@@ -18,22 +18,16 @@
 # along with pyfa.  If not, see <http://www.gnu.org/licenses/>.
 # ==============================================================================
 
-import sys
 import os
-import os.path
 import re
-import config
+import sys
 import traceback
+import warnings
+from optparse import AmbiguousOptionError, BadOptionError, OptionParser
 
-from optparse import OptionParser, BadOptionError, AmbiguousOptionError
+from logbook import CRITICAL, DEBUG, ERROR, FingersCrossedHandler, INFO, Logger, NestedSetup, NullHandler, StreamHandler, TimedRotatingFileHandler, WARNING
 
-# Import everything
-# noinspection PyPackageRequirements
-import os
-import os.path
-
-from logbook import TimedRotatingFileHandler, Logger, StreamHandler, NestedSetup, FingersCrossedHandler, NullHandler, \
-    CRITICAL, ERROR, WARNING, DEBUG, INFO
+import config
 
 try:
     import wxversion
@@ -88,6 +82,36 @@ class LoggerWriter:
         self.level(sys.stderr)
 
 
+def handleGUIException(exc_type, exc_value, exc_traceback):
+    tb = traceback.format_tb(exc_traceback)
+
+    try:
+        # Try and output to our log handler
+        with logging_setup.threadbound():
+            pyfalog.critical("Exception in main thread: {0}", exc_value.message)
+            # Print the base level traceback
+            traceback.print_tb(exc_traceback)
+
+            pyfa = wx.App(False)
+            ErrorFrame(exc_value, tb)
+            pyfa.MainLoop()
+    except:
+        # Most likely logging isn't available. Try and output to the console
+        print("Exception in main thread: " + str(exc_value.message))
+        traceback.print_tb(exc_traceback)
+
+        pyfa = wx.App(False)
+        ErrorFrame(exc_value, tb)
+        pyfa.MainLoop()
+
+    finally:
+        # TODO: Add cleanup when exiting here.
+        sys.exit()
+
+
+# Replace the uncaught exception handler with our own handler.
+sys.excepthook = handleGUIException
+
 # Parse command line options
 usage = "usage: %prog [--root]"
 parser = PassThroughOptionParser(usage=usage)
@@ -114,186 +138,168 @@ else:
     options.logginglevel = ERROR
 
 if __name__ == "__main__":
+    # Configure paths
+    if options.rootsavedata is True:
+        config.saveInRoot = True
+
+    # set title if it wasn't supplied by argument
+    if options.title is None:
+        options.title = "pyfa %s%s - Python Fitting Assistant" % (config.version, "" if config.tag.lower() != 'git' else " (git)")
+
+    config.debug = options.debug
+
+    # convert to unicode if it is set
+    if options.savepath is not None:
+        options.savepath = unicode(options.savepath)
+    config.defPaths(options.savepath)
+
+    # Basic logging initialization
+
+    # Logging levels:
+    '''
+    logbook.CRITICAL
+    logbook.ERROR
+    logbook.WARNING
+    logbook.INFO
+    logbook.DEBUG
+    logbook.NOTSET
+    '''
+
+    if options.debug:
+        savePath_filename = "Pyfa_debug.log"
+    else:
+        savePath_filename = "Pyfa.log"
+
+    savePath_Destination = os.path.join(config.savePath, savePath_filename)
+
     try:
-        # Configure paths
-        if options.rootsavedata is True:
-            config.saveInRoot = True
-
-        # set title if it wasn't supplied by argument
-        if options.title is None:
-            options.title = "pyfa %s%s - Python Fitting Assistant" % (config.version, "" if config.tag.lower() != 'git' else " (git)")
-
-        config.debug = options.debug
-
-        # convert to unicode if it is set
-        if options.savepath is not None:
-            options.savepath = unicode(options.savepath)
-        config.defPaths(options.savepath)
-
-        # Basic logging initialization
-
-        # Logging levels:
-        '''
-        logbook.CRITICAL
-        logbook.ERROR
-        logbook.WARNING
-        logbook.INFO
-        logbook.DEBUG
-        logbook.NOTSET
-        '''
-
         if options.debug:
-            savePath_filename = "Pyfa_debug.log"
-        else:
-            savePath_filename = "Pyfa.log"
-
-        savePath_Destination = os.path.join(config.savePath, savePath_filename)
-
-        try:
-            if options.debug:
-                logging_mode = "Debug"
-                logging_setup = NestedSetup([
-                    # make sure we never bubble up to the stderr handler
-                    # if we run out of setup handling
-                    NullHandler(),
-                    StreamHandler(
-                            sys.stdout,
-                            bubble=False,
-                            level=options.logginglevel
-                    ),
-                    TimedRotatingFileHandler(
-                            savePath_Destination,
-                            level=0,
-                            backup_count=3,
-                            bubble=True,
-                            date_format='%Y-%m-%d',
-                    ),
-                ])
-            else:
-                logging_mode = "User"
-                logging_setup = NestedSetup([
-                    # make sure we never bubble up to the stderr handler
-                    # if we run out of setup handling
-                    NullHandler(),
-                    FingersCrossedHandler(
-                            TimedRotatingFileHandler(
-                                    savePath_Destination,
-                                    level=0,
-                                    backup_count=3,
-                                    bubble=False,
-                                    date_format='%Y-%m-%d',
-                            ),
-                            action_level=ERROR,
-                            buffer_size=1000,
-                            # pull_information=True,
-                            # reset=False,
-                    )
-                ])
-        except:
-            print("Critical error attempting to setup logging. Falling back to console only.")
-            logging_mode = "Console Only"
+            logging_mode = "Debug"
             logging_setup = NestedSetup([
                 # make sure we never bubble up to the stderr handler
                 # if we run out of setup handling
                 NullHandler(),
                 StreamHandler(
                         sys.stdout,
-                        bubble=False
+                        bubble=False,
+                        level=options.logginglevel
+                ),
+                TimedRotatingFileHandler(
+                        savePath_Destination,
+                        level=0,
+                        backup_count=3,
+                        bubble=True,
+                        date_format='%Y-%m-%d',
+                ),
+            ])
+        else:
+            logging_mode = "User"
+            logging_setup = NestedSetup([
+                # make sure we never bubble up to the stderr handler
+                # if we run out of setup handling
+                NullHandler(),
+                FingersCrossedHandler(
+                        TimedRotatingFileHandler(
+                                savePath_Destination,
+                                level=0,
+                                backup_count=3,
+                                bubble=False,
+                                date_format='%Y-%m-%d',
+                        ),
+                        action_level=ERROR,
+                        buffer_size=1000,
+                        # pull_information=True,
+                        # reset=False,
                 )
             ])
-
-    except Exception, e:
-        tb = traceback.format_exc()
-
-        pyfa = wx.App(False)
-        ErrorFrame(e, tb)
-        pyfa.MainLoop()
-        raise
-        sys.exit()
+    except:
+        print("Critical error attempting to setup logging. Falling back to console only.")
+        logging_mode = "Console Only"
+        logging_setup = NestedSetup([
+            # make sure we never bubble up to the stderr handler
+            # if we run out of setup handling
+            NullHandler(),
+            StreamHandler(
+                    sys.stdout,
+                    bubble=False
+            )
+        ])
 
     with logging_setup.threadbound():
+        pyfalog.info("Starting Pyfa")
+
+        pyfalog.info("Running in logging mode: {0}", logging_mode)
+        pyfalog.info("Writing log file to: {0}", savePath_Destination)
+
+        # Output all stdout (print) messages as warnings
         try:
-            pyfalog.info("Starting Pyfa")
+            sys.stdout = LoggerWriter(pyfalog.warning)
+        except ValueError, Exception:
+            pyfalog.critical("Cannot access log file.  Continuing without writing stdout to log.")
 
-            # Don't redirect if frozen
-            if not hasattr(sys, 'frozen'):
-                # Output all stdout (print) messages as warnings
-                try:
-                    sys.stdout = LoggerWriter(pyfalog.warning)
-                except ValueError, Exception:
-                    pyfalog.critical("Cannot access log file.  Continuing without writing stdout to log.")
+        # Output all stderr (stacktrace) messages as critical
+        try:
+            sys.stderr = LoggerWriter(pyfalog.critical)
+        except ValueError, Exception:
+            pyfalog.critical("Cannot access log file.  Continuing without writing stderr to log.")
 
-                if not options.debug:
-                    # Output all stderr (stacktrace) messages as critical
-                    try:
-                        sys.stderr = LoggerWriter(pyfalog.critical)
-                    except ValueError, Exception:
-                        pyfalog.critical("Cannot access log file.  Continuing without writing stderr to log.")
+        if sys.version_info < (2, 6) or sys.version_info > (3, 0):
+            exit_message = "\nPyfa requires python 2.x branch ( >= 2.6 )\nExiting."
+            pyfalog.critical(exit_message)
+            raise Exception(exit_message)
 
-                if sys.version_info < (2, 6) or sys.version_info > (3, 0):
-                    exit_message = "\nPyfa requires python 2.x branch ( >= 2.6 )\nExiting."
-                    pyfalog.critical(exit_message)
-                    raise Exception(exit_message)
+        if hasattr(sys, 'frozen'):
+            pyfalog.info("Running in a frozen state.")
+        else:
+            pyfalog.info("Running in a thawed state.")
 
-                if wx is None or wxversion is None:
-                    exit_message = "\nCannot find wxPython\nYou can download wxPython (2.8+) from http://www.wxpython.org/"
-                    pyfalog.critical(exit_message)
-                    raise Exception(exit_message)
-                else:
-                    if options.force28 is True and wxversion.checkInstalled('2.8'):
-                        pyfalog.info("wxPython is installed. Version: {0} (forced).", wxversion.getInstalled())
-                    elif options.force28 is not True and (wxversion.checkInstalled('2.8') or wxversion.checkInstalled('3.0')):
-                        pyfalog.info("wxPython is installed. Version: {0}.", wxversion.getInstalled())
-                    else:
-                        exit_message = "\nInstalled wxPython version doesn't meet requirements.\nYou can download wxPython 2.8 or 3.0 from http://www.wxpython.org/"
-                        pyfalog.critical(exit_message)
-                        raise Exception(exit_message)
-
-            if sqlalchemy is None:
-                exit_message = "\nCannot find sqlalchemy.\nYou can download sqlalchemy (0.6+) from http://www.sqlalchemy.org/"
-                pyfalog.critical(exit_message)
-                raise Exception(exit_message)
+        if hasattr(sys, 'frozen') and wx is not None:
+            pyfalog.info("Running in frozen state with wx installed. Skipping wx validation.")
+        elif wx is None or wxversion is None:
+            exit_message = "\nCannot find wxPython\nYou can download wxPython (2.8+) from http://www.wxpython.org/"
+            pyfalog.critical(exit_message)
+            raise Exception(exit_message)
+        else:
+            if options.force28 is True and wxversion.checkInstalled('2.8'):
+                pyfalog.info("wxPython is installed. Version: {0} (forced).", wxversion.getInstalled())
+            elif options.force28 is not True and (wxversion.checkInstalled('2.8') or wxversion.checkInstalled('3.0')):
+                pyfalog.info("wxPython is installed. Version: {0}.", wxversion.getInstalled())
             else:
-                saVersion = sqlalchemy.__version__
-                saMatch = re.match("([0-9]+).([0-9]+)([b\.])([0-9]+)", saVersion)
-                if saMatch:
-                    saMajor = int(saMatch.group(1))
-                    saMinor = int(saMatch.group(2))
-                    betaFlag = True if saMatch.group(3) == "b" else False
-                    saBuild = int(saMatch.group(4)) if not betaFlag else 0
-                    if saMajor == 0 and (saMinor < 5 or (saMinor == 5 and saBuild < 8)):
-                        pyfalog.critical("Pyfa requires sqlalchemy 0.5.8 at least  but current sqlalchemy version is {0}", format(sqlalchemy.__version__))
-                        pyfalog.critical("You can download sqlalchemy (0.5.8+) from http://www.sqlalchemy.org/")
-                        sys.exit(1)
+                pyfalog.warning("\nInstalled wxPython version doesn't meet requirements.\nYou can download wxPython 2.8 or 3.0 from http://www.wxpython.org/")
+                pyfalog.critical("Attempting to run with unsupported version of wx. Version: {0}", wxversion.getInstalled())
+
+        if sqlalchemy is None:
+            exit_message = "\nCannot find sqlalchemy.\nYou can download sqlalchemy (0.6+) from http://www.sqlalchemy.org/"
+            pyfalog.critical(exit_message)
+            raise Exception(exit_message)
+        else:
+            saVersion = sqlalchemy.__version__
+            saMatch = re.match("([0-9]+).([0-9]+)([b\.])([0-9]+)", saVersion)
+            if saMatch:
+                saMajor = int(saMatch.group(1))
+                saMinor = int(saMatch.group(2))
+                betaFlag = True if saMatch.group(3) == "b" else False
+                saBuild = int(saMatch.group(4)) if not betaFlag else 0
+                if saMajor == 0 and (saMinor < 5 or (saMinor == 5 and saBuild < 8)):
+                    pyfalog.critical("Pyfa requires sqlalchemy 0.5.8 at least but current sqlAlchemy version is {0}", format(sqlalchemy.__version__))
+                    pyfalog.critical("You can download sqlAlchemy (0.5.8+) from http://www.sqlalchemy.org/")
+                    pyfalog.critical("Attempting to run with unsupported version of sqlAlchemy.")
                 else:
-                    pyfalog.warning("Unknown sqlalchemy version string format, skipping check")
+                    pyfalog.info("Current version of sqlAlchemy is: {0}", sqlalchemy.__version__)
+            else:
+                pyfalog.warning("Unknown sqlalchemy version string format, skipping check. Version: {0}", sqlalchemy.__version__)
 
-            import eos.db
-            # noinspection PyUnresolvedReferences
-            import service.prefetch  # noqa: F401
+        import eos.db
+        # noinspection PyUnresolvedReferences
+        import service.prefetch  # noqa: F401
 
-            # Make sure the saveddata db exists
-            if not os.path.exists(config.savePath):
-                os.mkdir(config.savePath)
+        # Make sure the saveddata db exists
+        if not os.path.exists(config.savePath):
+            os.mkdir(config.savePath)
 
-            eos.db.saveddata_meta.create_all()
+        eos.db.saveddata_meta.create_all()
 
-            pyfalog.info("Running in logging mode: {0}", logging_mode)
-
-            if hasattr(sys, 'frozen') and options.debug:
-                pyfalog.critical("Running in frozen mode with debug turned on. Forcing all output to be written to log.")
-
-            from gui.mainFrame import MainFrame
-
-        except Exception as e:
-            tb = traceback.format_exc()
-            pyfa = wx.App(False)
-            ErrorFrame(e, tb)
-            pyfa.MainLoop()
-            pyfalog.critical("Exception in main thread.")
-            pyfalog.critical(tb)
-            raise
-            sys.exit()
+        from gui.mainFrame import MainFrame
 
         pyfa = wx.App(False)
         MainFrame(options.title)
