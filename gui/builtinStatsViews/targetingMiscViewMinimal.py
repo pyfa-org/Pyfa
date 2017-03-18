@@ -242,7 +242,6 @@ class TargetingMiscViewMinimal(StatsView):
 
             # forces update of probe size, since this stat is used by both sig radius and sensor str
             if labelName == "labelFullSigRadius":
-                print "labelName"
                 if fit:
                     label.SetToolTip(wx.ToolTip("Probe Size: %.3f" % (fit.probeSize or 0)))
                 else:

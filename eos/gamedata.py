@@ -174,7 +174,7 @@ class Effect(EqBase):
             self.__runTime = "normal"
             self.__activeByDefault = True
             self.__type = None
-            pyfalog.warning("ImportError generating handler: {0}", e)
+            pyfalog.debug("ImportError generating handler: {0}", e)
         except (AttributeError) as e:
             # Effect probably exists but there is an issue with it.  Turn it into a dummy effect so we can continue, but flag it with an error.
             self.__handler = effectDummy

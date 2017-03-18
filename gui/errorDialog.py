@@ -17,8 +17,11 @@
 # along with pyfa.  If not, see <http://www.gnu.org/licenses/>.
 # ===============================================================================
 
-import wx
+import platform
 import sys
+
+import wx
+
 import config
 
 try:
@@ -76,6 +79,8 @@ class ErrorFrame(wx.Frame):
         errorTextCtrl.SetFont(wx.Font(8, wx.FONTFAMILY_TELETYPE, wx.NORMAL, wx.NORMAL))
         mainSizer.Add(errorTextCtrl, 0, wx.EXPAND | wx.ALL | wx.ALIGN_CENTER, 5)
 
+        errorTextCtrl.AppendText("OS version: \t" + str(platform.platform()))
+        errorTextCtrl.AppendText("\n")
         errorTextCtrl.AppendText("Python: \t" + '{}.{}.{}'.format(v.major, v.minor, v.micro))
         errorTextCtrl.AppendText("\n")
         errorTextCtrl.AppendText("wxPython: \t" + str(wx.__version__))

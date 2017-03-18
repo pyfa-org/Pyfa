@@ -18,6 +18,7 @@
 # along with pyfa.  If not, see <http://www.gnu.org/licenses/>.
 # ==============================================================================
 
+import platform
 import os
 import re
 import sys
@@ -241,6 +242,8 @@ if __name__ == "__main__":
             sys.stderr = LoggerWriter(pyfalog.critical)
         except ValueError, Exception:
             pyfalog.critical("Cannot redirect.  Continuing without writing stderr to log.")
+
+        pyfalog.info("OS version: {0}", platform.platform())
 
         pyfalog.info("Python version: {0}", sys.version)
         if sys.version_info < (2, 7) or sys.version_info > (3, 0):
