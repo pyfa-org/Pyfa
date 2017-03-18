@@ -22,7 +22,6 @@ import os
 import re
 import sys
 import traceback
-import warnings
 from optparse import AmbiguousOptionError, BadOptionError, OptionParser
 
 from logbook import CRITICAL, DEBUG, ERROR, FingersCrossedHandler, INFO, Logger, NestedSetup, NullHandler, StreamHandler, TimedRotatingFileHandler, WARNING
@@ -235,13 +234,13 @@ if __name__ == "__main__":
         try:
             sys.stdout = LoggerWriter(pyfalog.warning)
         except ValueError, Exception:
-            pyfalog.critical("Cannot access log file.  Continuing without writing stdout to log.")
+            pyfalog.critical("Cannot redirect.  Continuing without writing stdout to log.")
 
         # Output all stderr (stacktrace) messages as critical
         try:
             sys.stderr = LoggerWriter(pyfalog.critical)
         except ValueError, Exception:
-            pyfalog.critical("Cannot access log file.  Continuing without writing stderr to log.")
+            pyfalog.critical("Cannot redirect.  Continuing without writing stderr to log.")
 
         if sys.version_info < (2, 6) or sys.version_info > (3, 0):
             exit_message = "\nPyfa requires python 2.x branch ( >= 2.6 )\nExiting."
@@ -255,6 +254,7 @@ if __name__ == "__main__":
 
         if hasattr(sys, 'frozen') and wx is not None:
             pyfalog.info("Running in frozen state with wx installed. Skipping wx validation.")
+            pyfalog.debug("wxPython version: {0}.", wxversion.getInstalled())
         elif wx is None or wxversion is None:
             exit_message = "\nCannot find wxPython\nYou can download wxPython (2.8+) from http://www.wxpython.org/"
             pyfalog.critical(exit_message)
