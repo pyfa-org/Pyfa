@@ -1,6 +1,13 @@
 # noinspection PyPackageRequirements
 import pytest
 
+import os
+import sys
+
+script_dir = os.path.dirname(os.path.abspath(__file__))
+# Add this folder to paths so we can import our helpers
+sys.path.append(os.path.realpath(os.path.join(script_dir)))
+
 # noinspection PyUnresolvedReferences
 from helpers import DBInMemory as DB
 # noinspection PyUnresolvedReferences

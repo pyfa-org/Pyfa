@@ -12,6 +12,7 @@ sys.path.append(os.path.realpath(os.path.join(script_dir, '..', '..')))
 # noinspection PyUnresolvedReferences,PyUnusedLocal
 @pytest.fixture
 def DBInMemory():
+    print("Creating database in memory")
     import eos.config
     from os.path import realpath, join, dirname, abspath
 
@@ -39,6 +40,7 @@ def DBInMemory():
 
 @pytest.fixture
 def Gamedata():
+    print("Building Gamedata")
     from eos.gamedata import Item
 
     helper = {
@@ -49,6 +51,7 @@ def Gamedata():
 
 @pytest.fixture
 def Saveddata():
+    print("Building Saveddata")
     from eos.saveddata.ship import Ship
     from eos.saveddata.fit import Fit
     from eos.saveddata.character import Character
