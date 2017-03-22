@@ -19,6 +19,10 @@ def DBInMemory():
     import eos
     import eos.db
 
+    # Output debug info to help us troubleshoot Travis
+    print(eos.db.saveddata_engine)
+    print(eos.db.gamedata_engine)
+
     helper = {
         'config': eos.config,
         'db'    : eos.db,
