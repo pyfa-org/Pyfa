@@ -19,6 +19,9 @@ from helpers import Saveddata
 # noinspection PyShadowingNames
 @pytest.fixture
 def Rifter(DB, Gamedata, Saveddata):
+    print("Creating Rifter")
+    print(DB['db'].gamedata_session.bind)
+    print(DB['db'].saveddata_session.bind)
     item = DB['db'].gamedata_session.query(Gamedata['Item']).filter(Gamedata['Item'].name == "Rifter").first()
     ship = Saveddata['Ship'](item)
     # setup fit
