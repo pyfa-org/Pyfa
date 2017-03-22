@@ -7,7 +7,7 @@ import sys
 # noinspection PyPackageRequirements
 # import pytest
 
-
+'''
 script_dir = os.path.dirname(os.path.abspath(__file__))
 # Add root to python paths, this allows us to import submodules
 sys.path.append(os.path.realpath(os.path.join(script_dir, '..')))
@@ -49,6 +49,8 @@ def eos_modules():
                     file_.split(".py")[0],
                 )
                 yield mod_name
+
+'''
 
 # TODO: Disable walk through Eos paths until eos.types is killed.  eos.types causes the import to break
 '''
