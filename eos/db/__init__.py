@@ -54,8 +54,6 @@ except Exception as e:
     pyfalog.critical(e)
     config.gamedata_version = None
 
-print("Test: " + config.saveddata_connectionstring)
-
 saveddata_connectionstring = config.saveddata_connectionstring
 if saveddata_connectionstring is not None:
     if callable(saveddata_connectionstring):
