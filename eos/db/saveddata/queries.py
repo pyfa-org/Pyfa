@@ -30,6 +30,7 @@ from eos.saveddata.targetResists import TargetResists
 from eos.saveddata.character import Character
 from eos.saveddata.implantSet import ImplantSet
 from eos.saveddata.fit import Fit
+from eos.saveddata.module import Module
 from eos.saveddata.miscData import MiscData
 from eos.saveddata.override import Override
 
@@ -241,22 +242,17 @@ def getFitsWithShip(shipID, ownerID=None, where=None, eager=None):
     return fits
 
 
-def getBoosterFits(ownerID=None, where=None, eager=None):
+def getFitsWithModules(typeIDs, eager=None):
     """
-    Get all the fits that are flagged as a boosting ship
-    If no user is passed, do this for all users.
+    Get all the fits that have typeIDs fitted to them
     """
 
-    if ownerID is not None and not isinstance(ownerID, int):
-        raise TypeError("OwnerID must be integer")
-    filter = Fit.booster == 1
-    if ownerID is not None:
-        filter = and_(filter, Fit.ownerID == ownerID)
+    if not hasattr(typeIDs, "__iter__"):
+        typeIDs = (typeIDs,)
 
-    filter = processWhere(filter, where)
     eager = processEager(eager)
     with sd_lock:
-        fits = removeInvalid(saveddata_session.query(Fit).options(*eager).filter(filter).all())
+        fits = removeInvalid(saveddata_session.query(Fit).join(Module).options(*eager).filter(Module.itemID.in_(typeIDs)).all())
 
     return fits
 

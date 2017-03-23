@@ -95,15 +95,10 @@ class Fit(object):
         return names
 
     @staticmethod
-    def getBoosterFits():
+    def getFitsWithModules(typeIDs):
         """ Lists fits flagged as booster """
-        pyfalog.debug("Fetching all fits flagged as a booster.")
-        fits = eos.db.getBoosterFits()
-        names = []
-        for fit in fits:
-            names.append((fit.ID, fit.name, fit.shipID))
-
-        return names
+        fits = eos.db.getFitsWithModules(typeIDs)
+        return fits
 
     @staticmethod
     def countAllFits():
