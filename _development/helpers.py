@@ -11,7 +11,7 @@ from sqlalchemy.orm import sessionmaker
 script_dir = os.path.dirname(os.path.abspath(__file__))
 # Add root folder to python paths
 sys.path.append(os.path.realpath(os.path.join(script_dir, '..', '..')))
-
+sys._called_from_test = True
 
 # noinspection PyUnresolvedReferences,PyUnusedLocal
 @pytest.fixture
@@ -93,29 +93,11 @@ def DBInMemory_test():
 @pytest.fixture
 def DBInMemory():
     print("Creating database in memory")
-    from os.path import realpath, join, dirname, abspath
-
-    '''
-    global saveddata_memory
-    saveddata_memory = True
-    '''
 
     import eos.config
-    eos.config.saveddata_connectionstring = 'sqlite:///:memory:'
 
     import eos
     import eos.db
-
-    # Replace the existing DB connection with our own. For some reason on Linux, it ignores what we set above. :(
-    if callable('sqlite:///:memory:'):
-        eos.db.saveddata_engine = create_engine(creator='sqlite:///:memory:', echo=eos.config.debug)
-    else:
-        eos.db.saveddata_engine = create_engine('sqlite:///:memory:', echo=eos.config.debug)
-
-    eos.db.saveddata_meta = MetaData()
-    eos.db.saveddata_meta.bind = eos.db.saveddata_engine
-    eos.db.saveddata_session = sessionmaker(bind=eos.db.saveddata_engine, autoflush=False, expire_on_commit=False)()
-    eos.db.saveddata_meta.create_all()
 
     # Output debug info to help us troubleshoot Travis
     print(eos.db.saveddata_engine)
