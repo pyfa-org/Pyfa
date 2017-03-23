@@ -29,7 +29,8 @@ pyfalog = Logger(__name__)
 
 
 class SettingsProvider(object):
-    BASE_PATH = os.path.join(config.savePath, 'settings')
+    if config.savePath:
+        BASE_PATH = os.path.join(config.savePath, 'settings')
     settings = {}
     _instance = None
 

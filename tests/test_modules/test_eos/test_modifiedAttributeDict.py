@@ -32,8 +32,8 @@ def test_multiply_stacking_penalties(DB, Saveddata, RifterFit):
             calculated_resist = RifterFit.ship.getModifiedItemAttr("shieldEmDamageResonance")
         else:
             # Calculate what our next resist should be
-            # See: http://wiki.eveuniversity.org/Eve_Math#Stacking_Penalties
-            current_effectiveness = math.pow(0.5, (math.pow(0.45 * (_ - 1), 2)))
+            # Denominator: [math.exp((i / 2.67) ** 2.0) for i in xrange(8)]
+            current_effectiveness = 1 / math.exp(((_ - 1) / 2.67) ** 2.0)
             new_item_modifier = 1 + ((item_modifer * current_effectiveness) / 100)
             calculated_resist = (em_resist * new_item_modifier)
 
@@ -46,7 +46,5 @@ def test_multiply_stacking_penalties(DB, Saveddata, RifterFit):
 
         em_resist = RifterFit.ship.getModifiedItemAttr("shieldEmDamageResonance")
 
-        # Ohnoes! Our stacking penalty calculations are off! Round off because the ones in Eos are probably wrong after four decimal places.
-        # TODO: Remove the round when Eos calcs are fixed
-        assert round(em_resist, 4) == round(calculated_resist, 4)
+        assert em_resist == calculated_resist
         # print(str(em_resist) + "==" + str(calculated_resist))
