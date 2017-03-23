@@ -41,4 +41,4 @@ def test_multiply_stacking_penalties(DB, Saveddata, RifterFit):
         # Ohnoes! Our stacking penalty calculations are off! Round off because the ones in Eos are probably wrong after four decimal places.
         # TODO: Remove the round when Eos calcs are fixed
         assert round(em_resist, 4) == round(calculated_resist, 4)
-        print(str(em_resist) + "==" + str(calculated_resist))
+        # print(str(em_resist) + "==" + str(calculated_resist))
