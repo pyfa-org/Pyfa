@@ -4,6 +4,7 @@ import wx
 from service.fit import Fit
 from service.market import Market
 import gui.mainFrame
+import gui.globalEvents as GE
 from gui.contextMenu import ContextMenu
 from service.settings import ContextMenuSettings
 
@@ -86,10 +87,8 @@ class CommandFits(ContextMenu):
         sFit = Fit.getInstance()
         fitID = self.mainFrame.getActiveFit()
 
-        print fit, 'selected'
-        # add command fit
-        # sFit.toggleFighterAbility(fitID, fit)
-        # wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fitID))
+        sFit.addCommandFit(fitID, fit)
+        wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fitID))
 
 CommandFits.populateFits(None)
 CommandFits.register()
