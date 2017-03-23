@@ -4,7 +4,9 @@ import math
 import os
 import sys
 script_dir = os.path.dirname(os.path.abspath(__file__))
-sys.path.append(os.path.realpath(os.path.join(script_dir, '..', '..', '..')))
+script_dir = os.path.realpath(os.path.join(script_dir, '..', '..', '..'))
+print script_dir
+sys.path.append(script_dir)
 
 # noinspection PyPackageRequirements
 from _development.helpers import DBInMemory as DB, Gamedata, Saveddata
@@ -22,22 +24,25 @@ def test_multiply_stacking_penalties(DB, Saveddata, RifterFit):
     mod = Saveddata['Module'](DB['db'].getItem("EM Ward Amplifier II"))
     item_modifer = mod.item.getAttribute("emDamageResistanceBonus")
 
+    RifterFit.calculateModifiedAttributes()
 
     for _ in range(10):
-        # See: http://wiki.eveuniversity.org/Eve_Math#Stacking_Penalties
-        current_effectiveness = pow(0.5, (pow(0.45 * (_ - 1), 2)))
-
-        RifterFit.clear()
-        RifterFit.calculateModifiedAttributes()
-
         if _ == 0:
             # First run we have no modules, se don't try and calculate them.
             calculated_resist = RifterFit.ship.getModifiedItemAttr("shieldEmDamageResonance")
         else:
+            # Calculate what our next resist should be
+            # See: http://wiki.eveuniversity.org/Eve_Math#Stacking_Penalties
+            current_effectiveness = pow(0.5, (pow(0.45 * (_ - 1), 2)))
             new_item_modifier = 1 + ((item_modifer * current_effectiveness) / 100)
             calculated_resist = (em_resist * new_item_modifier)
+
+            # Add another resist module to our fit.
             RifterFit.modules.append(mod)
-            RifterFit.calculateModifiedAttributes()
+
+        # Modify our fit so that Eos generates new numbers for us.
+        RifterFit.clear()
+        RifterFit.calculateModifiedAttributes()
 
         em_resist = RifterFit.ship.getModifiedItemAttr("shieldEmDamageResonance")
 

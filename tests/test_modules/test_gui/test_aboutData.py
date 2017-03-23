@@ -5,8 +5,8 @@ import sys
 script_dir = os.path.dirname(os.path.abspath(__file__))
 sys.path.append(os.path.realpath(os.path.join(script_dir, '..', '..', '..')))
 
-
 from gui.aboutData import versionString, licenses, developers, credits, description
+
 
 def test_aboutData():
     """
