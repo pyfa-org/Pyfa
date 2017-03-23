@@ -130,8 +130,10 @@ def Saveddata():
     from eos.saveddata.fit import Fit
     from eos.saveddata.character import Character
     from eos.saveddata.module import Module, State
+    from eos.saveddata.citadel import Citadel
 
     helper = {
+        'Structure': Citadel,
         'Ship'     : Ship,
         'Fit'      : Fit,
         'Character': Character,
