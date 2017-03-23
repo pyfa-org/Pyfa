@@ -18,14 +18,15 @@
 # along with pyfa.  If not, see <http://www.gnu.org/licenses/>.
 # ==============================================================================
 
-import platform
 import os
+import platform
 import re
 import sys
 import traceback
 from optparse import AmbiguousOptionError, BadOptionError, OptionParser
 
-from logbook import CRITICAL, DEBUG, ERROR, FingersCrossedHandler, INFO, Logger, NestedSetup, NullHandler, StreamHandler, TimedRotatingFileHandler, WARNING
+from logbook import CRITICAL, DEBUG, ERROR, FingersCrossedHandler, INFO, Logger, NestedSetup, NullHandler, StreamHandler, TimedRotatingFileHandler, WARNING, \
+    __version__ as logbook_version
 
 import config
 
@@ -111,6 +112,10 @@ def handleGUIException(exc_type, exc_value, exc_traceback):
 
 # Replace the uncaught exception handler with our own handler.
 sys.excepthook = handleGUIException
+
+logVersion = logbook_version.split('.')
+if int(logVersion[0]) < 1:
+    print ("Logbook version >= 1.0.0 is recommended. You may have some performance issues by continuing to use an earlier version.")
 
 # Parse command line options
 usage = "usage: %prog [--root]"
