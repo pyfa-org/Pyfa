@@ -23,10 +23,11 @@ import gui.display as d
 import gui.globalEvents as GE
 
 import gui.droneView
+import gui.marketBrowser as marketBrowser
 from gui.builtinViewColumns.state import State
 from gui.contextMenu import ContextMenu
+from gui.builtinContextMenus.commandFits import CommandFits
 from service.fit import Fit
-from service.market import Market
 from eos.saveddata.drone import Drone as es_Drone
 
 
@@ -64,15 +65,7 @@ class CommandView(d.Display):
 
         self.lastFitId = None
 
-        # Get list of items that define a command fit
-        sMkt = Market.getInstance()
-        grp = sMkt.getGroup(1770) # Command burst group
-        self.commandTypeIDs = [item.ID for item in grp.items]
-
-        sFit = Fit.getInstance()
-        commandFits = sFit.getFitsWithModules(self.commandTypeIDs)
-        print (commandFits)
-
+        self.mainFrame.Bind(GE.FIT_CHANGED, CommandFits.populateFits)
         self.mainFrame.Bind(GE.FIT_CHANGED, self.fitChanged)
         self.Bind(wx.EVT_LEFT_DOWN, self.click)
         self.Bind(wx.EVT_RIGHT_DOWN, self.click)
