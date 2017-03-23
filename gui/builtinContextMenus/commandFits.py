@@ -8,6 +8,7 @@ import gui.globalEvents as GE
 from gui.contextMenu import ContextMenu
 from service.settings import ContextMenuSettings
 
+
 class CommandFits(ContextMenu):
     # Get list of items that define a command fit
     sMkt = Market.getInstance()
@@ -80,7 +81,7 @@ class CommandFits(ContextMenu):
 
     def handleSelection(self, event):
         fit = self.fitMenuItemIds[event.Id]
-        if fit is False or fit not in  self.__class__.commandFits:
+        if fit is False or fit not in self.__class__.commandFits:
             event.Skip()
             return
 
@@ -89,6 +90,7 @@ class CommandFits(ContextMenu):
 
         sFit.addCommandFit(fitID, fit)
         wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fitID))
+
 
 CommandFits.populateFits(None)
 CommandFits.register()

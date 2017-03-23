@@ -23,7 +23,6 @@ import gui.display as d
 import gui.globalEvents as GE
 
 import gui.droneView
-import gui.marketBrowser as marketBrowser
 from gui.builtinViewColumns.state import State
 from gui.contextMenu import ContextMenu
 from gui.builtinContextMenus.commandFits import CommandFits
