@@ -2,6 +2,9 @@ from gui.aboutData import versionString, licenses, developers, credits, descript
 
 
 def test_aboutData():
+    """
+    Simple test to validate all about data exists
+    """
     assert versionString.__len__() > 0
     assert licenses.__len__() > 0
     assert developers.__len__() > 0
