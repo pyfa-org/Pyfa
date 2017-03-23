@@ -21,26 +21,75 @@ class CommandFits(ContextMenu):
             # we are adding or removing an item that defines a command fit. Need to refresh fit list
             sFit = Fit.getInstance()
             cls.commandFits = sFit.getFitsWithModules(cls.commandTypeIDs)
-            print (cls.commandFits)
-            #todo: create menu here.
-            pass
 
     def __init__(self):
-        print (self.__class__.commandTypeIDs)
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
         self.settings = ContextMenuSettings.getInstance()
 
     def display(self, srcContext, selection):
-        # todo: the whole thing
-        return False
+        if self.mainFrame.getActiveFit() is None or len(self.__class__.commandFits) == 0 or srcContext != "commandView":
+            return False
+
+        return True
 
     def getText(self, itmContext, selection):
         return "Command Fits"
 
+    def addFit(self, menu, fit, includeShip=False):
+        label = fit.name if not includeShip else "({}) {}".format(fit.ship.item.name, fit.name)
+        id = ContextMenu.nextID()
+        self.fitMenuItemIds[id] = fit
+        menuItem = wx.MenuItem(menu, id, label)
+        menu.Bind(wx.EVT_MENU, self.handleSelection, menuItem)
+        return menuItem
+
     def getSubMenu(self, context, selection, rootMenu, i, pitem):
-        if self.__class__.menu is None:
-            self.__class__.populateFits()
-        return self.__class__.menu
+        msw = True if "wxMSW" in wx.PlatformInfo else False
+        self.context = context
+        self.fitMenuItemIds = {}
 
+        sub = wx.Menu()
 
+        if len(self.__class__.commandFits) < 15:
+            for fit in sorted(self.__class__.commandFits, key=lambda x: x.name):
+                print fit
+                menuItem = self.addFit(rootMenu if msw else sub, fit, True)
+                sub.AppendItem(menuItem)
+        else:
+            typeDict = {}
+
+            for fit in self.__class__.commandFits:
+                shipName = fit.ship.item.name
+                if shipName not in typeDict:
+                    typeDict[shipName] = []
+                typeDict[shipName].append(fit)
+
+            for ship in sorted(typeDict.keys()):
+                shipItem = wx.MenuItem(sub, ContextMenu.nextID(), ship)
+                grandSub = wx.Menu()
+                shipItem.SetSubMenu(grandSub)
+
+                for fit in sorted(typeDict[ship], key=lambda x: x.name):
+                    fitItem = self.addFit(rootMenu if msw else grandSub, fit, False)
+                    grandSub.AppendItem(fitItem)
+
+                sub.AppendItem(shipItem)
+
+        return sub
+
+    def handleSelection(self, event):
+        fit = self.fitMenuItemIds[event.Id]
+        if fit is False or fit not in  self.__class__.commandFits:
+            event.Skip()
+            return
+
+        sFit = Fit.getInstance()
+        fitID = self.mainFrame.getActiveFit()
+
+        print fit, 'selected'
+        # add command fit
+        # sFit.toggleFighterAbility(fitID, fit)
+        # wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fitID))
+
+CommandFits.populateFits(None)
 CommandFits.register()

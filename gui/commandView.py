@@ -197,13 +197,13 @@ class CommandView(d.Display):
             fitSrcContext = "commandFit"
             fitItemContext = item.name
             context = ((fitSrcContext, fitItemContext),)
-            context += ("command",),
+            context += ("commandView",),
             menu = ContextMenu.getMenu((item,), *context)
         elif sel == -1:
             fitID = self.mainFrame.getActiveFit()
             if fitID is None:
                 return
-            context = (("command",),)
+            context = (("commandView",),)
             menu = ContextMenu.getMenu([], *context)
         if menu is not None:
             self.PopupMenu(menu)
