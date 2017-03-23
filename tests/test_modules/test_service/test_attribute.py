@@ -10,7 +10,7 @@ from service.attribute import Attribute
 
 def test_attribute():
     """
-    We don't really have much to test here, to throw a generic attribute at it and validate we get the expected results
+    We don't really have much to test here, so throw a generic attribute at it and validate we get the expected results
 
     :return:
     """
