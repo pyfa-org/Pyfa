@@ -173,7 +173,7 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
                 charges = 0
             else:
                 charges = floor(containerCapacity / chargeVolume)
-        return charges
+        return int(charges)
 
     @property
     def numShots(self):
