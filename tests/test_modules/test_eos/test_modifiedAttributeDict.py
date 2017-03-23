@@ -33,7 +33,7 @@ def test_multiply_stacking_penalties(DB, Saveddata, RifterFit):
         else:
             # Calculate what our next resist should be
             # See: http://wiki.eveuniversity.org/Eve_Math#Stacking_Penalties
-            current_effectiveness = pow(0.5, (pow(0.45 * (_ - 1), 2)))
+            current_effectiveness = math.pow(0.5, (math.pow(0.45 * (_ - 1), 2)))
             new_item_modifier = 1 + ((item_modifer * current_effectiveness) / 100)
             calculated_resist = (em_resist * new_item_modifier)
 
