@@ -1,6 +1,5 @@
 from gui.contextMenu import ContextMenu
 import gui.mainFrame
-import service
 import gui.globalEvents as GE
 import wx
 from service.settings import ContextMenuSettings
