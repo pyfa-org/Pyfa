@@ -20,7 +20,7 @@ def DBInMemory():
     gamedataCache = True
     saveddataCache = True
     gamedata_version = ""
-    eos.config.gamedata_connectionstring = 'sqlite:///' + realpath(join(dirname(abspath(unicode(__file__))), "..", "..", "eve.db"))
+    eos.config.gamedata_connectionstring = 'sqlite:///' + realpath(join(dirname(abspath(unicode(__file__))), "..", "eve.db"))
     # saveddata_connectionstring = 'sqlite:///' + unicode(realpath(join(dirname(abspath(__file__)), "..", "saveddata", "saveddata.db")), sys.getfilesystemencoding())
     eos.config.saveddata_connectionstring = 'sqlite:///:memory:'
 

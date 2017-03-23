@@ -1,3 +1,12 @@
+import os
+import sys
+
+'''
+script_dir = os.path.dirname(os.path.abspath(__file__))
+# Add root folder to python paths
+sys.path.append(os.path.realpath(os.path.join(script_dir, '..', '..')))
+'''
+
 from service.attribute import Attribute
 
 
