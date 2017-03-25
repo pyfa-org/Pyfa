@@ -7,6 +7,7 @@ sys.path.append(os.path.realpath(os.path.join(script_dir, '..', '..', '..')))
 
 # noinspection PyPackageRequirements
 from _development.helpers import DBInMemory as DB, Gamedata, Saveddata
+# noinspection PyPackageRequirements
 from _development.helpers_fits import RifterFit, KeepstarFit
 from service.fit import Fit
 
