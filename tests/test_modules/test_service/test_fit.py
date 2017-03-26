@@ -12,9 +12,10 @@ from _development.helpers_fits import RifterFit, KeepstarFit
 from service.fit import Fit
 
 # Fake import wx
-from types import ModuleType
-wx = ModuleType("fake_module")
-sys.modules[wx.__name__] = wx
+# todo: fix this
+# from types import ModuleType
+# wx = ModuleType("fake_module")
+# sys.modules[wx.__name__] = wx
 
 def test_getAllFits(DB, RifterFit, KeepstarFit):
     assert len(Fit.getAllFits()) == 0
