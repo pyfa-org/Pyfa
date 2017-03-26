@@ -85,8 +85,9 @@ class CheckUpdateThread(threading.Thread):
                     if release['prerelease'] and rVersion > config.expansionVersion:
                         wx.CallAfter(self.callback, release)  # Singularity -> Singularity
                 break
-        except:
-            pyfalog.warning("Caught exception in run")
+        except Exception as e:
+            pyfalog.error("Caught exception in run")
+            pyfalog.error(e)
             pass
 
     @staticmethod
@@ -100,6 +101,7 @@ class Update(object):
     @staticmethod
     def CheckUpdate(callback):
         thread = CheckUpdateThread(callback)
+        pyfalog.debug("Starting Check Update Thread.")
         thread.start()
 
     @classmethod

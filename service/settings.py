@@ -22,13 +22,15 @@ import os.path
 import urllib2
 
 import config
+import eos.config
 from logbook import Logger
 
 pyfalog = Logger(__name__)
 
 
 class SettingsProvider(object):
-    BASE_PATH = os.path.join(config.savePath, 'settings')
+    if config.savePath:
+        BASE_PATH = os.path.join(config.savePath, 'settings')
     settings = {}
     _instance = None
 
@@ -40,13 +42,15 @@ class SettingsProvider(object):
         return cls._instance
 
     def __init__(self):
-        if not os.path.exists(self.BASE_PATH):
-            os.mkdir(self.BASE_PATH)
+        if hasattr(self, 'BASE_PATH'):
+            if not os.path.exists(self.BASE_PATH):
+                os.mkdir(self.BASE_PATH)
 
     def getSettings(self, area, defaults=None):
 
         s = self.settings.get(area)
-        if s is None:
+
+        if s is None and hasattr(self, 'BASE_PATH'):
             p = os.path.join(self.BASE_PATH, area)
 
             if not os.path.exists(p):
@@ -370,7 +374,8 @@ class StatViewSettings(object):
             "targetingMisc": 1,
             "price"        : 2,
             "miningyield"  : 2,
-            "drones"       : 2
+            "drones"       : 2,
+            "outgoing"     : 2,
         }
 
         # We don't have these....yet
@@ -406,14 +411,17 @@ class ContextMenuSettings(object):
             "ammoPattern"           : 1,
             "amount"                : 1,
             "cargo"                 : 1,
+            "cargoAmmo"             : 1,
             "changeAffectingSkills" : 1,
             "damagePattern"         : 1,
             "droneRemoveStack"      : 1,
             "droneSplit"            : 1,
+            "droneStack"            : 1,
             "factorReload"          : 1,
             "fighterAbilities"      : 1,
-            "implantSet"            : 1,
+            "implantSets"           : 1,
             "itemStats"             : 1,
+            "itemRemove"            : 1,
             "marketJump"            : 1,
             "metaSwap"              : 1,
             "moduleAmmoPicker"      : 1,
@@ -434,5 +442,25 @@ class ContextMenuSettings(object):
 
     def set(self, type, value):
         self.ContextMenuDefaultSettings[type] = value
+
+
+class EOSSettings(object):
+        _instance = None
+
+        @classmethod
+        def getInstance(cls):
+            if cls._instance is None:
+                cls._instance = EOSSettings()
+
+            return cls._instance
+
+        def __init__(self):
+            self.EOSSettings = SettingsProvider.getInstance().getSettings("pyfaEOSSettings", eos.config.settings)
+
+        def get(self, type):
+            return self.EOSSettings[type]
+
+        def set(self, type, value):
+            self.EOSSettings[type] = value
 
 # @todo: migrate fit settings (from fit service) here?

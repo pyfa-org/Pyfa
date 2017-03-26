@@ -83,11 +83,13 @@ class Port(object):
 
     @staticmethod
     def backupFits(path, callback):
+        pyfalog.debug("Starting backup fits thread.")
         thread = FitBackupThread(path, callback)
         thread.start()
 
     @staticmethod
     def importFitsThreaded(paths, callback):
+        pyfalog.debug("Starting import fits thread.")
         thread = FitImportThread(paths, callback)
         thread.start()
 
@@ -105,12 +107,14 @@ class Port(object):
         fits = []
         for path in paths:
             if callback:  # Pulse
+                pyfalog.debug("Processing file:\n{0}", path)
                 wx.CallAfter(callback, 1, "Processing file:\n%s" % path)
 
             file_ = open(path, "r")
             srcString = file_.read()
 
             if len(srcString) == 0:  # ignore blank files
+                pyfalog.debug("File is blank.")
                 continue
 
             codec_found = None
@@ -165,6 +169,7 @@ class Port(object):
                 _, fitsImport = Port.importAuto(srcString, path, callback=callback, encoding=codec_found)
                 fits += fitsImport
             except xml.parsers.expat.ExpatError:
+                pyfalog.warning("Malformed XML in:\n{0}", path)
                 return False, "Malformed XML in %s" % path
             except Exception as e:
                 pyfalog.critical("Unknown exception processing: {0}", path)
@@ -181,6 +186,7 @@ class Port(object):
             db.save(fit)
             IDs.append(fit.ID)
             if callback:  # Pulse
+                pyfalog.debug("Processing complete, saving fits to database: {0}/{1}", i + 1, numFits)
                 wx.CallAfter(
                     callback, 1,
                     "Processing complete, saving fits to database\n(%d/%d)" %
@@ -612,7 +618,7 @@ class Port(object):
             if m.fits(fit):
                 m.owner = fit
                 if not m.isValidState(m.state):
-                    print("Error: Module", m, "cannot have state", m.state)
+                    pyfalog.warning("Error: Module {0} cannot have state {1}", m, m.state)
 
                 fit.modules.append(m)
 
@@ -810,8 +816,9 @@ class Port(object):
                 if callback:
                     wx.CallAfter(callback, None)
             # Skip fit silently if we get an exception
-            except Exception:
+            except Exception as e:
                 pyfalog.error("Caught exception on fit.")
+                pyfalog.error(e)
                 pass
 
         return fits
@@ -835,8 +842,9 @@ class Port(object):
                     f.ship = Ship(sMkt.getItem(shipType))
                 except ValueError:
                     f.ship = Citadel(sMkt.getItem(shipType))
-            except:
+            except Exception as e:
                 pyfalog.warning("Caught exception on importXml")
+                pyfalog.error(e)
                 continue
             hardwares = fitting.getElementsByTagName("hardware")
             moduleList = []
@@ -845,8 +853,9 @@ class Port(object):
                     moduleName = hardware.getAttribute("type")
                     try:
                         item = sMkt.getItem(moduleName, eager="group.category")
-                    except:
+                    except Exception as e:
                         pyfalog.warning("Caught exception on importXml")
+                        pyfalog.error(e)
                         continue
                     if item:
                         if item.category.name == "Drone":

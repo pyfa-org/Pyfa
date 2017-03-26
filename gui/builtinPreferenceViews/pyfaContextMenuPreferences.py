@@ -108,7 +108,7 @@ class PFContextMenuPref(PreferenceView):
         self.settings.set('project', event.GetInt())
 
     def getImage(self):
-        return BitmapLoader.getBitmap("pref-gauges_big", "gui")
+        return BitmapLoader.getBitmap("settings_menu", "gui")
 
 
 PFContextMenuPref.register()

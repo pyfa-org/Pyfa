@@ -26,6 +26,7 @@ import config
 
 from optparse import OptionParser, BadOptionError, AmbiguousOptionError
 
+import logbook
 from logbook import TimedRotatingFileHandler, Logger, StreamHandler, NestedSetup, FingersCrossedHandler, NullHandler, \
     CRITICAL, ERROR, WARNING, DEBUG, INFO
 pyfalog = Logger(__name__)
@@ -143,6 +144,10 @@ if not hasattr(sys, 'frozen'):
         dateutil = None
         print("Cannot find python-dateutil.\nYou can download python-dateutil from https://pypi.python.org/pypi/python-dateutil")
         sys.exit(1)
+
+    logVersion = logbook.__version__.split('.')
+    if int(logVersion[0]) < 1:
+        print ("Logbook version >= 1.0.0 is recommended. You may have some performance issues by continuing to use an earlier version.")
 
 
 if __name__ == "__main__":

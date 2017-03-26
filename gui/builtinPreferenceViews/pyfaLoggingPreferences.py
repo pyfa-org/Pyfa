@@ -76,7 +76,7 @@ class PFGeneralPref(PreferenceView):
         '''
 
     def getImage(self):
-        return BitmapLoader.getBitmap("prefs_settings", "gui")
+        return BitmapLoader.getBitmap("settings_log", "gui")
 
 
 PFGeneralPref.register()

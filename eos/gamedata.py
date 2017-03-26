@@ -30,7 +30,10 @@ except ImportError:
     from utils.compat import OrderedDict
 
 from logbook import Logger
+
 pyfalog = Logger(__name__)
+# Keep a list of handlers that fail to import so we don't keep trying repeatedly.
+badHandlers = []
 
 
 class Effect(EqBase):
@@ -158,43 +161,51 @@ class Effect(EqBase):
         Grab the handler, type and runTime from the effect code if it exists,
         if it doesn't, set dummy values and add a dummy handler
         """
-        try:
-            self.__effectModule = effectModule = __import__('eos.effects.' + self.handlerName, fromlist=True)
-            try:
-                self.__handler = getattr(effectModule, "handler")
-            except AttributeError:
-                print "effect {} exists, but no handler".format(self.handlerName)
-                raise
+        global badHandlers
 
+        # Skip if we've tried to import before and failed
+        if self.handlerName not in badHandlers:
             try:
-                self.__runTime = getattr(effectModule, "runTime") or "normal"
-            except AttributeError:
+                self.__effectModule = effectModule = __import__('eos.effects.' + self.handlerName, fromlist=True)
+                self.__handler = getattr(effectModule, "handler", effectDummy)
+                self.__runTime = getattr(effectModule, "runTime", "normal")
+                self.__activeByDefault = getattr(effectModule, "activeByDefault", True)
+                t = getattr(effectModule, "type", None)
+
+                t = t if isinstance(t, tuple) or t is None else (t,)
+                self.__type = t
+            except (ImportError) as e:
+                # Effect probably doesn't exist, so create a dummy effect and flag it with a warning.
+                self.__handler = effectDummy
                 self.__runTime = "normal"
-
-            try:
-                self.__activeByDefault = getattr(effectModule, "activeByDefault")
-            except AttributeError:
                 self.__activeByDefault = True
+                self.__type = None
+                pyfalog.debug("ImportError generating handler: {0}", e)
+                badHandlers.append(self.handlerName)
+            except (AttributeError) as e:
+                # Effect probably exists but there is an issue with it.  Turn it into a dummy effect so we can continue, but flag it with an error.
+                self.__handler = effectDummy
+                self.__runTime = "normal"
+                self.__activeByDefault = True
+                self.__type = None
+                pyfalog.error("AttributeError generating handler: {0}", e)
+                badHandlers.append(self.handlerName)
+            except Exception as e:
+                self.__handler = effectDummy
+                self.__runTime = "normal"
+                self.__activeByDefault = True
+                self.__type = None
+                pyfalog.critical("Exception generating handler:")
+                pyfalog.critical(e)
+                badHandlers.append(self.handlerName)
 
-            try:
-                t = getattr(effectModule, "type")
-            except AttributeError:
-                t = None
-
-            t = t if isinstance(t, tuple) or t is None else (t,)
-            self.__type = t
-        except (ImportError, AttributeError) as e:
+            self.__generated = True
+        else:
+            # We've already failed on this one, just pass a dummy effect back
             self.__handler = effectDummy
             self.__runTime = "normal"
             self.__activeByDefault = True
             self.__type = None
-            pyfalog.debug("ImportError or AttributeError generating handler:")
-            pyfalog.debug(e)
-        except Exception as e:
-            pyfalog.critical("Exception generating handler:")
-            pyfalog.critical(e)
-
-        self.__generated = True
 
     def getattr(self, key):
         if not self.__generated:
@@ -292,8 +303,6 @@ class Item(EqBase):
     @property
     def requiredSkills(self):
         if self.__requiredSkills is None:
-            # This import should be here to make sure it's fully initialized
-            from eos import db
             requiredSkills = OrderedDict()
             self.__requiredSkills = requiredSkills
             # Map containing attribute IDs we may need for required skills
@@ -304,7 +313,7 @@ class Item(EqBase):
             # { attributeID : attributeValue }
             skillAttrs = {}
             # Get relevant attribute values from db (required skill IDs and levels) for our item
-            for attrInfo in db.directAttributeRequest((self.ID,), tuple(combinedAttrIDs)):
+            for attrInfo in eos.db.directAttributeRequest((self.ID,), tuple(combinedAttrIDs)):
                 attrID = attrInfo[1]
                 attrVal = attrInfo[2]
                 skillAttrs[attrID] = attrVal
@@ -315,7 +324,7 @@ class Item(EqBase):
                     skillID = int(skillAttrs[srqIDAtrr])
                     skillLvl = skillAttrs[srqLvlAttr]
                     # Fetch item from database and fill map
-                    item = db.getItem(skillID)
+                    item = eos.db.getItem(skillID)
                     requiredSkills[item] = skillLvl
         return self.__requiredSkills
 
@@ -348,18 +357,20 @@ class Item(EqBase):
             # thus keep old mechanism for now
             except KeyError:
                 # Define race map
-                map = {1: "caldari",
-                       2: "minmatar",
-                       4: "amarr",
-                       5: "sansha",  # Caldari + Amarr
-                       6: "blood",  # Minmatar + Amarr
-                       8: "gallente",
-                       9: "guristas",  # Caldari + Gallente
-                       10: "angelserp",  # Minmatar + Gallente, final race depends on the order of skills
-                       12: "sisters",  # Amarr + Gallente
-                       16: "jove",
-                       32: "sansha",  # Incrusion Sansha
-                       128: "ore"}
+                map = {
+                    1  : "caldari",
+                    2  : "minmatar",
+                    4  : "amarr",
+                    5  : "sansha",  # Caldari + Amarr
+                    6  : "blood",  # Minmatar + Amarr
+                    8  : "gallente",
+                    9  : "guristas",  # Caldari + Gallente
+                    10 : "angelserp",  # Minmatar + Gallente, final race depends on the order of skills
+                    12 : "sisters",  # Amarr + Gallente
+                    16 : "jove",
+                    32 : "sansha",  # Incrusion Sansha
+                    128: "ore"
+                }
                 # Race is None by default
                 race = None
                 # Check primary and secondary required skills' races
@@ -429,7 +440,7 @@ class Item(EqBase):
 
     def __repr__(self):
         return "Item(ID={}, name={}) at {}".format(
-            self.ID, self.name, hex(id(self))
+                self.ID, self.name, hex(id(self))
         )
 
 
@@ -454,7 +465,6 @@ class Category(EqBase):
 
 
 class AlphaClone(EqBase):
-
     @reconstructor
     def init(self):
         self.skillCache = {}
@@ -482,10 +492,9 @@ class Icon(EqBase):
 
 
 class MarketGroup(EqBase):
-
     def __repr__(self):
         return u"MarketGroup(ID={}, name={}, parent={}) at {}".format(
-            self.ID, self.name, getattr(self.parent, "name", None), self.name, hex(id(self))
+                self.ID, self.name, getattr(self.parent, "name", None), self.name, hex(id(self))
         ).encode('utf8')
 
 

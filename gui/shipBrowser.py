@@ -1559,6 +1559,10 @@ class FitItem(SFItem.SFBrowserItem):
         self.selTimer.Start(100)
 
         self.Bind(wx.EVT_RIGHT_UP, self.OnContextMenu)
+        self.Bind(wx.EVT_MIDDLE_UP, self.OpenNewTab)
+
+    def OpenNewTab(self, evt):
+        self.selectFit(newTab=True)
 
     def OnToggleBooster(self, event):
         sFit = Fit.getInstance()
@@ -1623,6 +1627,9 @@ class FitItem(SFItem.SFBrowserItem):
         #     menu.AppendSubMenu(boosterMenu, 'Set Booster')
 
         if fit:
+            newTabItem = menu.Append(wx.ID_ANY, "Open in new tab")
+            self.Bind(wx.EVT_MENU, self.OpenNewTab, newTabItem)
+
             projectedItem = menu.Append(wx.ID_ANY, "Project onto Active Fit")
             self.Bind(wx.EVT_MENU, self.OnProjectToFit, projectedItem)
 
@@ -1743,6 +1750,7 @@ class FitItem(SFItem.SFBrowserItem):
                 self.deleteFit()
 
     def deleteFit(self, event=None):
+        pyfalog.debug("Deleting ship fit.")
         if self.deleted:
             return
         else:
@@ -1816,8 +1824,11 @@ class FitItem(SFItem.SFBrowserItem):
                 self.dragWindow.SetPosition(pos)
             return
 
-    def selectFit(self, event=None):
-        wx.PostEvent(self.mainFrame, FitSelected(fitID=self.fitID))
+    def selectFit(self, event=None, newTab=False):
+        if newTab:
+            wx.PostEvent(self.mainFrame, FitSelected(fitID=self.fitID, startup=2))
+        else:
+            wx.PostEvent(self.mainFrame, FitSelected(fitID=self.fitID))
 
     def RestoreEditButton(self):
         self.tcFitName.Show(False)

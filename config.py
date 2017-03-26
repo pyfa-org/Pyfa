@@ -19,10 +19,10 @@ debug = False
 saveInRoot = False
 
 # Version data
-version = "1.27.3"
+version = "1.28.2"
 tag = "git"
-expansionName = "YC119.2"
-expansionVersion = "1.4"
+expansionName = "YC119.3"
+expansionVersion = "1.0"
 evemonMinVersion = "4081"
 
 pyfaPath = None
@@ -106,3 +106,7 @@ def defPaths(customSavePath):
     # saveddata db location modifier, shouldn't ever need to touch this
     eos.config.saveddata_connectionstring = "sqlite:///" + saveDB + "?check_same_thread=False"
     eos.config.gamedata_connectionstring = "sqlite:///" + gameDB + "?check_same_thread=False"
+
+    # initialize the settings
+    from service.settings import EOSSettings
+    eos.config.settings = EOSSettings.getInstance().EOSSettings  # this is kind of confusing, but whatever

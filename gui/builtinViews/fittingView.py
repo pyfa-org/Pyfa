@@ -55,15 +55,16 @@ class FitSpawner(gui.multiSwitch.TabSpawner):
     def fitSelected(self, event):
         count = -1
         for index, page in enumerate(self.multiSwitch.pages):
-            try:
-                if page.activeFitID == event.fitID:
-                    count += 1
-                    self.multiSwitch.SetSelection(index)
-                    wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=event.fitID))
-                    break
-            except Exception as e:
-                pyfalog.critical("Caught exception in fitSelected")
-                pyfalog.critical(e)
+            if not isinstance(page, gui.builtinViews.emptyView.BlankPage):  # Don't try and process it if it's a blank page.
+                try:
+                    if page.activeFitID == event.fitID:
+                        count += 1
+                        self.multiSwitch.SetSelection(index)
+                        wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=event.fitID))
+                        break
+                except Exception as e:
+                    pyfalog.critical("Caught exception in fitSelected")
+                    pyfalog.critical(e)
         if count < 0:
             startup = getattr(event, "startup", False)  # see OpenFitsThread in gui.mainFrame
             sFit = Fit.getInstance()
@@ -149,7 +150,6 @@ class FittingView(d.Display):
         self.activeFitID = None
         self.FVsnapshot = None
         self.itemCount = 0
-        self.itemRect = 0
 
         self.hoveredRow = None
         self.hoveredColumn = None
@@ -268,9 +268,7 @@ class FittingView(d.Display):
         We also refresh the fit of the new current page in case
         delete fit caused change in stats (projected)
         """
-        fitID = event.fitID
-
-        if fitID == self.getActiveFit():
+        if event.fitID == self.getActiveFit():
             self.parent.DeletePage(self.parent.GetPageIndex(self))
 
         try:
@@ -279,7 +277,7 @@ class FittingView(d.Display):
             sFit.refreshFit(self.getActiveFit())
             wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=self.activeFitID))
         except wx._core.PyDeadObjectError:
-            pyfalog.warning("Caught dead object")
+            pyfalog.error("Caught dead object")
             pass
 
         event.Skip()
@@ -408,7 +406,7 @@ class FittingView(d.Display):
             if mod1.slot != mod2.slot:
                 return
 
-            if getattr(mod2, "modPosition"):
+            if getattr(mod2, "modPosition") is not None:
                 if clone and mod2.isEmpty:
                     sFit.cloneModule(self.mainFrame.getActiveFit(), srcIdx, mod2.modPosition)
                 else:
@@ -485,7 +483,7 @@ class FittingView(d.Display):
 
             self.Show(self.activeFitID is not None and self.activeFitID == event.fitID)
         except wx._core.PyDeadObjectError:
-            pyfalog.warning("Caught dead object")
+            pyfalog.error("Caught dead object")
         finally:
             event.Skip()
 
@@ -633,7 +631,6 @@ class FittingView(d.Display):
 
         self.Thaw()
         self.itemCount = self.GetItemCount()
-        self.itemRect = self.GetItemRect(0)
 
         if 'wxMac' in wx.PlatformInfo:
             try:

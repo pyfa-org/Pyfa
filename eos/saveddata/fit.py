@@ -128,9 +128,9 @@ class Fit(object):
         self.__capRecharge = None
         self.__calculatedTargets = []
         self.__remoteReps = {
-            "Armor": None,
-            "Shield": None,
-            "Hull": None,
+            "Armor"    : None,
+            "Shield"   : None,
+            "Hull"     : None,
             "Capacitor": None,
         }
         self.factorReload = False
@@ -370,9 +370,11 @@ class Fit(object):
 
     @validates("ID", "ownerID", "shipID")
     def validator(self, key, val):
-        map = {"ID": lambda _val: isinstance(_val, int),
-               "ownerID": lambda _val: isinstance(_val, int) or _val is None,
-               "shipID": lambda _val: isinstance(_val, int) or _val is None}
+        map = {
+            "ID"     : lambda _val: isinstance(_val, int),
+            "ownerID": lambda _val: isinstance(_val, int) or _val is None,
+            "shipID" : lambda _val: isinstance(_val, int) or _val is None
+        }
 
         if not map[key](val):
             raise ValueError(str(val) + " is not a valid value for " + key)
@@ -408,15 +410,15 @@ class Fit(object):
             self.ship.clear()
 
         c = chain(
-            self.modules,
-            self.drones,
-            self.fighters,
-            self.boosters,
-            self.implants,
-            self.projectedDrones,
-            self.projectedModules,
-            self.projectedFighters,
-            (self.character, self.extraAttributes),
+                self.modules,
+                self.drones,
+                self.fighters,
+                self.boosters,
+                self.implants,
+                self.projectedDrones,
+                self.projectedModules,
+                self.projectedFighters,
+                (self.character, self.extraAttributes),
         )
 
         for stuff in c:
@@ -476,11 +478,11 @@ class Fit(object):
 
                 if warfareBuffID == 11:  # Shield Burst: Active Shielding: Repair Duration/Capacitor
                     self.modules.filteredItemBoost(
-                        lambda mod: mod.item.requiresSkill("Shield Operation") or mod.item.requiresSkill(
-                            "Shield Emission Systems"), "capacitorNeed", value)
+                            lambda mod: mod.item.requiresSkill("Shield Operation") or mod.item.requiresSkill(
+                                    "Shield Emission Systems"), "capacitorNeed", value)
                     self.modules.filteredItemBoost(
-                        lambda mod: mod.item.requiresSkill("Shield Operation") or mod.item.requiresSkill(
-                            "Shield Emission Systems"), "duration", value)
+                            lambda mod: mod.item.requiresSkill("Shield Operation") or mod.item.requiresSkill(
+                                    "Shield Emission Systems"), "duration", value)
 
                 if warfareBuffID == 12:  # Shield Burst: Shield Extension: Shield HP
                     self.ship.boostItemAttr("shieldCapacity", value, stackingPenalties=True)
@@ -506,26 +508,26 @@ class Fit(object):
                 if warfareBuffID == 17:  # Information Burst: Electronic Superiority: EWAR Range and Strength
                     groups = ("ECM", "Sensor Dampener", "Weapon Disruptor", "Target Painter")
                     self.modules.filteredItemBoost(lambda mod: mod.item.group.name in groups, "maxRange", value,
-                                                  stackingPenalties=True)
+                                                   stackingPenalties=True)
                     self.modules.filteredItemBoost(lambda mod: mod.item.group.name in groups,
-                                                  "falloffEffectiveness", value, stackingPenalties=True)
+                                                   "falloffEffectiveness", value, stackingPenalties=True)
 
                     for scanType in ("Magnetometric", "Radar", "Ladar", "Gravimetric"):
                         self.modules.filteredItemBoost(lambda mod: mod.item.group.name == "ECM",
-                                                      "scan%sStrengthBonus" % scanType, value,
-                                                      stackingPenalties=True)
+                                                       "scan%sStrengthBonus" % scanType, value,
+                                                       stackingPenalties=True)
 
                     for attr in ("missileVelocityBonus", "explosionDelayBonus", "aoeVelocityBonus", "falloffBonus",
                                  "maxRangeBonus", "aoeCloudSizeBonus", "trackingSpeedBonus"):
                         self.modules.filteredItemBoost(lambda mod: mod.item.group.name == "Weapon Disruptor",
-                                                      attr, value)
+                                                       attr, value)
 
                     for attr in ("maxTargetRangeBonus", "scanResolutionBonus"):
                         self.modules.filteredItemBoost(lambda mod: mod.item.group.name == "Sensor Dampener",
-                                                      attr, value)
+                                                       attr, value)
 
                     self.modules.filteredItemBoost(lambda mod: mod.item.group.name == "Target Painter",
-                                                  "signatureRadiusBonus", value, stackingPenalties=True)
+                                                   "signatureRadiusBonus", value, stackingPenalties=True)
 
                 if warfareBuffID == 18:  # Information Burst: Electronic Hardening: Scan Strength
                     for scanType in ("Gravimetric", "Radar", "Ladar", "Magnetometric"):
@@ -543,35 +545,33 @@ class Fit(object):
 
                 if warfareBuffID == 21:  # Skirmish Burst: Interdiction Maneuvers: Tackle Range
                     groups = ("Stasis Web", "Warp Scrambler")
-                    self.modules.filteredItemBoost(lambda mod: mod.item.group.name in groups, "maxRange", value,
-                                                  stackingPenalties=True)
+                    self.modules.filteredItemBoost(lambda mod: mod.item.group.name in groups, "maxRange", value, stackingPenalties=True)
 
                 if warfareBuffID == 22:  # Skirmish Burst: Rapid Deployment: AB/MWD Speed Increase
-                    self.modules.filteredItemBoost(
-                        lambda mod: mod.item.requiresSkill("Afterburner") or mod.item.requiresSkill(
-                            "High Speed Maneuvering"), "speedFactor", value, stackingPenalties=True)
+                    self.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill("Afterburner") or mod.item.requiresSkill("High Speed Maneuvering"),
+                                                   "speedFactor", value, stackingPenalties=True)
 
                 if warfareBuffID == 23:  # Mining Burst: Mining Laser Field Enhancement: Mining/Survey Range
-                    self.modules.filteredItemBoost(
-                        lambda mod: mod.item.requiresSkill("Mining") or mod.item.requiresSkill(
-                            "Ice Harvesting") or mod.item.requiresSkill("Gas Cloud Harvesting"), "maxRange",
-                        value, stackingPenalties=True)
-                    self.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill("CPU Management"),
-                                                  "surveyScanRange", value, stackingPenalties=True)
+                    self.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill("Mining") or
+                                                               mod.item.requiresSkill("Ice Harvesting") or
+                                                               mod.item.requiresSkill("Gas Cloud Harvesting"),
+                                                   "maxRange", value, stackingPenalties=True)
+
+                    self.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill("CPU Management"), "surveyScanRange", value, stackingPenalties=True)
 
                 if warfareBuffID == 24:  # Mining Burst: Mining Laser Optimization: Mining Capacitor/Duration
-                    self.modules.filteredItemBoost(
-                        lambda mod: mod.item.requiresSkill("Mining") or mod.item.requiresSkill(
-                            "Ice Harvesting") or mod.item.requiresSkill("Gas Cloud Harvesting"),
-                        "capacitorNeed", value, stackingPenalties=True)
-                    self.modules.filteredItemBoost(
-                        lambda mod: mod.item.requiresSkill("Mining") or mod.item.requiresSkill(
-                            "Ice Harvesting") or mod.item.requiresSkill("Gas Cloud Harvesting"), "duration",
-                        value, stackingPenalties=True)
+                    self.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill("Mining") or
+                                                               mod.item.requiresSkill("Ice Harvesting") or
+                                                               mod.item.requiresSkill("Gas Cloud Harvesting"),
+                                                   "capacitorNeed", value, stackingPenalties=True)
+
+                    self.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill("Mining") or
+                                                               mod.item.requiresSkill("Ice Harvesting") or
+                                                               mod.item.requiresSkill("Gas Cloud Harvesting"),
+                                                   "duration", value, stackingPenalties=True)
 
                 if warfareBuffID == 25:  # Mining Burst: Mining Equipment Preservation: Crystal Volatility
-                    self.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill("Mining"),
-                                                  "crystalVolatilityChance", value, stackingPenalties=True)
+                    self.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill("Mining"), "crystalVolatilityChance", value, stackingPenalties=True)
 
                 if warfareBuffID == 60:  # Skirmish Burst: Evasive Maneuvers: Agility
                     self.ship.boostItemAttr("agility", value, stackingPenalties=True)
@@ -844,15 +844,17 @@ class Fit(object):
 
         return amount
 
-    slots = {Slot.LOW: "lowSlots",
-             Slot.MED: "medSlots",
-             Slot.HIGH: "hiSlots",
-             Slot.RIG: "rigSlots",
-             Slot.SUBSYSTEM: "maxSubSystems",
-             Slot.SERVICE: "serviceSlots",
-             Slot.F_LIGHT: "fighterLightSlots",
-             Slot.F_SUPPORT: "fighterSupportSlots",
-             Slot.F_HEAVY: "fighterHeavySlots"}
+    slots = {
+        Slot.LOW      : "lowSlots",
+        Slot.MED      : "medSlots",
+        Slot.HIGH     : "hiSlots",
+        Slot.RIG      : "rigSlots",
+        Slot.SUBSYSTEM: "maxSubSystems",
+        Slot.SERVICE  : "serviceSlots",
+        Slot.F_LIGHT  : "fighterLightSlots",
+        Slot.F_SUPPORT: "fighterSupportSlots",
+        Slot.F_HEAVY  : "fighterHeavySlots"
+    }
 
     def getSlotsFree(self, type, countDummies=False):
         if type in (Slot.MODE, Slot.SYSTEM):
@@ -927,20 +929,19 @@ class Fit(object):
 
         return amount
 
-    # Expresses how difficult a target is to probe down with scan probes
-    # If this is <1.08, the ship is unproabeable
     @property
     def probeSize(self):
+        """
+        Expresses how difficult a target is to probe down with scan probes
+        """
+
         sigRad = self.ship.getModifiedItemAttr("signatureRadius")
         sensorStr = float(self.scanStrength)
         probeSize = sigRad / sensorStr if sensorStr != 0 else None
         # http://www.eveonline.com/ingameboard.asp?a=topic&threadID=1532170&page=2#42
         if probeSize is not None:
-            # http://forum.eve-ru.com/index.php?showtopic=74195&view=findpost&p=1333691
-            # http://forum.eve-ru.com/index.php?showtopic=74195&view=findpost&p=1333763
-            # Tests by tester128 and several conclusions by me, prove that cap is in range
-            # from 1.1 to 1.12, we're picking average value
-            probeSize = max(probeSize, 1.11)
+            # Probe size is capped at 1.08
+            probeSize = max(probeSize, 1.08)
         return probeSize
 
     @property
@@ -1002,29 +1003,35 @@ class Fit(object):
     def calculateSustainableTank(self, effective=True):
         if self.__sustainableTank is None:
             if self.capStable:
-                sustainable = {"armorRepair": self.extraAttributes["armorRepair"],
-                               "shieldRepair": self.extraAttributes["shieldRepair"],
-                               "hullRepair": self.extraAttributes["hullRepair"]}
+                sustainable = {
+                    "armorRepair" : self.extraAttributes["armorRepair"],
+                    "shieldRepair": self.extraAttributes["shieldRepair"],
+                    "hullRepair"  : self.extraAttributes["hullRepair"]
+                }
             else:
                 sustainable = {}
 
                 repairers = []
                 # Map a repairer type to the attribute it uses
-                groupAttrMap = {"Armor Repair Unit": "armorDamageAmount",
-                                "Ancillary Armor Repairer": "armorDamageAmount",
-                                "Hull Repair Unit": "structureDamageAmount",
-                                "Shield Booster": "shieldBonus",
-                                "Ancillary Shield Booster": "shieldBonus",
-                                "Remote Armor Repairer": "armorDamageAmount",
-                                "Remote Shield Booster": "shieldBonus"}
+                groupAttrMap = {
+                    "Armor Repair Unit"       : "armorDamageAmount",
+                    "Ancillary Armor Repairer": "armorDamageAmount",
+                    "Hull Repair Unit"        : "structureDamageAmount",
+                    "Shield Booster"          : "shieldBonus",
+                    "Ancillary Shield Booster": "shieldBonus",
+                    "Remote Armor Repairer"   : "armorDamageAmount",
+                    "Remote Shield Booster"   : "shieldBonus"
+                }
                 # Map repairer type to attribute
-                groupStoreMap = {"Armor Repair Unit": "armorRepair",
-                                 "Hull Repair Unit": "hullRepair",
-                                 "Shield Booster": "shieldRepair",
-                                 "Ancillary Shield Booster": "shieldRepair",
-                                 "Remote Armor Repairer": "armorRepair",
-                                 "Remote Shield Booster": "shieldRepair",
-                                 "Ancillary Armor Repairer": "armorRepair", }
+                groupStoreMap = {
+                    "Armor Repair Unit"       : "armorRepair",
+                    "Hull Repair Unit"        : "hullRepair",
+                    "Shield Booster"          : "shieldRepair",
+                    "Ancillary Shield Booster": "shieldRepair",
+                    "Remote Armor Repairer"   : "armorRepair",
+                    "Remote Shield Booster"   : "shieldRepair",
+                    "Ancillary Armor Repairer": "armorRepair",
+                }
 
                 capUsed = self.capUsed
                 for attr in ("shieldRepair", "armorRepair", "hullRepair"):
@@ -1052,7 +1059,7 @@ class Fit(object):
 
                 # Sort repairers by efficiency. We want to use the most efficient repairers first
                 repairers.sort(key=lambda _mod: _mod.getModifiedItemAttr(
-                    groupAttrMap[_mod.item.group.name]) / _mod.getModifiedItemAttr("capacitorNeed"), reverse=True)
+                        groupAttrMap[_mod.item.group.name]) / _mod.getModifiedItemAttr("capacitorNeed"), reverse=True)
 
                 # Loop through every module until we're above peak recharge
                 # Most efficient first, as we sorted earlier.
@@ -1365,10 +1372,10 @@ class Fit(object):
 
     def __repr__(self):
         return u"Fit(ID={}, ship={}, name={}) at {}".format(
-            self.ID, self.ship.item.name, self.name, hex(id(self))
+                self.ID, self.ship.item.name, self.name, hex(id(self))
         ).encode('utf8')
 
     def __str__(self):
         return u"{} ({})".format(
-            self.name, self.ship.item.name
+                self.name, self.ship.item.name
         ).encode('utf8')

@@ -82,7 +82,7 @@ class PFFittingEnginePref(PreferenceView):
         self.sFit.serviceFittingOptions["useStaticAdaptiveArmorHardener"] = self.cbUniversalAdaptiveArmorHardener.GetValue()
 
     def getImage(self):
-        return BitmapLoader.getBitmap("prefs_settings", "gui")
+        return BitmapLoader.getBitmap("settings_fitting", "gui")
 
     def OnWindowLeave(self, event):
         # We don't want to do anything when they leave,

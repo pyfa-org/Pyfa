@@ -81,7 +81,7 @@ class PFStatViewPref(PreferenceView):
         self.rbMisc = wx.RadioBox(panel, -1, "Misc", wx.DefaultPosition, wx.DefaultSize, ['None', 'Minimal', 'Full'], 1, wx.RA_SPECIFY_COLS)
         # Disable full as we don't have a view for this yet
         self.rbMisc.EnableItem(2, False)
-        self.rbMisc.SetSelection(self.settings.get('targetingmisc'))
+        self.rbMisc.SetSelection(self.settings.get('targetingMisc'))
         rbSizerRow2.Add(self.rbMisc, 1, wx.ALL, 5)
         self.rbMisc.Bind(wx.EVT_RADIOBOX, self.OnTargetingMiscChange)
 
@@ -97,6 +97,10 @@ class PFStatViewPref(PreferenceView):
         rbSizerRow3.Add(self.rbPrice, 1, wx.TOP | wx.RIGHT, 5)
         self.rbPrice.Bind(wx.EVT_RADIOBOX, self.OnPriceChange)
 
+        self.rbOutgoing = wx.RadioBox(panel, -1, "Remote Reps", wx.DefaultPosition, wx.DefaultSize, ['None', 'Minimal', 'Full'], 1, wx.RA_SPECIFY_COLS)
+        self.rbOutgoing.SetSelection(self.settings.get('outgoing'))
+        rbSizerRow3.Add(self.rbOutgoing, 1, wx.TOP | wx.RIGHT, 5)
+        self.rbOutgoing.Bind(wx.EVT_RADIOBOX, self.OnOutgoingChange)
         #  We don't have views for these.....yet
         '''
         self.rbMining = wx.RadioBox(panel, -1, "Mining", wx.DefaultPosition, wx.DefaultSize,
@@ -133,10 +137,13 @@ class PFStatViewPref(PreferenceView):
         self.settings.set('capacitor', event.GetInt())
 
     def OnTargetingMiscChange(self, event):
-        self.settings.set('targetingmisc', event.GetInt())
+        self.settings.set('targetingMisc', event.GetInt())
 
     def OnPriceChange(self, event):
         self.settings.set('price', event.GetInt())
+
+    def OnOutgoingChange(self, event):
+        self.settings.set('outgoing', event.GetInt())
 
     def OnMiningYieldChange(self, event):
         self.settings.set('miningyield', event.GetInt())
@@ -145,7 +152,7 @@ class PFStatViewPref(PreferenceView):
         self.settings.set('drones', event.GetInt())
 
     def getImage(self):
-        return BitmapLoader.getBitmap("pref-gauges_big", "gui")
+        return BitmapLoader.getBitmap("settings_stats", "gui")
 
 
 PFStatViewPref.register()
