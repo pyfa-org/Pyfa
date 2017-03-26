@@ -114,6 +114,10 @@ class CapacitorViewFull(StatsView):
             ("label%sCapacitorRecharge", lambda: fit.capRecharge, 3, 0, 0),
             ("label%sCapacitorDischarge", lambda: fit.capUsed, 3, 0, 0),
         )
+        if fit:
+            neut_resist = fit.ship.getModifiedItemAttr("energyWarfareResistance", 0)
+        else:
+            neut_resist = 0
 
         panel = "Full"
         for labelName, value, prec, lowest, highest in stats:
@@ -126,6 +130,12 @@ class CapacitorViewFull(StatsView):
             else:
                 label.SetLabel(formatAmount(value, prec, lowest, highest))
                 label.SetToolTip(wx.ToolTip("%.1f" % value))
+
+            if labelName == "label%sCapacitorDischarge":
+                if neut_resist:
+                    neut_resist = 100 - (neut_resist * 100)
+                label_tooltip = "Neut Resistance: {0:.0f}%".format(neut_resist)
+                label.SetToolTip(wx.ToolTip(label_tooltip))
 
         capState = fit.capState if fit is not None else 0
         capStable = fit.capStable if fit is not None else False

@@ -19,6 +19,7 @@
 
 import copy
 from logbook import Logger
+from time import time
 
 import eos.db
 from eos.saveddata.booster import Booster as es_Booster
@@ -1089,9 +1090,12 @@ class Fit(object):
         self.recalc(fit)
 
     def recalc(self, fit, withBoosters=True):
+        start_time = time()
         pyfalog.info("=" * 10 + "recalc" + "=" * 10)
         if fit.factorReload is not self.serviceFittingOptions["useGlobalForceReload"]:
             fit.factorReload = self.serviceFittingOptions["useGlobalForceReload"]
         fit.clear()
 
         fit.calculateModifiedAttributes(withBoosters=False)
+
+        pyfalog.info("=" * 10 + "recalc time: " + str(time() - start_time) + "=" * 10)
