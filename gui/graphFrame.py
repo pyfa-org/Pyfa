@@ -29,13 +29,14 @@ import gui.mainFrame
 import gui.globalEvents as GE
 from gui.graph import Graph
 from gui.bitmapLoader import BitmapLoader
+import traceback
 
 pyfalog = Logger(__name__)
 
 try:
     import matplotlib as mpl
 
-    mpl_version = int(mpl.__version__[0])
+    mpl_version = int(mpl.__version__[0]) or -1
     if mpl_version >= 2:
         mpl.use('wxagg')
         mplImported = True
@@ -48,43 +49,33 @@ try:
 
     graphFrame_enabled = True
     mplImported = True
-except ImportError:
+except ImportError as e:
+    pyfalog.warning("Matplotlib failed to import.  Likely missing or incompatible version.")
+    mpl_version = -1
+    Patch = mpl = Canvas = Figure = None
+    graphFrame_enabled = False
+    mplImported = False
+except Exception:
+    # We can get exceptions deep within matplotlib. Catch those.  See GH #1046
+    tb = traceback.format_exc()
+    pyfalog.critical("Exception when importing Matplotlib. Continuing without importing.")
+    pyfalog.critical(tb)
+    mpl_version = -1
     Patch = mpl = Canvas = Figure = None
     graphFrame_enabled = False
     mplImported = False
 
-pyfalog = Logger(__name__)
-
 
 class GraphFrame(wx.Frame):
     def __init__(self, parent, style=wx.DEFAULT_FRAME_STYLE | wx.NO_FULL_REPAINT_ON_RESIZE | wx.FRAME_FLOAT_ON_PARENT):
-
         global graphFrame_enabled
         global mplImported
-
-        self.Patch = None
-        self.mpl_version = -1
-
-        try:
-            import matplotlib as mpl
-            self.mpl_version = int(mpl.__version__[0])
-            if self.mpl_version >= 2:
-                mpl.use('wxagg')
-                mplImported = True
-            else:
-                mplImported = False
-            from matplotlib.patches import Patch
-            self.Patch = Patch
-            from matplotlib.backends.backend_wxagg import FigureCanvasWxAgg as Canvas
-            from matplotlib.figure import Figure
-            graphFrame_enabled = True
-        except ImportError:
-            Patch = mpl = Canvas = Figure = None
-            graphFrame_enabled = False
+        global mpl_version
 
         self.legendFix = False
+
         if not graphFrame_enabled:
-            pyfalog.info("Problems importing matplotlib; continuing without graphs")
+            pyfalog.warning("Matplotlib is not enabled. Skipping initialization.")
             return
 
         try:
@@ -236,6 +227,8 @@ class GraphFrame(wx.Frame):
         self.draw()
 
     def draw(self, event=None):
+        global mpl_version
+
         values = self.getValues()
         view = self.getView()
         self.subplot.clear()
@@ -260,7 +253,7 @@ class GraphFrame(wx.Frame):
                 self.canvas.draw()
                 return
 
-        if self.mpl_version < 2:
+        if mpl_version < 2:
             if self.legendFix and len(legend) > 0:
                 leg = self.subplot.legend(tuple(legend), "upper right", shadow=False)
                 for t in leg.get_texts():
@@ -276,7 +269,7 @@ class GraphFrame(wx.Frame):
 
                 for l in leg.get_lines():
                     l.set_linewidth(1)
-        elif self.mpl_version >= 2:
+        elif mpl_version >= 2:
             legend2 = []
             legend_colors = {
                 0: "blue",

@@ -19,7 +19,7 @@ debug = False
 saveInRoot = False
 
 # Version data
-version = "1.28.1"
+version = "1.28.2"
 tag = "git"
 expansionName = "YC119.3"
 expansionVersion = "1.0"
