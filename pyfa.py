@@ -30,6 +30,11 @@ from logbook import CRITICAL, DEBUG, ERROR, FingersCrossedHandler, INFO, Logger,
 
 import config
 
+
+class PreCheckException(Exception):
+    pass
+
+
 try:
     import wxversion
     import wx
@@ -84,9 +89,11 @@ class LoggerWriter:
 
 
 def handleGUIException(exc_type, exc_value, exc_traceback):
+
     tb = traceback.format_tb(exc_traceback)
 
     try:
+
         # Try and output to our log handler
         with logging_setup.threadbound():
             pyfalog.critical("Exception in main thread: {0}", exc_value.message)
@@ -94,7 +101,11 @@ def handleGUIException(exc_type, exc_value, exc_traceback):
             traceback.print_tb(exc_traceback)
 
             pyfa = wx.App(False)
-            ErrorFrame(exc_value, tb)
+            if exc_type == PreCheckException:
+                msgbox = wx.MessageBox(exc_value.message, 'Error', wx.ICON_ERROR | wx.STAY_ON_TOP)
+                msgbox.ShowModal()
+            else:
+                ErrorFrame(exc_value, tb)
             pyfa.MainLoop()
     except:
         # Most likely logging isn't available. Try and output to the console
@@ -102,7 +113,11 @@ def handleGUIException(exc_type, exc_value, exc_traceback):
         traceback.print_tb(exc_traceback)
 
         pyfa = wx.App(False)
-        ErrorFrame(exc_value, tb)
+        if exc_type == PreCheckException:
+            msgbox = wx.MessageBox(exc_value.message, 'Error', wx.ICON_ERROR | wx.STAY_ON_TOP)
+            msgbox.ShowModal()
+        else:
+            ErrorFrame(exc_value, tb)
         pyfa.MainLoop()
 
     finally:
@@ -253,7 +268,7 @@ if __name__ == "__main__":
         pyfalog.info("Python version: {0}", sys.version)
         if sys.version_info < (2, 7) or sys.version_info > (3, 0):
             exit_message = "Pyfa requires python 2.x branch ( >= 2.7 ).\nExiting."
-            raise Exception(exit_message)
+            raise PreCheckException(exit_message)
 
         if hasattr(sys, 'frozen'):
             pyfalog.info("Running in a frozen state.")
@@ -265,7 +280,7 @@ if __name__ == "__main__":
             pyfalog.debug("wxPython version: {0}.", wxversion.getInstalled())
         elif wx is None or wxversion is None:
             exit_message = "\nCannot find wxPython\nYou can download wxPython (2.8+) from http://www.wxpython.org/"
-            raise Exception(exit_message)
+            raise PreCheckException(exit_message)
         else:
             if options.force28 is True and wxversion.checkInstalled('2.8'):
                 pyfalog.info("wxPython is installed. Version: {0} (forced).", wxversion.getInstalled())
@@ -277,7 +292,7 @@ if __name__ == "__main__":
 
         if sqlalchemy is None:
             exit_message = "\nCannot find sqlalchemy.\nYou can download sqlalchemy (0.6+) from http://www.sqlalchemy.org/"
-            raise Exception(exit_message)
+            raise PreCheckException(exit_message)
         else:
             saVersion = sqlalchemy.__version__
             saMatch = re.match("([0-9]+).([0-9]+)([b\.])([0-9]+)", saVersion)
