@@ -334,7 +334,7 @@ class FittingView(d.Display):
                     populate = sFit.appendModule(fitID, itemID)
                     if populate is not None:
                         self.slotsChanged()
-                        wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fitID))
+                        wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fitID, action="modadd", typeID=itemID))
 
         event.Skip()
 
@@ -355,7 +355,7 @@ class FittingView(d.Display):
 
         if populate is not None:
             self.slotsChanged()
-            wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=self.activeFitID))
+            wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=self.activeFitID, action="moddel", typeID=module.item.ID))
 
     def addModule(self, x, y, srcIdx):
         """Add a module from the market browser"""
@@ -368,7 +368,8 @@ class FittingView(d.Display):
             if moduleChanged is None:
                 # the new module doesn't fit in specified slot, try to simply append it
                 wx.PostEvent(self.mainFrame, gui.marketBrowser.ItemSelected(itemID=srcIdx))
-            wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=self.mainFrame.getActiveFit()))
+
+            wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=self.mainFrame.getActiveFit(), action="modadd", typeID=srcIdx))
 
     def swapCargo(self, x, y, srcIdx):
         """Swap a module from cargo to fitting window"""
@@ -379,10 +380,13 @@ class FittingView(d.Display):
             module = self.mods[dstRow]
 
             sFit = Fit.getInstance()
+            fit = sFit.getFit(self.activeFitID)
+            typeID = fit.cargo[srcIdx].item.ID
+
             sFit.moveCargoToModule(self.mainFrame.getActiveFit(), module.modPosition, srcIdx,
                                    mstate.CmdDown() and module.isEmpty)
 
-            wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=self.mainFrame.getActiveFit()))
+            wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=self.mainFrame.getActiveFit(), action="modadd", typeID=typeID))
 
     def swapItems(self, x, y, srcIdx):
         """Swap two modules in fitting window"""
