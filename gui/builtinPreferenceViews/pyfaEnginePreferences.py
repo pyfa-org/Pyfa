@@ -38,8 +38,10 @@ class PFFittingEnginePref(PreferenceView):
                                                wx.DefaultPosition, wx.DefaultSize, 0)
         mainSizer.Add(self.cbGlobalForceReload, 0, wx.ALL | wx.EXPAND, 5)
 
-        self.cbUniversalAdaptiveArmorHardener = wx.CheckBox(panel, wx.ID_ANY, u"When damage profile is Uniform, set Reactive Armor Hardener to match (old behavior).",
-                                               wx.DefaultPosition, wx.DefaultSize, 0)
+        self.cbUniversalAdaptiveArmorHardener = wx.CheckBox(panel, wx.ID_ANY,
+                                                            u"When damage profile is Uniform, set Reactive Armor " +
+                                                            u"Hardener to match (old behavior).",
+                                                            wx.DefaultPosition, wx.DefaultSize, 0)
         mainSizer.Add(self.cbUniversalAdaptiveArmorHardener, 0, wx.ALL | wx.EXPAND, 5)
 
         # Future code once new cap sim is implemented
