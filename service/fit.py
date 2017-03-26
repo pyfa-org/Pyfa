@@ -73,6 +73,7 @@ class Fit(object):
             "exportCharges": True,
             "openFitInNew": False,
             "priceSystem": "Jita",
+            "showShipBrowserTooltip": True,
         }
 
         self.serviceFittingOptions = SettingsProvider.getInstance().getSettings(

@@ -74,8 +74,6 @@ class SettingsProvider(object):
                             info[item] = defaults[item]
 
             self.settings[area] = s = Settings(p, info)
-        else:
-            s = None
 
         return s
 
