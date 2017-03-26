@@ -545,12 +545,10 @@ class Fit(object):
 
                 if warfareBuffID == 21:  # Skirmish Burst: Interdiction Maneuvers: Tackle Range
                     groups = ("Stasis Web", "Warp Scrambler")
-                    self.modules.filteredItemBoost(lambda mod: mod.item.group.name in groups, "maxRange", value,
-                                                   stackingPenalties=True)
+                    self.modules.filteredItemBoost(lambda mod: mod.item.group.name in groups, "maxRange", value, stackingPenalties=True)
 
                 if warfareBuffID == 22:  # Skirmish Burst: Rapid Deployment: AB/MWD Speed Increase
-                    self.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill("Afterburner") or
-                                                               mod.item.requiresSkill("High Speed Maneuvering"),
+                    self.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill("Afterburner") or mod.item.requiresSkill("High Speed Maneuvering"),
                                                    "speedFactor", value, stackingPenalties=True)
 
                 if warfareBuffID == 23:  # Mining Burst: Mining Laser Field Enhancement: Mining/Survey Range
@@ -559,8 +557,7 @@ class Fit(object):
                                                                mod.item.requiresSkill("Gas Cloud Harvesting"),
                                                    "maxRange", value, stackingPenalties=True)
 
-                    self.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill("CPU Management"),
-                                                   "surveyScanRange", value, stackingPenalties=True)
+                    self.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill("CPU Management"), "surveyScanRange", value, stackingPenalties=True)
 
                 if warfareBuffID == 24:  # Mining Burst: Mining Laser Optimization: Mining Capacitor/Duration
                     self.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill("Mining") or
@@ -574,8 +571,7 @@ class Fit(object):
                                                    "duration", value, stackingPenalties=True)
 
                 if warfareBuffID == 25:  # Mining Burst: Mining Equipment Preservation: Crystal Volatility
-                    self.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill("Mining"),
-                                                   "crystalVolatilityChance", value, stackingPenalties=True)
+                    self.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill("Mining"), "crystalVolatilityChance", value, stackingPenalties=True)
 
                 if warfareBuffID == 60:  # Skirmish Burst: Evasive Maneuvers: Agility
                     self.ship.boostItemAttr("agility", value, stackingPenalties=True)
