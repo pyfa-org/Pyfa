@@ -1746,6 +1746,7 @@ class FitItem(SFItem.SFBrowserItem):
                 self.deleteFit()
 
     def deleteFit(self, event=None):
+        pyfalog.debug("Deleting ship fit.")
         if self.deleted:
             return
         else:

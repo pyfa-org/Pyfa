@@ -1,15 +1,20 @@
 from gui.contextMenu import ContextMenu
 import gui.mainFrame
-import service
 import gui.globalEvents as GE
 import wx
+from service.settings import ContextMenuSettings
+from service.fit import Fit
 
 
-class CargoAmmo(ContextMenu):
+class DroneStack(ContextMenu):
     def __init__(self):
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
+        self.settings = ContextMenuSettings.getInstance()
 
     def display(self, srcContext, selection):
+        if not self.settings.get('droneStack'):
+            return False
+
         if srcContext not in ("marketItemGroup", "marketItemMisc") or self.mainFrame.getActiveFit() is None:
             return False
 
@@ -25,7 +30,7 @@ class CargoAmmo(ContextMenu):
         return "Add {0} to Drone Bay (x5)".format(itmContext)
 
     def activate(self, fullContext, selection, i):
-        sFit = service.Fit.getInstance()
+        sFit = Fit.getInstance()
         fitID = self.mainFrame.getActiveFit()
 
         typeID = int(selection[0].ID)
@@ -34,4 +39,4 @@ class CargoAmmo(ContextMenu):
         wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fitID))
 
 
-CargoAmmo.register()
+DroneStack.register()
