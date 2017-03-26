@@ -73,7 +73,6 @@ class Fit(object):
             "exportCharges": True,
             "openFitInNew": False,
             "priceSystem": "Jita",
-            "useStaticAdaptiveArmorHardener": False,
             "showShipBrowserTooltip": True,
         }
 

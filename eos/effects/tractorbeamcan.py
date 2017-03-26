@@ -7,5 +7,4 @@ type = "active"
 
 
 def handler(fit, module, context):
-    print settings['setting1']
     pass

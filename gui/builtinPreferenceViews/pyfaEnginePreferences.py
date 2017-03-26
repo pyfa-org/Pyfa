@@ -5,6 +5,7 @@ import wx
 from service.fit import Fit
 from gui.bitmapLoader import BitmapLoader
 from gui.preferenceView import PreferenceView
+from service.settings import EOSSettings
 
 logger = logging.getLogger(__name__)
 
@@ -20,9 +21,10 @@ class PFFittingEnginePref(PreferenceView):
 
     # noinspection PyAttributeOutsideInit
     def populatePanel(self, panel):
-        # self.openFitsSettings = service.SettingsProvider.getInstance().getSettings("pyfaPrevOpenFits", {"enabled": False, "pyfaOpenFits": []})
 
         mainSizer = wx.BoxSizer(wx.VERTICAL)
+
+        self.engine_settings = EOSSettings.getInstance()
 
         self.stTitle = wx.StaticText(panel, wx.ID_ANY, self.title, wx.DefaultPosition, wx.DefaultSize, 0)
         self.stTitle.Wrap(-1)
@@ -36,7 +38,7 @@ class PFFittingEnginePref(PreferenceView):
                                                wx.DefaultPosition, wx.DefaultSize, 0)
         mainSizer.Add(self.cbGlobalForceReload, 0, wx.ALL | wx.EXPAND, 5)
 
-        self.cbUniversalAdaptiveArmorHardener = wx.CheckBox(panel, wx.ID_ANY, u"When damage profile is even, set Reactive Armor Hardener to match (old behavior).",
+        self.cbUniversalAdaptiveArmorHardener = wx.CheckBox(panel, wx.ID_ANY, u"When damage profile is Uniform, set Reactive Armor Hardener to match (old behavior).",
                                                wx.DefaultPosition, wx.DefaultSize, 0)
         mainSizer.Add(self.cbUniversalAdaptiveArmorHardener, 0, wx.ALL | wx.EXPAND, 5)
 
@@ -69,7 +71,7 @@ class PFFittingEnginePref(PreferenceView):
         self.cbGlobalForceReload.SetValue(self.sFit.serviceFittingOptions["useGlobalForceReload"])
         self.cbGlobalForceReload.Bind(wx.EVT_CHECKBOX, self.OnCBGlobalForceReloadStateChange)
 
-        self.cbUniversalAdaptiveArmorHardener.SetValue(self.sFit.serviceFittingOptions["useStaticAdaptiveArmorHardener"])
+        self.cbUniversalAdaptiveArmorHardener.SetValue(self.engine_settings.get("useStaticAdaptiveArmorHardener"))
         self.cbUniversalAdaptiveArmorHardener.Bind(wx.EVT_CHECKBOX, self.OnCBUniversalAdaptiveArmorHardenerChange)
 
         panel.SetSizer(mainSizer)
@@ -79,7 +81,7 @@ class PFFittingEnginePref(PreferenceView):
         self.sFit.serviceFittingOptions["useGlobalForceReload"] = self.cbGlobalForceReload.GetValue()
 
     def OnCBUniversalAdaptiveArmorHardenerChange(self, event):
-        self.sFit.serviceFittingOptions["useStaticAdaptiveArmorHardener"] = self.cbUniversalAdaptiveArmorHardener.GetValue()
+        self.engine_settings.set("useStaticAdaptiveArmorHardener", self.cbUniversalAdaptiveArmorHardener.GetValue())
 
     def getImage(self):
         return BitmapLoader.getBitmap("settings_fitting", "gui")

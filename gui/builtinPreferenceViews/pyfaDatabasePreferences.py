@@ -14,7 +14,6 @@ class PFGeneralPref(PreferenceView):
 
     def populatePanel(self, panel):
         self.dirtySettings = False
-        # self.openFitsSettings = service.SettingsProvider.getInstance().getSettings("pyfaPrevOpenFits", {"enabled": False, "pyfaOpenFits": []})
 
         mainSizer = wx.BoxSizer(wx.VERTICAL)
 
