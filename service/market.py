@@ -229,6 +229,7 @@ class Market(object):
             "Apotheosis"                  : self.les_grp,  # 5th EVE anniversary present
             "Zephyr"                      : self.les_grp,  # 2010 new year gift
             "Primae"                      : self.les_grp,  # Promotion of planetary interaction
+            "Council Diplomatic Shuttle"  : self.les_grp,  # CSM X celebration
             "Freki"                       : self.les_grp,  # AT7 prize
             "Mimir"                       : self.les_grp,  # AT7 prize
             "Utu"                         : self.les_grp,  # AT8 prize
@@ -274,7 +275,6 @@ class Market(object):
             "Guristas Shuttle"                         : False,
             "Mobile Decoy Unit"                        : False,  # Seems to be left over test mod for deployables
             "Tournament Micro Jump Unit"               : False,  # Normally seen only on tournament arenas
-            "Council Diplomatic Shuttle"               : False,  # CSM X celebration
             "Civilian Gatling Railgun"                 : True,
             "Civilian Gatling Pulse Laser"             : True,
             "Civilian Gatling Autocannon"              : True,
