@@ -1043,7 +1043,7 @@ class ItemAffectedBy(wx.Panel):
         container = {}
         for attrName in attributes.iterAfflictions():
             # if value is 0 or there has been no change from original to modified, return
-            if attributes[attrName] == (attributes.getOriginal(attrName) or 0):
+            if attributes[attrName] == (attributes.getOriginal(attrName, 0)):
                 continue
 
             for fit, afflictors in attributes.getAfflictions(attrName).iteritems():
@@ -1170,7 +1170,7 @@ class ItemAffectedBy(wx.Panel):
         container = {}
         for attrName in attributes.iterAfflictions():
             # if value is 0 or there has been no change from original to modified, return
-            if attributes[attrName] == (attributes.getOriginal(attrName) or 0):
+            if attributes[attrName] == (attributes.getOriginal(attrName, 0)):
                 continue
 
             for fit, afflictors in attributes.getAfflictions(attrName).iteritems():
