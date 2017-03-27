@@ -17,15 +17,20 @@
 # along with eos.  If not, see <http://www.gnu.org/licenses/>.
 # ===============================================================================
 
-from sqlalchemy import Table, Column, Integer, ForeignKey
+from sqlalchemy import Table, Column, Integer, ForeignKey, DateTime
 from sqlalchemy.orm import mapper
+import sqlalchemy.sql.functions as func
 
 from eos.db import saveddata_meta
 from eos.saveddata.character import Skill
 
+
 skills_table = Table("characterSkills", saveddata_meta,
                      Column("characterID", ForeignKey("characters.ID"), primary_key=True, index=True),
                      Column("itemID", Integer, primary_key=True),
-                     Column("_Skill__level", Integer, nullable=True))
+                     Column("_Skill__level", Integer, nullable=True),
+                     Column("created", DateTime, nullable=True, default=func.now()),
+                     Column("modified", DateTime, nullable=True, onupdate=func.now())
+                     )
 
 mapper(Skill, skills_table)
