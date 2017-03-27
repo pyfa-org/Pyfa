@@ -275,6 +275,20 @@ if __name__ == "__main__":
         else:
             pyfalog.info("Running in a thawed state.")
 
+        # FIX THIS
+        try:
+            if options.force28 is True:
+                wxversion.select('2.8')
+            else:
+                wxversion.select(['3.0', '2.8'])
+
+        if hasattr(sys, 'frozen'):
+            pyfalog.info("Running in frozen state. Skipping wx validation.")
+            pyfalog.debug("wxPython version: {0}.", wxversion.getInstalled())
+        elif options.force28 is True:
+            # Remove existing wxPython
+            wxversion.select('2.8')
+
         if hasattr(sys, 'frozen') and wx is not None:
             pyfalog.info("Running in frozen state with wx installed. Skipping wx validation.")
             pyfalog.debug("wxPython version: {0}.", wxversion.getInstalled())
