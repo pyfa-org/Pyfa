@@ -57,7 +57,7 @@ class CommandViewDrop(wx.PyDropTarget):
 
 
 class CommandView(d.Display):
-    DEFAULT_COLS = ["Base Name"]
+    DEFAULT_COLS = ["State", "Base Name"]
 
     def __init__(self, parent):
         d.Display.__init__(self, parent, style=wx.LC_SINGLE_SEL | wx.BORDER_NONE)
