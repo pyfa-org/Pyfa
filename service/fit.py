@@ -421,7 +421,7 @@ class Fit(object):
         self.recalc(fit)
 
     def changeActiveFighters(self, fitID, fighter, amount):
-        pyfalog.debug("Changing active fighters ({0}) for fit ({1}) to amount: {2}", fighter.itemID, amount)
+        pyfalog.debug("Changing active fighters ({0}) for fit ({1}) to amount: {2}", fighter.itemID, fitID, amount)
         fit = eos.db.getFit(fitID)
         fighter.amountActive = amount
 
