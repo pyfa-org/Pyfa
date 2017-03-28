@@ -18,6 +18,9 @@ before_install:
 install:
   - pip install -r requirements.txt
   - pip install -r requirements_test.txt
+  - sudo apt-get -y install `check-language-support -l ru`
+  - sudo apt-get -y install `check-language-support -l he`
+  - sudo apt-get -y install `check-language-support -l cn`
 script:
   - tox
   - py.test --cov=./
