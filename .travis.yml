@@ -15,12 +15,10 @@ addons:
       - wx2.8-i18n
 before_install:
   - pip install -U tox
+  - sudo apt-get update && sudo apt-get --reinstall install -qq language-pack-en language-pack-ru language-pack-he language-pack-cn
 install:
   - pip install -r requirements.txt
   - pip install -r requirements_test.txt
-  - sudo apt-get -y install `check-language-support -l ru`
-  - sudo apt-get -y install `check-language-support -l he`
-  - sudo apt-get -y install `check-language-support -l cn`
 script:
   - tox
   - py.test --cov=./
