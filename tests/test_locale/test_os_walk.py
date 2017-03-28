@@ -17,6 +17,10 @@ def test_os_walk():
         subdir = GetPath(current_directory, subfolder)
         testfile = GetPath(subdir, "testcodec")
 
+        if "__pycache__" in testfile:
+            # Grabbed a Travis temp folder, skip it.
+            continue
+
         # noinspection PyBroadException
         try:
             with open(testfile, 'r') as f:
