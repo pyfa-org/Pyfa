@@ -6,7 +6,7 @@ import sys
 
 script_dir = os.path.dirname(os.path.abspath(__file__))
 # Add root to python paths, this allows us to import submodules
-sys.path.append(os.path.realpath(os.path.join(script_dir, '..', '..')))
+sys.path.append(os.path.realpath(os.path.join(script_dir, '..', '..', '..')))
 
 from _development.helpers_locale import GetPath
 
@@ -19,7 +19,7 @@ def test_codec_english():
     }
 
     os_name = platform.system()
-    current_directory = os.path.dirname(os.path.abspath(__file__))
+    current_directory = os.path.dirname(os.path.abspath(unicode(__file__)))
 
     try:
         decoded_file = GetPath(current_directory, "testcodec", use_codec[os_name])
