@@ -312,7 +312,6 @@ if __name__ == "__main__":
         try:
             # noinspection PyPackageRequirements
             import wx
-            from gui.errorDialog import ErrorFrame
         except:
             exit_message = "Cannot import wxPython. You can download wxPython (2.8+) from http://www.wxpython.org/"
             raise PreCheckException(exit_message)
