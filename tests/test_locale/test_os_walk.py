@@ -26,6 +26,7 @@ def test_os_walk():
         except:
             assert False, "Failed to read file."
 
+        read_data = read_data.replace("\n", "")
         assert read_data == "True"
         subfolder_count += 1
 
