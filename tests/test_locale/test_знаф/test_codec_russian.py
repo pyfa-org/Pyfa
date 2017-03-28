@@ -19,7 +19,7 @@ def test_codec_russian():
     }
 
     os_name = platform.system()
-    current_directory = os.path.dirname(os.path.abspath(unicode(__file__)))
+    current_directory = os.path.dirname(os.path.abspath(__file__))
 
     try:
         decoded_file = GetPath(current_directory, "testcodec", use_codec[os_name])
