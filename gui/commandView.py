@@ -25,6 +25,7 @@ import gui.globalEvents as GE
 import gui.droneView
 from gui.builtinViewColumns.state import State
 from gui.contextMenu import ContextMenu
+from gui.builtinContextMenus.commandFits import CommandFits
 from service.fit import Fit
 from eos.saveddata.drone import Drone as es_Drone
 
@@ -63,6 +64,7 @@ class CommandView(d.Display):
 
         self.lastFitId = None
 
+        self.mainFrame.Bind(GE.FIT_CHANGED, CommandFits.populateFits)
         self.mainFrame.Bind(GE.FIT_CHANGED, self.fitChanged)
         self.Bind(wx.EVT_LEFT_DOWN, self.click)
         self.Bind(wx.EVT_RIGHT_DOWN, self.click)
@@ -194,13 +196,13 @@ class CommandView(d.Display):
             fitSrcContext = "commandFit"
             fitItemContext = item.name
             context = ((fitSrcContext, fitItemContext),)
-            context += ("command",),
+            context += ("commandView",),
             menu = ContextMenu.getMenu((item,), *context)
         elif sel == -1:
             fitID = self.mainFrame.getActiveFit()
             if fitID is None:
                 return
-            context = (("command",),)
+            context = (("commandView",),)
             menu = ContextMenu.getMenu([], *context)
         if menu is not None:
             self.PopupMenu(menu)

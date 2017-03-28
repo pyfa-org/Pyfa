@@ -78,6 +78,10 @@ class PFGeneralPref(PreferenceView):
                                           wx.DefaultPosition, wx.DefaultSize, 0)
         mainSizer.Add(self.cbOpenFitInNew, 0, wx.ALL | wx.EXPAND, 5)
 
+        self.cbShowShipBrowserTooltip = wx.CheckBox(panel, wx.ID_ANY, u"Show ship browser tooltip",
+                                          wx.DefaultPosition, wx.DefaultSize, 0)
+        mainSizer.Add(self.cbShowShipBrowserTooltip, 0, wx.ALL | wx.EXPAND, 5)
+
         priceSizer = wx.BoxSizer(wx.HORIZONTAL)
 
         self.stDefaultSystem = wx.StaticText(panel, wx.ID_ANY, u"Default Market Prices:", wx.DefaultPosition, wx.DefaultSize, 0)
@@ -104,6 +108,7 @@ class PFGeneralPref(PreferenceView):
         self.cbExportCharges.SetValue(self.sFit.serviceFittingOptions["exportCharges"])
         self.cbOpenFitInNew.SetValue(self.sFit.serviceFittingOptions["openFitInNew"])
         self.chPriceSystem.SetStringSelection(self.sFit.serviceFittingOptions["priceSystem"])
+        self.cbShowShipBrowserTooltip.SetValue(self.sFit.serviceFittingOptions["showShipBrowserTooltip"])
 
         self.cbGlobalChar.Bind(wx.EVT_CHECKBOX, self.OnCBGlobalCharStateChange)
         self.cbGlobalDmgPattern.Bind(wx.EVT_CHECKBOX, self.OnCBGlobalDmgPatternStateChange)
@@ -118,6 +123,7 @@ class PFGeneralPref(PreferenceView):
         self.cbExportCharges.Bind(wx.EVT_CHECKBOX, self.onCBExportCharges)
         self.cbOpenFitInNew.Bind(wx.EVT_CHECKBOX, self.onCBOpenFitInNew)
         self.chPriceSystem.Bind(wx.EVT_CHOICE, self.onPriceSelection)
+        self.cbShowShipBrowserTooltip.Bind(wx.EVT_CHECKBOX, self.onCBShowShipBrowserTooltip)
 
         self.cbRackLabels.Enable(self.sFit.serviceFittingOptions["rackSlots"] or False)
 
@@ -178,6 +184,9 @@ class PFGeneralPref(PreferenceView):
 
     def onCBOpenFitInNew(self, event):
         self.sFit.serviceFittingOptions["openFitInNew"] = self.cbOpenFitInNew.GetValue()
+
+    def onCBShowShipBrowserTooltip(self, event):
+        self.sFit.serviceFittingOptions["showShipBrowserTooltip"] = self.cbShowShipBrowserTooltip.GetValue()
 
     def getImage(self):
         return BitmapLoader.getBitmap("prefs_settings", "gui")

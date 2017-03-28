@@ -22,7 +22,7 @@ else:
 pyfalog.debug("Saveddata connection string: {0}", saveddata_connectionstring)
 
 settings = {
-    "setting1": True
+    "useStaticAdaptiveArmorHardener": False
 }
 
 # Autodetect path, only change if the autodetection bugs out.

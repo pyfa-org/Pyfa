@@ -3,6 +3,7 @@
 # Used by:
 # Module: Reactive Armor Hardener
 from logbook import Logger
+import eos.config
 
 pyfalog = Logger(__name__)
 
@@ -12,6 +13,12 @@ type = "active"
 
 def handler(fit, module, context):
     damagePattern = fit.damagePattern
+
+    static_adaptive_behavior = eos.config.settings['useStaticAdaptiveArmorHardener']
+
+    if (damagePattern.emAmount == damagePattern.thermalAmount == damagePattern.kineticAmount == damagePattern.explosiveAmount) and static_adaptive_behavior:
+        pyfalog.debug("Setting adaptivearmorhardener resists to uniform profile.")
+        return
 
     # Skip if there is no damage pattern. Example: projected ships or fleet boosters
     if damagePattern:

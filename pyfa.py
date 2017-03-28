@@ -238,11 +238,11 @@ if __name__ == "__main__":
                 NullHandler(),
                 FingersCrossedHandler(
                         TimedRotatingFileHandler(
-                                config.logPath,
-                                level=0,
-                                backup_count=3,
-                                bubble=False,
-                                date_format='%Y-%m-%d',
+                            config.logPath,
+                            level=0,
+                            backup_count=3,
+                            bubble=False,
+                            date_format='%Y-%m-%d',
                         ),
                         action_level=ERROR,
                         buffer_size=1000,

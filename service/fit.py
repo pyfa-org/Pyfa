@@ -73,6 +73,7 @@ class Fit(object):
             "exportCharges": True,
             "openFitInNew": False,
             "priceSystem": "Jita",
+            "showShipBrowserTooltip": True,
         }
 
         self.serviceFittingOptions = SettingsProvider.getInstance().getSettings(
@@ -96,15 +97,10 @@ class Fit(object):
         return names
 
     @staticmethod
-    def getBoosterFits():
+    def getFitsWithModules(typeIDs):
         """ Lists fits flagged as booster """
-        pyfalog.debug("Fetching all fits flagged as a booster.")
-        fits = eos.db.getBoosterFits()
-        names = []
-        for fit in fits:
-            names.append((fit.ID, fit.name, fit.shipID))
-
-        return names
+        fits = eos.db.getFitsWithModules(typeIDs)
+        return fits
 
     @staticmethod
     def countAllFits():
@@ -425,7 +421,7 @@ class Fit(object):
         self.recalc(fit)
 
     def changeActiveFighters(self, fitID, fighter, amount):
-        pyfalog.debug("Changing active fighters ({0}) for fit ({1}) to amount: {2}", fighter.itemID, amount)
+        pyfalog.debug("Changing active fighters ({0}) for fit ({1}) to amount: {2}", fighter.itemID, fitID, amount)
         fit = eos.db.getFit(fitID)
         fighter.amountActive = amount
 

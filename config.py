@@ -29,6 +29,7 @@ pyfaPath = None
 savePath = None
 saveDB = None
 gameDB = None
+logPath = None
 
 
 def isFrozen():
