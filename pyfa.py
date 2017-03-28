@@ -18,6 +18,7 @@
 # along with pyfa.  If not, see <http://www.gnu.org/licenses/>.
 # ==============================================================================
 
+import inspect
 import os
 import platform
 import re
@@ -30,19 +31,10 @@ from logbook import CRITICAL, DEBUG, ERROR, FingersCrossedHandler, INFO, Logger,
 
 import config
 
-
-class PreCheckException(Exception):
-    pass
-
-
 try:
     import wxversion
-    import wx
-    from gui.errorDialog import ErrorFrame
 except ImportError:
     wxversion = None
-    wx = None
-    ErrorFrame = None
 
 try:
     import sqlalchemy
@@ -68,7 +60,7 @@ class PassThroughOptionParser(OptionParser):
                 largs.append(e.opt_str)
 
 
-class LoggerWriter:
+class LoggerWriter(object):
     def __init__(self, level):
         # self.level is really like using log.debug(message)
         # at least in my case
@@ -88,7 +80,27 @@ class LoggerWriter:
         self.level(sys.stderr)
 
 
+class PreCheckException(Exception):
+    def __init__(self, msg):
+        try:
+            ln = sys.exc_info()[-1].tb_lineno
+        except AttributeError:
+            ln = inspect.currentframe().f_back.f_lineno
+        self.message = "{0.__name__} (line {1}): {2}".format(type(self), ln, msg)
+        self.args = self.message,
+
+
 def handleGUIException(exc_type, exc_value, exc_traceback):
+    try:
+        # Try and import wx in case it's missing.
+        # noinspection PyPackageRequirements
+        import wx
+        from gui.errorDialog import ErrorFrame
+    except:
+        # noinspection PyShadowingNames
+        wx = None
+        # noinspection PyShadowingNames
+        ErrorFrame = None
 
     tb = traceback.format_tb(exc_traceback)
 
@@ -100,25 +112,31 @@ def handleGUIException(exc_type, exc_value, exc_traceback):
             # Print the base level traceback
             traceback.print_tb(exc_traceback)
 
-            pyfa = wx.App(False)
-            if exc_type == PreCheckException:
-                msgbox = wx.MessageBox(exc_value.message, 'Error', wx.ICON_ERROR | wx.STAY_ON_TOP)
-                msgbox.ShowModal()
-            else:
-                ErrorFrame(exc_value, tb)
-            pyfa.MainLoop()
+            if wx and ErrorFrame:
+                pyfa_gui = wx.App(False)
+                if exc_type == PreCheckException:
+                    ErrorFrame(exc_value, None, "Missing Prerequisite")
+                else:
+                    ErrorFrame(exc_value, tb)
+
+                pyfa_gui.MainLoop()
+
+            pyfalog.info("Exiting.")
     except:
         # Most likely logging isn't available. Try and output to the console
         print("Exception in main thread: " + str(exc_value.message))
         traceback.print_tb(exc_traceback)
 
-        pyfa = wx.App(False)
-        if exc_type == PreCheckException:
-            msgbox = wx.MessageBox(exc_value.message, 'Error', wx.ICON_ERROR | wx.STAY_ON_TOP)
-            msgbox.ShowModal()
-        else:
-            ErrorFrame(exc_value, tb)
-        pyfa.MainLoop()
+        if wx and ErrorFrame:
+            pyfa_gui = wx.App(False)
+            if exc_type == PreCheckException:
+                ErrorFrame(exc_value, None, "Missing Prerequisite")
+            else:
+                ErrorFrame(exc_value, tb)
+
+            pyfa_gui.MainLoop()
+
+        print("Exiting.")
 
     finally:
         # TODO: Add cleanup when exiting here.
@@ -190,7 +208,7 @@ if __name__ == "__main__":
     else:
         savePath_filename = "Pyfa.log"
 
-    savePath_Destination = os.path.join(config.savePath, savePath_filename)
+    config.logPath = os.path.join(config.savePath, savePath_filename)
 
     try:
         if options.debug:
@@ -205,7 +223,7 @@ if __name__ == "__main__":
                         level=options.logginglevel
                 ),
                 TimedRotatingFileHandler(
-                        savePath_Destination,
+                        config.logPath,
                         level=0,
                         backup_count=3,
                         bubble=True,
@@ -220,7 +238,7 @@ if __name__ == "__main__":
                 NullHandler(),
                 FingersCrossedHandler(
                         TimedRotatingFileHandler(
-                                savePath_Destination,
+                                config.logPath,
                                 level=0,
                                 backup_count=3,
                                 bubble=False,
@@ -248,26 +266,28 @@ if __name__ == "__main__":
     with logging_setup.threadbound():
         pyfalog.info("Starting Pyfa")
 
+        pyfalog.info("Logbook version: {0}", logbook_version)
+
         pyfalog.info("Running in logging mode: {0}", logging_mode)
-        pyfalog.info("Writing log file to: {0}", savePath_Destination)
+        pyfalog.info("Writing log file to: {0}", config.logPath)
 
         # Output all stdout (print) messages as warnings
         try:
             sys.stdout = LoggerWriter(pyfalog.warning)
-        except ValueError, Exception:
+        except:
             pyfalog.critical("Cannot redirect.  Continuing without writing stdout to log.")
 
         # Output all stderr (stacktrace) messages as critical
         try:
             sys.stderr = LoggerWriter(pyfalog.critical)
-        except ValueError, Exception:
+        except:
             pyfalog.critical("Cannot redirect.  Continuing without writing stderr to log.")
 
         pyfalog.info("OS version: {0}", platform.platform())
 
         pyfalog.info("Python version: {0}", sys.version)
         if sys.version_info < (2, 7) or sys.version_info > (3, 0):
-            exit_message = "Pyfa requires python 2.x branch ( >= 2.7 ).\nExiting."
+            exit_message = "Pyfa requires python 2.x branch ( >= 2.7 )."
             raise PreCheckException(exit_message)
 
         if hasattr(sys, 'frozen'):
@@ -275,34 +295,29 @@ if __name__ == "__main__":
         else:
             pyfalog.info("Running in a thawed state.")
 
-        # FIX THIS
-        try:
-            if options.force28 is True:
-                wxversion.select('2.8')
-            else:
-                wxversion.select(['3.0', '2.8'])
-
-        if hasattr(sys, 'frozen'):
-            pyfalog.info("Running in frozen state. Skipping wx validation.")
-            pyfalog.debug("wxPython version: {0}.", wxversion.getInstalled())
-        elif options.force28 is True:
-            # Remove existing wxPython
-            wxversion.select('2.8')
-
-        if hasattr(sys, 'frozen') and wx is not None:
-            pyfalog.info("Running in frozen state with wx installed. Skipping wx validation.")
-            pyfalog.debug("wxPython version: {0}.", wxversion.getInstalled())
-        elif wx is None or wxversion is None:
-            exit_message = "\nCannot find wxPython\nYou can download wxPython (2.8+) from http://www.wxpython.org/"
-            raise PreCheckException(exit_message)
+        if not hasattr(sys, 'frozen') and wxversion:
+            try:
+                if options.force28 is True:
+                    pyfalog.info("Selecting wx version: 2.8. (Forced)")
+                    wxversion.select('2.8')
+                else:
+                    pyfalog.info("Selecting wx versions: 3.0, 2.8")
+                    wxversion.select(['3.0', '2.8'])
+            except:
+                pyfalog.warning("Unable to select wx version.  Attempting to import wx without specifying the version.")
         else:
-            if options.force28 is True and wxversion.checkInstalled('2.8'):
-                pyfalog.info("wxPython is installed. Version: {0} (forced).", wxversion.getInstalled())
-            elif options.force28 is not True and (wxversion.checkInstalled('2.8') or wxversion.checkInstalled('3.0')):
-                pyfalog.info("wxPython is installed. Version: {0}.", wxversion.getInstalled())
-            else:
-                pyfalog.warning("\nInstalled wxPython version doesn't meet requirements.\nYou can download wxPython 2.8 or 3.0 from http://www.wxpython.org/")
-                pyfalog.critical("Attempting to run with unsupported version of wx. Version: {0}", wxversion.getInstalled())
+            if not wxversion:
+                pyfalog.warning("wxVersion not found.  Attempting to import wx without specifying the version.")
+
+        try:
+            # noinspection PyPackageRequirements
+            import wx
+            from gui.errorDialog import ErrorFrame
+        except:
+            exit_message = "Cannot import wxPython. You can download wxPython (2.8+) from http://www.wxpython.org/"
+            raise PreCheckException(exit_message)
+
+        pyfalog.info("wxPython version: {0}.", str(wx.VERSION_STRING))
 
         if sqlalchemy is None:
             exit_message = "\nCannot find sqlalchemy.\nYou can download sqlalchemy (0.6+) from http://www.sqlalchemy.org/"

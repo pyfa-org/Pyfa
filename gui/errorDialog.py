@@ -20,9 +20,13 @@
 import platform
 import sys
 
+# noinspection PyPackageRequirements
 import wx
 
-import config
+try:
+    import config
+except:
+    config = None
 
 try:
     import sqlalchemy
@@ -31,16 +35,21 @@ try:
 except:
     sqlalchemy_version = "Unknown"
 
+try:
+    from logbook import __version__ as logbook_version
+except:
+    logbook_version = "Unknown"
+
 
 class ErrorFrame(wx.Frame):
-    def __init__(self, exception, tb):
+    def __init__(self, exception=None, tb=None, error_title='Error!'):
         v = sys.version_info
 
         wx.Frame.__init__(self, None, id=wx.ID_ANY, title="pyfa error", pos=wx.DefaultPosition, size=wx.Size(500, 600),
                           style=wx.DEFAULT_FRAME_STYLE ^ wx.RESIZE_BORDER | wx.STAY_ON_TOP)
 
-        desc = "pyfa has experienced an unexpected error. Below is the Traceback that contains crucial \n" \
-               "information about how this error was triggered. Please contact the developers with the \n" \
+        desc = "pyfa has experienced an unexpected issue. Below is a message that contains crucial\n" \
+               "information about how this was triggered. Please contact the developers with the\n" \
                "information provided through the EVE Online forums or file a GitHub issue."
 
         self.SetSizeHintsSz(wx.DefaultSize, wx.DefaultSize)
@@ -51,7 +60,7 @@ class ErrorFrame(wx.Frame):
         mainSizer = wx.BoxSizer(wx.VERTICAL)
         headSizer = wx.BoxSizer(wx.HORIZONTAL)
 
-        headingText = wx.StaticText(self, wx.ID_ANY, "Error!", wx.DefaultPosition, wx.DefaultSize, wx.ALIGN_CENTRE)
+        headingText = wx.StaticText(self, wx.ID_ANY, error_title, wx.DefaultPosition, wx.DefaultSize, wx.ALIGN_CENTRE)
         headingText.SetFont(wx.Font(14, 74, 90, 92, False))
 
         headSizer.Add(headingText, 1, wx.ALL, 5)
@@ -79,24 +88,46 @@ class ErrorFrame(wx.Frame):
         errorTextCtrl.SetFont(wx.Font(8, wx.FONTFAMILY_TELETYPE, wx.NORMAL, wx.NORMAL))
         mainSizer.Add(errorTextCtrl, 0, wx.EXPAND | wx.ALL | wx.ALIGN_CENTER, 5)
 
-        errorTextCtrl.AppendText("OS version: \t" + str(platform.platform()))
+        try:
+            errorTextCtrl.AppendText("OS version: \t" + str(platform.platform()))
+        except:
+            errorTextCtrl.AppendText("OS version: Unknown")
         errorTextCtrl.AppendText("\n")
-        errorTextCtrl.AppendText("Python: \t" + '{}.{}.{}'.format(v.major, v.minor, v.micro))
+
+        try:
+            errorTextCtrl.AppendText("Python: \t" + '{}.{}.{}'.format(v.major, v.minor, v.micro))
+        except:
+            errorTextCtrl.AppendText("Python: Unknown")
         errorTextCtrl.AppendText("\n")
-        errorTextCtrl.AppendText("wxPython: \t" + str(wx.__version__))
+
+        try:
+            errorTextCtrl.AppendText("wxPython: \t" + wx.VERSION_STRING)
+        except:
+            errorTextCtrl.AppendText("wxPython: Unknown")
         errorTextCtrl.AppendText("\n")
+
         errorTextCtrl.AppendText("SQLAlchemy: \t" + str(sqlalchemy_version))
         errorTextCtrl.AppendText("\n")
-        errorTextCtrl.AppendText("pyfa version: {0} {1} - {2} {3}".format(config.version, config.tag, config.expansionName, config.expansionVersion))
+
+        errorTextCtrl.AppendText("Logbook: \t" + str(logbook_version))
+        errorTextCtrl.AppendText("\n")
+
+        try:
+            errorTextCtrl.AppendText("pyfa version: {0} {1} - {2} {3}".format(config.version, config.tag, config.expansionName, config.expansionVersion))
+        except:
+            errorTextCtrl.AppendText("pyfa version: Unknown")
         errorTextCtrl.AppendText('\n')
+
         errorTextCtrl.AppendText("pyfa root: " + str(config.pyfaPath or "Unknown"))
         errorTextCtrl.AppendText('\n')
         errorTextCtrl.AppendText("save path: " + str(config.savePath or "Unknown"))
         errorTextCtrl.AppendText('\n')
         errorTextCtrl.AppendText("fs encoding: " + str(sys.getfilesystemencoding() or "Unknown"))
         errorTextCtrl.AppendText('\n\n')
+
         errorTextCtrl.AppendText("EXCEPTION: " + str(exception or "Unknown"))
         errorTextCtrl.AppendText('\n\n')
+
         if tb:
             for line in tb:
                 errorTextCtrl.AppendText(line)
