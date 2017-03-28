@@ -24,6 +24,8 @@ def test_os_walk():
             # noinspection PyStatementEffect
             f.closed
         except:
+            print("Test File:")
+            print(testfile)
             assert False, "Failed to read file."
 
         read_data = read_data.replace("\n", "")
