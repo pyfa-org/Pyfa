@@ -108,6 +108,13 @@ def handleGUIException(exc_type, exc_value, exc_traceback):
 
         # Try and output to our log handler
         with logging_setup.threadbound():
+            module_list = list(set(sys.modules) & set(globals()))
+            if module_list:
+                pyfalog.info("Imported Python Modules:")
+                for imported_module in module_list:
+                    module_details = sys.modules[imported_module]
+                    pyfalog.info("{0}: {1}", imported_module, getattr(module_details, '__version__', ''))
+
             pyfalog.critical("Exception in main thread: {0}", exc_value.message)
             # Print the base level traceback
             traceback.print_tb(exc_traceback)
@@ -124,6 +131,13 @@ def handleGUIException(exc_type, exc_value, exc_traceback):
             pyfalog.info("Exiting.")
     except:
         # Most likely logging isn't available. Try and output to the console
+        module_list = list(set(sys.modules) & set(globals()))
+        if module_list:
+            pyfalog.info("Imported Python Modules:")
+            for imported_module in module_list:
+                module_details = sys.modules[imported_module]
+                print(str(imported_module) + ": " + str(getattr(module_details, '__version__', '')))
+
         print("Exception in main thread: " + str(exc_value.message))
         traceback.print_tb(exc_traceback)
 
@@ -352,6 +366,7 @@ if __name__ == "__main__":
 
         pyfa = wx.App(False)
         MainFrame(options.title)
+        test = 1/0
         pyfa.MainLoop()
 
         # TODO: Add some thread cleanup code here. Right now we bail, and that can lead to orphaned threads or threads not properly exiting.
