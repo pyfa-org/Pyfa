@@ -200,6 +200,10 @@ class Fit(object):
         if fit is None:
             fit = eos.db.getFit(fitID)
 
+        projected_fits = len(fit.commandFits) + len(fit.projectedFits)
+
+        # If the fit  has fits projected on it, always recalc because another fit affecting this one could have changed.
+        if 0 < projected_fits:
             if self.serviceFittingOptions["useGlobalCharacter"]:
                 if fit.character != self.character:
                     fit.character = self.character
@@ -227,23 +231,26 @@ class Fit(object):
         if fit is None:
             fit = eos.db.getFit(fitID)
 
-            if basic:
-                return fit
+        if basic:
+            return fit
 
-            inited = getattr(fit, "inited", None)
+        inited = getattr(fit, "inited", None)
 
-            if inited is None or inited is False:
-                if not projected:
-                    for fitP in fit.projectedFits:
-                        self.getFit(fitP.ID, projected=True)
-                    self.recalc(fit, withBoosters=True)
-                    fit.fill()
+        projected_fits = len(fit.commandFits) + len(fit.projectedFits)
 
-                # Check that the states of all modules are valid
-                self.checkStates(fit, None)
+        # If the fit is not initialized, or is projected, or has fits projected on it, always recalc because another fit affecting this one could have changed.
+        if inited is None or inited is False or 0 < projected_fits or projected is True:
+            if not projected:
+                for fitP in fit.projectedFits:
+                    self.getFit(fitP.ID, projected=True)
+                self.recalc(fit, withBoosters=True)
+                fit.fill()
 
-                eos.db.commit()
-                fit.inited = True
+            # Check that the states of all modules are valid
+            self.checkStates(fit, None)
+
+            eos.db.commit()
+            fit.inited = True
 
         return fit
 
@@ -1096,7 +1103,7 @@ class Fit(object):
 
     def recalc(self, fit, withBoosters=True):
         start_time = time()
-        pyfalog.info("=" * 10 + "recalc" + "=" * 10)
+        pyfalog.info("=" * 10 + "recalc: {0}" + "=" * 10, fit.name)
         if fit.factorReload is not self.serviceFittingOptions["useGlobalForceReload"]:
             fit.factorReload = self.serviceFittingOptions["useGlobalForceReload"]
         fit.clear()
