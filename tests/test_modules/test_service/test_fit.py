@@ -21,7 +21,7 @@ def test_getAllFits(DB, RifterFit, KeepstarFit):
     DB['db'].save(RifterFit)
     print("second")
     for temp_fit in Fit.getAllFits():
-        print ("ID: " + str(temp_fit.ID))
+        print ("ID: " + str(temp_fit.name))
 
     assert len(Fit.getAllFits()) == 1
     DB['db'].save(KeepstarFit)
