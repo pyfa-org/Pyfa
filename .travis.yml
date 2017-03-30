@@ -8,6 +8,13 @@ addons:
   apt:
     packages:
 before_install:
+   # Work around for installation issue
+   # https://github.com/certbot/certbot/issues/2850
+   - sudo apt-get update
+   - sudo apt-get install python-software-properties
+   - sudo apt-get install apt-file
+   - sudo apt-file update
+   - sudo apt-get install software-properties-common
   # get Conda
   - if [[ "$TRAVIS_PYTHON_VERSION" == "2.7" ]]; then
       wget https://repo.continuum.io/miniconda/Miniconda-latest-Linux-x86_64.sh -O miniconda.sh;
