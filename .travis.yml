@@ -8,13 +8,11 @@ addons:
   apt:
     packages:
 before_install:
-
-install:
   - pip install -r requirements.txt
   - pip install -r requirements_test.txt
-
-script:
+install:
   - tox
+script:
   - py.test --cov=./
 after_success:
   - bash <(curl -s https://codecov.io/bash)
