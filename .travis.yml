@@ -7,12 +7,13 @@ addons:
   apt:
     packages:
       # for wxPython:
-      - python-wxgtk2.8
+      - python-wxgtk3.0
       - python-wxtools
-      - wx2.8-doc
-      - wx2.8-examples
-      - wx2.8-headers
-      - wx2.8-i18n
+      - python-wxversion
+      - wx3.0-doc
+      - wx3.0-examples
+      - wx3.0-headers
+      - wx3.0-i18n
 before_install:
   - pip install -U tox
 install:
