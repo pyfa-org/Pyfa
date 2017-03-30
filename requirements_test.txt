@@ -7,3 +7,4 @@ coveralls==1.1
 codecov
 virtualenv>=15.0.0
 tox
+wheel
