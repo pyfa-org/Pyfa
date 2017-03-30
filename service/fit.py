@@ -52,6 +52,7 @@ class Fit(object):
 
     def __init__(self):
         pyfalog.debug("Initialize Fit class")
+        self.cached_fits = []
         self.pattern = DamagePattern.getInstance().getDamagePattern("Uniform")
         self.targetResists = None
         self.character = saveddata_Character.getAll5()
@@ -194,18 +195,21 @@ class Fit(object):
         if fitID is None:
             return None
 
-        fit = eos.db.getFit(fitID)
+        fit = next((x for x in self.cached_fits if x.ID == fitID), None)
 
-        if self.serviceFittingOptions["useGlobalCharacter"]:
-            if fit.character != self.character:
-                fit.character = self.character
+        if fit is None:
+            fit = eos.db.getFit(fitID)
 
-        if self.serviceFittingOptions["useGlobalDamagePattern"]:
-            if fit.damagePattern != self.pattern:
-                fit.damagePattern = self.pattern
+            if self.serviceFittingOptions["useGlobalCharacter"]:
+                if fit.character != self.character:
+                    fit.character = self.character
 
-        eos.db.commit()
-        self.recalc(fit, withBoosters=True)
+            if self.serviceFittingOptions["useGlobalDamagePattern"]:
+                if fit.damagePattern != self.pattern:
+                    fit.damagePattern = self.pattern
+
+            eos.db.commit()
+            self.recalc(fit, withBoosters=True)
 
     def getFit(self, fitID, projected=False, basic=False):
         """
@@ -217,25 +221,30 @@ class Fit(object):
         pyfalog.debug("Getting fit for fit ID: {0}", fitID)
         if fitID is None:
             return None
-        fit = eos.db.getFit(fitID)
 
-        if basic:
-            return fit
+        fit = next((x for x in self.cached_fits if x.ID == fitID), None)
 
-        inited = getattr(fit, "inited", None)
+        if fit is None:
+            fit = eos.db.getFit(fitID)
 
-        if inited is None or inited is False:
-            if not projected:
-                for fitP in fit.projectedFits:
-                    self.getFit(fitP.ID, projected=True)
-                self.recalc(fit, withBoosters=True)
-                fit.fill()
+            if basic:
+                return fit
 
-            # Check that the states of all modules are valid
-            self.checkStates(fit, None)
+            inited = getattr(fit, "inited", None)
 
-            eos.db.commit()
-            fit.inited = True
+            if inited is None or inited is False:
+                if not projected:
+                    for fitP in fit.projectedFits:
+                        self.getFit(fitP.ID, projected=True)
+                    self.recalc(fit, withBoosters=True)
+                    fit.fill()
+
+                # Check that the states of all modules are valid
+                self.checkStates(fit, None)
+
+                eos.db.commit()
+                fit.inited = True
+
         return fit
 
     @staticmethod
@@ -1093,5 +1102,8 @@ class Fit(object):
         fit.clear()
 
         fit.calculateModifiedAttributes(withBoosters=False)
+
+        if fit not in self.cached_fits:
+            self.cached_fits.append(fit)
 
         pyfalog.info("=" * 10 + "recalc time: " + str(time() - start_time) + "=" * 10)
