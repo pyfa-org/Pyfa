@@ -8,6 +8,7 @@ addons:
   apt:
     packages:
 before_install:
+  - pip install tox
   # We're not actually installing Tox, but have to run it before we install wxPython via Conda. This is fugly but vOv
   - tox
   # get Conda
@@ -26,10 +27,9 @@ before_install:
 install:
   # install wxPython 3.0.0.0
   - conda install -c https://conda.anaconda.org/travis wxpython
+before_script:
   - pip install -r requirements.txt
   - pip install -r requirements_test.txt
-before_script:
-
 script:
   - py.test --cov=./
 after_success:
