@@ -15,6 +15,9 @@ from service.fit import Fit
 def test_getAllFits(DB, RifterFit, KeepstarFit):
     assert len(Fit.getAllFits()) == 0
     DB['db'].save(RifterFit)
+    for temp_fit in Fit.getAllFits():
+        print ("ID: " + str(temp_fit.ID))
+
     assert len(Fit.getAllFits()) == 1
     DB['db'].save(KeepstarFit)
     assert len(Fit.getAllFits()) == 2
