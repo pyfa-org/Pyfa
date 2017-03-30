@@ -31,3 +31,5 @@ script:
   - py.test --cov=./
 after_success:
   - bash <(curl -s https://codecov.io/bash)
+after_failure:
+  - cat /home/travis/build/Ebag333/Pyfa/.tox/pep8/log/pep8-0.log
