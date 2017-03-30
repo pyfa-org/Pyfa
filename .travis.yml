@@ -8,9 +8,6 @@ addons:
   apt:
     packages:
 before_install:
-  - pip install -U tox
-  - pip install -r requirements.txt
-  - pip install -r requirements_test.txt
   # get Conda
   - if [[ "$TRAVIS_PYTHON_VERSION" == "2.7" ]]; then
       wget https://repo.continuum.io/miniconda/Miniconda-latest-Linux-x86_64.sh -O miniconda.sh;
@@ -25,6 +22,8 @@ before_install:
   # Useful for debugging any issues with conda
   - conda info -a
 install:
+  - pip install -r requirements.txt
+  - pip install -r requirements_test.txt
     # install wxPython 3.0.0.0
   - conda install -c https://conda.anaconda.org/travis wxpython
 script:
