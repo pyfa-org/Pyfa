@@ -108,7 +108,7 @@ def defPaths(customSavePath):
     # maintenance script
     gameDB = getattr(configforced, "gameDB", gameDB)
     if not gameDB:
-        gameDB = os.path.join(pyfaPath, "eve.db")
+        gameDB = os.path.join(dataPath, "eve.db")
 
     # DON'T MODIFY ANYTHING BELOW
     import eos.config
