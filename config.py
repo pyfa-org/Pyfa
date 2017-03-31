@@ -26,6 +26,7 @@ expansionVersion = "1.0"
 evemonMinVersion = "4081"
 
 pyfaPath = None
+dataPath = None
 savePath = None
 saveDB = None
 gameDB = None
@@ -58,6 +59,7 @@ def getDefaultSave():
 def defPaths(customSavePath):
     global debug
     global pyfaPath
+    global dataPath
     global savePath
     global saveDB
     global gameDB
@@ -92,6 +94,14 @@ def defPaths(customSavePath):
 
     # The database where we store all the fits etc
     saveDB = os.path.join(savePath, "saveddata.db")
+
+    # pyfa shared data directory (used for Linux system-wide installation).
+    dataPath = getattr(configforced, "dataPath", dataPath)
+    if dataPath is None:
+        if "site-packages" in pyfaPath and sys.platform.startswith("linux"):
+            dataPath = os.path.join("/usr", "share", "pyfa")
+        else:
+            dataPath = pyfaPath
 
     # The database where the static EVE data from the datadump is kept.
     # This is not the standard sqlite datadump but a modified version created by eos
