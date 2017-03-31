@@ -205,7 +205,9 @@ class Fit(object):
                 fit.damagePattern = self.pattern
 
         eos.db.commit()
-        self.recalc(fit, withBoosters=True)
+
+        if not fit.calculated:
+            self.recalc(fit, withBoosters=True)
 
     def getFit(self, fitID, projected=False, basic=False):
         """

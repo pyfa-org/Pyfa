@@ -183,6 +183,15 @@ class Fit(object):
         self.__character = char
 
     @property
+    def calculated(self):
+        return self.__calculated
+
+    @calculated.setter
+    def calculated(self, bool):
+        # todo: brief explaination hwo this works
+        self.__calculated = bool
+
+    @property
     def ship(self):
         return self.__ship
 
@@ -641,6 +650,11 @@ class Fit(object):
     def calculateModifiedAttributes(self, targetFit=None, withBoosters=False, dirtyStorage=None):
         timer = Timer(u'Fit: {}, {}'.format(self.ID, self.name), pyfalog)
         pyfalog.debug("Starting fit calculation on: {0}, withBoosters: {1}", self, withBoosters)
+
+        if targetFit is None:
+            # do same for command fits as well possibly?
+            for _, value in self.projectedOnto.iteritems():
+                value.victim_fit.calculated = False;
 
         shadow = False
         if targetFit and not withBoosters:
