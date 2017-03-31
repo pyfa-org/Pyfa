@@ -751,11 +751,15 @@ class Fit(object):
         # Mark fit as calculated
         self.__calculated = True
 
-        # Only apply projected fits if fit it not projected itself.
-        if not projected and self is not targetFit:
+        if withBoosters:
             for fit in self.projectedFits:
                 if fit.getProjectionInfo(self.ID).active:
-                    fit.calculateModifiedAttributes(self, withBoosters=withBoosters)
+                    if self is fit:
+                        # If fit is self, don't recurse
+                        fit.calculateModifiedAttributes(targetFit=self, withBoosters=False)
+                    else:
+                        fit.calculateModifiedAttributes(targetFit=self, withBoosters=withBoosters)
+
 
         timer.checkpoint('Done with fit calculation')
 
