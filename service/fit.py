@@ -1092,6 +1092,7 @@ class Fit(object):
             fit.factorReload = self.serviceFittingOptions["useGlobalForceReload"]
         fit.clear()
 
-        fit.calculateModifiedAttributes(withBoosters=False)
+        # Disabled in 08be50c. Not sure why?
+        fit.calculateModifiedAttributes(withBoosters=withBoosters)
 
         pyfalog.info("=" * 10 + "recalc time: " + str(time() - start_time) + "=" * 10)

@@ -638,12 +638,12 @@ class Fit(object):
 
             del self.commandBonuses[warfareBuffID]
 
-    def calculateModifiedAttributes(self, targetFit=None, withBoosters=False, dirtyStorage=None):
+    def calculateModifiedAttributes(self, targetFit=None, withBoosters=False):
         timer = Timer(u'Fit: {}, {}'.format(self.ID, self.name), pyfalog)
         pyfalog.debug("Starting fit calculation on: {0}, withBoosters: {1}", self, withBoosters)
 
         shadow = False
-        if targetFit and not withBoosters:
+        if targetFit and withBoosters:
             pyfalog.debug("Applying projections to target: {0}", targetFit)
             projectionInfo = self.getProjectionInfo(targetFit.ID)
             pyfalog.debug("ProjectionInfo: {0}", projectionInfo)
@@ -659,7 +659,7 @@ class Fit(object):
                 # not want to save this fit to the database, so simply remove it
                 eos.db.saveddata_session.delete(self)
 
-        if self.commandFits and not withBoosters:
+        if self.commandFits and withBoosters:
             for fit in self.commandFits:
                 if self == fit:
                     continue
@@ -672,7 +672,7 @@ class Fit(object):
             targetFit = self
             projected = False
         else:
-            projected = not withBoosters
+            projected = True
 
         # If fit is calculated and we have nothing to do here, get out
 
@@ -743,7 +743,7 @@ class Fit(object):
                 pyfalog.info("Command bonuses applied.")
                 pyfalog.debug(self.commandBonuses)
 
-            if not withBoosters and self.commandBonuses:
+            if withBoosters and self.commandBonuses:
                 self.__runCommandBoosts(runTime)
 
             timer.checkpoint('Done with runtime: %s' % runTime)
@@ -752,10 +752,10 @@ class Fit(object):
         self.__calculated = True
 
         # Only apply projected fits if fit it not projected itself.
-        if not projected and not withBoosters:
+        if not projected and self is not targetFit:
             for fit in self.projectedFits:
                 if fit.getProjectionInfo(self.ID).active:
-                    fit.calculateModifiedAttributes(self, withBoosters=withBoosters, dirtyStorage=dirtyStorage)
+                    fit.calculateModifiedAttributes(self, withBoosters=withBoosters)
 
         timer.checkpoint('Done with fit calculation')
 
