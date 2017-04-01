@@ -732,8 +732,6 @@ class Fit(object):
                         self.register(item)
                         item.calculateModifiedAttributes(self, runTime, False)
 
-
-
                     if targetFit and withBoosters and item in self.modules:
                         # Apply the gang boosts to target fit
                         # targetFit.register(item, origin=self)
