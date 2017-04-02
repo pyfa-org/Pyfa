@@ -264,7 +264,7 @@ class HTMLExportSettings(object):
     def __init__(self):
         serviceHTMLExportDefaultSettings = {
             "enabled": False,
-            "path"   : config.pyfaPath + os.sep + 'pyfaFits.html',
+            "path"   : os.path.join(config.savePath, 'pyfaFits.html'),
             "minimal": False
         }
         self.serviceHTMLExportSettings = SettingsProvider.getInstance().getSettings(
