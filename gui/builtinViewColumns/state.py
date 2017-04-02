@@ -69,9 +69,9 @@ class State(ViewColumn):
         elif isinstance(stuff, Fit):
             fitID = self.mainFrame.getActiveFit()
 
-            # can't use isinstance here due to being prevented from importing CommandView.
-            #  So we do the next best thing and compare Name of class.
-            if type(self.fittingView).__name__ == "CommandView":
+            # Can't use isinstance here due to being prevented from importing CommandView.
+            # So we do the next best thing and compare Name of class.
+            if self.fittingView.__class__.__name__ == "CommandView":
                 info = stuff.getCommandInfo(fitID)
             else:
                 info = stuff.getProjectionInfo(fitID)
