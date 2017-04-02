@@ -255,11 +255,11 @@ if __name__ == "__main__":
                 NullHandler(),
                 FingersCrossedHandler(
                         TimedRotatingFileHandler(
-                            config.logPath,
-                            level=0,
-                            backup_count=3,
-                            bubble=False,
-                            date_format='%Y-%m-%d',
+                                config.logPath,
+                                level=0,
+                                backup_count=3,
+                                bubble=False,
+                                date_format='%Y-%m-%d',
                         ),
                         action_level=ERROR,
                         buffer_size=1000,
@@ -380,9 +380,6 @@ if __name__ == "__main__":
         eos.db.saveddata_meta.create_all()
 
         from gui.mainFrame import MainFrame
-
-
-        test = 1/0
 
         pyfa = wx.App(False)
         MainFrame(options.title)
