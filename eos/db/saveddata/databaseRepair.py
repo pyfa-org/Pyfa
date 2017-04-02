@@ -215,7 +215,7 @@ class DatabaseCleanup(object):
                 row = results.first()
 
                 if row and row['num']:
-                    query = "UPDATE '{0}' SET '{1}Amount' = '0' WHERE {1}Amount IS NULL OR Amount = ''".format(profileType,
+                    query = "UPDATE '{0}' SET '{1}Amount' = '0' WHERE {1}Amount IS NULL OR {1}Amount = ''".format(profileType,
                                                                                                                damageType)
                     delete = DatabaseCleanup.ExecuteSQLQuery(saveddata_engine, query)
                     pyfalog.error("Database corruption found. Cleaning up {0} records.", delete.rowcount)
