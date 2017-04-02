@@ -145,13 +145,13 @@ class IPortUser:
 
     __metaclass__ = ABCMeta
 
-    ID_PULSE  = 1
+    ID_PULSE = 1
     # Pulse the progress bar
     ID_UPDATE = ID_PULSE << 1
     # Replace message with data: update messate
-    ID_DONE   = ID_PULSE << 2
+    ID_DONE = ID_PULSE << 2
     # open fits: import process done
-    ID_ERROR  = ID_PULSE << 3
+    ID_ERROR = ID_PULSE << 3
     # display error: raise some error
 
     PROCESS_IMPORT = ID_PULSE << 4
@@ -236,7 +236,7 @@ class Port(object):
                     msg = "Processing file:\n%s" % path
                     pyfalog.debug(msg)
                     PortProcessing.notify(iportuser, IPortUser.PROCESS_IMPORT | IPortUser.ID_UPDATE, msg)
-                    #wx.CallAfter(callback, 1, msg)
+                    # wx.CallAfter(callback, 1, msg)
 
                 file_ = open(path, "r")
                 srcString = file_.read()
@@ -326,7 +326,6 @@ class Port(object):
             return False, "Unknown Error while processing %s\n\n message: %s" % (path, e.message)
 
         return True, fit_list
-
 
     @staticmethod
     def importFitFromBuffer(bufferStr, activeFit=None):
@@ -471,10 +470,10 @@ class Port(object):
     @staticmethod
     def importCrest(str_):
 
-        sMkt   = Market.getInstance()
+        sMkt = Market.getInstance()
         fitobj = Fit()
         refobj = json.loads(str_)
-        items  = refobj['items']
+        items = refobj['items']
         fitobj.name = refobj['name']
         # 2017/03/29: read description
         # "<" and ">" is replace to "&lt;", "&gt;" by EVE client
@@ -989,7 +988,7 @@ class Port(object):
                 description = ""
             elif len(description):
                 # convert <br> to "\n" and remove html tags.
-                description = sequential_rep(description, r"<(br|BR)>", "\n",r"<[^<>]+>", "")
+                description = sequential_rep(description, r"<(br|BR)>", "\n", r"<[^<>]+>", "")
 #                 description = re.sub(r"<(br|BR)>", "\n", description)
 #                 description = re.sub(r"<[^<>]+>", "", description)
             fitobj.notes = description
@@ -1275,7 +1274,7 @@ class Port(object):
                     hardware.setAttribute("type", name)
                     fitting.appendChild(hardware)
             except Exception as e:
-#                print("Failed on fitID: %d" % fit.ID)
+                # print("Failed on fitID: %d" % fit.ID)
                 pyfalog.error("Failed on fitID: %d, message: %s" % e.message)
                 continue
             finally:
@@ -1365,4 +1364,3 @@ class PortProcessing(object):
     def notify(iportuser, flag, data):
         if not iportuser.onPortProcessing(flag, data):
             raise UserCancelException
-

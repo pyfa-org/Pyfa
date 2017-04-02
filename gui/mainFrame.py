@@ -880,8 +880,9 @@ class MainFrame(wx.Frame, IPortUser):
     def onPortProcessStart(self):
         # flag for progress dialog.
         self.__progress_flag = True
-    # 2017/03/29 NOTE: implementation like interface
+
     def onPortProcessing(self, action, data=None):
+        # 2017/03/29 NOTE: implementation like interface
         wx.CallAfter(
             self._onPortProcessing, action, data
         )
@@ -909,8 +910,8 @@ class MainFrame(wx.Frame, IPortUser):
             dlg = wx.MessageDialog(self,
                                    "The following error was generated\n\n%s\n\nBe aware that already processed fits were not saved" % data,
                                    _message, wx.OK | wx.ICON_ERROR)
-#             if dlg.ShowModal() == wx.ID_OK:
-#                 return
+            # if dlg.ShowModal() == wx.ID_OK:
+            #     return
             dlg.ShowModal()
             return
 
