@@ -728,12 +728,6 @@ class Fit(object):
                         self.register(item)
                         item.calculateModifiedAttributes(self, runTime, False)
 
-                    if projected is True and projectionInfo and item not in chain.from_iterable(r):
-                        # apply effects onto target fit
-                        for _ in xrange(projectionInfo.amount):
-                            targetFit.register(item, origin=self)
-                            item.calculateModifiedAttributes(targetFit, runTime, True)
-
                     if targetFit and withBoosters and item in self.modules:
                         # Apply the gang boosts to target fit
                         # targetFit.register(item, origin=self)
@@ -745,6 +739,16 @@ class Fit(object):
 
             if not withBoosters and self.commandBonuses:
                 self.__runCommandBoosts(runTime)
+
+            # Projection effects have been broken out of the main loop, see GH issue #1081
+
+            if projected is True and projectionInfo:
+                for item in chain.from_iterable(u):
+                    if item is not None:
+                        # apply effects onto target fit
+                        for _ in xrange(projectionInfo.amount):
+                            targetFit.register(item, origin=self)
+                            item.calculateModifiedAttributes(targetFit, runTime, True)
 
             timer.checkpoint('Done with runtime: %s' % runTime)
 

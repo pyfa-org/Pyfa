@@ -14,12 +14,9 @@ class PFHTMLExportPref(PreferenceView):
     title = "HTML Export"
     desc = ("HTML Export (File > Export HTML) allows you to export your entire fitting "
             "database into an HTML file at the specified location. This file can be "
-            "used in the in-game browser to easily open and import your fits, or used "
-            "in a regular web browser to open them at NULL-SEC.com or Osmium.")
-    desc2 = ("Enabling automatic exporting will update the HTML file after any change "
-             "to a fit is made. Under certain circumstance, this may cause performance issues.")
-    desc4 = ("Export Fittings in a minmal HTML Version, just containing the Fittingslinks "
-             "without any visual styling or javscript features")
+            "used to easily open your fits in a web-based fitting program")
+    desc4 = ("Export Fittings in a minimal HTML Version, just containing the fittings links "
+             "without any visual styling")
 
     def populatePanel(self, panel):
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
@@ -55,21 +52,11 @@ class PFHTMLExportPref(PreferenceView):
         self.fileSelectButton.Bind(wx.EVT_BUTTON, self.selectHTMLExportFilePath)
         mainSizer.Add(self.fileSelectButton, 0, wx.ALL | wx.ALIGN_CENTER_VERTICAL, 5)
 
-        self.stDesc2 = wx.StaticText(panel, wx.ID_ANY, self.desc2, wx.DefaultPosition, wx.DefaultSize, 0)
-        self.stDesc2.Wrap(dlgWidth - 50)
-        mainSizer.Add(self.stDesc2, 0, wx.ALL, 5)
-
-        self.exportEnabled = wx.CheckBox(panel, wx.ID_ANY, u"Enable automatic HTML export", wx.DefaultPosition,
-                                         wx.DefaultSize, 0)
-        self.exportEnabled.SetValue(self.HTMLExportSettings.getEnabled())
-        self.exportEnabled.Bind(wx.EVT_CHECKBOX, self.OnExportEnabledChange)
-        mainSizer.Add(self.exportEnabled, 0, wx.ALL | wx.EXPAND, 5)
-
         self.stDesc4 = wx.StaticText(panel, wx.ID_ANY, self.desc4, wx.DefaultPosition, wx.DefaultSize, 0)
         self.stDesc4.Wrap(dlgWidth - 50)
         mainSizer.Add(self.stDesc4, 0, wx.ALL, 5)
 
-        self.exportMinimal = wx.CheckBox(panel, wx.ID_ANY, u"Enable minimal export Format", wx.DefaultPosition,
+        self.exportMinimal = wx.CheckBox(panel, wx.ID_ANY, u"Enable minimal format", wx.DefaultPosition,
                                          wx.DefaultSize, 0)
         self.exportMinimal.SetValue(self.HTMLExportSettings.getMinimalEnabled())
         self.exportMinimal.Bind(wx.EVT_CHECKBOX, self.OnMinimalEnabledChange)
@@ -89,9 +76,6 @@ class PFHTMLExportPref(PreferenceView):
             self.HTMLExportSettings.setPath(self.fileSelectDialog.GetPath())
             self.dirtySettings = True
             self.setPathLinkCtrlValues(self.HTMLExportSettings.getPath())
-
-    def OnExportEnabledChange(self, event):
-        self.HTMLExportSettings.setEnabled(self.exportEnabled.GetValue())
 
     def OnMinimalEnabledChange(self, event):
         self.HTMLExportSettings.setMinimalEnabled(self.exportMinimal.GetValue())
