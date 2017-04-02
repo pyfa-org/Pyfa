@@ -32,7 +32,6 @@ from eos.saveddata.module import Module, Slot, Rack
 from gui.builtinViewColumns.state import State
 from gui.bitmapLoader import BitmapLoader
 import gui.builtinViews.emptyView
-from gui.utils.exportHtml import exportHtml
 from logbook import Logger
 from gui.chromeTabs import EVT_NOTEBOOK_PAGE_CHANGED
 
@@ -482,8 +481,6 @@ class FittingView(d.Display):
                     # This only happens when turning on/off slot divisions
                     self.populate(self.mods)
                 self.refresh(self.mods)
-
-                exportHtml.getInstance().refreshFittingHtml()
 
             self.Show(self.activeFitID is not None and self.activeFitID == event.fitID)
         except wx._core.PyDeadObjectError:
