@@ -43,4 +43,3 @@ def upgrade(saveddata_engine):
                 saveddata_engine.execute("SELECT modified FROM {0} LIMIT 1;".format(table))
             except sqlalchemy.exc.DatabaseError:
                 saveddata_engine.execute("ALTER TABLE {} ADD COLUMN modified DATETIME;".format(table))
-
