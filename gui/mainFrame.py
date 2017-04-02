@@ -802,10 +802,7 @@ class MainFrame(wx.Frame, IPortUser):
                 "Importing fits",
                 " " * 100,  # set some arbitrary spacing to create width in window
                 parent=self,
-                style=wx.PD_CAN_ABORT
-                | wx.PD_SMOOTH
-                | wx.PD_ELAPSED_TIME
-                | wx.PD_APP_MODAL
+                style=wx.PD_CAN_ABORT | wx.PD_SMOOTH | wx.PD_ELAPSED_TIME | wx.PD_APP_MODAL
             )
             # self.progressDialog.message = None
             Port.importFitsThreaded(dlg.GetPaths(), self)
@@ -840,10 +837,7 @@ class MainFrame(wx.Frame, IPortUser):
                 "Backing up %d fits to: %s" % (max_, filePath),
                 maximum=max_,
                 parent=self,
-                style=wx.PD_CAN_ABORT
-                | wx.PD_SMOOTH
-                | wx.PD_ELAPSED_TIME
-                | wx.PD_APP_MODAL
+                style=wx.PD_CAN_ABORT | wx.PD_SMOOTH | wx.PD_ELAPSED_TIME | wx.PD_APP_MODAL
             )
             Port.backupFits(filePath, self)
             self.progressDialog.ShowModal()
@@ -891,6 +885,7 @@ class MainFrame(wx.Frame, IPortUser):
         wx.CallAfter(
             self._onPortProcessing, action, data
         )
+
         return self.__progress_flag
 
     def _onPortProcessing(self, action, data):
@@ -924,7 +919,7 @@ class MainFrame(wx.Frame, IPortUser):
             if action & IPortUser.ID_PULSE:
                 _message = ()
             # update message
-            elif action & IPortUser.ID_UPDATE: # and data != self.progressDialog.message:
+            elif action & IPortUser.ID_UPDATE:  # and data != self.progressDialog.message:
                 _message = data
 
             if _message is not None:
@@ -939,7 +934,6 @@ class MainFrame(wx.Frame, IPortUser):
                 self.closeProgressDialog()
             else:
                 self.__progress_flag, _unuse = self.progressDialog.Update(data[0], data[1])
-
 
     def _openAfterImport(self, fits):
         if len(fits) > 0:

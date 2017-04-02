@@ -73,7 +73,7 @@ class Ship(ItemAttrShortcut, HandledItem):
 
     @property
     def name(self):
-		# NOTE: add name property
+        # NOTE: add name property
         return self.__item.name
 
     @property

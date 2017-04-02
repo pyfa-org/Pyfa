@@ -47,6 +47,8 @@ from eos.saveddata.ship import Ship
 from eos.saveddata.citadel import Citadel
 from eos.saveddata.fit import Fit
 from service.market import Market
+from utils.strfunctions import sequential_rep, replaceLTGT
+from abc import ABCMeta, abstractmethod
 
 if 'wxMac' not in wx.PlatformInfo or ('wxMac' in wx.PlatformInfo and wx.VERSION >= (3, 0)):
     from service.crest import Crest
@@ -72,7 +74,6 @@ INV_FLAG_DRONEBAY = 87
 INV_FLAG_FIGHTER = 158
 
 
-from utils.strfunctions import sequential_rep, replaceLTGT
 # -- 170327 Ignored description --
 localized_pattern = re.compile(r'<localized hint="([^"]+)">([^\*]+)\*</localized>')
 
@@ -110,6 +111,7 @@ def _resolveShip(fitting, sMkt):
     # True means localized
     return matches is not None, fitobj
 
+
 def _resolveModule(hardware, sMkt, b_localized):
     moduleName = hardware.getAttribute("type")
     emergency = None
@@ -137,9 +139,6 @@ def _resolveModule(hardware, sMkt, b_localized):
 class UserCancelException(Exception):
     """when user cancel on port processing."""
     pass
-
-
-from abc import ABCMeta, abstractmethod
 
 
 class IPortUser:

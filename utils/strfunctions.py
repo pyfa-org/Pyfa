@@ -25,10 +25,10 @@ def sequential_rep(text_, *args):
 
     return text_
 
+
 def replaceLTGT(text_):
     """if fit name contained "<" or ">" then reprace to named html entity by EVE client.
 
        for fit name.
     """
     return text_.replace("&lt;", "<").replace("&gt;", ">") if isinstance(text_, unicode) else text_
-
