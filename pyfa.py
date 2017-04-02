@@ -24,6 +24,7 @@ import platform
 import re
 import sys
 import traceback
+from imp import find_module
 from optparse import AmbiguousOptionError, BadOptionError, OptionParser
 
 from logbook import CRITICAL, DEBUG, ERROR, FingersCrossedHandler, INFO, Logger, NestedSetup, NullHandler, StreamHandler, TimedRotatingFileHandler, WARNING, \
@@ -122,7 +123,8 @@ def handleGUIException(exc_type, exc_value, exc_traceback):
             if wx and ErrorFrame:
                 pyfa_gui = wx.App(False)
                 if exc_type == PreCheckException:
-                    ErrorFrame(exc_value, None, "Missing Prerequisite")
+                    msgbox = wx.MessageBox(exc_value.message, 'Error', wx.ICON_ERROR | wx.STAY_ON_TOP)
+                    msgbox.ShowModal()
                 else:
                     ErrorFrame(exc_value, tb)
 
@@ -144,7 +146,8 @@ def handleGUIException(exc_type, exc_value, exc_traceback):
         if wx and ErrorFrame:
             pyfa_gui = wx.App(False)
             if exc_type == PreCheckException:
-                ErrorFrame(exc_value, None, "Missing Prerequisite")
+                msgbox = wx.MessageBox(exc_value.message, 'Error', wx.ICON_ERROR | wx.STAY_ON_TOP)
+                msgbox.ShowModal()
             else:
                 ErrorFrame(exc_value, tb)
 
@@ -352,6 +355,20 @@ if __name__ == "__main__":
             else:
                 pyfalog.warning("Unknown sqlalchemy version string format, skipping check. Version: {0}", sqlalchemy.__version__)
 
+        requirements_path = os.path.join(config.pyfaPath, "requirements.txt")
+        if os.path.exists(requirements_path):
+            file = open(requirements_path, "r")
+            for requirement in file:
+                requirement = requirement.replace("\n", "")
+                requirement_parsed = requirement.split(' ')
+                if requirement_parsed:
+                    try:
+                        find_module(requirement_parsed[0])
+                    except ImportError as e:
+                        pyfalog.warning("Possibly missing required module: {0}", requirement_parsed[0])
+                        if len(requirement_parsed) == 3:
+                            pyfalog.warning("Recommended version {0} {1}", requirement_parsed[1], requirement_parsed[2])
+
         import eos.db
         # noinspection PyUnresolvedReferences
         import service.prefetch  # noqa: F401
@@ -364,9 +381,11 @@ if __name__ == "__main__":
 
         from gui.mainFrame import MainFrame
 
+
+        test = 1/0
+
         pyfa = wx.App(False)
         MainFrame(options.title)
-        test = 1/0
         pyfa.MainLoop()
 
         # TODO: Add some thread cleanup code here. Right now we bail, and that can lead to orphaned threads or threads not properly exiting.
