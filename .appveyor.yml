@@ -127,6 +127,8 @@ build_script:
   # Build the compiled extension
   # - "python setup.py build"
 
+build: off
+
 test_script:
   - tox
   - "py.test --cov=./"
