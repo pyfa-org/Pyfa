@@ -647,15 +647,27 @@ class Fit(object):
 
             del self.commandBonuses[warfareBuffID]
 
+    def __resetDependantCalcs(self):
+        self.calculated = False
+        for value in self.projectedOnto.values():
+            value.victim_fit.calculated = False
+
     def calculateModifiedAttributes(self, targetFit=None, withBoosters=False, dirtyStorage=None):
         timer = Timer(u'Fit: {}, {}'.format(self.ID, self.name), pyfalog)
         pyfalog.debug("Starting fit calculation on: {0}, withBoosters: {1}", self, withBoosters)
 
+        # First and foremost, if we're looking at a local calc, reset the calculated state of fits that this fit affects
+        # Thankfully, due to the way projection mechanics currently work, we don't have to traverse down a projection
+        # tree to (resetting the first degree of projection will suffice)
         if targetFit is None:
-            for value in self.projectedOnto.values():
-                value.victim_fit.calculated = False
+            # This resets all fits that local projects onto, allowing them to recalc when loaded
+            self.__resetDependantCalcs()
+
+            # For fits that are under local's Command, we do the same thing
             for value in self.boostedOnto.values():
-                value.boosted_fit.calculated = False
+                value.boosted_fit.__resetDependantCalcs()
+
+            # it should be noted that command bursts don't affect other command bursts
 
         shadow = False
         if targetFit and not withBoosters:
