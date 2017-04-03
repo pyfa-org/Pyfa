@@ -660,11 +660,11 @@ class Fit(object):
                 eos.db.saveddata_session.delete(self)
 
         if self.commandFits and not withBoosters:
-            for fit in self.commandFits:
-                if self == fit:
+            for boosterInfo in self.boostedOf.values():
+                if not boosterInfo.active or self == boosterInfo.booster_fit:
                     continue
 
-                fit.calculateModifiedAttributes(self, True)
+                boosterInfo.booster_fit.calculateModifiedAttributes(self, True)
 
         # If we're not explicitly asked to project fit onto something,
         # set self as target fit
