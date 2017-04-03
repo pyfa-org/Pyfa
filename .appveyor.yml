@@ -95,7 +95,7 @@ install:
           throw "There are newer queued builds for this pull request, failing early." }
 
   # Install wxPython
-  - 'ECHO Downloading %WXPYTHON_DL%'
+  - 'ECHO Downloading wxPython'
   - "appveyor DownloadFile %WXPYTHON_DL% -FileName C:\\wxpython.exe"
   # - ps: (new-object net.webclient).DownloadFile("$env:WXPYTHON_DL", 'C:/wxpython.exe')
 
