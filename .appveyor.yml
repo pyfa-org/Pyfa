@@ -121,7 +121,7 @@ install:
   # C:\\projects\\eve-gnosis\\
   - "pip install -r requirements.txt"
   - "pip install -r requirements_test.txt"
-  - "pip install -r requirements_build.txt"
+  - "pip install -r requirements_build_windows.txt"
 
 build_script:
   # Build the compiled extension
