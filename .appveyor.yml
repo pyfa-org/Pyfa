@@ -26,12 +26,12 @@ environment:
     - PYTHON: "C:\\Python27"
       PYTHON_VERSION: "2.7.x" # currently 2.7.9
       PYTHON_ARCH: "32"
-      WXPYTHON_DL: "https://drive.google.com/uc?export=download&id=0B59pJ0pO7UMed2VYcnpub1plbG8"
+      WXPYTHON_DL: "https://goo.gl/yvO8PB"
 
     - PYTHON: "C:\\Python27-x64"
       PYTHON_VERSION: "2.7.x" # currently 2.7.9
       PYTHON_ARCH: "64"
-      WXPYTHON_DL: "https://drive.google.com/uc?export=download&id=0B59pJ0pO7UMeZmQ1RUFpSUJTbE0"
+      WXPYTHON_DL: "https://goo.gl/Uj0jV3"
 
     #- PYTHON: "C:\\Python33"
     #  PYTHON_VERSION: "3.3.x" # currently 3.3.5
@@ -76,12 +76,12 @@ environment:
     - PYTHON: "C:\\Python270"
       PYTHON_VERSION: "2.7.0"
       PYTHON_ARCH: "32"
-      WXPYTHON_DL: "https://drive.google.com/uc?export=download&id=0B59pJ0pO7UMed2VYcnpub1plbG8"
+      WXPYTHON_DL: "https://goo.gl/yvO8PB"
 
     - PYTHON: "C:\\Python270-x64"
       PYTHON_VERSION: "2.7.0"
       PYTHON_ARCH: "64"
-      WXPYTHON_DL: "https://drive.google.com/uc?export=download&id=0B59pJ0pO7UMeZmQ1RUFpSUJTbE0"
+      WXPYTHON_DL: "https://goo.gl/Uj0jV3"
 
 install:
   # If there is a newer build queued for the same PR, cancel this one.
