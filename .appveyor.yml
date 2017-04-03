@@ -12,12 +12,12 @@ environment:
     - PYTHON: "C:\\Python27.10"
       PYTHON_VERSION: "2.7.10"
       PYTHON_ARCH: "32"
-      WXPYTHON_DL: "https://drive.google.com/uc?export=download&id=0B59pJ0pO7UMed2VYcnpub1plbG8"
+      WXPYTHON_DL: "https://goo.gl/yvO8PB"
 
     - PYTHON: "C:\\Python27.10-x64"
       PYTHON_VERSION: "2.7.10"
       PYTHON_ARCH: "64"
-      WXPYTHON_DL: "https://drive.google.com/uc?export=download&id=0B59pJ0pO7UMeZmQ1RUFpSUJTbE0"
+      WXPYTHON_DL: "https://goo.gl/Uj0jV3"
 
     # Pre-installed Python versions, which Appveyor may upgrade to
     # a later point release.
@@ -95,7 +95,7 @@ install:
           throw "There are newer queued builds for this pull request, failing early." }
 
   # Install wxPython
-  - 'ECHO Downloading wxPython'
+  - 'ECHO Downloading wxPython from: %WXPYTHON_DL%'
   - "appveyor DownloadFile %WXPYTHON_DL% -FileName C:\\wxpython.exe"
   # - ps: (new-object net.webclient).DownloadFile("$env:WXPYTHON_DL", 'C:/wxpython.exe')
 
