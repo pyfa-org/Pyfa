@@ -652,9 +652,10 @@ class Fit(object):
         pyfalog.debug("Starting fit calculation on: {0}, withBoosters: {1}", self, withBoosters)
 
         if targetFit is None:
-            # do same for command fits as well possibly?
-            for _, value in self.projectedOnto.iteritems():
-                value.victim_fit.calculated = False;
+            for value in self.projectedOnto.values():
+                value.victim_fit.calculated = False
+            for value in self.boostedOnto.values():
+                value.boosted_fit.calculated = False
 
         shadow = False
         if targetFit and not withBoosters:
