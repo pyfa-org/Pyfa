@@ -676,10 +676,11 @@ class Fit(object):
 
         if self.commandFits and not withBoosters:
             for fit in self.commandFits:
-                if self == fit:
+                commandInfo = fit.getCommandInfo(self.ID)
+                if not commandInfo.active or self == commandInfo.booster_fit:
                     continue
 
-                fit.calculateModifiedAttributes(self, True)
+                commandInfo.booster_fit.calculateModifiedAttributes(self, True)
 
         # If we're not explicitly asked to project fit onto something,
         # set self as target fit

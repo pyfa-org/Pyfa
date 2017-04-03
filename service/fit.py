@@ -280,7 +280,7 @@ class Fit(object):
         self.recalc(fit)
         return True
 
-    def addBooster(self, fitID, itemID):
+    def addBooster(self, fitID, itemID, recalc=True):
         pyfalog.debug("Adding booster ({0}) to fit ID: {1}", itemID, fitID)
         if fitID is None:
             return False
@@ -294,10 +294,11 @@ class Fit(object):
             return False
 
         fit.boosters.append(booster)
-        self.recalc(fit)
+        if recalc:
+            self.recalc(fit)
         return True
 
-    def removeBooster(self, fitID, position):
+    def removeBooster(self, fitID, position, recalc=True):
         pyfalog.debug("Removing booster from position ({0}) for fit ID: {1}", position, fitID)
         if fitID is None:
             return False
@@ -305,7 +306,8 @@ class Fit(object):
         fit = eos.db.getFit(fitID)
         booster = fit.boosters[position]
         fit.boosters.remove(booster)
-        self.recalc(fit)
+        if recalc:
+            self.recalc(fit)
         return True
 
     def project(self, fitID, thing):
@@ -672,7 +674,7 @@ class Fit(object):
         self.recalc(fit)
         return True
 
-    def addFighter(self, fitID, itemID):
+    def addFighter(self, fitID, itemID, recalc=True):
         pyfalog.debug("Adding fighters ({0}) to fit ID: {1}", itemID, fitID)
         if fitID is None:
             return False
@@ -714,22 +716,24 @@ class Fit(object):
                     return False
 
             eos.db.commit()
-            self.recalc(fit)
+            if recalc:
+                self.recalc(fit)
             return True
         else:
             return False
 
-    def removeFighter(self, fitID, i):
+    def removeFighter(self, fitID, i, recalc=True):
         pyfalog.debug("Removing fighters from fit ID: {0}", fitID)
         fit = eos.db.getFit(fitID)
         f = fit.fighters[i]
         fit.fighters.remove(f)
 
         eos.db.commit()
-        self.recalc(fit)
+        if recalc:
+            self.recalc(fit)
         return True
 
-    def addDrone(self, fitID, itemID, numDronesToAdd=1):
+    def addDrone(self, fitID, itemID, numDronesToAdd=1, recalc=True):
         pyfalog.debug("Adding {0} drones ({1}) to fit ID: {2}", numDronesToAdd, itemID, fitID)
         if fitID is None:
             return False
@@ -751,7 +755,8 @@ class Fit(object):
                     return False
             drone.amount += numDronesToAdd
             eos.db.commit()
-            self.recalc(fit)
+            if recalc:
+                self.recalc(fit)
             return True
         else:
             return False
@@ -812,7 +817,7 @@ class Fit(object):
         fit = eos.db.getFit(fitID)
         self.splitDrones(fit, d, amount, fit.drones)
 
-    def removeDrone(self, fitID, i, numDronesToRemove=1):
+    def removeDrone(self, fitID, i, numDronesToRemove=1, recalc=True):
         pyfalog.debug("Removing {0} drones for fit ID: {1}", numDronesToRemove, fitID)
         fit = eos.db.getFit(fitID)
         d = fit.drones[i]
@@ -824,7 +829,8 @@ class Fit(object):
             del fit.drones[i]
 
         eos.db.commit()
-        self.recalc(fit)
+        if recalc:
+            self.recalc(fit)
         return True
 
     def toggleDrone(self, fitID, i):

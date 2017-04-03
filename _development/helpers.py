@@ -131,6 +131,7 @@ def Saveddata():
     from eos.saveddata.character import Character
     from eos.saveddata.module import Module, State
     from eos.saveddata.citadel import Citadel
+    from eos.saveddata.booster import Booster
 
     helper = {
         'Structure': Citadel,
@@ -139,5 +140,6 @@ def Saveddata():
         'Character': Character,
         'Module'   : Module,
         'State'    : State,
+        'Booster'  : Booster,
     }
     return helper
