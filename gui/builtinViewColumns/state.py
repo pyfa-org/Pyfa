@@ -68,11 +68,17 @@ class State(ViewColumn):
                                                                 "gui")
         elif isinstance(stuff, Fit):
             fitID = self.mainFrame.getActiveFit()
-            projectionInfo = stuff.getProjectionInfo(fitID)
 
-            if projectionInfo is None:
+            # Can't use isinstance here due to being prevented from importing CommandView.
+            # So we do the next best thing and compare Name of class.
+            if self.fittingView.__class__.__name__ == "CommandView":
+                info = stuff.getCommandInfo(fitID)
+            else:
+                info = stuff.getProjectionInfo(fitID)
+
+            if info is None:
                 return -1
-            if projectionInfo.active:
+            if info.active:
                 return generic_active
             return generic_inactive
         elif isinstance(stuff, Implant) and stuff.character:
