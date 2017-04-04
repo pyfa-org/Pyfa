@@ -139,7 +139,7 @@ build_script:
   - ECHO "Build pyfa:"
   - "pyinstaller.exe --clean --noconfirm --windowed --upx-dir=C:\\projects\\pyfa\\scripts\\upx.exe C:\\projects\\pyfa\\pyfa.spec"
 
-build: off
+build: on
 
 test_script:
   - tox
