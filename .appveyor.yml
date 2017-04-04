@@ -149,7 +149,7 @@ on_success:
   - ps: Add-Content "$env:USERPROFILE\.git-credentials" "https://$($env:access_token):x-oauth-basic@github.com`n"
   - git config --global user.email "ebagola@gmail.com"
   - git config --global user.name "Ebag333"
-  - git commit -m 'my notes' "/build/pyfa/pyfa.exe"
+  - git commit -m 'my notes' "./build/pyfa/pyfa.exe"
   - git push Ebag333/pyfa-builds master
 
 test_script:
