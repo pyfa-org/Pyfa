@@ -150,8 +150,8 @@ after_build:
   - ps: "ls \"C:\\projects\\pyfa\\dist\\pyfa\\\""
   # Zip
   # APPVEYOR_PULL_REQUEST_NUMBER -and $env:APPVEYOR_BUILD_NUMBER
-  - 7z a build.zip C:\projects\pyfa\build\pyfa\*.*
-  - 7z a dist.zip C:\projects\pyfa\dist\pyfa\*.*
+  - 7z a build.zip -r C:\projects\pyfa\build\pyfa\*.*
+  - 7z a dist.zip -r C:\projects\pyfa\dist\pyfa\*.*
 
 on_success:
   # Do nothing right now
