@@ -143,9 +143,9 @@ build_script:
   - copy C:\projects\pyfa\dist_assets\win\pyfa.spec C:\projects\pyfa\pyfa.spec
   - "pyinstaller.exe --clean --noconfirm --windowed --upx-dir=C:\\projects\\pyfa\\scripts\\upx.exe C:\\projects\\pyfa\\pyfa.spec"
 
-  - ECHO "Build pyfa:"
-  - copy C:\projects\pyfa\dist_assets\win\pyfa.spec C:\projects\pyfa\pyfa.spec
-  - "pyinstaller.exe --clean --noconfirm --windowed --upx-dir=C:\\projects\\pyfa\\scripts\\upx.exe C:\\projects\\pyfa\\pyfa.spec"
+  - ECHO "Build pyfa (Debug):"
+  - copy C:\projects\pyfa\dist_assets\win\pyfa_debug.spec C:\projects\pyfa\pyfa_debug.spec
+  - "pyinstaller.exe --clean --noconfirm --windowed --upx-dir=C:\\projects\\pyfa\\scripts\\upx.exe C:\\projects\\pyfa\\pyfa_debug.spec"
 
 build: on
 
