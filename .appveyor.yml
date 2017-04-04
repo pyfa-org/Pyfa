@@ -147,8 +147,8 @@ build: on
 after_build:
   # Zip
   # APPVEYOR_PULL_REQUEST_NUMBER -and $env:APPVEYOR_BUILD_NUMBER
-  - 7z a build.zip %PYTHON%\\Scripts\\build\\*.*
-  - 7z a dist.zip %PYTHON%\\Scripts\\dist\\*.*
+  - 7z a build.zip %PYTHON%\Scripts\build\*.*
+  - 7z a dist.zip %PYTHON%\Scripts\dist\*.*
 
 on_success:
   # Do nothing right now
