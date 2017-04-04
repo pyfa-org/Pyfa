@@ -47,7 +47,7 @@ from eos.saveddata.ship import Ship
 from eos.saveddata.citadel import Citadel
 from eos.saveddata.fit import Fit
 from service.market import Market
-from utils.strfunctions import sequential_rep, replaceLTGT
+from utils.strfunctions import sequential_rep, replace_ltgt
 from abc import ABCMeta, abstractmethod
 
 if 'wxMac' not in wx.PlatformInfo or ('wxMac' in wx.PlatformInfo and wx.VERSION >= (3, 0)):
@@ -73,25 +73,39 @@ INV_FLAG_CARGOBAY = 5
 INV_FLAG_DRONEBAY = 87
 INV_FLAG_FIGHTER = 158
 
+# 2017/04/05 NOTE: simple validation, for xml file
+RE_XML_START = r'<\?xml\s+version="1.0"\s+\?>'
 
 # -- 170327 Ignored description --
-localized_pattern = re.compile(r'<localized hint="([^"]+)">([^\*]+)\*</localized>')
+RE_LTGT = "&(lt|gt);"
+L_MARK = "&lt;localized hint=&quot;"
+LOCALIZED_PATTERN = re.compile(r'<localized hint="([^"]+)">([^\*]+)\*</localized>')
 
 
-def _resolveShip(fitting, sMkt):
+def _extract_matche(t):
+    m = LOCALIZED_PATTERN.match(t)
+    # hint attribute, text content
+    return m.group(1), m.group(2)
+
+
+def _resolve_ship(fitting, sMkt, b_localized):
+    # type: (xml.dom.minidom.Element, Market, bool) -> eos.saveddata.fit.Fit
+
     fitobj = Fit()
+    fitobj.name = fitting.getAttribute("name")
     # 2017/03/29 NOTE:
     #    if fit name contained "<" or ">" then reprace to named html entity by EVE client
-    fitobj.name = replaceLTGT(fitting.getAttribute("name"))
+    # if re.search(RE_LTGT, fitobj.name):
+    if "&lt;" in fitobj.name or "&gt;" in fitobj.name:
+        fitobj.name = replace_ltgt(fitobj.name)
+
     # <localized hint="Maelstrom">Maelstrom</localized>
     shipType = fitting.getElementsByTagName("shipType").item(0).getAttribute("value")
-    emergency = None
-    matches = localized_pattern.match(shipType)
-    if matches:
-        # emergency cache
-        emergency = matches.group(2)
-        # expect an official name
-        shipType = matches.group(1)
+    # emergency = None
+    if b_localized:
+        # expect an official name, emergency cache
+        shipType, emergency = _extract_matche(shipType)
+
     limit = 2
     while True:
         must_retry = False
@@ -101,24 +115,28 @@ def _resolveShip(fitting, sMkt):
             except ValueError:
                 fitobj.ship = Citadel(sMkt.getItem(shipType))
         except Exception as e:
-            pyfalog.warning("Caught exception on _resolveShip")
+            pyfalog.warning("Caught exception on _resolve_ship")
             pyfalog.error(e)
+            limit -= 1
+            if limit is 0:
+                break
             shipType = emergency
             must_retry = True
-            limit -= 1
-        if not must_retry or limit is 0:
+        if not must_retry:
             break
-    # True means localized
-    return matches is not None, fitobj
+
+    return fitobj
 
 
-def _resolveModule(hardware, sMkt, b_localized):
+def _resolve_module(hardware, sMkt, b_localized):
+    # type: (xml.dom.minidom.Element, Market, bool) -> eos.saveddata.module.Module
+
     moduleName = hardware.getAttribute("type")
-    emergency = None
+    # emergency = None
     if b_localized:
-        emergency = localized_pattern.sub("\g<2>", moduleName)
-        # expect an official name
-        moduleName = localized_pattern.sub("\g<1>", moduleName)
+        # expect an official name, emergency cache
+        moduleName, emergency = _extract_matche(moduleName)
+
     item = None
     limit = 2
     while True:
@@ -126,12 +144,14 @@ def _resolveModule(hardware, sMkt, b_localized):
         try:
             item = sMkt.getItem(moduleName, eager="group.category")
         except Exception as e:
-            pyfalog.warning("Caught exception on _resolveModule")
+            pyfalog.warning("Caught exception on _resolve_module")
             pyfalog.error(e)
+            limit -= 1
+            if limit is 0:
+                break
             moduleName = emergency
             must_retry = True
-            limit -= 1
-        if not must_retry or limit is 0:
+        if not must_retry:
             break
     return item
 
@@ -160,7 +180,7 @@ class IPortUser:
     # means import process.
 
     @abstractmethod
-    def onPortProcessing(self, action, data=None):
+    def on_port_processing(self, action, data=None):
         """
         While importing fits from file, the logic calls back to this function to
         update progress bar to show activity. XML files can contain multiple
@@ -178,7 +198,7 @@ class IPortUser:
         """return: True is continue process, False is cancel."""
         pass
 
-    def onPortProcessStart(self):
+    def on_port_process_start(self):
         pass
 
 
@@ -189,6 +209,7 @@ class Port(object):
         2. i think should not write wx.CallAfter in here
     """
     instance = None
+    __tag_replace_flag = True
 
     @classmethod
     def getInstance(cls):
@@ -196,6 +217,16 @@ class Port(object):
             cls.instance = Port()
 
         return cls.instance
+
+    @classmethod
+    def set_tag_replace(cls, b):
+        cls.__tag_replace_flag = b
+
+    @classmethod
+    def is_tag_replace(cls):
+        # might there is a person who wants to hold tags.
+        # (item link in EVE client etc. When importing again to EVE)
+        return cls.__tag_replace_flag
 
     @staticmethod
     def backupFits(path, iportuser):
@@ -209,7 +240,12 @@ class Port(object):
 
     @staticmethod
     def importFitsThreaded(paths, iportuser):
-        """param iportuser: IPortUser implemented class"""
+        # type: (tuple, IPortUser) -> None
+        """
+        :param paths: fits data file path list.
+        :param iportuser:  IPortUser implemented class.
+        :rtype: None
+        """
         pyfalog.debug("Starting import fits thread.")
 #         thread = FitImportThread(paths, iportuser)
 #         thread.start()
@@ -238,8 +274,8 @@ class Port(object):
                     PortProcessing.notify(iportuser, IPortUser.PROCESS_IMPORT | IPortUser.ID_UPDATE, msg)
                     # wx.CallAfter(callback, 1, msg)
 
-                file_ = open(path, "r")
-                srcString = file_.read()
+                with open(path, "r") as file_:
+                    srcString = file_.read()
 
                 if len(srcString) == 0:  # ignore blank files
                     pyfalog.debug("File is blank.")
@@ -442,7 +478,7 @@ class Port(object):
         firstLine = firstLine.strip()
 
         # If XML-style start of tag encountered, detect as XML
-        if re.match("<", firstLine):
+        if re.match(RE_XML_START, firstLine):
             if encoding:
                 return "XML", cls.importXml(string, iportuser, encoding)
             else:
@@ -975,12 +1011,16 @@ class Port(object):
 
         sMkt = Market.getInstance()
         doc = xml.dom.minidom.parseString(text.encode(encoding))
+        # NOTE:
+        #   When L_MARK is included at this point,
+        #   Decided to be localized data
+        b_localized = L_MARK in text
         fittings = doc.getElementsByTagName("fittings").item(0)
         fittings = fittings.getElementsByTagName("fitting")
         fit_list = []
 
         for fitting in (fittings):
-            b_localized, fitobj = _resolveShip(fitting, sMkt)
+            fitobj = _resolve_ship(fitting, sMkt, b_localized)
             # -- 170327 Ignored description --
             # read description from exported xml. (EVE client, EFT)
             description = fitting.getElementsByTagName("description").item(0).getAttribute("value")
@@ -988,16 +1028,17 @@ class Port(object):
                 description = ""
             elif len(description):
                 # convert <br> to "\n" and remove html tags.
-                description = sequential_rep(description, r"<(br|BR)>", "\n", r"<[^<>]+>", "")
-#                 description = re.sub(r"<(br|BR)>", "\n", description)
-#                 description = re.sub(r"<[^<>]+>", "", description)
+                if Port.is_tag_replace():
+                    description = replace_ltgt(
+                        sequential_rep(description, r"<(br|BR)>", "\n", r"<[^<>]+>", "")
+                    )
             fitobj.notes = description
 
             hardwares = fitting.getElementsByTagName("hardware")
             moduleList = []
             for hardware in hardwares:
                 try:
-                    item = _resolveModule(hardware, sMkt, b_localized)
+                    item = _resolve_module(hardware, sMkt, b_localized)
                     if not item:
                         continue
 
@@ -1340,7 +1381,7 @@ class PortProcessing(object):
     def backupFits(path, iportuser):
         success = True
         try:
-            iportuser.onPortProcessStart()
+            iportuser.on_port_process_start()
             backedUpFits = Port.exportXml(iportuser, *svcFit.getInstance().getAllFits())
             backupFile = open(path, "w", encoding="utf-8")
             backupFile.write(backedUpFits)
@@ -1350,17 +1391,17 @@ class PortProcessing(object):
         # Send done signal to GUI
 #         wx.CallAfter(callback, -1, "Done.")
         flag = IPortUser.ID_ERROR if not success else IPortUser.ID_DONE
-        iportuser.onPortProcessing(IPortUser.PROCESS_EXPORT | flag,
+        iportuser.on_port_processing(IPortUser.PROCESS_EXPORT | flag,
                                    "User canceled or some error occurrence." if not success else "Done.")
 
     @staticmethod
     def importFitsFromFile(paths, iportuser):
-        iportuser.onPortProcessStart()
+        iportuser.on_port_process_start()
         success, result = Port.importFitFromFiles(paths, iportuser)
         flag = IPortUser.ID_ERROR if not success else IPortUser.ID_DONE
-        iportuser.onPortProcessing(IPortUser.PROCESS_IMPORT | flag, result)
+        iportuser.on_port_processing(IPortUser.PROCESS_IMPORT | flag, result)
 
     @staticmethod
     def notify(iportuser, flag, data):
-        if not iportuser.onPortProcessing(flag, data):
+        if not iportuser.on_port_processing(flag, data):
             raise UserCancelException

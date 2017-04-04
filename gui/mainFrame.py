@@ -877,19 +877,19 @@ class MainFrame(wx.Frame, IPortUser):
         else:
             self.progressDialog.Update(info)
 
-    def onPortProcessStart(self):
+    def on_port_process_start(self):
         # flag for progress dialog.
         self.__progress_flag = True
 
-    def onPortProcessing(self, action, data=None):
+    def on_port_processing(self, action, data=None):
         # 2017/03/29 NOTE: implementation like interface
         wx.CallAfter(
-            self._onPortProcessing, action, data
+            self._on_port_processing, action, data
         )
 
         return self.__progress_flag
 
-    def _onPortProcessing(self, action, data):
+    def _on_port_processing(self, action, data):
         """
         While importing fits from file, the logic calls back to this function to
         update progress bar to show activity. XML files can contain multiple
