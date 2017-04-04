@@ -96,11 +96,14 @@ install:
 
   # Install wxPython
   - 'ECHO Downloading wxPython from: %WXPYTHON_DL%'
-  - "appveyor DownloadFile %WXPYTHON_DL% -FileName C:\\wxpython.exe"
+  #- "appveyor DownloadFile %WXPYTHON_DL% -FileName C:\\wxpython.exe"
   # - ps: (new-object net.webclient).DownloadFile("$env:WXPYTHON_DL", 'C:/wxpython.exe')
+  - "appveyor DownloadFile https://goo.gl/yvO8PB -FileName C:\\wxpython.exe"
+  - "appveyor DownloadFile https://goo.gl/Uj0jV3 -FileName C:\\wxpython.exe2"
 
   - 'ECHO Install wxPython'
   - "C:\\wxpython.exe /SP- /VERYSILENT /NORESTART"
+  - "C:\\wxpython2.exe /SP- /VERYSILENT /NORESTART"
 
   - ECHO "Filesystem root:"
   - ps: "ls \"C:/\""
