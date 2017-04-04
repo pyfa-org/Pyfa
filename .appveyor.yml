@@ -115,9 +115,6 @@ install:
   # the parent CMD process).
   - "SET PATH=%PYTHON%;%PYTHON%\\Scripts;%PATH%"
 
-  - pip install tox
-  - pip install requests==2.11.1
-
   # Check that we have the expected version and architecture for Python
   - "python --version"
   - "python -c \"import struct; print(struct.calcsize('P') * 8)\""
@@ -131,6 +128,7 @@ install:
   # pip will build them from source using the MSVC compiler matching the
   # target Python version and architecture
   # C:\\projects\\eve-gnosis\\
+  - ECHO "Install pip requirements:"
   - "pip install -r requirements.txt"
   - "pip install -r requirements_test.txt"
   - "pip install -r requirements_build_windows.txt"
@@ -138,6 +136,7 @@ install:
 build_script:
   # Build the compiled extension
   # - "python setup.py build"
+  - ECHO "Build pyfa:"
   - "pyinstaller.exe --clean --noconfirm --windowed --upx-dir=C:\\projects\\pyfa\\scripts\\upx.exe C:\\projects\\pyfa\\pyfa.spec"
 
 build: off
