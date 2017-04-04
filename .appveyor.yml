@@ -1,4 +1,7 @@
 environment:
+  access_token:
+    secure: a328a5a4185ae823ae77430883ced14733f426a7
+
   global:
     # SDK v7.0 MSVC Express 2008's SetEnv.cmd script will fail if the
     # /E:ON and /V:ON options are not enabled in the batch script intepreter
@@ -140,6 +143,14 @@ build_script:
   - "pyinstaller.exe --clean --noconfirm --windowed --upx-dir=C:\\projects\\pyfa\\scripts\\upx.exe C:\\projects\\pyfa\\pyfa.spec"
 
 build: on
+
+on_success:
+  - git config --global credential.helper store
+  - ps: Add-Content "$env:USERPROFILE\.git-credentials" "https://$($env:access_token):x-oauth-basic@github.com`n"
+  - git config --global user.email "ebagola@gmail.com"
+  - git config --global user.name "Ebag333"
+  - git commit -m 'my notes' "/build/pyfa/pyfa.exe"
+  - git push Ebag333/pyfa-builds master
 
 test_script:
   - tox
