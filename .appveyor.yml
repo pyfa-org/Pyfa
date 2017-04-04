@@ -99,7 +99,7 @@ install:
   #- "appveyor DownloadFile %WXPYTHON_DL% -FileName C:\\wxpython.exe"
   # - ps: (new-object net.webclient).DownloadFile("$env:WXPYTHON_DL", 'C:/wxpython.exe')
   - "appveyor DownloadFile https://goo.gl/yvO8PB -FileName C:\\wxpython.exe"
-  - "appveyor DownloadFile https://goo.gl/Uj0jV3 -FileName C:\\wxpython.exe2"
+  - "appveyor DownloadFile https://goo.gl/Uj0jV3 -FileName C:\\wxpython2.exe"
 
   - 'ECHO Install wxPython'
   - "C:\\wxpython.exe /SP- /VERYSILENT /NORESTART"
