@@ -40,7 +40,7 @@ for root, folders, files in os.walk("eos/effects"):
 
 a = Analysis(
              ['pyfa.py'],
-             pathex=['C:\\Users\\Ebag333\\Documents\\GitHub\\Ebag333\\Pyfa'],
+             pathex=['C:\\projects\\pyfa\\'],
              binaries=[],
              datas=added_files,
              hiddenimports=import_these,
@@ -66,7 +66,7 @@ exe = EXE(pyz,
           strip=False,
           upx=True,
           name='pyfa',
-          icon='C:\\Users\\Ebag333\\Documents\\GitHub\\Ebag333\\Pyfa\\dist_assets\\win\\pyfa.ico',
+          icon='dist_assets/win/pyfa.ico',
           onefile=False,
           )
 
