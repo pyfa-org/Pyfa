@@ -145,6 +145,8 @@ build_script:
 build: on
 
 after_build:
+  - ps: "ls \"C:/\""
+  - ps: "ls \"./\""
   # Zip
   # APPVEYOR_PULL_REQUEST_NUMBER -and $env:APPVEYOR_BUILD_NUMBER
   - 7z a build.zip %PYTHON%\Scripts\build\*.*
