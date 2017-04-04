@@ -28,7 +28,7 @@ from sqlalchemy.sql import or_
 
 import config
 import eos.db
-from service import conversions
+from service.conversions import Conversions
 from service.settings import SettingsProvider
 from service.price import Price
 
@@ -282,8 +282,10 @@ class Market(object):
         }
 
         # do not publish ships that we convert
-        for name in conversions.packs['skinnedShips']:
+        sConversions = Conversions.getInstance()
+        for name in sConversions.PACKS['skinnedShips']:
             self.ITEMS_FORCEPUBLISHED[name] = False
+            pyfalog.debug("Forcing {0} to be unpublished.", name)
 
         if config.debug:
             # Publish Tactical Dessy Modes if in debug
@@ -436,9 +438,14 @@ class Market(object):
             elif isinstance(identity, int):
                 item = eos.db.getItem(identity, *args, **kwargs)
             elif isinstance(identity, basestring):
+                sConversions = Conversions.getInstance()
                 # We normally lookup with string when we are using import/export
                 # features. Check against overrides
-                identity = conversions.all.get(identity, identity)
+                for PACK in sConversions.PACKS:
+                    if identity in sConversions.PACKS[PACK]:
+                        pyfalog.debug("Converting {0} to {1}", identity, sConversions.PACKS[PACK][identity])
+                        identity = sConversions.PACKS[PACK][identity]
+
                 item = eos.db.getItem(identity, *args, **kwargs)
 
             elif isinstance(identity, float):
