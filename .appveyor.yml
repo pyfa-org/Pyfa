@@ -146,6 +146,8 @@ build: on
 
 after_build:
   - ps: "ls \"./\""
+  - ps: "ls \"C:\\projects\\pyfa\\build\\\""
+  - ps: "ls \"C:\\projects\\pyfa\\dist\\\""
   # Zip
   # APPVEYOR_PULL_REQUEST_NUMBER -and $env:APPVEYOR_BUILD_NUMBER
   - 7z a build.zip C:\projects\pyfa\build\*.*
