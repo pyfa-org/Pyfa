@@ -638,7 +638,7 @@ class Fit(object):
 
             del self.commandBonuses[warfareBuffID]
 
-    def calculateModifiedAttributes(self, targetFit=None, withBoosters=False, dirtyStorage=None):
+    def calculateModifiedAttributes(self, targetFit=None, withBoosters=False):
         timer = Timer(u'Fit: {}, {}'.format(self.ID, self.name), pyfalog)
         pyfalog.debug("Starting fit calculation on: {0}, withBoosters: {1}", self, withBoosters)
 
@@ -760,7 +760,7 @@ class Fit(object):
         if not projected and not withBoosters:
             for fit in self.projectedFits:
                 if fit.getProjectionInfo(self.ID).active:
-                    fit.calculateModifiedAttributes(self, withBoosters=withBoosters, dirtyStorage=dirtyStorage)
+                    fit.calculateModifiedAttributes(self, withBoosters=withBoosters)
 
         timer.checkpoint('Done with fit calculation')
 
