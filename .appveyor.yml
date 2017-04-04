@@ -101,7 +101,7 @@ install:
   - ps: "ls \"C:/\""
 
   - ECHO "Filesystem pyfa root:"
-  - ps: "ls \"C:/\projects/\pyfa/\""
+  - ps: "ls \"C:\\projects\\pyfa\\""
 
   - ECHO "Installed SDKs:"
   - ps: "ls \"C:/Program Files/Microsoft SDKs/Windows\""
