@@ -138,6 +138,7 @@ install:
 build_script:
   # Build the compiled extension
   # - "python setup.py build"
+  - "pyinstaller.exe --clean --noconfirm --windowed --upx-dir=C:\\projects\\pyfa\\scripts\\upx.exe C:\\projects\\pyfa\\pyfa.spec"
 
 build: off
 
