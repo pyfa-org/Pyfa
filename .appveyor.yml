@@ -144,13 +144,14 @@ build_script:
 
 build: on
 
+after_build:
+  # Zip
+  # APPVEYOR_PULL_REQUEST_NUMBER -and $env:APPVEYOR_BUILD_NUMBER
+  - 7z a build.zip .\\build\\*.*
+  - 7z a dist.zip .\\dist\\*.*
+
 on_success:
-  - git config --global credential.helper store
-  - ps: Add-Content "$env:USERPROFILE\.git-credentials" "https://$($env:access_token):x-oauth-basic@github.com`n"
-  - git config --global user.email "ebagola@gmail.com"
-  - git config --global user.name "Ebag333"
-  - git commit -m 'my notes' "./build/pyfa/pyfa.exe"
-  - git push Ebag333/pyfa-builds master
+  # Do nothing right now
 
 test_script:
   - tox
@@ -167,7 +168,10 @@ after_test:
 
 artifacts:
   # Archive the generated packages in the ci.appveyor.com build report.
-  - path: dist\*
+  - path: build.zip
+    name: Build
+  - path: dist.zip
+    name: Dist
 
 #on_success:
 #  - TODO: upload the content of dist/*.whl to a public wheelhouse
