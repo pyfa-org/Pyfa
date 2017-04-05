@@ -68,9 +68,12 @@ m_re_sub(stpwth, 1000, 100000, "asdfadsasdaasdfadsasda")
 
     def __update_stat(self, v):
         # :param v: unit of ms
-        if self.min == 0.0: self.min = v
-        if self.max < v: self.max = v
-        if self.min > v: self.min = v
+        if self.min == 0.0:
+            self.min = v
+        if self.max < v:
+            self.max = v
+        if self.min > v:
+            self.min = v
 
     def checkpoint(self, name=''):
         span = self.elapsed
