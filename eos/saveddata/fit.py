@@ -183,6 +183,15 @@ class Fit(object):
         self.__character = char
 
     @property
+    def calculated(self):
+        return self.__calculated
+
+    @calculated.setter
+    def calculated(self, value):
+        # todo: brief explaination hwo this works
+        self.__calculated = value
+
+    @property
     def ship(self):
         return self.__ship
 
@@ -392,7 +401,7 @@ class Fit(object):
         self.__droneVolley = None
         self.__droneYield = None
         self.__ehp = None
-        self.__calculated = False
+        self.calculated = False
         self.__capStable = None
         self.__capState = None
         self.__capUsed = None
@@ -638,9 +647,73 @@ class Fit(object):
 
             del self.commandBonuses[warfareBuffID]
 
+    def validateFitChainCalculated(self, recursion_level=0):
+        """
+        Walks up the chain for the fit and anything projected or command fits haven't been calculated
+
+        :return:
+        True if all fits are calculated, False if one (or more) is not
+        """
+
+        # Here we can control how deep we recurse up through the projected/command fits.
+        if recursion_level == 2:
+            return True
+
+        for projected_fit in self.projectedFits:
+            if projected_fit.getProjectionInfo(self.ID).active:
+                if projected_fit is not self:
+                    if projected_fit.calculated is False:
+                        return False
+
+                    projected_calculated = projected_fit.validateFitChainCalculated(recursion_level + 1)
+                    if projected_calculated is False:
+                        return False
+
+        for command_fit in self.commandFits:
+            if command_fit.getCommandInfo(self.ID).active:
+                if command_fit is not self:
+                    if command_fit.calculated is False:
+                        return False
+
+                    command_calculated = command_fit.validateFitChainCalculated(recursion_level + 1)
+                    if command_calculated is False:
+                        return False
+
+        # print("For (" + str(self.name) + ") returning chain have been calculated")
+        return True
+
+    def clearFitChainCalculated(self, recursion_level=0):
+        """
+        Walks up the chain for the fit and clear the calculated flag on any projected or command fits
+
+        :return:
+        True if all fits are calculated, False if one (or more) is not
+        """
+        # print("Clearing calculated flag on: " + str(self.name))
+
+        # Here we can control how deep we recurse up through the projected/command fits.
+        if recursion_level == 2:
+            return
+
+        for projected_fit in self.projectedFits:
+            if projected_fit.getProjectionInfo(self.ID).active:
+                if projected_fit is not self:
+                    projected_fit.clearFitChainCalculated(recursion_level + 1)
+
+        for command_fit in self.commandFits:
+            if command_fit.getCommandInfo(self.ID).active:
+                if command_fit is not self:
+                    command_fit.clearFitChainCalculated(recursion_level + 1)
+
+        self.calculated = False
+
     def calculateModifiedAttributes(self, targetFit=None, withBoosters=False, dirtyStorage=None):
         timer = Timer(u'Fit: {}, {}'.format(self.ID, self.name), pyfalog)
         pyfalog.debug("Starting fit calculation on: {0}, withBoosters: {1}", self, withBoosters)
+
+        # Follow the chain, if we find any fits not calculated, recalc them all.
+        if not self.validateFitChainCalculated():
+            self.clearFitChainCalculated()
 
         shadow = False
         if targetFit and not withBoosters:
@@ -658,6 +731,12 @@ class Fit(object):
                 # called to properly handle projection updates. However, we do
                 # not want to save this fit to the database, so simply remove it
                 eos.db.saveddata_session.delete(self)
+        else:
+            print("Calculating fit attributes for: " + str(self.name))
+            if self.calculated:
+                # Fit is already calculated, don't recalc
+                print("Fit calcs already ran.")
+                return
 
         if self.commandFits and not withBoosters:
             for fit in self.commandFits:
@@ -724,10 +803,9 @@ class Fit(object):
                 # Registering the item about to affect the fit allows us to
                 # track "Affected By" relations correctly
                 if item is not None:
-                    if not self.__calculated:
-                        # apply effects locally if this is first time running them on fit
-                        self.register(item)
-                        item.calculateModifiedAttributes(self, runTime, False)
+                    # apply effects locally if this is first time running them on fit
+                    self.register(item)
+                    item.calculateModifiedAttributes(self, runTime, False)
 
                     if targetFit and withBoosters and item in self.modules:
                         # Apply the gang boosts to target fit
@@ -754,7 +832,7 @@ class Fit(object):
             timer.checkpoint('Done with runtime: %s' % runTime)
 
         # Mark fit as calculated
-        self.__calculated = True
+        self.calculated = True
 
         # Only apply projected fits if fit it not projected itself.
         if not projected and not withBoosters:
