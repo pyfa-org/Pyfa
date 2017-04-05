@@ -183,6 +183,15 @@ class Fit(object):
         self.__character = char
 
     @property
+    def calculated(self):
+        return self.__calculated
+
+    @calculated.setter
+    def calculated(self, value):
+        # todo: brief explaination hwo this works
+        self.__calculated = value
+
+    @property
     def ship(self):
         return self.__ship
 
@@ -392,7 +401,7 @@ class Fit(object):
         self.__droneVolley = None
         self.__droneYield = None
         self.__ehp = None
-        self.__calculated = False
+        self.calculated = False
         self.__capStable = None
         self.__capState = None
         self.__capUsed = None
