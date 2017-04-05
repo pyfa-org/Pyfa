@@ -23,6 +23,7 @@ from sqlalchemy.orm import reconstructor
 
 import eos.db
 from eqBase import EqBase
+from eos.saveddata.price import Price as types_Price
 
 try:
     from collections import OrderedDict
@@ -437,6 +438,39 @@ class Item(EqBase):
                 return True
 
         return False
+
+    @property
+    def price(self):
+        try:
+            if not hasattr(self, "__price"):
+                self.__price = types_Price(self.ID)
+
+            # Get the price from the DB
+            price = eos.db.getPrice(self.ID)
+
+            if price:
+                if self.__price.time > price.time:
+                    # The object is newer than the DB, update the DB.
+                    eos.db.add(self.__price)
+                    eos.db.commit()
+
+                if self.__price.time < price.time:
+                    # DB object is newer than local object, update the local object
+                    self.__price = price
+            else:
+                pyfalog.debug("Unable to fetch item price from database.")
+
+            return self.__price
+
+        except Exception as e:
+            # We want to catch our failure and log it, but don't bail out for a single missing price tag.
+            pyfalog.error("Failed to get price for typeID: {0}", self.ID)
+            pyfalog.error(e)
+            if not self.__price.price:
+                self.__price.price = 0
+            self.__price.failed = True
+
+        return self.__price
 
     def __repr__(self):
         return "Item(ID={}, name={}) at {}".format(

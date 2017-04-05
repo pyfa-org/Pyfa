@@ -25,8 +25,8 @@ from gui.utils.numberFormatter import formatAmount
 from service.price import Price
 
 
-class PriceViewFull(StatsView):
-    name = "priceViewFull"
+class PriceViewMinimal(StatsView):
+    name = "priceViewMinimal"
 
     def __init__(self, parent):
         StatsView.__init__(self)
@@ -47,16 +47,10 @@ class PriceViewFull(StatsView):
         headerContentSizer.Add(self.labelEMStatus)
         headerPanel.GetParent().AddToggleItem(self.labelEMStatus)
 
-        gridPrice = wx.GridSizer(2, 3)
+        gridPrice = wx.GridSizer(1, 3)
         contentSizer.Add(gridPrice, 0, wx.EXPAND | wx.ALL, 0)
-        for _type in ("ship", "fittings", "drones", "cargoBay", "character", "total"):
-            if _type in "ship":
-                image = "ship_big"
-            elif _type in ("fittings", "total"):
-                image = "%sPrice_big" % _type
-            else:
-                image = "%s_big" % _type
-
+        for _type in ("ship", "fittings", "total"):
+            image = "%sPrice_big" % _type if _type != "ship" else "ship_big"
             box = wx.BoxSizer(wx.HORIZONTAL)
             gridPrice.Add(box, 0, wx.ALIGN_TOP)
 
@@ -131,17 +125,8 @@ class PriceViewFull(StatsView):
         self.labelPriceShip.SetLabel("%s ISK" % formatAmount(ship_price, 3, 3, 9, currency=True))
         self.labelPriceShip.SetToolTip(wx.ToolTip('{:,.2f}'.format(ship_price)))
 
-        self.labelPriceFittings.SetLabel("%s ISK" % formatAmount(module_price, 3, 3, 9, currency=True))
-        self.labelPriceFittings.SetToolTip(wx.ToolTip('{:,.2f}'.format(module_price)))
-
-        self.labelPriceDrones.SetLabel("%s ISK" % formatAmount(drone_price + fighter_price, 3, 3, 9, currency=True))
-        self.labelPriceDrones.SetToolTip(wx.ToolTip('{:,.2f}'.format(drone_price + fighter_price)))
-
-        self.labelPriceCargobay.SetLabel("%s ISK" % formatAmount(cargo_price, 3, 3, 9, currency=True))
-        self.labelPriceCargobay.SetToolTip(wx.ToolTip('{:,.2f}'.format(cargo_price)))
-
-        self.labelPriceCharacter.SetLabel("%s ISK" % formatAmount(booster_price + implant_price, 3, 3, 9, currency=True))
-        self.labelPriceCharacter.SetToolTip(wx.ToolTip('{:,.2f}'.format(booster_price + implant_price)))
+        self.labelPriceFittings.SetLabel("%s ISK" % formatAmount(fitting_price, 3, 3, 9, currency=True))
+        self.labelPriceFittings.SetToolTip(wx.ToolTip('{:,.2f}'.format(fitting_price)))
 
         self.labelPriceTotal.SetLabel("%s ISK" % formatAmount(total_price, 3, 3, 9, currency=True))
         self.labelPriceTotal.SetToolTip(wx.ToolTip('{:,.2f}'.format(total_price)))
@@ -153,4 +138,4 @@ class PriceViewFull(StatsView):
         self.panel.Layout()
 
 
-PriceViewFull.register()
+PriceViewMinimal.register()
