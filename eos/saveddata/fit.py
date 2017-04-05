@@ -759,8 +759,6 @@ class Fit(object):
                 if fit.getProjectionInfo(self.ID).active:
                     fit.calculateModifiedAttributes(self, withBoosters=withBoosters)
 
-        timer.checkpoint('Done with fit calculation')
-
         if shadow:
             pyfalog.debug("Delete shadow fit object")
             del self
