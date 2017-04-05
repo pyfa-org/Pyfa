@@ -647,9 +647,73 @@ class Fit(object):
 
             del self.commandBonuses[warfareBuffID]
 
+    def validateFitChainCalculated(self, recursion_level=0):
+        """
+        Walks up the chain for the fit and anything projected or command fits haven't been calculated
+
+        :return:
+        True if all fits are calculated, False if one (or more) is not
+        """
+
+        # Here we can control how deep we recurse up through the projected/command fits.
+        if recursion_level == 2:
+            return True
+
+        for projected_fit in self.projectedFits:
+            if projected_fit.getProjectionInfo(self.ID).active:
+                if projected_fit is not self:
+                    if projected_fit.calculated is False:
+                        return False
+
+                    projected_calculated = projected_fit.validateFitChainCalculated(recursion_level + 1)
+                    if projected_calculated is False:
+                        return False
+
+        for command_fit in self.commandFits:
+            if command_fit.getCommandInfo(self.ID).active:
+                if command_fit is not self:
+                    if command_fit.calculated is False:
+                        return False
+
+                    command_calculated = command_fit.validateFitChainCalculated(recursion_level + 1)
+                    if command_calculated is False:
+                        return False
+
+        # print("For (" + str(self.name) + ") returning chain have been calculated")
+        return True
+
+    def clearFitChainCalculated(self, recursion_level=0):
+        """
+        Walks up the chain for the fit and clear the calculated flag on any projected or command fits
+
+        :return:
+        True if all fits are calculated, False if one (or more) is not
+        """
+        # print("Clearing calculated flag on: " + str(self.name))
+
+        # Here we can control how deep we recurse up through the projected/command fits.
+        if recursion_level == 2:
+            return
+
+        for projected_fit in self.projectedFits:
+            if projected_fit.getProjectionInfo(self.ID).active:
+                if projected_fit is not self:
+                    projected_fit.clearFitChainCalculated(recursion_level + 1)
+
+        for command_fit in self.commandFits:
+            if command_fit.getCommandInfo(self.ID).active:
+                if command_fit is not self:
+                    command_fit.clearFitChainCalculated(recursion_level + 1)
+
+        self.calculated = False
+
     def calculateModifiedAttributes(self, targetFit=None, withBoosters=False, dirtyStorage=None):
         timer = Timer(u'Fit: {}, {}'.format(self.ID, self.name), pyfalog)
         pyfalog.debug("Starting fit calculation on: {0}, withBoosters: {1}", self, withBoosters)
+
+        # Follow the chain, if we find any fits not calculated, recalc them all.
+        if not self.validateFitChainCalculated():
+            self.clearFitChainCalculated()
 
         shadow = False
         if targetFit and not withBoosters:
