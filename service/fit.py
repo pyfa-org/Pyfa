@@ -186,7 +186,6 @@ class Fit(object):
         if fitID is None:
             return None
 
-        force_recalc = False
         fit = self.getFit(fitID)
 
         if self.serviceFittingOptions["useGlobalCharacter"]:
