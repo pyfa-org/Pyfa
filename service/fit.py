@@ -52,6 +52,7 @@ class Fit(object):
 
     def __init__(self):
         pyfalog.debug("Initialize Fit class")
+        self.fit_pointer_list = []
         self.pattern = DamagePattern.getInstance().getDamagePattern("Uniform")
         self.targetResists = None
         self.character = saveddata_Character.getAll5()
@@ -217,7 +218,14 @@ class Fit(object):
         pyfalog.debug("Getting fit for fit ID: {0}", fitID)
         if fitID is None:
             return None
-        fit = eos.db.getFit(fitID)
+
+        fit = next((x for x in self.fit_pointer_list if x.ID == fitID), None)
+
+        if fit is None:
+            fit = eos.db.getFit(fitID)
+
+        if fit not in self.fit_pointer_list:
+            self.fit_pointer_list.append(fit)
 
         if basic:
             return fit
