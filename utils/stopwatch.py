@@ -68,7 +68,7 @@ m_re_sub(stpwth, 1000, 100000, "asdfadsasdaasdfadsasda")
         return self.__last * 1000
 
     def __update_stat(self, v):
-        # :param v: unit of ms
+        # :param v: float unit of ms
         if self.min == 0.0:
             self.min = v
         if self.max < v:

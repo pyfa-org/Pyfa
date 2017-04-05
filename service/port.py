@@ -478,7 +478,7 @@ class Port(object):
         firstLine = firstLine.strip()
 
         # If XML-style start of tag encountered, detect as XML
-        if re.match(RE_XML_START, firstLine):
+        if re.search(RE_XML_START, firstLine):
             if encoding:
                 return "XML", cls.importXml(string, iportuser, encoding)
             else:
