@@ -40,7 +40,7 @@ for root, folders, files in os.walk("eos/effects"):
 
 a = Analysis(
              ['pyfa.py'],
-             pathex=['C:\\Users\\Ebag333\\Documents\\GitHub\\Ebag333\\Pyfa'],
+             pathex=['C:\\projects\\pyfa\\'],
              binaries=[],
              datas=added_files,
              hiddenimports=import_these,
