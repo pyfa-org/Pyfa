@@ -95,9 +95,9 @@ def test_calculateModifiedAttributes_withBooster(DB, RifterFit, HeronFit):
     # Project Heron fit onto Rifter
     RifterFit._Fit__projectedFits[HeronFit.ID] = HeronFit
 
-    DB['saveddata_session'].commit()
-    #DB['saveddata_session'].flush()
-    #DB['saveddata_session'].refresh(HeronFit)
+    # DB['saveddata_session'].commit()
+    # DB['saveddata_session'].flush()
+    # DB['saveddata_session'].refresh(HeronFit)
 
     RifterFit.calculateModifiedAttributes()
 
