@@ -17,8 +17,9 @@
 # along with eos.  If not, see <http://www.gnu.org/licenses/>.
 # ===============================================================================
 
-from sqlalchemy import Table, Column, Integer, ForeignKey
+from sqlalchemy import Table, Column, Integer, ForeignKey, DateTime
 from sqlalchemy.orm import mapper
+import sqlalchemy.sql.functions as func
 
 from eos.db import saveddata_meta
 from eos.saveddata.cargo import Cargo
@@ -27,6 +28,9 @@ cargo_table = Table("cargo", saveddata_meta,
                     Column("ID", Integer, primary_key=True),
                     Column("fitID", Integer, ForeignKey("fits.ID"), nullable=False, index=True),
                     Column("itemID", Integer, nullable=False),
-                    Column("amount", Integer, nullable=False))
+                    Column("amount", Integer, nullable=False),
+                    Column("created", DateTime, nullable=True, default=func.now()),
+                    Column("modified", DateTime, nullable=True, onupdate=func.now()),
+                    )
 
 mapper(Cargo, cargo_table)
