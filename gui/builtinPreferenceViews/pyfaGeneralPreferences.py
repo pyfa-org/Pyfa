@@ -133,7 +133,8 @@ class PFGeneralPref(PreferenceView):
     def onCBGlobalColorBySlot(self, event):
         self.sFit.serviceFittingOptions["colorFitBySlot"] = self.cbFitColorSlots.GetValue()
         fitID = self.mainFrame.getActiveFit()
-        self.sFit.refreshFit(fitID)
+        fit = self.sFit.getFit(fitID)
+        self.sFit.recalc(fit)
         wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fitID))
         event.Skip()
 
@@ -141,14 +142,16 @@ class PFGeneralPref(PreferenceView):
         self.sFit.serviceFittingOptions["rackSlots"] = self.cbRackSlots.GetValue()
         self.cbRackLabels.Enable(self.cbRackSlots.GetValue())
         fitID = self.mainFrame.getActiveFit()
-        self.sFit.refreshFit(fitID)
+        fit = self.sFit.getFit(fitID)
+        self.sFit.recalc(fit)
         wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fitID))
         event.Skip()
 
     def onCBGlobalRackLabels(self, event):
         self.sFit.serviceFittingOptions["rackLabels"] = self.cbRackLabels.GetValue()
         fitID = self.mainFrame.getActiveFit()
-        self.sFit.refreshFit(fitID)
+        fit = self.sFit.getFit(fitID)
+        self.sFit.recalc(fit)
         wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fitID))
         event.Skip()
 
@@ -163,7 +166,8 @@ class PFGeneralPref(PreferenceView):
     def onCBCompactSkills(self, event):
         self.sFit.serviceFittingOptions["compactSkills"] = self.cbCompactSkills.GetValue()
         fitID = self.mainFrame.getActiveFit()
-        self.sFit.refreshFit(fitID)
+        fit = self.sFit.getFit(fitID)
+        self.sFit.recalc(fit)
         wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fitID))
         event.Skip()
 
@@ -200,7 +204,8 @@ class PFGeneralPref(PreferenceView):
         sMkt = Market.getInstance()
         sMkt.clearPriceCache()
 
-        self.sFit.refreshFit(fitID)
+        fit = self.sFit.getFit(fitID)
+        self.sFit.recalc(fit)
         wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fitID))
         event.Skip()
 
