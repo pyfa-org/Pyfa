@@ -3,7 +3,7 @@
 import time
 import os
 
-# 2017/04/05:
+
 class Stopwatch(object):
     """
  --- on python console ---
@@ -50,12 +50,13 @@ m_re_sub(stpwth, 1000, 100000, "asdfadsasdaasdfadsasda")
         self.__last = self.start
         # __last field is means last checkpoint system clock value?
         self.logger = logger
-        self.reset()
+        self.min = 0.0
+        self.max = 0.0
 
     @property
     def stat(self):
         # :return: (float, float)
-        return (self.min, self.max)
+        return self.min, self.max
 
     @property
     def elapsed(self):
@@ -98,7 +99,7 @@ m_re_sub(stpwth, 1000, 100000, "asdfadsasdaasdfadsasda")
         self.start = Stopwatch._tfunc()
         return self
 
-    def __exit__(self, type, value, traceback):
+    def __exit__(self, type_, value, traceback):
         # https://docs.python.org/2.7/reference/datamodel.html?highlight=__enter__#object.__exit__
         # If the context was exited without an exception, all three arguments will be None
         self.checkpoint('finished')
