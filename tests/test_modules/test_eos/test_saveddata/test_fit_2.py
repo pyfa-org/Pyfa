@@ -32,7 +32,7 @@ def test_calculateModifiedAttributes(DB, RifterFit, KeepstarFit):
     for test_dict in rifter_modifier_dicts:
         assert len(getattr(RifterFit.ship.itemModifiedAttributes, test_dict)) == 0
 
-    RifterFit.calculateFitAttributes()
+    RifterFit.calculateModifiedAttributes()
 
     for test_dict in rifter_modifier_dicts:
         assert len(getattr(RifterFit.ship.itemModifiedAttributes, test_dict)) == rifter_modifier_dicts[test_dict]
@@ -55,7 +55,7 @@ def test_calculateModifiedAttributes(DB, RifterFit, KeepstarFit):
     for test_dict in keepstar_modifier_dicts:
         assert len(getattr(KeepstarFit.ship.itemModifiedAttributes, test_dict)) == 0
 
-    KeepstarFit.calculateFitAttributes()
+    KeepstarFit.calculateModifiedAttributes()
 
     for test_dict in keepstar_modifier_dicts:
         assert len(getattr(KeepstarFit.ship.itemModifiedAttributes, test_dict)) == keepstar_modifier_dicts[test_dict]
@@ -85,7 +85,7 @@ def test_calculateModifiedAttributes_withBooster(DB, RifterFit, HeronFit):
     scan_resolution_1 = RifterFit.ship.getModifiedItemAttr('scanResolution')
 
     RifterFit.clear()
-    RifterFit.calculateFitAttributes()
+    RifterFit.calculateModifiedAttributes()
 
     # Get self calculated stats
     max_target_range_2 = RifterFit.ship.getModifiedItemAttr('maxTargetRange')
@@ -99,22 +99,22 @@ def test_calculateModifiedAttributes_withBooster(DB, RifterFit, HeronFit):
     #DB['saveddata_session'].flush()
     #DB['saveddata_session'].refresh(HeronFit)
 
-    RifterFit.calculateFitAttributes()
+    RifterFit.calculateModifiedAttributes()
 
     # Get stats with projections
     max_target_range_3 = RifterFit.ship.getModifiedItemAttr('maxTargetRange')
     scan_resolution_3 = RifterFit.ship.getModifiedItemAttr('scanResolution')
 
     RifterFit.clear()
-    RifterFit.calculateFitAttributes(withBoosters=True)
+    RifterFit.calculateModifiedAttributes(withBoosters=True)
 
     # Get stats with projections
     max_target_range_4 = RifterFit.ship.getModifiedItemAttr('maxTargetRange')
     scan_resolution_4 = RifterFit.ship.getModifiedItemAttr('scanResolution')
 
     RifterFit.clear()
-    HeronFit.calculateFitAttributes(targetFit=RifterFit, withBoosters=True)
-    RifterFit.calculateFitAttributes(withBoosters=True)
+    HeronFit.calculateModifiedAttributes(targetFit=RifterFit, withBoosters=True)
+    RifterFit.calculateModifiedAttributes(withBoosters=True)
 
     # Get stats with projections
     max_target_range_5 = RifterFit.ship.getModifiedItemAttr('maxTargetRange')
