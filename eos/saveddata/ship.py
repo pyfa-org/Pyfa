@@ -29,14 +29,14 @@ pyfalog = Logger(__name__)
 
 class Ship(ItemAttrShortcut, HandledItem):
     EXTRA_ATTRIBUTES = {
-        "armorRepair": 0,
-        "hullRepair": 0,
-        "shieldRepair": 0,
-        "maxActiveDrones": 0,
+        "armorRepair"               : 0,
+        "hullRepair"                : 0,
+        "shieldRepair"              : 0,
+        "maxActiveDrones"           : 0,
         "maxTargetsLockedFromSkills": 2,
-        "droneControlRange": 20000,
-        "cloaked": False,
-        "siege": False
+        "droneControlRange"         : 20000,
+        "cloaked"                   : False,
+        "siege"                     : False
         # We also have speedLimit for Entosis Link, but there seems to be an
         # issue with naming it exactly "speedLimit" due to unknown reasons.
         # Regardless, we don't have to put it here anyways - it will come up
@@ -65,7 +65,7 @@ class Ship(ItemAttrShortcut, HandledItem):
         if item.category.name != "Ship":
             pyfalog.error("Passed item '{0}' (category: {1}) is not under Ship category", item.name, item.category.name)
             raise ValueError(
-                'Passed item "%s" (category: (%s)) is not under Ship category' % (item.name, item.category.name))
+                    'Passed item "%s" (category: (%s)) is not under Ship category' % (item.name, item.category.name))
 
     @property
     def item(self):
@@ -140,5 +140,5 @@ class Ship(ItemAttrShortcut, HandledItem):
 
     def __repr__(self):
         return "Ship(ID={}, name={}) at {}".format(
-            self.item.ID, self.item.name, hex(id(self))
+                self.item.ID, self.item.name, hex(id(self))
         )

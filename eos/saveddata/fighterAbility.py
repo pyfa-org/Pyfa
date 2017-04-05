@@ -132,7 +132,7 @@ class FighterAbility(object):
                 else:
                     volley = sum(map(lambda d2, d:
                                      (self.fighter.getModifiedItemAttr(
-                                         "{}Damage{}".format(self.attrPrefix, d2)) or 0) *
+                                             "{}Damage{}".format(self.attrPrefix, d2)) or 0) *
                                      (1 - getattr(targetResists, "{}Amount".format(d), 0)),
                                      self.DAMAGE_TYPES2, self.DAMAGE_TYPES))
 

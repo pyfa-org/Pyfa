@@ -64,29 +64,6 @@ class Booster(HandledItem, ItemAttrShortcut):
         self.__itemModifiedAttributes.overrides = self.__item.overrides
         self.__slot = self.__calculateSlot(self.__item)
 
-        # Legacy booster side effect code, disabling as not currently implemented
-        '''
-        for effect in self.__item.effects.itervalues():
-            if effect.isType("boosterSideEffect"):
-                s = SideEffect(self)
-                s.effect = effect
-                s.active = effect.ID in self.__activeSideEffectIDs
-                self.__sideEffects.append(s)
-        '''
-
-    # Legacy booster side effect code, disabling as not currently implemented
-    '''
-    def iterSideEffects(self):
-        return self.__sideEffects.__iter__()
-
-    def getSideEffect(self, name):
-        for sideEffect in self.iterSideEffects():
-            if sideEffect.effect.name == name:
-                return sideEffect
-
-        raise KeyError("SideEffect with %s as name not found" % name)
-    '''
-
     @property
     def itemModifiedAttributes(self):
         return self.__itemModifiedAttributes
@@ -124,20 +101,15 @@ class Booster(HandledItem, ItemAttrShortcut):
                     effect.activeByDefault:
                 effect.handler(fit, self, ("booster",))
 
-        # Legacy booster code, not fully implemented
-        '''
-        for sideEffect in self.iterSideEffects():
-            if sideEffect.active and sideEffect.effect.runTime == runTime:
-                sideEffect.effect.handler(fit, self, ("boosterSideEffect",))
-        '''
-
     @validates("ID", "itemID", "ammoID", "active")
     def validator(self, key, val):
-        map = {"ID": lambda _val: isinstance(_val, int),
-               "itemID": lambda _val: isinstance(_val, int),
-               "ammoID": lambda _val: isinstance(_val, int),
-               "active": lambda _val: isinstance(_val, bool),
-               "slot": lambda _val: isinstance(_val, int) and 1 <= _val <= 3}
+        map = {
+            "ID"    : lambda _val: isinstance(_val, int),
+            "itemID": lambda _val: isinstance(_val, int),
+            "ammoID": lambda _val: isinstance(_val, int),
+            "active": lambda _val: isinstance(_val, bool),
+            "slot"  : lambda _val: isinstance(_val, int) and 1 <= _val <= 3
+        }
 
         if not map[key](val):
             raise ValueError(str(val) + " is not a valid value for " + key)
@@ -148,52 +120,4 @@ class Booster(HandledItem, ItemAttrShortcut):
         copy = Booster(self.item)
         copy.active = self.active
 
-        # Legacy booster side effect code, disabling as not currently implemented
-        '''
-        origSideEffects = list(self.iterSideEffects())
-        copySideEffects = list(copy.iterSideEffects())
-        i = 0
-        while i < len(origSideEffects):
-            copySideEffects[i].active = origSideEffects[i].active
-            i += 1
-        '''
-
         return copy
-
-
-# Legacy booster side effect code, disabling as not currently implemented
-'''
-    class SideEffect(object):
-        def __init__(self, owner):
-            self.__owner = owner
-            self.__active = False
-            self.__effect = None
-
-        @property
-        def active(self):
-            return self.__active
-
-        @active.setter
-        def active(self, active):
-            if not isinstance(active, bool):
-                raise TypeError("Expecting a bool, not a " + type(active))
-
-            if active != self.__active:
-                if active:
-                    self.__owner._Booster__activeSideEffectIDs.append(self.effect.ID)
-                else:
-                    self.__owner._Booster__activeSideEffectIDs.remove(self.effect.ID)
-
-                self.__active = active
-
-        @property
-        def effect(self):
-            return self.__effect
-
-        @effect.setter
-        def effect(self, effect):
-            if not hasattr(effect, "handler"):
-                raise TypeError("Need an effect with a handler")
-
-            self.__effect = effect
-'''

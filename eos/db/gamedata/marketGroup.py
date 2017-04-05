@@ -33,10 +33,12 @@ marketgroups_table = Table("invmarketgroups", gamedata_meta,
                            Column("iconID", Integer, ForeignKey("icons.iconID")))
 
 mapper(MarketGroup, marketgroups_table,
-       properties={"items": relation(Item, backref="marketGroup"),
-                   "parent": relation(MarketGroup, backref="children",
-                                      remote_side=[marketgroups_table.c.marketGroupID]),
-                   "icon": relation(Icon),
-                   "ID": synonym("marketGroupID"),
-                   "name": synonym("marketGroupName"),
-                   "description": deferred(marketgroups_table.c.description)})
+       properties={
+           "items"      : relation(Item, backref="marketGroup"),
+           "parent"     : relation(MarketGroup, backref="children",
+                                   remote_side=[marketgroups_table.c.marketGroupID]),
+           "icon"       : relation(Icon),
+           "ID"         : synonym("marketGroupID"),
+           "name"       : synonym("marketGroupName"),
+           "description": deferred(marketgroups_table.c.description)
+        })

@@ -62,10 +62,12 @@ class DamagePattern(object):
 
         return amount / (specificDivider or 1)
 
-    importMap = {"em": "em",
-                 "therm": "thermal",
-                 "kin": "kinetic",
-                 "exp": "explosive"}
+    importMap = {
+        "em"   : "em",
+        "therm": "thermal",
+        "kin"  : "kinetic",
+        "exp"  : "explosive"
+    }
 
     @classmethod
     def importPatterns(cls, text):

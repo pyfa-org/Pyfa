@@ -32,13 +32,3 @@ class CrestChar(object):
     @reconstructor
     def init(self):
         pass
-
-    '''
-    @threads(1)
-    def fetchImage(self):
-        url = 'https://image.eveonline.com/character/%d_128.jpg'%self.ID
-        fp = urllib.urlopen(url)
-        data = fp.read()
-        fp.close()
-        self.img = StringIO(data)
-    '''

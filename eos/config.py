@@ -3,6 +3,7 @@ from os.path import realpath, join, dirname, abspath
 
 from logbook import Logger
 import os
+
 istravis = os.environ.get('TRAVIS') == 'true'
 pyfalog = Logger(__name__)
 

@@ -326,8 +326,8 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
                     func = self.getModifiedItemAttr
 
                 volley = sum(map(
-                    lambda attr: (func("%sDamage" % attr) or 0) * (1 - getattr(targetResists, "%sAmount" % attr, 0)),
-                    self.DAMAGE_TYPES))
+                        lambda attr: (func("%sDamage" % attr) or 0) * (1 - getattr(targetResists, "%sAmount" % attr, 0)),
+                        self.DAMAGE_TYPES))
                 volley *= self.getModifiedItemAttr("damageMultiplier") or 1
                 if volley:
                     cycleTime = self.cycleTime
@@ -344,7 +344,7 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
             else:
                 if self.state >= State.ACTIVE:
                     volley = self.getModifiedItemAttr("specialtyMiningAmount") or self.getModifiedItemAttr(
-                        "miningAmount") or 0
+                            "miningAmount") or 0
                     if volley:
                         cycleTime = self.cycleTime
                         self.__miningyield = volley / (cycleTime / 1000.0)
@@ -550,8 +550,10 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
 
     @staticmethod
     def __calculateHardpoint(item):
-        effectHardpointMap = {"turretFitted": Hardpoint.TURRET,
-                              "launcherFitted": Hardpoint.MISSILE}
+        effectHardpointMap = {
+            "turretFitted"  : Hardpoint.TURRET,
+            "launcherFitted": Hardpoint.MISSILE
+        }
 
         if item is None:
             return Hardpoint.NONE
@@ -564,12 +566,14 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
 
     @staticmethod
     def __calculateSlot(item):
-        effectSlotMap = {"rigSlot": Slot.RIG,
-                         "loPower": Slot.LOW,
-                         "medPower": Slot.MED,
-                         "hiPower": Slot.HIGH,
-                         "subSystem": Slot.SUBSYSTEM,
-                         "serviceSlot": Slot.SERVICE}
+        effectSlotMap = {
+            "rigSlot"    : Slot.RIG,
+            "loPower"    : Slot.LOW,
+            "medPower"   : Slot.MED,
+            "hiPower"    : Slot.HIGH,
+            "subSystem"  : Slot.SUBSYSTEM,
+            "serviceSlot": Slot.SERVICE
+        }
         if item is None:
             return None
         for effectName, slot in effectSlotMap.iteritems():
@@ -582,9 +586,11 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
 
     @validates("ID", "itemID", "ammoID")
     def validator(self, key, val):
-        map = {"ID": lambda _val: isinstance(_val, int),
-               "itemID": lambda _val: _val is None or isinstance(_val, int),
-               "ammoID": lambda _val: isinstance(_val, int)}
+        map = {
+            "ID"    : lambda _val: isinstance(_val, int),
+            "itemID": lambda _val: _val is None or isinstance(_val, int),
+            "ammoID": lambda _val: isinstance(_val, int)
+        }
 
         if not map[key](val):
             raise ValueError(str(val) + " is not a valid value for " + key)
@@ -628,8 +634,8 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
                     if effect.runTime == runTime and \
                             effect.activeByDefault and \
                             (effect.isType("offline") or
-                                (effect.isType("passive") and self.state >= State.ONLINE) or
-                                (effect.isType("active") and self.state >= State.ACTIVE)) and \
+                                 (effect.isType("passive") and self.state >= State.ONLINE) or
+                                 (effect.isType("active") and self.state >= State.ACTIVE)) and \
                             (not gang or (gang and effect.isType("gang"))):
 
                         chargeContext = ("moduleCharge",)
@@ -751,7 +757,7 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
     def __repr__(self):
         if self.item:
             return "Module(ID={}, name={}) at {}".format(
-                self.item.ID, self.item.name, hex(id(self))
+                    self.item.ID, self.item.name, hex(id(self))
             )
         else:
             return "EmptyModule() at {}".format(hex(id(self)))

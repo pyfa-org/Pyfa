@@ -37,13 +37,17 @@ effects_table = Table("dgmeffects", gamedata_meta,
                       Column("isOffensive", Boolean))
 
 mapper(EffectInfo, effects_table,
-       properties={"ID": synonym("effectID"),
-                   "name": synonym("effectName"),
-                   "description": deferred(effects_table.c.description)})
+       properties={
+           "ID"         : synonym("effectID"),
+           "name"       : synonym("effectName"),
+           "description": deferred(effects_table.c.description)
+       })
 
 mapper(Effect, typeeffects_table,
-       properties={"ID": synonym("effectID"),
-                   "info": relation(EffectInfo, lazy=False)})
+       properties={
+           "ID"  : synonym("effectID"),
+           "info": relation(EffectInfo, lazy=False)
+       })
 
 Effect.name = association_proxy("info", "name")
 Effect.description = association_proxy("info", "description")
