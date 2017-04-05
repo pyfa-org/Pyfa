@@ -658,6 +658,12 @@ class Fit(object):
                 # called to properly handle projection updates. However, we do
                 # not want to save this fit to the database, so simply remove it
                 eos.db.saveddata_session.delete(self)
+        else:
+            print("Calculating fit attributes for: " + str(self.name))
+            if self.calculated:
+                # Fit is already calculated, don't recalc
+                print("Fit calcs already ran.")
+                return
 
         if self.commandFits and not withBoosters:
             for fit in self.commandFits:
@@ -724,10 +730,9 @@ class Fit(object):
                 # Registering the item about to affect the fit allows us to
                 # track "Affected By" relations correctly
                 if item is not None:
-                    if not self.__calculated:
-                        # apply effects locally if this is first time running them on fit
-                        self.register(item)
-                        item.calculateModifiedAttributes(self, runTime, False)
+                    # apply effects locally if this is first time running them on fit
+                    self.register(item)
+                    item.calculateModifiedAttributes(self, runTime, False)
 
                     if targetFit and withBoosters and item in self.modules:
                         # Apply the gang boosts to target fit
@@ -754,7 +759,7 @@ class Fit(object):
             timer.checkpoint('Done with runtime: %s' % runTime)
 
         # Mark fit as calculated
-        self.__calculated = True
+        self.calculated = True
 
         # Only apply projected fits if fit it not projected itself.
         if not projected and not withBoosters:
