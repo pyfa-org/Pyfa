@@ -738,9 +738,9 @@ class Fit(object):
             return
 
         for runTime in ("early", "normal", "late"):
-            # Items that are unrestricted. These items are run on the local fit
-            # first and then projected onto the target fit it one is designated
             u = [
+                # Items that are unrestricted. These items are run on the local fit
+                # first and then projected onto the target fit it one is designated
                 (self.character, self.ship),
                 self.drones,
                 self.fighters,
@@ -772,11 +772,6 @@ class Fit(object):
 
                     pyfalog.debug("Processing item: {0}", str(item_name))
                     # print("Processing item: " + str(item_name))
-
-                    if not self.__calculated:
-                        # apply effects locally if this is first time running them on fit
-                        self.register(item)
-                        item.calculateModifiedAttributes(self, runTime, False)
 
                     if targetFit:
                         # Apply to projected fit
