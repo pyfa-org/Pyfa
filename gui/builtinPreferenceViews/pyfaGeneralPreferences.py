@@ -9,7 +9,6 @@ import gui.globalEvents as GE
 from service.settings import SettingsProvider
 from service.fit import Fit
 from service.price import Price
-from service.market import Market
 
 
 class PFGeneralPref(PreferenceView):
@@ -197,8 +196,8 @@ class PFGeneralPref(PreferenceView):
 
         fitID = self.mainFrame.getActiveFit()
 
-        sMkt = Market.getInstance()
-        sMkt.clearPriceCache()
+        sPrice = Price.getInstance()
+        sPrice.clearPriceCache()
 
         self.sFit.refreshFit(fitID)
         wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fitID))

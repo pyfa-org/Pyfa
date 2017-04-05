@@ -3,7 +3,7 @@ import gui.mainFrame
 # noinspection PyPackageRequirements
 import wx
 import gui.globalEvents as GE
-from service.market import Market
+from service.price import Price
 from service.settings import ContextMenuSettings
 
 
@@ -22,8 +22,8 @@ class PriceClear(ContextMenu):
         return "Reset Price Cache"
 
     def activate(self, fullContext, selection, i):
-        sMkt = Market.getInstance()
-        sMkt.clearPriceCache()
+        sPrice = Price.getInstance()
+        sPrice.clearPriceCache()
         wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=self.mainFrame.getActiveFit()))
 
 

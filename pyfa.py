@@ -262,7 +262,7 @@ if __name__ == "__main__":
         pyfa = wx.App(False)
         ErrorFrame(e, tb)
         pyfa.MainLoop()
-        sys.exit()
+        raise
 
     with logging_setup.threadbound():
         # Don't redirect if frozen

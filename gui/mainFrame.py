@@ -346,9 +346,20 @@ class MainFrame(wx.Frame):
 
         # save all teh settingz
         SettingsProvider.getInstance().saveAll()
+
+        from service.price import PriceWorkerThread
+
+        PriceWorkerThread.pause()
+        PriceWorkerThread.join()
+
         event.Skip()
 
     def ExitApp(self, event):
+        from service.price import PriceWorkerThread
+
+        PriceWorkerThread.pause()
+        PriceWorkerThread.join()
+
         self.Close()
         event.Skip()
 

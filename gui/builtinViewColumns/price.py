@@ -22,7 +22,7 @@ import wx
 
 from eos.saveddata.cargo import Cargo
 from eos.saveddata.drone import Drone
-from service.market import Market
+from service.price import Price as ServicePrice
 from gui.viewColumn import ViewColumn
 from gui.bitmapLoader import BitmapLoader
 from gui.utils.numberFormatter import formatAmount
@@ -41,32 +41,20 @@ class Price(ViewColumn):
         if stuff.item is None or stuff.item.group.name == "Ship Modifiers":
             return ""
 
-        sMkt = Market.getInstance()
-        price = sMkt.getPriceNow(stuff.item.ID)
+        if hasattr(stuff, "isEmpty"):
+            if stuff.isEmpty:
+                return ""
 
-        if not price or not price.price or not price.isValid:
-            return False
+        sPrice = ServicePrice.getInstance()
+        price = sPrice.fetchItemPrice(stuff.item)
 
-        price = price.price  # Set new price variable with what we need
+        if not price:
+            return ""
 
         if isinstance(stuff, Drone) or isinstance(stuff, Cargo):
             price *= stuff.amount
 
         return formatAmount(price, 3, 3, 9, currency=True)
-
-    def delayedText(self, mod, display, colItem):
-        sMkt = Market.getInstance()
-
-        def callback(item):
-            price = sMkt.getPriceNow(item.ID)
-            text = formatAmount(price.price, 3, 3, 9, currency=True) if price.price else ""
-            if price.failed:
-                text += " (!)"
-            colItem.SetText(text)
-
-            display.SetItem(colItem)
-
-        sMkt.waitForPrice(mod.item, callback)
 
     def getImageId(self, mod):
         return -1

@@ -91,8 +91,6 @@ class PFStatViewPref(PreferenceView):
         rbSizerRow3 = wx.BoxSizer(wx.HORIZONTAL)
 
         self.rbPrice = wx.RadioBox(panel, -1, "Price", wx.DefaultPosition, wx.DefaultSize, ['None', 'Minimal', 'Full'], 1, wx.RA_SPECIFY_COLS)
-        # Disable minimal as we don't have a view for this yet
-        self.rbPrice.EnableItem(1, False)
         self.rbPrice.SetSelection(self.settings.get('price'))
         rbSizerRow3.Add(self.rbPrice, 1, wx.TOP | wx.RIGHT, 5)
         self.rbPrice.Bind(wx.EVT_RADIOBOX, self.OnPriceChange)

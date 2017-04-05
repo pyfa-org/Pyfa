@@ -98,6 +98,11 @@ def getItem(lookfor, eager=None):
     return item
 
 
+def getAllItems():
+    items = gamedata_session.query(Item).all()
+    return items
+
+
 @cachedQuery(1, "lookfor")
 def getAlphaClone(lookfor, eager=None):
     if isinstance(lookfor, int):
