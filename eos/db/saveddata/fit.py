@@ -21,7 +21,8 @@ from sqlalchemy.ext.associationproxy import association_proxy
 from sqlalchemy.orm.collections import attribute_mapped_collection
 from sqlalchemy.sql import and_
 from sqlalchemy.orm import relation, reconstructor, mapper, relationship
-from sqlalchemy import ForeignKey, Column, Integer, String, Table, Boolean
+from sqlalchemy import ForeignKey, Column, Integer, String, Table, Boolean, DateTime
+import sqlalchemy.sql.functions as func
 
 from eos.db import saveddata_meta
 from eos.db import saveddata_session
@@ -57,6 +58,8 @@ fits_table = Table("fits", saveddata_meta,
                    Column("modeID", Integer, nullable=True),
                    Column("implantLocation", Integer, nullable=False, default=ImplantLocation.FIT),
                    Column("notes", String, nullable=True),
+                   Column("created", DateTime, nullable=True, default=func.now()),
+                   Column("modified", DateTime, nullable=True, onupdate=func.now())
                    )
 
 projectedFits_table = Table("projectedFits", saveddata_meta,
@@ -64,12 +67,16 @@ projectedFits_table = Table("projectedFits", saveddata_meta,
                             Column("victimID", ForeignKey("fits.ID"), primary_key=True),
                             Column("amount", Integer, nullable=False, default=1),
                             Column("active", Boolean, nullable=False, default=1),
+                            Column("created", DateTime, nullable=True, default=func.now()),
+                            Column("modified", DateTime, nullable=True, onupdate=func.now())
                             )
 
 commandFits_table = Table("commandFits", saveddata_meta,
                           Column("boosterID", ForeignKey("fits.ID"), primary_key=True),
                           Column("boostedID", ForeignKey("fits.ID"), primary_key=True),
-                          Column("active", Boolean, nullable=False, default=1)
+                          Column("active", Boolean, nullable=False, default=1),
+                          Column("created", DateTime, nullable=True, default=func.now()),
+                          Column("modified", DateTime, nullable=True, onupdate=func.now())
                           )
 
 

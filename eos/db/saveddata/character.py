@@ -17,8 +17,9 @@
 # along with eos.  If not, see <http://www.gnu.org/licenses/>.
 # ===============================================================================
 
-from sqlalchemy import Table, Column, Integer, ForeignKey, String
+from sqlalchemy import Table, Column, Integer, ForeignKey, String, DateTime
 from sqlalchemy.orm import relation, mapper
+import sqlalchemy.sql.functions as func
 
 from eos.db import saveddata_meta
 from eos.db.saveddata.implant import charImplants_table
@@ -36,7 +37,9 @@ characters_table = Table("characters", saveddata_meta,
                          Column("chars", String, nullable=True),
                          Column("defaultLevel", Integer, nullable=True),
                          Column("alphaCloneID", Integer, nullable=True),
-                         Column("ownerID", ForeignKey("users.ID"), nullable=True))
+                         Column("ownerID", ForeignKey("users.ID"), nullable=True),
+                         Column("created", DateTime, nullable=True, default=func.now()),
+                         Column("modified", DateTime, nullable=True, onupdate=func.now()))
 
 mapper(Character, characters_table,
        properties={

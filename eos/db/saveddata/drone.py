@@ -17,8 +17,9 @@
 # along with eos.  If not, see <http://www.gnu.org/licenses/>.
 # ===============================================================================
 
-from sqlalchemy import Table, Column, Integer, ForeignKey, Boolean
+from sqlalchemy import Table, Column, Integer, ForeignKey, Boolean, DateTime
 from sqlalchemy.orm import mapper
+import sqlalchemy.sql.functions as func
 
 from eos.db import saveddata_meta
 from eos.saveddata.drone import Drone
@@ -29,6 +30,9 @@ drones_table = Table("drones", saveddata_meta,
                      Column("itemID", Integer, nullable=False),
                      Column("amount", Integer, nullable=False),
                      Column("amountActive", Integer, nullable=False),
-                     Column("projected", Boolean, default=False))
+                     Column("projected", Boolean, default=False),
+                     Column("created", DateTime, nullable=True, default=func.now()),
+                     Column("modified", DateTime, nullable=True, onupdate=func.now())
+                     )
 
 mapper(Drone, drones_table)
