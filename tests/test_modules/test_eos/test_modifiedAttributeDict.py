@@ -24,7 +24,7 @@ def test_multiply_stacking_penalties(DB, Saveddata, RifterFit):
     mod = Saveddata['Module'](DB['db'].getItem("EM Ward Amplifier II"))
     item_modifer = mod.item.getAttribute("emDamageResistanceBonus")
 
-    RifterFit.calculateModifiedAttributes()
+    RifterFit.calculateFitAttributes()
 
     for _ in range(10):
         if _ == 0:
@@ -42,7 +42,7 @@ def test_multiply_stacking_penalties(DB, Saveddata, RifterFit):
 
         # Modify our fit so that Eos generates new numbers for us.
         RifterFit.clear()
-        RifterFit.calculateModifiedAttributes()
+        RifterFit.calculateFitAttributes()
 
         em_resist = RifterFit.ship.getModifiedItemAttr("shieldEmDamageResonance")
 

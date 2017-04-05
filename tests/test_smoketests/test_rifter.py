@@ -19,7 +19,7 @@ def test_rifter_empty_char0(DB, Saveddata, RifterFit):
     char0 = Saveddata['Character'].getAll0()
 
     RifterFit.character = char0
-    RifterFit.calculateModifiedAttributes()
+    RifterFit.calculateFitAttributes()
 
     assert RifterFit.ship.getModifiedItemAttr("agility") == 3.2
     assert RifterFit.ship.getModifiedItemAttr("armorEmDamageResonance") == 0.4
@@ -118,7 +118,7 @@ def test_rifter_empty_char5(DB, Saveddata, RifterFit):
     char5 = Saveddata['Character'].getAll5()
 
     RifterFit.character = char5
-    RifterFit.calculateModifiedAttributes()
+    RifterFit.calculateFitAttributes()
 
     assert RifterFit.ship.getModifiedItemAttr("agility") == 2.16
     assert RifterFit.ship.getModifiedItemAttr("armorEmDamageResonance") == 0.4
@@ -221,15 +221,15 @@ def test_rifter_coprocessor(DB, Saveddata, RifterFit):
 
     assert RifterFit.ship.getModifiedItemAttr("cpuOutput") == 130
 
-    RifterFit.calculateModifiedAttributes()
+    RifterFit.calculateFitAttributes()
     assert RifterFit.ship.getModifiedItemAttr("cpuOutput") == 130
 
     mod.state = Saveddata['State'].ONLINE
     RifterFit.clear()
-    RifterFit.calculateModifiedAttributes()
+    RifterFit.calculateFitAttributes()
     assert RifterFit.ship.getModifiedItemAttr("cpuOutput") == 143
 
     RifterFit.character = char5
     RifterFit.clear()
-    RifterFit.calculateModifiedAttributes()
+    RifterFit.calculateFitAttributes()
     assert RifterFit.ship.getModifiedItemAttr("cpuOutput") == 178.75
