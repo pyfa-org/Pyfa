@@ -669,7 +669,7 @@ class Fit(object):
 
         # Follow the chain, if we find any fits not calculated, recalc them all.
         # TODO: Add this from another PR.....
-        #if not self.validateFitChainCalculated():
+        # if not self.validateFitChainCalculated():
         #    self.clearFitChainCalculated()
 
         if withBoosters:
@@ -695,7 +695,6 @@ class Fit(object):
         if targetFit:
             self.calculateModifiedFitAttributes(targetFit=targetFit)
 
-
     def calculateModifiedFitAttributes(self, targetFit=None):
         """
         Calculates a fits atttributes.
@@ -705,7 +704,7 @@ class Fit(object):
         If targetFit is the same as self, then we make a copy in order to properly project it without running into recursion issues.
         """
         timer = Timer(u'Fit: {}, {}'.format(self.ID, self.name), pyfalog)
-        pyfalog.debug("Starting fit calculation on: {0}, withBoosters: {1}", self, withBoosters)
+        pyfalog.debug("Starting fit calculation on: {0}", self.name)
 
         shadow = None
         projectionInfo = None
