@@ -68,7 +68,7 @@ else:
     saveddata_meta = None
 
 # Lock controlling any changes introduced to session
-sd_lock = threading.Lock()
+sd_lock = threading.RLock()
 
 # Import all the definitions for all our database stuff
 # noinspection PyPep8
