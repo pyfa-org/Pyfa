@@ -2,8 +2,9 @@ from logbook import Logger
 import shutil
 import time
 
+# noinspection PyUnresolvedReferences
 import config
-from eos.db.migrations import (
+from eos.db.migrations import (  # noqa: E402, F401
     upgrade1,
     upgrade2,
     upgrade3,
