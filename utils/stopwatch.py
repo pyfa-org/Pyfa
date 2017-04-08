@@ -9,6 +9,9 @@ class Stopwatch(object):
  --- on python console ---
 import re
 from utils.stopwatch import Stopwatch
+
+# measurementor
+stpw = Stopwatch("test")
 # measurement re.sub
 def m_re_sub(t, set_count, executes, texts):
     t.reset()
@@ -21,10 +24,8 @@ def m_re_sub(t, set_count, executes, texts):
     # stat string
     return str(t)
 
-# measurementor
-stpwth = Stopwatch("test")
 # statistics loop: 1000(exec re.sub: 100000)
-m_re_sub(stpwth, 1000, 100000, "asdfadsasdaasdfadsasda")
+m_re_sub(stpw, 1000, 100000, "asdfadsasdaasdfadsasda")
 
 ----------- records -----------
  text: "asdfadsasda"
@@ -52,6 +53,7 @@ m_re_sub(stpwth, 1000, 100000, "asdfadsasdaasdfadsasda")
         self.logger = logger
         self.min = 0.0
         self.max = 0.0
+        self.__first = True
 
     @property
     def stat(self):
@@ -69,12 +71,13 @@ m_re_sub(stpwth, 1000, 100000, "asdfadsasdaasdfadsasda")
 
     def __update_stat(self, v):
         # :param v: float unit of ms
-        if self.min == 0.0:
+        if self.__first:
+            self.__first = False
+            return
+        if self.min == 0.0 or self.min > v:
             self.min = v
         if self.max < v:
             self.max = v
-        if self.min > v:
-            self.min = v
 
     def checkpoint(self, name=''):
         span = self.elapsed
@@ -91,9 +94,17 @@ m_re_sub(stpwth, 1000, 100000, "asdfadsasdaasdfadsasda")
         else:
             print(text)
 
+    @staticmethod
+    def CpuClock():
+        start = Stopwatch._tfunc()
+        time.sleep(1)
+        return Stopwatch._tfunc() - start
+
     def reset(self):
+        # clear stat
         self.min = 0.0
         self.max = 0.0
+        self.__first = True
 
     def __enter__(self):
         self.start = Stopwatch._tfunc()
