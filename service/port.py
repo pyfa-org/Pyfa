@@ -1,4 +1,3 @@
-# coding: utf-8
 # =============================================================================
 # Copyright (C) 2014 Ryan Holmes
 #
@@ -74,68 +73,77 @@ INV_FLAG_DRONEBAY = 87
 INV_FLAG_FIGHTER = 158
 
 # 2017/04/05 NOTE: simple validation, for xml file
-RE_XML_START = r'<\?xml\s+version="1.0"\s+\?>'
+RE_XML_START = r'<\?xml\s+version="1.0"\s*\?>'
 
 # -- 170327 Ignored description --
 RE_LTGT = "&(lt|gt);"
 L_MARK = "&lt;localized hint=&quot;"
+# &lt;localized hint=&quot;([^"]+)&quot;&gt;([^\*]+)\*&lt;\/localized&gt;
 LOCALIZED_PATTERN = re.compile(r'<localized hint="([^"]+)">([^\*]+)\*</localized>')
 
 
-def _extract_matche(t):
+def _extract_match(t):
     m = LOCALIZED_PATTERN.match(t)
     # hint attribute, text content
     return m.group(1), m.group(2)
 
 
 def _resolve_ship(fitting, sMkt, b_localized):
-    # type: (xml.dom.minidom.Element, Market, bool) -> eos.saveddata.fit.Fit
-
-    fitobj = Fit()
-    fitobj.name = fitting.getAttribute("name")
-    # 2017/03/29 NOTE:
-    #    if fit name contained "<" or ">" then reprace to named html entity by EVE client
-    # if re.search(RE_LTGT, fitobj.name):
-    if "&lt;" in fitobj.name or "&gt;" in fitobj.name:
-        fitobj.name = replace_ltgt(fitobj.name)
-
+    # type: (xml.dom.minidom.Element, service.market.Market, bool) -> eos.saveddata.fit.Fit
+    """ NOTE: Since it is meaningless unless a correct ship object can be constructed,
+        process flow changed
+    """
+    # ------ Confirm ship
     # <localized hint="Maelstrom">Maelstrom</localized>
     shipType = fitting.getElementsByTagName("shipType").item(0).getAttribute("value")
-    # emergency = None
+    anything = None
     if b_localized:
         # expect an official name, emergency cache
-        shipType, emergency = _extract_matche(shipType)
+        shipType, anything = _extract_match(shipType)
 
     limit = 2
+    ship = None
     while True:
         must_retry = False
         try:
             try:
-                fitobj.ship = Ship(sMkt.getItem(shipType))
+                ship = Ship(sMkt.getItem(shipType))
             except ValueError:
-                fitobj.ship = Citadel(sMkt.getItem(shipType))
+                ship = Citadel(sMkt.getItem(shipType))
         except Exception as e:
             pyfalog.warning("Caught exception on _resolve_ship")
             pyfalog.error(e)
             limit -= 1
             if limit is 0:
                 break
-            shipType = emergency
+            shipType = anything
             must_retry = True
         if not must_retry:
             break
+
+    if ship is None:
+        raise Exception("cannot resolve ship type.")
+
+    fitobj = Fit(ship=ship)
+    # ------ Confirm fit name
+    anything = fitting.getAttribute("name")
+    # 2017/03/29 NOTE:
+    #    if fit name contained "<" or ">" then reprace to named html entity by EVE client
+    # if re.search(RE_LTGT, anything):
+    if "&lt;" in anything or "&gt;" in anything:
+        anything = replace_ltgt(anything)
+    fitobj.name = anything
 
     return fitobj
 
 
 def _resolve_module(hardware, sMkt, b_localized):
-    # type: (xml.dom.minidom.Element, Market, bool) -> eos.saveddata.module.Module
-
+    # type: (xml.dom.minidom.Element, service.market.Market, bool) -> eos.saveddata.module.Module
     moduleName = hardware.getAttribute("type")
-    # emergency = None
+    emergency = None
     if b_localized:
         # expect an official name, emergency cache
-        moduleName, emergency = _extract_matche(moduleName)
+        moduleName, emergency = _extract_match(moduleName)
 
     item = None
     limit = 2
@@ -365,6 +373,9 @@ class Port(object):
 
     @staticmethod
     def importFitFromBuffer(bufferStr, activeFit=None):
+        # type: (basestring, object) -> object
+        # TODO: catch the exception?
+        # activeFit is reserved?, bufferStr is unicode? (assume only clipboard string?
         sFit = svcFit.getInstance()
         _, fits = Port.importAuto(bufferStr, activeFit=activeFit)
         for fit in fits:
@@ -473,6 +484,7 @@ class Port(object):
 
     @classmethod
     def importAuto(cls, string, path=None, activeFit=None, iportuser=None, encoding=None):
+        # type: (basestring, basestring, object, IPortUser, basestring) -> object
         # Get first line and strip space symbols of it to avoid possible detection errors
         firstLine = re.split("[\n\r]+", string.strip(), maxsplit=1)[0]
         firstLine = firstLine.strip()
@@ -510,9 +522,9 @@ class Port(object):
         fitobj = Fit()
         refobj = json.loads(str_)
         items = refobj['items']
+        # "<" and ">" is replace to "&lt;", "&gt;" by EVE client
         fitobj.name = refobj['name']
         # 2017/03/29: read description
-        # "<" and ">" is replace to "&lt;", "&gt;" by EVE client
         fitobj.notes = refobj['description']
 
         try:
@@ -1008,7 +1020,7 @@ class Port(object):
 
     @staticmethod
     def importXml(text, iportuser=None, encoding="utf-8"):
-
+        # type: (basestring, IPortUser, basestring) -> list[eos.saveddata.fit.Fit]
         sMkt = Market.getInstance()
         doc = xml.dom.minidom.parseString(text.encode(encoding))
         # NOTE:
@@ -1019,7 +1031,7 @@ class Port(object):
         fittings = fittings.getElementsByTagName("fitting")
         fit_list = []
 
-        for fitting in (fittings):
+        for fitting in fittings:
             fitobj = _resolve_ship(fitting, sMkt, b_localized)
             # -- 170327 Ignored description --
             # read description from exported xml. (EVE client, EFT)
@@ -1248,7 +1260,7 @@ class Port(object):
                 try:
                     notes = fit.notes  # unicode
                     description.setAttribute(
-                        "value", re.sub("[\r\n]+", "<br>", notes) if notes is not None else ""
+                        "value", re.sub("(\r|\n|\r\n)+", "<br>", notes) if notes is not None else ""
                     )
                 except Exception as e:
                     pyfalog.warning("read description is failed, msg=%s\n" % e.args)
