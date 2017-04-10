@@ -134,8 +134,8 @@ class Drone(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
                 cycleTime = self.getModifiedItemAttr(attr)
 
                 volley = sum(
-                    map(lambda d: (getter("%sDamage" % d) or 0) * (1 - getattr(targetResists, "%sAmount" % d, 0)),
-                        self.DAMAGE_TYPES))
+                        map(lambda d: (getter("%sDamage" % d) or 0) * (1 - getattr(targetResists, "%sAmount" % d, 0)),
+                            self.DAMAGE_TYPES))
                 volley *= self.amountActive
                 volley *= self.getModifiedItemAttr("damageMultiplier") or 1
                 self.__volley = volley
@@ -186,11 +186,13 @@ class Drone(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
 
     @validates("ID", "itemID", "chargeID", "amount", "amountActive")
     def validator(self, key, val):
-        map = {"ID": lambda _val: isinstance(_val, int),
-               "itemID": lambda _val: isinstance(_val, int),
-               "chargeID": lambda _val: isinstance(_val, int),
-               "amount": lambda _val: isinstance(_val, int) and _val >= 0,
-               "amountActive": lambda _val: isinstance(_val, int) and self.amount >= _val >= 0}
+        map = {
+            "ID"          : lambda _val: isinstance(_val, int),
+            "itemID"      : lambda _val: isinstance(_val, int),
+            "chargeID"    : lambda _val: isinstance(_val, int),
+            "amount"      : lambda _val: isinstance(_val, int) and _val >= 0,
+            "amountActive": lambda _val: isinstance(_val, int) and self.amount >= _val >= 0
+        }
 
         if not map[key](val):
             raise ValueError(str(val) + " is not a valid value for " + key)
@@ -232,9 +234,9 @@ class Drone(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
 
         for effect in self.item.effects.itervalues():
             if effect.runTime == runTime and \
-                effect.activeByDefault and \
+                    effect.activeByDefault and \
                     ((projected is True and effect.isType("projected")) or
-                        projected is False and effect.isType("passive")):
+                                 projected is False and effect.isType("passive")):
                 # See GH issue #765
                 if effect.getattr('grouped'):
                     effect.handler(fit, self, context)

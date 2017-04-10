@@ -29,5 +29,7 @@ icons_table = Table("icons", gamedata_meta,
                     Column("iconFile", String))
 
 mapper(Icon, icons_table,
-       properties={"ID": synonym("iconID"),
-                   "description": deferred(icons_table.c.description)})
+       properties={
+           "ID"         : synonym("iconID"),
+           "description": deferred(icons_table.c.description)
+       })

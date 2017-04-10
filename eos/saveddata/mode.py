@@ -26,7 +26,7 @@ class Mode(ItemAttrShortcut, HandledItem):
 
         if item.group.name != "Ship Modifiers":
             raise ValueError(
-                'Passed item "%s" (category: (%s)) is not a Ship Modifier' % (item.name, item.category.name))
+                    'Passed item "%s" (category: (%s)) is not a Ship Modifier' % (item.name, item.category.name))
 
         self.__item = item
         self.__itemModifiedAttributes = ModifiedAttributeDict()

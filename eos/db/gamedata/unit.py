@@ -29,5 +29,7 @@ groups_table = Table("dgmunits", gamedata_meta,
                      Column("displayName", String))
 
 mapper(Unit, groups_table,
-       properties={"ID": synonym("unitID"),
-                   "name": synonym("unitName")})
+       properties={
+           "ID"  : synonym("unitID"),
+           "name": synonym("unitName")
+        })

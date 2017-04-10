@@ -176,7 +176,7 @@ def getCharacter(lookfor, eager=None):
         eager = processEager(eager)
         with sd_lock:
             character = saveddata_session.query(Character).options(*eager).filter(
-                Character.savedName == lookfor).first()
+                    Character.savedName == lookfor).first()
     else:
         raise TypeError("Need integer or string as argument")
     return character
@@ -356,12 +356,12 @@ def getDamagePattern(lookfor, eager=None):
             eager = processEager(eager)
             with sd_lock:
                 pattern = saveddata_session.query(DamagePattern).options(*eager).filter(
-                    DamagePattern.ID == lookfor).first()
+                        DamagePattern.ID == lookfor).first()
     elif isinstance(lookfor, basestring):
         eager = processEager(eager)
         with sd_lock:
             pattern = saveddata_session.query(DamagePattern).options(*eager).filter(
-                DamagePattern.name == lookfor).first()
+                    DamagePattern.name == lookfor).first()
     else:
         raise TypeError("Need integer or string as argument")
     return pattern
@@ -377,12 +377,12 @@ def getTargetResists(lookfor, eager=None):
             eager = processEager(eager)
             with sd_lock:
                 pattern = saveddata_session.query(TargetResists).options(*eager).filter(
-                    TargetResists.ID == lookfor).first()
+                        TargetResists.ID == lookfor).first()
     elif isinstance(lookfor, basestring):
         eager = processEager(eager)
         with sd_lock:
             pattern = saveddata_session.query(TargetResists).options(*eager).filter(
-                TargetResists.name == lookfor).first()
+                    TargetResists.name == lookfor).first()
     else:
         raise TypeError("Need integer or string as argument")
     return pattern
@@ -398,7 +398,7 @@ def getImplantSet(lookfor, eager=None):
             eager = processEager(eager)
             with sd_lock:
                 pattern = saveddata_session.query(ImplantSet).options(*eager).filter(
-                    TargetResists.ID == lookfor).first()
+                        TargetResists.ID == lookfor).first()
     elif isinstance(lookfor, basestring):
         eager = processEager(eager)
         with sd_lock:

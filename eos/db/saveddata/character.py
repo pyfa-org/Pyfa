@@ -44,22 +44,22 @@ characters_table = Table("characters", saveddata_meta,
 mapper(Character, characters_table,
        properties={
            "_Character__alphaCloneID": characters_table.c.alphaCloneID,
-           "savedName": characters_table.c.name,
-           "_Character__owner": relation(
-               User,
-               backref="characters"),
-           "_Character__skills": relation(
-               Skill,
-               backref="character",
-               cascade="all,delete-orphan"),
-           "_Character__implants": relation(
-               Implant,
-               collection_class=HandledImplantBoosterList,
-               cascade='all,delete-orphan',
-               backref='character',
-               single_parent=True,
-               primaryjoin=charImplants_table.c.charID == characters_table.c.ID,
-               secondaryjoin=charImplants_table.c.implantID == Implant.ID,
-               secondary=charImplants_table),
+           "savedName"               : characters_table.c.name,
+           "_Character__owner"       : relation(
+                   User,
+                   backref="characters"),
+           "_Character__skills"      : relation(
+                   Skill,
+                   backref="character",
+                   cascade="all,delete-orphan"),
+           "_Character__implants"    : relation(
+                   Implant,
+                   collection_class=HandledImplantBoosterList,
+                   cascade='all,delete-orphan',
+                   backref='character',
+                   single_parent=True,
+                   primaryjoin=charImplants_table.c.charID == characters_table.c.ID,
+                   secondaryjoin=charImplants_table.c.implantID == Implant.ID,
+                   secondary=charImplants_table),
        }
        )

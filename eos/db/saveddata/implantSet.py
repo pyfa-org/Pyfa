@@ -37,13 +37,13 @@ implant_set_table = Table("implantSets", saveddata_meta,
 mapper(ImplantSet, implant_set_table,
        properties={
            "_ImplantSet__implants": relation(
-               Implant,
-               collection_class=HandledImplantBoosterList,
-               cascade='all, delete, delete-orphan',
-               backref='set',
-               single_parent=True,
-               primaryjoin=implantsSetMap_table.c.setID == implant_set_table.c.ID,
-               secondaryjoin=implantsSetMap_table.c.implantID == Implant.ID,
-               secondary=implantsSetMap_table),
+                   Implant,
+                   collection_class=HandledImplantBoosterList,
+                   cascade='all, delete, delete-orphan',
+                   backref='set',
+                   single_parent=True,
+                   primaryjoin=implantsSetMap_table.c.setID == implant_set_table.c.ID,
+                   secondaryjoin=implantsSetMap_table.c.implantID == Implant.ID,
+                   secondary=implantsSetMap_table),
        }
        )

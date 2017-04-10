@@ -45,11 +45,11 @@ fighter_abilities_table = Table("fightersAbilities", saveddata_meta,
 
 mapper(Fighter, fighters_table,
        properties={
-           "owner": relation(Fit),
+           "owner"              : relation(Fit),
            "_Fighter__abilities": relation(
-               FighterAbility,
-               backref="fighter",
-               cascade='all, delete, delete-orphan'),
+                   FighterAbility,
+                   backref="fighter",
+                   cascade='all, delete, delete-orphan'),
        })
 
 mapper(FighterAbility, fighter_abilities_table)
