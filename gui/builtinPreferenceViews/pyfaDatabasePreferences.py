@@ -76,7 +76,7 @@ class PFGeneralPref(PreferenceView):
         self.m_staticline2 = wx.StaticLine(panel, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.LI_HORIZONTAL)
         mainSizer.Add(self.m_staticline2, 0, wx.EXPAND | wx.TOP | wx.BOTTOM, 5)
 
-        self.stSubTitleTwo = wx.StaticText(panel, wx.ID_ANY, u"(DANGER ZONE!\nUsing these options will permanantly delete data out of the database.)",
+        self.stSubTitleTwo = wx.StaticText(panel, wx.ID_ANY, u"DANGER ZONE!\nUsing these options will permanantly delete data out of the database.",
                                         wx.DefaultPosition, wx.DefaultSize, 0)
         self.stSubTitleTwo.Wrap(-1)
         mainSizer.Add(self.stSubTitleTwo, 0, wx.ALL, 3)
