@@ -200,6 +200,10 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
             return self.owner.modules.index(self)
 
     @property
+    def isCapitalSize(self):
+        return self.getModifiedItemAttr("volume", 0) >= 4000
+
+    @property
     def hpBeforeReload(self):
         """
         If item is some kind of repairer with charges, calculate
@@ -416,6 +420,11 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
         # AFAIK Citadel modules will always be restricted based on canFitShipType/Group. If we are fitting to a Citadel
         # and the module does not have these properties, return false to prevent regular ship modules from being used
         if isinstance(fit.ship, Citadel) and len(fitsOnGroup) == 0 and len(fitsOnType) == 0:
+            return False
+
+        # EVE doesn't let capital modules be fit onto subcapital hulls. Confirmed by CCP Larrikin that this is dictated
+        # by the modules volume. See GH issue #1096
+        if (fit.ship.getModifiedItemAttr("isCapitalSize", 0) != 1 and self.isCapitalSize):
             return False
 
         # If the mod is a subsystem, don't let two subs in the same slot fit

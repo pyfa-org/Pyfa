@@ -46,36 +46,61 @@ class SettingsProvider(object):
             if not os.path.exists(self.BASE_PATH):
                 os.mkdir(self.BASE_PATH)
 
+    # def getSettings(self, area, defaults=None):
+    #     # type: (basestring, dict) -> service.Settings
+    #     # NOTE: needed to change for tests
+    #     settings_obj = self.settings.get(area)
+    #
+    #     if settings_obj is None and hasattr(self, 'BASE_PATH'):
+    #         canonical_path = os.path.join(self.BASE_PATH, area)
+    #
+    #         if not os.path.exists(canonical_path):
+    #             info = {}
+    #             if defaults:
+    #                 for item in defaults:
+    #                     info[item] = defaults[item]
+    #
+    #         else:
+    #             try:
+    #                 f = open(canonical_path, "rb")
+    #                 info = cPickle.load(f)
+    #                 for item in defaults:
+    #                     if item not in info:
+    #                         info[item] = defaults[item]
+    #
+    #             except:
+    #                 info = {}
+    #                 if defaults:
+    #                     for item in defaults:
+    #                         info[item] = defaults[item]
+    #
+    #         self.settings[area] = settings_obj = Settings(canonical_path, info)
+    #
+    #     return settings_obj
     def getSettings(self, area, defaults=None):
-
-        s = self.settings.get(area)
-
-        if s is None and hasattr(self, 'BASE_PATH'):
-            p = os.path.join(self.BASE_PATH, area)
-
-            if not os.path.exists(p):
+        # type: (basestring, dict) -> service.Settings
+        # NOTE: needed to change for tests
+        # TODO: Write to memory with mmap -> https://docs.python.org/2/library/mmap.html
+        settings_obj = self.settings.get(area)
+        if settings_obj is None:  # and hasattr(self, 'BASE_PATH'):
+            canonical_path = os.path.join(self.BASE_PATH, area) if hasattr(self, 'BASE_PATH') else ""
+            if not os.path.exists(canonical_path):  # path string or empty string.
                 info = {}
                 if defaults:
-                    for item in defaults:
-                        info[item] = defaults[item]
-
+                    info.update(defaults)
             else:
                 try:
-                    f = open(p, "rb")
-                    info = cPickle.load(f)
+                    with open(canonical_path, "rb") as f:
+                        info = cPickle.load(f)
                     for item in defaults:
                         if item not in info:
                             info[item] = defaults[item]
-
                 except:
                     info = {}
-                    if defaults:
-                        for item in defaults:
-                            info[item] = defaults[item]
+                    info.update(defaults)
 
-            self.settings[area] = s = Settings(p, info)
-
-        return s
+            self.settings[area] = settings_obj = Settings(canonical_path, info)
+        return settings_obj
 
     def saveAll(self):
         for settings in self.settings.itervalues():
@@ -84,12 +109,22 @@ class SettingsProvider(object):
 
 class Settings(object):
     def __init__(self, location, info):
+        # type: (basestring, dict) -> None
+        # path string or empty string.
         self.location = location
         self.info = info
 
+    # def save(self):
+    #     f = open(self.location, "wb")
+    #     cPickle.dump(self.info, f, cPickle.HIGHEST_PROTOCOL)
+
     def save(self):
-        f = open(self.location, "wb")
-        cPickle.dump(self.info, f, cPickle.HIGHEST_PROTOCOL)
+        # NOTE: needed to change for tests
+        if self.location is None or not self.location:
+            return
+        # NOTE: with + open -> file handle auto close
+        with open(self.location, "wb") as f:
+            cPickle.dump(self.info, f, cPickle.HIGHEST_PROTOCOL)
 
     def __getitem__(self, k):
         try:
