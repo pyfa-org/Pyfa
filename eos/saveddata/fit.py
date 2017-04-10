@@ -32,7 +32,6 @@ from eos.saveddata.ship import Ship
 from eos.saveddata.character import Character
 from eos.saveddata.citadel import Citadel
 from eos.saveddata.module import Module, State, Slot, Hardpoint
-from utils.timer import Timer
 from logbook import Logger
 
 pyfalog = Logger(__name__)
@@ -459,7 +458,7 @@ class Fit(object):
             self.commandBonuses[warfareBuffID] = (runTime, value, module, effect)
 
     def __runCommandBoosts(self, runTime="normal"):
-        pyfalog.debug("Applying gang boosts for {0}", self)
+        pyfalog.debug("Applying gang boosts for {0}", self.ID)
         for warfareBuffID in self.commandBonuses.keys():
             # Unpack all data required to run effect properly
             effect_runTime, value, thing, effect = self.commandBonuses[warfareBuffID]
@@ -638,13 +637,12 @@ class Fit(object):
 
             del self.commandBonuses[warfareBuffID]
 
-    def calculateModifiedAttributes(self, targetFit=None, withBoosters=False, dirtyStorage=None):
-        timer = Timer(u'Fit: {}, {}'.format(self.ID, self.name), pyfalog)
+    def calculateModifiedAttributes(self, targetFit=None, withBoosters=False):
         pyfalog.debug("Starting fit calculation on: {0}, withBoosters: {1}", self, withBoosters)
 
         shadow = False
         if targetFit and not withBoosters:
-            pyfalog.debug("Applying projections to target: {0}", targetFit)
+            pyfalog.debug("Calculating projections from {0} to target {1}", self.name, targetFit.name)
             projectionInfo = self.getProjectionInfo(targetFit.ID)
             pyfalog.debug("ProjectionInfo: {0}", projectionInfo)
             if self == targetFit:
@@ -693,6 +691,7 @@ class Fit(object):
             return
 
         for runTime in ("early", "normal", "late"):
+            pyfalog.debug("Run time: {0}", runTime)
             # Items that are unrestricted. These items are run on the local fit
             # first and then projected onto the target fit it one is designated
             u = [
@@ -751,8 +750,6 @@ class Fit(object):
                             targetFit.register(item, origin=self)
                             item.calculateModifiedAttributes(targetFit, runTime, True)
 
-            timer.checkpoint('Done with runtime: %s' % runTime)
-
         # Mark fit as calculated
         self.__calculated = True
 
@@ -760,13 +757,13 @@ class Fit(object):
         if not projected and not withBoosters:
             for fit in self.projectedFits:
                 if fit.getProjectionInfo(self.ID).active:
-                    fit.calculateModifiedAttributes(self, withBoosters=withBoosters, dirtyStorage=dirtyStorage)
-
-        timer.checkpoint('Done with fit calculation')
+                    fit.calculateModifiedAttributes(self, withBoosters=withBoosters)
 
         if shadow:
             pyfalog.debug("Delete shadow fit object")
             del self
+
+        pyfalog.debug('Done with fit calculation')
 
     def fill(self):
         """
