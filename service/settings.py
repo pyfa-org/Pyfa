@@ -29,7 +29,8 @@ pyfalog = Logger(__name__)
 
 
 class SettingsProvider(object):
-    BASE_PATH = os.path.join(config.savePath, 'settings')
+    if config.savePath:
+        BASE_PATH = os.path.join(config.savePath, 'settings')
     settings = {}
     _instance = None
 
@@ -41,13 +42,15 @@ class SettingsProvider(object):
         return cls._instance
 
     def __init__(self):
-        if not os.path.exists(self.BASE_PATH):
-            os.mkdir(self.BASE_PATH)
+        if hasattr(self, 'BASE_PATH'):
+            if not os.path.exists(self.BASE_PATH):
+                os.mkdir(self.BASE_PATH)
 
     def getSettings(self, area, defaults=None):
 
         s = self.settings.get(area)
-        if s is None:
+
+        if s is None and hasattr(self, 'BASE_PATH'):
             p = os.path.join(self.BASE_PATH, area)
 
             if not os.path.exists(p):
