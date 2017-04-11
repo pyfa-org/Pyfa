@@ -4,7 +4,7 @@ from gui.preferenceView import PreferenceView
 from gui.bitmapLoader import BitmapLoader
 from gui.utils import helpers_wxPython as wxHelpers
 import config
-from eos.db.saveddata.queries import getTargetResistsList, getDamagePatternList, clearPrices, remove
+from eos.db.saveddata.queries import clearPrices, remove, clearDamagePatterns, clearTargetResists
 from eos.db.saveddata.loadDefaultDatabaseValues import DefaultDatabaseValues
 
 import logging
@@ -107,21 +107,17 @@ class PFGeneralPref(PreferenceView):
 
     def DeleteDamagePatterns(self, event):
         question = u"This is a destructive action that will delete all damage pattern profiles.\nAre you sure you want to do this?"
-        if wxHelpers.YesNoDialog(question):
-            for damage_pattern in getDamagePatternList():
-                remove(damage_pattern)
-                DefaultDatabaseValues.importRequiredDefaults()
+        if wxHelpers.YesNoDialog(question, "Confirm"):
+            clearDamagePatterns()
 
     def DeleteTargetResists(self, event):
         question = u"This is a destructive action that will delete all target resist profiles.\nAre you sure you want to do this?"
-        if wxHelpers.YesNoDialog(question):
-            for target_resist in getTargetResistsList():
-                remove(target_resist)
-                DefaultDatabaseValues.importRequiredDefaults()
+        if wxHelpers.YesNoDialog(question, "Confirm"):
+            clearTargetResists()
 
     def DeletePrices(self, event):
         question = u"This is a destructive action that will delete all cached prices out of the database.\nAre you sure you want to do this?"
-        if wxHelpers.YesNoDialog(question):
+        if wxHelpers.YesNoDialog(question, "Confirm"):
             clearPrices()
 
     def onCBsaveInRoot(self, event):
