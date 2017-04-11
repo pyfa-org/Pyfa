@@ -16,7 +16,7 @@ class PriceClear(ContextMenu):
         if not self.settings.get('priceClear'):
             return False
 
-        return srcContext == "priceViewFull"
+        return srcContext in ("priceViewFull", "priceViewMinimal")
 
     def getText(self, itmContext, selection):
         return "Reset Price Cache"
