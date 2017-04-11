@@ -27,7 +27,9 @@ from eos import config
 from logbook import Logger
 
 pyfalog = Logger(__name__)
-
+pyfalog.info("Initializing database")
+pyfalog.info("Gamedata connection: {0}", config.gamedata_connectionstring)
+pyfalog.info("Saveddata connection: {0}", config.saveddata_connectionstring)
 
 class ReadOnlyException(Exception):
     pass
@@ -86,8 +88,10 @@ from eos.db.saveddata.queries import *
 # If using in memory saveddata, you'll want to reflect it so the data structure is good.
 if config.saveddata_connectionstring == "sqlite:///:memory:":
     saveddata_meta.create_all()
+    pyfalog.info("Running database out of memory.")
 
 
 def rollback():
     with sd_lock:
+        pyfalog.warning("Session rollback triggered.")
         saveddata_session.rollback()
