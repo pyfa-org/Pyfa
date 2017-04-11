@@ -4,8 +4,7 @@ from gui.preferenceView import PreferenceView
 from gui.bitmapLoader import BitmapLoader
 from gui.utils import helpers_wxPython as wxHelpers
 import config
-from eos.db.saveddata.queries import clearPrices, remove, clearDamagePatterns, clearTargetResists
-from eos.db.saveddata.loadDefaultDatabaseValues import DefaultDatabaseValues
+from eos.db.saveddata.queries import clearPrices, clearDamagePatterns, clearTargetResists
 
 import logging
 
