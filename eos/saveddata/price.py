@@ -21,6 +21,9 @@
 import time
 
 from sqlalchemy.orm import reconstructor
+from logbook import Logger
+
+pyfalog = Logger(__name__)
 
 
 class Price(object):
@@ -29,7 +32,6 @@ class Price(object):
         self.time = 0
         self.price = 0
         self.failed = None
-        self.__item = None
 
     @reconstructor
     def init(self):
