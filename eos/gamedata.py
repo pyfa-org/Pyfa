@@ -452,7 +452,7 @@ class Item(EqBase):
             db_price = eos.db.getPrice(self.ID)
             # do not yet have a price in the database for this item, create one
             if db_price is None:
-                print "Creating a price for {}".format(self.ID)
+                pyfalog.debug("Creating a price for {}".format(self.ID))
                 self.__price = types_Price(self.ID)
                 eos.db.add(self.__price)
                 eos.db.commit()
