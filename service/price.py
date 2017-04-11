@@ -34,7 +34,7 @@ from service.market import Market
 pyfalog = Logger(__name__)
 
 
-VALIDITY = 24 * 60 * 60  # Price validity period, 24 hours
+VALIDITY = 60  # Price validity period, 24 hours
 REREQUEST = 4 * 60 * 60  # Re-request delay for failed fetches, 4 hours
 TIMEOUT = 15 * 60  # Network timeout delay for connection issues, 15 minutes
 
@@ -128,7 +128,6 @@ class Price(object):
                 priceobj.failed = None
 
                 # Update the DB.
-                db.add(priceobj)
                 db.commit()
 
                 # delete price from working dict
@@ -144,7 +143,6 @@ class Price(object):
                 priceobj.failed = True
 
                 # Update the DB.
-                db.add(priceobj)
                 db.commit()
 
                 del priceMap[typeID]
@@ -160,7 +158,6 @@ class Price(object):
             priceobj.failed = True
 
             # Update the DB.
-            db.add(priceobj)
             db.commit()
 
     @classmethod
@@ -216,6 +213,10 @@ class Price(object):
             self.priceWorkerThread.setToWait(requests, cb)
         else:
             self.priceWorkerThread.trigger(requests, cb)
+
+    def clearPriceCache(self):
+        pyfalog.debug("Clearing Prices")
+        db.clearPrices()
 
 
 class PriceWorkerThread(threading.Thread):
