@@ -1,5 +1,6 @@
 # noinspection PyPackageRequirements
 import wx
+from wx.lib.intctrl import IntCtrl
 
 from gui.preferenceView import PreferenceView
 from gui.bitmapLoader import BitmapLoader
@@ -92,6 +93,20 @@ class PFGeneralPref(PreferenceView):
 
         mainSizer.Add(priceSizer, 0, wx.ALL | wx.EXPAND, 0)
 
+        delayTimer = wx.BoxSizer(wx.HORIZONTAL)
+
+        self.stMarketDelay = wx.StaticText(panel, wx.ID_ANY, u"Market Search Delay (ms):", wx.DefaultPosition, wx.DefaultSize, 0)
+        self.stMarketDelay.Wrap(-1)
+        self.stMarketDelay.SetToolTip(
+            wx.ToolTip('The delay between a keystroke and the market search. Can help reduce lag when typing fast in the market search box.'))
+
+        delayTimer.Add(self.stMarketDelay, 0, wx.ALL | wx.ALIGN_CENTER_VERTICAL, 5)
+
+        self.intDelay = IntCtrl(panel, max=1000, limited=True)
+        delayTimer.Add(self.intDelay, 0, wx.ALL, 5)
+
+        mainSizer.Add(delayTimer, 0, wx.ALL | wx.EXPAND, 0)
+
         self.sFit = Fit.getInstance()
 
         self.cbGlobalChar.SetValue(self.sFit.serviceFittingOptions["useGlobalCharacter"])
@@ -108,6 +123,7 @@ class PFGeneralPref(PreferenceView):
         self.cbOpenFitInNew.SetValue(self.sFit.serviceFittingOptions["openFitInNew"])
         self.chPriceSystem.SetStringSelection(self.sFit.serviceFittingOptions["priceSystem"])
         self.cbShowShipBrowserTooltip.SetValue(self.sFit.serviceFittingOptions["showShipBrowserTooltip"])
+        self.intDelay.SetValue(self.sFit.serviceFittingOptions["marketSearchDelay"])
 
         self.cbGlobalChar.Bind(wx.EVT_CHECKBOX, self.OnCBGlobalCharStateChange)
         self.cbGlobalDmgPattern.Bind(wx.EVT_CHECKBOX, self.OnCBGlobalDmgPatternStateChange)
@@ -123,11 +139,16 @@ class PFGeneralPref(PreferenceView):
         self.cbOpenFitInNew.Bind(wx.EVT_CHECKBOX, self.onCBOpenFitInNew)
         self.chPriceSystem.Bind(wx.EVT_CHOICE, self.onPriceSelection)
         self.cbShowShipBrowserTooltip.Bind(wx.EVT_CHECKBOX, self.onCBShowShipBrowserTooltip)
+        self.intDelay.Bind(wx.lib.intctrl.EVT_INT, self.onMarketDelayChange)
 
         self.cbRackLabels.Enable(self.sFit.serviceFittingOptions["rackSlots"] or False)
 
         panel.SetSizer(mainSizer)
         panel.Layout()
+
+    def onMarketDelayChange(self, event):
+        self.sFit.serviceFittingOptions["marketSearchDelay"] = self.intDelay.GetValue()
+        event.Skip()
 
     def onCBGlobalColorBySlot(self, event):
         self.sFit.serviceFittingOptions["colorFitBySlot"] = self.cbFitColorSlots.GetValue()

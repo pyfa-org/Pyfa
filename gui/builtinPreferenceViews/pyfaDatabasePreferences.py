@@ -72,14 +72,6 @@ class PFGeneralPref(PreferenceView):
         # self.inputFitDB.Bind(wx.EVT_LEAVE_WINDOW, self.OnWindowLeave)
         # self.inputGameDB.Bind(wx.EVT_LEAVE_WINDOW, self.OnWindowLeave)
 
-        self.m_staticline2 = wx.StaticLine(panel, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.LI_HORIZONTAL)
-        mainSizer.Add(self.m_staticline2, 0, wx.EXPAND | wx.TOP | wx.BOTTOM, 5)
-
-        self.stSubTitleTwo = wx.StaticText(panel, wx.ID_ANY, u"DANGER ZONE!\nUsing these options will permanantly delete data out of the database.",
-                                        wx.DefaultPosition, wx.DefaultSize, 0)
-        self.stSubTitleTwo.Wrap(-1)
-        mainSizer.Add(self.stSubTitleTwo, 0, wx.ALL, 3)
-
         self.m_staticline3 = wx.StaticLine(panel, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.LI_HORIZONTAL)
         mainSizer.Add(self.m_staticline3, 0, wx.EXPAND | wx.TOP | wx.BOTTOM, 5)
 
