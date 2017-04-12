@@ -206,4 +206,5 @@ from gui.builtinContextMenus import (  # noqa: E402,F401
     implantSets,
     fighterAbilities,
     commandFits,
+    tabbedFits
 )
