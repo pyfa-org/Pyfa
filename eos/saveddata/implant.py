@@ -99,9 +99,11 @@ class Implant(HandledItem, ItemAttrShortcut):
 
     @validates("fitID", "itemID", "active")
     def validator(self, key, val):
-        map = {"fitID": lambda _val: isinstance(_val, int),
-               "itemID": lambda _val: isinstance(_val, int),
-               "active": lambda _val: isinstance(_val, bool)}
+        map = {
+            "fitID" : lambda _val: isinstance(_val, int),
+            "itemID": lambda _val: isinstance(_val, int),
+            "active": lambda _val: isinstance(_val, bool)
+        }
 
         if not map[key](val):
             raise ValueError(str(val) + " is not a valid value for " + key)
@@ -115,5 +117,5 @@ class Implant(HandledItem, ItemAttrShortcut):
 
     def __repr__(self):
         return "Implant(ID={}, name={}) at {}".format(
-            self.item.ID, self.item.name, hex(id(self))
+                self.item.ID, self.item.name, hex(id(self))
         )

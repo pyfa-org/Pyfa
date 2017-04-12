@@ -168,7 +168,7 @@ class DatabaseCleanup(object):
         for table in ['drones', 'cargo', 'fighters']:
             pyfalog.debug("Running database cleanup for orphaned {0} items.", table)
             query = "SELECT COUNT(*) AS num FROM {} WHERE itemID IS NULL OR itemID = '' or itemID = '0' or fitID IS NULL OR fitID = '' or fitID = '0'".format(
-                table)
+                    table)
             results = DatabaseCleanup.ExecuteSQLQuery(saveddata_engine, query)
 
             if results is None:
@@ -178,14 +178,14 @@ class DatabaseCleanup(object):
 
             if row and row['num']:
                 query = "DELETE FROM {} WHERE itemID IS NULL OR itemID = '' or itemID = '0' or fitID IS NULL OR fitID = '' or fitID = '0'".format(
-                    table)
+                        table)
                 delete = DatabaseCleanup.ExecuteSQLQuery(saveddata_engine, query)
                 pyfalog.error("Database corruption found. Cleaning up {0} records.", delete.rowcount)
 
         for table in ['modules']:
             pyfalog.debug("Running database cleanup for orphaned {0} items.", table)
             query = "SELECT COUNT(*) AS num FROM {} WHERE itemID = '0' or fitID IS NULL OR fitID = '' or fitID = '0'".format(
-                table)
+                    table)
             results = DatabaseCleanup.ExecuteSQLQuery(saveddata_engine, query)
 
             if results is None:
@@ -216,7 +216,7 @@ class DatabaseCleanup(object):
 
                 if row and row['num']:
                     query = "UPDATE '{0}' SET '{1}Amount' = '0' WHERE {1}Amount IS NULL OR {1}Amount = ''".format(profileType,
-                                                                                                               damageType)
+                                                                                                                  damageType)
                     delete = DatabaseCleanup.ExecuteSQLQuery(saveddata_engine, query)
                     pyfalog.error("Database corruption found. Cleaning up {0} records.", delete.rowcount)
 

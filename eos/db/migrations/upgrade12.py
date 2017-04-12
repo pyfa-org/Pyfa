@@ -13,26 +13,26 @@ CONVERSIONS = {
         16461,  # Multiphasic Bolt Array I
         16463,  # 'Pandemonium' Ballistic Enhancement
     ),
-    5281: (  # Coadjunct Scoped Remote Sensor Booster
+    5281 : (  # Coadjunct Scoped Remote Sensor Booster
         7218,  # Piercing ECCM Emitter I
     ),
-    5365: (  # Cetus Scoped Burst Jammer
+    5365 : (  # Cetus Scoped Burst Jammer
         5359,  # 1Z-3 Subversive ECM Eruption
     ),
-    1973: (  # Sensor Booster I
+    1973 : (  # Sensor Booster I
         1947,  # ECCM - Radar I
         2002,  # ECCM - Ladar I
         2003,  # ECCM - Magnetometric I
         2004,  # ECCM - Gravimetric I
         2005,  # ECCM - Omni I
     ),
-    1951: (  # 'Basic' Tracking Enhancer
+    1951 : (  # 'Basic' Tracking Enhancer
         6322,  # Beta-Nought Tracking Mode
         6323,  # Azimuth Descalloping Tracking Enhancer
         6324,  # F-AQ Delay-Line Scan Tracking Subroutines
         6321,  # Beam Parallax Tracking Program
     ),
-    521: (  # 'Basic' Damage Control
+    521  : (  # 'Basic' Damage Control
         5829,  # GLFF Containment Field
         5831,  # Interior Force Field Array
         5835,  # F84 Local Damage System
@@ -42,13 +42,13 @@ CONVERSIONS = {
         22939,  # 'Boss' Remote Sensor Booster
         22941,  # 'Entrepreneur' Remote Sensor Booster
     ),
-    5443: (  # Faint Epsilon Scoped Warp Scrambler
+    5443 : (  # Faint Epsilon Scoped Warp Scrambler
         5441,  # Fleeting Progressive Warp Scrambler I
     ),
-    1963: (  # Remote Sensor Booster I
+    1963 : (  # Remote Sensor Booster I
         1959,  # ECCM Projector I
     ),
-    6325: (  # Fourier Compact Tracking Enhancer
+    6325 : (  # Fourier Compact Tracking Enhancer
         6326,  # Sigma-Nought Tracking Mode I
         6327,  # Auto-Gain Control Tracking Enhancer I
         6328,  # F-aQ Phase Code Tracking Subroutines
@@ -68,19 +68,19 @@ CONVERSIONS = {
     22919: (  # 'Monopoly' Magnetic Field Stabilizer
         22917,  # 'Capitalist' Magnetic Field Stabilizer I
     ),
-    5839: (  # IFFA Compact Damage Control
+    5839 : (  # IFFA Compact Damage Control
         5841,  # Emergency Damage Control I
         5843,  # F85 Peripheral Damage System I
         5837,  # Pseudoelectron Containment Field I
     ),
-    522: (  # 'Micro' Cap Battery
+    522  : (  # 'Micro' Cap Battery
         4747,  # Micro Ld-Acid Capacitor Battery I
         4751,  # Micro Ohm Capacitor Reserve I
         4745,  # Micro F-4a Ld-Sulfate Capacitor Charge Unit
         4749,  # Micro Peroxide Capacitor Power Cell
         3480,  # Micro Capacitor Battery II
     ),
-    518: (  # 'Basic' Gyrostabilizer
+    518  : (  # 'Basic' Gyrostabilizer
         5915,  # Lateral Gyrostabilizer
         5919,  # F-M2 Weapon Inertial Suspensor
         5913,  # Hydraulic Stabilization Actuator
@@ -89,19 +89,19 @@ CONVERSIONS = {
     19931: (  # Compulsive Scoped Multispectral ECM
         19933,  # 'Hypnos' Multispectral ECM I
     ),
-    5403: (  # Faint Scoped Warp Disruptor
+    5403 : (  # Faint Scoped Warp Disruptor
         5401,  # Fleeting Warp Disruptor I
     ),
     23902: (  # 'Trebuchet' Heat Sink I
         23900,  # 'Mangonel' Heat Sink I
     ),
-    1893: (  # 'Basic' Heat Sink
+    1893 : (  # 'Basic' Heat Sink
         5845,  # Heat Exhaust System
         5856,  # C3S Convection Thermal Radiator
         5855,  # 'Boreas' Coolant System
         5854,  # Stamped Heat Sink
     ),
-    6160: (  # F-90 Compact Sensor Booster
+    6160 : (  # F-90 Compact Sensor Booster
         20214,  # Extra Radar ECCM Scanning Array I
         20220,  # Extra Ladar ECCM Scanning Array I
         20226,  # Extra Gravimetric ECCM Scanning Array I
@@ -123,40 +123,40 @@ CONVERSIONS = {
     19952: (  # Umbra Scoped Radar ECM
         9520,  # 'Penumbra' White Noise ECM
     ),
-    1952: (  # Sensor Booster II
+    1952 : (  # Sensor Booster II
         2258,  # ECCM - Omni II
         2259,  # ECCM - Gravimetric II
         2260,  # ECCM - Ladar II
         2261,  # ECCM - Magnetometric II
         2262,  # ECCM - Radar II
     ),
-    5282: (  # Linked Enduring Sensor Booster
+    5282 : (  # Linked Enduring Sensor Booster
         7219,  # Scattering ECCM Projector I
     ),
-    1986: (  # Signal Amplifier I
+    1986 : (  # Signal Amplifier I
         2579,  # Gravimetric Backup Array I
         2583,  # Ladar Backup Array I
         2587,  # Magnetometric Backup Array I
         2591,  # Multi Sensor Backup Array I
         4013,  # RADAR Backup Array I
     ),
-    4871: (  # Large Compact Pb-Acid Cap Battery
+    4871 : (  # Large Compact Pb-Acid Cap Battery
         4875,  # Large Ohm Capacitor Reserve I
         4869,  # Large F-4a Ld-Sulfate Capacitor Charge Unit
         4873,  # Large Peroxide Capacitor Power Cell
     ),
-    1964: (  # Remote Sensor Booster II
+    1964 : (  # Remote Sensor Booster II
         1960,  # ECCM Projector II
     ),
-    5933: (  # Counterbalanced Compact Gyrostabilizer
+    5933 : (  # Counterbalanced Compact Gyrostabilizer
         5931,  # Cross-Lateral Gyrostabilizer I
         5935,  # F-M3 Munition Inertial Suspensor
         5929,  # Pneumatic Stabilization Actuator I
     ),
-    4025: (  # X5 Enduring Stasis Webifier
+    4025 : (  # X5 Enduring Stasis Webifier
         4029,  # 'Langour' Drive Disruptor I
     ),
-    4027: (  # Fleeting Compact Stasis Webifier
+    4027 : (  # Fleeting Compact Stasis Webifier
         4031,  # Patterned Stasis Web I
     ),
     22937: (  # 'Enterprise' Remote Tracking Computer
@@ -165,7 +165,7 @@ CONVERSIONS = {
     22929: (  # 'Marketeer' Tracking Computer
         22927,  # 'Economist' Tracking Computer I
     ),
-    1987: (  # Signal Amplifier II
+    1987 : (  # Signal Amplifier II
         2580,  # Gravimetric Backup Array II
         2584,  # Ladar Backup Array II
         2588,  # Magnetometric Backup Array II
@@ -175,13 +175,13 @@ CONVERSIONS = {
     19939: (  # Enfeebling Scoped Ladar ECM
         9522,  # Faint Phase Inversion ECM I
     ),
-    5340: (  # P-S Compact Remote Tracking Computer
+    5340 : (  # P-S Compact Remote Tracking Computer
         5341,  # 'Prayer' Remote Tracking Computer
     ),
     19814: (  # Phased Scoped Target Painter
         19808,  # Partial Weapon Navigation
     ),
-    1949: (  # 'Basic' Signal Amplifier
+    1949 : (  # 'Basic' Signal Amplifier
         1946,  # Basic RADAR Backup Array
         1982,  # Basic Ladar Backup Array
         1983,  # Basic Gravimetric Backup Array
@@ -222,10 +222,10 @@ CONVERSIONS = {
     23416: (  # 'Peace' Large Remote Armor Repairer
         None,  # 'Pacifier' Large Remote Armor Repairer
     ),
-    6176: (  # F-12 Enduring Tracking Computer
+    6176 : (  # F-12 Enduring Tracking Computer
         6174,  # Monopulse Tracking Mechanism I
     ),
-    6159: (  # Alumel-Wired Enduring Sensor Booster
+    6159 : (  # Alumel-Wired Enduring Sensor Booster
         7917,  # Alumel Radar ECCM Sensor Array I
         7918,  # Alumel Ladar ECCM Sensor Array I
         7922,  # Alumel Gravimetric ECCM Sensor Array I
@@ -247,7 +247,7 @@ CONVERSIONS = {
         7914,  # Prototype ECCM Magnetometric Sensor Cluster
         6158,  # Prototype Sensor Booster
     ),
-    5849: (  # Extruded Compact Heat Sink
+    5849 : (  # Extruded Compact Heat Sink
         5846,  # Thermal Exhaust System I
         5858,  # C4S Coiled Circuit Thermal Radiator
         5857,  # 'Skadi' Coolant System I
@@ -263,15 +263,15 @@ CONVERSIONS = {
     22945: (  # 'Executive' Remote Sensor Dampener
         22943,  # 'Broker' Remote Sensor Dampener I
     ),
-    6173: (  # Optical Compact Tracking Computer
+    6173 : (  # Optical Compact Tracking Computer
         6175,  # 'Orion' Tracking CPU I
     ),
-    5279: (  # F-23 Compact Remote Sensor Booster
+    5279 : (  # F-23 Compact Remote Sensor Booster
         7217,  # Spot Pulsing ECCM I
         7220,  # Phased Muon ECCM Caster I
         5280,  # Connected Remote Sensor Booster
     ),
-    4787: (  # Small Compact Pb-Acid Cap Battery
+    4787 : (  # Small Compact Pb-Acid Cap Battery
         4791,  # Small Ohm Capacitor Reserve I
         4785,  # Small F-4a Ld-Sulfate Capacitor Charge Unit
         4789,  # Small Peroxide Capacitor Power Cell
@@ -279,7 +279,7 @@ CONVERSIONS = {
     19946: (  # BZ-5 Scoped Gravimetric ECM
         9519,  # FZ-3 Subversive Spatial Destabilizer ECM
     ),
-    6073: (  # Medium Compact Pb-Acid Cap Battery
+    6073 : (  # Medium Compact Pb-Acid Cap Battery
         6097,  # Medium Ohm Capacitor Reserve I
         6111,  # Medium F-4a Ld-Sulfate Capacitor Charge Unit
         6083,  # Medium Peroxide Capacitor Power Cell
@@ -287,7 +287,7 @@ CONVERSIONS = {
     21484: (  # 'Full Duplex' Ballistic Control System
         21482,  # Ballistic 'Purge' Targeting System I
     ),
-    6296: (  # F-89 Compact Signal Amplifier
+    6296 : (  # F-89 Compact Signal Amplifier
         6218,  # Protected Gravimetric Backup Cluster I
         6222,  # Protected Ladar Backup Cluster I
         6226,  # Protected Magnetometric Backup Cluster I
@@ -324,7 +324,7 @@ CONVERSIONS = {
         6293,  # Wavelength Signal Enhancer I
         6295,  # Type-D Attenuation Signal Augmentation
     ),
-    5302: (  # Phased Muon Scoped Sensor Dampener
+    5302 : (  # Phased Muon Scoped Sensor Dampener
         5300,  # Indirect Scanning Dampening Unit I
     ),
 }

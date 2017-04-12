@@ -74,6 +74,7 @@ class Fit(object):
             "openFitInNew": False,
             "priceSystem": "Jita",
             "showShipBrowserTooltip": True,
+            "marketSearchDelay": 250
         }
 
         self.serviceFittingOptions = SettingsProvider.getInstance().getSettings(

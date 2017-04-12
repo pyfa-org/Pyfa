@@ -17,8 +17,9 @@
 # along with eos.  If not, see <http://www.gnu.org/licenses/>.
 # ===============================================================================
 
-from sqlalchemy import Table, Column, Integer, ForeignKey, Boolean
+from sqlalchemy import Table, Column, Integer, ForeignKey, Boolean, DateTime
 from sqlalchemy.orm import mapper
+import sqlalchemy.sql.functions as func
 
 from eos.db import saveddata_meta
 from eos.saveddata.implant import Implant
@@ -26,7 +27,10 @@ from eos.saveddata.implant import Implant
 implants_table = Table("implants", saveddata_meta,
                        Column("ID", Integer, primary_key=True),
                        Column("itemID", Integer),
-                       Column("active", Boolean))
+                       Column("active", Boolean),
+                       Column("created", DateTime, nullable=True, default=func.now()),
+                       Column("modified", DateTime, nullable=True, onupdate=func.now())
+                       )
 
 fitImplants_table = Table("fitImplants", saveddata_meta,
                           Column("fitID", ForeignKey("fits.ID"), index=True),

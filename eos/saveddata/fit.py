@@ -32,7 +32,6 @@ from eos.saveddata.ship import Ship
 from eos.saveddata.character import Character
 from eos.saveddata.citadel import Citadel
 from eos.saveddata.module import Module, State, Slot, Hardpoint
-from utils.timer import Timer
 from logbook import Logger
 
 pyfalog = Logger(__name__)
@@ -468,7 +467,7 @@ class Fit(object):
             self.commandBonuses[warfareBuffID] = (runTime, value, module, effect)
 
     def __runCommandBoosts(self, runTime="normal"):
-        pyfalog.debug("Applying gang boosts for {0}", self)
+        pyfalog.debug("Applying gang boosts for {0}", repr(self))
         for warfareBuffID in self.commandBonuses.keys():
             # Unpack all data required to run effect properly
             effect_runTime, value, thing, effect = self.commandBonuses[warfareBuffID]
@@ -554,10 +553,12 @@ class Fit(object):
 
                 if warfareBuffID == 21:  # Skirmish Burst: Interdiction Maneuvers: Tackle Range
                     groups = ("Stasis Web", "Warp Scrambler")
-                    self.modules.filteredItemBoost(lambda mod: mod.item.group.name in groups, "maxRange", value, stackingPenalties=True)
+                    self.modules.filteredItemBoost(lambda mod: mod.item.group.name in groups, "maxRange", value,
+                                                   stackingPenalties=True)
 
                 if warfareBuffID == 22:  # Skirmish Burst: Rapid Deployment: AB/MWD Speed Increase
-                    self.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill("Afterburner") or mod.item.requiresSkill("High Speed Maneuvering"),
+                    self.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill("Afterburner") or
+                                                               mod.item.requiresSkill("High Speed Maneuvering"),
                                                    "speedFactor", value, stackingPenalties=True)
 
                 if warfareBuffID == 23:  # Mining Burst: Mining Laser Field Enhancement: Mining/Survey Range
@@ -566,7 +567,8 @@ class Fit(object):
                                                                mod.item.requiresSkill("Gas Cloud Harvesting"),
                                                    "maxRange", value, stackingPenalties=True)
 
-                    self.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill("CPU Management"), "surveyScanRange", value, stackingPenalties=True)
+                    self.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill("CPU Management"),
+                                                   "surveyScanRange", value, stackingPenalties=True)
 
                 if warfareBuffID == 24:  # Mining Burst: Mining Laser Optimization: Mining Capacitor/Duration
                     self.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill("Mining") or
@@ -580,7 +582,8 @@ class Fit(object):
                                                    "duration", value, stackingPenalties=True)
 
                 if warfareBuffID == 25:  # Mining Burst: Mining Equipment Preservation: Crystal Volatility
-                    self.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill("Mining"), "crystalVolatilityChance", value, stackingPenalties=True)
+                    self.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill("Mining"),
+                                                   "crystalVolatilityChance", value, stackingPenalties=True)
 
                 if warfareBuffID == 60:  # Skirmish Burst: Evasive Maneuvers: Agility
                     self.ship.boostItemAttr("agility", value, stackingPenalties=True)
@@ -653,7 +656,6 @@ class Fit(object):
             value.victim_fit.calculated = False
 
     def calculateModifiedAttributes(self, targetFit=None, withBoosters=False, dirtyStorage=None):
-        timer = Timer(u'Fit: {}, {}'.format(self.ID, self.name), pyfalog)
         pyfalog.debug("Starting fit calculation on: {0}, withBoosters: {1}", self, withBoosters)
 
         # First and foremost, if we're looking at a local calc, reset the calculated state of fits that this fit affects
@@ -671,7 +673,7 @@ class Fit(object):
 
         shadow = False
         if targetFit and not withBoosters:
-            pyfalog.debug("Applying projections to target: {0}", targetFit)
+            pyfalog.debug("Calculating projections from {0} to target {1}", repr(self), repr(targetFit))
             projectionInfo = self.getProjectionInfo(targetFit.ID)
             pyfalog.debug("ProjectionInfo: {0}", projectionInfo)
             if self == targetFit:
@@ -720,6 +722,7 @@ class Fit(object):
             return
 
         for runTime in ("early", "normal", "late"):
+            pyfalog.debug("Run time: {0}", runTime)
             # Items that are unrestricted. These items are run on the local fit
             # first and then projected onto the target fit it one is designated
             u = [
@@ -778,8 +781,6 @@ class Fit(object):
                             targetFit.register(item, origin=self)
                             item.calculateModifiedAttributes(targetFit, runTime, True)
 
-            timer.checkpoint('Done with runtime: %s' % runTime)
-
         # Mark fit as calculated
         self.__calculated = True
 
@@ -787,13 +788,13 @@ class Fit(object):
         if not projected and not withBoosters:
             for fit in self.projectedFits:
                 if fit.getProjectionInfo(self.ID).active:
-                    fit.calculateModifiedAttributes(self, withBoosters=withBoosters, dirtyStorage=dirtyStorage)
-
-        timer.checkpoint('Done with fit calculation')
+                    fit.calculateModifiedAttributes(self, withBoosters=withBoosters)
 
         if shadow:
             pyfalog.debug("Delete shadow fit object")
             del self
+
+        pyfalog.debug('Done with fit calculation')
 
     def fill(self):
         """

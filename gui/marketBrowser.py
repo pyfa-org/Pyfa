@@ -20,6 +20,7 @@
 # noinspection PyPackageRequirements
 import wx
 from service.market import Market
+from service.fit import Fit
 from service.attribute import Attribute
 from gui.display import Display
 import gui.PFSearchBox as SBox
@@ -245,11 +246,15 @@ class ItemView(Display):
         self.marketBrowser = marketBrowser
         self.marketView = marketBrowser.marketView
 
+        # Set up timer for delaying search on every EVT_TEXT
+        self.searchTimer = wx.Timer(self)
+        self.Bind(wx.EVT_TIMER, self.scheduleSearch, self.searchTimer)
+
         # Make sure our search actually does interesting stuff
         self.marketBrowser.search.Bind(SBox.EVT_TEXT_ENTER, self.scheduleSearch)
         self.marketBrowser.search.Bind(SBox.EVT_SEARCH_BTN, self.scheduleSearch)
         self.marketBrowser.search.Bind(SBox.EVT_CANCEL_BTN, self.clearSearch)
-        self.marketBrowser.search.Bind(SBox.EVT_TEXT, self.scheduleSearch)
+        self.marketBrowser.search.Bind(SBox.EVT_TEXT, self.delaySearch)
 
         # Make sure WE do interesting stuff too
         self.Bind(wx.EVT_CONTEXT_MENU, self.contextMenu)
@@ -263,6 +268,11 @@ class ItemView(Display):
         pyfalog.debug("Fill up recently used modules set")
         for itemID in self.sMkt.serviceMarketRecentlyUsedModules["pyfaMarketRecentlyUsedModules"]:
             self.recentlyUsedModules.add(self.sMkt.getItem(itemID))
+
+    def delaySearch(self, evt):
+        sFit = Fit.getInstance()
+        self.searchTimer.Stop()
+        self.searchTimer.Start(sFit.serviceFittingOptions["marketSearchDelay"], True)  # 150ms
 
     def startDrag(self, event):
         row = self.GetFirstSelected()
@@ -361,6 +371,7 @@ class ItemView(Display):
                 btn.setMetaAvailable(False)
 
     def scheduleSearch(self, event=None):
+        self.searchTimer.Stop()  # Cancel any pending timers
         search = self.marketBrowser.search.GetLineText(0)
         # Make sure we do not count wildcard as search symbol
         realsearch = search.replace("*", "")
