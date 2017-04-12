@@ -371,6 +371,7 @@ class ItemView(Display):
                 btn.setMetaAvailable(False)
 
     def scheduleSearch(self, event=None):
+        self.searchTimer.Stop()  # Cancel any pending timers
         search = self.marketBrowser.search.GetLineText(0)
         # Make sure we do not count wildcard as search symbol
         realsearch = search.replace("*", "")
