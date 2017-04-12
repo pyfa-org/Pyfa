@@ -208,7 +208,7 @@ class Fit(object):
         eos.db.commit()
 
         if not fit.calculated:
-            self.recalc(fit, withBoosters=True)
+            self.recalc(fit)
 
     def getFit(self, fitID, projected=False, basic=False):
         """
@@ -231,7 +231,7 @@ class Fit(object):
             if not projected:
                 for fitP in fit.projectedFits:
                     self.getFit(fitP.ID, projected=True)
-                self.recalc(fit, withBoosters=True)
+                self.recalc(fit)
                 fit.fill()
 
             # Check that the states of all modules are valid
@@ -1094,13 +1094,13 @@ class Fit(object):
         eos.db.commit()
         self.recalc(fit)
 
-    def recalc(self, fit, withBoosters=True):
+    def recalc(self, fit):
         start_time = time()
         pyfalog.info("=" * 10 + "recalc" + "=" * 10)
         if fit.factorReload is not self.serviceFittingOptions["useGlobalForceReload"]:
             fit.factorReload = self.serviceFittingOptions["useGlobalForceReload"]
         fit.clear()
 
-        fit.calculateModifiedAttributes(withBoosters=False)
+        fit.calculateModifiedAttributes()
 
         pyfalog.info("=" * 10 + "recalc time: " + str(time() - start_time) + "=" * 10)

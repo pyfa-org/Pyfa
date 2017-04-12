@@ -60,7 +60,7 @@ def test_calculateModifiedAttributes(DB, RifterFit, KeepstarFit):
     for test_dict in keepstar_modifier_dicts:
         assert len(getattr(KeepstarFit.ship.itemModifiedAttributes, test_dict)) == keepstar_modifier_dicts[test_dict]
 
-def test_calculateModifiedAttributes_withBooster(DB, RifterFit, HeronFit):
+def test_calculateModifiedAttributes_withProjected(DB, RifterFit, HeronFit):
     # TODO: This test is not currently functional or meaningful as projections are not happening correctly.
     # This is true for all tested branches (master, dev, etc)
     rifter_modifier_dicts = {
@@ -106,15 +106,15 @@ def test_calculateModifiedAttributes_withBooster(DB, RifterFit, HeronFit):
     scan_resolution_3 = RifterFit.ship.getModifiedItemAttr('scanResolution')
 
     RifterFit.clear()
-    RifterFit.calculateModifiedAttributes(withBoosters=True)
+    RifterFit.calculateModifiedAttributes()
 
     # Get stats with projections
     max_target_range_4 = RifterFit.ship.getModifiedItemAttr('maxTargetRange')
     scan_resolution_4 = RifterFit.ship.getModifiedItemAttr('scanResolution')
 
     RifterFit.clear()
-    HeronFit.calculateModifiedAttributes(targetFit=RifterFit, withBoosters=True)
-    RifterFit.calculateModifiedAttributes(withBoosters=True)
+    HeronFit.calculateModifiedAttributes(targetFit=RifterFit)
+    RifterFit.calculateModifiedAttributes()
 
     # Get stats with projections
     max_target_range_5 = RifterFit.ship.getModifiedItemAttr('maxTargetRange')

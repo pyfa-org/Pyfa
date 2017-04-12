@@ -42,6 +42,12 @@ class ImplantLocation(Enum):
     CHARACTER = 1
 
 
+class CalcType(Enum):
+    LOCAL = 0
+    PROJECTED = 1
+    COMMAND = 2
+
+
 class Fit(object):
     """Represents a fitting, with modules, ship, implants, etc."""
 
@@ -656,9 +662,24 @@ class Fit(object):
             if value.victim_fit:  # removing a self-projected fit causes victim fit to be None. @todo: look into why. :3
                 value.victim_fit.calculated = False
 
-    def calculateModifiedAttributes(self, targetFit=None, withBoosters=False, dirtyStorage=None):
-        pyfalog.debug("Starting fit calculation on: {0}, withBoosters: {1}", self, withBoosters)
+    def calculateModifiedAttributes(self, targetFit=None, type=CalcType.LOCAL):
+        """
+        The fit calculation function. It should be noted that this is a recursive function - if the local fit has
+        projected fits, this function will be called for those projected fits to be calculated.
 
+        Args:
+            targetFit:
+                If this is set, signals that we are currently calculating a remote fit (projected or command) that
+                should apply it's remote effects to the targetFit. If None, signals that we are currently calcing the
+                local fit
+            type:
+                The type of calculation our current iteration is in. This helps us determine the interactions between
+                fits that rely on others for proper calculations
+        """
+        pyfalog.debug("Starting fit calculation on: {0}, calc: {1}", repr(self), CalcType.getName(type))
+
+        # If we are projecting this fit onto another one, collect the projection info for later use
+        # We also deal with self-projection here by setting self as a copy (to get a new fit object) to apply onto original fit
         # First and foremost, if we're looking at a local calc, reset the calculated state of fits that this fit affects
         # Thankfully, due to the way projection mechanics currently work, we don't have to traverse down a projection
         # tree to (resetting the first degree of projection will suffice)
@@ -673,7 +694,7 @@ class Fit(object):
             # it should be noted that command bursts don't affect other command bursts
 
         shadow = False
-        if targetFit and not withBoosters:
+        if targetFit and type == CalcType.PROJECTED:
             pyfalog.debug("Calculating projections from {0} to target {1}", repr(self), repr(targetFit))
             projectionInfo = self.getProjectionInfo(targetFit.ID)
             pyfalog.debug("ProjectionInfo: {0}", projectionInfo)
@@ -689,39 +710,40 @@ class Fit(object):
                 # not want to save this fit to the database, so simply remove it
                 eos.db.saveddata_session.delete(self)
 
-        if self.commandFits and not withBoosters:
+        # Start applying any command fits that we may have.
+        # We run the command calculations first so that they can calculate fully and store the command effects on the
+        # target fit to be used later on in the calculation. This does not apply when we're already calculating a
+        # command fit.
+        if type != CalcType.COMMAND and self.commandFits:
             for fit in self.commandFits:
                 commandInfo = fit.getCommandInfo(self.ID)
+                # Continue loop if we're trying to apply ourselves or if this fit isn't active
                 if not commandInfo.active or self == commandInfo.booster_fit:
                     continue
 
-                commandInfo.booster_fit.calculateModifiedAttributes(self, True)
+                commandInfo.booster_fit.calculateModifiedAttributes(self, CalcType.COMMAND)
 
         # If we're not explicitly asked to project fit onto something,
         # set self as target fit
         if targetFit is None:
             targetFit = self
-            projected = False
-        else:
-            projected = not withBoosters
 
         # If fit is calculated and we have nothing to do here, get out
 
-        # A note on why projected fits don't get to return here. If we return
-        # here, the projection afflictions will not be run as they are
-        # intertwined into the regular fit calculations. So, even if the fit has
-        # been calculated, we need to recalculate it again just to apply the
-        # projections. This is in contract to gang boosts, which are only
-        # calculated once, and their items are then looped and accessed with
-        #     self.gangBoosts.iteritems()
-        # We might be able to exit early in the fit calculations if we separate
-        # projections from the normal fit calculations. But we must ensure that
-        # projection have modifying stuff applied, such as gang boosts and other
-        # local modules that may help
-        if self.__calculated and not projected and not withBoosters:
-            pyfalog.debug("Fit has already been calculated and is not projected, returning: {0}", self)
+        # A note on why we only do this for local fits. There may be
+        # gains that we can do here after some evaluation, but right
+        # now we need the projected and command fits to continue in
+        # this function even if they are already calculated, since it
+        # is during those calculations that they apply their effect
+        # to the target fits. todo: We could probably skip local fit
+        # calculations if calculated, and instead to projections and
+        # command stuffs. ninja edit: this is probably already being
+        # done with the calculated conditional in the calc loop
+        if self.__calculated and type == CalcType.LOCAL:
+            pyfalog.debug("Fit has already been calculated and is local, returning: {0}", self)
             return
 
+        # Loop through our run times here. These determine which effects are run in which order.
         for runTime in ("early", "normal", "late"):
             pyfalog.debug("Run time: {0}", runTime)
             # Items that are unrestricted. These items are run on the local fit
@@ -747,34 +769,30 @@ class Fit(object):
             # chain unrestricted and restricted into one iterable
             c = chain.from_iterable(u + r)
 
-            # We calculate gang bonuses first so that projected fits get them
-            # if self.gangBoosts is not None:
-            #     self.__calculateGangBoosts(runTime)
-
             for item in c:
                 # Registering the item about to affect the fit allows us to
                 # track "Affected By" relations correctly
                 if item is not None:
+                    # apply effects locally if this is first time running them on fit
                     if not self.__calculated:
-                        # apply effects locally if this is first time running them on fit
                         self.register(item)
                         item.calculateModifiedAttributes(self, runTime, False)
 
-                    if targetFit and withBoosters and item in self.modules:
+                    # Run command effects against target fit. We only have to worry about modules
+                    if type == CalcType.COMMAND and item in self.modules:
                         # Apply the gang boosts to target fit
                         # targetFit.register(item, origin=self)
                         item.calculateModifiedAttributes(targetFit, runTime, False, True)
 
-            if len(self.commandBonuses) > 0:
-                pyfalog.info("Command bonuses applied.")
-                pyfalog.debug(self.commandBonuses)
+            pyfalog.debug("Command Bonuses: {}".format(self.commandBonuses))
 
-            if not withBoosters and self.commandBonuses:
+            # If we are calculating our local or projected fit and have command bonuses, apply them
+            if type != CalcType.COMMAND and self.commandBonuses:
                 self.__runCommandBoosts(runTime)
 
-            # Projection effects have been broken out of the main loop, see GH issue #1081
-
-            if projected is True and projectionInfo:
+            # Run projection effects against target fit. Projection effects have been broken out of the main loop,
+            # see GH issue #1081
+            if type == CalcType.PROJECTED and projectionInfo:
                 for item in chain.from_iterable(u):
                     if item is not None:
                         # apply effects onto target fit
@@ -786,10 +804,10 @@ class Fit(object):
         self.__calculated = True
 
         # Only apply projected fits if fit it not projected itself.
-        if not projected and not withBoosters:
+        if type == CalcType.LOCAL:
             for fit in self.projectedFits:
                 if fit.getProjectionInfo(self.ID).active:
-                    fit.calculateModifiedAttributes(self, withBoosters=withBoosters)
+                    fit.calculateModifiedAttributes(self, type=CalcType.PROJECTED)
 
         if shadow:
             pyfalog.debug("Delete shadow fit object")
