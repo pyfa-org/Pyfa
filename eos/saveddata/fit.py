@@ -659,7 +659,8 @@ class Fit(object):
     def __resetDependantCalcs(self):
         self.calculated = False
         for value in self.projectedOnto.values():
-            value.victim_fit.calculated = False
+            if value.victim_fit:  # removing a self-projected fit causes victim fit to be None. @todo: look into why. :3
+                value.victim_fit.calculated = False
 
     def calculateModifiedAttributes(self, targetFit=None, type=CalcType.LOCAL):
         """
