@@ -23,6 +23,7 @@ from sqlalchemy.orm import reconstructor
 
 import eos.db
 from eqBase import EqBase
+from eos.saveddata.price import Price as types_Price
 
 try:
     from collections import OrderedDict
@@ -253,6 +254,7 @@ class Item(EqBase):
         self.__offensive = None
         self.__assistive = None
         self.__overrides = None
+        self.__price = None
 
     @property
     def attributes(self):
@@ -437,6 +439,27 @@ class Item(EqBase):
                 return True
 
         return False
+
+    @property
+    def price(self):
+
+        # todo: use `from sqlalchemy import inspect` instead (need to verify it works in old and new OS X builds)
+        if self.__price is not None and getattr(self.__price, '_sa_instance_state', None):
+            pyfalog.debug("Price data for {} was deleted, resetting object".format(self.ID))
+            self.__price = None
+
+        if self.__price is None:
+            db_price = eos.db.getPrice(self.ID)
+            # do not yet have a price in the database for this item, create one
+            if db_price is None:
+                pyfalog.debug("Creating a price for {}".format(self.ID))
+                self.__price = types_Price(self.ID)
+                eos.db.add(self.__price)
+                eos.db.commit()
+            else:
+                self.__price = db_price
+
+        return self.__price
 
     def __repr__(self):
         return "Item(ID={}, name={}) at {}".format(

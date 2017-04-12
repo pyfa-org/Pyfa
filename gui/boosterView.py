@@ -43,9 +43,12 @@ class BoosterViewDrop(wx.PyDropTarget):
 
 
 class BoosterView(d.Display):
-    DEFAULT_COLS = ["State",
-                    "attr:boosterness",
-                    "Base Name"]
+    DEFAULT_COLS = [
+        "State",
+        "attr:boosterness",
+        "Base Name",
+        "Price",
+    ]
 
     def __init__(self, parent):
         d.Display.__init__(self, parent, style=wx.LC_SINGLE_SEL | wx.BORDER_NONE)

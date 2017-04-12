@@ -74,6 +74,7 @@ class Fit(object):
             "openFitInNew": False,
             "priceSystem": "Jita",
             "showShipBrowserTooltip": True,
+            "marketSearchDelay": 250
         }
 
         self.serviceFittingOptions = SettingsProvider.getInstance().getSettings(
@@ -205,7 +206,9 @@ class Fit(object):
                 fit.damagePattern = self.pattern
 
         eos.db.commit()
-        self.recalc(fit)
+
+        if not fit.calculated:
+            self.recalc(fit)
 
     def getFit(self, fitID, projected=False, basic=False):
         """

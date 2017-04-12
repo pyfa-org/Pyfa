@@ -79,10 +79,13 @@ class ImplantView(wx.Panel):
 
 
 class ImplantDisplay(d.Display):
-    DEFAULT_COLS = ["State",
-                    "attr:implantness",
-                    "Base Icon",
-                    "Base Name"]
+    DEFAULT_COLS = [
+        "State",
+        "attr:implantness",
+        "Base Icon",
+        "Base Name",
+        "Price",
+    ]
 
     def __init__(self, parent):
         d.Display.__init__(self, parent, style=wx.LC_SINGLE_SEL | wx.BORDER_NONE)

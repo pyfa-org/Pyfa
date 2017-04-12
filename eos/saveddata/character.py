@@ -35,16 +35,41 @@ class Character(object):
     __itemIDMap = None
     __itemNameMap = None
 
+    def __init__(self, name, defaultLevel=None, initSkills=True):
+        self.savedName = name
+        self.__owner = None
+        self.defaultLevel = defaultLevel
+        self.__skills = []
+        self.__skillIdMap = {}
+        self.dirtySkills = set()
+        self.alphaClone = None
+
+        if initSkills:
+            for item in self.getSkillList():
+                self.addSkill(Skill(item.ID, self.defaultLevel))
+
+        self.__implants = HandledImplantBoosterList()
+        self.apiKey = None
+
+    @reconstructor
+    def init(self):
+
+        self.__skillIdMap = {}
+        for skill in self.__skills:
+            self.__skillIdMap[skill.itemID] = skill
+        self.dirtySkills = set()
+
+        self.alphaClone = None
+
+        if self.alphaCloneID:
+            self.alphaClone = eos.db.getAlphaClone(self.alphaCloneID)
+
     @classmethod
     def getSkillList(cls):
         if cls.__itemList is None:
             cls.__itemList = eos.db.getItemsByCategory("Skill")
 
         return cls.__itemList
-
-    @classmethod
-    def setSkillList(cls, list):
-        cls.__itemList = list
 
     @classmethod
     def getSkillIDMap(cls):
@@ -90,35 +115,6 @@ class Character(object):
             eos.db.save(all0)
 
         return all0
-
-    def __init__(self, name, defaultLevel=None, initSkills=True):
-        self.savedName = name
-        self.__owner = None
-        self.defaultLevel = defaultLevel
-        self.__skills = []
-        self.__skillIdMap = {}
-        self.dirtySkills = set()
-        self.alphaClone = None
-
-        if initSkills:
-            for item in self.getSkillList():
-                self.addSkill(Skill(item.ID, self.defaultLevel))
-
-        self.__implants = HandledImplantBoosterList()
-        self.apiKey = None
-
-    @reconstructor
-    def init(self):
-
-        self.__skillIdMap = {}
-        for skill in self.__skills:
-            self.__skillIdMap[skill.itemID] = skill
-        self.dirtySkills = set()
-
-        self.alphaClone = None
-
-        if self.alphaCloneID:
-            self.alphaClone = eos.db.getAlphaClone(self.alphaCloneID)
 
     def apiUpdateCharSheet(self, skills):
         del self.__skills[:]
@@ -247,8 +243,8 @@ class Character(object):
 
     def clear(self):
         c = chain(
-            self.skills,
-            self.implants
+                self.skills,
+                self.implants
         )
         for stuff in c:
             if stuff is not None and stuff != self:
@@ -266,10 +262,12 @@ class Character(object):
 
     @validates("ID", "name", "apiKey", "ownerID")
     def validator(self, key, val):
-        map = {"ID": lambda _val: isinstance(_val, int),
-               "name": lambda _val: True,
-               "apiKey": lambda _val: _val is None or (isinstance(_val, basestring) and len(_val) > 0),
-               "ownerID": lambda _val: isinstance(_val, int) or _val is None}
+        map = {
+            "ID"     : lambda _val: isinstance(_val, int),
+            "name"   : lambda _val: True,
+            "apiKey" : lambda _val: _val is None or (isinstance(_val, basestring) and len(_val) > 0),
+            "ownerID": lambda _val: isinstance(_val, int) or _val is None
+        }
 
         if not map[key](val):
             raise ValueError(str(val) + " is not a valid value for " + key)
@@ -278,7 +276,7 @@ class Character(object):
 
     def __repr__(self):
         return "Character(ID={}, name={}) at {}".format(
-            self.ID, self.name, hex(id(self))
+                self.ID, self.name, hex(id(self))
         )
 
 
@@ -387,8 +385,10 @@ class Skill(HandledItem):
         if hasattr(self, "_Skill__ro") and self.__ro is True and key != "characterID":
             raise ReadOnlyException()
 
-        map = {"characterID": lambda _val: isinstance(_val, int),
-               "skillID": lambda _val: isinstance(_val, int)}
+        map = {
+            "characterID": lambda _val: isinstance(_val, int),
+            "skillID"    : lambda _val: isinstance(_val, int)
+        }
 
         if not map[key](val):
             raise ValueError(str(val) + " is not a valid value for " + key)
@@ -401,7 +401,7 @@ class Skill(HandledItem):
 
     def __repr__(self):
         return "Skill(ID={}, name={}) at {}".format(
-            self.item.ID, self.item.name, hex(id(self))
+                self.item.ID, self.item.name, hex(id(self))
         )
 
 
