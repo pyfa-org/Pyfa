@@ -689,7 +689,10 @@ class Fit(object):
 
             # For fits that are under local's Command, we do the same thing
             for value in self.boostedOnto.values():
-                value.boosted_fit.__resetDependantCalcs()
+                # apparently this is a thing that happens when removing a command fit from a fit and then switching to
+                # that command fit. Same as projected clears, figure out why.
+                if value.boosted_fit:
+                    value.boosted_fit.__resetDependantCalcs()
 
             # it should be noted that command bursts don't affect other command bursts
 
