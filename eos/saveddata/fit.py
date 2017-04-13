@@ -691,24 +691,9 @@ class Fit(object):
             for value in self.boostedOnto.values():
                 value.boosted_fit.__resetDependantCalcs()
 
-            # it should be noted that command bursts don't affect other command bursts
-
-        shadow = False
         if targetFit and type == CalcType.PROJECTED:
             pyfalog.debug("Calculating projections from {0} to target {1}", repr(self), repr(targetFit))
             projectionInfo = self.getProjectionInfo(targetFit.ID)
-            pyfalog.debug("ProjectionInfo: {0}", projectionInfo)
-            if self == targetFit:
-                copied = self  # original fit
-                shadow = True
-                # Don't inspect this, we genuinely want to reassign self
-                # noinspection PyMethodFirstArgAssignment
-                self = deepcopy(self)
-                pyfalog.debug("Handling self projection - making shadow copy of fit. {0} => {1}", copied, self)
-                # we delete the fit because when we copy a fit, flush() is
-                # called to properly handle projection updates. However, we do
-                # not want to save this fit to the database, so simply remove it
-                eos.db.saveddata_session.delete(self)
 
         # Start applying any command fits that we may have.
         # We run the command calculations first so that they can calculate fully and store the command effects on the
@@ -793,12 +778,7 @@ class Fit(object):
             # Run projection effects against target fit. Projection effects have been broken out of the main loop,
             # see GH issue #1081
             if type == CalcType.PROJECTED and projectionInfo:
-                for item in chain.from_iterable(u):
-                    if item is not None:
-                        # apply effects onto target fit
-                        for _ in xrange(projectionInfo.amount):
-                            targetFit.register(item, origin=self)
-                            item.calculateModifiedAttributes(targetFit, runTime, True)
+                self.__runProjectionEffects(runTime, targetFit, projectionInfo)
 
         # Mark fit as calculated
         self.__calculated = True
@@ -806,14 +786,31 @@ class Fit(object):
         # Only apply projected fits if fit it not projected itself.
         if type == CalcType.LOCAL:
             for fit in self.projectedFits:
-                if fit.getProjectionInfo(self.ID).active:
-                    fit.calculateModifiedAttributes(self, type=CalcType.PROJECTED)
-
-        if shadow:
-            pyfalog.debug("Delete shadow fit object")
-            del self
+                projInfo = fit.getProjectionInfo(self.ID)
+                if projInfo.active:
+                    if fit == self:
+                        # If doing self projection, no need to run through the recursion process. Simply run the
+                        # projection effects on ourselves
+                        pyfalog.debug("Running self-projection for {0}", repr(self))
+                        for runTime in ("early", "normal", "late"):
+                            self.__runProjectionEffects(runTime, self, projInfo)
+                    else:
+                        fit.calculateModifiedAttributes(self, type=CalcType.PROJECTED)
 
         pyfalog.debug('Done with fit calculation')
+
+    def __runProjectionEffects(self, runTime, targetFit, projectionInfo):
+        """
+        To support a simpler way of doing self projections (so that we don't have to make a copy of the fit and
+        recalculate), this function was developed to be a common source of projected effect application.
+        """
+        c = chain(self.drones, self.fighters, self.modules)
+        for item in c:
+            if item is not None:
+                # apply effects onto target fit x amount of times
+                for _ in xrange(projectionInfo.amount):
+                    targetFit.register(item, origin=self)
+                    item.calculateModifiedAttributes(targetFit, runTime, True)
 
     def fill(self):
         """
