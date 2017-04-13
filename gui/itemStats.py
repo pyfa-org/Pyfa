@@ -531,6 +531,10 @@ class ItemParams(wx.Panel):
 
 class ItemCompare(wx.Panel):
     def __init__(self, parent, stuff, item, items, context=None):
+        # Start dealing with Price stuff to get that thread going
+        sPrice = ServicePrice.getInstance()
+        sPrice.getPrices(items, self.UpdateList)
+
         wx.Panel.__init__(self, parent)
         mainSizer = wx.BoxSizer(wx.VERTICAL)
 
@@ -587,11 +591,10 @@ class ItemCompare(wx.Panel):
                                              wx.DefaultSize, 0)
         bSizer.Add(self.toggleViewBtn, 0, wx.ALIGN_CENTER_VERTICAL)
 
-        if stuff is not None:
-            self.refreshBtn = wx.Button(self, wx.ID_ANY, u"Refresh", wx.DefaultPosition, wx.DefaultSize,
-                                        wx.BU_EXACTFIT)
-            bSizer.Add(self.refreshBtn, 0, wx.ALIGN_CENTER_VERTICAL)
-            self.refreshBtn.Bind(wx.EVT_BUTTON, self.RefreshValues)
+        self.refreshBtn = wx.Button(self, wx.ID_ANY, u"Refresh", wx.DefaultPosition, wx.DefaultSize,
+                                    wx.BU_EXACTFIT)
+        bSizer.Add(self.refreshBtn, 0, wx.ALIGN_CENTER_VERTICAL)
+        self.refreshBtn.Bind(wx.EVT_BUTTON, self.RefreshValues)
 
         mainSizer.Add(bSizer, 0, wx.ALIGN_RIGHT)
 
@@ -606,7 +609,8 @@ class ItemCompare(wx.Panel):
         self.PopulateList(event.Column)
         self.Thaw()
 
-    def UpdateList(self):
+    def UpdateList(self, items=None):
+        # We do nothing with `items`, but it gets returned by the price service thread
         self.Freeze()
         self.paramList.ClearAll()
         self.PopulateList()
@@ -676,9 +680,8 @@ class ItemCompare(wx.Panel):
 
                     self.paramList.SetStringItem(i, x + 1, valueUnit)
 
-                # Add prices
-                sPrice = ServicePrice.getInstance()
-                self.paramList.SetStringItem(i, len(self.attrs) + 1, formatAmount(sPrice.getPriceNow(item), 3, 3, 9, currency=True))
+            # Add prices
+            self.paramList.SetStringItem(i, len(self.attrs) + 1, formatAmount(item.price.price, 3, 3, 9, currency=True))
 
         self.paramList.RefreshRows()
         self.Layout()
