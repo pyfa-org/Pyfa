@@ -180,6 +180,12 @@ class Fit(object):
         fit.clear()
         return fit
 
+    @staticmethod
+    def editNotes(fitID, notes):
+        fit = eos.db.getFit(fitID)
+        fit.notes = notes
+        eos.db.commit()
+
     def toggleFactorReload(self, fitID):
         pyfalog.debug("Toggling factor reload for fit ID: {0}", fitID)
         if fitID is None:
