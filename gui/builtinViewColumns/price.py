@@ -45,8 +45,7 @@ class Price(ViewColumn):
             if stuff.isEmpty:
                 return ""
 
-        sPrice = ServicePrice.getInstance()
-        price = sPrice.getPriceNow(stuff.item)
+        price = stuff.item.price.price
 
         if not price:
             return ""
@@ -60,7 +59,7 @@ class Price(ViewColumn):
         sPrice = ServicePrice.getInstance()
 
         def callback(item):
-            price = sPrice.getPriceNow(item.ID)
+            price = item.item.price
             text = formatAmount(price.price, 3, 3, 9, currency=True) if price.price else ""
             if price.failed:
                 text += " (!)"
