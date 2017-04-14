@@ -756,7 +756,7 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
 
     def __repr__(self):
         if self.item:
-            return "Module(ID={}, name={}) at {}".format(
+            return u"Module(ID={}, name={}) at {}".format(
                     self.item.ID, self.item.name, hex(id(self))
             )
         else:

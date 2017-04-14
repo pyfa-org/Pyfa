@@ -378,9 +378,13 @@ class Character(object):
         eos.db.commit()
 
     @staticmethod
-    def changeLevel(charID, skillID, level, persist=False):
+    def changeLevel(charID, skillID, level, persist=False, ifHigher=False):
         char = eos.db.getCharacter(charID)
         skill = char.getSkill(skillID)
+
+        if ifHigher and level < skill.level:
+            return
+
         if isinstance(level, basestring) or level > 5 or level < 0:
             skill.level = None
         else:
