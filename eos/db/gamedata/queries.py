@@ -249,6 +249,22 @@ def searchItems(nameLike, where=None, join=None, eager=None):
     return items
 
 
+@cachedQuery(3, "where", "nameLike", "join")
+def searchSkills(nameLike, where=None, eager=None):
+    if not isinstance(nameLike, basestring):
+        raise TypeError("Need string as argument")
+
+    items = gamedata_session.query(Item).options(*processEager(eager)).join(Item.group, Group.category)
+    for token in nameLike.split(' '):
+        token_safe = u"%{0}%".format(sqlizeString(token))
+        if where is not None:
+            items = items.filter(and_(Item.name.like(token_safe, escape="\\"), Category.ID == 16, where))
+        else:
+            items = items.filter(and_(Item.name.like(token_safe, escape="\\"), Category.ID == 16))
+    items = items.limit(100).all()
+    return items
+
+
 @cachedQuery(2, "where", "itemids")
 def getVariations(itemids, groupIDs=None, where=None, eager=None):
     for itemid in itemids:
