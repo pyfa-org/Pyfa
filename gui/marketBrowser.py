@@ -298,7 +298,7 @@ class ItemView(Display):
             for itemID in self.sMkt.serviceMarketRecentlyUsedModules["pyfaMarketRecentlyUsedModules"]:
                 self.recentlyUsedModules.add(self.sMkt.getItem(itemID))
 
-        wx.PostEvent(self.mainFrame, ItemSelected(itemID=self.active[sel].ID))
+            wx.PostEvent(self.mainFrame, ItemSelected(itemID=self.active[sel].ID))
 
     def storeRecentlyUsedMarketItem(self, itemID):
         if len(self.sMkt.serviceMarketRecentlyUsedModules["pyfaMarketRecentlyUsedModules"]) > MAX_RECENTLY_USED_MODULES:
