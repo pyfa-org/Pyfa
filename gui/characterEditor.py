@@ -657,14 +657,19 @@ class APIView(wx.Panel):
     def fetchSkills(self, event):
         charName = self.charChoice.GetString(self.charChoice.GetSelection())
         if charName:
-            try:
-                sChar = Character.getInstance()
-                activeChar = self.charEditor.entityEditor.getActiveEntity()
-                sChar.apiFetch(activeChar.ID, charName)
-                self.stStatus.SetLabel("Successfully fetched %s\'s skills from EVE API." % charName)
-            except Exception, e:
-                pyfalog.error("Unable to retrieve {0}\'s skills. Error message:\n{1}", charName, e)
-                self.stStatus.SetLabel("Unable to retrieve %s\'s skills. Error message:\n%s" % (charName, e))
+            sChar = Character.getInstance()
+            activeChar = self.charEditor.entityEditor.getActiveEntity()
+            sChar.apiFetch(activeChar.ID, charName, self.__fetchCallback)
+            self.stStatus.SetLabel("Getting skills for {}".format(charName))
+
+    def __fetchCallback(self, e=None):
+        charName = self.charChoice.GetString(self.charChoice.GetSelection())
+        if e is None:
+            self.stStatus.SetLabel("Successfully fetched {}\'s skills from EVE API.".format(charName))
+        else:
+            exc_type, exc_obj, exc_trace = e
+            pyfalog.error("Unable to retrieve {0}\'s skills. Error message:\n{1}".format(charName, exc_obj))
+            self.stStatus.SetLabel("Unable to retrieve {}\'s skills. Error message:\n{}".format(charName, exc_obj))
 
 
 class SaveCharacterAs(wx.Dialog):

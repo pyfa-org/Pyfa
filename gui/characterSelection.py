@@ -25,6 +25,7 @@ import gui.mainFrame
 from service.character import Character
 from service.fit import Fit
 from logbook import Logger
+
 pyfalog = Logger(__name__)
 
 
@@ -109,16 +110,24 @@ class CharacterSelection(wx.Panel):
             event.Skip()
 
     def refreshApi(self, event):
+        self.btnRefresh.Enable(False)
         sChar = Character.getInstance()
         ID, key, charName, chars = sChar.getApiDetails(self.getActiveCharacter())
         if charName:
-            try:
-                sChar.apiFetch(self.getActiveCharacter(), charName)
-            except Exception as e:
-                # can we do a popup, notifying user of API error?
-                pyfalog.error("API fetch error")
-                pyfalog.error(e)
-        self.refreshCharacterList()
+            sChar.apiFetch(self.getActiveCharacter(), charName, self.refreshAPICallback)
+
+    def refreshAPICallback(self, e=None):
+        self.btnRefresh.Enable(True)
+        if e is None:
+            self.refreshCharacterList()
+        else:
+            exc_type, exc_obj, exc_trace = e
+            pyfalog.warn("Error fetching API information for character")
+            pyfalog.warn(exc_obj)
+
+            wx.MessageBox(
+                "Error fetching API information, please check your API details in the character editor and try again later",
+                "Error", wx.ICON_ERROR | wx.STAY_ON_TOP)
 
     def charChanged(self, event):
         fitID = self.mainFrame.getActiveFit()
