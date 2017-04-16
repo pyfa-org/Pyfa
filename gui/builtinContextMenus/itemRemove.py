@@ -1,15 +1,21 @@
 from gui.contextMenu import ContextMenu
 import gui.mainFrame
+# noinspection PyPackageRequirements
 import wx
 import gui.globalEvents as GE
 from service.fit import Fit
+from service.settings import ContextMenuSettings
 
 
 class ItemRemove(ContextMenu):
     def __init__(self):
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
+        self.settings = ContextMenuSettings.getInstance()
 
     def display(self, srcContext, selection):
+        if not self.settings.get('itemRemove'):
+            return False
+
         return srcContext in ("fittingModule", "fittingCharge",
                               "droneItem", "implantItem",
                               "boosterItem", "projectedModule",

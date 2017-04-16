@@ -1,3 +1,4 @@
+# noinspection PyPackageRequirements
 import wx
 
 from gui.preferenceView import PreferenceView
@@ -7,6 +8,8 @@ import gui.mainFrame
 import gui.globalEvents as GE
 from service.settings import SettingsProvider
 from service.fit import Fit
+from service.price import Price
+from service.market import Market
 
 
 class PFGeneralPref(PreferenceView):
@@ -36,10 +39,6 @@ class PFGeneralPref(PreferenceView):
         self.cbGlobalDmgPattern = wx.CheckBox(panel, wx.ID_ANY, u"Use global damage pattern", wx.DefaultPosition,
                                               wx.DefaultSize, 0)
         mainSizer.Add(self.cbGlobalDmgPattern, 0, wx.ALL | wx.EXPAND, 5)
-
-        self.cbGlobalForceReload = wx.CheckBox(panel, wx.ID_ANY, u"Factor in reload time", wx.DefaultPosition,
-                                               wx.DefaultSize, 0)
-        mainSizer.Add(self.cbGlobalForceReload, 0, wx.ALL | wx.EXPAND, 5)
 
         self.cbCompactSkills = wx.CheckBox(panel, wx.ID_ANY, u"Compact skills needed tooltip", wx.DefaultPosition,
                                            wx.DefaultSize, 0)
@@ -79,13 +78,21 @@ class PFGeneralPref(PreferenceView):
                                           wx.DefaultPosition, wx.DefaultSize, 0)
         mainSizer.Add(self.cbOpenFitInNew, 0, wx.ALL | wx.EXPAND, 5)
 
-        wx.BoxSizer(wx.HORIZONTAL)
+        priceSizer = wx.BoxSizer(wx.HORIZONTAL)
+
+        self.stDefaultSystem = wx.StaticText(panel, wx.ID_ANY, u"Default Market Prices:", wx.DefaultPosition, wx.DefaultSize, 0)
+        self.stDefaultSystem.Wrap(-1)
+        priceSizer.Add(self.stDefaultSystem, 0, wx.ALL | wx.ALIGN_CENTER_VERTICAL, 5)
+
+        self.chPriceSystem = wx.Choice(panel, choices=Price.systemsList.keys())
+        priceSizer.Add(self.chPriceSystem, 1, wx.ALL | wx.EXPAND, 5)
+
+        mainSizer.Add(priceSizer, 0, wx.ALL | wx.EXPAND, 0)
 
         self.sFit = Fit.getInstance()
 
         self.cbGlobalChar.SetValue(self.sFit.serviceFittingOptions["useGlobalCharacter"])
         self.cbGlobalDmgPattern.SetValue(self.sFit.serviceFittingOptions["useGlobalDamagePattern"])
-        self.cbGlobalForceReload.SetValue(self.sFit.serviceFittingOptions["useGlobalForceReload"])
         self.cbFitColorSlots.SetValue(self.sFit.serviceFittingOptions["colorFitBySlot"] or False)
         self.cbRackSlots.SetValue(self.sFit.serviceFittingOptions["rackSlots"] or False)
         self.cbRackLabels.SetValue(self.sFit.serviceFittingOptions["rackLabels"] or False)
@@ -96,10 +103,10 @@ class PFGeneralPref(PreferenceView):
         self.cbGaugeAnimation.SetValue(self.sFit.serviceFittingOptions["enableGaugeAnimation"])
         self.cbExportCharges.SetValue(self.sFit.serviceFittingOptions["exportCharges"])
         self.cbOpenFitInNew.SetValue(self.sFit.serviceFittingOptions["openFitInNew"])
+        self.chPriceSystem.SetStringSelection(self.sFit.serviceFittingOptions["priceSystem"])
 
         self.cbGlobalChar.Bind(wx.EVT_CHECKBOX, self.OnCBGlobalCharStateChange)
         self.cbGlobalDmgPattern.Bind(wx.EVT_CHECKBOX, self.OnCBGlobalDmgPatternStateChange)
-        self.cbGlobalForceReload.Bind(wx.EVT_CHECKBOX, self.OnCBGlobalForceReloadStateChange)
         self.cbFitColorSlots.Bind(wx.EVT_CHECKBOX, self.onCBGlobalColorBySlot)
         self.cbRackSlots.Bind(wx.EVT_CHECKBOX, self.onCBGlobalRackSlots)
         self.cbRackLabels.Bind(wx.EVT_CHECKBOX, self.onCBGlobalRackLabels)
@@ -110,6 +117,7 @@ class PFGeneralPref(PreferenceView):
         self.cbGaugeAnimation.Bind(wx.EVT_CHECKBOX, self.onCBGaugeAnimation)
         self.cbExportCharges.Bind(wx.EVT_CHECKBOX, self.onCBExportCharges)
         self.cbOpenFitInNew.Bind(wx.EVT_CHECKBOX, self.onCBOpenFitInNew)
+        self.chPriceSystem.Bind(wx.EVT_CHOICE, self.onPriceSelection)
 
         self.cbRackLabels.Enable(self.sFit.serviceFittingOptions["rackSlots"] or False)
 
@@ -133,13 +141,6 @@ class PFGeneralPref(PreferenceView):
 
     def onCBGlobalRackLabels(self, event):
         self.sFit.serviceFittingOptions["rackLabels"] = self.cbRackLabels.GetValue()
-        fitID = self.mainFrame.getActiveFit()
-        self.sFit.refreshFit(fitID)
-        wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fitID))
-        event.Skip()
-
-    def OnCBGlobalForceReloadStateChange(self, event):
-        self.sFit.serviceFittingOptions["useGlobalForceReload"] = self.cbGlobalForceReload.GetValue()
         fitID = self.mainFrame.getActiveFit()
         self.sFit.refreshFit(fitID)
         wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fitID))
@@ -180,6 +181,19 @@ class PFGeneralPref(PreferenceView):
 
     def getImage(self):
         return BitmapLoader.getBitmap("prefs_settings", "gui")
+
+    def onPriceSelection(self, event):
+        system = self.chPriceSystem.GetString(self.chPriceSystem.GetSelection())
+        self.sFit.serviceFittingOptions["priceSystem"] = system
+
+        fitID = self.mainFrame.getActiveFit()
+
+        sMkt = Market.getInstance()
+        sMkt.clearPriceCache()
+
+        self.sFit.refreshFit(fitID)
+        wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fitID))
+        event.Skip()
 
 
 PFGeneralPref.register()

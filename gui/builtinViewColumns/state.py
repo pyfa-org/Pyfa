@@ -18,10 +18,13 @@
 # =============================================================================
 
 
+# noinspection PyPackageRequirements
 import wx
 
-from eos.types import Drone, Module, Rack, Fit, Implant
-from eos.types import State as State_
+from eos.saveddata.fit import Fit
+from eos.saveddata.implant import Implant
+from eos.saveddata.drone import Drone
+from eos.saveddata.module import Module, State as State_, Rack
 from gui.viewColumn import ViewColumn
 
 import gui.mainFrame

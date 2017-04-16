@@ -18,17 +18,16 @@
 # ===============================================================================
 
 
-import logging
+from logbook import Logger
 from itertools import chain
 
 from sqlalchemy.orm import validates, reconstructor
 
 import eos
 import eos.db
-import eos.types
 from eos.effectHandlerHelpers import HandledItem, HandledImplantBoosterList
 
-logger = logging.getLogger(__name__)
+pyfalog = Logger(__name__)
 
 
 class Character(object):
@@ -141,7 +140,17 @@ class Character(object):
 
     @property
     def name(self):
-        return self.savedName if not self.isDirty else "{} *".format(self.savedName)
+        name = self.savedName
+
+        if self.isDirty:
+            name += " *"
+
+        if self.alphaCloneID:
+            clone = eos.db.getAlphaClone(self.alphaCloneID)
+            type = clone.alphaCloneName.split()[1]
+            name += u' (\u03B1{})'.format(type[0].upper())
+
+        return name
 
     @name.setter
     def name(self, name):
@@ -257,10 +266,10 @@ class Character(object):
 
     @validates("ID", "name", "apiKey", "ownerID")
     def validator(self, key, val):
-        map = {"ID": lambda val: isinstance(val, int),
-               "name": lambda val: True,
-               "apiKey": lambda val: val is None or (isinstance(val, basestring) and len(val) > 0),
-               "ownerID": lambda val: isinstance(val, int) or val is None}
+        map = {"ID": lambda _val: isinstance(_val, int),
+               "name": lambda _val: True,
+               "apiKey": lambda _val: _val is None or (isinstance(_val, basestring) and len(_val) > 0),
+               "ownerID": lambda _val: isinstance(_val, int) or _val is None}
 
         if not map[key](val):
             raise ValueError(str(val) + " is not a valid value for " + key)
@@ -378,8 +387,8 @@ class Skill(HandledItem):
         if hasattr(self, "_Skill__ro") and self.__ro is True and key != "characterID":
             raise ReadOnlyException()
 
-        map = {"characterID": lambda val: isinstance(val, int),
-               "skillID": lambda val: isinstance(val, int)}
+        map = {"characterID": lambda _val: isinstance(_val, int),
+               "skillID": lambda _val: isinstance(_val, int)}
 
         if not map[key](val):
             raise ValueError(str(val) + " is not a valid value for " + key)

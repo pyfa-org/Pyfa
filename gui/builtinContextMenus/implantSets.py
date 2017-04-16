@@ -1,17 +1,23 @@
 from gui.contextMenu import ContextMenu
 import gui.mainFrame
 import gui.globalEvents as GE
+# noinspection PyPackageRequirements
 import wx
 from service.implantSet import ImplantSets as s_ImplantSets
 from service.character import Character
 from service.fit import Fit
+from service.settings import ContextMenuSettings
 
 
 class ImplantSets(ContextMenu):
     def __init__(self):
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
+        self.settings = ContextMenuSettings.getInstance()
 
     def display(self, srcContext, selection):
+        if not self.settings.get('implantSets'):
+            return False
+
         return srcContext in ("implantView", "implantEditor")
 
     def getText(self, itmContext, selection):

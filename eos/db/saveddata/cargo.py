@@ -21,7 +21,7 @@ from sqlalchemy import Table, Column, Integer, ForeignKey
 from sqlalchemy.orm import mapper
 
 from eos.db import saveddata_meta
-from eos.types import Cargo
+from eos.saveddata.cargo import Cargo
 
 cargo_table = Table("cargo", saveddata_meta,
                     Column("ID", Integer, primary_key=True),

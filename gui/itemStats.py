@@ -23,12 +23,24 @@ import csv
 import sys
 import subprocess
 
+# noinspection PyPackageRequirements
 import wx
+# noinspection PyPackageRequirements
 import wx.html
+# noinspection PyPackageRequirements
 import wx.lib.mixins.listctrl as listmix
 
 import config
-from eos.types import Fit, Ship, Citadel, Module, Skill, Booster, Implant, Drone, Mode, Fighter
+from eos.saveddata.mode import Mode
+from eos.saveddata.character import Skill
+from eos.saveddata.implant import Implant
+from eos.saveddata.booster import Booster
+from eos.saveddata.drone import Drone
+from eos.saveddata.fighter import Fighter
+from eos.saveddata.module import Module
+from eos.saveddata.ship import Ship
+from eos.saveddata.citadel import Citadel
+from eos.saveddata.fit import Fit
 from service.market import Market
 from service.attribute import Attribute
 import gui.mainFrame
@@ -50,13 +62,13 @@ class ItemStatsDialog(wx.Dialog):
     ):
 
         wx.Dialog.__init__(
-            self,
-            gui.mainFrame.MainFrame.getInstance(),
-            wx.ID_ANY,
-            title="Item stats",
-            pos=pos,
-            size=size,
-            style=wx.CAPTION | wx.CLOSE_BOX | wx.MINIMIZE_BOX | wx.MAXIMIZE_BOX | wx.RESIZE_BORDER | wx.SYSTEM_MENU
+                self,
+                gui.mainFrame.MainFrame.getInstance(),
+                wx.ID_ANY,
+                title="Item stats",
+                pos=pos,
+                size=size,
+                style=wx.CAPTION | wx.CLOSE_BOX | wx.MINIMIZE_BOX | wx.MAXIMIZE_BOX | wx.RESIZE_BORDER | wx.SYSTEM_MENU
         )
 
         empty = getattr(victim, "isEmpty", False)
@@ -185,6 +197,10 @@ class ItemStatsContainer(wx.Panel):
             self.affectedby = ItemAffectedBy(self.nbContainer, stuff, item)
             self.nbContainer.AddPage(self.affectedby, "Affected by")
 
+        if config.debug:
+            self.properties = ItemProperties(self.nbContainer, stuff, item, context)
+            self.nbContainer.AddPage(self.properties, "Properties")
+
         self.nbContainer.Bind(wx.EVT_LEFT_DOWN, self.mouseHit)
         self.SetSizer(mainSizer)
         self.Layout()
@@ -244,7 +260,7 @@ class ItemDescription(wx.Panel):
         # Strip URLs
         desc = re.sub("<( *)a(.*?)>(?P<inside>.*?)<( *)/( *)a( *)>", "\g<inside>", desc)
         desc = "<body bgcolor='" + bgcolor.GetAsString(wx.C2S_HTML_SYNTAX) + "' text='" + fgcolor.GetAsString(
-            wx.C2S_HTML_SYNTAX) + "' >" + desc + "</body>"
+                wx.C2S_HTML_SYNTAX) + "' >" + desc + "</body>"
 
         self.description.SetPage(desc)
 
@@ -346,13 +362,13 @@ class ItemParams(wx.Panel):
             writer = csv.writer(exportFile, delimiter=',')
 
             writer.writerow(
-                [
-                    "ID",
-                    "Internal Name",
-                    "Friendly Name",
-                    "Modified Value",
-                    "Base Value",
-                ]
+                    [
+                        "ID",
+                        "Internal Name",
+                        "Friendly Name",
+                        "Modified Value",
+                        "Base Value",
+                    ]
             )
 
             for attribute in self.attrValues:
@@ -383,13 +399,13 @@ class ItemParams(wx.Panel):
                     attribute_modified_value = self.attrValues[attribute]
 
                 writer.writerow(
-                    [
-                        attribute_id,
-                        attribute_name,
-                        attribute_displayname,
-                        attribute_modified_value,
-                        attribute_value,
-                    ]
+                        [
+                            attribute_id,
+                            attribute_name,
+                            attribute_displayname,
+                            attribute_modified_value,
+                            attribute_value,
+                        ]
                 )
 
     def PopulateList(self):
@@ -470,7 +486,8 @@ class ItemParams(wx.Panel):
         self.totalAttrsLabel.SetLabel("%d attributes. " % idCount)
         self.Layout()
 
-    def TranslateValueUnit(self, value, unitName, unitDisplayName):
+    @staticmethod
+    def TranslateValueUnit(value, unitName, unitDisplayName):
         def itemIDCallback():
             item = Market.getInstance().getItem(value)
             return "%s (%d)" % (item.name, value) if item is not None else str(value)
@@ -483,17 +500,19 @@ class ItemParams(wx.Panel):
             attribute = Attribute.getInstance().getAttributeInfo(value)
             return "%s (%d)" % (attribute.name.capitalize(), value)
 
-        trans = {"Inverse Absolute Percent": (lambda: (1 - value) * 100, unitName),
-                 "Inversed Modifier Percent": (lambda: (1 - value) * 100, unitName),
-                 "Modifier Percent": (
-                     lambda: ("%+.2f" if ((value - 1) * 100) % 1 else "%+d") % ((value - 1) * 100), unitName),
-                 "Volume": (lambda: value, u"m\u00B3"),
-                 "Sizeclass": (lambda: value, ""),
-                 "Absolute Percent": (lambda: (value * 100), unitName),
-                 "Milliseconds": (lambda: value / 1000.0, unitName),
-                 "typeID": (itemIDCallback, ""),
-                 "groupID": (groupIDCallback, ""),
-                 "attributeID": (attributeIDCallback, "")}
+        trans = {
+            "Inverse Absolute Percent" : (lambda: (1 - value) * 100, unitName),
+            "Inversed Modifier Percent": (lambda: (1 - value) * 100, unitName),
+            "Modifier Percent"         : (
+                lambda: ("%+.2f" if ((value - 1) * 100) % 1 else "%+d") % ((value - 1) * 100), unitName),
+            "Volume"                   : (lambda: value, u"m\u00B3"),
+            "Sizeclass"                : (lambda: value, ""),
+            "Absolute Percent"         : (lambda: (value * 100), unitName),
+            "Milliseconds"             : (lambda: value / 1000.0, unitName),
+            "typeID"                   : (itemIDCallback, ""),
+            "groupID"                  : (groupIDCallback, ""),
+            "attributeID"              : (attributeIDCallback, "")
+        }
 
         override = trans.get(unitDisplayName)
         if override is not None:
@@ -616,17 +635,17 @@ class ItemCompare(wx.Panel):
 
         if sort is not None:
             if sort == 0:  # Name sort
-                func = lambda x: x.name
+                func = lambda _val: _val.name
             else:
                 try:
                     # Remember to reduce by 1, because the attrs array
                     # starts at 0 while the list has the item name as column 0.
                     attr = str(self.attrs.keys()[sort - 1])
-                    func = lambda x: x.attributes[attr].value if attr in x.attributes else None
+                    func = lambda _val: _val.attributes[attr].value if attr in _val.attributes else None
                 except IndexError:
                     # Clicked on a column that's not part of our array (price most likely)
                     self.sortReverse = False
-                    func = lambda x: x.attributes['metaLevel'].value if 'metaLevel' in x.attributes else None
+                    func = lambda _val: _val.attributes['metaLevel'].value if 'metaLevel' in _val.attributes else None
 
             self.items = sorted(self.items, key=func, reverse=self.sortReverse)
 
@@ -652,7 +671,7 @@ class ItemCompare(wx.Panel):
                     value = item.attributes[attr].value
                     if self.toggleView != 1:
                         valueUnit = str(value)
-                    if info and info.unit:
+                    elif info and info.unit and self.toggleView == 1:
                         valueUnit = self.TranslateValueUnit(value, info.unit.displayName, info.unit.name)
                     else:
                         valueUnit = formatAmount(value, 3, 0, 0)
@@ -662,7 +681,8 @@ class ItemCompare(wx.Panel):
         self.paramList.RefreshRows()
         self.Layout()
 
-    def TranslateValueUnit(self, value, unitName, unitDisplayName):
+    @staticmethod
+    def TranslateValueUnit(value, unitName, unitDisplayName):
         def itemIDCallback():
             item = Market.getInstance().getItem(value)
             return "%s (%d)" % (item.name, value) if item is not None else str(value)
@@ -675,17 +695,18 @@ class ItemCompare(wx.Panel):
             attribute = Attribute.getInstance().getAttributeInfo(value)
             return "%s (%d)" % (attribute.name.capitalize(), value)
 
-        trans = {"Inverse Absolute Percent": (lambda: (1 - value) * 100, unitName),
-                 "Inversed Modifier Percent": (lambda: (1 - value) * 100, unitName),
-                 "Modifier Percent": (
-                     lambda: ("%+.2f" if ((value - 1) * 100) % 1 else "%+d") % ((value - 1) * 100), unitName),
-                 "Volume": (lambda: value, u"m\u00B3"),
-                 "Sizeclass": (lambda: value, ""),
-                 "Absolute Percent": (lambda: (value * 100), unitName),
-                 "Milliseconds": (lambda: value / 1000.0, unitName),
-                 "typeID": (itemIDCallback, ""),
-                 "groupID": (groupIDCallback, ""),
-                 "attributeID": (attributeIDCallback, "")}
+        trans = {
+            "Inverse Absolute Percent" : (lambda: (1 - value) * 100, unitName),
+            "Inversed Modifier Percent": (lambda: (1 - value) * 100, unitName),
+            "Modifier Percent"         : (lambda: ("%+.2f" if ((value - 1) * 100) % 1 else "%+d") % ((value - 1) * 100), unitName),
+            "Volume"                   : (lambda: value, u"m\u00B3"),
+            "Sizeclass"                : (lambda: value, ""),
+            "Absolute Percent"         : (lambda: (value * 100), unitName),
+            "Milliseconds"             : (lambda: value / 1000.0, unitName),
+            "typeID"                   : (itemIDCallback, ""),
+            "groupID"                  : (groupIDCallback, ""),
+            "attributeID"              : (attributeIDCallback, "")
+        }
 
         override = trans.get(unitDisplayName)
         if override is not None:
@@ -828,13 +849,14 @@ class ItemEffects(wx.Panel):
 
         self.RefreshValues(event)
 
-    def OnRightClick(self, event):
+    @staticmethod
+    def OnRightClick(event):
         """
         Debug use: open effect file with default application.
         If effect file does not exist, create it
         """
 
-        file_ = config.getPyfaPath(os.path.join("eos", "effects", "%s.py" % event.GetText().lower()))
+        file_ = os.path.join(config.pyfaPath, "eos", "effects", "%s.py" % event.GetText().lower())
 
         if not os.path.isfile(file_):
             open(file_, 'a').close()
@@ -1052,7 +1074,7 @@ class ItemAffectedBy(wx.Panel):
                         item = afflictor.item
 
                     items[attrName].append(
-                        (type(afflictor), afflictor, item, modifier, amount, getattr(afflictor, "projected", False)))
+                            (type(afflictor), afflictor, item, modifier, amount, getattr(afflictor, "projected", False)))
 
         # Make sure projected fits are on top
         rootOrder = container.keys()
@@ -1280,3 +1302,97 @@ class ItemAffectedBy(wx.Panel):
                         treeitem = self.affectedBy.AppendItem(child, display, attrIcon)
                         self.affectedBy.SetPyData(treeitem, saved)
                         self.treeItems.append(treeitem)
+
+
+class ItemProperties(wx.Panel):
+    def __init__(self, parent, stuff, item, context=None):
+        wx.Panel.__init__(self, parent)
+        mainSizer = wx.BoxSizer(wx.VERTICAL)
+
+        self.paramList = AutoListCtrl(self, wx.ID_ANY,
+                                      style=wx.LC_REPORT | wx.LC_SINGLE_SEL | wx.LC_VRULES | wx.NO_BORDER)
+        mainSizer.Add(self.paramList, 1, wx.ALL | wx.EXPAND, 0)
+        self.SetSizer(mainSizer)
+
+        self.toggleView = 1
+        self.stuff = stuff
+        self.item = item
+        self.attrInfo = {}
+        self.attrValues = {}
+        self._fetchValues()
+
+        self.m_staticline = wx.StaticLine(self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.LI_HORIZONTAL)
+        mainSizer.Add(self.m_staticline, 0, wx.EXPAND)
+        bSizer = wx.BoxSizer(wx.HORIZONTAL)
+
+        self.totalAttrsLabel = wx.StaticText(self, wx.ID_ANY, u" ", wx.DefaultPosition, wx.DefaultSize, 0)
+        bSizer.Add(self.totalAttrsLabel, 0, wx.ALIGN_CENTER_VERTICAL | wx.RIGHT)
+
+        mainSizer.Add(bSizer, 0, wx.ALIGN_RIGHT)
+
+        self.PopulateList()
+
+    def _fetchValues(self):
+        if self.stuff is None:
+            self.attrInfo.clear()
+            self.attrValues.clear()
+            self.attrInfo.update(self.item.attributes)
+            self.attrValues.update(self.item.attributes)
+        elif self.stuff.item == self.item:
+            self.attrInfo.clear()
+            self.attrValues.clear()
+            self.attrInfo.update(self.stuff.item.attributes)
+            self.attrValues.update(self.stuff.itemModifiedAttributes)
+        elif self.stuff.charge == self.item:
+            self.attrInfo.clear()
+            self.attrValues.clear()
+            self.attrInfo.update(self.stuff.charge.attributes)
+            self.attrValues.update(self.stuff.chargeModifiedAttributes)
+        # When item for stats window no longer exists, don't change anything
+        else:
+            return
+
+    def PopulateList(self):
+        self.paramList.InsertColumn(0, "Attribute")
+        self.paramList.InsertColumn(1, "Current Value")
+        self.paramList.SetColumnWidth(0, 110)
+        self.paramList.SetColumnWidth(1, 1500)
+        self.paramList.setResizeColumn(0)
+
+        if self.stuff:
+            names = dir(self.stuff)
+        else:
+            names = dir(self.item)
+
+        names = [a for a in names if not (a.startswith('__') and a.endswith('__'))]
+
+        idNameMap = {}
+        idCount = 0
+        for name in names:
+            try:
+                if self.stuff:
+                    attrName = name.title()
+                    value = getattr(self.stuff, name)
+                else:
+                    attrName = name.title()
+                    value = getattr(self.item, name)
+            except Exception as e:
+                # TODO: Add logging to this.
+                # We couldn't get a property for some reason. Skip it for now.
+                print(e)
+                continue
+
+            index = self.paramList.InsertStringItem(sys.maxint, attrName)
+            # index = self.paramList.InsertImageStringItem(sys.maxint, attrName)
+            idNameMap[idCount] = attrName
+            self.paramList.SetItemData(index, idCount)
+            idCount += 1
+
+            valueUnit = str(value)
+
+            self.paramList.SetStringItem(index, 1, valueUnit)
+
+        self.paramList.SortItems(lambda id1, id2: cmp(idNameMap[id1], idNameMap[id2]))
+        self.paramList.RefreshRows()
+        self.totalAttrsLabel.SetLabel("%d attributes. " % idCount)
+        self.Layout()

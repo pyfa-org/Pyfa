@@ -17,6 +17,7 @@
 # along with pyfa.  If not, see <http://www.gnu.org/licenses/>.
 # =============================================================================
 
+# noinspection PyPackageRequirements
 import wx
 from gui.preferenceView import PreferenceView
 from gui.bitmapLoader import BitmapLoader
@@ -65,12 +66,12 @@ class PreferenceDialog(wx.Dialog):
 
         # Set the height based on a condition. Can all the panels fit in the current height?
         # If not, use the .GetBestVirtualSize() to ensure that all content is available.
-        minHeight = 360
+        minHeight = 550
         bestFit = self.GetBestVirtualSize()
         if minHeight > bestFit[1]:
-            self.SetSizeWH(450, minHeight)
+            self.SetSizeWH(650, minHeight)
         else:
-            self.SetSizeWH(450, bestFit[1])
+            self.SetSizeWH(650, bestFit[1])
 
         self.Layout()
 

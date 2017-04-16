@@ -35,4 +35,5 @@ class Graph(object):
         return None
 
 
-from gui.builtinGraphs import *  # noqa
+# noinspection PyUnresolvedReferences
+from gui.builtinGraphs import fitDps  # noqa: E402, F401

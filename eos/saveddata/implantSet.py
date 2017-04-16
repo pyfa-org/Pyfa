@@ -48,13 +48,13 @@ class ImplantSet(object):
 
         return out.strip()
 
-    def __deepcopy__(self, memo):
+    def __deepcopy__(self):
         copy = ImplantSet(self.name)
         copy.name = "%s copy" % self.name
 
         orig = getattr(self, 'implants')
         c = getattr(copy, 'implants')
         for i in orig:
-            c.append(deepcopy(i, memo))
+            c.append(deepcopy(i))
 
         return copy

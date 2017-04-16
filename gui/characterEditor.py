@@ -17,9 +17,12 @@
 # along with pyfa.  If not, see <http://www.gnu.org/licenses/>.
 # =============================================================================
 
+# noinspection PyPackageRequirements
 import wx
 
+# noinspection PyPackageRequirements
 import wx.lib.newevent
+# noinspection PyPackageRequirements
 import wx.gizmos
 from gui.bitmapLoader import BitmapLoader
 from gui.contextMenu import ContextMenu
@@ -30,6 +33,8 @@ from service.fit import Fit
 from service.character import Character
 from service.network import AuthenticationError, TimeoutError
 from service.market import Market
+from logbook import Logger
+pyfalog = Logger(__name__)
 
 
 class CharacterTextValidor(BaseValidator):
@@ -52,6 +57,7 @@ class CharacterTextValidor(BaseValidator):
 
             return True
         except ValueError, e:
+            pyfalog.error(e)
             wx.MessageBox(u"{}".format(e), "Error")
             textCtrl.SetFocus()
             return False
@@ -626,10 +632,15 @@ class APIView(wx.Panel):
             activeChar = self.charEditor.entityEditor.getActiveEntity()
             list = sChar.apiCharList(activeChar.ID, self.inputID.GetLineText(0), self.inputKey.GetLineText(0))
         except AuthenticationError, e:
-            self.stStatus.SetLabel("Authentication failure. Please check keyID and vCode combination.")
+            msg = "Authentication failure. Please check keyID and vCode combination."
+            pyfalog.info(msg)
+            self.stStatus.SetLabel(msg)
         except TimeoutError, e:
-            self.stStatus.SetLabel("Request timed out. Please check network connectivity and/or proxy settings.")
+            msg = "Request timed out. Please check network connectivity and/or proxy settings."
+            pyfalog.info(msg)
+            self.stStatus.SetLabel(msg)
         except Exception, e:
+            pyfalog.error(e)
             self.stStatus.SetLabel("Error:\n%s" % e.message)
         else:
             self.charChoice.Clear()
@@ -652,6 +663,7 @@ class APIView(wx.Panel):
                 sChar.apiFetch(activeChar.ID, charName)
                 self.stStatus.SetLabel("Successfully fetched %s\'s skills from EVE API." % charName)
             except Exception, e:
+                pyfalog.error("Unable to retrieve {0}\'s skills. Error message:\n{1}", charName, e)
                 self.stStatus.SetLabel("Unable to retrieve %s\'s skills. Error message:\n%s" % (charName, e))
 
 

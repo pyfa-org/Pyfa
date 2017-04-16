@@ -6,7 +6,6 @@
 # Modules from group: Reactor Control Unit (22 of 22)
 # Modules from group: Shield Recharger (4 of 4)
 # Modules named like: Flux Coil (12 of 12)
-# Modules named like: QA Multiship Module Players (4 of 4)
 type = "passive"
 
 

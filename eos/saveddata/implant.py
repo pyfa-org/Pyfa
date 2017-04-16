@@ -17,7 +17,7 @@
 # along with eos.  If not, see <http://www.gnu.org/licenses/>.
 # ===============================================================================
 
-import logging
+from logbook import Logger
 
 from sqlalchemy.orm import validates, reconstructor
 
@@ -25,7 +25,7 @@ import eos.db
 from eos.effectHandlerHelpers import HandledItem
 from eos.modifiedAttributeDict import ModifiedAttributeDict, ItemAttrShortcut
 
-logger = logging.getLogger(__name__)
+pyfalog = Logger(__name__)
 
 
 class Implant(HandledItem, ItemAttrShortcut):
@@ -46,11 +46,11 @@ class Implant(HandledItem, ItemAttrShortcut):
         if self.itemID:
             self.__item = eos.db.getItem(self.itemID)
             if self.__item is None:
-                logger.error("Item (id: %d) does not exist", self.itemID)
+                pyfalog.error("Item (id: {0}) does not exist", self.itemID)
                 return
 
         if self.isInvalid:
-            logger.error("Item (id: %d) is not an Implant", self.itemID)
+            pyfalog.error("Item (id: {0}) is not an Implant", self.itemID)
             return
 
         self.build()
@@ -78,7 +78,8 @@ class Implant(HandledItem, ItemAttrShortcut):
     def item(self):
         return self.__item
 
-    def __calculateSlot(self, item):
+    @staticmethod
+    def __calculateSlot(item):
         if "implantness" not in item.attributes:
             raise ValueError("Passed item is not an implant")
 
@@ -98,9 +99,9 @@ class Implant(HandledItem, ItemAttrShortcut):
 
     @validates("fitID", "itemID", "active")
     def validator(self, key, val):
-        map = {"fitID": lambda val: isinstance(val, int),
-               "itemID": lambda val: isinstance(val, int),
-               "active": lambda val: isinstance(val, bool)}
+        map = {"fitID": lambda _val: isinstance(_val, int),
+               "itemID": lambda _val: isinstance(_val, int),
+               "active": lambda _val: isinstance(_val, bool)}
 
         if not map[key](val):
             raise ValueError(str(val) + " is not a valid value for " + key)

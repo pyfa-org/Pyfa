@@ -1,22 +1,28 @@
 from gui.contextMenu import ContextMenu
 import gui.mainFrame
 import gui.globalEvents as GE
+# noinspection PyPackageRequirements
 import wx
 from gui.bitmapLoader import BitmapLoader
 from service.fit import Fit
 from service.damagePattern import DamagePattern as import_DamagePattern
+from service.settings import ContextMenuSettings
 
 try:
     from collections import OrderedDict
 except ImportError:
-    from gui.utils.compat import OrderedDict
+    from utils.compat import OrderedDict
 
 
 class DamagePattern(ContextMenu):
     def __init__(self):
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
+        self.settings = ContextMenuSettings.getInstance()
 
     def display(self, srcContext, selection):
+        if not self.settings.get('damagePattern'):
+            return False
+
         return srcContext == "resistancesViewFull" and self.mainFrame.getActiveFit() is not None
 
     def getText(self, itmContext, selection):

@@ -17,6 +17,7 @@
 # along with pyfa.  If not, see <http://www.gnu.org/licenses/>.
 # =============================================================================
 
+# noinspection PyPackageRequirements
 import wx
 
 
@@ -37,4 +38,16 @@ class PreferenceView(object):
         return wx.NullBitmap
 
 
-from gui.builtinPreferenceViews import *  # noqa
+# noinspection PyUnresolvedReferences
+from gui.builtinPreferenceViews import (  # noqa: E402, F401
+    pyfaGeneralPreferences,
+    pyfaNetworkPreferences,
+    pyfaHTMLExportPreferences,
+    pyfaCrestPreferences,
+    pyfaContextMenuPreferences,
+    pyfaStatViewPreferences,
+    pyfaUpdatePreferences,
+    pyfaEnginePreferences,
+    pyfaDatabasePreferences,
+    pyfaLoggingPreferences
+)

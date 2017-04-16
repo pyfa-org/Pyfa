@@ -1,3 +1,4 @@
+# noinspection PyPackageRequirements
 import wx
 
 from gui.preferenceView import PreferenceView
@@ -39,11 +40,11 @@ class PFUpdatePref(PreferenceView):
 
         mainSizer.Add(self.suppressPrerelease, 0, wx.ALL | wx.EXPAND, 5)
 
-        if (self.UpdateSettings.get('version')):
+        if self.UpdateSettings.get('version'):
             self.versionSizer = wx.BoxSizer(wx.VERTICAL)
 
             self.versionTitle = wx.StaticText(panel, wx.ID_ANY, "Suppressing {0} Notifications".format(
-                self.UpdateSettings.get('version')), wx.DefaultPosition, wx.DefaultSize, 0)
+                    self.UpdateSettings.get('version')), wx.DefaultPosition, wx.DefaultSize, 0)
             self.versionTitle.Wrap(-1)
             self.versionTitle.SetFont(wx.Font(12, 70, 90, 90, False, wx.EmptyString))
 

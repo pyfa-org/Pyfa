@@ -22,8 +22,17 @@ from sqlalchemy.sql import and_
 from eos.db import saveddata_session, sd_lock
 from eos.db.saveddata.fit import projectedFits_table
 from eos.db.util import processEager, processWhere
+from eos.saveddata.price import Price
+from eos.saveddata.user import User
+from eos.saveddata.crestchar import CrestChar
+from eos.saveddata.damagePattern import DamagePattern
+from eos.saveddata.targetResists import TargetResists
+from eos.saveddata.character import Character
+from eos.saveddata.implantSet import ImplantSet
+from eos.saveddata.fit import Fit
+from eos.saveddata.miscData import MiscData
+from eos.saveddata.override import Override
 
-from eos.types import *
 import eos.config
 
 configVal = getattr(eos.config, "saveddataCache", None)
@@ -59,6 +68,7 @@ if configVal is True:
             def checkAndReturn(*args, **kwargs):
                 useCache = kwargs.pop("useCache", True)
                 cacheKey = []
+                items = None
                 cacheKey.extend(args)
                 for keyword in keywords:
                     cacheKey.append(kwargs.get(keyword))

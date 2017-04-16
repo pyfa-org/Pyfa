@@ -1,7 +1,4 @@
-# shieldTransfer
-#
-# Used by:
-# Module: QA Shield Transporter - 5 Players
+# Not used by any item
 type = "projected", "active"
 
 

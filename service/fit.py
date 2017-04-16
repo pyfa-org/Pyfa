@@ -18,7 +18,7 @@
 # ===============================================================================
 
 import copy
-import logging
+from logbook import Logger
 
 import eos.db
 from eos.saveddata.booster import Booster as es_Booster
@@ -29,15 +29,14 @@ from eos.saveddata.damagePattern import DamagePattern as es_DamagePattern
 from eos.saveddata.drone import Drone as es_Drone
 from eos.saveddata.fighter import Fighter as es_Fighter
 from eos.saveddata.implant import Implant as es_Implant
-from eos.saveddata.module import Module as es_Module
 from eos.saveddata.ship import Ship as es_Ship
-from eos.types import State, Slot, Fit as FitType
+from eos.saveddata.module import Module as es_Module, State, Slot
+from eos.saveddata.fit import Fit as FitType
 from service.character import Character
 from service.damagePattern import DamagePattern
-from service.market import Market
 from service.settings import SettingsProvider
 
-logger = logging.getLogger(__name__)
+pyfalog = Logger(__name__)
 
 
 class Fit(object):
@@ -51,6 +50,7 @@ class Fit(object):
         return cls.instance
 
     def __init__(self):
+        pyfalog.debug("Initialize Fit class")
         self.pattern = DamagePattern.getInstance().getDamagePattern("Uniform")
         self.targetResists = None
         self.character = saveddata_Character.getAll5()
@@ -71,16 +71,19 @@ class Fit(object):
             "enableGaugeAnimation": True,
             "exportCharges": True,
             "openFitInNew": False,
+            "priceSystem": "Jita",
         }
 
         self.serviceFittingOptions = SettingsProvider.getInstance().getSettings(
             "pyfaServiceFittingOptions", serviceFittingDefaultOptions)
 
-    def getAllFits(self):
+    @staticmethod
+    def getAllFits():
         fits = eos.db.getFitList()
         return fits
 
-    def getFitsWithShip(self, shipID):
+    @staticmethod
+    def getFitsWithShip(shipID):
         """ Lists fits of shipID, used with shipBrowser """
         fits = eos.db.getFitsWithShip(shipID)
         names = []
@@ -89,7 +92,8 @@ class Fit(object):
 
         return names
 
-    def getBoosterFits(self):
+    @staticmethod
+    def getBoosterFits():
         """ Lists fits flagged as booster """
         fits = eos.db.getBoosterFits()
         names = []
@@ -98,14 +102,17 @@ class Fit(object):
 
         return names
 
-    def countAllFits(self):
+    @staticmethod
+    def countAllFits():
         return eos.db.countAllFits()
 
-    def countFitsWithShip(self, stuff):
+    @staticmethod
+    def countFitsWithShip(stuff):
         count = eos.db.countFitsWithShip(stuff)
         return count
 
-    def getModule(self, fitID, pos):
+    @staticmethod
+    def getModule(fitID, pos):
         fit = eos.db.getFit(fitID)
         return fit.modules[pos]
 
@@ -124,17 +131,20 @@ class Fit(object):
         self.recalc(fit)
         return fit.ID
 
-    def toggleBoostFit(self, fitID):
+    @staticmethod
+    def toggleBoostFit(fitID):
         fit = eos.db.getFit(fitID)
         fit.booster = not fit.booster
         eos.db.commit()
 
-    def renameFit(self, fitID, newName):
+    @staticmethod
+    def renameFit(fitID, newName):
         fit = eos.db.getFit(fitID)
         fit.name = newName
         eos.db.commit()
 
-    def deleteFit(self, fitID):
+    @staticmethod
+    def deleteFit(fitID):
         fit = eos.db.getFit(fitID)
 
         eos.db.remove(fit)
@@ -145,13 +155,15 @@ class Fit(object):
             if projection.victim_fit in eos.db.saveddata_session:  # GH issue #359
                 eos.db.saveddata_session.refresh(projection.victim_fit)
 
-    def copyFit(self, fitID):
+    @staticmethod
+    def copyFit(fitID):
         fit = eos.db.getFit(fitID)
         newFit = copy.deepcopy(fit)
         eos.db.save(newFit)
         return newFit.ID
 
-    def clearFit(self, fitID):
+    @staticmethod
+    def clearFit(fitID):
         if fitID is None:
             return None
 
@@ -215,7 +227,8 @@ class Fit(object):
             fit.inited = True
         return fit
 
-    def searchFits(self, name):
+    @staticmethod
+    def searchFits(name):
         results = eos.db.searchFits(name)
         fits = []
         for fit in results:
@@ -233,6 +246,7 @@ class Fit(object):
         try:
             implant = es_Implant(item)
         except ValueError:
+            pyfalog.warning("Invalid item: {0}", itemID)
             return False
 
         fit.implants.append(implant)
@@ -240,14 +254,15 @@ class Fit(object):
             self.recalc(fit)
         return True
 
-    def removeImplant(self, fitID, position):
+    def removeImplant(self, fitID, position, recalc=True):
         if fitID is None:
             return False
 
         fit = eos.db.getFit(fitID)
         implant = fit.implants[position]
         fit.implants.remove(implant)
-        self.recalc(fit)
+        if recalc:
+            self.recalc(fit)
         return True
 
     def addBooster(self, fitID, itemID):
@@ -259,6 +274,7 @@ class Fit(object):
         try:
             booster = es_Booster(item)
         except ValueError:
+            pyfalog.warning("Invalid item: {0}", itemID)
             return False
 
         fit.boosters.append(booster)
@@ -419,6 +435,7 @@ class Fit(object):
         try:
             m = es_Module(item)
         except ValueError:
+            pyfalog.warning("Invalid item: {0}", itemID)
             return False
 
         if m.item.category.name == "Subsystem":
@@ -466,6 +483,7 @@ class Fit(object):
         try:
             m = es_Module(item)
         except ValueError:
+            pyfalog.warning("Invalid item: {0}", newItemID)
             return False
 
         if m.fits(fit):
@@ -506,6 +524,7 @@ class Fit(object):
             if cargoP.isValidState(State.ACTIVE):
                 cargoP.state = State.ACTIVE
         except:
+            pyfalog.warning("Invalid item: {0}", cargo.item)
             return
 
         if cargoP.slot != module.slot:  # can't swap modules to different racks
@@ -538,7 +557,8 @@ class Fit(object):
         eos.db.commit()
         self.recalc(fit)
 
-    def swapModules(self, fitID, src, dst):
+    @staticmethod
+    def swapModules(fitID, src, dst):
         fit = eos.db.getFit(fitID)
         # Gather modules
         srcMod = fit.modules[src]
@@ -639,7 +659,7 @@ class Fit(object):
                 total = fit.getNumSlots(fighter.slot)
                 standardAttackActive = False
                 for ability in fighter.abilities:
-                    if (ability.effect.isImplemented and ability.effect.handlerName == u'fighterabilityattackm'):
+                    if ability.effect.isImplemented and ability.effect.handlerName == u'fighterabilityattackm':
                         # Activate "standard attack" if available
                         ability.active = True
                         standardAttackActive = True
@@ -674,7 +694,7 @@ class Fit(object):
         self.recalc(fit)
         return True
 
-    def addDrone(self, fitID, itemID):
+    def addDrone(self, fitID, itemID, numDronesToAdd=1):
         if fitID is None:
             return False
 
@@ -693,7 +713,7 @@ class Fit(object):
                     fit.drones.append(drone)
                 else:
                     return False
-            drone.amount += 1
+            drone.amount += numDronesToAdd
             eos.db.commit()
             self.recalc(fit)
             return True
@@ -714,12 +734,19 @@ class Fit(object):
             fit.drones.remove(d1)
 
         d2.amount += d1.amount
-        d2.amountActive += d1.amountActive if d1.amountActive > 0 else -d2.amountActive
+        d2.amountActive += d1.amountActive
+
+        # If we have less than the total number of drones active, make them all active. Fixes #728
+        # This could be removed if we ever add an enhancement to make drone stacks partially active.
+        if d2.amount > d2.amountActive:
+            d2.amountActive = d2.amount
+
         eos.db.commit()
         self.recalc(fit)
         return True
 
-    def splitDrones(self, fit, d, amount, l):
+    @staticmethod
+    def splitDrones(fit, d, amount, l):
         total = d.amount
         active = d.amountActive > 0
         d.amount = amount
@@ -823,7 +850,8 @@ class Fit(object):
         fit.character = self.character = eos.db.getCharacter(charID)
         self.recalc(fit)
 
-    def isAmmo(self, itemID):
+    @staticmethod
+    def isAmmo(itemID):
         return eos.db.getItem(itemID).category.name == "Charge"
 
     def setAmmo(self, fitID, ammoID, modules):
@@ -839,7 +867,8 @@ class Fit(object):
 
         self.recalc(fit)
 
-    def getTargetResists(self, fitID):
+    @staticmethod
+    def getTargetResists(fitID):
         if fitID is None:
             return
 
@@ -856,7 +885,8 @@ class Fit(object):
 
         self.recalc(fit)
 
-    def getDamagePattern(self, fitID):
+    @staticmethod
+    def getDamagePattern(fitID):
         if fitID is None:
             return
 
@@ -904,13 +934,17 @@ class Fit(object):
         changed = False
         for mod in fit.modules:
             if mod != base:
-                if not mod.canHaveState(mod.state):
+                # fix for #529, where a module may be in incorrect state after CCP changes mechanics of module
+                if not mod.canHaveState(mod.state) or not mod.isValidState(mod.state):
                     mod.state = State.ONLINE
                     changed = True
+
         for mod in fit.projectedModules:
-            if not mod.canHaveState(mod.state, fit):
+            # fix for #529, where a module may be in incorrect state after CCP changes mechanics of module
+            if not mod.canHaveState(mod.state, fit) or not mod.isValidState(mod.state):
                 mod.state = State.OFFLINE
                 changed = True
+
         for drone in fit.projectedDrones:
             if drone.amountActive > 0 and not drone.canBeApplied(fit):
                 drone.amountActive = 0
@@ -921,21 +955,27 @@ class Fit(object):
             self.recalc(fit)
 
     def toggleModulesState(self, fitID, base, modules, click):
+        changed = False
         proposedState = self.__getProposedState(base, click)
+
         if proposedState != base.state:
+            changed = True
             base.state = proposedState
             for mod in modules:
                 if mod != base:
-                    mod.state = self.__getProposedState(mod, click,
-                                                        proposedState)
+                    p = self.__getProposedState(mod, click, proposedState)
+                    mod.state = p
+                    if p != mod.state:
+                        changed = True
 
-        eos.db.commit()
-        fit = eos.db.getFit(fitID)
+        if changed:
+            eos.db.commit()
+            fit = eos.db.getFit(fitID)
 
-        # As some items may affect state-limiting attributes of the ship, calculate new attributes first
-        self.recalc(fit)
-        # Then, check states of all modules and change where needed. This will recalc if needed
-        self.checkStates(fit, base)
+            # As some items may affect state-limiting attributes of the ship, calculate new attributes first
+            self.recalc(fit)
+            # Then, check states of all modules and change where needed. This will recalc if needed
+            self.checkStates(fit, base)
 
     # Old state : New State
     localMap = {
@@ -989,7 +1029,7 @@ class Fit(object):
         self.recalc(fit)
 
     def recalc(self, fit, withBoosters=True):
-        logger.debug("=" * 10 + "recalc" + "=" * 10)
+        pyfalog.info("=" * 10 + "recalc" + "=" * 10)
         if fit.factorReload is not self.serviceFittingOptions["useGlobalForceReload"]:
             fit.factorReload = self.serviceFittingOptions["useGlobalForceReload"]
         fit.clear()

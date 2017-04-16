@@ -18,8 +18,9 @@
 # =============================================================================
 
 
+# noinspection PyPackageRequirements
 import wx
-from eos.types import Fighter
+from eos.saveddata.fighter import Fighter
 from gui.viewColumn import ViewColumn
 import gui.mainFrame
 

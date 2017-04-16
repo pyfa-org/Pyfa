@@ -1,19 +1,25 @@
 # -*- coding: utf-8 -*-
 from gui.contextMenu import ContextMenu
 import gui.mainFrame
+# noinspection PyPackageRequirements
 import wx
 from gui.bitmapLoader import BitmapLoader
-from eos.types import Skill
+from eos.saveddata.character import Skill
 import gui.globalEvents as GE
 from service.fit import Fit
 from service.character import Character
+from service.settings import ContextMenuSettings
 
 
 class ChangeAffectingSkills(ContextMenu):
     def __init__(self):
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
+        self.settings = ContextMenuSettings.getInstance()
 
     def display(self, srcContext, selection):
+        if not self.settings.get('changeAffectingSkills'):
+            return False
+
         if self.mainFrame.getActiveFit() is None or srcContext not in ("fittingModule", "fittingCharge", "fittingShip"):
             return False
 

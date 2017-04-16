@@ -1,3 +1,4 @@
+# noinspection PyPackageRequirements
 import wx
 import gui.utils.drawUtils as drawUtils
 
@@ -57,7 +58,7 @@ class PFBaseButton(object):
     def GetSize(self):
         w = self.normalBmp.GetWidth()
         h = self.normalBmp.GetHeight()
-        return (w, h)
+        return w, h
 
     def GetBitmap(self):
         return self.normalBmp
@@ -136,7 +137,6 @@ class PFToolbar(object):
         return doRefresh
 
     def MouseClick(self, event):
-        mx, my = event.GetPosition()
         bx = self.toolbarX
         for button in self.buttons:
             if not button.IsVisible():
@@ -196,11 +196,12 @@ class PFToolbar(object):
 
         return height
 
-    def HitTest(self, target, position, area):
+    @staticmethod
+    def HitTest(target, position, area):
         x, y = target
         px, py = position
         aX, aY = area
-        if (px > x and px < x + aX) and (py > y and py < y + aY):
+        if (x < px < x + aX) and (y < py < y + aY):
             return True
         return False
 
@@ -354,7 +355,8 @@ class SFBrowserItem(wx.Window):
 
         event.Skip()
 
-    def GetType(self):
+    @staticmethod
+    def GetType():
         return -1
 
     def SetSelected(self, select=True):

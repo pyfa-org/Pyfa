@@ -17,7 +17,6 @@
 # along with eos.  If not, see <http://www.gnu.org/licenses/>.
 # ===============================================================================
 
-import copy
 import time
 from copy import deepcopy
 from itertools import chain
@@ -27,26 +26,19 @@ from sqlalchemy.orm import validates, reconstructor
 
 import eos.db
 from eos import capSim
-from eos.effectHandlerHelpers import *
 from eos.effectHandlerHelpers import HandledModuleList, HandledDroneCargoList, HandledImplantBoosterList, HandledProjectedDroneList, HandledProjectedModList
 from eos.enum import Enum
-from eos.saveddata.module import State, Hardpoint
-from eos.types import Ship, Character, Slot, Module, Citadel
+from eos.saveddata.ship import Ship
+from eos.saveddata.character import Character
+from eos.saveddata.citadel import Citadel
+from eos.saveddata.module import Module, State, Slot, Hardpoint
 from utils.timer import Timer
-import logging
+from logbook import Logger
 
-logger = logging.getLogger(__name__)
-
-try:
-    from collections import OrderedDict
-except ImportError:
-    from utils.compat import OrderedDict
+pyfalog = Logger(__name__)
 
 
 class ImplantLocation(Enum):
-    def __init__(self):
-        pass
-
     FIT = 0
     CHARACTER = 1
 
@@ -92,7 +84,7 @@ class Fit(object):
         if self.shipID:
             item = eos.db.getItem(self.shipID)
             if item is None:
-                logger.error("Item (id: %d) does not exist", self.shipID)
+                pyfalog.error("Item (id: {0}) does not exist", self.shipID)
                 return
 
             try:
@@ -105,7 +97,7 @@ class Fit(object):
                 # change all instances in source). Remove this at some point
                 self.extraAttributes = self.__ship.itemModifiedAttributes
             except ValueError:
-                logger.error("Item (id: %d) is not a Ship", self.shipID)
+                pyfalog.error("Item (id: {0}) is not a Ship", self.shipID)
                 return
 
         if self.modeID and self.__ship:
@@ -135,6 +127,12 @@ class Fit(object):
         self.__capUsed = None
         self.__capRecharge = None
         self.__calculatedTargets = []
+        self.__remoteReps = {
+            "Armor"    : None,
+            "Shield"   : None,
+            "Hull"     : None,
+            "Capacitor": None,
+        }
         self.factorReload = False
         self.boostsFits = set()
         self.gangBoosts = None
@@ -372,9 +370,11 @@ class Fit(object):
 
     @validates("ID", "ownerID", "shipID")
     def validator(self, key, val):
-        map = {"ID": lambda val: isinstance(val, int),
-               "ownerID": lambda val: isinstance(val, int) or val is None,
-               "shipID": lambda val: isinstance(val, int) or val is None}
+        map = {
+            "ID"     : lambda _val: isinstance(_val, int),
+            "ownerID": lambda _val: isinstance(_val, int) or _val is None,
+            "shipID" : lambda _val: isinstance(_val, int) or _val is None
+        }
 
         if not map[key](val):
             raise ValueError(str(val) + " is not a valid value for " + key)
@@ -400,6 +400,9 @@ class Fit(object):
         self.ecmProjectedStr = 1
         self.commandBonuses = {}
 
+        for remoterep_type in self.__remoteReps:
+            self.__remoteReps[remoterep_type] = None
+
         del self.__calculatedTargets[:]
         del self.__extraDrains[:]
 
@@ -407,15 +410,15 @@ class Fit(object):
             self.ship.clear()
 
         c = chain(
-            self.modules,
-            self.drones,
-            self.fighters,
-            self.boosters,
-            self.implants,
-            self.projectedDrones,
-            self.projectedModules,
-            self.projectedFighters,
-            (self.character, self.extraAttributes),
+                self.modules,
+                self.drones,
+                self.fighters,
+                self.boosters,
+                self.implants,
+                self.projectedDrones,
+                self.projectedModules,
+                self.projectedFighters,
+                (self.character, self.extraAttributes),
         )
 
         for stuff in c:
@@ -436,9 +439,11 @@ class Fit(object):
         self.__modifier = currModifier
         self.__origin = origin
         if hasattr(currModifier, "itemModifiedAttributes"):
-            currModifier.itemModifiedAttributes.fit = origin or self
+            if hasattr(currModifier.itemModifiedAttributes, "fit"):
+                currModifier.itemModifiedAttributes.fit = origin or self
         if hasattr(currModifier, "chargeModifiedAttributes"):
-            currModifier.chargeModifiedAttributes.fit = origin or self
+            if hasattr(currModifier.itemModifiedAttributes, "fit"):
+                currModifier.chargeModifiedAttributes.fit = origin or self
 
     def getModifier(self):
         return self.__modifier
@@ -454,7 +459,7 @@ class Fit(object):
             self.commandBonuses[warfareBuffID] = (runTime, value, module, effect)
 
     def __runCommandBoosts(self, runTime="normal"):
-        logger.debug("Applying gang boosts for %r", self)
+        pyfalog.debug("Applying gang boosts for {0}", self)
         for warfareBuffID in self.commandBonuses.keys():
             # Unpack all data required to run effect properly
             effect_runTime, value, thing, effect = self.commandBonuses[warfareBuffID]
@@ -473,11 +478,11 @@ class Fit(object):
 
                 if warfareBuffID == 11:  # Shield Burst: Active Shielding: Repair Duration/Capacitor
                     self.modules.filteredItemBoost(
-                        lambda mod: mod.item.requiresSkill("Shield Operation") or mod.item.requiresSkill(
-                            "Shield Emission Systems"), "capacitorNeed", value)
+                            lambda mod: mod.item.requiresSkill("Shield Operation") or mod.item.requiresSkill(
+                                    "Shield Emission Systems"), "capacitorNeed", value)
                     self.modules.filteredItemBoost(
-                        lambda mod: mod.item.requiresSkill("Shield Operation") or mod.item.requiresSkill(
-                            "Shield Emission Systems"), "duration", value)
+                            lambda mod: mod.item.requiresSkill("Shield Operation") or mod.item.requiresSkill(
+                                    "Shield Emission Systems"), "duration", value)
 
                 if warfareBuffID == 12:  # Shield Burst: Shield Extension: Shield HP
                     self.ship.boostItemAttr("shieldCapacity", value, stackingPenalties=True)
@@ -487,10 +492,12 @@ class Fit(object):
                         self.ship.boostItemAttr("armor%sDamageResonance" % damageType, value)
 
                 if warfareBuffID == 14:  # Armor Burst: Rapid Repair: Repair Duration/Capacitor
-                    self.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill("Remote Armor Repair Systems") or mod.item.requiresSkill("Repair Systems"),
-                                                  "capacitorNeed", value)
-                    self.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill("Remote Armor Repair Systems") or mod.item.requiresSkill("Repair Systems"), "duration",
-                                                  value)
+                    self.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill("Remote Armor Repair Systems") or
+                                                               mod.item.requiresSkill("Repair Systems"),
+                                                   "capacitorNeed", value)
+                    self.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill("Remote Armor Repair Systems") or
+                                                               mod.item.requiresSkill("Repair Systems"),
+                                                   "duration", value)
 
                 if warfareBuffID == 15:  # Armor Burst: Armor Reinforcement: Armor HP
                     self.ship.boostItemAttr("armorHP", value, stackingPenalties=True)
@@ -501,26 +508,26 @@ class Fit(object):
                 if warfareBuffID == 17:  # Information Burst: Electronic Superiority: EWAR Range and Strength
                     groups = ("ECM", "Sensor Dampener", "Weapon Disruptor", "Target Painter")
                     self.modules.filteredItemBoost(lambda mod: mod.item.group.name in groups, "maxRange", value,
-                                                  stackingPenalties=True)
+                                                   stackingPenalties=True)
                     self.modules.filteredItemBoost(lambda mod: mod.item.group.name in groups,
-                                                  "falloffEffectiveness", value, stackingPenalties=True)
+                                                   "falloffEffectiveness", value, stackingPenalties=True)
 
                     for scanType in ("Magnetometric", "Radar", "Ladar", "Gravimetric"):
                         self.modules.filteredItemBoost(lambda mod: mod.item.group.name == "ECM",
-                                                      "scan%sStrengthBonus" % scanType, value,
-                                                      stackingPenalties=True)
+                                                       "scan%sStrengthBonus" % scanType, value,
+                                                       stackingPenalties=True)
 
                     for attr in ("missileVelocityBonus", "explosionDelayBonus", "aoeVelocityBonus", "falloffBonus",
                                  "maxRangeBonus", "aoeCloudSizeBonus", "trackingSpeedBonus"):
                         self.modules.filteredItemBoost(lambda mod: mod.item.group.name == "Weapon Disruptor",
-                                                      attr, value)
+                                                       attr, value)
 
                     for attr in ("maxTargetRangeBonus", "scanResolutionBonus"):
                         self.modules.filteredItemBoost(lambda mod: mod.item.group.name == "Sensor Dampener",
-                                                      attr, value)
+                                                       attr, value)
 
-                    self.modules.filteredItemBoost(lambda mod: mod.item.gorup.name == "Target Painter",
-                                                  "signatureRadiusBonus", value, stackingPenalties=True)
+                    self.modules.filteredItemBoost(lambda mod: mod.item.group.name == "Target Painter",
+                                                   "signatureRadiusBonus", value, stackingPenalties=True)
 
                 if warfareBuffID == 18:  # Information Burst: Electronic Hardening: Scan Strength
                     for scanType in ("Gravimetric", "Radar", "Ladar", "Magnetometric"):
@@ -539,34 +546,36 @@ class Fit(object):
                 if warfareBuffID == 21:  # Skirmish Burst: Interdiction Maneuvers: Tackle Range
                     groups = ("Stasis Web", "Warp Scrambler")
                     self.modules.filteredItemBoost(lambda mod: mod.item.group.name in groups, "maxRange", value,
-                                                  stackingPenalties=True)
+                                                   stackingPenalties=True)
 
                 if warfareBuffID == 22:  # Skirmish Burst: Rapid Deployment: AB/MWD Speed Increase
-                    self.modules.filteredItemBoost(
-                        lambda mod: mod.item.requiresSkill("Afterburner") or mod.item.requiresSkill(
-                            "High Speed Maneuvering"), "speedFactor", value, stackingPenalties=True)
+                    self.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill("Afterburner") or
+                                                               mod.item.requiresSkill("High Speed Maneuvering"),
+                                                   "speedFactor", value, stackingPenalties=True)
 
                 if warfareBuffID == 23:  # Mining Burst: Mining Laser Field Enhancement: Mining/Survey Range
-                    self.modules.filteredItemBoost(
-                        lambda mod: mod.item.requiresSkill("Mining") or mod.item.requiresSkill(
-                            "Ice Harvesting") or mod.item.requiresSkill("Gas Cloud Harvesting"), "maxRange",
-                        value, stackingPenalties=True)
+                    self.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill("Mining") or
+                                                               mod.item.requiresSkill("Ice Harvesting") or
+                                                               mod.item.requiresSkill("Gas Cloud Harvesting"),
+                                                   "maxRange", value, stackingPenalties=True)
+
                     self.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill("CPU Management"),
-                                                  "surveyScanRange", value, stackingPenalties=True)
+                                                   "surveyScanRange", value, stackingPenalties=True)
 
                 if warfareBuffID == 24:  # Mining Burst: Mining Laser Optimization: Mining Capacitor/Duration
-                    self.modules.filteredItemBoost(
-                        lambda mod: mod.item.requiresSkill("Mining") or mod.item.requiresSkill(
-                            "Ice Harvesting") or mod.item.requiresSkill("Gas Cloud Harvesting"),
-                        "capacitorNeed", value, stackingPenalties=True)
-                    self.modules.filteredItemBoost(
-                        lambda mod: mod.item.requiresSkill("Mining") or mod.item.requiresSkill(
-                            "Ice Harvesting") or mod.item.requiresSkill("Gas Cloud Harvesting"), "duration",
-                        value, stackingPenalties=True)
+                    self.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill("Mining") or
+                                                               mod.item.requiresSkill("Ice Harvesting") or
+                                                               mod.item.requiresSkill("Gas Cloud Harvesting"),
+                                                   "capacitorNeed", value, stackingPenalties=True)
+
+                    self.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill("Mining") or
+                                                               mod.item.requiresSkill("Ice Harvesting") or
+                                                               mod.item.requiresSkill("Gas Cloud Harvesting"),
+                                                   "duration", value, stackingPenalties=True)
 
                 if warfareBuffID == 25:  # Mining Burst: Mining Equipment Preservation: Crystal Volatility
                     self.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill("Mining"),
-                                                  "crystalVolatilityChance", value, stackingPenalties=True)
+                                                   "crystalVolatilityChance", value, stackingPenalties=True)
 
                 if warfareBuffID == 60:  # Skirmish Burst: Evasive Maneuvers: Agility
                     self.ship.boostItemAttr("agility", value, stackingPenalties=True)
@@ -624,7 +633,8 @@ class Fit(object):
                     self.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill("Shield Emission Systems"), "shieldBonus", value, stackingPenalties=True)
 
                 if warfareBuffID == 53:  # Leviathan Effect Generator : Armor RR penalty
-                    self.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill("Remote Armor Repair Systems"), "armorDamageAmount", value, stackingPenalties=True)
+                    self.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill("Remote Armor Repair Systems"),
+                                                   "armorDamageAmount", value, stackingPenalties=True)
 
                 if warfareBuffID == 54:  # Ragnarok Effect Generator : Laser and Hybrid Optimal penalty
                     groups = ("Energy Weapon", "Hybrid Weapon")
@@ -633,21 +643,21 @@ class Fit(object):
             del self.commandBonuses[warfareBuffID]
 
     def calculateModifiedAttributes(self, targetFit=None, withBoosters=False, dirtyStorage=None):
-        timer = Timer(u'Fit: {}, {}'.format(self.ID, self.name), logger)
-        logger.debug("Starting fit calculation on: %r, withBoosters: %s", self, withBoosters)
+        timer = Timer(u'Fit: {}, {}'.format(self.ID, self.name), pyfalog)
+        pyfalog.debug("Starting fit calculation on: {0}, withBoosters: {1}", self, withBoosters)
 
         shadow = False
         if targetFit and not withBoosters:
-            logger.debug("Applying projections to target: %r", targetFit)
+            pyfalog.debug("Applying projections to target: {0}", targetFit)
             projectionInfo = self.getProjectionInfo(targetFit.ID)
-            logger.debug("ProjectionInfo: %s", projectionInfo)
+            pyfalog.debug("ProjectionInfo: {0}", projectionInfo)
             if self == targetFit:
                 copied = self  # original fit
                 shadow = True
                 # Don't inspect this, we genuinely want to reassign self
                 # noinspection PyMethodFirstArgAssignment
-                self = copy.deepcopy(self)
-                logger.debug("Handling self projection - making shadow copy of fit. %r => %r", copied, self)
+                self = deepcopy(self)
+                pyfalog.debug("Handling self projection - making shadow copy of fit. {0} => {1}", copied, self)
                 # we delete the fit because when we copy a fit, flush() is
                 # called to properly handle projection updates. However, we do
                 # not want to save this fit to the database, so simply remove it
@@ -682,7 +692,7 @@ class Fit(object):
         # projection have modifying stuff applied, such as gang boosts and other
         # local modules that may help
         if self.__calculated and not projected and not withBoosters:
-            logger.debug("Fit has already been calculated and is not projected, returning: %r", self)
+            pyfalog.debug("Fit has already been calculated and is not projected, returning: {0}", self)
             return
 
         for runTime in ("early", "normal", "late"):
@@ -722,22 +732,27 @@ class Fit(object):
                         self.register(item)
                         item.calculateModifiedAttributes(self, runTime, False)
 
-                    if projected is True and item not in chain.from_iterable(r):
-                        # apply effects onto target fit
-                        for _ in xrange(projectionInfo.amount):
-                            targetFit.register(item, origin=self)
-                            item.calculateModifiedAttributes(targetFit, runTime, True)
-
                     if targetFit and withBoosters and item in self.modules:
                         # Apply the gang boosts to target fit
                         # targetFit.register(item, origin=self)
                         item.calculateModifiedAttributes(targetFit, runTime, False, True)
 
-            print "Command: "
-            print self.commandBonuses
+            if len(self.commandBonuses) > 0:
+                pyfalog.info("Command bonuses applied.")
+                pyfalog.debug(self.commandBonuses)
 
             if not withBoosters and self.commandBonuses:
                 self.__runCommandBoosts(runTime)
+
+            # Projection effects have been broken out of the main loop, see GH issue #1081
+
+            if projected is True and projectionInfo:
+                for item in chain.from_iterable(u):
+                    if item is not None:
+                        # apply effects onto target fit
+                        for _ in xrange(projectionInfo.amount):
+                            targetFit.register(item, origin=self)
+                            item.calculateModifiedAttributes(targetFit, runTime, True)
 
             timer.checkpoint('Done with runtime: %s' % runTime)
 
@@ -753,7 +768,7 @@ class Fit(object):
         timer.checkpoint('Done with fit calculation')
 
         if shadow:
-            logger.debug("Delete shadow fit object")
+            pyfalog.debug("Delete shadow fit object")
             del self
 
     def fill(self):
@@ -798,7 +813,8 @@ class Fit(object):
                 x += 1
         return x
 
-    def getItemAttrSum(self, dict, attr):
+    @staticmethod
+    def getItemAttrSum(dict, attr):
         amount = 0
         for mod in dict:
             add = mod.getModifiedItemAttr(attr)
@@ -807,7 +823,8 @@ class Fit(object):
 
         return amount
 
-    def getItemAttrOnlineSum(self, dict, attr):
+    @staticmethod
+    def getItemAttrOnlineSum(dict, attr):
         amount = 0
         for mod in dict:
             add = mod.getModifiedItemAttr(attr) if mod.state >= State.ONLINE else None
@@ -835,15 +852,17 @@ class Fit(object):
 
         return amount
 
-    slots = {Slot.LOW: "lowSlots",
-             Slot.MED: "medSlots",
-             Slot.HIGH: "hiSlots",
-             Slot.RIG: "rigSlots",
-             Slot.SUBSYSTEM: "maxSubSystems",
-             Slot.SERVICE: "serviceSlots",
-             Slot.F_LIGHT: "fighterLightSlots",
-             Slot.F_SUPPORT: "fighterSupportSlots",
-             Slot.F_HEAVY: "fighterHeavySlots"}
+    slots = {
+        Slot.LOW      : "lowSlots",
+        Slot.MED      : "medSlots",
+        Slot.HIGH     : "hiSlots",
+        Slot.RIG      : "rigSlots",
+        Slot.SUBSYSTEM: "maxSubSystems",
+        Slot.SERVICE  : "serviceSlots",
+        Slot.F_LIGHT  : "fighterLightSlots",
+        Slot.F_SUPPORT: "fighterSupportSlots",
+        Slot.F_HEAVY  : "fighterHeavySlots"
+    }
 
     def getSlotsFree(self, type, countDummies=False):
         if type in (Slot.MODE, Slot.SYSTEM):
@@ -918,20 +937,19 @@ class Fit(object):
 
         return amount
 
-    # Expresses how difficult a target is to probe down with scan probes
-    # If this is <1.08, the ship is unproabeable
     @property
     def probeSize(self):
+        """
+        Expresses how difficult a target is to probe down with scan probes
+        """
+
         sigRad = self.ship.getModifiedItemAttr("signatureRadius")
         sensorStr = float(self.scanStrength)
         probeSize = sigRad / sensorStr if sensorStr != 0 else None
         # http://www.eveonline.com/ingameboard.asp?a=topic&threadID=1532170&page=2#42
         if probeSize is not None:
-            # http://forum.eve-ru.com/index.php?showtopic=74195&view=findpost&p=1333691
-            # http://forum.eve-ru.com/index.php?showtopic=74195&view=findpost&p=1333763
-            # Tests by tester128 and several conclusions by me, prove that cap is in range
-            # from 1.1 to 1.12, we're picking average value
-            probeSize = max(probeSize, 1.11)
+            # Probe size is capped at 1.08
+            probeSize = max(probeSize, 1.08)
         return probeSize
 
     @property
@@ -993,29 +1011,35 @@ class Fit(object):
     def calculateSustainableTank(self, effective=True):
         if self.__sustainableTank is None:
             if self.capStable:
-                sustainable = {"armorRepair": self.extraAttributes["armorRepair"],
-                               "shieldRepair": self.extraAttributes["shieldRepair"],
-                               "hullRepair": self.extraAttributes["hullRepair"]}
+                sustainable = {
+                    "armorRepair" : self.extraAttributes["armorRepair"],
+                    "shieldRepair": self.extraAttributes["shieldRepair"],
+                    "hullRepair"  : self.extraAttributes["hullRepair"]
+                }
             else:
                 sustainable = {}
 
                 repairers = []
                 # Map a repairer type to the attribute it uses
-                groupAttrMap = {"Armor Repair Unit": "armorDamageAmount",
-                                "Ancillary Armor Repairer": "armorDamageAmount",
-                                "Hull Repair Unit": "structureDamageAmount",
-                                "Shield Booster": "shieldBonus",
-                                "Ancillary Shield Booster": "shieldBonus",
-                                "Remote Armor Repairer": "armorDamageAmount",
-                                "Remote Shield Booster": "shieldBonus"}
+                groupAttrMap = {
+                    "Armor Repair Unit"       : "armorDamageAmount",
+                    "Ancillary Armor Repairer": "armorDamageAmount",
+                    "Hull Repair Unit"        : "structureDamageAmount",
+                    "Shield Booster"          : "shieldBonus",
+                    "Ancillary Shield Booster": "shieldBonus",
+                    "Remote Armor Repairer"   : "armorDamageAmount",
+                    "Remote Shield Booster"   : "shieldBonus"
+                }
                 # Map repairer type to attribute
-                groupStoreMap = {"Armor Repair Unit": "armorRepair",
-                                 "Hull Repair Unit": "hullRepair",
-                                 "Shield Booster": "shieldRepair",
-                                 "Ancillary Shield Booster": "shieldRepair",
-                                 "Remote Armor Repairer": "armorRepair",
-                                 "Remote Shield Booster": "shieldRepair",
-                                 "Ancillary Armor Repairer": "armorRepair", }
+                groupStoreMap = {
+                    "Armor Repair Unit"       : "armorRepair",
+                    "Hull Repair Unit"        : "hullRepair",
+                    "Shield Booster"          : "shieldRepair",
+                    "Ancillary Shield Booster": "shieldRepair",
+                    "Remote Armor Repairer"   : "armorRepair",
+                    "Remote Shield Booster"   : "shieldRepair",
+                    "Ancillary Armor Repairer": "armorRepair",
+                }
 
                 capUsed = self.capUsed
                 for attr in ("shieldRepair", "armorRepair", "hullRepair"):
@@ -1042,8 +1066,8 @@ class Fit(object):
                                     repairers.append(mod)
 
                 # Sort repairers by efficiency. We want to use the most efficient repairers first
-                repairers.sort(key=lambda mod: mod.getModifiedItemAttr(
-                    groupAttrMap[mod.item.group.name]) / mod.getModifiedItemAttr("capacitorNeed"), reverse=True)
+                repairers.sort(key=lambda _mod: _mod.getModifiedItemAttr(
+                        groupAttrMap[_mod.item.group.name]) / _mod.getModifiedItemAttr("capacitorNeed"), reverse=True)
 
                 # Loop through every module until we're above peak recharge
                 # Most efficient first, as we sorted earlier.
@@ -1152,6 +1176,67 @@ class Fit(object):
             self.__capState = 100
 
     @property
+    def remoteReps(self):
+        force_recalc = False
+        for remote_type in self.__remoteReps:
+            if self.__remoteReps[remote_type] is None:
+                force_recalc = True
+                break
+
+        if force_recalc is False:
+            return self.__remoteReps
+
+        # We are rerunning the recalcs. Explicitly set to 0 to make sure we don't duplicate anything and correctly set all values to 0.
+        for remote_type in self.__remoteReps:
+            self.__remoteReps[remote_type] = 0
+
+        for module in self.modules:
+            # Skip empty and non-Active modules
+            if module.isEmpty or module.state < State.ACTIVE:
+                continue
+
+            # Covert cycleTime to seconds
+            duration = module.cycleTime / 1000
+
+            # Skip modules with no duration.
+            if not duration:
+                continue
+
+            fueledMultiplier = module.getModifiedItemAttr("chargedArmorDamageMultiplier", 1)
+
+            remote_module_groups = {
+                "Remote Armor Repairer"          : "Armor",
+                "Ancillary Remote Armor Repairer": "Armor",
+                "Remote Hull Repairer"           : "Hull",
+                "Remote Shield Booster"          : "Shield",
+                "Ancillary Remote Shield Booster": "Shield",
+                "Remote Capacitor Transmitter"   : "Capacitor",
+            }
+
+            module_group = module.item.group.name
+
+            if module_group in remote_module_groups:
+                remote_type = remote_module_groups[module_group]
+            else:
+                # Module isn't in our list of remote rep modules, bail
+                continue
+
+            if remote_type == "Hull":
+                hp = module.getModifiedItemAttr("structureDamageAmount", 0)
+            elif remote_type == "Armor":
+                hp = module.getModifiedItemAttr("armorDamageAmount", 0)
+            elif remote_type == "Shield":
+                hp = module.getModifiedItemAttr("shieldBonus", 0)
+            elif remote_type == "Capacitor":
+                hp = module.getModifiedItemAttr("powerTransferAmount", 0)
+            else:
+                hp = 0
+
+            self.__remoteReps[remote_type] += (hp * fueledMultiplier) / duration
+
+        return self.__remoteReps
+
+    @property
     def hp(self):
         hp = {}
         for (type, attr) in (('shield', 'shieldCapacity'), ('armor', 'armorHP'), ('hull', 'hp')):
@@ -1258,16 +1343,16 @@ class Fit(object):
 
         return True
 
-    def __deepcopy__(self, memo):
-        copy = Fit()
+    def __deepcopy__(self, memo=None):
+        copy_ship = Fit()
         # Character and owner are not copied
-        copy.character = self.__character
-        copy.owner = self.owner
-        copy.ship = deepcopy(self.ship, memo)
-        copy.name = "%s copy" % self.name
-        copy.damagePattern = self.damagePattern
-        copy.targetResists = self.targetResists
-        copy.notes = self.notes
+        copy_ship.character = self.__character
+        copy_ship.owner = self.owner
+        copy_ship.ship = deepcopy(self.ship)
+        copy_ship.name = "%s copy" % self.name
+        copy_ship.damagePattern = self.damagePattern
+        copy_ship.targetResists = self.targetResists
+        copy_ship.notes = self.notes
 
         toCopy = (
             "modules",
@@ -1281,24 +1366,24 @@ class Fit(object):
             "projectedFighters")
         for name in toCopy:
             orig = getattr(self, name)
-            c = getattr(copy, name)
+            c = getattr(copy_ship, name)
             for i in orig:
-                c.append(deepcopy(i, memo))
+                c.append(deepcopy(i))
 
         for fit in self.projectedFits:
-            copy.__projectedFits[fit.ID] = fit
+            copy_ship.__projectedFits[fit.ID] = fit
             # this bit is required -- see GH issue # 83
             eos.db.saveddata_session.flush()
             eos.db.saveddata_session.refresh(fit)
 
-        return copy
+        return copy_ship
 
     def __repr__(self):
         return u"Fit(ID={}, ship={}, name={}) at {}".format(
-            self.ID, self.ship.item.name, self.name, hex(id(self))
+                self.ID, self.ship.item.name, self.name, hex(id(self))
         ).encode('utf8')
 
     def __str__(self):
         return u"{} ({})".format(
-            self.name, self.ship.item.name
+                self.name, self.ship.item.name
         ).encode('utf8')

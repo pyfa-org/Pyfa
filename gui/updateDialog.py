@@ -17,7 +17,9 @@
 # along with pyfa.  If not, see <http://www.gnu.org/licenses/>.
 # =============================================================================
 
+# noinspection PyPackageRequirements
 import wx
+# noinspection PyPackageRequirements
 import dateutil.parser
 from service.settings import UpdateSettings as svc_UpdateSettings
 
@@ -48,7 +50,7 @@ class UpdateDialog(wx.Dialog):
 
         versionSizer = wx.BoxSizer(wx.HORIZONTAL)
 
-        if (self.releaseInfo['prerelease']):
+        if self.releaseInfo['prerelease']:
             self.releaseText = wx.StaticText(self, wx.ID_ANY, "Pre-release", wx.DefaultPosition, wx.DefaultSize,
                                              wx.ALIGN_RIGHT)
             self.releaseText.SetFont(wx.Font(12, 74, 90, 92, False))
@@ -118,7 +120,7 @@ class UpdateDialog(wx.Dialog):
         self.Close()
 
     def SuppressChange(self, e):
-        if (self.supressCheckbox.IsChecked()):
+        if self.supressCheckbox.IsChecked():
             self.UpdateSettings.set('version', self.releaseInfo['tag_name'])
         else:
             self.UpdateSettings.set('version', None)

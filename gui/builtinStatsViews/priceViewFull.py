@@ -17,11 +17,13 @@
 # along with pyfa.  If not, see <http://www.gnu.org/licenses/>.
 # =============================================================================
 
+# noinspection PyPackageRequirements
 import wx
 from gui.statsView import StatsView
 from gui.bitmapLoader import BitmapLoader
 from gui.utils.numberFormatter import formatAmount
 from service.market import Market
+from service.price import Price
 
 
 class PriceViewFull(StatsView):
@@ -73,23 +75,8 @@ class PriceViewFull(StatsView):
     def refreshPanel(self, fit):
         if fit is not None:
             self.fit = fit
-            # Compose a list of all the data we need & request it
-            typeIDs = []
-            typeIDs.append(fit.ship.item.ID)
 
-            for mod in fit.modules:
-                if not mod.isEmpty:
-                    typeIDs.append(mod.itemID)
-
-            for drone in fit.drones:
-                typeIDs.append(drone.itemID)
-
-            for fighter in fit.fighters:
-                if fighter.amountActive > 0:
-                    typeIDs.append(fighter.itemID)
-
-            for cargo in fit.cargo:
-                typeIDs.append(cargo.itemID)
+            typeIDs = Price.fitItemsList(fit)
 
             sMkt = Market.getInstance()
             sMkt.getPrices(typeIDs, self.processPrices)

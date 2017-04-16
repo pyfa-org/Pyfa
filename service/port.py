@@ -20,7 +20,7 @@
 import re
 import os
 import xml.dom
-import logging
+from logbook import Logger
 import collections
 import json
 import threading
@@ -33,15 +33,24 @@ import xml.parsers.expat
 from eos import db
 from service.fit import Fit as svcFit
 
+# noinspection PyPackageRequirements
 import wx
-from service.market import Market
 
-from eos.types import State, Slot, Module, Cargo, Ship, Drone, Implant, Booster, Citadel, Fighter, Fit
+from eos.saveddata.cargo import Cargo
+from eos.saveddata.implant import Implant
+from eos.saveddata.booster import Booster
+from eos.saveddata.drone import Drone
+from eos.saveddata.fighter import Fighter
+from eos.saveddata.module import Module, State, Slot
+from eos.saveddata.ship import Ship
+from eos.saveddata.citadel import Citadel
+from eos.saveddata.fit import Fit
+from service.market import Market
 
 if 'wxMac' not in wx.PlatformInfo or ('wxMac' in wx.PlatformInfo and wx.VERSION >= (3, 0)):
     from service.crest import Crest
 
-logger = logging.getLogger("pyfa.service.port")
+pyfalog = Logger(__name__)
 
 try:
     from collections import OrderedDict
@@ -72,15 +81,20 @@ class Port(object):
 
         return cls.instance
 
-    def backupFits(self, path, callback):
+    @staticmethod
+    def backupFits(path, callback):
+        pyfalog.debug("Starting backup fits thread.")
         thread = FitBackupThread(path, callback)
         thread.start()
 
-    def importFitsThreaded(self, paths, callback):
+    @staticmethod
+    def importFitsThreaded(paths, callback):
+        pyfalog.debug("Starting import fits thread.")
         thread = FitImportThread(paths, callback)
         thread.start()
 
-    def importFitFromFiles(self, paths, callback=None):
+    @staticmethod
+    def importFitFromFiles(paths, callback=None):
         """
         Imports fits from file(s). First processes all provided paths and stores
         assembled fits into a list. This allows us to call back to the GUI as
@@ -93,12 +107,14 @@ class Port(object):
         fits = []
         for path in paths:
             if callback:  # Pulse
+                pyfalog.debug("Processing file:\n{0}", path)
                 wx.CallAfter(callback, 1, "Processing file:\n%s" % path)
 
             file_ = open(path, "r")
             srcString = file_.read()
 
             if len(srcString) == 0:  # ignore blank files
+                pyfalog.debug("File is blank.")
                 continue
 
             codec_found = None
@@ -107,6 +123,8 @@ class Port(object):
             # codepage then fallback to utf-16, cp1252
 
             if isinstance(srcString, str):
+                savebom = None
+
                 encoding_map = (
                     ('\xef\xbb\xbf', 'utf-8'),
                     ('\xff\xfe\0\0', 'utf-32'),
@@ -120,21 +138,21 @@ class Port(object):
                         savebom = bom
 
                 if codec_found is None:
-                    logger.info("Unicode BOM not found in file %s.", path)
+                    pyfalog.info("Unicode BOM not found in file {0}.", path)
                     attempt_codecs = (defcodepage, "utf-8", "utf-16", "cp1252")
 
                     for page in attempt_codecs:
                         try:
-                            logger.info("Attempting to decode file %s using %s page.", path, page)
+                            pyfalog.info("Attempting to decode file {0} using {1} page.", path, page)
                             srcString = unicode(srcString, page)
                             codec_found = page
-                            logger.info("File %s decoded using %s page.", path, page)
+                            pyfalog.info("File {0} decoded using {1} page.", path, page)
                         except UnicodeDecodeError:
-                            logger.info("Error unicode decoding %s from page %s, trying next codec", path, page)
+                            pyfalog.info("Error unicode decoding {0} from page {1}, trying next codec", path, page)
                         else:
                             break
                 else:
-                    logger.info("Unicode BOM detected in %s, using %s page.", path, codec_found)
+                    pyfalog.info("Unicode BOM detected in {0}, using {1} page.", path, codec_found)
                     srcString = unicode(srcString[len(savebom):], codec_found)
 
             else:
@@ -151,10 +169,12 @@ class Port(object):
                 _, fitsImport = Port.importAuto(srcString, path, callback=callback, encoding=codec_found)
                 fits += fitsImport
             except xml.parsers.expat.ExpatError:
+                pyfalog.warning("Malformed XML in:\n{0}", path)
                 return False, "Malformed XML in %s" % path
-            except Exception:
-                logger.exception("Unknown exception processing: %s", path)
-                return False, "Unknown Error while processing %s" % path
+            except Exception as e:
+                pyfalog.critical("Unknown exception processing: {0}", path)
+                pyfalog.critical(e)
+                return False, "Unknown Error while processing {0}" % path
 
         IDs = []
         numFits = len(fits)
@@ -166,6 +186,7 @@ class Port(object):
             db.save(fit)
             IDs.append(fit.ID)
             if callback:  # Pulse
+                pyfalog.debug("Processing complete, saving fits to database: {0}/{1}", i + 1, numFits)
                 wx.CallAfter(
                     callback, 1,
                     "Processing complete, saving fits to database\n(%d/%d)" %
@@ -174,7 +195,8 @@ class Port(object):
 
         return True, fits
 
-    def importFitFromBuffer(self, bufferStr, activeFit=None):
+    @staticmethod
+    def importFitFromBuffer(bufferStr, activeFit=None):
         sFit = svcFit.getInstance()
         _, fits = Port.importAuto(bufferStr, activeFit=activeFit)
         for fit in fits:
@@ -325,6 +347,7 @@ class Port(object):
             except ValueError:
                 f.ship = Citadel(sMkt.getItem(fit['ship']['id']))
         except:
+            pyfalog.warning("Caught exception in importCrest")
             return None
 
         items = fit['items']
@@ -350,6 +373,7 @@ class Port(object):
                         m = Module(item)
                     # When item can't be added to any slot (unknown item or just charge), ignore it
                     except ValueError:
+                        pyfalog.debug("Item can't be added to any slot (unknown item or just charge)")
                         continue
                     # Add subsystems before modules to make sure T3 cruisers have subsystems installed
                     if item.category.name == "Subsystem":
@@ -362,6 +386,7 @@ class Port(object):
                         moduleList.append(m)
 
             except:
+                pyfalog.warning("Could not process module.")
                 continue
 
         # Recalc to get slot numbers correct for T3 cruisers
@@ -390,6 +415,7 @@ class Port(object):
                 string = string[string.index(str(id_)):]
                 break
             except:
+                pyfalog.warning("Exception caught in importDna")
                 pass
         string = string[:string.index("::") + 2]
         info = string.split(":")
@@ -407,7 +433,7 @@ class Port(object):
                     return s_[:10] + "..."
                 return s_
 
-            logger.exception("Couldn't import ship data %r", [logtransform(s) for s in info])
+            pyfalog.exception("Couldn't import ship data {0}", [logtransform(s) for s in info])
             return None
 
         moduleList = []
@@ -434,6 +460,7 @@ class Port(object):
                         try:
                             m = Module(item)
                         except:
+                            pyfalog.warning("Exception caught in importDna")
                             continue
                         # Add subsystems before modules to make sure T3 cruisers have subsystems installed
                         if item.category.name == "Subsystem":
@@ -482,6 +509,7 @@ class Port(object):
                 fit.ship = Citadel(ship)
             fit.name = fitName
         except:
+            pyfalog.warning("Exception caught in importEft")
             return
 
         # maintain map of drones and their quantities
@@ -522,6 +550,7 @@ class Port(object):
                 item = sMkt.getItem(modName, eager="group.category")
             except:
                 # if no data can be found (old names)
+                pyfalog.warning("no data can be found (old names)")
                 continue
 
             if item.category.name == "Drone":
@@ -532,7 +561,7 @@ class Port(object):
             elif item.category.name == "Fighter":
                 extraAmount = int(extraAmount) if extraAmount is not None else 1
                 fighterItem = Fighter(item)
-                if (extraAmount > fighterItem.fighterSquadronMaxSize):  # Amount bigger then max fightergroup size
+                if extraAmount > fighterItem.fighterSquadronMaxSize:  # Amount bigger then max fightergroup size
                     extraAmount = fighterItem.fighterSquadronMaxSize
                 if fighterItem.fits(fit):
                     fit.fighters.append(fighterItem)
@@ -548,7 +577,7 @@ class Port(object):
                 elif "boosterness" in item.attributes:
                     fit.boosters.append(Booster(item))
                 else:
-                    logger.error("Failed to import implant: %s", line)
+                    pyfalog.error("Failed to import implant: {0}", line)
             # elif item.category.name == "Subsystem":
             #     try:
             #         subsystem = Module(item)
@@ -589,7 +618,7 @@ class Port(object):
             if m.fits(fit):
                 m.owner = fit
                 if not m.isValidState(m.state):
-                    print("Error: Module", m, "cannot have state", m.state)
+                    pyfalog.warning("Error: Module {0} cannot have state {1}", m, m.state)
 
                 fit.modules.append(m)
 
@@ -674,6 +703,7 @@ class Port(object):
                             try:
                                 droneItem = sMkt.getItem(droneName, eager="group.category")
                             except:
+                                pyfalog.warning("Cannot get item.")
                                 continue
                             if droneItem.category.name == "Drone":
                                 # Add drone to the fitting
@@ -695,6 +725,7 @@ class Port(object):
                             try:
                                 implantItem = sMkt.getItem(entityData, eager="group.category")
                             except:
+                                pyfalog.warning("Cannot get item.")
                                 continue
                             if implantItem.category.name != "Implant":
                                 continue
@@ -710,6 +741,7 @@ class Port(object):
                             try:
                                 boosterItem = sMkt.getItem(entityData, eager="group.category")
                             except:
+                                pyfalog.warning("Cannot get item.")
                                 continue
                             # All boosters have implant category
                             if boosterItem.category.name != "Implant":
@@ -730,6 +762,7 @@ class Port(object):
                         try:
                             item = sMkt.getItem(cargoName)
                         except:
+                            pyfalog.warning("Cannot get item.")
                             continue
                         # Add Cargo to the fitting
                         c = Cargo(item)
@@ -743,6 +776,7 @@ class Port(object):
                         try:
                             modItem = sMkt.getItem(modName)
                         except:
+                            pyfalog.warning("Cannot get item.")
                             continue
 
                         # Create module
@@ -764,6 +798,7 @@ class Port(object):
                                     if chargeItem.category.name == "Charge":
                                         m.charge = chargeItem
                                 except:
+                                    pyfalog.warning("Cannot get item.")
                                     pass
                             # Append module to fit
                             moduleList.append(m)
@@ -781,7 +816,9 @@ class Port(object):
                 if callback:
                     wx.CallAfter(callback, None)
             # Skip fit silently if we get an exception
-            except Exception:
+            except Exception as e:
+                pyfalog.error("Caught exception on fit.")
+                pyfalog.error(e)
                 pass
 
         return fits
@@ -805,7 +842,9 @@ class Port(object):
                     f.ship = Ship(sMkt.getItem(shipType))
                 except ValueError:
                     f.ship = Citadel(sMkt.getItem(shipType))
-            except:
+            except Exception as e:
+                pyfalog.warning("Caught exception on importXml")
+                pyfalog.error(e)
                 continue
             hardwares = fitting.getElementsByTagName("hardware")
             moduleList = []
@@ -814,7 +853,9 @@ class Port(object):
                     moduleName = hardware.getAttribute("type")
                     try:
                         item = sMkt.getItem(moduleName, eager="group.category")
-                    except:
+                    except Exception as e:
+                        pyfalog.warning("Caught exception on importXml")
+                        pyfalog.error(e)
                         continue
                     if item:
                         if item.category.name == "Drone":
@@ -837,6 +878,7 @@ class Port(object):
                                 m = Module(item)
                             # When item can't be added to any slot (unknown item or just charge), ignore it
                             except ValueError:
+                                pyfalog.warning("item can't be added to any slot (unknown item or just charge), ignore it")
                                 continue
                             # Add subsystems before modules to make sure T3 cruisers have subsystems installed
                             if item.category.name == "Subsystem":
@@ -850,6 +892,7 @@ class Port(object):
                                 moduleList.append(m)
 
                 except KeyboardInterrupt:
+                    pyfalog.warning("Keyboard Interrupt")
                     continue
 
             # Recalc to get slot numbers correct for T3 cruisers
@@ -1081,7 +1124,7 @@ class Port(object):
 
     @staticmethod
     def exportMultiBuy(fit):
-        export = "%s\n" % (fit.ship.item.name)
+        export = "%s\n" % fit.ship.item.name
         stuff = {}
         sFit = svcFit.getInstance()
         for module in fit.modules:
@@ -1156,7 +1199,7 @@ class FitImportThread(threading.Thread):
         success, result = sPort.importFitFromFiles(self.paths, self.callback)
 
         if not success:  # there was an error during processing
-            logger.error("Error while processing file import: %s", result)
+            pyfalog.error("Error while processing file import: {0}", result)
             wx.CallAfter(self.callback, -2, result)
         else:  # Send done signal to GUI
             wx.CallAfter(self.callback, -1, result)

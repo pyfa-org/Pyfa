@@ -37,31 +37,38 @@ class TargetResists(object):
 
         return cls.instance
 
-    def getTargetResistsList(self):
+    @staticmethod
+    def getTargetResistsList():
         return db.getTargetResistsList()
 
-    def getTargetResists(self, name):
+    @staticmethod
+    def getTargetResists(name):
         return db.getTargetResists(name)
 
-    def newPattern(self, name):
+    @staticmethod
+    def newPattern(name):
         p = es_TargetResists(0.0, 0.0, 0.0, 0.0)
         p.name = name
         db.save(p)
         return p
 
-    def renamePattern(self, p, newName):
+    @staticmethod
+    def renamePattern(p, newName):
         p.name = newName
         db.save(p)
 
-    def deletePattern(self, p):
+    @staticmethod
+    def deletePattern(p):
         db.remove(p)
 
-    def copyPattern(self, p):
+    @staticmethod
+    def copyPattern(p):
         newP = copy.deepcopy(p)
         db.save(newP)
         return newP
 
-    def saveChanges(self, p):
+    @staticmethod
+    def saveChanges(p):
         db.save(p)
 
     def importPatterns(self, text):

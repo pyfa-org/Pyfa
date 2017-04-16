@@ -3,7 +3,7 @@
 # Used by:
 # Modules named like: Warp Scrambler (26 of 26)
 
-from eos.types import State
+from eos.saveddata.module import State
 
 runTime = "early"
 type = "projected", "active"

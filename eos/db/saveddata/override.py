@@ -21,7 +21,7 @@ from sqlalchemy import Table, Column, Integer, Float
 from sqlalchemy.orm import mapper
 
 from eos.db import saveddata_meta
-from eos.types import Override
+from eos.saveddata.override import Override
 
 overrides_table = Table("overrides", saveddata_meta,
                         Column("itemID", Integer, primary_key=True, index=True),

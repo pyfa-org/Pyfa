@@ -18,7 +18,7 @@
 # ===============================================================================
 
 import sys
-import logging
+from logbook import Logger
 
 from sqlalchemy.orm import validates, reconstructor
 
@@ -26,7 +26,7 @@ import eos.db
 from eos.effectHandlerHelpers import HandledItem
 from eos.modifiedAttributeDict import ModifiedAttributeDict, ItemAttrShortcut
 
-logger = logging.getLogger(__name__)
+pyfalog = Logger(__name__)
 
 
 class Cargo(HandledItem, ItemAttrShortcut):
@@ -47,7 +47,7 @@ class Cargo(HandledItem, ItemAttrShortcut):
         if self.itemID:
             self.__item = eos.db.getItem(self.itemID)
             if self.__item is None:
-                logger.error("Item (id: %d) does not exist", self.itemID)
+                pyfalog.error("Item (id: {0}) does not exist", self.itemID)
                 return
 
         self.__itemModifiedAttributes = ModifiedAttributeDict()
@@ -71,9 +71,9 @@ class Cargo(HandledItem, ItemAttrShortcut):
 
     @validates("fitID", "itemID", "amount")
     def validator(self, key, val):
-        map = {"fitID": lambda val: isinstance(val, int),
-               "itemID": lambda val: isinstance(val, int),
-               "amount": lambda val: isinstance(val, int)}
+        map = {"fitID": lambda _val: isinstance(_val, int),
+               "itemID": lambda _val: isinstance(_val, int),
+               "amount": lambda _val: isinstance(_val, int)}
 
         if key == "amount" and val > sys.maxint:
             val = sys.maxint

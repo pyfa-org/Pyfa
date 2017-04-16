@@ -17,14 +17,14 @@
 # along with eos.  If not, see <http://www.gnu.org/licenses/>.
 # ===============================================================================
 
-import logging
+from logbook import Logger
 
 import eos.db
 from eos.effectHandlerHelpers import HandledItem
 from eos.modifiedAttributeDict import ModifiedAttributeDict, ItemAttrShortcut, cappingAttrKeyCache
 from eos.saveddata.mode import Mode
 
-logger = logging.getLogger(__name__)
+pyfalog = Logger(__name__)
 
 
 class Ship(ItemAttrShortcut, HandledItem):
@@ -63,6 +63,7 @@ class Ship(ItemAttrShortcut, HandledItem):
 
     def validate(self, item):
         if item.category.name != "Ship":
+            pyfalog.error("Passed item '{0}' (category: {1}) is not under Ship category", item.name, item.category.name)
             raise ValueError(
                 'Passed item "%s" (category: (%s)) is not under Ship category' % (item.name, item.category.name))
 

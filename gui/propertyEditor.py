@@ -1,9 +1,11 @@
 import csv
-import logging
+from logbook import Logger
 
+# noinspection PyPackageRequirements
 import wx
 
 try:
+    # noinspection PyPackageRequirements
     import wx.propgrid as wxpg
 except:
     if wx.VERSION < (2, 9):
@@ -11,7 +13,7 @@ except:
     else:
         raise
 
-import eos.db
+from eos.db.gamedata.queries import getItem, getAttributeInfo
 from service.market import Market
 import gui.display as d
 import gui.globalEvents as GE
@@ -19,7 +21,7 @@ import gui.PFSearchBox as SBox
 from gui.marketBrowser import SearchBox
 from gui.bitmapLoader import BitmapLoader
 
-logger = logging.getLogger(__name__)
+pyfalog = Logger(__name__)
 
 
 class AttributeEditor(wx.Frame):
@@ -98,14 +100,14 @@ class AttributeEditor(wx.Frame):
         dlg = wx.FileDialog(self, "Import pyfa override file",
                             wildcard="pyfa override file (*.csv)|*.csv",
                             style=wx.FD_OPEN | wx.FD_FILE_MUST_EXIST)
-        if (dlg.ShowModal() == wx.ID_OK):
+        if dlg.ShowModal() == wx.ID_OK:
             path = dlg.GetPath()
             with open(path, 'rb') as csvfile:
                 spamreader = csv.reader(csvfile)
                 for row in spamreader:
                     itemID, attrID, value = row
-                    item = eos.db.getItem(int(itemID))
-                    attr = eos.db.getAttributeInfo(int(attrID))
+                    item = getItem(int(itemID))
+                    attr = getAttributeInfo(int(attrID))
                     item.setOverride(attr, float(value))
             self.itemView.updateItems(True)
 
@@ -268,7 +270,7 @@ class AttributeGrid(wxpg.PropertyGrid):
 
         self.itemView.updateItems()
 
-        logger.debug('%s changed to "%s"' % (p.GetName(), p.GetValueAsString()))
+        pyfalog.debug('{0} changed to "{1}"', p.GetName(), p.GetValueAsString())
 
     def OnPropGridSelect(self, event):
         pass

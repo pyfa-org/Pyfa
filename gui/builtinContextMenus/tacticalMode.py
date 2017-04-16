@@ -1,16 +1,22 @@
+# noinspection PyPackageRequirements
 import wx
 from gui.contextMenu import ContextMenu
 import gui.mainFrame
 
 import gui.globalEvents as GE
 from service.fit import Fit
+from service.settings import ContextMenuSettings
 
 
 class TacticalMode(ContextMenu):
     def __init__(self):
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
+        self.settings = ContextMenuSettings.getInstance()
 
     def display(self, srcContext, selection):
+        if not self.settings.get('tacticalMode'):
+            return False
+
         if self.mainFrame.getActiveFit() is None or srcContext != "fittingShip":
             return False
 

@@ -1,18 +1,24 @@
 from gui.contextMenu import ContextMenu
-import eos.types
+from eos.saveddata.fit import Fit as es_Fit
 import gui.mainFrame
 import gui.globalEvents as GE
+# noinspection PyPackageRequirements
 import wx
 from service.fit import Fit
 from eos.saveddata.cargo import Cargo as es_Cargo
 from eos.saveddata.fighter import Fighter as es_Fighter
+from service.settings import ContextMenuSettings
 
 
 class ChangeAmount(ContextMenu):
     def __init__(self):
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
+        self.settings = ContextMenuSettings.getInstance()
 
     def display(self, srcContext, selection):
+        if not self.settings.get('amount'):
+            return False
+
         return srcContext in ("cargoItem", "projectedFit", "fighterItem", "projectedFighter")
 
     def getText(self, itmContext, selection):
@@ -49,9 +55,9 @@ class AmountChanger(wx.Dialog):
         self.button.Bind(wx.EVT_BUTTON, self.change)
 
     def change(self, event):
-        sFit = Fit.getInstance()
         if self.input.GetLineText(0).strip() == '':
             event.Skip()
+            self.Close()
             return
 
         sFit = Fit.getInstance()
@@ -60,7 +66,7 @@ class AmountChanger(wx.Dialog):
 
         if isinstance(self.thing, es_Cargo):
             sFit.addCargo(fitID, self.thing.item.ID, int(float(self.input.GetLineText(0))), replace=True)
-        elif isinstance(self.thing, eos.types.Fit):
+        elif isinstance(self.thing, es_Fit):
             sFit.changeAmount(fitID, self.thing, int(float(self.input.GetLineText(0))))
         elif isinstance(self.thing, es_Fighter):
             sFit.changeActiveFighters(fitID, self.thing, int(float(self.input.GetLineText(0))))
@@ -68,9 +74,11 @@ class AmountChanger(wx.Dialog):
         wx.PostEvent(mainFrame, GE.FitChanged(fitID=fitID))
 
         event.Skip()
+        self.Close()
 
     # checks to make sure it's valid number
-    def onChar(self, event):
+    @staticmethod
+    def onChar(event):
         key = event.GetKeyCode()
 
         acceptable_characters = "1234567890"

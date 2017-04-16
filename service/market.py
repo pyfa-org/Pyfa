@@ -19,9 +19,10 @@
 
 import re
 import threading
-import logging
+from logbook import Logger
 import Queue
 
+# noinspection PyPackageRequirements
 import wx
 from sqlalchemy.sql import or_
 
@@ -31,18 +32,16 @@ from service import conversions
 from service.settings import SettingsProvider
 from service.price import Price
 
-# TODO: Convert eos.types over to eos.gamedata
-# from eos.gamedata import Category as e_Category, Group as e_Group, Item as e_Item
-
-from eos.types import MarketGroup as types_MarketGroup, MetaGroup as types_MetaGroup, MetaType as types_MetaType, \
-    Category as types_Category, Item as types_Item, Group as types_Group, Price as types_Price
+from eos.gamedata import Category as types_Category, Group as types_Group, Item as types_Item, MarketGroup as types_MarketGroup, \
+    MetaGroup as types_MetaGroup, MetaType as types_MetaType
+from eos.saveddata.price import Price as types_Price
 
 try:
     from collections import OrderedDict
 except ImportError:
     from utils.compat import OrderedDict
 
-logger = logging.getLogger(__name__)
+pyfalog = Logger(__name__)
 
 # Event which tells threads dependent on Market that it's initialized
 mktRdy = threading.Event()
@@ -51,6 +50,7 @@ mktRdy = threading.Event()
 class ShipBrowserWorkerThread(threading.Thread):
     def __init__(self):
         threading.Thread.__init__(self)
+        pyfalog.debug("Initialize ShipBrowserWorkerThread.")
         self.name = "ShipBrowser"
 
     def run(self):
@@ -74,24 +74,29 @@ class ShipBrowserWorkerThread(threading.Thread):
                     cache[id_] = set_
 
                 wx.CallAfter(callback, (id_, set_))
-            except:
-                pass
+            except Exception as e:
+                pyfalog.critical("Callback failed.")
+                pyfalog.critical(e)
             finally:
                 try:
                     queue.task_done()
-                except:
-                    pass
+                except Exception as e:
+                    pyfalog.critical("Queue task done failed.")
+                    pyfalog.critical(e)
 
 
 class PriceWorkerThread(threading.Thread):
     def __init__(self):
         threading.Thread.__init__(self)
         self.name = "PriceWorker"
+        pyfalog.debug("Initialize PriceWorkerThread.")
 
     def run(self):
+        pyfalog.debug("Run start")
         self.queue = Queue.Queue()
         self.wait = {}
         self.processUpdates()
+        pyfalog.debug("Run end")
 
     def processUpdates(self):
         queue = self.queue
@@ -126,6 +131,7 @@ class SearchWorkerThread(threading.Thread):
     def __init__(self):
         threading.Thread.__init__(self)
         self.name = "SearchWorker"
+        pyfalog.debug("Initialize SearchWorkerThread.")
 
     def run(self):
         self.cv = threading.Condition()
@@ -170,7 +176,7 @@ class SearchWorkerThread(threading.Thread):
         self.cv.release()
 
 
-class Market():
+class Market(object):
     instance = None
 
     def __init__(self):
@@ -180,7 +186,7 @@ class Market():
         serviceMarketRecentlyUsedModules = {"pyfaMarketRecentlyUsedModules": []}
 
         self.serviceMarketRecentlyUsedModules = SettingsProvider.getInstance().getSettings(
-            "pyfaMarketRecentlyUsedModules", serviceMarketRecentlyUsedModules)
+                "pyfaMarketRecentlyUsedModules", serviceMarketRecentlyUsedModules)
 
         # Start price fetcher
         self.priceWorkerThread = PriceWorkerThread()
@@ -210,41 +216,41 @@ class Market():
         self.les_grp.description = ""
         self.les_grp.icon = None
         self.ITEMS_FORCEGROUP = {
-            "Opux Luxury Yacht": self.les_grp,
+            "Opux Luxury Yacht"           : self.les_grp,
             # One of those is wedding present at CCP fanfest, another was hijacked from ISD guy during an event
-            "Silver Magnate": self.les_grp,  # Amarr Championship prize
-            "Gold Magnate": self.les_grp,  # Amarr Championship prize
-            "Armageddon Imperial Issue": self.les_grp,  # Amarr Championship prize
-            "Apocalypse Imperial Issue": self.les_grp,  # Amarr Championship prize
-            "Guardian-Vexor": self.les_grp,  # Illegal rewards for the Gallente Frontier Tour Lines event arc
-            "Megathron Federate Issue": self.les_grp,  # Reward during Crielere event
-            "Raven State Issue": self.les_grp,  # AT4 prize
-            "Tempest Tribal Issue": self.les_grp,  # AT4 prize
-            "Apotheosis": self.les_grp,  # 5th EVE anniversary present
-            "Zephyr": self.les_grp,  # 2010 new year gift
-            "Primae": self.les_grp,  # Promotion of planetary interaction
-            "Freki": self.les_grp,  # AT7 prize
-            "Mimir": self.les_grp,  # AT7 prize
-            "Utu": self.les_grp,  # AT8 prize
-            "Adrestia": self.les_grp,  # AT8 prize
-            "Echelon": self.les_grp,  # 2011 new year gift
-            "Malice": self.les_grp,  # AT9 prize
-            "Vangel": self.les_grp,  # AT9 prize
-            "Cambion": self.les_grp,  # AT10 prize
-            "Etana": self.les_grp,  # AT10 prize
-            "Chremoas": self.les_grp,  # AT11 prize :(
-            "Moracha": self.les_grp,  # AT11 prize
+            "Silver Magnate"              : self.les_grp,  # Amarr Championship prize
+            "Gold Magnate"                : self.les_grp,  # Amarr Championship prize
+            "Armageddon Imperial Issue"   : self.les_grp,  # Amarr Championship prize
+            "Apocalypse Imperial Issue"   : self.les_grp,  # Amarr Championship prize
+            "Guardian-Vexor"              : self.les_grp,  # Illegal rewards for the Gallente Frontier Tour Lines event arc
+            "Megathron Federate Issue"    : self.les_grp,  # Reward during Crielere event
+            "Raven State Issue"           : self.les_grp,  # AT4 prize
+            "Tempest Tribal Issue"        : self.les_grp,  # AT4 prize
+            "Apotheosis"                  : self.les_grp,  # 5th EVE anniversary present
+            "Zephyr"                      : self.les_grp,  # 2010 new year gift
+            "Primae"                      : self.les_grp,  # Promotion of planetary interaction
+            "Freki"                       : self.les_grp,  # AT7 prize
+            "Mimir"                       : self.les_grp,  # AT7 prize
+            "Utu"                         : self.les_grp,  # AT8 prize
+            "Adrestia"                    : self.les_grp,  # AT8 prize
+            "Echelon"                     : self.les_grp,  # 2011 new year gift
+            "Malice"                      : self.les_grp,  # AT9 prize
+            "Vangel"                      : self.les_grp,  # AT9 prize
+            "Cambion"                     : self.les_grp,  # AT10 prize
+            "Etana"                       : self.les_grp,  # AT10 prize
+            "Chremoas"                    : self.les_grp,  # AT11 prize :(
+            "Moracha"                     : self.les_grp,  # AT11 prize
             "Stratios Emergency Responder": self.les_grp,  # Issued for Somer Blink lottery
-            "Miasmos Quafe Ultra Edition": self.les_grp,  # Gift to people who purchased FF HD stream
-            "InterBus Shuttle": self.les_grp,
-            "Leopard": self.les_grp,  # 2013 new year gift
-            "Whiptail": self.les_grp,  # AT12 prize
-            "Chameleon": self.les_grp,  # AT12 prize
-            "Victorieux Luxury Yacht": self.les_grp,  # Worlds Collide prize \o/ chinese getting owned
-            "Imp": self.les_grp,  # AT13 prize
-            "Fiend": self.les_grp,  # AT13 prize
-            "Caedes": self.les_grp,  # AT14 prize
-            "Rabisu": self.les_grp,  # AT14 prize
+            "Miasmos Quafe Ultra Edition" : self.les_grp,  # Gift to people who purchased FF HD stream
+            "InterBus Shuttle"            : self.les_grp,
+            "Leopard"                     : self.les_grp,  # 2013 new year gift
+            "Whiptail"                    : self.les_grp,  # AT12 prize
+            "Chameleon"                   : self.les_grp,  # AT12 prize
+            "Victorieux Luxury Yacht"     : self.les_grp,  # Worlds Collide prize \o/ chinese getting owned
+            "Imp"                         : self.les_grp,  # AT13 prize
+            "Fiend"                       : self.les_grp,  # AT13 prize
+            "Caedes"                      : self.les_grp,  # AT14 prize
+            "Rabisu"                      : self.les_grp,  # AT14 prize
         }
 
         self.ITEMS_FORCEGROUP_R = self.__makeRevDict(self.ITEMS_FORCEGROUP)
@@ -253,26 +259,26 @@ class Market():
 
         # List of items which are forcibly published or hidden
         self.ITEMS_FORCEPUBLISHED = {
-            "Data Subverter I": False,  # Not used in EVE, probably will appear with Dust link
-            "QA Cross Protocol Analyzer": False,  # QA modules used by CCP internally
-            "QA Damage Module": False,
-            "QA ECCM": False,
-            "QA Immunity Module": False,
-            "QA Multiship Module - 10 Players": False,
-            "QA Multiship Module - 20 Players": False,
-            "QA Multiship Module - 40 Players": False,
-            "QA Multiship Module - 5 Players": False,
+            "Data Subverter I"                         : False,  # Not used in EVE, probably will appear with Dust link
+            "QA Cross Protocol Analyzer"               : False,  # QA modules used by CCP internally
+            "QA Damage Module"                         : False,
+            "QA ECCM"                                  : False,
+            "QA Immunity Module"                       : False,
+            "QA Multiship Module - 10 Players"         : False,
+            "QA Multiship Module - 20 Players"         : False,
+            "QA Multiship Module - 40 Players"         : False,
+            "QA Multiship Module - 5 Players"          : False,
             "QA Remote Armor Repair System - 5 Players": False,
-            "QA Shield Transporter - 5 Players": False,
-            "Goru's Shuttle": False,
-            "Guristas Shuttle": False,
-            "Mobile Decoy Unit": False,  # Seems to be left over test mod for deployables
-            "Tournament Micro Jump Unit": False,  # Normally seen only on tournament arenas
-            "Council Diplomatic Shuttle": False,  # CSM X celebration
-            "Civilian Gatling Railgun": True,
-            "Civilian Gatling Pulse Laser": True,
-            "Civilian Gatling Autocannon": True,
-            "Civilian Light Electron Blaster": True,
+            "QA Shield Transporter - 5 Players"        : False,
+            "Goru's Shuttle"                           : False,
+            "Guristas Shuttle"                         : False,
+            "Mobile Decoy Unit"                        : False,  # Seems to be left over test mod for deployables
+            "Tournament Micro Jump Unit"               : False,  # Normally seen only on tournament arenas
+            "Council Diplomatic Shuttle"               : False,  # CSM X celebration
+            "Civilian Gatling Railgun"                 : True,
+            "Civilian Gatling Pulse Laser"             : True,
+            "Civilian Gatling Autocannon"              : True,
+            "Civilian Light Electron Blaster"          : True,
         }
 
         # do not publish ships that we convert
@@ -290,16 +296,18 @@ class Market():
 
         # List of groups which are forcibly published
         self.GROUPS_FORCEPUBLISHED = {
-            "Prototype Exploration Ship": False}  # We moved the only ship from this group to other group anyway
+            "Prototype Exploration Ship": False
+        }  # We moved the only ship from this group to other group anyway
 
         # Dictionary of items with forced meta groups, uses following format:
         # Item name: (metagroup name, parent type name)
         self.ITEMS_FORCEDMETAGROUP = {
-            "'Habitat' Miner I": ("Storyline", "Miner I"),
-            "'Wild' Miner I": ("Storyline", "Miner I"),
-            "Medium Nano Armor Repair Unit I": ("Tech I", "Medium Armor Repairer I"),
+            "'Habitat' Miner I"                        : ("Storyline", "Miner I"),
+            "'Wild' Miner I"                           : ("Storyline", "Miner I"),
+            "Medium Nano Armor Repair Unit I"          : ("Tech I", "Medium Armor Repairer I"),
             "Large 'Reprieve' Vestment Reconstructer I": ("Storyline", "Large Armor Repairer I"),
-            "Khanid Navy Torpedo Launcher": ("Faction", "Torpedo Launcher I"), }
+            "Khanid Navy Torpedo Launcher"             : ("Faction", "Torpedo Launcher I"),
+        }
         # Parent type name: set(item names)
         self.ITEMS_FORCEDMETAGROUP_R = {}
         for item, value in self.ITEMS_FORCEDMETAGROUP.items():
@@ -310,57 +318,58 @@ class Market():
         # Dictionary of items with forced market group (service assumes they have no
         # market group assigned in db, otherwise they'll appear in both original and forced groups)
         self.ITEMS_FORCEDMARKETGROUP = {
-            "'Alpha' Data Analyzer I": 714,
+            "'Alpha' Data Analyzer I"                   : 714,
             # Ship Equipment > Electronics and Sensor Upgrades > Scanners > Data and Composition Scanners
-            "'Codex' Data Analyzer I": 714,
+            "'Codex' Data Analyzer I"                   : 714,
             # Ship Equipment > Electronics and Sensor Upgrades > Scanners > Data and Composition Scanners
-            "'Daemon' Data Analyzer I": 714,
+            "'Daemon' Data Analyzer I"                  : 714,
             # Ship Equipment > Electronics and Sensor Upgrades > Scanners > Data and Composition Scanners
-            "'Libram' Data Analyzer I": 714,
+            "'Libram' Data Analyzer I"                  : 714,
             # Ship Equipment > Electronics and Sensor Upgrades > Scanners > Data and Composition Scanners
-            "Advanced Cerebral Accelerator": 977,  # Implants & Boosters > Booster
-            "Civilian Damage Control": 615,  # Ship Equipment > Hull & Armor > Damage Controls
-            "Civilian EM Ward Field": 1695,  # Ship Equipment > Shield > Shield Hardeners > EM Shield Hardeners
-            "Civilian Explosive Deflection Field": 1694,
+            "Advanced Cerebral Accelerator"             : 977,  # Implants & Boosters > Booster
+            "Civilian Damage Control"                   : 615,  # Ship Equipment > Hull & Armor > Damage Controls
+            "Civilian EM Ward Field"                    : 1695,
+            # Ship Equipment > Shield > Shield Hardeners > EM Shield Hardeners
+            "Civilian Explosive Deflection Field"       : 1694,
             # Ship Equipment > Shield > Shield Hardeners > Explosive Shield Hardeners
-            "Civilian Hobgoblin": 837,  # Drones > Combat Drones > Light Scout Drones
-            "Civilian Kinetic Deflection Field": 1693,
+            "Civilian Hobgoblin"                        : 837,  # Drones > Combat Drones > Light Scout Drones
+            "Civilian Kinetic Deflection Field"         : 1693,
             # Ship Equipment > Shield > Shield Hardeners > Kinetic Shield Hardeners
-            "Civilian Light Missile Launcher": 640,
+            "Civilian Light Missile Launcher"           : 640,
             # Ship Equipment > Turrets & Bays > Missile Launchers > Light Missile Launchers
-            "Civilian Scourge Light Missile": 920,
+            "Civilian Scourge Light Missile"            : 920,
             # Ammunition & Charges > Missiles > Light Missiles > Standard Light Missiles
-            "Civilian Small Remote Armor Repairer": 1059,
+            "Civilian Small Remote Armor Repairer"      : 1059,
             # Ship Equipment > Hull & Armor > Remote Armor Repairers > Small
-            "Civilian Small Remote Shield Booster": 603,  # Ship Equipment > Shield > Remote Shield Boosters > Small
-            "Civilian Stasis Webifier": 683,  # Ship Equipment > Electronic Warfare > Stasis Webifiers
-            "Civilian Thermic Dissipation Field": 1692,
+            "Civilian Small Remote Shield Booster"      : 603,  # Ship Equipment > Shield > Remote Shield Boosters > Small
+            "Civilian Stasis Webifier"                  : 683,  # Ship Equipment > Electronic Warfare > Stasis Webifiers
+            "Civilian Thermic Dissipation Field"        : 1692,
             # Ship Equipment > Shield > Shield Hardeners > Thermal Shield Hardeners
-            "Civilian Warp Disruptor": 1935,  # Ship Equipment > Electronic Warfare > Warp Disruptors
-            "Hardwiring - Zainou 'Sharpshooter' ZMX10": 1493,
+            "Civilian Warp Disruptor"                   : 1935,  # Ship Equipment > Electronic Warfare > Warp Disruptors
+            "Hardwiring - Zainou 'Sharpshooter' ZMX10"  : 1493,
             # Implants & Boosters > Implants > Skill Hardwiring > Missile Implants > Implant Slot 06
-            "Hardwiring - Zainou 'Sharpshooter' ZMX100": 1493,
+            "Hardwiring - Zainou 'Sharpshooter' ZMX100" : 1493,
             # Implants & Boosters > Implants > Skill Hardwiring > Missile Implants > Implant Slot 06
             "Hardwiring - Zainou 'Sharpshooter' ZMX1000": 1493,
             # Implants & Boosters > Implants > Skill Hardwiring > Missile Implants > Implant Slot 06
-            "Hardwiring - Zainou 'Sharpshooter' ZMX11": 1493,
+            "Hardwiring - Zainou 'Sharpshooter' ZMX11"  : 1493,
             # Implants & Boosters > Implants > Skill Hardwiring > Missile Implants > Implant Slot 06
-            "Hardwiring - Zainou 'Sharpshooter' ZMX110": 1493,
+            "Hardwiring - Zainou 'Sharpshooter' ZMX110" : 1493,
             # Implants & Boosters > Implants > Skill Hardwiring > Missile Implants > Implant Slot 06
             "Hardwiring - Zainou 'Sharpshooter' ZMX1100": 1493,
             # Implants & Boosters > Implants > Skill Hardwiring > Missile Implants > Implant Slot 06
-            "Nugoehuvi Synth Blue Pill Booster": 977,  # Implants & Boosters > Booster
-            "Prototype Cerebral Accelerator": 977,  # Implants & Boosters > Booster
-            "Prototype Iris Probe Launcher": 712,  # Ship Equipment > Turrets & Bays > Scan Probe Launchers
-            "Shadow": 1310,  # Drones > Combat Drones > Fighter Bombers
-            "Sleeper Data Analyzer I": 714,
+            "Nugoehuvi Synth Blue Pill Booster"         : 977,  # Implants & Boosters > Booster
+            "Prototype Cerebral Accelerator"            : 977,  # Implants & Boosters > Booster
+            "Prototype Iris Probe Launcher"             : 712,  # Ship Equipment > Turrets & Bays > Scan Probe Launchers
+            "Shadow"                                    : 1310,  # Drones > Combat Drones > Fighter Bombers
+            "Sleeper Data Analyzer I"                   : 714,
             # Ship Equipment > Electronics and Sensor Upgrades > Scanners > Data and Composition Scanners
-            "Standard Cerebral Accelerator": 977,  # Implants & Boosters > Booster
-            "Talocan Data Analyzer I": 714,
+            "Standard Cerebral Accelerator"             : 977,  # Implants & Boosters > Booster
+            "Talocan Data Analyzer I"                   : 714,
             # Ship Equipment > Electronics and Sensor Upgrades > Scanners > Data and Composition Scanners
-            "Terran Data Analyzer I": 714,
+            "Terran Data Analyzer I"                    : 714,
             # Ship Equipment > Electronics and Sensor Upgrades > Scanners > Data and Composition Scanners
-            "Tetrimon Data Analyzer I": 714
+            "Tetrimon Data Analyzer I"                  : 714
             # Ship Equipment > Electronics and Sensor Upgrades > Scanners > Data and Composition Scanners
         }
 
@@ -408,7 +417,8 @@ class Market():
             cls.instance = Market()
         return cls.instance
 
-    def __makeRevDict(self, orig):
+    @staticmethod
+    def __makeRevDict(orig):
         """Creates reverse dictionary"""
         rev = {}
         for item, value in orig.items():
@@ -417,7 +427,8 @@ class Market():
             rev[value].add(item)
         return rev
 
-    def getItem(self, identity, *args, **kwargs):
+    @staticmethod
+    def getItem(identity, *args, **kwargs):
         """Get item by its ID or name"""
         try:
             if isinstance(identity, types_Item):
@@ -436,7 +447,7 @@ class Market():
             else:
                 raise TypeError("Need Item object, integer, float or string as argument")
         except:
-            logger.error("Could not get item: %s", identity)
+            pyfalog.error("Could not get item: {0}", identity)
             raise
 
         return item
@@ -459,7 +470,8 @@ class Market():
         else:
             raise TypeError("Need Group object, integer, float or string as argument")
 
-    def getCategory(self, identity, *args, **kwargs):
+    @staticmethod
+    def getCategory(identity, *args, **kwargs):
         """Get category by its ID or name"""
         if isinstance(identity, types_Category):
             category = identity
@@ -472,7 +484,8 @@ class Market():
             raise TypeError("Need Category object, integer, float or string as argument")
         return category
 
-    def getMetaGroup(self, identity, *args, **kwargs):
+    @staticmethod
+    def getMetaGroup(identity, *args, **kwargs):
         """Get meta group by its ID or name"""
         if isinstance(identity, types_MetaGroup):
             metaGroup = identity
@@ -485,7 +498,8 @@ class Market():
             raise TypeError("Need MetaGroup object, integer, float or string as argument")
         return metaGroup
 
-    def getMarketGroup(self, identity, *args, **kwargs):
+    @staticmethod
+    def getMarketGroup(identity, *args, **kwargs):
         """Get market group by its ID"""
         if isinstance(identity, types_MarketGroup):
             marketGroup = identity
@@ -576,7 +590,40 @@ class Market():
         parents = set()
         # Set-container for variables
         variations = set()
+        variations_limiter = set()
         for item in items:
+            if item.category.ID == 20:  # Implants and Boosters
+                implant_remove_list = set()
+                implant_remove_list.add("Low-Grade ")
+                implant_remove_list.add("Low-grade ")
+                implant_remove_list.add("Mid-Grade ")
+                implant_remove_list.add("Mid-grade ")
+                implant_remove_list.add("High-Grade ")
+                implant_remove_list.add("High-grade ")
+                implant_remove_list.add("Limited ")
+                implant_remove_list.add(" - Advanced")
+                implant_remove_list.add(" - Basic")
+                implant_remove_list.add(" - Elite")
+                implant_remove_list.add(" - Improved")
+                implant_remove_list.add(" - Standard")
+                implant_remove_list.add("Copper ")
+                implant_remove_list.add("Gold ")
+                implant_remove_list.add("Silver ")
+                implant_remove_list.add("Advanced ")
+                implant_remove_list.add("Improved ")
+                implant_remove_list.add("Prototype ")
+                implant_remove_list.add("Standard ")
+                implant_remove_list.add("Strong ")
+                implant_remove_list.add("Synth ")
+
+                for implant_prefix in ("-6", "-7", "-8", "-9", "-10"):
+                    for i in range(50):
+                        implant_remove_list.add(implant_prefix + str("%02d" % i))
+
+                for text_to_remove in implant_remove_list:
+                    if text_to_remove in item.name:
+                        variations_limiter.add(item.name.replace(text_to_remove, ""))
+
             # Get parent item
             if alreadyparent is False:
                 parent = self.getParentItemByItem(item)
@@ -586,15 +633,24 @@ class Market():
             parents.add(parent)
             # Check for overrides and add them if any
             if parent.name in self.ITEMS_FORCEDMETAGROUP_R:
-                for item in self.ITEMS_FORCEDMETAGROUP_R[parent.name]:
-                    i = self.getItem(item)
+                for _item in self.ITEMS_FORCEDMETAGROUP_R[parent.name]:
+                    i = self.getItem(_item)
                     if i:
                         variations.add(i)
         # Add all parents to variations set
         variations.update(parents)
         # Add all variations of parents to the set
         parentids = tuple(item.ID for item in parents)
-        variations.update(eos.db.getVariations(parentids))
+        groupids = tuple(item.group.ID for item in parents)
+        variations_list = eos.db.getVariations(parentids, groupids)
+
+        if variations_limiter:
+            for limit in variations_limiter:
+                trimmed_variations_list = [variation_item for variation_item in variations_list if limit in variation_item.name]
+            if trimmed_variations_list:
+                variations_list = trimmed_variations_list
+
+        variations.update(variations_list)
         return variations
 
     def getGroupsByCategory(self, cat):
@@ -603,7 +659,8 @@ class Market():
 
         return groups
 
-    def getMarketGroupChildren(self, mg):
+    @staticmethod
+    def getMarketGroupChildren(mg):
         """Get the children marketGroups of marketGroup."""
         children = set()
         for child in mg.children:
@@ -618,7 +675,7 @@ class Market():
         if hasattr(group, 'addItems'):
             groupItems.update(group.addItems)
         items = set(
-            filter(lambda item: self.getPublicityByItem(item) and self.getGroupByItem(item) == group, groupItems))
+                filter(lambda item: self.getPublicityByItem(item) and self.getGroupByItem(item) == group, groupItems))
         return items
 
     def getItemsByMarketGroup(self, mg, vars_=True):
@@ -738,8 +795,6 @@ class Market():
         """Get ships for given group id"""
         grp = self.getGroup(grpid, eager=("items", "items.group", "items.marketGroup"))
         ships = self.getItemsByGroup(grp)
-        for ship in ships:
-            ship.race
         return ships
 
     def getShipListDelayed(self, id_, callback):
@@ -762,18 +817,20 @@ class Market():
         """Find items according to given text pattern"""
         self.searchWorkerThread.scheduleSearch(name, callback, filterOn)
 
-    def getItemsWithOverrides(self):
+    @staticmethod
+    def getItemsWithOverrides():
         overrides = eos.db.getAllOverrides()
         items = set()
         for x in overrides:
-            if (x.item is None):
+            if x.item is None:
                 eos.db.saveddata_session.delete(x)
                 eos.db.commit()
             else:
                 items.add(x.item)
         return list(items)
 
-    def directAttrRequest(self, items, attribs):
+    @staticmethod
+    def directAttrRequest(items, attribs):
         try:
             itemIDs = tuple(map(lambda i: i.ID, items))
         except TypeError:
@@ -825,8 +882,9 @@ class Market():
         def cb():
             try:
                 callback(requests)
-            except Exception:
-                pass
+            except Exception as e:
+                pyfalog.critical("Callback failed.")
+                pyfalog.critical(e)
             eos.db.commit()
 
         self.priceWorkerThread.trigger(requests, cb)
@@ -841,8 +899,9 @@ class Market():
         def cb():
             try:
                 callback(item)
-            except:
-                pass
+            except Exception as e:
+                pyfalog.critical("Callback failed.")
+                pyfalog.critical(e)
 
         self.priceWorkerThread.setToWait(item.ID, cb)
 

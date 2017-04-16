@@ -22,10 +22,14 @@ import os.path
 import urllib2
 
 import config
+import eos.config
+from logbook import Logger
+
+pyfalog = Logger(__name__)
 
 
 class SettingsProvider(object):
-    BASE_PATH = config.getSavePath("settings")
+    BASE_PATH = os.path.join(config.savePath, 'settings')
     settings = {}
     _instance = None
 
@@ -44,7 +48,7 @@ class SettingsProvider(object):
 
         s = self.settings.get(area)
         if s is None:
-            p = config.parsePath(self.BASE_PATH, area)
+            p = os.path.join(self.BASE_PATH, area)
 
             if not os.path.exists(p):
                 info = {}
@@ -87,7 +91,8 @@ class Settings(object):
     def __getitem__(self, k):
         try:
             return self.info[k]
-        except KeyError:
+        except KeyError as e:
+            pyfalog.warning("Failed to get setting for '{0}'. Exception: {1}", k, e)
             return None
 
     def __setitem__(self, k, v):
@@ -133,17 +138,17 @@ class NetworkSettings(object):
     def __init__(self):
 
         serviceNetworkDefaultSettings = {
-            "mode": self.PROXY_MODE_AUTODETECT,
-            "type": "https",
-            "address": "",
-            "port": "",
-            "access": 15,
-            "login": None,
+            "mode"    : self.PROXY_MODE_AUTODETECT,
+            "type"    : "https",
+            "address" : "",
+            "port"    : "",
+            "access"  : 15,
+            "login"   : None,
             "password": None
         }
 
         self.serviceNetworkSettings = SettingsProvider.getInstance().getSettings(
-            "pyfaServiceNetworkSettings", serviceNetworkDefaultSettings)
+                "pyfaServiceNetworkSettings", serviceNetworkDefaultSettings)
 
     def isEnabled(self, type):
         if type & self.serviceNetworkSettings["access"]:
@@ -217,7 +222,7 @@ class NetworkSettings(object):
         if self.getMode() == self.PROXY_MODE_AUTODETECT:
             return self.autodetect()
         if self.getMode() == self.PROXY_MODE_MANUAL:
-            return (self.getAddress(), int(self.getPort()))
+            return self.getAddress(), int(self.getPort())
 
     def getProxyAuthDetails(self):
         if self.getMode() == self.PROXY_MODE_NONE:
@@ -225,7 +230,7 @@ class NetworkSettings(object):
         if (self.serviceNetworkSettings["login"] is None) or (self.serviceNetworkSettings["password"] is None):
             return None
         # in all other cases, return tuple of (login, password)
-        return (self.serviceNetworkSettings["login"], self.serviceNetworkSettings["password"])
+        return self.serviceNetworkSettings["login"], self.serviceNetworkSettings["password"]
 
     def setProxyAuthDetails(self, login, password):
         if (login is None) or (password is None):
@@ -256,12 +261,12 @@ class HTMLExportSettings(object):
     def __init__(self):
         serviceHTMLExportDefaultSettings = {
             "enabled": False,
-            "path": config.pyfaPath + os.sep + 'pyfaFits.html',
+            "path"   : config.pyfaPath + os.sep + 'pyfaFits.html',
             "minimal": False
         }
         self.serviceHTMLExportSettings = SettingsProvider.getInstance().getSettings(
-            "pyfaServiceHTMLExportSettings",
-            serviceHTMLExportDefaultSettings
+                "pyfaServiceHTMLExportSettings",
+                serviceHTMLExportDefaultSettings
         )
 
     def getEnabled(self):
@@ -303,8 +308,8 @@ class UpdateSettings(object):
         # version    - Set to release tag that user does not want notifications for
         serviceUpdateDefaultSettings = {"prerelease": True, 'version': None}
         self.serviceUpdateSettings = SettingsProvider.getInstance().getSettings(
-            "pyfaServiceUpdateSettings",
-            serviceUpdateDefaultSettings
+                "pyfaServiceUpdateSettings",
+                serviceUpdateDefaultSettings
         )
 
     def get(self, type):
@@ -331,8 +336,8 @@ class CRESTSettings(object):
         serviceCRESTDefaultSettings = {"mode": 0, "server": 0, "clientID": "", "clientSecret": "", "timeout": 60}
 
         self.serviceCRESTSettings = SettingsProvider.getInstance().getSettings(
-            "pyfaServiceCRESTSettings",
-            serviceCRESTDefaultSettings
+                "pyfaServiceCRESTSettings",
+                serviceCRESTDefaultSettings
         )
 
     def get(self, type):
@@ -340,5 +345,119 @@ class CRESTSettings(object):
 
     def set(self, type, value):
         self.serviceCRESTSettings[type] = value
+
+
+class StatViewSettings(object):
+    _instance = None
+
+    @classmethod
+    def getInstance(cls):
+        if cls._instance is None:
+            cls._instance = StatViewSettings()
+
+        return cls._instance
+
+    def __init__(self):
+        # mode
+        # 0 - Do not show
+        # 1 - Minimal/Text Only View
+        # 2 - Full View
+        serviceStatViewDefaultSettings = {
+            "resources"    : 2,
+            "resistances"  : 2,
+            "recharge"     : 2,
+            "firepower"    : 2,
+            "capacitor"    : 2,
+            "targetingMisc": 1,
+            "price"        : 2,
+            "miningyield"  : 2,
+            "drones"       : 2,
+            "outgoing"     : 2,
+        }
+
+        # We don't have these....yet
+        '''
+        "miningyield": 2,
+        "drones": 2
+        '''
+
+        self.serviceStatViewDefaultSettings = SettingsProvider.getInstance().getSettings("pyfaServiceStatViewSettings", serviceStatViewDefaultSettings)
+
+    def get(self, type):
+        return self.serviceStatViewDefaultSettings[type]
+
+    def set(self, type, value):
+        self.serviceStatViewDefaultSettings[type] = value
+
+
+class ContextMenuSettings(object):
+    _instance = None
+
+    @classmethod
+    def getInstance(cls):
+        if cls._instance is None:
+            cls._instance = ContextMenuSettings()
+
+        return cls._instance
+
+    def __init__(self):
+        # mode
+        # 0 - Do not show
+        # 1 - Show
+        ContextMenuDefaultSettings = {
+            "ammoPattern"           : 1,
+            "amount"                : 1,
+            "cargo"                 : 1,
+            "cargoAmmo"             : 1,
+            "changeAffectingSkills" : 1,
+            "damagePattern"         : 1,
+            "droneRemoveStack"      : 1,
+            "droneSplit"            : 1,
+            "droneStack"            : 1,
+            "factorReload"          : 1,
+            "fighterAbilities"      : 1,
+            "implantSets"           : 1,
+            "itemStats"             : 1,
+            "itemRemove"            : 1,
+            "marketJump"            : 1,
+            "metaSwap"              : 1,
+            "moduleAmmoPicker"      : 1,
+            "moduleGlobalAmmoPicker": 1,
+            "openFit"               : 1,
+            "priceClear"            : 1,
+            "project"               : 1,
+            "shipJump"              : 1,
+            "tacticalMode"          : 1,
+            "targetResists"         : 1,
+            "whProjector"           : 1,
+        }
+
+        self.ContextMenuDefaultSettings = SettingsProvider.getInstance().getSettings("pyfaContextMenuSettings", ContextMenuDefaultSettings)
+
+    def get(self, type):
+        return self.ContextMenuDefaultSettings[type]
+
+    def set(self, type, value):
+        self.ContextMenuDefaultSettings[type] = value
+
+
+class EOSSettings(object):
+        _instance = None
+
+        @classmethod
+        def getInstance(cls):
+            if cls._instance is None:
+                cls._instance = EOSSettings()
+
+            return cls._instance
+
+        def __init__(self):
+            self.EOSSettings = SettingsProvider.getInstance().getSettings("pyfaEOSSettings", eos.config.settings)
+
+        def get(self, type):
+            return self.EOSSettings[type]
+
+        def set(self, type, value):
+            self.EOSSettings[type] = value
 
 # @todo: migrate fit settings (from fit service) here?

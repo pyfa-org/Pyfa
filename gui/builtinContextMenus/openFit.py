@@ -1,14 +1,20 @@
 from gui.contextMenu import ContextMenu
 import gui.mainFrame
+# noinspection PyPackageRequirements
 import wx
 from gui.shipBrowser import FitSelected
+from service.settings import ContextMenuSettings
 
 
 class OpenFit(ContextMenu):
     def __init__(self):
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
+        self.settings = ContextMenuSettings.getInstance()
 
     def display(self, srcContext, selection):
+        if not self.settings.get('openFit'):
+            return False
+
         return srcContext == "projectedFit"
 
     def getText(self, itmContext, selection):

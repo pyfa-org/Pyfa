@@ -17,13 +17,17 @@
 # along with pyfa.  If not, see <http://www.gnu.org/licenses/>.
 # =============================================================================
 
+# noinspection PyPackageRequirements
 import wx
 
 import config
 from service.character import Character
-#import gui.graphFrame
+import gui.graphFrame
 import gui.globalEvents as GE
 from gui.bitmapLoader import BitmapLoader
+
+from logbook import Logger
+pyfalog = Logger(__name__)
 
 if 'wxMac' not in wx.PlatformInfo or ('wxMac' in wx.PlatformInfo and wx.VERSION >= (3, 0)):
     from service.crest import Crest
@@ -32,6 +36,7 @@ if 'wxMac' not in wx.PlatformInfo or ('wxMac' in wx.PlatformInfo and wx.VERSION 
 
 class MainMenuBar(wx.MenuBar):
     def __init__(self, mainFrame):
+        pyfalog.debug("Initialize MainMenuBar")
         self.characterEditorId = wx.NewId()
         self.damagePatternEditorId = wx.NewId()
         self.targetResistsEditorId = wx.NewId()
@@ -116,6 +121,9 @@ class MainMenuBar(wx.MenuBar):
         graphFrameItem.SetBitmap(BitmapLoader.getBitmap("graphs_small", "gui"))
         windowMenu.AppendItem(graphFrameItem)
 
+        if not gui.graphFrame.graphFrame_enabled:
+            self.Enable(self.graphFrameId, False)
+
         preferencesShortCut = "CTRL+," if 'wxMac' in wx.PlatformInfo else "CTRL+P"
         preferencesItem = wx.MenuItem(windowMenu, wx.ID_PREFERENCES, "Preferences\t" + preferencesShortCut)
         preferencesItem.SetBitmap(BitmapLoader.getBitmap("preferences_small", "gui"))
@@ -162,6 +170,7 @@ class MainMenuBar(wx.MenuBar):
         self.mainFrame.Bind(GE.FIT_CHANGED, self.fitChanged)
 
     def fitChanged(self, event):
+        pyfalog.debug("fitChanged triggered")
         enable = event.fitID is not None
         self.Enable(wx.ID_SAVEAS, enable)
         self.Enable(wx.ID_COPY, enable)

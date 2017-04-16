@@ -1,14 +1,16 @@
 # coding: utf-8
 
+# noinspection PyPackageRequirements
 import wx
 
 from service.fit import Fit
 from service.market import Market
-from eos.types import Hardpoint
+from eos.saveddata.module import Hardpoint
 import gui.mainFrame
 import gui.globalEvents as GE
 from gui.contextMenu import ContextMenu
 from gui.bitmapLoader import BitmapLoader
+from service.settings import ContextMenuSettings
 
 
 class ModuleAmmoPicker(ContextMenu):
@@ -17,8 +19,12 @@ class ModuleAmmoPicker(ContextMenu):
 
     def __init__(self):
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
+        self.settings = ContextMenuSettings.getInstance()
 
     def display(self, srcContext, selection):
+        if not self.settings.get('moduleAmmoPicker'):
+            return False
+
         if self.mainFrame.getActiveFit() is None or srcContext not in ("fittingModule", "projectedModule"):
             return False
 
@@ -96,7 +102,8 @@ class ModuleAmmoPicker(ContextMenu):
 
         return chargeDamageType, totalDamage
 
-    def numericConverter(self, string):
+    @staticmethod
+    def numericConverter(string):
         return int(string) if string.isdigit() else string
 
     def nameSorter(self, charge):
@@ -117,7 +124,8 @@ class ModuleAmmoPicker(ContextMenu):
 
         return item
 
-    def addSeperator(self, m, text):
+    @staticmethod
+    def addSeperator(m, text):
         id_ = ContextMenu.nextID()
         m.Append(id_, u'─ %s ─' % text)
         m.Enable(id_, False)
@@ -157,7 +165,7 @@ class ModuleAmmoPicker(ContextMenu):
                     item = self.addCharge(rootMenu if msw else m, charge)
                     items.append(item)
                 else:
-                    if sub is None:
+                    if sub is None and item and base:
                         sub = wx.Menu()
                         sub.Bind(wx.EVT_MENU, self.handleAmmoSwitch)
                         self.addSeperator(sub, "Less Damage")

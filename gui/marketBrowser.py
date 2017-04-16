@@ -17,14 +17,18 @@
 # along with pyfa.  If not, see <http://www.gnu.org/licenses/>.
 # =============================================================================
 
+# noinspection PyPackageRequirements
 import wx
 from service.market import Market
 from service.attribute import Attribute
-import gui.display as d
+from gui.display import Display
 import gui.PFSearchBox as SBox
 from gui.cachingImageList import CachingImageList
 from gui.contextMenu import ContextMenu
 from gui.bitmapLoader import BitmapLoader
+from logbook import Logger
+
+pyfalog = Logger(__name__)
 
 ItemSelected, ITEM_SELECTED = wx.lib.newevent.NewEvent()
 
@@ -55,6 +59,7 @@ class MetaButton(wx.ToggleButton):
 class MarketBrowser(wx.Panel):
     def __init__(self, parent):
         wx.Panel.__init__(self, parent)
+        pyfalog.debug("Initialize marketBrowser")
         vbox = wx.BoxSizer(wx.VERTICAL)
         self.SetSizer(vbox)
 
@@ -82,6 +87,7 @@ class MarketBrowser(wx.Panel):
         p.SetSizer(box)
         vbox.Add(p, 0, wx.EXPAND)
         self.metaButtons = []
+        btn = None
         for name in self.sMkt.META_MAP.keys():
             btn = MetaButton(p, wx.ID_ANY, name.capitalize(), style=wx.BU_EXACTFIT)
             setattr(self, name, btn)
@@ -132,6 +138,7 @@ class SearchBox(SBox.PFSearchBox):
 class MarketTree(wx.TreeCtrl):
     def __init__(self, parent, marketBrowser):
         wx.TreeCtrl.__init__(self, parent, style=wx.TR_DEFAULT_STYLE | wx.TR_HIDE_ROOT)
+        pyfalog.debug("Initialize marketTree")
         self.root = self.AddRoot("root")
 
         self.imageList = CachingImageList(16, 16)
@@ -180,7 +187,9 @@ class MarketTree(wx.TreeCtrl):
                 iconId = self.addImage(sMkt.getIconByMarketGroup(childMktGrp))
                 try:
                     childId = self.AppendItem(root, childMktGrp.name, iconId, data=wx.TreeItemData(childMktGrp.ID))
-                except:
+                except Exception as e:
+                    pyfalog.debug("Error appending item.")
+                    pyfalog.debug(e)
                     continue
                 if sMkt.marketGroupHasTypesCheck(childMktGrp) is False:
                     self.AppendItem(childId, "dummy")
@@ -216,14 +225,15 @@ class MarketTree(wx.TreeCtrl):
         self.marketBrowser.itemView.selectionMade()
 
 
-class ItemView(d.Display):
+class ItemView(Display):
     DEFAULT_COLS = ["Base Icon",
                     "Base Name",
                     "attr:power,,,True",
                     "attr:cpu,,,True"]
 
     def __init__(self, parent, marketBrowser):
-        d.Display.__init__(self, parent)
+        Display.__init__(self, parent)
+        pyfalog.debug("Initialize ItemView")
         marketBrowser.Bind(wx.EVT_TREE_SEL_CHANGED, self.selectionMade)
 
         self.unfilteredStore = set()
@@ -250,6 +260,7 @@ class ItemView(d.Display):
         self.metaMap = self.makeReverseMetaMap()
 
         # Fill up recently used modules set
+        pyfalog.debug("Fill up recently used modules set")
         for itemID in self.sMkt.serviceMarketRecentlyUsedModules["pyfaMarketRecentlyUsedModules"]:
             self.recentlyUsedModules.add(self.sMkt.getItem(itemID))
 
@@ -398,7 +409,7 @@ class ItemView(d.Display):
         metagrpid = sMkt.getMetaGroupIdByItem(item)
         metatab = self.metaMap.get(metagrpid)
         metalvl = self.metalvls.get(item.ID, 0)
-        return (catname, mktgrpid, parentname, metatab, metalvl, item.name)
+        return catname, mktgrpid, parentname, metatab, metalvl, item.name
 
     def contextMenu(self, event):
         # Check if something is selected, if so, spawn the menu for it
@@ -429,7 +440,7 @@ class ItemView(d.Display):
         # Mark current item list as active
         self.active = items
         # Show them
-        d.Display.populate(self, items)
+        Display.populate(self, items)
 
     def refresh(self, items):
         if len(items) > 1:
@@ -445,7 +456,7 @@ class ItemView(d.Display):
             # set shortcut info for first 9 modules
             item.marketShortcut = i + 1
 
-        d.Display.refresh(self, items)
+        Display.refresh(self, items)
 
     def makeReverseMetaMap(self):
         """

@@ -17,9 +17,10 @@
 # along with pyfa.  If not, see <http://www.gnu.org/licenses/>.
 # =============================================================================
 
+# noinspection PyPackageRequirements
 import wx
 
-from eos.types import Mode
+from eos.saveddata.mode import Mode
 from service.attribute import Attribute
 from gui.utils.numberFormatter import formatAmount
 from gui.viewColumn import ViewColumn

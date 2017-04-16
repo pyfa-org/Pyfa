@@ -19,22 +19,27 @@
 
 import sys
 import os.path
-import logging
+from logbook import Logger
 
 import sqlalchemy
+# noinspection PyPackageRequirements
 import wx
+# noinspection PyPackageRequirements
+from wx._core import PyDeadObjectError
+# noinspection PyPackageRequirements
+from wx.lib.wordwrap import wordwrap
+# noinspection PyPackageRequirements
+from wx.lib.inspection import InspectionTool
 import time
 
 from codecs import open
-
-from wx.lib.wordwrap import wordwrap
 
 import config
 
 from eos.config import gamedata_version
 
 import gui.aboutData
-import gui.chromeTabs
+from gui.chromeTabs import PFNotebook
 import gui.globalEvents as GE
 
 from gui.bitmapLoader import BitmapLoader
@@ -54,7 +59,8 @@ from gui.graphFrame import GraphFrame
 from gui.copySelectDialog import CopySelectDialog
 from gui.utils.clipboard import toClipboard, fromClipboard
 from gui.updateDialog import UpdateDialog
-from gui.builtinViews import *  # TODO: unsure if this is needed here
+# noinspection PyUnresolvedReferences
+from gui.builtinViews import emptyView, entityEditor, fittingView, implantEditor  # noqa: F401
 from gui import graphFrame
 
 from service.settings import SettingsProvider
@@ -65,7 +71,7 @@ from service.update import Update
 # import this to access override setting
 from eos.modifiedAttributeDict import ModifiedAttributeDict
 from eos.db.saveddata.loadDefaultDatabaseValues import DefaultDatabaseValues
-from eos import db
+from eos.db.saveddata.queries import getFit as db_getFit
 from service.port import Port
 from service.settings import HTMLExportSettings
 
@@ -79,15 +85,16 @@ if 'wxMac' not in wx.PlatformInfo or ('wxMac' in wx.PlatformInfo and wx.VERSION 
     from service.crest import CrestModes
     from gui.crestFittings import CrestFittings, ExportToEve, CrestMgmt
 
-    try:
-        from gui.propertyEditor import AttributeEditor
+disableOverrideEditor = False
 
-        disableOverrideEditor = False
-    except ImportError as e:
-        print("Error loading Attribute Editor: %s.\nAccess to Attribute Editor is disabled." % e.message)
-        disableOverrideEditor = True
+try:
+    from gui.propertyEditor import AttributeEditor
+except ImportError as e:
+    AttributeEditor = None
+    print("Error loading Attribute Editor: %s.\nAccess to Attribute Editor is disabled." % e.message)
+    disableOverrideEditor = True
 
-logger = logging.getLogger("pyfa.gui.mainFrame")
+pyfalog = Logger(__name__)
 
 
 # dummy panel(no paint no erasebk)
@@ -137,7 +144,8 @@ class MainFrame(wx.Frame):
     def getInstance(cls):
         return cls.__instance if cls.__instance is not None else MainFrame()
 
-    def __init__(self, title):
+    def __init__(self, title="pyfa"):
+        pyfalog.debug("Initialize MainFrame")
         self.title = title
         wx.Frame.__init__(self, None, wx.ID_ANY, self.title)
 
@@ -167,7 +175,7 @@ class MainFrame(wx.Frame):
         self.fitMultiSwitch = MultiSwitch(self.fitting_additions_split)
         self.additionsPane = AdditionsPane(self.fitting_additions_split)
 
-        self.notebookBrowsers = gui.chromeTabs.PFNotebook(self.browser_fitting_split, False)
+        self.notebookBrowsers = PFNotebook(self.browser_fitting_split, False)
 
         marketImg = BitmapLoader.getImage("market_small", "gui")
         shipBrowserImg = BitmapLoader.getImage("ship_small", "gui")
@@ -349,6 +357,13 @@ class MainFrame(wx.Frame):
         info = wx.AboutDialogInfo()
         info.Name = "pyfa"
         info.Version = gui.aboutData.versionString
+
+        try:
+            import matplotlib
+            matplotlib_version = matplotlib.__version__
+        except:
+            matplotlib_version = None
+
         info.Description = wordwrap(gui.aboutData.description + "\n\nDevelopers:\n\t" +
                                     "\n\t".join(gui.aboutData.developers) +
                                     "\n\nAdditional credits:\n\t" +
@@ -358,7 +373,8 @@ class MainFrame(wx.Frame):
                                     "\n\nEVE Data: \t" + gamedata_version +
                                     "\nPython: \t\t" + '{}.{}.{}'.format(v.major, v.minor, v.micro) +
                                     "\nwxPython: \t" + wx.__version__ +
-                                    "\nSQLAlchemy: \t" + sqlalchemy.__version__,
+                                    "\nSQLAlchemy: \t" + sqlalchemy.__version__ +
+                                    "\nmatplotlib: \t {}".format(matplotlib_version if matplotlib_version else "Not Installed"),
                                     500, wx.ClientDC(self))
         if "__WXGTK__" in wx.PlatformInfo:
             forumUrl = "http://forums.eveonline.com/default.aspx?g=posts&amp;t=466425"
@@ -381,7 +397,10 @@ class MainFrame(wx.Frame):
     def showDamagePatternEditor(self, event):
         dlg = DmgPatternEditorDlg(self)
         dlg.ShowModal()
-        dlg.Destroy()
+        try:
+            dlg.Destroy()
+        except PyDeadObjectError:
+            pyfalog.error("Tried to destroy an object that doesn't exist in <showDamagePatternEditor>.")
 
     def showImplantSetEditor(self, event):
         ImplantSetEditorDlg(self)
@@ -406,26 +425,35 @@ class MainFrame(wx.Frame):
                     path += ".xml"
             else:
                 print("oops, invalid fit format %d" % format_)
-                dlg.Destroy()
+                try:
+                    dlg.Destroy()
+                except PyDeadObjectError:
+                    pyfalog.error("Tried to destroy an object that doesn't exist in <showExportDialog>.")
                 return
 
             with open(path, "w", encoding="utf-8") as openfile:
                 openfile.write(output)
                 openfile.close()
 
-        dlg.Destroy()
+        try:
+            dlg.Destroy()
+        except PyDeadObjectError:
+            pyfalog.error("Tried to destroy an object that doesn't exist in <showExportDialog>.")
 
     def showPreferenceDialog(self, event):
         dlg = PreferenceDialog(self)
         dlg.ShowModal()
 
-    def goWiki(self, event):
+    @staticmethod
+    def goWiki(event):
         webbrowser.open('https://github.com/pyfa-org/Pyfa/wiki')
 
-    def goForums(self, event):
+    @staticmethod
+    def goForums(event):
         webbrowser.open('https://forums.eveonline.com/default.aspx?g=posts&t=466425')
 
-    def loadDatabaseDefaults(self, event):
+    @staticmethod
+    def loadDatabaseDefaults(event):
         # Import values that must exist otherwise Pyfa breaks
         DefaultDatabaseValues.importRequiredDefaults()
         # Import default values for damage profiles
@@ -679,27 +707,27 @@ class MainFrame(wx.Frame):
             self.marketBrowser.search.Focus()
 
     def clipboardEft(self):
-        fit = db.getFit(self.getActiveFit())
+        fit = db_getFit(self.getActiveFit())
         toClipboard(Port.exportEft(fit))
 
     def clipboardEftImps(self):
-        fit = db.getFit(self.getActiveFit())
+        fit = db_getFit(self.getActiveFit())
         toClipboard(Port.exportEftImps(fit))
 
     def clipboardDna(self):
-        fit = db.getFit(self.getActiveFit())
+        fit = db_getFit(self.getActiveFit())
         toClipboard(Port.exportDna(fit))
 
     def clipboardCrest(self):
-        fit = db.getFit(self.getActiveFit())
+        fit = db_getFit(self.getActiveFit())
         toClipboard(Port.exportCrest(fit))
 
     def clipboardXml(self):
-        fit = db.getFit(self.getActiveFit())
+        fit = db_getFit(self.getActiveFit())
         toClipboard(Port.exportXml(None, fit))
 
     def clipboardMultiBuy(self):
-        fit = db.getFit(self.getActiveFit())
+        fit = db_getFit(self.getActiveFit())
         toClipboard(Port.exportMultiBuy(fit))
 
     def importFromClipboard(self, event):
@@ -707,7 +735,7 @@ class MainFrame(wx.Frame):
         try:
             fits = Port().importFitFromBuffer(clipboard, self.getActiveFit())
         except:
-            logger.error("Attempt to import failed:\n%s", clipboard)
+            pyfalog.error("Attempt to import failed:\n{0}", clipboard)
         else:
             self._openAfterImport(fits)
 
@@ -724,7 +752,10 @@ class MainFrame(wx.Frame):
 
         CopySelectDict[selected]()
 
-        dlg.Destroy()
+        try:
+            dlg.Destroy()
+        except PyDeadObjectError:
+            pyfalog.error("Tried to destroy an object that doesn't exist in <exportToClipboard>.")
 
     def exportSkillsNeeded(self, event):
         """ Exports skills needed for active fit and active character """
@@ -768,7 +799,7 @@ class MainFrame(wx.Frame):
                       "All Files (*)|*"),
             style=wx.FD_OPEN | wx.FD_FILE_MUST_EXIST | wx.FD_MULTIPLE
         )
-        if (dlg.ShowModal() == wx.ID_OK):
+        if dlg.ShowModal() == wx.ID_OK:
             self.progressDialog = wx.ProgressDialog(
                 "Importing fits",
                 " " * 100,  # set some arbitrary spacing to create width in window
@@ -778,7 +809,10 @@ class MainFrame(wx.Frame):
             self.progressDialog.message = None
             sPort.importFitsThreaded(dlg.GetPaths(), self.fileImportCallback)
             self.progressDialog.ShowModal()
-            dlg.Destroy()
+            try:
+                dlg.Destroy()
+            except PyDeadObjectError:
+                pyfalog.error("Tried to destroy an object that doesn't exist in <fileImportDialog>.")
 
     def backupToXml(self, event):
         """ Back up all fits to EVE XML file """
@@ -919,13 +953,12 @@ class MainFrame(wx.Frame):
         if not self.graphFrame:
             self.graphFrame = GraphFrame(self)
 
-            if graphFrame.enabled:
+            if graphFrame.graphFrame_enabled:
                 self.graphFrame.Show()
-        else:
+        elif graphFrame.graphFrame_enabled:
             self.graphFrame.SetFocus()
 
     def openWXInspectTool(self, event):
-        from wx.lib.inspection import InspectionTool
         if not InspectionTool().initialized:
             InspectionTool().Init()
 

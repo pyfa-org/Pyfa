@@ -32,8 +32,17 @@ from eos.db.saveddata.implant import fitImplants_table
 from eos.db.saveddata.module import modules_table
 from eos.effectHandlerHelpers import HandledModuleList, HandledImplantBoosterList, HandledProjectedModList, \
     HandledDroneCargoList, HandledProjectedDroneList
-from eos.types import Fit as es_Fit, Module, User, Booster, Drone, Fighter, Cargo, Implant, Character, DamagePattern, \
-    TargetResists, ImplantLocation
+from eos.saveddata.implant import Implant
+from eos.saveddata.character import Character
+from eos.saveddata.user import User
+from eos.saveddata.fighter import Fighter
+from eos.saveddata.fit import Fit as es_Fit, ImplantLocation
+from eos.saveddata.drone import Drone
+from eos.saveddata.booster import Booster
+from eos.saveddata.module import Module
+from eos.saveddata.cargo import Cargo
+from eos.saveddata.damagePattern import DamagePattern
+from eos.saveddata.targetResists import TargetResists
 
 fits_table = Table("fits", saveddata_meta,
                    Column("ID", Integer, primary_key=True),
@@ -131,7 +140,7 @@ mapper(es_Fit, fits_table,
            "_Fit__modules": relation(
                Module,
                collection_class=HandledModuleList,
-               primaryjoin=and_(modules_table.c.fitID == fits_table.c.ID, modules_table.c.projected == False), # noqa
+               primaryjoin=and_(modules_table.c.fitID == fits_table.c.ID, modules_table.c.projected == False),  # noqa
                order_by=modules_table.c.position,
                cascade='all, delete, delete-orphan'),
            "_Fit__projectedModules": relation(
@@ -139,7 +148,7 @@ mapper(es_Fit, fits_table,
                collection_class=HandledProjectedModList,
                cascade='all, delete, delete-orphan',
                single_parent=True,
-               primaryjoin=and_(modules_table.c.fitID == fits_table.c.ID, modules_table.c.projected == True)), # noqa
+               primaryjoin=and_(modules_table.c.fitID == fits_table.c.ID, modules_table.c.projected == True)),  # noqa
            "owner": relation(
                User,
                backref="fits"),
@@ -155,13 +164,13 @@ mapper(es_Fit, fits_table,
                collection_class=HandledDroneCargoList,
                cascade='all, delete, delete-orphan',
                single_parent=True,
-               primaryjoin=and_(drones_table.c.fitID == fits_table.c.ID, drones_table.c.projected == False)), # noqa
+               primaryjoin=and_(drones_table.c.fitID == fits_table.c.ID, drones_table.c.projected == False)),  # noqa
            "_Fit__fighters": relation(
                Fighter,
                collection_class=HandledDroneCargoList,
                cascade='all, delete, delete-orphan',
                single_parent=True,
-               primaryjoin=and_(fighters_table.c.fitID == fits_table.c.ID, fighters_table.c.projected == False)), # noqa
+               primaryjoin=and_(fighters_table.c.fitID == fits_table.c.ID, fighters_table.c.projected == False)),  # noqa
            "_Fit__cargo": relation(
                Cargo,
                collection_class=HandledDroneCargoList,
@@ -173,13 +182,13 @@ mapper(es_Fit, fits_table,
                collection_class=HandledProjectedDroneList,
                cascade='all, delete, delete-orphan',
                single_parent=True,
-               primaryjoin=and_(drones_table.c.fitID == fits_table.c.ID, drones_table.c.projected == True)), # noqa
+               primaryjoin=and_(drones_table.c.fitID == fits_table.c.ID, drones_table.c.projected == True)),  # noqa
            "_Fit__projectedFighters": relation(
                Fighter,
                collection_class=HandledProjectedDroneList,
                cascade='all, delete, delete-orphan',
                single_parent=True,
-               primaryjoin=and_(fighters_table.c.fitID == fits_table.c.ID, fighters_table.c.projected == True)), # noqa
+               primaryjoin=and_(fighters_table.c.fitID == fits_table.c.ID, fighters_table.c.projected == True)),  # noqa
            "_Fit__implants": relation(
                Implant,
                collection_class=HandledImplantBoosterList,

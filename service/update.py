@@ -21,12 +21,17 @@ import threading
 import json
 import calendar
 
+# noinspection PyPackageRequirements
 import wx
+# noinspection PyPackageRequirements
 import dateutil.parser
 
 import config
 from service.network import Network
 from service.settings import UpdateSettings
+from logbook import Logger
+
+pyfalog = Logger(__name__)
 
 
 class CheckUpdateThread(threading.Thread):
@@ -50,7 +55,7 @@ class CheckUpdateThread(threading.Thread):
 
             for release in jsonResponse:
                 # Suppress pre releases
-                if (release['prerelease'] and self.settings.get('prerelease')):
+                if release['prerelease'] and self.settings.get('prerelease'):
                     continue
 
                 # Handle use-case of updating to suppressed version
@@ -58,7 +63,7 @@ class CheckUpdateThread(threading.Thread):
                     self.settings.set('version', None)
 
                 # Suppress version
-                if (release['tag_name'] == self.settings.get('version')):
+                if release['tag_name'] == self.settings.get('version'):
                     break
 
                 # Set the release version that we will be comparing with.
@@ -80,18 +85,23 @@ class CheckUpdateThread(threading.Thread):
                     if release['prerelease'] and rVersion > config.expansionVersion:
                         wx.CallAfter(self.callback, release)  # Singularity -> Singularity
                 break
-        except:
+        except Exception as e:
+            pyfalog.error("Caught exception in run")
+            pyfalog.error(e)
             pass
 
-    def versiontuple(self, v):
+    @staticmethod
+    def versiontuple(v):
         return tuple(map(int, (v.split("."))))
 
 
-class Update():
+class Update(object):
     instance = None
 
-    def CheckUpdate(self, callback):
+    @staticmethod
+    def CheckUpdate(callback):
         thread = CheckUpdateThread(callback)
+        pyfalog.debug("Starting Check Update Thread.")
         thread.start()
 
     @classmethod

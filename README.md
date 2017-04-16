@@ -1,6 +1,6 @@
 # pyfa
 
-[![Join us on Slack!](https://pyfainvite.azurewebsites.net/badge.svg)](https://pyfainvite.azurewebsites.net/)
+[![Join us on Slack!](https://pyfainvite.azurewebsites.net/badge.svg)](https://pyfainvite.azurewebsites.net/) [![Build Status](https://travis-ci.org/pyfa-org/Pyfa.svg?branch=master)](https://travis-ci.org/pyfa-org/Pyfa)
 
 ![pyfa](https://cloud.githubusercontent.com/assets/3904767/10271512/af385ef2-6ade-11e5-8f67-52b8b1e4c797.PNG)
 
@@ -42,6 +42,7 @@ If you wish to help with development or simply need to run pyfa through a Python
 * `dateutil`
 * `matplotlib` (for some Linux distributions you may need to install separate wxPython bindings such as `python-matplotlib-wx`)
 * `requests`
+* `logbook` >= 1.0.0
 
 ## Bug Reporting
 The preferred method of reporting bugs is through the project's [GitHub Issues interface](https://github.com/pyfa-org/Pyfa/issues). Alternatively, posting a report in the [pyfa thread](http://forums.eveonline.com/default.aspx?g=posts&t=247609) on the official EVE Online forums is acceptable. Guidelines for bug reporting can be found on [this wiki page](https://github.com/DarkFenX/Pyfa/wiki/Bug-Reporting). 
@@ -51,8 +52,7 @@ pyfa is licensed under the GNU GPL v3.0, see LICENSE
 
 ## Resources
 * Development repository: [https://github.com/pyfa-org/Pyfa](https://github.com/pyfa-org/Pyfa)
-* XMPP conference: [pyfa@conference.jabber.org](pyfa@conference.jabber.org)
-* [EVE forum thread](http://forums.eveonline.com/default.aspx?g=posts&t=247609)
+* [EVE forum thread](https://forums.eveonline.com/default.aspx?g=posts&t=466425)
 * [EVE University guide using pyfa](http://wiki.eveuniversity.org/Guide_to_using_PYFA)
 * [EVE Online website](http://www.eveonline.com/)
 

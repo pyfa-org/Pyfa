@@ -23,6 +23,11 @@ from xml.dom import minidom
 
 from eos import db
 from service.network import Network, TimeoutError
+from service.fit import Fit
+from logbook import Logger
+
+pyfalog = Logger(__name__)
+
 
 VALIDITY = 24 * 60 * 60  # Price validity period, 24 hours
 REREQUEST = 4 * 60 * 60  # Re-request delay for failed fetches, 4 hours
@@ -30,6 +35,19 @@ TIMEOUT = 15 * 60  # Network timeout delay for connection issues, 15 minutes
 
 
 class Price(object):
+    systemsList = {
+        "Jita": 30000142,
+        "Amarr": 30002187,
+        "Dodixie": 30002659,
+        "Rens": 30002510,
+        "Hek": 30002053
+    }
+
+    @classmethod
+    def invalidPrices(cls, prices):
+        for price in prices:
+            price.time = 0
+
     @classmethod
     def fetchPrices(cls, prices):
         """Fetch all prices passed to this method"""
@@ -63,9 +81,10 @@ class Price(object):
         # This will store POST data for eve-central
         data = []
 
+        sFit = Fit.getInstance()
         # Base request URL
         baseurl = "https://eve-central.com/api/marketstat"
-        data.append(("usesystem", 30000142))  # Use Jita for market
+        data.append(("usesystem", cls.systemsList[sFit.serviceFittingOptions["priceSystem"]]))  # Use Jita for market
 
         for typeID in toRequest:  # Add all typeID arguments
             data.append(("typeid", typeID))
@@ -85,6 +104,7 @@ class Price(object):
                 try:
                     percprice = float(sell.getElementsByTagName("percentile").item(0).firstChild.data)
                 except (TypeError, ValueError):
+                    pyfalog.warning("Failed to get price for: {0}", type_)
                     percprice = 0
 
                 # Fill price data
@@ -99,6 +119,7 @@ class Price(object):
         # If getting or processing data returned any errors
         except TimeoutError:
             # Timeout error deserves special treatment
+            pyfalog.warning("Price fetch timout")
             for typeID in priceMap.keys():
                 priceobj = priceMap[typeID]
                 priceobj.time = time.time() + TIMEOUT
@@ -106,6 +127,7 @@ class Price(object):
                 del priceMap[typeID]
         except:
             # all other errors will pass and continue onward to the REREQUEST delay
+            pyfalog.warning("Caught exception in fetchPrices")
             pass
 
         # if we get to this point, then we've got an error. Set to REREQUEST delay
@@ -113,3 +135,23 @@ class Price(object):
             priceobj = priceMap[typeID]
             priceobj.time = time.time() + REREQUEST
             priceobj.failed = True
+
+    @classmethod
+    def fitItemsList(cls, fit):
+        # Compose a list of all the data we need & request it
+        typeIDs = [fit.ship.item.ID]
+
+        for mod in fit.modules:
+            if not mod.isEmpty:
+                typeIDs.append(mod.itemID)
+
+        for drone in fit.drones:
+            typeIDs.append(drone.itemID)
+
+        for fighter in fit.fighters:
+            typeIDs.append(fighter.itemID)
+
+        for cargo in fit.cargo:
+            typeIDs.append(cargo.itemID)
+
+        return typeIDs
