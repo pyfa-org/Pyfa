@@ -179,8 +179,8 @@ class MetaSwap(ContextMenu):
             elif isinstance(selected_item, Implant):
                 for idx, implant_stack in enumerate(fit.implants):
                     if implant_stack is selected_item:
-                        sFit.removeImplant(fitID, idx)
-                        sFit.addImplant(fitID, item.ID, False)
+                        sFit.removeImplant(fitID, idx, False)
+                        sFit.addImplant(fitID, item.ID, True)
                         break
 
         wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fitID))
