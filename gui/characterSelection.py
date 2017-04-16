@@ -152,12 +152,16 @@ class CharacterSelection(wx.Panel):
         return False
 
     def fitChanged(self, event):
+        """
+        When fit is changed, or new fit is selected
+        """
         self.charChoice.Enable(event.fitID is not None)
         choice = self.charChoice
         sFit = Fit.getInstance()
         currCharID = choice.GetClientData(choice.GetCurrentSelection())
         fit = sFit.getFit(event.fitID)
         newCharID = fit.character.ID if fit is not None else None
+
         if event.fitID is None:
             self.skillReqsStaticBitmap.SetBitmap(self.cleanSkills)
             self.skillReqsStaticBitmap.SetToolTipString("No active fit")
@@ -186,7 +190,8 @@ class CharacterSelection(wx.Panel):
 
         elif currCharID != newCharID:
             self.selectChar(newCharID)
-            self.charChanged(None)
+            if not fit.calculated:
+                self.charChanged(None)
 
         event.Skip()
 
