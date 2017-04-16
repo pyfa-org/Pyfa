@@ -1,4 +1,5 @@
 PyInstaller	>= 3.2.1
+cx_freeze == 4.3.4
 cycler >= 0.10.0
 functools32 >= 3.2.3
 future >= 0.16.0

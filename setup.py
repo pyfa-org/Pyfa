@@ -25,6 +25,24 @@ if __name__ == "__main__":
     # noinspection PyPackageRequirements,PyUnresolvedReferences
     from cx_Freeze import setup, Executable
     import config
+    import tempfile
+    import os
+    import zipfile
+    import shutil
+    tmpdir = tempfile.mkdtemp()
+
+    imagesFile = os.path.join(tmpdir, "imgs.zip")
+
+    def zipdir(path, zip):
+        for root, dirs, files in os.walk(path):
+            for file in files:
+                zip.write(os.path.join(root, file))
+  
+    os.chdir('imgs')
+    with zipfile.ZipFile(imagesFile, 'w') as images:
+        for dir in icon_dirs:
+            zipdir(dir, images)
+    os.chdir('..')
 
     app_name = 'pyfa'
     app_version = '{}'.format(config.version)
@@ -33,7 +51,7 @@ if __name__ == "__main__":
     # Windows-specific options
     build_options_winexe = {
         'packages': packages,
-        'include_files': include_files,
+        'include_files': include_files+[imagesFile],
         'includes': includes,
         'excludes': excludes,
         'compressed': True,
@@ -81,3 +99,5 @@ if __name__ == "__main__":
         },
         executables=[Executable(**executable_options)]
     )
+
+    shutil.rmtree(tmpdir)
