@@ -10,4 +10,4 @@ runTime = "early"
 
 def handler(fit, ship, context):
     fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill("Cloaking"),
-                                  "cpu", ship.getModifiedItemAttr("shipBonusPirateFaction"))
+                                  "cpu", ship.getModifiedItemAttr("shipBonusRole7"))
