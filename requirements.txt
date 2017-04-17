@@ -1,6 +1,5 @@
 logbook >= 1.0.0
 matplotlib
-PyYAML >= 3.12
 python-dateutil
 urllib3
 requests == 2.11.1
