@@ -20,7 +20,8 @@ class ChangeAffectingSkills(ContextMenu):
         if not self.settings.get('changeAffectingSkills'):
             return False
 
-        if self.mainFrame.getActiveFit() is None or srcContext not in ("fittingModule", "fittingCharge", "fittingShip"):
+        if self.mainFrame.getActiveFit() is None or srcContext not in (
+                "fittingModule", "fittingCharge", "fittingShip", "droneItem", "fighterItem"):
             return False
 
         self.sChar = Character.getInstance()
