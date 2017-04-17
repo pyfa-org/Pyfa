@@ -1,7 +1,7 @@
-# shipBonusForceAuxiliaryRole3NumWarfareLinks
+# shipBonusRole3NumWarfareLinks
 #
 # Used by:
-# Ships from group: Force Auxiliary (4 of 4)
+# Ships from group: Force Auxiliary (5 of 5)
 type = "passive"
 
 

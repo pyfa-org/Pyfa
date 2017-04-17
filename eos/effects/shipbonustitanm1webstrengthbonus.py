@@ -1,4 +1,4 @@
-# shipBonusTitanM1WebBonus
+# shipBonusTitanM1WebStrengthBonus
 #
 # Used by:
 # Ship: Vanquisher

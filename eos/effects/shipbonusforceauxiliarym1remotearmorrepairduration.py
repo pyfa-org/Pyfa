@@ -1,3 +1,7 @@
+# shipBonusForceAuxiliaryM1RemoteArmorRepairDuration
+#
+# Used by:
+# Ship: Dagon
 type = "passive"
 def handler(fit, src, context):
     lvl = src.level

@@ -4,6 +4,7 @@
 # Ship: Adrestia
 # Ship: Arazu
 # Ship: Deimos
+# Ship: Enforcer
 # Ship: Exequror Navy Issue
 # Ship: Guardian-Vexor
 # Ship: Thorax

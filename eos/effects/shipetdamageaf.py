@@ -4,6 +4,7 @@
 # Ship: Crucifier Navy Issue
 # Ship: Crusader
 # Ship: Imperial Navy Slicer
+# Ship: Pacifier
 type = "passive"
 
 

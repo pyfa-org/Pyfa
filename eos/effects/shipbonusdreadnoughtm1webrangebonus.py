@@ -1,3 +1,7 @@
+# shipBonusDreadnoughtM1WebRangeBonus
+#
+# Used by:
+# Ship: Chemosh
 type = "passive"
 def handler(fit, src, context):
     lvl = src.level

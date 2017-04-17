@@ -1,8 +1,9 @@
-# shipMissileSpeedBonusCF
+# shipBonusSmallMissileRoFCF2
 #
 # Used by:
 # Ship: Buzzard
 # Ship: Hawk
+# Ship: Pacifier
 type = "passive"
 
 

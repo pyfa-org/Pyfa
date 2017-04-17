@@ -1,4 +1,4 @@
-# remoteArmorPowerNeedBonusEffect
+# shipBonusRole5RemoteArmorRepairPowergridBonus
 #
 # Used by:
 # Ships from group: Logistics (3 of 6)

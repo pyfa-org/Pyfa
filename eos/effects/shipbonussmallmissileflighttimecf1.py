@@ -1,3 +1,7 @@
+# shipBonusSmallMissileFlightTimeCF1
+#
+# Used by:
+# Ship: Pacifier
 type = "passive"
 def handler(fit, src, context):
     lvl = src.level

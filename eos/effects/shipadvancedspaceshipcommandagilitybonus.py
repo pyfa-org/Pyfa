@@ -1,7 +1,7 @@
 # shipAdvancedSpaceshipCommandAgilityBonus
 #
 # Used by:
-# Items from market group: Ships > Capital Ships (34 of 34)
+# Items from market group: Ships > Capital Ships (37 of 37)
 type = "passive"
 
 

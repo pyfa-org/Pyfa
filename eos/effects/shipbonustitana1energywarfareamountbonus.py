@@ -1,3 +1,7 @@
+# shipBonusTitanA1EnergyWarfareAmountBonus
+#
+# Used by:
+# Ship: Molok
 type = "passive"
 def handler(fit, src, context):
     lvl = src.level

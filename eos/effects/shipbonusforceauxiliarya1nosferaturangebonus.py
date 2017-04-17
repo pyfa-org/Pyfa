@@ -1,3 +1,7 @@
+# shipBonusForceAuxiliaryA1NosferatuRangeBonus
+#
+# Used by:
+# Ship: Dagon
 type = "passive"
 def handler(fit, src, context):
     lvl = src.level

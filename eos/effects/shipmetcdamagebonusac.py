@@ -2,6 +2,7 @@
 #
 # Used by:
 # Ship: Augoror Navy Issue
+# Ship: Enforcer
 # Ship: Maller
 # Ship: Omen Navy Issue
 type = "passive"

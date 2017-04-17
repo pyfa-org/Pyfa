@@ -1,7 +1,7 @@
 # minigameVirusStrengthBonus
 #
 # Used by:
-# Ships from group: Covert Ops (6 of 6)
+# Ships from group: Covert Ops (7 of 7)
 # Ships named like: Stratios (2 of 2)
 # Subsystems named like: Electronics Emergent Locus Analyzer (4 of 4)
 # Ship: Astero
