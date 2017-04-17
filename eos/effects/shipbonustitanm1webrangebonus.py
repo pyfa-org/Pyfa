@@ -4,5 +4,4 @@
 # Ship: Molok
 type = "passive"
 def handler(fit, src, context):
-    lvl = src.level
-    fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == "Stasis Web", "maxRange", src.getModifiedItemAttr("shipBonusTitanM1") * lvl, skill="Minmatar Titan")
+    fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == "Stasis Web", "maxRange", src.getModifiedItemAttr("shipBonusTitanM1"), skill="Minmatar Titan")
