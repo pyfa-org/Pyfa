@@ -2,5 +2,5 @@ logbook >= 1.0.0
 matplotlib
 python-dateutil
 urllib3
-requests == 2.11.1
-sqlalchemy >= 1.0.5
+requests==2.11.1
+sqlalchemy==1.0.5
