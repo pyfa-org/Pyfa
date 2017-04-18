@@ -459,7 +459,6 @@ class UpdateAPIThread(threading.Thread):
         self.charName = charName
 
     def run(self):
-        print "in thread"
         try:
             dbChar = eos.db.getCharacter(self.charID)
             dbChar.defaultChar = self.charName
@@ -471,13 +470,15 @@ class UpdateAPIThread(threading.Thread):
             for char in apiResult.characters:
                 if char.name == self.charName:
                     charID = char.characterID
+                    break
 
             if charID is None:
                 return
 
             sheet = auth.character(charID).CharacterSheet()
+            charInfo = api.eve.CharacterInfo(characterID=charID)
 
-            dbChar.apiUpdateCharSheet(sheet.skills)
+            dbChar.apiUpdateCharSheet(sheet.skills, charInfo.securityStatus)
             self.callback[0](self.callback[1])
         except Exception:
             self.callback[0](self.callback[1], sys.exc_info())
