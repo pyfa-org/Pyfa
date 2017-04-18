@@ -7,4 +7,4 @@ type = "passive"
 
 def handler(fit, ship, context):
     fit.modules.filteredChargeBoost(lambda mod: mod.charge.requiresSkill("Astrometrics"),
-                                    "baseSensorStrength", ship.getModifiedItemAttr("shipBonusPirateFaction"))
+                                    "baseSensorStrength", ship.getModifiedItemAttr("shipBonusRole7"))

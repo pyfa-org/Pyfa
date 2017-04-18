@@ -5,6 +5,7 @@
 # Ship: Atron
 # Ship: Federation Navy Comet
 # Ship: Helios
+# Ship: Pacifier
 # Ship: Taranis
 type = "passive"
 

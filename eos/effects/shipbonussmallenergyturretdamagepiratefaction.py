@@ -12,4 +12,4 @@ type = "passive"
 
 def handler(fit, ship, context):
     fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill("Small Energy Turret"),
-                                  "damageMultiplier", ship.getModifiedItemAttr("shipBonusPirateFaction"))
+                                  "damageMultiplier", ship.getModifiedItemAttr("shipBonusRole7"))

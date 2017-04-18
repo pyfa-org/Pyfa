@@ -1,4 +1,4 @@
-# shipBonusDreadnoughtRole1DamageBonus
+# shipBonusRole1CapitalHybridDamageBonus
 #
 # Used by:
 # Ship: Vehement

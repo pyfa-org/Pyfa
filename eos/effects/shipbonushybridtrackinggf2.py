@@ -3,6 +3,7 @@
 # Used by:
 # Ship: Ares
 # Ship: Federation Navy Comet
+# Ship: Pacifier
 # Ship: Tristan
 type = "passive"
 

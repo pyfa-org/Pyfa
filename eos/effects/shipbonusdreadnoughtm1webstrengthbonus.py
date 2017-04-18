@@ -1,4 +1,4 @@
-# shipBonusDreadnoughtM1WebBonus
+# shipBonusDreadnoughtM1WebStrengthBonus
 #
 # Used by:
 # Ship: Vehement

@@ -1,7 +1,7 @@
-# shipBonusTitanRole2ArmorShieldModuleBonus
+# shipBonusRole2ArmorPlates&ShieldExtendersBonus
 #
 # Used by:
-# Ships from group: Titan (5 of 5)
+# Ships from group: Titan (6 of 6)
 type = "passive"
 
 

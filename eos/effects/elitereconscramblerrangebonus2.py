@@ -1,7 +1,8 @@
-# eliteReconJumpScramblerRangeBonus2
+# eliteReconScramblerRangeBonus2
 #
 # Used by:
 # Ship: Arazu
+# Ship: Enforcer
 # Ship: Lachesis
 type = "passive"
 

@@ -2,6 +2,7 @@
 #
 # Used by:
 # Ship: Avatar
+# Ship: Molok
 type = "passive"
 
 

@@ -1,4 +1,4 @@
-# shipBonusForceAuxiliaryM1RemoteCycleTime
+# shipBonusForceAuxiliaryM1RemoteDuration
 #
 # Used by:
 # Ship: Lif

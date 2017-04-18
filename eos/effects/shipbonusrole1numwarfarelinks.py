@@ -1,7 +1,7 @@
-# shipBonusTitanRole1NumWarfareLinks
+# shipBonusRole1NumWarfareLinks
 #
 # Used by:
-# Ships from group: Titan (5 of 5)
+# Ships from group: Titan (6 of 6)
 type = "passive"
 
 

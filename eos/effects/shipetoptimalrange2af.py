@@ -2,6 +2,7 @@
 #
 # Used by:
 # Ship: Imperial Navy Slicer
+# Ship: Pacifier
 type = "passive"
 
 
