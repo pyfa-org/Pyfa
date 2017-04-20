@@ -101,6 +101,10 @@ class Drone(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
         return self.__charge
 
     @property
+    def cycleTime(self):
+        return max(self.getModifiedItemAttr("duration"), 0)
+
+    @property
     def dealsDamage(self):
         for attr in ("emDamage", "kineticDamage", "explosiveDamage", "thermalDamage"):
             if attr in self.itemModifiedAttributes or attr in self.chargeModifiedAttributes:
