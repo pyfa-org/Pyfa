@@ -1187,14 +1187,16 @@ class Fit(object):
         if force_recalc is False:
             return self.__remoteReps
 
-        # We are rerunning the recalcs. Explicitly set to 0 to make sure we don't duplicate anything and correctly
-        # set all values to 0.
+        # We are rerunning the recalcs. Explicitly set to 0 to make sure we don't duplicate anything and correctly set all values to 0.
         for remote_type in self.__remoteReps:
             self.__remoteReps[remote_type] = 0
 
         for stuff in chain(self.modules, self.drones):
             remote_type = None
-            modifier = stuff.getModifiedItemAttr("chargedArmorDamageMultiplier", 1)
+            if stuff.charge:
+                fueledMultiplier = stuff.getModifiedItemAttr("chargedArmorDamageMultiplier", 1)
+            else:
+                fueledMultiplier = 1
 
             if isinstance(stuff, Module) and (stuff.isEmpty or stuff.state < State.ACTIVE):
                 continue
@@ -1249,7 +1251,7 @@ class Fit(object):
                     hp = droneHull
                 else:
                     hp = 0
-            self.__remoteReps[remote_type] += (hp * modifier) / duration
+            self.__remoteReps[remote_type] += (hp * fueledMultiplier) / duration
 
         return self.__remoteReps
 
