@@ -29,6 +29,7 @@ from gui.utils.numberFormatter import formatAmount
 from gui.utils.listFormatter import formatList
 from eos.saveddata.drone import Drone
 
+
 class Miscellanea(ViewColumn):
     name = "Miscellanea"
 

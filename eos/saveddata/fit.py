@@ -29,6 +29,7 @@ from eos import capSim
 from eos.effectHandlerHelpers import HandledModuleList, HandledDroneCargoList, HandledImplantBoosterList, HandledProjectedDroneList, HandledProjectedModList
 from eos.enum import Enum
 from eos.saveddata.ship import Ship
+from eos.saveddata.drone import Drone
 from eos.saveddata.character import Character
 from eos.saveddata.citadel import Citadel
 from eos.saveddata.module import Module, State, Slot, Hardpoint
@@ -1186,23 +1187,27 @@ class Fit(object):
         if force_recalc is False:
             return self.__remoteReps
 
-        # We are rerunning the recalcs. Explicitly set to 0 to make sure we don't duplicate anything and correctly set all values to 0.
+        # We are rerunning the recalcs. Explicitly set to 0 to make sure we don't duplicate anything and correctly
+        # set all values to 0.
         for remote_type in self.__remoteReps:
             self.__remoteReps[remote_type] = 0
 
-        for module in self.modules:
-            # Skip empty and non-Active modules
-            if module.isEmpty or module.state < State.ACTIVE:
+        for stuff in chain(self.modules, self.drones):
+            remote_type = None
+            modifier = stuff.getModifiedItemAttr("chargedArmorDamageMultiplier", 1)
+
+            if isinstance(stuff, Module) and (stuff.isEmpty or stuff.state < State.ACTIVE):
                 continue
+            elif isinstance(stuff, Drone):
+                # drones don't have fueled charges, so siomply override modifier with the amount of drones active
+                modifier = stuff.amountActive
 
             # Covert cycleTime to seconds
-            duration = module.cycleTime / 1000
+            duration = stuff.cycleTime / 1000
 
             # Skip modules with no duration.
             if not duration:
                 continue
-
-            fueledMultiplier = module.getModifiedItemAttr("chargedArmorDamageMultiplier", 1)
 
             remote_module_groups = {
                 "Remote Armor Repairer"          : "Armor",
@@ -1213,26 +1218,38 @@ class Fit(object):
                 "Remote Capacitor Transmitter"   : "Capacitor",
             }
 
-            module_group = module.item.group.name
+            module_group = stuff.item.group.name
 
             if module_group in remote_module_groups:
                 remote_type = remote_module_groups[module_group]
-            else:
+            elif not isinstance(stuff, Drone):
                 # Module isn't in our list of remote rep modules, bail
                 continue
 
             if remote_type == "Hull":
-                hp = module.getModifiedItemAttr("structureDamageAmount", 0)
+                hp = stuff.getModifiedItemAttr("structureDamageAmount", 0)
             elif remote_type == "Armor":
-                hp = module.getModifiedItemAttr("armorDamageAmount", 0)
+                hp = stuff.getModifiedItemAttr("armorDamageAmount", 0)
             elif remote_type == "Shield":
-                hp = module.getModifiedItemAttr("shieldBonus", 0)
+                hp = stuff.getModifiedItemAttr("shieldBonus", 0)
             elif remote_type == "Capacitor":
-                hp = module.getModifiedItemAttr("powerTransferAmount", 0)
+                hp = stuff.getModifiedItemAttr("powerTransferAmount", 0)
             else:
-                hp = 0
-
-            self.__remoteReps[remote_type] += (hp * fueledMultiplier) / duration
+                droneShield = stuff.getModifiedItemAttr("shieldBonus", 0)
+                droneArmor = stuff.getModifiedItemAttr("armorDamageAmount", 0)
+                droneHull = stuff.getModifiedItemAttr("structureDamageAmount", 0)
+                if droneShield:
+                    remote_type = "Shield"
+                    hp = droneShield
+                elif droneArmor:
+                    remote_type = "Armor"
+                    hp = droneArmor
+                elif droneHull:
+                    remote_type = "Hull"
+                    hp = droneHull
+                else:
+                    hp = 0
+            self.__remoteReps[remote_type] += (hp * modifier) / duration
 
         return self.__remoteReps
 
