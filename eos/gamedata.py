@@ -20,6 +20,7 @@
 import re
 
 from sqlalchemy.orm import reconstructor
+from sqlalchemy import inspect
 
 import eos.db
 from eqBase import EqBase
@@ -443,11 +444,9 @@ class Item(EqBase):
     @property
     def price(self):
 
-        # todo: use `from sqlalchemy import inspect` instead (need to verify it works in old and new OS X builds)
-
-
-
-        if self.__price is not None and getattr(self.__price, '_sa_instance_state', None) and self.__price._sa_instance_state.deleted:
+        # This happens when the price record is deleted from the database. We dynamically refresh the price object
+        # attached to the fit if it's determined to have been deleted
+        if self.__price is not None and inspect(self.__price).deleted:
             pyfalog.debug("Price data for {} was deleted (probably from a cache reset), resetting object".format(self.ID))
             self.__price = None
 
