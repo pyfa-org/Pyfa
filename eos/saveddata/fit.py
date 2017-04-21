@@ -1187,19 +1187,24 @@ class Fit(object):
         if force_recalc is False:
             return self.__remoteReps
 
-        # We are rerunning the recalcs. Explicitly set to 0 to make sure we don't duplicate anything and correctly
-        # set all values to 0.
+        # We are rerunning the recalcs. Explicitly set to 0 to make sure we don't duplicate anything and correctly set
+        # all values to 0.
         for remote_type in self.__remoteReps:
             self.__remoteReps[remote_type] = 0
 
         for stuff in chain(self.modules, self.drones):
             remote_type = None
-            modifier = stuff.getModifiedItemAttr("chargedArmorDamageMultiplier", 1)
+
+            # Only apply the charged multiplier if we have a charge in our ancil reppers (#1135)
+            if stuff.charge:
+                modifier = stuff.getModifiedItemAttr("chargedArmorDamageMultiplier", 1)
+            else:
+                modifier = 1
 
             if isinstance(stuff, Module) and (stuff.isEmpty or stuff.state < State.ACTIVE):
                 continue
             elif isinstance(stuff, Drone):
-                # drones don't have fueled charges, so siomply override modifier with the amount of drones active
+                # drones don't have fueled charges, so simply override modifier with the amount of drones active
                 modifier = stuff.amountActive
 
             # Covert cycleTime to seconds
