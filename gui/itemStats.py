@@ -1384,7 +1384,6 @@ class ItemProperties(wx.Panel):
             except Exception as e:
                 # TODO: Add logging to this.
                 # We couldn't get a property for some reason. Skip it for now.
-                print(e)
                 continue
 
             index = self.paramList.InsertStringItem(sys.maxint, attrName)
