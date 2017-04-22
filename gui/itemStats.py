@@ -1381,7 +1381,7 @@ class ItemProperties(wx.Panel):
                 else:
                     attrName = name.title()
                     value = getattr(self.item, name)
-            except Exception as e:
+            except:
                 # TODO: Add logging to this.
                 # We couldn't get a property for some reason. Skip it for now.
                 continue

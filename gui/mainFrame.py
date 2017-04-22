@@ -255,7 +255,9 @@ class MainFrame(wx.Frame):
         # Remove any fits that cause exception when fetching (non-existent fits)
         for id in fits[:]:
             try:
-                sFit.getFit(id, basic=True)
+                fit = sFit.getFit(id, basic=True)
+                if fit is None:
+                    fits.remove(id)
             except:
                 fits.remove(id)
 
