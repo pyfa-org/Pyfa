@@ -20,6 +20,7 @@
 import copy
 from logbook import Logger
 from time import time
+import datetime
 
 import eos.db
 from eos.saveddata.booster import Booster as es_Booster
@@ -93,7 +94,7 @@ class Fit(object):
         fits = eos.db.getFitsWithShip(shipID)
         names = []
         for fit in fits:
-            names.append((fit.ID, fit.name, fit.booster, fit.timestamp))
+            names.append((fit.ID, fit.name, fit.booster, fit.modified or fit.created or datetime.datetime.fromtimestamp(fit.timestamp)))
 
         return names
 

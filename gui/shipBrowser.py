@@ -7,6 +7,7 @@ import time
 import wx
 # noinspection PyPackageRequirements
 from wx.lib.buttons import GenBitmapButton
+import datetime
 
 from service.fit import Fit
 from service.market import Market
@@ -953,7 +954,7 @@ class ShipBrowser(wx.Panel):
                         shipTrait,
                         fit.name,
                         fit.booster,
-                        fit.timestamp,
+                        fit.modified,
                     ),
                     fit.ship.item.ID,
                 ))
@@ -1473,6 +1474,7 @@ class FitItem(SFItem.SFBrowserItem):
 
         self.shipFittingInfo = shipFittingInfo
         self.shipName, self.shipTrait, self.fitName, self.fitBooster, self.timestamp = shipFittingInfo
+
         self.shipTrait = re.sub("<.*?>", " ", self.shipTrait)
         # see GH issue #62
 
@@ -1553,10 +1555,13 @@ class FitItem(SFItem.SFBrowserItem):
         #    self.animCount = 0
         # =====================================================================
 
+        """
+        # Remove this bit as the time stuff is non-functional (works... but not exactly sure what it's meant to do)
         self.selTimerID = wx.NewId()
 
         self.selTimer = wx.Timer(self, self.selTimerID)
         self.selTimer.Start(100)
+        """
 
         self.Bind(wx.EVT_RIGHT_UP, self.OnContextMenu)
         self.Bind(wx.EVT_MIDDLE_UP, self.OpenNewTab)
@@ -1645,6 +1650,7 @@ class FitItem(SFItem.SFBrowserItem):
 
     def OnTimer(self, event):
 
+        # @todo: figure out what exactly this is supposed to accomplish
         if self.selTimerID == event.GetId():
             ctimestamp = time.time()
             interval = 5
@@ -1893,8 +1899,8 @@ class FitItem(SFItem.SFBrowserItem):
 
         mdc.SetFont(self.fontNormal)
 
-        fitDate = time.localtime(self.timestamp)
-        fitLocalDate = "%d/%02d/%02d %02d:%02d" % (fitDate[0], fitDate[1], fitDate[2], fitDate[3], fitDate[4])
+        fitDate = self.timestamp.strftime("%m/%d/%Y %H:%M")
+        fitLocalDate = fitDate #"%d/%02d/%02d %02d:%02d" % (fitDate[0], fitDate[1], fitDate[2], fitDate[3], fitDate[4])
         pfdate = drawUtils.GetPartialText(mdc, fitLocalDate,
                                           self.toolbarx - self.textStartx - self.padding * 2 - self.thoverw)
 
