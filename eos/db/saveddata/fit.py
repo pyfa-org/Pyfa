@@ -17,9 +17,12 @@
 # along with eos.  If not, see <http://www.gnu.org/licenses/>.
 # ===============================================================================
 
+import datetime
+from sqlalchemy import inspect
 from sqlalchemy.ext.associationproxy import association_proxy
 from sqlalchemy.orm.collections import attribute_mapped_collection
 from sqlalchemy.sql import and_
+from sqlalchemy.event import listen
 from sqlalchemy.orm import relation, reconstructor, mapper, relationship
 from sqlalchemy import ForeignKey, Column, Integer, String, Table, Boolean, DateTime
 import sqlalchemy.sql.functions as func
@@ -244,3 +247,24 @@ mapper(ProjectedFit, projectedFits_table,
        )
 
 mapper(CommandFit, commandFits_table)
+
+
+def rel_listener(target, value, initiator):
+    if not target or (isinstance(value, Module) and value.isEmpty):
+        return
+
+    print "{} has has has a relationship changes :(".format(target)
+    target.modified = datetime.datetime.now()
+
+
+def load_listener(target, context):
+    # We only want to se these events when the fit is first loaded (otherwise events will fire during the initial
+    # population of data). This sets listeners for all the relationships on fits. This allows us to update the fit's
+    # modified date whenever something is added/removed from fit
+    # See http://docs.sqlalchemy.org/en/rel_1_0/orm/events.html#sqlalchemy.orm.events.InstanceEvents.load
+    for rel in inspect(es_Fit).relationships:
+        listen(rel, 'append', rel_listener)
+        listen(rel, 'remove', rel_listener)
+
+listen(Module, 'load', load_listener)
+
