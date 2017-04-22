@@ -411,14 +411,28 @@ class SkillTreeView(wx.Panel):
         skillID = self.skillTreeListCtrl.GetPyData(selection)
 
         if level is not None:
-            self.skillTreeListCtrl.SetItemText(selection, "Level %d" % level if isinstance(level, int) else level, 1)
             sChar.changeLevel(char.ID, skillID, level, persist=True)
         elif event.Id == self.revertID:
             sChar.revertLevel(char.ID, skillID)
         elif event.Id == self.saveID:
             sChar.saveSkill(char.ID, skillID)
 
-        self.skillTreeListCtrl.SetItemTextColour(selection, None)
+        # After saving the skill, we need to update not just the selected skill, but all open skills due to strict skill
+        # level setting. We don't want to refresh tree, as that will lose all expanded categories and users location
+        # within the tree. Thus, we loop through the tree and refresh the info.
+        child, cookie = self.skillTreeListCtrl.GetFirstChild(self.root)
+        while child.IsOk():
+            # child = Skill category
+            grand, cookie2 = self.skillTreeListCtrl.GetFirstChild(child)
+            while grand.IsOk():
+                # grand = Skill (or "dummy" if not expanded)
+                if self.skillTreeListCtrl.GetItemText(grand) != "dummy":
+                    lvl, dirty = sChar.getSkillLevel(char.ID, self.skillTreeListCtrl.GetPyData(grand))
+                    self.skillTreeListCtrl.SetItemText(grand, "Level {}".format(lvl) if not isinstance(lvl, basestring) else lvl, 1)
+                    if not dirty:
+                        self.skillTreeListCtrl.SetItemTextColour(grand, None)
+                grand, cookie2 = self.skillTreeListCtrl.GetNextChild(child, cookie2)
+            child, cookie = self.skillTreeListCtrl.GetNextChild(self.root, cookie)
 
         dirtySkills = sChar.getDirtySkills(char.ID)
         dirtyGroups = set([skill.item.group.ID for skill in dirtySkills])

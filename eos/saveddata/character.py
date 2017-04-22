@@ -17,6 +17,7 @@
 # along with eos.  If not, see <http://www.gnu.org/licenses/>.
 # ===============================================================================
 
+import time
 
 from logbook import Logger
 from itertools import chain
@@ -25,6 +26,7 @@ from sqlalchemy.orm import validates, reconstructor
 
 import eos
 import eos.db
+import eos.config
 from eos.effectHandlerHelpers import HandledItem, HandledImplantBoosterList
 
 pyfalog = Logger(__name__)
@@ -334,12 +336,15 @@ class Skill(HandledItem):
 
         self.activeLevel = level
 
-        for item, rlevel in self.item.requiredFor.iteritems():
-            if item.group.category.ID == 16:  # Skill category
-                if level < rlevel:
-                    skill = self.character.getSkill(item.ID)
-                    #print "Removing skill: {}, Dependant level: {}, Required level: {}".format(skill, level, rlevel)
-                    skill.setLevel(None, persist)
+        if eos.config.settings['strictSkillLevels']:
+            start = time.time()
+            for item, rlevel in self.item.requiredFor.iteritems():
+                if item.group.category.ID == 16:  # Skill category
+                    if level < rlevel:
+                        skill = self.character.getSkill(item.ID)
+                        #print "Removing skill: {}, Dependant level: {}, Required level: {}".format(skill, level, rlevel)
+                        skill.setLevel(None, persist)
+            pyfalog.debug("Strict Skill levels enabled, time to process {}: {}".format(self.item.ID, time.time() - start))
 
         if persist:
             self.saveLevel()

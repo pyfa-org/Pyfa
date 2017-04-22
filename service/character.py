@@ -370,6 +370,7 @@ class Character(object):
     def changeLevel(charID, skillID, level, persist=False):
         char = eos.db.getCharacter(charID)
         skill = char.getSkill(skillID)
+
         if isinstance(level, basestring) or level > 5 or level < 0:
             skill.setLevel(None, persist)
         else:
