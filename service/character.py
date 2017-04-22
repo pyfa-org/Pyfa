@@ -371,12 +371,9 @@ class Character(object):
         char = eos.db.getCharacter(charID)
         skill = char.getSkill(skillID)
         if isinstance(level, basestring) or level > 5 or level < 0:
-            skill.level = None
+            skill.setLevel(None, persist)
         else:
-            skill.level = level
-
-        if persist:
-            skill.saveLevel()
+            skill.setLevel(level, persist)
 
         eos.db.commit()
 

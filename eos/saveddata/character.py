@@ -324,8 +324,8 @@ class Skill(HandledItem):
 
         return self.activeLevel or 0
 
-    @level.setter
-    def level(self, level):
+    def setLevel(self, level, persist=False):
+
         if (level < 0 or level > 5) and level is not None:
             raise ValueError(str(level) + " is not a valid value for level")
 
@@ -333,10 +333,21 @@ class Skill(HandledItem):
             raise ReadOnlyException()
 
         self.activeLevel = level
-        self.character.dirtySkills.add(self)
 
-        if self.activeLevel == self.__level and self in self.character.dirtySkills:
-            self.character.dirtySkills.remove(self)
+        for item, rlevel in self.item.requiredFor.iteritems():
+            if item.group.category.ID == 16:  # Skill category
+                if level < rlevel:
+                    skill = self.character.getSkill(item.ID)
+                    #print "Removing skill: {}, Dependant level: {}, Required level: {}".format(skill, level, rlevel)
+                    skill.setLevel(None, persist)
+
+        if persist:
+            self.saveLevel()
+        else:
+            self.character.dirtySkills.add(self)
+
+            if self.activeLevel == self.__level and self in self.character.dirtySkills:
+                self.character.dirtySkills.remove(self)
 
     @property
     def item(self):

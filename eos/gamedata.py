@@ -250,6 +250,7 @@ class Item(EqBase):
     def init(self):
         self.__race = None
         self.__requiredSkills = None
+        self.__requiredFor = None
         self.__moved = False
         self.__offensive = None
         self.__assistive = None
@@ -329,6 +330,24 @@ class Item(EqBase):
                     item = eos.db.getItem(skillID)
                     requiredSkills[item] = skillLvl
         return self.__requiredSkills
+
+    @property
+    def requiredFor(self):
+        if self.__requiredFor is None:
+            self.__requiredFor = dict()
+
+            # Map containing attribute IDs we may need for required skills
+            srqIDMap = {182: 277, 183: 278, 184: 279, 1285: 1286, 1289: 1287, 1290: 1288}
+
+            # Get relevant attribute values from db (required skill IDs and levels) for our item
+            q = eos.db.getRequiredFor(self.ID, srqIDMap)
+
+            for itemID, lvl in q:
+                # Fetch item from database and fill map
+                item = eos.db.getItem(itemID)
+                self.__requiredFor[item] = lvl
+
+        return self.__requiredFor
 
     factionMap = {
         500001: "caldari",
@@ -442,7 +461,6 @@ class Item(EqBase):
 
     @property
     def price(self):
-
         # todo: use `from sqlalchemy import inspect` instead (need to verify it works in old and new OS X builds)
         if self.__price is not None and getattr(self.__price, '_sa_instance_state', None):
             pyfalog.debug("Price data for {} was deleted, resetting object".format(self.ID))
