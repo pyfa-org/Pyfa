@@ -1534,6 +1534,7 @@ class FitItem(SFItem.SFBrowserItem):
         self.tcFitName.Bind(wx.EVT_TEXT_ENTER, self.renameFit)
         self.tcFitName.Bind(wx.EVT_KILL_FOCUS, self.editLostFocus)
         self.tcFitName.Bind(wx.EVT_KEY_DOWN, self.editCheckEsc)
+        self.mainFrame.Bind(GE.FIT_CHANGED, self.OnFitChanged)
         self.Bind(wx.EVT_MOUSE_CAPTURE_LOST, self.OnMouseCaptureLost)
 
         self.animTimerId = wx.NewId()
@@ -1565,6 +1566,13 @@ class FitItem(SFItem.SFBrowserItem):
 
         self.Bind(wx.EVT_RIGHT_UP, self.OnContextMenu)
         self.Bind(wx.EVT_MIDDLE_UP, self.OpenNewTab)
+
+    def OnFitChanged(self, evt):
+        if evt.fitID == self.fitID:
+            sFit = Fit.getInstance()
+            fit = sFit.getFit(evt.fitID)
+            if fit.modified:
+                self.timestamp = fit.modified
 
     def OpenNewTab(self, evt):
         self.selectFit(newTab=True)
@@ -1732,7 +1740,6 @@ class FitItem(SFItem.SFBrowserItem):
             self.fitName = fitName
             sFit.renameFit(self.fitID, self.fitName)
             wx.PostEvent(self.mainFrame, FitRenamed(fitID=self.fitID))
-            self.Refresh()
         else:
             self.tcFitName.SetValue(self.fitName)
 
