@@ -27,12 +27,11 @@ from eos.db.gamedata.group import groups_table
 from eos.db.util import processEager, processWhere
 from eos.gamedata import AlphaClone, Attribute, Category, Group, Item, MarketGroup, MetaGroup, AttributeInfo, MetaData
 
+cache = {}
 configVal = getattr(eos.config, "gamedataCache", None)
 if configVal is True:
     def cachedQuery(amount, *keywords):
         def deco(function):
-            cache = {}
-
             def checkAndReturn(*args, **kwargs):
                 useCache = kwargs.pop("useCache", True)
                 cacheKey = []
@@ -97,6 +96,34 @@ def getItem(lookfor, eager=None):
         raise TypeError("Need integer or string as argument")
     return item
 
+
+@cachedQuery(1, "lookfor")
+def getItems(lookfor, eager=None):
+    """
+    Gets a list of items. Does a bit of cache hackery to get working properly -- cache
+    is usually based on function calls with the parameters, needed to extract data directly.
+    Works well enough. Not currently used, but it's here for possible future inclusion
+    """
+
+    toGet = []
+    results = []
+
+    for id in lookfor:
+        if (id, None) in cache:
+            results.append(cache.get((id, None)))
+        else:
+            toGet.append(id)
+
+    if len(toGet) > 0:
+        # Get items that aren't currently cached, and store them in the cache
+        items = gamedata_session.query(Item).filter(Item.ID.in_(toGet)).all()
+        for item in items:
+            cache[(item.ID, None)] = item
+        results += items
+
+    # sort the results based on the original indexing
+    results.sort(key=lambda x: lookfor.index(x.ID))
+    return results
 
 @cachedQuery(1, "lookfor")
 def getAlphaClone(lookfor, eager=None):

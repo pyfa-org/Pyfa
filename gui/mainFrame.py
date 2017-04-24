@@ -20,6 +20,7 @@
 import sys
 import os.path
 from logbook import Logger
+import datetime
 
 import sqlalchemy
 # noinspection PyPackageRequirements
@@ -919,7 +920,16 @@ class MainFrame(wx.Frame):
                 wx.PostEvent(self, FitSelected(fitID=fit.ID))
                 wx.PostEvent(self.shipBrowser, Stage3Selected(shipID=fit.shipID, back=True))
             else:
-                wx.PostEvent(self.shipBrowser, ImportSelected(fits=fits, back=True))
+                fits.sort(key=lambda _fit: (_fit.ship.item.name, _fit.name))
+                results = []
+                for fit in fits:
+                    results.append((
+                        fit.ID,
+                        fit.name,
+                        fit.modified or fit.created or datetime.datetime.fromtimestamp(fit.timestamp),
+                        fit.ship.item
+                    ))
+                wx.PostEvent(self.shipBrowser, ImportSelected(fits=results, back=True))
 
     def closeProgressDialog(self):
         # Windows apparently handles ProgressDialogs differently. We can

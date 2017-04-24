@@ -99,6 +99,20 @@ class Fit(object):
         return names
 
     @staticmethod
+    def getRecentFits():
+        """ Fetches recently modified fits, used with shipBrowser """
+        pyfalog.debug("Fetching recent fits")
+        fits = eos.db.getRecentFits()
+        returnInfo = []
+
+        for fit in fits:
+            item = eos.db.getItem(fit[1])
+            returnInfo.append((fit[0], fit[2], fit[3] or fit[4] or datetime.datetime.fromtimestamp(fit[5]), item))
+            #                  ID      name    timestamps
+
+        return returnInfo
+
+    @staticmethod
     def getFitsWithModules(typeIDs):
         """ Lists fits flagged as booster """
         fits = eos.db.getFitsWithModules(typeIDs)
