@@ -461,9 +461,10 @@ class Item(EqBase):
 
     @property
     def price(self):
-        # todo: use `from sqlalchemy import inspect` instead (need to verify it works in old and new OS X builds)
-        if self.__price is not None and getattr(self.__price, '_sa_instance_state', None):
-            pyfalog.debug("Price data for {} was deleted, resetting object".format(self.ID))
+
+        # todo: use `from sqlalchemy import inspect` instead (mac-deprecated doesn't have inspect(), was imp[lemented in 0.8)
+        if self.__price is not None and getattr(self.__price, '_sa_instance_state', None) and self.__price._sa_instance_state.deleted:
+            pyfalog.debug("Price data for {} was deleted (probably from a cache reset), resetting object".format(self.ID))
             self.__price = None
 
         if self.__price is None:

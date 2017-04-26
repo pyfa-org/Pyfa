@@ -481,6 +481,7 @@ class FittingView(d.Display):
                     # This only happens when turning on/off slot divisions
                     self.populate(self.mods)
                 self.refresh(self.mods)
+                self.Refresh()
 
             self.Show(self.activeFitID is not None and self.activeFitID == event.fitID)
         except wx._core.PyDeadObjectError:
