@@ -290,7 +290,7 @@ class Character(object):
     @staticmethod
     def getSkillLevel(charID, skillID):
         skill = eos.db.getCharacter(charID).getSkill(skillID)
-        return skill.level if skill.learned else "Not learned", skill.isDirty
+        return float(skill.level) if skill.learned else "Not learned", skill.isDirty
 
     @staticmethod
     def getDirtySkills(charID):

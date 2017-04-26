@@ -378,7 +378,7 @@ class SkillTreeView(wx.Panel):
                 iconId = self.skillBookImageId
                 childId = tree.AppendItem(root, name, iconId, data=wx.TreeItemData(id))
                 level, dirty = sChar.getSkillLevel(char.ID, id)
-                tree.SetItemText(childId, "Level %d" % level if isinstance(level, int) else level, 1)
+                tree.SetItemText(childId, "Level %d" % level if isinstance(level, float) else level, 1)
                 if dirty:
                     tree.SetItemTextColour(childId, wx.BLUE)
 
