@@ -7,7 +7,6 @@ import time
 import wx
 # noinspection PyPackageRequirements
 from wx.lib.buttons import GenBitmapButton
-import datetime
 
 from service.fit import Fit
 from service.market import Market

@@ -19,10 +19,7 @@
 
 from sqlalchemy import Table, Column, Integer, ForeignKey, CheckConstraint, Boolean, DateTime, select
 from sqlalchemy.orm import relation, mapper
-from sqlalchemy.event import listen
 import sqlalchemy.sql.functions as func
-
-import datetime
 
 from eos.db import saveddata_meta
 from eos.saveddata.module import Module
@@ -44,30 +41,5 @@ modules_table = Table("modules", saveddata_meta,
 mapper(Module, modules_table,
        properties={"owner": relation(Fit)})
 
-
-def update_fit_modified(target, value, oldvalue, initiator):
-    if not target.owner:
-        return
-
-    if value != oldvalue:
-        print "{} had a module change".format(target.owner)
-        target.owner.modified = datetime.datetime.now()
-
-
-def load_listener(target, context):
-    # We only want to se these events when the module is first loaded (otherwise events will fire during the initial
-    # population of data). This runs through all columns and sets up "set" events on each column. We do it with each
-    # column because the alternative would be to do a before/after_update for the Mapper itself, however we're only
-    # allowed to change the local attributes during those events as that's inter-flush.
-    # See http://docs.sqlalchemy.org/en/rel_1_0/orm/session_events.html#mapper-level-events
-
-    # @todo replace with `inspect(Module).column_attrs` when mac binaries are updated
-    manager = getattr(Module, "_sa_class_manager", None)
-    if manager:
-        for col in manager.mapper.column_attrs:
-            listen(col, 'set', update_fit_modified)
-
-
-listen(Module, 'load', load_listener)
 
 

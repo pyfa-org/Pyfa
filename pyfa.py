@@ -341,6 +341,7 @@ if __name__ == "__main__":
         else:
             saVersion = sqlalchemy.__version__
             saMatch = re.match("([0-9]+).([0-9]+)([b\.])([0-9]+)", saVersion)
+            config.saVersion = (int(saMatch.group(1)), int(saMatch.group(2)), int(saMatch.group(4)))
             if saMatch:
                 saMajor = int(saMatch.group(1))
                 saMinor = int(saMatch.group(2))
@@ -370,6 +371,12 @@ if __name__ == "__main__":
                             pyfalog.warning("Recommended version {0} {1}", requirement_parsed[1], requirement_parsed[2])
 
         import eos.db
+
+        if config.saVersion[0] > 0 or config.saVersion[1] >= 7:
+            # <0.7 doesn't have support for events ;_; (mac-deprecated)
+            config.sa_events = True
+            import eos.events
+
         # noinspection PyUnresolvedReferences
         import service.prefetch  # noqa: F401
 
