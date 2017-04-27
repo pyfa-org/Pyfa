@@ -6,13 +6,13 @@ type = "passive"
 
 
 def handler(fit, src, context):
-    fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill("Shield Command"), "warfareBuff4Multiplier",
+    fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill("Shield Command"), "warfareBuff4Value",
                                   src.getModifiedItemAttr("shipBonusORECapital3"), skill="Capital Industrial Ships")
     fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill("Shield Command"), "buffDuration",
                                   src.getModifiedItemAttr("shipBonusORECapital3"), skill="Capital Industrial Ships")
-    fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill("Shield Command"), "warfareBuff1Multiplier",
+    fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill("Shield Command"), "warfareBuff1Value",
                                   src.getModifiedItemAttr("shipBonusORECapital3"), skill="Capital Industrial Ships")
-    fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill("Shield Command"), "warfareBuff3Multiplier",
+    fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill("Shield Command"), "warfareBuff3Value",
                                   src.getModifiedItemAttr("shipBonusORECapital3"), skill="Capital Industrial Ships")
-    fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill("Shield Command"), "warfareBuff2Multiplier",
+    fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill("Shield Command"), "warfareBuff2Value",
                                   src.getModifiedItemAttr("shipBonusORECapital3"), skill="Capital Industrial Ships")
