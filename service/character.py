@@ -280,6 +280,11 @@ class Character(object):
         eos.db.commit()
 
     @staticmethod
+    def setSecStatus(char, secStatus):
+        char.secStatus = secStatus
+        eos.db.commit()
+
+    @staticmethod
     def getSkillDescription(itemID):
         return eos.db.getItem(itemID).description
 

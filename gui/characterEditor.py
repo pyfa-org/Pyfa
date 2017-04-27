@@ -20,6 +20,7 @@
 # noinspection PyPackageRequirements
 import wx
 
+from utils.floatspin import FloatSpin
 # noinspection PyPackageRequirements
 import wx.lib.newevent
 # noinspection PyPackageRequirements
@@ -284,10 +285,18 @@ class SkillTreeView(wx.Panel):
 
         tree.SetColumnWidth(0, 500)
 
+        self.btnSecStatus = wx.Button(self, wx.ID_ANY, "Sec Status: {0:.2f}".format(char.secStatus or 0.0))
+        self.btnSecStatus.Bind(wx.EVT_BUTTON, self.onSecStatus)
+
         self.populateSkillTree()
 
         tree.Bind(wx.EVT_TREE_ITEM_EXPANDING, self.expandLookup)
         tree.Bind(wx.EVT_TREE_ITEM_RIGHT_CLICK, self.scheduleMenu)
+
+        bSizerButtons = wx.BoxSizer(wx.HORIZONTAL)
+
+        bSizerButtons.Add(self.btnSecStatus, 0, wx.ALL, 5)
+        pmainSizer.Add(bSizerButtons, 0, wx.EXPAND, 5)
 
         # bind the Character selection event
         self.charEditor.entityEditor.Bind(wx.EVT_CHOICE, self.charChanged)
@@ -322,6 +331,17 @@ class SkillTreeView(wx.Panel):
 
         self.Layout()
 
+    def onSecStatus(self, event):
+        sChar = Character.getInstance()
+        char = self.charEditor.entityEditor.getActiveEntity()
+        myDlg = SecStatusDialog(self, char.secStatus or 0.0)
+        res = myDlg.ShowModal()
+        if res == wx.ID_OK:
+            value = myDlg.floatSpin.GetValue()
+            sChar.setSecStatus(char, value)
+            self.btnSecStatus.SetLabel("Sec Status: {0:.2f}".format(value))
+        myDlg.Destroy()
+
     def cloneChanged(self, event):
         sChar = Character.getInstance()
         sChar.setAlphaClone(self.charEditor.entityEditor.getActiveEntity(), event.ClientData)
@@ -334,6 +354,8 @@ class SkillTreeView(wx.Panel):
             if char.alphaCloneID == cloneID:
                 self.clonesChoice.SetSelection(i)
 
+        self.btnSecStatus.SetLabel("Sec Status: {0:.2f}".format(char.secStatus or 0.0))
+
         self.populateSkillTree(event)
 
     def populateSkillTree(self, event=None):
@@ -343,8 +365,10 @@ class SkillTreeView(wx.Panel):
 
         if char.name in ("All 0", "All 5"):
             self.clonesChoice.Disable()
+            self.btnSecStatus.Disable()
         else:
             self.clonesChoice.Enable()
+            self.btnSecStatus.Enable()
 
         groups = sChar.getSkillGroups()
         imageId = self.skillBookImageId
@@ -700,3 +724,31 @@ class SaveCharacterAs(wx.Dialog):
 
         event.Skip()
         self.Close()
+
+
+class SecStatusDialog(wx.Dialog):
+
+    def __init__(self, parent, sec):
+        wx.Dialog.__init__(self, parent, title="Set Security Status", size=(275, 175))
+
+        self.SetSizeHintsSz(wx.DefaultSize, wx.DefaultSize)
+
+        bSizer1 = wx.BoxSizer(wx.VERTICAL)
+
+        self.m_staticText1 = wx.StaticText(self, wx.ID_ANY,
+                                        u"Security Status is used in some CONCORD hull calculations; you can set the characters security status here",
+                                        wx.DefaultPosition, wx.DefaultSize, 0)
+        self.m_staticText1.Wrap(-1)
+        bSizer1.Add(self.m_staticText1, 1, wx.ALL | wx.EXPAND, 5)
+
+
+        self.floatSpin = FloatSpin(self, value=sec, min_val=-5.0, max_val=5.0, increment=0.1, digits=2, size=(100, -1))
+        bSizer1.Add(self.floatSpin, 1, wx.ALIGN_CENTER | wx.ALL, 5)
+
+        btnOk = wx.Button(self, wx.ID_OK)
+        bSizer1.Add(btnOk, 0, wx.ALIGN_CENTER | wx.ALIGN_RIGHT | wx.ALL, 5)
+
+        self.SetSizer(bSizer1)
+        self.Layout()
+
+        self.Centre(wx.BOTH)
