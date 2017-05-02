@@ -163,10 +163,6 @@ def handleGUIException(exc_type, exc_value, exc_traceback):
 # Replace the uncaught exception handler with our own handler.
 sys.excepthook = handleGUIException
 
-logVersion = logbook_version.split('.')
-if int(logVersion[0]) < 1:
-    print ("Logbook version >= 1.0.0 is recommended. You may have some performance issues by continuing to use an earlier version.")
-
 # Parse command line options
 usage = "usage: %prog [--root]"
 parser = PassThroughOptionParser(usage=usage)
@@ -355,19 +351,9 @@ if __name__ == "__main__":
             else:
                 pyfalog.warning("Unknown sqlalchemy version string format, skipping check. Version: {0}", sqlalchemy.__version__)
 
-        requirements_path = os.path.join(config.pyfaPath, "requirements.txt")
-        if os.path.exists(requirements_path):
-            file = open(requirements_path, "r")
-            for requirement in file:
-                requirement = requirement.replace("\n", "")
-                requirement_parsed = requirement.split(' ')
-                if requirement_parsed:
-                    try:
-                        find_module(requirement_parsed[0])
-                    except ImportError as e:
-                        pyfalog.warning("Possibly missing required module: {0}", requirement_parsed[0])
-                        if len(requirement_parsed) == 3:
-                            pyfalog.warning("Recommended version {0} {1}", requirement_parsed[1], requirement_parsed[2])
+        logVersion = logbook_version.split('.')
+        if int(logVersion[0]) == 0 and int(logVersion[1]) < 10:
+            raise PreCheckException("Logbook version >= 0.10.0 is required.")
 
         import eos.db
         # noinspection PyUnresolvedReferences
