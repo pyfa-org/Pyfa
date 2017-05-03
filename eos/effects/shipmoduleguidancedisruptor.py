@@ -5,7 +5,7 @@
 type = "active", "projected"
 
 
-def handler(fit, module, context):
+def handler(fit, module, context, *args, **kwargs):
     if "projected" in context:
         for srcAttr, tgtAttr in (
                 ("aoeCloudSizeBonus", "aoeCloudSize"),
@@ -15,4 +15,4 @@ def handler(fit, module, context):
         ):
             fit.modules.filteredChargeBoost(lambda mod: mod.charge.requiresSkill("Missile Launcher Operation"),
                                             tgtAttr, module.getModifiedItemAttr(srcAttr),
-                                            stackingPenalties=True, remoteResists=True)
+                                            stackingPenalties=True, *args, **kwargs)

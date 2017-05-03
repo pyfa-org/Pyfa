@@ -34,7 +34,8 @@ effects_table = Table("dgmeffects", gamedata_meta,
                       Column("description", String),
                       Column("published", Boolean),
                       Column("isAssistance", Boolean),
-                      Column("isOffensive", Boolean))
+                      Column("isOffensive", Boolean),
+                      Column("resistanceID", Integer))
 
 mapper(Effect, effects_table,
        properties={
