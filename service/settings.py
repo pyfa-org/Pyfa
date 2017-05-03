@@ -48,33 +48,33 @@ class SettingsProvider(object):
 
     def getSettings(self, area, defaults=None):
 
+        if defaults is None:
+            defaults = []
+
         s = self.settings.get(area)
 
         if s is None and hasattr(self, 'BASE_PATH'):
             p = os.path.join(self.BASE_PATH, area)
 
-            if not os.path.exists(p):
-                info = {}
-                if defaults:
-                    for item in defaults:
-                        info[item] = defaults[item]
-
-            else:
+            if os.path.exists(p):
+                # noinspection PyBroadException
                 try:
                     f = open(p, "rb")
                     info = cPickle.load(f)
-                    for item in defaults:
-                        if item not in info:
-                            info[item] = defaults[item]
-
                 except:
                     info = {}
-                    if defaults:
-                        for item in defaults:
-                            info[item] = defaults[item]
+                    # TODO: Add logging message that we failed to open the file
+            else:
+                info = {}
 
-            self.settings[area] = s = Settings(p, info)
+            s = Settings(p, info)
 
+        for item in defaults:
+            if item not in s.info:
+                s.info[item] = defaults[item]
+
+        self.settings[area] = s
+                
         return s
 
     def saveAll(self):
@@ -153,18 +153,18 @@ class NetworkSettings(object):
         self.serviceNetworkSettings = SettingsProvider.getInstance().getSettings(
                 "pyfaServiceNetworkSettings", serviceNetworkDefaultSettings)
 
-    def isEnabled(self, type):
-        if type & self.serviceNetworkSettings["access"]:
+    def isEnabled(self, setting_type):
+        if setting_type & self.serviceNetworkSettings["access"]:
             return True
         return False
 
-    def toggleAccess(self, type, toggle=True):
+    def toggleAccess(self, setting_type, toggle=True):
         bitfield = self.serviceNetworkSettings["access"]
 
         if toggle:  # Turn bit on
-            self.serviceNetworkSettings["access"] = type | bitfield
+            self.serviceNetworkSettings["access"] = setting_type | bitfield
         else:  # Turn bit off
-            self.serviceNetworkSettings["access"] = ~type & bitfield
+            self.serviceNetworkSettings["access"] = ~setting_type & bitfield
 
     def getMode(self):
         return self.serviceNetworkSettings["mode"]
@@ -190,8 +190,8 @@ class NetworkSettings(object):
     def setPort(self, port):
         self.serviceNetworkSettings["port"] = port
 
-    def setType(self, type):
-        self.serviceNetworkSettings["type"] = type
+    def setType(self, setting_type):
+        self.serviceNetworkSettings["type"] = setting_type
 
     def setAccess(self, access):
         self.serviceNetworkSettings["access"] = access
@@ -308,11 +308,11 @@ class UpdateSettings(object):
                 serviceUpdateDefaultSettings
         )
 
-    def get(self, type):
-        return self.serviceUpdateSettings[type]
+    def get(self, setting_type):
+        return self.serviceUpdateSettings[setting_type]
 
-    def set(self, type, value):
-        self.serviceUpdateSettings[type] = value
+    def set(self, setting_type, value):
+        self.serviceUpdateSettings[setting_type] = value
 
 
 class CRESTSettings(object):
@@ -336,11 +336,11 @@ class CRESTSettings(object):
                 serviceCRESTDefaultSettings
         )
 
-    def get(self, type):
-        return self.serviceCRESTSettings[type]
+    def get(self, setting_type):
+        return self.serviceCRESTSettings[setting_type]
 
-    def set(self, type, value):
-        self.serviceCRESTSettings[type] = value
+    def set(self, setting_type, value):
+        self.serviceCRESTSettings[setting_type] = value
 
 
 class StatViewSettings(object):
