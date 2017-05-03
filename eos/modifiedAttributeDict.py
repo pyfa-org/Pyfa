@@ -361,12 +361,13 @@ class ModifiedAttributeDict(collections.MutableMapping):
             # effect is applied.
             mod = self.fit.getModifier()
             remoteResistID = mod.getModifiedItemAttr("remoteResistanceID") or None
+            attrInfo = getAttributeInfo(int(remoteResistID))
 
-            # We really don't have a way of getting a ships attribute by ID. Fail.
-            resist = next((x for x in self.fit.ship.item.attributes.values() if x.ID == remoteResistID), None)
+            # Get the attribute of the resist
+            resist = self.fit.ship.itemModifiedAttributes[attrInfo.attributeName] or None
 
             if remoteResistID and resist:
-                boostFactor *= resist.value
+                boostFactor *= resist
 
         # We just transform percentage boost into multiplication factor
         self.multiply(attributeName, 1 + boostFactor / 100.0, *args, **kwargs)

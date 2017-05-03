@@ -27,6 +27,7 @@ from gui.viewColumn import ViewColumn
 from gui.bitmapLoader import BitmapLoader
 from gui.utils.numberFormatter import formatAmount
 from gui.utils.listFormatter import formatList
+from eos.saveddata.drone import Drone
 
 
 class Miscellanea(ViewColumn):
@@ -417,7 +418,11 @@ class Miscellanea(ViewColumn):
             cycleTime = stuff.getModifiedItemAttr("duration")
             if not repAmount or not cycleTime:
                 return "", None
-            repPerSec = float(repAmount) * 1000 / cycleTime
+            repPerSecPerDrone = repPerSec = float(repAmount) * 1000 / cycleTime
+
+            if isinstance(stuff, Drone):
+                repPerSec *= stuff.amount
+
             text = "{0}/s".format(formatAmount(repPerSec, 3, 0, 3))
             ttEntries = []
             if hullAmount is not None and repAmount == hullAmount:
@@ -426,7 +431,8 @@ class Miscellanea(ViewColumn):
                 ttEntries.append("armor")
             if shieldAmount is not None and repAmount == shieldAmount:
                 ttEntries.append("shield")
-            tooltip = "{0} repaired per second".format(formatList(ttEntries)).capitalize()
+
+            tooltip = "{0} HP repaired per second\n{1} HP/s per drone".format(formatList(ttEntries).capitalize(), repPerSecPerDrone)
             return text, tooltip
         elif itemGroup == "Energy Neutralizer Drone":
             neutAmount = stuff.getModifiedItemAttr("energyNeutralizerAmount")
