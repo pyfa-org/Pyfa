@@ -223,16 +223,11 @@ class PriceWorkerThread(threading.Thread):
     def __init__(self):
         threading.Thread.__init__(self)
         self.name = "PriceWorker"
+        self.queue = Queue.Queue()
+        self.wait = {}
         pyfalog.debug("Initialize PriceWorkerThread.")
 
     def run(self):
-        pyfalog.debug("Run start")
-        self.queue = Queue.Queue()
-        self.wait = {}
-        self.processUpdates()
-        pyfalog.debug("Run end")
-
-    def processUpdates(self):
         queue = self.queue
         while True:
             # Grab our data
