@@ -64,6 +64,28 @@ class CharacterTextValidor(BaseValidator):
             return False
 
 
+class PlaceholderTextCtrl(wx.TextCtrl):
+    def __init__(self, *args, **kwargs):
+        self.default_text = kwargs.pop("placeholder", "")
+        kwargs["value"] = self.default_text
+        wx.TextCtrl.__init__(self, *args, **kwargs)
+        self.Bind(wx.EVT_SET_FOCUS, self.OnFocus)
+        self.Bind(wx.EVT_KILL_FOCUS, self.OnKillFocus)
+
+    def OnFocus(self, evt):
+        if self.GetValue() == self.default_text:
+            self.SetValue("")
+        evt.Skip()
+
+    def OnKillFocus(self, evt):
+        if self.GetValue().strip() == "":
+            self.SetValue(self.default_text)
+        evt.Skip()
+
+    def Reset(self):
+        self.SetValue(self.default_text)
+
+
 class CharacterEntityEditor(EntityEditor):
     def __init__(self, parent):
         EntityEditor.__init__(self, parent, "Character")
@@ -253,10 +275,16 @@ class SkillTreeView(wx.Panel):
 
         pmainSizer = wx.BoxSizer(wx.VERTICAL)
 
+        hSizer = wx.BoxSizer(wx.HORIZONTAL)
+
         self.clonesChoice = wx.Choice(self, wx.ID_ANY, style=0)
         i = self.clonesChoice.Append("Omega Clone", None)
         self.clonesChoice.SetSelection(i)
-        pmainSizer.Add(self.clonesChoice, 0, wx.ALL | wx.EXPAND, 5)
+        hSizer.Add(self.clonesChoice, 5, wx.ALL | wx.EXPAND, 5)
+
+        self.searchInput = PlaceholderTextCtrl(self, wx.ID_ANY, placeholder="Search...")
+        hSizer.Add(self.searchInput, 1, wx.ALL | wx.EXPAND, 5)
+        self.searchInput.Bind(wx.EVT_TEXT, self.delaySearch)
 
         sChar = Character.getInstance()
         self.alphaClones = sChar.getAlphaCloneList()
@@ -268,6 +296,12 @@ class SkillTreeView(wx.Panel):
                 self.clonesChoice.SetSelection(i)
 
         self.clonesChoice.Bind(wx.EVT_CHOICE, self.cloneChanged)
+
+        pmainSizer.Add(hSizer, 0, wx.EXPAND | wx.ALL, 5)
+
+        # Set up timer for skill search
+        self.searchTimer = wx.Timer(self)
+        self.Bind(wx.EVT_TIMER, self.populateSkillTreeSkillSearch, self.searchTimer)
 
         tree = self.skillTreeListCtrl = wx.gizmos.TreeListCtrl(self, wx.ID_ANY, style=wx.TR_DEFAULT_STYLE | wx.TR_HIDE_ROOT)
         pmainSizer.Add(tree, 1, wx.EXPAND | wx.ALL, 5)
@@ -342,12 +376,20 @@ class SkillTreeView(wx.Panel):
             self.btnSecStatus.SetLabel("Sec Status: {0:.2f}".format(value))
         myDlg.Destroy()
 
+    def delaySearch(self, evt):
+        if self.searchInput.GetValue() == "" or self.searchInput.GetValue() == self.searchInput.default_text:
+            self.populateSkillTree()
+        else:
+            self.searchTimer.Stop()
+            self.searchTimer.Start(150, True)  # 150ms
+
     def cloneChanged(self, event):
         sChar = Character.getInstance()
         sChar.setAlphaClone(self.charEditor.entityEditor.getActiveEntity(), event.ClientData)
         self.populateSkillTree()
 
     def charChanged(self, event=None):
+        self.searchInput.Reset()
         char = self.charEditor.entityEditor.getActiveEntity()
         for i in range(self.clonesChoice.GetCount()):
             cloneID = self.clonesChoice.GetClientData(i)
@@ -357,6 +399,23 @@ class SkillTreeView(wx.Panel):
         self.btnSecStatus.SetLabel("Sec Status: {0:.2f}".format(char.secStatus or 0.0))
 
         self.populateSkillTree(event)
+
+    def populateSkillTreeSkillSearch(self, event=None):
+        sChar = Character.getInstance()
+        char = self.charEditor.entityEditor.getActiveEntity()
+        search = self.searchInput.GetLineText(0)
+
+        root = self.root
+        tree = self.skillTreeListCtrl
+        tree.DeleteChildren(root)
+
+        for id, name in sChar.getSkillsByName(search):
+            iconId = self.skillBookImageId
+            childId = tree.AppendItem(root, name, iconId, data=wx.TreeItemData(id))
+            level, dirty = sChar.getSkillLevel(char.ID, id)
+            tree.SetItemText(childId, "Level %d" % level if isinstance(level, int) else level, 1)
+            if dirty:
+                tree.SetItemTextColour(childId, wx.BLUE)
 
     def populateSkillTree(self, event=None):
         sChar = Character.getInstance()
@@ -444,6 +503,7 @@ class SkillTreeView(wx.Panel):
         # After saving the skill, we need to update not just the selected skill, but all open skills due to strict skill
         # level setting. We don't want to refresh tree, as that will lose all expanded categories and users location
         # within the tree. Thus, we loop through the tree and refresh the info.
+        # @todo: when collapsing branch, remove the data. This will make this loop more performant
         child, cookie = self.skillTreeListCtrl.GetFirstChild(self.root)
         while child.IsOk():
             # child = Skill category

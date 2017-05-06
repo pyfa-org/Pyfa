@@ -278,6 +278,15 @@ class Character(object):
         return skills
 
     @staticmethod
+    def getSkillsByName(text):
+        items = eos.db.searchSkills(text)
+        skills = []
+        for skill in items:
+            if skill.published is True:
+                skills.append((skill.ID, skill.name))
+        return skills
+
+    @staticmethod
     def setAlphaClone(char, cloneID):
         char.alphaCloneID = cloneID
         eos.db.commit()
