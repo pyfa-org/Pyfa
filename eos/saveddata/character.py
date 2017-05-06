@@ -43,6 +43,7 @@ class Character(object):
         self.__skillIdMap = {}
         self.dirtySkills = set()
         self.alphaClone = None
+        self.secStatus = 0.0
 
         if initSkills:
             for item in self.getSkillList():
@@ -116,11 +117,12 @@ class Character(object):
 
         return all0
 
-    def apiUpdateCharSheet(self, skills):
+    def apiUpdateCharSheet(self, skills, secStatus):
         del self.__skills[:]
         self.__skillIdMap.clear()
         for skillRow in skills:
             self.addSkill(Skill(skillRow["typeID"], skillRow["level"]))
+        self.secStatus = secStatus
 
     @property
     def ro(self):

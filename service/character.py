@@ -17,9 +17,11 @@
 # along with pyfa.  If not, see <http://www.gnu.org/licenses/>.
 # =============================================================================
 
+import sys
 import copy
 import itertools
 import json
+
 from logbook import Logger
 import threading
 from codecs import open
@@ -350,26 +352,13 @@ class Character(object):
         char.chars = json.dumps(charList)
         return charList
 
-    @staticmethod
-    def apiFetch(charID, charName):
-        dbChar = eos.db.getCharacter(charID)
-        dbChar.defaultChar = charName
+    def apiFetch(self, charID, charName, callback):
+        thread = UpdateAPIThread(charID, charName, (self.apiFetchCallback, callback))
+        thread.start()
 
-        api = EVEAPIConnection()
-        auth = api.auth(keyID=dbChar.apiID, vCode=dbChar.apiKey)
-        apiResult = auth.account.Characters()
-        charID = None
-        for char in apiResult.characters:
-            if char.name == charName:
-                charID = char.characterID
-
-        if charID is None:
-            return
-
-        sheet = auth.character(charID).CharacterSheet()
-
-        dbChar.apiUpdateCharSheet(sheet.skills)
+    def apiFetchCallback(self, guiCallback, e=None):
         eos.db.commit()
+        wx.CallAfter(guiCallback, e)
 
     @staticmethod
     def apiUpdateCharSheet(charID, skills):
@@ -458,3 +447,38 @@ class Character(object):
                 self._checkRequirements(fit, char, req, subs)
 
         return reqs
+
+
+class UpdateAPIThread(threading.Thread):
+    def __init__(self, charID, charName, callback):
+        threading.Thread.__init__(self)
+
+        self.name = "CheckUpdate"
+        self.callback = callback
+        self.charID = charID
+        self.charName = charName
+
+    def run(self):
+        try:
+            dbChar = eos.db.getCharacter(self.charID)
+            dbChar.defaultChar = self.charName
+
+            api = EVEAPIConnection()
+            auth = api.auth(keyID=dbChar.apiID, vCode=dbChar.apiKey)
+            apiResult = auth.account.Characters()
+            charID = None
+            for char in apiResult.characters:
+                if char.name == self.charName:
+                    charID = char.characterID
+                    break
+
+            if charID is None:
+                return
+
+            sheet = auth.character(charID).CharacterSheet()
+            charInfo = api.eve.CharacterInfo(characterID=charID)
+
+            dbChar.apiUpdateCharSheet(sheet.skills, charInfo.securityStatus)
+            self.callback[0](self.callback[1])
+        except Exception:
+            self.callback[0](self.callback[1], sys.exc_info())

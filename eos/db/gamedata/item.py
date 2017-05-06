@@ -21,6 +21,7 @@ from sqlalchemy import Column, String, Integer, Boolean, ForeignKey, Table, Floa
 from sqlalchemy.ext.associationproxy import association_proxy
 from sqlalchemy.orm import relation, mapper, synonym, deferred
 from sqlalchemy.orm.collections import attribute_mapped_collection
+from eos.db.gamedata.effect import typeeffects_table
 
 from eos.db import gamedata_meta
 from eos.gamedata import Attribute, Effect, Group, Icon, Item, MetaType, Traits
@@ -47,7 +48,7 @@ mapper(Item, items_table,
            "group"            : relation(Group, backref="items"),
            "icon"             : relation(Icon),
            "_Item__attributes": relation(Attribute, collection_class=attribute_mapped_collection('name')),
-           "effects"          : relation(Effect, collection_class=attribute_mapped_collection('name')),
+           "effects": relation(Effect, secondary=typeeffects_table, collection_class=attribute_mapped_collection('name')),
            "metaGroup"        : relation(MetaType,
                                          primaryjoin=metatypes_table.c.typeID == items_table.c.typeID,
                                          uselist=False),

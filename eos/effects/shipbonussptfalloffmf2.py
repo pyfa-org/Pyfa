@@ -1,6 +1,7 @@
 # shipBonusSPTFalloffMF2
 #
 # Used by:
+# Ship: Pacifier
 # Ship: Rifter
 type = "passive"
 

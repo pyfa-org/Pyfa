@@ -17,7 +17,7 @@
 # along with eos.  If not, see <http://www.gnu.org/licenses/>.
 # ===============================================================================
 
-from sqlalchemy import Table, Column, Integer, ForeignKey, String, DateTime
+from sqlalchemy import Table, Column, Integer, ForeignKey, String, DateTime, Float
 from sqlalchemy.orm import relation, mapper
 import sqlalchemy.sql.functions as func
 
@@ -38,6 +38,7 @@ characters_table = Table("characters", saveddata_meta,
                          Column("defaultLevel", Integer, nullable=True),
                          Column("alphaCloneID", Integer, nullable=True),
                          Column("ownerID", ForeignKey("users.ID"), nullable=True),
+                         Column("secStatus", Float, nullable=True, default=0.0),
                          Column("created", DateTime, nullable=True, default=func.now()),
                          Column("modified", DateTime, nullable=True, onupdate=func.now()))
 

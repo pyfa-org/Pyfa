@@ -1,6 +1,7 @@
 # shipPTurretFalloffBonusMC2
 #
 # Used by:
+# Ship: Enforcer
 # Ship: Stabber
 type = "passive"
 

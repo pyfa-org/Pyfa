@@ -1144,11 +1144,13 @@ class ItemAffectedBy(wx.Panel):
                     if projected:
                         displayStr += " (projected)"
 
-                    if attrModifier == "s*":
-                        attrModifier = "*"
-                        penalized = "(penalized)"
-                    else:
-                        penalized = ""
+                    penalized = ""
+                    if '*' in attrModifier:
+                        if 's' in attrModifier:
+                            penalized += "(penalized)"
+                        if 'r' in attrModifier:
+                            penalized += "(resisted)"
+                    attrModifier = "*"
 
                     # this is the Module node, the attribute will be attached to this
                     display = "%s %s %.2f %s" % (displayStr, attrModifier, attrAmount, penalized)
@@ -1274,11 +1276,13 @@ class ItemAffectedBy(wx.Panel):
                         else:
                             attrIcon = self.imageList.Add(BitmapLoader.getBitmap("7_15", "icons"))
 
-                        if attrModifier == "s*":
-                            attrModifier = "*"
-                            penalized = "(penalized)"
-                        else:
-                            penalized = ""
+                        penalized = ""
+                        if '*' in attrModifier:
+                            if 's' in attrModifier:
+                                penalized += "(penalized)"
+                            if 'r' in attrModifier:
+                                penalized += "(resisted)"
+                        attrModifier = "*"
 
                         attributes.append((attrName, (displayName if displayName != "" else attrName), attrModifier,
                                            attrAmount, penalized, attrIcon))

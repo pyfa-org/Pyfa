@@ -1,7 +1,7 @@
 # scriptWarpDisruptionFieldGeneratorSetDisallowInEmpireSpace
 #
 # Used by:
-# Charge: Focused Warp Disruption Script
+# Charges from group: Warp Disruption Script (2 of 2)
 type = "passive"
 
 

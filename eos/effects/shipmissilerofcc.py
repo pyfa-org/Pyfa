@@ -2,6 +2,7 @@
 #
 # Used by:
 # Ships named like: Caracal (2 of 2)
+# Ship: Enforcer
 type = "passive"
 
 
