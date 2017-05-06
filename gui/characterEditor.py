@@ -741,12 +741,11 @@ class SecStatusDialog(wx.Dialog):
         self.m_staticText1.Wrap(-1)
         bSizer1.Add(self.m_staticText1, 1, wx.ALL | wx.EXPAND, 5)
 
-
         self.floatSpin = FloatSpin(self, value=sec, min_val=-5.0, max_val=5.0, increment=0.1, digits=2, size=(100, -1))
-        bSizer1.Add(self.floatSpin, 1, wx.ALIGN_CENTER | wx.ALL, 5)
+        bSizer1.Add(self.floatSpin, 0, wx.ALIGN_CENTER | wx.ALL, 5)
 
         btnOk = wx.Button(self, wx.ID_OK)
-        bSizer1.Add(btnOk, 0, wx.ALIGN_CENTER | wx.ALIGN_RIGHT | wx.ALL, 5)
+        bSizer1.Add(btnOk, 0, wx.ALIGN_RIGHT | wx.ALL, 5)
 
         self.SetSizer(bSizer1)
         self.Layout()
