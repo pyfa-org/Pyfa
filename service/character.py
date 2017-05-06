@@ -146,17 +146,20 @@ class Character(object):
         self.all5()
 
     def exportText(self):
-        data = "Pyfa exported plan for \"" + self.skillReqsDict['charname'] + "\"\n"
-        data += "=" * 79 + "\n"
-        data += "\n"
-        item = ""
-        for s in self.skillReqsDict['skills']:
-            if item == "" or not item == s["item"]:
-                item = s["item"]
-                data += "-" * 79 + "\n"
-                data += "Skills required for {}:\n".format(item)
-            data += "{}{}: {}\n".format("    " * s["indent"], s["skill"], int(s["level"]))
-        data += "-" * 79 + "\n"
+        data = u"Pyfa exported plan for \"" + self.skillReqsDict['charname'] + "\"\n"
+        data += u"=" * 79 + u"\n"
+        data += u"\n"
+        item = u""
+        try:
+            for s in self.skillReqsDict['skills']:
+                if item == "" or not item == s["item"]:
+                    item = s["item"]
+                    data += u"-" * 79 + "\n"
+                    data += u"Skills required for {}:\n".format(item)
+                data += u"{}{}: {}\n".format("    " * s["indent"], s["skill"], int(s["level"]))
+            data += u"-" * 79 + "\n"
+        except Exception, e:
+            pass
 
         return data
 
