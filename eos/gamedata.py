@@ -450,7 +450,7 @@ class Item(EqBase):
         return self.__price
 
     def __repr__(self):
-        return "Item(ID={}, name={}) at {}".format(
+        return u"Item(ID={}, name={}) at {}".format(
                 self.ID, self.name, hex(id(self))
         )
 
