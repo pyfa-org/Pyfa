@@ -238,6 +238,7 @@ class Item(EqBase):
     def init(self):
         self.__race = None
         self.__requiredSkills = None
+        self.__requiredFor = None
         self.__moved = False
         self.__offensive = None
         self.__assistive = None
@@ -290,6 +291,8 @@ class Item(EqBase):
         eos.db.saveddata_session.delete(override)
         eos.db.commit()
 
+    srqIDMap = {182: 277, 183: 278, 184: 279, 1285: 1286, 1289: 1287, 1290: 1288}
+
     @property
     def requiredSkills(self):
         if self.__requiredSkills is None:
@@ -297,8 +300,7 @@ class Item(EqBase):
             self.__requiredSkills = requiredSkills
             # Map containing attribute IDs we may need for required skills
             # { requiredSkillX : requiredSkillXLevel }
-            srqIDMap = {182: 277, 183: 278, 184: 279, 1285: 1286, 1289: 1287, 1290: 1288}
-            combinedAttrIDs = set(srqIDMap.iterkeys()).union(set(srqIDMap.itervalues()))
+            combinedAttrIDs = set(self.srqIDMap.iterkeys()).union(set(self.srqIDMap.itervalues()))
             # Map containing result of the request
             # { attributeID : attributeValue }
             skillAttrs = {}
@@ -308,7 +310,7 @@ class Item(EqBase):
                 attrVal = attrInfo[2]
                 skillAttrs[attrID] = attrVal
             # Go through all attributeID pairs
-            for srqIDAtrr, srqLvlAttr in srqIDMap.iteritems():
+            for srqIDAtrr, srqLvlAttr in self.srqIDMap.iteritems():
                 # Check if we have both in returned result
                 if srqIDAtrr in skillAttrs and srqLvlAttr in skillAttrs:
                     skillID = int(skillAttrs[srqIDAtrr])
@@ -317,6 +319,23 @@ class Item(EqBase):
                     item = eos.db.getItem(skillID)
                     requiredSkills[item] = skillLvl
         return self.__requiredSkills
+
+    @property
+    def requiredFor(self):
+        if self.__requiredFor is None:
+            self.__requiredFor = dict()
+
+            # Map containing attribute IDs we may need for required skills
+
+            # Get relevant attribute values from db (required skill IDs and levels) for our item
+            q = eos.db.getRequiredFor(self.ID, self.srqIDMap)
+
+            for itemID, lvl in q:
+                # Fetch item from database and fill map
+                item = eos.db.getItem(itemID)
+                self.__requiredFor[item] = lvl
+
+        return self.__requiredFor
 
     factionMap = {
         500001: "caldari",

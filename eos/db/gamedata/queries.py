@@ -17,7 +17,7 @@
 # along with eos.  If not, see <http://www.gnu.org/licenses/>.
 # ===============================================================================
 
-from sqlalchemy.orm import join, exc
+from sqlalchemy.orm import join, exc, aliased
 from sqlalchemy.sql import and_, or_, select
 
 import eos.config
@@ -314,4 +314,25 @@ def directAttributeRequest(itemIDs, attrIDs):
                from_obj=[join(Attribute, Item)])
 
     result = gamedata_session.execute(q).fetchall()
+    return result
+
+def getRequiredFor(itemID, attrMapping):
+    Attribute1 = aliased(Attribute)
+    Attribute2 = aliased(Attribute)
+
+    skillToLevelClauses = []
+
+    for attrSkill, attrLevel in attrMapping.iteritems():
+        skillToLevelClauses.append(and_(Attribute1.attributeID == attrSkill, Attribute2.attributeID == attrLevel))
+
+    queryOr = or_(*skillToLevelClauses)
+
+    q = select((Attribute2.typeID, Attribute2.value),
+               and_(Attribute1.value == itemID, queryOr),
+               from_obj=[
+                   join(Attribute1, Attribute2, Attribute1.typeID == Attribute2.typeID)
+               ])
+
+    result = gamedata_session.execute(q).fetchall()
+
     return result

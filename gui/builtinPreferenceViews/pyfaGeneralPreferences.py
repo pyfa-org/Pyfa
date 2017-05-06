@@ -21,6 +21,8 @@ class PFGeneralPref(PreferenceView):
         self.openFitsSettings = SettingsProvider.getInstance().getSettings("pyfaPrevOpenFits",
                                                                            {"enabled": False, "pyfaOpenFits": []})
 
+        helpCursor = wx.StockCursor(wx.CURSOR_QUESTION_ARROW)
+
         mainSizer = wx.BoxSizer(wx.VERTICAL)
 
         self.stTitle = wx.StaticText(panel, wx.ID_ANY, self.title, wx.DefaultPosition, wx.DefaultSize, 0)
@@ -97,6 +99,7 @@ class PFGeneralPref(PreferenceView):
 
         self.stMarketDelay = wx.StaticText(panel, wx.ID_ANY, u"Market Search Delay (ms):", wx.DefaultPosition, wx.DefaultSize, 0)
         self.stMarketDelay.Wrap(-1)
+        self.stMarketDelay.SetCursor(helpCursor)
         self.stMarketDelay.SetToolTip(
             wx.ToolTip('The delay between a keystroke and the market search. Can help reduce lag when typing fast in the market search box.'))
 
