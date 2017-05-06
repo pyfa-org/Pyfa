@@ -611,12 +611,13 @@ class FittingView(d.Display):
             slotMap[slot] = fit.getSlotsFree(slot) < 0
 
         font = (self.GetClassDefaultAttributes()).font
+
         for i, mod in enumerate(self.mods):
             self.SetItemBackgroundColour(i, self.GetBackgroundColour())
 
             #  only consider changing color if we're dealing with a Module
             if type(mod) is Module:
-                if slotMap[mod.slot]:  # Color too many modules as red
+                if slotMap[mod.slot] or getattr(mod, 'restrictionOverridden', None):  # Color too many modules as red
                     self.SetItemBackgroundColour(i, wx.Colour(204, 51, 51))
                 elif sFit.serviceFittingOptions["colorFitBySlot"]:  # Color by slot it enabled
                     self.SetItemBackgroundColour(i, self.slotColour(mod.slot))

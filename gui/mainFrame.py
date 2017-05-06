@@ -524,6 +524,9 @@ class MainFrame(wx.Frame):
         # Clipboard exports
         self.Bind(wx.EVT_MENU, self.exportToClipboard, id=wx.ID_COPY)
 
+        # Fitting Restrictions
+        self.Bind(wx.EVT_MENU, self.toggleIgnoreRestriction, id=menuBar.toggleIgnoreRestrictionID)
+
         # Graphs
         self.Bind(wx.EVT_MENU, self.openGraphFrame, id=menuBar.graphFrameId)
 
@@ -583,6 +586,24 @@ class MainFrame(wx.Frame):
 
         atable = wx.AcceleratorTable(actb)
         self.SetAcceleratorTable(atable)
+
+    def toggleIgnoreRestriction(self, event):
+
+        sFit = Fit.getInstance()
+        fitID = self.getActiveFit()
+        fit = sFit.getFit(fitID)
+
+        if not fit.ignoreRestrictions:
+            dlg = wx.MessageDialog(self, "Are you sure you wish to ignore fitting restrictions for the "
+                                         "current fit? This could lead to wildly inaccurate results and possible errors.", "Confirm", wx.YES_NO | wx.ICON_QUESTION)
+        else:
+            dlg = wx.MessageDialog(self, "Re-enabling fitting restrictions for this fit will also remove any illegal items "
+                                         "from the fit. Do you want to continue?", "Confirm", wx.YES_NO | wx.ICON_QUESTION)
+        result = dlg.ShowModal() == wx.ID_YES
+        dlg.Destroy()
+        if result:
+            sFit.toggleRestrictionIgnore(fitID)
+            wx.PostEvent(self, GE.FitChanged(fitID=fitID))
 
     def eveFittings(self, event):
         dlg = CrestFittings(self)

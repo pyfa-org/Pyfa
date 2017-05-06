@@ -240,6 +240,12 @@ class Fit(object):
                 self.recalc(fit)
                 fit.fill()
 
+                # this will loop through modules and set their restriction flag (set in m.fit())
+                if fit.ignoreRestrictions:
+                    for mod in fit.modules:
+                        if not mod.isEmpty:
+                            mod.fits(fit)
+
             # Check that the states of all modules are valid
             self.checkStates(fit, None)
 
@@ -878,6 +884,21 @@ class Fit(object):
         pyfalog.debug("Toggling implant source for fit ID: {0}", fitID)
         fit = eos.db.getFit(fitID)
         fit.implantSource = source
+
+        eos.db.commit()
+        self.recalc(fit)
+        return True
+
+    def toggleRestrictionIgnore(self, fitID):
+        pyfalog.debug("Toggling restriction ignore for fit ID: {0}", fitID)
+        fit = eos.db.getFit(fitID)
+        fit.ignoreRestrictions = not fit.ignoreRestrictions
+
+        # remove invalid modules when switching back to enabled fitting restrictions
+        if not fit.ignoreRestrictions:
+            for m in fit.modules:
+                if not m.isEmpty and not m.fits(fit):
+                    self.removeModule(fit.ID, m.modPosition)
 
         eos.db.commit()
         self.recalc(fit)

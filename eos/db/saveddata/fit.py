@@ -58,6 +58,7 @@ fits_table = Table("fits", saveddata_meta,
                    Column("modeID", Integer, nullable=True),
                    Column("implantLocation", Integer, nullable=False, default=ImplantLocation.FIT),
                    Column("notes", String, nullable=True),
+                   Column("ignoreRestrictions", Boolean, default=0),
                    Column("created", DateTime, nullable=True, default=func.now()),
                    Column("modified", DateTime, nullable=True, onupdate=func.now())
                    )

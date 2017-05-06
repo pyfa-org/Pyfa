@@ -1404,7 +1404,7 @@ class Fit(object):
     @property
     def fits(self):
         for mod in self.modules:
-            if not mod.fits(self):
+            if not mod.isEmpty and not mod.fits(self):
                 return False
 
         return True
