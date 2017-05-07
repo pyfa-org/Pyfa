@@ -306,10 +306,13 @@ class ModifiedAttributeDict(collections.MutableMapping):
         self.__placehold(attributeName)
         self.__afflict(attributeName, "=", value, value != self.getOriginal(attributeName))
 
-    def increase(self, attributeName, increase, position="pre", skill=None):
+    def increase(self, attributeName, increase, position="pre", skill=None, **kwargs):
         """Increase value of given attribute by given number"""
         if skill:
             increase *= self.__handleSkill(skill)
+
+        if 'effect' in kwargs:
+            increase *= ModifiedAttributeDict.getResistance(self.fit, kwargs['effect']) or 1
 
         # Increases applied before multiplications and after them are
         # written in separate maps
@@ -365,25 +368,10 @@ class ModifiedAttributeDict(collections.MutableMapping):
 
         resist = None
 
-        # Goddammit CCP, make up you mind where you want this information >.< See #1139
+        # Goddammit CCP, make up your mind where you want this information >.< See #1139
         if 'effect' in kwargs:
-            remoteResistID = kwargs['effect'].resistanceID
-
-            # If it doesn't exist on the effect, check the modifying modules attributes. If it's there, set it on the
-            # effect for this session so that we don't have to look here again (won't always work when it's None, but
-            # will catch most)
-            if not remoteResistID:
-                mod = self.fit.getModifier()
-                kwargs['effect'].resistanceID = int(mod.getModifiedItemAttr("remoteResistanceID")) or None
-                remoteResistID = kwargs['effect'].resistanceID
-
-            attrInfo = getAttributeInfo(remoteResistID)
-
-            # Get the attribute of the resist
-            resist = self.fit.ship.itemModifiedAttributes[attrInfo.attributeName] or None
-
-            if resist:
-                boostFactor *= resist
+            resist = ModifiedAttributeDict.getResistance(self.fit, kwargs['effect']) or 1
+            boostFactor *= resist
 
         # We just transform percentage boost into multiplication factor
         self.multiply(attributeName, 1 + boostFactor / 100.0, resist=(True if resist else False), *args, **kwargs)
@@ -393,6 +381,25 @@ class ModifiedAttributeDict(collections.MutableMapping):
         self.__forced[attributeName] = value
         self.__placehold(attributeName)
         self.__afflict(attributeName, u"\u2263", value)
+
+    @staticmethod
+    def getResistance(fit, effect):
+        remoteResistID = effect.resistanceID
+
+        # If it doesn't exist on the effect, check the modifying modules attributes. If it's there, set it on the
+        # effect for this session so that we don't have to look here again (won't always work when it's None, but
+        # will catch most)
+        if not remoteResistID:
+            mod = fit.getModifier()
+            effect.resistanceID = int(mod.getModifiedItemAttr("remoteResistanceID")) or None
+            remoteResistID = effect.resistanceID
+
+        attrInfo = getAttributeInfo(remoteResistID)
+
+        # Get the attribute of the resist
+        resist = fit.ship.itemModifiedAttributes[attrInfo.attributeName] or None
+
+        return resist or 1.0
 
 
 class Affliction(object):

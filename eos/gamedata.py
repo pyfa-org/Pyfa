@@ -407,7 +407,7 @@ class Item(EqBase):
             assistive = False
             # Go through all effects and find first assistive
             for effect in self.effects.itervalues():
-                if effect.info.isAssistance is True:
+                if effect.isAssistance is True:
                     # If we find one, stop and mark item as assistive
                     assistive = True
                     break
@@ -422,7 +422,7 @@ class Item(EqBase):
             offensive = False
             # Go through all effects and find first offensive
             for effect in self.effects.itervalues():
-                if effect.info.isOffensive is True:
+                if effect.isOffensive is True:
                     # If we find one, stop and mark item as offensive
                     offensive = True
                     break
