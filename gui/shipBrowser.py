@@ -1994,7 +1994,7 @@ class FitItem(SFItem.SFBrowserItem):
         if activeFit == self.fitID:
             sFit = Fit.getInstance()
             fit = sFit.getFit(activeFit)
-            self.timestamp = fit.modified
+            self.timestamp = fit.modifiedCoalesce
 
         SFItem.SFBrowserItem.Refresh(self)
 

@@ -926,7 +926,7 @@ class MainFrame(wx.Frame):
                     results.append((
                         fit.ID,
                         fit.name,
-                        fit.modified or fit.created or datetime.datetime.fromtimestamp(fit.timestamp),
+                        fit.modifiedCoalesce,
                         fit.ship.item
                     ))
                 wx.PostEvent(self.shipBrowser, ImportSelected(fits=results, back=True))

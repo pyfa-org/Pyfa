@@ -18,11 +18,12 @@
 # ===============================================================================
 
 from sqlalchemy import Table, Column, Integer, ForeignKey, DateTime
-from sqlalchemy.orm import mapper
+from sqlalchemy.orm import mapper, relation
 import sqlalchemy.sql.functions as func
 
 from eos.db import saveddata_meta
 from eos.saveddata.cargo import Cargo
+from eos.saveddata.fit import Fit
 
 cargo_table = Table("cargo", saveddata_meta,
                     Column("ID", Integer, primary_key=True),
@@ -33,4 +34,8 @@ cargo_table = Table("cargo", saveddata_meta,
                     Column("modified", DateTime, nullable=True, onupdate=func.now()),
                     )
 
-mapper(Cargo, cargo_table)
+mapper(Cargo, cargo_table,
+   properties={
+       "owner": relation(Fit)
+   }
+)

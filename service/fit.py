@@ -267,10 +267,15 @@ class Fit(object):
         pyfalog.debug("Searching for fit: {0}", name)
         results = eos.db.searchFits(name)
         fits = []
+
         for fit in results:
             fits.append((
-                fit.ID, fit.name, fit.ship.item.ID, fit.ship.item.name, fit.booster,
-                fit.timestamp))
+                fit.ID,
+                fit.name,
+                fit.ship.item.ID,
+                fit.ship.item.name,
+                fit.booster,
+                fit.modifiedCoalesce))
         return fits
 
     def addImplant(self, fitID, itemID, recalc=True):

@@ -18,11 +18,12 @@
 # ===============================================================================
 
 from sqlalchemy import Table, Column, Integer, ForeignKey, Boolean, DateTime
-from sqlalchemy.orm import mapper
+from sqlalchemy.orm import mapper, relation
 import sqlalchemy.sql.functions as func
 
 from eos.db import saveddata_meta
 from eos.saveddata.drone import Drone
+from eos.saveddata.fit import Fit
 
 drones_table = Table("drones", saveddata_meta,
                      Column("groupID", Integer, primary_key=True),
@@ -35,4 +36,8 @@ drones_table = Table("drones", saveddata_meta,
                      Column("modified", DateTime, nullable=True, onupdate=func.now())
                      )
 
-mapper(Drone, drones_table)
+mapper(Drone, drones_table,
+   properties={
+       "owner": relation(Fit)
+   }
+)
