@@ -19,7 +19,7 @@
 
 from sqlalchemy import Table, Column, Integer, ForeignKey, CheckConstraint, Boolean, DateTime, select
 from sqlalchemy.orm import relation, mapper
-import sqlalchemy.sql.functions as func
+import datetime
 
 from eos.db import saveddata_meta
 from eos.saveddata.module import Module
@@ -34,8 +34,8 @@ modules_table = Table("modules", saveddata_meta,
                       Column("state", Integer, CheckConstraint("state >= -1"), CheckConstraint("state <= 2")),
                       Column("projected", Boolean, default=False, nullable=False),
                       Column("position", Integer),
-                      Column("created", DateTime, nullable=True, default=func.now()),
-                      Column("modified", DateTime, nullable=True, onupdate=func.now()),
+                      Column("created", DateTime, nullable=True, default=datetime.datetime.now),
+                      Column("modified", DateTime, nullable=True, onupdate=datetime.datetime.now),
                       CheckConstraint('("dummySlot" = NULL OR "itemID" = NULL) AND "dummySlot" != "itemID"'))
 
 mapper(Module, modules_table,

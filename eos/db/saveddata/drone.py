@@ -19,7 +19,7 @@
 
 from sqlalchemy import Table, Column, Integer, ForeignKey, Boolean, DateTime
 from sqlalchemy.orm import mapper, relation
-import sqlalchemy.sql.functions as func
+import datetime
 
 from eos.db import saveddata_meta
 from eos.saveddata.drone import Drone
@@ -32,8 +32,8 @@ drones_table = Table("drones", saveddata_meta,
                      Column("amount", Integer, nullable=False),
                      Column("amountActive", Integer, nullable=False),
                      Column("projected", Boolean, default=False),
-                     Column("created", DateTime, nullable=True, default=func.now()),
-                     Column("modified", DateTime, nullable=True, onupdate=func.now())
+                     Column("created", DateTime, nullable=True, default=datetime.datetime.now),
+                     Column("modified", DateTime, nullable=True, onupdate=datetime.datetime.now)
                      )
 
 mapper(Drone, drones_table,

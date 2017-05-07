@@ -19,7 +19,7 @@
 
 from sqlalchemy import Table, Column, Integer, Float, ForeignKey, String, DateTime
 from sqlalchemy.orm import mapper
-import sqlalchemy.sql.functions as func
+import datetime
 
 from eos.db import saveddata_meta
 from eos.saveddata.targetResists import TargetResists
@@ -32,8 +32,8 @@ targetResists_table = Table("targetResists", saveddata_meta,
                             Column("kineticAmount", Float),
                             Column("explosiveAmount", Float),
                             Column("ownerID", ForeignKey("users.ID"), nullable=True),
-                            Column("created", DateTime, nullable=True, default=func.now()),
-                            Column("modified", DateTime, nullable=True, onupdate=func.now())
+                            Column("created", DateTime, nullable=True, default=datetime.datetime.now),
+                            Column("modified", DateTime, nullable=True, onupdate=datetime.datetime.now)
                             )
 
 mapper(TargetResists, targetResists_table)

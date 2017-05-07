@@ -19,7 +19,7 @@
 
 from sqlalchemy import Table, Column, Integer, ForeignKey, DateTime
 from sqlalchemy.orm import mapper
-import sqlalchemy.sql.functions as func
+import datetime
 
 from eos.db import saveddata_meta
 from eos.saveddata.character import Skill
@@ -29,8 +29,8 @@ skills_table = Table("characterSkills", saveddata_meta,
                      Column("characterID", ForeignKey("characters.ID"), primary_key=True, index=True),
                      Column("itemID", Integer, primary_key=True),
                      Column("_Skill__level", Integer, nullable=True),
-                     Column("created", DateTime, nullable=True, default=func.now()),
-                     Column("modified", DateTime, nullable=True, onupdate=func.now())
+                     Column("created", DateTime, nullable=True, default=datetime.datetime.now),
+                     Column("modified", DateTime, nullable=True, onupdate=datetime.datetime.now)
                      )
 
 mapper(Skill, skills_table)

@@ -19,7 +19,7 @@
 
 from sqlalchemy import Table, Column, Integer, ForeignKey, Boolean, DateTime
 from sqlalchemy.orm import mapper, relation
-import sqlalchemy.sql.functions as func
+import datetime
 
 from eos.db import saveddata_meta
 from eos.saveddata.fighterAbility import FighterAbility
@@ -33,8 +33,8 @@ fighters_table = Table("fighters", saveddata_meta,
                        Column("active", Boolean, nullable=True),
                        Column("amount", Integer, nullable=False),
                        Column("projected", Boolean, default=False),
-                       Column("created", DateTime, nullable=True, default=func.now()),
-                       Column("modified", DateTime, nullable=True, onupdate=func.now())
+                       Column("created", DateTime, nullable=True, default=datetime.datetime.now),
+                       Column("modified", DateTime, nullable=True, onupdate=datetime.datetime.now)
                        )
 
 fighter_abilities_table = Table("fightersAbilities", saveddata_meta,

@@ -19,7 +19,7 @@
 
 from sqlalchemy import Table, Column, Integer, ForeignKey, DateTime
 from sqlalchemy.orm import mapper, relation
-import sqlalchemy.sql.functions as func
+import datetime
 
 from eos.db import saveddata_meta
 from eos.saveddata.cargo import Cargo
@@ -30,8 +30,8 @@ cargo_table = Table("cargo", saveddata_meta,
                     Column("fitID", Integer, ForeignKey("fits.ID"), nullable=False, index=True),
                     Column("itemID", Integer, nullable=False),
                     Column("amount", Integer, nullable=False),
-                    Column("created", DateTime, nullable=True, default=func.now()),
-                    Column("modified", DateTime, nullable=True, onupdate=func.now()),
+                    Column("created", DateTime, nullable=True, default=datetime.datetime.now),
+                    Column("modified", DateTime, nullable=True, onupdate=datetime.datetime.now),
                     )
 
 mapper(Cargo, cargo_table,
