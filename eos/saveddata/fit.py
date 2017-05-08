@@ -1248,6 +1248,9 @@ class Fit(object):
             self.__remoteReps[remote_type] = 0
 
         for stuff in chain(self.modules, self.drones):
+            if stuff.item:
+                if stuff.item.ID == 10250:
+                    pass
             remote_type = None
 
             # Only apply the charged multiplier if we have a charge in our ancil reppers (#1135)
@@ -1309,7 +1312,9 @@ class Fit(object):
                     hp = droneHull
                 else:
                     hp = 0
-            self.__remoteReps[remote_type] += (hp * modifier) / duration
+
+            if hp > 0:
+                self.__remoteReps[remote_type] += (hp * modifier) / duration
 
         return self.__remoteReps
 
