@@ -46,6 +46,7 @@ mapper(Character, characters_table,
        properties={
            "_Character__alphaCloneID": characters_table.c.alphaCloneID,
            "savedName"               : characters_table.c.name,
+           "_Character__secStatus": characters_table.c.secStatus,
            "_Character__owner"       : relation(
                    User,
                    backref="characters"),

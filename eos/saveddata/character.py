@@ -45,7 +45,7 @@ class Character(object):
         self.__skillIdMap = {}
         self.dirtySkills = set()
         self.alphaClone = None
-        self.secStatus = 0.0
+        self.__secStatus = 0.0
 
         if initSkills:
             for item in self.getSkillList():
@@ -129,6 +129,18 @@ class Character(object):
     @property
     def ro(self):
         return self == self.getAll0() or self == self.getAll5()
+
+    @property
+    def secStatus(self):
+        if self.name == "All 5":
+            self.__secStatus = 5.00
+        elif self.name == "All 0":
+            self.__secStatus = 0.00
+        return self.__secStatus
+
+    @secStatus.setter
+    def owner(self, sec):
+        self.__secStatus = sec
 
     @property
     def owner(self):
@@ -321,7 +333,12 @@ class Skill(HandledItem):
 
     @property
     def level(self):
-        if self.character.alphaClone:
+        # Ensure that All 5/0 character have proper skill levels (in case database gets corrupted)
+        if self.character.name == "All 5":
+            self.activeLevel = self.__level = 5
+        elif self.character.name == "All 0":
+            self.activeLevel = self.__level = 0
+        elif self.character.alphaClone:
             return min(self.activeLevel, self.character.alphaClone.getSkillLevel(self)) or 0
 
         return self.activeLevel or 0
