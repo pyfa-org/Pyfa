@@ -18,6 +18,7 @@
 # ===============================================================================
 
 from sqlalchemy.sql import and_
+from sqlalchemy import desc, select
 
 from eos.db import saveddata_session, sd_lock
 from eos.db.saveddata.fit import projectedFits_table
@@ -238,6 +239,22 @@ def getFitsWithShip(shipID, ownerID=None, where=None, eager=None):
             fits = removeInvalid(saveddata_session.query(Fit).options(*eager).filter(filter).all())
     else:
         raise TypeError("ShipID must be integer")
+
+    return fits
+
+
+def getRecentFits(ownerID=None, where=None, eager=None):
+    eager = processEager(eager)
+    with sd_lock:
+        q = select((
+            Fit.ID,
+            Fit.shipID,
+            Fit.name,
+            Fit.modified,
+            Fit.created,
+            Fit.timestamp
+        )).order_by(desc(Fit.modified), desc(Fit.timestamp)).limit(50)
+        fits = eos.db.saveddata_session.execute(q).fetchall()
 
     return fits
 

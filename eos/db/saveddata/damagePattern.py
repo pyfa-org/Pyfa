@@ -19,7 +19,7 @@
 
 from sqlalchemy import Table, Column, Integer, ForeignKey, String, DateTime
 from sqlalchemy.orm import mapper
-import sqlalchemy.sql.functions as func
+import datetime
 
 from eos.db import saveddata_meta
 from eos.saveddata.damagePattern import DamagePattern
@@ -32,8 +32,8 @@ damagePatterns_table = Table("damagePatterns", saveddata_meta,
                              Column("kineticAmount", Integer),
                              Column("explosiveAmount", Integer),
                              Column("ownerID", ForeignKey("users.ID"), nullable=True),
-                             Column("created", DateTime, nullable=True, default=func.now()),
-                             Column("modified", DateTime, nullable=True, onupdate=func.now())
+                             Column("created", DateTime, nullable=True, default=datetime.datetime.now),
+                             Column("modified", DateTime, nullable=True, onupdate=datetime.datetime.now)
                              )
 
 mapper(DamagePattern, damagePatterns_table)

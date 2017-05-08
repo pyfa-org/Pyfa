@@ -20,6 +20,7 @@
 import copy
 from logbook import Logger
 from time import time
+import datetime
 
 import eos.db
 from eos.saveddata.booster import Booster as es_Booster
@@ -93,9 +94,23 @@ class Fit(object):
         fits = eos.db.getFitsWithShip(shipID)
         names = []
         for fit in fits:
-            names.append((fit.ID, fit.name, fit.booster, fit.timestamp))
+            names.append((fit.ID, fit.name, fit.booster, fit.modified or fit.created or datetime.datetime.fromtimestamp(fit.timestamp)))
 
         return names
+
+    @staticmethod
+    def getRecentFits():
+        """ Fetches recently modified fits, used with shipBrowser """
+        pyfalog.debug("Fetching recent fits")
+        fits = eos.db.getRecentFits()
+        returnInfo = []
+
+        for fit in fits:
+            item = eos.db.getItem(fit[1])
+            returnInfo.append((fit[0], fit[2], fit[3] or fit[4] or datetime.datetime.fromtimestamp(fit[5]), item))
+            #                  ID      name    timestamps
+
+        return returnInfo
 
     @staticmethod
     def getFitsWithModules(typeIDs):
@@ -258,10 +273,15 @@ class Fit(object):
         pyfalog.debug("Searching for fit: {0}", name)
         results = eos.db.searchFits(name)
         fits = []
+
         for fit in results:
             fits.append((
-                fit.ID, fit.name, fit.ship.item.ID, fit.ship.item.name, fit.booster,
-                fit.timestamp))
+                fit.ID,
+                fit.name,
+                fit.ship.item.ID,
+                fit.ship.item.name,
+                fit.booster,
+                fit.modifiedCoalesce))
         return fits
 
     def addImplant(self, fitID, itemID, recalc=True):

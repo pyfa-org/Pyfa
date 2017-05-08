@@ -19,7 +19,7 @@
 
 from sqlalchemy import Table, Column, Integer, ForeignKey, String, DateTime, Float
 from sqlalchemy.orm import relation, mapper
-import sqlalchemy.sql.functions as func
+import datetime
 
 from eos.db import saveddata_meta
 from eos.db.saveddata.implant import charImplants_table
@@ -39,8 +39,8 @@ characters_table = Table("characters", saveddata_meta,
                          Column("alphaCloneID", Integer, nullable=True),
                          Column("ownerID", ForeignKey("users.ID"), nullable=True),
                          Column("secStatus", Float, nullable=True, default=0.0),
-                         Column("created", DateTime, nullable=True, default=func.now()),
-                         Column("modified", DateTime, nullable=True, onupdate=func.now()))
+                         Column("created", DateTime, nullable=True, default=datetime.datetime.now),
+                         Column("modified", DateTime, nullable=True, onupdate=datetime.datetime.now))
 
 mapper(Character, characters_table,
        properties={

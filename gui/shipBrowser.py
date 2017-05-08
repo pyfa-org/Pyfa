@@ -337,15 +337,21 @@ class NavigationPanel(SFItem.SFBrowserItem):
         self.newBmpH = BitmapLoader.getBitmap("fit_add_small", "gui")
         self.resetBmpH = BitmapLoader.getBitmap("freset_small", "gui")
         self.switchBmpH = BitmapLoader.getBitmap("fit_switch_view_mode_small", "gui")
+        self.recentBmpH = BitmapLoader.getBitmap("frecent_small", "gui")
 
         switchImg = BitmapLoader.getImage("fit_switch_view_mode_small", "gui")
         switchImg = switchImg.AdjustChannels(1, 1, 1, 0.4)
         self.switchBmpD = wx.BitmapFromImage(switchImg)
 
+        recentImg = BitmapLoader.getImage("frecent_small", "gui")
+        recentImg = recentImg.AdjustChannels(1, 1, 1, 0.4)
+        self.recentBmpD = wx.BitmapFromImage(recentImg)
+
         self.resetBmp = self.AdjustChannels(self.resetBmpH)
         self.rewBmp = self.AdjustChannels(self.rewBmpH)
         self.searchBmp = self.AdjustChannels(self.searchBmpH)
         self.switchBmp = self.AdjustChannels(self.switchBmpH)
+        self.recentBmp = self.AdjustChannels(self.recentBmpH)
         self.newBmp = self.AdjustChannels(self.newBmpH)
 
         self.toolbar.AddButton(self.resetBmp, "Ship groups", clickCallback=self.OnHistoryReset,
@@ -356,6 +362,9 @@ class NavigationPanel(SFItem.SFBrowserItem):
         self.btnSwitch = self.toolbar.AddButton(self.switchBmpD, "Hide empty ship groups",
                                                 clickCallback=self.ToggleEmptyGroupsView, hoverBitmap=self.switchBmpH,
                                                 show=False)
+        self.btnRecent = self.toolbar.AddButton(self.recentBmpD, "Recent Fits",
+                                                clickCallback=self.ToggleRecentShips, hoverBitmap=self.recentBmpH,
+                                                show=True)
 
         modifier = "CTRL" if 'wxMac' not in wx.PlatformInfo else "CMD"
         self.toolbar.AddButton(self.searchBmp, "Search fittings ({}+F)".format(modifier), clickCallback=self.ToggleSearchBox,
@@ -415,6 +424,27 @@ class NavigationPanel(SFItem.SFBrowserItem):
     def OnResize(self, event):
         self.Refresh()
 
+    def ToggleRecentShips(self, bool = None, emitEvent = True):
+        # this is so janky. Need to revaluate pretty much entire ship browser. >.<
+        toggle = bool if bool is not None else not self.shipBrowser.recentFits
+
+        if not toggle:
+            self.shipBrowser.recentFits = False
+            self.btnRecent.label = "Recent Fits"
+            self.btnRecent.normalBmp = self.recentBmpD
+
+            if emitEvent:
+                wx.PostEvent(self.shipBrowser, Stage1Selected())
+        else:
+            self.shipBrowser.recentFits = True
+            self.btnRecent.label = "Hide Recent Fits"
+            self.btnRecent.normalBmp = self.recentBmp
+
+            if emitEvent:
+                sFit = Fit.getInstance()
+                fits = sFit.getRecentFits()
+                wx.PostEvent(self.shipBrowser, ImportSelected(fits=fits, back=True, recent=True))
+
     def ToggleEmptyGroupsView(self):
         if self.shipBrowser.filterShipsWithNoFits:
             self.shipBrowser.filterShipsWithNoFits = False
@@ -453,11 +483,13 @@ class NavigationPanel(SFItem.SFBrowserItem):
             wx.PostEvent(self.mainFrame, FitSelected(fitID=fitID))
 
     def OnHistoryReset(self):
+        self.ToggleRecentShips(False, False)
         if self.shipBrowser.browseHist:
             self.shipBrowser.browseHist = []
         self.gotoStage(1, 0)
 
     def OnHistoryBack(self):
+        self.ToggleRecentShips(False, False)
         if len(self.shipBrowser.browseHist) > 0:
             stage, data = self.shipBrowser.browseHist.pop()
             self.gotoStage(stage, data)
@@ -537,6 +569,7 @@ class NavigationPanel(SFItem.SFBrowserItem):
         self.bkBitmap.mFactor = mFactor
 
     def gotoStage(self, stage, data=None):
+        self.shipBrowser.recentFits = False
         if stage == 1:
             wx.PostEvent(self.Parent, Stage1Selected())
         elif stage == 2:
@@ -572,6 +605,7 @@ class ShipBrowser(wx.Panel):
         self._stage3ShipName = ""
         self.fitIDMustEditName = -1
         self.filterShipsWithNoFits = False
+        self.recentFits = False
 
         self.racesFilter = {}
 
@@ -628,7 +662,8 @@ class ShipBrowser(wx.Panel):
 
     def RefreshList(self, event):
         stage = self.GetActiveStage()
-        if stage == 3 or stage == 4:
+
+        if stage in (3, 4, 5):
             self.lpane.RefreshList(True)
         event.Skip()
 
@@ -671,6 +706,7 @@ class ShipBrowser(wx.Panel):
         return self.racesFilter[race]
 
     def stage1(self, event):
+        self.navpanel.ToggleRecentShips(False, False)
         self._lastStage = self._activeStage
         self._activeStage = 1
         self.lastdata = 0
@@ -726,6 +762,7 @@ class ShipBrowser(wx.Panel):
     def stage2Callback(self, data):
         if self.GetActiveStage() != 2:
             return
+        self.navpanel.ToggleRecentShips(False, False)
 
         categoryID = self._stage2Data
         ships = list(data[1])
@@ -811,7 +848,7 @@ class ShipBrowser(wx.Panel):
         return info[1]
 
     def stage3(self, event):
-
+        self.navpanel.ToggleRecentShips(False, False)
         self.lpane.ShowLoading(False)
 
         # If back is False, do not append to history. This could be us calling
@@ -920,6 +957,10 @@ class ShipBrowser(wx.Panel):
             self.Layout()
 
     def importStage(self, event):
+        """
+        The import stage handles both displaying fits after importing as well as displaying recent fits. todo: need to 
+        reconcile these two better into a more uniform function, right now hacked together to get working
+        """
         self.lpane.ShowLoading(False)
 
         self.navpanel.ShowNewFitButton(False)
@@ -933,29 +974,26 @@ class ShipBrowser(wx.Panel):
 
         fits = event.fits
 
-        # sort by ship name, then fit name
-        fits.sort(key=lambda _fit: (_fit.ship.item.name, _fit.name))
-
         self.lastdata = fits
         self.lpane.Freeze()
         self.lpane.RemoveAllChildren()
 
         if fits:
             for fit in fits:
-                shipTrait = fit.ship.item.traits.traitText if (fit.ship.item.traits is not None) else ""
-                # empty string if no traits
+                shipItem = fit[3]
+                shipTrait = shipItem.traits.traitText if (shipItem.traits is not None) else ""
 
                 self.lpane.AddWidget(FitItem(
                     self.lpane,
-                    fit.ID,
+                    fit[0],
                     (
-                        fit.ship.item.name,
+                        shipItem.name,
                         shipTrait,
-                        fit.name,
-                        fit.booster,
-                        fit.timestamp,
+                        fit[1],
+                        False,
+                        fit[2]
                     ),
-                    fit.ship.item.ID,
+                    shipItem.ID,
                 ))
             self.lpane.RefreshList(doFocus=False)
         self.lpane.Thaw()
@@ -1473,6 +1511,7 @@ class FitItem(SFItem.SFBrowserItem):
 
         self.shipFittingInfo = shipFittingInfo
         self.shipName, self.shipTrait, self.fitName, self.fitBooster, self.timestamp = shipFittingInfo
+
         self.shipTrait = re.sub("<.*?>", " ", self.shipTrait)
         # see GH issue #62
 
@@ -1553,10 +1592,13 @@ class FitItem(SFItem.SFBrowserItem):
         #    self.animCount = 0
         # =====================================================================
 
+        """
+        # Remove this bit as the time stuff is non-functional (works... but not exactly sure what it's meant to do)
         self.selTimerID = wx.NewId()
 
         self.selTimer = wx.Timer(self, self.selTimerID)
         self.selTimer.Start(100)
+        """
 
         self.Bind(wx.EVT_RIGHT_UP, self.OnContextMenu)
         self.Bind(wx.EVT_MIDDLE_UP, self.OpenNewTab)
@@ -1645,6 +1687,7 @@ class FitItem(SFItem.SFBrowserItem):
 
     def OnTimer(self, event):
 
+        # @todo: figure out what exactly this is supposed to accomplish
         if self.selTimerID == event.GetId():
             ctimestamp = time.time()
             interval = 5
@@ -1726,7 +1769,6 @@ class FitItem(SFItem.SFBrowserItem):
             self.fitName = fitName
             sFit.renameFit(self.fitID, self.fitName)
             wx.PostEvent(self.mainFrame, FitRenamed(fitID=self.fitID))
-            self.Refresh()
         else:
             self.tcFitName.SetValue(self.fitName)
 
@@ -1893,8 +1935,8 @@ class FitItem(SFItem.SFBrowserItem):
 
         mdc.SetFont(self.fontNormal)
 
-        fitDate = time.localtime(self.timestamp)
-        fitLocalDate = "%d/%02d/%02d %02d:%02d" % (fitDate[0], fitDate[1], fitDate[2], fitDate[3], fitDate[4])
+        fitDate = self.timestamp.strftime("%m/%d/%Y %H:%M")
+        fitLocalDate = fitDate #"%d/%02d/%02d %02d:%02d" % (fitDate[0], fitDate[1], fitDate[2], fitDate[3], fitDate[4])
         pfdate = drawUtils.GetPartialText(mdc, fitLocalDate,
                                           self.toolbarx - self.textStartx - self.padding * 2 - self.thoverw)
 
@@ -1946,6 +1988,15 @@ class FitItem(SFItem.SFBrowserItem):
             else:
                 state = SFItem.SB_ITEM_NORMAL
         return state
+
+    def Refresh(self):
+        activeFit = self.mainFrame.getActiveFit()
+        if activeFit == self.fitID:
+            sFit = Fit.getInstance()
+            fit = sFit.getFit(activeFit)
+            self.timestamp = fit.modifiedCoalesce
+
+        SFItem.SFBrowserItem.Refresh(self)
 
     def RenderBackground(self):
         rect = self.GetRect()

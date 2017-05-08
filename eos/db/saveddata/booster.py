@@ -20,7 +20,7 @@
 from sqlalchemy import Table, Column, ForeignKey, Integer, Boolean, DateTime
 from sqlalchemy.ext.associationproxy import association_proxy
 from sqlalchemy.orm import mapper, relation
-import sqlalchemy.sql.functions as func
+import datetime
 
 from eos.db import saveddata_meta
 from eos.saveddata.booster import Booster
@@ -30,8 +30,8 @@ boosters_table = Table("boosters", saveddata_meta,
                         Column("itemID", Integer),
                         Column("fitID", Integer, ForeignKey("fits.ID"), nullable=False),
                         Column("active", Boolean),
-                        Column("created", DateTime, nullable=True, default=func.now()),
-                        Column("modified", DateTime, nullable=True, onupdate=func.now()),
+                        Column("created", DateTime, nullable=True, default=datetime.datetime.now),
+                        Column("modified", DateTime, nullable=True, onupdate=datetime.datetime.now),
                        )
 
 # Legacy booster side effect code, should disable but a mapper relies on it.

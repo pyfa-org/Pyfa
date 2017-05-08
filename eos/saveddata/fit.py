@@ -21,6 +21,7 @@ import time
 from copy import deepcopy
 from itertools import chain
 from math import sqrt, log, asinh
+import datetime
 
 from sqlalchemy.orm import validates, reconstructor
 
@@ -77,6 +78,8 @@ class Fit(object):
         self.projected = False
         self.name = name
         self.timestamp = time.time()
+        self.created = None
+        self.modified = None
         self.modeID = None
 
         self.build()
@@ -179,6 +182,14 @@ class Fit(object):
     def mode(self, mode):
         self.__mode = mode
         self.modeID = mode.item.ID if mode is not None else None
+
+    @property
+    def modifiedCoalesce(self):
+        """
+        This is a property that should get whichever date is available for the fit. @todo: migrate old timestamp data 
+        and ensure created / modified are set in database to get rid of this
+        """
+        return self.modified or self.created or datetime.datetime.fromtimestamp(self.timestamp)
 
     @property
     def character(self):
