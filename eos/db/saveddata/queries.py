@@ -252,7 +252,8 @@ def getRecentFits(ownerID=None, where=None, eager=None):
             Fit.name,
             Fit.modified,
             Fit.created,
-            Fit.timestamp
+            Fit.timestamp,
+            Fit.notes
         )).order_by(desc(Fit.modified), desc(Fit.timestamp)).limit(50)
         fits = eos.db.saveddata_session.execute(q).fetchall()
 

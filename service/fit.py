@@ -94,7 +94,7 @@ class Fit(object):
         fits = eos.db.getFitsWithShip(shipID)
         names = []
         for fit in fits:
-            names.append((fit.ID, fit.name, fit.booster, fit.modified or fit.created or datetime.datetime.fromtimestamp(fit.timestamp)))
+            names.append((fit.ID, fit.name, fit.booster, fit.modified or fit.created or datetime.datetime.fromtimestamp(fit.timestamp), fit.notes))
 
         return names
 
@@ -107,8 +107,8 @@ class Fit(object):
 
         for fit in fits:
             item = eos.db.getItem(fit[1])
-            returnInfo.append((fit[0], fit[2], fit[3] or fit[4] or datetime.datetime.fromtimestamp(fit[5]), item))
-            #                  ID      name    timestamps
+            returnInfo.append((fit[0], fit[2], fit[3] or fit[4] or datetime.datetime.fromtimestamp(fit[5]), item, fit[6]))
+            #                  ID      name    timestamps                                                   item  notes
 
         return returnInfo
 
@@ -281,7 +281,8 @@ class Fit(object):
                 fit.ship.item.ID,
                 fit.ship.item.name,
                 fit.booster,
-                fit.modifiedCoalesce))
+                fit.modifiedCoalesce,
+                fit.notes))
         return fits
 
     def addImplant(self, fitID, itemID, recalc=True):

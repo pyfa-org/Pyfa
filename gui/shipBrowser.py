@@ -899,8 +899,8 @@ class ShipBrowser(wx.Panel):
 
         shipTrait = ship.traits.traitText if (ship.traits is not None) else ""  # empty string if no traits
 
-        for ID, name, booster, timestamp in fitList:
-            self.lpane.AddWidget(FitItem(self.lpane, ID, (shipName, shipTrait, name, booster, timestamp), shipID))
+        for ID, name, booster, timestamp, notes in fitList:
+            self.lpane.AddWidget(FitItem(self.lpane, ID, (shipName, shipTrait, name, booster, timestamp, notes), shipID))
 
         self.lpane.RefreshList()
         self.lpane.Thaw()
@@ -940,11 +940,11 @@ class ShipBrowser(wx.Panel):
                     ShipItem(self.lpane, ship.ID, (ship.name, shipTrait, len(sFit.getFitsWithShip(ship.ID))),
                              ship.race))
 
-            for ID, name, shipID, shipName, booster, timestamp in fitList:
+            for ID, name, shipID, shipName, booster, timestamp, notes in fitList:
                 ship = sMkt.getItem(shipID)
                 shipTrait = ship.traits.traitText if (ship.traits is not None) else ""  # empty string if no traits
 
-                self.lpane.AddWidget(FitItem(self.lpane, ID, (shipName, shipTrait, name, booster, timestamp), shipID))
+                self.lpane.AddWidget(FitItem(self.lpane, ID, (shipName, shipTrait, name, booster, timestamp, notes), shipID))
             if len(ships) == 0 and len(fitList) == 0:
                 self.lpane.AddWidget(PFStaticText(self.lpane, label=u"No matching results."))
             self.lpane.RefreshList(doFocus=False)
@@ -991,7 +991,8 @@ class ShipBrowser(wx.Panel):
                         shipTrait,
                         fit[1],
                         False,
-                        fit[2]
+                        fit[2],
+                        fit[3]
                     ),
                     shipItem.ID,
                 ))
@@ -1475,7 +1476,7 @@ class PFBitmapFrame(wx.Frame):
 
 
 class FitItem(SFItem.SFBrowserItem):
-    def __init__(self, parent, fitID=None, shipFittingInfo=("Test", "TestTrait", "cnc's avatar", 0, 0), shipID=None,
+    def __init__(self, parent, fitID=None, shipFittingInfo=("Test", "TestTrait", "cnc's avatar", 0, 0, None), shipID=None,
                  itemData=None,
                  id=wx.ID_ANY, pos=wx.DefaultPosition,
                  size=(0, 40), style=0):
@@ -1510,7 +1511,7 @@ class FitItem(SFItem.SFBrowserItem):
             self.shipBmp = BitmapLoader.getBitmap("ship_no_image_big", "gui")
 
         self.shipFittingInfo = shipFittingInfo
-        self.shipName, self.shipTrait, self.fitName, self.fitBooster, self.timestamp = shipFittingInfo
+        self.shipName, self.shipTrait, self.fitName, self.fitBooster, self.timestamp, self.notes = shipFittingInfo
 
         self.shipTrait = re.sub("<.*?>", " ", self.shipTrait)
         # see GH issue #62
@@ -1533,10 +1534,9 @@ class FitItem(SFItem.SFBrowserItem):
         self.dragTLFBmp = None
 
         self.bkBitmap = None
-        sFit = Fit.getInstance()
-        # show no tooltip if no trait available or setting is disabled
-        if self.shipTrait and sFit.serviceFittingOptions["showShipBrowserTooltip"]:
-            self.SetToolTip(wx.ToolTip(u'{}\n{}\n{}'.format(self.shipName, u'─' * 20, self.shipTrait)))
+
+        self.__setToolTip()
+
         self.padding = 4
         self.editWidth = 150
 
@@ -1602,6 +1602,16 @@ class FitItem(SFItem.SFBrowserItem):
 
         self.Bind(wx.EVT_RIGHT_UP, self.OnContextMenu)
         self.Bind(wx.EVT_MIDDLE_UP, self.OpenNewTab)
+
+    def __setToolTip(self):
+        sFit = Fit.getInstance()
+        # show no tooltip if no trait available or setting is disabled
+        if self.shipTrait and sFit.serviceFittingOptions["showShipBrowserTooltip"]:
+            notes = ""
+            if self.notes:
+                notes = u'─' * 20 + u"\nNotes: {}\n".format(
+                    self.notes[:197] + '...' if len(self.notes) > 200 else self.notes)
+            self.SetToolTip(wx.ToolTip(u'{}\n{}{}\n{}'.format(self.shipName, notes, u'─' * 20, self.shipTrait)))
 
     def OpenNewTab(self, evt):
         self.selectFit(newTab=True)
@@ -1995,6 +2005,8 @@ class FitItem(SFItem.SFBrowserItem):
             sFit = Fit.getInstance()
             fit = sFit.getFit(activeFit)
             self.timestamp = fit.modifiedCoalesce
+            self.notes = fit.notes
+            self.__setToolTip()
 
         SFItem.SFBrowserItem.Refresh(self)
 

@@ -1259,7 +1259,7 @@ class Port(object):
                 # -- 170327 Ignored description --
                 try:
                     notes = fit.notes  # unicode
-                    
+
                     if notes:
                         notes = notes[:397] + '...' if len(notes) > 400 else notes
 
