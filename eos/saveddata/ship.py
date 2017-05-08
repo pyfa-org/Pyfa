@@ -72,6 +72,11 @@ class Ship(ItemAttrShortcut, HandledItem):
         return self.__item
 
     @property
+    def name(self):
+        # NOTE: add name property
+        return self.__item.name
+
+    @property
     def itemModifiedAttributes(self):
         return self.__itemModifiedAttributes
 
