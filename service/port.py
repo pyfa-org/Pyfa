@@ -367,7 +367,7 @@ class Port(object):
             pyfalog.critical(e)
             # TypeError: not all arguments converted during string formatting
 #                 return False, "Unknown Error while processing {0}" % path
-            return False, "Unknown Error while processing %s\n\n message: %s" % (path, e.message)
+            return False, "Unknown error while processing %s\n\n Error: %s" % (path, e.message)
 
         return True, fit_list
 
@@ -1103,7 +1103,7 @@ class Port(object):
             if iportuser:  # NOTE: Send current processing status
                 PortProcessing.notify(
                     iportuser, IPortUser.PROCESS_IMPORT | IPortUser.ID_UPDATE,
-                    "analysis :%s\n%s" % (fitobj.ship.name, fitobj.name)
+                    "Processing %s\n%s" % (fitobj.ship.name, fitobj.name)
                 )
 
         return fit_list
