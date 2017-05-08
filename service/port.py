@@ -409,7 +409,7 @@ class Port(object):
 
         # 2017/03/29 NOTE: "<" or "&lt;" is Ignored
         # fit['description'] = "<pyfa:%d />" % ofit.ID
-        fit['description'] = ofit.notes if ofit.notes is not None else ""
+        fit['description'] = ofit.notes[:397] + '...' if len(ofit.notes) > 400 else ofit.notes if ofit.notes is not None else ""
         fit['items'] = []
 
         slotNum = {}
@@ -1259,6 +1259,10 @@ class Port(object):
                 # -- 170327 Ignored description --
                 try:
                     notes = fit.notes  # unicode
+                    
+                    if notes:
+                        notes = notes[:397] + '...' if len(notes) > 400 else notes
+
                     description.setAttribute(
                         "value", re.sub("(\r|\n|\r\n)+", "<br>", notes) if notes is not None else ""
                     )
