@@ -1,4 +1,5 @@
 language: python
+cache: pip
 python:
   - '2.7'
 env:
@@ -6,20 +7,33 @@ env:
 addons:
   apt:
     packages:
-      # for wxPython:
-      - python-wxgtk2.8
-      - python-wxtools
-      - wx2.8-doc
-      - wx2.8-examples
-      - wx2.8-headers
-      - wx2.8-i18n
 before_install:
-  - pip install -U tox
+  - sudo apt-get update && sudo apt-get --reinstall install -qq language-pack-en language-pack-ru language-pack-he language-pack-zh-hans
+  - pip install tox
+  # We're not actually installing Tox, but have to run it before we install wxPython via Conda. This is fugly but vOv
+  - tox
+  # get Conda
+  - if [[ "$TRAVIS_PYTHON_VERSION" == "2.7" ]]; then
+      wget https://repo.continuum.io/miniconda/Miniconda-latest-Linux-x86_64.sh -O miniconda.sh;
+    else
+      wget https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh -O miniconda.sh;
+    fi
+  - bash miniconda.sh -b -p $HOME/miniconda
+  - export PATH="$HOME/miniconda/bin:$PATH"
+  - hash -r
+  - conda config --set always_yes yes --set changeps1 no
+  - conda update -q conda
+  # Useful for debugging any issues with conda
+  - conda info -a
 install:
+  # install wxPython 3.0.0.0
+  - conda install -c https://conda.anaconda.org/travis wxpython
+before_script:
   - pip install -r requirements.txt
   - pip install -r requirements_test.txt
 script:
-  - tox
   - py.test --cov=./
 after_success:
   - bash <(curl -s https://codecov.io/bash)
+before_deploy:
+  - pip install -r requirements_build_linux.txt
