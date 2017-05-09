@@ -77,6 +77,7 @@ def apply_rel_listeners(target, context):
             listen(rel, 'append', rel_listener)
             listen(rel, 'remove', rel_listener)
 
+
 listen(Fit, 'load', apply_rel_listeners)
 listen(Module, 'load', apply_col_listeners)
 listen(Drone, 'load', apply_col_listeners)

@@ -359,7 +359,7 @@ class Skill(HandledItem):
                 if item.group.category.ID == 16:  # Skill category
                     if level < rlevel:
                         skill = self.character.getSkill(item.ID)
-                        #print "Removing skill: {}, Dependant level: {}, Required level: {}".format(skill, level, rlevel)
+                        # print "Removing skill: {}, Dependant level: {}, Required level: {}".format(skill, level, rlevel)
                         skill.setLevel(None, persist)
             pyfalog.debug("Strict Skill levels enabled, time to process {}: {}".format(self.item.ID, time.time() - start))
 

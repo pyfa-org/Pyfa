@@ -20,7 +20,6 @@
 import sys
 import os.path
 from logbook import Logger
-import datetime
 
 import sqlalchemy
 # noinspection PyPackageRequirements

@@ -11,4 +11,3 @@ def upgrade(saveddata_engine):
         saveddata_engine.execute("SELECT secStatus FROM characters LIMIT 1")
     except sqlalchemy.exc.DatabaseError:
         saveddata_engine.execute("ALTER TABLE characters ADD COLUMN secStatus FLOAT;")
-

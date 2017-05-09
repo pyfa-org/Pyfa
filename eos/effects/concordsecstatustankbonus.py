@@ -1,4 +1,6 @@
 type = "passive"
+
+
 def handler(fit, src, context):
 
     # Get pilot sec status bonus directly here, instead of going through the intermediary effects

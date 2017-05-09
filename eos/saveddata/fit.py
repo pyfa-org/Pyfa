@@ -186,7 +186,7 @@ class Fit(object):
     @property
     def modifiedCoalesce(self):
         """
-        This is a property that should get whichever date is available for the fit. @todo: migrate old timestamp data 
+        This is a property that should get whichever date is available for the fit. @todo: migrate old timestamp data
         and ensure created / modified are set in database to get rid of this
         """
         return self.modified or self.created or datetime.datetime.fromtimestamp(self.timestamp)

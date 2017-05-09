@@ -24,7 +24,6 @@ import platform
 import re
 import sys
 import traceback
-from imp import find_module
 from optparse import AmbiguousOptionError, BadOptionError, OptionParser
 
 from logbook import CRITICAL, DEBUG, ERROR, FingersCrossedHandler, INFO, Logger, NestedSetup, NullHandler, StreamHandler, TimedRotatingFileHandler, WARNING, \
@@ -359,6 +358,7 @@ if __name__ == "__main__":
         if 'wxMac' not in wx.PlatformInfo or ('wxMac' in wx.PlatformInfo and wx.VERSION >= (3, 0)):
             try:
                 import requests
+                config.requestsVersion = requests.__version
             except ImportError:
                 raise PreCheckException("Cannot import requests. You can download requests from https://pypi.python.org/pypi/requests.")
 

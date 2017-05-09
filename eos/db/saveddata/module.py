@@ -17,7 +17,7 @@
 # along with eos.  If not, see <http://www.gnu.org/licenses/>.
 # ===============================================================================
 
-from sqlalchemy import Table, Column, Integer, ForeignKey, CheckConstraint, Boolean, DateTime, select
+from sqlalchemy import Table, Column, Integer, ForeignKey, CheckConstraint, Boolean, DateTime
 from sqlalchemy.orm import relation, mapper
 import datetime
 
@@ -40,6 +40,3 @@ modules_table = Table("modules", saveddata_meta,
 
 mapper(Module, modules_table,
        properties={"owner": relation(Fit)})
-
-
-

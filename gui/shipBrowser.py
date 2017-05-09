@@ -424,7 +424,7 @@ class NavigationPanel(SFItem.SFBrowserItem):
     def OnResize(self, event):
         self.Refresh()
 
-    def ToggleRecentShips(self, bool = None, emitEvent = True):
+    def ToggleRecentShips(self, bool=None, emitEvent=True):
         # this is so janky. Need to revaluate pretty much entire ship browser. >.<
         toggle = bool if bool is not None else not self.shipBrowser.recentFits
 
@@ -958,7 +958,7 @@ class ShipBrowser(wx.Panel):
 
     def importStage(self, event):
         """
-        The import stage handles both displaying fits after importing as well as displaying recent fits. todo: need to 
+        The import stage handles both displaying fits after importing as well as displaying recent fits. todo: need to
         reconcile these two better into a more uniform function, right now hacked together to get working
         """
         self.lpane.ShowLoading(False)
@@ -1946,7 +1946,7 @@ class FitItem(SFItem.SFBrowserItem):
         mdc.SetFont(self.fontNormal)
 
         fitDate = self.timestamp.strftime("%m/%d/%Y %H:%M")
-        fitLocalDate = fitDate #"%d/%02d/%02d %02d:%02d" % (fitDate[0], fitDate[1], fitDate[2], fitDate[3], fitDate[4])
+        fitLocalDate = fitDate  # "%d/%02d/%02d %02d:%02d" % (fitDate[0], fitDate[1], fitDate[2], fitDate[3], fitDate[4])
         pfdate = drawUtils.GetPartialText(mdc, fitLocalDate,
                                           self.toolbarx - self.textStartx - self.padding * 2 - self.thoverw)
 

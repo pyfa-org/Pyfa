@@ -158,7 +158,7 @@ class Character(object):
                     data += u"Skills required for {}:\n".format(item)
                 data += u"{}{}: {}\n".format("    " * s["indent"], s["skill"], int(s["level"]))
             data += u"-" * 79 + "\n"
-        except Exception, e:
+        except Exception:
             pass
 
         return data

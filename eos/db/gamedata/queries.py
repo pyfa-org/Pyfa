@@ -125,6 +125,7 @@ def getItems(lookfor, eager=None):
     results.sort(key=lambda x: lookfor.index(x.ID))
     return results
 
+
 @cachedQuery(1, "lookfor")
 def getAlphaClone(lookfor, eager=None):
     if isinstance(lookfor, int):
@@ -358,6 +359,7 @@ def directAttributeRequest(itemIDs, attrIDs):
 
     result = gamedata_session.execute(q).fetchall()
     return result
+
 
 def getRequiredFor(itemID, attrMapping):
     Attribute1 = aliased(Attribute)

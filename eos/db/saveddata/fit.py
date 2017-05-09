@@ -250,9 +250,9 @@ mapper(es_Fit, fits_table,
 )
 
 mapper(ProjectedFit, projectedFits_table,
-       properties={
-           "_ProjectedFit__amount": projectedFits_table.c.amount,
-       }
+   properties={
+       "_ProjectedFit__amount": projectedFits_table.c.amount,
+   }
 )
 
 mapper(CommandFit, commandFits_table)

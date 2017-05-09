@@ -812,7 +812,7 @@ class ItemDependants(wx.Panel):
                 else:
                     itemIcon = -1
 
-                grand = self.reqTree.AppendItem(child, "{}".format(item.name), itemIcon)
+                self.reqTree.AppendItem(child, "{}".format(item.name), itemIcon)
 
 
 class ItemEffects(wx.Panel):

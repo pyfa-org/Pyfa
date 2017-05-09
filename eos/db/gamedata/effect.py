@@ -18,8 +18,7 @@
 # ===============================================================================
 
 from sqlalchemy import Column, String, Integer, Boolean, Table, ForeignKey
-from sqlalchemy.ext.associationproxy import association_proxy
-from sqlalchemy.orm import mapper, synonym, relation, deferred
+from sqlalchemy.orm import mapper, synonym, deferred
 
 from eos.db import gamedata_meta
 from eos.gamedata import Effect, ItemEffect
@@ -45,4 +44,3 @@ mapper(Effect, effects_table,
        })
 
 mapper(ItemEffect, typeeffects_table)
-
