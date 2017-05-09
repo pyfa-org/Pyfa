@@ -439,7 +439,7 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
 
         # EVE doesn't let capital modules be fit onto subcapital hulls. Confirmed by CCP Larrikin that this is dictated
         # by the modules volume. See GH issue #1096
-        if (fit.ship.getModifiedItemAttr("isCapitalSize", 0) != 1 and self.isCapitalSize):
+        if not isinstance(fit.ship, Citadel) and fit.ship.getModifiedItemAttr("isCapitalSize", 0) != 1 and self.isCapitalSize:
             return False
 
         # If the mod is a subsystem, don't let two subs in the same slot fit

@@ -1438,20 +1438,20 @@ class ItemProperties(wx.Panel):
                 else:
                     attrName = name.title()
                     value = getattr(self.item, name)
+
+                index = self.paramList.InsertStringItem(sys.maxint, attrName)
+                # index = self.paramList.InsertImageStringItem(sys.maxint, attrName)
+                idNameMap[idCount] = attrName
+                self.paramList.SetItemData(index, idCount)
+                idCount += 1
+
+                valueUnit = str(value)
+
+                self.paramList.SetStringItem(index, 1, valueUnit)
             except:
                 # TODO: Add logging to this.
                 # We couldn't get a property for some reason. Skip it for now.
                 continue
-
-            index = self.paramList.InsertStringItem(sys.maxint, attrName)
-            # index = self.paramList.InsertImageStringItem(sys.maxint, attrName)
-            idNameMap[idCount] = attrName
-            self.paramList.SetItemData(index, idCount)
-            idCount += 1
-
-            valueUnit = str(value)
-
-            self.paramList.SetStringItem(index, 1, valueUnit)
 
         self.paramList.SortItems(lambda id1, id2: cmp(idNameMap[id1], idNameMap[id2]))
         self.paramList.RefreshRows()
