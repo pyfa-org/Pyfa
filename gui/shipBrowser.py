@@ -992,7 +992,7 @@ class ShipBrowser(wx.Panel):
                         fit[1],
                         False,
                         fit[2],
-                        fit[3]
+                        fit[4]
                     ),
                     shipItem.ID,
                 ))
