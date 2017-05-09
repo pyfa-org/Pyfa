@@ -413,7 +413,7 @@ class SkillTreeView(wx.Panel):
             iconId = self.skillBookImageId
             childId = tree.AppendItem(root, name, iconId, data=wx.TreeItemData(id))
             level, dirty = sChar.getSkillLevel(char.ID, id)
-            tree.SetItemText(childId, "Level %d" % level if isinstance(level, float) else level, 1)
+            tree.SetItemText(childId, "Level %d" % int(level) if isinstance(level, float) else level, 1)
             if dirty:
                 tree.SetItemTextColour(childId, wx.BLUE)
 
@@ -461,7 +461,7 @@ class SkillTreeView(wx.Panel):
                 iconId = self.skillBookImageId
                 childId = tree.AppendItem(root, name, iconId, data=wx.TreeItemData(id))
                 level, dirty = sChar.getSkillLevel(char.ID, id)
-                tree.SetItemText(childId, "Level %d" % level if isinstance(level, float) else level, 1)
+                tree.SetItemText(childId, "Level %d" % int(level) if isinstance(level, float) else level, 1)
                 if dirty:
                     tree.SetItemTextColour(childId, wx.BLUE)
 
@@ -512,7 +512,7 @@ class SkillTreeView(wx.Panel):
                 # grand = Skill (or "dummy" if not expanded)
                 if self.skillTreeListCtrl.GetItemText(grand) != "dummy":
                     lvl, dirty = sChar.getSkillLevel(char.ID, self.skillTreeListCtrl.GetPyData(grand))
-                    self.skillTreeListCtrl.SetItemText(grand, "Level {}".format(lvl) if not isinstance(lvl, basestring) else lvl, 1)
+                    self.skillTreeListCtrl.SetItemText(grand, "Level {}".format(int(lvl)) if not isinstance(lvl, basestring) else lvl, 1)
                     if not dirty:
                         self.skillTreeListCtrl.SetItemTextColour(grand, None)
                 grand, cookie2 = self.skillTreeListCtrl.GetNextChild(child, cookie2)

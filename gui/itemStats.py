@@ -192,8 +192,8 @@ class ItemStatsContainer(wx.Panel):
         self.nbContainer.AddPage(self.reqs, "Requirements")
 
         if context == "Skill":
-            self.dependants = ItemDependants(self.nbContainer, stuff, item)
-            self.nbContainer.AddPage(self.dependants, "Dependants")
+            self.dependents = ItemDependents(self.nbContainer, stuff, item)
+            self.nbContainer.AddPage(self.dependents, "Dependents")
 
         self.effects = ItemEffects(self.nbContainer, stuff, item)
         self.nbContainer.AddPage(self.effects, "Effects")
@@ -766,7 +766,7 @@ class ItemRequirements(wx.Panel):
                 self.skillIdHistory.append(skill.ID)
 
 
-class ItemDependants(wx.Panel):
+class ItemDependents(wx.Panel):
     def __init__(self, parent, stuff, item):
         wx.Panel.__init__(self, parent, style=wx.TAB_TRAVERSAL)
 

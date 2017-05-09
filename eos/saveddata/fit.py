@@ -668,7 +668,7 @@ class Fit(object):
 
             del self.commandBonuses[warfareBuffID]
 
-    def __resetDependantCalcs(self):
+    def __resetDependentCalcs(self):
         self.calculated = False
         for value in self.projectedOnto.values():
             if value.victim_fit:  # removing a self-projected fit causes victim fit to be None. @todo: look into why. :3
@@ -697,14 +697,14 @@ class Fit(object):
         # tree to (resetting the first degree of projection will suffice)
         if targetFit is None:
             # This resets all fits that local projects onto, allowing them to recalc when loaded
-            self.__resetDependantCalcs()
+            self.__resetDependentCalcs()
 
             # For fits that are under local's Command, we do the same thing
             for value in self.boostedOnto.values():
                 # apparently this is a thing that happens when removing a command fit from a fit and then switching to
                 # that command fit. Same as projected clears, figure out why.
                 if value.boosted_fit:
-                    value.boosted_fit.__resetDependantCalcs()
+                    value.boosted_fit.__resetDependentCalcs()
 
         if targetFit and type == CalcType.PROJECTED:
             pyfalog.debug("Calculating projections from {0} to target {1}", repr(self), repr(targetFit))
