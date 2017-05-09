@@ -15,7 +15,7 @@ class OpenFit(ContextMenu):
         if not self.settings.get('openFit'):
             return False
 
-        return srcContext in ("projectedFit", "commandView")
+        return srcContext in ("projectedFit", "commandFit")
 
     def getText(self, itmContext, selection):
         return "Open Fit in New Tab"
