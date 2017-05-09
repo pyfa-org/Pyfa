@@ -10,7 +10,7 @@ import sys
 # nopep8
 import re
 # from utils.strfunctions import sequential_rep, replace_ltgt
-from utils.stopwatch import Stopwatch
+#from utils.stopwatch import Stopwatch
 
 script_dir = os.path.dirname(os.path.abspath(__file__))
 sys.path.append(os.path.realpath(os.path.join(script_dir, '..')))
@@ -56,7 +56,7 @@ class PortUser(IPortUser):
         return True
 
 
-stpw = Stopwatch('test measurementer')
+#stpw = Stopwatch('test measurementer')
 
 @pytest.fixture()
 def print_db_info():
@@ -81,8 +81,8 @@ def test_import_xml(print_db_info):
         srcString = unicode(srcString, "utf-8")
         #  (basestring, IPortUser, basestring) -> list[eos.saveddata.fit.Fit]
         usr.on_port_process_start()
-        stpw.reset()
-        with stpw:
-            fits = Port.importXml(srcString, usr)
+        #stpw.reset()
+        #with stpw:
+        fits = Port.importXml(srcString, usr)
 
         assert fits is not None and len(fits) is fit_count

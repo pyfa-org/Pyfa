@@ -358,7 +358,7 @@ if __name__ == "__main__":
         if 'wxMac' not in wx.PlatformInfo or ('wxMac' in wx.PlatformInfo and wx.VERSION >= (3, 0)):
             try:
                 import requests
-                config.requestsVersion = requests.__version
+                config.requestsVersion = requests.__version__
             except ImportError:
                 raise PreCheckException("Cannot import requests. You can download requests from https://pypi.python.org/pypi/requests.")
 
