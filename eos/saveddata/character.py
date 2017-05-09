@@ -139,7 +139,7 @@ class Character(object):
         return self.__secStatus
 
     @secStatus.setter
-    def owner(self, sec):
+    def secStatus(self, sec):
         self.__secStatus = sec
 
     @property
