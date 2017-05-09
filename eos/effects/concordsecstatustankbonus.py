@@ -1,3 +1,8 @@
+# concordSecStatusTankBonus
+#
+# Used by:
+# Ship: Enforcer
+# Ship: Pacifier
 type = "passive"
 
 
