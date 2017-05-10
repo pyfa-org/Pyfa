@@ -2001,7 +2001,7 @@ class FitItem(SFItem.SFBrowserItem):
 
     def Refresh(self):
         activeFit = self.mainFrame.getActiveFit()
-        if activeFit == self.fitID:
+        if activeFit == self.fitID and not self.deleted:
             sFit = Fit.getInstance()
             fit = sFit.getFit(activeFit)
             self.timestamp = fit.modifiedCoalesce
