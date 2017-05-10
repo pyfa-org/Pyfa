@@ -22,7 +22,6 @@ import wx
 from gui.statsView import StatsView
 from gui.bitmapLoader import BitmapLoader
 from gui.utils.numberFormatter import formatAmount
-from service.market import Market
 from service.price import Price
 
 
@@ -32,9 +31,6 @@ class PriceViewFull(StatsView):
     def __init__(self, parent):
         StatsView.__init__(self)
         self.parent = parent
-        self._cachedShip = 0
-        self._cachedFittings = 0
-        self._cachedTotal = 0
 
     def getHeaderText(self, fit):
         return "Price"
@@ -51,10 +47,16 @@ class PriceViewFull(StatsView):
         headerContentSizer.Add(self.labelEMStatus)
         headerPanel.GetParent().AddToggleItem(self.labelEMStatus)
 
-        gridPrice = wx.GridSizer(1, 3)
+        gridPrice = wx.GridSizer(2, 3)
         contentSizer.Add(gridPrice, 0, wx.EXPAND | wx.ALL, 0)
-        for type in ("ship", "fittings", "total"):
-            image = "%sPrice_big" % type if type != "ship" else "ship_big"
+        for _type in ("ship", "fittings", "drones", "cargoBay", "character", "total"):
+            if _type in "ship":
+                image = "ship_big"
+            elif _type in ("fittings", "total"):
+                image = "%sPrice_big" % _type
+            else:
+                image = "%s_big" % _type
+
             box = wx.BoxSizer(wx.HORIZONTAL)
             gridPrice.Add(box, 0, wx.ALIGN_TOP)
 
@@ -63,50 +65,91 @@ class PriceViewFull(StatsView):
             vbox = wx.BoxSizer(wx.VERTICAL)
             box.Add(vbox, 1, wx.EXPAND)
 
-            vbox.Add(wx.StaticText(contentPanel, wx.ID_ANY, type.capitalize()), 0, wx.ALIGN_LEFT)
+            vbox.Add(wx.StaticText(contentPanel, wx.ID_ANY, _type.capitalize()), 0, wx.ALIGN_LEFT)
 
             hbox = wx.BoxSizer(wx.HORIZONTAL)
             vbox.Add(hbox)
 
             lbl = wx.StaticText(contentPanel, wx.ID_ANY, "0.00 ISK")
-            setattr(self, "labelPrice%s" % type.capitalize(), lbl)
+            setattr(self, "labelPrice%s" % _type.capitalize(), lbl)
             hbox.Add(lbl, 0, wx.ALIGN_LEFT)
 
     def refreshPanel(self, fit):
         if fit is not None:
             self.fit = fit
 
-            typeIDs = Price.fitItemsList(fit)
+            fit_items = Price.fitItemsList(fit)
 
-            sMkt = Market.getInstance()
-            sMkt.getPrices(typeIDs, self.processPrices)
+            sPrice = Price.getInstance()
+            sPrice.getPrices(fit_items, self.processPrices)
             self.labelEMStatus.SetLabel("Updating prices...")
-        else:
-            self.labelEMStatus.SetLabel("")
-            self.labelPriceShip.SetLabel("0.0 ISK")
-            self.labelPriceFittings.SetLabel("0.0 ISK")
-            self.labelPriceTotal.SetLabel("0.0 ISK")
-            self._cachedFittings = self._cachedShip = self._cachedTotal = 0
-            self.panel.Layout()
+
+        self.refreshPanelPrices(fit)
+        self.panel.Layout()
+
+    def refreshPanelPrices(self, fit=None):
+
+        ship_price = 0
+        module_price = 0
+        drone_price = 0
+        fighter_price = 0
+        cargo_price = 0
+        booster_price = 0
+        implant_price = 0
+
+        if fit:
+            ship_price = fit.ship.item.price.price
+
+            if fit.modules:
+                for module in fit.modules:
+                    if not module.isEmpty:
+                        module_price += module.item.price.price
+
+            if fit.drones:
+                for drone in fit.drones:
+                    drone_price += drone.item.price.price * drone.amount
+
+            if fit.fighters:
+                for fighter in fit.fighters:
+                    fighter_price += fighter.item.price.price * fighter.amount
+
+            if fit.cargo:
+                for cargo in fit.cargo:
+                    cargo_price += cargo.item.price.price * cargo.amount
+
+            if fit.boosters:
+                for booster in fit.boosters:
+                    booster_price += booster.item.price.price
+
+            if fit.implants:
+                for implant in fit.implants:
+                    implant_price += implant.item.price.price
+
+        fitting_price = module_price + drone_price + fighter_price + cargo_price + booster_price + implant_price
+        total_price = ship_price + fitting_price
+
+        self.labelPriceShip.SetLabel("%s ISK" % formatAmount(ship_price, 3, 3, 9, currency=True))
+        self.labelPriceShip.SetToolTip(wx.ToolTip('{:,.2f}'.format(ship_price)))
+
+        self.labelPriceFittings.SetLabel("%s ISK" % formatAmount(module_price, 3, 3, 9, currency=True))
+        self.labelPriceFittings.SetToolTip(wx.ToolTip('{:,.2f}'.format(module_price)))
+
+        self.labelPriceDrones.SetLabel("%s ISK" % formatAmount(drone_price + fighter_price, 3, 3, 9, currency=True))
+        self.labelPriceDrones.SetToolTip(wx.ToolTip('{:,.2f}'.format(drone_price + fighter_price)))
+
+        self.labelPriceCargobay.SetLabel("%s ISK" % formatAmount(cargo_price, 3, 3, 9, currency=True))
+        self.labelPriceCargobay.SetToolTip(wx.ToolTip('{:,.2f}'.format(cargo_price)))
+
+        self.labelPriceCharacter.SetLabel("%s ISK" % formatAmount(booster_price + implant_price, 3, 3, 9, currency=True))
+        self.labelPriceCharacter.SetToolTip(wx.ToolTip('{:,.2f}'.format(booster_price + implant_price)))
+
+        self.labelPriceTotal.SetLabel("%s ISK" % formatAmount(total_price, 3, 3, 9, currency=True))
+        self.labelPriceTotal.SetToolTip(wx.ToolTip('{:,.2f}'.format(total_price)))
 
     def processPrices(self, prices):
-        shipPrice = prices[0].price
-        modPrice = sum(map(lambda p: p.price or 0, prices[1:]))
+        self.refreshPanelPrices(self.fit)
 
         self.labelEMStatus.SetLabel("")
-
-        if self._cachedShip != shipPrice:
-            self.labelPriceShip.SetLabel("%s ISK" % formatAmount(shipPrice, 3, 3, 9, currency=True))
-            self.labelPriceShip.SetToolTip(wx.ToolTip('{:,.2f}'.format(shipPrice)))
-            self._cachedShip = shipPrice
-        if self._cachedFittings != modPrice:
-            self.labelPriceFittings.SetLabel("%s ISK" % formatAmount(modPrice, 3, 3, 9, currency=True))
-            self.labelPriceFittings.SetToolTip(wx.ToolTip('{:,.2f}'.format(modPrice)))
-            self._cachedFittings = modPrice
-        if self._cachedTotal != (shipPrice + modPrice):
-            self.labelPriceTotal.SetLabel("%s ISK" % formatAmount(shipPrice + modPrice, 3, 3, 9, currency=True))
-            self.labelPriceTotal.SetToolTip(wx.ToolTip('{:,.2f}'.format(shipPrice + modPrice)))
-            self._cachedTotal = shipPrice + modPrice
         self.panel.Layout()
 
 

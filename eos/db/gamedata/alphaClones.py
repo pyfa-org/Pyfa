@@ -40,11 +40,11 @@ alphacloneskskills_table = Table(
 
 mapper(AlphaClone, alphaclones_table,
        properties={
-           "ID": synonym("alphaCloneID"),
+           "ID"    : synonym("alphaCloneID"),
            "skills": relation(
-               AlphaCloneSkill,
-               cascade="all,delete-orphan",
-               backref="clone")
+                   AlphaCloneSkill,
+                   cascade="all,delete-orphan",
+                   backref="clone")
        })
 
 mapper(AlphaCloneSkill, alphacloneskskills_table)

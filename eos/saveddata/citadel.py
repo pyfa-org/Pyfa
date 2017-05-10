@@ -29,7 +29,7 @@ class Citadel(Ship):
         if item.category.name != "Structure":
             pyfalog.error("Passed item '{0}' (category: {1}) is not under Structure category", item.name, item.category.name)
             raise ValueError(
-                'Passed item "%s" (category: (%s)) is not under Structure category' % (item.name, item.category.name))
+                    'Passed item "%s" (category: (%s)) is not under Structure category' % (item.name, item.category.name))
 
     def __deepcopy__(self, memo):
         copy = Citadel(self.item)
@@ -37,5 +37,5 @@ class Citadel(Ship):
 
     def __repr__(self):
         return "Citadel(ID={}, name={}) at {}".format(
-            self.item.ID, self.item.name, hex(id(self))
+                self.item.ID, self.item.name, hex(id(self))
         )

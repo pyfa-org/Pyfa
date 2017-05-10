@@ -17,8 +17,9 @@
 # along with eos.  If not, see <http://www.gnu.org/licenses/>.
 # ===============================================================================
 
-from sqlalchemy import Table, Column, Integer, ForeignKey, CheckConstraint, Boolean
+from sqlalchemy import Table, Column, Integer, ForeignKey, CheckConstraint, Boolean, DateTime
 from sqlalchemy.orm import relation, mapper
+import datetime
 
 from eos.db import saveddata_meta
 from eos.saveddata.module import Module
@@ -33,6 +34,8 @@ modules_table = Table("modules", saveddata_meta,
                       Column("state", Integer, CheckConstraint("state >= -1"), CheckConstraint("state <= 2")),
                       Column("projected", Boolean, default=False, nullable=False),
                       Column("position", Integer),
+                      Column("created", DateTime, nullable=True, default=datetime.datetime.now),
+                      Column("modified", DateTime, nullable=True, onupdate=datetime.datetime.now),
                       CheckConstraint('("dummySlot" = NULL OR "itemID" = NULL) AND "dummySlot" != "itemID"'))
 
 mapper(Module, modules_table,

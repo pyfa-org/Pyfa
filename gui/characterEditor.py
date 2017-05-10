@@ -20,6 +20,7 @@
 # noinspection PyPackageRequirements
 import wx
 
+from utils.floatspin import FloatSpin
 # noinspection PyPackageRequirements
 import wx.lib.newevent
 # noinspection PyPackageRequirements
@@ -61,6 +62,28 @@ class CharacterTextValidor(BaseValidator):
             wx.MessageBox(u"{}".format(e), "Error")
             textCtrl.SetFocus()
             return False
+
+
+class PlaceholderTextCtrl(wx.TextCtrl):
+    def __init__(self, *args, **kwargs):
+        self.default_text = kwargs.pop("placeholder", "")
+        kwargs["value"] = self.default_text
+        wx.TextCtrl.__init__(self, *args, **kwargs)
+        self.Bind(wx.EVT_SET_FOCUS, self.OnFocus)
+        self.Bind(wx.EVT_KILL_FOCUS, self.OnKillFocus)
+
+    def OnFocus(self, evt):
+        if self.GetValue() == self.default_text:
+            self.SetValue("")
+        evt.Skip()
+
+    def OnKillFocus(self, evt):
+        if self.GetValue().strip() == "":
+            self.SetValue(self.default_text)
+        evt.Skip()
+
+    def Reset(self):
+        self.SetValue(self.default_text)
 
 
 class CharacterEntityEditor(EntityEditor):
@@ -252,10 +275,16 @@ class SkillTreeView(wx.Panel):
 
         pmainSizer = wx.BoxSizer(wx.VERTICAL)
 
+        hSizer = wx.BoxSizer(wx.HORIZONTAL)
+
         self.clonesChoice = wx.Choice(self, wx.ID_ANY, style=0)
         i = self.clonesChoice.Append("Omega Clone", None)
         self.clonesChoice.SetSelection(i)
-        pmainSizer.Add(self.clonesChoice, 0, wx.ALL | wx.EXPAND, 5)
+        hSizer.Add(self.clonesChoice, 5, wx.ALL | wx.EXPAND, 5)
+
+        self.searchInput = PlaceholderTextCtrl(self, wx.ID_ANY, placeholder="Search...")
+        hSizer.Add(self.searchInput, 1, wx.ALL | wx.EXPAND, 5)
+        self.searchInput.Bind(wx.EVT_TEXT, self.delaySearch)
 
         sChar = Character.getInstance()
         self.alphaClones = sChar.getAlphaCloneList()
@@ -267,6 +296,12 @@ class SkillTreeView(wx.Panel):
                 self.clonesChoice.SetSelection(i)
 
         self.clonesChoice.Bind(wx.EVT_CHOICE, self.cloneChanged)
+
+        pmainSizer.Add(hSizer, 0, wx.EXPAND | wx.ALL, 5)
+
+        # Set up timer for skill search
+        self.searchTimer = wx.Timer(self)
+        self.Bind(wx.EVT_TIMER, self.populateSkillTreeSkillSearch, self.searchTimer)
 
         tree = self.skillTreeListCtrl = wx.gizmos.TreeListCtrl(self, wx.ID_ANY, style=wx.TR_DEFAULT_STYLE | wx.TR_HIDE_ROOT)
         pmainSizer.Add(tree, 1, wx.EXPAND | wx.ALL, 5)
@@ -284,10 +319,18 @@ class SkillTreeView(wx.Panel):
 
         tree.SetColumnWidth(0, 500)
 
+        self.btnSecStatus = wx.Button(self, wx.ID_ANY, "Sec Status: {0:.2f}".format(char.secStatus or 0.0))
+        self.btnSecStatus.Bind(wx.EVT_BUTTON, self.onSecStatus)
+
         self.populateSkillTree()
 
         tree.Bind(wx.EVT_TREE_ITEM_EXPANDING, self.expandLookup)
         tree.Bind(wx.EVT_TREE_ITEM_RIGHT_CLICK, self.scheduleMenu)
+
+        bSizerButtons = wx.BoxSizer(wx.HORIZONTAL)
+
+        bSizerButtons.Add(self.btnSecStatus, 0, wx.ALL, 5)
+        pmainSizer.Add(bSizerButtons, 0, wx.EXPAND, 5)
 
         # bind the Character selection event
         self.charEditor.entityEditor.Bind(wx.EVT_CHOICE, self.charChanged)
@@ -322,19 +365,57 @@ class SkillTreeView(wx.Panel):
 
         self.Layout()
 
+    def onSecStatus(self, event):
+        sChar = Character.getInstance()
+        char = self.charEditor.entityEditor.getActiveEntity()
+        myDlg = SecStatusDialog(self, char.secStatus or 0.0)
+        res = myDlg.ShowModal()
+        if res == wx.ID_OK:
+            value = myDlg.floatSpin.GetValue()
+            sChar.setSecStatus(char, value)
+            self.btnSecStatus.SetLabel("Sec Status: {0:.2f}".format(value))
+        myDlg.Destroy()
+
+    def delaySearch(self, evt):
+        if self.searchInput.GetValue() == "" or self.searchInput.GetValue() == self.searchInput.default_text:
+            self.populateSkillTree()
+        else:
+            self.searchTimer.Stop()
+            self.searchTimer.Start(150, True)  # 150ms
+
     def cloneChanged(self, event):
         sChar = Character.getInstance()
         sChar.setAlphaClone(self.charEditor.entityEditor.getActiveEntity(), event.ClientData)
         self.populateSkillTree()
 
     def charChanged(self, event=None):
+        self.searchInput.Reset()
         char = self.charEditor.entityEditor.getActiveEntity()
         for i in range(self.clonesChoice.GetCount()):
             cloneID = self.clonesChoice.GetClientData(i)
             if char.alphaCloneID == cloneID:
                 self.clonesChoice.SetSelection(i)
 
+        self.btnSecStatus.SetLabel("Sec Status: {0:.2f}".format(char.secStatus or 0.0))
+
         self.populateSkillTree(event)
+
+    def populateSkillTreeSkillSearch(self, event=None):
+        sChar = Character.getInstance()
+        char = self.charEditor.entityEditor.getActiveEntity()
+        search = self.searchInput.GetLineText(0)
+
+        root = self.root
+        tree = self.skillTreeListCtrl
+        tree.DeleteChildren(root)
+
+        for id, name in sChar.getSkillsByName(search):
+            iconId = self.skillBookImageId
+            childId = tree.AppendItem(root, name, iconId, data=wx.TreeItemData(('skill', id)))
+            level, dirty = sChar.getSkillLevel(char.ID, id)
+            tree.SetItemText(childId, "Level %d" % int(level) if isinstance(level, float) else level, 1)
+            if dirty:
+                tree.SetItemTextColour(childId, wx.BLUE)
 
     def populateSkillTree(self, event=None):
         sChar = Character.getInstance()
@@ -343,8 +424,10 @@ class SkillTreeView(wx.Panel):
 
         if char.name in ("All 0", "All 5"):
             self.clonesChoice.Disable()
+            self.btnSecStatus.Disable()
         else:
             self.clonesChoice.Enable()
+            self.btnSecStatus.Enable()
 
         groups = sChar.getSkillGroups()
         imageId = self.skillBookImageId
@@ -354,7 +437,7 @@ class SkillTreeView(wx.Panel):
 
         for id, name in groups:
             childId = tree.AppendItem(root, name, imageId)
-            tree.SetPyData(childId, id)
+            tree.SetPyData(childId, ('group', id))
             tree.AppendItem(childId, "dummy")
             if id in dirtyGroups:
                 tree.SetItemTextColour(childId, wx.BLUE)
@@ -374,11 +457,12 @@ class SkillTreeView(wx.Panel):
             # Get the real intrestin' stuff
             sChar = Character.getInstance()
             char = self.charEditor.entityEditor.getActiveEntity()
-            for id, name in sChar.getSkills(tree.GetPyData(root)):
+            data = tree.GetPyData(root)
+            for id, name in sChar.getSkills(data[1]):
                 iconId = self.skillBookImageId
-                childId = tree.AppendItem(root, name, iconId, data=wx.TreeItemData(id))
+                childId = tree.AppendItem(root, name, iconId, data=wx.TreeItemData(('skill', id)))
                 level, dirty = sChar.getSkillLevel(char.ID, id)
-                tree.SetItemText(childId, "Level %d" % level if isinstance(level, int) else level, 1)
+                tree.SetItemText(childId, "Level %d" % int(level) if isinstance(level, float) else level, 1)
                 if dirty:
                     tree.SetItemTextColour(childId, wx.BLUE)
 
@@ -395,11 +479,12 @@ class SkillTreeView(wx.Panel):
 
         char = self.charEditor.entityEditor.getActiveEntity()
         sMkt = Market.getInstance()
+        id = self.skillTreeListCtrl.GetPyData(item)[1]
         if char.name not in ("All 0", "All 5"):
-            self.levelChangeMenu.selection = sMkt.getItem(self.skillTreeListCtrl.GetPyData(item))
+            self.levelChangeMenu.selection = sMkt.getItem(id)
             self.PopupMenu(self.levelChangeMenu)
         else:
-            self.statsMenu.selection = sMkt.getItem(self.skillTreeListCtrl.GetPyData(item))
+            self.statsMenu.selection = sMkt.getItem(id)
             self.PopupMenu(self.statsMenu)
 
     def changeLevel(self, event):
@@ -408,26 +493,54 @@ class SkillTreeView(wx.Panel):
         sChar = Character.getInstance()
         char = self.charEditor.entityEditor.getActiveEntity()
         selection = self.skillTreeListCtrl.GetSelection()
-        skillID = self.skillTreeListCtrl.GetPyData(selection)
+        dataType, skillID = self.skillTreeListCtrl.GetPyData(selection)
 
         if level is not None:
-            self.skillTreeListCtrl.SetItemText(selection, "Level %d" % level if isinstance(level, int) else level, 1)
             sChar.changeLevel(char.ID, skillID, level, persist=True)
         elif event.Id == self.revertID:
             sChar.revertLevel(char.ID, skillID)
         elif event.Id == self.saveID:
             sChar.saveSkill(char.ID, skillID)
 
-        self.skillTreeListCtrl.SetItemTextColour(selection, None)
+        # After saving the skill, we need to update not just the selected skill, but all open skills due to strict skill
+        # level setting. We don't want to refresh tree, as that will lose all expanded categories and users location
+        # within the tree. Thus, we loop through the tree and refresh the info.
+        # @todo: when collapsing branch, remove the data. This will make this loop more performant
+        child, cookie = self.skillTreeListCtrl.GetFirstChild(self.root)
+
+        def _setTreeSkillLevel(treeItem, skillID):
+            lvl, dirty = sChar.getSkillLevel(char.ID, skillID)
+            self.skillTreeListCtrl.SetItemText(treeItem,
+                                               "Level {}".format(int(lvl)) if not isinstance(lvl, basestring) else lvl,
+                                               1)
+            if not dirty:
+                self.skillTreeListCtrl.SetItemTextColour(treeItem, None)
+
+        while child.IsOk():
+            # child = Skill category
+            dataType, id = self.skillTreeListCtrl.GetPyData(child)
+            if dataType == 'skill':
+                _setTreeSkillLevel(child, id)
+            else:
+                grand, cookie2 = self.skillTreeListCtrl.GetFirstChild(child)
+
+                while grand.IsOk():
+                    if self.skillTreeListCtrl.GetItemText(grand) != "dummy":
+                        _, skillID = self.skillTreeListCtrl.GetPyData(grand)
+                        _setTreeSkillLevel(grand, skillID)
+                    grand, cookie2 = self.skillTreeListCtrl.GetNextChild(child, cookie2)
+
+            child, cookie = self.skillTreeListCtrl.GetNextChild(self.root, cookie)
 
         dirtySkills = sChar.getDirtySkills(char.ID)
         dirtyGroups = set([skill.item.group.ID for skill in dirtySkills])
 
         parentID = self.skillTreeListCtrl.GetItemParent(selection)
-        groupID = self.skillTreeListCtrl.GetPyData(parentID)
+        parent = self.skillTreeListCtrl.GetPyData(parentID)
 
-        if groupID not in dirtyGroups:
-            self.skillTreeListCtrl.SetItemTextColour(parentID, None)
+        if parent:
+            if parent[1] in dirtyGroups:
+                self.skillTreeListCtrl.SetItemTextColour(parentID, None)
 
         event.Skip()
 
@@ -657,14 +770,19 @@ class APIView(wx.Panel):
     def fetchSkills(self, event):
         charName = self.charChoice.GetString(self.charChoice.GetSelection())
         if charName:
-            try:
-                sChar = Character.getInstance()
-                activeChar = self.charEditor.entityEditor.getActiveEntity()
-                sChar.apiFetch(activeChar.ID, charName)
-                self.stStatus.SetLabel("Successfully fetched %s\'s skills from EVE API." % charName)
-            except Exception, e:
-                pyfalog.error("Unable to retrieve {0}\'s skills. Error message:\n{1}", charName, e)
-                self.stStatus.SetLabel("Unable to retrieve %s\'s skills. Error message:\n%s" % (charName, e))
+            sChar = Character.getInstance()
+            activeChar = self.charEditor.entityEditor.getActiveEntity()
+            sChar.apiFetch(activeChar.ID, charName, self.__fetchCallback)
+            self.stStatus.SetLabel("Getting skills for {}".format(charName))
+
+    def __fetchCallback(self, e=None):
+        charName = self.charChoice.GetString(self.charChoice.GetSelection())
+        if e is None:
+            self.stStatus.SetLabel("Successfully fetched {}\'s skills from EVE API.".format(charName))
+        else:
+            exc_type, exc_obj, exc_trace = e
+            pyfalog.error("Unable to retrieve {0}\'s skills. Error message:\n{1}".format(charName, exc_obj))
+            self.stStatus.SetLabel("Unable to retrieve {}\'s skills. Error message:\n{}".format(charName, exc_obj))
 
 
 class SaveCharacterAs(wx.Dialog):
@@ -695,3 +813,30 @@ class SaveCharacterAs(wx.Dialog):
 
         event.Skip()
         self.Close()
+
+
+class SecStatusDialog(wx.Dialog):
+
+    def __init__(self, parent, sec):
+        wx.Dialog.__init__(self, parent, title="Set Security Status", size=(275, 175))
+
+        self.SetSizeHintsSz(wx.DefaultSize, wx.DefaultSize)
+
+        bSizer1 = wx.BoxSizer(wx.VERTICAL)
+
+        self.m_staticText1 = wx.StaticText(self, wx.ID_ANY,
+                                        u"Security Status is used in some CONCORD hull calculations; you can set the characters security status here",
+                                        wx.DefaultPosition, wx.DefaultSize, 0)
+        self.m_staticText1.Wrap(-1)
+        bSizer1.Add(self.m_staticText1, 1, wx.ALL | wx.EXPAND, 5)
+
+        self.floatSpin = FloatSpin(self, value=sec, min_val=-5.0, max_val=5.0, increment=0.1, digits=2, size=(100, -1))
+        bSizer1.Add(self.floatSpin, 0, wx.ALIGN_CENTER | wx.ALL, 5)
+
+        btnOk = wx.Button(self, wx.ID_OK)
+        bSizer1.Add(btnOk, 0, wx.ALIGN_RIGHT | wx.ALL, 5)
+
+        self.SetSizer(bSizer1)
+        self.Layout()
+
+        self.Centre(wx.BOTH)

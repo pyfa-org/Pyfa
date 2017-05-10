@@ -125,7 +125,7 @@ class CargoView(d.Display):
             if not mstate.CmdDown():  # if not copying, remove module
                 sFit.removeModule(self.mainFrame.getActiveFit(), module.position)
 
-        wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=self.mainFrame.getActiveFit()))
+        wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=self.mainFrame.getActiveFit(), action="moddel", typeID=module.item.ID))
 
     def fitChanged(self, event):
         sFit = Fit.getInstance()

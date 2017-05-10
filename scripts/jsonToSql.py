@@ -49,9 +49,9 @@ def main(db, json_path):
     tables = {
         "clonegrades": eos.gamedata.AlphaCloneSkill,
         "dgmattribs": eos.gamedata.AttributeInfo,
-        "dgmeffects": eos.gamedata.EffectInfo,
+        "dgmeffects": eos.gamedata.Effect,
         "dgmtypeattribs": eos.gamedata.Attribute,
-        "dgmtypeeffects": eos.gamedata.Effect,
+        "dgmtypeeffects": eos.gamedata.ItemEffect,
         "dgmunits": eos.gamedata.Unit,
         "icons": eos.gamedata.Icon,
         "evecategories": eos.gamedata.Category,
@@ -62,7 +62,6 @@ def main(db, json_path):
         "phbtraits": eos.gamedata.Traits,
         "phbmetadata": eos.gamedata.MetaData,
         "mapbulk_marketGroups": eos.gamedata.MarketGroup,
-
     }
 
     fieldMapping = {

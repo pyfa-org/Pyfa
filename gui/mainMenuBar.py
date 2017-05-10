@@ -22,6 +22,7 @@ import wx
 
 import config
 from service.character import Character
+from service.fit import Fit
 import gui.graphFrame
 import gui.globalEvents as GE
 from gui.bitmapLoader import BitmapLoader
@@ -57,6 +58,7 @@ class MainMenuBar(wx.MenuBar):
         self.attrEditorId = wx.NewId()
         self.toggleOverridesId = wx.NewId()
         self.importDatabaseDefaultsId = wx.NewId()
+        self.toggleIgnoreRestrictionID = wx.NewId()
 
         if 'wxMac' in wx.PlatformInfo and wx.VERSION >= (3, 0):
             wx.ID_COPY = wx.NewId()
@@ -96,6 +98,8 @@ class MainMenuBar(wx.MenuBar):
         editMenu.Append(self.saveCharId, "Save Character")
         editMenu.Append(self.saveCharAsId, "Save Character As...")
         editMenu.Append(self.revertCharId, "Revert Character")
+        editMenu.AppendSeparator()
+        self.ignoreRestrictionItem = editMenu.Append(self.toggleIgnoreRestrictionID, "Ignore Fitting Restrictions")
 
         # Character menu
         windowMenu = wx.Menu()
@@ -170,7 +174,6 @@ class MainMenuBar(wx.MenuBar):
         self.mainFrame.Bind(GE.FIT_CHANGED, self.fitChanged)
 
     def fitChanged(self, event):
-        pyfalog.debug("fitChanged triggered")
         enable = event.fitID is not None
         self.Enable(wx.ID_SAVEAS, enable)
         self.Enable(wx.ID_COPY, enable)
@@ -184,5 +187,16 @@ class MainMenuBar(wx.MenuBar):
         self.Enable(self.saveCharId, not char.ro and char.isDirty)
         self.Enable(self.saveCharAsId, char.isDirty)
         self.Enable(self.revertCharId, char.isDirty)
+
+        self.Enable(self.toggleIgnoreRestrictionID, enable)
+
+        if event.fitID:
+            sFit = Fit.getInstance()
+            fit = sFit.getFit(event.fitID)
+
+            if fit.ignoreRestrictions:
+                self.ignoreRestrictionItem.SetItemLabel("Enable Fitting Restrictions")
+            else:
+                self.ignoreRestrictionItem.SetItemLabel("Disable Fitting Restrictions")
 
         event.Skip()

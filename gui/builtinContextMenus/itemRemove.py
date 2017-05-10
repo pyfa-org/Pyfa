@@ -21,12 +21,14 @@ class ItemRemove(ContextMenu):
                               "boosterItem", "projectedModule",
                               "projectedCharge", "cargoItem",
                               "projectedFit", "projectedDrone",
-                              "fighterItem", "projectedFighter")
+                              "fighterItem", "projectedFighter",
+                              "commandFit")
 
     def getText(self, itmContext, selection):
         return "Remove {0}".format(itmContext if itmContext is not None else "Item")
 
     def activate(self, fullContext, selection, i):
+
         srcContext = fullContext[0]
         sFit = Fit.getInstance()
         fitID = self.mainFrame.getActiveFit()
@@ -48,8 +50,10 @@ class ItemRemove(ContextMenu):
             sFit.removeBooster(fitID, fit.boosters.index(selection[0]))
         elif srcContext == "cargoItem":
             sFit.removeCargo(fitID, fit.cargo.index(selection[0]))
-        else:
+        elif srcContext == "projectedFit":
             sFit.removeProjected(fitID, selection[0])
+        elif srcContext == "commandFit":
+            sFit.removeCommand(fitID, selection[0])
 
         wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fitID))
 

@@ -43,6 +43,7 @@ from eos.saveddata.citadel import Citadel
 from eos.saveddata.fit import Fit
 from service.market import Market
 from service.attribute import Attribute
+from service.price import Price as ServicePrice
 import gui.mainFrame
 from gui.bitmapLoader import BitmapLoader
 from gui.utils.numberFormatter import formatAmount
@@ -189,6 +190,10 @@ class ItemStatsContainer(wx.Panel):
 
         self.reqs = ItemRequirements(self.nbContainer, stuff, item)
         self.nbContainer.AddPage(self.reqs, "Requirements")
+
+        if context == "Skill":
+            self.dependents = ItemDependents(self.nbContainer, stuff, item)
+            self.nbContainer.AddPage(self.dependents, "Dependents")
 
         self.effects = ItemEffects(self.nbContainer, stuff, item)
         self.nbContainer.AddPage(self.effects, "Effects")
@@ -530,6 +535,10 @@ class ItemParams(wx.Panel):
 
 class ItemCompare(wx.Panel):
     def __init__(self, parent, stuff, item, items, context=None):
+        # Start dealing with Price stuff to get that thread going
+        sPrice = ServicePrice.getInstance()
+        sPrice.getPrices(items, self.UpdateList)
+
         wx.Panel.__init__(self, parent)
         mainSizer = wx.BoxSizer(wx.VERTICAL)
 
@@ -586,11 +595,10 @@ class ItemCompare(wx.Panel):
                                              wx.DefaultSize, 0)
         bSizer.Add(self.toggleViewBtn, 0, wx.ALIGN_CENTER_VERTICAL)
 
-        if stuff is not None:
-            self.refreshBtn = wx.Button(self, wx.ID_ANY, u"Refresh", wx.DefaultPosition, wx.DefaultSize,
-                                        wx.BU_EXACTFIT)
-            bSizer.Add(self.refreshBtn, 0, wx.ALIGN_CENTER_VERTICAL)
-            self.refreshBtn.Bind(wx.EVT_BUTTON, self.RefreshValues)
+        self.refreshBtn = wx.Button(self, wx.ID_ANY, u"Refresh", wx.DefaultPosition, wx.DefaultSize,
+                                    wx.BU_EXACTFIT)
+        bSizer.Add(self.refreshBtn, 0, wx.ALIGN_CENTER_VERTICAL)
+        self.refreshBtn.Bind(wx.EVT_BUTTON, self.RefreshValues)
 
         mainSizer.Add(bSizer, 0, wx.ALIGN_RIGHT)
 
@@ -605,7 +613,8 @@ class ItemCompare(wx.Panel):
         self.PopulateList(event.Column)
         self.Thaw()
 
-    def UpdateList(self):
+    def UpdateList(self, items=None):
+        # We do nothing with `items`, but it gets returned by the price service thread
         self.Freeze()
         self.paramList.ClearAll()
         self.PopulateList()
@@ -623,7 +632,7 @@ class ItemCompare(wx.Panel):
 
     def processPrices(self, prices):
         for i, price in enumerate(prices):
-            self.paramList.SetStringItem(i, len(self.attrs) + 1, formatAmount(price.price, 3, 3, 9, currency=True))
+            self.paramList.SetStringItem(i, len(self.attrs) + 1, formatAmount(price.value, 3, 3, 9, currency=True))
 
     def PopulateList(self, sort=None):
 
@@ -660,9 +669,6 @@ class ItemCompare(wx.Panel):
         self.paramList.InsertColumn(len(self.attrs) + 1, "Price")
         self.paramList.SetColumnWidth(len(self.attrs) + 1, 60)
 
-        sMkt = Market.getInstance()
-        sMkt.getPrices([x.ID for x in self.items], self.processPrices)
-
         for item in self.items:
             i = self.paramList.InsertStringItem(sys.maxint, item.name)
             for x, attr in enumerate(self.attrs.keys()):
@@ -677,6 +683,9 @@ class ItemCompare(wx.Panel):
                         valueUnit = formatAmount(value, 3, 0, 0)
 
                     self.paramList.SetStringItem(i, x + 1, valueUnit)
+
+            # Add prices
+            self.paramList.SetStringItem(i, len(self.attrs) + 1, formatAmount(item.price.price, 3, 3, 9, currency=True))
 
         self.paramList.RefreshRows()
         self.Layout()
@@ -755,6 +764,55 @@ class ItemRequirements(wx.Panel):
             if skill.ID not in self.skillIdHistory:
                 self.getFullSkillTree(skill, child, sbIconId)
                 self.skillIdHistory.append(skill.ID)
+
+
+class ItemDependents(wx.Panel):
+    def __init__(self, parent, stuff, item):
+        wx.Panel.__init__(self, parent, style=wx.TAB_TRAVERSAL)
+
+        # itemId is set by the parent.
+        self.romanNb = ["0", "I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX", "X"]
+        self.skillIdHistory = []
+        mainSizer = wx.BoxSizer(wx.VERTICAL)
+
+        self.reqTree = wx.TreeCtrl(self, style=wx.TR_DEFAULT_STYLE | wx.TR_HIDE_ROOT | wx.NO_BORDER)
+
+        mainSizer.Add(self.reqTree, 1, wx.ALL | wx.EXPAND, 0)
+
+        self.SetSizer(mainSizer)
+        self.root = self.reqTree.AddRoot("WINRARZOR")
+        self.reqTree.SetPyData(self.root, None)
+
+        self.imageList = wx.ImageList(16, 16)
+        self.reqTree.SetImageList(self.imageList)
+        skillBookId = self.imageList.Add(BitmapLoader.getBitmap("skill_small", "gui"))
+
+        self.getFullSkillTree(item, self.root, skillBookId)
+
+        self.Layout()
+
+    def getFullSkillTree(self, parentSkill, parent, sbIconId):
+        levelToItems = {}
+
+        for item, level in parentSkill.requiredFor.iteritems():
+            if level not in levelToItems:
+                levelToItems[level] = []
+            levelToItems[level].append(item)
+
+        for x in sorted(levelToItems.keys()):
+            items = levelToItems[x]
+            items.sort(key=lambda x: x.name)
+
+            child = self.reqTree.AppendItem(parent, "Level {}".format(self.romanNb[int(x)]), sbIconId)
+            for item in items:
+
+                if item.icon:
+                    bitmap = BitmapLoader.getBitmap(item.icon.iconFile, "icons")
+                    itemIcon = self.imageList.Add(bitmap) if bitmap else -1
+                else:
+                    itemIcon = -1
+
+                self.reqTree.AppendItem(child, "{}".format(item.name), itemIcon)
 
 
 class ItemEffects(wx.Panel):
@@ -1043,7 +1101,7 @@ class ItemAffectedBy(wx.Panel):
         container = {}
         for attrName in attributes.iterAfflictions():
             # if value is 0 or there has been no change from original to modified, return
-            if attributes[attrName] == (attributes.getOriginal(attrName) or 0):
+            if attributes[attrName] == (attributes.getOriginal(attrName, 0)):
                 continue
 
             for fit, afflictors in attributes.getAfflictions(attrName).iteritems():
@@ -1139,11 +1197,13 @@ class ItemAffectedBy(wx.Panel):
                     if projected:
                         displayStr += " (projected)"
 
-                    if attrModifier == "s*":
-                        attrModifier = "*"
-                        penalized = "(penalized)"
-                    else:
-                        penalized = ""
+                    penalized = ""
+                    if '*' in attrModifier:
+                        if 's' in attrModifier:
+                            penalized += "(penalized)"
+                        if 'r' in attrModifier:
+                            penalized += "(resisted)"
+                    attrModifier = "*"
 
                     # this is the Module node, the attribute will be attached to this
                     display = "%s %s %.2f %s" % (displayStr, attrModifier, attrAmount, penalized)
@@ -1170,7 +1230,7 @@ class ItemAffectedBy(wx.Panel):
         container = {}
         for attrName in attributes.iterAfflictions():
             # if value is 0 or there has been no change from original to modified, return
-            if attributes[attrName] == (attributes.getOriginal(attrName) or 0):
+            if attributes[attrName] == (attributes.getOriginal(attrName, 0)):
                 continue
 
             for fit, afflictors in attributes.getAfflictions(attrName).iteritems():
@@ -1269,11 +1329,13 @@ class ItemAffectedBy(wx.Panel):
                         else:
                             attrIcon = self.imageList.Add(BitmapLoader.getBitmap("7_15", "icons"))
 
-                        if attrModifier == "s*":
-                            attrModifier = "*"
-                            penalized = "(penalized)"
-                        else:
-                            penalized = ""
+                        penalized = ""
+                        if '*' in attrModifier:
+                            if 's' in attrModifier:
+                                penalized += "(penalized)"
+                            if 'r' in attrModifier:
+                                penalized += "(resisted)"
+                        attrModifier = "*"
 
                         attributes.append((attrName, (displayName if displayName != "" else attrName), attrModifier,
                                            attrAmount, penalized, attrIcon))
@@ -1376,21 +1438,20 @@ class ItemProperties(wx.Panel):
                 else:
                     attrName = name.title()
                     value = getattr(self.item, name)
-            except Exception as e:
+
+                index = self.paramList.InsertStringItem(sys.maxint, attrName)
+                # index = self.paramList.InsertImageStringItem(sys.maxint, attrName)
+                idNameMap[idCount] = attrName
+                self.paramList.SetItemData(index, idCount)
+                idCount += 1
+
+                valueUnit = str(value)
+
+                self.paramList.SetStringItem(index, 1, valueUnit)
+            except:
                 # TODO: Add logging to this.
                 # We couldn't get a property for some reason. Skip it for now.
-                print(e)
                 continue
-
-            index = self.paramList.InsertStringItem(sys.maxint, attrName)
-            # index = self.paramList.InsertImageStringItem(sys.maxint, attrName)
-            idNameMap[idCount] = attrName
-            self.paramList.SetItemData(index, idCount)
-            idCount += 1
-
-            valueUnit = str(value)
-
-            self.paramList.SetStringItem(index, 1, valueUnit)
 
         self.paramList.SortItems(lambda id1, id2: cmp(idNameMap[id1], idNameMap[id2]))
         self.paramList.RefreshRows()

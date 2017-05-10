@@ -17,8 +17,9 @@
 # along with eos.  If not, see <http://www.gnu.org/licenses/>.
 # ===============================================================================
 
-from sqlalchemy import Table, Column, Integer, ForeignKey, Boolean
+from sqlalchemy import Table, Column, Integer, ForeignKey, Boolean, DateTime
 from sqlalchemy.orm import mapper, relation
+import datetime
 
 from eos.db import saveddata_meta
 from eos.saveddata.fighterAbility import FighterAbility
@@ -31,7 +32,10 @@ fighters_table = Table("fighters", saveddata_meta,
                        Column("itemID", Integer, nullable=False),
                        Column("active", Boolean, nullable=True),
                        Column("amount", Integer, nullable=False),
-                       Column("projected", Boolean, default=False))
+                       Column("projected", Boolean, default=False),
+                       Column("created", DateTime, nullable=True, default=datetime.datetime.now),
+                       Column("modified", DateTime, nullable=True, onupdate=datetime.datetime.now)
+                       )
 
 fighter_abilities_table = Table("fightersAbilities", saveddata_meta,
                                 Column("groupID", Integer, ForeignKey("fighters.groupID"), primary_key=True,
@@ -41,11 +45,11 @@ fighter_abilities_table = Table("fightersAbilities", saveddata_meta,
 
 mapper(Fighter, fighters_table,
        properties={
-           "owner": relation(Fit),
+           "owner"              : relation(Fit),
            "_Fighter__abilities": relation(
-               FighterAbility,
-               backref="fighter",
-               cascade='all, delete, delete-orphan'),
+                   FighterAbility,
+                   backref="fighter",
+                   cascade='all, delete, delete-orphan'),
        })
 
 mapper(FighterAbility, fighter_abilities_table)

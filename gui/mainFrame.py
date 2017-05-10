@@ -72,7 +72,7 @@ from service.update import Update
 from eos.modifiedAttributeDict import ModifiedAttributeDict
 from eos.db.saveddata.loadDefaultDatabaseValues import DefaultDatabaseValues
 from eos.db.saveddata.queries import getFit as db_getFit
-from service.port import Port
+from service.port import Port, IPortUser
 from service.settings import HTMLExportSettings
 
 from time import gmtime, strftime
@@ -137,7 +137,7 @@ class OpenFitsThread(threading.Thread):
         wx.CallAfter(self.callback)
 
 
-class MainFrame(wx.Frame):
+class MainFrame(wx.Frame, IPortUser):
     __instance = None
 
     @classmethod
@@ -255,7 +255,9 @@ class MainFrame(wx.Frame):
         # Remove any fits that cause exception when fetching (non-existent fits)
         for id in fits[:]:
             try:
-                sFit.getFit(id, basic=True)
+                fit = sFit.getFit(id, basic=True)
+                if fit is None:
+                    fits.remove(id)
             except:
                 fits.remove(id)
 
@@ -419,8 +421,7 @@ class MainFrame(wx.Frame):
             format_ = dlg.GetFilterIndex()
             path = dlg.GetPath()
             if format_ == 0:
-                sPort = Port.getInstance()
-                output = sPort.exportXml(None, fit)
+                output = Port.exportXml(None, fit)
                 if '.' not in os.path.basename(path):
                     path += ".xml"
             else:
@@ -522,6 +523,9 @@ class MainFrame(wx.Frame):
         # Clipboard exports
         self.Bind(wx.EVT_MENU, self.exportToClipboard, id=wx.ID_COPY)
 
+        # Fitting Restrictions
+        self.Bind(wx.EVT_MENU, self.toggleIgnoreRestriction, id=menuBar.toggleIgnoreRestrictionID)
+
         # Graphs
         self.Bind(wx.EVT_MENU, self.openGraphFrame, id=menuBar.graphFrameId)
 
@@ -581,6 +585,24 @@ class MainFrame(wx.Frame):
 
         atable = wx.AcceleratorTable(actb)
         self.SetAcceleratorTable(atable)
+
+    def toggleIgnoreRestriction(self, event):
+
+        sFit = Fit.getInstance()
+        fitID = self.getActiveFit()
+        fit = sFit.getFit(fitID)
+
+        if not fit.ignoreRestrictions:
+            dlg = wx.MessageDialog(self, "Are you sure you wish to ignore fitting restrictions for the "
+                                         "current fit? This could lead to wildly inaccurate results and possible errors.", "Confirm", wx.YES_NO | wx.ICON_QUESTION)
+        else:
+            dlg = wx.MessageDialog(self, "Re-enabling fitting restrictions for this fit will also remove any illegal items "
+                                         "from the fit. Do you want to continue?", "Confirm", wx.YES_NO | wx.ICON_QUESTION)
+        result = dlg.ShowModal() == wx.ID_YES
+        dlg.Destroy()
+        if result:
+            sFit.toggleRestrictionIgnore(fitID)
+            wx.PostEvent(self, GE.FitChanged(fitID=fitID))
 
     def eveFittings(self, event):
         dlg = CrestFittings(self)
@@ -651,11 +673,11 @@ class MainFrame(wx.Frame):
         dlg.Show()
 
     def toggleOverrides(self, event):
-        ModifiedAttributeDict.OVERRIDES = not ModifiedAttributeDict.OVERRIDES
+        ModifiedAttributeDict.overrides_enabled = not ModifiedAttributeDict.overrides_enabled
         wx.PostEvent(self, GE.FitChanged(fitID=self.getActiveFit()))
         menu = self.GetMenuBar()
         menu.SetLabel(menu.toggleOverridesId,
-                      "Turn Overrides Off" if ModifiedAttributeDict.OVERRIDES else "Turn Overrides On")
+                      "Turn Overrides Off" if ModifiedAttributeDict.overrides_enabled else "Turn Overrides On")
 
     def saveChar(self, event):
         sChr = Character.getInstance()
@@ -790,7 +812,6 @@ class MainFrame(wx.Frame):
 
     def fileImportDialog(self, event):
         """Handles importing single/multiple EVE XML / EFT cfg fit files"""
-        sPort = Port.getInstance()
         dlg = wx.FileDialog(
             self,
             "Open One Or More Fitting Files",
@@ -804,10 +825,10 @@ class MainFrame(wx.Frame):
                 "Importing fits",
                 " " * 100,  # set some arbitrary spacing to create width in window
                 parent=self,
-                style=wx.PD_APP_MODAL | wx.PD_ELAPSED_TIME
+                style=wx.PD_CAN_ABORT | wx.PD_SMOOTH | wx.PD_ELAPSED_TIME | wx.PD_APP_MODAL
             )
-            self.progressDialog.message = None
-            sPort.importFitsThreaded(dlg.GetPaths(), self.fileImportCallback)
+            # self.progressDialog.message = None
+            Port.importFitsThreaded(dlg.GetPaths(), self)
             self.progressDialog.ShowModal()
             try:
                 dlg.Destroy()
@@ -839,9 +860,9 @@ class MainFrame(wx.Frame):
                 "Backing up %d fits to: %s" % (max_, filePath),
                 maximum=max_,
                 parent=self,
-                style=wx.PD_APP_MODAL | wx.PD_ELAPSED_TIME,
+                style=wx.PD_CAN_ABORT | wx.PD_SMOOTH | wx.PD_ELAPSED_TIME | wx.PD_APP_MODAL
             )
-            Port().backupFits(filePath, self.backupCallback)
+            Port.backupFits(filePath, self)
             self.progressDialog.ShowModal()
 
     def exportHtml(self, event):
@@ -879,7 +900,19 @@ class MainFrame(wx.Frame):
         else:
             self.progressDialog.Update(info)
 
-    def fileImportCallback(self, action, data=None):
+    def on_port_process_start(self):
+        # flag for progress dialog.
+        self.__progress_flag = True
+
+    def on_port_processing(self, action, data=None):
+        # 2017/03/29 NOTE: implementation like interface
+        wx.CallAfter(
+            self._on_port_processing, action, data
+        )
+
+        return self.__progress_flag
+
+    def _on_port_processing(self, action, data):
         """
         While importing fits from file, the logic calls back to this function to
         update progress bar to show activity. XML files can contain multiple
@@ -893,22 +926,38 @@ class MainFrame(wx.Frame):
                 1: Replace message with data
                 other: Close dialog and handle based on :action (-1 open fits, -2 display error)
         """
-
-        if action is None:
-            self.progressDialog.Pulse()
-        elif action == 1 and data != self.progressDialog.message:
-            self.progressDialog.message = data
-            self.progressDialog.Pulse(data)
-        else:
+        _message = None
+        if action & IPortUser.ID_ERROR:
             self.closeProgressDialog()
-            if action == -1:
-                self._openAfterImport(data)
-            elif action == -2:
-                dlg = wx.MessageDialog(self,
-                                       "The following error was generated\n\n%s\n\nBe aware that already processed fits were not saved" % data,
-                                       "Import Error", wx.OK | wx.ICON_ERROR)
-                if dlg.ShowModal() == wx.ID_OK:
-                    return
+            _message = "Import Error" if action & IPortUser.PROCESS_IMPORT else "Export Error"
+            dlg = wx.MessageDialog(self,
+                                   "The following error was generated\n\n%s\n\nBe aware that already processed fits were not saved" % data,
+                                   _message, wx.OK | wx.ICON_ERROR)
+            # if dlg.ShowModal() == wx.ID_OK:
+            #     return
+            dlg.ShowModal()
+            return
+
+        # data is str
+        if action & IPortUser.PROCESS_IMPORT:
+            if action & IPortUser.ID_PULSE:
+                _message = ()
+            # update message
+            elif action & IPortUser.ID_UPDATE:  # and data != self.progressDialog.message:
+                _message = data
+
+            if _message is not None:
+                self.__progress_flag, _unuse = self.progressDialog.Pulse(_message)
+            else:
+                self.closeProgressDialog()
+                if action & IPortUser.ID_DONE:
+                    self._openAfterImport(data)
+        # data is tuple(int, str)
+        elif action & IPortUser.PROCESS_EXPORT:
+            if action & IPortUser.ID_DONE:
+                self.closeProgressDialog()
+            else:
+                self.__progress_flag, _unuse = self.progressDialog.Update(data[0], data[1])
 
     def _openAfterImport(self, fits):
         if len(fits) > 0:
@@ -917,7 +966,16 @@ class MainFrame(wx.Frame):
                 wx.PostEvent(self, FitSelected(fitID=fit.ID))
                 wx.PostEvent(self.shipBrowser, Stage3Selected(shipID=fit.shipID, back=True))
             else:
-                wx.PostEvent(self.shipBrowser, ImportSelected(fits=fits, back=True))
+                fits.sort(key=lambda _fit: (_fit.ship.item.name, _fit.name))
+                results = []
+                for fit in fits:
+                    results.append((
+                        fit.ID,
+                        fit.name,
+                        fit.modifiedCoalesce,
+                        fit.ship.item
+                    ))
+                wx.PostEvent(self.shipBrowser, ImportSelected(fits=results, back=True))
 
     def closeProgressDialog(self):
         # Windows apparently handles ProgressDialogs differently. We can

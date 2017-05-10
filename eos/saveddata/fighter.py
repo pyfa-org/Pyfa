@@ -101,9 +101,11 @@ class Fighter(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
         return [FighterAbility(effect) for effect in self.item.effects.values()]
 
     def __calculateSlot(self, item):
-        types = {"Light": Slot.F_LIGHT,
-                 "Support": Slot.F_SUPPORT,
-                 "Heavy": Slot.F_HEAVY}
+        types = {
+            "Light"  : Slot.F_LIGHT,
+            "Support": Slot.F_SUPPORT,
+            "Heavy"  : Slot.F_HEAVY
+        }
 
         for t, slot in types.iteritems():
             if self.getModifiedItemAttr("fighterSquadronIs{}".format(t)):
@@ -219,11 +221,12 @@ class Fighter(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
 
     @validates("ID", "itemID", "chargeID", "amount", "amountActive")
     def validator(self, key, val):
-        map = {"ID": lambda _val: isinstance(_val, int),
-               "itemID": lambda _val: isinstance(_val, int),
-               "chargeID": lambda _val: isinstance(_val, int),
-               "amount": lambda _val: isinstance(_val, int) and _val >= -1,
-               }
+        map = {
+            "ID"      : lambda _val: isinstance(_val, int),
+            "itemID"  : lambda _val: isinstance(_val, int),
+            "chargeID": lambda _val: isinstance(_val, int),
+            "amount"  : lambda _val: isinstance(_val, int) and _val >= -1,
+        }
 
         if not map[key](val):
             raise ValueError(str(val) + " is not a valid value for " + key)

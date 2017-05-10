@@ -5,14 +5,14 @@
 type = "projected", "active"
 
 
-def handler(fit, module, context):
+def handler(fit, module, context, **kwargs):
     if "projected" in context:
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill("Gunnery"),
                                       "trackingSpeed", module.getModifiedItemAttr("trackingSpeedBonus"),
-                                      stackingPenalties=True)
+                                      stackingPenalties=True, **kwargs)
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill("Gunnery"),
                                       "maxRange", module.getModifiedItemAttr("maxRangeBonus"),
-                                      stackingPenalties=True)
+                                      stackingPenalties=True, **kwargs)
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill("Gunnery"),
                                       "falloff", module.getModifiedItemAttr("falloffBonus"),
-                                      stackingPenalties=True)
+                                      stackingPenalties=True, **kwargs)

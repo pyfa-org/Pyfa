@@ -32,8 +32,10 @@ groups_table = Table("invgroups", gamedata_meta,
                      Column("iconID", Integer, ForeignKey("icons.iconID")))
 
 mapper(Group, groups_table,
-       properties={"category": relation(Category, backref="groups"),
-                   "icon": relation(Icon),
-                   "ID": synonym("groupID"),
-                   "name": synonym("groupName"),
-                   "description": deferred(groups_table.c.description)})
+       properties={
+           "category"   : relation(Category, backref="groups"),
+           "icon"       : relation(Icon),
+           "ID"         : synonym("groupID"),
+           "name"       : synonym("groupName"),
+           "description": deferred(groups_table.c.description)
+       })

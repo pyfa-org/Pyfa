@@ -24,7 +24,13 @@ class NotesView(wx.Panel):
         sFit = Fit.getInstance()
         fit = sFit.getFit(event.fitID)
 
+        self.saveTimer.Stop()  # cancel any pending timers
+
         self.Parent.Parent.DisablePage(self, not fit or fit.isStructure)
+
+        # when switching fits, ensure that we save the notes for the previous fit
+        if self.lastFitId is not None:
+            sFit.editNotes(self.lastFitId, self.editNotes.GetValue())
 
         if event.fitID is None and self.lastFitId is not None:
             self.lastFitId = None
@@ -41,7 +47,4 @@ class NotesView(wx.Panel):
 
     def delayedSave(self, event):
         sFit = Fit.getInstance()
-        fit = sFit.getFit(self.lastFitId)
-        newNotes = self.editNotes.GetValue()
-        fit.notes = newNotes
-        wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fit.ID))
+        sFit.editNotes(self.lastFitId, self.editNotes.GetValue())

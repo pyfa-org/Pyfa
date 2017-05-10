@@ -18,11 +18,10 @@
 # ===============================================================================
 
 from sqlalchemy import Column, String, Integer, Boolean, Table, ForeignKey
-from sqlalchemy.ext.associationproxy import association_proxy
-from sqlalchemy.orm import mapper, synonym, relation, deferred
+from sqlalchemy.orm import mapper, synonym, deferred
 
 from eos.db import gamedata_meta
-from eos.gamedata import Effect, EffectInfo
+from eos.gamedata import Effect, ItemEffect
 
 typeeffects_table = Table("dgmtypeeffects", gamedata_meta,
                           Column("typeID", Integer, ForeignKey("invtypes.typeID"), primary_key=True, index=True),
@@ -34,17 +33,14 @@ effects_table = Table("dgmeffects", gamedata_meta,
                       Column("description", String),
                       Column("published", Boolean),
                       Column("isAssistance", Boolean),
-                      Column("isOffensive", Boolean))
+                      Column("isOffensive", Boolean),
+                      Column("resistanceID", Integer))
 
-mapper(EffectInfo, effects_table,
-       properties={"ID": synonym("effectID"),
-                   "name": synonym("effectName"),
-                   "description": deferred(effects_table.c.description)})
+mapper(Effect, effects_table,
+       properties={
+           "ID"         : synonym("effectID"),
+           "name"       : synonym("effectName"),
+           "description": deferred(effects_table.c.description)
+       })
 
-mapper(Effect, typeeffects_table,
-       properties={"ID": synonym("effectID"),
-                   "info": relation(EffectInfo, lazy=False)})
-
-Effect.name = association_proxy("info", "name")
-Effect.description = association_proxy("info", "description")
-Effect.published = association_proxy("info", "published")
+mapper(ItemEffect, typeeffects_table)

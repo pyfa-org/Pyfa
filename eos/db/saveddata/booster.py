@@ -17,18 +17,21 @@
 # along with eos.  If not, see <http://www.gnu.org/licenses/>.
 # ===============================================================================
 
-from sqlalchemy import Table, Column, ForeignKey, Integer, Boolean
+from sqlalchemy import Table, Column, ForeignKey, Integer, Boolean, DateTime
 from sqlalchemy.ext.associationproxy import association_proxy
 from sqlalchemy.orm import mapper, relation
+import datetime
 
 from eos.db import saveddata_meta
 from eos.saveddata.booster import Booster
 
 boosters_table = Table("boosters", saveddata_meta,
-                       Column("ID", Integer, primary_key=True),
-                       Column("itemID", Integer),
-                       Column("fitID", Integer, ForeignKey("fits.ID"), nullable=False),
-                       Column("active", Boolean),
+                        Column("ID", Integer, primary_key=True),
+                        Column("itemID", Integer),
+                        Column("fitID", Integer, ForeignKey("fits.ID"), nullable=False),
+                        Column("active", Boolean),
+                        Column("created", DateTime, nullable=True, default=datetime.datetime.now),
+                        Column("modified", DateTime, nullable=True, onupdate=datetime.datetime.now),
                        )
 
 # Legacy booster side effect code, should disable but a mapper relies on it.

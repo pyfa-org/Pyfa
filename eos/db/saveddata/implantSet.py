@@ -17,8 +17,9 @@
 # along with eos.  If not, see <http://www.gnu.org/licenses/>.
 # ===============================================================================
 
-from sqlalchemy import Table, Column, Integer, String
+from sqlalchemy import Table, Column, Integer, String, DateTime
 from sqlalchemy.orm import relation, mapper
+import datetime
 
 from eos.db import saveddata_meta
 from eos.db.saveddata.implant import implantsSetMap_table
@@ -29,18 +30,20 @@ from eos.saveddata.implantSet import ImplantSet
 implant_set_table = Table("implantSets", saveddata_meta,
                           Column("ID", Integer, primary_key=True),
                           Column("name", String, nullable=False),
+                          Column("created", DateTime, nullable=True, default=datetime.datetime.now),
+                          Column("modified", DateTime, nullable=True, onupdate=datetime.datetime.now)
                           )
 
 mapper(ImplantSet, implant_set_table,
        properties={
            "_ImplantSet__implants": relation(
-               Implant,
-               collection_class=HandledImplantBoosterList,
-               cascade='all, delete, delete-orphan',
-               backref='set',
-               single_parent=True,
-               primaryjoin=implantsSetMap_table.c.setID == implant_set_table.c.ID,
-               secondaryjoin=implantsSetMap_table.c.implantID == Implant.ID,
-               secondary=implantsSetMap_table),
+                   Implant,
+                   collection_class=HandledImplantBoosterList,
+                   cascade='all, delete, delete-orphan',
+                   backref='set',
+                   single_parent=True,
+                   primaryjoin=implantsSetMap_table.c.setID == implant_set_table.c.ID,
+                   secondaryjoin=implantsSetMap_table.c.implantID == Implant.ID,
+                   secondary=implantsSetMap_table),
        }
        )

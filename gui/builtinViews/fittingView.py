@@ -32,7 +32,6 @@ from eos.saveddata.module import Module, Slot, Rack
 from gui.builtinViewColumns.state import State
 from gui.bitmapLoader import BitmapLoader
 import gui.builtinViews.emptyView
-from gui.utils.exportHtml import exportHtml
 from logbook import Logger
 from gui.chromeTabs import EVT_NOTEBOOK_PAGE_CHANGED
 
@@ -268,9 +267,7 @@ class FittingView(d.Display):
         We also refresh the fit of the new current page in case
         delete fit caused change in stats (projected)
         """
-        fitID = event.fitID
-
-        if fitID == self.getActiveFit():
+        if event.fitID == self.getActiveFit():
             self.parent.DeletePage(self.parent.GetPageIndex(self))
 
         try:
@@ -279,7 +276,7 @@ class FittingView(d.Display):
             sFit.refreshFit(self.getActiveFit())
             wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=self.activeFitID))
         except wx._core.PyDeadObjectError:
-            pyfalog.warning("Caught dead object")
+            pyfalog.error("Caught dead object")
             pass
 
         event.Skip()
@@ -336,7 +333,7 @@ class FittingView(d.Display):
                     populate = sFit.appendModule(fitID, itemID)
                     if populate is not None:
                         self.slotsChanged()
-                        wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fitID))
+                        wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fitID, action="modadd", typeID=itemID))
 
         event.Skip()
 
@@ -357,7 +354,7 @@ class FittingView(d.Display):
 
         if populate is not None:
             self.slotsChanged()
-            wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=self.activeFitID))
+            wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=self.activeFitID, action="moddel", typeID=module.item.ID))
 
     def addModule(self, x, y, srcIdx):
         """Add a module from the market browser"""
@@ -370,7 +367,8 @@ class FittingView(d.Display):
             if moduleChanged is None:
                 # the new module doesn't fit in specified slot, try to simply append it
                 wx.PostEvent(self.mainFrame, gui.marketBrowser.ItemSelected(itemID=srcIdx))
-            wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=self.mainFrame.getActiveFit()))
+
+            wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=self.mainFrame.getActiveFit(), action="modadd", typeID=srcIdx))
 
     def swapCargo(self, x, y, srcIdx):
         """Swap a module from cargo to fitting window"""
@@ -381,10 +379,13 @@ class FittingView(d.Display):
             module = self.mods[dstRow]
 
             sFit = Fit.getInstance()
+            fit = sFit.getFit(self.activeFitID)
+            typeID = fit.cargo[srcIdx].item.ID
+
             sFit.moveCargoToModule(self.mainFrame.getActiveFit(), module.modPosition, srcIdx,
                                    mstate.CmdDown() and module.isEmpty)
 
-            wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=self.mainFrame.getActiveFit()))
+            wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=self.mainFrame.getActiveFit(), action="modadd", typeID=typeID))
 
     def swapItems(self, x, y, srcIdx):
         """Swap two modules in fitting window"""
@@ -480,12 +481,11 @@ class FittingView(d.Display):
                     # This only happens when turning on/off slot divisions
                     self.populate(self.mods)
                 self.refresh(self.mods)
-
-                exportHtml.getInstance().refreshFittingHtml()
+                self.Refresh()
 
             self.Show(self.activeFitID is not None and self.activeFitID == event.fitID)
         except wx._core.PyDeadObjectError:
-            pyfalog.warning("Caught dead object")
+            pyfalog.error("Caught dead object")
         finally:
             event.Skip()
 
@@ -611,12 +611,13 @@ class FittingView(d.Display):
             slotMap[slot] = fit.getSlotsFree(slot) < 0
 
         font = (self.GetClassDefaultAttributes()).font
+
         for i, mod in enumerate(self.mods):
             self.SetItemBackgroundColour(i, self.GetBackgroundColour())
 
             #  only consider changing color if we're dealing with a Module
             if type(mod) is Module:
-                if slotMap[mod.slot]:  # Color too many modules as red
+                if slotMap[mod.slot] or getattr(mod, 'restrictionOverridden', None):  # Color too many modules as red
                     self.SetItemBackgroundColour(i, wx.Colour(204, 51, 51))
                 elif sFit.serviceFittingOptions["colorFitBySlot"]:  # Color by slot it enabled
                     self.SetItemBackgroundColour(i, self.slotColour(mod.slot))

@@ -17,9 +17,11 @@
 # along with pyfa.  If not, see <http://www.gnu.org/licenses/>.
 # =============================================================================
 
+import sys
 import copy
 import itertools
 import json
+
 from logbook import Logger
 import threading
 from codecs import open
@@ -144,17 +146,20 @@ class Character(object):
         self.all5()
 
     def exportText(self):
-        data = "Pyfa exported plan for \"" + self.skillReqsDict['charname'] + "\"\n"
-        data += "=" * 79 + "\n"
-        data += "\n"
-        item = ""
-        for s in self.skillReqsDict['skills']:
-            if item == "" or not item == s["item"]:
-                item = s["item"]
-                data += "-" * 79 + "\n"
-                data += "Skills required for {}:\n".format(item)
-            data += "{}{}: {}\n".format("    " * s["indent"], s["skill"], int(s["level"]))
-        data += "-" * 79 + "\n"
+        data = u"Pyfa exported plan for \"" + self.skillReqsDict['charname'] + "\"\n"
+        data += u"=" * 79 + u"\n"
+        data += u"\n"
+        item = u""
+        try:
+            for s in self.skillReqsDict['skills']:
+                if item == "" or not item == s["item"]:
+                    item = s["item"]
+                    data += u"-" * 79 + "\n"
+                    data += u"Skills required for {}:\n".format(item)
+                data += u"{}{}: {}\n".format("    " * s["indent"], s["skill"], int(s["level"]))
+            data += u"-" * 79 + "\n"
+        except Exception:
+            pass
 
         return data
 
@@ -273,8 +278,22 @@ class Character(object):
         return skills
 
     @staticmethod
+    def getSkillsByName(text):
+        items = eos.db.searchSkills(text)
+        skills = []
+        for skill in items:
+            if skill.published is True:
+                skills.append((skill.ID, skill.name))
+        return skills
+
+    @staticmethod
     def setAlphaClone(char, cloneID):
         char.alphaCloneID = cloneID
+        eos.db.commit()
+
+    @staticmethod
+    def setSecStatus(char, secStatus):
+        char.secStatus = secStatus
         eos.db.commit()
 
     @staticmethod
@@ -288,7 +307,7 @@ class Character(object):
     @staticmethod
     def getSkillLevel(charID, skillID):
         skill = eos.db.getCharacter(charID).getSkill(skillID)
-        return skill.level if skill.learned else "Not learned", skill.isDirty
+        return float(skill.level) if skill.learned else "Not learned", skill.isDirty
 
     @staticmethod
     def getDirtySkills(charID):
@@ -350,26 +369,13 @@ class Character(object):
         char.chars = json.dumps(charList)
         return charList
 
-    @staticmethod
-    def apiFetch(charID, charName):
-        dbChar = eos.db.getCharacter(charID)
-        dbChar.defaultChar = charName
+    def apiFetch(self, charID, charName, callback):
+        thread = UpdateAPIThread(charID, charName, (self.apiFetchCallback, callback))
+        thread.start()
 
-        api = EVEAPIConnection()
-        auth = api.auth(keyID=dbChar.apiID, vCode=dbChar.apiKey)
-        apiResult = auth.account.Characters()
-        charID = None
-        for char in apiResult.characters:
-            if char.name == charName:
-                charID = char.characterID
-
-        if charID is None:
-            return
-
-        sheet = auth.character(charID).CharacterSheet()
-
-        dbChar.apiUpdateCharSheet(sheet.skills)
+    def apiFetchCallback(self, guiCallback, e=None):
         eos.db.commit()
+        wx.CallAfter(guiCallback, e)
 
     @staticmethod
     def apiUpdateCharSheet(charID, skills):
@@ -378,16 +384,17 @@ class Character(object):
         eos.db.commit()
 
     @staticmethod
-    def changeLevel(charID, skillID, level, persist=False):
+    def changeLevel(charID, skillID, level, persist=False, ifHigher=False):
         char = eos.db.getCharacter(charID)
         skill = char.getSkill(skillID)
-        if isinstance(level, basestring) or level > 5 or level < 0:
-            skill.level = None
-        else:
-            skill.level = level
 
-        if persist:
-            skill.saveLevel()
+        if ifHigher and level < skill.level:
+            return
+
+        if isinstance(level, basestring) or level > 5 or level < 0:
+            skill.setLevel(None, persist)
+        else:
+            skill.setLevel(level, persist)
 
         eos.db.commit()
 
@@ -458,3 +465,38 @@ class Character(object):
                 self._checkRequirements(fit, char, req, subs)
 
         return reqs
+
+
+class UpdateAPIThread(threading.Thread):
+    def __init__(self, charID, charName, callback):
+        threading.Thread.__init__(self)
+
+        self.name = "CheckUpdate"
+        self.callback = callback
+        self.charID = charID
+        self.charName = charName
+
+    def run(self):
+        try:
+            dbChar = eos.db.getCharacter(self.charID)
+            dbChar.defaultChar = self.charName
+
+            api = EVEAPIConnection()
+            auth = api.auth(keyID=dbChar.apiID, vCode=dbChar.apiKey)
+            apiResult = auth.account.Characters()
+            charID = None
+            for char in apiResult.characters:
+                if char.name == self.charName:
+                    charID = char.characterID
+                    break
+
+            if charID is None:
+                return
+
+            sheet = auth.character(charID).CharacterSheet()
+            charInfo = api.eve.CharacterInfo(characterID=charID)
+
+            dbChar.apiUpdateCharSheet(sheet.skills, charInfo.securityStatus)
+            self.callback[0](self.callback[1])
+        except Exception:
+            self.callback[0](self.callback[1], sys.exc_info())

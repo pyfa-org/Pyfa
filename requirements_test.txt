@@ -1,8 +1,10 @@
-pytest==3.0.3
-pytest-mock==1.2
-pytest-cov==2.3.1
-pytest-capturelog==0.7
-coverage==4.2
-coveralls==1.1
+pytest == 3.0.3
+pytest-mock == 1.2
+pytest-cov == 2.3.1
+pytest-capturelog == 0.7
+coverage == 4.2
+coveralls == 1.1
 codecov
+virtualenv>=15.0.0
 tox
+wheel

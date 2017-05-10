@@ -1,6 +1,7 @@
 # shipHybridTrackingGC2
 #
 # Used by:
+# Ship: Enforcer
 # Ship: Thorax
 type = "passive"
 

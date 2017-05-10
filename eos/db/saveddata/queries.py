@@ -18,6 +18,7 @@
 # ===============================================================================
 
 from sqlalchemy.sql import and_
+from sqlalchemy import desc, select
 
 from eos.db import saveddata_session, sd_lock
 from eos.db.saveddata.fit import projectedFits_table
@@ -30,6 +31,7 @@ from eos.saveddata.targetResists import TargetResists
 from eos.saveddata.character import Character
 from eos.saveddata.implantSet import ImplantSet
 from eos.saveddata.fit import Fit
+from eos.saveddata.module import Module
 from eos.saveddata.miscData import MiscData
 from eos.saveddata.override import Override
 
@@ -175,7 +177,7 @@ def getCharacter(lookfor, eager=None):
         eager = processEager(eager)
         with sd_lock:
             character = saveddata_session.query(Character).options(*eager).filter(
-                Character.savedName == lookfor).first()
+                    Character.savedName == lookfor).first()
     else:
         raise TypeError("Need integer or string as argument")
     return character
@@ -241,22 +243,34 @@ def getFitsWithShip(shipID, ownerID=None, where=None, eager=None):
     return fits
 
 
-def getBoosterFits(ownerID=None, where=None, eager=None):
-    """
-    Get all the fits that are flagged as a boosting ship
-    If no user is passed, do this for all users.
-    """
-
-    if ownerID is not None and not isinstance(ownerID, int):
-        raise TypeError("OwnerID must be integer")
-    filter = Fit.booster == 1
-    if ownerID is not None:
-        filter = and_(filter, Fit.ownerID == ownerID)
-
-    filter = processWhere(filter, where)
+def getRecentFits(ownerID=None, where=None, eager=None):
     eager = processEager(eager)
     with sd_lock:
-        fits = removeInvalid(saveddata_session.query(Fit).options(*eager).filter(filter).all())
+        q = select((
+            Fit.ID,
+            Fit.shipID,
+            Fit.name,
+            Fit.modified,
+            Fit.created,
+            Fit.timestamp,
+            Fit.notes
+        )).order_by(desc(Fit.modified), desc(Fit.timestamp)).limit(50)
+        fits = eos.db.saveddata_session.execute(q).fetchall()
+
+    return fits
+
+
+def getFitsWithModules(typeIDs, eager=None):
+    """
+    Get all the fits that have typeIDs fitted to them
+    """
+
+    if not hasattr(typeIDs, "__iter__"):
+        typeIDs = (typeIDs,)
+
+    eager = processEager(eager)
+    with sd_lock:
+        fits = removeInvalid(saveddata_session.query(Fit).join(Module).options(*eager).filter(Module.itemID.in_(typeIDs)).all())
 
     return fits
 
@@ -336,11 +350,25 @@ def getDamagePatternList(eager=None):
     return patterns
 
 
+def clearDamagePatterns():
+    with sd_lock:
+        deleted_rows = saveddata_session.query(DamagePattern).filter(DamagePattern.name != 'Uniform').delete()
+    commit()
+    return deleted_rows
+
+
 def getTargetResistsList(eager=None):
     eager = processEager(eager)
     with sd_lock:
         patterns = saveddata_session.query(TargetResists).options(*eager).all()
     return patterns
+
+
+def clearTargetResists():
+    with sd_lock:
+        deleted_rows = saveddata_session.query(TargetResists).delete()
+    commit()
+    return deleted_rows
 
 
 def getImplantSetList(eager=None):
@@ -360,12 +388,12 @@ def getDamagePattern(lookfor, eager=None):
             eager = processEager(eager)
             with sd_lock:
                 pattern = saveddata_session.query(DamagePattern).options(*eager).filter(
-                    DamagePattern.ID == lookfor).first()
+                        DamagePattern.ID == lookfor).first()
     elif isinstance(lookfor, basestring):
         eager = processEager(eager)
         with sd_lock:
             pattern = saveddata_session.query(DamagePattern).options(*eager).filter(
-                DamagePattern.name == lookfor).first()
+                    DamagePattern.name == lookfor).first()
     else:
         raise TypeError("Need integer or string as argument")
     return pattern
@@ -381,12 +409,12 @@ def getTargetResists(lookfor, eager=None):
             eager = processEager(eager)
             with sd_lock:
                 pattern = saveddata_session.query(TargetResists).options(*eager).filter(
-                    TargetResists.ID == lookfor).first()
+                        TargetResists.ID == lookfor).first()
     elif isinstance(lookfor, basestring):
         eager = processEager(eager)
         with sd_lock:
             pattern = saveddata_session.query(TargetResists).options(*eager).filter(
-                TargetResists.name == lookfor).first()
+                    TargetResists.name == lookfor).first()
     else:
         raise TypeError("Need integer or string as argument")
     return pattern
@@ -402,7 +430,7 @@ def getImplantSet(lookfor, eager=None):
             eager = processEager(eager)
             with sd_lock:
                 pattern = saveddata_session.query(ImplantSet).options(*eager).filter(
-                    TargetResists.ID == lookfor).first()
+                        TargetResists.ID == lookfor).first()
     elif isinstance(lookfor, basestring):
         eager = processEager(eager)
         with sd_lock:

@@ -20,16 +20,18 @@
 from sqlalchemy.orm import eagerload
 from sqlalchemy.sql import and_
 
-replace = {"attributes": "_Item__attributes",
-           "modules": "_Fit__modules",
-           "projectedModules": "_Fit__projectedModules",
-           "boosters": "_Fit__boosters",
-           "drones": "_Fit__drones",
-           "projectedDrones": "_Fit__projectedDrones",
-           "implants": "_Fit__implants",
-           "character": "_Fit__character",
-           "damagePattern": "_Fit__damagePattern",
-           "projectedFits": "_Fit__projectedFits"}
+replace = {
+    "attributes"      : "_Item__attributes",
+    "modules"         : "_Fit__modules",
+    "projectedModules": "_Fit__projectedModules",
+    "boosters"        : "_Fit__boosters",
+    "drones"          : "_Fit__drones",
+    "projectedDrones" : "_Fit__projectedDrones",
+    "implants"        : "_Fit__implants",
+    "character"       : "_Fit__character",
+    "damagePattern"   : "_Fit__damagePattern",
+    "projectedFits"   : "_Fit__projectedFits"
+}
 
 
 def processEager(eager):

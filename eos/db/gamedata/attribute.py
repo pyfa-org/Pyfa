@@ -45,11 +45,13 @@ mapper(Attribute, typeattributes_table,
        properties={"info": relation(AttributeInfo, lazy=False)})
 
 mapper(AttributeInfo, attributes_table,
-       properties={"icon": relation(Icon),
-                   "unit": relation(Unit),
-                   "ID": synonym("attributeID"),
-                   "name": synonym("attributeName"),
-                   "description": deferred(attributes_table.c.description)})
+       properties={
+           "icon"       : relation(Icon),
+           "unit"       : relation(Unit),
+           "ID"         : synonym("attributeID"),
+           "name"       : synonym("attributeName"),
+           "description": deferred(attributes_table.c.description)
+       })
 
 Attribute.ID = association_proxy("info", "attributeID")
 Attribute.name = association_proxy("info", "attributeName")

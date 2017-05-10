@@ -17,8 +17,9 @@
 # along with eos.  If not, see <http://www.gnu.org/licenses/>.
 # ===============================================================================
 
-from sqlalchemy import Table, Column, Integer, Float, ForeignKey, String
+from sqlalchemy import Table, Column, Integer, Float, ForeignKey, String, DateTime
 from sqlalchemy.orm import mapper
+import datetime
 
 from eos.db import saveddata_meta
 from eos.saveddata.targetResists import TargetResists
@@ -30,6 +31,9 @@ targetResists_table = Table("targetResists", saveddata_meta,
                             Column("thermalAmount", Float),
                             Column("kineticAmount", Float),
                             Column("explosiveAmount", Float),
-                            Column("ownerID", ForeignKey("users.ID"), nullable=True))
+                            Column("ownerID", ForeignKey("users.ID"), nullable=True),
+                            Column("created", DateTime, nullable=True, default=datetime.datetime.now),
+                            Column("modified", DateTime, nullable=True, onupdate=datetime.datetime.now)
+                            )
 
 mapper(TargetResists, targetResists_table)

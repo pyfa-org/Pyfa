@@ -17,11 +17,13 @@
 # along with eos.  If not, see <http://www.gnu.org/licenses/>.
 # ===============================================================================
 
-from sqlalchemy import Table, Column, Integer, ForeignKey, Boolean
-from sqlalchemy.orm import mapper
+from sqlalchemy import Table, Column, Integer, ForeignKey, Boolean, DateTime
+from sqlalchemy.orm import mapper, relation
+import datetime
 
 from eos.db import saveddata_meta
 from eos.saveddata.drone import Drone
+from eos.saveddata.fit import Fit
 
 drones_table = Table("drones", saveddata_meta,
                      Column("groupID", Integer, primary_key=True),
@@ -29,6 +31,13 @@ drones_table = Table("drones", saveddata_meta,
                      Column("itemID", Integer, nullable=False),
                      Column("amount", Integer, nullable=False),
                      Column("amountActive", Integer, nullable=False),
-                     Column("projected", Boolean, default=False))
+                     Column("projected", Boolean, default=False),
+                     Column("created", DateTime, nullable=True, default=datetime.datetime.now),
+                     Column("modified", DateTime, nullable=True, onupdate=datetime.datetime.now)
+                     )
 
-mapper(Drone, drones_table)
+mapper(Drone, drones_table,
+   properties={
+       "owner": relation(Fit)
+   }
+)

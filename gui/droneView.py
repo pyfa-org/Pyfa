@@ -202,7 +202,7 @@ class DroneView(Display):
 
         fit = sFit.getFit(fitID)
 
-        if fit.isStructure:
+        if not fit or fit.isStructure:
             return
 
         trigger = sFit.addDrone(fitID, event.itemID)

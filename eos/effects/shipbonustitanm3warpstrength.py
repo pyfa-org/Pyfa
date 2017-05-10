@@ -1,8 +1,7 @@
 # shipBonusTitanM3WarpStrength
 #
 # Used by:
-# Ship: Ragnarok
-# Ship: Vanquisher
+# Ships from group: Titan (3 of 6)
 type = "passive"
 
 

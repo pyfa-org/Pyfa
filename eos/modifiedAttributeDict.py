@@ -19,6 +19,9 @@
 
 import collections
 from math import exp
+# TODO: This needs to be moved out, we shouldn't have *ANY* dependencies back to other modules/methods inside eos.
+# This also breaks writing any tests. :(
+from eos.db.gamedata.queries import getAttributeInfo
 
 defaultValuesCache = {}
 cappingAttrKeyCache = {}
@@ -26,22 +29,26 @@ cappingAttrKeyCache = {}
 
 class ItemAttrShortcut(object):
     def getModifiedItemAttr(self, key, default=None):
-        if key in self.itemModifiedAttributes:
-            return self.itemModifiedAttributes[key]
-        else:
-            return default
+        return_value = self.itemModifiedAttributes.get(key)
+
+        if return_value is None and default is not None:
+            return_value = default
+
+        return return_value
 
 
 class ChargeAttrShortcut(object):
     def getModifiedChargeAttr(self, key, default=None):
-        if key in self.chargeModifiedAttributes:
-            return self.chargeModifiedAttributes[key]
-        else:
-            return default
+        return_value = self.chargeModifiedAttributes.get(key)
+
+        if return_value is None and default is not None:
+            return_value = default
+
+        return return_value
 
 
 class ModifiedAttributeDict(collections.MutableMapping):
-    OVERRIDES = False
+    overrides_enabled = False
 
     class CalculationPlaceholder(object):
         def __init__(self):
@@ -98,15 +105,23 @@ class ModifiedAttributeDict(collections.MutableMapping):
 
     def __getitem__(self, key):
         # Check if we have final calculated value
-        if key in self.__modified:
-            if self.__modified[key] == self.CalculationPlaceholder:
-                self.__modified[key] = self.__calculateValue(key)
-            return self.__modified[key]
+        key_value = self.__modified.get(key)
+        if key_value is self.CalculationPlaceholder:
+            key_value = self.__modified[key] = self.__calculateValue(key)
+
+        if key_value is not None:
+            return key_value
+
         # Then in values which are not yet calculated
-        elif key in self.__intermediary:
-            return self.__intermediary[key]
-        # Original value is the least priority
+        if self.__intermediary:
+            val = self.__intermediary.get(key)
         else:
+            val = None
+
+        if val is not None:
+            return val
+        else:
+            # Original value is the least priority
             return self.getOriginal(key)
 
     def __delitem__(self, key):
@@ -115,12 +130,18 @@ class ModifiedAttributeDict(collections.MutableMapping):
         if key in self.__intermediary:
             del self.__intermediary[key]
 
-    def getOriginal(self, key):
-        if self.OVERRIDES and key in self.__overrides:
-            return self.__overrides.get(key).value
-        val = self.__original.get(key)
+    def getOriginal(self, key, default=None):
+        if self.overrides_enabled and self.overrides:
+            val = self.overrides.get(key, None)
+        else:
+            val = None
+
         if val is None:
-            return None
+            if self.original:
+                val = self.original.get(key, None)
+
+        if val is None and val != default:
+            val = default
 
         return val.value if hasattr(val, "value") else val
 
@@ -128,12 +149,12 @@ class ModifiedAttributeDict(collections.MutableMapping):
         self.__intermediary[key] = val
 
     def __iter__(self):
-        all = dict(self.__original, **self.__modified)
-        return (key for key in all)
+        all_dict = dict(self.original, **self.__modified)
+        return (key for key in all_dict)
 
     def __contains__(self, key):
-        return (self.__original is not None and key in self.__original) or \
-            key in self.__modified or key in self.__intermediary
+        return (self.original is not None and key in self.original) or \
+               key in self.__modified or key in self.__intermediary
 
     def __placehold(self, key):
         """Create calculation placeholder in item's modified attribute dict"""
@@ -141,7 +162,7 @@ class ModifiedAttributeDict(collections.MutableMapping):
 
     def __len__(self):
         keys = set()
-        keys.update(self.__original.iterkeys())
+        keys.update(self.original.iterkeys())
         keys.update(self.__modified.iterkeys())
         keys.update(self.__intermediary.iterkeys())
         return len(keys)
@@ -152,7 +173,6 @@ class ModifiedAttributeDict(collections.MutableMapping):
         try:
             cappingKey = cappingAttrKeyCache[key]
         except KeyError:
-            from eos.db.gamedata.queries import getAttributeInfo
             attrInfo = getAttributeInfo(key)
             if attrInfo is None:
                 cappingId = cappingAttrKeyCache[key] = None
@@ -166,12 +186,8 @@ class ModifiedAttributeDict(collections.MutableMapping):
                 cappingKey = None if cappingAttrInfo is None else cappingAttrInfo.name
 
         if cappingKey:
-            if cappingKey in self.original:
-                #  some items come with their own caps (ie: carriers). If they do, use this
-                cappingValue = self.original.get(cappingKey).value
-            else:
-                # If not, get info about the default value
-                cappingValue = self.__calculateValue(cappingKey)
+            cappingValue = self.original.get(cappingKey, self.__calculateValue(cappingKey))
+            cappingValue = cappingValue.value if hasattr(cappingValue, "value") else cappingValue
         else:
             cappingValue = None
 
@@ -183,25 +199,28 @@ class ModifiedAttributeDict(collections.MutableMapping):
                 force = min(force, cappingValue)
             return force
         # Grab our values if they're there, otherwise we'll take default values
-        preIncrease = self.__preIncreases[key] if key in self.__preIncreases else 0
-        multiplier = self.__multipliers[key] if key in self.__multipliers else 1
-        penalizedMultiplierGroups = self.__penalizedMultipliers[key] if key in self.__penalizedMultipliers else {}
-        postIncrease = self.__postIncreases[key] if key in self.__postIncreases else 0
+        preIncrease = self.__preIncreases.get(key, 0)
+        multiplier = self.__multipliers.get(key, 1)
+        penalizedMultiplierGroups = self.__penalizedMultipliers.get(key, {})
+        postIncrease = self.__postIncreases.get(key, 0)
 
         # Grab initial value, priorities are:
         # Results of ongoing calculation > preAssign > original > 0
         try:
             default = defaultValuesCache[key]
         except KeyError:
-            from eos.db.gamedata.queries import getAttributeInfo
             attrInfo = getAttributeInfo(key)
             if attrInfo is None:
                 default = defaultValuesCache[key] = 0.0
             else:
                 dv = attrInfo.defaultValue
                 default = defaultValuesCache[key] = dv if dv is not None else 0.0
-        val = self.__intermediary[key] if key in self.__intermediary else self.__preAssigns[
-            key] if key in self.__preAssigns else self.getOriginal(key) if key in self.__original else default
+
+        val = self.__intermediary.get(key,
+                                      self.__preAssigns.get(key,
+                                                            self.getOriginal(key, default)
+                                                            )
+                                      )
 
         # We'll do stuff in the following order:
         # preIncrease > multiplier > stacking penalized multipliers > postIncrease
@@ -254,7 +273,7 @@ class ModifiedAttributeDict(collections.MutableMapping):
         return skill.level
 
     def getAfflictions(self, key):
-        return self.__affectedBy[key] if key in self.__affectedBy else {}
+        return self.__affectedBy.get(key, {})
 
     def iterAfflictions(self):
         return self.__affectedBy.__iter__()
@@ -287,10 +306,13 @@ class ModifiedAttributeDict(collections.MutableMapping):
         self.__placehold(attributeName)
         self.__afflict(attributeName, "=", value, value != self.getOriginal(attributeName))
 
-    def increase(self, attributeName, increase, position="pre", skill=None):
+    def increase(self, attributeName, increase, position="pre", skill=None, **kwargs):
         """Increase value of given attribute by given number"""
         if skill:
             increase *= self.__handleSkill(skill)
+
+        if 'effect' in kwargs:
+            increase *= ModifiedAttributeDict.getResistance(self.fit, kwargs['effect']) or 1
 
         # Increases applied before multiplications and after them are
         # written in separate maps
@@ -306,7 +328,7 @@ class ModifiedAttributeDict(collections.MutableMapping):
         self.__placehold(attributeName)
         self.__afflict(attributeName, "+", increase, increase != 0)
 
-    def multiply(self, attributeName, multiplier, stackingPenalties=False, penaltyGroup="default", skill=None):
+    def multiply(self, attributeName, multiplier, stackingPenalties=False, penaltyGroup="default", skill=None, resist=True, *args, **kwargs):
         """Multiply value of given attribute by given factor"""
         if multiplier is None:  # See GH issue 397
             return
@@ -330,27 +352,29 @@ class ModifiedAttributeDict(collections.MutableMapping):
             self.__multipliers[attributeName] *= multiplier
 
         self.__placehold(attributeName)
-        self.__afflict(attributeName, "%s*" % ("s" if stackingPenalties else ""), multiplier, multiplier != 1)
 
-    def boost(self, attributeName, boostFactor, skill=None, remoteResists=False, *args, **kwargs):
+        afflictPenal = ""
+        if stackingPenalties:
+            afflictPenal += "s"
+        if resist:
+            afflictPenal += "r"
+
+        self.__afflict(attributeName, "%s*" % (afflictPenal), multiplier, multiplier != 1)
+
+    def boost(self, attributeName, boostFactor, skill=None, *args, **kwargs):
         """Boost value by some percentage"""
         if skill:
             boostFactor *= self.__handleSkill(skill)
 
-        if remoteResists:
-            # @todo: this is such a disgusting hack. Look into sending these checks to the module class before the
-            # effect is applied.
-            mod = self.fit.getModifier()
-            remoteResistID = mod.getModifiedItemAttr("remoteResistanceID") or None
+        resist = None
 
-            # We really don't have a way of getting a ships attribute by ID. Fail.
-            resist = next((x for x in self.fit.ship.item.attributes.values() if x.ID == remoteResistID), None)
-
-            if remoteResistID and resist:
-                boostFactor *= resist.value
+        # Goddammit CCP, make up your mind where you want this information >.< See #1139
+        if 'effect' in kwargs:
+            resist = ModifiedAttributeDict.getResistance(self.fit, kwargs['effect']) or 1
+            boostFactor *= resist
 
         # We just transform percentage boost into multiplication factor
-        self.multiply(attributeName, 1 + boostFactor / 100.0, *args, **kwargs)
+        self.multiply(attributeName, 1 + boostFactor / 100.0, resist=(True if resist else False), *args, **kwargs)
 
     def force(self, attributeName, value):
         """Force value to attribute and prohibit any changes to it"""
@@ -358,8 +382,27 @@ class ModifiedAttributeDict(collections.MutableMapping):
         self.__placehold(attributeName)
         self.__afflict(attributeName, u"\u2263", value)
 
+    @staticmethod
+    def getResistance(fit, effect):
+        remoteResistID = effect.resistanceID
+
+        # If it doesn't exist on the effect, check the modifying modules attributes. If it's there, set it on the
+        # effect for this session so that we don't have to look here again (won't always work when it's None, but
+        # will catch most)
+        if not remoteResistID:
+            mod = fit.getModifier()
+            effect.resistanceID = int(mod.getModifiedItemAttr("remoteResistanceID")) or None
+            remoteResistID = effect.resistanceID
+
+        attrInfo = getAttributeInfo(remoteResistID)
+
+        # Get the attribute of the resist
+        resist = fit.ship.itemModifiedAttributes[attrInfo.attributeName] or None
+
+        return resist or 1.0
+
 
 class Affliction(object):
-    def __init__(self, type, amount):
-        self.type = type
+    def __init__(self, affliction_type, amount):
+        self.type = affliction_type
         self.amount = amount

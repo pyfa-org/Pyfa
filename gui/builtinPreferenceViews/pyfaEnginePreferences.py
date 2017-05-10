@@ -5,6 +5,7 @@ import wx
 from service.fit import Fit
 from gui.bitmapLoader import BitmapLoader
 from gui.preferenceView import PreferenceView
+from service.settings import EOSSettings
 
 logger = logging.getLogger(__name__)
 
@@ -20,9 +21,12 @@ class PFFittingEnginePref(PreferenceView):
 
     # noinspection PyAttributeOutsideInit
     def populatePanel(self, panel):
-        # self.openFitsSettings = service.SettingsProvider.getInstance().getSettings("pyfaPrevOpenFits", {"enabled": False, "pyfaOpenFits": []})
 
         mainSizer = wx.BoxSizer(wx.VERTICAL)
+
+        helpCursor = wx.StockCursor(wx.CURSOR_QUESTION_ARROW)
+
+        self.engine_settings = EOSSettings.getInstance()
 
         self.stTitle = wx.StaticText(panel, wx.ID_ANY, self.title, wx.DefaultPosition, wx.DefaultSize, 0)
         self.stTitle.Wrap(-1)
@@ -34,7 +38,25 @@ class PFFittingEnginePref(PreferenceView):
 
         self.cbGlobalForceReload = wx.CheckBox(panel, wx.ID_ANY, u"Factor in reload time when calculating capacitor usage, damage, and tank.",
                                                wx.DefaultPosition, wx.DefaultSize, 0)
+
         mainSizer.Add(self.cbGlobalForceReload, 0, wx.ALL | wx.EXPAND, 5)
+
+        self.cbStrictSkillLevels = wx.CheckBox(panel, wx.ID_ANY,
+                                               u"Enforce strict skill level requirements",
+                                               wx.DefaultPosition, wx.DefaultSize, 0)
+        self.cbStrictSkillLevels.SetCursor(helpCursor)
+        self.cbStrictSkillLevels.SetToolTip(wx.ToolTip(
+            u'When enabled, skills will check their dependencies\' requirements when their levels change and reset ' +
+            u'skills that no longer meet the requirement.\neg: Setting Drones from level V to IV will reset the Heavy ' +
+            u'Drone Operation skill, as that requires Drones V'))
+
+        mainSizer.Add(self.cbStrictSkillLevels, 0, wx.ALL | wx.EXPAND, 5)
+
+        self.cbUniversalAdaptiveArmorHardener = wx.CheckBox(panel, wx.ID_ANY,
+                                                            u"When damage profile is Uniform, set Reactive Armor " +
+                                                            u"Hardener to match (old behavior).",
+                                                            wx.DefaultPosition, wx.DefaultSize, 0)
+        mainSizer.Add(self.cbUniversalAdaptiveArmorHardener, 0, wx.ALL | wx.EXPAND, 5)
 
         # Future code once new cap sim is implemented
         '''
@@ -63,14 +85,25 @@ class PFFittingEnginePref(PreferenceView):
         self.sFit = Fit.getInstance()
 
         self.cbGlobalForceReload.SetValue(self.sFit.serviceFittingOptions["useGlobalForceReload"])
-
         self.cbGlobalForceReload.Bind(wx.EVT_CHECKBOX, self.OnCBGlobalForceReloadStateChange)
+
+        self.cbStrictSkillLevels.SetValue(self.engine_settings.get("strictSkillLevels"))
+        self.cbStrictSkillLevels.Bind(wx.EVT_CHECKBOX, self.OnCBStrictSkillLevelsChange)
+
+        self.cbUniversalAdaptiveArmorHardener.SetValue(self.engine_settings.get("useStaticAdaptiveArmorHardener"))
+        self.cbUniversalAdaptiveArmorHardener.Bind(wx.EVT_CHECKBOX, self.OnCBUniversalAdaptiveArmorHardenerChange)
 
         panel.SetSizer(mainSizer)
         panel.Layout()
 
     def OnCBGlobalForceReloadStateChange(self, event):
         self.sFit.serviceFittingOptions["useGlobalForceReload"] = self.cbGlobalForceReload.GetValue()
+
+    def OnCBStrictSkillLevelsChange(self, event):
+        self.engine_settings.set("strictSkillLevels", self.cbStrictSkillLevels.GetValue())
+
+    def OnCBUniversalAdaptiveArmorHardenerChange(self, event):
+        self.engine_settings.set("useStaticAdaptiveArmorHardener", self.cbUniversalAdaptiveArmorHardener.GetValue())
 
     def getImage(self):
         return BitmapLoader.getBitmap("settings_fitting", "gui")

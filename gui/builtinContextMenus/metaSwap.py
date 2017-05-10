@@ -143,11 +143,11 @@ class MetaSwap(ContextMenu):
                 for idx, drone_stack in enumerate(fit.drones):
                     if drone_stack is selected_item:
                         drone_count = drone_stack.amount
-                        sFit.removeDrone(fitID, idx, drone_count)
+                        sFit.removeDrone(fitID, idx, drone_count, False)
                         break
 
                 if drone_count:
-                    sFit.addDrone(fitID, item.ID, drone_count)
+                    sFit.addDrone(fitID, item.ID, drone_count, True)
 
             elif isinstance(selected_item, Fighter):
                 fighter_count = None
@@ -164,16 +164,16 @@ class MetaSwap(ContextMenu):
                         else:
                             fighter_count.amount = 0
 
-                        sFit.removeFighter(fitID, idx)
+                        sFit.removeFighter(fitID, idx, False)
                         break
 
-                sFit.addFighter(fitID, item.ID)
+                sFit.addFighter(fitID, item.ID, True)
 
             elif isinstance(selected_item, Booster):
                 for idx, booster_stack in enumerate(fit.boosters):
                     if booster_stack is selected_item:
-                        sFit.removeBooster(fitID, idx)
-                        sFit.addBooster(fitID, item.ID)
+                        sFit.removeBooster(fitID, idx, False)
+                        sFit.addBooster(fitID, item.ID, True)
                         break
 
             elif isinstance(selected_item, Implant):

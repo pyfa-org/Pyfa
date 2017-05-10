@@ -2,7 +2,9 @@ import wx
 
 from gui.preferenceView import PreferenceView
 from gui.bitmapLoader import BitmapLoader
+from gui.utils import helpers_wxPython as wxHelpers
 import config
+from eos.db.saveddata.queries import clearPrices, clearDamagePatterns, clearTargetResists
 
 import logging
 
@@ -14,7 +16,6 @@ class PFGeneralPref(PreferenceView):
 
     def populatePanel(self, panel):
         self.dirtySettings = False
-        # self.openFitsSettings = service.SettingsProvider.getInstance().getSettings("pyfaPrevOpenFits", {"enabled": False, "pyfaOpenFits": []})
 
         mainSizer = wx.BoxSizer(wx.VERTICAL)
 
@@ -67,12 +68,48 @@ class PFGeneralPref(PreferenceView):
         self.cbsaveInRoot.SetValue(config.saveInRoot)
         self.cbsaveInRoot.Bind(wx.EVT_CHECKBOX, self.onCBsaveInRoot)
 
-        self.inputUserPath.Bind(wx.EVT_LEAVE_WINDOW, self.OnWindowLeave)
-        self.inputFitDB.Bind(wx.EVT_LEAVE_WINDOW, self.OnWindowLeave)
-        self.inputGameDB.Bind(wx.EVT_LEAVE_WINDOW, self.OnWindowLeave)
+        # self.inputUserPath.Bind(wx.EVT_LEAVE_WINDOW, self.OnWindowLeave)
+        # self.inputFitDB.Bind(wx.EVT_LEAVE_WINDOW, self.OnWindowLeave)
+        # self.inputGameDB.Bind(wx.EVT_LEAVE_WINDOW, self.OnWindowLeave)
+
+        self.m_staticline3 = wx.StaticLine(panel, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.LI_HORIZONTAL)
+        mainSizer.Add(self.m_staticline3, 0, wx.EXPAND | wx.TOP | wx.BOTTOM, 5)
+
+        btnSizer = wx.BoxSizer(wx.VERTICAL)
+        btnSizer.AddSpacer((0, 0), 1, wx.EXPAND, 5)
+
+        self.btnDeleteDamagePatterns = wx.Button(panel, wx.ID_ANY, u"Delete All Damage Pattern Profiles", wx.DefaultPosition, wx.DefaultSize, 0)
+        btnSizer.Add(self.btnDeleteDamagePatterns, 0, wx.ALL, 5)
+
+        self.btnDeleteTargetResists = wx.Button(panel, wx.ID_ANY, u"Delete All Target Resist Profiles", wx.DefaultPosition, wx.DefaultSize, 0)
+        btnSizer.Add(self.btnDeleteTargetResists, 0, wx.ALL, 5)
+
+        self.btnPrices = wx.Button(panel, wx.ID_ANY, u"Delete All Prices", wx.DefaultPosition, wx.DefaultSize, 0)
+        btnSizer.Add(self.btnPrices, 0, wx.ALL, 5)
+
+        mainSizer.Add(btnSizer, 0, wx.EXPAND, 5)
+
+        self.btnDeleteDamagePatterns.Bind(wx.EVT_BUTTON, self.DeleteDamagePatterns)
+        self.btnDeleteTargetResists.Bind(wx.EVT_BUTTON, self.DeleteTargetResists)
+        self.btnPrices.Bind(wx.EVT_BUTTON, self.DeletePrices)
 
         panel.SetSizer(mainSizer)
         panel.Layout()
+
+    def DeleteDamagePatterns(self, event):
+        question = u"This is a destructive action that will delete all damage pattern profiles.\nAre you sure you want to do this?"
+        if wxHelpers.YesNoDialog(question, "Confirm"):
+            clearDamagePatterns()
+
+    def DeleteTargetResists(self, event):
+        question = u"This is a destructive action that will delete all target resist profiles.\nAre you sure you want to do this?"
+        if wxHelpers.YesNoDialog(question, "Confirm"):
+            clearTargetResists()
+
+    def DeletePrices(self, event):
+        question = u"This is a destructive action that will delete all cached prices out of the database.\nAre you sure you want to do this?"
+        if wxHelpers.YesNoDialog(question, "Confirm"):
+            clearPrices()
 
     def onCBsaveInRoot(self, event):
         # We don't want users to be able to actually change this,
@@ -86,27 +123,6 @@ class PFGeneralPref(PreferenceView):
 
     def getImage(self):
         return BitmapLoader.getBitmap("settings_database", "gui")
-
-    def OnWindowLeave(self, event):
-        # We don't want to do anything when they leave,
-        # but in the future we'd want to make sure settings
-        # changed get saved.
-        pass
-
-        '''
-        #Set database path
-        config.defPaths(self.inputFitDBPath.GetValue())
-
-        logger.debug("Running database import")
-        if self.cbimportDefaults is True:
-            # Import default database values
-            # Import values that must exist otherwise Pyfa breaks
-            DefaultDatabaseValues.importRequiredDefaults()
-            # Import default values for damage profiles
-            DefaultDatabaseValues.importDamageProfileDefaults()
-            # Import default values for target resist profiles
-            DefaultDatabaseValues.importResistProfileDefaults()
-        '''
 
 
 PFGeneralPref.register()

@@ -19,9 +19,9 @@ debug = False
 saveInRoot = False
 
 # Version data
-version = "1.28.2"
-tag = "git"
-expansionName = "YC119.3"
+version = "1.29.0"
+tag = "Stable"
+expansionName = "YC119.5"
 expansionVersion = "1.0"
 evemonMinVersion = "4081"
 
@@ -29,6 +29,7 @@ pyfaPath = None
 savePath = None
 saveDB = None
 gameDB = None
+logPath = None
 
 
 def isFrozen():
@@ -95,7 +96,9 @@ def defPaths(customSavePath):
     # The database where the static EVE data from the datadump is kept.
     # This is not the standard sqlite datadump but a modified version created by eos
     # maintenance script
-    gameDB = os.path.join(pyfaPath, "eve.db")
+    gameDB = getattr(configforced, "gameDB", gameDB)
+    if not gameDB:
+        gameDB = os.path.join(pyfaPath, "eve.db")
 
     # DON'T MODIFY ANYTHING BELOW
     import eos.config

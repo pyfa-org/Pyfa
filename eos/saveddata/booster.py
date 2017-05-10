@@ -133,11 +133,13 @@ class Booster(HandledItem, ItemAttrShortcut):
 
     @validates("ID", "itemID", "ammoID", "active")
     def validator(self, key, val):
-        map = {"ID": lambda _val: isinstance(_val, int),
-               "itemID": lambda _val: isinstance(_val, int),
-               "ammoID": lambda _val: isinstance(_val, int),
-               "active": lambda _val: isinstance(_val, bool),
-               "slot": lambda _val: isinstance(_val, int) and 1 <= _val <= 3}
+        map = {
+            "ID"    : lambda _val: isinstance(_val, int),
+            "itemID": lambda _val: isinstance(_val, int),
+            "ammoID": lambda _val: isinstance(_val, int),
+            "active": lambda _val: isinstance(_val, bool),
+            "slot"  : lambda _val: isinstance(_val, int) and 1 <= _val <= 3
+        }
 
         if not map[key](val):
             raise ValueError(str(val) + " is not a valid value for " + key)
