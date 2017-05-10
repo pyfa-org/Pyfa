@@ -973,7 +973,8 @@ class MainFrame(wx.Frame, IPortUser):
                         fit.ID,
                         fit.name,
                         fit.modifiedCoalesce,
-                        fit.ship.item
+                        fit.ship.item,
+                        fit.notes
                     ))
                 wx.PostEvent(self.shipBrowser, ImportSelected(fits=results, back=True))
 
