@@ -127,9 +127,6 @@ class Price(object):
                 priceobj.time = time.time() + VALIDITY
                 priceobj.failed = None
 
-                # Update the DB.
-                db.commit()
-
                 # delete price from working dict
                 del priceMap[typeID]
 
@@ -142,9 +139,6 @@ class Price(object):
                 priceobj.time = time.time() + TIMEOUT
                 priceobj.failed = True
 
-                # Update the DB.
-                db.commit()
-
                 del priceMap[typeID]
         except:
             # all other errors will pass and continue onward to the REREQUEST delay
@@ -156,9 +150,6 @@ class Price(object):
             priceobj = priceMap[typeID]
             priceobj.time = time.time() + REREQUEST
             priceobj.failed = True
-
-            # Update the DB.
-            db.commit()
 
     @classmethod
     def fitItemsList(cls, fit):
@@ -207,6 +198,7 @@ class Price(object):
             except Exception as e:
                 pyfalog.critical("Callback failed.")
                 pyfalog.critical(e)
+
             db.commit()
 
         if waitforthread:
