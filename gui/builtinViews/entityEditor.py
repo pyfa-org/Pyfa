@@ -96,8 +96,8 @@ class EntityEditor(wx.Panel):
 
     def OnNew(self, event):
         dlg = TextEntryValidatedDialog(self, self.validator,
-                                       "Enter a name for your new {}:".format(self.entityName),
-                                       "New {}".format(self.entityName))
+                                       u"Enter a name for your new {}:".format(self.entityName),
+                                       u"New {}".format(self.entityName))
         dlg.CenterOnParent()
 
         if dlg.ShowModal() == wx.ID_OK:
@@ -110,10 +110,10 @@ class EntityEditor(wx.Panel):
 
     def OnCopy(self, event):
         dlg = TextEntryValidatedDialog(self, self.validator,
-                                       "Enter a name for your {} copy:".format(self.entityName),
-                                       "Copy {}".format(self.entityName))
+                                       u"Enter a name for your {} copy:".format(self.entityName),
+                                       u"Copy {}".format(self.entityName))
         active = self.getActiveEntity()
-        dlg.SetValue("{} Copy".format(active.name))
+        dlg.SetValue(u"{} Copy".format(active.name))
         dlg.txtctrl.SetInsertionPointEnd()
         dlg.CenterOnParent()
 
@@ -124,8 +124,8 @@ class EntityEditor(wx.Panel):
 
     def OnRename(self, event):
         dlg = TextEntryValidatedDialog(self, self.validator,
-                                       "Enter a new name for your {}:".format(self.entityName),
-                                       "Rename {}".format(self.entityName))
+                                       u"Enter a new name for your {}:".format(self.entityName),
+                                       u"Rename {}".format(self.entityName))
         active = self.getActiveEntity()
         dlg.SetValue(active.name)
         dlg.txtctrl.SetInsertionPointEnd()
@@ -138,9 +138,9 @@ class EntityEditor(wx.Panel):
 
     def OnDelete(self, event):
         dlg = wx.MessageDialog(self,
-                               "Do you really want to delete the {} {}?".format(self.getActiveEntity().name,
+                               u"Do you really want to delete the {} {}?".format(self.getActiveEntity().name,
                                                                                 self.entityName),
-                               "Confirm Delete", wx.YES | wx.NO | wx.ICON_QUESTION)
+                               u"Confirm Delete", wx.YES | wx.NO | wx.ICON_QUESTION)
         dlg.CenterOnParent()
 
         if dlg.ShowModal() == wx.ID_YES:
