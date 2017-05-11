@@ -151,7 +151,6 @@ class Price(object):
             priceobj.time = time.time() + REREQUEST
             priceobj.failed = True
 
-
     @classmethod
     def fitItemsList(cls, fit):
         # Compose a list of all the data we need & request it
