@@ -279,8 +279,10 @@ class ItemView(Display):
 
         if row != -1:
             data = wx.PyTextDataObject()
-            data.SetText("market:" + str(self.active[row].ID))
+            dataStr = "market:" + str(self.active[row].ID)
+            pyfalog.debug("Dragging from market: " + dataStr)
 
+            data.SetText(dataStr)
             dropSource = wx.DropSource(self)
             dropSource.SetData(data)
             dropSource.DoDragDrop()

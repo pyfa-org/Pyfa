@@ -763,8 +763,9 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
         capNeed = self.getModifiedItemAttr("capacitorNeed")
         if capNeed and self.state >= State.ACTIVE:
             cycleTime = self.cycleTime
-            capUsed = capNeed / (cycleTime / 1000.0)
-            return capUsed
+            if cycleTime > 0:
+                capUsed = capNeed / (cycleTime / 1000.0)
+                return capUsed
         else:
             return 0
 

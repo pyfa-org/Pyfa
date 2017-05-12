@@ -110,6 +110,7 @@ class FittingViewDrop(wx.PyDropTarget):
 
     def OnData(self, x, y, t):
         if self.GetData():
+            pyfalog.debug("fittingView: recieved drag: " + self.dropData.GetText())
             data = self.dropData.GetText().split(':')
             self.dropFn(x, y, data)
         return t
