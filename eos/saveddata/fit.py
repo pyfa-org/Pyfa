@@ -1313,7 +1313,7 @@ class Fit(object):
                 else:
                     hp = 0
 
-            if hp > 0:
+            if hp > 0 and duration > 0:
                 self.__remoteReps[remote_type] += (hp * modifier) / duration
 
         return self.__remoteReps
