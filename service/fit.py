@@ -177,6 +177,10 @@ class Fit(object):
             if projection.victim_fit in eos.db.saveddata_session:  # GH issue #359
                 eos.db.saveddata_session.refresh(projection.victim_fit)
 
+        for booster in fit.boostedOnto.values():
+            if booster.boosted_fit in eos.db.saveddata_session:  # GH issue #359
+                 eos.db.saveddata_session.refresh(booster.boosted_fit)
+
     @staticmethod
     def copyFit(fitID):
         pyfalog.debug("Creating copy of fit ID: {0}", fitID)
