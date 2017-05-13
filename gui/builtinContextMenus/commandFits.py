@@ -13,16 +13,24 @@ class CommandFits(ContextMenu):
     # Get list of items that define a command fit
     sMkt = Market.getInstance()
     grp = sMkt.getGroup(1770)  # Command burst group
-    commandTypeIDs = [item.ID for item in grp.items]
+    commandTypeIDs = {item.ID for item in grp.items}
     commandFits = []
     menu = None
 
     @classmethod
     def populateFits(cls, evt):
-        if evt is None or (getattr(evt, 'action', None) in ("modadd", "moddel") and getattr(evt, 'typeID', None) in cls.commandTypeIDs):
-            # we are adding or removing an item that defines a command fit. Need to refresh fit list
-            sFit = Fit.getInstance()
-            cls.commandFits = sFit.getFitsWithModules(cls.commandTypeIDs)
+        # This fires on a FitChanged event and updates the command fits whenever a command burst module is added or
+        # removed from a fit. evt.typeID can be either a int or a set (in the case of multiple module deletions)
+        if evt is None or (getattr(evt, 'action', None) in ("modadd", "moddel") and getattr(evt, 'typeID', None)):
+            if evt is not None:
+                ids = getattr(evt, 'typeID')
+                if not isinstance(ids, set):
+                    ids = set([ids])
+
+            if evt is None or not ids.isdisjoint(cls.commandTypeIDs):   
+                # we are adding or removing an item that defines a command fit. Need to refresh fit list
+                sFit = Fit.getInstance()
+                cls.commandFits = sFit.getFitsWithModules(cls.commandTypeIDs)
 
     def __init__(self):
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()

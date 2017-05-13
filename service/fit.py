@@ -540,14 +540,26 @@ class Fit(object):
         else:
             return None
 
-    def removeModule(self, fitID, position):
-        pyfalog.debug("Removing module from position ({0}) for fit ID: {1}", position, fitID)
+    def removeModule(self, fitID, positions):
+        """Removes modules based on a number of positions."""
+        pyfalog.debug("Removing module from position ({0}) for fit ID: {1}", positions, fitID)
         fit = eos.db.getFit(fitID)
-        if fit.modules[position].isEmpty:
+
+        # Convert scalar value to list
+        if not isinstance(positions, list):
+            positions = [positions]
+
+        modulesChanged = False
+        for x in positions:
+            if not fit.modules[x].isEmpty:
+                fit.modules.toDummy(x)
+                modulesChanged=True
+
+        # if no modules have changes, report back None
+        if not modulesChanged:
             return None
 
         numSlots = len(fit.modules)
-        fit.modules.toDummy(position)
         self.recalc(fit)
         self.checkStates(fit, None)
         fit.fill()
