@@ -27,7 +27,7 @@ class CommandFits(ContextMenu):
                 if not isinstance(ids, set):
                     ids = set([ids])
 
-            if evt is None or not ids.isdisjoint(cls.commandTypeIDs):   
+            if evt is None or not ids.isdisjoint(cls.commandTypeIDs):
                 # we are adding or removing an item that defines a command fit. Need to refresh fit list
                 sFit = Fit.getInstance()
                 cls.commandFits = sFit.getFitsWithModules(cls.commandTypeIDs)

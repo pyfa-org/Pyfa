@@ -553,7 +553,7 @@ class Fit(object):
         for x in positions:
             if not fit.modules[x].isEmpty:
                 fit.modules.toDummy(x)
-                modulesChanged=True
+                modulesChanged = True
 
         # if no modules have changes, report back None
         if not modulesChanged:
