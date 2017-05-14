@@ -254,11 +254,16 @@ class FittingView(d.Display):
         keycode = event.GetKeyCode()
         if keycode == wx.WXK_DELETE or keycode == wx.WXK_NUMPAD_DELETE:
             row = self.GetFirstSelected()
+            modules = []
+
             while row != -1:
                 if row not in self.blanks:
-                    self.removeModule(self.mods[row])
+                    mod = self.mods[row]
+                    if isinstance(mod, Module) and not mod.isEmpty:
+                        modules.append(self.mods[row])
                 self.Select(row, 0)
                 row = self.GetNextSelected(row)
+            self.removeModule(modules)
 
         event.Skip()
 
@@ -348,14 +353,20 @@ class FittingView(d.Display):
                 if "wxMSW" in wx.PlatformInfo:
                     self.click(event)
 
-    def removeModule(self, module):
+    def removeModule(self, modules):
+        """Removes a list of modules from the fit"""
         sFit = Fit.getInstance()
-        fit = sFit.getFit(self.activeFitID)
-        populate = sFit.removeModule(self.activeFitID, fit.modules.index(module))
 
-        if populate is not None:
+        if not isinstance(modules, list):
+            modules = [modules]
+
+        positions = [mod.modPosition for mod in modules]
+        result = sFit.removeModule(self.activeFitID, positions)
+
+        if result is not None:
             self.slotsChanged()
-            wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=self.activeFitID, action="moddel", typeID=module.item.ID))
+            ids = {mod.item.ID for mod in modules}
+            wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=self.activeFitID, action="moddel", typeID=ids))
 
     def addModule(self, x, y, srcIdx):
         """Add a module from the market browser"""
