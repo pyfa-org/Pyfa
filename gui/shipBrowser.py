@@ -1813,6 +1813,10 @@ class FitItem(SFItem.SFBrowserItem):
 
         sFit.deleteFit(self.fitID)
 
+        # Notify other areas that a fit has been deleted
+        wx.PostEvent(self.mainFrame, FitRemoved(fitID=self.fitID))
+
+        # todo: would a simple RefreshList() work here instead of posting that a stage has been selected?
         if self.shipBrowser.GetActiveStage() == 5:
             if fit in self.shipBrowser.lastdata:  # remove fit from import cache
                 self.shipBrowser.lastdata.remove(fit)
@@ -1821,8 +1825,6 @@ class FitItem(SFItem.SFBrowserItem):
             wx.PostEvent(self.shipBrowser, SearchSelected(text=self.shipBrowser.navpanel.lastSearch, back=True))
         else:
             wx.PostEvent(self.shipBrowser, Stage3Selected(shipID=self.shipID))
-
-        wx.PostEvent(self.mainFrame, FitRemoved(fitID=self.fitID))
 
     def MouseLeftUp(self, event):
         if self.dragging and self.dragged:
@@ -2004,9 +2006,10 @@ class FitItem(SFItem.SFBrowserItem):
         if activeFit == self.fitID and not self.deleted:
             sFit = Fit.getInstance()
             fit = sFit.getFit(activeFit)
-            self.timestamp = fit.modifiedCoalesce
-            self.notes = fit.notes
-            self.__setToolTip()
+            if fit is not None:  # sometimes happens when deleting fits, dunno why.
+                self.timestamp = fit.modifiedCoalesce
+                self.notes = fit.notes
+                self.__setToolTip()
 
         SFItem.SFBrowserItem.Refresh(self)
 

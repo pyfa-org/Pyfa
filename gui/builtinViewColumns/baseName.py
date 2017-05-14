@@ -55,7 +55,9 @@ class BaseName(ViewColumn):
             if self.projectedView:
                 # we need a little more information for the projected view
                 fitID = self.mainFrame.getActiveFit()
-                return "%dx %s (%s)" % (stuff.getProjectionInfo(fitID).amount, stuff.name, stuff.ship.item.name)
+                info = stuff.getProjectionInfo(fitID)
+                if info:
+                    return "%dx %s (%s)" % (stuff.getProjectionInfo(fitID).amount, stuff.name, stuff.ship.item.name)
             else:
                 return "%s (%s)" % (stuff.name, stuff.ship.item.name)
         elif isinstance(stuff, Rack):

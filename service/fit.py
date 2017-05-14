@@ -173,9 +173,22 @@ class Fit(object):
 
         # refresh any fits this fit is projected onto. Otherwise, if we have
         # already loaded those fits, they will not reflect the changes
+
+        # A note on refreshFits: we collect the target fits in a set because
+        # if a target fit has the same fit for both projected and command,
+        # it will be refreshed first during the projected loop and throw an
+        # error during the command loop
+        refreshFits = set()
         for projection in fit.projectedOnto.values():
             if projection.victim_fit in eos.db.saveddata_session:  # GH issue #359
-                eos.db.saveddata_session.refresh(projection.victim_fit)
+                refreshFits.add(projection.victim_fit)
+
+        for booster in fit.boostedOnto.values():
+            if booster.boosted_fit in eos.db.saveddata_session:  # GH issue #359
+                refreshFits.add(booster.boosted_fit)
+
+        for fit in refreshFits:
+            eos.db.saveddata_session.refresh(fit)
 
     @staticmethod
     def copyFit(fitID):
@@ -243,6 +256,9 @@ class Fit(object):
         if fitID is None:
             return None
         fit = eos.db.getFit(fitID)
+
+        if fit is None:
+            return None
 
         if basic:
             return fit
