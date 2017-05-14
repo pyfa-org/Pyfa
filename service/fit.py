@@ -257,6 +257,9 @@ class Fit(object):
             return None
         fit = eos.db.getFit(fitID)
 
+        if fit is None:
+            return None
+
         if basic:
             return fit
 

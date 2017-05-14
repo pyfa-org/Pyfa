@@ -2006,9 +2006,10 @@ class FitItem(SFItem.SFBrowserItem):
         if activeFit == self.fitID and not self.deleted:
             sFit = Fit.getInstance()
             fit = sFit.getFit(activeFit)
-            self.timestamp = fit.modifiedCoalesce
-            self.notes = fit.notes
-            self.__setToolTip()
+            if fit is not None:  # sometimes happens when deleting fits, dunno why.
+                self.timestamp = fit.modifiedCoalesce
+                self.notes = fit.notes
+                self.__setToolTip()
 
         SFItem.SFBrowserItem.Refresh(self)
 
