@@ -1084,7 +1084,8 @@ class Fit(object):
                     "Shield Booster"          : "shieldBonus",
                     "Ancillary Shield Booster": "shieldBonus",
                     "Remote Armor Repairer"   : "armorDamageAmount",
-                    "Remote Shield Booster"   : "shieldBonus"
+                    "Remote Shield Booster"   : "shieldBonus",
+                    "Remote Hull Repairer"    : "structureDamageAmount",
                 }
                 # Map repairer type to attribute
                 groupStoreMap = {
@@ -1095,6 +1096,7 @@ class Fit(object):
                     "Remote Armor Repairer"   : "armorRepair",
                     "Remote Shield Booster"   : "shieldRepair",
                     "Ancillary Armor Repairer": "armorRepair",
+                    "Remote Hull Repairer"    : "hullRepair",
                 }
 
                 capUsed = self.capUsed
