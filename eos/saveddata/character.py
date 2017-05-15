@@ -190,7 +190,6 @@ class Character(object):
             else:
                 return
 
-        self.__skills.append(skill)
         self.__skillIdMap[skill.itemID] = skill
 
     def removeSkill(self, skill):
@@ -272,7 +271,7 @@ class Character(object):
         copy.apiID = self.apiID
 
         for skill in self.skills:
-            copy.addSkill(Skill(self, skill.itemID, skill.level, False, skill.learned))
+            copy.addSkill(Skill(copy, skill.itemID, skill.level, False, skill.learned))
 
         return copy
 
