@@ -411,7 +411,7 @@ class MainFrame(wx.Frame, IPortUser):
         """ Export active fit """
         sFit = Fit.getInstance()
         fit = sFit.getFit(self.getActiveFit())
-        defaultFile = "%s - %s.xml" % (fit.ship.item.name, fit.name) if fit else None
+        defaultFile = u"%s - %s.xml" % (fit.ship.item.name, fit.name) if fit else None
 
         dlg = wx.FileDialog(self, "Save Fitting As...",
                             wildcard="EVE XML fitting files (*.xml)|*.xml",
