@@ -49,7 +49,7 @@ class Character(object):
 
         if initSkills:
             for item in self.getSkillList():
-                self.addSkill(Skill(self, item.ID, self.defaultLevel))
+                self.addSkill(Skill(item.ID, self.defaultLevel))
 
         self.__implants = HandledImplantBoosterList()
         self.apiKey = None
@@ -123,7 +123,7 @@ class Character(object):
         del self.__skills[:]
         self.__skillIdMap.clear()
         for skillRow in skills:
-            self.addSkill(Skill(self, skillRow["typeID"], skillRow["level"]))
+            self.addSkill(Skill(skillRow["typeID"], skillRow["level"]))
         self.secStatus = secStatus
 
     @property
@@ -206,7 +206,7 @@ class Character(object):
         skill = self.__skillIdMap.get(item.ID)
 
         if skill is None:
-            skill = Skill(self, item, self.defaultLevel, False, True)
+            skill = Skill(item, self.defaultLevel, False, True)
             self.addSkill(skill)
 
         return skill
@@ -272,7 +272,7 @@ class Character(object):
         copy.apiID = self.apiID
 
         for skill in self.skills:
-            copy.addSkill(Skill(self, skill.itemID, skill.level, False, skill.learned))
+            copy.addSkill(Skill(skill.itemID, skill.level, False, skill.learned))
 
         return copy
 
@@ -297,8 +297,7 @@ class Character(object):
 
 
 class Skill(HandledItem):
-    def __init__(self, character, item, level=0, ro=False, learned=True):
-        self.character = character
+    def __init__(self, item, level=0, ro=False, learned=True):
         self.__item = item if not isinstance(item, int) else None
         self.itemID = item.ID if not isinstance(item, int) else item
         self.__level = level if learned else None
@@ -432,7 +431,7 @@ class Skill(HandledItem):
             return val
 
     def __deepcopy__(self, memo):
-        copy = Skill(self.character, self.item, self.level, self.__ro)
+        copy = Skill(self.item, self.level, self.__ro)
         return copy
 
     def __repr__(self):
