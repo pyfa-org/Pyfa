@@ -125,7 +125,7 @@ class CharacterSelection(wx.Panel):
         activeChar = self.getActiveCharacter()
 
         choice.Clear()
-        charList = sChar.getCharacterList()
+        charList = sorted(sChar.getCharacterList(), key=lambda c: (not c.ro, c.name))
         picked = False
 
         for char in charList:
