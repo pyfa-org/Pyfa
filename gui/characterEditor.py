@@ -93,7 +93,7 @@ class CharacterEntityEditor(EntityEditor):
 
     def getEntitiesFromContext(self):
         sChar = Character.getInstance()
-        charList = sorted(sChar.getCharacterList(), key=lambda c: c.name)
+        charList = sorted(sChar.getCharacterList(), key=lambda c: (not c.ro, c.name))
 
         # Do some processing to ensure that we have All 0 and All 5 at the top
         all5 = sChar.all5()

@@ -218,8 +218,12 @@ class Character(object):
     def isDirty(self):
         return len(self.dirtySkills) > 0
 
+    @property
+    def ro(self):
+        return self == self.getAll5() or self == self.getAll0()
+
     def saveLevels(self):
-        if self == self.getAll5() or self == self.getAll0():
+        if self.ro:
             raise ReadOnlyException("This character is read-only")
 
         for skill in self.dirtySkills.copy():
