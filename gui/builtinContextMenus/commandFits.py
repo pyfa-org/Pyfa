@@ -46,7 +46,7 @@ class CommandFits(ContextMenu):
         return "Command Fits"
 
     def addFit(self, menu, fit, includeShip=False):
-        label = fit.name if not includeShip else "({}) {}".format(fit.ship.item.name, fit.name)
+        label = fit.name if not includeShip else u"({}) {}".format(fit.ship.item.name, fit.name)
         id = ContextMenu.nextID()
         self.fitMenuItemIds[id] = fit
         menuItem = wx.MenuItem(menu, id, label)
