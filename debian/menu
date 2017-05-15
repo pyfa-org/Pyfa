@@ -1,0 +1,2 @@
+?package(pyfa):needs="X11" section="Games/Tools"\
+  title="pyfa" command="/usr/bin/pyfa"
