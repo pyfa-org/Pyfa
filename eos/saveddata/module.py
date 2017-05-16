@@ -374,7 +374,7 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
         moduleReloadTime = self.getModifiedItemAttr("reloadTime")
         if moduleReloadTime is None:
             moduleReloadTime = self.__reloadTime
-        return moduleReloadTime
+        return moduleReloadTime or 0.0
 
     @reloadTime.setter
     def reloadTime(self, milliseconds):
