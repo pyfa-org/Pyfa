@@ -18,6 +18,12 @@ class ImplantSets(ContextMenu):
         if not self.settings.get('implantSets'):
             return False
 
+        sIS = s_ImplantSets.getInstance()
+        implantSets = sIS.getImplantSetList()
+
+        if len(implantSets) == 0:
+            return False
+
         return srcContext in ("implantView", "implantEditor")
 
     def getText(self, itmContext, selection):

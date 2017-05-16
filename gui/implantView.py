@@ -62,6 +62,7 @@ class ImplantView(wx.Panel):
         activeFitID = self.mainFrame.getActiveFit()
         fit = sFit.getFit(activeFitID)
         if fit:
+            self.source = fit.implantSource
             if fit.implantSource == ImplantLocation.FIT:
                 self.rbFit.SetValue(True)
             else:
@@ -159,6 +160,10 @@ class ImplantDisplay(d.Display):
         event.Skip()
 
     def removeItem(self, event):
+        # Character implants can't be changed here...
+        if self.Parent.source == ImplantLocation.CHARACTER:
+            return
+
         row, _ = self.HitTest(event.Position)
         if row != -1:
             col = self.getColumn(event.Position)
@@ -168,11 +173,17 @@ class ImplantDisplay(d.Display):
     def removeImplant(self, implant):
         fitID = self.mainFrame.getActiveFit()
         sFit = Fit.getInstance()
+
         sFit.removeImplant(fitID, self.original.index(implant))
         wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fitID))
 
     def click(self, event):
         event.Skip()
+
+        # Character implants can't be changed here...
+        if self.Parent.source == ImplantLocation.CHARACTER:
+            return
+
         row, _ = self.HitTest(event.Position)
         if row != -1:
             col = self.getColumn(event.Position)
