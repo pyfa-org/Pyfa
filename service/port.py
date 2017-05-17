@@ -1114,7 +1114,7 @@ class Port(object):
             also, it's OK to arrange modules randomly?
         """
         offineSuffix = " /OFFLINE"
-        export = u"[%s, %s]\n" % (fit.ship.item.name, fit.name)
+        export = "[%s, %s]\n" % (fit.ship.item.name, fit.name)
         stuff = {}
         sFit = svcFit.getInstance()
         for module in fit.modules:

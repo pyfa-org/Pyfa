@@ -707,7 +707,7 @@ class Fit(object):
                     value.boosted_fit.__resetDependentCalcs()
 
         if targetFit and type == CalcType.PROJECTED:
-            pyfalog.debug(u"Calculating projections from {0} to target {1}", repr(self), repr(targetFit))
+            pyfalog.debug("Calculating projections from {0} to target {1}", repr(self), repr(targetFit))
             projectionInfo = self.getProjectionInfo(targetFit.ID)
 
         # Start applying any command fits that we may have.
