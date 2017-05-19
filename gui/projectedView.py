@@ -298,5 +298,7 @@ class ProjectedView(d.Display):
             if col != self.getColIndex(State):
                 fitID = self.mainFrame.getActiveFit()
                 sFit = Fit.getInstance()
-                sFit.removeProjected(fitID, self.get(row))
-                wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fitID))
+                thing = self.get(row)
+                if thing:  # thing doesn't exist if it's the dummy value
+                    sFit.removeProjected(fitID, thing)
+                    wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fitID))
