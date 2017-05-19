@@ -214,5 +214,7 @@ class CommandView(d.Display):
             if col != self.getColIndex(State):
                 fitID = self.mainFrame.getActiveFit()
                 sFit = Fit.getInstance()
-                sFit.removeCommand(fitID, self.get(row))
-                wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fitID))
+                thing = self.get(row)
+                if thing:  # thing doesn't exist if it's the dummy value
+                    sFit.removeCommand(fitID, thing)
+                    wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fitID))
