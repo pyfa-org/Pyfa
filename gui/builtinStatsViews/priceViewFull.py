@@ -111,7 +111,7 @@ class PriceViewFull(StatsView):
 
             if fit.fighters:
                 for fighter in fit.fighters:
-                    fighter_price += fighter.item.price.price * fighter.amount
+                    fighter_price += fighter.item.price.price * fighter.amountActive
 
             if fit.cargo:
                 for cargo in fit.cargo:
