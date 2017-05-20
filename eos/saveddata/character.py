@@ -119,7 +119,7 @@ class Character(object):
 
         return all0
 
-    def apiUpdateCharSheet(self, skills, secStatus):
+    def apiUpdateCharSheet(self, skills, secStatus=0):
         del self.__skills[:]
         self.__skillIdMap.clear()
         for skillRow in skills:

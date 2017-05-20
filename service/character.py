@@ -77,6 +77,7 @@ class CharacterImportThread(threading.Thread):
                         pyfalog.error("Incorrect EVEMon XML sheet")
                         raise RuntimeError("Incorrect EVEMon XML sheet")
                     name = doc.getElementsByTagName("name")[0].firstChild.nodeValue
+                    securitystatus = doc.getElementsByTagName("securityStatus")[0].firstChild.nodeValue or 0
                     skill_els = doc.getElementsByTagName("skill")
                     skills = []
                     for skill in skill_els:
@@ -93,7 +94,7 @@ class CharacterImportThread(threading.Thread):
                                     skill.getAttribute("level"),
                             )
                     char = sCharacter.new(name + " (EVEMon)")
-                    sCharacter.apiUpdateCharSheet(char.ID, skills)
+                    sCharacter.apiUpdateCharSheet(char.ID, skills, securitystatus)
                 except Exception, e:
                     pyfalog.error("Exception on character import:")
                     pyfalog.error(e)
@@ -378,9 +379,9 @@ class Character(object):
         wx.CallAfter(guiCallback, e)
 
     @staticmethod
-    def apiUpdateCharSheet(charID, skills):
+    def apiUpdateCharSheet(charID, skills, securitystatus):
         char = eos.db.getCharacter(charID)
-        char.apiUpdateCharSheet(skills)
+        char.apiUpdateCharSheet(skills, securitystatus)
         eos.db.commit()
 
     @staticmethod
