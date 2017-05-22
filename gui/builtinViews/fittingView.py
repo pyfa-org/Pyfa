@@ -347,6 +347,8 @@ class FittingView(d.Display):
         event.Skip()
 
     def removeItem(self, event):
+        if event.CmdDown():
+            return
         row, _ = self.HitTest(event.Position)
         if row != -1 and row not in self.blanks and isinstance(self.mods[row], Module):
             col = self.getColumn(event.Position)
