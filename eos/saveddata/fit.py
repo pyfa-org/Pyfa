@@ -1078,25 +1078,33 @@ class Fit(object):
                 repairers = []
                 # Map a repairer type to the attribute it uses
                 groupAttrMap = {
-                    "Armor Repair Unit"       : "armorDamageAmount",
-                    "Ancillary Armor Repairer": "armorDamageAmount",
-                    "Hull Repair Unit"        : "structureDamageAmount",
-                    "Shield Booster"          : "shieldBonus",
+                    "Shield Booster": "shieldBonus",
                     "Ancillary Shield Booster": "shieldBonus",
-                    "Remote Armor Repairer"   : "armorDamageAmount",
-                    "Remote Shield Booster"   : "shieldBonus",
-                    "Remote Hull Repairer"    : "structureDamageAmount",
+                    "Remote Shield Booster": "shieldBonus",
+                    "Ancillary Remote Shield Booster": "shieldBonus",
+
+                    "Armor Repair Unit": "armorDamageAmount",
+                    "Ancillary Armor Repairer": "armorDamageAmount",
+                    "Remote Armor Repairer": "armorDamageAmount",
+                    "Ancillary Remote Armor Repairer": "armorDamageAmount",
+
+                    "Hull Repair Unit": "structureDamageAmount",
+                    "Remote Hull Repairer": "structureDamageAmount",
                 }
                 # Map repairer type to attribute
                 groupStoreMap = {
-                    "Armor Repair Unit"       : "armorRepair",
-                    "Hull Repair Unit"        : "hullRepair",
-                    "Shield Booster"          : "shieldRepair",
+                    "Shield Booster": "shieldRepair",
+                    "Remote Shield Booster": "shieldRepair",
                     "Ancillary Shield Booster": "shieldRepair",
-                    "Remote Armor Repairer"   : "armorRepair",
-                    "Remote Shield Booster"   : "shieldRepair",
+                    "Ancillary Remote Shield Booster": "shieldRepair",
+
+                    "Armor Repair Unit": "armorRepair",
+                    "Remote Armor Repairer": "armorRepair",
                     "Ancillary Armor Repairer": "armorRepair",
-                    "Remote Hull Repairer"    : "hullRepair",
+                    "Ancillary Remote Armor Repairer": "armorRepair",
+
+                    "Hull Repair Unit": "hullRepair",
+                    "Remote Hull Repairer": "hullRepair",
                 }
 
                 capUsed = self.capUsed
