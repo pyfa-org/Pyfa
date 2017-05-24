@@ -199,6 +199,7 @@ from gui.builtinContextMenus import (  # noqa: E402,F401
     tacticalMode,
     targetResists,
     priceClear,
+    priceOptions,
     amount,
     cargoAmmo,
     droneStack,
