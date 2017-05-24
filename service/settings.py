@@ -421,6 +421,38 @@ class StatViewSettings(object):
         self.serviceStatViewDefaultSettings[type] = value
 
 
+class PriceMenuSettings(object):
+    _instance = None
+
+    @classmethod
+    def getInstance(cls):
+        if cls._instance is None:
+            cls._instance = PriceMenuSettings()
+
+        return cls._instance
+
+    def __init__(self):
+        # mode
+        # 0 - Do not add to total
+        # 1 - Add to total
+        PriceMenuDefaultSettings = {
+            "ship" : 1,
+            "modules" : 1,
+            "drones" : 0,
+            "cargo" : 0,
+            "character" : 0
+        }
+
+        self.PriceMenuDefaultSettings = SettingsProvider.getInstance().getSettings("pyfaPriceMenuSettings",
+                                                                                     PriceMenuDefaultSettings)
+
+    def get(self, type):
+        return self.PriceMenuDefaultSettings[type]
+
+    def set(self, type, value):
+        self.PriceMenuDefaultSettings[type] = value
+
+
 class ContextMenuSettings(object):
     _instance = None
 

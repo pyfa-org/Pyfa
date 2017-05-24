@@ -23,6 +23,7 @@ from gui.statsView import StatsView
 from gui.bitmapLoader import BitmapLoader
 from gui.utils.numberFormatter import formatAmount
 from service.price import Price
+from service.settings import PriceMenuSettings
 
 
 class PriceViewMinimal(StatsView):
@@ -31,6 +32,7 @@ class PriceViewMinimal(StatsView):
     def __init__(self, parent):
         StatsView.__init__(self)
         self.parent = parent
+        self.settings = PriceMenuSettings.getInstance()
 
     def getHeaderText(self, fit):
         return "Price"
@@ -119,7 +121,24 @@ class PriceViewMinimal(StatsView):
                 for implant in fit.implants:
                     implant_price += implant.item.price.price
 
-        fitting_price = module_price + drone_price + fighter_price + cargo_price + booster_price + implant_price
+        fitting_price = module_price
+
+        total_price = 0
+
+        if (self.settings.get("ship")):
+            total_price += ship_price
+        if(self.settings.get("modules")):
+            total_price += module_price
+        if(self.settings.get("drones")):
+            total_price += drone_price + fighter_price
+        if(self.settings.get("cargo")):
+            total_price += cargo_price
+        if(self.settings.get("character")):
+            total_price += booster_price + implant_price
+
+
+
+
         total_price = ship_price + fitting_price
 
         self.labelPriceShip.SetLabel("%s ISK" % formatAmount(ship_price, 3, 3, 9, currency=True))
