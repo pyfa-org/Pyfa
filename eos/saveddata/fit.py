@@ -425,7 +425,7 @@ class Fit(object):
         self.__capUsed = None
         self.__capRecharge = None
         self.ecmProjectedStr = 1
-        self.commandBonuses = {}
+        #self.commandBonuses = {}
 
         for remoterep_type in self.__remoteReps:
             self.__remoteReps[remoterep_type] = None
@@ -711,8 +711,6 @@ class Fit(object):
                 # apparently this is a thing that happens when removing a command fit from a fit and then switching to
                 # that command fit. Same as projected clears, figure out why.
                 if value.boosted_fit:
-                    if value.boosted_fit in self.commandFits: # recursion, need to clear manually
-                        value.boosted_fit.clear()
                     value.boosted_fit.__resetDependentCalcs()
 
         if targetFit and type == CalcType.PROJECTED:
@@ -754,6 +752,7 @@ class Fit(object):
 
         if not self.__calculated:
             pyfalog.info("Fit is not yet calculated; will be running local calcs for {}".format(repr(self)))
+            self.clear()
 
         # Loop through our run times here. These determine which effects are run in which order.
         for runTime in ("early", "normal", "late"):
@@ -808,7 +807,7 @@ class Fit(object):
                 self.__runProjectionEffects(runTime, targetFit, projectionInfo)
 
         # Recursive command ships (A <-> B) get marked as calculated, which means that they aren't recalced when changing
-        # tabs. See GH issue
+        # tabs. See GH issue 1193
         if type == CalcType.COMMAND and targetFit in self.commandFits:
             pyfalog.debug("{} is in the command listing for COMMAND ({}), do not mark self as calculated (recursive)".format(repr(targetFit), repr(self)))
         else:
