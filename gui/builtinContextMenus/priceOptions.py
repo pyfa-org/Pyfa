@@ -11,6 +11,7 @@ class PriceOptions(ContextMenu):
     def __init__(self):
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
         self.settings = PriceMenuSettings.getInstance()
+        self.optionList = ["Ship", "Modules", "Drones", "Cargo", "Character"]
 
     def display(self, srcContext, selection):
         return srcContext in ("priceViewFull", "priceViewMinimal")
@@ -33,16 +34,16 @@ class PriceOptions(ContextMenu):
 
         sub = wx.Menu()
 
-        for option in self.settings.PriceMenuDefaultSettings.info:
+        for option in self.optionList:
             menuItem = self.addOption(rootMenu if msw else sub, option)
             sub.AppendItem(menuItem)
-            menuItem.Check(self.settings.get(option))
+            menuItem.Check(self.settings.get(option.lower()))
 
         return sub
 
     def handleMode(self, event):
         option = self.optionIds[event.Id]
-        self.settings.set(option, event.Int)
+        self.settings.set(option.lower(), event.Int)
 
         wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=self.mainFrame.getActiveFit()))
 
