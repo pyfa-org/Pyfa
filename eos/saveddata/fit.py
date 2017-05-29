@@ -694,7 +694,7 @@ class Fit(object):
                 The type of calculation our current iteration is in. This helps us determine the interactions between
                 fits that rely on others for proper calculations
         """
-        pyfalog.warn("Starting fit calculation on: {0}, calc: {1}", repr(self), CalcType.getName(type))
+        pyfalog.info("Starting fit calculation on: {0}, calc: {1}", repr(self), CalcType.getName(type))
 
         # If we are projecting this fit onto another one, collect the projection info for later use
 
@@ -711,6 +711,8 @@ class Fit(object):
                 # apparently this is a thing that happens when removing a command fit from a fit and then switching to
                 # that command fit. Same as projected clears, figure out why.
                 if value.boosted_fit:
+                    if value.boosted_fit in self.commandFits: # recursion, need to clear manually
+                        value.boosted_fit.clear()
                     value.boosted_fit.__resetDependentCalcs()
 
         if targetFit and type == CalcType.PROJECTED:
@@ -751,7 +753,7 @@ class Fit(object):
             return
 
         if not self.__calculated:
-            pyfalog.warn("Running local calcs for {}".format(repr(self)))
+            pyfalog.info("Fit is not yet calculated; will be running local calcs for {}".format(repr(self)))
 
         # Loop through our run times here. These determine which effects are run in which order.
         for runTime in ("early", "normal", "late"):
@@ -805,8 +807,12 @@ class Fit(object):
             if type == CalcType.PROJECTED and projectionInfo:
                 self.__runProjectionEffects(runTime, targetFit, projectionInfo)
 
-        # Mark fit as calculated
-        self.__calculated = True
+        # Recursive command ships (A <-> B) get marked as calculated, which means that they aren't recalced when changing
+        # tabs. See GH issue
+        if type == CalcType.COMMAND and targetFit in self.commandFits:
+            pyfalog.debug("{} is in the command listing for COMMAND ({}), do not mark self as calculated (recursive)".format(repr(targetFit), repr(self)))
+        else:
+            self.__calculated = True
 
         # Only apply projected fits if fit it not projected itself.
         if type == CalcType.LOCAL:
