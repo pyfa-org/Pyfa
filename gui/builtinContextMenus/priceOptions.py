@@ -1,10 +1,9 @@
-from gui.contextMenu import ContextMenu
-import gui.mainFrame
-# noinspection PyPackageRequirements
 import wx
+
 import gui.globalEvents as GE
-from service.price import Price
-from service.settings import ContextMenuSettings, PriceMenuSettings
+import gui.mainFrame
+from gui.contextMenu import ContextMenu
+from service.settings import PriceMenuSettings
 
 
 class PriceOptions(ContextMenu):
@@ -46,5 +45,6 @@ class PriceOptions(ContextMenu):
         self.settings.set(option.lower(), event.Int)
 
         wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=self.mainFrame.getActiveFit()))
+
 
 PriceOptions.register()
