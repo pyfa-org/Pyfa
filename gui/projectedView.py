@@ -19,6 +19,7 @@
 
 # noinspection PyPackageRequirements
 import wx
+from logbook import Logger
 import gui.display as d
 import gui.globalEvents as GE
 import gui.droneView
@@ -30,6 +31,8 @@ from service.market import Market
 from eos.saveddata.drone import Drone as es_Drone
 from eos.saveddata.fighter import Fighter as es_Fighter
 from eos.saveddata.module import Module as es_Module
+
+pyfalog = Logger(__name__)
 
 
 class DummyItem(object):
@@ -174,6 +177,7 @@ class ProjectedView(d.Display):
     def fitChanged(self, event):
         sFit = Fit.getInstance()
         fit = sFit.getFit(event.fitID)
+        pyfalog.debug("ProjectedView::fitChanged: {}", repr(fit))
 
         self.Parent.Parent.DisablePage(self, not fit or fit.isStructure)
 
@@ -186,6 +190,7 @@ class ProjectedView(d.Display):
 
         stuff = []
         if fit is not None:
+            pyfalog.debug("    Collecting list of stuff to display in ProjectedView")
             self.modules = fit.projectedModules[:]
             self.drones = fit.projectedDrones[:]
             self.fighters = fit.projectedFighters[:]
