@@ -570,13 +570,22 @@ class Fit(object):
         return numSlots != len(fit.modules)
 
     def changeModule(self, fitID, position, newItemID):
-        pyfalog.debug("Changing position of module from position ({0}) for fit ID: {1}", position, fitID)
         fit = eos.db.getFit(fitID)
+
+        # We're trying to add a charge to a slot, which won't work. Instead, try to add the charge to the module in that slot.
+        if self.isAmmo(newItemID):
+            module = fit.modules[position]
+            if not module.isEmpty:
+                self.setAmmo(fitID, newItemID, [module])
+            return True
+
+        pyfalog.debug("Changing position of module from position ({0}) for fit ID: {1}", position, fitID)
+
+        item = eos.db.getItem(newItemID, eager=("attributes", "group.category"))
 
         # Dummy it out in case the next bit fails
         fit.modules.toDummy(position)
 
-        item = eos.db.getItem(newItemID, eager=("attributes", "group.category"))
         try:
             m = es_Module(item)
         except ValueError:
@@ -609,11 +618,19 @@ class Fit(object):
         sanity checks as opposed to the GUI View. This is different than how the
         normal .swapModules() does things, which is mostly a blind swap.
         """
-        pyfalog.debug("Moving cargo item to module for fit ID: {1}", fitID)
-        fit = eos.db.getFit(fitID)
 
+        fit = eos.db.getFit(fitID)
         module = fit.modules[moduleIdx]
         cargo = fit.cargo[cargoIdx]
+
+        # We're trying to move a charge from cargo to a slot - try to add charge to dst module. Don't do anything with
+        # the charge in the cargo (don't respect move vs copy)
+        if self.isAmmo(cargo.item.ID):
+            if not module.isEmpty:
+                self.setAmmo(fitID, cargo.item.ID, [module])
+            return
+
+        pyfalog.debug("Moving cargo item to module for fit ID: {1}", fitID)
 
         # Gather modules and convert Cargo item to Module, silently return if not a module
         try:

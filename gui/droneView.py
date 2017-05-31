@@ -25,6 +25,7 @@ from gui.marketBrowser import ITEM_SELECTED, ItemSelected
 from gui.display import Display
 from gui.builtinViewColumns.state import State
 from gui.contextMenu import ContextMenu
+from gui.utils.staticHelpers import DragDropHelper
 from service.fit import Fit
 from service.market import Market
 
@@ -39,7 +40,8 @@ class DroneViewDrop(wx.PyDropTarget):
 
     def OnData(self, x, y, t):
         if self.GetData():
-            data = self.dropData.GetText().split(':')
+            dragged_data = DragDropHelper.data
+            data = dragged_data.split(':')
             self.dropFn(x, y, data)
         return t
 
@@ -122,10 +124,12 @@ class DroneView(Display):
         row = event.GetIndex()
         if row != -1:
             data = wx.PyTextDataObject()
-            data.SetText("drone:" + str(row))
+            dataStr = "drone:" + str(row)
+            data.SetText(dataStr)
 
             dropSource = wx.DropSource(self)
             dropSource.SetData(data)
+            DragDropHelper.data = dataStr
             dropSource.DoDragDrop()
 
     def handleDragDrop(self, x, y, data):
