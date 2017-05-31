@@ -28,6 +28,7 @@ from gui.cachingImageList import CachingImageList
 from gui.contextMenu import ContextMenu
 from gui.bitmapLoader import BitmapLoader
 from logbook import Logger
+from utils.staticHelpers import DragDropHelper
 
 pyfalog = Logger(__name__)
 
@@ -285,6 +286,7 @@ class ItemView(Display):
             data.SetText(dataStr)
             dropSource = wx.DropSource(self)
             dropSource.SetData(data)
+            DragDropHelper.data = dataStr
             dropSource.DoDragDrop()
 
     def itemActivated(self, event=None):
