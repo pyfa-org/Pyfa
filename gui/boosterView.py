@@ -24,6 +24,7 @@ import gui.globalEvents as GE
 import gui.marketBrowser as marketBrowser
 from gui.builtinViewColumns.state import State
 from gui.contextMenu import ContextMenu
+from gui.utils.staticHelpers import DragDropHelper
 from service.fit import Fit
 
 
