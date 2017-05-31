@@ -425,7 +425,7 @@ class Fit(object):
         self.__capUsed = None
         self.__capRecharge = None
         self.ecmProjectedStr = 1
-        #self.commandBonuses = {}
+        # self.commandBonuses = {}
 
         for remoterep_type in self.__remoteReps:
             self.__remoteReps[remoterep_type] = None
