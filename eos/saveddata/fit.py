@@ -506,7 +506,7 @@ class Fit(object):
 
                 if warfareBuffID == 10:  # Shield Burst: Shield Harmonizing: Shield Resistance
                     for damageType in ("Em", "Explosive", "Thermal", "Kinetic"):
-                        self.ship.boostItemAttr("shield%sDamageResonance" % damageType, value)
+                        self.ship.boostItemAttr("shield%sDamageResonance" % damageType, value, stackingPenalties=True)
 
                 if warfareBuffID == 11:  # Shield Burst: Active Shielding: Repair Duration/Capacitor
                     self.modules.filteredItemBoost(
@@ -521,7 +521,7 @@ class Fit(object):
 
                 if warfareBuffID == 13:  # Armor Burst: Armor Energizing: Armor Resistance
                     for damageType in ("Em", "Thermal", "Explosive", "Kinetic"):
-                        self.ship.boostItemAttr("armor%sDamageResonance" % damageType, value)
+                        self.ship.boostItemAttr("armor%sDamageResonance" % damageType, value, stackingPenalties=True)
 
                 if warfareBuffID == 14:  # Armor Burst: Rapid Repair: Repair Duration/Capacitor
                     self.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill("Remote Armor Repair Systems") or
