@@ -166,10 +166,8 @@ class Fit(object):
 
     @staticmethod
     def deleteFit(fitID):
-        pyfalog.debug("Deleting fit for fit ID: {0}", fitID)
         fit = eos.db.getFit(fitID)
-
-        eos.db.remove(fit)
+        pyfalog.debug("Fit::deleteFit - Deleting fit: {}", fit)
 
         # refresh any fits this fit is projected onto. Otherwise, if we have
         # already loaded those fits, they will not reflect the changes
@@ -180,15 +178,20 @@ class Fit(object):
         # error during the command loop
         refreshFits = set()
         for projection in fit.projectedOnto.values():
-            if projection.victim_fit in eos.db.saveddata_session:  # GH issue #359
+            if projection.victim_fit != fit and projection.victim_fit in eos.db.saveddata_session:  # GH issue #359
                 refreshFits.add(projection.victim_fit)
 
         for booster in fit.boostedOnto.values():
-            if booster.boosted_fit in eos.db.saveddata_session:  # GH issue #359
+            if booster.boosted_fit != fit and booster.boosted_fit in eos.db.saveddata_session:  # GH issue #359
                 refreshFits.add(booster.boosted_fit)
 
+        eos.db.saveddata_session.delete(fit)
+
+        pyfalog.debug("    Need to refresh {} fits: {}", len(refreshFits), refreshFits)
         for fit in refreshFits:
             eos.db.saveddata_session.refresh(fit)
+
+        eos.db.saveddata_session.commit()
 
     @staticmethod
     def copyFit(fitID):
