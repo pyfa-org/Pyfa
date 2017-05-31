@@ -23,6 +23,7 @@ import gui.display as d
 from gui.builtinViewColumns.state import State
 from gui.contextMenu import ContextMenu
 import globalEvents as GE
+from gui.utils.staticHelpers import DragDropHelper
 from service.fit import Fit
 from service.market import Market
 
@@ -37,7 +38,8 @@ class CargoViewDrop(wx.PyDropTarget):
 
     def OnData(self, x, y, t):
         if self.GetData():
-            data = self.dropData.GetText().split(':')
+            dragged_data = DragDropHelper.data
+            data = dragged_data.split(':')
             self.dropFn(x, y, data)
         return t
 
@@ -87,10 +89,12 @@ class CargoView(d.Display):
 
         if row != -1:
             data = wx.PyTextDataObject()
-            data.SetText("cargo:" + str(row))
+            dataStr = "cargo:" + str(row)
+            data.SetText(dataStr)
 
             dropSource = wx.DropSource(self)
             dropSource.SetData(data)
+            DragDropHelper.data = dataStr
             dropSource.DoDragDrop()
 
     def kbEvent(self, event):

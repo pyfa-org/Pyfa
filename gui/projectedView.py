@@ -24,6 +24,7 @@ import gui.globalEvents as GE
 import gui.droneView
 from gui.builtinViewColumns.state import State
 from gui.contextMenu import ContextMenu
+from gui.utils.staticHelpers import DragDropHelper
 from service.fit import Fit
 from service.market import Market
 from eos.saveddata.drone import Drone as es_Drone
@@ -52,7 +53,8 @@ class ProjectedViewDrop(wx.PyDropTarget):
 
     def OnData(self, x, y, t):
         if self.GetData():
-            data = self.dropData.GetText().split(':')
+            dragged_data = DragDropHelper.data
+            data = dragged_data.split(':')
             self.dropFn(x, y, data)
         return t
 
@@ -127,10 +129,12 @@ class ProjectedView(d.Display):
         row = event.GetIndex()
         if row != -1 and isinstance(self.get(row), es_Drone):
             data = wx.PyTextDataObject()
-            data.SetText("projected:" + str(self.GetItemData(row)))
+            dataStr = "projected:" + str(self.GetItemData(row))
+            data.SetText(dataStr)
 
             dropSource = wx.DropSource(self)
             dropSource.SetData(data)
+            DragDropHelper.data = dataStr
             dropSource.DoDragDrop()
 
     def mergeDrones(self, x, y, itemID):
