@@ -27,6 +27,7 @@ import gui.display as d
 from gui.builtinViewColumns.state import State
 from eos.saveddata.module import Slot
 from gui.contextMenu import ContextMenu
+from gui.utils.staticHelpers import DragDropHelper
 from service.fit import Fit
 from service.market import Market
 
@@ -41,7 +42,8 @@ class FighterViewDrop(wx.PyDropTarget):
 
     def OnData(self, x, y, t):
         if self.GetData():
-            data = self.dropData.GetText().split(':')
+            dragged_data = DragDropHelper.data
+            data = dragged_data.split(':')
             self.dropFn(x, y, data)
         return t
 
@@ -184,10 +186,12 @@ class FighterDisplay(d.Display):
         row = event.GetIndex()
         if row != -1:
             data = wx.PyTextDataObject()
-            data.SetText("fighter:" + str(row))
+            dataStr = "fighter:" + str(row)
+            data.SetText(dataStr)
 
             dropSource = wx.DropSource(self)
             dropSource.SetData(data)
+            DragDropHelper.data = dataStr
             dropSource.DoDragDrop()
 
     def handleDragDrop(self, x, y, data):
