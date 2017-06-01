@@ -26,6 +26,7 @@ import gui.droneView
 from gui.builtinViewColumns.state import State
 from gui.contextMenu import ContextMenu
 from gui.builtinContextMenus.commandFits import CommandFits
+from gui.utils.staticHelpers import DragDropHelper
 from service.fit import Fit
 from eos.saveddata.drone import Drone as es_Drone
 
@@ -51,7 +52,8 @@ class CommandViewDrop(wx.PyDropTarget):
 
     def OnData(self, x, y, t):
         if self.GetData():
-            data = self.dropData.GetText().split(':')
+            dragged_data = DragDropHelper.data
+            data = dragged_data.split(':')
             self.dropFn(x, y, data)
         return t
 
@@ -116,10 +118,12 @@ class CommandView(d.Display):
         row = event.GetIndex()
         if row != -1 and isinstance(self.get(row), es_Drone):
             data = wx.PyTextDataObject()
-            data.SetText("command:" + str(self.GetItemData(row)))
+            dataStr = "command:" + str(self.GetItemData(row))
+            data.SetText(dataStr)
 
             dropSource = wx.DropSource(self)
             dropSource.SetData(data)
+            DragDropHelper.data = dataStr
             dropSource.DoDragDrop()
 
     @staticmethod

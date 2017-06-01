@@ -403,11 +403,12 @@ class Fit(object):
         }
 
         if not map[key](val):
+
             raise ValueError(str(val) + " is not a valid value for " + key)
         else:
             return val
 
-    def clear(self, projected=False):
+    def clear(self, projected=False, command=False):
         self.__effectiveTank = None
         self.__weaponDPS = None
         self.__minerYield = None
@@ -424,7 +425,7 @@ class Fit(object):
         self.__capUsed = None
         self.__capRecharge = None
         self.ecmProjectedStr = 1
-        self.commandBonuses = {}
+        # self.commandBonuses = {}
 
         for remoterep_type in self.__remoteReps:
             self.__remoteReps[remoterep_type] = None
@@ -454,10 +455,15 @@ class Fit(object):
         # If this is the active fit that we are clearing, not a projected fit,
         # then this will run and clear the projected ships and flag the next
         # iteration to skip this part to prevent recursion.
-        if not projected:
-            for stuff in self.projectedFits:
-                if stuff is not None and stuff != self:
-                    stuff.clear(projected=True)
+        # if not projected:
+        #     for stuff in self.projectedFits:
+        #         if stuff is not None and stuff != self:
+        #             stuff.clear(projected=True)
+        #
+        # if not command:
+        #     for stuff in self.commandFits:
+        #         if stuff is not None and stuff != self:
+        #             stuff.clear(command=True)
 
     # Methods to register and get the thing currently affecting the fit,
     # so we can correctly map "Affected By"
@@ -500,7 +506,7 @@ class Fit(object):
 
                 if warfareBuffID == 10:  # Shield Burst: Shield Harmonizing: Shield Resistance
                     for damageType in ("Em", "Explosive", "Thermal", "Kinetic"):
-                        self.ship.boostItemAttr("shield%sDamageResonance" % damageType, value)
+                        self.ship.boostItemAttr("shield%sDamageResonance" % damageType, value, stackingPenalties=True)
 
                 if warfareBuffID == 11:  # Shield Burst: Active Shielding: Repair Duration/Capacitor
                     self.modules.filteredItemBoost(
@@ -515,7 +521,7 @@ class Fit(object):
 
                 if warfareBuffID == 13:  # Armor Burst: Armor Energizing: Armor Resistance
                     for damageType in ("Em", "Thermal", "Explosive", "Kinetic"):
-                        self.ship.boostItemAttr("armor%sDamageResonance" % damageType, value)
+                        self.ship.boostItemAttr("armor%sDamageResonance" % damageType, value, stackingPenalties=True)
 
                 if warfareBuffID == 14:  # Armor Burst: Rapid Repair: Repair Duration/Capacitor
                     self.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill("Remote Armor Repair Systems") or
@@ -688,9 +694,10 @@ class Fit(object):
                 The type of calculation our current iteration is in. This helps us determine the interactions between
                 fits that rely on others for proper calculations
         """
-        pyfalog.debug("Starting fit calculation on: {0}, calc: {1}", repr(self), CalcType.getName(type))
+        pyfalog.info("Starting fit calculation on: {0}, calc: {1}", repr(self), CalcType.getName(type))
 
         # If we are projecting this fit onto another one, collect the projection info for later use
+
         # We also deal with self-projection here by setting self as a copy (to get a new fit object) to apply onto original fit
         # First and foremost, if we're looking at a local calc, reset the calculated state of fits that this fit affects
         # Thankfully, due to the way projection mechanics currently work, we don't have to traverse down a projection
@@ -714,7 +721,7 @@ class Fit(object):
         # We run the command calculations first so that they can calculate fully and store the command effects on the
         # target fit to be used later on in the calculation. This does not apply when we're already calculating a
         # command fit.
-        if type != CalcType.COMMAND and self.commandFits:
+        if type != CalcType.COMMAND and self.commandFits and not self.__calculated:
             for fit in self.commandFits:
                 commandInfo = fit.getCommandInfo(self.ID)
                 # Continue loop if we're trying to apply ourselves or if this fit isn't active
@@ -742,6 +749,10 @@ class Fit(object):
         if self.__calculated and type == CalcType.LOCAL:
             pyfalog.debug("Fit has already been calculated and is local, returning: {0}", self)
             return
+
+        if not self.__calculated:
+            pyfalog.info("Fit is not yet calculated; will be running local calcs for {}".format(repr(self)))
+            self.clear()
 
         # Loop through our run times here. These determine which effects are run in which order.
         for runTime in ("early", "normal", "late"):
@@ -795,8 +806,12 @@ class Fit(object):
             if type == CalcType.PROJECTED and projectionInfo:
                 self.__runProjectionEffects(runTime, targetFit, projectionInfo)
 
-        # Mark fit as calculated
-        self.__calculated = True
+        # Recursive command ships (A <-> B) get marked as calculated, which means that they aren't recalced when changing
+        # tabs. See GH issue 1193
+        if type == CalcType.COMMAND and targetFit in self.commandFits:
+            pyfalog.debug("{} is in the command listing for COMMAND ({}), do not mark self as calculated (recursive)".format(repr(targetFit), repr(self)))
+        else:
+            self.__calculated = True
 
         # Only apply projected fits if fit it not projected itself.
         if type == CalcType.LOCAL:

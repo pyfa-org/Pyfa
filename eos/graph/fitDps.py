@@ -47,11 +47,11 @@ class FitDpsGraph(Graph):
 
         for mod in fit.modules:
             if not mod.isEmpty and mod.state >= State.ACTIVE:
-                if "remoteTargetPaintFalloff" in mod.item.effects:
+                if "remoteTargetPaintFalloff" in mod.item.effects or "structureModuleEffectTargetPainter" in mod.item.effects:
                     ew['signatureRadius'].append(
                             1 + (mod.getModifiedItemAttr("signatureRadiusBonus") / 100) * self.calculateModuleMultiplier(
                                     mod, data))
-                if "remoteWebifierFalloff" in mod.item.effects:
+                if "remoteWebifierFalloff" in mod.item.effects or "structureModuleEffectStasisWebifier" in mod.item.effects:
                     if distance <= mod.getModifiedItemAttr("maxRange"):
                         ew['velocity'].append(1 + (mod.getModifiedItemAttr("speedFactor") / 100))
                     elif mod.getModifiedItemAttr("falloffEffectiveness") > 0:
