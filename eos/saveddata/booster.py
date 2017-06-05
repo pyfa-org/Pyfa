@@ -24,6 +24,7 @@ from sqlalchemy.orm import reconstructor, validates
 import eos.db
 from eos.effectHandlerHelpers import HandledItem
 from eos.modifiedAttributeDict import ModifiedAttributeDict, ItemAttrShortcut
+from eos.saveddata.boosterSideEffect import BoosterSideEffect
 
 pyfalog = Logger(__name__)
 
@@ -37,6 +38,9 @@ class Booster(HandledItem, ItemAttrShortcut):
 
         self.itemID = item.ID if item is not None else None
         self.active = True
+
+        self.__sideEffects = self.__getSideEffects()
+
         self.build()
 
     @reconstructor
@@ -58,34 +62,23 @@ class Booster(HandledItem, ItemAttrShortcut):
 
     def build(self):
         """ Build object. Assumes proper and valid item already set """
-        self.__sideEffects = []
         self.__itemModifiedAttributes = ModifiedAttributeDict()
         self.__itemModifiedAttributes.original = self.__item.attributes
         self.__itemModifiedAttributes.overrides = self.__item.overrides
         self.__slot = self.__calculateSlot(self.__item)
 
-        # Legacy booster side effect code, disabling as not currently implemented
-        '''
-        for effect in self.__item.effects.itervalues():
-            if effect.isType("boosterSideEffect"):
-                s = SideEffect(self)
-                s.effect = effect
-                s.active = effect.ID in self.__activeSideEffectIDs
-                self.__sideEffects.append(s)
-        '''
+        if len(self.sideEffects) != len(self.__getSideEffects()):
+            self.__sideEffects = []
+            for ability in self.__getSideEffects():
+                self.__sideEffects.append(ability)
 
-    # Legacy booster side effect code, disabling as not currently implemented
-    '''
-    def iterSideEffects(self):
-        return self.__sideEffects.__iter__()
+    @property
+    def sideEffects(self):
+        return self.__sideEffects or []
 
-    def getSideEffect(self, name):
-        for sideEffect in self.iterSideEffects():
-            if sideEffect.effect.name == name:
-                return sideEffect
-
-        raise KeyError("SideEffect with %s as name not found" % name)
-    '''
+    def __getSideEffects(self):
+        """Returns list of BoosterSideEffect that are loaded with data"""
+        return [BoosterSideEffect(effect) for effect in self.item.effects.values() if effect.type and 'boosterSideEffect' in effect.type]
 
     @property
     def itemModifiedAttributes(self):
@@ -161,41 +154,3 @@ class Booster(HandledItem, ItemAttrShortcut):
         '''
 
         return copy
-
-
-# Legacy booster side effect code, disabling as not currently implemented
-'''
-    class SideEffect(object):
-        def __init__(self, owner):
-            self.__owner = owner
-            self.__active = False
-            self.__effect = None
-
-        @property
-        def active(self):
-            return self.__active
-
-        @active.setter
-        def active(self, active):
-            if not isinstance(active, bool):
-                raise TypeError("Expecting a bool, not a " + type(active))
-
-            if active != self.__active:
-                if active:
-                    self.__owner._Booster__activeSideEffectIDs.append(self.effect.ID)
-                else:
-                    self.__owner._Booster__activeSideEffectIDs.remove(self.effect.ID)
-
-                self.__active = active
-
-        @property
-        def effect(self):
-            return self.__effect
-
-        @effect.setter
-        def effect(self, effect):
-            if not hasattr(effect, "handler"):
-                raise TypeError("Need an effect with a handler")
-
-            self.__effect = effect
-'''
