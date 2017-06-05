@@ -76,9 +76,13 @@ class Booster(HandledItem, ItemAttrShortcut):
     def sideEffects(self):
         return self.__sideEffects or []
 
+    @property
+    def activeSideEffectEffects(self):
+        return [x.effect for x in self.sideEffects if x.active]
+
     def __getSideEffects(self):
         """Returns list of BoosterSideEffect that are loaded with data"""
-        return [BoosterSideEffect(effect) for effect in self.item.effects.values() if effect.type and 'boosterSideEffect' in effect.type]
+        return [BoosterSideEffect(effect) for effect in self.item.effects.values() if effect.isType("boosterSideEffect")]
 
     @property
     def itemModifiedAttributes(self):
@@ -111,18 +115,13 @@ class Booster(HandledItem, ItemAttrShortcut):
             return
         if not self.active:
             return
+
         for effect in self.item.effects.itervalues():
             if effect.runTime == runTime and \
-                    (effect.isType("passive") or effect.isType("boosterSideEffect")) and \
-                    effect.activeByDefault:
+                    (effect.isType("passive") or effect.isType("boosterSideEffect")):
+                if effect.isType("boosterSideEffect") and effect not in self.activeSideEffectEffects:
+                    continue
                 effect.handler(fit, self, ("booster",))
-
-        # Legacy booster code, not fully implemented
-        '''
-        for sideEffect in self.iterSideEffects():
-            if sideEffect.active and sideEffect.effect.runTime == runTime:
-                sideEffect.effect.handler(fit, self, ("boosterSideEffect",))
-        '''
 
     @validates("ID", "itemID", "ammoID", "active")
     def validator(self, key, val):

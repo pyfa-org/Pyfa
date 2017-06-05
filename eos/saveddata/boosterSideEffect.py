@@ -55,9 +55,12 @@ class BoosterSideEffect(object):
 
     @property
     def name(self):
-        return self.__effect.getattr('displayName') or self.__effect.handlerName
+        return "{0}% {1}".format(
+            self.booster.getModifiedItemAttr(self.attr),
+            self.__effect.getattr('displayName') or self.__effect.handlerName,
+        )
 
     @property
-    def attrPrefix(self):
-        return self.__effect.getattr('prefix')
+    def attr(self):
+        return self.__effect.getattr('attr')
 
