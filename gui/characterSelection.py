@@ -19,12 +19,15 @@
 
 # noinspection PyPackageRequirements
 import wx
-from gui.bitmapLoader import BitmapLoader
+
+from logbook import Logger
+
 import gui.globalEvents as GE
 import gui.mainFrame
+from gui.bitmapLoader import BitmapLoader
+from gui.utils.clipboard import toClipboard
 from service.character import Character
 from service.fit import Fit
-from logbook import Logger
 
 pyfalog = Logger(__name__)
 
@@ -93,6 +96,9 @@ class CharacterSelection(wx.Panel):
 
         grantItem = menu.Append(wx.ID_ANY, "Grant Missing Skills")
         self.Bind(wx.EVT_MENU, self.grantMissingSkills, grantItem)
+
+        exportItem = menu.Append(wx.ID_ANY, "Export Missing Skills")
+        self.Bind(wx.EVT_MENU, self.exportSkills, exportItem)
 
         self.PopupMenu(menu, pos)
 
@@ -245,6 +251,15 @@ class CharacterSelection(wx.Panel):
                 self.charChanged(None)
 
         event.Skip()
+
+    def exportSkills(self, evt):
+        skillsMap = self._buildSkillsTooltipCondensed(self.reqs, skillsMap={})
+        list = ""
+        for skill in skillsMap:
+            for i in range(1, int(skillsMap[skill])):
+                list += skill + " " + str(i) + "\n"
+
+        toClipboard(list)
 
     def _buildSkillsTooltip(self, reqs, currItem="", tabulationLevel=0):
         tip = ""
