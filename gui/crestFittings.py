@@ -407,7 +407,13 @@ class FittingsTreeView(wx.Panel):
 
     def displayFit(self, event):
         selection = self.fittingsTreeCtrl.GetSelection()
-        fit = json.loads(self.fittingsTreeCtrl.GetPyData(selection))
+        data = self.fittingsTreeCtrl.GetPyData(selection)
+
+        if data is None:
+            event.Skip()
+            return
+
+        fit = json.loads(data)
         list = []
 
         for item in fit['items']:
