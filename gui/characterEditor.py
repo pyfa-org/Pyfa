@@ -297,6 +297,9 @@ class SkillTreeView(wx.Panel):
 
         self.clonesChoice.Bind(wx.EVT_CHOICE, self.cloneChanged)
 
+        self.clonesChoice.SetToolTip(
+            wx.ToolTip("Setting an Alpha clone does not replace the character's skills, but rather caps them to Alpha levels."))
+
         pmainSizer.Add(hSizer, 0, wx.EXPAND | wx.ALL, 5)
 
         # Set up timer for skill search
