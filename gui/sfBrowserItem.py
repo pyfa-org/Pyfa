@@ -261,6 +261,18 @@ class SFBrowserItem(wx.Window):
         self.Bind(wx.EVT_ENTER_WINDOW, self.OnEnterWindow)
         self.Bind(wx.EVT_LEAVE_WINDOW, self.OnLeaveWindow)
         self.Bind(wx.EVT_MOTION, self.OnMotion)
+        self.Bind(wx.EVT_SET_FOCUS, self.OnFocus)
+        self.Bind(wx.EVT_KILL_FOCUS, self.OnKillFocus)
+
+    def OnFocus(self, evt):
+        self.SetHighlighted(True)
+        self.Refresh()
+        evt.Skip()
+
+    def OnKillFocus(self, evt):
+        self.SetHighlighted(False)
+        self.Refresh()
+        evt.Skip()
 
     def Refresh(self):
         self.RenderBackground()
