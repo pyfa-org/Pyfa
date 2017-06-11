@@ -21,7 +21,7 @@
 import wx
 
 import gui.globalEvents as GE
-from gui.marketBrowser import ITEM_SELECTED, ItemSelected
+from gui.builtinMarketBrowser.events import ItemSelected, ITEM_SELECTED
 from gui.display import Display
 from gui.builtinViewColumns.state import State
 from gui.contextMenu import ContextMenu

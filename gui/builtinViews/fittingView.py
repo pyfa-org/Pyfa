@@ -22,7 +22,7 @@ import wx
 # noinspection PyPackageRequirements
 import wx.lib.newevent
 import gui.mainFrame
-import gui.marketBrowser
+from gui.builtinMarketBrowser.events import ItemSelected, ITEM_SELECTED
 import gui.display as d
 from gui.contextMenu import ContextMenu
 from gui.builtinShipBrowser.events import *
@@ -140,7 +140,7 @@ class FittingView(d.Display):
         self.mainFrame.Bind(GE.FIT_CHANGED, self.fitChanged)
         self.mainFrame.Bind(EVT_FIT_RENAMED, self.fitRenamed)
         self.mainFrame.Bind(EVT_FIT_REMOVED, self.fitRemoved)
-        self.mainFrame.Bind(gui.marketBrowser.ITEM_SELECTED, self.appendItem)
+        self.mainFrame.Bind(ITEM_SELECTED, self.appendItem)
 
         self.Bind(wx.EVT_LEFT_DCLICK, self.removeItem)
         self.Bind(wx.EVT_LIST_BEGIN_DRAG, self.startDrag)
@@ -217,7 +217,7 @@ class FittingView(d.Display):
         self.mainFrame.Unbind(GE.FIT_CHANGED, handler=self.fitChanged)
         self.mainFrame.Unbind(EVT_FIT_RENAMED, handler=self.fitRenamed)
         self.mainFrame.Unbind(EVT_FIT_REMOVED, handler=self.fitRemoved)
-        self.mainFrame.Unbind(gui.marketBrowser.ITEM_SELECTED, handler=self.appendItem)
+        self.mainFrame.Unbind(ITEM_SELECTED, handler=self.appendItem)
 
         d.Display.Destroy(self)
 
@@ -394,7 +394,7 @@ class FittingView(d.Display):
             moduleChanged = sFit.changeModule(fitID, self.mods[dstRow].modPosition, srcIdx)
             if moduleChanged is None:
                 # the new module doesn't fit in specified slot, try to simply append it
-                wx.PostEvent(self.mainFrame, gui.marketBrowser.ItemSelected(itemID=srcIdx))
+                wx.PostEvent(self.mainFrame, ItemSelected(itemID=srcIdx))
 
             wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=self.mainFrame.getActiveFit(), action="modadd", typeID=srcIdx))
 

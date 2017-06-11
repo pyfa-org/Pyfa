@@ -45,7 +45,8 @@ import gui.globalEvents as GE
 from gui.bitmapLoader import BitmapLoader
 from gui.mainMenuBar import MainMenuBar
 from gui.additionsPane import AdditionsPane
-from gui.marketBrowser import MarketBrowser, ItemSelected
+from gui.marketBrowser import MarketBrowser
+from gui.builtinMarketBrowser.events import ItemSelected
 from gui.multiSwitch import MultiSwitch
 from gui.statsPane import StatsPane
 from gui.shipBrowser import ShipBrowser
