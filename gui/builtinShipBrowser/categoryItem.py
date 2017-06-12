@@ -56,6 +56,11 @@ class CategoryItem(SFBrowserItem):
             self.animTimer.Stop()
         self.Refresh()
 
+    def OnKeyUp(self, event):
+        if event.GetKeyCode() in (32, 13):  # space and enter
+            self.selectCategory(event)
+        event.Skip()
+
     @staticmethod
     def OUT_QUAD(t, b, c, d):
         t = float(t)
@@ -70,10 +75,12 @@ class CategoryItem(SFBrowserItem):
     def GetType(self):
         return 1
 
-    def MouseLeftUp(self, event):
-
+    def selectCategory(self, event):
         categoryID = self.categoryID
         wx.PostEvent(self.shipBrowser, Stage2Selected(categoryID=categoryID, back=False))
+
+    def MouseLeftUp(self, event):
+        self.selectCategory(event)
 
     def UpdateElementsPos(self, mdc):
         rect = self.GetRect()

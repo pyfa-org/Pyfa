@@ -253,7 +253,7 @@ class SFBrowserItem(wx.Window):
         self.Bind(wx.EVT_PAINT, self.OnPaint)
         self.Bind(wx.EVT_ERASE_BACKGROUND, self.OnEraseBackground)
         self.Bind(wx.EVT_LEFT_UP, self.OnLeftUp)
-        self.Bind(wx.EVT_KEY_DOWN, self.OnKeyDown)
+        self.Bind(wx.EVT_KEY_UP, self.OnKeyUp)
 
 
         if "wxMSW" in wx.PlatformInfo:
@@ -296,7 +296,7 @@ class SFBrowserItem(wx.Window):
     def OnEraseBackground(self, event):
         pass
 
-    def OnKeyDown(self, event):
+    def OnKeyUp(self, event):
         pass
 
     def MouseLeftUp(self, event):

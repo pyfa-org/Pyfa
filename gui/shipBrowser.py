@@ -54,11 +54,12 @@ class ShipBrowser(wx.Panel):
 
         mainSizer = wx.BoxSizer(wx.VERTICAL)
 
+        self.navpanel = NavigationPanel(self)
+        mainSizer.Add(self.navpanel, 0, wx.EXPAND)
+
         self.lpane = PFWidgetsContainer(self)
         layout = wx.HORIZONTAL
 
-        self.navpanel = NavigationPanel(self)
-        mainSizer.Add(self.navpanel, 0, wx.EXPAND)
         self.raceselect = RaceSelector(self, layout=layout, animate=False)
         container = wx.BoxSizer(wx.VERTICAL if layout == wx.HORIZONTAL else wx.HORIZONTAL)
 
