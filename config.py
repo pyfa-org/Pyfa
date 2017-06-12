@@ -47,7 +47,7 @@ def __createDirs(path):
 def getPyfaRoot():
     base = getattr(sys.modules['__main__'], "__file__", sys.executable) if isFrozen() else sys.argv[0]
     root = os.path.dirname(os.path.realpath(os.path.abspath(base)))
-    root = str(root, sys.getfilesystemencoding())
+    root = root
     return root
 
 
