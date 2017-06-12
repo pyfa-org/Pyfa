@@ -24,7 +24,7 @@ import gui.marketBrowser as marketBrowser
 import gui.mainFrame
 from gui.builtinViewColumns.state import State
 from gui.contextMenu import ContextMenu
-import globalEvents as GE
+import gui.globalEvents as GE
 from eos.saveddata.fit import ImplantLocation
 from service.fit import Fit
 from service.market import Market
