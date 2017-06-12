@@ -3,7 +3,7 @@ import wx
 from wx.lib.intctrl import IntCtrl
 
 from gui.preferenceView import PreferenceView
-from gui.bitmapLoader import BitmapLoader
+from gui.bitmap_loader import BitmapLoader
 
 import gui.mainFrame
 import gui.globalEvents as GE

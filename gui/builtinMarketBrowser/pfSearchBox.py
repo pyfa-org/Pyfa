@@ -1,7 +1,7 @@
 # noinspection PyPackageRequirements
 import wx
-import gui.utils.colorUtils as colorUtils
-import gui.utils.drawUtils as drawUtils
+import gui.utils.color as colorUtils
+import gui.utils.draw as drawUtils
 
 SearchButton, EVT_SEARCH_BTN = wx.lib.newevent.NewEvent()
 CancelButton, EVT_CANCEL_BTN = wx.lib.newevent.NewEvent()

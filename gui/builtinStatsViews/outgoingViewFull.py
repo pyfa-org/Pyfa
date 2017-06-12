@@ -20,7 +20,7 @@
 # noinspection PyPackageRequirements
 import wx
 from gui.statsView import StatsView
-from gui.bitmapLoader import BitmapLoader
+from gui.bitmap_loader import BitmapLoader
 from gui.utils.numberFormatter import formatAmount
 
 

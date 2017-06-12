@@ -19,7 +19,7 @@
 
 # noinspection PyPackageRequirements
 import wx
-from gui.bitmapLoader import BitmapLoader
+from gui.bitmap_loader import BitmapLoader
 # noinspection PyPackageRequirements
 from wx.lib.intctrl import IntCtrl
 from gui.utils.clipboard import toClipboard, fromClipboard

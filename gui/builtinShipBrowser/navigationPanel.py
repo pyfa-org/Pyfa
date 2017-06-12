@@ -5,11 +5,11 @@ from logbook import Logger
 
 import gui.builtinShipBrowser.sfBrowserItem as SFItem
 import gui.mainFrame
-import gui.utils.colorUtils as colorUtils
-import gui.utils.drawUtils as drawUtils
+import gui.utils.color as colorUtils
+import gui.utils.draw as drawUtils
 import gui.utils.fonts as fonts
 from .events import *
-from gui.bitmapLoader import BitmapLoader
+from gui.bitmap_loader import BitmapLoader
 from service.fit import Fit
 
 pyfalog = Logger(__name__)

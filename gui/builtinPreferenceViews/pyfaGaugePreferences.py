@@ -7,9 +7,9 @@ import wx
 import copy
 
 from gui.preferenceView import PreferenceView
-from gui.bitmapLoader import BitmapLoader
-from gui.utils import colorUtils
-import gui.utils.drawUtils as drawUtils
+from gui.bitmap_loader import BitmapLoader
+from gui.utils import color
+import gui.utils.draw as drawUtils
 
 
 ###########################################################################
@@ -122,13 +122,13 @@ class PFGaugePreview(wx.Window):
         r = copy.copy(rect)
         r.width = w
 
-        color = colorUtils.CalculateTransitionColor(self.colorS, self.colorE, float(value) / 100)
+        color = color.CalculateTransitionColor(self.colorS, self.colorE, float(value) / 100)
         if self.gradientStart > 0:
-            gcolor = colorUtils.BrightenColor(color, float(self.gradientStart) / 100)
-            gMid = colorUtils.BrightenColor(color, float(self.gradientStart / 2) / 100)
+            gcolor = color.BrightenColor(color, float(self.gradientStart) / 100)
+            gMid = color.BrightenColor(color, float(self.gradientStart / 2) / 100)
         else:
-            gcolor = colorUtils.DarkenColor(color, float(-self.gradientStart) / 100)
-            gMid = colorUtils.DarkenColor(color, float(-self.gradientStart / 2) / 100)
+            gcolor = color.DarkenColor(color, float(-self.gradientStart) / 100)
+            gMid = color.DarkenColor(color, float(-self.gradientStart / 2) / 100)
 
         gBmp = drawUtils.DrawGradientBar(r.width, r.height, gMid, color, gcolor)
         dc.DrawBitmap(gBmp, 0, 0)

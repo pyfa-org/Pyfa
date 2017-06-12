@@ -20,7 +20,7 @@
 # noinspection PyPackageRequirements
 import wx
 
-from gui.bitmapLoader import BitmapLoader
+from gui.bitmap_loader import BitmapLoader
 from gui.builtinAdditionPanes.boosterView import BoosterView
 from gui.builtinAdditionPanes.cargoView import CargoView
 from gui.builtinAdditionPanes.commandView import CommandView
@@ -29,7 +29,7 @@ from gui.builtinAdditionPanes.fighterView import FighterView
 from gui.builtinAdditionPanes.implantView import ImplantView
 from gui.builtinAdditionPanes.notesView import NotesView
 from gui.builtinAdditionPanes.projectedView import ProjectedView
-from gui.chromeTabs import PFNotebook
+from gui.chrome_tabs import PFNotebook
 from gui.pyfatogglepanel import TogglePanel
 
 

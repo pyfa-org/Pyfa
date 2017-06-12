@@ -5,7 +5,7 @@ from wx.lib.buttons import GenBitmapButton
 
 import gui.builtinMarketBrowser.pfSearchBox as SBox
 import gui.display as d
-from gui.bitmapLoader import BitmapLoader
+from gui.bitmap_loader import BitmapLoader
 from gui.marketBrowser import SearchBox
 from service.market import Market
 

@@ -1,6 +1,6 @@
 # noinspection PyPackageRequirements
 import wx
-import gui.utils.colorUtils as colorUtils
+import gui.utils.color as colorUtils
 
 
 class LoadAnimation(wx.Window):

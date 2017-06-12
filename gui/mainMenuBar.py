@@ -25,7 +25,7 @@ from service.character import Character
 from service.fit import Fit
 import gui.graphFrame
 import gui.globalEvents as GE
-from gui.bitmapLoader import BitmapLoader
+from gui.bitmap_loader import BitmapLoader
 
 from logbook import Logger
 pyfalog = Logger(__name__)

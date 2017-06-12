@@ -4,10 +4,10 @@ import wx
 from logbook import Logger
 
 from gui.builtinShipBrowser.sfBrowserItem import SFBrowserItem
-import gui.utils.colorUtils as colorUtils
-import gui.utils.drawUtils as drawUtils
+import gui.utils.color as colorUtils
+import gui.utils.draw as drawUtils
 import gui.utils.fonts as fonts
-from gui.bitmapLoader import BitmapLoader
+from gui.bitmap_loader import BitmapLoader
 from .events import *
 
 pyfalog = Logger(__name__)

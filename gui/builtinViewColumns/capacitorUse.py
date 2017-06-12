@@ -24,7 +24,7 @@ from eos.saveddata.mode import Mode
 from service.attribute import Attribute
 from gui.utils.numberFormatter import formatAmount
 from gui.viewColumn import ViewColumn
-from gui.bitmapLoader import BitmapLoader
+from gui.bitmap_loader import BitmapLoader
 
 
 class CapacitorUse(ViewColumn):

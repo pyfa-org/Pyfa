@@ -45,7 +45,7 @@ from service.market import Market
 from service.attribute import Attribute
 from service.price import Price as ServicePrice
 import gui.mainFrame
-from gui.bitmapLoader import BitmapLoader
+from gui.bitmap_loader import BitmapLoader
 from gui.utils.numberFormatter import formatAmount
 from gui.contextMenu import ContextMenu
 

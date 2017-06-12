@@ -9,7 +9,7 @@ from eos.saveddata.module import Hardpoint
 import gui.mainFrame
 import gui.globalEvents as GE
 from gui.contextMenu import ContextMenu
-from gui.bitmapLoader import BitmapLoader
+from gui.bitmap_loader import BitmapLoader
 from service.settings import ContextMenuSettings
 
 

@@ -30,10 +30,10 @@ import gui.multiSwitch
 from eos.saveddata.mode import Mode
 from eos.saveddata.module import Module, Slot, Rack
 from gui.builtinViewColumns.state import State
-from gui.bitmapLoader import BitmapLoader
+from gui.bitmap_loader import BitmapLoader
 import gui.builtinViews.emptyView
 from logbook import Logger
-from gui.chromeTabs import EVT_NOTEBOOK_PAGE_CHANGED
+from gui.chrome_tabs import EVT_NOTEBOOK_PAGE_CHANGED
 
 from service.fit import Fit
 from service.market import Market

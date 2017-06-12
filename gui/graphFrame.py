@@ -28,7 +28,7 @@ import gui.display
 import gui.mainFrame
 import gui.globalEvents as GE
 from gui.graph import Graph
-from gui.bitmapLoader import BitmapLoader
+from gui.bitmap_loader import BitmapLoader
 import traceback
 
 pyfalog = Logger(__name__)

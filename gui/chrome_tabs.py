@@ -21,10 +21,10 @@
 import wx
 # noinspection PyPackageRequirements
 import wx.lib.newevent
-import gui.utils.colorUtils as colorUtils
-import gui.utils.drawUtils as drawUtils
+import gui.utils.color as colorUtils
+import gui.utils.draw as drawUtils
 import gui.utils.fonts as fonts
-from gui.bitmapLoader import BitmapLoader
+from gui.bitmap_loader import BitmapLoader
 from logbook import Logger
 from service.fit import Fit
 

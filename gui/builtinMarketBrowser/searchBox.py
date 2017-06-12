@@ -1,4 +1,4 @@
-from gui.bitmapLoader import BitmapLoader
+from gui.bitmap_loader import BitmapLoader
 from .pfSearchBox import PFSearchBox
 
 

@@ -15,9 +15,9 @@ It uses the easeOutQuad equation from caurina.transitions.Tweener to do the anim
 import wx
 import copy
 
-from gui.utils import colorUtils
-import gui.utils.drawUtils as drawUtils
-import gui.utils.animEffects as animEffects
+from gui.utils import color
+import gui.utils.draw as drawUtils
+import gui.utils.anim_effects as animEffects
 import gui.utils.fonts as fonts
 
 from service.fit import Fit
@@ -347,16 +347,16 @@ class PyGauge(wx.PyWindow):
 
                 if transition != -1:
                     colorS, colorE = self.transitionsColors[transition]
-                    color = colorUtils.CalculateTransitionColor(colorS, colorE, xv)
+                    color = color.CalculateTransitionColor(colorS, colorE, xv)
                 else:
                     color = wx.Colour(191, 48, 48)
 
                 if self.gradientEffect > 0:
-                    gcolor = colorUtils.BrightenColor(color, float(self.gradientEffect) / 100)
-                    gMid = colorUtils.BrightenColor(color, float(self.gradientEffect / 2) / 100)
+                    gcolor = color.BrightenColor(color, float(self.gradientEffect) / 100)
+                    gMid = color.BrightenColor(color, float(self.gradientEffect / 2) / 100)
                 else:
-                    gcolor = colorUtils.DarkenColor(color, float(-self.gradientEffect) / 100)
-                    gMid = colorUtils.DarkenColor(color, float(-self.gradientEffect / 2) / 100)
+                    gcolor = color.DarkenColor(color, float(-self.gradientEffect) / 100)
+                    gMid = color.DarkenColor(color, float(-self.gradientEffect / 2) / 100)
 
                 gBmp = drawUtils.DrawGradientBar(r.width, r.height, gMid, color, gcolor)
                 dc.DrawBitmap(gBmp, r.left, r.top)

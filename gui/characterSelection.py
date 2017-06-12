@@ -19,7 +19,7 @@
 
 # noinspection PyPackageRequirements
 import wx
-from gui.bitmapLoader import BitmapLoader
+from gui.bitmap_loader import BitmapLoader
 import gui.globalEvents as GE
 import gui.mainFrame
 from service.character import Character

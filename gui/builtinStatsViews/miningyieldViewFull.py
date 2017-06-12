@@ -21,7 +21,7 @@
 import wx
 import gui.mainFrame
 from gui.statsView import StatsView
-from gui.bitmapLoader import BitmapLoader
+from gui.bitmap_loader import BitmapLoader
 from gui.utils.numberFormatter import formatAmount
 from service.fit import Fit
 

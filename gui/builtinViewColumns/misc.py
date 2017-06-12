@@ -24,7 +24,7 @@ from service.fit import Fit
 from service.market import Market
 import gui.mainFrame
 from gui.viewColumn import ViewColumn
-from gui.bitmapLoader import BitmapLoader
+from gui.bitmap_loader import BitmapLoader
 from gui.utils.numberFormatter import formatAmount
 from gui.utils.listFormatter import formatList
 from eos.saveddata.drone import Drone

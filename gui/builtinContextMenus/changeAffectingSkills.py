@@ -3,7 +3,7 @@ from gui.contextMenu import ContextMenu
 import gui.mainFrame
 # noinspection PyPackageRequirements
 import wx
-from gui.bitmapLoader import BitmapLoader
+from gui.bitmap_loader import BitmapLoader
 from eos.saveddata.character import Skill
 import gui.globalEvents as GE
 from service.fit import Fit

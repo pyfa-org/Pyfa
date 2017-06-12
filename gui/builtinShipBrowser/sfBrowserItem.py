@@ -1,6 +1,6 @@
 # noinspection PyPackageRequirements
 import wx
-import gui.utils.drawUtils as drawUtils
+import gui.utils.draw as drawUtils
 
 SB_ITEM_NORMAL = 0
 SB_ITEM_SELECTED = 1

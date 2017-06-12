@@ -3,11 +3,11 @@
 import wx
 from logbook import Logger
 
-import gui.utils.animEffects as animEffects
-import gui.utils.colorUtils as colorUtils
-import gui.utils.drawUtils as drawUtils
+import gui.utils.anim_effects as animEffects
+import gui.utils.color as colorUtils
+import gui.utils.draw as drawUtils
 from .events import *
-from gui.bitmapLoader import BitmapLoader
+from gui.bitmap_loader import BitmapLoader
 
 pyfalog = Logger(__name__)
 

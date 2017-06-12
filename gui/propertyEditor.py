@@ -19,7 +19,7 @@ import gui.display as d
 import gui.globalEvents as GE
 import gui.builtinMarketBrowser.pfSearchBox as SBox
 from gui.marketBrowser import SearchBox
-from gui.bitmapLoader import BitmapLoader
+from gui.bitmap_loader import BitmapLoader
 
 pyfalog = Logger(__name__)
 

@@ -1,7 +1,7 @@
 import wx
 
 from gui.preferenceView import PreferenceView
-from gui.bitmapLoader import BitmapLoader
+from gui.bitmap_loader import BitmapLoader
 from gui.utils import helpers_wxPython as wxHelpers
 import config
 from eos.db.saveddata.queries import clearPrices, clearDamagePatterns, clearTargetResists

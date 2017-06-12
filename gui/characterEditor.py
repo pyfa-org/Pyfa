@@ -25,7 +25,7 @@ from .utils.floatspin import FloatSpin
 import wx.lib.newevent
 # noinspection PyPackageRequirements
 import wx.gizmos
-from gui.bitmapLoader import BitmapLoader
+from gui.bitmap_loader import BitmapLoader
 from gui.contextMenu import ContextMenu
 import gui.globalEvents as GE
 from gui.builtinViews.implantEditor import BaseImplantEditorView

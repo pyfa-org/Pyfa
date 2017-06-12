@@ -17,7 +17,7 @@
 # along with pyfa.  If not, see <http://www.gnu.org/licenses/>.
 # =============================================================================
 
-from gui.chromeTabs import PFNotebook
+from gui.chrome_tabs import PFNotebook
 import gui.builtinViews.emptyView
 
 

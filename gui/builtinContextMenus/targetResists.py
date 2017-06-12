@@ -3,7 +3,7 @@ import gui.mainFrame
 import gui.globalEvents as GE
 # noinspection PyPackageRequirements
 import wx
-from gui.bitmapLoader import BitmapLoader
+from gui.bitmap_loader import BitmapLoader
 from service.targetResists import TargetResists as svc_TargetResists
 from service.fit import Fit
 from service.settings import ContextMenuSettings

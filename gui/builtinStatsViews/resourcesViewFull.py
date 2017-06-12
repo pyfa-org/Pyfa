@@ -20,10 +20,10 @@
 # noinspection PyPackageRequirements
 import wx
 from gui.statsView import StatsView
-from gui.bitmapLoader import BitmapLoader
+from gui.bitmap_loader import BitmapLoader
 from gui.pygauge import PyGauge
 import gui.mainFrame
-from gui.chromeTabs import EVT_NOTEBOOK_PAGE_CHANGED
+from gui.chrome_tabs import EVT_NOTEBOOK_PAGE_CHANGED
 
 from eos.saveddata.module import Hardpoint
 

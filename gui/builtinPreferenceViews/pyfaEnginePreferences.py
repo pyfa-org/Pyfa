@@ -3,7 +3,7 @@ import logging
 import wx
 
 from service.fit import Fit
-from gui.bitmapLoader import BitmapLoader
+from gui.bitmap_loader import BitmapLoader
 from gui.preferenceView import PreferenceView
 from service.settings import EOSSettings
 

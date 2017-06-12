@@ -18,7 +18,7 @@
 # =============================================================================
 
 from gui.graph import Graph
-from gui.bitmapLoader import BitmapLoader
+from gui.bitmap_loader import BitmapLoader
 from eos.graph.fitDps import FitDpsGraph as FitDps
 from eos.graph import Data
 import gui.mainFrame

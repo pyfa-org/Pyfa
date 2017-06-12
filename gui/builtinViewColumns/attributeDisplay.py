@@ -21,7 +21,7 @@
 import wx
 
 from gui.viewColumn import ViewColumn
-from gui.bitmapLoader import BitmapLoader
+from gui.bitmap_loader import BitmapLoader
 from gui.utils.numberFormatter import formatAmount
 
 from service.attribute import Attribute

@@ -39,10 +39,10 @@ import config
 from eos.config import gamedata_version
 
 import gui.aboutData
-from gui.chromeTabs import PFNotebook
+from gui.chrome_tabs import PFNotebook
 import gui.globalEvents as GE
 
-from gui.bitmapLoader import BitmapLoader
+from gui.bitmap_loader import BitmapLoader
 from gui.mainMenuBar import MainMenuBar
 from gui.additionsPane import AdditionsPane
 from gui.marketBrowser import MarketBrowser
