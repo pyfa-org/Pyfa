@@ -1,13 +1,10 @@
 # noinspection PyPackageRequirements
 import wx
-import math
 
 
-def BrightenColor(color, factor):
-    # Brightens a color (wx.Colour), factor = [0,1]
-
-    r, g, b = color
-    a = color.Alpha()
+def Brighten(color: wx.Colour, factor: [0, 1]):
+    """ Brightens a Color using a factor between 0 and 1"""
+    r, g, b, a = color
 
     factor = min(max(factor, 0), 1)
 
@@ -18,64 +15,59 @@ def BrightenColor(color, factor):
     return wx.Colour(r, g, b, a)
 
 
-def DarkenColor(color, factor):
-    # Darkens a color (wx.Colour), factor = [0, 1]
-
-    bkR, bkG, bkB = color
-
-    alpha = color.Alpha()
+def Darken(color: wx.Colour, factor: [0, 1]):
+    """ Darkens a Color using a factor between 0 and 1"""
+    r, g, b, a = color
 
     factor = min(max(factor, 0), 1)
     factor = 1 - factor
 
-    r = float(bkR * factor)
-    g = float(bkG * factor)
-    b = float(bkB * factor)
+    r *= factor
+    g *= factor
+    b *= factor
 
     r = min(max(r, 0), 255)
     b = min(max(b, 0), 255)
     g = min(max(g, 0), 255)
 
-    return wx.Colour(r, g, b, alpha)
+    return wx.Colour(r, g, b, a)
 
 
-def GetBrightnessO1(color):
-    # Calculates the brightness of a color, different options
-
-    r, g, b = color
-    return 0.299 * r + 0.587 * g + 0.114 * b
-
-
-def GetBrightnessO2(color):
-    r, g, b = color
-    return math.sqrt(0.241 * r * r + 0.691 * g * g + 0.068 * b * b)
+def _getBrightness(color: wx.Colour):
+    """
+    Calculates brightness of color
+    http://stackoverflow.com/a/596243/788054
+    """
+    r, g, b, a = color
+    return 0.299*r + 0.587*g + 0.114*b
 
 
-def GetSuitableColor(color, factor):
-    # Calculates a suitable color based on original color (wx.Colour), its brightness, a factor=[0,1] (darken/brighten by factor depending on calculated brightness)
+def GetSuitable(color: wx.Colour, factor: [0, 1]):
+    """
+    Calculates a suitable color based on original color (wx.Colour), its
+    brightness, and a factor (darken/brighten by factor depending on
+    calculated brightness)
+    """
 
-    brightness = GetBrightnessO1(color)
+    brightness = _getBrightness(color)
 
     if brightness > 129:
-        return DarkenColor(color, factor)
+        return Darken(color, factor)
     else:
-        return BrightenColor(color, factor)
+        return Brighten(color, factor)
 
 
-def CalculateTransitionColor(startColor, endColor, delta):
+def CalculateTransition(s_color: wx.Colour, e_color: wx.Colour, delta: [0, 1]):
     """
-    Calculates the color between a given start and end colors, delta = [0,1]
-    Colors are wx.Colour objects
+    Calculates the color between a given start and end color using a delta
+    value between 0 and 1
     """
 
-    sR, sG, sB = startColor
-    eR, eG, eB = endColor
-
-    alphaS = startColor.Alpha()
-    alphaE = endColor.Alpha()
+    sR, sG, sB, sA = s_color
+    eR, eG, eB, eA = e_color
 
     tR = sR + (eR - sR) * delta
     tG = sG + (eG - sG) * delta
     tB = sB + (eB - sB) * delta
 
-    return wx.Colour(tR, tG, tB, (alphaS + alphaE) / 2)
+    return wx.Colour(tR, tG, tB, (sA + eA)/2)
