@@ -159,7 +159,7 @@
 # -----------------------------------------------------------------------------
 
 
-import urlparse
+import urllib.parse
 import copy
 
 from xml.parsers import expat
@@ -200,7 +200,7 @@ class Error(Exception):
         self.args = (message.rstrip("."),)
 
     def __unicode__(self):
-        return u'%s [code=%s]' % (self.args[0], self.code)
+        return '%s [code=%s]' % (self.args[0], self.code)
 
 
 class RequestError(Error):
@@ -255,7 +255,7 @@ def EVEAPIConnection(url="api.eveonline.com", cacheHandler=None, proxy=None, pro
 
     if not url.startswith("http"):
         url = "https://" + url
-    p = urlparse.urlparse(url, "https")
+    p = urllib.parse.urlparse(url, "https")
     if p.path and p.path[-1] == "/":
         p.path = p.path[:-1]
     ctx = _RootContext(None, p.path, {}, {})
@@ -279,7 +279,7 @@ def _ParseXML(response, fromContext, storeFunc):
 
     if fromContext and isinstance(response, Element):
         obj = response
-    elif type(response) in (str, unicode):
+    elif type(response) in (str, str):
         obj = _Parser().Parse(response, False)
     elif hasattr(response, "read"):
         obj = _Parser().Parse(response, True)
@@ -349,7 +349,7 @@ class _Context(object):
     def __call__(self, **kw):
         if kw:
             # specified keywords override contextual ones
-            for k, v in self.parameters.iteritems():
+            for k, v in self.parameters.items():
                 if k not in kw:
                     kw[k] = v
         else:
@@ -383,7 +383,7 @@ class _RootContext(_Context):
 
     def __call__(self, path, **kw):
         # convert list type arguments to something the API likes
-        for k, v in kw.iteritems():
+        for k, v in kw.items():
             if isinstance(v, _listtypes):
                 kw[k] = ','.join(map(str, list(v)))
 
@@ -567,7 +567,7 @@ class _Parser(object):
                     # the row data contains more attributes than were defined.
                     self.container._cols = attributes[0::2]
                 self.container.append(
-                    [_castfunc(attributes[i], attributes[i + 1]) for i in xrange(0, len(attributes), 2)]
+                    [_castfunc(attributes[i], attributes[i + 1]) for i in range(0, len(attributes), 2)]
                 )
             # </hack>
 
@@ -658,7 +658,7 @@ class _Parser(object):
                         e = Element()
                         e._name = this._name
                         setattr(self.container, this._name, e)
-                        for i in xrange(0, len(attributes), 2):
+                        for i in range(0, len(attributes), 2):
                             setattr(e, attributes[i], attributes[i + 1])
                     else:
                         # tag of the form: <tag />, treat as empty string.
@@ -671,7 +671,7 @@ class _Parser(object):
             # multiples of some tag or attribute. Code below handles this case.
             elif isinstance(sibling, Rowset):
                 # its doppelganger is a rowset, append this as a row to that.
-                row = [_castfunc(attributes[i], attributes[i + 1]) for i in xrange(0, len(attributes), 2)]
+                row = [_castfunc(attributes[i], attributes[i + 1]) for i in range(0, len(attributes), 2)]
                 row.extend([getattr(this, col) for col in attributes2])
                 sibling.append(row)
             elif isinstance(sibling, Element):
@@ -680,13 +680,13 @@ class _Parser(object):
                 # into a Rowset, adding the sibling element and this one.
                 rs = Rowset()
                 rs.__catch = rs._name = this._name
-                row = [_castfunc(attributes[i], attributes[i + 1]) for i in xrange(0, len(attributes), 2)] + \
+                row = [_castfunc(attributes[i], attributes[i + 1]) for i in range(0, len(attributes), 2)] + \
                       [getattr(this, col) for col in attributes2]
                 rs.append(row)
-                row = [getattr(sibling, attributes[i]) for i in xrange(0, len(attributes), 2)] + \
+                row = [getattr(sibling, attributes[i]) for i in range(0, len(attributes), 2)] + \
                       [getattr(sibling, col) for col in attributes2]
                 rs.append(row)
-                rs._cols = [attributes[i] for i in xrange(0, len(attributes), 2)] + [col for col in attributes2]
+                rs._cols = [attributes[i] for i in range(0, len(attributes), 2)] + [col for col in attributes2]
                 setattr(self.container, this._name, rs)
             else:
                 # something else must have set this attribute already.
@@ -694,7 +694,7 @@ class _Parser(object):
                 pass
 
         # Now fix up the attributes and be done with it.
-        for i in xrange(0, len(attributes), 2):
+        for i in range(0, len(attributes), 2):
             this.__dict__[attributes[i]] = _castfunc(attributes[i], attributes[i + 1])
 
         return
@@ -719,7 +719,7 @@ class Element(object):
         return "<Element '%s'>" % self._name
 
 
-_fmt = u"%s:%s".__mod__
+_fmt = "%s:%s".__mod__
 
 
 class Row(object):
@@ -734,7 +734,7 @@ class Row(object):
         self._cols = cols or []
         self._row = row or []
 
-    def __nonzero__(self):
+    def __bool__(self):
         return True
 
     def __ne__(self, other):
@@ -770,7 +770,7 @@ class Row(object):
         return self._row[self._cols.index(this)]
 
     def __str__(self):
-        return "Row(" + ','.join(map(_fmt, zip(self._cols, self._row))) + ")"
+        return "Row(" + ','.join(map(_fmt, list(zip(self._cols, self._row)))) + ")"
 
 
 class Rowset(object):
@@ -829,7 +829,7 @@ class Rowset(object):
                 for line in self._rows:
                     yield line[i]
         else:
-            i = map(self._cols.index, columns)
+            i = list(map(self._cols.index, columns))
             if options.get("row", False):
                 for line in self._rows:
                     yield line, [line[x] for x in i]
@@ -857,7 +857,7 @@ class Rowset(object):
                 self._rows += other._rows
         raise TypeError("rowset instance expected")
 
-    def __nonzero__(self):
+    def __bool__(self):
         return not not self._rows
 
     def __len__(self):

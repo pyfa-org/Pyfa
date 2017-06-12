@@ -28,7 +28,7 @@ def DBInMemory_test():
     gamedataCache = True
     saveddataCache = True
     gamedata_version = ""
-    gamedata_connectionstring = 'sqlite:///' + realpath(join(dirname(abspath(unicode(__file__))), "..", "eve.db"))
+    gamedata_connectionstring = 'sqlite:///' + realpath(join(dirname(abspath(str(__file__))), "..", "eve.db"))
     saveddata_connectionstring = 'sqlite:///:memory:'
 
     class ReadOnlyException(Exception):
@@ -100,8 +100,8 @@ def DBInMemory():
     import eos.db
 
     # Output debug info to help us troubleshoot Travis
-    print(eos.db.saveddata_engine)
-    print(eos.db.gamedata_engine)
+    print((eos.db.saveddata_engine))
+    print((eos.db.gamedata_engine))
 
     helper = {
         'config': eos.config,

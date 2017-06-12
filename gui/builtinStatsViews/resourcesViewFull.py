@@ -169,8 +169,8 @@ class ResourcesViewFull(StatsView):
                 setattr(self, "label%sTotal%s" % (panel.capitalize(), capitalizedType), lbl)
                 absolute.Add(lbl, 0, wx.ALIGN_LEFT)
 
-                units = {"cpu": " tf", "pg": " MW", "droneBandwidth": " mbit/s", "droneBay": u" m\u00B3",
-                         "fighterBay": u" m\u00B3", "cargoBay": u" m\u00B3"}
+                units = {"cpu": " tf", "pg": " MW", "droneBandwidth": " mbit/s", "droneBay": " m\u00B3",
+                         "fighterBay": " m\u00B3", "cargoBay": " m\u00B3"}
                 lbl = wx.StaticText(parent, wx.ID_ANY, "%s" % units[type_])
                 absolute.Add(lbl, 0, wx.ALIGN_LEFT)
 
@@ -275,7 +275,7 @@ class ResourcesViewFull(StatsView):
                 totalCalibrationPoints = value
                 labelTCP = label
 
-            if isinstance(value, basestring):
+            if isinstance(value, str):
                 label.SetLabel(value)
                 label.SetToolTip(wx.ToolTip(value))
             else:

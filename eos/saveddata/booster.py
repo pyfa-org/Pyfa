@@ -118,7 +118,7 @@ class Booster(HandledItem, ItemAttrShortcut):
             return
         if not self.active:
             return
-        for effect in self.item.effects.itervalues():
+        for effect in self.item.effects.values():
             if effect.runTime == runTime and \
                     (effect.isType("passive") or effect.isType("boosterSideEffect")) and \
                     effect.activeByDefault:

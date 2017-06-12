@@ -95,7 +95,7 @@ class CharacterImportThread(threading.Thread):
                             )
                     char = sCharacter.new(name + " (EVEMon)")
                     sCharacter.apiUpdateCharSheet(char.ID, skills, securitystatus)
-                except Exception, e:
+                except Exception as e:
                     pyfalog.error("Exception on character import:")
                     pyfalog.error(e)
                     continue
@@ -147,18 +147,18 @@ class Character(object):
         self.all5()
 
     def exportText(self):
-        data = u"Pyfa exported plan for \"" + self.skillReqsDict['charname'] + "\"\n"
-        data += u"=" * 79 + u"\n"
-        data += u"\n"
-        item = u""
+        data = "Pyfa exported plan for \"" + self.skillReqsDict['charname'] + "\"\n"
+        data += "=" * 79 + "\n"
+        data += "\n"
+        item = ""
         try:
             for s in self.skillReqsDict['skills']:
                 if item == "" or not item == s["item"]:
                     item = s["item"]
-                    data += u"-" * 79 + "\n"
-                    data += u"Skills required for {}:\n".format(item)
-                data += u"{}{}: {}\n".format("    " * s["indent"], s["skill"], int(s["level"]))
-            data += u"-" * 79 + "\n"
+                    data += "-" * 79 + "\n"
+                    data += "Skills required for {}:\n".format(item)
+                data += "{}{}: {}\n".format("    " * s["indent"], s["skill"], int(s["level"]))
+            data += "-" * 79 + "\n"
         except Exception:
             pass
 
@@ -365,7 +365,7 @@ class Character(object):
         api = EVEAPIConnection()
         auth = api.auth(keyID=userID, vCode=apiKey)
         apiResult = auth.account.Characters()
-        charList = map(lambda c: unicode(c.name), apiResult.characters)
+        charList = [str(c.name) for c in apiResult.characters]
 
         char.chars = json.dumps(charList)
         return charList
@@ -392,7 +392,7 @@ class Character(object):
         if ifHigher and level < skill.level:
             return
 
-        if isinstance(level, basestring) or level > 5 or level < 0:
+        if isinstance(level, str) or level > 5 or level < 0:
             skill.setLevel(None, persist)
         else:
             skill.setLevel(level, persist)
@@ -456,7 +456,7 @@ class Character(object):
         return reqs
 
     def _checkRequirements(self, fit, char, subThing, reqs):
-        for req, level in subThing.requiredSkills.iteritems():
+        for req, level in subThing.requiredSkills.items():
             name = req.name
             ID = req.ID
             info = reqs.get(name)

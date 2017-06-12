@@ -63,10 +63,10 @@ class FitDpsGraph(Graph):
         ew['signatureRadius'].sort(key=abssort)
         ew['velocity'].sort(key=abssort)
 
-        for attr, values in ew.iteritems():
+        for attr, values in ew.items():
             val = data[attr]
             try:
-                for i in xrange(len(values)):
+                for i in range(len(values)):
                     bonus = values[i]
                     val *= 1 + (bonus - 1) * exp(- i ** 2 / 7.1289)
                 data[attr] = val

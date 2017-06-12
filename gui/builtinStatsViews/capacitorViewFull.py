@@ -124,7 +124,7 @@ class CapacitorViewFull(StatsView):
             label = getattr(self, labelName % panel)
             value = value() if fit is not None else 0
             value = value if value is not None else 0
-            if isinstance(value, basestring):
+            if isinstance(value, str):
                 label.SetLabel(value)
                 label.SetToolTip(wx.ToolTip(value))
             else:

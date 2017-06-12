@@ -83,7 +83,7 @@ class AttributeDisplay(ViewColumn):
         if self.info.name == "volume":
             str_ = (formatAmount(attr, 3, 0, 3))
             if hasattr(mod, "amount"):
-                str_ += u"m\u00B3 (%s m\u00B3)" % (formatAmount(attr * mod.amount, 3, 0, 3))
+                str_ += "m\u00B3 (%s m\u00B3)" % (formatAmount(attr * mod.amount, 3, 0, 3))
             attr = str_
 
         if isinstance(attr, (float, int)):

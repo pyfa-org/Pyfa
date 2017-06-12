@@ -214,12 +214,12 @@ class ShipBrowser(wx.Panel):
                 if ship.race not in racesList:
                     racesList.append(ship.race)
 
-        for race, state in self.racesFilter.iteritems():
+        for race, state in self.racesFilter.items():
             if race in racesList:
                 subRacesFilter[race] = self.racesFilter[race]
 
         override = True
-        for race, state in subRacesFilter.iteritems():
+        for race, state in subRacesFilter.items():
             if state:
                 override = False
                 break
@@ -382,7 +382,7 @@ class ShipBrowser(wx.Panel):
 
                 self.lpane.AddWidget(FitItem(self.lpane, ID, (shipName, shipTrait, name, booster, timestamp, notes), shipID))
             if len(ships) == 0 and len(fitList) == 0:
-                self.lpane.AddWidget(PFStaticText(self.lpane, label=u"No matching results."))
+                self.lpane.AddWidget(PFStaticText(self.lpane, label="No matching results."))
             self.lpane.RefreshList(doFocus=False)
         self.lpane.Thaw()
 

@@ -95,7 +95,7 @@ class TargetResists(ContextMenu):
             sub.AppendItem(self.addPattern(rootMenu if msw else sub, pattern))
 
         # Items that have a parent
-        for menuName, patterns in self.subMenus.items():
+        for menuName, patterns in list(self.subMenus.items()):
             # Create parent item for root menu that is simply name of parent
             item = wx.MenuItem(rootMenu, ContextMenu.nextID(), menuName)
 

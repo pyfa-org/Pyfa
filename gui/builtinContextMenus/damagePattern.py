@@ -52,7 +52,7 @@ class DamagePattern(ContextMenu):
                 self.singles.append(pattern)
 
         # return list of names, with singles first followed by submenu names
-        self.m = map(lambda p: p.name, self.singles) + self.subMenus.keys()
+        self.m = [p.name for p in self.singles] + list(self.subMenus.keys())
         return self.m
 
     def addPattern(self, rootMenu, pattern):

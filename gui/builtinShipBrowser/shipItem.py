@@ -8,7 +8,7 @@ import gui.mainFrame
 import gui.utils.colorUtils as colorUtils
 import gui.utils.drawUtils as drawUtils
 import gui.utils.fonts as fonts
-from events import *
+from .events import *
 from gui.bitmapLoader import BitmapLoader
 from gui.contextMenu import ContextMenu
 from service.fit import Fit

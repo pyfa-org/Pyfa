@@ -23,7 +23,7 @@ class PFContextMenuPref(PreferenceView):
         mainSizer.Add(self.stTitle, 0, wx.ALL, 5)
 
         self.stSubTitle = wx.StaticText(panel, wx.ID_ANY,
-                                        u"Disabling context menus can improve responsiveness.",
+                                        "Disabling context menus can improve responsiveness.",
                                         wx.DefaultPosition, wx.DefaultSize, 0)
         self.stSubTitle.Wrap(-1)
         mainSizer.Add(self.stSubTitle, 0, wx.ALL, 5)

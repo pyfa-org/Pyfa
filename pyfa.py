@@ -137,9 +137,9 @@ def handleGUIException(exc_type, exc_value, exc_traceback):
             pyfalog.info("Imported Python Modules:")
             for imported_module in module_list:
                 module_details = sys.modules[imported_module]
-                print(str(imported_module) + ": " + str(getattr(module_details, '__version__', '')))
+                print((str(imported_module) + ": " + str(getattr(module_details, '__version__', ''))))
 
-        print("Exception in main thread: " + str(exc_value.message))
+        print(("Exception in main thread: " + str(exc_value.message)))
         traceback.print_tb(exc_traceback)
 
         if wx and ErrorFrame:
@@ -200,7 +200,7 @@ if __name__ == "__main__":
 
     # convert to unicode if it is set
     if options.savepath is not None:
-        options.savepath = unicode(options.savepath)
+        options.savepath = str(options.savepath)
     config.defPaths(options.savepath)
 
     # Basic logging initialization

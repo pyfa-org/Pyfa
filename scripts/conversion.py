@@ -7,7 +7,7 @@ import sqlite3
 import sys
 
 # Add eos root path to sys.path so we can import ourselves
-path = os.path.dirname(unicode(__file__, sys.getfilesystemencoding()))
+path = os.path.dirname(str(__file__, sys.getfilesystemencoding()))
 sys.path.append(os.path.realpath(os.path.join(path, "..")))
 
 # change to correct conversion
@@ -275,14 +275,14 @@ def main(old, new):
             c = x.split(rename_phrase)
             container = renames
         else:
-            print "Unknown format: {}".format(x)
+            print("Unknown format: {}".format(x))
             sys.exit()
 
         old_name, new_name = c[0], c[1]
         old_item, new_item = None, None
 
         if "Blueprint" in old_name or "Blueprint" in new_name:
-            print "Blueprint: Skipping this line: %s"%x
+            print("Blueprint: Skipping this line: %s"%x)
             continue
 
         # gather item info
@@ -297,9 +297,9 @@ def main(old, new):
             break
 
         if not old_item:
-            print "Error finding old item in {} -> {}".format(old_name, new_name)
+            print("Error finding old item in {} -> {}".format(old_name, new_name))
         if not new_item:
-            print "Error finding new item in {} -> {}".format(old_name, new_name)
+            print("Error finding new item in {} -> {}".format(old_name, new_name))
 
         if not container.get((new_item,new_name), None):
             container[(new_item,new_name)] = []
@@ -307,31 +307,31 @@ def main(old, new):
 
         container[(new_item,new_name)].append((old_item, old_name))
 
-    print "    # Renamed items"
+    print("    # Renamed items")
 
-    for new, old in renames.iteritems():
+    for new, old in renames.items():
         if len(old) != 1:
-            print "Incorrect length, key: {}, value: {}".format(new, old)
+            print("Incorrect length, key: {}, value: {}".format(new, old))
             sys.exit()
         old = old[0]
 
-        print "    \"{}\": \"{}\",".format(old[1], new[1])
+        print("    \"{}\": \"{}\",".format(old[1], new[1]))
 
     # Convert modules
-    print "\n    # Converted items"
+    print("\n    # Converted items")
 
-    for new, olds in conversions.iteritems():
+    for new, olds in conversions.items():
         for old in olds:
-            print "    \"{}\": \"{}\",".format(old[1], new[1])
+            print("    \"{}\": \"{}\",".format(old[1], new[1]))
 
-    print
-    print
+    print()
+    print()
 
-    for new, old in conversions.iteritems():
-        print "    {}: (  # {}".format(new[0], new[1])
+    for new, old in conversions.items():
+        print("    {}: (  # {}".format(new[0], new[1]))
         for item in old:
-            print "        {},  # {}".format(item[0], item[1])
-        print "    ),"
+            print("        {},  # {}".format(item[0], item[1]))
+        print("    ),")
 
 
 if __name__ == "__main__":

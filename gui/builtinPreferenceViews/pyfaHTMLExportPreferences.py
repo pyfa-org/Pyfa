@@ -38,7 +38,7 @@ class PFHTMLExportPref(PreferenceView):
         mainSizer.Add(self.stDesc, 0, wx.ALL, 5)
 
         self.PathLinkCtrl = wx.HyperlinkCtrl(panel, wx.ID_ANY, self.HTMLExportSettings.getPath(),
-                                             u'file:///{}'.format(self.HTMLExportSettings.getPath()),
+                                             'file:///{}'.format(self.HTMLExportSettings.getPath()),
                                              wx.DefaultPosition, wx.DefaultSize,
                                              wx.HL_ALIGN_LEFT | wx.NO_BORDER | wx.HL_CONTEXTMENU)
         mainSizer.Add(self.PathLinkCtrl, 0, wx.ALL | wx.EXPAND, 5)
@@ -56,7 +56,7 @@ class PFHTMLExportPref(PreferenceView):
         self.stDesc4.Wrap(dlgWidth - 50)
         mainSizer.Add(self.stDesc4, 0, wx.ALL, 5)
 
-        self.exportMinimal = wx.CheckBox(panel, wx.ID_ANY, u"Enable minimal format", wx.DefaultPosition,
+        self.exportMinimal = wx.CheckBox(panel, wx.ID_ANY, "Enable minimal format", wx.DefaultPosition,
                                          wx.DefaultSize, 0)
         self.exportMinimal.SetValue(self.HTMLExportSettings.getMinimalEnabled())
         self.exportMinimal.Bind(wx.EVT_CHECKBOX, self.OnMinimalEnabledChange)
@@ -67,7 +67,7 @@ class PFHTMLExportPref(PreferenceView):
 
     def setPathLinkCtrlValues(self, path):
         self.PathLinkCtrl.SetLabel(self.HTMLExportSettings.getPath())
-        self.PathLinkCtrl.SetURL(u'file:///{}'.format(self.HTMLExportSettings.getPath()))
+        self.PathLinkCtrl.SetURL('file:///{}'.format(self.HTMLExportSettings.getPath()))
         self.PathLinkCtrl.SetSize(wx.DefaultSize)
         self.PathLinkCtrl.Refresh()
 

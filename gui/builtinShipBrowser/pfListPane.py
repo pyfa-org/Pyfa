@@ -127,7 +127,7 @@ class PFListPane(wx.ScrolledWindow):
         maxy = 0
 
         selected = None
-        for i in xrange(len(self._wList)):
+        for i in range(len(self._wList)):
             iwidth, iheight = self._wList[i].GetSize()
             xa, ya = self.CalcScrolledPosition((0, maxy))
             self._wList[i].SetPosition((xa, ya))
@@ -144,7 +144,7 @@ class PFListPane(wx.ScrolledWindow):
         elif doFocus:
             self.SetFocus()
 
-        for i in xrange(len(self._wList)):
+        for i in range(len(self._wList)):
             iwidth, iheight = self._wList[i].GetSize()
             self._wList[i].SetSize((cwidth, iheight))
             if doRefresh is True:

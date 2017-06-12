@@ -160,7 +160,7 @@ class PFGaugePref(PreferenceView):
 
         gSizer1 = wx.BoxSizer(wx.HORIZONTAL)
 
-        self.st0100 = wx.StaticText(panel, wx.ID_ANY, u"0 - 100", wx.DefaultPosition, wx.DefaultSize, wx.ALIGN_RIGHT)
+        self.st0100 = wx.StaticText(panel, wx.ID_ANY, "0 - 100", wx.DefaultPosition, wx.DefaultSize, wx.ALIGN_RIGHT)
         self.st0100.Wrap(-1)
         gSizer1.Add(self.st0100, 1, wx.ALL | wx.ALIGN_CENTER_VERTICAL, 5)
 
@@ -185,7 +185,7 @@ class PFGaugePref(PreferenceView):
 
         gSizer2 = wx.BoxSizer(wx.HORIZONTAL)
 
-        self.st100101 = wx.StaticText(panel, wx.ID_ANY, u"100 - 101", wx.DefaultPosition, wx.DefaultSize,
+        self.st100101 = wx.StaticText(panel, wx.ID_ANY, "100 - 101", wx.DefaultPosition, wx.DefaultSize,
                                       wx.ALIGN_RIGHT)
         self.st100101.Wrap(-1)
         gSizer2.Add(self.st100101, 1, wx.ALL | wx.ALIGN_CENTER_VERTICAL, 5)
@@ -211,7 +211,7 @@ class PFGaugePref(PreferenceView):
 
         gSizer3 = wx.BoxSizer(wx.HORIZONTAL)
 
-        self.st101103 = wx.StaticText(panel, wx.ID_ANY, u"101 - 103", wx.DefaultPosition, wx.DefaultSize,
+        self.st101103 = wx.StaticText(panel, wx.ID_ANY, "101 - 103", wx.DefaultPosition, wx.DefaultSize,
                                       wx.ALIGN_RIGHT)
         self.st101103.Wrap(-1)
         gSizer3.Add(self.st101103, 1, wx.ALL | wx.ALIGN_CENTER_VERTICAL, 5)
@@ -237,7 +237,7 @@ class PFGaugePref(PreferenceView):
 
         gSizer4 = wx.BoxSizer(wx.HORIZONTAL)
 
-        self.st103105 = wx.StaticText(panel, wx.ID_ANY, u"103 - 105", wx.DefaultPosition, wx.DefaultSize,
+        self.st103105 = wx.StaticText(panel, wx.ID_ANY, "103 - 105", wx.DefaultPosition, wx.DefaultSize,
                                       wx.ALIGN_RIGHT)
         self.st103105.Wrap(-1)
         gSizer4.Add(self.st103105, 1, wx.ALL | wx.ALIGN_CENTER_VERTICAL, 5)
@@ -284,20 +284,20 @@ class PFGaugePref(PreferenceView):
 
         buttonsSizer = wx.BoxSizer(wx.HORIZONTAL)
 
-        self.cbLink = wx.CheckBox(panel, wx.ID_ANY, u"Link Colors", wx.DefaultPosition, wx.DefaultSize, 0)
+        self.cbLink = wx.CheckBox(panel, wx.ID_ANY, "Link Colors", wx.DefaultPosition, wx.DefaultSize, 0)
         buttonsSizer.Add(self.cbLink, 0, wx.ALIGN_CENTER_VERTICAL | wx.RIGHT | wx.LEFT, 5)
 
         self.sliderGradientStart = wx.Slider(panel, wx.ID_ANY, self.gradientStart, -100, 100, wx.DefaultPosition,
                                              (127, -1), wx.SL_HORIZONTAL | wx.SL_LABELS)
         buttonsSizer.Add(self.sliderGradientStart, 1, wx.EXPAND | wx.ALL | wx.ALIGN_CENTER_VERTICAL, 5)
 
-        self.btnRestore = wx.Button(panel, wx.ID_ANY, u"Restore Defaults", wx.DefaultPosition, wx.DefaultSize, 0)
+        self.btnRestore = wx.Button(panel, wx.ID_ANY, "Restore Defaults", wx.DefaultPosition, wx.DefaultSize, 0)
         buttonsSizer.Add(self.btnRestore, 0, wx.ALL | wx.ALIGN_CENTER_VERTICAL, 5)
 
-        self.btnDump = wx.Button(panel, wx.ID_ANY, u"Dump Colors", wx.DefaultPosition, wx.DefaultSize, 0)
+        self.btnDump = wx.Button(panel, wx.ID_ANY, "Dump Colors", wx.DefaultPosition, wx.DefaultSize, 0)
         buttonsSizer.Add(self.btnDump, 0, wx.ALL | wx.ALIGN_CENTER_VERTICAL, 5)
 
-        self.btnOk = wx.Button(panel, wx.ID_ANY, u"Apply", wx.DefaultPosition, wx.DefaultSize, 0)
+        self.btnOk = wx.Button(panel, wx.ID_ANY, "Apply", wx.DefaultPosition, wx.DefaultSize, 0)
         buttonsSizer.Add(self.btnOk, 0, wx.ALL | wx.ALIGN_CENTER_VERTICAL, 5)
 
         footerSizer.Add(buttonsSizer, 1, wx.ALIGN_RIGHT, 5)
@@ -432,11 +432,11 @@ class PFGaugePref(PreferenceView):
         event.Skip()
 
     def DumpColours(self, event):
-        print("Gradient start: %d" % self.sliderGradientStart.GetValue())
-        print("  0 <-> 100 Start: ", self.c0100S, " End: ", self.c0100E)
-        print("100 <-> 101 Start: ", self.c100101S, " End: ", self.c100101E)
-        print("101 <-> 103 Start: ", self.c101103S, " End: ", self.c101103E)
-        print("103 <-> 105 Start: ", self.c103105S, " End: ", self.c103105E)
+        print(("Gradient start: %d" % self.sliderGradientStart.GetValue()))
+        print(("  0 <-> 100 Start: ", self.c0100S, " End: ", self.c0100E))
+        print(("100 <-> 101 Start: ", self.c100101S, " End: ", self.c100101E))
+        print(("101 <-> 103 Start: ", self.c101103S, " End: ", self.c101103E))
+        print(("103 <-> 105 Start: ", self.c103105S, " End: ", self.c103105E))
 
         event.Skip()
 

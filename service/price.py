@@ -20,7 +20,7 @@
 
 import time
 import threading
-import Queue
+import queue
 from xml.dom import minidom
 
 from logbook import Logger
@@ -134,7 +134,7 @@ class Price(object):
         except TimeoutError:
             # Timeout error deserves special treatment
             pyfalog.warning("Price fetch timout")
-            for typeID in priceMap.keys():
+            for typeID in list(priceMap.keys()):
                 priceobj = priceMap[typeID]
                 priceobj.time = time.time() + TIMEOUT
                 priceobj.failed = True
@@ -146,7 +146,7 @@ class Price(object):
             pass
 
         # if we get to this point, then we've got an error. Set to REREQUEST delay
-        for typeID in priceMap.keys():
+        for typeID in list(priceMap.keys()):
             priceobj = priceMap[typeID]
             priceobj.time = time.time() + REREQUEST
             priceobj.failed = True
@@ -215,7 +215,7 @@ class PriceWorkerThread(threading.Thread):
     def __init__(self):
         threading.Thread.__init__(self)
         self.name = "PriceWorker"
-        self.queue = Queue.Queue()
+        self.queue = queue.Queue()
         self.wait = {}
         pyfalog.debug("Initialize PriceWorkerThread.")
 

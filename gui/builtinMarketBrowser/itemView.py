@@ -205,7 +205,7 @@ class ItemView(Display):
             mktgrpid = sMkt.getMarketGroupByItem(item).ID
         except AttributeError:
             mktgrpid = None
-            print("unable to find market group for", item.name)
+            print(("unable to find market group for", item.name))
         parentname = sMkt.getParentItemByItem(item).name
         # Get position of market group
         metagrpid = sMkt.getMetaGroupIdByItem(item)
@@ -266,7 +266,7 @@ class ItemView(Display):
         """
         revmap = {}
         i = 0
-        for mgids in self.sMkt.META_MAP.itervalues():
+        for mgids in self.sMkt.META_MAP.values():
             for mgid in mgids:
                 revmap[mgid] = i
             i += 1

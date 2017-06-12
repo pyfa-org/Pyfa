@@ -72,7 +72,7 @@ class ContextMenu(object):
                     display_amount += 1
                     texts = m.getText(itemContext, selection)
 
-                    if isinstance(texts, basestring):
+                    if isinstance(texts, str):
                         texts = (texts,)
 
                     bitmap = m.getBitmap(srcContext, selection)

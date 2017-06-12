@@ -33,7 +33,7 @@ class User(object):
 
     def encodeAndSetPassword(self, pw):
         h = hashlib.new("sha256")
-        salt = "".join([random.choice(string.letters) for _ in xrange(32)])
+        salt = "".join([random.choice(string.letters) for _ in range(32)])
         h.update(pw)
         h.update(salt)
         self.password = ("%s%s" % (h.hexdigest(), salt))
@@ -45,14 +45,14 @@ class User(object):
         h = hashlib.new("sha256")
         h.update(pw)
         h.update(salt)
-        return self.password == (u"%s%s" % (h.hexdigest(), salt))
+        return self.password == ("%s%s" % (h.hexdigest(), salt))
 
     @validates("ID", "username", "password", "admin")
     def validator(self, key, val):
         map = {
             "ID"      : lambda _val: isinstance(_val, int),
-            "username": lambda _val: isinstance(_val, basestring),
-            "password": lambda _val: isinstance(_val, basestring) and len(_val) == 96,
+            "username": lambda _val: isinstance(_val, str),
+            "password": lambda _val: isinstance(_val, str) and len(_val) == 96,
             "admin"   : lambda _val: isinstance(_val, bool)
         }
 

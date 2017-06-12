@@ -113,7 +113,7 @@ class ItemStatsDialog(wx.Dialog):
         self.mainSizer.Add(self.container, 1, wx.EXPAND)
 
         if "wxGTK" in wx.PlatformInfo:
-            self.closeBtn = wx.Button(self, wx.ID_ANY, u"Close", wx.DefaultPosition, wx.DefaultSize, 0)
+            self.closeBtn = wx.Button(self, wx.ID_ANY, "Close", wx.DefaultPosition, wx.DefaultSize, 0)
             self.mainSizer.Add(self.closeBtn, 0, wx.ALL | wx.ALIGN_RIGHT, 5)
             self.closeBtn.Bind(wx.EVT_BUTTON, self.closeEvent)
 
@@ -294,19 +294,19 @@ class ItemParams(wx.Panel):
         mainSizer.Add(self.m_staticline, 0, wx.EXPAND)
         bSizer = wx.BoxSizer(wx.HORIZONTAL)
 
-        self.totalAttrsLabel = wx.StaticText(self, wx.ID_ANY, u" ", wx.DefaultPosition, wx.DefaultSize, 0)
+        self.totalAttrsLabel = wx.StaticText(self, wx.ID_ANY, " ", wx.DefaultPosition, wx.DefaultSize, 0)
         bSizer.Add(self.totalAttrsLabel, 0, wx.ALIGN_CENTER_VERTICAL | wx.RIGHT)
 
-        self.toggleViewBtn = wx.ToggleButton(self, wx.ID_ANY, u"Toggle view mode", wx.DefaultPosition, wx.DefaultSize,
+        self.toggleViewBtn = wx.ToggleButton(self, wx.ID_ANY, "Toggle view mode", wx.DefaultPosition, wx.DefaultSize,
                                              0)
         bSizer.Add(self.toggleViewBtn, 0, wx.ALIGN_CENTER_VERTICAL)
 
-        self.exportStatsBtn = wx.ToggleButton(self, wx.ID_ANY, u"Export Item Stats", wx.DefaultPosition, wx.DefaultSize,
+        self.exportStatsBtn = wx.ToggleButton(self, wx.ID_ANY, "Export Item Stats", wx.DefaultPosition, wx.DefaultSize,
                                               0)
         bSizer.Add(self.exportStatsBtn, 0, wx.ALIGN_CENTER_VERTICAL)
 
         if stuff is not None:
-            self.refreshBtn = wx.Button(self, wx.ID_ANY, u"Refresh", wx.DefaultPosition, wx.DefaultSize, wx.BU_EXACTFIT)
+            self.refreshBtn = wx.Button(self, wx.ID_ANY, "Refresh", wx.DefaultPosition, wx.DefaultSize, wx.BU_EXACTFIT)
             bSizer.Add(self.refreshBtn, 0, wx.ALIGN_CENTER_VERTICAL)
             self.refreshBtn.Bind(wx.EVT_BUTTON, self.RefreshValues)
 
@@ -426,7 +426,7 @@ class ItemParams(wx.Panel):
         self.imageList = wx.ImageList(16, 16)
         self.paramList.SetImageList(self.imageList, wx.IMAGE_LIST_SMALL)
 
-        names = list(self.attrValues.iterkeys())
+        names = list(self.attrValues.keys())
         names.sort()
 
         idNameMap = {}
@@ -463,7 +463,7 @@ class ItemParams(wx.Panel):
             else:
                 attrIcon = self.imageList.Add(BitmapLoader.getBitmap("7_15", "icons"))
 
-            index = self.paramList.InsertImageStringItem(sys.maxint, attrName, attrIcon)
+            index = self.paramList.InsertImageStringItem(sys.maxsize, attrName, attrIcon)
             idNameMap[idCount] = attrName
             self.paramList.SetItemData(index, idCount)
             idCount += 1
@@ -510,7 +510,7 @@ class ItemParams(wx.Panel):
             "Inversed Modifier Percent": (lambda: (1 - value) * 100, unitName),
             "Modifier Percent"         : (
                 lambda: ("%+.2f" if ((value - 1) * 100) % 1 else "%+d") % ((value - 1) * 100), unitName),
-            "Volume"                   : (lambda: value, u"m\u00B3"),
+            "Volume"                   : (lambda: value, "m\u00B3"),
             "Sizeclass"                : (lambda: value, ""),
             "Absolute Percent"         : (lambda: (value * 100), unitName),
             "Milliseconds"             : (lambda: value / 1000.0, unitName),
@@ -524,7 +524,7 @@ class ItemParams(wx.Panel):
             v = override[0]()
             if isinstance(v, str):
                 fvalue = v
-            elif isinstance(v, (int, float, long)):
+            elif isinstance(v, (int, float)):
                 fvalue = formatAmount(v, 3, 0, 0)
             else:
                 fvalue = v
@@ -558,12 +558,12 @@ class ItemCompare(wx.Panel):
 
         # get a dict of attrName: attrInfo of all unique attributes across all items
         for item in self.items:
-            for attr in item.attributes.keys():
+            for attr in list(item.attributes.keys()):
                 if item.attributes[attr].info.displayName:
                     self.attrs[attr] = item.attributes[attr].info
 
         # Process attributes for items and find ones that differ
-        for attr in self.attrs.keys():
+        for attr in list(self.attrs.keys()):
             value = None
 
             for item in self.items:
@@ -588,14 +588,14 @@ class ItemCompare(wx.Panel):
         mainSizer.Add(self.m_staticline, 0, wx.EXPAND)
         bSizer = wx.BoxSizer(wx.HORIZONTAL)
 
-        self.totalAttrsLabel = wx.StaticText(self, wx.ID_ANY, u" ", wx.DefaultPosition, wx.DefaultSize, 0)
+        self.totalAttrsLabel = wx.StaticText(self, wx.ID_ANY, " ", wx.DefaultPosition, wx.DefaultSize, 0)
         bSizer.Add(self.totalAttrsLabel, 0, wx.ALIGN_CENTER_VERTICAL | wx.RIGHT)
 
-        self.toggleViewBtn = wx.ToggleButton(self, wx.ID_ANY, u"Toggle view mode", wx.DefaultPosition,
+        self.toggleViewBtn = wx.ToggleButton(self, wx.ID_ANY, "Toggle view mode", wx.DefaultPosition,
                                              wx.DefaultSize, 0)
         bSizer.Add(self.toggleViewBtn, 0, wx.ALIGN_CENTER_VERTICAL)
 
-        self.refreshBtn = wx.Button(self, wx.ID_ANY, u"Refresh", wx.DefaultPosition, wx.DefaultSize,
+        self.refreshBtn = wx.Button(self, wx.ID_ANY, "Refresh", wx.DefaultPosition, wx.DefaultSize,
                                     wx.BU_EXACTFIT)
         bSizer.Add(self.refreshBtn, 0, wx.ALIGN_CENTER_VERTICAL)
         self.refreshBtn.Bind(wx.EVT_BUTTON, self.RefreshValues)
@@ -649,7 +649,7 @@ class ItemCompare(wx.Panel):
                 try:
                     # Remember to reduce by 1, because the attrs array
                     # starts at 0 while the list has the item name as column 0.
-                    attr = str(self.attrs.keys()[sort - 1])
+                    attr = str(list(self.attrs.keys())[sort - 1])
                     func = lambda _val: _val.attributes[attr].value if attr in _val.attributes else None
                 except IndexError:
                     # Clicked on a column that's not part of our array (price most likely)
@@ -670,7 +670,7 @@ class ItemCompare(wx.Panel):
         self.paramList.SetColumnWidth(len(self.attrs) + 1, 60)
 
         for item in self.items:
-            i = self.paramList.InsertStringItem(sys.maxint, item.name)
+            i = self.paramList.InsertStringItem(sys.maxsize, item.name)
             for x, attr in enumerate(self.attrs.keys()):
                 if attr in item.attributes:
                     info = self.attrs[attr]
@@ -708,7 +708,7 @@ class ItemCompare(wx.Panel):
             "Inverse Absolute Percent" : (lambda: (1 - value) * 100, unitName),
             "Inversed Modifier Percent": (lambda: (1 - value) * 100, unitName),
             "Modifier Percent"         : (lambda: ("%+.2f" if ((value - 1) * 100) % 1 else "%+d") % ((value - 1) * 100), unitName),
-            "Volume"                   : (lambda: value, u"m\u00B3"),
+            "Volume"                   : (lambda: value, "m\u00B3"),
             "Sizeclass"                : (lambda: value, ""),
             "Absolute Percent"         : (lambda: (value * 100), unitName),
             "Milliseconds"             : (lambda: value / 1000.0, unitName),
@@ -722,7 +722,7 @@ class ItemCompare(wx.Panel):
             v = override[0]()
             if isinstance(v, str):
                 fvalue = v
-            elif isinstance(v, (int, float, long)):
+            elif isinstance(v, (int, float)):
                 fvalue = formatAmount(v, 3, 0, 0)
             else:
                 fvalue = v
@@ -759,7 +759,7 @@ class ItemRequirements(wx.Panel):
         self.Layout()
 
     def getFullSkillTree(self, parentSkill, parent, sbIconId):
-        for skill, level in parentSkill.requiredSkills.iteritems():
+        for skill, level in parentSkill.requiredSkills.items():
             child = self.reqTree.AppendItem(parent, "%s  %s" % (skill.name, self.romanNb[int(level)]), sbIconId)
             if skill.ID not in self.skillIdHistory:
                 self.getFullSkillTree(skill, child, sbIconId)
@@ -794,7 +794,7 @@ class ItemDependents(wx.Panel):
     def getFullSkillTree(self, parentSkill, parent, sbIconId):
         levelToItems = {}
 
-        for item, level in parentSkill.requiredFor.iteritems():
+        for item, level in parentSkill.requiredFor.items():
             if level not in levelToItems:
                 levelToItems[level] = []
             levelToItems[level].append(item)
@@ -853,11 +853,11 @@ class ItemEffects(wx.Panel):
 
         item = self.item
         effects = item.effects
-        names = list(effects.iterkeys())
+        names = list(effects.keys())
         names.sort()
 
         for name in names:
-            index = self.effectList.InsertStringItem(sys.maxint, name)
+            index = self.effectList.InsertStringItem(sys.maxsize, name)
 
             if effects[name].isImplemented:
                 if effects[name].activeByDefault:
@@ -962,17 +962,17 @@ class ItemAffectedBy(wx.Panel):
         mainSizer.Add(self.m_staticline, 0, wx.EXPAND)
         bSizer = wx.BoxSizer(wx.HORIZONTAL)
 
-        self.toggleExpandBtn = wx.ToggleButton(self, wx.ID_ANY, u"Expand All", wx.DefaultPosition, wx.DefaultSize, 0)
+        self.toggleExpandBtn = wx.ToggleButton(self, wx.ID_ANY, "Expand All", wx.DefaultPosition, wx.DefaultSize, 0)
         bSizer.Add(self.toggleExpandBtn, 0, wx.ALIGN_CENTER_VERTICAL)
 
-        self.toggleNameBtn = wx.ToggleButton(self, wx.ID_ANY, u"Toggle Names", wx.DefaultPosition, wx.DefaultSize, 0)
+        self.toggleNameBtn = wx.ToggleButton(self, wx.ID_ANY, "Toggle Names", wx.DefaultPosition, wx.DefaultSize, 0)
         bSizer.Add(self.toggleNameBtn, 0, wx.ALIGN_CENTER_VERTICAL)
 
-        self.toggleViewBtn = wx.ToggleButton(self, wx.ID_ANY, u"Toggle View", wx.DefaultPosition, wx.DefaultSize, 0)
+        self.toggleViewBtn = wx.ToggleButton(self, wx.ID_ANY, "Toggle View", wx.DefaultPosition, wx.DefaultSize, 0)
         bSizer.Add(self.toggleViewBtn, 0, wx.ALIGN_CENTER_VERTICAL)
 
         if stuff is not None:
-            self.refreshBtn = wx.Button(self, wx.ID_ANY, u"Refresh", wx.DefaultPosition, wx.DefaultSize, wx.BU_EXACTFIT)
+            self.refreshBtn = wx.Button(self, wx.ID_ANY, "Refresh", wx.DefaultPosition, wx.DefaultSize, wx.BU_EXACTFIT)
             bSizer.Add(self.refreshBtn, 0, wx.ALIGN_CENTER_VERTICAL)
             self.refreshBtn.Bind(wx.EVT_BUTTON, self.RefreshTree)
 
@@ -995,7 +995,7 @@ class ItemAffectedBy(wx.Panel):
 
         stuff = self.affectedBy.GetPyData(item)
         # String is set as data when we are dealing with attributes, not stuff containers
-        if stuff is None or isinstance(stuff, basestring):
+        if stuff is None or isinstance(stuff, str):
             return
         contexts = []
 
@@ -1104,7 +1104,7 @@ class ItemAffectedBy(wx.Panel):
             if attributes[attrName] == (attributes.getOriginal(attrName, 0)):
                 continue
 
-            for fit, afflictors in attributes.getAfflictions(attrName).iteritems():
+            for fit, afflictors in attributes.getAfflictions(attrName).items():
                 for afflictor, modifier, amount, used in afflictors:
 
                     if not used or afflictor.item is None:
@@ -1135,7 +1135,7 @@ class ItemAffectedBy(wx.Panel):
                             (type(afflictor), afflictor, item, modifier, amount, getattr(afflictor, "projected", False)))
 
         # Make sure projected fits are on top
-        rootOrder = container.keys()
+        rootOrder = list(container.keys())
         rootOrder.sort(key=lambda x: self.ORDER.index(type(x)))
 
         # Now, we take our created dictionary and start adding stuff to our tree
@@ -1149,7 +1149,7 @@ class ItemAffectedBy(wx.Panel):
                 parent = child
 
             attributes = container[thing]
-            attrOrder = sorted(attributes.keys(), key=self.sortAttrDisplayName)
+            attrOrder = sorted(list(attributes.keys()), key=self.sortAttrDisplayName)
 
             for attrName in attrOrder:
                 attrInfo = self.stuff.item.attributes.get(attrName)
@@ -1233,7 +1233,7 @@ class ItemAffectedBy(wx.Panel):
             if attributes[attrName] == (attributes.getOriginal(attrName, 0)):
                 continue
 
-            for fit, afflictors in attributes.getAfflictions(attrName).iteritems():
+            for fit, afflictors in attributes.getAfflictions(attrName).items():
                 for afflictor, modifier, amount, used in afflictors:
                     if not used or getattr(afflictor, 'item', None) is None:
                         continue
@@ -1269,7 +1269,7 @@ class ItemAffectedBy(wx.Panel):
                     info[2].append((attrName, modifier, amount))
 
         # Make sure projected fits are on top
-        rootOrder = container.keys()
+        rootOrder = list(container.keys())
         rootOrder.sort(key=lambda x: self.ORDER.index(type(x)))
 
         # Now, we take our created dictionary and start adding stuff to our tree
@@ -1283,7 +1283,7 @@ class ItemAffectedBy(wx.Panel):
                 parent = child
 
             items = container[thing]
-            order = items.keys()
+            order = list(items.keys())
             order.sort(key=lambda x: (self.ORDER.index(items[x][0]), x))
 
             for itemName in order:
@@ -1387,7 +1387,7 @@ class ItemProperties(wx.Panel):
         mainSizer.Add(self.m_staticline, 0, wx.EXPAND)
         bSizer = wx.BoxSizer(wx.HORIZONTAL)
 
-        self.totalAttrsLabel = wx.StaticText(self, wx.ID_ANY, u" ", wx.DefaultPosition, wx.DefaultSize, 0)
+        self.totalAttrsLabel = wx.StaticText(self, wx.ID_ANY, " ", wx.DefaultPosition, wx.DefaultSize, 0)
         bSizer.Add(self.totalAttrsLabel, 0, wx.ALIGN_CENTER_VERTICAL | wx.RIGHT)
 
         mainSizer.Add(bSizer, 0, wx.ALIGN_RIGHT)
@@ -1439,7 +1439,7 @@ class ItemProperties(wx.Panel):
                     attrName = name.title()
                     value = getattr(self.item, name)
 
-                index = self.paramList.InsertStringItem(sys.maxint, attrName)
+                index = self.paramList.InsertStringItem(sys.maxsize, attrName)
                 # index = self.paramList.InsertImageStringItem(sys.maxint, attrName)
                 idNameMap[idCount] = attrName
                 self.paramList.SetItemData(index, idCount)

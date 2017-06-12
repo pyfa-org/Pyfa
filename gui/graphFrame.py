@@ -93,13 +93,13 @@ class GraphFrame(wx.Frame):
 
         graphFrame_enabled = True
         if int(mpl.__version__[0]) < 1:
-            print("pyfa: Found matplotlib version ", mpl.__version__, " - activating OVER9000 workarounds")
+            print(("pyfa: Found matplotlib version ", mpl.__version__, " - activating OVER9000 workarounds"))
             print("pyfa: Recommended minimum matplotlib version is 1.0.0")
             self.legendFix = True
 
         mplImported = True
 
-        wx.Frame.__init__(self, parent, title=u"pyfa: Graph Generator", style=style, size=(520, 390))
+        wx.Frame.__init__(self, parent, title="pyfa: Graph Generator", style=style, size=(520, 390))
 
         i = wx.IconFromBitmap(BitmapLoader.getBitmap("graphs_small", "gui"))
         self.SetIcon(i)
@@ -179,7 +179,7 @@ class GraphFrame(wx.Frame):
 
     def getValues(self):
         values = {}
-        for fieldName, field in self.fields.iteritems():
+        for fieldName, field in self.fields.items():
             values[fieldName] = field.GetValue()
 
         return values
@@ -193,14 +193,14 @@ class GraphFrame(wx.Frame):
         self.fields.clear()
 
         # Setup textboxes
-        for field, defaultVal in view.getFields().iteritems():
+        for field, defaultVal in view.getFields().items():
 
             textBox = wx.TextCtrl(self.gridPanel, wx.ID_ANY, style=0)
             self.fields[field] = textBox
             textBox.Bind(wx.EVT_TEXT, self.onFieldChanged)
             sizer.Add(textBox, 1, wx.EXPAND | wx.ALIGN_CENTER_VERTICAL | wx.ALL, 3)
             if defaultVal is not None:
-                if not isinstance(defaultVal, basestring):
+                if not isinstance(defaultVal, str):
                     defaultVal = ("%f" % defaultVal).rstrip("0")
                     if defaultVal[-1:] == ".":
                         defaultVal += "0"
@@ -248,8 +248,8 @@ class GraphFrame(wx.Frame):
                 self.subplot.plot(x, y)
                 legend.append(fit.name)
             except:
-                pyfalog.warning(u"Invalid values in '{0}'", fit.name)
-                self.SetStatusText(u"Invalid values in '%s'" % fit.name)
+                pyfalog.warning("Invalid values in '{0}'", fit.name)
+                self.SetStatusText("Invalid values in '%s'" % fit.name)
                 self.canvas.draw()
                 return
 

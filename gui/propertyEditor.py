@@ -70,7 +70,7 @@ class AttributeEditor(wx.Frame):
         mainSizer.Add(leftPanel, 1, wx.ALL | wx.EXPAND, 5)
 
         rightSizer = wx.BoxSizer(wx.VERTICAL)
-        self.btnRemoveOverrides = wx.Button(panel, wx.ID_ANY, u"Remove Overides for Item", wx.DefaultPosition,
+        self.btnRemoveOverrides = wx.Button(panel, wx.ID_ANY, "Remove Overides for Item", wx.DefaultPosition,
                                             wx.DefaultSize, 0)
         self.pg = AttributeGrid(panel)
         rightSizer.Add(self.pg, 1, wx.ALL | wx.EXPAND, 5)
@@ -126,7 +126,7 @@ class AttributeEditor(wx.Frame):
             with open(path, 'wb') as csvfile:
                 writer = csv.writer(csvfile)
                 for item in items:
-                    for key, override in item.overrides.iteritems():
+                    for key, override in item.overrides.items():
                         writer.writerow([item.ID, override.attrID, override.value])
 
     def OnClear(self, event):
@@ -145,7 +145,7 @@ class AttributeEditor(wx.Frame):
             # them due to the eve/user database disconnect. We must loop through
             # all items that have overrides and remove them
             for item in items:
-                for _, x in item.overrides.items():
+                for _, x in list(item.overrides.items()):
                     item.deleteOverride(x.attr)
             self.itemView.updateItems(True)
             self.pg.Clear()
@@ -247,7 +247,7 @@ class AttributeGrid(wxpg.PropertyGrid):
         if self.item is None:
             return
 
-        for x in self.item.overrides.values():
+        for x in list(self.item.overrides.values()):
             self.item.deleteOverride(x.attr)
             self.itemView.updateItems(True)
         self.ClearModifiedStatus()

@@ -7,8 +7,8 @@ if PY3:  # pragma: no cover
     text_type = str
     binary_type = bytes
 else:  # pragma: no cover
-    string_types = basestring,
-    text_type = unicode
+    string_types = str,
+    text_type = str
     binary_type = str
 
 

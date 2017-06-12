@@ -160,7 +160,7 @@ class Character(object):
         if self.alphaCloneID:
             clone = eos.db.getAlphaClone(self.alphaCloneID)
             type = clone.alphaCloneName.split()[1]
-            name += u' (\u03B1{})'.format(type[0].upper())
+            name += ' (\u03B1{})'.format(type[0].upper())
 
         return name
 
@@ -197,7 +197,7 @@ class Character(object):
         del self.__skillIdMap[skill.itemID]
 
     def getSkill(self, item):
-        if isinstance(item, basestring):
+        if isinstance(item, str):
             item = self.getSkillNameMap()[item]
         elif isinstance(item, int):
             item = self.getSkillIDMap()[item]
@@ -236,17 +236,17 @@ class Character(object):
 
     def filteredSkillIncrease(self, filter, *args, **kwargs):
         for element in self.skills:
-            if filter(element):
+            if list(filter(element)):
                 element.increaseItemAttr(*args, **kwargs)
 
     def filteredSkillMultiply(self, filter, *args, **kwargs):
         for element in self.skills:
-            if filter(element):
+            if list(filter(element)):
                 element.multiplyItemAttr(*args, **kwargs)
 
     def filteredSkillBoost(self, filter, *args, **kwargs):
         for element in self.skills:
-            if filter(element):
+            if list(filter(element)):
                 element.boostItemAttr(*args, **kwargs)
 
     def calculateModifiedAttributes(self, fit, runTime, forceProjected=False):
@@ -280,7 +280,7 @@ class Character(object):
         map = {
             "ID"     : lambda _val: isinstance(_val, int),
             "name"   : lambda _val: True,
-            "apiKey" : lambda _val: _val is None or (isinstance(_val, basestring) and len(_val) > 0),
+            "apiKey" : lambda _val: _val is None or (isinstance(_val, str) and len(_val) > 0),
             "ownerID": lambda _val: isinstance(_val, int) or _val is None
         }
 
@@ -355,7 +355,7 @@ class Skill(HandledItem):
 
         if eos.config.settings['strictSkillLevels']:
             start = time.time()
-            for item, rlevel in self.item.requiredFor.iteritems():
+            for item, rlevel in self.item.requiredFor.items():
                 if item.group.category.ID == 16:  # Skill category
                     if level < rlevel:
                         skill = self.character.getSkill(item.ID)
@@ -395,7 +395,7 @@ class Skill(HandledItem):
         if item is None:
             return
 
-        for effect in item.effects.itervalues():
+        for effect in item.effects.values():
             if effect.runTime == runTime and \
                     effect.isType("passive") and \
                     (not fit.isStructure or effect.isType("structure")) and \

@@ -329,9 +329,7 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
                 else:
                     func = self.getModifiedItemAttr
 
-                volley = sum(map(
-                        lambda attr: (func("%sDamage" % attr) or 0) * (1 - getattr(targetResists, "%sAmount" % attr, 0)),
-                        self.DAMAGE_TYPES))
+                volley = sum([(func("%sDamage" % attr) or 0) * (1 - getattr(targetResists, "%sAmount" % attr, 0)) for attr in self.DAMAGE_TYPES])
                 volley *= self.getModifiedItemAttr("damageMultiplier") or 1
                 if volley:
                     cycleTime = self.cycleTime
@@ -415,13 +413,13 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
         if shipType is not None:
             fitsOnType.add(shipType)
 
-        for attr in self.itemModifiedAttributes.keys():
+        for attr in list(self.itemModifiedAttributes.keys()):
             if attr.startswith("canFitShipType"):
                 shipType = self.getModifiedItemAttr(attr)
                 if shipType is not None:
                     fitsOnType.add(shipType)
 
-        for attr in self.itemModifiedAttributes.keys():
+        for attr in list(self.itemModifiedAttributes.keys()):
             if attr.startswith("canFitShipGroup"):
                 shipGroup = self.getModifiedItemAttr(attr)
                 if shipGroup is not None:
@@ -582,7 +580,7 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
         if item is None:
             return Hardpoint.NONE
 
-        for effectName, slot in effectHardpointMap.iteritems():
+        for effectName, slot in effectHardpointMap.items():
             if effectName in item.effects:
                 return slot
 
@@ -600,7 +598,7 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
         }
         if item is None:
             return None
-        for effectName, slot in effectSlotMap.iteritems():
+        for effectName, slot in effectSlotMap.items():
             if effectName in item.effects:
                 return slot
         if item.group.name == "Effect Beacon":
@@ -654,7 +652,7 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
         if self.charge is not None:
             # fix for #82 and it's regression #106
             if not projected or (self.projected and not forceProjected) or gang:
-                for effect in self.charge.effects.itervalues():
+                for effect in self.charge.effects.values():
                     if effect.runTime == runTime and \
                             effect.activeByDefault and \
                             (effect.isType("offline") or
@@ -673,7 +671,7 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
 
         if self.item:
             if self.state >= State.OVERHEATED:
-                for effect in self.item.effects.itervalues():
+                for effect in self.item.effects.values():
                     if effect.runTime == runTime and \
                             effect.isType("overheat") \
                             and not forceProjected \
@@ -681,7 +679,7 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
                             and ((gang and effect.isType("gang")) or not gang):
                         effect.handler(fit, self, context)
 
-            for effect in self.item.effects.itervalues():
+            for effect in self.item.effects.values():
                 if effect.runTime == runTime and \
                         effect.activeByDefault and \
                         (effect.isType("offline") or
@@ -781,7 +779,7 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
 
     def __repr__(self):
         if self.item:
-            return u"Module(ID={}, name={}) at {}".format(
+            return "Module(ID={}, name={}) at {}".format(
                     self.item.ID, self.item.name, hex(id(self))
             )
         else:

@@ -45,7 +45,7 @@ class CrestFittings(wx.Frame):
             characterSelectSizer.Add(self.charChoice, 1, wx.ALIGN_CENTER_VERTICAL | wx.ALL, 5)
             self.updateCharList()
 
-        self.fetchBtn = wx.Button(self, wx.ID_ANY, u"Fetch Fits", wx.DefaultPosition, wx.DefaultSize, 5)
+        self.fetchBtn = wx.Button(self, wx.ID_ANY, "Fetch Fits", wx.DefaultPosition, wx.DefaultSize, 5)
         characterSelectSizer.Add(self.fetchBtn, 0, wx.ALL, 5)
         mainSizer.Add(characterSelectSizer, 0, wx.EXPAND, 5)
 
@@ -64,8 +64,8 @@ class CrestFittings(wx.Frame):
         fitSizer.Add(self.fitView, 1, wx.ALL | wx.EXPAND, 5)
 
         btnSizer = wx.BoxSizer(wx.HORIZONTAL)
-        self.importBtn = wx.Button(self, wx.ID_ANY, u"Import to pyfa", wx.DefaultPosition, wx.DefaultSize, 5)
-        self.deleteBtn = wx.Button(self, wx.ID_ANY, u"Delete from EVE", wx.DefaultPosition, wx.DefaultSize, 5)
+        self.importBtn = wx.Button(self, wx.ID_ANY, "Import to pyfa", wx.DefaultPosition, wx.DefaultSize, 5)
+        self.deleteBtn = wx.Button(self, wx.ID_ANY, "Delete from EVE", wx.DefaultPosition, wx.DefaultSize, 5)
         btnSizer.Add(self.importBtn, 1, wx.ALL, 5)
         btnSizer.Add(self.deleteBtn, 1, wx.ALL, 5)
         fitSizer.Add(btnSizer, 0, wx.EXPAND)
@@ -207,7 +207,7 @@ class ExportToEve(wx.Frame):
             self.updateCharList()
             self.charChoice.SetSelection(0)
 
-        self.exportBtn = wx.Button(self, wx.ID_ANY, u"Export Fit", wx.DefaultPosition, wx.DefaultSize, 5)
+        self.exportBtn = wx.Button(self, wx.ID_ANY, "Export Fit", wx.DefaultPosition, wx.DefaultSize, 5)
         hSizer.Add(self.exportBtn, 0, wx.ALL, 5)
 
         mainSizer.Add(hSizer, 0, wx.EXPAND, 5)
@@ -314,10 +314,10 @@ class CrestMgmt(wx.Dialog):
 
         btnSizer = wx.BoxSizer(wx.VERTICAL)
 
-        self.addBtn = wx.Button(self, wx.ID_ANY, u"Add Character", wx.DefaultPosition, wx.DefaultSize, 0)
+        self.addBtn = wx.Button(self, wx.ID_ANY, "Add Character", wx.DefaultPosition, wx.DefaultSize, 0)
         btnSizer.Add(self.addBtn, 0, wx.ALL | wx.EXPAND, 5)
 
-        self.deleteBtn = wx.Button(self, wx.ID_ANY, u"Revoke Character", wx.DefaultPosition, wx.DefaultSize, 0)
+        self.deleteBtn = wx.Button(self, wx.ID_ANY, "Revoke Character", wx.DefaultPosition, wx.DefaultSize, 0)
         btnSizer.Add(self.deleteBtn, 0, wx.ALL | wx.EXPAND, 5)
 
         mainSizer.Add(btnSizer, 0, wx.EXPAND, 5)
@@ -397,7 +397,7 @@ class FittingsTreeView(wx.Panel):
                 dict[fit['ship']['name']] = []
             dict[fit['ship']['name']].append(fit)
 
-        for name, fits in dict.iteritems():
+        for name, fits in dict.items():
             shipID = tree.AppendItem(root, name)
             for fit in fits:
                 fitId = tree.AppendItem(shipID, fit['name'])

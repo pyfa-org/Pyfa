@@ -74,7 +74,7 @@ class TogglePanel(wx.Panel):
 
         hbmpSizer.Add(self.headerBmp, 0, 0, 5)
 
-        self.headerLabel = wx.StaticText(self.headerPanel, wx.ID_ANY, u"PYFA", wx.DefaultPosition, wx.DefaultSize, 0)
+        self.headerLabel = wx.StaticText(self.headerPanel, wx.ID_ANY, "PYFA", wx.DefaultPosition, wx.DefaultSize, 0)
         hlblSizer.Add(self.headerLabel, 0, wx.EXPAND, 5)
 
         headerSizer.Add(hbmpSizer, 0, wx.RIGHT, 5)

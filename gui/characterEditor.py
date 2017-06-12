@@ -20,7 +20,7 @@
 # noinspection PyPackageRequirements
 import wx
 
-from utils.floatspin import FloatSpin
+from .utils.floatspin import FloatSpin
 # noinspection PyPackageRequirements
 import wx.lib.newevent
 # noinspection PyPackageRequirements
@@ -57,9 +57,9 @@ class CharacterTextValidor(BaseValidator):
                 raise ValueError("Character name already in use, please choose another.")
 
             return True
-        except ValueError, e:
+        except ValueError as e:
             pyfalog.error(e)
-            wx.MessageBox(u"{}".format(e), "Error")
+            wx.MessageBox("{}".format(e), "Error")
             textCtrl.SetFocus()
             return False
 
@@ -128,7 +128,7 @@ class CharacterEntityEditor(EntityEditor):
 
 class CharacterEditor(wx.Frame):
     def __init__(self, parent):
-        wx.Frame.__init__(self, parent, id=wx.ID_ANY, title=u"pyfa: Character Editor", pos=wx.DefaultPosition,
+        wx.Frame.__init__(self, parent, id=wx.ID_ANY, title="pyfa: Character Editor", pos=wx.DefaultPosition,
                           size=wx.Size(640, 600), style=wx.DEFAULT_FRAME_STYLE ^ wx.RESIZE_BORDER)
 
         i = wx.IconFromBitmap(BitmapLoader.getBitmap("character_small", "gui"))
@@ -351,7 +351,7 @@ class SkillTreeView(wx.Panel):
         self.levelIds[idUnlearned] = "Not learned"
         self.levelChangeMenu.Append(idUnlearned, "Unlearn")
 
-        for level in xrange(6):
+        for level in range(6):
             id = wx.NewId()
             self.levelIds[id] = level
             self.levelChangeMenu.Append(id, "Level %d" % level)
@@ -514,7 +514,7 @@ class SkillTreeView(wx.Panel):
         def _setTreeSkillLevel(treeItem, skillID):
             lvl, dirty = sChar.getSkillLevel(char.ID, skillID)
             self.skillTreeListCtrl.SetItemText(treeItem,
-                                               "Level {}".format(int(lvl)) if not isinstance(lvl, basestring) else lvl,
+                                               "Level {}".format(int(lvl)) if not isinstance(lvl, str) else lvl,
                                                1)
             if not dirty:
                 self.skillTreeListCtrl.SetItemTextColour(treeItem, None)
@@ -611,16 +611,16 @@ class APIView(wx.Panel):
         self.charEditor = self.Parent.Parent  # first parent is Notebook, second is Character Editor
         self.SetBackgroundColour(wx.SystemSettings_GetColour(wx.SYS_COLOUR_WINDOW))
 
-        self.apiUrlCreatePredefined = u"https://community.eveonline.com/support/api-key/CreatePredefined?accessMask=8"
-        self.apiUrlKeyList = u"https://community.eveonline.com/support/api-key/"
+        self.apiUrlCreatePredefined = "https://community.eveonline.com/support/api-key/CreatePredefined?accessMask=8"
+        self.apiUrlKeyList = "https://community.eveonline.com/support/api-key/"
 
         pmainSizer = wx.BoxSizer(wx.VERTICAL)
 
         hintSizer = wx.BoxSizer(wx.HORIZONTAL)
         hintSizer.AddStretchSpacer()
         self.stDisabledTip = wx.StaticText(self, wx.ID_ANY,
-                                           u"You cannot add API Details for All 0 and All 5 characters.\n"
-                                           u"Please select another character or make a new one.", style=wx.ALIGN_CENTER)
+                                           "You cannot add API Details for All 0 and All 5 characters.\n"
+                                           "Please select another character or make a new one.", style=wx.ALIGN_CENTER)
         self.stDisabledTip.Wrap(-1)
         hintSizer.Add(self.stDisabledTip, 0, wx.TOP | wx.BOTTOM, 10)
         self.stDisabledTip.Hide()
@@ -632,21 +632,21 @@ class APIView(wx.Panel):
         fgSizerInput.SetFlexibleDirection(wx.BOTH)
         fgSizerInput.SetNonFlexibleGrowMode(wx.FLEX_GROWMODE_SPECIFIED)
 
-        self.m_staticIDText = wx.StaticText(self, wx.ID_ANY, u"keyID:", wx.DefaultPosition, wx.DefaultSize, 0)
+        self.m_staticIDText = wx.StaticText(self, wx.ID_ANY, "keyID:", wx.DefaultPosition, wx.DefaultSize, 0)
         self.m_staticIDText.Wrap(-1)
         fgSizerInput.Add(self.m_staticIDText, 0, wx.ALL | wx.ALIGN_RIGHT | wx.ALIGN_CENTER_VERTICAL, 5)
 
         self.inputID = wx.TextCtrl(self, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.DefaultSize, 0)
         fgSizerInput.Add(self.inputID, 1, wx.ALL | wx.EXPAND, 5)
 
-        self.m_staticKeyText = wx.StaticText(self, wx.ID_ANY, u"vCode:", wx.DefaultPosition, wx.DefaultSize, 0)
+        self.m_staticKeyText = wx.StaticText(self, wx.ID_ANY, "vCode:", wx.DefaultPosition, wx.DefaultSize, 0)
         self.m_staticKeyText.Wrap(-1)
         fgSizerInput.Add(self.m_staticKeyText, 0, wx.ALL | wx.ALIGN_RIGHT | wx.ALIGN_CENTER_VERTICAL, 5)
 
         self.inputKey = wx.TextCtrl(self, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.DefaultSize, 0)
         fgSizerInput.Add(self.inputKey, 0, wx.ALL | wx.EXPAND, 5)
 
-        self.m_staticCharText = wx.StaticText(self, wx.ID_ANY, u"Character:", wx.DefaultPosition, wx.DefaultSize, 0)
+        self.m_staticCharText = wx.StaticText(self, wx.ID_ANY, "Character:", wx.DefaultPosition, wx.DefaultSize, 0)
         self.m_staticCharText.Wrap(-1)
         fgSizerInput.Add(self.m_staticCharText, 0, wx.ALL | wx.ALIGN_RIGHT | wx.ALIGN_CENTER_VERTICAL, 5)
 
@@ -661,11 +661,11 @@ class APIView(wx.Panel):
         btnSizer = wx.BoxSizer(wx.HORIZONTAL)
         btnSizer.AddStretchSpacer()
 
-        self.btnFetchCharList = wx.Button(self, wx.ID_ANY, u"Get Characters")
+        self.btnFetchCharList = wx.Button(self, wx.ID_ANY, "Get Characters")
         btnSizer.Add(self.btnFetchCharList, 0, wx.ALL, 2)
         self.btnFetchCharList.Bind(wx.EVT_BUTTON, self.fetchCharList)
 
-        self.btnFetchSkills = wx.Button(self, wx.ID_ANY, u"Fetch Skills")
+        self.btnFetchSkills = wx.Button(self, wx.ID_ANY, "Fetch Skills")
         btnSizer.Add(self.btnFetchSkills, 0, wx.ALL, 2)
         self.btnFetchSkills.Bind(wx.EVT_BUTTON, self.fetchSkills)
         self.btnFetchSkills.Enable(False)
@@ -678,7 +678,7 @@ class APIView(wx.Panel):
 
         pmainSizer.AddStretchSpacer()
         self.stAPITip = wx.StaticText(self, wx.ID_ANY,
-                                      u"You can create a pre-defined key here (only CharacterSheet is required):",
+                                      "You can create a pre-defined key here (only CharacterSheet is required):",
                                       wx.DefaultPosition, wx.DefaultSize, 0)
         self.stAPITip.Wrap(-1)
 
@@ -688,7 +688,7 @@ class APIView(wx.Panel):
                                          wx.DefaultPosition, wx.DefaultSize, wx.HL_DEFAULT_STYLE)
         pmainSizer.Add(self.hlEveAPI, 0, wx.ALL, 2)
 
-        self.stAPITip2 = wx.StaticText(self, wx.ID_ANY, u"Or, you can choose an existing key from:", wx.DefaultPosition,
+        self.stAPITip2 = wx.StaticText(self, wx.ID_ANY, "Or, you can choose an existing key from:", wx.DefaultPosition,
                                        wx.DefaultSize, 0)
         self.stAPITip2.Wrap(-1)
         pmainSizer.Add(self.stAPITip2, 0, wx.ALL, 2)
@@ -747,15 +747,15 @@ class APIView(wx.Panel):
         try:
             activeChar = self.charEditor.entityEditor.getActiveEntity()
             list = sChar.apiCharList(activeChar.ID, self.inputID.GetLineText(0), self.inputKey.GetLineText(0))
-        except AuthenticationError, e:
+        except AuthenticationError as e:
             msg = "Authentication failure. Please check keyID and vCode combination."
             pyfalog.info(msg)
             self.stStatus.SetLabel(msg)
-        except TimeoutError, e:
+        except TimeoutError as e:
             msg = "Request timed out. Please check network connectivity and/or proxy settings."
             pyfalog.info(msg)
             self.stStatus.SetLabel(msg)
-        except Exception, e:
+        except Exception as e:
             pyfalog.error(e)
             self.stStatus.SetLabel("Error:\n%s" % e.message)
         else:
@@ -801,7 +801,7 @@ class SaveCharacterAs(wx.Dialog):
 
         bSizer1.Add(self.input, 1, wx.ALL, 5)
         self.input.Bind(wx.EVT_TEXT_ENTER, self.change)
-        self.button = wx.Button(self, wx.ID_OK, u"Save")
+        self.button = wx.Button(self, wx.ID_OK, "Save")
         bSizer1.Add(self.button, 0, wx.ALL, 5)
 
         self.SetSizer(bSizer1)
@@ -828,7 +828,7 @@ class SecStatusDialog(wx.Dialog):
         bSizer1 = wx.BoxSizer(wx.VERTICAL)
 
         self.m_staticText1 = wx.StaticText(self, wx.ID_ANY,
-                                        u"Security Status is used in some CONCORD hull calculations; you can set the characters security status here",
+                                        "Security Status is used in some CONCORD hull calculations; you can set the characters security status here",
                                         wx.DefaultPosition, wx.DefaultSize, 0)
         self.m_staticText1.Wrap(-1)
         bSizer1.Add(self.m_staticText1, 1, wx.ALL | wx.EXPAND, 5)

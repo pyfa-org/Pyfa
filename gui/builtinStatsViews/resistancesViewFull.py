@@ -93,7 +93,7 @@ class ResistancesViewFull(StatsView):
 
         self.stEHPs.Bind(wx.EVT_BUTTON, self.toggleEHP)
 
-        for i in xrange(4):
+        for i in range(4):
             sizerResistances.AddGrowableCol(i + 1)
 
         sizerResistances.Add(self.stEHPs, wx.GBPosition(row, col), wx.GBSpan(1, 1), wx.ALIGN_CENTER)

@@ -321,7 +321,7 @@ class FittingView(d.Display):
         fit = sFit.getFit(self.getActiveFit(), basic=True)
 
         bitmap = BitmapLoader.getImage("race_%s_small" % fit.ship.item.race, "gui")
-        text = u"%s: %s" % (fit.ship.item.name, fit.name)
+        text = "%s: %s" % (fit.ship.item.name, fit.name)
 
         pageIndex = self.parent.GetPageIndex(self)
         if pageIndex is not None:
@@ -731,7 +731,7 @@ class FittingView(d.Display):
                     break
                 name = col.getText(st)
 
-                if not isinstance(name, basestring):
+                if not isinstance(name, str):
                     name = ""
 
                 nx, ny = tdc.GetTextExtent(name)
@@ -761,7 +761,7 @@ class FittingView(d.Display):
             name = col.columnText
             imgId = col.imageId
 
-            if not isinstance(name, basestring):
+            if not isinstance(name, str):
                 name = ""
 
             opts = wx.HeaderButtonParams()
@@ -804,7 +804,7 @@ class FittingView(d.Display):
             name = col.columnText
             imgId = col.imageId
 
-            if not isinstance(name, basestring):
+            if not isinstance(name, str):
                 name = ""
 
             opts = wx.HeaderButtonParams()
@@ -838,7 +838,7 @@ class FittingView(d.Display):
                     break
 
                 name = col.getText(st)
-                if not isinstance(name, basestring):
+                if not isinstance(name, str):
                     name = ""
 
                 imgId = col.getImageId(st)

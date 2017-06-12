@@ -17,7 +17,7 @@
 # along with pyfa.  If not, see <http://www.gnu.org/licenses/>.
 # =============================================================================
 
-import cStringIO
+import io
 import os.path
 import zipfile
 
@@ -32,7 +32,7 @@ logging = Logger(__name__)
 try:
     from collections import OrderedDict
 except ImportError:
-    from utils.compat import OrderedDict
+    from .utils.compat import OrderedDict
 
 
 class BitmapLoader(object):
@@ -88,14 +88,14 @@ class BitmapLoader(object):
 
             try:
                 img_data = cls.archive.read(path)
-                sbuf = cStringIO.StringIO(img_data)
+                sbuf = io.StringIO(img_data)
                 return wx.ImageFromStream(sbuf)
             except KeyError:
-                print("Missing icon file from zip: {0}".format(path))
+                print(("Missing icon file from zip: {0}".format(path)))
         else:
             path = os.path.join(config.pyfaPath, 'imgs' + os.sep + location + os.sep + filename)
 
             if os.path.exists(path):
                 return wx.Image(path)
             else:
-                print("Missing icon file: {0}".format(path))
+                print(("Missing icon file: {0}".format(path)))

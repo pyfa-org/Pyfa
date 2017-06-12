@@ -12,7 +12,7 @@ import gui.mainFrame
 import gui.utils.colorUtils as colorUtils
 import gui.utils.drawUtils as drawUtils
 import gui.utils.fonts as fonts
-from events import *
+from .events import *
 from gui.bitmapLoader import BitmapLoader
 from gui.builtinShipBrowser.pfBitmapFrame import PFBitmapFrame
 from service.fit import Fit
@@ -154,8 +154,8 @@ class FitItem(SFItem.SFBrowserItem):
         if self.shipTrait and sFit.serviceFittingOptions["showShipBrowserTooltip"]:
             notes = ""
             if self.notes:
-                notes = u'─' * 20 + u"\nNotes: {}\n".format(self.notes[:197] + '...' if len(self.notes) > 200 else self.notes)
-            self.SetToolTip(wx.ToolTip(u'{}\n{}{}\n{}'.format(self.shipName, notes, u'─' * 20, self.shipTrait)))
+                notes = '─' * 20 + "\nNotes: {}\n".format(self.notes[:197] + '...' if len(self.notes) > 200 else self.notes)
+            self.SetToolTip(wx.ToolTip('{}\n{}{}\n{}'.format(self.shipName, notes, '─' * 20, self.shipTrait)))
 
     def OnKeyUp(self, event):
         if event.GetKeyCode() in (32, 13):  # space and enter

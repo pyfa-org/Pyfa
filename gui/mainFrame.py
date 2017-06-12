@@ -93,7 +93,7 @@ try:
     from gui.propertyEditor import AttributeEditor
 except ImportError as e:
     AttributeEditor = None
-    print("Error loading Attribute Editor: %s.\nAccess to Attribute Editor is disabled." % e.message)
+    print(("Error loading Attribute Editor: %s.\nAccess to Attribute Editor is disabled." % e.message))
     disableOverrideEditor = True
 
 pyfalog = Logger(__name__)
@@ -413,7 +413,7 @@ class MainFrame(wx.Frame, IPortUser):
         """ Export active fit """
         sFit = Fit.getInstance()
         fit = sFit.getFit(self.getActiveFit())
-        defaultFile = u"%s - %s.xml" % (fit.ship.item.name, fit.name) if fit else None
+        defaultFile = "%s - %s.xml" % (fit.ship.item.name, fit.name) if fit else None
 
         dlg = wx.FileDialog(self, "Save Fitting As...",
                             wildcard="EVE XML fitting files (*.xml)|*.xml",
@@ -427,7 +427,7 @@ class MainFrame(wx.Frame, IPortUser):
                 if '.' not in os.path.basename(path):
                     path += ".xml"
             else:
-                print("oops, invalid fit format %d" % format_)
+                print(("oops, invalid fit format %d" % format_))
                 try:
                     dlg.Destroy()
                 except PyDeadObjectError:

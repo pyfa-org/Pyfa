@@ -103,14 +103,14 @@ class CharacterSelection(wx.Panel):
         sChar = Character.getInstance()
 
         skillsMap = {}
-        for item, stuff in self.reqs.iteritems():
-            for things in stuff.values():
+        for item, stuff in self.reqs.items():
+            for things in list(stuff.values()):
                 if things[1] not in skillsMap:
                     skillsMap[things[1]] = things[0]
                 elif things[0] > skillsMap[things[1]]:
                     skillsMap[things[1]] = things[0]
 
-        for skillID, level in skillsMap.iteritems():
+        for skillID, level in skillsMap.items():
             sChar.changeLevel(charID, skillID, level, ifHigher=True)
 
         self.refreshCharacterList()
@@ -142,7 +142,7 @@ class CharacterSelection(wx.Panel):
             sFit = Fit.getInstance()
             sFit.changeChar(fitID, charID)
 
-        choice.Append(u"\u2015 Open Character Editor \u2015", -1)
+        choice.Append("\u2015 Open Character Editor \u2015", -1)
         self.charCache = self.charChoice.GetCurrentSelection()
 
         if event is not None:
@@ -251,11 +251,11 @@ class CharacterSelection(wx.Panel):
         sCharacter = Character.getInstance()
 
         if tabulationLevel == 0:
-            for item, subReqs in reqs.iteritems():
+            for item, subReqs in reqs.items():
                 tip += "%s:\n" % item.name
                 tip += self._buildSkillsTooltip(subReqs, item.name, 1)
         else:
-            for name, info in reqs.iteritems():
+            for name, info in reqs.items():
                 level, ID, more = info
                 sCharacter.skillReqsDict['skills'].append({
                     'item': currItem,
@@ -277,11 +277,11 @@ class CharacterSelection(wx.Panel):
         sCharacter = Character.getInstance()
 
         if tabulationLevel == 0:
-            for item, subReqs in reqs.iteritems():
+            for item, subReqs in reqs.items():
                 skillsMap = self._buildSkillsTooltipCondensed(subReqs, item.name, 1, skillsMap)
             sorted(skillsMap, key=skillsMap.get)
         else:
-            for name, info in reqs.iteritems():
+            for name, info in reqs.items():
                 level, ID, more = info
                 sCharacter.skillReqsDict['skills'].append({
                     'item': currItem,

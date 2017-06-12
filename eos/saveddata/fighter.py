@@ -98,7 +98,7 @@ class Fighter(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
 
     def __getAbilities(self):
         """Returns list of FighterAbilities that are loaded with data"""
-        return [FighterAbility(effect) for effect in self.item.effects.values()]
+        return [FighterAbility(effect) for effect in list(self.item.effects.values())]
 
     def __calculateSlot(self, item):
         types = {
@@ -107,7 +107,7 @@ class Fighter(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
             "Heavy"  : Slot.F_HEAVY
         }
 
-        for t, slot in types.iteritems():
+        for t, slot in types.items():
             if self.getModifiedItemAttr("fighterSquadronIs{}".format(t)):
                 return slot
 

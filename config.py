@@ -47,12 +47,12 @@ def __createDirs(path):
 def getPyfaRoot():
     base = getattr(sys.modules['__main__'], "__file__", sys.executable) if isFrozen() else sys.argv[0]
     root = os.path.dirname(os.path.realpath(os.path.abspath(base)))
-    root = unicode(root, sys.getfilesystemencoding())
+    root = str(root, sys.getfilesystemencoding())
     return root
 
 
 def getDefaultSave():
-    return unicode(os.path.expanduser(os.path.join("~", ".pyfa")), sys.getfilesystemencoding())
+    return str(os.path.expanduser(os.path.join("~", ".pyfa")), sys.getfilesystemencoding())
 
 
 def defPaths(customSavePath):

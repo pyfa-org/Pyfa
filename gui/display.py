@@ -55,7 +55,7 @@ class Display(wx.ListCtrl):
                     name, type, defaultValue = param
                     value = params[x] if len(params) > x else defaultValue
                     value = value if value != "" else defaultValue
-                    if type == bool and isinstance(value, basestring):
+                    if type == bool and isinstance(value, str):
                         value = bool(value) if value.lower() != "false" and value != "0" else False
                     paramDict[name] = value
                 col = colClass(self, paramDict)
@@ -219,13 +219,13 @@ class Display(wx.ListCtrl):
 
             if listItemCount < stuffItemCount:
                 for i in range(stuffItemCount - listItemCount):
-                    self.InsertStringItem(sys.maxint, "")
+                    self.InsertStringItem(sys.maxsize, "")
 
             if listItemCount > stuffItemCount:
                 if listItemCount - stuffItemCount > 20 > stuffItemCount:
                     self.DeleteAllItems()
                     for i in range(stuffItemCount):
-                        self.InsertStringItem(sys.maxint, "")
+                        self.InsertStringItem(sys.maxsize, "")
                 else:
                     for i in range(listItemCount - stuffItemCount):
                         self.DeleteItem(self.getLastItem())
@@ -247,7 +247,7 @@ class Display(wx.ListCtrl):
                 newText = col.getText(st)
                 if newText is False:
                     col.delayedText(st, self, colItem)
-                    newText = u"\u21bb"
+                    newText = "\u21bb"
 
                 newImageId = col.getImageId(st)
 

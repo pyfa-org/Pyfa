@@ -33,7 +33,7 @@ class PFUpdatePref(PreferenceView):
         self.stDesc.Wrap(dlgWidth - 50)
         mainSizer.Add(self.stDesc, 0, wx.ALL, 5)
 
-        self.suppressPrerelease = wx.CheckBox(panel, wx.ID_ANY, u"Allow pre-release notifications", wx.DefaultPosition,
+        self.suppressPrerelease = wx.CheckBox(panel, wx.ID_ANY, "Allow pre-release notifications", wx.DefaultPosition,
                                               wx.DefaultSize, 0)
         self.suppressPrerelease.Bind(wx.EVT_CHECKBOX, self.OnPrereleaseStateChange)
         self.suppressPrerelease.SetValue(not self.UpdateSettings.get('prerelease'))

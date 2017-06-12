@@ -50,7 +50,7 @@ class ModuleAmmoPicker(ContextMenu):
             return False
 
         self.modules = modules
-        self.charges = list(filter(lambda charge: Market.getInstance().getPublicityByItem(charge), validCharges))
+        self.charges = list([charge for charge in validCharges if Market.getInstance().getPublicityByItem(charge)])
         return len(self.charges) > 0
 
     def getText(self, itmContext, selection):
@@ -108,7 +108,7 @@ class ModuleAmmoPicker(ContextMenu):
 
     def nameSorter(self, charge):
         parts = charge.name.split(" ")
-        return map(self.numericConverter, parts)
+        return list(map(self.numericConverter, parts))
 
     def addCharge(self, menu, charge):
         id_ = ContextMenu.nextID()
@@ -127,7 +127,7 @@ class ModuleAmmoPicker(ContextMenu):
     @staticmethod
     def addSeperator(m, text):
         id_ = ContextMenu.nextID()
-        m.Append(id_, u'─ %s ─' % text)
+        m.Append(id_, '─ %s ─' % text)
         m.Enable(id_, False)
 
     def getSubMenu(self, context, selection, rootMenu, i, pitem):

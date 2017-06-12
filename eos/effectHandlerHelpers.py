@@ -26,7 +26,7 @@ class HandledList(list):
     def filteredItemPreAssign(self, filter, *args, **kwargs):
         for element in self:
             try:
-                if filter(element):
+                if list(filter(element)):
                     element.preAssignItemAttr(*args, **kwargs)
             except AttributeError:
                 pass
@@ -34,7 +34,7 @@ class HandledList(list):
     def filteredItemIncrease(self, filter, *args, **kwargs):
         for element in self:
             try:
-                if filter(element):
+                if list(filter(element)):
                     element.increaseItemAttr(*args, **kwargs)
             except AttributeError:
                 pass
@@ -42,7 +42,7 @@ class HandledList(list):
     def filteredItemMultiply(self, filter, *args, **kwargs):
         for element in self:
             try:
-                if filter(element):
+                if list(filter(element)):
                     element.multiplyItemAttr(*args, **kwargs)
             except AttributeError:
                 pass
@@ -50,7 +50,7 @@ class HandledList(list):
     def filteredItemBoost(self, filter, *args, **kwargs):
         for element in self:
             try:
-                if filter(element):
+                if list(filter(element)):
                     element.boostItemAttr(*args, **kwargs)
             except AttributeError:
                 pass
@@ -58,7 +58,7 @@ class HandledList(list):
     def filteredItemForce(self, filter, *args, **kwargs):
         for element in self:
             try:
-                if filter(element):
+                if list(filter(element)):
                     element.forceItemAttr(*args, **kwargs)
             except AttributeError:
                 pass
@@ -66,7 +66,7 @@ class HandledList(list):
     def filteredChargePreAssign(self, filter, *args, **kwargs):
         for element in self:
             try:
-                if filter(element):
+                if list(filter(element)):
                     element.preAssignChargeAttr(*args, **kwargs)
             except AttributeError:
                 pass
@@ -74,7 +74,7 @@ class HandledList(list):
     def filteredChargeIncrease(self, filter, *args, **kwargs):
         for element in self:
             try:
-                if filter(element):
+                if list(filter(element)):
                     element.increaseChargeAttr(*args, **kwargs)
             except AttributeError:
                 pass
@@ -82,7 +82,7 @@ class HandledList(list):
     def filteredChargeMultiply(self, filter, *args, **kwargs):
         for element in self:
             try:
-                if filter(element):
+                if list(filter(element)):
                     element.multiplyChargeAttr(*args, **kwargs)
             except AttributeError:
                 pass
@@ -90,7 +90,7 @@ class HandledList(list):
     def filteredChargeBoost(self, filter, *args, **kwargs):
         for element in self:
             try:
-                if filter(element):
+                if list(filter(element)):
                     element.boostChargeAttr(*args, **kwargs)
             except AttributeError:
                 pass
@@ -98,7 +98,7 @@ class HandledList(list):
     def filteredChargeForce(self, filter, *args, **kwargs):
         for element in self:
             try:
-                if filter(element):
+                if list(filter(element)):
                     element.forceChargeAttr(*args, **kwargs)
             except AttributeError:
                 pass
@@ -115,7 +115,7 @@ class HandledList(list):
 class HandledModuleList(HandledList):
     def append(self, mod):
         emptyPosition = float("Inf")
-        for i in xrange(len(self)):
+        for i in range(len(self)):
             currMod = self[i]
             if currMod.isEmpty and not mod.isEmpty and currMod.slot == mod.slot:
                 currPos = mod.position or i
@@ -149,7 +149,7 @@ class HandledModuleList(HandledList):
         oldPos = mod.position
 
         mod.position = None
-        for i in xrange(oldPos, len(self)):
+        for i in range(oldPos, len(self)):
             self[i].position -= 1
 
     def toDummy(self, index):

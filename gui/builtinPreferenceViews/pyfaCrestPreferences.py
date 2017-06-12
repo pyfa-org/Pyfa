@@ -36,7 +36,7 @@ class PFCrestPref(PreferenceView):
         mainSizer.Add(self.m_staticline1, 0, wx.EXPAND | wx.TOP | wx.BOTTOM, 5)
 
         self.stInfo = wx.StaticText(panel, wx.ID_ANY,
-                                    u"Please see the pyfa wiki on GitHub for information regarding these options.",
+                                    "Please see the pyfa wiki on GitHub for information regarding these options.",
                                     wx.DefaultPosition, wx.DefaultSize, 0)
         self.stInfo.Wrap(dlgWidth - 50)
         mainSizer.Add(self.stInfo, 0, wx.EXPAND | wx.TOP | wx.BOTTOM, 5)
@@ -60,7 +60,7 @@ class PFCrestPref(PreferenceView):
 
         timeoutSizer = wx.BoxSizer(wx.HORIZONTAL)
 
-        self.stTimout = wx.StaticText(panel, wx.ID_ANY, u"Timeout (seconds):", wx.DefaultPosition, wx.DefaultSize, 0)
+        self.stTimout = wx.StaticText(panel, wx.ID_ANY, "Timeout (seconds):", wx.DefaultPosition, wx.DefaultSize, 0)
         self.stTimout.Wrap(-1)
 
         timeoutSizer.Add(self.stTimout, 0, wx.ALL | wx.ALIGN_CENTER_VERTICAL, 5)
@@ -84,7 +84,7 @@ class PFCrestPref(PreferenceView):
         fgAddrSizer.SetFlexibleDirection(wx.BOTH)
         fgAddrSizer.SetNonFlexibleGrowMode(wx.FLEX_GROWMODE_SPECIFIED)
 
-        self.stSetID = wx.StaticText(panel, wx.ID_ANY, u"Client ID:", wx.DefaultPosition, wx.DefaultSize, 0)
+        self.stSetID = wx.StaticText(panel, wx.ID_ANY, "Client ID:", wx.DefaultPosition, wx.DefaultSize, 0)
         self.stSetID.Wrap(-1)
         fgAddrSizer.Add(self.stSetID, 0, wx.ALL | wx.ALIGN_CENTER_VERTICAL, 5)
 
@@ -93,7 +93,7 @@ class PFCrestPref(PreferenceView):
 
         fgAddrSizer.Add(self.inputClientID, 0, wx.ALL | wx.ALIGN_CENTER_VERTICAL | wx.EXPAND, 5)
 
-        self.stSetSecret = wx.StaticText(panel, wx.ID_ANY, u"Client Secret:", wx.DefaultPosition, wx.DefaultSize, 0)
+        self.stSetSecret = wx.StaticText(panel, wx.ID_ANY, "Client Secret:", wx.DefaultPosition, wx.DefaultSize, 0)
         self.stSetSecret.Wrap(-1)
 
         fgAddrSizer.Add(self.stSetSecret, 0, wx.ALL | wx.ALIGN_CENTER_VERTICAL, 5)
@@ -103,7 +103,7 @@ class PFCrestPref(PreferenceView):
 
         fgAddrSizer.Add(self.inputClientSecret, 0, wx.ALL | wx.ALIGN_CENTER_VERTICAL | wx.EXPAND, 5)
 
-        self.btnApply = wx.Button(panel, wx.ID_ANY, u"Save Client Settings", wx.DefaultPosition, wx.DefaultSize, 0)
+        self.btnApply = wx.Button(panel, wx.ID_ANY, "Save Client Settings", wx.DefaultPosition, wx.DefaultSize, 0)
         self.btnApply.Bind(wx.EVT_BUTTON, self.OnBtnApply)
 
         mainSizer.Add(fgAddrSizer, 0, wx.EXPAND, 5)

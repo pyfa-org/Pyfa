@@ -6,7 +6,7 @@ from logbook import Logger
 import gui.utils.animEffects as animEffects
 import gui.utils.colorUtils as colorUtils
 import gui.utils.drawUtils as drawUtils
-from events import *
+from .events import *
 from gui.bitmapLoader import BitmapLoader
 
 pyfalog = Logger(__name__)

@@ -379,7 +379,7 @@ class PyGauge(wx.PyWindow):
         r.left += 1
         r.top += 1
         if self._range == 0.01 and self._value > 0:
-            formatStr = u'\u221e'
+            formatStr = '\u221e'
             dc.SetTextForeground(wx.Colour(80, 80, 80))
             dc.DrawLabel(formatStr, r, wx.ALIGN_CENTER)
 

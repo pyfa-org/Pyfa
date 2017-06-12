@@ -90,12 +90,12 @@ if toremove:
     print('Some renders are not used and will be removed:')
     for type_id in sorted(toremove):
         fullname = '{}.png'.format(type_id)
-        print('  {}'.format(fullname))
+        print(('  {}'.format(fullname)))
         fullpath = os.path.join(icons_dir, fullname)
         os.remove(fullpath)
 
 if toupdate:
-    print('Updating {} renders...'.format(len(toupdate)))
+    print(('Updating {} renders...'.format(len(toupdate))))
     missing = toupdate.difference(export)
     toupdate.intersection_update(export)
     for type_id in sorted(toupdate):
@@ -104,12 +104,12 @@ if toupdate:
         fullpath = os.path.join(icons_dir, fname)
         render.save(fullpath, 'png')
     if missing:
-        print('  {} renders are missing in export:'.format(len(missing)))
+        print(('  {} renders are missing in export:'.format(len(missing))))
         for type_id in sorted(missing):
-            print('    {}.png'.format(type_id))
+            print(('    {}.png'.format(type_id)))
 
 if toadd:
-    print('Adding {} renders...'.format(len(toadd)))
+    print(('Adding {} renders...'.format(len(toadd))))
     missing = toadd.difference(export)
     toadd.intersection_update(export)
     for type_id in sorted(toadd):
@@ -118,6 +118,6 @@ if toadd:
         fullpath = os.path.join(icons_dir, fname)
         render.save(fullpath, 'png')
     if missing:
-        print('  {} renders are missing in export:'.format(len(missing)))
+        print(('  {} renders are missing in export:'.format(len(missing))))
         for type_id in sorted(missing):
-            print('    {}.png'.format(type_id))
+            print(('    {}.png'.format(type_id)))

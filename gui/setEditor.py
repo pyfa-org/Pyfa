@@ -50,7 +50,7 @@ class ImplantTextValidor(BaseValidator):
             return True
         except ValueError as e:
             pyfalog.error(e)
-            wx.MessageBox(u"{}".format(e), "Error")
+            wx.MessageBox("{}".format(e), "Error")
             textCtrl.SetFocus()
             return False
 
@@ -114,7 +114,7 @@ class ImplantSetEditor(BaseImplantEditorView):
 
 class ImplantSetEditorDlg(wx.Dialog):
     def __init__(self, parent):
-        wx.Dialog.__init__(self, parent, id=wx.ID_ANY, title=u"Implant Set Editor", size=wx.Size(640, 600))
+        wx.Dialog.__init__(self, parent, id=wx.ID_ANY, title="Implant Set Editor", size=wx.Size(640, 600))
 
         self.block = False
         self.SetSizeHintsSz(wx.DefaultSize, wx.DefaultSize)
@@ -135,12 +135,12 @@ class ImplantSetEditorDlg(wx.Dialog):
 
         footerSizer = wx.BoxSizer(wx.HORIZONTAL)
 
-        self.stNotice = wx.StaticText(self, wx.ID_ANY, u"")
+        self.stNotice = wx.StaticText(self, wx.ID_ANY, "")
         self.stNotice.Wrap(-1)
         footerSizer.Add(self.stNotice, 1, wx.BOTTOM | wx.TOP | wx.LEFT, 5)
 
         if "wxGTK" in wx.PlatformInfo:
-            self.closeBtn = wx.Button(self, wx.ID_ANY, u"Close", wx.DefaultPosition, wx.DefaultSize, 0)
+            self.closeBtn = wx.Button(self, wx.ID_ANY, "Close", wx.DefaultPosition, wx.DefaultSize, 0)
             mainSizer.Add(self.closeBtn, 0, wx.ALL | wx.ALIGN_RIGHT, 5)
             self.closeBtn.Bind(wx.EVT_BUTTON, self.closeEvent)
 

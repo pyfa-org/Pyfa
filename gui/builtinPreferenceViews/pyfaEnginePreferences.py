@@ -36,25 +36,25 @@ class PFFittingEnginePref(PreferenceView):
         self.m_staticline1 = wx.StaticLine(panel, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.LI_HORIZONTAL)
         mainSizer.Add(self.m_staticline1, 0, wx.EXPAND | wx.TOP | wx.BOTTOM, 5)
 
-        self.cbGlobalForceReload = wx.CheckBox(panel, wx.ID_ANY, u"Factor in reload time when calculating capacitor usage, damage, and tank.",
+        self.cbGlobalForceReload = wx.CheckBox(panel, wx.ID_ANY, "Factor in reload time when calculating capacitor usage, damage, and tank.",
                                                wx.DefaultPosition, wx.DefaultSize, 0)
 
         mainSizer.Add(self.cbGlobalForceReload, 0, wx.ALL | wx.EXPAND, 5)
 
         self.cbStrictSkillLevels = wx.CheckBox(panel, wx.ID_ANY,
-                                               u"Enforce strict skill level requirements",
+                                               "Enforce strict skill level requirements",
                                                wx.DefaultPosition, wx.DefaultSize, 0)
         self.cbStrictSkillLevels.SetCursor(helpCursor)
         self.cbStrictSkillLevels.SetToolTip(wx.ToolTip(
-            u'When enabled, skills will check their dependencies\' requirements when their levels change and reset ' +
-            u'skills that no longer meet the requirement.\neg: Setting Drones from level V to IV will reset the Heavy ' +
-            u'Drone Operation skill, as that requires Drones V'))
+            'When enabled, skills will check their dependencies\' requirements when their levels change and reset ' +
+            'skills that no longer meet the requirement.\neg: Setting Drones from level V to IV will reset the Heavy ' +
+            'Drone Operation skill, as that requires Drones V'))
 
         mainSizer.Add(self.cbStrictSkillLevels, 0, wx.ALL | wx.EXPAND, 5)
 
         self.cbUniversalAdaptiveArmorHardener = wx.CheckBox(panel, wx.ID_ANY,
-                                                            u"When damage profile is Uniform, set Reactive Armor " +
-                                                            u"Hardener to match (old behavior).",
+                                                            "When damage profile is Uniform, set Reactive Armor " +
+                                                            "Hardener to match (old behavior).",
                                                             wx.DefaultPosition, wx.DefaultSize, 0)
         mainSizer.Add(self.cbUniversalAdaptiveArmorHardener, 0, wx.ALL | wx.EXPAND, 5)
 
