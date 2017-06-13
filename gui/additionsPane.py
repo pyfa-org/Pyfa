@@ -36,10 +36,10 @@ from gui.toggle_panel import TogglePanel
 class AdditionsPane(TogglePanel):
     def __init__(self, parent):
 
-        TogglePanel.__init__(self, parent, forceLayout=1)
+        TogglePanel.__init__(self, parent, force_layout=1)
 
         self.SetLabel("Additions")
-        pane = self.GetContentPane()
+        pane = self.GetContentPanel()
 
         baseSizer = wx.BoxSizer(wx.HORIZONTAL)
         pane.SetSizer(baseSizer)
@@ -59,28 +59,28 @@ class AdditionsPane(TogglePanel):
         notesImg = BitmapLoader.getImage("skill_small", "gui")
 
         self.drone = DroneView(self.notebook)
-        self.notebook.AddPage(self.drone, "Drones", tabImage=droneImg, showClose=False)
+        self.notebook.AddPage(self.drone, "Drones", image=droneImg, closeable=False)
 
         self.fighter = FighterView(self.notebook)
-        self.notebook.AddPage(self.fighter, "Fighters", tabImage=fighterImg, showClose=False)
+        self.notebook.AddPage(self.fighter, "Fighters", image=fighterImg, closeable=False)
 
         self.cargo = CargoView(self.notebook)
-        self.notebook.AddPage(self.cargo, "Cargo", tabImage=cargoImg, showClose=False)
+        self.notebook.AddPage(self.cargo, "Cargo", image=cargoImg, closeable=False)
 
         self.implant = ImplantView(self.notebook)
-        self.notebook.AddPage(self.implant, "Implants", tabImage=implantImg, showClose=False)
+        self.notebook.AddPage(self.implant, "Implants", image=implantImg, closeable=False)
 
         self.booster = BoosterView(self.notebook)
-        self.notebook.AddPage(self.booster, "Boosters", tabImage=boosterImg, showClose=False)
+        self.notebook.AddPage(self.booster, "Boosters", image=boosterImg, closeable=False)
 
         self.projectedPage = ProjectedView(self.notebook)
-        self.notebook.AddPage(self.projectedPage, "Projected", tabImage=projectedImg, showClose=False)
+        self.notebook.AddPage(self.projectedPage, "Projected", image=projectedImg, closeable=False)
 
         self.gangPage = CommandView(self.notebook)
-        self.notebook.AddPage(self.gangPage, "Command", tabImage=gangImg, showClose=False)
+        self.notebook.AddPage(self.gangPage, "Command", image=gangImg, closeable=False)
 
         self.notes = NotesView(self.notebook)
-        self.notebook.AddPage(self.notes, "Notes", tabImage=notesImg, showClose=False)
+        self.notebook.AddPage(self.notes, "Notes", image=notesImg, closeable=False)
 
         self.notebook.SetSelection(0)
 

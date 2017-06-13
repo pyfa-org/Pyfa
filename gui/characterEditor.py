@@ -24,7 +24,7 @@ from .utils.floatspin import FloatSpin
 # noinspection PyPackageRequirements
 import wx.lib.newevent
 # noinspection PyPackageRequirements
-import wx.gizmos
+from wx.dataview import TreeListCtrl
 from gui.bitmap_loader import BitmapLoader
 from gui.contextMenu import ContextMenu
 import gui.globalEvents as GE
@@ -306,7 +306,7 @@ class SkillTreeView(wx.Panel):
         self.searchTimer = wx.Timer(self)
         self.Bind(wx.EVT_TIMER, self.populateSkillTreeSkillSearch, self.searchTimer)
 
-        tree = self.skillTreeListCtrl = wx.gizmos.TreeListCtrl(self, wx.ID_ANY, style=wx.TR_DEFAULT_STYLE | wx.TR_HIDE_ROOT)
+        tree = self.skillTreeListCtrl = TreeListCtrl(self, wx.ID_ANY, style=wx.TR_DEFAULT_STYLE | wx.TR_HIDE_ROOT)
         pmainSizer.Add(tree, 1, wx.EXPAND | wx.ALL, 5)
 
         self.imageList = wx.ImageList(16, 16)

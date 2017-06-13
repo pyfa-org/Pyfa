@@ -96,7 +96,7 @@ class StatsPane(wx.Panel):
         i = 0
         for viewName in self.DEFAULT_VIEWS:
             tp = TogglePanel(self)
-            contentPanel = tp.GetContentPane()
+            contentPanel = tp.GetContentPanel()
             contentPanel.viewName = viewName
 
             try:

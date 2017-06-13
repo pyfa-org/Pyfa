@@ -69,7 +69,7 @@ class Display(wx.ListCtrl):
         info = wx.ListItem()
         # noinspection PyPropertyAccess
         info.m_mask = wx.LIST_MASK_WIDTH
-        self.InsertColumnInfo(i, info)
+        self.InsertColumn(i, info)
         self.SetColumnWidth(i, 0)
 
         self.imageListBase = self.imageList.ImageCount
@@ -156,7 +156,7 @@ class Display(wx.ListCtrl):
         info.m_text = col.columnText
         info.m_width = -1
         info.m_format = wx.LIST_FORMAT_LEFT
-        self.InsertColumnInfo(i, info)
+        self.InsertColumn(i, info)
         col.resized = False
         if i == 0 and col.size != wx.LIST_AUTOSIZE_USEHEADER:
             col.size += 4

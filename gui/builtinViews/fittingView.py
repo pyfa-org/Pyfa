@@ -51,7 +51,7 @@ class FitSpawner(gui.multiSwitch.TabSpawner):
         self.multiSwitch = multiSwitch
         self.mainFrame = mainFrame = gui.mainFrame.MainFrame.getInstance()
         mainFrame.Bind(EVT_FIT_SELECTED, self.fitSelected)
-        self.multiSwitch.tabsContainer.handleDrag = self.handleDrag
+        self.multiSwitch.tabs_container.handleDrag = self.handleDrag
 
     def fitSelected(self, event):
         count = -1

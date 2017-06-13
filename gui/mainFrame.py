@@ -136,8 +136,8 @@ class OpenFitsThread(threading.Thread):
         wx.PostEvent(self.mainFrame, FitSelected(fitID=self.fits[-1], startup=2))
         wx.CallAfter(self.callback)
 
-
-class MainFrame(wx.Frame, IPortUser):
+# todo: include IPortUser again
+class MainFrame(wx.Frame):
     __instance = None
 
     @classmethod
@@ -161,7 +161,7 @@ class MainFrame(wx.Frame, IPortUser):
             self.SetBackgroundColour(wx.SystemSettings.GetColour(wx.SYS_COLOUR_BTNFACE))
 
         # Load and set the icon for pyfa main window
-        i = wx.IconFromBitmap(BitmapLoader.getBitmap("pyfa", "gui"))
+        i = wx.Icon(BitmapLoader.getBitmap("pyfa", "gui"))
         self.SetIcon(i)
 
         # Create the layout and windows
@@ -181,11 +181,11 @@ class MainFrame(wx.Frame, IPortUser):
         shipBrowserImg = BitmapLoader.getImage("ship_small", "gui")
 
         self.marketBrowser = MarketBrowser(self.notebookBrowsers)
-        self.notebookBrowsers.AddPage(self.marketBrowser, "Market", tabImage=marketImg, showClose=False)
+        self.notebookBrowsers.AddPage(self.marketBrowser, "Market", image=marketImg, closeable=False)
         self.marketBrowser.splitter.SetSashPosition(self.marketHeight)
 
         self.shipBrowser = ShipBrowser(self.notebookBrowsers)
-        self.notebookBrowsers.AddPage(self.shipBrowser, "Fittings", tabImage=shipBrowserImg, showClose=False)
+        self.notebookBrowsers.AddPage(self.shipBrowser, "Fittings", image=shipBrowserImg, closeable=False)
 
         self.notebookBrowsers.SetSelection(1)
 
