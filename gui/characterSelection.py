@@ -58,7 +58,7 @@ class CharacterSelection(wx.Panel):
 
         self.btnRefresh.SetMinSize(size)
         self.btnRefresh.SetMaxSize(size)
-        self.btnRefresh.SetToolTipString("Refresh API")
+        self.btnRefresh.SetToolTip("Refresh API")
 
         self.btnRefresh.Bind(wx.EVT_BUTTON, self.refreshApi)
         self.btnRefresh.Enable(False)
@@ -212,7 +212,7 @@ class CharacterSelection(wx.Panel):
 
         if event.fitID is None:
             self.skillReqsStaticBitmap.SetBitmap(self.cleanSkills)
-            self.skillReqsStaticBitmap.SetToolTipString("No active fit")
+            self.skillReqsStaticBitmap.SetToolTip("No active fit")
         else:
             sCharacter = Character.getInstance()
             self.reqs = sCharacter.checkRequirements(fit)
@@ -233,7 +233,7 @@ class CharacterSelection(wx.Panel):
                 else:
                     tip += self._buildSkillsTooltip(self.reqs)
                 self.skillReqsStaticBitmap.SetBitmap(self.redSkills)
-            self.skillReqsStaticBitmap.SetToolTipString(tip.strip())
+            self.skillReqsStaticBitmap.SetToolTip(tip.strip())
 
         if newCharID is None:
             sChar = Character.getInstance()

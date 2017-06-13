@@ -170,7 +170,7 @@ class ResistsEditorDlg(wx.Dialog):
             btn.Layout()
             setattr(self, name, btn)
             btn.Enable(True)
-            btn.SetToolTipString("%s patterns %s clipboard" % (name, direction))
+            btn.SetToolTip("%s patterns %s clipboard" % (name, direction))
             footerSizer.Add(btn, 0, wx.ALIGN_CENTER_HORIZONTAL | wx.ALIGN_RIGHT)
             btn.Bind(wx.EVT_BUTTON, getattr(self, "{}Patterns".format(name.lower())))
 

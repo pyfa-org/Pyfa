@@ -134,7 +134,7 @@ class Display(wx.ListCtrl):
             items_rect = wx.Rect(topRect.left, 0, bottomRect.right - topRect.left, bottomRect.bottom)
 
             updateRegion = wx.Region(x, y, w, h)
-            updateRegion.SubtractRect(items_rect)
+            updateRegion.Subtract(items_rect)
 
             dc.DestroyClippingRegion()
             dc.SetClippingRegionAsRegion(updateRegion)

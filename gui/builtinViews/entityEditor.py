@@ -60,7 +60,7 @@ class EntityEditor(wx.Panel):
             btn.SetMinSize(size)
             btn.SetMaxSize(size)
 
-            btn.SetToolTipString("{} {}".format(name.capitalize(), self.entityName))
+            btn.SetToolTip("{} {}".format(name.capitalize(), self.entityName))
             btn.Bind(wx.EVT_BUTTON, func)
             setattr(self, "btn%s" % name.capitalize(), btn)
             self.navSizer.Add(btn, 0, wx.ALL | wx.ALIGN_CENTER_VERTICAL, 2)

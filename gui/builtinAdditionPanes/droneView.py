@@ -101,7 +101,7 @@ class DroneView(Display):
                     if self.DEFAULT_COLS[col] == "Miscellanea":
                         tooltip = self.activeColumns[col].getToolTip(mod)
                         if tooltip is not None:
-                            self.SetToolTipString(tooltip)
+                            self.SetToolTip(tooltip)
                         else:
                             self.SetToolTip(None)
                     else:

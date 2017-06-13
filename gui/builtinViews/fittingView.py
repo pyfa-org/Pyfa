@@ -55,7 +55,8 @@ class FitSpawner(gui.multiSwitch.TabSpawner):
 
     def fitSelected(self, event):
         count = -1
-        for index, page in enumerate(self.multiSwitch.pages):
+        # @todo pheonix: _pages is supposed to be private?
+        for index, page in enumerate(self.multiSwitch._pages):
             if not isinstance(page, gui.builtinViews.emptyView.BlankPage):  # Don't try and process it if it's a blank page.
                 try:
                     if page.activeFitID == event.fitID:
@@ -184,7 +185,7 @@ class FittingView(d.Display):
                     mod = self.mods[self.GetItemData(row)]
                     tooltip = self.activeColumns[col].getToolTip(mod)
                     if tooltip is not None:
-                        self.SetToolTipString(tooltip)
+                        self.SetToolTip(tooltip)
                     else:
                         self.SetToolTip(None)
                 else:
@@ -610,7 +611,7 @@ class FittingView(d.Display):
             # update state tooltip
             tooltip = self.activeColumns[col].getToolTip(self.mods[self.GetItemData(row)])
             if tooltip:
-                self.SetToolTipString(tooltip)
+                self.SetToolTip(tooltip)
 
             wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=self.mainFrame.getActiveFit()))
         else:

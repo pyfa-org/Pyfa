@@ -50,7 +50,7 @@ class ShipBrowser(wx.Panel):
             if race:
                 self.racesFilter[race] = False
 
-        self.SetSizeHintsSz(wx.DefaultSize, wx.DefaultSize)
+        self.SetSizeHints(wx.DefaultSize, wx.DefaultSize)
 
         mainSizer = wx.BoxSizer(wx.VERTICAL)
 
