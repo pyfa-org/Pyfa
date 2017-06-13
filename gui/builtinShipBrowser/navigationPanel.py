@@ -212,8 +212,8 @@ class NavigationPanel(SFItem.SFBrowserItem):
         rect = self.GetRect()
 
         windowColor = wx.SystemSettings.GetColour(wx.SYS_COLOUR_WINDOW)
-        textColor = colorUtils.GetSuitableColor(windowColor, 1)
-        sepColor = colorUtils.GetSuitableColor(windowColor, 0.2)
+        textColor = colorUtils.GetSuitable(windowColor, 1)
+        sepColor = colorUtils.GetSuitable(windowColor, 0.2)
 
         mdc.SetTextForeground(textColor)
 

@@ -101,7 +101,7 @@ class CategoryItem(SFBrowserItem):
         self.UpdateElementsPos(mdc)
 
         windowColor = wx.SystemSettings.GetColour(wx.SYS_COLOUR_WINDOW)
-        textColor = colorUtils.GetSuitableColor(windowColor, 1)
+        textColor = colorUtils.GetSuitable(windowColor, 1)
 
         mdc.SetTextForeground(textColor)
         mdc.DrawBitmap(self.dropShadowBitmap, self.shipBmpx + 1, self.shipBmpy + 1)
