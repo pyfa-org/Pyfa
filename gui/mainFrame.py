@@ -198,15 +198,16 @@ class MainFrame(wx.Frame):
         self.fitting_additions_split.SetSashPosition(self.fittingHeight)
         self.fitting_additions_split.SetSashGravity(1.0)
 
-        cstatsSizer = wx.BoxSizer(wx.VERTICAL)
-
-        self.charSelection = CharacterSelection(self)
-        cstatsSizer.Add(self.charSelection, 0, wx.EXPAND)
-
-        self.statsPane = StatsPane(self)
-        cstatsSizer.Add(self.statsPane, 0, wx.EXPAND)
-
-        mainSizer.Add(cstatsSizer, 0, wx.EXPAND)
+        # @todo pheonix: fix all stats stuff
+        # cstatsSizer = wx.BoxSizer(wx.VERTICAL)
+        #
+        # self.charSelection = CharacterSelection(self)
+        # cstatsSizer.Add(self.charSelection, 0, wx.EXPAND)
+        #
+        # self.statsPane = StatsPane(self)
+        # cstatsSizer.Add(self.statsPane, 0, wx.EXPAND)
+        #
+        # mainSizer.Add(cstatsSizer, 0, wx.EXPAND)
 
         self.SetSizer(mainSizer)
 
