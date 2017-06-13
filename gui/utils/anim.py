@@ -53,11 +53,11 @@ class LoadAnimation(wx.Window):
     def OnPaint(self, event):
         rect = self.GetClientRect()
         dc = wx.BufferedPaintDC(self)
-        windowColor = wx.SystemSettings_GetColour(wx.SYS_COLOUR_WINDOW)
+        windowColor = wx.SystemSettings.GetColour(wx.SYS_COLOUR_WINDOW)
         dc.SetBackground(wx.Brush(windowColor))
         dc.Clear()
 
-        barColor = wx.SystemSettings_GetColour(wx.SYS_COLOUR_WINDOWTEXT)
+        barColor = wx.SystemSettings.GetColour(wx.SYS_COLOUR_WINDOWTEXT)
         shadeColor = colorUtils.GetSuitableColor(barColor, 0.75)
 
         barWidth = rect.width / self.bars
@@ -81,7 +81,7 @@ class LoadAnimation(wx.Window):
             dc.DrawRectangle(x, y, barWidth, bh)
             x += barWidth
 
-        textColor = wx.SystemSettings_GetColour(wx.SYS_COLOUR_WINDOWTEXT)
+        textColor = wx.SystemSettings.GetColour(wx.SYS_COLOUR_WINDOWTEXT)
         dc.SetTextForeground(textColor)
         dc.DrawLabel(self.label, rect, wx.ALIGN_CENTER)
 

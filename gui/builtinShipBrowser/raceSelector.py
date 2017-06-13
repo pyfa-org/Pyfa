@@ -166,7 +166,7 @@ class RaceSelector(wx.Window):
     def OnPaint(self, event):
         rect = self.GetRect()
 
-        windowColor = wx.SystemSettings_GetColour(wx.SYS_COLOUR_WINDOW)
+        windowColor = wx.SystemSettings.GetColour(wx.SYS_COLOUR_WINDOW)
         # bkColor = colorUtils.GetSuitableColor(windowColor, 0.1)
         sepColor = colorUtils.GetSuitableColor(windowColor, 0.2)
 

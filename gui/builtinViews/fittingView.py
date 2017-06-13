@@ -790,11 +790,11 @@ class FittingView(d.Display):
 
         mdc.SelectObject(mbmp)
 
-        mdc.SetBackground(wx.Brush(wx.SystemSettings_GetColour(wx.SYS_COLOUR_WINDOW)))
+        mdc.SetBackground(wx.Brush(wx.SystemSettings.GetColour(wx.SYS_COLOUR_WINDOW)))
         mdc.Clear()
 
         mdc.SetFont(font)
-        mdc.SetTextForeground(wx.SystemSettings_GetColour(wx.SYS_COLOUR_WINDOWTEXT))
+        mdc.SetTextForeground(wx.SystemSettings.GetColour(wx.SYS_COLOUR_WINDOWTEXT))
 
         cx = padding
         for i, col in enumerate(self.activeColumns):

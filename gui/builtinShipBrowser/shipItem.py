@@ -232,7 +232,7 @@ class ShipItem(SFItem.SFBrowserItem):
     def DrawItem(self, mdc):
         # rect = self.GetRect()
 
-        windowColor = wx.SystemSettings_GetColour(wx.SYS_COLOUR_WINDOW)
+        windowColor = wx.SystemSettings.GetColour(wx.SYS_COLOUR_WINDOW)
         textColor = colorUtils.GetSuitableColor(windowColor, 1)
 
         mdc.SetTextForeground(textColor)

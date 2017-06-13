@@ -400,7 +400,7 @@ class SFBrowserItem(wx.Window):
     def RenderBackground(self):
         rect = self.GetRect()
 
-        windowColor = wx.SystemSettings_GetColour(wx.SYS_COLOUR_WINDOW)
+        windowColor = wx.SystemSettings.GetColour(wx.SYS_COLOUR_WINDOW)
 
         state = self.GetState()
 

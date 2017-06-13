@@ -283,7 +283,7 @@ class ResourcesViewFull(StatsView):
                 label.SetToolTip(wx.ToolTip("%.1f" % value))
 
         colorWarn = wx.Colour(204, 51, 51)
-        colorNormal = wx.SystemSettings_GetColour(wx.SYS_COLOUR_WINDOWTEXT)
+        colorNormal = wx.SystemSettings.GetColour(wx.SYS_COLOUR_WINDOWTEXT)
 
         if usedTurretHardpoints > totalTurretHardpoints:
             colorT = colorWarn

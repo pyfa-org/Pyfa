@@ -211,7 +211,7 @@ class NavigationPanel(SFItem.SFBrowserItem):
     def DrawItem(self, mdc):
         rect = self.GetRect()
 
-        windowColor = wx.SystemSettings_GetColour(wx.SYS_COLOUR_WINDOW)
+        windowColor = wx.SystemSettings.GetColour(wx.SYS_COLOUR_WINDOW)
         textColor = colorUtils.GetSuitableColor(windowColor, 1)
         sepColor = colorUtils.GetSuitableColor(windowColor, 0.2)
 
@@ -230,7 +230,7 @@ class NavigationPanel(SFItem.SFBrowserItem):
     def RenderBackground(self):
         rect = self.GetRect()
 
-        windowColor = wx.SystemSettings_GetColour(wx.SYS_COLOUR_WINDOW)
+        windowColor = wx.SystemSettings.GetColour(wx.SYS_COLOUR_WINDOW)
 
         sFactor = 0.1
 

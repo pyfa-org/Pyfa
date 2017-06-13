@@ -100,7 +100,7 @@ class CategoryItem(SFBrowserItem):
         # rect = self.GetRect()
         self.UpdateElementsPos(mdc)
 
-        windowColor = wx.SystemSettings_GetColour(wx.SYS_COLOUR_WINDOW)
+        windowColor = wx.SystemSettings.GetColour(wx.SYS_COLOUR_WINDOW)
         textColor = colorUtils.GetSuitableColor(windowColor, 1)
 
         mdc.SetTextForeground(textColor)
