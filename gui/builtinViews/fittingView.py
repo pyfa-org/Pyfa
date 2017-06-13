@@ -102,12 +102,12 @@ FitSpawner.register()
 
 
 # Drag'n'drop handler
-class FittingViewDrop(wx.PyDropTarget):
+class FittingViewDrop(wx.DropTarget):
     def __init__(self, dropFn, *args, **kwargs):
         super(FittingViewDrop, self).__init__(*args, **kwargs)
         self.dropFn = dropFn
         # this is really transferring an EVE itemID
-        self.dropData = wx.PyTextDataObject()
+        self.dropData = wx.TextDataObject()
         self.SetDataObject(self.dropData)
 
     def OnData(self, x, y, t):
@@ -237,7 +237,7 @@ class FittingView(d.Display):
         row = event.GetIndex()
 
         if row != -1 and row not in self.blanks and isinstance(self.mods[row], Module) and not self.mods[row].isEmpty:
-            data = wx.PyTextDataObject()
+            data = wx.TextDataObject()
             dataStr = "fitting:" + str(self.mods[row].modPosition)
             data.SetText(dataStr)
 

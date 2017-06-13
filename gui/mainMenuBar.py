@@ -107,23 +107,23 @@ class MainMenuBar(wx.MenuBar):
 
         charEditItem = wx.MenuItem(windowMenu, self.characterEditorId, "&Character Editor\tCTRL+E")
         charEditItem.SetBitmap(BitmapLoader.getBitmap("character_small", "gui"))
-        windowMenu.AppendItem(charEditItem)
+        windowMenu.Append(charEditItem)
 
         damagePatternEditItem = wx.MenuItem(windowMenu, self.damagePatternEditorId, "Damage Pattern Editor\tCTRL+D")
         damagePatternEditItem.SetBitmap(BitmapLoader.getBitmap("damagePattern_small", "gui"))
-        windowMenu.AppendItem(damagePatternEditItem)
+        windowMenu.Append(damagePatternEditItem)
 
         targetResistsEditItem = wx.MenuItem(windowMenu, self.targetResistsEditorId, "Target Resists Editor\tCTRL+R")
         targetResistsEditItem.SetBitmap(BitmapLoader.getBitmap("explosive_small", "gui"))
-        windowMenu.AppendItem(targetResistsEditItem)
+        windowMenu.Append(targetResistsEditItem)
 
         implantSetEditItem = wx.MenuItem(windowMenu, self.implantSetEditorId, "Implant Set Editor\tCTRL+I")
         implantSetEditItem.SetBitmap(BitmapLoader.getBitmap("hardwire_small", "gui"))
-        windowMenu.AppendItem(implantSetEditItem)
+        windowMenu.Append(implantSetEditItem)
 
         graphFrameItem = wx.MenuItem(windowMenu, self.graphFrameId, "Graphs\tCTRL+G")
         graphFrameItem.SetBitmap(BitmapLoader.getBitmap("graphs_small", "gui"))
-        windowMenu.AppendItem(graphFrameItem)
+        windowMenu.Append(graphFrameItem)
 
         if not gui.graphFrame.graphFrame_enabled:
             self.Enable(self.graphFrameId, False)
@@ -131,7 +131,7 @@ class MainMenuBar(wx.MenuBar):
         preferencesShortCut = "CTRL+," if 'wxMac' in wx.PlatformInfo else "CTRL+P"
         preferencesItem = wx.MenuItem(windowMenu, wx.ID_PREFERENCES, "Preferences\t" + preferencesShortCut)
         preferencesItem.SetBitmap(BitmapLoader.getBitmap("preferences_small", "gui"))
-        windowMenu.AppendItem(preferencesItem)
+        windowMenu.Append(preferencesItem)
 
         if 'wxMac' not in wx.PlatformInfo or ('wxMac' in wx.PlatformInfo and wx.VERSION >= (3, 0)):
             self.sCrest = Crest.getInstance()
@@ -154,7 +154,7 @@ class MainMenuBar(wx.MenuBar):
                 windowMenu.AppendSeparator()
                 attrItem = wx.MenuItem(windowMenu, self.attrEditorId, "Attribute Overrides\tCTRL+B")
                 attrItem.SetBitmap(BitmapLoader.getBitmap("fit_rename_small", "gui"))
-                windowMenu.AppendItem(attrItem)
+                windowMenu.Append(attrItem)
                 windowMenu.Append(self.toggleOverridesId, "Turn Overrides On")
 
         # Help menu

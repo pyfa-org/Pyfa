@@ -66,7 +66,7 @@ class ItemView(Display):
         row = self.GetFirstSelected()
 
         if row != -1:
-            data = wx.PyTextDataObject()
+            data = wx.TextDataObject()
             dataStr = "market:" + str(self.active[row].ID)
             pyfalog.debug("Dragging from market: " + dataStr)
 

@@ -133,7 +133,7 @@ class MainWindow(wx.Frame):
    def OnDragInit(self, event):
        """ Begin a Drag Operation """
        # Create a Text Data Object, which holds the text that is to be dragged
-       tdo = wx.PyTextDataObject(self.text.GetStringSelection())
+       tdo = wx.TextDataObject(self.text.GetStringSelection())
        # Create a Drop Source Object, which enables the Drag operation
        tds = wx.DropSource(self.text)
        # Associate the Data to be dragged with the Drop Source Object

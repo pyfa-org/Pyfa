@@ -29,11 +29,11 @@ class NavigationPanel(SFItem.SFBrowserItem):
 
         switchImg = BitmapLoader.getImage("fit_switch_view_mode_small", "gui")
         switchImg = switchImg.AdjustChannels(1, 1, 1, 0.4)
-        self.switchBmpD = wx.BitmapFromImage(switchImg)
+        self.switchBmpD = wx.Bitmap(switchImg)
 
         recentImg = BitmapLoader.getImage("frecent_small", "gui")
         recentImg = recentImg.AdjustChannels(1, 1, 1, 0.4)
-        self.recentBmpD = wx.BitmapFromImage(recentImg)
+        self.recentBmpD = wx.Bitmap(recentImg)
 
         self.resetBmp = self.AdjustChannels(self.resetBmpH)
         self.rewBmp = self.AdjustChannels(self.rewBmpH)
@@ -184,9 +184,9 @@ class NavigationPanel(SFItem.SFBrowserItem):
 
     @staticmethod
     def AdjustChannels(bitmap):
-        img = wx.ImageFromBitmap(bitmap)
+        img = bitmap.ConvertToImage()
         img = img.AdjustChannels(1.05, 1.05, 1.05, 1)
-        return wx.BitmapFromImage(img)
+        return wx.Bitmap(img)
 
     def UpdateElementsPos(self, mdc):
         rect = self.GetRect()

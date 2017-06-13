@@ -7,7 +7,7 @@ class PFBitmapFrame(wx.Frame):
                           style=wx.NO_BORDER | wx.FRAME_NO_TASKBAR | wx.STAY_ON_TOP)
         img = bitmap.ConvertToImage()
         img = img.ConvertToGreyscale()
-        bitmap = wx.BitmapFromImage(img)
+        bitmap = wx.Bitmap(img)
         self.bitmap = bitmap
         self.SetSize((bitmap.GetWidth(), bitmap.GetHeight()))
         self.Bind(wx.EVT_PAINT, self.OnWindowPaint)

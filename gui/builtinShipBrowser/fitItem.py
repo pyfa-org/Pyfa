@@ -72,9 +72,9 @@ class FitItem(SFItem.SFBrowserItem):
         self.acceptBmp = BitmapLoader.getBitmap("faccept_small", "gui")
         self.shipEffBk = BitmapLoader.getBitmap("fshipbk_big", "gui")
 
-        img = wx.ImageFromBitmap(self.shipEffBk)
+        img = self.shipEffBk.ConvertToImage()
         img = img.Mirror(False)
-        self.shipEffBkMirrored = wx.BitmapFromImage(img)
+        self.shipEffBkMirrored = wx.Bitmap(img)
 
         self.dragTLFBmp = None
 

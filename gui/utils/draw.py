@@ -84,6 +84,6 @@ def GetPartialText(dc, text , maxWidth, defEllipsis="..."):
 
 
 def CreateDropShadowBitmap(bitmap, opacity):
-    img = wx.ImageFromBitmap(bitmap)
+    img = bitmap.ConvertToImage()
     img = img.AdjustChannels(0, 0, 0, opacity)
-    return wx.BitmapFromImage(img)
+    return wx.Bitmap(img)

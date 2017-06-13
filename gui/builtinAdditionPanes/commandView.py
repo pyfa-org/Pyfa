@@ -42,12 +42,12 @@ class DummyEntry(object):
         self.item = DummyItem(txt)
 
 
-class CommandViewDrop(wx.PyDropTarget):
+class CommandViewDrop(wx.DropTarget):
     def __init__(self, dropFn, *args, **kwargs):
         super(CommandViewDrop, self).__init__(*args, **kwargs)
         self.dropFn = dropFn
         # this is really transferring an EVE itemID
-        self.dropData = wx.PyTextDataObject()
+        self.dropData = wx.TextDataObject()
         self.SetDataObject(self.dropData)
 
     def OnData(self, x, y, t):
@@ -117,7 +117,7 @@ class CommandView(d.Display):
     def startDrag(self, event):
         row = event.GetIndex()
         if row != -1 and isinstance(self.get(row), es_Drone):
-            data = wx.PyTextDataObject()
+            data = wx.TextDataObject()
             dataStr = "command:" + str(self.GetItemData(row))
             data.SetText(dataStr)
 

@@ -50,9 +50,9 @@ class ShipItem(SFItem.SFBrowserItem):
 
         self.shipEffBk = BitmapLoader.getBitmap("fshipbk_big", "gui")
 
-        img = wx.ImageFromBitmap(self.shipEffBk)
+        img = self.shipEffBk.ConvertToImage()
         img = img.Mirror(False)
-        self.shipEffBkMirrored = wx.BitmapFromImage(img)
+        self.shipEffBkMirrored = wx.Bitmap(img)
 
         self.raceBmp = BitmapLoader.getBitmap("race_%s_small" % self.shipRace, "gui")
 

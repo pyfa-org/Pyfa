@@ -30,12 +30,12 @@ from service.fit import Fit
 from service.market import Market
 
 
-class DroneViewDrop(wx.PyDropTarget):
+class DroneViewDrop(wx.DropTarget):
     def __init__(self, dropFn, *args, **kwargs):
         super(DroneViewDrop, self).__init__(*args, **kwargs)
         self.dropFn = dropFn
         # this is really transferring an EVE itemID
-        self.dropData = wx.PyTextDataObject()
+        self.dropData = wx.TextDataObject()
         self.SetDataObject(self.dropData)
 
     def OnData(self, x, y, t):
@@ -123,7 +123,7 @@ class DroneView(Display):
     def startDrag(self, event):
         row = event.GetIndex()
         if row != -1:
-            data = wx.PyTextDataObject()
+            data = wx.TextDataObject()
             dataStr = "drone:" + str(row)
             data.SetText(dataStr)
 

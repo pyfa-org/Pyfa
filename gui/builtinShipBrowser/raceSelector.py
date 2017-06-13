@@ -70,7 +70,7 @@ class RaceSelector(wx.Window):
         if layout == wx.VERTICAL:
             img = img.Scale(self.minWidth, 8, wx.IMAGE_QUALITY_HIGH)
 
-        self.bmpArrow = wx.BitmapFromImage(img)
+        self.bmpArrow = wx.Bitmap(img)
 
         self.RebuildRaces(self.shipBrowser.RACE_ORDER)
 
@@ -184,12 +184,12 @@ class RaceSelector(wx.Window):
                 if self.shipBrowser.GetRaceFilterState(self.raceNames[self.raceBmps.index(raceBmp)]):
                     bmp = raceBmp
                 else:
-                    img = wx.ImageFromBitmap(raceBmp)
+                    img = raceBmp.ConvertToImage()
                     if self.hoveredItem == self.raceBmps.index(raceBmp):
                         img = img.AdjustChannels(1, 1, 1, 0.7)
                     else:
                         img = img.AdjustChannels(1, 1, 1, 0.4)
-                    bmp = wx.BitmapFromImage(img)
+                    bmp = wx.Bitmap(img)
 
                 if self.layout == wx.VERTICAL:
                     mdc.DrawBitmap(dropShadow, rect.width - self.buttonsPadding - bmp.GetWidth() + 1, y + 1)
