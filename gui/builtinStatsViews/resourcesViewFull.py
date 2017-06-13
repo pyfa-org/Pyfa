@@ -21,7 +21,7 @@
 import wx
 from gui.statsView import StatsView
 from gui.bitmap_loader import BitmapLoader
-from gui.pygauge import PyGauge
+from gui.pyfa_gauge import PyGauge
 import gui.mainFrame
 from gui.chrome_tabs import EVT_NOTEBOOK_PAGE_CHANGED
 
