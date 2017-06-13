@@ -1,34 +1,25 @@
-# =============================================================================
-# Copyright (C) 2010 Darriele
+#===============================================================================
 #
-# This file is part of pyfa.
+# ToDo: Bug - when selecting close on a tab, sometimes the tab to the right is
+#       selected, most likely due to determination of mouse position
+# ToDo: Tab Selection seems overly complicated. OnLeftDown finds tab at
+#       position, and then call's CheckTabSelected which calls TabHitTest (when
+#       we are already aware it will return due to FindTabAtPos)
+# ToDo: Perhaps a better way of finding tabs at position instead of looping
+#       through them and getting their regions. Perhaps some smart trickery with
+#       mouse pos x (all tabs have same width, so we divide x by width to find
+#       tab index?). This will also help with finding close buttons.
+# ToDo: Fix page preview code (PFNotebookPagePreview)
 #
-# pyfa is free software: you can redistribute it and/or modify
-# it under the terms of the GNU General Public License as published by
-# the Free Software Foundation, either version 3 of the License, or
-# (at your option) any later version.
-#
-# pyfa is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
-#
-# You should have received a copy of the GNU General Public License
-# along with pyfa.  If not, see <http://www.gnu.org/licenses/>.
-# =============================================================================
+#===============================================================================
 
-# noinspection PyPackageRequirements
 import wx
-# noinspection PyPackageRequirements
 import wx.lib.newevent
-import gui.utils.color as colorUtils
-import gui.utils.draw as drawUtils
-import gui.utils.fonts as fonts
-from gui.bitmap_loader import BitmapLoader
-from logbook import Logger
-from service.fit import Fit
 
-pyfalog = Logger(__name__)
+from gui.bitmap_loader import BitmapLoader
+from gui.utils import draw
+from gui.utils import color as color_utils
+
 
 _PageChanging, EVT_NOTEBOOK_PAGE_CHANGING = wx.lib.newevent.NewEvent()
 _PageChanged, EVT_NOTEBOOK_PAGE_CHANGED = wx.lib.newevent.NewEvent()
@@ -37,8 +28,7 @@ _PageClosing, EVT_NOTEBOOK_PAGE_CLOSING = wx.lib.newevent.NewEvent()
 PageAdded, EVT_NOTEBOOK_PAGE_ADDED = wx.lib.newevent.NewEvent()
 PageClosed, EVT_NOTEBOOK_PAGE_CLOSED = wx.lib.newevent.NewEvent()
 
-
-class VetoAble(object):
+class VetoAble():
     def __init__(self):
         self.__vetoed = False
 
@@ -49,7 +39,7 @@ class VetoAble(object):
         return self.__vetoed
 
 
-class NotebookTabChangeEvent(object):
+class NotebookTabChangeEvent():
     def __init__(self, old, new):
         self.__old = old
         self.__new = new
@@ -66,21 +56,21 @@ class NotebookTabChangeEvent(object):
 
 class PageChanging(_PageChanging, NotebookTabChangeEvent, VetoAble):
     def __init__(self, old, new):
-        NotebookTabChangeEvent.__init__(self, old, new)
         _PageChanging.__init__(self)
+        NotebookTabChangeEvent.__init__(self, old, new)
         VetoAble.__init__(self)
 
 
 class PageChanged(_PageChanged, NotebookTabChangeEvent):
     def __init__(self, old, new):
-        NotebookTabChangeEvent.__init__(self, old, new)
         _PageChanged.__init__(self)
+        NotebookTabChangeEvent.__init__(self, old, new)
 
 
 class PageClosing(_PageClosing, VetoAble):
     def __init__(self, i):
-        self.__index = i
         _PageClosing.__init__(self)
+        self.__index = i
         VetoAble.__init__(self)
         self.Selection = property(self.GetSelection)
 
@@ -94,68 +84,69 @@ class PageAdding(_PageAdding, VetoAble):
         VetoAble.__init__(self)
 
 
-class PFNotebook(wx.Panel):
-    def __init__(self, parent, canAdd=True):
+class ChromeNotebook(wx.Panel):
+
+    def __init__(self, parent, can_add=True):
         """
-        Instance of Pyfa Notebook. Initializes general layout, includes methods
-        for setting current page, replacing pages, etc
-
-        parent - wx parent element
-        canAdd - True if tabs be deleted and added, passed directly to
-                 PFTabsContainer
+        Instance of Notebook. Initializes general layout, includes methods
+        for setting current page, replacing pages, any public function for the
+        notebook
         """
+        super().__init__(parent, wx.ID_ANY, size=(-1, -1))
 
-        wx.Panel.__init__(self, parent, wx.ID_ANY, size=(-1, -1))
+        self._pages = []
+        self._active_page = None
 
-        self.pages = []
-        self.activePage = None
+        main_sizer = wx.BoxSizer(wx.VERTICAL)
 
-        mainSizer = wx.BoxSizer(wx.VERTICAL)
+        tabs_sizer = wx.BoxSizer(wx.VERTICAL)
+        self.tabs_container = _TabsContainer(self, can_add=can_add)
+        tabs_sizer.Add(self.tabs_container, 0, wx.EXPAND)
 
-        tabsSizer = wx.BoxSizer(wx.VERTICAL)
-        self.tabsContainer = PFTabsContainer(self, canAdd=canAdd)
-        tabsSizer.Add(self.tabsContainer, 0, wx.EXPAND)
+        if 'wxMSW' in wx.PlatformInfo:
+            style = wx.DOUBLE_BORDER
+        else:
+            style = wx.SIMPLE_BORDER
 
-        style = wx.DOUBLE_BORDER if 'wxMSW' in wx.PlatformInfo else wx.SIMPLE_BORDER
+        back_color = wx.SystemSettings.GetColour(wx.SYS_COLOUR_WINDOW)
 
-        contentSizer = wx.BoxSizer(wx.VERTICAL)
-        self.pageContainer = wx.Panel(self, style=style)
-        self.pageContainer.SetBackgroundColour(wx.SystemSettings_GetColour(wx.SYS_COLOUR_WINDOW))
-        contentSizer.Add(self.pageContainer, 1, wx.EXPAND, 5)
+        content_sizer = wx.BoxSizer(wx.VERTICAL)
+        self.page_container = wx.Panel(self, style=style)
+        self.page_container.SetBackgroundColour(back_color)
+        content_sizer.Add(self.page_container, 1, wx.EXPAND, 5)
 
-        mainSizer.Add(tabsSizer, 0, wx.EXPAND, 5)
-        mainSizer.Add(contentSizer, 1, wx.EXPAND | wx.BOTTOM, 2)
+        main_sizer.Add(tabs_sizer, 0, wx.EXPAND, 5)
+        main_sizer.Add(content_sizer, 1, wx.EXPAND | wx.BOTTOM, 2)
 
-        self.SetSizer(mainSizer)
+        self.SetSizer(main_sizer)
         self.Bind(wx.EVT_SIZE, self.OnSize)
         self.Layout()
 
     def GetPage(self, i):
-        return self.pages[i]
+        return self._pages[i]
 
     def SetPage(self, i, page):
-        if i >= len(self.pages) or i is None or page is None:
+        if i >= len(self._pages) or i is None or page is None:
             return
 
-        oldPage = self.pages[i]
-        self.pages[i] = page
-        if oldPage == self.activePage:
-            oldPage.Destroy()
-            self.activePage = page
+        old_page = self._pages[i]
+        self._pages[i] = page
+        if old_page == self._active_page:
+            old_page.Destroy()
+            self._active_page = page
         else:
-            oldPage.Destroy()
+            old_page.Destroy()
 
-        page.Reparent(self.pageContainer)
+        page.Reparent(self.page_container)
 
-        if self.activePage == page:
+        if self._active_page == page:
             self.ShowActive()
 
-    @staticmethod
-    def GetBorders():
+    def GetBorders(self):
         """Gets border widths to better determine page size in ShowActive()"""
 
-        bx = wx.SystemSettings_GetMetric(wx.SYS_BORDER_X)
-        by = wx.SystemSettings_GetMetric(wx.SYS_BORDER_Y)
+        bx = wx.SystemSettings.GetMetric(wx.SYS_BORDER_X)
+        by = wx.SystemSettings.GetMetric(wx.SYS_BORDER_Y)
 
         if bx < 0:
             bx = 1
@@ -168,220 +159,194 @@ class PFNotebook(wx.Panel):
         self.SetPage(self.GetSelection(), page)
 
     def GetSelectedPage(self):
-        return self.activePage
+        return self._active_page
 
     def GetPageIndex(self, page):
-        return self.pages.index(page) if page in self.pages else None
+        return self._pages.index(page) if page in self._pages else None
 
     def GetSelection(self):
-        return self.GetPageIndex(self.activePage)
+        return self.GetPageIndex(self._active_page)
 
     def GetCurrentPage(self):
-        return self.activePage
+        return self._active_page
 
     def GetPageCount(self):
-        return len(self.pages)
+        return len(self._pages)
 
     def NextPage(self):
         """Used with keyboard shortcut for next page navigation"""
-        cpage = self.GetSelection()
+        current_page = self.GetSelection()
 
-        if cpage is None:
+        if current_page is None:
             return
 
-        if cpage < self.GetPageCount() - 1:
-            self.SetSelection(cpage + 1)
-            npage = cpage + 1
+        if current_page < self.GetPageCount() - 1:
+            self.SetSelection(current_page + 1)
+            new_page = current_page + 1
         else:
             self.SetSelection(0)
-            npage = 0
+            new_page = 0
 
-        wx.PostEvent(self, PageChanged(cpage, npage))
+        wx.PostEvent(self, PageChanged(current_page, new_page))
 
     def PrevPage(self):
         """Used with keyboard shortcut for previous page navigation"""
-        cpage = self.GetSelection()
+        current_page = self.GetSelection()
 
-        if cpage is None:
+        if current_page is None:
             return
 
-        if cpage > 0:
-            self.SetSelection(cpage - 1)
-            npage = cpage - 1
+        if current_page > 0:
+            self.SetSelection(current_page - 1)
+            new_page = current_page - 1
         else:
             self.SetSelection(self.GetPageCount() - 1)
-            npage = self.GetPageCount() - 1
+            new_page = self.GetPageCount() - 1
 
-        wx.PostEvent(self, PageChanged(cpage, npage))
+        wx.PostEvent(self, PageChanged(current_page, new_page))
 
-    def AddPage(self, tabWnd=None, tabTitle="Empty Tab", tabImage=None, showClose=True):
-        if self.activePage:
-            self.activePage.Hide()
+    def AddPage(self, win=None, title="Empty Tab", image: wx.Image=None,
+                closeable=True):
+        if self._active_page:
+            self._active_page.Hide()
 
-        if not tabWnd:
-            tabWnd = wx.Panel(self)
+        if not win:
+            win = wx.Panel(self)
 
-        tabWnd.Reparent(self.pageContainer)
+        win.Reparent(self.page_container)
 
-        self.pageContainer.Layout()
+        self.page_container.Layout()
 
-        self.pages.append(tabWnd)
-        self.tabsContainer.AddTab(tabTitle, tabImage, showClose)
+        self._pages.append(win)
+        self.tabs_container.AddTab(title, image, closeable)
 
-        self.activePage = tabWnd
+        self._active_page = win
         self.ShowActive(True)
 
-    def DisablePage(self, page, toggle):
-        idx = self.GetPageIndex(page)
-
-        if toggle and page == self.activePage:
-            try:
-                # Set page to the first non-disabled page
-                self.SetSelection(next(i for i, _ in enumerate(self.pages) if not self.tabsContainer.tabs[i].disabled))
-            except StopIteration:
-                self.SetSelection(0)
-
-        self.tabsContainer.DisableTab(idx, toggle)
-
     def SetSelection(self, page):
-        oldsel = self.GetSelection()
-        if oldsel != page:
-            self.activePage.Hide()
-            self.activePage = self.pages[page]
-            self.tabsContainer.SetSelected(page)
+        old_selection = self.GetSelection()
+        if old_selection != page:
+            self._active_page.Hide()
+            self._active_page = self._pages[page]
+            self.tabs_container.SetSelected(page)
             self.ShowActive()
 
-    def DeletePage(self, n, internal=False):
-        """
-        Deletes page.
-
-        n -- index of page to be deleted
-        internal -- True if we're deleting the page from the PFTabsContainer
-        """
-        page = self.pages[n]
-        self.pages.remove(page)
+    def DeletePage(self, n):
+        page = self._pages[n]
+        self._pages.remove(page)
         page.Destroy()
 
-        if not internal:
-            # If we're not deleting from the tab, delete the tab
-            # (deleting from the tab automatically deletes itself)
-            self.tabsContainer.DeleteTab(n, True)
+        self.tabs_container.DeleteTab(n)
 
-        sel = self.tabsContainer.GetSelected()
-        if sel is not None:
-            self.activePage = self.pages[sel]
+        selection = self.tabs_container.GetSelected()
+        if selection is not None:
+            self._active_page = self._pages[selection]
             self.ShowActive()
-            wx.PostEvent(self, PageChanged(-1, sel))
+            wx.PostEvent(self, PageChanged(-1, selection))
         else:
-            self.activePage = None
+            self._active_page = None
 
-    def SwitchPages(self, src, dest):
-        self.pages[src], self.pages[dest] = self.pages[dest], self.pages[src]
+    def SwitchPages(self, src, dst):
+        self._pages[src], self._pages[dst] = self._pages[dst], self._pages[src]
 
-    def ShowActive(self, resizeOnly=False):
+    def ShowActive(self, resize_only=False):
         """
         Sets the size of the page and shows. The sizing logic adjusts for some
         minor sizing errors (scrollbars going beyond bounds)
 
-        resizeOnly -- if we are not interested in showing the page, only setting
-                      the size
+        resize_only
+            if we are not interested in showing the page, only setting the size
 
-        @todo: is resizeOnly still needed? Was introduced with 8b8b97 in mid 2011
-        to fix a resizing bug with blank pages, cannot reproduce 13Sept2014
+        @todo: is resize_only still needed? Was introduced with 8b8b97 in mid
+        2011 to fix a resizing bug with blank _pages, cannot reproduce
+        13Sept2014
         """
 
-        ww, wh = self.pageContainer.GetSize()
+        ww, wh = self.page_container.GetSize()
         bx, by = self.GetBorders()
         ww -= bx * 4
         wh -= by * 4
-        self.activePage.SetSize((max(ww, -1), max(wh, -1)))
-        self.activePage.SetPosition((0, 0))
+        self._active_page.SetSize((ww, wh))
+        self._active_page.SetPosition((0, 0))
 
-        if not resizeOnly:
-            self.activePage.Show()
+        if not resize_only:
+            self._active_page.Show()
 
         self.Layout()
 
     def IsActive(self, page):
-        return self.activePage == page
+        return self._active_page == page
 
     def SetPageTitle(self, i, text, refresh=True):
-        tab = self.tabsContainer.tabs[i]
+        tab = self.tabs_container.tabs[i]
         tab.text = text
         if refresh:
-            self.tabsContainer.AdjustTabsSize()
+            self.tabs_container.AdjustTabsSize()
             self.Refresh()
 
     def SetPageIcon(self, i, icon, refresh=True):
-        tab = self.tabsContainer.tabs[i]
+        tab = self.tabs_container.tabs[i]
         tab.tabImg = icon
         if refresh:
-            self.tabsContainer.AdjustTabsSize()
+            self.tabs_container.AdjustTabsSize()
             self.Refresh()
 
     def SetPageTextIcon(self, i, text=wx.EmptyString, icon=None):
         self.SetPageTitle(i, text, False)
         self.SetPageIcon(i, icon, False)
-        self.tabsContainer.AdjustTabsSize()
+        self.tabs_container.AdjustTabsSize()
         self.Refresh()
 
     def Refresh(self):
-        self.tabsContainer.Refresh()
+        self.tabs_container.Refresh()
 
     def OnSize(self, event):
         w, h = self.GetSize()
-        self.tabsContainer.SetSize((w, -1))
-        self.tabsContainer.UpdateSize()
-        self.tabsContainer.Refresh()
+        self.tabs_container.SetSize((w, -1))
+        self.tabs_container.UpdateSize()
+        self.tabs_container.Refresh()
         self.Layout()
 
-        if self.activePage:
+        if self._active_page:
             self.ShowActive()
         event.Skip()
 
 
-class PFTabRenderer(object):
-    def __init__(self, size=(36, 24), text=wx.EmptyString, img=None, inclination=6, closeButton=True):
-        """
-        Renders a new tab
+class _TabRenderer:
+    def __init__(self, size=(36, 24), text=wx.EmptyString, img: wx.Image=None,
+                 closeable=True):
 
-        text -- tab label
-        img -- wxImage of tab icon
-        inclination -- does not seem to affect class, maybe used to be a variable
-                       for custom drawn tab inclinations before there were bitmaps?
-        closeButton -- True if tab can be closed
-        """
         # tab left/right zones inclination
-        self.ctabLeft = BitmapLoader.getImage("ctableft", "gui")
-        self.ctabMiddle = BitmapLoader.getImage("ctabmiddle", "gui")
-        self.ctabRight = BitmapLoader.getImage("ctabright", "gui")
-        self.ctabClose = BitmapLoader.getImage("ctabclose", "gui")
+        self.ctab_left = BitmapLoader.getImage("ctableft", "gui")
+        self.ctab_middle = BitmapLoader.getImage("ctabmiddle", "gui")
+        self.ctab_right = BitmapLoader.getImage("ctabright", "gui")
+        self.ctab_close = BitmapLoader.getImage("ctabclose", "gui")
 
-        self.leftWidth = self.ctabLeft.GetWidth()
-        self.rightWidth = self.ctabRight.GetWidth()
-        self.middleWidth = self.ctabMiddle.GetWidth()
-        self.closeBtnWidth = self.ctabClose.GetWidth()
+        self.left_width = self.ctab_left.GetWidth()
+        self.right_width = self.ctab_right.GetWidth()
+        self.middle_width = self.ctab_middle.GetWidth()
+        self.close_btn_width = self.ctab_close.GetWidth()
 
         width, height = size
-        if width < self.leftWidth + self.rightWidth + self.middleWidth:
-            width = self.leftWidth + self.rightWidth + self.middleWidth
-        if height < self.ctabMiddle.GetHeight():
-            height = self.ctabMiddle.GetHeight()
 
-        self.inclination = inclination
+        self.min_width = self.left_width + self.right_width + self.middle_width
+        self.min_height = self.ctab_middle.GetHeight()
+
+        # set minimum width and height to what is allotted to images
+        width = max(width, self.min_width)
+        height = max(height, self.min_height)
+
         self.text = text
-        self.disabled = False
-        self.tabSize = (width, height)
-        self.closeButton = closeButton
+        self.tab_size = (width, height)
+        self.closeable = closeable
         self.selected = False
-        self.closeBtnHovering = False
-        self.tabBitmap = None
-        self.tabBackBitmap = None
-        self.cbSize = 5
+        self.close_btn_hovering = False
+        self.tab_bitmap = None
+        self.tab_back_bitmap = None
         self.padding = 4
-        self.font = wx.Font(fonts.NORMAL, wx.SWISS, wx.NORMAL, wx.NORMAL, False)
+        self.font = wx.Font(10, wx.SWISS, wx.NORMAL, wx.NORMAL, False)
 
-        self.tabImg = img
+        self.tab_img = img
         self.position = (0, 0)  # Not used internally for rendering - helper for tab container
         self.InitTab()
 
@@ -392,16 +357,15 @@ class PFTabRenderer(object):
         return self.position
 
     def GetSize(self):
-        return self.tabSize
+        return self.tab_size
 
     def SetSize(self, size):
-        w, h = size
-        if w < self.leftWidth + self.rightWidth + self.middleWidth:
-            w = self.leftWidth + self.rightWidth + self.middleWidth
-        if h < self.ctabMiddle.GetHeight():
-            h = self.ctabMiddle.GetHeight()
+        width, height = size
 
-        self.tabSize = (w, h)
+        width = max(width, self.min_width)
+        height = max(height, self.min_height)
+
+        self.tab_size = (width, height)
         self.InitTab()
 
     def SetSelected(self, sel=True):
@@ -415,49 +379,48 @@ class PFTabRenderer(object):
         return self.selected
 
     def ShowCloseButtonHovering(self, hover=True):
-        if self.closeBtnHovering != hover:
-            self.closeBtnHovering = hover
+        if self.close_btn_hovering != hover:
+            self.close_btn_hovering = hover
             self._Render()
 
     def GetCloseButtonHoverStatus(self):
-        return self.closeBtnHovering
+        return self.close_btn_hovering
 
     def GetTabRegion(self):
-        nregion = self.CopyRegion(self.tabRegion)
-        nregion.SubtractRegion(self.closeBtnRegion) if self.closeButton else self.tabRegion
-        return nregion
+        new_region = self.CopyRegion(self.tab_region)
+        new_region.Subtract(self.close_region) if self.closeable else self.tab_region
+        return new_region
 
     def GetCloseButtonRegion(self):
-        return self.CopyRegion(self.closeBtnRegion)
+        return self.CopyRegion(self.close_region)
 
     def GetMinSize(self):
-        ebmp = wx.EmptyBitmap(1, 1)
+        ebmp = wx.Bitmap(1, 1)
         mdc = wx.MemoryDC()
         mdc.SelectObject(ebmp)
         mdc.SetFont(self.font)
         textSizeX, textSizeY = mdc.GetTextExtent(self.text)
-        totalSize = self.leftWidth + self.rightWidth + textSizeX + self.closeBtnWidth / 2 + 16 + self.padding * 2
+        totalSize = self.left_width + self.right_width + textSizeX + self.close_btn_width/2 + 16 + self.padding*2
         mdc.SelectObject(wx.NullBitmap)
-        return totalSize, self.tabHeight
+        return totalSize, self.tab_height
 
     def SetTabImage(self, img):
-        self.tabImg = img
+        self.tab_img = img
 
-    @staticmethod
-    def CopyRegion(region):
+    def CopyRegion(self, region):
         rect = region.GetBox()
 
         newRegion = wx.Region(rect.X, rect.Y, rect.Width, rect.Height)
-        newRegion.IntersectRegion(region)
+        newRegion.Intersect(region)
 
         return newRegion
 
     def InitTab(self):
-        self.tabWidth, self.tabHeight = self.tabSize
+        self.tab_width, self.tab_height = self.tab_size
 
-        self.contentWidth = self.tabWidth - self.leftWidth - self.rightWidth
-        self.tabRegion = None
-        self.closeBtnRegion = None
+        self.content_width = self.tab_width - self.left_width - self.right_width
+        self.tab_region = None
+        self.close_region = None
 
         self.InitColors()
         self.InitBitmaps()
@@ -475,132 +438,138 @@ class PFTabRenderer(object):
         on platform -- see InitColors().
         """
         if self.selected:
-            tr, tg, tb = self.selectedColor
+            tr, tg, tb, ta = self.selected_color
         else:
-            tr, tg, tb = self.inactiveColor
+            tr, tg, tb, ta = self.inactive_color
 
-        ctabLeft = self.ctabLeft.Copy()
-        ctabRight = self.ctabRight.Copy()
-        ctabMiddle = self.ctabMiddle.Copy()
+        ctab_left = self.ctab_left.Copy()
+        ctab_right = self.ctab_right.Copy()
+        ctab_middle = self.ctab_middle.Copy()
 
-        ctabLeft.Replace(0, 0, 0, tr, tg, tb)
-        ctabRight.Replace(0, 0, 0, tr, tg, tb)
-        ctabMiddle.Replace(0, 0, 0, tr, tg, tb)
+        ctab_left.Replace(0, 0, 0, tr, tg, tb)
+        ctab_right.Replace(0, 0, 0, tr, tg, tb)
+        ctab_middle.Replace(0, 0, 0, tr, tg, tb)
 
-        self.ctabLeftBmp = wx.BitmapFromImage(ctabLeft)
-        self.ctabRightBmp = wx.BitmapFromImage(ctabRight)
-        self.ctabMiddleBmp = wx.BitmapFromImage(ctabMiddle)
-        self.ctabCloseBmp = wx.BitmapFromImage(self.ctabClose)
+        self.ctab_left_bmp = wx.Bitmap(ctab_left)
+        self.ctab_right_bmp = wx.Bitmap(ctab_right)
+        self.ctab_middle_bmp = wx.Bitmap(ctab_middle)
+        self.ctab_close_bmp = wx.Bitmap(self.ctab_close)
 
     def ComposeTabBack(self):
         """
         Creates the tab background bitmap based upon calculated dimension values
         and modified bitmaps via InitBitmaps()
         """
-        bkbmp = wx.EmptyBitmap(self.tabWidth, self.tabHeight)
+        bk_bmp = wx.Bitmap(self.tab_width, self.tab_height)
 
         mdc = wx.MemoryDC()
-        mdc.SelectObject(bkbmp)
-
-        # mdc.SetBackground(wx.Brush((0x12, 0x23, 0x32)))
+        mdc.SelectObject(bk_bmp)
         mdc.Clear()
 
-        mdc.DrawBitmap(self.ctabLeftBmp, 0, 0)  # set the left bitmap
+        # draw the left bitmap
+        mdc.DrawBitmap(self.ctab_left_bmp, 0, 0)
 
         # convert middle bitmap and scale to tab width
-        cm = self.ctabMiddleBmp.ConvertToImage()
-        mimg = cm.Scale(self.contentWidth, self.ctabMiddle.GetHeight(), wx.IMAGE_QUALITY_NORMAL)
-        mbmp = wx.BitmapFromImage(mimg)
-        mdc.DrawBitmap(mbmp, self.leftWidth, 0)  # set middle bitmap, offset by left
+        cm = self.ctab_middle_bmp.ConvertToImage()
+        mimg = cm.Scale(self.content_width, self.ctab_middle.GetHeight(),
+                        wx.IMAGE_QUALITY_NORMAL)
+        mbmp = wx.Bitmap(mimg)
 
-        # set right bitmap offset by left + middle
-        mdc.DrawBitmap(self.ctabRightBmp, self.contentWidth + self.leftWidth, 0)
+        # draw middle bitmap, offset by left
+        mdc.DrawBitmap(mbmp, self.left_width, 0)
+
+        # draw right bitmap offset by left + middle
+        mdc.DrawBitmap(self.ctab_right_bmp,
+                       self.content_width + self.left_width, 0)
 
         mdc.SelectObject(wx.NullBitmap)
 
-        # bkbmp.SetMaskColour((0x12, 0x23, 0x32))
+        if self.tab_back_bitmap:
+            del self.tab_back_bitmap
 
-        if self.tabBackBitmap:
-            del self.tabBackBitmap
-
-        self.tabBackBitmap = bkbmp
+        self.tab_back_bitmap = bk_bmp
 
     def InitTabRegions(self):
         """
         Initializes regions for tab, which makes it easier to determine if
-        given coordinates are incluced in a region
+        given coordinates are included in a region
         """
-        self.tabRegion = wx.RegionFromBitmap(self.tabBackBitmap)
-        self.closeBtnRegion = wx.RegionFromBitmap(self.ctabCloseBmp)
-        self.closeBtnRegion.Offset(
-                self.contentWidth + self.leftWidth - self.ctabCloseBmp.GetWidth() / 2,
-                (self.tabHeight - self.ctabCloseBmp.GetHeight()) / 2
-        )
+        self.tab_region = wx.Region(self.tab_back_bitmap)
+        self.close_region = wx.Region(self.ctab_close_bmp)
+
+        x_offset = self.content_width \
+            + self.left_width \
+            - self.ctab_close_bmp.GetWidth() / 2
+        y_offset = (self.tab_height - self.ctab_close_bmp.GetHeight())/2
+        self.close_region.Offset(x_offset, y_offset)
 
     def InitColors(self):
         """Determines colors used for tab, based on system settings"""
-        self.tabColor = wx.SystemSettings_GetColour(wx.SYS_COLOUR_3DFACE)
-        self.inactiveColor = colorUtils.GetSuitableColor(self.tabColor, 0.25)
-        self.selectedColor = colorUtils.GetSuitableColor(self.tabColor, 0.10)
+        self.tab_color = wx.SystemSettings.GetColour(wx.SYS_COLOUR_3DFACE)
+        self.inactive_color = color_utils.GetSuitable(self.tab_color, 0.25)
+        self.selected_color = color_utils.GetSuitable(self.tab_color, 0.10)
 
     def Render(self):
-        return self.tabBitmap
+        return self.tab_bitmap
 
     def _Render(self):
         """Renders the tab, complete with the icon, text, and close button"""
-        if self.tabBitmap:
-            del self.tabBitmap
+        if self.tab_bitmap:
+            del self.tab_bitmap
 
-        height = self.tabHeight
+        height = self.tab_height
 
-        # rect = wx.Rect(0, 0, self.tabWidth, self.tabHeight)
-
-        canvas = wx.EmptyBitmap(self.tabWidth, self.tabHeight, 24)
+        canvas = wx.Bitmap(self.tab_width, self.tab_height, 24)
 
         mdc = wx.MemoryDC()
 
         mdc.SelectObject(canvas)
-        # mdc.SetBackground(wx.Brush ((0x12,0x23,0x32)))
         mdc.Clear()
 
-        # r = copy.copy(rect)
-        # r.top = r.left = 0
-        # r.height = height
-        mdc.DrawBitmap(self.tabBackBitmap, 0, 0, True)
+        mdc.DrawBitmap(self.tab_back_bitmap, 0, 0, True)
 
-        if self.tabImg:
-            bmp = wx.BitmapFromImage(self.tabImg.ConvertToGreyscale() if self.disabled else self.tabImg)
-            if self.contentWidth > 16:  # @todo: is this conditional relevant anymore?
+        # draw the tab icon
+        if self.tab_img:
+            bmp = wx.Bitmap(self.tab_img)
+            # @todo: is this conditional relevant anymore?
+            if self.content_width > 16:
                 # Draw tab icon
-                mdc.DrawBitmap(bmp, self.leftWidth + self.padding - bmp.GetWidth() / 2, (height - bmp.GetHeight()) / 2)
-            textStart = self.leftWidth + self.padding + bmp.GetWidth() / 2
+                mdc.DrawBitmap(
+                    bmp,
+                    self.left_width + self.padding - bmp.GetWidth() / 2,
+                    (height - bmp.GetHeight()) / 2)
+            text_start = self.left_width + self.padding + bmp.GetWidth() / 2
         else:
-            textStart = self.leftWidth
+            text_start = self.left_width
 
         mdc.SetFont(self.font)
 
-        maxsize = self.tabWidth - textStart - self.rightWidth - self.padding * 4
-        color = self.selectedColor if self.selected else self.inactiveColor
+        maxsize = self.tab_width \
+            - text_start \
+            - self.right_width \
+            - self.padding * 4
+        color = self.selected_color if self.selected else self.inactive_color
 
-        mdc.SetTextForeground(colorUtils.GetSuitableColor(color, 1))
+        mdc.SetTextForeground(color_utils.GetSuitable(color, 1))
 
-        text = drawUtils.GetPartialText(mdc, self.text, maxsize, "")
+        # draw text (with no ellipses)
+        text = draw.GetPartialText(mdc, self.text, maxsize, "")
         tx, ty = mdc.GetTextExtent(text)
-        mdc.DrawText(text, textStart + self.padding, height / 2 - ty / 2)
+        mdc.DrawText(text, text_start + self.padding, height / 2 - ty / 2)
 
-        if self.closeButton:
-            if self.closeBtnHovering:
-                cbmp = self.ctabCloseBmp
+        # draw close button
+        if self.closeable:
+            if self.close_btn_hovering:
+                cbmp = self.ctab_close_bmp
             else:
-                cimg = self.ctabCloseBmp.ConvertToImage()
+                cimg = self.ctab_close_bmp.ConvertToImage()
                 cimg = cimg.AdjustChannels(0.7, 0.7, 0.7, 0.3)
-                cbmp = wx.BitmapFromImage(cimg)
+                cbmp = wx.Bitmap(cimg)
 
             mdc.DrawBitmap(
-                    cbmp,
-                    self.contentWidth + self.leftWidth - self.ctabCloseBmp.GetWidth() / 2,
-                    (height - self.ctabCloseBmp.GetHeight()) / 2,
-            )
+                cbmp,
+                self.content_width + self.left_width - cbmp.GetWidth()/2,
+                (height - cbmp.GetHeight())/2)
 
         mdc.SelectObject(wx.NullBitmap)
 
@@ -610,25 +579,20 @@ class PFTabRenderer(object):
         if not img.HasAlpha():
             img.InitAlpha()
 
-        bmp = wx.BitmapFromImage(img)
-        self.tabBitmap = bmp
-
-    def __repr__(self):
-        return "PFTabRenderer(text={}, disabled={}) at {}".format(
-                self.text, self.disabled, hex(id(self))
-        )
+        bmp = wx.Bitmap(img)
+        self.tab_bitmap = bmp
 
 
-class PFAddRenderer(object):
+class _AddRenderer:
     def __init__(self):
         """Renders the add tab button"""
-        self.addImg = BitmapLoader.getImage("ctabadd", "gui")
-        self.width = self.addImg.GetWidth()
-        self.height = self.addImg.GetHeight()
+        self.add_img = BitmapLoader.getImage("ctabadd", "gui")
+        self.width = self.add_img.GetWidth()
+        self.height = self.add_img.GetHeight()
 
         self.region = None
-        self.tbmp = wx.BitmapFromImage(self.addImg)
-        self.addBitmap = None
+        self.tbmp = wx.Bitmap(self.add_img)
+        self.add_bitmap = None
 
         self.position = (0, 0)
         self.highlighted = False
@@ -638,7 +602,7 @@ class PFAddRenderer(object):
     def GetPosition(self):
         return self.position
 
-    def SetPosition(self, pos):
+    def SetPosition(self,pos):
         self.position = pos
 
     def GetSize(self):
@@ -655,17 +619,16 @@ class PFAddRenderer(object):
         self._Render()
 
     def CreateRegion(self):
-        region = wx.RegionFromBitmap(self.tbmp)
+        region = wx.Region(self.tbmp)
         return region
 
-    @staticmethod
-    def CopyRegion(region):
+    def CopyRegion(self, region):
         rect = region.GetBox()
 
-        newRegion = wx.Region(rect.X, rect.Y, rect.Width, rect.Height)
-        newRegion.IntersectRegion(region)
+        new_region = wx.Region(rect.X, rect.Y, rect.Width, rect.Height)
+        new_region.Intersect(region)
 
-        return newRegion
+        return new_region
 
     def GetRegion(self):
         return self.CopyRegion(self.region)
@@ -678,67 +641,68 @@ class PFAddRenderer(object):
         return self.highlighted
 
     def Render(self):
-        return self.addBitmap
+        return self.add_bitmap
 
     def _Render(self):
-        if self.addBitmap:
-            del self.addBitmap
+        if self.add_bitmap:
+            del self.add_bitmap
 
         alpha = 1 if self.highlighted else 0.3
 
-        img = self.addImg.AdjustChannels(1, 1, 1, alpha)
-        bbmp = wx.BitmapFromImage(img)
-        self.addBitmap = bbmp
+        img = self.add_img.AdjustChannels(1, 1, 1, alpha)
+        bmp = wx.Bitmap(img)
+        self.add_bitmap = bmp
 
 
-class PFTabsContainer(wx.Panel):
-    def __init__(self, parent, pos=(0, 0), size=(100, 22), id=wx.ID_ANY, canAdd=True):
+class _TabsContainer(wx.Panel):
+    def __init__(self, parent, pos=(50, 0), size=(100, 22), id=wx.ID_ANY,
+                 can_add=True):
         """
         Defines the tab container. Handles functions such as tab selection and
-        dragging, and defines minimum width of tabs (all tabs are of equal width,
-        which is determined via widest tab). Also handles the tab preview, if any.
+        dragging, and defines minimum width of tabs (all tabs are of equal
+        width, which is determined via widest tab). Also handles the tab
+        preview, if any.
         """
 
-        wx.Panel.__init__(self, parent, id, pos, size)
-        if wx.VERSION >= (3, 0):
-            self.SetBackgroundStyle(wx.BG_STYLE_PAINT)
+        super().__init__(parent, id, pos, size)
 
         self.tabs = []
-        width, height = size
-        self.width = width
-        self.height = height
-        self.containerHeight = height
-        self.startDrag = False
+        self.width, self.height = size
+        self.container_height = self.height
+        self.start_drag = False
         self.dragging = False
-        self.sFit = Fit.getInstance()
 
+        # amount of overlap of tabs?
         self.inclination = 7
-        if canAdd:
+
+        if can_add:
             self.reserved = 48
         else:
             self.reserved = self.inclination * 4
 
-        self.dragTrail = 3  # pixel distance to drag before we actually start dragging
+        # pixel distance to drag before we actually start dragging
+        self.drag_trail = 5
+
         self.dragx = 0
         self.dragy = 0
-        self.draggedTab = None
-        self.dragTrigger = self.dragTrail
+        self.dragged_tab = None
+        self.drag_trigger = self.drag_trail
 
-        self.showAddButton = canAdd
+        self.show_add_button = can_add
 
-        self.tabContainerWidth = width - self.reserved
-        self.tabMinWidth = width
-        self.tabShadow = None
+        self.tab_container_width = self.width - self.reserved
+        self.tab_min_width = self.width
+        self.tab_shadow = _TabRenderer((self.tab_min_width, self.height + 1))
 
-        self.addButton = PFAddRenderer()
-        self.addBitmap = self.addButton.Render()
+        self.add_button = _AddRenderer()
+        self.add_bitmap = self.add_button.Render()
 
-        self.previewTimer = None
-        self.previewTimerID = wx.ID_ANY
-        self.previewWnd = None
-        self.previewBmp = None
-        self.previewPos = None
-        self.previewTab = None
+        self.preview_timer = None
+        self.preview_timer_id = wx.ID_ANY
+        self.preview_wnd = None
+        self.preview_bmp = None
+        self.preview_pos = None
+        self.preview_tab = None
 
         self.Bind(wx.EVT_TIMER, self.OnTimer)
         self.Bind(wx.EVT_LEAVE_WINDOW, self.OnLeaveWindow)
@@ -747,11 +711,9 @@ class PFTabsContainer(wx.Panel):
         self.Bind(wx.EVT_ERASE_BACKGROUND, self.OnErase)
         self.Bind(wx.EVT_LEFT_DOWN, self.OnLeftDown)
         self.Bind(wx.EVT_LEFT_UP, self.OnLeftUp)
-        self.Bind(wx.EVT_MIDDLE_UP, self.OnMiddleUp)
         self.Bind(wx.EVT_MOTION, self.OnMotion)
         self.Bind(wx.EVT_SIZE, self.OnSize)
         self.Bind(wx.EVT_SYS_COLOUR_CHANGED, self.OnSysColourChanged)
-        self.tabShadow = PFTabRenderer((self.tabMinWidth, self.height + 1), inclination=self.inclination)
 
     def OnSysColourChanged(self, event):
         for tab in self.tabs:
@@ -763,47 +725,110 @@ class PFTabsContainer(wx.Panel):
         event.Skip()
 
     def UpdateSize(self):
+        """Update tab sizes based on new tab container size"""
         width, _ = self.GetSize()
         if width != self.width:
             self.width = width
-            self.tabContainerWidth = self.width - self.reserved
+            self.tab_container_width = self.width - self.reserved
             self.AdjustTabsSize()
 
     def OnLeftDown(self, event):
-        """Determines what happens when user left clicks (down)"""
+        """ Select tab on mouse down and start dragging logic """
         mposx, mposy = event.GetPosition()
-        if not self.startDrag:
+        if not self.start_drag:
             tab = self.FindTabAtPos(mposx, mposy)
             if tab:
                 self.CheckTabSelected(tab, mposx, mposy)
-                if self.showAddButton:
+                if self.show_add_button:
                     # If we can add tabs, we can drag them. Set flag
-                    self.startDrag = True
+                    self.start_drag = True
                     tx, ty = tab.GetPosition()
                     self.dragx = mposx - tx
-                    self.dragy = self.containerHeight - self.height
+                    self.dragy = self.container_height - self.height
                 self.Refresh()
 
-            self.draggedTab = tab
+            self.dragged_tab = tab
+
+    def OnMotion(self, event):
+        """
+        Determines what happens when the mouse moves. This handles primarily
+        dragging (region tab can be dragged) as well as checking if we are over
+        an actionable button.
+        """
+        mposx, mposy = event.GetPosition()
+
+        if self.start_drag:
+            if not self.dragging:
+                if self.drag_trigger < 0:
+                    self.dragging = True
+                    self.drag_trigger = self.drag_trail
+                    self.CaptureMouse()
+                else:
+                    self.drag_trigger -= 1
+            if self.dragging:
+                # we wish to keep tab within tab container boundaries. To do
+                # this, we must detect when mouse moves outside of boundaries.
+                # Set hard limits to 0 and the size of tab container.
+                dtx = mposx - self.dragx
+                w, h = self.dragged_tab.GetSize()
+
+                dtx = max(dtx, 0)
+
+                if dtx + w > self.tab_container_width + self.inclination * 2:
+                    dtx = self.tab_container_width - w + self.inclination * 2
+
+                self.dragged_tab.SetPosition((dtx, self.dragy))
+
+                # we must modify the surrounding tabs
+                index = self.GetTabIndex(self.dragged_tab)
+
+                left_tab = self.GetTabAtLeft(index)
+                right_tab = self.GetTabAtRight(index)
+
+                if left_tab:
+                    lw, lh = left_tab.GetSize()
+                    lx, ly = left_tab.GetPosition()
+
+                    if lx + lw / 2 - self.inclination * 2 > dtx:
+                        self.SwitchTabs(index - 1, index, self.dragged_tab)
+
+                if right_tab:
+                    rw, rh = right_tab.GetSize()
+                    rx, ry = right_tab.GetPosition()
+
+                    if rx + rw / 2 + self.inclination * 2 < dtx + w:
+                        self.SwitchTabs(index + 1, index, self.dragged_tab)
+
+                self.UpdateTabsPosition(self.dragged_tab)
+                self.Refresh()
+            return
+
+        # If we aren't dragging, check for actionable buttons under mouse
+        self.CheckCloseHighlighted(mposx, mposy)
+        self.CheckAddHighlighted(mposx, mposy)
+        self.CheckTabPreview(mposx, mposy)
+
+        event.Skip()
 
     def OnLeftUp(self, event):
         """Determines what happens when user left clicks (up)"""
         mposx, mposy = event.GetPosition()
-        if self.startDrag and self.dragging:
+        if self.start_drag and self.dragging:
             self.dragging = False
-            self.startDrag = False
-            self.draggedTab = None
-            self.dragTrigger = self.dragTrail
+            self.start_drag = False
+            self.dragged_tab = None
+            self.drag_trigger = self.drag_trail
             self.UpdateTabsPosition()
             self.Refresh()
+
             if self.HasCapture():
                 self.ReleaseMouse()
 
             return
 
-        if self.startDrag:
-            self.startDrag = False
-            self.dragTrigger = self.dragTrail
+        if self.start_drag:
+            self.start_drag = False
+            self.drag_trigger = self.drag_trail
 
         # Checks if we selected the add button and, if True, returns
         if self.CheckAddButton(mposx, mposy):
@@ -814,38 +839,16 @@ class PFTabsContainer(wx.Panel):
             return
 
         # Gets selected tab (was set when user down clicked)
-        selTab = self.GetSelectedTab()
+        sel_tab = self.GetSelectedTab()
 
         # Check if we selected close button for selected tab
-        if self.CheckTabClose(selTab, mposx, mposy):
+        if self.CheckTabClose(sel_tab, mposx, mposy):
             return
 
         # Check if we selected close button for all others
         for tab in self.tabs:
             if self.CheckTabClose(tab, mposx, mposy):
                 return
-
-    def OnMiddleUp(self, event):
-        mposx, mposy = event.GetPosition()
-
-        tab = self.FindTabAtPos(mposx, mposy)
-
-        if tab is None or not tab.closeButton:  # if not able to close, return False
-            return False
-
-        index = self.tabs.index(tab)
-        ev = PageClosing(index)
-        wx.PostEvent(self.Parent, ev)
-        if ev.isVetoed():
-            return False
-
-        index = self.GetTabIndex(tab)
-        self.DeleteTab(index)
-        wx.PostEvent(self.Parent, PageClosed(index=index))
-        sel = self.GetSelected()
-
-        if sel is not None:
-            wx.PostEvent(self.Parent, PageChanged(-1, sel))
 
     def GetSelectedTab(self):
         for tab in self.tabs:
@@ -860,8 +863,9 @@ class PFTabsContainer(wx.Panel):
         return None
 
     def SetSelected(self, tabIndex):
-        oldSelTab = self.GetSelectedTab()
-        oldSelTab.SetSelected(False)
+        """Set tab as selected given its index"""
+        old_sel_tab = self.GetSelectedTab()
+        old_sel_tab.SetSelected(False)
         self.tabs[tabIndex].SetSelected(True)
         self.Refresh()
 
@@ -871,53 +875,56 @@ class PFTabsContainer(wx.Panel):
         return true. Otherwise, perform TabHitTest and set tab at position to
         selected
         """
-        oldSelTab = self.GetSelectedTab()
-        if oldSelTab == tab:
+        old_sel_tab = self.GetSelectedTab()
+        if old_sel_tab == tab:
             return True
 
         if self.TabHitTest(tab, x, y):
-            if tab.disabled:
-                return
             tab.SetSelected(True)
-            oldSelTab.SetSelected(False)
+            old_sel_tab.SetSelected(False)
 
-            ev = PageChanging(self.tabs.index(oldSelTab), self.tabs.index(tab))
+            ev = PageChanging(self.tabs.index(old_sel_tab), self.tabs.index(tab))
             wx.PostEvent(self.Parent, ev)
 
             if ev.isVetoed():
                 return False
 
             self.Refresh()
-            selTab = self.tabs.index(tab)
-            self.Parent.SetSelection(selTab)
+            sel_tab = self.tabs.index(tab)
+            self.Parent.SetSelection(sel_tab)
 
-            wx.PostEvent(self.Parent, PageChanged(self.tabs.index(oldSelTab), self.tabs.index(tab)))
+            wx.PostEvent(self.Parent, PageChanged(self.tabs.index(old_sel_tab),
+                                                  self.tabs.index(tab)))
 
             return True
 
         return False
 
     def CheckTabClose(self, tab, x, y):
-        """Determines if close button was selected for the given tab."""
-        if not tab.closeButton:  # if not able to close, return False
+        """
+        Determines if close button was selected for the given tab by comparing
+        x and y position with known close button region
+        """
+        if not tab.closeable:  # if not able to close, return False
             return False
 
-        closeBtnReg = tab.GetCloseButtonRegion()
-        tabPosX, tabPosY = tab.GetPosition()
-        closeBtnReg.Offset(tabPosX, tabPosY)
+        region = tab.GetCloseButtonRegion()
+        posx, posy = tab.GetPosition()
+        region.Offset(posx, posy)
 
-        if closeBtnReg.Contains(x, y):
+        if region.Contains(x, y):
             index = self.tabs.index(tab)
             ev = PageClosing(index)
             wx.PostEvent(self.Parent, ev)
+
             if ev.isVetoed():
                 return False
 
             index = self.GetTabIndex(tab)
-            self.DeleteTab(index)
+            self.Parent.DeletePage(index)
             wx.PostEvent(self.Parent, PageClosed(index=index))
-            sel = self.GetSelected()
 
+            sel = self.GetSelected()
             if sel is not None:
                 wx.PostEvent(self.Parent, PageChanged(-1, sel))
 
@@ -925,15 +932,18 @@ class PFTabsContainer(wx.Panel):
         return False
 
     def CheckAddButton(self, x, y):
-        """Determines if add button was selected."""
-        if not self.showAddButton:  # if not able to add, return False
+        """
+        Determines if add button was selected by comparing x and y position with
+        add button region
+        """
+        if not self.show_add_button:  # if not able to add, return False
             return
 
-        reg = self.addButton.GetRegion()
-        ax, ay = self.addButton.GetPosition()
-        reg.Offset(ax, ay)
+        region = self.add_button.GetRegion()
+        ax, ay = self.add_button.GetPosition()
+        region.Offset(ax, ay)
 
-        if reg.Contains(x, y):
+        if region.Contains(x, y):
             ev = PageAdding()
             wx.PostEvent(self.Parent, ev)
             if ev.isVetoed():
@@ -943,20 +953,19 @@ class PFTabsContainer(wx.Panel):
             wx.PostEvent(self.Parent, PageAdded())
             return True
 
-    def CheckCloseButtons(self, x, y):
+    def CheckCloseHighlighted(self, x, y):
         """
         Checks if mouse pos at x, y is over a close button. If so, set the
         close hovering flag for that tab
         """
         dirty = False
-        # @todo: maybe change to for...else
-        for tab in self.tabs:
-            closeBtnReg = tab.GetCloseButtonRegion()
-            tabPos = tab.GetPosition()
-            tabPosX, tabPosY = tabPos
-            closeBtnReg.Offset(tabPosX, tabPosY)
 
-            if closeBtnReg.Contains(x, y):
+        for tab in self.tabs:
+            region = tab.GetCloseButtonRegion()
+            posx, posy = tab.GetPosition()
+            region.Offset(posx, posy)
+
+            if region.Contains(x, y):
                 if not tab.GetCloseButtonHoverStatus():
                     tab.ShowCloseButtonHovering(True)
                     dirty = True
@@ -964,24 +973,28 @@ class PFTabsContainer(wx.Panel):
                 if tab.GetCloseButtonHoverStatus():
                     tab.ShowCloseButtonHovering(False)
                     dirty = True
-        if dirty:
-            self.Refresh()
+            if dirty:
+                self.Refresh()
+                break
 
     def FindTabAtPos(self, x, y):
         if self.GetTabsCount() == 0:
             return None
 
-        selTab = self.GetSelectedTab()
-        if self.TabHitTest(selTab, x, y):
-            return selTab
+        # test current tab first
+        sel_tab = self.GetSelectedTab()
+        if self.TabHitTest(sel_tab, x, y):
+            return sel_tab
 
+        # test all other tabs next
         for tab in self.tabs:
             if self.TabHitTest(tab, x, y):
                 return tab
+
         return None
 
-    @staticmethod
-    def TabHitTest(tab, x, y):
+    def TabHitTest(self, tab, x, y):
+        """ Test if x and y are contained within a tabs region """
         tabRegion = tab.GetTabRegion()
         tabPos = tab.GetPosition()
         tabPosX, tabPosY = tabPos
@@ -992,96 +1005,39 @@ class PFTabsContainer(wx.Panel):
 
         return False
 
-    def GetTabAtLeft(self, tabIndex):
-        return self.tabs[tabIndex - 1] if tabIndex > 0 else None
+    def GetTabAtLeft(self, tab_index):
+        return self.tabs[tab_index - 1] if tab_index > 0 else None
 
-    def GetTabAtRight(self, tabIndex):
-        return self.tabs[tabIndex + 1] if tabIndex < self.GetTabsCount() - 1 else None
+    def GetTabAtRight(self, tab_index):
+        if tab_index < self.GetTabsCount() - 1:
+            return self.tabs[tab_index + 1]
+        else:
+            return None
 
-    def SwitchTabs(self, src, dest, draggedTab=None):
-        self.tabs[src], self.tabs[dest] = self.tabs[dest], self.tabs[src]
-        self.UpdateTabsPosition(draggedTab)
-        self.Parent.SwitchPages(src, dest)
+    def SwitchTabs(self, src, dst, dragged_tab=None):
+        self.tabs[src], self.tabs[dst] = self.tabs[dst], self.tabs[src]
+        self.UpdateTabsPosition(dragged_tab)
+        self.Parent.SwitchPages(src, dst)
         self.Refresh()
 
     def GetTabIndex(self, tab):
         return self.tabs.index(tab)
-
-    def OnMotion(self, event):
-        """
-        Determines what happens when the mouse moves. This handles primarily
-        dragging (region tab can be dragged) as well as checking if we are over
-        an actionable button.
-        """
-        mposx, mposy = event.GetPosition()
-
-        if self.startDrag:
-            if not self.dragging:
-                if self.dragTrigger < 0:
-                    self.dragging = True
-                    self.dragTrigger = self.dragTrail
-                    self.CaptureMouse()
-                else:
-                    self.dragTrigger -= 1
-            if self.dragging:
-                dtx = mposx - self.dragx
-                w, h = self.draggedTab.GetSize()
-
-                if dtx < 0:
-                    dtx = 0
-                if dtx + w > self.tabContainerWidth + self.inclination * 2:
-                    dtx = self.tabContainerWidth - w + self.inclination * 2
-                self.draggedTab.SetPosition((dtx, self.dragy))
-
-                index = self.GetTabIndex(self.draggedTab)
-
-                leftTab = self.GetTabAtLeft(index)
-                rightTab = self.GetTabAtRight(index)
-
-                if leftTab:
-                    lw, lh = leftTab.GetSize()
-                    lx, ly = leftTab.GetPosition()
-
-                    if lx + lw / 2 - self.inclination * 2 > dtx:
-                        self.SwitchTabs(index - 1, index, self.draggedTab)
-                        return
-
-                if rightTab:
-                    rw, rh = rightTab.GetSize()
-                    rx, ry = rightTab.GetPosition()
-
-                    if rx + rw / 2 + self.inclination * 2 < dtx + w:
-                        self.SwitchTabs(index + 1, index, self.draggedTab)
-                        return
-                self.UpdateTabsPosition(self.draggedTab)
-                self.Refresh()
-                return
-            return
-
-        self.CheckCloseButtons(mposx, mposy)
-        self.CheckAddHighlighted(mposx, mposy)
-        self.CheckTabPreview(mposx, mposy)
-
-        event.Skip()
 
     def CheckTabPreview(self, mposx, mposy):
         """
         Checks to see if we have a tab preview and sets up the timer for it
         to display
         """
-        if not self.sFit.serviceFittingOptions["showTooltip"] or False:
-            return
-
-        if self.previewTimer:
-            if self.previewTimer.IsRunning():
-                if self.previewWnd:
-                    self.previewTimer.Stop()
+        if self.preview_timer:
+            if self.preview_timer.IsRunning():
+                if self.preview_wnd:
+                    self.preview_timer.Stop()
                 return
 
-        if self.previewWnd:
-            self.previewWnd.Show(False)
-            del self.previewWnd
-            self.previewWnd = None
+        if self.preview_wnd:
+            self.preview_wnd.Show(False)
+            del self.preview_wnd
+            self.preview_wnd = None
 
         for tab in self.tabs:
             if not tab.GetSelected():
@@ -1089,35 +1045,35 @@ class PFTabsContainer(wx.Panel):
                     try:
                         page = self.Parent.GetPage(self.GetTabIndex(tab))
                         if hasattr(page, "Snapshot"):
-                            if not self.previewTimer:
-                                self.previewTimer = wx.Timer(self, self.previewTimerID)
+                            if not self.preview_timer:
+                                self.preview_timer = wx.Timer(
+                                    self, self.preview_timer_id)
 
-                            self.previewTab = tab
-                            self.previewTimer.Start(500, True)
+                            self.preview_tab = tab
+                            self.preview_timer.Start(500, True)
                             break
-                    except Exception as e:
-                        pyfalog.critical("Exception caught in CheckTabPreview.")
-                        pyfalog.critical(e)
+                    except:
+                        pass
 
     def CheckAddHighlighted(self, x, y):
         """
         Checks to see if x, y are in add button region, and sets the highlight
         flag
         """
-        if not self.showAddButton:
+        if not self.show_add_button:
             return
 
-        reg = self.addButton.GetRegion()
-        ax, ay = self.addButton.GetPosition()
-        reg.Offset(ax, ay)
+        region = self.add_button.GetRegion()
+        ax, ay = self.add_button.GetPosition()
+        region.Offset(ax, ay)
 
-        if reg.Contains(x, y):
-            if not self.addButton.IsHighlighted():
-                self.addButton.Highlight(True)
+        if region.Contains(x, y):
+            if not self.add_button.IsHighlighted():
+                self.add_button.Highlight(True)
                 self.Refresh()
         else:
-            if self.addButton.IsHighlighted():
-                self.addButton.Highlight(False)
+            if self.add_button.IsHighlighted():
+                self.add_button.Highlight(False)
                 self.Refresh()
 
     def OnPaint(self, event):
@@ -1126,16 +1082,14 @@ class PFTabsContainer(wx.Panel):
         else:
             mdc = wx.BufferedPaintDC(self)
 
-        if 'wxMac' in wx.PlatformInfo and wx.VERSION < (3, 0):
+        if 'wxMac' in wx.PlatformInfo:
             color = wx.Colour(0, 0, 0)
             brush = wx.Brush(color)
-
-            # noinspection PyPackageRequirements,PyUnresolvedReferences,PyUnresolvedReferences,PyUnresolvedReferences
+            # @todo: what needs to be changed with wxPheonix?
             from Carbon.Appearance import kThemeBrushDialogBackgroundActive
-            # noinspection PyUnresolvedReferences
             brush.MacSetTheme(kThemeBrushDialogBackgroundActive)
         else:
-            color = wx.SystemSettings_GetColour(wx.SYS_COLOUR_3DFACE)
+            color = wx.SystemSettings.GetColour(wx.SYS_COLOUR_3DFACE)
             brush = wx.Brush(color)
 
         if "wxGTK" not in wx.PlatformInfo:
@@ -1144,40 +1098,38 @@ class PFTabsContainer(wx.Panel):
 
         selected = None
 
-        tabsWidth = 0
-
-        for tab in self.tabs:
-            tabsWidth += tab.tabWidth - self.inclination * 2
-
-        if self.showAddButton:
-            ax, ay = self.addButton.GetPosition()
-            mdc.DrawBitmap(self.addButton.Render(), ax, ay, True)
+        if self.show_add_button:
+            ax, ay = self.add_button.GetPosition()
+            mdc.DrawBitmap(self.add_button.Render(), ax, ay, True)
 
         for i in range(len(self.tabs) - 1, -1, -1):
             tab = self.tabs[i]
             posx, posy = tab.GetPosition()
 
             if not tab.IsSelected():
-                mdc.DrawBitmap(self.efxBmp, posx, posy, True)
+                # drop shadow first
+                mdc.DrawBitmap(self.fx_bmp, posx, posy, True)
                 bmp = tab.Render()
                 img = bmp.ConvertToImage()
                 img = img.AdjustChannels(1, 1, 1, 0.85)
-                bmp = wx.BitmapFromImage(img)
+                bmp = wx.Bitmap(img)
                 mdc.DrawBitmap(bmp, posx, posy, True)
-
             else:
                 selected = tab
 
+        # we draw selected tab separately (instead of in else) so as to not hide
+        # the front bit behind the preceding tab
         if selected:
             posx, posy = selected.GetPosition()
-            mdc.DrawBitmap(self.efxBmp, posx, posy, True)
+            # drop shadow first
+            mdc.DrawBitmap(self.fx_bmp, posx, posy, True)
 
             bmp = selected.Render()
 
             if self.dragging:
                 img = bmp.ConvertToImage()
                 img = img.AdjustChannels(1.2, 1.2, 1.2, 0.7)
-                bmp = wx.BitmapFromImage(img)
+                bmp = wx.Bitmap(img)
 
             mdc.DrawBitmap(bmp, posx, posy, True)
 
@@ -1185,26 +1137,25 @@ class PFTabsContainer(wx.Panel):
         pass
 
     def UpdateTabFX(self):
-        w, h = self.tabShadow.GetSize()
-        if w != self.tabMinWidth:
-            self.tabShadow.SetSize((self.tabMinWidth, self.height + 1))
-            fxBmp = self.tabShadow.Render()
+        """ Updates tab drop shadow bitmap """
+        self.tab_shadow.SetSize((self.tab_min_width, self.height + 1))
+        fx_bmp = self.tab_shadow.Render()
 
-            simg = fxBmp.ConvertToImage()
-            if not simg.HasAlpha():
-                simg.InitAlpha()
-            simg = simg.Blur(2)
-            simg = simg.AdjustChannels(0.3, 0.3, 0.3, 0.35)
+        img = fx_bmp.ConvertToImage()
+        if not img.HasAlpha():
+            img.InitAlpha()
+        img = img.Blur(2)
+        img = img.AdjustChannels(0.3, 0.3, 0.3, 0.35)
 
-            self.efxBmp = wx.BitmapFromImage(simg)
+        self.fx_bmp = wx.Bitmap(img)
 
-    def AddTab(self, title=wx.EmptyString, img=None, showClose=False):
+    def AddTab(self, title=wx.EmptyString, img=None, closeable=False):
         self.ClearTabsSelected()
 
-        tabRenderer = PFTabRenderer((120, self.height), title, img, self.inclination, closeButton=showClose)
-        tabRenderer.SetSelected(True)
+        tab_renderer = _TabRenderer((200, self.height), title, img, closeable)
+        tab_renderer.SetSelected(True)
 
-        self.tabs.append(tabRenderer)
+        self.tabs.append(tab_renderer)
         self.AdjustTabsSize()
         self.Refresh()
 
@@ -1212,29 +1163,20 @@ class PFTabsContainer(wx.Panel):
         for tab in self.tabs:
             tab.SetSelected(False)
 
-    def DisableTab(self, tab, disabled=True):
-        tabRenderer = self.tabs[tab]
-        tabRenderer.disabled = disabled
+    def DeleteTab(self, tab):
+        tab_renderer = self.tabs[tab]
+        was_selected = tab_renderer.GetSelected()
+        self.tabs.remove(tab_renderer)
 
-        self.AdjustTabsSize()
-        self.Refresh()
+        if tab_renderer:
+            del tab_renderer
 
-    def DeleteTab(self, tab, external=False):
-        tabRenderer = self.tabs[tab]
-        wasSelected = tabRenderer.GetSelected()
-        self.tabs.remove(tabRenderer)
-
-        if tabRenderer:
-            del tabRenderer
-
-        if wasSelected and self.GetTabsCount() > 0:
+        # determine our new selection
+        if was_selected and self.GetTabsCount() > 0:
             if tab > self.GetTabsCount() - 1:
                 self.tabs[self.GetTabsCount() - 1].SetSelected(True)
             else:
                 self.tabs[tab].SetSelected(True)
-
-        if not external:
-            self.Parent.DeletePage(tab, True)
 
         self.AdjustTabsSize()
         self.Refresh()
@@ -1243,104 +1185,101 @@ class PFTabsContainer(wx.Panel):
         return len(self.tabs)
 
     def AdjustTabsSize(self):
-        tabMinWidth = 9000000  # Really, it should be over 9000
-        tabMaxWidth = 0
-        for tab in self.tabs:
-            mw, mh = tab.GetMinSize()
-            if tabMinWidth > mw:
-                tabMinWidth = mw
-            if tabMaxWidth < mw:
-                tabMaxWidth = mw
-        if tabMaxWidth < 100:
-            tabMaxWidth = 100
-        if self.GetTabsCount() > 0:
-            if (self.GetTabsCount()) * (tabMaxWidth - self.inclination * 2) > self.tabContainerWidth:
-                self.tabMinWidth = float(self.tabContainerWidth) / float(self.GetTabsCount()) + self.inclination * 2
-            else:
-                self.tabMinWidth = tabMaxWidth
+        """
+        Adjust tab sizes to ensure that they are all consistent and can fit into
+        the tab container.
+        """
 
-        if self.tabMinWidth < 1:
-            self.tabMinWidth = 1
+        # first we loop through our tabs and calculate the the largest tab. This
+        # is the size that we will base our calculations off
+
+        max_width = 100  # Tab should be at least 100
         for tab in self.tabs:
-            tab.GetSize()
-            tab.SetSize((self.tabMinWidth, self.height))
+            mw, _ = tab.GetMinSize()  # Tab min size includes tab contents
+            max_width = max(mw, max_width)
+
+        # Divide tab container by number of tabs and add inclination. This will
+        # return the ideal max size for the containers size
+        if self.GetTabsCount() > 0:
+            dx = self.tab_container_width / self.GetTabsCount() + self.inclination * 2
+            self.tab_min_width = min(dx, max_width)
+
+        # Apply new size to all tabs
+        for tab in self.tabs:
+            tab.SetSize((self.tab_min_width, self.height))
 
         if self.GetTabsCount() > 0:
+            # update drop shadow based on new sizes
             self.UpdateTabFX()
 
         self.UpdateTabsPosition()
 
-    def UpdateTabsPosition(self, skipTab=None):
+    def UpdateTabsPosition(self, skip_tab=None):
         tabsWidth = 0
         for tab in self.tabs:
-            tabsWidth += tab.tabWidth - self.inclination * 2
+            tabsWidth += tab.tab_width - self.inclination * 2
 
         pos = tabsWidth
         selected = None
-        selpos = None
         for i in range(len(self.tabs) - 1, -1, -1):
             tab = self.tabs[i]
-            width = tab.tabWidth - self.inclination * 2
+            width = tab.tab_width - self.inclination*2
             pos -= width
             if not tab.IsSelected():
-                tab.SetPosition((pos, self.containerHeight - self.height))
+                tab.SetPosition((pos, self.container_height - self.height))
             else:
                 selected = tab
                 selpos = pos
-        if selected is not skipTab:
-            selected.SetPosition((selpos, self.containerHeight - self.height))
-        self.addButton.SetPosition(
-            (
-                round(tabsWidth) + self.inclination * 2,
-                self.containerHeight - self.height / 2 - self.addButton.GetHeight() / 3
-            )
-        )
+
+        if selected is not skip_tab:
+            selected.SetPosition((selpos, self.container_height - self.height))
+
+        self.add_button.SetPosition((
+            round(tabsWidth)
+            + self.inclination*2,
+            self.container_height
+            - self.height / 2
+            - self.add_button.GetHeight()/3))
 
     def OnLeaveWindow(self, event):
-
-        if self.startDrag and not self.dragging:
+        if self.start_drag and not self.dragging:
             self.dragging = False
-            self.startDrag = False
-            self.draggedTab = None
-            self.dragTrigger = self.dragTrail
+            self.start_drag = False
+            self.dragged_tab = None
+            self.drag_trigger = self.drag_trail
             if self.HasCapture():
                 self.ReleaseMouse()
 
-        if self.previewWnd:
-            self.previewWnd.Show(False)
-            del self.previewWnd
-            self.previewWnd = None
+        if self.preview_wnd:
+            self.preview_wnd.Show(False)
+            del self.preview_wnd
+            self.preview_wnd = None
         event.Skip()
 
     def OnTimer(self, event):
         mposx, mposy = wx.GetMousePosition()
         cposx, cposy = self.ScreenToClient((mposx, mposy))
-        if self.FindTabAtPos(cposx, cposy) == self.previewTab:
-            if not self.previewTab.GetSelected():
-                page = self.Parent.GetPage(self.GetTabIndex(self.previewTab))
+
+        if self.FindTabAtPos(cposx, cposy) == self.preview_tab:
+            if not self.preview_tab.GetSelected():
+                page = self.Parent.GetPage(self.GetTabIndex(self.preview_tab))
                 if page.Snapshot():
-                    self.previewWnd = PFNotebookPagePreview(
-                        self,
-                        (mposx + 3, mposy + 3),
-                        page.Snapshot(),
-                        self.previewTab.text
-                    )
-                    self.previewWnd.Show()
+                    self.preview_wnd = PFNotebookPagePreview(
+                                                        self,
+                                                        (mposx+3, mposy+3),
+                                                        page.Snapshot(),
+                                                        self.preview_tab.text)
+                    self.preview_wnd.Show()
 
         event.Skip()
 
 
 class PFNotebookPagePreview(wx.Frame):
     def __init__(self, parent, pos, bitmap, title):
-        wx.Frame.__init__(
-            self,
-            parent,
-            id=wx.ID_ANY,
-            title=wx.EmptyString,
-            pos=pos,
-            size=wx.DefaultSize,
-            style=wx.NO_BORDER | wx.FRAME_NO_TASKBAR | wx.STAY_ON_TOP
-        )
+        super().__init__(parent, id=wx.ID_ANY, title=wx.EmptyString, pos=pos,
+                         size=wx.DefaultSize, style=wx.NO_BORDER |
+                                                    wx.FRAME_NO_TASKBAR |
+                                                    wx.STAY_ON_TOP)
 
         self.title = title
         self.bitmap = bitmap
@@ -1356,7 +1295,7 @@ class PFNotebookPagePreview(wx.Frame):
         self.padding = 15
         self.transp = 0
 
-        hfont = wx.Font(fonts.NORMAL, wx.SWISS, wx.NORMAL, wx.NORMAL, False)
+        hfont = wx.Font(10, wx.SWISS, wx.NORMAL, wx.NORMAL, False)
         self.SetFont(hfont)
 
         tx, ty = self.GetTextExtent(self.title)
@@ -1367,13 +1306,13 @@ class PFNotebookPagePreview(wx.Frame):
         else:
             width = bitmap.GetWidth()
 
-        self.SetSize((width, bitmap.GetHeight() + 16))
+        self.SetSize((width, bitmap.GetHeight()+16))
 
         self.SetTransparent(0)
         self.Refresh()
 
     def OnTimer(self, event):
-        self.transp += 20 * self.direction
+        self.transp += 20*self.direction
 
         if self.transp > 220:
             self.transp = 220
@@ -1382,7 +1321,7 @@ class PFNotebookPagePreview(wx.Frame):
         if self.transp < 0:
             self.transp = 0
             self.timer.Stop()
-            wx.Frame.Show(self, False)
+            wx.Frame.Show(self,False)
             self.Destroy()
             return
         self.SetTransparent(self.transp)
@@ -1406,29 +1345,30 @@ class PFNotebookPagePreview(wx.Frame):
             self.direction = -1
             self.timer.Start(10)
 
-    def OnWindowEraseBk(self, event):
+
+    def OnWindowEraseBk(self,event):
         pass
 
     def OnWindowPaint(self, event):
         rect = self.GetRect()
-        canvas = wx.EmptyBitmap(rect.width, rect.height)
+        canvas = wx.Bitmap(rect.width, rect.height)
         mdc = wx.BufferedPaintDC(self)
         mdc.SelectObject(canvas)
-        color = wx.SystemSettings_GetColour(wx.SYS_COLOUR_WINDOW)
+        color = wx.SystemSettings.GetColour(wx.SYS_COLOUR_WINDOW)
         mdc.SetBackground(wx.Brush(color))
         mdc.Clear()
 
-        font = wx.Font(fonts.NORMAL, wx.SWISS, wx.NORMAL, wx.NORMAL, False)
+        font = wx.Font(10, wx.SWISS, wx.NORMAL,wx.NORMAL, False)
         mdc.SetFont(font)
 
-        x, y = mdc.GetTextExtent(self.title)
+        x,y = mdc.GetTextExtent(self.title)
 
-        mdc.SetBrush(wx.Brush(wx.SystemSettings_GetColour(wx.SYS_COLOUR_WINDOWTEXT)))
+        mdc.SetBrush(wx.Brush(wx.SystemSettings.GetColour(wx.SYS_COLOUR_WINDOWTEXT)))
         mdc.DrawRectangle(0, 0, rect.width, 16)
 
-        mdc.SetTextForeground(wx.SystemSettings_GetColour(wx.SYS_COLOUR_WINDOW))
+        mdc.SetTextForeground(wx.SystemSettings.GetColour(wx.SYS_COLOUR_WINDOW))
 
-        mdc.DrawText(self.title, (rect.width - x) / 2, (16 - y) / 2)
+        mdc.DrawText(self.title, (rect.width - x)/2, (16 - y)/2)
 
         mdc.DrawBitmap(self.bitmap, 0, 16)
 
@@ -1436,3 +1376,80 @@ class PFNotebookPagePreview(wx.Frame):
         mdc.SetBrush(wx.TRANSPARENT_BRUSH)
 
         mdc.DrawRectangle(0, 16, rect.width, rect.height - 16)
+
+
+if __name__ == "__main__":
+
+    import os
+    os.chdir('..')
+    import config
+    config.defPaths(None)
+
+    class Frame(wx.Frame):
+        def __init__(self, title):
+            super().__init__(None, title=title, size=(1000, 500))
+
+            if 'wxMSW' in wx.PlatformInfo:
+                color = wx.SystemSettings.GetColour(wx.SYS_COLOUR_BTNFACE)
+                self.SetBackgroundColour(color)
+
+            main_sizer = wx.BoxSizer(wx.HORIZONTAL)
+            splitter = wx.SplitterWindow(self, style=wx.SP_LIVE_UPDATE)
+            main_sizer.Add(splitter, 1, wx.EXPAND | wx.ALL, 2)
+
+            # Main test notebook
+            self.notebook = ChromeNotebook(splitter)
+
+            # Tests can_add, has dummy tabs
+            notebook2 = ChromeNotebook(splitter, can_add=False)
+
+            self.statusbar = self.CreateStatusBar()
+
+            panel = wx.Panel(self)
+            box = wx.BoxSizer(wx.VERTICAL)
+
+            head = wx.StaticText(panel, -1, "Chome Tabs Test")
+            head.SetFont(wx.Font(14, wx.SWISS, wx.NORMAL, wx.BOLD))
+            box.Add(head, 0, wx.ALL, 10)
+
+            self.tctrl = wx.TextCtrl(panel, wx.ID_ANY, "Tab Name")
+
+            self.close_check = wx.CheckBox(panel, label="Closable?")
+            self.close_check.SetValue(True)
+
+            self.icon_check = wx.CheckBox(panel, label="Icon?")
+            self.icon_check.SetValue(True)
+
+            button = wx.Button(panel, wx.ID_ANY, "Create")
+            button.Bind(wx.EVT_BUTTON, self.OnCreate)
+
+            box.Add(self.tctrl, 0, wx.ALL, 5)
+            box.Add(self.close_check, 0, wx.ALL, 5)
+            box.Add(self.icon_check, 0, wx.ALL, 5)
+            box.Add(button, 0, wx.ALL, 10)
+
+            self.notebook.AddPage(panel, "Tab1", closeable=False)
+
+            # Add dummy pages
+            notebook2.AddPage()
+            notebook2.AddPage()
+
+            splitter.SplitVertically(self.notebook, notebook2)
+
+            panel.SetSizer(box)
+            panel.Layout()
+            self.SetSizer(main_sizer)
+
+        def OnCreate(self, event):
+            tab_name = self.tctrl.GetValue()
+            tab_icon = BitmapLoader.getImage("ship_small", "gui")
+            self.notebook.AddPage(
+                title=tab_name,
+                image=tab_icon if self.icon_check.GetValue() else None,
+                closeable=self.close_check.GetValue())
+
+    app = wx.App(redirect=False)   # Error messages go to popup window
+    top = Frame("Test Chrome Tabs")
+    top.Show()
+    app.MainLoop()
+
