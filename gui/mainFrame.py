@@ -25,8 +25,6 @@ import sqlalchemy
 # noinspection PyPackageRequirements
 import wx
 # noinspection PyPackageRequirements
-from wx._core import PyDeadObjectError
-# noinspection PyPackageRequirements
 from wx.lib.wordwrap import wordwrap
 # noinspection PyPackageRequirements
 from wx.lib.inspection import InspectionTool
@@ -39,7 +37,7 @@ import config
 from eos.config import gamedata_version
 
 import gui.aboutData
-from gui.chrome_tabs import PFNotebook
+from gui.chrome_tabs import ChromeNotebook
 import gui.globalEvents as GE
 
 from gui.bitmap_loader import BitmapLoader
@@ -177,7 +175,7 @@ class MainFrame(wx.Frame, IPortUser):
         self.fitMultiSwitch = MultiSwitch(self.fitting_additions_split)
         self.additionsPane = AdditionsPane(self.fitting_additions_split)
 
-        self.notebookBrowsers = PFNotebook(self.browser_fitting_split, False)
+        self.notebookBrowsers = ChromeNotebook(self.browser_fitting_split, False)
 
         marketImg = BitmapLoader.getImage("market_small", "gui")
         shipBrowserImg = BitmapLoader.getImage("ship_small", "gui")
@@ -403,7 +401,7 @@ class MainFrame(wx.Frame, IPortUser):
         dlg.ShowModal()
         try:
             dlg.Destroy()
-        except PyDeadObjectError:
+        except RuntimeError:
             pyfalog.error("Tried to destroy an object that doesn't exist in <showDamagePatternEditor>.")
 
     def showImplantSetEditor(self, event):
@@ -430,7 +428,7 @@ class MainFrame(wx.Frame, IPortUser):
                 print(("oops, invalid fit format %d" % format_))
                 try:
                     dlg.Destroy()
-                except PyDeadObjectError:
+                except RuntimeError:
                     pyfalog.error("Tried to destroy an object that doesn't exist in <showExportDialog>.")
                 return
 
@@ -440,7 +438,7 @@ class MainFrame(wx.Frame, IPortUser):
 
         try:
             dlg.Destroy()
-        except PyDeadObjectError:
+        except RuntimeError:
             pyfalog.error("Tried to destroy an object that doesn't exist in <showExportDialog>.")
 
     def showPreferenceDialog(self, event):
@@ -779,7 +777,7 @@ class MainFrame(wx.Frame, IPortUser):
 
         try:
             dlg.Destroy()
-        except PyDeadObjectError:
+        except RuntimeError:
             pyfalog.error("Tried to destroy an object that doesn't exist in <exportToClipboard>.")
 
     def exportSkillsNeeded(self, event):
@@ -835,7 +833,7 @@ class MainFrame(wx.Frame, IPortUser):
             self.progressDialog.ShowModal()
             try:
                 dlg.Destroy()
-            except PyDeadObjectError:
+            except RuntimeError:
                 pyfalog.error("Tried to destroy an object that doesn't exist in <fileImportDialog>.")
 
     def backupToXml(self, event):

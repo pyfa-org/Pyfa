@@ -29,7 +29,7 @@ from gui.builtinAdditionPanes.fighterView import FighterView
 from gui.builtinAdditionPanes.implantView import ImplantView
 from gui.builtinAdditionPanes.notesView import NotesView
 from gui.builtinAdditionPanes.projectedView import ProjectedView
-from gui.chrome_tabs import PFNotebook
+from gui.chrome_tabs import ChromeNotebook
 from gui.toggle_panel import TogglePanel
 
 
@@ -44,7 +44,7 @@ class AdditionsPane(TogglePanel):
         baseSizer = wx.BoxSizer(wx.HORIZONTAL)
         pane.SetSizer(baseSizer)
 
-        self.notebook = PFNotebook(pane, False)
+        self.notebook = ChromeNotebook(pane, False)
         self.notebook.SetMinSize((-1, 1000))
 
         baseSizer.Add(self.notebook, 1, wx.EXPAND)
