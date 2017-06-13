@@ -30,7 +30,7 @@ from gui.builtinAdditionPanes.implantView import ImplantView
 from gui.builtinAdditionPanes.notesView import NotesView
 from gui.builtinAdditionPanes.projectedView import ProjectedView
 from gui.chrome_tabs import PFNotebook
-from gui.pyfatogglepanel import TogglePanel
+from gui.toggle_panel import TogglePanel
 
 
 class AdditionsPane(TogglePanel):

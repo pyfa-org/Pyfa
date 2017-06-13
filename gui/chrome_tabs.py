@@ -1380,6 +1380,8 @@ class PFNotebookPagePreview(wx.Frame):
 
 if __name__ == "__main__":
 
+    # need to set up some paths, since bitmap loader requires config to have things
+    # Should probably change that so that it's not dependant on config
     import os
     os.chdir('..')
     import config
