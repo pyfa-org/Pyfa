@@ -222,6 +222,18 @@ class ChromeNotebook(wx.Panel):
         self._active_page = win
         self.ShowActive(True)
 
+    def DisablePage(self, page, toggle):
+        idx = self.GetPageIndex(page)
+
+        if toggle and page == self._active_page:
+            try:
+                # Set page to the first non-disabled page
+                self.SetSelection(next(i for i, _ in enumerate(self._pages) if not self.tabs_container.tabs[i].disabled))
+            except StopIteration:
+                self.SetSelection(0)
+
+        self.tabs_container.DisableTab(idx, toggle)
+
     def SetSelection(self, page):
         old_selection = self.GetSelection()
         if old_selection != page:
@@ -848,6 +860,13 @@ class _TabsContainer(wx.Panel):
         for tab in self.tabs:
             if self.CheckTabClose(tab, mposx, mposy):
                 return
+            
+    def DisableTab(self, tab, disabled=True):
+        tb_renderer = self.tabs[tab]
+        tb_renderer.disabled = disabled
+
+        self.AdjustTabsSize()
+        self.Refresh()
 
     def GetSelectedTab(self):
         for tab in self.tabs:

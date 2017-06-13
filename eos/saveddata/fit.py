@@ -1488,9 +1488,9 @@ class Fit(object):
     def __repr__(self):
         return "Fit(ID={}, ship={}, name={}) at {}".format(
                 self.ID, self.ship.item.name, self.name, hex(id(self))
-        ).encode('utf8')
+        )
 
     def __str__(self):
         return "{} ({})".format(
                 self.name, self.ship.item.name
-        ).encode('utf8')
+        )

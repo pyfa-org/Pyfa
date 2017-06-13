@@ -678,13 +678,14 @@ class FittingView(d.Display):
                 pyfalog.critical(e)
 
     def OnShow(self, event):
-        if event.GetShow():
-            try:
-                self.MakeSnapshot()
-            except Exception as e:
-                pyfalog.critical("Failed to make snapshot")
-                pyfalog.critical(e)
-        event.Skip()
+        pass
+        # if event.Show():
+        #     try:
+        #         self.MakeSnapshot()
+        #     except Exception as e:
+        #         pyfalog.critical("Failed to make snapshot")
+        #         pyfalog.critical(e)
+        # event.Skip()
 
     def Snapshot(self):
         return self.FVsnapshot
