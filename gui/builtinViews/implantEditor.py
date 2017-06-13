@@ -54,7 +54,7 @@ class BaseImplantEditorView(wx.Panel):
         pmainSizer.Add(availableSizer, 1, wx.ALL | wx.EXPAND, 5)
 
         buttonSizer = wx.BoxSizer(wx.VERTICAL)
-        buttonSizer.AddSpacer((0, 0), 1)
+        buttonSizer.AddSpacer(0)
 
         self.btnAdd = GenBitmapButton(self, wx.ID_ADD, BitmapLoader.getBitmap("fit_add_small", "gui"),
                                       style=wx.BORDER_NONE)
@@ -64,7 +64,7 @@ class BaseImplantEditorView(wx.Panel):
                                          style=wx.BORDER_NONE)
         buttonSizer.Add(self.btnRemove, 0)
 
-        buttonSizer.AddSpacer((0, 0), 1)
+        buttonSizer.AddSpacer(0)
         pmainSizer.Add(buttonSizer, 0, wx.EXPAND, 0)
 
         characterImplantSizer = wx.BoxSizer(wx.VERTICAL)

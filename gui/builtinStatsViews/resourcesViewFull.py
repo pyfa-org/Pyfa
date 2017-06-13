@@ -101,7 +101,7 @@ class ResourcesViewFull(StatsView):
         panel = "full"
 
         base = sizerResources
-        sizer.AddSpacer((0, 0), 1, wx.EXPAND, 5)
+        sizer.AddSpacer(0)
         # Turrets & launcher hardslots display
         tooltipText = {"turret": "Turret hardpoints", "launcher": "Launcher hardpoints", "drones": "Drones active",
                        "fighter": "Fighter squadrons active", "calibration": "Calibration"}
@@ -133,7 +133,7 @@ class ResourcesViewFull(StatsView):
             # Hack - We add a spacer after each thing, but we are always hiding something. The spacer is stil there.
             # This way, we only have one space after the drones/fighters
             if type_ != "drones":
-                sizer.AddSpacer((0, 0), 1, wx.EXPAND, 5)
+                sizer.AddSpacer(0)
 
         # PG, Cpu & drone stuff
         tooltipText = {"cpu": "CPU", "pg": "PowerGrid", "droneBay": "Drone bay", "fighterBay": "Fighter bay",

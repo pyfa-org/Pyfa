@@ -70,10 +70,10 @@ class UpdateDialog(wx.Dialog):
         self.versionText.SetFont(wx.Font(12, 74, 90, 90, False))
 
         versionSizer.Add(self.versionText, 1, wx.ALL, 5)
-        versionSizer.AddSpacer((15, 5), 0, wx.EXPAND, 5)
+        versionSizer.AddSpacer(15)
 
         mainSizer.Add(versionSizer, 0, wx.EXPAND, 5)
-        mainSizer.AddSpacer((0, 5), 0, wx.EXPAND, 5)
+        mainSizer.AddSpacer(0)
 
         releaseDate = dateutil.parser.parse(self.releaseInfo['published_at'])
         notesSizer = wx.BoxSizer(wx.HORIZONTAL)

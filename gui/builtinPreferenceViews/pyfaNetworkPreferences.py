@@ -139,7 +139,7 @@ class PFNetworkPref(PreferenceView):
         mainSizer.Add(self.stPSAutoDetected, 0, wx.ALL | wx.ALIGN_CENTER_VERTICAL, 5)
 
         btnSizer = wx.BoxSizer(wx.HORIZONTAL)
-        btnSizer.AddSpacer((0, 0), 1, wx.EXPAND, 5)
+        btnSizer.AddSpacer(0)
 
         self.btnApply = wx.Button(panel, wx.ID_ANY, "Apply Proxy Settings", wx.DefaultPosition, wx.DefaultSize, 0)
 
