@@ -158,7 +158,7 @@ class CrestFittings(wx.Frame):
         selection = self.fitView.fitSelection
         if not selection:
             return
-        data = self.fitTree.fittingsTreeCtrl.GetPyData(selection)
+        data = self.fitTree.fittingsTreeCtrl.GetItemData(selection)
         sPort = Port.getInstance()
         fits = sPort.importFitFromBuffer(data)
         self.mainFrame._openAfterImport(fits)
@@ -168,7 +168,7 @@ class CrestFittings(wx.Frame):
         selection = self.fitView.fitSelection
         if not selection:
             return
-        data = json.loads(self.fitTree.fittingsTreeCtrl.GetPyData(selection))
+        data = json.loads(self.fitTree.fittingsTreeCtrl.GetItemData(selection))
 
         dlg = wx.MessageDialog(self,
                                "Do you really want to delete %s (%s) from EVE?" % (data['name'], data['ship']['name']),
@@ -407,7 +407,7 @@ class FittingsTreeView(wx.Panel):
 
     def displayFit(self, event):
         selection = self.fittingsTreeCtrl.GetSelection()
-        data = self.fittingsTreeCtrl.GetPyData(selection)
+        data = self.fittingsTreeCtrl.GetItemData(selection)
 
         if data is None:
             event.Skip()

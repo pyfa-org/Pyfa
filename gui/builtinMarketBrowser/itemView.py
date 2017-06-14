@@ -103,7 +103,7 @@ class ItemView(Display):
         sel = self.marketView.GetSelection()
         if sel.IsOk():
             # Get data field of the selected item (which is a marketGroup ID if anything was selected)
-            seldata = self.marketView.GetPyData(sel)
+            seldata = self.marketView.GetItemData(sel)
             if seldata is not None and seldata != RECENTLY_USED_MODULES:
                 # If market group treeview item doesn't have children (other market groups or dummies),
                 # then it should have items in it and we want to request them

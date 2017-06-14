@@ -993,7 +993,7 @@ class ItemAffectedBy(wx.Panel):
     def spawnMenu(self, item):
         self.affectedBy.SelectItem(item)
 
-        stuff = self.affectedBy.GetPyData(item)
+        stuff = self.affectedBy.GetItemData(item)
         # String is set as data when we are dealing with attributes, not stuff containers
         if stuff is None or isinstance(stuff, str):
             return
@@ -1028,7 +1028,7 @@ class ItemAffectedBy(wx.Panel):
         self.Freeze()
 
         for item in self.treeItems:
-            change = self.affectedBy.GetPyData(item)
+            change = self.affectedBy.GetItemData(item)
             display = self.affectedBy.GetItemText(item)
             self.affectedBy.SetItemText(item, change)
             self.affectedBy.SetPyData(item, display)

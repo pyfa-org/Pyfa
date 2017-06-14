@@ -24,7 +24,7 @@ class PFFittingEnginePref(PreferenceView):
 
         mainSizer = wx.BoxSizer(wx.VERTICAL)
 
-        helpCursor = wx.StockCursor(wx.CURSOR_QUESTION_ARROW)
+        helpCursor = wx.Cursor(wx.CURSOR_QUESTION_ARROW)
 
         self.engine_settings = EOSSettings.getInstance()
 

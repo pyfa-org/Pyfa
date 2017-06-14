@@ -122,7 +122,7 @@ class PFToolbar(object):
                 if not state & BTN_HOVER:
                     button.SetState(state | BTN_HOVER)
                     self.hoverLabel = button.GetLabel()
-                    self.Parent.SetCursor(wx.StockCursor(wx.CURSOR_HAND))
+                    self.Parent.SetCursor(wx.Cursor(wx.CURSOR_HAND))
                     doRefresh = True
             else:
                 if state & BTN_HOVER:
@@ -133,7 +133,7 @@ class PFToolbar(object):
             bx += bwidth + self.padding
 
         if not changeCursor:
-            self.Parent.SetCursor(wx.StockCursor(wx.CURSOR_ARROW))
+            self.Parent.SetCursor(wx.Cursor(wx.CURSOR_ARROW))
         return doRefresh
 
     def MouseClick(self, event):

@@ -92,9 +92,9 @@ class RaceSelector(wx.Window):
             self.hoveredItem = location
             self.Refresh()
             if location is not None:
-                self.SetCursor(wx.StockCursor(wx.CURSOR_HAND))
+                self.SetCursor(wx.Cursor(wx.CURSOR_HAND))
             else:
-                self.SetCursor(wx.StockCursor(wx.CURSOR_ARROW))
+                self.SetCursor(wx.Cursor(wx.CURSOR_ARROW))
 
     def OnSizeUpdate(self, event):
         self.CalcButtonsBarPos()
@@ -253,7 +253,7 @@ class RaceSelector(wx.Window):
     def OnWindowLeave(self, event):
         if self.hoveredItem is not None:
             self.hoveredItem = None
-            self.SetCursor(wx.StockCursor(wx.CURSOR_ARROW))
+            self.SetCursor(wx.Cursor(wx.CURSOR_ARROW))
             self.Refresh()
 
         if not self.animate:

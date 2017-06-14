@@ -21,7 +21,7 @@ class PFGeneralPref(PreferenceView):
         self.openFitsSettings = SettingsProvider.getInstance().getSettings("pyfaPrevOpenFits",
                                                                            {"enabled": False, "pyfaOpenFits": []})
 
-        helpCursor = wx.StockCursor(wx.CURSOR_QUESTION_ARROW)
+        helpCursor = wx.Cursor(wx.CURSOR_QUESTION_ARROW)
 
         mainSizer = wx.BoxSizer(wx.VERTICAL)
 
