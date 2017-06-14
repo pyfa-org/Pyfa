@@ -45,7 +45,6 @@ class PFSearchBox(wx.Window):
                                    wx.TE_PROCESS_ENTER | (wx.BORDER_NONE if 'wxGTK' in wx.PlatformInfo else 0))
 
         self.Bind(wx.EVT_PAINT, self.OnPaint)
-        self.Bind(wx.EVT_ERASE_BACKGROUND, self.OnEraseBk)
         self.Bind(wx.EVT_SIZE, self.OnSize)
 
         self.Bind(wx.EVT_LEFT_DOWN, self.OnLeftDown)
@@ -186,9 +185,6 @@ class PFSearchBox(wx.Window):
     def OnSize(self, event):
         self.resized = True
         self.Refresh()
-
-    def OnEraseBk(self, event):
-        pass
 
     def UpdateElementsPos(self, dc):
         rect = self.GetRect()

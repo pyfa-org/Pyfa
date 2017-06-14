@@ -37,10 +37,6 @@ class Display(wx.ListCtrl):
         self.columnsMinWidth = []
         self.Bind(wx.EVT_LIST_COL_END_DRAG, self.resizeChecker)
         self.Bind(wx.EVT_LIST_COL_BEGIN_DRAG, self.resizeSkip)
-
-        if "wxMSW" in wx.PlatformInfo:
-            self.Bind(wx.EVT_ERASE_BACKGROUND, self.OnEraseBk)
-
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
 
         i = 0
@@ -112,40 +108,6 @@ class Display(wx.ListCtrl):
                 return rowIndex, flag, i
 
         return rowIndex, 0, -1
-
-    def OnEraseBk(self, event):
-        if self.GetItemCount() > 0:
-            width, height = self.GetClientSize()
-            dc = event.GetDC()
-
-            dc.DestroyClippingRegion()
-            dc.SetClippingRegion(0, 0, width, height)
-            x, y, w, h = dc.GetClippingBox()
-
-            topItem = self.GetTopItem()
-            bottomItem = topItem + self.GetCountPerPage()
-
-            if bottomItem >= self.GetItemCount():
-                bottomItem = self.GetItemCount() - 1
-
-            topRect = self.GetItemRect(topItem, wx.LIST_RECT_LABEL)
-            bottomRect = self.GetItemRect(bottomItem, wx.LIST_RECT_BOUNDS)
-
-            items_rect = wx.Rect(topRect.left, 0, bottomRect.right - topRect.left, bottomRect.bottom)
-
-            updateRegion = wx.Region(x, y, w, h)
-            updateRegion.Subtract(items_rect)
-
-            dc.DestroyClippingRegion()
-            dc.SetClippingRegionAsRegion(updateRegion)
-
-            dc.SetBackground(wx.Brush(self.GetBackgroundColour(), wx.SOLID))
-            dc.Clear()
-
-            dc.DestroyClippingRegion()
-
-        else:
-            event.Skip()
 
     # noinspection PyPropertyAccess
     def addColumn(self, i, col):

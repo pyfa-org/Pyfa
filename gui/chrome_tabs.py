@@ -719,7 +719,6 @@ class _TabsContainer(wx.Panel):
         self.Bind(wx.EVT_LEAVE_WINDOW, self.OnLeaveWindow)
 
         self.Bind(wx.EVT_PAINT, self.OnPaint)
-        self.Bind(wx.EVT_ERASE_BACKGROUND, self.OnErase)
         self.Bind(wx.EVT_LEFT_DOWN, self.OnLeftDown)
         self.Bind(wx.EVT_LEFT_UP, self.OnLeftUp)
         self.Bind(wx.EVT_MOTION, self.OnMotion)
@@ -1151,9 +1150,6 @@ class _TabsContainer(wx.Panel):
 
             mdc.DrawBitmap(bmp, posx, posy, True)
 
-    def OnErase(self, event):
-        pass
-
     def UpdateTabFX(self):
         """ Updates tab drop shadow bitmap """
         self.tab_shadow.SetSize((self.tab_min_width, self.height + 1))
@@ -1303,7 +1299,6 @@ class PFNotebookPagePreview(wx.Frame):
         self.bitmap = bitmap
         self.SetSize((bitmap.GetWidth(), bitmap.GetHeight()))
         self.Bind(wx.EVT_PAINT, self.OnWindowPaint)
-        self.Bind(wx.EVT_ERASE_BACKGROUND, self.OnWindowEraseBk)
         self.Bind(wx.EVT_TIMER, self.OnTimer)
 
         self.timer = wx.Timer(self, wx.ID_ANY)
@@ -1362,10 +1357,6 @@ class PFNotebookPagePreview(wx.Frame):
         else:
             self.direction = -1
             self.timer.Start(10)
-
-
-    def OnWindowEraseBk(self,event):
-        pass
 
     def OnWindowPaint(self, event):
         rect = self.GetRect()

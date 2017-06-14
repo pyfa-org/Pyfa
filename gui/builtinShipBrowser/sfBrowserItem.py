@@ -251,7 +251,6 @@ class SFBrowserItem(wx.Window):
         self.toolbar = PFToolbar(self)
 
         self.Bind(wx.EVT_PAINT, self.OnPaint)
-        self.Bind(wx.EVT_ERASE_BACKGROUND, self.OnEraseBackground)
         self.Bind(wx.EVT_LEFT_UP, self.OnLeftUp)
         self.Bind(wx.EVT_KEY_UP, self.OnKeyUp)
 
@@ -291,9 +290,6 @@ class SFBrowserItem(wx.Window):
         self.toolbar.Render(mdc)
 
     def DrawItem(self, mdc):
-        pass
-
-    def OnEraseBackground(self, event):
         pass
 
     def OnKeyUp(self, event):

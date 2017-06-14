@@ -102,13 +102,9 @@ class PFPanel(wx.Panel):
     def __init__(self, parent):
         wx.Panel.__init__(self, parent)
         self.Bind(wx.EVT_PAINT, self.OnPaint)
-        self.Bind(wx.EVT_ERASE_BACKGROUND, self.OnBkErase)
 
     def OnPaint(self, event):
         event.Skip()
-
-    def OnBkErase(self, event):
-        pass
 
 
 class OpenFitsThread(threading.Thread):

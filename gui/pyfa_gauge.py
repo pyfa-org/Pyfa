@@ -72,7 +72,6 @@ class PyGauge(wx.Window):
         self.SetToolTip(self._tooltip)
 
         self.Bind(wx.EVT_PAINT, self.OnPaint)
-        self.Bind(wx.EVT_ERASE_BACKGROUND, self.OnEraseBackground)
         self.Bind(wx.EVT_TIMER, self.OnTimer)
         self.Bind(wx.EVT_ENTER_WINDOW, self.OnWindowEnter)
         self.Bind(wx.EVT_LEAVE_WINDOW, self.OnWindowLeave)
@@ -182,9 +181,6 @@ class PyGauge(wx.Window):
         self._tooltip.SetTip("%.2f/%.2f" %
                              (self._value,
                               self._max_range if self._max_range > 0.01 else 0))
-
-    def OnEraseBackground(self, event):
-        pass
 
     def OnPaint(self, event):
         dc = wx.BufferedPaintDC(self)

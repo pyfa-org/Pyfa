@@ -18,7 +18,6 @@ class LoadAnimation(wx.Window):
         self.bars = 10
         self.padding = 2
 
-        self.Bind(wx.EVT_ERASE_BACKGROUND, self.OnEraseBackground)
         self.Bind(wx.EVT_TIMER, self.OnTimer)
         self.Bind(wx.EVT_PAINT, self.OnPaint)
 
@@ -46,9 +45,6 @@ class LoadAnimation(wx.Window):
             self.animDir = 1
 
         self.Refresh()
-
-    def OnEraseBackground(self, event):
-        pass
 
     def OnPaint(self, event):
         rect = self.GetClientRect()
