@@ -200,8 +200,8 @@ class MainFrame(wx.Frame):
         cstatsSizer.Add(self.charSelection, 0, wx.EXPAND)
 
         # @todo pheonix: fix all stats stuff
-        # self.statsPane = StatsPane(self)
-        # cstatsSizer.Add(self.statsPane, 0, wx.EXPAND)
+        self.statsPane = StatsPane(self)
+        cstatsSizer.Add(self.statsPane, 0, wx.EXPAND)
 
         mainSizer.Add(cstatsSizer, 0, wx.EXPAND)
 

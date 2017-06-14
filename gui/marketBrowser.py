@@ -79,7 +79,7 @@ class MarketBrowser(wx.Panel):
 
     def toggleMetaButton(self, event):
         """Process clicks on toggle buttons"""
-        appendMeta = wx.GetMouseState().CmdDown()
+        appendMeta = event.cmdDown
         clickedBtn = event.EventObject
 
         if appendMeta:

@@ -43,7 +43,7 @@ class OutgoingViewMinimal(StatsView):
         parent = self.panel = contentPanel
         self.headerPanel = headerPanel
 
-        sizerOutgoing = wx.GridSizer(1, 4)
+        sizerOutgoing = wx.GridSizer(1, 4, 0, 0)
 
         contentSizer.Add(sizerOutgoing, 0, wx.EXPAND, 0)
 

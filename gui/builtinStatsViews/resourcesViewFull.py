@@ -24,6 +24,7 @@ from gui.bitmap_loader import BitmapLoader
 from gui.pyfa_gauge import PyGauge
 import gui.mainFrame
 from gui.chrome_tabs import EVT_NOTEBOOK_PAGE_CHANGED
+from gui.utils import fonts
 
 from eos.saveddata.module import Hardpoint
 
@@ -135,6 +136,8 @@ class ResourcesViewFull(StatsView):
             if type_ != "drones":
                 sizer.AddSpacer(0)
 
+        gauge_font = wx.Font(fonts.NORMAL, wx.SWISS, wx.NORMAL, wx.NORMAL, False)
+
         # PG, Cpu & drone stuff
         tooltipText = {"cpu": "CPU", "pg": "PowerGrid", "droneBay": "Drone bay", "fighterBay": "Fighter bay",
                        "droneBandwidth": "Drone bandwidth", "cargoBay": "Cargo bay"}
@@ -176,7 +179,7 @@ class ResourcesViewFull(StatsView):
 
                 # Gauges modif. - Darriele
 
-                gauge = PyGauge(parent, wx.ID_ANY, 1)
+                gauge = PyGauge(parent, gauge_font)
                 gauge.SetValueRange(0, 0)
                 gauge.SetMinSize((self.getTextExtentW("1.999M/1.99M MW"), 23))
                 gauge.SetFractionDigits(2)

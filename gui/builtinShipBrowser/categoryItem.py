@@ -20,7 +20,7 @@ class CategoryItem(SFBrowserItem):
         if categoryID:
             self.shipBmp = BitmapLoader.getBitmap("ship_small", "gui")
         else:
-            self.shipBmp = wx.EmptyBitmap(16, 16)
+            self.shipBmp = wx.Bitmap(16, 16)
 
         self.dropShadowBitmap = drawUtils.CreateDropShadowBitmap(self.shipBmp, 0.2)
 

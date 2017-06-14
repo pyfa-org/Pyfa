@@ -143,7 +143,7 @@ class GraphFrame(wx.Frame):
         dummyBox = wx.BoxSizer(wx.VERTICAL)
         self.gridPanel.SetSizer(dummyBox)
 
-        self.gridSizer = wx.FlexGridSizer(0, 4)
+        self.gridSizer = wx.FlexGridSizer(0, 4, 0, 0)
         self.gridSizer.AddGrowableCol(1)
         dummyBox.Add(self.gridSizer, 0, wx.EXPAND)
 

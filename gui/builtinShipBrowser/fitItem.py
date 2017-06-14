@@ -520,7 +520,7 @@ class FitItem(SFItem.SFBrowserItem):
             self.AdjustControlSizePos(self.tcFitName, self.textStartx, self.toolbarx - self.editWidth - self.padding)
 
         tdc = wx.MemoryDC()
-        self.dragTLFBmp = wx.EmptyBitmap((self.toolbarx if self.toolbarx < 200 else 200), rect.height, 24)
+        self.dragTLFBmp = wx.Bitmap((self.toolbarx if self.toolbarx < 200 else 200), rect.height, 24)
         tdc.SelectObject(self.dragTLFBmp)
         tdc.Blit(0, 0, (self.toolbarx if self.toolbarx < 200 else 200), rect.height, mdc, 0, 0, wx.COPY)
         tdc.SelectObject(wx.NullBitmap)

@@ -45,7 +45,7 @@ class CapacitorViewFull(StatsView):
 
         panel = "full"
 
-        sizerCapacitor = wx.GridSizer(1, 2)
+        sizerCapacitor = wx.GridSizer(1, 2, 0, 0)
         contentSizer.Add(sizerCapacitor, 0, wx.EXPAND, 0)
         # Capacitor capacity and time
         baseBox = wx.BoxSizer(wx.HORIZONTAL)
@@ -91,7 +91,7 @@ class CapacitorViewFull(StatsView):
         baseBox.Add(bitmap, 0, wx.ALIGN_CENTER)
 
         # Recharge
-        chargeSizer = wx.FlexGridSizer(2, 3)
+        chargeSizer = wx.FlexGridSizer(2, 3, 0, 0)
         baseBox.Add(chargeSizer, 0, wx.ALIGN_CENTER)
 
         chargeSizer.Add(wx.StaticText(parent, wx.ID_ANY, "+ "), 0, wx.ALIGN_CENTER)

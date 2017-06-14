@@ -46,7 +46,7 @@ class PFBitmapFrame(wx.Frame):
 
     def OnWindowPaint(self, event):
         rect = self.GetRect()
-        canvas = wx.EmptyBitmap(rect.width, rect.height)
+        canvas = wx.Bitmap(rect.width, rect.height)
         mdc = wx.BufferedPaintDC(self)
         mdc.SelectObject(canvas)
         mdc.DrawBitmap(self.bitmap, 0, 0)

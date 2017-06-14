@@ -53,7 +53,7 @@ class FirepowerViewFull(StatsView):
 
         panel = "full"
 
-        sizerFirepower = wx.FlexGridSizer(1, 4)
+        sizerFirepower = wx.FlexGridSizer(1, 4, 0, 0)
         sizerFirepower.AddGrowableCol(1)
 
         contentSizer.Add(sizerFirepower, 0, wx.EXPAND, 0)

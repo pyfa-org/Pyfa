@@ -48,7 +48,7 @@ class MiningYieldViewFull(StatsView):
 
         panel = "full"
 
-        sizerMiningYield = wx.FlexGridSizer(1, 4)
+        sizerMiningYield = wx.FlexGridSizer(1, 4, 0, 0)
         sizerMiningYield.AddGrowableCol(1)
 
         contentSizer.Add(sizerMiningYield, 0, wx.EXPAND, 0)

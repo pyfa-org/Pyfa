@@ -47,7 +47,7 @@ class ItemStats(ContextMenu):
         mstate = wx.GetMouseState()
         reuse = False
 
-        if mstate.CmdDown():
+        if mstate.cmdDown:
             reuse = True
 
         if self.mainFrame.GetActiveStatsWindow() is None and reuse:

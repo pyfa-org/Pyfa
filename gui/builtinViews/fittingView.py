@@ -605,7 +605,7 @@ class FittingView(d.Display):
 
             sFit = Fit.getInstance()
             fitID = self.mainFrame.getActiveFit()
-            ctrl = wx.GetMouseState().CmdDown() or wx.GetMouseState().MiddleDown()
+            ctrl = event.cmdDown or event.middleIsDown
             click = "ctrl" if ctrl is True else "right" if event.GetButton() == 3 else "left"
             sFit.toggleModulesState(fitID, self.mods[self.GetItemData(row)], mods, click)
 
@@ -698,7 +698,7 @@ class FittingView(d.Display):
         if self.FVsnapshot:
             del self.FVsnapshot
 
-        tbmp = wx.EmptyBitmap(16, 16)
+        tbmp = wx.Bitmap(16, 16)
         tdc = wx.MemoryDC()
         tdc.SelectObject(tbmp)
         font = wx.SystemSettings_GetFont(wx.SYS_DEFAULT_GUI_FONT)
@@ -774,7 +774,7 @@ class FittingView(d.Display):
                 opts.m_labelText = name
 
             if imgId != -1:
-                opts.m_labelBitmap = wx.EmptyBitmap(isize, isize)
+                opts.m_labelBitmap = wx.Bitmap(isize, isize)
 
             width = render.DrawHeaderButton(self, tdc, (0, 0, 16, 16), sortArrow=wx.HDR_SORT_ICON_NONE, params=opts)
 
@@ -790,7 +790,7 @@ class FittingView(d.Display):
             maxWidth += columnsWidths[i]
 
         mdc = wx.MemoryDC()
-        mbmp = wx.EmptyBitmap(maxWidth, maxRowHeight * rows + padding * 4 + headerSize)
+        mbmp = wx.Bitmap(maxWidth, maxRowHeight * rows + padding * 4 + headerSize)
 
         mdc.SelectObject(mbmp)
 

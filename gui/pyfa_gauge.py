@@ -79,7 +79,7 @@ class PyGauge(wx.Window):
 
     def OnEraseBackground(self, event):
         pass
-    
+
     def OnWindowEnter(self, event):
         self._show_remaining = True
         self.Refresh()
@@ -298,7 +298,6 @@ class PyGauge(wx.Window):
             dc.DrawBitmap(gradient_bitmap, r.left, r.top)
 
         # font stuff begins here
-        print(self.font)
         dc.SetFont(self.font)
 
         # determine shadow position
