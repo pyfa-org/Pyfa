@@ -342,7 +342,7 @@ class MainFrame(wx.Frame):
 
         # save open fits
         self.prevOpenFits['pyfaOpenFits'] = []  # clear old list
-        for page in self.fitMultiSwitch.pages:
+        for page in self.fitMultiSwitch._pages:
             m = getattr(page, "getActiveFit", None)
             if m is not None:
                 self.prevOpenFits['pyfaOpenFits'].append(m())
