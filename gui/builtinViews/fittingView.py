@@ -313,7 +313,8 @@ class FittingView(d.Display):
                 self.Show(fitID is not None)
                 self.slotsChanged()
                 sFit.switchFit(fitID)
-                wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fitID))
+                # @todo pheonix: had to disable this as it was causing a crash at the wxWidgets level. Dunno why, investigate
+                #wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fitID))
 
         event.Skip()
 

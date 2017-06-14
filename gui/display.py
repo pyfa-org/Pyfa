@@ -151,11 +151,11 @@ class Display(wx.ListCtrl):
     def addColumn(self, i, col):
         self.activeColumns.append(col)
         info = wx.ListItem()
-        info.m_mask = col.mask | wx.LIST_MASK_FORMAT | wx.LIST_MASK_WIDTH
-        info.m_image = col.imageId
-        info.m_text = col.columnText
-        info.m_width = -1
-        info.m_format = wx.LIST_FORMAT_LEFT
+        info.SetMask(col.mask | wx.LIST_MASK_FORMAT | wx.LIST_MASK_WIDTH)
+        info.SetImage(col.imageId)
+        info.SetText(col.columnText)
+        info.SetWidth(-1)
+        info.SetAlign(wx.LIST_FORMAT_LEFT)
         self.InsertColumn(i, info)
         col.resized = False
         if i == 0 and col.size != wx.LIST_AUTOSIZE_USEHEADER:
