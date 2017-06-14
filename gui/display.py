@@ -219,13 +219,13 @@ class Display(wx.ListCtrl):
 
             if listItemCount < stuffItemCount:
                 for i in range(stuffItemCount - listItemCount):
-                    self.InsertStringItem(sys.maxsize, "")
+                    self.InsertItem(sys.maxsize, "")
 
             if listItemCount > stuffItemCount:
                 if listItemCount - stuffItemCount > 20 > stuffItemCount:
                     self.DeleteAllItems()
                     for i in range(stuffItemCount):
-                        self.InsertStringItem(sys.maxsize, "")
+                        self.InsertItem(sys.maxsize, "")
                 else:
                     for i in range(listItemCount - stuffItemCount):
                         self.DeleteItem(self.getLastItem())

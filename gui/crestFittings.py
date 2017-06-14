@@ -343,7 +343,7 @@ class CrestMgmt(wx.Dialog):
         self.lcCharacters.DeleteAllItems()
 
         for index, char in enumerate(chars):
-            self.lcCharacters.InsertStringItem(index, char.name)
+            self.lcCharacters.InsertItem(index, char.name)
             self.lcCharacters.SetStringItem(index, 1, char.refresh_token)
             self.lcCharacters.SetItemData(index, char.ID)
 

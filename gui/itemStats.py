@@ -670,7 +670,7 @@ class ItemCompare(wx.Panel):
         self.paramList.SetColumnWidth(len(self.attrs) + 1, 60)
 
         for item in self.items:
-            i = self.paramList.InsertStringItem(sys.maxsize, item.name)
+            i = self.paramList.InsertItem(sys.maxsize, item.name)
             for x, attr in enumerate(self.attrs.keys()):
                 if attr in item.attributes:
                     info = self.attrs[attr]
@@ -857,7 +857,7 @@ class ItemEffects(wx.Panel):
         names.sort()
 
         for name in names:
-            index = self.effectList.InsertStringItem(sys.maxsize, name)
+            index = self.effectList.InsertItem(sys.maxsize, name)
 
             if effects[name].isImplemented:
                 if effects[name].activeByDefault:
@@ -1439,7 +1439,7 @@ class ItemProperties(wx.Panel):
                     attrName = name.title()
                     value = getattr(self.item, name)
 
-                index = self.paramList.InsertStringItem(sys.maxsize, attrName)
+                index = self.paramList.InsertItem(sys.maxsize, attrName)
                 # index = self.paramList.InsertImageStringItem(sys.maxint, attrName)
                 idNameMap[idCount] = attrName
                 self.paramList.SetItemData(index, idCount)
