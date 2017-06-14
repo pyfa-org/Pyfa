@@ -37,6 +37,7 @@ class Display(wx.ListCtrl):
         self.columnsMinWidth = []
         self.Bind(wx.EVT_LIST_COL_END_DRAG, self.resizeChecker)
         self.Bind(wx.EVT_LIST_COL_BEGIN_DRAG, self.resizeSkip)
+
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
 
         i = 0

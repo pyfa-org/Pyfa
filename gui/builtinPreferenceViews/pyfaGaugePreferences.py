@@ -48,6 +48,10 @@ class PFGaugePreview(wx.Window):
         self.Bind(wx.EVT_ENTER_WINDOW, self.OnWindowEnter)
         self.Bind(wx.EVT_LEAVE_WINDOW, self.OnWindowLeave)
         self.Bind(wx.EVT_TIMER, self.OnTimer)
+        self.Bind(wx.EVT_ERASE_BACKGROUND, self.OnEraseBk)
+
+    def OnEraseBk(self, event):
+        pass
 
     def OnTimer(self, event):
         if event.GetId() == self.timerID:

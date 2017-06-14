@@ -11,6 +11,7 @@ class PFBitmapFrame(wx.Frame):
         self.bitmap = bitmap
         self.SetSize((bitmap.GetWidth(), bitmap.GetHeight()))
         self.Bind(wx.EVT_PAINT, self.OnWindowPaint)
+        self.Bind(wx.EVT_ERASE_BACKGROUND, self.OnWindowEraseBk)
         self.Bind(wx.EVT_TIMER, self.OnTimer)
 
         self.timer = wx.Timer(self, wx.ID_ANY)
@@ -43,6 +44,9 @@ class PFBitmapFrame(wx.Frame):
         else:
             self.direction = -1
             self.timer.Start(5)
+
+    def OnWindowEraseBk(self, event):
+        pass
 
     def OnWindowPaint(self, event):
         rect = self.GetRect()

@@ -77,6 +77,7 @@ class RaceSelector(wx.Window):
         self.Bind(wx.EVT_ENTER_WINDOW, self.OnWindowEnter)
         self.Bind(wx.EVT_LEAVE_WINDOW, self.OnWindowLeave)
         self.Bind(wx.EVT_TIMER, self.OnTimer)
+        self.Bind(wx.EVT_ERASE_BACKGROUND, self.OnBackgroundErase)
         self.Bind(wx.EVT_PAINT, self.OnPaint)
         self.Bind(wx.EVT_LEFT_UP, self.OnLeftUp)
         self.Bind(wx.EVT_MOTION, self.OnMouseMove)
@@ -158,6 +159,9 @@ class RaceSelector(wx.Window):
         self.raceNames = races
         self.CalcButtonsBarPos()
         self.Refresh()
+
+    def OnBackgroundErase(self, event):
+        pass
 
     def OnPaint(self, event):
         rect = self.GetRect()
