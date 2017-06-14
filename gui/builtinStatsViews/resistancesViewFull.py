@@ -136,7 +136,7 @@ class ResistancesViewFull(StatsView):
                 bc = pgColour[1]
                 currGColour += 1
 
-                lbl = PyGauge(contentPanel, font, (100, 25))
+                lbl = PyGauge(contentPanel, font, 100)
                 lbl.SetMinSize((48, 16))
                 lbl.SetBackgroundColour(wx.Colour(bc[0], bc[1], bc[2]))
                 lbl.SetBarColour(wx.Colour(fc[0], fc[1], fc[2]))

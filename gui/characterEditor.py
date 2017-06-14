@@ -131,7 +131,7 @@ class CharacterEditor(wx.Frame):
         wx.Frame.__init__(self, parent, id=wx.ID_ANY, title="pyfa: Character Editor", pos=wx.DefaultPosition,
                           size=wx.Size(640, 600), style=wx.DEFAULT_FRAME_STYLE ^ wx.RESIZE_BORDER)
 
-        i = wx.IconFromBitmap(BitmapLoader.getBitmap("character_small", "gui"))
+        i = wx.Icon(BitmapLoader.getBitmap("character_small", "gui"))
         self.SetIcon(i)
 
         self.mainFrame = parent

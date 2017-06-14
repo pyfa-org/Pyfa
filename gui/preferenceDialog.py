@@ -27,7 +27,7 @@ class PreferenceDialog(wx.Dialog):
     def __init__(self, parent):
         wx.Dialog.__init__(self, parent, id=wx.ID_ANY, size=wx.DefaultSize, style=wx.DEFAULT_DIALOG_STYLE)
         self.SetTitle("pyfa - Preferences")
-        i = wx.IconFromBitmap(BitmapLoader.getBitmap("preferences_small", "gui"))
+        i = wx.Icon(BitmapLoader.getBitmap("preferences_small", "gui"))
         self.SetIcon(i)
         mainSizer = wx.BoxSizer(wx.VERTICAL)
 

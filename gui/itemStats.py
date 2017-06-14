@@ -98,7 +98,7 @@ class ItemStatsDialog(wx.Dialog):
             iconFile = "%s%s%s" % (before, sep, "0%s" % after if len(after) < 2 else after)
             itemImg = BitmapLoader.getBitmap(iconFile, "icons")
             if itemImg is not None:
-                self.SetIcon(wx.IconFromBitmap(itemImg))
+                self.SetIcon(wx.Icon(itemImg))
         self.SetTitle("%s: %s%s" % ("%s Stats" % itmContext if itmContext is not None else "Stats", item.name,
                                     " (%d)" % item.ID if config.debug else ""))
 

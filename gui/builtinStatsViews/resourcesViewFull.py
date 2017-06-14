@@ -179,7 +179,7 @@ class ResourcesViewFull(StatsView):
 
                 # Gauges modif. - Darriele
 
-                gauge = PyGauge(parent, gauge_font)
+                gauge = PyGauge(parent, gauge_font, 1)
                 gauge.SetValueRange(0, 0)
                 gauge.SetMinSize((self.getTextExtentW("1.999M/1.99M MW"), 23))
                 gauge.SetFractionDigits(2)

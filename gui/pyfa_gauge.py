@@ -72,9 +72,7 @@ class PyGauge(wx.Window):
         self.SetToolTip(self._tooltip)
 
         self.Bind(wx.EVT_PAINT, self.OnPaint)
-        self.Bind(wx.EVT_ERASE_BACKGROUND, self.OnEraseBackground)
         self.Bind(wx.EVT_TIMER, self.OnTimer)
-        self.Bind(wx.EVT_ERASE_BACKGROUND, self.OnEraseBackground)
         self.Bind(wx.EVT_ENTER_WINDOW, self.OnWindowEnter)
         self.Bind(wx.EVT_LEAVE_WINDOW, self.OnWindowLeave)
 
