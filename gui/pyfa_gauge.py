@@ -73,9 +73,13 @@ class PyGauge(wx.Window):
 
         self.Bind(wx.EVT_PAINT, self.OnPaint)
         self.Bind(wx.EVT_TIMER, self.OnTimer)
+        self.Bind(wx.EVT_ERASE_BACKGROUND, self.OnEraseBackground)
         self.Bind(wx.EVT_ENTER_WINDOW, self.OnWindowEnter)
         self.Bind(wx.EVT_LEAVE_WINDOW, self.OnWindowLeave)
 
+    def OnEraseBackground(self, event):
+        pass
+    
     def OnWindowEnter(self, event):
         self._show_remaining = True
         self.Refresh()
@@ -99,11 +103,21 @@ class PyGauge(wx.Window):
     def SetFractionDigits(self, digits):
         self._fraction_digits = digits
 
+
     def GetBarGradient(self):
-        raise NotImplemented()
+        if self._bar_gradient is None:
+            return None
+
+        return self._bar_gradient[0]
 
     def SetBarGradient(self, gradient=None):
-        raise NotImplemented()
+        if gradient is None:
+            self._bar_gradient = None
+        else:
+            if not isinstance(gradient, list):
+                self._bar_gradient = [gradient]
+            else:
+                self._bar_gradient = list(gradient)
 
     def GetBorderPadding(self) -> int:
         return self._border_padding
@@ -284,6 +298,7 @@ class PyGauge(wx.Window):
             dc.DrawBitmap(gradient_bitmap, r.left, r.top)
 
         # font stuff begins here
+        print(self.font)
         dc.SetFont(self.font)
 
         # determine shadow position
