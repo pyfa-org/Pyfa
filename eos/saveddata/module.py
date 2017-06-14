@@ -178,7 +178,7 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
     @property
     def numShots(self):
         if self.charge is None:
-            return None
+            return -1
         if self.__chargeCycles is None and self.charge:
             numCharges = self.numCharges
             # Usual ammo like projectiles and missiles
@@ -738,13 +738,12 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
     @property
     def rawCycleTime(self):
         speed = max(
-                self.getModifiedItemAttr("speed"),  # Most weapons
-                self.getModifiedItemAttr("duration"),  # Most average modules
-                self.getModifiedItemAttr("durationSensorDampeningBurstProjector"),
-                self.getModifiedItemAttr("durationTargetIlluminationBurstProjector"),
-                self.getModifiedItemAttr("durationECMJammerBurstProjector"),
-                self.getModifiedItemAttr("durationWeaponDisruptionBurstProjector"),
-                0,  # Return 0 if none of the above are valid
+                self.getModifiedItemAttr("speed", 0),  # Most weapons
+                self.getModifiedItemAttr("duration", 0),  # Most average modules
+                self.getModifiedItemAttr("durationSensorDampeningBurstProjector", 0),
+                self.getModifiedItemAttr("durationTargetIlluminationBurstProjector", 0),
+                self.getModifiedItemAttr("durationECMJammerBurstProjector", 0),
+                self.getModifiedItemAttr("durationWeaponDisruptionBurstProjector", 0)
         )
         return speed
 
