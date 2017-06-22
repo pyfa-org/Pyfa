@@ -7,5 +7,4 @@ type = "passive"
 
 
 def handler(fit, module, context):
-    fit.ship.increaseItemAttr("capacitorCapacity",
-                              module.getModifiedItemAttr("capacitorCapacity"))
+    fit.ship.increaseItemAttr("capacitorCapacity", module.getModifiedItemAttr("capacitorCapacity") or 0)

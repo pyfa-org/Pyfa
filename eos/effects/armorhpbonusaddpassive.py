@@ -6,4 +6,4 @@ type = "passive"
 
 
 def handler(fit, module, context):
-    fit.ship.increaseItemAttr("armorHP", module.getModifiedItemAttr("armorHPBonusAdd"))
+    fit.ship.increaseItemAttr("armorHP", module.getModifiedItemAttr("armorHPBonusAdd") or 0)
