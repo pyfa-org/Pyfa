@@ -1,4 +1,7 @@
-# Not used by any item
+# subsystemBonusMinmatarPropulsionMaxVelocity
+#
+# Used by:
+# Subsystem: Loki Propulsion - Intercalated Nanofibers
 type = "passive"
 
 

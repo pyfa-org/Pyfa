@@ -1,4 +1,7 @@
-# Not used by any item
+# subsystemBonusAmarrPropulsionAfterburnerSpeedFactor
+#
+# Used by:
+# Subsystem: Legion Propulsion - Wake Limiter
 type = "passive"
 
 

@@ -1,4 +1,7 @@
-# Not used by any item
+# subsystemBonusAmarrPropulsionMaxVelocity
+#
+# Used by:
+# Subsystem: Legion Propulsion - Intercalated Nanofibers
 type = "passive"
 
 

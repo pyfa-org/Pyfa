@@ -1,4 +1,7 @@
-# Not used by any item
+# maxTargetRangeAddPassive
+#
+# Used by:
+# Subsystems named like: Propulsion Interdiction Nullifier (4 of 4)
 type = "passive"
 
 

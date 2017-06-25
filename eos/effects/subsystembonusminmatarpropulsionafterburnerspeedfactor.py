@@ -1,4 +1,7 @@
-# Not used by any item
+# subsystemBonusMinmatarPropulsionAfterburnerSpeedFactor
+#
+# Used by:
+# Subsystem: Loki Propulsion - Wake Limiter
 type = "passive"
 
 

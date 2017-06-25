@@ -1,4 +1,7 @@
-# Not used by any item
+# subsystemBonusCaldariPropulsionWarpSpeed
+#
+# Used by:
+# Subsystem: Tengu Propulsion - Chassis Optimization
 type = "passive"
 
 

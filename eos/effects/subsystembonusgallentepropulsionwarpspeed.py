@@ -1,4 +1,7 @@
-# Not used by any item
+# subsystemBonusGallentePropulsionWarpSpeed
+#
+# Used by:
+# Subsystem: Proteus Propulsion - Chassis Optimization
 type = "passive"
 
 

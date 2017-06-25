@@ -1,7 +1,4 @@
-# maxVelocityAddPassive
-#
-# Used by:
-# Subsystems from group: Propulsion Systems (12 of 12)
+# Not used by any item
 type = "passive"
 
 

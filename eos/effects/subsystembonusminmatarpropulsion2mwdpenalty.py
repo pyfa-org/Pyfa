@@ -1,3 +1,7 @@
+# subsystemBonusMinmatarPropulsion2MWDPenalty
+#
+# Used by:
+# Subsystem: Loki Propulsion - Wake Limiter
 type = "passive"
 def handler(fit, src, context):
     fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill("High Speed Maneuvering"),
