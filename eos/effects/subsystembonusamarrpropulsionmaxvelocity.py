@@ -1,7 +1,4 @@
-# subsystemBonusAmarrPropulsionMaxVelocity
-#
-# Used by:
-# Subsystem: Legion Propulsion - Chassis Optimization
+# Not used by any item
 type = "passive"
 
 

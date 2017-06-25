@@ -1,7 +1,4 @@
-# subsystemBonusCaldariEngineeringPowerOutput
-#
-# Used by:
-# Subsystem: Tengu Engineering - Power Core Multiplier
+# Not used by any item
 type = "passive"
 
 

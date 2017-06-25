@@ -1,7 +1,4 @@
-# subsystemBonusGallenteDefensiveArmorResistance
-#
-# Used by:
-# Subsystem: Proteus Defensive - Adaptive Augmenter
+# Not used by any item
 type = "passive"
 
 

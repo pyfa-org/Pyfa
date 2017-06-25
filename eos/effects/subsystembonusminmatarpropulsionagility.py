@@ -1,8 +1,4 @@
-# subsystemBonusMinmatarPropulsionAgility
-#
-# Used by:
-# Subsystem: Loki Propulsion - Intercalated Nanofibers
-# Subsystem: Loki Propulsion - Interdiction Nullifier
+# Not used by any item
 type = "passive"
 
 

@@ -1,7 +1,4 @@
-# subsystemBonusCaldariElectronicCPU
-#
-# Used by:
-# Subsystem: Tengu Electronics - CPU Efficiency Gate
+# Not used by any item
 type = "passive"
 
 

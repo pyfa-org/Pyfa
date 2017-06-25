@@ -1,7 +1,4 @@
-# subsystemBonusMinmatarDefensive2RemoteShieldTransporterAmount
-#
-# Used by:
-# Subsystem: Loki Defensive - Adaptive Shielding
+# Not used by any item
 type = "passive"
 runTime = "early"
 

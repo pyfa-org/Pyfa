@@ -1,7 +1,4 @@
-# subsystemBonusCaldariEngineeringCapacitorCapacity
-#
-# Used by:
-# Subsystem: Tengu Engineering - Augmented Capacitor Reservoir
+# Not used by any item
 type = "passive"
 
 

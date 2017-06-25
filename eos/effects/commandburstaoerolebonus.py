@@ -7,7 +7,6 @@
 # Ships from group: Force Auxiliary (5 of 5)
 # Ships from group: Supercarrier (6 of 6)
 # Ships from group: Titan (6 of 6)
-# Subsystems named like: Defensive Warfare Processor (4 of 4)
 # Ship: Orca
 # Ship: Rorqual
 type = "passive"

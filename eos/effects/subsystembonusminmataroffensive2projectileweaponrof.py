@@ -1,8 +1,4 @@
-# subsystemBonusMinmatarOffensive2ProjectileWeaponROF
-#
-# Used by:
-# Subsystem: Loki Offensive - Hardpoint Efficiency Configuration
-# Subsystem: Loki Offensive - Projectile Scoping Array
+# Not used by any item
 type = "passive"
 
 

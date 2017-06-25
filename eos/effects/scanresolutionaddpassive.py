@@ -1,7 +1,4 @@
-# scanResolutionAddPassive
-#
-# Used by:
-# Subsystems from group: Electronic Systems (16 of 16)
+# Not used by any item
 type = "passive"
 
 

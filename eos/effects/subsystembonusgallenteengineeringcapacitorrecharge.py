@@ -1,7 +1,4 @@
-# subsystemBonusGallenteEngineeringCapacitorRecharge
-#
-# Used by:
-# Subsystem: Proteus Engineering - Capacitor Regeneration Matrix
+# Not used by any item
 type = "passive"
 
 

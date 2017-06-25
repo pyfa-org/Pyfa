@@ -1,7 +1,4 @@
-# subsystemBonusMinmatarEngineeringCapacitorRecharge
-#
-# Used by:
-# Subsystem: Loki Engineering - Capacitor Regeneration Matrix
+# Not used by any item
 type = "passive"
 
 

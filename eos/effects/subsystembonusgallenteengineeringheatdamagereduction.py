@@ -1,7 +1,4 @@
-# subsystemBonusGallenteEngineeringHeatDamageReduction
-#
-# Used by:
-# Subsystem: Proteus Engineering - Supplemental Coolant Injector
+# Not used by any item
 type = "passive"
 
 

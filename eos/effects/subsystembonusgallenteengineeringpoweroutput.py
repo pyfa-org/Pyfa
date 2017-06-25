@@ -1,7 +1,4 @@
-# subsystemBonusGallenteEngineeringPowerOutput
-#
-# Used by:
-# Subsystem: Proteus Engineering - Power Core Multiplier
+# Not used by any item
 type = "passive"
 
 

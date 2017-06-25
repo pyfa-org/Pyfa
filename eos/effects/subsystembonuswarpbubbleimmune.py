@@ -1,7 +1,4 @@
-# subsystemBonusWarpBubbleImmune
-#
-# Used by:
-# Subsystems named like: Propulsion Interdiction Nullifier (4 of 4)
+# Not used by any item
 type = "passive"
 
 

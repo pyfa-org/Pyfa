@@ -1,3 +1,7 @@
+# subsystemBonusMinmatarOffensive2MissileLauncherROF
+#
+# Used by:
+# Subsystem: Loki Offensive - Launcher Efficiency Configuration
 type = "passive"
 def handler(fit, src, context):
     groups = ("Missile Launcher Heavy", "Missile Launcher Rapid Light", "Missile Launcher Heavy Assault")

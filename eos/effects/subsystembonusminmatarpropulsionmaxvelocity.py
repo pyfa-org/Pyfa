@@ -1,7 +1,4 @@
-# subsystemBonusMinmatarPropulsionMaxVelocity
-#
-# Used by:
-# Subsystem: Loki Propulsion - Chassis Optimization
+# Not used by any item
 type = "passive"
 
 

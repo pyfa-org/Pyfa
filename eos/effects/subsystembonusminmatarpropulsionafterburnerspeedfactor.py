@@ -1,7 +1,4 @@
-# subsystemBonusMinmatarPropulsionAfterburnerSpeedFactor
-#
-# Used by:
-# Subsystem: Loki Propulsion - Fuel Catalyst
+# Not used by any item
 type = "passive"
 
 

@@ -1,3 +1,8 @@
+# structureHPBonusAddPassive
+#
+# Used by:
+# Subsystems named like: Defensive Covert Reconfiguration (4 of 4)
+# Subsystem: Loki Defensive - Adaptive Defense Node
 type = "passive"
 
 

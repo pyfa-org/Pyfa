@@ -1,3 +1,7 @@
+# shipBonusStrategicCruiserMinmatarNaniteRepairTime2
+#
+# Used by:
+# Ship: Loki
 type = "passive"
 
 

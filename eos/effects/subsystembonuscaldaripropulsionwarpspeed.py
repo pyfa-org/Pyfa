@@ -1,7 +1,4 @@
-# subsystemBonusCaldariPropulsionWarpSpeed
-#
-# Used by:
-# Subsystem: Tengu Propulsion - Gravitational Capacitor
+# Not used by any item
 type = "passive"
 
 

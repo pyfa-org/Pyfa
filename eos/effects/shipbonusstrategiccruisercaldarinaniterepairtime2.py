@@ -1,3 +1,7 @@
+# shipBonusStrategicCruiserCaldariNaniteRepairTime2
+#
+# Used by:
+# Ship: Tengu
 type = "passive"
 
 

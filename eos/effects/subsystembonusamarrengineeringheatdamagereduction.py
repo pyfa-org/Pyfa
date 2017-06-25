@@ -1,7 +1,4 @@
-# subsystemBonusAmarrEngineeringHeatDamageReduction
-#
-# Used by:
-# Subsystem: Legion Engineering - Supplemental Coolant Injector
+# Not used by any item
 type = "passive"
 
 

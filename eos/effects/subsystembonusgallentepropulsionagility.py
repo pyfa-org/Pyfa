@@ -1,7 +1,4 @@
-# subsystemBonusGallentePropulsionAgility
-#
-# Used by:
-# Subsystem: Proteus Propulsion - Interdiction Nullifier
+# Not used by any item
 type = "passive"
 
 

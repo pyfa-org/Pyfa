@@ -1,3 +1,7 @@
+# shipBonusStrategicCruiserAmarrNaniteRepairTime2
+#
+# Used by:
+# Ship: Legion
 type = "passive"
 
 

@@ -1,7 +1,4 @@
-# subsystemBonusMinmatarEngineeringPowerOutput
-#
-# Used by:
-# Subsystem: Loki Engineering - Power Core Multiplier
+# Not used by any item
 type = "passive"
 
 

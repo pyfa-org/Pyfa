@@ -1,7 +1,4 @@
-# subsystemBonusGallenteElectronic2MaxTargetingRange
-#
-# Used by:
-# Subsystem: Proteus Electronics - Dissolution Sequencer
+# Not used by any item
 type = "passive"
 
 

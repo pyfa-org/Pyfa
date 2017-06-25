@@ -1,7 +1,7 @@
 # modifyShipAgilityPassivePreAssignment
 #
 # Used by:
-# Subsystems from group: Propulsion Systems (16 of 16)
+# Subsystems from group: Propulsion Systems (12 of 12)
 runTime = "early"
 type = "passive"
 

@@ -1,3 +1,7 @@
+# subsystemBonusAmarrOffensive3DroneDamageHP
+#
+# Used by:
+# Subsystem: Legion Offensive - Assault Optimization
 type = "passive"
 def handler(fit, src, context):
     lvl = src.level

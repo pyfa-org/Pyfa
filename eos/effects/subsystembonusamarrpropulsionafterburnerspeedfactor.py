@@ -1,7 +1,4 @@
-# subsystemBonusAmarrPropulsionAfterburnerSpeedFactor
-#
-# Used by:
-# Subsystem: Legion Propulsion - Fuel Catalyst
+# Not used by any item
 type = "passive"
 
 

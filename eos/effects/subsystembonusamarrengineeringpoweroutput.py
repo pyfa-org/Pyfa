@@ -1,7 +1,4 @@
-# subsystemBonusAmarrEngineeringPowerOutput
-#
-# Used by:
-# Subsystem: Legion Engineering - Power Core Multiplier
+# Not used by any item
 type = "passive"
 
 

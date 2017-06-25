@@ -1,3 +1,7 @@
+# subsystemBonusCaldariOffensive1LauncherROF
+#
+# Used by:
+# Subsystem: Tengu Offensive - Accelerated Ejection Bay
 type = "passive"
 def handler(fit, src, context):
     groups = ("Missile Launcher Heavy", "Missile Launcher Rapid Light", "Missile Launcher Heavy Assault")

@@ -1,7 +1,4 @@
-# subsystemBonusCaldariPropulsionAfterburnerSpeedFactor
-#
-# Used by:
-# Subsystem: Tengu Propulsion - Fuel Catalyst
+# Not used by any item
 type = "passive"
 
 

@@ -1,7 +1,4 @@
-# subsystemBonusGallentePropulsionABMWDCapNeed
-#
-# Used by:
-# Subsystem: Proteus Propulsion - Localized Injectors
+# Not used by any item
 type = "passive"
 
 

@@ -1,3 +1,7 @@
+# subsystemBonusAmarrOffensiveMissileLauncherROF
+#
+# Used by:
+# Subsystem: Legion Offensive - Assault Optimization
 type = "passive"
 def handler(fit, src, context):
     groups = ("Missile Launcher Heavy", "Missile Launcher Rapid Light", "Missile Launcher Heavy Assault")

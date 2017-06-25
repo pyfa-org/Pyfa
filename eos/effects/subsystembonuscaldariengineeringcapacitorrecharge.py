@@ -1,7 +1,4 @@
-# subsystemBonusCaldariEngineeringCapacitorRecharge
-#
-# Used by:
-# Subsystem: Tengu Engineering - Capacitor Regeneration Matrix
+# Not used by any item
 type = "passive"
 
 

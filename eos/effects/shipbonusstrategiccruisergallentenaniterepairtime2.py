@@ -1,3 +1,7 @@
+# shipBonusStrategicCruiserGallenteNaniteRepairTime2
+#
+# Used by:
+# Ship: Proteus
 type = "passive"
 
 

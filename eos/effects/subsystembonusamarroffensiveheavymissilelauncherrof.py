@@ -1,7 +1,4 @@
-# subsystemBonusAmarrOffensiveHeavyMissileLauncherROF
-#
-# Used by:
-# Subsystem: Legion Offensive - Assault Optimization
+# Not used by any item
 type = "passive"
 
 

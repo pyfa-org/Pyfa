@@ -1,7 +1,4 @@
-# subsystemBonusCaldariEngineeringHeatDamageReduction
-#
-# Used by:
-# Subsystem: Tengu Engineering - Supplemental Coolant Injector
+# Not used by any item
 type = "passive"
 
 

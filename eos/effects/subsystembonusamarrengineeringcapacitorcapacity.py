@@ -1,7 +1,4 @@
-# subsystemBonusAmarrEngineeringCapacitorCapacity
-#
-# Used by:
-# Subsystem: Legion Engineering - Augmented Capacitor Reservoir
+# Not used by any item
 type = "passive"
 
 
