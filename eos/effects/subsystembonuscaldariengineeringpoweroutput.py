@@ -1,10 +1,7 @@
-# subsystemBonusCaldariEngineeringPowerOutput
-#
-# Used by:
-# Subsystem: Tengu Engineering - Power Core Multiplier
+# Not used by any item
 type = "passive"
 
 
 def handler(fit, module, context):
-    fit.ship.boostItemAttr("powerOutput", module.getModifiedItemAttr("subsystemBonusCaldariEngineering"),
+    fit.ship.boostItemAttr("powerOutput", module.getModifiedItemAttr("subsystemBonusCaldariCore"),
                            skill="Caldari Engineering Systems")

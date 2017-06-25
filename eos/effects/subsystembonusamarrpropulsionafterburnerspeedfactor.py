@@ -1,7 +1,7 @@
 # subsystemBonusAmarrPropulsionAfterburnerSpeedFactor
 #
 # Used by:
-# Subsystem: Legion Propulsion - Fuel Catalyst
+# Subsystem: Legion Propulsion - Wake Limiter
 type = "passive"
 
 

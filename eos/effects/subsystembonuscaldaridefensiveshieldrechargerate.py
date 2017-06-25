@@ -1,7 +1,4 @@
-# subsystemBonusCaldariDefensiveShieldRechargeRate
-#
-# Used by:
-# Subsystem: Tengu Defensive - Supplemental Screening
+# Not used by any item
 type = "passive"
 
 

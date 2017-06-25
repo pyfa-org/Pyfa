@@ -1,7 +1,4 @@
-# subsystemBonusCaldariElectronicScanStrengthGravimetric
-#
-# Used by:
-# Subsystem: Tengu Electronics - Dissolution Sequencer
+# Not used by any item
 type = "passive"
 
 

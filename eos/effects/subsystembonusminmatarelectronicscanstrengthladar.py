@@ -1,7 +1,4 @@
-# subsystemBonusMinmatarElectronicScanStrengthLADAR
-#
-# Used by:
-# Subsystem: Loki Electronics - Dissolution Sequencer
+# Not used by any item
 type = "passive"
 
 

@@ -1,11 +1,8 @@
-# subsystemBonusCaldariEngineeringHeatDamageReduction
-#
-# Used by:
-# Subsystem: Tengu Engineering - Supplemental Coolant Injector
+# Not used by any item
 type = "passive"
 
 
 def handler(fit, module, context):
     fit.modules.filteredItemBoost(lambda mod: True, "heatDamage",
-                                  module.getModifiedItemAttr("subsystemBonusCaldariEngineering"),
+                                  module.getModifiedItemAttr("subsystemBonusCaldariCore"),
                                   skill="Caldari Engineering Systems")

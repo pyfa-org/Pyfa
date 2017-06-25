@@ -1,7 +1,4 @@
-# subSystemBonusGallenteDefensiveSkirmishWarfare
-#
-# Used by:
-# Subsystem: Proteus Defensive - Warfare Processor
+# Not used by any item
 type = "passive"
 
 

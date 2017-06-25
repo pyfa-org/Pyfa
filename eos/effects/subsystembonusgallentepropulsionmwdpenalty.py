@@ -1,7 +1,4 @@
-# subsystemBonusGallentePropulsionMWDPenalty
-#
-# Used by:
-# Subsystem: Proteus Propulsion - Wake Limiter
+# Not used by any item
 type = "passive"
 
 

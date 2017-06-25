@@ -1,7 +1,4 @@
-# subsystemBonusCaldariOffensiveHeavyAssaultMissileLauncherROF
-#
-# Used by:
-# Variations of subsystem: Tengu Offensive - Accelerated Ejection Bay (3 of 4)
+# Not used by any item
 type = "passive"
 
 

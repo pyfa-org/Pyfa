@@ -1,7 +1,6 @@
 # subsystemBonusAmarrOffensive2EnergyWeaponCapacitorNeed
 #
 # Used by:
-# Subsystem: Legion Offensive - Drone Synthesis Projector
 # Subsystem: Legion Offensive - Liquid Crystal Magnifiers
 type = "passive"
 

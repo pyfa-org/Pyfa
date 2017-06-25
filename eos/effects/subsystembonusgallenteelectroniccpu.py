@@ -1,7 +1,4 @@
-# subsystemBonusGallenteElectronicCPU
-#
-# Used by:
-# Subsystem: Proteus Electronics - CPU Efficiency Gate
+# Not used by any item
 type = "passive"
 
 

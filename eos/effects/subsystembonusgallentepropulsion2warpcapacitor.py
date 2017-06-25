@@ -1,7 +1,4 @@
-# subsystemBonusGallentePropulsion2WarpCapacitor
-#
-# Used by:
-# Subsystem: Proteus Propulsion - Gravitational Capacitor
+# Not used by any item
 type = "passive"
 
 

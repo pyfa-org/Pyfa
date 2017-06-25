@@ -1,10 +1,7 @@
-# subsystemBonusMinmatarEngineeringPowerOutput
-#
-# Used by:
-# Subsystem: Loki Engineering - Power Core Multiplier
+# Not used by any item
 type = "passive"
 
 
 def handler(fit, module, context):
-    fit.ship.boostItemAttr("powerOutput", module.getModifiedItemAttr("subsystemBonusMinmatarEngineering"),
+    fit.ship.boostItemAttr("powerOutput", module.getModifiedItemAttr("subsystemBonusMinmatarCore"),
                            skill="Minmatar Engineering Systems")

@@ -1,7 +1,7 @@
 # powerOutputAddPassive
 #
 # Used by:
-# Items from category: Subsystem (40 of 80)
+# Subsystems from group: Offensive Systems (8 of 12)
 type = "passive"
 
 

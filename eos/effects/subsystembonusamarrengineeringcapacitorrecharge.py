@@ -1,10 +1,7 @@
-# subsystemBonusAmarrEngineeringCapacitorRecharge
-#
-# Used by:
-# Subsystem: Legion Engineering - Capacitor Regeneration Matrix
+# Not used by any item
 type = "passive"
 
 
 def handler(fit, module, context):
-    fit.ship.boostItemAttr("rechargeRate", module.getModifiedItemAttr("subsystemBonusAmarrEngineering"),
+    fit.ship.boostItemAttr("rechargeRate", module.getModifiedItemAttr("subsystemBonusAmarrCore"),
                            skill="Amarr Engineering Systems")

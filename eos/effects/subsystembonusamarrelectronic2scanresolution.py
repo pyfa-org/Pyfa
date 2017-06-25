@@ -1,7 +1,4 @@
-# subsystemBonusAmarrElectronic2ScanResolution
-#
-# Used by:
-# Subsystem: Legion Electronics - Tactical Targeting Network
+# Not used by any item
 type = "passive"
 
 

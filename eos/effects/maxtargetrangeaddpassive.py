@@ -1,7 +1,7 @@
 # maxTargetRangeAddPassive
 #
 # Used by:
-# Subsystems from group: Electronic Systems (16 of 16)
+# Subsystems named like: Propulsion Interdiction Nullifier (4 of 4)
 type = "passive"
 
 

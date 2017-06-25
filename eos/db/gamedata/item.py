@@ -47,7 +47,7 @@ mapper(Item, items_table,
        properties={
            "group"            : relation(Group, backref="items"),
            "icon"             : relation(Icon),
-           "_Item__attributes": relation(Attribute, collection_class=attribute_mapped_collection('name')),
+           "_Item__attributes": relation(Attribute, cascade='all, delete, delete-orphan', collection_class=attribute_mapped_collection('name')),
            "effects": relation(Effect, secondary=typeeffects_table, collection_class=attribute_mapped_collection('name')),
            "metaGroup"        : relation(MetaType,
                                          primaryjoin=metatypes_table.c.typeID == items_table.c.typeID,
