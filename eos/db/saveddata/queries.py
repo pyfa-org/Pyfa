@@ -17,6 +17,8 @@
 # along with eos.  If not, see <http://www.gnu.org/licenses/>.
 # ===============================================================================
 
+import sys
+
 from sqlalchemy.sql import and_
 from sqlalchemy import desc, select
 
@@ -539,5 +541,10 @@ def remove(stuff):
 
 def commit():
     with sd_lock:
-        saveddata_session.commit()
-        saveddata_session.flush()
+        try:
+            saveddata_session.commit()
+            saveddata_session.flush()
+        except Exception:
+            saveddata_session.rollback()
+            exc_info = sys.exc_info()
+            raise exc_info[0], exc_info[1], exc_info[2]
