@@ -5,4 +5,4 @@ type = "passive"
 def handler(fit, module, context):
     fit.drones.filteredItemBoost(lambda drone: drone.item.requiresSkill("Drones"), "maxVelocity",
                                  module.getModifiedItemAttr("subsystemBonusGallenteCore2"),
-                                 skill="Gallente Engineering Systems")
+                                 skill="Gallente Core Systems")

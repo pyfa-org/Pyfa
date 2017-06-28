@@ -4,4 +4,4 @@ type = "passive"
 
 def handler(fit, module, context):
     fit.ship.boostItemAttr("rechargeRate", module.getModifiedItemAttr("subsystemBonusGallenteCore"),
-                           skill="Gallente Engineering Systems")
+                           skill="Gallente Core Systems")

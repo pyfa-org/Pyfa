@@ -4,4 +4,4 @@ type = "passive"
 
 def handler(fit, module, context):
     fit.ship.boostItemAttr("capacitorCapacity", module.getModifiedItemAttr("subsystemBonusCaldariCore"),
-                           skill="Caldari Engineering Systems")
+                           skill="Caldari Core Systems")
