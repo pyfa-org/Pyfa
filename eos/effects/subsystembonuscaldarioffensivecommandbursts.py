@@ -1,3 +1,7 @@
+# subSystemBonusCaldariOffensiveCommandBursts
+#
+# Used by:
+# Subsystem: Tengu Offensive - Support Processor
 type = "passive"
 def handler(fit, src, context):
     fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill("Skirmish Command"), "warfareBuff2Value", src.getModifiedItemAttr("subsystemBonusCaldariOffensive"), skill="Caldari Offensive Systems")

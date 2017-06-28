@@ -1,3 +1,7 @@
+# subSystemBonusAmarrOffensiveCommandBursts
+#
+# Used by:
+# Subsystem: Legion Offensive - Support Processor
 type = "passive"
 def handler(fit, src, context):
     fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill("Skirmish Command"), "buffDuration", src.getModifiedItemAttr("subsystemBonusAmarrOffensive"), skill="Amarr Offensive Systems")

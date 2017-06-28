@@ -1,3 +1,7 @@
+# subSystemBonusGallenteOffensiveCommandBursts
+#
+# Used by:
+# Subsystem: Proteus Offensive - Support Processor
 type = "passive"
 def handler(fit, src, context):
     fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill("Skirmish Command"), "warfareBuff1Value", src.getModifiedItemAttr("subsystemBonusGallenteOffensive"), skill="Gallente Offensive Systems")

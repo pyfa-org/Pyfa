@@ -1,4 +1,7 @@
-# Not used by any item
+# subsystemBonusMinmatarEngineeringHeatDamageReduction
+#
+# Used by:
+# Subsystem: Loki Core - Immobility Drivers
 type = "passive"
 
 

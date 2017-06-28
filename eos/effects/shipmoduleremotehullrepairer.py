@@ -1,4 +1,4 @@
-# remoteHullRepairFalloff
+# shipModuleRemoteHullRepairer
 #
 # Used by:
 # Modules from group: Remote Hull Repairer (8 of 8)

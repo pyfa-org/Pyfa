@@ -1,3 +1,7 @@
+# subsystemBonusMinmatarDefensive2HardenerHeat
+#
+# Used by:
+# Subsystem: Loki Defensive - Augmented Durability
 type = "passive"
 def handler(fit, src, context):
     fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill("Hull Upgrades"), "overloadSelfDurationBonus",

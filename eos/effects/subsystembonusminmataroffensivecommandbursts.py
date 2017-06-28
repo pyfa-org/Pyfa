@@ -1,3 +1,7 @@
+# subSystemBonusMinmatarOffensiveCommandBursts
+#
+# Used by:
+# Subsystem: Loki Offensive - Support Processor
 type = "passive"
 def handler(fit, src, context):
     fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill("Skirmish Command"), "warfareBuff1Value", src.getModifiedItemAttr("subsystemBonusMinmatarOffensive"), skill="Minmatar Offensive Systems")

@@ -1,4 +1,7 @@
-# Not used by any item
+# covertOpsCloakCpuPenalty
+#
+# Used by:
+# Subsystems from group: Defensive Systems (8 of 12)
 type = "passive"
 
 

@@ -1,4 +1,7 @@
-# Not used by any item
+# subsystemBonusGallenteEngineeringHeatDamageReduction
+#
+# Used by:
+# Subsystem: Proteus Core - Friction Extension Processor
 type = "passive"
 
 

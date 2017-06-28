@@ -1,4 +1,7 @@
-# Not used by any item
+# subsystemBonusAmarrEngineeringHeatDamageReduction
+#
+# Used by:
+# Subsystem: Legion Core - Energy Parasitic Complex
 type = "passive"
 
 

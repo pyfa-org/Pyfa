@@ -1,4 +1,7 @@
-# Not used by any item
+# subsystemBonusCaldariEngineeringHeatDamageReduction
+#
+# Used by:
+# Subsystem: Tengu Core - Obfuscation Manifold
 type = "passive"
 
 

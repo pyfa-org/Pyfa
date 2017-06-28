@@ -1,4 +1,7 @@
-# Not used by any item
+# warfareLinkCpuPenalty
+#
+# Used by:
+# Subsystems from group: Offensive Systems (8 of 12)
 type = "passive"
 
 

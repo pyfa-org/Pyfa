@@ -1,4 +1,4 @@
-# remoteShieldTransferFalloff
+# shipModuleRemoteShieldBooster
 #
 # Used by:
 # Modules from group: Remote Shield Booster (38 of 38)

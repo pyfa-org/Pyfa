@@ -1,3 +1,7 @@
+# subSystemBonusMinmatarDefensive3TractorBeamBonus
+#
+# Used by:
+# Subsystem: Loki Defensive - Covert Reconfiguration
 type = "passive"
 def handler(fit, src, context):
     fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == "Tractor Beam", "maxRange",

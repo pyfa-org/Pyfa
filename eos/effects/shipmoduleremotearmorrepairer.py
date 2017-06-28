@@ -1,4 +1,4 @@
-# remoteArmorRepairFalloff
+# shipModuleRemoteArmorRepairer
 #
 # Used by:
 # Modules from group: Remote Armor Repairer (39 of 39)
