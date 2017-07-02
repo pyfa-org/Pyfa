@@ -267,7 +267,7 @@ class Character(object):
         for grp in cat.groups:
             if grp.published:
                 groups.append((grp.ID, grp.name))
-        return groups
+        return sorted(groups, key=lambda x: x[1])
 
     @staticmethod
     def getSkills(groupID):
@@ -276,7 +276,7 @@ class Character(object):
         for skill in group.items:
             if skill.published is True:
                 skills.append((skill.ID, skill.name))
-        return skills
+        return sorted(skills, key=lambda x: x[1])
 
     @staticmethod
     def getSkillsByName(text):
@@ -285,7 +285,7 @@ class Character(object):
         for skill in items:
             if skill.published is True:
                 skills.append((skill.ID, skill.name))
-        return skills
+        return sorted(skills, key=lambda x: x[1])
 
     @staticmethod
     def setAlphaClone(char, cloneID):

@@ -19,7 +19,7 @@
 
 # noinspection PyPackageRequirements
 import wx
-
+import wx.dataview
 from .utils.floatspin import FloatSpin
 # noinspection PyPackageRequirements
 import wx.lib.newevent
@@ -150,12 +150,12 @@ class CharacterEditor(wx.Frame):
         self.viewsNBContainer = wx.Notebook(self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, 0)
 
         self.sview = SkillTreeView(self.viewsNBContainer)
-        self.iview = ImplantEditorView(self.viewsNBContainer)
-        self.aview = APIView(self.viewsNBContainer)
+        # self.iview = ImplantEditorView(self.viewsNBContainer)
+        # self.aview = APIView(self.viewsNBContainer)
 
         self.viewsNBContainer.AddPage(self.sview, "Skills")
-        self.viewsNBContainer.AddPage(self.iview, "Implants")
-        self.viewsNBContainer.AddPage(self.aview, "API")
+        # self.viewsNBContainer.AddPage(self.iview, "Implants")
+        # self.viewsNBContainer.AddPage(self.aview, "API")
 
         mainSizer.Add(self.viewsNBContainer, 1, wx.EXPAND | wx.ALL, 5)
 
@@ -306,29 +306,31 @@ class SkillTreeView(wx.Panel):
         self.searchTimer = wx.Timer(self)
         self.Bind(wx.EVT_TIMER, self.populateSkillTreeSkillSearch, self.searchTimer)
 
-        tree = self.skillTreeListCtrl = TreeListCtrl(self, wx.ID_ANY, style=wx.TR_DEFAULT_STYLE | wx.TR_HIDE_ROOT)
+        tree = self.skillTreeListCtrl = TreeListCtrl(self, wx.ID_ANY, style=wx.dataview.TL_DEFAULT_STYLE)
         pmainSizer.Add(tree, 1, wx.EXPAND | wx.ALL, 5)
 
         self.imageList = wx.ImageList(16, 16)
         tree.SetImageList(self.imageList)
         self.skillBookImageId = self.imageList.Add(BitmapLoader.getBitmap("skill_small", "gui"))
 
-        tree.AddColumn("Skill")
-        tree.AddColumn("Level")
-        tree.SetMainColumn(0)
+        tree.AppendColumn("Skill")
+        tree.AppendColumn("Level")
+        #tree.SetMainColumn(0)
 
-        self.root = tree.AddRoot("Skills")
-        tree.SetItemText(self.root, "Levels", 1)
+        self.root = tree.GetRootItem()
+        # self.root = tree.AppendItem(root, "Skills")
+        #
+        # tree.SetItemText(self.root, 1, "Levels")
 
-        tree.SetColumnWidth(0, 500)
+        #tree.SetColumnWidth(0, 300)
 
         self.btnSecStatus = wx.Button(self, wx.ID_ANY, "Sec Status: {0:.2f}".format(char.secStatus or 0.0))
         self.btnSecStatus.Bind(wx.EVT_BUTTON, self.onSecStatus)
 
         self.populateSkillTree()
 
-        tree.Bind(wx.EVT_TREE_ITEM_EXPANDING, self.expandLookup)
-        tree.Bind(wx.EVT_TREE_ITEM_RIGHT_CLICK, self.scheduleMenu)
+        tree.Bind(wx.dataview.EVT_TREELIST_ITEM_EXPANDING, self.expandLookup)
+        tree.Bind(wx.dataview.EVT_TREELIST_ITEM_CONTEXT_MENU, self.scheduleMenu)
 
         bSizerButtons = wx.BoxSizer(wx.HORIZONTAL)
 
@@ -410,15 +412,16 @@ class SkillTreeView(wx.Panel):
 
         root = self.root
         tree = self.skillTreeListCtrl
-        tree.DeleteChildren(root)
+        tree.DeleteAllItems()
 
         for id, name in sChar.getSkillsByName(search):
             iconId = self.skillBookImageId
             childId = tree.AppendItem(root, name, iconId, data=('skill', id))
             level, dirty = sChar.getSkillLevel(char.ID, id)
-            tree.SetItemText(childId, "Level %d" % int(level) if isinstance(level, float) else level, 1)
-            if dirty:
-                tree.SetItemTextColour(childId, wx.BLUE)
+            tree.SetItemText(childId, 1, "Level %d" % int(level) if isinstance(level, float) else level)
+            # @todo: pheonix
+            # if dirty:
+            #     tree.SetItemTextColour(childId, wx.BLUE)
 
     def populateSkillTree(self, event=None):
         sChar = Character.getInstance()
@@ -436,26 +439,27 @@ class SkillTreeView(wx.Panel):
         imageId = self.skillBookImageId
         root = self.root
         tree = self.skillTreeListCtrl
-        tree.DeleteChildren(root)
+        tree.DeleteAllItems()
 
         for id, name in groups:
-            childId = tree.AppendItem(root, name, imageId)
-            tree.SetPyData(childId, ('group', id))
+            childId = tree.AppendItem(root, name, imageId, data=('group', id))
             tree.AppendItem(childId, "dummy")
-            if id in dirtyGroups:
-                tree.SetItemTextColour(childId, wx.BLUE)
+            # @todo: pheonix
+            # if id in dirtyGroups:
+            #     tree.(childId, wx.BLUE)
 
-        tree.SortChildren(root)
+        # @todo: pheonix
+        #tree.SortChildren(root)
 
         if event:
             event.Skip()
 
     def expandLookup(self, event):
-        root = event.Item
+        root = event.GetItem()
         tree = self.skillTreeListCtrl
-        child, cookie = tree.GetFirstChild(root)
+        child = tree.GetFirstChild(root)
         if tree.GetItemText(child) == "dummy":
-            tree.Delete(child)
+            tree.DeleteItem(child)
 
             # Get the real intrestin' stuff
             sChar = Character.getInstance()
@@ -465,19 +469,22 @@ class SkillTreeView(wx.Panel):
                 iconId = self.skillBookImageId
                 childId = tree.AppendItem(root, name, iconId, data=('skill', id))
                 level, dirty = sChar.getSkillLevel(char.ID, id)
-                tree.SetItemText(childId, "Level %d" % int(level) if isinstance(level, float) else level, 1)
-                if dirty:
-                    tree.SetItemTextColour(childId, wx.BLUE)
+                tree.SetItemText(childId, 1, "Level %d" % int(level) if isinstance(level, float) else level)
 
-            tree.SortChildren(root)
+                # @todo: pheonix
+                # if dirty:
+                #     tree.SetItemTextColour(childId, wx.BLUE)
+
+            #tree.SortChildren(root)
 
     def scheduleMenu(self, event):
         event.Skip()
-        wx.CallAfter(self.spawnMenu, event.Item)
+        wx.CallAfter(self.spawnMenu, event.GetItem())
 
     def spawnMenu(self, item):
-        self.skillTreeListCtrl.SelectItem(item)
-        if self.skillTreeListCtrl.GetChildrenCount(item) > 0:
+        self.skillTreeListCtrl.Select(item)
+        thing = self.skillTreeListCtrl.GetFirstChild(item).IsOk()
+        if thing:
             return
 
         char = self.charEditor.entityEditor.getActiveEntity()

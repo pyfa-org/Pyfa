@@ -112,7 +112,7 @@ class ContextMenu(object):
                             else:
                                 rootItem.SetBitmap(bitmap)
 
-                        rootMenu.AppendItem(rootItem)
+                        rootMenu.Append(rootItem)
 
                     empty = False
 
