@@ -8,7 +8,7 @@ from gui.bitmap_loader import BitmapLoader
 import gui.mainFrame
 
 from service.settings import HTMLExportSettings
-
+import wx.lib.agw.hyperlink
 
 class PFHTMLExportPref(PreferenceView):
     title = "HTML Export"
@@ -37,10 +37,9 @@ class PFHTMLExportPref(PreferenceView):
         self.stDesc.Wrap(dlgWidth - 50)
         mainSizer.Add(self.stDesc, 0, wx.ALL, 5)
 
-        self.PathLinkCtrl = wx.HyperlinkCtrl(panel, wx.ID_ANY, self.HTMLExportSettings.getPath(),
-                                             'file:///{}'.format(self.HTMLExportSettings.getPath()),
+        self.PathLinkCtrl = wx.lib.agw.hyperlink.HyperLinkCtrl(panel, wx.ID_ANY, self.HTMLExportSettings.getPath(),
                                              wx.DefaultPosition, wx.DefaultSize,
-                                             wx.HL_ALIGN_LEFT | wx.NO_BORDER | wx.HL_CONTEXTMENU)
+                                             URL='file:///{}'.format(self.HTMLExportSettings.getPath()),)
         mainSizer.Add(self.PathLinkCtrl, 0, wx.ALL | wx.EXPAND, 5)
 
         self.fileSelectDialog = wx.FileDialog(None, "Save Fitting As...",
