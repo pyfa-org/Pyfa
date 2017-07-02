@@ -113,7 +113,7 @@ class Network(object):
             # another option could be installing a default opener:
             # urllib2.install_opener(urllib2.build_opener())
 
-        request = urllib.request.Request(url, headers=headers, data=urllib.parse.urlencode(data) if data else None)
+        request = urllib.request.Request(url, headers=headers, data=urllib.parse.urlencode(data).encode("utf-8") if data else None)
         try:
             return urllib.request.urlopen(request)
         except urllib.error.HTTPError as error:

@@ -20,6 +20,7 @@
 # noinspection PyPackageRequirements
 import wx
 import wx.dataview
+import wx.lib.agw.hyperlink
 from .utils.floatspin import FloatSpin
 # noinspection PyPackageRequirements
 import wx.lib.newevent
@@ -150,12 +151,12 @@ class CharacterEditor(wx.Frame):
         self.viewsNBContainer = wx.Notebook(self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, 0)
 
         self.sview = SkillTreeView(self.viewsNBContainer)
-        # self.iview = ImplantEditorView(self.viewsNBContainer)
-        # self.aview = APIView(self.viewsNBContainer)
+        self.iview = ImplantEditorView(self.viewsNBContainer)
+        self.aview = APIView(self.viewsNBContainer)
 
         self.viewsNBContainer.AddPage(self.sview, "Skills")
-        # self.viewsNBContainer.AddPage(self.iview, "Implants")
-        # self.viewsNBContainer.AddPage(self.aview, "API")
+        self.viewsNBContainer.AddPage(self.iview, "Implants")
+        self.viewsNBContainer.AddPage(self.aview, "API")
 
         mainSizer.Add(self.viewsNBContainer, 1, wx.EXPAND | wx.ALL, 5)
 
@@ -448,9 +449,6 @@ class SkillTreeView(wx.Panel):
             # if id in dirtyGroups:
             #     tree.(childId, wx.BLUE)
 
-        # @todo: pheonix
-        #tree.SortChildren(root)
-
         if event:
             event.Skip()
 
@@ -474,8 +472,6 @@ class SkillTreeView(wx.Panel):
                 # @todo: pheonix
                 # if dirty:
                 #     tree.SetItemTextColour(childId, wx.BLUE)
-
-            #tree.SortChildren(root)
 
     def scheduleMenu(self, event):
         event.Skip()
@@ -516,31 +512,33 @@ class SkillTreeView(wx.Panel):
         # level setting. We don't want to refresh tree, as that will lose all expanded categories and users location
         # within the tree. Thus, we loop through the tree and refresh the info.
         # @todo: when collapsing branch, remove the data. This will make this loop more performant
-        child, cookie = self.skillTreeListCtrl.GetFirstChild(self.root)
+
+        child = self.skillTreeListCtrl.GetFirstChild(self.root)
 
         def _setTreeSkillLevel(treeItem, skillID):
             lvl, dirty = sChar.getSkillLevel(char.ID, skillID)
             self.skillTreeListCtrl.SetItemText(treeItem,
-                                               "Level {}".format(int(lvl)) if not isinstance(lvl, str) else lvl,
-                                               1)
-            if not dirty:
-                self.skillTreeListCtrl.SetItemTextColour(treeItem, None)
+                                               1,
+                                               "Level {}".format(int(lvl)) if not isinstance(lvl, str) else lvl)
+            # @todo: pheonix
+            # if not dirty:
+            #     self.skillTreeListCtrl.SetItemTextColour(treeItem, None)
 
         while child.IsOk():
             # child = Skill category
             dataType, id = self.skillTreeListCtrl.GetItemData(child)
+
             if dataType == 'skill':
                 _setTreeSkillLevel(child, id)
             else:
-                grand, cookie2 = self.skillTreeListCtrl.GetFirstChild(child)
-
+                grand = self.skillTreeListCtrl.GetFirstChild(child)
                 while grand.IsOk():
                     if self.skillTreeListCtrl.GetItemText(grand) != "dummy":
                         _, skillID = self.skillTreeListCtrl.GetItemData(grand)
                         _setTreeSkillLevel(grand, skillID)
-                    grand, cookie2 = self.skillTreeListCtrl.GetNextChild(child, cookie2)
+                    grand = self.skillTreeListCtrl.GetNextSibling(grand)
 
-            child, cookie = self.skillTreeListCtrl.GetNextChild(self.root, cookie)
+            child = self.skillTreeListCtrl.GetNextSibling(child)
 
         dirtySkills = sChar.getDirtySkills(char.ID)
         dirtyGroups = set([skill.item.group.ID for skill in dirtySkills])
@@ -548,9 +546,10 @@ class SkillTreeView(wx.Panel):
         parentID = self.skillTreeListCtrl.GetItemParent(selection)
         parent = self.skillTreeListCtrl.GetItemData(parentID)
 
-        if parent:
-            if parent[1] in dirtyGroups:
-                self.skillTreeListCtrl.SetItemTextColour(parentID, None)
+        # @todo: pheonix
+        # if parent:
+        #     if parent[1] in dirtyGroups:
+        #         self.skillTreeListCtrl.SetItemTextColour(parentID, None)
 
         event.Skip()
 
@@ -691,8 +690,7 @@ class APIView(wx.Panel):
 
         pmainSizer.Add(self.stAPITip, 0, wx.ALL, 2)
 
-        self.hlEveAPI = wx.HyperlinkCtrl(self, wx.ID_ANY, self.apiUrlCreatePredefined, self.apiUrlCreatePredefined,
-                                         wx.DefaultPosition, wx.DefaultSize, wx.HL_DEFAULT_STYLE)
+        self.hlEveAPI = wx.lib.agw.hyperlink.HyperLinkCtrl(self, wx.ID_ANY, label=self.apiUrlCreatePredefined)
         pmainSizer.Add(self.hlEveAPI, 0, wx.ALL, 2)
 
         self.stAPITip2 = wx.StaticText(self, wx.ID_ANY, "Or, you can choose an existing key from:", wx.DefaultPosition,
@@ -700,8 +698,7 @@ class APIView(wx.Panel):
         self.stAPITip2.Wrap(-1)
         pmainSizer.Add(self.stAPITip2, 0, wx.ALL, 2)
 
-        self.hlEveAPI2 = wx.HyperlinkCtrl(self, wx.ID_ANY, self.apiUrlKeyList, self.apiUrlKeyList, wx.DefaultPosition,
-                                          wx.DefaultSize, wx.HL_DEFAULT_STYLE)
+        self.hlEveAPI2 = wx.lib.agw.hyperlink.HyperLinkCtrl(self, wx.ID_ANY, label=self.apiUrlKeyList)
         pmainSizer.Add(self.hlEveAPI2, 0, wx.ALL, 2)
 
         self.charEditor.entityEditor.Bind(wx.EVT_CHOICE, self.charChanged)
@@ -764,7 +761,7 @@ class APIView(wx.Panel):
             self.stStatus.SetLabel(msg)
         except Exception as e:
             pyfalog.error(e)
-            self.stStatus.SetLabel("Error:\n%s" % e.message)
+            self.stStatus.SetLabel("Error:\n%s" % e)
         else:
             self.charChoice.Clear()
             for charName in list:
