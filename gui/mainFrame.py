@@ -79,7 +79,7 @@ from time import gmtime, strftime
 
 import threading
 import webbrowser
-
+import wx.adv
 if 'wxMac' not in wx.PlatformInfo or ('wxMac' in wx.PlatformInfo and wx.VERSION >= (3, 0)):
     from service.crest import Crest
     from service.crest import CrestModes
@@ -357,7 +357,7 @@ class MainFrame(wx.Frame):
 
     def ShowAboutBox(self, evt):
         v = sys.version_info
-        info = wx.AboutDialogInfo()
+        info = wx.adv.AboutDialogInfo()
         info.Name = "pyfa"
         info.Version = gui.aboutData.versionString
 
@@ -384,7 +384,7 @@ class MainFrame(wx.Frame):
         else:
             forumUrl = "http://forums.eveonline.com/default.aspx?g=posts&t=466425"
         info.WebSite = (forumUrl, "pyfa thread at EVE Online forum")
-        wx.AboutBox(info)
+        wx.adv.AboutBox(info)
 
     def showCharacterEditor(self, event):
         dlg = CharacterEditor(self)
