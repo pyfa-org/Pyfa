@@ -197,6 +197,10 @@ EVT_FLOATSPIN = wx.PyEventBinder(wxEVT_FLOATSPIN, 1)
 """ with the keyboard. """
 
 
+def _cmp(self, a, b):
+    return (a>b)-(a<b)
+
+
 # ---------------------------------------------------------------------------- #
 # Class FloatSpinEvent
 # ---------------------------------------------------------------------------- #
@@ -1417,7 +1421,7 @@ class FixedPoint(object):
         if (other == None):
             return 1
         xn, yn, p = _norm(self, other)
-        return cmp(xn, yn)
+        return _cmp(xn, yn)
 
     def __hash__(self):
         # caution!  == values must have equal hashes, and a FixedPoint
@@ -1596,7 +1600,7 @@ def _mkFP(n, p, FixedPoint=FixedPoint):
 def _roundquotient(x, y):
     assert y > 0
     n, leftover = divmod(x, y)
-    c = cmp(leftover << 1, y)
+    c = _cmp(leftover << 1, y)
     # c < 0 <-> leftover < y/2, etc
     if c > 0 or (c == 0 and (n & 1) == 1):
         n = n + 1

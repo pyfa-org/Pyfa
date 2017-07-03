@@ -722,6 +722,9 @@ class Element(object):
 _fmt = "%s:%s".__mod__
 
 
+def _cmp(self, a, b):
+    return (a>b)-(a<b)
+
 class Row(object):
     # A Row is a single database record associated with a Rowset.
     # The fields in the record are accessed as attributes by their respective
@@ -743,10 +746,11 @@ class Row(object):
     def __eq__(self, other):
         return self.__cmp__(other) == 0
 
+
     def __cmp__(self, other):
         if type(other) != type(self):
             raise TypeError("Incompatible comparison type")
-        return cmp(self._cols, other._cols) or cmp(self._row, other._row)
+        return _cmp(self._cols, other._cols) or _cmp(self._row, other._row)
 
     def __hasattr__(self, this):
         if this in self._cols:

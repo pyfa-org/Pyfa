@@ -119,7 +119,7 @@ class MetaSwap(ContextMenu):
             mitem = wx.MenuItem(rootMenu, id, item.name)
             bindmenu.Bind(wx.EVT_MENU, self.handleModule, mitem)
             self.moduleLookup[id] = item
-            m.AppendItem(mitem)
+            m.Append(mitem)
         return m
 
     def handleModule(self, event):

@@ -206,17 +206,11 @@ class ItemStatsContainer(wx.Panel):
             self.properties = ItemProperties(self.nbContainer, stuff, item, context)
             self.nbContainer.AddPage(self.properties, "Properties")
 
-        self.nbContainer.Bind(wx.EVT_LEFT_DOWN, self.mouseHit)
         self.SetSizer(mainSizer)
         self.Layout()
 
     def __del__(self):
         pass
-
-    def mouseHit(self, event):
-        tab, _ = self.nbContainer.HitTest(event.Position)
-        if tab != -1:
-            self.nbContainer.SetSelection(tab)
 
 
 class AutoListCtrl(wx.ListCtrl, listmix.ListCtrlAutoWidthMixin, listmix.ListRowHighlighter):
@@ -463,7 +457,7 @@ class ItemParams(wx.Panel):
             else:
                 attrIcon = self.imageList.Add(BitmapLoader.getBitmap("7_15", "icons"))
 
-            index = self.paramList.InsertImageStringItem(sys.maxsize, attrName, attrIcon)
+            index = self.paramList.InsertItem(sys.maxsize, attrName, attrIcon)
             idNameMap[idCount] = attrName
             self.paramList.SetItemData(index, idCount)
             idCount += 1
@@ -482,11 +476,12 @@ class ItemParams(wx.Panel):
             else:
                 valueUnitDefault = formatAmount(valueDefault, 3, 0, 0)
 
-            self.paramList.SetStringItem(index, 1, valueUnit)
+            self.paramList.SetItem(index, 1, valueUnit)
             if self.stuff is not None:
-                self.paramList.SetStringItem(index, 2, valueUnitDefault)
-
-        self.paramList.SortItems(lambda id1, id2: cmp(idNameMap[id1], idNameMap[id2]))
+                self.paramList.SetItem(index, 2, valueUnitDefault)
+        # @todo: pheonix, this lamda used cmp() which no longer exists in py3. Probably a better way to do this in the
+        # long run, take a look
+        self.paramList.SortItems(lambda id1, id2: (idNameMap[id1]>idNameMap[id2])-(idNameMap[id1]<idNameMap[id2]))
         self.paramList.RefreshRows()
         self.totalAttrsLabel.SetLabel("%d attributes. " % idCount)
         self.Layout()
@@ -553,7 +548,7 @@ class ItemCompare(wx.Panel):
         self.sortReverse = False
         self.item = item
         self.items = sorted(items,
-                            key=lambda x: x.attributes['metaLevel'].value if 'metaLevel' in x.attributes else None)
+                            key=lambda x: x.attributes['metaLevel'].value if 'metaLevel' in x.attributes else 0)
         self.attrs = {}
 
         # get a dict of attrName: attrInfo of all unique attributes across all items
@@ -632,7 +627,7 @@ class ItemCompare(wx.Panel):
 
     def processPrices(self, prices):
         for i, price in enumerate(prices):
-            self.paramList.SetStringItem(i, len(self.attrs) + 1, formatAmount(price.value, 3, 3, 9, currency=True))
+            self.paramList.SetItem(i, len(self.attrs) + 1, formatAmount(price.value, 3, 3, 9, currency=True))
 
     def PopulateList(self, sort=None):
 
@@ -682,10 +677,10 @@ class ItemCompare(wx.Panel):
                     else:
                         valueUnit = formatAmount(value, 3, 0, 0)
 
-                    self.paramList.SetStringItem(i, x + 1, valueUnit)
+                    self.paramList.SetItem(i, x + 1, valueUnit)
 
             # Add prices
-            self.paramList.SetStringItem(i, len(self.attrs) + 1, formatAmount(item.price.price, 3, 3, 9, currency=True))
+            self.paramList.SetItem(i, len(self.attrs) + 1, formatAmount(item.price.price, 3, 3, 9, currency=True))
 
         self.paramList.RefreshRows()
         self.Layout()
@@ -746,7 +741,7 @@ class ItemRequirements(wx.Panel):
 
         self.SetSizer(mainSizer)
         self.root = self.reqTree.AddRoot("WINRARZOR")
-        self.reqTree.SetPyData(self.root, None)
+        self.reqTree.SetItemData(self.root, None)
 
         self.imageList = wx.ImageList(16, 16)
         self.reqTree.SetImageList(self.imageList)
@@ -878,11 +873,11 @@ class ItemEffects(wx.Panel):
             else:
                 effectRunTime = ""
 
-            self.effectList.SetStringItem(index, 1, activeByDefault)
-            self.effectList.SetStringItem(index, 2, effectTypeText)
+            self.effectList.SetItem(index, 1, activeByDefault)
+            self.effectList.SetItem(index, 2, effectTypeText)
             if config.debug:
-                self.effectList.SetStringItem(index, 3, effectRunTime)
-                self.effectList.SetStringItem(index, 4, str(effects[name].ID))
+                self.effectList.SetItem(index, 3, effectRunTime)
+                self.effectList.SetItem(index, 4, str(effects[name].ID))
 
         self.effectList.RefreshRows()
         self.Layout()
@@ -1060,7 +1055,7 @@ class ItemAffectedBy(wx.Panel):
         # sheri was here
         del self.treeItems[:]
         root = self.affectedBy.AddRoot("WINPWNZ0R")
-        self.affectedBy.SetPyData(root, None)
+        self.affectedBy.SetItemData(root, None)
 
         self.imageList = wx.ImageList(16, 16)
         self.affectedBy.SetImageList(self.imageList)
@@ -1308,7 +1303,7 @@ class ItemAffectedBy(wx.Panel):
 
                 # this is the Module node, the attribute will be attached to this
                 child = self.affectedBy.AppendItem(parent, displayStr, itemIcon)
-                self.affectedBy.SetPyData(child, afflictors.pop())
+                self.affectedBy.SetItemData(child, afflictors.pop())
 
                 if counter > 0:
                     attributes = []
@@ -1362,7 +1357,7 @@ class ItemAffectedBy(wx.Panel):
                             saved = "%s %s %.2f %s" % (attrName, attrModifier, attrAmount, penalized)
 
                         treeitem = self.affectedBy.AppendItem(child, display, attrIcon)
-                        self.affectedBy.SetPyData(treeitem, saved)
+                        self.affectedBy.SetItemData(treeitem, saved)
                         self.treeItems.append(treeitem)
 
 
@@ -1447,13 +1442,13 @@ class ItemProperties(wx.Panel):
 
                 valueUnit = str(value)
 
-                self.paramList.SetStringItem(index, 1, valueUnit)
+                self.paramList.SetItem(index, 1, valueUnit)
             except:
                 # TODO: Add logging to this.
                 # We couldn't get a property for some reason. Skip it for now.
                 continue
 
-        self.paramList.SortItems(lambda id1, id2: cmp(idNameMap[id1], idNameMap[id2]))
+        self.paramList.SortItems(lambda id1, id2: (idNameMap[id1]>idNameMap[id2])-(idNameMap[id1]<idNameMap[id2]))
         self.paramList.RefreshRows()
         self.totalAttrsLabel.SetLabel("%d attributes. " % idCount)
         self.Layout()

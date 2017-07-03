@@ -339,7 +339,7 @@ class Skill(HandledItem):
         elif self.character.name == "All 0":
             self.activeLevel = self.__level = 0
         elif self.character.alphaClone:
-            return min(self.activeLevel, self.character.alphaClone.getSkillLevel(self)) or 0
+            return min(self.activeLevel or 0, self.character.alphaClone.getSkillLevel(self) or 0)
 
         return self.activeLevel or 0
 
