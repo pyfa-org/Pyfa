@@ -102,7 +102,7 @@ class Drone(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
 
     @property
     def cycleTime(self):
-        return max(self.getModifiedItemAttr("duration"), 0)
+        return max(self.getModifiedItemAttr("duration", 0), 0)
 
     @property
     def dealsDamage(self):

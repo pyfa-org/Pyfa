@@ -40,6 +40,8 @@ class NotesView(wx.Panel):
             self.lastFitId = event.fitID
             self.editNotes.SetValue(fit.notes or "")
 
+        event.Skip()
+
     def onText(self, event):
         # delay the save so we're not writing to sqlite on every keystroke
         self.saveTimer.Stop()  # cancel the existing timer

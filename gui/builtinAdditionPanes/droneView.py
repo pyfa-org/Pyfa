@@ -21,6 +21,7 @@
 import wx
 
 import gui.globalEvents as GE
+import gui.mainFrame
 from gui.builtinMarketBrowser.events import ItemSelected, ITEM_SELECTED
 from gui.display import Display
 from gui.builtinViewColumns.state import State
@@ -65,6 +66,8 @@ class DroneView(Display):
 
         self.hoveredRow = None
         self.hoveredColumn = None
+
+        self.mainFrame = gui.mainFrame.MainFrame.getInstance()
 
         self.mainFrame.Bind(GE.FIT_CHANGED, self.fitChanged)
         self.mainFrame.Bind(ITEM_SELECTED, self.addItem)

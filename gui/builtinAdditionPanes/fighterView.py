@@ -108,6 +108,8 @@ class FighterView(wx.Panel):
 
             self.Refresh()
 
+        event.Skip()
+
 
 class FighterDisplay(d.Display):
     DEFAULT_COLS = ["State",

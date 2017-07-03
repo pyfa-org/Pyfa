@@ -66,7 +66,6 @@ class CommandView(d.Display):
 
         self.lastFitId = None
 
-        self.mainFrame.Bind(GE.FIT_CHANGED, CommandFits.populateFits)
         self.mainFrame.Bind(GE.FIT_CHANGED, self.fitChanged)
         self.Bind(wx.EVT_LEFT_DOWN, self.click)
         self.Bind(wx.EVT_RIGHT_DOWN, self.click)
@@ -134,6 +133,8 @@ class CommandView(d.Display):
         sFit = Fit.getInstance()
         fit = sFit.getFit(event.fitID)
 
+        CommandFits.populateFits(event)
+
         self.Parent.Parent.DisablePage(self, not fit or fit.isStructure)
 
         # Clear list and get out if current fitId is None
@@ -164,6 +165,8 @@ class CommandView(d.Display):
             stuff = [DummyEntry("Drag a fit to this area")]
 
         self.update(stuff)
+
+        event.Skip()
 
     def get(self, row):
         numFits = len(self.fits)

@@ -222,6 +222,8 @@ class ProjectedView(d.Display):
 
         self.update(stuff)
 
+        event.Skip()
+
     def get(self, row):
         numMods = len(self.modules)
         numDrones = len(self.drones)

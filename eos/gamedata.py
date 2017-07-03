@@ -68,7 +68,7 @@ class Effect(EqBase):
         if not self.__generated:
             self.__generateHandler()
 
-        pyfalog.debug("Generating effect: {0} ({1}) [runTime: {2}]", self.name, self.effectID, self.runTime)
+        #pyfalog.debug("Generating effect: {0} ({1}) [runTime: {2}]", self.name, self.effectID, self.runTime)
 
         return self.__handler
 
