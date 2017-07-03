@@ -52,7 +52,7 @@ class ErrorFrame(wx.Frame):
                "information about how this was triggered. Please contact the developers with the\n" \
                "information provided through the EVE Online forums or file a GitHub issue."
 
-        self.SetSizeHintsSz(wx.DefaultSize, wx.DefaultSize)
+        self.SetSizeHints(wx.DefaultSize, wx.DefaultSize)
 
         if 'wxMSW' in wx.PlatformInfo:
             self.SetBackgroundColour(wx.SystemSettings.GetColour(wx.SYS_COLOUR_BTNFACE))

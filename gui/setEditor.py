@@ -117,7 +117,7 @@ class ImplantSetEditorDlg(wx.Dialog):
         wx.Dialog.__init__(self, parent, id=wx.ID_ANY, title="Implant Set Editor", size=wx.Size(640, 600))
 
         self.block = False
-        self.SetSizeHintsSz(wx.DefaultSize, wx.DefaultSize)
+        self.SetSizeHints(wx.DefaultSize, wx.DefaultSize)
 
         mainSizer = wx.BoxSizer(wx.VERTICAL)
 

@@ -1025,7 +1025,7 @@ class MainFrame(wx.Frame):
 
         # Find a widget to be selected in the tree.  Use either the
         # one under the cursor, if any, or this frame.
-        wnd = wx.FindWindowAtPointer()
+        wnd, _ = wx.FindWindowAtPointer()
         if not wnd:
             wnd = self
         InspectionTool().Show(wnd, True)

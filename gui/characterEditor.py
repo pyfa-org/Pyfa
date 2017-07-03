@@ -827,7 +827,7 @@ class SecStatusDialog(wx.Dialog):
     def __init__(self, parent, sec):
         wx.Dialog.__init__(self, parent, title="Set Security Status", size=(275, 175))
 
-        self.SetSizeHintsSz(wx.DefaultSize, wx.DefaultSize)
+        self.SetSizeHints(wx.DefaultSize, wx.DefaultSize)
 
         bSizer1 = wx.BoxSizer(wx.VERTICAL)
 

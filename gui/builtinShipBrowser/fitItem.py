@@ -382,7 +382,7 @@ class FitItem(SFItem.SFBrowserItem):
         if self.dragging and self.dragged:
             self.OnMouseCaptureLost(event)
 
-            targetWnd = wx.FindWindowAtPointer()
+            targetWnd, _ = wx.FindWindowAtPointer()
 
             if not targetWnd:
                 return

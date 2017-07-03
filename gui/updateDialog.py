@@ -31,7 +31,7 @@ class UpdateDialog(wx.Dialog):
 
         self.UpdateSettings = svc_UpdateSettings.getInstance()
         self.releaseInfo = release
-        self.SetSizeHintsSz(wx.DefaultSize, wx.DefaultSize)
+        self.SetSizeHints(wx.DefaultSize, wx.DefaultSize)
 
         mainSizer = wx.BoxSizer(wx.VERTICAL)
 

@@ -90,7 +90,7 @@ class ResistsEditorDlg(wx.Dialog):
         wx.Dialog.__init__(self, parent, id=wx.ID_ANY, title="Target Resists Editor", size=wx.Size(350, 240))
 
         self.block = False
-        self.SetSizeHintsSz(wx.DefaultSize, wx.DefaultSize)
+        self.SetSizeHints(wx.DefaultSize, wx.DefaultSize)
 
         mainSizer = wx.BoxSizer(wx.VERTICAL)
 

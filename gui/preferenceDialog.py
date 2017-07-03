@@ -69,9 +69,9 @@ class PreferenceDialog(wx.Dialog):
         minHeight = 550
         bestFit = self.GetBestVirtualSize()
         if minHeight > bestFit[1]:
-            self.SetSizeWH(650, minHeight)
+            self.SetSize(650, minHeight)
         else:
-            self.SetSizeWH(650, bestFit[1])
+            self.SetSize(650, bestFit[1])
 
         self.Layout()
 
