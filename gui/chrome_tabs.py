@@ -1100,15 +1100,15 @@ class _TabsContainer(wx.Panel):
         else:
             mdc = wx.BufferedPaintDC(self)
 
-        if 'wxMac' in wx.PlatformInfo:
-            color = wx.Colour(0, 0, 0)
-            brush = wx.Brush(color)
-            # @todo: what needs to be changed with wxPheonix?
-            from Carbon.Appearance import kThemeBrushDialogBackgroundActive
-            brush.MacSetTheme(kThemeBrushDialogBackgroundActive)
-        else:
-            color = wx.SystemSettings.GetColour(wx.SYS_COLOUR_3DFACE)
-            brush = wx.Brush(color)
+        # if 'wxMac' in wx.PlatformInfo:
+        #     color = wx.Colour(0, 0, 0)
+        #     brush = wx.Brush(color)
+        #     # @todo: what needs to be changed with wxPheonix?
+        #     from Carbon.Appearance import kThemeBrushDialogBackgroundActive
+        #     brush.MacSetTheme(kThemeBrushDialogBackgroundActive)
+        # else:
+        color = wx.SystemSettings.GetColour(wx.SYS_COLOUR_3DFACE)
+        brush = wx.Brush(color)
 
         if "wxGTK" not in wx.PlatformInfo:
             mdc.SetBackground(brush)
