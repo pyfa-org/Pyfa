@@ -243,6 +243,11 @@ def main(db, json_path):
 
     eos.db.gamedata_session.commit()
 
+    # CCP still has 5 subsystems assigned to T3Cs, even though only 4 are available / usable. They probably have some
+    # old legacy requirement or assumption that makes it difficult for them to change this value in the data. But for
+    # pyfa, we can do it here as a post-processing step
+    eos.db.gamedata_engine.execute("UPDATE dgmtypeattribs SET value = 4.0 WHERE attributeID = ?", (1367,))
+
     print("done")
 
 if __name__ == "__main__":
