@@ -218,7 +218,7 @@ class ProjectedView(d.Display):
             self.deselectItems()
 
         if not stuff:
-            stuff = [DummyEntry("Drag an item or fit, or use right-click menu for system effects")]
+            stuff = [DummyEntry("Drag an item or fit, or use right-click menu for wormhole effects")]
 
         self.update(stuff)
 
