@@ -1,11 +1,11 @@
 # subsystemBonusAmarrEngineeringHeatDamageReduction
 #
 # Used by:
-# Subsystem: Legion Engineering - Supplemental Coolant Injector
+# Subsystem: Legion Core - Energy Parasitic Complex
 type = "passive"
 
 
 def handler(fit, module, context):
     fit.modules.filteredItemBoost(lambda mod: True, "heatDamage",
-                                  module.getModifiedItemAttr("subsystemBonusAmarrEngineering"),
-                                  skill="Amarr Engineering Systems")
+                                  module.getModifiedItemAttr("subsystemBonusAmarrCore"),
+                                  skill="Amarr Core Systems")

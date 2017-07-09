@@ -1,7 +1,4 @@
-# subSystemBonusMinmatarDefensiveArmoredWarfare
-#
-# Used by:
-# Subsystem: Loki Defensive - Warfare Processor
+# Not used by any item
 type = "passive"
 
 

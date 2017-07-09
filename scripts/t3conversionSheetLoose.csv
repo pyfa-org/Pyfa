@@ -1,0 +1,89 @@
+Electronic Subsystem Technology,Core Subsystem Technology
+Amarr Electronic Systems,Amarr Core Systems
+Gallente Electronic Systems,Gallente Core Systems
+Caldari Electronic Systems,Caldari Core Systems
+Minmatar Electronic Systems,Minmatar Core Systems
+Datacore - Electronic Subsystems Engineering,Datacore - Core Subsystems Engineering
+Malfunctioning Electromechanical Component,Malfunctioning Power Cores
+Wrecked Electromechanical Component,Wrecked Power Cores
+Intact Electromechanical Component,Intact Power Cores
+Legion Electronics - Energy Parasitic Complex,Legion Core - Energy Parasitic Complex
+Legion Electronics - Tactical Targeting Network,Legion Core - Dissolution Sequencer
+Legion Electronics - Dissolution Sequencer,Legion Core - Dissolution Sequencer
+Legion Electronics - Emergent Locus Analyzer,Legion Core - Dissolution Sequencer
+Tengu Electronics - Obfuscation Manifold,Tengu Core - Obfuscation Manifold
+Tengu Electronics - CPU Efficiency Gate,Tengu Core - Electronic Efficiency Gate
+Tengu Electronics - Dissolution Sequencer,Tengu Core - Electronic Efficiency Gate
+Tengu Electronics - Emergent Locus Analyzer,Tengu Core - Electronic Efficiency Gate
+Proteus Electronics - Friction Extension Processor,Proteus Core - Friction Extension Processor
+Proteus Electronics - CPU Efficiency Gate,Proteus Core - Electronic Efficiency Gate
+Proteus Electronics - Dissolution Sequencer,Proteus Core - Electronic Efficiency Gate
+Proteus Electronics - Emergent Locus Analyzer,Proteus Core - Electronic Efficiency Gate
+Loki Electronics - Immobility Drivers,Loki Core - Immobility Drivers
+Loki Electronics - Tactical Targeting Network,Loki Core - Dissolution Sequencer
+Loki Electronics - Dissolution Sequencer,Loki Core - Dissolution Sequencer
+Loki Electronics - Emergent Locus Analyzer,Loki Core - Dissolution Sequencer
+Tengu Engineering - Power Core Multiplier,Tengu Core - Augmented Graviton Reactor
+Tengu Engineering - Augmented Capacitor Reservoir,Tengu Core - Augmented Graviton Reactor
+Tengu Engineering - Capacitor Regeneration Matrix,Tengu Core - Augmented Graviton Reactor
+Tengu Engineering - Supplemental Coolant Injector,Tengu Core - Obfuscation Manifold
+Proteus Engineering - Power Core Multiplier,Proteus Core - Augmented Fusion Reactor
+Proteus Engineering - Augmented Capacitor Reservoir,Proteus Core - Augmented Fusion Reactor
+Proteus Engineering - Capacitor Regeneration Matrix,Proteus Core - Augmented Fusion Reactor
+Proteus Engineering - Supplemental Coolant Injector,Proteus Core - Friction Extension Processor
+Loki Engineering - Power Core Multiplier,Loki Core - Augmented Nuclear Reactor
+Loki Engineering - Augmented Capacitor Reservoir,Loki Core - Augmented Nuclear Reactor
+Loki Engineering - Capacitor Regeneration Matrix,Loki Core - Augmented Nuclear Reactor
+Loki Engineering - Supplemental Coolant Injector,Loki Core - Immobility Drivers
+Legion Engineering - Power Core Multiplier,Legion Core - Augmented Antimatter Reactor
+Legion Engineering - Augmented Capacitor Reservoir,Legion Core - Augmented Antimatter Reactor
+Legion Engineering - Capacitor Regeneration Matrix,Legion Core - Augmented Antimatter Reactor
+Legion Engineering - Supplemental Coolant Injector,Legion Core - Energy Parasitic Complex
+Legion Propulsion - Chassis Optimization,Legion Propulsion - Intercalated Nanofibers
+Legion Propulsion - Fuel Catalyst,Legion Propulsion - Wake Limiter
+Legion Propulsion - Wake Limiter,Legion Propulsion - Wake Limiter
+Legion Propulsion - Interdiction Nullifier,Legion Propulsion - Interdiction Nullifier
+Tengu Propulsion - Intercalated Nanofibers,Tengu Propulsion - Chassis Optimization
+Tengu Propulsion - Gravitational Capacitor,Tengu Propulsion - Chassis Optimization
+Tengu Propulsion - Fuel Catalyst,Tengu Propulsion - Fuel Catalyst
+Tengu Propulsion - Interdiction Nullifier,Tengu Propulsion - Interdiction Nullifier
+Proteus Propulsion - Wake Limiter,Proteus Propulsion - Localized Injectors
+Proteus Propulsion - Localized Injectors,Proteus Propulsion - Localized Injectors
+Proteus Propulsion - Gravitational Capacitor,Proteus Propulsion - Hyperspatial Optimization
+Proteus Propulsion - Interdiction Nullifier,Proteus Propulsion - Interdiction Nullifier
+Loki Propulsion - Chassis Optimization,Loki Propulsion - Intercalated Nanofibers
+Loki Propulsion - Intercalated Nanofibers,Loki Propulsion - Intercalated Nanofibers
+Loki Propulsion - Fuel Catalyst,Loki Propulsion - Wake Limiter
+Loki Propulsion - Interdiction Nullifier,Loki Propulsion - Interdiction Nullifier
+Legion Defensive - Adaptive Augmenter,Legion Defensive - Augmented Plating
+Legion Defensive - Nanobot Injector,Legion Defensive - Nanobot Injector
+Legion Defensive - Augmented Plating,Legion Defensive - Augmented Plating
+Legion Defensive - Warfare Processor,Legion Defensive - Augmented Plating
+Tengu Defensive - Adaptive Shielding,Tengu Defensive - Supplemental Screening
+Tengu Defensive - Amplification Node,Tengu Defensive - Amplification Node
+Tengu Defensive - Supplemental Screening,Tengu Defensive - Supplemental Screening
+Tengu Defensive - Warfare Processor,Tengu Defensive - Supplemental Screening
+Loki Defensive - Adaptive Shielding,Loki Defensive - Augmented Durability
+Loki Defensive - Adaptive Augmenter,Loki Defensive - Augmented Durability
+Loki Defensive - Amplification Node,Loki Defensive - Adaptive Defense Node
+Loki Defensive - Warfare Processor,Loki Defensive - Augmented Durability
+Proteus Defensive - Adaptive Augmenter,Proteus Defensive - Augmented Plating
+Proteus Defensive - Nanobot Injector,Proteus Defensive - Nanobot Injector
+Proteus Defensive - Augmented Plating,Proteus Defensive - Augmented Plating
+Proteus Defensive - Warfare Processor,Proteus Defensive - Augmented Plating
+Legion Offensive - Drone Synthesis Projector,Legion Offensive - Assault Optimization
+Legion Offensive - Assault Optimization,Legion Offensive - Assault Optimization
+Legion Offensive - Liquid Crystal Magnifiers,Legion Offensive - Liquid Crystal Magnifiers
+Legion Offensive - Covert Reconfiguration,Legion Offensive - Liquid Crystal Magnifiers
+Tengu Offensive - Accelerated Ejection Bay,Tengu Offensive - Accelerated Ejection Bay
+Tengu Offensive - Rifling Launcher Pattern,Tengu Offensive - Accelerated Ejection Bay
+Tengu Offensive - Magnetic Infusion Basin,Tengu Offensive - Magnetic Infusion Basin
+Tengu Offensive - Covert Reconfiguration,Tengu Offensive - Accelerated Ejection Bay
+Proteus Offensive - Dissonic Encoding Platform,Proteus Offensive - Hybrid Encoding Platform
+Proteus Offensive - Hybrid Propulsion Armature,Proteus Offensive - Hybrid Encoding Platform
+Proteus Offensive - Drone Synthesis Projector,Proteus Offensive - Drone Synthesis Projector
+Proteus Offensive - Covert Reconfiguration,Proteus Offensive - Hybrid Encoding Platform
+Loki Offensive - Turret Concurrence Registry,Loki Offensive - Projectile Scoping Array
+Loki Offensive - Projectile Scoping Array,Loki Offensive - Projectile Scoping Array
+Loki Offensive - Hardpoint Efficiency Configuration,Loki Offensive - Launcher Efficiency Configuration
+Loki Offensive - Covert Reconfiguration,Loki Offensive - Projectile Scoping Array

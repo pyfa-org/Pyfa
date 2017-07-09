@@ -1,7 +1,4 @@
-# subSystemBonusCaldariDefensiveSiegeWarfare
-#
-# Used by:
-# Subsystem: Tengu Defensive - Warfare Processor
+# Not used by any item
 type = "passive"
 
 

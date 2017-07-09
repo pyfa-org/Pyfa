@@ -1,7 +1,4 @@
-# subSystemBonusGallenteElectronic2TractorBeamRange
-#
-# Used by:
-# Subsystem: Proteus Electronics - Emergent Locus Analyzer
+# Not used by any item
 type = "passive"
 
 

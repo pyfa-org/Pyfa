@@ -1,7 +1,8 @@
 # capacityAddPassive
 #
 # Used by:
-# Subsystems from group: Defensive Systems (16 of 16)
+# Subsystems named like: Defensive Covert Reconfiguration (4 of 4)
+# Subsystem: Legion Defensive - Nanobot Injector
 type = "passive"
 
 

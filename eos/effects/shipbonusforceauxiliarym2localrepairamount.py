@@ -1,3 +1,7 @@
+# shipBonusForceAuxiliaryM2LocalRepairAmount
+#
+# Used by:
+# Ship: Dagon
 type = "passive"
 
 

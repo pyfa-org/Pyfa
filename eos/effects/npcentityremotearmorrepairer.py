@@ -1,4 +1,4 @@
-# remoteArmorRepairEntity
+# npcEntityRemoteArmorRepairer
 #
 # Used by:
 # Drones named like: Armor Maintenance Bot (6 of 6)

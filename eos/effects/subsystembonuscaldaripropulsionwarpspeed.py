@@ -1,7 +1,7 @@
 # subsystemBonusCaldariPropulsionWarpSpeed
 #
 # Used by:
-# Subsystem: Tengu Propulsion - Gravitational Capacitor
+# Subsystem: Tengu Propulsion - Chassis Optimization
 type = "passive"
 
 

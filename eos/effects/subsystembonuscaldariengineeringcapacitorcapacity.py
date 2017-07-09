@@ -1,10 +1,7 @@
-# subsystemBonusCaldariEngineeringCapacitorCapacity
-#
-# Used by:
-# Subsystem: Tengu Engineering - Augmented Capacitor Reservoir
+# Not used by any item
 type = "passive"
 
 
 def handler(fit, module, context):
-    fit.ship.boostItemAttr("capacitorCapacity", module.getModifiedItemAttr("subsystemBonusCaldariEngineering"),
-                           skill="Caldari Engineering Systems")
+    fit.ship.boostItemAttr("capacitorCapacity", module.getModifiedItemAttr("subsystemBonusCaldariCore"),
+                           skill="Caldari Core Systems")

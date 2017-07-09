@@ -1,7 +1,4 @@
-# subSystemBonusAmarrElectronic2TractorBeamVelocity
-#
-# Used by:
-# Subsystem: Legion Electronics - Emergent Locus Analyzer
+# Not used by any item
 type = "passive"
 
 

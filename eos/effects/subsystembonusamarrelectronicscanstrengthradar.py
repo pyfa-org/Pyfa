@@ -1,7 +1,4 @@
-# subsystemBonusAmarrElectronicScanStrengthRADAR
-#
-# Used by:
-# Subsystem: Legion Electronics - Dissolution Sequencer
+# Not used by any item
 type = "passive"
 
 

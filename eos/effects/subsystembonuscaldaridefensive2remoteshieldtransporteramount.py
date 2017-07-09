@@ -1,7 +1,4 @@
-# subsystemBonusCaldariDefensive2RemoteShieldTransporterAmount
-#
-# Used by:
-# Subsystem: Tengu Defensive - Adaptive Shielding
+# Not used by any item
 type = "passive"
 runTime = "early"
 

@@ -1,7 +1,7 @@
 # droneCapacityAdddroneCapacityPassive
 #
 # Used by:
-# Items from category: Subsystem (42 of 80)
+# Subsystems from group: Offensive Systems (12 of 12)
 type = "passive"
 
 

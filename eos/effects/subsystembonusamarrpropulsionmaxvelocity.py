@@ -1,7 +1,7 @@
 # subsystemBonusAmarrPropulsionMaxVelocity
 #
 # Used by:
-# Subsystem: Legion Propulsion - Chassis Optimization
+# Subsystem: Legion Propulsion - Intercalated Nanofibers
 type = "passive"
 
 

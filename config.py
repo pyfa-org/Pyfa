@@ -21,8 +21,8 @@ saveInRoot = False
 # Version data
 version = "1.29.5"
 tag = "git"
-expansionName = "YC119.5"
-expansionVersion = "1.0"
+expansionName = "Singularity"
+expansionVersion = "1158190"
 evemonMinVersion = "4081"
 
 pyfaPath = None
@@ -91,7 +91,7 @@ def defPaths(customSavePath):
         os.environ["SSL_CERT_FILE"] = os.path.join(pyfaPath, "cacert.pem").encode('utf8')
 
     # The database where we store all the fits etc
-    saveDB = os.path.join(savePath, "saveddata.db")
+    saveDB = os.path.join(savePath, "saveddata-dev.db")
 
     # The database where the static EVE data from the datadump is kept.
     # This is not the standard sqlite datadump but a modified version created by eos

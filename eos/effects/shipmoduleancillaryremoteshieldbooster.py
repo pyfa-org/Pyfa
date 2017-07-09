@@ -1,4 +1,4 @@
-# moduleBonusAncillaryRemoteShieldBooster
+# shipModuleAncillaryRemoteShieldBooster
 #
 # Used by:
 # Modules from group: Ancillary Remote Shield Booster (4 of 4)

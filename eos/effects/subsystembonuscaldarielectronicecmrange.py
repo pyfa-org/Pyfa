@@ -1,7 +1,4 @@
-# subsystemBonusCaldariElectronicECMRange
-#
-# Used by:
-# Subsystem: Tengu Electronics - Obfuscation Manifold
+# Not used by any item
 type = "passive"
 
 

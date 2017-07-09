@@ -1,4 +1,4 @@
-# remoteShieldTransferEntity
+# npcEntityRemoteShieldBooster
 #
 # Used by:
 # Drones named like: Shield Maintenance Bot (6 of 6)

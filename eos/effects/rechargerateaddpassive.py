@@ -1,7 +1,4 @@
-# rechargeRateAddPassive
-#
-# Used by:
-# Subsystems from group: Engineering Systems (16 of 16)
+# Not used by any item
 type = "passive"
 
 

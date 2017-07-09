@@ -1,7 +1,4 @@
-# subsystemBonusGallenteOffensiveHybridWeaponDamageMultiplier
-#
-# Used by:
-# Subsystem: Proteus Offensive - Covert Reconfiguration
+# Not used by any item
 type = "passive"
 
 
