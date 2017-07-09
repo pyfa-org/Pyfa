@@ -431,6 +431,9 @@ def main(old, new, groups=True, effects=True, attributes=True, renames=True):
         title = 'items'
         printrenames(ren_items, title)
 
+    print
+    print
+
     if effects or attributes or groups:
         # Print legend only when there're any interesting changes
         if len(global_itmdata[S["removed"]]) > 0 or len(global_itmdata[S["changed"]]) > 0 or len(global_itmdata[S["added"]]) > 0:
