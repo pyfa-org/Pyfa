@@ -3,11 +3,11 @@ import wx
 # noinspection PyPackageRequirements
 from wx.lib.buttons import GenBitmapButton
 
-from service.market import Market
+import gui.builtinMarketBrowser.pfSearchBox as SBox
 import gui.display as d
-import gui.PFSearchBox as SBox
 from gui.bitmapLoader import BitmapLoader
 from gui.marketBrowser import SearchBox
+from service.market import Market
 
 
 class BaseImplantEditorView(wx.Panel):

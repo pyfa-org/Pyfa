@@ -253,6 +253,8 @@ class SFBrowserItem(wx.Window):
         self.Bind(wx.EVT_PAINT, self.OnPaint)
         self.Bind(wx.EVT_ERASE_BACKGROUND, self.OnEraseBackground)
         self.Bind(wx.EVT_LEFT_UP, self.OnLeftUp)
+        self.Bind(wx.EVT_KEY_UP, self.OnKeyUp)
+
 
         if "wxMSW" in wx.PlatformInfo:
             self.Bind(wx.EVT_LEFT_DCLICK, self.OnLeftDown)
@@ -261,6 +263,18 @@ class SFBrowserItem(wx.Window):
         self.Bind(wx.EVT_ENTER_WINDOW, self.OnEnterWindow)
         self.Bind(wx.EVT_LEAVE_WINDOW, self.OnLeaveWindow)
         self.Bind(wx.EVT_MOTION, self.OnMotion)
+        self.Bind(wx.EVT_SET_FOCUS, self.OnFocus)
+        self.Bind(wx.EVT_KILL_FOCUS, self.OnKillFocus)
+
+    def OnFocus(self, evt):
+        self.SetHighlighted(True)
+        self.Refresh()
+        evt.Skip()
+
+    def OnKillFocus(self, evt):
+        self.SetHighlighted(False)
+        self.Refresh()
+        evt.Skip()
 
     def Refresh(self):
         self.RenderBackground()
@@ -280,6 +294,9 @@ class SFBrowserItem(wx.Window):
         pass
 
     def OnEraseBackground(self, event):
+        pass
+
+    def OnKeyUp(self, event):
         pass
 
     def MouseLeftUp(self, event):

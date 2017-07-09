@@ -1,8 +1,8 @@
 import csv
-from logbook import Logger
 
 # noinspection PyPackageRequirements
 import wx
+from logbook import Logger
 
 try:
     # noinspection PyPackageRequirements
@@ -17,7 +17,7 @@ from eos.db.gamedata.queries import getItem, getAttributeInfo
 from service.market import Market
 import gui.display as d
 import gui.globalEvents as GE
-import gui.PFSearchBox as SBox
+import gui.builtinMarketBrowser.pfSearchBox as SBox
 from gui.marketBrowser import SearchBox
 from gui.bitmapLoader import BitmapLoader
 

@@ -22,7 +22,7 @@ import wx
 import gui.display as d
 from gui.builtinViewColumns.state import State
 from gui.contextMenu import ContextMenu
-import globalEvents as GE
+import gui.globalEvents as GE
 from gui.utils.staticHelpers import DragDropHelper
 from service.fit import Fit
 from service.market import Market

@@ -21,7 +21,7 @@
 import wx
 
 import gui.globalEvents as GE
-import gui.marketBrowser as marketBrowser
+from gui.builtinMarketBrowser.events import ItemSelected, ITEM_SELECTED
 import gui.mainFrame
 import gui.display as d
 from gui.builtinViewColumns.state import State
@@ -129,7 +129,7 @@ class FighterDisplay(d.Display):
         self.hoveredColumn = None
 
         self.mainFrame.Bind(GE.FIT_CHANGED, self.fitChanged)
-        self.mainFrame.Bind(marketBrowser.ITEM_SELECTED, self.addItem)
+        self.mainFrame.Bind(ITEM_SELECTED, self.addItem)
         self.Bind(wx.EVT_LEFT_DCLICK, self.removeItem)
         self.Bind(wx.EVT_LEFT_DOWN, self.click)
         self.Bind(wx.EVT_KEY_UP, self.kbEvent)
@@ -208,7 +208,7 @@ class FighterDisplay(d.Display):
             if srcRow != -1 and dstRow != -1:
                 self._merge(srcRow, dstRow)
         elif data[0] == "market":
-            wx.PostEvent(self.mainFrame, marketBrowser.ItemSelected(itemID=int(data[1])))
+            wx.PostEvent(self.mainFrame, ItemSelected(itemID=int(data[1])))
 
     @staticmethod
     def _merge(src, dst):
