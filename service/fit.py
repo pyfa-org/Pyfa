@@ -991,6 +991,13 @@ class Fit(object):
         eos.db.commit()
         self.recalc(fit)
 
+    def toggleBoosterSideEffect(self, fitID, sideEffect):
+        pyfalog.debug("Toggling booster side effect for fit ID: {0}", fitID)
+        fit = eos.db.getFit(fitID)
+        sideEffect.active = not sideEffect.active
+        eos.db.commit()
+        self.recalc(fit)
+
     def changeChar(self, fitID, charID):
         pyfalog.debug("Changing character ({0}) for fit ID: {1}", charID, fitID)
         if fitID is None or charID is None:
