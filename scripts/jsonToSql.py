@@ -190,12 +190,11 @@ def main(db, json_path):
     # can do it here - just add them to initial set
     eveTypes = set()
     for row in data["evetypes"]:
-        # 1306 - group Ship Modifiers, for items like tactical t3 ship modes
-        # (3638, 3634, 3636, 3640) - Civilian weapons
-        # (41549, 41548, 41551, 41550) - Micro Bombs (Fighters)
-        if (row["published"] or row['groupID'] == 1306
-            or row['typeID'] in (3638, 3634, 3636, 3640)
-            or row['typeID'] in (41549, 41548, 41551,41550)):
+        if (row["published"]
+            or row['groupID'] == 1306  # group Ship Modifiers, for items like tactical t3 ship modes
+            or row['typeID'] in (3638, 3634, 3636, 3640)  # Civilian weapons
+            or row['typeID'] in (41549, 41548, 41551,41550)  # Micro Bombs (Fighters)
+        ):
             eveTypes.add(row["typeID"])
 
     # ignore checker
