@@ -317,8 +317,7 @@ def getVariations(itemids, groupIDs=None, where=None, eager=None):
         vars = gamedata_session.query(Item).options(*processEager(eager)).join((groups_table, joinon)).filter(
                 filter).all()
 
-        return vars
-
+    return vars
 
 @cachedQuery(1, "attr")
 def getAttributeInfo(attr, eager=None):
