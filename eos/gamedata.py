@@ -66,9 +66,8 @@ class Effect(EqBase):
         the first time this property is accessed.
         """
         if not self.__generated:
+            pyfalog.debug("Generating effect: {0} ({1}) [runTime: {2}]", self.name, self.effectID, self.runTime)
             self.__generateHandler()
-
-        pyfalog.debug("Generating effect: {0} ({1}) [runTime: {2}]", self.name, self.effectID, self.runTime)
 
         return self.__handler
 
