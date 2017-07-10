@@ -48,7 +48,7 @@ class ImplantSet(object):
 
         return out.strip()
 
-    def __deepcopy__(self):
+    def __deepcopy__(self, memo):
         copy = ImplantSet(self.name)
         copy.name = "%s copy" % self.name
 
