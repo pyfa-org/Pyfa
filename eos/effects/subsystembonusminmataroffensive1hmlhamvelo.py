@@ -3,7 +3,7 @@
 # Used by:
 # Subsystem: Loki Offensive - Launcher Efficiency Configuration
 type = "passive"
-def handler(fit, src, context):
-    fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill("Heavy Missiles") or mod.item.requiresSkill("Heavy Assault Missiles"),
-                                  "maxVelocity", src.getModifiedItemAttr("subsystemBonusMinmatarOffensive"),
+def handler(fit, container, context):
+    fit.modules.filteredChargeBoost(lambda mod: mod.charge.requiresSkill("Heavy Missiles") or mod.charge.requiresSkill("Heavy Assault Missiles"),
+                                  "maxVelocity", container.getModifiedItemAttr("subsystemBonusMinmatarOffensive"),
                                   skill="Minmatar Offensive Systems")
