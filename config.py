@@ -91,7 +91,7 @@ def defPaths(customSavePath):
         os.environ["SSL_CERT_FILE"] = os.path.join(pyfaPath, "cacert.pem").encode('utf8')
 
     # The database where we store all the fits etc
-    saveDB = os.path.join(savePath, "saveddata-dev.db")
+    saveDB = os.path.join(savePath, "saveddata.db")
 
     # The database where the static EVE data from the datadump is kept.
     # This is not the standard sqlite datadump but a modified version created by eos
