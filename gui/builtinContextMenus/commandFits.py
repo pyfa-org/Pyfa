@@ -66,7 +66,6 @@ class CommandFits(ContextMenu):
 
         if len(self.__class__.commandFits) < 15:
             for fit in sorted(self.__class__.commandFits, key=lambda x: x.name):
-                print fit
                 menuItem = self.addFit(rootMenu if msw else sub, fit, True)
                 sub.AppendItem(menuItem)
         else:
