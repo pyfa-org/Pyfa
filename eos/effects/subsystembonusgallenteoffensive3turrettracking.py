@@ -1,7 +1,8 @@
 # subsystemBonusGallenteOffensive3TurretTracking
 #
 # Used by:
-# Subsystem: Proteus Offensive - Dissonic Encoding Platform
+# Subsystem: Proteus Offensive - Drone Synthesis Projector
+# Subsystem: Proteus Offensive - Hybrid Encoding Platform
 type = "passive"
 
 

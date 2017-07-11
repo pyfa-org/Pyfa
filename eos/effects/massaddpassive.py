@@ -1,7 +1,4 @@
-# massAddPassive
-#
-# Used by:
-# Items from category: Subsystem (80 of 80)
+# Not used by any item
 type = "passive"
 
 

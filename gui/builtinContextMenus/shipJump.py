@@ -2,7 +2,7 @@
 import wx
 from gui.contextMenu import ContextMenu
 import gui.mainFrame
-from gui.shipBrowser import Stage3Selected
+from gui.builtinShipBrowser.events import Stage3Selected
 from service.fit import Fit
 from service.settings import ContextMenuSettings
 

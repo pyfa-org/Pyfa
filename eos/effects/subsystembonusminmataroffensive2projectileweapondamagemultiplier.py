@@ -1,7 +1,7 @@
 # subsystemBonusMinmatarOffensive2ProjectileWeaponDamageMultiplier
 #
 # Used by:
-# Subsystem: Loki Offensive - Turret Concurrence Registry
+# Subsystem: Loki Offensive - Projectile Scoping Array
 type = "passive"
 
 

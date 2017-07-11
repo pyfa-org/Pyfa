@@ -8,7 +8,7 @@
 # Ships from group: Force Recon Ship (7 of 7)
 # Ships from group: Stealth Bomber (4 of 4)
 # Ships named like: Stratios (2 of 2)
-# Subsystems named like: Offensive Covert Reconfiguration (4 of 4)
+# Subsystems named like: Defensive Covert Reconfiguration (4 of 4)
 # Ship: Astero
 # Ship: Rabisu
 type = "passive"

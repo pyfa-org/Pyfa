@@ -1,7 +1,4 @@
-# subsystemBonusAmarrElectronicEnergyDestabilizerAmount
-#
-# Used by:
-# Subsystem: Legion Electronics - Energy Parasitic Complex
+# Not used by any item
 type = "passive"
 
 

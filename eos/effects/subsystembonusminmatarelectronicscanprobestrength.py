@@ -1,7 +1,4 @@
-# subSystemBonusMinmatarElectronicScanProbeStrength
-#
-# Used by:
-# Subsystem: Loki Electronics - Emergent Locus Analyzer
+# Not used by any item
 type = "passive"
 
 

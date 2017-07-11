@@ -1,6 +1,7 @@
 # subsystemBonusAmarrDefensiveArmorRepairAmount
 #
 # Used by:
+# Subsystem: Legion Defensive - Covert Reconfiguration
 # Subsystem: Legion Defensive - Nanobot Injector
 type = "passive"
 

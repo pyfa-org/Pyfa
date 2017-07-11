@@ -5,9 +5,14 @@
 # Implants named like: Mindflood Booster (3 of 4)
 # Implants named like: Sooth Sayer Booster (3 of 4)
 type = "boosterSideEffect"
-activeByDefault = False
+
+# User-friendly name for the side effect
+displayName = "Turret Optimal Range"
+
+# Attribute that this effect targets
+attr = "boosterTurretOptimalRange"
 
 
 def handler(fit, booster, context):
     fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill("Gunnery"),
-                                  "maxRange", booster.getModifiedItemAttr("boosterTurretOptimalRange"))
+                                  "maxRange", booster.getModifiedItemAttr(attr))

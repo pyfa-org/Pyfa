@@ -255,7 +255,7 @@ class Fit(object):
         Projected is a recursion flag that is set to reduce recursions into projected fits
         Basic is a flag to simply return the fit without any other processing
         """
-        pyfalog.debug("Getting fit for fit ID: {0}", fitID)
+        # pyfalog.debug("Getting fit for fit ID: {0}", fitID)
         if fitID is None:
             return None
         fit = eos.db.getFit(fitID)
@@ -988,6 +988,13 @@ class Fit(object):
         pyfalog.debug("Toggling fighter ability for fit ID: {0}", fitID)
         fit = eos.db.getFit(fitID)
         ability.active = not ability.active
+        eos.db.commit()
+        self.recalc(fit)
+
+    def toggleBoosterSideEffect(self, fitID, sideEffect):
+        pyfalog.debug("Toggling booster side effect for fit ID: {0}", fitID)
+        fit = eos.db.getFit(fitID)
+        sideEffect.active = not sideEffect.active
         eos.db.commit()
         self.recalc(fit)
 

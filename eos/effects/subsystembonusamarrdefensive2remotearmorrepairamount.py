@@ -1,7 +1,4 @@
-# subsystemBonusAmarrDefensive2RemoteArmorRepairAmount
-#
-# Used by:
-# Subsystem: Legion Defensive - Adaptive Augmenter
+# Not used by any item
 type = "passive"
 runTime = "early"
 

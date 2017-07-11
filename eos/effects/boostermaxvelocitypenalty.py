@@ -1,10 +1,15 @@
 # boosterMaxVelocityPenalty
 #
 # Used by:
-# Implants from group: Booster (12 of 48)
+# Implants from group: Booster (12 of 55)
 type = "boosterSideEffect"
-activeByDefault = False
+
+# User-friendly name for the side effect
+displayName = "Velocity"
+
+# Attribute that this effect targets
+attr = "boosterMaxVelocityPenalty"
 
 
 def handler(fit, booster, context):
-    fit.ship.boostItemAttr("maxVelocity", booster.getModifiedItemAttr("boosterMaxVelocityPenalty"))
+    fit.ship.boostItemAttr("maxVelocity", booster.getModifiedItemAttr(attr))

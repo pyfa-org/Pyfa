@@ -1,6 +1,7 @@
 # subsystemBonusGallenteDefensiveArmorRepairAmount
 #
 # Used by:
+# Subsystem: Proteus Defensive - Covert Reconfiguration
 # Subsystem: Proteus Defensive - Nanobot Injector
 type = "passive"
 

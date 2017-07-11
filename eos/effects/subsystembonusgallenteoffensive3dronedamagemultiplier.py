@@ -1,7 +1,4 @@
-# subsystemBonusGallenteOffensive3DroneDamageMultiplier
-#
-# Used by:
-# Subsystem: Proteus Offensive - Drone Synthesis Projector
+# Not used by any item
 type = "passive"
 
 

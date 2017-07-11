@@ -1,7 +1,4 @@
-# subsystemBonusAmarrOffensiveDroneDamageMultiplier
-#
-# Used by:
-# Subsystem: Legion Offensive - Drone Synthesis Projector
+# Not used by any item
 type = "passive"
 
 

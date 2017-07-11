@@ -542,6 +542,10 @@ class Market(object):
         # Set-container for variables
         variations = set()
         variations_limiter = set()
+
+        # if item belongs to these categories, use their group to find "variations"
+        categories = ['Drone', 'Fighter', 'Implant']
+
         for item in items:
             if item.category.ID == 20:  # Implants and Boosters
                 implant_remove_list = set()
@@ -592,7 +596,7 @@ class Market(object):
         variations.update(parents)
         # Add all variations of parents to the set
         parentids = tuple(item.ID for item in parents)
-        groupids = tuple(item.group.ID for item in parents)
+        groupids = tuple(item.group.ID for item in parents if item.category.name in categories)
         variations_list = eos.db.getVariations(parentids, groupids)
 
         if variations_limiter:

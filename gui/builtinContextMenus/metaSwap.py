@@ -104,7 +104,9 @@ class MetaSwap(ContextMenu):
         group = None
         for item in items:
             # Apparently no metaGroup for the Tech I variant:
-            if item.metaGroup is None:
+            if "subSystem" in item.effects:
+                thisgroup = item.marketGroup.marketGroupName
+            elif item.metaGroup is None:
                 thisgroup = "Tech I"
             else:
                 thisgroup = item.metaGroup.name

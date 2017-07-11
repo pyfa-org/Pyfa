@@ -45,10 +45,12 @@ import gui.globalEvents as GE
 from gui.bitmapLoader import BitmapLoader
 from gui.mainMenuBar import MainMenuBar
 from gui.additionsPane import AdditionsPane
-from gui.marketBrowser import MarketBrowser, ItemSelected
+from gui.marketBrowser import MarketBrowser
+from gui.builtinMarketBrowser.events import ItemSelected
 from gui.multiSwitch import MultiSwitch
 from gui.statsPane import StatsPane
-from gui.shipBrowser import ShipBrowser, FitSelected, ImportSelected, Stage3Selected
+from gui.shipBrowser import ShipBrowser
+from gui.builtinShipBrowser.events import FitSelected, ImportSelected, Stage3Selected
 from gui.characterEditor import CharacterEditor, SaveCharacterAs
 from gui.characterSelection import CharacterSelection
 from gui.patternEditor import DmgPatternEditorDlg

@@ -1,7 +1,4 @@
-# subsystemBonusScanProbeLauncherCPU
-#
-# Used by:
-# Subsystems named like: Electronics Emergent Locus Analyzer (4 of 4)
+# Not used by any item
 type = "passive"
 
 

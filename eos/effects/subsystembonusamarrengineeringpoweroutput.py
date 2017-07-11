@@ -1,10 +1,7 @@
-# subsystemBonusAmarrEngineeringPowerOutput
-#
-# Used by:
-# Subsystem: Legion Engineering - Power Core Multiplier
+# Not used by any item
 type = "passive"
 
 
 def handler(fit, module, context):
-    fit.ship.boostItemAttr("powerOutput", module.getModifiedItemAttr("subsystemBonusAmarrEngineering"),
-                           skill="Amarr Engineering Systems")
+    fit.ship.boostItemAttr("powerOutput", module.getModifiedItemAttr("subsystemBonusAmarrCore"),
+                           skill="Amarr Core Systems")

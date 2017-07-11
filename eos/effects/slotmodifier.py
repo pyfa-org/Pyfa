@@ -1,7 +1,7 @@
 # slotModifier
 #
 # Used by:
-# Items from category: Subsystem (80 of 80)
+# Items from category: Subsystem (48 of 48)
 type = "passive"
 
 

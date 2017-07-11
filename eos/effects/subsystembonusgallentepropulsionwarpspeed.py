@@ -1,7 +1,7 @@
 # subsystemBonusGallentePropulsionWarpSpeed
 #
 # Used by:
-# Subsystem: Proteus Propulsion - Gravitational Capacitor
+# Subsystem: Proteus Propulsion - Hyperspatial Optimization
 type = "passive"
 
 

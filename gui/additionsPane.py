@@ -19,19 +19,18 @@
 
 # noinspection PyPackageRequirements
 import wx
-from gui.boosterView import BoosterView
-from gui.droneView import DroneView
-from gui.fighterView import FighterView
-from gui.cargoView import CargoView
-from gui.implantView import ImplantView
-from gui.projectedView import ProjectedView
 
-from gui.commandView import CommandView
-from gui.notesView import NotesView
-from gui.pyfatogglepanel import TogglePanel
 from gui.bitmapLoader import BitmapLoader
-
+from gui.builtinAdditionPanes.boosterView import BoosterView
+from gui.builtinAdditionPanes.cargoView import CargoView
+from gui.builtinAdditionPanes.commandView import CommandView
+from gui.builtinAdditionPanes.droneView import DroneView
+from gui.builtinAdditionPanes.fighterView import FighterView
+from gui.builtinAdditionPanes.implantView import ImplantView
+from gui.builtinAdditionPanes.notesView import NotesView
+from gui.builtinAdditionPanes.projectedView import ProjectedView
 from gui.chromeTabs import PFNotebook
+from gui.pyfatogglepanel import TogglePanel
 
 
 class AdditionsPane(TogglePanel):

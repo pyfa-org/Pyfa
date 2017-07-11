@@ -1,7 +1,4 @@
-# subsystemBonusMinmatarDefensiveSignatureRadius
-#
-# Used by:
-# Subsystem: Loki Defensive - Amplification Node
+# Not used by any item
 type = "passive"
 
 

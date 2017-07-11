@@ -1,7 +1,7 @@
 # subsystemBonusMinmatarPropulsionMaxVelocity
 #
 # Used by:
-# Subsystem: Loki Propulsion - Chassis Optimization
+# Subsystem: Loki Propulsion - Intercalated Nanofibers
 type = "passive"
 
 
