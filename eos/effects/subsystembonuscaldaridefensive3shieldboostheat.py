@@ -1,3 +1,8 @@
+# subsystemBonusCaldariDefensive3ShieldBoostHeat
+#
+# Used by:
+# Subsystem: Tengu Defensive - Amplification Node
+# Subsystem: Tengu Defensive - Covert Reconfiguration
 type = "passive"
 def handler(fit, src, context):
     fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill("Shield Operation"),

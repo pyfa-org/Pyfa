@@ -1,7 +1,7 @@
 # subsystemBonusGallentePropulsionWarpSpeed
 #
 # Used by:
-# Subsystem: Proteus Propulsion - Chassis Optimization
+# Subsystem: Proteus Propulsion - Hyperspatial Optimization
 type = "passive"
 
 
