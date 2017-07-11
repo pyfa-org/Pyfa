@@ -1,7 +1,7 @@
 import wx
 
 from gui.cachingImageList import CachingImageList
-from gui.builtinMarketBrowser.events import *
+import gui.builtinMarketBrowser.events as events
 
 from logbook import Logger
 
@@ -32,7 +32,7 @@ class MarketTree(wx.TreeCtrl):
 
         # Add recently used modules node
         rumIconId = self.addImage("market_small", "gui")
-        self.AppendItem(self.root, "Recently Used Modules", rumIconId, data=wx.TreeItemData(RECENTLY_USED_MODULES))
+        self.AppendItem(self.root, "Recently Used Modules", rumIconId, data=wx.TreeItemData(events.RECENTLY_USED_MODULES))
 
         # Bind our lookup method to when the tree gets expanded
         self.Bind(wx.EVT_TREE_ITEM_EXPANDING, self.expandLookup)
@@ -96,4 +96,3 @@ class MarketTree(wx.TreeCtrl):
 
         self.SelectItem(item)
         self.marketBrowser.itemView.selectionMade()
-

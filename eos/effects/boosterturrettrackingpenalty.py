@@ -11,6 +11,7 @@ displayName = "Turret Tracking"
 # Attribute that this effect targets
 attr = "boosterTurretTrackingPenalty"
 
+
 def handler(fit, booster, context):
     fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill("Gunnery"),
                                   "trackingSpeed", booster.getModifiedItemAttr(attr))

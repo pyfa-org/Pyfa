@@ -4208,12 +4208,14 @@ def upgrade(saveddata_engine):
 
     # I can't figure out a way to get IN operator to work when supplying a list using a parameterized query. So I'm
     # doing it the shitty way by formatting the SQL string. Don't do this kids!
-    fits = [x['fitID'] for x in saveddata_engine.execute("SELECT fitID FROM modules WHERE itemID IN ({}) GROUP BY fitID HAVING COUNT(*) = 5".format(','.join(oldItems)))]
+    fits = [x['fitID'] for x in saveddata_engine.execute(
+        "SELECT fitID FROM modules WHERE itemID IN ({}) GROUP BY fitID HAVING COUNT(*) = 5".format(','.join(oldItems)))]
 
     for fitID in fits:
         try:
             # Gather a list of the old subsystems and their record IDs
-            modules = saveddata_engine.execute("SELECT * FROM modules WHERE itemID IN ({}) AND fitID = ?".format(','.join(oldItems)), (fitID,))
+            modules = saveddata_engine.execute(
+                "SELECT * FROM modules WHERE itemID IN ({}) AND fitID = ?".format(','.join(oldItems)), (fitID,))
 
             oldModules = []
             for mod in modules:

@@ -11,6 +11,7 @@ displayName = "Missile Explosion Radius"
 # Attribute that this effect targets
 attr = "boosterMissileAOECloudPenalty"
 
+
 def handler(fit, booster, context):
     fit.modules.filteredChargeBoost(lambda mod: mod.charge.requiresSkill("Missile Launcher Operation"),
                                     "aoeCloudSize", booster.getModifiedItemAttr(attr))

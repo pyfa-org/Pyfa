@@ -63,4 +63,3 @@ class BoosterSideEffect(object):
     @property
     def attr(self):
         return self.__effect.getattr('attr')
-

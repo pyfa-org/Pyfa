@@ -26,7 +26,6 @@ from gui.builtinMarketBrowser.searchBox import SearchBox
 from gui.builtinMarketBrowser.itemView import ItemView
 from gui.builtinMarketBrowser.metaButton import MetaButton
 from gui.builtinMarketBrowser.marketTree import MarketTree
-from gui.builtinMarketBrowser.events import *
 
 from logbook import Logger
 
@@ -99,4 +98,3 @@ class MarketBrowser(wx.Panel):
 
     def jump(self, item):
         self.marketView.jump(item)
-

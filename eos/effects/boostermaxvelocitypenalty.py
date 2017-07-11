@@ -10,5 +10,6 @@ displayName = "Velocity"
 # Attribute that this effect targets
 attr = "boosterMaxVelocityPenalty"
 
+
 def handler(fit, booster, context):
     fit.ship.boostItemAttr("maxVelocity", booster.getModifiedItemAttr(attr))

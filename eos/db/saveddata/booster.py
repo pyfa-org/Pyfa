@@ -48,8 +48,8 @@ mapper(Booster, boosters_table,
             BoosterSideEffect,
             backref="booster",
             cascade='all, delete, delete-orphan'),
-        }
-)
+       }
+       )
 
 
 mapper(BoosterSideEffect, booster_side_effect_table)

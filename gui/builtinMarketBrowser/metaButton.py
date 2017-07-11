@@ -1,4 +1,4 @@
-from gui.builtinMarketBrowser.events import *
+import wx
 from logbook import Logger
 
 pyfalog = Logger(__name__)

@@ -12,6 +12,7 @@ displayName = "Turret Optimal Range"
 # Attribute that this effect targets
 attr = "boosterTurretOptimalRange"
 
+
 def handler(fit, booster, context):
     fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill("Gunnery"),
                                   "maxRange", booster.getModifiedItemAttr(attr))

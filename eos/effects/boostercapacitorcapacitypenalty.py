@@ -11,5 +11,6 @@ displayName = "Cap Capacity"
 # Attribute that this effect targets
 attr = "boosterCapacitorCapacityPenalty"
 
+
 def handler(fit, booster, context):
     fit.ship.boostItemAttr("capacitorCapacity", booster.getModifiedItemAttr(attr))
