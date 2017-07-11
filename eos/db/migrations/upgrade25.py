@@ -10,8 +10,6 @@ https://community.eveonline.com/news/patch-notes/patch-notes-for-july-2017-relea
  conversion. Best effort ftw
 """
 
-import sqlalchemy
-
 conversion = {
     frozenset([30046, 29969, 30139, 30122, 30090]): (45627, 45590, 45601, 45615),
     frozenset([30046, 29969, 30139, 30122, 30088]): (45627, 45590, 45601, 45614),

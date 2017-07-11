@@ -9,7 +9,7 @@ from gui.utils.staticHelpers import DragDropHelper
 
 from logbook import Logger
 
-from gui.builtinMarketBrowser.events import *
+import events
 
 pyfalog = Logger(__name__)
 
@@ -89,10 +89,10 @@ class ItemView(Display):
             for itemID in self.sMkt.serviceMarketRecentlyUsedModules["pyfaMarketRecentlyUsedModules"]:
                 self.recentlyUsedModules.add(self.sMkt.getItem(itemID))
 
-            wx.PostEvent(self.mainFrame, ItemSelected(itemID=self.active[sel].ID))
+            wx.PostEvent(self.mainFrame, events.ItemSelected(itemID=self.active[sel].ID))
 
     def storeRecentlyUsedMarketItem(self, itemID):
-        if len(self.sMkt.serviceMarketRecentlyUsedModules["pyfaMarketRecentlyUsedModules"]) > MAX_RECENTLY_USED_MODULES:
+        if len(self.sMkt.serviceMarketRecentlyUsedModules["pyfaMarketRecentlyUsedModules"]) > events.MAX_RECENTLY_USED_MODULES:
             self.sMkt.serviceMarketRecentlyUsedModules["pyfaMarketRecentlyUsedModules"].pop(0)
 
         self.sMkt.serviceMarketRecentlyUsedModules["pyfaMarketRecentlyUsedModules"].append(itemID)
@@ -104,7 +104,7 @@ class ItemView(Display):
         if sel.IsOk():
             # Get data field of the selected item (which is a marketGroup ID if anything was selected)
             seldata = self.marketView.GetPyData(sel)
-            if seldata is not None and seldata != RECENTLY_USED_MODULES:
+            if seldata is not None and seldata != events.RECENTLY_USED_MODULES:
                 # If market group treeview item doesn't have children (other market groups or dummies),
                 # then it should have items in it and we want to request them
                 if self.marketView.ItemHasChildren(sel) is False:
@@ -117,7 +117,7 @@ class ItemView(Display):
                     items = set()
             else:
                 # If method was called but selection wasn't actually made or we have a hit on recently used modules
-                if seldata == RECENTLY_USED_MODULES:
+                if seldata == events.RECENTLY_USED_MODULES:
                     items = self.recentlyUsedModules
                 else:
                     items = set()
@@ -126,7 +126,7 @@ class ItemView(Display):
             self.updateItemStore(items)
 
             # Set toggle buttons / use search mode flag if recently used modules category is selected (in order to have all modules listed and not filtered)
-            if seldata is not RECENTLY_USED_MODULES:
+            if seldata is not events.RECENTLY_USED_MODULES:
                 self.setToggles()
             else:
                 self.marketBrowser.searchMode = True

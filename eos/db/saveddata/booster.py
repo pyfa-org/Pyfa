@@ -18,29 +18,28 @@
 # ===============================================================================
 
 from sqlalchemy import Table, Column, ForeignKey, Integer, Boolean, DateTime
-from sqlalchemy.ext.associationproxy import association_proxy
 from sqlalchemy.orm import mapper, relation
 import datetime
 
 from eos.db import saveddata_meta
 from eos.saveddata.booster import Booster
 from eos.saveddata.boosterSideEffect import BoosterSideEffect
-from eos.saveddata.fit import Fit
 
 boosters_table = Table("boosters", saveddata_meta,
-                        Column("ID", Integer, primary_key=True),
-                        Column("itemID", Integer),
-                        Column("fitID", Integer, ForeignKey("fits.ID"), nullable=False),
-                        Column("active", Boolean),
-                        Column("created", DateTime, nullable=True, default=datetime.datetime.now),
-                        Column("modified", DateTime, nullable=True, onupdate=datetime.datetime.now),
+                       Column("ID", Integer, primary_key=True),
+                       Column("itemID", Integer),
+                       Column("fitID", Integer, ForeignKey("fits.ID"), nullable=False),
+                       Column("active", Boolean),
+                       Column("created", DateTime, nullable=True, default=datetime.datetime.now),
+                       Column("modified", DateTime, nullable=True, onupdate=datetime.datetime.now),
                        )
 
 
 booster_side_effect_table = Table("boosterSideEffects", saveddata_meta,
-                                Column("boosterID", Integer, ForeignKey("boosters.ID"), primary_key=True, index=True),
-                                Column("effectID", Integer, nullable=False, primary_key=True),
-                                Column("active", Boolean, default=False))
+                                  Column("boosterID", Integer, ForeignKey("boosters.ID"), primary_key=True, index=True),
+                                  Column("effectID", Integer, nullable=False, primary_key=True),
+                                  Column("active", Boolean, default=False)
+                                  )
 
 
 mapper(Booster, boosters_table,

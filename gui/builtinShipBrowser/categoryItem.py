@@ -8,7 +8,7 @@ import gui.utils.colorUtils as colorUtils
 import gui.utils.drawUtils as drawUtils
 import gui.utils.fonts as fonts
 from gui.bitmapLoader import BitmapLoader
-from .events import *
+import events
 
 pyfalog = Logger(__name__)
 
@@ -77,7 +77,7 @@ class CategoryItem(SFBrowserItem):
 
     def selectCategory(self, event):
         categoryID = self.categoryID
-        wx.PostEvent(self.shipBrowser, Stage2Selected(categoryID=categoryID, back=False))
+        wx.PostEvent(self.shipBrowser, events.Stage2Selected(categoryID=categoryID, back=False))
 
     def MouseLeftUp(self, event):
         self.selectCategory(event)

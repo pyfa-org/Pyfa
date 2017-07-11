@@ -8,7 +8,7 @@ import gui.mainFrame
 import gui.utils.colorUtils as colorUtils
 import gui.utils.drawUtils as drawUtils
 import gui.utils.fonts as fonts
-from events import *
+import events
 from gui.bitmapLoader import BitmapLoader
 from gui.contextMenu import ContextMenu
 from service.fit import Fit
@@ -147,7 +147,7 @@ class ShipItem(SFItem.SFBrowserItem):
         else:
             shipName, shipTrait, fittings = self.shipFittingInfo
             if fittings > 0:
-                wx.PostEvent(self.shipBrowser, Stage3Selected(shipID=self.shipID, back=True))
+                wx.PostEvent(self.shipBrowser, events.Stage3Selected(shipID=self.shipID, back=True))
             else:
                 self.newBtnCB()
 
@@ -186,8 +186,8 @@ class ShipItem(SFItem.SFBrowserItem):
         sFit = Fit.getInstance()
         fitID = sFit.newFit(self.shipID, self.tcFitName.GetValue())
 
-        wx.PostEvent(self.shipBrowser, Stage3Selected(shipID=self.shipID, back=False))
-        wx.PostEvent(self.mainFrame, FitSelected(fitID=fitID))
+        wx.PostEvent(self.shipBrowser, events.Stage3Selected(shipID=self.shipID, back=False))
+        wx.PostEvent(self.mainFrame, events.FitSelected(fitID=fitID))
 
     def UpdateElementsPos(self, mdc):
         rect = self.GetRect()
@@ -289,5 +289,3 @@ class ShipItem(SFItem.SFBrowserItem):
         else:
             editCtl.SetSize((self.editWidth, -1))
             editCtl.SetPosition((fnEditPosX, fnEditPosY))
-
-

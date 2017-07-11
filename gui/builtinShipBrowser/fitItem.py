@@ -12,7 +12,7 @@ import gui.mainFrame
 import gui.utils.colorUtils as colorUtils
 import gui.utils.drawUtils as drawUtils
 import gui.utils.fonts as fonts
-from events import *
+import events
 from gui.bitmapLoader import BitmapLoader
 from gui.builtinShipBrowser.pfBitmapFrame import PFBitmapFrame
 from service.fit import Fit
@@ -171,7 +171,7 @@ class FitItem(SFItem.SFBrowserItem):
         self.fitBooster = not self.fitBooster
         self.boosterBtn.Show(self.fitBooster)
         self.Refresh()
-        wx.PostEvent(self.mainFrame, BoosterListUpdated())
+        wx.PostEvent(self.mainFrame, events.BoosterListUpdated())
         event.Skip()
 
     def OnProjectToFit(self, event):
@@ -303,8 +303,8 @@ class FitItem(SFItem.SFBrowserItem):
         sFit = Fit.getInstance()
         fitID = sFit.copyFit(self.fitID)
         self.shipBrowser.fitIDMustEditName = fitID
-        wx.PostEvent(self.shipBrowser, Stage3Selected(shipID=self.shipID))
-        wx.PostEvent(self.mainFrame, FitSelected(fitID=fitID))
+        wx.PostEvent(self.shipBrowser, events.Stage3Selected(shipID=self.shipID))
+        wx.PostEvent(self.mainFrame, events.FitSelected(fitID=fitID))
 
     def renameBtnCB(self):
         if self.tcFitName.IsShown():
@@ -327,7 +327,7 @@ class FitItem(SFItem.SFBrowserItem):
         if fitName:
             self.fitName = fitName
             sFit.renameFit(self.fitID, self.fitName)
-            wx.PostEvent(self.mainFrame, FitRenamed(fitID=self.fitID))
+            wx.PostEvent(self.mainFrame, events.FitRenamed(fitID=self.fitID))
         else:
             self.tcFitName.SetValue(self.fitName)
 
@@ -368,15 +368,15 @@ class FitItem(SFItem.SFBrowserItem):
         sFit.deleteFit(self.fitID)
 
         # Notify other areas that a fit has been deleted
-        wx.PostEvent(self.mainFrame, FitRemoved(fitID=self.fitID))
+        wx.PostEvent(self.mainFrame, events.FitRemoved(fitID=self.fitID))
 
         # todo: would a simple RefreshList() work here instead of posting that a stage has been selected?
         if self.shipBrowser.GetActiveStage() == 5:
-            wx.PostEvent(self.shipBrowser, ImportSelected(fits=self.shipBrowser.lastdata))
+            wx.PostEvent(self.shipBrowser, events.ImportSelected(fits=self.shipBrowser.lastdata))
         elif self.shipBrowser.GetActiveStage() == 4:
-            wx.PostEvent(self.shipBrowser, SearchSelected(text=self.shipBrowser.navpanel.lastSearch, back=True))
+            wx.PostEvent(self.shipBrowser, events.SearchSelected(text=self.shipBrowser.navpanel.lastSearch, back=True))
         else:
-            wx.PostEvent(self.shipBrowser, Stage3Selected(shipID=self.shipID))
+            wx.PostEvent(self.shipBrowser, events.Stage3Selected(shipID=self.shipID))
 
     def MouseLeftUp(self, event):
         if self.dragging and self.dragged:
@@ -432,9 +432,9 @@ class FitItem(SFItem.SFBrowserItem):
 
     def selectFit(self, event=None, newTab=False):
         if newTab:
-            wx.PostEvent(self.mainFrame, FitSelected(fitID=self.fitID, startup=2))
+            wx.PostEvent(self.mainFrame, events.FitSelected(fitID=self.fitID, startup=2))
         else:
-            wx.PostEvent(self.mainFrame, FitSelected(fitID=self.fitID))
+            wx.PostEvent(self.mainFrame, events.FitSelected(fitID=self.fitID))
 
     def RestoreEditButton(self):
         self.tcFitName.Show(False)

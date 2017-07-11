@@ -6,7 +6,7 @@ from logbook import Logger
 import gui.utils.animEffects as animEffects
 import gui.utils.colorUtils as colorUtils
 import gui.utils.drawUtils as drawUtils
-from events import *
+import events
 from gui.bitmapLoader import BitmapLoader
 
 pyfalog = Logger(__name__)
@@ -134,7 +134,7 @@ class RaceSelector(wx.Window):
 
             if stage == 2:
                 categoryID = self.shipBrowser.GetStageData(stage)
-                wx.PostEvent(self.shipBrowser, Stage2Selected(categoryID=categoryID, back=True))
+                wx.PostEvent(self.shipBrowser, events.Stage2Selected(categoryID=categoryID, back=True))
         event.Skip()
 
     def HitTest(self, mx, my):
@@ -268,4 +268,3 @@ class RaceSelector(wx.Window):
         self.checkMaximize = False
 
         event.Skip()
-

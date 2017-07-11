@@ -25,7 +25,7 @@ import gui.mainFrame
 from gui.builtinMarketBrowser.events import ItemSelected, ITEM_SELECTED
 import gui.display as d
 from gui.contextMenu import ContextMenu
-from gui.builtinShipBrowser.events import *
+import gui.builtinShipBrowser.events as sbEvents
 import gui.multiSwitch
 from eos.saveddata.mode import Mode
 from eos.saveddata.module import Module, Slot, Rack
@@ -50,7 +50,7 @@ class FitSpawner(gui.multiSwitch.TabSpawner):
     def __init__(self, multiSwitch):
         self.multiSwitch = multiSwitch
         self.mainFrame = mainFrame = gui.mainFrame.MainFrame.getInstance()
-        mainFrame.Bind(EVT_FIT_SELECTED, self.fitSelected)
+        mainFrame.Bind(sbEvents.EVT_FIT_SELECTED, self.fitSelected)
         self.multiSwitch.tabsContainer.handleDrag = self.handleDrag
 
     def fitSelected(self, event):
@@ -138,8 +138,8 @@ class FittingView(d.Display):
         self.Show(False)
         self.parent = parent
         self.mainFrame.Bind(GE.FIT_CHANGED, self.fitChanged)
-        self.mainFrame.Bind(EVT_FIT_RENAMED, self.fitRenamed)
-        self.mainFrame.Bind(EVT_FIT_REMOVED, self.fitRemoved)
+        self.mainFrame.Bind(sbEvents.EVT_FIT_RENAMED, self.fitRenamed)
+        self.mainFrame.Bind(sbEvents.EVT_FIT_REMOVED, self.fitRemoved)
         self.mainFrame.Bind(ITEM_SELECTED, self.appendItem)
 
         self.Bind(wx.EVT_LEFT_DCLICK, self.removeItem)
@@ -210,13 +210,13 @@ class FittingView(d.Display):
     def handleDrag(self, type, fitID):
         # Those are drags coming from pyfa sources, NOT builtin wx drags
         if type == "fit":
-            wx.PostEvent(self.mainFrame, FitSelected(fitID=fitID))
+            wx.PostEvent(self.mainFrame, sbEvents.FitSelected(fitID=fitID))
 
     def Destroy(self):
         self.parent.Unbind(EVT_NOTEBOOK_PAGE_CHANGED, handler=self.pageChanged)
         self.mainFrame.Unbind(GE.FIT_CHANGED, handler=self.fitChanged)
-        self.mainFrame.Unbind(EVT_FIT_RENAMED, handler=self.fitRenamed)
-        self.mainFrame.Unbind(EVT_FIT_REMOVED, handler=self.fitRemoved)
+        self.mainFrame.Unbind(sbEvents.EVT_FIT_RENAMED, handler=self.fitRenamed)
+        self.mainFrame.Unbind(sbEvents.EVT_FIT_REMOVED, handler=self.fitRemoved)
         self.mainFrame.Unbind(ITEM_SELECTED, handler=self.appendItem)
 
         d.Display.Destroy(self)
