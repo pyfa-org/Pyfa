@@ -23,6 +23,7 @@ import wx
 import gui.builtinAdditionPanes.droneView
 import gui.display as d
 import gui.globalEvents as GE
+from gui.builtinShipBrowser.events import EVT_FIT_REMOVED
 from eos.saveddata.drone import Drone as es_Drone
 from gui.builtinContextMenus.commandFits import CommandFits
 from gui.builtinViewColumns.state import State
@@ -66,7 +67,8 @@ class CommandView(d.Display):
 
         self.lastFitId = None
 
-        self.mainFrame.Bind(GE.FIT_CHANGED, CommandFits.populateFits)
+        self.mainFrame.Bind(GE.FIT_CHANGED, CommandFits.fitChanged)
+        self.mainFrame.Bind(EVT_FIT_REMOVED, CommandFits.populateFits)
         self.mainFrame.Bind(GE.FIT_CHANGED, self.fitChanged)
         self.Bind(wx.EVT_LEFT_DOWN, self.click)
         self.Bind(wx.EVT_RIGHT_DOWN, self.click)

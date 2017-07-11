@@ -18,7 +18,7 @@ class CommandFits(ContextMenu):
     menu = None
 
     @classmethod
-    def populateFits(cls, evt):
+    def fitChanged(cls, evt):
         # This fires on a FitChanged event and updates the command fits whenever a command burst module is added or
         # removed from a fit. evt.typeID can be either a int or a set (in the case of multiple module deletions)
         if evt is None or (getattr(evt, 'action', None) in ("modadd", "moddel") and getattr(evt, 'typeID', None)):
@@ -29,8 +29,12 @@ class CommandFits(ContextMenu):
 
             if evt is None or not ids.isdisjoint(cls.commandTypeIDs):
                 # we are adding or removing an item that defines a command fit. Need to refresh fit list
-                sFit = Fit.getInstance()
-                cls.commandFits = sFit.getFitsWithModules(cls.commandTypeIDs)
+                cls.populateFits(evt)
+
+    @classmethod
+    def populateFits(cls, evt):
+        sFit = Fit.getInstance()
+        cls.commandFits = sFit.getFitsWithModules(cls.commandTypeIDs)
 
     def __init__(self):
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
