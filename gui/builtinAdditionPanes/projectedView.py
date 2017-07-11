@@ -191,7 +191,7 @@ class ProjectedView(d.Display):
 
         stuff = []
         if fit is not None:
-            pyfalog.debug("    Collecting list of stuff to display in ProjectedView")
+            #pyfalog.debug("    Collecting list of stuff to display in ProjectedView")
             self.modules = fit.projectedModules[:]
             self.drones = fit.projectedDrones[:]
             self.fighters = fit.projectedFighters[:]
