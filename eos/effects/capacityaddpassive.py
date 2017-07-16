@@ -7,4 +7,4 @@ type = "passive"
 
 
 def handler(fit, subsystem, context):
-    fit.ship.increaseItemAttr("capacity", subsystem.getModifiedItemAttr("capacity") or 0)
+    fit.ship.increaseItemAttr("capacity", subsystem.getModifiedItemAttr("cargoCapacityAdd") or 0)
