@@ -14,7 +14,7 @@ from eos.saveddata.module import Module
 from eos.saveddata.drone import Drone
 from eos.saveddata.fighter import Fighter
 from eos.saveddata.implant import Implant
-
+from eos.saveddata.cargo import Cargo
 
 class MetaSwap(ContextMenu):
     def __init__(self):
@@ -31,6 +31,7 @@ class MetaSwap(ContextMenu):
                 "fighterItem",
                 "boosterItem",
                 "implantItem",
+                "cargoItem",
         ):
             return False
 
@@ -183,6 +184,13 @@ class MetaSwap(ContextMenu):
                     if implant_stack is selected_item:
                         sFit.removeImplant(fitID, idx, False)
                         sFit.addImplant(fitID, item.ID, True)
+                        break
+
+            elif isinstance(selected_item, Cargo):
+                for idx, cargo_stack in enumerate(fit.cargo):
+                    if cargo_stack is selected_item:
+                        sFit.removeCargo(fitID, idx)
+                        sFit.addCargo(fitID, item.ID, cargo_stack.amount, True)
                         break
 
         wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fitID))
