@@ -62,7 +62,7 @@ class AmountChanger(wx.Dialog):
             return
 
         sFit = Fit.getInstance()
-        cleanInput = re.sub(r'[^0-9]', '', self.input.GetLineText(0).strip())
+        cleanInput = re.sub(r'[^0-9.]', '', self.input.GetLineText(0).strip())
         mainFrame = gui.mainFrame.MainFrame.getInstance()
         fitID = mainFrame.getActiveFit()
 
