@@ -346,7 +346,7 @@ class Skill(HandledItem):
 
         return self.activeLevel or 0
 
-    def setLevel(self, level, persist=False):
+    def setLevel(self, level, persist=False, ignoreRestrict=False):
 
         if (level < 0 or level > 5) and level is not None:
             raise ValueError(str(level) + " is not a valid value for level")
@@ -356,7 +356,9 @@ class Skill(HandledItem):
 
         self.activeLevel = level
 
-        if eos.config.settings['strictSkillLevels']:
+        # todo: have a way to do bulk skill level editing. Currently, everytime a single skill is changed, this runs,
+        # which affects performance. Should have a checkSkillLevels() or something that is more efficient for bulk.
+        if not ignoreRestrict and eos.config.settings['strictSkillLevels']:
             start = time.time()
             for item, rlevel in self.item.requiredFor.iteritems():
                 if item.group.category.ID == 16:  # Skill category

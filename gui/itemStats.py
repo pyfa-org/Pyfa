@@ -35,6 +35,7 @@ from gui.builtinItemStatsViews.itemEffects import ItemEffects
 from gui.builtinItemStatsViews.itemAffectedBy import ItemAffectedBy
 from gui.builtinItemStatsViews.itemProperties import ItemProperties
 
+
 class ItemStatsDialog(wx.Dialog):
     counter = 0
 

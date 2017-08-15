@@ -35,6 +35,9 @@ from service.character import Character
 from service.network import AuthenticationError, TimeoutError
 from service.market import Market
 from logbook import Logger
+
+from gui.utils.clipboard import toClipboard, fromClipboard
+
 pyfalog = Logger(__name__)
 
 
@@ -199,6 +202,7 @@ class CharacterEditor(wx.Frame):
         self.btnSaveChar.Enable(not char.ro and char.isDirty)
         self.btnSaveAs.Enable(char.isDirty)
         self.btnRevert.Enable(char.isDirty)
+        self.sview.importBtn.Enable(not char.ro)
 
     def refreshCharacterList(self, event=None):
         """This is only called when we save a modified character"""
@@ -333,6 +337,26 @@ class SkillTreeView(wx.Panel):
         bSizerButtons = wx.BoxSizer(wx.HORIZONTAL)
 
         bSizerButtons.Add(self.btnSecStatus, 0, wx.ALL, 5)
+
+        bSizerButtons.AddSpacer((0, 0), 1, wx.EXPAND, 5)
+
+        importExport = (("Import", wx.ART_FILE_OPEN, "from"),
+                        ("Export", wx.ART_FILE_SAVE_AS, "to"))
+
+        for name, art, direction in importExport:
+            bitmap = wx.ArtProvider.GetBitmap(art, wx.ART_BUTTON)
+            btn = wx.BitmapButton(self, wx.ID_ANY, bitmap)
+
+            btn.SetMinSize(btn.GetSize())
+            btn.SetMaxSize(btn.GetSize())
+
+            btn.Layout()
+            setattr(self, "{}Btn".format(name.lower()), btn)
+            btn.Enable(True)
+            btn.SetToolTipString("%s skills %s clipboard" % (name, direction))
+            bSizerButtons.Add(btn, 0, wx.ALIGN_CENTER_HORIZONTAL | wx.ALIGN_RIGHT | wx.ALL, 5)
+            btn.Bind(wx.EVT_BUTTON, getattr(self, "{}Skills".format(name.lower())))
+
         pmainSizer.Add(bSizerButtons, 0, wx.EXPAND, 5)
 
         # bind the Character selection event
@@ -367,6 +391,48 @@ class SkillTreeView(wx.Panel):
         self.SetSizer(pmainSizer)
 
         self.Layout()
+
+    def importSkills(self, evt):
+
+        dlg = wx.MessageDialog(self, "Importing skills into this character will set the skill levels as pending. " +
+                                     "To save the skills permanently, please click the Save button at the bottom of the window after importing"
+                                     , "Import Skills", wx.OK)
+        dlg.ShowModal()
+        dlg.Destroy()
+
+        text = fromClipboard().strip()
+        if text:
+            char = self.charEditor.entityEditor.getActiveEntity()
+            try:
+                lines = text.splitlines()
+
+                for l in lines:
+                    skill, level = l.strip()[:-1].strip(), int(l.strip()[-1])
+                    skill = char.getSkill(skill)
+                    if skill:
+                        skill.setLevel(level, ignoreRestrict=True)
+
+            except Exception as e:
+                dlg = wx.MessageDialog(self, "There was an error importing skills, please see log file", "Error", wx.ICON_ERROR)
+                dlg.ShowModal()
+                dlg.Destroy()
+                pyfalog.error(e)
+
+            finally:
+                self.charEditor.btnRestrict()
+                self.populateSkillTree()
+                self.charEditor.entityEditor.refreshEntityList(char)
+
+    def exportSkills(self, evt):
+        char = self.charEditor.entityEditor.getActiveEntity()
+
+        skills = sorted(char.__class__.getSkillNameMap().keys())
+        list = ""
+        for s in skills:
+            skill = char.getSkill(s)
+            list += "{} {}\n".format(skill.item.name, skill.level)
+
+        toClipboard(list)
 
     def onSecStatus(self, event):
         sChar = Character.getInstance()

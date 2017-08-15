@@ -254,10 +254,10 @@ class CharacterSelection(wx.Panel):
 
     def exportSkills(self, evt):
         skillsMap = self._buildSkillsTooltipCondensed(self.reqs, skillsMap={})
+
         list = ""
-        for skill in skillsMap:
-            for i in range(1, int(skillsMap[skill])):
-                list += skill + " " + str(i) + "\n"
+        for key in sorted(skillsMap):
+            list += "%s %d\n" % (key, skillsMap[key])
 
         toClipboard(list)
 
