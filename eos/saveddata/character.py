@@ -333,13 +333,16 @@ class Skill(HandledItem):
 
     @property
     def level(self):
-        # Ensure that All 5/0 character have proper skill levels (in case database gets corrupted)
-        if self.character.name == "All 5":
-            self.activeLevel = self.__level = 5
-        elif self.character.name == "All 0":
-            self.activeLevel = self.__level = 0
-        elif self.character.alphaClone:
-            return min(self.activeLevel, self.character.alphaClone.getSkillLevel(self)) or 0
+        # @todo: there is a phantom bug that keep popping up about skills not having a character... See #1234
+        # Remove this at some point when the cause can be determined.
+        if self.character:
+            # Ensure that All 5/0 character have proper skill levels (in case database gets corrupted)
+            if self.character.name == "All 5":
+                self.activeLevel = self.__level = 5
+            elif self.character.name == "All 0":
+                self.activeLevel = self.__level = 0
+            elif self.character.alphaClone:
+                return min(self.activeLevel, self.character.alphaClone.getSkillLevel(self)) or 0
 
         return self.activeLevel or 0
 

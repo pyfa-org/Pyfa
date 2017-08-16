@@ -2,7 +2,7 @@ from gui.contextMenu import ContextMenu
 import gui.mainFrame
 # noinspection PyPackageRequirements
 import wx
-from gui.shipBrowser import FitSelected
+from gui.builtinShipBrowser.events import FitSelected
 from service.settings import ContextMenuSettings
 
 
