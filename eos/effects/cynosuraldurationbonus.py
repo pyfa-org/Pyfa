@@ -1,7 +1,7 @@
 # cynosuralDurationBonus
 #
 # Used by:
-# Ships from group: Force Recon Ship (6 of 7)
+# Ships from group: Force Recon Ship (6 of 8)
 type = "passive"
 
 
