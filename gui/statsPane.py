@@ -113,7 +113,7 @@ class StatsPane(wx.Panel):
             view.populatePanel(contentPanel, headerPanel)
             tp.SetLabel(view.getHeaderText(None))
             view.refreshPanel(None)
-            
+
             contentPanel.Bind(wx.EVT_RIGHT_DOWN, self.contextHandler(contentPanel))
             for child in contentPanel.GetChildren():
                 child.Bind(wx.EVT_RIGHT_DOWN, self.contextHandler(contentPanel))
@@ -148,5 +148,4 @@ class StatsPane(wx.Panel):
     def applyBinding(self, contentPanel):
         pyfalog.debug("Attempt applyBinding to children of {0}", contentPanel.viewName)
         for child in contentPanel.GetChildren():
-            child.Bind(wx.EVT_RIGHT_DOWN, self.contextHandler(contentPanel))        
-     
+            child.Bind(wx.EVT_RIGHT_DOWN, self.contextHandler(contentPanel))
