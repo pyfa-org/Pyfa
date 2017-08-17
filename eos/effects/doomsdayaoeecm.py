@@ -1,7 +1,7 @@
-# ECMBurstJammer
+# doomsdayAOEECM
 #
 # Used by:
-# Modules from group: Burst Jammer (11 of 11)
+# Module: ECM Jammer Burst Projector
 from eos.modifiedAttributeDict import ModifiedAttributeDict
 
 type = "projected", "active"
