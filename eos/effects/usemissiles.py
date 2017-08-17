@@ -3,7 +3,7 @@
 # Used by:
 # Modules from group: Missile Launcher Heavy (12 of 12)
 # Modules from group: Missile Launcher Rocket (15 of 15)
-# Modules named like: Launcher (153 of 153)
+# Modules named like: Launcher (154 of 154)
 type = 'active', "projected"
 
 
