@@ -108,18 +108,42 @@ class CharacterSelection(wx.Panel):
         charID = self.getActiveCharacter()
         sChar = Character.getInstance()
 
-        skillsMap = {}
-        for item, stuff in self.reqs.iteritems():
-            for things in stuff.values():
-                if things[1] not in skillsMap:
-                    skillsMap[things[1]] = things[0]
-                elif things[0] > skillsMap[things[1]]:
-                    skillsMap[things[1]] = things[0]
+        skillsMap = self.generateMissingSkillsMap(self.reqs, skillsMap={})
 
         for skillID, level in skillsMap.iteritems():
             sChar.changeLevel(charID, skillID, level, ifHigher=True)
 
         self.refreshCharacterList()
+
+    def generateMissingSkillsMap(self, reqs, currItem="", tabulationLevel=0, skillsMap=None):
+        if skillsMap is None:
+            skillsMap = {}
+
+        sCharacter = Character.getInstance()
+
+        if tabulationLevel == 0:
+            for item, subReqs in reqs.iteritems():
+                skillsMap = self.generateMissingSkillsMap(subReqs, item.ID, 1, skillsMap)
+            sorted(skillsMap, key=skillsMap.get)
+        else:
+            for ID, info in reqs.iteritems():
+                level, ID, more = info
+                sCharacter.skillReqsDict['skills'].append({
+                    'item': currItem,
+                    'skillID': ID,
+                    'skill': ID,
+                    'level': level,
+                    'indent': tabulationLevel,
+                })
+
+                if ID not in skillsMap:
+                    skillsMap[ID] = level
+                elif skillsMap[ID] < level:
+                    skillsMap[ID] = level
+
+                skillsMap = self.generateMissingSkillsMap(more, currItem, tabulationLevel + 1, skillsMap)
+
+        return skillsMap
 
     def getActiveCharacter(self):
         selection = self.charChoice.GetCurrentSelection()
