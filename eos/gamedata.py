@@ -277,16 +277,16 @@ class Item(EqBase):
 
     def setOverride(self, attr, value):
         from eos.saveddata.override import Override
-        if attr.name in self.__overrides:
-            override = self.__overrides.get(attr.name)
+        if attr.name in self.overrides:
+            override = self.overrides.get(attr.name)
             override.value = value
         else:
             override = Override(self, attr, value)
-            self.__overrides[attr.name] = override
+            self.overrides[attr.name] = override
         eos.db.save(override)
 
     def deleteOverride(self, attr):
-        override = self.__overrides.pop(attr.name, None)
+        override = self.overrides.pop(attr.name, None)
         eos.db.saveddata_session.delete(override)
         eos.db.commit()
 
