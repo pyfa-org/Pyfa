@@ -630,7 +630,7 @@ class Fit(object):
                 self.setAmmo(fitID, cargo.item.ID, [module])
             return
 
-        pyfalog.debug("Moving cargo item to module for fit ID: {1}", fitID)
+        pyfalog.debug("Moving cargo item to module for fit ID: {0}", fitID)
 
         # Gather modules and convert Cargo item to Module, silently return if not a module
         try:
