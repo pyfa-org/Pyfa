@@ -659,7 +659,11 @@ class ImplantEditorView(BaseImplantEditorView):
         # fuck good coding practices, passing a pointer to the character editor here for [reasons] =D
         # (see implantSets context class for info)
         menu = ContextMenu.getMenu((self.Parent.Parent,), *context)
-        self.PopupMenu(menu)
+
+        if menu:
+            self.PopupMenu(menu)
+        else:
+            pyfalog.debug("ContextMenu.getMenu returned false do not attempt PopupMenu")
 
     def determineEnabled(self):
         char = self.Parent.Parent.entityEditor.getActiveEntity()
