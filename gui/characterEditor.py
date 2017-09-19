@@ -153,7 +153,7 @@ class CharacterEditor(wx.Frame):
         self.viewsNBContainer = wx.Notebook(self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, 0)
 
         self.sview = SkillTreeView(self.viewsNBContainer)
-        self.iview = ImplantEditorView(self.viewsNBContainer)
+        self.iview = ImplantEditorView(self.viewsNBContainer, self)
         self.aview = APIView(self.viewsNBContainer)
 
         self.viewsNBContainer.AddPage(self.sview, "Skills")
@@ -615,10 +615,11 @@ class SkillTreeView(wx.Panel):
 
 
 class ImplantEditorView(BaseImplantEditorView):
-    def __init__(self, parent):
+    def __init__(self, parent, charEditor):
         BaseImplantEditorView.__init__(self, parent)
 
         self.determineEnabled()
+        charEditor.Bind(GE.CHAR_CHANGED, self.contextChanged)
 
         if "__WXGTK__" in wx.PlatformInfo:
             self.pluggedImplantsTree.Bind(wx.EVT_RIGHT_UP, self.scheduleMenu)
