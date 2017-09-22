@@ -74,6 +74,7 @@ class Fit(object):
             "exportCharges": True,
             "openFitInNew": False,
             "priceSystem": "Jita",
+            "priceSource": "eve-central.com",
             "showShipBrowserTooltip": True,
             "marketSearchDelay": 250
         }
