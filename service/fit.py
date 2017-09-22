@@ -237,6 +237,7 @@ class Fit(object):
 
         if self.serviceFittingOptions["useGlobalCharacter"]:
             if fit.character != self.character:
+                fit.calculated = False
                 fit.character = self.character
 
         if self.serviceFittingOptions["useGlobalDamagePattern"]:
