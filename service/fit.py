@@ -242,6 +242,7 @@ class Fit(object):
 
         if self.serviceFittingOptions["useGlobalDamagePattern"]:
             if fit.damagePattern != self.pattern:
+                fit.calculated = False
                 fit.damagePattern = self.pattern
 
         eos.db.commit()
