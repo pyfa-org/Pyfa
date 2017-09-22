@@ -39,7 +39,6 @@ REREQUEST = 4 * 60 * 60  # Re-request delay for failed fetches, 4 hours
 TIMEOUT = 15 * 60  # Network timeout delay for connection issues, 15 minutes
 
 
-
 class Price(object):
     instance = None
 
@@ -51,11 +50,17 @@ class Price(object):
         "Hek": 30002053
     }
 
+    sources = {}
+
     def __init__(self):
         # Start price fetcher
         self.priceWorkerThread = PriceWorkerThread()
         self.priceWorkerThread.daemon = True
         self.priceWorkerThread.start()
+
+    @classmethod
+    def register(cls, source):
+        cls.sources[source.name] = source
 
     @classmethod
     def getInstance(cls):
@@ -95,8 +100,13 @@ class Price(object):
 
         sFit = Fit.getInstance()
 
-        func = cls.evemarketdata
-        func(toRequest, cls.systemsList[sFit.serviceFittingOptions["priceSystem"]], priceMap)
+        if len(cls.sources.keys()) == 0:
+            pyfalog.warn('No price source can be found')
+            return
+
+        # attempt to find user's selected price source, otherwise get first one
+        sourceCls = cls.sources.get(sFit.serviceFittingOptions["priceSource"], cls.sources[cls.sources.keys()[0]])
+        sourceCls(toRequest, cls.systemsList[sFit.serviceFittingOptions["priceSystem"]], priceMap)
 
         # if we get to this point, then we've got an error. Set to REREQUEST delay
         for typeID in priceMap.keys():
@@ -163,109 +173,6 @@ class Price(object):
         pyfalog.debug("Clearing Prices")
         db.clearPrices()
 
-    # todo: create classes for these, inherit a base class that allows a simple api of setPrice() and stuff?
-    @classmethod
-    def evecentral(self, types, system, priceMap):
-        data = []
-        baseurl = "https://eve-central.com/api/marketstat"
-        data.append(("usesystem", system))  # Use Jita for market
-
-        for typeID in types:  # Add all typeID arguments
-            data.append(("typeid", typeID))
-
-        # Attempt to send request and process it
-        try:
-            network = Network.getInstance()
-            data = network.request(baseurl, network.PRICES, data)
-            xml = minidom.parse(data)
-            types = xml.getElementsByTagName("marketstat").item(0).getElementsByTagName("type")
-            # Cycle through all types we've got from request
-            for type_ in types:
-                # Get data out of each typeID details tree
-                typeID = int(type_.getAttribute("id"))
-                sell = type_.getElementsByTagName("sell").item(0)
-                # If price data wasn't there, set price to zero
-                try:
-                    percprice = float(sell.getElementsByTagName("percentile").item(0).firstChild.data)
-                except (TypeError, ValueError):
-                    pyfalog.warning("Failed to get price for: {0}", type_)
-                    percprice = 0
-
-                # Fill price data
-                priceobj = priceMap[typeID]
-                priceobj.price = percprice
-                priceobj.time = time.time() + VALIDITY
-                priceobj.failed = None
-
-                # delete price from working dict
-                del priceMap[typeID]
-
-        # If getting or processing data returned any errors
-        except TimeoutError:
-            # Timeout error deserves special treatment
-            pyfalog.warning("Price fetch timout")
-            for typeID in priceMap.keys():
-                priceobj = priceMap[typeID]
-                priceobj.time = time.time() + TIMEOUT
-                priceobj.failed = True
-
-                del priceMap[typeID]
-        except:
-            # all other errors will pass and continue onward to the REREQUEST delay
-            pyfalog.warning("Caught exception in fetchPrices")
-            pass
-        pass
-
-    @classmethod
-    def evemarketdata(self, types, system, priceMap):
-        data = []
-        baseurl = "https://eve-marketdata.com/api/item_prices.xml"
-        data.append(("system_id", system))  # Use Jita for market
-        data.append(("type_ids", ','.join(str(x) for x in types)))
-
-        # Attempt to send request and process it
-        try:
-            network = Network.getInstance()
-            data = network.request(baseurl, network.PRICES, data)
-            xml = minidom.parse(data)
-            print (xml.getElementsByTagName("eve").item(0))
-            types = xml.getElementsByTagName("eve").item(0).getElementsByTagName("price")
-            # Cycle through all types we've got from request
-            for type_ in types:
-                # Get data out of each typeID details tree
-                typeID = int(type_.getAttribute("id"))
-                price = 0
-
-                try:
-                    price = float(type_.firstChild.data)
-                except (TypeError, ValueError):
-                    pyfalog.warning("Failed to get price for: {0}", type_)
-
-                # Fill price data
-                priceobj = priceMap[typeID]
-                priceobj.price = price
-                priceobj.time = time.time() + VALIDITY
-                priceobj.failed = None
-
-                # delete price from working dict
-                del priceMap[typeID]
-
-        # If getting or processing data returned any errors
-        except TimeoutError:
-            # Timeout error deserves special treatment
-            pyfalog.warning("Price fetch timout")
-            for typeID in priceMap.keys():
-                priceobj = priceMap[typeID]
-                priceobj.time = time.time() + TIMEOUT
-                priceobj.failed = True
-
-                del priceMap[typeID]
-        except:
-            # all other errors will pass and continue onward to the REREQUEST delay
-            pyfalog.warning("Caught exception in fetchPrices")
-            pass
-        pass
-
 
 class PriceWorkerThread(threading.Thread):
     def __init__(self):
@@ -302,3 +209,5 @@ class PriceWorkerThread(threading.Thread):
         if itemID not in self.wait:
             self.wait[itemID] = []
         self.wait[itemID].append(callback)
+
+from service.marketSources import *  # noqa: E402,F401

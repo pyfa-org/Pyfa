@@ -90,7 +90,9 @@ class PFGeneralPref(PreferenceView):
         self.stDefaultSystem.Wrap(-1)
         priceSizer.Add(self.stDefaultSystem, 0, wx.ALL | wx.ALIGN_CENTER_VERTICAL, 5)
 
+        self.chPriceSource = wx.Choice(panel, choices=sorted(Price.sources.keys()))
         self.chPriceSystem = wx.Choice(panel, choices=Price.systemsList.keys())
+        priceSizer.Add(self.chPriceSource, 1, wx.ALL | wx.EXPAND, 5)
         priceSizer.Add(self.chPriceSystem, 1, wx.ALL | wx.EXPAND, 5)
 
         mainSizer.Add(priceSizer, 0, wx.ALL | wx.EXPAND, 0)
@@ -124,6 +126,7 @@ class PFGeneralPref(PreferenceView):
         self.cbGaugeAnimation.SetValue(self.sFit.serviceFittingOptions["enableGaugeAnimation"])
         self.cbExportCharges.SetValue(self.sFit.serviceFittingOptions["exportCharges"])
         self.cbOpenFitInNew.SetValue(self.sFit.serviceFittingOptions["openFitInNew"])
+        self.chPriceSource.SetStringSelection(self.sFit.serviceFittingOptions["priceSource"])
         self.chPriceSystem.SetStringSelection(self.sFit.serviceFittingOptions["priceSystem"])
         self.cbShowShipBrowserTooltip.SetValue(self.sFit.serviceFittingOptions["showShipBrowserTooltip"])
         self.intDelay.SetValue(self.sFit.serviceFittingOptions["marketSearchDelay"])
@@ -140,6 +143,7 @@ class PFGeneralPref(PreferenceView):
         self.cbGaugeAnimation.Bind(wx.EVT_CHECKBOX, self.onCBGaugeAnimation)
         self.cbExportCharges.Bind(wx.EVT_CHECKBOX, self.onCBExportCharges)
         self.cbOpenFitInNew.Bind(wx.EVT_CHECKBOX, self.onCBOpenFitInNew)
+        self.chPriceSource.Bind(wx.EVT_CHOICE, self.onPricesSourceSelection)
         self.chPriceSystem.Bind(wx.EVT_CHOICE, self.onPriceSelection)
         self.cbShowShipBrowserTooltip.Bind(wx.EVT_CHECKBOX, self.onCBShowShipBrowserTooltip)
         self.intDelay.Bind(wx.lib.intctrl.EVT_INT, self.onMarketDelayChange)
@@ -223,6 +227,10 @@ class PFGeneralPref(PreferenceView):
         self.sFit.refreshFit(fitID)
         wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fitID))
         event.Skip()
+
+    def onPricesSourceSelection(self, event):
+        source = self.chPriceSource.GetString(self.chPriceSource.GetSelection())
+        self.sFit.serviceFittingOptions["priceSource"] = source
 
 
 PFGeneralPref.register()
