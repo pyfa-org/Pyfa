@@ -210,4 +210,5 @@ class PriceWorkerThread(threading.Thread):
             self.wait[itemID] = []
         self.wait[itemID].append(callback)
 
-from service.marketSources import *  # noqa: E402,F401
+
+from service.marketSources import evecentral, evemarketdata  # noqa: E402
