@@ -25,8 +25,10 @@ from eos.saveddata.price import Price
 
 prices_table = Table("prices", saveddata_meta,
                      Column("typeID", Integer, primary_key=True),
-                     Column("price", Float),
+                     Column("price", Float, default=0.0),
                      Column("time", Integer, nullable=False),
                      Column("failed", Integer))
 
-mapper(Price, prices_table)
+mapper(Price, prices_table, properties={
+    "_Price__price": prices_table.c.price,
+})
