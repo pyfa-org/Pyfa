@@ -254,6 +254,8 @@ class ExportToEve(wx.Frame):
 
     def OnClose(self, event):
         self.mainFrame.Unbind(GE.EVT_SSO_LOGOUT, handler=self.ssoLogout)
+        self.mainFrame.Unbind(GE.EVT_SSO_LOGIN, handler=self.ssoLogin)
+
         event.Skip()
 
     def getActiveCharacter(self):
