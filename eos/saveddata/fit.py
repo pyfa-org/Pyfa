@@ -608,7 +608,7 @@ class Fit(object):
 
                 if warfareBuffID == 26:  # Information Burst: Sensor Optimization: Targeting Range
                     self.ship.boostItemAttr("maxTargetRange", value, stackingPenalties=True)
-                    
+
                 if warfareBuffID == 60:  # Skirmish Burst: Evasive Maneuvers: Agility
                     self.ship.boostItemAttr("agility", value, stackingPenalties=True)
 
