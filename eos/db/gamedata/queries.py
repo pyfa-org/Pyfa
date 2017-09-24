@@ -30,28 +30,89 @@ from eos.gamedata import AlphaClone, Attribute, Category, Group, Item, MarketGro
 cache = {}
 configVal = getattr(eos.config, "gamedataCache", None)
 if configVal is True:
-    def cachedQuery(amount, *keywords):
+    import weakref
+
+    itemCache = {}
+    queryCache = {}
+
+    def cachedQuery(type, amount, *keywords):
+        itemCache[type] = localItemCache = weakref.WeakValueDictionary()
+        queryCache[type] = typeQueryCache = {}
+
         def deco(function):
+            localQueryCache = typeQueryCache[function] = {}
+
+            def setCache(cacheKey, args, kwargs):
+                items = function(*args, **kwargs)
+                IDs = set()
+                localQueryCache[cacheKey] = (isinstance(items, list), IDs)
+                stuff = items if isinstance(items, list) else (items,)
+                for item in stuff:
+                    ID = getattr(item, "ID", None)
+                    if ID is None:
+                        # Some uncachable data, don't cache this query
+                        del localQueryCache[cacheKey]
+                        break
+                    localItemCache[ID] = item
+                    IDs.add(ID)
+
+                return items
+
             def checkAndReturn(*args, **kwargs):
                 useCache = kwargs.pop("useCache", True)
                 cacheKey = []
+                items = None
                 cacheKey.extend(args)
                 for keyword in keywords:
                     cacheKey.append(kwargs.get(keyword))
 
                 cacheKey = tuple(cacheKey)
-                handler = cache.get(cacheKey)
-                if handler is None or not useCache:
-                    handler = cache[cacheKey] = function(*args, **kwargs)
+                info = localQueryCache.get(cacheKey)
+                if info is None or not useCache:
+                    items = setCache(cacheKey, args, kwargs)
+                else:
+                    l, IDs = info
+                    if l:
+                        items = []
+                        for ID in IDs:
+                            data = localItemCache.get(ID)
+                            if data is None:
+                                # Fuck, some of our stuff isn't cached it seems.
+                                items = setCache(cacheKey, args, kwargs)
+                                break
+                            items.append(data)
+                    else:
+                        for ID in IDs:
+                            items = localItemCache.get(ID)
+                            if items is None:
+                                items = setCache(cacheKey, args, kwargs)
+                            break
 
-                return handler
+                return items
 
             return checkAndReturn
 
         return deco
 
+    def removeCachedEntry(type, ID):
+        if type not in queryCache:
+            return
+        functionCache = queryCache[type]
+        for _, localCache in functionCache.iteritems():
+            toDelete = set()
+            for cacheKey, info in localCache.iteritems():
+                IDs = info[1]
+                if ID in IDs:
+                    toDelete.add(cacheKey)
+
+            for cacheKey in toDelete:
+                del localCache[cacheKey]
+
+            if ID in itemCache[type]:
+                del itemCache[type][ID]
+
 elif callable(configVal):
-    cachedQuery = eos.config.gamedataCache
+    cachedQuery, removeCachedEntry = eos.config.gamedataCache
 else:
     def cachedQuery(amount, *keywords):
         def deco(function):
@@ -61,6 +122,9 @@ else:
             return checkAndReturn
 
         return deco
+
+    def removeCachedEntry(*args, **kwargs):
+        return
 
 
 def sqlizeString(line):
@@ -74,7 +138,7 @@ def sqlizeString(line):
 itemNameMap = {}
 
 
-@cachedQuery(1, "lookfor")
+@cachedQuery(Item, 1, "lookfor")
 def getItem(lookfor, eager=None):
     if isinstance(lookfor, int):
         if eager is None:
@@ -126,7 +190,7 @@ def getItems(lookfor, eager=None):
     return results
 
 
-@cachedQuery(1, "lookfor")
+@cachedQuery(AlphaClone, 1, "lookfor")
 def getAlphaClone(lookfor, eager=None):
     if isinstance(lookfor, int):
         if eager is None:
@@ -147,7 +211,7 @@ def getAlphaCloneList(eager=None):
 groupNameMap = {}
 
 
-@cachedQuery(1, "lookfor")
+@cachedQuery(Group, 1, "lookfor")
 def getGroup(lookfor, eager=None):
     if isinstance(lookfor, int):
         if eager is None:
@@ -173,7 +237,7 @@ def getGroup(lookfor, eager=None):
 categoryNameMap = {}
 
 
-@cachedQuery(1, "lookfor")
+@cachedQuery(Category, 1, "lookfor")
 def getCategory(lookfor, eager=None):
     if isinstance(lookfor, int):
         if eager is None:
@@ -203,7 +267,7 @@ metaGroupNameMap = {}
 
 
 @cachedQuery(1, "lookfor")
-def getMetaGroup(lookfor, eager=None):
+def getMetaGroup(MetaGroup, lookfor, eager=None):
     if isinstance(lookfor, int):
         if eager is None:
             metaGroup = gamedata_session.query(MetaGroup).get(lookfor)
@@ -228,7 +292,7 @@ def getMetaGroup(lookfor, eager=None):
     return metaGroup
 
 
-@cachedQuery(1, "lookfor")
+@cachedQuery(MarketGroup, 1, "lookfor")
 def getMarketGroup(lookfor, eager=None):
     if isinstance(lookfor, int):
         if eager is None:
@@ -241,7 +305,7 @@ def getMarketGroup(lookfor, eager=None):
     return marketGroup
 
 
-@cachedQuery(2, "where", "filter")
+@cachedQuery(Item, 2, "where", "filter")
 def getItemsByCategory(filter, where=None, eager=None):
     if isinstance(filter, int):
         filter = Category.ID == filter
@@ -255,8 +319,9 @@ def getItemsByCategory(filter, where=None, eager=None):
             filter).all()
 
 
-@cachedQuery(3, "where", "nameLike", "join")
+@cachedQuery(Item, 3, "where", "nameLike", "join")
 def searchItems(nameLike, where=None, join=None, eager=None):
+    print "search items!"+nameLike
     if not isinstance(nameLike, basestring):
         raise TypeError("Need string as argument")
 
@@ -277,7 +342,6 @@ def searchItems(nameLike, where=None, join=None, eager=None):
     return items
 
 
-@cachedQuery(3, "where", "nameLike", "join")
 def searchSkills(nameLike, where=None, eager=None):
     if not isinstance(nameLike, basestring):
         raise TypeError("Need string as argument")
@@ -293,8 +357,8 @@ def searchSkills(nameLike, where=None, eager=None):
     return items
 
 
-@cachedQuery(2, "where", "itemids")
 def getVariations(itemids, groupIDs=None, where=None, eager=None):
+    print "get variations"
     for itemid in itemids:
         if not isinstance(itemid, int):
             raise TypeError("All passed item IDs must be integers")
@@ -320,7 +384,7 @@ def getVariations(itemids, groupIDs=None, where=None, eager=None):
     return vars
 
 
-@cachedQuery(1, "attr")
+@cachedQuery(AttributeInfo, 1, "attr")
 def getAttributeInfo(attr, eager=None):
     if isinstance(attr, basestring):
         filter = AttributeInfo.name == attr
@@ -335,7 +399,7 @@ def getAttributeInfo(attr, eager=None):
     return result
 
 
-@cachedQuery(1, "field")
+@cachedQuery(MetaData, 1, "field")
 def getMetaData(field):
     if isinstance(field, basestring):
         data = gamedata_session.query(MetaData).get(field)
@@ -344,7 +408,7 @@ def getMetaData(field):
     return data
 
 
-@cachedQuery(2, "itemIDs", "attributeID")
+@cachedQuery(Attribute, 2, "itemIDs", "attributeID")
 def directAttributeRequest(itemIDs, attrIDs):
     for itemID in itemIDs:
         if not isinstance(itemID, int):
