@@ -15,7 +15,7 @@
 
 #define MyAppName "pyfa"
 #define MyAppPublisher "pyfa"
-#define MyAppURL "https://forums.eveonline.com/default.aspx?g=posts&t=466425&p=1"
+#define MyAppURL "https://forums.eveonline.com/t/27156"
 #define MyAppExeName "pyfa.exe"
 
 ; What version starts with the new structure (1.x.0). This is used to determine if we run directory structure cleanup

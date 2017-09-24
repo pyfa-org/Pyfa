@@ -380,10 +380,9 @@ class MainFrame(wx.Frame, IPortUser):
                                     "\nSQLAlchemy: \t" + sqlalchemy.__version__ +
                                     "\nmatplotlib: \t {}".format(matplotlib_version if matplotlib_version else "Not Installed"),
                                     500, wx.ClientDC(self))
-        if "__WXGTK__" in wx.PlatformInfo:
-            forumUrl = "http://forums.eveonline.com/default.aspx?g=posts&amp;t=466425"
-        else:
-            forumUrl = "http://forums.eveonline.com/default.aspx?g=posts&t=466425"
+
+        forumUrl = "https://forums.eveonline.com/t/27156"
+
         info.WebSite = (forumUrl, "pyfa thread at EVE Online forum")
         wx.AboutBox(info)
 
@@ -453,7 +452,7 @@ class MainFrame(wx.Frame, IPortUser):
 
     @staticmethod
     def goForums(event):
-        webbrowser.open('https://forums.eveonline.com/default.aspx?g=posts&t=466425')
+        webbrowser.open('https://forums.eveonline.com/t/27156')
 
     @staticmethod
     def loadDatabaseDefaults(event):
