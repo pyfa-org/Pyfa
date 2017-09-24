@@ -569,9 +569,6 @@ class Fit(object):
                     self.ship.boostItemAttr("sensorDampenerResistance", value)
                     self.ship.boostItemAttr("weaponDisruptionResistance", value)
 
-                if warfareBuffID == 26:  # Information Burst: Sensor Optimization: Targeting Range
-                    self.ship.boostItemAttr("maxTargetRange", value)
-
                 if warfareBuffID == 20:  # Skirmish Burst: Evasive Maneuvers: Signature Radius
                     self.ship.boostItemAttr("signatureRadius", value, stackingPenalties=True)
 
@@ -608,6 +605,9 @@ class Fit(object):
                 if warfareBuffID == 25:  # Mining Burst: Mining Equipment Preservation: Crystal Volatility
                     self.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill("Mining"),
                                                    "crystalVolatilityChance", value, stackingPenalties=True)
+
+                if warfareBuffID == 26:  # Information Burst: Sensor Optimization: Targeting Range
+                    self.ship.boostItemAttr("maxTargetRange", value, stackingPenalties=True)
 
                 if warfareBuffID == 60:  # Skirmish Burst: Evasive Maneuvers: Agility
                     self.ship.boostItemAttr("agility", value, stackingPenalties=True)
