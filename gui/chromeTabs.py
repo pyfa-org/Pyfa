@@ -711,6 +711,7 @@ class PFTabsContainer(wx.Panel):
         self.startDrag = False
         self.dragging = False
         self.sFit = Fit.getInstance()
+        self.efxBmp = None
 
         self.inclination = 7
         if canAdd:
@@ -1186,7 +1187,7 @@ class PFTabsContainer(wx.Panel):
 
     def UpdateTabFX(self):
         w, h = self.tabShadow.GetSize()
-        if w != self.tabMinWidth:
+        if self.efxBmp is None or w != self.tabMinWidth:
             self.tabShadow.SetSize((self.tabMinWidth, self.height + 1))
             fxBmp = self.tabShadow.Render()
 
