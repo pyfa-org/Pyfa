@@ -570,7 +570,7 @@ class Fit(object):
                     self.ship.boostItemAttr("weaponDisruptionResistance", value)
 
                 if warfareBuffID == 26:  # Information Burst: Sensor Optimization: Targeting Range
-                    self.ship.boostItemAttr("maxTargetRange", value)
+                    self.ship.boostItemAttr("maxTargetRange", value, stackingPenalties=True)
 
                 if warfareBuffID == 20:  # Skirmish Burst: Evasive Maneuvers: Signature Radius
                     self.ship.boostItemAttr("signatureRadius", value, stackingPenalties=True)
