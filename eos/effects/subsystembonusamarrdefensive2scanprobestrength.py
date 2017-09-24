@@ -1,3 +1,7 @@
+# subSystemBonusAmarrDefensive2ScanProbeStrength
+#
+# Used by:
+# Subsystem: Legion Defensive - Covert Reconfiguration
 type = "passive"
 
 
