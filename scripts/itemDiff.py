@@ -89,8 +89,8 @@ def main(old, new, groups=True, effects=True, attributes=True, renames=True):
                 dictionary[id] = name
 
         for id in set(old_namedata.keys()).intersection(new_namedata.keys()):
-            oldname = old_namedata[id]
-            newname = new_namedata[id]
+            oldname = old_namedata[id] if old_namedata[id] is not None else 'None'
+            newname = new_namedata[id] if new_namedata[id] is not None else 'None'
             if oldname != newname:
                 ren_dict[id] = (oldname, newname)
         return
