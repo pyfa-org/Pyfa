@@ -646,7 +646,7 @@ class FittingView(d.Display):
             slot = Slot.getValue(slotType)
             slotMap[slot] = fit.getSlotsFree(slot) < 0
 
-        font = (self.GetClassDefaultAttributes()).font
+        font = wx.Font(self.GetClassDefaultAttributes().font)
 
         for i, mod in enumerate(self.mods):
             self.SetItemBackgroundColour(i, self.GetBackgroundColour())
@@ -662,11 +662,10 @@ class FittingView(d.Display):
             if isinstance(mod, Rack) and \
                     sFit.serviceFittingOptions["rackSlots"] and \
                     sFit.serviceFittingOptions["rackLabels"]:
-                # @ todo pheonix: SetWeight is causing a hard crash, possibly a wxPython bug?
-                #font.SetWeight(wx.FONTWEIGHT_BOLD)
+                font.SetWeight(wx.FONTWEIGHT_BOLD)
                 self.SetItemFont(i, font)
             else:
-                #font.SetWeight(wx.FONTWEIGHT_NORMAL)
+                font.SetWeight(wx.FONTWEIGHT_NORMAL)
                 self.SetItemFont(i, font)
 
         self.Thaw()
