@@ -347,6 +347,7 @@ class _TabRenderer:
         width = max(width, self.min_width)
         height = max(height, self.min_height)
 
+        self.disabled = False
         self.text = text
         self.tab_size = (width, height)
         self.closeable = closeable
