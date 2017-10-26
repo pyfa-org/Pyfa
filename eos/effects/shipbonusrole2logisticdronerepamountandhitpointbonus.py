@@ -1,3 +1,7 @@
+# shipBonusRole2LogisticDroneRepAmountAndHitpointBonus
+#
+# Used by:
+# Ship: Loggerhead
 type = "passive"
 def handler(fit, src, context):
     fit.modules.filteredChargeBoost(lambda mod: mod.charge.requiresSkill("Repair Drone Operation"), "structureDamageAmount", src.getModifiedItemAttr("shipBonusRole2"))

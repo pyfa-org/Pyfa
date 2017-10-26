@@ -1,3 +1,8 @@
+# shipBonusRole4FighterDamageAndHitpoints
+#
+# Used by:
+# Ship: Caiman
+# Ship: Komodo
 type = "passive"
 def handler(fit, src, context):
     fit.fighters.filteredItemBoost(lambda mod: mod.item.requiresSkill("Fighters"), "shieldCapacity", src.getModifiedItemAttr("shipBonusRole4"))

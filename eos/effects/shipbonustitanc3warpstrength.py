@@ -1,6 +1,7 @@
 # shipBonusTitanC3WarpStrength
 #
 # Used by:
+# Ship: Komodo
 # Ship: Leviathan
 type = "passive"
 

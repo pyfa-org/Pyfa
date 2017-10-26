@@ -3,6 +3,7 @@
 # Used by:
 # Variations of ship: Tempest (4 of 4)
 # Ship: Maelstrom
+# Ship: Marshal
 # Ship: Panther
 # Ship: Typhoon Fleet Issue
 type = "passive"

@@ -6332,7 +6332,7 @@
   description: icon for the station service slot
   iconFile: res:/UI/Texture/classes/Fitting/stationServiceSlot.png
 21513:
-  description: Focused Warp Disruption Script
+  description: Focused Warp Scrambling Script
   iconFile: res:/ui/texture/icons/118_64_12.png
 21514:
   description: Upwell Male Jacket
@@ -6889,3 +6889,234 @@
 21742:
   description: Icon for the Xmas crates
   iconFile: res:/UI/Texture/Icons/Inventory/holidayCrate.png
+21743:
+  description: Focused Warp Disruption Script
+  iconFile: res:/ui/texture/icons/118_64_15.png
+21744:
+  description: SOE Exploration Suit Female
+  iconFile: res:/UI/Asset/mannequin/outer/45514_female_Outer_ExplorationSuit_F01_Types_ExplorationSuit_F01_SOE.png
+21745:
+  description: Caldari Exploration Suit Female
+  iconFile: res:/UI/Asset/mannequin/outer/45515_female_Outer_ExplorationSuit_F01_Types_ExplorationSuit_F01_Caldari.png
+21746:
+  description: Minmatar Exploration Suit Female
+  iconFile: res:/UI/Asset/mannequin/outer/45516_female_Outer_ExplorationSuit_F01_Types_ExplorationSuit_F01_Minmatar.png
+21747:
+  description: Gallente Exploration Suit Female
+  iconFile: res:/UI/Asset/mannequin/outer/45517_female_Outer_ExplorationSuit_F01_Types_ExplorationSuit_F01_Gallente.png
+21748:
+  description: Amarr Exploration Suit Female
+  iconFile: res:/UI/Asset/mannequin/outer/45518_female_Outer_ExplorationSuit_F01_Types_ExplorationSuit_F01_Amarr.png
+21749:
+  description: Caldari Orange Exploration Suit Female
+  iconFile: res:/UI/Asset/mannequin/outer/45519_female_Outer_ExplorationSuit_F01_Types_ExplorationSuit_F01_CaldariOrange.png
+21750:
+  description: ORE Exploration Suit Female
+  iconFile: res:/UI/Asset/mannequin/outer/45520_female_Outer_ExplorationSuit_F01_Types_ExplorationSuit_F01_ORE.png
+21751:
+  description: Gallente Exploration Suit Male
+  iconFile: res:/UI/Asset/mannequin/outer/45521_male_outer_ExplorationSuit_M01_Types_ExplorationSuit_M01_Gallente.png
+21752:
+  description: ORE Exploration Suit Male
+  iconFile: res:/UI/Asset/mannequin/outer/45522_male_outer_ExplorationSuit_M01_Types_ExplorationSuit_M01_ORE.png
+21753:
+  description: SOE Exploration Suit Male
+  iconFile: res:/UI/Asset/mannequin/outer/45523_male_outer_ExplorationSuit_M01_Types_ExplorationSuit_M01_SOE.png
+21754:
+  description: Caldari Exploration Suit Male
+  iconFile: res:/UI/Asset/mannequin/outer/45524_male_outer_ExplorationSuit_M01_Types_ExplorationSuit_M01_Caldari.png
+21755:
+  description: Minmatar Exploration Suit Male
+  iconFile: res:/UI/Asset/mannequin/outer/45525_male_outer_ExplorationSuit_M01_Types_ExplorationSuit_M01_Minmatar.png
+21756:
+  description: Amarr Exploration Suit Male
+  iconFile: res:/UI/Asset/mannequin/outer/45526_male_outer_ExplorationSuit_M01_Types_ExplorationSuit_M01_Amarr.png
+21757:
+  description: Caldari Orange Exploration Suit Male
+  iconFile: res:/UI/Asset/mannequin/outer/45527_male_outer_ExplorationSuit_M01_Types_ExplorationSuit_M01_CaldariOrange.png
+21760:
+  description: Project Discovery Crate Icon
+  iconFile: res:/UI/Texture/classes/ItemPacks/SplashImages/ProjectDiscoveryPlaceholder.png
+21763:
+  description: 45734_female_TopMiddle_TshirtF01_Types_TshirtF01_Exo.png
+  iconFile: res:/UI/Asset/mannequin/topmiddle/45734_female_TopMiddle_TshirtF01_Types_TshirtF01_Exo.png
+21764:
+  description: 45735_female_Outer_ExplorationSuit_F01_Types_ExplorationSuit_F01_Exo.png
+  iconFile: res:/UI/Asset/mannequin/outer/45735_female_Outer_ExplorationSuit_F01_Types_ExplorationSuit_F01_Exo.png
+21765:
+  description: 45737_female_Outer_LabCoatF01_Types_LabCoatF01_Exo.png
+  iconFile: res:/UI/Asset/mannequin/outer/45737_female_Outer_LabCoatF01_Types_LabCoatF01_Exo.png
+21766:
+  description: 45738_female_Outer_JacketMilF01_Types_JacketMilF01_exo.png
+  iconFile: res:/UI/Asset/mannequin/outer/45738_female_Outer_JacketMilF01_Types_JacketMilF01_exo.png
+21767:
+  description: 45739_female_hair_HeadWear_Cap_F01_Types_HeadWear_Cap_F01_Exo.png
+  iconFile: res:/UI/Asset/mannequin/hair/45739_female_hair_HeadWear_Cap_F01_Types_HeadWear_Cap_F01_Exo.png
+21768:
+  description: 45740_male_hair_HeadWear_Cap_M01_Types_HeadWear_Cap_M01_Exo.png
+  iconFile: res:/UI/Asset/mannequin/hair/45740_male_hair_HeadWear_Cap_M01_Types_HeadWear_Cap_M01_Exo.png
+21769:
+  description: 45741_male_outer_ExplorationSuit_M01_Types_ExplorationSuit_M01_Exo.png
+  iconFile: res:/UI/Asset/mannequin/outer/45741_male_outer_ExplorationSuit_M01_Types_ExplorationSuit_M01_Exo.png
+21770:
+  description: 45742_male_outer_JacketMilM02_Types_JacketMilM02_exo.png
+  iconFile: res:/UI/Asset/mannequin/outer/45742_male_outer_JacketMilM02_Types_JacketMilM02_exo.png
+21771:
+  description: 45743_male_TopMiddle_TshirtM01_Types_TshirtM01_Exo.png
+  iconFile: res:/UI/Asset/mannequin/topmiddle/45743_male_TopMiddle_TshirtM01_Types_TshirtM01_Exo.png
+21772:
+  description: 45744_male_outer_LabCoatM01_Types_LabCoatM01_Exo.png
+  iconFile: res:/UI/Asset/mannequin/outer/45744_male_outer_LabCoatM01_Types_LabCoatM01_Exo.png
+21773:
+  description: 45745_male_Accessories_Glasses_Glasses_Exo_M01_Types_Glasses_Exo_M01_clear.png
+  iconFile: res:/UI/Asset/mannequin/accessories_glasses/45745_male_Accessories_Glasses_Glasses_Exo_M01_Types_Glasses_Exo_M01_clear.png
+21774:
+  description: Structure Moon Drilling Service Module
+  iconFile: res:/UI/Texture/Icons/128_64_1.png
+21775:
+  description: 45736_female_Accessories_Glasses_Glasses_Exo_F01_Types_Glasses_Exo_F01_clear.png
+  iconFile: res:/UI/Asset/mannequin/accessories_glasses/45736_female_Accessories_Glasses_Glasses_Exo_F01_Types_Glasses_Exo_F01_clear.png
+21778:
+  description: 46038_male_outer_ExplorationSuit_M01_Types_ExplorationSuit_M01_IGC.png
+  iconFile: res:/UI/Asset/mannequin/outer/46038_male_outer_ExplorationSuit_M01_Types_ExplorationSuit_M01_IGC.png
+21779:
+  description: 46039_female_Outer_ExplorationSuit_F01_Types_ExplorationSuit_F01_IGC.png
+  iconFile: res:/UI/Asset/mannequin/outer/46039_female_Outer_ExplorationSuit_F01_Types_ExplorationSuit_F01_IGC.png
+21780:
+  description: 46274_male_outer_JacketPrtm01_Types_JacketPrtm01_valkyrie
+  iconFile: res:/UI/Asset/mannequin/outer/46274_male_outer_JacketPrtm01_Types_JacketPrtm01_valkyrie.png
+21781:
+  description: 46273_female_Outer_JacketPrtF01_Types_JacketPrtF01_valkyrie
+  iconFile: res:/UI/Asset/mannequin/outer/46273_female_Outer_JacketPrtF01_Types_JacketPrtF01_valkyrie.png
+21783:
+  description: ReactionBackdrop
+  iconFile: res:/ui/texture/icons/reaction.png
+21784:
+  description: Valkyrie Data Core
+  iconFile: res:/UI/Texture/Icons/Inventory/dataCore.png
+21785:
+  description: Valkyrie Relic Vault
+  iconFile: res:/UI/Texture/Icons/Inventory/relicVault.png
+21787:
+  description: refinery rig drill
+  iconFile: res:/UI/Texture/Icons/Modules/refinery_ChunkStabilization.png
+21788:
+  description: refinery rig reactions
+  iconFile: res:/UI/Texture/Icons/Modules/refinery_MiningYield.png
+21789:
+  description: refinery reaction module booster
+  iconFile: res:/UI/Texture/Icons/Modules/refinery_BoosterReactions.png
+21790:
+  description: refinery module hybrid reactions
+  iconFile: res:/UI/Texture/Icons/Modules/refinery_HybridReactions.png
+21791:
+  description: refinery module adv reactions
+  iconFile: res:/UI/Texture/Icons/Modules/refinery_T2Reactions.png
+21792:
+  description: moon asteroid ubi
+  iconFile: res:/UI/Texture/Icons/Inventory/moonAsteroid_R4.png
+21793:
+  description: moon asteroid com
+  iconFile: res:/UI/Texture/Icons/Inventory/moonAsteroid_R8.png
+21794:
+  description: moon asteroid unc
+  iconFile: res:/UI/Texture/Icons/Inventory/moonAsteroid_R16.png
+21795:
+  description: moon asteroid rar
+  iconFile: res:/UI/Texture/Icons/Inventory/moonAsteroid_R32.png
+21796:
+  description: moon asteroid exc
+  iconFile: res:/UI/Texture/Icons/Inventory/moonAsteroid_R64.png
+21797:
+  description: moon asteroid ubi jkpt
+  iconFile: res:/UI/Texture/Icons/Inventory/moonAsteroid_JackpotR4.png
+21798:
+  description: moon asteroid com jkpt
+  iconFile: res:/UI/Texture/Icons/Inventory/moonAsteroid_JackpotR8.png
+21799:
+  description: moon asteroid unc jkpt
+  iconFile: res:/UI/Texture/Icons/Inventory/moonAsteroid_JackpotR16.png
+21800:
+  description: moon asteroid rar jkpt
+  iconFile: res:/UI/Texture/Icons/Inventory/moonAsteroid_JackpotR32.png
+21801:
+  description: moon asteroid exc jkpt
+  iconFile: res:/UI/Texture/Icons/Inventory/moonAsteroid_JackpotR64.png
+21802:
+  description: Icon for the Gallente Resource Wars corporation
+  iconFile: res:/ui/texture/corps/federalStrategicMateriel.png
+21803:
+  description: Icon for the Amarr Resource Wars corporation
+  iconFile: res:/ui/texture/corps/imperialWarReserves.png
+21804:
+  description: Icon for the Minmatar Resource Wars corporation
+  iconFile: res:/ui/texture/corps/republicFleetOrdnance.png
+21805:
+  description: Icon for the Caldari Resource Wars corporation
+  iconFile: res:/ui/texture/corps/stateMilitaryStockpile.png
+21807:
+  description: 46658_female_Outer_JacketAGF01_Types_JacketAGF01_Gallente_RW.png
+  iconFile: res:/UI/Asset/mannequin/outer/46658_female_Outer_JacketAGF01_Types_JacketAGF01_Gallente_RW.png
+21808:
+  description: 46659_male_outer_JacketCMM01_Types_JacketCMM01_Caldari.png
+  iconFile: res:/UI/Asset/mannequin/outer/46659_male_outer_JacketCMM01_Types_JacketCMM01_Caldari.png
+21809:
+  description: 46660_female_Outer_JacketAGF01_Types_JacketAGF01_Gallente.png
+  iconFile: res:/UI/Asset/mannequin/outer/46660_female_Outer_JacketAGF01_Types_JacketAGF01_Gallente.png
+21810:
+  description: 46661_female_Outer_JacketCMF01_Types_JacketCMF01_Minmatar_RW.png
+  iconFile: res:/UI/Asset/mannequin/outer/46661_female_Outer_JacketCMF01_Types_JacketCMF01_Minmatar_RW.png
+21811:
+  description: 46662_male_outer_JacketAGM01_Types_JacketAGM01_Amarr.png
+  iconFile: res:/UI/Asset/mannequin/outer/46662_male_outer_JacketAGM01_Types_JacketAGM01_Amarr.png
+21812:
+  description: 46663_female_Outer_JacketAGF01_Types_JacketAGF01_Amarr.png
+  iconFile: res:/UI/Asset/mannequin/outer/46663_female_Outer_JacketAGF01_Types_JacketAGF01_Amarr.png
+21813:
+  description: 46664_male_outer_JacketCMM01_Types_JacketCMM01_Minmatar.png
+  iconFile: res:/UI/Asset/mannequin/outer/46664_male_outer_JacketCMM01_Types_JacketCMM01_Minmatar.png
+21814:
+  description: 46665_male_outer_JacketAGM01_Types_JacketAGM01_Gallente.pn
+  iconFile: res:/UI/Asset/mannequin/outer/46665_male_outer_JacketAGM01_Types_JacketAGM01_Gallente.png
+21815:
+  description: 46666_male_outer_JacketAGM01_Types_JacketAGM01_Amarr_RW.png
+  iconFile: res:/UI/Asset/mannequin/outer/46666_male_outer_JacketAGM01_Types_JacketAGM01_Amarr_RW.png
+21816:
+  description: 46667_male_outer_JacketAGM01_Types_JacketAGM01_Gallente_RW.png
+  iconFile: res:/UI/Asset/mannequin/outer/46667_male_outer_JacketAGM01_Types_JacketAGM01_Gallente_RW.png
+21817:
+  description: 46668_female_Outer_JacketAGF01_Types_JacketAGF01_Amarr_RW.png
+  iconFile: res:/UI/Asset/mannequin/outer/46668_female_Outer_JacketAGF01_Types_JacketAGF01_Amarr_RW.png
+21818:
+  description: 46669_female_Outer_JacketCMF01_Types_JacketCMF01_Caldari.png
+  iconFile: res:/UI/Asset/mannequin/outer/46669_female_Outer_JacketCMF01_Types_JacketCMF01_Caldari.png
+21819:
+  description: 46674_male_outer_JacketCMM01_Types_JacketCMM01_Minmatar_RW.png
+  iconFile: res:/UI/Asset/mannequin/outer/46674_male_outer_JacketCMM01_Types_JacketCMM01_Minmatar_RW.png
+21820:
+  description: 46671_female_Outer_JacketCMF01_Types_JacketCMF01_Caldari_RW.png
+  iconFile: res:/UI/Asset/mannequin/outer/46671_female_Outer_JacketCMF01_Types_JacketCMF01_Caldari_RW.png
+21821:
+  description: 46672_male_outer_JacketCMM01_Types_JacketCMM01_Caldari_RW.png
+  iconFile: res:/UI/Asset/mannequin/outer/46672_male_outer_JacketCMM01_Types_JacketCMM01_Caldari_RW.png
+21822:
+  description: 46673_female_Outer_JacketCMF01_Types_JacketCMF01_Minmatar.png
+  iconFile: res:/UI/Asset/mannequin/outer/46673_female_Outer_JacketCMF01_Types_JacketCMF01_Minmatar.png
+21823:
+  description: Resource Wars Asteroid Icon
+  iconFile: res:/UI/Texture/Icons/Inventory/rwAsteroid.png
+21829:
+  description: Biochemical materials
+  iconFile: res:/ui/texture/icons/Inventory/biochemMaterials.png
+21830:
+  description: Amarr RW reward crate icon
+  iconFile: res:/UI/Texture/Icons/Inventory/crateAmarr.png
+21831:
+  description: Caldari RW reward crate icon
+  iconFile: res:/UI/Texture/Icons/Inventory/crateCaldari.png
+21832:
+  description: Gallente RW reward crate icon
+  iconFile: res:/UI/Texture/Icons/Inventory/crateGallente.png
+21833:
+  description: Minmatar RW reward crate icon
+  iconFile: res:/UI/Texture/Icons/Inventory/crateMinmatar.png

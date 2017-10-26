@@ -1,6 +1,7 @@
 # missileSkillWarheadUpgradesKineticDamageBonus
 #
 # Used by:
+# Implants named like: Agency Damage Booster (3 of 3)
 # Skill: Warhead Upgrades
 type = "passive"
 

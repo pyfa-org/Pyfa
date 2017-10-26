@@ -1,3 +1,7 @@
+# shipBonusDreadnoughtG1KinThermDamageBonus
+#
+# Used by:
+# Ship: Caiman
 type = "passive"
 def handler(fit, src, context):
     fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill("Torpedoes"), "kineticDamage", src.getModifiedItemAttr("shipBonusDreadnoughtG1"), skill="Gallente Dreadnought")

@@ -1,7 +1,7 @@
 # covertOpsAndReconOpsCloakModuleDelayBonus
 #
 # Used by:
-# Ships from group: Black Ops (4 of 4)
+# Ships from group: Black Ops (5 of 5)
 # Ships from group: Blockade Runner (4 of 4)
 # Ships from group: Covert Ops (7 of 7)
 # Ships from group: Expedition Frigate (2 of 2)

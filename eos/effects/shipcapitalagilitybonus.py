@@ -1,7 +1,7 @@
 # shipCapitalAgilityBonus
 #
 # Used by:
-# Items from market group: Ships > Capital Ships (28 of 37)
+# Items from market group: Ships > Capital Ships (31 of 40)
 type = "passive"
 
 

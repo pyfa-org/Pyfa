@@ -1,3 +1,7 @@
+# shipBonusTitanG2AllDamageBonus
+#
+# Used by:
+# Ship: Komodo
 type = "passive"
 def handler(fit, src, context):
     fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill("Torpedoes"), "thermalDamage", src.getModifiedItemAttr("shipBonusTitanG2"), skill="Gallente Titan")

@@ -1,9 +1,7 @@
 # ammoInfluenceCapNeed
 #
 # Used by:
-# Items from category: Charge (464 of 910)
-# Charges from group: Frequency Crystal (184 of 184)
-# Charges from group: Hybrid Charge (208 of 208)
+# Items from category: Charge (478 of 924)
 type = "passive"
 
 
