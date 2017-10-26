@@ -2,6 +2,7 @@
 #
 # Used by:
 # Ship: Abaddon
+# Ship: Marshal
 type = "passive"
 
 

@@ -1,6 +1,7 @@
 # shipBonusPTFalloffMB1
 #
 # Used by:
+# Ship: Marshal
 # Ship: Vargur
 type = "passive"
 

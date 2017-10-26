@@ -192,7 +192,7 @@ def main(db, json_path):
     for row in data["evetypes"]:
         if (row["published"]
             or row['groupID'] == 1306  # group Ship Modifiers, for items like tactical t3 ship modes
-            or row['typeID'] in (3638, 3634, 3636, 3640)  # Civilian weapons
+            or row['typeName'].startswith('Civilian') # Civilian weapons
             or row['typeID'] in (41549, 41548, 41551,41550)  # Micro Bombs (Fighters)
         ):
             eveTypes.add(row["typeID"])
@@ -213,6 +213,9 @@ def main(db, json_path):
         for row in table:
             # We don't care about some kind of rows, filter it out if so
             if not isIgnored(jsonName, row):
+                if jsonName == 'evetypes' and row["typeName"].startswith('Civilian'):  # Apparently people really want Civilian modules available
+                    row["published"] = True
+
                 instance = tables[jsonName]()
                 # fix for issue 80
                 if jsonName is "icons" and "res:/ui/texture/icons/" in str(row["iconFile"]).lower():

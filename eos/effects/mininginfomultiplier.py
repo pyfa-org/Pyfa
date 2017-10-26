@@ -1,8 +1,8 @@
 # miningInfoMultiplier
 #
 # Used by:
-# Charges from group: Mining Crystal (30 of 30)
-# Charges named like: Mining Crystal (32 of 32)
+# Charges from group: Mining Crystal (40 of 40)
+# Charges named like: Mining Crystal (42 of 42)
 type = "passive"
 
 

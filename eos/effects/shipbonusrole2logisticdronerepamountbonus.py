@@ -1,7 +1,7 @@
-# shipBonusRole2LogisticDroneBonus
+# shipBonusRole2LogisticDroneRepAmountBonus
 #
 # Used by:
-# Ships from group: Force Auxiliary (5 of 5)
+# Ships from group: Force Auxiliary (5 of 6)
 type = "passive"
 
 
