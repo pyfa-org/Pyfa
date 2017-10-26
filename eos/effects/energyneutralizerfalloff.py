@@ -13,9 +13,6 @@ def handler(fit, src, context, **kwargs):
                                     hasattr(src, "amountActive")):
         amount = src.getModifiedItemAttr("energyNeutralizerAmount")
 
-        if 'effect' in kwargs:
-            amount *= ModifiedAttributeDict.getResistance(fit, kwargs['effect'])
-
         time = src.getModifiedItemAttr("duration")
 
         fit.addDrain(src, time, amount, 0)
