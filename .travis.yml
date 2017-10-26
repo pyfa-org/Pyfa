@@ -31,8 +31,8 @@ install:
 before_script:
   - pip install -r requirements.txt
   - pip install -r requirements_test.txt
-script:
-  - py.test --cov=./
+#script:
+#  - py.test --cov=./
 after_success:
   - bash <(curl -s https://codecov.io/bash)
 before_deploy:
