@@ -1193,8 +1193,7 @@ class Fit(object):
         if energyNeutralizerSignatureResolution:
             capNeed = capNeed * min(1, signatureRadius / energyNeutralizerSignatureResolution)
 
-        resistance = self.ship.getModifiedItemAttr("energyWarfareResistance") or 1 if capNeed > 0 else 1
-        self.__extraDrains.append((cycleTime, capNeed * resistance, clipSize))
+        self.__extraDrains.append((cycleTime, capNeed, clipSize))
 
     def removeDrain(self, i):
         del self.__extraDrains[i]

@@ -6,6 +6,7 @@
 type = "passive"
 
 
-def handler(fit, skill, context):
+def handler(fit, src, context):
+    mod = src.level if "skill" in context else 1
     fit.modules.filteredChargeBoost(lambda mod: mod.charge.requiresSkill("Missile Launcher Operation"),
-                                    "thermalDamage", skill.getModifiedItemAttr("damageMultiplierBonus") * skill.level)
+                                    "thermalDamage", src.getModifiedItemAttr("damageMultiplierBonus") * mod)
