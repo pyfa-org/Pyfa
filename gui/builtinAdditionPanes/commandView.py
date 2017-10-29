@@ -170,7 +170,7 @@ class CommandView(d.Display):
     def get(self, row):
         if row == -1:
             return None
-        
+
         numFits = len(self.fits)
 
         if numFits == 0:
