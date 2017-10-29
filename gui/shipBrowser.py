@@ -378,6 +378,10 @@ class ShipBrowser(wx.Panel):
 
             for ID, name, shipID, shipName, booster, timestamp, notes in fitList:
                 ship = sMkt.getItem(shipID)
+
+                if not sMkt.getPublicityByItem(ship):
+                    continue
+
                 shipTrait = ship.traits.traitText if (ship.traits is not None) else ""  # empty string if no traits
 
                 self.lpane.AddWidget(FitItem(self.lpane, ID, (shipName, shipTrait, name, booster, timestamp, notes), shipID))
