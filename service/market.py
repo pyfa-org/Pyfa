@@ -203,6 +203,8 @@ class Market(object):
             "Fiend"                       : self.les_grp,  # AT13 prize
             "Caedes"                      : self.les_grp,  # AT14 prize
             "Rabisu"                      : self.les_grp,  # AT14 prize
+            "Victor"                      : self.les_grp,  # AT prize
+            "Virtuoso"                    : self.les_grp,  # AT prize
         }
 
         self.ITEMS_FORCEGROUP_R = self.__makeRevDict(self.ITEMS_FORCEGROUP)
@@ -226,6 +228,8 @@ class Market(object):
             "Guristas Shuttle"                         : False,
             "Mobile Decoy Unit"                        : False,  # Seems to be left over test mod for deployables
             "Tournament Micro Jump Unit"               : False,  # Normally seen only on tournament arenas
+            "Victor": False,  # See GH Issue 1323
+            "Virtuoso": False,  # See GH Issue 1323
         }
 
         # do not publish ships that we convert

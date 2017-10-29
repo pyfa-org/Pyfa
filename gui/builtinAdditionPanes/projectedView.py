@@ -223,6 +223,9 @@ class ProjectedView(d.Display):
         self.update(stuff)
 
     def get(self, row):
+        if row == -1:
+            return None
+
         numMods = len(self.modules)
         numDrones = len(self.drones)
         numFighters = len(self.fighters)
@@ -260,13 +263,17 @@ class ProjectedView(d.Display):
             wx.CallAfter(self.spawnMenu)
 
     def spawnMenu(self):
+        fitID = self.mainFrame.getActiveFit()
+        if fitID is None:
+            return
+
         sel = self.GetFirstSelected()
-        menu = None
-        if sel != -1:
-            item = self.get(sel)
-            if item is None:
-                return
+        context = ()
+        item = self.get(sel)
+
+        if item is not None:
             sMkt = Market.getInstance()
+
             if isinstance(item, es_Drone):
                 srcContext = "projectedDrone"
                 itemContext = sMkt.getCategoryByItem(item.item).name
@@ -290,14 +297,10 @@ class ProjectedView(d.Display):
                 fitSrcContext = "projectedFit"
                 fitItemContext = item.name
                 context = ((fitSrcContext, fitItemContext),)
-            context += ("projected",),
-            menu = ContextMenu.getMenu((item,), *context)
-        elif sel == -1:
-            fitID = self.mainFrame.getActiveFit()
-            if fitID is None:
-                return
-            context = (("projected",),)
-            menu = ContextMenu.getMenu([], *context)
+
+        context += (("projected",),)
+        menu = ContextMenu.getMenu((item,) if item is not None else [], *context)
+
         if menu is not None:
             self.PopupMenu(menu)
 
