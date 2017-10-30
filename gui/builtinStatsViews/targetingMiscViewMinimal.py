@@ -194,7 +194,7 @@ class TargetingMiscViewMinimal(StatsView):
                     elif labelName == "labelFullWarpSpeed":
                         maxWarpDistance = "Max Warp Distance: %.1f AU" % fit.maxWarpDistance
                         if fit.ship.getModifiedItemAttr("warpScrambleStatus"):
-                            warpScrambleStatus = "Warp Core Strength: %.1f" % abs(fit.ship.getModifiedItemAttr("warpScrambleStatus"))
+                            warpScrambleStatus = "Warp Core Strength: %.1f" % (fit.ship.getModifiedItemAttr("warpScrambleStatus") * -1)
                         else:
                             warpScrambleStatus = "Warp Core Strength: %.1f" % 0
                         label.SetToolTip(wx.ToolTip("%s\n%s" % (maxWarpDistance, warpScrambleStatus)))
@@ -223,7 +223,7 @@ class TargetingMiscViewMinimal(StatsView):
                 if fit:
                     maxWarpDistance = "Max Warp Distance: %.1f AU" % fit.maxWarpDistance
                     if fit.ship.getModifiedItemAttr("warpScrambleStatus"):
-                        warpScrambleStatus = "Warp Core Strength: %.1f" % abs(fit.ship.getModifiedItemAttr("warpScrambleStatus"))
+                        warpScrambleStatus = "Warp Core Strength: %.1f" % (fit.ship.getModifiedItemAttr("warpScrambleStatus") * -1)
                     else:
                         warpScrambleStatus = "Warp Core Strength: %.1f" % 0
                     label.SetToolTip(wx.ToolTip("%s\n%s" % (maxWarpDistance, warpScrambleStatus)))
