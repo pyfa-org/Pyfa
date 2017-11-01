@@ -2,6 +2,8 @@
 #
 # Used by:
 # Modules from group: Warp Disrupt Field Generator (7 of 7)
+from eos.saveddata.module import State
+
 type = "projected", "active"
 runTime = "early"
 
@@ -17,3 +19,10 @@ def handler(fit, module, context):
 
     if "projected" in context:
         fit.ship.increaseItemAttr("warpScrambleStatus", module.getModifiedItemAttr("warpScrambleStrength"))
+
+        if module.charge is not None and module.charge.ID == 45010:
+            pyfalog.debug("ALEX: charge is: {0} id is = {1}, so do MWD scrambling", module.charge.name, module.charge.ID)
+            # this is such a dirty hack
+            for mod in fit.modules:
+                if not mod.isEmpty and mod.item.requiresSkill("High Speed Maneuvering") and mod.state > State.ONLINE:
+                    mod.state = State.ONLINE
