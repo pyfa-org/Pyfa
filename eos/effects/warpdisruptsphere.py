@@ -2,7 +2,7 @@
 #
 # Used by:
 # Modules from group: Warp Disrupt Field Generator (7 of 7)
-type = "active"
+type = "projected", "active"
 runTime = "early"
 
 
@@ -14,3 +14,6 @@ def handler(fit, module, context):
     fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == "Propulsion Module",
                                   "speedFactor", module.getModifiedItemAttr("speedFactorBonus"))
     fit.ship.forceItemAttr("disallowAssistance", 1)
+
+    if "projected" in context:
+        fit.ship.increaseItemAttr("warpScrambleStatus", module.getModifiedItemAttr("warpScrambleStrength"))
