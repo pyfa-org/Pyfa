@@ -81,9 +81,9 @@ class CommandFits(ContextMenu):
 
                 for fit in sorted(typeDict[ship], key=lambda x: x.name):
                     fitItem = self.addFit(rootMenu if msw else grandSub, fit, False)
-                    grandSub.AppendItem(fitItem)
+                    grandSub.Append(fitItem)
 
-                sub.AppendItem(shipItem)
+                sub.Append(shipItem)
 
         return sub
 
