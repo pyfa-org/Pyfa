@@ -213,7 +213,7 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
         armorRep = self.getModifiedItemAttr("armorDamageAmount") or 0
         shieldRep = self.getModifiedItemAttr("shieldBonus") or 0
         if not cycles or (not armorRep and not shieldRep):
-            return None
+            return 0
         hp = round((armorRep + shieldRep) * cycles)
         return hp
 

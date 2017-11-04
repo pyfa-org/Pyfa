@@ -28,23 +28,23 @@ cappingAttrKeyCache = {}
 
 
 class ItemAttrShortcut(object):
-    def getModifiedItemAttr(self, key, default=None):
+    def getModifiedItemAttr(self, key, default=0):
         return_value = self.itemModifiedAttributes.get(key)
 
         if return_value is None and default is not None:
             return_value = default
 
-        return return_value
+        return return_value if default is not None else None
 
 
 class ChargeAttrShortcut(object):
-    def getModifiedChargeAttr(self, key, default=None):
+    def getModifiedChargeAttr(self, key, default=0):
         return_value = self.chargeModifiedAttributes.get(key)
 
         if return_value is None and default is not None:
             return_value = default
 
-        return return_value
+        return return_value if default is not None else None
 
 
 class ModifiedAttributeDict(collections.MutableMapping):

@@ -73,7 +73,8 @@ class Drone(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
         self.__itemModifiedAttributes.overrides = self.__item.overrides
 
         self.__chargeModifiedAttributes = ModifiedAttributeDict()
-        chargeID = self.getModifiedItemAttr("entityMissileTypeID")
+        # pheonix todo: check the attribute itself, not the modified. this will always return 0 now.
+        chargeID = self.getModifiedItemAttr("entityMissileTypeID", None)
         if chargeID is not None:
             charge = eos.db.getItem(int(chargeID))
             self.__charge = charge
