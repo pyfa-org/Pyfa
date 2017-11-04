@@ -72,13 +72,16 @@ class AttributeDisplay(ViewColumn):
 
     def getText(self, mod):
         if hasattr(mod, "item"):
-            attr = mod.getModifiedItemAttr(self.info.name)
+            attr = mod.getModifiedItemAttr(self.info.name, None)
         else:
             if self.direct:
                 info = self.directInfo
                 attr = info.get(mod.ID, "") if info else ""
             else:
                 attr = mod.getAttribute(self.info.name)
+
+        if attr is None:
+            return ""
 
         if self.info.name == "volume":
             str_ = (formatAmount(attr, 3, 0, 3))
@@ -89,7 +92,7 @@ class AttributeDisplay(ViewColumn):
         if isinstance(attr, (float, int)):
             attr = (formatAmount(attr, 3, 0, 3))
 
-        return attr if attr is not None else ""
+        return attr
 
     def getImageId(self, mod):
         return -1
