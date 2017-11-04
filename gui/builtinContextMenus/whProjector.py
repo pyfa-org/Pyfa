@@ -34,7 +34,7 @@ class WhProjector(ContextMenu):
             subItem = wx.MenuItem(sub, wx.ID_ANY, swType)
             grandSub = wx.Menu()
             subItem.SetSubMenu(grandSub)
-            sub.AppendItem(subItem)
+            sub.Append(subItem)
 
             for swData in sorted(effdata[swType], key=lambda tpl: tpl[2]):
                 wxid = ContextMenu.nextID()

@@ -170,15 +170,15 @@ class ModuleAmmoPicker(ContextMenu):
                         sub.Bind(wx.EVT_MENU, self.handleAmmoSwitch)
                         self.addSeperator(sub, "Less Damage")
                         item.SetSubMenu(sub)
-                        sub.AppendItem(self.addCharge(rootMenu if msw else sub, base))
+                        sub.Append(self.addCharge(rootMenu if msw else sub, base))
 
-                    sub.AppendItem(self.addCharge(rootMenu if msw else sub, charge))
+                    sub.Append(self.addCharge(rootMenu if msw else sub, charge))
 
             if sub is not None:
                 self.addSeperator(sub, "More Damage")
 
             for item in items:
-                m.AppendItem(item)
+                m.Append(item)
 
             self.addSeperator(m, "Short Range")
         elif hardpoint == Hardpoint.MISSILE and moduleName != 'Festival Launcher':
@@ -203,23 +203,23 @@ class ModuleAmmoPicker(ContextMenu):
                     sub.Bind(wx.EVT_MENU, self.handleAmmoSwitch)
                     self.addSeperator(sub, "Less Damage")
                     item.SetSubMenu(sub)
-                    m.AppendItem(item)
+                    m.Append(item)
 
                 if charge.name not in ("Light Defender Missile I", "Heavy Defender Missile I"):
-                    sub.AppendItem(self.addCharge(rootMenu if msw else sub, charge))
+                    sub.Append(self.addCharge(rootMenu if msw else sub, charge))
                 else:
                     defender = charge
 
             if defender is not None:
-                m.AppendItem(self.addCharge(rootMenu if msw else m, defender))
+                m.Append(self.addCharge(rootMenu if msw else m, defender))
             if sub is not None:
                 self.addSeperator(sub, "More Damage")
         else:
             self.charges.sort(key=self.nameSorter)
             for charge in self.charges:
-                m.AppendItem(self.addCharge(rootMenu if msw else m, charge))
+                m.Append(self.addCharge(rootMenu if msw else m, charge))
 
-        m.AppendItem(self.addCharge(rootMenu if msw else m, None))
+        m.Append(self.addCharge(rootMenu if msw else m, None))
         return m
 
     def handleAmmoSwitch(self, event):
