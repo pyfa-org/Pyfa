@@ -58,9 +58,9 @@ class ModuleAmmoPicker(ContextMenu):
 
     def turretSorter(self, charge):
         damage = 0
-        range_ = (self.module.getModifiedItemAttr("maxRange") or 0) * \
+        range_ = (self.module.getModifiedItemAttr("maxRange")) * \
                  (charge.getAttribute("weaponRangeMultiplier") or 1)
-        falloff = (self.module.getModifiedItemAttr("falloff") or 0) * \
+        falloff = (self.module.getModifiedItemAttr("falloff")) * \
                   (charge.getAttribute("fallofMultiplier") or 1)
         for type_ in self.DAMAGE_TYPES:
             d = charge.getAttribute("%sDamage" % type_)
@@ -137,7 +137,7 @@ class ModuleAmmoPicker(ContextMenu):
         hardpoint = self.module.hardpoint
         moduleName = self.module.item.name
         # Make sure we do not consider mining turrets as combat turrets
-        if hardpoint == Hardpoint.TURRET and self.module.getModifiedItemAttr("miningAmount") is None:
+        if hardpoint == Hardpoint.TURRET and self.module.getModifiedItemAttr("miningAmount", None) is None:
             self.addSeperator(m, "Long Range")
             items = []
             range_ = None
