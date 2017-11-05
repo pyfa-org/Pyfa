@@ -88,7 +88,7 @@ class MarketTree(wx.TreeCtrl):
         for i in range(len(jumpList) - 1, -1, -1):
             target = jumpList[i]
             child, cookie = self.GetFirstChild(item)
-            while self.GetItemPyData(child) != target:
+            while self.GetItemData(child) != target:
                 child, cookie = self.GetNextChild(item, cookie)
 
             item = child

@@ -251,7 +251,7 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
                  "ecmBurstRange", "warpScrambleRange", "cargoScanRange",
                  "shipScanRange", "surveyScanRange")
         for attr in attrs:
-            maxRange = self.getModifiedItemAttr(attr)
+            maxRange = self.getModifiedItemAttr(attr, None)
             if maxRange is not None:
                 return maxRange
         if self.charge is not None:
@@ -280,7 +280,7 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
     def falloff(self):
         attrs = ("falloffEffectiveness", "falloff", "shipScanFalloff")
         for attr in attrs:
-            falloff = self.getModifiedItemAttr(attr)
+            falloff = self.getModifiedItemAttr(attr, None)
             if falloff is not None:
                 return falloff
 
@@ -409,19 +409,19 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
         fitsOnType = set()
         fitsOnGroup = set()
 
-        shipType = self.getModifiedItemAttr("fitsToShipType")
+        shipType = self.getModifiedItemAttr("fitsToShipType", None)
         if shipType is not None:
             fitsOnType.add(shipType)
 
         for attr in list(self.itemModifiedAttributes.keys()):
             if attr.startswith("canFitShipType"):
-                shipType = self.getModifiedItemAttr(attr)
+                shipType = self.getModifiedItemAttr(attr, None)
                 if shipType is not None:
                     fitsOnType.add(shipType)
 
         for attr in list(self.itemModifiedAttributes.keys()):
             if attr.startswith("canFitShipGroup"):
-                shipGroup = self.getModifiedItemAttr(attr)
+                shipGroup = self.getModifiedItemAttr(attr, None)
                 if shipGroup is not None:
                     fitsOnGroup.add(shipGroup)
 
@@ -453,7 +453,7 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
                 return False
 
         # Check max group fitted
-        max = self.getModifiedItemAttr("maxGroupFitted")
+        max = self.getModifiedItemAttr("maxGroupFitted", None)
         if max is not None:
             current = 0 if self.owner != fit else -1
             for mod in fit.modules:
@@ -466,11 +466,10 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
         # Check this only if we're told to do so
         if hardpointLimit:
             if self.hardpoint == Hardpoint.TURRET:
-                if (fit.ship.getModifiedItemAttr('turretSlotsLeft') or 0) - fit.getHardpointsUsed(Hardpoint.TURRET) < 1:
+                if fit.ship.getModifiedItemAttr('turretSlotsLeft') - fit.getHardpointsUsed(Hardpoint.TURRET) < 1:
                     return False
             elif self.hardpoint == Hardpoint.MISSILE:
-                if (fit.ship.getModifiedItemAttr('launcherSlotsLeft') or 0) - fit.getHardpointsUsed(
-                        Hardpoint.MISSILE) < 1:
+                if fit.ship.getModifiedItemAttr('launcherSlotsLeft') - fit.getHardpointsUsed(Hardpoint.MISSILE) < 1:
                     return False
 
         return True
@@ -500,7 +499,7 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
             return True
 
         # Check if the local module is over it's max limit; if it's not, we're fine
-        maxGroupActive = self.getModifiedItemAttr("maxGroupActive")
+        maxGroupActive = self.getModifiedItemAttr("maxGroupActive", None)
         if maxGroupActive is None and projectedOnto is None:
             return True
 
@@ -548,7 +547,7 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
 
         chargeGroup = charge.groupID
         for i in range(5):
-            itemChargeGroup = self.getModifiedItemAttr('chargeGroup' + str(i))
+            itemChargeGroup = self.getModifiedItemAttr('chargeGroup' + str(i), None)
             if itemChargeGroup is None:
                 continue
             if itemChargeGroup == chargeGroup:
@@ -559,7 +558,7 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
     def getValidCharges(self):
         validCharges = set()
         for i in range(5):
-            itemChargeGroup = self.getModifiedItemAttr('chargeGroup' + str(i))
+            itemChargeGroup = self.getModifiedItemAttr('chargeGroup' + str(i), None)
             if itemChargeGroup is not None:
                 g = eos.db.getGroup(int(itemChargeGroup), eager=("items.icon", "items.attributes"))
                 if g is None:

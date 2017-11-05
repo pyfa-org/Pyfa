@@ -31,20 +31,14 @@ class ItemAttrShortcut(object):
     def getModifiedItemAttr(self, key, default=0):
         return_value = self.itemModifiedAttributes.get(key)
 
-        if return_value is None and default is not None:
-            return_value = default
-
-        return return_value if default is not None else None
+        return return_value or default
 
 
 class ChargeAttrShortcut(object):
     def getModifiedChargeAttr(self, key, default=0):
         return_value = self.chargeModifiedAttributes.get(key)
 
-        if return_value is None and default is not None:
-            return_value = default
-
-        return return_value if default is not None else None
+        return return_value or default
 
 
 class ModifiedAttributeDict(collections.MutableMapping):
