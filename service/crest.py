@@ -75,14 +75,15 @@ class Crest(object):
         self.state = None
         self.ssoTimer = None
 
+        self.eve_options = {
+            'client_id': self.settings.get('clientID') if self.settings.get('mode') == CrestModes.USER else self.clientIDs.get(self.settings.get('server')),
+            'api_key': self.settings.get('clientSecret') if self.settings.get('mode') == CrestModes.USER else None,
+            'redirect_uri': self.clientCallback,
+            'testing': self.isTestServer
+        }
+
         # Base EVE connection that is copied to all characters
-        self.eve = EVE(
-                client_id=self.settings.get('clientID') if self.settings.get(
-                        'mode') == CrestModes.USER else self.clientIDs.get(self.settings.get('server')),
-                api_key=self.settings.get('clientSecret') if self.settings.get('mode') == CrestModes.USER else None,
-                redirect_uri=self.clientCallback,
-                testing=self.isTestServer
-        )
+        self.eve = EVE(**self.eve_options)
 
         self.implicitCharacter = None
 
@@ -131,7 +132,7 @@ class Crest(object):
 
         char = eos.db.getCrestCharacter(charID)
         if char and not hasattr(char, "eve"):
-            char.eve = copy.deepcopy(self.eve)
+            char.eve = EVE(**self.eve_options)
             char.eve.temptoken_authorize(refresh_token=char.refresh_token)
         self.charCache[charID] = char
         return char
@@ -188,7 +189,7 @@ class Crest(object):
         pyfalog.debug("Handling CREST login with: {0}", message)
 
         if 'access_token' in message:  # implicit
-            eve = copy.deepcopy(self.eve)
+            eve = EVE(**self.eve_options)
             eve.temptoken_authorize(
                     access_token=message['access_token'][0],
                     expires_in=int(message['expires_in'][0])
@@ -207,7 +208,7 @@ class Crest(object):
 
             wx.PostEvent(self.mainFrame, GE.SsoLogin(type=CrestModes.IMPLICIT))
         elif 'code' in message:
-            eve = copy.deepcopy(self.eve)
+            eve = EVE(**self.eve_options)
             eve.authorize(message['code'][0])
             eve()
             info = eve.whoami()

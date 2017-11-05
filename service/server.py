@@ -95,7 +95,7 @@ class AuthHandler(http.server.BaseHTTPRequestHandler):
         finally:
             self.send_response(200)
             self.end_headers()
-            self.wfile.write(HTML.format(msg))
+            self.wfile.write(str.encode(HTML.format(msg)))
 
         if step2:
             # Only stop once if we've received something in the querystring

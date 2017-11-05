@@ -614,7 +614,7 @@ class MainFrame(wx.Frame):
         char = sCrest.implicitCharacter
         if char:
             t = time.gmtime(char.eve.expires - time.time())
-            sTime = time.strftime("%H:%M:%S", t if t >= 0 else 0)
+            sTime = time.strftime("%H:%M:%S", t)
             newTitle = "%s | %s - %s" % (self.title, char.name, sTime)
             self.SetTitle(newTitle)
 

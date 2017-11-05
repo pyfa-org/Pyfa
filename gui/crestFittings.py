@@ -15,6 +15,7 @@ from gui.display import Display
 import gui.globalEvents as GE
 
 from logbook import Logger
+import calendar
 pyfalog = Logger(__name__)
 
 if 'wxMac' not in wx.PlatformInfo or ('wxMac' in wx.PlatformInfo and wx.VERSION >= (3, 0)):
@@ -112,7 +113,8 @@ class CrestFittings(wx.Frame):
 
     def updateCacheStatus(self, event):
         t = time.gmtime(self.cacheTime - time.time())
-        if t < 0:
+
+        if calendar.timegm(t) < 0:  # calendar.timegm gets seconds until time given
             self.cacheTimer.Stop()
         else:
             sTime = time.strftime("%H:%M:%S", t)
@@ -222,7 +224,7 @@ class ExportToEve(wx.Frame):
         self.mainFrame.Bind(GE.EVT_SSO_LOGIN, self.ssoLogin)
         self.Bind(wx.EVT_CLOSE, self.OnClose)
 
-        self.SetSizer(hSizer)
+        self.SetSizer(mainSizer)
         self.SetStatusBar(self.statusbar)
         self.Layout()
 
