@@ -21,7 +21,7 @@
 import wx
 import wx.dataview
 import wx.lib.agw.hyperlink
-from .utils.floatspin import FloatSpin
+
 # noinspection PyPackageRequirements
 import wx.lib.newevent
 # noinspection PyPackageRequirements
@@ -36,6 +36,9 @@ from service.character import Character
 from service.network import AuthenticationError, TimeoutError
 from service.market import Market
 from logbook import Logger
+
+from wx.lib.agw.floatspin import FloatSpin
+
 pyfalog = Logger(__name__)
 
 
