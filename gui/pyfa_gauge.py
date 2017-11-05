@@ -186,17 +186,30 @@ class PyGauge(wx.Window):
 
     def SetValueRange(self, value, range, reinit=False):
         """ Set both value and range of the gauge. """
+        range_ = float(range)
 
-        self.SetRange(range, reinit, animate=False)
-        self.SetValue(value, animate=False)
+        if range_ <= 0:
+            self._max_range = 0.01
+        else:
+            self._max_range = range_
+
+        value = float(value)
+
+        self._value = value
+        if value < 0:
+            self._value = float(0)
+
+        if reinit is False:
+            self._old_percentage = self._percentage
+            self._percentage = (self._value / self._max_range) * 100
+
+        else:
+            self._old_percentage = self._percentage
+            self._percentage = 0
 
         self.Animate()
         self._tooltip.SetTip("%.2f/%.2f" %
-                             (self._value,
-                              self._max_range if self._max_range > 0.01 else 0))
-
-    def OnEraseBackground(self, event):
-        pass
+                             (self._value, self._max_range if float(self._max_range) > 0.01 else 0))
 
     def OnPaint(self, event):
         dc = wx.BufferedPaintDC(self)
