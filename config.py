@@ -19,10 +19,10 @@ debug = False
 saveInRoot = False
 
 # Version data
-version = "1.33.0"
+version = "1.33.2"
 tag = "git"
-expansionName = "YC119.9"
-expansionVersion = "1.3"
+expansionName = "Lifeblood"
+expansionVersion = "1.0"
 evemonMinVersion = "4081"
 
 pyfaPath = None

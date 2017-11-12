@@ -1,7 +1,7 @@
 # boosterMaxVelocityPenalty
 #
 # Used by:
-# Implants from group: Booster (12 of 49)
+# Implants from group: Booster (12 of 52)
 type = "boosterSideEffect"
 
 # User-friendly name for the side effect

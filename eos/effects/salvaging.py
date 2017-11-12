@@ -1,7 +1,7 @@
 # salvaging
 #
 # Used by:
-# Modules from group: Salvager (2 of 2)
+# Modules from group: Salvager (3 of 3)
 type = "active"
 
 

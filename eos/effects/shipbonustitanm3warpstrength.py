@@ -1,7 +1,7 @@
 # shipBonusTitanM3WarpStrength
 #
 # Used by:
-# Ships from group: Titan (3 of 6)
+# Ships from group: Titan (3 of 7)
 type = "passive"
 
 
