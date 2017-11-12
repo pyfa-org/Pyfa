@@ -19,7 +19,7 @@ debug = False
 saveInRoot = False
 
 # Version data
-version = "1.34.0"
+version = "1.33.2"
 tag = "git"
 expansionName = "Lifeblood"
 expansionVersion = "1.0"
