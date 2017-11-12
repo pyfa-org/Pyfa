@@ -31,7 +31,12 @@ for root, folders, files in chain.from_iterable(os.walk(path) for path in paths)
             import_these.append(mod_name)
 
 a = Analysis([r'C:\Users\Ryan\Sync\Git\blitzmann\Pyfa\pyfa.py'],
-             pathex=[r'C:\Users\Ryan\Sync\Git\blitzmann\Pyfa'],
+             pathex=[
+                 r'C:\Users\Ryan\Sync\Git\blitzmann\Pyfa',
+                 # Need this, see https://github.com/pyinstaller/pyinstaller/issues/1566
+                 # To get this, download and install windows 10 SDK
+                 # If not building on Windows 10, this might be optional
+                 r'C:\Program Files (x86)\Windows Kits\10\Redist\ucrt\DLLs\x86'],
              binaries=[],
              datas=added_files,
              hiddenimports=import_these,
