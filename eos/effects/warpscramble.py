@@ -6,4 +6,5 @@ type = "projected", "active"
 
 
 def handler(fit, module, context):
-    fit.ship.increaseItemAttr("warpScrambleStatus", module.getModifiedItemAttr("warpScrambleStrength"))
+    if "projected" in context:
+        fit.ship.increaseItemAttr("warpScrambleStatus", module.getModifiedItemAttr("warpScrambleStrength"))

@@ -192,7 +192,12 @@ class TargetingMiscViewMinimal(StatsView):
                             lockTime += "%5s\t%s\n" % (left, right)
                         label.SetToolTip(wx.ToolTip(lockTime))
                     elif labelName == "labelFullWarpSpeed":
-                        label.SetToolTip(wx.ToolTip("Max Warp Distance: %.1f AU" % fit.maxWarpDistance))
+                        maxWarpDistance = "Max Warp Distance: %.1f AU" % fit.maxWarpDistance
+                        if fit.ship.getModifiedItemAttr("warpScrambleStatus"):
+                            warpScrambleStatus = "Warp Core Strength: %.1f" % (fit.ship.getModifiedItemAttr("warpScrambleStatus") * -1)
+                        else:
+                            warpScrambleStatus = "Warp Core Strength: %.1f" % 0
+                        label.SetToolTip(wx.ToolTip("%s\n%s" % (maxWarpDistance, warpScrambleStatus)))
                     elif labelName == "labelSensorStr":
                         if fit.jamChance > 0:
                             label.SetToolTip(wx.ToolTip("Type: %s\n%.1f%% Chance of Jam" % (fit.scanType, fit.jamChance)))
@@ -216,7 +221,12 @@ class TargetingMiscViewMinimal(StatsView):
                 self._cachedValues[counter] = newValues
             elif labelName == "labelFullWarpSpeed":
                 if fit:
-                    label.SetToolTip(wx.ToolTip("Max Warp Distance: %.1f AU" % fit.maxWarpDistance))
+                    maxWarpDistance = "Max Warp Distance: %.1f AU" % fit.maxWarpDistance
+                    if fit.ship.getModifiedItemAttr("warpScrambleStatus"):
+                        warpScrambleStatus = "Warp Core Strength: %.1f" % (fit.ship.getModifiedItemAttr("warpScrambleStatus") * -1)
+                    else:
+                        warpScrambleStatus = "Warp Core Strength: %.1f" % 0
+                    label.SetToolTip(wx.ToolTip("%s\n%s" % (maxWarpDistance, warpScrambleStatus)))
                 else:
                     label.SetToolTip(wx.ToolTip(""))
             elif labelName == "labelSensorStr":
