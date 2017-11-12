@@ -525,7 +525,7 @@ class MarketGroup(EqBase):
     def __repr__(self):
         return "MarketGroup(ID={}, name={}, parent={}) at {}".format(
                 self.ID, self.name, getattr(self.parent, "name", None), self.name, hex(id(self))
-        ).encode('utf8')
+        )
 
 
 class MetaGroup(EqBase):

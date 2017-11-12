@@ -184,6 +184,7 @@ parser.add_option("-l", "--logginglevel", action="store", dest="logginglevel", h
 
 if __name__ == "__main__":
     # Configure paths
+    print ('starting')
     if options.rootsavedata is True:
         config.saveInRoot = True
 

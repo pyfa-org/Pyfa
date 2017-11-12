@@ -86,9 +86,9 @@ def defPaths(customSavePath):
 
     __createDirs(savePath)
 
-    if isFrozen():
-        os.environ["REQUESTS_CA_BUNDLE"] = os.path.join(pyfaPath, "cacert.pem").encode('utf8')
-        os.environ["SSL_CERT_FILE"] = os.path.join(pyfaPath, "cacert.pem").encode('utf8')
+    #if isFrozen():
+    #    os.environ["REQUESTS_CA_BUNDLE"] = os.path.join(pyfaPath, "cacert.pem")
+    #    os.environ["SSL_CERT_FILE"] = os.path.join(pyfaPath, "cacert.pem")
 
     # The database where we store all the fits etc
     saveDB = os.path.join(savePath, "saveddata.db")
@@ -108,6 +108,9 @@ def defPaths(customSavePath):
     # saveddata db location modifier, shouldn't ever need to touch this
     eos.config.saveddata_connectionstring = "sqlite:///" + saveDB + "?check_same_thread=False"
     eos.config.gamedata_connectionstring = "sqlite:///" + gameDB + "?check_same_thread=False"
+
+    print(eos.config.saveddata_connectionstring)
+    print(eos.config.gamedata_connectionstring)
 
     # initialize the settings
     from service.settings import EOSSettings

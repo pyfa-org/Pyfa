@@ -394,7 +394,7 @@ if __name__ == "__main__":
             yield x
             x += jump
 
-    class TestPanel(wx.Panel):
+    class MyPanel(wx.Panel):
         def __init__(self, parent, size=(500, 500)):
             wx.Panel.__init__(self, parent, size=size)
             box = wx.BoxSizer(wx.VERTICAL)
@@ -432,7 +432,7 @@ if __name__ == "__main__":
             wx.Frame.__init__(self, None, title=title, size=size)
             self.statusbar = self.CreateStatusBar()
             main_sizer = wx.BoxSizer(wx.VERTICAL)
-            panel = TestPanel(self, size=size)
+            panel = MyPanel(self, size=size)
             main_sizer.Add(panel)
             self.SetSizer(main_sizer)
 

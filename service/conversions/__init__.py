@@ -9,6 +9,8 @@ elsewhere (in which case can be accessed with packs[name])
 
 import pkgutil
 
+
+
 # init parent dict
 all = {}
 
@@ -17,7 +19,32 @@ packs = {}
 
 
 prefix = __name__ + "."
-for importer, modname, ispkg in pkgutil.iter_modules(__path__, prefix):
+
+# load modules to work based with and without pyinstaller
+# from: https://github.com/webcomics/dosage/blob/master/dosagelib/loader.py
+# see: https://github.com/pyinstaller/pyinstaller/issues/1905
+
+# load modules using iter_modules()
+# (should find all filters in normal build, but not pyinstaller)
+module_names = [m[1] for m in pkgutil.iter_modules(__path__, prefix)]
+
+print ("module names from iter_modules: ", module_names)
+
+# special handling for PyInstaller
+importers = map(pkgutil.get_importer, __path__)
+toc = set()
+for i in importers:
+    if hasattr(i, 'toc'):
+        toc |= i.toc
+
+for elm in toc:
+    if elm.startswith(prefix):
+        module_names.append(elm)
+
+print("module names after get_importer toc: ", module_names)
+
+for modname in module_names:
+    print (modname)
     conversionPack = __import__(modname, fromlist="dummy")
     all.update(conversionPack.CONVERSIONS)
     modname_tail = modname.rsplit('.', 1)[-1]
