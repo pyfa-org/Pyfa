@@ -19,10 +19,10 @@ debug = False
 saveInRoot = False
 
 # Version data
-version = "1.33.1"
+version = "1.33.2"
 tag = "Stable"
 expansionName = "Lifeblood"
-expansionVersion = "1.0"
+expansionVersion = "1.7"
 evemonMinVersion = "4081"
 
 pyfaPath = None
