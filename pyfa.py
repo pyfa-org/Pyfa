@@ -39,6 +39,26 @@ except ImportError:
 pyfalog = Logger(__name__)
 
 
+ascii_text = '''
+++++++++++++++++++++++++++++++++++++++++++++++++++
+                             __       
+                            / _|      
+              _ __   _   _ | |_  __ _ 
+             | '_ \ | | | ||  _|/ _` |
+             | |_) || |_| || | | (_| |
+             | .__/  \__, ||_|  \__,_|
+             | |      __/ |           
+             |_|     |___/            
+
+You are running a alpha/beta version of pyfa. 
+If you run into problems, please let me know at:
+https://github.com/pyfa-org/Pyfa/issues
+
+++++++++++++++++++++++++++++++++++++++++++++++++++
+'''
+
+print(ascii_text)
+
 class PassThroughOptionParser(OptionParser):
     """
     An unknown option pass-through implementation of OptionParser.
