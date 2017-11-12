@@ -359,31 +359,31 @@ class MainFrame(wx.Frame):
         v = sys.version_info
         info = wx.adv.AboutDialogInfo()
         info.Name = "pyfa"
-        info.Version = gui.aboutData.versionString
-
-        try:
-            import matplotlib
-            matplotlib_version = matplotlib.__version__
-        except:
-            matplotlib_version = None
-
-        info.Description = wordwrap(gui.aboutData.description + "\n\nDevelopers:\n\t" +
-                                    "\n\t".join(gui.aboutData.developers) +
-                                    "\n\nAdditional credits:\n\t" +
-                                    "\n\t".join(gui.aboutData.credits) +
-                                    "\n\nLicenses:\n\t" +
-                                    "\n\t".join(gui.aboutData.licenses) +
-                                    "\n\nEVE Data: \t" + gamedata_version +
-                                    "\nPython: \t\t" + '{}.{}.{}'.format(v.major, v.minor, v.micro) +
-                                    "\nwxPython: \t" + wx.__version__ +
-                                    "\nSQLAlchemy: \t" + sqlalchemy.__version__ +
-                                    "\nmatplotlib: \t {}".format(matplotlib_version if matplotlib_version else "Not Installed"),
-                                    500, wx.ClientDC(self))
-        if "__WXGTK__" in wx.PlatformInfo:
-            forumUrl = "http://forums.eveonline.com/default.aspx?g=posts&amp;t=466425"
-        else:
-            forumUrl = "http://forums.eveonline.com/default.aspx?g=posts&t=466425"
-        info.WebSite = (forumUrl, "pyfa thread at EVE Online forum")
+        info.Version = config.getGitVersion() #  gui.aboutData.versionString
+        #
+        # try:
+        #     import matplotlib
+        #     matplotlib_version = matplotlib.__version__
+        # except:
+        #     matplotlib_version = None
+        #
+        # info.Description = wordwrap(gui.aboutData.description + "\n\nDevelopers:\n\t" +
+        #                             "\n\t".join(gui.aboutData.developers) +
+        #                             "\n\nAdditional credits:\n\t" +
+        #                             "\n\t".join(gui.aboutData.credits) +
+        #                             "\n\nLicenses:\n\t" +
+        #                             "\n\t".join(gui.aboutData.licenses) +
+        #                             "\n\nEVE Data: \t" + gamedata_version +
+        #                             "\nPython: \t\t" + '{}.{}.{}'.format(v.major, v.minor, v.micro) +
+        #                             "\nwxPython: \t" + wx.__version__ +
+        #                             "\nSQLAlchemy: \t" + sqlalchemy.__version__ +
+        #                             "\nmatplotlib: \t {}".format(matplotlib_version if matplotlib_version else "Not Installed"),
+        #                             500, wx.ClientDC(self))
+        # if "__WXGTK__" in wx.PlatformInfo:
+        #     forumUrl = "http://forums.eveonline.com/default.aspx?g=posts&amp;t=466425"
+        # else:
+        #     forumUrl = "http://forums.eveonline.com/default.aspx?g=posts&t=466425"
+        # info.WebSite = (forumUrl, "pyfa thread at EVE Online forum")
         wx.adv.AboutBox(info)
 
     def showCharacterEditor(self, event):

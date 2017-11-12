@@ -51,11 +51,17 @@ def getPyfaRoot():
     return root
 
 
+def getGitVersion():
+    with open(os.path.join(pyfaPath, 'gitversion')) as f:
+        version = f.readline()
+    return version
+
+
 def getDefaultSave():
     return os.path.expanduser(os.path.join("~", ".pyfa"))
 
 
-def defPaths(customSavePath):
+def defPaths(customSavePath=None):
     global debug
     global pyfaPath
     global savePath

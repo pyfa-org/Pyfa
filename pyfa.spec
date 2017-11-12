@@ -2,6 +2,13 @@
 
 import os
 from itertools import chain
+import subprocess
+
+label = subprocess.check_output([
+    "git", "describe", "--tags"]).strip()
+
+with open('gitversion', 'w+') as f:
+    f.write(label.decode())
 
 block_cipher = None
 
@@ -15,6 +22,7 @@ added_files = [
              ( 'eve.db', '.' ),
              ( 'README.md', '.' ),
              ( 'LICENSE', '.' ),
+             ( 'gitversion', '.' ),
              ]
 
 import_these = []
@@ -32,7 +40,6 @@ for root, folders, files in chain.from_iterable(os.walk(path) for path in paths)
 
 a = Analysis([r'C:\Users\Ryan\Sync\Git\blitzmann\Pyfa\pyfa.py'],
              pathex=[
-                 r'C:\Users\Ryan\Sync\Git\blitzmann\Pyfa',
                  # Need this, see https://github.com/pyinstaller/pyinstaller/issues/1566
                  # To get this, download and install windows 10 SDK
                  # If not building on Windows 10, this might be optional
