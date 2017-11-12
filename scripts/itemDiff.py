@@ -57,10 +57,12 @@ def main(old, new, groups=True, effects=True, attributes=True, renames=True):
     implemented = set()
 
     for filename in os.listdir(effectspath):
-        basename, extension = filename.rsplit('.', 1)
+        if filename.startswith("_") or not filename.endswith(".py"):
+            continue
+
+        basename, _ = filename.rsplit('.', 1)
         # Ignore non-py files and exclude implementation-specific 'effect'
-        if extension == "py" and basename not in ("__init__",):
-            implemented.add(basename)
+        implemented.add(basename)
 
     # Effects' names are used w/o any special symbols by eos
     stripspec = "[^A-Za-z0-9]"
