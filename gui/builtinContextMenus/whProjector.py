@@ -45,7 +45,7 @@ class WhProjector(ContextMenu):
                     rootMenu.Bind(wx.EVT_MENU, self.handleSelection, grandSubItem)
                 else:
                     grandSub.Bind(wx.EVT_MENU, self.handleSelection, grandSubItem)
-                grandSub.AppendItem(grandSubItem)
+                grandSub.Append(grandSubItem)
         return sub
 
     def handleSelection(self, event):

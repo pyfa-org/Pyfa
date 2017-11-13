@@ -87,12 +87,12 @@ class TargetResists(ContextMenu):
             else:
                 self.singles.append(pattern)
 
-        sub.AppendItem(self.addPattern(rootMenu if msw else sub, None))  # Add reset
+        sub.Append(self.addPattern(rootMenu if msw else sub, None))  # Add reset
         sub.AppendSeparator()
 
         # Single items, no parent
         for pattern in self.singles:
-            sub.AppendItem(self.addPattern(rootMenu if msw else sub, pattern))
+            sub.Append(self.addPattern(rootMenu if msw else sub, pattern))
 
         # Items that have a parent
         for menuName, patterns in list(self.subMenus.items()):
@@ -108,8 +108,8 @@ class TargetResists(ContextMenu):
 
             # Append child items to child menu
             for pattern in patterns:
-                grandSub.AppendItem(self.addPattern(rootMenu if msw else grandSub, pattern))
-            sub.AppendItem(item)  # finally, append parent item to root menu
+                grandSub.Append(self.addPattern(rootMenu if msw else grandSub, pattern))
+            sub.Append(item)  # finally, append parent item to root menu
 
         return sub
 

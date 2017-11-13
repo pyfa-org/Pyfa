@@ -403,7 +403,7 @@ class FittingsTreeView(wx.Panel):
             shipID = tree.AppendItem(root, name)
             for fit in fits:
                 fitId = tree.AppendItem(shipID, fit['name'])
-                tree.SetPyData(fitId, json.dumps(fit))
+                tree.SetItemData(fitId, json.dumps(fit))
 
         tree.SortChildren(root)
 

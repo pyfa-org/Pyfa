@@ -96,7 +96,7 @@ class DamagePattern(ContextMenu):
 
         # Items that have a parent
         for pattern in self.subMenus[self.m[i]]:
-            sub.AppendItem(self.addPattern(rootMenu if msw else sub, pattern))
+            sub.Append(self.addPattern(rootMenu if msw else sub, pattern))
 
         return sub
 

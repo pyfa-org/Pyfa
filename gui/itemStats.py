@@ -776,7 +776,7 @@ class ItemDependents(wx.Panel):
 
         self.SetSizer(mainSizer)
         self.root = self.reqTree.AddRoot("WINRARZOR")
-        self.reqTree.SetPyData(self.root, None)
+        self.reqTree.SetItemData(self.root, None)
 
         self.imageList = wx.ImageList(16, 16)
         self.reqTree.SetImageList(self.imageList)
@@ -1026,7 +1026,7 @@ class ItemAffectedBy(wx.Panel):
             change = self.affectedBy.GetItemData(item)
             display = self.affectedBy.GetItemText(item)
             self.affectedBy.SetItemText(item, change)
-            self.affectedBy.SetPyData(item, display)
+            self.affectedBy.SetItemData(item, display)
 
         self.Thaw()
 
@@ -1171,7 +1171,7 @@ class ItemAffectedBy(wx.Panel):
 
                 # this is the attribute node
                 child = self.affectedBy.AppendItem(parent, display, attrIcon)
-                self.affectedBy.SetPyData(child, saved)
+                self.affectedBy.SetItemData(child, saved)
                 self.treeItems.append(child)
 
                 items = attributes[attrName]
@@ -1203,7 +1203,7 @@ class ItemAffectedBy(wx.Panel):
                     # this is the Module node, the attribute will be attached to this
                     display = "%s %s %.2f %s" % (displayStr, attrModifier, attrAmount, penalized)
                     treeItem = self.affectedBy.AppendItem(child, display, itemIcon)
-                    self.affectedBy.SetPyData(treeItem, afflictor)
+                    self.affectedBy.SetItemData(treeItem, afflictor)
 
     def buildModuleView(self, root):
         """

@@ -61,7 +61,7 @@ class ImplantSets(ContextMenu):
             mitem = wx.MenuItem(rootMenu, id, set.name)
             bindmenu.Bind(wx.EVT_MENU, self.handleSelection, mitem)
             self.idmap[id] = set
-            m.AppendItem(mitem)
+            m.Append(mitem)
 
         return m
 

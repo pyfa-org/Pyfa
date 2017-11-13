@@ -64,7 +64,7 @@ class CommandFits(ContextMenu):
             for fit in sorted(self.__class__.commandFits, key=lambda x: x.name):
                 print(fit)
                 menuItem = self.addFit(rootMenu if msw else sub, fit, True)
-                sub.AppendItem(menuItem)
+                sub.Append(menuItem)
         else:
             typeDict = {}
 
