@@ -297,7 +297,7 @@ class ChromeNotebook(wx.Panel):
 
     def SetPageIcon(self, i, icon, refresh=True):
         tab = self.tabs_container.tabs[i]
-        tab.tabImg = icon
+        tab.tab_img = icon
         if refresh:
             self.tabs_container.AdjustTabsSize()
             self.Refresh()
