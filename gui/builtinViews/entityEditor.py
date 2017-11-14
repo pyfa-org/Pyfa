@@ -22,7 +22,10 @@ class TextEntryValidatedDialog(wx.TextEntryDialog):
         wx.TextEntryDialog.__init__(self, parent, *args, **kargs)
         self.parent = parent
 
-        self.txtctrl = self.FindWindowById(3000)
+        # Find first TextCtrl in the TextEntryDialog
+        # See https://github.com/wxWidgets/Phoenix/issues/611
+        self.txtctrl = next(x for x in self.Children if isinstance(x, wx.TextCtrl))
+
         if validator:
             self.txtctrl.SetValidator(validator())
 
