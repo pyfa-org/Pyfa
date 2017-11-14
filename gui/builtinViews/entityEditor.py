@@ -3,9 +3,9 @@ import wx
 from gui.bitmap_loader import BitmapLoader
 
 
-class BaseValidator(wx.PyValidator):
+class BaseValidator(wx.Validator):
     def __init__(self):
-        wx.PyValidator.__init__(self)
+        wx.Validator.__init__(self)
 
     def Validate(self, win):
         raise NotImplementedError()
