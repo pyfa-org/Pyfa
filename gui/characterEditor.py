@@ -420,12 +420,13 @@ class SkillTreeView(wx.Panel):
 
         for id, name in sChar.getSkillsByName(search):
             iconId = self.skillBookImageId
-            childId = tree.AppendItem(root, name, iconId, data=('skill', id))
             level, dirty = sChar.getSkillLevel(char.ID, id)
+
+            if dirty:
+                name = "* " + name
+
+            childId = tree.AppendItem(root, name, iconId, data=('skill', id))
             tree.SetItemText(childId, 1, "Level %d" % int(level) if isinstance(level, float) else level)
-            # @todo: pheonix
-            # if dirty:
-            #     tree.SetItemTextColour(childId, wx.BLUE)
 
     def populateSkillTree(self, event=None):
         sChar = Character.getInstance()
@@ -446,11 +447,11 @@ class SkillTreeView(wx.Panel):
         tree.DeleteAllItems()
 
         for id, name in groups:
+            if id in dirtyGroups:
+                name = "* " + name
+
             childId = tree.AppendItem(root, name, imageId, data=('group', id))
             tree.AppendItem(childId, "dummy")
-            # @todo: pheonix
-            # if id in dirtyGroups:
-            #     tree.(childId, wx.BLUE)
 
         if event:
             event.Skip()
@@ -468,13 +469,14 @@ class SkillTreeView(wx.Panel):
             data = tree.GetItemData(root)
             for id, name in sChar.getSkills(data[1]):
                 iconId = self.skillBookImageId
-                childId = tree.AppendItem(root, name, iconId, data=('skill', id))
                 level, dirty = sChar.getSkillLevel(char.ID, id)
-                tree.SetItemText(childId, 1, "Level %d" % int(level) if isinstance(level, float) else level)
 
-                # @todo: pheonix
-                # if dirty:
-                #     tree.SetItemTextColour(childId, wx.BLUE)
+                if dirty:
+                    name = "* " + name
+
+                childId = tree.AppendItem(root, name, iconId, data=('skill', id))
+
+                tree.SetItemText(childId, 1, "Level %d" % int(level) if isinstance(level, float) else level)
 
     def scheduleMenu(self, event):
         event.Skip()

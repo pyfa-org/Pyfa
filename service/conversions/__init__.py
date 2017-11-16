@@ -9,14 +9,11 @@ elsewhere (in which case can be accessed with packs[name])
 
 import pkgutil
 
-
-
 # init parent dict
 all = {}
 
 # init container to store the separate conversion packs in case we need them
 packs = {}
-
 
 prefix = __name__ + "."
 
@@ -27,8 +24,6 @@ prefix = __name__ + "."
 # load modules using iter_modules()
 # (should find all filters in normal build, but not pyinstaller)
 module_names = [m[1] for m in pkgutil.iter_modules(__path__, prefix)]
-
-print ("module names from iter_modules: ", module_names)
 
 # special handling for PyInstaller
 importers = map(pkgutil.get_importer, __path__)
@@ -41,10 +36,7 @@ for elm in toc:
     if elm.startswith(prefix):
         module_names.append(elm)
 
-print("module names after get_importer toc: ", module_names)
-
 for modname in module_names:
-    print (modname)
     conversionPack = __import__(modname, fromlist="dummy")
     all.update(conversionPack.CONVERSIONS)
     modname_tail = modname.rsplit('.', 1)[-1]
