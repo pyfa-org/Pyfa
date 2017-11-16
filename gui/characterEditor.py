@@ -316,6 +316,7 @@ class SkillTreeView(wx.Panel):
         self.imageList = wx.ImageList(16, 16)
         tree.SetImageList(self.imageList)
         self.skillBookImageId = self.imageList.Add(BitmapLoader.getBitmap("skill_small", "gui"))
+        self.skillBookDirtyImageId = self.imageList.Add(BitmapLoader.getBitmap("skill_small_red", "gui"))
 
         tree.AppendColumn("Skill")
         tree.AppendColumn("Level")
@@ -423,7 +424,7 @@ class SkillTreeView(wx.Panel):
             level, dirty = sChar.getSkillLevel(char.ID, id)
 
             if dirty:
-                name = "* " + name
+                iconId = self.skillBookDirtyImageId
 
             childId = tree.AppendItem(root, name, iconId, data=('skill', id))
             tree.SetItemText(childId, 1, "Level %d" % int(level) if isinstance(level, float) else level)
@@ -441,14 +442,14 @@ class SkillTreeView(wx.Panel):
             self.btnSecStatus.Enable()
 
         groups = sChar.getSkillGroups()
-        imageId = self.skillBookImageId
         root = self.root
         tree = self.skillTreeListCtrl
         tree.DeleteAllItems()
 
         for id, name in groups:
+            imageId = self.skillBookImageId
             if id in dirtyGroups:
-                name = "* " + name
+                imageId = self.skillBookDirtyImageId
 
             childId = tree.AppendItem(root, name, imageId, data=('group', id))
             tree.AppendItem(childId, "dummy")
@@ -472,7 +473,7 @@ class SkillTreeView(wx.Panel):
                 level, dirty = sChar.getSkillLevel(char.ID, id)
 
                 if dirty:
-                    name = "* " + name
+                    iconId = self.skillBookDirtyImageId
 
                 childId = tree.AppendItem(root, name, iconId, data=('skill', id))
 
@@ -525,9 +526,9 @@ class SkillTreeView(wx.Panel):
             self.skillTreeListCtrl.SetItemText(treeItem,
                                                1,
                                                "Level {}".format(int(lvl)) if not isinstance(lvl, str) else lvl)
-            # @todo: pheonix
-            # if not dirty:
-            #     self.skillTreeListCtrl.SetItemTextColour(treeItem, None)
+
+            if not dirty:
+                self.skillTreeListCtrl.SetItemImage(treeItem, self.skillBookImageId)
 
         while child.IsOk():
             # child = Skill category
@@ -551,10 +552,10 @@ class SkillTreeView(wx.Panel):
         parentID = self.skillTreeListCtrl.GetItemParent(selection)
         parent = self.skillTreeListCtrl.GetItemData(parentID)
 
-        # @todo: pheonix
-        # if parent:
-        #     if parent[1] in dirtyGroups:
-        #         self.skillTreeListCtrl.SetItemTextColour(parentID, None)
+        if parent:
+            if parent[1] in dirtyGroups:
+                self.skillTreeListCtrl.SetItemImage(parentID, self.skillBookImageId)
+
 
         event.Skip()
 
