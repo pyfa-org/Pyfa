@@ -357,7 +357,7 @@ class Skill(HandledItem):
             start = time.time()
             for item, rlevel in self.item.requiredFor.items():
                 if item.group.category.ID == 16:  # Skill category
-                    if level < rlevel:
+                    if level is None or level < rlevel:
                         skill = self.character.getSkill(item.ID)
                         # print "Removing skill: {}, Dependant level: {}, Required level: {}".format(skill, level, rlevel)
                         skill.setLevel(None, persist)
