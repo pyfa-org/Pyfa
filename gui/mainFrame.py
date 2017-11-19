@@ -54,6 +54,7 @@ from gui.characterSelection import CharacterSelection
 from gui.patternEditor import DmgPatternEditorDlg
 from gui.resistsEditor import ResistsEditorDlg
 from gui.setEditor import ImplantSetEditorDlg
+from gui.devTools import DevTools
 from gui.preferenceDialog import PreferenceDialog
 from gui.graphFrame import GraphFrame
 from gui.copySelectDialog import CopySelectDialog
@@ -386,6 +387,9 @@ class MainFrame(wx.Frame):
         # info.WebSite = (forumUrl, "pyfa thread at EVE Online forum")
         wx.adv.AboutBox(info)
 
+    def showDevTools(self, event):
+        DevTools(self)
+
     def showCharacterEditor(self, event):
         dlg = CharacterEditor(self)
         dlg.Show()
@@ -472,6 +476,7 @@ class MainFrame(wx.Frame):
         # Widgets Inspector
         if config.debug:
             self.Bind(wx.EVT_MENU, self.openWXInspectTool, id=self.widgetInspectMenuID)
+            self.Bind(wx.EVT_MENU, self.showDevTools, id=menuBar.devToolsId)
         # About
         self.Bind(wx.EVT_MENU, self.ShowAboutBox, id=wx.ID_ABOUT)
         # Char editor

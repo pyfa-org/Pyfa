@@ -59,6 +59,7 @@ class MainMenuBar(wx.MenuBar):
         self.toggleOverridesId = wx.NewId()
         self.importDatabaseDefaultsId = wx.NewId()
         self.toggleIgnoreRestrictionID = wx.NewId()
+        self.devToolsId = wx.NewId()
 
         if 'wxMac' in wx.PlatformInfo and wx.VERSION >= (3, 0):
             wx.ID_COPY = wx.NewId()
@@ -170,6 +171,8 @@ class MainMenuBar(wx.MenuBar):
         if config.debug:
             helpMenu.Append(self.mainFrame.widgetInspectMenuID, "Open Widgets Inspect tool",
                             "Open Widgets Inspect tool")
+            helpMenu.Append(self.devToolsId, "Open Dev Tools",
+                            "Dev Tools")
 
         self.mainFrame.Bind(GE.FIT_CHANGED, self.fitChanged)
 

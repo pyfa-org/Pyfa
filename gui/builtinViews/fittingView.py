@@ -166,6 +166,8 @@ class FittingView(d.Display):
         self.Bind(wx.EVT_MOTION, self.OnMouseMove)
         self.Bind(wx.EVT_LEAVE_WINDOW, self.OnLeaveWindow)
         self.parent.Bind(EVT_NOTEBOOK_PAGE_CHANGED, self.pageChanged)
+        print("------------------ new fitting view -------------------")
+        print(self)
 
     def OnLeaveWindow(self, event):
         self.SetToolTip(None)

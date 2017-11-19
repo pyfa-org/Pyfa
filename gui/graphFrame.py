@@ -171,7 +171,7 @@ class GraphFrame(wx.Frame):
 
     def close(self, event):
         self.fitList.fitList.Unbind(wx.EVT_LEFT_DCLICK, handler=self.removeItem)
-        self.mainFrame.Unbind(GE.FIT_CHANGED, handler=self.draw)
+        print(self.mainFrame.Unbind(GE.FIT_CHANGED, handler=self.draw))
         event.Skip()
 
     def getView(self):
