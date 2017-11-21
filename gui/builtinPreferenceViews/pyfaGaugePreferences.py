@@ -49,6 +49,7 @@ class PFGaugePreview(wx.Window):
         self.Bind(wx.EVT_LEAVE_WINDOW, self.OnWindowLeave)
         self.Bind(wx.EVT_TIMER, self.OnTimer)
         self.Bind(wx.EVT_ERASE_BACKGROUND, self.OnEraseBk)
+        self.SetBackgroundStyle(wx.BG_STYLE_PAINT)
 
     def OnEraseBk(self, event):
         pass
@@ -110,7 +111,7 @@ class PFGaugePreview(wx.Window):
 
     def OnPaint(self, event):
         rect = self.GetClientRect()
-        dc = wx.BufferedPaintDC(self)
+        dc = wx.AutoBufferedPaintDC(self)
         dc.SetBackground(wx.Brush(self.bkColor))
         dc.Clear()
 

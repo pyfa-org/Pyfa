@@ -24,6 +24,8 @@ class LoadAnimation(wx.Window):
 
         self.animTimer.Start(self.animTimerPeriod)
 
+        self.SetBackgroundStyle(wx.BG_STYLE_PAINT)
+
     def Play(self):
         if self.animTimer.IsRunning():
             self.animTimer.Stop()
@@ -52,7 +54,7 @@ class LoadAnimation(wx.Window):
 
     def OnPaint(self, event):
         rect = self.GetClientRect()
-        dc = wx.BufferedPaintDC(self)
+        dc = wx.AutoBufferedPaintDC(self)
         windowColor = wx.SystemSettings.GetColour(wx.SYS_COLOUR_WINDOW)
         dc.SetBackground(wx.Brush(windowColor))
         dc.Clear()

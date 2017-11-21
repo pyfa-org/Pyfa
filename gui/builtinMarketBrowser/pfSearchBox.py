@@ -59,6 +59,8 @@ class PFSearchBox(wx.Window):
         self.EditBox.Bind(wx.EVT_TEXT, self.OnText)
         self.EditBox.Bind(wx.EVT_TEXT_ENTER, self.OnTextEnter)
 
+        self.SetBackgroundStyle(wx.BG_STYLE_PAINT)
+
         self.SetMinSize(size)
 
     def OnText(self, event):
@@ -224,7 +226,7 @@ class PFSearchBox(wx.Window):
         self.EditBox.SetSize((self.cancelButtonX - self.padding - self.editX, -1))
 
     def OnPaint(self, event):
-        dc = wx.BufferedPaintDC(self)
+        dc = wx.AutoBufferedPaintDC(self)
 
         bkColor = wx.SystemSettings.GetColour(wx.SYS_COLOUR_WINDOW)
         sepColor = colorUtils.GetSuitable(bkColor, 0.2)

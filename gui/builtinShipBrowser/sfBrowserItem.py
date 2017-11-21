@@ -241,7 +241,7 @@ class PFToolbar(object):
 class SFBrowserItem(wx.Window):
     def __init__(self, parent, id=wx.ID_ANY, pos=wx.DefaultPosition, size=(0, 16), style=0):
         wx.Window.__init__(self, parent, id, pos, size, style)
-
+        self.SetBackgroundStyle(wx.BG_STYLE_PAINT)
         self.highlighted = False
         self.selected = False
         self.bkBitmap = None
@@ -281,7 +281,7 @@ class SFBrowserItem(wx.Window):
         wx.Window.Refresh(self)
 
     def OnPaint(self, event):
-        mdc = wx.BufferedPaintDC(self)
+        mdc = wx.AutoBufferedPaintDC(self)
 
         self.RenderBackground()
 

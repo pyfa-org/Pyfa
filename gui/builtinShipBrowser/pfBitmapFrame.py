@@ -19,6 +19,8 @@ class PFBitmapFrame(wx.Frame):
         self.transp = 0
         self.SetSize((bitmap.GetWidth(), bitmap.GetHeight()))
 
+        self.SetBackgroundStyle(wx.BG_STYLE_PAINT)
+
         self.SetTransparent(0)
         self.Refresh()
 
@@ -51,7 +53,7 @@ class PFBitmapFrame(wx.Frame):
     def OnWindowPaint(self, event):
         rect = self.GetRect()
         canvas = wx.Bitmap(rect.width, rect.height)
-        mdc = wx.BufferedPaintDC(self)
+        mdc = wx.AutoBufferedPaintDC(self)
         mdc.SelectObject(canvas)
         mdc.DrawBitmap(self.bitmap, 0, 0)
         mdc.SetPen(wx.Pen("#000000", width=1))

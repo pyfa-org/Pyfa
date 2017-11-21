@@ -85,6 +85,8 @@ class RaceSelector(wx.Window):
 
         self.Layout()
 
+        self.SetBackgroundStyle(wx.BG_STYLE_PAINT)
+
     def OnMouseMove(self, event):
         mx, my = event.GetPosition()
 
@@ -170,7 +172,7 @@ class RaceSelector(wx.Window):
         # bkColor = colorUtils.GetSuitable(windowColor, 0.1)
         sepColor = colorUtils.GetSuitable(windowColor, 0.2)
 
-        mdc = wx.BufferedPaintDC(self)
+        mdc = wx.AutoBufferedPaintDC(self)
 
         bkBitmap = drawUtils.RenderGradientBar(windowColor, rect.width, rect.height, 0.1, 0.1, 0.2, 2)
         mdc.DrawBitmap(bkBitmap, 0, 0, True)

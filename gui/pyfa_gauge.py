@@ -75,6 +75,7 @@ class PyGauge(wx.Window):
         self.Bind(wx.EVT_TIMER, self.OnTimer)
         self.Bind(wx.EVT_ENTER_WINDOW, self.OnWindowEnter)
         self.Bind(wx.EVT_LEAVE_WINDOW, self.OnWindowLeave)
+        self.SetBackgroundStyle(wx.BG_STYLE_PAINT)
 
     def OnEraseBackground(self, event):
         pass
@@ -212,7 +213,7 @@ class PyGauge(wx.Window):
                              (self._value, self._max_range if float(self._max_range) > 0.01 else 0))
 
     def OnPaint(self, event):
-        dc = wx.BufferedPaintDC(self)
+        dc = wx.AutoBufferedPaintDC(self)
         rect = self.GetClientRect()
 
         dc.SetBackground(wx.Brush(self.GetBackgroundColour()))

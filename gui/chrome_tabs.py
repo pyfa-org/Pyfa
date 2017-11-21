@@ -727,6 +727,8 @@ class _TabsContainer(wx.Panel):
         self.Bind(wx.EVT_SIZE, self.OnSize)
         self.Bind(wx.EVT_SYS_COLOUR_CHANGED, self.OnSysColourChanged)
 
+        self.SetBackgroundStyle(wx.BG_STYLE_PAINT)
+
     def OnSysColourChanged(self, event):
         for tab in self.tabs:
             tab.InitTab()
@@ -1096,10 +1098,7 @@ class _TabsContainer(wx.Panel):
                 self.Refresh()
 
     def OnPaint(self, event):
-        if "wxGTK" in wx.PlatformInfo:
-            mdc = wx.AutoBufferedPaintDC(self)
-        else:
-            mdc = wx.BufferedPaintDC(self)
+        mdc = wx.AutoBufferedPaintDC(self)
 
         # if 'wxMac' in wx.PlatformInfo:
         #     color = wx.Colour(0, 0, 0)
@@ -1299,7 +1298,7 @@ class PFNotebookPagePreview(wx.Frame):
                          size=wx.DefaultSize, style=wx.NO_BORDER |
                                                     wx.FRAME_NO_TASKBAR |
                                                     wx.STAY_ON_TOP)
-
+        self.SetBackgroundStyle(wx.BG_STYLE_PAINT)
         self.title = title
         self.bitmap = bitmap
         self.SetSize((bitmap.GetWidth(), bitmap.GetHeight()))
@@ -1371,7 +1370,7 @@ class PFNotebookPagePreview(wx.Frame):
     def OnWindowPaint(self, event):
         rect = self.GetRect()
         canvas = wx.Bitmap(rect.width, rect.height)
-        mdc = wx.BufferedPaintDC(self)
+        mdc = wx.AudoBufferedPaintDC(self)
         mdc.SelectObject(canvas)
         color = wx.SystemSettings.GetColour(wx.SYS_COLOUR_WINDOW)
         mdc.SetBackground(wx.Brush(color))

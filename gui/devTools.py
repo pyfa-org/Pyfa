@@ -43,6 +43,11 @@ class DevTools(wx.Dialog):
 
         self.idBtn.Bind(wx.EVT_BUTTON, self.objects_by_id)
 
+        self.gcCollect = wx.Button(self, wx.ID_ANY, "GC Collect", wx.DefaultPosition, wx.DefaultSize, 0)
+        mainSizer.Add(self.gcCollect, 0, wx.EXPAND | wx.TOP | wx.BOTTOM, 5)
+
+        self.gcCollect.Bind(wx.EVT_BUTTON, self.gc_collect)
+
         self.SetSizer(mainSizer)
 
         self.Layout()
@@ -62,6 +67,13 @@ class DevTools(wx.Dialog):
             if id(obj) == input:
                 print(obj)
                 print(bool(obj))
+                print(str(len(gc.get_referents(obj))) + " references")
+
                 break
         else:
             print(None)
+
+    def gc_collect(self, evt):
+        print(gc.collect())
+        print(gc.get_debug())
+        print(gc.get_stats())

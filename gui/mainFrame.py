@@ -1016,6 +1016,7 @@ class MainFrame(wx.Frame):
         del self.waitDialog
 
     def openGraphFrame(self, event):
+
         if not self.graphFrame:
             self.graphFrame = GraphFrame(self)
 
