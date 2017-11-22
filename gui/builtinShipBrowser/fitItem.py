@@ -2,6 +2,7 @@
 
 import re
 import time
+import config
 
 import wx
 from logbook import Logger
@@ -57,6 +58,9 @@ class FitItem(SFItem.SFBrowserItem):
 
         self.shipFittingInfo = shipFittingInfo
         self.shipName, self.shipTrait, self.fitName, self.fitBooster, self.timestamp, self.notes = shipFittingInfo
+
+        if config.debug:
+            self.fitName = '({}) {}'.format(self.fitID, self.fitName)
 
         self.shipTrait = re.sub("<.*?>", " ", self.shipTrait)
         # see GH issue #62

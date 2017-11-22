@@ -78,7 +78,7 @@ class FitSpawner(gui.multiSwitch.TabSpawner):
 
             view = self.multiSwitch.GetSelectedPage()
             
-            if isinstance(view, gui.builtinViews.emptyView.BlankPage):
+            if not isinstance(view, FittingView):
                 view = FittingView(self.multiSwitch)
                 print("###################### Created new view:"+repr(view))
                 self.multiSwitch.ReplaceActivePage(view)
@@ -287,19 +287,20 @@ class FittingView(d.Display):
         We also refresh the fit of the new current page in case
         delete fit caused change in stats (projected)
         """
+        print('_+_+_+_+_+_ Fit Removed: {} {} activeFitID: {}, eventFitID: {}'.format(repr(self), str(bool(self)), self.activeFitID, event.fitID))
         pyfalog.debug("FittingView::fitRemoved")
         if event.fitID == self.getActiveFit():
             pyfalog.debug("    Deleted fit is currently active")
             self.parent.DeletePage(self.parent.GetPageIndex(self))
 
-        try:
-            # Sometimes there is no active page after deletion, hence the try block
-            sFit = Fit.getInstance()
-            sFit.refreshFit(self.getActiveFit())
-            wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=self.activeFitID))
-        except RuntimeError:
-            pyfalog.warning("Caught dead object")
-            pass
+            try:
+                # Sometimes there is no active page after deletion, hence the try block
+                sFit = Fit.getInstance()
+                sFit.refreshFit(self.getActiveFit())
+                wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=self.activeFitID))
+            except RuntimeError:
+                pyfalog.warning("Caught dead object")
+                pass
 
         event.Skip()
 
@@ -520,7 +521,7 @@ class FittingView(d.Display):
         self.populate(self.mods)
 
     def fitChanged(self, event):
-        print('====== Fit Changed: '+repr(self)+str(bool(self)))
+        print('====== Fit Changed: {} {} activeFitID: {}, eventFitID: {}'.format(repr(self), str(bool(self)), self.activeFitID, event.fitID))
 
         try:
             if self.activeFitID is not None and self.activeFitID == event.fitID:
