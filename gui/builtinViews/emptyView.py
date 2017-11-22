@@ -18,7 +18,8 @@ class BlankPage(wx.Panel):
         wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=None))
 
     def Destroy(self):
-        self.parent.Unbind(EVT_NOTEBOOK_PAGE_CHANGED)
+        # todo: This unbind caused fits to not recalc when switching to their tabs; find out why
+        # self.parent.Unbind(EVT_NOTEBOOK_PAGE_CHANGED)
         wx.Panel.Destroy(self)
 
     def pageChanged(self, event):
