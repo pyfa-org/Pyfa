@@ -216,11 +216,11 @@ class FittingView(d.Display):
             wx.PostEvent(self.mainFrame, FitSelected(fitID=fitID))
 
     def Destroy(self):
-        self.parent.Unbind(EVT_NOTEBOOK_PAGE_CHANGED, handler=self.pageChanged)
-        self.mainFrame.Unbind(GE.FIT_CHANGED, handler=self.fitChanged)
-        self.mainFrame.Unbind(EVT_FIT_RENAMED, handler=self.fitRenamed)
-        self.mainFrame.Unbind(EVT_FIT_REMOVED, handler=self.fitRemoved)
-        self.mainFrame.Unbind(ITEM_SELECTED, handler=self.appendItem)
+        self.parent.Unbind(EVT_NOTEBOOK_PAGE_CHANGED)
+        self.mainFrame.Unbind(GE.FIT_CHANGED)
+        self.mainFrame.Unbind(EVT_FIT_RENAMED)
+        self.mainFrame.Unbind(EVT_FIT_REMOVED)
+        self.mainFrame.Unbind(ITEM_SELECTED)
 
         d.Display.Destroy(self)
 

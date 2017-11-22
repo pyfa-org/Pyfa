@@ -128,8 +128,8 @@ class CrestFittings(wx.Frame):
         event.Skip()  # continue event
 
     def OnClose(self, event):
-        self.mainFrame.Unbind(GE.EVT_SSO_LOGOUT, handler=self.ssoLogout)
-        self.mainFrame.Unbind(GE.EVT_SSO_LOGIN, handler=self.ssoLogin)
+        self.mainFrame.Unbind(GE.EVT_SSO_LOGOUT)
+        self.mainFrame.Unbind(GE.EVT_SSO_LOGIN)
         event.Skip()
 
     def getActiveCharacter(self):
@@ -255,7 +255,7 @@ class ExportToEve(wx.Frame):
         event.Skip()  # continue event
 
     def OnClose(self, event):
-        self.mainFrame.Unbind(GE.EVT_SSO_LOGOUT, handler=self.ssoLogout)
+        self.mainFrame.Unbind(GE.EVT_SSO_LOGOUT)
         event.Skip()
 
     def getActiveCharacter(self):
