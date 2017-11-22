@@ -161,7 +161,7 @@ class Effect(EqBase):
         if it doesn't, set dummy values and add a dummy handler
         """
 
-        pyfalog.debug("Generate effect handler for {}".format(self.name))
+        #pyfalog.debug("Generate effect handler for {}".format(self.name))
 
         try:
             self.__effectModule = effectModule = __import__('eos.effects.' + self.handlerName, fromlist=True)
@@ -178,20 +178,20 @@ class Effect(EqBase):
             self.__runTime = "normal"
             self.__activeByDefault = True
             self.__type = None
-            pyfalog.debug("ImportError generating handler: {0}", e)
+            #pyfalog.debug("ImportError generating handler: {0}", e)
         except (AttributeError) as e:
             # Effect probably exists but there is an issue with it.  Turn it into a dummy effect so we can continue, but flag it with an error.
             self.__handler = effectDummy
             self.__runTime = "normal"
             self.__activeByDefault = True
             self.__type = None
-            pyfalog.error("AttributeError generating handler: {0}", e)
+            #pyfalog.error("AttributeError generating handler: {0}", e)
         except Exception as e:
             self.__handler = effectDummy
             self.__runTime = "normal"
             self.__activeByDefault = True
             self.__type = None
-            pyfalog.critical("Exception generating handler:")
+            #pyfalog.critical("Exception generating handler:")
             pyfalog.critical(e)
 
         self.__generated = True
