@@ -76,8 +76,13 @@ class FitSpawner(gui.multiSwitch.TabSpawner):
             if (not openFitInNew and mstate.CmdDown()) or startup or (openFitInNew and not mstate.CmdDown()):
                 self.multiSwitch.AddPage()
 
-            view = FittingView(self.multiSwitch)
-            self.multiSwitch.ReplaceActivePage(view)
+            view = self.multiSwitch.GetSelectedPage()
+            
+            if isinstance(view, gui.builtinViews.emptyView.BlankPage):
+                view = FittingView(self.multiSwitch)
+                print("###################### Created new view:"+repr(view))
+                self.multiSwitch.ReplaceActivePage(view)
+
             view.fitSelected(event)
 
     def handleDrag(self, type, fitID):
@@ -216,11 +221,12 @@ class FittingView(d.Display):
             wx.PostEvent(self.mainFrame, FitSelected(fitID=fitID))
 
     def Destroy(self):
-        self.parent.Unbind(EVT_NOTEBOOK_PAGE_CHANGED)
-        self.mainFrame.Unbind(GE.FIT_CHANGED)
-        self.mainFrame.Unbind(EVT_FIT_RENAMED)
-        self.mainFrame.Unbind(EVT_FIT_REMOVED)
-        self.mainFrame.Unbind(ITEM_SELECTED)
+        print("+++++ Destroy "+repr(self))
+        print(self.parent.Unbind(EVT_NOTEBOOK_PAGE_CHANGED))
+        print(self.mainFrame.Unbind(GE.FIT_CHANGED))
+        print(self.mainFrame.Unbind(EVT_FIT_RENAMED))
+        print(self.mainFrame.Unbind(EVT_FIT_REMOVED))
+        print(self.mainFrame.Unbind(ITEM_SELECTED))
 
         d.Display.Destroy(self)
 
@@ -305,6 +311,8 @@ class FittingView(d.Display):
         event.Skip()
 
     def fitSelected(self, event):
+        print('====== Fit Selected: '+repr(self)+str(bool(self)))
+
         if self.parent.IsActive(self):
             fitID = event.fitID
             startup = getattr(event, "startup", False)
@@ -512,6 +520,8 @@ class FittingView(d.Display):
         self.populate(self.mods)
 
     def fitChanged(self, event):
+        print('====== Fit Changed: '+repr(self)+str(bool(self)))
+
         try:
             if self.activeFitID is not None and self.activeFitID == event.fitID:
                 self.generateMods()
