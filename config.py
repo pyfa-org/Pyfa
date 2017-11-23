@@ -19,8 +19,8 @@ debug = False
 saveInRoot = False
 
 # Version data
-version = "1.33.2"
-tag = "Stable"
+version = "1.33.3"
+tag = "git"
 expansionName = "Lifeblood"
 expansionVersion = "1.7"
 evemonMinVersion = "4081"
