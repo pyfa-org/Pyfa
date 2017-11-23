@@ -5,9 +5,9 @@ import config
 # noinspection PyPackageRequirements
 import wx
 
-from helpers import AutoListCtrl
+from .helpers import AutoListCtrl
 
-from gui.bitmapLoader import BitmapLoader
+from gui.bitmap_loader import BitmapLoader
 from service.market import Market
 from service.attribute import Attribute
 from gui.utils.numberFormatter import formatAmount

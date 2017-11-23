@@ -91,7 +91,7 @@ class PFGeneralPref(PreferenceView):
         priceSizer.Add(self.stDefaultSystem, 0, wx.ALL | wx.ALIGN_CENTER_VERTICAL, 5)
 
         self.chPriceSource = wx.Choice(panel, choices=sorted(Price.sources.keys()))
-        self.chPriceSystem = wx.Choice(panel, choices=Price.systemsList.keys())
+        self.chPriceSystem = wx.Choice(panel, choices=list(Price.systemsList.keys()))
         priceSizer.Add(self.chPriceSource, 1, wx.ALL | wx.EXPAND, 5)
         priceSizer.Add(self.chPriceSystem, 1, wx.ALL | wx.EXPAND, 5)
 

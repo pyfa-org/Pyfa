@@ -3,7 +3,7 @@ import sys
 # noinspection PyPackageRequirements
 import wx
 
-from helpers import AutoListCtrl
+from .helpers import AutoListCtrl
 
 
 class ItemProperties(wx.Panel):

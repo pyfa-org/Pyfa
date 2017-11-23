@@ -6,7 +6,7 @@ import config
 # noinspection PyPackageRequirements
 import wx
 
-from helpers import AutoListCtrl
+from .helpers import AutoListCtrl
 
 
 class ItemEffects(wx.Panel):

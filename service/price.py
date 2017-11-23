@@ -105,7 +105,7 @@ class Price(object):
             return
 
         # attempt to find user's selected price source, otherwise get first one
-        sourceCls = cls.sources.get(sFit.serviceFittingOptions["priceSource"], cls.sources[cls.sources.keys()[0]])
+        sourceCls = cls.sources.get(sFit.serviceFittingOptions["priceSource"], cls.sources[list(cls.sources.keys())[0]])
         sourceCls(toRequest, cls.systemsList[sFit.serviceFittingOptions["priceSystem"]], priceMap)
 
         # if we get to this point, then we've got an error. Set to REREQUEST delay

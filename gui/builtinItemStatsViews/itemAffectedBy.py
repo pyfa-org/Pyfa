@@ -14,7 +14,7 @@ from eos.saveddata.fit import Fit
 
 import gui.mainFrame
 from gui.contextMenu import ContextMenu
-from gui.bitmapLoader import BitmapLoader
+from gui.bitmap_loader import BitmapLoader
 
 
 class ItemAffectedBy(wx.Panel):

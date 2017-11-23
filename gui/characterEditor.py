@@ -22,7 +22,6 @@ import wx
 import wx.dataview
 import wx.lib.agw.hyperlink
 
-from utils.floatspin import FloatSpin
 # noinspection PyPackageRequirements
 import wx.lib.newevent
 # noinspection PyPackageRequirements
@@ -346,7 +345,7 @@ class SkillTreeView(wx.Panel):
 
         bSizerButtons.Add(self.btnSecStatus, 0, wx.ALL, 5)
 
-        bSizerButtons.AddSpacer((0, 0), 1, wx.EXPAND, 5)
+        bSizerButtons.AddSpacer(0)
 
         importExport = (("Import", wx.ART_FILE_OPEN, "from"),
                         ("Export", wx.ART_FILE_SAVE_AS, "to"))
@@ -361,7 +360,7 @@ class SkillTreeView(wx.Panel):
             btn.Layout()
             setattr(self, "{}Btn".format(name.lower()), btn)
             btn.Enable(True)
-            btn.SetToolTipString("%s skills %s clipboard" % (name, direction))
+            btn.SetToolTip("%s skills %s clipboard" % (name, direction))
             bSizerButtons.Add(btn, 0, wx.ALIGN_CENTER_HORIZONTAL | wx.ALIGN_RIGHT | wx.ALL, 5)
             btn.Bind(wx.EVT_BUTTON, getattr(self, "{}Skills".format(name.lower())))
 

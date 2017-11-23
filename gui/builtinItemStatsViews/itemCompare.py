@@ -3,7 +3,7 @@ import sys
 # noinspection PyPackageRequirements
 import wx
 
-from helpers import AutoListCtrl
+from .helpers import AutoListCtrl
 from service.price import Price as ServicePrice
 from service.market import Market
 from service.attribute import Attribute
