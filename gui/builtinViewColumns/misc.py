@@ -49,6 +49,7 @@ class Miscellanea(ViewColumn):
             self.columnText = "Misc data"
             self.mask |= wx.LIST_MASK_TEXT
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
+        self.fittingView = fittingView
 
     def getText(self, stuff):
         return self.__getData(stuff)[0]
@@ -487,7 +488,7 @@ class Miscellanea(ViewColumn):
             if not hp or not cycleTime or not cycles:
                 return "", None
 
-            fit = Fit.getInstance().getFit(self.mainFrame.getActiveFit())
+            fit = Fit.getInstance().getFit(self.fittingView.getActiveFit())
             ehpTotal = fit.ehp
             hpTotal = fit.hp
             useEhp = self.mainFrame.statsPane.nameViewMap["resistancesViewFull"].showEffective
