@@ -11,7 +11,7 @@ from gui.builtinShipBrowser.shipItem import ShipItem
 from service.fit import Fit
 from service.market import Market
 
-import gui.builtinShipBrowser.events as events
+from gui.builtinShipBrowser.events import *
 from gui.builtinShipBrowser.pfWidgetContainer import PFWidgetsContainer
 from gui.builtinShipBrowser.navigationPanel import NavigationPanel
 from gui.builtinShipBrowser.raceSelector import RaceSelector
@@ -76,11 +76,11 @@ class ShipBrowser(wx.Panel):
         self.Show()
 
         self.Bind(wx.EVT_SIZE, self.SizeRefreshList)
-        self.Bind(events.EVT_SB_STAGE2_SEL, self.stage2)
-        self.Bind(events.EVT_SB_STAGE1_SEL, self.stage1)
-        self.Bind(events.EVT_SB_STAGE3_SEL, self.stage3)
-        self.Bind(events.EVT_SB_SEARCH_SEL, self.searchStage)
-        self.Bind(events.EVT_SB_IMPORT_SEL, self.importStage)
+        self.Bind(EVT_SB_STAGE2_SEL, self.stage2)
+        self.Bind(EVT_SB_STAGE1_SEL, self.stage1)
+        self.Bind(EVT_SB_STAGE3_SEL, self.stage3)
+        self.Bind(EVT_SB_SEARCH_SEL, self.searchStage)
+        self.Bind(EVT_SB_IMPORT_SEL, self.importStage)
 
         self.mainFrame.Bind(GE.FIT_CHANGED, self.RefreshList)
 
