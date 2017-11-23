@@ -2,6 +2,7 @@
 #
 # Used by:
 # Subsystem: Tengu Defensive - Amplification Node
+# Subsystem: Tengu Defensive - Covert Reconfiguration
 type = "passive"
 
 

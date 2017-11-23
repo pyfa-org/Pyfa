@@ -1,7 +1,4 @@
-# subsystemBonusGallenteElectronicWarpScrambleRange
-#
-# Used by:
-# Subsystem: Proteus Electronics - Friction Extension Processor
+# Not used by any item
 type = "passive"
 
 

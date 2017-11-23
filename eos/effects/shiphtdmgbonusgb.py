@@ -4,6 +4,7 @@
 # Ship: Dominix Navy Issue
 # Ship: Hyperion
 # Ship: Kronos
+# Ship: Marshal
 # Ship: Megathron Federate Issue
 # Ship: Sin
 type = "passive"

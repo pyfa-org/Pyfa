@@ -49,6 +49,7 @@ class BoosterView(d.Display):
         "State",
         "attr:boosterness",
         "Base Name",
+        "Side Effects",
         "Price",
     ]
 

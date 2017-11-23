@@ -236,17 +236,17 @@ class Character(object):
 
     def filteredSkillIncrease(self, filter, *args, **kwargs):
         for element in self.skills:
-            if list(filter(element)):
+            if filter(element):
                 element.increaseItemAttr(*args, **kwargs)
 
     def filteredSkillMultiply(self, filter, *args, **kwargs):
         for element in self.skills:
-            if list(filter(element)):
+            if filter(element):
                 element.multiplyItemAttr(*args, **kwargs)
 
     def filteredSkillBoost(self, filter, *args, **kwargs):
         for element in self.skills:
-            if list(filter(element)):
+            if filter(element):
                 element.boostItemAttr(*args, **kwargs)
 
     def calculateModifiedAttributes(self, fit, runTime, forceProjected=False):
@@ -333,17 +333,20 @@ class Skill(HandledItem):
 
     @property
     def level(self):
-        # Ensure that All 5/0 character have proper skill levels (in case database gets corrupted)
-        if self.character.name == "All 5":
-            self.activeLevel = self.__level = 5
-        elif self.character.name == "All 0":
-            self.activeLevel = self.__level = 0
-        elif self.character.alphaClone:
-            return min(self.activeLevel or 0, self.character.alphaClone.getSkillLevel(self) or 0)
+        # @todo: there is a phantom bug that keep popping up about skills not having a character... See #1234
+        # Remove this at some point when the cause can be determined.
+        if self.character:
+            # Ensure that All 5/0 character have proper skill levels (in case database gets corrupted)
+            if self.character.name == "All 5":
+                self.activeLevel = self.__level = 5
+            elif self.character.name == "All 0":
+                self.activeLevel = self.__level = 0
+            elif self.character.alphaClone:
+                return min(self.activeLevel or 0, self.character.alphaClone.getSkillLevel(self)) or 0
 
         return self.activeLevel or 0
 
-    def setLevel(self, level, persist=False):
+    def setLevel(self, level, persist=False, ignoreRestrict=False):
 
         if level is not None and (level < 0 or level > 5):
             raise ValueError(str(level) + " is not a valid value for level")
@@ -353,7 +356,9 @@ class Skill(HandledItem):
 
         self.activeLevel = level
 
-        if eos.config.settings['strictSkillLevels']:
+        # todo: have a way to do bulk skill level editing. Currently, everytime a single skill is changed, this runs,
+        # which affects performance. Should have a checkSkillLevels() or something that is more efficient for bulk.
+        if not ignoreRestrict and eos.config.settings['strictSkillLevels']:
             start = time.time()
             for item, rlevel in self.item.requiredFor.items():
                 if item.group.category.ID == 16:  # Skill category

@@ -49,6 +49,7 @@ class Miscellanea(ViewColumn):
             self.columnText = "Misc data"
             self.mask |= wx.LIST_MASK_TEXT
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
+        self.fittingView = fittingView
 
     def getText(self, stuff):
         return self.__getData(stuff)[0]
@@ -487,7 +488,7 @@ class Miscellanea(ViewColumn):
             if not hp or not cycleTime or not cycles:
                 return "", None
 
-            fit = Fit.getInstance().getFit(self.mainFrame.getActiveFit())
+            fit = Fit.getInstance().getFit(self.fittingView.getActiveFit())
             ehpTotal = fit.ehp
             hpTotal = fit.hp
             useEhp = self.mainFrame.statsPane.nameViewMap["resistancesViewFull"].showEffective
@@ -543,25 +544,7 @@ class Miscellanea(ViewColumn):
             return text, tooltip
         elif stuff.charge is not None:
             chargeGroup = stuff.charge.group.name
-            if chargeGroup in (
-                    "Rocket",
-                    "Advanced Rocket",
-                    "Light Missile",
-                    "Advanced Light Missile",
-                    "FoF Light Missile",
-                    "Heavy Assault Missile",
-                    "Advanced Heavy Assault Missile",
-                    "Heavy Missile",
-                    "Advanced Heavy Missile",
-                    "FoF Heavy Missile",
-                    "Torpedo",
-                    "Advanced Torpedo",
-                    "Cruise Missile",
-                    "Advanced Cruise Missile",
-                    "FoF Cruise Missile",
-                    "XL Torpedo",
-                    "XL Cruise Missile"
-            ):
+            if chargeGroup.endswith("Rocket") or chargeGroup.endswith("Missile") or chargeGroup.endswith("Torpedo"):
                 cloudSize = stuff.getModifiedChargeAttr("aoeCloudSize")
                 aoeVelocity = stuff.getModifiedChargeAttr("aoeVelocity")
                 if not cloudSize or not aoeVelocity:

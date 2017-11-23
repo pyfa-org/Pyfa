@@ -1,7 +1,4 @@
-# subsystemBonusAmarrOffensiveEnergyWeaponCapacitorNeed
-#
-# Used by:
-# Subsystem: Legion Offensive - Covert Reconfiguration
+# Not used by any item
 type = "passive"
 
 

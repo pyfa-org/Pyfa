@@ -78,7 +78,7 @@ class ErrorFrame(wx.Frame):
                                   wx.DefaultPosition, wx.DefaultSize, wx.HL_DEFAULT_STYLE)
         box.Add(github, 0, wx.ALL, 5)
 
-        eveForums = wx.HyperlinkCtrl(self, wx.ID_ANY, "EVE Forums", "https://forums.eveonline.com/default.aspx?g=posts&t=466425",
+        eveForums = wx.HyperlinkCtrl(self, wx.ID_ANY, "EVE Forums", "https://forums.eveonline.com/t/27156",
                                      wx.DefaultPosition, wx.DefaultSize, wx.HL_DEFAULT_STYLE)
         box.Add(eveForums, 0, wx.ALL, 5)
 

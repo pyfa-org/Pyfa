@@ -75,10 +75,10 @@ class ImplantSets(ContextMenu):
         if self.context == "implantEditor":
             # we are calling from character editor, the implant source is different
             sChar = Character.getInstance()
-            charID = self.selection.getActiveCharacter()
+            char = self.selection.entityEditor.getActiveEntity()
 
             for implant in set.implants:
-                sChar.addImplant(charID, implant.item.ID)
+                sChar.addImplant(char.ID, implant.item.ID)
 
             wx.PostEvent(self.selection, GE.CharChanged())
         else:

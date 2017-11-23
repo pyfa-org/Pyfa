@@ -1,7 +1,7 @@
 # subsystemBonusMinmatarPropulsionAfterburnerSpeedFactor
 #
 # Used by:
-# Subsystem: Loki Propulsion - Fuel Catalyst
+# Subsystem: Loki Propulsion - Wake Limiter
 type = "passive"
 
 

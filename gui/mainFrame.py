@@ -456,7 +456,7 @@ class MainFrame(wx.Frame):
 
     @staticmethod
     def goForums(event):
-        webbrowser.open('https://forums.eveonline.com/default.aspx?g=posts&t=466425')
+        webbrowser.open('https://forums.eveonline.com/t/27156')
 
     @staticmethod
     def loadDatabaseDefaults(event):
@@ -1016,7 +1016,6 @@ class MainFrame(wx.Frame):
         del self.waitDialog
 
     def openGraphFrame(self, event):
-
         if not self.graphFrame:
             self.graphFrame = GraphFrame(self)
 

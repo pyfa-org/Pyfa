@@ -122,6 +122,8 @@ class MiningYieldViewFull(StatsView):
         self.parent.views.append(view)
         # Get the TogglePanel
         tp = self.panel.GetParent()
+        # Bind the new panel's children to allow context menu access
+        self.parent.applyBinding(self.parent, tp.GetContentPane())
         tp.SetLabel(view.getHeaderText(fit))
         view.refreshPanel(fit)
 

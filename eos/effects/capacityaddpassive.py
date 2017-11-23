@@ -1,9 +1,10 @@
 # capacityAddPassive
 #
 # Used by:
-# Subsystems from group: Defensive Systems (16 of 16)
+# Subsystems named like: Defensive Covert Reconfiguration (4 of 4)
+# Subsystem: Legion Defensive - Nanobot Injector
 type = "passive"
 
 
 def handler(fit, subsystem, context):
-    fit.ship.increaseItemAttr("capacity", subsystem.getModifiedItemAttr("capacity") or 0)
+    fit.ship.increaseItemAttr("capacity", subsystem.getModifiedItemAttr("cargoCapacityAdd") or 0)

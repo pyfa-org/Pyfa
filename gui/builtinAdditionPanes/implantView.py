@@ -20,7 +20,7 @@
 # noinspection PyPackageRequirements
 import wx
 import gui.display as d
-import gui.marketBrowser as marketBrowser
+from gui.builtinMarketBrowser.events import ITEM_SELECTED
 import gui.mainFrame
 from gui.builtinViewColumns.state import State
 from gui.contextMenu import ContextMenu
@@ -96,7 +96,7 @@ class ImplantDisplay(d.Display):
         self.lastFitId = None
 
         self.mainFrame.Bind(GE.FIT_CHANGED, self.fitChanged)
-        self.mainFrame.Bind(marketBrowser.ITEM_SELECTED, self.addItem)
+        self.mainFrame.Bind(ITEM_SELECTED, self.addItem)
         self.Bind(wx.EVT_LEFT_DCLICK, self.removeItem)
         self.Bind(wx.EVT_LEFT_DOWN, self.click)
         self.Bind(wx.EVT_KEY_UP, self.kbEvent)

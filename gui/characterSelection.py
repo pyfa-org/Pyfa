@@ -20,11 +20,13 @@
 # noinspection PyPackageRequirements
 import wx
 from gui.bitmap_loader import BitmapLoader
+
+from logbook import Logger
+
 import gui.globalEvents as GE
 import gui.mainFrame
 from service.character import Character
 from service.fit import Fit
-from logbook import Logger
 
 pyfalog = Logger(__name__)
 
@@ -94,6 +96,9 @@ class CharacterSelection(wx.Panel):
         grantItem = menu.Append(wx.ID_ANY, "Grant Missing Skills")
         self.Bind(wx.EVT_MENU, self.grantMissingSkills, grantItem)
 
+        exportItem = menu.Append(wx.ID_ANY, "Export Missing Skills")
+        self.Bind(wx.EVT_MENU, self.exportSkills, exportItem)
+
         self.PopupMenu(menu, pos)
 
         event.Skip()
@@ -102,16 +107,10 @@ class CharacterSelection(wx.Panel):
         charID = self.getActiveCharacter()
         sChar = Character.getInstance()
 
-        skillsMap = {}
-        for item, stuff in self.reqs.items():
-            for things in list(stuff.values()):
-                if things[1] not in skillsMap:
-                    skillsMap[things[1]] = things[0]
-                elif things[0] > skillsMap[things[1]]:
-                    skillsMap[things[1]] = things[0]
+        skillsMap = self._buildSkillsTooltipCondensed(self.reqs, skillsMap={})
 
-        for skillID, level in skillsMap.items():
-            sChar.changeLevel(charID, skillID, level, ifHigher=True)
+        for index in skillsMap:
+            sChar.changeLevel(charID, skillsMap[index][1], skillsMap[index][0], ifHigher=True)
 
         self.refreshCharacterList()
 
@@ -229,7 +228,7 @@ class CharacterSelection(wx.Panel):
                 if condensed:
                     dict_ = self._buildSkillsTooltipCondensed(self.reqs, skillsMap={})
                     for key in sorted(dict_):
-                        tip += "%s: %d\n" % (key, dict_[key])
+                        tip += "%s: %d\n" % (key, dict_[key][0])
                 else:
                     tip += self._buildSkillsTooltip(self.reqs)
                 self.skillReqsStaticBitmap.SetBitmap(self.redSkills)
@@ -245,6 +244,15 @@ class CharacterSelection(wx.Panel):
                 self.charChanged(None)
 
         event.Skip()
+
+    def exportSkills(self, evt):
+        skillsMap = self._buildSkillsTooltipCondensed(self.reqs, skillsMap={})
+
+        list = ""
+        for key in sorted(skillsMap):
+            list += "%s %d\n" % (key, skillsMap[key][0])
+
+        toClipboard(list)
 
     def _buildSkillsTooltip(self, reqs, currItem="", tabulationLevel=0):
         tip = ""
@@ -292,9 +300,9 @@ class CharacterSelection(wx.Panel):
                 })
 
                 if name not in skillsMap:
-                    skillsMap[name] = level
-                elif skillsMap[name] < level:
-                    skillsMap[name] = level
+                    skillsMap[name] = level, ID
+                elif skillsMap[name][0] < level:
+                    skillsMap[name] = level, ID
 
                 skillsMap = self._buildSkillsTooltipCondensed(more, currItem, tabulationLevel + 1, skillsMap)
 

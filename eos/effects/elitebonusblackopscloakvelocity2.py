@@ -1,7 +1,7 @@
 # eliteBonusBlackOpsCloakVelocity2
 #
 # Used by:
-# Ships from group: Black Ops (4 of 4)
+# Ships from group: Black Ops (5 of 5)
 type = "passive"
 
 

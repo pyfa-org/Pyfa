@@ -18,35 +18,38 @@
 # ===============================================================================
 
 from sqlalchemy import Table, Column, ForeignKey, Integer, Boolean, DateTime
-from sqlalchemy.ext.associationproxy import association_proxy
 from sqlalchemy.orm import mapper, relation
 import datetime
 
 from eos.db import saveddata_meta
 from eos.saveddata.booster import Booster
+from eos.saveddata.boosterSideEffect import BoosterSideEffect
 
 boosters_table = Table("boosters", saveddata_meta,
-                        Column("ID", Integer, primary_key=True),
-                        Column("itemID", Integer),
-                        Column("fitID", Integer, ForeignKey("fits.ID"), nullable=False),
-                        Column("active", Boolean),
-                        Column("created", DateTime, nullable=True, default=datetime.datetime.now),
-                        Column("modified", DateTime, nullable=True, onupdate=datetime.datetime.now),
+                       Column("ID", Integer, primary_key=True),
+                       Column("itemID", Integer),
+                       Column("fitID", Integer, ForeignKey("fits.ID"), nullable=False),
+                       Column("active", Boolean),
+                       Column("created", DateTime, nullable=True, default=datetime.datetime.now),
+                       Column("modified", DateTime, nullable=True, onupdate=datetime.datetime.now),
                        )
 
-# Legacy booster side effect code, should disable but a mapper relies on it.
-activeSideEffects_table = Table("boostersActiveSideEffects", saveddata_meta,
-                                Column("boosterID", ForeignKey("boosters.ID"), primary_key=True),
-                                Column("effectID", Integer, primary_key=True))
+
+booster_side_effect_table = Table("boosterSideEffects", saveddata_meta,
+                                  Column("boosterID", Integer, ForeignKey("boosters.ID"), primary_key=True, index=True),
+                                  Column("effectID", Integer, nullable=False, primary_key=True),
+                                  Column("active", Boolean, default=False)
+                                  )
 
 
-class ActiveSideEffectsDummy(object):
-    def __init__(self, effectID):
-        self.effectID = effectID
-
-
-mapper(ActiveSideEffectsDummy, activeSideEffects_table)
 mapper(Booster, boosters_table,
-       properties={"_Booster__activeSideEffectDummies": relation(ActiveSideEffectsDummy)})
+       properties={
+        "_Booster__sideEffects": relation(
+            BoosterSideEffect,
+            backref="booster",
+            cascade='all, delete, delete-orphan'),
+       }
+       )
 
-Booster._Booster__activeSideEffectIDs = association_proxy("_Booster__activeSideEffectDummies", "effectID")
+
+mapper(BoosterSideEffect, booster_side_effect_table)

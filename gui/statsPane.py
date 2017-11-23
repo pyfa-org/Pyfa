@@ -143,3 +143,9 @@ class StatsPane(wx.Panel):
             event.Skip()
 
         return handler
+
+    @staticmethod
+    def applyBinding(self, contentPanel):
+        pyfalog.debug("Attempt applyBinding to children of {0}", contentPanel.viewName)
+        for child in contentPanel.GetChildren():
+            child.Bind(wx.EVT_RIGHT_DOWN, self.contextHandler(contentPanel))

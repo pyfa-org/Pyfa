@@ -23,6 +23,7 @@ import wx
 import gui.builtinAdditionPanes.droneView
 import gui.display as d
 import gui.globalEvents as GE
+from gui.builtinShipBrowser.events import EVT_FIT_REMOVED
 from eos.saveddata.drone import Drone as es_Drone
 from gui.builtinContextMenus.commandFits import CommandFits
 from gui.builtinViewColumns.state import State
@@ -66,6 +67,8 @@ class CommandView(d.Display):
 
         self.lastFitId = None
 
+        self.mainFrame.Bind(GE.FIT_CHANGED, CommandFits.fitChanged)
+        self.mainFrame.Bind(EVT_FIT_REMOVED, CommandFits.populateFits)
         self.mainFrame.Bind(GE.FIT_CHANGED, self.fitChanged)
         self.Bind(wx.EVT_LEFT_DOWN, self.click)
         self.Bind(wx.EVT_RIGHT_DOWN, self.click)
@@ -169,6 +172,9 @@ class CommandView(d.Display):
         event.Skip()
 
     def get(self, row):
+        if row == -1:
+            return None
+
         numFits = len(self.fits)
 
         if numFits == 0:
@@ -194,23 +200,21 @@ class CommandView(d.Display):
             wx.CallAfter(self.spawnMenu)
 
     def spawnMenu(self):
+        fitID = self.mainFrame.getActiveFit()
+        if fitID is None:
+            return
+
         sel = self.GetFirstSelected()
-        menu = None
-        if sel != -1:
-            item = self.get(sel)
-            if item is None:
-                return
+        context = ()
+        item = self.get(sel)
+
+        if item is not None:
             fitSrcContext = "commandFit"
             fitItemContext = item.name
             context = ((fitSrcContext, fitItemContext),)
-            context += ("commandView",),
-            menu = ContextMenu.getMenu((item,), *context)
-        elif sel == -1:
-            fitID = self.mainFrame.getActiveFit()
-            if fitID is None:
-                return
-            context = (("commandView",),)
-            menu = ContextMenu.getMenu([], *context)
+
+        context += (("commandView",),)
+        menu = ContextMenu.getMenu((item,) if item is not None else [], *context)
         if menu is not None:
             self.PopupMenu(menu)
 

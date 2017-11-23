@@ -255,7 +255,6 @@ class SFBrowserItem(wx.Window):
         self.Bind(wx.EVT_LEFT_UP, self.OnLeftUp)
         self.Bind(wx.EVT_KEY_UP, self.OnKeyUp)
 
-
         if "wxMSW" in wx.PlatformInfo:
             self.Bind(wx.EVT_LEFT_DCLICK, self.OnLeftDown)
 

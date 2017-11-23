@@ -68,6 +68,9 @@ class ModifiedAttributeDict(collections.MutableMapping):
         self.__multipliers = {}
         self.__penalizedMultipliers = {}
         self.__postIncreases = {}
+        # We sometimes override the modifier (for things like skill handling). Store it here instead of registering it
+        # with the fit (which could cause bug for items that have both item bonuses and skill bonus, ie Subsystems)
+        self.__tmpModifier = None
 
     def clear(self):
         self.__intermediary.clear()
@@ -263,7 +266,7 @@ class ModifiedAttributeDict(collections.MutableMapping):
             # to point to the correct fit. See GH Issue #434
             fit = self.parent.owner
         skill = fit.character.getSkill(skillName)
-        fit.register(skill)
+        self.__tmpModifier = skill
         return skill.level
 
     def getAfflictions(self, key):
@@ -289,7 +292,12 @@ class ModifiedAttributeDict(collections.MutableMapping):
         # Reassign alias to list
         affs = affs[fit]
         # Get modifier which helps to compose 'Affected by' map
-        modifier = self.fit.getModifier()
+
+        if self.__tmpModifier:
+            modifier = self.__tmpModifier
+            self.__tmpModifier = None
+        else:
+            modifier = self.fit.getModifier()
 
         # Add current affliction to list
         affs.append((modifier, operation, bonus, used))

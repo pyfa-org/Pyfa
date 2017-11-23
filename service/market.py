@@ -203,6 +203,8 @@ class Market(object):
             "Fiend"                       : self.les_grp,  # AT13 prize
             "Caedes"                      : self.les_grp,  # AT14 prize
             "Rabisu"                      : self.les_grp,  # AT14 prize
+            "Victor"                      : self.les_grp,  # AT prize
+            "Virtuoso"                    : self.les_grp,  # AT prize
         }
 
         self.ITEMS_FORCEGROUP_R = self.__makeRevDict(self.ITEMS_FORCEGROUP)
@@ -226,10 +228,8 @@ class Market(object):
             "Guristas Shuttle"                         : False,
             "Mobile Decoy Unit"                        : False,  # Seems to be left over test mod for deployables
             "Tournament Micro Jump Unit"               : False,  # Normally seen only on tournament arenas
-            "Civilian Gatling Railgun"                 : True,
-            "Civilian Gatling Pulse Laser"             : True,
-            "Civilian Gatling Autocannon"              : True,
-            "Civilian Light Electron Blaster"          : True,
+            "Victor": False,  # See GH Issue 1323
+            "Virtuoso": False,  # See GH Issue 1323
         }
 
         # do not publish ships that we convert
@@ -542,6 +542,10 @@ class Market(object):
         # Set-container for variables
         variations = set()
         variations_limiter = set()
+
+        # if item belongs to these categories, use their group to find "variations"
+        categories = ['Drone', 'Fighter', 'Implant']
+
         for item in items:
             if item.category.ID == 20:  # Implants and Boosters
                 implant_remove_list = set()
@@ -592,7 +596,7 @@ class Market(object):
         variations.update(parents)
         # Add all variations of parents to the set
         parentids = tuple(item.ID for item in parents)
-        groupids = tuple(item.group.ID for item in parents)
+        groupids = tuple(item.group.ID for item in parents if item.category.name in categories)
         variations_list = eos.db.getVariations(parentids, groupids)
 
         if variations_limiter:

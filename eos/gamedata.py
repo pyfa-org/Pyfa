@@ -66,9 +66,8 @@ class Effect(EqBase):
         the first time this property is accessed.
         """
         if not self.__generated:
+            pyfalog.debug("Generating effect: {0} ({1}) [runTime: {2}]", self.name, self.effectID, self.runTime)
             self.__generateHandler()
-
-        #pyfalog.debug("Generating effect: {0} ({1}) [runTime: {2}]", self.name, self.effectID, self.runTime)
 
         return self.__handler
 
@@ -161,8 +160,6 @@ class Effect(EqBase):
         if it doesn't, set dummy values and add a dummy handler
         """
 
-        #pyfalog.debug("Generate effect handler for {}".format(self.name))
-
         try:
             self.__effectModule = effectModule = __import__('eos.effects.' + self.handlerName, fromlist=True)
             self.__handler = getattr(effectModule, "handler", effectDummy)
@@ -178,20 +175,20 @@ class Effect(EqBase):
             self.__runTime = "normal"
             self.__activeByDefault = True
             self.__type = None
-            #pyfalog.debug("ImportError generating handler: {0}", e)
+            pyfalog.debug("ImportError generating handler: {0}", e)
         except (AttributeError) as e:
             # Effect probably exists but there is an issue with it.  Turn it into a dummy effect so we can continue, but flag it with an error.
             self.__handler = effectDummy
             self.__runTime = "normal"
             self.__activeByDefault = True
             self.__type = None
-            #pyfalog.error("AttributeError generating handler: {0}", e)
+            pyfalog.error("AttributeError generating handler: {0}", e)
         except Exception as e:
             self.__handler = effectDummy
             self.__runTime = "normal"
             self.__activeByDefault = True
             self.__type = None
-            #pyfalog.critical("Exception generating handler:")
+            pyfalog.critical("Exception generating handler:")
             pyfalog.critical(e)
 
         self.__generated = True
@@ -278,16 +275,16 @@ class Item(EqBase):
 
     def setOverride(self, attr, value):
         from eos.saveddata.override import Override
-        if attr.name in self.__overrides:
-            override = self.__overrides.get(attr.name)
+        if attr.name in self.overrides:
+            override = self.overrides.get(attr.name)
             override.value = value
         else:
             override = Override(self, attr, value)
-            self.__overrides[attr.name] = override
+            self.overrides[attr.name] = override
         eos.db.save(override)
 
     def deleteOverride(self, attr):
-        override = self.__overrides.pop(attr.name, None)
+        override = self.overrides.pop(attr.name, None)
         eos.db.saveddata_session.delete(override)
         eos.db.commit()
 

@@ -74,6 +74,7 @@ class Fit(object):
             "exportCharges": True,
             "openFitInNew": False,
             "priceSystem": "Jita",
+            "priceSource": "eve-central.com",
             "showShipBrowserTooltip": True,
             "marketSearchDelay": 250
         }
@@ -237,10 +238,12 @@ class Fit(object):
 
         if self.serviceFittingOptions["useGlobalCharacter"]:
             if fit.character != self.character:
+                fit.calculated = False
                 fit.character = self.character
 
         if self.serviceFittingOptions["useGlobalDamagePattern"]:
             if fit.damagePattern != self.pattern:
+                fit.calculated = False
                 fit.damagePattern = self.pattern
 
         eos.db.commit()
@@ -630,7 +633,7 @@ class Fit(object):
                 self.setAmmo(fitID, cargo.item.ID, [module])
             return
 
-        pyfalog.debug("Moving cargo item to module for fit ID: {1}", fitID)
+        pyfalog.debug("Moving cargo item to module for fit ID: {0}", fitID)
 
         # Gather modules and convert Cargo item to Module, silently return if not a module
         try:
@@ -988,6 +991,13 @@ class Fit(object):
         pyfalog.debug("Toggling fighter ability for fit ID: {0}", fitID)
         fit = eos.db.getFit(fitID)
         ability.active = not ability.active
+        eos.db.commit()
+        self.recalc(fit)
+
+    def toggleBoosterSideEffect(self, fitID, sideEffect):
+        pyfalog.debug("Toggling booster side effect for fit ID: {0}", fitID)
+        fit = eos.db.getFit(fitID)
+        sideEffect.active = not sideEffect.active
         eos.db.commit()
         self.recalc(fit)
 

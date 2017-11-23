@@ -25,7 +25,7 @@ class ItemRemove(ContextMenu):
                               "commandFit")
 
     def getText(self, itmContext, selection):
-        return "Remove {0}".format(itmContext if itmContext is not None else "Item")
+        return u"Remove {0}".format(itmContext if itmContext is not None else "Item")
 
     def activate(self, fullContext, selection, i):
 
@@ -50,7 +50,7 @@ class ItemRemove(ContextMenu):
             sFit.removeBooster(fitID, fit.boosters.index(selection[0]))
         elif srcContext == "cargoItem":
             sFit.removeCargo(fitID, fit.cargo.index(selection[0]))
-        elif srcContext == "projectedFit":
+        elif srcContext in ("projectedFit", "projectedModule", "projectedDrone", "projectedFighter"):
             sFit.removeProjected(fitID, selection[0])
         elif srcContext == "commandFit":
             sFit.removeCommand(fitID, selection[0])

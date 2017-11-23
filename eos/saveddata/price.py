@@ -30,7 +30,7 @@ class Price(object):
     def __init__(self, typeID):
         self.typeID = typeID
         self.time = 0
-        self.price = 0
+        self.__price = 0
         self.failed = None
 
     @reconstructor
@@ -40,3 +40,11 @@ class Price(object):
     @property
     def isValid(self):
         return self.time >= time.time()
+
+    @property
+    def price(self):
+        return self.__price or 0.0
+
+    @price.setter
+    def price(self, price):
+        self.__price = price

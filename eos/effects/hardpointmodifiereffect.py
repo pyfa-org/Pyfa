@@ -1,8 +1,7 @@
 # hardPointModifierEffect
 #
 # Used by:
-# Subsystems from group: Engineering Systems (16 of 16)
-# Subsystems from group: Offensive Systems (16 of 16)
+# Subsystems from group: Offensive Systems (12 of 12)
 type = "passive"
 
 

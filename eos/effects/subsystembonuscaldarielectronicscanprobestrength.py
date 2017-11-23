@@ -1,7 +1,4 @@
-# subSystemBonusCaldariElectronicScanProbeStrength
-#
-# Used by:
-# Subsystem: Tengu Electronics - Emergent Locus Analyzer
+# Not used by any item
 type = "passive"
 
 

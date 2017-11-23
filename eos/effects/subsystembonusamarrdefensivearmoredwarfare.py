@@ -1,7 +1,4 @@
-# subSystemBonusAmarrDefensiveArmoredWarfare
-#
-# Used by:
-# Subsystem: Legion Defensive - Warfare Processor
+# Not used by any item
 type = "passive"
 
 

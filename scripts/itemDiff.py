@@ -57,10 +57,12 @@ def main(old, new, groups=True, effects=True, attributes=True, renames=True):
     implemented = set()
 
     for filename in os.listdir(effectspath):
-        basename, extension = filename.rsplit('.', 1)
+        if filename.startswith("_") or not filename.endswith(".py"):
+            continue
+
+        basename, _ = filename.rsplit('.', 1)
         # Ignore non-py files and exclude implementation-specific 'effect'
-        if extension == "py" and basename not in ("__init__",):
-            implemented.add(basename)
+        implemented.add(basename)
 
     # Effects' names are used w/o any special symbols by eos
     stripspec = "[^A-Za-z0-9]"
@@ -89,15 +91,15 @@ def main(old, new, groups=True, effects=True, attributes=True, renames=True):
                 dictionary[id] = name
 
         for id in set(old_namedata.keys()).intersection(list(new_namedata.keys())):
-            oldname = old_namedata[id]
-            newname = new_namedata[id]
+            oldname = old_namedata[id] if old_namedata[id] is not None else 'None'
+            newname = new_namedata[id] if new_namedata[id] is not None else 'None'
             if oldname != newname:
                 ren_dict[id] = (oldname, newname)
         return
 
     def printrenames(ren_dict, title, implementedtag=False):
         if len(ren_dict) > 0:
-            print(('\nRenamed ' + title + ':'))
+            print('\nRenamed ' + title + ':')
             for id in sorted(ren_dict):
                 couple = ren_dict[id]
                 if implementedtag:
@@ -430,6 +432,9 @@ def main(old, new, groups=True, effects=True, attributes=True, renames=True):
 
         title = 'items'
         printrenames(ren_items, title)
+
+    print
+    print
 
     if effects or attributes or groups:
         # Print legend only when there're any interesting changes

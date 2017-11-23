@@ -569,9 +569,6 @@ class Fit(object):
                     self.ship.boostItemAttr("sensorDampenerResistance", value)
                     self.ship.boostItemAttr("weaponDisruptionResistance", value)
 
-                if warfareBuffID == 26:  # Information Burst: Sensor Optimization: Targeting Range
-                    self.ship.boostItemAttr("maxTargetRange", value)
-
                 if warfareBuffID == 20:  # Skirmish Burst: Evasive Maneuvers: Signature Radius
                     self.ship.boostItemAttr("signatureRadius", value, stackingPenalties=True)
 
@@ -608,6 +605,9 @@ class Fit(object):
                 if warfareBuffID == 25:  # Mining Burst: Mining Equipment Preservation: Crystal Volatility
                     self.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill("Mining"),
                                                    "crystalVolatilityChance", value, stackingPenalties=True)
+
+                if warfareBuffID == 26:  # Information Burst: Sensor Optimization: Targeting Range
+                    self.ship.boostItemAttr("maxTargetRange", value, stackingPenalties=True)
 
                 if warfareBuffID == 60:  # Skirmish Burst: Evasive Maneuvers: Agility
                     self.ship.boostItemAttr("agility", value, stackingPenalties=True)
@@ -1193,8 +1193,7 @@ class Fit(object):
         if energyNeutralizerSignatureResolution:
             capNeed = capNeed * min(1, signatureRadius / energyNeutralizerSignatureResolution)
 
-        resistance = self.ship.getModifiedItemAttr("energyWarfareResistance") or 1 if capNeed > 0 else 1
-        self.__extraDrains.append((cycleTime, capNeed * resistance, clipSize))
+        self.__extraDrains.append((cycleTime, capNeed, clipSize))
 
     def removeDrain(self, i):
         del self.__extraDrains[i]

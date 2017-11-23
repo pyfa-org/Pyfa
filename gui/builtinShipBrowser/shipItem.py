@@ -289,5 +289,3 @@ class ShipItem(SFItem.SFBrowserItem):
         else:
             editCtl.SetSize((self.editWidth, -1))
             editCtl.SetPosition((fnEditPosX, fnEditPosY))
-
-

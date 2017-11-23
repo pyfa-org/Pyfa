@@ -197,7 +197,6 @@ class ImplantSetEditorDlg(wx.Dialog):
             try:
                 sIS.importSets(text)
                 self.stNotice.SetLabel("Patterns successfully imported from clipboard")
-                self.showInput(False)
             except ImportError as e:
                 pyfalog.error(e)
                 self.stNotice.SetLabel(str(e))
@@ -205,7 +204,7 @@ class ImplantSetEditorDlg(wx.Dialog):
                 pyfalog.error(e)
                 self.stNotice.SetLabel("Could not import from clipboard: unknown errors")
             finally:
-                self.updateChoices()
+                self.entityEditor.refreshEntityList()
         else:
             self.stNotice.SetLabel("Could not import from clipboard")
 

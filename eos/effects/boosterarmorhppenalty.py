@@ -1,10 +1,15 @@
 # boosterArmorHpPenalty
 #
 # Used by:
-# Implants from group: Booster (12 of 48)
+# Implants from group: Booster (12 of 52)
 type = "boosterSideEffect"
-activeByDefault = False
+
+# User-friendly name for the side effect
+displayName = "Armor Capacity"
+
+# Attribute that this effect targets
+attr = "boosterArmorHPPenalty"
 
 
 def handler(fit, booster, context):
-    fit.ship.boostItemAttr("armorHP", booster.getModifiedItemAttr("boosterArmorHPPenalty"))
+    fit.ship.boostItemAttr("armorHP", booster.getModifiedItemAttr(attr))

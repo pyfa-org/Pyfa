@@ -1,8 +1,4 @@
-# subsystemBonusCaldariPropulsionAgility
-#
-# Used by:
-# Subsystem: Tengu Propulsion - Intercalated Nanofibers
-# Subsystem: Tengu Propulsion - Interdiction Nullifier
+# Not used by any item
 type = "passive"
 
 

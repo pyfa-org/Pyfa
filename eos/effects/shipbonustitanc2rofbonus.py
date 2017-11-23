@@ -1,6 +1,7 @@
 # shipBonusTitanC2ROFBonus
 #
 # Used by:
+# Ship: Komodo
 # Ship: Leviathan
 type = "passive"
 

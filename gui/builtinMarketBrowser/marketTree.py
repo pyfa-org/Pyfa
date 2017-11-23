@@ -96,4 +96,3 @@ class MarketTree(wx.TreeCtrl):
 
         self.SelectItem(item)
         self.marketBrowser.itemView.selectionMade()
-

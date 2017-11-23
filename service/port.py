@@ -1028,9 +1028,15 @@ class Port(object):
         fittings = doc.getElementsByTagName("fittings").item(0)
         fittings = fittings.getElementsByTagName("fitting")
         fit_list = []
+        failed = 0
 
         for fitting in fittings:
-            fitobj = _resolve_ship(fitting, sMkt, b_localized)
+            try:
+                fitobj = _resolve_ship(fitting, sMkt, b_localized)
+            except:
+                failed += 1
+                continue
+
             # -- 170327 Ignored description --
             # read description from exported xml. (EVE client, EFT)
             description = fitting.getElementsByTagName("description").item(0).getAttribute("value")

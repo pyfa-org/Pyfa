@@ -1,7 +1,4 @@
-# subsystemBonusAmarrPropulsionMWDPenalty
-#
-# Used by:
-# Subsystem: Legion Propulsion - Wake Limiter
+# Not used by any item
 type = "passive"
 
 
