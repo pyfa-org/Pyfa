@@ -6,4 +6,4 @@ type = "passive"
 
 
 def handler(fit, src, context):
-    fit.ship.boostItemAttr("warpSpeedMultiplier", src.getModifiedItemAttr("eliteBonusCoverOps1"), skill="Covert Ops")
+    fit.ship.boostItemAttr("warpSpeedMultiplier", src.getModifiedItemAttr("eliteBonusCovertOps1"), skill="Covert Ops")

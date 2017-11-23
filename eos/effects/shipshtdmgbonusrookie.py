@@ -3,6 +3,7 @@
 # Used by:
 # Ship: Velator
 # Ship: Violator
+# Ship: Virtuoso
 type = "passive"
 
 

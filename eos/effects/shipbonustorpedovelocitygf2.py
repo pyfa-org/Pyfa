@@ -2,6 +2,7 @@
 #
 # Used by:
 # Ship: Nemesis
+# Ship: Virtuoso
 type = "passive"
 
 
