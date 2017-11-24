@@ -542,7 +542,7 @@ class _TabRenderer:
 
         # draw the tab icon
         if self.tab_img:
-            bmp = wx.Bitmap(self.tab_img)
+            bmp = wx.Bitmap(self.tab_img.ConvertToGreyscale() if self.disabled else self.tab_img)
             # @todo: is this conditional relevant anymore?
             if self.content_width > 16:
                 # Draw tab icon
@@ -593,6 +593,12 @@ class _TabRenderer:
 
         bmp = wx.Bitmap(img)
         self.tab_bitmap = bmp
+
+
+    def __repr__(self):
+        return "_TabRenderer(text={}, disabled={}) at {}".format(
+            self.text, self.disabled, hex(id(self))
+        )
 
 
 class _AddRenderer:
@@ -901,6 +907,8 @@ class _TabsContainer(wx.Panel):
             return True
 
         if self.TabHitTest(tab, x, y):
+            if tab.disabled:
+                return
             tab.SetSelected(True)
             old_sel_tab.SetSelected(False)
 

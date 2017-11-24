@@ -30,6 +30,7 @@ class CommandFits(ContextMenu):
             if evt is None or not ids.isdisjoint(cls.commandTypeIDs):
                 # we are adding or removing an item that defines a command fit. Need to refresh fit list
                 cls.populateFits(evt)
+        evt.Skip()
 
     @classmethod
     def populateFits(cls, evt):
