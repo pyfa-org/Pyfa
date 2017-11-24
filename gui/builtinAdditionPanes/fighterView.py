@@ -60,8 +60,7 @@ class FighterView(wx.Panel):
         mainSizer.Add(self.fighterDisplay, 1, wx.EXPAND, 0)
 
         textSizer = wx.BoxSizer(wx.HORIZONTAL)
-        # @todo pheonix: Add spacer doesn't take a tuple anymore, using int of 0, and other parameters are killed off
-        textSizer.AddSpacer(0)
+        textSizer.AddStretchSpacer()
 
         for x in self.labels:
             lbl = wx.StaticText(self, wx.ID_ANY, x.capitalize())
@@ -76,7 +75,7 @@ class FighterView(wx.Panel):
             lbl = wx.StaticText(self, wx.ID_ANY, "0")
             setattr(self, "label%sTotal" % (x.capitalize()), lbl)
             textSizer.Add(lbl, 0, wx.ALIGN_CENTER)
-            textSizer.AddSpacer(0)
+            textSizer.AddStretchSpacer()
 
         mainSizer.Add(textSizer, 0, wx.EXPAND, 5)
 

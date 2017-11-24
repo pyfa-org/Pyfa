@@ -41,12 +41,12 @@ class ImplantView(wx.Panel):
         mainSizer.Add(self.implantDisplay, 1, wx.EXPAND, 0)
 
         radioSizer = wx.BoxSizer(wx.HORIZONTAL)
-        radioSizer.AddSpacer(0)
+        radioSizer.AddStretchSpacer()
         self.rbFit = wx.RadioButton(self, id=wx.ID_ANY, label="Use Fit-specific Implants", style=wx.RB_GROUP)
         self.rbChar = wx.RadioButton(self, id=wx.ID_ANY, label="Use Character Implants")
         radioSizer.Add(self.rbFit, 0, wx.ALL, 5)
         radioSizer.Add(self.rbChar, 0, wx.ALL, 5)
-        radioSizer.AddSpacer(0)
+        radioSizer.AddStretchSpacer()
 
         mainSizer.Add(radioSizer, 0, wx.EXPAND, 5)
 

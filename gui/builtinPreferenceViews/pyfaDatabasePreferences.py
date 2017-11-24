@@ -76,7 +76,7 @@ class PFGeneralPref(PreferenceView):
         mainSizer.Add(self.m_staticline3, 0, wx.EXPAND | wx.TOP | wx.BOTTOM, 5)
 
         btnSizer = wx.BoxSizer(wx.VERTICAL)
-        btnSizer.AddSpacer(0)
+        btnSizer.AddStretchSpacer()
 
         self.btnDeleteDamagePatterns = wx.Button(panel, wx.ID_ANY, "Delete All Damage Pattern Profiles", wx.DefaultPosition, wx.DefaultSize, 0)
         btnSizer.Add(self.btnDeleteDamagePatterns, 0, wx.ALL, 5)

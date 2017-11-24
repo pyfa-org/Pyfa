@@ -80,7 +80,7 @@ class DummyView(PreferenceView):
     def initFooter(self, panel):
         footerSizer = wx.BoxSizer(wx.HORIZONTAL)
 
-        footerSizer.AddSpacer(0)
+        footerSizer.AddStretchSpacer()
         self.btnRestore = wx.Button(panel, wx.ID_ANY, "Restore", wx.DefaultPosition, wx.DefaultSize, 0)
         self.btnRestore.Enable(False)
 

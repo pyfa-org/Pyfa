@@ -46,7 +46,7 @@ class PreferenceDialog(wx.Dialog):
         mainSizer.Add(self.m_staticline2, 0, wx.EXPAND, 5)
 
         btnSizer = wx.BoxSizer(wx.HORIZONTAL)
-        btnSizer.AddSpacer(0)
+        btnSizer.AddStretchSpacer()
         self.btnOK = wx.Button(self, wx.ID_ANY, "OK", wx.DefaultPosition, wx.DefaultSize, 0)
         btnSizer.Add(self.btnOK, 0, wx.ALL, 5)
         mainSizer.Add(btnSizer, 0, wx.EXPAND, 5)

@@ -52,11 +52,11 @@ class PFUpdatePref(PreferenceView):
                                 "You can choose to reset notification suppression for this release, "
                                 "or download the new release from GitHub.")
 
-            self.versionSizer.AddSpacer(0)
+            self.versionSizer.AddStretchSpacer()
 
             self.versionSizer.Add(wx.StaticLine(panel, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.LI_HORIZONTAL),
                                   0, wx.EXPAND, 5)
-            self.versionSizer.AddSpacer(0)
+            self.versionSizer.AddStretchSpacer()
 
             self.versionSizer.Add(self.versionTitle, 0, wx.EXPAND, 5)
             self.versionDesc = wx.StaticText(panel, wx.ID_ANY, self.versionInfo, wx.DefaultPosition, wx.DefaultSize, 0)

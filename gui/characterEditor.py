@@ -345,7 +345,7 @@ class SkillTreeView(wx.Panel):
 
         bSizerButtons.Add(self.btnSecStatus, 0, wx.ALL, 5)
 
-        bSizerButtons.AddSpacer(0)
+        bSizerButtons.AddStretchSpacer()
 
         importExport = (("Import", wx.ART_FILE_OPEN, "from"),
                         ("Export", wx.ART_FILE_SAVE_AS, "to"))
