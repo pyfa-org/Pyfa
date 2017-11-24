@@ -277,7 +277,7 @@ class ChromeNotebook(wx.Panel):
         bx, by = self.GetBorders()
         ww -= bx * 4
         wh -= by * 4
-        self._active_page.SetSize((ww, wh))
+        self._active_page.SetSize((max(ww, -1), max(wh, -1)))
         self._active_page.SetPosition((0, 0))
 
         if not resize_only:
