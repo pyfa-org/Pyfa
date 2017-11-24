@@ -19,7 +19,7 @@ class ItemDependents(wx.Panel):
 
         self.SetSizer(mainSizer)
         self.root = self.reqTree.AddRoot("WINRARZOR")
-        self.reqTree.SetPyData(self.root, None)
+        self.reqTree.SetItemData(self.root, None)
 
         self.imageList = wx.ImageList(16, 16)
         self.reqTree.SetImageList(self.imageList)
@@ -32,7 +32,7 @@ class ItemDependents(wx.Panel):
     def getFullSkillTree(self, parentSkill, parent, sbIconId):
         levelToItems = {}
 
-        for item, level in parentSkill.requiredFor.iteritems():
+        for item, level in parentSkill.requiredFor.items():
             if level not in levelToItems:
                 levelToItems[level] = []
             levelToItems[level].append(item)
@@ -51,3 +51,5 @@ class ItemDependents(wx.Panel):
                     itemIcon = -1
 
                 self.reqTree.AppendItem(child, "{}".format(item.name), itemIcon)
+
+

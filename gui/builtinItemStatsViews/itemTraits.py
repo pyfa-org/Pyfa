@@ -15,3 +15,4 @@ class ItemTraits(wx.Panel):
 
         mainSizer.Add(self.traits, 1, wx.ALL | wx.EXPAND, 0)
         self.Layout()
+

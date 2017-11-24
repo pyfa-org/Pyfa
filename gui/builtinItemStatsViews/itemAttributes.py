@@ -12,7 +12,6 @@ from service.market import Market
 from service.attribute import Attribute
 from gui.utils.numberFormatter import formatAmount
 
-
 class ItemParams(wx.Panel):
     def __init__(self, parent, stuff, item, context=None):
         wx.Panel.__init__(self, parent)
@@ -34,19 +33,19 @@ class ItemParams(wx.Panel):
         mainSizer.Add(self.m_staticline, 0, wx.EXPAND)
         bSizer = wx.BoxSizer(wx.HORIZONTAL)
 
-        self.totalAttrsLabel = wx.StaticText(self, wx.ID_ANY, u" ", wx.DefaultPosition, wx.DefaultSize, 0)
+        self.totalAttrsLabel = wx.StaticText(self, wx.ID_ANY, " ", wx.DefaultPosition, wx.DefaultSize, 0)
         bSizer.Add(self.totalAttrsLabel, 0, wx.ALIGN_CENTER_VERTICAL | wx.RIGHT)
 
-        self.toggleViewBtn = wx.ToggleButton(self, wx.ID_ANY, u"Toggle view mode", wx.DefaultPosition, wx.DefaultSize,
+        self.toggleViewBtn = wx.ToggleButton(self, wx.ID_ANY, "Toggle view mode", wx.DefaultPosition, wx.DefaultSize,
                                              0)
         bSizer.Add(self.toggleViewBtn, 0, wx.ALIGN_CENTER_VERTICAL)
 
-        self.exportStatsBtn = wx.ToggleButton(self, wx.ID_ANY, u"Export Item Stats", wx.DefaultPosition, wx.DefaultSize,
+        self.exportStatsBtn = wx.ToggleButton(self, wx.ID_ANY, "Export Item Stats", wx.DefaultPosition, wx.DefaultSize,
                                               0)
         bSizer.Add(self.exportStatsBtn, 0, wx.ALIGN_CENTER_VERTICAL)
 
         if stuff is not None:
-            self.refreshBtn = wx.Button(self, wx.ID_ANY, u"Refresh", wx.DefaultPosition, wx.DefaultSize, wx.BU_EXACTFIT)
+            self.refreshBtn = wx.Button(self, wx.ID_ANY, "Refresh", wx.DefaultPosition, wx.DefaultSize, wx.BU_EXACTFIT)
             bSizer.Add(self.refreshBtn, 0, wx.ALIGN_CENTER_VERTICAL)
             self.refreshBtn.Bind(wx.EVT_BUTTON, self.RefreshValues)
 
@@ -203,7 +202,7 @@ class ItemParams(wx.Panel):
             else:
                 attrIcon = self.imageList.Add(BitmapLoader.getBitmap("7_15", "icons"))
 
-            index = self.paramList.InsertImageStringItem(sys.maxint, attrName, attrIcon)
+            index = self.paramList.InsertItem(sys.maxsize, attrName, attrIcon)
             idNameMap[idCount] = attrName
             self.paramList.SetItemData(index, idCount)
             idCount += 1
@@ -222,11 +221,12 @@ class ItemParams(wx.Panel):
             else:
                 valueUnitDefault = formatAmount(valueDefault, 3, 0, 0)
 
-            self.paramList.SetStringItem(index, 1, valueUnit)
+            self.paramList.SetItem(index, 1, valueUnit)
             if self.stuff is not None:
-                self.paramList.SetStringItem(index, 2, valueUnitDefault)
-
-        self.paramList.SortItems(lambda id1, id2: cmp(idNameMap[id1], idNameMap[id2]))
+                self.paramList.SetItem(index, 2, valueUnitDefault)
+        # @todo: pheonix, this lamda used cmp() which no longer exists in py3. Probably a better way to do this in the
+        # long run, take a look
+        self.paramList.SortItems(lambda id1, id2: (idNameMap[id1]>idNameMap[id2])-(idNameMap[id1]<idNameMap[id2]))
         self.paramList.RefreshRows()
         self.totalAttrsLabel.SetLabel("%d attributes. " % idCount)
         self.Layout()
@@ -250,7 +250,7 @@ class ItemParams(wx.Panel):
             "Inversed Modifier Percent": (lambda: (1 - value) * 100, unitName),
             "Modifier Percent"         : (
                 lambda: ("%+.2f" if ((value - 1) * 100) % 1 else "%+d") % ((value - 1) * 100), unitName),
-            "Volume"                   : (lambda: value, u"m\u00B3"),
+            "Volume"                   : (lambda: value, "m\u00B3"),
             "Sizeclass"                : (lambda: value, ""),
             "Absolute Percent"         : (lambda: (value * 100), unitName),
             "Milliseconds"             : (lambda: value / 1000.0, unitName),
@@ -264,10 +264,12 @@ class ItemParams(wx.Panel):
             v = override[0]()
             if isinstance(v, str):
                 fvalue = v
-            elif isinstance(v, (int, float, long)):
+            elif isinstance(v, (int, float)):
                 fvalue = formatAmount(v, 3, 0, 0)
             else:
                 fvalue = v
             return "%s %s" % (fvalue, override[1])
         else:
             return "%s %s" % (formatAmount(value, 3, 0), unitName)
+
+

@@ -8,7 +8,6 @@ import wx
 
 from .helpers import AutoListCtrl
 
-
 class ItemEffects(wx.Panel):
     def __init__(self, parent, stuff, item):
         wx.Panel.__init__(self, parent)
@@ -51,7 +50,7 @@ class ItemEffects(wx.Panel):
         names.sort()
 
         for name in names:
-            index = self.effectList.InsertStringItem(sys.maxint, name)
+            index = self.effectList.InsertItem(sys.maxsize, name)
 
             if effects[name].isImplemented:
                 if effects[name].activeByDefault:
@@ -72,11 +71,11 @@ class ItemEffects(wx.Panel):
             else:
                 effectRunTime = ""
 
-            self.effectList.SetStringItem(index, 1, activeByDefault)
-            self.effectList.SetStringItem(index, 2, effectTypeText)
+            self.effectList.SetItem(index, 1, activeByDefault)
+            self.effectList.SetItem(index, 2, effectTypeText)
             if config.debug:
-                self.effectList.SetStringItem(index, 3, effectRunTime)
-                self.effectList.SetStringItem(index, 4, str(effects[name].ID))
+                self.effectList.SetItem(index, 3, effectRunTime)
+                self.effectList.SetItem(index, 4, str(effects[name].ID))
 
         self.effectList.RefreshRows()
         self.Layout()
@@ -128,3 +127,5 @@ class ItemEffects(wx.Panel):
         self.Layout()
         self.Thaw()
         event.Skip()
+
+
