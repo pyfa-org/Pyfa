@@ -37,7 +37,7 @@ class TogglePanel (wx.Panel):
 
         # Add arrow
         self.header_arrow = wx.StaticText(self.header_panel, wx.ID_ANY,
-                                          "\u25bc")
+                                          "\u25bc", size=wx.Size((10, -1)))
         header_sizer.Add(self.header_arrow, 0,  wx.RIGHT, 5)
 
         # Add header text
@@ -143,7 +143,10 @@ class TogglePanel (wx.Panel):
             self.OnStateChange(self.GetBestSize())
 
 if __name__ == "__main__":
-    class TestPanel(wx.Panel):
+
+    from wx.lib.inspection import InspectionTool
+
+    class MainPanel(wx.Panel):
         def __init__(self, parent):
             super().__init__(parent, size=(-1, -1))
 
@@ -176,10 +179,20 @@ if __name__ == "__main__":
             super().__init__(None, title=title, size=(500, 500))
             main_sizer = wx.BoxSizer(wx.VERTICAL)
 
-            self.statsPane = TestPanel(self)
+            self.statsPane = MainPanel(self)
             main_sizer.Add(self.statsPane, 0, wx.EXPAND)
 
             self.SetSizerAndFit(main_sizer)
+
+            if not InspectionTool().initialized:
+                InspectionTool().Init()
+
+            # Find a widget to be selected in the tree.  Use either the
+            # one under the cursor, if any, or this frame.
+            wnd, _ = wx.FindWindowAtPointer()
+            if not wnd:
+                wnd = self
+            InspectionTool().Show(wnd, True)
 
     app = wx.App(redirect=False)   # Error messages go to popup window
     top = Frame("Test Toggle Panel")
