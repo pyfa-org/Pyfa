@@ -166,7 +166,7 @@ class ItemParams(wx.Panel):
         self.imageList = wx.ImageList(16, 16)
         self.paramList.SetImageList(self.imageList, wx.IMAGE_LIST_SMALL)
 
-        names = list(self.attrValues.iterkeys())
+        names = list(self.attrValues.keys())
         names.sort()
 
         idNameMap = {}

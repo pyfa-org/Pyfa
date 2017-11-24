@@ -47,7 +47,7 @@ class ItemEffects(wx.Panel):
 
         item = self.item
         effects = item.effects
-        names = list(effects.iterkeys())
+        names = list(effects.keys())
         names.sort()
 
         for name in names:
