@@ -4239,7 +4239,7 @@ def upgrade(saveddata_engine):
             # if something fails, fuck it, we tried. It'll default to the generic conversion below
             continue
 
-    for oldItem, newItem in conversion2.iteritems():
+    for oldItem, newItem in conversion2.items():
         saveddata_engine.execute('UPDATE "modules" SET "itemID" = ? WHERE "itemID" = ?',
                                  (newItem, oldItem))
         saveddata_engine.execute('UPDATE "cargo" SET "itemID" = ? WHERE "itemID" = ?',
