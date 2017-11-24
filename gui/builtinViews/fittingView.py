@@ -684,12 +684,12 @@ class FittingView(d.Display):
         self.Thaw()
         self.itemCount = self.GetItemCount()
 
-        if 'wxMac' in wx.PlatformInfo:
-            try:
-                self.MakeSnapshot()
-            except Exception as e:
-                pyfalog.critical("Failed to make snapshot")
-                pyfalog.critical(e)
+        # if 'wxMac' in wx.PlatformInfo:
+        #     try:
+        #         self.MakeSnapshot()
+        #     except Exception as e:
+        #         pyfalog.critical("Failed to make snapshot")
+        #         pyfalog.critical(e)
 
     def OnShow(self, event):
         pass

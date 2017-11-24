@@ -81,10 +81,10 @@ from time import gmtime, strftime
 import threading
 import webbrowser
 import wx.adv
-if 'wxMac' not in wx.PlatformInfo or ('wxMac' in wx.PlatformInfo and wx.VERSION >= (3, 0)):
-    from service.crest import Crest
-    from service.crest import CrestModes
-    from gui.crestFittings import CrestFittings, ExportToEve, CrestMgmt
+
+from service.crest import Crest
+from service.crest import CrestModes
+from gui.crestFittings import CrestFittings, ExportToEve, CrestMgmt
 
 disableOverrideEditor = False
 
@@ -236,9 +236,8 @@ class MainFrame(wx.Frame):
         self.sUpdate = Update.getInstance()
         self.sUpdate.CheckUpdate(self.ShowUpdateBox)
 
-        if 'wxMac' not in wx.PlatformInfo or ('wxMac' in wx.PlatformInfo and wx.VERSION >= (3, 0)):
-            self.Bind(GE.EVT_SSO_LOGIN, self.onSSOLogin)
-            self.Bind(GE.EVT_SSO_LOGOUT, self.onSSOLogout)
+        self.Bind(GE.EVT_SSO_LOGIN, self.onSSOLogin)
+        self.Bind(GE.EVT_SSO_LOGOUT, self.onSSOLogout)
 
         self.titleTimer = wx.Timer(self)
         self.Bind(wx.EVT_TIMER, self.updateTitle, self.titleTimer)

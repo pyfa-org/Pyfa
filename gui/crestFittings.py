@@ -18,8 +18,7 @@ from logbook import Logger
 import calendar
 pyfalog = Logger(__name__)
 
-if 'wxMac' not in wx.PlatformInfo or ('wxMac' in wx.PlatformInfo and wx.VERSION >= (3, 0)):
-    from service.crest import Crest, CrestModes
+from service.crest import Crest, CrestModes
 
 
 class CrestFittings(wx.Frame):

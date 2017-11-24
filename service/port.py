@@ -49,8 +49,7 @@ from service.market import Market
 from utils.strfunctions import sequential_rep, replace_ltgt
 from abc import ABCMeta, abstractmethod
 
-if 'wxMac' not in wx.PlatformInfo or ('wxMac' in wx.PlatformInfo and wx.VERSION >= (3, 0)):
-    from service.crest import Crest
+from service.crest import Crest
 
 pyfalog = Logger(__name__)
 

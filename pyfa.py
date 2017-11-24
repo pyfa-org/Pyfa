@@ -371,13 +371,12 @@ if __name__ == "__main__":
         # if int(logVersion[0]) == 0 and int(logVersion[1]) < 10:
         #     raise PreCheckException("Logbook version >= 0.10.0 is required.")
 
-        if 'wxMac' not in wx.PlatformInfo or ('wxMac' in wx.PlatformInfo and wx.VERSION >= (3, 0)):
-            try:
-                import requests
-                config.requestsVersion = requests.__version__
-            except ImportError:
-                pass
-                # raise PreCheckException("Cannot import requests. You can download requests from https://pypi.python.org/pypi/requests.")
+        try:
+            import requests
+            config.requestsVersion = requests.__version__
+        except ImportError:
+            pass
+            # raise PreCheckException("Cannot import requests. You can download requests from https://pypi.python.org/pypi/requests.")
 
         import eos.db
 
