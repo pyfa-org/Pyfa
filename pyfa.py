@@ -51,8 +51,6 @@ ascii_text = '''
              |_|     |___/            
 
 You are running a alpha/beta version of pyfa. 
-If you run into problems, please let me know at:
-https://github.com/pyfa-org/Pyfa/issues
 
 ++++++++++++++++++++++++++++++++++++++++++++++++++
 '''
@@ -95,87 +93,88 @@ class PassThroughOptionParser(OptionParser):
 #         self.level(sys.stderr)
 #
 #
-# class PreCheckException(Exception):
-#     def __init__(self, msg):
-#         try:
-#             ln = sys.exc_info()[-1].tb_lineno
-#         except AttributeError:
-#             ln = inspect.currentframe().f_back.f_lineno
-#         self.message = "{0.__name__} (line {1}): {2}".format(type(self), ln, msg)
-#         self.args = self.message,
-#
-#
-# def handleGUIException(exc_type, exc_value, exc_traceback):
-#     try:
-#         # Try and import wx in case it's missing.
-#         # noinspection PyPackageRequirements
-#         import wx
-#         from gui.errorDialog import ErrorFrame
-#     except:
-#         # noinspection PyShadowingNames
-#         wx = None
-#         # noinspection PyShadowingNames
-#         ErrorFrame = None
-#
-#     tb = traceback.format_tb(exc_traceback)
-#
-#     try:
-#
-#         # Try and output to our log handler
-#         with logging_setup.threadbound():
-#             module_list = list(set(sys.modules) & set(globals()))
-#             if module_list:
-#                 pyfalog.info("Imported Python Modules:")
-#                 for imported_module in module_list:
-#                     module_details = sys.modules[imported_module]
-#                     pyfalog.info("{0}: {1}", imported_module, getattr(module_details, '__version__', ''))
-#
-#             pyfalog.critical("Exception in main thread: {0}", exc_value.message)
-#             # Print the base level traceback
-#             traceback.print_tb(exc_traceback)
-#
-#             if wx and ErrorFrame:
-#                 pyfa_gui = wx.App(False)
-#                 if exc_type == PreCheckException:
-#                     msgbox = wx.MessageBox(exc_value.message, 'Error', wx.ICON_ERROR | wx.STAY_ON_TOP)
-#                     msgbox.ShowModal()
-#                 else:
-#                     ErrorFrame(exc_value, tb)
-#
-#                 pyfa_gui.MainLoop()
-#
-#             pyfalog.info("Exiting.")
-#     except:
-#         # Most likely logging isn't available. Try and output to the console
-#         module_list = list(set(sys.modules) & set(globals()))
-#         if module_list:
-#             pyfalog.info("Imported Python Modules:")
-#             for imported_module in module_list:
-#                 module_details = sys.modules[imported_module]
-#                 print((str(imported_module) + ": " + str(getattr(module_details, '__version__', ''))))
-#
-#         print(("Exception in main thread: " + str(exc_value.message)))
-#         traceback.print_tb(exc_traceback)
-#
-#         if wx and ErrorFrame:
-#             pyfa_gui = wx.App(False)
-#             if exc_type == PreCheckException:
-#                 msgbox = wx.MessageBox(exc_value.message, 'Error', wx.ICON_ERROR | wx.STAY_ON_TOP)
-#                 msgbox.ShowModal()
-#             else:
-#                 ErrorFrame(exc_value, tb)
-#
-#             pyfa_gui.MainLoop()
-#
-#         print("Exiting.")
-#
-#     finally:
-#         # TODO: Add cleanup when exiting here.
-#         sys.exit()
-#
-#
-# # Replace the uncaught exception handler with our own handler.
-# sys.excepthook = handleGUIException
+class PreCheckException(Exception):
+    def __init__(self, msg):
+        try:
+            ln = sys.exc_info()[-1].tb_lineno
+        except AttributeError:
+            ln = inspect.currentframe().f_back.f_lineno
+        self.message = "{0.__name__} (line {1}): {2}".format(type(self), ln, msg)
+        self.args = self.message,
+
+
+def handleGUIException(exc_type, exc_value, exc_traceback):
+    try:
+        # Try and import wx in case it's missing.
+        # noinspection PyPackageRequirements
+        import wx
+        from gui.errorDialog import ErrorFrame
+    except:
+        # noinspection PyShadowingNames
+        wx = None
+        # noinspection PyShadowingNames
+        ErrorFrame = None
+
+    tb = traceback.format_tb(exc_traceback)
+
+    try:
+
+        # Try and output to our log handler
+        with logging_setup.threadbound():
+            module_list = list(set(sys.modules) & set(globals()))
+            if module_list:
+                pyfalog.info("Imported Python Modules:")
+                for imported_module in module_list:
+                    module_details = sys.modules[imported_module]
+                    pyfalog.info("{0}: {1}", imported_module, getattr(module_details, '__version__', ''))
+
+            pyfalog.critical("Exception in main thread: {0}", str(exc_value))
+            # Print the base level traceback
+            traceback.print_tb(exc_traceback)
+
+            if wx and ErrorFrame:
+                pyfa_gui = wx.App(False)
+                if exc_type == PreCheckException:
+                    msgbox = wx.MessageBox(str(exc_value), 'Error', wx.ICON_ERROR | wx.STAY_ON_TOP)
+                    msgbox.ShowModal()
+                else:
+                    ErrorFrame(exc_value, tb)
+
+                pyfa_gui.MainLoop()
+
+            pyfalog.info("Exiting.")
+    except Exception as ex:
+        # Most likely logging isn't available. Try and output to the console
+        module_list = list(set(sys.modules) & set(globals()))
+        if module_list:
+            pyfalog.info("Imported Python Modules:")
+            for imported_module in module_list:
+                module_details = sys.modules[imported_module]
+                print((str(imported_module) + ": " + str(getattr(module_details, '__version__', ''))))
+
+        print(("Exception in main thread: " + str(exc_value)))
+        traceback.print_tb(exc_traceback)
+
+        if wx and ErrorFrame:
+            pyfa_gui = wx.App(False)
+            if exc_type == PreCheckException:
+                msgbox = wx.MessageBox(str(exc_value), 'Error', wx.ICON_ERROR | wx.STAY_ON_TOP)
+                msgbox.ShowModal()
+            else:
+                ErrorFrame(exc_value, tb)
+
+            pyfa_gui.MainLoop()
+
+        print("Exiting.")
+
+    finally:
+        # TODO: Add cleanup when exiting here.
+        pass
+        # sys.exit()
+
+
+# Replace the uncaught exception handler with our own handler.
+sys.excepthook = handleGUIException
 
 # Parse command line options
 usage = "usage: %prog [--root]"
@@ -294,10 +293,11 @@ if __name__ == "__main__":
     with logging_setup.threadbound():
         pyfalog.info("Starting Pyfa")
 
-        pyfalog.info("Logbook version: {0}", logbook_version)
+       # pyfalog.info("Logbook version: {0}", logbook_version)
 
-        pyfalog.info("Running in logging mode: {0}", logging_mode)
-        pyfalog.info("Writing log file to: {0}", config.logPath)
+        # pyfalog.info("Running in logging mode: {0}", logging_mode)
+        # move this to the log set up - if it fails, can't say that we're writing it
+        # pyfalog.info("Writing log file to: {0}", config.logPath)
 
         # Output all stdout (print) messages as warnings
         # try:
@@ -311,9 +311,9 @@ if __name__ == "__main__":
         # except:
         #     pyfalog.critical("Cannot redirect.  Continuing without writing stderr to log.")
 
-        pyfalog.info("OS version: {0}", platform.platform())
-
-        pyfalog.info("Python version: {0}", sys.version)
+        # pyfalog.info("OS version: {0}", platform.platform())
+        #
+        # pyfalog.info("Python version: {0}", sys.version)
         # if sys.version_info < (2, 7) or sys.version_info > (3, 0):
         #     exit_message = "Pyfa requires python 2.x branch ( >= 2.7 )."
         #     raise PreCheckException(exit_message)
@@ -344,7 +344,7 @@ if __name__ == "__main__":
             exit_message = "Cannot import wxPython. You can download wxPython (2.8+) from http://www.wxpython.org/"
             # raise PreCheckException(exit_message)
 
-        pyfalog.info("wxPython version: {0}.", str(wx.VERSION_STRING))
+        #pyfalog.info("wxPython version: {0}.", str(wx.VERSION_STRING))
 
         if sqlalchemy is None:
             exit_message = "\nCannot find sqlalchemy.\nYou can download sqlalchemy (0.6+) from http://www.sqlalchemy.org/"
@@ -363,7 +363,8 @@ if __name__ == "__main__":
                     pyfalog.critical("You can download sqlAlchemy (0.5.8+) from http://www.sqlalchemy.org/")
                     pyfalog.critical("Attempting to run with unsupported version of sqlAlchemy.")
                 else:
-                    pyfalog.info("Current version of sqlAlchemy is: {0}", sqlalchemy.__version__)
+                    pass
+                    # pyfalog.info("Current version of sqlAlchemy is: {0}", sqlalchemy.__version__)
             else:
                 pyfalog.warning("Unknown sqlalchemy version string format, skipping check. Version: {0}", sqlalchemy.__version__)
 

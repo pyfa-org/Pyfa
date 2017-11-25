@@ -40,6 +40,9 @@ try:
 except:
     logbook_version = "Unknown"
 
+import wx.lib.agw.hyperlink
+
+
 
 class ErrorFrame(wx.Frame):
     def __init__(self, exception=None, tb=None, error_title='Error!'):
@@ -74,13 +77,11 @@ class ErrorFrame(wx.Frame):
         descText = wx.StaticText(self, wx.ID_ANY, desc)
         box.Add(descText, 1, wx.ALL, 5)
 
-        github = wx.HyperlinkCtrl(self, wx.ID_ANY, "Github", "https://github.com/pyfa-org/Pyfa/issues",
-                                  wx.DefaultPosition, wx.DefaultSize, wx.HL_DEFAULT_STYLE)
-        box.Add(github, 0, wx.ALL, 5)
-
-        eveForums = wx.HyperlinkCtrl(self, wx.ID_ANY, "EVE Forums", "https://forums.eveonline.com/t/27156",
-                                     wx.DefaultPosition, wx.DefaultSize, wx.HL_DEFAULT_STYLE)
-        box.Add(eveForums, 0, wx.ALL, 5)
+        # github = wx.lib.agw.hyperlink.HyperLinkCtrl(self, wx.ID_ANY, label="Github", URL="https://github.com/pyfa-org/Pyfa/issues")
+        # box.Add(github, 0, wx.ALL, 5)
+        #
+        # eveForums = wx.lib.agw.hyperlink.HyperLinkCtrl(self, wx.ID_ANY, label="EVE Forums", URL="https://forums.eveonline.com/t/27156")
+        # box.Add(eveForums, 0, wx.ALL, 5)
 
         # mainSizer.AddSpacer((0, 5), 0, wx.EXPAND, 5)
 
@@ -88,42 +89,42 @@ class ErrorFrame(wx.Frame):
         errorTextCtrl.SetFont(wx.Font(8, wx.FONTFAMILY_TELETYPE, wx.NORMAL, wx.NORMAL))
         mainSizer.Add(errorTextCtrl, 0, wx.EXPAND | wx.ALL | wx.ALIGN_CENTER, 5)
 
-        try:
-            errorTextCtrl.AppendText("OS version: \t" + str(platform.platform()))
-        except:
-            errorTextCtrl.AppendText("OS version: Unknown")
-        errorTextCtrl.AppendText("\n")
-
-        try:
-            errorTextCtrl.AppendText("Python: \t" + '{}.{}.{}'.format(v.major, v.minor, v.micro))
-        except:
-            errorTextCtrl.AppendText("Python: Unknown")
-        errorTextCtrl.AppendText("\n")
-
-        try:
-            errorTextCtrl.AppendText("wxPython: \t" + wx.VERSION_STRING)
-        except:
-            errorTextCtrl.AppendText("wxPython: Unknown")
-        errorTextCtrl.AppendText("\n")
-
-        errorTextCtrl.AppendText("SQLAlchemy: \t" + str(sqlalchemy_version))
-        errorTextCtrl.AppendText("\n")
-
-        errorTextCtrl.AppendText("Logbook: \t" + str(logbook_version))
-        errorTextCtrl.AppendText("\n")
-
-        try:
-            errorTextCtrl.AppendText("pyfa version: {0} {1} - {2} {3}".format(config.version, config.tag, config.expansionName, config.expansionVersion))
-        except:
-            errorTextCtrl.AppendText("pyfa version: Unknown")
-        errorTextCtrl.AppendText('\n')
-
-        errorTextCtrl.AppendText("pyfa root: " + str(config.pyfaPath or "Unknown"))
-        errorTextCtrl.AppendText('\n')
-        errorTextCtrl.AppendText("save path: " + str(config.savePath or "Unknown"))
-        errorTextCtrl.AppendText('\n')
-        errorTextCtrl.AppendText("fs encoding: " + str(sys.getfilesystemencoding() or "Unknown"))
-        errorTextCtrl.AppendText('\n\n')
+        # try:
+        #     errorTextCtrl.AppendText("OS version: \t" + str(platform.platform()))
+        # except:
+        #     errorTextCtrl.AppendText("OS version: Unknown")
+        # errorTextCtrl.AppendText("\n")
+        #
+        # try:
+        #     errorTextCtrl.AppendText("Python: \t" + '{}.{}.{}'.format(v.major, v.minor, v.micro))
+        # except:
+        #     errorTextCtrl.AppendText("Python: Unknown")
+        # errorTextCtrl.AppendText("\n")
+        #
+        # try:
+        #     errorTextCtrl.AppendText("wxPython: \t" + wx.VERSION_STRING)
+        # except:
+        #     errorTextCtrl.AppendText("wxPython: Unknown")
+        # errorTextCtrl.AppendText("\n")
+        #
+        # errorTextCtrl.AppendText("SQLAlchemy: \t" + str(sqlalchemy_version))
+        # errorTextCtrl.AppendText("\n")
+        #
+        # errorTextCtrl.AppendText("Logbook: \t" + str(logbook_version))
+        # errorTextCtrl.AppendText("\n")
+        #
+        # try:
+        #     errorTextCtrl.AppendText("pyfa version: {0} {1} - {2} {3}".format(config.version, config.tag, config.expansionName, config.expansionVersion))
+        # except:
+        #     errorTextCtrl.AppendText("pyfa version: Unknown")
+        # errorTextCtrl.AppendText('\n')
+        #
+        # errorTextCtrl.AppendText("pyfa root: " + str(config.pyfaPath or "Unknown"))
+        # errorTextCtrl.AppendText('\n')
+        # errorTextCtrl.AppendText("save path: " + str(config.savePath or "Unknown"))
+        # errorTextCtrl.AppendText('\n')
+        # errorTextCtrl.AppendText("fs encoding: " + str(sys.getfilesystemencoding() or "Unknown"))
+        # errorTextCtrl.AppendText('\n\n')
 
         errorTextCtrl.AppendText("EXCEPTION: " + str(exception or "Unknown"))
         errorTextCtrl.AppendText('\n\n')
