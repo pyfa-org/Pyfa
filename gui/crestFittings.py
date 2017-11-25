@@ -129,6 +129,7 @@ class CrestFittings(wx.Frame):
     def OnClose(self, event):
         self.mainFrame.Unbind(GE.EVT_SSO_LOGOUT)
         self.mainFrame.Unbind(GE.EVT_SSO_LOGIN)
+        self.cacheTimer.Stop()  # must be manually stopped, otherwise crash. See https://github.com/wxWidgets/Phoenix/issues/632
         event.Skip()
 
     def getActiveCharacter(self):
