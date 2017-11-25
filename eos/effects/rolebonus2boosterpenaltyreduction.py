@@ -4,6 +4,8 @@
 # Ship: Victor
 # Ship: Virtuoso
 type = "passive"
+
+
 def handler(fit, src, context):
     fit.boosters.filteredItemBoost(lambda mod: mod.item.group.name == "Booster", "boosterMissileAOECloudPenalty", src.getModifiedItemAttr("shipBonusRole2"))
     fit.boosters.filteredItemBoost(lambda mod: mod.item.group.name == "Booster", "boosterCapacitorCapacityPenalty", src.getModifiedItemAttr("shipBonusRole2"))

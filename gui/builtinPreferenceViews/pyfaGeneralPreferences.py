@@ -91,7 +91,8 @@ class PFGeneralPref(PreferenceView):
         priceSizer.Add(self.stDefaultSystem, 0, wx.ALL | wx.ALIGN_CENTER_VERTICAL, 5)
         self.stDefaultSystem.SetCursor(helpCursor)
         self.stDefaultSystem.SetToolTip(
-            wx.ToolTip('The source you choose will be tried first, but subsequent sources will be used if the preferred source fails. The system you choose is absolute and requests will not be made against other systems.'))
+            wx.ToolTip('The source you choose will be tried first, but subsequent sources will be used if the preferred '
+                       'source fails. The system you choose is absolute and requests will not be made against other systems.'))
 
         self.chPriceSource = wx.Choice(panel, choices=sorted(Price.sources.keys()))
         self.chPriceSystem = wx.Choice(panel, choices=Price.systemsList.keys())
