@@ -38,48 +38,36 @@ class EveMarketData(object):
         data.append(("system_id", system))  # Use Jita for market
         data.append(("type_ids", ','.join(str(x) for x in types)))
 
-        # Attempt to send request and process it
-        try:
-            network = Network.getInstance()
-            data = network.request(baseurl, network.PRICES, data)
-            xml = minidom.parse(data)
-            print (xml.getElementsByTagName("eve").item(0))
-            types = xml.getElementsByTagName("eve").item(0).getElementsByTagName("price")
-            # Cycle through all types we've got from request
-            for type_ in types:
-                # Get data out of each typeID details tree
-                typeID = int(type_.getAttribute("id"))
-                price = 0
+        network = Network.getInstance()
+        data = network.request(baseurl, network.PRICES, data)
+        xml = minidom.parse(data)
+        types = xml.getElementsByTagName("eve").item(0).getElementsByTagName("price")
 
-                try:
-                    price = float(type_.firstChild.data)
-                except (TypeError, ValueError):
-                    pyfalog.warning("Failed to get price for: {0}", type_)
+        # Cycle through all types we've got from request
+        for type_ in types:
+            # Get data out of each typeID details tree
+            typeID = int(type_.getAttribute("id"))
 
-                # Fill price data
-                priceobj = priceMap[typeID]
+            try:
+                price = float(type_.firstChild.data)
+            except (TypeError, ValueError):
+                pyfalog.warning("Failed to get price for: {0}", type_)
+
+            # Fill price data
+            priceobj = priceMap[typeID]
+
+            # eve-marketdata returns 0 if price data doesn't even exist for the item. In this case, don't reset the
+            # cached price, and set the price timeout to TIMEOUT (every 15 minutes currently). Se GH issue #1334
+            if price != 0:
                 priceobj.price = price
                 priceobj.time = time.time() + VALIDITY
-                priceobj.failed = None
-
-                # delete price from working dict
-                del priceMap[typeID]
-
-        # If getting or processing data returned any errors
-        except TimeoutError:
-            # Timeout error deserves special treatment
-            pyfalog.warning("Price fetch timout")
-            for typeID in priceMap.keys():
-                priceobj = priceMap[typeID]
+            else:
                 priceobj.time = time.time() + TIMEOUT
-                priceobj.failed = True
 
-                del priceMap[typeID]
-        except:
-            # all other errors will pass and continue onward to the REREQUEST delay
-            pyfalog.warning("Caught exception in fetchPrices")
-            pass
-        pass
+            priceobj.failed = None
+
+            # delete price from working dict
+            del priceMap[typeID]
 
 
 Price.register(EveMarketData)
