@@ -7,11 +7,7 @@ from gui.bitmap_loader import BitmapLoader
 from service.targetResists import TargetResists as svc_TargetResists
 from service.fit import Fit
 from service.settings import ContextMenuSettings
-
-try:
-    from collections import OrderedDict
-except ImportError:
-    from utils.compat import OrderedDict
+from collections import OrderedDict
 
 
 class TargetResists(ContextMenu):

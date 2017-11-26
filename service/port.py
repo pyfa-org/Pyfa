@@ -52,11 +52,7 @@ from abc import ABCMeta, abstractmethod
 from service.crest import Crest
 
 pyfalog = Logger(__name__)
-
-try:
-    from collections import OrderedDict
-except ImportError:
-    from utils.compat import OrderedDict
+from collections import OrderedDict
 
 EFT_SLOT_ORDER = [Slot.LOW, Slot.MED, Slot.HIGH, Slot.RIG, Slot.SUBSYSTEM]
 INV_FLAGS = {

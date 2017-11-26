@@ -24,11 +24,8 @@ from sqlalchemy.orm import reconstructor
 import eos.db
 from .eqBase import EqBase
 from eos.saveddata.price import Price as types_Price
+from collections import OrderedDict
 
-try:
-    from collections import OrderedDict
-except ImportError:
-    from utils.compat import OrderedDict
 
 from logbook import Logger
 

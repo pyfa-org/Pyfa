@@ -21,11 +21,7 @@
 import wx
 from gui.statsView import StatsView
 from gui.utils.numberFormatter import formatAmount
-
-try:
-    from collections import OrderedDict
-except ImportError:
-    from utils.compat import OrderedDict
+from collections import OrderedDict
 
 
 class TargetingMiscViewFull(StatsView):
