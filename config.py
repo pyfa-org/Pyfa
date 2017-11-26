@@ -37,14 +37,14 @@ def isFrozen():
         return True
     else:
         return False
-
-
 def __createDirs(path):
     if not os.path.exists(path):
         os.makedirs(path)
 
 
 def getPyfaRoot():
+    if hasattr(sys, '_MEIPASS'):
+        return sys._MEIPASS
     base = getattr(sys.modules['__main__'], "__file__", sys.executable) if isFrozen() else __file__
     root = os.path.dirname(os.path.realpath(os.path.abspath(base)))
     root = root
