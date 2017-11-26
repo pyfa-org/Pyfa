@@ -8,7 +8,7 @@ import requests.certs
 label = subprocess.check_output([
     "git", "describe", "--tags"]).strip()
 
-with open('gitversion', 'w+') as f:
+with open('.version', 'w+') as f:
     f.write(label.decode())
 
 block_cipher = None
