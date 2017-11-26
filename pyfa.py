@@ -18,14 +18,13 @@
 # along with pyfa.  If not, see <http://www.gnu.org/licenses/>.
 # ==============================================================================
 
-import inspect
+
 import os
 import platform
-import re
 import sys
 import traceback
 from optparse import AmbiguousOptionError, BadOptionError, OptionParser
-
+from service.prereqsCheck import PreCheckException, version_precheck, version_block
 from logbook import CRITICAL, DEBUG, ERROR, FingersCrossedHandler, INFO, Logger, NestedSetup, NullHandler, StreamHandler, TimedRotatingFileHandler, WARNING, \
     __version__ as logbook_version
 
@@ -93,15 +92,6 @@ class PassThroughOptionParser(OptionParser):
 #         self.level(sys.stderr)
 #
 #
-class PreCheckException(Exception):
-    def __init__(self, msg):
-        try:
-            ln = sys.exc_info()[-1].tb_lineno
-        except AttributeError:
-            ln = inspect.currentframe().f_back.f_lineno
-        self.message = "{0.__name__} (line {1}): {2}".format(type(self), ln, msg)
-        self.args = self.message,
-
 
 def handleGUIException(exc_type, exc_value, exc_traceback):
     try:
@@ -158,8 +148,7 @@ def handleGUIException(exc_type, exc_value, exc_traceback):
         if wx and ErrorFrame:
             pyfa_gui = wx.App(False)
             if exc_type == PreCheckException:
-                msgbox = wx.MessageBox(str(exc_value), 'Error', wx.ICON_ERROR | wx.STAY_ON_TOP)
-                msgbox.ShowModal()
+                wx.MessageBox(str(exc_value), 'Error', wx.ICON_ERROR | wx.STAY_ON_TOP)
             else:
                 ErrorFrame(exc_value, tb)
 
@@ -180,7 +169,6 @@ sys.excepthook = handleGUIException
 usage = "usage: %prog [--root]"
 parser = PassThroughOptionParser(usage=usage)
 parser.add_option("-r", "--root", action="store_true", dest="rootsavedata", help="if you want pyfa to store its data in root folder, use this option", default=False)
-parser.add_option("-w", "--wx28", action="store_true", dest="force28", help="Force usage of wxPython 2.8", default=False)
 parser.add_option("-d", "--debug", action="store_true", dest="debug", help="Set logger to debug level.", default=False)
 parser.add_option("-t", "--title", action="store", dest="title", help="Set Window Title", default=None)
 parser.add_option("-s", "--savepath", action="store", dest="savepath", help="Set the folder for savedata", default=None)
@@ -204,6 +192,11 @@ parser.add_option("-l", "--logginglevel", action="store", dest="logginglevel", h
 if __name__ == "__main__":
     # Configure paths
     print ('starting')
+
+    version_precheck()
+
+    import wx
+
     if options.rootsavedata is True:
         config.saveInRoot = True
 
@@ -212,10 +205,6 @@ if __name__ == "__main__":
         options.title = "pyfa %s%s - Python Fitting Assistant" % (config.version, "" if config.tag.lower() != 'git' else " (git)")
 
     config.debug = options.debug
-
-    # convert to unicode if it is set
-    if options.savepath is not None:
-        options.savepath = str(options.savepath)
     config.defPaths(options.savepath)
 
     # Basic logging initialization
@@ -293,11 +282,11 @@ if __name__ == "__main__":
     with logging_setup.threadbound():
         pyfalog.info("Starting Pyfa")
 
-       # pyfalog.info("Logbook version: {0}", logbook_version)
+        pyfalog.info("Logbook version: {0}", logbook_version)
 
-        # pyfalog.info("Running in logging mode: {0}", logging_mode)
+        pyfalog.info("Running in logging mode: {0}", logging_mode)
         # move this to the log set up - if it fails, can't say that we're writing it
-        # pyfalog.info("Writing log file to: {0}", config.logPath)
+        pyfalog.info("Writing log file to: {0}", config.logPath)
 
         # Output all stdout (print) messages as warnings
         # try:
@@ -311,80 +300,13 @@ if __name__ == "__main__":
         # except:
         #     pyfalog.critical("Cannot redirect.  Continuing without writing stderr to log.")
 
-        # pyfalog.info("OS version: {0}", platform.platform())
-        #
-        # pyfalog.info("Python version: {0}", sys.version)
-        # if sys.version_info < (2, 7) or sys.version_info > (3, 0):
-        #     exit_message = "Pyfa requires python 2.x branch ( >= 2.7 )."
-        #     raise PreCheckException(exit_message)
-
         if hasattr(sys, 'frozen'):
             pyfalog.info("Running in a frozen state.")
         else:
             pyfalog.info("Running in a thawed state.")
 
-        # if not hasattr(sys, 'frozen') and wxversion:
-        #     try:
-        #         if options.force28 is True:
-        #             pyfalog.info("Selecting wx version: 2.8. (Forced)")
-        #             wxversion.select('2.8')
-        #         else:
-        #             pyfalog.info("Selecting wx versions: 3.0, 2.8")
-        #             wxversion.select(['3.0', '2.8'])
-        #     except:
-        #         pyfalog.warning("Unable to select wx version.  Attempting to import wx without specifying the version.")
-        # else:
-        #     if not wxversion:
-        #         pyfalog.warning("wxVersion not found.  Attempting to import wx without specifying the version.")
-
-        try:
-            # noinspection PyPackageRequirements
-            import wx
-        except:
-            exit_message = "Cannot import wxPython. You can download wxPython (2.8+) from http://www.wxpython.org/"
-            # raise PreCheckException(exit_message)
-
-        #pyfalog.info("wxPython version: {0}.", str(wx.VERSION_STRING))
-
-        if sqlalchemy is None:
-            exit_message = "\nCannot find sqlalchemy.\nYou can download sqlalchemy (0.6+) from http://www.sqlalchemy.org/"
-            # raise PreCheckException(exit_message)
-        else:
-            saVersion = sqlalchemy.__version__
-            saMatch = re.match("([0-9]+).([0-9]+)([b\.])([0-9]+)", saVersion)
-            config.saVersion = (int(saMatch.group(1)), int(saMatch.group(2)), int(saMatch.group(4)))
-            if saMatch:
-                saMajor = int(saMatch.group(1))
-                saMinor = int(saMatch.group(2))
-                betaFlag = True if saMatch.group(3) == "b" else False
-                saBuild = int(saMatch.group(4)) if not betaFlag else 0
-                if saMajor == 0 and (saMinor < 5 or (saMinor == 5 and saBuild < 8)):
-                    pyfalog.critical("Pyfa requires sqlalchemy 0.5.8 at least but current sqlAlchemy version is {0}", format(sqlalchemy.__version__))
-                    pyfalog.critical("You can download sqlAlchemy (0.5.8+) from http://www.sqlalchemy.org/")
-                    pyfalog.critical("Attempting to run with unsupported version of sqlAlchemy.")
-                else:
-                    pass
-                    # pyfalog.info("Current version of sqlAlchemy is: {0}", sqlalchemy.__version__)
-            else:
-                pyfalog.warning("Unknown sqlalchemy version string format, skipping check. Version: {0}", sqlalchemy.__version__)
-
-        logVersion = logbook_version.split('.')
-        # if int(logVersion[0]) == 0 and int(logVersion[1]) < 10:
-        #     raise PreCheckException("Logbook version >= 0.10.0 is required.")
-
-        try:
-            import requests
-            config.requestsVersion = requests.__version__
-        except ImportError:
-            pass
-            # raise PreCheckException("Cannot import requests. You can download requests from https://pypi.python.org/pypi/requests.")
-
         import eos.db
-
-        if config.saVersion[0] > 0 or config.saVersion[1] >= 7:
-            # <0.7 doesn't have support for events ;_; (mac-deprecated)
-            config.sa_events = True
-            import eos.events
+        import eos.events  # todo: move this to eos initialization
 
         # noinspection PyUnresolvedReferences
         import service.prefetch  # noqa: F401
