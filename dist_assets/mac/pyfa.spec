@@ -3,6 +3,7 @@
 import os
 from itertools import chain
 import subprocess
+import requests.certs
 
 label = subprocess.check_output([
     "git", "describe", "--tags"]).strip()
@@ -13,17 +14,18 @@ with open('gitversion', 'w+') as f:
 block_cipher = None
 
 added_files = [
-             ( 'imgs/gui/*.png', 'imgs/gui' ),
-             ( 'imgs/gui/*.gif', 'imgs/gui' ),
-             ( 'imgs/icons/*.png', 'imgs/icons' ),
-             ( 'imgs/renders/*.png', 'imgs/renders' ),
-             ( 'dist_assets/win/pyfa.ico', '.' ),
-             ( 'dist_assets/cacert.pem', '.' ),
-             ( 'eve.db', '.' ),
-             ( 'README.md', '.' ),
-             ( 'LICENSE', '.' ),
-             ( 'gitversion', '.' ),
+             ('../../imgs/gui/*.png', 'imgs/gui'),
+             ('../../imgs/gui/*.gif', 'imgs/gui'),
+             ('../../imgs/icons/*.png', 'imgs/icons'),
+             ('../../imgs/renders/*.png', 'imgs/renders'),
+             ('../../dist_assets/win/pyfa.ico', '.'),
+             (requests.certs.where(), '.'),  # is this needed anymore?
+             ('../../eve.db', '.'),
+             ('../../README.md', '.'),
+             ('../../LICENSE', '.'),
+             ('../../gitversion', '.'),
              ]
+
 
 import_these = []
 
@@ -38,7 +40,7 @@ for root, folders, files in chain.from_iterable(os.walk(path) for path in paths)
             )
             import_these.append(mod_name)
 
-a = Analysis([r'pyfa.py'],
+a = Analysis([r'../../pyfa.py'],
              pathex=[],
              binaries=[],
              datas=added_files,
