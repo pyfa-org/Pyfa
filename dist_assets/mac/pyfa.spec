@@ -38,16 +38,12 @@ for root, folders, files in chain.from_iterable(os.walk(path) for path in paths)
             )
             import_these.append(mod_name)
 
-a = Analysis([r'C:\Users\Ryan\Sync\Git\blitzmann\Pyfa\pyfa.py'],
-             pathex=[
-                 # Need this, see https://github.com/pyinstaller/pyinstaller/issues/1566
-                 # To get this, download and install windows 10 SDK
-                 # If not building on Windows 10, this might be optional
-                 r'C:\Program Files (x86)\Windows Kits\10\Redist\ucrt\DLLs\x86'],
+a = Analysis([r'pyfa.py'],
+             pathex=[],
              binaries=[],
              datas=added_files,
              hiddenimports=import_these,
-             hookspath=[],
+             hookspath=['dist_assets/pyinstaller_hooks'],
              runtime_hooks=[],
              excludes=[],
              win_no_prefer_redirects=False,
@@ -57,22 +53,19 @@ pyz = PYZ(a.pure, a.zipped_data,
              cipher=block_cipher)
 exe = EXE(pyz,
           a.scripts,
-          exclude_binaries=True,
+          a.binaries,
+          a.zipfiles,
+          a.datas,
+          name='pyfa',
           debug=False,
-          console=True,
           strip=False,
           upx=True,
-          name='pyfa',
-          icon='dist_assets/win/pyfa.ico',
+          runtime_tmpdir=None,
+          console=False ,
+          icon='dist_assets/mac/pyfa.icns',
           )
 
-coll = COLLECT(
-               exe,
-               a.binaries,
-               a.zipfiles,
-               a.datas,
-               strip=False,
-               upx=True,
-               name='pyfa',
-               icon='dist_assets/win/pyfa.ico',
-               )
+app = BUNDLE(exe,
+             name='pyfa.app',
+             icon=None,
+             bundle_identifier=None)
