@@ -20,11 +20,10 @@
 
 
 import os
-import platform
 import sys
 import traceback
 from optparse import AmbiguousOptionError, BadOptionError, OptionParser
-from service.prereqsCheck import PreCheckException, version_precheck, version_block
+from service.prereqsCheck import PreCheckException, PreCheckMessage, version_precheck, version_block
 from logbook import CRITICAL, DEBUG, ERROR, FingersCrossedHandler, INFO, Logger, NestedSetup, NullHandler, StreamHandler, TimedRotatingFileHandler, WARNING, \
     __version__ as logbook_version
 
@@ -161,9 +160,10 @@ def handleGUIException(exc_type, exc_value, exc_traceback):
         pass
         # sys.exit()
 
+from gui.errorDialog import ErrorFrameHandler
 
 # Replace the uncaught exception handler with our own handler.
-sys.excepthook = handleGUIException
+sys.excepthook = ErrorFrameHandler.HandleException
 
 # Parse command line options
 usage = "usage: %prog [--root]"
@@ -193,7 +193,10 @@ if __name__ == "__main__":
     # Configure paths
     print ('starting')
 
-    version_precheck()
+    try:
+        version_precheck()
+    except PreCheckException as ex:
+        PreCheckMessage(str(ex))
 
     import wx
 

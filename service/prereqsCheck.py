@@ -8,6 +8,19 @@ version_block = ''
 class PreCheckException(Exception):
     pass
 
+class PreCheckMessage():
+    def __init__(self, msg):
+        # wx may not be installed, in which case print to console. For all other prechecks, should pop up a MessageDialog
+        try:
+            import wx
+            app = wx.App(False)
+            wx.MessageBox(msg, 'Error', wx.ICON_ERROR | wx.STAY_ON_TOP)
+            app.MainLoop()
+        except:
+            pass
+        finally:
+            print(msg)
+            sys.exit()
 
 def version_precheck():
     global version_block
@@ -40,7 +53,7 @@ def version_precheck():
         saMatch = re.match("([0-9]+).([0-9]+).([0-9]+)(([b\.])([0-9]+))?", sqlalchemy.__version__)
         version_block += "\nSQLAlchemy version: {}".format(sqlalchemy.__version__)
 
-        if (int(saMatch.group(1)), int(saMatch.group(2)), int(saMatch.group(3))) < (3, 0, 5):
+        if (int(saMatch.group(1)), int(saMatch.group(2)), int(saMatch.group(3))) < (1, 0, 5):
             raise Exception()
     except:
         msg = "pyfa requires SQLAlchemy v1.0.5+. You can download SQLAlchemy from https://www.sqlalchemy.org/download.html"

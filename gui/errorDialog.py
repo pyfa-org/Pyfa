@@ -17,31 +17,42 @@
 # along with pyfa.  If not, see <http://www.gnu.org/licenses/>.
 # ===============================================================================
 
-import platform
-import sys
+# import platform
+# import sys
+#
+# # noinspection PyPackageRequirements
+# import wx
+#
+# try:
+#     import config
+# except:
+#     config = None
+#
+# try:
+#     import sqlalchemy
+#
+#     sqlalchemy_version = sqlalchemy.__version__
+# except:
+#     sqlalchemy_version = "Unknown"
+#
+# try:
+#     from logbook import __version__ as logbook_version
+# except:
+#     logbook_version = "Unknown"
+#
+# import wx.lib.agw.hyperlink
 
-# noinspection PyPackageRequirements
-import wx
 
-try:
-    import config
-except:
-    config = None
+class ErrorFrameHandler(object):
+    __app = None
 
-try:
-    import sqlalchemy
+    @classmethod
+    def HandleException(cls, exc_type, exc_value, exc_traceback):
+        print("Handle excpetion! {}".format(cls.__app))
 
-    sqlalchemy_version = sqlalchemy.__version__
-except:
-    sqlalchemy_version = "Unknown"
-
-try:
-    from logbook import __version__ as logbook_version
-except:
-    logbook_version = "Unknown"
-
-import wx.lib.agw.hyperlink
-
+    @classmethod
+    def SetApp(cls, wxApp):
+        cls.__app = wxApp
 
 
 class ErrorFrame(wx.Frame):
