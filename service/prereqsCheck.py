@@ -20,7 +20,6 @@ class PreCheckMessage():
             pass
         finally:
             print(msg)
-            sys.exit()
 
 def version_precheck():
     global version_block
@@ -43,7 +42,7 @@ def version_precheck():
                 raise Exception()
 
         import wx
-        version_block += "\nwxPython version: {} (wxWidgets {})".format(VERSION_STRING, wx.wxWidgets_version)
+        version_block += "\nwxPython version: {} ({})".format(VERSION_STRING, wx.wxWidgets_version)
     except:
         msg = "pyfa requires wxPython v4.0.0b2+. You can download wxPython from https://wxpython.org/pages/downloads/"
         raise PreCheckException(msg)

@@ -1,7 +1,8 @@
 import os
 import sys
 
-from logbook import Logger
+from logbook import CRITICAL, DEBUG, ERROR, FingersCrossedHandler, INFO, Logger, NestedSetup, NullHandler, \
+    StreamHandler, TimedRotatingFileHandler, WARNING
 
 pyfalog = Logger(__name__)
 
@@ -30,6 +31,16 @@ savePath = None
 saveDB = None
 gameDB = None
 logPath = None
+loggingLevel = None
+logging_setup = None
+
+LOGLEVEL_MAP = {
+    "critical": CRITICAL,
+    "error": ERROR,
+    "warning": WARNING,
+    "info": INFO,
+    "debug": DEBUG,
+}
 
 
 def isFrozen():
@@ -68,6 +79,7 @@ def defPaths(customSavePath=None):
     global saveDB
     global gameDB
     global saveInRoot
+    global logPath
 
     pyfalog.debug("Configuring Pyfa")
 
@@ -106,6 +118,13 @@ def defPaths(customSavePath=None):
     if not gameDB:
         gameDB = os.path.join(pyfaPath, "eve.db")
 
+    if debug:
+        logFile = "pyfa_debug.log"
+    else:
+        logFile = "pyfa.log"
+
+    logPath = os.path.join(savePath, logFile)
+
     # DON'T MODIFY ANYTHING BELOW
     import eos.config
 
@@ -121,3 +140,96 @@ def defPaths(customSavePath=None):
     # initialize the settings
     from service.settings import EOSSettings
     eos.config.settings = EOSSettings.getInstance().EOSSettings  # this is kind of confusing, but whatever
+
+def defLogging():
+    global debug
+    global logPath
+    global loggingLevel
+    global logging_setup
+
+    try:
+        if debug:
+            logging_setup = NestedSetup([
+                # make sure we never bubble up to the stderr handler
+                # if we run out of setup handling
+                NullHandler(),
+                StreamHandler(
+                        sys.stdout,
+                        bubble=False,
+                        level=loggingLevel
+                ),
+                TimedRotatingFileHandler(
+                        logPath,
+                        level=0,
+                        backup_count=3,
+                        bubble=True,
+                        date_format='%Y-%m-%d',
+                ),
+            ])
+        else:
+            logging_setup = NestedSetup([
+                # make sure we never bubble up to the stderr handler
+                # if we run out of setup handling
+                NullHandler(),
+                FingersCrossedHandler(
+                        TimedRotatingFileHandler(
+                                logPath,
+                                level=0,
+                                backup_count=3,
+                                bubble=False,
+                                date_format='%Y-%m-%d',
+                        ),
+                        action_level=ERROR,
+                        buffer_size=1000,
+                        # pull_information=True,
+                        # reset=False,
+                )
+            ])
+    except:
+        print("Critical error attempting to setup logging. Falling back to console only.")
+        logging_setup = NestedSetup([
+            # make sure we never bubble up to the stderr handler
+            # if we run out of setup handling
+            NullHandler(),
+            StreamHandler(
+                    sys.stdout,
+                    bubble=False
+            )
+        ])
+
+    with logging_setup.threadbound():
+
+        # Output all stdout (print) messages as warnings
+        try:
+            sys.stdout = LoggerWriter(pyfalog.warning)
+        except:
+            pyfalog.critical("Cannot redirect.  Continuing without writing stdout to log.")
+
+        # Output all stderr (stacktrace) messages as critical
+        try:
+            sys.stderr = LoggerWriter(pyfalog.critical)
+        except:
+            pyfalog.critical("Cannot redirect.  Continuing without writing stderr to log.")
+
+
+class LoggerWriter(object):
+    def __init__(self, level):
+        # self.level is really like using log.debug(message)
+        # at least in my case
+        self.level = level
+
+    def write(self, message):
+        # if statement reduces the amount of newlines that are
+        # printed to the logger
+        if message.strip() != '':
+            self.level(message.replace("\n", ""))
+
+    def flush(self):
+        # create a flush method so things can be flushed when
+        # the system wants to. Not sure if simply 'printing'
+        # sys.stderr is the correct way to do it, but it seemed
+        # to work properly for me.
+        self.level(sys.stderr)
+
+
+
