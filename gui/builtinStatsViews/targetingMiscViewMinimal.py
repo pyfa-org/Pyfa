@@ -24,7 +24,6 @@ from gui.utils.numberFormatter import formatAmount
 from collections import OrderedDict
 
 
-
 class TargetingMiscViewMinimal(StatsView):
     name = "targetingMiscViewMinimal"
 

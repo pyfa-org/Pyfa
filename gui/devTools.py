@@ -21,6 +21,11 @@
 import wx
 from logbook import Logger
 import gc
+import eos
+import time
+import threading
+from gui.builtinShipBrowser.events import FitSelected
+
 
 pyfalog = Logger(__name__)
 
@@ -48,13 +53,16 @@ class DevTools(wx.Dialog):
 
         self.gcCollect.Bind(wx.EVT_BUTTON, self.gc_collect)
 
+        self.fitTest = wx.Button(self, wx.ID_ANY, "Test fits", wx.DefaultPosition, wx.DefaultSize, 0)
+        mainSizer.Add(self.fitTest, 0, wx.EXPAND | wx.TOP | wx.BOTTOM, 5)
+
+        self.fitTest .Bind(wx.EVT_BUTTON, self.fit_test)
+
         self.SetSizer(mainSizer)
 
         self.Layout()
         self.CenterOnParent()
         self.Show()
-
-
 
     def objects_by_id(self, evt):
         input = self.id_get.GetValue()
@@ -77,3 +85,30 @@ class DevTools(wx.Dialog):
         print(gc.collect())
         print(gc.get_debug())
         print(gc.get_stats())
+
+    def fit_test(self, evt):
+        fits = eos.db.getFitList()
+        self.thread = FitTestThread([x.ID for x in fits], self.Parent)
+        self.thread.start()
+
+
+class FitTestThread(threading.Thread):
+    def __init__(self, fitIDs, mainFrame):
+        threading.Thread.__init__(self)
+        self.name = "FitTestThread"
+        self.mainFrame = mainFrame
+        self.stopRunning = False
+        self.fits = fitIDs
+
+    def stop(self):
+        self.stopRunning = True
+
+    def run(self):
+        # wait 1 second just in case a lot of modifications get made
+        if self.stopRunning:
+            return
+
+        for fit in self.fits:
+            time.sleep(1)
+            e = FitSelected(fitID=fit)
+            wx.PostEvent(self.mainFrame, e)

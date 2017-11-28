@@ -8,6 +8,7 @@ import wx
 
 from .helpers import AutoListCtrl
 
+
 class ItemEffects(wx.Panel):
     def __init__(self, parent, stuff, item):
         wx.Panel.__init__(self, parent)
@@ -127,5 +128,3 @@ class ItemEffects(wx.Panel):
         self.Layout()
         self.Thaw()
         event.Skip()
-
-

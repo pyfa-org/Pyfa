@@ -11,7 +11,7 @@ from gui.builtinShipBrowser.shipItem import ShipItem
 from service.fit import Fit
 from service.market import Market
 
-from gui.builtinShipBrowser.events import *
+from gui.builtinShipBrowser.events import EVT_SB_IMPORT_SEL, EVT_SB_STAGE1_SEL, EVT_SB_STAGE2_SEL, EVT_SB_STAGE3_SEL, EVT_SB_SEARCH_SEL
 from gui.builtinShipBrowser.pfWidgetContainer import PFWidgetsContainer
 from gui.builtinShipBrowser.navigationPanel import NavigationPanel
 from gui.builtinShipBrowser.raceSelector import RaceSelector

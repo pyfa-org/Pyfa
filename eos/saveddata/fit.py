@@ -756,7 +756,7 @@ class Fit(object):
 
         # Loop through our run times here. These determine which effects are run in which order.
         for runTime in ("early", "normal", "late"):
-            #pyfalog.debug("Run time: {0}", runTime)
+            # pyfalog.debug("Run time: {0}", runTime)
             # Items that are unrestricted. These items are run on the local fit
             # first and then projected onto the target fit it one is designated
             u = [
@@ -795,7 +795,7 @@ class Fit(object):
                         # targetFit.register(item, origin=self)
                         item.calculateModifiedAttributes(targetFit, runTime, False, True)
 
-            #pyfalog.debug("Command Bonuses: {}".format(self.commandBonuses))
+            # pyfalog.debug("Command Bonuses: {}".format(self.commandBonuses))
 
             # If we are calculating our local or projected fit and have command bonuses, apply them
             if type != CalcType.COMMAND and self.commandBonuses:

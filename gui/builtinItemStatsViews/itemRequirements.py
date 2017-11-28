@@ -37,5 +37,3 @@ class ItemRequirements(wx.Panel):
             if skill.ID not in self.skillIdHistory:
                 self.getFullSkillTree(skill, child, sbIconId)
                 self.skillIdHistory.append(skill.ID)
-
-

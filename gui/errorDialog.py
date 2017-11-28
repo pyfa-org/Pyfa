@@ -39,7 +39,7 @@ class ErrorHandler(object):
         with config.logging_setup.threadbound():
             # Print the base level traceback
             t = traceback.format_exception(exc_type, exc_value, exc_traceback)
-            pyfalog.critical("\n\n"+"".join(t))
+            pyfalog.critical("\n\n" + "".join(t))
 
             if cls.__parent is None:
                 app = wx.App(False)
@@ -59,8 +59,6 @@ class ErrorHandler(object):
 
 class ErrorFrame(wx.Frame):
     def __init__(self, parent=None, error_title='Error!'):
-        v = sys.version_info
-
         wx.Frame.__init__(self, parent, id=wx.ID_ANY, title="pyfa error", pos=wx.DefaultPosition, size=wx.Size(500, 600),
                           style=wx.DEFAULT_FRAME_STYLE ^ wx.RESIZE_BORDER | wx.STAY_ON_TOP)
 
@@ -98,7 +96,8 @@ class ErrorFrame(wx.Frame):
 
         # mainSizer.AddSpacer((0, 5), 0, wx.EXPAND, 5)
 
-        self.errorTextCtrl = wx.TextCtrl(self, wx.ID_ANY, version_block.strip(), wx.DefaultPosition, (-1, 400), wx.TE_MULTILINE | wx.TE_READONLY | wx.TE_RICH2 | wx.TE_DONTWRAP)
+        self.errorTextCtrl = wx.TextCtrl(self, wx.ID_ANY, version_block.strip(), wx.DefaultPosition,
+                                         (-1, 400), wx.TE_MULTILINE | wx.TE_READONLY | wx.TE_RICH2 | wx.TE_DONTWRAP)
         self.errorTextCtrl.SetFont(wx.Font(8, wx.FONTFAMILY_TELETYPE, wx.NORMAL, wx.NORMAL))
         mainSizer.Add(self.errorTextCtrl, 0, wx.EXPAND | wx.ALL | wx.ALIGN_CENTER, 5)
         self.errorTextCtrl.AppendText("\n")
@@ -112,7 +111,6 @@ class ErrorFrame(wx.Frame):
         self.Bind(wx.EVT_CLOSE, self.OnClose)
 
         self.Show()
-
 
     def OnClose(self, evt):
         self.Hide()

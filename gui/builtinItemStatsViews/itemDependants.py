@@ -51,5 +51,3 @@ class ItemDependents(wx.Panel):
                     itemIcon = -1
 
                 self.reqTree.AppendItem(child, "{}".format(item.name), itemIcon)
-
-

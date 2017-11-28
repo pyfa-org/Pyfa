@@ -1,4 +1,4 @@
-#===============================================================================
+# ===============================================================================
 # TogglePanel is based on PyCollapsiblePane - includes a few improvements
 # such as adding items to header, lack of button implementation ("GTK
 # expander" style is implemented with plain text with unicode arrows rather
@@ -10,7 +10,7 @@
 #
 # ToDo: Create animations for collapsing / expanding
 #
-#===============================================================================
+# ===============================================================================
 
 import wx
 
@@ -38,7 +38,7 @@ class TogglePanel (wx.Panel):
         # Add arrow
         self.header_arrow = wx.StaticText(self.header_panel, wx.ID_ANY,
                                           "\u25bc", size=wx.Size((10, -1)))
-        header_sizer.Add(self.header_arrow, 0,  wx.RIGHT, 5)
+        header_sizer.Add(self.header_arrow, 0, wx.RIGHT, 5)
 
         # Add header text
         self.header_label = wx.StaticText(self.header_panel, wx.ID_ANY, "")
@@ -120,7 +120,7 @@ class TogglePanel (wx.Panel):
             self.parent.Fit()
 
     def ToggleContent(self, event):
-        #self.Freeze()
+        # self.Freeze()
 
         if self._toggled:
             # If we are expanded, save previous size and collapse by setting
@@ -135,12 +135,13 @@ class TogglePanel (wx.Panel):
 
         self._toggled = not self._toggled
 
-        #self.Thaw()
+        # self.Thaw()
 
         if self.force_layout:
             self.parent.Layout()
         else:
             self.OnStateChange(self.GetBestSize())
+
 
 if __name__ == "__main__":
 
@@ -166,7 +167,7 @@ if __name__ == "__main__":
 
                 content_sizer = wx.BoxSizer(wx.HORIZONTAL)
                 header = wx.StaticText(content_panel, -1, "TogglePanel Test")
-                header.SetFont(wx.Font(10+(x*3), wx.SWISS, wx.NORMAL, wx.BOLD))
+                header.SetFont(wx.Font(10 + (x * 3), wx.SWISS, wx.NORMAL, wx.BOLD))
                 content_sizer.Add(header, 0, wx.ALL, 10)
                 content_panel.SetSizer(content_sizer)
 

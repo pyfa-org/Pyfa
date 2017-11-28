@@ -137,6 +137,7 @@ class OpenFitsThread(threading.Thread):
         wx.PostEvent(self.mainFrame, FitSelected(fitID=self.fits[-1], startup=2))
         wx.CallAfter(self.callback)
 
+
 # todo: include IPortUser again
 class MainFrame(wx.Frame):
     __instance = None
@@ -356,10 +357,9 @@ class MainFrame(wx.Frame):
         event.Skip()
 
     def ShowAboutBox(self, evt):
-        v = sys.version_info
         info = wx.adv.AboutDialogInfo()
         info.Name = "pyfa"
-        info.Version = config.getGitVersion() #  gui.aboutData.versionString
+        info.Version = config.getGitVersion()  # gui.aboutData.versionString
         #
         # try:
         #     import matplotlib

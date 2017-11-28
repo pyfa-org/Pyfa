@@ -25,7 +25,7 @@ import gui.mainFrame
 from gui.builtinMarketBrowser.events import ItemSelected, ITEM_SELECTED
 import gui.display as d
 from gui.contextMenu import ContextMenu
-from gui.builtinShipBrowser.events import *
+from gui.builtinShipBrowser.events import EVT_FIT_RENAMED, EVT_FIT_REMOVED, FitSelected, EVT_FIT_SELECTED
 import gui.multiSwitch
 from eos.saveddata.mode import Mode
 from eos.saveddata.module import Module, Slot, Rack
@@ -77,10 +77,10 @@ class FitSpawner(gui.multiSwitch.TabSpawner):
                 self.multiSwitch.AddPage()
 
             view = self.multiSwitch.GetSelectedPage()
-            
+
             if not isinstance(view, FittingView):
                 view = FittingView(self.multiSwitch)
-                print("###################### Created new view:"+repr(view))
+                print("###################### Created new view:" + repr(view))
                 self.multiSwitch.ReplaceActivePage(view)
 
             view.fitSelected(event)
@@ -221,7 +221,7 @@ class FittingView(d.Display):
             wx.PostEvent(self.mainFrame, FitSelected(fitID=fitID))
 
     def Destroy(self):
-        print("+++++ Destroy "+repr(self))
+        print("+++++ Destroy " + repr(self))
         print(self.parent.Unbind(EVT_NOTEBOOK_PAGE_CHANGED))
         print(self.mainFrame.Unbind(GE.FIT_CHANGED))
         print(self.mainFrame.Unbind(EVT_FIT_RENAMED))
@@ -312,7 +312,7 @@ class FittingView(d.Display):
         event.Skip()
 
     def fitSelected(self, event):
-        print('====== Fit Selected: '+repr(self)+str(bool(self)))
+        print('====== Fit Selected: ' + repr(self) + str(bool(self)))
 
         if self.parent.IsActive(self):
             fitID = event.fitID

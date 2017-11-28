@@ -1,7 +1,7 @@
 import wx
 
 from gui.cachingImageList import CachingImageList
-from gui.builtinMarketBrowser.events import *
+from gui.builtinMarketBrowser.events import RECENTLY_USED_MODULES
 
 from logbook import Logger
 

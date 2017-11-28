@@ -324,14 +324,14 @@ class SkillTreeView(wx.Panel):
 
         tree.AppendColumn("Skill")
         tree.AppendColumn("Level")
-        #tree.SetMainColumn(0)
+        # tree.SetMainColumn(0)
 
         self.root = tree.GetRootItem()
         # self.root = tree.AppendItem(root, "Skills")
         #
         # tree.SetItemText(self.root, 1, "Levels")
 
-        #tree.SetColumnWidth(0, 300)
+        # tree.SetColumnWidth(0, 300)
 
         self.btnSecStatus = wx.Button(self, wx.ID_ANY, "Sec Status: {0:.2f}".format(char.secStatus or 0.0))
         self.btnSecStatus.Bind(wx.EVT_BUTTON, self.onSecStatus)
@@ -621,7 +621,6 @@ class SkillTreeView(wx.Panel):
         if parent:
             if parent[1] in dirtyGroups:
                 self.skillTreeListCtrl.SetItemImage(parentID, self.skillBookImageId)
-
 
         event.Skip()
 

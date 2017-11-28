@@ -48,6 +48,8 @@ def isFrozen():
         return True
     else:
         return False
+
+
 def __createDirs(path):
     if not os.path.exists(path):
         os.makedirs(path)
@@ -104,7 +106,7 @@ def defPaths(customSavePath=None):
 
     __createDirs(savePath)
 
-    #if isFrozen():
+    # if isFrozen():
     #    os.environ["REQUESTS_CA_BUNDLE"] = os.path.join(pyfaPath, "cacert.pem")
     #    os.environ["SSL_CERT_FILE"] = os.path.join(pyfaPath, "cacert.pem")
 
@@ -140,6 +142,7 @@ def defPaths(customSavePath=None):
     # initialize the settings
     from service.settings import EOSSettings
     eos.config.settings = EOSSettings.getInstance().EOSSettings  # this is kind of confusing, but whatever
+
 
 def defLogging():
     global debug
@@ -230,6 +233,3 @@ class LoggerWriter(object):
         # sys.stderr is the correct way to do it, but it seemed
         # to work properly for me.
         self.level(sys.stderr)
-
-
-

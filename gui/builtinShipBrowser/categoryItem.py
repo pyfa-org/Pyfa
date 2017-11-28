@@ -8,7 +8,7 @@ import gui.utils.color as colorUtils
 import gui.utils.draw as drawUtils
 import gui.utils.fonts as fonts
 from gui.bitmap_loader import BitmapLoader
-from .events import *
+from .events import Stage2Selected
 
 pyfalog = Logger(__name__)
 

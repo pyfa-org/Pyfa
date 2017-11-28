@@ -8,7 +8,7 @@ import gui.mainFrame
 import gui.utils.color as colorUtils
 import gui.utils.draw as drawUtils
 import gui.utils.fonts as fonts
-from .events import *
+from .events import Stage3Selected, Stage2Selected, Stage1Selected, FitSelected
 from gui.bitmap_loader import BitmapLoader
 from gui.contextMenu import ContextMenu
 from service.fit import Fit

@@ -16,9 +16,9 @@ import gui.globalEvents as GE
 
 from logbook import Logger
 import calendar
-pyfalog = Logger(__name__)
-
 from service.crest import Crest, CrestModes
+
+pyfalog = Logger(__name__)
 
 
 class CrestFittings(wx.Frame):

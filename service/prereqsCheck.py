@@ -5,8 +5,10 @@ import platform
 
 version_block = ''
 
+
 class PreCheckException(Exception):
     pass
+
 
 class PreCheckMessage():
     def __init__(self, msg):
@@ -20,6 +22,7 @@ class PreCheckMessage():
             pass
         finally:
             print(msg)
+
 
 def version_precheck():
     global version_block

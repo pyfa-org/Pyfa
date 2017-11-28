@@ -9,7 +9,7 @@ from gui.utils.staticHelpers import DragDropHelper
 
 from logbook import Logger
 
-from gui.builtinMarketBrowser.events import *
+from gui.builtinMarketBrowser.events import RECENTLY_USED_MODULES, MAX_RECENTLY_USED_MODULES, ItemSelected
 
 pyfalog = Logger(__name__)
 

@@ -12,6 +12,7 @@ from service.market import Market
 from service.attribute import Attribute
 from gui.utils.numberFormatter import formatAmount
 
+
 class ItemParams(wx.Panel):
     def __init__(self, parent, stuff, item, context=None):
         wx.Panel.__init__(self, parent)
@@ -226,7 +227,7 @@ class ItemParams(wx.Panel):
                 self.paramList.SetItem(index, 2, valueUnitDefault)
         # @todo: pheonix, this lamda used cmp() which no longer exists in py3. Probably a better way to do this in the
         # long run, take a look
-        self.paramList.SortItems(lambda id1, id2: (idNameMap[id1]>idNameMap[id2])-(idNameMap[id1]<idNameMap[id2]))
+        self.paramList.SortItems(lambda id1, id2: (idNameMap[id1] > idNameMap[id2]) - (idNameMap[id1] < idNameMap[id2]))
         self.paramList.RefreshRows()
         self.totalAttrsLabel.SetLabel("%d attributes. " % idCount)
         self.Layout()
@@ -271,5 +272,3 @@ class ItemParams(wx.Panel):
             return "%s %s" % (fvalue, override[1])
         else:
             return "%s %s" % (formatAmount(value, 3, 0), unitName)
-
-

@@ -9,6 +9,7 @@ from service.market import Market
 from service.attribute import Attribute
 from gui.utils.numberFormatter import formatAmount
 
+
 class ItemCompare(wx.Panel):
     def __init__(self, parent, stuff, item, items, context=None):
         # Start dealing with Price stuff to get that thread going
@@ -205,5 +206,3 @@ class ItemCompare(wx.Panel):
             return "%s %s" % (fvalue, override[1])
         else:
             return "%s %s" % (formatAmount(value, 3, 0), unitName)
-
-

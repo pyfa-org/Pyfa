@@ -28,21 +28,22 @@ import config
 
 ascii_text = '''
 ++++++++++++++++++++++++++++++++++++++++++++++++++
-                             __       
-                            / _|      
-              _ __   _   _ | |_  __ _ 
+
+                            / _|
+              _ __   _   _ | |
              | '_ \ | | | ||  _|/ _` |
              | |_) || |_| || | | (_| |
              | .__/  \__, ||_|  \__,_|
-             | |      __/ |           
-             |_|     |___/            
+             | |      __/ |
+             |_|     |___/
 
-You are running a alpha/beta version of pyfa. 
+You are running a alpha/beta version of pyfa.
 
 ++++++++++++++++++++++++++++++++++++++++++++++++++
 '''
 
 print(ascii_text)
+
 
 class PassThroughOptionParser(OptionParser):
     """
@@ -58,6 +59,7 @@ class PassThroughOptionParser(OptionParser):
             except (BadOptionError, AmbiguousOptionError) as e:
                 # pyfalog.error("Bad startup option passed.")
                 largs.append(e.opt_str)
+
 
 # Parse command line options
 usage = "usage: %prog [--root]"

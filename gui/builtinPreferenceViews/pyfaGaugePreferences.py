@@ -1,14 +1,13 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-
 # noinspection PyPackageRequirements
 import wx
 import copy
 
 from gui.preferenceView import PreferenceView
 from gui.bitmap_loader import BitmapLoader
-from gui.utils import color
+from gui.utils.color import CalculateTransition
 import gui.utils.draw as drawUtils
 
 
@@ -110,44 +109,45 @@ class PFGaugePreview(wx.Window):
         self.Refresh()
 
     def OnPaint(self, event):
-        rect = self.GetClientRect()
-        dc = wx.AutoBufferedPaintDC(self)
-        dc.SetBackground(wx.Brush(self.bkColor))
-        dc.Clear()
-
-        value = float(self.value)
-        if self.percS >= 100:
-            w = rect.width
-        else:
-            w = rect.width * (float(value) / 100)
-        r = copy.copy(rect)
-        r.width = w
-
-        color = color.CalculateTransitionColor(self.colorS, self.colorE, float(value) / 100)
-        if self.gradientStart > 0:
-            gcolor = color.BrightenColor(color, float(self.gradientStart) / 100)
-            gMid = color.BrightenColor(color, float(self.gradientStart / 2) / 100)
-        else:
-            gcolor = color.DarkenColor(color, float(-self.gradientStart) / 100)
-            gMid = color.DarkenColor(color, float(-self.gradientStart / 2) / 100)
-
-        gBmp = drawUtils.DrawGradientBar(r.width, r.height, gMid, color, gcolor)
-        dc.DrawBitmap(gBmp, 0, 0)
-        dc.SetFont(self.font)
-
-        r = copy.copy(rect)
-        r.left += 1
-        r.top += 1
-
-        formatStr = "{0:." + str(self._fractionDigits) + "f}%"
-        value = (self.percE - self.percS) * value / (self.percE - self.percS)
-        value = self.percS + (self.percE - self.percS) * value / 100
-
-        dc.SetTextForeground(wx.Colour(80, 80, 80))
-        dc.DrawLabel(formatStr.format(value), r, wx.ALIGN_CENTER)
-
-        dc.SetTextForeground(wx.Colour(255, 255, 255))
-        dc.DrawLabel(formatStr.format(value), rect, wx.ALIGN_CENTER)
+        pass
+        # rect = self.GetClientRect()
+        # dc = wx.AutoBufferedPaintDC(self)
+        # dc.SetBackground(wx.Brush(self.bkColor))
+        # dc.Clear()
+        #
+        # value = float(self.value)
+        # if self.percS >= 100:
+        #     w = rect.width
+        # else:
+        #     w = rect.width * (float(value) / 100)
+        # r = copy.copy(rect)
+        # r.width = w
+        #
+        # color = CalculateTransitionColor(self.colorS, self.colorE, float(value) / 100)
+        # if self.gradientStart > 0:
+        #     gcolor = color.BrightenColor(color, float(self.gradientStart) / 100)
+        #     gMid = color.BrightenColor(color, float(self.gradientStart / 2) / 100)
+        # else:
+        #     gcolor = color.DarkenColor(color, float(-self.gradientStart) / 100)
+        #     gMid = color.DarkenColor(color, float(-self.gradientStart / 2) / 100)
+        #
+        # gBmp = drawUtils.DrawGradientBar(r.width, r.height, gMid, color, gcolor)
+        # dc.DrawBitmap(gBmp, 0, 0)
+        # dc.SetFont(self.font)
+        #
+        # r = copy.copy(rect)
+        # r.left += 1
+        # r.top += 1
+        #
+        # formatStr = "{0:." + str(self._fractionDigits) + "f}%"
+        # value = (self.percE - self.percS) * value / (self.percE - self.percS)
+        # value = self.percS + (self.percE - self.percS) * value / 100
+        #
+        # dc.SetTextForeground(wx.Colour(80, 80, 80))
+        # dc.DrawLabel(formatStr.format(value), r, wx.ALIGN_CENTER)
+        #
+        # dc.SetTextForeground(wx.Colour(255, 255, 255))
+        # dc.DrawLabel(formatStr.format(value), rect, wx.ALIGN_CENTER)
 
 
 class PFGaugePref(PreferenceView):

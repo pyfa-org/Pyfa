@@ -93,7 +93,7 @@ class ItemProperties(wx.Panel):
                 # We couldn't get a property for some reason. Skip it for now.
                 continue
 
-        self.paramList.SortItems(lambda id1, id2: (idNameMap[id1]>idNameMap[id2])-(idNameMap[id1]<idNameMap[id2]))
+        self.paramList.SortItems(lambda id1, id2: (idNameMap[id1] > idNameMap[id2]) - (idNameMap[id1] < idNameMap[id2]))
         self.paramList.RefreshRows()
         self.totalAttrsLabel.SetLabel("%d attributes. " % idCount)
         self.Layout()

@@ -11,7 +11,7 @@
 #       tab index?). This will also help with finding close buttons.
 # ToDo: Fix page preview code (PFNotebookPagePreview)
 #
-#===============================================================================
+#= ==============================================================================
 
 import wx
 import wx.lib.newevent
@@ -27,6 +27,7 @@ _PageAdding, EVT_NOTEBOOK_PAGE_ADDING = wx.lib.newevent.NewEvent()
 _PageClosing, EVT_NOTEBOOK_PAGE_CLOSING = wx.lib.newevent.NewEvent()
 PageAdded, EVT_NOTEBOOK_PAGE_ADDED = wx.lib.newevent.NewEvent()
 PageClosed, EVT_NOTEBOOK_PAGE_CLOSED = wx.lib.newevent.NewEvent()
+
 
 class VetoAble():
     def __init__(self):
@@ -412,7 +413,7 @@ class _TabRenderer:
         mdc.SelectObject(ebmp)
         mdc.SetFont(self.font)
         textSizeX, textSizeY = mdc.GetTextExtent(self.text)
-        totalSize = self.left_width + self.right_width + textSizeX + self.close_btn_width/2 + 16 + self.padding*2
+        totalSize = self.left_width + self.right_width + textSizeX + self.close_btn_width / 2 + 16 + self.padding* 2
         mdc.SelectObject(wx.NullBitmap)
         return totalSize, self.tab_height
 
@@ -512,7 +513,7 @@ class _TabRenderer:
         x_offset = self.content_width \
             + self.left_width \
             - self.ctab_close_bmp.GetWidth() / 2
-        y_offset = (self.tab_height - self.ctab_close_bmp.GetHeight())/2
+        y_offset = (self.tab_height - self.ctab_close_bmp.GetHeight()) / 2
         self.close_region.Offset(x_offset, y_offset)
 
     def InitColors(self):
@@ -580,8 +581,8 @@ class _TabRenderer:
 
             mdc.DrawBitmap(
                 cbmp,
-                self.content_width + self.left_width - cbmp.GetWidth()/2,
-                (height - cbmp.GetHeight())/2)
+                self.content_width + self.left_width - cbmp.GetWidth() / 2,
+                (height - cbmp.GetHeight()) / 2)
 
         mdc.SelectObject(wx.NullBitmap)
 
@@ -593,7 +594,6 @@ class _TabRenderer:
 
         bmp = wx.Bitmap(img)
         self.tab_bitmap = bmp
-
 
     def __repr__(self):
         return "_TabRenderer(text={}, disabled={}) at {}".format(
@@ -620,7 +620,7 @@ class _AddRenderer:
     def GetPosition(self):
         return self.position
 
-    def SetPosition(self,pos):
+    def SetPosition(self, pos):
         self.position = pos
 
     def GetSize(self):
@@ -869,7 +869,7 @@ class _TabsContainer(wx.Panel):
         for tab in self.tabs:
             if self.CheckTabClose(tab, mposx, mposy):
                 return
-            
+
     def DisableTab(self, tab, disabled=True):
         tb_renderer = self.tabs[tab]
         tb_renderer.disabled = disabled
@@ -1249,7 +1249,7 @@ class _TabsContainer(wx.Panel):
         selected = None
         for i in range(len(self.tabs) - 1, -1, -1):
             tab = self.tabs[i]
-            width = tab.tab_width - self.inclination*2
+            width = tab.tab_width - self.inclination * 2
             pos -= width
             if not tab.IsSelected():
                 tab.SetPosition((pos, self.container_height - self.height))
@@ -1260,12 +1260,8 @@ class _TabsContainer(wx.Panel):
         if selected is not skip_tab:
             selected.SetPosition((selpos, self.container_height - self.height))
 
-        self.add_button.SetPosition((
-            round(tabsWidth)
-            + self.inclination*2,
-            self.container_height
-            - self.height / 2
-            - self.add_button.GetHeight()/3))
+        self.add_button.SetPosition((round(tabsWidth) + self.inclination * 2,
+                                     self.container_height - self.height / 2 - self.add_button.GetHeight() / 3))
 
     def OnLeaveWindow(self, event):
         if self.start_drag and not self.dragging:
@@ -1292,7 +1288,7 @@ class _TabsContainer(wx.Panel):
                 if page.Snapshot():
                     self.preview_wnd = PFNotebookPagePreview(
                                                         self,
-                                                        (mposx+3, mposy+3),
+                                                        (mposx + 3, mposy + 3),
                                                         page.Snapshot(),
                                                         self.preview_tab.text)
                     self.preview_wnd.Show()
@@ -1332,13 +1328,13 @@ class PFNotebookPagePreview(wx.Frame):
         else:
             width = bitmap.GetWidth()
 
-        self.SetSize((width, bitmap.GetHeight()+16))
+        self.SetSize((width, bitmap.GetHeight() + 16))
 
         self.SetTransparent(0)
         self.Refresh()
 
     def OnTimer(self, event):
-        self.transp += 20*self.direction
+        self.transp += 20 * self.direction
 
         if self.transp > 220:
             self.transp = 220
@@ -1347,7 +1343,7 @@ class PFNotebookPagePreview(wx.Frame):
         if self.transp < 0:
             self.transp = 0
             self.timer.Stop()
-            wx.Frame.Show(self,False)
+            wx.Frame.Show(self, False)
             self.Destroy()
             return
         self.SetTransparent(self.transp)
@@ -1371,8 +1367,7 @@ class PFNotebookPagePreview(wx.Frame):
             self.direction = -1
             self.timer.Start(10)
 
-
-    def OnWindowEraseBk(self,event):
+    def OnWindowEraseBk(self, event):
         pass
 
     def OnWindowPaint(self, event):
@@ -1384,17 +1379,15 @@ class PFNotebookPagePreview(wx.Frame):
         mdc.SetBackground(wx.Brush(color))
         mdc.Clear()
 
-        font = wx.Font(10, wx.SWISS, wx.NORMAL,wx.NORMAL, False)
+        font = wx.Font(10, wx.SWISS, wx.NORMAL, wx.NORMAL, False)
         mdc.SetFont(font)
 
-        x,y = mdc.GetTextExtent(self.title)
+        x, y = mdc.GetTextExtent(self.title)
 
         mdc.SetBrush(wx.Brush(wx.SystemSettings.GetColour(wx.SYS_COLOUR_WINDOWTEXT)))
         mdc.DrawRectangle(0, 0, rect.width, 16)
 
         mdc.SetTextForeground(wx.SystemSettings.GetColour(wx.SYS_COLOUR_WINDOW))
-
-        mdc.DrawText(self.title, (rect.width - x)/2, (16 - y)/2)
 
         mdc.DrawBitmap(self.bitmap, 0, 16)
 

@@ -8,7 +8,7 @@ import gui.mainFrame
 import gui.utils.color as colorUtils
 import gui.utils.draw as drawUtils
 import gui.utils.fonts as fonts
-from .events import *
+from .events import FitSelected, SearchSelected, ImportSelected, Stage1Selected, Stage2Selected, Stage3Selected
 from gui.bitmap_loader import BitmapLoader
 from service.fit import Fit
 
@@ -271,4 +271,3 @@ class NavigationPanel(SFItem.SFBrowserItem):
             wx.PostEvent(self.Parent, ImportSelected(fits=data))
         else:
             wx.PostEvent(self.Parent, Stage1Selected())
-

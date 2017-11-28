@@ -13,7 +13,7 @@ import gui.mainFrame
 import gui.utils.color as colorUtils
 import gui.utils.draw as drawUtils
 import gui.utils.fonts as fonts
-from .events import *
+from .events import ImportSelected, SearchSelected, FitSelected, BoosterListUpdated, Stage3Selected, FitRenamed, FitRemoved
 from gui.bitmap_loader import BitmapLoader
 from gui.builtinShipBrowser.pfBitmapFrame import PFBitmapFrame
 from service.fit import Fit

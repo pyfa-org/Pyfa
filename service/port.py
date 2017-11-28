@@ -50,9 +50,9 @@ from utils.strfunctions import sequential_rep, replace_ltgt
 from abc import ABCMeta, abstractmethod
 
 from service.crest import Crest
+from collections import OrderedDict
 
 pyfalog = Logger(__name__)
-from collections import OrderedDict
 
 EFT_SLOT_ORDER = [Slot.LOW, Slot.MED, Slot.HIGH, Slot.RIG, Slot.SUBSYSTEM]
 INV_FLAGS = {

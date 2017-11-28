@@ -6,14 +6,14 @@ from . import color
 def RenderGradientBar(windowColor, width, height, sFactor, eFactor, mFactor=None , fillRatio=2):
 
     if sFactor == 0 and eFactor == 0 and mFactor is None:
-        return DrawFilledBitmap(width,height, windowColor)
+        return DrawFilledBitmap(width, height, windowColor)
 
     gStart = color.GetSuitable(windowColor, sFactor)
 
     if mFactor:
         gMid = color.GetSuitable(windowColor, mFactor)
     else:
-         gMid = color.GetSuitable(windowColor, sFactor + (eFactor - sFactor) / 2)
+        gMid = color.GetSuitable(windowColor, sFactor + (eFactor - sFactor) / 2)
 
     gEnd = color.GetSuitable(windowColor, eFactor)
 
@@ -21,7 +21,7 @@ def RenderGradientBar(windowColor, width, height, sFactor, eFactor, mFactor=None
 
 
 def DrawFilledBitmap(width, height, color):
-    canvas = wx.Bitmap(width,height)
+    canvas = wx.Bitmap(width, height)
 
     mdc = wx.MemoryDC()
     mdc.SelectObject(canvas)
@@ -33,8 +33,9 @@ def DrawFilledBitmap(width, height, color):
 
     return canvas
 
+
 def DrawGradientBar(width, height, gStart, gEnd, gMid=None, fillRatio=4):
-    canvas = wx.Bitmap(width,height)
+    canvas = wx.Bitmap(width, height)
 
     mdc = wx.MemoryDC()
     mdc.SelectObject(canvas)
@@ -47,7 +48,7 @@ def DrawGradientBar(width, height, gStart, gEnd, gMid=None, fillRatio=4):
 
     mdc.GradientFillLinear(r, gStart, gMid, wx.SOUTH)
     r.SetTop(r.GetHeight())
-    r.SetHeight(height * (fillRatio - 1)/fillRatio + (1 if height % fillRatio != 0 else 0))
+    r.SetHeight(height * (fillRatio - 1) / fillRatio + (1 if height % fillRatio != 0 else 0))
 
     mdc.GradientFillLinear(r, gMid, gEnd, wx.SOUTH)
 

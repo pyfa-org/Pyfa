@@ -5,7 +5,6 @@ import wx.html
 import re
 
 
-
 class ItemDescription(wx.Panel):
     def __init__(self, parent, stuff, item):
         wx.Panel.__init__(self, parent)
@@ -32,5 +31,3 @@ class ItemDescription(wx.Panel):
 
         mainSizer.Add(self.description, 1, wx.ALL | wx.EXPAND, 0)
         self.Layout()
-
-

@@ -28,10 +28,10 @@ import gui.globalEvents as GE
 from gui.bitmap_loader import BitmapLoader
 
 from logbook import Logger
-pyfalog = Logger(__name__)
-
 from service.crest import Crest
 from service.crest import CrestModes
+
+pyfalog = Logger(__name__)
 
 
 class MainMenuBar(wx.MenuBar):

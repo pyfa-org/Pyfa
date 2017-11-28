@@ -10,6 +10,7 @@ import gui.mainFrame
 from service.settings import HTMLExportSettings
 import wx.lib.agw.hyperlink
 
+
 class PFHTMLExportPref(PreferenceView):
     title = "HTML Export"
     desc = ("HTML Export (File > Export HTML) allows you to export your entire fitting "

@@ -723,7 +723,8 @@ _fmt = "%s:%s".__mod__
 
 
 def _cmp(self, a, b):
-    return (a>b)-(a<b)
+    return (a > b) - (a < b)
+
 
 class Row(object):
     # A Row is a single database record associated with a Rowset.
@@ -745,7 +746,6 @@ class Row(object):
 
     def __eq__(self, other):
         return self.__cmp__(other) == 0
-
 
     def __cmp__(self, other):
         if type(other) != type(self):

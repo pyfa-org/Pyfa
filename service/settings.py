@@ -19,7 +19,9 @@
 
 import pickle
 import os.path
-import urllib.request, urllib.error, urllib.parse
+import urllib.request
+import urllib.error
+import urllib.parse
 
 import config
 import eos.config

@@ -27,6 +27,7 @@ import gui.globalEvents as GE
 import gui.mainFrame
 from service.character import Character
 from service.fit import Fit
+from gui.utils.clipboard import toClipboard
 
 pyfalog = Logger(__name__)
 

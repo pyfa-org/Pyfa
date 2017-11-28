@@ -71,7 +71,6 @@ class UpdateDialog(wx.Dialog):
 
         versionSizer.Add(self.versionText, 1, wx.ALL, 5)
 
-
         mainSizer.Add(versionSizer, 0, wx.EXPAND, 0)
 
         releaseDate = dateutil.parser.parse(self.releaseInfo['published_at'])
