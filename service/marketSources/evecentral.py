@@ -40,48 +40,30 @@ class EveCentral(object):
         for typeID in types:  # Add all typeID arguments
             data.append(("typeid", typeID))
 
-        # Attempt to send request and process it
-        try:
-            network = Network.getInstance()
-            data = network.request(baseurl, network.PRICES, data)
-            xml = minidom.parse(data)
-            types = xml.getElementsByTagName("marketstat").item(0).getElementsByTagName("type")
-            # Cycle through all types we've got from request
-            for type_ in types:
-                # Get data out of each typeID details tree
-                typeID = int(type_.getAttribute("id"))
-                sell = type_.getElementsByTagName("sell").item(0)
-                # If price data wasn't there, set price to zero
-                try:
-                    percprice = float(sell.getElementsByTagName("percentile").item(0).firstChild.data)
-                except (TypeError, ValueError):
-                    pyfalog.warning("Failed to get price for: {0}", type_)
-                    percprice = 0
+        network = Network.getInstance()
+        data = network.request(baseurl, network.PRICES, data)
+        xml = minidom.parse(data)
+        types = xml.getElementsByTagName("marketstat").item(0).getElementsByTagName("type")
+        # Cycle through all types we've got from request
+        for type_ in types:
+            # Get data out of each typeID details tree
+            typeID = int(type_.getAttribute("id"))
+            sell = type_.getElementsByTagName("sell").item(0)
+            # If price data wasn't there, set price to zero
+            try:
+                percprice = float(sell.getElementsByTagName("percentile").item(0).firstChild.data)
+            except (TypeError, ValueError):
+                pyfalog.warning("Failed to get price for: {0}", type_)
+                percprice = 0
 
-                # Fill price data
-                priceobj = priceMap[typeID]
-                priceobj.price = percprice
-                priceobj.time = time.time() + VALIDITY
-                priceobj.failed = None
+            # Fill price data
+            priceobj = priceMap[typeID]
+            priceobj.price = percprice
+            priceobj.time = time.time() + VALIDITY
+            priceobj.failed = None
 
-                # delete price from working dict
-                del priceMap[typeID]
-
-        # If getting or processing data returned any errors
-        except TimeoutError:
-            # Timeout error deserves special treatment
-            pyfalog.warning("Price fetch timout")
-            for typeID in priceMap.keys():
-                priceobj = priceMap[typeID]
-                priceobj.time = time.time() + TIMEOUT
-                priceobj.failed = True
-
-                del priceMap[typeID]
-        except:
-            # all other errors will pass and continue onward to the REREQUEST delay
-            pyfalog.warning("Caught exception in fetchPrices")
-            pass
-        pass
+            # delete price from working dict
+            del priceMap[typeID]
 
 
 Price.register(EveCentral)

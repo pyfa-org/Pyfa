@@ -19,10 +19,10 @@ debug = False
 saveInRoot = False
 
 # Version data
-version = "1.33.3"
-tag = "git"
-expansionName = "Lifeblood"
-expansionVersion = "1.7"
+version = "1.34.0"
+tag = "Stable"
+expansionName = " Arms Race"
+expansionVersion = "1.3"
 evemonMinVersion = "4081"
 
 pyfaPath = None

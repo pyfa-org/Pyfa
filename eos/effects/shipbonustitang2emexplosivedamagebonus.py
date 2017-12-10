@@ -1,4 +1,4 @@
-# shipBonusTitanG2AllDamageBonus
+# shipBonusTitanG2EMExplosiveDamageBonus
 #
 # Used by:
 # Ship: Komodo

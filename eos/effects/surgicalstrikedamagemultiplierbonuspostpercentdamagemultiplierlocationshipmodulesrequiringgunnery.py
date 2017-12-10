@@ -1,7 +1,7 @@
 # surgicalStrikeDamageMultiplierBonusPostPercentDamageMultiplierLocationShipModulesRequiringGunnery
 #
 # Used by:
-# Implants named like: Agency Damage Booster (3 of 3)
+# Implants named like: Agency 'Pyrolancea' DB Dose (3 of 3)
 # Implants named like: Eifyr and Co. 'Gunslinger' Surgical Strike SS (6 of 6)
 # Implant: Standard Cerebral Accelerator
 type = "passive"

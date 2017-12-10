@@ -1,7 +1,7 @@
 # missileSkillWarheadUpgradesExplosiveDamageBonus
 #
 # Used by:
-# Implants named like: Agency Damage Booster (3 of 3)
+# Implants named like: Agency 'Pyrolancea' DB Dose (3 of 3)
 # Skill: Warhead Upgrades
 type = "passive"
 

@@ -1,7 +1,7 @@
 # shipBonusHeavyDroneArmorHpPirateFaction
 #
 # Used by:
-# Ships named like: Rattlesnake (2 of 2)
+# Ship: Rattlesnake
 type = "passive"
 
 

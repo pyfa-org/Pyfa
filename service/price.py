@@ -105,10 +105,33 @@ class Price(object):
             return
 
         # attempt to find user's selected price source, otherwise get first one
-        sourceCls = cls.sources.get(sFit.serviceFittingOptions["priceSource"], cls.sources[cls.sources.keys()[0]])
-        sourceCls(toRequest, cls.systemsList[sFit.serviceFittingOptions["priceSystem"]], priceMap)
+        sourcesToTry = list(cls.sources.keys())
+        curr = sFit.serviceFittingOptions["priceSource"] if sFit.serviceFittingOptions["priceSource"] in sourcesToTry else sourcesToTry[0]
 
-        # if we get to this point, then we've got an error. Set to REREQUEST delay
+        while len(sourcesToTry) > 0:
+            sourcesToTry.remove(curr)
+            try:
+                sourceCls = cls.sources.get(curr)
+                sourceCls(toRequest, cls.systemsList[sFit.serviceFittingOptions["priceSystem"]], priceMap)
+                break
+                # If getting or processing data returned any errors
+            except TimeoutError:
+                # Timeout error deserves special treatment
+                pyfalog.warning("Price fetch timout")
+                for typeID in priceMap.keys():
+                    priceobj = priceMap[typeID]
+                    priceobj.time = time.time() + TIMEOUT
+                    priceobj.failed = True
+
+                    del priceMap[typeID]
+            except Exception as ex:
+                # something happened, try another source
+                pyfalog.warn('Failed to fetch prices from price source {}: {}'.format(curr, ex, sourcesToTry[0]))
+                if len(sourcesToTry) > 0:
+                    pyfalog.warn('Trying {}'.format(sourcesToTry[0]))
+                    curr = sourcesToTry[0]
+
+        # if we get to this point, then we've got an error in all of our sources. Set to REREQUEST delay
         for typeID in priceMap.keys():
             priceobj = priceMap[typeID]
             priceobj.time = time.time() + REREQUEST

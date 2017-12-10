@@ -1,6 +1,7 @@
 # shipStasisWebStrengthBonusMC2
 #
 # Used by:
+# Ship: Victor
 # Ship: Vigilant
 type = "passive"
 

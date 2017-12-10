@@ -228,8 +228,6 @@ class Market(object):
             "Guristas Shuttle"                         : False,
             "Mobile Decoy Unit"                        : False,  # Seems to be left over test mod for deployables
             "Tournament Micro Jump Unit"               : False,  # Normally seen only on tournament arenas
-            "Victor": False,  # See GH Issue 1323
-            "Virtuoso": False,  # See GH Issue 1323
         }
 
         # do not publish ships that we convert

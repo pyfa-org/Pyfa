@@ -2,6 +2,7 @@
 #
 # Used by:
 # Ship: Daredevil
+# Ship: Virtuoso
 type = "passive"
 
 
