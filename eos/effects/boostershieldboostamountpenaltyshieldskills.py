@@ -1,3 +1,9 @@
+# boosterShieldBoostAmountPenaltyShieldSkills
+#
+# Used by:
+# Implants named like: Crash Booster (3 of 4)
+# Implants named like: Frentix Booster (3 of 4)
+# Implants named like: Mindflood Booster (3 of 4)
 type = "boosterSideEffect"
 
 # User-friendly name for the side effect

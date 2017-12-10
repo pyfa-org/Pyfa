@@ -197,7 +197,12 @@ class TargetingMiscViewFull(StatsView):
                     elif labelName == "labelFullSigRadius":
                         label.SetToolTip(wx.ToolTip("Probe Size: %.3f" % (fit.probeSize or 0)))
                     elif labelName == "labelFullWarpSpeed":
-                        label.SetToolTip(wx.ToolTip("Max Warp Distance: %.1f AU" % fit.maxWarpDistance))
+                        maxWarpDistance = "Max Warp Distance: %.1f AU" % fit.maxWarpDistance
+                        if fit.ship.getModifiedItemAttr("warpScrambleStatus"):
+                            warpScrambleStatus = "Warp Core Strength: %.1f" % (fit.ship.getModifiedItemAttr("warpScrambleStatus") * -1)
+                        else:
+                            warpScrambleStatus = "Warp Core Strength: %.1f" % 0
+                        label.SetToolTip(wx.ToolTip("%s\n%s" % (maxWarpDistance, warpScrambleStatus)))
                     elif labelName == "labelSensorStr":
                         if fit.jamChance > 0:
                             label.SetToolTip(
@@ -222,9 +227,12 @@ class TargetingMiscViewFull(StatsView):
                 self._cachedValues[counter] = newValues
             elif labelName == "labelFullWarpSpeed":
                 if fit:
-                    label.SetToolTip(wx.ToolTip("Max Warp Distance: %.1f AU" % fit.maxWarpDistance))
-                else:
-                    label.SetToolTip(wx.ToolTip(""))
+                    maxWarpDistance = "Max Warp Distance: %.1f AU" % fit.maxWarpDistance
+                    if fit.ship.getModifiedItemAttr("warpScrambleStatus"):
+                        warpScrambleStatus = "Warp Core Strength: %.1f" % (fit.ship.getModifiedItemAttr("warpScrambleStatus") * -1)
+                    else:
+                        warpScrambleStatus = "Warp Core Strength: %.1f" % 0
+                    label.SetToolTip(wx.ToolTip("%s\n%s" % (maxWarpDistance, warpScrambleStatus)))
             elif labelName == "labelSensorStr":
                 if fit:
                     if fit.jamChance > 0:

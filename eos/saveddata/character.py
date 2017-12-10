@@ -158,9 +158,7 @@ class Character(object):
             name += " *"
 
         if self.alphaCloneID:
-            clone = eos.db.getAlphaClone(self.alphaCloneID)
-            type = clone.alphaCloneName.split()[1]
-            name += u' (\u03B1{})'.format(type[0].upper())
+            name += u' (\u03B1)'
 
         return name
 

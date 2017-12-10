@@ -8,4 +8,4 @@ runTime = "early"
 
 def handler(fit, ship, context):
     fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill("Cloaking"),
-                                  "cpu", ship.getModifiedItemAttr("eliteBonusCoverOps1"), skill="Covert Ops")
+                                  "cpu", ship.getModifiedItemAttr("eliteBonusCovertOps1"), skill="Covert Ops")

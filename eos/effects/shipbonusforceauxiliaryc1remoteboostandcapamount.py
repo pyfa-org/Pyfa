@@ -1,7 +1,6 @@
 # shipBonusForceAuxiliaryC1RemoteBoostAndCapAmount
 #
 # Used by:
-# Ship: Loggerhead
 # Ship: Minokawa
 type = "passive"
 
