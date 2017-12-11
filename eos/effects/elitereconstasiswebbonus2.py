@@ -4,6 +4,7 @@
 # Ship: Huginn
 # Ship: Moracha
 # Ship: Rapier
+# Ship: Victor
 type = "passive"
 
 

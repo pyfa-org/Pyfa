@@ -1,7 +1,7 @@
 # boosterShieldCapacityPenalty
 #
 # Used by:
-# Implants from group: Booster (12 of 52)
+# Implants from group: Booster (12 of 54)
 type = "boosterSideEffect"
 
 # User-friendly name for the side effect

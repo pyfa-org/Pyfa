@@ -126,6 +126,7 @@ class Network(object):
                 raise AuthenticationError()
             elif error.code >= 500:
                 raise ServerError()
+            raise Error(error)
         except urllib.error.URLError as error:
             pyfalog.warning("Timed out or other URL error:")
             pyfalog.warning(error)

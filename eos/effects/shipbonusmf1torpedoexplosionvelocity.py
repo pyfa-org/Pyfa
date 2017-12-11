@@ -2,6 +2,7 @@
 #
 # Used by:
 # Ship: Hound
+# Ship: Virtuoso
 type = "passive"
 
 
