@@ -33,7 +33,9 @@ targetResists_table = Table("targetResists", saveddata_meta,
                             Column("explosiveAmount", Float),
                             Column("ownerID", ForeignKey("users.ID"), nullable=True),
                             Column("created", DateTime, nullable=True, default=datetime.datetime.now),
-                            Column("modified", DateTime, nullable=True, onupdate=datetime.datetime.now)
+                            Column("modified", DateTime, nullable=True, onupdate=datetime.datetime.now),
+                            Column("signatureRadius", Float),
+                            Column("maxVelocity", Float)
                             )
 
 mapper(TargetResists, targetResists_table)

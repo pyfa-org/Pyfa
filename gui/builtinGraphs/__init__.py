@@ -1,1 +1,1 @@
-__all__ = ["fitDps"]
+__all__ = ["fitDps","fitDpsSim"]

@@ -19,7 +19,10 @@
 
 # noinspection PyPackageRequirements
 import wx
+import gui.mainFrame
+import gui.globalEvents as GE
 from service.targetResists import TargetResists
+from service.fit import Fit
 from gui.bitmapLoader import BitmapLoader
 from gui.utils.clipboard import toClipboard, fromClipboard
 from gui.builtinViews.entityEditor import EntityEditor, BaseValidator
@@ -42,9 +45,9 @@ class TargetResistsTextValidor(BaseValidator):
 
         try:
             if len(text) == 0:
-                raise ValueError("You must supply a name for your Target Resist Profile!")
+                raise ValueError("You must supply a name for your Target Profile!")
             elif text in [x.name for x in entityEditor.choices]:
-                raise ValueError("Target Resist Profile name already in use, please choose another.")
+                raise ValueError("Target Profile name already in use, please choose another.")
 
             return True
         except ValueError as e:
@@ -56,7 +59,7 @@ class TargetResistsTextValidor(BaseValidator):
 
 class TargetResistsEntityEditor(EntityEditor):
     def __init__(self, parent):
-        EntityEditor.__init__(self, parent, "Target Resist Profile")
+        EntityEditor.__init__(self, parent, "Target Profile")
         self.SetEditorValidator(TargetResistsTextValidor)
 
     def getEntitiesFromContext(self):
@@ -85,9 +88,11 @@ class TargetResistsEntityEditor(EntityEditor):
 
 class ResistsEditorDlg(wx.Dialog):
     DAMAGE_TYPES = ("em", "thermal", "kinetic", "explosive")
+    ATTRIBUTES = ("signatureRadius", "maxVelocity")
 
     def __init__(self, parent):
-        wx.Dialog.__init__(self, parent, id=wx.ID_ANY, title=u"Target Resists Editor", size=wx.Size(350, 240))
+        wx.Dialog.__init__(self, parent, id=wx.ID_ANY, title=u"Target Profile Editor", size=wx.Size(350, 240))
+        self.mainFrame = gui.mainFrame.MainFrame.getInstance()
 
         self.block = False
         self.SetSizeHintsSz(wx.DefaultSize, wx.DefaultSize)
@@ -102,13 +107,30 @@ class ResistsEditorDlg(wx.Dialog):
 
         contentSizer = wx.BoxSizer(wx.VERTICAL)
 
-        resistEditSizer = wx.FlexGridSizer(2, 6, 0, 2)
+        resistEditSizer = wx.FlexGridSizer(3, 6, 0, 2)
         resistEditSizer.AddGrowableCol(0)
         resistEditSizer.AddGrowableCol(5)
         resistEditSizer.SetFlexibleDirection(wx.BOTH)
         resistEditSizer.SetNonFlexibleGrowMode(wx.FLEX_GROWMODE_SPECIFIED)
 
         defSize = wx.Size(50, -1)
+
+        for i, attr in enumerate(self.ATTRIBUTES):
+            if i % 2:
+                style = wx.ALIGN_CENTER_VERTICAL | wx.ALIGN_RIGHT | wx.LEFT
+                border = 25
+            else:
+                style = wx.ALIGN_CENTER_VERTICAL | wx.ALIGN_RIGHT
+                border = 5
+            bmp = wx.StaticBitmap(self, wx.ID_ANY, BitmapLoader.getBitmap("22_%d" % (14-i,), "icons")) # TODO get larger gui icons for signatureRadius and maxVelocity
+            resistEditSizer.Add(bmp, 0, style, border)
+            # set text edit
+            setattr(self, "%sEdit" % attr, wx.TextCtrl(self, wx.ID_ANY, "", wx.DefaultPosition, defSize))
+            editObj = getattr(self, "%sEdit" % attr)
+            resistEditSizer.Add(editObj, 0, wx.BOTTOM | wx.TOP | wx.ALIGN_CENTER_VERTICAL, 5)
+            resistEditSizer.Add(wx.StaticText(self, wx.ID_ANY, u"m" if i == 0 else u"m/s", wx.DefaultPosition, wx.DefaultSize, 0), 0,
+                                wx.BOTTOM | wx.TOP | wx.ALIGN_CENTER_VERTICAL, 5)
+            editObj.Bind(wx.EVT_TEXT, self.ValuesUpdated)
 
         for i, type_ in enumerate(self.DAMAGE_TYPES):
             if i % 2:
@@ -170,7 +192,7 @@ class ResistsEditorDlg(wx.Dialog):
             btn.Layout()
             setattr(self, name, btn)
             btn.Enable(True)
-            btn.SetToolTipString("%s patterns %s clipboard" % (name, direction))
+            btn.SetToolTipString("%s profiles %s clipboard" % (name, direction))
             footerSizer.Add(btn, 0, wx.ALIGN_CENTER_HORIZONTAL | wx.ALIGN_RIGHT)
             btn.Bind(wx.EVT_BUTTON, getattr(self, "{}Patterns".format(name.lower())))
 
@@ -184,13 +206,24 @@ class ResistsEditorDlg(wx.Dialog):
         self.CenterOnParent()
 
         self.Bind(wx.EVT_CHOICE, self.patternChanged)
+        self.Bind(wx.EVT_CLOSE, self.onClose)
 
         self.patternChanged()
 
         self.ShowModal()
 
     def closeEvent(self, event):
-        self.Destroy()
+        self.Close()
+
+    def onClose(self, event):
+        sFit = Fit.getInstance()
+        fitID = self.mainFrame.getActiveFit()
+        if fitID:
+            fit = sFit.getFit(fitID)
+            if fit and fit.targetResists:
+                sFit.recalc(fit)
+                wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fitID))
+        event.Skip()
 
     def ValuesUpdated(self, event=None):
         """
@@ -206,6 +239,28 @@ class ResistsEditorDlg(wx.Dialog):
 
         try:
             p = self.entityEditor.getActiveEntity()
+
+            for attr in self.ATTRIBUTES:
+                editObj = getattr(self, "%sEdit" % attr)
+
+                if editObj.GetValue() == "" and attr != "signatureRadius":
+                    # if we are blank, overwrite with 0 except for signatureRadius
+                    editObj.ChangeValue("0.0")
+                    editObj.SetInsertionPointEnd()
+
+                value = float(editObj.GetValue() or 0)
+
+                if editObj.GetValue() != "" and attr == "signatureRadius" and value == 0:
+                    # if we are zero, overwrite with blank for signatureRadius
+                    editObj.ChangeValue("")
+                    editObj.SetInsertionPointEnd()
+
+                # assertion, because they're easy
+                assert 0 <= value
+
+                # if everything checks out, set attribute
+                setattr(p, attr, value)
+                editObj.SetForegroundColour(self.colorReset)
 
             for type_ in self.DAMAGE_TYPES:
                 editObj = getattr(self, "%sEdit" % type_)
@@ -231,6 +286,7 @@ class ResistsEditorDlg(wx.Dialog):
                 event.Skip()
 
             TargetResists.getInstance().saveChanges(p)
+            wx.PostEvent(self.mainFrame, GE.TargetResistsChanged(name=p.name))
 
         except ValueError:
             editObj.SetForegroundColour(wx.RED)
@@ -258,6 +314,11 @@ class ResistsEditorDlg(wx.Dialog):
 
         self.block = True
         # Set new values
+        for attr in self.ATTRIBUTES:
+            edit = getattr(self, "%sEdit" % attr)
+            amount = getattr(p, attr)
+            edit.ChangeValue(str(amount or ("" if attr == "signatureRadius" else 0.0)))
+
         for field in self.DAMAGE_TYPES:
             edit = getattr(self, "%sEdit" % field)
             amount = getattr(p, "%sAmount" % field) * 100
@@ -277,7 +338,8 @@ class ResistsEditorDlg(wx.Dialog):
             sTR = TargetResists.getInstance()
             try:
                 sTR.importPatterns(text)
-                self.stNotice.SetLabel("Patterns successfully imported from clipboard")
+                self.stNotice.SetLabel("Profiles successfully imported from clipboard")
+                wx.PostEvent(self.mainFrame, GE.TargetResistsChanged())
             except ImportError as e:
                 pyfalog.error(e)
                 self.stNotice.SetLabel(str(e))
@@ -295,4 +357,4 @@ class ResistsEditorDlg(wx.Dialog):
         """Event fired when export to clipboard button is clicked"""
         sTR = TargetResists.getInstance()
         toClipboard(sTR.exportPatterns())
-        self.stNotice.SetLabel("Patterns exported to clipboard")
+        self.stNotice.SetLabel("Profiles exported to clipboard")

@@ -27,6 +27,7 @@ from eos.saveddata.drone import Drone
 from eos.saveddata.fighter import Fighter
 from eos.saveddata.module import Module, Slot, Rack
 from eos.saveddata.fit import Fit
+from eos.saveddata.targetResists import TargetResists
 from service.fit import Fit as FitSvc
 from gui.viewColumn import ViewColumn
 import gui.mainFrame
@@ -41,7 +42,7 @@ class BaseName(ViewColumn):
         ViewColumn.__init__(self, fittingView)
 
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
-        self.columnText = "Name"
+        self.columnText = params["columnText"] if params != None else "Name"
         self.shipImage = fittingView.imageList.GetImageIndex("ship_small", "gui")
         self.mask = wx.LIST_MASK_TEXT
         self.projectedView = isinstance(fittingView, gui.builtinAdditionPanes.projectedView.ProjectedView)
@@ -83,6 +84,12 @@ class BaseName(ViewColumn):
                 return stuff.item.name
         elif isinstance(stuff, Implant):
             return stuff.item.name
+        elif isinstance(stuff, TargetResists):
+            name = getattr(stuff, "name")
+            if name is None:
+                pyfalog.warning("no name for TargetResists instance")
+                name = "?"
+            return name
         else:
             item = getattr(stuff, "item", stuff)
 
@@ -96,6 +103,10 @@ class BaseName(ViewColumn):
                     return shortcut + item.name
 
             return item.name
+
+    @staticmethod
+    def getParameters():
+        return (("columnText", str, "Name"),)
 
 
 BaseName.register()

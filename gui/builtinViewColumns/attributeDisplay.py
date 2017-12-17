@@ -26,6 +26,7 @@ from gui.utils.numberFormatter import formatAmount
 
 from service.attribute import Attribute
 from service.market import Market
+from eos.saveddata.fit import Fit
 
 
 class AttributeDisplay(ViewColumn):
@@ -36,6 +37,7 @@ class AttributeDisplay(ViewColumn):
         sAttr = Attribute.getInstance()
         info = sAttr.getAttributeInfo(params["attribute"])
         self.info = info
+        self.direct = False
         if params["showIcon"]:
             if info.name == "power":
                 iconFile = "pg_small"
@@ -71,7 +73,9 @@ class AttributeDisplay(ViewColumn):
             fittingView.refresh = refresh
 
     def getText(self, mod):
-        if hasattr(mod, "item"):
+        if isinstance(mod, Fit):
+            attr = mod.ship.getModifiedItemAttr(self.info.name)
+        elif hasattr(mod, "item"):
             attr = mod.getModifiedItemAttr(self.info.name)
         else:
             if self.direct:

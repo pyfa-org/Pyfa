@@ -73,8 +73,6 @@ class Fighter(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
     def build(self):
         """ Build object. Assumes proper and valid item already set """
         self.__charge = None
-        self.__dps = None
-        self.__volley = None
         self.__miningyield = None
         self.__itemModifiedAttributes = ModifiedAttributeDict()
         self.__chargeModifiedAttributes = ModifiedAttributeDict()
@@ -159,39 +157,36 @@ class Fighter(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
     def dps(self):
         return self.damageStats()
 
-    def damageStats(self, targetResists=None):
-        if self.__dps is None:
-            self.__volley = 0
-            self.__dps = 0
-            if self.active and self.amountActive > 0:
-                for ability in self.abilities:
-                    dps, volley = ability.damageStats(targetResists)
-                    self.__dps += dps
-                    self.__volley += volley
+    def damageStats(self, emRes=0, thRes=0, kiRes=0, exRes=0, distance=0, signatureRadius=0, speed=0, transversal=0):
+        if (not self.active) or (self.amountActive < 1):
+            return 0, 0
 
-                # For forward compatability this assumes a fighter
-                # can have more than 2 damaging abilities and/or
-                # multiple that use charges.
-                if self.owner.factorReload:
-                    activeTimes = []
-                    reloadTimes = []
-                    constantDps = 0
-                    for ability in self.abilities:
-                        if not ability.active:
-                            continue
-                        if ability.numShots == 0:
-                            dps, volley = ability.damageStats(targetResists)
-                            constantDps += dps
-                            continue
-                        activeTimes.append(ability.numShots * ability.cycleTime)
-                        reloadTimes.append(ability.reloadTime)
+        for ability in self.abilities: #TODO this overwrites! only take the last one? should it sum?
+            dps, volley = ability.damageStats(emRes, thRes, kiRes, exRes, distance, signatureRadius, speed, transversal)
 
-                    if len(activeTimes) > 0:
-                        shortestActive = sorted(activeTimes)[0]
-                        longestReload = sorted(reloadTimes, reverse=True)[0]
-                        self.__dps = max(constantDps, self.__dps * shortestActive / (shortestActive + longestReload))
+        # For forward compatability this assumes a fighter
+        # can have more than 2 damaging abilities and/or
+        # multiple that use charges.
+        if self.owner.factorReload:
+            activeTimes = []
+            reloadTimes = []
+            constantDps = 0
+            for ability in self.abilities:
+                if not ability.active:
+                    continue
+                if ability.numShots == 0:
+                    cdps, _ = ability.damageStats(emRes, thRes, kiRes, exRes, distance, signatureRadius, speed, transversal)
+                    constantDps += cdps
+                    continue
+                activeTimes.append(ability.numShots * ability.cycleTime)
+                reloadTimes.append(ability.reloadTime)
 
-        return self.__dps, self.__volley
+            if len(activeTimes) > 0:
+                shortestActive = sorted(activeTimes)[0]
+                longestReload = sorted(reloadTimes, reverse=True)[0]
+                dps = max(constantDps, dps * shortestActive / (shortestActive + longestReload))
+
+        return dps, volley
 
     @property
     def maxRange(self):
@@ -234,8 +229,6 @@ class Fighter(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
             return val
 
     def clear(self):
-        self.__dps = None
-        self.__volley = None
         self.__miningyield = None
         self.itemModifiedAttributes.clear()
         self.chargeModifiedAttributes.clear()

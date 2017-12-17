@@ -4,7 +4,11 @@ from eos.saveddata.implant import Implant
 from eos.saveddata.drone import Drone
 from eos.saveddata.module import Module, Slot, Rack
 from eos.saveddata.fit import Fit
+from eos.saveddata.targetResists import TargetResists
 from gui.viewColumn import ViewColumn
+from logbook import Logger
+
+pyfalog = Logger(__name__)
 
 
 class BaseIcon(ViewColumn):
@@ -36,8 +40,13 @@ class BaseIcon(ViewColumn):
                                                                 "gui")
             else:
                 return self.loadIconFile(stuff.item.icon.iconFile if stuff.item.icon else "")
+        elif isinstance(stuff, TargetResists):
+            return self.fittingView.imageList.GetImageIndex("explosive_small", "gui")
 
         item = getattr(stuff, "item", stuff)
+        if not hasattr(item, "icon"):
+            pyfalog.critical("item class %s has no .icon attribute" % (type(stuff).__name__,))
+            return -1
         return self.loadIconFile(item.icon.iconFile if item.icon else "")
 
     def loadIconFile(self, iconFile):

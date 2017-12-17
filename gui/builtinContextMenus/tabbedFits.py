@@ -16,7 +16,7 @@ class TabbedFits(ContextMenu):
 
     def display(self, srcContext, selection):
 
-        if self.mainFrame.getActiveFit() is None or srcContext not in ("projected", "commandView"):
+        if self.mainFrame.getActiveFit() is None or srcContext not in ("projected", "commandView", "graphAttacker", "graphTargetFitsResists", "graphTargetFits"):
             return False
 
         return True
@@ -45,7 +45,7 @@ class TabbedFits(ContextMenu):
             id = ContextMenu.nextID()
             mitem = wx.MenuItem(rootMenu, id, u"{}: {}".format(fit.ship.item.name, fit.name))
             bindmenu.Bind(wx.EVT_MENU, self.handleSelection, mitem)
-            self.fitLookup[id] = fit
+            self.fitLookup[id] = (page.activeFitID,fit)
             m.AppendItem(mitem)
 
         return m
@@ -54,12 +54,16 @@ class TabbedFits(ContextMenu):
         sFit = Fit.getInstance()
         fitID = self.mainFrame.getActiveFit()
 
-        fit = self.fitLookup[event.Id]
+        selFitID,selFit = self.fitLookup[event.Id]
 
         if self.context == 'commandView':
-            sFit.addCommandFit(fitID, fit)
+            sFit.addCommandFit(fitID, selFit)
         elif self.context == 'projected':
-            sFit.project(fitID, fit)
+            sFit.project(fitID, selFit)
+        elif self.context == "graphAttacker":
+            self.mainFrame.graphFrame.AppendFitToList(selFitID)
+        elif self.context in ("graphTargetFitsResists", "graphTargetFits"):
+            self.mainFrame.graphFrame.addTargetFit(selFitID)
 
         wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fitID))
 

@@ -20,7 +20,7 @@
 from logbook import Logger
 
 from sqlalchemy.orm import validates, reconstructor
-from math import floor
+from math import floor, sin, radians, exp
 
 import eos.db
 from eos.effectHandlerHelpers import HandledItem, HandledCharge
@@ -318,27 +318,68 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
 
         self.__itemModifiedAttributes.clear()
 
-    def damageStats(self, targetResists):
-        if self.__dps is None:
-            self.__dps = 0
-            self.__volley = 0
+    def calculateTrackingMultiplier(self, distance, signatureRadius, transversal):
+        tracking = self.getModifiedItemAttr("trackingSpeed")
+        optSigRes = self.getModifiedItemAttr("optimalSigRadius")
+        tgtSigRad = signatureRadius or optSigRes
+        return 0.5 ** (((transversal / (max(1,distance) * tracking)) * (optSigRes / tgtSigRad)) ** 2)
 
-            if not self.isEmpty and self.state >= State.ACTIVE:
-                if self.charge:
-                    func = self.getModifiedChargeAttr
-                else:
-                    func = self.getModifiedItemAttr
+    def calculateFalloffMultiplier(self, distance):
+        return 0.5 ** ((max(0, distance - self.maxRange) / self.falloff) ** 2)
 
-                volley = sum(map(
-                        lambda attr: (func("%sDamage" % attr) or 0) * (1 - getattr(targetResists, "%sAmount" % attr, 0)),
-                        self.DAMAGE_TYPES))
-                volley *= self.getModifiedItemAttr("damageMultiplier") or 1
-                if volley:
-                    cycleTime = self.cycleTime
-                    self.__volley = volley
-                    self.__dps = volley / (cycleTime / 1000.0)
+    def calculateTurretChanceToHit(self, distance, signatureRadius, transversal):
+        # Source for most of turret calculation info: http://wiki.eveonline.com/en/wiki/Falloff
+        return self.calculateTrackingMultiplier(distance, signatureRadius, transversal) * self.calculateFalloffMultiplier(distance)
 
-        return self.__dps, self.__volley
+    def calculateTurretMultiplier(self, distance, signatureRadius, speed, transversal):
+        dmgScaling = self.getModifiedItemAttr("turretDamageScalingRadius")
+        if dmgScaling:
+            multiplier = min(1, (float(signatureRadius) / dmgScaling) ** 2)
+        else:
+            chanceToHit = self.calculateTurretChanceToHit(distance, signatureRadius, transversal)
+            if chanceToHit > 0.01:
+                # AvgDPS = Base Damage * [ ( ChanceToHit^2 + ChanceToHit + 0.0499 ) / 2 ]
+                multiplier = (chanceToHit ** 2 + chanceToHit + 0.0499) / 2
+            else:
+                # All hits are wreckings
+                multiplier = chanceToHit * 3
+        return multiplier
+
+    def calculateMissileMultiplier(self, distance, signatureRadius, speed):
+        if distance > self.maxRange:
+            return 0
+        explosionRadius = self.getModifiedChargeAttr("aoeCloudSize")
+        explosionVelocity = self.getModifiedChargeAttr("aoeVelocity")
+        tgtSigRad = signatureRadius or explosionRadius
+        damageReductionFactor = self.getModifiedChargeAttr("aoeDamageReductionFactor")
+        sigRadiusFactor = tgtSigRad / explosionRadius
+        velocityFactor = 1
+        if speed:
+            velocityFactor = (explosionVelocity / explosionRadius * tgtSigRad / speed) ** damageReductionFactor
+        return min(sigRadiusFactor, velocityFactor, 1)
+
+    def damageStats(self, emRes=0, thRes=0, kiRes=0, exRes=0, distance=0, signatureRadius=0, speed=0, transversal=0):
+        if self.isEmpty or (self.state < State.ACTIVE):
+            return 0, 0
+
+        if self.charge:
+            func = self.getModifiedChargeAttr
+        else:
+            func = self.getModifiedItemAttr
+
+        dps = 0
+        volley = sum(((func("{}Damage".format(dtype)) or 0) * (1 - res)) for dtype,res in zip(self.DAMAGE_TYPES,(emRes,thRes,kiRes,exRes)))
+        if volley:
+            volley *= self.getModifiedItemAttr("damageMultiplier") or 1
+            if distance or signatureRadius or speed or transversal:
+                if self.hardpoint == Hardpoint.TURRET:
+                    volley *= self.calculateTurretMultiplier(distance, signatureRadius, speed, transversal)
+                elif self.hardpoint == Hardpoint.MISSILE:
+                    volley *= self.calculateMissileMultiplier(distance, signatureRadius, speed)
+            volley = volley or 0
+            dps = volley / (self.cycleTime / 1000.0)
+
+        return dps, volley
 
     @property
     def miningStats(self):
@@ -361,11 +402,15 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
 
     @property
     def dps(self):
-        return self.damageStats(None)[0]
+        if self.__dps is None:
+            self.__dps, self.__volley = self.damageStats()
+        return self.__dps
 
     @property
     def volley(self):
-        return self.damageStats(None)[1]
+        if self.__volley is None:
+            self.__dps, self.__volley = self.damageStats()
+        return self.__volley
 
     @property
     def reloadTime(self):

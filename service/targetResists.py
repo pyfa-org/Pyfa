@@ -47,7 +47,7 @@ class TargetResists(object):
 
     @staticmethod
     def newPattern(name):
-        p = es_TargetResists(0.0, 0.0, 0.0, 0.0)
+        p = es_TargetResists()
         p.name = name
         db.save(p)
         return p
@@ -88,9 +88,9 @@ class TargetResists(object):
 
         lenImports = len(imports)
         if lenImports == 0:
-            raise ImportError("No patterns found for import")
+            raise ImportError("No profiles found for import")
         if lenImports != num:
-            raise ImportError("%d patterns imported from clipboard; %d had errors" % (num, num - lenImports))
+            raise ImportError("%d profiles imported from clipboard; %d had errors" % (num, num - lenImports))
 
     def exportPatterns(self):
         patterns = self.getTargetResistsList()

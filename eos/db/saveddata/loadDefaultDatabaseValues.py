@@ -34,8 +34,10 @@ class DefaultDatabaseValues(object):
 
     @classmethod
     def importDamageProfileDefaults(cls):
-        damageProfileList = [["Uniform", "25", "25", "25", "25"], ["[Generic]EM", "100", "0", "0", "0"],
-                             ["[Generic]Thermal", "0", "100", "0", "0"], ["[Generic]Kinetic", "0", "0", "100", "0"],
+        damageProfileList = [["Uniform", "25", "25", "25", "25"],
+                             ["[Generic]EM", "100", "0", "0", "0"],
+                             ["[Generic]Thermal", "0", "100", "0", "0"],
+                             ["[Generic]Kinetic", "0", "0", "100", "0"],
                              ["[Generic]Explosive", "0", "0", "0", "100"],
                              ["[NPC][Asteroid] Blood Raiders", "5067", "4214", "0", "0"],
                              ["[Bombs]Concussion Bomb", "0", "0", "6400", "0"],
@@ -66,8 +68,10 @@ class DefaultDatabaseValues(object):
                              ["[Hybrid Charges]Thorium", "0", "38.4", "48", "0"],
                              ["[Hybrid Charges]Tungsten", "0", "19.2", "38.4", "0"],
                              ["[Hybrid Charges]Uranium", "0", "38.4", "57.6", "0"],
-                             ["[Missiles]Mjolnir", "100", "0", "0", "0"], ["[Missiles]Inferno", "0", "100", "0", "0"],
-                             ["[Missiles]Scourge", "0", "0", "100", "0"], ["[Missiles]Nova", "0", "0", "0", "100"],
+                             ["[Missiles]Mjolnir", "100", "0", "0", "0"],
+                             ["[Missiles]Inferno", "0", "100", "0", "0"],
+                             ["[Missiles]Scourge", "0", "0", "100", "0"],
+                             ["[Missiles]Nova", "0", "0", "0", "100"],
                              ["[Missiles][Structure) Standup Missile", "100", "100", "100", "100"],
                              ["[Projectile Ammo][T2] Tremor", "0", "0", "24", "40"],
                              ["[Projectile Ammo][T2] Quake", "0", "0", "40", "72"],
@@ -179,11 +183,24 @@ class DefaultDatabaseValues(object):
 
         for targetResistProfileRow in targetResistProfileList:
             name, em, therm, kin, exp = targetResistProfileRow
+            sigRes = targetResistProfileRow[5] if len(targetResistProfileRow) > 5 else None
+            maxVel = targetResistProfileRow[6] if len(targetResistProfileRow) > 6 else None
             resistsProfile = eos.db.eos.db.getTargetResists(name)
             if resistsProfile is None:
                 resistsProfile = es_TargetResists(em, therm, kin, exp)
                 resistsProfile.name = name
                 eos.db.save(resistsProfile)
+            else:
+                update = False
+                if sigRes and not resistsProfile.signatureRadius:
+                    resistsProfile.signatureRadius = sigRes
+                    update = True
+                if maxVel and not resistsProfile.maxVelocity:
+                    resistsProfile.maxVelocity = maxVel
+                    update = True
+                if update:
+                    eos.db.save(resistsProfile)
+
 
     @classmethod
     def importRequiredDefaults(cls):

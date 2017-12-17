@@ -21,6 +21,8 @@ A few small changes are also made elsewhere to support the new DPS Simulator gra
 * Consequently, effective turret damage will appear slightly higher than before since signature radius does not impact turret damage with zero transversal, but the signature radius calculation still factors in wrecking shots which were previously ignored.
 * Conversely, effective missile damage may appear lower than before unless the target's signature radius is larger than the missile's explosion radius. Any activated target painters or missile guidance computers on the fit will be factored in, however.
 
+Below, for reference, is upstream's original README in its entirety. To test this fork, please refer to the [FAQ](https://github.com/pyfa-org/Pyfa/wiki/FAQ#requirements-for-running-pyfa-from-source) and [Setting Up Development Environment](https://github.com/pyfa-org/Pyfa/wiki/Setting-Up-Development-Environment) for notes on how to run from source.
+
 # pyfa
 
 [![Join us on Slack!](https://pyfainvite.azurewebsites.net/badge.svg)](https://pyfainvite.azurewebsites.net/) [![Build Status](https://travis-ci.org/pyfa-org/Pyfa.svg?branch=master)](https://travis-ci.org/pyfa-org/Pyfa)

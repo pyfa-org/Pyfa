@@ -113,7 +113,7 @@ class MainMenuBar(wx.MenuBar):
         damagePatternEditItem.SetBitmap(BitmapLoader.getBitmap("damagePattern_small", "gui"))
         windowMenu.AppendItem(damagePatternEditItem)
 
-        targetResistsEditItem = wx.MenuItem(windowMenu, self.targetResistsEditorId, "Target Resists Editor\tCTRL+R")
+        targetResistsEditItem = wx.MenuItem(windowMenu, self.targetResistsEditorId, "Target Profile Editor\tCTRL+R")
         targetResistsEditItem.SetBitmap(BitmapLoader.getBitmap("explosive_small", "gui"))
         windowMenu.AppendItem(targetResistsEditItem)
 

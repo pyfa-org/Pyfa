@@ -26,27 +26,28 @@ from service.attribute import Attribute
 
 
 class FitDpsGraph(Graph):
-    propertyAttributeMap = {"angle": "maxVelocity",
+    propertyAttributeMap = {"tgtAngle": "maxVelocity",
                             "distance": "maxRange",
                             "signatureRadius": "signatureRadius",
-                            "velocity": "maxVelocity"}
+                            "tgtSpeed": "maxVelocity"}
 
-    propertyLabelMap = {"angle": "Target Angle (degrees)",
+    propertyLabelMap = {"tgtAngle": "Target Angle (degrees)",
                         "distance": "Distance to Target (km)",
                         "signatureRadius": "Target Signature Radius (m)",
-                        "velocity": "Target Velocity (m/s)"}
+                        "tgtSpeed": "Target Velocity (m/s)"}
 
     defaults = FitDps.defaults.copy()
 
     def __init__(self):
         Graph.__init__(self)
         self.defaults["distance"] = "0-20"
-        self.name = "DPS"
-        self.fitDps = None
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
 
+    def getName(self):
+        return "DPS Calculator"
+
     def getFields(self):
-        return self.defaults
+        return dict((k,v) for k,v in self.defaults.iteritems() if k in self.propertyLabelMap)
 
     def getLabels(self):
         return self.propertyLabelMap
@@ -62,14 +63,22 @@ class FitDpsGraph(Graph):
 
         return icons
 
-    def getPoints(self, fit, fields):
-        fitDps = getattr(self, "fitDps", None)
-        if fitDps is None or fitDps.fit != fit:
-            fitDps = self.fitDps = FitDps(fit)
+    def getVariableLabels(self, values):
+        for fieldName, value in values.iteritems():
+            d = Data(fieldName, value)
+            if not d.isConstant():
+                return (self.propertyLabelMap[fieldName],)
+        return None
 
-        fitDps.clearData()
+    def getPoints(self, values, fit=None, tgt=None):
+        fitDps = FitDps(fit)
+
+        for fieldName, value in self.defaults.iteritems():
+            d = Data(fieldName, value)
+            fitDps.setData(d)
+
         variable = None
-        for fieldName, value in fields.iteritems():
+        for fieldName, value in values.iteritems():
             d = Data(fieldName, value)
             if not d.isConstant():
                 if variable is None:

@@ -17,6 +17,9 @@
 # along with pyfa.  If not, see <http://www.gnu.org/licenses/>.
 # =============================================================================
 
+# noinspection PyPackageRequirements
+import wx
+
 from gui.viewColumn import ViewColumn
 from gui.utils.numberFormatter import formatAmount
 from service.attribute import Attribute
@@ -47,6 +50,8 @@ class PropertyDisplay(ViewColumn):
                 self.imageId = fittingView.imageList.GetImageIndex(iconFile, iconType)
             else:
                 self.imageId = -1
+
+            self.mask = wx.LIST_MASK_IMAGE
         else:
             self.imageId = -1
 

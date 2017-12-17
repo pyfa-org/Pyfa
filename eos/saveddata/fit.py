@@ -20,7 +20,7 @@
 import time
 from copy import deepcopy
 from itertools import chain
-from math import sqrt, log, asinh
+from math import sqrt, log, exp, asinh
 import datetime
 
 from sqlalchemy.orm import validates, reconstructor
@@ -124,6 +124,7 @@ class Fit(object):
         self.__weaponDPS = None
         self.__minerYield = None
         self.__weaponVolley = None
+        self.__weaponModules = None
         self.__droneDPS = None
         self.__droneVolley = None
         self.__droneYield = None
@@ -157,6 +158,7 @@ class Fit(object):
         self.__targetResists = targetResists
         self.__weaponDPS = None
         self.__weaponVolley = None
+        self.__weaponModules = None
         self.__droneDPS = None
         self.__droneVolley = None
 
@@ -293,6 +295,13 @@ class Fit(object):
         return self.__weaponVolley
 
     @property
+    def weaponModules(self):
+        if self.__weaponModules is None:
+            self.calculateWeaponStats()
+
+        return self.__weaponModules
+
+    @property
     def droneDPS(self):
         if self.__droneDPS is None:
             self.calculateWeaponStats()
@@ -365,12 +374,18 @@ class Fit(object):
         return (1 - self.ecmProjectedStr) * 100
 
     @property
+    def signatureRadius(self):
+        return self.ship.getModifiedItemAttr("signatureRadius")
+
+    @property
+    def maxVelocity(self):
+        return self.ship.getModifiedItemAttr("maxVelocity")
+
+    @property
     def maxSpeed(self):
         speedLimit = self.ship.getModifiedItemAttr("speedLimit")
-        if speedLimit and self.ship.getModifiedItemAttr("maxVelocity") > speedLimit:
-            return speedLimit
-
-        return self.ship.getModifiedItemAttr("maxVelocity")
+        maxVelocity = self.ship.getModifiedItemAttr("maxVelocity")
+        return min(maxVelocity, speedLimit or maxVelocity)
 
     @property
     def alignTime(self):
@@ -412,6 +427,7 @@ class Fit(object):
         self.__effectiveTank = None
         self.__weaponDPS = None
         self.__minerYield = None
+        self.__weaponModules = None
         self.__weaponVolley = None
         self.__effectiveSustainableTank = None
         self.__sustainableTank = None
@@ -1362,6 +1378,26 @@ class Fit(object):
         return self.__ehp
 
     @property
+    def emAmount(self):
+        hp = self.hp
+        return 1 - sum(hp.itervalues()) / sum((layerHP / self.ship.getModifiedItemAttr("%s%sDamageResonance" % (("","em") if layer == "hull" else (layer,"Em")))) for layer,layerHP in hp.iteritems())
+
+    @property
+    def thermalAmount(self):
+        hp = self.hp
+        return 1 - sum(hp.itervalues()) / sum((layerHP / self.ship.getModifiedItemAttr("%s%sDamageResonance" % (("","thermal") if layer == "hull" else (layer,"Thermal")))) for layer,layerHP in hp.iteritems())
+
+    @property
+    def kineticAmount(self):
+        hp = self.hp
+        return 1 - sum(hp.itervalues()) / sum((layerHP / self.ship.getModifiedItemAttr("%s%sDamageResonance" % (("","kinetic") if layer == "hull" else (layer,"Kinetic")))) for layer,layerHP in hp.iteritems())
+
+    @property
+    def explosiveAmount(self):
+        hp = self.hp
+        return 1 - sum(hp.itervalues()) / sum((layerHP / self.ship.getModifiedItemAttr("%s%sDamageResonance" % (("","explosive") if layer == "hull" else (layer,"Explosive")))) for layer,layerHP in hp.iteritems())
+
+    @property
     def tank(self):
         hps = {"passiveShield": self.calculateShieldRecharge()}
         for type in ("shield", "armor", "hull"):
@@ -1415,29 +1451,73 @@ class Fit(object):
         self.__minerYield = minerYield
         self.__droneYield = droneYield
 
+    def calculateStackingPenalizedMultiplier(self, multipliers):
+        multiplier = 1.0
+        for i,value in enumerate(sorted(multipliers, key=(lambda val: -abs(val - 1)))):
+            multiplier *= 1 + (value - 1) * exp(-i ** 2 / 7.1289)
+        return multiplier
+
+    def calculateTargetSignatureRadiusMultiplier(self, distance):
+        multipliers = []
+        for mod in self.modules:
+            if not mod.isEmpty and mod.state >= State.ACTIVE:
+                if "remoteTargetPaintFalloff" in mod.item.effects or "structureModuleEffectTargetPainter" in mod.item.effects:
+                    multipliers.append(1 + (mod.getModifiedItemAttr("signatureRadiusBonus") / 100) * mod.calculateFalloffMultiplier(distance))
+        return self.calculateStackingPenalizedMultiplier(multipliers)
+
+    def calculateTargetSpeedModifier(self, distance):
+        multipliers = []
+        for mod in self.modules:
+            if not mod.isEmpty and mod.state >= State.ACTIVE:
+                if "remoteWebifierFalloff" in mod.item.effects or "structureModuleEffectStasisWebifier" in mod.item.effects:
+                    if distance <= mod.getModifiedItemAttr("maxRange"):
+                        multipliers.append(1 + (mod.getModifiedItemAttr("speedFactor") / 100))
+                    elif mod.getModifiedItemAttr("falloffEffectiveness") > 0:
+                        # I am affected by falloff
+                        multipliers.append(1 + (mod.getModifiedItemAttr("speedFactor") / 100) * mod.calculateFalloffMultiplier(distance))
+        return self.calculateStackingPenalizedMultiplier(multipliers)
+
     def calculateWeaponStats(self):
         weaponDPS = 0
         droneDPS = 0
         weaponVolley = 0
         droneVolley = 0
 
+        emRes = thRes = kiRes = exRes = 0
+        distance = signatureRadius = speed = transversal = 0
+        if self.targetResists:
+            emRes = self.targetResists.emAmount
+            thRes = self.targetResists.thermalAmount
+            kiRes = self.targetResists.kineticAmount
+            exRes = self.targetResists.explosiveAmount
+            signatureRadius = self.targetResists.signatureRadius * self.calculateTargetSignatureRadiusMultiplier(distance)
+
+        weapons = dict()
         for mod in self.modules:
-            dps, volley = mod.damageStats(self.targetResists)
+            dps, volley = mod.damageStats(emRes, thRes, kiRes, exRes, distance, signatureRadius, speed, transversal)
             weaponDPS += dps
             weaponVolley += volley
+            if volley:
+                ids = (mod.itemID,mod.chargeID,mod.state)
+                if ids in weapons:
+                    weapons[ids][1] += 1
+                else:
+                    weapons[ids] = [mod,1]
 
-        for drone in self.drones:
-            dps, volley = drone.damageStats(self.targetResists)
-            droneDPS += dps
-            droneVolley += volley
+        if distance <= self.extraAttributes["droneControlRange"]:
+            for drone in self.drones:
+                dps, volley = drone.damageStats(emRes, thRes, kiRes, exRes, distance, signatureRadius, speed, transversal)
+                droneDPS += dps
+                droneVolley += volley
 
         for fighter in self.fighters:
-            dps, volley = fighter.damageStats(self.targetResists)
+            dps, volley = fighter.damageStats(emRes, thRes, kiRes, exRes, distance, signatureRadius, speed, transversal)
             droneDPS += dps
             droneVolley += volley
 
         self.__weaponDPS = weaponDPS
         self.__weaponVolley = weaponVolley
+        self.__weaponModules = tuple(weapons.values())
         self.__droneDPS = droneDPS
         self.__droneVolley = droneVolley
 

@@ -20,6 +20,7 @@
 from logbook import Logger
 
 from sqlalchemy.orm import reconstructor
+from math import log
 
 pyfalog = Logger(__name__)
 
@@ -118,31 +119,49 @@ class FighterAbility(object):
 
         return speed
 
-    def damageStats(self, targetResists=None):
-        if self.__dps is None:
-            self.__volley = 0
-            self.__dps = 0
-            if self.dealsDamage and self.active:
-                cycleTime = self.cycleTime
+    def calculateAbilityMultiplier(self, signatureRadius, speed):
+        explosionRadius = self.fighter.getModifiedItemAttr("{}ExplosionRadius".format(self.attrPrefix))
+        explosionVelocity = self.fighter.getModifiedItemAttr("{}ExplosionVelocity".format(self.attrPrefix))
+        damageReductionFactor = self.fighter.getModifiedItemAttr("{}ReductionFactor".format(self.attrPrefix))
+        damageReductionSensitivity = self.fighter.getModifiedItemAttr("{}ReductionSensitivity".format(self.attrPrefix))
 
-                if self.attrPrefix == "fighterAbilityLaunchBomb":
-                    # bomb calcs
-                    volley = sum(map(lambda attr: (self.fighter.getModifiedChargeAttr("%sDamage" % attr) or 0) * (
-                        1 - getattr(targetResists, "%sAmount" % attr, 0)), self.DAMAGE_TYPES))
-                else:
-                    volley = sum(map(lambda d2, d:
-                                     (self.fighter.getModifiedItemAttr(
-                                             "{}Damage{}".format(self.attrPrefix, d2)) or 0) *
-                                     (1 - getattr(targetResists, "{}Amount".format(d), 0)),
-                                     self.DAMAGE_TYPES2, self.DAMAGE_TYPES))
+        # the following conditionals are because CCP can't keep a decent naming convention, as if fighter implementation
+        # wasn't already fucked.
+        if damageReductionFactor is None:
+            damageReductionFactor = self.fighter.getModifiedItemAttr("{}DamageReductionFactor".format(self.attrPrefix))
+        if damageReductionSensitivity is None:
+            damageReductionSensitivity = self.fighter.getModifiedItemAttr("{}DamageReductionSensitivity".format(self.attrPrefix))
 
-                volley *= self.fighter.amountActive
-                volley *= self.fighter.getModifiedItemAttr("{}DamageMultiplier".format(self.attrPrefix)) or 1
-                self.__volley += volley
-                self.__dps += volley / (cycleTime / 1000.0)
+        signatureRadius = signatureRadius or explosionRadius
+        sigRadiusFactor = signatureRadius / explosionRadius
 
-        return self.__dps, self.__volley
+        velocityFactor = 1
+        if speed:
+            velocityFactor = (explosionVelocity / explosionRadius * signatureRadius / speed) ** (
+                log(damageReductionFactor) / log(damageReductionSensitivity))
+
+        return min(sigRadiusFactor, velocityFactor, 1)
+
+    def damageStats(self, emRes=0, thRes=0, kiRes=0, exRes=0, distance=0, signatureRadius=0, speed=0, transversal=0):
+        if (not self.active) or (not self.dealsDamage) or (self.fighter.amountActive < 1):
+            return 0, 0
+
+        dps = 0
+        if self.attrPrefix == "fighterAbilityLaunchBomb":
+            # bomb calcs
+            volley = sum(((self.fighter.getModifiedChargeAttr("{}Damage".format(dtype)) or 0) * (1 - res)) for dtype,res in zip(self.DAMAGE_TYPES,(emRes,thRes,kiRes,exRes)))
+        else:
+            volley = sum(((self.fighter.getModifiedItemAttr("{}Damage{}".format(self.attrPrefix, dtype)) or 0) * (1 - res)) for dtype,res in zip(self.DAMAGE_TYPES2,(emRes,thRes,kiRes,exRes)))
+
+        if volley:
+            volley *= self.fighter.amountActive
+            volley *= self.fighter.getModifiedItemAttr("{}DamageMultiplier".format(self.attrPrefix)) or 1
+            if signatureRadius or speed:
+                volley *= self.calculateAbilityMultiplier(signatureRadius, speed)
+            volley = volley or 0
+            dps = volley / (self.cycleTime / 1000.0)
+
+        return dps, volley
 
     def clear(self):
-        self.__dps = None
-        self.__volley = None
+        pass

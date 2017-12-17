@@ -23,7 +23,12 @@ class TargetResists(ContextMenu):
         if not self.settings.get('targetResists'):
             return False
 
-        if self.mainFrame.getActiveFit() is None or srcContext != "firepowerViewFull":
+        if srcContext == "firepowerViewFull":
+            if self.mainFrame.getActiveFit() is None:
+                return False
+        elif srcContext in ("graphTargetFitsResists","graphTargetResists"):
+            pass
+        else:
             return False
 
         sTR = svc_TargetResists.getInstance()
@@ -33,7 +38,7 @@ class TargetResists(ContextMenu):
         return len(self.patterns) > 0
 
     def getText(self, itmContext, selection):
-        return "Target Resists"
+        return "Target Profile"
 
     def handleResistSwitch(self, event):
         pattern = self.patternIds.get(event.Id, False)
@@ -41,10 +46,13 @@ class TargetResists(ContextMenu):
             event.Skip()
             return
 
-        sFit = Fit.getInstance()
-        fitID = self.mainFrame.getActiveFit()
-        sFit.setTargetResists(fitID, pattern)
-        wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fitID))
+        if self.context == "firepowerViewFull":
+            sFit = Fit.getInstance()
+            fitID = self.mainFrame.getActiveFit()
+            sFit.setTargetResists(fitID, pattern)
+            wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fitID))
+        elif self.context in ("graphTargetFitsResists","graphTargetResists"):
+            self.mainFrame.graphFrame.addTargetProfile(pattern)
 
     def addPattern(self, rootMenu, pattern):
         id = ContextMenu.nextID()
@@ -57,20 +65,22 @@ class TargetResists(ContextMenu):
         # set pattern attr to menu item
         item.pattern = pattern
 
-        # determine active pattern
-        sFit = Fit.getInstance()
-        fitID = self.mainFrame.getActiveFit()
-        f = sFit.getFit(fitID)
-        tr = f.targetResists
+        # determine active pattern, if applicable
+        if self.context == "firepowerViewFull":
+            sFit = Fit.getInstance()
+            fitID = self.mainFrame.getActiveFit()
+            f = sFit.getFit(fitID)
+            tr = f.targetResists
+            if tr == pattern:
+                bitmap = BitmapLoader.getBitmap("state_active_small", "gui")
+                item.SetBitmap(bitmap)
 
-        if tr == pattern:
-            bitmap = BitmapLoader.getBitmap("state_active_small", "gui")
-            item.SetBitmap(bitmap)
         return item
 
     def getSubMenu(self, context, selection, rootMenu, i, pitem):
         msw = True if "wxMSW" in wx.PlatformInfo else False
         self.patternIds = {}
+        self.context = context
         self.subMenus = OrderedDict()
         self.singles = []
 

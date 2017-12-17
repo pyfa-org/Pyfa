@@ -1033,7 +1033,7 @@ class Fit(object):
 
     @staticmethod
     def getTargetResists(fitID):
-        pyfalog.debug("Get target resists for fit ID: {0}", fitID)
+        pyfalog.debug("Get target profile for fit ID: {0}", fitID)
         if fitID is None:
             return
 
@@ -1041,7 +1041,7 @@ class Fit(object):
         return fit.targetResists
 
     def setTargetResists(self, fitID, pattern):
-        pyfalog.debug("Set target resist for fit ID: {0}", fitID)
+        pyfalog.debug("Set target profile for fit ID: {0}", fitID)
         if fitID is None:
             return
 

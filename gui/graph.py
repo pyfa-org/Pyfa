@@ -26,14 +26,38 @@ class Graph(object):
         Graph.views.append(cls)
 
     def __init__(self):
-        self.name = ""
+        pass
 
-    def getFields(self, fit, fields):
+    def getName(self):
         raise NotImplementedError()
+
+    def allowTargetFits(self):
+        return False
+
+    def allowTargetResists(self):
+        return False
+
+    def getControlPanel(self, parent, onFieldChanged):
+        return None
+
+    def getFields(self):
+        return None
+
+    def getLabels(self):
+        return None
 
     def getIcons(self):
         return None
 
+    def getVariableLabels(self, values):
+        return None
+
+    def getPoint(self, values, point, fit=None, tgt=None):
+        return None
+
+    def getPoints(self, values, fit=None, tgt=None):
+        raise NotImplementedError()
 
 # noinspection PyUnresolvedReferences
-from gui.builtinGraphs import fitDps  # noqa: E402, F401
+#from gui.builtinGraphs import fitDps  # noqa: E402, F401
+from gui.builtinGraphs import *

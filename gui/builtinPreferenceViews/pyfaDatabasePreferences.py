@@ -81,7 +81,7 @@ class PFGeneralPref(PreferenceView):
         self.btnDeleteDamagePatterns = wx.Button(panel, wx.ID_ANY, u"Delete All Damage Pattern Profiles", wx.DefaultPosition, wx.DefaultSize, 0)
         btnSizer.Add(self.btnDeleteDamagePatterns, 0, wx.ALL, 5)
 
-        self.btnDeleteTargetResists = wx.Button(panel, wx.ID_ANY, u"Delete All Target Resist Profiles", wx.DefaultPosition, wx.DefaultSize, 0)
+        self.btnDeleteTargetResists = wx.Button(panel, wx.ID_ANY, u"Delete All Target Profiles", wx.DefaultPosition, wx.DefaultSize, 0)
         btnSizer.Add(self.btnDeleteTargetResists, 0, wx.ALL, 5)
 
         self.btnPrices = wx.Button(panel, wx.ID_ANY, u"Delete All Prices", wx.DefaultPosition, wx.DefaultSize, 0)
@@ -102,7 +102,7 @@ class PFGeneralPref(PreferenceView):
             clearDamagePatterns()
 
     def DeleteTargetResists(self, event):
-        question = u"This is a destructive action that will delete all target resist profiles.\nAre you sure you want to do this?"
+        question = u"This is a destructive action that will delete all target profiles.\nAre you sure you want to do this?"
         if wxHelpers.YesNoDialog(question, "Confirm"):
             clearTargetResists()
 
