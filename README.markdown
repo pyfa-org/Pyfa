@@ -29,4 +29,4 @@ A few small changes are also made elsewhere to support the new DPS Simulator gra
 
 # pyfa-org (upstream)
 
-Refer to (README.md)[https://github.com/taleden/Pyfa/blob/master/README.md] for information about the original upstream project. To test this fork, please refer to the [FAQ](https://github.com/pyfa-org/Pyfa/wiki/FAQ#requirements-for-running-pyfa-from-source) and [Setting Up Development Environment](https://github.com/pyfa-org/Pyfa/wiki/Setting-Up-Development-Environment) for notes on how to run from source.
+Refer to [README.md](https://github.com/taleden/Pyfa/blob/master/README.md) for information about the original upstream project. To test this fork, please refer to the [FAQ](https://github.com/pyfa-org/Pyfa/wiki/FAQ#requirements-for-running-pyfa-from-source) and [Setting Up Development Environment](https://github.com/pyfa-org/Pyfa/wiki/Setting-Up-Development-Environment) for notes on how to run from source.
