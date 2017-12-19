@@ -145,7 +145,7 @@ class FitDpsGraphSim(Graph):
             data["tgtSpeed"] = tgt.ship.getModifiedItemAttr("maxVelocity")
         else:
             if resists != "":
-                for type in ("em","thermal","kinetic","explosive"):
+                for type in ("em", "thermal", "kinetic", "explosive"):
                     data["%sRes" % (type[:2],)] = 100.0 * getattr(tgt, "%sAmount" % (type,))
             data["signatureRadius"] = tgt.signatureRadius
             data["tgtSpeed"] = tgt.maxVelocity
@@ -198,6 +198,7 @@ class FitDpsGraphSim(Graph):
 
         return x, y
 
+
 class VectorEvent(wx.PyCommandEvent):
     def __init__(self, evtType, id):
         wx.PyCommandEvent.__init__(self, evtType, id)
@@ -212,6 +213,7 @@ class VectorEvent(wx.PyCommandEvent):
 
     def GetLength(self):
         return self._length
+
 
 class VectorPicker(wx.PyControl):
 

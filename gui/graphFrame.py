@@ -80,30 +80,30 @@ except Exception:
 
 class GraphFrame(wx.Frame):
     COLORS = (  # TODO find a good colorblind-friendly palette
-        (   0 / 360.0, 1.0, 0.5 , "Red" ),
-        ( 120 / 360.0, 1.0, 0.5 , "Green" ),
-        ( 240 / 360.0, 1.0, 0.5 , "Blue" ),
-        (  56 / 360.0, 1.0, 0.5 , "Yellow" ),
-        ( 180 / 360.0, 1.0, 0.5 , "Cyan" ),
-        ( 300 / 360.0, 1.0, 0.5 , "Magenta" ),
-        (  40 / 360.0, 1.0, 0.5 , "Orange" ),
-        ( 275 / 360.0, 1.0, 0.5 , "Purple" ),
-        (   0 / 360.0, 0.7, 0.35, "Dark Red" ),
-        ( 120 / 360.0, 0.7, 0.35, "Dark Green" ),
-        ( 240 / 360.0, 0.7, 0.35, "Dark Blue" ),
-        (  56 / 360.0, 0.7, 0.35, "Dark Yellow" ),
-        ( 180 / 360.0, 0.7, 0.35, "Dark Cyan" ),
-        ( 300 / 360.0, 0.7, 0.35, "Dark Magenta" ),
-        (  40 / 360.0, 0.7, 0.35, "Dark Orange" ),
-        ( 275 / 360.0, 0.7, 0.35, "Dark Purple" ),
-        (   0 / 360.0, 0.7, 0.7 , "Light Red" ),
-        ( 120 / 360.0, 0.7, 0.7 , "Light Green" ),
-        ( 240 / 360.0, 0.7, 0.7 , "Light Blue" ),
-        (  56 / 360.0, 0.7, 0.7 , "Light Yellow" ),
-        ( 180 / 360.0, 0.7, 0.7 , "Light Cyan" ),
-        ( 300 / 360.0, 0.7, 0.7 , "Light Magenta" ),
-        (  40 / 360.0, 0.7, 0.7 , "Light Orange" ),
-        ( 275 / 360.0, 0.7, 0.7 , "Light Purple" ),
+        (0   / 360.0, 1.0, 0.5 , "Red"),
+        (120 / 360.0, 1.0, 0.5 , "Green"),
+        (240 / 360.0, 1.0, 0.5 , "Blue"),
+        (56  / 360.0, 1.0, 0.5 , "Yellow"),
+        (180 / 360.0, 1.0, 0.5 , "Cyan"),
+        (300 / 360.0, 1.0, 0.5 , "Magenta"),
+        (40  / 360.0, 1.0, 0.5 , "Orange"),
+        (275 / 360.0, 1.0, 0.5 , "Purple"),
+        (0   / 360.0, 0.7, 0.35, "Dark Red"),
+        (120 / 360.0, 0.7, 0.35, "Dark Green"),
+        (240 / 360.0, 0.7, 0.35, "Dark Blue"),
+        (56  / 360.0, 0.7, 0.35, "Dark Yellow"),
+        (180 / 360.0, 0.7, 0.35, "Dark Cyan"),
+        (300 / 360.0, 0.7, 0.35, "Dark Magenta"),
+        (40  / 360.0, 0.7, 0.35, "Dark Orange"),
+        (275 / 360.0, 0.7, 0.35, "Dark Purple"),
+        (0   / 360.0, 0.7, 0.7 , "Light Red"),
+        (120 / 360.0, 0.7, 0.7 , "Light Green"),
+        (240 / 360.0, 0.7, 0.7 , "Light Blue"),
+        (56  / 360.0, 0.7, 0.7 , "Light Yellow"),
+        (180 / 360.0, 0.7, 0.7 , "Light Cyan"),
+        (300 / 360.0, 0.7, 0.7 , "Light Magenta"),
+        (40  / 360.0, 0.7, 0.7 , "Light Orange"),
+        (275 / 360.0, 0.7, 0.7 , "Light Purple"),
     )
 
     def __init__(self, parent, style=wx.DEFAULT_FRAME_STYLE | wx.NO_FULL_REPAINT_ON_RESIZE | wx.FRAME_FLOAT_ON_PARENT):
@@ -693,7 +693,7 @@ class ColorPickerPopup(wx.PopupTransientWindow):
         self.patches = list()
         for hsln in colors:
             patch = wx.StaticText(self, label=wx.EmptyString, size=wx.Size(24, 24), style=wx.BORDER_STATIC)
-            color = wx.Colour(*(v*255 for v in hsv_to_rgb(hsl_to_hsv(hsln[:3]))))
+            color = wx.Colour(*(v * 255 for v in hsv_to_rgb(hsl_to_hsv(hsln[:3]))))
             patch.SetBackgroundColour(color)
             patch.SetToolTipString(hsln[3])
             patch.Bind(wx.EVT_LEFT_UP, self.OnLeftUp_Patch)
