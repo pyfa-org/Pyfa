@@ -52,18 +52,22 @@ class FitDpsGraph(Graph):
         transversal = sin(radians(data["atkAngle"])) * data["atkSpeed"] + sin(radians(data["tgtAngle"])) * tgtSpeed
 
         total = 0
+        damageStatsArgs = (
+            data["emRes"] / 100.0, data["thRes"] / 100.0, data["kiRes"] / 100.0, data["exRes"] / 100.0,
+            distance, signatureRadius, tgtSpeed, transversal
+        )
 
-        for mod,count in fit.weaponModules:
-            dps, _ = mod.damageStats(data["emRes"]/100.0, data["thRes"]/100.0, data["kiRes"]/100.0, data["exRes"]/100.0, distance, signatureRadius, tgtSpeed, transversal)
+        for mod, count in fit.weaponModules:
+            dps, _ = mod.damageStats(*damageStatsArgs)
             total += dps * count
 
         if distance <= fit.extraAttributes["droneControlRange"]:
             for drone in fit.drones:
-                dps, _ = drone.damageStats(data["emRes"]/100.0, data["thRes"]/100.0, data["kiRes"]/100.0, data["exRes"]/100.0, distance, signatureRadius, tgtSpeed, transversal)
+                dps, _ = drone.damageStats(*damageStatsArgs)
                 total += dps
 
         for fighter in fit.fighters:
-            dps, _ = fighter.damageStats(data["emRes"]/100.0, data["thRes"]/100.0, data["kiRes"]/100.0, data["exRes"]/100.0, distance, signatureRadius, tgtSpeed, transversal)
-            total += dps * multiplier
+            dps, _ = fighter.damageStats(*damageStatsArgs)
+            total += dps
 
         return total

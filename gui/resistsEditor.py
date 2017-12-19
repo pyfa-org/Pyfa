@@ -122,7 +122,8 @@ class ResistsEditorDlg(wx.Dialog):
             else:
                 style = wx.ALIGN_CENTER_VERTICAL | wx.ALIGN_RIGHT
                 border = 5
-            bmp = wx.StaticBitmap(self, wx.ID_ANY, BitmapLoader.getBitmap("22_%d" % (14-i,), "icons")) # TODO get larger gui icons for signatureRadius and maxVelocity
+            # TODO get larger gui icons for signatureRadius and maxVelocity
+            bmp = wx.StaticBitmap(self, wx.ID_ANY, BitmapLoader.getBitmap("22_%d" % (14 - i,), "icons"))
             resistEditSizer.Add(bmp, 0, style, border)
             # set text edit
             setattr(self, "%sEdit" % attr, wx.TextCtrl(self, wx.ID_ANY, "", wx.DefaultPosition, defSize))

@@ -26,7 +26,7 @@ class TargetResists(ContextMenu):
         if srcContext == "firepowerViewFull":
             if self.mainFrame.getActiveFit() is None:
                 return False
-        elif srcContext in ("graphTargetFitsResists","graphTargetResists"):
+        elif srcContext in ("graphTargetFitsResists", "graphTargetResists"):
             pass
         else:
             return False
@@ -51,7 +51,7 @@ class TargetResists(ContextMenu):
             fitID = self.mainFrame.getActiveFit()
             sFit.setTargetResists(fitID, pattern)
             wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fitID))
-        elif self.context in ("graphTargetFitsResists","graphTargetResists"):
+        elif self.context in ("graphTargetFitsResists", "graphTargetResists"):
             self.mainFrame.graphFrame.addTargetProfile(pattern)
 
     def addPattern(self, rootMenu, pattern):

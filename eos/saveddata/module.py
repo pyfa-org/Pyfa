@@ -322,7 +322,7 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
         tracking = self.getModifiedItemAttr("trackingSpeed")
         optSigRes = self.getModifiedItemAttr("optimalSigRadius")
         tgtSigRad = signatureRadius or optSigRes
-        return 0.5 ** (((transversal / (max(1,distance) * tracking)) * (optSigRes / tgtSigRad)) ** 2)
+        return 0.5 ** (((transversal / (max(1, distance) * tracking)) * (optSigRes / tgtSigRad)) ** 2)
 
     def calculateFalloffMultiplier(self, distance):
         return 0.5 ** ((max(0, distance - self.maxRange) / self.falloff) ** 2)
@@ -368,7 +368,7 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
             func = self.getModifiedItemAttr
 
         dps = 0
-        volley = sum(((func("{}Damage".format(dtype)) or 0) * (1 - res)) for dtype,res in zip(self.DAMAGE_TYPES,(emRes,thRes,kiRes,exRes)))
+        volley = sum(((func("{}Damage".format(dtype)) or 0) * (1 - res)) for dtype, res in zip(self.DAMAGE_TYPES, (emRes, thRes, kiRes, exRes)))
         if volley:
             volley *= self.getModifiedItemAttr("damageMultiplier") or 1
             if distance or signatureRadius or speed or transversal:

@@ -1379,23 +1379,39 @@ class Fit(object):
 
     @property
     def emAmount(self):
-        hp = self.hp
-        return 1 - sum(hp.itervalues()) / sum((layerHP / self.ship.getModifiedItemAttr("%s%sDamageResonance" % (("","em") if layer == "hull" else (layer,"Em")))) for layer,layerHP in hp.iteritems())
+        hp = 0
+        ehp = 0
+        for layer, layerHP in self.hp.iteritems():
+            hp += layerHP
+            ehp += layerHP / self.ship.getModifiedItemAttr("%s%sDamageResonance" % (("", "em") if layer == "hull" else (layer, "Em")))
+        return 1 - hp / ehp
 
     @property
     def thermalAmount(self):
-        hp = self.hp
-        return 1 - sum(hp.itervalues()) / sum((layerHP / self.ship.getModifiedItemAttr("%s%sDamageResonance" % (("","thermal") if layer == "hull" else (layer,"Thermal")))) for layer,layerHP in hp.iteritems())
+        hp = 0
+        ehp = 0
+        for layer, layerHP in self.hp.iteritems():
+            hp += layerHP
+            ehp += layerHP / self.ship.getModifiedItemAttr("%s%sDamageResonance" % (("", "thermal") if layer == "hull" else (layer, "Thermal")))
+        return 1 - hp / ehp
 
     @property
     def kineticAmount(self):
-        hp = self.hp
-        return 1 - sum(hp.itervalues()) / sum((layerHP / self.ship.getModifiedItemAttr("%s%sDamageResonance" % (("","kinetic") if layer == "hull" else (layer,"Kinetic")))) for layer,layerHP in hp.iteritems())
+        hp = 0
+        ehp = 0
+        for layer, layerHP in self.hp.iteritems():
+            hp += layerHP
+            ehp += layerHP / self.ship.getModifiedItemAttr("%s%sDamageResonance" % (("", "kinetic") if layer == "hull" else (layer, "Kinetic")))
+        return 1 - hp / ehp
 
     @property
     def explosiveAmount(self):
-        hp = self.hp
-        return 1 - sum(hp.itervalues()) / sum((layerHP / self.ship.getModifiedItemAttr("%s%sDamageResonance" % (("","explosive") if layer == "hull" else (layer,"Explosive")))) for layer,layerHP in hp.iteritems())
+        hp = 0
+        ehp = 0
+        for layer, layerHP in self.hp.iteritems():
+            hp += layerHP
+            ehp += layerHP / self.ship.getModifiedItemAttr("%s%sDamageResonance" % (("", "explosive") if layer == "hull" else (layer, "Explosive")))
+        return 1 - hp / ehp
 
     @property
     def tank(self):
@@ -1453,7 +1469,7 @@ class Fit(object):
 
     def calculateStackingPenalizedMultiplier(self, multipliers):
         multiplier = 1.0
-        for i,value in enumerate(sorted(multipliers, key=(lambda val: -abs(val - 1)))):
+        for i, value in enumerate(sorted(multipliers, key=(lambda val: -abs(val - 1)))):
             multiplier *= 1 + (value - 1) * exp(-i ** 2 / 7.1289)
         return multiplier
 
@@ -1498,11 +1514,11 @@ class Fit(object):
             weaponDPS += dps
             weaponVolley += volley
             if volley:
-                ids = (mod.itemID,mod.chargeID,mod.state)
+                ids = (mod.itemID, mod.chargeID, mod.state)
                 if ids in weapons:
                     weapons[ids][1] += 1
                 else:
-                    weapons[ids] = [mod,1]
+                    weapons[ids] = [mod, 1]
 
         if distance <= self.extraAttributes["droneControlRange"]:
             for drone in self.drones:

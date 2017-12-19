@@ -34,7 +34,6 @@ from gui.bitmapLoader import BitmapLoader
 import traceback
 from gui.contextMenu import ContextMenu
 from eos.saveddata.targetResists import TargetResists
-import time
 import collections
 
 pyfalog = Logger(__name__)
@@ -50,11 +49,12 @@ try:
         mplImported = False
     from matplotlib.patches import Patch
     from matplotlib.colors import hsv_to_rgb
-    def hsl_to_hsv(hsl): # why is this not in matplotlib.colors ?!
-        h,s,l = hsl
+
+    def hsl_to_hsv(hsl):  # why is this not in matplotlib.colors ?!
+        h, s, l = hsl
         s *= l if (l < 0.5) else (1 - l)
         l += s
-        return (h, 2*s/l, l)
+        return (h, 2 * s / l, l)
 
     from matplotlib.backends.backend_wxagg import FigureCanvasWxAgg as Canvas
     from matplotlib.figure import Figure
@@ -79,31 +79,31 @@ except Exception:
 
 
 class GraphFrame(wx.Frame):
-    COLORS = ( # TODO find a good colorblind-friendly palette
-        (  0 / 360.0, 1.0, 0.5 , "Red"),
-        (120 / 360.0, 1.0, 0.5 , "Green"),
-        (240 / 360.0, 1.0, 0.5 , "Blue"),
-        ( 56 / 360.0, 1.0, 0.5 , "Yellow"),
-        (180 / 360.0, 1.0, 0.5 , "Cyan"),
-        (300 / 360.0, 1.0, 0.5 , "Magenta"),
-        ( 40 / 360.0, 1.0, 0.5 , "Orange"),
-        (275 / 360.0, 1.0, 0.5 , "Purple"),
-        (  0 / 360.0, 0.7, 0.35, "Dark Red"),
-        (120 / 360.0, 0.7, 0.35, "Dark Green"),
-        (240 / 360.0, 0.7, 0.35, "Dark Blue"),
-        ( 56 / 360.0, 0.7, 0.35, "Dark Yellow"),
-        (180 / 360.0, 0.7, 0.35, "Dark Cyan"),
-        (300 / 360.0, 0.7, 0.35, "Dark Magenta"),
-        ( 40 / 360.0, 0.7, 0.35, "Dark Orange"),
-        (275 / 360.0, 0.7, 0.35, "Dark Purple"),
-        (  0 / 360.0, 0.7, 0.7 , "Light Red"),
-        (120 / 360.0, 0.7, 0.7 , "Light Green"),
-        (240 / 360.0, 0.7, 0.7 , "Light Blue"),
-        ( 56 / 360.0, 0.7, 0.7 , "Light Yellow"),
-        (180 / 360.0, 0.7, 0.7 , "Light Cyan"),
-        (300 / 360.0, 0.7, 0.7 , "Light Magenta"),
-        ( 40 / 360.0, 0.7, 0.7 , "Light Orange"),
-        (275 / 360.0, 0.7, 0.7 , "Light Purple"),
+    COLORS = (  # TODO find a good colorblind-friendly palette
+        (   0 / 360.0, 1.0, 0.5 , "Red" ),
+        ( 120 / 360.0, 1.0, 0.5 , "Green" ),
+        ( 240 / 360.0, 1.0, 0.5 , "Blue" ),
+        (  56 / 360.0, 1.0, 0.5 , "Yellow" ),
+        ( 180 / 360.0, 1.0, 0.5 , "Cyan" ),
+        ( 300 / 360.0, 1.0, 0.5 , "Magenta" ),
+        (  40 / 360.0, 1.0, 0.5 , "Orange" ),
+        ( 275 / 360.0, 1.0, 0.5 , "Purple" ),
+        (   0 / 360.0, 0.7, 0.35, "Dark Red" ),
+        ( 120 / 360.0, 0.7, 0.35, "Dark Green" ),
+        ( 240 / 360.0, 0.7, 0.35, "Dark Blue" ),
+        (  56 / 360.0, 0.7, 0.35, "Dark Yellow" ),
+        ( 180 / 360.0, 0.7, 0.35, "Dark Cyan" ),
+        ( 300 / 360.0, 0.7, 0.35, "Dark Magenta" ),
+        (  40 / 360.0, 0.7, 0.35, "Dark Orange" ),
+        ( 275 / 360.0, 0.7, 0.35, "Dark Purple" ),
+        (   0 / 360.0, 0.7, 0.7 , "Light Red" ),
+        ( 120 / 360.0, 0.7, 0.7 , "Light Green" ),
+        ( 240 / 360.0, 0.7, 0.7 , "Light Blue" ),
+        (  56 / 360.0, 0.7, 0.7 , "Light Yellow" ),
+        ( 180 / 360.0, 0.7, 0.7 , "Light Cyan" ),
+        ( 300 / 360.0, 0.7, 0.7 , "Light Magenta" ),
+        (  40 / 360.0, 0.7, 0.7 , "Light Orange" ),
+        ( 275 / 360.0, 0.7, 0.7 , "Light Purple" ),
     )
 
     def __init__(self, parent, style=wx.DEFAULT_FRAME_STYLE | wx.NO_FULL_REPAINT_ON_RESIZE | wx.FRAME_FLOAT_ON_PARENT):
@@ -136,7 +136,7 @@ class GraphFrame(wx.Frame):
         sizer.Add(linePanel, 0, wx.EXPAND)
 
         self.buttonLineColor = wx.Button(linePanel, label=" ", style=wx.BU_EXACTFIT | wx.BORDER_NONE)
-        self.buttonLineColor.SetSize(2*self.buttonLineColor.GetSize()[-1:])
+        self.buttonLineColor.SetSize(2 * self.buttonLineColor.GetSize()[-1:])
         lineSizer.Add(self.buttonLineColor, 0, flag=wx.SHAPED | wx.ALIGN_CENTER_VERTICAL | wx.ALL, border=3)
 
         self.labelLine = wx.StaticText(linePanel, label="")
@@ -261,7 +261,7 @@ class GraphFrame(wx.Frame):
 
         self.tgts.clear()
         if self.currentView.allowTargetResists():
-            for fitID,fit in self.fits.iteritems():
+            for fitID, fit in self.fits.iteritems():
                 tgtID = fit.targetResists.name if fit.targetResists else ""
                 if tgtID not in self.tgts:
                     self.tgts[tgtID] = svc_TargetResists.getTargetResists(tgtID) if tgtID else self.dummyTargetProfile
@@ -401,17 +401,15 @@ class GraphFrame(wx.Frame):
             self.draw()
 
     def calculate(self, calcID=None, markerOnly=False):
-        t0 = time.time()
-
         values = self.getValues()
         sFit = Fit.getInstance()
         oldLineData = self.lineData
         self.lineData = {}
         # don't clear lineColor so that removing and re-adding a pairing re-uses the previous color
 
-        for fitID,fit in self.fits.iteritems():
-            for tgtID,tgt in (self.tgts.iteritems() if self.tgts else ((None,None),)):
-                lineID = (fitID,tgtID)
+        for fitID, fit in self.fits.iteritems():
+            for tgtID, tgt in (self.tgts.iteritems() if self.tgts else ((None, None),)):
+                lineID = (fitID, tgtID)
 
                 # if we're only recalculating for a specific fit, recycle plotted data for lines that don't involve that fit
                 if (lineID in oldLineData) and (calcID is not None):
@@ -448,7 +446,9 @@ class GraphFrame(wx.Frame):
                     if self.markerX and markerY is None:
                         x = bisect.bisect(self.lineData[lineID][0], self.markerX)
                         if x > 0 and x < (len(self.lineData[lineID][1]) - 1):
-                            markerY = self.lineData[lineID][1][x-1] + (self.lineData[lineID][1][x] - self.lineData[lineID][1][x-1]) * (self.markerX - self.lineData[lineID][0][x-1]) / (self.lineData[lineID][0][x] - self.lineData[lineID][0][x-1])
+                            dx = (self.lineData[lineID][0][x] - self.lineData[lineID][0][x - 1])
+                            dy = (self.lineData[lineID][1][x] - self.lineData[lineID][1][x - 1])
+                            markerY = self.lineData[lineID][1][x - 1] + dy * (self.markerX - self.lineData[lineID][0][x - 1]) / dx
                     self.lineData[lineID][2] = markerY
 
                 except ValueError as e:
@@ -457,24 +457,21 @@ class GraphFrame(wx.Frame):
                     pyfalog.warning(msg)
                     pyfalog.warning(str(e))
                     return False
-            #for tgtID
-        #for fitID
+            # for tgtID
+        # for fitID
 
         self.plotPanel.labelX.SetLabel(self.currentView.getVariableLabels(values)[0])
         self.SetStatusText("")
-        t1 = time.time()
-        #DEBUG pyfalog.critical("calculate(): %1.3f seconds" % (t1-t0,))
         return True
-    #calculate()
+    # calculate()
 
     def draw(self):
-        t0 = time.time()
-        lineDataGen = (([lineID] + lineXYM + [self.lineColor.get(lineID), lineID == self.selected]) for lineID,lineXYM in self.lineData.iteritems())
+        lineDataGen = (([lineID] + lineXYM + [self.lineColor.get(lineID), lineID == self.selected]) for lineID, lineXYM in self.lineData.iteritems())
         self.plotPanel.draw(lineDataGen, self.markerX)
         if self.selected:
             self.buttonLineColor.Enable()
-            self.buttonLineColor.SetBackgroundColour(tuple(c*255 for c in self.lineColor[self.selected]))
-            fitID,tgtID = self.selected
+            self.buttonLineColor.SetBackgroundColour(tuple(c * 255 for c in self.lineColor[self.selected]))
+            fitID, tgtID = self.selected
             if tgtID is None:
                 self.labelLine.SetLabel(self.fits[fitID].name)
             else:
@@ -483,8 +480,6 @@ class GraphFrame(wx.Frame):
             self.buttonLineColor.Disable()
             self.buttonLineColor.SetBackgroundColour(wx.SystemSettings.GetColour(wx.SYS_COLOUR_BTNFACE))
             self.labelLine.SetLabel("")
-        t1 = time.time()
-        #DEBUG pyfalog.critical("draw(): %1.3f seconds" % (t1-t0,))
 
 
 class FitList(wx.Panel):
@@ -573,7 +568,7 @@ class PlotPanelMPL(wx.Panel):
         self.sizer.AddGrowableCol(1)
         self.SetSizer(self.sizer)
 
-        self.labelY = wx.StaticText(self, label="") # TODO custom control for rotated text?
+        self.labelY = wx.StaticText(self, label="")  # TODO custom control for rotated text?
         self.sizer.Add(self.labelY, flag=wx.ALIGN_CENTER | wx.ALL, border=3)
 
         self.figure = Figure(figsize=(4, 3))
@@ -581,7 +576,7 @@ class PlotPanelMPL(wx.Panel):
         colorFloat = [c / 255. for c in colorByte]
         self.figure.set_facecolor(colorFloat)
         self.figure.set_edgecolor(colorFloat)
-        self.subplot = self.figure.add_axes([0,0,1,1])
+        self.subplot = self.figure.add_axes([0, 0, 1, 1])
 
         self.canvas = Canvas(self, -1, self.figure)
         self.canvas.SetBackgroundColour(wx.Colour(*colorByte))
@@ -606,27 +601,37 @@ class PlotPanelMPL(wx.Panel):
         self.subplot.clear()
         self.subplot.grid(True)
 
-        for lineID,xdata,ydata,markerY,color,selected in lineData:
+        for lineID, xdata, ydata, markerY, color, selected in lineData:
             self._lines[lineID], = self.subplot.plot(xdata, ydata, color=color, linewidth=(2 if selected else 1), picker=5)
             self.maxX = max(self.maxX, max(xdata))
             self.maxY = max(self.maxY, max(ydata))
             if markerX and (markerY is not None):
-                self.subplot.annotate("%.1f" % (markerY,), xy=(markerX,markerY), xytext=(-1,1), textcoords="offset pixels", ha="right", va="bottom", fontsize="small")
+                self.subplot.annotate(
+                    "%.1f" % (markerY,),
+                    xy=(markerX, markerY), xytext=(-1, 1), textcoords="offset pixels",
+                    ha="right", va="bottom", fontsize="small"
+                )
         if markerX:
-            self.subplot.axvline(x=markerX, linestyle="dotted", linewidth=1, color=(0,0,0))
-            self.subplot.annotate("@ %.1f" % (markerX,), xy=(markerX,self.maxY*1.1), xytext=(-1,-1), textcoords="offset pixels", ha="right", va="top", fontsize="small")
+            self.subplot.axvline(x=markerX, linestyle="dotted", linewidth=1, color=(0, 0, 0))
+            self.subplot.annotate(
+                "@ %.1f" % (markerX,),
+                xy=(markerX, self.maxY * 1.1), xytext=(-1, -1), textcoords="offset pixels",
+                ha="right", va="top", fontsize="small"
+            )
 
-        self.subplot.set_xlim(left=0, right=self.maxX*1.05)
-        self.subplot.set_ylim(bottom=0, top=self.maxY*1.1)
+        self.subplot.set_xlim(left=0, right=self.maxX * 1.05)
+        self.subplot.set_ylim(bottom=0, top=self.maxY * 1.1)
         self.subplot.tick_params(direction="in", width=2, length=6)
 
         self.subplot.tick_params(axis="x", pad=-5.0)
-        xticks = list(int(v) for v in mpl.ticker.MaxNLocator(nbins=15, steps=[1,2,5,10], integer=True, min_n_ticks=10, prune="lower").tick_values(0, self.maxX * 1.025))
+        tickvalues = mpl.ticker.MaxNLocator(nbins=15, steps=[1, 2, 5, 10], integer=True, min_n_ticks=10, prune="lower").tick_values(0, self.maxX * 1.025)
+        xticks = list(int(v) for v in tickvalues)
         self.subplot.set_xticks(xticks)
         self.subplot.set_xticklabels(xticks, va="bottom")
 
         self.subplot.tick_params(axis="y", pad=-8.0)
-        yticks = list(int(v) for v in mpl.ticker.MaxNLocator(nbins=12, steps=[1,2,5,10], integer=True, min_n_ticks=8, prune="lower").tick_values(0, self.maxY * 1.05))
+        tickvalues = mpl.ticker.MaxNLocator(nbins=12, steps=[1, 2, 5, 10], integer=True, min_n_ticks=8, prune="lower").tick_values(0, self.maxY * 1.05)
+        yticks = list(int(v) for v in tickvalues)
         self.subplot.set_yticks(yticks)
         self.subplot.set_yticklabels(yticks, ha="left")
 
@@ -654,10 +659,10 @@ class PlotPanelMPL(wx.Panel):
                 self.onrelease = None
 
     def onPick(self, event):
-        for lineID,line in self._lines.iteritems():
+        for lineID, line in self._lines.iteritems():
             if line == event.artist:
                 self._parent.setSelectedLine(lineID)
-#PlotPanelMPL
+# PlotPanelMPL
 
 
 COLORPOPUP_SELECT = wx.NewEventType()
@@ -668,8 +673,8 @@ class ColorPopupSelectEvent(wx.PyCommandEvent):
     def __init__(self, windowID, color):
         wx.PyCommandEvent.__init__(self, COLORPOPUP_SELECT, windowID)
         self.color = color
-    #__init__()
-#ColorPopupSelectEvent
+    # __init__()
+# ColorPopupSelectEvent
 
 
 class ColorPickerPopup(wx.PopupTransientWindow):
@@ -688,7 +693,6 @@ class ColorPickerPopup(wx.PopupTransientWindow):
         self.patches = list()
         for hsln in colors:
             patch = wx.StaticText(self, label=wx.EmptyString, size=wx.Size(24, 24), style=wx.BORDER_STATIC)
-            #patch.Wrap(-1)
             color = wx.Colour(*(v*255 for v in hsv_to_rgb(hsl_to_hsv(hsln[:3]))))
             patch.SetBackgroundColour(color)
             patch.SetToolTipString(hsln[3])
@@ -706,13 +710,11 @@ class ColorPickerPopup(wx.PopupTransientWindow):
 
         sizer.Fit(self)
         self.Layout()
-    #__init__()
-
+    # __init__()
 
     def OnLeftUp_Patch(self, evt):
         self.PickColor(evt.GetEventObject().GetBackgroundColour())
-    #OnLeftUp_Patch()
-
+    # OnLeftUp_Patch()
 
     def OnButton_Custom(self, evt):
         data = wx.ColourData()
@@ -721,14 +723,13 @@ class ColorPickerPopup(wx.PopupTransientWindow):
         if dialog.ShowModal() == wx.ID_OK:
             self.PickColor(dialog.GetColourData().Colour)
         dialog.Destroy()
-    #OnButton_Custom()
-
+    # OnButton_Custom()
 
     def PickColor(self, color):
         evt = ColorPopupSelectEvent(self.parent.GetId(), color)
         self.parent.GetEventHandler().AddPendingEvent(evt)
         self.Hide()
         self.Destroy()
-    #PickColor()
+    # PickColor()
 
-#ColorPickerPopup
+# ColorPickerPopup

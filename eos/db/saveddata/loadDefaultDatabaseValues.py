@@ -201,7 +201,6 @@ class DefaultDatabaseValues(object):
                 if update:
                     eos.db.save(resistsProfile)
 
-
     @classmethod
     def importRequiredDefaults(cls):
         damageProfileList = [["Uniform", "25", "25", "25", "25"]]

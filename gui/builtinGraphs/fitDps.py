@@ -47,7 +47,7 @@ class FitDpsGraph(Graph):
         return "DPS Calculator"
 
     def getFields(self):
-        return dict((k,v) for k,v in self.defaults.iteritems() if k in self.propertyLabelMap)
+        return dict((k, v) for k, v in self.defaults.iteritems() if k in self.propertyLabelMap)
 
     def getLabels(self):
         return self.propertyLabelMap

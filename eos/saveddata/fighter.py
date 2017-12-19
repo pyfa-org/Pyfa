@@ -161,7 +161,7 @@ class Fighter(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
         if (not self.active) or (self.amountActive < 1):
             return 0, 0
 
-        for ability in self.abilities: #TODO this overwrites! only take the last one? should it sum?
+        for ability in self.abilities:  # TODO this overwrites! only take the last one? should it sum?
             dps, volley = ability.damageStats(emRes, thRes, kiRes, exRes, distance, signatureRadius, speed, transversal)
 
         # For forward compatability this assumes a fighter

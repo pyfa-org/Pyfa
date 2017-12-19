@@ -37,13 +37,13 @@ class TargetResists(object):
         self.maxVelocity = maxVelocity
 
     def getAttribute(self, attr):
-        if attr in ("emDamageResonance","armorEmDamageResonance","shieldEmDamageResonance"):
+        if attr in ("emDamageResonance", "armorEmDamageResonance", "shieldEmDamageResonance"):
             attr = "emAmount"
-        elif attr in ("thermalDamageResonance","armorThermalDamageResonance","shieldThermalDamageResonance"):
+        elif attr in ("thermalDamageResonance", "armorThermalDamageResonance", "shieldThermalDamageResonance"):
             attr = "thermalAmount"
-        elif attr in ("kineticDamageResonance","armorKineticDamageResonance","shieldKineticDamageResonance"):
+        elif attr in ("kineticDamageResonance", "armorKineticDamageResonance", "shieldKineticDamageResonance"):
             attr = "kineticAmount"
-        elif attr in ("explosiveDamageResonance","armorExplosiveDamageResonance","shieldExplosiveDamageResonance"):
+        elif attr in ("explosiveDamageResonance", "armorExplosiveDamageResonance", "shieldExplosiveDamageResonance"):
             attr = "explosiveAmount"
         return getattr(self, attr, None)
 

@@ -7,7 +7,7 @@ import sqlalchemy
 
 
 def upgrade(saveddata_engine):
-    for column in ('signatureRadius','maxVelocity'):
+    for column in ('signatureRadius', 'maxVelocity'):
         try:
             saveddata_engine.execute("SELECT {} FROM targetResists LIMIT 1;".format(column))
         except sqlalchemy.exc.DatabaseError:

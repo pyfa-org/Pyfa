@@ -66,12 +66,12 @@ class FitDpsGraphSim(Graph):
         # attacker vector
         self.fields["attackerVector"] = vector = VectorPicker(panel, style=wx.NO_BORDER, size=60, offset=90, label="Atk", labelpos=2)
         vector.Bind(VectorPicker.EVT_VECTOR_CHANGED, onFieldChanged)
-        sizer.Add(vector, pos=(0,1), span=(3,1), flag=wx.SHAPED | wx.ALIGN_RIGHT | wx.ALIGN_CENTER_VERTICAL)
+        sizer.Add(vector, pos=(0, 1), span=(3, 1), flag=wx.SHAPED | wx.ALIGN_RIGHT | wx.ALIGN_CENTER_VERTICAL)
 
         # target vector
         self.fields["targetVector"] = vector = VectorPicker(panel, style=wx.NO_BORDER, size=60, offset=-90, label="Tgt", labelpos=3)
         vector.Bind(VectorPicker.EVT_VECTOR_CHANGED, onFieldChanged)
-        sizer.Add(vector, pos=(0,2), span=(3,1), flag=wx.SHAPED | wx.ALIGN_LEFT | wx.ALIGN_CENTER_VERTICAL)
+        sizer.Add(vector, pos=(0, 2), span=(3, 1), flag=wx.SHAPED | wx.ALIGN_LEFT | wx.ALIGN_CENTER_VERTICAL)
 
         """
         # behavior
@@ -91,10 +91,10 @@ class FitDpsGraphSim(Graph):
 
         # resists
         icon = wx.StaticBitmap(panel, bitmap=BitmapLoader.getBitmap("22_19", "icons"))
-        sizer.Add(icon, pos=(1,3), flag=wx.ALIGN_CENTER)
+        sizer.Add(icon, pos=(1, 3), flag=wx.ALIGN_CENTER)
 
         label = wx.StaticText(panel, label="Resistances: ")
-        sizer.Add(label, pos=(1,4), flag=wx.ALIGN_LEFT | wx.ALIGN_CENTER_VERTICAL)
+        sizer.Add(label, pos=(1, 4), flag=wx.ALIGN_LEFT | wx.ALIGN_CENTER_VERTICAL)
 
         self.fields["resists"] = choice = wx.Choice(panel)
         choice.Append("Weighted Average", "ehp")
@@ -104,11 +104,11 @@ class FitDpsGraphSim(Graph):
         choice.Append("None", "")
         choice.SetSelection(0)
         choice.Bind(wx.EVT_CHOICE, onFieldChanged)
-        sizer.Add(choice, pos=(1,5), flag=wx.EXPAND | wx.ALIGN_LEFT | wx.ALIGN_CENTER_VERTICAL)
+        sizer.Add(choice, pos=(1, 5), flag=wx.EXPAND | wx.ALIGN_LEFT | wx.ALIGN_CENTER_VERTICAL)
 
         # spacers
-        sizer.Add(wx.StaticText(panel, label=""), pos=(1,0), flag=wx.EXPAND)
-        sizer.Add(wx.StaticText(panel, label=""), pos=(1,6), flag=wx.EXPAND)
+        sizer.Add(wx.StaticText(panel, label=""), pos=(1, 0), flag=wx.EXPAND)
+        sizer.Add(wx.StaticText(panel, label=""), pos=(1, 6), flag=wx.EXPAND)
 
         sizer.AddGrowableRow(0, proportion=1)
         sizer.AddGrowableRow(2, proportion=1)
@@ -126,12 +126,20 @@ class FitDpsGraphSim(Graph):
         if hasattr(tgt, "ship"):
             hp = tgt.hp
             if resists == "ehp":
-                for type in ("em","thermal","kinetic","explosive"):
-                    ehp = sum((layerHP / tgt.ship.getModifiedItemAttr("%s%s%sDamageResonance" % (("",type,"") if layer == "hull" else (layer,type[0].upper(),type[1:])))) for layer,layerHP in hp.iteritems())
+                for type in ("em", "thermal", "kinetic", "explosive"):
+                    ehp = 0
+                    for layer, layerHP in hp.iteritems():
+                        if layer == "hull":
+                            ehp += (layerHP / tgt.ship.getModifiedItemAttr("%sDamageResonance" % type))
+                        else:
+                            ehp += (layerHP / tgt.ship.getModifiedItemAttr("%s%s%sDamageResonance" % (layer, type[0].upper(), type[1:])))
                     data["%sRes" % (type[:2],)] = 100.0 * (1 - (sum(hp.itervalues()) / ehp))
             elif resists in hp:
-                for type in ("em","thermal","kinetic","explosive"):
-                    res = 1 - tgt.ship.getModifiedItemAttr("%s%s%sDamageResonance" % (("",type,"") if resists == "hull" else (resists,type[0].upper(),type[1:])))
+                for type in ("em", "thermal", "kinetic", "explosive"):
+                    if resists == "hull":
+                        res = 1 - tgt.ship.getModifiedItemAttr("%sDamageResonance" % type)
+                    else:
+                        res = 1 - tgt.ship.getModifiedItemAttr("%s%s%sDamageResonance" % (resists, type[0].upper(), type[1:]))
                     data["%sRes" % (type[:2],)] = 100.0 * res
             data["signatureRadius"] = tgt.ship.getModifiedItemAttr("signatureRadius")
             data["tgtSpeed"] = tgt.ship.getModifiedItemAttr("maxVelocity")
@@ -190,25 +198,20 @@ class FitDpsGraphSim(Graph):
 
         return x, y
 
-
 class VectorEvent(wx.PyCommandEvent):
     def __init__(self, evtType, id):
         wx.PyCommandEvent.__init__(self, evtType, id)
         self._angle = 0
         self._length = 0
 
-
     def GetValue(self):
         return self._angle, self._length
-
 
     def GetAngle(self):
         return self._angle
 
-
     def GetLength(self):
         return self._length
-
 
 class VectorPicker(wx.PyControl):
 
@@ -234,28 +237,22 @@ class VectorPicker(wx.PyControl):
         self.Bind(wx.EVT_ERASE_BACKGROUND, self.OnEraseBackground)
         self.Bind(wx.EVT_LEFT_DOWN, self.OnLeftDown)
         self.Bind(wx.EVT_RIGHT_DOWN, self.OnRightDown)
-        self.Bind(wx.EVT_MOUSEWHEEL, self.OnWheel) 
-
+        self.Bind(wx.EVT_MOUSEWHEEL, self.OnWheel)
 
     def DoGetBestSize(self):
         return wx.Size(self._size, self._size)
 
-
     def AcceptsFocusFromKeyboard(self):
         return False
-
 
     def GetValue(self):
         return self._angle, self._length
 
-
     def GetAngle(self):
         return self._angle
 
-
     def GetLength(self):
         return self._length
-
 
     def SetValue(self, angle=None, length=None):
         if angle is not None:
@@ -264,19 +261,15 @@ class VectorPicker(wx.PyControl):
             self._length = min(max(length, 0), 1)
         self.Refresh()
 
-
-    def GetAngle(self, angle):
+    def SetAngle(self, angle):
         self.SetValue(angle, None)
 
-
-    def GetLength(self, length):
+    def SetLength(self, length):
         self.SetValue(None, length)
-
 
     def OnPaint(self, event):
         dc = wx.BufferedPaintDC(self)
         self.Draw(dc)
-
 
     def Draw(self, dc):
         width, height = self.GetClientSize()
@@ -300,7 +293,7 @@ class VectorPicker(wx.PyControl):
 
         if self._label:
             labelText = self._label
-            labelTextW,labelTextH = dc.GetTextExtent(labelText)
+            labelTextW, labelTextH = dc.GetTextExtent(labelText)
             labelTextX = (radius * 2 + 4 - labelTextW) if (self._labelpos & 1) else 0
             labelTextY = (radius * 2 + 4 - labelTextH) if (self._labelpos & 2) else 0
             dc.DrawText(labelText, labelTextX, labelTextY)
@@ -320,10 +313,8 @@ class VectorPicker(wx.PyControl):
             dc.DrawCircle(angleTextX + angleTextW + 1, angleTextY + 1, 1.5)
         dc.DrawText(angleText, angleTextX, angleTextY)
 
-
     def OnEraseBackground(self, event):
         pass
-
 
     def OnLeftDown(self, event):
         self._left = True
@@ -336,7 +327,6 @@ class VectorPicker(wx.PyControl):
             self.CaptureMouse()
         self.HandleMouseEvent(event)
 
-
     def OnRightDown(self, event):
         self._right = True
         self.SetToolTip(None)
@@ -347,7 +337,6 @@ class VectorPicker(wx.PyControl):
         if not self.HasCapture():
             self.CaptureMouse()
         self.HandleMouseEvent(event)
-
 
     def OnLeftUp(self, event):
         self.HandleMouseEvent(event)
@@ -361,7 +350,6 @@ class VectorPicker(wx.PyControl):
             if self.HasCapture():
                 self.ReleaseMouse()
 
-
     def OnRightUp(self, event):
         self.HandleMouseEvent(event)
         self.Unbind(wx.EVT_RIGHT_UP, handler=self.OnRightUp)
@@ -374,11 +362,9 @@ class VectorPicker(wx.PyControl):
             if self.HasCapture():
                 self.ReleaseMouse()
 
-
     def OnMotion(self, event):
         self.HandleMouseEvent(event)
         event.Skip()
-
 
     def OnWheel(self, event):
         amount = 0.1 * event.GetWheelRotation() / event.GetWheelDelta()
@@ -386,20 +372,19 @@ class VectorPicker(wx.PyControl):
         self.Refresh()
         self.SendChangeEvent()
 
-
     def HandleMouseEvent(self, event):
         width, height = self.GetClientSize()
         if width and height:
             center = min(width, height) / 2
-            x,y = event.GetPositionTuple()
+            x, y = event.GetPositionTuple()
             x = x - center
             y = center - y
             angle = self._angle
-            length = min((x*x + y*y) ** 0.5 / (center - 2), 1.0)
+            length = min((x * x + y * y) ** 0.5 / (center - 2), 1.0)
             if length < 0.01:
                 length = 0
             else:
-                angle = ((degrees(atan2(x,y)) - self._offset + 180) % 360) - 180
+                angle = ((degrees(atan2(x, y)) - self._offset + 180) % 360) - 180
             if (self._right and not self._left) or event.ShiftDown():
                 angle = round(angle / 15.0) * 15.0
                 # floor() for length to make it easier to hit 0%, can still hit 100% outside the circle
@@ -410,7 +395,6 @@ class VectorPicker(wx.PyControl):
                 self.Refresh()
                 if self._right and not self._left:
                     self.SendChangeEvent()
-
 
     def SendChangeEvent(self):
         changeEvent = wx.CommandEvent(self.myEVT_VECTOR_CHANGED, self.GetId())

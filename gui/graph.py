@@ -58,6 +58,6 @@ class Graph(object):
     def getPoints(self, values, fit=None, tgt=None):
         raise NotImplementedError()
 
+
 # noinspection PyUnresolvedReferences
-#from gui.builtinGraphs import fitDps  # noqa: E402, F401
-from gui.builtinGraphs import *
+from gui.builtinGraphs import fitDps, fitDpsSim  # noqa: E402, F401

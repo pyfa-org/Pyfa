@@ -147,11 +147,14 @@ class FighterAbility(object):
             return 0, 0
 
         dps = 0
+        volley = 0
         if self.attrPrefix == "fighterAbilityLaunchBomb":
             # bomb calcs
-            volley = sum(((self.fighter.getModifiedChargeAttr("{}Damage".format(dtype)) or 0) * (1 - res)) for dtype,res in zip(self.DAMAGE_TYPES,(emRes,thRes,kiRes,exRes)))
+            for dtype,res in zip(self.DAMAGE_TYPES, (emRes, thRes, kiRes, exRes)):
+                volley += (self.fighter.getModifiedChargeAttr("{}Damage".format(dtype)) or 0) * (1 - res)
         else:
-            volley = sum(((self.fighter.getModifiedItemAttr("{}Damage{}".format(self.attrPrefix, dtype)) or 0) * (1 - res)) for dtype,res in zip(self.DAMAGE_TYPES2,(emRes,thRes,kiRes,exRes)))
+            for dtype,res in zip(self.DAMAGE_TYPES2, (emRes, thRes, kiRes, exRes)):
+                volley += (self.fighter.getModifiedItemAttr("{}Damage{}".format(self.attrPrefix, dtype)) or 0) * (1 - res)
 
         if volley:
             volley *= self.fighter.amountActive
