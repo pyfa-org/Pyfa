@@ -132,6 +132,7 @@ def test_fighter_dps(DB, Saveddata, KeepstarFit):
 
     # add a fighter
     fighter = Saveddata['Fighter'](DB['db'].getItem("Equite II"))
+    fighter.owner = KeepstarFit
     fighter.amountActive = 1
     KeepstarFit.fighters.append(fighter)
 
