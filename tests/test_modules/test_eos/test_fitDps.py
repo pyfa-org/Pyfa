@@ -131,7 +131,6 @@ def test_fighter_dps(DB, Saveddata, KeepstarFit):
     data['emRes'] = 10.0
 
     # add a fighter
-    KeepstarFit.modules.clear()
     fighter = Saveddata['Fighter'](DB['db'].getItem("Equite II"))
     fighter.amountActive = 1
     KeepstarFit.fighters.append(fighter)
