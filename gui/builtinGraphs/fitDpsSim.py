@@ -152,7 +152,7 @@ class FitDpsGraphSim(Graph):
 
         data["distance"] = "0-%d" % (ceil(fit.maxTargetRange / 1000.0),)
         data["atkAngle"], atkThrottle = self.fields["attackerVector"].GetValue()
-        data["atkSpeed"] = atkThrottle * fit.ship.getModifiedItemAttr("maxVelocity")
+        data["atkSpeed"] = atkThrottle * (fit.ship.getModifiedItemAttr("maxVelocity") or 0)
         data["tgtAngle"], tgtThrottle = self.fields["targetVector"].GetValue()
         data["tgtSpeed"] *= tgtThrottle
 

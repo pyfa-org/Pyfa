@@ -130,6 +130,8 @@ def Saveddata():
     from eos.saveddata.fit import Fit
     from eos.saveddata.character import Character
     from eos.saveddata.module import Module, State
+    from eos.saveddata.drone import Drone
+    from eos.saveddata.fighter import Fighter
     from eos.saveddata.citadel import Citadel
     from eos.saveddata.booster import Booster
 
@@ -139,6 +141,8 @@ def Saveddata():
         'Fit'      : Fit,
         'Character': Character,
         'Module'   : Module,
+        'Drone'    : Drone,
+        'Fighter'  : Fighter,
         'State'    : State,
         'Booster'  : Booster,
     }
