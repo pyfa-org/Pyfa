@@ -25,8 +25,13 @@ def test_fit_dps(DB, Saveddata, RifterFit):
     # add a turret
     mod = Saveddata['Module'](DB['db'].getItem("280mm Howitzer Artillery II"))
     mod.state = Saveddata['State'].ACTIVE
-    ammo = DB['gamedata_session'].query(Gamedata['Item']).filter(Gamedata['Item'].name == "EMP S").first()
-    mod.charge = ammo
+    # there must be a better way to fetch this ammo directly, but I couldn't figure out the appropriate Gamedata voodoo
+    # this, for example, did not work:
+    # mod.charge = DB['gamedata_session'].query(Gamedata['Item']).filter(Gamedata['Item'].name == "EMP S").first()
+    for charge in mod.getValidCharges():
+        if charge.name == "EMP S":
+            mod.charge = charge
+            break
     RifterFit.modules.append(mod)
 
     # update values
