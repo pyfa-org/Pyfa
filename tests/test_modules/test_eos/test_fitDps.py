@@ -133,7 +133,10 @@ def test_fighter_dps(DB, Saveddata, KeepstarFit):
     # add a fighter
     fighter = Saveddata['Fighter'](DB['db'].getItem("Equite II"))
     fighter.owner = KeepstarFit
+    fighter.active = True
     fighter.amountActive = 1
+    for ability in fighter.abilities:
+        ability.active = True
     KeepstarFit.fighters.append(fighter)
 
     # calculate applied DPS
