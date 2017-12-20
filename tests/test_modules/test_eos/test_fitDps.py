@@ -33,6 +33,7 @@ def test_fit_dps(DB, Saveddata, RifterFit):
             mod.charge = charge
             break
     RifterFit.modules.append(mod)
+    mod.owner = RifterFit
 
     # update values
     RifterFit.clear()
