@@ -128,8 +128,8 @@ class FirepowerViewFull(StatsView):
 
         # Remove effective label
         hsizer = self.headerPanel.GetSizer()
-        hsizer.Remove(self.stEff)
-        self.stEff.Destroy()
+        hsizer.Hide(self.stEff)
+        #self.stEff.Destroy()
 
         # Get the new view
         view = StatsView.getView("miningyieldViewFull")(self.parent)
