@@ -204,13 +204,14 @@ class ItemView(Display):
         try:
             mktgrpid = sMkt.getMarketGroupByItem(item).ID
         except AttributeError:
-            mktgrpid = None
+            mktgrpid = -1
             print(("unable to find market group for", item.name))
         parentname = sMkt.getParentItemByItem(item).name
         # Get position of market group
         metagrpid = sMkt.getMetaGroupIdByItem(item)
         metatab = self.metaMap.get(metagrpid)
         metalvl = self.metalvls.get(item.ID, 0)
+
         return catname, mktgrpid, parentname, metatab, metalvl, item.name
 
     def contextMenu(self, event):
