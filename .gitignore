@@ -117,3 +117,4 @@ ENV/
 # Pycharm project settings
 .idea
 eos.iml
+gitversion

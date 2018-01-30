@@ -203,6 +203,8 @@ class Market(object):
             "Fiend"                       : self.les_grp,  # AT13 prize
             "Caedes"                      : self.les_grp,  # AT14 prize
             "Rabisu"                      : self.les_grp,  # AT14 prize
+            "Victor"                      : self.les_grp,  # AT prize
+            "Virtuoso"                    : self.les_grp,  # AT prize
         }
 
         self.ITEMS_FORCEGROUP_R = self.__makeRevDict(self.ITEMS_FORCEGROUP)

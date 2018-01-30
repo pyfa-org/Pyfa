@@ -7,5 +7,5 @@ type = "passive"
 
 def handler(fit, ship, context):
     fit.modules.filteredChargeBoost(lambda mod: mod.charge.group.name == "Scanner Probe",
-                                    "baseSensorStrength", ship.getModifiedItemAttr("eliteBonusCoverOps2"),
+                                    "baseSensorStrength", ship.getModifiedItemAttr("eliteBonusCovertOps2"),
                                     skill="Covert Ops")

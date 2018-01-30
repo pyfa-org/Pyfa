@@ -5,7 +5,9 @@
 # Ship: Astero
 # Ship: Enforcer
 # Ship: Pacifier
+# Ship: Victor
 # Ship: Victorieux Luxury Yacht
+# Ship: Virtuoso
 type = "passive"
 runTime = "early"
 

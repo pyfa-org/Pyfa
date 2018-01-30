@@ -2,6 +2,7 @@
 #
 # Used by:
 # Ships named like: Megathron (3 of 3)
+# Ship: Marshal
 type = "passive"
 
 

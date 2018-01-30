@@ -113,13 +113,30 @@ def main(db, json_path):
     def convertClones(data):
         newData = []
 
+        # December, 2017 - CCP decided to use only one set of skill levels for alpha clones. However, this is still
+        # represented in the data as a skillset per race. To ensure that all skills are the same, we store them in a way
+        # that we can check to make sure all races have the same skills, as well as skill levels
+
+        check = {}
+
         for ID in data:
             for skill in data[ID]["skills"]:
                 newData.append({
                     "alphaCloneID": int(ID),
-                    "alphaCloneName": data[ID]["internalDescription"],
+                    "alphaCloneName": "Alpha Clone",
                     "typeID": skill["typeID"],
                     "level": skill["level"]})
+                if ID not in check:
+                    check[ID] = {}
+                check[ID][int(skill["typeID"])] = int(skill["level"])
+
+        if not reduce(lambda a, b: a if a == b else False, [v for _, v in check.iteritems()]):
+            raise Exception("Alpha Clones not all equal")
+
+        newData = [x for x in newData if x['alphaCloneID'] == 1]
+
+        if len(newData) == 0:
+            raise Exception("Alpha Clone processing failed")
 
         return newData
 

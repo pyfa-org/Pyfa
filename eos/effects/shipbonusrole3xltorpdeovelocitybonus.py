@@ -1,6 +1,7 @@
-# shipBonusTitanRole3TorpdeoVelocityBonus
+# shipBonusRole3XLTorpdeoVelocityBonus
 #
 # Used by:
+# Ship: Komodo
 # Ship: Leviathan
 type = "passive"
 

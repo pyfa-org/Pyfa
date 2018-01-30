@@ -1,7 +1,7 @@
-# covertOpsStealthBomberSiegeMissileLauncerPowerNeedBonus
+# covertOpsStealthBomberSiegeMissileLauncherPowerNeedBonus
 #
 # Used by:
-# Ships from group: Stealth Bomber (4 of 5)
+# Ships from group: Stealth Bomber (5 of 5)
 type = "passive"
 
 

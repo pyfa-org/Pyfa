@@ -1,4 +1,4 @@
-# shipFalloffBonusGF
+# shipBonusSHTFalloffGF2
 #
 # Used by:
 # Ship: Atron

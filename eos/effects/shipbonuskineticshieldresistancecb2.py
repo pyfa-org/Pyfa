@@ -1,7 +1,7 @@
 # shipBonusKineticShieldResistanceCB2
 #
 # Used by:
-# Ships named like: Rattlesnake (2 of 2)
+# Ship: Rattlesnake
 # Ship: Rokh
 # Ship: Scorpion Navy Issue
 type = "passive"

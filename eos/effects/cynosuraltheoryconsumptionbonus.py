@@ -1,7 +1,7 @@
 # cynosuralTheoryConsumptionBonus
 #
 # Used by:
-# Ships from group: Force Recon Ship (6 of 8)
+# Ships from group: Force Recon Ship (7 of 8)
 # Skill: Cynosural Field Theory
 type = "passive"
 

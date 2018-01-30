@@ -20,7 +20,12 @@ class BoosterSideEffect(ContextMenu):
             return False
 
         self.booster = selection[0]
-        return True
+
+        for effect in self.booster.sideEffects:
+            if effect.effect.isImplemented:
+                return True
+
+        return False
 
     def getText(self, itmContext, selection):
         return "Side Effects"

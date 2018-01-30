@@ -2,6 +2,7 @@
 #
 # Used by:
 # Variations of ship: Erebus (2 of 2)
+# Ship: Komodo
 type = "passive"
 
 

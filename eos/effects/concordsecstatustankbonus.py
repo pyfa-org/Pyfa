@@ -2,6 +2,7 @@
 #
 # Used by:
 # Ship: Enforcer
+# Ship: Marshal
 # Ship: Pacifier
 type = "passive"
 

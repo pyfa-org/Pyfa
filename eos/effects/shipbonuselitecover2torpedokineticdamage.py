@@ -7,5 +7,5 @@ type = "passive"
 
 def handler(fit, ship, context):
     fit.modules.filteredChargeBoost(lambda mod: mod.charge.requiresSkill("Torpedoes"),
-                                    "kineticDamage", ship.getModifiedItemAttr("eliteBonusCoverOps2"),
+                                    "kineticDamage", ship.getModifiedItemAttr("eliteBonusCovertOps2"),
                                     skill="Covert Ops")

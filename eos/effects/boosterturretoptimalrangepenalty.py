@@ -10,7 +10,7 @@ type = "boosterSideEffect"
 displayName = "Turret Optimal Range"
 
 # Attribute that this effect targets
-attr = "boosterTurretOptimalRange"
+attr = "boosterTurretOptimalRangePenalty"
 
 
 def handler(fit, booster, context):
