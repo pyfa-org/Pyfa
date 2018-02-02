@@ -22,13 +22,17 @@ from sqlalchemy.orm import mapper
 import datetime
 
 from eos.db import saveddata_meta
-from eos.saveddata.crestchar import CrestChar
+from eos.saveddata.ssocharacter import SsoCharacter
 
-crest_table = Table("crest", saveddata_meta,
+sso_table = Table("ssoCharacter", saveddata_meta,
                     Column("ID", Integer, primary_key=True),
-                    Column("name", String, nullable=False, unique=True),
-                    Column("refresh_token", String, nullable=False),
-                    # These records aren't updated. Instead, they are dropped and created, hence we don't have a modified field
-                    Column("created", DateTime, nullable=True, default=datetime.datetime.now))
+                    Column("client", String, nullable=False),
+                    Column("characterID", Integer, nullable=False, unique=True),
+                    Column("characterName", String, nullable=False, unique=True),
+                    Column("refreshToken", String, nullable=False),
+                    Column("accessToken", String, nullable=False),
+                    Column("accessTokenExpires", DateTime, nullable=False),
+                    Column("created", DateTime, nullable=True, default=datetime.datetime.now),
+                    Column("modified", DateTime, nullable=True, onupdate=datetime.datetime.now))
 
-mapper(CrestChar, crest_table)
+mapper(SsoCharacter, sso_table)

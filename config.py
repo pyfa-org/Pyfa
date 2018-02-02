@@ -3,6 +3,7 @@ import sys
 
 from logbook import CRITICAL, DEBUG, ERROR, FingersCrossedHandler, INFO, Logger, NestedSetup, NullHandler, \
     StreamHandler, TimedRotatingFileHandler, WARNING
+import hashlib
 
 pyfalog = Logger(__name__)
 
@@ -41,6 +42,10 @@ LOGLEVEL_MAP = {
     "info": INFO,
     "debug": DEBUG,
 }
+
+
+def getClientSecret():
+    return hashlib.sha3_256("This is a secret, this will not remain in here for long".encode('utf-8')).hexdigest()
 
 
 def isFrozen():

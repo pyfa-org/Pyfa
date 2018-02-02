@@ -662,16 +662,8 @@ class MainFrame(wx.Frame):
             menu.Enable(menu.exportToEveId, not enable)
 
     def ssoHandler(self, event):
-        sCrest = Crest.getInstance()
-        if sCrest.settings.get('mode') == CrestModes.IMPLICIT:
-            if sCrest.implicitCharacter is not None:
-                sCrest.logout()
-            else:
-                uri = sCrest.startServer()
-                webbrowser.open(uri)
-        else:
-            dlg = CrestMgmt(self)
-            dlg.Show()
+        dlg = CrestMgmt(self)
+        dlg.Show()
 
     def exportToEve(self, event):
         dlg = ExportToEve(self)

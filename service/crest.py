@@ -8,7 +8,7 @@ import time
 
 import eos.db
 from eos.enum import Enum
-from eos.saveddata.crestchar import CrestChar
+from eos.saveddata.ssocharacter import SsoCharacter
 import gui.globalEvents as GE
 from service.settings import CRESTSettings
 from service.server import StoppableHTTPServer, AuthHandler
@@ -100,40 +100,30 @@ class Crest(object):
         return self.settings.get('server') == Servers.SISI
 
     def delCrestCharacter(self, charID):
-        char = eos.db.getCrestCharacter(charID)
+        char = eos.db.getSsoCharacter(charID)
         del self.charCache[char.ID]
         eos.db.remove(char)
         wx.PostEvent(self.mainFrame, GE.SsoLogout(type=CrestModes.USER, numChars=len(self.charCache)))
 
     def delAllCharacters(self):
-        chars = eos.db.getCrestCharacters()
+        chars = eos.db.getSsoCharacters()
         for char in chars:
             eos.db.remove(char)
         self.charCache = {}
         wx.PostEvent(self.mainFrame, GE.SsoLogout(type=CrestModes.USER, numChars=0))
 
     def getCrestCharacters(self):
-        chars = eos.db.getCrestCharacters()
-        # I really need to figure out that DB cache problem, this is ridiculous
-        chars2 = [self.getCrestCharacter(char.ID) for char in chars]
-        return chars2
+        chars = eos.db.getSsoCharacters()
+        return chars
 
     def getCrestCharacter(self, charID):
         """
         Get character, and modify to include the eve connection
         """
-        if self.settings.get('mode') == CrestModes.IMPLICIT:
-            if self.implicitCharacter.ID != charID:
-                raise ValueError("CharacterID does not match currently logged in character.")
-            return self.implicitCharacter
-
         if charID in self.charCache:
             return self.charCache.get(charID)
 
-        char = eos.db.getCrestCharacter(charID)
-        if char and not hasattr(char, "eve"):
-            char.eve = EVE(**self.eve_options)
-            char.eve.temptoken_authorize(refresh_token=char.refresh_token)
+        char = eos.db.getSsoCharacter(charID)
         self.charCache[charID] = char
         return char
 

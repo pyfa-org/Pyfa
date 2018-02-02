@@ -27,7 +27,7 @@ from eos.db.saveddata.fit import projectedFits_table
 from eos.db.util import processEager, processWhere
 from eos.saveddata.price import Price
 from eos.saveddata.user import User
-from eos.saveddata.crestchar import CrestChar
+from eos.saveddata.ssocharacter import SsoCharacter
 from eos.saveddata.damagePattern import DamagePattern
 from eos.saveddata.targetResists import TargetResists
 from eos.saveddata.character import Character
@@ -467,27 +467,27 @@ def getProjectedFits(fitID):
         raise TypeError("Need integer as argument")
 
 
-def getCrestCharacters(eager=None):
+def getSsoCharacters(eager=None):
     eager = processEager(eager)
     with sd_lock:
-        characters = saveddata_session.query(CrestChar).options(*eager).all()
+        characters = saveddata_session.query(SsoCharacter).options(*eager).all()
     return characters
 
 
-@cachedQuery(CrestChar, 1, "lookfor")
-def getCrestCharacter(lookfor, eager=None):
+@cachedQuery(SsoCharacter, 1, "lookfor")
+def getSsoCharacter(lookfor, eager=None):
     if isinstance(lookfor, int):
         if eager is None:
             with sd_lock:
-                character = saveddata_session.query(CrestChar).get(lookfor)
+                character = saveddata_session.query(SsoCharacter).get(lookfor)
         else:
             eager = processEager(eager)
             with sd_lock:
-                character = saveddata_session.query(CrestChar).options(*eager).filter(CrestChar.ID == lookfor).first()
+                character = saveddata_session.query(SsoCharacter).options(*eager).filter(SsoCharacter.ID == lookfor).first()
     elif isinstance(lookfor, str):
         eager = processEager(eager)
         with sd_lock:
-            character = saveddata_session.query(CrestChar).options(*eager).filter(CrestChar.name == lookfor).first()
+            character = saveddata_session.query(SsoCharacter).options(*eager).filter(SsoCharacter.name == lookfor).first()
     else:
         raise TypeError("Need integer or string as argument")
     return character

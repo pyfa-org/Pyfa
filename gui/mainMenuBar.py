@@ -28,8 +28,8 @@ import gui.globalEvents as GE
 from gui.bitmap_loader import BitmapLoader
 
 from logbook import Logger
-from service.crest import Crest
-from service.crest import CrestModes
+# from service.crest import Crest
+# from service.crest import CrestModes
 
 pyfalog = Logger(__name__)
 
@@ -134,21 +134,19 @@ class MainMenuBar(wx.MenuBar):
         preferencesItem.SetBitmap(BitmapLoader.getBitmap("preferences_small", "gui"))
         windowMenu.Append(preferencesItem)
 
-        self.sCrest = Crest.getInstance()
+        # self.sCrest = Crest.getInstance()
 
         # CREST Menu
         crestMenu = wx.Menu()
         self.Append(crestMenu, "&CREST")
-        if self.sCrest.settings.get('mode') != CrestModes.IMPLICIT:
-            crestMenu.Append(self.ssoLoginId, "Manage Characters")
-        else:
-            crestMenu.Append(self.ssoLoginId, "Login to EVE")
+
+        crestMenu.Append(self.ssoLoginId, "Manage Characters")
         crestMenu.Append(self.eveFittingsId, "Browse EVE Fittings")
         crestMenu.Append(self.exportToEveId, "Export To EVE")
 
-        if self.sCrest.settings.get('mode') == CrestModes.IMPLICIT or len(self.sCrest.getCrestCharacters()) == 0:
-            self.Enable(self.eveFittingsId, False)
-            self.Enable(self.exportToEveId, False)
+        # if self.sCrest.settings.get('mode') == CrestModes.IMPLICIT or len(self.sCrest.getCrestCharacters()) == 0:
+        self.Enable(self.eveFittingsId, False)
+        self.Enable(self.exportToEveId, False)
 
         if not self.mainFrame.disableOverrideEditor:
             windowMenu.AppendSeparator()
