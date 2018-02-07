@@ -34,16 +34,9 @@ class CrestFittings(wx.Frame):
 
         characterSelectSizer = wx.BoxSizer(wx.HORIZONTAL)
 
-        if sCrest.settings.get('mode') == CrestModes.IMPLICIT:
-            self.stLogged = wx.StaticText(self, wx.ID_ANY, "Currently logged in as %s" % sCrest.implicitCharacter.name,
-                                          wx.DefaultPosition, wx.DefaultSize)
-            self.stLogged.Wrap(-1)
-
-            characterSelectSizer.Add(self.stLogged, 1, wx.ALIGN_CENTER_VERTICAL | wx.ALL, 5)
-        else:
-            self.charChoice = wx.Choice(self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, [])
-            characterSelectSizer.Add(self.charChoice, 1, wx.ALIGN_CENTER_VERTICAL | wx.ALL, 5)
-            self.updateCharList()
+        self.charChoice = wx.Choice(self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, [])
+        characterSelectSizer.Add(self.charChoice, 1, wx.ALIGN_CENTER_VERTICAL | wx.ALL, 5)
+        self.updateCharList()
 
         self.fetchBtn = wx.Button(self, wx.ID_ANY, "Fetch Fits", wx.DefaultPosition, wx.DefaultSize, 5)
         characterSelectSizer.Add(self.fetchBtn, 0, wx.ALL, 5)
@@ -99,14 +92,14 @@ class CrestFittings(wx.Frame):
 
     def updateCharList(self):
         sCrest = Crest.getInstance()
-        chars = sCrest.getCrestCharacters()
+        chars = sCrest.getSsoCharacters()
 
         if len(chars) == 0:
             self.Close()
 
         self.charChoice.Clear()
         for char in chars:
-            self.charChoice.Append(char.name, char.ID)
+            self.charChoice.Append(char.characterName, char.characterID)
 
         self.charChoice.SetSelection(0)
 
@@ -232,7 +225,7 @@ class ExportToEve(wx.Frame):
 
     def updateCharList(self):
         sCrest = Crest.getInstance()
-        chars = sCrest.getCrestCharacters()
+        chars = sCrest.getSsoCharacters()
 
         if len(chars) == 0:
             self.Close()
@@ -344,7 +337,7 @@ class CrestMgmt(wx.Dialog):
 
     def popCharList(self):
         sCrest = Crest.getInstance()
-        chars = sCrest.getCrestCharacters()
+        chars = sCrest.getSsoCharacters()
 
         self.lcCharacters.DeleteAllItems()
 

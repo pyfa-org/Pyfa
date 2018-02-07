@@ -18,9 +18,11 @@ from service.server import StoppableHTTPServer, AuthHandler
 from service.pycrest.eve import EVE
 
 from .esi_security_proxy import EsiSecurityProxy
-from esipy import EsiClient
+from esipy import EsiClient, EsiApp
 from esipy.cache import FileCache
 import os
+import logging
+
 
 pyfalog = Logger(__name__)
 
@@ -41,6 +43,7 @@ class CrestModes(Enum):
     IMPLICIT = 0
     USER = 1
 
+from utils.timer import Timer
 
 class Crest(object):
     clientIDs = {
@@ -53,6 +56,16 @@ class Crest(object):
     clientTest = True
 
     _instance = None
+
+    @classmethod
+    def initEsiApp(cls):
+        with Timer() as t:
+            cls.esiapp = EsiApp(cache=None)
+
+        with Timer() as t:
+            cls.esi_v1 = cls.esiapp.get_v1_swagger
+        with Timer() as t:
+            cls.esi_v4 = cls.esiapp.get_v4_swagger
 
     @classmethod
     def genEsiClient(cls, security=None):
@@ -135,7 +148,7 @@ class Crest(object):
         self.charCache = {}
         wx.PostEvent(self.mainFrame, GE.SsoLogout(type=CrestModes.USER, numChars=0))
 
-    def getCrestCharacters(self):
+    def getSsoCharacters(self):
         chars = eos.db.getSsoCharacters(config.getClientSecret())
         return chars
 
@@ -150,6 +163,10 @@ class Crest(object):
 
     def getFittings(self, charID):
         char = self.getSsoCharacter(charID)
+        op = esi_v1.op['get_characters_character_id_fittings'](
+            character_id=self.currentCharacter.character_id
+        )
+        resp = self.currentCharacter.esi_client.request(op)
         return char.eve.get('%scharacters/%d/fittings/' % (char.eve._authed_endpoint, char.ID))
 
     def postFitting(self, charID, json):

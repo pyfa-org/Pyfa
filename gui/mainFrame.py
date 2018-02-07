@@ -657,7 +657,7 @@ class MainFrame(wx.Frame):
             menu.Enable(menu.exportToEveId, False)
         else:
             menu.SetLabel(menu.ssoLoginId, "Manage Characters")
-            enable = len(sCrest.getCrestCharacters()) == 0
+            enable = len(sCrest.getSsoCharacters()) == 0
             menu.Enable(menu.eveFittingsId, not enable)
             menu.Enable(menu.exportToEveId, not enable)
 

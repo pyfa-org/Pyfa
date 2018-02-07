@@ -145,8 +145,8 @@ class MainMenuBar(wx.MenuBar):
         crestMenu.Append(self.exportToEveId, "Export To EVE")
 
         # if self.sCrest.settings.get('mode') == CrestModes.IMPLICIT or len(self.sCrest.getCrestCharacters()) == 0:
-        self.Enable(self.eveFittingsId, False)
-        self.Enable(self.exportToEveId, False)
+        self.Enable(self.eveFittingsId, True)
+        self.Enable(self.exportToEveId, True)
 
         if not self.mainFrame.disableOverrideEditor:
             windowMenu.AppendSeparator()
