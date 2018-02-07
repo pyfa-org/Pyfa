@@ -126,11 +126,6 @@ class CrestFittings(wx.Frame):
         event.Skip()
 
     def getActiveCharacter(self):
-        sCrest = Crest.getInstance()
-
-        if sCrest.settings.get('mode') == CrestModes.IMPLICIT:
-            return sCrest.implicitCharacter.ID
-
         selection = self.charChoice.GetCurrentSelection()
         return self.charChoice.GetClientData(selection) if selection is not None else None
 

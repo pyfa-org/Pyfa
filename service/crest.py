@@ -34,6 +34,9 @@ if not os.path.exists(cache_path):
 
 file_cache = FileCache(cache_path)
 
+esiRdy = threading.Event()
+
+
 class Servers(Enum):
     TQ = 0
     SISI = 1
@@ -44,6 +47,17 @@ class CrestModes(Enum):
     USER = 1
 
 from utils.timer import Timer
+
+
+
+class EsiInitThread(threading.Thread):
+    def __init__(self):
+        threading.Thread.__init__(self)
+        self.name = "EsiInitThread"
+
+    def run(self):
+        Crest.initEsiApp()
+
 
 class Crest(object):
     clientIDs = {
@@ -66,6 +80,8 @@ class Crest(object):
             cls.esi_v1 = cls.esiapp.get_v1_swagger
         with Timer() as t:
             cls.esi_v4 = cls.esiapp.get_v4_swagger
+
+        esiRdy.set()
 
     @classmethod
     def genEsiClient(cls, security=None):
@@ -102,6 +118,10 @@ class Crest(object):
         mode. The mode is sent as an argument, as well as the umber of
         characters still in the cache (if USER mode)
         """
+
+        prefetch = EsiInitThread()
+        prefetch.daemon = True
+        prefetch.start()
 
         self.settings = CRESTSettings.getInstance()
         self.scopes = ['characterFittingsRead', 'characterFittingsWrite']
@@ -159,15 +179,16 @@ class Crest(object):
         char = eos.db.getSsoCharacter(charID, config.getClientSecret())
         if char.esi_client is None:
             char.esi_client = Crest.genEsiClient()
+            char.esi_client.security.update_token(char.get_sso_data())
         return char
 
     def getFittings(self, charID):
         char = self.getSsoCharacter(charID)
-        op = esi_v1.op['get_characters_character_id_fittings'](
-            character_id=self.currentCharacter.character_id
+        op = Crest.esi_v1.op['get_characters_character_id_fittings'](
+            character_id=charID
         )
-        resp = self.currentCharacter.esi_client.request(op)
-        return char.eve.get('%scharacters/%d/fittings/' % (char.eve._authed_endpoint, char.ID))
+        resp = char.esi_client.request(op)
+        return resp
 
     def postFitting(self, charID, json):
         # @todo: new fitting ID can be recovered from Location header,
