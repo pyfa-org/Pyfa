@@ -5,6 +5,9 @@ import threading
 import copy
 import uuid
 import time
+import config
+import base64
+import json
 
 import eos.db
 from eos.enum import Enum
@@ -14,8 +17,20 @@ from service.settings import CRESTSettings
 from service.server import StoppableHTTPServer, AuthHandler
 from service.pycrest.eve import EVE
 
+from .esi_security_proxy import EsiSecurityProxy
+from esipy import EsiClient
+from esipy.cache import FileCache
+import os
+
 pyfalog = Logger(__name__)
 
+server = "https://blitzmann.pythonanywhere.com"
+cache_path = os.path.join(config.savePath, config.ESI_CACHE)
+
+if not os.path.exists(cache_path):
+    os.mkdir(cache_path)
+
+file_cache = FileCache(cache_path)
 
 class Servers(Enum):
     TQ = 0
@@ -38,6 +53,14 @@ class Crest(object):
     clientTest = True
 
     _instance = None
+
+    @classmethod
+    def genEsiClient(cls, security=None):
+        return EsiClient(
+            security=EsiSecurityProxy(sso_url=config.ESI_AUTH_PROXY) if security is None else security,
+            cache=file_cache,
+            headers={'User-Agent': 'pyfa esipy'}
+        )
 
     @classmethod
     def getInstance(cls):
@@ -113,32 +136,30 @@ class Crest(object):
         wx.PostEvent(self.mainFrame, GE.SsoLogout(type=CrestModes.USER, numChars=0))
 
     def getCrestCharacters(self):
-        chars = eos.db.getSsoCharacters()
+        chars = eos.db.getSsoCharacters(config.getClientSecret())
         return chars
 
-    def getCrestCharacter(self, charID):
+    def getSsoCharacter(self, charID):
         """
         Get character, and modify to include the eve connection
         """
-        if charID in self.charCache:
-            return self.charCache.get(charID)
-
-        char = eos.db.getSsoCharacter(charID)
-        self.charCache[charID] = char
+        char = eos.db.getSsoCharacter(charID, config.getClientSecret())
+        if char.esi_client is None:
+            char.esi_client = Crest.genEsiClient()
         return char
 
     def getFittings(self, charID):
-        char = self.getCrestCharacter(charID)
+        char = self.getSsoCharacter(charID)
         return char.eve.get('%scharacters/%d/fittings/' % (char.eve._authed_endpoint, char.ID))
 
     def postFitting(self, charID, json):
         # @todo: new fitting ID can be recovered from Location header,
         # ie: Location -> https://api-sisi.testeveonline.com/characters/1611853631/fittings/37486494/
-        char = self.getCrestCharacter(charID)
+        char = self.getSsoCharacter(charID)
         return char.eve.post('%scharacters/%d/fittings/' % (char.eve._authed_endpoint, char.ID), data=json)
 
     def delFitting(self, charID, fittingID):
-        char = self.getCrestCharacter(charID)
+        char = self.getSsoCharacter(charID)
         return char.eve.delete('%scharacters/%d/fittings/%d/' % (char.eve._authed_endpoint, char.ID, fittingID))
 
     def logout(self):
@@ -154,19 +175,26 @@ class Crest(object):
 
     def startServer(self):
         pyfalog.debug("Starting server")
+
+        # we need this to ensure that the previous get_request finishes, and then the socket will close
         if self.httpd:
             self.stopServer()
             time.sleep(1)
-            # we need this to ensure that the previous get_request finishes, and then the socket will close
-        self.httpd = StoppableHTTPServer(('localhost', 6461), AuthHandler)
+
+        self.state = str(uuid.uuid4())
+        self.httpd = StoppableHTTPServer(('localhost', 0), AuthHandler)
+        port = self.httpd.socket.getsockname()[1]
+
+        esisecurity = EsiSecurityProxy(sso_url=config.ESI_AUTH_PROXY)
+
+        uri = esisecurity.get_auth_uri(state=self.state, redirect='http://localhost:{}'.format(port))
 
         self.serverThread = threading.Thread(target=self.httpd.serve, args=(self.handleLogin,))
-        self.serverThread.name = "CRESTServer"
+        self.serverThread.name = "SsoCallbackServer"
         self.serverThread.daemon = True
         self.serverThread.start()
 
-        self.state = str(uuid.uuid4())
-        return self.eve.auth_uri(scopes=self.scopes, state=self.state)
+        return uri
 
     def handleLogin(self, message):
         if not message:
@@ -178,41 +206,26 @@ class Crest(object):
 
         pyfalog.debug("Handling CREST login with: {0}", message)
 
-        if 'access_token' in message:  # implicit
-            eve = EVE(**self.eve_options)
-            eve.temptoken_authorize(
-                    access_token=message['access_token'][0],
-                    expires_in=int(message['expires_in'][0])
-            )
-            self.ssoTimer = threading.Timer(int(message['expires_in'][0]), self.logout)
-            self.ssoTimer.start()
+        auth_response = json.loads(base64.b64decode(message['SSOInfo'][0]))
 
-            eve()
-            info = eve.whoami()
+        # We need to preload the ESI Security object beforehand with the auth response so that we can use verify to
+        # get character information
+        # init the security object
+        esisecurity = EsiSecurityProxy(sso_url=config.ESI_AUTH_PROXY)
 
-            pyfalog.debug("Got character info: {0}", info)
+        esisecurity.update_token(auth_response)
 
-            self.implicitCharacter = CrestChar(info['CharacterID'], info['CharacterName'])
-            self.implicitCharacter.eve = eve
-            # self.implicitCharacter.fetchImage()
+        # we get the character information
+        cdata = esisecurity.verify()
+        print(cdata)
 
-            wx.PostEvent(self.mainFrame, GE.SsoLogin(type=CrestModes.IMPLICIT))
-        elif 'code' in message:
-            eve = EVE(**self.eve_options)
-            eve.authorize(message['code'][0])
-            eve()
-            info = eve.whoami()
+        currentCharacter = self.getSsoCharacter(cdata['CharacterID'])
 
-            pyfalog.debug("Got character info: {0}", info)
+        if currentCharacter is None:
+            currentCharacter = SsoCharacter(cdata['CharacterID'], cdata['CharacterName'], config.getClientSecret())
+            currentCharacter.esi_client = Crest.genEsiClient(esisecurity)
+            currentCharacter.update_token(auth_response)  # this also sets the esi security token
 
-            # check if we have character already. If so, simply replace refresh_token
-            char = self.getCrestCharacter(int(info['CharacterID']))
-            if char:
-                char.refresh_token = eve.refresh_token
-            else:
-                char = CrestChar(info['CharacterID'], info['CharacterName'], eve.refresh_token)
-                char.eve = eve
-            self.charCache[int(info['CharacterID'])] = char
-            eos.db.save(char)
+        eos.db.save(currentCharacter)
 
-            wx.PostEvent(self.mainFrame, GE.SsoLogin(type=CrestModes.USER))
+        wx.PostEvent(self.mainFrame, GE.SsoLogin(type=CrestModes.USER))  # todo: remove user / implicit authentication

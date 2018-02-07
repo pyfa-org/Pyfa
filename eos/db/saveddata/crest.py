@@ -17,7 +17,7 @@
 # along with eos.  If not, see <http://www.gnu.org/licenses/>.
 # ===============================================================================
 
-from sqlalchemy import Table, Column, Integer, String, DateTime
+from sqlalchemy import Table, Column, Integer, String, DateTime, UniqueConstraint
 from sqlalchemy.orm import mapper
 import datetime
 
@@ -27,12 +27,15 @@ from eos.saveddata.ssocharacter import SsoCharacter
 sso_table = Table("ssoCharacter", saveddata_meta,
                     Column("ID", Integer, primary_key=True),
                     Column("client", String, nullable=False),
-                    Column("characterID", Integer, nullable=False, unique=True),
-                    Column("characterName", String, nullable=False, unique=True),
+                    Column("characterID", Integer, nullable=False),
+                    Column("characterName", String, nullable=False),
                     Column("refreshToken", String, nullable=False),
                     Column("accessToken", String, nullable=False),
                     Column("accessTokenExpires", DateTime, nullable=False),
                     Column("created", DateTime, nullable=True, default=datetime.datetime.now),
-                    Column("modified", DateTime, nullable=True, onupdate=datetime.datetime.now))
+                    Column("modified", DateTime, nullable=True, onupdate=datetime.datetime.now),
+                    UniqueConstraint('client', 'characterID', name='uix_client_characterID'),
+                    UniqueConstraint('client', 'characterName', name='uix_client_characterName')
+                  )
 
 mapper(SsoCharacter, sso_table)

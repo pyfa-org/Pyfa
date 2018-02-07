@@ -310,7 +310,9 @@ class CrestMgmt(wx.Dialog):
         self.lcCharacters = wx.ListCtrl(self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.LC_REPORT)
 
         self.lcCharacters.InsertColumn(0, heading='Character')
-        self.lcCharacters.InsertColumn(1, heading='Refresh Token')
+        self.lcCharacters.InsertColumn(1, heading='Character ID')
+        self.lcCharacters.InsertColumn(2, heading='Access Token')
+        self.lcCharacters.InsertColumn(3, heading='Refresh Token')
 
         self.popCharList()
 
@@ -347,8 +349,8 @@ class CrestMgmt(wx.Dialog):
         self.lcCharacters.DeleteAllItems()
 
         for index, char in enumerate(chars):
-            self.lcCharacters.InsertItem(index, char.name)
-            self.lcCharacters.SetStringItem(index, 1, char.refresh_token)
+            self.lcCharacters.InsertItem(index, char.characterName)
+            self.lcCharacters.SetStringItem(index, 1, char.refreshToken)
             self.lcCharacters.SetItemData(index, char.ID)
 
         self.lcCharacters.SetColumnWidth(0, wx.LIST_AUTOSIZE)

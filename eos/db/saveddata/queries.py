@@ -467,29 +467,28 @@ def getProjectedFits(fitID):
         raise TypeError("Need integer as argument")
 
 
-def getSsoCharacters(eager=None):
+def getSsoCharacters(clientHash, eager=None):
     eager = processEager(eager)
     with sd_lock:
-        characters = saveddata_session.query(SsoCharacter).options(*eager).all()
+        characters = saveddata_session.query(SsoCharacter).filter(SsoCharacter.client == clientHash).options(*eager).all()
     return characters
 
 
 @cachedQuery(SsoCharacter, 1, "lookfor")
-def getSsoCharacter(lookfor, eager=None):
+def getSsoCharacter(lookfor, clientHash, eager=None):
+    filter = SsoCharacter.client == clientHash
+
     if isinstance(lookfor, int):
-        if eager is None:
-            with sd_lock:
-                character = saveddata_session.query(SsoCharacter).get(lookfor)
-        else:
-            eager = processEager(eager)
-            with sd_lock:
-                character = saveddata_session.query(SsoCharacter).options(*eager).filter(SsoCharacter.ID == lookfor).first()
+        filter = and_(filter, SsoCharacter.characterID == lookfor)
     elif isinstance(lookfor, str):
-        eager = processEager(eager)
-        with sd_lock:
-            character = saveddata_session.query(SsoCharacter).options(*eager).filter(SsoCharacter.name == lookfor).first()
+        filter = and_(filter, SsoCharacter.characterName == lookfor)
     else:
         raise TypeError("Need integer or string as argument")
+
+    eager = processEager(eager)
+    with sd_lock:
+        character = saveddata_session.query(SsoCharacter).options(*eager).filter(filter).first()
+
     return character
 
 
@@ -544,7 +543,7 @@ def commit():
         try:
             saveddata_session.commit()
             saveddata_session.flush()
-        except Exception:
+        except Exception as ex:
             saveddata_session.rollback()
             exc_info = sys.exc_info()
             raise exc_info[0](exc_info[1]).with_traceback(exc_info[2])

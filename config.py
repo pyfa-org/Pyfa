@@ -35,6 +35,9 @@ logPath = None
 loggingLevel = None
 logging_setup = None
 
+ESI_AUTH_PROXY = "http://localhost:5015" # "https://blitzmann.pythonanywhere.com" // need to get this set up, and actually put on it's own domain
+ESI_CACHE = 'esi_cache'
+
 LOGLEVEL_MAP = {
     "critical": CRITICAL,
     "error": ERROR,

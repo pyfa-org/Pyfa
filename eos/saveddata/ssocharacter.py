@@ -25,13 +25,13 @@ import time
 
 
 class SsoCharacter(object):
-    def __init__(self, id, charID, name, client, accessToken, refreshToken=None):
-        self.ID = id
+    def __init__(self, charID, name, client, accessToken=None, refreshToken=None):
         self.characterID = charID
         self.characterName = name
         self.client = client
         self.accessToken = accessToken
         self.refreshToken = refreshToken
+        self.esi_client = None
 
     @reconstructor
     def init(self):
@@ -51,7 +51,7 @@ class SsoCharacter(object):
     def update_token(self, tokenResponse):
         """ helper function to update token data from SSO response """
         self.accessToken = tokenResponse['access_token']
-        self.accessTokenExpires = datetime.fromtimestamp(
+        self.accessTokenExpires = datetime.datetime.fromtimestamp(
             time.time() + tokenResponse['expires_in'],
         )
         if 'refresh_token' in tokenResponse:

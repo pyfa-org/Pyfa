@@ -26,11 +26,9 @@ class EsiSecurityProxy(object):
 
     def __init__(
             self,
-            redirect_uri,
             **kwargs):
         """ Init the ESI Security Object
 
-        :param redirect_uri: the uri to redirect the user after login into SSO
         :param sso_url: the default sso URL used when no "app" is provided
         :param esi_url: the default esi URL used for verify endpoint
         :param app: (optionnal) the pyswagger app object
@@ -43,7 +41,6 @@ class EsiSecurityProxy(object):
         esi_url = kwargs.pop('esi_url', "https://esi.tech.ccp.is")
 
         self.security_name = kwargs.pop('security_name', 'evesso')
-        self.redirect_uri = redirect_uri
 
         # we provide app object, so we don't use sso_url
         if app is not None:
