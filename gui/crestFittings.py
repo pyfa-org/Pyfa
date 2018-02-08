@@ -185,17 +185,10 @@ class ExportToEve(wx.Frame):
         mainSizer = wx.BoxSizer(wx.VERTICAL)
         hSizer = wx.BoxSizer(wx.HORIZONTAL)
 
-        if sCrest.settings.get('mode') == CrestModes.IMPLICIT:
-            self.stLogged = wx.StaticText(self, wx.ID_ANY, "Currently logged in as %s" % sCrest.implicitCharacter.name,
-                                          wx.DefaultPosition, wx.DefaultSize)
-            self.stLogged.Wrap(-1)
-
-            hSizer.Add(self.stLogged, 1, wx.ALIGN_CENTER_VERTICAL | wx.ALL, 5)
-        else:
-            self.charChoice = wx.Choice(self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, [])
-            hSizer.Add(self.charChoice, 1, wx.ALIGN_CENTER_VERTICAL | wx.ALL, 5)
-            self.updateCharList()
-            self.charChoice.SetSelection(0)
+        self.charChoice = wx.Choice(self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, [])
+        hSizer.Add(self.charChoice, 1, wx.ALIGN_CENTER_VERTICAL | wx.ALL, 5)
+        self.updateCharList()
+        self.charChoice.SetSelection(0)
 
         self.exportBtn = wx.Button(self, wx.ID_ANY, "Export Fit", wx.DefaultPosition, wx.DefaultSize, 5)
         hSizer.Add(self.exportBtn, 0, wx.ALL, 5)
@@ -227,7 +220,7 @@ class ExportToEve(wx.Frame):
 
         self.charChoice.Clear()
         for char in chars:
-            self.charChoice.Append(char.name, char.ID)
+            self.charChoice.Append(char.characterName, char.characterID)
 
         self.charChoice.SetSelection(0)
 
@@ -249,11 +242,6 @@ class ExportToEve(wx.Frame):
         event.Skip()
 
     def getActiveCharacter(self):
-        sCrest = Crest.getInstance()
-
-        if sCrest.settings.get('mode') == CrestModes.IMPLICIT:
-            return sCrest.implicitCharacter.ID
-
         selection = self.charChoice.GetCurrentSelection()
         return self.charChoice.GetClientData(selection) if selection is not None else None
 
@@ -272,16 +260,17 @@ class ExportToEve(wx.Frame):
 
         try:
             sFit = Fit.getInstance()
-            data = sPort.exportCrest(sFit.getFit(fitID))
+            data = sPort.exportESI(sFit.getFit(fitID))
             res = sCrest.postFitting(self.getActiveCharacter(), data)
 
-            self.statusbar.SetStatusText("%d: %s" % (res.status_code, res.reason), 0)
-            try:
-                text = json.loads(res.text)
-                self.statusbar.SetStatusText(text['message'], 1)
-            except ValueError:
-                pyfalog.warning("Value error on loading JSON.")
-                self.statusbar.SetStatusText("", 1)
+            self.statusbar.SetStatusText("", 0)
+            self.statusbar.SetStatusText("", 1)
+            # try:
+            #     text = json.loads(res.text)
+            #     self.statusbar.SetStatusText(text['message'], 1)
+            # except ValueError:
+            #     pyfalog.warning("Value error on loading JSON.")
+            #     self.statusbar.SetStatusText("", 1)
         except requests.exceptions.ConnectionError:
             msg = "Connection error, please check your internet connection"
             pyfalog.error(msg)

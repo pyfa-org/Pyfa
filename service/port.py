@@ -381,7 +381,7 @@ class Port(object):
     """Service which houses all import/export format functions"""
 
     @classmethod
-    def exportCrest(cls, ofit, callback=None):
+    def exportESI(cls, ofit, callback=None):
         # A few notes:
         # max fit name length is 50 characters
         # Most keys are created simply because they are required, but bogus data is okay
@@ -396,9 +396,7 @@ class Port(object):
         # max length is 50 characters
         name = ofit.name[:47] + '...' if len(ofit.name) > 50 else ofit.name
         fit['name'] = name
-        fit['ship']['href'] = "%sinventory/types/%d/" % (eve._authed_endpoint, ofit.ship.item.ID)
-        fit['ship']['id'] = ofit.ship.item.ID
-        fit['ship']['name'] = ''
+        fit['ship_type_id'] = ofit.ship.item.ID
 
         # 2017/03/29 NOTE: "<" or "&lt;" is Ignored
         # fit['description'] = "<pyfa:%d />" % ofit.ID
@@ -426,9 +424,7 @@ class Port(object):
                 slotNum[slot] += 1
 
             item['quantity'] = 1
-            item['type']['href'] = "%sinventory/types/%d/" % (eve._authed_endpoint, module.item.ID)
-            item['type']['id'] = module.item.ID
-            item['type']['name'] = ''
+            item['type_id'] = module.item.ID
             fit['items'].append(item)
 
             if module.charge and sFit.serviceFittingOptions["exportCharges"]:
@@ -441,36 +437,28 @@ class Port(object):
             item = nested_dict()
             item['flag'] = INV_FLAG_CARGOBAY
             item['quantity'] = cargo.amount
-            item['type']['href'] = "%sinventory/types/%d/" % (eve._authed_endpoint, cargo.item.ID)
-            item['type']['id'] = cargo.item.ID
-            item['type']['name'] = ''
+            item['type_id'] = cargo.item.ID
             fit['items'].append(item)
 
         for chargeID, amount in list(charges.items()):
             item = nested_dict()
             item['flag'] = INV_FLAG_CARGOBAY
             item['quantity'] = amount
-            item['type']['href'] = "%sinventory/types/%d/" % (eve._authed_endpoint, chargeID)
-            item['type']['id'] = chargeID
-            item['type']['name'] = ''
+            item['type_id'] = chargeID
             fit['items'].append(item)
 
         for drone in ofit.drones:
             item = nested_dict()
             item['flag'] = INV_FLAG_DRONEBAY
             item['quantity'] = drone.amount
-            item['type']['href'] = "%sinventory/types/%d/" % (eve._authed_endpoint, drone.item.ID)
-            item['type']['id'] = drone.item.ID
-            item['type']['name'] = ''
+            item['type_id'] = drone.item.ID
             fit['items'].append(item)
 
         for fighter in ofit.fighters:
             item = nested_dict()
             item['flag'] = INV_FLAG_FIGHTER
             item['quantity'] = fighter.amountActive
-            item['type']['href'] = "%sinventory/types/%d/" % (eve._authed_endpoint, fighter.item.ID)
-            item['type']['id'] = fighter.item.ID
-            item['type']['name'] = fighter.item.name
+            item['type_id'] = fighter.item.ID
             fit['items'].append(item)
 
         return json.dumps(fit)

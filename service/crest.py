@@ -187,11 +187,18 @@ class Crest(object):
         resp = char.esi_client.request(op)
         return resp.data
 
-    def postFitting(self, charID, json):
-        # @todo: new fitting ID can be recovered from Location header,
-        # ie: Location -> https://api-sisi.testeveonline.com/characters/1611853631/fittings/37486494/
+    def postFitting(self, charID, json_str):
+        # @todo: new fitting ID can be recovered from resp.data,
         char = self.getSsoCharacter(charID)
-        return char.eve.post('%scharacters/%d/fittings/' % (char.eve._authed_endpoint, char.ID), data=json)
+
+        op = Crest.esi_v1.op['post_characters_character_id_fittings'](
+            character_id=char.characterID,
+            fitting=json.loads(json_str)
+        )
+
+        resp = char.esi_client.request(op)
+
+        return resp.data
 
     def delFitting(self, charID, fittingID):
         char = self.getSsoCharacter(charID)

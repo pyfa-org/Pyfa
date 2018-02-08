@@ -740,7 +740,7 @@ class MainFrame(wx.Frame):
 
     def clipboardCrest(self):
         fit = db_getFit(self.getActiveFit())
-        toClipboard(Port.exportCrest(fit))
+        toClipboard(Port.exportESI(fit))
 
     def clipboardXml(self):
         fit = db_getFit(self.getActiveFit())
