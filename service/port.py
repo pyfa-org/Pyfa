@@ -491,7 +491,7 @@ class Port(object):
 
         # If JSON-style start, parse as CREST/JSON
         if firstLine[0] == '{':
-            return "JSON", (cls.importCrest(string),)
+            return "JSON", (cls.importESI(string),)
 
         # If we've got source file name which is used to describe ship name
         # and first line contains something like [setup name], detect as eft config file
@@ -509,7 +509,7 @@ class Port(object):
         return "DNA", (cls.importDna(string),)
 
     @staticmethod
-    def importCrest(str_):
+    def importESI(str_):
 
         sMkt = Market.getInstance()
         fitobj = Fit()
@@ -521,11 +521,11 @@ class Port(object):
         fitobj.notes = refobj['description']
 
         try:
-            refobj = refobj['ship']['id']
+            ship = refobj['ship_type_id']
             try:
-                fitobj.ship = Ship(sMkt.getItem(refobj))
+                fitobj.ship = Ship(sMkt.getItem(ship))
             except ValueError:
-                fitobj.ship = Citadel(sMkt.getItem(refobj))
+                fitobj.ship = Citadel(sMkt.getItem(ship))
         except:
             pyfalog.warning("Caught exception in importCrest")
             return None
@@ -535,7 +535,7 @@ class Port(object):
         moduleList = []
         for module in items:
             try:
-                item = sMkt.getItem(module['type']['id'], eager="group.category")
+                item = sMkt.getItem(module['type_id'], eager="group.category")
                 if module['flag'] == INV_FLAG_DRONEBAY:
                     d = Drone(item)
                     d.amount = module['quantity']

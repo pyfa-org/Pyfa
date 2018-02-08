@@ -166,8 +166,6 @@ class MainFrame(wx.Frame):
         i = wx.Icon(BitmapLoader.getBitmap("pyfa", "gui"))
         self.SetIcon(i)
 
-        sCrest = Crest()
-
         # Create the layout and windows
         mainSizer = wx.BoxSizer(wx.HORIZONTAL)
 

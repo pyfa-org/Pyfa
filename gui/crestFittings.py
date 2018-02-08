@@ -134,9 +134,9 @@ class CrestFittings(wx.Frame):
         try:
             waitDialog = wx.BusyInfo("Fetching fits, please wait...", parent=self)
             fittings = sCrest.getFittings(self.getActiveCharacter())
-            self.cacheTime = fittings.get('cached_until')
-            self.updateCacheStatus(None)
-            self.cacheTimer.Start(1000)
+            # self.cacheTime = fittings.get('cached_until')
+            # self.updateCacheStatus(None)
+            # self.cacheTimer.Start(1000)
             self.fitTree.populateSkillTree(fittings)
             del waitDialog
         except requests.exceptions.ConnectionError:
@@ -385,11 +385,12 @@ class FittingsTreeView(wx.Panel):
         tree.DeleteChildren(root)
 
         dict = {}
-        fits = data['items']
+        fits = data
         for fit in fits:
-            if fit['ship']['name'] not in dict:
-                dict[fit['ship']['name']] = []
-            dict[fit['ship']['name']].append(fit)
+            ship = getItem(fit['ship_type_id'])
+            if ship.name not in dict:
+                dict[ship.name ] = []
+            dict[ship.name ].append(fit)
 
         for name, fits in dict.items():
             shipID = tree.AppendItem(root, name)
@@ -412,7 +413,7 @@ class FittingsTreeView(wx.Panel):
 
         for item in fit['items']:
             try:
-                cargo = Cargo(getItem(item['type']['id']))
+                cargo = Cargo(getItem(item['type_id']))
                 cargo.amount = item['quantity']
                 list.append(cargo)
             except Exception as e:

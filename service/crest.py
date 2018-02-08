@@ -50,15 +50,6 @@ from utils.timer import Timer
 
 
 
-class EsiInitThread(threading.Thread):
-    def __init__(self):
-        threading.Thread.__init__(self)
-        self.name = "EsiInitThread"
-
-    def run(self):
-        Crest.initEsiApp()
-
-
 class Crest(object):
     clientIDs = {
         Servers.TQ  : 'f9be379951c046339dc13a00e6be7704',
@@ -73,15 +64,14 @@ class Crest(object):
 
     @classmethod
     def initEsiApp(cls):
-        with Timer() as t:
-            cls.esiapp = EsiApp(cache=None)
-
-        with Timer() as t:
+        with Timer("Main EsiApp") as t:
+            cls.esiapp = EsiApp(cache=file_cache)
+        with Timer('ESI v1') as t:
             cls.esi_v1 = cls.esiapp.get_v1_swagger
-        with Timer() as t:
+        with Timer('ESI v4') as t:
             cls.esi_v4 = cls.esiapp.get_v4_swagger
 
-        esiRdy.set()
+        # esiRdy.set()
 
     @classmethod
     def genEsiClient(cls, security=None):
@@ -118,10 +108,12 @@ class Crest(object):
         mode. The mode is sent as an argument, as well as the umber of
         characters still in the cache (if USER mode)
         """
+        Crest.initEsiApp()
 
-        prefetch = EsiInitThread()
-        prefetch.daemon = True
-        prefetch.start()
+
+        # prefetch = EsiInitThread()
+        # prefetch.daemon = True
+        # prefetch.start()
 
         self.settings = CRESTSettings.getInstance()
         self.scopes = ['characterFittingsRead', 'characterFittingsWrite']
@@ -188,7 +180,7 @@ class Crest(object):
             character_id=charID
         )
         resp = char.esi_client.request(op)
-        return resp
+        return resp.data
 
     def postFitting(self, charID, json):
         # @todo: new fitting ID can be recovered from Location header,
