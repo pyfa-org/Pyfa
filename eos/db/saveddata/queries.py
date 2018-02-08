@@ -474,7 +474,7 @@ def getSsoCharacters(clientHash, eager=None):
     return characters
 
 
-@cachedQuery(SsoCharacter, 1, "lookfor")
+@cachedQuery(SsoCharacter, 1, "lookfor", "clientHash")
 def getSsoCharacter(lookfor, clientHash, eager=None):
     filter = SsoCharacter.client == clientHash
 

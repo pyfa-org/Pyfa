@@ -161,12 +161,12 @@ class CrestFittings(wx.Frame):
         data = json.loads(self.fitTree.fittingsTreeCtrl.GetItemData(selection))
 
         dlg = wx.MessageDialog(self,
-                               "Do you really want to delete %s (%s) from EVE?" % (data['name'], data['ship']['name']),
+                               "Do you really want to delete %s (%s) from EVE?" % (data['name'], getItem(data['ship_type_id']).name),
                                "Confirm Delete", wx.YES | wx.NO | wx.ICON_QUESTION)
 
         if dlg.ShowModal() == wx.ID_YES:
             try:
-                sCrest.delFitting(self.getActiveCharacter(), data['fittingID'])
+                sCrest.delFitting(self.getActiveCharacter(), data['fitting_id'])
             except requests.exceptions.ConnectionError:
                 msg = "Connection error, please check your internet connection"
                 pyfalog.error(msg)
@@ -389,8 +389,8 @@ class FittingsTreeView(wx.Panel):
         for fit in fits:
             ship = getItem(fit['ship_type_id'])
             if ship.name not in dict:
-                dict[ship.name ] = []
-            dict[ship.name ].append(fit)
+                dict[ship.name] = []
+            dict[ship.name].append(fit)
 
         for name, fits in dict.items():
             shipID = tree.AppendItem(root, name)

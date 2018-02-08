@@ -60,6 +60,10 @@ class Crest(object):
     clientCallback = 'http://localhost:6461'
     clientTest = True
 
+    esiapp = None
+    esi_v1 = None
+    esi_v4 = None
+
     _instance = None
 
     @classmethod
@@ -176,6 +180,7 @@ class Crest(object):
 
     def getFittings(self, charID):
         char = self.getSsoCharacter(charID)
+        print(repr(char))
         op = Crest.esi_v1.op['get_characters_character_id_fittings'](
             character_id=charID
         )
@@ -190,7 +195,15 @@ class Crest(object):
 
     def delFitting(self, charID, fittingID):
         char = self.getSsoCharacter(charID)
-        return char.eve.delete('%scharacters/%d/fittings/%d/' % (char.eve._authed_endpoint, char.ID, fittingID))
+        print(repr(char))
+        op = Crest.esi_v1.op['delete_characters_character_id_fittings_fitting_id'](
+            character_id=charID,
+            fitting_id=fittingID
+        )
+
+        resp = char.esi_client.request(op)
+        return resp.data
+
 
     def logout(self):
         """Logout of implicit character"""
