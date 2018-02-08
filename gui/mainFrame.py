@@ -82,8 +82,8 @@ import threading
 import webbrowser
 import wx.adv
 
-from service.crest import Crest
-from service.crest import CrestModes
+from service.esi import Esi
+from service.esi import CrestModes
 from gui.crestFittings import CrestFittings, ExportToEve, CrestMgmt
 
 disableOverrideEditor = False
@@ -614,7 +614,7 @@ class MainFrame(wx.Frame):
         dlg.Show()
 
     def updateTitle(self, event):
-        sCrest = Crest.getInstance()
+        sCrest = Esi.getInstance()
         char = sCrest.implicitCharacter
         if char:
             t = time.gmtime(char.eve.expires - time.time())
@@ -649,7 +649,7 @@ class MainFrame(wx.Frame):
         self.SetTitle(self.title)
 
         menu = self.GetMenuBar()
-        sCrest = Crest.getInstance()
+        sCrest = Esi.getInstance()
 
         if type == CrestModes.IMPLICIT:
             menu.SetLabel(menu.ssoLoginId, "Login to EVE")

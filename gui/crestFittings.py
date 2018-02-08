@@ -16,7 +16,7 @@ import gui.globalEvents as GE
 
 from logbook import Logger
 import calendar
-from service.crest import Crest, CrestModes
+from service.esi import Esi, CrestModes
 
 pyfalog = Logger(__name__)
 
@@ -30,7 +30,7 @@ class CrestFittings(wx.Frame):
 
         self.mainFrame = parent
         mainSizer = wx.BoxSizer(wx.VERTICAL)
-        sCrest = Crest.getInstance()
+        sCrest = Esi.getInstance()
 
         characterSelectSizer = wx.BoxSizer(wx.HORIZONTAL)
 
@@ -91,7 +91,7 @@ class CrestFittings(wx.Frame):
         event.Skip()
 
     def updateCharList(self):
-        sCrest = Crest.getInstance()
+        sCrest = Esi.getInstance()
         chars = sCrest.getSsoCharacters()
 
         if len(chars) == 0:
@@ -130,7 +130,7 @@ class CrestFittings(wx.Frame):
         return self.charChoice.GetClientData(selection) if selection is not None else None
 
     def fetchFittings(self, event):
-        sCrest = Crest.getInstance()
+        sCrest = Esi.getInstance()
         try:
             waitDialog = wx.BusyInfo("Fetching fits, please wait...", parent=self)
             fittings = sCrest.getFittings(self.getActiveCharacter())
@@ -154,7 +154,7 @@ class CrestFittings(wx.Frame):
         self.mainFrame._openAfterImport(fits)
 
     def deleteFitting(self, event):
-        sCrest = Crest.getInstance()
+        sCrest = Esi.getInstance()
         selection = self.fitView.fitSelection
         if not selection:
             return
@@ -181,7 +181,7 @@ class ExportToEve(wx.Frame):
         self.mainFrame = parent
         self.SetBackgroundColour(wx.SystemSettings.GetColour(wx.SYS_COLOUR_BTNFACE))
 
-        sCrest = Crest.getInstance()
+        sCrest = Esi.getInstance()
         mainSizer = wx.BoxSizer(wx.VERTICAL)
         hSizer = wx.BoxSizer(wx.HORIZONTAL)
 
@@ -212,7 +212,7 @@ class ExportToEve(wx.Frame):
         self.Centre(wx.BOTH)
 
     def updateCharList(self):
-        sCrest = Crest.getInstance()
+        sCrest = Esi.getInstance()
         chars = sCrest.getSsoCharacters()
 
         if len(chars) == 0:
@@ -256,7 +256,7 @@ class ExportToEve(wx.Frame):
             return
 
         self.statusbar.SetStatusText("Sending request and awaiting response", 1)
-        sCrest = Crest.getInstance()
+        sCrest = Esi.getInstance()
 
         try:
             sFit = Fit.getInstance()
@@ -320,7 +320,7 @@ class CrestMgmt(wx.Dialog):
         event.Skip()
 
     def popCharList(self):
-        sCrest = Crest.getInstance()
+        sCrest = Esi.getInstance()
         chars = sCrest.getSsoCharacters()
 
         self.lcCharacters.DeleteAllItems()
@@ -335,7 +335,7 @@ class CrestMgmt(wx.Dialog):
 
     @staticmethod
     def addChar(event):
-        sCrest = Crest.getInstance()
+        sCrest = Esi.getInstance()
         uri = sCrest.startServer()
         webbrowser.open(uri)
 
@@ -343,7 +343,7 @@ class CrestMgmt(wx.Dialog):
         item = self.lcCharacters.GetFirstSelected()
         if item > -1:
             charID = self.lcCharacters.GetItemData(item)
-            sCrest = Crest.getInstance()
+            sCrest = Esi.getInstance()
             sCrest.delCrestCharacter(charID)
             self.popCharList()
 

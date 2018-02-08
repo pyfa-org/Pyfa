@@ -11,7 +11,7 @@ from service.settings import CRESTSettings
 # noinspection PyPackageRequirements
 from wx.lib.intctrl import IntCtrl
 
-from service.crest import Crest
+from service.esi import Esi
 
 
 class PFCrestPref(PreferenceView):
@@ -119,16 +119,16 @@ class PFCrestPref(PreferenceView):
     def OnModeChange(self, event):
         self.settings.set('mode', event.GetInt())
         self.ToggleProxySettings(self.settings.get('mode'))
-        Crest.restartService()
+        Esi.restartService()
 
     def OnServerChange(self, event):
         self.settings.set('server', event.GetInt())
-        Crest.restartService()
+        Esi.restartService()
 
     def OnBtnApply(self, event):
         self.settings.set('clientID', self.inputClientID.GetValue().strip())
         self.settings.set('clientSecret', self.inputClientSecret.GetValue().strip())
-        sCrest = Crest.getInstance()
+        sCrest = Esi.getInstance()
         sCrest.delAllCharacters()
 
     def ToggleProxySettings(self, mode):

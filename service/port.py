@@ -49,7 +49,7 @@ from service.market import Market
 from utils.strfunctions import sequential_rep, replace_ltgt
 from abc import ABCMeta, abstractmethod
 
-from service.crest import Crest
+from service.esi import Esi
 from collections import OrderedDict
 
 pyfalog = Logger(__name__)
@@ -388,7 +388,7 @@ class Port(object):
 
         nested_dict = lambda: collections.defaultdict(nested_dict)
         fit = nested_dict()
-        sCrest = Crest.getInstance()
+        sCrest = Esi.getInstance()
         sFit = svcFit.getInstance()
 
         eve = sCrest.eve
