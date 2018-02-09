@@ -119,11 +119,9 @@ class PFCrestPref(PreferenceView):
     def OnModeChange(self, event):
         self.settings.set('mode', event.GetInt())
         self.ToggleProxySettings(self.settings.get('mode'))
-        Esi.restartService()
 
     def OnServerChange(self, event):
         self.settings.set('server', event.GetInt())
-        Esi.restartService()
 
     def OnBtnApply(self, event):
         self.settings.set('clientID', self.inputClientID.GetValue().strip())

@@ -27,14 +27,12 @@ from eos.effectHandlerHelpers import HandledImplantBoosterList
 from eos.saveddata.implant import Implant
 from eos.saveddata.user import User
 from eos.saveddata.character import Character, Skill
+from eos.saveddata.ssocharacter import SsoCharacter
 
 characters_table = Table("characters", saveddata_meta,
                          Column("ID", Integer, primary_key=True),
                          Column("name", String, nullable=False),
-                         Column("apiID", Integer),
-                         Column("apiKey", String),
-                         Column("defaultChar", Integer),
-                         Column("chars", String, nullable=True),
+                         Column("ssoCharacterID", ForeignKey("ssoCharacter.ID"), nullable=True),
                          Column("defaultLevel", Integer, nullable=True),
                          Column("alphaCloneID", Integer, nullable=True),
                          Column("ownerID", ForeignKey("users.ID"), nullable=True),
@@ -62,6 +60,6 @@ mapper(Character, characters_table,
                    single_parent=True,
                    primaryjoin=charImplants_table.c.charID == characters_table.c.ID,
                    secondaryjoin=charImplants_table.c.implantID == Implant.ID,
-                   secondary=charImplants_table),
+                   secondary=charImplants_table)
        }
        )

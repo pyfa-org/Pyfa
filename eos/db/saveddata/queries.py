@@ -479,7 +479,7 @@ def getSsoCharacter(lookfor, clientHash, eager=None):
     filter = SsoCharacter.client == clientHash
 
     if isinstance(lookfor, int):
-        filter = and_(filter, SsoCharacter.characterID == lookfor)
+        filter = and_(filter, SsoCharacter.ID == lookfor)
     elif isinstance(lookfor, str):
         filter = and_(filter, SsoCharacter.characterName == lookfor)
     else:

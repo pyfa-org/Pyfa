@@ -16,7 +16,6 @@
 # You should have received a copy of the GNU General Public License
 # along with pyfa.  If not, see <http://www.gnu.org/licenses/>.
 # =============================================================================
-
 import sys
 import copy
 import itertools
@@ -34,10 +33,10 @@ import wx
 
 import config
 import eos.db
-from service.eveapi import EVEAPIConnection, ParseXML
+from service.esi import Esi
 
 from eos.saveddata.implant import Implant as es_Implant
-from eos.saveddata.character import Character as es_Character
+from eos.saveddata.character import Character as es_Character, Skill
 from eos.saveddata.module import Slot as es_Slot, Module as es_Module
 from eos.saveddata.fighter import Fighter as es_Fighter
 
@@ -52,6 +51,9 @@ class CharacterImportThread(threading.Thread):
         self.callback = callback
 
     def run(self):
+        wx.CallAfter(self.callback)
+        # todo: Fix character import (don't need CCP SML anymore, only support evemon?)
+        return
         paths = self.paths
         sCharacter = Character.getInstance()
         all5_character = es_Character("All 5", 5)
@@ -62,43 +64,34 @@ class CharacterImportThread(threading.Thread):
 
         for path in paths:
             try:
-                # we try to parse api XML data first
-                with open(path, mode='r') as charFile:
-                    sheet = ParseXML(charFile)
-                    char = sCharacter.new(sheet.name + " (imported)")
-                    sCharacter.apiUpdateCharSheet(char.ID, sheet.skills)
-            except:
-                # if it's not api XML data, try this
-                # this is a horrible logic flow, but whatever
-                try:
-                    charFile = open(path, mode='r').read()
-                    doc = minidom.parseString(charFile)
-                    if doc.documentElement.tagName not in ("SerializableCCPCharacter", "SerializableUriCharacter"):
-                        pyfalog.error("Incorrect EVEMon XML sheet")
-                        raise RuntimeError("Incorrect EVEMon XML sheet")
-                    name = doc.getElementsByTagName("name")[0].firstChild.nodeValue
-                    securitystatus = doc.getElementsByTagName("securityStatus")[0].firstChild.nodeValue or 0
-                    skill_els = doc.getElementsByTagName("skill")
-                    skills = []
-                    for skill in skill_els:
-                        if int(skill.getAttribute("typeID")) in all_skill_ids and (0 <= int(skill.getAttribute("level")) <= 5):
-                            skills.append({
-                                "typeID": int(skill.getAttribute("typeID")),
-                                "level": int(skill.getAttribute("level")),
-                            })
-                        else:
-                            pyfalog.error(
-                                    "Attempted to import unknown skill {0} (ID: {1}) (Level: {2})",
-                                    skill.getAttribute("name"),
-                                    skill.getAttribute("typeID"),
-                                    skill.getAttribute("level"),
-                            )
-                    char = sCharacter.new(name + " (EVEMon)")
-                    sCharacter.apiUpdateCharSheet(char.ID, skills, securitystatus)
-                except Exception as e:
-                    pyfalog.error("Exception on character import:")
-                    pyfalog.error(e)
-                    continue
+                charFile = open(path, mode='r').read()
+                doc = minidom.parseString(charFile)
+                if doc.documentElement.tagName not in ("SerializableCCPCharacter", "SerializableUriCharacter"):
+                    pyfalog.error("Incorrect EVEMon XML sheet")
+                    raise RuntimeError("Incorrect EVEMon XML sheet")
+                name = doc.getElementsByTagName("name")[0].firstChild.nodeValue
+                securitystatus = doc.getElementsByTagName("securityStatus")[0].firstChild.nodeValue or 0
+                skill_els = doc.getElementsByTagName("skill")
+                skills = []
+                for skill in skill_els:
+                    if int(skill.getAttribute("typeID")) in all_skill_ids and (0 <= int(skill.getAttribute("level")) <= 5):
+                        skills.append({
+                            "typeID": int(skill.getAttribute("typeID")),
+                            "level": int(skill.getAttribute("level")),
+                        })
+                    else:
+                        pyfalog.error(
+                                "Attempted to import unknown skill {0} (ID: {1}) (Level: {2})",
+                                skill.getAttribute("name"),
+                                skill.getAttribute("typeID"),
+                                skill.getAttribute("level"),
+                        )
+                char = sCharacter.new(name + " (EVEMon)")
+                sCharacter.apiUpdateCharSheet(char.ID, skills, securitystatus)
+            except Exception as e:
+                pyfalog.error("Exception on character import:")
+                pyfalog.error(e)
+                continue
 
         wx.CallAfter(self.callback)
 
@@ -344,6 +337,8 @@ class Character(object):
 
     @staticmethod
     def getApiDetails(charID):
+        # todo: fix this (or get rid of?)
+        return ("", "", "", [])
         char = eos.db.getCharacter(charID)
         if char.chars is not None:
             chars = json.loads(char.chars)
@@ -351,27 +346,8 @@ class Character(object):
             chars = None
         return char.apiID or "", char.apiKey or "", char.defaultChar or "", chars or []
 
-    def apiEnabled(self, charID):
-        id_, key, default, _ = self.getApiDetails(charID)
-        return id_ is not "" and key is not "" and default is not ""
-
-    @staticmethod
-    def apiCharList(charID, userID, apiKey):
-        char = eos.db.getCharacter(charID)
-
-        char.apiID = userID
-        char.apiKey = apiKey
-
-        api = EVEAPIConnection()
-        auth = api.auth(keyID=userID, vCode=apiKey)
-        apiResult = auth.account.Characters()
-        charList = [str(c.name) for c in apiResult.characters]
-
-        char.chars = json.dumps(charList)
-        return charList
-
-    def apiFetch(self, charID, charName, callback):
-        thread = UpdateAPIThread(charID, charName, (self.apiFetchCallback, callback))
+    def apiFetch(self, charID, callback):
+        thread = UpdateAPIThread(charID, (self.apiFetchCallback, callback))
         thread.start()
 
     def apiFetchCallback(self, guiCallback, e=None):
@@ -469,35 +445,30 @@ class Character(object):
 
 
 class UpdateAPIThread(threading.Thread):
-    def __init__(self, charID, charName, callback):
+    def __init__(self, charID, callback):
         threading.Thread.__init__(self)
 
         self.name = "CheckUpdate"
         self.callback = callback
         self.charID = charID
-        self.charName = charName
 
     def run(self):
         try:
-            dbChar = eos.db.getCharacter(self.charID)
-            dbChar.defaultChar = self.charName
+            char = eos.db.getCharacter(self.charID)
 
-            api = EVEAPIConnection()
-            auth = api.auth(keyID=dbChar.apiID, vCode=dbChar.apiKey)
-            apiResult = auth.account.Characters()
-            charID = None
-            for char in apiResult.characters:
-                if char.name == self.charName:
-                    charID = char.characterID
-                    break
+            sEsi = Esi.getInstance()
+            resp = sEsi.getSkills(char.ssoCharacterID)
 
-            if charID is None:
-                return
+            # todo: check if alpha. if so, pop up a question if they want to apply it as alpha. Use threading events to set the answer?
+            char.clearSkills()
+            for skillRow in resp["skills"]:
+                char.addSkill(Skill(char, skillRow["skill_id"], skillRow["trained_skill_level"]))
 
-            sheet = auth.character(charID).CharacterSheet()
-            charInfo = api.eve.CharacterInfo(characterID=charID)
+            resp = sEsi.getSecStatus(char.ssoCharacterID)
 
-            dbChar.apiUpdateCharSheet(sheet.skills, charInfo.securityStatus)
+            char.secStatus = resp['security_status']
+
             self.callback[0](self.callback[1])
-        except Exception:
+        except Exception as ex:
+            pyfalog.warn(ex)
             self.callback[0](self.callback[1], sys.exc_info())

@@ -158,11 +158,11 @@ class CharacterEditor(wx.Frame):
 
         self.sview = SkillTreeView(self.viewsNBContainer)
         self.iview = ImplantEditorView(self.viewsNBContainer, self)
-        self.aview = APIView(self.viewsNBContainer)
+        # self.aview = APIView(self.viewsNBContainer)
 
         self.viewsNBContainer.AddPage(self.sview, "Skills")
         self.viewsNBContainer.AddPage(self.iview, "Implants")
-        self.viewsNBContainer.AddPage(self.aview, "API")
+        # self.viewsNBContainer.AddPage(self.aview, "API")
 
         mainSizer.Add(self.viewsNBContainer, 1, wx.EXPAND | wx.ALL, 5)
 

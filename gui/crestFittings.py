@@ -99,7 +99,7 @@ class CrestFittings(wx.Frame):
 
         self.charChoice.Clear()
         for char in chars:
-            self.charChoice.Append(char.characterName, char.characterID)
+            self.charChoice.Append(char.characterName, char.ID)
 
         self.charChoice.SetSelection(0)
 
@@ -220,7 +220,7 @@ class ExportToEve(wx.Frame):
 
         self.charChoice.Clear()
         for char in chars:
-            self.charChoice.Append(char.characterName, char.characterID)
+            self.charChoice.Append(char.characterName, char.ID)
 
         self.charChoice.SetSelection(0)
 
@@ -344,7 +344,7 @@ class CrestMgmt(wx.Dialog):
         if item > -1:
             charID = self.lcCharacters.GetItemData(item)
             sCrest = Esi.getInstance()
-            sCrest.delCrestCharacter(charID)
+            sCrest.delSsoCharacter(charID)
             self.popCharList()
 
 

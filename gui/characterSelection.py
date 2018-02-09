@@ -151,9 +151,7 @@ class CharacterSelection(wx.Panel):
     def refreshApi(self, event):
         self.btnRefresh.Enable(False)
         sChar = Character.getInstance()
-        ID, key, charName, chars = sChar.getApiDetails(self.getActiveCharacter())
-        if charName:
-            sChar.apiFetch(self.getActiveCharacter(), charName, self.refreshAPICallback)
+        sChar.apiFetch(self.getActiveCharacter(), self.refreshAPICallback)
 
     def refreshAPICallback(self, e=None):
         self.btnRefresh.Enable(True)
@@ -178,7 +176,9 @@ class CharacterSelection(wx.Panel):
             self.charChoice.SetSelection(self.charCache)
             self.mainFrame.showCharacterEditor(event)
             return
-        if sChar.getCharName(charID) not in ("All 0", "All 5") and sChar.apiEnabled(charID):
+
+        char = sChar.getCharacter(charID)
+        if sChar.getCharName(charID) not in ("All 0", "All 5") and char.ssoCharacterID is not None:
             self.btnRefresh.Enable(True)
         else:
             self.btnRefresh.Enable(False)

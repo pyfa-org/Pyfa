@@ -2,12 +2,12 @@
 import wx
 from logbook import Logger
 import threading
-import copy
 import uuid
 import time
 import config
 import base64
 import json
+import os
 
 import eos.db
 from eos.enum import Enum
@@ -15,18 +15,13 @@ from eos.saveddata.ssocharacter import SsoCharacter
 import gui.globalEvents as GE
 from service.settings import CRESTSettings
 from service.server import StoppableHTTPServer, AuthHandler
-from service.pycrest.eve import EVE
 
 from .esi_security_proxy import EsiSecurityProxy
 from esipy import EsiClient, EsiApp
 from esipy.cache import FileCache
-import os
-import logging
-
 
 pyfalog = Logger(__name__)
 
-server = "https://blitzmann.pythonanywhere.com"
 cache_path = os.path.join(config.savePath, config.ESI_CACHE)
 
 if not os.path.exists(cache_path):
@@ -34,32 +29,13 @@ if not os.path.exists(cache_path):
 
 file_cache = FileCache(cache_path)
 
-esiRdy = threading.Event()
-
 
 class Servers(Enum):
     TQ = 0
     SISI = 1
 
 
-class CrestModes(Enum):
-    IMPLICIT = 0
-    USER = 1
-
-from utils.timer import Timer
-
-
-
 class Esi(object):
-    clientIDs = {
-        Servers.TQ  : 'f9be379951c046339dc13a00e6be7704',
-        Servers.SISI: 'af87365240d644f7950af563b8418bad'
-    }
-
-    # @todo: move this to settings
-    clientCallback = 'http://localhost:6461'
-    clientTest = True
-
     esiapp = None
     esi_v1 = None
     esi_v4 = None
@@ -68,12 +44,9 @@ class Esi(object):
 
     @classmethod
     def initEsiApp(cls):
-        with Timer("Main EsiApp") as t:
-            cls.esiapp = EsiApp(cache=file_cache)
-        with Timer('ESI v1') as t:
-            cls.esi_v1 = cls.esiapp.get_v1_swagger
-        with Timer('ESI v4') as t:
-            cls.esi_v4 = cls.esiapp.get_v4_swagger
+        cls.esiapp = EsiApp(cache=file_cache)
+        cls.esi_v1 = cls.esiapp.get_v1_swagger
+        cls.esi_v4 = cls.esiapp.get_v4_swagger
 
         # esiRdy.set()
 
@@ -92,50 +65,15 @@ class Esi(object):
 
         return cls._instance
 
-    @classmethod
-    def restartService(cls):
-        # This is here to reseed pycrest values when changing preferences
-        # We first stop the server n case one is running, as creating a new
-        # instance doesn't do this.
-        if cls._instance.httpd:
-            cls._instance.stopServer()
-        cls._instance = Esi()
-        cls._instance.mainFrame.updateCrestMenus(type=cls._instance.settings.get('mode'))
-        return cls._instance
-
     def __init__(self):
-        """
-        A note on login/logout events: the character login events happen
-        whenever a characters is logged into via the SSO, regardless of mod.
-        However, the mode should be send as an argument. Similarily,
-        the Logout even happens whenever the character is deleted for either
-        mode. The mode is sent as an argument, as well as the umber of
-        characters still in the cache (if USER mode)
-        """
         Esi.initEsiApp()
 
-
-        # prefetch = EsiInitThread()
-        # prefetch.daemon = True
-        # prefetch.start()
-
         self.settings = CRESTSettings.getInstance()
-        self.scopes = ['characterFittingsRead', 'characterFittingsWrite']
 
         # these will be set when needed
         self.httpd = None
         self.state = None
         self.ssoTimer = None
-
-        self.eve_options = {
-            'client_id': self.settings.get('clientID') if self.settings.get('mode') == CrestModes.USER else self.clientIDs.get(self.settings.get('server')),
-            'api_key': self.settings.get('clientSecret') if self.settings.get('mode') == CrestModes.USER else None,
-            'redirect_uri': self.clientCallback,
-            'testing': self.isTestServer
-        }
-
-        # Base EVE connection that is copied to all characters
-        self.eve = EVE(**self.eve_options)
 
         self.implicitCharacter = None
 
@@ -151,72 +89,60 @@ class Esi(object):
     def isTestServer(self):
         return self.settings.get('server') == Servers.SISI
 
-    def delCrestCharacter(self, charID):
-        char = eos.db.getSsoCharacter(charID)
-        del self.charCache[char.ID]
+    def delSsoCharacter(self, id):
+        char = eos.db.getSsoCharacter(id)
         eos.db.remove(char)
-        wx.PostEvent(self.mainFrame, GE.SsoLogout(type=CrestModes.USER, numChars=len(self.charCache)))
-
-    def delAllCharacters(self):
-        chars = eos.db.getSsoCharacters()
-        for char in chars:
-            eos.db.remove(char)
-        self.charCache = {}
-        wx.PostEvent(self.mainFrame, GE.SsoLogout(type=CrestModes.USER, numChars=0))
 
     def getSsoCharacters(self):
         chars = eos.db.getSsoCharacters(config.getClientSecret())
         return chars
 
-    def getSsoCharacter(self, charID):
+    def getSsoCharacter(self, id):
         """
         Get character, and modify to include the eve connection
         """
-        char = eos.db.getSsoCharacter(charID, config.getClientSecret())
-        if char.esi_client is None:
+        char = eos.db.getSsoCharacter(id, config.getClientSecret())
+        if char is not None and char.esi_client is None:
             char.esi_client = Esi.genEsiClient()
             char.esi_client.security.update_token(char.get_sso_data())
         return char
 
-    def getFittings(self, charID):
-        char = self.getSsoCharacter(charID)
-        print(repr(char))
-        op = Esi.esi_v1.op['get_characters_character_id_fittings'](
-            character_id=charID
-        )
+    def getSkills(self, id):
+        char = self.getSsoCharacter(id)
+        op = Esi.esi_v4.op['get_characters_character_id_skills'](character_id=char.characterID)
         resp = char.esi_client.request(op)
         return resp.data
 
-    def postFitting(self, charID, json_str):
-        # @todo: new fitting ID can be recovered from resp.data,
-        char = self.getSsoCharacter(charID)
+    def getSecStatus(self, id):
+        char = self.getSsoCharacter(id)
+        op = Esi.esi_v4.op['get_characters_character_id'](character_id=char.characterID)
+        resp = char.esi_client.request(op)
+        return resp.data
 
+    def getFittings(self, id):
+        char = self.getSsoCharacter(id)
+        op = Esi.esi_v1.op['get_characters_character_id_fittings'](character_id=char.characterID)
+        resp = char.esi_client.request(op)
+        return resp.data
+
+    def postFitting(self, id, json_str):
+        # @todo: new fitting ID can be recovered from resp.data,
+        char = self.getSsoCharacter(id)
         op = Esi.esi_v1.op['post_characters_character_id_fittings'](
             character_id=char.characterID,
             fitting=json.loads(json_str)
         )
-
         resp = char.esi_client.request(op)
-
         return resp.data
 
-    def delFitting(self, charID, fittingID):
-        char = self.getSsoCharacter(charID)
-        print(repr(char))
+    def delFitting(self, id, fittingID):
+        char = self.getSsoCharacter(id)
         op = Esi.esi_v1.op['delete_characters_character_id_fittings_fitting_id'](
-            character_id=charID,
+            character_id=char.characterID,
             fitting_id=fittingID
         )
-
         resp = char.esi_client.request(op)
         return resp.data
-
-
-    def logout(self):
-        """Logout of implicit character"""
-        pyfalog.debug("Character logout")
-        self.implicitCharacter = None
-        wx.PostEvent(self.mainFrame, GE.SsoLogout(type=self.settings.get('mode')))
 
     def stopServer(self):
         pyfalog.debug("Stopping Server")
@@ -278,4 +204,3 @@ class Esi(object):
 
         eos.db.save(currentCharacter)
 
-        wx.PostEvent(self.mainFrame, GE.SsoLogin(type=CrestModes.USER))  # todo: remove user / implicit authentication
