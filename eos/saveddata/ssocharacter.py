@@ -31,7 +31,9 @@ class SsoCharacter(object):
         self.client = client
         self.accessToken = accessToken
         self.refreshToken = refreshToken
+        self.accessTokenExpires = None
         self.esi_client = None
+
 
     @reconstructor
     def init(self):
@@ -47,14 +49,3 @@ class SsoCharacter(object):
                 self.accessTokenExpires - datetime.datetime.utcnow()
             ).total_seconds()
         }
-
-    def update_token(self, tokenResponse):
-        """ helper function to update token data from SSO response """
-        self.accessToken = tokenResponse['access_token']
-        self.accessTokenExpires = datetime.datetime.fromtimestamp(
-            time.time() + tokenResponse['expires_in'],
-        )
-        if 'refresh_token' in tokenResponse:
-            self.refreshToken = tokenResponse['refresh_token']
-        if self.esi_client is not None:
-            self.esi_client.security.update_token(tokenResponse)

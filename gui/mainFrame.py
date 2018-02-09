@@ -83,7 +83,6 @@ import webbrowser
 import wx.adv
 
 from service.esi import Esi
-from service.esi import CrestModes
 from gui.crestFittings import CrestFittings, ExportToEve, CrestMgmt
 
 disableOverrideEditor = False

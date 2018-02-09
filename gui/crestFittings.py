@@ -16,7 +16,7 @@ import gui.globalEvents as GE
 
 from logbook import Logger
 import calendar
-from service.esi import Esi, CrestModes
+from service.esi import Esi
 
 pyfalog = Logger(__name__)
 

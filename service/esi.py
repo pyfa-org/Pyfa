@@ -10,6 +10,7 @@ import json
 import os
 
 import eos.db
+import datetime
 from eos.enum import Enum
 from eos.saveddata.ssocharacter import SsoCharacter
 import gui.globalEvents as GE
@@ -104,7 +105,7 @@ class Esi(object):
         char = eos.db.getSsoCharacter(id, config.getClientSecret())
         if char is not None and char.esi_client is None:
             char.esi_client = Esi.genEsiClient()
-            char.esi_client.security.update_token(char.get_sso_data())
+            char.esi_client.security.update_token(Esi.get_sso_data(char))
         return char
 
     def getSkills(self, id):
@@ -143,6 +144,26 @@ class Esi(object):
         )
         resp = char.esi_client.request(op)
         return resp.data
+
+    @staticmethod
+    def get_sso_data(char):
+        """ Little "helper" function to get formated data for esipy security
+        """
+        return {
+            'access_token': char.accessToken,
+            'refresh_token': config.cipher.decrypt(char.refreshToken).decode(),
+            'expires_in': (char.accessTokenExpires - datetime.datetime.utcnow()).total_seconds()
+        }
+
+    @staticmethod
+    def update_token(char, tokenResponse):
+        """ helper function to update token data from SSO response """
+        char.accessToken = tokenResponse['access_token']
+        char.accessTokenExpires = datetime.datetime.fromtimestamp(time.time() + tokenResponse['expires_in'])
+        if 'refresh_token' in tokenResponse:
+            char.refreshToken = config.cipher.encrypt(tokenResponse['refresh_token'].encode())
+        if char.esi_client is not None:
+            char.esi_client.security.update_token(tokenResponse)
 
     def stopServer(self):
         pyfalog.debug("Stopping Server")
@@ -200,7 +221,7 @@ class Esi(object):
         if currentCharacter is None:
             currentCharacter = SsoCharacter(cdata['CharacterID'], cdata['CharacterName'], config.getClientSecret())
             currentCharacter.esi_client = Esi.genEsiClient(esisecurity)
-            currentCharacter.update_token(auth_response)  # this also sets the esi security token
+            Esi.update_token(currentCharacter, auth_response)  # this also sets the esi security token
 
         eos.db.save(currentCharacter)
 
