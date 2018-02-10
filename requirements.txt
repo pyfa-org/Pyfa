@@ -5,3 +5,4 @@ python-dateutil
 requests >= 2.0.0
 sqlalchemy >= 1.0.5
 markdown2
+packaging

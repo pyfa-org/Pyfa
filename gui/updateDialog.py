@@ -33,11 +33,12 @@ html_tmpl = """
 <style>
 body {{ padding: 10px; font-size:0.87em }}
 p , li {{ text-align: justify; }}
-h2, h3 {{ text-align: center; }}
-hr {{ margin-top: -10px; border: #000 1px solid; }}
+h2 {{ text-align: center; margin: 0; }}
+.date {{ text-align: right; }}
+hr {{ border: #000 1px solid; }}
 </style>
 <h2>pyfa {0}</h2>
-<h3>{1}</h3>
+<div class="date"><small>{1}</small></div>
 <hr>
 {2}
 {3}
@@ -45,7 +46,7 @@ hr {{ margin-top: -10px; border: #000 1px solid; }}
 
 
 class UpdateDialog(wx.Dialog):
-    def __init__(self, parent, release):
+    def __init__(self, parent, release, version):
         wx.Dialog.__init__(self, parent, id=wx.ID_ANY, title="pyfa Update Available", pos=wx.DefaultPosition,
                            size=wx.Size(550, 450), style=wx.DEFAULT_DIALOG_STYLE)
 
@@ -72,7 +73,7 @@ class UpdateDialog(wx.Dialog):
         self.browser.SetPage(html_tmpl.format(
             self.releaseInfo['tag_name'],
             releaseDate.strftime('%B %d, %Y'),
-            "<p class='text-danger'><b>This is a pre-release, be prepared for unstable features</b></p>" if self.releaseInfo['prerelease'] else "",
+            "<p class='text-danger'><b>This is a pre-release, be prepared for unstable features</b></p>" if version.is_prerelease else "",
             markdowner.convert(self.releaseInfo['body'])
         ),"")
 

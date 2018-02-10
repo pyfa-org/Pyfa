@@ -243,8 +243,8 @@ class MainFrame(wx.Frame):
         self.titleTimer = wx.Timer(self)
         self.Bind(wx.EVT_TIMER, self.updateTitle, self.titleTimer)
 
-    def ShowUpdateBox(self, release):
-        dlg = UpdateDialog(self, release)
+    def ShowUpdateBox(self, release, version):
+        dlg = UpdateDialog(self, release, version)
         dlg.ShowModal()
 
     def LoadPreviousOpenFits(self):
