@@ -358,7 +358,6 @@ class FitItem(SFItem.SFBrowserItem):
             self.deleted = True
 
         sFit = Fit.getInstance()
-        fit = sFit.getFit(self.fitID)
 
         # need to delete from import cache before actually deleting fit
         if self.shipBrowser.GetActiveStage() == 5:
