@@ -51,6 +51,7 @@ class BoosterView(d.Display):
         "Base Name",
         "Side Effects",
         "Price",
+        "Miscellanea",
     ]
 
     def __init__(self, parent):
