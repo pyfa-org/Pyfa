@@ -1,4 +1,4 @@
-wxPython >= 4.0.0b2
+wxPython >= 4.0.1
 logbook >= 1.0.0
 matplotlib >= 2.0.0
 python-dateutil
