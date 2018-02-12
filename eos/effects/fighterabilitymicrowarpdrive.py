@@ -14,7 +14,8 @@ runTime = "late"
 
 
 def handler(fit, module, context):
-    module.boostItemAttr("maxVelocity", module.getModifiedItemAttr("fighterAbilityMicroWarpDriveSpeedBonus"))
+    module.boostItemAttr("maxVelocity", module.getModifiedItemAttr("fighterAbilityMicroWarpDriveSpeedBonus"),
+                         stackingPenalties=True)
     module.boostItemAttr("signatureRadius",
                          module.getModifiedItemAttr("fighterAbilityMicroWarpDriveSignatureRadiusBonus"),
                          stackingPenalties=True)

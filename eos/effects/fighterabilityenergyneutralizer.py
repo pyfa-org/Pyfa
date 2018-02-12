@@ -9,11 +9,12 @@ from eos.modifiedAttributeDict import ModifiedAttributeDict
 displayName = "Energy Neutralizer"
 prefix = "fighterAbilityEnergyNeutralizer"
 type = "active", "projected"
+grouped = True
 
 
 def handler(fit, src, context, **kwargs):
     if "projected" in context:
-        amount = src.getModifiedItemAttr("{}Amount".format(prefix))
+        amount = src.getModifiedItemAttr("{}Amount".format(prefix)) * src.amountActive
         time = src.getModifiedItemAttr("{}Duration".format(prefix))
 
         if 'effect' in kwargs:
