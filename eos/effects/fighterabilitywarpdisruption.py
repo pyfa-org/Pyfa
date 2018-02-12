@@ -8,9 +8,10 @@ effects, and thus this effect file contains some custom information useful only 
 displayName = "Warp Disruption"
 prefix = "fighterAbilityWarpDisruption"
 type = "active", "projected"
+grouped = True
 
 
 def handler(fit, src, context):
     if "projected" not in context:
         return
-    fit.ship.increaseItemAttr("warpScrambleStatus", src.getModifiedItemAttr("{}PointStrength".format(prefix)))
+    fit.ship.increaseItemAttr("warpScrambleStatus", src.getModifiedItemAttr("{}PointStrength".format(prefix)) * src.amountActive)

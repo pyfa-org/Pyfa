@@ -12,7 +12,7 @@ def handler(fit, src, context, **kwargs):
     amount = src.getModifiedItemAttr("powerTransferAmount")
     time = src.getModifiedItemAttr("duration")
 
-    if 'effect' in kwargs:
+    if 'effect' in kwargs and "projected" in context:
         amount *= ModifiedAttributeDict.getResistance(fit, kwargs['effect'])
 
     if "projected" in context:

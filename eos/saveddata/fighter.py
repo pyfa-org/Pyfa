@@ -271,17 +271,19 @@ class Fighter(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
             projected = False
 
         for ability in self.abilities:
-            if ability.active:
-                effect = ability.effect
-                if effect.runTime == runTime and effect.activeByDefault and \
-                        ((projected and effect.isType("projected")) or not projected):
-                    if ability.grouped:
+            if not ability.active:
+                continue
+
+            effect = ability.effect
+            if effect.runTime == runTime and effect.activeByDefault and \
+                    ((projected and effect.isType("projected")) or not projected):
+                if ability.grouped:
+                    effect.handler(fit, self, context)
+                else:
+                    i = 0
+                    while i != self.amountActive:
                         effect.handler(fit, self, context)
-                    else:
-                        i = 0
-                        while i != self.amountActive:
-                            effect.handler(fit, self, context)
-                            i += 1
+                        i += 1
 
     def __deepcopy__(self, memo):
         copy = Fighter(self.item)

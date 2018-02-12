@@ -54,13 +54,14 @@ from collections import OrderedDict
 
 pyfalog = Logger(__name__)
 
-EFT_SLOT_ORDER = [Slot.LOW, Slot.MED, Slot.HIGH, Slot.RIG, Slot.SUBSYSTEM]
+EFT_SLOT_ORDER = [Slot.LOW, Slot.MED, Slot.HIGH, Slot.RIG, Slot.SUBSYSTEM, Slot.SERVICE]
 INV_FLAGS = {
     Slot.LOW: 11,
     Slot.MED: 19,
     Slot.HIGH: 27,
     Slot.RIG: 92,
-    Slot.SUBSYSTEM: 125
+    Slot.SUBSYSTEM: 125,
+    Slot.SERVICE: 164
 }
 
 INV_FLAG_CARGOBAY = 5

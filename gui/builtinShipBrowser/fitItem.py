@@ -362,12 +362,13 @@ class FitItem(SFItem.SFBrowserItem):
             self.deleted = True
 
         sFit = Fit.getInstance()
-        fit = sFit.getFit(self.fitID)
 
         # need to delete from import cache before actually deleting fit
         if self.shipBrowser.GetActiveStage() == 5:
-            if fit in self.shipBrowser.lastdata:  # remove fit from import cache
-                self.shipBrowser.lastdata.remove(fit)
+            for x in self.shipBrowser.lastdata:  # remove fit from import cache
+                if x[0] == self.fitID:
+                    self.shipBrowser.lastdata.remove(x)
+                    break
 
         sFit.deleteFit(self.fitID)
 
@@ -376,7 +377,7 @@ class FitItem(SFItem.SFBrowserItem):
 
         # todo: would a simple RefreshList() work here instead of posting that a stage has been selected?
         if self.shipBrowser.GetActiveStage() == 5:
-            wx.PostEvent(self.shipBrowser, ImportSelected(fits=self.shipBrowser.lastdata))
+            wx.PostEvent(self.shipBrowser, ImportSelected(fits=self.shipBrowser.lastdata, recent=self.shipBrowser.recentFits))
         elif self.shipBrowser.GetActiveStage() == 4:
             wx.PostEvent(self.shipBrowser, SearchSelected(text=self.shipBrowser.navpanel.lastSearch, back=True))
         else:
