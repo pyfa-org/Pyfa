@@ -43,7 +43,8 @@ class ErrorHandler(object):
 
             if cls.__parent is None:
                 app = wx.App(False)
-                ErrorFrame(None)
+                cls.__frame = ErrorFrame(None)
+                cls.__frame.addException("".join(t))
                 app.MainLoop()
                 sys.exit()
             else:
