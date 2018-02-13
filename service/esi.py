@@ -25,6 +25,8 @@ pyfalog = Logger(__name__)
 
 cache_path = os.path.join(config.savePath, config.ESI_CACHE)
 
+from esipy.events import AFTER_TOKEN_REFRESH
+
 if not os.path.exists(cache_path):
     os.mkdir(cache_path)
 
@@ -69,6 +71,8 @@ class Esi(object):
     def __init__(self):
         Esi.initEsiApp()
 
+        AFTER_TOKEN_REFRESH.add_receiver(self.tokenUpdate)
+
         self.settings = CRESTSettings.getInstance()
 
         # these will be set when needed
@@ -85,6 +89,10 @@ class Esi(object):
         # need these here to post events
         import gui.mainFrame  # put this here to avoid loop
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
+
+    def tokenUpdate(self, **kwargs):
+        print(kwargs)
+        pass
 
     @property
     def isTestServer(self):
@@ -105,7 +113,9 @@ class Esi(object):
         char = eos.db.getSsoCharacter(id, config.getClientSecret())
         if char is not None and char.esi_client is None:
             char.esi_client = Esi.genEsiClient()
-            char.esi_client.security.update_token(Esi.get_sso_data(char))
+            Esi.update_token(char, Esi.get_sso_data(char)) # don't use update_token on security directly, se still need to apply the values here
+        print(repr(char))
+        eos.db.commit()
         return char
 
     def getSkills(self, id):
