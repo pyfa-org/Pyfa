@@ -38,8 +38,18 @@ from logbook import Logger
 
 from gui.utils.clipboard import toClipboard, fromClipboard
 
-pyfalog = Logger(__name__)
+import roman
+import re
 
+def arabicOrRomanToInt(s):
+    m = re.match(r'\d+$', s)
+    if m:
+        i = int(s)
+    else:
+        i = roman.fromRoman(s)
+    return i
+
+pyfalog = Logger(__name__)
 
 class CharacterTextValidor(BaseValidator):
     def __init__(self):
@@ -407,7 +417,8 @@ class SkillTreeView(wx.Panel):
                 lines = text.splitlines()
 
                 for l in lines:
-                    skill, level = l.strip()[:-1].strip(), int(l.strip()[-1])
+                    s = l.strip()
+                    skill, level = s.rsplit(None,1)[0], arabicOrRomanToInt(s.rsplit(None,1)[1])
                     skill = char.getSkill(skill)
                     if skill:
                         skill.setLevel(level, ignoreRestrict=True)
