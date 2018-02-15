@@ -1,7 +1,4 @@
-# shipSETTrackingBonusAF
-#
-# Used by:
-# Ship: Retribution
+# Not used by any item
 type = "passive"
 
 

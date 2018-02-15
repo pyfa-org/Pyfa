@@ -1,4 +1,7 @@
-# Not used by any item
+# hackingVirusStrengthBonus
+#
+# Used by:
+# Implant: Neural Lace 'Blackglass' Net Intrusion 920-40
 type = "passive"
 
 
