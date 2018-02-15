@@ -5,6 +5,7 @@
 type = "active"
 runTime = "early"
 
+
 def handler(fit, src, context):
     for layer, attrPrefix in (('shield', 'shield'), ('armor', 'armor'), ('hull', '')):
         for damageType in ('Kinetic', 'Thermal', 'Explosive', 'Em'):
@@ -13,4 +14,3 @@ def handler(fit, src, context):
             booster = "%s%sDamageResonance" % (layer, damageType)
 
             src.forceItemAttr(booster, src.getModifiedItemAttr("resistanceMultiplier"))
-

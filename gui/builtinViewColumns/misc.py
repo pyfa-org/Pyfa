@@ -74,7 +74,7 @@ class Miscellanea(ViewColumn):
             return "", None
         elif itemGroup == "Booster":
             stuff.getModifiedItemAttr("boosterDuration")
-            text = "{0} min".format(formatAmount(stuff.getModifiedItemAttr("boosterDuration")/1000/60, 3, 0, 3))
+            text = "{0} min".format(formatAmount(stuff.getModifiedItemAttr("boosterDuration") / 1000 / 60, 3, 0, 3))
             return text, "Booster Duration"
         elif itemGroup in ("Energy Weapon", "Hybrid Weapon", "Projectile Weapon", "Combat Drone", "Fighter Drone"):
             trackingSpeed = stuff.getModifiedItemAttr("trackingSpeed")
