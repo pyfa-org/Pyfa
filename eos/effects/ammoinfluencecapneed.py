@@ -1,7 +1,7 @@
 # ammoInfluenceCapNeed
 #
 # Used by:
-# Items from category: Charge (478 of 924)
+# Items from category: Charge (478 of 925)
 type = "passive"
 
 

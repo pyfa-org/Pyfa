@@ -2,6 +2,7 @@
 #
 # Used by:
 # Ship: Breacher
+# Ship: Jaguar
 type = "passive"
 
 

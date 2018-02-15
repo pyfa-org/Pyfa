@@ -1,3 +1,7 @@
+# moduleBonusAssaultDamageControl
+#
+# Used by:
+# Variations of module: Assault Damage Control I (5 of 5)
 type = "active"
 runTime = "early"
 
