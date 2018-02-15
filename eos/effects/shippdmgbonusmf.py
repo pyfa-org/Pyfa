@@ -1,11 +1,12 @@
 # shipPDmgBonusMF
 #
 # Used by:
-# Variations of ship: Rifter (3 of 3)
 # Variations of ship: Slasher (3 of 3)
 # Ship: Cheetah
 # Ship: Freki
 # Ship: Republic Fleet Firetail
+# Ship: Rifter
+# Ship: Wolf
 type = "passive"
 
 
