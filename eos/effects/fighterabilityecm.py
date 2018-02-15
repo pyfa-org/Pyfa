@@ -11,13 +11,14 @@ displayName = "ECM"
 prefix = "fighterAbilityECM"
 
 type = "projected", "active"
+grouped = True
 
 
 def handler(fit, module, context, **kwargs):
     if "projected" not in context:
         return
     # jam formula: 1 - (1- (jammer str/ship str))^(# of jam mods with same str))
-    strModifier = 1 - module.getModifiedItemAttr("{}Strength{}".format(prefix, fit.scanType)) / fit.scanStrength
+    strModifier = 1 - (module.getModifiedItemAttr("{}Strength{}".format(prefix, fit.scanType)) * module.amountActive) / fit.scanStrength
 
     if 'effect' in kwargs:
         strModifier *= ModifiedAttributeDict.getResistance(fit, kwargs['effect'])
