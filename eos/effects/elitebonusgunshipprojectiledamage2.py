@@ -1,7 +1,4 @@
-# eliteBonusGunshipProjectileDamage2
-#
-# Used by:
-# Ship: Jaguar
+# Not used by any item
 type = "passive"
 
 

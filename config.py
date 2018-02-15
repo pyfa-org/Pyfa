@@ -19,10 +19,10 @@ debug = False
 saveInRoot = False
 
 # Version data
-version = "1.34.0"
+version = "1.35.0"
 tag = "Stable"
-expansionName = " Arms Race"
-expansionVersion = "1.3"
+expansionName = "YC120.2"
+expansionVersion = "1.1"
 evemonMinVersion = "4081"
 
 pyfaPath = None

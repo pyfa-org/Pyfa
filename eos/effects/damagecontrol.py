@@ -1,8 +1,7 @@
 # damageControl
 #
 # Used by:
-# Variations of module: Damage Control I (16 of 16)
-# Module: Civilian Damage Control
+# Modules from group: Damage Control (22 of 27)
 type = "passive"
 
 

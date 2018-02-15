@@ -1,7 +1,4 @@
-# eliteBonusGunshipDroneCapacity2
-#
-# Used by:
-# Ship: Ishkur
+# Not used by any item
 type = "passive"
 
 
