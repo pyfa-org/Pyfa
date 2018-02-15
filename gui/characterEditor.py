@@ -41,6 +41,8 @@ from gui.utils.clipboard import toClipboard, fromClipboard
 import roman
 import re
 
+pyfalog = Logger(__name__)
+
 def arabicOrRomanToInt(s):
     m = re.match(r'\d+$', s)
     if m:
@@ -48,8 +50,6 @@ def arabicOrRomanToInt(s):
     else:
         i = roman.fromRoman(s)
     return i
-
-pyfalog = Logger(__name__)
 
 class CharacterTextValidor(BaseValidator):
     def __init__(self):
