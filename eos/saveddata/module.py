@@ -56,7 +56,10 @@ class Slot(Enum):
     F_LIGHT = 10
     F_SUPPORT = 11
     F_HEAVY = 12
-
+    # fighter 'slots' (for structures)
+    FS_LIGHT = 13
+    FS_SUPPORT = 14
+    FS_HEAVY = 15
 
 class Hardpoint(Enum):
     NONE = 0

@@ -91,7 +91,10 @@ class FighterView(wx.Panel):
 
         if fit:
             for x in self.labels:
-                slot = getattr(Slot, "F_{}".format(x.upper()))
+                if fit.isStructure:
+                    slot = getattr(Slot, "FS_{}".format(x.upper()))
+                else:
+                    slot = getattr(Slot, "F_{}".format(x.upper()))
                 used = fit.getSlotsUsed(slot)
                 total = fit.getNumSlots(slot)
                 color = wx.Colour(204, 51, 51) if used > total else wx.SystemSettings_GetColour(
