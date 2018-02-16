@@ -107,7 +107,7 @@ class Fighter(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
             "Heavy"  : Slot.F_HEAVY,
             "StandupLight": Slot.FS_LIGHT,
             "StandupSupport": Slot.FS_SUPPORT,
-            "StandupHeavy":Slot.FS_HEAVY
+            "StandupHeavy": Slot.FS_HEAVY
         }
 
         for t, slot in types.iteritems():

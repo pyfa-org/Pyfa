@@ -61,6 +61,7 @@ class Slot(Enum):
     FS_SUPPORT = 14
     FS_HEAVY = 15
 
+
 class Hardpoint(Enum):
     NONE = 0
     MISSILE = 1
