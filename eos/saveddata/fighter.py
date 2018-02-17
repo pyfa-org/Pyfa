@@ -90,7 +90,7 @@ class Fighter(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
             self.__slot = self.__calculateSlot(self.__item)
 
             chargeID = self.getModifiedItemAttr("fighterAbilityLaunchBombType")
-            if chargeID is not None:
+            if chargeID:
                 charge = eos.db.getItem(int(chargeID))
                 self.__charge = charge
                 self.__chargeModifiedAttributes.original = charge.attributes

@@ -242,6 +242,8 @@ class ItemParams(wx.Panel):
             return "%s (%d)" % (group.name, value) if group is not None else str(value)
 
         def attributeIDCallback():
+            if not value:  # some attributes come through with a value of 0? See #1387
+                return "%d" % (value)
             attribute = Attribute.getInstance().getAttributeInfo(value)
             return "%s (%d)" % (attribute.name.capitalize(), value)
 
