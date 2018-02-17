@@ -286,6 +286,7 @@ class FittingView(d.Display):
         If fit is removed and active, the page is deleted.
         We also refresh the fit of the new current page in case
         delete fit caused change in stats (projected)
+        todo: move this to the notebook, not the page. We don't want the page being responsible for deleting itself
         """
         print('_+_+_+_+_+_ Fit Removed: {} {} activeFitID: {}, eventFitID: {}'.format(repr(self), str(bool(self)), self.activeFitID, event.fitID))
         pyfalog.debug("FittingView::fitRemoved")
