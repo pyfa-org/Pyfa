@@ -43,6 +43,7 @@ import re
 
 pyfalog = Logger(__name__)
 
+
 def arabicOrRomanToInt(s):
     m = re.match(r'\d+$', s)
     if m:
@@ -50,6 +51,7 @@ def arabicOrRomanToInt(s):
     else:
         i = roman.fromRoman(s)
     return i
+
 
 class CharacterTextValidor(BaseValidator):
     def __init__(self):
@@ -418,7 +420,7 @@ class SkillTreeView(wx.Panel):
 
                 for l in lines:
                     s = l.strip()
-                    skill, level = s.rsplit(None,1)[0], arabicOrRomanToInt(s.rsplit(None,1)[1])
+                    skill, level = s.rsplit(None, 1)[0], arabicOrRomanToInt(s.rsplit(None, 1)[1])
                     skill = char.getSkill(skill)
                     if skill:
                         skill.setLevel(level, ignoreRestrict=True)
