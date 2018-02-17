@@ -152,6 +152,7 @@ class ImplantDisplay(d.Display):
         fit = sFit.getFit(fitID)
 
         if not fit or fit.isStructure:
+            event.Skip()
             return
 
         trigger = sFit.addImplant(fitID, event.itemID)
