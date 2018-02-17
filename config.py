@@ -20,8 +20,8 @@ debug = False
 saveInRoot = False
 
 # Version data
-version = "1.35.0"
-tag = "Stable"
+version = "2.0.x"
+tag = "git"
 expansionName = "YC120.2"
 expansionVersion = "1.1"
 evemonMinVersion = "4081"
@@ -64,10 +64,13 @@ def getPyfaRoot():
     return root
 
 
-def getGitVersion():
-    with open(os.path.join(pyfaPath, '.version')) as f:
-        version = f.readline()
-    return version
+def getVersion():
+    if os.path.isfile(os.path.join(pyfaPath, '.version')):
+        with open(os.path.join(pyfaPath, '.version')) as f:
+            gitVersion = f.readline()
+        return gitVersion
+    # if no version file exists, then user is running from source or not an official build
+    return version + " (git)"
 
 
 def getDefaultSave():

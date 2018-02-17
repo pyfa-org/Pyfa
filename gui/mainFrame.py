@@ -359,7 +359,7 @@ class MainFrame(wx.Frame):
     def ShowAboutBox(self, evt):
         info = wx.adv.AboutDialogInfo()
         info.Name = "pyfa"
-        info.Version = config.getGitVersion()  # gui.aboutData.versionString
+        info.Version = config.getVersion()  # gui.aboutData.versionString
         #
         # try:
         #     import matplotlib

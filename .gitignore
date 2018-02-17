@@ -119,3 +119,4 @@ ENV/
 eos.iml
 gitversion
 .version
+/.version

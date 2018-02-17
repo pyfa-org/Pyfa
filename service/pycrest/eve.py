@@ -99,7 +99,7 @@ class APIConnection(object):
         if additional_headers is None:
             additional_headers = {}
         if user_agent is None:
-            user_agent = "pyfa/{0} ({1})".format(config.version, config.tag)
+            user_agent = "pyfa/{0}".format(config.getVersion)
         session.headers.update({
             "User-Agent": user_agent,
             "Accept": "application/json",
