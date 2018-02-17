@@ -23,7 +23,7 @@ saveInRoot = False
 version = "2.0.x"
 tag = "git"
 expansionName = "YC120.2"
-expansionVersion = "1.1"
+expansionVersion = "1.2"
 evemonMinVersion = "4081"
 
 pyfaPath = None

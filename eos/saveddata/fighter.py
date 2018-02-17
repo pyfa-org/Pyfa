@@ -89,8 +89,8 @@ class Fighter(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
             self.__itemModifiedAttributes.overrides = self.__item.overrides
             self.__slot = self.__calculateSlot(self.__item)
 
-            chargeID = self.getModifiedItemAttr("fighterAbilityLaunchBombType", None)
-            if chargeID is not None:
+            chargeID = self.getModifiedItemAttr("fighterAbilityLaunchBombType")
+            if chargeID:
                 charge = eos.db.getItem(int(chargeID))
                 self.__charge = charge
                 self.__chargeModifiedAttributes.original = charge.attributes
