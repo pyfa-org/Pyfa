@@ -319,8 +319,8 @@ class SkillTreeView(wx.Panel):
 
         self.imageList = wx.ImageList(16, 16)
         tree.SetImageList(self.imageList)
-        self.skillBookImageId = self.imageList.Add(BitmapLoader.getBitmap("skill_small", "gui"))
-        self.skillBookDirtyImageId = self.imageList.Add(BitmapLoader.getBitmap("skill_small_red", "gui"))
+        self.skillBookImageId = self.imageList.Add(wx.Icon(BitmapLoader.getBitmap("skill_small", "gui")))
+        self.skillBookDirtyImageId = self.imageList.Add(wx.Icon(BitmapLoader.getBitmap("skill_small_red", "gui")))
 
         tree.AppendColumn("Skill")
         tree.AppendColumn("Level")
