@@ -38,7 +38,7 @@ class PreferenceDialog(wx.Dialog):
         # self.listview.SetSize((500, -1))
 
         self.imageList = wx.ImageList(32, 32)
-        self.listbook.SetImageList(self.imageList)
+        self.listbook.AssignImageList(self.imageList)
 
         mainSizer.Add(self.listbook, 1, wx.EXPAND | wx.TOP | wx.BOTTOM | wx.LEFT, 5)
 
