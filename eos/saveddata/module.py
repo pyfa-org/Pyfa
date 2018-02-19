@@ -182,7 +182,7 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
     @property
     def numShots(self):
         if self.charge is None:
-            return -1
+            return 0
         if self.__chargeCycles is None and self.charge:
             numCharges = self.numCharges
             # Usual ammo like projectiles and missiles
