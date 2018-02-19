@@ -49,15 +49,10 @@ from service.market import Market
 from utils.strfunctions import sequential_rep, replace_ltgt
 from abc import ABCMeta, abstractmethod
 
-if 'wxMac' not in wx.PlatformInfo or ('wxMac' in wx.PlatformInfo and wx.VERSION >= (3, 0)):
-    from service.crest import Crest
+from service.crest import Crest
+from collections import OrderedDict
 
 pyfalog = Logger(__name__)
-
-try:
-    from collections import OrderedDict
-except ImportError:
-    from utils.compat import OrderedDict
 
 EFT_SLOT_ORDER = [Slot.LOW, Slot.MED, Slot.HIGH, Slot.RIG, Slot.SUBSYSTEM, Slot.SERVICE]
 INV_FLAGS = {
@@ -170,9 +165,7 @@ class UserCancelException(Exception):
     pass
 
 
-class IPortUser:
-
-    __metaclass__ = ABCMeta
+class IPortUser(metaclass=ABCMeta):
 
     ID_PULSE = 1
     # Pulse the progress bar
@@ -317,7 +310,7 @@ class Port(object):
                         for page in attempt_codecs:
                             try:
                                 pyfalog.info("Attempting to decode file {0} using {1} page.", path, page)
-                                srcString = unicode(srcString, page)
+                                srcString = str(srcString, page)
                                 codec_found = page
                                 pyfalog.info("File {0} decoded using {1} page.", path, page)
                             except UnicodeDecodeError:
@@ -326,7 +319,7 @@ class Port(object):
                                 break
                     else:
                         pyfalog.info("Unicode BOM detected in {0}, using {1} page.", path, codec_found)
-                        srcString = unicode(srcString[len(savebom):], codec_found)
+                        srcString = str(srcString[len(savebom):], codec_found)
 
                 else:
                     # nasty hack to detect other transparent utf-16 loading
@@ -454,7 +447,7 @@ class Port(object):
             item['type']['name'] = ''
             fit['items'].append(item)
 
-        for chargeID, amount in charges.items():
+        for chargeID, amount in list(charges.items()):
             item = nested_dict()
             item['flag'] = INV_FLAG_CARGOBAY
             item['quantity'] = amount
@@ -589,7 +582,7 @@ class Port(object):
     def importDna(string):
         sMkt = Market.getInstance()
 
-        ids = map(int, re.findall(r'\d+', string))
+        ids = list(map(int, re.findall(r'\d+', string)))
         for id_ in ids:
             try:
                 try:
@@ -643,7 +636,7 @@ class Port(object):
                     c.amount = int(amount)
                     f.cargo.append(c)
                 else:
-                    for i in xrange(int(amount)):
+                    for i in range(int(amount)):
                         try:
                             m = Module(item)
                         except:
@@ -835,7 +828,7 @@ class Port(object):
         # If client didn't take care of encoding file contents into Unicode,
         # do it using fallback encoding ourselves
         if isinstance(contents, str):
-            contents = unicode(contents, locale.getpreferredencoding())
+            contents = str(contents, locale.getpreferredencoding())
 
         fits = []  # List for fits
         fitIndices = []  # List for starting line numbers for each fit
@@ -1121,7 +1114,7 @@ class Port(object):
             also, it's OK to arrange modules randomly?
         """
         offineSuffix = " /OFFLINE"
-        export = u"[%s, %s]\n" % (fit.ship.item.name, fit.name)
+        export = "[%s, %s]\n" % (fit.ship.item.name, fit.name)
         stuff = {}
         sFit = svcFit.getInstance()
         for module in fit.modules:
@@ -1331,7 +1324,7 @@ class Port(object):
                         charges[cargo.item.name] = 0
                     charges[cargo.item.name] += cargo.amount
 
-                for name, qty in charges.items():
+                for name, qty in list(charges.items()):
                     hardware = doc.createElement("hardware")
                     hardware.setAttribute("qty", "%d" % qty)
                     hardware.setAttribute("slot", "cargo")

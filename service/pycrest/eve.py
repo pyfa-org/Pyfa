@@ -12,13 +12,13 @@ import config
 from service.pycrest.compat import bytes_, text_
 from service.pycrest.errors import APIException
 
-from urlparse import urlparse, urlunparse, parse_qsl
+from urllib.parse import urlparse, urlunparse, parse_qsl
 
 try:
     import pickle
 except ImportError:  # pragma: no cover
     # noinspection PyPep8Naming
-    import cPickle as pickle
+    import pickle as pickle
 
 pyfalog = Logger(__name__)
 cache_re = re.compile(r'max-age=([0-9]+)')
@@ -99,7 +99,7 @@ class APIConnection(object):
         if additional_headers is None:
             additional_headers = {}
         if user_agent is None:
-            user_agent = "pyfa/{0} ({1})".format(config.version, config.tag)
+            user_agent = "pyfa/{0}".format(config.getVersion)
         session.headers.update({
             "User-Agent": user_agent,
             "Accept": "application/json",
@@ -136,7 +136,7 @@ class APIConnection(object):
             prms[key] = params[key]
 
         # check cache
-        key = (resource, frozenset(self._session.headers.items()), frozenset(prms.items()))
+        key = (resource, frozenset(list(self._session.headers.items())), frozenset(list(prms.items())))
         cached = self.cache.get(key)
         if cached and cached['cached_until'] > time.time():
             pyfalog.debug('Cache hit for resource {0} (params={1})', resource, prms)
@@ -280,7 +280,7 @@ class APIObject(object):
     def __init__(self, parent, connection):
         self._dict = {}
         self.connection = connection
-        for k, v in parent.items():
+        for k, v in list(parent.items()):
             if type(v) is dict:
                 self._dict[k] = APIObject(v, connection)
             elif type(v) is list:

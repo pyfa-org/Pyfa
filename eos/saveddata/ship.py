@@ -87,7 +87,7 @@ class Ship(ItemAttrShortcut, HandledItem):
     def calculateModifiedAttributes(self, fit, runTime, forceProjected=False):
         if forceProjected:
             return
-        for effect in self.item.effects.itervalues():
+        for effect in self.item.effects.values():
             if effect.runTime == runTime and \
                     effect.isType("passive") and \
                     effect.activeByDefault:

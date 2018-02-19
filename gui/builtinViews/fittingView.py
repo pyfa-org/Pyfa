@@ -25,15 +25,15 @@ import gui.mainFrame
 from gui.builtinMarketBrowser.events import ItemSelected, ITEM_SELECTED
 import gui.display as d
 from gui.contextMenu import ContextMenu
-import gui.builtinShipBrowser.events as sbEvents
+from gui.builtinShipBrowser.events import EVT_FIT_RENAMED, EVT_FIT_REMOVED, FitSelected, EVT_FIT_SELECTED
 import gui.multiSwitch
 from eos.saveddata.mode import Mode
 from eos.saveddata.module import Module, Slot, Rack
 from gui.builtinViewColumns.state import State
-from gui.bitmapLoader import BitmapLoader
+from gui.bitmap_loader import BitmapLoader
 import gui.builtinViews.emptyView
 from logbook import Logger
-from gui.chromeTabs import EVT_NOTEBOOK_PAGE_CHANGED
+from gui.chrome_tabs import EVT_NOTEBOOK_PAGE_CHANGED
 
 from service.fit import Fit
 from service.market import Market
@@ -50,12 +50,13 @@ class FitSpawner(gui.multiSwitch.TabSpawner):
     def __init__(self, multiSwitch):
         self.multiSwitch = multiSwitch
         self.mainFrame = mainFrame = gui.mainFrame.MainFrame.getInstance()
-        mainFrame.Bind(sbEvents.EVT_FIT_SELECTED, self.fitSelected)
-        self.multiSwitch.tabsContainer.handleDrag = self.handleDrag
+        mainFrame.Bind(EVT_FIT_SELECTED, self.fitSelected)
+        self.multiSwitch.tabs_container.handleDrag = self.handleDrag
 
     def fitSelected(self, event):
         count = -1
-        for index, page in enumerate(self.multiSwitch.pages):
+        # @todo pheonix: _pages is supposed to be private?
+        for index, page in enumerate(self.multiSwitch._pages):
             if not isinstance(page, gui.builtinViews.emptyView.BlankPage):  # Don't try and process it if it's a blank page.
                 try:
                     if page.activeFitID == event.fitID:
@@ -75,8 +76,13 @@ class FitSpawner(gui.multiSwitch.TabSpawner):
             if (not openFitInNew and mstate.CmdDown()) or startup or (openFitInNew and not mstate.CmdDown()):
                 self.multiSwitch.AddPage()
 
-            view = FittingView(self.multiSwitch)
-            self.multiSwitch.ReplaceActivePage(view)
+            view = self.multiSwitch.GetSelectedPage()
+
+            if not isinstance(view, FittingView):
+                view = FittingView(self.multiSwitch)
+                print("###################### Created new view:" + repr(view))
+                self.multiSwitch.ReplaceActivePage(view)
+
             view.fitSelected(event)
 
     def handleDrag(self, type, fitID):
@@ -102,12 +108,12 @@ FitSpawner.register()
 
 
 # Drag'n'drop handler
-class FittingViewDrop(wx.PyDropTarget):
+class FittingViewDrop(wx.DropTarget):
     def __init__(self, dropFn, *args, **kwargs):
         super(FittingViewDrop, self).__init__(*args, **kwargs)
         self.dropFn = dropFn
         # this is really transferring an EVE itemID
-        self.dropData = wx.PyTextDataObject()
+        self.dropData = wx.TextDataObject()
         self.SetDataObject(self.dropData)
 
     def OnData(self, x, y, t):
@@ -138,8 +144,8 @@ class FittingView(d.Display):
         self.Show(False)
         self.parent = parent
         self.mainFrame.Bind(GE.FIT_CHANGED, self.fitChanged)
-        self.mainFrame.Bind(sbEvents.EVT_FIT_RENAMED, self.fitRenamed)
-        self.mainFrame.Bind(sbEvents.EVT_FIT_REMOVED, self.fitRemoved)
+        self.mainFrame.Bind(EVT_FIT_RENAMED, self.fitRenamed)
+        self.mainFrame.Bind(EVT_FIT_REMOVED, self.fitRemoved)
         self.mainFrame.Bind(ITEM_SELECTED, self.appendItem)
 
         self.Bind(wx.EVT_LEFT_DCLICK, self.removeItem)
@@ -165,6 +171,8 @@ class FittingView(d.Display):
         self.Bind(wx.EVT_MOTION, self.OnMouseMove)
         self.Bind(wx.EVT_LEAVE_WINDOW, self.OnLeaveWindow)
         self.parent.Bind(EVT_NOTEBOOK_PAGE_CHANGED, self.pageChanged)
+        print("------------------ new fitting view -------------------")
+        print(self)
 
     def OnLeaveWindow(self, event):
         self.SetToolTip(None)
@@ -184,7 +192,7 @@ class FittingView(d.Display):
                     mod = self.mods[self.GetItemData(row)]
                     tooltip = self.activeColumns[col].getToolTip(mod)
                     if tooltip is not None:
-                        self.SetToolTipString(tooltip)
+                        self.SetToolTip(tooltip)
                     else:
                         self.SetToolTip(None)
                 else:
@@ -210,14 +218,15 @@ class FittingView(d.Display):
     def handleDrag(self, type, fitID):
         # Those are drags coming from pyfa sources, NOT builtin wx drags
         if type == "fit":
-            wx.PostEvent(self.mainFrame, sbEvents.FitSelected(fitID=fitID))
+            wx.PostEvent(self.mainFrame, FitSelected(fitID=fitID))
 
     def Destroy(self):
-        self.parent.Unbind(EVT_NOTEBOOK_PAGE_CHANGED, handler=self.pageChanged)
-        self.mainFrame.Unbind(GE.FIT_CHANGED, handler=self.fitChanged)
-        self.mainFrame.Unbind(sbEvents.EVT_FIT_RENAMED, handler=self.fitRenamed)
-        self.mainFrame.Unbind(sbEvents.EVT_FIT_REMOVED, handler=self.fitRemoved)
-        self.mainFrame.Unbind(ITEM_SELECTED, handler=self.appendItem)
+        print("+++++ Destroy " + repr(self))
+        print(self.parent.Unbind(EVT_NOTEBOOK_PAGE_CHANGED))
+        print(self.mainFrame.Unbind(GE.FIT_CHANGED))
+        print(self.mainFrame.Unbind(EVT_FIT_RENAMED))
+        print(self.mainFrame.Unbind(EVT_FIT_REMOVED))
+        print(self.mainFrame.Unbind(ITEM_SELECTED))
 
         d.Display.Destroy(self)
 
@@ -237,7 +246,7 @@ class FittingView(d.Display):
         row = event.GetIndex()
 
         if row != -1 and row not in self.blanks and isinstance(self.mods[row], Module) and not self.mods[row].isEmpty:
-            data = wx.PyTextDataObject()
+            data = wx.TextDataObject()
             dataStr = "fitting:" + str(self.mods[row].modPosition)
             data.SetText(dataStr)
 
@@ -277,20 +286,22 @@ class FittingView(d.Display):
         If fit is removed and active, the page is deleted.
         We also refresh the fit of the new current page in case
         delete fit caused change in stats (projected)
+        todo: move this to the notebook, not the page. We don't want the page being responsible for deleting itself
         """
+        print('_+_+_+_+_+_ Fit Removed: {} {} activeFitID: {}, eventFitID: {}'.format(repr(self), str(bool(self)), self.activeFitID, event.fitID))
         pyfalog.debug("FittingView::fitRemoved")
         if event.fitID == self.getActiveFit():
             pyfalog.debug("    Deleted fit is currently active")
             self.parent.DeletePage(self.parent.GetPageIndex(self))
 
-        try:
-            # Sometimes there is no active page after deletion, hence the try block
-            sFit = Fit.getInstance()
-            sFit.refreshFit(self.getActiveFit())
-            wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=self.activeFitID))
-        except wx._core.PyDeadObjectError:
-            pyfalog.warning("Caught dead object")
-            pass
+            try:
+                # Sometimes there is no active page after deletion, hence the try block
+                sFit = Fit.getInstance()
+                sFit.refreshFit(self.getActiveFit())
+                wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=self.activeFitID))
+            except RuntimeError:
+                pyfalog.warning("Caught dead object")
+                pass
 
         event.Skip()
 
@@ -302,6 +313,8 @@ class FittingView(d.Display):
         event.Skip()
 
     def fitSelected(self, event):
+        print('====== Fit Selected: ' + repr(self) + str(bool(self)))
+
         if self.parent.IsActive(self):
             fitID = event.fitID
             startup = getattr(event, "startup", False)
@@ -312,6 +325,7 @@ class FittingView(d.Display):
                 self.Show(fitID is not None)
                 self.slotsChanged()
                 sFit.switchFit(fitID)
+                # @todo pheonix: had to disable this as it was causing a crash at the wxWidgets level. Dunno why, investigate
                 wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fitID))
 
         event.Skip()
@@ -321,7 +335,7 @@ class FittingView(d.Display):
         fit = sFit.getFit(self.getActiveFit(), basic=True)
 
         bitmap = BitmapLoader.getImage("race_%s_small" % fit.ship.item.race, "gui")
-        text = u"%s: %s" % (fit.ship.item.name, fit.name)
+        text = "%s: %s" % (fit.ship.item.name, fit.name)
 
         pageIndex = self.parent.GetPageIndex(self)
         if pageIndex is not None:
@@ -508,6 +522,8 @@ class FittingView(d.Display):
         self.populate(self.mods)
 
     def fitChanged(self, event):
+        print('====== Fit Changed: {} {} activeFitID: {}, eventFitID: {}'.format(repr(self), str(bool(self)), self.activeFitID, event.fitID))
+
         try:
             if self.activeFitID is not None and self.activeFitID == event.fitID:
                 self.generateMods()
@@ -518,7 +534,7 @@ class FittingView(d.Display):
                 self.Refresh()
 
             self.Show(self.activeFitID is not None and self.activeFitID == event.fitID)
-        except wx._core.PyDeadObjectError:
+        except RuntimeError:
             pyfalog.error("Caught dead object")
         finally:
             event.Skip()
@@ -603,14 +619,14 @@ class FittingView(d.Display):
 
             sFit = Fit.getInstance()
             fitID = self.mainFrame.getActiveFit()
-            ctrl = wx.GetMouseState().CmdDown() or wx.GetMouseState().MiddleDown()
+            ctrl = event.cmdDown or event.middleIsDown
             click = "ctrl" if ctrl is True else "right" if event.GetButton() == 3 else "left"
             sFit.toggleModulesState(fitID, self.mods[self.GetItemData(row)], mods, click)
 
             # update state tooltip
             tooltip = self.activeColumns[col].getToolTip(self.mods[self.GetItemData(row)])
             if tooltip:
-                self.SetToolTipString(tooltip)
+                self.SetToolTip(tooltip)
 
             wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=self.mainFrame.getActiveFit()))
         else:
@@ -644,7 +660,7 @@ class FittingView(d.Display):
             slot = Slot.getValue(slotType)
             slotMap[slot] = fit.getSlotsFree(slot) < 0
 
-        font = (self.GetClassDefaultAttributes()).font
+        font = wx.Font(self.GetClassDefaultAttributes().font)
 
         for i, mod in enumerate(self.mods):
             self.SetItemBackgroundColour(i, self.GetBackgroundColour())
@@ -669,21 +685,22 @@ class FittingView(d.Display):
         self.Thaw()
         self.itemCount = self.GetItemCount()
 
-        if 'wxMac' in wx.PlatformInfo:
-            try:
-                self.MakeSnapshot()
-            except Exception as e:
-                pyfalog.critical("Failed to make snapshot")
-                pyfalog.critical(e)
+        # if 'wxMac' in wx.PlatformInfo:
+        #     try:
+        #         self.MakeSnapshot()
+        #     except Exception as e:
+        #         pyfalog.critical("Failed to make snapshot")
+        #         pyfalog.critical(e)
 
     def OnShow(self, event):
-        if event.GetShow():
-            try:
-                self.MakeSnapshot()
-            except Exception as e:
-                pyfalog.critical("Failed to make snapshot")
-                pyfalog.critical(e)
-        event.Skip()
+        pass
+        # if event.Show():
+        #     try:
+        #         self.MakeSnapshot()
+        #     except Exception as e:
+        #         pyfalog.critical("Failed to make snapshot")
+        #         pyfalog.critical(e)
+        # event.Skip()
 
     def Snapshot(self):
         return self.FVsnapshot
@@ -694,7 +711,7 @@ class FittingView(d.Display):
         if self.FVsnapshot:
             del self.FVsnapshot
 
-        tbmp = wx.EmptyBitmap(16, 16)
+        tbmp = wx.Bitmap(16, 16)
         tdc = wx.MemoryDC()
         tdc.SelectObject(tbmp)
         font = wx.SystemSettings_GetFont(wx.SYS_DEFAULT_GUI_FONT)
@@ -731,7 +748,7 @@ class FittingView(d.Display):
                     break
                 name = col.getText(st)
 
-                if not isinstance(name, basestring):
+                if not isinstance(name, str):
                     name = ""
 
                 nx, ny = tdc.GetTextExtent(name)
@@ -761,7 +778,7 @@ class FittingView(d.Display):
             name = col.columnText
             imgId = col.imageId
 
-            if not isinstance(name, basestring):
+            if not isinstance(name, str):
                 name = ""
 
             opts = wx.HeaderButtonParams()
@@ -770,7 +787,7 @@ class FittingView(d.Display):
                 opts.m_labelText = name
 
             if imgId != -1:
-                opts.m_labelBitmap = wx.EmptyBitmap(isize, isize)
+                opts.m_labelBitmap = wx.Bitmap(isize, isize)
 
             width = render.DrawHeaderButton(self, tdc, (0, 0, 16, 16), sortArrow=wx.HDR_SORT_ICON_NONE, params=opts)
 
@@ -786,15 +803,15 @@ class FittingView(d.Display):
             maxWidth += columnsWidths[i]
 
         mdc = wx.MemoryDC()
-        mbmp = wx.EmptyBitmap(maxWidth, maxRowHeight * rows + padding * 4 + headerSize)
+        mbmp = wx.Bitmap(maxWidth, maxRowHeight * rows + padding * 4 + headerSize)
 
         mdc.SelectObject(mbmp)
 
-        mdc.SetBackground(wx.Brush(wx.SystemSettings_GetColour(wx.SYS_COLOUR_WINDOW)))
+        mdc.SetBackground(wx.Brush(wx.SystemSettings.GetColour(wx.SYS_COLOUR_WINDOW)))
         mdc.Clear()
 
         mdc.SetFont(font)
-        mdc.SetTextForeground(wx.SystemSettings_GetColour(wx.SYS_COLOUR_WINDOWTEXT))
+        mdc.SetTextForeground(wx.SystemSettings.GetColour(wx.SYS_COLOUR_WINDOWTEXT))
 
         cx = padding
         for i, col in enumerate(self.activeColumns):
@@ -804,7 +821,7 @@ class FittingView(d.Display):
             name = col.columnText
             imgId = col.imageId
 
-            if not isinstance(name, basestring):
+            if not isinstance(name, str):
                 name = ""
 
             opts = wx.HeaderButtonParams()
@@ -838,7 +855,7 @@ class FittingView(d.Display):
                     break
 
                 name = col.getText(st)
-                if not isinstance(name, basestring):
+                if not isinstance(name, str):
                     name = ""
 
                 imgId = col.getImageId(st)

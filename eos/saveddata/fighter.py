@@ -98,7 +98,7 @@ class Fighter(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
 
     def __getAbilities(self):
         """Returns list of FighterAbilities that are loaded with data"""
-        return [FighterAbility(effect) for effect in self.item.effects.values()]
+        return [FighterAbility(effect) for effect in list(self.item.effects.values())]
 
     def __calculateSlot(self, item):
         types = {
@@ -110,7 +110,7 @@ class Fighter(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
             "StandupHeavy": Slot.FS_HEAVY
         }
 
-        for t, slot in types.iteritems():
+        for t, slot in types.items():
             if self.getModifiedItemAttr("fighterSquadronIs{}".format(t)):
                 return slot
 
@@ -202,12 +202,12 @@ class Fighter(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
                  "energyDestabilizationRange", "empFieldRange",
                  "ecmBurstRange", "maxRange")
         for attr in attrs:
-            maxRange = self.getModifiedItemAttr(attr)
+            maxRange = self.getModifiedItemAttr(attr, None)
             if maxRange is not None:
                 return maxRange
         if self.charge is not None:
-            delay = self.getModifiedChargeAttr("explosionDelay")
-            speed = self.getModifiedChargeAttr("maxVelocity")
+            delay = self.getModifiedChargeAttr("explosionDelay", None)
+            speed = self.getModifiedChargeAttr("maxVelocity", None)
             if delay is not None and speed is not None:
                 return delay / 1000.0 * speed
 
@@ -218,7 +218,7 @@ class Fighter(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
     def falloff(self):
         attrs = ("falloff", "falloffEffectiveness")
         for attr in attrs:
-            falloff = self.getModifiedItemAttr(attr)
+            falloff = self.getModifiedItemAttr(attr, None)
             if falloff is not None:
                 return falloff
 

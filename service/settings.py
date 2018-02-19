@@ -17,9 +17,11 @@
 # along with pyfa.  If not, see <http://www.gnu.org/licenses/>.
 # =============================================================================
 
-import cPickle
+import pickle
 import os.path
-import urllib2
+import urllib.request
+import urllib.error
+import urllib.parse
 
 import config
 import eos.config
@@ -91,7 +93,7 @@ class SettingsProvider(object):
             else:
                 try:
                     with open(canonical_path, "rb") as f:
-                        info = cPickle.load(f)
+                        info = pickle.load(f)
                     for item in defaults:
                         if item not in info:
                             info[item] = defaults[item]
@@ -103,7 +105,7 @@ class SettingsProvider(object):
         return settings_obj
 
     def saveAll(self):
-        for settings in self.settings.itervalues():
+        for settings in self.settings.values():
             settings.save()
 
 
@@ -124,7 +126,7 @@ class Settings(object):
             return
         # NOTE: with + open -> file handle auto close
         with open(self.location, "wb") as f:
-            cPickle.dump(self.info, f, cPickle.HIGHEST_PROTOCOL)
+            pickle.dump(self.info, f, pickle.HIGHEST_PROTOCOL)
 
     def __getitem__(self, k):
         try:
@@ -140,22 +142,22 @@ class Settings(object):
         return self.info.__iter__()
 
     def iterkeys(self):
-        return self.info.iterkeys()
+        return iter(self.info.keys())
 
     def itervalues(self):
-        return self.info.itervalues()
+        return iter(self.info.values())
 
     def iteritems(self):
-        return self.info.iteritems()
+        return iter(self.info.items())
 
     def keys(self):
-        return self.info.keys()
+        return list(self.info.keys())
 
     def values(self):
-        return self.info.values()
+        return list(self.info.values())
 
     def items(self):
-        return self.info.items()
+        return list(self.info.items())
 
 
 class NetworkSettings(object):
@@ -235,7 +237,7 @@ class NetworkSettings(object):
     def autodetect():
 
         proxy = None
-        proxydict = urllib2.ProxyHandler().proxies
+        proxydict = urllib.request.ProxyHandler().proxies
 
         validPrefixes = ("http", "https")
 

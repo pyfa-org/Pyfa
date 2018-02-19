@@ -20,14 +20,14 @@
 # noinspection PyPackageRequirements
 import wx
 from gui.preferenceView import PreferenceView
-from gui.bitmapLoader import BitmapLoader
+from gui.bitmap_loader import BitmapLoader
 
 
 class PreferenceDialog(wx.Dialog):
     def __init__(self, parent):
         wx.Dialog.__init__(self, parent, id=wx.ID_ANY, size=wx.DefaultSize, style=wx.DEFAULT_DIALOG_STYLE)
         self.SetTitle("pyfa - Preferences")
-        i = wx.IconFromBitmap(BitmapLoader.getBitmap("preferences_small", "gui"))
+        i = wx.Icon(BitmapLoader.getBitmap("preferences_small", "gui"))
         self.SetIcon(i)
         mainSizer = wx.BoxSizer(wx.VERTICAL)
 
@@ -46,8 +46,8 @@ class PreferenceDialog(wx.Dialog):
         mainSizer.Add(self.m_staticline2, 0, wx.EXPAND, 5)
 
         btnSizer = wx.BoxSizer(wx.HORIZONTAL)
-        btnSizer.AddSpacer((0, 0), 1, wx.EXPAND, 5)
-        self.btnOK = wx.Button(self, wx.ID_ANY, u"OK", wx.DefaultPosition, wx.DefaultSize, 0)
+        btnSizer.AddStretchSpacer()
+        self.btnOK = wx.Button(self, wx.ID_ANY, "OK", wx.DefaultPosition, wx.DefaultSize, 0)
         btnSizer.Add(self.btnOK, 0, wx.ALL, 5)
         mainSizer.Add(btnSizer, 0, wx.EXPAND, 5)
         self.SetSizer(mainSizer)
@@ -69,9 +69,9 @@ class PreferenceDialog(wx.Dialog):
         minHeight = 550
         bestFit = self.GetBestVirtualSize()
         if minHeight > bestFit[1]:
-            self.SetSizeWH(650, minHeight)
+            self.SetSize(650, minHeight)
         else:
-            self.SetSizeWH(650, bestFit[1])
+            self.SetSize(650, bestFit[1])
 
         self.Layout()
 

@@ -19,9 +19,8 @@
 
 # noinspection PyPackageRequirements
 import wx
-
-from gui.bitmapLoader import BitmapLoader
 from gui.statsView import StatsView
+from gui.bitmap_loader import BitmapLoader
 from gui.utils.numberFormatter import formatAmount
 from service.price import Price
 from service.settings import PriceMenuSettings
@@ -50,7 +49,7 @@ class PriceViewFull(StatsView):
         headerContentSizer.Add(self.labelEMStatus)
         headerPanel.GetParent().AddToggleItem(self.labelEMStatus)
 
-        gridPrice = wx.GridSizer(2, 3)
+        gridPrice = wx.GridSizer(2, 3, 0, 0)
         contentSizer.Add(gridPrice, 0, wx.EXPAND | wx.ALL, 0)
         for _type in ("ship", "fittings", "total", "drones", "cargoBay", "character"):
             if _type in "ship":

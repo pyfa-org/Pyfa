@@ -118,3 +118,5 @@ ENV/
 .idea
 eos.iml
 gitversion
+.version
+/.version

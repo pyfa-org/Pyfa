@@ -29,7 +29,7 @@ def upgrade(saveddata_engine):
         "targetResists": 2
     }
 
-    for table in tables.keys():
+    for table in list(tables.keys()):
 
         # midnight brain, there's probably a much more simple way to do this, but fuck it
         if tables[table] > 0:

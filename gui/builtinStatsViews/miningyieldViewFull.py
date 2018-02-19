@@ -21,7 +21,7 @@
 import wx
 import gui.mainFrame
 from gui.statsView import StatsView
-from gui.bitmapLoader import BitmapLoader
+from gui.bitmap_loader import BitmapLoader
 from gui.utils.numberFormatter import formatAmount
 from service.fit import Fit
 
@@ -48,7 +48,7 @@ class MiningYieldViewFull(StatsView):
 
         panel = "full"
 
-        sizerMiningYield = wx.FlexGridSizer(1, 4)
+        sizerMiningYield = wx.FlexGridSizer(1, 4, 0, 0)
         sizerMiningYield.AddGrowableCol(1)
 
         contentSizer.Add(sizerMiningYield, 0, wx.EXPAND, 0)
@@ -69,7 +69,7 @@ class MiningYieldViewFull(StatsView):
             hbox = wx.BoxSizer(wx.HORIZONTAL)
             box.Add(hbox, 1, wx.ALIGN_CENTER)
 
-            lbl = wx.StaticText(parent, wx.ID_ANY, u"0.0 m\u00B3/s")
+            lbl = wx.StaticText(parent, wx.ID_ANY, "0.0 m\u00B3/s")
             setattr(self, "label%sminingyield%s" % (panel.capitalize(), miningType.capitalize()), lbl)
 
             hbox.Add(lbl, 0, wx.ALIGN_CENTER)
@@ -90,7 +90,7 @@ class MiningYieldViewFull(StatsView):
         hbox = wx.BoxSizer(wx.HORIZONTAL)
         box.Add(hbox, 1, wx.EXPAND)
 
-        lbl = wx.StaticText(parent, wx.ID_ANY, u"0.0 m\u00B3/s")
+        lbl = wx.StaticText(parent, wx.ID_ANY, "0.0 m\u00B3/s")
         setattr(self, "label%sminingyieldTotal" % panel.capitalize(), lbl)
         hbox.Add(lbl, 0, wx.ALIGN_LEFT)
 
@@ -123,16 +123,16 @@ class MiningYieldViewFull(StatsView):
         # Get the TogglePanel
         tp = self.panel.GetParent()
         # Bind the new panel's children to allow context menu access
-        self.parent.applyBinding(self.parent, tp.GetContentPane())
+        self.parent.applyBinding(self.parent, tp.content_panel)
         tp.SetLabel(view.getHeaderText(fit))
         view.refreshPanel(fit)
 
     def refreshPanel(self, fit):
         # If we did anything intresting, we'd update our labels to reflect the new fit's stats here
 
-        stats = (("labelFullminingyieldMiner", lambda: fit.minerYield, 3, 0, 0, u"%s m\u00B3/s", None),
-                 ("labelFullminingyieldDrone", lambda: fit.droneYield, 3, 0, 0, u"%s m\u00B3/s", None),
-                 ("labelFullminingyieldTotal", lambda: fit.totalYield, 3, 0, 0, u"%s m\u00B3/s", None))
+        stats = (("labelFullminingyieldMiner", lambda: fit.minerYield, 3, 0, 0, "%s m\u00B3/s", None),
+                 ("labelFullminingyieldDrone", lambda: fit.droneYield, 3, 0, 0, "%s m\u00B3/s", None),
+                 ("labelFullminingyieldTotal", lambda: fit.totalYield, 3, 0, 0, "%s m\u00B3/s", None))
 
         counter = 0
         for labelName, value, prec, lowest, highest, valueFormat, altFormat in stats:

@@ -14,7 +14,7 @@ from eos.saveddata.fit import Fit
 
 import gui.mainFrame
 from gui.contextMenu import ContextMenu
-from gui.bitmapLoader import BitmapLoader
+from gui.bitmap_loader import BitmapLoader
 
 
 class ItemAffectedBy(wx.Panel):
@@ -43,17 +43,17 @@ class ItemAffectedBy(wx.Panel):
         mainSizer.Add(self.m_staticline, 0, wx.EXPAND)
         bSizer = wx.BoxSizer(wx.HORIZONTAL)
 
-        self.toggleExpandBtn = wx.ToggleButton(self, wx.ID_ANY, u"Expand All", wx.DefaultPosition, wx.DefaultSize, 0)
+        self.toggleExpandBtn = wx.ToggleButton(self, wx.ID_ANY, "Expand All", wx.DefaultPosition, wx.DefaultSize, 0)
         bSizer.Add(self.toggleExpandBtn, 0, wx.ALIGN_CENTER_VERTICAL)
 
-        self.toggleNameBtn = wx.ToggleButton(self, wx.ID_ANY, u"Toggle Names", wx.DefaultPosition, wx.DefaultSize, 0)
+        self.toggleNameBtn = wx.ToggleButton(self, wx.ID_ANY, "Toggle Names", wx.DefaultPosition, wx.DefaultSize, 0)
         bSizer.Add(self.toggleNameBtn, 0, wx.ALIGN_CENTER_VERTICAL)
 
-        self.toggleViewBtn = wx.ToggleButton(self, wx.ID_ANY, u"Toggle View", wx.DefaultPosition, wx.DefaultSize, 0)
+        self.toggleViewBtn = wx.ToggleButton(self, wx.ID_ANY, "Toggle View", wx.DefaultPosition, wx.DefaultSize, 0)
         bSizer.Add(self.toggleViewBtn, 0, wx.ALIGN_CENTER_VERTICAL)
 
         if stuff is not None:
-            self.refreshBtn = wx.Button(self, wx.ID_ANY, u"Refresh", wx.DefaultPosition, wx.DefaultSize, wx.BU_EXACTFIT)
+            self.refreshBtn = wx.Button(self, wx.ID_ANY, "Refresh", wx.DefaultPosition, wx.DefaultSize, wx.BU_EXACTFIT)
             bSizer.Add(self.refreshBtn, 0, wx.ALIGN_CENTER_VERTICAL)
             self.refreshBtn.Bind(wx.EVT_BUTTON, self.RefreshTree)
 
@@ -74,9 +74,9 @@ class ItemAffectedBy(wx.Panel):
     def spawnMenu(self, item):
         self.affectedBy.SelectItem(item)
 
-        stuff = self.affectedBy.GetPyData(item)
+        stuff = self.affectedBy.GetItemData(item)
         # String is set as data when we are dealing with attributes, not stuff containers
-        if stuff is None or isinstance(stuff, basestring):
+        if stuff is None or isinstance(stuff, str):
             return
         contexts = []
 
@@ -109,10 +109,10 @@ class ItemAffectedBy(wx.Panel):
         self.Freeze()
 
         for item in self.treeItems:
-            change = self.affectedBy.GetPyData(item)
+            change = self.affectedBy.GetItemData(item)
             display = self.affectedBy.GetItemText(item)
             self.affectedBy.SetItemText(item, change)
-            self.affectedBy.SetPyData(item, display)
+            self.affectedBy.SetItemData(item, display)
 
         self.Thaw()
 
@@ -141,7 +141,7 @@ class ItemAffectedBy(wx.Panel):
         # sheri was here
         del self.treeItems[:]
         root = self.affectedBy.AddRoot("WINPWNZ0R")
-        self.affectedBy.SetPyData(root, None)
+        self.affectedBy.SetItemData(root, None)
 
         self.imageList = wx.ImageList(16, 16)
         self.affectedBy.SetImageList(self.imageList)
@@ -185,7 +185,7 @@ class ItemAffectedBy(wx.Panel):
             if attributes[attrName] == (attributes.getOriginal(attrName, 0)):
                 continue
 
-            for fit, afflictors in attributes.getAfflictions(attrName).iteritems():
+            for fit, afflictors in attributes.getAfflictions(attrName).items():
                 for afflictor, modifier, amount, used in afflictors:
 
                     if not used or afflictor.item is None:
@@ -216,7 +216,7 @@ class ItemAffectedBy(wx.Panel):
                             (type(afflictor), afflictor, item, modifier, amount, getattr(afflictor, "projected", False)))
 
         # Make sure projected fits are on top
-        rootOrder = container.keys()
+        rootOrder = list(container.keys())
         rootOrder.sort(key=lambda x: self.ORDER.index(type(x)))
 
         # Now, we take our created dictionary and start adding stuff to our tree
@@ -230,7 +230,7 @@ class ItemAffectedBy(wx.Panel):
                 parent = child
 
             attributes = container[thing]
-            attrOrder = sorted(attributes.keys(), key=self.sortAttrDisplayName)
+            attrOrder = sorted(list(attributes.keys()), key=self.sortAttrDisplayName)
 
             for attrName in attrOrder:
                 attrInfo = self.stuff.item.attributes.get(attrName)
@@ -257,7 +257,7 @@ class ItemAffectedBy(wx.Panel):
 
                 # this is the attribute node
                 child = self.affectedBy.AppendItem(parent, display, attrIcon)
-                self.affectedBy.SetPyData(child, saved)
+                self.affectedBy.SetItemData(child, saved)
                 self.treeItems.append(child)
 
                 items = attributes[attrName]
@@ -284,12 +284,12 @@ class ItemAffectedBy(wx.Panel):
                             penalized += "(penalized)"
                         if 'r' in attrModifier:
                             penalized += "(resisted)"
-                        attrModifier = "*"
+                    attrModifier = "*"
 
                     # this is the Module node, the attribute will be attached to this
                     display = "%s %s %.2f %s" % (displayStr, attrModifier, attrAmount, penalized)
                     treeItem = self.affectedBy.AppendItem(child, display, itemIcon)
-                    self.affectedBy.SetPyData(treeItem, afflictor)
+                    self.affectedBy.SetItemData(treeItem, afflictor)
 
     def buildModuleView(self, root):
         """
@@ -314,7 +314,7 @@ class ItemAffectedBy(wx.Panel):
             if attributes[attrName] == (attributes.getOriginal(attrName, 0)):
                 continue
 
-            for fit, afflictors in attributes.getAfflictions(attrName).iteritems():
+            for fit, afflictors in attributes.getAfflictions(attrName).items():
                 for afflictor, modifier, amount, used in afflictors:
                     if not used or getattr(afflictor, 'item', None) is None:
                         continue
@@ -350,7 +350,7 @@ class ItemAffectedBy(wx.Panel):
                     info[2].append((attrName, modifier, amount))
 
         # Make sure projected fits are on top
-        rootOrder = container.keys()
+        rootOrder = list(container.keys())
         rootOrder.sort(key=lambda x: self.ORDER.index(type(x)))
 
         # Now, we take our created dictionary and start adding stuff to our tree
@@ -364,7 +364,7 @@ class ItemAffectedBy(wx.Panel):
                 parent = child
 
             items = container[thing]
-            order = items.keys()
+            order = list(items.keys())
             order.sort(key=lambda x: (self.ORDER.index(items[x][0]), x))
 
             for itemName in order:
@@ -389,7 +389,7 @@ class ItemAffectedBy(wx.Panel):
 
                 # this is the Module node, the attribute will be attached to this
                 child = self.affectedBy.AppendItem(parent, displayStr, itemIcon)
-                self.affectedBy.SetPyData(child, afflictors.pop())
+                self.affectedBy.SetItemData(child, afflictors.pop())
 
                 if counter > 0:
                     attributes = []
@@ -416,7 +416,7 @@ class ItemAffectedBy(wx.Panel):
                                 penalized += "(penalized)"
                             if 'r' in attrModifier:
                                 penalized += "(resisted)"
-                            attrModifier = "*"
+                        attrModifier = "*"
 
                         attributes.append((attrName, (displayName if displayName != "" else attrName), attrModifier,
                                            attrAmount, penalized, attrIcon))
@@ -443,5 +443,5 @@ class ItemAffectedBy(wx.Panel):
                             saved = "%s %s %.2f %s" % (attrName, attrModifier, attrAmount, penalized)
 
                         treeitem = self.affectedBy.AppendItem(child, display, attrIcon)
-                        self.affectedBy.SetPyData(treeitem, saved)
+                        self.affectedBy.SetItemData(treeitem, saved)
                         self.treeItems.append(treeitem)

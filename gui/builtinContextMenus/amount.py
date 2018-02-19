@@ -47,7 +47,7 @@ class AmountChanger(wx.Dialog):
         bSizer1.Add(self.input, 1, wx.ALL, 5)
         self.input.Bind(wx.EVT_CHAR, self.onChar)
         self.input.Bind(wx.EVT_TEXT_ENTER, self.change)
-        self.button = wx.Button(self, wx.ID_OK, u"Done")
+        self.button = wx.Button(self, wx.ID_OK, "Done")
         bSizer1.Add(self.button, 0, wx.ALL, 5)
 
         self.SetSizer(bSizer1)

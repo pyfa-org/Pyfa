@@ -18,8 +18,9 @@
 # =============================================================================
 
 
-import urllib2
-import urllib
+import urllib.request
+import urllib.error
+import urllib.parse
 import socket
 from logbook import Logger
 
@@ -33,24 +34,24 @@ timeout = 3
 socket.setdefaulttimeout(timeout)
 
 
-class Error(StandardError):
+class Error(Exception):
     def __init__(self, msg=None):
         self.message = msg
 
 
-class RequestError(StandardError):
+class RequestError(Exception):
     pass
 
 
-class AuthenticationError(StandardError):
+class AuthenticationError(Exception):
     pass
 
 
-class ServerError(StandardError):
+class ServerError(Exception):
     pass
 
 
-class TimeoutError(StandardError):
+class TimeoutError(Exception):
     pass
 
 
@@ -94,29 +95,29 @@ class Network(object):
             # proxy_auth is a tuple of (login, password) or None
             if proxy_auth is not None:
                 # add login:password@ in front of proxy address
-                proxy_handler = urllib2.ProxyHandler({
+                proxy_handler = urllib.request.ProxyHandler({
                     'https': '{0}:{1}@{2}:{3}'.format(
                             proxy_auth[0], proxy_auth[1], proxy[0], proxy[1])
                 })
             else:
                 # build proxy handler with no login/pass info
-                proxy_handler = urllib2.ProxyHandler({'https': "{0}:{1}".format(proxy[0], proxy[1])})
-            opener = urllib2.build_opener(proxy_handler)
-            urllib2.install_opener(opener)
+                proxy_handler = urllib.request.ProxyHandler({'https': "{0}:{1}".format(proxy[0], proxy[1])})
+            opener = urllib.request.build_opener(proxy_handler)
+            urllib.request.install_opener(opener)
         else:
             # This is a bug fix, explicitly disable possibly previously installed
             # opener with proxy, by urllib2.install_opener() a few lines above in code.
             # Now this explicitly disables proxy handler, "uninstalling" opener.
             # This is used in case when user had proxy enabled, so proxy_handler was already
             # installed globally, and then user had disabled the proxy, so we should clear that opener
-            urllib2.install_opener(None)
+            urllib.request.install_opener(None)
             # another option could be installing a default opener:
             # urllib2.install_opener(urllib2.build_opener())
 
-        request = urllib2.Request(url, headers=headers, data=urllib.urlencode(data) if data else None)
+        request = urllib.request.Request(url, headers=headers, data=urllib.parse.urlencode(data).encode("utf-8") if data else None)
         try:
-            return urllib2.urlopen(request)
-        except urllib2.HTTPError as error:
+            return urllib.request.urlopen(request)
+        except urllib.error.HTTPError as error:
             pyfalog.warning("HTTPError:")
             pyfalog.warning(error)
             if error.code == 404:
@@ -126,7 +127,7 @@ class Network(object):
             elif error.code >= 500:
                 raise ServerError()
             raise Error(error)
-        except urllib2.URLError as error:
+        except urllib.error.URLError as error:
             pyfalog.warning("Timed out or other URL error:")
             pyfalog.warning(error)
             if "timed out" in error.reason:

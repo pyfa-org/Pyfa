@@ -115,7 +115,7 @@ class HandledList(list):
 class HandledModuleList(HandledList):
     def append(self, mod):
         emptyPosition = float("Inf")
-        for i in xrange(len(self)):
+        for i in range(len(self)):
             currMod = self[i]
             if currMod.isEmpty and not mod.isEmpty and currMod.slot == mod.slot:
                 currPos = mod.position or i
@@ -149,7 +149,7 @@ class HandledModuleList(HandledList):
         oldPos = mod.position
 
         mod.position = None
-        for i in xrange(oldPos, len(self)):
+        for i in range(oldPos, len(self)):
             self[i].position -= 1
 
     def toDummy(self, index):

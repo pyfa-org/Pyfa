@@ -1,7 +1,7 @@
 # noinspection PyPackageRequirements
 import wx
-import gui.utils.colorUtils as colorUtils
-import gui.utils.drawUtils as drawUtils
+import gui.utils.color as colorUtils
+import gui.utils.draw as drawUtils
 
 SearchButton, EVT_SEARCH_BTN = wx.lib.newevent.NewEvent()
 CancelButton, EVT_CANCEL_BTN = wx.lib.newevent.NewEvent()
@@ -58,6 +58,8 @@ class PFSearchBox(wx.Window):
 
         self.EditBox.Bind(wx.EVT_TEXT, self.OnText)
         self.EditBox.Bind(wx.EVT_TEXT_ENTER, self.OnTextEnter)
+
+        self.SetBackgroundStyle(wx.BG_STYLE_PAINT)
 
         self.SetMinSize(size)
 
@@ -224,10 +226,10 @@ class PFSearchBox(wx.Window):
         self.EditBox.SetSize((self.cancelButtonX - self.padding - self.editX, -1))
 
     def OnPaint(self, event):
-        dc = wx.BufferedPaintDC(self)
+        dc = wx.AutoBufferedPaintDC(self)
 
-        bkColor = wx.SystemSettings_GetColour(wx.SYS_COLOUR_WINDOW)
-        sepColor = colorUtils.GetSuitableColor(bkColor, 0.2)
+        bkColor = wx.SystemSettings.GetColour(wx.SYS_COLOUR_WINDOW)
+        sepColor = colorUtils.GetSuitable(bkColor, 0.2)
         rect = self.GetRect()
 
         if self.resized:

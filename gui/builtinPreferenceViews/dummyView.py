@@ -50,7 +50,7 @@ class DummyView(PreferenceView):
 
     def initHeader(self, panel):
         headerSizer = wx.BoxSizer(wx.VERTICAL)
-        self.stTitle = wx.StaticText(panel, wx.ID_ANY, u"Dummy", wx.DefaultPosition, wx.DefaultSize, 0)
+        self.stTitle = wx.StaticText(panel, wx.ID_ANY, "Dummy", wx.DefaultPosition, wx.DefaultSize, 0)
         self.stTitle.Wrap(-1)
         self.stTitle.SetFont(wx.Font(14, 70, 90, 90, False, wx.EmptyString))
         headerSizer.Add(self.stTitle, 0, wx.ALL, 5)
@@ -60,10 +60,10 @@ class DummyView(PreferenceView):
     def initContent(self, panel):
         contentSizer = wx.BoxSizer(wx.VERTICAL)
 
-        self.m_checkBox2 = wx.CheckBox(panel, wx.ID_ANY, u"Check Me!", wx.DefaultPosition, wx.DefaultSize, 0)
+        self.m_checkBox2 = wx.CheckBox(panel, wx.ID_ANY, "Check Me!", wx.DefaultPosition, wx.DefaultSize, 0)
         contentSizer.Add(self.m_checkBox2, 0, wx.ALL, 5)
 
-        self.m_radioBtn2 = wx.RadioButton(panel, wx.ID_ANY, u"RadioBtn", wx.DefaultPosition, wx.DefaultSize, 0)
+        self.m_radioBtn2 = wx.RadioButton(panel, wx.ID_ANY, "RadioBtn", wx.DefaultPosition, wx.DefaultSize, 0)
         contentSizer.Add(self.m_radioBtn2, 0, wx.ALL, 5)
 
         self.m_slider2 = wx.Slider(panel, wx.ID_ANY, 50, 0, 100, wx.DefaultPosition, wx.DefaultSize, wx.SL_HORIZONTAL)
@@ -80,14 +80,13 @@ class DummyView(PreferenceView):
     def initFooter(self, panel):
         footerSizer = wx.BoxSizer(wx.HORIZONTAL)
 
-        footerSizer.AddSpacer((0, 0), 1, wx.EXPAND, 5)
-
-        self.btnRestore = wx.Button(panel, wx.ID_ANY, u"Restore", wx.DefaultPosition, wx.DefaultSize, 0)
+        footerSizer.AddStretchSpacer()
+        self.btnRestore = wx.Button(panel, wx.ID_ANY, "Restore", wx.DefaultPosition, wx.DefaultSize, 0)
         self.btnRestore.Enable(False)
 
         footerSizer.Add(self.btnRestore, 0, wx.ALL, 5)
 
-        self.btnApply = wx.Button(panel, wx.ID_ANY, u"Apply", wx.DefaultPosition, wx.DefaultSize, 0)
+        self.btnApply = wx.Button(panel, wx.ID_ANY, "Apply", wx.DefaultPosition, wx.DefaultSize, 0)
         footerSizer.Add(self.btnApply, 0, wx.ALL, 5)
         return footerSizer
 

@@ -1,6 +1,6 @@
 from gui.builtinShipBrowser.pfListPane import PFListPane
 import gui.mainFrame
-import gui.utils.animUtils as animUtils
+import gui.utils.anim as animUtils
 
 
 class PFWidgetsContainer(PFListPane):

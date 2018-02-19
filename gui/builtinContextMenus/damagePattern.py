@@ -3,15 +3,12 @@ import gui.mainFrame
 import gui.globalEvents as GE
 # noinspection PyPackageRequirements
 import wx
-from gui.bitmapLoader import BitmapLoader
+from gui.bitmap_loader import BitmapLoader
 from service.fit import Fit
 from service.damagePattern import DamagePattern as import_DamagePattern
 from service.settings import ContextMenuSettings
 
-try:
-    from collections import OrderedDict
-except ImportError:
-    from utils.compat import OrderedDict
+from collections import OrderedDict
 
 
 class DamagePattern(ContextMenu):
@@ -52,7 +49,7 @@ class DamagePattern(ContextMenu):
                 self.singles.append(pattern)
 
         # return list of names, with singles first followed by submenu names
-        self.m = map(lambda p: p.name, self.singles) + self.subMenus.keys()
+        self.m = [p.name for p in self.singles] + list(self.subMenus.keys())
         return self.m
 
     def addPattern(self, rootMenu, pattern):
@@ -96,7 +93,7 @@ class DamagePattern(ContextMenu):
 
         # Items that have a parent
         for pattern in self.subMenus[self.m[i]]:
-            sub.AppendItem(self.addPattern(rootMenu if msw else sub, pattern))
+            sub.Append(self.addPattern(rootMenu if msw else sub, pattern))
 
         return sub
 

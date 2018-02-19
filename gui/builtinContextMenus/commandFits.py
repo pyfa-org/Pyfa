@@ -30,6 +30,7 @@ class CommandFits(ContextMenu):
             if evt is None or not ids.isdisjoint(cls.commandTypeIDs):
                 # we are adding or removing an item that defines a command fit. Need to refresh fit list
                 cls.populateFits(evt)
+        evt.Skip()
 
     @classmethod
     def populateFits(cls, evt):
@@ -50,7 +51,7 @@ class CommandFits(ContextMenu):
         return "Command Fits"
 
     def addFit(self, menu, fit, includeShip=False):
-        label = fit.name if not includeShip else u"({}) {}".format(fit.ship.item.name, fit.name)
+        label = fit.name if not includeShip else "({}) {}".format(fit.ship.item.name, fit.name)
         id = ContextMenu.nextID()
         self.fitMenuItemIds[id] = fit
         menuItem = wx.MenuItem(menu, id, label)
@@ -67,7 +68,7 @@ class CommandFits(ContextMenu):
         if len(self.__class__.commandFits) < 15:
             for fit in sorted(self.__class__.commandFits, key=lambda x: x.name):
                 menuItem = self.addFit(rootMenu if msw else sub, fit, True)
-                sub.AppendItem(menuItem)
+                sub.Append(menuItem)
         else:
             typeDict = {}
 
@@ -84,9 +85,9 @@ class CommandFits(ContextMenu):
 
                 for fit in sorted(typeDict[ship], key=lambda x: x.name):
                     fitItem = self.addFit(rootMenu if msw else grandSub, fit, False)
-                    grandSub.AppendItem(fitItem)
+                    grandSub.Append(fitItem)
 
-                sub.AppendItem(shipItem)
+                sub.Append(shipItem)
 
         return sub
 

@@ -285,7 +285,7 @@ for marketgroupid in INITIALMARKETGROUPIDS:
             (globalmap_marketgroupid_typeid[marketgroupid])
         else: break
 # Now, make a reverse map
-for marketgroupid, typeidset in globalmap_marketgroupid_typeid.items():
+for marketgroupid, typeidset in list(globalmap_marketgroupid_typeid.items()):
     for typeid in typeidset:
         if not typeid in globalmap_typeid_marketgroupid:
             globalmap_typeid_marketgroupid[typeid] = set()
@@ -310,7 +310,7 @@ for marketgroupid in globalmap_marketgroupid_typeidwithvariations:
     (typestoadd)
 # Make reverse map using simple way too
 for marketgroupid, typeidwithvariationsset in \
-globalmap_marketgroupid_typeidwithvariations.items():
+list(globalmap_marketgroupid_typeidwithvariations.items()):
     for typeid in typeidwithvariationsset:
         if not typeid in globalmap_typeidwithvariations_marketgroupid:
             globalmap_typeidwithvariations_marketgroupid[typeid] = set()
@@ -423,12 +423,12 @@ for effect_name in effect_list:
         effectids = globalmap_effectnameeos_effectid[effect_name]
     else:
         if options.remove2:
-            print("Warning: effect file " + effect_name +
-              " exists but is not in database, removing")
+            print(("Warning: effect file " + effect_name +
+              " exists but is not in database, removing"))
             os.remove(os.path.join(effects_path, effect_file))
         else:
-            print("Warning: effect file " + effect_name +
-              " exists but is not in database")
+            print(("Warning: effect file " + effect_name +
+              " exists but is not in database"))
         continue
     for effectid in effectids:
         cursor.execute(QUERY_EFFECTID_TYPEID, (effectid,))
@@ -498,8 +498,8 @@ for effect_name in effect_list:
 
     stopdebugprints = False
     if DEBUG_LEVEL >= 1:
-        print("\nEffect:", effect_name)
-        print("Total items affected: {0}".format(pereffect_totalaffected))
+        print(("\nEffect:", effect_name))
+        print(("Total items affected: {0}".format(pereffect_totalaffected)))
 
     # Stage 2.2
     # This set holds all ids of already described items
@@ -554,18 +554,18 @@ for effect_name in effect_list:
                     if DEBUG_LEVEL == 1:
                         printstr = "Group: {0}: {1}/{2} ({3:.3}%, inner \
 score: {4:.3})"
-                        print(printstr.format(groupName,
+                        print((printstr.format(groupName,
                               affected_undescribed, total, coverage,
-                              groupscore[groupid]))
+                              groupscore[groupid])))
                     # If it's 2, print results for each
                     # iteration, so we need to include number
                     # of already described items
                     if DEBUG_LEVEL == 2:
                         printstr = "Group: {0}: {1}+{2}/{3} ({4:.3}%, \
 inner score: {5:.3})"
-                        print(printstr.format(groupName,
+                        print((printstr.format(groupName,
                               affected_undescribed, affected_decribed,
-                              total, coverage, groupscore[groupid]))
+                              total, coverage, groupscore[groupid])))
         # Calculate outer score for this grouping type
         groupouterscore = calc_outerscore(groupscore,
                                           pereffect_totalaffected,
@@ -573,7 +573,7 @@ inner score: {5:.3})"
         # Debug print for outer data
         if DEBUG_LEVEL >= 1 and not stopdebugprints:
             printstr = "Groups outer score: {0:.3}"
-            print(printstr.format(groupouterscore))
+            print((printstr.format(groupouterscore)))
 
         categoryscore = {}
         for categoryid in effectmap_categoryid_typeid:
@@ -598,21 +598,21 @@ inner score: {5:.3})"
                     if DEBUG_LEVEL == 1:
                         printstr = "Category: {0}: {1}/{2} ({3:.3}%, \
 inner score: {4:.3})"
-                        print(printstr.format(categoryname,
+                        print((printstr.format(categoryname,
                               affected_undescribed, total, coverage,
-                              categoryscore[categoryid]))
+                              categoryscore[categoryid])))
                     if DEBUG_LEVEL == 2:
                         printstr = "Category: {0}: {1}+{2}/{3} ({4:.3}%, \
 inner score: {5:.3})"
-                        print(printstr.format(categoryname,
+                        print((printstr.format(categoryname,
                               affected_undescribed, affected_decribed,
-                              total, coverage, categoryscore[categoryid]))
+                              total, coverage, categoryscore[categoryid])))
         categoryouterscore = calc_outerscore(categoryscore,
                                              pereffect_totalaffected,
                                              CATEGORY_WEIGHT)
         if DEBUG_LEVEL >= 1 and not stopdebugprints:
             printstr = "Category outer score: {0:.3}"
-            print(printstr.format(categoryouterscore))
+            print((printstr.format(categoryouterscore)))
 
         basetypescore = {}
         for basetypeid in effectmap_basetypeid_typeid:
@@ -636,22 +636,22 @@ inner score: {5:.3})"
                     if DEBUG_LEVEL == 1:
                         printstr = "Base item: {0}: {1}/{2} ({3:.3}%, \
 inner score: {4:.3})"
-                        print(printstr.format(basetypename,
+                        print((printstr.format(basetypename,
                               affected_undescribed, total, coverage,
-                              basetypescore[basetypeid]))
+                              basetypescore[basetypeid])))
                     if DEBUG_LEVEL == 2:
                         printstr = "Base item: {0}: {1}+{2}/{3} ({4:.3}%, \
 inner score: {5:.3})"
-                        print(printstr.format(basetypename,
+                        print((printstr.format(basetypename,
                               affected_undescribed, affected_decribed,
-                              total, coverage, basetypescore[basetypeid]))
+                              total, coverage, basetypescore[basetypeid])))
         basetypeouterscore = calc_outerscore(basetypescore,
                                              pereffect_totalaffected,
                                              BASETYPE_WEIGHT)
         #Print outer data
         if DEBUG_LEVEL >= 1 and not stopdebugprints:
             printstr = "Base item outer score: {0:.3}"
-            print(printstr.format(basetypeouterscore))
+            print((printstr.format(basetypeouterscore)))
 
         marketgroupwithvarsscore = {}
         for marketgroupid in effectmap_marketgroupid_typeidwithvars:
@@ -699,22 +699,22 @@ inner score: {5:.3})"
                     if DEBUG_LEVEL == 1:
                         printstr = "Market group with variations: {0}: \
 {1}/{2} ({3:.3}%, inner score: {4:.3})"
-                        print(printstr.format(marketgroupname,
+                        print((printstr.format(marketgroupname,
                               affected_undescribed, total, coverage,
-                              marketgroupwithvarsscore[marketgroupid]))
+                              marketgroupwithvarsscore[marketgroupid])))
                     if DEBUG_LEVEL == 2:
                         printstr = "Market group with variations: {0}: \
 {1}+{2}/{3} ({4:.3}%, inner score: {5:.3})"
-                        print(printstr.format(marketgroupname,
+                        print((printstr.format(marketgroupname,
                               affected_undescribed,
                               affected_decribed, total, coverage,
-                              marketgroupwithvarsscore[marketgroupid]))
+                              marketgroupwithvarsscore[marketgroupid])))
         marketgroupwithvarsouterscore = calc_outerscore\
         (marketgroupwithvarsscore, pereffect_totalaffected,
          MARKETGROUPWITHVARS_WEIGHT)
         if DEBUG_LEVEL >= 1 and not stopdebugprints:
             printstr = "Market group outer score: {0:.3}"
-            print(printstr.format(marketgroupwithvarsouterscore))
+            print((printstr.format(marketgroupwithvarsouterscore)))
 
         typenamecombscore = {}
         for typenamecombtuple in effectmap_typenamecombtuple_typeid:
@@ -756,22 +756,22 @@ inner score: {5:.3})"
                     if DEBUG_LEVEL == 1:
                         printstr = "Type name combination: \"{0}\": \
 {1}/{2} ({3:.3}%, inner score: {4:.3})"
-                        print(printstr.format(typenamecombprintable,
+                        print((printstr.format(typenamecombprintable,
                               affected_undescribed, total, coverage,
-                              typenamecombscore[typenamecombtuple]))
+                              typenamecombscore[typenamecombtuple])))
                     if DEBUG_LEVEL == 2:
                         printstr = "Type name combination: \"{0}\": \
 {1}+{2}/{3} ({4:.3}%, inner score: {5:.3})"
-                        print(printstr.format(typenamecombprintable,
+                        print((printstr.format(typenamecombprintable,
                               affected_undescribed, affected_decribed,
                               total, coverage,
-                              typenamecombscore[typenamecombtuple]))
+                              typenamecombscore[typenamecombtuple])))
         typenamecombouterscore = calc_outerscore(typenamecombscore,
                                                  pereffect_totalaffected,
                                                  TYPENAMECOMBS_WEIGHT)
         if DEBUG_LEVEL >= 1 and not stopdebugprints:
             printstr = "Type name combination outer score: {0:.3}"
-            print(printstr.format(typenamecombouterscore))
+            print((printstr.format(typenamecombouterscore)))
 
         # Don't print anything after 1st iteration at 1st debugging
         # level
@@ -805,7 +805,7 @@ inner score: {5:.3})"
                 effectmap_categoryid_typeid[categorywinner][1] = True
                 if DEBUG_LEVEL >= 2:
                     printstr = "Category winner: {0}"
-                    print(printstr.format(categorywinner))
+                    print((printstr.format(categorywinner)))
             elif maxouterscore == groupouterscore:
                 groupwinner = max(groupscore, key=groupscore.get)
                 describedbygroup.append(groupwinner)
@@ -814,7 +814,7 @@ inner score: {5:.3})"
                 effectmap_groupid_typeid[groupwinner][1] = True
                 if DEBUG_LEVEL >= 2:
                     printstr = "Group winner: {0}"
-                    print(printstr.format(groupwinner))
+                    print((printstr.format(groupwinner)))
             elif maxouterscore == typenamecombouterscore:
                 typenamecombwinner = max(typenamecombscore,
                                          key=typenamecombscore.get)
@@ -825,7 +825,7 @@ inner score: {5:.3})"
                 [1] = True
                 if DEBUG_LEVEL >= 2:
                     printstr = "Named like winner: {0}"
-                    print(printstr.format(typenamecombwinner))
+                    print((printstr.format(typenamecombwinner)))
             elif maxouterscore == marketgroupwithvarsouterscore:
                 marketgroupwithvarswinner = max(marketgroupwithvarsscore,
                 key=marketgroupwithvarsscore.get)
@@ -838,7 +838,7 @@ inner score: {5:.3})"
                 [marketgroupwithvarswinner][1] = True
                 if DEBUG_LEVEL >= 2:
                     printstr = "Market group with variations winner: {0}"
-                    print(printstr.format(marketgroupwithvarswinner))
+                    print((printstr.format(marketgroupwithvarswinner)))
             elif maxouterscore == basetypeouterscore:
                 basetypewinner = max(basetypescore, key=basetypescore.get)
                 describedbybasetype.append(basetypewinner)
@@ -847,7 +847,7 @@ inner score: {5:.3})"
                 effectmap_basetypeid_typeid[basetypewinner][1] = True
                 if DEBUG_LEVEL >= 2:
                     printstr = "Base item winner: {0}"
-                    print(printstr.format(basetypewinner))
+                    print((printstr.format(basetypewinner)))
         # Stop if we have score less than some critical value,
         # all undescribed items will be provided as plain list
         else:
@@ -865,13 +865,13 @@ inner score: {5:.3})"
     (effect_describedtypes)
     if DEBUG_LEVEL >= 1:
         print("Effect will be described by:")
-        print("Single item IDs:", singleitems)
-        print("Group IDs:", describedbygroup)
-        print("Category IDs:", describedbycategory)
-        print("Base item IDs:", describedbybasetype)
-        print("Market group with variations IDs:",
-              describedbymarketgroupwithvars)
-        print("Type name combinations:", describedbytypenamecomb)
+        print(("Single item IDs:", singleitems))
+        print(("Group IDs:", describedbygroup))
+        print(("Category IDs:", describedbycategory))
+        print(("Base item IDs:", describedbybasetype))
+        print(("Market group with variations IDs:",
+              describedbymarketgroupwithvars))
+        print(("Type name combinations:", describedbytypenamecomb))
 
     # Stage 2.1
     # Read effect file and split it into lines
@@ -1069,13 +1069,13 @@ inner score: {5:.3})"
     else:
         commentlines = ["# Not used by any item"]
         if options.remove:
-            print("Warning: effect file " + effect_name +
-              " is not used by any item, removing")
+            print(("Warning: effect file " + effect_name +
+              " is not used by any item, removing"))
             os.remove(os.path.join(effects_path, effect_file))
             continue
         else:
-            print("Warning: effect file " + effect_name +
-              " is not used by any item")
+            print(("Warning: effect file " + effect_name +
+              " is not used by any item"))
     # Combine "used by" comment lines and actual effect lines
     outputlines = commentlines + effectLines
     # Combine all lines into single string
@@ -1089,4 +1089,4 @@ inner score: {5:.3})"
         effectfile.close()
     elif DEBUG_LEVEL >= 2:
         print("Comment to write to file:")
-        print("\n".join(commentlines))
+        print(("\n".join(commentlines)))

@@ -62,11 +62,11 @@ class PortUser(IPortUser):
 def print_db_info():
     # Output debug info
     import eos
-    print
-    print "------------ data base connection info ------------"
-    print(eos.db.saveddata_engine)
-    print(eos.db.gamedata_engine)
-    print
+    print()
+    print("------------ data base connection info ------------")
+    print((eos.db.saveddata_engine))
+    print((eos.db.gamedata_engine))
+    print()
 
 
 # noinspection PyUnusedLocal
@@ -78,7 +78,7 @@ def test_import_xml(print_db_info):
     fits = None
     with open(os.path.join(script_dir, xml_file), "r") as file_:
         srcString = file_.read()
-        srcString = unicode(srcString, "utf-8")
+        srcString = str(srcString, "utf-8")
         #  (basestring, IPortUser, basestring) -> list[eos.saveddata.fit.Fit]
         usr.on_port_process_start()
         #stpw.reset()

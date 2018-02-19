@@ -15,10 +15,10 @@ from gui.display import Display
 import gui.globalEvents as GE
 
 from logbook import Logger
-pyfalog = Logger(__name__)
+import calendar
+from service.crest import Crest, CrestModes
 
-if 'wxMac' not in wx.PlatformInfo or ('wxMac' in wx.PlatformInfo and wx.VERSION >= (3, 0)):
-    from service.crest import Crest, CrestModes
+pyfalog = Logger(__name__)
 
 
 class CrestFittings(wx.Frame):
@@ -45,7 +45,7 @@ class CrestFittings(wx.Frame):
             characterSelectSizer.Add(self.charChoice, 1, wx.ALIGN_CENTER_VERTICAL | wx.ALL, 5)
             self.updateCharList()
 
-        self.fetchBtn = wx.Button(self, wx.ID_ANY, u"Fetch Fits", wx.DefaultPosition, wx.DefaultSize, 5)
+        self.fetchBtn = wx.Button(self, wx.ID_ANY, "Fetch Fits", wx.DefaultPosition, wx.DefaultSize, 5)
         characterSelectSizer.Add(self.fetchBtn, 0, wx.ALL, 5)
         mainSizer.Add(characterSelectSizer, 0, wx.EXPAND, 5)
 
@@ -64,8 +64,8 @@ class CrestFittings(wx.Frame):
         fitSizer.Add(self.fitView, 1, wx.ALL | wx.EXPAND, 5)
 
         btnSizer = wx.BoxSizer(wx.HORIZONTAL)
-        self.importBtn = wx.Button(self, wx.ID_ANY, u"Import to pyfa", wx.DefaultPosition, wx.DefaultSize, 5)
-        self.deleteBtn = wx.Button(self, wx.ID_ANY, u"Delete from EVE", wx.DefaultPosition, wx.DefaultSize, 5)
+        self.importBtn = wx.Button(self, wx.ID_ANY, "Import to pyfa", wx.DefaultPosition, wx.DefaultSize, 5)
+        self.deleteBtn = wx.Button(self, wx.ID_ANY, "Delete from EVE", wx.DefaultPosition, wx.DefaultSize, 5)
         btnSizer.Add(self.importBtn, 1, wx.ALL, 5)
         btnSizer.Add(self.deleteBtn, 1, wx.ALL, 5)
         fitSizer.Add(btnSizer, 0, wx.EXPAND)
@@ -112,7 +112,8 @@ class CrestFittings(wx.Frame):
 
     def updateCacheStatus(self, event):
         t = time.gmtime(self.cacheTime - time.time())
-        if t < 0:
+
+        if calendar.timegm(t) < 0:  # calendar.timegm gets seconds until time given
             self.cacheTimer.Stop()
         else:
             sTime = time.strftime("%H:%M:%S", t)
@@ -126,8 +127,9 @@ class CrestFittings(wx.Frame):
         event.Skip()  # continue event
 
     def OnClose(self, event):
-        self.mainFrame.Unbind(GE.EVT_SSO_LOGOUT, handler=self.ssoLogout)
-        self.mainFrame.Unbind(GE.EVT_SSO_LOGIN, handler=self.ssoLogin)
+        self.mainFrame.Unbind(GE.EVT_SSO_LOGOUT)
+        self.mainFrame.Unbind(GE.EVT_SSO_LOGIN)
+        self.cacheTimer.Stop()  # must be manually stopped, otherwise crash. See https://github.com/wxWidgets/Phoenix/issues/632
         event.Skip()
 
     def getActiveCharacter(self):
@@ -158,7 +160,7 @@ class CrestFittings(wx.Frame):
         selection = self.fitView.fitSelection
         if not selection:
             return
-        data = self.fitTree.fittingsTreeCtrl.GetPyData(selection)
+        data = self.fitTree.fittingsTreeCtrl.GetItemData(selection)
         sPort = Port.getInstance()
         fits = sPort.importFitFromBuffer(data)
         self.mainFrame._openAfterImport(fits)
@@ -168,7 +170,7 @@ class CrestFittings(wx.Frame):
         selection = self.fitView.fitSelection
         if not selection:
             return
-        data = json.loads(self.fitTree.fittingsTreeCtrl.GetPyData(selection))
+        data = json.loads(self.fitTree.fittingsTreeCtrl.GetItemData(selection))
 
         dlg = wx.MessageDialog(self,
                                "Do you really want to delete %s (%s) from EVE?" % (data['name'], data['ship']['name']),
@@ -207,7 +209,7 @@ class ExportToEve(wx.Frame):
             self.updateCharList()
             self.charChoice.SetSelection(0)
 
-        self.exportBtn = wx.Button(self, wx.ID_ANY, u"Export Fit", wx.DefaultPosition, wx.DefaultSize, 5)
+        self.exportBtn = wx.Button(self, wx.ID_ANY, "Export Fit", wx.DefaultPosition, wx.DefaultSize, 5)
         hSizer.Add(self.exportBtn, 0, wx.ALL, 5)
 
         mainSizer.Add(hSizer, 0, wx.EXPAND, 5)
@@ -222,7 +224,7 @@ class ExportToEve(wx.Frame):
         self.mainFrame.Bind(GE.EVT_SSO_LOGIN, self.ssoLogin)
         self.Bind(wx.EVT_CLOSE, self.OnClose)
 
-        self.SetSizer(hSizer)
+        self.SetSizer(mainSizer)
         self.SetStatusBar(self.statusbar)
         self.Layout()
 
@@ -253,8 +255,8 @@ class ExportToEve(wx.Frame):
         event.Skip()  # continue event
 
     def OnClose(self, event):
-        self.mainFrame.Unbind(GE.EVT_SSO_LOGOUT, handler=self.ssoLogout)
-        self.mainFrame.Unbind(GE.EVT_SSO_LOGIN, handler=self.ssoLogin)
+        self.mainFrame.Unbind(GE.EVT_SSO_LOGOUT)
+        self.mainFrame.Unbind(GE.EVT_SSO_LOGIN)
 
         event.Skip()
 
@@ -316,10 +318,10 @@ class CrestMgmt(wx.Dialog):
 
         btnSizer = wx.BoxSizer(wx.VERTICAL)
 
-        self.addBtn = wx.Button(self, wx.ID_ANY, u"Add Character", wx.DefaultPosition, wx.DefaultSize, 0)
+        self.addBtn = wx.Button(self, wx.ID_ANY, "Add Character", wx.DefaultPosition, wx.DefaultSize, 0)
         btnSizer.Add(self.addBtn, 0, wx.ALL | wx.EXPAND, 5)
 
-        self.deleteBtn = wx.Button(self, wx.ID_ANY, u"Revoke Character", wx.DefaultPosition, wx.DefaultSize, 0)
+        self.deleteBtn = wx.Button(self, wx.ID_ANY, "Revoke Character", wx.DefaultPosition, wx.DefaultSize, 0)
         btnSizer.Add(self.deleteBtn, 0, wx.ALL | wx.EXPAND, 5)
 
         mainSizer.Add(btnSizer, 0, wx.EXPAND, 5)
@@ -345,7 +347,7 @@ class CrestMgmt(wx.Dialog):
         self.lcCharacters.DeleteAllItems()
 
         for index, char in enumerate(chars):
-            self.lcCharacters.InsertStringItem(index, char.name)
+            self.lcCharacters.InsertItem(index, char.name)
             self.lcCharacters.SetStringItem(index, 1, char.refresh_token)
             self.lcCharacters.SetItemData(index, char.ID)
 
@@ -399,17 +401,17 @@ class FittingsTreeView(wx.Panel):
                 dict[fit['ship']['name']] = []
             dict[fit['ship']['name']].append(fit)
 
-        for name, fits in dict.iteritems():
+        for name, fits in dict.items():
             shipID = tree.AppendItem(root, name)
             for fit in fits:
                 fitId = tree.AppendItem(shipID, fit['name'])
-                tree.SetPyData(fitId, json.dumps(fit))
+                tree.SetItemData(fitId, json.dumps(fit))
 
         tree.SortChildren(root)
 
     def displayFit(self, event):
         selection = self.fittingsTreeCtrl.GetSelection()
-        data = self.fittingsTreeCtrl.GetPyData(selection)
+        data = self.fittingsTreeCtrl.GetItemData(selection)
 
         if data is None:
             event.Skip()

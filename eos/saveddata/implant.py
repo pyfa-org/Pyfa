@@ -93,7 +93,7 @@ class Implant(HandledItem, ItemAttrShortcut):
             return
         if not self.active:
             return
-        for effect in self.item.effects.itervalues():
+        for effect in self.item.effects.values():
             if effect.runTime == runTime and effect.isType("passive") and effect.activeByDefault:
                 effect.handler(fit, self, ("implant",))
 

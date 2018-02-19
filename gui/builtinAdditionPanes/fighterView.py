@@ -32,12 +32,12 @@ from service.fit import Fit
 from service.market import Market
 
 
-class FighterViewDrop(wx.PyDropTarget):
+class FighterViewDrop(wx.DropTarget):
     def __init__(self, dropFn, *args, **kwargs):
         super(FighterViewDrop, self).__init__(*args, **kwargs)
         self.dropFn = dropFn
         # this is really transferring an EVE itemID
-        self.dropData = wx.PyTextDataObject()
+        self.dropData = wx.TextDataObject()
         self.SetDataObject(self.dropData)
 
     def OnData(self, x, y, t):
@@ -60,7 +60,7 @@ class FighterView(wx.Panel):
         mainSizer.Add(self.fighterDisplay, 1, wx.EXPAND, 0)
 
         textSizer = wx.BoxSizer(wx.HORIZONTAL)
-        textSizer.AddSpacer((0, 0), 1, wx.EXPAND, 5)
+        textSizer.AddStretchSpacer()
 
         for x in self.labels:
             lbl = wx.StaticText(self, wx.ID_ANY, x.capitalize())
@@ -75,7 +75,7 @@ class FighterView(wx.Panel):
             lbl = wx.StaticText(self, wx.ID_ANY, "0")
             setattr(self, "label%sTotal" % (x.capitalize()), lbl)
             textSizer.Add(lbl, 0, wx.ALIGN_CENTER)
-            textSizer.AddSpacer((0, 0), 1, wx.EXPAND, 5)
+            textSizer.AddStretchSpacer()
 
         mainSizer.Add(textSizer, 0, wx.EXPAND, 5)
 
@@ -97,7 +97,7 @@ class FighterView(wx.Panel):
                     slot = getattr(Slot, "F_{}".format(x.upper()))
                 used = fit.getSlotsUsed(slot)
                 total = fit.getNumSlots(slot)
-                color = wx.Colour(204, 51, 51) if used > total else wx.SystemSettings_GetColour(
+                color = wx.Colour(204, 51, 51) if used > total else wx.SystemSettings.GetColour(
                     wx.SYS_COLOUR_WINDOWTEXT)
 
                 lbl = getattr(self, "label%sUsed" % x.capitalize())
@@ -109,6 +109,8 @@ class FighterView(wx.Panel):
                 lbl.SetForegroundColour(color)
 
             self.Refresh()
+
+        event.Skip()
 
 
 class FighterDisplay(d.Display):
@@ -166,7 +168,7 @@ class FighterDisplay(d.Display):
                     if self.DEFAULT_COLS[col] == "Miscellanea":
                         tooltip = self.activeColumns[col].getToolTip(mod)
                         if tooltip is not None:
-                            self.SetToolTipString(tooltip)
+                            self.SetToolTip(tooltip)
                         else:
                             self.SetToolTip(None)
                     else:
@@ -188,7 +190,7 @@ class FighterDisplay(d.Display):
     def startDrag(self, event):
         row = event.GetIndex()
         if row != -1:
-            data = wx.PyTextDataObject()
+            data = wx.TextDataObject()
             dataStr = "fighter:" + str(row)
             data.SetText(dataStr)
 

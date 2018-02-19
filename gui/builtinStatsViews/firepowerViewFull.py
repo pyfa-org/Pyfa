@@ -21,7 +21,7 @@
 import wx
 import gui.mainFrame
 from gui.statsView import StatsView
-from gui.bitmapLoader import BitmapLoader
+from gui.bitmap_loader import BitmapLoader
 from gui.utils.numberFormatter import formatAmount
 from service.fit import Fit
 
@@ -53,7 +53,7 @@ class FirepowerViewFull(StatsView):
 
         panel = "full"
 
-        sizerFirepower = wx.FlexGridSizer(1, 4)
+        sizerFirepower = wx.FlexGridSizer(1, 4, 0, 0)
         sizerFirepower.AddGrowableCol(1)
 
         contentSizer.Add(sizerFirepower, 0, wx.EXPAND, 0)
@@ -128,8 +128,8 @@ class FirepowerViewFull(StatsView):
 
         # Remove effective label
         hsizer = self.headerPanel.GetSizer()
-        hsizer.Remove(self.stEff)
-        self.stEff.Destroy()
+        hsizer.Hide(self.stEff)
+        #self.stEff.Destroy()
 
         # Get the new view
         view = StatsView.getView("miningyieldViewFull")(self.parent)

@@ -3,7 +3,7 @@ import shutil
 import time
 
 import config
-import migrations
+from . import migrations
 
 pyfalog = Logger(__name__)
 
@@ -34,7 +34,7 @@ def update(saveddata_engine):
 
         shutil.copyfile(config.saveDB, toFile)
 
-        for version in xrange(dbVersion, appVersion):
+        for version in range(dbVersion, appVersion):
             func = migrations.updates[version + 1]
             if func:
                 pyfalog.info("Applying database update: {0}", version + 1)

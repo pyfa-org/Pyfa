@@ -23,7 +23,7 @@ import sys
 import re
 
 # Add eos root path to sys.path so we can import ourselves
-path = os.path.dirname(unicode(__file__, sys.getfilesystemencoding()))
+path = os.path.dirname(str(__file__, sys.getfilesystemencoding()))
 sys.path.append(os.path.realpath(os.path.join(path, "..")))
 
 import json
@@ -105,7 +105,7 @@ def main(db, json_path):
 
     def convertIcons(data):
         new = []
-        for k, v in data.items():
+        for k, v in list(data.items()):
             v["iconID"] = k
             new.append(v)
         return new
@@ -144,13 +144,13 @@ def main(db, json_path):
 
         def convertSection(sectionData):
             sectionLines = []
-            headerText = u"<b>{}</b>".format(sectionData["header"])
+            headerText = "<b>{}</b>".format(sectionData["header"])
             sectionLines.append(headerText)
             for bonusData in sectionData["bonuses"]:
-                prefix = u"{} ".format(bonusData["number"]) if "number" in bonusData else ""
-                bonusText = u"{}{}".format(prefix, bonusData["text"].replace(u"\u00B7", u"\u2022 "))
+                prefix = "{} ".format(bonusData["number"]) if "number" in bonusData else ""
+                bonusText = "{}{}".format(prefix, bonusData["text"].replace("\u00B7", "\u2022 "))
                 sectionLines.append(bonusText)
-            sectionLine = u"<br />\n".join(sectionLines)
+            sectionLine = "<br />\n".join(sectionLines)
             return sectionLine
 
         newData = []
@@ -164,7 +164,7 @@ def main(db, json_path):
                 typeLines.append(convertSection(traitData["role"]))
             if "misc" in traitData:
                 typeLines.append(convertSection(traitData["misc"]))
-            traitLine = u"<br />\n<br />\n".join(typeLines)
+            traitLine = "<br />\n<br />\n".join(typeLines)
             newRow = {"typeID": typeId, "traitText": traitLine}
             newData.append(newRow)
         return newData
@@ -176,7 +176,7 @@ def main(db, json_path):
         factionMap = {}
         with open(os.path.join(jsonPath, "fsdTypeOverrides.json")) as f:
             overridesData = json.load(f)
-        for typeID, typeData in overridesData.items():
+        for typeID, typeData in list(overridesData.items()):
             factionID = typeData.get("factionID")
             if factionID is not None:
                 factionMap[int(typeID)] = factionID
@@ -187,7 +187,7 @@ def main(db, json_path):
     data = {}
 
     # Dump all data to memory so we can easely cross check ignored rows
-    for jsonName, cls in tables.iteritems():
+    for jsonName, cls in tables.items():
         with open(os.path.join(jsonPath, "{}.json".format(jsonName))) as f:
             tableData = json.load(f)
         if jsonName in rowsInValues:
@@ -221,11 +221,11 @@ def main(db, json_path):
         return False
 
     # Loop through each json file and write it away, checking ignored rows
-    for jsonName, table in data.iteritems():
+    for jsonName, table in data.items():
         fieldMap = fieldMapping.get(jsonName, {})
         tmp = []
 
-        print "processing {}".format(jsonName)
+        print("processing {}".format(jsonName))
 
         for row in table:
             # We don't care about some kind of rows, filter it out if so
@@ -253,8 +253,8 @@ def main(db, json_path):
                         eos.db.gamedata_session.add(cloneParent)
                         tmp.append(row['alphaCloneID'])
 
-                for k, v in row.iteritems():
-                    if (isinstance(v, basestring)):
+                for k, v in row.items():
+                    if (isinstance(v, str)):
                         v = v.strip()
                     setattr(instance, fieldMap.get(k, k), v)
 

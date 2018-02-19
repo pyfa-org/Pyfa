@@ -71,9 +71,9 @@ class BaseName(ViewColumn):
         elif isinstance(stuff, Rack):
             if FitSvc.getInstance().serviceFittingOptions["rackLabels"]:
                 if stuff.slot == Slot.MODE:
-                    return u'─ Tactical Mode ─'
+                    return '─ Tactical Mode ─'
                 else:
-                    return u'─ {} Slots ─'.format(Slot.getName(stuff.slot).capitalize())
+                    return '─ {} Slots ─'.format(Slot.getName(stuff.slot).capitalize())
             else:
                 return ""
         elif isinstance(stuff, Module):
@@ -91,7 +91,7 @@ class BaseName(ViewColumn):
 
                 if marketShortcut:
                     # use unicode subscript to display shortcut value
-                    shortcut = unichr(marketShortcut + 8320) + u" "
+                    shortcut = chr(marketShortcut + 8320) + " "
                     del item.marketShortcut
                     return shortcut + item.name
 

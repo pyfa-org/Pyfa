@@ -1,7 +1,8 @@
 import os
 import sys
 
-from logbook import Logger
+from logbook import CRITICAL, DEBUG, ERROR, FingersCrossedHandler, INFO, Logger, NestedSetup, NullHandler, \
+    StreamHandler, TimedRotatingFileHandler, WARNING
 
 pyfalog = Logger(__name__)
 
@@ -19,8 +20,8 @@ debug = False
 saveInRoot = False
 
 # Version data
-version = "1.35.1"
-tag = "Stable"
+version = "2.0.0b3"
+tag = "git"
 expansionName = "YC120.2"
 expansionVersion = "1.2"
 evemonMinVersion = "4081"
@@ -30,6 +31,16 @@ savePath = None
 saveDB = None
 gameDB = None
 logPath = None
+loggingLevel = None
+logging_setup = None
+
+LOGLEVEL_MAP = {
+    "critical": CRITICAL,
+    "error": ERROR,
+    "warning": WARNING,
+    "info": INFO,
+    "debug": DEBUG,
+}
 
 
 def isFrozen():
@@ -45,23 +56,35 @@ def __createDirs(path):
 
 
 def getPyfaRoot():
-    base = getattr(sys.modules['__main__'], "__file__", sys.executable) if isFrozen() else sys.argv[0]
+    if hasattr(sys, '_MEIPASS'):
+        return sys._MEIPASS
+    base = getattr(sys.modules['__main__'], "__file__", sys.executable) if isFrozen() else __file__
     root = os.path.dirname(os.path.realpath(os.path.abspath(base)))
-    root = unicode(root, sys.getfilesystemencoding())
+    root = root
     return root
 
 
+def getVersion():
+    if os.path.isfile(os.path.join(pyfaPath, '.version')):
+        with open(os.path.join(pyfaPath, '.version')) as f:
+            gitVersion = f.readline()
+        return gitVersion
+    # if no version file exists, then user is running from source or not an official build
+    return version + " (git)"
+
+
 def getDefaultSave():
-    return unicode(os.path.expanduser(os.path.join("~", ".pyfa")), sys.getfilesystemencoding())
+    return os.path.expanduser(os.path.join("~", ".pyfa"))
 
 
-def defPaths(customSavePath):
+def defPaths(customSavePath=None):
     global debug
     global pyfaPath
     global savePath
     global saveDB
     global gameDB
     global saveInRoot
+    global logPath
 
     pyfalog.debug("Configuring Pyfa")
 
@@ -86,12 +109,12 @@ def defPaths(customSavePath):
 
     __createDirs(savePath)
 
-    if isFrozen():
-        os.environ["REQUESTS_CA_BUNDLE"] = os.path.join(pyfaPath, "cacert.pem").encode('utf8')
-        os.environ["SSL_CERT_FILE"] = os.path.join(pyfaPath, "cacert.pem").encode('utf8')
+    # if isFrozen():
+    #    os.environ["REQUESTS_CA_BUNDLE"] = os.path.join(pyfaPath, "cacert.pem")
+    #    os.environ["SSL_CERT_FILE"] = os.path.join(pyfaPath, "cacert.pem")
 
     # The database where we store all the fits etc
-    saveDB = os.path.join(savePath, "saveddata.db")
+    saveDB = os.path.join(savePath, "saveddata-py3-dev.db")
 
     # The database where the static EVE data from the datadump is kept.
     # This is not the standard sqlite datadump but a modified version created by eos
@@ -99,6 +122,13 @@ def defPaths(customSavePath):
     gameDB = getattr(configforced, "gameDB", gameDB)
     if not gameDB:
         gameDB = os.path.join(pyfaPath, "eve.db")
+
+    if debug:
+        logFile = "pyfa_debug.log"
+    else:
+        logFile = "pyfa.log"
+
+    logPath = os.path.join(savePath, logFile)
 
     # DON'T MODIFY ANYTHING BELOW
     import eos.config
@@ -109,6 +139,100 @@ def defPaths(customSavePath):
     eos.config.saveddata_connectionstring = "sqlite:///" + saveDB + "?check_same_thread=False"
     eos.config.gamedata_connectionstring = "sqlite:///" + gameDB + "?check_same_thread=False"
 
+    print(eos.config.saveddata_connectionstring)
+    print(eos.config.gamedata_connectionstring)
+
     # initialize the settings
     from service.settings import EOSSettings
     eos.config.settings = EOSSettings.getInstance().EOSSettings  # this is kind of confusing, but whatever
+
+
+def defLogging():
+    global debug
+    global logPath
+    global loggingLevel
+    global logging_setup
+
+    try:
+        if debug:
+            logging_setup = NestedSetup([
+                # make sure we never bubble up to the stderr handler
+                # if we run out of setup handling
+                NullHandler(),
+                StreamHandler(
+                        sys.stdout,
+                        bubble=False,
+                        level=loggingLevel
+                ),
+                TimedRotatingFileHandler(
+                        logPath,
+                        level=0,
+                        backup_count=3,
+                        bubble=True,
+                        date_format='%Y-%m-%d',
+                ),
+            ])
+        else:
+            logging_setup = NestedSetup([
+                # make sure we never bubble up to the stderr handler
+                # if we run out of setup handling
+                NullHandler(),
+                FingersCrossedHandler(
+                        TimedRotatingFileHandler(
+                                logPath,
+                                level=0,
+                                backup_count=3,
+                                bubble=False,
+                                date_format='%Y-%m-%d',
+                        ),
+                        action_level=ERROR,
+                        buffer_size=1000,
+                        # pull_information=True,
+                        # reset=False,
+                )
+            ])
+    except:
+        print("Critical error attempting to setup logging. Falling back to console only.")
+        logging_setup = NestedSetup([
+            # make sure we never bubble up to the stderr handler
+            # if we run out of setup handling
+            NullHandler(),
+            StreamHandler(
+                    sys.stdout,
+                    bubble=False
+            )
+        ])
+
+    with logging_setup.threadbound():
+
+        # Output all stdout (print) messages as warnings
+        try:
+            sys.stdout = LoggerWriter(pyfalog.warning)
+        except:
+            pyfalog.critical("Cannot redirect.  Continuing without writing stdout to log.")
+
+        # Output all stderr (stacktrace) messages as critical
+        try:
+            sys.stderr = LoggerWriter(pyfalog.critical)
+        except:
+            pyfalog.critical("Cannot redirect.  Continuing without writing stderr to log.")
+
+
+class LoggerWriter(object):
+    def __init__(self, level):
+        # self.level is really like using log.debug(message)
+        # at least in my case
+        self.level = level
+
+    def write(self, message):
+        # if statement reduces the amount of newlines that are
+        # printed to the logger
+        if message.strip() != '':
+            self.level(message.replace("\n", ""))
+
+    def flush(self):
+        # create a flush method so things can be flushed when
+        # the system wants to. Not sure if simply 'printing'
+        # sys.stderr is the correct way to do it, but it seemed
+        # to work properly for me.
+        self.level(sys.stderr)

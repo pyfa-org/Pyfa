@@ -17,9 +17,10 @@
 # along with pyfa.  If not, see <http://www.gnu.org/licenses/>.
 # =============================================================================
 
-import cStringIO
+import io
 import os.path
 import zipfile
+from collections import OrderedDict
 
 # noinspection PyPackageRequirements
 import wx
@@ -29,23 +30,18 @@ import config
 from logbook import Logger
 logging = Logger(__name__)
 
-try:
-    from collections import OrderedDict
-except ImportError:
-    from utils.compat import OrderedDict
-
 
 class BitmapLoader(object):
     try:
         archive = zipfile.ZipFile(os.path.join(config.pyfaPath, 'imgs.zip'), 'r')
         logging.info("Using zipped image files.")
-    except IOError:
+    except (IOError, TypeError):
         logging.info("Using local image files.")
         archive = None
 
-    cachedBitmaps = OrderedDict()
-    dontUseCachedBitmaps = False
-    max_bmps = 500
+    cached_bitmaps = OrderedDict()
+    dont_use_cached_bitmaps = False
+    max_cached_bitmaps = 500
 
     @classmethod
     def getStaticBitmap(cls, name, parent, location):
@@ -55,25 +51,25 @@ class BitmapLoader(object):
 
     @classmethod
     def getBitmap(cls, name, location):
-        if cls.dontUseCachedBitmaps:
+        if cls.dont_use_cached_bitmaps:
             img = cls.getImage(name, location)
             if img is not None:
                 return img.ConvertToBitmap()
 
         path = "%s%s" % (name, location)
 
-        if len(cls.cachedBitmaps) == cls.max_bmps:
-            cls.cachedBitmaps.popitem(False)
+        if len(cls.cached_bitmaps) == cls.max_cached_bitmaps:
+            cls.cached_bitmaps.popitem(False)
 
-        if path not in cls.cachedBitmaps:
+        if path not in cls.cached_bitmaps:
             img = cls.getImage(name, location)
             if img is not None:
                 bmp = img.ConvertToBitmap()
             else:
                 bmp = None
-            cls.cachedBitmaps[path] = bmp
+            cls.cached_bitmaps[path] = bmp
         else:
-            bmp = cls.cachedBitmaps[path]
+            bmp = cls.cached_bitmaps[path]
 
         return bmp
 
@@ -88,14 +84,14 @@ class BitmapLoader(object):
 
             try:
                 img_data = cls.archive.read(path)
-                sbuf = cStringIO.StringIO(img_data)
+                sbuf = io.StringIO(img_data)
                 return wx.ImageFromStream(sbuf)
             except KeyError:
-                print("Missing icon file from zip: {0}".format(path))
+                print(("Missing icon file from zip: {0}".format(path)))
         else:
             path = os.path.join(config.pyfaPath, 'imgs' + os.sep + location + os.sep + filename)
 
             if os.path.exists(path):
                 return wx.Image(path)
             else:
-                print("Missing icon file: {0}".format(path))
+                print(("Missing icon file: {0}".format(path)))

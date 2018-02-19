@@ -22,7 +22,7 @@ import threading
 from sqlalchemy import MetaData, create_engine
 from sqlalchemy.orm import sessionmaker
 
-import migration
+from . import migration
 from eos import config
 from logbook import Logger
 

@@ -2,7 +2,7 @@
 import wx
 
 from gui.preferenceView import PreferenceView
-from gui.bitmapLoader import BitmapLoader
+from gui.bitmap_loader import BitmapLoader
 from service.settings import StatViewSettings
 
 
@@ -27,7 +27,7 @@ class PFStatViewPref(PreferenceView):
         mainSizer.Add(self.stTitle, 0, wx.ALL, 5)
 
         self.stSubTitle = wx.StaticText(panel, wx.ID_ANY,
-                                        u"Changes require restart of pyfa to take effect.",
+                                        "Changes require restart of pyfa to take effect.",
                                         wx.DefaultPosition, wx.DefaultSize, 0)
         self.stSubTitle.Wrap(-1)
         mainSizer.Add(self.stSubTitle, 0, wx.ALL, 3)

@@ -39,7 +39,7 @@ class BoosterSideEffect(object):
         self.__effect = None
 
         if self.effectID:
-            self.__effect = next((x for x in self.booster.item.effects.itervalues() if x.ID == self.effectID), None)
+            self.__effect = next((x for x in self.booster.item.effects.values() if x.ID == self.effectID), None)
             if self.__effect is None:
                 pyfalog.error("Effect (id: {0}) does not exist", self.effectID)
                 return

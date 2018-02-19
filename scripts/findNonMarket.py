@@ -5,7 +5,7 @@ import os.path
 import re
 import sqlite3
 
-script_dir = os.path.dirname(unicode(__file__, sys.getfilesystemencoding()))
+script_dir = os.path.dirname(str(__file__, sys.getfilesystemencoding()))
 
 # Connect to database and set up cursor
 db = sqlite3.connect(os.path.join(script_dir, "..", "eve.db"))
@@ -156,7 +156,7 @@ for marketgroupid in INITIALMARKETGROUPIDS:
             (globalmap_marketgroupid_typeid[marketgroupid])
         else: break
 # Now, make a reverse map
-for marketgroupid, typeidset in globalmap_marketgroupid_typeid.items():
+for marketgroupid, typeidset in list(globalmap_marketgroupid_typeid.items()):
     for typeid in typeidset:
         if not typeid in globalmap_typeid_marketgroupid:
             globalmap_typeid_marketgroupid[typeid] = set()
@@ -181,7 +181,7 @@ for marketgroupid in globalmap_marketgroupid_typeidwithvariations:
     (typestoadd)
 # Make reverse map using simple way too
 for marketgroupid, typeidwithvariationsset in \
-globalmap_marketgroupid_typeidwithvariations.items():
+list(globalmap_marketgroupid_typeidwithvariations.items()):
     for typeid in typeidwithvariationsset:
         if not typeid in globalmap_typeidwithvariations_marketgroupid:
             globalmap_typeidwithvariations_marketgroupid[typeid] = set()
@@ -310,7 +310,7 @@ def suggestMktGrp(typeid, mode="grp"):
                 similarity_factor *= 0.01
         mktgrps_w_cos[marketgroupid] += similarity_factor
     if mktgrps_w_cos:
-        winner = max(mktgrps_w_cos.keys(), key=lambda k: mktgrps_w_cos[k])
+        winner = max(list(mktgrps_w_cos.keys()), key=lambda k: mktgrps_w_cos[k])
     else:
         winner = None
     return winner
@@ -429,4 +429,4 @@ for typeid in nonmarket:
     #print("---\nItem: {0}\nGroup: {1}\nSuggested market group: {2} ({3})\nMeta group: {4}".format(typename, grpname, marketgroupname, mkt, metagroupname))
 
 #print("\n\nmap = {{ {0} }}".format(", ".join("{0}: ({1}, {2})".format(key, map_typeid_stuff[key][0], map_typeid_stuff[key][1]) for key in sorted(map_typeid_stuff))))
-print("---\n{0}".format("\n".join("\"{0}\": {1}, # {2}".format(key, map_typeid_stuff2[key][0], map_typeid_stuff2[key][1]) for key in sorted(map_typeid_stuff2))))
+print(("---\n{0}".format("\n".join("\"{0}\": {1}, # {2}".format(key, map_typeid_stuff2[key][0], map_typeid_stuff2[key][1]) for key in sorted(map_typeid_stuff2)))))

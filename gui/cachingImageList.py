@@ -20,7 +20,7 @@
 
 # noinspection PyPackageRequirements
 import wx
-from gui.bitmapLoader import BitmapLoader
+from gui.bitmap_loader import BitmapLoader
 
 
 class CachingImageList(wx.ImageList):
