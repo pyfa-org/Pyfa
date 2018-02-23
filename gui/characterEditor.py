@@ -42,7 +42,7 @@ from wx.lib.agw.floatspin import FloatSpin
 
 from gui.utils.clipboard import toClipboard, fromClipboard
 
-import utils.roman as roman
+import roman
 import re
 
 pyfalog = Logger(__name__)
