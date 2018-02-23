@@ -38,7 +38,7 @@ from logbook import Logger
 
 from gui.utils.clipboard import toClipboard, fromClipboard
 
-import roman
+import utils.roman as roman
 import re
 
 pyfalog = Logger(__name__)
