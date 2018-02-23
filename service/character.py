@@ -115,6 +115,7 @@ class SkillBackupThread(threading.Thread):
     def run(self):
         path = self.path
         sCharacter = Character.getInstance()
+
         if self.saveFmt == "xml" or self.saveFmt == "emp":
             backupData = sCharacter.exportXml()
         else:
@@ -122,13 +123,12 @@ class SkillBackupThread(threading.Thread):
 
         if self.saveFmt == "emp":
             with gzip.open(path, mode='wb') as backupFile:
-                backupFile.write(backupData)
+                backupFile.write(backupData.encode())
         else:
             with open(path, mode='w', encoding='utf-8') as backupFile:
                 backupFile.write(backupData)
 
         wx.CallAfter(self.callback)
-
 
 class Character(object):
     instance = None
