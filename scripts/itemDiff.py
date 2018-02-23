@@ -208,7 +208,7 @@ def main(old, new, groups=True, effects=True, attributes=True, renames=True):
 
         for cursor, dictionary in ((old_cursor, old_itmdata), (new_cursor, new_itmdata)):
             # Compose list of items we're interested in, filtered by category
-            query = 'SELECT it.typeID, it.groupID FROM invtypes AS it INNER JOIN invgroups AS ig ON it.groupID = ig.groupID INNER JOIN invcategories AS ic ON ig.categoryID = ic.categoryID WHERE it.published = 1 AND ic.categoryName IN ("Ship", "Module", "Charge", "Skill", "Drone", "Implant", "Subsystem")'
+            query = 'SELECT it.typeID, it.groupID FROM invtypes AS it INNER JOIN invgroups AS ig ON it.groupID = ig.groupID INNER JOIN invcategories AS ic ON ig.categoryID = ic.categoryID WHERE it.published = 1 AND ic.categoryName IN ("Ship", "Module", "Charge", "Skill", "Drone", "Implant", "Subsystem", "Structure", "Structure Module", "Fighter")'
             cursor.execute(query)
             for row in cursor:
                 itemid = row[0]

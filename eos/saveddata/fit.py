@@ -917,7 +917,7 @@ class Fit(object):
 
         for mod in chain(self.modules, self.fighters):
             if mod.slot is type and (not getattr(mod, "isEmpty", False) or countDummies):
-                if type in (Slot.F_HEAVY, Slot.F_SUPPORT, Slot.F_LIGHT) and not mod.active:
+                if type in (Slot.F_HEAVY, Slot.F_SUPPORT, Slot.F_LIGHT, Slot.FS_HEAVY, Slot.FS_LIGHT, Slot.FS_SUPPORT) and not mod.active:
                     continue
                 amount += 1
 
@@ -932,7 +932,10 @@ class Fit(object):
         Slot.SERVICE  : "serviceSlots",
         Slot.F_LIGHT  : "fighterLightSlots",
         Slot.F_SUPPORT: "fighterSupportSlots",
-        Slot.F_HEAVY  : "fighterHeavySlots"
+        Slot.F_HEAVY  : "fighterHeavySlots",
+        Slot.FS_LIGHT: "fighterStandupLightSlots",
+        Slot.FS_SUPPORT: "fighterStandupSupportSlots",
+        Slot.FS_HEAVY: "fighterStandupHeavySlots",
     }
 
     def getSlotsFree(self, type, countDummies=False):

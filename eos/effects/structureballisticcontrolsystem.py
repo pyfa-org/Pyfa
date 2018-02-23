@@ -11,7 +11,7 @@ def handler(fit, module, context):
                                            module.getModifiedItemAttr("missileDamageMultiplierBonus"),
                                            stackingPenalties=True)
 
-    launcherGroups = ("Structure AXL Missile Launcher", "Structure ASML Missile Launcher")
+    launcherGroups = ("Structure XL Missile Launcher", "Structure Multirole Missile Launcher")
     fit.modules.filteredItemMultiply(lambda mod: mod.item.group.name in launcherGroups,
                                      "speed", module.getModifiedItemAttr("speedMultiplier"),
                                      stackingPenalties=True)
