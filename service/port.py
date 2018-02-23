@@ -264,7 +264,7 @@ class Port(object):
         fits are processed as well as when fits are being saved.
         returns
         """
-        defcodepage = locale.getpreferredencoding()
+
         sFit = svcFit.getInstance()
 
         fit_list = []
@@ -276,63 +276,15 @@ class Port(object):
                     PortProcessing.notify(iportuser, IPortUser.PROCESS_IMPORT | IPortUser.ID_UPDATE, msg)
                     # wx.CallAfter(callback, 1, msg)
 
-                with open(path, "r") as file_:
+                with open(path, "r", encoding='utf-8') as file_:
                     srcString = file_.read()
 
                 if len(srcString) == 0:  # ignore blank files
                     pyfalog.debug("File is blank.")
                     continue
 
-                codec_found = None
-                # If file had ANSI encoding, decode it to unicode using detection
-                # of BOM header or if there is no header try default
-                # codepage then fallback to utf-16, cp1252
-
-                if isinstance(srcString, str):
-                    savebom = None
-
-                    encoding_map = (
-                        ('\xef\xbb\xbf', 'utf-8'),
-                        ('\xff\xfe\0\0', 'utf-32'),
-                        ('\0\0\xfe\xff', 'UTF-32BE'),
-                        ('\xff\xfe', 'utf-16'),
-                        ('\xfe\xff', 'UTF-16BE'))
-
-                    for bom, encoding in encoding_map:
-                        if srcString.startswith(bom):
-                            codec_found = encoding
-                            savebom = bom
-
-                    if codec_found is None:
-                        pyfalog.info("Unicode BOM not found in file {0}.", path)
-                        attempt_codecs = (defcodepage, "utf-8", "utf-16", "cp1252")
-
-                        for page in attempt_codecs:
-                            try:
-                                pyfalog.info("Attempting to decode file {0} using {1} page.", path, page)
-                                srcString = str(srcString, page)
-                                codec_found = page
-                                pyfalog.info("File {0} decoded using {1} page.", path, page)
-                            except UnicodeDecodeError:
-                                pyfalog.info("Error unicode decoding {0} from page {1}, trying next codec", path, page)
-                            else:
-                                break
-                    else:
-                        pyfalog.info("Unicode BOM detected in {0}, using {1} page.", path, codec_found)
-                        srcString = str(srcString[len(savebom):], codec_found)
-
-                else:
-                    # nasty hack to detect other transparent utf-16 loading
-                    if srcString[0] == '<' and 'utf-16' in srcString[:128].lower():
-                        codec_found = "utf-16"
-                    else:
-                        codec_found = "utf-8"
-
-                if codec_found is None:
-                    return False, "Proper codec could not be established for %s" % path
-
                 try:
-                    _, fitsImport = Port.importAuto(srcString, path, iportuser=iportuser, encoding=codec_found)
+                    _, fitsImport = Port.importAuto(srcString, path, iportuser=iportuser)
                     fit_list += fitsImport
                 except xml.parsers.expat.ExpatError:
                     pyfalog.warning("Malformed XML in:\n{0}", path)
@@ -477,7 +429,7 @@ class Port(object):
         return json.dumps(fit)
 
     @classmethod
-    def importAuto(cls, string, path=None, activeFit=None, iportuser=None, encoding=None):
+    def importAuto(cls, string, path=None, activeFit=None, iportuser=None):
         # type: (basestring, basestring, object, IPortUser, basestring) -> object
         # Get first line and strip space symbols of it to avoid possible detection errors
         firstLine = re.split("[\n\r]+", string.strip(), maxsplit=1)[0]
@@ -485,10 +437,7 @@ class Port(object):
 
         # If XML-style start of tag encountered, detect as XML
         if re.search(RE_XML_START, firstLine):
-            if encoding:
-                return "XML", cls.importXml(string, iportuser, encoding)
-            else:
-                return "XML", cls.importXml(string, iportuser)
+            return "XML", cls.importXml(string, iportuser)
 
         # If JSON-style start, parse as CREST/JSON
         if firstLine[0] == '{':
@@ -1013,10 +962,10 @@ class Port(object):
         return fits
 
     @staticmethod
-    def importXml(text, iportuser=None, encoding="utf-8"):
+    def importXml(text, iportuser=None):
         # type: (basestring, IPortUser, basestring) -> list[eos.saveddata.fit.Fit]
         sMkt = Market.getInstance()
-        doc = xml.dom.minidom.parseString(text.encode(encoding))
+        doc = xml.dom.minidom.parseString(text)
         # NOTE:
         #   When L_MARK is included at this point,
         #   Decided to be localized data
