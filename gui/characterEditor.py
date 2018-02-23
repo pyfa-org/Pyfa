@@ -42,7 +42,19 @@ from wx.lib.agw.floatspin import FloatSpin
 
 from gui.utils.clipboard import toClipboard, fromClipboard
 
+import utils.roman as roman
+import re
+
 pyfalog = Logger(__name__)
+
+
+def arabicOrRomanToInt(s):
+    m = re.match(r'\d+$', s)
+    if m:
+        i = int(s)
+    else:
+        i = roman.fromRoman(s)
+    return i
 
 
 class CharacterTextValidor(BaseValidator):
@@ -414,7 +426,8 @@ class SkillTreeView(wx.Panel):
                 lines = text.splitlines()
 
                 for l in lines:
-                    skill, level = l.strip()[:-1].strip(), int(l.strip()[-1])
+                    s = l.strip()
+                    skill, level = s.rsplit(None, 1)[0], arabicOrRomanToInt(s.rsplit(None, 1)[1])
                     skill = char.getSkill(skill)
                     if skill:
                         skill.setLevel(level, ignoreRestrict=True)

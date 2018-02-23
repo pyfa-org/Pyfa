@@ -262,14 +262,6 @@ class Market(object):
         # Dictionary of items with forced market group (service assumes they have no
         # market group assigned in db, otherwise they'll appear in both original and forced groups)
         self.ITEMS_FORCEDMARKETGROUP = {
-            "'Alpha' Data Analyzer I"                   : 714,
-            # Ship Equipment > Electronics and Sensor Upgrades > Scanners > Data and Composition Scanners
-            "'Codex' Data Analyzer I"                   : 714,
-            # Ship Equipment > Electronics and Sensor Upgrades > Scanners > Data and Composition Scanners
-            "'Daemon' Data Analyzer I"                  : 714,
-            # Ship Equipment > Electronics and Sensor Upgrades > Scanners > Data and Composition Scanners
-            "'Libram' Data Analyzer I"                  : 714,
-            # Ship Equipment > Electronics and Sensor Upgrades > Scanners > Data and Composition Scanners
             "Advanced Cerebral Accelerator"             : 977,  # Implants & Boosters > Booster
             "Civilian Damage Control"                   : 615,  # Ship Equipment > Hull & Armor > Damage Controls
             "Civilian EM Ward Field"                    : 1695,
@@ -287,8 +279,6 @@ class Market(object):
             # Ship Equipment > Hull & Armor > Remote Armor Repairers > Small
             "Civilian Small Remote Shield Booster"      : 603,  # Ship Equipment > Shield > Remote Shield Boosters > Small
             "Civilian Stasis Webifier"                  : 683,  # Ship Equipment > Electronic Warfare > Stasis Webifiers
-            "Civilian Thermic Dissipation Field"        : 1692,
-            # Ship Equipment > Shield > Shield Hardeners > Thermal Shield Hardeners
             "Civilian Warp Disruptor"                   : 1935,  # Ship Equipment > Electronic Warfare > Warp Disruptors
             "Hardwiring - Zainou 'Sharpshooter' ZMX10"  : 1493,
             # Implants & Boosters > Implants > Skill Hardwiring > Missile Implants > Implant Slot 06
@@ -309,12 +299,6 @@ class Market(object):
             "Sleeper Data Analyzer I"                   : 714,
             # Ship Equipment > Electronics and Sensor Upgrades > Scanners > Data and Composition Scanners
             "Standard Cerebral Accelerator"             : 977,  # Implants & Boosters > Booster
-            "Talocan Data Analyzer I"                   : 714,
-            # Ship Equipment > Electronics and Sensor Upgrades > Scanners > Data and Composition Scanners
-            "Terran Data Analyzer I"                    : 714,
-            # Ship Equipment > Electronics and Sensor Upgrades > Scanners > Data and Composition Scanners
-            "Tetrimon Data Analyzer I"                  : 714
-            # Ship Equipment > Electronics and Sensor Upgrades > Scanners > Data and Composition Scanners
         }
 
         self.ITEMS_FORCEDMARKETGROUP_R = self.__makeRevDict(self.ITEMS_FORCEDMARKETGROUP)
