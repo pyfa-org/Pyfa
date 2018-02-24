@@ -229,6 +229,9 @@ class GraphFrame(wx.Frame):
     def draw(self, event=None):
         global mpl_version
 
+        if event is not None:
+            event.Skip()
+
         values = self.getValues()
         view = self.getView()
         self.subplot.clear()
@@ -299,8 +302,6 @@ class GraphFrame(wx.Frame):
 
         self.canvas.draw()
         self.SetStatusText("")
-        if event is not None:
-            event.Skip()
 
     def onFieldChanged(self, event):
         self.draw()
