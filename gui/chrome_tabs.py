@@ -1373,7 +1373,7 @@ class PFNotebookPagePreview(wx.Frame):
     def OnWindowPaint(self, event):
         rect = self.GetRect()
         canvas = wx.Bitmap(rect.width, rect.height)
-        mdc = wx.AudoBufferedPaintDC(self)
+        mdc = wx.BufferedPaintDC(self)
         mdc.SelectObject(canvas)
         color = wx.SystemSettings.GetColour(wx.SYS_COLOUR_WINDOW)
         mdc.SetBackground(wx.Brush(color))
