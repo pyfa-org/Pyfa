@@ -68,7 +68,7 @@ class DefaultDatabaseValues(object):
                              ["[Hybrid Charges]Uranium", "0", "38.4", "57.6", "0"],
                              ["[Missiles]Mjolnir", "100", "0", "0", "0"], ["[Missiles]Inferno", "0", "100", "0", "0"],
                              ["[Missiles]Scourge", "0", "0", "100", "0"], ["[Missiles]Nova", "0", "0", "0", "100"],
-                             ["[Missiles][Structure) Standup Missile", "100", "100", "100", "100"],
+                             ["[Missiles][Structure] Standup Missile", "100", "100", "100", "100"],
                              ["[Projectile Ammo][T2] Tremor", "0", "0", "24", "40"],
                              ["[Projectile Ammo][T2] Quake", "0", "0", "40", "72"],
                              ["[Projectile Ammo][T2] Hail", "0", "0", "26.4", "96.8"],
