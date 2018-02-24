@@ -72,21 +72,9 @@ class DamagePattern(object):
         eos.db.save(p)
 
     def importPatterns(self, text):
-        lookup = {}
-        current = self.getDamagePatternList()
-        for pattern in current:
-            lookup[pattern.name] = pattern
-
         imports, num = es_DamagePattern.importPatterns(text)
-        for pattern in imports:
-            if pattern.name in lookup:
-                match = lookup[pattern.name]
-                match.__dict__.update(pattern.__dict__)
-            else:
-                eos.db.save(pattern)
-        eos.db.commit()
-
         lenImports = len(imports)
+
         if lenImports == 0:
             raise ImportError("No patterns found for import")
         if lenImports != num:
