@@ -55,9 +55,11 @@ class PFBitmapFrame(wx.Frame):
         # (like the sexy fade-in animation)
         rect = self.GetRect()
         canvas = wx.Bitmap(rect.width, rect.height)
-        with wx.BufferedPaintDC(self) as mdc:
-            mdc.SelectObject(canvas)
-            mdc.DrawBitmap(self.bitmap, 0, 0)
-            mdc.SetPen(wx.Pen("#000000", width=1))
-            mdc.SetBrush(wx.TRANSPARENT_BRUSH)
-            mdc.DrawRectangle(0, 0, rect.width, rect.height)
+        # todo: convert to context manager after updating to wxPython >v4.0.1 (4.0.1 has a bug, see #1421)
+        # See #1418 for discussion
+        mdc = wx.BufferedPaintDC(self)
+        mdc.SelectObject(canvas)
+        mdc.DrawBitmap(self.bitmap, 0, 0)
+        mdc.SetPen(wx.Pen("#000000", width=1))
+        mdc.SetBrush(wx.TRANSPARENT_BRUSH)
+        mdc.DrawRectangle(0, 0, rect.width, rect.height)
