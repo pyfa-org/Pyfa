@@ -253,6 +253,7 @@ class Character(object):
 
         # revert old char
         char.revertLevels()
+        return newChar.ID
 
     @staticmethod
     def revertCharacter(charID):
