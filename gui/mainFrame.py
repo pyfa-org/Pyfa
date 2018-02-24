@@ -49,7 +49,7 @@ from gui.multiSwitch import MultiSwitch
 from gui.statsPane import StatsPane
 from gui.shipBrowser import ShipBrowser
 from gui.builtinShipBrowser.events import FitSelected, ImportSelected, Stage3Selected
-from gui.characterEditor import CharacterEditor, SaveCharacterAs
+from gui.characterEditor import CharacterEditor
 from gui.characterSelection import CharacterSelection
 from gui.patternEditor import DmgPatternEditorDlg
 from gui.resistsEditor import ResistsEditorDlg
@@ -692,8 +692,8 @@ class MainFrame(wx.Frame):
 
     def saveCharAs(self, event):
         charID = self.charSelection.getActiveCharacter()
-        dlg = SaveCharacterAs(self, charID)
-        dlg.ShowModal()
+        CharacterEditor.SaveCharacterAs(self, charID)
+        wx.PostEvent(self, GE.CharListUpdated())
 
     def revertChar(self, event):
         sChr = Character.getInstance()
