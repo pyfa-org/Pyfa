@@ -27,8 +27,26 @@ class ChangeAmount(ContextMenu):
 
     def activate(self, fullContext, selection, i):
         srcContext = fullContext[0]
-        dlg = AmountChanger(self.mainFrame, selection[0], srcContext)
-        dlg.ShowModal()
+        thing = selection[0]
+        dlg = AmountChanger(self.mainFrame, thing, srcContext)
+        if dlg.ShowModal() == wx.ID_OK:
+
+            if dlg.input.GetLineText(0).strip() == '':
+                return
+
+            sFit = Fit.getInstance()
+            cleanInput = re.sub(r'[^0-9.]', '', dlg.input.GetLineText(0).strip())
+            mainFrame = gui.mainFrame.MainFrame.getInstance()
+            fitID = mainFrame.getActiveFit()
+
+            if isinstance(thing, es_Cargo):
+                sFit.addCargo(fitID, thing.item.ID, int(float(cleanInput)), replace=True)
+            elif isinstance(thing, es_Fit):
+                sFit.changeAmount(fitID, thing, int(float(cleanInput)))
+            elif isinstance(thing, es_Fighter):
+                sFit.changeActiveFighters(fitID, thing, int(float(cleanInput)))
+
+            wx.PostEvent(mainFrame, GE.FitChanged(fitID=fitID))
 
 
 ChangeAmount.register()
@@ -36,47 +54,41 @@ ChangeAmount.register()
 
 class AmountChanger(wx.Dialog):
     def __init__(self, parent, thing, context):
-        wx.Dialog.__init__(self, parent, title="Select Amount", size=wx.Size(220, 60))
+        wx.Dialog.__init__(self, parent, title="Change Amount")
         self.thing = thing
         self.context = context
 
-        bSizer1 = wx.BoxSizer(wx.HORIZONTAL)
+        self.SetMinSize((346, 156))
+
+        bSizer1 = wx.BoxSizer(wx.VERTICAL)
+
+        bSizer2 = wx.BoxSizer(wx.VERTICAL)
+        text = wx.StaticText(self, wx.ID_ANY, "New Amount:")
+        bSizer2.Add(text, 0)
+
+        bSizer1.Add(bSizer2, 0, wx.ALL, 10)
 
         self.input = wx.TextCtrl(self, wx.ID_ANY, style=wx.TE_PROCESS_ENTER)
+        self.input.SetValue(str(self.thing.amount))
 
-        bSizer1.Add(self.input, 1, wx.ALL, 5)
+        bSizer1.Add(self.input, 0, wx.LEFT | wx.RIGHT | wx.EXPAND, 15)
+
+        bSizer3 = wx.BoxSizer(wx.VERTICAL)
+        bSizer3.Add(wx.StaticLine(self, wx.ID_ANY), 0, wx.BOTTOM | wx.EXPAND, 15)
+
+        bSizer3.Add(self.CreateStdDialogButtonSizer(wx.OK | wx.CANCEL), 0, wx.EXPAND)
+        bSizer1.Add(bSizer3, 0, wx.ALL | wx.EXPAND, 10)
+
+        self.input.SetFocus()
+        self.input.SetInsertionPointEnd()
         self.input.Bind(wx.EVT_CHAR, self.onChar)
-        self.input.Bind(wx.EVT_TEXT_ENTER, self.change)
-        self.button = wx.Button(self, wx.ID_OK, "Done")
-        bSizer1.Add(self.button, 0, wx.ALL, 5)
-
+        self.input.Bind(wx.EVT_TEXT_ENTER, self.processEnter)
         self.SetSizer(bSizer1)
-        self.Layout()
-        self.Centre(wx.BOTH)
-        self.button.Bind(wx.EVT_BUTTON, self.change)
+        self.CenterOnParent()
+        self.Fit()
 
-    def change(self, event):
-        if self.input.GetLineText(0).strip() == '':
-            event.Skip()
-            self.Close()
-            return
-
-        sFit = Fit.getInstance()
-        cleanInput = re.sub(r'[^0-9.]', '', self.input.GetLineText(0).strip())
-        mainFrame = gui.mainFrame.MainFrame.getInstance()
-        fitID = mainFrame.getActiveFit()
-
-        if isinstance(self.thing, es_Cargo):
-            sFit.addCargo(fitID, self.thing.item.ID, int(float(cleanInput)), replace=True)
-        elif isinstance(self.thing, es_Fit):
-            sFit.changeAmount(fitID, self.thing, int(float(cleanInput)))
-        elif isinstance(self.thing, es_Fighter):
-            sFit.changeActiveFighters(fitID, self.thing, int(float(cleanInput)))
-
-        wx.PostEvent(mainFrame, GE.FitChanged(fitID=fitID))
-
-        event.Skip()
-        self.Close()
+    def processEnter(self, evt):
+        self.EndModal(wx.ID_OK)
 
     # checks to make sure it's valid number
     @staticmethod
