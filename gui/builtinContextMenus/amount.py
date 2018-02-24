@@ -48,6 +48,7 @@ class ChangeAmount(ContextMenu):
 
             wx.PostEvent(mainFrame, GE.FitChanged(fitID=fitID))
 
+
 ChangeAmount.register()
 
 
