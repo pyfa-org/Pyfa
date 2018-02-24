@@ -51,11 +51,13 @@ class PFBitmapFrame(wx.Frame):
         pass
 
     def OnWindowPaint(self, event):
+        # todo: evaluate wx.DragImage, might make this class obsolete, however might also lose our customizations
+        # (like the sexy fade-in animation)
         rect = self.GetRect()
         canvas = wx.Bitmap(rect.width, rect.height)
-        mdc = wx.AutoBufferedPaintDC(self)
-        mdc.SelectObject(canvas)
-        mdc.DrawBitmap(self.bitmap, 0, 0)
-        mdc.SetPen(wx.Pen("#000000", width=1))
-        mdc.SetBrush(wx.TRANSPARENT_BRUSH)
-        mdc.DrawRectangle(0, 0, rect.width, rect.height)
+        with wx.BufferedPaintDC(self) as mdc:
+            mdc.SelectObject(canvas)
+            mdc.DrawBitmap(self.bitmap, 0, 0)
+            mdc.SetPen(wx.Pen("#000000", width=1))
+            mdc.SetBrush(wx.TRANSPARENT_BRUSH)
+            mdc.DrawRectangle(0, 0, rect.width, rect.height)
