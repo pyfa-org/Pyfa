@@ -965,7 +965,7 @@ class MainFrame(wx.Frame, IPortUser):
         if len(fits) > 0:
             if len(fits) == 1:
                 fit = fits[0]
-                wx.PostEvent(self, FitSelected(fitID=fit.ID))
+                wx.PostEvent(self, FitSelected(fitID=fit.ID, from_import=True))
                 wx.PostEvent(self.shipBrowser, Stage3Selected(shipID=fit.shipID, back=True))
             else:
                 fits.sort(key=lambda _fit: (_fit.ship.item.name, _fit.name))

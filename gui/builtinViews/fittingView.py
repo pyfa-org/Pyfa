@@ -68,11 +68,12 @@ class FitSpawner(gui.multiSwitch.TabSpawner):
                     pyfalog.critical(e)
         if count < 0:
             startup = getattr(event, "startup", False)  # see OpenFitsThread in gui.mainFrame
+            from_import = getattr(event, "from_import", False)  # always open imported into a new tab
             sFit = Fit.getInstance()
             openFitInNew = sFit.serviceFittingOptions["openFitInNew"]
             mstate = wx.GetMouseState()
 
-            if (not openFitInNew and mstate.CmdDown()) or startup or (openFitInNew and not mstate.CmdDown()):
+            if from_import or (not openFitInNew and mstate.CmdDown()) or startup or (openFitInNew and not mstate.CmdDown()):
                 self.multiSwitch.AddPage()
 
             view = FittingView(self.multiSwitch)
