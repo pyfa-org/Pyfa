@@ -81,7 +81,7 @@ class FitDpsGraph(Graph):
                     total += dps * self.calculateTurretMultiplier(mod, data)
 
             elif mod.hardpoint == Hardpoint.MISSILE:
-                if mod.state >= State.ACTIVE and mod.maxRange >= distance:
+                if mod.state >= State.ACTIVE and mod.maxRange is not None and mod.maxRange >= distance:
                     total += dps * self.calculateMissileMultiplier(mod, data)
 
         if distance <= fit.extraAttributes["droneControlRange"]:
