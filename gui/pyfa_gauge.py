@@ -18,6 +18,7 @@ import wx
 
 from gui.utils import color as color_utils
 from gui.utils import draw, anim_effects
+from service.fit import Fit
 
 
 class PyGauge(wx.Window):
@@ -129,11 +130,16 @@ class PyGauge(wx.Window):
         return self._max_range
 
     def Animate(self):
-        if not self._timer:
-            self._timer = wx.Timer(self, self._timer_id)
+        sFit = Fit.getInstance()
+        if sFit.serviceFittingOptions["enableGaugeAnimation"]:
+            if not self._timer:
+                self._timer = wx.Timer(self, self._timer_id)
 
-        self._anim_step = 0
-        self._timer.Start(self._period)
+            self._anim_step = 0
+            self._timer.Start(self._period)
+        else:
+            self._anim_value = self._percentage
+            self.Refresh()
 
     def SetRange(self, range, reinit=False, animate=True):
         """
