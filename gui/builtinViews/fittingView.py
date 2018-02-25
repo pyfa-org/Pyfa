@@ -694,28 +694,27 @@ class FittingView(d.Display):
         #         pyfalog.critical(e)
 
     def OnShow(self, event):
-        pass
-        # if event.Show():
-        #     try:
-        #         self.MakeSnapshot()
-        #     except Exception as e:
-        #         pyfalog.critical("Failed to make snapshot")
-        #         pyfalog.critical(e)
-        # event.Skip()
+
+        if not self.IsShown():
+            try:
+                self.MakeSnapshot()
+            except Exception as e:
+                pyfalog.critical("Failed to make snapshot")
+                pyfalog.critical(e)
+        event.Skip()
 
     def Snapshot(self):
         return self.FVsnapshot
 
     # noinspection PyPropertyAccess
     def MakeSnapshot(self, maxColumns=1337):
-
         if self.FVsnapshot:
             del self.FVsnapshot
 
         tbmp = wx.Bitmap(16, 16)
         tdc = wx.MemoryDC()
         tdc.SelectObject(tbmp)
-        font = wx.SystemSettings_GetFont(wx.SYS_DEFAULT_GUI_FONT)
+        font = wx.SystemSettings.GetFont(wx.SYS_DEFAULT_GUI_FONT)
         tdc.SetFont(font)
 
         columnsWidths = []
@@ -728,6 +727,7 @@ class FittingView(d.Display):
         except Exception as e:
             pyfalog.critical("Failed to get fit")
             pyfalog.critical(e)
+            return
 
         if fit is None:
             return
