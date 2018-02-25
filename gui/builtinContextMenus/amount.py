@@ -26,9 +26,16 @@ class ChangeAmount(ContextMenu):
         return u"Change {0} Quantity".format(itmContext)
 
     def activate(self, fullContext, selection, i):
-        srcContext = fullContext[0]
         thing = selection[0]
-        dlg = AmountChanger(self.mainFrame, thing, srcContext)
+        mainFrame = gui.mainFrame.MainFrame.getInstance()
+        fitID = mainFrame.getActiveFit()
+
+        if isinstance(thing, es_Fit):
+            value = thing.getProjectionInfo(fitID).amount
+        else:
+            value = thing.amount
+
+        dlg = AmountChanger(self.mainFrame, value)
         if dlg.ShowModal() == wx.ID_OK:
 
             if dlg.input.GetLineText(0).strip() == '':
@@ -36,8 +43,6 @@ class ChangeAmount(ContextMenu):
 
             sFit = Fit.getInstance()
             cleanInput = re.sub(r'[^0-9.]', '', dlg.input.GetLineText(0).strip())
-            mainFrame = gui.mainFrame.MainFrame.getInstance()
-            fitID = mainFrame.getActiveFit()
 
             if isinstance(thing, es_Cargo):
                 sFit.addCargo(fitID, thing.item.ID, int(float(cleanInput)), replace=True)
@@ -53,11 +58,8 @@ ChangeAmount.register()
 
 
 class AmountChanger(wx.Dialog):
-    def __init__(self, parent, thing, context):
+    def __init__(self, parent, value):
         wx.Dialog.__init__(self, parent, title="Change Amount")
-        self.thing = thing
-        self.context = context
-
         self.SetMinSize((346, 156))
 
         bSizer1 = wx.BoxSizer(wx.VERTICAL)
@@ -69,7 +71,7 @@ class AmountChanger(wx.Dialog):
         bSizer1.Add(bSizer2, 0, wx.ALL, 10)
 
         self.input = wx.TextCtrl(self, wx.ID_ANY, style=wx.TE_PROCESS_ENTER)
-        self.input.SetValue(str(self.thing.amount))
+        self.input.SetValue(str(value))
 
         bSizer1.Add(self.input, 0, wx.LEFT | wx.RIGHT | wx.EXPAND, 15)
 
