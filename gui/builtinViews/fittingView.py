@@ -678,7 +678,7 @@ class FittingView(d.Display):
                 pyfalog.critical(e)
 
     def OnShow(self, event):
-        if event.GetShow():
+        if not event.GetShow():
             try:
                 self.MakeSnapshot()
             except Exception as e:
@@ -691,7 +691,6 @@ class FittingView(d.Display):
 
     # noinspection PyPropertyAccess
     def MakeSnapshot(self, maxColumns=1337):
-
         if self.FVsnapshot:
             del self.FVsnapshot
 
