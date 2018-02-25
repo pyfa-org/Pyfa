@@ -26,7 +26,6 @@ class ChangeAmount(ContextMenu):
         return u"Change {0} Quantity".format(itmContext)
 
     def activate(self, fullContext, selection, i):
-        srcContext = fullContext[0]
         thing = selection[0]
         mainFrame = gui.mainFrame.MainFrame.getInstance()
         fitID = mainFrame.getActiveFit()
