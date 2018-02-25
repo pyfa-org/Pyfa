@@ -694,8 +694,7 @@ class FittingView(d.Display):
         #         pyfalog.critical(e)
 
     def OnShow(self, event):
-
-        if not self.IsShown():
+        if self and not self.IsShown():
             try:
                 self.MakeSnapshot()
             except Exception as e:
