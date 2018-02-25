@@ -1201,6 +1201,7 @@ class Port(object):
         subsystems = []  # EVE cares which order you put these in
         mods = OrderedDict()
         charges = OrderedDict()
+        sFit = svcFit.getInstance()
         for mod in fit.modules:
             if not mod.isEmpty:
                 if mod.slot == Slot.SUBSYSTEM:
@@ -1210,7 +1211,7 @@ class Port(object):
                     mods[mod.itemID] = 0
                 mods[mod.itemID] += 1
 
-                if mod.charge:
+                if mod.charge and sFit.serviceFittingOptions["exportCharges"]:
                     if mod.chargeID not in charges:
                         charges[mod.chargeID] = 0
                     # `or 1` because some charges (ie scripts) are without qty
