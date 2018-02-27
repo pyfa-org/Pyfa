@@ -110,12 +110,11 @@ class ProjectedView(d.Display):
             # Gather module information to get position
             module = fit.modules[int(data[1])]
             sFit.project(fit.ID, module.item.ID)
-            wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=self.mainFrame.getActiveFit()))
+            wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fit.ID))
         elif data[0] == "market":
             sFit = Fit.getInstance()
-            fitID = self.mainFrame.getActiveFit()
             sFit.project(fit.ID, int(data[1]))
-            wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=self.mainFrame.getActiveFit()))
+            wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fit.ID))
 
     def kbEvent(self, event):
         keycode = event.GetKeyCode()
