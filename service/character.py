@@ -77,7 +77,7 @@ class CharacterImportThread(threading.Thread):
                         pyfalog.error("Incorrect EVEMon XML sheet")
                         raise RuntimeError("Incorrect EVEMon XML sheet")
                     name = doc.getElementsByTagName("name")[0].firstChild.nodeValue
-                    securitystatus = doc.getElementsByTagName("securityStatus")[0].firstChild.nodeValue or 0
+                    securitystatus = float(doc.getElementsByTagName("securityStatus")[0].firstChild.nodeValue) or 0.0
                     skill_els = doc.getElementsByTagName("skill")
                     skills = []
                     for skill in skill_els:
