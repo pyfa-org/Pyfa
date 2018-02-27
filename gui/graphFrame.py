@@ -232,6 +232,12 @@ class GraphFrame(wx.Frame):
         if event is not None:
             event.Skip()
 
+        # todo: FIX THIS, see #1430. draw() is not being unbound properly when the window closes, this is an easy fix,
+        # but not a proper solution
+        if not self:
+            pyfalog.warning("GraphFrame handled event, however GraphFrame no longer exists. Ignoring event")
+            return
+
         values = self.getValues()
         view = self.getView()
         self.subplot.clear()
