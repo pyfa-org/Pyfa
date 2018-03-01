@@ -99,15 +99,22 @@ class ProjectedView(d.Display):
             data[0] is hard-coded str of originating source
             data[1] is typeID or index of data we want to manipulate
         """
+        sFit = Fit.getInstance()
+        fit = sFit.getFit(self.mainFrame.getActiveFit())
 
         if data[0] == "projected":
             # if source is coming from projected, we are trying to combine drones.
             self.mergeDrones(x, y, int(data[1]))
+        elif data[0] == "fitting":
+            dstRow, _ = self.HitTest((x, y))
+            # Gather module information to get position
+            module = fit.modules[int(data[1])]
+            sFit.project(fit.ID, module.item.ID)
+            wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fit.ID))
         elif data[0] == "market":
             sFit = Fit.getInstance()
-            fitID = self.mainFrame.getActiveFit()
-            sFit.project(fitID, int(data[1]))
-            wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=self.mainFrame.getActiveFit()))
+            sFit.project(fit.ID, int(data[1]))
+            wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fit.ID))
 
     def kbEvent(self, event):
         keycode = event.GetKeyCode()

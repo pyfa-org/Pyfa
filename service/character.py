@@ -66,7 +66,7 @@ class CharacterImportThread(threading.Thread):
                 with open(path, mode='r') as charFile:
                     sheet = ParseXML(charFile)
                     char = sCharacter.new(sheet.name + " (imported)")
-                    sCharacter.apiUpdateCharSheet(char.ID, sheet.skills)
+                    sCharacter.apiUpdateCharSheet(char.ID, sheet.skills, 0)
             except:
                 # if it's not api XML data, try this
                 # this is a horrible logic flow, but whatever
