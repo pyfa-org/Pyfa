@@ -122,7 +122,7 @@ class Character(object):
     def apiUpdateCharSheet(self, skills, secStatus=0):
         for skillRow in skills:
             skill = self.getSkill(int(skillRow["typeID"]))
-            skill.setLevel(int(skillRow["level"], persist=True, ignoreRestrict=True))
+            skill.setLevel(int(skillRow["level"]), persist=True, ignoreRestrict=True)
 
         self.secStatus = secStatus
 
