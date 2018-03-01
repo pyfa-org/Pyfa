@@ -289,6 +289,7 @@ class FitItem(SFItem.SFBrowserItem):
     def editLostFocus(self, event):
         self.RestoreEditButton()
         self.Refresh()
+        event.Skip()
 
     def editCheckEsc(self, event):
         if event.GetKeyCode() == wx.WXK_ESCAPE:
