@@ -301,8 +301,6 @@ class Market(object):
             "Prototype Cerebral Accelerator"            : 977,  # Implants & Boosters > Booster
             "Prototype Iris Probe Launcher"             : 712,  # Ship Equipment > Turrets & Bays > Scan Probe Launchers
             "Shadow"                                    : 1310,  # Drones > Combat Drones > Fighter Bombers
-            "Sleeper Data Analyzer I"                   : 714,
-            # Ship Equipment > Electronics and Sensor Upgrades > Scanners > Data and Composition Scanners
             "Standard Cerebral Accelerator"             : 977,  # Implants & Boosters > Booster
         }
 
