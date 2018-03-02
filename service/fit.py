@@ -410,7 +410,7 @@ class Fit(object):
         else:
             try:
                 module = es_Module(thing)
-            except ValueError as ex:
+            except ValueError:
                 return False
             module.state = State.ACTIVE
             if not module.canHaveState(module.state, fit):
