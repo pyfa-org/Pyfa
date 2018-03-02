@@ -63,7 +63,7 @@ class CharacterImportThread(threading.Thread):
         for path in paths:
             try:
                 # we try to parse api XML data first
-                with open(path, mode='r') as charFile:
+                with open(path, mode='rb') as charFile:
                     sheet = ParseXML(charFile)
                     char = sCharacter.new(sheet.name + " (imported)")
                     sCharacter.apiUpdateCharSheet(char.ID, sheet.skills, 0)
