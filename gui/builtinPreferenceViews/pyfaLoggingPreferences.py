@@ -42,6 +42,15 @@ class PFGeneralPref(PreferenceView):
         self.inputLogPath.SetBackgroundColour((200, 200, 200))
         mainSizer.Add(self.inputLogPath, 0, wx.ALL | wx.ALIGN_CENTER_VERTICAL | wx.EXPAND, 5)
 
+        import requests
+        self.certPath = wx.StaticText(panel, wx.ID_ANY, "Cert Path:", wx.DefaultPosition, wx.DefaultSize, 0)
+        self.certPath .Wrap(-1)
+        mainSizer.Add(self.certPath, 0, wx.ALL | wx.ALIGN_CENTER_VERTICAL, 5)
+        self.certPathCtrl = wx.TextCtrl(panel, wx.ID_ANY, requests.certs.where(), wx.DefaultPosition, wx.DefaultSize, 0)
+        self.certPathCtrl.SetEditable(False)
+        self.certPathCtrl.SetBackgroundColour((200, 200, 200))
+        mainSizer.Add(self.certPathCtrl, 0, wx.ALL | wx.ALIGN_CENTER_VERTICAL | wx.EXPAND, 5)
+
         # Debug Logging
         self.cbdebugLogging = wx.CheckBox(panel, wx.ID_ANY, "Debug Logging Enabled", wx.DefaultPosition, wx.DefaultSize, 0)
         mainSizer.Add(self.cbdebugLogging, 0, wx.ALL | wx.EXPAND, 5)
