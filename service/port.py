@@ -774,11 +774,6 @@ class Port(object):
         except:
             return []  # empty list is expected
 
-        # If client didn't take care of encoding file contents into Unicode,
-        # do it using fallback encoding ourselves
-        if isinstance(contents, str):
-            contents = str(contents, locale.getpreferredencoding())
-
         fits = []  # List for fits
         fitIndices = []  # List for starting line numbers for each fit
         lines = re.split('[\n\r]+', contents)  # Separate string into lines
