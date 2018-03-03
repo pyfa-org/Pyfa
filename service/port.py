@@ -25,6 +25,8 @@ import collections
 import json
 import threading
 import locale
+from bs4 import UnicodeDammit
+
 
 from codecs import open
 
@@ -276,8 +278,10 @@ class Port(object):
                     PortProcessing.notify(iportuser, IPortUser.PROCESS_IMPORT | IPortUser.ID_UPDATE, msg)
                     # wx.CallAfter(callback, 1, msg)
 
-                with open(path, "r", encoding='utf-8') as file_:
+                with open(path, "rb") as file_:
                     srcString = file_.read()
+                    dammit = UnicodeDammit(srcString)
+                    srcString = dammit.unicode_markup
 
                 if len(srcString) == 0:  # ignore blank files
                     pyfalog.debug("File is blank.")

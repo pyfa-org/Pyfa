@@ -7,3 +7,4 @@ sqlalchemy >= 1.0.5
 markdown2
 packaging
 roman
+beautifulsoup4
