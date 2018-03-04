@@ -18,9 +18,7 @@
 # =============================================================================
 
 
-import urllib.request
-import urllib.error
-import urllib.parse
+import requests
 import socket
 from logbook import Logger
 
@@ -72,7 +70,8 @@ class Network(object):
 
         return cls._instance
 
-    def request(self, url, type, data=None):
+    def request(self, url, type, *args, **kwargs):
+
         # URL is required to be https as of right now
         # print "Starting request: %s\n\tType: %s\n\tPost Data: %s"%(url,type,data)
 
@@ -88,49 +87,47 @@ class Network(object):
                                                    config.expansionVersion)
         headers = {"User-Agent": "pyfa {0} (Python-urllib2)".format(versionString)}
 
-        proxy = NetworkSettings.getInstance().getProxySettings()
-        if proxy is not None:
-            # proxy is a tuple of (host, port):  (u'192.168.20.1', 3128)
-            proxy_auth = NetworkSettings.getInstance().getProxyAuthDetails()
-            # proxy_auth is a tuple of (login, password) or None
-            if proxy_auth is not None:
-                # add login:password@ in front of proxy address
-                proxy_handler = urllib.request.ProxyHandler({
-                    'https': '{0}:{1}@{2}:{3}'.format(
-                            proxy_auth[0], proxy_auth[1], proxy[0], proxy[1])
-                })
-            else:
-                # build proxy handler with no login/pass info
-                proxy_handler = urllib.request.ProxyHandler({'https': "{0}:{1}".format(proxy[0], proxy[1])})
-            opener = urllib.request.build_opener(proxy_handler)
-            urllib.request.install_opener(opener)
-        else:
-            # This is a bug fix, explicitly disable possibly previously installed
-            # opener with proxy, by urllib2.install_opener() a few lines above in code.
-            # Now this explicitly disables proxy handler, "uninstalling" opener.
-            # This is used in case when user had proxy enabled, so proxy_handler was already
-            # installed globally, and then user had disabled the proxy, so we should clear that opener
-            urllib.request.install_opener(None)
-            # another option could be installing a default opener:
-            # urllib2.install_opener(urllib2.build_opener())
+          # proxy = NetworkSettings.getInstance().getProxySettings()
+        # if proxy is not None:
+        #     # proxy is a tuple of (host, port):  (u'192.168.20.1', 3128)
+        #     proxy_auth = NetworkSettings.getInstance().getProxyAuthDetails()
+        #     # proxy_auth is a tuple of (login, password) or None
+        #     if proxy_auth is not None:
+        #         # add login:password@ in front of proxy address
+        #         proxy_handler = urllib.request.ProxyHandler({
+        #             'https': '{0}:{1}@{2}:{3}'.format(
+        #                     proxy_auth[0], proxy_auth[1], proxy[0], proxy[1])
+        #         })
+        #     else:
+        #         # build proxy handler with no login/pass info
+        #         proxy_handler = urllib.request.ProxyHandler({'https': "{0}:{1}".format(proxy[0], proxy[1])})
+        #     opener = urllib.request.build_opener(proxy_handler)
+        #     urllib.request.install_opener(opener)
+        # else:
+        #     # This is a bug fix, explicitly disable possibly previously installed
+        #     # opener with proxy, by urllib2.install_opener() a few lines above in code.
+        #     # Now this explicitly disables proxy handler, "uninstalling" opener.
+        #     # This is used in case when user had proxy enabled, so proxy_handler was already
+        #     # installed globally, and then user had disabled the proxy, so we should clear that opener
+        #     urllib.request.install_opener(None)
+        #     # another option could be installing a default opener:
+        #     # urllib2.install_opener(urllib2.build_opener())
 
-        request = urllib.request.Request(url, headers=headers, data=urllib.parse.urlencode(data).encode("utf-8") if data else None)
         try:
-            return urllib.request.urlopen(request)
-        except urllib.error.HTTPError as error:
+            resp = requests.get(url, headers=headers, **kwargs)
+            resp.raise_for_status()
+            return resp
+        except requests.exceptions.HTTPError as error:
             pyfalog.warning("HTTPError:")
             pyfalog.warning(error)
-            if error.code == 404:
+            if error.response.status_code == 404:
                 raise RequestError()
-            elif error.code == 403:
+            elif error.response.status_code == 403:
                 raise AuthenticationError()
-            elif error.code >= 500:
+            elif error.response.status_code >= 500:
                 raise ServerError()
             raise Error(error)
-        except urllib.error.URLError as error:
-            pyfalog.warning("Timed out or other URL error:")
-            pyfalog.warning(error)
-            if "timed out" in error.reason:
-                raise TimeoutError()
-            else:
-                raise Error(error)
+        except requests.exceptions.Timeout:
+            raise TimeoutError()
+        except Exception as error:
+            raise Error(error)

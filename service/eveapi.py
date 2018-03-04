@@ -402,11 +402,11 @@ class _RootContext(_Context):
 
             req = self._scheme + '://' + self._host + path
 
-            response = network.request(req, network.EVE, kw)
+            response = network.request(req, network.EVE, params=kw)
 
             if cache:
                 store = True
-                response = response.read()
+                response = response.text
             else:
                 store = False
         else:
@@ -416,8 +416,8 @@ class _RootContext(_Context):
         if retrieve_fallback:
             # implementor is handling fallbacks...
             try:
-                return _ParseXML(response, True,
-                                 store and (lambda obj: cache.store(self._host, path, kw, response, obj)))
+                return _ParseXML(response.text, True,
+                                 store and (lambda obj: cache.store(self._host, path, kw, response.text, obj)))
             except Error as e:
                 response = retrieve_fallback(self._host, path, kw, reason=e)
                 if response is not None:
@@ -425,7 +425,7 @@ class _RootContext(_Context):
                 raise
         else:
             # implementor is not handling fallbacks...
-            return _ParseXML(response, True, store and (lambda obj: cache.store(self._host, path, kw, response, obj)))
+            return _ParseXML(response.text, True, store and (lambda obj: cache.store(self._host, path, kw, response, obj)))
 
 
 # -----------------------------------------------------------------------------
