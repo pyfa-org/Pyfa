@@ -85,7 +85,8 @@ class Network(object):
         # Set up some things for the request
         versionString = "{0} {1} - {2} {3}".format(config.version, config.tag, config.expansionName,
                                                    config.expansionVersion)
-        headers = {"User-Agent": "pyfa {0} (Python-urllib2)".format(versionString)}
+        headers = {"User-Agent": "pyfa {0} (python-requests {1})".format(versionString, requests.__version__)}
+        # user-agent: pyfa 2.0.0b4 git -YC120.2 1.2 (python-requests 2.18.4)
 
           # proxy = NetworkSettings.getInstance().getProxySettings()
         # if proxy is not None:
