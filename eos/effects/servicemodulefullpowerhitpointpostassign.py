@@ -4,4 +4,4 @@ runTime = "early"
 
 
 def handler(fit, src, context):
-    fit.ship.multiplyItemAttr("structureFullPowerStateHitpointMultiplier", src.getModifiedItemAttr("serviceModuleFullPowerStateHitpointMultiplier"))
+    fit.ship.forceItemAttr("structureFullPowerStateHitpointMultiplier", src.getModifiedItemAttr("serviceModuleFullPowerStateHitpointMultiplier"))
