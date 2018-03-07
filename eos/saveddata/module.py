@@ -632,7 +632,7 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
         self.itemModifiedAttributes.clear()
         self.chargeModifiedAttributes.clear()
 
-    def calculateModifiedAttributes(self, fit, runTime, forceProjected=False, gang=False):
+    def calculateModifiedAttributes(self, fit, runTime, forceProjected=False, gang=False, preOnly=False):
         # We will run the effect when two conditions are met:
         # 1: It makes sense to run the effect
         #    The effect is either offline
@@ -641,6 +641,7 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
         #    or the effect is active and the module is in the active state (or higher)
         #    or the effect is overheat and the module is in the overheated state (or higher)
         # 2: the runtimes match
+        # preOnly: only run effects that are labeled pre-projected
 
         if self.projected or forceProjected:
             context = "projected", "module"
@@ -689,7 +690,8 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
                              (effect.isType("passive") and self.state >= State.ONLINE) or
                              (effect.isType("active") and self.state >= State.ACTIVE)) \
                         and ((projected and effect.isType("projected")) or not projected) \
-                        and ((gang and effect.isType("gang")) or not gang):
+                        and ((gang and effect.isType("gang")) or not gang) \
+                        and (not preOnly or (preOnly and effect.isType("pre-projected"))):
                     try:
                         effect.handler(fit, self, context, effect=effect)
                     except:

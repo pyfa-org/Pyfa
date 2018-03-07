@@ -754,6 +754,19 @@ class Fit(object):
             pyfalog.info("Fit is not yet calculated; will be running local calcs for {}".format(repr(self)))
             self.clear()
 
+        if type == CalcType.LOCAL:
+            for fit in self.projectedFits:
+                projInfo = fit.getProjectionInfo(self.ID)
+                if projInfo.active:
+                    for runTime in ("early", "normal", "late"):
+                        c = chain(fit.drones, fit.fighters, fit.modules)
+                        for item in c:
+                            if item is not None:
+                                # apply effects onto target fit x amount of times
+                                for _ in range(projInfo.amount):
+                                    targetFit.register(item, origin=self)
+                                    item.calculateModifiedAttributes(targetFit, runTime, True, preOnly=True)
+
         # Loop through our run times here. These determine which effects are run in which order.
         for runTime in ("early", "normal", "late"):
             # pyfalog.debug("Run time: {0}", runTime)
