@@ -16,7 +16,7 @@ except ImportError:
 
 # Turns on debug mode
 debug = False
-# Defines if our saveddata will be in pyfa root or not
+# Defines if our saveddata will be in pyfa root or not.
 saveInRoot = False
 
 # Version data
