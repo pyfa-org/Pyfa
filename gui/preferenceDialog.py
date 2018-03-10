@@ -38,7 +38,7 @@ class PreferenceDialog(wx.Dialog):
         # self.listview.SetSize((500, -1))
 
         self.imageList = wx.ImageList(32, 32)
-        self.listbook.SetImageList(self.imageList)
+        self.listbook.AssignImageList(self.imageList)
 
         mainSizer.Add(self.listbook, 1, wx.EXPAND | wx.TOP | wx.BOTTOM | wx.LEFT, 5)
 
@@ -55,17 +55,17 @@ class PreferenceDialog(wx.Dialog):
         self.Centre(wx.BOTH)
 
         for prefView in PreferenceView.views:
-            page = wx.Panel(self.listbook)
+            page = wx.ScrolledWindow(self.listbook)
+            page.SetScrollbars(1, 1, 20, 20)
             bmp = prefView.getImage()
             if bmp:
                 imgID = self.imageList.Add(bmp)
             else:
                 imgID = -1
             prefView.populatePanel(page)
+
             self.listbook.AddPage(page, prefView.title, imageId=imgID)
 
-        # Set the height based on a condition. Can all the panels fit in the current height?
-        # If not, use the .GetBestVirtualSize() to ensure that all content is available.
         minHeight = 550
         bestFit = self.GetBestVirtualSize()
         if minHeight > bestFit[1]:

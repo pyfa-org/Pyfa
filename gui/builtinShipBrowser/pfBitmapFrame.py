@@ -51,9 +51,13 @@ class PFBitmapFrame(wx.Frame):
         pass
 
     def OnWindowPaint(self, event):
+        # todo: evaluate wx.DragImage, might make this class obsolete, however might also lose our customizations
+        # (like the sexy fade-in animation)
         rect = self.GetRect()
         canvas = wx.Bitmap(rect.width, rect.height)
-        mdc = wx.AutoBufferedPaintDC(self)
+        # todo: convert to context manager after updating to wxPython >v4.0.1 (4.0.1 has a bug, see #1421)
+        # See #1418 for discussion
+        mdc = wx.BufferedPaintDC(self)
         mdc.SelectObject(canvas)
         mdc.DrawBitmap(self.bitmap, 0, 0)
         mdc.SetPen(wx.Pen("#000000", width=1))

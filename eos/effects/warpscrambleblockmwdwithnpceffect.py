@@ -16,5 +16,8 @@ def handler(fit, module, context):
 
     # this is such a dirty hack
     for mod in fit.modules:
-        if not mod.isEmpty and mod.item.requiresSkill("High Speed Maneuvering") and mod.state > State.ONLINE:
+        if not mod.isEmpty and mod.state > State.ONLINE and (
+                mod.item.requiresSkill("Micro Jump Drive Operation")
+                or mod.item.requiresSkill("High Speed Maneuvering")
+        ):
             mod.state = State.ONLINE

@@ -31,9 +31,7 @@ class FactorReload(ContextMenu):
 
     def getBitmap(self, context, selection):
         sFit = Fit.getInstance()
-        fitID = self.mainFrame.getActiveFit()
-        fit = sFit.getFit(fitID)
-        if fit.factorReload:
+        if sFit.serviceFittingOptions["useGlobalForceReload"]:
             return BitmapLoader.getBitmap("state_active_small", "gui")
         else:
             return None

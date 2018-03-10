@@ -1,7 +1,7 @@
 # doHacking
 #
 # Used by:
-# Modules from group: Data Miners (17 of 18)
+# Modules from group: Data Miners (9 of 9)
 type = "active"
 
 

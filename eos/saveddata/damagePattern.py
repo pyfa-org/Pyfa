@@ -18,12 +18,16 @@
 # ===============================================================================
 
 import re
+import eos.db
 
 
 class DamagePattern(object):
     DAMAGE_TYPES = ("em", "thermal", "kinetic", "explosive")
 
-    def __init__(self, emAmount=25, thermalAmount=25, kineticAmount=25, explosiveAmount=25):
+    def __init__(self, *args, **kwargs):
+        self.update(*args, **kwargs)
+
+    def update(self, emAmount=25, thermalAmount=25, kineticAmount=25, explosiveAmount=25):
         self.emAmount = emAmount
         self.thermalAmount = thermalAmount
         self.kineticAmount = kineticAmount
@@ -74,6 +78,14 @@ class DamagePattern(object):
         lines = re.split('[\n\r]+', text)
         patterns = []
         numPatterns = 0
+
+        # When we import damage profiles, we create new ones and update old ones. To do this, get a list of current
+        # patterns to allow lookup
+        lookup = {}
+        current = eos.db.getDamagePatternList()
+        for pattern in current:
+            lookup[pattern.name] = pattern
+
         for line in lines:
             try:
                 if line.strip()[0] == "#":  # comments
@@ -99,9 +111,17 @@ class DamagePattern(object):
                     continue
 
             if len(fields) == 4:  # Avoid possible blank lines
-                pattern = DamagePattern(**fields)
-                pattern.name = name.strip()
+                if name.strip() in lookup:
+                    pattern = lookup[name.strip()]
+                    pattern.update(**fields)
+                    eos.db.save(pattern)
+                else:
+                    pattern = DamagePattern(**fields)
+                    pattern.name = name.strip()
+                    eos.db.save(pattern)
                 patterns.append(pattern)
+
+        eos.db.commit()
 
         return patterns, numPatterns
 

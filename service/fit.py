@@ -408,7 +408,10 @@ class Fit(object):
             module.state = State.ONLINE
             fit.projectedModules.append(module)
         else:
-            module = es_Module(thing)
+            try:
+                module = es_Module(thing)
+            except ValueError:
+                return False
             module.state = State.ACTIVE
             if not module.canHaveState(module.state, fit):
                 module.state = State.OFFLINE
@@ -1205,10 +1208,12 @@ class Fit(object):
     def recalc(self, fit):
         start_time = time()
         pyfalog.info("=" * 10 + "recalc: {0}" + "=" * 10, fit.name)
-        if fit.factorReload is not self.serviceFittingOptions["useGlobalForceReload"]:
-            fit.factorReload = self.serviceFittingOptions["useGlobalForceReload"]
+
+
+        fit.factorReload = self.serviceFittingOptions["useGlobalForceReload"]
         fit.clear()
 
         fit.calculateModifiedAttributes()
 
         pyfalog.info("=" * 10 + "recalc time: " + str(time() - start_time) + "=" * 10)
+

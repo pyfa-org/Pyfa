@@ -48,14 +48,14 @@ class CheckUpdateThread(threading.Thread):
         network = Network.getInstance()
 
         try:
-            response = network.request('https://api.github.com/repos/blitzmann/Pyfa/releases', network.UPDATE)
-            jsonResponse = json.loads(response.read())
+            response = network.request('https://api.github.com/repos/pyfa-org/Pyfa/releases', network.UPDATE)
+            jsonResponse = response.json()
             jsonResponse.sort(
                 key=lambda x: calendar.timegm(dateutil.parser.parse(x['published_at']).utctimetuple()),
                 reverse=True
             )
 
-            for release in jsonResponse:
+            for release in jsonResponse[:5]:
                 rVersion = Version(release['tag_name'])
                 cVersion = Version(config.version)
 
@@ -73,8 +73,8 @@ class CheckUpdateThread(threading.Thread):
 
                 if rVersion > cVersion:
                     wx.CallAfter(self.callback, release, rVersion)
+                    break
 
-                break
         except Exception as e:
             pyfalog.error("Caught exception in run")
             pyfalog.error(e)

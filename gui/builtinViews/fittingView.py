@@ -69,11 +69,12 @@ class FitSpawner(gui.multiSwitch.TabSpawner):
                     pyfalog.critical(e)
         if count < 0:
             startup = getattr(event, "startup", False)  # see OpenFitsThread in gui.mainFrame
+            from_import = getattr(event, "from_import", False)  # always open imported into a new tab
             sFit = Fit.getInstance()
             openFitInNew = sFit.serviceFittingOptions["openFitInNew"]
             mstate = wx.GetMouseState()
 
-            if (not openFitInNew and mstate.CmdDown()) or startup or (openFitInNew and not mstate.CmdDown()):
+            if from_import or (not openFitInNew and mstate.CmdDown()) or startup or (openFitInNew and not mstate.CmdDown()):
                 self.multiSwitch.AddPage()
 
             view = self.multiSwitch.GetSelectedPage()
@@ -286,6 +287,7 @@ class FittingView(d.Display):
         If fit is removed and active, the page is deleted.
         We also refresh the fit of the new current page in case
         delete fit caused change in stats (projected)
+        todo: move this to the notebook, not the page. We don't want the page being responsible for deleting itself
         """
         print('_+_+_+_+_+_ Fit Removed: {} {} activeFitID: {}, eventFitID: {}'.format(repr(self), str(bool(self)), self.activeFitID, event.fitID))
         pyfalog.debug("FittingView::fitRemoved")
@@ -692,28 +694,26 @@ class FittingView(d.Display):
         #         pyfalog.critical(e)
 
     def OnShow(self, event):
-        pass
-        # if event.Show():
-        #     try:
-        #         self.MakeSnapshot()
-        #     except Exception as e:
-        #         pyfalog.critical("Failed to make snapshot")
-        #         pyfalog.critical(e)
-        # event.Skip()
+        if self and not self.IsShown():
+            try:
+                self.MakeSnapshot()
+            except Exception as e:
+                pyfalog.critical("Failed to make snapshot")
+                pyfalog.critical(e)
+        event.Skip()
 
     def Snapshot(self):
         return self.FVsnapshot
 
     # noinspection PyPropertyAccess
     def MakeSnapshot(self, maxColumns=1337):
-
         if self.FVsnapshot:
             del self.FVsnapshot
 
         tbmp = wx.Bitmap(16, 16)
         tdc = wx.MemoryDC()
         tdc.SelectObject(tbmp)
-        font = wx.SystemSettings_GetFont(wx.SYS_DEFAULT_GUI_FONT)
+        font = wx.SystemSettings.GetFont(wx.SYS_DEFAULT_GUI_FONT)
         tdc.SetFont(font)
 
         columnsWidths = []
@@ -726,6 +726,7 @@ class FittingView(d.Display):
         except Exception as e:
             pyfalog.critical("Failed to get fit")
             pyfalog.critical(e)
+            return
 
         if fit is None:
             return

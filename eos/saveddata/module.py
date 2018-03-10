@@ -56,6 +56,10 @@ class Slot(Enum):
     F_LIGHT = 10
     F_SUPPORT = 11
     F_HEAVY = 12
+    # fighter 'slots' (for structures)
+    FS_LIGHT = 13
+    FS_SUPPORT = 14
+    FS_HEAVY = 15
 
 
 class Hardpoint(Enum):
@@ -178,7 +182,7 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
     @property
     def numShots(self):
         if self.charge is None:
-            return -1
+            return 0
         if self.__chargeCycles is None and self.charge:
             numCharges = self.numCharges
             # Usual ammo like projectiles and missiles
@@ -430,9 +434,9 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
                 and fit.ship.item.ID not in fitsOnType:
             return False
 
-        # AFAIK Citadel modules will always be restricted based on canFitShipType/Group. If we are fitting to a Citadel
-        # and the module does not have these properties, return false to prevent regular ship modules from being used
-        if isinstance(fit.ship, Citadel) and len(fitsOnGroup) == 0 and len(fitsOnType) == 0:
+        # Citadel modules are now under a new category, so we can check this to ensure only structure modules can fit on a citadel
+        if isinstance(fit.ship, Citadel) and self.item.category.name != "Structure Module" or \
+                not isinstance(fit.ship, Citadel) and self.item.category.name == "Structure Module":
             return False
 
         # EVE doesn't let capital modules be fit onto subcapital hulls. Confirmed by CCP Larrikin that this is dictated

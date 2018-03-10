@@ -62,6 +62,7 @@ class UpdateDialog(wx.Dialog):
         self.browser.Bind(wx.html2.EVT_WEBVIEW_NEWWINDOW, self.OnNewWindow)
 
         link_patterns = [
+            (re.compile("([0-9a-f]{6,40})", re.I), r"https://github.com/pyfa-org/Pyfa/commit/\1"),
             (re.compile("#(\d+)", re.I), r"https://github.com/pyfa-org/Pyfa/issues/\1"),
             (re.compile("@(\w+)", re.I), r"https://github.com/\1")
         ]

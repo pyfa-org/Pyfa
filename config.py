@@ -23,10 +23,11 @@ debug = False
 saveInRoot = False
 
 # Version data
-version = "1.34.0"
-tag = "Stable"
-expansionName = " Arms Race"
-expansionVersion = "1.3"
+
+version = "2.0.0b4"
+tag = "git"
+expansionName = "YC120.2"
+expansionVersion = "1.2"
 evemonMinVersion = "4081"
 
 pyfaPath = None
@@ -76,10 +77,13 @@ def getPyfaRoot():
     return root
 
 
-def getGitVersion():
-    with open(os.path.join(pyfaPath, '.version')) as f:
-        version = f.readline()
-    return version
+def getVersion():
+    if os.path.isfile(os.path.join(pyfaPath, '.version')):
+        with open(os.path.join(pyfaPath, '.version')) as f:
+            gitVersion = f.readline()
+        return gitVersion
+    # if no version file exists, then user is running from source or not an official build
+    return version + " (git)"
 
 
 def getDefaultSave():
@@ -136,7 +140,7 @@ def defPaths(customSavePath=None):
     #    os.environ["SSL_CERT_FILE"] = os.path.join(pyfaPath, "cacert.pem")
 
     # The database where we store all the fits etc
-    saveDB = os.path.join(savePath, "saveddata.db")
+    saveDB = os.path.join(savePath, "saveddata-py3-dev.db")
 
     # The database where the static EVE data from the datadump is kept.
     # This is not the standard sqlite datadump but a modified version created by eos

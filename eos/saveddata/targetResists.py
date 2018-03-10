@@ -19,6 +19,7 @@
 
 import re
 from logbook import Logger
+import eos.db
 
 pyfalog = Logger(__name__)
 
@@ -27,7 +28,10 @@ class TargetResists(object):
     # also determined import/export order - VERY IMPORTANT
     DAMAGE_TYPES = ("em", "thermal", "kinetic", "explosive")
 
-    def __init__(self, emAmount=0, thermalAmount=0, kineticAmount=0, explosiveAmount=0):
+    def __init__(self, *args, **kwargs):
+        self.update(*args, **kwargs)
+
+    def update(self, emAmount=0, thermalAmount=0, kineticAmount=0, explosiveAmount=0):
         self.emAmount = emAmount
         self.thermalAmount = thermalAmount
         self.kineticAmount = kineticAmount
@@ -38,6 +42,14 @@ class TargetResists(object):
         lines = re.split('[\n\r]+', text)
         patterns = []
         numPatterns = 0
+
+        # When we import damage profiles, we create new ones and update old ones. To do this, get a list of current
+        # patterns to allow lookup
+        lookup = {}
+        current = eos.db.getTargetResistsList()
+        for pattern in current:
+            lookup[pattern.name] = pattern
+
         for line in lines:
             try:
                 if line.strip()[0] == "#":  # comments
@@ -66,9 +78,17 @@ class TargetResists(object):
                     continue
 
             if len(fields) == 4:  # Avoid possible blank lines
-                pattern = TargetResists(**fields)
-                pattern.name = name.strip()
+                if name.strip() in lookup:
+                    pattern = lookup[name.strip()]
+                    pattern.update(**fields)
+                    eos.db.save(pattern)
+                else:
+                    pattern = TargetResists(**fields)
+                    pattern.name = name.strip()
+                    eos.db.save(pattern)
                 patterns.append(pattern)
+
+        eos.db.commit()
 
         return patterns, numPatterns
 

@@ -19,7 +19,7 @@ import wx.lib.newevent
 from gui.bitmap_loader import BitmapLoader
 from gui.utils import draw
 from gui.utils import color as color_utils
-
+from service.fit import Fit
 
 _PageChanging, EVT_NOTEBOOK_PAGE_CHANGING = wx.lib.newevent.NewEvent()
 _PageChanged, EVT_NOTEBOOK_PAGE_CHANGED = wx.lib.newevent.NewEvent()
@@ -1057,6 +1057,10 @@ class _TabsContainer(wx.Panel):
         Checks to see if we have a tab preview and sets up the timer for it
         to display
         """
+        sFit = Fit.getInstance()
+        if not sFit.serviceFittingOptions["showTooltip"] or False:
+            return
+
         if self.preview_timer:
             if self.preview_timer.IsRunning():
                 if self.preview_wnd:
@@ -1286,6 +1290,7 @@ class _TabsContainer(wx.Panel):
             if not self.preview_tab.GetSelected():
                 page = self.Parent.GetPage(self.GetTabIndex(self.preview_tab))
                 if page.Snapshot():
+
                     self.preview_wnd = PFNotebookPagePreview(
                                                         self,
                                                         (mposx + 3, mposy + 3),
@@ -1373,7 +1378,7 @@ class PFNotebookPagePreview(wx.Frame):
     def OnWindowPaint(self, event):
         rect = self.GetRect()
         canvas = wx.Bitmap(rect.width, rect.height)
-        mdc = wx.AudoBufferedPaintDC(self)
+        mdc = wx.BufferedPaintDC(self)
         mdc.SelectObject(canvas)
         color = wx.SystemSettings.GetColour(wx.SYS_COLOUR_WINDOW)
         mdc.SetBackground(wx.Brush(color))

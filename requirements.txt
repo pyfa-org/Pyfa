@@ -1,4 +1,4 @@
-wxPython >= 4.0.1
+wxPython == 4.0.0b2
 logbook >= 1.0.0
 matplotlib >= 2.0.0
 python-dateutil
@@ -7,3 +7,5 @@ sqlalchemy >= 1.0.5
 esipy == 0.3.0
 markdown2
 packaging
+roman
+beautifulsoup4

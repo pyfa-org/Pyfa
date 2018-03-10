@@ -95,10 +95,6 @@ if __name__ == "__main__":
     if options.rootsavedata is True:
         config.saveInRoot = True
 
-    # set title if it wasn't supplied by argument
-    if options.title is None:
-        options.title = "pyfa %s%s - Python Fitting Assistant" % (config.version, "" if config.tag.lower() != 'git' else " (git)")
-
     config.debug = options.debug
     config.loggingLevel = config.LOGLEVEL_MAP.get(options.logginglevel.lower(), config.LOGLEVEL_MAP['error'])
     config.defPaths(options.savepath)
@@ -130,6 +126,10 @@ if __name__ == "__main__":
         eos.db.saveddata_meta.create_all()
 
         from gui.mainFrame import MainFrame
+
+        # set title if it wasn't supplied by argument
+        if options.title is None:
+            options.title = "pyfa %s - Python Fitting Assistant" % (config.getVersion())
 
         pyfa = wx.App(False)
         mf = MainFrame(options.title)

@@ -51,6 +51,7 @@ class BoosterView(d.Display):
         "Base Name",
         "Side Effects",
         "Price",
+        "Miscellanea",
     ]
 
     def __init__(self, parent):
@@ -130,6 +131,7 @@ class BoosterView(d.Display):
         fit = sFit.getFit(fitID)
 
         if not fit or fit.isStructure:
+            event.Skip()
             return
 
         trigger = sFit.addBooster(fitID, event.itemID)

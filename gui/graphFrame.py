@@ -170,8 +170,8 @@ class GraphFrame(wx.Frame):
             self.AppendFitToList(fitID)
 
     def close(self, event):
-        self.fitList.fitList.Unbind(wx.EVT_LEFT_DCLICK)
-        self.mainFrame.Unbind(GE.FIT_CHANGED)
+        self.fitList.fitList.Unbind(wx.EVT_LEFT_DCLICK, handler=self.removeItem)
+        self.mainFrame.Unbind(GE.FIT_CHANGED, handler=self.draw)
         event.Skip()
 
     def getView(self):
@@ -229,6 +229,15 @@ class GraphFrame(wx.Frame):
     def draw(self, event=None):
         global mpl_version
 
+        if event is not None:
+            event.Skip()
+
+        # todo: FIX THIS, see #1430. draw() is not being unbound properly when the window closes, this is an easy fix,
+        # but not a proper solution
+        if not self:
+            pyfalog.warning("GraphFrame handled event, however GraphFrame no longer exists. Ignoring event")
+            return
+
         values = self.getValues()
         view = self.getView()
         self.subplot.clear()
@@ -247,7 +256,7 @@ class GraphFrame(wx.Frame):
 
                 self.subplot.plot(x, y)
                 legend.append(fit.name)
-            except:
+            except Exception as ex:
                 pyfalog.warning("Invalid values in '{0}'", fit.name)
                 self.SetStatusText("Invalid values in '%s'" % fit.name)
                 self.canvas.draw()
@@ -299,8 +308,6 @@ class GraphFrame(wx.Frame):
 
         self.canvas.draw()
         self.SetStatusText("")
-        if event is not None:
-            event.Skip()
 
     def onFieldChanged(self, event):
         self.draw()

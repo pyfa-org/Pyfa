@@ -30,7 +30,7 @@ from gui.bitmap_loader import BitmapLoader
 from gui.contextMenu import ContextMenu
 import gui.globalEvents as GE
 from gui.builtinViews.implantEditor import BaseImplantEditorView
-from gui.builtinViews.entityEditor import EntityEditor, BaseValidator
+from gui.builtinViews.entityEditor import EntityEditor, BaseValidator, TextEntryValidatedDialog
 from service.fit import Fit
 from service.character import Character
 from service.network import AuthenticationError, TimeoutError
@@ -42,7 +42,19 @@ from wx.lib.agw.floatspin import FloatSpin
 
 from gui.utils.clipboard import toClipboard, fromClipboard
 
+import roman
+import re
+
 pyfalog = Logger(__name__)
+
+
+def arabicOrRomanToInt(s):
+    m = re.match(r'\d+$', s)
+    if m:
+        i = int(s)
+    else:
+        i = roman.fromRoman(s)
+    return i
 
 
 class CharacterTextValidor(BaseValidator):
@@ -53,14 +65,14 @@ class CharacterTextValidor(BaseValidator):
         return CharacterTextValidor()
 
     def Validate(self, win):
-        entityEditor = win.parent
         textCtrl = self.GetWindow()
         text = textCtrl.GetValue().strip()
+        sChar = Character.getInstance()
 
         try:
             if len(text) == 0:
                 raise ValueError("You must supply a name for the Character!")
-            elif text in [x.name for x in entityEditor.choices]:
+            elif text in [x.name for x in sChar.getCharacterList()]:
                 raise ValueError("Character name already in use, please choose another.")
 
             return True
@@ -230,8 +242,8 @@ class CharacterEditor(wx.Frame):
 
     def saveCharAs(self, event):
         char = self.entityEditor.getActiveEntity()
-        dlg = SaveCharacterAs(self, char.ID)
-        dlg.ShowModal()
+        self.SaveCharacterAs(self, char.ID)
+        wx.PostEvent(self, GE.CharListUpdated())
 
     def revertChar(self, event):
         sChr = Character.getInstance()
@@ -272,6 +284,22 @@ class CharacterEditor(wx.Frame):
             wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fitID))
 
         wx.Frame.Destroy(self)
+
+    @staticmethod
+    def SaveCharacterAs(parent, charID):
+        sChar = Character.getInstance()
+        name = sChar.getCharName(charID)
+
+        dlg = TextEntryValidatedDialog(parent, CharacterTextValidor,
+                                       "Enter a name for your new Character:",
+                                       "Save Character As...")
+        dlg.SetValue("{} Copy".format(name))
+        dlg.txtctrl.SetInsertionPointEnd()
+        dlg.CenterOnParent()
+
+        if dlg.ShowModal() == wx.ID_OK:
+            sChar = Character.getInstance()
+            return sChar.saveCharacterAs(charID, dlg.txtctrl.GetValue().strip())
 
 
 class SkillTreeView(wx.Panel):
@@ -319,8 +347,8 @@ class SkillTreeView(wx.Panel):
 
         self.imageList = wx.ImageList(16, 16)
         tree.SetImageList(self.imageList)
-        self.skillBookImageId = self.imageList.Add(BitmapLoader.getBitmap("skill_small", "gui"))
-        self.skillBookDirtyImageId = self.imageList.Add(BitmapLoader.getBitmap("skill_small_red", "gui"))
+        self.skillBookImageId = self.imageList.Add(wx.Icon(BitmapLoader.getBitmap("skill_small", "gui")))
+        self.skillBookDirtyImageId = self.imageList.Add(wx.Icon(BitmapLoader.getBitmap("skill_small_red", "gui")))
 
         tree.AppendColumn("Skill")
         tree.AppendColumn("Level")
@@ -414,7 +442,8 @@ class SkillTreeView(wx.Panel):
                 lines = text.splitlines()
 
                 for l in lines:
-                    skill, level = l.strip()[:-1].strip(), int(l.strip()[-1])
+                    s = l.strip()
+                    skill, level = s.rsplit(None, 1)[0], arabicOrRomanToInt(s.rsplit(None, 1)[1])
                     skill = char.getSkill(skill)
                     if skill:
                         skill.setLevel(level, ignoreRestrict=True)
@@ -866,36 +895,6 @@ class APIView(wx.Panel):
             exc_type, exc_obj, exc_trace = e
             pyfalog.error("Unable to retrieve {0}\'s skills. Error message:\n{1}".format(charName, exc_obj))
             self.stStatus.SetLabel("Unable to retrieve {}\'s skills. Error message:\n{}".format(charName, exc_obj))
-
-
-class SaveCharacterAs(wx.Dialog):
-    def __init__(self, parent, charID):
-        wx.Dialog.__init__(self, parent, title="Save Character As...", size=wx.Size(300, 60))
-        self.charID = charID
-        self.parent = parent
-        sChar = Character.getInstance()
-        name = sChar.getCharName(charID)
-        bSizer1 = wx.BoxSizer(wx.HORIZONTAL)
-
-        self.input = wx.TextCtrl(self, wx.ID_ANY, name, style=wx.TE_PROCESS_ENTER)
-
-        bSizer1.Add(self.input, 1, wx.ALL, 5)
-        self.input.Bind(wx.EVT_TEXT_ENTER, self.change)
-        self.button = wx.Button(self, wx.ID_OK, "Save")
-        bSizer1.Add(self.button, 0, wx.ALL, 5)
-
-        self.SetSizer(bSizer1)
-        self.Layout()
-        self.Centre(wx.BOTH)
-        self.button.Bind(wx.EVT_BUTTON, self.change)
-
-    def change(self, event):
-        sChar = Character.getInstance()
-        sChar.saveCharacterAs(self.charID, self.input.GetLineText(0))
-        wx.PostEvent(self.parent, GE.CharListUpdated())
-
-        event.Skip()
-        self.Close()
 
 
 class SecStatusDialog(wx.Dialog):

@@ -97,7 +97,7 @@ class CharacterSelection(wx.Panel):
         grantItem = menu.Append(wx.ID_ANY, "Grant Missing Skills")
         self.Bind(wx.EVT_MENU, self.grantMissingSkills, grantItem)
 
-        exportItem = menu.Append(wx.ID_ANY, "Export Missing Skills")
+        exportItem = menu.Append(wx.ID_ANY, "Copy Missing Skills")
         self.Bind(wx.EVT_MENU, self.exportSkills, exportItem)
 
         self.PopupMenu(menu, pos)

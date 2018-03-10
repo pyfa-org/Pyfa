@@ -121,11 +121,11 @@ class PFNetworkPref(PreferenceView):
         self.stPSetLogin = wx.StaticText(panel, wx.ID_ANY, "Username:", wx.DefaultPosition, wx.DefaultSize, 0)
         self.stPSetLogin.Wrap(-1)
         self.editProxySettingsLogin = wx.TextCtrl(panel, wx.ID_ANY, self.nAuth[0], wx.DefaultPosition, wx.DefaultSize,
-                                                  0)
+                                                   0)
         self.stPSetPassword = wx.StaticText(panel, wx.ID_ANY, "Password:", wx.DefaultPosition, wx.DefaultSize, 0)
         self.stPSetPassword.Wrap(-1)
         self.editProxySettingsPassword = wx.TextCtrl(panel, wx.ID_ANY, self.nAuth[1], wx.DefaultPosition,
-                                                     wx.DefaultSize, wx.TE_PASSWORD)
+                                                      wx.DefaultSize, wx.TE_PASSWORD)
         pAuthSizer = wx.BoxSizer(wx.HORIZONTAL)
         pAuthSizer.Add(self.stPSetLogin, 0, wx.ALL | wx.ALIGN_CENTER_VERTICAL, 5)
         pAuthSizer.Add(self.editProxySettingsLogin, 0, wx.ALL | wx.ALIGN_CENTER_VERTICAL, 5)
@@ -134,7 +134,7 @@ class PFNetworkPref(PreferenceView):
         mainSizer.Add(pAuthSizer, 0, wx.EXPAND, 5)
 
         self.stPSAutoDetected = wx.StaticText(panel, wx.ID_ANY, "Auto-detected: ", wx.DefaultPosition, wx.DefaultSize,
-                                              0)
+                                               0)
         self.stPSAutoDetected.Wrap(-1)
         mainSizer.Add(self.stPSAutoDetected, 0, wx.ALL | wx.ALIGN_CENTER_VERTICAL, 5)
 
@@ -150,10 +150,10 @@ class PFNetworkPref(PreferenceView):
         proxy = self.settings.autodetect()
 
         if proxy is not None:
-            addr, port = proxy
-            txt = addr + ":" + str(port)
+             addr, port = proxy
+             txt = addr + ":" + str(port)
         else:
-            txt = "None"
+             txt = "None"
 
         self.stPSAutoDetected.SetLabel("Auto-detected: " + txt)
         self.stPSAutoDetected.Disable()

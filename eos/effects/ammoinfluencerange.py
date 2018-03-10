@@ -1,7 +1,7 @@
 # ammoInfluenceRange
 #
 # Used by:
-# Items from category: Charge (572 of 924)
+# Items from category: Charge (572 of 925)
 type = "passive"
 
 

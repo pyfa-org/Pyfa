@@ -72,21 +72,9 @@ class TargetResists(object):
         db.save(p)
 
     def importPatterns(self, text):
-        lookup = {}
-        current = self.getTargetResistsList()
-        for pattern in current:
-            lookup[pattern.name] = pattern
-
         imports, num = es_TargetResists.importPatterns(text)
-        for pattern in imports:
-            if pattern.name in lookup:
-                match = lookup[pattern.name]
-                match.__dict__.update(pattern.__dict__)
-            else:
-                db.save(pattern)
-        db.commit()
-
         lenImports = len(imports)
+
         if lenImports == 0:
             raise ImportError("No patterns found for import")
         if lenImports != num:

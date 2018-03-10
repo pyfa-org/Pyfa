@@ -102,9 +102,11 @@ class AttributeEditor(wx.Frame):
                             style=wx.FD_OPEN | wx.FD_FILE_MUST_EXIST)
         if dlg.ShowModal() == wx.ID_OK:
             path = dlg.GetPath()
-            with open(path, 'rb') as csvfile:
+            with open(path, 'r') as csvfile:
                 spamreader = csv.reader(csvfile)
                 for row in spamreader:
+                    if len(row) == 0:  # csvwriter seems to added blank lines to the end sometimes
+                        continue
                     itemID, attrID, value = row
                     item = getItem(int(itemID))
                     attr = getAttributeInfo(int(attrID))
@@ -123,7 +125,7 @@ class AttributeEditor(wx.Frame):
 
         if dlg.ShowModal() == wx.ID_OK:
             path = dlg.GetPath()
-            with open(path, 'wb') as csvfile:
+            with open(path, 'w', encoding='utf-8') as csvfile:
                 writer = csv.writer(csvfile)
                 for item in items:
                     for key, override in item.overrides.items():
