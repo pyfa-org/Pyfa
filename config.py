@@ -6,7 +6,7 @@ from logbook import CRITICAL, DEBUG, ERROR, FingersCrossedHandler, INFO, Logger,
 
 pyfalog = Logger(__name__)
 
-# Load variable overrides specific to distribution type
+# Load variable overrides specific to distribution type 2
 try:
     import configforced
 except ImportError:
