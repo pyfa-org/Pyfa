@@ -85,36 +85,36 @@ class Network(object):
         # Set up some things for the request
         versionString = "{0} {1} - {2} {3}".format(config.version, config.tag, config.expansionName,
                                                    config.expansionVersion)
-        headers = {"User-Agent": "pyfa {0} (Python-urllib2)".format(versionString)}
+        headers = {"User-Agent": "pyfa {0} (python-requests {1})".format(versionString, requests.__version__)}
+        # user-agent: pyfa 2.0.0b4 git -YC120.2 1.2 (python-requests 2.18.4)
 
-          # proxy = NetworkSettings.getInstance().getProxySettings()
-        # if proxy is not None:
-        #     # proxy is a tuple of (host, port):  (u'192.168.20.1', 3128)
-        #     proxy_auth = NetworkSettings.getInstance().getProxyAuthDetails()
-        #     # proxy_auth is a tuple of (login, password) or None
-        #     if proxy_auth is not None:
-        #         # add login:password@ in front of proxy address
-        #         proxy_handler = urllib.request.ProxyHandler({
-        #             'https': '{0}:{1}@{2}:{3}'.format(
-        #                     proxy_auth[0], proxy_auth[1], proxy[0], proxy[1])
-        #         })
-        #     else:
-        #         # build proxy handler with no login/pass info
-        #         proxy_handler = urllib.request.ProxyHandler({'https': "{0}:{1}".format(proxy[0], proxy[1])})
-        #     opener = urllib.request.build_opener(proxy_handler)
-        #     urllib.request.install_opener(opener)
-        # else:
-        #     # This is a bug fix, explicitly disable possibly previously installed
-        #     # opener with proxy, by urllib2.install_opener() a few lines above in code.
-        #     # Now this explicitly disables proxy handler, "uninstalling" opener.
-        #     # This is used in case when user had proxy enabled, so proxy_handler was already
-        #     # installed globally, and then user had disabled the proxy, so we should clear that opener
-        #     urllib.request.install_opener(None)
-        #     # another option could be installing a default opener:
-        #     # urllib2.install_opener(urllib2.build_opener())
+        # python-requests supports setting proxy for request as parameter to get() / post()
+        # in a form like: proxies = { 'http': 'http://10.10.1.10:3128', 'https': 'http://10.10.1.10:1080' }
+        # or with HTTP Basic auth support: proxies = {'http': 'http://user:pass@10.10.1.10:3128/'}
+        # then you do: requests.get('http://example.org', proxies=proxies)
+
+        proxies = None
+        proxy_settings = NetworkSettings.getInstance().getProxySettings()
+        # proxy_settings is a tuple of (host, port), like  ('192.168.20.1', 3128), or None
+
+        if proxy_settings is not None:
+            # form proxy address in format "http://host:port
+            proxy_host_port = '{}:{}'.format(proxy_settings[0], proxy_settings[1])
+            proxy_auth_details = NetworkSettings.getInstance().getProxyAuthDetails()
+            # proxy_auth_details is a tuple of (login, password), or None
+            user_pass = ''
+            if proxy_auth_details is not None:
+                # construct prefix in form "user:password@"
+                user_pass = '{}:{}@'.format(proxy_auth_details[0], proxy_auth_details[1])
+            proxies = {
+                'http': 'http://' + user_pass + proxy_host_port,
+                'https': 'http://' + user_pass + proxy_host_port
+            }
+            # final form: { 'http': 'http://user:password@host:port', ... }, or
+            #             { 'http': 'http://host:port', ... }   if no auth info.
 
         try:
-            resp = requests.get(url, headers=headers, **kwargs)
+            resp = requests.get(url, headers=headers, proxies=proxies, **kwargs)
             resp.raise_for_status()
             return resp
         except requests.exceptions.HTTPError as error:
