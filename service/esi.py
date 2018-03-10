@@ -8,6 +8,7 @@ import config
 import base64
 import json
 import os
+import config
 
 import eos.db
 import datetime
@@ -47,7 +48,7 @@ class Esi(object):
 
     @classmethod
     def initEsiApp(cls):
-        cls.esiapp = EsiApp(cache=file_cache)
+        cls.esiapp = EsiApp(cache=file_cache, cache_time=None, cache_prefix='pyfa{0}-esipy-'.format(config.version))
         cls.esi_v1 = cls.esiapp.get_v1_swagger
         cls.esi_v4 = cls.esiapp.get_v4_swagger
 

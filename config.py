@@ -40,7 +40,7 @@ logging_setup = None
 cipher = None
 clientHash = None
 
-ESI_AUTH_PROXY = "http://localhost:5015" # "https://blitzmann.pythonanywhere.com" // need to get this set up, and actually put on it's own domain
+ESI_AUTH_PROXY = "https://www.pyfa.io" # "http://localhost:5015"
 ESI_CACHE = 'esi_cache'
 
 LOGLEVEL_MAP = {
@@ -140,7 +140,7 @@ def defPaths(customSavePath=None):
     #    os.environ["SSL_CERT_FILE"] = os.path.join(pyfaPath, "cacert.pem")
 
     # The database where we store all the fits etc
-    saveDB = os.path.join(savePath, "saveddata-py3-dev.db")
+    saveDB = os.path.join(savePath, "saveddata-py3-esi-dev.db")
 
     # The database where the static EVE data from the datadump is kept.
     # This is not the standard sqlite datadump but a modified version created by eos
