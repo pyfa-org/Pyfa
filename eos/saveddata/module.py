@@ -726,6 +726,7 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
                 Applies to MJD/MJFG
                 """
                 effective_reload_time = max(raw_reload_time, self.reactivationDelay, 0)
+                speed = speed + effective_reload_time
         else:
             """
             Currently no other modules would have a reactivation delay, so for sanities sake don't try and account for it.
