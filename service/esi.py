@@ -100,7 +100,7 @@ class Esi(object):
         return self.settings.get('server') == Servers.SISI
 
     def delSsoCharacter(self, id):
-        char = eos.db.getSsoCharacter(id)
+        char = eos.db.getSsoCharacter(id, config.getClientSecret())
         eos.db.remove(char)
 
     def getSsoCharacters(self):
@@ -236,4 +236,5 @@ class Esi(object):
         Esi.update_token(currentCharacter, auth_response)  # this also sets the esi security token
 
         eos.db.save(currentCharacter)
+        wx.PostEvent(self.mainFrame, GE.SsoLogin(character = currentCharacter))
 

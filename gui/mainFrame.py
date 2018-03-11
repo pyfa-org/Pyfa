@@ -237,10 +237,6 @@ class MainFrame(wx.Frame):
         self.sUpdate.CheckUpdate(self.ShowUpdateBox)
 
         self.Bind(GE.EVT_SSO_LOGIN, self.onSSOLogin)
-        self.Bind(GE.EVT_SSO_LOGOUT, self.onSSOLogout)
-
-        self.titleTimer = wx.Timer(self)
-        self.Bind(wx.EVT_TIMER, self.updateTitle, self.titleTimer)
 
     def ShowUpdateBox(self, release, version):
         dlg = UpdateDialog(self, release, version)
@@ -612,35 +608,10 @@ class MainFrame(wx.Frame):
         dlg = CrestFittings(self)
         dlg.Show()
 
-    def updateTitle(self, event):
-        sCrest = Esi.getInstance()
-        char = sCrest.implicitCharacter
-        if char:
-            t = time.gmtime(char.eve.expires - time.time())
-            sTime = time.strftime("%H:%M:%S", t)
-            newTitle = "%s | %s - %s" % (self.title, char.name, sTime)
-            self.SetTitle(newTitle)
-
     def onSSOLogin(self, event):
         menu = self.GetMenuBar()
         menu.Enable(menu.eveFittingsId, True)
         menu.Enable(menu.exportToEveId, True)
-
-        if event.type == CrestModes.IMPLICIT:
-            menu.SetLabel(menu.ssoLoginId, "Logout Character")
-            self.titleTimer.Start(1000)
-
-    def onSSOLogout(self, event):
-        self.titleTimer.Stop()
-        self.SetTitle(self.title)
-
-        menu = self.GetMenuBar()
-        if event.type == CrestModes.IMPLICIT or event.numChars == 0:
-            menu.Enable(menu.eveFittingsId, False)
-            menu.Enable(menu.exportToEveId, False)
-
-        if event.type == CrestModes.IMPLICIT:
-            menu.SetLabel(menu.ssoLoginId, "Login to EVE")
 
     def updateCrestMenus(self, type):
         # in case we are logged in when switching, change title back
