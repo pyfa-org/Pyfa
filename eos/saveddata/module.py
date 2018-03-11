@@ -752,7 +752,7 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
 
     @property
     def disallowRepeatingAction(self):
-        return self.getModifiedItemAttr("disallowRepeatingAction", 0)
+        return self.getModifiedItemAttr("disallowRepeatingActivation", 0)
 
     @property
     def reactivationDelay(self):
