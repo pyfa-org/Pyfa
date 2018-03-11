@@ -23,7 +23,8 @@ import datetime
 
 from eos.db import saveddata_meta
 from eos.db.saveddata.implant import charImplants_table
-from eos.effectHandlerHelpers import HandledImplantBoosterList
+from eos.db.saveddata.ssoCharacter import sso_character_map_table
+from eos.effectHandlerHelpers import HandledImplantBoosterList, HandledSsoCharacterList
 from eos.saveddata.implant import Implant
 from eos.saveddata.user import User
 from eos.saveddata.character import Character, Skill
@@ -59,6 +60,15 @@ mapper(Character, characters_table,
                    single_parent=True,
                    primaryjoin=charImplants_table.c.charID == characters_table.c.ID,
                    secondaryjoin=charImplants_table.c.implantID == Implant.ID,
-                   secondary=charImplants_table)
+                   secondary=charImplants_table),
+           "_Character__ssoCharacters"    : relation(
+                   SsoCharacter,
+                   collection_class=HandledSsoCharacterList,
+                   cascade='all,delete-orphan',
+                   backref='character',
+                   single_parent=True,
+                   primaryjoin=sso_character_map_table.c.characterID == characters_table.c.ID,
+                   secondaryjoin=sso_character_map_table.c.ssoCharacterID == SsoCharacter.ID,
+                   secondary=sso_character_map_table)
        }
        )

@@ -205,6 +205,13 @@ class HandledImplantBoosterList(HandledList):
         HandledList.append(self, thing)
 
 
+class HandledSsoCharacterList(HandledList):
+    def append(self, character):
+        for x in self:
+            print(x)
+        HandledList.append(self, character)
+
+
 class HandledProjectedModList(HandledList):
     def append(self, proj):
         if proj.isInvalid:
