@@ -18,7 +18,7 @@ from logbook import Logger
 import calendar
 from service.esi import Esi
 from esipy.exceptions import APIException
-
+from service.port import ESIExportException
 
 pyfalog = Logger(__name__)
 
@@ -147,11 +147,10 @@ class CrestFittings(wx.Frame):
             pyfalog.error(msg)
             self.statusbar.SetStatusText(msg)
         except APIException as ex:
-            del waitDialog  # Can't do this in a finally because then it obscures the message dialog 
+            del waitDialog  # Can't do this in a finally because then it obscures the message dialog
             ESIExceptionHandler(self, ex)
         except Exception as ex:
             del waitDialog
-
 
     def importFitting(self, event):
         selection = self.fitView.fitSelection
@@ -186,7 +185,7 @@ class ESIExceptionHandler(object):
     def __init__(self, parentWindow, ex):
         if ex.response['error'] == "invalid_token":
             dlg = wx.MessageDialog(parentWindow,
-                                   "There was an error retrieving fits for the selected character due to an invalid token. Please try "
+                                   "There was an error validating characters' SSO token. Please try "
                                    "logging into the character again to reset the token.", "Invalid Token",
                                    wx.OK | wx.ICON_ERROR)
             dlg.ShowModal()
@@ -298,6 +297,12 @@ class ExportToEve(wx.Frame):
             msg = "Connection error, please check your internet connection"
             pyfalog.error(msg)
             self.statusbar.SetStatusText(msg)
+        except ESIExportException as ex:
+            pyfalog.error(ex)
+            self.statusbar.SetStatusText("ERROR", 0)
+            self.statusbar.SetStatusText(ex.args[0], 1)
+        except APIException as ex:
+            ESIExceptionHandler(self, ex)
 
 
 class CrestMgmt(wx.Dialog):

@@ -54,6 +54,10 @@ from abc import ABCMeta, abstractmethod
 from service.esi import Esi
 from collections import OrderedDict
 
+
+class ESIExportException(Exception):
+    pass
+
 pyfalog = Logger(__name__)
 
 EFT_SLOT_ORDER = [Slot.LOW, Slot.MED, Slot.HIGH, Slot.RIG, Slot.SUBSYSTEM, Slot.SERVICE]
@@ -348,8 +352,6 @@ class Port(object):
         sCrest = Esi.getInstance()
         sFit = svcFit.getInstance()
 
-        eve = sCrest.eve
-
         # max length is 50 characters
         name = ofit.name[:47] + '...' if len(ofit.name) > 50 else ofit.name
         fit['name'] = name
@@ -417,6 +419,9 @@ class Port(object):
             item['quantity'] = fighter.amountActive
             item['type_id'] = fighter.item.ID
             fit['items'].append(item)
+
+        if len(fit['items']) == 0:
+            raise ESIExportException("Cannot export fitting: module list cannot be empty.")
 
         return json.dumps(fit)
 
