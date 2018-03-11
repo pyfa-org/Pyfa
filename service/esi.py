@@ -44,15 +44,18 @@ class Esi(object):
     esi_v1 = None
     esi_v4 = None
 
+    _initializing = None
+
     _instance = None
 
     @classmethod
     def initEsiApp(cls):
-        cls.esiapp = EsiApp(cache=file_cache, cache_time=None, cache_prefix='pyfa{0}-esipy-'.format(config.version))
-        cls.esi_v1 = cls.esiapp.get_v1_swagger
-        cls.esi_v4 = cls.esiapp.get_v4_swagger
-
-        # esiRdy.set()
+        if cls._initializing is None:
+            cls._initializing = True
+            cls.esiapp = EsiApp(cache=file_cache, cache_time=None, cache_prefix='pyfa{0}-esipy-'.format(config.version))
+            cls.esi_v1 = cls.esiapp.get_v1_swagger
+            cls.esi_v4 = cls.esiapp.get_v4_swagger
+            cls._initializing = False
 
     @classmethod
     def genEsiClient(cls, security=None):
@@ -102,6 +105,7 @@ class Esi(object):
     def delSsoCharacter(self, id):
         char = eos.db.getSsoCharacter(id, config.getClientSecret())
         eos.db.remove(char)
+        wx.PostEvent(self.mainFrame, GE.SsoLogout(charID=id))
 
     def getSsoCharacters(self):
         chars = eos.db.getSsoCharacters(config.getClientSecret())

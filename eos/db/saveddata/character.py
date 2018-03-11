@@ -32,7 +32,6 @@ from eos.saveddata.ssocharacter import SsoCharacter
 characters_table = Table("characters", saveddata_meta,
                          Column("ID", Integer, primary_key=True),
                          Column("name", String, nullable=False),
-                         Column("ssoCharacterID", ForeignKey("ssoCharacter.ID"), nullable=True),
                          Column("defaultLevel", Integer, nullable=True),
                          Column("alphaCloneID", Integer, nullable=True),
                          Column("ownerID", ForeignKey("users.ID"), nullable=True),

@@ -17,7 +17,7 @@
 # along with eos.  If not, see <http://www.gnu.org/licenses/>.
 # ===============================================================================
 
-from sqlalchemy import Table, Column, Integer, String, DateTime, UniqueConstraint
+from sqlalchemy import Table, Column, Integer, String, DateTime, UniqueConstraint, ForeignKey
 from sqlalchemy.orm import mapper
 import datetime
 
@@ -36,6 +36,11 @@ sso_table = Table("ssoCharacter", saveddata_meta,
                     Column("modified", DateTime, nullable=True, onupdate=datetime.datetime.now),
                     UniqueConstraint('client', 'characterID', name='uix_client_characterID'),
                     UniqueConstraint('client', 'characterName', name='uix_client_characterName')
+                  )
+
+sso_character_map_table = Table("ssoCharacterMap", saveddata_meta,
+                    Column("characterID", ForeignKey("characters.ID"), primary_key=True),
+                    Column("ssoCharacterID", ForeignKey("ssoCharacter.ID"), primary_key=True),
                   )
 
 mapper(SsoCharacter, sso_table)

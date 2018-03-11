@@ -12,7 +12,7 @@ __all__ = [
     "miscData",
     "targetResists",
     "override",
-    "crest",
+    "ssoCharacter",
     "implantSet",
     "loadDefaultDatabaseValues"
 ]
