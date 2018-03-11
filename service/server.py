@@ -85,7 +85,7 @@ class AuthHandler(http.server.BaseHTTPRequestHandler):
                 pyfalog.info("Successfully logged into EVE.")
                 msg = "If you see this message then it means you should be logged into CREST. You may close this window and return to the application."
             else:
-                # For implicit mode, we have to serve up the page which will take the hash and redirect useing a querystring
+                # For implicit mode, we have to serve up the page which will take the hash and redirect using a querystring
                 pyfalog.info("Processing response from EVE Online.")
                 msg = "Processing response from EVE Online"
         except Exception as ex:

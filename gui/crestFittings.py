@@ -17,6 +17,8 @@ import gui.globalEvents as GE
 from logbook import Logger
 import calendar
 from service.esi import Esi
+from esipy.exceptions import APIException
+
 
 pyfalog = Logger(__name__)
 
@@ -131,8 +133,9 @@ class CrestFittings(wx.Frame):
 
     def fetchFittings(self, event):
         sCrest = Esi.getInstance()
+        waitDialog = wx.BusyInfo("Fetching fits, please wait...", parent=self)
+
         try:
-            waitDialog = wx.BusyInfo("Fetching fits, please wait...", parent=self)
             fittings = sCrest.getFittings(self.getActiveCharacter())
             # self.cacheTime = fittings.get('cached_until')
             # self.updateCacheStatus(None)
@@ -143,6 +146,12 @@ class CrestFittings(wx.Frame):
             msg = "Connection error, please check your internet connection"
             pyfalog.error(msg)
             self.statusbar.SetStatusText(msg)
+        except APIException as ex:
+            del waitDialog  # Can't do this in a finally because then it obscures the message dialog 
+            ESIExceptionHandler(self, ex)
+        except Exception as ex:
+            del waitDialog
+
 
     def importFitting(self, event):
         selection = self.fitView.fitSelection
@@ -171,6 +180,20 @@ class CrestFittings(wx.Frame):
                 msg = "Connection error, please check your internet connection"
                 pyfalog.error(msg)
                 self.statusbar.SetStatusText(msg)
+
+
+class ESIExceptionHandler(object):
+    def __init__(self, parentWindow, ex):
+        if ex.response['error'] == "invalid_token":
+            dlg = wx.MessageDialog(parentWindow,
+                                   "There was an error retrieving fits for the selected character due to an invalid token. Please try "
+                                   "logging into the character again to reset the token.", "Invalid Token",
+                                   wx.OK | wx.ICON_ERROR)
+            dlg.ShowModal()
+            pyfalog.error(ex)
+        else:
+            # We don't know how to handle the error, raise it for the global error handler to pick it up
+            raise ex
 
 
 class ExportToEve(wx.Frame):

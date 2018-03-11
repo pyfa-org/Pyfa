@@ -227,12 +227,13 @@ class Esi(object):
         cdata = esisecurity.verify()
         print(cdata)
 
-        currentCharacter = self.getSsoCharacter(cdata['CharacterID'])
+        currentCharacter = self.getSsoCharacter(cdata['CharacterName'])
 
         if currentCharacter is None:
             currentCharacter = SsoCharacter(cdata['CharacterID'], cdata['CharacterName'], config.getClientSecret())
             currentCharacter.esi_client = Esi.genEsiClient(esisecurity)
-            Esi.update_token(currentCharacter, auth_response)  # this also sets the esi security token
+
+        Esi.update_token(currentCharacter, auth_response)  # this also sets the esi security token
 
         eos.db.save(currentCharacter)
 
