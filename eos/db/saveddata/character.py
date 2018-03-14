@@ -64,9 +64,7 @@ mapper(Character, characters_table,
            "_Character__ssoCharacters"    : relation(
                    SsoCharacter,
                    collection_class=HandledSsoCharacterList,
-                   cascade='all,delete-orphan',
-                   backref='character',
-                   single_parent=True,
+                   cascade='all',
                    primaryjoin=sso_character_map_table.c.characterID == characters_table.c.ID,
                    secondaryjoin=sso_character_map_table.c.ssoCharacterID == SsoCharacter.ID,
                    secondary=sso_character_map_table)
