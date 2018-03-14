@@ -347,6 +347,22 @@ class Character(object):
             chars = None
         return char.apiID or "", char.apiKey or "", char.defaultChar or "", chars or []
 
+    @staticmethod
+    def getSsoCharacter(charID):
+        char = eos.db.getCharacter(charID)
+        sso = char.getSsoCharacter(config.getClientSecret())
+        return sso
+
+    @staticmethod
+    def setSsoCharacter(charID, ssoCharID):
+        char = eos.db.getCharacter(charID)
+        if ssoCharID is not None:
+            sso = eos.db.getSsoCharacter(ssoCharID, config.getClientSecret())
+            char.setSsoCharacter(sso, config.getClientSecret())
+        else:
+            char.setSsoCharacter(None, config.getClientSecret())
+        eos.db.commit()
+
     def apiFetch(self, charID, callback):
         thread = UpdateAPIThread(charID, (self.apiFetchCallback, callback))
         thread.start()

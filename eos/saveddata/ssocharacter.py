@@ -49,3 +49,9 @@ class SsoCharacter(object):
                 self.accessTokenExpires - datetime.datetime.utcnow()
             ).total_seconds()
         }
+
+
+    def __repr__(self):
+        return "SsoCharacter(ID={}, name={}, client={}) at {}".format(
+                self.ID, self.characterName, self.client, hex(id(self))
+        )

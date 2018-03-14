@@ -163,6 +163,18 @@ class Character(object):
     def name(self, name):
         self.savedName = name
 
+    def setSsoCharacter(self, character, clientHash):
+        if character is not None:
+            self.__ssoCharacters.append(character)
+        else:
+            for x in self.__ssoCharacters:
+                if x.client == clientHash:
+                    self.__ssoCharacters.remove(x)
+
+
+    def getSsoCharacter(self, clientHash):
+        return next((x for x in self.__ssoCharacters if x.client == clientHash), None)
+
     @property
     def alphaCloneID(self):
         return self.__alphaCloneID

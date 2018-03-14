@@ -33,6 +33,7 @@ from gui.builtinViews.implantEditor import BaseImplantEditorView
 from gui.builtinViews.entityEditor import EntityEditor, BaseValidator, TextEntryValidatedDialog
 from service.fit import Fit
 from service.character import Character
+from service.esi import Esi
 from service.network import AuthenticationError, TimeoutError
 from service.market import Market
 from logbook import Logger
@@ -174,7 +175,7 @@ class CharacterEditor(wx.Frame):
 
         self.viewsNBContainer.AddPage(self.sview, "Skills")
         self.viewsNBContainer.AddPage(self.iview, "Implants")
-        self.viewsNBContainer.AddPage(self.aview, "API")
+        self.viewsNBContainer.AddPage(self.aview, "EVE SSO")
 
         mainSizer.Add(self.viewsNBContainer, 1, wx.EXPAND | wx.ALL, 5)
 
@@ -746,7 +747,6 @@ class APIView(wx.Panel):
         fgSizerInput.Add(self.m_staticCharText, 0, wx.ALL | wx.ALIGN_RIGHT | wx.ALIGN_CENTER_VERTICAL, 5)
 
         self.charChoice = wx.Choice(self, wx.ID_ANY, style=0)
-        self.charChoice.Append("No Selection", 0)
         fgSizerInput.Add(self.charChoice, 1, wx.ALL | wx.EXPAND, 5)
 
         pmainSizer.Add(fgSizerInput, 0, wx.EXPAND, 5)
@@ -759,28 +759,51 @@ class APIView(wx.Panel):
 
         self.charEditor.entityEditor.Bind(wx.EVT_CHOICE, self.charChanged)
 
+        self.charChoice.Bind(wx.EVT_CHOICE, self.ssoCharChanged)
+
         self.SetSizer(pmainSizer)
         self.Layout()
         self.charChanged(None)
 
-    def charChanged(self, event):
+    def ssoCharChanged(self, event):
         sChar = Character.getInstance()
         activeChar = self.charEditor.entityEditor.getActiveEntity()
+        sChar.setSsoCharacter(activeChar.ID, self.getActiveCharacter())
+        event.Skip()
 
-        ID, key, char, chars = sChar.getApiDetails(activeChar.ID)
+    def getActiveCharacter(self):
+        selection = self.charChoice.GetCurrentSelection()
+        return self.charChoice.GetClientData(selection) if selection is not -1 else None
+
+    def charChanged(self, event):
+        sChar = Character.getInstance()
+        sEsi = Esi.getInstance()
+
+        activeChar = self.charEditor.entityEditor.getActiveEntity()
+        sso = sChar.getSsoCharacter(activeChar.ID)
+
+        ssoChars = sEsi.getSsoCharacters()
 
         self.charChoice.Clear()
 
-        if chars:
-            for charName in chars:
-                self.charChoice.Append(charName)
-            self.charChoice.SetStringSelection(char)
-            self.charChoice.Enable(True)
-        else:
-            self.charChoice.Append("No characters...", 0)
-            self.charChoice.SetSelection(0)
-            self.charChoice.Enable(False)
+        noneID = self.charChoice.Append("None", None)
 
+        for char in ssoChars:
+            currId = self.charChoice.Append(char.characterName, char.ID)
+
+            if sso is not None and char.ID == sso.ID:
+                self.charChoice.SetSelection(currId)
+            if sso is None:
+                self.charChoice.SetSelection(noneID)
+        #
+        # if chars:
+        #     for charName in chars:
+        #         self.charChoice.Append(charName)
+        #     self.charChoice.SetStringSelection(char)
+        # else:
+        #     self.charChoice.Append("No characters...", 0)
+        #     self.charChoice.SetSelection(0)
+        #
         if activeChar.name in ("All 0", "All 5"):
             self.Enable(False)
             self.stDisabledTip.Show()
