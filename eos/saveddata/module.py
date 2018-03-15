@@ -710,7 +710,7 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
 
         # Module can only fire one shot at a time, think bomb launchers or defender launchers
         if self.disallowRepeatingAction:
-            if numShots > 1:
+            if numShots > 0:
                 """
                 The actual mechanics behind this is complex.  Behavior will be (for 3 ammo):
                     fire, reactivation delay, fire, reactivation delay, fire, max(reactivation delay, reload)
