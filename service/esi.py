@@ -104,6 +104,12 @@ class Esi(object):
 
     def delSsoCharacter(self, id):
         char = eos.db.getSsoCharacter(id, config.getClientSecret())
+
+        # There is an issue in which the SSO character is not removed from any linked characters - a reference to the
+        # sso character remains even though the SSO character is deleted which should have deleted the link. This is a
+        # work around until we can figure out why. Manually delete SSOCharacter from all of it's characters
+        for x in char.characters:
+            x._Character__ssoCharacters.remove(char)
         eos.db.remove(char)
         wx.PostEvent(self.mainFrame, GE.SsoLogout(charID=id))
 

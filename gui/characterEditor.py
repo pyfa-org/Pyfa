@@ -45,6 +45,7 @@ from gui.utils.clipboard import toClipboard, fromClipboard
 
 import roman
 import re
+import webbrowser
 
 pyfalog = Logger(__name__)
 
@@ -723,7 +724,6 @@ class APIView(wx.Panel):
         self.charEditor = self.Parent.Parent  # first parent is Notebook, second is Character Editor
         self.SetBackgroundColour(wx.SystemSettings.GetColour(wx.SYS_COLOUR_WINDOW))
 
-
         pmainSizer = wx.BoxSizer(wx.VERTICAL)
 
         hintSizer = wx.BoxSizer(wx.HORIZONTAL)
@@ -733,6 +733,13 @@ class APIView(wx.Panel):
                                            "Please select another character or make a new one.", style=wx.ALIGN_CENTER)
         self.stDisabledTip.Wrap(-1)
         hintSizer.Add(self.stDisabledTip, 0, wx.TOP | wx.BOTTOM, 10)
+
+        self.noCharactersTip = wx.StaticText(self, wx.ID_ANY,
+                                           "You haven't logging into EVE SSO with any characters yet. Please use the "
+                                           "button below to log into EVE.", style=wx.ALIGN_CENTER)
+        self.noCharactersTip.Wrap(-1)
+        hintSizer.Add(self.noCharactersTip, 0, wx.TOP | wx.BOTTOM, 10)
+
         self.stDisabledTip.Hide()
         hintSizer.AddStretchSpacer()
         pmainSizer.Add(hintSizer, 0, wx.EXPAND, 5)
@@ -744,26 +751,27 @@ class APIView(wx.Panel):
 
         self.m_staticCharText = wx.StaticText(self, wx.ID_ANY, "Character:", wx.DefaultPosition, wx.DefaultSize, 0)
         self.m_staticCharText.Wrap(-1)
-        fgSizerInput.Add(self.m_staticCharText, 0, wx.ALL | wx.ALIGN_RIGHT | wx.ALIGN_CENTER_VERTICAL, 5)
+        fgSizerInput.Add(self.m_staticCharText, 0, wx.ALL | wx.ALIGN_RIGHT | wx.ALIGN_CENTER_VERTICAL, 10)
 
         self.charChoice = wx.Choice(self, wx.ID_ANY, style=0)
-        fgSizerInput.Add(self.charChoice, 1, wx.ALL | wx.EXPAND, 5)
+        fgSizerInput.Add(self.charChoice, 1, wx.ALL | wx.EXPAND, 10)
 
         pmainSizer.Add(fgSizerInput, 0, wx.EXPAND, 5)
 
-        btnSizer = wx.BoxSizer(wx.HORIZONTAL)
-        pmainSizer.Add(btnSizer, 0, wx.EXPAND, 5)
-
+        self.addButton = wx.Button(self, wx.ID_ANY, "Log In with EVE SSO", wx.DefaultPosition, wx.DefaultSize, 0)
+        self.addButton.Bind(wx.EVT_BUTTON, self.addCharacter)
+        pmainSizer.Add(self.addButton, 0, wx.ALL | wx.ALIGN_CENTER, 5)
         self.stStatus = wx.StaticText(self, wx.ID_ANY, wx.EmptyString)
         pmainSizer.Add(self.stStatus, 0, wx.ALL, 5)
-
+        self.charEditor.mainFrame.Bind(GE.EVT_SSO_LOGOUT, self.ssoListChanged)
+        self.charEditor.mainFrame.Bind(GE.EVT_SSO_LOGIN, self.ssoListChanged)
         self.charEditor.entityEditor.Bind(wx.EVT_CHOICE, self.charChanged)
 
         self.charChoice.Bind(wx.EVT_CHOICE, self.ssoCharChanged)
 
         self.SetSizer(pmainSizer)
         self.Layout()
-        self.charChanged(None)
+        self.ssoListChanged(None)
 
     def ssoCharChanged(self, event):
         sChar = Character.getInstance()
@@ -771,9 +779,29 @@ class APIView(wx.Panel):
         sChar.setSsoCharacter(activeChar.ID, self.getActiveCharacter())
         event.Skip()
 
+    def addCharacter(self, event):
+        sCrest = Esi.getInstance()
+        uri = sCrest.startServer()
+        webbrowser.open(uri)
+
     def getActiveCharacter(self):
         selection = self.charChoice.GetCurrentSelection()
         return self.charChoice.GetClientData(selection) if selection is not -1 else None
+
+    def ssoListChanged(self, event):
+        sEsi = Esi.getInstance()
+        ssoChars = sEsi.getSsoCharacters()
+
+        if len(ssoChars) == 0:
+            self.charChoice.Hide()
+            self.m_staticCharText.Hide()
+            self.noCharactersTip.Show()
+        else:
+            self.noCharactersTip.Hide()
+            self.m_staticCharText.Show()
+            self.charChoice.Show()
+
+        self.charChanged(event)
 
     def charChanged(self, event):
         sChar = Character.getInstance()

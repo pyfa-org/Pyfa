@@ -115,10 +115,7 @@ class CrestFittings(wx.Frame):
             self.statusbar.SetStatusText("Cached for %s" % sTime, 0)
 
     def ssoLogout(self, event):
-        if event.type == CrestModes.IMPLICIT:
-            self.Close()
-        else:
-            self.updateCharList()
+        self.updateCharList()
         event.Skip()  # continue event
 
     def OnClose(self, event):
@@ -307,7 +304,7 @@ class ExportToEve(wx.Frame):
 
 class CrestMgmt(wx.Dialog):
     def __init__(self, parent):
-        wx.Dialog.__init__(self, parent, id=wx.ID_ANY, title="CREST Character Management", pos=wx.DefaultPosition,
+        wx.Dialog.__init__(self, parent, id=wx.ID_ANY, title="SSO Character Management", pos=wx.DefaultPosition,
                            size=wx.Size(550, 250), style=wx.DEFAULT_DIALOG_STYLE)
         self.mainFrame = parent
         mainSizer = wx.BoxSizer(wx.HORIZONTAL)
@@ -316,8 +313,6 @@ class CrestMgmt(wx.Dialog):
 
         self.lcCharacters.InsertColumn(0, heading='Character')
         self.lcCharacters.InsertColumn(1, heading='Character ID')
-        self.lcCharacters.InsertColumn(2, heading='Access Token')
-        self.lcCharacters.InsertColumn(3, heading='Refresh Token')
 
         self.popCharList()
 
@@ -355,7 +350,7 @@ class CrestMgmt(wx.Dialog):
 
         for index, char in enumerate(chars):
             self.lcCharacters.InsertItem(index, char.characterName)
-            self.lcCharacters.SetStringItem(index, 1, char.refreshToken)
+            self.lcCharacters.SetItem(index, 1, str(char.characterID))
             self.lcCharacters.SetItemData(index, char.ID)
 
         self.lcCharacters.SetColumnWidth(0, wx.LIST_AUTOSIZE)

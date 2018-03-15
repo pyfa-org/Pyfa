@@ -76,7 +76,7 @@ sd_lock = threading.RLock()
 # noinspection PyPep8
 from eos.db.gamedata import alphaClones, attribute, category, effect, group, icon, item, marketGroup, metaData, metaGroup, queries, traits, unit
 # noinspection PyPep8
-from eos.db.saveddata import booster, cargo, character, ssoCharacter, damagePattern, databaseRepair, drone, fighter, fit, implant, implantSet, loadDefaultDatabaseValues, \
+from eos.db.saveddata import booster, cargo, character, damagePattern, databaseRepair, drone, fighter, fit, implant, implantSet, loadDefaultDatabaseValues, \
     miscData, module, override, price, queries, skill, targetResists, user
 
 # Import queries

@@ -88,7 +88,7 @@ mapper(Character, characters_table,
            "_Character__ssoCharacters"    : relation(
                    SsoCharacter,
                    collection_class=HandledSsoCharacterList,
-                    backref='characters',
+                   backref='characters',
                    secondary=sso_character_map_table)
        }
        )

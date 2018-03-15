@@ -138,7 +138,7 @@ class MainMenuBar(wx.MenuBar):
 
         # CREST Menu
         crestMenu = wx.Menu()
-        self.Append(crestMenu, "&CREST")
+        self.Append(crestMenu, "EVE &SSO")
 
         crestMenu.Append(self.ssoLoginId, "Manage Characters")
         crestMenu.Append(self.eveFittingsId, "Browse EVE Fittings")
