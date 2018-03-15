@@ -62,15 +62,7 @@ sso_character_map_table = Table("ssoCharacterMap", saveddata_meta,
                   )
 
 
-mapper(SsoCharacter, sso_table,
-      properties={
-    "_SsoCharacter__maps": relation(
-        Character,
-        cascade="all",
-        secondary=sso_character_map_table
-    ),
-}
-)
+mapper(SsoCharacter, sso_table)
 
 mapper(Character, characters_table,
        properties={
@@ -96,7 +88,7 @@ mapper(Character, characters_table,
            "_Character__ssoCharacters"    : relation(
                    SsoCharacter,
                    collection_class=HandledSsoCharacterList,
-                   cascade='all',
+                    backref='characters',
                    secondary=sso_character_map_table)
        }
        )
