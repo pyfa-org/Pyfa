@@ -474,14 +474,16 @@ class UpdateAPIThread(threading.Thread):
             char = eos.db.getCharacter(self.charID)
 
             sEsi = Esi.getInstance()
-            resp = sEsi.getSkills(char.ssoCharacterID)
+            sChar = Character.getInstance()
+            ssoChar = sChar.getSsoCharacter(char.ID)
+            resp = sEsi.getSkills(ssoChar.ID)
 
             # todo: check if alpha. if so, pop up a question if they want to apply it as alpha. Use threading events to set the answer?
             char.clearSkills()
             for skillRow in resp["skills"]:
                 char.addSkill(Skill(char, skillRow["skill_id"], skillRow["trained_skill_level"]))
 
-            resp = sEsi.getSecStatus(char.ssoCharacterID)
+            resp = sEsi.getSecStatus(ssoChar.ID)
 
             char.secStatus = resp['security_status']
 
