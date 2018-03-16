@@ -236,10 +236,7 @@ class ExportToEve(wx.Frame):
         event.Skip()
 
     def ssoLogout(self, event):
-        if event.type == CrestModes.IMPLICIT:
-            self.Close()
-        else:
-            self.updateCharList()
+        self.updateCharList()
         event.Skip()  # continue event
 
     def OnClose(self, event):

@@ -614,22 +614,13 @@ class MainFrame(wx.Frame):
         menu.Enable(menu.exportToEveId, True)
 
     def updateCrestMenus(self, type):
-        # in case we are logged in when switching, change title back
-        self.titleTimer.Stop()
-        self.SetTitle(self.title)
-
         menu = self.GetMenuBar()
         sCrest = Esi.getInstance()
 
-        if type == CrestModes.IMPLICIT:
-            menu.SetLabel(menu.ssoLoginId, "Login to EVE")
-            menu.Enable(menu.eveFittingsId, False)
-            menu.Enable(menu.exportToEveId, False)
-        else:
-            menu.SetLabel(menu.ssoLoginId, "Manage Characters")
-            enable = len(sCrest.getSsoCharacters()) == 0
-            menu.Enable(menu.eveFittingsId, not enable)
-            menu.Enable(menu.exportToEveId, not enable)
+        menu.SetLabel(menu.ssoLoginId, "Manage Characters")
+        enable = len(sCrest.getSsoCharacters()) == 0
+        menu.Enable(menu.eveFittingsId, not enable)
+        menu.Enable(menu.exportToEveId, not enable)
 
     def ssoHandler(self, event):
         dlg = CrestMgmt(self)
