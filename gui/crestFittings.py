@@ -80,9 +80,6 @@ class CrestFittings(wx.Frame):
         self.statusbar.SetFieldsCount()
         self.SetStatusBar(self.statusbar)
 
-        self.cacheTimer = wx.Timer(self)
-        self.Bind(wx.EVT_TIMER, self.updateCacheStatus, self.cacheTimer)
-
         self.SetSizer(mainSizer)
         self.Layout()
 
@@ -105,15 +102,6 @@ class CrestFittings(wx.Frame):
 
         self.charChoice.SetSelection(0)
 
-    def updateCacheStatus(self, event):
-        t = time.gmtime(self.cacheTime - time.time())
-
-        if calendar.timegm(t) < 0:  # calendar.timegm gets seconds until time given
-            self.cacheTimer.Stop()
-        else:
-            sTime = time.strftime("%H:%M:%S", t)
-            self.statusbar.SetStatusText("Cached for %s" % sTime, 0)
-
     def ssoLogout(self, event):
         self.updateCharList()
         event.Skip()  # continue event
@@ -121,7 +109,7 @@ class CrestFittings(wx.Frame):
     def OnClose(self, event):
         self.mainFrame.Unbind(GE.EVT_SSO_LOGOUT)
         self.mainFrame.Unbind(GE.EVT_SSO_LOGIN)
-        self.cacheTimer.Stop()  # must be manually stopped, otherwise crash. See https://github.com/wxWidgets/Phoenix/issues/632
+        # self.cacheTimer.Stop()  # must be manually stopped, otherwise crash. See https://github.com/wxWidgets/Phoenix/issues/632
         event.Skip()
 
     def getActiveCharacter(self):
@@ -383,7 +371,7 @@ class FittingsTreeView(wx.Panel):
         self.root = tree.AddRoot("Fits")
         self.populateSkillTree(None)
 
-        self.Bind(wx.EVT_TREE_ITEM_ACTIVATED, self.displayFit)
+        self.Bind(wx.EVT_TREE_SEL_CHANGED, self.displayFit)
 
         self.SetSizer(pmainSizer)
 
