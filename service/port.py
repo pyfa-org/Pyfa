@@ -349,7 +349,7 @@ class Port(object):
 
         nested_dict = lambda: collections.defaultdict(nested_dict)
         fit = nested_dict()
-        sCrest = Esi.getInstance()
+        sEsi = Esi.getInstance()
         sFit = svcFit.getInstance()
 
         # max length is 50 characters

@@ -615,10 +615,10 @@ class MainFrame(wx.Frame):
 
     def updateCrestMenus(self, type):
         menu = self.GetMenuBar()
-        sCrest = Esi.getInstance()
+        sEsi = Esi.getInstance()
 
         menu.SetLabel(menu.ssoLoginId, "Manage Characters")
-        enable = len(sCrest.getSsoCharacters()) == 0
+        enable = len(sEsi.getSsoCharacters()) == 0
         menu.Enable(menu.eveFittingsId, not enable)
         menu.Enable(menu.exportToEveId, not enable)
 

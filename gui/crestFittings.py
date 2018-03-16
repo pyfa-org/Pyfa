@@ -32,7 +32,7 @@ class CrestFittings(wx.Frame):
 
         self.mainFrame = parent
         mainSizer = wx.BoxSizer(wx.VERTICAL)
-        sCrest = Esi.getInstance()
+        sEsi = Esi.getInstance()
 
         characterSelectSizer = wx.BoxSizer(wx.HORIZONTAL)
 
@@ -90,8 +90,8 @@ class CrestFittings(wx.Frame):
         event.Skip()
 
     def updateCharList(self):
-        sCrest = Esi.getInstance()
-        chars = sCrest.getSsoCharacters()
+        sEsi = Esi.getInstance()
+        chars = sEsi.getSsoCharacters()
 
         if len(chars) == 0:
             self.Close()
@@ -117,11 +117,11 @@ class CrestFittings(wx.Frame):
         return self.charChoice.GetClientData(selection) if selection is not None else None
 
     def fetchFittings(self, event):
-        sCrest = Esi.getInstance()
+        sEsi = Esi.getInstance()
         waitDialog = wx.BusyInfo("Fetching fits, please wait...", parent=self)
 
         try:
-            fittings = sCrest.getFittings(self.getActiveCharacter())
+            fittings = sEsi.getFittings(self.getActiveCharacter())
             # self.cacheTime = fittings.get('cached_until')
             # self.updateCacheStatus(None)
             # self.cacheTimer.Start(1000)
@@ -147,7 +147,7 @@ class CrestFittings(wx.Frame):
         self.mainFrame._openAfterImport(fits)
 
     def deleteFitting(self, event):
-        sCrest = Esi.getInstance()
+        sEsi = Esi.getInstance()
         selection = self.fitView.fitSelection
         if not selection:
             return
@@ -159,7 +159,7 @@ class CrestFittings(wx.Frame):
 
         if dlg.ShowModal() == wx.ID_YES:
             try:
-                sCrest.delFitting(self.getActiveCharacter(), data['fitting_id'])
+                sEsi.delFitting(self.getActiveCharacter(), data['fitting_id'])
             except requests.exceptions.ConnectionError:
                 msg = "Connection error, please check your internet connection"
                 pyfalog.error(msg)
@@ -188,7 +188,7 @@ class ExportToEve(wx.Frame):
         self.mainFrame = parent
         self.SetBackgroundColour(wx.SystemSettings.GetColour(wx.SYS_COLOUR_BTNFACE))
 
-        sCrest = Esi.getInstance()
+        sEsi = Esi.getInstance()
         mainSizer = wx.BoxSizer(wx.VERTICAL)
         hSizer = wx.BoxSizer(wx.HORIZONTAL)
 
@@ -219,8 +219,8 @@ class ExportToEve(wx.Frame):
         self.Centre(wx.BOTH)
 
     def updateCharList(self):
-        sCrest = Esi.getInstance()
-        chars = sCrest.getSsoCharacters()
+        sEsi = Esi.getInstance()
+        chars = sEsi.getSsoCharacters()
 
         if len(chars) == 0:
             self.Close()
@@ -260,12 +260,12 @@ class ExportToEve(wx.Frame):
             return
 
         self.statusbar.SetStatusText("Sending request and awaiting response", 1)
-        sCrest = Esi.getInstance()
+        sEsi = Esi.getInstance()
 
         try:
             sFit = Fit.getInstance()
             data = sPort.exportESI(sFit.getFit(fitID))
-            res = sCrest.postFitting(self.getActiveCharacter(), data)
+            res = sEsi.postFitting(self.getActiveCharacter(), data)
 
             self.statusbar.SetStatusText("", 0)
             self.statusbar.SetStatusText("", 1)
@@ -328,8 +328,8 @@ class CrestMgmt(wx.Dialog):
         event.Skip()
 
     def popCharList(self):
-        sCrest = Esi.getInstance()
-        chars = sCrest.getSsoCharacters()
+        sEsi = Esi.getInstance()
+        chars = sEsi.getSsoCharacters()
 
         self.lcCharacters.DeleteAllItems()
 
@@ -343,16 +343,16 @@ class CrestMgmt(wx.Dialog):
 
     @staticmethod
     def addChar(event):
-        sCrest = Esi.getInstance()
-        uri = sCrest.startServer()
+        sEsi = Esi.getInstance()
+        uri = sEsi.startServer()
         webbrowser.open(uri)
 
     def delChar(self, event):
         item = self.lcCharacters.GetFirstSelected()
         if item > -1:
             charID = self.lcCharacters.GetItemData(item)
-            sCrest = Esi.getInstance()
-            sCrest.delSsoCharacter(charID)
+            sEsi = Esi.getInstance()
+            sEsi.delSsoCharacter(charID)
             self.popCharList()
 
 

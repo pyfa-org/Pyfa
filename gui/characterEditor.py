@@ -780,8 +780,8 @@ class APIView(wx.Panel):
         event.Skip()
 
     def addCharacter(self, event):
-        sCrest = Esi.getInstance()
-        uri = sCrest.startServer()
+        sEsi = Esi.getInstance()
+        uri = sEsi.startServer()
         webbrowser.open(uri)
 
     def getActiveCharacter(self):

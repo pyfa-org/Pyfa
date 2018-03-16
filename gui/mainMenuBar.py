@@ -134,7 +134,7 @@ class MainMenuBar(wx.MenuBar):
         preferencesItem.SetBitmap(BitmapLoader.getBitmap("preferences_small", "gui"))
         windowMenu.Append(preferencesItem)
 
-        # self.sCrest = Crest.getInstance()
+        # self.sEsi = Crest.getInstance()
 
         # CREST Menu
         crestMenu = wx.Menu()
@@ -144,7 +144,7 @@ class MainMenuBar(wx.MenuBar):
         crestMenu.Append(self.eveFittingsId, "Browse EVE Fittings")
         crestMenu.Append(self.exportToEveId, "Export To EVE")
 
-        # if self.sCrest.settings.get('mode') == CrestModes.IMPLICIT or len(self.sCrest.getCrestCharacters()) == 0:
+        # if self.sEsi.settings.get('mode') == CrestModes.IMPLICIT or len(self.sEsi.getCrestCharacters()) == 0:
         self.Enable(self.eveFittingsId, True)
         self.Enable(self.exportToEveId, True)
 

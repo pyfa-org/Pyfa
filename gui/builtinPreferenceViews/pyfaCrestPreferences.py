@@ -126,8 +126,8 @@ class PFCrestPref(PreferenceView):
     def OnBtnApply(self, event):
         self.settings.set('clientID', self.inputClientID.GetValue().strip())
         self.settings.set('clientSecret', self.inputClientSecret.GetValue().strip())
-        sCrest = Esi.getInstance()
-        sCrest.delAllCharacters()
+        sEsi = Esi.getInstance()
+        sEsi.delAllCharacters()
 
     def ToggleProxySettings(self, mode):
         if mode:
