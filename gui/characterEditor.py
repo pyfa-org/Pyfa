@@ -808,6 +808,11 @@ class APIView(wx.Panel):
         sEsi = Esi.getInstance()
 
         activeChar = self.charEditor.entityEditor.getActiveEntity()
+
+        if event and event.EventType == GE.EVT_SSO_LOGIN.typeId and hasattr(event, 'character'):
+            # Automatically assign the character that was just logged into
+            sChar.setSsoCharacter(activeChar.ID, event.character.ID)
+
         sso = sChar.getSsoCharacter(activeChar.ID)
 
         ssoChars = sEsi.getSsoCharacters()
@@ -823,6 +828,8 @@ class APIView(wx.Panel):
                 self.charChoice.SetSelection(currId)
             if sso is None:
                 self.charChoice.SetSelection(noneID)
+
+
         #
         # if chars:
         #     for charName in chars:

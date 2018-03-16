@@ -178,7 +178,7 @@ class CharacterSelection(wx.Panel):
             return
 
         char = sChar.getCharacter(charID)
-        if sChar.getCharName(charID) not in ("All 0", "All 5") and char.ssoCharacterID is not None:
+        if sChar.getCharName(charID) not in ("All 0", "All 5") and sChar.getSsoCharacter(char.ID) is not None:
             self.btnRefresh.Enable(True)
         else:
             self.btnRefresh.Enable(False)
