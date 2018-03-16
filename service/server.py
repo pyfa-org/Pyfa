@@ -4,7 +4,6 @@ import socket
 import threading
 from logbook import Logger
 
-from service.settings import CRESTSettings
 pyfalog = Logger(__name__)
 
 # noinspection PyPep8
@@ -83,7 +82,7 @@ class AuthHandler(http.server.BaseHTTPRequestHandler):
             if step2:
                 self.server.callback(parts)
                 pyfalog.info("Successfully logged into EVE.")
-                msg = "If you see this message then it means you should be logged into CREST. You may close this window and return to the application."
+                msg = "If you see this message then it means you should be logged into EVE SSO. You may close this window and return to the application."
             else:
                 # For implicit mode, we have to serve up the page which will take the hash and redirect using a querystring
                 pyfalog.info("Processing response from EVE Online.")

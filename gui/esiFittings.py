@@ -23,7 +23,7 @@ from service.port import ESIExportException
 pyfalog = Logger(__name__)
 
 
-class CrestFittings(wx.Frame):
+class EveFittings(wx.Frame):
     def __init__(self, parent):
         wx.Frame.__init__(self, parent, id=wx.ID_ANY, title="Browse EVE Fittings", pos=wx.DefaultPosition,
                           size=wx.Size(550, 450), style=wx.DEFAULT_FRAME_STYLE | wx.TAB_TRAVERSAL)
@@ -287,7 +287,7 @@ class ExportToEve(wx.Frame):
             ESIExceptionHandler(self, ex)
 
 
-class CrestMgmt(wx.Dialog):
+class SsoCharacterMgmt(wx.Dialog):
     def __init__(self, parent):
         wx.Dialog.__init__(self, parent, id=wx.ID_ANY, title="SSO Character Management", pos=wx.DefaultPosition,
                            size=wx.Size(550, 250), style=wx.DEFAULT_DIALOG_STYLE)

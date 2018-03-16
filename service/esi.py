@@ -15,7 +15,6 @@ import datetime
 from eos.enum import Enum
 from eos.saveddata.ssocharacter import SsoCharacter
 import gui.globalEvents as GE
-from service.settings import CRESTSettings
 from service.server import StoppableHTTPServer, AuthHandler
 
 from .esi_security_proxy import EsiSecurityProxy
@@ -77,8 +76,6 @@ class Esi(object):
 
         AFTER_TOKEN_REFRESH.add_receiver(self.tokenUpdate)
 
-        self.settings = CRESTSettings.getInstance()
-
         # these will be set when needed
         self.httpd = None
         self.state = None
@@ -97,10 +94,6 @@ class Esi(object):
     def tokenUpdate(self, **kwargs):
         print(kwargs)
         pass
-
-    @property
-    def isTestServer(self):
-        return self.settings.get('server') == Servers.SISI
 
     def delSsoCharacter(self, id):
         char = eos.db.getSsoCharacter(id, config.getClientSecret())
@@ -222,7 +215,7 @@ class Esi(object):
             pyfalog.warn("OAUTH state mismatch")
             raise Exception("OAUTH State Mismatch.")
 
-        pyfalog.debug("Handling CREST login with: {0}", message)
+        pyfalog.debug("Handling SSO login with: {0}", message)
 
         auth_response = json.loads(base64.b64decode(message['SSOInfo'][0]))
 

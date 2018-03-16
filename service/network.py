@@ -57,7 +57,7 @@ class Network(object):
     # Request constants - every request must supply this, as it is checked if
     # enabled or not via settings
     ENABLED = 1
-    EVE = 2  # Mostly API, but also covers CREST requests
+    EVE = 2  # Mostly API, but also covers CREST requests. update: might be useless these days, this Network class needs to be reviewed
     PRICES = 4
     UPDATE = 8
 

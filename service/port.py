@@ -474,7 +474,7 @@ class Port(object):
             except ValueError:
                 fitobj.ship = Citadel(sMkt.getItem(ship))
         except:
-            pyfalog.warning("Caught exception in importCrest")
+            pyfalog.warning("Caught exception in importESI")
             return None
 
         items.sort(key=lambda k: k['flag'])

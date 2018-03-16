@@ -137,12 +137,12 @@ class MainMenuBar(wx.MenuBar):
         # self.sEsi = Crest.getInstance()
 
         # CREST Menu
-        crestMenu = wx.Menu()
-        self.Append(crestMenu, "EVE &SSO")
+        esiMMenu = wx.Menu()
+        self.Append(esiMMenu, "EVE &SSO")
 
-        crestMenu.Append(self.ssoLoginId, "Manage Characters")
-        crestMenu.Append(self.eveFittingsId, "Browse EVE Fittings")
-        crestMenu.Append(self.exportToEveId, "Export To EVE")
+        esiMMenu.Append(self.ssoLoginId, "Manage Characters")
+        esiMMenu.Append(self.eveFittingsId, "Browse EVE Fittings")
+        esiMMenu.Append(self.exportToEveId, "Export To EVE")
 
         # if self.sEsi.settings.get('mode') == CrestModes.IMPLICIT or len(self.sEsi.getCrestCharacters()) == 0:
         self.Enable(self.eveFittingsId, True)

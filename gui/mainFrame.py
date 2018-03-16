@@ -83,7 +83,7 @@ import webbrowser
 import wx.adv
 
 from service.esi import Esi
-from gui.crestFittings import CrestFittings, ExportToEve, CrestMgmt
+from gui.esiFittings import EveFittings, ExportToEve, SsoCharacterMgmt
 
 disableOverrideEditor = False
 
@@ -605,7 +605,7 @@ class MainFrame(wx.Frame):
             wx.PostEvent(self, GE.FitChanged(fitID=fitID))
 
     def eveFittings(self, event):
-        dlg = CrestFittings(self)
+        dlg = EveFittings(self)
         dlg.Show()
 
     def onSSOLogin(self, event):
@@ -613,7 +613,7 @@ class MainFrame(wx.Frame):
         menu.Enable(menu.eveFittingsId, True)
         menu.Enable(menu.exportToEveId, True)
 
-    def updateCrestMenus(self, type):
+    def updateEsiMenus(self, type):
         menu = self.GetMenuBar()
         sEsi = Esi.getInstance()
 
@@ -623,7 +623,7 @@ class MainFrame(wx.Frame):
         menu.Enable(menu.exportToEveId, not enable)
 
     def ssoHandler(self, event):
-        dlg = CrestMgmt(self)
+        dlg = SsoCharacterMgmt(self)
         dlg.Show()
 
     def exportToEve(self, event):
@@ -699,7 +699,7 @@ class MainFrame(wx.Frame):
         fit = db_getFit(self.getActiveFit())
         toClipboard(Port.exportDna(fit))
 
-    def clipboardCrest(self):
+    def clipboardEsi(self):
         fit = db_getFit(self.getActiveFit())
         toClipboard(Port.exportESI(fit))
 
@@ -725,7 +725,7 @@ class MainFrame(wx.Frame):
                           CopySelectDialog.copyFormatEftImps: self.clipboardEftImps,
                           CopySelectDialog.copyFormatXml: self.clipboardXml,
                           CopySelectDialog.copyFormatDna: self.clipboardDna,
-                          CopySelectDialog.copyFormatCrest: self.clipboardCrest,
+                          CopySelectDialog.copyFormatEsi: self.clipboardEsi,
                           CopySelectDialog.copyFormatMultiBuy: self.clipboardMultiBuy}
         dlg = CopySelectDialog(self)
         dlg.ShowModal()
