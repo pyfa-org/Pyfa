@@ -79,6 +79,7 @@ class CapSimulator(object):
             # a cap booster module.
             if not self.reload and capNeed > 0:
                 clipSize = 0
+                reloadTime = 0
 
             # Group modules based on their properties
             if (duration, capNeed, clipSize, disableStagger, reloadTime) in mods:
