@@ -1169,8 +1169,8 @@ class Fit(object):
                 # Sort repairers by efficiency. We want to use the most efficient repairers first
                 repairers.sort(key=lambda _mod: _mod.getModifiedItemAttr(
                     groupAttrMap[_mod.item.group.name]) * (_mod.getModifiedItemAttr(
-                    "chargedArmorDamageMultiplier") or 1)
-                                                / _mod.getModifiedItemAttr("capacitorNeed"), reverse=True)
+                        "chargedArmorDamageMultiplier") or 1)
+                            / _mod.getModifiedItemAttr("capacitorNeed"), reverse=True)
 
                 # Loop through every module until we're above peak recharge
                 # Most efficient first, as we sorted earlier.
