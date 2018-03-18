@@ -207,24 +207,15 @@ class Esi(object):
 
         uri = esisecurity.get_auth_uri(state=self.state, redirect='http://localhost:{}'.format(port), pyfa_version=config.version)
 
-        self.serverThread = threading.Thread(target=self.httpd.serve, args=(self.handleLogin,))
+        self.serverThread = threading.Thread(target=self.httpd.serve, args=(self.handleServerLogin,))
         self.serverThread.name = "SsoCallbackServer"
         self.serverThread.daemon = True
         self.serverThread.start()
 
         return uri
 
-    def handleLogin(self, message):
-        if not message:
-            raise Exception("Could not parse out querystring parameters.")
-
-        if message['state'][0] != self.state:
-            pyfalog.warn("OAUTH state mismatch")
-            raise Exception("OAUTH State Mismatch.")
-
-        pyfalog.debug("Handling SSO login with: {0}", message)
-
-        auth_response = json.loads(base64.b64decode(message['SSOInfo'][0]))
+    def handleLogin(self, ssoInfo):
+        auth_response = json.loads(base64.b64decode(ssoInfo))
 
         # We need to preload the ESI Security object beforehand with the auth response so that we can use verify to
         # get character information
@@ -246,5 +237,16 @@ class Esi(object):
         Esi.update_token(currentCharacter, auth_response)  # this also sets the esi security token
 
         eos.db.save(currentCharacter)
-        wx.PostEvent(self.mainFrame, GE.SsoLogin(character = currentCharacter))
+        wx.PostEvent(self.mainFrame, GE.SsoLogin(character=currentCharacter))
 
+    def handleServerLogin(self, message):
+        if not message:
+            raise Exception("Could not parse out querystring parameters.")
+
+        if message['state'][0] != self.state:
+            pyfalog.warn("OAUTH state mismatch")
+            raise Exception("OAUTH State Mismatch.")
+
+        pyfalog.debug("Handling SSO login with: {0}", message)
+
+        self.handleLogin(message['SSOInfo'][0])
