@@ -57,6 +57,7 @@ from gui.setEditor import ImplantSetEditorDlg
 from gui.devTools import DevTools
 from gui.preferenceDialog import PreferenceDialog
 from gui.graphFrame import GraphFrame
+from gui.ssoLogin import SsoLogin
 from gui.copySelectDialog import CopySelectDialog
 from gui.utils.clipboard import toClipboard, fromClipboard
 from gui.updateDialog import UpdateDialog
@@ -237,6 +238,15 @@ class MainFrame(wx.Frame):
         self.sUpdate.CheckUpdate(self.ShowUpdateBox)
 
         self.Bind(GE.EVT_SSO_LOGIN, self.onSSOLogin)
+        self.Bind(GE.EVT_SSO_LOGGING_IN, self.ShowSsoLogin)
+
+    def ShowSsoLogin(self, event):
+        dlg = SsoLogin(self)
+        if dlg.ShowModal() == wx.ID_OK:
+            sEsi = Esi.getInstance()
+            # todo: verify that this is a correct SSO Info block
+            sEsi.handleLogin(dlg.ssoInfoCtrl.Value.strip())
+
 
     def ShowUpdateBox(self, release, version):
         dlg = UpdateDialog(self, release, version)
