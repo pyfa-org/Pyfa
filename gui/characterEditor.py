@@ -781,8 +781,7 @@ class APIView(wx.Panel):
 
     def addCharacter(self, event):
         sEsi = Esi.getInstance()
-        uri = sEsi.startServer()
-        webbrowser.open(uri)
+        sEsi.login()
 
     def getActiveCharacter(self):
         selection = self.charChoice.GetCurrentSelection()
