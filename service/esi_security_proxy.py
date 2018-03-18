@@ -12,6 +12,7 @@ import time
 from requests import Session
 from requests.utils import quote
 from six.moves.urllib.parse import urlparse
+from urllib.parse import urlencode
 
 from esipy.events import AFTER_TOKEN_REFRESH
 from esipy.exceptions import APIException
@@ -115,7 +116,7 @@ class EsiSecurityProxy(object):
 
         return request_params
 
-    def get_auth_uri(self, state=None, redirect='http://localhost:8080'):
+    def get_auth_uri(self, *args, **kwargs):
         """ Constructs the full auth uri and returns it.
 
         :param state: The state to pass through the auth process
@@ -123,10 +124,9 @@ class EsiSecurityProxy(object):
         :return: the authorizationUrl with the correct parameters.
         """
 
-        return '%s?redirect=%s%s' % (
+        return '%s?%s' % (
             self.oauth_authorize,
-            quote(redirect, safe=''),
-            '&state=%s' % state if state else ''
+            urlencode(kwargs)
         )
 
     def get_refresh_token_params(self):

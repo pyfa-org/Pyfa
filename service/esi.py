@@ -198,7 +198,7 @@ class Esi(object):
 
         esisecurity = EsiSecurityProxy(sso_url=config.ESI_AUTH_PROXY)
 
-        uri = esisecurity.get_auth_uri(state=self.state, redirect='http://localhost:{}'.format(port))
+        uri = esisecurity.get_auth_uri(state=self.state, redirect='http://localhost:{}'.format(port), pyfa_version=config.version)
 
         self.serverThread = threading.Thread(target=self.httpd.serve, args=(self.handleLogin,))
         self.serverThread.name = "SsoCallbackServer"
