@@ -344,8 +344,7 @@ class SsoCharacterMgmt(wx.Dialog):
     @staticmethod
     def addChar(event):
         sEsi = Esi.getInstance()
-        uri = sEsi.startServer()
-        webbrowser.open(uri)
+        sEsi.login()
 
     def delChar(self, event):
         item = self.lcCharacters.GetFirstSelected()

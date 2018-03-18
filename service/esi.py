@@ -9,6 +9,7 @@ import base64
 import json
 import os
 import config
+import webbrowser
 
 import eos.db
 import datetime
@@ -178,6 +179,12 @@ class Esi(object):
             char.refreshToken = config.cipher.encrypt(tokenResponse['refresh_token'].encode())
         if char.esi_client is not None:
             char.esi_client.security.update_token(tokenResponse)
+
+    def login(self):
+        # Switch off how we do things here depending on the mode of authentication
+        uri = self.startServer()
+        webbrowser.open(uri)
+        wx.PostEvent(self.mainFrame, GE.SsoLoggingIn())
 
     def stopServer(self):
         pyfalog.debug("Stopping Server")
