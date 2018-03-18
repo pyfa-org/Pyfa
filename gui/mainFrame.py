@@ -83,7 +83,7 @@ import threading
 import webbrowser
 import wx.adv
 
-from service.esi import Esi
+from service.esi import Esi, LoginMethod
 from gui.esiFittings import EveFittings, ExportToEve, SsoCharacterMgmt
 
 disableOverrideEditor = False
@@ -241,12 +241,12 @@ class MainFrame(wx.Frame):
         self.Bind(GE.EVT_SSO_LOGGING_IN, self.ShowSsoLogin)
 
     def ShowSsoLogin(self, event):
-        dlg = SsoLogin(self)
-        if dlg.ShowModal() == wx.ID_OK:
-            sEsi = Esi.getInstance()
-            # todo: verify that this is a correct SSO Info block
-            sEsi.handleLogin(dlg.ssoInfoCtrl.Value.strip())
-
+        if getattr(event, "login_mode", LoginMethod.SERVER) == LoginMethod.MANUAL:
+            dlg = SsoLogin(self)
+            if dlg.ShowModal() == wx.ID_OK:
+                sEsi = Esi.getInstance()
+                # todo: verify that this is a correct SSO Info block
+                sEsi.handleLogin(dlg.ssoInfoCtrl.Value.strip())
 
     def ShowUpdateBox(self, release, version):
         dlg = UpdateDialog(self, release, version)

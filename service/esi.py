@@ -17,6 +17,7 @@ from eos.enum import Enum
 from eos.saveddata.ssocharacter import SsoCharacter
 import gui.globalEvents as GE
 from service.server import StoppableHTTPServer, AuthHandler
+from service.settings import EsiSettings
 
 from .esi_security_proxy import EsiSecurityProxy
 from esipy import EsiClient, EsiApp
@@ -37,6 +38,11 @@ file_cache = FileCache(cache_path)
 class Servers(Enum):
     TQ = 0
     SISI = 1
+
+
+class LoginMethod(Enum):
+    SERVER = 0
+    MANUAL = 1
 
 
 class Esi(object):
@@ -74,6 +80,8 @@ class Esi(object):
 
     def __init__(self):
         Esi.initEsiApp()
+
+        self.settings = EsiSettings.getInstance()
 
         AFTER_TOKEN_REFRESH.add_receiver(self.tokenUpdate)
 
@@ -119,7 +127,7 @@ class Esi(object):
         if char is not None and char.esi_client is None:
             char.esi_client = Esi.genEsiClient()
             Esi.update_token(char, Esi.get_sso_data(char)) # don't use update_token on security directly, se still need to apply the values here
-        print(repr(char))
+
         eos.db.commit()
         return char
 
@@ -181,17 +189,33 @@ class Esi(object):
             char.esi_client.security.update_token(tokenResponse)
 
     def login(self):
-        # Switch off how we do things here depending on the mode of authentication
-        uri = self.startServer()
+        serverAddr = None
+        if self.settings.get('loginMode') == LoginMethod.SERVER:
+            serverAddr = self.startServer()
+        uri = self.getLoginURI(serverAddr)
         webbrowser.open(uri)
-        wx.PostEvent(self.mainFrame, GE.SsoLoggingIn())
+        wx.PostEvent(self.mainFrame, GE.SsoLoggingIn(login_mode=self.settings.get('loginMode')))
 
     def stopServer(self):
         pyfalog.debug("Stopping Server")
         self.httpd.stop()
         self.httpd = None
 
-    def startServer(self):
+    def getLoginURI(self, redirect=None):
+        self.state = str(uuid.uuid4())
+        esisecurity = EsiSecurityProxy(sso_url=config.ESI_AUTH_PROXY)
+
+        args = {
+            'state': self.state,
+            'pyfa_version': config.version,
+        }
+
+        if redirect is not None:
+            args['redirect'] = redirect
+
+        return esisecurity.get_auth_uri(**args)
+
+    def startServer(self):  # todo: break this out into two functions: starting the server, and getting the URI
         pyfalog.debug("Starting server")
 
         # we need this to ensure that the previous get_request finishes, and then the socket will close
@@ -199,20 +223,14 @@ class Esi(object):
             self.stopServer()
             time.sleep(1)
 
-        self.state = str(uuid.uuid4())
         self.httpd = StoppableHTTPServer(('localhost', 0), AuthHandler)
         port = self.httpd.socket.getsockname()[1]
-
-        esisecurity = EsiSecurityProxy(sso_url=config.ESI_AUTH_PROXY)
-
-        uri = esisecurity.get_auth_uri(state=self.state, redirect='http://localhost:{}'.format(port), pyfa_version=config.version)
-
         self.serverThread = threading.Thread(target=self.httpd.serve, args=(self.handleServerLogin,))
         self.serverThread.name = "SsoCallbackServer"
         self.serverThread.daemon = True
         self.serverThread.start()
 
-        return uri
+        return 'http://localhost:{}'.format(port)
 
     def handleLogin(self, ssoInfo):
         auth_response = json.loads(base64.b64decode(ssoInfo))
