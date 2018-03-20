@@ -11,6 +11,8 @@ from logbook import CRITICAL, DEBUG, ERROR, FingersCrossedHandler, INFO, Logger,
 
 import config
 
+from math import log
+
 try:
     import wxversion
 except ImportError:
@@ -169,9 +171,9 @@ def processExportedHtml(fileLocation):
             outputBaseline.write(stats)
             outputBaseline.write(',\n')
             baseN += 1;
-            limit = 500
-            skipTill = 0
-            n = 0
+    limit = 500
+    skipTill = 0
+    n = 0
     try:
         with open('pyfaFits.html'):
             fileLocation = 'pyfaFits.html'
@@ -235,7 +237,7 @@ def parseNeededFitDetails(fit, groupID):
             tracking = stats.itemModifiedAttributes['trackingSpeed']
             typeing = 'Turret'
             name = stats.item.name + ', ' + stats.charge.name
-        elif stats.hardpoint == 1:
+        elif stats.hardpoint == 1 or 'Bomb Launcher' in stats.item.name:
             maxVelocity = stats.chargeModifiedAttributes['maxVelocity']
             explosionDelay = stats.chargeModifiedAttributes['explosionDelay']
             damageReductionFactor = stats.chargeModifiedAttributes['aoeDamageReductionFactor']
@@ -247,15 +249,15 @@ def parseNeededFitDetails(fit, groupID):
             aoeFieldRange = stats.itemModifiedAttributes['empFieldRange']
             typeing = 'SmartBomb'
             name = stats.item.name
-            statDict = {'dps': stats.dps * c, 'capUse': stats.capUse * c, 'falloff': stats.falloff,\
-                        'type': typeing, 'name': name, 'optimal': stats.maxRange,\
-                        'numCharges': stats.numCharges, 'numShots': stats.numShots, 'reloadTime': stats.reloadTime,\
-                        'cycleTime': stats.cycleTime, 'volley': stats.volley * c, 'tracking': tracking,\
-                        'maxVelocity': maxVelocity, 'explosionDelay': explosionDelay, 'damageReductionFactor': damageReductionFactor,\
-                        'explosionRadius': explosionRadius, 'explosionVelocity': explosionVelocity, 'aoeFieldRange': aoeFieldRange\
-            }
-            weaponSystems.append(statDict)
-            #if fit.droneDPS > 0:
+        statDict = {'dps': stats.dps * c, 'capUse': stats.capUse * c, 'falloff': stats.falloff,\
+                    'type': typeing, 'name': name, 'optimal': stats.maxRange,\
+                    'numCharges': stats.numCharges, 'numShots': stats.numShots, 'reloadTime': stats.reloadTime,\
+                    'cycleTime': stats.cycleTime, 'volley': stats.volley * c, 'tracking': tracking,\
+                    'maxVelocity': maxVelocity, 'explosionDelay': explosionDelay, 'damageReductionFactor': damageReductionFactor,\
+                    'explosionRadius': explosionRadius, 'explosionVelocity': explosionVelocity, 'aoeFieldRange': aoeFieldRange\
+        }
+        weaponSystems.append(statDict)
+        #if fit.droneDPS > 0:
     for drone in fit.drones:
         if drone.dps[0] > 0 and drone.amountActive > 0:
             newTracking =  drone.itemModifiedAttributes['trackingSpeed'] / (drone.itemModifiedAttributes['optimalSigRadius'] / 40000)
@@ -266,34 +268,37 @@ def parseNeededFitDetails(fit, groupID):
             }
             weaponSystems.append(statDict)
     for fighter in fit.fighters:
+        print vars(fighter)
         if fighter.dps[0] > 0 and fighter.amountActive > 0:
             abilities = []
             #for ability in fighter.abilities:
             if 'fighterAbilityAttackMissileDamageEM' in fighter.itemModifiedAttributes:
                 baseRef = 'fighterAbilityAttackMissile'
                 baseRefDam = baseRef + 'Damage'
+                damageReductionFactor = log(fighter.itemModifiedAttributes[baseRef + 'ReductionFactor']) / log(fighter.itemModifiedAttributes[baseRef + 'ReductionSensitivity'])
                 abBaseDamage = fighter.itemModifiedAttributes[baseRefDam + 'EM'] + fighter.itemModifiedAttributes[baseRefDam + 'Therm'] + fighter.itemModifiedAttributes[baseRefDam + 'Exp'] + fighter.itemModifiedAttributes[baseRefDam + 'Kin']
                 abDamage = abBaseDamage * fighter.itemModifiedAttributes[baseRefDam + 'Multiplier']
                 ability = {'name': 'RegularAttack', 'volley': abDamage * fighter.amountActive, 'explosionRadius': fighter.itemModifiedAttributes[baseRef + 'ExplosionRadius'],\
                            'explosionVelocity': fighter.itemModifiedAttributes[baseRef + 'ExplosionVelocity'], 'optimal': fighter.itemModifiedAttributes[baseRef + 'RangeOptimal'],\
-                           'damageReductionFactor': fighter.itemModifiedAttributes[baseRef + 'ReductionFactor'], 'rof': fighter.itemModifiedAttributes[baseRef + 'Duration'],\
+                           'damageReductionFactor': damageReductionFactor, 'rof': fighter.itemModifiedAttributes[baseRef + 'Duration'],\
                 }
                 abilities.append(ability)
             if 'fighterAbilityMissilesDamageEM' in fighter.itemModifiedAttributes:
                 baseRef = 'fighterAbilityMissiles'
                 baseRefDam = baseRef + 'Damage'
+                damageReductionFactor = log(fighter.itemModifiedAttributes[baseRefDam + 'ReductionFactor']) / log(fighter.itemModifiedAttributes[baseRefDam + 'ReductionSensitivity'])
                 abBaseDamage = fighter.itemModifiedAttributes[baseRefDam + 'EM'] + fighter.itemModifiedAttributes[baseRefDam + 'Therm'] + fighter.itemModifiedAttributes[baseRefDam + 'Exp'] + fighter.itemModifiedAttributes[baseRefDam + 'Kin']
                 abDamage = abBaseDamage * fighter.itemModifiedAttributes[baseRefDam + 'Multiplier']
                 ability = {'name': 'MissileAttack', 'volley': abDamage * fighter.amountActive, 'explosionRadius': fighter.itemModifiedAttributes[baseRef + 'ExplosionRadius'],\
                            'explosionVelocity': fighter.itemModifiedAttributes[baseRef + 'ExplosionVelocity'], 'optimal': fighter.itemModifiedAttributes[baseRef + 'Range'],\
-                           'damageReductionFactor': fighter.itemModifiedAttributes[baseRefDam + 'ReductionFactor'], 'rof': fighter.itemModifiedAttributes[baseRef + 'Duration'],\
+                           'damageReductionFactor': damageReductionFactor, 'rof': fighter.itemModifiedAttributes[baseRef + 'Duration'],\
                 }
                 abilities.append(ability)
-                statDict = {'dps': fighter.dps[0], 'type': 'Fighter', 'name': fighter.item.name,\
-                            'maxSpeed': fighter.itemModifiedAttributes['maxVelocity'], 'abilities': abilities, 'ehp': fighter.itemModifiedAttributes['shieldCapacity'] / 0.8875 * fighter.amountActive,\
-                            'volley': fighter.dps[1], 'signatureRadius': fighter.itemModifiedAttributes['signatureRadius']\
-                }
-                weaponSystems.append(statDict)
+            statDict = {'dps': fighter.dps[0], 'type': 'Fighter', 'name': fighter.item.name,\
+                        'maxSpeed': fighter.itemModifiedAttributes['maxVelocity'], 'abilities': abilities, 'ehp': fighter.itemModifiedAttributes['shieldCapacity'] / 0.8875 * fighter.amountActive,\
+                        'volley': fighter.dps[1], 'signatureRadius': fighter.itemModifiedAttributes['signatureRadius']\
+            }
+            weaponSystems.append(statDict)
     turretSlots = fit.ship.itemModifiedAttributes['turretSlotsLeft']
     launcherSlots = fit.ship.itemModifiedAttributes['launcherSlotsLeft']
     droneBandwidth = fit.ship.itemModifiedAttributes['droneBandwidth']
@@ -433,14 +438,14 @@ def setFitFromString(dnaString, fitName, groupID) :
                     if fitL.isAmmo(int(modSp[0])):
                         k += 100
                         ammoArray.append(int(modSp[0]));
-                        fitL.appendModule(fitID, int(modSp[0]))
-                        fit = eos.db.getFit(fitID)
-                        #nonEmptyModules = fit.modules
-                        #while nonEmptyModules.find(None) >= 0:
-                        #   print 'ssssssssssssssss'
-                        #   nonEmptyModules.remove(None)
+                    fitL.appendModule(fitID, int(modSp[0]))
+    fit = eos.db.getFit(fitID)
+    #nonEmptyModules = fit.modules
+    #while nonEmptyModules.find(None) >= 0:
+    #   print 'ssssssssssssssss'
+    #   nonEmptyModules.remove(None)
     for ammo in iter(ammoArray):
-        fitL.setAmmo(fitID, ammo, fit.modules)
+        fitL.setAmmo(fitID, ammo, filter(lambda mod: str(mod).find('name') > 0, fit.modules))
     if len(fit.drones) > 0:
         fit.drones[0].amountActive = fit.drones[0].amount
         eos.db.commit()
@@ -450,10 +455,10 @@ def setFitFromString(dnaString, fitName, groupID) :
                 for abilityAltRef in fighter.abilities:
                     if abilityAltRef.effect.isImplemented:
                         abilityAltRef.active = True
-                        fitL.recalc(fit)
-                        fit = eos.db.getFit(fitID)
-                        #print fit.modules
-                        #fit.calculateWeaponStats()
+    fitL.recalc(fit)
+    fit = eos.db.getFit(fitID)
+    #print fit.modules
+    #fit.calculateWeaponStats()
     fitL.addCommandFit(fit.ID, armorLinkShip)
     fitL.addCommandFit(fit.ID, shieldLinkShip)
     fitL.addCommandFit(fit.ID, skirmishLinkShip)
