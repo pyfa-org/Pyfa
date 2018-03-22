@@ -339,8 +339,15 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
                 volley *= self.getModifiedItemAttr("damageMultiplier") or 1
                 if volley:
                     cycleTime = self.cycleTime
+                    # Some weapons repeat multiple times in one cycle (think doomsdays)
+                    # Get the number of times it fires off
+                    weaponDoT = max(
+                            self.getModifiedItemAttr("doomsdayDamageDuration", 1) / self.getModifiedItemAttr("doomsdayDamageCycleTime", 1),
+                            1
+                    )
+
                     self.__volley = volley
-                    self.__dps = volley / (cycleTime / 1000.0)
+                    self.__dps = (volley * weaponDoT) / (cycleTime / 1000.0)
 
         return self.__dps, self.__volley
 
