@@ -1,4 +1,10 @@
+# eliteBonusFlagCruiserAllResistances1
+#
+# Used by:
+# Ship: Monitor
 type = "passive"
+
+
 def handler(fit, src, context):
     fit.ship.boostItemAttr("explosiveDamageResonance", src.getModifiedItemAttr("eliteBonusFlagCruisers1"), skill="Flag Cruisers")
     fit.ship.boostItemAttr("shieldKineticDamageResonance", src.getModifiedItemAttr("eliteBonusFlagCruisers1"), skill="Flag Cruisers")

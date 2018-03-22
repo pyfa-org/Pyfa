@@ -1,4 +1,10 @@
+# shipLargeWeaponsDamageBonus
+#
+# Used by:
+# Ship: Praxis
 type = "passive"
+
+
 def handler(fit, src, context):
     fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill("Large Hybrid Turret"), "damageMultiplier",
                                   src.getModifiedItemAttr("shipBonusRole7"))
