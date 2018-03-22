@@ -71,7 +71,7 @@ class CapSimulator(object):
         disable_period = False
 
         # Loop over modules, clearing clipSize if applicable, and group modules based on attributes
-        for (duration, capNeed, clipSize, disableStagger) in self.modules:
+        for (duration, capNeed, clipSize, disableStagger, reloadTime) in self.modules:
             if self.scale:
                 duration, capNeed = self.scale_activation(duration, capNeed)
 
@@ -79,24 +79,25 @@ class CapSimulator(object):
             # a cap booster module.
             if not self.reload and capNeed > 0:
                 clipSize = 0
+                reloadTime = 0
 
             # Group modules based on their properties
-            if (duration, capNeed, clipSize, disableStagger) in mods:
-                mods[(duration, capNeed, clipSize, disableStagger)] += 1
+            if (duration, capNeed, clipSize, disableStagger, reloadTime) in mods:
+                mods[(duration, capNeed, clipSize, disableStagger, reloadTime)] += 1
             else:
-                mods[(duration, capNeed, clipSize, disableStagger)] = 1
+                mods[(duration, capNeed, clipSize, disableStagger, reloadTime)] = 1
 
         # Loop over grouped modules, configure staggering and push to the simulation state
-        for (duration, capNeed, clipSize, disableStagger), amount in mods.iteritems():
+        for (duration, capNeed, clipSize, disableStagger, reloadTime), amount in mods.iteritems():
             if self.stagger and not disableStagger:
                 if clipSize == 0:
                     duration = int(duration / amount)
                 else:
-                    stagger_amount = (duration * clipSize + 10000) / (amount * clipSize)
+                    stagger_amount = (duration * clipSize + reloadTime) / (amount * clipSize)
                     for i in range(1, amount):
                         heapq.heappush(self.state,
                                        [i * stagger_amount, duration,
-                                        capNeed, 0, clipSize])
+                                        capNeed, 0, clipSize, reloadTime])
             else:
                 capNeed *= amount
 
@@ -106,7 +107,7 @@ class CapSimulator(object):
             if clipSize:
                 disable_period = True
 
-            heapq.heappush(self.state, [0, duration, capNeed, 0, clipSize])
+            heapq.heappush(self.state, [0, duration, capNeed, 0, clipSize, reloadTime])
 
         if disable_period:
             self.period = self.t_max
@@ -143,7 +144,7 @@ class CapSimulator(object):
 
         while 1:
             activation = pop(state)
-            t_now, duration, capNeed, shot, clipSize = activation
+            t_now, duration, capNeed, shot, clipSize, reloadTime = activation
             if t_now >= t_max:
                 break
 
@@ -179,7 +180,7 @@ class CapSimulator(object):
             if clipSize:
                 if shot % clipSize == 0:
                     shot = 0
-                    t_now += 10000  # include reload time
+                    t_now += reloadTime  # include reload time
             activation[0] = t_now
             activation[3] = shot
 

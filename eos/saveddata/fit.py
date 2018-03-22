@@ -1186,7 +1186,7 @@ class Fit(object):
         rechargeRate = self.ship.getModifiedItemAttr("shieldRechargeRate") / 1000.0
         return 10 / rechargeRate * sqrt(percent) * (1 - sqrt(percent)) * capacity
 
-    def addDrain(self, src, cycleTime, capNeed, clipSize=0):
+    def addDrain(self, src, cycleTime, capNeed, clipSize=0, reloadTime=0):
         """ Used for both cap drains and cap fills (fills have negative capNeed) """
 
         energyNeutralizerSignatureResolution = src.getModifiedItemAttr("energyNeutralizerSignatureResolution")
@@ -1196,7 +1196,7 @@ class Fit(object):
         if energyNeutralizerSignatureResolution:
             capNeed = capNeed * min(1, signatureRadius / energyNeutralizerSignatureResolution)
 
-        self.__extraDrains.append((cycleTime, capNeed, clipSize))
+        self.__extraDrains.append((cycleTime, capNeed, clipSize, reloadTime))
 
     def removeDrain(self, i):
         del self.__extraDrains[i]
@@ -1214,6 +1214,7 @@ class Fit(object):
                     cycleTime = mod.rawCycleTime or 0
                     reactivationTime = mod.getModifiedItemAttr("moduleReactivationDelay") or 0
                     fullCycleTime = cycleTime + reactivationTime
+                    reloadTime = mod.reloadTime
                     if fullCycleTime > 0:
                         capNeed = mod.capUse
                         if capNeed > 0:
@@ -1225,11 +1226,11 @@ class Fit(object):
                         disableStagger = mod.hardpoint == Hardpoint.TURRET
 
                         drains.append((int(fullCycleTime), mod.getModifiedItemAttr("capacitorNeed") or 0,
-                                       mod.numShots or 0, disableStagger))
+                                       mod.numShots or 0, disableStagger, reloadTime))
 
-        for fullCycleTime, capNeed, clipSize in self.iterDrains():
+        for fullCycleTime, capNeed, clipSize, reloadTime in self.iterDrains():
             # Stagger incoming effects for cap simulation
-            drains.append((int(fullCycleTime), capNeed, clipSize, False))
+            drains.append((int(fullCycleTime), capNeed, clipSize, False, reloadTime))
             if capNeed > 0:
                 capUsed += capNeed / (fullCycleTime / 1000.0)
             else:
