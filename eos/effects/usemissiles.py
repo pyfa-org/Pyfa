@@ -15,12 +15,13 @@ def handler(fit, src, context):
         if src.item.group.name == 'Missile Launcher Bomb':
             # Bomb Launcher Cooldown Timer
             moduleReactivationDelay = src.getModifiedItemAttr("moduleReactivationDelay")
+            speed = src.getModifiedItemAttr("speed")
 
             # Void and Focused Void Bombs
             neutAmount = src.getModifiedChargeAttr("energyNeutralizerAmount")
 
-            if moduleReactivationDelay and neutAmount:
-                fit.addDrain(src, moduleReactivationDelay, neutAmount, 0)
+            if moduleReactivationDelay and neutAmount and speed:
+                fit.addDrain(src, speed + moduleReactivationDelay, neutAmount, 0)
 
             # Lockbreaker Bombs
             ecmStrengthBonus = src.getModifiedChargeAttr("scan{0}StrengthBonus".format(fit.scanType))
