@@ -11,7 +11,6 @@ runTime = "early"
 
 def handler(fit, module, context):
 
-
     if "projected" in context:
         fit.ship.increaseItemAttr("warpScrambleStatus", module.getModifiedItemAttr("warpScrambleStrength"))
         if module.charge is not None and module.charge.ID == 45010:
