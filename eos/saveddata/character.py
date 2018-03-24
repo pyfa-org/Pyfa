@@ -121,8 +121,12 @@ class Character(object):
 
     def apiUpdateCharSheet(self, skills, secStatus=0):
         for skillRow in skills:
-            skill = self.getSkill(int(skillRow["typeID"]))
-            skill.setLevel(int(skillRow["level"]), persist=True, ignoreRestrict=True)
+            try:
+                skill = self.getSkill(int(skillRow["typeID"]))
+                skill.setLevel(int(skillRow["level"]), persist=True, ignoreRestrict=True)
+            except:
+                # if setting a skill doesn't work, it's not the end of the world, just quietly pass
+                pass
 
         self.secStatus = secStatus
 
