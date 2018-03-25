@@ -59,8 +59,8 @@ class CheckUpdateThread(threading.Thread):
                 rVersion = Version(release['tag_name'])
                 cVersion = Version(config.version)
 
-                # Suppress pre releases
-                if rVersion.is_prerelease and self.settings.get('prerelease'):
+                # Suppress pre releases if we're not already on a pre-release (if we are, we want to know about new ones)
+                if not cVersion.is_prerelease and rVersion.is_prerelease and self.settings.get('prerelease'):
                     continue
 
                 # Handle use-case of updating to suppressed version
