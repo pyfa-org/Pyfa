@@ -21,3 +21,5 @@ def handler(fit, module, context):
                 or mod.item.requiresSkill("High Speed Maneuvering")
         ):
             mod.state = State.ONLINE
+        if not mod.isEmpty and mod.item.requiresSkill("Micro Jump Drive Operation") and mod.state > State.ONLINE:
+            mod.state = State.ONLINE

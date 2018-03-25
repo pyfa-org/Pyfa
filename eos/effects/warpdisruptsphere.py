@@ -1,4 +1,3 @@
-
 # warpDisruptSphere
 #
 # Used by:
@@ -10,7 +9,6 @@ runTime = "early"
 
 
 def handler(fit, module, context):
-
 
     if "projected" in context:
         fit.ship.increaseItemAttr("warpScrambleStatus", module.getModifiedItemAttr("warpScrambleStrength"))
