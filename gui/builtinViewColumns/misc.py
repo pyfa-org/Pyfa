@@ -76,6 +76,31 @@ class Miscellanea(ViewColumn):
             stuff.getModifiedItemAttr("boosterDuration")
             text = "{0} min".format(formatAmount(stuff.getModifiedItemAttr("boosterDuration") / 1000 / 60, 3, 0, 3))
             return text, "Booster Duration"
+        elif itemGroup in ("Super Weapon", "Structure Doomsday Weapon"):
+            doomsday_duration = stuff.getModifiedItemAttr("doomsdayDamageDuration", 1)
+            doomsday_dottime = stuff.getModifiedItemAttr("doomsdayDamageCycleTime", 1)
+            func = stuff.getModifiedItemAttr
+
+            volley = sum(
+                map(
+                    lambda attr: (func("%sDamage" % attr) or 0),
+                    ("em", "thermal", "kinetic", "explosive")
+                )
+            )
+            volley *= stuff.getModifiedItemAttr("damageMultiplier") or 1
+
+            if volley <= 0:
+                text = ""
+                tooltip = ""
+            elif max(doomsday_duration / doomsday_dottime, 1) > 1:
+                text = "{0} dmg over {1} s".format(formatAmount(volley * (doomsday_duration / doomsday_dottime), 3, 0, 3), doomsday_duration / 1000)
+                tooltip = "Raw damage done over time"
+            else:
+                text = "{0} dmg".format(formatAmount(volley * (doomsday_duration / doomsday_dottime), 3, 0, 3))
+                tooltip = "Raw damage done"
+            return text, tooltip
+
+            pass
         elif itemGroup in ("Energy Weapon", "Hybrid Weapon", "Projectile Weapon", "Combat Drone", "Fighter Drone"):
             trackingSpeed = stuff.getModifiedItemAttr("trackingSpeed")
             if not trackingSpeed:

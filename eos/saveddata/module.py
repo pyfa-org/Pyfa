@@ -337,8 +337,15 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
                 volley *= self.getModifiedItemAttr("damageMultiplier") or 1
                 if volley:
                     cycleTime = self.cycleTime
+                    # Some weapons repeat multiple times in one cycle (think doomsdays)
+                    # Get the number of times it fires off
+                    weaponDoT = max(
+                            self.getModifiedItemAttr("doomsdayDamageDuration", 1) / self.getModifiedItemAttr("doomsdayDamageCycleTime", 1),
+                            1
+                    )
+
                     self.__volley = volley
-                    self.__dps = volley / (cycleTime / 1000.0)
+                    self.__dps = (volley * weaponDoT) / (cycleTime / 1000.0)
 
         return self.__dps, self.__volley
 
@@ -710,7 +717,7 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
 
         # Module can only fire one shot at a time, think bomb launchers or defender launchers
         if self.disallowRepeatingAction:
-            if numShots > 1:
+            if numShots > 0:
                 """
                 The actual mechanics behind this is complex.  Behavior will be (for 3 ammo):
                     fire, reactivation delay, fire, reactivation delay, fire, max(reactivation delay, reload)
@@ -720,12 +727,13 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
 
                 Currently would apply to bomb launchers and defender missiles
                 """
-                effective_reload_time = ((self.reactivationDelay * (numShots - 1)) + max(raw_reload_time, self.reactivationDelay, 0)) / numShots
+                effective_reload_time = ((self.reactivationDelay * (numShots - 1)) + max(raw_reload_time, self.reactivationDelay, 0))
             else:
                 """
                 Applies to MJD/MJFG
                 """
                 effective_reload_time = max(raw_reload_time, self.reactivationDelay, 0)
+                speed = speed + effective_reload_time
         else:
             """
             Currently no other modules would have a reactivation delay, so for sanities sake don't try and account for it.
@@ -752,7 +760,7 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
 
     @property
     def disallowRepeatingAction(self):
-        return self.getModifiedItemAttr("disallowRepeatingAction", 0)
+        return self.getModifiedItemAttr("disallowRepeatingActivation", 0)
 
     @property
     def reactivationDelay(self):

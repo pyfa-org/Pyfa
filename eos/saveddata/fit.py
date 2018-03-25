@@ -1084,7 +1084,7 @@ class Fit(object):
 
     def calculateSustainableTank(self, effective=True):
         if self.__sustainableTank is None:
-            if self.capStable:
+            if self.capStable and not self.factorReload:
                 sustainable = {
                     "armorRepair" : self.extraAttributes["armorRepair"],
                     "shieldRepair": self.extraAttributes["shieldRepair"],
@@ -1142,16 +1142,34 @@ class Fit(object):
                                         usesCap = False
                                 except AttributeError:
                                     usesCap = False
-                                # Modules which do not use cap are not penalized based on cap use
-                                if usesCap:
-                                    cycleTime = mod.getModifiedItemAttr("duration")
-                                    amount = mod.getModifiedItemAttr(groupAttrMap[mod.item.group.name])
+
+                                cycleTime = mod.rawCycleTime
+                                amount = mod.getModifiedItemAttr(groupAttrMap[mod.item.group.name])
+                                # Normal Repairers
+                                if usesCap and not mod.charge:
                                     sustainable[attr] -= amount / (cycleTime / 1000.0)
                                     repairers.append(mod)
+                                # Ancillary Armor reps etc
+                                elif usesCap and mod.charge:
+                                    if mod.charge.name == "Nanite Repair Paste":
+                                        multiplier = mod.getModifiedItemAttr("chargedArmorDamageMultiplier") or 1
+                                    else:
+                                        multiplier = 1
+                                    sustainable[attr] -= amount * multiplier / (cycleTime / 1000.0)
+                                    repairers.append(mod)
+                                # Ancillary Shield boosters etc
+                                elif not usesCap:
+                                    if self.factorReload and mod.charge:
+                                        reloadtime = mod.reloadTime
+                                    else:
+                                        reloadtime = 0.0
+                                    offdutycycle = reloadtime / ((max(mod.numShots, 1) * cycleTime) + reloadtime)
+                                    sustainable[attr] -= amount * offdutycycle / (cycleTime / 1000.0)
 
                 # Sort repairers by efficiency. We want to use the most efficient repairers first
                 repairers.sort(key=lambda _mod: _mod.getModifiedItemAttr(
-                        groupAttrMap[_mod.item.group.name]) / _mod.getModifiedItemAttr("capacitorNeed"), reverse=True)
+                    groupAttrMap[_mod.item.group.name]) * (_mod.getModifiedItemAttr(
+                        "chargedArmorDamageMultiplier") or 1) / _mod.getModifiedItemAttr("capacitorNeed"), reverse=True)
 
                 # Loop through every module until we're above peak recharge
                 # Most efficient first, as we sorted earlier.
@@ -1160,15 +1178,35 @@ class Fit(object):
                 for mod in repairers:
                     if capUsed > totalPeakRecharge:
                         break
-                    cycleTime = mod.cycleTime
+
+                    if self.factorReload and mod.charge:
+                        reloadtime = mod.reloadTime
+                    else:
+                        reloadtime = 0.0
+
+                    cycleTime = mod.rawCycleTime
                     capPerSec = mod.capUse
+
                     if capPerSec is not None and cycleTime is not None:
                         # Check how much this repper can work
                         sustainability = min(1, (totalPeakRecharge - capUsed) / capPerSec)
-
-                        # Add the sustainable amount
                         amount = mod.getModifiedItemAttr(groupAttrMap[mod.item.group.name])
-                        sustainable[groupStoreMap[mod.item.group.name]] += sustainability * (amount / (cycleTime / 1000.0))
+                        # Add the sustainable amount
+
+                        if not mod.charge:
+                            sustainable[groupStoreMap[mod.item.group.name]] += sustainability * amount / (
+                                    cycleTime / 1000.0)
+                        else:
+                            if mod.charge.name == "Nanite Repair Paste":
+                                multiplier = mod.getModifiedItemAttr("chargedArmorDamageMultiplier") or 1
+                            else:
+                                multiplier = 1
+                            ondutycycle = (max(mod.numShots, 1) * cycleTime) / (
+                                    (max(mod.numShots, 1) * cycleTime) + reloadtime)
+                            sustainable[groupStoreMap[
+                                mod.item.group.name]] += sustainability * amount * ondutycycle * multiplier / (
+                                    cycleTime / 1000.0)
+
                         capUsed += capPerSec
 
             sustainable["passiveShield"] = self.calculateShieldRecharge()
@@ -1186,7 +1224,7 @@ class Fit(object):
         rechargeRate = self.ship.getModifiedItemAttr("shieldRechargeRate") / 1000.0
         return 10 / rechargeRate * sqrt(percent) * (1 - sqrt(percent)) * capacity
 
-    def addDrain(self, src, cycleTime, capNeed, clipSize=0):
+    def addDrain(self, src, cycleTime, capNeed, clipSize=0, reloadTime=0):
         """ Used for both cap drains and cap fills (fills have negative capNeed) """
 
         energyNeutralizerSignatureResolution = src.getModifiedItemAttr("energyNeutralizerSignatureResolution")
@@ -1196,7 +1234,7 @@ class Fit(object):
         if energyNeutralizerSignatureResolution:
             capNeed = capNeed * min(1, signatureRadius / energyNeutralizerSignatureResolution)
 
-        self.__extraDrains.append((cycleTime, capNeed, clipSize))
+        self.__extraDrains.append((cycleTime, capNeed, clipSize, reloadTime))
 
     def removeDrain(self, i):
         del self.__extraDrains[i]
@@ -1214,6 +1252,7 @@ class Fit(object):
                     cycleTime = mod.rawCycleTime or 0
                     reactivationTime = mod.getModifiedItemAttr("moduleReactivationDelay") or 0
                     fullCycleTime = cycleTime + reactivationTime
+                    reloadTime = mod.reloadTime
                     if fullCycleTime > 0:
                         capNeed = mod.capUse
                         if capNeed > 0:
@@ -1225,11 +1264,11 @@ class Fit(object):
                         disableStagger = mod.hardpoint == Hardpoint.TURRET
 
                         drains.append((int(fullCycleTime), mod.getModifiedItemAttr("capacitorNeed") or 0,
-                                       mod.numShots or 0, disableStagger))
+                                       mod.numShots or 0, disableStagger, reloadTime))
 
-        for fullCycleTime, capNeed, clipSize in self.iterDrains():
+        for fullCycleTime, capNeed, clipSize, reloadTime in self.iterDrains():
             # Stagger incoming effects for cap simulation
-            drains.append((int(fullCycleTime), capNeed, clipSize, False))
+            drains.append((int(fullCycleTime), capNeed, clipSize, False, reloadTime))
             if capNeed > 0:
                 capUsed += capNeed / (fullCycleTime / 1000.0)
             else:
