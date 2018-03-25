@@ -53,38 +53,46 @@ class CheckUpdateThread(threading.Thread):
                 reverse=True
             )
 
-            for release in jsonResponse:
-                # Suppress pre releases
-                if release['prerelease'] and self.settings.get('prerelease'):
-                    continue
+            for release in jsonResponse[:5]:
+                try:
+                    # Suppress pre releases
+                    if release['prerelease'] and self.settings.get('prerelease'):
+                        continue
 
-                # Handle use-case of updating to suppressed version
-                if self.settings.get('version') == 'v' + config.version:
-                    self.settings.set('version', None)
+                    # Handle use-case of updating to suppressed version
+                    if self.settings.get('version') == 'v' + config.version:
+                        self.settings.set('version', None)
 
-                # Suppress version
-                if release['tag_name'] == self.settings.get('version'):
-                    break
+                    # Suppress version
+                    if release['tag_name'] == self.settings.get('version'):
+                        break
 
-                # Set the release version that we will be comparing with.
-                if release['prerelease']:
-                    rVersion = release['tag_name'].replace('singularity-', '', 1)
-                else:
-                    rVersion = release['tag_name'].replace('v', '', 1)
-
-                if config.tag is 'git' and \
-                        not release['prerelease'] and \
-                        self.versiontuple(rVersion) >= self.versiontuple(config.version):
-                    wx.CallAfter(self.callback, release)  # git (dev/Singularity) -> Stable
-                elif config.expansionName is not "Singularity":
+                    # Set the release version that we will be comparing with.
                     if release['prerelease']:
-                        wx.CallAfter(self.callback, release)  # Stable -> Singularity
-                    elif self.versiontuple(rVersion) > self.versiontuple(config.version):
-                        wx.CallAfter(self.callback, release)  # Stable -> Stable
-                else:
-                    if release['prerelease'] and rVersion > config.expansionVersion:
-                        wx.CallAfter(self.callback, release)  # Singularity -> Singularity
-                break
+                        rVersion = release['tag_name'].replace('singularity-', '', 1)
+                    else:
+                        rVersion = release['tag_name'].replace('v', '', 1)
+
+                    if config.tag is 'git' and \
+                            not release['prerelease'] and \
+                            self.versiontuple(rVersion) >= self.versiontuple(config.version):
+                        wx.CallAfter(self.callback, release)  # git (dev/Singularity) -> Stable
+                        break
+                    elif config.expansionName is not "Singularity":
+                        if release['prerelease']:
+                            wx.CallAfter(self.callback, release)  # Stable -> Singularity
+                            break
+                        elif self.versiontuple(rVersion) > self.versiontuple(config.version):
+                            wx.CallAfter(self.callback, release)  # Stable -> Stable
+                            break
+                    else:
+                        if release['prerelease'] and rVersion > config.expansionVersion:
+                            wx.CallAfter(self.callback, release)  # Singularity -> Singularity
+                            break
+                except Exception as e:
+                    # if we break at version checking, try the next version
+                    pyfalog.error(e)
+                    continue
         except Exception as e:
             pyfalog.error("Caught exception in run")
             pyfalog.error(e)
