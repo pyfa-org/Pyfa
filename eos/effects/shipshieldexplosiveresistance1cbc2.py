@@ -1,7 +1,8 @@
 # shipShieldExplosiveResistance1CBC2
 #
 # Used by:
-# Variations of ship: Drake (3 of 3)
+# Ship: Drake
+# Ship: Nighthawk
 # Ship: Vulture
 type = "passive"
 

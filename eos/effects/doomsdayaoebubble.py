@@ -1,7 +1,7 @@
 # doomsdayAOEBubble
 #
 # Used by:
-# Module: Standup Warp Disruption Burst Projector
+# Module: Warp Disruption Burst Projector
 type = "projected", "active"
 
 

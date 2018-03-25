@@ -1,7 +1,7 @@
 # microJumpPortalDrive
 #
 # Used by:
-# Module: MJFG - Micro Jump Field Generator (used on command destroyers)
+# Module: Micro Jump Field Generator
 type = "active"
 
 

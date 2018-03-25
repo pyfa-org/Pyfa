@@ -2,6 +2,7 @@
 #
 # Used by:
 # Ship: Gnosis
+# Ship: Praxis
 # Ship: Taipan
 # Ship: Velator
 type = "passive"

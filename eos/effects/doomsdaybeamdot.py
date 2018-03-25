@@ -1,7 +1,7 @@
 # doomsdayBeamDOT
 #
 # Used by:
-# Module: Lance type modules
+# Modules named like: Lance (4 of 4)
 type = "active"
 
 
