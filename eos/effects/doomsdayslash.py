@@ -1,7 +1,7 @@
 # doomsdaySlash
 #
 # Used by:
-# Module: Reaper type modules
+# Modules named like: Reaper (4 of 4)
 type = "active"
 
 
