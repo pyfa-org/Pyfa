@@ -1,7 +1,7 @@
 # doomsdayHOG
 #
 # Used by:
-# Module: GTFO - Gravitational Transportation Field Oscillator
+# Module: Gravitational Transportation Field Oscillator
 type = "active"
 
 
