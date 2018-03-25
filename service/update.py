@@ -52,8 +52,8 @@ class CheckUpdateThread(threading.Thread):
                 key=lambda x: calendar.timegm(dateutil.parser.parse(x['published_at']).utctimetuple()),
                 reverse=True
             )
+
             for release in jsonResponse[:5]:
-                # sometimes, depending on the tag name, things break. If they do, just continue to the next iteration
                 try:
                     # Suppress pre releases
                     if release['prerelease'] and self.settings.get('prerelease'):
@@ -90,6 +90,8 @@ class CheckUpdateThread(threading.Thread):
                             wx.CallAfter(self.callback, release)  # Singularity -> Singularity
                             break
                 except Exception as e:
+                    # if we break at version checking, try the next version
+                    pyfalog.error(e)
                     continue
         except Exception as e:
             pyfalog.error("Caught exception in run")
