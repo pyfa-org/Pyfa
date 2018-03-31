@@ -1,5 +1,3 @@
-import sys
-
 # noinspection PyPackageRequirements
 import wx
 
@@ -147,7 +145,7 @@ class ItemCompare(wx.Panel):
         self.paramList.SetColumnWidth(len(self.attrs) + 1, 60)
 
         for item in self.items:
-            i = self.paramList.InsertItem(sys.maxsize, item.name)
+            i = self.paramList.InsertItem(self.paramList.GetItemCount(), item.name)
             for x, attr in enumerate(self.attrs.keys()):
                 if attr in item.attributes:
                     info = self.attrs[attr]
