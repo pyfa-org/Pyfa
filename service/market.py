@@ -84,8 +84,9 @@ class SearchWorkerThread(threading.Thread):
         threading.Thread.__init__(self)
         self.name = "SearchWorker"
         self.jargonLoader = JargonLoader.instance()
-        self.jargonLoader.get_jargon() # load the jargon while in an out-of-thread context, to spot any problems
-        self.jargonLoader.get_jargon().apply('foobar baz')
+        # load the jargon while in an out-of-thread context, to spot any problems while in the main thread
+        self.jargonLoader.get_jargon()
+        self.jargonLoader.get_jargon().apply('test string')
 
     def run(self):
         self.cv = threading.Condition()
@@ -117,15 +118,10 @@ class SearchWorkerThread(threading.Thread):
                                          join=(types_Item.group, types_Group.category),
                                          eager=("icon", "group.category", "metaGroup", "metaGroup.parent"))
 
-            try:
-                jargon_request = self.jargonLoader.get_jargon().apply(request)
-                jargon_results = eos.db.searchItems(jargon_request, where=filter_,
-                                             join=(types_Item.group, types_Group.category),
-                                             eager=("icon", "group.category", "metaGroup", "metaGroup.parent"))
-            except Exception as e:
-                import sys
-                print(e, file=sys.stderr)
-
+            jargon_request = self.jargonLoader.get_jargon().apply(request)
+            jargon_results = eos.db.searchItems(jargon_request, where=filter_,
+                                         join=(types_Item.group, types_Group.category),
+                                         eager=("icon", "group.category", "metaGroup", "metaGroup.parent"))
 
             items = set()
             # Return only published items, consult with Market service this time
