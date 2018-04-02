@@ -114,14 +114,20 @@ class SearchWorkerThread(threading.Thread):
                 filter_ = None
 
 
-            results = eos.db.searchItems(request, where=filter_,
-                                         join=(types_Item.group, types_Group.category),
-                                         eager=("icon", "group.category", "metaGroup", "metaGroup.parent"))
-
             jargon_request = self.jargonLoader.get_jargon().apply(request)
-            jargon_results = eos.db.searchItems(jargon_request, where=filter_,
-                                         join=(types_Item.group, types_Group.category),
-                                         eager=("icon", "group.category", "metaGroup", "metaGroup.parent"))
+
+
+            results = []
+            if len(request) >= config.minItemSearchLength:
+                results = eos.db.searchItems(request, where=filter_,
+                                             join=(types_Item.group, types_Group.category),
+                                             eager=("icon", "group.category", "metaGroup", "metaGroup.parent"))
+
+            jargon_results = []
+            if len(jargon_request) >= config.minItemSearchLength:
+                jargon_results = eos.db.searchItems(jargon_request, where=filter_,
+                                             join=(types_Item.group, types_Group.category),
+                                             eager=("icon", "group.category", "metaGroup", "metaGroup.parent"))
 
             items = set()
             # Return only published items, consult with Market service this time

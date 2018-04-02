@@ -1,5 +1,6 @@
 import wx
 
+import config
 import gui.builtinMarketBrowser.pfSearchBox as SBox
 from gui.contextMenu import ContextMenu
 from gui.display import Display
@@ -169,10 +170,6 @@ class ItemView(Display):
         # Re-select market group if search query has zero length
         if len(realsearch) == 0:
             self.selectionMade()
-            return
-        # Show nothing if query is too short
-        elif len(realsearch) < 3:
-            self.clearSearch()
             return
 
         self.marketBrowser.searchMode = True
