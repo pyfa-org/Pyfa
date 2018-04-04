@@ -1143,14 +1143,16 @@ class Fit(object):
                                 except AttributeError:
                                     usesCap = False
 
-                                cycleTime = mod.rawCycleTime
-                                amount = mod.getModifiedItemAttr(groupAttrMap[mod.item.group.name])
                                 # Normal Repairers
                                 if usesCap and not mod.charge:
+                                    cycleTime = mod.rawCycleTime
+                                    amount = mod.getModifiedItemAttr(groupAttrMap[mod.item.group.name])
                                     sustainable[attr] -= amount / (cycleTime / 1000.0)
                                     repairers.append(mod)
                                 # Ancillary Armor reps etc
                                 elif usesCap and mod.charge:
+                                    cycleTime = mod.rawCycleTime
+                                    amount = mod.getModifiedItemAttr(groupAttrMap[mod.item.group.name])
                                     if mod.charge.name == "Nanite Repair Paste":
                                         multiplier = mod.getModifiedItemAttr("chargedArmorDamageMultiplier") or 1
                                     else:
@@ -1158,7 +1160,9 @@ class Fit(object):
                                     sustainable[attr] -= amount * multiplier / (cycleTime / 1000.0)
                                     repairers.append(mod)
                                 # Ancillary Shield boosters etc
-                                elif not usesCap:
+                                elif not usesCap and mod.item.group.name in ("Ancillary Shield Booster", "Ancillary Remote Shield Booster"):
+                                    cycleTime = mod.rawCycleTime
+                                    amount = mod.getModifiedItemAttr(groupAttrMap[mod.item.group.name])
                                     if self.factorReload and mod.charge:
                                         reloadtime = mod.reloadTime
                                     else:
