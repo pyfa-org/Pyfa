@@ -29,19 +29,21 @@ class CopySelectDialog(wx.Dialog):
     copyFormatDna = 3
     copyFormatCrest = 4
     copyFormatMultiBuy = 5
+    copyFormatEffs = 6
 
     def __init__(self, parent):
         wx.Dialog.__init__(self, parent, id=wx.ID_ANY, title=u"Select a format", size=(-1, -1),
                            style=wx.DEFAULT_DIALOG_STYLE)
         mainSizer = wx.BoxSizer(wx.VERTICAL)
 
-        copyFormats = [u"EFT", u"EFT (Implants)", u"XML", u"DNA", u"CREST", u"MultiBuy"]
+        copyFormats = [u"EFT", u"EFT (Implants)", u"XML", u"DNA", u"CREST", u"MultiBuy", u"EFFS"]
         copyFormatTooltips = {CopySelectDialog.copyFormatEft: u"EFT text format",
                               CopySelectDialog.copyFormatEftImps: u"EFT text format",
                               CopySelectDialog.copyFormatXml: u"EVE native XML format",
                               CopySelectDialog.copyFormatDna: u"A one-line text format",
                               CopySelectDialog.copyFormatCrest: u"A JSON format used for EVE CREST",
-                              CopySelectDialog.copyFormatMultiBuy: u"MultiBuy text format"}
+                              CopySelectDialog.copyFormatMultiBuy: u"MultiBuy text format",
+                              CopySelectDialog.copyFormatEffs: u"EFFS json stats format"}
         selector = wx.RadioBox(self, wx.ID_ANY, label=u"Copy to the clipboard using:", choices=copyFormats,
                                style=wx.RA_SPECIFY_ROWS)
         selector.Bind(wx.EVT_RADIOBOX, self.Selected)

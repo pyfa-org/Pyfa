@@ -77,6 +77,8 @@ from eos.db.saveddata.queries import getFit as db_getFit
 from service.port import Port, IPortUser
 from service.settings import HTMLExportSettings
 
+from effs_stat_export import parseNeededFitDetails as exportEffsStats
+
 from time import gmtime, strftime
 
 import threading
@@ -754,6 +756,10 @@ class MainFrame(wx.Frame, IPortUser):
         fit = db_getFit(self.getActiveFit())
         toClipboard(Port.exportMultiBuy(fit))
 
+    def clipboardEffs(self):
+        fit = db_getFit(self.getActiveFit())
+        toClipboard(exportEffsStats(fit, 0))
+
     def importFromClipboard(self, event):
         clipboard = fromClipboard()
         try:
@@ -769,11 +775,11 @@ class MainFrame(wx.Frame, IPortUser):
                           CopySelectDialog.copyFormatXml: self.clipboardXml,
                           CopySelectDialog.copyFormatDna: self.clipboardDna,
                           CopySelectDialog.copyFormatCrest: self.clipboardCrest,
-                          CopySelectDialog.copyFormatMultiBuy: self.clipboardMultiBuy}
+                          CopySelectDialog.copyFormatMultiBuy: self.clipboardMultiBuy,
+                          CopySelectDialog.copyFormatEffs: self.clipboardEffs}
         dlg = CopySelectDialog(self)
         dlg.ShowModal()
         selected = dlg.GetSelected()
-
         CopySelectDict[selected]()
 
         try:
