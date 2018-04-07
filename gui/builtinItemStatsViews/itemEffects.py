@@ -1,4 +1,3 @@
-import sys
 import os
 import subprocess
 import config
@@ -51,7 +50,7 @@ class ItemEffects(wx.Panel):
         names.sort()
 
         for name in names:
-            index = self.effectList.InsertItem(sys.maxsize, name)
+            index = self.effectList.InsertItem(self.effectList.GetItemCount(), name)
 
             if effects[name].isImplemented:
                 if effects[name].activeByDefault:

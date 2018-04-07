@@ -1,4 +1,3 @@
-import sys
 import csv
 import config
 
@@ -203,7 +202,7 @@ class ItemParams(wx.Panel):
             else:
                 attrIcon = self.imageList.Add(BitmapLoader.getBitmap("7_15", "icons"))
 
-            index = self.paramList.InsertItem(sys.maxsize, attrName, attrIcon)
+            index = self.paramList.InsertItem(self.paramList.GetItemCount(), attrName, attrIcon)
             idNameMap[idCount] = attrName
             self.paramList.SetItemData(index, idCount)
             idCount += 1

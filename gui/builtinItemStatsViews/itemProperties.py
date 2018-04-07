@@ -1,5 +1,3 @@
-import sys
-
 # noinspection PyPackageRequirements
 import wx
 
@@ -79,7 +77,7 @@ class ItemProperties(wx.Panel):
                     attrName = name.title()
                     value = getattr(self.item, name)
 
-                index = self.paramList.InsertItem(sys.maxsize, attrName)
+                index = self.paramList.InsertItem(self.paramList.GetItemCount(), attrName)
                 # index = self.paramList.InsertImageStringItem(sys.maxint, attrName)
                 idNameMap[idCount] = attrName
                 self.paramList.SetItemData(index, idCount)

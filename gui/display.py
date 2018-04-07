@@ -17,7 +17,6 @@
 # along with pyfa.  If not, see <http://www.gnu.org/licenses/>.
 # =============================================================================
 
-import sys
 # noinspection PyPackageRequirements
 import wx
 import gui.mainFrame
@@ -182,13 +181,13 @@ class Display(wx.ListCtrl):
 
             if listItemCount < stuffItemCount:
                 for i in range(stuffItemCount - listItemCount):
-                    self.InsertItem(sys.maxsize, "")
+                    self.InsertItem(self.GetItemCount(), "")
 
             if listItemCount > stuffItemCount:
                 if listItemCount - stuffItemCount > 20 > stuffItemCount:
                     self.DeleteAllItems()
                     for i in range(stuffItemCount):
-                        self.InsertItem(sys.maxsize, "")
+                        self.InsertItem(self.GetItemCount(), "")
                 else:
                     for i in range(listItemCount - stuffItemCount):
                         self.DeleteItem(self.getLastItem())
