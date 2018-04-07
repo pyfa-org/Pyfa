@@ -8,3 +8,4 @@ markdown2
 packaging
 roman
 beautifulsoup4
+PyYAML

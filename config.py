@@ -27,6 +27,8 @@ expansionName = "YC120.3"
 expansionVersion = "1.8"
 evemonMinVersion = "4081"
 
+minItemSearchLength = 3
+
 pyfaPath = None
 savePath = None
 saveDB = None
