@@ -101,7 +101,7 @@ class Miscellanea(ViewColumn):
             return text, tooltip
 
             pass
-        elif itemGroup in ("Energy Weapon", "Hybrid Weapon", "Projectile Weapon", "Combat Drone", "Fighter Drone"):
+        elif itemGroup in ("Energy Weapon", "Hybrid Weapon", "Projectile Weapon", "Precursor Turret", "Combat Drone", "Fighter Drone"):
             trackingSpeed = stuff.getModifiedItemAttr("trackingSpeed")
             if not trackingSpeed:
                 return "", None

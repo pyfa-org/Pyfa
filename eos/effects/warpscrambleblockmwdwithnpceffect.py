@@ -1,7 +1,7 @@
 # warpScrambleBlockMWDWithNPCEffect
 #
 # Used by:
-# Modules named like: Warp Scrambler (26 of 26)
+# Modules named like: Warp Scrambler (27 of 27)
 from eos.saveddata.module import State
 
 runTime = "early"

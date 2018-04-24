@@ -337,6 +337,8 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
                         lambda attr: (func("%sDamage" % attr) or 0) * (1 - getattr(targetResists, "%sAmount" % attr, 0)),
                         self.DAMAGE_TYPES))
                 volley *= self.getModifiedItemAttr("damageMultiplier") or 1
+                # Disintegrator-specific ramp-up multiplier
+                volley *= (self.getModifiedItemAttr("damageMultiplierBonusMax") or 0) + 1
                 if volley:
                     cycleTime = self.cycleTime
                     # Some weapons repeat multiple times in one cycle (think doomsdays)

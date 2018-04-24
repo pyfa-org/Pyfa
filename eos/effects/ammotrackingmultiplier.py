@@ -5,6 +5,7 @@
 # Charges from group: Advanced Autocannon Ammo (8 of 8)
 # Charges from group: Advanced Beam Laser Crystal (8 of 8)
 # Charges from group: Advanced Blaster Charge (8 of 8)
+# Charges from group: Advanced Charge Bottle (5 of 6)
 # Charges from group: Advanced Pulse Laser Crystal (8 of 8)
 # Charges from group: Advanced Railgun Charge (8 of 8)
 # Charges from group: Projectile Ammo (128 of 128)
