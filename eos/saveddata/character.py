@@ -119,16 +119,9 @@ class Character(object):
 
         return all0
 
-    def apiUpdateCharSheet(self, skills, secStatus=0):
-        for skillRow in skills:
-            try:
-                skill = self.getSkill(int(skillRow["typeID"]))
-                skill.setLevel(int(skillRow["level"]), persist=True, ignoreRestrict=True)
-            except:
-                # if setting a skill doesn't work, it's not the end of the world, just quietly pass
-                pass
-
-        self.secStatus = secStatus
+    def clearSkills(self):
+        del self.__skills[:]
+        self.__skillIdMap.clear()
 
     @property
     def ro(self):
@@ -169,6 +162,18 @@ class Character(object):
     @name.setter
     def name(self, name):
         self.savedName = name
+
+    def setSsoCharacter(self, character, clientHash):
+        if character is not None:
+            self.__ssoCharacters.append(character)
+        else:
+            for x in self.__ssoCharacters:
+                if x.client == clientHash:
+                    self.__ssoCharacters.remove(x)
+
+
+    def getSsoCharacter(self, clientHash):
+        return next((x for x in self.__ssoCharacters if x.client == clientHash), None)
 
     @property
     def alphaCloneID(self):

@@ -27,7 +27,7 @@ from eos.db.saveddata.fit import projectedFits_table
 from eos.db.util import processEager, processWhere
 from eos.saveddata.price import Price
 from eos.saveddata.user import User
-from eos.saveddata.crestchar import CrestChar
+from eos.saveddata.ssocharacter import SsoCharacter
 from eos.saveddata.damagePattern import DamagePattern
 from eos.saveddata.targetResists import TargetResists
 from eos.saveddata.character import Character
@@ -467,29 +467,28 @@ def getProjectedFits(fitID):
         raise TypeError("Need integer as argument")
 
 
-def getCrestCharacters(eager=None):
+def getSsoCharacters(clientHash, eager=None):
     eager = processEager(eager)
     with sd_lock:
-        characters = saveddata_session.query(CrestChar).options(*eager).all()
+        characters = saveddata_session.query(SsoCharacter).filter(SsoCharacter.client == clientHash).options(*eager).all()
     return characters
 
 
-@cachedQuery(CrestChar, 1, "lookfor")
-def getCrestCharacter(lookfor, eager=None):
+@cachedQuery(SsoCharacter, 1, "lookfor", "clientHash")
+def getSsoCharacter(lookfor, clientHash, eager=None):
+    filter = SsoCharacter.client == clientHash
+
     if isinstance(lookfor, int):
-        if eager is None:
-            with sd_lock:
-                character = saveddata_session.query(CrestChar).get(lookfor)
-        else:
-            eager = processEager(eager)
-            with sd_lock:
-                character = saveddata_session.query(CrestChar).options(*eager).filter(CrestChar.ID == lookfor).first()
+        filter = and_(filter, SsoCharacter.ID == lookfor)
     elif isinstance(lookfor, str):
-        eager = processEager(eager)
-        with sd_lock:
-            character = saveddata_session.query(CrestChar).options(*eager).filter(CrestChar.name == lookfor).first()
+        filter = and_(filter, SsoCharacter.characterName == lookfor)
     else:
         raise TypeError("Need integer or string as argument")
+
+    eager = processEager(eager)
+    with sd_lock:
+        character = saveddata_session.query(SsoCharacter).options(*eager).filter(filter).first()
+
     return character
 
 
@@ -544,7 +543,7 @@ def commit():
         try:
             saveddata_session.commit()
             saveddata_session.flush()
-        except Exception:
+        except Exception as ex:
             saveddata_session.rollback()
             exc_info = sys.exc_info()
             raise exc_info[0](exc_info[1]).with_traceback(exc_info[2])

@@ -352,32 +352,32 @@ class UpdateSettings(object):
         self.serviceUpdateSettings[type] = value
 
 
-class CRESTSettings(object):
+class EsiSettings(object):
     _instance = None
 
     @classmethod
     def getInstance(cls):
         if cls._instance is None:
-            cls._instance = CRESTSettings()
+            cls._instance = EsiSettings()
 
         return cls._instance
 
     def __init__(self):
-        # mode
-        # 0 - Implicit authentication
-        # 1 - User-supplied client details
-        serviceCRESTDefaultSettings = {"mode": 0, "server": 0, "clientID": "", "clientSecret": "", "timeout": 60}
+        # LoginMode:
+        # 0 - Server Start Up
+        # 1 - User copy and paste data from website to pyfa
+        defaults = {"loginMode": 0, "clientID": "", "clientSecret": "", "timeout": 60}
 
-        self.serviceCRESTSettings = SettingsProvider.getInstance().getSettings(
-                "pyfaServiceCRESTSettings",
-                serviceCRESTDefaultSettings
+        self.settings = SettingsProvider.getInstance().getSettings(
+                "pyfaServiceEsiSettings",
+                defaults
         )
 
     def get(self, type):
-        return self.serviceCRESTSettings[type]
+        return self.settings[type]
 
     def set(self, type, value):
-        self.serviceCRESTSettings[type] = value
+        self.settings[type] = value
 
 
 class StatViewSettings(object):

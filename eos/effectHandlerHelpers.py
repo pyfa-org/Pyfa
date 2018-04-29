@@ -205,6 +205,16 @@ class HandledImplantBoosterList(HandledList):
         HandledList.append(self, thing)
 
 
+class HandledSsoCharacterList(list):
+    def append(self, character):
+        old = next((x for x in self if x.client == character.client), None)
+        if old is not None:
+            pyfalog.warning("Removing SSO Character with same hash: {}".format(repr(old)))
+            list.remove(self, old)
+
+        list.append(self, character)
+
+
 class HandledProjectedModList(HandledList):
     def append(self, proj):
         if proj.isInvalid:

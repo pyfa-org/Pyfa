@@ -16,12 +16,14 @@ import gui.globalEvents as GE
 
 from logbook import Logger
 import calendar
-from service.crest import Crest, CrestModes
+from service.esi import Esi
+from esipy.exceptions import APIException
+from service.port import ESIExportException
 
 pyfalog = Logger(__name__)
 
 
-class CrestFittings(wx.Frame):
+class EveFittings(wx.Frame):
     def __init__(self, parent):
         wx.Frame.__init__(self, parent, id=wx.ID_ANY, title="Browse EVE Fittings", pos=wx.DefaultPosition,
                           size=wx.Size(550, 450), style=wx.DEFAULT_FRAME_STYLE | wx.TAB_TRAVERSAL)
@@ -30,20 +32,13 @@ class CrestFittings(wx.Frame):
 
         self.mainFrame = parent
         mainSizer = wx.BoxSizer(wx.VERTICAL)
-        sCrest = Crest.getInstance()
+        sEsi = Esi.getInstance()
 
         characterSelectSizer = wx.BoxSizer(wx.HORIZONTAL)
 
-        if sCrest.settings.get('mode') == CrestModes.IMPLICIT:
-            self.stLogged = wx.StaticText(self, wx.ID_ANY, "Currently logged in as %s" % sCrest.implicitCharacter.name,
-                                          wx.DefaultPosition, wx.DefaultSize)
-            self.stLogged.Wrap(-1)
-
-            characterSelectSizer.Add(self.stLogged, 1, wx.ALIGN_CENTER_VERTICAL | wx.ALL, 5)
-        else:
-            self.charChoice = wx.Choice(self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, [])
-            characterSelectSizer.Add(self.charChoice, 1, wx.ALIGN_CENTER_VERTICAL | wx.ALL, 5)
-            self.updateCharList()
+        self.charChoice = wx.Choice(self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, [])
+        characterSelectSizer.Add(self.charChoice, 1, wx.ALIGN_CENTER_VERTICAL | wx.ALL, 5)
+        self.updateCharList()
 
         self.fetchBtn = wx.Button(self, wx.ID_ANY, "Fetch Fits", wx.DefaultPosition, wx.DefaultSize, 5)
         characterSelectSizer.Add(self.fetchBtn, 0, wx.ALL, 5)
@@ -85,9 +80,6 @@ class CrestFittings(wx.Frame):
         self.statusbar.SetFieldsCount()
         self.SetStatusBar(self.statusbar)
 
-        self.cacheTimer = wx.Timer(self)
-        self.Bind(wx.EVT_TIMER, self.updateCacheStatus, self.cacheTimer)
-
         self.SetSizer(mainSizer)
         self.Layout()
 
@@ -98,63 +90,52 @@ class CrestFittings(wx.Frame):
         event.Skip()
 
     def updateCharList(self):
-        sCrest = Crest.getInstance()
-        chars = sCrest.getCrestCharacters()
+        sEsi = Esi.getInstance()
+        chars = sEsi.getSsoCharacters()
 
         if len(chars) == 0:
             self.Close()
 
         self.charChoice.Clear()
         for char in chars:
-            self.charChoice.Append(char.name, char.ID)
+            self.charChoice.Append(char.characterName, char.ID)
 
         self.charChoice.SetSelection(0)
 
-    def updateCacheStatus(self, event):
-        t = time.gmtime(self.cacheTime - time.time())
-
-        if calendar.timegm(t) < 0:  # calendar.timegm gets seconds until time given
-            self.cacheTimer.Stop()
-        else:
-            sTime = time.strftime("%H:%M:%S", t)
-            self.statusbar.SetStatusText("Cached for %s" % sTime, 0)
-
     def ssoLogout(self, event):
-        if event.type == CrestModes.IMPLICIT:
-            self.Close()
-        else:
-            self.updateCharList()
+        self.updateCharList()
         event.Skip()  # continue event
 
     def OnClose(self, event):
         self.mainFrame.Unbind(GE.EVT_SSO_LOGOUT)
         self.mainFrame.Unbind(GE.EVT_SSO_LOGIN)
-        self.cacheTimer.Stop()  # must be manually stopped, otherwise crash. See https://github.com/wxWidgets/Phoenix/issues/632
+        # self.cacheTimer.Stop()  # must be manually stopped, otherwise crash. See https://github.com/wxWidgets/Phoenix/issues/632
         event.Skip()
 
     def getActiveCharacter(self):
-        sCrest = Crest.getInstance()
-
-        if sCrest.settings.get('mode') == CrestModes.IMPLICIT:
-            return sCrest.implicitCharacter.ID
-
         selection = self.charChoice.GetCurrentSelection()
         return self.charChoice.GetClientData(selection) if selection is not None else None
 
     def fetchFittings(self, event):
-        sCrest = Crest.getInstance()
+        sEsi = Esi.getInstance()
+        waitDialog = wx.BusyInfo("Fetching fits, please wait...", parent=self)
+
         try:
-            waitDialog = wx.BusyInfo("Fetching fits, please wait...", parent=self)
-            fittings = sCrest.getFittings(self.getActiveCharacter())
-            self.cacheTime = fittings.get('cached_until')
-            self.updateCacheStatus(None)
-            self.cacheTimer.Start(1000)
+            fittings = sEsi.getFittings(self.getActiveCharacter())
+            # self.cacheTime = fittings.get('cached_until')
+            # self.updateCacheStatus(None)
+            # self.cacheTimer.Start(1000)
             self.fitTree.populateSkillTree(fittings)
             del waitDialog
         except requests.exceptions.ConnectionError:
             msg = "Connection error, please check your internet connection"
             pyfalog.error(msg)
             self.statusbar.SetStatusText(msg)
+        except APIException as ex:
+            del waitDialog  # Can't do this in a finally because then it obscures the message dialog
+            ESIExceptionHandler(self, ex)
+        except Exception as ex:
+            del waitDialog
 
     def importFitting(self, event):
         selection = self.fitView.fitSelection
@@ -166,23 +147,37 @@ class CrestFittings(wx.Frame):
         self.mainFrame._openAfterImport(fits)
 
     def deleteFitting(self, event):
-        sCrest = Crest.getInstance()
+        sEsi = Esi.getInstance()
         selection = self.fitView.fitSelection
         if not selection:
             return
         data = json.loads(self.fitTree.fittingsTreeCtrl.GetItemData(selection))
 
         dlg = wx.MessageDialog(self,
-                               "Do you really want to delete %s (%s) from EVE?" % (data['name'], data['ship']['name']),
+                               "Do you really want to delete %s (%s) from EVE?" % (data['name'], getItem(data['ship_type_id']).name),
                                "Confirm Delete", wx.YES | wx.NO | wx.ICON_QUESTION)
 
         if dlg.ShowModal() == wx.ID_YES:
             try:
-                sCrest.delFitting(self.getActiveCharacter(), data['fittingID'])
+                sEsi.delFitting(self.getActiveCharacter(), data['fitting_id'])
             except requests.exceptions.ConnectionError:
                 msg = "Connection error, please check your internet connection"
                 pyfalog.error(msg)
                 self.statusbar.SetStatusText(msg)
+
+
+class ESIExceptionHandler(object):
+    def __init__(self, parentWindow, ex):
+        if ex.response['error'] == "invalid_token":
+            dlg = wx.MessageDialog(parentWindow,
+                                   "There was an error validating characters' SSO token. Please try "
+                                   "logging into the character again to reset the token.", "Invalid Token",
+                                   wx.OK | wx.ICON_ERROR)
+            dlg.ShowModal()
+            pyfalog.error(ex)
+        else:
+            # We don't know how to handle the error, raise it for the global error handler to pick it up
+            raise ex
 
 
 class ExportToEve(wx.Frame):
@@ -193,21 +188,14 @@ class ExportToEve(wx.Frame):
         self.mainFrame = parent
         self.SetBackgroundColour(wx.SystemSettings.GetColour(wx.SYS_COLOUR_BTNFACE))
 
-        sCrest = Crest.getInstance()
+        sEsi = Esi.getInstance()
         mainSizer = wx.BoxSizer(wx.VERTICAL)
         hSizer = wx.BoxSizer(wx.HORIZONTAL)
 
-        if sCrest.settings.get('mode') == CrestModes.IMPLICIT:
-            self.stLogged = wx.StaticText(self, wx.ID_ANY, "Currently logged in as %s" % sCrest.implicitCharacter.name,
-                                          wx.DefaultPosition, wx.DefaultSize)
-            self.stLogged.Wrap(-1)
-
-            hSizer.Add(self.stLogged, 1, wx.ALIGN_CENTER_VERTICAL | wx.ALL, 5)
-        else:
-            self.charChoice = wx.Choice(self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, [])
-            hSizer.Add(self.charChoice, 1, wx.ALIGN_CENTER_VERTICAL | wx.ALL, 5)
-            self.updateCharList()
-            self.charChoice.SetSelection(0)
+        self.charChoice = wx.Choice(self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, [])
+        hSizer.Add(self.charChoice, 1, wx.ALIGN_CENTER_VERTICAL | wx.ALL, 5)
+        self.updateCharList()
+        self.charChoice.SetSelection(0)
 
         self.exportBtn = wx.Button(self, wx.ID_ANY, "Export Fit", wx.DefaultPosition, wx.DefaultSize, 5)
         hSizer.Add(self.exportBtn, 0, wx.ALL, 5)
@@ -231,15 +219,15 @@ class ExportToEve(wx.Frame):
         self.Centre(wx.BOTH)
 
     def updateCharList(self):
-        sCrest = Crest.getInstance()
-        chars = sCrest.getCrestCharacters()
+        sEsi = Esi.getInstance()
+        chars = sEsi.getSsoCharacters()
 
         if len(chars) == 0:
             self.Close()
 
         self.charChoice.Clear()
         for char in chars:
-            self.charChoice.Append(char.name, char.ID)
+            self.charChoice.Append(char.characterName, char.ID)
 
         self.charChoice.SetSelection(0)
 
@@ -248,10 +236,7 @@ class ExportToEve(wx.Frame):
         event.Skip()
 
     def ssoLogout(self, event):
-        if event.type == CrestModes.IMPLICIT:
-            self.Close()
-        else:
-            self.updateCharList()
+        self.updateCharList()
         event.Skip()  # continue event
 
     def OnClose(self, event):
@@ -261,11 +246,6 @@ class ExportToEve(wx.Frame):
         event.Skip()
 
     def getActiveCharacter(self):
-        sCrest = Crest.getInstance()
-
-        if sCrest.settings.get('mode') == CrestModes.IMPLICIT:
-            return sCrest.implicitCharacter.ID
-
         selection = self.charChoice.GetCurrentSelection()
         return self.charChoice.GetClientData(selection) if selection is not None else None
 
@@ -280,29 +260,36 @@ class ExportToEve(wx.Frame):
             return
 
         self.statusbar.SetStatusText("Sending request and awaiting response", 1)
-        sCrest = Crest.getInstance()
+        sEsi = Esi.getInstance()
 
         try:
             sFit = Fit.getInstance()
-            data = sPort.exportCrest(sFit.getFit(fitID))
-            res = sCrest.postFitting(self.getActiveCharacter(), data)
+            data = sPort.exportESI(sFit.getFit(fitID))
+            res = sEsi.postFitting(self.getActiveCharacter(), data)
 
-            self.statusbar.SetStatusText("%d: %s" % (res.status_code, res.reason), 0)
-            try:
-                text = json.loads(res.text)
-                self.statusbar.SetStatusText(text['message'], 1)
-            except ValueError:
-                pyfalog.warning("Value error on loading JSON.")
-                self.statusbar.SetStatusText("", 1)
+            self.statusbar.SetStatusText("", 0)
+            self.statusbar.SetStatusText("", 1)
+            # try:
+            #     text = json.loads(res.text)
+            #     self.statusbar.SetStatusText(text['message'], 1)
+            # except ValueError:
+            #     pyfalog.warning("Value error on loading JSON.")
+            #     self.statusbar.SetStatusText("", 1)
         except requests.exceptions.ConnectionError:
             msg = "Connection error, please check your internet connection"
             pyfalog.error(msg)
             self.statusbar.SetStatusText(msg)
+        except ESIExportException as ex:
+            pyfalog.error(ex)
+            self.statusbar.SetStatusText("ERROR", 0)
+            self.statusbar.SetStatusText(ex.args[0], 1)
+        except APIException as ex:
+            ESIExceptionHandler(self, ex)
 
 
-class CrestMgmt(wx.Dialog):
+class SsoCharacterMgmt(wx.Dialog):
     def __init__(self, parent):
-        wx.Dialog.__init__(self, parent, id=wx.ID_ANY, title="CREST Character Management", pos=wx.DefaultPosition,
+        wx.Dialog.__init__(self, parent, id=wx.ID_ANY, title="SSO Character Management", pos=wx.DefaultPosition,
                            size=wx.Size(550, 250), style=wx.DEFAULT_DIALOG_STYLE)
         self.mainFrame = parent
         mainSizer = wx.BoxSizer(wx.HORIZONTAL)
@@ -310,7 +297,7 @@ class CrestMgmt(wx.Dialog):
         self.lcCharacters = wx.ListCtrl(self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.LC_REPORT)
 
         self.lcCharacters.InsertColumn(0, heading='Character')
-        self.lcCharacters.InsertColumn(1, heading='Refresh Token')
+        self.lcCharacters.InsertColumn(1, heading='Character ID')
 
         self.popCharList()
 
@@ -341,14 +328,14 @@ class CrestMgmt(wx.Dialog):
         event.Skip()
 
     def popCharList(self):
-        sCrest = Crest.getInstance()
-        chars = sCrest.getCrestCharacters()
+        sEsi = Esi.getInstance()
+        chars = sEsi.getSsoCharacters()
 
         self.lcCharacters.DeleteAllItems()
 
         for index, char in enumerate(chars):
-            self.lcCharacters.InsertItem(index, char.name)
-            self.lcCharacters.SetStringItem(index, 1, char.refresh_token)
+            self.lcCharacters.InsertItem(index, char.characterName)
+            self.lcCharacters.SetItem(index, 1, str(char.characterID))
             self.lcCharacters.SetItemData(index, char.ID)
 
         self.lcCharacters.SetColumnWidth(0, wx.LIST_AUTOSIZE)
@@ -356,16 +343,15 @@ class CrestMgmt(wx.Dialog):
 
     @staticmethod
     def addChar(event):
-        sCrest = Crest.getInstance()
-        uri = sCrest.startServer()
-        webbrowser.open(uri)
+        sEsi = Esi.getInstance()
+        sEsi.login()
 
     def delChar(self, event):
         item = self.lcCharacters.GetFirstSelected()
         if item > -1:
             charID = self.lcCharacters.GetItemData(item)
-            sCrest = Crest.getInstance()
-            sCrest.delCrestCharacter(charID)
+            sEsi = Esi.getInstance()
+            sEsi.delSsoCharacter(charID)
             self.popCharList()
 
 
@@ -381,7 +367,7 @@ class FittingsTreeView(wx.Panel):
         self.root = tree.AddRoot("Fits")
         self.populateSkillTree(None)
 
-        self.Bind(wx.EVT_TREE_ITEM_ACTIVATED, self.displayFit)
+        self.Bind(wx.EVT_TREE_SEL_CHANGED, self.displayFit)
 
         self.SetSizer(pmainSizer)
 
@@ -395,11 +381,12 @@ class FittingsTreeView(wx.Panel):
         tree.DeleteChildren(root)
 
         dict = {}
-        fits = data['items']
+        fits = data
         for fit in fits:
-            if fit['ship']['name'] not in dict:
-                dict[fit['ship']['name']] = []
-            dict[fit['ship']['name']].append(fit)
+            ship = getItem(fit['ship_type_id'])
+            if ship.name not in dict:
+                dict[ship.name] = []
+            dict[ship.name].append(fit)
 
         for name, fits in dict.items():
             shipID = tree.AppendItem(root, name)
@@ -422,7 +409,7 @@ class FittingsTreeView(wx.Panel):
 
         for item in fit['items']:
             try:
-                cargo = Cargo(getItem(item['type']['id']))
+                cargo = Cargo(getItem(item['type_id']))
                 cargo.amount = item['quantity']
                 list.append(cargo)
             except Exception as e:

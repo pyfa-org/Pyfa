@@ -57,6 +57,7 @@ from gui.setEditor import ImplantSetEditorDlg
 from gui.devTools import DevTools
 from gui.preferenceDialog import PreferenceDialog
 from gui.graphFrame import GraphFrame
+from gui.ssoLogin import SsoLogin
 from gui.copySelectDialog import CopySelectDialog
 from gui.utils.clipboard import toClipboard, fromClipboard
 from gui.updateDialog import UpdateDialog
@@ -82,9 +83,8 @@ import threading
 import webbrowser
 import wx.adv
 
-from service.crest import Crest
-from service.crest import CrestModes
-from gui.crestFittings import CrestFittings, ExportToEve, CrestMgmt
+from service.esi import Esi, LoginMethod
+from gui.esiFittings import EveFittings, ExportToEve, SsoCharacterMgmt
 
 disableOverrideEditor = False
 
@@ -238,10 +238,15 @@ class MainFrame(wx.Frame):
         self.sUpdate.CheckUpdate(self.ShowUpdateBox)
 
         self.Bind(GE.EVT_SSO_LOGIN, self.onSSOLogin)
-        self.Bind(GE.EVT_SSO_LOGOUT, self.onSSOLogout)
+        self.Bind(GE.EVT_SSO_LOGGING_IN, self.ShowSsoLogin)
 
-        self.titleTimer = wx.Timer(self)
-        self.Bind(wx.EVT_TIMER, self.updateTitle, self.titleTimer)
+    def ShowSsoLogin(self, event):
+        if getattr(event, "login_mode", LoginMethod.SERVER) == LoginMethod.MANUAL:
+            dlg = SsoLogin(self)
+            if dlg.ShowModal() == wx.ID_OK:
+                sEsi = Esi.getInstance()
+                # todo: verify that this is a correct SSO Info block
+                sEsi.handleLogin(dlg.ssoInfoCtrl.Value.strip())
 
     def ShowUpdateBox(self, release, version):
         dlg = UpdateDialog(self, release, version)
@@ -610,68 +615,26 @@ class MainFrame(wx.Frame):
             wx.PostEvent(self, GE.FitChanged(fitID=fitID))
 
     def eveFittings(self, event):
-        dlg = CrestFittings(self)
+        dlg = EveFittings(self)
         dlg.Show()
-
-    def updateTitle(self, event):
-        sCrest = Crest.getInstance()
-        char = sCrest.implicitCharacter
-        if char:
-            t = time.gmtime(char.eve.expires - time.time())
-            sTime = time.strftime("%H:%M:%S", t)
-            newTitle = "%s | %s - %s" % (self.title, char.name, sTime)
-            self.SetTitle(newTitle)
 
     def onSSOLogin(self, event):
         menu = self.GetMenuBar()
         menu.Enable(menu.eveFittingsId, True)
         menu.Enable(menu.exportToEveId, True)
 
-        if event.type == CrestModes.IMPLICIT:
-            menu.SetLabel(menu.ssoLoginId, "Logout Character")
-            self.titleTimer.Start(1000)
-
-    def onSSOLogout(self, event):
-        self.titleTimer.Stop()
-        self.SetTitle(self.title)
-
+    def updateEsiMenus(self, type):
         menu = self.GetMenuBar()
-        if event.type == CrestModes.IMPLICIT or event.numChars == 0:
-            menu.Enable(menu.eveFittingsId, False)
-            menu.Enable(menu.exportToEveId, False)
+        sEsi = Esi.getInstance()
 
-        if event.type == CrestModes.IMPLICIT:
-            menu.SetLabel(menu.ssoLoginId, "Login to EVE")
-
-    def updateCrestMenus(self, type):
-        # in case we are logged in when switching, change title back
-        self.titleTimer.Stop()
-        self.SetTitle(self.title)
-
-        menu = self.GetMenuBar()
-        sCrest = Crest.getInstance()
-
-        if type == CrestModes.IMPLICIT:
-            menu.SetLabel(menu.ssoLoginId, "Login to EVE")
-            menu.Enable(menu.eveFittingsId, False)
-            menu.Enable(menu.exportToEveId, False)
-        else:
-            menu.SetLabel(menu.ssoLoginId, "Manage Characters")
-            enable = len(sCrest.getCrestCharacters()) == 0
-            menu.Enable(menu.eveFittingsId, not enable)
-            menu.Enable(menu.exportToEveId, not enable)
+        menu.SetLabel(menu.ssoLoginId, "Manage Characters")
+        enable = len(sEsi.getSsoCharacters()) == 0
+        menu.Enable(menu.eveFittingsId, not enable)
+        menu.Enable(menu.exportToEveId, not enable)
 
     def ssoHandler(self, event):
-        sCrest = Crest.getInstance()
-        if sCrest.settings.get('mode') == CrestModes.IMPLICIT:
-            if sCrest.implicitCharacter is not None:
-                sCrest.logout()
-            else:
-                uri = sCrest.startServer()
-                webbrowser.open(uri)
-        else:
-            dlg = CrestMgmt(self)
-            dlg.Show()
+        dlg = SsoCharacterMgmt(self)
+        dlg.Show()
 
     def exportToEve(self, event):
         dlg = ExportToEve(self)
@@ -746,9 +709,9 @@ class MainFrame(wx.Frame):
         fit = db_getFit(self.getActiveFit())
         toClipboard(Port.exportDna(fit))
 
-    def clipboardCrest(self):
+    def clipboardEsi(self):
         fit = db_getFit(self.getActiveFit())
-        toClipboard(Port.exportCrest(fit))
+        toClipboard(Port.exportESI(fit))
 
     def clipboardXml(self):
         fit = db_getFit(self.getActiveFit())
@@ -772,7 +735,7 @@ class MainFrame(wx.Frame):
                           CopySelectDialog.copyFormatEftImps: self.clipboardEftImps,
                           CopySelectDialog.copyFormatXml: self.clipboardXml,
                           CopySelectDialog.copyFormatDna: self.clipboardDna,
-                          CopySelectDialog.copyFormatCrest: self.clipboardCrest,
+                          CopySelectDialog.copyFormatEsi: self.clipboardEsi,
                           CopySelectDialog.copyFormatMultiBuy: self.clipboardMultiBuy}
         dlg = CopySelectDialog(self)
         dlg.ShowModal()

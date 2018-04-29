@@ -79,6 +79,7 @@ class CharacterSelection(wx.Panel):
         self.mainFrame.Bind(GE.FIT_CHANGED, self.fitChanged)
 
         self.SetMinSize(wx.Size(25, -1))
+        self.toggleRefreshButton()
 
         self.charChoice.Enable(False)
 
@@ -151,9 +152,7 @@ class CharacterSelection(wx.Panel):
     def refreshApi(self, event):
         self.btnRefresh.Enable(False)
         sChar = Character.getInstance()
-        ID, key, charName, chars = sChar.getApiDetails(self.getActiveCharacter())
-        if charName:
-            sChar.apiFetch(self.getActiveCharacter(), charName, self.refreshAPICallback)
+        sChar.apiFetch(self.getActiveCharacter(), self.refreshAPICallback)
 
     def refreshAPICallback(self, e=None):
         self.btnRefresh.Enable(True)
@@ -161,11 +160,11 @@ class CharacterSelection(wx.Panel):
             self.refreshCharacterList()
         else:
             exc_type, exc_obj, exc_trace = e
-            pyfalog.warn("Error fetching API information for character")
+            pyfalog.warn("Error fetching skill information for character")
             pyfalog.warn(exc_obj)
 
             wx.MessageBox(
-                "Error fetching API information, please check your API details in the character editor and try again later",
+                "Error fetching skill information",
                 "Error", wx.ICON_ERROR | wx.STAY_ON_TOP)
 
     def charChanged(self, event):
@@ -178,15 +177,22 @@ class CharacterSelection(wx.Panel):
             self.charChoice.SetSelection(self.charCache)
             self.mainFrame.showCharacterEditor(event)
             return
-        if sChar.getCharName(charID) not in ("All 0", "All 5") and sChar.apiEnabled(charID):
-            self.btnRefresh.Enable(True)
-        else:
-            self.btnRefresh.Enable(False)
+
+        self.toggleRefreshButton()
 
         sFit = Fit.getInstance()
         sFit.changeChar(fitID, charID)
         self.charCache = self.charChoice.GetCurrentSelection()
         wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fitID))
+
+    def toggleRefreshButton(self):
+        charID = self.getActiveCharacter()
+        sChar = Character.getInstance()
+        char = sChar.getCharacter(charID)
+        if sChar.getCharName(charID) not in ("All 0", "All 5") and sChar.getSsoCharacter(char.ID) is not None:
+            self.btnRefresh.Enable(True)
+        else:
+            self.btnRefresh.Enable(False)
 
     def selectChar(self, charID):
         choice = self.charChoice
@@ -243,6 +249,8 @@ class CharacterSelection(wx.Panel):
             self.selectChar(newCharID)
             if not fit.calculated:
                 self.charChanged(None)
+
+        self.toggleRefreshButton()
 
         event.Skip()
 

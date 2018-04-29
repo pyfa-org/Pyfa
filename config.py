@@ -3,6 +3,9 @@ import sys
 
 from logbook import CRITICAL, DEBUG, ERROR, FingersCrossedHandler, INFO, Logger, NestedSetup, NullHandler, \
     StreamHandler, TimedRotatingFileHandler, WARNING
+import hashlib
+
+from cryptography.fernet import Fernet
 
 pyfalog = Logger(__name__)
 
@@ -34,6 +37,11 @@ gameDB = None
 logPath = None
 loggingLevel = None
 logging_setup = None
+cipher = None
+clientHash = None
+
+ESI_AUTH_PROXY = "https://www.pyfa.io" # "http://localhost:5015"
+ESI_CACHE = 'esi_cache'
 
 LOGLEVEL_MAP = {
     "critical": CRITICAL,
@@ -42,6 +50,10 @@ LOGLEVEL_MAP = {
     "info": INFO,
     "debug": DEBUG,
 }
+
+
+def getClientSecret():
+    return clientHash
 
 
 def isFrozen():
@@ -86,6 +98,8 @@ def defPaths(customSavePath=None):
     global gameDB
     global saveInRoot
     global logPath
+    global cipher
+    global clientHash
 
     pyfalog.debug("Configuring Pyfa")
 
@@ -109,6 +123,17 @@ def defPaths(customSavePath=None):
                 savePath = customSavePath
 
     __createDirs(savePath)
+
+    # get cipher object based on secret key of this client (stores encryption cipher for ESI refresh token)
+    secret_file = os.path.join(savePath, "{}.secret".format(hashlib.sha3_256(pyfaPath.encode('utf-8')).hexdigest()))
+    if not os.path.exists(secret_file):
+        with open(secret_file, "wb") as _file:
+            _file.write(Fernet.generate_key())
+
+    with open(secret_file, 'rb') as fp:
+        key = fp.read()
+        clientHash = hashlib.sha3_256(key).hexdigest()
+        cipher = Fernet(key)
 
     # if isFrozen():
     #    os.environ["REQUESTS_CA_BUNDLE"] = os.path.join(pyfaPath, "cacert.pem")

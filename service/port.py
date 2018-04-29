@@ -51,8 +51,12 @@ from service.market import Market
 from utils.strfunctions import sequential_rep, replace_ltgt
 from abc import ABCMeta, abstractmethod
 
-from service.crest import Crest
+from service.esi import Esi
 from collections import OrderedDict
+
+
+class ESIExportException(Exception):
+    pass
 
 pyfalog = Logger(__name__)
 
@@ -338,24 +342,20 @@ class Port(object):
     """Service which houses all import/export format functions"""
 
     @classmethod
-    def exportCrest(cls, ofit, callback=None):
+    def exportESI(cls, ofit, callback=None):
         # A few notes:
         # max fit name length is 50 characters
         # Most keys are created simply because they are required, but bogus data is okay
 
         nested_dict = lambda: collections.defaultdict(nested_dict)
         fit = nested_dict()
-        sCrest = Crest.getInstance()
+        sEsi = Esi.getInstance()
         sFit = svcFit.getInstance()
-
-        eve = sCrest.eve
 
         # max length is 50 characters
         name = ofit.name[:47] + '...' if len(ofit.name) > 50 else ofit.name
         fit['name'] = name
-        fit['ship']['href'] = "%sinventory/types/%d/" % (eve._authed_endpoint, ofit.ship.item.ID)
-        fit['ship']['id'] = ofit.ship.item.ID
-        fit['ship']['name'] = ''
+        fit['ship_type_id'] = ofit.ship.item.ID
 
         # 2017/03/29 NOTE: "<" or "&lt;" is Ignored
         # fit['description'] = "<pyfa:%d />" % ofit.ID
@@ -383,9 +383,7 @@ class Port(object):
                 slotNum[slot] += 1
 
             item['quantity'] = 1
-            item['type']['href'] = "%sinventory/types/%d/" % (eve._authed_endpoint, module.item.ID)
-            item['type']['id'] = module.item.ID
-            item['type']['name'] = ''
+            item['type_id'] = module.item.ID
             fit['items'].append(item)
 
             if module.charge and sFit.serviceFittingOptions["exportCharges"]:
@@ -398,37 +396,32 @@ class Port(object):
             item = nested_dict()
             item['flag'] = INV_FLAG_CARGOBAY
             item['quantity'] = cargo.amount
-            item['type']['href'] = "%sinventory/types/%d/" % (eve._authed_endpoint, cargo.item.ID)
-            item['type']['id'] = cargo.item.ID
-            item['type']['name'] = ''
+            item['type_id'] = cargo.item.ID
             fit['items'].append(item)
 
         for chargeID, amount in list(charges.items()):
             item = nested_dict()
             item['flag'] = INV_FLAG_CARGOBAY
             item['quantity'] = amount
-            item['type']['href'] = "%sinventory/types/%d/" % (eve._authed_endpoint, chargeID)
-            item['type']['id'] = chargeID
-            item['type']['name'] = ''
+            item['type_id'] = chargeID
             fit['items'].append(item)
 
         for drone in ofit.drones:
             item = nested_dict()
             item['flag'] = INV_FLAG_DRONEBAY
             item['quantity'] = drone.amount
-            item['type']['href'] = "%sinventory/types/%d/" % (eve._authed_endpoint, drone.item.ID)
-            item['type']['id'] = drone.item.ID
-            item['type']['name'] = ''
+            item['type_id'] = drone.item.ID
             fit['items'].append(item)
 
         for fighter in ofit.fighters:
             item = nested_dict()
             item['flag'] = INV_FLAG_FIGHTER
             item['quantity'] = fighter.amountActive
-            item['type']['href'] = "%sinventory/types/%d/" % (eve._authed_endpoint, fighter.item.ID)
-            item['type']['id'] = fighter.item.ID
-            item['type']['name'] = fighter.item.name
+            item['type_id'] = fighter.item.ID
             fit['items'].append(item)
+
+        if len(fit['items']) == 0:
+            raise ESIExportException("Cannot export fitting: module list cannot be empty.")
 
         return json.dumps(fit)
 
@@ -445,7 +438,7 @@ class Port(object):
 
         # If JSON-style start, parse as CREST/JSON
         if firstLine[0] == '{':
-            return "JSON", (cls.importCrest(string),)
+            return "JSON", (cls.importESI(string),)
 
         # If we've got source file name which is used to describe ship name
         # and first line contains something like [setup name], detect as eft config file
@@ -463,7 +456,7 @@ class Port(object):
         return "DNA", (cls.importDna(string),)
 
     @staticmethod
-    def importCrest(str_):
+    def importESI(str_):
 
         sMkt = Market.getInstance()
         fitobj = Fit()
@@ -475,13 +468,13 @@ class Port(object):
         fitobj.notes = refobj['description']
 
         try:
-            refobj = refobj['ship']['id']
+            ship = refobj['ship_type_id']
             try:
-                fitobj.ship = Ship(sMkt.getItem(refobj))
+                fitobj.ship = Ship(sMkt.getItem(ship))
             except ValueError:
-                fitobj.ship = Citadel(sMkt.getItem(refobj))
+                fitobj.ship = Citadel(sMkt.getItem(ship))
         except:
-            pyfalog.warning("Caught exception in importCrest")
+            pyfalog.warning("Caught exception in importESI")
             return None
 
         items.sort(key=lambda k: k['flag'])
@@ -489,7 +482,7 @@ class Port(object):
         moduleList = []
         for module in items:
             try:
-                item = sMkt.getItem(module['type']['id'], eager="group.category")
+                item = sMkt.getItem(module['type_id'], eager="group.category")
                 if module['flag'] == INV_FLAG_DRONEBAY:
                     d = Drone(item)
                     d.amount = module['quantity']

@@ -33,6 +33,7 @@ from gui.builtinViews.implantEditor import BaseImplantEditorView
 from gui.builtinViews.entityEditor import EntityEditor, BaseValidator, TextEntryValidatedDialog
 from service.fit import Fit
 from service.character import Character
+from service.esi import Esi
 from service.network import AuthenticationError, TimeoutError
 from service.market import Market
 from logbook import Logger
@@ -44,6 +45,7 @@ from gui.utils.clipboard import toClipboard, fromClipboard
 
 import roman
 import re
+import webbrowser
 
 pyfalog = Logger(__name__)
 
@@ -174,7 +176,7 @@ class CharacterEditor(wx.Frame):
 
         self.viewsNBContainer.AddPage(self.sview, "Skills")
         self.viewsNBContainer.AddPage(self.iview, "Implants")
-        self.viewsNBContainer.AddPage(self.aview, "API")
+        self.viewsNBContainer.AddPage(self.aview, "EVE SSO")
 
         mainSizer.Add(self.viewsNBContainer, 1, wx.EXPAND | wx.ALL, 5)
 
@@ -722,18 +724,22 @@ class APIView(wx.Panel):
         self.charEditor = self.Parent.Parent  # first parent is Notebook, second is Character Editor
         self.SetBackgroundColour(wx.SystemSettings.GetColour(wx.SYS_COLOUR_WINDOW))
 
-        self.apiUrlCreatePredefined = "https://community.eveonline.com/support/api-key/CreatePredefined?accessMask=8"
-        self.apiUrlKeyList = "https://community.eveonline.com/support/api-key/"
-
         pmainSizer = wx.BoxSizer(wx.VERTICAL)
 
         hintSizer = wx.BoxSizer(wx.HORIZONTAL)
         hintSizer.AddStretchSpacer()
         self.stDisabledTip = wx.StaticText(self, wx.ID_ANY,
-                                           "You cannot add API Details for All 0 and All 5 characters.\n"
+                                           "You cannot link All 0 or All 5 characters to an EVE character.\n"
                                            "Please select another character or make a new one.", style=wx.ALIGN_CENTER)
         self.stDisabledTip.Wrap(-1)
         hintSizer.Add(self.stDisabledTip, 0, wx.TOP | wx.BOTTOM, 10)
+
+        self.noCharactersTip = wx.StaticText(self, wx.ID_ANY,
+                                           "You haven't logging into EVE SSO with any characters yet. Please use the "
+                                           "button below to log into EVE.", style=wx.ALIGN_CENTER)
+        self.noCharactersTip.Wrap(-1)
+        hintSizer.Add(self.noCharactersTip, 0, wx.TOP | wx.BOTTOM, 10)
+
         self.stDisabledTip.Hide()
         hintSizer.AddStretchSpacer()
         pmainSizer.Add(hintSizer, 0, wx.EXPAND, 5)
@@ -743,97 +749,95 @@ class APIView(wx.Panel):
         fgSizerInput.SetFlexibleDirection(wx.BOTH)
         fgSizerInput.SetNonFlexibleGrowMode(wx.FLEX_GROWMODE_SPECIFIED)
 
-        self.m_staticIDText = wx.StaticText(self, wx.ID_ANY, "keyID:", wx.DefaultPosition, wx.DefaultSize, 0)
-        self.m_staticIDText.Wrap(-1)
-        fgSizerInput.Add(self.m_staticIDText, 0, wx.ALL | wx.ALIGN_RIGHT | wx.ALIGN_CENTER_VERTICAL, 5)
-
-        self.inputID = wx.TextCtrl(self, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.DefaultSize, 0)
-        fgSizerInput.Add(self.inputID, 1, wx.ALL | wx.EXPAND, 5)
-
-        self.m_staticKeyText = wx.StaticText(self, wx.ID_ANY, "vCode:", wx.DefaultPosition, wx.DefaultSize, 0)
-        self.m_staticKeyText.Wrap(-1)
-        fgSizerInput.Add(self.m_staticKeyText, 0, wx.ALL | wx.ALIGN_RIGHT | wx.ALIGN_CENTER_VERTICAL, 5)
-
-        self.inputKey = wx.TextCtrl(self, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.DefaultSize, 0)
-        fgSizerInput.Add(self.inputKey, 0, wx.ALL | wx.EXPAND, 5)
-
         self.m_staticCharText = wx.StaticText(self, wx.ID_ANY, "Character:", wx.DefaultPosition, wx.DefaultSize, 0)
         self.m_staticCharText.Wrap(-1)
-        fgSizerInput.Add(self.m_staticCharText, 0, wx.ALL | wx.ALIGN_RIGHT | wx.ALIGN_CENTER_VERTICAL, 5)
+        fgSizerInput.Add(self.m_staticCharText, 0, wx.ALL | wx.ALIGN_RIGHT | wx.ALIGN_CENTER_VERTICAL, 10)
 
         self.charChoice = wx.Choice(self, wx.ID_ANY, style=0)
-        self.charChoice.Append("No Selection", 0)
-        fgSizerInput.Add(self.charChoice, 1, wx.ALL | wx.EXPAND, 5)
-
-        self.charChoice.Enable(False)
+        fgSizerInput.Add(self.charChoice, 1, wx.ALL | wx.EXPAND, 10)
 
         pmainSizer.Add(fgSizerInput, 0, wx.EXPAND, 5)
 
-        btnSizer = wx.BoxSizer(wx.HORIZONTAL)
-        btnSizer.AddStretchSpacer()
-
-        self.btnFetchCharList = wx.Button(self, wx.ID_ANY, "Get Characters")
-        btnSizer.Add(self.btnFetchCharList, 0, wx.ALL, 2)
-        self.btnFetchCharList.Bind(wx.EVT_BUTTON, self.fetchCharList)
-
-        self.btnFetchSkills = wx.Button(self, wx.ID_ANY, "Fetch Skills")
-        btnSizer.Add(self.btnFetchSkills, 0, wx.ALL, 2)
-        self.btnFetchSkills.Bind(wx.EVT_BUTTON, self.fetchSkills)
-        self.btnFetchSkills.Enable(False)
-
-        btnSizer.AddStretchSpacer()
-        pmainSizer.Add(btnSizer, 0, wx.EXPAND, 5)
-
+        self.addButton = wx.Button(self, wx.ID_ANY, "Log In with EVE SSO", wx.DefaultPosition, wx.DefaultSize, 0)
+        self.addButton.Bind(wx.EVT_BUTTON, self.addCharacter)
+        pmainSizer.Add(self.addButton, 0, wx.ALL | wx.ALIGN_CENTER, 5)
         self.stStatus = wx.StaticText(self, wx.ID_ANY, wx.EmptyString)
         pmainSizer.Add(self.stStatus, 0, wx.ALL, 5)
-
-        pmainSizer.AddStretchSpacer()
-        self.stAPITip = wx.StaticText(self, wx.ID_ANY,
-                                      "You can create a pre-defined key here (only CharacterSheet is required):",
-                                      wx.DefaultPosition, wx.DefaultSize, 0)
-        self.stAPITip.Wrap(-1)
-
-        pmainSizer.Add(self.stAPITip, 0, wx.ALL, 2)
-
-        self.hlEveAPI = wx.lib.agw.hyperlink.HyperLinkCtrl(self, wx.ID_ANY, label=self.apiUrlCreatePredefined)
-        pmainSizer.Add(self.hlEveAPI, 0, wx.ALL, 2)
-
-        self.stAPITip2 = wx.StaticText(self, wx.ID_ANY, "Or, you can choose an existing key from:", wx.DefaultPosition,
-                                       wx.DefaultSize, 0)
-        self.stAPITip2.Wrap(-1)
-        pmainSizer.Add(self.stAPITip2, 0, wx.ALL, 2)
-
-        self.hlEveAPI2 = wx.lib.agw.hyperlink.HyperLinkCtrl(self, wx.ID_ANY, label=self.apiUrlKeyList)
-        pmainSizer.Add(self.hlEveAPI2, 0, wx.ALL, 2)
-
+        self.charEditor.mainFrame.Bind(GE.EVT_SSO_LOGOUT, self.ssoListChanged)
+        self.charEditor.mainFrame.Bind(GE.EVT_SSO_LOGIN, self.ssoListChanged)
         self.charEditor.entityEditor.Bind(wx.EVT_CHOICE, self.charChanged)
+
+        self.charChoice.Bind(wx.EVT_CHOICE, self.ssoCharChanged)
 
         self.SetSizer(pmainSizer)
         self.Layout()
-        self.charChanged(None)
+        self.ssoListChanged(None)
+
+    def ssoCharChanged(self, event):
+        sChar = Character.getInstance()
+        activeChar = self.charEditor.entityEditor.getActiveEntity()
+        sChar.setSsoCharacter(activeChar.ID, self.getActiveCharacter())
+        event.Skip()
+
+    def addCharacter(self, event):
+        sEsi = Esi.getInstance()
+        sEsi.login()
+
+    def getActiveCharacter(self):
+        selection = self.charChoice.GetCurrentSelection()
+        return self.charChoice.GetClientData(selection) if selection is not -1 else None
+
+    def ssoListChanged(self, event):
+        sEsi = Esi.getInstance()
+        ssoChars = sEsi.getSsoCharacters()
+
+        if len(ssoChars) == 0:
+            self.charChoice.Hide()
+            self.m_staticCharText.Hide()
+            self.noCharactersTip.Show()
+        else:
+            self.noCharactersTip.Hide()
+            self.m_staticCharText.Show()
+            self.charChoice.Show()
+
+        self.charChanged(event)
 
     def charChanged(self, event):
         sChar = Character.getInstance()
+        sEsi = Esi.getInstance()
+
         activeChar = self.charEditor.entityEditor.getActiveEntity()
 
-        ID, key, char, chars = sChar.getApiDetails(activeChar.ID)
-        self.inputID.SetValue(str(ID))
-        self.inputKey.SetValue(key)
+        if event and event.EventType == GE.EVT_SSO_LOGIN.typeId and hasattr(event, 'character'):
+            # Automatically assign the character that was just logged into
+            sChar.setSsoCharacter(activeChar.ID, event.character.ID)
+
+        sso = sChar.getSsoCharacter(activeChar.ID)
+
+        ssoChars = sEsi.getSsoCharacters()
 
         self.charChoice.Clear()
 
-        if chars:
-            for charName in chars:
-                self.charChoice.Append(charName)
-            self.charChoice.SetStringSelection(char)
-            self.charChoice.Enable(True)
-            self.btnFetchSkills.Enable(True)
-        else:
-            self.charChoice.Append("No characters...", 0)
-            self.charChoice.SetSelection(0)
-            self.charChoice.Enable(False)
-            self.btnFetchSkills.Enable(False)
+        noneID = self.charChoice.Append("None", None)
 
+        for char in ssoChars:
+            currId = self.charChoice.Append(char.characterName, char.ID)
+
+            if sso is not None and char.ID == sso.ID:
+                self.charChoice.SetSelection(currId)
+            if sso is None:
+                self.charChoice.SetSelection(noneID)
+
+
+        #
+        # if chars:
+        #     for charName in chars:
+        #         self.charChoice.Append(charName)
+        #     self.charChoice.SetStringSelection(char)
+        # else:
+        #     self.charChoice.Append("No characters...", 0)
+        #     self.charChoice.SetSelection(0)
+        #
         if activeChar.name in ("All 0", "All 5"):
             self.Enable(False)
             self.stDisabledTip.Show()
@@ -845,47 +849,6 @@ class APIView(wx.Panel):
 
         if event is not None:
             event.Skip()
-
-    def fetchCharList(self, event):
-        self.stStatus.SetLabel("")
-        if self.inputID.GetLineText(0) == "" or self.inputKey.GetLineText(0) == "":
-            self.stStatus.SetLabel("Invalid keyID or vCode!")
-            return
-
-        sChar = Character.getInstance()
-        try:
-            activeChar = self.charEditor.entityEditor.getActiveEntity()
-            list = sChar.apiCharList(activeChar.ID, self.inputID.GetLineText(0), self.inputKey.GetLineText(0))
-        except AuthenticationError as e:
-            msg = "Authentication failure. Please check keyID and vCode combination."
-            pyfalog.info(msg)
-            self.stStatus.SetLabel(msg)
-        except TimeoutError as e:
-            msg = "Request timed out. Please check network connectivity and/or proxy settings."
-            pyfalog.info(msg)
-            self.stStatus.SetLabel(msg)
-        except Exception as e:
-            pyfalog.error(e)
-            self.stStatus.SetLabel("Error:\n%s" % e)
-        else:
-            self.charChoice.Clear()
-            for charName in list:
-                self.charChoice.Append(charName)
-
-            self.btnFetchSkills.Enable(True)
-            self.charChoice.Enable(True)
-
-            self.Layout()
-
-            self.charChoice.SetSelection(0)
-
-    def fetchSkills(self, event):
-        charName = self.charChoice.GetString(self.charChoice.GetSelection())
-        if charName:
-            sChar = Character.getInstance()
-            activeChar = self.charEditor.entityEditor.getActiveEntity()
-            sChar.apiFetch(activeChar.ID, charName, self.__fetchCallback)
-            self.stStatus.SetLabel("Getting skills for {}".format(charName))
 
     def __fetchCallback(self, e=None):
         charName = self.charChoice.GetString(self.charChoice.GetSelection())
