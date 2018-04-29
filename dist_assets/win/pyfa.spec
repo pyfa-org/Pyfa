@@ -18,6 +18,7 @@ added_files = [
              ('../../imgs/gui/*.gif', 'imgs/gui'),
              ('../../imgs/icons/*.png', 'imgs/icons'),
              ('../../imgs/renders/*.png', 'imgs/renders'),
+             ('../../service/jargon/*.yaml', 'service/jargon'),
              ('../../dist_assets/win/pyfa.ico', '.'),
              (requests.certs.where(), '.'),  # is this needed anymore?
              ('../../eve.db', '.'),
