@@ -5,6 +5,8 @@ python-dateutil
 requests >= 2.0.0
 sqlalchemy >= 1.0.5
 esipy == 0.3.3
+cryptography
+diskcache
 markdown2
 packaging
 roman
