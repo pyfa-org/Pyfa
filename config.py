@@ -126,8 +126,7 @@ def defPaths(customSavePath=None):
 
     __createDirs(savePath)
 
-    # get cipher object based on secret key of this client (stores encryption cipher for ESI refresh token)
-    secret_file = os.path.join(savePath, "{}.secret".format(hashlib.sha3_256(pyfaPath.encode('utf-8')).hexdigest()))
+    secret_file = os.path.join(savePath, ".secret")
     if not os.path.exists(secret_file):
         with open(secret_file, "wb") as _file:
             _file.write(Fernet.generate_key())
