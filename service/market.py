@@ -30,6 +30,7 @@ import config
 import eos.db
 from service import conversions
 from service.settings import SettingsProvider
+from service.jargon import JargonLoader
 
 from eos.gamedata import Category as types_Category, Group as types_Group, Item as types_Item, MarketGroup as types_MarketGroup, \
     MetaGroup as types_MetaGroup, MetaType as types_MetaType
@@ -39,7 +40,6 @@ pyfalog = Logger(__name__)
 
 # Event which tells threads dependent on Market that it's initialized
 mktRdy = threading.Event()
-
 
 class ShipBrowserWorkerThread(threading.Thread):
     def __init__(self):
@@ -83,7 +83,10 @@ class SearchWorkerThread(threading.Thread):
     def __init__(self):
         threading.Thread.__init__(self)
         self.name = "SearchWorker"
-        pyfalog.debug("Initialize SearchWorkerThread.")
+        self.jargonLoader = JargonLoader.instance()
+        # load the jargon while in an out-of-thread context, to spot any problems while in the main thread
+        self.jargonLoader.get_jargon()
+        self.jargonLoader.get_jargon().apply('test string')
 
     def run(self):
         self.cv = threading.Condition()
@@ -110,13 +113,25 @@ class SearchWorkerThread(threading.Thread):
             else:
                 filter_ = None
 
-            results = eos.db.searchItems(request, where=filter_,
-                                         join=(types_Item.group, types_Group.category),
-                                         eager=("icon", "group.category", "metaGroup", "metaGroup.parent"))
+
+            jargon_request = self.jargonLoader.get_jargon().apply(request)
+
+
+            results = []
+            if len(request) >= config.minItemSearchLength:
+                results = eos.db.searchItems(request, where=filter_,
+                                             join=(types_Item.group, types_Group.category),
+                                             eager=("icon", "group.category", "metaGroup", "metaGroup.parent"))
+
+            jargon_results = []
+            if len(jargon_request) >= config.minItemSearchLength:
+                jargon_results = eos.db.searchItems(jargon_request, where=filter_,
+                                             join=(types_Item.group, types_Group.category),
+                                             eager=("icon", "group.category", "metaGroup", "metaGroup.parent"))
 
             items = set()
             # Return only published items, consult with Market service this time
-            for item in results:
+            for item in [*results, *jargon_results]:
                 if sMkt.getPublicityByItem(item):
                     items.add(item)
             wx.CallAfter(callback, items)

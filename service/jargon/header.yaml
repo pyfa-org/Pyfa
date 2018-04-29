@@ -1,0 +1,14 @@
+# This is the default Pyfa jargon file.
+#
+# It is essentially a giant set of find/replace statements in order to translate
+# abbreviated Eve community terms into more useful full terms. It is intended
+# for translation of strings such as "haml 2" "into "Heavy Assault Missile Launcher II"..
+#
+# These abbreviations are not case-sensitive. If abbreviations collide, the
+# later one is used.
+#
+# Abbreviations with spaces are not supported.
+#
+# Syntax:
+#
+#   abbreviation: full name
