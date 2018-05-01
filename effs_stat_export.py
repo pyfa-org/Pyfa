@@ -228,7 +228,9 @@ def parseNeededFitDetails(fit, groupID):
     moduleNames = []
     fitID = fit.ID
     if len(fit.modules) > 0:
-        fit.name = fit.ship.name + ': ' + fit.name
+        fitName = fit.ship.name + ': ' + fit.name
+    else:
+        fitName = fit.name
     print ''
     print 'name: ' + fit.name
     fitL = Fit()
@@ -611,10 +613,10 @@ def parseNeededFitDetails(fit, groupID):
     elif groupID in [29, 1022]:
         shipSize = shipSizes[7]
     else:
-        shipSize = 'ShipSize not found for ' + fit.name + ' groupID: ' + str(groupID)
+        shipSize = 'ShipSize not found for ' + fitName + ' groupID: ' + str(groupID)
         print shipSize
     try:
-        parsable =  {'name': fit.name, 'ehp': fit.ehp, 'droneDPS': fit.droneDPS, \
+        parsable =  {'name': fitName, 'ehp': fit.ehp, 'droneDPS': fit.droneDPS, \
                      'droneVolley': fit.droneVolley, 'hp': fit.hp, 'maxTargets': fit.maxTargets, \
                      'maxSpeed': fit.maxSpeed, 'weaponVolley': fit.weaponVolley, 'totalVolley': fit.totalVolley,\
                      'maxTargetRange': fit.maxTargetRange, 'scanStrength': fit.scanStrength,\
@@ -634,7 +636,7 @@ def parseNeededFitDetails(fit, groupID):
     except TypeError:
         print 'Error parsing fit:' + str(fit)
         print TypeError
-        parsable = {'name': fit.name + 'Fit could not be correctly parsed'}
+        parsable = {'name': fitName + 'Fit could not be correctly parsed'}
         #print fit.ship.itemModifiedAttributes.items()
         #help(fit)
         #if len(fit.fighters) > 5:
