@@ -90,10 +90,10 @@ if not os.path.exists(config.savePath):
 eos.db.saveddata_meta.create_all()
 
 
-armorLinkShip = eos.db.searchFits('armor links')[0]
-infoLinkShip = eos.db.searchFits('information links')[0]
-shieldLinkShip =  eos.db.searchFits('shield links')[0]
-skirmishLinkShip = eos.db.searchFits('skirmish links')[0]
+#armorLinkShip = eos.db.searchFits('armor links')[0]
+#infoLinkShip = eos.db.searchFits('information links')[0]
+#shieldLinkShip =  eos.db.searchFits('shield links')[0]
+#skirmishLinkShip = eos.db.searchFits('skirmish links')[0]
 import json
 
 def processExportedHtml(fileLocation):
@@ -133,31 +133,31 @@ def processExportedHtml(fileLocation):
     things = []#[Category, MetaGroup, AttributeInfo, MetaData, Item, Attribute, Effect, ItemEffect, Traits]#, Attribute]
     if False:
          for dataTab in things :
-             print 'Data for: ' + str(dataTab)
+             print('Data for: ' + str(dataTab))
              try:
                  filter = dataTab.typeID == 638
              except:
                  filter = dataTab.ID == 638
                  data = gamedata_session.query(dataTab).options().filter(filter).all()
-                 print data
+                 print(data)
                  try:
                      varDict = vars(data)
-                     print varDict
+                     print(varDict)
                  except:
-                     print 'Not a Dict'
+                     print('Not a Dict')
                      try:
                          varDict = data.__doc__
-                         print varDict
+                         print(varDict)
                      except:
-                         print 'No items()'
+                         print('No items()')
                          try:
                              for varDict in data:
-                                 print varDict
-                                 print vars(varDict)
+                                 print(varDict)
+                                 print(vars(varDict))
                          except:
-                             print 'Not a list of dicts'
+                             print('Not a list of dicts')
 
-    #print vars(shipCata._sa_instance_state)
+    #print(vars(shipCata._sa_instance_state))
     baseLimit = 0
     baseN = 0
     nameReqBase = '';
@@ -210,7 +210,7 @@ def processExportedHtml(fileLocation):
                     dna = line[0:endInd]
                     name = line[line.find('>') + 1:line.find('<')]
                     if n >= skipTill and nameReq in name:
-                        print 'name: ' + name + ' DNA: ' + dna
+                        print('name: ' + name + ' DNA: ' + dna)
                         stats = setFitFromString(dna, name, 0)
                         output.write(stats)
                         output.write(',\n')
@@ -231,8 +231,8 @@ def parseNeededFitDetails(fit, groupID):
         fitName = fit.ship.name + ': ' + fit.name
     else:
         fitName = fit.name
-    print ''
-    print 'name: ' + fit.name
+    print('')
+    print('name: ' + fit.name)
     fitL = Fit()
     fitL.recalc(fit)
     fit = eos.db.getFit(fitID)
@@ -242,10 +242,10 @@ def parseNeededFitDetails(fit, groupID):
         filterVal = Group.categoryID == 6
         data = gamedata_session.query(Group).options().filter(filterVal).all()
         for group in data:
-            print group.groupName + '  groupID: ' + str(group.groupID)
-            #print group.categoryName + '  categoryID: ' + str(group.categoryID) + ', published: ' + str(group.published)
-            #print vars(group)
-            #print ''
+            print(group.groupName + '  groupID: ' + str(group.groupID))
+            #print(group.categoryName + '  categoryID: ' + str(group.categoryID) + ', published: ' + str(group.published)
+            #print(vars(group)
+            #print(''
         return ''
     projectedModGroupIds = [
         41, 52, 65, 67, 68, 71, 80, 201, 208, 291, 325, 379, 585,
@@ -271,8 +271,8 @@ def parseNeededFitDetails(fit, groupID):
         fit = eos.db.getFit(fitID)
         usingMWD = True
 
-    print fit.ship.itemModifiedAttributes['rigSize']
-    print propMods
+    print(fit.ship.itemModifiedAttributes['rigSize'])
+    print(propMods)
     mwdPropSpeed = fit.maxSpeed
     if groupID > 0:
         propID = None
@@ -358,22 +358,22 @@ def parseNeededFitDetails(fit, groupID):
             mod.itemModifiedAttributes['maxRange'] = 0
             attrDirectMap(['moduleReactivationDelay'], stats, mod)
         if mod.itemModifiedAttributes['maxRange'] == None:
-            print mod.item.name
-            print mod.itemModifiedAttributes.items()
+            print(mod.item.name)
+            print(mod.itemModifiedAttributes.items())
             raise ValueError('Projected module lacks a maxRange')
         stats['optimal'] = mod.itemModifiedAttributes['maxRange']
         stats['falloff'] = mod.itemModifiedAttributes['falloffEffectiveness'] or 0
         attrDirectMap(['duration', 'capacitorNeed'], stats, mod)
         projections.append(stats)
-        #print ''
-        #print stats
-        #print mod.item.name
-        #print mod.itemModifiedAttributes.items()
-        #print ''
-        #print vars(mod.item)
-    #print vars(web.itemModifiedAttributes)
-    #print vars(fit.modules)
-    #print vars(fit.modules[0])
+        #print(''
+        #print(stats
+        #print(mod.item.name
+        #print(mod.itemModifiedAttributes.items()
+        #print(''
+        #print(vars(mod.item)
+    #print(vars(web.itemModifiedAttributes)
+    #print(vars(fit.modules)
+    #print(vars(fit.modules[0])
     highSlotNames = []
     midSlotNames = []
     lowSlotNames = []
@@ -399,9 +399,9 @@ def parseNeededFitDetails(fit, groupID):
             else:
                 modSlotNames.append('Empty Slot')
         except:
-            print vars(mod)
-            print 'could not find name for module'
-            print fit.modules
+            print(vars(mod))
+            print('could not find name for module')
+            print(fit.modules)
         if mod.dps > 0:
             keystr = str(mod.itemID) + '-' + str(mod.chargeID)
             if keystr in groups:
@@ -534,12 +534,12 @@ def parseNeededFitDetails(fit, groupID):
     data = gamedata_session.query(Traits).options().filter(filterVal).all()
     roleBonusMode = False
     if len(data) != 0:
-        #print data[0].traitText
+        #print(data[0].traitText
         previousTypedBonus = 0
         previousDroneTypeBonus = 0
         for bonusText in data[0].traitText.splitlines():
             bonusText = bonusText.lower()
-            #print 'bonus text line: ' + bonusText
+            #print('bonus text line: ' + bonusText
             if 'per skill level' in bonusText:
                 roleBonusMode = False
             if 'role bonus' in bonusText or 'misc bonus' in bonusText:
@@ -548,8 +548,8 @@ def parseNeededFitDetails(fit, groupID):
             if 'damage' in bonusText and not any(e in bonusText for e in ['control', 'heat']):#'control' in bonusText and not 'heat' in bonusText:
                 splitText = bonusText.split('%')
                 if (float(splitText[0]) > 0) == False:
-                    print 'damage bonus split did not parse correctly!'
-                    print float(splitText[0])
+                    print('damage bonus split did not parse correctly!')
+                    print(float(splitText[0]))
                 if roleBonusMode:
                     addedMulti = float(splitText[0])
                 else:
@@ -568,8 +568,8 @@ def parseNeededFitDetails(fit, groupID):
             elif 'rate of fire' in bonusText:
                 splitText = bonusText.split('%')
                 if (float(splitText[0]) > 0) == False:
-                    print 'rate of fire bonus split did not parse correctly!'
-                    print float(splitText[0])
+                    print('rate of fire bonus split did not parse correctly!')
+                    print(float(splitText[0]))
                 if roleBonusMode:
                     rofMulti = float(splitText[0])
                 else:
@@ -614,7 +614,7 @@ def parseNeededFitDetails(fit, groupID):
         shipSize = shipSizes[7]
     else:
         shipSize = 'ShipSize not found for ' + fitName + ' groupID: ' + str(groupID)
-        print shipSize
+        print(shipSize)
     try:
         parsable =  {'name': fitName, 'ehp': fit.ehp, 'droneDPS': fit.droneDPS, \
                      'droneVolley': fit.droneVolley, 'hp': fit.hp, 'maxTargets': fit.maxTargets, \
@@ -634,13 +634,13 @@ def parseNeededFitDetails(fit, groupID):
                      'usingMWD': usingMWD, 'mwdPropSpeed': mwdPropSpeed
         }
     except TypeError:
-        print 'Error parsing fit:' + str(fit)
-        print TypeError
+        print('Error parsing fit:' + str(fit))
+        print(TypeError)
         parsable = {'name': fitName + 'Fit could not be correctly parsed'}
-        #print fit.ship.itemModifiedAttributes.items()
+        #print(fit.ship.itemModifiedAttributes.items()
         #help(fit)
         #if len(fit.fighters) > 5:
-        #print fit.fighters
+        #print(fit.fighters
         #help(fit.fighters[0])
     stringified = json.dumps(parsable, skipkeys=True)
     return stringified
@@ -650,7 +650,7 @@ def setFitFromString(dnaString, fitName, groupID) :
     #if groupID == 485 and len(modArray) == 1:
         #additionalModeFit = ',\n' + setFitFromString(dnaString + ':4292', fitName + ' (Sieged)', groupID)
     fitL = Fit()
-    print modArray[0]
+    print(modArray[0])
     fitID = fitL.newFit(int(modArray[0]), fitName)
     fit = eos.db.getFit(fitID)
     ammoArray = []
@@ -658,8 +658,8 @@ def setFitFromString(dnaString, fitName, groupID) :
     for mod in iter(modArray):
         n = n + 1
         if n > 0:
-            #print n
-            #print mod
+            #print(n
+            #print(mod
             modSp = mod.split(';')
             if len(modSp) == 2:
                 k = 0
@@ -682,7 +682,7 @@ def setFitFromString(dnaString, fitName, groupID) :
     fit = eos.db.getFit(fitID)
     #nonEmptyModules = fit.modules
     #while nonEmptyModules.find(None) >= 0:
-    #   print 'ssssssssssssssss'
+    #   print('ssssssssssssssss'
     #   nonEmptyModules.remove(None)
     for ammo in iter(ammoArray):
         fitL.setAmmo(fitID, ammo, filter(lambda mod: str(mod).find('name') > 0, fit.modules))
@@ -697,7 +697,7 @@ def setFitFromString(dnaString, fitName, groupID) :
                         abilityAltRef.active = True
     fitL.recalc(fit)
     fit = eos.db.getFit(fitID)
-    print filter(lambda mod: mod.item.groupID in [1189, 658], fit.modules)
+    print(filter(lambda mod: mod.item.groupID in [1189, 658], fit.modules))
     #fit.calculateWeaponStats()
     fitL.addCommandFit(fit.ID, armorLinkShip)
     fitL.addCommandFit(fit.ID, shieldLinkShip)
@@ -705,7 +705,7 @@ def setFitFromString(dnaString, fitName, groupID) :
     fitL.addCommandFit(fit.ID, infoLinkShip)
     #def anonfunc(unusedArg): True
     jsonStr = parseNeededFitDetails(fit, groupID)
-    #print vars(fit.ship._Ship__item)
+    #print(vars(fit.ship._Ship__item)
     #help(fit)
     Fit.deleteFit(fitID)
     return jsonStr + additionalModeFit
