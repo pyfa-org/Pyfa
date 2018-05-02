@@ -32,11 +32,6 @@ class JargonLoader(object):
         self._jargon_mtime = 0 # type: int
         self._jargon = None # type: Jargon
 
-    def save_jargon(self, data: Jargon):
-        rawdata = data.get_rawdata()
-        with open(JARGON_PATH, 'w') as f:
-            yaml.dump(rawdata, stream=f, default_flow_style=False)
-
     def get_jargon(self) -> Jargon:
         if self._is_stale():
             self._load_jargon()
@@ -47,10 +42,12 @@ class JargonLoader(object):
                 self.jargon_mtime != self._get_jargon_file_mtime())
 
     def _load_jargon(self):
+        jargondata = yaml.load(DEFAULT_DATA)
         with open(JARGON_PATH) as f:
-            rawdata = yaml.load(f)
+            userdata = yaml.load(f)
+        jargondata.update(userdata)
         self.jargon_mtime = self._get_jargon_file_mtime()
-        self._jargon = Jargon(rawdata)
+        self._jargon = Jargon(jargondata)
 
     def _get_jargon_file_mtime(self) -> int:
         if not os.path.exists(self.jargon_path):
@@ -60,15 +57,19 @@ class JargonLoader(object):
     @staticmethod
     def init_user_jargon(jargon_path):
         values = yaml.load(DEFAULT_DATA)
-        if os.path.exists(jargon_path):
-            with open(jargon_path) as f:
-                custom_values = yaml.load(f)
-            if custom_values:
-                values.update(custom_values)
-        with open(jargon_path, 'w') as f:
-            f.write(DEFAULT_HEADER)
-            f.write('\n\n')
-            yaml.dump(values, stream=f, default_flow_style=False)
+
+        ## Disabled for issue/1533; do not overwrite existing user config
+        # if os.path.exists(jargon_path):
+        #     with open(jargon_path) as f:
+        #         custom_values = yaml.load(f)
+        #     if custom_values:
+        #         values.update(custom_values)
+
+        if not os.path.exists(jargon_path):
+            with open(jargon_path, 'w') as f:
+                f.write(DEFAULT_HEADER)
+                f.write('\n\n')
+                yaml.dump(values, stream=f, default_flow_style=False)
 
     _instance = None
     @staticmethod
