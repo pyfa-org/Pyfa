@@ -108,7 +108,7 @@ class Miscellanea(ViewColumn):
             text = "{0}".format(formatAmount(trackingSpeed, 3, 0, 3))
             tooltip = "Tracking speed"
             return text, tooltip
-        elif itemGroup == "Precursor Turret":
+        elif itemGroup == "Precursor Weapon":
             info = []
             trackingSpeed = stuff.getModifiedItemAttr("trackingSpeed")
             if trackingSpeed:

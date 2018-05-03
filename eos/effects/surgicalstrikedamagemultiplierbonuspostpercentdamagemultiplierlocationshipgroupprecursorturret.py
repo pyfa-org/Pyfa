@@ -6,5 +6,5 @@ type = "passive"
 
 
 def handler(fit, skill, context):
-    fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == "Precursor Turret",
+    fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == "Precursor Weapon",
                                   "damageMultiplier", skill.getModifiedItemAttr("damageMultiplierBonus") * skill.level)
