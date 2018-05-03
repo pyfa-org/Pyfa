@@ -297,7 +297,7 @@ class Fit(object):
         results = eos.db.searchFits(name)
         fits = []
 
-        for fit in results:
+        for fit in sorted(results, key=lambda f: (f.ship.item.group.name, f.ship.item.name, f.name)):
             fits.append((
                 fit.ID,
                 fit.name,
