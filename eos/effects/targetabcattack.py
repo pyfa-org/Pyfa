@@ -1,7 +1,7 @@
 # targetABCAttack
 #
 # Used by:
-# Modules from group: Precursor Turret (14 of 14)
+# Modules from group: Precursor Weapon (14 of 14)
 type = 'active'
 
 
