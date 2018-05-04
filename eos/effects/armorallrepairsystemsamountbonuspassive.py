@@ -10,4 +10,4 @@ type = "passive"
 def handler(fit, booster, context):
     fit.modules.filteredItemBoost(
         lambda mod: mod.item.requiresSkill("Repair Systems") or mod.item.requiresSkill("Capital Repair Systems"),
-        "armorDamageAmount", booster.getModifiedItemAttr("armorDamageAmountBonus"))
+        "armorDamageAmount", booster.getModifiedItemAttr("armorDamageAmountBonus") or 0)
