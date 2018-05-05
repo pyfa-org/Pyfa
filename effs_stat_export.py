@@ -90,10 +90,6 @@ if not os.path.exists(config.savePath):
 eos.db.saveddata_meta.create_all()
 
 
-#armorLinkShip = eos.db.searchFits('armor links')[0]
-#infoLinkShip = eos.db.searchFits('information links')[0]
-#shieldLinkShip =  eos.db.searchFits('shield links')[0]
-#skirmishLinkShip = eos.db.searchFits('skirmish links')[0]
 import json
 
 def processExportedHtml(fileLocation):
@@ -138,7 +134,7 @@ def processExportedHtml(fileLocation):
                  filter = dataTab.typeID == 638
              except:
                  filter = dataTab.ID == 638
-                 data = gamedata_session.query(dataTab).options().filter(filter).all()
+                 data = gamedata_session.query(dataTab).options().list(filter(filter).all())
                  print(data)
                  try:
                      varDict = vars(data)
@@ -158,7 +154,7 @@ def processExportedHtml(fileLocation):
                              print('Not a list of dicts')
 
     #print(vars(shipCata._sa_instance_state))
-    baseLimit = 0
+    baseLimit = 10
     baseN = 0
     nameReqBase = '';
     for ship in iter(shipCata):
@@ -168,7 +164,7 @@ def processExportedHtml(fileLocation):
             outputBaseline.write(stats)
             outputBaseline.write(',\n')
             baseN += 1;
-    limit = 0
+    limit = 100
     skipTill = 0
     nameReq = ''
     n = 0
@@ -240,7 +236,7 @@ def parseNeededFitDetails(fit, groupID):
         from eos.db import gamedata_session
         from eos.gamedata import Group, Category
         filterVal = Group.categoryID == 6
-        data = gamedata_session.query(Group).options().filter(filterVal).all()
+        data = gamedata_session.query(Group).options().list(filter(filterVal).all())
         for group in data:
             print(group.groupName + '  groupID: ' + str(group.groupID))
             #print(group.categoryName + '  categoryID: ' + str(group.categoryID) + ', published: ' + str(group.published)
@@ -251,13 +247,13 @@ def parseNeededFitDetails(fit, groupID):
         41, 52, 65, 67, 68, 71, 80, 201, 208, 291, 325, 379, 585,
         842, 899, 1150, 1154, 1189, 1306, 1672, 1697, 1698, 1815, 1894
     ]
-    projectedMods = filter(lambda mod: mod.item and mod.item.groupID in projectedModGroupIds, fit.modules)
+    projectedMods = list(filter(lambda mod: mod.item and mod.item.groupID in projectedModGroupIds, fit.modules))
 
     unpropedSpeed = fit.maxSpeed
     unpropedSig = fit.ship.itemModifiedAttributes['signatureRadius']
     usingMWD = False
-    propMods = filter(lambda mod: mod.item and mod.item.groupID in [46], fit.modules)
-    possibleMWD = filter(lambda mod: 'signatureRadiusBonus' in mod.item.attributes, propMods)
+    propMods = list(filter(lambda mod: mod.item and mod.item.groupID in [46], fit.modules))
+    possibleMWD = list(filter(lambda mod: 'signatureRadiusBonus' in mod.item.attributes, propMods))
     if len(possibleMWD) > 0 and possibleMWD[0].state > 0:
         mwd = possibleMWD[0]
         oldMwdState = mwd.state
@@ -295,7 +291,7 @@ def parseNeededFitDetails(fit, groupID):
             fitL.recalc(fit)
             fit = eos.db.getFit(fitID)
             mwdPropSpeed = fit.maxSpeed
-            mwdPosition = filter(lambda mod: mod.item and mod.item.ID == propID, fit.modules)[0].position
+            mwdPosition = list(filter(lambda mod: mod.item and mod.item.ID == propID, fit.modules))[0].position
             fitL.removeModule(fitID, mwdPosition)
             fitL.recalc(fit)
             fit = eos.db.getFit(fitID)
@@ -644,7 +640,22 @@ def parseNeededFitDetails(fit, groupID):
         #help(fit.fighters[0])
     stringified = json.dumps(parsable, skipkeys=True)
     return stringified
+
+try:
+    armorLinkShip = eos.db.searchFits('armor links')[0]
+    infoLinkShip = eos.db.searchFits('information links')[0]
+    shieldLinkShip =  eos.db.searchFits('shield links')[0]
+    skirmishLinkShip = eos.db.searchFits('skirmish links')[0]
+except:
+    armorLinkShip = None
+    infoLinkShip = None
+    shieldLinkShip = None
+    skirmishLinkShip = None
+
 def setFitFromString(dnaString, fitName, groupID) :
+    if armorLinkShip == None:
+        print('Cannot find correct link fits for base calculations')
+        return ''
     modArray = dnaString.split(':')
     additionalModeFit = ''
     #if groupID == 485 and len(modArray) == 1:
@@ -685,7 +696,7 @@ def setFitFromString(dnaString, fitName, groupID) :
     #   print('ssssssssssssssss'
     #   nonEmptyModules.remove(None)
     for ammo in iter(ammoArray):
-        fitL.setAmmo(fitID, ammo, filter(lambda mod: str(mod).find('name') > 0, fit.modules))
+        fitL.setAmmo(fitID, ammo, list(filter(lambda mod: str(mod).find('name') > 0, fit.modules)))
     if len(fit.drones) > 0:
         fit.drones[0].amountActive = fit.drones[0].amount
         eos.db.commit()
@@ -697,7 +708,7 @@ def setFitFromString(dnaString, fitName, groupID) :
                         abilityAltRef.active = True
     fitL.recalc(fit)
     fit = eos.db.getFit(fitID)
-    print(filter(lambda mod: mod.item.groupID in [1189, 658], fit.modules))
+    print(list(filter(lambda mod: mod.item.groupID in [1189, 658], fit.modules)))
     #fit.calculateWeaponStats()
     fitL.addCommandFit(fit.ID, armorLinkShip)
     fitL.addCommandFit(fit.ID, shieldLinkShip)
