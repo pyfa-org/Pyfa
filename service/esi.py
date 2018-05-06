@@ -134,19 +134,19 @@ class Esi(object):
     def getSkills(self, id):
         char = self.getSsoCharacter(id)
         op = Esi.esi_v4.op['get_characters_character_id_skills'](character_id=char.characterID)
-        resp = char.esi_client.request(op)
+        resp = self.check_response(char.esi_client.request(op))
         return resp.data
 
     def getSecStatus(self, id):
         char = self.getSsoCharacter(id)
         op = Esi.esi_v4.op['get_characters_character_id'](character_id=char.characterID)
-        resp = char.esi_client.request(op)
+        resp = self.check_response(char.esi_client.request(op))
         return resp.data
 
     def getFittings(self, id):
         char = self.getSsoCharacter(id)
         op = Esi.esi_v1.op['get_characters_character_id_fittings'](character_id=char.characterID)
-        resp = char.esi_client.request(op)
+        resp = self.check_response(char.esi_client.request(op))
         return resp.data
 
     def postFitting(self, id, json_str):
@@ -156,7 +156,7 @@ class Esi(object):
             character_id=char.characterID,
             fitting=json.loads(json_str)
         )
-        resp = char.esi_client.request(op)
+        resp = self.check_response(char.esi_client.request(op))
         return resp.data
 
     def delFitting(self, id, fittingID):
@@ -165,8 +165,13 @@ class Esi(object):
             character_id=char.characterID,
             fitting_id=fittingID
         )
-        resp = char.esi_client.request(op)
+        resp = self.check_response(char.esi_client.request(op))
         return resp.data
+
+    def check_response(self, resp):
+        if resp.status != 200:
+            raise Exception(resp.status)
+        return resp
 
     @staticmethod
     def get_sso_data(char):
