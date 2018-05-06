@@ -35,6 +35,9 @@ if not os.path.exists(cache_path):
 file_cache = FileCache(cache_path)
 
 
+class EsiException(Exception):
+    pass
+
 class Servers(Enum):
     TQ = 0
     SISI = 1
@@ -170,7 +173,7 @@ class Esi(object):
 
     def check_response(self, resp):
         if resp.status != 200:
-            raise Exception(resp.status)
+            raise EsiException(resp.status)
         return resp
 
     @staticmethod
