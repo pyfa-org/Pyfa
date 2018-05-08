@@ -1,15 +1,14 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-
 # noinspection PyPackageRequirements
 import wx
 import copy
 
 from gui.preferenceView import PreferenceView
-from gui.bitmapLoader import BitmapLoader
-from gui.utils import colorUtils
-import gui.utils.drawUtils as drawUtils
+from gui.bitmap_loader import BitmapLoader
+from gui.utils.color import CalculateTransition
+import gui.utils.draw as drawUtils
 
 
 ###########################################################################
@@ -49,6 +48,7 @@ class PFGaugePreview(wx.Window):
         self.Bind(wx.EVT_LEAVE_WINDOW, self.OnWindowLeave)
         self.Bind(wx.EVT_TIMER, self.OnTimer)
         self.Bind(wx.EVT_ERASE_BACKGROUND, self.OnEraseBk)
+        self.SetBackgroundStyle(wx.BG_STYLE_PAINT)
 
     def OnEraseBk(self, event):
         pass
@@ -109,44 +109,45 @@ class PFGaugePreview(wx.Window):
         self.Refresh()
 
     def OnPaint(self, event):
-        rect = self.GetClientRect()
-        dc = wx.BufferedPaintDC(self)
-        dc.SetBackground(wx.Brush(self.bkColor))
-        dc.Clear()
-
-        value = float(self.value)
-        if self.percS >= 100:
-            w = rect.width
-        else:
-            w = rect.width * (float(value) / 100)
-        r = copy.copy(rect)
-        r.width = w
-
-        color = colorUtils.CalculateTransitionColor(self.colorS, self.colorE, float(value) / 100)
-        if self.gradientStart > 0:
-            gcolor = colorUtils.BrightenColor(color, float(self.gradientStart) / 100)
-            gMid = colorUtils.BrightenColor(color, float(self.gradientStart / 2) / 100)
-        else:
-            gcolor = colorUtils.DarkenColor(color, float(-self.gradientStart) / 100)
-            gMid = colorUtils.DarkenColor(color, float(-self.gradientStart / 2) / 100)
-
-        gBmp = drawUtils.DrawGradientBar(r.width, r.height, gMid, color, gcolor)
-        dc.DrawBitmap(gBmp, 0, 0)
-        dc.SetFont(self.font)
-
-        r = copy.copy(rect)
-        r.left += 1
-        r.top += 1
-
-        formatStr = "{0:." + str(self._fractionDigits) + "f}%"
-        value = (self.percE - self.percS) * value / (self.percE - self.percS)
-        value = self.percS + (self.percE - self.percS) * value / 100
-
-        dc.SetTextForeground(wx.Colour(80, 80, 80))
-        dc.DrawLabel(formatStr.format(value), r, wx.ALIGN_CENTER)
-
-        dc.SetTextForeground(wx.Colour(255, 255, 255))
-        dc.DrawLabel(formatStr.format(value), rect, wx.ALIGN_CENTER)
+        pass
+        # rect = self.GetClientRect()
+        # dc = wx.AutoBufferedPaintDC(self)
+        # dc.SetBackground(wx.Brush(self.bkColor))
+        # dc.Clear()
+        #
+        # value = float(self.value)
+        # if self.percS >= 100:
+        #     w = rect.width
+        # else:
+        #     w = rect.width * (float(value) / 100)
+        # r = copy.copy(rect)
+        # r.width = w
+        #
+        # color = CalculateTransitionColor(self.colorS, self.colorE, float(value) / 100)
+        # if self.gradientStart > 0:
+        #     gcolor = color.BrightenColor(color, float(self.gradientStart) / 100)
+        #     gMid = color.BrightenColor(color, float(self.gradientStart / 2) / 100)
+        # else:
+        #     gcolor = color.DarkenColor(color, float(-self.gradientStart) / 100)
+        #     gMid = color.DarkenColor(color, float(-self.gradientStart / 2) / 100)
+        #
+        # gBmp = drawUtils.DrawGradientBar(r.width, r.height, gMid, color, gcolor)
+        # dc.DrawBitmap(gBmp, 0, 0)
+        # dc.SetFont(self.font)
+        #
+        # r = copy.copy(rect)
+        # r.left += 1
+        # r.top += 1
+        #
+        # formatStr = "{0:." + str(self._fractionDigits) + "f}%"
+        # value = (self.percE - self.percS) * value / (self.percE - self.percS)
+        # value = self.percS + (self.percE - self.percS) * value / 100
+        #
+        # dc.SetTextForeground(wx.Colour(80, 80, 80))
+        # dc.DrawLabel(formatStr.format(value), r, wx.ALIGN_CENTER)
+        #
+        # dc.SetTextForeground(wx.Colour(255, 255, 255))
+        # dc.DrawLabel(formatStr.format(value), rect, wx.ALIGN_CENTER)
 
 
 class PFGaugePref(PreferenceView):
@@ -160,7 +161,7 @@ class PFGaugePref(PreferenceView):
 
         gSizer1 = wx.BoxSizer(wx.HORIZONTAL)
 
-        self.st0100 = wx.StaticText(panel, wx.ID_ANY, u"0 - 100", wx.DefaultPosition, wx.DefaultSize, wx.ALIGN_RIGHT)
+        self.st0100 = wx.StaticText(panel, wx.ID_ANY, "0 - 100", wx.DefaultPosition, wx.DefaultSize, wx.ALIGN_RIGHT)
         self.st0100.Wrap(-1)
         gSizer1.Add(self.st0100, 1, wx.ALL | wx.ALIGN_CENTER_VERTICAL, 5)
 
@@ -185,7 +186,7 @@ class PFGaugePref(PreferenceView):
 
         gSizer2 = wx.BoxSizer(wx.HORIZONTAL)
 
-        self.st100101 = wx.StaticText(panel, wx.ID_ANY, u"100 - 101", wx.DefaultPosition, wx.DefaultSize,
+        self.st100101 = wx.StaticText(panel, wx.ID_ANY, "100 - 101", wx.DefaultPosition, wx.DefaultSize,
                                       wx.ALIGN_RIGHT)
         self.st100101.Wrap(-1)
         gSizer2.Add(self.st100101, 1, wx.ALL | wx.ALIGN_CENTER_VERTICAL, 5)
@@ -211,7 +212,7 @@ class PFGaugePref(PreferenceView):
 
         gSizer3 = wx.BoxSizer(wx.HORIZONTAL)
 
-        self.st101103 = wx.StaticText(panel, wx.ID_ANY, u"101 - 103", wx.DefaultPosition, wx.DefaultSize,
+        self.st101103 = wx.StaticText(panel, wx.ID_ANY, "101 - 103", wx.DefaultPosition, wx.DefaultSize,
                                       wx.ALIGN_RIGHT)
         self.st101103.Wrap(-1)
         gSizer3.Add(self.st101103, 1, wx.ALL | wx.ALIGN_CENTER_VERTICAL, 5)
@@ -237,7 +238,7 @@ class PFGaugePref(PreferenceView):
 
         gSizer4 = wx.BoxSizer(wx.HORIZONTAL)
 
-        self.st103105 = wx.StaticText(panel, wx.ID_ANY, u"103 - 105", wx.DefaultPosition, wx.DefaultSize,
+        self.st103105 = wx.StaticText(panel, wx.ID_ANY, "103 - 105", wx.DefaultPosition, wx.DefaultSize,
                                       wx.ALIGN_RIGHT)
         self.st103105.Wrap(-1)
         gSizer4.Add(self.st103105, 1, wx.ALL | wx.ALIGN_CENTER_VERTICAL, 5)
@@ -284,20 +285,20 @@ class PFGaugePref(PreferenceView):
 
         buttonsSizer = wx.BoxSizer(wx.HORIZONTAL)
 
-        self.cbLink = wx.CheckBox(panel, wx.ID_ANY, u"Link Colors", wx.DefaultPosition, wx.DefaultSize, 0)
+        self.cbLink = wx.CheckBox(panel, wx.ID_ANY, "Link Colors", wx.DefaultPosition, wx.DefaultSize, 0)
         buttonsSizer.Add(self.cbLink, 0, wx.ALIGN_CENTER_VERTICAL | wx.RIGHT | wx.LEFT, 5)
 
         self.sliderGradientStart = wx.Slider(panel, wx.ID_ANY, self.gradientStart, -100, 100, wx.DefaultPosition,
                                              (127, -1), wx.SL_HORIZONTAL | wx.SL_LABELS)
         buttonsSizer.Add(self.sliderGradientStart, 1, wx.EXPAND | wx.ALL | wx.ALIGN_CENTER_VERTICAL, 5)
 
-        self.btnRestore = wx.Button(panel, wx.ID_ANY, u"Restore Defaults", wx.DefaultPosition, wx.DefaultSize, 0)
+        self.btnRestore = wx.Button(panel, wx.ID_ANY, "Restore Defaults", wx.DefaultPosition, wx.DefaultSize, 0)
         buttonsSizer.Add(self.btnRestore, 0, wx.ALL | wx.ALIGN_CENTER_VERTICAL, 5)
 
-        self.btnDump = wx.Button(panel, wx.ID_ANY, u"Dump Colors", wx.DefaultPosition, wx.DefaultSize, 0)
+        self.btnDump = wx.Button(panel, wx.ID_ANY, "Dump Colors", wx.DefaultPosition, wx.DefaultSize, 0)
         buttonsSizer.Add(self.btnDump, 0, wx.ALL | wx.ALIGN_CENTER_VERTICAL, 5)
 
-        self.btnOk = wx.Button(panel, wx.ID_ANY, u"Apply", wx.DefaultPosition, wx.DefaultSize, 0)
+        self.btnOk = wx.Button(panel, wx.ID_ANY, "Apply", wx.DefaultPosition, wx.DefaultSize, 0)
         buttonsSizer.Add(self.btnOk, 0, wx.ALL | wx.ALIGN_CENTER_VERTICAL, 5)
 
         footerSizer.Add(buttonsSizer, 1, wx.ALIGN_RIGHT, 5)
@@ -432,11 +433,11 @@ class PFGaugePref(PreferenceView):
         event.Skip()
 
     def DumpColours(self, event):
-        print("Gradient start: %d" % self.sliderGradientStart.GetValue())
-        print("  0 <-> 100 Start: ", self.c0100S, " End: ", self.c0100E)
-        print("100 <-> 101 Start: ", self.c100101S, " End: ", self.c100101E)
-        print("101 <-> 103 Start: ", self.c101103S, " End: ", self.c101103E)
-        print("103 <-> 105 Start: ", self.c103105S, " End: ", self.c103105E)
+        print(("Gradient start: %d" % self.sliderGradientStart.GetValue()))
+        print(("  0 <-> 100 Start: ", self.c0100S, " End: ", self.c0100E))
+        print(("100 <-> 101 Start: ", self.c100101S, " End: ", self.c100101E))
+        print(("101 <-> 103 Start: ", self.c101103S, " End: ", self.c101103E))
+        print(("103 <-> 105 Start: ", self.c103105S, " End: ", self.c103105E))
 
         event.Skip()
 

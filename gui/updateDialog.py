@@ -22,66 +22,63 @@ import wx
 # noinspection PyPackageRequirements
 import dateutil.parser
 from service.settings import UpdateSettings as svc_UpdateSettings
+import wx.html2
+import webbrowser
+import re
+import markdown2
+
+# HTML template. We link to a bootstrap cdn for quick and easy css, and include some additional teaks.
+html_tmpl = """
+<link href='https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css' rel='stylesheet' />
+<style>
+body {{ padding: 10px; font-size:0.87em }}
+p , li {{ text-align: justify; }}
+h2 {{ text-align: center; margin: 0; }}
+.date {{ text-align: right; }}
+hr {{ border: #000 1px solid; }}
+</style>
+<h2>pyfa {0}</h2>
+<div class="date"><small>{1}</small></div>
+<hr>
+{2}
+{3}
+"""
 
 
 class UpdateDialog(wx.Dialog):
-    def __init__(self, parent, release):
-        wx.Dialog.__init__(self, parent, id=wx.ID_ANY, title="Pyfa Update", pos=wx.DefaultPosition,
-                           size=wx.Size(400, 300), style=wx.DEFAULT_DIALOG_STYLE)
+    def __init__(self, parent, release, version):
+        wx.Dialog.__init__(self, parent, id=wx.ID_ANY, title="pyfa Update Available", pos=wx.DefaultPosition,
+                           size=wx.Size(550, 450), style=wx.DEFAULT_DIALOG_STYLE)
 
         self.UpdateSettings = svc_UpdateSettings.getInstance()
         self.releaseInfo = release
-        self.SetSizeHintsSz(wx.DefaultSize, wx.DefaultSize)
+        self.SetSizeHints(wx.DefaultSize, wx.DefaultSize)
 
         mainSizer = wx.BoxSizer(wx.VERTICAL)
 
-        headSizer = wx.BoxSizer(wx.HORIZONTAL)
-
-        self.headingText = wx.StaticText(self, wx.ID_ANY, "Pyfa Update Available!", wx.DefaultPosition, wx.DefaultSize,
-                                         wx.ALIGN_CENTRE)
-        self.headingText.Wrap(-1)
-        self.headingText.SetFont(wx.Font(14, 74, 90, 92, False))
-
-        headSizer.Add(self.headingText, 1, wx.ALL, 5)
-        mainSizer.Add(headSizer, 0, wx.EXPAND, 5)
-
-        mainSizer.Add(wx.StaticLine(self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.LI_HORIZONTAL), 0,
-                      wx.EXPAND | wx.ALL, 5)
-
-        versionSizer = wx.BoxSizer(wx.HORIZONTAL)
-
-        if self.releaseInfo['prerelease']:
-            self.releaseText = wx.StaticText(self, wx.ID_ANY, "Pre-release", wx.DefaultPosition, wx.DefaultSize,
-                                             wx.ALIGN_RIGHT)
-            self.releaseText.SetFont(wx.Font(12, 74, 90, 92, False))
-            self.releaseText.SetForegroundColour(wx.Colour(230, 0, 0))
-        else:
-            self.releaseText = wx.StaticText(self, wx.ID_ANY, "Stable", wx.DefaultPosition, wx.DefaultSize,
-                                             wx.ALIGN_RIGHT)
-            self.releaseText.SetFont(wx.Font(12, 74, 90, 90, False))
-
-        self.releaseText.Wrap(-1)
-
-        versionSizer.Add(self.releaseText, 1, wx.ALL, 5)
-
-        self.versionText = wx.StaticText(self, wx.ID_ANY, self.releaseInfo['tag_name'], wx.DefaultPosition,
-                                         wx.DefaultSize, wx.ALIGN_LEFT)
-        self.versionText.Wrap(-1)
-        self.versionText.SetFont(wx.Font(12, 74, 90, 90, False))
-
-        versionSizer.Add(self.versionText, 1, wx.ALL, 5)
-        versionSizer.AddSpacer((15, 5), 0, wx.EXPAND, 5)
-
-        mainSizer.Add(versionSizer, 0, wx.EXPAND, 5)
-        mainSizer.AddSpacer((0, 5), 0, wx.EXPAND, 5)
-
         releaseDate = dateutil.parser.parse(self.releaseInfo['published_at'])
         notesSizer = wx.BoxSizer(wx.HORIZONTAL)
-        self.notesTextCtrl = wx.TextCtrl(self, wx.ID_ANY, str(releaseDate.date()) + ":\n\n" + self.releaseInfo['body'],
-                                         wx.DefaultPosition, wx.DefaultSize,
-                                         wx.TE_AUTO_URL | wx.TE_MULTILINE | wx.TE_READONLY | wx.DOUBLE_BORDER | wx.TRANSPARENT_WINDOW)
+        self.browser = wx.html2.WebView.New(self)
+        self.browser.Bind(wx.html2.EVT_WEBVIEW_NEWWINDOW, self.OnNewWindow)
 
-        notesSizer.Add(self.notesTextCtrl, 1, wx.EXPAND | wx.LEFT | wx.RIGHT, 5)
+        link_patterns = [
+            (re.compile("([0-9a-f]{6,40})", re.I), r"https://github.com/pyfa-org/Pyfa/commit/\1"),
+            (re.compile("#(\d+)", re.I), r"https://github.com/pyfa-org/Pyfa/issues/\1"),
+            (re.compile("@(\w+)", re.I), r"https://github.com/\1")
+        ]
+
+        markdowner = markdown2.Markdown(
+            extras=['cuddled-lists', 'fenced-code-blocks', 'target-blank-links', 'toc', 'link-patterns'],
+            link_patterns=link_patterns)
+
+        self.browser.SetPage(html_tmpl.format(
+            self.releaseInfo['tag_name'],
+            releaseDate.strftime('%B %d, %Y'),
+            "<p class='text-danger'><b>This is a pre-release, be prepared for unstable features</b></p>" if version.is_prerelease else "",
+            markdowner.convert(self.releaseInfo['body'])
+        ),"")
+
+        notesSizer.Add(self.browser, 1, wx.EXPAND | wx.LEFT | wx.RIGHT | wx.TOP, 5)
         mainSizer.Add(notesSizer, 1, wx.EXPAND, 5)
 
         self.supressCheckbox = wx.CheckBox(self, wx.ID_ANY, "Don't remind me again for this release",
@@ -118,6 +115,10 @@ class UpdateDialog(wx.Dialog):
 
     def OnClose(self, e):
         self.Close()
+
+    def OnNewWindow(self, event):
+        url = event.GetURL()
+        webbrowser.open(url)
 
     def SuppressChange(self, e):
         if self.supressCheckbox.IsChecked():

@@ -25,7 +25,7 @@ class Graph(object):
         self.fit = fit
         self.data = {}
         if data is not None:
-            for name, d in data.iteritems():
+            for name, d in data.items():
                 self.setData(Data(name, d))
 
         self.function = function
@@ -39,7 +39,7 @@ class Graph(object):
     def getIterator(self):
         pointNames = []
         pointIterators = []
-        for data in self.data.itervalues():
+        for data in self.data.values():
             pointNames.append(data.name)
             pointIterators.append(data)
 
@@ -48,7 +48,7 @@ class Graph(object):
     def _iterator(self, pointNames, pointIterators):
         for pointValues in itertools.product(*pointIterators):
             point = {}
-            for i in xrange(len(pointValues)):
+            for i in range(len(pointValues)):
                 point[pointNames[i]] = pointValues[i]
 
             yield point, self.function(point)
@@ -61,12 +61,12 @@ class Data(object):
         self.data = self.parseString(dataString)
 
     def parseString(self, dataString):
-        if not isinstance(dataString, basestring):
+        if not isinstance(dataString, str):
             return Constant(dataString),
 
         dataList = []
         for data in dataString.split(";"):
-            if isinstance(data, basestring) and "-" in data:
+            if isinstance(data, str) and "-" in data:
                 # Dealing with a range
                 dataList.append(Range(data, self.step))
             else:
@@ -85,7 +85,7 @@ class Data(object):
 
 class Constant(object):
     def __init__(self, const):
-        if isinstance(const, basestring):
+        if isinstance(const, str):
             self.value = None if const == "" else float(const)
         else:
             self.value = const

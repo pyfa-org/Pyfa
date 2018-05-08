@@ -22,13 +22,10 @@ import re
 from sqlalchemy.orm import reconstructor
 
 import eos.db
-from eqBase import EqBase
+from .eqBase import EqBase
 from eos.saveddata.price import Price as types_Price
+from collections import OrderedDict
 
-try:
-    from collections import OrderedDict
-except ImportError:
-    from utils.compat import OrderedDict
 
 from logbook import Logger
 
@@ -160,8 +157,6 @@ class Effect(EqBase):
         if it doesn't, set dummy values and add a dummy handler
         """
 
-        pyfalog.debug("Generate effect handler for {}".format(self.name))
-
         try:
             self.__effectModule = effectModule = __import__('eos.effects.' + self.handlerName, fromlist=True)
             self.__handler = getattr(effectModule, "handler", effectDummy)
@@ -258,7 +253,7 @@ class Item(EqBase):
             return default
 
     def isType(self, type):
-        for effect in self.effects.itervalues():
+        for effect in self.effects.values():
             if effect.isType(type):
                 return True
 
@@ -299,7 +294,7 @@ class Item(EqBase):
             self.__requiredSkills = requiredSkills
             # Map containing attribute IDs we may need for required skills
             # { requiredSkillX : requiredSkillXLevel }
-            combinedAttrIDs = set(self.srqIDMap.iterkeys()).union(set(self.srqIDMap.itervalues()))
+            combinedAttrIDs = set(self.srqIDMap.keys()).union(set(self.srqIDMap.values()))
             # Map containing result of the request
             # { attributeID : attributeValue }
             skillAttrs = {}
@@ -309,7 +304,7 @@ class Item(EqBase):
                 attrVal = attrInfo[2]
                 skillAttrs[attrID] = attrVal
             # Go through all attributeID pairs
-            for srqIDAtrr, srqLvlAttr in self.srqIDMap.iteritems():
+            for srqIDAtrr, srqLvlAttr in self.srqIDMap.items():
                 # Check if we have both in returned result
                 if srqIDAtrr in skillAttrs and srqLvlAttr in skillAttrs:
                     skillID = int(skillAttrs[srqIDAtrr])
@@ -383,7 +378,7 @@ class Item(EqBase):
                 race = None
                 # Check primary and secondary required skills' races
                 if race is None:
-                    skillRaces = tuple(filter(lambda rid: rid, (s.raceID for s in tuple(self.requiredSkills.keys()))))
+                    skillRaces = tuple([rid for rid in (s.raceID for s in tuple(self.requiredSkills.keys())) if rid])
                     if sum(skillRaces) in map:
                         race = map[sum(skillRaces)]
                         if race == "angelserp":
@@ -405,7 +400,7 @@ class Item(EqBase):
         if self.__assistive is None:
             assistive = False
             # Go through all effects and find first assistive
-            for effect in self.effects.itervalues():
+            for effect in self.effects.values():
                 if effect.isAssistance is True:
                     # If we find one, stop and mark item as assistive
                     assistive = True
@@ -420,7 +415,7 @@ class Item(EqBase):
         if self.__offensive is None:
             offensive = False
             # Go through all effects and find first offensive
-            for effect in self.effects.itervalues():
+            for effect in self.effects.values():
                 if effect.isOffensive is True:
                     # If we find one, stop and mark item as offensive
                     offensive = True
@@ -429,8 +424,8 @@ class Item(EqBase):
         return self.__offensive
 
     def requiresSkill(self, skill, level=None):
-        for s, l in self.requiredSkills.iteritems():
-            if isinstance(skill, basestring):
+        for s, l in self.requiredSkills.items():
+            if isinstance(skill, str):
                 if s.name == skill and (level is None or l == level):
                     return True
 
@@ -468,7 +463,7 @@ class Item(EqBase):
         return self.__price
 
     def __repr__(self):
-        return u"Item(ID={}, name={}) at {}".format(
+        return "Item(ID={}, name={}) at {}".format(
                 self.ID, self.name, hex(id(self))
         )
 
@@ -522,9 +517,9 @@ class Icon(EqBase):
 
 class MarketGroup(EqBase):
     def __repr__(self):
-        return u"MarketGroup(ID={}, name={}, parent={}) at {}".format(
+        return "MarketGroup(ID={}, name={}, parent={}) at {}".format(
                 self.ID, self.name, getattr(self.parent, "name", None), self.name, hex(id(self))
-        ).encode('utf8')
+        )
 
 
 class MetaGroup(EqBase):

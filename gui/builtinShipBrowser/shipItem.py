@@ -5,11 +5,11 @@ from logbook import Logger
 
 import gui.builtinShipBrowser.sfBrowserItem as SFItem
 import gui.mainFrame
-import gui.utils.colorUtils as colorUtils
-import gui.utils.drawUtils as drawUtils
+import gui.utils.color as colorUtils
+import gui.utils.draw as drawUtils
 import gui.utils.fonts as fonts
-import events
-from gui.bitmapLoader import BitmapLoader
+from .events import Stage3Selected, Stage2Selected, Stage1Selected, FitSelected
+from gui.bitmap_loader import BitmapLoader
 from gui.contextMenu import ContextMenu
 from service.fit import Fit
 from service.market import Market
@@ -50,9 +50,9 @@ class ShipItem(SFItem.SFBrowserItem):
 
         self.shipEffBk = BitmapLoader.getBitmap("fshipbk_big", "gui")
 
-        img = wx.ImageFromBitmap(self.shipEffBk)
+        img = self.shipEffBk.ConvertToImage()
         img = img.Mirror(False)
-        self.shipEffBkMirrored = wx.BitmapFromImage(img)
+        self.shipEffBkMirrored = wx.Bitmap(img)
 
         self.raceBmp = BitmapLoader.getBitmap("race_%s_small" % self.shipRace, "gui")
 
@@ -147,7 +147,7 @@ class ShipItem(SFItem.SFBrowserItem):
         else:
             shipName, shipTrait, fittings = self.shipFittingInfo
             if fittings > 0:
-                wx.PostEvent(self.shipBrowser, events.Stage3Selected(shipID=self.shipID, back=True))
+                wx.PostEvent(self.shipBrowser, Stage3Selected(shipID=self.shipID, back=True))
             else:
                 self.newBtnCB()
 
@@ -186,8 +186,8 @@ class ShipItem(SFItem.SFBrowserItem):
         sFit = Fit.getInstance()
         fitID = sFit.newFit(self.shipID, self.tcFitName.GetValue())
 
-        wx.PostEvent(self.shipBrowser, events.Stage3Selected(shipID=self.shipID, back=False))
-        wx.PostEvent(self.mainFrame, events.FitSelected(fitID=fitID))
+        wx.PostEvent(self.shipBrowser, Stage3Selected(shipID=self.shipID, back=False))
+        wx.PostEvent(self.mainFrame, FitSelected(fitID=fitID))
 
     def UpdateElementsPos(self, mdc):
         rect = self.GetRect()
@@ -232,8 +232,8 @@ class ShipItem(SFItem.SFBrowserItem):
     def DrawItem(self, mdc):
         # rect = self.GetRect()
 
-        windowColor = wx.SystemSettings_GetColour(wx.SYS_COLOUR_WINDOW)
-        textColor = colorUtils.GetSuitableColor(windowColor, 1)
+        windowColor = wx.SystemSettings.GetColour(wx.SYS_COLOUR_WINDOW)
+        textColor = colorUtils.GetSuitable(windowColor, 1)
 
         mdc.SetTextForeground(textColor)
 

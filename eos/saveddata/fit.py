@@ -258,11 +258,11 @@ class Fit(object):
     def projectedFits(self):
         # only in extreme edge cases will the fit be invalid, but to be sure do
         # not return them.
-        return [fit for fit in self.__projectedFits.values() if not fit.isInvalid]
+        return [fit for fit in list(self.__projectedFits.values()) if not fit.isInvalid]
 
     @property
     def commandFits(self):
-        return [fit for fit in self.__commandFits.values() if not fit.isInvalid]
+        return [fit for fit in list(self.__commandFits.values()) if not fit.isInvalid]
 
     def getProjectionInfo(self, fitID):
         return self.projectedOnto.get(fitID, None)
@@ -492,7 +492,7 @@ class Fit(object):
 
     def __runCommandBoosts(self, runTime="normal"):
         pyfalog.debug("Applying gang boosts for {0}", repr(self))
-        for warfareBuffID in self.commandBonuses.keys():
+        for warfareBuffID in list(self.commandBonuses.keys()):
             # Unpack all data required to run effect properly
             effect_runTime, value, thing, effect = self.commandBonuses[warfareBuffID]
 
@@ -676,7 +676,7 @@ class Fit(object):
 
     def __resetDependentCalcs(self):
         self.calculated = False
-        for value in self.projectedOnto.values():
+        for value in list(self.projectedOnto.values()):
             if value.victim_fit:  # removing a self-projected fit causes victim fit to be None. @todo: look into why. :3
                 value.victim_fit.calculated = False
 
@@ -707,14 +707,14 @@ class Fit(object):
             self.__resetDependentCalcs()
 
             # For fits that are under local's Command, we do the same thing
-            for value in self.boostedOnto.values():
+            for value in list(self.boostedOnto.values()):
                 # apparently this is a thing that happens when removing a command fit from a fit and then switching to
                 # that command fit. Same as projected clears, figure out why.
                 if value.boosted_fit:
                     value.boosted_fit.__resetDependentCalcs()
 
         if targetFit and type == CalcType.PROJECTED:
-            pyfalog.debug(u"Calculating projections from {0} to target {1}", repr(self), repr(targetFit))
+            pyfalog.debug("Calculating projections from {0} to target {1}", repr(self), repr(targetFit))
             projectionInfo = self.getProjectionInfo(targetFit.ID)
 
         # Start applying any command fits that we may have.
@@ -756,7 +756,7 @@ class Fit(object):
 
         # Loop through our run times here. These determine which effects are run in which order.
         for runTime in ("early", "normal", "late"):
-            pyfalog.debug("Run time: {0}", runTime)
+            # pyfalog.debug("Run time: {0}", runTime)
             # Items that are unrestricted. These items are run on the local fit
             # first and then projected onto the target fit it one is designated
             u = [
@@ -795,7 +795,7 @@ class Fit(object):
                         # targetFit.register(item, origin=self)
                         item.calculateModifiedAttributes(targetFit, runTime, False, True)
 
-            pyfalog.debug("Command Bonuses: {}".format(self.commandBonuses))
+            # pyfalog.debug("Command Bonuses: {}".format(self.commandBonuses))
 
             # If we are calculating our local or projected fit and have command bonuses, apply them
             if type != CalcType.COMMAND and self.commandBonuses:
@@ -838,7 +838,7 @@ class Fit(object):
         for item in c:
             if item is not None:
                 # apply effects onto target fit x amount of times
-                for _ in xrange(projectionInfo.amount):
+                for _ in range(projectionInfo.amount):
                     targetFit.register(item, origin=self)
                     item.calculateModifiedAttributes(targetFit, runTime, True)
 
@@ -854,7 +854,7 @@ class Fit(object):
         for slotType in (Slot.LOW, Slot.MED, Slot.HIGH, Slot.RIG, Slot.SUBSYSTEM, Slot.SERVICE):
             amount = self.getSlotsFree(slotType, True)
             if amount > 0:
-                for _ in xrange(int(amount)):
+                for _ in range(int(amount)):
                     self.modules.append(Module.buildEmpty(slotType))
 
             if amount < 0:
@@ -870,7 +870,7 @@ class Fit(object):
                     self.modules.remove(mod)
 
     def unfill(self):
-        for i in xrange(len(self.modules) - 1, -1, -1):
+        for i in range(len(self.modules) - 1, -1, -1):
             mod = self.modules[i]
             if mod.isEmpty:
                 del self.modules[i]
@@ -878,7 +878,7 @@ class Fit(object):
     @property
     def modCount(self):
         x = 0
-        for i in xrange(len(self.modules) - 1, -1, -1):
+        for i in range(len(self.modules) - 1, -1, -1):
             mod = self.modules[i]
             if not mod.isEmpty:
                 x += 1
@@ -1531,11 +1531,11 @@ class Fit(object):
         return copy_ship
 
     def __repr__(self):
-        return u"Fit(ID={}, ship={}, name={}) at {}".format(
+        return "Fit(ID={}, ship={}, name={}) at {}".format(
                 self.ID, self.ship.item.name, self.name, hex(id(self))
-        ).encode('utf8')
+        )
 
     def __str__(self):
-        return u"{} ({})".format(
+        return "{} ({})".format(
                 self.name, self.ship.item.name
-        ).encode('utf8')
+        )

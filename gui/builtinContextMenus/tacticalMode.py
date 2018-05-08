@@ -49,7 +49,7 @@ class TacticalMode(ContextMenu):
 
         for mode in self.modes:
             menuItem = self.addMode(rootMenu if msw else sub, mode)
-            sub.AppendItem(menuItem)
+            sub.Append(menuItem)
             menuItem.Check(self.currMode.item == mode.item)
 
         return sub

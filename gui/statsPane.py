@@ -28,7 +28,7 @@ import gui.globalEvents as GE
 # import gui.builtinViews.fittingView as fv
 from gui.statsView import StatsView
 from gui.contextMenu import ContextMenu
-from gui.pyfatogglepanel import TogglePanel
+from gui.toggle_panel import TogglePanel
 from logbook import Logger
 
 pyfalog = Logger(__name__)
@@ -96,7 +96,7 @@ class StatsPane(wx.Panel):
         i = 0
         for viewName in self.DEFAULT_VIEWS:
             tp = TogglePanel(self)
-            contentPanel = tp.GetContentPane()
+            contentPanel = tp.GetContentPanel()
             contentPanel.viewName = viewName
 
             try:

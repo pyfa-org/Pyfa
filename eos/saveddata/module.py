@@ -182,7 +182,7 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
     @property
     def numShots(self):
         if self.charge is None:
-            return None
+            return 0
         if self.__chargeCycles is None and self.charge:
             numCharges = self.numCharges
             # Usual ammo like projectiles and missiles
@@ -217,7 +217,7 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
         armorRep = self.getModifiedItemAttr("armorDamageAmount") or 0
         shieldRep = self.getModifiedItemAttr("shieldBonus") or 0
         if not cycles or (not armorRep and not shieldRep):
-            return None
+            return 0
         hp = round((armorRep + shieldRep) * cycles)
         return hp
 
@@ -255,7 +255,7 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
                  "ecmBurstRange", "warpScrambleRange", "cargoScanRange",
                  "shipScanRange", "surveyScanRange")
         for attr in attrs:
-            maxRange = self.getModifiedItemAttr(attr)
+            maxRange = self.getModifiedItemAttr(attr, None)
             if maxRange is not None:
                 return maxRange
         if self.charge is not None:
@@ -284,7 +284,7 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
     def falloff(self):
         attrs = ("falloffEffectiveness", "falloff", "shipScanFalloff")
         for attr in attrs:
-            falloff = self.getModifiedItemAttr(attr)
+            falloff = self.getModifiedItemAttr(attr, None)
             if falloff is not None:
                 return falloff
 
@@ -333,9 +333,7 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
                 else:
                     func = self.getModifiedItemAttr
 
-                volley = sum(map(
-                        lambda attr: (func("%sDamage" % attr) or 0) * (1 - getattr(targetResists, "%sAmount" % attr, 0)),
-                        self.DAMAGE_TYPES))
+                volley = sum([(func("%sDamage" % attr) or 0) * (1 - getattr(targetResists, "%sAmount" % attr, 0)) for attr in self.DAMAGE_TYPES])
                 volley *= self.getModifiedItemAttr("damageMultiplier") or 1
                 if volley:
                     cycleTime = self.cycleTime
@@ -422,19 +420,19 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
         fitsOnType = set()
         fitsOnGroup = set()
 
-        shipType = self.getModifiedItemAttr("fitsToShipType")
+        shipType = self.getModifiedItemAttr("fitsToShipType", None)
         if shipType is not None:
             fitsOnType.add(shipType)
 
-        for attr in self.itemModifiedAttributes.keys():
+        for attr in list(self.itemModifiedAttributes.keys()):
             if attr.startswith("canFitShipType"):
-                shipType = self.getModifiedItemAttr(attr)
+                shipType = self.getModifiedItemAttr(attr, None)
                 if shipType is not None:
                     fitsOnType.add(shipType)
 
-        for attr in self.itemModifiedAttributes.keys():
+        for attr in list(self.itemModifiedAttributes.keys()):
             if attr.startswith("canFitShipGroup"):
-                shipGroup = self.getModifiedItemAttr(attr)
+                shipGroup = self.getModifiedItemAttr(attr, None)
                 if shipGroup is not None:
                     fitsOnGroup.add(shipGroup)
 
@@ -466,7 +464,7 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
                 return False
 
         # Check max group fitted
-        max = self.getModifiedItemAttr("maxGroupFitted")
+        max = self.getModifiedItemAttr("maxGroupFitted", None)
         if max is not None:
             current = 0  # if self.owner != fit else -1  # Disabled, see #1278
             for mod in fit.modules:
@@ -479,11 +477,10 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
         # Check this only if we're told to do so
         if hardpointLimit:
             if self.hardpoint == Hardpoint.TURRET:
-                if (fit.ship.getModifiedItemAttr('turretSlotsLeft') or 0) - fit.getHardpointsUsed(Hardpoint.TURRET) < 1:
+                if fit.ship.getModifiedItemAttr('turretSlotsLeft') - fit.getHardpointsUsed(Hardpoint.TURRET) < 1:
                     return False
             elif self.hardpoint == Hardpoint.MISSILE:
-                if (fit.ship.getModifiedItemAttr('launcherSlotsLeft') or 0) - fit.getHardpointsUsed(
-                        Hardpoint.MISSILE) < 1:
+                if fit.ship.getModifiedItemAttr('launcherSlotsLeft') - fit.getHardpointsUsed(Hardpoint.MISSILE) < 1:
                     return False
 
         return True
@@ -513,7 +510,7 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
             return True
 
         # Check if the local module is over it's max limit; if it's not, we're fine
-        maxGroupActive = self.getModifiedItemAttr("maxGroupActive")
+        maxGroupActive = self.getModifiedItemAttr("maxGroupActive", None)
         if maxGroupActive is None and projectedOnto is None:
             return True
 
@@ -561,7 +558,7 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
 
         chargeGroup = charge.groupID
         for i in range(5):
-            itemChargeGroup = self.getModifiedItemAttr('chargeGroup' + str(i))
+            itemChargeGroup = self.getModifiedItemAttr('chargeGroup' + str(i), None)
             if itemChargeGroup is None:
                 continue
             if itemChargeGroup == chargeGroup:
@@ -572,7 +569,7 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
     def getValidCharges(self):
         validCharges = set()
         for i in range(5):
-            itemChargeGroup = self.getModifiedItemAttr('chargeGroup' + str(i))
+            itemChargeGroup = self.getModifiedItemAttr('chargeGroup' + str(i), None)
             if itemChargeGroup is not None:
                 g = eos.db.getGroup(int(itemChargeGroup), eager=("items.icon", "items.attributes"))
                 if g is None:
@@ -593,7 +590,7 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
         if item is None:
             return Hardpoint.NONE
 
-        for effectName, slot in effectHardpointMap.iteritems():
+        for effectName, slot in effectHardpointMap.items():
             if effectName in item.effects:
                 return slot
 
@@ -611,7 +608,7 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
         }
         if item is None:
             return None
-        for effectName, slot in effectSlotMap.iteritems():
+        for effectName, slot in effectSlotMap.items():
             if effectName in item.effects:
                 return slot
         if item.group.name == "Effect Beacon":
@@ -665,7 +662,7 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
         if self.charge is not None:
             # fix for #82 and it's regression #106
             if not projected or (self.projected and not forceProjected) or gang:
-                for effect in self.charge.effects.itervalues():
+                for effect in self.charge.effects.values():
                     if effect.runTime == runTime and \
                             effect.activeByDefault and \
                             (effect.isType("offline") or
@@ -684,7 +681,7 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
 
         if self.item:
             if self.state >= State.OVERHEATED:
-                for effect in self.item.effects.itervalues():
+                for effect in self.item.effects.values():
                     if effect.runTime == runTime and \
                             effect.isType("overheat") \
                             and not forceProjected \
@@ -692,7 +689,7 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
                             and ((gang and effect.isType("gang")) or not gang):
                         effect.handler(fit, self, context)
 
-            for effect in self.item.effects.itervalues():
+            for effect in self.item.effects.values():
                 if effect.runTime == runTime and \
                         effect.activeByDefault and \
                         (effect.isType("offline") or
@@ -752,13 +749,12 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
     @property
     def rawCycleTime(self):
         speed = max(
-                self.getModifiedItemAttr("speed"),  # Most weapons
-                self.getModifiedItemAttr("duration"),  # Most average modules
-                self.getModifiedItemAttr("durationSensorDampeningBurstProjector"),
-                self.getModifiedItemAttr("durationTargetIlluminationBurstProjector"),
-                self.getModifiedItemAttr("durationECMJammerBurstProjector"),
-                self.getModifiedItemAttr("durationWeaponDisruptionBurstProjector"),
-                0,  # Return 0 if none of the above are valid
+                self.getModifiedItemAttr("speed", 0),  # Most weapons
+                self.getModifiedItemAttr("duration", 0),  # Most average modules
+                self.getModifiedItemAttr("durationSensorDampeningBurstProjector", 0),
+                self.getModifiedItemAttr("durationTargetIlluminationBurstProjector", 0),
+                self.getModifiedItemAttr("durationECMJammerBurstProjector", 0),
+                self.getModifiedItemAttr("durationWeaponDisruptionBurstProjector", 0)
         )
         return speed
 
@@ -793,7 +789,7 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
 
     def __repr__(self):
         if self.item:
-            return u"Module(ID={}, name={}) at {}".format(
+            return "Module(ID={}, name={}) at {}".format(
                     self.item.ID, self.item.name, hex(id(self))
             )
         else:

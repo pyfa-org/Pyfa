@@ -23,7 +23,7 @@ import wx
 from eos.saveddata.mode import Mode
 from service.attribute import Attribute
 from gui.viewColumn import ViewColumn
-from gui.bitmapLoader import BitmapLoader
+from gui.bitmap_loader import BitmapLoader
 from gui.utils.numberFormatter import formatAmount
 
 
@@ -58,7 +58,7 @@ class MaxRange(ViewColumn):
         if isinstance(stuff, Mode):
             return ""
 
-        maxRange = stuff.maxRange if hasattr(stuff, "maxRange") else stuff.getModifiedItemAttr("maxRange")
+        maxRange = stuff.maxRange if hasattr(stuff, "maxRange") else stuff.getModifiedItemAttr("maxRange", None)
         falloff = stuff.falloff
         if falloff:
             falloff = "+%sm" % formatAmount(falloff, 3, 0, 3)

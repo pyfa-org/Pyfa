@@ -25,8 +25,6 @@ import sqlalchemy
 # noinspection PyPackageRequirements
 import wx
 # noinspection PyPackageRequirements
-from wx._core import PyDeadObjectError
-# noinspection PyPackageRequirements
 from wx.lib.wordwrap import wordwrap
 # noinspection PyPackageRequirements
 from wx.lib.inspection import InspectionTool
@@ -39,10 +37,10 @@ import config
 from eos.config import gamedata_version
 
 import gui.aboutData
-from gui.chromeTabs import PFNotebook
+from gui.chrome_tabs import ChromeNotebook
 import gui.globalEvents as GE
 
-from gui.bitmapLoader import BitmapLoader
+from gui.bitmap_loader import BitmapLoader
 from gui.mainMenuBar import MainMenuBar
 from gui.additionsPane import AdditionsPane
 from gui.marketBrowser import MarketBrowser
@@ -56,8 +54,10 @@ from gui.characterSelection import CharacterSelection
 from gui.patternEditor import DmgPatternEditorDlg
 from gui.resistsEditor import ResistsEditorDlg
 from gui.setEditor import ImplantSetEditorDlg
+from gui.devTools import DevTools
 from gui.preferenceDialog import PreferenceDialog
 from gui.graphFrame import GraphFrame
+from gui.ssoLogin import SsoLogin
 from gui.copySelectDialog import CopySelectDialog
 from gui.utils.clipboard import toClipboard, fromClipboard
 from gui.updateDialog import UpdateDialog
@@ -81,11 +81,10 @@ from time import gmtime, strftime
 
 import threading
 import webbrowser
+import wx.adv
 
-if 'wxMac' not in wx.PlatformInfo or ('wxMac' in wx.PlatformInfo and wx.VERSION >= (3, 0)):
-    from service.crest import Crest
-    from service.crest import CrestModes
-    from gui.crestFittings import CrestFittings, ExportToEve, CrestMgmt
+from service.esi import Esi, LoginMethod
+from gui.esiFittings import EveFittings, ExportToEve, SsoCharacterMgmt
 
 disableOverrideEditor = False
 
@@ -93,7 +92,7 @@ try:
     from gui.propertyEditor import AttributeEditor
 except ImportError as e:
     AttributeEditor = None
-    print("Error loading Attribute Editor: %s.\nAccess to Attribute Editor is disabled." % e.message)
+    print(("Error loading Attribute Editor: %s.\nAccess to Attribute Editor is disabled." % e.message))
     disableOverrideEditor = True
 
 pyfalog = Logger(__name__)
@@ -139,7 +138,8 @@ class OpenFitsThread(threading.Thread):
         wx.CallAfter(self.callback)
 
 
-class MainFrame(wx.Frame, IPortUser):
+# todo: include IPortUser again
+class MainFrame(wx.Frame):
     __instance = None
 
     @classmethod
@@ -163,7 +163,7 @@ class MainFrame(wx.Frame, IPortUser):
             self.SetBackgroundColour(wx.SystemSettings.GetColour(wx.SYS_COLOUR_BTNFACE))
 
         # Load and set the icon for pyfa main window
-        i = wx.IconFromBitmap(BitmapLoader.getBitmap("pyfa", "gui"))
+        i = wx.Icon(BitmapLoader.getBitmap("pyfa", "gui"))
         self.SetIcon(i)
 
         # Create the layout and windows
@@ -177,17 +177,17 @@ class MainFrame(wx.Frame, IPortUser):
         self.fitMultiSwitch = MultiSwitch(self.fitting_additions_split)
         self.additionsPane = AdditionsPane(self.fitting_additions_split)
 
-        self.notebookBrowsers = PFNotebook(self.browser_fitting_split, False)
+        self.notebookBrowsers = ChromeNotebook(self.browser_fitting_split, False)
 
         marketImg = BitmapLoader.getImage("market_small", "gui")
         shipBrowserImg = BitmapLoader.getImage("ship_small", "gui")
 
         self.marketBrowser = MarketBrowser(self.notebookBrowsers)
-        self.notebookBrowsers.AddPage(self.marketBrowser, "Market", tabImage=marketImg, showClose=False)
+        self.notebookBrowsers.AddPage(self.marketBrowser, "Market", image=marketImg, closeable=False)
         self.marketBrowser.splitter.SetSashPosition(self.marketHeight)
 
         self.shipBrowser = ShipBrowser(self.notebookBrowsers)
-        self.notebookBrowsers.AddPage(self.shipBrowser, "Fittings", tabImage=shipBrowserImg, showClose=False)
+        self.notebookBrowsers.AddPage(self.shipBrowser, "Fittings", image=shipBrowserImg, closeable=False)
 
         self.notebookBrowsers.SetSelection(1)
 
@@ -205,6 +205,7 @@ class MainFrame(wx.Frame, IPortUser):
         self.charSelection = CharacterSelection(self)
         cstatsSizer.Add(self.charSelection, 0, wx.EXPAND)
 
+        # @todo pheonix: fix all stats stuff
         self.statsPane = StatsPane(self)
         cstatsSizer.Add(self.statsPane, 0, wx.EXPAND)
 
@@ -236,15 +237,19 @@ class MainFrame(wx.Frame, IPortUser):
         self.sUpdate = Update.getInstance()
         self.sUpdate.CheckUpdate(self.ShowUpdateBox)
 
-        if 'wxMac' not in wx.PlatformInfo or ('wxMac' in wx.PlatformInfo and wx.VERSION >= (3, 0)):
-            self.Bind(GE.EVT_SSO_LOGIN, self.onSSOLogin)
-            self.Bind(GE.EVT_SSO_LOGOUT, self.onSSOLogout)
+        self.Bind(GE.EVT_SSO_LOGIN, self.onSSOLogin)
+        self.Bind(GE.EVT_SSO_LOGGING_IN, self.ShowSsoLogin)
 
-        self.titleTimer = wx.Timer(self)
-        self.Bind(wx.EVT_TIMER, self.updateTitle, self.titleTimer)
+    def ShowSsoLogin(self, event):
+        if getattr(event, "login_mode", LoginMethod.SERVER) == LoginMethod.MANUAL:
+            dlg = SsoLogin(self)
+            if dlg.ShowModal() == wx.ID_OK:
+                sEsi = Esi.getInstance()
+                # todo: verify that this is a correct SSO Info block
+                sEsi.handleLogin(dlg.ssoInfoCtrl.Value.strip())
 
-    def ShowUpdateBox(self, release):
-        dlg = UpdateDialog(self, release)
+    def ShowUpdateBox(self, release, version):
+        dlg = UpdateDialog(self, release, version)
         dlg.ShowModal()
 
     def LoadPreviousOpenFits(self):
@@ -343,7 +348,7 @@ class MainFrame(wx.Frame, IPortUser):
 
         # save open fits
         self.prevOpenFits['pyfaOpenFits'] = []  # clear old list
-        for page in self.fitMultiSwitch.pages:
+        for page in self.fitMultiSwitch._pages:
             m = getattr(page, "getActiveFit", None)
             if m is not None:
                 self.prevOpenFits['pyfaOpenFits'].append(m())
@@ -357,34 +362,37 @@ class MainFrame(wx.Frame, IPortUser):
         event.Skip()
 
     def ShowAboutBox(self, evt):
-        v = sys.version_info
-        info = wx.AboutDialogInfo()
+        info = wx.adv.AboutDialogInfo()
         info.Name = "pyfa"
-        info.Version = gui.aboutData.versionString
+        info.Version = config.getVersion()  # gui.aboutData.versionString
+        #
+        # try:
+        #     import matplotlib
+        #     matplotlib_version = matplotlib.__version__
+        # except:
+        #     matplotlib_version = None
+        #
+        # info.Description = wordwrap(gui.aboutData.description + "\n\nDevelopers:\n\t" +
+        #                             "\n\t".join(gui.aboutData.developers) +
+        #                             "\n\nAdditional credits:\n\t" +
+        #                             "\n\t".join(gui.aboutData.credits) +
+        #                             "\n\nLicenses:\n\t" +
+        #                             "\n\t".join(gui.aboutData.licenses) +
+        #                             "\n\nEVE Data: \t" + gamedata_version +
+        #                             "\nPython: \t\t" + '{}.{}.{}'.format(v.major, v.minor, v.micro) +
+        #                             "\nwxPython: \t" + wx.__version__ +
+        #                             "\nSQLAlchemy: \t" + sqlalchemy.__version__ +
+        #                             "\nmatplotlib: \t {}".format(matplotlib_version if matplotlib_version else "Not Installed"),
+        #                             500, wx.ClientDC(self))
+        # if "__WXGTK__" in wx.PlatformInfo:
+        #     forumUrl = "http://forums.eveonline.com/default.aspx?g=posts&amp;t=466425"
+        # else:
+        #     forumUrl = "http://forums.eveonline.com/default.aspx?g=posts&t=466425"
+        # info.WebSite = (forumUrl, "pyfa thread at EVE Online forum")
+        wx.adv.AboutBox(info)
 
-        try:
-            import matplotlib
-            matplotlib_version = matplotlib.__version__
-        except:
-            matplotlib_version = None
-
-        info.Description = wordwrap(gui.aboutData.description + "\n\nDevelopers:\n\t" +
-                                    "\n\t".join(gui.aboutData.developers) +
-                                    "\n\nAdditional credits:\n\t" +
-                                    "\n\t".join(gui.aboutData.credits) +
-                                    "\n\nLicenses:\n\t" +
-                                    "\n\t".join(gui.aboutData.licenses) +
-                                    "\n\nEVE Data: \t" + gamedata_version +
-                                    "\nPython: \t\t" + '{}.{}.{}'.format(v.major, v.minor, v.micro) +
-                                    "\nwxPython: \t" + wx.__version__ +
-                                    "\nSQLAlchemy: \t" + sqlalchemy.__version__ +
-                                    "\nmatplotlib: \t {}".format(matplotlib_version if matplotlib_version else "Not Installed"),
-                                    500, wx.ClientDC(self))
-
-        forumUrl = "https://forums.eveonline.com/t/27156"
-
-        info.WebSite = (forumUrl, "pyfa thread at EVE Online forum")
-        wx.AboutBox(info)
+    def showDevTools(self, event):
+        DevTools(self)
 
     def showCharacterEditor(self, event):
         dlg = CharacterEditor(self)
@@ -402,7 +410,7 @@ class MainFrame(wx.Frame, IPortUser):
         dlg.ShowModal()
         try:
             dlg.Destroy()
-        except PyDeadObjectError:
+        except RuntimeError:
             pyfalog.error("Tried to destroy an object that doesn't exist in <showDamagePatternEditor>.")
 
     def showImplantSetEditor(self, event):
@@ -412,7 +420,7 @@ class MainFrame(wx.Frame, IPortUser):
         """ Export active fit """
         sFit = Fit.getInstance()
         fit = sFit.getFit(self.getActiveFit())
-        defaultFile = u"%s - %s.xml" % (fit.ship.item.name, fit.name) if fit else None
+        defaultFile = "%s - %s.xml" % (fit.ship.item.name, fit.name) if fit else None
 
         dlg = wx.FileDialog(self, "Save Fitting As...",
                             wildcard="EVE XML fitting files (*.xml)|*.xml",
@@ -426,10 +434,10 @@ class MainFrame(wx.Frame, IPortUser):
                 if '.' not in os.path.basename(path):
                     path += ".xml"
             else:
-                print("oops, invalid fit format %d" % format_)
+                print(("oops, invalid fit format %d" % format_))
                 try:
                     dlg.Destroy()
-                except PyDeadObjectError:
+                except RuntimeError:
                     pyfalog.error("Tried to destroy an object that doesn't exist in <showExportDialog>.")
                 return
 
@@ -439,7 +447,7 @@ class MainFrame(wx.Frame, IPortUser):
 
         try:
             dlg.Destroy()
-        except PyDeadObjectError:
+        except RuntimeError:
             pyfalog.error("Tried to destroy an object that doesn't exist in <showExportDialog>.")
 
     def showPreferenceDialog(self, event):
@@ -472,6 +480,7 @@ class MainFrame(wx.Frame, IPortUser):
         # Widgets Inspector
         if config.debug:
             self.Bind(wx.EVT_MENU, self.openWXInspectTool, id=self.widgetInspectMenuID)
+            self.Bind(wx.EVT_MENU, self.showDevTools, id=menuBar.devToolsId)
         # About
         self.Bind(wx.EVT_MENU, self.ShowAboutBox, id=wx.ID_ABOUT)
         # Char editor
@@ -606,68 +615,26 @@ class MainFrame(wx.Frame, IPortUser):
             wx.PostEvent(self, GE.FitChanged(fitID=fitID))
 
     def eveFittings(self, event):
-        dlg = CrestFittings(self)
+        dlg = EveFittings(self)
         dlg.Show()
-
-    def updateTitle(self, event):
-        sCrest = Crest.getInstance()
-        char = sCrest.implicitCharacter
-        if char:
-            t = time.gmtime(char.eve.expires - time.time())
-            sTime = time.strftime("%H:%M:%S", t if t >= 0 else 0)
-            newTitle = "%s | %s - %s" % (self.title, char.name, sTime)
-            self.SetTitle(newTitle)
 
     def onSSOLogin(self, event):
         menu = self.GetMenuBar()
         menu.Enable(menu.eveFittingsId, True)
         menu.Enable(menu.exportToEveId, True)
 
-        if event.type == CrestModes.IMPLICIT:
-            menu.SetLabel(menu.ssoLoginId, "Logout Character")
-            self.titleTimer.Start(1000)
-
-    def onSSOLogout(self, event):
-        self.titleTimer.Stop()
-        self.SetTitle(self.title)
-
+    def updateEsiMenus(self, type):
         menu = self.GetMenuBar()
-        if event.type == CrestModes.IMPLICIT or event.numChars == 0:
-            menu.Enable(menu.eveFittingsId, False)
-            menu.Enable(menu.exportToEveId, False)
+        sEsi = Esi.getInstance()
 
-        if event.type == CrestModes.IMPLICIT:
-            menu.SetLabel(menu.ssoLoginId, "Login to EVE")
-
-    def updateCrestMenus(self, type):
-        # in case we are logged in when switching, change title back
-        self.titleTimer.Stop()
-        self.SetTitle(self.title)
-
-        menu = self.GetMenuBar()
-        sCrest = Crest.getInstance()
-
-        if type == CrestModes.IMPLICIT:
-            menu.SetLabel(menu.ssoLoginId, "Login to EVE")
-            menu.Enable(menu.eveFittingsId, False)
-            menu.Enable(menu.exportToEveId, False)
-        else:
-            menu.SetLabel(menu.ssoLoginId, "Manage Characters")
-            enable = len(sCrest.getCrestCharacters()) == 0
-            menu.Enable(menu.eveFittingsId, not enable)
-            menu.Enable(menu.exportToEveId, not enable)
+        menu.SetLabel(menu.ssoLoginId, "Manage Characters")
+        enable = len(sEsi.getSsoCharacters()) == 0
+        menu.Enable(menu.eveFittingsId, not enable)
+        menu.Enable(menu.exportToEveId, not enable)
 
     def ssoHandler(self, event):
-        sCrest = Crest.getInstance()
-        if sCrest.settings.get('mode') == CrestModes.IMPLICIT:
-            if sCrest.implicitCharacter is not None:
-                sCrest.logout()
-            else:
-                uri = sCrest.startServer()
-                webbrowser.open(uri)
-        else:
-            dlg = CrestMgmt(self)
-            dlg.Show()
+        dlg = SsoCharacterMgmt(self)
+        dlg.Show()
 
     def exportToEve(self, event):
         dlg = ExportToEve(self)
@@ -742,9 +709,9 @@ class MainFrame(wx.Frame, IPortUser):
         fit = db_getFit(self.getActiveFit())
         toClipboard(Port.exportDna(fit))
 
-    def clipboardCrest(self):
+    def clipboardEsi(self):
         fit = db_getFit(self.getActiveFit())
-        toClipboard(Port.exportCrest(fit))
+        toClipboard(Port.exportESI(fit))
 
     def clipboardXml(self):
         fit = db_getFit(self.getActiveFit())
@@ -768,7 +735,7 @@ class MainFrame(wx.Frame, IPortUser):
                           CopySelectDialog.copyFormatEftImps: self.clipboardEftImps,
                           CopySelectDialog.copyFormatXml: self.clipboardXml,
                           CopySelectDialog.copyFormatDna: self.clipboardDna,
-                          CopySelectDialog.copyFormatCrest: self.clipboardCrest,
+                          CopySelectDialog.copyFormatEsi: self.clipboardEsi,
                           CopySelectDialog.copyFormatMultiBuy: self.clipboardMultiBuy}
         dlg = CopySelectDialog(self)
         dlg.ShowModal()
@@ -778,7 +745,7 @@ class MainFrame(wx.Frame, IPortUser):
 
         try:
             dlg.Destroy()
-        except PyDeadObjectError:
+        except RuntimeError:
             pyfalog.error("Tried to destroy an object that doesn't exist in <exportToClipboard>.")
 
     def exportSkillsNeeded(self, event):
@@ -834,7 +801,7 @@ class MainFrame(wx.Frame, IPortUser):
             self.progressDialog.ShowModal()
             try:
                 dlg.Destroy()
-            except PyDeadObjectError:
+            except RuntimeError:
                 pyfalog.error("Tried to destroy an object that doesn't exist in <fileImportDialog>.")
 
     def backupToXml(self, event):
@@ -1025,7 +992,7 @@ class MainFrame(wx.Frame, IPortUser):
 
         # Find a widget to be selected in the tree.  Use either the
         # one under the cursor, if any, or this frame.
-        wnd = wx.FindWindowAtPointer()
+        wnd, _ = wx.FindWindowAtPointer()
         if not wnd:
             wnd = self
         InspectionTool().Show(wnd, True)

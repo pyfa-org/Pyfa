@@ -1,4 +1,3 @@
-import sys
 import os
 import subprocess
 import config
@@ -6,7 +5,7 @@ import config
 # noinspection PyPackageRequirements
 import wx
 
-from helpers import AutoListCtrl
+from .helpers import AutoListCtrl
 
 
 class ItemEffects(wx.Panel):
@@ -47,11 +46,11 @@ class ItemEffects(wx.Panel):
 
         item = self.item
         effects = item.effects
-        names = list(effects.iterkeys())
+        names = list(effects.keys())
         names.sort()
 
         for name in names:
-            index = self.effectList.InsertStringItem(sys.maxint, name)
+            index = self.effectList.InsertItem(self.effectList.GetItemCount(), name)
 
             if effects[name].isImplemented:
                 if effects[name].activeByDefault:
@@ -72,11 +71,11 @@ class ItemEffects(wx.Panel):
             else:
                 effectRunTime = ""
 
-            self.effectList.SetStringItem(index, 1, activeByDefault)
-            self.effectList.SetStringItem(index, 2, effectTypeText)
+            self.effectList.SetItem(index, 1, activeByDefault)
+            self.effectList.SetItem(index, 2, effectTypeText)
             if config.debug:
-                self.effectList.SetStringItem(index, 3, effectRunTime)
-                self.effectList.SetStringItem(index, 4, str(effects[name].ID))
+                self.effectList.SetItem(index, 3, effectRunTime)
+                self.effectList.SetItem(index, 4, str(effects[name].ID))
 
         self.effectList.RefreshRows()
         self.Layout()

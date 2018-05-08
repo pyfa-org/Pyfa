@@ -47,12 +47,12 @@ class DummyEntry(object):
         self.item = DummyItem(txt)
 
 
-class ProjectedViewDrop(wx.PyDropTarget):
+class ProjectedViewDrop(wx.DropTarget):
     def __init__(self, dropFn, *args, **kwargs):
         super(ProjectedViewDrop, self).__init__(*args, **kwargs)
         self.dropFn = dropFn
         # this is really transferring an EVE itemID
-        self.dropData = wx.PyTextDataObject()
+        self.dropData = wx.TextDataObject()
         self.SetDataObject(self.dropData)
 
     def OnData(self, x, y, t):
@@ -139,7 +139,7 @@ class ProjectedView(d.Display):
     def startDrag(self, event):
         row = event.GetIndex()
         if row != -1 and isinstance(self.get(row), es_Drone):
-            data = wx.PyTextDataObject()
+            data = wx.TextDataObject()
             dataStr = "projected:" + str(self.GetItemData(row))
             data.SetText(dataStr)
 
@@ -228,6 +228,8 @@ class ProjectedView(d.Display):
             stuff = [DummyEntry("Drag an item or fit, or use right-click menu for wormhole effects")]
 
         self.update(stuff)
+
+        event.Skip()
 
     def get(self, row):
         if row == -1:

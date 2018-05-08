@@ -19,7 +19,7 @@
 
 # noinspection PyPackageRequirements
 import wx
-from gui.bitmapLoader import BitmapLoader
+from gui.bitmap_loader import BitmapLoader
 # noinspection PyPackageRequirements
 from wx.lib.intctrl import IntCtrl
 from gui.utils.clipboard import toClipboard, fromClipboard
@@ -51,7 +51,7 @@ class DmgPatternTextValidor(BaseValidator):
             return True
         except ValueError as e:
             pyfalog.error(e)
-            wx.MessageBox(u"{}".format(e), "Error")
+            wx.MessageBox("{}".format(e), "Error")
             textCtrl.SetFocus()
             return False
 
@@ -89,10 +89,10 @@ class DmgPatternEditorDlg(wx.Dialog):
     DAMAGE_TYPES = ("em", "thermal", "kinetic", "explosive")
 
     def __init__(self, parent):
-        wx.Dialog.__init__(self, parent, id=wx.ID_ANY, title=u"Damage Pattern Editor", size=wx.Size(400, 240))
+        wx.Dialog.__init__(self, parent, id=wx.ID_ANY, title="Damage Pattern Editor", size=wx.Size(400, 240))
 
         self.block = False
-        self.SetSizeHintsSz(wx.DefaultSize, wx.DefaultSize)
+        self.SetSizeHints(wx.DefaultSize, wx.DefaultSize)
 
         mainSizer = wx.BoxSizer(wx.VERTICAL)
 
@@ -128,7 +128,7 @@ class DmgPatternEditorDlg(wx.Dialog):
 
             # set text edit
             setattr(self, "%sEdit" % type_, IntCtrl(self, wx.ID_ANY, 0, wx.DefaultPosition, defSize))
-            setattr(self, "%sPerc" % type_, wx.StaticText(self, wx.ID_ANY, u"0%"))
+            setattr(self, "%sPerc" % type_, wx.StaticText(self, wx.ID_ANY, "0%"))
             editObj = getattr(self, "%sEdit" % type_)
 
             dmgeditSizer.Add(bmp, 0, style, border)
@@ -147,7 +147,7 @@ class DmgPatternEditorDlg(wx.Dialog):
         footerSizer = wx.BoxSizer(wx.HORIZONTAL)
         perSizer = wx.BoxSizer(wx.VERTICAL)
 
-        self.stNotice = wx.StaticText(self, wx.ID_ANY, u"")
+        self.stNotice = wx.StaticText(self, wx.ID_ANY, "")
         self.stNotice.Wrap(-1)
         perSizer.Add(self.stNotice, 0, wx.BOTTOM | wx.TOP | wx.LEFT, 5)
 
@@ -160,7 +160,7 @@ class DmgPatternEditorDlg(wx.Dialog):
         mainSizer.Add(contentSizer, 1, wx.EXPAND, 0)
 
         if "wxGTK" in wx.PlatformInfo:
-            self.closeBtn = wx.Button(self, wx.ID_ANY, u"Close", wx.DefaultPosition, wx.DefaultSize, 0)
+            self.closeBtn = wx.Button(self, wx.ID_ANY, "Close", wx.DefaultPosition, wx.DefaultSize, 0)
             mainSizer.Add(self.closeBtn, 0, wx.ALL | wx.ALIGN_RIGHT, 5)
             self.closeBtn.Bind(wx.EVT_BUTTON, self.closeEvent)
 
@@ -179,7 +179,7 @@ class DmgPatternEditorDlg(wx.Dialog):
             btn.Layout()
             setattr(self, name, btn)
             btn.Enable(True)
-            btn.SetToolTipString("%s patterns %s clipboard" % (name, direction))
+            btn.SetToolTip("%s patterns %s clipboard" % (name, direction))
             footerSizer.Add(btn, 0, wx.ALIGN_CENTER_HORIZONTAL | wx.ALIGN_RIGHT)
             btn.Bind(wx.EVT_BUTTON, getattr(self, "{}Patterns".format(name.lower())))
 
@@ -200,7 +200,7 @@ class DmgPatternEditorDlg(wx.Dialog):
             return
 
         p = self.entityEditor.getActiveEntity()
-        total = sum(map(lambda attr: getattr(self, "%sEdit" % attr).GetValue(), self.DAMAGE_TYPES))
+        total = sum([getattr(self, "%sEdit" % attr).GetValue() for attr in self.DAMAGE_TYPES])
         for type_ in self.DAMAGE_TYPES:
             editObj = getattr(self, "%sEdit" % type_)
             percObj = getattr(self, "%sPerc" % type_)

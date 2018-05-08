@@ -17,13 +17,13 @@ def formatAmount(val, prec=3, lowest=0, highest=0, currency=False, forceSign=Fal
         return ""
     # Define suffix maps
     posSuffixMap = {3: "k", 6: "M", 9: "B" if currency is True else "G"}
-    negSuffixMap = {-6: u'\u03bc', -3: "m"}
+    negSuffixMap = {-6: '\u03bc', -3: "m"}
     # Define tuple of the map keys
     # As we're going to go from the biggest order of abs(key), sort
     # them differently due to one set of values being negative
     # and other positive
-    posOrders = tuple(sorted(posSuffixMap.iterkeys(), reverse=True))
-    negOrders = tuple(sorted(negSuffixMap.iterkeys(), reverse=False))
+    posOrders = tuple(sorted(iter(posSuffixMap.keys()), reverse=True))
+    negOrders = tuple(sorted(iter(negSuffixMap.keys()), reverse=False))
     # Find the least abs(key)
     posLowest = min(posOrders)
     negHighest = max(negOrders)
@@ -89,7 +89,7 @@ def formatAmount(val, prec=3, lowest=0, highest=0, currency=False, forceSign=Fal
     mantissa = roundToPrec(mantissa, prec)
     sign = "+" if forceSign is True and mantissa > 0 else ""
     # Round mantissa and add suffix
-    result = u"{0}{1}{2}".format(sign, mantissa, suffix)
+    result = "{0}{1}{2}".format(sign, mantissa, suffix)
     return result
 
 

@@ -24,7 +24,7 @@ from service.fit import Fit
 from service.market import Market
 import gui.mainFrame
 from gui.viewColumn import ViewColumn
-from gui.bitmapLoader import BitmapLoader
+from gui.bitmap_loader import BitmapLoader
 from gui.utils.numberFormatter import formatAmount
 from gui.utils.listFormatter import formatList
 from eos.saveddata.drone import Drone
@@ -201,7 +201,7 @@ class Miscellanea(ViewColumn):
                 "falloff range": falloffRangeBonus,
                 "tracking speed": trackingSpeedBonus}
 
-            isTrackingDisruptor = any(map(lambda x: x is not None and x != 0, trackingDisruptorAttributes.values()))
+            isTrackingDisruptor = any([x is not None and x != 0 for x in list(trackingDisruptorAttributes.values())])
 
             # Then get the attributes for guidance disruptors
             explosionVelocityBonus = stuff.getModifiedItemAttr("aoeVelocityBonus")
@@ -216,7 +216,7 @@ class Miscellanea(ViewColumn):
                 "flight time": flightTimeBonus,
                 "missile velocity": missileVelocityBonus}
 
-            isGuidanceDisruptor = any(map(lambda x: x is not None and x != 0, guidanceDisruptorAttributes.values()))
+            isGuidanceDisruptor = any([x is not None and x != 0 for x in list(guidanceDisruptorAttributes.values())])
 
             if isTrackingDisruptor:
                 attributes = trackingDisruptorAttributes
@@ -225,12 +225,12 @@ class Miscellanea(ViewColumn):
             else:
                 return "", None
 
-            display = max(attributes.values(), key=lambda x: abs(x))
+            display = max(list(attributes.values()), key=lambda x: abs(x))
 
             text = "{0}%".format(formatAmount(display, 3, 0, 3, forceSign=True))
 
             ttEntries = []
-            for attributeName, attributeValue in attributes.items():
+            for attributeName, attributeValue in list(attributes.items()):
                 if attributeValue == display:
                     ttEntries.append(attributeName)
 

@@ -77,8 +77,8 @@ class Cargo(HandledItem, ItemAttrShortcut):
             "amount": lambda _val: isinstance(_val, int)
         }
 
-        if key == "amount" and val > sys.maxint:
-            val = sys.maxint
+        if key == "amount" and val > sys.maxsize:
+            val = sys.maxsize
 
         if not map[key](val):
             raise ValueError(str(val) + " is not a valid value for " + key)

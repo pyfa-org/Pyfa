@@ -20,7 +20,7 @@
 
 import time
 import threading
-import Queue
+import queue
 from xml.dom import minidom
 
 from logbook import Logger
@@ -201,7 +201,7 @@ class PriceWorkerThread(threading.Thread):
     def __init__(self):
         threading.Thread.__init__(self)
         self.name = "PriceWorker"
-        self.queue = Queue.Queue()
+        self.queue = queue.Queue()
         self.wait = {}
         pyfalog.debug("Initialize PriceWorkerThread.")
 

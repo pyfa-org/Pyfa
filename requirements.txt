@@ -1,6 +1,14 @@
-logbook >= 0.10.0
-matplotlib
+wxPython == 4.0.0b2
+logbook >= 1.0.0
+matplotlib >= 2.0.0
 python-dateutil
-urllib3
-requests==2.11.1
-sqlalchemy==1.0.5
+requests >= 2.0.0
+sqlalchemy >= 1.0.5
+esipy == 0.3.4
+cryptography
+diskcache
+markdown2
+packaging
+roman
+beautifulsoup4
+PyYAML

@@ -3,7 +3,7 @@ import gui.mainFrame
 import gui.globalEvents as GE
 # noinspection PyPackageRequirements
 import wx
-from gui.bitmapLoader import BitmapLoader
+from gui.bitmap_loader import BitmapLoader
 from service.fit import Fit
 from service.settings import ContextMenuSettings
 
@@ -31,9 +31,7 @@ class FactorReload(ContextMenu):
 
     def getBitmap(self, context, selection):
         sFit = Fit.getInstance()
-        fitID = self.mainFrame.getActiveFit()
-        fit = sFit.getFit(fitID)
-        if fit.factorReload:
+        if sFit.serviceFittingOptions["useGlobalForceReload"]:
             return BitmapLoader.getBitmap("state_active_small", "gui")
         else:
             return None

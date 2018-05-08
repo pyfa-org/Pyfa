@@ -44,7 +44,7 @@ class FighterAbility(ContextMenu):
             if not ability.effect.isImplemented:
                 continue
             menuItem = self.addAbility(rootMenu if msw else sub, ability)
-            sub.AppendItem(menuItem)
+            sub.Append(menuItem)
             menuItem.Check(ability.active)
 
         return sub

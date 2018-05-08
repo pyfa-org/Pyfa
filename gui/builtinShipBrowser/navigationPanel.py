@@ -5,11 +5,11 @@ from logbook import Logger
 
 import gui.builtinShipBrowser.sfBrowserItem as SFItem
 import gui.mainFrame
-import gui.utils.colorUtils as colorUtils
-import gui.utils.drawUtils as drawUtils
+import gui.utils.color as colorUtils
+import gui.utils.draw as drawUtils
 import gui.utils.fonts as fonts
-import events
-from gui.bitmapLoader import BitmapLoader
+from .events import FitSelected, SearchSelected, ImportSelected, Stage1Selected, Stage2Selected, Stage3Selected
+from gui.bitmap_loader import BitmapLoader
 from service.fit import Fit
 
 pyfalog = Logger(__name__)
@@ -29,11 +29,11 @@ class NavigationPanel(SFItem.SFBrowserItem):
 
         switchImg = BitmapLoader.getImage("fit_switch_view_mode_small", "gui")
         switchImg = switchImg.AdjustChannels(1, 1, 1, 0.4)
-        self.switchBmpD = wx.BitmapFromImage(switchImg)
+        self.switchBmpD = wx.Bitmap(switchImg)
 
         recentImg = BitmapLoader.getImage("frecent_small", "gui")
         recentImg = recentImg.AdjustChannels(1, 1, 1, 0.4)
-        self.recentBmpD = wx.BitmapFromImage(recentImg)
+        self.recentBmpD = wx.Bitmap(recentImg)
 
         self.resetBmp = self.AdjustChannels(self.resetBmpH)
         self.rewBmp = self.AdjustChannels(self.rewBmpH)
@@ -87,7 +87,7 @@ class NavigationPanel(SFItem.SFBrowserItem):
         realsearch = search.replace("*", "")
         if len(realsearch) >= 3:
             self.lastSearch = search
-            wx.PostEvent(self.shipBrowser, events.SearchSelected(text=search, back=False))
+            wx.PostEvent(self.shipBrowser, SearchSelected(text=search, back=False))
 
     def ToggleSearchBox(self):
         if self.BrowserSearchBox.IsShown():
@@ -122,7 +122,7 @@ class NavigationPanel(SFItem.SFBrowserItem):
             self.btnRecent.normalBmp = self.recentBmpD
 
             if emitEvent:
-                wx.PostEvent(self.shipBrowser, events.Stage1Selected())
+                wx.PostEvent(self.shipBrowser, Stage1Selected())
         else:
             self.shipBrowser.recentFits = True
             self.btnRecent.label = "Hide Recent Fits"
@@ -131,7 +131,7 @@ class NavigationPanel(SFItem.SFBrowserItem):
             if emitEvent:
                 sFit = Fit.getInstance()
                 fits = sFit.getRecentFits()
-                wx.PostEvent(self.shipBrowser, events.ImportSelected(fits=fits, back=True, recent=True))
+                wx.PostEvent(self.shipBrowser, ImportSelected(fits=fits, back=True, recent=True))
 
     def ToggleEmptyGroupsView(self):
         if self.shipBrowser.filterShipsWithNoFits:
@@ -146,10 +146,10 @@ class NavigationPanel(SFItem.SFBrowserItem):
         stage = self.shipBrowser.GetActiveStage()
 
         if stage == 1:
-            wx.PostEvent(self.shipBrowser, events.Stage1Selected())
+            wx.PostEvent(self.shipBrowser, Stage1Selected())
         elif stage == 2:
             categoryID = self.shipBrowser.GetStageData(stage)
-            wx.PostEvent(self.shipBrowser, events.Stage2Selected(categoryID=categoryID, back=True))
+            wx.PostEvent(self.shipBrowser, Stage2Selected(categoryID=categoryID, back=True))
 
     def ShowNewFitButton(self, show):
         self.btnNew.Show(show)
@@ -167,8 +167,8 @@ class NavigationPanel(SFItem.SFBrowserItem):
             sFit = Fit.getInstance()
             fitID = sFit.newFit(shipID, "%s fit" % shipName)
             self.shipBrowser.fitIDMustEditName = fitID
-            wx.PostEvent(self.Parent, events.Stage3Selected(shipID=shipID))
-            wx.PostEvent(self.mainFrame, events.FitSelected(fitID=fitID))
+            wx.PostEvent(self.Parent, Stage3Selected(shipID=shipID))
+            wx.PostEvent(self.mainFrame, FitSelected(fitID=fitID))
 
     def OnHistoryReset(self):
         self.ToggleRecentShips(False, False)
@@ -184,9 +184,9 @@ class NavigationPanel(SFItem.SFBrowserItem):
 
     @staticmethod
     def AdjustChannels(bitmap):
-        img = wx.ImageFromBitmap(bitmap)
+        img = bitmap.ConvertToImage()
         img = img.AdjustChannels(1.05, 1.05, 1.05, 1)
-        return wx.BitmapFromImage(img)
+        return wx.Bitmap(img)
 
     def UpdateElementsPos(self, mdc):
         rect = self.GetRect()
@@ -211,9 +211,9 @@ class NavigationPanel(SFItem.SFBrowserItem):
     def DrawItem(self, mdc):
         rect = self.GetRect()
 
-        windowColor = wx.SystemSettings_GetColour(wx.SYS_COLOUR_WINDOW)
-        textColor = colorUtils.GetSuitableColor(windowColor, 1)
-        sepColor = colorUtils.GetSuitableColor(windowColor, 0.2)
+        windowColor = wx.SystemSettings.GetColour(wx.SYS_COLOUR_WINDOW)
+        textColor = colorUtils.GetSuitable(windowColor, 1)
+        sepColor = colorUtils.GetSuitable(windowColor, 0.2)
 
         mdc.SetTextForeground(textColor)
 
@@ -230,7 +230,7 @@ class NavigationPanel(SFItem.SFBrowserItem):
     def RenderBackground(self):
         rect = self.GetRect()
 
-        windowColor = wx.SystemSettings_GetColour(wx.SYS_COLOUR_WINDOW)
+        windowColor = wx.SystemSettings.GetColour(wx.SYS_COLOUR_WINDOW)
 
         sFactor = 0.1
 
@@ -259,15 +259,15 @@ class NavigationPanel(SFItem.SFBrowserItem):
     def gotoStage(self, stage, data=None):
         self.shipBrowser.recentFits = False
         if stage == 1:
-            wx.PostEvent(self.Parent, events.Stage1Selected())
+            wx.PostEvent(self.Parent, Stage1Selected())
         elif stage == 2:
-            wx.PostEvent(self.Parent, events.Stage2Selected(categoryID=data, back=True))
+            wx.PostEvent(self.Parent, Stage2Selected(categoryID=data, back=True))
         elif stage == 3:
-            wx.PostEvent(self.Parent, events.Stage3Selected(shipID=data))
+            wx.PostEvent(self.Parent, Stage3Selected(shipID=data))
         elif stage == 4:
             self.shipBrowser._activeStage = 4
-            wx.PostEvent(self.Parent, events.SearchSelected(text=data, back=True))
+            wx.PostEvent(self.Parent, SearchSelected(text=data, back=True))
         elif stage == 5:
-            wx.PostEvent(self.Parent, events.ImportSelected(fits=data))
+            wx.PostEvent(self.Parent, ImportSelected(fits=data))
         else:
-            wx.PostEvent(self.Parent, events.Stage1Selected())
+            wx.PostEvent(self.Parent, Stage1Selected())

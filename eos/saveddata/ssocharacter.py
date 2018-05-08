@@ -18,17 +18,40 @@
 # ===============================================================================
 
 from sqlalchemy.orm import reconstructor
-
+import datetime
+import time
 
 # from tomorrow import threads
 
 
-class CrestChar(object):
-    def __init__(self, id, name, refresh_token=None):
-        self.ID = id
-        self.name = name
-        self.refresh_token = refresh_token
+class SsoCharacter(object):
+    def __init__(self, charID, name, client, accessToken=None, refreshToken=None):
+        self.characterID = charID
+        self.characterName = name
+        self.client = client
+        self.accessToken = accessToken
+        self.refreshToken = refreshToken
+        self.accessTokenExpires = None
+        self.esi_client = None
+
 
     @reconstructor
     def init(self):
-        pass
+        self.esi_client = None
+
+    def get_sso_data(self):
+        """ Little "helper" function to get formated data for esipy security
+        """
+        return {
+            'access_token': self.accessToken,
+            'refresh_token': self.refreshToken,
+            'expires_in': (
+                self.accessTokenExpires - datetime.datetime.utcnow()
+            ).total_seconds()
+        }
+
+
+    def __repr__(self):
+        return "SsoCharacter(ID={}, name={}, client={}) at {}".format(
+                self.ID, self.characterName, self.client, hex(id(self))
+        )

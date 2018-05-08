@@ -24,7 +24,7 @@ from eos.saveddata.cargo import Cargo
 from eos.saveddata.drone import Drone
 from service.price import Price as ServicePrice
 from gui.viewColumn import ViewColumn
-from gui.bitmapLoader import BitmapLoader
+from gui.bitmap_loader import BitmapLoader
 from gui.utils.numberFormatter import formatAmount
 
 

@@ -20,7 +20,7 @@
 # noinspection PyPackageRequirements
 import wx
 
-from gui.bitmapLoader import BitmapLoader
+from gui.bitmap_loader import BitmapLoader
 from gui.builtinAdditionPanes.boosterView import BoosterView
 from gui.builtinAdditionPanes.cargoView import CargoView
 from gui.builtinAdditionPanes.commandView import CommandView
@@ -29,22 +29,22 @@ from gui.builtinAdditionPanes.fighterView import FighterView
 from gui.builtinAdditionPanes.implantView import ImplantView
 from gui.builtinAdditionPanes.notesView import NotesView
 from gui.builtinAdditionPanes.projectedView import ProjectedView
-from gui.chromeTabs import PFNotebook
-from gui.pyfatogglepanel import TogglePanel
+from gui.chrome_tabs import ChromeNotebook
+from gui.toggle_panel import TogglePanel
 
 
 class AdditionsPane(TogglePanel):
     def __init__(self, parent):
 
-        TogglePanel.__init__(self, parent, forceLayout=1)
+        TogglePanel.__init__(self, parent, force_layout=1)
 
         self.SetLabel("Additions")
-        pane = self.GetContentPane()
+        pane = self.GetContentPanel()
 
         baseSizer = wx.BoxSizer(wx.HORIZONTAL)
         pane.SetSizer(baseSizer)
 
-        self.notebook = PFNotebook(pane, False)
+        self.notebook = ChromeNotebook(pane, False)
         self.notebook.SetMinSize((-1, 1000))
 
         baseSizer.Add(self.notebook, 1, wx.EXPAND)
@@ -59,28 +59,28 @@ class AdditionsPane(TogglePanel):
         notesImg = BitmapLoader.getImage("skill_small", "gui")
 
         self.drone = DroneView(self.notebook)
-        self.notebook.AddPage(self.drone, "Drones", tabImage=droneImg, showClose=False)
+        self.notebook.AddPage(self.drone, "Drones", image=droneImg, closeable=False)
 
         self.fighter = FighterView(self.notebook)
-        self.notebook.AddPage(self.fighter, "Fighters", tabImage=fighterImg, showClose=False)
+        self.notebook.AddPage(self.fighter, "Fighters", image=fighterImg, closeable=False)
 
         self.cargo = CargoView(self.notebook)
-        self.notebook.AddPage(self.cargo, "Cargo", tabImage=cargoImg, showClose=False)
+        self.notebook.AddPage(self.cargo, "Cargo", image=cargoImg, closeable=False)
 
         self.implant = ImplantView(self.notebook)
-        self.notebook.AddPage(self.implant, "Implants", tabImage=implantImg, showClose=False)
+        self.notebook.AddPage(self.implant, "Implants", image=implantImg, closeable=False)
 
         self.booster = BoosterView(self.notebook)
-        self.notebook.AddPage(self.booster, "Boosters", tabImage=boosterImg, showClose=False)
+        self.notebook.AddPage(self.booster, "Boosters", image=boosterImg, closeable=False)
 
         self.projectedPage = ProjectedView(self.notebook)
-        self.notebook.AddPage(self.projectedPage, "Projected", tabImage=projectedImg, showClose=False)
+        self.notebook.AddPage(self.projectedPage, "Projected", image=projectedImg, closeable=False)
 
         self.gangPage = CommandView(self.notebook)
-        self.notebook.AddPage(self.gangPage, "Command", tabImage=gangImg, showClose=False)
+        self.notebook.AddPage(self.gangPage, "Command", image=gangImg, closeable=False)
 
         self.notes = NotesView(self.notebook)
-        self.notebook.AddPage(self.notes, "Notes", tabImage=notesImg, showClose=False)
+        self.notebook.AddPage(self.notes, "Notes", image=notesImg, closeable=False)
 
         self.notebook.SetSelection(0)
 
@@ -92,19 +92,16 @@ class AdditionsPane(TogglePanel):
     def getName(self, idx):
         return self.PANES[idx]
 
-    def toggleContent(self, event):
-        TogglePanel.toggleContent(self, event)
-        h = self.headerPanel.GetSize()[1] + 4
+    def ToggleContent(self, event):
+        TogglePanel.ToggleContent(self, event)
+        h = self.header_panel.GetSize()[1] + 4
 
         if self.IsCollapsed():
             self.old_pos = self.parent.GetSashPosition()
             self.parent.SetMinimumPaneSize(h)
             self.parent.SetSashPosition(h * -1, True)
-            # only available in >= wx2.9
-            if getattr(self.parent, "SetSashInvisible", None):
-                self.parent.SetSashInvisible(True)
+            self.parent.SetSashInvisible(True)
         else:
-            if getattr(self.parent, "SetSashInvisible", None):
-                self.parent.SetSashInvisible(False)
+            self.parent.SetSashInvisible(False)
             self.parent.SetMinimumPaneSize(200)
             self.parent.SetSashPosition(self.old_pos, True)

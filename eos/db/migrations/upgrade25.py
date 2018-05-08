@@ -4204,7 +4204,7 @@ conversion2 = {
 
 def upgrade(saveddata_engine):
     # First we want to get a list of fittings that are completely fitted out with subsystems
-    oldItems = [str(x) for x in conversion2.iterkeys()]
+    oldItems = [str(x) for x in conversion2.keys()]
 
     # I can't figure out a way to get IN operator to work when supplying a list using a parameterized query. So I'm
     # doing it the shitty way by formatting the SQL string. Don't do this kids!
@@ -4239,7 +4239,7 @@ def upgrade(saveddata_engine):
             # if something fails, fuck it, we tried. It'll default to the generic conversion below
             continue
 
-    for oldItem, newItem in conversion2.iteritems():
+    for oldItem, newItem in conversion2.items():
         saveddata_engine.execute('UPDATE "modules" SET "itemID" = ? WHERE "itemID" = ?',
                                  (newItem, oldItem))
         saveddata_engine.execute('UPDATE "cargo" SET "itemID" = ? WHERE "itemID" = ?',

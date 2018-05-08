@@ -36,13 +36,8 @@ The following is a list of pyfa packages available for certain distributions. Pl
 ### Dependencies
 If you wish to help with development or simply need to run pyfa through a Python interpreter, the following software is required:
 
-* Python 2.7
-* `wxPython` 2.8/3.0
-* `sqlalchemy` >= 1.0.5
-* `dateutil`
-* `matplotlib` (for some Linux distributions you may need to install separate wxPython bindings such as `python-matplotlib-wx`)
-* `requests`
-* `logbook` >= 1.0.0
+* Python 3.6
+* Requirements as listed in `requirements.txt`
 
 ## Bug Reporting
 The preferred method of reporting bugs is through the project's [GitHub Issues interface](https://github.com/pyfa-org/Pyfa/issues). Alternatively, posting a report in the [pyfa thread](http://forums.eveonline.com/default.aspx?g=posts&t=247609) on the official EVE Online forums is acceptable. Guidelines for bug reporting can be found on [this wiki page](https://github.com/DarkFenX/Pyfa/wiki/Bug-Reporting). 

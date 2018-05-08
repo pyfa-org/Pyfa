@@ -20,7 +20,7 @@
 import re
 import threading
 from logbook import Logger
-import Queue
+import queue
 
 # noinspection PyPackageRequirements
 import wx
@@ -30,21 +30,16 @@ import config
 import eos.db
 from service import conversions
 from service.settings import SettingsProvider
+from service.jargon import JargonLoader
 
 from eos.gamedata import Category as types_Category, Group as types_Group, Item as types_Item, MarketGroup as types_MarketGroup, \
     MetaGroup as types_MetaGroup, MetaType as types_MetaType
-
-
-try:
-    from collections import OrderedDict
-except ImportError:
-    from utils.compat import OrderedDict
+from collections import OrderedDict
 
 pyfalog = Logger(__name__)
 
 # Event which tells threads dependent on Market that it's initialized
 mktRdy = threading.Event()
-
 
 class ShipBrowserWorkerThread(threading.Thread):
     def __init__(self):
@@ -53,7 +48,7 @@ class ShipBrowserWorkerThread(threading.Thread):
         self.name = "ShipBrowser"
 
     def run(self):
-        self.queue = Queue.Queue()
+        self.queue = queue.Queue()
         self.cache = {}
         # Wait for full market initialization (otherwise there's high risky
         # this thread will attempt to init Market which is already being inited)
@@ -88,7 +83,10 @@ class SearchWorkerThread(threading.Thread):
     def __init__(self):
         threading.Thread.__init__(self)
         self.name = "SearchWorker"
-        pyfalog.debug("Initialize SearchWorkerThread.")
+        self.jargonLoader = JargonLoader.instance()
+        # load the jargon while in an out-of-thread context, to spot any problems while in the main thread
+        self.jargonLoader.get_jargon()
+        self.jargonLoader.get_jargon().apply('test string')
 
     def run(self):
         self.cv = threading.Condition()
@@ -115,13 +113,25 @@ class SearchWorkerThread(threading.Thread):
             else:
                 filter_ = None
 
-            results = eos.db.searchItems(request, where=filter_,
-                                         join=(types_Item.group, types_Group.category),
-                                         eager=("icon", "group.category", "metaGroup", "metaGroup.parent"))
+
+            jargon_request = self.jargonLoader.get_jargon().apply(request)
+
+
+            results = []
+            if len(request) >= config.minItemSearchLength:
+                results = eos.db.searchItems(request, where=filter_,
+                                             join=(types_Item.group, types_Group.category),
+                                             eager=("icon", "group.category", "metaGroup", "metaGroup.parent"))
+
+            jargon_results = []
+            if len(jargon_request) >= config.minItemSearchLength:
+                jargon_results = eos.db.searchItems(jargon_request, where=filter_,
+                                             join=(types_Item.group, types_Group.category),
+                                             eager=("icon", "group.category", "metaGroup", "metaGroup.parent"))
 
             items = set()
             # Return only published items, consult with Market service this time
-            for item in results:
+            for item in [*results, *jargon_results]:
                 if sMkt.getPublicityByItem(item):
                     items.add(item)
             wx.CallAfter(callback, items)
@@ -259,7 +269,7 @@ class Market(object):
         }
         # Parent type name: set(item names)
         self.ITEMS_FORCEDMETAGROUP_R = {}
-        for item, value in self.ITEMS_FORCEDMETAGROUP.items():
+        for item, value in list(self.ITEMS_FORCEDMETAGROUP.items()):
             parent = value[1]
             if parent not in self.ITEMS_FORCEDMETAGROUP_R:
                 self.ITEMS_FORCEDMETAGROUP_R[parent] = set()
@@ -352,7 +362,7 @@ class Market(object):
     def __makeRevDict(orig):
         """Creates reverse dictionary"""
         rev = {}
-        for item, value in orig.items():
+        for item, value in list(orig.items()):
             if value not in rev:
                 rev[value] = set()
             rev[value].add(item)
@@ -366,7 +376,7 @@ class Market(object):
                 item = identity
             elif isinstance(identity, int):
                 item = eos.db.getItem(identity, *args, **kwargs)
-            elif isinstance(identity, basestring):
+            elif isinstance(identity, str):
                 # We normally lookup with string when we are using import/export
                 # features. Check against overrides
                 identity = conversions.all.get(identity, identity)
@@ -387,7 +397,7 @@ class Market(object):
         """Get group by its ID or name"""
         if isinstance(identity, types_Group):
             return identity
-        elif isinstance(identity, (int, float, basestring)):
+        elif isinstance(identity, (int, float, str)):
             if isinstance(identity, float):
                 identity = int(identity)
             # Check custom groups
@@ -406,7 +416,7 @@ class Market(object):
         """Get category by its ID or name"""
         if isinstance(identity, types_Category):
             category = identity
-        elif isinstance(identity, (int, basestring)):
+        elif isinstance(identity, (int, str)):
             category = eos.db.getCategory(identity, *args, **kwargs)
         elif isinstance(identity, float):
             id_ = int(identity)
@@ -420,7 +430,7 @@ class Market(object):
         """Get meta group by its ID or name"""
         if isinstance(identity, types_MetaGroup):
             metaGroup = identity
-        elif isinstance(identity, (int, basestring)):
+        elif isinstance(identity, (int, str)):
             metaGroup = eos.db.getMetaGroup(identity, *args, **kwargs)
         elif isinstance(identity, float):
             id_ = int(identity)
@@ -590,7 +600,7 @@ class Market(object):
 
     def getGroupsByCategory(self, cat):
         """Get groups from given category"""
-        groups = set(filter(lambda grp: self.getPublicityByGroup(grp), cat.groups))
+        groups = set([grp for grp in cat.groups if self.getPublicityByGroup(grp)])
 
         return groups
 
@@ -610,7 +620,7 @@ class Market(object):
         if hasattr(group, 'addItems'):
             groupItems.update(group.addItems)
         items = set(
-                filter(lambda item: self.getPublicityByItem(item) and self.getGroupByItem(item) == group, groupItems))
+                [item for item in groupItems if self.getPublicityByItem(item) and self.getGroupByItem(item) == group])
         return items
 
     def getItemsByMarketGroup(self, mg, vars_=True):
@@ -640,7 +650,7 @@ class Market(object):
         else:
             result = baseitms
         # Get rid of unpublished items
-        result = set(filter(lambda item_: self.getPublicityByItem(item_), result))
+        result = set([item_ for item_ in result if self.getPublicityByItem(item_)])
         return result
 
     def marketGroupHasTypesCheck(self, mg):
@@ -767,11 +777,11 @@ class Market(object):
     @staticmethod
     def directAttrRequest(items, attribs):
         try:
-            itemIDs = tuple(map(lambda i: i.ID, items))
+            itemIDs = tuple([i.ID for i in items])
         except TypeError:
             itemIDs = (items.ID,)
         try:
-            attrIDs = tuple(map(lambda i: i.ID, attribs))
+            attrIDs = tuple([i.ID for i in attribs])
         except TypeError:
             attrIDs = (attribs.ID,)
         info = {}
@@ -787,7 +797,7 @@ class Market(object):
 
     def filterItemsByMeta(self, items, metas):
         """Filter items by meta lvl"""
-        filtered = set(filter(lambda item: self.getMetaGroupIdByItem(item) in metas, items))
+        filtered = set([item for item in items if self.getMetaGroupIdByItem(item) in metas])
         return filtered
 
     def getSystemWideEffects(self):

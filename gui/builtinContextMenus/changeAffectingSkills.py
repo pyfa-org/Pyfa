@@ -3,7 +3,7 @@ from gui.contextMenu import ContextMenu
 import gui.mainFrame
 # noinspection PyPackageRequirements
 import wx
-from gui.bitmapLoader import BitmapLoader
+from gui.bitmap_loader import BitmapLoader
 from eos.saveddata.character import Skill
 import gui.globalEvents as GE
 from service.fit import Fit
@@ -49,7 +49,7 @@ class ChangeAffectingSkills(ContextMenu):
             if cont[attrName] == 0:
                 continue
 
-            for fit, afflictors in cont.getAfflictions(attrName).iteritems():
+            for fit, afflictors in cont.getAfflictions(attrName).items():
                 for afflictor, modifier, amount, used in afflictors:
                     # only add Skills
                     if not isinstance(afflictor, Skill):
@@ -89,12 +89,12 @@ class ChangeAffectingSkills(ContextMenu):
                 if bitmap is not None:
                     skillItem.SetBitmap(bitmap)
 
-            for i in xrange(-1, 6):
+            for i in range(-1, 6):
                 levelItem = self.addSkill(rootMenu if msw else grandSub, skill, i)
-                grandSub.AppendItem(levelItem)
+                grandSub.Append(levelItem)
                 if (not skill.learned and i == -1) or (skill.learned and skill.level == i):
                     levelItem.Check(True)
-            sub.AppendItem(skillItem)
+            sub.Append(skillItem)
 
         return sub
 

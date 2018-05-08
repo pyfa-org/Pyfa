@@ -41,7 +41,7 @@ def CurseFit(DB, Gamedata, Saveddata):
     mod.state = Saveddata['State'].ONLINE
 
     # Add 5 neuts
-    for _ in xrange(5):
+    for _ in range(5):
         fit.modules.append(mod)
 
     return fit
@@ -60,7 +60,7 @@ def HeronFit(DB, Gamedata, Saveddata):
     mod.state = Saveddata['State'].ONLINE
 
     # Add 5 neuts
-    for _ in xrange(4):
+    for _ in range(4):
         fit.modules.append(mod)
 
     return fit

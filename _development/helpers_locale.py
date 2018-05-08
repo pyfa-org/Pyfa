@@ -94,8 +94,8 @@ def GetUnicodePath(root, file=None, codec=None):
         path = os.path.join(path, file)
 
     if codec:
-        path = unicode(path, codec)
+        path = str(path, codec)
     else:
-        path = unicode(path)
+        path = str(path)
 
     return path

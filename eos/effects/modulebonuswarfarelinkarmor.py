@@ -16,7 +16,7 @@ type = "active", "gang"
 
 
 def handler(fit, module, context, **kwargs):
-    for x in xrange(1, 5):
+    for x in range(1, 5):
         if module.getModifiedChargeAttr("warfareBuff{}ID".format(x)):
             value = module.getModifiedItemAttr("warfareBuff{}Value".format(x))
             id = module.getModifiedChargeAttr("warfareBuff{}ID".format(x))

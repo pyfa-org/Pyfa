@@ -21,7 +21,7 @@
 import wx
 
 from gui.viewColumn import ViewColumn
-from gui.bitmapLoader import BitmapLoader
+from gui.bitmap_loader import BitmapLoader
 from gui.utils.numberFormatter import formatAmount
 
 from service.attribute import Attribute
@@ -72,7 +72,7 @@ class AttributeDisplay(ViewColumn):
 
     def getText(self, mod):
         if hasattr(mod, "item"):
-            attr = mod.getModifiedItemAttr(self.info.name)
+            attr = mod.getModifiedItemAttr(self.info.name, None)
         else:
             if self.direct:
                 info = self.directInfo
@@ -80,16 +80,19 @@ class AttributeDisplay(ViewColumn):
             else:
                 attr = mod.getAttribute(self.info.name)
 
+        if attr is None:
+            return ""
+
         if self.info.name == "volume":
             str_ = (formatAmount(attr, 3, 0, 3))
             if hasattr(mod, "amount"):
-                str_ += u"m\u00B3 (%s m\u00B3)" % (formatAmount(attr * mod.amount, 3, 0, 3))
+                str_ += "m\u00B3 (%s m\u00B3)" % (formatAmount(attr * mod.amount, 3, 0, 3))
             attr = str_
 
         if isinstance(attr, (float, int)):
             attr = (formatAmount(attr, 3, 0, 3))
 
-        return attr if attr is not None else ""
+        return attr
 
     def getImageId(self, mod):
         return -1

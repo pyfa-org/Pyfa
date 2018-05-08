@@ -1,35 +1,37 @@
 # -*- mode: python -*-
 
-# Note: This script is provided AS-IS for those that may be interested.
-# pyfa does not currently support pyInstaller (or any other build process) 100% at the moment
-
-# Command line to build:
-# (Run from directory where pyfa.py and pyfa.spec lives.)
-# c:\Python27\scripts\pyinstaller.exe --clean --noconfirm --windowed --upx-dir=.\scripts\upx.exe pyfa.spec
-
-# Don't forget to change the path to where your pyfa.py and pyfa.spec lives
-#  pathex=['C:\\Users\\Ebag333\\Documents\\GitHub\\Ebag333\\Pyfa'],
-
 import os
+from itertools import chain
+import subprocess
+import requests.certs
+
+label = subprocess.check_output([
+    "git", "describe", "--tags"]).strip()
+
+with open('.version', 'w+') as f:
+    f.write(label.decode())
 
 block_cipher = None
 
 added_files = [
-             ( 'imgs/gui/*.png', 'imgs/gui' ),
-             ( 'imgs/gui/*.gif', 'imgs/gui' ),
-             ( 'imgs/icons/*.png', 'imgs/icons' ),
-             ( 'imgs/renders/*.png', 'imgs/renders' ),
-             ( 'dist_assets/win/pyfa.ico', '.' ),
-             ( 'dist_assets/cacert.pem', '.' ),
-             ( 'eve.db', '.' ),
-             ( 'README.md', '.' ),
-             ( 'LICENSE', '.' ),
+             ('../../imgs/gui/*.png', 'imgs/gui'),
+             ('../../imgs/gui/*.gif', 'imgs/gui'),
+             ('../../imgs/icons/*.png', 'imgs/icons'),
+             ('../../imgs/renders/*.png', 'imgs/renders'),
+             ('../../service/jargon/*.yaml', 'service/jargon'),
+             ('../../dist_assets/win/pyfa.ico', '.'),
+             (requests.certs.where(), '.'),  # is this needed anymore?
+             ('../../eve.db', '.'),
+             ('../../README.md', '.'),
+             ('../../LICENSE', '.'),
+             ('../../.version', '.'),
              ]
 
 import_these = []
 
-# Walk eos.effects and add all effects so we can import them properly
-for root, folders, files in os.walk("eos/effects"):
+# Walk directories that do dynamic importing
+paths = ('eos/effects', 'eos/db/migrations', 'service/conversions')
+for root, folders, files in chain.from_iterable(os.walk(path) for path in paths):
     for file_ in files:
         if file_.endswith(".py") and not file_.startswith("_"):
             mod_name = "{}.{}".format(
@@ -38,25 +40,24 @@ for root, folders, files in os.walk("eos/effects"):
             )
             import_these.append(mod_name)
 
-a = Analysis(
-             ['pyfa.py'],
-             pathex=['C:\\projects\\pyfa\\'],
+a = Analysis(['../../pyfa.py'],
+             pathex=[
+                 # Need this, see https://github.com/pyinstaller/pyinstaller/issues/1566
+                 # To get this, download and install windows 10 SDK
+                 # If not building on Windows 10, this might be optional
+                 r'C:\Program Files (x86)\Windows Kits\10\Redist\ucrt\DLLs\x86'],
              binaries=[],
              datas=added_files,
              hiddenimports=import_these,
-             hookspath=[],
+             hookspath=['dist_assets/pyinstaller_hooks'],
              runtime_hooks=[],
-             excludes=[],
+             excludes=['Tkinter'],
              win_no_prefer_redirects=False,
              win_private_assemblies=False,
-             cipher=block_cipher,
-             )
+             cipher=block_cipher)
 
-pyz = PYZ(
-          a.pure,
-          a.zipped_data,
-          cipher=block_cipher,
-          )
+pyz = PYZ(a.pure, a.zipped_data,
+             cipher=block_cipher)
 
 exe = EXE(pyz,
           a.scripts,
@@ -67,7 +68,6 @@ exe = EXE(pyz,
           upx=True,
           name='pyfa',
           icon='dist_assets/win/pyfa.ico',
-          onefile=False,
           )
 
 coll = COLLECT(
@@ -77,7 +77,6 @@ coll = COLLECT(
                a.datas,
                strip=False,
                upx=True,
-               onefile=False,
                name='pyfa',
                icon='dist_assets/win/pyfa.ico',
                )

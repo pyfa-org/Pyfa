@@ -9,4 +9,6 @@ type = "passive"
 
 
 def handler(fit, module, context):
-    fit.ship.multiplyItemAttr("powerOutput", module.getModifiedItemAttr("powerOutputMultiplier"))
+    # We default this to None as there are times when the source attribute doesn't exist (for example, Cap Power Relay).
+    # It will return 0 as it doesn't exist, which would nullify whatever the target attribute is
+    fit.ship.multiplyItemAttr("powerOutput", module.getModifiedItemAttr("powerOutputMultiplier", None))

@@ -63,11 +63,13 @@ class exportHtmlThread(threading.Thread):
             HTML = self.generateFullHTML(sMkt, sFit, dnaUrl)
 
         try:
-            FILE = open(settings.getPath(), "w")
-            FILE.write(HTML.encode('utf-8'))
+            FILE = open(settings.getPath(), "w", encoding='utf-8')
+            FILE.write(HTML)
             FILE.close()
-        except IOError:
-            print("Failed to write to " + settings.getPath())
+        except IOError as ex:
+            print(("Failed to write to " + settings.getPath()))
+            pass
+        except Exception as ex:
             pass
 
         if self.callback:
@@ -84,6 +86,7 @@ class exportHtmlThread(threading.Thread):
   <head>
   <title>Pyfa Fittings</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta charset="utf-8" /> 
   <link rel="stylesheet" href="https://code.jquery.com/mobile/1.4.2/jquery.mobile-1.4.2.min.css" />
   <script src="https://code.jquery.com/jquery-1.11.0.min.js"></script>
   <script>
@@ -222,7 +225,7 @@ class exportHtmlThread(threading.Thread):
                                 return
                             try:
                                 dnaFit = Port.exportDna(getFit(fit[0]))
-                                print dnaFit
+                                print(dnaFit)
                                 HTMLship += '          <li><a data-dna="' + dnaFit + '" target="_blank">' + fit[
                                     1] + '</a></li>\n'
                             except:

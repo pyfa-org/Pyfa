@@ -87,7 +87,7 @@ if __name__ == "__main__":
     options, args = parser.parse_args()
 
     if options.skeleton is None or options.base is None or options.destination is None:
-        print "Need --skeleton argument as well as --base and --destination argument"
+        print("Need --skeleton argument as well as --base and --destination argument")
         parser.print_help()
         sys.exit()
 
@@ -100,20 +100,20 @@ if __name__ == "__main__":
         if skel not in options.platforms:
             continue
 
-        print "\n======== %s ========"%skel
+        print("\n======== %s ========"%skel)
 
         info = {}
         config = {}
         setup = {}
         skeleton = os.path.expanduser(os.path.join(options.skeleton, skel))
 
-        execfile(os.path.join(options.base, "config.py"), config)
-        execfile(os.path.join(skeleton, "info.py"), info)
-        execfile(os.path.join(options.base, "setup.py"), setup)
+        exec(compile(open(os.path.join(options.base, "config.py")).read(), os.path.join(options.base, "config.py"), 'exec'), config)
+        exec(compile(open(os.path.join(skeleton, "info.py")).read(), os.path.join(skeleton, "info.py"), 'exec'), info)
+        exec(compile(open(os.path.join(options.base, "setup.py")).read(), os.path.join(options.base, "setup.py"), 'exec'), setup)
 
         destination = os.path.expanduser(options.destination)
         if not os.path.isdir(destination) or not os.access(destination, os.W_OK | os.X_OK):
-            print "Destination directory does not exist or is not writable: {}".format(destination)
+            print("Destination directory does not exist or is not writable: {}".format(destination))
             sys.exit()
 
         dirName = info["arcname"]
@@ -143,9 +143,9 @@ if __name__ == "__main__":
         tmpFile = os.path.join(os.getcwd(), archiveName)
 
         try:
-            print "Copying skeleton to ", tmpDir
+            print("Copying skeleton to ", tmpDir)
             shutil.copytree(skeleton, tmpDir, ignore=loginfo)
-            print
+            print()
             source = os.path.expanduser(options.base)
             root = os.path.join(tmpDir, info["base"])
 
@@ -154,7 +154,7 @@ if __name__ == "__main__":
             os.chdir(source)
 
             if info["library"]:
-                print "Injecting files into", info["library"]
+                print("Injecting files into", info["library"])
                 libraryFile = os.path.join(root, info["library"])
 
                 with zipfile.ZipFile(libraryFile, 'a') as library:
@@ -163,7 +163,7 @@ if __name__ == "__main__":
                     library.write('pyfa.py', 'pyfa__main__.py')
                     library.write('config.py')
             else: # platforms where we don't have a packaged library
-                print "Copying modules into", root
+                print("Copying modules into", root)
                 for dir in setup['packages']:
                     copyanything(dir, os.path.join(root, dir))
 
@@ -175,27 +175,27 @@ if __name__ == "__main__":
             if skel in ('src', 'mac-deprecated'):
                 setup['include_files'] += ['pyfa.py', 'config.py']
 
-            print
-            print "Copying included files:",
+            print()
+            print("Copying included files:", end=' ')
 
             for file in setup['include_files']:
-                if isinstance(file, basestring):
-                    print file,
+                if isinstance(file, str):
+                    print(file, end=' ')
                     copyanything(file, os.path.join(root, file))
 
-            print
-            print "Creating images zipfile:",
+            print()
+            print("Creating images zipfile:", end=' ')
             os.chdir('imgs')
             imagesFile = os.path.join(root, "imgs.zip")
 
             with zipfile.ZipFile(imagesFile, 'w') as images:
                 for dir in setup['icon_dirs']:
-                    print dir,
+                    print(dir, end=' ')
                     zipdir(dir, images)
             os.chdir(oldcwd)
 
-            print
-            print "Creating archive"
+            print()
+            print("Creating archive")
             if options.zip:
                 archive = zipfile.ZipFile(tmpFile, 'w', compression=zipfile.ZIP_DEFLATED)
                 zipdir(dirName, archive)
@@ -205,11 +205,11 @@ if __name__ == "__main__":
                 archive.add(tmpDir, arcname=info["arcname"])
                 archive.close()
 
-            print "Moving archive to ", destination
+            print("Moving archive to ", destination)
             shutil.move(tmpFile, destination)
 
             if "win" in skel and options.winexe:
-                print "Compiling EXE"
+                print("Compiling EXE")
 
                 if config['tag'].lower() == "git":
                     if git:   # if git repo info available, use git commit
@@ -230,13 +230,13 @@ if __name__ == "__main__":
                     "/dMyOutputDir=%s"%destination,
                     "/dMyOutputFile=%s"%fileName]) #stdout=devnull, stderr=devnull
 
-                print "EXE completed"
+                print("EXE completed")
 
         except Exception as e:
-            print "Encountered an error: \n\t", e
+            print("Encountered an error: \n\t", e)
             raise
         finally:
-            print "Deleting tmp files\n"
+            print("Deleting tmp files\n")
             try:
                 shutil.rmtree("dist") # Inno dir
             except:
@@ -252,6 +252,6 @@ if __name__ == "__main__":
 
         sys.stdout = oldstd
         if os.path.isdir(destination):
-            print os.path.join(destination, os.path.split(tmpFile)[1])
+            print(os.path.join(destination, os.path.split(tmpFile)[1]))
         else:
-            print destination
+            print(destination)

@@ -4,11 +4,11 @@ import wx
 from logbook import Logger
 
 from gui.builtinShipBrowser.sfBrowserItem import SFBrowserItem
-import gui.utils.colorUtils as colorUtils
-import gui.utils.drawUtils as drawUtils
+import gui.utils.color as colorUtils
+import gui.utils.draw as drawUtils
 import gui.utils.fonts as fonts
-from gui.bitmapLoader import BitmapLoader
-import events
+from gui.bitmap_loader import BitmapLoader
+from .events import Stage2Selected
 
 pyfalog = Logger(__name__)
 
@@ -20,7 +20,7 @@ class CategoryItem(SFBrowserItem):
         if categoryID:
             self.shipBmp = BitmapLoader.getBitmap("ship_small", "gui")
         else:
-            self.shipBmp = wx.EmptyBitmap(16, 16)
+            self.shipBmp = wx.Bitmap(16, 16)
 
         self.dropShadowBitmap = drawUtils.CreateDropShadowBitmap(self.shipBmp, 0.2)
 
@@ -77,7 +77,7 @@ class CategoryItem(SFBrowserItem):
 
     def selectCategory(self, event):
         categoryID = self.categoryID
-        wx.PostEvent(self.shipBrowser, events.Stage2Selected(categoryID=categoryID, back=False))
+        wx.PostEvent(self.shipBrowser, Stage2Selected(categoryID=categoryID, back=False))
 
     def MouseLeftUp(self, event):
         self.selectCategory(event)
@@ -100,8 +100,8 @@ class CategoryItem(SFBrowserItem):
         # rect = self.GetRect()
         self.UpdateElementsPos(mdc)
 
-        windowColor = wx.SystemSettings_GetColour(wx.SYS_COLOUR_WINDOW)
-        textColor = colorUtils.GetSuitableColor(windowColor, 1)
+        windowColor = wx.SystemSettings.GetColour(wx.SYS_COLOUR_WINDOW)
+        textColor = colorUtils.GetSuitable(windowColor, 1)
 
         mdc.SetTextForeground(textColor)
         mdc.DrawBitmap(self.dropShadowBitmap, self.shipBmpx + 1, self.shipBmpy + 1)

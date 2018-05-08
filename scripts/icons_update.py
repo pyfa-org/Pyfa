@@ -153,7 +153,7 @@ for fname in os.listdir(icons_dir):
     fname = strip_path(fname)
     # Get rid of "icon" prefix as well
     #fname = re.sub('^icon', '', fname)
-    print fname,"exists"
+    print(fname,"exists")
     existing.add(fname)
 
 # Get a list of all the icons currently available in export
@@ -232,12 +232,12 @@ if toremove:
     print('Some icons are not used and will be removed:')
     for fname in sorted(toremove):
         fullname = '{}.png'.format(fname)
-        print('  {}'.format(fullname))
+        print(('  {}'.format(fullname)))
         fullpath = os.path.join(icons_dir, fullname)
         os.remove(fullpath)
 
 if toupdate:
-    print('Updating {} icons...'.format(len(toupdate)))
+    print(('Updating {} icons...'.format(len(toupdate))))
     missing = set()
     for fname in sorted(toupdate):
         icon = get_icon_file(fname)
@@ -248,12 +248,12 @@ if toupdate:
         fullpath = os.path.join(icons_dir, fullname)
         icon.save(fullpath, 'png')
     if missing:
-        print('  {} icons are missing in export:'.format(len(missing)))
+        print(('  {} icons are missing in export:'.format(len(missing))))
         for fname in sorted(missing):
-            print('    {}'.format(fname))
+            print(('    {}'.format(fname)))
 
 if toadd:
-    print('Adding {} icons...'.format(len(toadd)))
+    print(('Adding {} icons...'.format(len(toadd))))
     missing = set()
     for fname in sorted(toadd):
         icon = get_icon_file(fname)
@@ -264,6 +264,6 @@ if toadd:
         fullpath = os.path.join(icons_dir, fullname)
         icon.save(fullpath, 'png')
     if missing:
-        print('  {} icons are missing in export:'.format(len(missing)))
+        print(('  {} icons are missing in export:'.format(len(missing))))
         for fname in sorted(missing):
-            print('    {}'.format(fname))
+            print(('    {}'.format(fname)))

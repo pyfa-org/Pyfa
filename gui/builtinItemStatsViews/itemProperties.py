@@ -1,9 +1,7 @@
-import sys
-
 # noinspection PyPackageRequirements
 import wx
 
-from helpers import AutoListCtrl
+from .helpers import AutoListCtrl
 
 
 class ItemProperties(wx.Panel):
@@ -27,7 +25,7 @@ class ItemProperties(wx.Panel):
         mainSizer.Add(self.m_staticline, 0, wx.EXPAND)
         bSizer = wx.BoxSizer(wx.HORIZONTAL)
 
-        self.totalAttrsLabel = wx.StaticText(self, wx.ID_ANY, u" ", wx.DefaultPosition, wx.DefaultSize, 0)
+        self.totalAttrsLabel = wx.StaticText(self, wx.ID_ANY, " ", wx.DefaultPosition, wx.DefaultSize, 0)
         bSizer.Add(self.totalAttrsLabel, 0, wx.ALIGN_CENTER_VERTICAL | wx.RIGHT)
 
         mainSizer.Add(bSizer, 0, wx.ALIGN_RIGHT)
@@ -79,7 +77,7 @@ class ItemProperties(wx.Panel):
                     attrName = name.title()
                     value = getattr(self.item, name)
 
-                index = self.paramList.InsertStringItem(sys.maxint, attrName)
+                index = self.paramList.InsertItem(self.paramList.GetItemCount(), attrName)
                 # index = self.paramList.InsertImageStringItem(sys.maxint, attrName)
                 idNameMap[idCount] = attrName
                 self.paramList.SetItemData(index, idCount)
@@ -87,13 +85,13 @@ class ItemProperties(wx.Panel):
 
                 valueUnit = str(value)
 
-                self.paramList.SetStringItem(index, 1, valueUnit)
+                self.paramList.SetItem(index, 1, valueUnit)
             except:
                 # TODO: Add logging to this.
                 # We couldn't get a property for some reason. Skip it for now.
                 continue
 
-        self.paramList.SortItems(lambda id1, id2: cmp(idNameMap[id1], idNameMap[id2]))
+        self.paramList.SortItems(lambda id1, id2: (idNameMap[id1] > idNameMap[id2]) - (idNameMap[id1] < idNameMap[id2]))
         self.paramList.RefreshRows()
         self.totalAttrsLabel.SetLabel("%d attributes. " % idCount)
         self.Layout()

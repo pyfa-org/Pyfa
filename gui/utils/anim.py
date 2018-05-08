@@ -1,6 +1,6 @@
 # noinspection PyPackageRequirements
 import wx
-import gui.utils.colorUtils as colorUtils
+import gui.utils.color as colorUtils
 
 
 class LoadAnimation(wx.Window):
@@ -23,6 +23,8 @@ class LoadAnimation(wx.Window):
         self.Bind(wx.EVT_PAINT, self.OnPaint)
 
         self.animTimer.Start(self.animTimerPeriod)
+
+        self.SetBackgroundStyle(wx.BG_STYLE_PAINT)
 
     def Play(self):
         if self.animTimer.IsRunning():
@@ -52,13 +54,13 @@ class LoadAnimation(wx.Window):
 
     def OnPaint(self, event):
         rect = self.GetClientRect()
-        dc = wx.BufferedPaintDC(self)
-        windowColor = wx.SystemSettings_GetColour(wx.SYS_COLOUR_WINDOW)
+        dc = wx.AutoBufferedPaintDC(self)
+        windowColor = wx.SystemSettings.GetColour(wx.SYS_COLOUR_WINDOW)
         dc.SetBackground(wx.Brush(windowColor))
         dc.Clear()
 
-        barColor = wx.SystemSettings_GetColour(wx.SYS_COLOUR_WINDOWTEXT)
-        shadeColor = colorUtils.GetSuitableColor(barColor, 0.75)
+        barColor = wx.SystemSettings.GetColour(wx.SYS_COLOUR_WINDOWTEXT)
+        shadeColor = colorUtils.GetSuitable(barColor, 0.75)
 
         barWidth = rect.width / self.bars
         barHeight = rect.height - self.padding * 2
@@ -72,7 +74,7 @@ class LoadAnimation(wx.Window):
                 bh = barHeight
                 y = self.padding
             else:
-                barColor = colorUtils.GetSuitableColor(barColor, float(self.animCount / 2) / 10)
+                barColor = colorUtils.GetSuitable(barColor, float(self.animCount / 2) / 10)
                 dc.SetPen(wx.Pen(barColor))
                 dc.SetBrush(wx.Brush(barColor))
                 bh = rect.height
@@ -81,7 +83,7 @@ class LoadAnimation(wx.Window):
             dc.DrawRectangle(x, y, barWidth, bh)
             x += barWidth
 
-        textColor = wx.SystemSettings_GetColour(wx.SYS_COLOUR_WINDOWTEXT)
+        textColor = wx.SystemSettings.GetColour(wx.SYS_COLOUR_WINDOWTEXT)
         dc.SetTextForeground(textColor)
         dc.DrawLabel(self.label, rect, wx.ALIGN_CENTER)
 

@@ -25,23 +25,23 @@ parser.add_argument("-s", "--singularity", action="store_true", help="Singularit
 parser.add_argument("-j", "--nojson", dest="nojson", action="store_true", help="Skip Phobos JSON data dump.")
 
 args = parser.parse_args()
-eve_path = os.path.expanduser(unicode(args.eve_path, sys.getfilesystemencoding()))
-cache_path = os.path.expanduser(unicode(args.cache_path, sys.getfilesystemencoding())) if args.cache_path else None
-res_path = os.path.expanduser(unicode(args.res_path,  sys.getfilesystemencoding())) if args.res_path else None
-dump_path = os.path.expanduser(unicode(args.dump_path, sys.getfilesystemencoding()))
-script_path = os.path.dirname(unicode(__file__, sys.getfilesystemencoding()))
+eve_path = os.path.expanduser(str(args.eve_path, sys.getfilesystemencoding()))
+cache_path = os.path.expanduser(str(args.cache_path, sys.getfilesystemencoding())) if args.cache_path else None
+res_path = os.path.expanduser(str(args.res_path,  sys.getfilesystemencoding())) if args.res_path else None
+dump_path = os.path.expanduser(str(args.dump_path, sys.getfilesystemencoding()))
+script_path = os.path.dirname(str(__file__, sys.getfilesystemencoding()))
 
 ### Append Phobos to path
-sys.path.append(os.path.expanduser(unicode(args.phb_path, sys.getfilesystemencoding())))
+sys.path.append(os.path.expanduser(str(args.phb_path, sys.getfilesystemencoding())))
 
 def header(text, subtext=None):
-    print
-    print "* "*30
-    print text.center(60)
+    print()
+    print("* "*30)
+    print(text.center(60))
     if subtext:
-        print subtext.center(60)
-    print "* "*30
-    print
+        print(subtext.center(60))
+    print("* "*30)
+    print()
 
 ### Data dump
 if not args.nojson:
@@ -54,10 +54,10 @@ if not args.nojson:
     from writer import *
 
     rvr = reverence.blue.EVE(eve_path, cachepath=args.cache_path, sharedcachepath=res_path, server="singularity" if args.singularity else "tranquility")
-    print "EVE Directory: {}".format(rvr.paths.root)
-    print "Cache Directory: {}".format(rvr.paths.cache)
-    print "Shared Resource Directory: {}".format(rvr.paths.sharedcache)
-    print
+    print("EVE Directory: {}".format(rvr.paths.root))
+    print("Cache Directory: {}".format(rvr.paths.cache))
+    print("Shared Resource Directory: {}".format(rvr.paths.sharedcache))
+    print()
 
     pickle_miner = ResourcePickleMiner(rvr)
     trans = Translator(pickle_miner)
@@ -106,4 +106,4 @@ sys.stdout = open(diff_file, 'w')
 itemDiff.main(old=old_db, new=db_file)
 sys.stdout = old_stdout
 
-print "\nAll done."
+print("\nAll done.")

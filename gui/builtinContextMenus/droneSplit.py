@@ -45,7 +45,7 @@ class DroneSpinner(wx.Dialog):
 
         bSizer1.Add(self.spinner, 1, wx.ALL, 5)
 
-        self.button = wx.Button(self, wx.ID_OK, u"Split")
+        self.button = wx.Button(self, wx.ID_OK, "Split")
         bSizer1.Add(self.button, 0, wx.ALL, 5)
 
         self.SetSizer(bSizer1)

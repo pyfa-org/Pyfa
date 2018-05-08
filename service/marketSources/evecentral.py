@@ -33,16 +33,17 @@ class EveCentral(object):
     name = "eve-central.com"
 
     def __init__(self, types, system, priceMap):
-        data = []
+        data = {}
         baseurl = "https://eve-central.com/api/marketstat"
-        data.append(("usesystem", system))  # Use Jita for market
 
+        data["usesystem"] = system  # Use Jita for market
+        data["typeid"] = set()
         for typeID in types:  # Add all typeID arguments
-            data.append(("typeid", typeID))
+            data["typeid"].add(typeID)
 
         network = Network.getInstance()
-        data = network.request(baseurl, network.PRICES, data)
-        xml = minidom.parse(data)
+        data = network.request(baseurl, network.PRICES, params=data)
+        xml = minidom.parseString(data.text)
         types = xml.getElementsByTagName("marketstat").item(0).getElementsByTagName("type")
         # Cycle through all types we've got from request
         for type_ in types:
