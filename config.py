@@ -24,7 +24,7 @@ saveInRoot = False
 
 # Version data
 
-version = "2.0.0b5"
+version = "2.0.0b6"
 tag = "git"
 expansionName = "YC120.3"
 expansionVersion = "1.8"
@@ -141,7 +141,7 @@ def defPaths(customSavePath=None):
     #    os.environ["SSL_CERT_FILE"] = os.path.join(pyfaPath, "cacert.pem")
 
     # The database where we store all the fits etc
-    saveDB = os.path.join(savePath, "saveddata-py3-dev.db")
+    saveDB = os.path.join(savePath, "saveddata.db")
 
     # The database where the static EVE data from the datadump is kept.
     # This is not the standard sqlite datadump but a modified version created by eos
