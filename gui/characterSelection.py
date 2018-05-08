@@ -149,6 +149,9 @@ class CharacterSelection(wx.Panel):
             event.Skip()
 
     def refreshApi(self, event):
+        wx.MessageBox("On May 8th, 2018, CCP discontinued support for XML API. pyfa 1.x no longer has this functionality. This functionality has been replaced by a newer technology called ESI, available in pyfa 2.x release.")
+        return
+
         self.btnRefresh.Enable(False)
         sChar = Character.getInstance()
         ID, key, charName, chars = sChar.getApiDetails(self.getActiveCharacter())

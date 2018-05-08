@@ -606,6 +606,8 @@ class MainFrame(wx.Frame, IPortUser):
             wx.PostEvent(self, GE.FitChanged(fitID=fitID))
 
     def eveFittings(self, event):
+        wx.MessageBox("On May 8th, 2018, CCP discontinued support for CREST. pyfa 1.x no longer has this functionality. This functionality has been replaced by a newer technology called ESI, available in pyfa 2.x release.")
+        return
         dlg = CrestFittings(self)
         dlg.Show()
 
@@ -670,6 +672,8 @@ class MainFrame(wx.Frame, IPortUser):
             dlg.Show()
 
     def exportToEve(self, event):
+        wx.MessageBox("On May 8th, 2018, CCP discontinued support for CREST. pyfa 1.x no longer has this functionality. This functionality has been replaced by a newer technology called ESI, available in pyfa 2.x release.")
+        return
         dlg = ExportToEve(self)
         dlg.Show()
 

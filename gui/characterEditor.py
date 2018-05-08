@@ -711,181 +711,23 @@ class APIView(wx.Panel):
         self.charEditor = self.Parent.Parent  # first parent is Notebook, second is Character Editor
         self.SetBackgroundColour(wx.SystemSettings_GetColour(wx.SYS_COLOUR_WINDOW))
 
-        self.apiUrlCreatePredefined = u"https://community.eveonline.com/support/api-key/CreatePredefined?accessMask=8"
-        self.apiUrlKeyList = u"https://community.eveonline.com/support/api-key/"
-
         pmainSizer = wx.BoxSizer(wx.VERTICAL)
 
         hintSizer = wx.BoxSizer(wx.HORIZONTAL)
         hintSizer.AddStretchSpacer()
-        self.stDisabledTip = wx.StaticText(self, wx.ID_ANY,
-                                           u"You cannot add API Details for All 0 and All 5 characters.\n"
-                                           u"Please select another character or make a new one.", style=wx.ALIGN_CENTER)
-        self.stDisabledTip.Wrap(-1)
-        hintSizer.Add(self.stDisabledTip, 0, wx.TOP | wx.BOTTOM, 10)
-        self.stDisabledTip.Hide()
-        hintSizer.AddStretchSpacer()
+
+        self.text = wx.StaticText(self, wx.ID_ANY,
+                                           u"On May 8th, 2018, CCP discontinued support for XML API. pyfa 1.x no longer has this functionality. This functionality has been replaced by a newer technology called ESI, available in pyfa 2.x release.\n"
+                                           u"", style=wx.ALIGN_CENTER)
+        self.text.Wrap(-1)
+        hintSizer.Add(self.text, 0, wx.TOP | wx.BOTTOM, 10)
+
         pmainSizer.Add(hintSizer, 0, wx.EXPAND, 5)
 
-        fgSizerInput = wx.FlexGridSizer(3, 2, 0, 0)
-        fgSizerInput.AddGrowableCol(1)
-        fgSizerInput.SetFlexibleDirection(wx.BOTH)
-        fgSizerInput.SetNonFlexibleGrowMode(wx.FLEX_GROWMODE_SPECIFIED)
 
-        self.m_staticIDText = wx.StaticText(self, wx.ID_ANY, u"keyID:", wx.DefaultPosition, wx.DefaultSize, 0)
-        self.m_staticIDText.Wrap(-1)
-        fgSizerInput.Add(self.m_staticIDText, 0, wx.ALL | wx.ALIGN_RIGHT | wx.ALIGN_CENTER_VERTICAL, 5)
-
-        self.inputID = wx.TextCtrl(self, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.DefaultSize, 0)
-        fgSizerInput.Add(self.inputID, 1, wx.ALL | wx.EXPAND, 5)
-
-        self.m_staticKeyText = wx.StaticText(self, wx.ID_ANY, u"vCode:", wx.DefaultPosition, wx.DefaultSize, 0)
-        self.m_staticKeyText.Wrap(-1)
-        fgSizerInput.Add(self.m_staticKeyText, 0, wx.ALL | wx.ALIGN_RIGHT | wx.ALIGN_CENTER_VERTICAL, 5)
-
-        self.inputKey = wx.TextCtrl(self, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.DefaultSize, 0)
-        fgSizerInput.Add(self.inputKey, 0, wx.ALL | wx.EXPAND, 5)
-
-        self.m_staticCharText = wx.StaticText(self, wx.ID_ANY, u"Character:", wx.DefaultPosition, wx.DefaultSize, 0)
-        self.m_staticCharText.Wrap(-1)
-        fgSizerInput.Add(self.m_staticCharText, 0, wx.ALL | wx.ALIGN_RIGHT | wx.ALIGN_CENTER_VERTICAL, 5)
-
-        self.charChoice = wx.Choice(self, wx.ID_ANY, style=0)
-        self.charChoice.Append("No Selection", 0)
-        fgSizerInput.Add(self.charChoice, 1, wx.ALL | wx.EXPAND, 5)
-
-        self.charChoice.Enable(False)
-
-        pmainSizer.Add(fgSizerInput, 0, wx.EXPAND, 5)
-
-        btnSizer = wx.BoxSizer(wx.HORIZONTAL)
-        btnSizer.AddStretchSpacer()
-
-        self.btnFetchCharList = wx.Button(self, wx.ID_ANY, u"Get Characters")
-        btnSizer.Add(self.btnFetchCharList, 0, wx.ALL, 2)
-        self.btnFetchCharList.Bind(wx.EVT_BUTTON, self.fetchCharList)
-
-        self.btnFetchSkills = wx.Button(self, wx.ID_ANY, u"Fetch Skills")
-        btnSizer.Add(self.btnFetchSkills, 0, wx.ALL, 2)
-        self.btnFetchSkills.Bind(wx.EVT_BUTTON, self.fetchSkills)
-        self.btnFetchSkills.Enable(False)
-
-        btnSizer.AddStretchSpacer()
-        pmainSizer.Add(btnSizer, 0, wx.EXPAND, 5)
-
-        self.stStatus = wx.StaticText(self, wx.ID_ANY, wx.EmptyString)
-        pmainSizer.Add(self.stStatus, 0, wx.ALL, 5)
-
-        pmainSizer.AddStretchSpacer()
-        self.stAPITip = wx.StaticText(self, wx.ID_ANY,
-                                      u"You can create a pre-defined key here (only CharacterSheet is required):",
-                                      wx.DefaultPosition, wx.DefaultSize, 0)
-        self.stAPITip.Wrap(-1)
-
-        pmainSizer.Add(self.stAPITip, 0, wx.ALL, 2)
-
-        self.hlEveAPI = wx.HyperlinkCtrl(self, wx.ID_ANY, self.apiUrlCreatePredefined, self.apiUrlCreatePredefined,
-                                         wx.DefaultPosition, wx.DefaultSize, wx.HL_DEFAULT_STYLE)
-        pmainSizer.Add(self.hlEveAPI, 0, wx.ALL, 2)
-
-        self.stAPITip2 = wx.StaticText(self, wx.ID_ANY, u"Or, you can choose an existing key from:", wx.DefaultPosition,
-                                       wx.DefaultSize, 0)
-        self.stAPITip2.Wrap(-1)
-        pmainSizer.Add(self.stAPITip2, 0, wx.ALL, 2)
-
-        self.hlEveAPI2 = wx.HyperlinkCtrl(self, wx.ID_ANY, self.apiUrlKeyList, self.apiUrlKeyList, wx.DefaultPosition,
-                                          wx.DefaultSize, wx.HL_DEFAULT_STYLE)
-        pmainSizer.Add(self.hlEveAPI2, 0, wx.ALL, 2)
-
-        self.charEditor.entityEditor.Bind(wx.EVT_CHOICE, self.charChanged)
 
         self.SetSizer(pmainSizer)
         self.Layout()
-        self.charChanged(None)
-
-    def charChanged(self, event):
-        sChar = Character.getInstance()
-        activeChar = self.charEditor.entityEditor.getActiveEntity()
-
-        ID, key, char, chars = sChar.getApiDetails(activeChar.ID)
-        self.inputID.SetValue(str(ID))
-        self.inputKey.SetValue(key)
-
-        self.charChoice.Clear()
-
-        if chars:
-            for charName in chars:
-                self.charChoice.Append(charName)
-            self.charChoice.SetStringSelection(char)
-            self.charChoice.Enable(True)
-            self.btnFetchSkills.Enable(True)
-        else:
-            self.charChoice.Append("No characters...", 0)
-            self.charChoice.SetSelection(0)
-            self.charChoice.Enable(False)
-            self.btnFetchSkills.Enable(False)
-
-        if activeChar.name in ("All 0", "All 5"):
-            self.Enable(False)
-            self.stDisabledTip.Show()
-            self.Layout()
-        else:
-            self.Enable()
-            self.stDisabledTip.Hide()
-            self.Layout()
-
-        if event is not None:
-            event.Skip()
-
-    def fetchCharList(self, event):
-        self.stStatus.SetLabel("")
-        if self.inputID.GetLineText(0) == "" or self.inputKey.GetLineText(0) == "":
-            self.stStatus.SetLabel("Invalid keyID or vCode!")
-            return
-
-        sChar = Character.getInstance()
-        try:
-            activeChar = self.charEditor.entityEditor.getActiveEntity()
-            list = sChar.apiCharList(activeChar.ID, self.inputID.GetLineText(0), self.inputKey.GetLineText(0))
-        except AuthenticationError, e:
-            msg = "Authentication failure. Please check keyID and vCode combination."
-            pyfalog.info(msg)
-            self.stStatus.SetLabel(msg)
-        except TimeoutError, e:
-            msg = "Request timed out. Please check network connectivity and/or proxy settings."
-            pyfalog.info(msg)
-            self.stStatus.SetLabel(msg)
-        except Exception, e:
-            pyfalog.error(e)
-            self.stStatus.SetLabel("Error:\n%s" % e.message)
-        else:
-            self.charChoice.Clear()
-            for charName in list:
-                self.charChoice.Append(charName)
-
-            self.btnFetchSkills.Enable(True)
-            self.charChoice.Enable(True)
-
-            self.Layout()
-
-            self.charChoice.SetSelection(0)
-
-    def fetchSkills(self, event):
-        charName = self.charChoice.GetString(self.charChoice.GetSelection())
-        if charName:
-            sChar = Character.getInstance()
-            activeChar = self.charEditor.entityEditor.getActiveEntity()
-            sChar.apiFetch(activeChar.ID, charName, self.__fetchCallback)
-            self.stStatus.SetLabel("Getting skills for {}".format(charName))
-
-    def __fetchCallback(self, e=None):
-        charName = self.charChoice.GetString(self.charChoice.GetSelection())
-        if e is None:
-            self.stStatus.SetLabel("Successfully fetched {}\'s skills from EVE API.".format(charName))
-        else:
-            exc_type, exc_obj, exc_trace = e
-            pyfalog.error("Unable to retrieve {0}\'s skills. Error message:\n{1}".format(charName, exc_obj))
-            self.stStatus.SetLabel("Unable to retrieve {}\'s skills. Error message:\n{}".format(charName, exc_obj))
 
 
 class SecStatusDialog(wx.Dialog):
