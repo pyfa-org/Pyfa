@@ -172,7 +172,7 @@ class Esi(object):
         return resp.data
 
     def check_response(self, resp):
-        if resp.status != 200:
+        if resp.status >= 400:
             raise EsiException(resp.status)
         return resp
 
