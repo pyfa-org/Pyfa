@@ -1,7 +1,7 @@
 # shipBonusRemoteRepMaxRangeRoleBonus1
 #
 # Used by:
-# Ship: Demavik
+# Ship: Damavik
 # Ship: Leshak
 # Ship: Vedmak
 type = "passive"
