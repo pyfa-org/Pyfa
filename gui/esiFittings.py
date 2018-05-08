@@ -72,8 +72,6 @@ class EveFittings(wx.Frame):
         self.importBtn.Bind(wx.EVT_BUTTON, self.importFitting)
         self.deleteBtn.Bind(wx.EVT_BUTTON, self.deleteFitting)
 
-        self.mainFrame.Bind(GE.EVT_SSO_LOGOUT, self.ssoLogout)
-        self.mainFrame.Bind(GE.EVT_SSO_LOGIN, self.ssoLogin)
         self.Bind(wx.EVT_CLOSE, self.OnClose)
 
         self.statusbar = wx.StatusBar(self)
@@ -84,10 +82,6 @@ class EveFittings(wx.Frame):
         self.Layout()
 
         self.Centre(wx.BOTH)
-
-    def ssoLogin(self, event):
-        self.updateCharList()
-        event.Skip()
 
     def updateCharList(self):
         sEsi = Esi.getInstance()
@@ -101,10 +95,6 @@ class EveFittings(wx.Frame):
             self.charChoice.Append(char.characterName, char.ID)
 
         self.charChoice.SetSelection(0)
-
-    def ssoLogout(self, event):
-        self.updateCharList()
-        event.Skip()  # continue event
 
     def OnClose(self, event):
         self.mainFrame.Unbind(GE.EVT_SSO_LOGOUT)
@@ -208,8 +198,6 @@ class ExportToEve(wx.Frame):
         self.statusbar.SetFieldsCount(2)
         self.statusbar.SetStatusWidths([100, -1])
 
-        self.mainFrame.Bind(GE.EVT_SSO_LOGOUT, self.ssoLogout)
-        self.mainFrame.Bind(GE.EVT_SSO_LOGIN, self.ssoLogin)
         self.Bind(wx.EVT_CLOSE, self.OnClose)
 
         self.SetSizer(mainSizer)
@@ -230,14 +218,6 @@ class ExportToEve(wx.Frame):
             self.charChoice.Append(char.characterName, char.ID)
 
         self.charChoice.SetSelection(0)
-
-    def ssoLogin(self, event):
-        self.updateCharList()
-        event.Skip()
-
-    def ssoLogout(self, event):
-        self.updateCharList()
-        event.Skip()  # continue event
 
     def OnClose(self, event):
         self.mainFrame.Unbind(GE.EVT_SSO_LOGOUT)
@@ -324,8 +304,10 @@ class SsoCharacterMgmt(wx.Dialog):
         self.Centre(wx.BOTH)
 
     def ssoLogin(self, event):
-        self.popCharList()
-        event.Skip()
+        if (self):
+            #todo: these events don't unbind properly when window is closed (?), hence the `if`. Figure out better way of doing this.
+            self.popCharList()
+            event.Skip()
 
     def popCharList(self):
         sEsi = Esi.getInstance()
