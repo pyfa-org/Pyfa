@@ -52,7 +52,6 @@ class Character(object):
                 self.addSkill(Skill(self, item.ID, self.defaultLevel))
 
         self.__implants = HandledImplantBoosterList()
-        self.apiKey = None
 
     @reconstructor
     def init(self):
@@ -274,20 +273,17 @@ class Character(object):
 
     def __deepcopy__(self, memo):
         copy = Character("%s copy" % self.name, initSkills=False)
-        copy.apiKey = self.apiKey
-        copy.apiID = self.apiID
 
         for skill in self.skills:
             copy.addSkill(Skill(copy, skill.itemID, skill.level, False, skill.learned))
 
         return copy
 
-    @validates("ID", "name", "apiKey", "ownerID")
+    @validates("ID", "name", "ownerID")
     def validator(self, key, val):
         map = {
             "ID"     : lambda _val: isinstance(_val, int),
             "name"   : lambda _val: True,
-            "apiKey" : lambda _val: _val is None or (isinstance(_val, str) and len(_val) > 0),
             "ownerID": lambda _val: isinstance(_val, int) or _val is None
         }
 
