@@ -23,6 +23,8 @@ from .esi_security_proxy import EsiSecurityProxy
 from esipy import EsiClient, EsiApp
 from esipy.cache import FileCache
 
+import wx
+
 pyfalog = Logger(__name__)
 
 cache_path = os.path.join(config.savePath, config.ESI_CACHE)
@@ -82,7 +84,13 @@ class Esi(object):
         return cls._instance
 
     def __init__(self):
-        Esi.initEsiApp()
+        try:
+            Esi.initEsiApp()
+        except Exception as e:
+            # todo: this is a stop-gap for #1546. figure out a better way of handling esi service failing.
+            pyfalog.error(e)
+            wx.MessageBox("The ESI module failed to initialize. This can sometimes happen on first load on a slower connection. Please try again.")
+            return
 
         self.settings = EsiSettings.getInstance()
 
