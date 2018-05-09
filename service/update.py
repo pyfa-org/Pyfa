@@ -49,7 +49,7 @@ class CheckUpdateThread(threading.Thread):
 
         try:
             try:
-                response = network.request('https://www.pyfa.io/update_check?pyfa_version={}'.format(config.version), network.UPDATE)
+                response = network.request('https://www.pyfa.io/update_check?pyfa_version={}&client_hash={}'.format(config.version, config.getClientSecret()), network.UPDATE)
             except Exception as e:
                 response = network.request('https://api.github.com/repos/pyfa-org/Pyfa/releases', network.UPDATE)
 

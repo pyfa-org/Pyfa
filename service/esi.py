@@ -216,7 +216,8 @@ class Esi(object):
         args = {
             'state': self.state,
             'pyfa_version': config.version,
-            'login_method': self.settings.get('loginMode')
+            'login_method': self.settings.get('loginMode'),
+            'client_hash': config.getClientSecret()
         }
 
         if redirect is not None:
