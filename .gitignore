@@ -122,3 +122,6 @@ gitversion
 /.version
 *.swp
 
+# Test Python files
+test.py
+
