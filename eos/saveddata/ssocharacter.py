@@ -32,23 +32,11 @@ class SsoCharacter(object):
         self.accessToken = accessToken
         self.refreshToken = refreshToken
         self.accessTokenExpires = None
-        self.esi_client = None
 
 
     @reconstructor
     def init(self):
-        self.esi_client = None
-
-    def get_sso_data(self):
-        """ Little "helper" function to get formated data for esipy security
-        """
-        return {
-            'access_token': self.accessToken,
-            'refresh_token': self.refreshToken,
-            'expires_in': (
-                self.accessTokenExpires - datetime.datetime.utcnow()
-            ).total_seconds()
-        }
+        pass
 
     def is_token_expired(self):
         if self.accessTokenExpires is None:
