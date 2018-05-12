@@ -50,6 +50,10 @@ class SsoCharacter(object):
             ).total_seconds()
         }
 
+    def is_token_expired(self):
+        if self.accessTokenExpires is None:
+            return True
+        return datetime.datetime.now() >= self.accessTokenExpires
 
     def __repr__(self):
         return "SsoCharacter(ID={}, name={}, client={}) at {}".format(

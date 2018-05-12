@@ -16,8 +16,7 @@ import gui.globalEvents as GE
 
 from logbook import Logger
 import calendar
-from service.esi import Esi
-from esipy.exceptions import APIException
+from service.esi import Esi, APIException
 from service.port import ESIExportException
 
 pyfalog = Logger(__name__)

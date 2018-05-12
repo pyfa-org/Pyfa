@@ -19,35 +19,53 @@ import gui.globalEvents as GE
 from service.server import StoppableHTTPServer, AuthHandler
 from service.settings import EsiSettings
 
-from .esi_security_proxy import EsiSecurityProxy
-from esipy import EsiClient, EsiApp
-from esipy.cache import FileCache
-
 import wx
+from requests import Session
 
 pyfalog = Logger(__name__)
 
-cache_path = os.path.join(config.savePath, config.ESI_CACHE)
-
-from esipy.events import AFTER_TOKEN_REFRESH
-
 from urllib.parse import urlencode
 
-if not os.path.exists(cache_path):
-    os.mkdir(cache_path)
+# todo: reimplement Caching for calls
+# from esipy.cache import FileCache
+# file_cache = FileCache(cache_path)
+# cache_path = os.path.join(config.savePath, config.ESI_CACHE)
+#
+# if not os.path.exists(cache_path):
+#     os.mkdir(cache_path)
+#
 
-file_cache = FileCache(cache_path)
-
-
-sso_url = "https://www.pyfa.io" # "https://login.eveonline.com" for actual login
+sso_url = "https://www.pyfa.io"  # "https://login.eveonline.com" for actual login
 esi_url = "https://esi.tech.ccp.is"
 
 oauth_authorize = '%s/oauth/authorize' % sso_url
 oauth_token = '%s/oauth/token' % sso_url
 
-class EsiException(Exception):
-    pass
 
+class APIException(Exception):
+    """ Exception for SSO related errors """
+
+    def __init__(self, url, code, json_response):
+        self.url = url
+        self.status_code = code
+        self.response = json_response
+        super(APIException, self).__init__(str(self))
+
+    def __str__(self):
+        if 'error' in self.response:
+            return 'HTTP Error %s: %s' % (self.status_code,
+                                          self.response['error'])
+        elif 'message' in self.response:
+            return 'HTTP Error %s: %s' % (self.status_code,
+                                          self.response['message'])
+        return 'HTTP Error %s' % (self.status_code)
+
+
+class ESIEndpoints(Enum):
+    CHAR = "/v4/characters/{character_id}/"
+    CHAR_SKILLS = "/v4/characters/{character_id}/skills/" # prepend https://esi.evetech.net/
+    CHAR_FITTINGS = "/v1/characters/{character_id}/fittings/"
+    CHAR_DEL_FIT = "/v1/characters/{character_id}/fittings/{fitting_id}/"
 
 class Servers(Enum):
     TQ = 0
@@ -60,30 +78,7 @@ class LoginMethod(Enum):
 
 
 class Esi(object):
-    esiapp = None
-    esi_v1 = None
-    esi_v4 = None
-
-    _initializing = None
-
     _instance = None
-
-    @classmethod
-    def initEsiApp(cls):
-        if cls._initializing is None:
-            cls._initializing = True
-            cls.esiapp = EsiApp(cache=file_cache, cache_time=None, cache_prefix='pyfa{0}-esipy-'.format(config.version))
-            cls.esi_v1 = cls.esiapp.get_v1_swagger
-            cls.esi_v4 = cls.esiapp.get_v4_swagger
-            cls._initializing = False
-
-    @classmethod
-    def genEsiClient(cls, security=None):
-        return EsiClient(
-            security=EsiSecurityProxy(sso_url=config.ESI_AUTH_PROXY) if security is None else security,
-            cache=file_cache,
-            headers={'User-Agent': 'pyfa esipy'}
-        )
 
     @classmethod
     def getInstance(cls):
@@ -93,17 +88,7 @@ class Esi(object):
         return cls._instance
 
     def __init__(self):
-        try:
-            Esi.initEsiApp()
-        except Exception as e:
-            # todo: this is a stop-gap for #1546. figure out a better way of handling esi service failing.
-            pyfalog.error(e)
-            wx.MessageBox("The ESI module failed to initialize. This can sometimes happen on first load on a slower connection. Please try again.")
-            return
-
         self.settings = EsiSettings.getInstance()
-
-        AFTER_TOKEN_REFRESH.add_receiver(self.tokenUpdate)
 
         # these will be set when needed
         self.httpd = None
@@ -112,17 +97,31 @@ class Esi(object):
 
         self.implicitCharacter = None
 
-        # The database cache does not seem to be working for some reason. Use
-        # this as a temporary measure
-        self.charCache = {}
-
         # need these here to post events
         import gui.mainFrame  # put this here to avoid loop
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
 
-    def tokenUpdate(self, **kwargs):
-        print(kwargs)
-        pass
+        if sso_url is None or sso_url == "":
+            raise AttributeError("sso_url cannot be None or empty "
+                                 "without app parameter")
+
+        self.oauth_authorize = '%s/oauth/authorize' % sso_url
+        self.oauth_token = '%s/oauth/token' % sso_url
+
+        # use ESI url for verify, since it's better for caching
+        if esi_url is None or esi_url == "":
+            raise AttributeError("esi_url cannot be None or empty")
+        self.oauth_verify = '%s/verify/' % esi_url
+
+
+        # session request stuff
+        self._session = Session()
+        self._session.headers.update({
+            'Accept': 'application/json',
+            'User-Agent': (
+                'pyfa v{}'.format(config.version)
+            )
+        })
 
     def delSsoCharacter(self, id):
         char = eos.db.getSsoCharacter(id, config.getClientSecret())
@@ -151,46 +150,36 @@ class Esi(object):
         eos.db.commit()
         return char
 
+
     def getSkills(self, id):
         char = self.getSsoCharacter(id)
-        op = Esi.esi_v4.op['get_characters_character_id_skills'](character_id=char.characterID)
-        resp = self.check_response(char.esi_client.request(op))
-        return resp.data
+        resp = self.get(char, ESIEndpoints.CHAR_SKILLS, character_id=char.characterID)
+        # resp = self.check_response(char.esi_client.request(op))
+        return resp.json()
 
     def getSecStatus(self, id):
         char = self.getSsoCharacter(id)
-        op = Esi.esi_v4.op['get_characters_character_id'](character_id=char.characterID)
-        resp = self.check_response(char.esi_client.request(op))
-        return resp.data
+        resp = self.get(char, ESIEndpoints.CHAR, character_id=char.characterID)
+        return resp.json()
 
     def getFittings(self, id):
         char = self.getSsoCharacter(id)
-        op = Esi.esi_v1.op['get_characters_character_id_fittings'](character_id=char.characterID)
-        resp = self.check_response(char.esi_client.request(op))
-        return resp.data
+        resp = self.get(char, ESIEndpoints.CHAR_FITTINGS, character_id=char.characterID)
+        return resp.json()
 
     def postFitting(self, id, json_str):
         # @todo: new fitting ID can be recovered from resp.data,
         char = self.getSsoCharacter(id)
-        op = Esi.esi_v1.op['post_characters_character_id_fittings'](
-            character_id=char.characterID,
-            fitting=json.loads(json_str)
-        )
-        resp = self.check_response(char.esi_client.request(op))
-        return resp.data
+        resp = self.post(char, ESIEndpoints.CHAR_FITTINGS, json_str, character_id=char.characterID)
+        return resp.json()
 
     def delFitting(self, id, fittingID):
         char = self.getSsoCharacter(id)
-        op = Esi.esi_v1.op['delete_characters_character_id_fittings_fitting_id'](
-            character_id=char.characterID,
-            fitting_id=fittingID
-        )
-        resp = self.check_response(char.esi_client.request(op))
-        return resp.data
+        self.delete(char, ESIEndpoints.CHAR_DEL_FIT, character_id=char.characterID, fitting_id=fittingID)
 
     def check_response(self, resp):
-        if resp.status >= 400:
-            raise EsiException(resp.status)
+        # if resp.status >= 400:
+        #     raise EsiException(resp.status)
         return resp
 
     @staticmethod
@@ -210,10 +199,6 @@ class Esi(object):
         char.accessTokenExpires = datetime.datetime.fromtimestamp(time.time() + tokenResponse['expires_in'])
         if 'refresh_token' in tokenResponse:
             char.refreshToken = config.cipher.encrypt(tokenResponse['refresh_token'].encode())
-
-        # remove, no longer need?
-        if char.esi_client is not None:
-            char.esi_client.security.update_token(tokenResponse)
 
     def login(self):
         serverAddr = None
@@ -263,30 +248,71 @@ class Esi(object):
 
         return 'http://localhost:{}'.format(port)
 
+    def get_oauth_header(self, token):
+        """ Return the Bearer Authorization header required in oauth calls
+
+        :return: a dict with the authorization header
+        """
+        return {'Authorization': 'Bearer %s' % token}
+
+    def get_refresh_token_params(self, refreshToken):
+        """ Return the param object for the post() call to get the access_token
+        from the refresh_token
+
+        :param code: the refresh token
+        :return: a dict with the url, params and header
+        """
+        if refreshToken is None:
+            raise AttributeError('No refresh token is defined.')
+
+        return {
+            'data': {
+                'grant_type': 'refresh_token',
+                'refresh_token': refreshToken,
+            },
+            'url': self.oauth_token,
+        }
+
+    def refresh(self, ssoChar):
+        request_data = self.get_refresh_token_params(config.cipher.decrypt(ssoChar.refreshToken).decode())
+        res = self._session.post(**request_data)
+        if res.status_code != 200:
+            raise APIException(
+                request_data['url'],
+                res.status_code,
+                res.json()
+            )
+        json_res = res.json()
+        self.update_token(ssoChar, json_res)
+        return json_res
+
     def handleLogin(self, ssoInfo):
         auth_response = json.loads(base64.b64decode(ssoInfo))
 
-        # We need to preload the ESI Security object beforehand with the auth response so that we can use verify to
-        # get character information
-        # init the security object
-        esisecurity = EsiSecurityProxy(sso_url=config.ESI_AUTH_PROXY)
-
-        esisecurity.update_token(auth_response)
-
-        # we get the character information
-        cdata = esisecurity.verify()
+        res = self._session.get(
+            self.oauth_verify,
+            headers=self.get_oauth_header(auth_response['access_token'])
+        )
+        if res.status_code != 200:
+            raise APIException(
+                self.oauth_verify,
+                res.status_code,
+                res.json()
+            )
+        cdata = res.json()
         print(cdata)
 
         currentCharacter = self.getSsoCharacter(cdata['CharacterName'])
 
         if currentCharacter is None:
             currentCharacter = SsoCharacter(cdata['CharacterID'], cdata['CharacterName'], config.getClientSecret())
-            currentCharacter.esi_client = Esi.genEsiClient(esisecurity)
 
-        Esi.update_token(currentCharacter, auth_response)  # this also sets the esi security token
+        Esi.update_token(currentCharacter, auth_response)
 
         eos.db.save(currentCharacter)
         wx.PostEvent(self.mainFrame, GE.SsoLogin(character=currentCharacter))
+
+    # get (endpoint, char, data?)
 
     def handleServerLogin(self, message):
         if not message:
@@ -299,3 +325,34 @@ class Esi(object):
         pyfalog.debug("Handling SSO login with: {0}", message)
 
         self.handleLogin(message['SSOInfo'][0])
+
+    def __before_request(self, ssoChar):
+        if ssoChar.is_token_expired():
+            json_response = self.refresh(ssoChar)
+            # AFTER_TOKEN_REFRESH.send(**json_response)
+
+        if ssoChar.accessToken is not None:
+            self._session.headers.update(self.get_oauth_header(ssoChar.accessToken))
+
+    def get(self, ssoChar, endpoint, *args, **kwargs):
+        self.__before_request(ssoChar)
+        endpoint = endpoint.format(**kwargs)
+        return self._session.get("{}{}".format(esi_url, endpoint))
+
+        # check for warnings, also status > 400
+
+
+    def post(self, ssoChar, endpoint, json, *args, **kwargs):
+        self.__before_request(ssoChar)
+        endpoint = endpoint.format(**kwargs)
+        return self._session.post("{}{}".format(esi_url, endpoint), data=json)
+
+        # check for warnings, also status > 400
+
+    def delete(self, ssoChar, endpoint, *args, **kwargs):
+        self.__before_request(ssoChar)
+        endpoint = endpoint.format(**kwargs)
+        return self._session.delete("{}{}".format(esi_url, endpoint))
+
+        # check for warnings, also status > 400
+
