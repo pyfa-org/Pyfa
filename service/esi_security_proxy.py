@@ -116,19 +116,6 @@ class EsiSecurityProxy(object):
 
         return request_params
 
-    def get_auth_uri(self, *args, **kwargs):
-        """ Constructs the full auth uri and returns it.
-
-        :param state: The state to pass through the auth process
-        :param redirect: The URI that the proxy server will redirect to
-        :return: the authorizationUrl with the correct parameters.
-        """
-
-        return '%s?%s' % (
-            self.oauth_authorize,
-            urlencode(kwargs)
-        )
-
     def get_refresh_token_params(self):
         """ Return the param object for the post() call to get the access_token
         from the refresh_token

@@ -31,14 +31,23 @@ cache_path = os.path.join(config.savePath, config.ESI_CACHE)
 
 from esipy.events import AFTER_TOKEN_REFRESH
 
+from urllib.parse import urlencode
+
 if not os.path.exists(cache_path):
     os.mkdir(cache_path)
 
 file_cache = FileCache(cache_path)
 
 
+sso_url = "https://www.pyfa.io" # "https://login.eveonline.com" for actual login
+esi_url = "https://esi.tech.ccp.is"
+
+oauth_authorize = '%s/oauth/authorize' % sso_url
+oauth_token = '%s/oauth/token' % sso_url
+
 class EsiException(Exception):
     pass
+
 
 class Servers(Enum):
     TQ = 0
@@ -201,6 +210,8 @@ class Esi(object):
         char.accessTokenExpires = datetime.datetime.fromtimestamp(time.time() + tokenResponse['expires_in'])
         if 'refresh_token' in tokenResponse:
             char.refreshToken = config.cipher.encrypt(tokenResponse['refresh_token'].encode())
+
+        # remove, no longer need?
         if char.esi_client is not None:
             char.esi_client.security.update_token(tokenResponse)
 
@@ -219,7 +230,6 @@ class Esi(object):
 
     def getLoginURI(self, redirect=None):
         self.state = str(uuid.uuid4())
-        esisecurity = EsiSecurityProxy(sso_url=config.ESI_AUTH_PROXY)
 
         args = {
             'state': self.state,
@@ -231,7 +241,10 @@ class Esi(object):
         if redirect is not None:
             args['redirect'] = redirect
 
-        return esisecurity.get_auth_uri(**args)
+        return '%s?%s' % (
+            oauth_authorize,
+            urlencode(args)
+        )
 
     def startServer(self):  # todo: break this out into two functions: starting the server, and getting the URI
         pyfalog.debug("Starting server")
