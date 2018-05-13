@@ -80,3 +80,4 @@ coll = COLLECT(
                name='pyfa',
                icon='dist_assets/win/pyfa.ico',
                )
+
