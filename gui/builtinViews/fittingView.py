@@ -88,7 +88,7 @@ class FitSpawner(gui.multiSwitch.TabSpawner):
 
     def handleDrag(self, type, fitID):
         if type == "fit":
-            for page in self.multiSwitch.pages:
+            for page in self.multiSwitch._pages:
                 if isinstance(page, FittingView) and page.activeFitID == fitID:
                     index = self.multiSwitch.GetPageIndex(page)
                     self.multiSwitch.SetSelection(index)
