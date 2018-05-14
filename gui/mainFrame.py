@@ -69,6 +69,7 @@ from service.settings import SettingsProvider
 from service.fit import Fit
 from service.character import Character
 from service.update import Update
+from service.esiAccess import SsoMode
 
 # import this to access override setting
 from eos.modifiedAttributeDict import ModifiedAttributeDict
@@ -241,12 +242,12 @@ class MainFrame(wx.Frame):
         self.Bind(GE.EVT_SSO_LOGGING_IN, self.ShowSsoLogin)
 
     def ShowSsoLogin(self, event):
-        if getattr(event, "login_mode", LoginMethod.SERVER) == LoginMethod.MANUAL:
+        if getattr(event, "login_mode", LoginMethod.SERVER) == LoginMethod.MANUAL and getattr(event, "sso_mode", SsoMode.AUTO) == SsoMode.AUTO:
             dlg = SsoLogin(self)
             if dlg.ShowModal() == wx.ID_OK:
                 sEsi = Esi.getInstance()
                 # todo: verify that this is a correct SSO Info block
-                sEsi.handleLogin(dlg.ssoInfoCtrl.Value.strip())
+                sEsi.handleLogin({'SSOInfo': [dlg.ssoInfoCtrl.Value.strip()]})
 
     def ShowUpdateBox(self, release, version):
         dlg = UpdateDialog(self, release, version)

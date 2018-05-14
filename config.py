@@ -42,7 +42,6 @@ logging_setup = None
 cipher = None
 clientHash = None
 
-ESI_AUTH_PROXY = "https://www.pyfa.io" # "http://localhost:5015"
 ESI_CACHE = 'esi_cache'
 
 LOGLEVEL_MAP = {

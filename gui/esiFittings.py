@@ -123,6 +123,7 @@ class EveFittings(wx.Frame):
             ESIExceptionHandler(self, ex)
         except Exception as ex:
             del waitDialog
+            raise ex
 
     def importFitting(self, event):
         selection = self.fitView.fitSelection
@@ -159,7 +160,7 @@ class EveFittings(wx.Frame):
 class ESIExceptionHandler(object):
     # todo: make this a generate excetpion handler for all calls
     def __init__(self, parentWindow, ex):
-        if ex.response['error'].startswith('Token is not valid'):
+        if ex.response['error'].startswith('Token is not valid') or ex.response['error'] == 'invalid_token':  # todo: this seems messy, figure out a better response
             dlg = wx.MessageDialog(parentWindow,
                                    "There was an error validating characters' SSO token. Please try "
                                    "logging into the character again to reset the token.", "Invalid Token",

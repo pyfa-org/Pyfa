@@ -11,7 +11,7 @@ import webbrowser
 import eos.db
 from eos.enum import Enum
 from eos.saveddata.ssocharacter import SsoCharacter
-from service.esiAccess import APIException
+from service.esiAccess import APIException, SsoMode
 import gui.globalEvents as GE
 from service.server import StoppableHTTPServer, AuthHandler
 from service.settings import EsiSettings
@@ -39,8 +39,9 @@ class Esi(EsiAccess):
         return cls._instance
 
     def __init__(self):
-        super().__init__()
         self.settings = EsiSettings.getInstance()
+
+        super().__init__()
 
         # these will be set when needed
         self.httpd = None
@@ -105,18 +106,19 @@ class Esi(EsiAccess):
 
     def login(self):
         serverAddr = None
-        if self.settings.get('loginMode') == LoginMethod.SERVER:
-            serverAddr = self.startServer()
+        # always start the local server if user is using client details. Otherwise, start only if they choose to do so.
+        if self.settings.get('ssoMode') == SsoMode.CUSTOM or self.settings.get('loginMode') == LoginMethod.SERVER:
+            serverAddr = self.startServer(6461 if self.settings.get('ssoMode') == SsoMode.CUSTOM else 0)  # random port, or if it's custom application, use a defined port
         uri = self.getLoginURI(serverAddr)
         webbrowser.open(uri)
-        wx.PostEvent(self.mainFrame, GE.SsoLoggingIn(login_mode=self.settings.get('loginMode')))
+        wx.PostEvent(self.mainFrame, GE.SsoLoggingIn(sso_mode=self.settings.get('ssoMode'), login_mode=self.settings.get('loginMode')))
 
     def stopServer(self):
         pyfalog.debug("Stopping Server")
         self.httpd.stop()
         self.httpd = None
 
-    def startServer(self):  # todo: break this out into two functions: starting the server, and getting the URI
+    def startServer(self, port):  # todo: break this out into two functions: starting the server, and getting the URI
         pyfalog.debug("Starting server")
 
         # we need this to ensure that the previous get_request finishes, and then the socket will close
@@ -124,7 +126,7 @@ class Esi(EsiAccess):
             self.stopServer()
             time.sleep(1)
 
-        self.httpd = StoppableHTTPServer(('localhost', 0), AuthHandler)
+        self.httpd = StoppableHTTPServer(('localhost', port), AuthHandler)
         port = self.httpd.socket.getsockname()[1]
         self.serverThread = threading.Thread(target=self.httpd.serve, args=(self.handleServerLogin,))
         self.serverThread.name = "SsoCallbackServer"
@@ -133,8 +135,15 @@ class Esi(EsiAccess):
 
         return 'http://localhost:{}'.format(port)
 
-    def handleLogin(self, ssoInfo):
-        auth_response = json.loads(base64.b64decode(ssoInfo))
+    def handleLogin(self, message):
+
+        # we already have authenticated stuff for the auto mode
+        if (self.settings.get('ssoMode') == SsoMode.AUTO):
+            ssoInfo = message['SSOInfo'][0]
+            auth_response = json.loads(base64.b64decode(ssoInfo))
+        else:
+            # otherwise, we need to fetch the information
+            auth_response = self.auth(message['code'][0])
 
         res = self._session.get(
             self.oauth_verify,
@@ -171,5 +180,5 @@ class Esi(EsiAccess):
 
         pyfalog.debug("Handling SSO login with: {0}", message)
 
-        self.handleLogin(message['SSOInfo'][0])
+        self.handleLogin(message)
 

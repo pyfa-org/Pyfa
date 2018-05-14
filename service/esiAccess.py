@@ -1,16 +1,27 @@
+'''
+
+A lot of the inspiration (and straight up code copying!) for this class comes from EsiPy <https://github.com/Kyria/EsiPy>
+Much of the credit goes to the maintainer of that package, Kyria <tweetfleet slack: @althalus>. The reasoning for no
+longer using EsiPy was due to it's reliance on pyswagger, which has caused a bit of a headache in how it operates on a
+low level.
+
+Eventually I'll rewrite this to be a bit cleaner and a bit more generic, but for now, it works!
+
+'''
+
 # noinspection PyPackageRequirements
 from logbook import Logger
 import uuid
 import time
 import config
+import base64
 
 import datetime
 from eos.enum import Enum
-from eos.saveddata.ssocharacter import SsoCharacter
 from service.settings import EsiSettings
 
 from requests import Session
-from urllib.parse import urlencode
+from urllib.parse import urlencode, quote
 
 pyfalog = Logger(__name__)
 
@@ -23,12 +34,17 @@ pyfalog = Logger(__name__)
 #     os.mkdir(cache_path)
 #
 
-# todo: move these over to getters that automatically determine which endpoint we use.
-sso_url = "https://www.pyfa.io"  # "https://login.eveonline.com" for actual login
-esi_url = "https://esi.tech.ccp.is"
 
-oauth_authorize = '%s/oauth/authorize' % sso_url
-oauth_token = '%s/oauth/token' % sso_url
+scopes = [
+    'esi-skills.read_skills.v1',
+    'esi-fittings.read_fittings.v1',
+    'esi-fittings.write_fittings.v1'
+]
+
+
+class SsoMode(Enum):
+    AUTO = 0
+    CUSTOM = 1
 
 
 class APIException(Exception):
@@ -57,26 +73,9 @@ class ESIEndpoints(Enum):
     CHAR_DEL_FIT = "/v1/characters/{character_id}/fittings/{fitting_id}/"
 
 
-# class Servers(Enum):
-#     TQ = 0
-#     SISI = 1
-
 class EsiAccess(object):
     def __init__(self):
-        if sso_url is None or sso_url == "":
-            raise AttributeError("sso_url cannot be None or empty "
-                                 "without app parameter")
-
         self.settings = EsiSettings.getInstance()
-
-        self.oauth_authorize = '%s/oauth/authorize' % sso_url
-        self.oauth_token = '%s/oauth/token' % sso_url
-
-        # use ESI url for verify, since it's better for caching
-        if esi_url is None or esi_url == "":
-            raise AttributeError("esi_url cannot be None or empty")
-        self.oauth_verify = '%s/verify/' % esi_url
-
 
         # session request stuff
         self._session = Session()
@@ -86,6 +85,28 @@ class EsiAccess(object):
                 'pyfa v{}'.format(config.version)
             )
         })
+
+    @property
+    def sso_url(self):
+        if (self.settings.get("ssoMode") == SsoMode.CUSTOM):
+            return "https://login.eveonline.com"
+        return "https://www.pyfa.io"
+
+    @property
+    def esi_url(self):
+        return "https://esi.tech.ccp.is"
+
+    @property
+    def oauth_verify(self):
+        return '%s/verify/' % self.esi_url
+
+    @property
+    def oauth_authorize(self):
+        return '%s/oauth/authorize' % self.sso_url
+
+    @property
+    def oauth_token(self):
+        return '%s/oauth/token' % self.sso_url
 
     def getSkills(self, char):
         return self.get(char, ESIEndpoints.CHAR_SKILLS, character_id=char.characterID)
@@ -114,20 +135,30 @@ class EsiAccess(object):
     def getLoginURI(self, redirect=None):
         self.state = str(uuid.uuid4())
 
-        args = {
-            'state': self.state,
-            'pyfa_version': config.version,
-            'login_method': self.settings.get('loginMode'),
-            'client_hash': config.getClientSecret()
-        }
+        if (self.settings.get("ssoMode") == SsoMode.AUTO):
+            args = {
+                'state': self.state,
+                'pyfa_version': config.version,
+                'login_method': self.settings.get('loginMode'),
+                'client_hash': config.getClientSecret()
+            }
 
-        if redirect is not None:
-            args['redirect'] = redirect
+            if redirect is not None:
+                args['redirect'] = redirect
 
-        return '%s?%s' % (
-            oauth_authorize,
-            urlencode(args)
-        )
+            return '%s?%s' % (
+                self.oauth_authorize,
+                urlencode(args)
+            )
+        else:
+            return '%s?response_type=%s&redirect_uri=%s&client_id=%s%s%s' % (
+                self.oauth_authorize,
+                'code',
+                quote('http://localhost:6461', safe=''),
+                self.settings.get('clientID'),
+                '&scope=%s' % '+'.join(scopes) if scopes else '',
+                '&state=%s' % self.state
+            )
 
     def get_oauth_header(self, token):
         """ Return the Bearer Authorization header required in oauth calls
@@ -146,13 +177,61 @@ class EsiAccess(object):
         if refreshToken is None:
             raise AttributeError('No refresh token is defined.')
 
-        return {
-            'data': {
-                'grant_type': 'refresh_token',
-                'refresh_token': refreshToken,
-            },
+        data = {
+            'grant_type': 'refresh_token',
+            'refresh_token': refreshToken,
+            }
+
+        if self.settings.get('ssoMode') == SsoMode.AUTO:
+            # data is all we really need, the rest is handled automatically by pyfa.io
+            return {
+                'data': data,
+                'url': self.oauth_token,
+            }
+
+        # otherwise, we need to make the token with the client keys
+        return self.__make_token_request_parameters(data)
+
+    def __get_token_auth_header(self):
+        """ Return the Basic Authorization header required to get the tokens
+
+        :return: a dict with the headers
+        """
+        # encode/decode for py2/py3 compatibility
+        auth_b64 = "%s:%s" % (self.settings.get('clientID'), self.settings.get('clientSecret'))
+        auth_b64 = base64.b64encode(auth_b64.encode('latin-1'))
+        auth_b64 = auth_b64.decode('latin-1')
+
+        return {'Authorization': 'Basic %s' % auth_b64}
+
+    def __make_token_request_parameters(self, params):
+        request_params = {
+            'headers': self.__get_token_auth_header(),
+            'data': params,
             'url': self.oauth_token,
         }
+
+        return request_params
+
+    def get_access_token_request_params(self, code):
+        return self.__make_token_request_parameters(
+            {
+                'grant_type': 'authorization_code',
+                'code': code,
+            }
+        )
+
+    def auth(self, code):
+        request_data = self.get_access_token_request_params(code)
+        res = self._session.post(**request_data)
+        if res.status_code != 200:
+            raise Exception(
+                request_data['url'],
+                res.status_code,
+                res.json()
+            )
+        json_res = res.json()
+        return json_res
 
     def refresh(self, ssoChar):
         request_data = self.get_refresh_token_params(config.cipher.decrypt(ssoChar.refreshToken).decode())
@@ -191,21 +270,15 @@ class EsiAccess(object):
     def get(self, ssoChar, endpoint, *args, **kwargs):
         self._before_request(ssoChar)
         endpoint = endpoint.format(**kwargs)
-        return self._after_request(self._session.get("{}{}".format(esi_url, endpoint)))
-
-        # check for warnings, also status > 400
+        return self._after_request(self._session.get("{}{}".format(self.esi_url, endpoint)))
 
     def post(self, ssoChar, endpoint, json, *args, **kwargs):
         self._before_request(ssoChar)
         endpoint = endpoint.format(**kwargs)
-        return self._after_request(self._session.post("{}{}".format(esi_url, endpoint), data=json))
-
-        # check for warnings, also status > 400
+        return self._after_request(self._session.post("{}{}".format(self.esi_url, endpoint), data=json))
 
     def delete(self, ssoChar, endpoint, *args, **kwargs):
         self._before_request(ssoChar)
         endpoint = endpoint.format(**kwargs)
-        return self._after_request(self._session.delete("{}{}".format(esi_url, endpoint)))
-
-        # check for warnings, also status > 400
+        return self._after_request(self._session.delete("{}{}".format(self.esi_url, endpoint)))
 
