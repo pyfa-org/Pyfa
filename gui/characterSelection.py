@@ -19,15 +19,15 @@
 
 # noinspection PyPackageRequirements
 import wx
+from gui.bitmap_loader import BitmapLoader
 
 from logbook import Logger
 
 import gui.globalEvents as GE
 import gui.mainFrame
-from gui.bitmapLoader import BitmapLoader
-from gui.utils.clipboard import toClipboard
 from service.character import Character
 from service.fit import Fit
+from gui.utils.clipboard import toClipboard
 
 pyfalog = Logger(__name__)
 
@@ -61,7 +61,7 @@ class CharacterSelection(wx.Panel):
 
         self.btnRefresh.SetMinSize(size)
         self.btnRefresh.SetMaxSize(size)
-        self.btnRefresh.SetToolTipString("Refresh API")
+        self.btnRefresh.SetToolTip("Refresh API")
 
         self.btnRefresh.Bind(wx.EVT_BUTTON, self.refreshApi)
         self.btnRefresh.Enable(False)
@@ -79,6 +79,7 @@ class CharacterSelection(wx.Panel):
         self.mainFrame.Bind(GE.FIT_CHANGED, self.fitChanged)
 
         self.SetMinSize(wx.Size(25, -1))
+        self.toggleRefreshButton()
 
         self.charChoice.Enable(False)
 
@@ -142,7 +143,7 @@ class CharacterSelection(wx.Panel):
             sFit = Fit.getInstance()
             sFit.changeChar(fitID, charID)
 
-        choice.Append(u"\u2015 Open Character Editor \u2015", -1)
+        choice.Append("\u2015 Open Character Editor \u2015", -1)
         self.charCache = self.charChoice.GetCurrentSelection()
 
         if event is not None:
@@ -151,9 +152,7 @@ class CharacterSelection(wx.Panel):
     def refreshApi(self, event):
         self.btnRefresh.Enable(False)
         sChar = Character.getInstance()
-        ID, key, charName, chars = sChar.getApiDetails(self.getActiveCharacter())
-        if charName:
-            sChar.apiFetch(self.getActiveCharacter(), charName, self.refreshAPICallback)
+        sChar.apiFetch(self.getActiveCharacter(), self.refreshAPICallback)
 
     def refreshAPICallback(self, e=None):
         self.btnRefresh.Enable(True)
@@ -161,11 +160,11 @@ class CharacterSelection(wx.Panel):
             self.refreshCharacterList()
         else:
             exc_type, exc_obj, exc_trace = e
-            pyfalog.warn("Error fetching API information for character")
+            pyfalog.warn("Error fetching skill information for character")
             pyfalog.warn(exc_obj)
 
             wx.MessageBox(
-                "Error fetching API information, please check your API details in the character editor and try again later",
+                "Error fetching skill information",
                 "Error", wx.ICON_ERROR | wx.STAY_ON_TOP)
 
     def charChanged(self, event):
@@ -178,15 +177,22 @@ class CharacterSelection(wx.Panel):
             self.charChoice.SetSelection(self.charCache)
             self.mainFrame.showCharacterEditor(event)
             return
-        if sChar.getCharName(charID) not in ("All 0", "All 5") and sChar.apiEnabled(charID):
-            self.btnRefresh.Enable(True)
-        else:
-            self.btnRefresh.Enable(False)
+
+        self.toggleRefreshButton()
 
         sFit = Fit.getInstance()
         sFit.changeChar(fitID, charID)
         self.charCache = self.charChoice.GetCurrentSelection()
         wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fitID))
+
+    def toggleRefreshButton(self):
+        charID = self.getActiveCharacter()
+        sChar = Character.getInstance()
+        char = sChar.getCharacter(charID)
+        if sChar.getCharName(charID) not in ("All 0", "All 5") and sChar.getSsoCharacter(char.ID) is not None:
+            self.btnRefresh.Enable(True)
+        else:
+            self.btnRefresh.Enable(False)
 
     def selectChar(self, charID):
         choice = self.charChoice
@@ -212,7 +218,7 @@ class CharacterSelection(wx.Panel):
 
         if event.fitID is None:
             self.skillReqsStaticBitmap.SetBitmap(self.cleanSkills)
-            self.skillReqsStaticBitmap.SetToolTipString("No active fit")
+            self.skillReqsStaticBitmap.SetToolTip("No active fit")
         else:
             sCharacter = Character.getInstance()
             self.reqs = sCharacter.checkRequirements(fit)
@@ -233,7 +239,7 @@ class CharacterSelection(wx.Panel):
                 else:
                     tip += self._buildSkillsTooltip(self.reqs)
                 self.skillReqsStaticBitmap.SetBitmap(self.redSkills)
-            self.skillReqsStaticBitmap.SetToolTipString(tip.strip())
+            self.skillReqsStaticBitmap.SetToolTip(tip.strip())
 
         if newCharID is None:
             sChar = Character.getInstance()
@@ -243,6 +249,8 @@ class CharacterSelection(wx.Panel):
             self.selectChar(newCharID)
             if not fit.calculated:
                 self.charChanged(None)
+
+        self.toggleRefreshButton()
 
         event.Skip()
 
@@ -260,11 +268,11 @@ class CharacterSelection(wx.Panel):
         sCharacter = Character.getInstance()
 
         if tabulationLevel == 0:
-            for item, subReqs in reqs.iteritems():
+            for item, subReqs in reqs.items():
                 tip += "%s:\n" % item.name
                 tip += self._buildSkillsTooltip(subReqs, item.name, 1)
         else:
-            for name, info in reqs.iteritems():
+            for name, info in reqs.items():
                 level, ID, more = info
                 sCharacter.skillReqsDict['skills'].append({
                     'item': currItem,
@@ -286,11 +294,11 @@ class CharacterSelection(wx.Panel):
         sCharacter = Character.getInstance()
 
         if tabulationLevel == 0:
-            for item, subReqs in reqs.iteritems():
+            for item, subReqs in reqs.items():
                 skillsMap = self._buildSkillsTooltipCondensed(subReqs, item.name, 1, skillsMap)
             sorted(skillsMap, key=skillsMap.get)
         else:
-            for name, info in reqs.iteritems():
+            for name, info in reqs.items():
                 level, ID, more = info
                 sCharacter.skillReqsDict['skills'].append({
                     'item': currItem,

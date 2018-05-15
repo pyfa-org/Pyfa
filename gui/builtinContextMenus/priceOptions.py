@@ -35,7 +35,7 @@ class PriceOptions(ContextMenu):
 
         for option in self.optionList:
             menuItem = self.addOption(rootMenu if msw else sub, option)
-            sub.AppendItem(menuItem)
+            sub.Append(menuItem)
             menuItem.Check(self.settings.get(option.lower()))
 
         return sub

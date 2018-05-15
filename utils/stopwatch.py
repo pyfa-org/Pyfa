@@ -82,9 +82,9 @@ m_re_sub(stpw, 1000, 100000, "asdfadsasdaasdfadsasda")
     def checkpoint(self, name=''):
         span = self.elapsed
         self.__update_stat(span)
-        text = u'Stopwatch("{tname}") - {checkpoint} - {last:.6f}ms ({elapsed:.12f}ms elapsed)'.format(
+        text = 'Stopwatch("{tname}") - {checkpoint} - {last:.6f}ms ({elapsed:.12f}ms elapsed)'.format(
                 tname=self.name,
-                checkpoint=unicode(name, "utf-8"),
+                checkpoint=str(name, "utf-8"),
                 last=self.last,
                 elapsed=span
         ).strip()

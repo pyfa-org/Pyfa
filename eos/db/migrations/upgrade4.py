@@ -133,7 +133,7 @@ CONVERSIONS = {
 
 def upgrade(saveddata_engine):
     # Convert modules
-    for replacement_item, list in CONVERSIONS.iteritems():
+    for replacement_item, list in CONVERSIONS.items():
         for retired_item in list:
             saveddata_engine.execute('UPDATE "modules" SET "itemID" = ? WHERE "itemID" = ?',
                                      (replacement_item, retired_item))

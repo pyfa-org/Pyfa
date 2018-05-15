@@ -21,11 +21,7 @@
 import wx
 from gui.statsView import StatsView
 from gui.utils.numberFormatter import formatAmount
-
-try:
-    from collections import OrderedDict
-except ImportError:
-    from utils.compat import OrderedDict
+from collections import OrderedDict
 
 
 class TargetingMiscViewMinimal(StatsView):
@@ -48,13 +44,13 @@ class TargetingMiscViewMinimal(StatsView):
 
         self.panel = contentPanel
         self.headerPanel = headerPanel
-        gridTargetingMisc = wx.FlexGridSizer(1, 3)
+        gridTargetingMisc = wx.FlexGridSizer(1, 3, 0, 0)
         contentSizer.Add(gridTargetingMisc, 0, wx.EXPAND | wx.ALL, 0)
         gridTargetingMisc.AddGrowableCol(0)
         gridTargetingMisc.AddGrowableCol(2)
         # Targeting
 
-        gridTargeting = wx.FlexGridSizer(5, 2)
+        gridTargeting = wx.FlexGridSizer(5, 2, 0, 0)
         gridTargeting.AddGrowableCol(1)
 
         gridTargetingMisc.Add(gridTargeting, 0, wx.ALIGN_LEFT | wx.ALL, 5)
@@ -79,7 +75,7 @@ class TargetingMiscViewMinimal(StatsView):
 
         # Misc
         gridTargetingMisc.Add(wx.StaticLine(contentPanel, wx.ID_ANY, style=wx.VERTICAL), 0, wx.EXPAND, 3)
-        gridMisc = wx.FlexGridSizer(5, 2)
+        gridMisc = wx.FlexGridSizer(5, 2, 0, 0)
         gridMisc.AddGrowableCol(1)
         gridTargetingMisc.Add(gridMisc, 0, wx.ALIGN_LEFT | wx.ALL, 5)
 
@@ -87,7 +83,7 @@ class TargetingMiscViewMinimal(StatsView):
                   ("Align time", "AlignTime", "s"),
                   ("Signature", "SigRadius", "m"),
                   ("Warp Speed", "WarpSpeed", "AU/s"),
-                  ("Cargo", "Cargo", u"m\u00B3"))
+                  ("Cargo", "Cargo", "m\u00B3"))
 
         for header, labelShort, unit in labels:
             gridMisc.Add(wx.StaticText(contentPanel, wx.ID_ANY, "%s: " % header), 0, wx.ALIGN_LEFT)
@@ -154,7 +150,7 @@ class TargetingMiscViewMinimal(StatsView):
                  ("labelFullAlignTime", {"main": lambda: fit.alignTime}, 3, 0, 0, "s"),
                  ("labelFullSigRadius", {"main": lambda: fit.ship.getModifiedItemAttr("signatureRadius")}, 3, 0, 9, ""),
                  ("labelFullWarpSpeed", {"main": lambda: fit.warpSpeed}, 3, 0, 0, "AU/s"),
-                 ("labelFullCargo", cargoValues, 4, 0, 9, u"m\u00B3"))
+                 ("labelFullCargo", cargoValues, 4, 0, 9, "m\u00B3"))
 
         counter = 0
         RADII = [("Pod", 25), ("Interceptor", 33), ("Frigate", 38),
@@ -164,13 +160,13 @@ class TargetingMiscViewMinimal(StatsView):
         for labelName, valueDict, prec, lowest, highest, unit in stats:
             label = getattr(self, labelName)
             newValues = {}
-            for valueAlias, value in valueDict.items():
+            for valueAlias, value in list(valueDict.items()):
                 value = value() if fit is not None else 0
                 value = value if value is not None else 0
                 newValues[valueAlias] = value
             if self._cachedValues[counter] != newValues:
                 mainValue = newValues["main"]
-                otherValues = dict((k, newValues[k]) for k in filter(lambda k: k != "main", newValues))
+                otherValues = dict((k, newValues[k]) for k in [k for k in newValues if k != "main"])
                 if labelName == "labelFullCargo":
                     # Get sum of all cargoholds except for maintenance bay
                     additionalCargo = sum(otherValues.values())
@@ -209,11 +205,11 @@ class TargetingMiscViewMinimal(StatsView):
                         agility = "Agility:\t%.3fx" % (fit.ship.getModifiedItemAttr("agility") or 0)
                         label.SetToolTip(wx.ToolTip("%s\n%s\n%s" % (alignTime, mass, agility)))
                     elif labelName == "labelFullCargo":
-                        tipLines = [u"Cargohold: {:,.2f}m\u00B3 / {:,.2f}m\u00B3".format(fit.cargoBayUsed, newValues["main"])]
-                        for attrName, tipAlias in cargoNamesOrder.items():
+                        tipLines = ["Cargohold: {:,.2f}m\u00B3 / {:,.2f}m\u00B3".format(fit.cargoBayUsed, newValues["main"])]
+                        for attrName, tipAlias in list(cargoNamesOrder.items()):
                             if newValues[attrName] > 0:
-                                tipLines.append(u"{}: {:,.2f}m\u00B3".format(tipAlias, newValues[attrName]))
-                        label.SetToolTip(wx.ToolTip(u"\n".join(tipLines)))
+                                tipLines.append("{}: {:,.2f}m\u00B3".format(tipAlias, newValues[attrName]))
+                        label.SetToolTip(wx.ToolTip("\n".join(tipLines)))
                     else:
                         label.SetToolTip(wx.ToolTip("%.1f" % mainValue))
                 else:
@@ -242,11 +238,11 @@ class TargetingMiscViewMinimal(StatsView):
                     cachedCargo = self._cachedValues[counter]
                     # if you add stuff to cargo, the capacity doesn't change and thus it is still cached
                     # This assures us that we force refresh of cargo tooltip
-                    tipLines = [u"Cargohold: {:,.2f}m\u00B3 / {:,.2f}m\u00B3".format(fit.cargoBayUsed, cachedCargo["main"])]
-                    for attrName, tipAlias in cargoNamesOrder.items():
+                    tipLines = ["Cargohold: {:,.2f}m\u00B3 / {:,.2f}m\u00B3".format(fit.cargoBayUsed, cachedCargo["main"])]
+                    for attrName, tipAlias in list(cargoNamesOrder.items()):
                         if cachedCargo[attrName] > 0:
-                            tipLines.append(u"{}: {:,.2f}m\u00B3".format(tipAlias, cachedCargo[attrName]))
-                    label.SetToolTip(wx.ToolTip(u"\n".join(tipLines)))
+                            tipLines.append("{}: {:,.2f}m\u00B3".format(tipAlias, cachedCargo[attrName]))
+                    label.SetToolTip(wx.ToolTip("\n".join(tipLines)))
                 else:
                     label.SetToolTip(wx.ToolTip(""))
 

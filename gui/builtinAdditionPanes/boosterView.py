@@ -28,12 +28,12 @@ from gui.utils.staticHelpers import DragDropHelper
 from service.fit import Fit
 
 
-class BoosterViewDrop(wx.PyDropTarget):
+class BoosterViewDrop(wx.DropTarget):
     def __init__(self, dropFn, *args, **kwargs):
         super(BoosterViewDrop, self).__init__(*args, **kwargs)
         self.dropFn = dropFn
         # this is really transferring an EVE itemID
-        self.dropData = wx.PyTextDataObject()
+        self.dropData = wx.TextDataObject()
         self.SetDataObject(self.dropData)
 
     def OnData(self, x, y, t):
@@ -131,6 +131,7 @@ class BoosterView(d.Display):
         fit = sFit.getFit(fitID)
 
         if not fit or fit.isStructure:
+            event.Skip()
             return
 
         trigger = sFit.addBooster(fitID, event.itemID)

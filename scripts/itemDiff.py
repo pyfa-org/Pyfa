@@ -90,7 +90,7 @@ def main(old, new, groups=True, effects=True, attributes=True, renames=True):
                     name = re.sub(stripspec, "", name)
                 dictionary[id] = name
 
-        for id in set(old_namedata.keys()).intersection(new_namedata.keys()):
+        for id in set(old_namedata.keys()).intersection(list(new_namedata.keys())):
             oldname = old_namedata[id] if old_namedata[id] is not None else 'None'
             newname = new_namedata[id] if new_namedata[id] is not None else 'None'
             if oldname != newname:
@@ -103,9 +103,9 @@ def main(old, new, groups=True, effects=True, attributes=True, renames=True):
             for id in sorted(ren_dict):
                 couple = ren_dict[id]
                 if implementedtag:
-                    print("\n[{0}] \"{1}\"\n[{2}] \"{3}\"".format(geteffst(couple[0]), couple[0], geteffst(couple[1]), couple[1]))
+                    print(("\n[{0}] \"{1}\"\n[{2}] \"{3}\"".format(geteffst(couple[0]), couple[0], geteffst(couple[1]), couple[1])))
                 else:
-                    print("    \"{0}\": \"{1}\",".format(couple[0].encode('utf-8'), couple[1].encode('utf-8')))
+                    print(("    \"{0}\": \"{1}\",".format(couple[0].encode('utf-8'), couple[1].encode('utf-8'))))
 
     groupcats = {}
     def getgroupcat(grp):
@@ -216,7 +216,7 @@ def main(old, new, groups=True, effects=True, attributes=True, renames=True):
                 # Initialize container for the data for each item with empty stuff besides groupID
                 dictionary[itemid] = [groupID, set(), {}]
             # Add items filtered by group
-            query = 'SELECT it.typeID, it.groupID FROM invtypes AS it INNER JOIN invgroups AS ig ON it.groupID = ig.groupID WHERE it.published = 1 AND ig.groupName IN ("Effect Beacon", "Ship Modifiers")'
+            query = 'SELECT it.typeID, it.groupID FROM invtypes AS it INNER JOIN invgroups AS ig ON it.groupID = ig.groupID WHERE it.published = 1 AND ig.groupName IN ("Effect Beacon", "Ship Modifiers", "Mutaplasmids")'
             cursor.execute(query)
             for row in cursor:
                 itemid = row[0]
@@ -349,7 +349,7 @@ def main(old, new, groups=True, effects=True, attributes=True, renames=True):
             if attributes:
                 oldattrs = old_itmdata[item][2]
                 newattrs = new_itmdata[item][2]
-                for attr in set(oldattrs.keys()).union(newattrs.keys()):
+                for attr in set(oldattrs.keys()).union(list(newattrs.keys())):
                     # NULL will mean there's no such attribute in db
                     oldattr = oldattrs.get(attr, "NULL")
                     newattr = newattrs.get(attr, "NULL")
@@ -412,7 +412,7 @@ def main(old, new, groups=True, effects=True, attributes=True, renames=True):
     except:
         pass
     # Print jobs
-    print("Comparing databases:\n{0} -> {1}\n".format(old_meta.get("client_build"), new_meta.get("client_build")))
+    print(("Comparing databases:\n{0} -> {1}\n".format(old_meta.get("client_build"), new_meta.get("client_build"))))
 
     if renames:
         title = 'effects'
@@ -443,7 +443,7 @@ def main(old, new, groups=True, effects=True, attributes=True, renames=True):
             grpleg = "(x => y) - group changes\n" if groups else ""
             attreffleg = "  [+] - effect or attribute has been added to item\n  [-] - effect or attribute has been removed from item\n" if attributes or effects else ""
             effleg = "  [y] - effect is implemented\n  [n] - effect is not implemented\n" if effects else ""
-            print("{0}{1}{2}{3}\nItems:".format(genleg, grpleg, attreffleg, effleg))
+            print(("{0}{1}{2}{3}\nItems:".format(genleg, grpleg, attreffleg, effleg)))
 
             # Make sure our states are sorted
             stateorder = sorted(global_itmdata)
@@ -468,7 +468,7 @@ def main(old, new, groups=True, effects=True, attributes=True, renames=True):
                 for item in itemorder:
                     groupdata = items[item][0]
                     groupstr = " ({0} => {1})".format(getgroupname(groupdata[1]), getgroupname(groupdata[2])) if groupdata[0] == S["changed"] else ""
-                    print("\n[{0}] {1}{2}".format(TG[itmstate], getitemname(item).encode('utf-8'), groupstr))
+                    print(("\n[{0}] {1}{2}".format(TG[itmstate], getitemname(item).encode('utf-8'), groupstr)))
 
                     effdata = items[item][1]
                     for effstate in stateorder:
@@ -481,7 +481,7 @@ def main(old, new, groups=True, effects=True, attributes=True, renames=True):
                         for eff in efforder:
                             # Take tag from item if item was added or removed
                             tag = TG[effstate] if itmstate not in (S["removed"], S["added"]) else TG[itmstate]
-                            print("  [{0}|{1}] {2}".format(tag, "y" if geteffst(geteffectname(eff)) else "n", geteffectname(eff)))
+                            print(("  [{0}|{1}] {2}".format(tag, "y" if geteffst(geteffectname(eff)) else "n", geteffectname(eff))))
 
                     attrdata = items[item][2]
                     for attrstate in stateorder:
@@ -498,7 +498,7 @@ def main(old, new, groups=True, effects=True, attributes=True, renames=True):
                                 valline = "{0}".format(attrs[attr][0] or 0)
                             else:
                                 valline = "{0} => {1}".format(attrs[attr][0] or 0, attrs[attr][1] or 0)
-                            print("  [{0}] {1}: {2}".format(TG[attrstate], getattrname(attr), valline))
+                            print(("  [{0}] {1}: {2}".format(TG[attrstate], getattrname(attr), valline)))
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Compare two databases generated from eve dump to find eos-related differences")

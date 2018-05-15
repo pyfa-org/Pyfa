@@ -63,10 +63,10 @@ class FitDpsGraph(Graph):
         ew['signatureRadius'].sort(key=abssort)
         ew['velocity'].sort(key=abssort)
 
-        for attr, values in ew.iteritems():
+        for attr, values in ew.items():
             val = data[attr]
             try:
-                for i in xrange(len(values)):
+                for i in range(len(values)):
                     bonus = values[i]
                     val *= 1 + (bonus - 1) * exp(- i ** 2 / 7.1289)
                 data[attr] = val
@@ -81,7 +81,7 @@ class FitDpsGraph(Graph):
                     total += dps * self.calculateTurretMultiplier(mod, data)
 
             elif mod.hardpoint == Hardpoint.MISSILE:
-                if mod.state >= State.ACTIVE and mod.maxRange >= distance:
+                if mod.state >= State.ACTIVE and mod.maxRange is not None and mod.maxRange >= distance:
                     total += dps * self.calculateMissileMultiplier(mod, data)
 
         if distance <= fit.extraAttributes["droneControlRange"]:

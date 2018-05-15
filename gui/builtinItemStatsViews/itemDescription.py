@@ -11,8 +11,8 @@ class ItemDescription(wx.Panel):
         mainSizer = wx.BoxSizer(wx.VERTICAL)
         self.SetSizer(mainSizer)
 
-        bgcolor = wx.SystemSettings_GetColour(wx.SYS_COLOUR_WINDOW)
-        fgcolor = wx.SystemSettings_GetColour(wx.SYS_COLOUR_WINDOWTEXT)
+        bgcolor = wx.SystemSettings.GetColour(wx.SYS_COLOUR_WINDOW)
+        fgcolor = wx.SystemSettings.GetColour(wx.SYS_COLOUR_WINDOWTEXT)
 
         self.description = wx.html.HtmlWindow(self)
 

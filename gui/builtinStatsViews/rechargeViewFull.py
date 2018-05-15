@@ -20,7 +20,7 @@
 # noinspection PyPackageRequirements
 import wx
 from gui.statsView import StatsView
-from gui.bitmapLoader import BitmapLoader
+from gui.bitmap_loader import BitmapLoader
 from gui.utils.numberFormatter import formatAmount
 import gui.mainFrame
 from gui.builtinStatsViews.resistancesViewFull import EFFECTIVE_HP_TOGGLED
@@ -55,7 +55,7 @@ class RechargeViewFull(StatsView):
 
         self.panel = contentPanel
         self.headerPanel = headerPanel
-        sizerTankStats = wx.FlexGridSizer(3, 5)
+        sizerTankStats = wx.FlexGridSizer(3, 5, 0, 0)
         for i in range(4):
             sizerTankStats.AddGrowableCol(i + 1)
 

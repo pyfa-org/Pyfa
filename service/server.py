@@ -1,10 +1,9 @@
-import BaseHTTPServer
-import urlparse
+import http.server
+import urllib.parse
 import socket
 import threading
 from logbook import Logger
 
-from service.settings import CRESTSettings
 pyfalog = Logger(__name__)
 
 # noinspection PyPep8
@@ -68,13 +67,13 @@ if (window.location.href.indexOf('step=2') == -1) {{
 
 
 # https://github.com/fuzzysteve/CREST-Market-Downloader/
-class AuthHandler(BaseHTTPServer.BaseHTTPRequestHandler):
+class AuthHandler(http.server.BaseHTTPRequestHandler):
     def do_GET(self):
         if self.path == "/favicon.ico":
             return
 
-        parsed_path = urlparse.urlparse(self.path)
-        parts = urlparse.parse_qs(parsed_path.query)
+        parsed_path = urllib.parse.urlparse(self.path)
+        parts = urllib.parse.parse_qs(parsed_path.query)
         msg = ""
 
         step2 = 'step' in parts
@@ -82,20 +81,20 @@ class AuthHandler(BaseHTTPServer.BaseHTTPRequestHandler):
         try:
             if step2:
                 self.server.callback(parts)
-                pyfalog.info("Successfully logged into CREST.")
-                msg = "If you see this message then it means you should be logged into CREST. You may close this window and return to the application."
+                pyfalog.info("Successfully logged into EVE.")
+                msg = "If you see this message then it means you should be logged into EVE SSO. You may close this window and return to the application."
             else:
-                # For implicit mode, we have to serve up the page which will take the hash and redirect useing a querystring
+                # For implicit mode, we have to serve up the page which will take the hash and redirect using a querystring
                 pyfalog.info("Processing response from EVE Online.")
                 msg = "Processing response from EVE Online"
-        except Exception, ex:
-            pyfalog.error("Error in CREST AuthHandler")
+        except Exception as ex:
+            pyfalog.error("Error logging into EVE")
             pyfalog.error(ex)
             msg = "<h2>Error</h2>\n<p>{}</p>".format(ex.message)
         finally:
             self.send_response(200)
             self.end_headers()
-            self.wfile.write(HTML.format(msg))
+            self.wfile.write(str.encode(HTML.format(msg)))
 
         if step2:
             # Only stop once if we've received something in the querystring
@@ -106,13 +105,13 @@ class AuthHandler(BaseHTTPServer.BaseHTTPRequestHandler):
 
 
 # http://code.activestate.com/recipes/425210-simple-stoppable-server-using-socket-timeout/
-class StoppableHTTPServer(BaseHTTPServer.HTTPServer):
+class StoppableHTTPServer(http.server.HTTPServer):
     def server_bind(self):
-        BaseHTTPServer.HTTPServer.server_bind(self)
-        self.settings = CRESTSettings.getInstance()
+        http.server.HTTPServer.server_bind(self)
+        # self.settings = CRESTSettings.getInstance()
 
         # Allow listening for x seconds
-        sec = self.settings.get('timeout')
+        sec = 120
         pyfalog.debug("Running server for {0} seconds", sec)
 
         self.socket.settimeout(1)
@@ -131,7 +130,7 @@ class StoppableHTTPServer(BaseHTTPServer.HTTPServer):
                 pass
 
     def stop(self):
-        pyfalog.warning("Setting CREST server to stop.")
+        pyfalog.warning("Setting pyfa server to stop.")
         self.run = False
 
     def handle_timeout(self):
@@ -156,5 +155,5 @@ class StoppableHTTPServer(BaseHTTPServer.HTTPServer):
 if __name__ == "__main__":
     httpd = StoppableHTTPServer(('', 6461), AuthHandler)
     t = threading.Thread(target=httpd.serve)
-    raw_input("Press <RETURN> to stop server\n")
+    input("Press <RETURN> to stop server\n")
     httpd.stop()

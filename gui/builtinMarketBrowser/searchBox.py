@@ -1,5 +1,5 @@
-from gui.bitmapLoader import BitmapLoader
-from pfSearchBox import PFSearchBox
+from gui.bitmap_loader import BitmapLoader
+from .pfSearchBox import PFSearchBox
 
 
 class SearchBox(PFSearchBox):

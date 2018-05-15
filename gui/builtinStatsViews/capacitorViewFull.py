@@ -20,7 +20,7 @@
 # noinspection PyPackageRequirements
 import wx
 from gui.statsView import StatsView
-from gui.bitmapLoader import BitmapLoader
+from gui.bitmap_loader import BitmapLoader
 from gui.utils.numberFormatter import formatAmount
 
 
@@ -45,7 +45,7 @@ class CapacitorViewFull(StatsView):
 
         panel = "full"
 
-        sizerCapacitor = wx.GridSizer(1, 2)
+        sizerCapacitor = wx.GridSizer(1, 2, 0, 0)
         contentSizer.Add(sizerCapacitor, 0, wx.EXPAND, 0)
         # Capacitor capacity and time
         baseBox = wx.BoxSizer(wx.HORIZONTAL)
@@ -91,7 +91,7 @@ class CapacitorViewFull(StatsView):
         baseBox.Add(bitmap, 0, wx.ALIGN_CENTER)
 
         # Recharge
-        chargeSizer = wx.FlexGridSizer(2, 3)
+        chargeSizer = wx.FlexGridSizer(2, 3, 0, 0)
         baseBox.Add(chargeSizer, 0, wx.ALIGN_CENTER)
 
         chargeSizer.Add(wx.StaticText(parent, wx.ID_ANY, "+ "), 0, wx.ALIGN_CENTER)
@@ -124,7 +124,7 @@ class CapacitorViewFull(StatsView):
             label = getattr(self, labelName % panel)
             value = value() if fit is not None else 0
             value = value if value is not None else 0
-            if isinstance(value, basestring):
+            if isinstance(value, str):
                 label.SetLabel(value)
                 label.SetToolTip(wx.ToolTip(value))
             else:

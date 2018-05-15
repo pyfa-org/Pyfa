@@ -25,6 +25,8 @@ import collections
 import json
 import threading
 import locale
+from bs4 import UnicodeDammit
+
 
 from codecs import open
 
@@ -49,15 +51,14 @@ from service.market import Market
 from utils.strfunctions import sequential_rep, replace_ltgt
 from abc import ABCMeta, abstractmethod
 
-if 'wxMac' not in wx.PlatformInfo or ('wxMac' in wx.PlatformInfo and wx.VERSION >= (3, 0)):
-    from service.crest import Crest
+from service.esi import Esi
+from collections import OrderedDict
+
+
+class ESIExportException(Exception):
+    pass
 
 pyfalog = Logger(__name__)
-
-try:
-    from collections import OrderedDict
-except ImportError:
-    from utils.compat import OrderedDict
 
 EFT_SLOT_ORDER = [Slot.LOW, Slot.MED, Slot.HIGH, Slot.RIG, Slot.SUBSYSTEM, Slot.SERVICE]
 INV_FLAGS = {
@@ -170,9 +171,7 @@ class UserCancelException(Exception):
     pass
 
 
-class IPortUser:
-
-    __metaclass__ = ABCMeta
+class IPortUser(metaclass=ABCMeta):
 
     ID_PULSE = 1
     # Pulse the progress bar
@@ -271,7 +270,7 @@ class Port(object):
         fits are processed as well as when fits are being saved.
         returns
         """
-        defcodepage = locale.getpreferredencoding()
+
         sFit = svcFit.getInstance()
 
         fit_list = []
@@ -283,63 +282,17 @@ class Port(object):
                     PortProcessing.notify(iportuser, IPortUser.PROCESS_IMPORT | IPortUser.ID_UPDATE, msg)
                     # wx.CallAfter(callback, 1, msg)
 
-                with open(path, "r") as file_:
+                with open(path, "rb") as file_:
                     srcString = file_.read()
+                    dammit = UnicodeDammit(srcString)
+                    srcString = dammit.unicode_markup
 
                 if len(srcString) == 0:  # ignore blank files
                     pyfalog.debug("File is blank.")
                     continue
 
-                codec_found = None
-                # If file had ANSI encoding, decode it to unicode using detection
-                # of BOM header or if there is no header try default
-                # codepage then fallback to utf-16, cp1252
-
-                if isinstance(srcString, str):
-                    savebom = None
-
-                    encoding_map = (
-                        ('\xef\xbb\xbf', 'utf-8'),
-                        ('\xff\xfe\0\0', 'utf-32'),
-                        ('\0\0\xfe\xff', 'UTF-32BE'),
-                        ('\xff\xfe', 'utf-16'),
-                        ('\xfe\xff', 'UTF-16BE'))
-
-                    for bom, encoding in encoding_map:
-                        if srcString.startswith(bom):
-                            codec_found = encoding
-                            savebom = bom
-
-                    if codec_found is None:
-                        pyfalog.info("Unicode BOM not found in file {0}.", path)
-                        attempt_codecs = (defcodepage, "utf-8", "utf-16", "cp1252")
-
-                        for page in attempt_codecs:
-                            try:
-                                pyfalog.info("Attempting to decode file {0} using {1} page.", path, page)
-                                srcString = unicode(srcString, page)
-                                codec_found = page
-                                pyfalog.info("File {0} decoded using {1} page.", path, page)
-                            except UnicodeDecodeError:
-                                pyfalog.info("Error unicode decoding {0} from page {1}, trying next codec", path, page)
-                            else:
-                                break
-                    else:
-                        pyfalog.info("Unicode BOM detected in {0}, using {1} page.", path, codec_found)
-                        srcString = unicode(srcString[len(savebom):], codec_found)
-
-                else:
-                    # nasty hack to detect other transparent utf-16 loading
-                    if srcString[0] == '<' and 'utf-16' in srcString[:128].lower():
-                        codec_found = "utf-16"
-                    else:
-                        codec_found = "utf-8"
-
-                if codec_found is None:
-                    return False, "Proper codec could not be established for %s" % path
-
                 try:
-                    _, fitsImport = Port.importAuto(srcString, path, iportuser=iportuser, encoding=codec_found)
+                    _, fitsImport = Port.importAuto(srcString, path, iportuser=iportuser)
                     fit_list += fitsImport
                 except xml.parsers.expat.ExpatError:
                     pyfalog.warning("Malformed XML in:\n{0}", path)
@@ -389,24 +342,20 @@ class Port(object):
     """Service which houses all import/export format functions"""
 
     @classmethod
-    def exportCrest(cls, ofit, callback=None):
+    def exportESI(cls, ofit, callback=None):
         # A few notes:
         # max fit name length is 50 characters
         # Most keys are created simply because they are required, but bogus data is okay
 
         nested_dict = lambda: collections.defaultdict(nested_dict)
         fit = nested_dict()
-        sCrest = Crest.getInstance()
+        sEsi = Esi.getInstance()
         sFit = svcFit.getInstance()
-
-        eve = sCrest.eve
 
         # max length is 50 characters
         name = ofit.name[:47] + '...' if len(ofit.name) > 50 else ofit.name
         fit['name'] = name
-        fit['ship']['href'] = "%sinventory/types/%d/" % (eve._authed_endpoint, ofit.ship.item.ID)
-        fit['ship']['id'] = ofit.ship.item.ID
-        fit['ship']['name'] = ''
+        fit['ship_type_id'] = ofit.ship.item.ID
 
         # 2017/03/29 NOTE: "<" or "&lt;" is Ignored
         # fit['description'] = "<pyfa:%d />" % ofit.ID
@@ -434,9 +383,7 @@ class Port(object):
                 slotNum[slot] += 1
 
             item['quantity'] = 1
-            item['type']['href'] = "%sinventory/types/%d/" % (eve._authed_endpoint, module.item.ID)
-            item['type']['id'] = module.item.ID
-            item['type']['name'] = ''
+            item['type_id'] = module.item.ID
             fit['items'].append(item)
 
             if module.charge and sFit.serviceFittingOptions["exportCharges"]:
@@ -449,42 +396,37 @@ class Port(object):
             item = nested_dict()
             item['flag'] = INV_FLAG_CARGOBAY
             item['quantity'] = cargo.amount
-            item['type']['href'] = "%sinventory/types/%d/" % (eve._authed_endpoint, cargo.item.ID)
-            item['type']['id'] = cargo.item.ID
-            item['type']['name'] = ''
+            item['type_id'] = cargo.item.ID
             fit['items'].append(item)
 
-        for chargeID, amount in charges.items():
+        for chargeID, amount in list(charges.items()):
             item = nested_dict()
             item['flag'] = INV_FLAG_CARGOBAY
             item['quantity'] = amount
-            item['type']['href'] = "%sinventory/types/%d/" % (eve._authed_endpoint, chargeID)
-            item['type']['id'] = chargeID
-            item['type']['name'] = ''
+            item['type_id'] = chargeID
             fit['items'].append(item)
 
         for drone in ofit.drones:
             item = nested_dict()
             item['flag'] = INV_FLAG_DRONEBAY
             item['quantity'] = drone.amount
-            item['type']['href'] = "%sinventory/types/%d/" % (eve._authed_endpoint, drone.item.ID)
-            item['type']['id'] = drone.item.ID
-            item['type']['name'] = ''
+            item['type_id'] = drone.item.ID
             fit['items'].append(item)
 
         for fighter in ofit.fighters:
             item = nested_dict()
             item['flag'] = INV_FLAG_FIGHTER
             item['quantity'] = fighter.amountActive
-            item['type']['href'] = "%sinventory/types/%d/" % (eve._authed_endpoint, fighter.item.ID)
-            item['type']['id'] = fighter.item.ID
-            item['type']['name'] = fighter.item.name
+            item['type_id'] = fighter.item.ID
             fit['items'].append(item)
+
+        if len(fit['items']) == 0:
+            raise ESIExportException("Cannot export fitting: module list cannot be empty.")
 
         return json.dumps(fit)
 
     @classmethod
-    def importAuto(cls, string, path=None, activeFit=None, iportuser=None, encoding=None):
+    def importAuto(cls, string, path=None, activeFit=None, iportuser=None):
         # type: (basestring, basestring, object, IPortUser, basestring) -> object
         # Get first line and strip space symbols of it to avoid possible detection errors
         firstLine = re.split("[\n\r]+", string.strip(), maxsplit=1)[0]
@@ -492,14 +434,11 @@ class Port(object):
 
         # If XML-style start of tag encountered, detect as XML
         if re.search(RE_XML_START, firstLine):
-            if encoding:
-                return "XML", cls.importXml(string, iportuser, encoding)
-            else:
-                return "XML", cls.importXml(string, iportuser)
+            return "XML", cls.importXml(string, iportuser)
 
         # If JSON-style start, parse as CREST/JSON
         if firstLine[0] == '{':
-            return "JSON", (cls.importCrest(string),)
+            return "JSON", (cls.importESI(string),)
 
         # If we've got source file name which is used to describe ship name
         # and first line contains something like [setup name], detect as eft config file
@@ -517,7 +456,7 @@ class Port(object):
         return "DNA", (cls.importDna(string),)
 
     @staticmethod
-    def importCrest(str_):
+    def importESI(str_):
 
         sMkt = Market.getInstance()
         fitobj = Fit()
@@ -529,13 +468,13 @@ class Port(object):
         fitobj.notes = refobj['description']
 
         try:
-            refobj = refobj['ship']['id']
+            ship = refobj['ship_type_id']
             try:
-                fitobj.ship = Ship(sMkt.getItem(refobj))
+                fitobj.ship = Ship(sMkt.getItem(ship))
             except ValueError:
-                fitobj.ship = Citadel(sMkt.getItem(refobj))
+                fitobj.ship = Citadel(sMkt.getItem(ship))
         except:
-            pyfalog.warning("Caught exception in importCrest")
+            pyfalog.warning("Caught exception in importESI")
             return None
 
         items.sort(key=lambda k: k['flag'])
@@ -543,7 +482,7 @@ class Port(object):
         moduleList = []
         for module in items:
             try:
-                item = sMkt.getItem(module['type']['id'], eager="group.category")
+                item = sMkt.getItem(module['type_id'], eager="group.category")
                 if module['flag'] == INV_FLAG_DRONEBAY:
                     d = Drone(item)
                     d.amount = module['quantity']
@@ -589,7 +528,7 @@ class Port(object):
     def importDna(string):
         sMkt = Market.getInstance()
 
-        ids = map(int, re.findall(r'\d+', string))
+        ids = list(map(int, re.findall(r'\d+', string)))
         for id_ in ids:
             try:
                 try:
@@ -643,7 +582,7 @@ class Port(object):
                     c.amount = int(amount)
                     f.cargo.append(c)
                 else:
-                    for i in xrange(int(amount)):
+                    for i in range(int(amount)):
                         try:
                             m = Module(item)
                         except:
@@ -832,11 +771,6 @@ class Port(object):
         except:
             return []  # empty list is expected
 
-        # If client didn't take care of encoding file contents into Unicode,
-        # do it using fallback encoding ourselves
-        if isinstance(contents, str):
-            contents = unicode(contents, locale.getpreferredencoding())
-
         fits = []  # List for fits
         fitIndices = []  # List for starting line numbers for each fit
         lines = re.split('[\n\r]+', contents)  # Separate string into lines
@@ -1020,10 +954,10 @@ class Port(object):
         return fits
 
     @staticmethod
-    def importXml(text, iportuser=None, encoding="utf-8"):
+    def importXml(text, iportuser=None):
         # type: (basestring, IPortUser, basestring) -> list[eos.saveddata.fit.Fit]
         sMkt = Market.getInstance()
-        doc = xml.dom.minidom.parseString(text.encode(encoding))
+        doc = xml.dom.minidom.parseString(text)
         # NOTE:
         #   When L_MARK is included at this point,
         #   Decided to be localized data
@@ -1121,7 +1055,7 @@ class Port(object):
             also, it's OK to arrange modules randomly?
         """
         offineSuffix = " /OFFLINE"
-        export = u"[%s, %s]\n" % (fit.ship.item.name, fit.name)
+        export = "[%s, %s]\n" % (fit.ship.item.name, fit.name)
         stuff = {}
         sFit = svcFit.getInstance()
         for module in fit.modules:
@@ -1332,7 +1266,7 @@ class Port(object):
                         charges[cargo.item.name] = 0
                     charges[cargo.item.name] += cargo.amount
 
-                for name, qty in charges.items():
+                for name, qty in list(charges.items()):
                     hardware = doc.createElement("hardware")
                     hardware.setAttribute("qty", "%d" % qty)
                     hardware.setAttribute("slot", "cargo")

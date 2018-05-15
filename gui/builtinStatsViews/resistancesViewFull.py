@@ -20,11 +20,12 @@
 # noinspection PyPackageRequirements
 import wx
 from gui.statsView import StatsView
-from gui.bitmapLoader import BitmapLoader
-from gui.pygauge import PyGauge
+from gui.bitmap_loader import BitmapLoader
+from gui.pyfa_gauge import PyGauge
 from gui.utils.numberFormatter import formatAmount
 import gui.mainFrame
 import gui.globalEvents as GE
+from gui.utils import fonts
 
 EffectiveHpToggled, EFFECTIVE_HP_TOGGLED = wx.lib.newevent.NewEvent()
 
@@ -93,7 +94,7 @@ class ResistancesViewFull(StatsView):
 
         self.stEHPs.Bind(wx.EVT_BUTTON, self.toggleEHP)
 
-        for i in xrange(4):
+        for i in range(4):
             sizerResistances.AddGrowableCol(i + 1)
 
         sizerResistances.Add(self.stEHPs, wx.GBPosition(row, col), wx.GBSpan(1, 1), wx.ALIGN_CENTER)
@@ -122,6 +123,8 @@ class ResistancesViewFull(StatsView):
                 continue
             currGColour = 0
 
+            font = wx.Font(fonts.NORMAL, wx.SWISS, wx.NORMAL, wx.NORMAL, False)
+
             for damageType in ("em", "thermal", "kinetic", "explosive"):
                 box = wx.BoxSizer(wx.HORIZONTAL)
                 sizerResistances.Add(box, wx.GBPosition(row, col), wx.GBSpan(1, 1), wx.ALIGN_CENTER)
@@ -133,7 +136,7 @@ class ResistancesViewFull(StatsView):
                 bc = pgColour[1]
                 currGColour += 1
 
-                lbl = PyGauge(contentPanel, wx.ID_ANY, 100)
+                lbl = PyGauge(contentPanel, font, 100)
                 lbl.SetMinSize((48, 16))
                 lbl.SetBackgroundColour(wx.Colour(bc[0], bc[1], bc[2]))
                 lbl.SetBarColour(wx.Colour(fc[0], fc[1], fc[2]))

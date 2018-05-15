@@ -20,19 +20,19 @@ def test_attribute():
     assert info.attributeID == 54
     assert type(info.attributeID) is int
     assert info.attributeName == 'maxRange'
-    assert type(info.attributeName) is unicode
+    assert type(info.attributeName) is str
     assert info.defaultValue == 0.0
     assert type(info.defaultValue) is float
     assert info.description == 'Distance below which range does not affect the to-hit equation.'
-    assert type(info.description) is unicode
+    assert type(info.description) is str
     assert info.displayName == 'Optimal Range'
-    assert type(info.displayName) is unicode
+    assert type(info.displayName) is str
     assert info.highIsGood is True
     assert type(info.highIsGood) is bool
     assert info.iconID == 1391
     assert type(info.iconID) is int
     assert info.name == 'maxRange'
-    assert type(info.name) is unicode
+    assert type(info.name) is str
     assert info.published is True
     assert type(info.published) is bool
     assert info.unitID == 1
@@ -40,10 +40,10 @@ def test_attribute():
     assert info.unit.ID == 1
     assert type(info.unit.ID) is int
     assert info.unit.displayName == 'm'
-    assert type(info.unit.displayName) is unicode
+    assert type(info.unit.displayName) is str
     assert info.unit.name == 'Length'
-    assert type(info.unit.name) is unicode
+    assert type(info.unit.name) is str
     assert info.unit.unitID == 1
     assert type(info.unit.unitID) is int
     assert info.unit.unitName == 'Length'
-    assert type(info.unit.unitName) is unicode
+    assert type(info.unit.unitName) is str

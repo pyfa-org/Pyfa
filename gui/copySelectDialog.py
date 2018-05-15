@@ -27,25 +27,25 @@ class CopySelectDialog(wx.Dialog):
     copyFormatEftImps = 1
     copyFormatXml = 2
     copyFormatDna = 3
-    copyFormatCrest = 4
+    copyFormatEsi = 4
     copyFormatMultiBuy = 5
 
     def __init__(self, parent):
-        wx.Dialog.__init__(self, parent, id=wx.ID_ANY, title=u"Select a format", size=(-1, -1),
+        wx.Dialog.__init__(self, parent, id=wx.ID_ANY, title="Select a format", size=(-1, -1),
                            style=wx.DEFAULT_DIALOG_STYLE)
         mainSizer = wx.BoxSizer(wx.VERTICAL)
 
-        copyFormats = [u"EFT", u"EFT (Implants)", u"XML", u"DNA", u"CREST", u"MultiBuy"]
-        copyFormatTooltips = {CopySelectDialog.copyFormatEft: u"EFT text format",
-                              CopySelectDialog.copyFormatEftImps: u"EFT text format",
-                              CopySelectDialog.copyFormatXml: u"EVE native XML format",
-                              CopySelectDialog.copyFormatDna: u"A one-line text format",
-                              CopySelectDialog.copyFormatCrest: u"A JSON format used for EVE CREST",
-                              CopySelectDialog.copyFormatMultiBuy: u"MultiBuy text format"}
-        selector = wx.RadioBox(self, wx.ID_ANY, label=u"Copy to the clipboard using:", choices=copyFormats,
+        copyFormats = ["EFT", "EFT (Implants)", "XML", "DNA", "CREST", "MultiBuy"]
+        copyFormatTooltips = {CopySelectDialog.copyFormatEft: "EFT text format",
+                              CopySelectDialog.copyFormatEftImps: "EFT text format",
+                              CopySelectDialog.copyFormatXml: "EVE native XML format",
+                              CopySelectDialog.copyFormatDna: "A one-line text format",
+                              CopySelectDialog.copyFormatEsi: "A JSON format used for EVE CREST",
+                              CopySelectDialog.copyFormatMultiBuy: "MultiBuy text format"}
+        selector = wx.RadioBox(self, wx.ID_ANY, label="Copy to the clipboard using:", choices=copyFormats,
                                style=wx.RA_SPECIFY_ROWS)
         selector.Bind(wx.EVT_RADIOBOX, self.Selected)
-        for format, tooltip in copyFormatTooltips.iteritems():
+        for format, tooltip in copyFormatTooltips.items():
             selector.SetItemToolTip(format, tooltip)
 
         self.copyFormat = CopySelectDialog.copyFormatEft

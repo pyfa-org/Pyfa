@@ -23,7 +23,7 @@ import wx
 import config
 from service.market import Market
 import gui.mainFrame
-from gui.bitmapLoader import BitmapLoader
+from gui.bitmap_loader import BitmapLoader
 
 from gui.builtinItemStatsViews.itemTraits import ItemTraits
 from gui.builtinItemStatsViews.itemDescription import ItemDescription
@@ -84,7 +84,7 @@ class ItemStatsDialog(wx.Dialog):
             iconFile = "%s%s%s" % (before, sep, "0%s" % after if len(after) < 2 else after)
             itemImg = BitmapLoader.getBitmap(iconFile, "icons")
             if itemImg is not None:
-                self.SetIcon(wx.IconFromBitmap(itemImg))
+                self.SetIcon(wx.Icon(itemImg))
         self.SetTitle("%s: %s%s" % ("%s Stats" % itmContext if itmContext is not None else "Stats", item.name,
                                     " (%d)" % item.ID if config.debug else ""))
 
@@ -99,7 +99,7 @@ class ItemStatsDialog(wx.Dialog):
         self.mainSizer.Add(self.container, 1, wx.EXPAND)
 
         if "wxGTK" in wx.PlatformInfo:
-            self.closeBtn = wx.Button(self, wx.ID_ANY, u"Close", wx.DefaultPosition, wx.DefaultSize, 0)
+            self.closeBtn = wx.Button(self, wx.ID_ANY, "Close", wx.DefaultPosition, wx.DefaultSize, 0)
             self.mainSizer.Add(self.closeBtn, 0, wx.ALL | wx.ALIGN_RIGHT, 5)
             self.closeBtn.Bind(wx.EVT_BUTTON, self.closeEvent)
 

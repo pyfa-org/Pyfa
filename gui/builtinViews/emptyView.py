@@ -1,7 +1,7 @@
 # noinspection PyPackageRequirements
 import wx
 import gui.globalEvents as GE
-from gui.chromeTabs import EVT_NOTEBOOK_PAGE_CHANGED
+from gui.chrome_tabs import EVT_NOTEBOOK_PAGE_CHANGED
 import gui.mainFrame
 
 
@@ -13,12 +13,13 @@ class BlankPage(wx.Panel):
         self.parent = parent
 
         self.parent.Bind(EVT_NOTEBOOK_PAGE_CHANGED, self.pageChanged)
-        self.SetBackgroundColour(wx.SystemSettings_GetColour(wx.SYS_COLOUR_WINDOW))
+        self.SetBackgroundColour(wx.SystemSettings.GetColour(wx.SYS_COLOUR_WINDOW))
 
         wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=None))
 
     def Destroy(self):
-        self.parent.Unbind(EVT_NOTEBOOK_PAGE_CHANGED, handler=self.pageChanged)
+        # todo: This unbind caused fits to not recalc when switching to their tabs; find out why
+        # self.parent.Unbind(EVT_NOTEBOOK_PAGE_CHANGED)
         wx.Panel.Destroy(self)
 
     def pageChanged(self, event):

@@ -17,7 +17,6 @@
 # along with pyfa.  If not, see <http://www.gnu.org/licenses/>.
 # =============================================================================
 
-import sys
 # noinspection PyPackageRequirements
 import wx
 import gui.mainFrame
@@ -38,9 +37,6 @@ class Display(wx.ListCtrl):
         self.Bind(wx.EVT_LIST_COL_END_DRAG, self.resizeChecker)
         self.Bind(wx.EVT_LIST_COL_BEGIN_DRAG, self.resizeSkip)
 
-        if "wxMSW" in wx.PlatformInfo:
-            self.Bind(wx.EVT_ERASE_BACKGROUND, self.OnEraseBk)
-
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
 
         i = 0
@@ -55,7 +51,7 @@ class Display(wx.ListCtrl):
                     name, type, defaultValue = param
                     value = params[x] if len(params) > x else defaultValue
                     value = value if value != "" else defaultValue
-                    if type == bool and isinstance(value, basestring):
+                    if type == bool and isinstance(value, str):
                         value = bool(value) if value.lower() != "false" and value != "0" else False
                     paramDict[name] = value
                 col = colClass(self, paramDict)
@@ -69,7 +65,7 @@ class Display(wx.ListCtrl):
         info = wx.ListItem()
         # noinspection PyPropertyAccess
         info.m_mask = wx.LIST_MASK_WIDTH
-        self.InsertColumnInfo(i, info)
+        self.InsertColumn(i, info)
         self.SetColumnWidth(i, 0)
 
         self.imageListBase = self.imageList.ImageCount
@@ -113,50 +109,16 @@ class Display(wx.ListCtrl):
 
         return rowIndex, 0, -1
 
-    def OnEraseBk(self, event):
-        if self.GetItemCount() > 0:
-            width, height = self.GetClientSize()
-            dc = event.GetDC()
-
-            dc.DestroyClippingRegion()
-            dc.SetClippingRegion(0, 0, width, height)
-            x, y, w, h = dc.GetClippingBox()
-
-            topItem = self.GetTopItem()
-            bottomItem = topItem + self.GetCountPerPage()
-
-            if bottomItem >= self.GetItemCount():
-                bottomItem = self.GetItemCount() - 1
-
-            topRect = self.GetItemRect(topItem, wx.LIST_RECT_LABEL)
-            bottomRect = self.GetItemRect(bottomItem, wx.LIST_RECT_BOUNDS)
-
-            items_rect = wx.Rect(topRect.left, 0, bottomRect.right - topRect.left, bottomRect.bottom)
-
-            updateRegion = wx.Region(x, y, w, h)
-            updateRegion.SubtractRect(items_rect)
-
-            dc.DestroyClippingRegion()
-            dc.SetClippingRegionAsRegion(updateRegion)
-
-            dc.SetBackground(wx.Brush(self.GetBackgroundColour(), wx.SOLID))
-            dc.Clear()
-
-            dc.DestroyClippingRegion()
-
-        else:
-            event.Skip()
-
     # noinspection PyPropertyAccess
     def addColumn(self, i, col):
         self.activeColumns.append(col)
         info = wx.ListItem()
-        info.m_mask = col.mask | wx.LIST_MASK_FORMAT | wx.LIST_MASK_WIDTH
-        info.m_image = col.imageId
-        info.m_text = col.columnText
-        info.m_width = -1
-        info.m_format = wx.LIST_FORMAT_LEFT
-        self.InsertColumnInfo(i, info)
+        info.SetMask(col.mask | wx.LIST_MASK_FORMAT | wx.LIST_MASK_WIDTH)
+        info.SetImage(col.imageId)
+        info.SetText(col.columnText)
+        info.SetWidth(-1)
+        info.SetAlign(wx.LIST_FORMAT_LEFT)
+        self.InsertColumn(i, info)
         col.resized = False
         if i == 0 and col.size != wx.LIST_AUTOSIZE_USEHEADER:
             col.size += 4
@@ -219,13 +181,13 @@ class Display(wx.ListCtrl):
 
             if listItemCount < stuffItemCount:
                 for i in range(stuffItemCount - listItemCount):
-                    self.InsertStringItem(sys.maxint, "")
+                    self.InsertItem(self.GetItemCount(), "")
 
             if listItemCount > stuffItemCount:
                 if listItemCount - stuffItemCount > 20 > stuffItemCount:
                     self.DeleteAllItems()
                     for i in range(stuffItemCount):
-                        self.InsertStringItem(sys.maxint, "")
+                        self.InsertItem(self.GetItemCount(), "")
                 else:
                     for i in range(listItemCount - stuffItemCount):
                         self.DeleteItem(self.getLastItem())
@@ -247,7 +209,7 @@ class Display(wx.ListCtrl):
                 newText = col.getText(st)
                 if newText is False:
                     col.delayedText(st, self, colItem)
-                    newText = u"\u21bb"
+                    newText = "\u21bb"
 
                 newImageId = col.getImageId(st)
 

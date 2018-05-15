@@ -64,7 +64,7 @@ class MarketBrowser(wx.Panel):
         vbox.Add(p, 0, wx.EXPAND)
         self.metaButtons = []
         btn = None
-        for name in self.sMkt.META_MAP.keys():
+        for name in list(self.sMkt.META_MAP.keys()):
             btn = MetaButton(p, wx.ID_ANY, name.capitalize(), style=wx.BU_EXACTFIT)
             setattr(self, name, btn)
             box.Add(btn, 1, wx.ALIGN_CENTER)
@@ -78,10 +78,10 @@ class MarketBrowser(wx.Panel):
 
     def toggleMetaButton(self, event):
         """Process clicks on toggle buttons"""
-        appendMeta = wx.GetMouseState().CmdDown()
+        mstate = wx.GetMouseState()
         clickedBtn = event.EventObject
 
-        if appendMeta:
+        if mstate.cmdDown:
             activeBtns = [btn for btn in self.metaButtons if btn.GetValue()]
             if activeBtns:
                 clickedBtn.setUserSelection(clickedBtn.GetValue())

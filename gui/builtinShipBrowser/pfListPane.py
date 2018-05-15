@@ -23,14 +23,13 @@ import wx
 
 class PFListPane(wx.ScrolledWindow):
     def __init__(self, parent):
-        wx.ScrolledWindow.__init__(self, parent, id=wx.ID_ANY, pos=wx.DefaultPosition, size=wx.Size(1, 1),
-                                   style=wx.TAB_TRAVERSAL)
+        wx.ScrolledWindow.__init__(self, parent, pos=wx.DefaultPosition, style=wx.TAB_TRAVERSAL)
 
         self._wList = []
         self._wCount = 0
         self.itemsHeight = 1
 
-        self.SetBackgroundColour(wx.SystemSettings_GetColour(wx.SYS_COLOUR_WINDOW))
+        self.SetBackgroundColour(wx.SystemSettings.GetColour(wx.SYS_COLOUR_WINDOW))
 
         self.SetVirtualSize((1, 1))
         self.SetScrollRate(0, 1)
@@ -127,7 +126,7 @@ class PFListPane(wx.ScrolledWindow):
         maxy = 0
 
         selected = None
-        for i in xrange(len(self._wList)):
+        for i in range(len(self._wList)):
             iwidth, iheight = self._wList[i].GetSize()
             xa, ya = self.CalcScrolledPosition((0, maxy))
             self._wList[i].SetPosition((xa, ya))
@@ -144,7 +143,7 @@ class PFListPane(wx.ScrolledWindow):
         elif doFocus:
             self.SetFocus()
 
-        for i in xrange(len(self._wList)):
+        for i in range(len(self._wList)):
             iwidth, iheight = self._wList[i].GetSize()
             self._wList[i].SetSize((cwidth, iheight))
             if doRefresh is True:

@@ -82,7 +82,7 @@ class DamagePattern(object):
 
     def exportPatterns(self):
         patterns = self.getDamagePatternList()
-        for i in xrange(len(patterns) - 1, -1, -1):
+        for i in range(len(patterns) - 1, -1, -1):
             if patterns[i].name in ("Uniform", "Selected Ammo"):
                 del patterns[i]
 

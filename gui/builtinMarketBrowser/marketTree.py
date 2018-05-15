@@ -1,7 +1,7 @@
 import wx
 
 from gui.cachingImageList import CachingImageList
-import gui.builtinMarketBrowser.events as events
+from gui.builtinMarketBrowser.events import RECENTLY_USED_MODULES
 
 from logbook import Logger
 
@@ -24,7 +24,7 @@ class MarketTree(wx.TreeCtrl):
         sMkt = self.sMkt
         for mktGrp in sMkt.getMarketRoot():
             iconId = self.addImage(sMkt.getIconByMarketGroup(mktGrp))
-            childId = self.AppendItem(self.root, mktGrp.name, iconId, data=wx.TreeItemData(mktGrp.ID))
+            childId = self.AppendItem(self.root, mktGrp.name, iconId, data=mktGrp.ID)
             # All market groups which were never expanded are dummies, here we assume
             # that all root market groups are expandable
             self.AppendItem(childId, "dummy")
@@ -32,7 +32,7 @@ class MarketTree(wx.TreeCtrl):
 
         # Add recently used modules node
         rumIconId = self.addImage("market_small", "gui")
-        self.AppendItem(self.root, "Recently Used Modules", rumIconId, data=wx.TreeItemData(events.RECENTLY_USED_MODULES))
+        self.AppendItem(self.root, "Recently Used Modules", rumIconId, data=RECENTLY_USED_MODULES)
 
         # Bind our lookup method to when the tree gets expanded
         self.Bind(wx.EVT_TREE_ITEM_EXPANDING, self.expandLookup)
@@ -52,14 +52,14 @@ class MarketTree(wx.TreeCtrl):
             self.Delete(child)
             # And add real market group contents
             sMkt = self.sMkt
-            currentMktGrp = sMkt.getMarketGroup(self.GetPyData(root), eager="children")
+            currentMktGrp = sMkt.getMarketGroup(self.GetItemData(root), eager="children")
             for childMktGrp in sMkt.getMarketGroupChildren(currentMktGrp):
                 # If market should have items but it doesn't, do not show it
                 if sMkt.marketGroupValidityCheck(childMktGrp) is False:
                     continue
                 iconId = self.addImage(sMkt.getIconByMarketGroup(childMktGrp))
                 try:
-                    childId = self.AppendItem(root, childMktGrp.name, iconId, data=wx.TreeItemData(childMktGrp.ID))
+                    childId = self.AppendItem(root, childMktGrp.name, iconId, data=childMktGrp.ID)
                 except Exception as e:
                     pyfalog.debug("Error appending item.")
                     pyfalog.debug(e)
@@ -88,7 +88,7 @@ class MarketTree(wx.TreeCtrl):
         for i in range(len(jumpList) - 1, -1, -1):
             target = jumpList[i]
             child, cookie = self.GetFirstChild(item)
-            while self.GetItemPyData(child) != target:
+            while self.GetItemData(child) != target:
                 child, cookie = self.GetNextChild(item, cookie)
 
             item = child

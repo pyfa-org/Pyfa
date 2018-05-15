@@ -3,15 +3,11 @@ import gui.mainFrame
 import gui.globalEvents as GE
 # noinspection PyPackageRequirements
 import wx
-from gui.bitmapLoader import BitmapLoader
+from gui.bitmap_loader import BitmapLoader
 from service.targetResists import TargetResists as svc_TargetResists
 from service.fit import Fit
 from service.settings import ContextMenuSettings
-
-try:
-    from collections import OrderedDict
-except ImportError:
-    from utils.compat import OrderedDict
+from collections import OrderedDict
 
 
 class TargetResists(ContextMenu):
@@ -87,15 +83,15 @@ class TargetResists(ContextMenu):
             else:
                 self.singles.append(pattern)
 
-        sub.AppendItem(self.addPattern(rootMenu if msw else sub, None))  # Add reset
+        sub.Append(self.addPattern(rootMenu if msw else sub, None))  # Add reset
         sub.AppendSeparator()
 
         # Single items, no parent
         for pattern in self.singles:
-            sub.AppendItem(self.addPattern(rootMenu if msw else sub, pattern))
+            sub.Append(self.addPattern(rootMenu if msw else sub, pattern))
 
         # Items that have a parent
-        for menuName, patterns in self.subMenus.items():
+        for menuName, patterns in list(self.subMenus.items()):
             # Create parent item for root menu that is simply name of parent
             item = wx.MenuItem(rootMenu, ContextMenu.nextID(), menuName)
 
@@ -108,8 +104,8 @@ class TargetResists(ContextMenu):
 
             # Append child items to child menu
             for pattern in patterns:
-                grandSub.AppendItem(self.addPattern(rootMenu if msw else grandSub, pattern))
-            sub.AppendItem(item)  # finally, append parent item to root menu
+                grandSub.Append(self.addPattern(rootMenu if msw else grandSub, pattern))
+            sub.Append(item)  # finally, append parent item to root menu
 
         return sub
 

@@ -20,7 +20,7 @@
 # noinspection PyPackageRequirements
 import wx
 from service.targetResists import TargetResists
-from gui.bitmapLoader import BitmapLoader
+from gui.bitmap_loader import BitmapLoader
 from gui.utils.clipboard import toClipboard, fromClipboard
 from gui.builtinViews.entityEditor import EntityEditor, BaseValidator
 from logbook import Logger
@@ -49,7 +49,7 @@ class TargetResistsTextValidor(BaseValidator):
             return True
         except ValueError as e:
             pyfalog.error(e)
-            wx.MessageBox(u"{}".format(e), "Error")
+            wx.MessageBox("{}".format(e), "Error")
             textCtrl.SetFocus()
             return False
 
@@ -87,10 +87,10 @@ class ResistsEditorDlg(wx.Dialog):
     DAMAGE_TYPES = ("em", "thermal", "kinetic", "explosive")
 
     def __init__(self, parent):
-        wx.Dialog.__init__(self, parent, id=wx.ID_ANY, title=u"Target Resists Editor", size=wx.Size(350, 240))
+        wx.Dialog.__init__(self, parent, id=wx.ID_ANY, title="Target Resists Editor", size=wx.Size(350, 240))
 
         self.block = False
-        self.SetSizeHintsSz(wx.DefaultSize, wx.DefaultSize)
+        self.SetSizeHints(wx.DefaultSize, wx.DefaultSize)
 
         mainSizer = wx.BoxSizer(wx.VERTICAL)
 
@@ -124,7 +124,7 @@ class ResistsEditorDlg(wx.Dialog):
             setattr(self, "%sEdit" % type_, wx.TextCtrl(self, wx.ID_ANY, "", wx.DefaultPosition, defSize))
             editObj = getattr(self, "%sEdit" % type_)
             resistEditSizer.Add(editObj, 0, wx.BOTTOM | wx.TOP | wx.ALIGN_CENTER_VERTICAL, 5)
-            resistEditSizer.Add(wx.StaticText(self, wx.ID_ANY, u"%", wx.DefaultPosition, wx.DefaultSize, 0), 0,
+            resistEditSizer.Add(wx.StaticText(self, wx.ID_ANY, "%", wx.DefaultPosition, wx.DefaultSize, 0), 0,
                                 wx.BOTTOM | wx.TOP | wx.ALIGN_CENTER_VERTICAL, 5)
             editObj.Bind(wx.EVT_TEXT, self.ValuesUpdated)
 
@@ -138,7 +138,7 @@ class ResistsEditorDlg(wx.Dialog):
         footerSizer = wx.BoxSizer(wx.HORIZONTAL)
         perSizer = wx.BoxSizer(wx.VERTICAL)
 
-        self.stNotice = wx.StaticText(self, wx.ID_ANY, u"")
+        self.stNotice = wx.StaticText(self, wx.ID_ANY, "")
         self.stNotice.Wrap(-1)
         perSizer.Add(self.stNotice, 0, wx.BOTTOM | wx.TOP | wx.LEFT, 5)
 
@@ -151,7 +151,7 @@ class ResistsEditorDlg(wx.Dialog):
         mainSizer.Add(contentSizer, 1, wx.EXPAND, 0)
 
         if "wxGTK" in wx.PlatformInfo:
-            self.closeBtn = wx.Button(self, wx.ID_ANY, u"Close", wx.DefaultPosition, wx.DefaultSize, 0)
+            self.closeBtn = wx.Button(self, wx.ID_ANY, "Close", wx.DefaultPosition, wx.DefaultSize, 0)
             mainSizer.Add(self.closeBtn, 0, wx.ALL | wx.ALIGN_RIGHT, 5)
             self.closeBtn.Bind(wx.EVT_BUTTON, self.closeEvent)
 
@@ -170,7 +170,7 @@ class ResistsEditorDlg(wx.Dialog):
             btn.Layout()
             setattr(self, name, btn)
             btn.Enable(True)
-            btn.SetToolTipString("%s patterns %s clipboard" % (name, direction))
+            btn.SetToolTip("%s patterns %s clipboard" % (name, direction))
             footerSizer.Add(btn, 0, wx.ALIGN_CENTER_HORIZONTAL | wx.ALIGN_RIGHT)
             btn.Bind(wx.EVT_BUTTON, getattr(self, "{}Patterns".format(name.lower())))
 

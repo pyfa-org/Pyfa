@@ -17,30 +17,52 @@
 # along with eos.  If not, see <http://www.gnu.org/licenses/>.
 # ===============================================================================
 
-from sqlalchemy import Table, Column, Integer, ForeignKey, String, DateTime, Float
+from sqlalchemy import Table, Column, Integer, ForeignKey, String, DateTime, Float, UniqueConstraint
 from sqlalchemy.orm import relation, mapper
 import datetime
 
 from eos.db import saveddata_meta
 from eos.db.saveddata.implant import charImplants_table
-from eos.effectHandlerHelpers import HandledImplantBoosterList
+from eos.effectHandlerHelpers import HandledImplantBoosterList, HandledSsoCharacterList
 from eos.saveddata.implant import Implant
 from eos.saveddata.user import User
 from eos.saveddata.character import Character, Skill
+from eos.saveddata.ssocharacter import SsoCharacter
+
+
+
 
 characters_table = Table("characters", saveddata_meta,
                          Column("ID", Integer, primary_key=True),
                          Column("name", String, nullable=False),
-                         Column("apiID", Integer),
-                         Column("apiKey", String),
-                         Column("defaultChar", Integer),
-                         Column("chars", String, nullable=True),
                          Column("defaultLevel", Integer, nullable=True),
                          Column("alphaCloneID", Integer, nullable=True),
                          Column("ownerID", ForeignKey("users.ID"), nullable=True),
                          Column("secStatus", Float, nullable=True, default=0.0),
                          Column("created", DateTime, nullable=True, default=datetime.datetime.now),
                          Column("modified", DateTime, nullable=True, onupdate=datetime.datetime.now))
+
+sso_table = Table("ssoCharacter", saveddata_meta,
+                    Column("ID", Integer, primary_key=True),
+                    Column("client", String, nullable=False),
+                    Column("characterID", Integer, nullable=False),
+                    Column("characterName", String, nullable=False),
+                    Column("refreshToken", String, nullable=False),
+                    Column("accessToken", String, nullable=False),
+                    Column("accessTokenExpires", DateTime, nullable=False),
+                    Column("created", DateTime, nullable=True, default=datetime.datetime.now),
+                    Column("modified", DateTime, nullable=True, onupdate=datetime.datetime.now),
+                    UniqueConstraint('client', 'characterID', name='uix_client_characterID'),
+                    UniqueConstraint('client', 'characterName', name='uix_client_characterName')
+                  )
+
+sso_character_map_table = Table("ssoCharacterMap", saveddata_meta,
+                    Column("characterID", ForeignKey("characters.ID"), primary_key=True),
+                    Column("ssoCharacterID", ForeignKey("ssoCharacter.ID"), primary_key=True),
+                  )
+
+
+mapper(SsoCharacter, sso_table)
 
 mapper(Character, characters_table,
        properties={
@@ -63,5 +85,10 @@ mapper(Character, characters_table,
                    primaryjoin=charImplants_table.c.charID == characters_table.c.ID,
                    secondaryjoin=charImplants_table.c.implantID == Implant.ID,
                    secondary=charImplants_table),
+           "_Character__ssoCharacters"    : relation(
+                   SsoCharacter,
+                   collection_class=HandledSsoCharacterList,
+                   backref='characters',
+                   secondary=sso_character_map_table)
        }
        )

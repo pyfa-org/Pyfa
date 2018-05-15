@@ -20,14 +20,14 @@
 # noinspection PyPackageRequirements
 import wx
 from gui.preferenceView import PreferenceView
-from gui.bitmapLoader import BitmapLoader
+from gui.bitmap_loader import BitmapLoader
 
 
 class PreferenceDialog(wx.Dialog):
     def __init__(self, parent):
         wx.Dialog.__init__(self, parent, id=wx.ID_ANY, size=wx.DefaultSize, style=wx.DEFAULT_DIALOG_STYLE)
         self.SetTitle("pyfa - Preferences")
-        i = wx.IconFromBitmap(BitmapLoader.getBitmap("preferences_small", "gui"))
+        i = wx.Icon(BitmapLoader.getBitmap("preferences_small", "gui"))
         self.SetIcon(i)
         mainSizer = wx.BoxSizer(wx.VERTICAL)
 
@@ -38,7 +38,7 @@ class PreferenceDialog(wx.Dialog):
         # self.listview.SetSize((500, -1))
 
         self.imageList = wx.ImageList(32, 32)
-        self.listbook.SetImageList(self.imageList)
+        self.listbook.AssignImageList(self.imageList)
 
         mainSizer.Add(self.listbook, 1, wx.EXPAND | wx.TOP | wx.BOTTOM | wx.LEFT, 5)
 
@@ -46,8 +46,8 @@ class PreferenceDialog(wx.Dialog):
         mainSizer.Add(self.m_staticline2, 0, wx.EXPAND, 5)
 
         btnSizer = wx.BoxSizer(wx.HORIZONTAL)
-        btnSizer.AddSpacer((0, 0), 1, wx.EXPAND, 5)
-        self.btnOK = wx.Button(self, wx.ID_ANY, u"OK", wx.DefaultPosition, wx.DefaultSize, 0)
+        btnSizer.AddStretchSpacer()
+        self.btnOK = wx.Button(self, wx.ID_ANY, "OK", wx.DefaultPosition, wx.DefaultSize, 0)
         btnSizer.Add(self.btnOK, 0, wx.ALL, 5)
         mainSizer.Add(btnSizer, 0, wx.EXPAND, 5)
         self.SetSizer(mainSizer)
@@ -55,23 +55,23 @@ class PreferenceDialog(wx.Dialog):
         self.Centre(wx.BOTH)
 
         for prefView in PreferenceView.views:
-            page = wx.Panel(self.listbook)
+            page = wx.ScrolledWindow(self.listbook)
+            page.SetScrollbars(1, 1, 20, 20)
             bmp = prefView.getImage()
             if bmp:
                 imgID = self.imageList.Add(bmp)
             else:
                 imgID = -1
             prefView.populatePanel(page)
+
             self.listbook.AddPage(page, prefView.title, imageId=imgID)
 
-        # Set the height based on a condition. Can all the panels fit in the current height?
-        # If not, use the .GetBestVirtualSize() to ensure that all content is available.
         minHeight = 550
         bestFit = self.GetBestVirtualSize()
         if minHeight > bestFit[1]:
-            self.SetSizeWH(650, minHeight)
+            self.SetSize(650, minHeight)
         else:
-            self.SetSizeWH(650, bestFit[1])
+            self.SetSize(650, bestFit[1])
 
         self.Layout()
 

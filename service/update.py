@@ -30,6 +30,8 @@ import config
 from service.network import Network
 from service.settings import UpdateSettings
 from logbook import Logger
+from packaging.version import Version
+
 
 pyfalog = Logger(__name__)
 
@@ -46,53 +48,37 @@ class CheckUpdateThread(threading.Thread):
         network = Network.getInstance()
 
         try:
-            response = network.request('https://api.github.com/repos/pyfa-org/Pyfa/releases', network.UPDATE)
-            jsonResponse = json.loads(response.read())
+            try:
+                response = network.request('https://www.pyfa.io/update_check?pyfa_version={}&client_hash={}'.format(config.version, config.getClientSecret()), network.UPDATE)
+            except Exception as e:
+                response = network.request('https://api.github.com/repos/pyfa-org/Pyfa/releases', network.UPDATE)
+
+            jsonResponse = response.json()
             jsonResponse.sort(
                 key=lambda x: calendar.timegm(dateutil.parser.parse(x['published_at']).utctimetuple()),
                 reverse=True
             )
 
             for release in jsonResponse[:5]:
-                try:
-                    # Suppress pre releases
-                    if release['prerelease'] and self.settings.get('prerelease'):
-                        continue
+                rVersion = Version(release['tag_name'])
+                cVersion = Version(config.version)
 
-                    # Handle use-case of updating to suppressed version
-                    if self.settings.get('version') == 'v' + config.version:
-                        self.settings.set('version', None)
-
-                    # Suppress version
-                    if release['tag_name'] == self.settings.get('version'):
-                        break
-
-                    # Set the release version that we will be comparing with.
-                    if release['prerelease']:
-                        rVersion = release['tag_name'].replace('singularity-', '', 1)
-                    else:
-                        rVersion = release['tag_name'].replace('v', '', 1)
-
-                    if config.tag is 'git' and \
-                            not release['prerelease'] and \
-                            self.versiontuple(rVersion) >= self.versiontuple(config.version):
-                        wx.CallAfter(self.callback, release)  # git (dev/Singularity) -> Stable
-                        break
-                    elif config.expansionName is not "Singularity":
-                        if release['prerelease']:
-                            wx.CallAfter(self.callback, release)  # Stable -> Singularity
-                            break
-                        elif self.versiontuple(rVersion) > self.versiontuple(config.version):
-                            wx.CallAfter(self.callback, release)  # Stable -> Stable
-                            break
-                    else:
-                        if release['prerelease'] and rVersion > config.expansionVersion:
-                            wx.CallAfter(self.callback, release)  # Singularity -> Singularity
-                            break
-                except Exception as e:
-                    # if we break at version checking, try the next version
-                    pyfalog.error(e)
+                # Suppress pre releases if we're not already on a pre-release (if we are, we want to know about new ones)
+                if not cVersion.is_prerelease and rVersion.is_prerelease and self.settings.get('prerelease'):
                     continue
+
+                # Handle use-case of updating to suppressed version
+                if self.settings.get('version') == 'v' + config.version:
+                    self.settings.set('version', None)
+
+                # Suppress version
+                if release['tag_name'] == self.settings.get('version'):
+                    break
+
+                if rVersion > cVersion:
+                    wx.CallAfter(self.callback, release, rVersion)
+                    break
+
         except Exception as e:
             pyfalog.error("Caught exception in run")
             pyfalog.error(e)

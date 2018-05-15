@@ -21,6 +21,7 @@
 import wx
 
 import gui.globalEvents as GE
+import gui.mainFrame
 from gui.builtinMarketBrowser.events import ItemSelected, ITEM_SELECTED
 from gui.display import Display
 from gui.builtinViewColumns.state import State
@@ -30,12 +31,12 @@ from service.fit import Fit
 from service.market import Market
 
 
-class DroneViewDrop(wx.PyDropTarget):
+class DroneViewDrop(wx.DropTarget):
     def __init__(self, dropFn, *args, **kwargs):
         super(DroneViewDrop, self).__init__(*args, **kwargs)
         self.dropFn = dropFn
         # this is really transferring an EVE itemID
-        self.dropData = wx.PyTextDataObject()
+        self.dropData = wx.TextDataObject()
         self.SetDataObject(self.dropData)
 
     def OnData(self, x, y, t):
@@ -65,6 +66,8 @@ class DroneView(Display):
 
         self.hoveredRow = None
         self.hoveredColumn = None
+
+        self.mainFrame = gui.mainFrame.MainFrame.getInstance()
 
         self.mainFrame.Bind(GE.FIT_CHANGED, self.fitChanged)
         self.mainFrame.Bind(ITEM_SELECTED, self.addItem)
@@ -101,7 +104,7 @@ class DroneView(Display):
                     if self.DEFAULT_COLS[col] == "Miscellanea":
                         tooltip = self.activeColumns[col].getToolTip(mod)
                         if tooltip is not None:
-                            self.SetToolTipString(tooltip)
+                            self.SetToolTip(tooltip)
                         else:
                             self.SetToolTip(None)
                     else:
@@ -123,7 +126,7 @@ class DroneView(Display):
     def startDrag(self, event):
         row = event.GetIndex()
         if row != -1:
-            data = wx.PyTextDataObject()
+            data = wx.TextDataObject()
             dataStr = "drone:" + str(row)
             data.SetText(dataStr)
 
@@ -207,6 +210,7 @@ class DroneView(Display):
         fit = sFit.getFit(fitID)
 
         if not fit or fit.isStructure:
+            event.Skip()
             return
 
         trigger = sFit.addDrone(fitID, event.itemID)

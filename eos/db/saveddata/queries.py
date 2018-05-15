@@ -27,7 +27,7 @@ from eos.db.saveddata.fit import projectedFits_table
 from eos.db.util import processEager, processWhere
 from eos.saveddata.price import Price
 from eos.saveddata.user import User
-from eos.saveddata.crestchar import CrestChar
+from eos.saveddata.ssocharacter import SsoCharacter
 from eos.saveddata.damagePattern import DamagePattern
 from eos.saveddata.targetResists import TargetResists
 from eos.saveddata.character import Character
@@ -109,9 +109,9 @@ if configVal is True:
         if type not in queryCache:
             return
         functionCache = queryCache[type]
-        for _, localCache in functionCache.iteritems():
+        for _, localCache in functionCache.items():
             toDelete = set()
-            for cacheKey, info in localCache.iteritems():
+            for cacheKey, info in localCache.items():
                 IDs = info[1]
                 if ID in IDs:
                     toDelete.add(cacheKey)
@@ -156,7 +156,7 @@ def getUser(lookfor, eager=None):
             eager = processEager(eager)
             with sd_lock:
                 user = saveddata_session.query(User).options(*eager).filter(User.ID == lookfor).first()
-    elif isinstance(lookfor, basestring):
+    elif isinstance(lookfor, str):
         eager = processEager(eager)
         with sd_lock:
             user = saveddata_session.query(User).options(*eager).filter(User.username == lookfor).first()
@@ -175,7 +175,7 @@ def getCharacter(lookfor, eager=None):
             eager = processEager(eager)
             with sd_lock:
                 character = saveddata_session.query(Character).options(*eager).filter(Character.ID == lookfor).first()
-    elif isinstance(lookfor, basestring):
+    elif isinstance(lookfor, str):
         eager = processEager(eager)
         with sd_lock:
             character = saveddata_session.query(Character).options(*eager).filter(
@@ -337,7 +337,7 @@ def clearPrices():
 
 
 def getMiscData(field):
-    if isinstance(field, basestring):
+    if isinstance(field, str):
         with sd_lock:
             data = saveddata_session.query(MiscData).get(field)
     else:
@@ -391,7 +391,7 @@ def getDamagePattern(lookfor, eager=None):
             with sd_lock:
                 pattern = saveddata_session.query(DamagePattern).options(*eager).filter(
                         DamagePattern.ID == lookfor).first()
-    elif isinstance(lookfor, basestring):
+    elif isinstance(lookfor, str):
         eager = processEager(eager)
         with sd_lock:
             pattern = saveddata_session.query(DamagePattern).options(*eager).filter(
@@ -412,7 +412,7 @@ def getTargetResists(lookfor, eager=None):
             with sd_lock:
                 pattern = saveddata_session.query(TargetResists).options(*eager).filter(
                         TargetResists.ID == lookfor).first()
-    elif isinstance(lookfor, basestring):
+    elif isinstance(lookfor, str):
         eager = processEager(eager)
         with sd_lock:
             pattern = saveddata_session.query(TargetResists).options(*eager).filter(
@@ -433,7 +433,7 @@ def getImplantSet(lookfor, eager=None):
             with sd_lock:
                 pattern = saveddata_session.query(ImplantSet).options(*eager).filter(
                         TargetResists.ID == lookfor).first()
-    elif isinstance(lookfor, basestring):
+    elif isinstance(lookfor, str):
         eager = processEager(eager)
         with sd_lock:
             pattern = saveddata_session.query(ImplantSet).options(*eager).filter(TargetResists.name == lookfor).first()
@@ -443,10 +443,10 @@ def getImplantSet(lookfor, eager=None):
 
 
 def searchFits(nameLike, where=None, eager=None):
-    if not isinstance(nameLike, basestring):
+    if not isinstance(nameLike, str):
         raise TypeError("Need string as argument")
     # Prepare our string for request
-    nameLike = u"%{0}%".format(sqlizeString(nameLike))
+    nameLike = "%{0}%".format(sqlizeString(nameLike))
 
     # Add any extra components to the search to our where clause
     filter = processWhere(Fit.name.like(nameLike, escape="\\"), where)
@@ -467,29 +467,28 @@ def getProjectedFits(fitID):
         raise TypeError("Need integer as argument")
 
 
-def getCrestCharacters(eager=None):
+def getSsoCharacters(clientHash, eager=None):
     eager = processEager(eager)
     with sd_lock:
-        characters = saveddata_session.query(CrestChar).options(*eager).all()
+        characters = saveddata_session.query(SsoCharacter).filter(SsoCharacter.client == clientHash).options(*eager).all()
     return characters
 
 
-@cachedQuery(CrestChar, 1, "lookfor")
-def getCrestCharacter(lookfor, eager=None):
+@cachedQuery(SsoCharacter, 1, "lookfor", "clientHash")
+def getSsoCharacter(lookfor, clientHash, eager=None):
+    filter = SsoCharacter.client == clientHash
+
     if isinstance(lookfor, int):
-        if eager is None:
-            with sd_lock:
-                character = saveddata_session.query(CrestChar).get(lookfor)
-        else:
-            eager = processEager(eager)
-            with sd_lock:
-                character = saveddata_session.query(CrestChar).options(*eager).filter(CrestChar.ID == lookfor).first()
-    elif isinstance(lookfor, basestring):
-        eager = processEager(eager)
-        with sd_lock:
-            character = saveddata_session.query(CrestChar).options(*eager).filter(CrestChar.name == lookfor).first()
+        filter = and_(filter, SsoCharacter.ID == lookfor)
+    elif isinstance(lookfor, str):
+        filter = and_(filter, SsoCharacter.characterName == lookfor)
     else:
         raise TypeError("Need integer or string as argument")
+
+    eager = processEager(eager)
+    with sd_lock:
+        character = saveddata_session.query(SsoCharacter).options(*eager).filter(filter).first()
+
     return character
 
 
@@ -515,8 +514,8 @@ def removeInvalid(fits):
     invalids = [f for f in fits if f.isInvalid]
 
     if invalids:
-        map(fits.remove, invalids)
-        map(saveddata_session.delete, invalids)
+        list(map(fits.remove, invalids))
+        list(map(saveddata_session.delete, invalids))
         saveddata_session.commit()
 
     return fits
@@ -544,7 +543,7 @@ def commit():
         try:
             saveddata_session.commit()
             saveddata_session.flush()
-        except Exception:
+        except Exception as ex:
             saveddata_session.rollback()
             exc_info = sys.exc_info()
-            raise exc_info[0], exc_info[1], exc_info[2]
+            raise exc_info[0](exc_info[1]).with_traceback(exc_info[2])

@@ -1,6 +1,7 @@
 import heapq
 import time
 from math import sqrt, exp
+from functools import reduce
 
 DAY = 24 * 60 * 60 * 1000
 
@@ -88,7 +89,7 @@ class CapSimulator(object):
                 mods[(duration, capNeed, clipSize, disableStagger, reloadTime)] = 1
 
         # Loop over grouped modules, configure staggering and push to the simulation state
-        for (duration, capNeed, clipSize, disableStagger, reloadTime), amount in mods.iteritems():
+        for (duration, capNeed, clipSize, disableStagger, reloadTime), amount in mods.items():
             if self.stagger and not disableStagger:
                 if clipSize == 0:
                     duration = int(duration / amount)
@@ -193,7 +194,7 @@ class CapSimulator(object):
 
         # calculate EVE's stability value
         try:
-            avgDrain = reduce(float.__add__, map(lambda x: x[2] / x[1], self.state), 0.0)
+            avgDrain = reduce(float.__add__, [x[2] / x[1] for x in self.state], 0.0)
             self.cap_stable_eve = 0.25 * (1.0 + sqrt(-(2.0 * avgDrain * tau - capCapacity) / capCapacity)) ** 2
         except ValueError:
             self.cap_stable_eve = 0.0

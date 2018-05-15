@@ -52,7 +52,6 @@ class Character(object):
                 self.addSkill(Skill(self, item.ID, self.defaultLevel))
 
         self.__implants = HandledImplantBoosterList()
-        self.apiKey = None
 
     @reconstructor
     def init(self):
@@ -119,16 +118,9 @@ class Character(object):
 
         return all0
 
-    def apiUpdateCharSheet(self, skills, secStatus=0):
-        for skillRow in skills:
-            try:
-                skill = self.getSkill(int(skillRow["typeID"]))
-                skill.setLevel(int(skillRow["level"]), persist=True, ignoreRestrict=True)
-            except:
-                # if setting a skill doesn't work, it's not the end of the world, just quietly pass
-                pass
-
-        self.secStatus = secStatus
+    def clearSkills(self):
+        del self.__skills[:]
+        self.__skillIdMap.clear()
 
     @property
     def ro(self):
@@ -162,13 +154,25 @@ class Character(object):
             name += " *"
 
         if self.alphaCloneID:
-            name += u' (\u03B1)'
+            name += ' (\u03B1)'
 
         return name
 
     @name.setter
     def name(self, name):
         self.savedName = name
+
+    def setSsoCharacter(self, character, clientHash):
+        if character is not None:
+            self.__ssoCharacters.append(character)
+        else:
+            for x in self.__ssoCharacters:
+                if x.client == clientHash:
+                    self.__ssoCharacters.remove(x)
+
+
+    def getSsoCharacter(self, clientHash):
+        return next((x for x in self.__ssoCharacters if x.client == clientHash), None)
 
     @property
     def alphaCloneID(self):
@@ -199,7 +203,7 @@ class Character(object):
         del self.__skillIdMap[skill.itemID]
 
     def getSkill(self, item):
-        if isinstance(item, basestring):
+        if isinstance(item, str):
             item = self.getSkillNameMap()[item]
         elif isinstance(item, int):
             item = self.getSkillIDMap()[item]
@@ -269,20 +273,17 @@ class Character(object):
 
     def __deepcopy__(self, memo):
         copy = Character("%s copy" % self.name, initSkills=False)
-        copy.apiKey = self.apiKey
-        copy.apiID = self.apiID
 
         for skill in self.skills:
             copy.addSkill(Skill(copy, skill.itemID, skill.level, False, skill.learned))
 
         return copy
 
-    @validates("ID", "name", "apiKey", "ownerID")
+    @validates("ID", "name", "ownerID")
     def validator(self, key, val):
         map = {
             "ID"     : lambda _val: isinstance(_val, int),
             "name"   : lambda _val: True,
-            "apiKey" : lambda _val: _val is None or (isinstance(_val, basestring) and len(_val) > 0),
             "ownerID": lambda _val: isinstance(_val, int) or _val is None
         }
 
@@ -344,13 +345,13 @@ class Skill(HandledItem):
             elif self.character.name == "All 0":
                 self.activeLevel = self.__level = 0
             elif self.character.alphaClone:
-                return min(self.activeLevel, self.character.alphaClone.getSkillLevel(self)) or 0
+                return min(self.activeLevel or 0, self.character.alphaClone.getSkillLevel(self) or 0)
 
         return self.activeLevel or 0
 
     def setLevel(self, level, persist=False, ignoreRestrict=False):
 
-        if (level < 0 or level > 5) and level is not None:
+        if level is not None and (level < 0 or level > 5):
             raise ValueError(str(level) + " is not a valid value for level")
 
         if hasattr(self, "_Skill__ro") and self.__ro is True:
@@ -362,9 +363,9 @@ class Skill(HandledItem):
         # which affects performance. Should have a checkSkillLevels() or something that is more efficient for bulk.
         if not ignoreRestrict and eos.config.settings['strictSkillLevels']:
             start = time.time()
-            for item, rlevel in self.item.requiredFor.iteritems():
+            for item, rlevel in self.item.requiredFor.items():
                 if item.group.category.ID == 16:  # Skill category
-                    if level < rlevel:
+                    if level is None or level < rlevel:
                         skill = self.character.getSkill(item.ID)
                         # print "Removing skill: {}, Dependant level: {}, Required level: {}".format(skill, level, rlevel)
                         skill.setLevel(None, persist)
@@ -392,7 +393,7 @@ class Skill(HandledItem):
         if key in self.item.attributes:
             return self.item.attributes[key].value
         else:
-            return None
+            return 0
 
     def calculateModifiedAttributes(self, fit, runTime):
         if self.__suppressed:  # or not self.learned - removed for GH issue 101
@@ -402,7 +403,7 @@ class Skill(HandledItem):
         if item is None:
             return
 
-        for effect in item.effects.itervalues():
+        for effect in item.effects.values():
             if effect.runTime == runTime and \
                     effect.isType("passive") and \
                     (not fit.isStructure or effect.isType("structure")) and \

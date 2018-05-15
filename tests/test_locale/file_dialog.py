@@ -60,7 +60,7 @@ class MyForm(wx.Frame):
         print(path)
 
         print("Type:")
-        print(type(path))
+        print((type(path)))
 
         print("OS Walk: No Codec:")
         print(os_walk_without_codec)

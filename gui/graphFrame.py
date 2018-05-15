@@ -28,7 +28,7 @@ import gui.display
 import gui.mainFrame
 import gui.globalEvents as GE
 from gui.graph import Graph
-from gui.bitmapLoader import BitmapLoader
+from gui.bitmap_loader import BitmapLoader
 import traceback
 
 pyfalog = Logger(__name__)
@@ -93,15 +93,15 @@ class GraphFrame(wx.Frame):
 
         graphFrame_enabled = True
         if int(mpl.__version__[0]) < 1:
-            print("pyfa: Found matplotlib version ", mpl.__version__, " - activating OVER9000 workarounds")
+            print(("pyfa: Found matplotlib version ", mpl.__version__, " - activating OVER9000 workarounds"))
             print("pyfa: Recommended minimum matplotlib version is 1.0.0")
             self.legendFix = True
 
         mplImported = True
 
-        wx.Frame.__init__(self, parent, title=u"pyfa: Graph Generator", style=style, size=(520, 390))
+        wx.Frame.__init__(self, parent, title="pyfa: Graph Generator", style=style, size=(520, 390))
 
-        i = wx.IconFromBitmap(BitmapLoader.getBitmap("graphs_small", "gui"))
+        i = wx.Icon(BitmapLoader.getBitmap("graphs_small", "gui"))
         self.SetIcon(i)
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
         self.CreateStatusBar()
@@ -143,7 +143,7 @@ class GraphFrame(wx.Frame):
         dummyBox = wx.BoxSizer(wx.VERTICAL)
         self.gridPanel.SetSizer(dummyBox)
 
-        self.gridSizer = wx.FlexGridSizer(0, 4)
+        self.gridSizer = wx.FlexGridSizer(0, 4, 0, 0)
         self.gridSizer.AddGrowableCol(1)
         dummyBox.Add(self.gridSizer, 0, wx.EXPAND)
 
@@ -179,7 +179,7 @@ class GraphFrame(wx.Frame):
 
     def getValues(self):
         values = {}
-        for fieldName, field in self.fields.iteritems():
+        for fieldName, field in self.fields.items():
             values[fieldName] = field.GetValue()
 
         return values
@@ -193,14 +193,14 @@ class GraphFrame(wx.Frame):
         self.fields.clear()
 
         # Setup textboxes
-        for field, defaultVal in view.getFields().iteritems():
+        for field, defaultVal in view.getFields().items():
 
             textBox = wx.TextCtrl(self.gridPanel, wx.ID_ANY, style=0)
             self.fields[field] = textBox
             textBox.Bind(wx.EVT_TEXT, self.onFieldChanged)
             sizer.Add(textBox, 1, wx.EXPAND | wx.ALIGN_CENTER_VERTICAL | wx.ALL, 3)
             if defaultVal is not None:
-                if not isinstance(defaultVal, basestring):
+                if not isinstance(defaultVal, str):
                     defaultVal = ("%f" % defaultVal).rstrip("0")
                     if defaultVal[-1:] == ".":
                         defaultVal += "0"
@@ -229,6 +229,15 @@ class GraphFrame(wx.Frame):
     def draw(self, event=None):
         global mpl_version
 
+        if event is not None:
+            event.Skip()
+
+        # todo: FIX THIS, see #1430. draw() is not being unbound properly when the window closes, this is an easy fix,
+        # but not a proper solution
+        if not self:
+            pyfalog.warning("GraphFrame handled event, however GraphFrame no longer exists. Ignoring event")
+            return
+
         values = self.getValues()
         view = self.getView()
         self.subplot.clear()
@@ -247,9 +256,9 @@ class GraphFrame(wx.Frame):
 
                 self.subplot.plot(x, y)
                 legend.append(fit.name)
-            except:
-                pyfalog.warning(u"Invalid values in '{0}'", fit.name)
-                self.SetStatusText(u"Invalid values in '%s'" % fit.name)
+            except Exception as ex:
+                pyfalog.warning("Invalid values in '{0}'", fit.name)
+                self.SetStatusText("Invalid values in '%s'" % fit.name)
                 self.canvas.draw()
                 return
 
@@ -299,8 +308,6 @@ class GraphFrame(wx.Frame):
 
         self.canvas.draw()
         self.SetStatusText("")
-        if event is not None:
-            event.Skip()
 
     def onFieldChanged(self, event):
         self.draw()

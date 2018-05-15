@@ -20,7 +20,7 @@
 # noinspection PyPackageRequirements
 import wx
 from gui.statsView import StatsView
-from gui.bitmapLoader import BitmapLoader
+from gui.bitmap_loader import BitmapLoader
 from gui.utils.numberFormatter import formatAmount
 
 
@@ -44,7 +44,7 @@ class OutgoingViewFull(StatsView):
         parent = self.panel = contentPanel
         self.headerPanel = headerPanel
 
-        sizerOutgoing = wx.GridSizer(1, 4)
+        sizerOutgoing = wx.GridSizer(1, 4, 0, 0)
 
         contentSizer.Add(sizerOutgoing, 0, wx.EXPAND, 0)
 
@@ -63,9 +63,9 @@ class OutgoingViewFull(StatsView):
             baseBox.Add(BitmapLoader.getStaticBitmap("%s_big" % image, parent, "gui"), 0, wx.ALIGN_CENTER)
 
             if "Capacitor" in outgoingType:
-                lbl = wx.StaticText(parent, wx.ID_ANY, u"0 GJ/s")
+                lbl = wx.StaticText(parent, wx.ID_ANY, "0 GJ/s")
             else:
-                lbl = wx.StaticText(parent, wx.ID_ANY, u"0 HP/s")
+                lbl = wx.StaticText(parent, wx.ID_ANY, "0 HP/s")
 
             lbl.SetToolTip(wx.ToolTip(tooltip))
 
@@ -81,10 +81,10 @@ class OutgoingViewFull(StatsView):
         # If we did anything intresting, we'd update our labels to reflect the new fit's stats here
 
         stats = [
-            ("labelRemoteArmor", lambda: fit.remoteReps["Armor"], 3, 0, 0, u"%s HP/s", None),
-            ("labelRemoteShield", lambda: fit.remoteReps["Shield"], 3, 0, 0, u"%s HP/s", None),
-            ("labelRemoteHull", lambda: fit.remoteReps["Hull"], 3, 0, 0, u"%s HP/s", None),
-            ("labelRemoteCapacitor", lambda: fit.remoteReps["Capacitor"], 3, 0, 0, u"%s GJ/s", None),
+            ("labelRemoteArmor", lambda: fit.remoteReps["Armor"], 3, 0, 0, "%s HP/s", None),
+            ("labelRemoteShield", lambda: fit.remoteReps["Shield"], 3, 0, 0, "%s HP/s", None),
+            ("labelRemoteHull", lambda: fit.remoteReps["Hull"], 3, 0, 0, "%s HP/s", None),
+            ("labelRemoteCapacitor", lambda: fit.remoteReps["Capacitor"], 3, 0, 0, "%s GJ/s", None),
         ]
 
         counter = 0
