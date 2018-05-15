@@ -180,7 +180,7 @@ class EsiAccess(object):
         data = {
             'grant_type': 'refresh_token',
             'refresh_token': refreshToken,
-            }
+        }
 
         if self.settings.get('ssoMode') == SsoMode.AUTO:
             # data is all we really need, the rest is handled automatically by pyfa.io
@@ -281,4 +281,3 @@ class EsiAccess(object):
         self._before_request(ssoChar)
         endpoint = endpoint.format(**kwargs)
         return self._after_request(self._session.delete("{}{}".format(self.esi_url, endpoint)))
-

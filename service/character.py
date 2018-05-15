@@ -123,6 +123,7 @@ class SkillBackupThread(threading.Thread):
 
         wx.CallAfter(self.callback)
 
+
 class Character(object):
     instance = None
     skillReqsDict = {}

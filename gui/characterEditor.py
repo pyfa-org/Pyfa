@@ -830,7 +830,6 @@ class APIView(wx.Panel):
             if sso is None:
                 self.charChoice.SetSelection(noneID)
 
-
         #
         # if chars:
         #     for charName in chars:

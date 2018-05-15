@@ -76,7 +76,7 @@ class UpdateDialog(wx.Dialog):
             releaseDate.strftime('%B %d, %Y'),
             "<p class='text-danger'><b>This is a pre-release, be prepared for unstable features</b></p>" if version.is_prerelease else "",
             markdowner.convert(self.releaseInfo['body'])
-        ),"")
+        ), "")
 
         notesSizer.Add(self.browser, 1, wx.EXPAND | wx.LEFT | wx.RIGHT | wx.TOP, 5)
         mainSizer.Add(notesSizer, 1, wx.EXPAND, 5)

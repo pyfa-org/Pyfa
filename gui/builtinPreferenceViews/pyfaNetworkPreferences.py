@@ -150,10 +150,10 @@ class PFNetworkPref(PreferenceView):
         proxy = self.settings.autodetect()
 
         if proxy is not None:
-             addr, port = proxy
-             txt = addr + ":" + str(port)
+            addr, port = proxy
+            txt = addr + ":" + str(port)
         else:
-             txt = "None"
+            txt = "None"
 
         self.stPSAutoDetected.SetLabel("Auto-detected: " + txt)
         self.stPSAutoDetected.Disable()

@@ -26,11 +26,12 @@ from .resources import DEFAULT_DATA, DEFAULT_HEADER
 
 JARGON_PATH = os.path.join(config.savePath, 'jargon.yaml')
 
+
 class JargonLoader(object):
     def __init__(self, jargon_path: str):
         self.jargon_path = jargon_path
-        self._jargon_mtime = 0 # type: int
-        self._jargon = None # type: Jargon
+        self._jargon_mtime = 0  # type: int
+        self._jargon = None  # type: Jargon
 
     def get_jargon(self) -> Jargon:
         if self._is_stale():
@@ -58,7 +59,7 @@ class JargonLoader(object):
     def init_user_jargon(jargon_path):
         values = yaml.load(DEFAULT_DATA)
 
-        ## Disabled for issue/1533; do not overwrite existing user config
+        # Disabled for issue/1533; do not overwrite existing user config
         # if os.path.exists(jargon_path):
         #     with open(jargon_path) as f:
         #         custom_values = yaml.load(f)
@@ -72,11 +73,13 @@ class JargonLoader(object):
                 yaml.dump(values, stream=f, default_flow_style=False)
 
     _instance = None
+
     @staticmethod
     def instance(jargon_path=None):
         if not JargonLoader._instance:
             jargon_path = jargon_path or JARGON_PATH
             JargonLoader._instance = JargonLoader(jargon_path)
         return JargonLoader._instance
+
 
 JargonLoader.init_user_jargon(JARGON_PATH)
