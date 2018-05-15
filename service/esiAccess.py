@@ -18,7 +18,7 @@ import base64
 
 import datetime
 from eos.enum import Enum
-from service.settings import EsiSettings
+from service.settings import EsiSettings, NetworkSettings
 
 from requests import Session
 from urllib.parse import urlencode, quote
@@ -85,6 +85,7 @@ class EsiAccess(object):
                 'pyfa v{}'.format(config.version)
             )
         })
+        self._session.proxies = self.get_requests_proxies()
 
     @property
     def sso_url(self):
@@ -131,6 +132,26 @@ class EsiAccess(object):
         char.accessTokenExpires = datetime.datetime.fromtimestamp(time.time() + tokenResponse['expires_in'])
         if 'refresh_token' in tokenResponse:
             char.refreshToken = config.cipher.encrypt(tokenResponse['refresh_token'].encode())
+
+    @staticmethod
+    def get_requests_proxies():
+        proxies = {}
+        proxy_settings = NetworkSettings.getInstance().getProxySettings()
+        # proxy_settings is a tuple of (host, port), like  ('192.168.20.1', 3128), or None
+        if proxy_settings is not None:
+            # form proxy address in format "http://host:port
+            proxy_host_port = '{}:{}'.format(proxy_settings[0], proxy_settings[1])
+            proxy_auth_details = NetworkSettings.getInstance().getProxyAuthDetails()
+            # proxy_auth_details is a tuple of (login, password), or None
+            user_pass = ''
+            if proxy_auth_details is not None:
+                # construct prefix in form "user:password@"
+                user_pass = '{}:{}@'.format(proxy_auth_details[0], proxy_auth_details[1])
+            proxies = {
+                'http': 'http://' + user_pass + proxy_host_port,
+                'https': 'http://' + user_pass + proxy_host_port
+            }
+        return proxies
 
     def getLoginURI(self, redirect=None):
         self.state = str(uuid.uuid4())
