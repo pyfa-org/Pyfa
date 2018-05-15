@@ -30,6 +30,8 @@ from eos.saveddata.module import Hardpoint
 
 from gui.utils.numberFormatter import formatAmount
 
+from multilanguage import translate
+
 
 class ResourcesViewFull(StatsView):
     name = "resourcesViewFull"
@@ -78,7 +80,7 @@ class ResourcesViewFull(StatsView):
         self.headerPanel.Layout()
 
     def getHeaderText(self, fit):
-        return "Resources"
+        return translate.look_up("ui", "Resources")
 
     def getTextExtentW(self, text):
         width, height = self.parent.GetTextExtent(text)
@@ -104,8 +106,13 @@ class ResourcesViewFull(StatsView):
         base = sizerResources
         sizer.AddStretchSpacer()
         # Turrets & launcher hardslots display
-        tooltipText = {"turret": "Turret hardpoints", "launcher": "Launcher hardpoints", "drones": "Drones active",
-                       "fighter": "Fighter squadrons active", "calibration": "Calibration"}
+        tooltipText = {
+            "turret": translate.look_up("ui", "Turret hardpoints"),
+            "launcher": translate.look_up("ui", "Launcher hardpoints"),
+            "drones": translate.look_up("ui", "Drones active"),
+            "fighter": translate.look_up("ui", "Fighter squadrons active"),
+            "calibration": translate.look_up("ui", "Calibration")
+        }
         for type_ in ("turret", "launcher", "drones", "fighter", "calibration"):
             box = wx.BoxSizer(wx.HORIZONTAL)
 
@@ -139,8 +146,14 @@ class ResourcesViewFull(StatsView):
         gauge_font = wx.Font(fonts.NORMAL, wx.SWISS, wx.NORMAL, wx.NORMAL, False)
 
         # PG, Cpu & drone stuff
-        tooltipText = {"cpu": "CPU", "pg": "PowerGrid", "droneBay": "Drone bay", "fighterBay": "Fighter bay",
-                       "droneBandwidth": "Drone bandwidth", "cargoBay": "Cargo bay"}
+        tooltipText = {
+            "cpu": translate.look_up("ui", "CPU"),
+            "pg": translate.look_up("ui", "PowerGrid"),
+            "droneBay": translate.look_up("ui", "Drone bay"),
+            "fighterBay": translate.look_up("ui", "Fighter bay"),
+            "droneBandwidth": translate.look_up("ui", "Drone bandwidth"),
+            "cargoBay": translate.look_up("ui", "Cargo bay")
+        }
         for i, group in enumerate((("cpu", "pg"), ("cargoBay", "droneBay", "fighterBay", "droneBandwidth"))):
             main = wx.BoxSizer(wx.VERTICAL)
             base.Add(main, 1, wx.ALIGN_CENTER)

@@ -25,6 +25,7 @@ from gui.utils.numberFormatter import formatAmount
 import gui.mainFrame
 from gui.builtinStatsViews.resistancesViewFull import EFFECTIVE_HP_TOGGLED
 from service.fit import Fit
+from multilanguage import translate
 
 
 class RechargeViewFull(StatsView):
@@ -38,7 +39,7 @@ class RechargeViewFull(StatsView):
         self.effective = True
 
     def getHeaderText(self, fit):
-        return "Recharge rates"
+        return translate.look_up("ui", "Recharge rates")
 
     def getTextExtentW(self, text):
         width, height = self.parent.GetTextExtent(text)
@@ -63,8 +64,12 @@ class RechargeViewFull(StatsView):
 
         # Add an empty label first for correct alignment.
         sizerTankStats.Add(wx.StaticText(contentPanel, wx.ID_ANY, ""), 0)
-        toolTipText = {"shieldPassive": "Passive shield recharge", "shieldActive": "Active shield boost",
-                       "armorActive": "Armor repair amount", "hullActive": "Hull repair amount"}
+        toolTipText = {
+            "shieldPassive": translate.look_up("ui", "Passive shield recharge"),
+            "shieldActive": translate.look_up("ui", "Active shield boost"),
+            "armorActive": translate.look_up("ui", "Armor repair amount"),
+            "hullActive": translate.look_up("ui", "Hull repair amount")
+        }
         for tankType in ("shieldPassive", "shieldActive", "armorActive", "hullActive"):
             bitmap = BitmapLoader.getStaticBitmap("%s_big" % tankType, contentPanel, "gui")
             tooltip = wx.ToolTip(toolTipText[tankType])

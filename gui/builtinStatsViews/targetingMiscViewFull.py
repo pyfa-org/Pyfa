@@ -22,6 +22,7 @@ import wx
 from gui.statsView import StatsView
 from gui.utils.numberFormatter import formatAmount
 from collections import OrderedDict
+from multilanguage import translate
 
 
 class TargetingMiscViewFull(StatsView):
@@ -33,7 +34,7 @@ class TargetingMiscViewFull(StatsView):
         self._cachedValues = []
 
     def getHeaderText(self, fit):
-        return "Targeting && Misc"
+        return translate.look_up("ui", "Targeting && Misc")
 
     def getTextExtentW(self, text):
         width, height = self.parent.GetTextExtent(text)
@@ -55,11 +56,11 @@ class TargetingMiscViewFull(StatsView):
 
         gridTargetingMisc.Add(gridTargeting, 0, wx.ALIGN_LEFT | wx.ALL, 5)
 
-        labels = (("Targets", "Targets", ""),
-                  ("Range", "Range", "km"),
-                  ("Scan res.", "ScanRes", "mm"),
-                  ("Sensor str.", "SensorStr", ""),
-                  ("Drone range", "CtrlRange", "km"))
+        labels = ((translate.look_up("ui", "Targets"), "Targets", ""),
+                  (translate.look_up("ui", "Range"), "Range", "km"),
+                  (translate.look_up("ui", "Scan res."), "ScanRes", "mm"),
+                  (translate.look_up("ui", "Sensor str."), "SensorStr", ""),
+                  (translate.look_up("ui", "Drone range"), "CtrlRange", "km"))
 
         for header, labelShort, unit in labels:
             gridTargeting.Add(wx.StaticText(contentPanel, wx.ID_ANY, "%s: " % header), 0, wx.ALIGN_LEFT)
@@ -79,11 +80,11 @@ class TargetingMiscViewFull(StatsView):
         gridMisc.AddGrowableCol(1)
         gridTargetingMisc.Add(gridMisc, 0, wx.ALIGN_LEFT | wx.ALL, 5)
 
-        labels = (("Speed", "Speed", "m/s"),
-                  ("Align time", "AlignTime", "s"),
-                  ("Signature", "SigRadius", "m"),
-                  ("Warp Speed", "WarpSpeed", "AU/s"),
-                  ("Cargo", "Cargo", "m\u00B3"))
+        labels = ((translate.look_up("ui", "Speed"), "Speed", "m/s"),
+                  (translate.look_up("ui", "Align time"), "AlignTime", "s"),
+                  (translate.look_up("ui", "Signature"), "SigRadius", "m"),
+                  (translate.look_up("ui", "Warp Speed"), "WarpSpeed", "AU/s"),
+                  (translate.look_up("ui", "Cargo"), "Cargo", "m\u00B3"))
 
         for header, labelShort, unit in labels:
             gridMisc.Add(wx.StaticText(contentPanel, wx.ID_ANY, "%s: " % header), 0, wx.ALIGN_LEFT)

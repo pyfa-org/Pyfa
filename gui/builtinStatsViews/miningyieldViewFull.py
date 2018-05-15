@@ -24,6 +24,7 @@ from gui.statsView import StatsView
 from gui.bitmap_loader import BitmapLoader
 from gui.utils.numberFormatter import formatAmount
 from service.fit import Fit
+from multilanguage import translate
 
 
 class MiningYieldViewFull(StatsView):
@@ -35,7 +36,7 @@ class MiningYieldViewFull(StatsView):
         self._cachedValues = []
 
     def getHeaderText(self, fit):
-        return "Mining Yield"
+        return translate.look_up("ui", "Mining Yield")
 
     def getTextExtentW(self, text):
         width, height = self.parent.GetTextExtent(text)
@@ -98,7 +99,7 @@ class MiningYieldViewFull(StatsView):
 
         image = BitmapLoader.getBitmap("turret_small", "gui")
         firepower = wx.BitmapButton(contentPanel, -1, image)
-        firepower.SetToolTip(wx.ToolTip("Click to toggle to Firepower View"))
+        firepower.SetToolTip(wx.ToolTip(translate.look_up("ui", "Click to toggle to Firepower View")))
         firepower.Bind(wx.EVT_BUTTON, self.switchToFirepowerView)
         sizerMiningYield.Add(firepower, 0, wx.ALIGN_LEFT)
 

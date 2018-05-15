@@ -31,6 +31,7 @@ from gui.builtinAdditionPanes.notesView import NotesView
 from gui.builtinAdditionPanes.projectedView import ProjectedView
 from gui.chrome_tabs import ChromeNotebook
 from gui.toggle_panel import TogglePanel
+from multilanguage import translate
 
 
 class AdditionsPane(TogglePanel):
@@ -38,7 +39,7 @@ class AdditionsPane(TogglePanel):
 
         TogglePanel.__init__(self, parent, force_layout=1)
 
-        self.SetLabel("Additions")
+        self.SetLabel(translate.look_up("ui", "Additions"))
         pane = self.GetContentPanel()
 
         baseSizer = wx.BoxSizer(wx.HORIZONTAL)
@@ -59,32 +60,42 @@ class AdditionsPane(TogglePanel):
         notesImg = BitmapLoader.getImage("skill_small", "gui")
 
         self.drone = DroneView(self.notebook)
-        self.notebook.AddPage(self.drone, "Drones", image=droneImg, closeable=False)
+        self.notebook.AddPage(self.drone, translate.look_up("ui", "Drones"), image=droneImg, closeable=False)
 
         self.fighter = FighterView(self.notebook)
-        self.notebook.AddPage(self.fighter, "Fighters", image=fighterImg, closeable=False)
+        self.notebook.AddPage(self.fighter, translate.look_up("ui", "Fighters"), image=fighterImg, closeable=False)
 
         self.cargo = CargoView(self.notebook)
-        self.notebook.AddPage(self.cargo, "Cargo", image=cargoImg, closeable=False)
+        self.notebook.AddPage(self.cargo, translate.look_up("ui", "Cargo"), image=cargoImg, closeable=False)
 
         self.implant = ImplantView(self.notebook)
-        self.notebook.AddPage(self.implant, "Implants", image=implantImg, closeable=False)
+        self.notebook.AddPage(self.implant, translate.look_up("ui", "Implants"), image=implantImg, closeable=False)
 
         self.booster = BoosterView(self.notebook)
-        self.notebook.AddPage(self.booster, "Boosters", image=boosterImg, closeable=False)
+        self.notebook.AddPage(self.booster, translate.look_up("ui", "Boosters"), image=boosterImg, closeable=False)
 
         self.projectedPage = ProjectedView(self.notebook)
-        self.notebook.AddPage(self.projectedPage, "Projected", image=projectedImg, closeable=False)
+        self.notebook.AddPage(self.projectedPage, translate.look_up("ui", "Projected"), image=projectedImg,
+                              closeable=False)
 
         self.gangPage = CommandView(self.notebook)
-        self.notebook.AddPage(self.gangPage, "Command", image=gangImg, closeable=False)
+        self.notebook.AddPage(self.gangPage, translate.look_up("ui", "Command"), image=gangImg, closeable=False)
 
         self.notes = NotesView(self.notebook)
-        self.notebook.AddPage(self.notes, "Notes", image=notesImg, closeable=False)
+        self.notebook.AddPage(self.notes, translate.look_up("ui", "Notes"), image=notesImg, closeable=False)
 
         self.notebook.SetSelection(0)
 
-    PANES = ["Drones", "Fighters", "Cargo", "Implants", "Boosters", "Projected", "Command", "Notes"]
+    PANES = [
+        translate.look_up("ui", "Drones"),
+        translate.look_up("ui", "Fighters"),
+        translate.look_up("ui", "Cargo"),
+        translate.look_up("ui", "Implants"),
+        translate.look_up("ui", "Boosters"),
+        translate.look_up("ui", "Projected"),
+        translate.look_up("ui", "Command"),
+        translate.look_up("ui", "Notes")
+    ]
 
     def select(self, name):
         self.notebook.SetSelection(self.PANES.index(name))

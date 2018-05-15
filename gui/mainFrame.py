@@ -83,6 +83,9 @@ import threading
 import webbrowser
 import wx.adv
 
+from multilanguage import language
+from multilanguage import packs
+
 from service.esi import Esi, LoginMethod
 from gui.esiFittings import EveFittings, ExportToEve, SsoCharacterMgmt
 
@@ -538,6 +541,10 @@ class MainFrame(wx.Frame):
 
         # Graphs
         self.Bind(wx.EVT_MENU, self.openGraphFrame, id=menuBar.graphFrameId)
+
+        # Change Language
+        for idx in range(len(language.packs.packs_list)):
+            self.Bind(wx.EVT_MENU, self.changeLanguage, id=menuBar.languageId[idx])
 
         toggleSearchBoxId = wx.NewId()
         toggleShipMarketId = wx.NewId()
@@ -996,3 +1003,11 @@ class MainFrame(wx.Frame):
         if not wnd:
             wnd = self
         InspectionTool().Show(wnd, True)
+
+    def changeLanguage(self, event):
+        idx = event.GetId() - self.GetMenuBar().languageId[0]
+        language.change_current_language(packs.packs_list[idx])
+        info = wx.adv.AboutDialogInfo()
+        info.Name = "Language has been changed."
+        info.Version = "It will take effect on next start."
+        wx.adv.AboutBox(info)
