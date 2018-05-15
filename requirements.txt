@@ -4,7 +4,6 @@ matplotlib >= 2.0.0
 python-dateutil
 requests >= 2.0.0
 sqlalchemy >= 1.0.5
-esipy == 0.3.4
 cryptography
 diskcache
 markdown2

@@ -1,5 +1,3 @@
-import time
-import webbrowser
 import json
 # noinspection PyPackageRequirements
 import wx
@@ -15,9 +13,8 @@ from gui.display import Display
 import gui.globalEvents as GE
 
 from logbook import Logger
-import calendar
 from service.esi import Esi
-from esipy.exceptions import APIException
+from service.esiAccess import APIException
 from service.port import ESIExportException
 
 pyfalog = Logger(__name__)
@@ -111,11 +108,11 @@ class EveFittings(wx.Frame):
         waitDialog = wx.BusyInfo("Fetching fits, please wait...", parent=self)
 
         try:
-            fittings = sEsi.getFittings(self.getActiveCharacter())
+            self.fittings = sEsi.getFittings(self.getActiveCharacter())
             # self.cacheTime = fittings.get('cached_until')
             # self.updateCacheStatus(None)
             # self.cacheTimer.Start(1000)
-            self.fitTree.populateSkillTree(fittings)
+            self.fitTree.populateSkillTree(self.fittings)
             del waitDialog
         except requests.exceptions.ConnectionError:
             msg = "Connection error, please check your internet connection"
@@ -126,6 +123,7 @@ class EveFittings(wx.Frame):
             ESIExceptionHandler(self, ex)
         except Exception as ex:
             del waitDialog
+            raise ex
 
     def importFitting(self, event):
         selection = self.fitView.fitSelection
@@ -150,6 +148,9 @@ class EveFittings(wx.Frame):
         if dlg.ShowModal() == wx.ID_YES:
             try:
                 sEsi.delFitting(self.getActiveCharacter(), data['fitting_id'])
+                # repopulate the fitting list
+                self.fitTree.populateSkillTree(self.fittings)
+                self.fitView.update([])
             except requests.exceptions.ConnectionError:
                 msg = "Connection error, please check your internet connection"
                 pyfalog.error(msg)
@@ -157,8 +158,9 @@ class EveFittings(wx.Frame):
 
 
 class ESIExceptionHandler(object):
+    # todo: make this a generate excetpion handler for all calls
     def __init__(self, parentWindow, ex):
-        if ex.response['error'] == "invalid_token":
+        if ex.response['error'].startswith('Token is not valid') or ex.response['error'] == 'invalid_token':  # todo: this seems messy, figure out a better response
             dlg = wx.MessageDialog(parentWindow,
                                    "There was an error validating characters' SSO token. Please try "
                                    "logging into the character again to reset the token.", "Invalid Token",
@@ -362,9 +364,13 @@ class FittingsTreeView(wx.Panel):
         tree = self.fittingsTreeCtrl
         tree.DeleteChildren(root)
 
+        sEsi = Esi.getInstance()
+
         dict = {}
         fits = data
         for fit in fits:
+            if (fit['fitting_id'] in sEsi.fittings_deleted):
+                continue
             ship = getItem(fit['ship_type_id'])
             if ship.name not in dict:
                 dict[ship.name] = []

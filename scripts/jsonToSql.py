@@ -20,16 +20,19 @@
 
 import os
 import sys
+import functools
 import re
 
 # Add eos root path to sys.path so we can import ourselves
-path = os.path.dirname(str(__file__, sys.getfilesystemencoding()))
+path = os.path.dirname(__file__)
 sys.path.append(os.path.realpath(os.path.join(path, "..")))
 
 import json
 import argparse
 
 def main(db, json_path):
+    if os.path.isfile(db):
+        os.remove(db)
 
     jsonPath = os.path.expanduser(json_path)
 
@@ -130,7 +133,7 @@ def main(db, json_path):
                     check[ID] = {}
                 check[ID][int(skill["typeID"])] = int(skill["level"])
 
-        if not reduce(lambda a, b: a if a == b else False, [v for _, v in check.iteritems()]):
+        if not functools.reduce(lambda a, b: a if a == b else False, [v for _, v in check.items()]):
             raise Exception("Alpha Clones not all equal")
 
         newData = [x for x in newData if x['alphaCloneID'] == 1]
@@ -188,7 +191,7 @@ def main(db, json_path):
 
     # Dump all data to memory so we can easely cross check ignored rows
     for jsonName, cls in tables.items():
-        with open(os.path.join(jsonPath, "{}.json".format(jsonName))) as f:
+        with open(os.path.join(jsonPath, "{}.json".format(jsonName)), encoding="utf-8") as f:
             tableData = json.load(f)
         if jsonName in rowsInValues:
             tableData = list(tableData.values())

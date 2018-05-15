@@ -19,7 +19,8 @@
 #define MyAppExeName "pyfa.exe"
 
 ; What version starts with the new structure (1.x.0). This is used to determine if we run directory structure cleanup
-#define VersionFlag 16
+#define MajorVersionFlag 2
+#define MinorVersionFlag 0
 
 #ifndef MyOutputFile
     #define MyOutputFile LowerCase(StringChange(MyAppName+'-'+MyAppVersion+'-'+MyAppExpansion+'-win-wx3', " ", "-"))
@@ -138,15 +139,19 @@ var
   V: Integer;
   iResultCode: Integer;
   sUnInstallString: string;
-  iOldVersion: Cardinal;
+  iOldVersionMajor: Cardinal;
+  iOldVersionMinor: Cardinal;
 begin
   Result := True; // in case when no previous version is found
   if RegValueExists(HKEY_LOCAL_MACHINE,'Software\Microsoft\Windows\CurrentVersion\Uninstall\{3DA39096-C08D-49CD-90E0-1D177F32C8AA}_is1', 'UninstallString') then  //Your App GUID/ID
   begin
     RegQueryDWordValue(HKEY_LOCAL_MACHINE,
       'Software\Microsoft\Windows\CurrentVersion\Uninstall\{3DA39096-C08D-49CD-90E0-1D177F32C8AA}_is1',
-      'MinorVersion', iOldVersion);
-    if iOldVersion < {#VersionFlag} then // If old version with old structure is installed.
+      'MajorVersion', iOldVersionMajor);
+    RegQueryDWordValue(HKEY_LOCAL_MACHINE,
+      'Software\Microsoft\Windows\CurrentVersion\Uninstall\{3DA39096-C08D-49CD-90E0-1D177F32C8AA}_is1',
+      'MinorVersion', iOldVersionMinor);
+    if (iOldVersionMajor < {#MajorVersionFlag}) or ((iOldVersionMajor = {#MajorVersionFlag}) and (iOldVersionMinor < {#MinorVersionFlag})) then // If old version with old structure is installed.
     begin
       V := MsgBox(ExpandConstant('An old version of pyfa was detected. Due to recent changes in the application structure, you must uninstall the previous version first. This will not affect your user data (saved fittings, characters, etc.). Do you want to uninstall now?'), mbInformation, MB_YESNO); //Custom Message if App installed
       if V = IDYES then

@@ -363,10 +363,18 @@ class EsiSettings(object):
         return cls._instance
 
     def __init__(self):
+        # SSO Mode:
+        # 0 - pyfa.io
+        # 1 - custom application
         # LoginMode:
         # 0 - Server Start Up
         # 1 - User copy and paste data from website to pyfa
-        defaults = {"loginMode": 0, "clientID": "", "clientSecret": "", "timeout": 60}
+        defaults = {
+            "ssoMode": 0,
+            "loginMode": 0,
+            "clientID": "",
+            "clientSecret": "",
+            "timeout": 60}
 
         self.settings = SettingsProvider.getInstance().getSettings(
                 "pyfaServiceEsiSettings",

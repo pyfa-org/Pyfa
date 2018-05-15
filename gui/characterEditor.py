@@ -788,6 +788,8 @@ class APIView(wx.Panel):
         return self.charChoice.GetClientData(selection) if selection is not -1 else None
 
     def ssoListChanged(self, event):
+        if not self:  # todo: fix event not unbinding properly
+            return
         sEsi = Esi.getInstance()
         ssoChars = sEsi.getSsoCharacters()
 
