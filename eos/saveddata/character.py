@@ -170,7 +170,6 @@ class Character(object):
                 if x.client == clientHash:
                     self.__ssoCharacters.remove(x)
 
-
     def getSsoCharacter(self, clientHash):
         return next((x for x in self.__ssoCharacters if x.client == clientHash), None)
 

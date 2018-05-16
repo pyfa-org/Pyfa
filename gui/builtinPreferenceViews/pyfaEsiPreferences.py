@@ -43,23 +43,65 @@ class PFEsiPref(PreferenceView):
         rbSizer = wx.BoxSizer(wx.HORIZONTAL)
         self.rbMode = wx.RadioBox(panel, -1, "Login Authentication Method", wx.DefaultPosition, wx.DefaultSize,
                                   ['Local Server', 'Manual'], 1, wx.RA_SPECIFY_COLS)
-        self.rbMode.SetItemToolTip(0, "This options starts a local webserver that the web application will call back to with information about the character login.")
-        self.rbMode.SetItemToolTip(1, "This option prompts users to copy and paste information from the web application to allow for character login. Use this if having issues with the local server.")
-        # self.rbServer = wx.RadioBox(panel, -1, "Server", wx.DefaultPosition, wx.DefaultSize,
-        #                             ['Tranquility', 'Singularity'], 1, wx.RA_SPECIFY_COLS)
+        self.rbMode.SetItemToolTip(0, "This options starts a local webserver that the web application will call back to"
+                                      " with information about the character login.")
+        self.rbMode.SetItemToolTip(1, "This option prompts users to copy and paste information from the web application "
+                                      "to allow for character login. Use this if having issues with the local server.")
+
+        self.rbSsoMode = wx.RadioBox(panel, -1, "SSO Mode", wx.DefaultPosition, wx.DefaultSize,
+                                     ['pyfa.io', 'Custom application'], 1, wx.RA_SPECIFY_COLS)
+        self.rbSsoMode.SetItemToolTip(0, "This options routes SSO Logins through pyfa.io, allowing you to easily login "
+                                         "without any configuration. When in doubt, use this option.")
+        self.rbSsoMode.SetItemToolTip(1, "This option goes through EVE SSO directly, but requires more configuration. Use "
+                                         "this is pyfa.io is blocked for some reason, or if you do not wish to route data throguh pyfa.io.")
 
         self.rbMode.SetSelection(self.settings.get('loginMode'))
-        # self.rbServer.SetSelection(self.settings.get('server'))
+        self.rbSsoMode.SetSelection(self.settings.get('ssoMode'))
 
+        rbSizer.Add(self.rbSsoMode, 1, wx.ALL, 5)
         rbSizer.Add(self.rbMode, 1, wx.TOP | wx.RIGHT, 5)
-        # rbSizer.Add(self.rbServer, 1, wx.ALL, 5)
 
         self.rbMode.Bind(wx.EVT_RADIOBOX, self.OnModeChange)
-        # self.rbServer.Bind(wx.EVT_RADIOBOX, self.OnServerChange)
+        self.rbSsoMode.Bind(wx.EVT_RADIOBOX, self.OnSSOChange)
 
         mainSizer.Add(rbSizer, 1, wx.ALL | wx.EXPAND, 0)
 
-        timeoutSizer = wx.BoxSizer(wx.HORIZONTAL)
+        detailsTitle = wx.StaticText(panel, wx.ID_ANY, "Custom Application", wx.DefaultPosition, wx.DefaultSize, 0)
+        detailsTitle.Wrap(-1)
+        detailsTitle.SetFont(wx.Font(12, 70, 90, 90, False, wx.EmptyString))
+
+        mainSizer.Add(detailsTitle, 0, wx.ALL, 5)
+        mainSizer.Add(wx.StaticLine(panel, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.LI_HORIZONTAL), 0,
+                      wx.EXPAND, 5)
+
+        fgAddrSizer = wx.FlexGridSizer(2, 2, 0, 0)
+        fgAddrSizer.AddGrowableCol(1)
+        fgAddrSizer.SetFlexibleDirection(wx.BOTH)
+        fgAddrSizer.SetNonFlexibleGrowMode(wx.FLEX_GROWMODE_SPECIFIED)
+
+        self.stSetID = wx.StaticText(panel, wx.ID_ANY, u"Client ID:", wx.DefaultPosition, wx.DefaultSize, 0)
+        self.stSetID.Wrap(-1)
+        fgAddrSizer.Add(self.stSetID, 0, wx.ALL | wx.ALIGN_CENTER_VERTICAL, 5)
+
+        self.inputClientID = wx.TextCtrl(panel, wx.ID_ANY, self.settings.get('clientID'), wx.DefaultPosition,
+                                         wx.DefaultSize, 0)
+
+        fgAddrSizer.Add(self.inputClientID, 0, wx.ALL | wx.ALIGN_CENTER_VERTICAL | wx.EXPAND, 5)
+
+        self.stSetSecret = wx.StaticText(panel, wx.ID_ANY, u"Client Secret:", wx.DefaultPosition, wx.DefaultSize, 0)
+        self.stSetSecret.Wrap(-1)
+
+        fgAddrSizer.Add(self.stSetSecret, 0, wx.ALL | wx.ALIGN_CENTER_VERTICAL, 5)
+
+        self.inputClientSecret = wx.TextCtrl(panel, wx.ID_ANY, self.settings.get('clientSecret'), wx.DefaultPosition,
+                                             wx.DefaultSize, 0)
+
+        fgAddrSizer.Add(self.inputClientSecret, 0, wx.ALL | wx.ALIGN_CENTER_VERTICAL | wx.EXPAND, 5)
+
+        self.inputClientID.Bind(wx.EVT_TEXT, self.OnClientDetailChange)
+        self.inputClientSecret.Bind(wx.EVT_TEXT, self.OnClientDetailChange)
+
+        mainSizer.Add(fgAddrSizer, 0, wx.EXPAND, 5)
 
         # self.stTimout = wx.StaticText(panel, wx.ID_ANY, "Timeout (seconds):", wx.DefaultPosition, wx.DefaultSize, 0)
         # self.stTimout.Wrap(-1)
@@ -112,6 +154,7 @@ class PFEsiPref(PreferenceView):
 
         # self.ToggleProxySettings(self.settings.get('loginMode'))
 
+        self.ToggleSSOMode(self.settings.get('ssoMode'))
         panel.SetSizer(mainSizer)
         panel.Layout()
 
@@ -121,14 +164,31 @@ class PFEsiPref(PreferenceView):
     def OnModeChange(self, event):
         self.settings.set('loginMode', event.GetInt())
 
-    def OnServerChange(self, event):
-        self.settings.set('server', event.GetInt())
+    def OnSSOChange(self, event):
+        self.settings.set('ssoMode', event.GetInt())
+        self.ToggleSSOMode(event.GetInt())
 
-    def OnBtnApply(self, event):
+    def ToggleSSOMode(self, mode):
+        if mode:
+            self.stSetID.Enable()
+            self.inputClientID.Enable()
+            self.stSetSecret.Enable()
+            self.inputClientSecret.Enable()
+            self.rbMode.Disable()
+        else:
+            self.stSetID.Disable()
+            self.inputClientID.Disable()
+            self.stSetSecret.Disable()
+            self.inputClientSecret.Disable()
+            self.rbMode.Enable()
+
+    def OnClientDetailChange(self, evt):
         self.settings.set('clientID', self.inputClientID.GetValue().strip())
         self.settings.set('clientSecret', self.inputClientSecret.GetValue().strip())
-        sEsi = Esi.getInstance()
-        sEsi.delAllCharacters()
+
+        # sEsi = Esi.getInstance()
+        # sEsi.delAllCharacters()
+        #
 
     def getImage(self):
         return BitmapLoader.getBitmap("eve", "gui")

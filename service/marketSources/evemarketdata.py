@@ -35,7 +35,7 @@ class EveMarketData(object):
     def __init__(self, types, system, priceMap):
         data = {}
         baseurl = "https://eve-marketdata.com/api/item_prices.xml"
-        data["system_id"] = system # Use Jita for market
+        data["system_id"] = system  # Use Jita for market
         data["type_ids"] = ','.join(str(x) for x in types)
 
         network = Network.getInstance()

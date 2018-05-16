@@ -1,5 +1,6 @@
 import wx
 
+
 class SsoLogin(wx.Dialog):
     def __init__(self, parent):
         wx.Dialog.__init__(self, parent, id=wx.ID_ANY, title="SSO Login", size=wx.Size(400, 240))

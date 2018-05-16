@@ -41,6 +41,7 @@ pyfalog = Logger(__name__)
 # Event which tells threads dependent on Market that it's initialized
 mktRdy = threading.Event()
 
+
 class ShipBrowserWorkerThread(threading.Thread):
     def __init__(self):
         threading.Thread.__init__(self)
@@ -113,9 +114,7 @@ class SearchWorkerThread(threading.Thread):
             else:
                 filter_ = None
 
-
             jargon_request = self.jargonLoader.get_jargon().apply(request)
-
 
             results = []
             if len(request) >= config.minItemSearchLength:

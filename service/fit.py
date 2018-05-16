@@ -1209,11 +1209,9 @@ class Fit(object):
         start_time = time()
         pyfalog.info("=" * 10 + "recalc: {0}" + "=" * 10, fit.name)
 
-
         fit.factorReload = self.serviceFittingOptions["useGlobalForceReload"]
         fit.clear()
 
         fit.calculateModifiedAttributes()
 
         pyfalog.info("=" * 10 + "recalc time: " + str(time() - start_time) + "=" * 10)
-

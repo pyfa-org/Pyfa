@@ -30,6 +30,8 @@ added_files = [
 
 import_these = []
 
+icon = os.path.join(os.getcwd(), "dist_assets", "mac", "pyfa.icns")
+
 # Walk directories that do dynamic importing
 paths = ('eos/effects', 'eos/db/migrations', 'service/conversions')
 for root, folders, files in chain.from_iterable(os.walk(path) for path in paths):
@@ -65,10 +67,10 @@ exe = EXE(pyz,
           upx=True,
           runtime_tmpdir=None,
           console=False ,
-          icon='dist_assets/mac/pyfa.icns',
+          icon=icon,
           )
 
 app = BUNDLE(exe,
              name='pyfa.app',
-             icon=None,
+             icon=icon,
              bundle_identifier=None)
