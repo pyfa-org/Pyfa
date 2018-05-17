@@ -69,6 +69,7 @@ class StatsPane(wx.Panel):
             pyfalog.error("Unknown setting for view: {0}", aView)
 
     def fitChanged(self, event):
+        pyfalog.info("StatsPane::fitChanged, updating stats view")
         sFit = Fit.getInstance()
         fit = sFit.getFit(event.fitID)
         for view in self.views:

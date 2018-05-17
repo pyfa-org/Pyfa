@@ -222,13 +222,6 @@ class FittingView(d.Display):
             wx.PostEvent(self.mainFrame, FitSelected(fitID=fitID))
 
     def Destroy(self):
-        print("+++++ Destroy " + repr(self))
-        print(self.parent.Unbind(EVT_NOTEBOOK_PAGE_CHANGED))
-        print(self.mainFrame.Unbind(GE.FIT_CHANGED))
-        print(self.mainFrame.Unbind(EVT_FIT_RENAMED))
-        print(self.mainFrame.Unbind(EVT_FIT_REMOVED))
-        print(self.mainFrame.Unbind(ITEM_SELECTED))
-
         d.Display.Destroy(self)
 
     def pageChanged(self, event):
@@ -527,7 +520,7 @@ class FittingView(d.Display):
         self.populate(self.mods)
 
     def fitChanged(self, event):
-        print('====== Fit Changed: {} {} activeFitID: {}, eventFitID: {}'.format(repr(self), str(bool(self)), self.activeFitID, event.fitID))
+        pyfalog.debug('fittingView::fitChanged(): {} {} activeFitID: {}, eventFitID: {}'.format(repr(self), str(bool(self)), self.activeFitID, event.fitID))
 
         try:
             if self.activeFitID is not None and self.activeFitID == event.fitID:
