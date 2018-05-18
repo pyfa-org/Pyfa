@@ -222,6 +222,16 @@ class FittingView(d.Display):
             wx.PostEvent(self.mainFrame, FitSelected(fitID=fitID))
 
     def Destroy(self):
+        # @todo: when wxPython 4.0.2 is release, https://github.com/pyfa-org/Pyfa/issues/1586#issuecomment-390074915
+        # Make sure to remove the shitty checks that I have to put in place for these handlers to ignore when self is None
+        print("+++++ Destroy " + repr(self))
+
+        # print(self.parent.Unbind(EVT_NOTEBOOK_PAGE_CHANGED))
+        # print(self.mainFrame.Unbind(GE.FIT_CHANGED, handler=self.fitChanged))
+        # print(self.mainFrame.Unbind(EVT_FIT_RENAMED, handler=self.fitRenamed ))
+        # print(self.mainFrame.Unbind(EVT_FIT_REMOVED, handler=self.fitRemoved))
+        # print(self.mainFrame.Unbind(ITEM_SELECTED, handler=self.appendItem))
+
         d.Display.Destroy(self)
 
     def pageChanged(self, event):
@@ -284,6 +294,9 @@ class FittingView(d.Display):
         """
         print('_+_+_+_+_+_ Fit Removed: {} {} activeFitID: {}, eventFitID: {}'.format(repr(self), str(bool(self)), self.activeFitID, event.fitID))
         pyfalog.debug("FittingView::fitRemoved")
+        if not self:
+            event.Skip()
+            return
         if event.fitID == self.getActiveFit():
             pyfalog.debug("    Deleted fit is currently active")
             self.parent.DeletePage(self.parent.GetPageIndex(self))
@@ -304,6 +317,9 @@ class FittingView(d.Display):
         event.Skip()
 
     def fitRenamed(self, event):
+        if not self:
+            event.Skip()
+            return
         fitID = event.fitID
         if fitID == self.getActiveFit():
             self.updateTab()
@@ -340,6 +356,9 @@ class FittingView(d.Display):
             self.parent.SetPageTextIcon(pageIndex, text, bitmap)
 
     def appendItem(self, event):
+        if not self:
+            event.Skip()
+            return
         if self.parent.IsActive(self):
             itemID = event.itemID
             fitID = self.activeFitID
@@ -520,8 +539,10 @@ class FittingView(d.Display):
         self.populate(self.mods)
 
     def fitChanged(self, event):
-        pyfalog.debug('fittingView::fitChanged(): {} {} activeFitID: {}, eventFitID: {}'.format(repr(self), str(bool(self)), self.activeFitID, event.fitID))
-
+        print('====== Fit Changed: {} {} activeFitID: {}, eventFitID: {}'.format(repr(self), str(bool(self)), self.activeFitID, event.fitID))
+        if not self:
+            event.Skip()
+            return
         try:
             if self.activeFitID is not None and self.activeFitID == event.fitID:
                 self.generateMods()
