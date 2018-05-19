@@ -20,11 +20,13 @@ class ItemTraits(wx.Panel):
         self.Layout()
 
         self.popupMenu = wx.Menu()
-        copyItem = wx.MenuItem(self.popupMenu, 1, 'Copy')
-        self.popupMenu.Append(copyItem)
-        self.popupMenu.Bind(wx.EVT_MENU, self.menuClickHandler, copyItem)
+        self.copyItem = wx.MenuItem(self.popupMenu, 1, 'Copy')
+        self.popupMenu.Append(self.copyItem)
+        self.popupMenu.Bind(wx.EVT_MENU, self.menuClickHandler, self.copyItem)
 
     def onPopupMenu(self, event):
+        selectedText = self.traits.SelectionToText()
+        self.copyItem.Enable(len(selectedText) > 0)
         self.PopupMenu(self.popupMenu)
 
     def menuClickHandler(self, event):
