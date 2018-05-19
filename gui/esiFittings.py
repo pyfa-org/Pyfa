@@ -366,6 +366,9 @@ class FittingsTreeView(wx.Panel):
             if (fit['fitting_id'] in sEsi.fittings_deleted):
                 continue
             ship = getItem(fit['ship_type_id'])
+            if ship is None:
+                pyfalog.debug('Cannot find ship type id: {}'.format(fit['ship_type_id']))
+                continue
             if ship.name not in dict:
                 dict[ship.name] = []
             dict[ship.name].append(fit)
