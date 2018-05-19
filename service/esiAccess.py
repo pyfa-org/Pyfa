@@ -18,7 +18,7 @@ import base64
 
 import datetime
 from eos.enum import Enum
-from service.settings import EsiSettings
+from service.settings import EsiSettings, NetworkSettings
 
 from requests import Session
 from urllib.parse import urlencode, quote
@@ -85,6 +85,7 @@ class EsiAccess(object):
                 'pyfa v{}'.format(config.version)
             )
         })
+        self._session.proxies = NetworkSettings.getInstance().getProxySettingsInRequestsFormat()
 
     @property
     def sso_url(self):
