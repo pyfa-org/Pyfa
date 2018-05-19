@@ -13,7 +13,8 @@ class ItemTraits(wx.Panel):
         self.traits = wx.html.HtmlWindow(self)
         self.traits.SetPage(item.traits.traitText)
 
-        self.traits.Bind(wx.EVT_CONTEXT_MENU, self.showPopupMenu)
+        self.traits.Bind(wx.EVT_CONTEXT_MENU, self.onPopupMenu)
+        self.traits.Bind(wx.EVT_KEY_DOWN, self.onKeyDown)
 
         mainSizer.Add(self.traits, 1, wx.ALL | wx.EXPAND, 0)
         self.Layout()
@@ -23,14 +24,23 @@ class ItemTraits(wx.Panel):
         self.popupMenu.Append(copyItem)
         self.popupMenu.Bind(wx.EVT_MENU, self.menuClickHandler, copyItem)
 
-    def showPopupMenu(self, event):
+    def onPopupMenu(self, event):
         self.PopupMenu(self.popupMenu)
 
     def menuClickHandler(self, event):
         selectedMenuItem = event.GetId()
         if selectedMenuItem == 1:  # Copy was chosen
-            selectedText = self.traits.SelectionToText()
-            if len(selectedText) > 0:
-                if wx.TheClipboard.Open():
-                    wx.TheClipboard.SetData(wx.TextDataObject(selectedText))
-                    wx.TheClipboard.Close()
+            self.copySelectionToClipboard()
+
+    def onKeyDown(self, event):
+        keyCode = event.GetKeyCode()
+        # Ctrl + C
+        if keyCode == 67 and event.ControlDown():
+            self.copySelectionToClipboard()
+
+    def copySelectionToClipboard(self):
+        selectedText = self.traits.SelectionToText()
+        if len(selectedText) > 0:
+            if wx.TheClipboard.Open():
+                wx.TheClipboard.SetData(wx.TextDataObject(selectedText))
+                wx.TheClipboard.Close()
