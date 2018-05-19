@@ -37,6 +37,9 @@ class ItemTraits(wx.Panel):
         # Ctrl + C
         if keyCode == 67 and event.ControlDown():
             self.copySelectionToClipboard()
+        # Ctrl + A
+        if keyCode == 65 and event.ControlDown():
+            self.traits.SelectAll()
 
     def copySelectionToClipboard(self):
         selectedText = self.traits.SelectionToText()
