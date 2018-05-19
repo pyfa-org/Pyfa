@@ -73,7 +73,7 @@ class BaseName(ViewColumn):
                 if stuff.slot == Slot.MODE:
                     return '─ Tactical Mode ─'
                 else:
-                    return '─ {} Slots ─'.format(Slot.getName(stuff.slot).capitalize())
+                    return '─ {} Slots ({}) ─'.format(Slot.getName(stuff.slot).capitalize(), stuff.num)
             else:
                 return ""
         elif isinstance(stuff, Module):

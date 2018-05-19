@@ -520,7 +520,7 @@ class FittingView(d.Display):
                 # second loop modifies self.mods, rewrites self.blanks to represent actual index of blanks
                 for i, (x, slot) in enumerate(self.blanks):
                     self.blanks[i] = x + i  # modify blanks with actual index
-                    self.mods.insert(x + i, Rack.buildRack(slot))
+                    self.mods.insert(x + i, Rack.buildRack(slot, sum(m.slot == slot for m in self.mods)))
 
             if fit.mode:
                 # Modes are special snowflakes and need a little manual loving
@@ -528,7 +528,7 @@ class FittingView(d.Display):
                 # while also marking the mode header position in the Blanks list
                 if sFit.serviceFittingOptions["rackSlots"]:
                     self.blanks.append(len(self.mods))
-                    self.mods.append(Rack.buildRack(Slot.MODE))
+                    self.mods.append(Rack.buildRack(Slot.MODE, None))
 
                 self.mods.append(fit.mode)
         else:

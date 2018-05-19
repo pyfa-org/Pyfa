@@ -144,10 +144,11 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
         return empty
 
     @classmethod
-    def buildRack(cls, slot):
+    def buildRack(cls, slot, num=None):
         empty = Rack(None)
         empty.__slot = slot
         empty.dummySlot = slot
+        empty.num = num
         return empty
 
     @property
@@ -799,6 +800,7 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
 class Rack(Module):
     """
     This is simply the Module class named something else to differentiate
-    it for app logic. This class does not do anything special
+    it for app logic. The only thing interesting about it is the num property,
+    which is the number of slots for this rack
     """
-    pass
+    num = None
