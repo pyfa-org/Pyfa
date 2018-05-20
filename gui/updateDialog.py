@@ -62,7 +62,6 @@ class UpdateDialog(wx.Dialog):
         self.browser.Bind(wx.html2.EVT_WEBVIEW_NEWWINDOW, self.OnNewWindow)
 
         link_patterns = [
-            (re.compile("([0-9a-f]{6,40})", re.I), r"https://github.com/pyfa-org/Pyfa/commit/\1"),
             (re.compile("#(\d+)", re.I), r"https://github.com/pyfa-org/Pyfa/issues/\1"),
             (re.compile("@(\w+)", re.I), r"https://github.com/\1")
         ]
@@ -71,11 +70,26 @@ class UpdateDialog(wx.Dialog):
             extras=['cuddled-lists', 'fenced-code-blocks', 'target-blank-links', 'toc', 'link-patterns'],
             link_patterns=link_patterns)
 
+        release_markup = markdowner.convert(self.releaseInfo['body'])
+
+        # run the text through markup again, this time with the hashing pattern. This is required due to bugs in markdown2:
+        # https://github.com/trentm/python-markdown2/issues/287
+        link_patterns = [
+            (re.compile("([0-9a-f]{6,40})", re.I), r"https://github.com/pyfa-org/Pyfa/commit/\1"),
+        ]
+
+        markdowner = markdown2.Markdown(
+            extras=['cuddled-lists', 'fenced-code-blocks', 'target-blank-links', 'toc', 'link-patterns'],
+            link_patterns=link_patterns)
+
+        # The space here is required, again, due to bug. Again, see https://github.com/trentm/python-markdown2/issues/287
+        release_markup = markdowner.convert(' ' + release_markup)
+
         self.browser.SetPage(html_tmpl.format(
             self.releaseInfo['tag_name'],
             releaseDate.strftime('%B %d, %Y'),
             "<p class='text-danger'><b>This is a pre-release, be prepared for unstable features</b></p>" if version.is_prerelease else "",
-            markdowner.convert(self.releaseInfo['body'])
+            release_markup
         ), "")
 
         notesSizer.Add(self.browser, 1, wx.EXPAND | wx.LEFT | wx.RIGHT | wx.TOP, 5)
