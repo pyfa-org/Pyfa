@@ -672,6 +672,24 @@ class Fit(object):
                     groups = ("Energy Weapon", "Hybrid Weapon")
                     self.modules.filteredItemBoost(lambda mod: mod.item.group.name in groups, "maxRange", value, stackingPenalties=True)
 
+                # Abysmal Weather Effects
+
+                if warfareBuffID == 90:  # Weather_electric_storm_EM_resistance_penalty
+                    for tankType in ("shield", "armor"):
+                        self.ship.boostItemAttr("{}EmDamageResonance".format(tankType), value)
+                    self.ship.boostItemAttr("emDamageResonance", value)  # for hull
+
+                if warfareBuffID == 92:  # Weather_electric_storm_capacitor_recharge_bonus
+                    self.ship.boostItemAttr("rechargeRate", value, stackingPenalties=True)
+
+                if warfareBuffID == 93:  # Weather_xenon_gas_explosive_resistance_penalty
+                    for tankType in ("shield", "armor"):
+                        self.ship.boostItemAttr("{}ExplosiveDamageResonance".format(tankType), value)
+                    self.ship.boostItemAttr("explosiveDamageResonance", value)  # for hull
+
+                if warfareBuffID == 94:  # Weather_xenon_gas_shield_hp_bonus
+                    self.ship.boostItemAttr("shieldCapacity", value)  # for hull
+
                 if warfareBuffID == 95:  # Weather_infernal_thermal_resistance_penalty
                     for tankType in ("shield", "armor"):
                         self.ship.boostItemAttr("{}ThermalDamageResonance".format(tankType), value)
