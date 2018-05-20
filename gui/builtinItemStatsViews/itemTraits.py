@@ -20,13 +20,11 @@ class ItemTraits(wx.Panel):
         self.Layout()
 
         self.popupMenu = wx.Menu()
-        self.copyItem = wx.MenuItem(self.popupMenu, 1, 'Copy')
-        self.popupMenu.Append(self.copyItem)
-        self.popupMenu.Bind(wx.EVT_MENU, self.menuClickHandler, self.copyItem)
+        copyItem = wx.MenuItem(self.popupMenu, 1, 'Copy')
+        self.popupMenu.Append(copyItem)
+        self.popupMenu.Bind(wx.EVT_MENU, self.menuClickHandler, copyItem)
 
     def onPopupMenu(self, event):
-        selectedText = self.traits.SelectionToText()
-        self.copyItem.Enable(len(selectedText) > 0)
         self.PopupMenu(self.popupMenu)
 
     def menuClickHandler(self, event):
@@ -45,7 +43,8 @@ class ItemTraits(wx.Panel):
 
     def copySelectionToClipboard(self):
         selectedText = self.traits.SelectionToText()
-        if len(selectedText) > 0:
-            if wx.TheClipboard.Open():
-                wx.TheClipboard.SetData(wx.TextDataObject(selectedText))
-                wx.TheClipboard.Close()
+        if selectedText == '':  # if no selection, copy all content
+            selectedText = self.traits.ToText()
+        if wx.TheClipboard.Open():
+            wx.TheClipboard.SetData(wx.TextDataObject(selectedText))
+            wx.TheClipboard.Close()
