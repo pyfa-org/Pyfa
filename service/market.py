@@ -812,14 +812,19 @@ class Market(object):
                        "Pulsar Effect Beacon",
                        "Red Giant Beacon",
                        "Wolf Rayet Effect Beacon",
-                       "Incursion ship attributes effects")
+                       "Incursion ship attributes effects",
+                       "MassiveEnvironments",
+                       "Non-Interactable Object")
         # Stuff we don't want to see in names
         garbages = ("Effect", "Beacon", "ship attributes effects")
         # Get group with all the system-wide beacons
         grp = self.getGroup("Effect Beacon")
-        beacons = self.getItemsByGroup(grp)
+        grp2 = self.getGroup("MassiveEnvironments")
+        grp3 = self.getGroup("Non-Interactable Object")
+
         # Cycle through them
-        for beacon in beacons:
+        for beacon in self.getItemsByGroup(grp):
+            print(beacon.name)
             # Check if it belongs to any valid group
             for group in validgroups:
                 # Check beginning of the name only
@@ -845,4 +850,9 @@ class Market(object):
                     effects[groupname].add((beacon, beaconname, shortname))
                     # Break loop on 1st result
                     break
+
+        effects["Non-Interactable"] = set()
+        for beacon in grp3.items:
+            effects["Non-Interactable"].add((beacon, beacon.name, beacon.name))
+
         return effects

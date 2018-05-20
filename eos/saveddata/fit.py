@@ -672,6 +672,12 @@ class Fit(object):
                     groups = ("Energy Weapon", "Hybrid Weapon")
                     self.modules.filteredItemBoost(lambda mod: mod.item.group.name in groups, "maxRange", value, stackingPenalties=True)
 
+                if warfareBuffID == 95:  # Weather_infernal_thermal_resistance_penalty
+                    for tankType in ("shield", "armor"):
+                        self.ship.boostItemAttr("{}ThermalDamageResonance".format(tankType), value)
+                    self.ship.boostItemAttr("thermalDamageResonance", value)  # for hull
+
+
             del self.commandBonuses[warfareBuffID]
 
     def __resetDependentCalcs(self):
