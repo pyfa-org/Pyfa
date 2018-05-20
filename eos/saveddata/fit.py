@@ -677,6 +677,8 @@ class Fit(object):
                         self.ship.boostItemAttr("{}ThermalDamageResonance".format(tankType), value)
                     self.ship.boostItemAttr("thermalDamageResonance", value)  # for hull
 
+                if warfareBuffID == 96:  # Weather_infernal_armor_hp_bonus
+                    self.ship.boostItemAttr("armorHP", value)  # for hull
 
             del self.commandBonuses[warfareBuffID]
 
