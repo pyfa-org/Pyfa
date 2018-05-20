@@ -680,6 +680,23 @@ class Fit(object):
                 if warfareBuffID == 96:  # Weather_infernal_armor_hp_bonus
                     self.ship.boostItemAttr("armorHP", value)  # for hull
 
+                if warfareBuffID == 97:  # Weather_darkness_turret_range_penalty
+                    self.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill("Gunnery"),
+                                                   "maxRange", value, stackingPenalties=True)
+                    self.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill("Gunnery"),
+                                                   "falloff", value, stackingPenalties=True)
+
+                if warfareBuffID == 98:  # Weather_darkness_velocity_bonus
+                    self.ship.boostItemAttr("maxVelocity", value)
+
+                if warfareBuffID == 99:  # Weather_caustic_toxin_kinetic_resistance_penalty
+                    for tankType in ("shield", "armor"):
+                        self.ship.boostItemAttr("{}KineticDamageResonance".format(tankType), value)
+                    self.ship.boostItemAttr("kineticDamageResonance", value)  # for hull
+
+                if warfareBuffID == 100:  # Weather_caustic_toxin_scan_resolution_bonus
+                  self.ship.boostItemAttr("scanResolution", value, stackingPenalties=True)
+
             del self.commandBonuses[warfareBuffID]
 
     def __resetDependentCalcs(self):
