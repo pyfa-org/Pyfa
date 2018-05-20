@@ -672,6 +672,29 @@ class Fit(object):
                     groups = ("Energy Weapon", "Hybrid Weapon")
                     self.modules.filteredItemBoost(lambda mod: mod.item.group.name in groups, "maxRange", value, stackingPenalties=True)
 
+                # Localized environment effects
+
+                if warfareBuffID == 79:  # AOE_Beacon_bioluminescence_cloud
+                    self.ship.boostItemAttr("signatureRadius", value, stackingPenalties=True)
+
+                if warfareBuffID == 80:  # AOE_Beacon_caustic_cloud_local_repair
+                    self.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill("Repair Systems"),
+                                                   "armorDamageAmount", value, stackingPenalties=True)
+
+                if warfareBuffID == 81:  # AOE_Beacon_caustic_cloud_remote_repair
+                    self.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill("Remote Armor Repair Systems"),
+                                                   "armorDamageAmount", value, stackingPenalties=True)
+
+                if warfareBuffID == 88:  # AOE_Beacon_filament_cloud_shield_booster
+                    self.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill("Shield Operation") or
+                                                               mod.item.requiresSkill("Shield Emission Systems"),
+                                                   "capacitorNeed", value, stackingPenalties=True)
+
+                if warfareBuffID == 89:  # AOE_Beacon_filament_cloud_ancillary_charge_usage
+                    self.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill("Shield Operation") or
+                                                               mod.item.requiresSkill("Shield Emission Systems"),
+                                                   "chargeRate", value, stackingPenalties=True)
+
                 # Abysmal Weather Effects
 
                 if warfareBuffID == 90:  # Weather_electric_storm_EM_resistance_penalty

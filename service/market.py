@@ -821,6 +821,7 @@ class Market(object):
         grp = self.getGroup("Effect Beacon")
         grp2 = self.getGroup("MassiveEnvironments")
         grp3 = self.getGroup("Non-Interactable Object")
+        grp4 = self.getGroup("Uninteractable Localized Effect Beacon")
 
         # Cycle through them
         for beacon in self.getItemsByGroup(grp):
@@ -851,8 +852,17 @@ class Market(object):
                     # Break loop on 1st result
                     break
 
-        effects["Non-Interactable"] = set()
+        effects["Weather"] = set()
         for beacon in grp3.items:
-            effects["Non-Interactable"].add((beacon, beacon.name, beacon.name))
+            if "weather" in beacon.name:
+                effects["Weather"].add((beacon, beacon.name, beacon.name))
+
+        for beacon in grp2.items:
+            if "weather" in beacon.name:
+                effects["Weather"].add((beacon, beacon.name, beacon.name))
+
+        effects["Localized"] = set()
+        for beacon in grp4.items:
+            effects["Localized"].add((beacon, beacon.name, beacon.name))
 
         return effects
