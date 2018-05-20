@@ -86,7 +86,7 @@ class exportHtmlThread(threading.Thread):
   <head>
   <title>Pyfa Fittings</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta charset="utf-8" /> 
+  <meta charset="utf-8" />
   <link rel="stylesheet" href="https://code.jquery.com/mobile/1.4.2/jquery.mobile-1.4.2.min.css" />
   <script src="https://code.jquery.com/jquery-1.11.0.min.js"></script>
   <script>

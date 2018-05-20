@@ -24,8 +24,8 @@ saveInRoot = False
 
 # Version data
 
-version = "2.0.0b5"
-tag = "git"
+version = "2.0.2"
+tag = "Stable"
 expansionName = "YC120.3"
 expansionVersion = "1.8"
 evemonMinVersion = "4081"
@@ -42,7 +42,6 @@ logging_setup = None
 cipher = None
 clientHash = None
 
-ESI_AUTH_PROXY = "https://www.pyfa.io" # "http://localhost:5015"
 ESI_CACHE = 'esi_cache'
 
 LOGLEVEL_MAP = {
@@ -141,7 +140,7 @@ def defPaths(customSavePath=None):
     #    os.environ["SSL_CERT_FILE"] = os.path.join(pyfaPath, "cacert.pem")
 
     # The database where we store all the fits etc
-    saveDB = os.path.join(savePath, "saveddata-py3-dev.db")
+    saveDB = os.path.join(savePath, "saveddata.db")
 
     # The database where the static EVE data from the datadump is kept.
     # This is not the standard sqlite datadump but a modified version created by eos

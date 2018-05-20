@@ -26,23 +26,23 @@ from optparse import AmbiguousOptionError, BadOptionError, OptionParser
 from service.prereqsCheck import PreCheckException, PreCheckMessage, version_precheck, version_block
 import config
 
-ascii_text = '''
-++++++++++++++++++++++++++++++++++++++++++++++++++
-
-                            / _|
-              _ __   _   _ | |
-             | '_ \ | | | ||  _|/ _` |
-             | |_) || |_| || | | (_| |
-             | .__/  \__, ||_|  \__,_|
-             | |      __/ |
-             |_|     |___/
-
-You are running a alpha/beta version of pyfa.
-
-++++++++++++++++++++++++++++++++++++++++++++++++++
-'''
-
-print(ascii_text)
+# ascii_text = '''
+# ++++++++++++++++++++++++++++++++++++++++++++++++++
+#
+#                             / _|
+#               _ __   _   _ | |
+#              | '_ \ | | | ||  _|/ _` |
+#              | |_) || |_| || | | (_| |
+#              | .__/  \__, ||_|  \__,_|
+#              | |      __/ |
+#              |_|     |___/
+#
+# You are running a alpha/beta version of pyfa.
+#
+# ++++++++++++++++++++++++++++++++++++++++++++++++++
+# '''
+#
+# print(ascii_text)
 
 
 class PassThroughOptionParser(OptionParser):

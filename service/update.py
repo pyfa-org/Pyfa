@@ -48,7 +48,12 @@ class CheckUpdateThread(threading.Thread):
         network = Network.getInstance()
 
         try:
-            response = network.request('https://api.github.com/repos/pyfa-org/Pyfa/releases', network.UPDATE)
+            try:
+                response = network.request('https://www.pyfa.io/update_check?pyfa_version={}&client_hash={}'.format(
+                    config.version, config.getClientSecret()), network.UPDATE)
+            except Exception as e:
+                response = network.request('https://api.github.com/repos/pyfa-org/Pyfa/releases', network.UPDATE)
+
             jsonResponse = response.json()
             jsonResponse.sort(
                 key=lambda x: calendar.timegm(dateutil.parser.parse(x['published_at']).utctimetuple()),

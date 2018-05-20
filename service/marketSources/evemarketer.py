@@ -30,11 +30,11 @@ pyfalog = Logger(__name__)
 
 class EveCentral(object):
 
-    name = "eve-central.com"
+    name = "evemarketer"
 
     def __init__(self, types, system, priceMap):
         data = {}
-        baseurl = "https://eve-central.com/api/marketstat"
+        baseurl = "https://api.evemarketer.com/ec/marketstat"
 
         data["usesystem"] = system  # Use Jita for market
         data["typeid"] = set()

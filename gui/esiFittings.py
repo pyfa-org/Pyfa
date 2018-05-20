@@ -1,5 +1,3 @@
-import time
-import webbrowser
 import json
 # noinspection PyPackageRequirements
 import wx
@@ -15,9 +13,8 @@ from gui.display import Display
 import gui.globalEvents as GE
 
 from logbook import Logger
-import calendar
 from service.esi import Esi
-from esipy.exceptions import APIException
+from service.esiAccess import APIException
 from service.port import ESIExportException
 
 pyfalog = Logger(__name__)
@@ -32,7 +29,6 @@ class EveFittings(wx.Frame):
 
         self.mainFrame = parent
         mainSizer = wx.BoxSizer(wx.VERTICAL)
-        sEsi = Esi.getInstance()
 
         characterSelectSizer = wx.BoxSizer(wx.HORIZONTAL)
 
@@ -72,8 +68,6 @@ class EveFittings(wx.Frame):
         self.importBtn.Bind(wx.EVT_BUTTON, self.importFitting)
         self.deleteBtn.Bind(wx.EVT_BUTTON, self.deleteFitting)
 
-        self.mainFrame.Bind(GE.EVT_SSO_LOGOUT, self.ssoLogout)
-        self.mainFrame.Bind(GE.EVT_SSO_LOGIN, self.ssoLogin)
         self.Bind(wx.EVT_CLOSE, self.OnClose)
 
         self.statusbar = wx.StatusBar(self)
@@ -84,10 +78,6 @@ class EveFittings(wx.Frame):
         self.Layout()
 
         self.Centre(wx.BOTH)
-
-    def ssoLogin(self, event):
-        self.updateCharList()
-        event.Skip()
 
     def updateCharList(self):
         sEsi = Esi.getInstance()
@@ -101,10 +91,6 @@ class EveFittings(wx.Frame):
             self.charChoice.Append(char.characterName, char.ID)
 
         self.charChoice.SetSelection(0)
-
-    def ssoLogout(self, event):
-        self.updateCharList()
-        event.Skip()  # continue event
 
     def OnClose(self, event):
         self.mainFrame.Unbind(GE.EVT_SSO_LOGOUT)
@@ -121,21 +107,23 @@ class EveFittings(wx.Frame):
         waitDialog = wx.BusyInfo("Fetching fits, please wait...", parent=self)
 
         try:
-            fittings = sEsi.getFittings(self.getActiveCharacter())
+            self.fittings = sEsi.getFittings(self.getActiveCharacter())
             # self.cacheTime = fittings.get('cached_until')
             # self.updateCacheStatus(None)
             # self.cacheTimer.Start(1000)
-            self.fitTree.populateSkillTree(fittings)
+            self.fitTree.populateSkillTree(self.fittings)
             del waitDialog
         except requests.exceptions.ConnectionError:
             msg = "Connection error, please check your internet connection"
             pyfalog.error(msg)
             self.statusbar.SetStatusText(msg)
         except APIException as ex:
-            del waitDialog  # Can't do this in a finally because then it obscures the message dialog
+            #  Can't do this in a finally because then it obscures the message dialog
+            del waitDialog  # noqa: F821
             ESIExceptionHandler(self, ex)
         except Exception as ex:
-            del waitDialog
+            del waitDialog  # noqa: F821
+            raise ex
 
     def importFitting(self, event):
         selection = self.fitView.fitSelection
@@ -160,6 +148,9 @@ class EveFittings(wx.Frame):
         if dlg.ShowModal() == wx.ID_YES:
             try:
                 sEsi.delFitting(self.getActiveCharacter(), data['fitting_id'])
+                # repopulate the fitting list
+                self.fitTree.populateSkillTree(self.fittings)
+                self.fitView.update([])
             except requests.exceptions.ConnectionError:
                 msg = "Connection error, please check your internet connection"
                 pyfalog.error(msg)
@@ -167,8 +158,9 @@ class EveFittings(wx.Frame):
 
 
 class ESIExceptionHandler(object):
+    # todo: make this a generate excetpion handler for all calls
     def __init__(self, parentWindow, ex):
-        if ex.response['error'] == "invalid_token":
+        if ex.response['error'].startswith('Token is not valid') or ex.response['error'] == 'invalid_token':  # todo: this seems messy, figure out a better response
             dlg = wx.MessageDialog(parentWindow,
                                    "There was an error validating characters' SSO token. Please try "
                                    "logging into the character again to reset the token.", "Invalid Token",
@@ -188,7 +180,6 @@ class ExportToEve(wx.Frame):
         self.mainFrame = parent
         self.SetBackgroundColour(wx.SystemSettings.GetColour(wx.SYS_COLOUR_BTNFACE))
 
-        sEsi = Esi.getInstance()
         mainSizer = wx.BoxSizer(wx.VERTICAL)
         hSizer = wx.BoxSizer(wx.HORIZONTAL)
 
@@ -208,8 +199,6 @@ class ExportToEve(wx.Frame):
         self.statusbar.SetFieldsCount(2)
         self.statusbar.SetStatusWidths([100, -1])
 
-        self.mainFrame.Bind(GE.EVT_SSO_LOGOUT, self.ssoLogout)
-        self.mainFrame.Bind(GE.EVT_SSO_LOGIN, self.ssoLogin)
         self.Bind(wx.EVT_CLOSE, self.OnClose)
 
         self.SetSizer(mainSizer)
@@ -231,14 +220,6 @@ class ExportToEve(wx.Frame):
 
         self.charChoice.SetSelection(0)
 
-    def ssoLogin(self, event):
-        self.updateCharList()
-        event.Skip()
-
-    def ssoLogout(self, event):
-        self.updateCharList()
-        event.Skip()  # continue event
-
     def OnClose(self, event):
         self.mainFrame.Unbind(GE.EVT_SSO_LOGOUT)
         self.mainFrame.Unbind(GE.EVT_SSO_LOGIN)
@@ -250,7 +231,6 @@ class ExportToEve(wx.Frame):
         return self.charChoice.GetClientData(selection) if selection is not None else None
 
     def exportFitting(self, event):
-        sPort = Port.getInstance()
         fitID = self.mainFrame.getActiveFit()
 
         self.statusbar.SetStatusText("", 0)
@@ -260,12 +240,8 @@ class ExportToEve(wx.Frame):
             return
 
         self.statusbar.SetStatusText("Sending request and awaiting response", 1)
-        sEsi = Esi.getInstance()
 
         try:
-            sFit = Fit.getInstance()
-            data = sPort.exportESI(sFit.getFit(fitID))
-            res = sEsi.postFitting(self.getActiveCharacter(), data)
 
             self.statusbar.SetStatusText("", 0)
             self.statusbar.SetStatusText("", 1)
@@ -324,8 +300,10 @@ class SsoCharacterMgmt(wx.Dialog):
         self.Centre(wx.BOTH)
 
     def ssoLogin(self, event):
-        self.popCharList()
-        event.Skip()
+        if (self):
+            # todo: these events don't unbind properly when window is closed (?), hence the `if`. Figure out better way of doing this.
+            self.popCharList()
+            event.Skip()
 
     def popCharList(self):
         sEsi = Esi.getInstance()
@@ -380,10 +358,17 @@ class FittingsTreeView(wx.Panel):
         tree = self.fittingsTreeCtrl
         tree.DeleteChildren(root)
 
+        sEsi = Esi.getInstance()
+
         dict = {}
         fits = data
         for fit in fits:
+            if (fit['fitting_id'] in sEsi.fittings_deleted):
+                continue
             ship = getItem(fit['ship_type_id'])
+            if ship is None:
+                pyfalog.debug('Cannot find ship type id: {}'.format(fit['ship_type_id']))
+                continue
             if ship.name not in dict:
                 dict[ship.name] = []
             dict[ship.name].append(fit)
