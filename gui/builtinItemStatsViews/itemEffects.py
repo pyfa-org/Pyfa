@@ -106,7 +106,7 @@ class ItemEffects(wx.Panel):
         If effect file does not exist, create it
         """
 
-        effect = self.effects[event.GetText()];
+        effect = self.effects[event.GetText()]
 
         file_ = os.path.join(config.pyfaPath, "eos", "effects", "%s.py" % effect.handlerName)
 

@@ -10,4 +10,3 @@ def handler(fit, beacon, context, **kwargs):
 
             if id:
                 fit.addCommandBonus(id, value, beacon, kwargs['effect'], 'early')
-

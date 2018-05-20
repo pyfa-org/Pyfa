@@ -736,7 +736,7 @@ class Fit(object):
                     self.ship.boostItemAttr("kineticDamageResonance", value)  # for hull
 
                 if warfareBuffID == 100:  # Weather_caustic_toxin_scan_resolution_bonus
-                  self.ship.boostItemAttr("scanResolution", value, stackingPenalties=True)
+                    self.ship.boostItemAttr("scanResolution", value, stackingPenalties=True)
 
             del self.commandBonuses[warfareBuffID]
 
