@@ -92,10 +92,11 @@ eos.db.saveddata_meta.create_all()
 
 import json
 
-def processExportedHtml(fileLocation):
-    output = open('./shipJSON.js', 'w')
+def processExportedHtml():
+    basePath = config.savePath + os.sep
+    output = open(basePath + 'shipJSON.js', 'w')
     output.write('let shipJSON = JSON.stringify([')
-    outputBaseline = open('./shipBaseJSON.js', 'w')
+    outputBaseline = open(basePath + 'shipBaseJSON.js', 'w')
     outputBaseline.write('let shipBaseJSON = JSON.stringify([')
     shipCata = eos.db.getItemsByCategory('Ship')
     #shipCata = eos.db.getItem(638)
@@ -154,7 +155,7 @@ def processExportedHtml(fileLocation):
                              print('Not a list of dicts')
 
     #print(vars(shipCata._sa_instance_state))
-    baseLimit = 10
+    baseLimit = 0
     baseN = 0
     nameReqBase = '';
     for ship in iter(shipCata):
@@ -164,7 +165,7 @@ def processExportedHtml(fileLocation):
             outputBaseline.write(stats)
             outputBaseline.write(',\n')
             baseN += 1;
-    limit = 100
+    limit = 10
     skipTill = 0
     nameReq = ''
     n = 0
@@ -173,18 +174,12 @@ def processExportedHtml(fileLocation):
             fileLocation = 'pyfaFits.html'
     except:
         try:
-            with open('.pyfa/pyfaFits.html'):
-                fileLocation = '.pyfa/pyfaFits.html'
+            d = config.savePath + os.sep + 'pyfaFits.html'
+            print(d)
+            with open(d):
+                fileLocation = d
         except:
-            try:
-                with open('../.pyfa/pyfaFits.html'):
-                    fileLocation = '../.pyfa/pyfaFits.html'
-            except:
-                try:
-                    with open('../../.pyfa/pyfaFits.html'):
-                        fileLocation = '../../.pyfa/pyfaFits.html'
-                except:
-                    fileLocation = None;
+            fileLocation = None;
     fitList = eos.db.getFitList()
     with open(fileLocation) as f:
             for fit in fitList:
@@ -724,7 +719,4 @@ launchUI = False
 #launchUI = True
 if launchUI == False:
     from service.fit import Fit
-    #setFitFromString(dnaChim, 'moMachsD')
-    #help(eos.db.getItem)
-    #ship = es_Ship(eos.db.getItem(27))
-    processExportedHtml('../.pyfa/pyfaFits.html')
+    processExportedHtml()
