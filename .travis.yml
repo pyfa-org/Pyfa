@@ -1,7 +1,9 @@
+dist: trusty
+sudo: required
 language: python
 cache: pip
 python:
-  - '2.7'
+  - '3.6'
 env:
   - TOXENV=pep8
 addons:
@@ -12,28 +14,23 @@ before_install:
   - pip install tox
   # We're not actually installing Tox, but have to run it before we install wxPython via Conda. This is fugly but vOv
   - tox
-  # get Conda
-  - if [[ "$TRAVIS_PYTHON_VERSION" == "2.7" ]]; then
-      wget https://repo.continuum.io/miniconda/Miniconda-latest-Linux-x86_64.sh -O miniconda.sh;
-    else
-      wget https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh -O miniconda.sh;
-    fi
-  - bash miniconda.sh -b -p $HOME/miniconda
-  - export PATH="$HOME/miniconda/bin:$PATH"
-  - hash -r
-  - conda config --set always_yes yes --set changeps1 no
-  - conda update -q conda
-  # Useful for debugging any issues with conda
-  - conda info -a
-install:
+  - pip install -U -f https://extras.wxpython.org/wxPython4/extras/linux/gtk2/ubuntu-14.04 wxPython==4.0.0b2
+#  # get Conda
+#  - if [[ "$TRAVIS_PYTHON_VERSION" == "2.7" ]]; then
+#      wget https://repo.continuum.io/miniconda/Miniconda-latest-Linux-x86_64.sh -O miniconda.sh;
+#    else
+#      wget https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh -O miniconda.sh;
+#    fi
+#  - bash miniconda.sh -b -p $HOME/miniconda
+#  - export PATH="$HOME/miniconda/bin:$PATH"
+#  - hash -r
+#  - conda config --set always_yes yes --set changeps1 no
+#  - conda update -q conda
+#  # Useful for debugging any issues with conda
+#  - conda info -a
+#install:
   # install wxPython 3.0.0.0
-  - conda install -c https://conda.anaconda.org/travis wxpython
-before_script:
-  - pip install -r requirements.txt
-  - pip install -r requirements_test.txt
+ # - conda install -c https://conda.anaconda.org/travis wxpython=4.0.0b2
 script:
-  - py.test --cov=./
-after_success:
-  - bash <(curl -s https://codecov.io/bash)
-before_deploy:
-  - pip install -r requirements_build_linux.txt
+  - tox
+
