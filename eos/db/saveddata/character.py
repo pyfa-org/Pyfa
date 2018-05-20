@@ -29,9 +29,6 @@ from eos.saveddata.user import User
 from eos.saveddata.character import Character, Skill
 from eos.saveddata.ssocharacter import SsoCharacter
 
-
-
-
 characters_table = Table("characters", saveddata_meta,
                          Column("ID", Integer, primary_key=True),
                          Column("name", String, nullable=False),

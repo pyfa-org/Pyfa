@@ -43,13 +43,17 @@ class PFEsiPref(PreferenceView):
         rbSizer = wx.BoxSizer(wx.HORIZONTAL)
         self.rbMode = wx.RadioBox(panel, -1, "Login Authentication Method", wx.DefaultPosition, wx.DefaultSize,
                                   ['Local Server', 'Manual'], 1, wx.RA_SPECIFY_COLS)
-        self.rbMode.SetItemToolTip(0, "This options starts a local webserver that the web application will call back to with information about the character login.")
-        self.rbMode.SetItemToolTip(1, "This option prompts users to copy and paste information from the web application to allow for character login. Use this if having issues with the local server.")
+        self.rbMode.SetItemToolTip(0, "This options starts a local webserver that the web application will call back to"
+                                      " with information about the character login.")
+        self.rbMode.SetItemToolTip(1, "This option prompts users to copy and paste information from the web application "
+                                      "to allow for character login. Use this if having issues with the local server.")
 
         self.rbSsoMode = wx.RadioBox(panel, -1, "SSO Mode", wx.DefaultPosition, wx.DefaultSize,
                                      ['pyfa.io', 'Custom application'], 1, wx.RA_SPECIFY_COLS)
-        self.rbSsoMode.SetItemToolTip(0, "This options routes SSO Logins through pyfa.io, allowing you to easily login without any configuration. When in doubt, use this option.")
-        self.rbSsoMode.SetItemToolTip(1, "This option goes through EVE SSO directly, but requires more configuration. Use this is pyfa.io is blocked for some reason, or if you do not wish to route data throguh pyfa.io.")
+        self.rbSsoMode.SetItemToolTip(0, "This options routes SSO Logins through pyfa.io, allowing you to easily login "
+                                         "without any configuration. When in doubt, use this option.")
+        self.rbSsoMode.SetItemToolTip(1, "This option goes through EVE SSO directly, but requires more configuration. Use "
+                                         "this is pyfa.io is blocked for some reason, or if you do not wish to route data throguh pyfa.io.")
 
         self.rbMode.SetSelection(self.settings.get('loginMode'))
         self.rbSsoMode.SetSelection(self.settings.get('ssoMode'))
@@ -69,12 +73,6 @@ class PFEsiPref(PreferenceView):
         mainSizer.Add(detailsTitle, 0, wx.ALL, 5)
         mainSizer.Add(wx.StaticLine(panel, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.LI_HORIZONTAL), 0,
                       wx.EXPAND, 5)
-
-        # self.stInfo = wx.StaticText(panel, wx.ID_ANY,
-        #                             u"Using custom applications details will let pyfa to access the SSO under your application, rather than the pyfa application that is automatically set up. This requires you to set up your own ESI client application and accept CCPs License Agreement. Additionally, when setting up your client, make sure the callback url is set to 'http://localhost:6461'. Please see the pyfa wiki for more information regarding this",
-        #                             wx.DefaultPosition, wx.DefaultSize, 0)
-        # self.stInfo.Wrap(dlgWidth)
-        # mainSizer.Add(self.stInfo, 0, wx.EXPAND | wx.TOP | wx.BOTTOM, 5)
 
         fgAddrSizer = wx.FlexGridSizer(2, 2, 0, 0)
         fgAddrSizer.AddGrowableCol(1)
@@ -104,10 +102,6 @@ class PFEsiPref(PreferenceView):
         self.inputClientSecret.Bind(wx.EVT_TEXT, self.OnClientDetailChange)
 
         mainSizer.Add(fgAddrSizer, 0, wx.EXPAND, 5)
-
-
-
-        timeoutSizer = wx.BoxSizer(wx.HORIZONTAL)
 
         # self.stTimout = wx.StaticText(panel, wx.ID_ANY, "Timeout (seconds):", wx.DefaultPosition, wx.DefaultSize, 0)
         # self.stTimout.Wrap(-1)

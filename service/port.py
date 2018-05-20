@@ -58,6 +58,7 @@ from collections import OrderedDict
 class ESIExportException(Exception):
     pass
 
+
 pyfalog = Logger(__name__)
 
 EFT_SLOT_ORDER = [Slot.LOW, Slot.MED, Slot.HIGH, Slot.RIG, Slot.SUBSYSTEM, Slot.SERVICE]
@@ -349,7 +350,6 @@ class Port(object):
 
         nested_dict = lambda: collections.defaultdict(nested_dict)
         fit = nested_dict()
-        sEsi = Esi.getInstance()
         sFit = svcFit.getInstance()
 
         # max length is 50 characters

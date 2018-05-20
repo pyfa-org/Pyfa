@@ -17,7 +17,6 @@ from service.server import StoppableHTTPServer, AuthHandler
 from service.settings import EsiSettings
 from service.esiAccess import EsiAccess
 
-import wx
 from requests import Session
 
 pyfalog = Logger(__name__)
@@ -108,7 +107,8 @@ class Esi(EsiAccess):
         serverAddr = None
         # always start the local server if user is using client details. Otherwise, start only if they choose to do so.
         if self.settings.get('ssoMode') == SsoMode.CUSTOM or self.settings.get('loginMode') == LoginMethod.SERVER:
-            serverAddr = self.startServer(6461 if self.settings.get('ssoMode') == SsoMode.CUSTOM else 0)  # random port, or if it's custom application, use a defined port
+            # random port, or if it's custom application, use a defined port
+            serverAddr = self.startServer(6461 if self.settings.get('ssoMode') == SsoMode.CUSTOM else 0)
         uri = self.getLoginURI(serverAddr)
         webbrowser.open(uri)
         wx.PostEvent(self.mainFrame, GE.SsoLoggingIn(sso_mode=self.settings.get('ssoMode'), login_mode=self.settings.get('loginMode')))
@@ -181,4 +181,3 @@ class Esi(EsiAccess):
         pyfalog.debug("Handling SSO login with: {0}", message)
 
         self.handleLogin(message)
-

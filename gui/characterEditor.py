@@ -734,17 +734,14 @@ class APIView(wx.Panel):
         self.stDisabledTip.Wrap(-1)
         hintSizer.Add(self.stDisabledTip, 0, wx.TOP | wx.BOTTOM, 10)
 
-        self.noCharactersTip = wx.StaticText(self, wx.ID_ANY,
-                                           "You haven't logging into EVE SSO with any characters yet. Please use the "
-                                           "button below to log into EVE.", style=wx.ALIGN_CENTER)
-        self.noCharactersTip.Wrap(-1)
-        hintSizer.Add(self.noCharactersTip, 0, wx.TOP | wx.BOTTOM, 10)
+
+
 
         self.stDisabledTip.Hide()
         hintSizer.AddStretchSpacer()
         pmainSizer.Add(hintSizer, 0, wx.EXPAND, 5)
 
-        fgSizerInput = wx.FlexGridSizer(3, 2, 0, 0)
+        fgSizerInput = wx.FlexGridSizer(1, 3, 0, 0)
         fgSizerInput.AddGrowableCol(1)
         fgSizerInput.SetFlexibleDirection(wx.BOTH)
         fgSizerInput.SetNonFlexibleGrowMode(wx.FLEX_GROWMODE_SPECIFIED)
@@ -754,15 +751,28 @@ class APIView(wx.Panel):
         fgSizerInput.Add(self.m_staticCharText, 0, wx.ALL | wx.ALIGN_RIGHT | wx.ALIGN_CENTER_VERTICAL, 10)
 
         self.charChoice = wx.Choice(self, wx.ID_ANY, style=0)
-        fgSizerInput.Add(self.charChoice, 1, wx.ALL | wx.EXPAND, 10)
+        fgSizerInput.Add(self.charChoice, 1, wx.TOP | wx.BOTTOM | wx.EXPAND, 10)
+
+        self.fetchButton = wx.Button(self, wx.ID_ANY, "Get Skills", wx.DefaultPosition, wx.DefaultSize, 0)
+        self.fetchButton.Bind(wx.EVT_BUTTON, self.fetchSkills)
+        fgSizerInput.Add(self.fetchButton, 0, wx.ALL | wx.ALIGN_RIGHT | wx.ALIGN_CENTER_VERTICAL, 10)
 
         pmainSizer.Add(fgSizerInput, 0, wx.EXPAND, 5)
 
+        pmainSizer.AddStretchSpacer()
+
+        self.m_staticline1 = wx.StaticLine(self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.LI_HORIZONTAL)
+        pmainSizer.Add(self.m_staticline1, 0, wx.EXPAND | wx.ALL, 10)
+
+        self.noCharactersTip = wx.StaticText(self, wx.ID_ANY, "Don't see your EVE character in the list?", style=wx.ALIGN_CENTER)
+
+        self.noCharactersTip.Wrap(-1)
+        pmainSizer.Add(self.noCharactersTip, 0, wx.CENTER | wx.TOP | wx.BOTTOM, 0)
+
         self.addButton = wx.Button(self, wx.ID_ANY, "Log In with EVE SSO", wx.DefaultPosition, wx.DefaultSize, 0)
         self.addButton.Bind(wx.EVT_BUTTON, self.addCharacter)
-        pmainSizer.Add(self.addButton, 0, wx.ALL | wx.ALIGN_CENTER, 5)
-        self.stStatus = wx.StaticText(self, wx.ID_ANY, wx.EmptyString)
-        pmainSizer.Add(self.stStatus, 0, wx.ALL, 5)
+        pmainSizer.Add(self.addButton, 0, wx.ALL | wx.ALIGN_CENTER, 10)
+
         self.charEditor.mainFrame.Bind(GE.EVT_SSO_LOGOUT, self.ssoListChanged)
         self.charEditor.mainFrame.Bind(GE.EVT_SSO_LOGIN, self.ssoListChanged)
         self.charEditor.entityEditor.Bind(wx.EVT_CHOICE, self.charChanged)
@@ -776,8 +786,17 @@ class APIView(wx.Panel):
     def ssoCharChanged(self, event):
         sChar = Character.getInstance()
         activeChar = self.charEditor.entityEditor.getActiveEntity()
-        sChar.setSsoCharacter(activeChar.ID, self.getActiveCharacter())
+        ssoChar = self.getActiveCharacter()
+        sChar.setSsoCharacter(activeChar.ID, ssoChar)
+
+        self.fetchButton.Enable(ssoChar is not None)
+
         event.Skip()
+
+    def fetchSkills(self, evt):
+        sChar = Character.getInstance()
+        char = self.charEditor.entityEditor.getActiveEntity()
+        sChar.apiFetch(char.ID, self.__fetchCallback)
 
     def addCharacter(self, event):
         sEsi = Esi.getInstance()
@@ -790,17 +809,6 @@ class APIView(wx.Panel):
     def ssoListChanged(self, event):
         if not self:  # todo: fix event not unbinding properly
             return
-        sEsi = Esi.getInstance()
-        ssoChars = sEsi.getSsoCharacters()
-
-        if len(ssoChars) == 0:
-            self.charChoice.Hide()
-            self.m_staticCharText.Hide()
-            self.noCharactersTip.Show()
-        else:
-            self.noCharactersTip.Hide()
-            self.m_staticCharText.Show()
-            self.charChoice.Show()
 
         self.charChanged(event)
 
@@ -816,6 +824,8 @@ class APIView(wx.Panel):
 
         sso = sChar.getSsoCharacter(activeChar.ID)
 
+        self.fetchButton.Enable(sso is not None)
+
         ssoChars = sEsi.getSsoCharacters()
 
         self.charChoice.Clear()
@@ -827,9 +837,9 @@ class APIView(wx.Panel):
 
             if sso is not None and char.ID == sso.ID:
                 self.charChoice.SetSelection(currId)
-            if sso is None:
-                self.charChoice.SetSelection(noneID)
 
+        if sso is None:
+            self.charChoice.SetSelection(noneID)
 
         #
         # if chars:
@@ -853,13 +863,17 @@ class APIView(wx.Panel):
             event.Skip()
 
     def __fetchCallback(self, e=None):
-        charName = self.charChoice.GetString(self.charChoice.GetSelection())
-        if e is None:
-            self.stStatus.SetLabel("Successfully fetched {}\'s skills from EVE API.".format(charName))
-        else:
+        if e:
             exc_type, exc_obj, exc_trace = e
-            pyfalog.error("Unable to retrieve {0}\'s skills. Error message:\n{1}".format(charName, exc_obj))
-            self.stStatus.SetLabel("Unable to retrieve {}\'s skills. Error message:\n{}".format(charName, exc_obj))
+            pyfalog.warn("Error fetching skill information for character")
+            pyfalog.warn(exc_obj)
+
+            wx.MessageBox(
+                "Error fetching skill information",
+                "Error", wx.ICON_ERROR | wx.STAY_ON_TOP)
+        else:
+            wx.MessageBox(
+                "Successfully fetched skills", "Success", wx.ICON_INFORMATION | wx.STAY_ON_TOP)
 
 
 class SecStatusDialog(wx.Dialog):

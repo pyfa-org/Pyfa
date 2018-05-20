@@ -1,4 +1,4 @@
-#===============================================================================
+# ===============================================================================
 #
 # ToDo: Bug - when selecting close on a tab, sometimes the tab to the right is
 #       selected, most likely due to determination of mouse position
@@ -11,7 +11,7 @@
 #       tab index?). This will also help with finding close buttons.
 # ToDo: Fix page preview code (PFNotebookPagePreview)
 #
-#= ==============================================================================
+# ===============================================================================
 
 import wx
 import wx.lib.newevent
@@ -413,7 +413,7 @@ class _TabRenderer:
         mdc.SelectObject(ebmp)
         mdc.SetFont(self.font)
         textSizeX, textSizeY = mdc.GetTextExtent(self.text)
-        totalSize = self.left_width + self.right_width + textSizeX + self.close_btn_width / 2 + 16 + self.padding* 2
+        totalSize = self.left_width + self.right_width + textSizeX + self.close_btn_width / 2 + 16 + self.padding * 2
         mdc.SelectObject(wx.NullBitmap)
         return totalSize, self.tab_height
 
@@ -1478,4 +1478,3 @@ if __name__ == "__main__":
     top = Frame("Test Chrome Tabs")
     top.Show()
     app.MainLoop()
-

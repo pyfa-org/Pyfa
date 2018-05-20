@@ -284,6 +284,23 @@ class NetworkSettings(object):
         self.serviceNetworkSettings["login"] = login
         self.serviceNetworkSettings["password"] = password
 
+    def getProxySettingsInRequestsFormat(self) -> dict:
+        proxies = {}
+        proxy_settings = self.getProxySettings()
+        if proxy_settings is not None:
+            # form proxy address in format "http://host:port
+            proxy_host_port = '{}:{}'.format(proxy_settings[0], proxy_settings[1])
+            proxy_auth_details = self.getProxyAuthDetails()
+            user_pass = ''
+            if proxy_auth_details is not None:
+                # construct prefix in form "user:password@"
+                user_pass = '{}:{}@'.format(proxy_auth_details[0], proxy_auth_details[1])
+            proxies = {
+                'http': 'http://' + user_pass + proxy_host_port,
+                'https': 'http://' + user_pass + proxy_host_port
+            }
+        return proxies
+
 
 class HTMLExportSettings(object):
     """

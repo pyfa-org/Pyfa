@@ -170,7 +170,6 @@ class CharacterSelection(wx.Panel):
     def charChanged(self, event):
         fitID = self.mainFrame.getActiveFit()
         charID = self.getActiveCharacter()
-        sChar = Character.getInstance()
 
         if charID == -1:
             # revert to previous character

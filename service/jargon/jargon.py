@@ -20,17 +20,18 @@
 import config
 import pkg_resources
 
+
 class Jargon(object):
     def __init__(self, rawdata: dict):
         self._rawdata = rawdata
 
         # copy the data to lowercase keys, ignore blank keys
-        self._data = {str(k).lower():v for k,v in rawdata.items() if k}
+        self._data = {str(k).lower(): v for k, v in rawdata.items() if k}
 
     def get(self, term: str) -> str:
         return self._data.get(term.lower())
 
-    def get_rawdata() -> dict:
+    def get_rawdata(self) -> dict:
         return self._rawdata
 
     def apply(self, query):

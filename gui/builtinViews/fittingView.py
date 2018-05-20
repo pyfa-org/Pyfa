@@ -222,12 +222,15 @@ class FittingView(d.Display):
             wx.PostEvent(self.mainFrame, FitSelected(fitID=fitID))
 
     def Destroy(self):
+        # @todo: when wxPython 4.0.2 is release, https://github.com/pyfa-org/Pyfa/issues/1586#issuecomment-390074915
+        # Make sure to remove the shitty checks that I have to put in place for these handlers to ignore when self is None
         print("+++++ Destroy " + repr(self))
-        print(self.parent.Unbind(EVT_NOTEBOOK_PAGE_CHANGED))
-        print(self.mainFrame.Unbind(GE.FIT_CHANGED))
-        print(self.mainFrame.Unbind(EVT_FIT_RENAMED))
-        print(self.mainFrame.Unbind(EVT_FIT_REMOVED))
-        print(self.mainFrame.Unbind(ITEM_SELECTED))
+
+        # print(self.parent.Unbind(EVT_NOTEBOOK_PAGE_CHANGED))
+        # print(self.mainFrame.Unbind(GE.FIT_CHANGED, handler=self.fitChanged))
+        # print(self.mainFrame.Unbind(EVT_FIT_RENAMED, handler=self.fitRenamed ))
+        # print(self.mainFrame.Unbind(EVT_FIT_REMOVED, handler=self.fitRemoved))
+        # print(self.mainFrame.Unbind(ITEM_SELECTED, handler=self.appendItem))
 
         d.Display.Destroy(self)
 
@@ -291,6 +294,9 @@ class FittingView(d.Display):
         """
         print('_+_+_+_+_+_ Fit Removed: {} {} activeFitID: {}, eventFitID: {}'.format(repr(self), str(bool(self)), self.activeFitID, event.fitID))
         pyfalog.debug("FittingView::fitRemoved")
+        if not self:
+            event.Skip()
+            return
         if event.fitID == self.getActiveFit():
             pyfalog.debug("    Deleted fit is currently active")
             self.parent.DeletePage(self.parent.GetPageIndex(self))
@@ -311,6 +317,9 @@ class FittingView(d.Display):
         event.Skip()
 
     def fitRenamed(self, event):
+        if not self:
+            event.Skip()
+            return
         fitID = event.fitID
         if fitID == self.getActiveFit():
             self.updateTab()
@@ -347,6 +356,9 @@ class FittingView(d.Display):
             self.parent.SetPageTextIcon(pageIndex, text, bitmap)
 
     def appendItem(self, event):
+        if not self:
+            event.Skip()
+            return
         if self.parent.IsActive(self):
             itemID = event.itemID
             fitID = self.activeFitID
@@ -508,7 +520,7 @@ class FittingView(d.Display):
                 # second loop modifies self.mods, rewrites self.blanks to represent actual index of blanks
                 for i, (x, slot) in enumerate(self.blanks):
                     self.blanks[i] = x + i  # modify blanks with actual index
-                    self.mods.insert(x + i, Rack.buildRack(slot))
+                    self.mods.insert(x + i, Rack.buildRack(slot, sum(m.slot == slot for m in self.mods)))
 
             if fit.mode:
                 # Modes are special snowflakes and need a little manual loving
@@ -516,7 +528,7 @@ class FittingView(d.Display):
                 # while also marking the mode header position in the Blanks list
                 if sFit.serviceFittingOptions["rackSlots"]:
                     self.blanks.append(len(self.mods))
-                    self.mods.append(Rack.buildRack(Slot.MODE))
+                    self.mods.append(Rack.buildRack(Slot.MODE, None))
 
                 self.mods.append(fit.mode)
         else:
@@ -528,7 +540,9 @@ class FittingView(d.Display):
 
     def fitChanged(self, event):
         print('====== Fit Changed: {} {} activeFitID: {}, eventFitID: {}'.format(repr(self), str(bool(self)), self.activeFitID, event.fitID))
-
+        if not self:
+            event.Skip()
+            return
         try:
             if self.activeFitID is not None and self.activeFitID == event.fitID:
                 self.generateMods()

@@ -33,7 +33,6 @@ class SsoCharacter(object):
         self.refreshToken = refreshToken
         self.accessTokenExpires = None
 
-
     @reconstructor
     def init(self):
         pass
