@@ -98,6 +98,8 @@ except ImportError as e:
 
 pyfalog = Logger(__name__)
 
+pyfalog.debug("Done loading mainframe imports")
+
 
 # dummy panel(no paint no erasebk)
 class PFPanel(wx.Panel):
