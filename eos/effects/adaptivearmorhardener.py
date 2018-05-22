@@ -104,7 +104,7 @@ def handler(fit, module, context):
 
             cycleList.append(list(RAHResistance))
 
-        if loopStart < 0:
+        # if loopStart < 0:
             # pyfalog.error("Reactive Armor Hardener failed to find equilibrium. Damage profile after armor: {0}/{1}/{2}/{3}".format(
             #             baseDamageTaken[0], baseDamageTaken[1], baseDamageTaken[2], baseDamageTaken[3]))
 
