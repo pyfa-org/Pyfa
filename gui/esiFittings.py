@@ -231,6 +231,7 @@ class ExportToEve(wx.Frame):
         return self.charChoice.GetClientData(selection) if selection is not None else None
 
     def exportFitting(self, event):
+        sPort = Port.getInstance()
         fitID = self.mainFrame.getActiveFit()
 
         self.statusbar.SetStatusText("", 0)
@@ -240,9 +241,12 @@ class ExportToEve(wx.Frame):
             return
 
         self.statusbar.SetStatusText("Sending request and awaiting response", 1)
+        sEsi = Esi.getInstance()
 
         try:
-
+            sFit = Fit.getInstance()
+            data = sPort.exportESI(sFit.getFit(fitID))
+            res = sEsi.postFitting(self.getActiveCharacter(), data)
             self.statusbar.SetStatusText("", 0)
             self.statusbar.SetStatusText("", 1)
             # try:
