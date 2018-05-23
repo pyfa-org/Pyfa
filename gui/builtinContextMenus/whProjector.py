@@ -34,7 +34,7 @@ class WhProjector(ContextMenu):
         return srcContext == "projected"
 
     def getText(self, itmContext, selection):
-        return "Add Environment Effects"
+        return "Add Environmental Effect"
 
     def getSubMenu(self, context, selection, rootMenu, i, pitem):
         msw = True if "wxMSW" in wx.PlatformInfo else False
