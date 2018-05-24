@@ -60,7 +60,7 @@ class MaxRange(ViewColumn):
 
         maxRange = stuff.maxRange if hasattr(stuff, "maxRange") else stuff.getModifiedItemAttr("maxRange", None)
         falloff = stuff.falloff
-        if falloff:
+        if falloff and falloff >= 5:
             falloff = "+%sm" % formatAmount(falloff, 3, 0, 3)
         else:
             falloff = ""
