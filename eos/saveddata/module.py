@@ -109,7 +109,6 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
             self.__charge = eos.db.getItem(self.chargeID)
 
         self.build()
-
     def build(self):
         """ Builds internal module variables from both init's """
 
@@ -129,6 +128,7 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
 
         if self.__item:
             self.__itemModifiedAttributes.original = self.__item.attributes
+            self.__itemModifiedAttributes.mutators = self.mutators
             self.__itemModifiedAttributes.overrides = self.__item.overrides
             self.__hardpoint = self.__calculateHardpoint(self.__item)
             self.__slot = self.__calculateSlot(self.__item)

@@ -23,6 +23,7 @@ import datetime
 
 from eos.db import saveddata_meta
 from eos.saveddata.module import Module
+from eos.saveddata.mutator import Mutator
 from eos.saveddata.fit import Fit
 
 modules_table = Table("modules", saveddata_meta,
@@ -39,4 +40,11 @@ modules_table = Table("modules", saveddata_meta,
                       CheckConstraint('("dummySlot" = NULL OR "itemID" = NULL) AND "dummySlot" != "itemID"'))
 
 mapper(Module, modules_table,
-       properties={"owner": relation(Fit)})
+       properties={
+           "owner": relation(Fit),
+           "mutators": relation(
+                   Mutator,
+                   backref="module",
+                   cascade="all,delete-orphan"
+           )
+       })

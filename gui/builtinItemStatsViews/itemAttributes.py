@@ -174,7 +174,12 @@ class ItemParams(wx.Panel):
             info = self.attrInfo.get(name)
             att = self.attrValues[name]
 
-            valDefault = getattr(info, "value", None)
+            # If we're working with a stuff object, we should get the original value from our getBaseAttrValue function,
+            # which will return the value with respect to the effective base (with mutators / overrides in place)
+            valDefault = getattr(info, "value", None)  # Get default value from attribute
+            if self.stuff is not None:
+                # if it's a stuff, overwrite default (with fallback to current value)
+                valDefault = self.stuff.getBaseAttrValue(name, valDefault)
             valueDefault = valDefault if valDefault is not None else att
 
             val = getattr(att, "value", None)
