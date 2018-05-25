@@ -264,6 +264,29 @@ def main(db, json_path):
 
                 eos.db.gamedata_session.add(instance)
 
+    # quick and dirty hack to get this data in
+    with open(os.path.join(jsonPath, "dynamicAttributes.json"), encoding="utf-8") as f:
+        bulkdata = json.load(f)
+        for mutaID, data in bulkdata.items():
+            muta = eos.gamedata.DynamicItem()
+            muta.typeID = mutaID
+            muta.resultingTypeID = data['inputOutputMapping'][0]['resultingType']
+            eos.db.gamedata_session.add(muta)
+
+            for x in data['inputOutputMapping'][0]['applicableTypes']:
+                item = eos.gamedata.DynamicItemItem()
+                item.typeID = mutaID
+                item.applicableTypeID = x
+                eos.db.gamedata_session.add(item)
+
+            for attrID, attrData in data['attributeIDs'].items():
+                attr = eos.gamedata.DynamicItemAttribute()
+                attr.typeID = mutaID
+                attr.attributeID = attrID
+                attr.min = attrData['min']
+                attr.max = attrData['max']
+                eos.db.gamedata_session.add(attr)
+
     eos.db.gamedata_session.commit()
 
     # CCP still has 5 subsystems assigned to T3Cs, even though only 4 are available / usable. They probably have some
@@ -280,3 +303,4 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     main(args.db, args.json)
+
