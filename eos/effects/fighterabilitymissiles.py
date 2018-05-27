@@ -7,7 +7,7 @@ effects, and thus this effect file contains some custom information useful only 
 displayName = "Missile Attack"
 
 # Attribute prefix that this ability targets
-prefix = "fighterAbilityMissiles"
+prefix = "fighterAbilityAttackMissile"
 
 type = "active"
 
