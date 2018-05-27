@@ -102,7 +102,7 @@ class ItemParams(wx.Panel):
         if saveFileDialog.ShowModal() == wx.ID_CANCEL:
             return  # the user hit cancel...
 
-        with open(saveFileDialog.GetPath(), "wb") as exportFile:
+        with open(saveFileDialog.GetPath(), "w") as exportFile:
             writer = csv.writer(exportFile, delimiter=',')
 
             writer.writerow(
