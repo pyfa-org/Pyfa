@@ -28,7 +28,9 @@ from eos.saveddata.fighter import Fighter
 from eos.saveddata.module import Module, Slot, Rack
 from eos.saveddata.fit import Fit
 from service.fit import Fit as FitSvc
+from service.market import Market
 from gui.viewColumn import ViewColumn
+from gui.builtinContextMenus.whProjector import WhProjector
 import gui.mainFrame
 
 pyfalog = Logger(__name__)
@@ -77,6 +79,15 @@ class BaseName(ViewColumn):
             else:
                 return ""
         elif isinstance(stuff, Module):
+            if self.projectedView:
+                # check for projected abyssal name
+                name_check = stuff.item.name[0:-2]
+                type = WhProjector.abyssal_mapping.get(name_check, None)
+                if type:
+                    sMkt = Market.getInstance()
+                    type = sMkt.getItem(type)
+                    return "{} {}".format(type.name, stuff.item.name[-1:])
+
             if stuff.isEmpty:
                 return "%s Slot" % Slot.getName(stuff.slot).capitalize()
             else:

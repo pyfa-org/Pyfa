@@ -213,8 +213,13 @@ def main(db, json_path):
         if (row["published"]
             or row['groupID'] == 1306  # group Ship Modifiers, for items like tactical t3 ship modes
             or row['typeName'].startswith('Civilian') # Civilian weapons
-            or row['typeID'] in (41549, 41548, 41551,41550)  # Micro Bombs (Fighters)
-            or row['groupID'] in (1882, 1975)  # Abysmal weather (environment)
+            or row['typeID'] in (41549, 41548, 41551, 41550)  # Micro Bombs (Fighters)
+            or row['groupID'] in (
+                        1882,
+                        1975,
+                        1971,
+                        1983  # the "container" for the abysmal environments
+                )  # Abysmal weather (environment)
         ):
             eveTypes.add(row["typeID"])
 
