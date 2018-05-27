@@ -318,6 +318,7 @@ class Market(object):
         self.FORCEDMARKETGROUP = {
             685: False,  # Ship Equipment > Electronic Warfare > ECCM
             681: False,  # Ship Equipment > Electronic Warfare > Sensor Backup Arrays
+            1639: False  # Ship Equipment > Fleet Assistance > Command Processors
         }
 
         # Misc definitions

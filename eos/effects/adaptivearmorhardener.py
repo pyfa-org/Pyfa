@@ -13,11 +13,14 @@ type = "active"
 
 def handler(fit, module, context):
     damagePattern = fit.damagePattern
+    # pyfalog.debug("==============================")
 
     static_adaptive_behavior = eos.config.settings['useStaticAdaptiveArmorHardener']
 
     if (damagePattern.emAmount == damagePattern.thermalAmount == damagePattern.kineticAmount == damagePattern.explosiveAmount) and static_adaptive_behavior:
-        pyfalog.debug("Setting adaptivearmorhardener resists to uniform profile.")
+        # pyfalog.debug("Setting adaptivearmorhardener resists to uniform profile.")
+        for attr in ("armorEmDamageResonance", "armorThermalDamageResonance", "armorKineticDamageResonance", "armorExplosiveDamageResonance"):
+            fit.ship.multiplyItemAttr(attr, module.getModifiedItemAttr(attr), stackingPenalties=True, penaltyGroup="preMul")
         return
 
     # Skip if there is no damage pattern. Example: projected ships or fleet boosters
@@ -30,7 +33,7 @@ def handler(fit, module, context):
             damagePattern.kineticAmount * fit.ship.getModifiedItemAttr('armorKineticDamageResonance'),
             damagePattern.explosiveAmount * fit.ship.getModifiedItemAttr('armorExplosiveDamageResonance'),
         )
-        # pyfalog.debug("Damage Adjusted for Armor Resists: %f/%f/%f/%f", baseDamageTaken[0], baseDamageTaken[1], baseDamageTaken[2], baseDamageTaken[3])
+        # pyfalog.debug("Damage Adjusted for Armor Resists: %f/%f/%f/%f" % (baseDamageTaken[0], baseDamageTaken[1], baseDamageTaken[2], baseDamageTaken[3]))
 
         resistanceShiftAmount = module.getModifiedItemAttr(
             'resistanceShiftAmount') / 100  # The attribute is in percent and we want a fraction
@@ -46,7 +49,7 @@ def handler(fit, module, context):
         cycleList = []
         loopStart = -20
         for num in range(50):
-            # pyfalog.debug("Starting cycle %d.", num)
+            # pyfalog.debug("Starting cycle %d." % num)
             # The strange order is to emulate the ingame sorting when different types have taken the same amount of damage.
             # This doesn't take into account stacking penalties. In a few cases fitting a Damage Control causes an inaccurate result.
             damagePattern_tuples = [
@@ -84,7 +87,7 @@ def handler(fit, module, context):
             RAHResistance[sortedDamagePattern_tuples[1][0]] = sortedDamagePattern_tuples[1][2] + change1
             RAHResistance[sortedDamagePattern_tuples[2][0]] = sortedDamagePattern_tuples[2][2] + change2
             RAHResistance[sortedDamagePattern_tuples[3][0]] = sortedDamagePattern_tuples[3][2] + change3
-            # pyfalog.debug("Resistances shifted to %f/%f/%f/%f", RAHResistance[0], RAHResistance[1], RAHResistance[2], RAHResistance[3])
+            # pyfalog.debug("Resistances shifted to %f/%f/%f/%f" % ( RAHResistance[0], RAHResistance[1], RAHResistance[2], RAHResistance[3]))
 
             # See if the current RAH profile has been encountered before, indicating a loop.
             for i, val in enumerate(cycleList):
@@ -94,16 +97,16 @@ def handler(fit, module, context):
                             abs(RAHResistance[2] - val[2]) <= tolerance and \
                             abs(RAHResistance[3] - val[3]) <= tolerance:
                     loopStart = i
-                    # pyfalog.debug("Loop found: %d-%d", loopStart, num)
+                    # pyfalog.debug("Loop found: %d-%d" % (loopStart, num))
                     break
             if loopStart >= 0:
                 break
 
             cycleList.append(list(RAHResistance))
 
-        if loopStart < 0:
-            pyfalog.error("Reactive Armor Hardener failed to find equilibrium. Damage profile after armor: {0}/{1}/{2}/{3}",
-                         baseDamageTaken[0], baseDamageTaken[1], baseDamageTaken[2], baseDamageTaken[3])
+        # if loopStart < 0:
+            # pyfalog.error("Reactive Armor Hardener failed to find equilibrium. Damage profile after armor: {0}/{1}/{2}/{3}".format(
+            #             baseDamageTaken[0], baseDamageTaken[1], baseDamageTaken[2], baseDamageTaken[3]))
 
         # Average the profiles in the RAH loop, or the last 20 if it didn't find a loop.
         loopCycles = cycleList[loopStart:]
@@ -117,7 +120,7 @@ def handler(fit, module, context):
             average[i] = round(average[i] / numCycles, 3)
 
         # Set the new resistances
-        # pyfalog.debug("Setting new resist profile: %f/%f/%f/%f", average[0], average[1], average[2],average[3])
+        # pyfalog.debug("Setting new resist profile: %f/%f/%f/%f" % ( average[0], average[1], average[2],average[3]))
         for i, attr in enumerate((
                 'armorEmDamageResonance', 'armorThermalDamageResonance', 'armorKineticDamageResonance',
                 'armorExplosiveDamageResonance')):

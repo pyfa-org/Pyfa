@@ -3,6 +3,7 @@ import urllib.parse
 import socket
 import threading
 from logbook import Logger
+import socketserver
 
 pyfalog = Logger(__name__)
 
@@ -103,7 +104,6 @@ class AuthHandler(http.server.BaseHTTPRequestHandler):
     def log_message(self, format, *args):
         return
 
-import socketserver
 
 # http://code.activestate.com/recipes/425210-simple-stoppable-server-using-socket-timeout/
 class StoppableHTTPServer(socketserver.TCPServer):
