@@ -8,15 +8,15 @@
 2: II
 lrg: Large
 hvy: Heavy
-med: Medium
+# med: Medium
 sml: Small
 mic: Micro
 xl: X-Large
-l: Large
-h: Heavy
-m: Medium
-s: Small
- 
+# l: Large
+# h: Heavy
+# m: Medium
+# s: Small
+
 #language fixes (american/british differences)
  
 armour: armor
