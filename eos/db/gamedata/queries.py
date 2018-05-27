@@ -17,8 +17,9 @@
 # along with eos.  If not, see <http://www.gnu.org/licenses/>.
 # ===============================================================================
 
-from sqlalchemy.orm import join, exc, aliased
+from sqlalchemy.orm import join, exc, aliased, joinedload, subqueryload
 from sqlalchemy.sql import and_, or_, select
+from sqlalchemy.inspection import inspect
 
 import eos.config
 from eos.db import gamedata_session
@@ -96,6 +97,27 @@ def getItem(lookfor, eager=None):
         raise TypeError("Need integer or string as argument")
     return item
 
+
+def getItemWithBaseItemAttribute(lookfor, baseItemID, eager=None):
+    # A lot of this is described in more detail in #1597
+    item = gamedata_session.query(Item).get(lookfor)
+    base = getItem(baseItemID)
+
+    # we have to load all attributes for this object, otherwise we'll lose access to them when we expunge.
+    # todo: figure out a way to eagerly load all these via the query...
+    for x in inspect(Item).relationships.keys():
+        getattr(item, x)
+
+    # Copy over the attributes from the base, but ise the items attributes when there's an overlap
+    # WARNING: the attribute object still has the old typeID. I don't believe we access this typeID anywhere in the code,
+    # but should keep this in mind for now.
+    item._Item__attributes = {**base.attributes, **item.attributes}
+
+    # Expunge the item form the session. This is required to have different Abyssal / Base combinations loaded in memory.
+    # Without expunging it, once one Abyssal Web is created, SQLAlchmey will use it for all others. We don't want this,
+    # we want to generate a completely new object to work with
+    gamedata_session.expunge(item)
+    return item
 
 @cachedQuery(1, "lookfor")
 def getItems(lookfor, eager=None):

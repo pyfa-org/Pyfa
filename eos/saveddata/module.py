@@ -76,6 +76,7 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
     def __init__(self, item):
         """Initialize a module from the program"""
         self.__item = item
+        self.__baseItem = None
 
         if item is not None and self.isInvalid:
             raise ValueError("Passed item is not a Module")
@@ -90,6 +91,7 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
     def init(self):
         """Initialize a module from the database and validate"""
         self.__item = None
+        self.__baseItem = None
         self.__charge = None
 
         # we need this early if module is invalid and returns early
@@ -99,6 +101,13 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
             self.__item = eos.db.getItem(self.itemID)
             if self.__item is None:
                 pyfalog.error("Item (id: {0}) does not exist", self.itemID)
+                return
+
+        if self.baseItemID:
+            self.__item = eos.db.getItemWithBaseItemAttribute(self.itemID, self.baseItemID)
+            self.__baseItem = eos.db.getItem(self.baseItemID)
+            if self.__baseItem is None:
+                pyfalog.error("Base Item (id: {0}) does not exist", self.itemID)
                 return
 
         if self.isInvalid:
@@ -128,10 +137,11 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
 
         if self.__item:
             self.__itemModifiedAttributes.original = self.__item.attributes
-            self.__itemModifiedAttributes.mutators = self.mutators
             self.__itemModifiedAttributes.overrides = self.__item.overrides
             self.__hardpoint = self.__calculateHardpoint(self.__item)
             self.__slot = self.__calculateSlot(self.__item)
+            self.__itemModifiedAttributes.mutators = self.mutators
+
         if self.__charge:
             self.__chargeModifiedAttributes.original = self.__charge.attributes
             self.__chargeModifiedAttributes.overrides = self.__charge.overrides
