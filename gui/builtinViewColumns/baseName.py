@@ -31,7 +31,6 @@ from service.fit import Fit as FitSvc
 from service.market import Market
 from gui.viewColumn import ViewColumn
 from gui.builtinContextMenus.whProjector import WhProjector
-from gui.builtinAdditionPanes.projectedView import ProjectedView
 import gui.mainFrame
 
 pyfalog = Logger(__name__)
@@ -47,7 +46,7 @@ class BaseName(ViewColumn):
         self.columnText = "Name"
         self.shipImage = fittingView.imageList.GetImageIndex("ship_small", "gui")
         self.mask = wx.LIST_MASK_TEXT
-        self.projectedView = isinstance(fittingView, ProjectedView)
+        self.projectedView = isinstance(fittingView, gui.builtinAdditionPanes.projectedView.ProjectedView)
 
     def getText(self, stuff):
         if isinstance(stuff, Drone):
