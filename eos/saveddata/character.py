@@ -121,6 +121,7 @@ class Character(object):
     def clearSkills(self):
         del self.__skills[:]
         self.__skillIdMap.clear()
+        self.dirtySkills.clear()
 
     @property
     def ro(self):
