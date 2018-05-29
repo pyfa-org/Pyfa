@@ -276,6 +276,7 @@ def main(db, json_path):
     # pyfa, we can do it here as a post-processing step
     eos.db.gamedata_engine.execute("UPDATE dgmtypeattribs SET value = 4.0 WHERE attributeID = ?", (1367,))
 
+    eos.db.gamedata_engine.execute("UPDATE invtypes  SET published = 0 WHERE typeName LIKE '%abyssal%'")
     print("done")
 
 if __name__ == "__main__":
