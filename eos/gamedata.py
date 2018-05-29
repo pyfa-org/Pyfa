@@ -372,7 +372,8 @@ class Item(EqBase):
                     12 : "sisters",  # Amarr + Gallente
                     16 : "jove",
                     32 : "sansha",  # Incrusion Sansha
-                    128: "ore"
+                    128: "ore",
+                    135: "triglavian"
                 }
                 # Race is None by default
                 race = None
