@@ -1,39 +1,39 @@
-#Default jargon - comment out as necessary. 
+#Default jargon - comment out as necessary.
 
 #Note that some of these are experimental abbreviations which don't have any real purpose and are simply there to play with
- 
+
 #shortcuts
- 
+
 1: I
 2: II
 lrg: Large
 hvy: Heavy
-# med: Medium
+# med: Medium # (ineffective)
 sml: Small
-mic: Micro
+# mic: Micro # (ineffective)
 xl: X-Large
-# l: Large
-# h: Heavy
-# m: Medium
-# s: Small
+
+# Derp.
+large: heavy
+heavy: large
 
 #language fixes (american/british differences)
- 
+
 armour: armor
 neutraliser: neutralizer
 stabiliser: stabilizer
 energised: energized
 economiser: economizer
- 
+
 #definitions
- 
+
 cn: Caldari Navy
 rf: Republic Fleet
 in: Imperial Navy
 fn: Federation Navy
- 
+
 #weapons
- 
+
 ac: AutoCannon
 rt: Artillery
 arty: Artillery
@@ -124,9 +124,9 @@ dd: Doomsday
 rp: Reaper
 disco: Smartbomb
 sbomb: Smartbomb
- 
+
 #Propulsion Modules
- 
+
 ab: Afterburner
 mwd: Microwarpdrive
 smwd: 5mn
@@ -146,14 +146,21 @@ wcs: Warp Core Stabilizer
 nano: Nanofiber Internal Structure
 boosh: Micro Jump Field Generator
 mjfg: Micro Jump Field Generator
- 
+
 #Tank Modules
- 
+
+100pl: 100mm Plates
+200pl: 200mm Plates
+400pl: 400mm Plates
+800pl: 800mm Plates
+1600pl: 1600mm Plates
+25000pl: 25000mm Plates
 aar: Ancillary Armor Repairer
 ain: Adaptive Invulnerability Field
 anp: Adaptive Nano Plating
 asb: Ancillary Shield Booster
 car: Capital Armor Repairer
+cpl: 25000mm Plates
 dc: Damage Control
 dcu: Damage Control
 eanm: Energized Adaptive Nano Membrane
@@ -187,9 +194,9 @@ thra: Thermal Dissipation Amplifier
 knra: Kinetic Deflection Amplifier
 emra: EM Ward Amplifier
 exra: Explosive Deflection Amplifier
- 
+
 #Weapon Upgrades
- 
+
 bcs: Ballistic Control System
 bcu: Ballistic Control System
 bc: Ballistic Control System
@@ -209,9 +216,9 @@ dda: Drone Damage Amplifier
 dnc: Drone Navigation Computer
 gs: Gyrostabilizer
 hs: Heat Sink
- 
+
 # Fleet Assistance
- 
+
 rsebo: Remote Sensor Booster
 rct: Remote Capacitor Transmitter
 rar: Remote Armor Repairer
@@ -221,9 +228,10 @@ rtc: Remote Tracking Computer
 tl: Remote Tracking Computer
 cmdb: Command Burst
 cdb: Command Burst
- 
+cp: Command Processor
+
 # EWAR
- 
+
 wd: Warp Disruptor
 ws: Warp Scrambler
 sw: Stasis Webifier
@@ -240,9 +248,9 @@ sd: Remote Sensor Dampener
 gd: Guidance Disruptor
 md: Guidance Disruptor
 point: Warp Disruptor
- 
+
 # Engineering
- 
+
 cpr: Capacitor Power Relay
 cpu: Co-Processor
 coproc: Co-Processor
@@ -256,9 +264,10 @@ cb: Capacitor Booster
 cbat: Cap Battery
 cbst: Capacitor Booster
 sigamp: Signal Amplifier
- 
+mapc: Micro Auxiliary Power Core
+
 # Ammo/Charges
- 
+
 am: Antimatter
 cnam: Caldari Navy Antimatter
 fnam: Federation Navy Antimatter
@@ -279,9 +288,9 @@ wdp: Warp Disrupt Probe
 sp: Scanner Probe
 bubble: Warp Disrupt Probe
 ars: Armor Resistance Script
- 
+
 # Rigs
- 
+
 acr: Ancillary Current Router
 ccc: Capacitor Control Circuit
 smc: Semiconductor Memory Cell
@@ -289,3 +298,9 @@ tap: Trimark Armor Pump
 aap: Anti- Pump
 pcu: Processor Overclocking Unit
 asr: Anti- Screen Reinforcer
+cdfe: Core Defense Field Extender
+
+# Implants
+lg: Low-grade
+mg: Mid-grade
+hg: High-grade
