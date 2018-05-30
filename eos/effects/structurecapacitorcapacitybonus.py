@@ -1,4 +1,7 @@
-# Not used by any item
+# structureCapacitorCapacityBonus
+#
+# Used by:
+# Structure Modules from group: Structure Capacitor Battery (2 of 2)
 type = "passive"
 
 

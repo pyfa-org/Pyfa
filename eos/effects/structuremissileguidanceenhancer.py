@@ -1,4 +1,7 @@
-# Not used by any item
+# structureMissileGuidanceEnhancer
+#
+# Used by:
+# Variations of structure module: Standup Missile Guidance Enhancer I (2 of 2)
 type = "passive"
 
 

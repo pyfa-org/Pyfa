@@ -1,4 +1,8 @@
-# Not used by any item
+# structureRigNeutralizerMaxRangeFalloffEffectiveness
+#
+# Used by:
+# Structure Modules from group: Structure Combat Rig XL - Energy Neutralizer and EW (2 of 2)
+# Structure Modules named like: Standup Set Energy Neutralizer (4 of 6)
 type = "passive"
 
 

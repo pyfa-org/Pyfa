@@ -2,6 +2,7 @@
 #
 # Used by:
 # Module: Target Illumination Burst Projector
+# Structure Module: Standup Target Illumination Burst Projector
 type = "projected", "active"
 
 

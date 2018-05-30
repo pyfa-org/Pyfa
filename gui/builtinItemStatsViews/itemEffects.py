@@ -45,7 +45,7 @@ class ItemEffects(wx.Panel):
             self.effectList.SetColumnWidth(4, 40)
 
         item = self.item
-        effects = item.effects
+        self.effects = effects = item.effects
         names = list(effects.keys())
         names.sort()
 
@@ -100,14 +100,15 @@ class ItemEffects(wx.Panel):
 
         self.RefreshValues(event)
 
-    @staticmethod
-    def OnRightClick(event):
+    def OnRightClick(self, event):
         """
         Debug use: open effect file with default application.
         If effect file does not exist, create it
         """
 
-        file_ = os.path.join(config.pyfaPath, "eos", "effects", "%s.py" % event.GetText().lower())
+        effect = self.effects[event.GetText()]
+
+        file_ = os.path.join(config.pyfaPath, "eos", "effects", "%s.py" % effect.handlerName)
 
         if not os.path.isfile(file_):
             open(file_, 'a').close()

@@ -1,4 +1,7 @@
-# Not used by any item
+# fighterAbilityLaunchBomb
+#
+# Used by:
+# Fighters from group: Heavy Fighter (16 of 34)
 """
 Since fighter abilities do not have any sort of item entity in the EVE database, we must derive the abilities from the
 effects, and thus this effect file contains some custom information useful only to fighters.

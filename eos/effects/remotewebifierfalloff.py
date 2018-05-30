@@ -2,7 +2,8 @@
 #
 # Used by:
 # Modules from group: Stasis Grappler (7 of 7)
-# Modules from group: Stasis Web (18 of 18)
+# Modules from group: Stasis Web (19 of 19)
+# Starbases from group: Stasis Webification Battery (3 of 3)
 type = "active", "projected"
 
 

@@ -108,6 +108,28 @@ class Miscellanea(ViewColumn):
             text = "{0}".format(formatAmount(trackingSpeed, 3, 0, 3))
             tooltip = "Tracking speed"
             return text, tooltip
+        elif itemGroup == "Precursor Weapon":
+            info = []
+            trackingSpeed = stuff.getModifiedItemAttr("trackingSpeed")
+            if trackingSpeed:
+                text = "{0}".format(formatAmount(trackingSpeed, 3, 0, 3))
+                tooltip = "tracking speed"
+                info.append((text, tooltip))
+            maxBonusDamage = stuff.getModifiedItemAttr("damageMultiplierBonusMax")
+            bonusDamagePerCycle = stuff.getModifiedItemAttr("damageMultiplierBonusPerCycle")
+            cycleTime = stuff.getModifiedItemAttr("speed")
+            if maxBonusDamage and bonusDamagePerCycle and cycleTime:
+                cyclesToFullDamage = int(maxBonusDamage / bonusDamagePerCycle)
+                timeToFullDamage = (cycleTime / 1000) * cyclesToFullDamage
+                if cyclesToFullDamage:
+                    text = "{0}s".format(formatAmount(timeToFullDamage, 3, 0, 3))
+                    tooltip = "spool-up time"
+                    info.append((text, tooltip))
+            if not info:
+                return "", None
+            text = ' | '.join(i[0] for i in info)
+            tooltip = ' and '.join(i[1] for i in info).capitalize()
+            return text, tooltip
         elif itemCategory == "Subsystem":
             slots = ("hi", "med", "low")
             info = []
