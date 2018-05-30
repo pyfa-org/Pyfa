@@ -38,7 +38,6 @@ class WhProjector(ContextMenu):
 
     def getSubMenu(self, context, selection, rootMenu, i, pitem):
         msw = True if "wxMSW" in wx.PlatformInfo else False
-        sMkt = Market.getInstance()
 
         # Wormholes
 
