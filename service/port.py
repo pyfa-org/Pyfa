@@ -483,6 +483,8 @@ class Port(object):
         for module in items:
             try:
                 item = sMkt.getItem(module['type_id'], eager="group.category")
+                if not item.published:
+                    continue
                 if module['flag'] == INV_FLAG_DRONEBAY:
                     d = Drone(item)
                     d.amount = module['quantity']
@@ -677,6 +679,9 @@ class Port(object):
             except:
                 # if no data can be found (old names)
                 pyfalog.warning("no data can be found (old names)")
+                continue
+
+            if not item.published:
                 continue
 
             if item.category.name == "Drone":
@@ -992,7 +997,7 @@ class Port(object):
             for hardware in hardwares:
                 try:
                     item = _resolve_module(hardware, sMkt, b_localized)
-                    if not item:
+                    if not item or not item.published:
                         continue
 
                     if item.category.name == "Drone":
