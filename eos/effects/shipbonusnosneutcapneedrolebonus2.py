@@ -1,9 +1,4 @@
-# shipBonusNosNeutCapNeedRoleBonus2
-#
-# Used by:
-# Ship: Damavik
-# Ship: Leshak
-# Ship: Vedmak
+# Not used by any item
 type = "passive"
 
 

@@ -1,7 +1,7 @@
 # armorHPBonusAdd
 #
 # Used by:
-# Modules from group: Armor Reinforcer (51 of 51)
+# Modules from group: Armor Reinforcer (48 of 48)
 type = "passive"
 
 

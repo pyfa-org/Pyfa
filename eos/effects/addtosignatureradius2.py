@@ -2,7 +2,7 @@
 #
 # Used by:
 # Modules from group: Missile Launcher Bomb (2 of 2)
-# Modules from group: Shield Extender (36 of 36)
+# Modules from group: Shield Extender (33 of 33)
 type = "passive"
 
 
