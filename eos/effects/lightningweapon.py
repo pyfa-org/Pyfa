@@ -1,4 +1,7 @@
-# Not used by any item
+# lightningWeapon
+#
+# Used by:
+# Structure Module: Standup Arcing Vorton Projector I
 type = 'active'
 
 

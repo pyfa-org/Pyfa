@@ -1,4 +1,9 @@
-# Not used by any item
+# weather_infernal
+#
+# Used by:
+# Celestial: infernal_weather_1
+# Celestial: infernal_weather_2
+# Celestial: infernal_weather_3
 runTime = "early"
 type = ("projected", "passive", "gang")
 

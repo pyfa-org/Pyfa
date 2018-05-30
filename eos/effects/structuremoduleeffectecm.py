@@ -1,4 +1,7 @@
-# Not used by any item
+# structureModuleEffectECM
+#
+# Used by:
+# Structure Modules from group: Structure ECM Battery (3 of 3)
 type = "projected", "active"
 
 

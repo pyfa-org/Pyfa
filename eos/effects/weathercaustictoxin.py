@@ -1,4 +1,9 @@
-# Not used by any item
+# weather_caustic_toxin
+#
+# Used by:
+# Celestial: caustic_toxin_weather_1
+# Celestial: caustic_toxin_weather_2
+# Celestial: caustic_toxin_weather_3
 runTime = "early"
 type = ("projected", "passive", "gang")
 

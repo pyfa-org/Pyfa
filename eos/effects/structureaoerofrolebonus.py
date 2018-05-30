@@ -1,4 +1,7 @@
-# Not used by any item
+# structureAoERoFRoleBonus
+#
+# Used by:
+# Items from category: Structure (11 of 14)
 type = "passive"
 
 

@@ -1,4 +1,7 @@
-# Not used by any item
+# aoe_beacon_filament_cloud
+#
+# Used by:
+# Celestials named like: Filament Cloud (3 of 3)
 runTime = "early"
 type = ("projected", "passive", "gang")
 

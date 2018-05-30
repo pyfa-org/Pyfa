@@ -1,4 +1,9 @@
-# Not used by any item
+# weather_xenon_gas
+#
+# Used by:
+# Celestial: xenon_gas_weather_1
+# Celestial: xenon_gas_weather_2
+# Celestial: xenon_gas_weather_3
 runTime = "early"
 type = ("projected", "passive", "gang")
 

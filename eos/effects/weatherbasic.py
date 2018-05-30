@@ -1,4 +1,7 @@
-# Not used by any item
+# weather_basic
+#
+# Used by:
+# Celestial: basic_weather
 runTime = "early"
 type = ("projected", "passive")
 

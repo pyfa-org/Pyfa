@@ -5,6 +5,7 @@
 # Modules from group: Capacitor Power Relay (20 of 20)
 # Modules from group: Power Diagnostic System (23 of 23)
 # Modules from group: Reactor Control Unit (22 of 22)
+# Variations of structure module: Standup Reactor Control Unit I (2 of 2)
 type = "passive"
 
 

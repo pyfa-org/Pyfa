@@ -1,4 +1,9 @@
-# Not used by any item
+# weather_electric_storm
+#
+# Used by:
+# Celestial: electric_storm_weather_1
+# Celestial: electric_storm_weather_2
+# Celestial: electric_storm_weather_3
 runTime = "early"
 type = ("projected", "passive", "gang")
 

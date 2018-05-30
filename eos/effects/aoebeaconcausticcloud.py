@@ -1,4 +1,7 @@
-# Not used by any item
+# aoe_beacon_caustic_cloud
+#
+# Used by:
+# Celestials named like: Caustic Cloud (3 of 3)
 runTime = "early"
 type = ("projected", "passive", "gang")
 
