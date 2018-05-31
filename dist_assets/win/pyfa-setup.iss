@@ -5,7 +5,7 @@
 ; we do some #ifdef conditionals because automated compilation passes these as arguments
 
 #ifndef MyAppVersion
-    #define MyAppVersion "1.15.0"
+    #define MyAppVersion "2.1.0"
 #endif
 #ifndef MyAppExpansion
     #define MyAppExpansion "Vanguard 1.0"
@@ -64,7 +64,7 @@ Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{
 Name: "quicklaunchicon"; Description: "{cm:CreateQuickLaunchIcon}"; GroupDescription: "{cm:AdditionalIcons}"; Flags: unchecked; OnlyBelowVersion: 0,6.1
 
 [Files]
-Source: "{#MyAppDir}\pyfa.exe"; DestDir: "{app}"; Flags: ignoreversion
+Source: "{#MyAppDir}\pyfa.exe"; DestDir: "{app}"; Flags: ignoreversion; AfterInstall: RemoveFromVirtualStore
 Source: "{#MyAppDir}\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 
@@ -102,6 +102,22 @@ begin
     FWbemObjectSet := Unassigned;
     FWMIService := Unassigned;
     FSWbemLocator := Unassigned;
+end;
+
+procedure RemoveFromVirtualStore;
+var
+    VirtualStore,FileName,FilePath:String;
+    DriveChars:Integer;
+begin
+    VirtualStore:=AddBackslash(ExpandConstant('{localappdata}'))+'VirtualStore';
+    FileName:=ExpandConstant(CurrentFileName);
+    DriveChars:=Length(ExtractFileDrive(FileName));
+    if DriveChars>0 then begin
+        Delete(FileName,1,DriveChars);
+        FileName:=VirtualStore+FileName;
+        FilePath:=ExtractFilePath(FileName);
+        DelTree(FilePath, True, True, True);
+    end;
 end;
 
 function PrepareToInstall(var NeedsRestart: Boolean): String;
