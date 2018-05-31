@@ -39,6 +39,7 @@ from service.fit import Fit
 from service.market import Market
 
 from gui.utils.staticHelpers import DragDropHelper
+import gui.utils.fonts as fonts
 
 import gui.globalEvents as GE
 
@@ -660,6 +661,9 @@ class FittingView(d.Display):
     def slotColour(self, slot):
         return self.slotColourMap.get(slot) or self.GetBackgroundColour()
 
+    def getFittingFont(self):
+        return wx.SystemSettings.GetFont(wx.SYS_DEFAULT_GUI_FONT)
+
     def refresh(self, stuff):
         """
         Displays fitting
@@ -679,7 +683,7 @@ class FittingView(d.Display):
             slot = Slot.getValue(slotType)
             slotMap[slot] = fit.getSlotsFree(slot) < 0
 
-        font = wx.Font(self.GetClassDefaultAttributes().font)
+        font = self.getFittingFont()
 
         for i, mod in enumerate(self.mods):
             self.SetItemBackgroundColour(i, self.GetBackgroundColour())
@@ -731,7 +735,7 @@ class FittingView(d.Display):
         tbmp = wx.Bitmap(16, 16)
         tdc = wx.MemoryDC()
         tdc.SelectObject(tbmp)
-        font = wx.SystemSettings.GetFont(wx.SYS_DEFAULT_GUI_FONT)
+        font = self.getFittingFont()
         tdc.SetFont(font)
 
         columnsWidths = []
