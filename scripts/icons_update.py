@@ -14,7 +14,9 @@ from PIL import Image
 
 
 parser = argparse.ArgumentParser(description='This script updates module icons for pyfa')
-parser.add_argument('-i', '--icons', required=True, type=str, help='path to unpacked Icons folder from CCP\'s image export')
+parser.add_argument('-e', '--eve', required=True, type=str, help='path to eve\'s ')
+parser.add_argument('-s', '--server', required=False, default='tq', type=str, help='which server to us (defaults to tq)')
+parser.add_argument('-i', '--icons', required=True, type=str, help='Path to icons .json')
 args = parser.parse_args()
 
 
@@ -54,6 +56,22 @@ MARKET_ROOTS = {
     2203  # Structure Modifications (Rigs)
 }
 
+import json
+with open(args.icons, 'r') as f:
+    icon_json = json.load(f)
+
+eve_path = os.path.join(args.eve, 'index_{}.txt'.format(args.server))
+with open(eve_path, 'r') as f:
+    lines = f.readlines()
+    file_index = {x.split(',')[0]: x.split(',') for x in lines}
+
+resfileindex = file_index['app:/resfileindex.txt']
+
+res_cache = os.path.join(args.eve, 'ResFiles')
+with open(os.path.join(res_cache, resfileindex[1]), 'r') as f:
+    lines = f.readlines()
+    res_index = {x.split(',')[0]: x.split(',') for x in lines}
+
 # Add children to market group list
 # {parent: {children}}
 mkt_tree = {}
@@ -81,94 +99,34 @@ for root in MARKET_ROOTS:
     market_groups.update(get_children(root))
 
 
-query_items = 'select distinct i.iconFile from icons as i inner join invtypes as it on it.iconID = i.iconID inner join invgroups as ig on it.groupID = ig.groupID where ig.categoryID in ({})'.format(', '.join(str(i) for i in ITEM_CATEGORIES))
-query_groups = 'select distinct i.iconFile from icons as i inner join invgroups as ig on ig.iconID = i.iconID where ig.categoryID in ({})'.format(', '.join(str(i) for i in ITEM_CATEGORIES))
-query_cats = 'select distinct i.iconFile from icons as i inner join invcategories as ic on ic.iconID = i.iconID where ic.categoryID in ({})'.format(', '.join(str(i) for i in ITEM_CATEGORIES))
-query_market = 'select distinct i.iconFile from icons as i inner join invmarketgroups as img on img.iconID = i.iconID where img.marketGroupID in ({})'.format(', '.join(str(i) for i in market_groups))
-query_attrib = 'select distinct i.iconFile from icons as i inner join dgmattribs as da on da.iconID = i.iconID'
-
+query_items = 'select distinct iconID from invtypes'
+query_groups = 'select distinct iconID from invgroups'
+query_cats = 'select distinct iconID from invcategories'
+query_market = 'select distinct iconID from invmarketgroups'
+query_attrib = 'select distinct iconID from dgmattribs'
 
 needed = set()
 existing = set()
 export = {}
 
 
-def strip_path(fname):
-    """
-    Here we extract 'core' of icon name. Path and
-    extension are sometimes specified in database
-    but we don't need them.
-    """
-    # Path before the icon file name
-    fname = fname.split('/')[-1]
-    # Extension
-    fname = fname.rsplit('.', 1)[0]
-    return fname
-
-
-def unzero(fname):
-    """
-    Get rid of leading zeros in triplet. They are often specified in DB
-    but almost never in actual files.
-    """
-    m = re.match(r'^(?P<prefix>[^_\.]+)_((?P<size>\d+)_)?(?P<suffix>[^_\.]+)(?P<tail>\..*)?$', fname)
-    if m:
-        prefix = m.group('prefix')
-        size = m.group('size')
-        suffix = m.group('suffix')
-        tail = m.group('tail')
-        try:
-            prefix = int(prefix)
-        except (TypeError, ValueError):
-            pass
-        try:
-            size = int(size)
-        except (TypeError, ValueError):
-            pass
-        try:
-            suffix = int(suffix)
-        except (TypeError, ValueError):
-            pass
-        if size is None:
-            fname = '{}_{}'.format(prefix, suffix)
-        else:
-            fname = '{}_{}_{}'.format(prefix, size, suffix)
-        return fname
-    else:
-        return fname
-
 # Get a list of needed icons based on the items / attributes / etc from the database
 for query in (query_items, query_groups, query_cats, query_market, query_attrib):
     for row in cursor.execute(query):
         fname = row[0]
-        if not fname:
+        if fname is None:
             continue
-        fname = strip_path(fname)
         needed.add(fname)
 
 # Get a list of all the icons we currently have
 for fname in os.listdir(icons_dir):
     if not os.path.isfile(os.path.join(icons_dir, fname)):
         continue
-    fname = strip_path(fname)
+    fname = os.path.splitext(fname)[0]
     # Get rid of "icon" prefix as well
     #fname = re.sub('^icon', '', fname)
     print(fname,"exists")
     existing.add(fname)
-
-# Get a list of all the icons currently available in export
-for dir in dirs:
-    for fname in os.listdir(dir):
-        if not os.path.isfile(os.path.join(dir, fname)):
-            continue
-        stripped = strip_path(fname)
-        stripped = unzero(stripped)
-        # Icons in export often specify size in their name, but references often use
-        # convention without size specification
-        sizeless = re.sub('^(?P<prefix>[^_]+)_(?P<size>\d+)_(?P<suffix>[^_]+)$', r'\1_\3', stripped)
-        # Often items referred to with 01_01 format,
-        fnames = export.setdefault(sizeless.lower(), set())
-        fnames.add(fname)
 
 def crop_image(img):
     w, h = img.size
@@ -191,32 +149,22 @@ def get_icon_file(request):
     icon for it. Return as PIL image object down-
     scaled for use in pyfa.
     """
-    rq = strip_path(request)
-    rq = unzero(rq)
-    try:
-        fnames = export[rq]
-    except KeyError:
+
+    # the the res file
+    icon = icon_json[str(request)]
+    if icon['iconFile'] not in res_index :
         return None
-    # {(h, w): source full path}
-    sizes = {}
-    for dir in dirs:
-        for fname in fnames:
-            fullpath = os.path.join(dir, fname)
-            if not os.path.isfile(fullpath):
-                continue
-            img = Image.open(fullpath)
-            sizes[img.size] = fullpath
-    # Try to return image which is already in necessary format
-    try:
-        fullpath = sizes[ICON_SIZE]
-    # Otherwise, convert biggest image
-    except KeyError:
-        fullpath = sizes[max(sizes)]
-        img = Image.open(fullpath)
-        img = crop_image(img)
-        img.thumbnail(ICON_SIZE, Image.ANTIALIAS)
-    else:
-        img = Image.open(fullpath)
+    res_icon = res_index[icon['iconFile']]
+    icon_path = res_icon[1]
+
+    fullpath = os.path.join(res_cache, icon_path)
+
+    if not os.path.isfile(fullpath):
+        return None
+    img = Image.open(fullpath)
+    img = crop_image(img)
+    img.thumbnail(ICON_SIZE, Image.ANTIALIAS)
+
     # Strip all additional image info (mostly for ICC color
     # profiles, see issue #337)
     img.info.clear()
