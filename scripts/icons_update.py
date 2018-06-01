@@ -70,7 +70,11 @@ resfileindex = file_index['app:/resfileindex.txt']
 res_cache = os.path.join(args.eve, 'ResFiles')
 with open(os.path.join(res_cache, resfileindex[1]), 'r') as f:
     lines = f.readlines()
-    res_index = {x.split(',')[0]: x.split(',') for x in lines}
+    res_index = {x.split(',')[0].lower(): x.split(',') for x in lines}
+
+for x in res_index:
+    if x.startswith('res:/ui/texture/icons/ammo/'):
+        print(x)
 
 # Add children to market group list
 # {parent: {children}}
@@ -152,9 +156,10 @@ def get_icon_file(request):
 
     # the the res file
     icon = icon_json[str(request)]
-    if icon['iconFile'] not in res_index :
+    key = icon['iconFile'].lower()
+    if key not in res_index:
         return None
-    res_icon = res_index[icon['iconFile']]
+    res_icon = res_index[key]
     icon_path = res_icon[1]
 
     fullpath = os.path.join(res_cache, icon_path)
