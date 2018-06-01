@@ -41,7 +41,7 @@ class PropertyDisplay(ViewColumn):
                 iconFile = "pg_small"
                 iconType = "gui"
             else:
-                iconFile = info.icon.iconFile if info.icon else None
+                iconFile = info.iconID if info.icon else None
                 iconType = "icons"
             if iconFile:
                 self.imageId = fittingView.imageList.GetImageIndex(iconFile, iconType)

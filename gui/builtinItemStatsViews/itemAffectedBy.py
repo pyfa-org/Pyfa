@@ -238,15 +238,15 @@ class ItemAffectedBy(wx.Panel):
 
                 if attrInfo:
                     if attrInfo.icon is not None:
-                        iconFile = attrInfo.icon.iconFile
+                        iconFile = attrInfo.iconID
                         icon = BitmapLoader.getBitmap(iconFile, "icons")
                         if icon is None:
                             icon = BitmapLoader.getBitmap("transparent16x16", "gui")
                         attrIcon = self.imageList.Add(icon)
                     else:
-                        attrIcon = self.imageList.Add(BitmapLoader.getBitmap("7_15", "icons"))
+                        attrIcon = self.imageList.Add(BitmapLoader.getBitmap("0", "icons"))
                 else:
-                    attrIcon = self.imageList.Add(BitmapLoader.getBitmap("7_15", "icons"))
+                    attrIcon = self.imageList.Add(BitmapLoader.getBitmap("0", "icons"))
 
                 if self.showRealNames:
                     display = attrName
@@ -268,7 +268,7 @@ class ItemAffectedBy(wx.Panel):
                     if afflictorType == Ship:
                         itemIcon = self.imageList.Add(BitmapLoader.getBitmap("ship_small", "gui"))
                     elif item.icon:
-                        bitmap = BitmapLoader.getBitmap(item.icon.iconFile, "icons")
+                        bitmap = BitmapLoader.getBitmap(item.iconID, "icons")
                         itemIcon = self.imageList.Add(bitmap) if bitmap else -1
                     else:
                         itemIcon = -1
@@ -373,8 +373,8 @@ class ItemAffectedBy(wx.Panel):
                 counter = len(afflictors)
                 if afflictorType == Ship:
                     itemIcon = self.imageList.Add(BitmapLoader.getBitmap("ship_small", "gui"))
-                elif item.icon:
-                    bitmap = BitmapLoader.getBitmap(item.icon.iconFile, "icons")
+                elif item.iconID:
+                    bitmap = BitmapLoader.getBitmap(item.iconID, "icons")
                     itemIcon = self.imageList.Add(bitmap) if bitmap else -1
                 else:
                     itemIcon = -1
@@ -398,17 +398,17 @@ class ItemAffectedBy(wx.Panel):
                         displayName = attrInfo.displayName if attrInfo else ""
 
                         if attrInfo:
-                            if attrInfo.icon is not None:
-                                iconFile = attrInfo.icon.iconFile
+                            if attrInfo.iconID is not None:
+                                iconFile = attrInfo.iconID
                                 icon = BitmapLoader.getBitmap(iconFile, "icons")
                                 if icon is None:
                                     icon = BitmapLoader.getBitmap("transparent16x16", "gui")
 
                                 attrIcon = self.imageList.Add(icon)
                             else:
-                                attrIcon = self.imageList.Add(BitmapLoader.getBitmap("7_15", "icons"))
+                                attrIcon = self.imageList.Add(BitmapLoader.getBitmap("0", "icons"))
                         else:
-                            attrIcon = self.imageList.Add(BitmapLoader.getBitmap("7_15", "icons"))
+                            attrIcon = self.imageList.Add(BitmapLoader.getBitmap("0", "icons"))
 
                         penalized = ""
                         if '*' in attrModifier:

@@ -45,7 +45,7 @@ class ItemDependents(wx.Panel):
             for item in items:
 
                 if item.icon:
-                    bitmap = BitmapLoader.getBitmap(item.icon.iconFile, "icons")
+                    bitmap = BitmapLoader.getBitmap(item.iconID, "icons")
                     itemIcon = self.imageList.Add(bitmap) if bitmap else -1
                 else:
                     itemIcon = -1

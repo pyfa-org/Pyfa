@@ -156,7 +156,7 @@ class BaseImplantEditorView(wx.Panel):
             currentMktGrp = sMkt.getMarketGroup(tree.GetItemData(parent))
             items = sMkt.getItemsByMarketGroup(currentMktGrp)
             for item in items:
-                iconId = self.addMarketViewImage(item.icon.iconFile)
+                iconId = self.addMarketViewImage(item.iconID)
                 tree.AppendItem(parent, item.name, iconId, data=item)
 
         tree.SortChildren(parent)

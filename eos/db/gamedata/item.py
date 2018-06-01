@@ -24,7 +24,7 @@ from sqlalchemy.orm.collections import attribute_mapped_collection
 from eos.db.gamedata.effect import typeeffects_table
 
 from eos.db import gamedata_meta
-from eos.gamedata import Attribute, Effect, Group, Icon, Item, MetaType, Traits
+from eos.gamedata import Attribute, Effect, Group, Item, MetaType, Traits
 
 items_table = Table("invtypes", gamedata_meta,
                     Column("typeID", Integer, primary_key=True),
@@ -37,7 +37,7 @@ items_table = Table("invtypes", gamedata_meta,
                     Column("capacity", Float),
                     Column("published", Boolean),
                     Column("marketGroupID", Integer, ForeignKey("invmarketgroups.marketGroupID")),
-                    Column("iconID", Integer, ForeignKey("icons.iconID")),
+                    Column("iconID", Integer),
                     Column("groupID", Integer, ForeignKey("invgroups.groupID"), index=True))
 
 from .metaGroup import metatypes_table  # noqa
@@ -46,7 +46,6 @@ from .traits import traits_table  # noqa
 mapper(Item, items_table,
        properties={
            "group"            : relation(Group, backref="items"),
-           "icon"             : relation(Icon),
            "_Item__attributes": relation(Attribute, cascade='all, delete, delete-orphan', collection_class=attribute_mapped_collection('name')),
            "effects": relation(Effect, secondary=typeeffects_table, collection_class=attribute_mapped_collection('name')),
            "metaGroup"        : relation(MetaType,

@@ -35,10 +35,10 @@ class BaseIcon(ViewColumn):
                 return self.fittingView.imageList.GetImageIndex("slot_%s_small" % Slot.getName(stuff.slot).lower(),
                                                                 "gui")
             else:
-                return self.loadIconFile(stuff.item.icon.iconFile if stuff.item.icon else "")
+                return self.loadIconFile(stuff.item.iconID or "")
 
         item = getattr(stuff, "item", stuff)
-        return self.loadIconFile(item.icon.iconFile if item.icon else "")
+        return self.loadIconFile(item.iconID)
 
     def loadIconFile(self, iconFile):
         if iconFile:

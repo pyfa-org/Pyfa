@@ -56,7 +56,6 @@ def main(db, json_path):
         "dgmtypeattribs": eos.gamedata.Attribute,
         "dgmtypeeffects": eos.gamedata.ItemEffect,
         "dgmunits": eos.gamedata.Unit,
-        "icons": eos.gamedata.Icon,
         "evecategories": eos.gamedata.Category,
         "evegroups": eos.gamedata.Group,
         "invmetagroups": eos.gamedata.MetaGroup,
