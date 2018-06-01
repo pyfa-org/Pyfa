@@ -973,7 +973,7 @@ class Fit(object):
         # remove invalid modules when switching back to enabled fitting restrictions
         if not fit.ignoreRestrictions:
             for m in fit.modules:
-                if not m.isEmpty and not m.fits(fit):
+                if not m.isEmpty and not m.fits(fit, False):
                     self.removeModule(fit.ID, m.modPosition)
 
         eos.db.commit()
