@@ -575,7 +575,7 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
         for i in range(5):
             itemChargeGroup = self.getModifiedItemAttr('chargeGroup' + str(i), None)
             if itemChargeGroup is not None:
-                g = eos.db.getGroup(int(itemChargeGroup), eager=("items.icon", "items.attributes"))
+                g = eos.db.getGroup(int(itemChargeGroup), eager=("items.attributes"))
                 if g is None:
                     continue
                 for singleItem in g.items:
