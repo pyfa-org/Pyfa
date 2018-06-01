@@ -701,7 +701,7 @@ class FittingView(d.Display):
                         del mod.restrictionOverridden
                         hasRestrictionOverriden = not hasRestrictionOverriden
 
-                if slotMap[mod.slot] or hasRestrictionOverriden: # Color too many modules as red  # Color too many modules as red
+                if slotMap[mod.slot] or hasRestrictionOverriden:  # Color too many modules as red
                     self.SetItemBackgroundColour(i, wx.Colour(204, 51, 51))
                 elif sFit.serviceFittingOptions["colorFitBySlot"]:  # Color by slot it enabled
                     self.SetItemBackgroundColour(i, self.slotColour(mod.slot))

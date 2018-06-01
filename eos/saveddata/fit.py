@@ -1025,7 +1025,7 @@ class Fit(object):
             return self.ship.getModifiedItemAttr('launcherSlotsLeft') - self.getHardpointsUsed(Hardpoint.MISSILE)
         else:
             raise ValueError("%d is not a valid value for Hardpoint Enum", type)
-            
+
     @property
     def calibrationUsed(self):
         return self.getItemAttrOnlineSum(self.modules, 'upgradeCost')
