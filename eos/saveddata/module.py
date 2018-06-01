@@ -472,7 +472,8 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
         if max is not None:
             current = 0  # if self.owner != fit else -1  # Disabled, see #1278
             for mod in fit.modules:
-                if mod.item and mod.item.groupID == self.item.groupID:
+                if (mod.item and mod.item.groupID == self.item.groupID and
+                    self.modPosition != mod.modPosition):
                     current += 1
 
             if current >= max:
