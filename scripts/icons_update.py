@@ -56,6 +56,11 @@ MARKET_ROOTS = {
     2203  # Structure Modifications (Rigs)
 }
 
+# todo: figure out how icons work
+loaders = {
+    "app:/bin/graphicIDsLoader.pyd": "res:/staticdata/graphicIDs.fsdbinary",
+}
+
 import json
 with open(args.icons, 'r') as f:
     icon_json = json.load(f)
