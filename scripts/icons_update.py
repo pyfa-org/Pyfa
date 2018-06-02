@@ -164,49 +164,49 @@ toremove = existing.difference(needed)
 toupdate = existing.intersection(needed)
 toadd = needed.difference(existing)
 
-#
-# if toremove:
-#     print('Some icons are not used and will be removed:')
-#     for fname in sorted(toremove):
-#         fullname = '{}.png'.format(fname)
-#         fullpath = os.path.join(icons_dir, fullname)
-#         os.remove(fullpath)
-#
-# if toupdate:
-#     print(('Updating {} icons...'.format(len(toupdate))))
-#     missing = set()
-#     for fname in sorted(toupdate):
-#         icon = get_icon_file(fname)
-#         if icon is None:
-#             missing.add(fname)
-#             continue
-#         fullname = '{}.png'.format(fname)
-#         fullpath = os.path.join(icons_dir, fullname)
-#         icon.save(fullpath, 'png')
-#     if missing:
-#         print(('  {} icons are missing in export:'.format(len(missing))))
-#         for fname in sorted(missing):
-#             print(('    {}'.format(fname)))
-#
-# if toadd:
-#     print(('Adding {} icons...'.format(len(toadd))))
-#     missing = set()
-#     for fname in sorted(toadd):
-#         icon = icon_json[str(fname)]
-#         key = icon['iconFile'].lower()
-#         icon = get_icon_file(key, ICON_SIZE)
-#         if icon is None:
-#             missing.add(fname)
-#             continue
-#         fullname = '{}.png'.format(fname)
-#         fullpath = os.path.join(icons_dir, fullname)
-#         icon.save(fullpath, 'png')
-#     if missing:
-#         print(('  {} icons are missing in export:'.format(len(missing))))
-#         for fname in sorted(missing):
-#             print(('    {}'.format(fname)))
-#
-# print(missing)
+
+if toremove:
+    print('Some icons are not used and will be removed:')
+    for fname in sorted(toremove):
+        fullname = '{}.png'.format(fname)
+        fullpath = os.path.join(icons_dir, fullname)
+        os.remove(fullpath)
+
+if toupdate:
+    print(('Updating {} icons...'.format(len(toupdate))))
+    missing = set()
+    for fname in sorted(toupdate):
+        icon = get_icon_file(fname)
+        if icon is None:
+            missing.add(fname)
+            continue
+        fullname = '{}.png'.format(fname)
+        fullpath = os.path.join(icons_dir, fullname)
+        icon.save(fullpath, 'png')
+    if missing:
+        print(('  {} icons are missing in export:'.format(len(missing))))
+        for fname in sorted(missing):
+            print(('    {}'.format(fname)))
+
+if toadd:
+    print(('Adding {} icons...'.format(len(toadd))))
+    missing = set()
+    for fname in sorted(toadd):
+        icon = icon_json[str(fname)]
+        key = icon['iconFile'].lower()
+        icon = get_icon_file(key, ICON_SIZE)
+        if icon is None:
+            missing.add(fname)
+            continue
+        fullname = '{}.png'.format(fname)
+        fullpath = os.path.join(icons_dir, fullname)
+        icon.save(fullpath, 'png')
+    if missing:
+        print(('  {} icons are missing in export:'.format(len(missing))))
+        for fname in sorted(missing):
+            print(('    {}'.format(fname)))
+
+print(missing)
 
 print("Doing renders")
 
