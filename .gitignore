@@ -122,3 +122,4 @@ gitversion
 /.version
 *.swp
 
+*.fsdbinary

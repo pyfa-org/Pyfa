@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/usr/bin/env python2.7
 
 """
 This script updates only market/item icons.
@@ -11,7 +11,7 @@ import re
 import sqlite3
 
 from PIL import Image
-
+from shutil import copyfile
 
 parser = argparse.ArgumentParser(description='This script updates module icons for pyfa')
 parser.add_argument('-e', '--eve', required=True, type=str, help='path to eve\'s ')
@@ -73,13 +73,31 @@ with open(eve_path, 'r') as f:
 resfileindex = file_index['app:/resfileindex.txt']
 
 res_cache = os.path.join(args.eve, 'ResFiles')
+
 with open(os.path.join(res_cache, resfileindex[1]), 'r') as f:
     lines = f.readlines()
     res_index = {x.split(',')[0].lower(): x.split(',') for x in lines}
 
-for x in res_index:
-    if x.startswith('res:/ui/texture/icons/ammo/'):
-        print(x)
+# Need to copy the file to  our cuirrent directory
+graphics_loader_file = os.path.join(res_cache, file_index['app:/bin/graphicIDsLoader.pyd'][1])
+to_path = os.path.dirname(os.path.abspath(__file__))
+copyfile(graphics_loader_file, os.path.join(os.path.dirname(os.path.abspath(__file__)), 'graphicIDsLoader.pyd'))
+
+# The loader expect it to be the correct filename, so copy trhe file as well
+graphics_file = os.path.join(res_cache, res_index['res:/staticdata/graphicIDs.fsdbinary'.lower()][1])
+to_path = os.path.dirname(os.path.abspath(__file__))
+copyfile(graphics_file, os.path.join(os.path.dirname(os.path.abspath(__file__)), 'graphicIDs.fsdbinary'))
+
+import graphicIDsLoader
+
+print(dir(graphicIDsLoader))
+
+graphics = graphicIDsLoader.load(os.path.join(to_path, 'graphicIDs.fsdbinary'))
+
+graphics_py_ob = {}
+for x, v in graphics.items():
+    if (hasattr(v, 'iconFolder')):
+        graphics_py_ob[x] = v.iconFolder
 
 # Add children to market group list
 # {parent: {children}}
