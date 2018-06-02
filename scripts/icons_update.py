@@ -9,13 +9,15 @@ import argparse
 import os
 import re
 import sqlite3
+import json
 
 from PIL import Image
+
 from shutil import copyfile
 
 parser = argparse.ArgumentParser(description='This script updates module icons for pyfa')
 parser.add_argument('-e', '--eve', required=True, type=str, help='path to eve\'s ')
-parser.add_argument('-s', '--server', required=False, default='tq', type=str, help='which server to us (defaults to tq)')
+parser.add_argument('-s', '--server', required=False, default='tq', type=str, help='which server to use (defaults to tq)')
 parser.add_argument('-i', '--icons', required=True, type=str, help='Path to icons .json')
 args = parser.parse_args()
 
@@ -23,45 +25,14 @@ args = parser.parse_args()
 script_dir = os.path.dirname(os.path.abspath(__file__))
 db_path = os.path.abspath(os.path.join(script_dir, '..', 'eve.db'))
 icons_dir = os.path.abspath(os.path.join(script_dir, '..', 'imgs', 'icons'))
-export_dir = os.path.abspath(os.path.expanduser(os.path.join(args.icons, 'items')))
-
-dirs = [export_dir, os.path.join(export_dir, "Modules")]
+render_dir = os.path.abspath(os.path.join(script_dir, '..', 'imgs', 'renders'))
 
 db = sqlite3.connect(db_path)
 cursor = db.cursor()
 
 ICON_SIZE = (16, 16)
+RENDER_SIZE = (32, 32)
 
-ITEM_CATEGORIES = (
-    2,  # Celestial
-    6,  # Ship
-    7,  # Module
-    8,  # Charge
-    16,  # Skill
-    18,  # Drone
-    20,  # Implant
-    32,  # Subsystem
-    66,  # Structure Module
-)
-
-MARKET_ROOTS = {
-    9,  # Modules
-    1111,  # Rigs
-    157,  # Drones
-    11,  # Ammo
-    1112,  # Subsystems
-    24,  # Implants & Boosters
-    404,  # Deployables
-    2202,  # Structure Equipment
-    2203  # Structure Modifications (Rigs)
-}
-
-# todo: figure out how icons work
-loaders = {
-    "app:/bin/graphicIDsLoader.pyd": "res:/staticdata/graphicIDs.fsdbinary",
-}
-
-import json
 with open(args.icons, 'r') as f:
     icon_json = json.load(f)
 
@@ -120,17 +91,12 @@ def get_children(parent):
     return children
 
 
-market_groups = set()
-for root in MARKET_ROOTS:
-    market_groups.add(root)
-    market_groups.update(get_children(root))
-
-
 query_items = 'select distinct iconID from invtypes'
 query_groups = 'select distinct iconID from invgroups'
 query_cats = 'select distinct iconID from invcategories'
 query_market = 'select distinct iconID from invmarketgroups'
 query_attrib = 'select distinct iconID from dgmattribs'
+query_ships = 'select it.graphicID from invtypes as it inner join invgroups as ig on it.groupID = ig.groupID where ig.categoryID in (6, 65)'
 
 needed = set()
 existing = set()
@@ -169,19 +135,15 @@ def crop_image(img):
     return img.crop(box)
 
 
-def get_icon_file(request):
+def get_icon_file(res_path, size):
     """
     Get the iconFile field value and find proper
     icon for it. Return as PIL image object down-
     scaled for use in pyfa.
     """
-
-    # the the res file
-    icon = icon_json[str(request)]
-    key = icon['iconFile'].lower()
-    if key not in res_index:
+    if res_path not in res_index:
         return None
-    res_icon = res_index[key]
+    res_icon = res_index[res_path]
     icon_path = res_icon[1]
 
     fullpath = os.path.join(res_cache, icon_path)
@@ -190,7 +152,7 @@ def get_icon_file(request):
         return None
     img = Image.open(fullpath)
     img = crop_image(img)
-    img.thumbnail(ICON_SIZE, Image.ANTIALIAS)
+    img.thumbnail(size, Image.ANTIALIAS)
 
     # Strip all additional image info (mostly for ICC color
     # profiles, see issue #337)
@@ -202,40 +164,75 @@ toremove = existing.difference(needed)
 toupdate = existing.intersection(needed)
 toadd = needed.difference(existing)
 
+#
+# if toremove:
+#     print('Some icons are not used and will be removed:')
+#     for fname in sorted(toremove):
+#         fullname = '{}.png'.format(fname)
+#         fullpath = os.path.join(icons_dir, fullname)
+#         os.remove(fullpath)
+#
+# if toupdate:
+#     print(('Updating {} icons...'.format(len(toupdate))))
+#     missing = set()
+#     for fname in sorted(toupdate):
+#         icon = get_icon_file(fname)
+#         if icon is None:
+#             missing.add(fname)
+#             continue
+#         fullname = '{}.png'.format(fname)
+#         fullpath = os.path.join(icons_dir, fullname)
+#         icon.save(fullpath, 'png')
+#     if missing:
+#         print(('  {} icons are missing in export:'.format(len(missing))))
+#         for fname in sorted(missing):
+#             print(('    {}'.format(fname)))
+#
+# if toadd:
+#     print(('Adding {} icons...'.format(len(toadd))))
+#     missing = set()
+#     for fname in sorted(toadd):
+#         icon = icon_json[str(fname)]
+#         key = icon['iconFile'].lower()
+#         icon = get_icon_file(key, ICON_SIZE)
+#         if icon is None:
+#             missing.add(fname)
+#             continue
+#         fullname = '{}.png'.format(fname)
+#         fullpath = os.path.join(icons_dir, fullname)
+#         icon.save(fullpath, 'png')
+#     if missing:
+#         print(('  {} icons are missing in export:'.format(len(missing))))
+#         for fname in sorted(missing):
+#             print(('    {}'.format(fname)))
+#
+# print(missing)
 
-if toremove:
-    print('Some icons are not used and will be removed:')
-    for fname in sorted(toremove):
-        fullname = '{}.png'.format(fname)
-        fullpath = os.path.join(icons_dir, fullname)
-        os.remove(fullpath)
+print("Doing renders")
 
-if toupdate:
-    print(('Updating {} icons...'.format(len(toupdate))))
-    missing = set()
-    for fname in sorted(toupdate):
-        icon = get_icon_file(fname)
-        if icon is None:
-            missing.add(fname)
-            continue
-        fullname = '{}.png'.format(fname)
-        fullpath = os.path.join(icons_dir, fullname)
-        icon.save(fullpath, 'png')
-    if missing:
-        print(('  {} icons are missing in export:'.format(len(missing))))
-        for fname in sorted(missing):
-            print(('    {}'.format(fname)))
+needed.clear()
+existing.clear()
+toremove.clear()
+
+for row in cursor.execute(query_ships):
+    needed.add(row[0])
+
+toremove = existing.difference(needed)
+toupdate = existing.intersection(needed)
+toadd = needed.difference(existing)
 
 if toadd:
     print(('Adding {} icons...'.format(len(toadd))))
     missing = set()
     for fname in sorted(toadd):
-        icon = get_icon_file(fname)
+        icon = graphics_py_ob[int(fname)]
+        icon = "{}/{}_64.png".format(icon, fname)
+        icon = get_icon_file(icon, RENDER_SIZE)
         if icon is None:
             missing.add(fname)
             continue
         fullname = '{}.png'.format(fname)
-        fullpath = os.path.join(icons_dir, fullname)
+        fullpath = os.path.join(render_dir, fullname)
         icon.save(fullpath, 'png')
     if missing:
         print(('  {} icons are missing in export:'.format(len(missing))))
