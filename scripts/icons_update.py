@@ -152,7 +152,6 @@ for fname in os.listdir(icons_dir):
     fname = os.path.splitext(fname)[0]
     # Get rid of "icon" prefix as well
     #fname = re.sub('^icon', '', fname)
-    print(fname,"exists")
     existing.add(fname)
 
 def crop_image(img):
@@ -208,7 +207,6 @@ if toremove:
     print('Some icons are not used and will be removed:')
     for fname in sorted(toremove):
         fullname = '{}.png'.format(fname)
-        print(('  {}'.format(fullname)))
         fullpath = os.path.join(icons_dir, fullname)
         os.remove(fullpath)
 
