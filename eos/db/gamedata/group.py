@@ -18,7 +18,7 @@
 # ===============================================================================
 
 from sqlalchemy import Column, String, Integer, Boolean, ForeignKey, Table
-from sqlalchemy.orm import relation, mapper, synonym, deferred
+from sqlalchemy.orm import relation, mapper, synonym, deferred, backref
 
 from eos.db import gamedata_meta
 from eos.gamedata import Category, Group
@@ -33,7 +33,7 @@ groups_table = Table("invgroups", gamedata_meta,
 
 mapper(Group, groups_table,
        properties={
-           "category"   : relation(Category, backref="groups"),
+           "category"   : relation(Category, backref=backref("groups", cascade="all,delete")),
            "ID"         : synonym("groupID"),
            "name"       : synonym("groupName"),
            "description": deferred(groups_table.c.description)

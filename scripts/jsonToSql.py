@@ -30,6 +30,10 @@ sys.path.append(os.path.realpath(os.path.join(path, "..")))
 import json
 import argparse
 
+CATEGORIES_TO_REMOVE = [
+    30  # Apparel
+]
+
 def main(db, json_path):
     if os.path.isfile(db):
         os.remove(db)
@@ -276,6 +280,16 @@ def main(db, json_path):
     eos.db.gamedata_engine.execute("UPDATE dgmtypeattribs SET value = 4.0 WHERE attributeID = ?", (1367,))
 
     eos.db.gamedata_engine.execute("UPDATE invtypes  SET published = 0 WHERE typeName LIKE '%abyssal%'")
+
+    print()
+    for x in CATEGORIES_TO_REMOVE:
+        cat = eos.db.gamedata_session.query(eos.gamedata.Category).filter(eos.gamedata.Category.ID == x).first()
+        print ("Removing Category: {}".format(cat.name))
+        eos.db.gamedata_session.delete(cat)
+
+    eos.db.gamedata_session.commit()
+    eos.db.gamedata_engine.execute("VACUUM")
+
     print("done")
 
 if __name__ == "__main__":

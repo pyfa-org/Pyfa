@@ -19,7 +19,7 @@
 
 from sqlalchemy import Column, String, Integer, Boolean, ForeignKey, Table, Float
 from sqlalchemy.ext.associationproxy import association_proxy
-from sqlalchemy.orm import relation, mapper, synonym, deferred
+from sqlalchemy.orm import relation, mapper, synonym, deferred, backref
 from sqlalchemy.orm.collections import attribute_mapped_collection
 from eos.db.gamedata.effect import typeeffects_table
 
@@ -45,7 +45,7 @@ from .traits import traits_table  # noqa
 
 mapper(Item, items_table,
        properties={
-           "group"            : relation(Group, backref="items"),
+           "group"            : relation(Group, backref=backref("items", cascade="all,delete")),
            "_Item__attributes": relation(Attribute, cascade='all, delete, delete-orphan', collection_class=attribute_mapped_collection('name')),
            "effects": relation(Effect, secondary=typeeffects_table, collection_class=attribute_mapped_collection('name')),
            "metaGroup"        : relation(MetaType,
