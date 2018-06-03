@@ -14,7 +14,7 @@ def upgrade(saveddata_engine):
         "boosters": 2,
         "cargo": 2,
         "characters": 2,
-        "crest": 1,
+        # "crest": 1,
         "damagePatterns": 2,
         "drones": 2,
         "fighters": 2,

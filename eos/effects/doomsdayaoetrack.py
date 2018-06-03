@@ -2,6 +2,7 @@
 #
 # Used by:
 # Module: Weapon Disruption Burst Projector
+# Structure Module: Standup Weapon Disruption Burst Projector
 
 type = "active", "projected"
 

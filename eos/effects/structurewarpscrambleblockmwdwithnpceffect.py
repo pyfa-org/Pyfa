@@ -1,4 +1,7 @@
-# Not used by any item
+# structureWarpScrambleBlockMWDWithNPCEffect
+#
+# Used by:
+# Structure Modules from group: Structure Warp Scrambler (2 of 2)
 from eos.saveddata.module import State
 
 # Not used by any item

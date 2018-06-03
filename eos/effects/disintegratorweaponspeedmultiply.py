@@ -1,7 +1,7 @@
 # disintegratorWeaponSpeedMultiply
 #
 # Used by:
-# Modules from group: Entropic Suppressor (3 of 3)
+# Modules from group: Entropic Radiation Sink (3 of 3)
 type = "passive"
 
 

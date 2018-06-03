@@ -2,6 +2,7 @@
 #
 # Used by:
 # Module: ECM Jammer Burst Projector
+# Structure Module: Standup ECM Jammer Burst Projector
 from eos.modifiedAttributeDict import ModifiedAttributeDict
 
 type = "projected", "active"

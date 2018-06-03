@@ -1,4 +1,4 @@
-# surgicalStrikeDamageMultiplierBonusPostPercentDamageMultiplierLocationShipGroupProjectileWeapon
+# surgicalStrikeDamageMultiplierBonusPostPercentDamageMultiplierLocationShipGroupPrecursorTurret
 #
 # Used by:
 # Skill: Surgical Strike

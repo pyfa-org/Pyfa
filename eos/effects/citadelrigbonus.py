@@ -1,4 +1,7 @@
-# Not used by any item
+# citadelRigBonus
+#
+# Used by:
+# Structures from group: Citadel (9 of 9)
 type = "passive"
 runTime = "early"
 

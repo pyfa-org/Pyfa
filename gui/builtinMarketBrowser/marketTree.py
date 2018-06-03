@@ -53,6 +53,7 @@ class MarketTree(wx.TreeCtrl):
             # And add real market group contents
             sMkt = self.sMkt
             currentMktGrp = sMkt.getMarketGroup(self.GetItemData(root), eager="children")
+
             for childMktGrp in sMkt.getMarketGroupChildren(currentMktGrp):
                 # If market should have items but it doesn't, do not show it
                 if sMkt.marketGroupValidityCheck(childMktGrp) is False:

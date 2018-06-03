@@ -1,4 +1,7 @@
-# Not used by any item
+# structureArmorHPMultiply
+#
+# Used by:
+# Structure Modules from group: Structure Armor Reinforcer (2 of 2)
 type = "passive"
 runTime = "early"
 

@@ -1,4 +1,7 @@
-# Not used by any item
+# structureModuleEffectWeaponDisruption
+#
+# Used by:
+# Variations of structure module: Standup Weapon Disruptor I (2 of 2)
 
 type = "active", "projected"
 

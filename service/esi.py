@@ -96,7 +96,7 @@ class Esi(EsiAccess):
         # @todo: new fitting ID can be recovered from resp.data,
         char = self.getSsoCharacter(id)
         resp = super().postFitting(char, json_str)
-        return resp.json()
+        return resp
 
     def delFitting(self, id, fittingID):
         char = self.getSsoCharacter(id)

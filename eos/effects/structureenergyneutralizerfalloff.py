@@ -1,4 +1,7 @@
-# Not used by any item
+# structureEnergyNeutralizerFalloff
+#
+# Used by:
+# Structure Modules from group: Structure Energy Neutralizer (5 of 5)
 from eos.saveddata.module import State
 
 type = "active", "projected"

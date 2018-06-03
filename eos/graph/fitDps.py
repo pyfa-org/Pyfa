@@ -141,14 +141,14 @@ class FitDpsGraph(Graph):
         targetVelocity = data["velocity"]
         explosionRadius = ability.fighter.getModifiedItemAttr("{}ExplosionRadius".format(prefix))
         explosionVelocity = ability.fighter.getModifiedItemAttr("{}ExplosionVelocity".format(prefix))
-        damageReductionFactor = ability.fighter.getModifiedItemAttr("{}ReductionFactor".format(prefix))
+        damageReductionFactor = ability.fighter.getModifiedItemAttr("{}ReductionFactor".format(prefix), None)
 
         # the following conditionals are because CCP can't keep a decent naming convention, as if fighter implementation
         # wasn't already fucked.
         if damageReductionFactor is None:
             damageReductionFactor = ability.fighter.getModifiedItemAttr("{}DamageReductionFactor".format(prefix))
 
-        damageReductionSensitivity = ability.fighter.getModifiedItemAttr("{}ReductionSensitivity".format(prefix))
+        damageReductionSensitivity = ability.fighter.getModifiedItemAttr("{}ReductionSensitivity".format(prefix), None)
         if damageReductionSensitivity is None:
             damageReductionSensitivity = ability.fighter.getModifiedItemAttr(
                     "{}DamageReductionSensitivity".format(prefix))

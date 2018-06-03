@@ -34,7 +34,8 @@ from codecs import open
 
 import config
 
-from eos.config import gamedata_version
+from eos.config import gamedata_version, gamedata_date
+import datetime
 
 import gui.aboutData
 from gui.chrome_tabs import ChromeNotebook
@@ -97,6 +98,8 @@ except ImportError as e:
     disableOverrideEditor = True
 
 pyfalog = Logger(__name__)
+
+pyfalog.debug("Done loading mainframe imports")
 
 
 # dummy panel(no paint no erasebk)
@@ -365,7 +368,8 @@ class MainFrame(wx.Frame):
     def ShowAboutBox(self, evt):
         info = wx.adv.AboutDialogInfo()
         info.Name = "pyfa"
-        info.Version = config.getVersion()  # gui.aboutData.versionString
+        time = datetime.datetime.fromtimestamp(int(gamedata_date)).strftime('%Y-%m-%d %H:%M:%S')
+        info.Version = config.getVersion() + '\nEVE Data Version: {} ({})'.format(gamedata_version, time)  # gui.aboutData.versionString
         #
         # try:
         #     import matplotlib

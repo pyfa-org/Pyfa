@@ -1,4 +1,7 @@
-# Not used by any item
+# structureRigDoomsdayDamageLoss
+#
+# Used by:
+# Structure Modules from group: Structure Combat Rig XL - Doomsday and Targeting (2 of 2)
 type = "passive"
 
 

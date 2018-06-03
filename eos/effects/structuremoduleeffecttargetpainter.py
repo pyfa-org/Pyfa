@@ -1,4 +1,7 @@
-# Not used by any item
+# structureModuleEffectTargetPainter
+#
+# Used by:
+# Variations of structure module: Standup Target Painter I (2 of 2)
 type = "projected", "active"
 
 

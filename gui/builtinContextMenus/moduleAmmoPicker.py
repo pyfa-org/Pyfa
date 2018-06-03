@@ -60,7 +60,7 @@ class ModuleAmmoPicker(ContextMenu):
         damage = 0
         range_ = (self.module.item.getAttribute("maxRange")) * \
                  (charge.getAttribute("weaponRangeMultiplier") or 1)
-        falloff = (self.module.item.getAttribute("falloff")) * \
+        falloff = (self.module.item.getAttribute("falloff") or 0) * \
                   (charge.getAttribute("fallofMultiplier") or 1)
         for type_ in self.DAMAGE_TYPES:
             d = charge.getAttribute("%sDamage" % type_)

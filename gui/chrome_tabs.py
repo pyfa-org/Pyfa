@@ -357,7 +357,7 @@ class _TabRenderer:
         self.tab_bitmap = None
         self.tab_back_bitmap = None
         self.padding = 4
-        self.font = wx.Font(10, wx.SWISS, wx.NORMAL, wx.NORMAL, False)
+        self.font = wx.Font(8, wx.FONTFAMILY_SWISS, wx.FONTSTYLE_NORMAL, wx.FONTWEIGHT_NORMAL, False)
 
         self.tab_img = img
         self.position = (0, 0)  # Not used internally for rendering - helper for tab container
@@ -1322,7 +1322,7 @@ class PFNotebookPagePreview(wx.Frame):
         self.padding = 15
         self.transp = 0
 
-        hfont = wx.Font(10, wx.SWISS, wx.NORMAL, wx.NORMAL, False)
+        hfont = wx.Font(8, wx.FONTFAMILY_SWISS, wx.FONTSTYLE_NORMAL, wx.FONTWEIGHT_NORMAL, False)
         self.SetFont(hfont)
 
         tx, ty = self.GetTextExtent(self.title)
@@ -1384,7 +1384,7 @@ class PFNotebookPagePreview(wx.Frame):
         mdc.SetBackground(wx.Brush(color))
         mdc.Clear()
 
-        font = wx.Font(10, wx.SWISS, wx.NORMAL, wx.NORMAL, False)
+        font = wx.Font(8, wx.FONTFAMILY_SWISS, wx.FONTSTYLE_NORMAL, wx.FONTWEIGHT_NORMAL, False)
         mdc.SetFont(font)
 
         x, y = mdc.GetTextExtent(self.title)

@@ -1,4 +1,7 @@
-# Not used by any item
+# structureRigAoeVelocityBonusSingleTargetMissiles
+#
+# Used by:
+# Structure Modules named like: Standup Set Missile (6 of 8)
 type = "passive"
 
 
