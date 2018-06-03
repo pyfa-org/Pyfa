@@ -18,10 +18,13 @@
 # ===============================================================================
 
 from sqlalchemy import Column, Float, Integer, Table, ForeignKey
-from sqlalchemy.orm import mapper
+from sqlalchemy.orm import mapper, relation
+from sqlalchemy.ext.associationproxy import association_proxy
 
 from eos.db import gamedata_meta
-from eos.gamedata import DynamicItem, DynamicItemAttribute, DynamicItemItem
+from eos.gamedata import DynamicItem, DynamicItemAttribute, DynamicItemItem, Item
+
+from eos.gamedata import AttributeInfo
 
 dynamic_table = Table("mutaplasmids", gamedata_meta,
                           Column("typeID", ForeignKey("invtypes.typeID"), primary_key=True, index=True),
@@ -29,15 +32,34 @@ dynamic_table = Table("mutaplasmids", gamedata_meta,
 
 dynamicAttributes_table = Table("mutaplasmidAttributes", gamedata_meta,
                       Column("typeID", Integer, ForeignKey("mutaplasmids.typeID"), primary_key=True),
-                      Column("attributeID", Integer, primary_key=True),
+                      Column("attributeID", ForeignKey("dgmattribs.attributeID"), primary_key=True),
                       Column("min", Float),
                       Column("max", Float))
 
 dynamicApplicable_table = Table("mutaplasmidItems", gamedata_meta,
-                      Column("typeID", Integer, ForeignKey("mutaplasmids.typeID"), primary_key=True),
+                      Column("typeID", ForeignKey("mutaplasmids.typeID"), primary_key=True),
                       Column("applicableTypeID", ForeignKey("invtypes.typeID"), primary_key=True),
                       )
 
-mapper(DynamicItem, dynamic_table)
-mapper(DynamicItemAttribute, dynamicAttributes_table)
-mapper(DynamicItemItem, dynamicApplicable_table)
+mapper(DynamicItem, dynamic_table, properties={
+           "attributes": relation(DynamicItemAttribute),
+           "item": relation(Item, foreign_keys=[dynamic_table.c.typeID]),
+           "resultingItem": relation(Item, foreign_keys=[dynamic_table.c.resultingTypeID]),
+       })
+
+mapper(DynamicItemAttribute, dynamicAttributes_table,
+       properties={"info": relation(AttributeInfo, lazy=False)})
+
+mapper(DynamicItemItem, dynamicApplicable_table, properties={
+           "mutaplasmid": relation(DynamicItem),
+       })
+
+DynamicItemAttribute.ID = association_proxy("info", "attributeID")
+DynamicItemAttribute.name = association_proxy("info", "attributeName")
+DynamicItemAttribute.description = association_proxy("info", "description")
+DynamicItemAttribute.published = association_proxy("info", "published")
+DynamicItemAttribute.displayName = association_proxy("info", "displayName")
+DynamicItemAttribute.highIsGood = association_proxy("info", "highIsGood")
+DynamicItemAttribute.iconID = association_proxy("info", "iconID")
+DynamicItemAttribute.icon = association_proxy("info", "icon")
+DynamicItemAttribute.unit = association_proxy("info", "unit")

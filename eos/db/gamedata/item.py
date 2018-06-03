@@ -24,7 +24,8 @@ from sqlalchemy.orm.collections import attribute_mapped_collection
 from eos.db.gamedata.effect import typeeffects_table
 
 from eos.db import gamedata_meta
-from eos.gamedata import Attribute, Effect, Group, Icon, Item, MetaType, Traits
+from eos.gamedata import Attribute, Effect, Group, Icon, Item, MetaType, Traits, DynamicItemItem, DynamicItem
+from eos.db.gamedata.dynamicAttributes import dynamicApplicable_table, dynamic_table
 
 items_table = Table("invtypes", gamedata_meta,
                     Column("typeID", Integer, primary_key=True),
@@ -57,7 +58,13 @@ mapper(Item, items_table,
            "description"      : deferred(items_table.c.description),
            "traits"           : relation(Traits,
                                          primaryjoin=traits_table.c.typeID == items_table.c.typeID,
-                                         uselist=False)
+                                         uselist=False),
+           "mutaplasmids": relation(DynamicItem,
+                   primaryjoin=dynamicApplicable_table.c.applicableTypeID == items_table.c.typeID,
+                   secondaryjoin=dynamicApplicable_table.c.typeID == DynamicItem.typeID,
+                   secondary=dynamicApplicable_table,
+                   backref="applicableItems"
+            )
        })
 
 Item.category = association_proxy("group", "category")
