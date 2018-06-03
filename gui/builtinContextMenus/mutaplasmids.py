@@ -11,6 +11,7 @@ class MutaplasmidCM(ContextMenu):
     def __init__(self):
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
         self.settings = ContextMenuSettings.getInstance()
+        self.eventIDs = {}
 
     def display(self, srcContext, selection):
 
@@ -20,21 +21,41 @@ class MutaplasmidCM(ContextMenu):
         if srcContext not in ("fittingModule") or self.mainFrame.getActiveFit() is None:
             return False
 
-        item = selection[0]
-        for attr in ("emDamage", "thermalDamage", "explosiveDamage", "kineticDamage"):
-            if item.getAttribute(attr) is not None:
-                return True
+        mod = selection[0]
+        if len(mod.item.mutaplasmids) == 0:
+            return False
 
-        return False
+        return True
 
     def getText(self, itmContext, selection):
+        # todo: switch between apply and remove
         return "Apply Mutaplasmid"
 
-    def activate(self, fullContext, selection, i):
-        item = selection[0]
+    def getSubMenu(self, context, selection, rootMenu, i, pitem):
+        msw = True if "wxMSW" in wx.PlatformInfo else False
+        self.skillIds = {}
+        sub = wx.Menu()
+
+        mod = selection[0]
+
+        for item in mod.item.mutaplasmids:
+            label = item.item.name
+            id = ContextMenu.nextID()
+            self.eventIDs[id] = item
+            skillItem = wx.MenuItem(sub, id, label)
+            rootMenu.Bind(wx.EVT_MENU, self.activate, skillItem)
+            sub.Append(skillItem)
+
+        return sub
+
+    def activate(self, event):
+        mutaplasmid = self.eventIDs[event.ID]
         fit = self.mainFrame.getActiveFit()
         sFit = Fit.getInstance()
-        sFit.setAsPattern(fit, item)
+
+        # todo: dev out function to switch module to an abyssal module. Also, maybe open item stats here automatically
+        # with the attribute tab set?
+
         wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fit))
 
     def getBitmap(self, context, selection):
