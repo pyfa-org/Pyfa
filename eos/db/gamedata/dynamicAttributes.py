@@ -18,7 +18,7 @@
 # ===============================================================================
 
 from sqlalchemy import Column, Float, Integer, Table, ForeignKey
-from sqlalchemy.orm import mapper, relation
+from sqlalchemy.orm import mapper, relation, synonym
 from sqlalchemy.ext.associationproxy import association_proxy
 
 from eos.db import gamedata_meta
@@ -45,7 +45,8 @@ mapper(DynamicItem, dynamic_table, properties={
            "attributes": relation(DynamicItemAttribute),
            "item": relation(Item, foreign_keys=[dynamic_table.c.typeID]),
            "resultingItem": relation(Item, foreign_keys=[dynamic_table.c.resultingTypeID]),
-       })
+           "ID": synonym("typeID"),
+})
 
 mapper(DynamicItemAttribute, dynamicAttributes_table,
        properties={"info": relation(AttributeInfo, lazy=False)})

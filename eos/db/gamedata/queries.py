@@ -105,7 +105,7 @@ def getItemWithBaseItemAttribute(lookfor, baseItemID, eager=None):
 
     # we have to load all attributes for this object, otherwise we'll lose access to them when we expunge.
     # todo: figure out a way to eagerly load all these via the query...
-    for x in inspect(Item).relationships.keys():
+    for x in [*inspect(Item).relationships.keys(), 'description']:
         getattr(item, x)
 
     # Copy over the attributes from the base, but ise the items attributes when there's an overlap

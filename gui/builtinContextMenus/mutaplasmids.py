@@ -41,7 +41,7 @@ class MutaplasmidCM(ContextMenu):
         for item in mod.item.mutaplasmids:
             label = item.item.name
             id = ContextMenu.nextID()
-            self.eventIDs[id] = item
+            self.eventIDs[id] = (item, mod)
             skillItem = wx.MenuItem(sub, id, label)
             rootMenu.Bind(wx.EVT_MENU, self.activate, skillItem)
             sub.Append(skillItem)
@@ -49,13 +49,13 @@ class MutaplasmidCM(ContextMenu):
         return sub
 
     def activate(self, event):
-        mutaplasmid = self.eventIDs[event.ID]
+        mutaplasmid, mod = self.eventIDs[event.Id]
         fit = self.mainFrame.getActiveFit()
         sFit = Fit.getInstance()
 
         # todo: dev out function to switch module to an abyssal module. Also, maybe open item stats here automatically
         # with the attribute tab set?
-
+        sFit.convertMutaplasmid(fit, mod.modPosition, mutaplasmid)
         wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fit))
 
     def getBitmap(self, context, selection):

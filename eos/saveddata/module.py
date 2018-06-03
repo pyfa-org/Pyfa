@@ -74,16 +74,31 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
     MINING_ATTRIBUTES = ("miningAmount",)
     SYSTEM_GROUPS = ("Effect Beacon", "MassiveEnvironments", "Uninteractable Localized Effect Beacon", "Non-Interactable Object")
 
-    def __init__(self, item):
+    def __init__(self, item, baseItem=None, mutaplasmid=None):
         """Initialize a module from the program"""
-        self.__item = item
-        self.__baseItem = None
+
+        self.itemID = item.ID if item is not None else None
+        self.baseItemID = baseItem.ID if baseItem is not None else None
+        self.mutaplasmidID = mutaplasmid.ID if mutaplasmid is not None else None
+
+        if baseItem is not None:
+            # we're working with a mutated module, need to get abyssal module loaded with the base attributes
+            # Note: there may be a better way of doing this, such as a metho on this classe to convert(mutaplamid). This
+            # will require a bit more research though, considering there has never been a need to "swap" out the item of a Module
+            # before, and there may be assumptions taken with regards to the item never changing (pre-calculated / cached results, for example)
+            self.__item = eos.db.getItemWithBaseItemAttribute(self.itemID, self.baseItemID)
+            self.__baseItem = baseItem
+            self.__mutaplasmid = mutaplasmid
+        else:
+            self.__item = item
+            self.__baseItem = baseItem
+            self.__mutaplasmid = mutaplasmid
 
         if item is not None and self.isInvalid:
             raise ValueError("Passed item is not a Module")
 
         self.__charge = None
-        self.itemID = item.ID if item is not None else None
+
         self.projected = False
         self.state = State.ONLINE
         self.build()
@@ -107,6 +122,7 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
         if self.baseItemID:
             self.__item = eos.db.getItemWithBaseItemAttribute(self.itemID, self.baseItemID)
             self.__baseItem = eos.db.getItem(self.baseItemID)
+            self.__mutaplasmid = eos.db.getItem(self.mutaplasmidID)
             if self.__baseItem is None:
                 pyfalog.error("Base Item (id: {0}) does not exist", self.itemID)
                 return
@@ -172,6 +188,7 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
 
     @property
     def isInvalid(self):
+        # todo: validate baseItem as well if it's set.
         if self.isEmpty:
             return False
         return self.__item is None or \
