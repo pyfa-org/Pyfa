@@ -62,21 +62,38 @@ class AttributeSlider(wx.Panel):
         self.parent.SetClientSize((500, vsizer1.GetSize()[1]))
 
     def OnScroll(self, event):
+        self.CalculateUserValue()
+
+    def SetValue(self, value):
+        # todo: check this against values that might be 2.5x and whatnot
+        mod = value / self.base_value
+        slider_percentage = 0
+        if mod < 1:
+            modEnd = -1 * self.UserMinValue
+            slider_percentage = (modEnd / mod) * 100
+        elif mod > 1:
+            modEnd = self.UserMaxValue
+            slider_percentage = ((mod-1)/(modEnd-1)) * 100
+
+        self.slider.SetValue(slider_percentage)
+        self.CalculateUserValue()
+
+    def CalculateUserValue(self):
         self.SliderValue = self.slider.GetValue()
 
-        # The slkider value tells us when mod we're going to use, depending on its sign
+        mod = 1
+
+        # The slider value tells us when mod we're going to use, depending on its sign
         if self.SliderValue < 0:
             mod = self.UserMinValue
         elif self.SliderValue > 0:
             mod = self.UserMaxValue
-        else:
-            mod = 1
 
         # Get the slider value percentage as an absolute value
         slider_mod = abs(self.SliderValue) / 100
 
         # Gets our new mod by use the slider's percentage to determine where in the spectrum it is
-        new_mod = mod + ((1-mod)-((1-mod) * slider_mod))
+        new_mod = mod + ((1 - mod) - ((1 - mod) * slider_mod))
 
         # Modifies our base vale, to get out modified value
         newValue = new_mod * self.base_value
@@ -84,24 +101,8 @@ class AttributeSlider(wx.Panel):
         if mod == 1:
             self.statxt2.SetLabel("{0:.3f}".format(newValue))
         else:
-            self.statxt2.SetLabel("{0:.3f} ({1:+.3f})".format(newValue, newValue-self.base_value,))
+            self.statxt2.SetLabel("{0:.3f} ({1:+.3f})".format(newValue, newValue - self.base_value, ))
             self.statxt2.SetToolTip("{0:+f}%".format(newValue))
-
-    def SetValue(self, value):
-        # todo: check this against values that might be 2.5x and whatnot
-        mod = value / self.base_value
-        if mod < 1:
-            modEnd = -1 * self.UserMinValue
-            sliderMod = (modEnd / mod) * 100
-        elif mod > 1:
-            modEnd = self.UserMaxValue
-            sliderMod = ((mod-1)/(modEnd-1)) * 100
-
-        self.slider.SetValue(sliderMod)
-
-    def CalculateUserValue(self):
-        # this will just take the slider value and calculate what the user needs to see as their value.
-        pass
 
 
 class TestAttributeSlider(wx.Frame):
@@ -113,8 +114,8 @@ class TestAttributeSlider(wx.Frame):
         sty = wx.DEFAULT_FRAME_STYLE
         wx.Frame.__init__(self, parent, id, title, pos, size, sty)
 
-        self.panel = AttributeSlider(self, 200, .80, 1.5)
-        self.panel.SetValue(160)
+        self.panel = AttributeSlider(self, 200, .80, 2.5)
+        self.panel.SetValue(400)
         self.Bind(wx.EVT_CLOSE, self.OnCloseWindow)
 
     def OnCloseWindow(self, event):
