@@ -87,6 +87,22 @@ class AttributeSlider(wx.Panel):
             self.statxt2.SetLabel("{0:.3f} ({1:+.3f})".format(newValue, newValue-self.base_value,))
             self.statxt2.SetToolTip("{0:+f}%".format(newValue))
 
+    def SetValue(self, value):
+        # todo: check this against values that might be 2.5x and whatnot
+        mod = value / self.base_value
+        if mod < 1:
+            modEnd = -1 * self.UserMinValue
+            sliderMod = (modEnd / mod) * 100
+        elif mod > 1:
+            modEnd = self.UserMaxValue
+            sliderMod = ((mod-1)/(modEnd-1)) * 100
+
+        self.slider.SetValue(sliderMod)
+
+    def CalculateUserValue(self):
+        # this will just take the slider value and calculate what the user needs to see as their value.
+        pass
+
 
 class TestAttributeSlider(wx.Frame):
 
@@ -98,7 +114,7 @@ class TestAttributeSlider(wx.Frame):
         wx.Frame.__init__(self, parent, id, title, pos, size, sty)
 
         self.panel = AttributeSlider(self, 200, .80, 1.5)
-
+        self.panel.SetValue(160)
         self.Bind(wx.EVT_CLOSE, self.OnCloseWindow)
 
     def OnCloseWindow(self, event):
