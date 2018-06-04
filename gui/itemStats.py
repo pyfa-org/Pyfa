@@ -34,6 +34,9 @@ from gui.builtinItemStatsViews.itemDependants import ItemDependents
 from gui.builtinItemStatsViews.itemEffects import ItemEffects
 from gui.builtinItemStatsViews.itemAffectedBy import ItemAffectedBy
 from gui.builtinItemStatsViews.itemProperties import ItemProperties
+from gui.builtinItemStatsViews.itemMutator import ItemMutator
+
+from eos.saveddata.module import Module
 
 
 class ItemStatsDialog(wx.Dialog):
@@ -162,6 +165,10 @@ class ItemStatsContainer(wx.Panel):
         if item.traits is not None:
             self.traits = ItemTraits(self.nbContainer, stuff, item)
             self.nbContainer.AddPage(self.traits, "Traits")
+
+        if isinstance(stuff, Module) and stuff.isMutated:
+            self.mutator = ItemMutator(self.nbContainer, stuff, item)
+            self.nbContainer.AddPage(self.mutator, "Multiplasmid")
 
         self.desc = ItemDescription(self.nbContainer, stuff, item)
         self.nbContainer.AddPage(self.desc, "Description")

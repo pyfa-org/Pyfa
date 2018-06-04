@@ -22,33 +22,38 @@ class MutaplasmidCM(ContextMenu):
             return False
 
         mod = selection[0]
-        if len(mod.item.mutaplasmids) == 0:
+        if len(mod.item.mutaplasmids) == 0 and not mod.isMutated:
             return False
 
         return True
 
     def getText(self, itmContext, selection):
-        # todo: switch between apply and remove
-        return "Apply Mutaplasmid"
+        mod = selection[0]
+        return "Apply Mutaplasmid" if not mod.isMutated else "Revert to {}".format(mod.baseItem.name)
 
     def getSubMenu(self, context, selection, rootMenu, i, pitem):
+        if selection[0].isMutated:
+            return None
+
         msw = True if "wxMSW" in wx.PlatformInfo else False
         self.skillIds = {}
         sub = wx.Menu()
 
         mod = selection[0]
 
+        menu = rootMenu if msw else sub
+
         for item in mod.item.mutaplasmids:
             label = item.item.name
             id = ContextMenu.nextID()
             self.eventIDs[id] = (item, mod)
-            skillItem = wx.MenuItem(sub, id, label)
-            rootMenu.Bind(wx.EVT_MENU, self.activate, skillItem)
+            skillItem = wx.MenuItem(menu, id, label)
+            menu.Bind(wx.EVT_MENU, self.handleMenu, skillItem)
             sub.Append(skillItem)
 
         return sub
 
-    def activate(self, event):
+    def handleMenu(self, event):
         mutaplasmid, mod = self.eventIDs[event.Id]
         fit = self.mainFrame.getActiveFit()
         sFit = Fit.getInstance()
@@ -57,6 +62,14 @@ class MutaplasmidCM(ContextMenu):
         # with the attribute tab set?
         sFit.convertMutaplasmid(fit, mod.modPosition, mutaplasmid)
         wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fit))
+
+    def activate(self, fullContext, selection, i):
+        sFit = Fit.getInstance()
+        fitID = self.mainFrame.getActiveFit()
+
+        mod = selection[0]
+        sFit.changeModule(fitID, mod.modPosition, mod.baseItemID)
+        wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fitID))
 
     def getBitmap(self, context, selection):
         return None

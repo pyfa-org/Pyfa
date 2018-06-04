@@ -122,7 +122,7 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
         if self.baseItemID:
             self.__item = eos.db.getItemWithBaseItemAttribute(self.itemID, self.baseItemID)
             self.__baseItem = eos.db.getItem(self.baseItemID)
-            self.__mutaplasmid = eos.db.getItem(self.mutaplasmidID)
+            self.__mutaplasmid = eos.db.getMutaplasmid(self.mutaplasmidID)
             if self.__baseItem is None:
                 pyfalog.error("Base Item (id: {0}) does not exist", self.itemID)
                 return
@@ -194,6 +194,10 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
         return self.__item is None or \
                (self.__item.category.name not in ("Module", "Subsystem", "Structure Module") and
                 self.__item.group.name not in self.SYSTEM_GROUPS)
+
+    @property
+    def isMutated(self):
+        return self.baseItemID or self.mutaplasmidID
 
     @property
     def numCharges(self):
@@ -332,6 +336,14 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
     @property
     def item(self):
         return self.__item if self.__item != 0 else None
+
+    @property
+    def baseItem(self):
+        return self.__baseItem if self.__baseItem != 0 else None  # what?
+
+    @property
+    def mutaplasmid(self):
+        return self.__mutaplasmid if self.__mutaplasmid != 0 else None
 
     @property
     def charge(self):

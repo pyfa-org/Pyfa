@@ -26,7 +26,7 @@ from eos.db import gamedata_session
 from eos.db.gamedata.metaGroup import metatypes_table, items_table
 from eos.db.gamedata.group import groups_table
 from eos.db.util import processEager, processWhere
-from eos.gamedata import AlphaClone, Attribute, Category, Group, Item, MarketGroup, MetaGroup, AttributeInfo, MetaData
+from eos.gamedata import AlphaClone, Attribute, Category, Group, Item, MarketGroup, MetaGroup, AttributeInfo, MetaData, DynamicItem
 
 cache = {}
 configVal = getattr(eos.config, "gamedataCache", None)
@@ -95,6 +95,14 @@ def getItem(lookfor, eager=None):
             itemNameMap[lookfor] = item.ID
     else:
         raise TypeError("Need integer or string as argument")
+    return item
+
+
+def getMutaplasmid(lookfor, eager=None):
+    if isinstance(lookfor, int):
+        item = gamedata_session.query(DynamicItem).filter(DynamicItem.ID == lookfor).first()
+    else:
+        raise TypeError("Need integer as argument")
     return item
 
 
