@@ -21,8 +21,8 @@ from gui.utils import draw, anim_effects
 from service.fit import Fit
 
 
-class PyGauge(wx.Window):
-    def __init__(self, parent, font, max_range=100, size=(-1, 30), *args,
+class AttributeGauge(wx.Window):
+    def __init__(self, parent, max_range=100, size=(-1, 30), *args,
                  **kargs):
 
         super().__init__(parent, size=size, *args, **kargs)
@@ -64,8 +64,6 @@ class PyGauge(wx.Window):
         self._percentage = 0
         self._old_percentage = 0
         self._show_remaining = False
-
-        self.font = font
 
         self.SetBackgroundColour(wx.Colour(51, 51, 51))
 
@@ -131,7 +129,7 @@ class PyGauge(wx.Window):
 
     def Animate(self):
         #sFit = Fit.getInstance()
-        if True:
+        if False:
             if not self._timer:
                 self._timer = wx.Timer(self, self._timer_id)
 
@@ -179,9 +177,6 @@ class PyGauge(wx.Window):
 
         self._old_percentage = self._percentage
         self._value = value
-
-        if value < 0:
-            self._value = 0
 
         self._percentage = (self._value / self._max_range) * 100
 
@@ -231,7 +226,7 @@ class PyGauge(wx.Window):
 
         dc.DrawRectangle(rect)
 
-        value = self._percentage
+        value = abs(self._percentage)
 
         if self._timer:
             if self._timer.IsRunning():
@@ -250,110 +245,20 @@ class PyGauge(wx.Window):
             dc.SetBrush(wx.Brush(colour))
             dc.SetPen(wx.Pen(colour))
 
+            half = (rect.width / 2)
             # calculate width of bar and draw it
-            if value > 100:
-                w = rect.width
+            w = (rect.width * (value / 100)) / 2
+            w = min(w, half)
+
+            print(half, w)
+
+            if self._percentage >= 0:
+                padding = half
             else:
-                w = rect.width * (float(value) / 100)
+                padding = min(half-w, half)
 
-            r = copy.copy(rect)
-            r.width = w
-            dc.DrawRectangle(r)
-        else:
-            # if bar color is not set, then we use pre-defined transitions
-            # for the colors based on the percentage value
-
-            # calculate width of bar
-            if value > 100:
-                w = rect.width
-            else:
-                w = rect.width * (float(value) / 100)
-            r = copy.copy(rect)
-            r.width = w
-
-            # determine transition range number and calculate xv (which is the
-            # progress between the two transition ranges)
-            pv = value
-            if pv <= 100:
-                xv = pv / 100
-                transition = 0
-            elif pv <= 101:
-                xv = pv - 100
-                transition = 1
-            elif pv <= 103:
-                xv = (pv - 101) / 2
-                transition = 2
-            elif pv <= 105:
-                xv = (pv - 103) / 2
-                transition = 3
-            else:
-                pv = 106
-                xv = pv - 100
-                transition = -1
-
-            if transition != -1:
-                start_color, end_color = self.transition_colors[transition]
-                color = color_utils.CalculateTransition(start_color, end_color,
-                                                        xv)
-            else:
-                color = wx.Colour(191, 48, 48)  # dark red
-
-            color_factor = self.gradient_effect / 100
-            mid_factor = (self.gradient_effect / 2) / 100
-
-            if self.gradient_effect > 0:
-                gradient_color = color_utils.Brighten(color, color_factor)
-                gradient_mid = color_utils.Brighten(color, mid_factor)
-            else:
-                gradient_color = color_utils.Darken(color, color_factor * -1)
-                gradient_mid = color_utils.Darken(color, mid_factor * -1)
-
-            # draw bar
-            gradient_bitmap = draw.DrawGradientBar(
-                r.width,
-                r.height,
-                gradient_mid,
-                color,
-                gradient_color
-            )
-            dc.DrawBitmap(gradient_bitmap, r.left, r.top)
-
-        # font stuff begins here
-        dc.SetFont(self.font)
-
-        # determine shadow position
-        r = copy.copy(rect)
-        r.left += 1
-        r.top += 1
-
-        if self._max_range == 0.01 and self._value > 0:
-            format = u'\u221e'  # infinity symbol
-            # drop shadow
-            dc.SetTextForeground(wx.Colour(80, 80, 80))  # dark grey
-            dc.DrawLabel(format, r, wx.ALIGN_CENTER)
-            # text
-            dc.SetTextForeground(wx.WHITE)
-            dc.DrawLabel(format, rect, wx.ALIGN_CENTER)
-        else:
-            if not self.GetBarColour() and self._show_remaining:
-                # we only do these for gradients with mouse over
-                range = self._max_range if self._max_range > 0.01 else 0
-                value = range - self._value
-                if value < 0:
-                    label = "over"
-                    value = -value
-                else:
-                    label = "left"
-                format = "{0:." + str(self._fraction_digits) + "f} " + label
-            else:
-                format = "{0:." + str(self._fraction_digits) + "f}%"
-
-            # drop shadow
-            dc.SetTextForeground(wx.Colour(80, 80, 80))
-            dc.DrawLabel(format.format(value), r, wx.ALIGN_CENTER)
-            # text
-            dc.SetTextForeground(wx.WHITE)
-            dc.DrawLabel(format.format(value), rect, wx.ALIGN_CENTER)
+            #r = copy.copy(rect)
+            dc.DrawRectangle(padding+1, 1, w, rect.height)
 
     def OnTimer(self, event):
         old_value = self._old_percentage
@@ -406,29 +311,12 @@ if __name__ == "__main__":
             wx.Panel.__init__(self, parent, size=size)
             box = wx.BoxSizer(wx.VERTICAL)
 
-            # tests the colors of transition based on percentage used
-            # list of test values (from 99 -> 106 in increments of 0.5)
-            tests = [x for x in frange(99, 106.5, .5)]
-
             font = wx.Font(9, wx.SWISS, wx.NORMAL, wx.NORMAL, False)
 
-            for i, value in enumerate(tests):
-                self.gauge = PyGauge(self, font, size=(100, 25))
-                self.gauge.SetValueRange(value, 100)
-                self.gauge.SetFractionDigits(2)
-                box.Add(self.gauge, 0, wx.ALL, 2)
-
-            gauge = PyGauge(self, font, size=(100, 25))
-            gauge.SetBackgroundColour(wx.Colour(52, 86, 98))
-            gauge.SetBarColour(wx.Colour(38, 133, 198))
-            gauge.SetValue(59)
-            gauge.SetFractionDigits(1)
-            box.Add(gauge, 0, wx.ALL, 2)
-
-            gauge = PyGauge(self, font, size=(100, 5))
+            gauge = AttributeGauge(self, size=(100, 25))
             gauge.SetBackgroundColour(wx.Colour(52, 86, 98))
             gauge.SetBarColour(wx.Colour(255, 128, 0))
-            gauge.SetValue(59)
+            gauge.SetValue(-25)
             gauge.SetFractionDigits(1)
             box.Add(gauge, 0, wx.ALL, 2)
 
@@ -436,7 +324,7 @@ if __name__ == "__main__":
             self.Layout()
 
             # see animation going backwards with last gauge
-            wx.CallLater(2000, self.ChangeValues)
+            #wx.CallLater(2000, self.ChangeValues)
 
         def ChangeValues(self):
             self.gauge.SetValueRange(4, 100)

@@ -19,8 +19,11 @@ class AttributeSlider(wx.Panel):
         # be centered. We use a range of -100,100 so that we can depend on the SliderValue to contain the percentage
         # toward one end
 
-        self.SliderMinValue = -100
-        self.SliderMaxValue = 100
+        # Additionally, since we want the slider to be accurate to 3 decimal places, we need to blow out the two ends here
+        # (if we have a slider that needs to land on 66.66% towards the right, it will actually be converted to 66%. Se we need it to support 6,666)
+
+        self.SliderMinValue = -100_000
+        self.SliderMaxValue = 100_000
         self.SliderValue = 0
 
         self.statxt1 = wx.StaticText(self, wx.ID_ANY, 'left',
@@ -70,10 +73,10 @@ class AttributeSlider(wx.Panel):
         slider_percentage = 0
         if mod < 1:
             modEnd = -1 * self.UserMinValue
-            slider_percentage = (modEnd / mod) * 100
+            slider_percentage = (modEnd / mod) * 10_000
         elif mod > 1:
             modEnd = self.UserMaxValue
-            slider_percentage = ((mod-1)/(modEnd-1)) * 100
+            slider_percentage = ((mod-1)/(modEnd-1)) * 100_000
 
         self.slider.SetValue(slider_percentage)
         self.CalculateUserValue()
@@ -90,19 +93,19 @@ class AttributeSlider(wx.Panel):
             mod = self.UserMaxValue
 
         # Get the slider value percentage as an absolute value
-        slider_mod = abs(self.SliderValue) / 100
+        slider_mod = abs(self.SliderValue/1_000) / 100
 
         # Gets our new mod by use the slider's percentage to determine where in the spectrum it is
         new_mod = mod + ((1 - mod) - ((1 - mod) * slider_mod))
 
-        # Modifies our base vale, to get out modified value
+        # Modifies our base value, to get out modified value
         newValue = new_mod * self.base_value
 
         if mod == 1:
             self.statxt2.SetLabel("{0:.3f}".format(newValue))
         else:
             self.statxt2.SetLabel("{0:.3f} ({1:+.3f})".format(newValue, newValue - self.base_value, ))
-            self.statxt2.SetToolTip("{0:+f}%".format(newValue))
+            self.statxt2.SetToolTip("{0:+f}%".format(new_mod*100))
 
 
 class TestAttributeSlider(wx.Frame):
@@ -114,8 +117,8 @@ class TestAttributeSlider(wx.Frame):
         sty = wx.DEFAULT_FRAME_STYLE
         wx.Frame.__init__(self, parent, id, title, pos, size, sty)
 
-        self.panel = AttributeSlider(self, 200, .80, 2.5)
-        self.panel.SetValue(400)
+        self.panel = AttributeSlider(self, 10, .80, 1.5)
+        self.panel.SetValue(8.805)
         self.Bind(wx.EVT_CLOSE, self.OnCloseWindow)
 
     def OnCloseWindow(self, event):
