@@ -195,7 +195,7 @@ class WhProjector(ContextMenu):
     def getLocalizedEnvironments(self):
         sMkt = Market.getInstance()
 
-        grp = sMkt.getGroup("Uninteractable Localized Effect Beacon")
+        grp = sMkt.getGroup("Abyssal Hazards")
 
         effects = dict()
 
