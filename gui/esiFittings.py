@@ -157,6 +157,19 @@ class EveFittings(wx.Frame):
                 self.statusbar.SetStatusText(msg)
 
 
+class ESIServerExceptionHandler(object):
+    def __init__(self, parentWindow, ex):
+        dlg = wx.MessageDialog(parentWindow,
+                               "There was an issue starting up the localized server, try setting "
+                               "Login Authentication Method to Manual by going to Preferences -> EVE SS0 -> "
+                               "Login Authentication Method. If this doesn't fix the problem please file an "
+                               "issue on Github.",
+                               "Add Character Error",
+                                wx.OK | wx.ICON_ERROR)
+        dlg.ShowModal()
+        pyfalog.error(ex)
+
+
 class ESIExceptionHandler(object):
     # todo: make this a generate excetpion handler for all calls
     def __init__(self, parentWindow, ex):
@@ -325,10 +338,12 @@ class SsoCharacterMgmt(wx.Dialog):
         self.lcCharacters.SetColumnWidth(0, wx.LIST_AUTOSIZE)
         self.lcCharacters.SetColumnWidth(1, wx.LIST_AUTOSIZE)
 
-    @staticmethod
-    def addChar(event):
-        sEsi = Esi.getInstance()
-        sEsi.login()
+    def addChar(self, event):
+        try:
+            sEsi = Esi.getInstance()
+            sEsi.login()
+        except Exception as ex:
+            ESIServerExceptionHandler(self, ex)
 
     def delChar(self, event):
         item = self.lcCharacters.GetFirstSelected()
