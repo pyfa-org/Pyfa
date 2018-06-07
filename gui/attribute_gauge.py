@@ -1,18 +1,3 @@
-# ===============================================================================
-# PyfaGauge is a generic Gauge implementation tailored for pyfa (the Python
-# Fitting Assistant). It uses the easeOutQuad equation from
-# caurina.transitions.Tweener to do animations
-#
-# ToDo: make SetGradient(<value, colour start, colour end)
-# ToDo: make a solid gradient (not to->from and not dependant on value)
-# ToDo: fix 0 range (currently resets range to 0.01, but this causes problems if
-#       we really set range at 0.01). Perhaps make it -1 and test percentage as
-#       a negativeor something.
-# ToDo: possibly devise a way to determine transition percents on init
-#       (currently hardcoded)
-#
-# ===============================================================================
-
 import copy
 import wx
 import math
@@ -20,6 +5,8 @@ import math
 from gui.utils import color as color_utils
 from gui.utils import draw, anim_effects
 from service.fit import Fit
+
+# todo: clean class up. Took from pyfa gauge, has a bunch of extra shit we don't need
 
 
 class AttributeGauge(wx.Window):
@@ -246,7 +233,7 @@ class AttributeGauge(wx.Window):
             pad = 1 + self.GetBorderPadding()
             rect.Deflate(pad, pad)
 
-        if self.GetBarColour():  # todo, get rid of this
+        if True:
             # if we have a bar color set, then we will use this
             colour = self.goodColor if value >= 0 else self.badColor
 
