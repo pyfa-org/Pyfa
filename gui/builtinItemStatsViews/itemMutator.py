@@ -64,23 +64,34 @@ class ItemMutator(wx.Panel):
             displayName = wx.StaticText(self, wx.ID_ANY, x.displayName)
             displayName.SetFont(font)
 
-            headingSizer.Add(displayName, 1, wx.ALL | wx.EXPAND, 0)
+            headingSizer.Add(displayName, 3, wx.ALL | wx.EXPAND, 0)
 
-            range_low=wx.StaticText(self, wx.ID_ANY, str(badValue))
+            range_low = wx.StaticText(self, wx.ID_ANY, "{} {}".format(badValue, x.unit.displayName))
             range_low.SetForegroundColour(self.goodColor if minIsGood else self.badColor)
 
-            range_high = wx.StaticText(self, wx.ID_ANY, str(goodValue))
+            range_high = wx.StaticText(self, wx.ID_ANY, "{} {}".format(goodValue, x.unit.displayName))
             range_high.SetForegroundColour(self.goodColor if maxIsGood else self.badColor)
 
             headingSizer.Add(range_low, 0, wx.ALL | wx.EXPAND, 0)
-            headingSizer.Add(wx.StaticText(self, wx.ID_ANY, " - "), 0, wx.ALL | wx.EXPAND, 0)
-            headingSizer.Add(range_high, 0, wx.ALL | wx.EXPAND, 0)
+            headingSizer.Add(wx.StaticText(self, wx.ID_ANY, " ── "), 0, wx.RIGHT | wx.LEFT | wx.EXPAND, 5)
+            headingSizer.Add(range_high, 0, wx.RIGHT | wx.EXPAND, 10)
 
             mainSizer.Add(headingSizer, 0, wx.ALL | wx.EXPAND, 5)
 
             mainSizer.Add(slider, 0, wx.RIGHT | wx.LEFT | wx.EXPAND, 10)
-            mainSizer.Add(wx.StaticLine(self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.LI_HORIZONTAL), 0, wx.ALL | wx.EXPAND, 0)
+            mainSizer.Add(wx.StaticLine(self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.LI_HORIZONTAL), 0, wx.ALL | wx.EXPAND, 5)
 
+        mainSizer.AddStretchSpacer()
+
+        self.m_staticline = wx.StaticLine(self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.LI_HORIZONTAL)
+        mainSizer.Add(self.m_staticline, 0, wx.EXPAND)
+
+        bSizer = wx.BoxSizer(wx.HORIZONTAL)
+
+        self.saveBtn = wx.Button(self, wx.ID_ANY, "Save Attributes", wx.DefaultPosition, wx.DefaultSize, 0)
+        bSizer.Add(self.saveBtn, 0, wx.ALIGN_CENTER_VERTICAL)
+
+        mainSizer.Add(bSizer, 0, wx.RIGHT | wx.LEFT | wx.EXPAND, 0)
 
         self.SetSizer(mainSizer)
         self.Layout()
