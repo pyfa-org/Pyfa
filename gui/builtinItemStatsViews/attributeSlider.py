@@ -1,15 +1,54 @@
 import wx
+import wx.lib.newevent
 from gui.attribute_gauge import AttributeGauge
+
+import eos
+import eos.db
+
+_ValueChanged, EVT_NOTEBOOK_PAGE_CHANGED = wx.lib.newevent.NewEvent()
+
+
+class AttributeSliderChangeEvent:
+    def __init__(self, old_value, new_value, old_percentage, new_percentage):
+        self.__old = old_value
+        self.__new = new_value
+        self.__old_percent = old_percentage
+        self.__new_percent = new_percentage
+
+    def GetOldValue(self):
+        return self.__old
+
+    def GetValue(self):
+        return self.__new
+
+    def GetOldPercentage(self):
+        return self.__old_percent
+
+    def GetPercentage(self):
+        return self.__new_percent
+
+    OldValue = property(GetOldValue)
+    Value = property(GetValue)
+    OldPercentage = property(GetOldPercentage)
+    Percentage = property(GetPercentage)
+
+
+class ValueChanged(_ValueChanged, AttributeSliderChangeEvent):
+    def __init__(self, old_value, new_value, old_percentage, new_percentage):
+        _ValueChanged.__init__(self)
+        AttributeSliderChangeEvent.__init__(self, old_value, new_value, old_percentage, new_percentage)
 
 
 class AttributeSlider(wx.Panel):
     # Slider which abstracts users values from internal values (because the built in slider does not deal with floats
     # and the like), based on http://wxpython-users.wxwidgets.narkive.com/ekgBzA7u/anyone-ever-thought-of-a-floating-point-slider
 
-    def __init__(self, parent, baseValue, minMod, maxMod):
+    def __init__(self, parent, baseValue, minMod, maxMod, inverse=False):
         wx.Panel.__init__(self, parent)
 
         self.parent = parent
+
+        self.inverse = inverse
 
         self.base_value = baseValue
 
@@ -28,30 +67,17 @@ class AttributeSlider(wx.Panel):
         self.SliderMaxValue = 100
         self.SliderValue = 0
 
-        self.statxt1 = wx.StaticText(self, wx.ID_ANY, 'left', style=wx.ST_NO_AUTORESIZE | wx.ALIGN_LEFT)
-        self.ctrl = wx.SpinCtrlDouble(self, min=(1-self.UserMinValue)*-100, max=(1-self.UserMaxValue)*-100)
+        self.ctrl = wx.SpinCtrlDouble(self, min=(self.UserMinValue * self.base_value), max=(self.UserMaxValue * self.base_value))
         self.ctrl.SetDigits(3)
-        self.statxt3 = wx.StaticText(self, wx.ID_ANY, 'right', style=wx.ST_NO_AUTORESIZE | wx.ALIGN_RIGHT)
 
         self.ctrl.Bind(wx.EVT_SPINCTRLDOUBLE, self.UpdateValue)
 
-        self.statxt1.SetLabel("{0:.3f}".format(self.UserMinValue * self.base_value))
-        self.statxt1.SetToolTip("{0:+f}%".format((1-self.UserMinValue)*-100))
-        self.statxt3.SetLabel("{0:.3f}".format(self.UserMaxValue * self.base_value))
-        self.statxt3.SetToolTip("{0:+f}%".format((1-self.UserMaxValue)*-100))
-
         self.slider = AttributeGauge(self, size=(-1,8))
-
-        b = 20
-        hsizer1 = wx.BoxSizer(wx.HORIZONTAL)
-        hsizer1.Add(self.statxt1, 1, wx.RIGHT, b)
-        hsizer1.Add(self.ctrl, 1, wx.LEFT | wx.RIGHT, b)
-        hsizer1.Add(self.statxt3, 1, wx.LEFT, b)
 
         b = 4
         vsizer1 = wx.BoxSizer(wx.VERTICAL)
-        vsizer1.Add(hsizer1, 0, wx.EXPAND | wx.ALL, b)
-        vsizer1.Add(self.slider, 0, wx.EXPAND | wx.LEFT | wx.TOP | wx.BOTTOM, b)
+        vsizer1.Add(self.ctrl, 0, wx.LEFT | wx.RIGHT | wx.CENTER, b)
+        vsizer1.Add(self.slider, 0, wx.EXPAND | wx.ALL , b)
 
         self.SetSizerAndFit(vsizer1)
         self.parent.SetClientSize((500, vsizer1.GetSize()[1]))
@@ -60,50 +86,22 @@ class AttributeSlider(wx.Panel):
         self.SetValue(self.ctrl.GetValue())
         evt.Skip()
 
-    def OnScroll(self, event):
-        self.CalculateUserValue()
-
     def SetValue(self, value):
         # todo: check this against values that might be 2.5x and whatnot
         mod = value / self.base_value
         self.ctrl.SetValue(value)
         slider_percentage = 0
         if mod < 1:
-            modEnd = -1 * self.UserMinValue
-            slider_percentage = (modEnd / mod) * 100
+            modEnd = self.UserMinValue
+            slider_percentage = (1-mod)/(1 - modEnd) * -100
         elif mod > 1:
             modEnd = self.UserMaxValue
             slider_percentage = ((mod-1)/(modEnd-1)) * 100
         print(slider_percentage)
+        if self.inverse:
+            slider_percentage *= -1
         self.slider.SetValue(slider_percentage)
-        self.CalculateUserValue()
-
-    def CalculateUserValue(self):
-        self.SliderValue = self.slider.GetValue()
-
-        mod = 1
-
-        # The slider value tells us when mod we're going to use, depending on its sign
-        if self.SliderValue < 0:
-            mod = self.UserMinValue
-        elif self.SliderValue > 0:
-            mod = self.UserMaxValue
-
-        # Get the slider value percentage as an absolute value
-        slider_mod = abs(self.SliderValue/1_000) / 100
-
-        # Gets our new mod by use the slider's percentage to determine where in the spectrum it is
-        new_mod = mod + ((1 - mod) - ((1 - mod) * slider_mod))
-
-        # Modifies our base value, to get out modified value
-        newValue = new_mod * self.base_value
-
-        # if mod == 1:
-        #     self.statxt2.SetLabel("{0:.3f}".format(newValue))
-        # else:
-        #     self.statxt2.SetLabel("{0:.3f} ({1:+.3f})".format(newValue, newValue - self.base_value, ))
-        #     self.statxt2.SetToolTip("{0:+f}%".format(new_mod*100))
-
+        wx.PostEvent(self, ValueChanged(None, value, None, slider_percentage))
 
 class TestAttributeSlider(wx.Frame):
 
@@ -114,12 +112,16 @@ class TestAttributeSlider(wx.Frame):
         sty = wx.DEFAULT_FRAME_STYLE
         wx.Frame.__init__(self, parent, id, title, pos, size, sty)
 
-        self.panel = AttributeSlider(self, 10, .80, 1.5)
-        self.panel.SetValue(9.0)
+        self.panel = AttributeSlider(self, 10, 1.2, 1.8, False)
+        self.panel.Bind(EVT_NOTEBOOK_PAGE_CHANGED, self.thing)
+        self.panel.SetValue(10)
         self.Bind(wx.EVT_CLOSE, self.OnCloseWindow)
 
     def OnCloseWindow(self, event):
         self.Destroy()
+
+    def thing(self, evt):
+        print("thing")
 
 
 if __name__ == "__main__":
