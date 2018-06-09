@@ -72,7 +72,7 @@ class AttributeSlider(wx.Panel):
 
         self.ctrl.Bind(wx.EVT_SPINCTRLDOUBLE, self.UpdateValue)
 
-        self.slider = AttributeGauge(self, size=(-1,8))
+        self.slider = AttributeGauge(self, size=(-1, 8))
 
         b = 4
         vsizer1 = wx.BoxSizer(wx.VERTICAL)
