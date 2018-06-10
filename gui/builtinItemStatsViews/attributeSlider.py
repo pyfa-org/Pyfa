@@ -67,7 +67,9 @@ class AttributeSlider(wx.Panel):
         self.SliderMaxValue = 100
         self.SliderValue = 0
 
-        self.ctrl = wx.SpinCtrlDouble(self, min=(self.UserMinValue * self.base_value), max=(self.UserMaxValue * self.base_value))
+        range = [(self.UserMinValue * self.base_value), (self.UserMaxValue * self.base_value)]
+
+        self.ctrl = wx.SpinCtrlDouble(self, min=min(range), max=max(range))
         self.ctrl.SetDigits(3)
 
         self.ctrl.Bind(wx.EVT_SPINCTRLDOUBLE, self.UpdateValue)
@@ -112,9 +114,9 @@ class TestAttributeSlider(wx.Frame):
         sty = wx.DEFAULT_FRAME_STYLE
         wx.Frame.__init__(self, parent, id, title, pos, size, sty)
 
-        self.panel = AttributeSlider(self, 10, 1.2, 1.8, False)
+        self.panel = AttributeSlider(self, -50, 0.8, 1.5, False)
         self.panel.Bind(EVT_NOTEBOOK_PAGE_CHANGED, self.thing)
-        self.panel.SetValue(10)
+        self.panel.SetValue(-55)
         self.Bind(wx.EVT_CLOSE, self.OnCloseWindow)
 
     def OnCloseWindow(self, event):
