@@ -64,8 +64,9 @@ class Mutator(EqBase):
 
         minValue = dynAttr.min * baseAttr.value
         maxValue = dynAttr.max * baseAttr.value
+        mod = val/baseAttr.value
 
-        if minValue < val < maxValue:
+        if dynAttr.min < mod < dynAttr.max:
             # sweet, all good
             returnVal = val
         else:
