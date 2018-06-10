@@ -10,7 +10,7 @@ from service.fit import Fit
 
 
 class AttributeGauge(wx.Window):
-    def __init__(self, parent, max_range=100, animate=True, leading_edge=True, guide_lines=False, size=(-1, 30), *args,
+    def __init__(self, parent, max_range=100, animate=True, leading_edge=True, edge_on_neutral=True, guide_lines=False, size=(-1, 30), *args,
                  **kargs):
 
         super().__init__(parent, size=size, *args, **kargs)
@@ -24,6 +24,7 @@ class AttributeGauge(wx.Window):
         self._bar_gradient = None
 
         self.leading_edge = leading_edge
+        self.edge_on_neutral = edge_on_neutral
 
         self._border_padding = 0
         self._max_range = max_range
@@ -269,7 +270,7 @@ class AttributeGauge(wx.Window):
                 padding = half - w + 1 if is_even else math.ceil(half)-(w-1)
                 dc.DrawRectangle(padding, 1, w, rect.height)
 
-            if self.leading_edge and value != 0:
+            if self.leading_edge and (self.edge_on_neutral or value != 0):
                 dc.SetPen(wx.Pen(wx.WHITE))
                 dc.SetBrush(wx.Brush(wx.WHITE))
 
