@@ -19,7 +19,7 @@
 
 from logbook import Logger
 
-from sqlalchemy.orm import reconstructor
+from sqlalchemy.orm import validates, reconstructor
 
 import eos.db
 from eos.eqBase import EqBase
@@ -28,8 +28,14 @@ pyfalog = Logger(__name__)
 
 
 class Mutator(EqBase):
-    def __init__(self, stuff, attr, value):
-        self.moduleID = stuff.ID
+    """ Mutators are the object that represent an attribute override on the module level, in conjunction with
+    mutaplasmids. Each mutated module, when created, is instantiated with a list of these objects, dictated by the
+    mutaplasmid that is used on the base module.
+    """
+
+    def __init__(self, module, attr, value):
+        self.module = module
+        self.moduleID = module.ID
         self.attrID = attr.ID
         self.__attr = attr
         self.value = value
@@ -37,13 +43,45 @@ class Mutator(EqBase):
     @reconstructor
     def init(self):
         self.__attr = None
-        self.__item = None
 
         if self.attrID:
             self.__attr = eos.db.getAttributeInfo(self.attrID)
             if self.__attr is None:
                 pyfalog.error("Attribute (id: {0}) does not exist", self.attrID)
                 return
+
+        self.value = self.value  # run the validator (to ensure we catch any changed min/max values CCP releases)
+        self.build()
+
+    def build(self):
+        pass
+
+    @validates("value")
+    def validator(self, key, val):
+        """ Validates values as properly falling within the range of the modules mutaplasmid """
+        dynAttr = next(a for a in self.module.mutaplasmid.attributes if a.attributeID == self.attrID)
+        baseAttr = self.module.item.attributes[dynAttr.name]
+
+        minValue = dynAttr.min * baseAttr.value
+        maxValue = dynAttr.max * baseAttr.value
+
+        if minValue < val < maxValue:
+            # sweet, all good
+            returnVal = val
+        else:
+            # need to fudge the numbers a bit. Go with the value closest to base
+            returnVal = min(maxValue, max(minValue, val))
+
+        return returnVal
+
+    @property
+    def isInvalid(self):
+        # @todo: need to test what happens:
+        # 1) if an attribute is removed from the EVE database
+        # 2) if a mutaplasmid does not have the attribute anymore
+        # 3) if a mutaplasmid does not exist (in eve or on the module's item)
+        # Can remove invalid ones in a SQLAlchemy collection class... eventually
+        return self.__attr is None
 
     @property
     def attr(self):

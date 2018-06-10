@@ -36,13 +36,16 @@ class ItemMutator(wx.Panel):
             min = round(x.min, 2)
             max = round(x.max, 2)
 
-            value = stuff.itemModifiedAttributes.getOriginal(x.name)
-            slider = AttributeSlider(self, value, min, max, not x.highIsGood)
-            slider.SetValue(value)
+            base_value = stuff.item.attributes[x.name].value
+
+            mutator = stuff.mutators[x.attributeID]
+
+            slider = AttributeSlider(self, base_value, min, max, not x.highIsGood)
+            slider.SetValue(mutator.value)
             headingSizer = wx.BoxSizer(wx.HORIZONTAL)
 
-            minValue = round(value * min, 3)
-            maxValue = round(value * max, 3)
+            minValue = round(base_value * min, 3)
+            maxValue = round(base_value * max, 3)
 
             # create array for the two ranges
             min_t = [minValue, min, None]
@@ -64,7 +67,7 @@ class ItemMutator(wx.Panel):
                 worse_range = min_t
 
             print("{}: \nHigh is good: {}".format(x.displayName, x.highIsGood))
-            print("Value {}".format(value))
+            print("Value {}".format(base_value))
 
             print(min_t)
             print(max_t)

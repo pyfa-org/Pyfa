@@ -27,6 +27,7 @@ from eos.effectHandlerHelpers import HandledItem, HandledCharge
 from eos.enum import Enum
 from eos.modifiedAttributeDict import ModifiedAttributeDict, ItemAttrShortcut, ChargeAttrShortcut
 from eos.saveddata.citadel import Citadel
+from eos.saveddata.mutator import Mutator
 
 pyfalog = Logger(__name__)
 
@@ -135,6 +136,7 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
             self.__charge = eos.db.getItem(self.chargeID)
 
         self.build()
+
     def build(self):
         """ Builds internal module variables from both init's """
 
@@ -157,11 +159,21 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
             self.__itemModifiedAttributes.overrides = self.__item.overrides
             self.__hardpoint = self.__calculateHardpoint(self.__item)
             self.__slot = self.__calculateSlot(self.__item)
+
+            # Instantiate / remove mutators if this is a mutated module
+            if self.__baseItem:
+                for x in self.mutaplasmid.attributes:
+                    attr = self.item.attributes[x.name]
+                    if attr.ID not in self.mutators:  # create the mutator
+                        self.mutators[attr.ID] = Mutator(self, attr, attr.value)
+                # @todo: remove attributes that are no longer part of the mutaplasmid.
+
             self.__itemModifiedAttributes.mutators = self.mutators
 
         if self.__charge:
             self.__chargeModifiedAttributes.original = self.__charge.attributes
             self.__chargeModifiedAttributes.overrides = self.__charge.overrides
+
 
     @classmethod
     def buildEmpty(cls, slot):

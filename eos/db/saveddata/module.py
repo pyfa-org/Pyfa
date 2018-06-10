@@ -18,6 +18,7 @@
 # ===============================================================================
 
 from sqlalchemy import Table, Column, Integer, ForeignKey, CheckConstraint, Boolean, DateTime
+from sqlalchemy.orm.collections import attribute_mapped_collection
 from sqlalchemy.orm import relation, mapper
 import datetime
 
@@ -47,6 +48,7 @@ mapper(Module, modules_table,
            "mutators": relation(
                    Mutator,
                    backref="module",
-                   cascade="all,delete-orphan"
+                   cascade="all,delete-orphan",
+                   collection_class=attribute_mapped_collection('attrID')
            )
        })

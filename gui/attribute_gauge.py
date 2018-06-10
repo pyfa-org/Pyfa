@@ -23,7 +23,7 @@ class AttributeGauge(wx.Window):
         self._bar_colour = None
         self._bar_gradient = None
 
-        self.leading_edge = True
+        self.leading_edge = leading_edge
 
         self._border_padding = 0
         self._max_range = max_range

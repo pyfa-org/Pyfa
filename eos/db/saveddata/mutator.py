@@ -25,7 +25,7 @@ from eos.db import saveddata_meta
 from eos.saveddata.mutator import Mutator
 
 mutator_table = Table("mutators", saveddata_meta,
-                        Column("moduleID", Integer, ForeignKey("modules.ID"), nullable=False, index=True),
+                        Column("moduleID", Integer, ForeignKey("modules.ID"), primary_key=True, index=True),
                         Column("attrID", Integer, primary_key=True, index=True),
                         Column("value", Float, nullable=False),
                         Column("created", DateTime, nullable=True, default=datetime.datetime.now),
