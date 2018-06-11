@@ -741,7 +741,7 @@ class FittingView(d.Display):
     # noinspection PyPropertyAccess
     def MakeSnapshot(self, maxColumns=1337):
         if self.FVsnapshot:
-            del self.FVsnapshot
+            self.FVsnapshot = None
 
         tbmp = wx.Bitmap(16, 16)
         tdc = wx.MemoryDC()
