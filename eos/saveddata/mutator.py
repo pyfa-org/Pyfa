@@ -31,6 +31,13 @@ class Mutator(EqBase):
     """ Mutators are the object that represent an attribute override on the module level, in conjunction with
     mutaplasmids. Each mutated module, when created, is instantiated with a list of these objects, dictated by the
     mutaplasmid that is used on the base module.
+
+    A note on the different attributes on this object:
+    * attribute: points to the definition of the attribute from dgmattribs.
+    * baseAttribute: points to the attribute defined for the base item (contains the base value with with to mutate)
+    * dynamicAttribute: points to the Mutaplasmid definition of the attribute, including min/max
+
+    This could probably be cleaned up with smarter relationships, but whatever
     """
 
     def __init__(self, module, attr, value):
@@ -38,7 +45,8 @@ class Mutator(EqBase):
         self.moduleID = module.ID
         self.attrID = attr.ID
         self.__attr = attr
-        self.value = value
+        self.build()
+        self.value = value  # must run after the build(), because the validator requires build() to run first
 
     @reconstructor
     def init(self):
@@ -50,28 +58,26 @@ class Mutator(EqBase):
                 pyfalog.error("Attribute (id: {0}) does not exist", self.attrID)
                 return
 
-        self.value = self.value  # run the validator (to ensure we catch any changed min/max values CCP releases)
         self.build()
+        self.value = self.value  # run the validator (to ensure we catch any changed min/max values might CCP release)
 
     def build(self):
-        pass
+        # dynamic attribute links to the Mutaplasmids attribute definition for this mutated definition
+        self.dynamicAttribute = next(a for a in self.module.mutaplasmid.attributes if a.attributeID == self.attrID)
+        # base attribute links to the base ite's attribute for this mutated definition (contains original, base value)
+        self.baseAttribute = self.module.item.attributes[self.dynamicAttribute.name]
 
     @validates("value")
     def validator(self, key, val):
-        """ Validates values as properly falling within the range of the modules mutaplasmid """
-        dynAttr = next(a for a in self.module.mutaplasmid.attributes if a.attributeID == self.attrID)
-        baseAttr = self.module.item.attributes[dynAttr.name]
+        """ Validates values as properly falling within the range of the modules' Mutaplasmid """
+        mod = val/self.baseValue
 
-        minValue = dynAttr.min * baseAttr.value
-        maxValue = dynAttr.max * baseAttr.value
-        mod = val/baseAttr.value
-
-        if dynAttr.min < mod < dynAttr.max:
+        if self.minMod < mod < self.maxMod:
             # sweet, all good
             returnVal = val
         else:
             # need to fudge the numbers a bit. Go with the value closest to base
-            returnVal = min(maxValue, max(minValue, val))
+            returnVal = min(self.maxValue, max(self.minValue, val))
 
         return returnVal
 
@@ -85,9 +91,31 @@ class Mutator(EqBase):
         return self.__attr is None
 
     @property
-    def attr(self):
-        return self.__attr
+    def highIsGood(self):
+        return self.attribute.highIsGood
 
     @property
-    def item(self):
-        return self.__item
+    def minMod(self):
+        return self.dynamicAttribute.min
+
+    @property
+    def maxMod(self):
+        return self.dynamicAttribute.max
+
+    @property
+    def baseValue(self):
+        return self.baseAttribute.value
+
+    @property
+    def minValue(self):
+        return self.minMod * self.baseAttribute.value
+
+    @property
+    def maxValue(self):
+        return self.maxMod * self.baseAttribute.value
+
+    @property
+    def attribute(self):
+        return self.__attr
+
+

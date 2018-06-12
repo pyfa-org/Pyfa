@@ -112,7 +112,7 @@ class ModifiedAttributeDict(collections.MutableMapping):
 
     @property
     def mutators(self):
-        return {x.attr.name: x for x in self.__mutators.values()}
+        return {x.attribute.name: x for x in self.__mutators.values()}
 
     @mutators.setter
     def mutators(self, val):

@@ -5,7 +5,7 @@ from gui.attribute_gauge import AttributeGauge
 import eos
 import eos.db
 
-_ValueChanged, EVT_NOTEBOOK_PAGE_CHANGED = wx.lib.newevent.NewEvent()
+_ValueChanged, EVT_VALUE_CHANGED = wx.lib.newevent.NewEvent()
 
 
 class AttributeSliderChangeEvent:
@@ -115,7 +115,7 @@ class TestAttributeSlider(wx.Frame):
         wx.Frame.__init__(self, parent, id, title, pos, size, sty)
 
         self.panel = AttributeSlider(self, -50, 0.8, 1.5, False)
-        self.panel.Bind(EVT_NOTEBOOK_PAGE_CHANGED, self.thing)
+        self.panel.Bind(EVT_VALUE_CHANGED, self.thing)
         self.panel.SetValue(-55)
         self.Bind(wx.EVT_CLOSE, self.OnCloseWindow)
 
