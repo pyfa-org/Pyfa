@@ -1,17 +1,8 @@
 # noinspection PyPackageRequirements
 import wx
 
-from eos.saveddata.mode import Mode
-from eos.saveddata.character import Skill
-from eos.saveddata.implant import Implant
-from eos.saveddata.booster import Booster
-from eos.saveddata.drone import Drone
-from eos.saveddata.fighter import Fighter
-from eos.saveddata.module import Module
-from eos.saveddata.ship import Ship
-from eos.saveddata.citadel import Citadel
-from eos.saveddata.fit import Fit
-from .attributeSlider import AttributeSlider
+from service.fit import Fit
+from .attributeSlider import AttributeSlider, EVT_VALUE_CHANGED
 
 import gui.mainFrame
 from gui.contextMenu import ContextMenu
@@ -31,9 +22,13 @@ class ItemMutator(wx.Panel):
         self.goodColor = wx.Colour(96, 191, 0)
         self.badColor = wx.Colour(255, 64, 0)
 
+        self.event_mapping = {}
+
         for m in sorted(stuff.mutators.values(), key=lambda x: x.attribute.displayName):
             slider = AttributeSlider(self, m.baseValue, m.minMod, m.maxMod, not m.highIsGood)
-            slider.SetValue(m.value)
+            slider.SetValue(m.value, False)
+            slider.Bind(EVT_VALUE_CHANGED, self.changeMutatedValue)
+            self.event_mapping[slider] = m
             headingSizer = wx.BoxSizer(wx.HORIZONTAL)
 
             # create array for the two ranges
@@ -102,3 +97,11 @@ class ItemMutator(wx.Panel):
 
         self.SetSizer(mainSizer)
         self.Layout()
+
+    def changeMutatedValue(self, evt):
+        m = self.event_mapping[evt.Object]
+        value = evt.Value
+        sFit = Fit.getInstance()
+
+        sFit.changeMutatedValue(m, value)
+

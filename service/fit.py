@@ -517,6 +517,13 @@ class Fit(object):
         eos.db.commit()
         self.recalc(fit)
 
+    def changeMutatedValue(self, mutator, value):
+        pyfalog.debug("Changing mutated value for {} / {}: {} => {}".format(mutator.module, mutator.module.mutaplasmid, mutator.value, value))
+        mutator.value = value
+
+        eos.db.commit()
+        #self.recalc(fit)
+
     def appendModule(self, fitID, itemID):
         pyfalog.debug("Appending module for fit ({0}) using item: {1}", fitID, itemID)
         fit = eos.db.getFit(fitID)

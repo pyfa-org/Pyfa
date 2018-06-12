@@ -9,11 +9,15 @@ _ValueChanged, EVT_VALUE_CHANGED = wx.lib.newevent.NewEvent()
 
 
 class AttributeSliderChangeEvent:
-    def __init__(self, old_value, new_value, old_percentage, new_percentage):
+    def __init__(self, obj, old_value, new_value, old_percentage, new_percentage):
+        self.__obj = obj
         self.__old = old_value
         self.__new = new_value
         self.__old_percent = old_percentage
         self.__new_percent = new_percentage
+
+    def GetObj(self):
+        return self.__obj
 
     def GetOldValue(self):
         return self.__old
@@ -27,6 +31,7 @@ class AttributeSliderChangeEvent:
     def GetPercentage(self):
         return self.__new_percent
 
+    Object = property(GetObj)
     OldValue = property(GetOldValue)
     Value = property(GetValue)
     OldPercentage = property(GetOldPercentage)
@@ -34,17 +39,17 @@ class AttributeSliderChangeEvent:
 
 
 class ValueChanged(_ValueChanged, AttributeSliderChangeEvent):
-    def __init__(self, old_value, new_value, old_percentage, new_percentage):
+    def __init__(self, obj, old_value, new_value, old_percentage, new_percentage):
         _ValueChanged.__init__(self)
-        AttributeSliderChangeEvent.__init__(self, old_value, new_value, old_percentage, new_percentage)
+        AttributeSliderChangeEvent.__init__(self, obj, old_value, new_value, old_percentage, new_percentage)
 
 
 class AttributeSlider(wx.Panel):
     # Slider which abstracts users values from internal values (because the built in slider does not deal with floats
     # and the like), based on http://wxpython-users.wxwidgets.narkive.com/ekgBzA7u/anyone-ever-thought-of-a-floating-point-slider
 
-    def __init__(self, parent, baseValue, minMod, maxMod, inverse=False):
-        wx.Panel.__init__(self, parent)
+    def __init__(self, parent, baseValue, minMod, maxMod, inverse=False, id=-1):
+        wx.Panel.__init__(self, parent, id=id)
 
         self.parent = parent
 
@@ -88,7 +93,7 @@ class AttributeSlider(wx.Panel):
         self.SetValue(self.ctrl.GetValue())
         evt.Skip()
 
-    def SetValue(self, value):
+    def SetValue(self, value, post_event=True):
         # todo: check this against values that might be 2.5x and whatnot
         mod = value / self.base_value
         self.ctrl.SetValue(value)
@@ -103,7 +108,8 @@ class AttributeSlider(wx.Panel):
         if self.inverse:
             slider_percentage *= -1
         self.slider.SetValue(slider_percentage)
-        wx.PostEvent(self, ValueChanged(None, value, None, slider_percentage))
+        if post_event:
+            wx.PostEvent(self, ValueChanged(self, None, value, None, slider_percentage))
 
 class TestAttributeSlider(wx.Frame):
 
