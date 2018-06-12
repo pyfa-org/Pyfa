@@ -7,7 +7,8 @@ from .attributeSlider import AttributeSlider, EVT_VALUE_CHANGED
 import gui.mainFrame
 from gui.contextMenu import ContextMenu
 from gui.bitmap_loader import BitmapLoader
-
+import gui.globalEvents as GE
+import gui.mainFrame
 
 class ItemMutator(wx.Panel):
 
@@ -15,7 +16,7 @@ class ItemMutator(wx.Panel):
         wx.Panel.__init__(self, parent)
         self.stuff = stuff
         self.item = item
-
+        self.timer = None
         self.activeFit = gui.mainFrame.MainFrame.getInstance().getActiveFit()
         mainSizer = wx.BoxSizer(wx.VERTICAL)
 
@@ -104,4 +105,16 @@ class ItemMutator(wx.Panel):
         sFit = Fit.getInstance()
 
         sFit.changeMutatedValue(m, value)
+        if self.timer:
+            self.timer.Stop()
+            self.timer = None
+        self.timer = wx.CallLater(1000, self.callLater)
+
+    def callLater(self):
+        self.timer = None
+        print("recalc fit")
+        sFit = Fit.getInstance()
+        sFit.refreshFit(self.activeFit)
+        # todo BUG: if fit is not currently active, this causes the changed fit to show...?
+        wx.PostEvent(gui.mainFrame.MainFrame.getInstance(), GE.FitChanged(fitID=self.activeFit))
 
