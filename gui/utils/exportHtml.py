@@ -90,7 +90,7 @@ class exportHtmlThread(threading.Thread):
   <link rel="stylesheet" href="https://code.jquery.com/mobile/1.4.2/jquery.mobile-1.4.2.min.css" />
   <script src="https://code.jquery.com/jquery-1.11.0.min.js"></script>
   <script>
-    // http://stackoverflow.com/questions/32453806/uncaught-securityerror-failed-to-execute-replacestate-on-history-cannot-be
+//http://stackoverflow.com/questions/32453806/uncaught-securityerror-failed-to-execute-replacestate-on-history-cannot-be
     $(document).bind('mobileinit',function(){
         $.mobile.changePage.defaults.changeHash = false;
         $.mobile.hashListeningEnabled = false;
