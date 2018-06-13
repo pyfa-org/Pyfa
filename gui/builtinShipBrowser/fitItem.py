@@ -23,7 +23,7 @@ pyfalog = Logger(__name__)
 
 class FitItem(SFItem.SFBrowserItem):
     def __init__(self, parent, fitID=None, shipFittingInfo=("Test", "TestTrait", "cnc's avatar", 0, 0, None), shipID=None,
-                 itemData=None,
+                 itemData=None, graphicID=None,
                  id=wx.ID_ANY, pos=wx.DefaultPosition,
                  size=(0, 40), style=0):
 
@@ -51,7 +51,7 @@ class FitItem(SFItem.SFBrowserItem):
         self.deleted = False
 
         if shipID:
-            self.shipBmp = BitmapLoader.getBitmap(str(shipID), "renders")
+            self.shipBmp = BitmapLoader.getBitmap(str(graphicID), "renders")
 
         if not self.shipBmp:
             self.shipBmp = BitmapLoader.getBitmap("ship_no_image_big", "gui")

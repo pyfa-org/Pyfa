@@ -44,8 +44,8 @@ class ItemDependents(wx.Panel):
             child = self.reqTree.AppendItem(parent, "Level {}".format(self.romanNb[int(x)]), sbIconId)
             for item in items:
 
-                if item.icon:
-                    bitmap = BitmapLoader.getBitmap(item.icon.iconFile, "icons")
+                if item.iconID:
+                    bitmap = BitmapLoader.getBitmap(item.iconID, "icons")
                     itemIcon = self.imageList.Add(bitmap) if bitmap else -1
                 else:
                     itemIcon = -1

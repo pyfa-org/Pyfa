@@ -512,10 +512,6 @@ class Group(EqBase):
     pass
 
 
-class Icon(EqBase):
-    pass
-
-
 class DynamicItem(EqBase):
     pass
 
