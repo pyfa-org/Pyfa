@@ -66,10 +66,15 @@ class Mutator(EqBase):
         self.value = self.value  # run the validator (to ensure we catch any changed min/max values might CCP release)
 
     def build(self):
-        # dynamic attribute links to the Mutaplasmids attribute definition for this mutated definition
-        self.dynamicAttribute = next(a for a in self.module.mutaplasmid.attributes if a.attributeID == self.attrID)
-        # base attribute links to the base ite's attribute for this mutated definition (contains original, base value)
-        self.baseAttribute = self.module.item.attributes[self.dynamicAttribute.name]
+        # try...except here to catch orphaned mutators. Pretty rare, only happens so far if hacking the database
+        # But put it here to remove the module link if it happens, until a better solution can be developed
+        try:
+            # dynamic attribute links to the Mutaplasmids attribute definition for this mutated definition
+            self.dynamicAttribute = next(a for a in self.module.mutaplasmid.attributes if a.attributeID == self.attrID)
+            # base attribute links to the base ite's attribute for this mutated definition (contains original, base value)
+            self.baseAttribute = self.module.item.attributes[self.dynamicAttribute.name]
+        except:
+            self.module = None
 
     @validates("value")
     def validator(self, key, val):
