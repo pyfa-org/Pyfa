@@ -9,6 +9,11 @@ from gui.contextMenu import ContextMenu
 from gui.bitmap_loader import BitmapLoader
 import gui.globalEvents as GE
 import gui.mainFrame
+import random
+
+from logbook import Logger
+
+pyfalog = Logger(__name__)
 
 class ItemMutator(wx.Panel):
 
@@ -91,8 +96,13 @@ class ItemMutator(wx.Panel):
 
         bSizer = wx.BoxSizer(wx.HORIZONTAL)
 
-        self.saveBtn = wx.Button(self, wx.ID_ANY, "Save Attributes", wx.DefaultPosition, wx.DefaultSize, 0)
-        bSizer.Add(self.saveBtn, 0, wx.ALIGN_CENTER_VERTICAL)
+        self.refreshBtn = wx.Button(self, wx.ID_ANY, "Reset defaults", wx.DefaultPosition, wx.DefaultSize, 0)
+        bSizer.Add(self.refreshBtn, 0, wx.ALIGN_CENTER_VERTICAL)
+        self.refreshBtn.Bind(wx.EVT_BUTTON, self.resetMutatedValues)
+
+        self.randomBtn = wx.Button(self, wx.ID_ANY, "Random stats", wx.DefaultPosition, wx.DefaultSize, 0)
+        bSizer.Add(self.randomBtn, 0, wx.ALIGN_CENTER_VERTICAL)
+        self.randomBtn.Bind(wx.EVT_BUTTON, self.randomMutatedValues)
 
         mainSizer.Add(bSizer, 0, wx.RIGHT | wx.LEFT | wx.EXPAND, 0)
 
@@ -109,6 +119,26 @@ class ItemMutator(wx.Panel):
             self.timer.Stop()
             self.timer = None
         self.timer = wx.CallLater(1000, self.callLater)
+
+    def resetMutatedValues(self, evt):
+        sFit = Fit.getInstance()
+
+        for slider, m in self.event_mapping.items():
+            value = m.baseValue
+            sFit.changeMutatedValue(m, value)
+            slider.SetValue(value)
+
+        evt.Skip()
+
+    def randomMutatedValues(self, evt):
+        sFit = Fit.getInstance()
+
+        for slider, m in self.event_mapping.items():
+            value = random.uniform(m.minValue, m.maxValue)
+            sFit.changeMutatedValue(m, value)
+            slider.SetValue(value)
+
+        evt.Skip()
 
     def callLater(self):
         self.timer = None
