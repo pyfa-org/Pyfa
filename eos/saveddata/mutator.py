@@ -41,9 +41,13 @@ class Mutator(EqBase):
     """
 
     def __init__(self, module, attr, value):
+        # this needs to be above module assignment, as assigning the module will add it to the list and it via
+        # relationship and needs this set 4correctly
+        self.attrID = attr.ID
+
         self.module = module
         self.moduleID = module.ID
-        self.attrID = attr.ID
+
         self.__attr = attr
         self.build()
         self.value = value  # must run after the build(), because the validator requires build() to run first

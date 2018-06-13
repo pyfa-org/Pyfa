@@ -164,8 +164,9 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
             if self.__baseItem:
                 for x in self.mutaplasmid.attributes:
                     attr = self.item.attributes[x.name]
-                    if attr.ID not in self.mutators:  # create the mutator
-                        self.mutators[attr.ID] = Mutator(self, attr, attr.value)
+                    id = attr.ID
+                    if id not in self.mutators:  # create the mutator
+                        Mutator(self, attr, attr.value)
                 # @todo: remove attributes that are no longer part of the mutaplasmid.
 
             self.__itemModifiedAttributes.mutators = self.mutators
