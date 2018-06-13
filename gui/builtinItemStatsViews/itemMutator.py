@@ -62,7 +62,7 @@ class ItemMutator(wx.Panel):
             font = parent.GetFont()
             font.SetWeight(wx.BOLD)
 
-            headingSizer.Add(BitmapLoader.getStaticBitmap(m.attribute.icon.iconFile, self, "icons"), 0, wx.RIGHT, 10)
+            headingSizer.Add(BitmapLoader.getStaticBitmap(m.attribute.iconID, self, "icons"), 0, wx.RIGHT, 10)
 
             displayName = wx.StaticText(self, wx.ID_ANY, m.attribute.displayName)
             displayName.SetFont(font)
