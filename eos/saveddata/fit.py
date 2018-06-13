@@ -1016,6 +1016,16 @@ class Fit(object):
     def getNumSlots(self, type):
         return self.ship.getModifiedItemAttr(self.slots[type]) or 0
 
+    def getHardpointsFree(self, type):
+        if type == Hardpoint.NONE:
+            return 1
+        elif type == Hardpoint.TURRET:
+            return self.ship.getModifiedItemAttr('turretSlotsLeft') - self.getHardpointsUsed(Hardpoint.TURRET)
+        elif type == Hardpoint.MISSILE:
+            return self.ship.getModifiedItemAttr('launcherSlotsLeft') - self.getHardpointsUsed(Hardpoint.MISSILE)
+        else:
+            raise ValueError("%d is not a valid value for Hardpoint Enum", type)
+
     @property
     def calibrationUsed(self):
         return self.getItemAttrOnlineSum(self.modules, 'upgradeCost')
