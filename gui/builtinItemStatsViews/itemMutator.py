@@ -6,6 +6,7 @@ from .attributeSlider import AttributeSlider, EVT_VALUE_CHANGED
 
 import gui.mainFrame
 from gui.contextMenu import ContextMenu
+from .itemAttributes import ItemParams
 from gui.bitmap_loader import BitmapLoader
 import gui.globalEvents as GE
 import gui.mainFrame
@@ -69,14 +70,15 @@ class ItemMutator(wx.Panel):
 
             headingSizer.Add(displayName, 3, wx.ALL | wx.EXPAND, 0)
 
-            range_low = wx.StaticText(self, wx.ID_ANY, "{} {}".format(worse_range[0], m.attribute.unit.displayName))
+
+            range_low = wx.StaticText(self, wx.ID_ANY, ItemParams.FormatValue(*m.attribute.unit.TranslateValue(worse_range[0])))
             range_low.SetForegroundColour(self.goodColor if worse_range[2] else self.badColor)
 
-            range_high = wx.StaticText(self, wx.ID_ANY, "{} {}".format(better_range[0], m.attribute.unit.displayName))
+            range_high = wx.StaticText(self, wx.ID_ANY, ItemParams.FormatValue(*m.attribute.unit.TranslateValue(better_range[0])))
             range_high.SetForegroundColour(self.goodColor if better_range[2] else self.badColor)
 
             headingSizer.Add(range_low, 0, wx.ALL | wx.EXPAND, 0)
-            headingSizer.Add(wx.StaticText(self, wx.ID_ANY, " ── "), 0, wx.RIGHT | wx.LEFT | wx.EXPAND, 5)
+            headingSizer.Add(wx.StaticText(self, wx.ID_ANY, " ─ "), 0, wx.RIGHT | wx.LEFT | wx.EXPAND, 5)
             headingSizer.Add(range_high, 0, wx.RIGHT | wx.EXPAND, 10)
 
             mainSizer.Add(headingSizer, 0, wx.ALL | wx.EXPAND, 5)
