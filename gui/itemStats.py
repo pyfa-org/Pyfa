@@ -149,7 +149,7 @@ class ItemStatsDialog(wx.Dialog):
             ItemStatsDialog.counter -= 1
         self.parentWnd.UnregisterStatsWindow(self)
 
-        self.Destroy()
+        event.Skip()
 
 
 class ItemStatsContainer(wx.Panel):
