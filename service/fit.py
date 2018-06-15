@@ -522,7 +522,7 @@ class Fit(object):
         mutator.value = value
 
         eos.db.commit()
-        #self.recalc(fit)
+        return mutator.value
 
     def appendModule(self, fitID, itemID):
         pyfalog.debug("Appending module for fit ({0}) using item: {1}", fitID, itemID)

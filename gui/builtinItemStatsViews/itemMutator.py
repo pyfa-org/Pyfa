@@ -32,8 +32,10 @@ class ItemMutator(wx.Panel):
         self.event_mapping = {}
 
         for m in sorted(stuff.mutators.values(), key=lambda x: x.attribute.displayName):
-            slider = AttributeSlider(self, m.baseValue, m.minMod, m.maxMod, not m.highIsGood)
-            slider.SetValue(m.value, False)
+            baseValueFormated = m.attribute.unit.TranslateValue(m.baseValue)[0]
+            valueFormated = m.attribute.unit.TranslateValue(m.value)[0]
+            slider = AttributeSlider(self, baseValueFormated, m.minMod, m.maxMod, not m.highIsGood)
+            slider.SetValue(valueFormated, False)
             slider.Bind(EVT_VALUE_CHANGED, self.changeMutatedValue)
             self.event_mapping[slider] = m
             headingSizer = wx.BoxSizer(wx.HORIZONTAL)
@@ -114,6 +116,7 @@ class ItemMutator(wx.Panel):
     def changeMutatedValue(self, evt):
         m = self.event_mapping[evt.Object]
         value = evt.Value
+        value = m.attribute.unit.ComplicateValue(value)
         sFit = Fit.getInstance()
 
         sFit.changeMutatedValue(m, value)
@@ -126,8 +129,8 @@ class ItemMutator(wx.Panel):
         sFit = Fit.getInstance()
 
         for slider, m in self.event_mapping.items():
-            value = m.baseValue
-            sFit.changeMutatedValue(m, value)
+            value = sFit.changeMutatedValue(m, m.baseValue)
+            value = m.attribute.unit.TranslateValue(value)[0]
             slider.SetValue(value)
 
         evt.Skip()
@@ -137,7 +140,8 @@ class ItemMutator(wx.Panel):
 
         for slider, m in self.event_mapping.items():
             value = random.uniform(m.minValue, m.maxValue)
-            sFit.changeMutatedValue(m, value)
+            value = sFit.changeMutatedValue(m, value)
+            value = m.attribute.unit.TranslateValue(value)[0]
             slider.SetValue(value)
 
         evt.Skip()
