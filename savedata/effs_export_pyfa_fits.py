@@ -22,7 +22,10 @@ if not os.path.exists(config.savePath):
 from effs_stat_export import parseNeededFitDetails
 
 def exportPyfaFits(opts):
+    nameReq = ''
     if opts:
+        if opts.search:
+            nameReq = opts.search
         if opts.outputpath:
             basePath = opts.outputpath
         elif opts.savepath:
@@ -38,7 +41,6 @@ def exportPyfaFits(opts):
     #The current storage system isn't going to hold more than 2500 fits as local browser storage is limited
     limit = 2500
     skipTill = 0
-    nameReq = ''
     n = 0
     fitList = eos.db.getFitList()
     for fit in fitList:

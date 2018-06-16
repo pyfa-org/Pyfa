@@ -8,126 +8,174 @@ from math import log
 
 import eos.db
 
-eos.db.saveddata_meta.create_all()
-
 import json
 from service.fit import Fit
+from service.market import Market
+from eos.enum import Enum
+from eos.saveddata.module import Hardpoint, Slot, Module
+from eos.saveddata.drone import Drone
+from eos.effectHandlerHelpers import HandledList
+from eos.db import gamedata_session, getItemsByCategory, getCategory, getAttributeInfo, getGroup
+from eos.gamedata import Category, Group, Item, Traits, Attribute, Effect, ItemEffect
+
+eos.db.saveddata_meta.create_all()
+
+
+class RigSize(Enum):
+    # Matches to item attribute 'rigSize' on ship and rig items
+    SMALL = 1
+    MEDIUM = 2
+    LARGE = 3
+    CAPITAL = 4
+
 
 def attrDirectMap(values, target, source):
     for val in values:
         target[val] = source.itemModifiedAttributes[val]
 
+
 def getT2MwdSpeed(fit, fitL):
     fitID = fit.ID
     propID = None
+    shipHasMedSlots = fit.ship.itemModifiedAttributes['medSlots'] > 0
+    shipPower = fit.ship.itemModifiedAttributes['powerOutput']
+    # Monitors have a 99% reduction to prop mod power requirements
+    if fit.ship.name == 'Monitor':
+        shipPower *= 100
     rigSize = fit.ship.itemModifiedAttributes['rigSize']
-    if rigSize == 1 and fit.ship.itemModifiedAttributes['medSlots'] > 0:
-        propID = 440
-    elif rigSize == 2 and fit.ship.itemModifiedAttributes['medSlots'] > 0:
-        propID = 12076
-    elif rigSize == 3 and fit.ship.itemModifiedAttributes['medSlots'] > 0:
-        propID = 12084
-    elif rigSize == 4 and fit.ship.itemModifiedAttributes['medSlots'] > 0:
-        if fit.ship.itemModifiedAttributes['powerOutput'] > 60000:
-            propID = 41253
-        else:
-            propID = 12084
-    elif rigSize == None and fit.ship.itemModifiedAttributes['medSlots'] > 0:
-        propID = 440
-    if propID:
-        fitL.appendModule(fitID, propID)
-        fitL.recalc(fit)
-        fit = eos.db.getFit(fitID)
-        mwdPropSpeed = fit.maxSpeed
-        mwdPosition = list(filter(lambda mod: mod.item and mod.item.ID == propID, fit.modules))[0].position
-        fitL.removeModule(fitID, mwdPosition)
-        fitL.recalc(fit)
-        fit = eos.db.getFit(fitID)
-        return mwdPropSpeed
+    if not shipHasMedSlots:
+        return None
+
+    filterVal = Item.groupID == getGroup('Propulsion Module').ID
+    propMods = gamedata_session.query(Item).options().filter(filterVal).all()
+    mapPropData = lambda propName: \
+                  next(map(lambda propMod: {'id': propMod.typeID, 'powerReq': propMod.attributes['power'].value},
+                           (filter(lambda mod: mod.name == propName, propMods))))
+    mwd5mn = mapPropData('5MN Microwarpdrive II')
+    mwd50mn = mapPropData('50MN Microwarpdrive II')
+    mwd500mn = mapPropData('500MN Microwarpdrive II')
+    mwd50000mn = mapPropData('50000MN Microwarpdrive II')
+    if rigSize == RigSize.SMALL or rigSize is None:
+        propID = mwd5mn['id'] if shipPower > mwd5mn['powerReq'] else None
+    elif rigSize == RigSize.MEDIUM:
+        propID = mwd50mn['id'] if shipPower > mwd50mn['powerReq'] else mwd5mn['id']
+    elif rigSize == RigSize.LARGE:
+        propID = mwd500mn['id'] if shipPower > mwd500mn['powerReq'] else mwd50mn['id']
+    elif rigSize == RigSize.CAPITAL:
+        propID = mwd50000mn['id'] if shipPower > mwd50000mn['powerReq'] else mwd500mn['id']
+
+    if propID is None:
+        return None
+    fitL.appendModule(fitID, propID)
+    fitL.recalc(fit)
+    fit = eos.db.getFit(fitID)
+    mwdPropSpeed = fit.maxSpeed
+    mwdPosition = list(filter(lambda mod: mod.item and mod.item.ID == propID, fit.modules))[0].position
+    fitL.removeModule(fitID, mwdPosition)
+    fitL.recalc(fit)
+    fit = eos.db.getFit(fitID)
+    return mwdPropSpeed
+
 
 def getPropData(fit, fitL):
     fitID = fit.ID
-    propMods = list(filter(lambda mod: mod.item and mod.item.groupID in [46], fit.modules))
-    possibleMWD = list(filter(lambda mod: 'signatureRadiusBonus' in mod.item.attributes, propMods))
-    if len(possibleMWD) > 0 and possibleMWD[0].state > 0:
-        mwd = possibleMWD[0]
-        oldMwdState = mwd.state
-        mwd.state = 0
+    propGroupId = getGroup('Propulsion Module').ID
+    propMods = filter(lambda mod: mod.item and mod.item.groupID == propGroupId, fit.modules)
+    activePropWBloomFilter = lambda mod: mod.state > 0 and 'signatureRadiusBonus' in mod.item.attributes
+    propWithBloom = next(filter(activePropWBloomFilter, propMods), None)
+    if propWithBloom is not None:
+        oldPropState = propWithBloom.state
+        propWithBloom.state = 0
         fitL.recalc(fit)
         fit = eos.db.getFit(fitID)
         sp = fit.maxSpeed
         sig = fit.ship.itemModifiedAttributes['signatureRadius']
-        mwd.state = oldMwdState
+        propWithBloom.state = oldPropState
         fitL.recalc(fit)
         fit = eos.db.getFit(fitID)
         return {'usingMWD': True, 'unpropedSpeed': sp, 'unpropedSig': sig}
-    return {'usingMWD': False, 'unpropedSpeed': fit.maxSpeed, 'unpropedSig': fit.ship.itemModifiedAttributes['signatureRadius']}
+    return {
+        'usingMWD': False,
+        'unpropedSpeed': fit.maxSpeed,
+        'unpropedSig': fit.ship.itemModifiedAttributes['signatureRadius']
+    }
+
 
 def getOutgoingProjectionData(fit):
     # This is a subset of module groups capable of projection and a superset of those currently used by efs
-    projectedModGroupIds = [
-        41, 52, 65, 67, 68, 71, 80, 201, 208, 291, 325, 379, 585,
-        842, 899, 1150, 1154, 1189, 1306, 1672, 1697, 1698, 1815, 1894
+    modGroupNames = [
+        'Remote Shield Booster', 'Warp Scrambler', 'Stasis Web', 'Remote Capacitor Transmitter',
+        'Energy Nosferatu', 'Energy Neutralizer', 'Burst Jammer', 'ECM', 'Sensor Dampener',
+        'Weapon Disruptor', 'Remote Armor Repairer', 'Target Painter', 'Remote Hull Repairer',
+        'Burst Projectors', 'Warp Disrupt Field Generator', 'Armor Resistance Shift Hardener',
+        'Target Breaker', 'Micro Jump Drive', 'Ship Modifiers', 'Stasis Grappler',
+        'Ancillary Remote Shield Booster', 'Ancillary Remote Armor Repairer',
+        'Titan Phenomena Generator', 'Non-Repeating Hardeners'
     ]
-    projectedMods = list(filter(lambda mod: mod.item and mod.item.groupID in projectedModGroupIds, fit.modules))
+    modGroupIds = list(map(lambda s: getGroup(s).ID, modGroupNames))
+    modGroupData = dict(map(lambda name, gid: (name, {'name': name, 'id': gid}),
+                                modGroupNames, modGroupIds))
+    projectedMods = list(filter(lambda mod: mod.item and mod.item.groupID in modGroupIds, fit.modules))
     projections = []
     for mod in projectedMods:
         stats = {}
-        if mod.item.groupID == 65 or mod.item.groupID == 1672:
+        if mod.item.groupID in [modGroupData['Stasis Web']['id'], modGroupData['Stasis Grappler']['id']]:
             stats['type'] = 'Stasis Web'
             stats['optimal'] = mod.itemModifiedAttributes['maxRange']
             attrDirectMap(['duration', 'speedFactor'], stats, mod)
-        elif mod.item.groupID == 291:
+        elif mod.item.groupID == modGroupData['Weapon Disruptor']['id']:
             stats['type'] = 'Weapon Disruptor'
             stats['optimal'] = mod.itemModifiedAttributes['maxRange']
             stats['falloff'] = mod.itemModifiedAttributes['falloffEffectiveness']
             attrDirectMap([
-                'trackingSpeedBonus', 'maxRangeBonus', 'falloffBonus', 'aoeCloudSizeBonus',\
-                'aoeVelocityBonus', 'missileVelocityBonus', 'explosionDelayBonus'\
+                'trackingSpeedBonus', 'maxRangeBonus', 'falloffBonus', 'aoeCloudSizeBonus',
+                'aoeVelocityBonus', 'missileVelocityBonus', 'explosionDelayBonus'
             ], stats, mod)
-        elif mod.item.groupID == 68:
+        elif mod.item.groupID == modGroupData['Energy Nosferatu']['id']:
             stats['type'] = 'Energy Nosferatu'
             attrDirectMap(['powerTransferAmount', 'energyNeutralizerSignatureResolution'], stats, mod)
-        elif mod.item.groupID == 71:
+        elif mod.item.groupID == modGroupData['Energy Neutralizer']['id']:
             stats['type'] = 'Energy Neutralizer'
             attrDirectMap([
-                'energyNeutralizerSignatureResolution','entityCapacitorLevelModifierSmall',\
-                'entityCapacitorLevelModifierMedium', 'entityCapacitorLevelModifierLarge',\
-                'energyNeutralizerAmount'\
+                'energyNeutralizerSignatureResolution', 'entityCapacitorLevelModifierSmall',
+                'entityCapacitorLevelModifierMedium', 'entityCapacitorLevelModifierLarge',
+                'energyNeutralizerAmount'
             ], stats, mod)
-        elif mod.item.groupID == 41 or mod.item.groupID == 1697:
+        elif mod.item.groupID in [modGroupData['Remote Shield Booster']['id'],
+                                  modGroupData['Ancillary Remote Shield Booster']['id']]:
             stats['type'] = 'Remote Shield Booster'
             attrDirectMap(['shieldBonus'], stats, mod)
-        elif mod.item.groupID == 325 or mod.item.groupID == 1698:
+        elif mod.item.groupID in [modGroupData['Remote Armor Repairer']['id'],
+                                  modGroupData['Ancillary Remote Armor Repairer']['id']]:
             stats['type'] = 'Remote Armor Repairer'
             attrDirectMap(['armorDamageAmount'], stats, mod)
-        elif mod.item.groupID == 52:
+        elif mod.item.groupID == modGroupData['Warp Scrambler']['id']:
             stats['type'] = 'Warp Scrambler'
             attrDirectMap(['activationBlockedStrenght', 'warpScrambleStrength'], stats, mod)
-        elif mod.item.groupID == 379:
+        elif mod.item.groupID == modGroupData['Target Painter']['id']:
             stats['type'] = 'Target Painter'
             attrDirectMap(['signatureRadiusBonus'], stats, mod)
-        elif mod.item.groupID == 208:
+        elif mod.item.groupID == modGroupData['Sensor Dampener']['id']:
             stats['type'] = 'Sensor Dampener'
             attrDirectMap(['maxTargetRangeBonus', 'scanResolutionBonus'], stats, mod)
-        elif mod.item.groupID == 201:
+        elif mod.item.groupID == modGroupData['ECM']['id']:
             stats['type'] = 'ECM'
             attrDirectMap([
-                'scanGravimetricStrengthBonus', 'scanMagnetometricStrengthBonus',\
-                'scanRadarStrengthBonus', 'scanLadarStrengthBonus',\
+                'scanGravimetricStrengthBonus', 'scanMagnetometricStrengthBonus',
+                'scanRadarStrengthBonus', 'scanLadarStrengthBonus',
             ], stats, mod)
-        elif mod.item.groupID == 80:
+        elif mod.item.groupID == modGroupData['Burst Jammer']['id']:
             stats['type'] = 'Burst Jammer'
             mod.itemModifiedAttributes['maxRange'] = mod.itemModifiedAttributes['ecmBurstRange']
             attrDirectMap([
-                'scanGravimetricStrengthBonus', 'scanMagnetometricStrengthBonus',\
-                'scanRadarStrengthBonus', 'scanLadarStrengthBonus',\
+                'scanGravimetricStrengthBonus', 'scanMagnetometricStrengthBonus',
+                'scanRadarStrengthBonus', 'scanLadarStrengthBonus',
             ], stats, mod)
-        elif mod.item.groupID == 1189:
+        elif mod.item.groupID == modGroupData['Micro Jump Drive']['id']:
             stats['type'] = 'Micro Jump Drive'
             mod.itemModifiedAttributes['maxRange'] = 0
             attrDirectMap(['moduleReactivationDelay'], stats, mod)
-        if mod.itemModifiedAttributes['maxRange'] == None:
+        if mod.itemModifiedAttributes['maxRange'] is None:
             print(mod.item.name)
             print(mod.itemModifiedAttributes.items())
             raise ValueError('Projected module lacks a maxRange')
@@ -137,13 +185,14 @@ def getOutgoingProjectionData(fit):
         projections.append(stats)
     return projections
 
+
 def getModuleNames(fit):
     moduleNames = []
     highSlotNames = []
     midSlotNames = []
     lowSlotNames = []
     rigSlotNames = []
-    miscSlotNames = [] #subsystems ect
+    miscSlotNames = []  # subsystems ect
     for mod in fit.modules:
         if mod.slot == 3:
             modSlotNames = highSlotNames
@@ -156,8 +205,8 @@ def getModuleNames(fit):
         elif mod.slot == 5:
             modSlotNames = miscSlotNames
         try:
-            if mod.item != None:
-                if mod.charge != None:
+            if mod.item is not None:
+                if mod.charge is not None:
                     modSlotNames.append(mod.item.name + ':  ' + mod.charge.name)
                 else:
                     modSlotNames.append(mod.item.name)
@@ -167,8 +216,12 @@ def getModuleNames(fit):
             print(vars(mod))
             print('could not find name for module')
             print(fit.modules)
-    for modInfo in [['High Slots:'], highSlotNames, ['', 'Med Slots:'], midSlotNames, ['', 'Low Slots:'], lowSlotNames, ['', 'Rig Slots:'], rigSlotNames]:
+    for modInfo in [
+        ['High Slots:'], highSlotNames, ['', 'Med Slots:'], midSlotNames,
+        ['', 'Low Slots:'], lowSlotNames, ['', 'Rig Slots:'], rigSlotNames
+    ]:
         moduleNames.extend(modInfo)
+
     if len(miscSlotNames) > 0:
         moduleNames.append('')
         moduleNames.append('Subsystems:')
@@ -201,19 +254,37 @@ def getModuleNames(fit):
             moduleNames.append(commandFit.name)
     return moduleNames
 
+
+def getFighterAbilityData(fighterAttr, fighter, baseRef):
+    baseRefDam = baseRef + 'Damage'
+    abilityName = 'RegularAttack' if baseRef == 'fighterAbilityAttackMissile' else 'MissileAttack'
+    rangeSuffix = 'RangeOptimal' if baseRef == 'fighterAbilityAttackMissile' else 'Range'
+    reductionRef = baseRef if baseRef == 'fighterAbilityAttackMissile' else baseRefDam
+    damageReductionFactor = log(fighterAttr[reductionRef + 'ReductionFactor']) / log(fighterAttr[reductionRef + 'ReductionSensitivity'])
+    damTypes = ['EM', 'Therm', 'Exp', 'Kin']
+    abBaseDamage = sum(map(lambda damType: fighterAttr[baseRefDam + damType], damTypes))
+    abDamage = abBaseDamage * fighterAttr[baseRefDam + 'Multiplier']
+    return {
+        'name': abilityName, 'volley': abDamage * fighter.amountActive, 'explosionRadius': fighterAttr[baseRef + 'ExplosionRadius'],
+        'explosionVelocity': fighterAttr[baseRef + 'ExplosionVelocity'], 'optimal': fighterAttr[baseRef + rangeSuffix],
+        'damageReductionFactor': damageReductionFactor, 'rof': fighterAttr[baseRef + 'Duration'],
+    }
+
+
 def getWeaponSystemData(fit):
     weaponSystems = []
     groups = {}
     for mod in fit.modules:
         if mod.dps > 0:
+            # Group weapon + ammo combinations that occur more than once
             keystr = str(mod.itemID) + '-' + str(mod.chargeID)
             if keystr in groups:
                 groups[keystr][1] += 1
             else:
                 groups[keystr] = [mod, 1]
-    for wepGroup in groups:
-        stats = groups[wepGroup][0]
-        c = groups[wepGroup][1]
+    for wepGroup in groups.values():
+        stats = wepGroup[0]
+        n = wepGroup[1]
         tracking = 0
         maxVelocity = 0
         explosionDelay = 0
@@ -221,11 +292,12 @@ def getWeaponSystemData(fit):
         explosionRadius = 0
         explosionVelocity = 0
         aoeFieldRange = 0
-        if stats.hardpoint == 2:
+        if stats.hardpoint == Hardpoint.TURRET:
             tracking = stats.itemModifiedAttributes['trackingSpeed']
             typeing = 'Turret'
             name = stats.item.name + ', ' + stats.charge.name
-        elif stats.hardpoint == 1 or 'Bomb Launcher' in stats.item.name:
+        # Bombs share most attributes with missiles despite not needing the hardpoint
+        elif stats.hardpoint == Hardpoint.MISSILE or 'Bomb Launcher' in stats.item.name:
             maxVelocity = stats.chargeModifiedAttributes['maxVelocity']
             explosionDelay = stats.chargeModifiedAttributes['explosionDelay']
             damageReductionFactor = stats.chargeModifiedAttributes['aoeDamageReductionFactor']
@@ -233,140 +305,240 @@ def getWeaponSystemData(fit):
             explosionVelocity = stats.chargeModifiedAttributes['aoeVelocity']
             typeing = 'Missile'
             name = stats.item.name + ', ' + stats.charge.name
-        elif stats.hardpoint == 0:
+        elif stats.hardpoint == Hardpoint.NONE:
             aoeFieldRange = stats.itemModifiedAttributes['empFieldRange']
+            # This also covers non-bomb weapons with dps values and no hardpoints, most notably targeted doomsdays.
             typeing = 'SmartBomb'
             name = stats.item.name
-        statDict = {'dps': stats.dps * c, 'capUse': stats.capUse * c, 'falloff': stats.falloff,\
-                    'type': typeing, 'name': name, 'optimal': stats.maxRange,\
-                    'numCharges': stats.numCharges, 'numShots': stats.numShots, 'reloadTime': stats.reloadTime,\
-                    'cycleTime': stats.cycleTime, 'volley': stats.volley * c, 'tracking': tracking,\
-                    'maxVelocity': maxVelocity, 'explosionDelay': explosionDelay, 'damageReductionFactor': damageReductionFactor,\
-                    'explosionRadius': explosionRadius, 'explosionVelocity': explosionVelocity, 'aoeFieldRange': aoeFieldRange\
+        statDict = {
+            'dps': stats.dps * n, 'capUse': stats.capUse * n, 'falloff': stats.falloff,
+            'type': typeing, 'name': name, 'optimal': stats.maxRange,
+            'numCharges': stats.numCharges, 'numShots': stats.numShots, 'reloadTime': stats.reloadTime,
+            'cycleTime': stats.cycleTime, 'volley': stats.volley * n, 'tracking': tracking,
+            'maxVelocity': maxVelocity, 'explosionDelay': explosionDelay, 'damageReductionFactor': damageReductionFactor,
+            'explosionRadius': explosionRadius, 'explosionVelocity': explosionVelocity, 'aoeFieldRange': aoeFieldRange
         }
         weaponSystems.append(statDict)
-        #if fit.droneDPS > 0:
     for drone in fit.drones:
         if drone.dps[0] > 0 and drone.amountActive > 0:
-            newTracking =  drone.itemModifiedAttributes['trackingSpeed'] / (drone.itemModifiedAttributes['optimalSigRadius'] / 40000)
-            statDict = {'dps': drone.dps[0], 'cycleTime': drone.cycleTime, 'type': 'Drone',\
-                        'optimal': drone.maxRange, 'name': drone.item.name, 'falloff': drone.falloff,\
-                        'maxSpeed': drone.itemModifiedAttributes['maxVelocity'], 'tracking': newTracking,\
-                        'volley': drone.dps[1]\
+            droneAttr = drone.itemModifiedAttributes
+            # Drones are using the old tracking formula for trackingSpeed. This updates it to match turrets.
+            newTracking = droneAttr['trackingSpeed'] / (droneAttr['optimalSigRadius'] / 40000)
+            statDict = {
+                'dps': drone.dps[0], 'cycleTime': drone.cycleTime, 'type': 'Drone',
+                'optimal': drone.maxRange, 'name': drone.item.name, 'falloff': drone.falloff,
+                'maxSpeed': droneAttr['maxVelocity'], 'tracking': newTracking,
+                'volley': drone.dps[1]
             }
             weaponSystems.append(statDict)
     for fighter in fit.fighters:
         if fighter.dps[0] > 0 and fighter.amountActive > 0:
+            fighterAttr = fighter.itemModifiedAttributes
             abilities = []
-            #for ability in fighter.abilities:
-            if 'fighterAbilityAttackMissileDamageEM' in fighter.itemModifiedAttributes:
+            if 'fighterAbilityAttackMissileDamageEM' in fighterAttr:
                 baseRef = 'fighterAbilityAttackMissile'
-                baseRefDam = baseRef + 'Damage'
-                damageReductionFactor = log(fighter.itemModifiedAttributes[baseRef + 'ReductionFactor']) / log(fighter.itemModifiedAttributes[baseRef + 'ReductionSensitivity'])
-                abBaseDamage = fighter.itemModifiedAttributes[baseRefDam + 'EM'] + fighter.itemModifiedAttributes[baseRefDam + 'Therm'] + fighter.itemModifiedAttributes[baseRefDam + 'Exp'] + fighter.itemModifiedAttributes[baseRefDam + 'Kin']
-                abDamage = abBaseDamage * fighter.itemModifiedAttributes[baseRefDam + 'Multiplier']
-                ability = {'name': 'RegularAttack', 'volley': abDamage * fighter.amountActive, 'explosionRadius': fighter.itemModifiedAttributes[baseRef + 'ExplosionRadius'],\
-                           'explosionVelocity': fighter.itemModifiedAttributes[baseRef + 'ExplosionVelocity'], 'optimal': fighter.itemModifiedAttributes[baseRef + 'RangeOptimal'],\
-                           'damageReductionFactor': damageReductionFactor, 'rof': fighter.itemModifiedAttributes[baseRef + 'Duration'],\
-                }
+                ability = getFighterAbilityData(fighterAttr, fighter, baseRef)
                 abilities.append(ability)
-            if 'fighterAbilityMissilesDamageEM' in fighter.itemModifiedAttributes:
+            if 'fighterAbilityMissilesDamageEM' in fighterAttr:
                 baseRef = 'fighterAbilityMissiles'
-                baseRefDam = baseRef + 'Damage'
-                damageReductionFactor = log(fighter.itemModifiedAttributes[baseRefDam + 'ReductionFactor']) / log(fighter.itemModifiedAttributes[baseRefDam + 'ReductionSensitivity'])
-                abBaseDamage = fighter.itemModifiedAttributes[baseRefDam + 'EM'] + fighter.itemModifiedAttributes[baseRefDam + 'Therm'] + fighter.itemModifiedAttributes[baseRefDam + 'Exp'] + fighter.itemModifiedAttributes[baseRefDam + 'Kin']
-                abDamage = abBaseDamage * fighter.itemModifiedAttributes[baseRefDam + 'Multiplier']
-                ability = {'name': 'MissileAttack', 'volley': abDamage * fighter.amountActive, 'explosionRadius': fighter.itemModifiedAttributes[baseRef + 'ExplosionRadius'],\
-                           'explosionVelocity': fighter.itemModifiedAttributes[baseRef + 'ExplosionVelocity'], 'optimal': fighter.itemModifiedAttributes[baseRef + 'Range'],\
-                           'damageReductionFactor': damageReductionFactor, 'rof': fighter.itemModifiedAttributes[baseRef + 'Duration'],\
-                }
+                ability = getFighterAbilityData(fighterAttr, fighter, baseRef)
                 abilities.append(ability)
-            statDict = {'dps': fighter.dps[0], 'type': 'Fighter', 'name': fighter.item.name,\
-                        'maxSpeed': fighter.itemModifiedAttributes['maxVelocity'], 'abilities': abilities, 'ehp': fighter.itemModifiedAttributes['shieldCapacity'] / 0.8875 * fighter.amountActive,\
-                        'volley': fighter.dps[1], 'signatureRadius': fighter.itemModifiedAttributes['signatureRadius']\
+            statDict = {
+                'dps': fighter.dps[0], 'type': 'Fighter', 'name': fighter.item.name,
+                'maxSpeed': fighterAttr['maxVelocity'], 'abilities': abilities,
+                'ehp': fighterAttr['shieldCapacity'] / 0.8875 * fighter.amountActive,
+                'volley': fighter.dps[1], 'signatureRadius': fighterAttr['signatureRadius']
             }
             weaponSystems.append(statDict)
     return weaponSystems
 
-def getWeaponBonusMultipliers(fit):
-    multipliers = {'turret': 1, 'launcher': 1, 'droneBandwidth': 1}
-    from eos.db import gamedata_session
-    from eos.gamedata import Traits
-    filterVal = Traits.typeID == fit.shipID
-    data = gamedata_session.query(Traits).options().filter(filterVal).all()
-    roleBonusMode = False
-    if len(data) == 0:
-        return multipliers
-    previousTypedBonus = 0
-    previousDroneTypeBonus = 0
-    for bonusText in data[0].traitText.splitlines():
-        bonusText = bonusText.lower()
-        if 'per skill level' in bonusText:
-            roleBonusMode = False
-        if 'role bonus' in bonusText or 'misc bonus' in bonusText:
-            roleBonusMode = True
-        multi = 1
-        if 'damage' in bonusText and not any(e in bonusText for e in ['control', 'heat']):
-            splitText = bonusText.split('%')
-            if (float(splitText[0]) > 0) == False:
-                print('damage bonus split did not parse correctly!')
-                print(float(splitText[0]))
-            if roleBonusMode:
-                addedMulti = float(splitText[0])
-            else:
-                addedMulti = float(splitText[0]) * 5
-            if any(e in bonusText for e in [' em', 'thermal', 'kinetic', 'explosive']):
-                if addedMulti > previousTypedBonus:
-                    previousTypedBonus = addedMulti
-                else:
-                    addedMulti = 0
-            if any(e in bonusText for e in ['heavy drone', 'medium drone', 'light drone', 'sentry drone']):
-                if addedMulti > previousDroneTypeBonus:
-                    previousDroneTypeBonus = addedMulti
-                else:
-                    addedMulti = 0
-            multi = 1 + (addedMulti / 100)
-        elif 'rate of fire' in bonusText:
-            splitText = bonusText.split('%')
-            if (float(splitText[0]) > 0) == False:
-                print('rate of fire bonus split did not parse correctly!')
-                print(float(splitText[0]))
-            if roleBonusMode:
-                rofMulti = float(splitText[0])
-            else:
-                rofMulti = float(splitText[0]) * 5
-            multi = 1 / (1 - (rofMulti / 100))
-        if multi > 1:
-            if 'drone' in bonusText.lower():
-                multipliers['droneBandwidth'] *= multi
-            elif 'turret' in bonusText.lower():
-                multipliers['turret'] *= multi
-            elif any(e in bonusText for e in ['missile', 'torpedo']):
-                multipliers['launcher'] *= multi
-    return multipliers
-def getShipSize(groupID):
-    # Sizings are somewhat arbitrary but allow for a more managable number of top level groupings in a tree structure.
-    shipSizes = ['Frigate', 'Destroyer', 'Cruiser', 'Battlecruiser', 'Battleship', 'Capital', 'Industrial', 'Misc']
-    if groupID in [25, 31, 237, 324, 830, 831, 834, 893, 1283, 1527]:
-        return shipSizes[0]
-    elif groupID in [420, 541, 1305, 1534]:
-        return shipSizes[1]
-    elif groupID in [26, 358, 832, 833, 894, 906, 963]:
-        return shipSizes[2]
-    elif groupID in [419, 540, 1201]:
-        return shipSizes[3]
-    elif groupID in [27, 381, 898, 900]:
-        return shipSizes[4]
-    elif groupID in [30, 485, 513, 547, 659, 883, 902, 1538]:
-        return shipSizes[5]
-    elif groupID in [28, 380, 1202, 463, 543, 941]:
-        return shipSizes[6]
-    elif groupID in [29, 1022]:
-        return shipSizes[7]
+
+wepTestSet = {}
+
+
+def getTestSet(setType):
+    def GetT2ItemsWhere(additionalFilter, mustBeOffensive=False, category='Module'):
+        # Used to obtain a smaller subset of items while still containing examples of each group.
+        T2_META_LEVEL = 5
+        metaLevelAttrID = getAttributeInfo('metaLevel').attributeID
+        categoryID = getCategory(category).categoryID
+        result = gamedata_session.query(Item).join(ItemEffect, Group, Attribute).\
+                  filter(
+                      additionalFilter,
+                      Attribute.attributeID == metaLevelAttrID,
+                      Attribute.value == T2_META_LEVEL,
+                      Group.categoryID == categoryID,
+                  ).all()
+        if mustBeOffensive:
+            result = filter(lambda t: t.offensive is True, result)
+        return list(result)
+
+    def getChargeType(item, setType):
+        if setType == 'turret':
+            return str(item.attributes['chargeGroup1'].value) + '-' + str(item.attributes['chargeSize'].value)
+        return str(item.attributes['chargeGroup1'].value)
+
+    if setType in wepTestSet.keys():
+        return wepTestSet[setType]
     else:
-        sizeNotFoundMsg = 'ShipSize not found for groupID: ' + str(groupID)
-        print(sizeNotFoundMsg)
-        return sizeNotFoundMsg
+        wepTestSet[setType] = []
+    modSet = wepTestSet[setType]
+
+    if setType == 'drone':
+        ilist = GetT2ItemsWhere(True, True, 'Drone')
+        for item in ilist:
+            drone = Drone(item)
+            drone.amount = 1
+            drone.amountActive = 1
+            drone.itemModifiedAttributes.parent = drone
+            modSet.append(drone)
+        return modSet
+
+    turretFittedEffectID = gamedata_session.query(Effect).filter(Effect.name == 'turretFitted').first().effectID
+    launcherFittedEffectID = gamedata_session.query(Effect).filter(Effect.name == 'launcherFitted').first().effectID
+    if setType == 'launcher':
+        effectFilter = ItemEffect.effectID == launcherFittedEffectID
+        reqOff = False
+    else:
+        effectFilter = ItemEffect.effectID == turretFittedEffectID
+        reqOff = True
+    ilist = GetT2ItemsWhere(effectFilter, reqOff)
+    previousChargeTypes = []
+    # Get modules from item list
+    for item in ilist:
+        chargeType = getChargeType(item, setType)
+        # Only add turrets if we don't already have one with the same size and ammo type.
+        if setType == 'launcher' or chargeType not in previousChargeTypes:
+            previousChargeTypes.append(chargeType)
+            mod = Module(item)
+            modSet.append(mod)
+
+    mkt = Market.getInstance()
+    # Due to typed missile damage bonuses we'll need to add extra launchers to cover all four types.
+    additionalLaunchers = []
+    for mod in modSet:
+        clist = list(gamedata_session.query(Item).options().
+                filter(Item.groupID == mod.itemModifiedAttributes['chargeGroup1']).all())
+        mods = [mod]
+        charges = [clist[0]]
+        if setType == 'launcher':
+            # We don't want variations of missiles we already have
+            prevCharges = list(mkt.getVariationsByItems(charges))
+            testCharges = []
+            for charge in clist:
+                if charge not in prevCharges:
+                    testCharges.append(charge)
+                    prevCharges += mkt.getVariationsByItems([charge])
+            for c in testCharges:
+                charges.append(c)
+                additionalLauncher = Module(mod.item)
+                mods.append(additionalLauncher)
+        for i in range(len(mods)):
+            mods[i].charge = charges[i]
+            mods[i].reloadForce = True
+            mods[i].state = 2
+            if setType == 'launcher' and i > 0:
+                additionalLaunchers.append(mods[i])
+    modSet += additionalLaunchers
+    return modSet
+
+
+def getWeaponBonusMultipliers(fit):
+    def sumDamage(attr):
+        totalDamage = 0
+        for damageType in ['emDamage', 'thermalDamage', 'kineticDamage', 'explosiveDamage']:
+            if attr[damageType] is not None:
+                totalDamage += attr[damageType]
+        return totalDamage
+
+    def getCurrentMultipliers(tf):
+        fitMultipliers = {}
+        getDroneMulti = lambda d: sumDamage(d.itemModifiedAttributes) * d.itemModifiedAttributes['damageMultiplier']
+        fitMultipliers['drones'] = list(map(getDroneMulti, tf.drones))
+
+        getFitTurrets = lambda f: filter(lambda mod: mod.hardpoint == Hardpoint.TURRET, f.modules)
+        getTurretMulti = lambda mod: mod.itemModifiedAttributes['damageMultiplier'] / mod.cycleTime
+        fitMultipliers['turrets'] = list(map(getTurretMulti, getFitTurrets(tf)))
+
+        getFitLaunchers = lambda f: filter(lambda mod: mod.hardpoint == Hardpoint.MISSILE, f.modules)
+        getLauncherMulti = lambda mod: sumDamage(mod.chargeModifiedAttributes) / mod.cycleTime
+        fitMultipliers['launchers'] = list(map(getLauncherMulti, getFitLaunchers(tf)))
+        return fitMultipliers
+
+    multipliers = {'turret': 1, 'launcher': 1, 'droneBandwidth': 1}
+    drones = getTestSet('drone')
+    launchers = getTestSet('launcher')
+    turrets = getTestSet('turret')
+    for weaponTypeSet in [turrets, launchers, drones]:
+        for mod in weaponTypeSet:
+            mod.owner = fit
+    turrets = list(filter(lambda mod: mod.itemModifiedAttributes['damageMultiplier'], turrets))
+    launchers = list(filter(lambda mod: sumDamage(mod.chargeModifiedAttributes), launchers))
+    # Since the effect modules are fairly opaque a mock test fit is used to test the impact of traits.
+    tf = Fit.getInstance()
+    tf.modules = HandledList(turrets + launchers)
+    tf.character = fit.character
+    tf.ship = fit.ship
+    tf.drones = HandledList(drones)
+    tf.fighters = HandledList([])
+    tf.boosters = HandledList([])
+    tf.extraAttributes = fit.extraAttributes
+    tf.mode = fit.mode
+    preTraitMultipliers = getCurrentMultipliers(tf)
+    for effect in fit.ship.item.effects.values():
+        if effect._Effect__effectModule is not None:
+            effect.handler(tf, tf.ship, [])
+    # Factor in mode effects for T3 Destroyers
+    if fit.mode is not None:
+        for effect in fit.mode.item.effects.values():
+            if effect._Effect__effectModule is not None:
+                effect.handler(tf, fit.mode, [])
+    if fit.ship.item.groupID == getGroup('Strategic Cruiser').ID:
+        subSystems = list(filter(lambda mod: mod.slot == Slot.SUBSYSTEM and mod.item, fit.modules))
+        for sub in subSystems:
+            for effect in sub.item.effects.values():
+                if effect._Effect__effectModule is not None:
+                    effect.handler(tf, sub, [])
+    postTraitMultipliers = getCurrentMultipliers(tf)
+    getMaxRatio = lambda dictA, dictB, key: max(map(lambda a, b: b / a, dictA[key], dictB[key]))
+    multipliers['turret'] = round(getMaxRatio(preTraitMultipliers, postTraitMultipliers, 'turrets'), 6)
+    multipliers['launcher'] = round(getMaxRatio(preTraitMultipliers, postTraitMultipliers, 'launchers'), 6)
+    multipliers['droneBandwidth'] = round(getMaxRatio(preTraitMultipliers, postTraitMultipliers, 'drones'), 6)
+    tf.recalc(fit)
+    return multipliers
+
+
+def getShipSize(groupID):
+    # Size groupings are somewhat arbitrary but allow for a more managable number of top level groupings in a tree structure.
+    frigateGroupNames = ['Frigate', 'Shuttle', 'Corvette', 'Assault Frigate', 'Covert Ops', 'Interceptor',
+                         'Stealth Bomber', 'Electronic Attack Ship', 'Expedition Frigate', 'Logistics Frigate']
+    destroyerGroupNames = ['Destroyer', 'Interdictor', 'Tactical Destroyer', 'Command Destroyer']
+    cruiserGroupNames = ['Cruiser', 'Heavy Assault Cruiser', 'Logistics', 'Force Recon Ship',
+                         'Heavy Interdiction Cruiser', 'Combat Recon Ship', 'Strategic Cruiser']
+    bcGroupNames = ['Combat Battlecruiser', 'Command Ship', 'Attack Battlecruiser']
+    bsGroupNames = ['Battleship', 'Elite Battleship', 'Black Ops', 'Marauder']
+    capitalGroupNames = ['Titan', 'Dreadnought', 'Freighter', 'Carrier', 'Supercarrier',
+                         'Capital Industrial Ship', 'Jump Freighter', 'Force Auxiliary']
+    indyGroupNames = ['Industrial', 'Deep Space Transport', 'Blockade Runner',
+                      'Mining Barge', 'Exhumer', 'Industrial Command Ship']
+    miscGroupNames = ['Capsule', 'Prototype Exploration Ship']
+    shipSizes = [
+        {'name': 'Frigate', 'groupIDs': map(lambda s: getGroup(s).ID, frigateGroupNames)},
+        {'name': 'Destroyer', 'groupIDs': map(lambda s: getGroup(s).ID, destroyerGroupNames)},
+        {'name': 'Cruiser', 'groupIDs': map(lambda s: getGroup(s).ID, cruiserGroupNames)},
+        {'name': 'Battlecruiser', 'groupIDs': map(lambda s: getGroup(s).ID, bcGroupNames)},
+        {'name': 'Battleship', 'groupIDs': map(lambda s: getGroup(s).ID, bsGroupNames)},
+        {'name': 'Capital', 'groupIDs': map(lambda s: getGroup(s).ID, capitalGroupNames)},
+        {'name': 'Industrial', 'groupIDs': map(lambda s: getGroup(s).ID, indyGroupNames)},
+        {'name': 'Misc', 'groupIDs': map(lambda s: getGroup(s).ID, miscGroupNames)}
+    ]
+    for size in shipSizes:
+        if groupID in size['groupIDs']:
+            return size['name']
+    sizeNotFoundMsg = 'ShipSize not found for groupID: ' + str(groupID)
+    print(sizeNotFoundMsg)
+    return sizeNotFoundMsg
+
 
 def parseNeededFitDetails(fit, groupID):
     includeShipTypeData = groupID > 0
@@ -377,13 +549,11 @@ def parseNeededFitDetails(fit, groupID):
         fitName = fit.name
     print('')
     print('name: ' + fit.name)
-    fitL = Fit()
+    fitL = Fit.getInstance()
     fitL.recalc(fit)
     fit = eos.db.getFit(fitID)
     fitModAttr = fit.ship.itemModifiedAttributes
     propData = getPropData(fit, fitL)
-    print(fitModAttr['rigSize'])
-    print(propData)
     mwdPropSpeed = fit.maxSpeed
     if includeShipTypeData:
         mwdPropSpeed = getT2MwdSpeed(fit, fitL)
@@ -395,52 +565,52 @@ def parseNeededFitDetails(fit, groupID):
     launcherSlots = fitModAttr['launcherSlotsLeft'] if fitModAttr['launcherSlotsLeft'] is not None else 0
     droneBandwidth = fitModAttr['droneBandwidth'] if fitModAttr['droneBandwidth'] is not None else 0
     weaponBonusMultipliers = getWeaponBonusMultipliers(fit)
-    effectiveTurretSlots = round(turretSlots * weaponBonusMultipliers['turret'], 2);
-    effectiveLauncherSlots = round(launcherSlots * weaponBonusMultipliers['launcher'], 2);
-    effectiveDroneBandwidth = round(droneBandwidth * weaponBonusMultipliers['droneBandwidth'], 2);
+    effectiveTurretSlots = round(turretSlots * weaponBonusMultipliers['turret'], 2)
+    effectiveLauncherSlots = round(launcherSlots * weaponBonusMultipliers['launcher'], 2)
+    effectiveDroneBandwidth = round(droneBandwidth * weaponBonusMultipliers['droneBandwidth'], 2)
     # Assume a T2 siege module for dreads
-    if groupID == 485:
+    if groupID == getGroup('Dreadnought').ID:
         effectiveTurretSlots *= 9.4
         effectiveLauncherSlots *= 15
     hullResonance = {
-        'exp': fitModAttr['explosiveDamageResonance'], 'kin': fitModAttr['kineticDamageResonance'], \
+        'exp': fitModAttr['explosiveDamageResonance'], 'kin': fitModAttr['kineticDamageResonance'],
         'therm': fitModAttr['thermalDamageResonance'], 'em': fitModAttr['emDamageResonance']
     }
     armorResonance = {
-        'exp': fitModAttr['armorExplosiveDamageResonance'], 'kin': fitModAttr['armorKineticDamageResonance'], \
+        'exp': fitModAttr['armorExplosiveDamageResonance'], 'kin': fitModAttr['armorKineticDamageResonance'],
         'therm': fitModAttr['armorThermalDamageResonance'], 'em': fitModAttr['armorEmDamageResonance']
     }
     shieldResonance = {
-        'exp': fitModAttr['shieldExplosiveDamageResonance'], 'kin': fitModAttr['shieldKineticDamageResonance'], \
+        'exp': fitModAttr['shieldExplosiveDamageResonance'], 'kin': fitModAttr['shieldKineticDamageResonance'],
         'therm': fitModAttr['shieldThermalDamageResonance'], 'em': fitModAttr['shieldEmDamageResonance']
     }
     resonance = {'hull': hullResonance, 'armor': armorResonance, 'shield': shieldResonance}
     shipSize = getShipSize(groupID)
 
     try:
-        parsable =  {
-            'name': fitName, 'ehp': fit.ehp, 'droneDPS': fit.droneDPS, \
-            'droneVolley': fit.droneVolley, 'hp': fit.hp, 'maxTargets': fit.maxTargets, \
-            'maxSpeed': fit.maxSpeed, 'weaponVolley': fit.weaponVolley, 'totalVolley': fit.totalVolley,\
-            'maxTargetRange': fit.maxTargetRange, 'scanStrength': fit.scanStrength,\
-            'weaponDPS': fit.weaponDPS, 'alignTime': fit.alignTime, 'signatureRadius': fitModAttr['signatureRadius'],\
-            'weapons': weaponSystems, 'scanRes': fitModAttr['scanResolution'],\
-            'projectedModules': fit.projectedModules, 'capUsed': fit.capUsed, 'capRecharge': fit.capRecharge,\
-            'rigSlots': fitModAttr['rigSlots'], 'lowSlots': fitModAttr['lowSlots'],\
-            'midSlots': fitModAttr['medSlots'], 'highSlots': fitModAttr['hiSlots'],\
-            'turretSlots': fitModAttr['turretSlotsLeft'], 'launcherSlots': fitModAttr['launcherSlotsLeft'],\
-            'powerOutput': fitModAttr['powerOutput'], 'rigSize': fitModAttr['rigSize'],\
-            'effectiveTurrets': effectiveTurretSlots, 'effectiveLaunchers': effectiveLauncherSlots,\
-            'effectiveDroneBandwidth': effectiveDroneBandwidth,\
-            'resonance': resonance, 'typeID': fit.shipID, 'groupID': groupID, 'shipSize': shipSize,\
-            'droneControlRange': fitModAttr['droneControlRange'], 'mass': fitModAttr['mass'],\
-            'moduleNames': moduleNames, 'projections': projections,\
-            'unpropedSpeed': propData['unpropedSpeed'], 'unpropedSig': propData['unpropedSig'],\
+        dataDict = {
+            'name': fitName, 'ehp': fit.ehp, 'droneDPS': fit.droneDPS,
+            'droneVolley': fit.droneVolley, 'hp': fit.hp, 'maxTargets': fit.maxTargets,
+            'maxSpeed': fit.maxSpeed, 'weaponVolley': fit.weaponVolley, 'totalVolley': fit.totalVolley,
+            'maxTargetRange': fit.maxTargetRange, 'scanStrength': fit.scanStrength,
+            'weaponDPS': fit.weaponDPS, 'alignTime': fit.alignTime, 'signatureRadius': fitModAttr['signatureRadius'],
+            'weapons': weaponSystems, 'scanRes': fitModAttr['scanResolution'],
+            'projectedModules': fit.projectedModules, 'capUsed': fit.capUsed, 'capRecharge': fit.capRecharge,
+            'rigSlots': fitModAttr['rigSlots'], 'lowSlots': fitModAttr['lowSlots'],
+            'midSlots': fitModAttr['medSlots'], 'highSlots': fitModAttr['hiSlots'],
+            'turretSlots': fitModAttr['turretSlotsLeft'], 'launcherSlots': fitModAttr['launcherSlotsLeft'],
+            'powerOutput': fitModAttr['powerOutput'], 'rigSize': fitModAttr['rigSize'],
+            'effectiveTurrets': effectiveTurretSlots, 'effectiveLaunchers': effectiveLauncherSlots,
+            'effectiveDroneBandwidth': effectiveDroneBandwidth,
+            'resonance': resonance, 'typeID': fit.shipID, 'groupID': groupID, 'shipSize': shipSize,
+            'droneControlRange': fitModAttr['droneControlRange'], 'mass': fitModAttr['mass'],
+            'moduleNames': moduleNames, 'projections': projections,
+            'unpropedSpeed': propData['unpropedSpeed'], 'unpropedSig': propData['unpropedSig'],
             'usingMWD': propData['usingMWD'], 'mwdPropSpeed': mwdPropSpeed
         }
     except TypeError:
         print('Error parsing fit:' + str(fit))
         print(TypeError)
         parsable = {'name': fitName + 'Fit could not be correctly parsed'}
-    stringified = json.dumps(parsable, skipkeys=True)
-    return stringified
+    export = json.dumps(dataDict, skipkeys=True)
+    return export

@@ -93,7 +93,10 @@ from eos.db.gamedata.traits import traits_table
 from eos.saveddata.mode import Mode
 
 def exportBaseShips(opts):
+    nameReq = ''
     if opts:
+        if opts.search:
+            nameReq = opts.search
         if opts.outputpath:
             basePath = opts.outputpath
         elif opts.savepath:
@@ -109,9 +112,8 @@ def exportBaseShips(opts):
     shipCata = eos.db.getItemsByCategory('Ship')
     baseLimit = 1000
     baseN = 0
-    nameReqBase = '';
     for ship in iter(shipCata):
-        if baseN < baseLimit and nameReqBase in ship.name:
+        if baseN < baseLimit and nameReq in ship.name:
             print(ship.name)
             print(ship.groupID)
             dna = str(ship.ID)
