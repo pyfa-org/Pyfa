@@ -58,14 +58,14 @@ class ItemMutator(wx.Panel):
                 worse_range = max_t
             else:
                 worse_range = min_t
-
-            print("{}: \nHigh is good: {}".format(m.attribute.displayName, m.attribute.highIsGood))
-            print("Value {}".format(m.baseValue))
-
-            print(min_t)
-            print(max_t)
-            print(better_range)
-            print(worse_range)
+            #
+            # print("{}: \nHigh is good: {}".format(m.attribute.displayName, m.attribute.highIsGood))
+            # print("Value {}".format(m.baseValue))
+            #
+            # print(min_t)
+            # print(max_t)
+            # print(better_range)
+            # print(worse_range)
 
             font = parent.GetFont()
             font.SetWeight(wx.BOLD)
@@ -148,9 +148,19 @@ class ItemMutator(wx.Panel):
 
     def callLater(self):
         self.timer = None
-        print("recalc fit")
         sFit = Fit.getInstance()
+
+        # recalc the fit that this module affects. This is not necessarily the currently active fit
         sFit.refreshFit(self.activeFit)
-        # todo BUG: if fit is not currently active, this causes the changed fit to show...?
-        wx.PostEvent(gui.mainFrame.MainFrame.getInstance(), GE.FitChanged(fitID=self.activeFit))
+
+        mainFrame = gui.mainFrame.MainFrame.getInstance()
+        activeFit = mainFrame.getActiveFit()
+
+        if activeFit != self.activeFit:
+            # if we're no longer on the fit this module is affecting, simulate a "switch fit" so that the active fit
+            # can be recalculated (if needed)
+            sFit.switchFit(activeFit)
+
+        # Send signal to GUI to update stats with current active fit
+        wx.PostEvent(mainFrame, GE.FitChanged(fitID=activeFit))
 
