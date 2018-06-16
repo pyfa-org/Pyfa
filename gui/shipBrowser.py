@@ -189,7 +189,7 @@ class ShipBrowser(wx.Panel):
         "amarr", "caldari", "gallente", "minmatar",
         "sisters", "ore",
         "serpentis", "angel", "blood", "sansha", "guristas", "mordu",
-        "jove", "upwell", None
+        "jove", "upwell", "triglavian", None
     ]
 
     def raceNameKey(self, ship):

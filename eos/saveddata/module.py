@@ -72,6 +72,7 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
     """An instance of this class represents a module together with its charge and modified attributes"""
     DAMAGE_TYPES = ("em", "thermal", "kinetic", "explosive")
     MINING_ATTRIBUTES = ("miningAmount",)
+    SYSTEM_GROUPS = ("Effect Beacon", "MassiveEnvironments", "Abyssal Hazards", "Non-Interactable Object")
 
     def __init__(self, item):
         """Initialize a module from the program"""
@@ -165,7 +166,7 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
             return False
         return self.__item is None or \
                (self.__item.category.name not in ("Module", "Subsystem", "Structure Module") and
-                self.__item.group.name != "Effect Beacon")
+                self.__item.group.name not in self.SYSTEM_GROUPS)
 
     @property
     def numCharges(self):
@@ -336,6 +337,8 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
 
                 volley = sum([(func("%sDamage" % attr) or 0) * (1 - getattr(targetResists, "%sAmount" % attr, 0)) for attr in self.DAMAGE_TYPES])
                 volley *= self.getModifiedItemAttr("damageMultiplier") or 1
+                # Disintegrator-specific ramp-up multiplier
+                volley *= (self.getModifiedItemAttr("damageMultiplierBonusMax") or 0) + 1
                 if volley:
                     cycleTime = self.cycleTime
                     # Some weapons repeat multiple times in one cycle (think doomsdays)
@@ -469,7 +472,8 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
         if max is not None:
             current = 0  # if self.owner != fit else -1  # Disabled, see #1278
             for mod in fit.modules:
-                if mod.item and mod.item.groupID == self.item.groupID:
+                if (mod.item and mod.item.groupID == self.item.groupID and
+                        self.modPosition != mod.modPosition):
                     current += 1
 
             if current >= max:
@@ -477,12 +481,8 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
 
         # Check this only if we're told to do so
         if hardpointLimit:
-            if self.hardpoint == Hardpoint.TURRET:
-                if fit.ship.getModifiedItemAttr('turretSlotsLeft') - fit.getHardpointsUsed(Hardpoint.TURRET) < 1:
-                    return False
-            elif self.hardpoint == Hardpoint.MISSILE:
-                if fit.ship.getModifiedItemAttr('launcherSlotsLeft') - fit.getHardpointsUsed(Hardpoint.MISSILE) < 1:
-                    return False
+            if fit.getHardpointsFree(self.hardpoint) < 1:
+                return False
 
         return True
 
@@ -612,7 +612,7 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
         for effectName, slot in effectSlotMap.items():
             if effectName in item.effects:
                 return slot
-        if item.group.name == "Effect Beacon":
+        if item.group.name in Module.SYSTEM_GROUPS:
             return Slot.SYSTEM
 
         raise ValueError("Passed item does not fit in any known slot")

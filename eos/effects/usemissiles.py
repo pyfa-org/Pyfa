@@ -4,6 +4,7 @@
 # Modules from group: Missile Launcher Heavy (12 of 12)
 # Modules from group: Missile Launcher Rocket (15 of 15)
 # Modules named like: Launcher (154 of 154)
+# Structure Modules named like: Standup Launcher (7 of 7)
 type = 'active', "projected"
 
 

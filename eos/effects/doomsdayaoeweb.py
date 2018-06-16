@@ -2,6 +2,7 @@
 #
 # Used by:
 # Module: Stasis Webification Burst Projector
+# Structure Module: Standup Stasis Webification Burst Projector
 type = "active", "projected"
 
 

@@ -1,7 +1,7 @@
 # missileSkillWarheadUpgradesThermalDamageBonus
 #
 # Used by:
-# Implants named like: Agency 'Pyrolancea' DB Dose (3 of 3)
+# Implants named like: Agency 'Pyrolancea' DB Dose (3 of 4)
 # Skill: Warhead Upgrades
 type = "passive"
 

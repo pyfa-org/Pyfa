@@ -1,8 +1,8 @@
 # overloadSelfShieldBonusDurationBonus
 #
 # Used by:
-# Modules from group: Ancillary Shield Booster (5 of 5)
-# Modules from group: Shield Booster (93 of 93)
+# Modules from group: Ancillary Shield Booster (8 of 8)
+# Modules from group: Shield Booster (97 of 97)
 type = "overheat"
 
 

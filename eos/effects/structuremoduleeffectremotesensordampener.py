@@ -1,4 +1,7 @@
-# Not used by any item
+# structureModuleEffectRemoteSensorDampener
+#
+# Used by:
+# Variations of structure module: Standup Remote Sensor Dampener I (2 of 2)
 
 type = "projected", "active"
 

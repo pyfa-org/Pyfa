@@ -297,7 +297,7 @@ class Fit(object):
         results = eos.db.searchFits(name)
         fits = []
 
-        for fit in results:
+        for fit in sorted(results, key=lambda f: (f.ship.item.group.name, f.ship.item.name, f.name)):
             fits.append((
                 fit.ID,
                 fit.name,
@@ -403,7 +403,7 @@ class Fit(object):
         elif thing.category.name == "Fighter":
             fighter = es_Fighter(thing)
             fit.projectedFighters.append(fighter)
-        elif thing.group.name == "Effect Beacon":
+        elif thing.group.name in es_Module.SYSTEM_GROUPS:
             module = es_Module(thing)
             module.state = State.ONLINE
             fit.projectedModules.append(module)
@@ -973,7 +973,7 @@ class Fit(object):
         # remove invalid modules when switching back to enabled fitting restrictions
         if not fit.ignoreRestrictions:
             for m in fit.modules:
-                if not m.isEmpty and not m.fits(fit):
+                if not m.isEmpty and not m.fits(fit, False):
                     self.removeModule(fit.ID, m.modPosition)
 
         eos.db.commit()

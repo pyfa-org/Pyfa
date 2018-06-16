@@ -25,7 +25,7 @@ import re
 
 # Add eos root path to sys.path so we can import ourselves
 path = os.path.dirname(__file__)
-sys.path.append(os.path.realpath(os.path.join(path, "..")))
+sys.path.insert(0, os.path.realpath(os.path.join(path, "..")))
 
 import json
 import argparse
@@ -172,21 +172,6 @@ def main(db, json_path):
             newData.append(newRow)
         return newData
 
-    def convertTypes(typesData):
-        """
-        Add factionID column to evetypes table.
-        """
-        factionMap = {}
-        with open(os.path.join(jsonPath, "fsdTypeOverrides.json")) as f:
-            overridesData = json.load(f)
-        for typeID, typeData in list(overridesData.items()):
-            factionID = typeData.get("factionID")
-            if factionID is not None:
-                factionMap[int(typeID)] = factionID
-        for row in typesData:
-            row['factionID'] = factionMap.get(int(row['typeID']))
-        return typesData
-
     data = {}
 
     # Dump all data to memory so we can easely cross check ignored rows
@@ -199,8 +184,6 @@ def main(db, json_path):
             tableData = convertIcons(tableData)
         if jsonName == "phbtraits":
             tableData = convertTraits(tableData)
-        if jsonName == "evetypes":
-            tableData = convertTypes(tableData)
         if jsonName == "clonegrades":
             tableData = convertClones(tableData)
         data[jsonName] = tableData
@@ -213,7 +196,13 @@ def main(db, json_path):
         if (row["published"]
             or row['groupID'] == 1306  # group Ship Modifiers, for items like tactical t3 ship modes
             or row['typeName'].startswith('Civilian') # Civilian weapons
-            or row['typeID'] in (41549, 41548, 41551,41550)  # Micro Bombs (Fighters)
+            or row['typeID'] in (41549, 41548, 41551, 41550)  # Micro Bombs (Fighters)
+            or row['groupID'] in (
+                        1882,
+                        1975,
+                        1971,
+                        1983  # the "container" for the abysmal environments
+                )  # Abysmal weather (environment)
         ):
             eveTypes.add(row["typeID"])
 
@@ -270,6 +259,7 @@ def main(db, json_path):
     # pyfa, we can do it here as a post-processing step
     eos.db.gamedata_engine.execute("UPDATE dgmtypeattribs SET value = 4.0 WHERE attributeID = ?", (1367,))
 
+    eos.db.gamedata_engine.execute("UPDATE invtypes  SET published = 0 WHERE typeName LIKE '%abyssal%'")
     print("done")
 
 if __name__ == "__main__":

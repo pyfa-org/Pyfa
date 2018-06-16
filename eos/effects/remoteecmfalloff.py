@@ -2,6 +2,7 @@
 #
 # Used by:
 # Modules from group: ECM (39 of 39)
+# Starbases from group: Electronic Warfare Battery (12 of 12)
 from eos.modifiedAttributeDict import ModifiedAttributeDict
 
 type = "projected", "active"

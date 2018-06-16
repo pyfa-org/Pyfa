@@ -21,6 +21,7 @@ import re
 import threading
 from logbook import Logger
 import queue
+from itertools import chain
 
 # noinspection PyPackageRequirements
 import wx
@@ -799,51 +800,3 @@ class Market(object):
         """Filter items by meta lvl"""
         filtered = set([item for item in items if self.getMetaGroupIdByItem(item) in metas])
         return filtered
-
-    def getSystemWideEffects(self):
-        """
-        Get dictionary with system-wide effects
-        """
-        # Container for system-wide effects
-        effects = {}
-        # Expressions for matching when detecting effects we're looking for
-        validgroups = ("Black Hole Effect Beacon",
-                       "Cataclysmic Variable Effect Beacon",
-                       "Magnetar Effect Beacon",
-                       "Pulsar Effect Beacon",
-                       "Red Giant Beacon",
-                       "Wolf Rayet Effect Beacon",
-                       "Incursion ship attributes effects")
-        # Stuff we don't want to see in names
-        garbages = ("Effect", "Beacon", "ship attributes effects")
-        # Get group with all the system-wide beacons
-        grp = self.getGroup("Effect Beacon")
-        beacons = self.getItemsByGroup(grp)
-        # Cycle through them
-        for beacon in beacons:
-            # Check if it belongs to any valid group
-            for group in validgroups:
-                # Check beginning of the name only
-                if re.match(group, beacon.name):
-                    # Get full beacon name
-                    beaconname = beacon.name
-                    for garbage in garbages:
-                        beaconname = re.sub(garbage, "", beaconname)
-                    beaconname = re.sub(" {2,}", " ", beaconname).strip()
-                    # Get short name
-                    shortname = re.sub(group, "", beacon.name)
-                    for garbage in garbages:
-                        shortname = re.sub(garbage, "", shortname)
-                    shortname = re.sub(" {2,}", " ", shortname).strip()
-                    # Get group name
-                    groupname = group
-                    for garbage in garbages:
-                        groupname = re.sub(garbage, "", groupname)
-                    groupname = re.sub(" {2,}", " ", groupname).strip()
-                    # Add stuff to dictionary
-                    if groupname not in effects:
-                        effects[groupname] = set()
-                    effects[groupname].add((beacon, beaconname, shortname))
-                    # Break loop on 1st result
-                    break
-        return effects

@@ -1,4 +1,7 @@
-# Not used by any item
+# structureModuleEffectStasisWebifier
+#
+# Used by:
+# Structure Modules from group: Structure Stasis Webifier (2 of 2)
 type = "active", "projected"
 
 

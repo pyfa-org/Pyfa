@@ -110,8 +110,8 @@
   description: Module - PowerRecharger
   iconFile: res:/ui/texture/icons/1_64_1.png
 91:
-  description: Module - ProtectiveShell
-  iconFile: res:/ui/texture/icons/2_64_8.png
+  description: 'Buff bar: Tethered'
+  iconFile: res:/UI/Texture/Icons/StatusEffects/tether.png
 92:
   description: Module - StorageEnhancer
   iconFile: res:/ui/texture/icons/4_64_13.png
@@ -6995,7 +6995,7 @@
   description: Valkyrie Data Core
   iconFile: res:/UI/Texture/Icons/Inventory/dataCore.png
 21785:
-  description: Valkyrie Relic Vault
+  description: Triglavian Data Vault
   iconFile: res:/UI/Texture/Icons/Inventory/relicVault.png
 21787:
   description: refinery rig drill
@@ -7120,3 +7120,348 @@
 21833:
   description: Minmatar RW reward crate icon
   iconFile: res:/UI/Texture/Icons/Inventory/crateMinmatar.png
+21835:
+  description: Alpha Injector Icon
+  iconFile: res:/UI/Texture/Icons/Inventory/skillInjectorAlpha.png
+21836:
+  description: 47031_female_Outer_JacketSLF_01_Types_JacketSLF_01_JinMeiOpera.png
+  iconFile: res:/UI/Asset/mannequin/outer/47031_female_Outer_JacketSLF_01_Types_JacketSLF_01_JinMeiOpera.png
+21837:
+  description: 47032_male_outer_JacketALM01_Types_JacketALM01_JinMeiOpera.png
+  iconFile: res:/UI/Asset/mannequin/outer/47032_male_outer_JacketALM01_Types_JacketALM01_JinMeiOpera.png
+21839:
+  description: Agency damage booster
+  iconFile: res:/UI/Texture/Icons/Inventory/boosterAgencyDamage.png
+21840:
+  description: Agency speed booster
+  iconFile: res:/UI/Texture/Icons/Inventory/boosterAgencySpeed.png
+21841:
+  description: Agency tank booster
+  iconFile: res:/UI/Texture/Icons/Inventory/boosterAgencyTank.png
+21843:
+  description: stolen tokens
+  iconFile: res:/ui/texture/icons/25_64_16.png
+21844:
+  description: generic guidebook
+  iconFile: res:/ui/texture/icons/25_64_3.png
+21845:
+  description: 47191_male_hair_HeadWear_Cap_M01_Types_HeadWear_Cap_M01_XV_BlackOrange.png
+  iconFile: res:/UI/Asset/mannequin/hair/47191_male_hair_HeadWear_Cap_M01_Types_HeadWear_Cap_M01_XV_BlackOrange.png
+21846:
+  description: 47192_female_TopMiddle_TshirtF01_Types_TshirtF01_XV_StarOrange.png
+  iconFile: res:/UI/Asset/mannequin/topmiddle/47192_female_TopMiddle_TshirtF01_Types_TshirtF01_XV_StarOrange.png
+21847:
+  description: 47182_male_TopMiddle_TshirtM01_Types_TshirtM01_XV_Amarr.png
+  iconFile: res:/UI/Asset/mannequin/topmiddle/47182_male_TopMiddle_TshirtM01_Types_TshirtM01_XV_Amarr.png
+21848:
+  description: 47183_male_TopMiddle_TshirtM01_Types_TshirtM01_XV_Minmatar.png
+  iconFile: res:/UI/Asset/mannequin/topmiddle/47183_male_TopMiddle_TshirtM01_Types_TshirtM01_XV_Minmatar.png
+21849:
+  description: 47184_male_TopMiddle_TshirtM01_Types_TshirtM01_XV_Gallente.png
+  iconFile: res:/UI/Asset/mannequin/topmiddle/47184_male_TopMiddle_TshirtM01_Types_TshirtM01_XV_Gallente.png
+21850:
+  description: 47185_female_TopMiddle_TshirtF01_Types_TshirtF01_XV_Gallente.png
+  iconFile: res:/UI/Asset/mannequin/topmiddle/47185_female_TopMiddle_TshirtF01_Types_TshirtF01_XV_Gallente.png
+21851:
+  description: 47186_female_TopMiddle_TshirtF01_Types_TshirtF01_XV_Amarr.png
+  iconFile: res:/UI/Asset/mannequin/topmiddle/47186_female_TopMiddle_TshirtF01_Types_TshirtF01_XV_Amarr.png
+21853:
+  description: 47188_male_TopMiddle_TshirtM01_Types_TshirtM01_XV_Caldari.png
+  iconFile: res:/UI/Asset/mannequin/topmiddle/47188_male_TopMiddle_TshirtM01_Types_TshirtM01_XV_Caldari.png
+21854:
+  description: 47189_female_TopMiddle_TshirtF01_Types_TshirtF01_XV_Caldari.png
+  iconFile: res:/UI/Asset/mannequin/topmiddle/47189_female_TopMiddle_TshirtF01_Types_TshirtF01_XV_Caldari.png
+21855:
+  description: 47190_male_TopMiddle_TshirtM01_Types_TshirtM01_XV_StarOrange.png
+  iconFile: res:/UI/Asset/mannequin/topmiddle/47190_male_TopMiddle_TshirtM01_Types_TshirtM01_XV_StarOrange.png
+21857:
+  description: 47187_female_TopMiddle_TshirtF01_Types_TshirtF01_XV_Minmatar.png
+  iconFile: res:/UI/Asset/mannequin/topmiddle/47187_female_TopMiddle_TshirtF01_Types_TshirtF01_XV_Minmatar.png
+21858:
+  description: 47193_female_hair_HeadWear_Cap_F01_Types_HeadWear_Cap_F01_XV_BlackOrange.png
+  iconFile: res:/UI/Asset/mannequin/hair/47193_female_hair_HeadWear_Cap_F01_Types_HeadWear_Cap_F01_XV_BlackOrange.png
+21860:
+  description: Assault Damage Control
+  iconFile: res:/UI/Texture/Icons/Modules/AssaultDamageControl.png
+21872:
+  description: 47287_female_Outer_ArmorSuitCF01_Types_ArmorSuitCF01_SWAT.png
+  iconFile: res:/UI/Asset/mannequin/outer/47287_female_Outer_ArmorSuitCF01_Types_ArmorSuitCF01_SWAT.png
+21873:
+  description: 47286_male_outer_ArmorSuitMM01_Types_ArmorSuitMM01_SWAT.png
+  iconFile: res:/UI/Asset/mannequin/outer/47286_male_outer_ArmorSuitMM01_Types_ArmorSuitMM01_SWAT.png
+21877:
+  description: 'Buff bar: Tether Blocked'
+  iconFile: res:/UI/Texture/Icons/StatusEffects/tetherDisabled.png
+21878:
+  description: 47477_female_hair_HeadWear_Cap_F01_Types_HeadWear_Cap_F01_XV_FF.png
+  iconFile: res:/UI/Asset/mannequin/hair/47477_female_hair_HeadWear_Cap_F01_Types_HeadWear_Cap_F01_XV_FF.png
+21879:
+  description: 47478_male_hair_HeadWear_Cap_M01_Types_HeadWear_Cap_M01_XV_FF.png
+  iconFile: res:/UI/Asset/mannequin/hair/47478_male_hair_HeadWear_Cap_M01_Types_HeadWear_Cap_M01_XV_FF.png
+21880:
+  description: 47475_female_Outer_ExplorationSuit_F01_Types_ExplorationSuit_F01_XV.png
+  iconFile: res:/UI/Asset/mannequin/outer/47475_female_Outer_ExplorationSuit_F01_Types_ExplorationSuit_F01_XV.png
+21881:
+  description: 47476_male_outer_ExplorationSuit_M01_Types_ExplorationSuit_M01_XV.png
+  iconFile: res:/UI/Asset/mannequin/outer/47476_male_outer_ExplorationSuit_M01_Types_ExplorationSuit_M01_XV.png
+21882:
+  description: 47479_female_TopMiddle_TshirtF01_Types_TshirtF01_XV_FF.png
+  iconFile: res:/UI/Asset/mannequin/topmiddle/47479_female_TopMiddle_TshirtF01_Types_TshirtF01_XV_FF.png
+21883:
+  description: 47480_male_TopMiddle_TshirtM01_Types_TshirtM01_XV_FF.png
+  iconFile: res:/UI/Asset/mannequin/topmiddle/47480_male_TopMiddle_TshirtM01_Types_TshirtM01_XV_FF.png
+21888:
+  description: Decayed Mutaplasmid
+  iconFile: res:/ui/texture/icons/Modules/mutatorDecayed.png
+21890:
+  description: Gravid Mutaplasmid
+  iconFile: res:/ui/texture/icons/Modules/mutatorGravid.png
+21891:
+  description: Unstable Mutaplasmid
+  iconFile: res:/ui/texture/icons/Modules/mutatorUnstable.png
+21892:
+  description: Abyssal Afterburner
+  iconFile: res:/ui/texture/icons/Modules/abyssalAfterburner.png
+21893:
+  description: Abyssal Microwarp Drive
+  iconFile: res:/ui/texture/icons/Modules/abyssalMWD.png
+21894:
+  description: Abyssal Armor Plate
+  iconFile: res:/ui/texture/icons/Modules/abyssalPlate.png
+21895:
+  description: Abyssal Armor Repairer
+  iconFile: res:/ui/texture/icons/Modules/abyssalRepairer.png
+21896:
+  description: Abyssal Energy Neutralizer
+  iconFile: res:/ui/texture/icons/Modules/abyssalNeut.png
+21897:
+  description: Abyssal Nosferatu
+  iconFile: res:/ui/texture/icons/Modules/abyssalNosferatu.png
+21898:
+  description: Crate - Capsuleer Day Theme
+  iconFile: res:/UI/Texture/Icons/Inventory/crateCapsuleerDay.png
+21899:
+  description: Crate - Yoiul Festival Theme
+  iconFile: res:/UI/Texture/Icons/Inventory/crateChristmas.png
+21900:
+  description: Crate - Crimson Harvest Theme
+  iconFile: res:/UI/Texture/Icons/Inventory/crateCrimsonHarvest.png
+21901:
+  description: Crate - Guardian's Gala Theme
+  iconFile: res:/UI/Texture/Icons/Inventory/crateGuardiansGala.png
+21902:
+  description: Crate - Generic Celebration Theme
+  iconFile: res:/UI/Texture/Icons/Inventory/crateNewYears.png
+21903:
+  description: Abyssal Weather Electrical
+  iconFile: res:/UI/Texture/Icons/StatusEffects/weatherLightning.png
+21904:
+  description: Abyssal Weather Xenon
+  iconFile: res:/UI/Texture/Icons/StatusEffects/weatherXenonGas.png
+21905:
+  description: Abyssal Weather Caustic
+  iconFile: res:/UI/Texture/Icons/StatusEffects/weatherCaustic.png
+21906:
+  description: Abyssal Weather Dark
+  iconFile: res:/UI/Texture/Icons/StatusEffects/weatherDarkness.png
+21907:
+  description: Abyssal Weather Infernal
+  iconFile: res:/UI/Texture/Icons/StatusEffects/weatherInfernal.png
+21909:
+  description: Abyssal Plate
+  iconFile: res:/ui/texture/icons/Modules/abyssalPlate.png
+21910:
+  description: Abyssal Stasis Webifier
+  iconFile: res:/ui/texture/icons/Modules/abyssalStasisWebifier.png
+21911:
+  description: Abyssal Warp Scrambler
+  iconFile: res:/ui/texture/icons/Modules/abyssalWarpScrambler.png
+21912:
+  description: Abyssal Warp Disruptor
+  iconFile: res:/ui/texture/icons/Modules/abyssalWarpDisruptor.png
+21913:
+  description: Abyssal Shield Booster
+  iconFile: res:/ui/texture/icons/Modules/abyssalShieldBooster.png
+21914:
+  description: Abyssal Shield Extender
+  iconFile: res:/ui/texture/icons/Modules/abyssalShieldExtender.png
+21916:
+  description: Gluon Charge Bottle
+  iconFile: res:/ui/texture/icons/ammo/disintegratorChargeGluon.png
+21917:
+  description: Charge Bottle Lepton
+  iconFile: res:/ui/texture/icons/ammo/disintegratorChargeLepton.png
+21918:
+  description: Charge Bottle Quark
+  iconFile: res:/ui/texture/icons/ammo/disintegratorChargeQuark.png
+21919:
+  description: Charge Bottle Mystic
+  iconFile: res:/ui/texture/icons/ammo/disintegratorChargeMystic.png
+21920:
+  description: Charge Bottle Occult
+  iconFile: res:/ui/texture/icons/ammo/disintegratorChargeOccult.png
+21921:
+  description: Disintegrator Large
+  iconFile: res:/ui/texture/icons/Modules/disintegratorCannonL.png
+21922:
+  description: Disintegrator Medium
+  iconFile: res:/ui/texture/icons/Modules/disintegratorCannonM.png
+21923:
+  description: Disintegrator Small
+  iconFile: res:/ui/texture/icons/Modules/disintegratorCannonS.png
+21924:
+  description: Abyssal Filament 1
+  iconFile: res:/UI/Texture/Icons/Inventory/abyssalFilamentL1.png
+21925:
+  description: Abyssal Filament 2
+  iconFile: res:/UI/Texture/Icons/Inventory/abyssalFilamentL2.png
+21926:
+  description: Abyssal Filament 3
+  iconFile: res:/UI/Texture/Icons/Inventory/abyssalFilamentL3.png
+21927:
+  description: Abyssal Filament 4
+  iconFile: res:/UI/Texture/Icons/Inventory/abyssalFilamentL4.png
+21928:
+  description: Abyssal Filament 5
+  iconFile: res:/UI/Texture/Icons/Inventory/abyssalFilamentL5.png
+21931:
+  description: 48081_female_Outer_VanguardF01_Types_VanguardF01_TG.png
+  iconFile: res:/UI/Asset/mannequin/outer/48081_female_Outer_VanguardF01_Types_VanguardF01_TG.png
+21932:
+  description: 48082_male_outer_VanguardM01_Types_VanguardM01_TG.png
+  iconFile: res:/UI/Asset/mannequin/outer/48082_male_outer_VanguardM01_Types_VanguardM01_TG.png
+21933:
+  description: 48083_male_bottomOuter_PantsEngM01_Types_PantsEngM01_silver.png
+  iconFile: res:/UI/Asset/mannequin/bottomouter/48083_male_bottomOuter_PantsEngM01_Types_PantsEngM01_silver.png
+21934:
+  description: Unused Material
+  iconFile: res:/ui/texture/icons/86_64_2.png
+21936:
+  description: AOE Bioluminescence dbuff icon
+  iconFile: res:/UI/Texture/Icons/StatusEffects/bioluminescence.png
+21937:
+  description: AOE Caustic dbuff icon
+  iconFile: res:/UI/Texture/Icons/StatusEffects/causticCloud.png
+21938:
+  description: AOE Filament dbuff icon
+  iconFile: res:/UI/Texture/Icons/StatusEffects/filamentCloud.png
+21939:
+  description: AOE Point Defense dbuff icon
+  iconFile: res:/UI/Texture/Icons/StatusEffects/pointDefenseBattery.png
+21941:
+  description: AOE Pulse Battery dbuff icon
+  iconFile: res:/UI/Texture/Icons/StatusEffects/pulseBattery.png
+21980:
+  description: Crystalline Isogen-10
+  iconFile: res:/UI/Texture/Icons/Inventory/crystallineIsogen10.png
+21981:
+  description: Mutaplasmid Residue
+  iconFile: res:/UI/Texture/Icons/Inventory/mutaPlasmidResidue.png
+21982:
+  description: Triglavian Survey Data
+  iconFile: res:/UI/Texture/Icons/Inventory/triglavianSurveyData.png
+21983:
+  description: Zero-Point Condensate
+  iconFile: res:/UI/Texture/Icons/Inventory/zeroPointCondensate.png
+21984:
+  description: Decayed Afterburner Mutaplasmid
+  iconFile: res:/ui/texture/icons/modules/mutaDecayedAfterburner.png
+21985:
+  description: Decayed Shield Extender Mutaplasmid
+  iconFile: res:/ui/texture/icons/Modules/mutaDecayedExtender.png
+21986:
+  description: Decayed MWD Mutaplasmid
+  iconFile: res:/ui/texture/icons/Modules/mutaDecayedMWD.png
+21987:
+  description: Decayed Energy Neutralizer Mutaplasmid
+  iconFile: res:/ui/texture/icons/Modules/mutaDecayedNeut.png
+21988:
+  description: Decayed Nosferatu Mutaplasmid
+  iconFile: res:/ui/texture/icons/Modules/mutaDecayedNosferatu.png
+21989:
+  description: Decayed Armor Plate Mutaplasmid
+  iconFile: res:/ui/texture/icons/Modules/mutaDecayedPlate.png
+21990:
+  description: Decayed Armor Repairer Mutaplasmid
+  iconFile: res:/ui/texture/icons/Modules/mutaDecayedRepairer.png
+21991:
+  description: Decayed Shield Booster Mutaplasmid
+  iconFile: res:/ui/texture/icons/Modules/mutaDecayedShieldBooster.png
+21992:
+  description: Decayed Stasis Webifier Mutaplasmid
+  iconFile: res:/ui/texture/icons/Modules/mutaDecayedStasisWebifier.png
+21993:
+  description: Decayed Warp Disruptor Mutaplasmid
+  iconFile: res:/ui/texture/icons/Modules/mutaDecayedWarpDisruptor.png
+21994:
+  description: Decayed Warp Scrambler Mutaplasmid
+  iconFile: res:/ui/texture/icons/Modules/mutaDecayedWarpScrambler.png
+21995:
+  description: Gravid Afterburner Mutaplasmid
+  iconFile: res:/ui/texture/icons/modules/mutaGravidAfterburner.png
+21996:
+  description: Gravid Shield Extender Mutaplasmid
+  iconFile: res:/ui/texture/icons/modules/mutaGravidExtender.png
+21997:
+  description: Gravid MWD Mutaplasmid
+  iconFile: res:/ui/texture/icons/modules/mutaGravidMWD.png
+21998:
+  description: Gravid Energy Neutralizer Mutaplasmid
+  iconFile: res:/ui/texture/icons/modules/mutaGravidNeut.png
+21999:
+  description: Gravid Nosferatu Mutaplasmid
+  iconFile: res:/ui/texture/icons/modules/mutaGravidNosferatu.png
+22000:
+  description: Gravid Armor Plate Mutaplasmid
+  iconFile: res:/ui/texture/icons/modules/mutaGravidPlate.png
+22001:
+  description: Gravid Armor Repairer Mutaplasmid
+  iconFile: res:/ui/texture/icons/modules/mutaGravidRepairer.png
+22002:
+  description: Gravid Shield Booster Mutaplasmid
+  iconFile: res:/ui/texture/icons/modules/mutaGravidShieldBooster.png
+22003:
+  description: Gravid Stasis Webifier Mutaplasmid
+  iconFile: res:/ui/texture/icons/modules/mutaGravidStasisWebifier.png
+22004:
+  description: Gravid Warp Disruptor Mutaplasmid
+  iconFile: res:/ui/texture/icons/modules/mutaGravidWarpDisruptor.png
+22005:
+  description: Gravid Warp Scrambler Mutaplasmid
+  iconFile: res:/ui/texture/icons/modules/mutaGravidWarpScrambler.png
+22006:
+  description: Unstable Afterburner Mutaplasmid
+  iconFile: res:/ui/texture/icons/modules/mutaUnstableAfterburner.png
+22007:
+  description: Unstable Shield Extender Mutaplasmid
+  iconFile: res:/ui/texture/icons/modules/mutaUnstableExtender.png
+22008:
+  description: Unstable MWD Mutaplasmid
+  iconFile: res:/ui/texture/icons/modules/mutaUnstableMWD.png
+22009:
+  description: Unstable Energy Neutralizer Mutaplasmid
+  iconFile: res:/ui/texture/icons/modules/mutaUnstableNeut.png
+22010:
+  description: Unstable Nosferatu Mutaplasmid
+  iconFile: res:/ui/texture/icons/modules/mutaUnstableNosferatu.png
+22011:
+  description: Unstable Armor Plate Mutaplasmid
+  iconFile: res:/ui/texture/icons/modules/mutaUnstablePlate.png
+22012:
+  description: Unstable Armor Repairer Mutaplasmid
+  iconFile: res:/ui/texture/icons/modules/mutaUnstableRepairer.png
+22013:
+  description: Unstable Shield Booster Mutaplasmid
+  iconFile: res:/ui/texture/icons/modules/mutaUnstableShieldBooster.png
+22014:
+  description: Unstable Stasis Webifier Mutaplasmid
+  iconFile: res:/ui/texture/icons/modules/mutaUnstableStasisWebifier.png
+22016:
+  description: Unstable Warp Disruptor Mutaplasmid
+  iconFile: res:/ui/texture/icons/modules/mutaUnstableWarpDisruptor.png
+22018:
+  description: Unstable Warp Scrambler Mutaplasmid
+  iconFile: res:/ui/texture/icons/modules/mutaUnstableWarpScrambler.png
+22020:
+  description: Abyssal Boundry
+  iconFile: res:/UI/Texture/Icons/StatusEffects/boundary.png

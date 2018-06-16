@@ -1,7 +1,7 @@
 # energyNeutralizerFalloff
 #
 # Used by:
-# Modules from group: Energy Neutralizer (51 of 51)
+# Modules from group: Energy Neutralizer (54 of 54)
 from eos.saveddata.module import State
 from eos.modifiedAttributeDict import ModifiedAttributeDict
 
