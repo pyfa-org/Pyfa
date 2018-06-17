@@ -208,6 +208,8 @@ class Item(EqBase):
 
     MOVE_ATTR_INFO = None
 
+    ABYSSAL_TYPES = None
+
     @classmethod
     def getMoveAttrInfo(cls):
         info = getattr(cls, "MOVE_ATTR_INFO", None)
@@ -462,6 +464,17 @@ class Item(EqBase):
                 self.__price = db_price
 
         return self.__price
+
+    @property
+    def isAbyssal(self):
+        if Item.ABYSSAL_TYPES is None:
+            Item.getAbyssalYypes()
+
+        return self.ID in Item.ABYSSAL_TYPES
+
+    @classmethod
+    def getAbyssalYypes(cls):
+        cls.ABYSSAL_TYPES = eos.db.getAbyssalTypes()
 
     def __repr__(self):
         return "Item(ID={}, name={}) at {}".format(

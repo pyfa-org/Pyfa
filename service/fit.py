@@ -705,11 +705,12 @@ class Fit(object):
                 cargo.amount -= 1
 
         if not module.isEmpty:  # if module is placeholder, we don't want to convert/add it
-            for x in fit.cargo.find(module.item):
+            moduleItem = module.item if not module.item.isAbyssal else module.baseItem
+            for x in fit.cargo.find(moduleItem ):
                 x.amount += 1
                 break
             else:
-                moduleP = es_Cargo(module.item)
+                moduleP = es_Cargo(moduleItem )
                 moduleP.amount = 1
                 fit.cargo.insert(cargoIdx, moduleP)
 
