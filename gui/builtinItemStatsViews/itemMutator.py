@@ -123,6 +123,11 @@ class ItemMutator(wx.Panel):
         if self.timer:
             self.timer.Stop()
             self.timer = None
+
+        for x in self.Parent.Children:
+            if isinstance(x, ItemParams):
+                x.RefreshValues(None)
+                break
         self.timer = wx.CallLater(1000, self.callLater)
 
     def resetMutatedValues(self, evt):

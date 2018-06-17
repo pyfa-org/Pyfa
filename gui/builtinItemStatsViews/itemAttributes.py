@@ -84,7 +84,8 @@ class ItemParams(wx.Panel):
     def RefreshValues(self, event):
         self._fetchValues()
         self.UpdateList()
-        event.Skip()
+        if event:
+            event.Skip()
 
     def ToggleViewMode(self, event):
         self.toggleView *= -1

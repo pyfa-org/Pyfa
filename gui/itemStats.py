@@ -168,7 +168,7 @@ class ItemStatsContainer(wx.Panel):
 
         if isinstance(stuff, Module) and stuff.isMutated:
             self.mutator = ItemMutator(self.nbContainer, stuff, item)
-            self.nbContainer.AddPage(self.mutator, "Multiplasmid")
+            self.nbContainer.AddPage(self.mutator, "Mutations")
 
         self.desc = ItemDescription(self.nbContainer, stuff, item)
         self.nbContainer.AddPage(self.desc, "Description")
