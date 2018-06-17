@@ -686,7 +686,22 @@ class FittingView(d.Display):
 
             #  only consider changing color if we're dealing with a Module
             if type(mod) is Module:
-                if slotMap[mod.slot] or getattr(mod, 'restrictionOverridden', None):  # Color too many modules as red
+                hasRestrictionOverriden = getattr(mod, 'restrictionOverridden', None)
+                # If module had broken fitting restrictions but now doesn't,
+                # ensure it is now valid, and remove restrictionOverridden
+                # variable. More in #1519
+                if not fit.ignoreRestrictions and hasRestrictionOverriden:
+                    clean = False
+                    if mod.fits(fit, False):
+                        if not mod.hardpoint:
+                            clean = True
+                        elif fit.getHardpointsFree(mod.hardpoint) >= 0:
+                            clean = True
+                    if clean:
+                        del mod.restrictionOverridden
+                        hasRestrictionOverriden = not hasRestrictionOverriden
+
+                if slotMap[mod.slot] or hasRestrictionOverriden:  # Color too many modules as red
                     self.SetItemBackgroundColour(i, wx.Colour(204, 51, 51))
                 elif sFit.serviceFittingOptions["colorFitBySlot"]:  # Color by slot it enabled
                     self.SetItemBackgroundColour(i, self.slotColour(mod.slot))
@@ -726,7 +741,7 @@ class FittingView(d.Display):
     # noinspection PyPropertyAccess
     def MakeSnapshot(self, maxColumns=1337):
         if self.FVsnapshot:
-            del self.FVsnapshot
+            self.FVsnapshot = None
 
         tbmp = wx.Bitmap(16, 16)
         tdc = wx.MemoryDC()

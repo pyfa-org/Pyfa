@@ -90,7 +90,7 @@ class exportHtmlThread(threading.Thread):
   <link rel="stylesheet" href="https://code.jquery.com/mobile/1.4.2/jquery.mobile-1.4.2.min.css" />
   <script src="https://code.jquery.com/jquery-1.11.0.min.js"></script>
   <script>
-    // http://stackoverflow.com/questions/32453806/uncaught-securityerror-failed-to-execute-replacestate-on-history-cannot-be
+//http://stackoverflow.com/questions/32453806/uncaught-securityerror-failed-to-execute-replacestate-on-history-cannot-be
     $(document).bind('mobileinit',function(){
         $.mobile.changePage.defaults.changeHash = false;
         $.mobile.hashListeningEnabled = false;
@@ -195,55 +195,51 @@ class exportHtmlThread(threading.Thread):
 
                 if len(fits) > 0:
                     groupFits += len(fits)
+                    HTMLship = (
+                        '        <li data-role="collapsible" data-iconpos="right" data-shadow="false" '
+                        'data-corners="false">\n'
+                        '        <h2>' + ship.name + ' <span class="ui-li-count">' + str(
+                            len(fits)) + '</span></h2>\n'
+                                         '          <ul data-role="listview" data-shadow="false" data-inset="true" '
+                                         'data-corners="false">\n'
+                    )
 
-                    if len(fits) == 1:
+                    for fit in fits:
                         if self.stopRunning:
                             return
-                        fit = fits[0]
                         try:
-                            dnaFit = Port.exportDna(getFit(fit[0]))
-                            HTMLgroup += '        <li><a data-dna="' + dnaFit + '" target="_blank">' + ship.name + ": " + \
-                                         fit[1] + '</a></li>\n'
+                            eftFit = Port.exportEft(getFit(fit[0]))
+                            print(eftFit)
+
+                            HTMLfit = (
+                                    '           <li data-role="collapsible" data-iconpos="right" data-shadow="false" '
+                                    'data-corners="false">\n'
+                                    '           <h2>' + fit[1] + '</h2>\n'
+                                    '               <ul data-role="listview" data-shadow="false" data-inset="true" '
+                                                                 'data-corners="false">\n'
+                            )
+
+                            HTMLfit += '                   <li><pre>' + eftFit + '\n                   </pre></li>\n'
+
+                            HTMLfit += '              </ul>\n          </li>\n'
+                            HTMLship += HTMLfit
                         except:
                             pyfalog.warning("Failed to export line")
-                            pass
+                            continue
                         finally:
                             if self.callback:
                                 wx.CallAfter(self.callback, count)
                             count += 1
-                    else:
-                        # Ship group header
-                        HTMLship = (
-                            '        <li data-role="collapsible" data-iconpos="right" data-shadow="false" data-corners="false">\n'
-                            '        <h2>' + ship.name + ' <span class="ui-li-count">' + str(
-                                len(fits)) + '</span></h2>\n'
-                                             '          <ul data-role="listview" data-shadow="false" data-inset="true" data-corners="false">\n'
-                        )
-
-                        for fit in fits:
-                            if self.stopRunning:
-                                return
-                            try:
-                                dnaFit = Port.exportDna(getFit(fit[0]))
-                                print(dnaFit)
-                                HTMLship += '          <li><a data-dna="' + dnaFit + '" target="_blank">' + fit[
-                                    1] + '</a></li>\n'
-                            except:
-                                pyfalog.warning("Failed to export line")
-                                continue
-                            finally:
-                                if self.callback:
-                                    wx.CallAfter(self.callback, count)
-                                count += 1
-                        HTMLgroup += HTMLship + ('          </ul>\n'
-                                                 '        </li>\n')
+                    HTMLgroup += HTMLship + ('          </ul>\n'
+                                             '        </li>\n')
 
             if groupFits > 0:
                 # Market group header
                 HTML += (
                     '    <li data-role="collapsible" data-iconpos="right" data-shadow="false" data-corners="false">\n'
                     '      <h2>' + group.groupName + ' <span class="ui-li-count">' + str(groupFits) + '</span></h2>\n'
-                    '      <ul data-role="listview" data-shadow="false" data-inset="true" data-corners="false">\n' + HTMLgroup +
+                    '      <ul data-role="listview" data-shadow="false" data-inset="true" data-corners="false">\n'
+                    + HTMLgroup +
                     '      </ul>\n'
                     '    </li>'
                 )
@@ -279,7 +275,8 @@ class exportHtmlThread(threading.Thread):
                         return
                     try:
                         dnaFit = Port.exportDna(getFit(fit[0]))
-                        HTML += '<a class="outOfGameBrowserLink" target="_blank" href="' + dnaUrl + dnaFit + '">' + ship.name + ': ' + \
+                        HTML += '<a class="outOfGameBrowserLink" target="_blank" href="' + dnaUrl + dnaFit + '">' \
+                                + ship.name + ': ' + \
                                 fit[1] + '</a><br> \n'
                     except:
                         pyfalog.error("Failed to export line")

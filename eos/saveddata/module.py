@@ -74,7 +74,7 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
     """An instance of this class represents a module together with its charge and modified attributes"""
     DAMAGE_TYPES = ("em", "thermal", "kinetic", "explosive")
     MINING_ATTRIBUTES = ("miningAmount",)
-    SYSTEM_GROUPS = ("Effect Beacon", "MassiveEnvironments", "Uninteractable Localized Effect Beacon", "Non-Interactable Object")
+    SYSTEM_GROUPS = ("Effect Beacon", "MassiveEnvironments", "Abyssal Hazards", "Non-Interactable Object")
 
     def __init__(self, item, baseItem=None, mutaplasmid=None):
         """Initialize a module from the program"""
@@ -527,7 +527,8 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
         if max is not None:
             current = 0  # if self.owner != fit else -1  # Disabled, see #1278
             for mod in fit.modules:
-                if mod.item and mod.item.groupID == self.item.groupID:
+                if (mod.item and mod.item.groupID == self.item.groupID and
+                        self.modPosition != mod.modPosition):
                     current += 1
 
             if current >= max:
@@ -535,12 +536,8 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
 
         # Check this only if we're told to do so
         if hardpointLimit:
-            if self.hardpoint == Hardpoint.TURRET:
-                if fit.ship.getModifiedItemAttr('turretSlotsLeft') - fit.getHardpointsUsed(Hardpoint.TURRET) < 1:
-                    return False
-            elif self.hardpoint == Hardpoint.MISSILE:
-                if fit.ship.getModifiedItemAttr('launcherSlotsLeft') - fit.getHardpointsUsed(Hardpoint.MISSILE) < 1:
-                    return False
+            if fit.getHardpointsFree(self.hardpoint) < 1:
+                return False
 
         return True
 
