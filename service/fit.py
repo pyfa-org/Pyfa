@@ -379,7 +379,10 @@ class Fit(object):
             thing = eos.db.getItem(thing,
                                    eager=("attributes", "group.category"))
 
-        if isinstance(thing, FitType):
+        if isinstance(thing, es_Module):
+            thing = copy.deepcopy(thing)
+            fit.projectedModules.append(thing)
+        elif isinstance(thing, FitType):
             if thing in fit.projectedFits:
                 return
 
