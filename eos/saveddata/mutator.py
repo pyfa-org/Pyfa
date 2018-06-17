@@ -86,7 +86,10 @@ class Mutator(EqBase):
             returnVal = val
         else:
             # need to fudge the numbers a bit. Go with the value closest to base
-            returnVal = min(self.maxValue, max(self.minValue, val))
+            if val >= 0:
+                returnVal = min(self.maxValue, max(self.minValue, val))
+            else:
+                returnVal = max(self.maxValue, min(self.minValue, val))
 
         return returnVal
 
