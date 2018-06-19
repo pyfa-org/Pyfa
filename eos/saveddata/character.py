@@ -125,6 +125,12 @@ class Character(object):
 
         return all0
 
+    def apiUpdateCharSheet(self, skills, secStatus=0.00):
+        self.clearSkills()
+        for skillRow in skills:
+            self.addSkill(Skill(self, skillRow["typeID"], skillRow["level"]))
+        self.secStatus = float(secStatus)
+
     def clearSkills(self):
         del self.__skills[:]
         self.__skillIdMap.clear()
