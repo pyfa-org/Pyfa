@@ -130,8 +130,8 @@ class PyGauge(wx.Window):
         return self._max_range
 
     def Animate(self):
-        sFit = Fit.getInstance()
-        if sFit.serviceFittingOptions["enableGaugeAnimation"]:
+        #sFit = Fit.getInstance()
+        if True:
             if not self._timer:
                 self._timer = wx.Timer(self, self._timer_id)
 
@@ -421,6 +421,13 @@ if __name__ == "__main__":
             gauge = PyGauge(self, font, size=(100, 25))
             gauge.SetBackgroundColour(wx.Colour(52, 86, 98))
             gauge.SetBarColour(wx.Colour(38, 133, 198))
+            gauge.SetValue(59)
+            gauge.SetFractionDigits(1)
+            box.Add(gauge, 0, wx.ALL, 2)
+
+            gauge = PyGauge(self, font, size=(100, 5))
+            gauge.SetBackgroundColour(wx.Colour(52, 86, 98))
+            gauge.SetBarColour(wx.Colour(255, 128, 0))
             gauge.SetValue(59)
             gauge.SetFractionDigits(1)
             box.Add(gauge, 0, wx.ALL, 2)

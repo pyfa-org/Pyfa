@@ -39,7 +39,7 @@ pyfalog = Logger(__name__)
 class DummyItem(object):
     def __init__(self, txt):
         self.name = txt
-        self.icon = None
+        self.iconID = None
 
 
 class DummyEntry(object):

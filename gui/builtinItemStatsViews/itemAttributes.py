@@ -174,7 +174,12 @@ class ItemParams(wx.Panel):
             info = self.attrInfo.get(name)
             att = self.attrValues[name]
 
-            valDefault = getattr(info, "value", None)
+            # If we're working with a stuff object, we should get the original value from our getBaseAttrValue function,
+            # which will return the value with respect to the effective base (with mutators / overrides in place)
+            valDefault = getattr(info, "value", None)  # Get default value from attribute
+            if self.stuff is not None:
+                # if it's a stuff, overwrite default (with fallback to current value)
+                valDefault = self.stuff.getBaseAttrValue(name, valDefault)
             valueDefault = valDefault if valDefault is not None else att
 
             val = getattr(att, "value", None)
@@ -189,8 +194,8 @@ class ItemParams(wx.Panel):
                 attrName += " ({})".format(info.ID)
 
             if info:
-                if info.icon is not None:
-                    iconFile = info.icon.iconFile
+                if info.iconID is not None:
+                    iconFile = info.iconID
                     icon = BitmapLoader.getBitmap(iconFile, "icons")
 
                     if icon is None:
@@ -198,9 +203,9 @@ class ItemParams(wx.Panel):
 
                     attrIcon = self.imageList.Add(icon)
                 else:
-                    attrIcon = self.imageList.Add(BitmapLoader.getBitmap("7_15", "icons"))
+                    attrIcon = self.imageList.Add(BitmapLoader.getBitmap("0", "icons"))
             else:
-                attrIcon = self.imageList.Add(BitmapLoader.getBitmap("7_15", "icons"))
+                attrIcon = self.imageList.Add(BitmapLoader.getBitmap("0", "icons"))
 
             index = self.paramList.InsertItem(self.paramList.GetItemCount(), attrName, attrIcon)
             idNameMap[idCount] = attrName

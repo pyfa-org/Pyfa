@@ -512,9 +512,16 @@ class Group(EqBase):
     pass
 
 
-class Icon(EqBase):
+class DynamicItem(EqBase):
     pass
 
+
+class DynamicItemAttribute(EqBase):
+    pass
+
+
+class DynamicItemItem(EqBase):
+    pass
 
 class MarketGroup(EqBase):
     def __repr__(self):

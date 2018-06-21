@@ -18,7 +18,7 @@ pyfalog = Logger(__name__)
 
 
 class ShipItem(SFItem.SFBrowserItem):
-    def __init__(self, parent, shipID=None, shipFittingInfo=("Test", "TestTrait", 2), itemData=None,
+    def __init__(self, parent, shipID=None, shipFittingInfo=("Test", "TestTrait", 2), itemData=None, graphicID=None,
                  id=wx.ID_ANY, pos=wx.DefaultPosition,
                  size=(0, 40), style=0):
         SFItem.SFBrowserItem.__init__(self, parent, size=size)
@@ -36,8 +36,8 @@ class ShipItem(SFItem.SFBrowserItem):
         self.fontSmall = wx.Font(fonts.SMALL, wx.SWISS, wx.NORMAL, wx.NORMAL)
 
         self.shipBmp = None
-        if shipID:
-            self.shipBmp = BitmapLoader.getBitmap(str(shipID), "renders")
+        if graphicID:
+            self.shipBmp = BitmapLoader.getBitmap(str(graphicID), "renders")
         if not self.shipBmp:
             self.shipBmp = BitmapLoader.getBitmap("ship_no_image_big", "gui")
 
