@@ -391,6 +391,10 @@ def directAttributeRequest(itemIDs, attrIDs):
     return result
 
 
+def getAbyssalTypes():
+    return set([r.resultingTypeID for r in gamedata_session.query(DynamicItem.resultingTypeID).distinct()])
+
+
 def getRequiredFor(itemID, attrMapping):
     Attribute1 = aliased(Attribute)
     Attribute2 = aliased(Attribute)

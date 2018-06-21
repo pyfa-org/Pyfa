@@ -81,12 +81,15 @@ class Mutator(EqBase):
         """ Validates values as properly falling within the range of the modules' Mutaplasmid """
         mod = val/self.baseValue
 
-        if self.minMod < mod < self.maxMod:
+        if self.minMod <= mod <= self.maxMod:
             # sweet, all good
             returnVal = val
         else:
             # need to fudge the numbers a bit. Go with the value closest to base
-            returnVal = min(self.maxValue, max(self.minValue, val))
+            if val >= 0:
+                returnVal = min(self.maxValue, max(self.minValue, val))
+            else:
+                returnVal = max(self.maxValue, min(self.minValue, val))
 
         return returnVal
 
@@ -105,11 +108,11 @@ class Mutator(EqBase):
 
     @property
     def minMod(self):
-        return self.dynamicAttribute.min
+        return round(self.dynamicAttribute.min, 3)
 
     @property
     def maxMod(self):
-        return self.dynamicAttribute.max
+        return round(self.dynamicAttribute.max, 3)
 
     @property
     def baseValue(self):

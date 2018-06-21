@@ -18,6 +18,7 @@
 # ===============================================================================
 
 from logbook import Logger
+from copy import deepcopy
 
 from sqlalchemy.orm import validates, reconstructor
 from math import floor
@@ -110,6 +111,7 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
         self.__item = None
         self.__baseItem = None
         self.__charge = None
+        self.__mutaplasmid = None
 
         # we need this early if module is invalid and returns early
         self.__slot = self.dummySlot
@@ -206,7 +208,8 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
             return False
         return self.__item is None or \
                (self.__item.category.name not in ("Module", "Subsystem", "Structure Module") and
-                self.__item.group.name not in self.SYSTEM_GROUPS)
+                self.__item.group.name not in self.SYSTEM_GROUPS) or \
+               (self.item.isAbyssal and (not self.baseItemID or not self.mutaplasmidID) )
 
     @property
     def isMutated(self):
@@ -352,11 +355,11 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
 
     @property
     def baseItem(self):
-        return self.__baseItem if self.__baseItem != 0 else None  # what?
+        return self.__baseItem
 
     @property
     def mutaplasmid(self):
-        return self.__mutaplasmid if self.__mutaplasmid != 0 else None
+        return self.__mutaplasmid
 
     @property
     def charge(self):
@@ -835,9 +838,13 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
         if item is None:
             copy = Module.buildEmpty(self.slot)
         else:
-            copy = Module(self.item)
+            copy = Module(self.item, self.baseItem, self.mutaplasmid)
         copy.charge = self.charge
         copy.state = self.state
+
+        for x in self.mutators.values():
+            Mutator(copy, x.attribute, x.value)
+
         return copy
 
     def __repr__(self):

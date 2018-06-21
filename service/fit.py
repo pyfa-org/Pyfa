@@ -379,7 +379,10 @@ class Fit(object):
             thing = eos.db.getItem(thing,
                                    eager=("attributes", "group.category"))
 
-        if isinstance(thing, FitType):
+        if isinstance(thing, es_Module):
+            thing = copy.deepcopy(thing)
+            fit.projectedModules.append(thing)
+        elif isinstance(thing, FitType):
             if thing in fit.projectedFits:
                 return
 
@@ -522,7 +525,7 @@ class Fit(object):
         mutator.value = value
 
         eos.db.commit()
-        #self.recalc(fit)
+        return mutator.value
 
     def appendModule(self, fitID, itemID):
         pyfalog.debug("Appending module for fit ({0}) using item: {1}", fitID, itemID)
@@ -705,11 +708,12 @@ class Fit(object):
                 cargo.amount -= 1
 
         if not module.isEmpty:  # if module is placeholder, we don't want to convert/add it
-            for x in fit.cargo.find(module.item):
+            moduleItem = module.item if not module.item.isAbyssal else module.baseItem
+            for x in fit.cargo.find(moduleItem ):
                 x.amount += 1
                 break
             else:
-                moduleP = es_Cargo(module.item)
+                moduleP = es_Cargo(moduleItem )
                 moduleP.amount = 1
                 fit.cargo.insert(cargoIdx, moduleP)
 

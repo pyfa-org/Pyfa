@@ -104,7 +104,7 @@ class AttributeSlider(wx.Panel):
         elif mod > 1:
             modEnd = self.UserMaxValue
             slider_percentage = ((mod-1)/(modEnd-1)) * 100
-        print(slider_percentage)
+        # print(slider_percentage)
         if self.inverse:
             slider_percentage *= -1
         self.slider.SetValue(slider_percentage)
