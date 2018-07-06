@@ -19,7 +19,7 @@ import eos.db
 if not os.path.exists(config.savePath):
     os.mkdir(config.savePath)
 
-from effs_stat_export import parseNeededFitDetails
+from efs_stat_export import parseNeededFitDetails
 
 def exportPyfaFits(opts):
     nameReq = ''

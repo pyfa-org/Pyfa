@@ -38,16 +38,16 @@ parser.add_option(
 (options, args) = parser.parse_args()
 
 if options.exportfits:
-    from effs_export_pyfa_fits import exportPyfaFits
+    from efs_export_pyfa_fits import exportPyfaFits
     exportPyfaFits(options)
 
 if options.exportbaseships:
-    from effs_export_base_fits import exportBaseShips
+    from efs_export_base_fits import exportBaseShips
     exportBaseShips(options)
 
 if options.convertfitsfromhtml:
-    from effs_process_html_export import effsFitsFromHTMLExport
-    effsFitsFromHTMLExport(options)
+    from efs_process_html_export import efsFitsFromHTMLExport
+    efsFitsFromHTMLExport(options)
 
 #stuff bellow this point is purely scrap diagnostic stuff and should not be public (as it's scrawl)
 def printGroupData():

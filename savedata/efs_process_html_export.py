@@ -1,6 +1,6 @@
-from effs_export_base_fits import *
+from efs_export_base_fits import *
 
-def effsFitsFromHTMLExport(opts):
+def efsFitsFromHTMLExport(opts):
     if opts:
         if opts.outputpath:
             basePath = opts.outputpath

@@ -78,7 +78,7 @@ eos.db.saveddata_meta.create_all()
 
 import json
 from service.fit import Fit
-from effs_stat_export import parseNeededFitDetails
+from efs_stat_export import parseNeededFitDetails
 
 from sqlalchemy import Column, String, Integer, ForeignKey, Boolean, Table
 from sqlalchemy.orm import relation, mapper, synonym, deferred
@@ -140,7 +140,11 @@ def t3dGetStatSet(dnaString, shipName, groupID, raceID):
     n = 0
     while n < len(t3dModes):
         dna = dnaString + ':' + str(t3dModes[n].ID) + ';1'
-        shipModeData += setFitFromString(dna, t3dModes[n].name, groupID) + ',\n'
+        #Don't add the new line for the last mode
+        if n < len(t3dModes) - 1:
+            shipModeData += setFitFromString(dna, t3dModes[n].name, groupID) + ',\n'
+        else:
+            shipModeData += setFitFromString(dna, t3dModes[n].name, groupID)
         n += 1
     return shipModeData
 
@@ -168,8 +172,11 @@ def t3cGetStatSet(dnaString, shipName, groupID, raceID):
                     dna = dnaString + ':' + str(ss[0][a].ID) \
                           + ';1:' + str(ss[1][b].ID) + ';1:' + str(ss[2][c].ID) \
                           + ';1:' + str(ss[3][d].ID) + ';1'
-                    name = shipName + str(a) + str(b) + str(c) + str(d)
-                    shipPermutationData += setFitFromString(dna, name, groupID) + ',\n'
+                    #Don't add the new line for the last permutation
+                    if a == 2 and b == 2 and c == 2 and d == 2:
+                        shipPermutationData += setFitFromString(dna, shipName, groupID)
+                    else:
+                        shipPermutationData += setFitFromString(dna, shipName, groupID) + ',\n'
                     d += 1
                     n += 1
                 c += 1
@@ -193,7 +200,6 @@ def setFitFromString(dnaString, fitName, groupID) :
         print('Cannot find correct link fits for base calculations')
         return ''
     modArray = dnaString.split(':')
-    additionalModeFit = ''
     fitL = Fit()
     fitID = fitL.newFit(int(modArray[0]), fitName)
     fit = eos.db.getFit(fitID)
@@ -246,4 +252,4 @@ def setFitFromString(dnaString, fitName, groupID) :
     fitL.addCommandFit(fit.ID, infoLinkShip)
     jsonStr = parseNeededFitDetails(fit, groupID)
     Fit.deleteFit(fitID)
-    return jsonStr + additionalModeFit
+    return jsonStr

@@ -543,10 +543,10 @@ def getShipSize(groupID):
 def parseNeededFitDetails(fit, groupID):
     includeShipTypeData = groupID > 0
     fitID = fit.ID
-    if len(fit.modules) > 0:
-        fitName = fit.ship.name + ': ' + fit.name
-    else:
+    if includeShipTypeData:
         fitName = fit.name
+    else:
+        fitName = fit.ship.name + ': ' + fit.name
     print('')
     print('name: ' + fit.name)
     fitL = Fit.getInstance()
@@ -599,9 +599,9 @@ def parseNeededFitDetails(fit, groupID):
             'rigSlots': fitModAttr['rigSlots'], 'lowSlots': fitModAttr['lowSlots'],
             'midSlots': fitModAttr['medSlots'], 'highSlots': fitModAttr['hiSlots'],
             'turretSlots': fitModAttr['turretSlotsLeft'], 'launcherSlots': fitModAttr['launcherSlotsLeft'],
-            'powerOutput': fitModAttr['powerOutput'], 'rigSize': fitModAttr['rigSize'],
-            'effectiveTurrets': effectiveTurretSlots, 'effectiveLaunchers': effectiveLauncherSlots,
-            'effectiveDroneBandwidth': effectiveDroneBandwidth,
+            'powerOutput': fitModAttr['powerOutput'], 'cpuOutput': fitModAttr['cpuOutput'],
+            'rigSize': fitModAttr['rigSize'], 'effectiveTurrets': effectiveTurretSlots,
+            'effectiveLaunchers': effectiveLauncherSlots, 'effectiveDroneBandwidth': effectiveDroneBandwidth,
             'resonance': resonance, 'typeID': fit.shipID, 'groupID': groupID, 'shipSize': shipSize,
             'droneControlRange': fitModAttr['droneControlRange'], 'mass': fitModAttr['mass'],
             'moduleNames': moduleNames, 'projections': projections,
@@ -611,6 +611,6 @@ def parseNeededFitDetails(fit, groupID):
     except TypeError:
         print('Error parsing fit:' + str(fit))
         print(TypeError)
-        parsable = {'name': fitName + 'Fit could not be correctly parsed'}
+        dataDict = {'name': fitName + 'Fit could not be correctly parsed'}
     export = json.dumps(dataDict, skipkeys=True)
     return export
