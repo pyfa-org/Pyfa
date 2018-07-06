@@ -34,6 +34,7 @@ class BoosterSideEffect(ContextMenu):
         label = ability.name
         id = ContextMenu.nextID()
         self.effectIds[id] = ability
+
         menuItem = wx.MenuItem(menu, id, label, kind=wx.ITEM_CHECK)
         menu.Bind(wx.EVT_MENU, self.handleMode, menuItem)
         return menuItem

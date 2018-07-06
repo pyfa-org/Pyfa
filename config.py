@@ -24,8 +24,8 @@ saveInRoot = False
 
 # Version data
 
-version = "2.1.1"
-tag = "Stable"
+version = "2.2.0b1"
+tag = "git"
 expansionName = "Into the Abyss"
 expansionVersion = "1.1"
 evemonMinVersion = "4081"

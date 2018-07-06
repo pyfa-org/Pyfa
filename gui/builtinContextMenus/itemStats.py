@@ -63,7 +63,7 @@ class ItemStats(ContextMenu):
                 size = wx.DefaultSize
                 pos = wx.DefaultPosition
             ItemStatsDialog(stuff, fullContext, pos, size, maximized)
-            lastWnd.closeEvent(None)
+            lastWnd.Close()
 
         else:
             ItemStatsDialog(stuff, fullContext)

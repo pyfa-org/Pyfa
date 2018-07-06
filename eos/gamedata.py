@@ -208,6 +208,8 @@ class Item(EqBase):
 
     MOVE_ATTR_INFO = None
 
+    ABYSSAL_TYPES = None
+
     @classmethod
     def getMoveAttrInfo(cls):
         info = getattr(cls, "MOVE_ATTR_INFO", None)
@@ -463,6 +465,17 @@ class Item(EqBase):
 
         return self.__price
 
+    @property
+    def isAbyssal(self):
+        if Item.ABYSSAL_TYPES is None:
+            Item.getAbyssalYypes()
+
+        return self.ID in Item.ABYSSAL_TYPES
+
+    @classmethod
+    def getAbyssalYypes(cls):
+        cls.ABYSSAL_TYPES = eos.db.getAbyssalTypes()
+
     def __repr__(self):
         return "Item(ID={}, name={}) at {}".format(
                 self.ID, self.name, hex(id(self))
@@ -512,9 +525,16 @@ class Group(EqBase):
     pass
 
 
-class Icon(EqBase):
+class DynamicItem(EqBase):
     pass
 
+
+class DynamicItemAttribute(EqBase):
+    pass
+
+
+class DynamicItemItem(EqBase):
+    pass
 
 class MarketGroup(EqBase):
     def __repr__(self):
@@ -532,7 +552,101 @@ class MetaType(EqBase):
 
 
 class Unit(EqBase):
-    pass
+
+    def __init__(self):
+        self.name = None
+        self.displayName = None
+
+    @property
+    def translations(self):
+        """ This is a mapping of various tweaks that we have to do between the internal representation of an attribute
+        value and the display (for example, 'Millisecond' units have the display name of 's', so we have to convert value
+        from ms to s) """
+        return {
+            "Inverse Absolute Percent": (
+                lambda v: (1 - v) * 100,
+                lambda d: -1 * (d / 100) + 1,
+                lambda u: u),
+            "Inversed Modifier Percent": (
+                lambda v: (1 - v) * 100,
+                lambda d: -1 * (d / 100) + 1,
+                lambda u: u),
+            "Modifier Percent": (
+                lambda v: ("%+.2f" if ((v - 1) * 100) % 1 else "%+d") % ((v - 1) * 100),
+                lambda d: (d / 100) + 1,
+                lambda u: u),
+            "Volume": (
+                lambda v: v,
+                lambda d: d,
+                lambda u: "m³"),
+            "Sizeclass": (
+                lambda v: v,
+                lambda d: d,
+                lambda u: ""),
+            "Absolute Percent": (
+                lambda v: (v * 100),
+                lambda d: d / 100,
+                lambda u: u),
+            "Milliseconds": (
+                lambda v: v / 1000.0,
+                lambda d: d * 1000.0,
+                lambda u: u),
+            "Boolean": (
+                lambda v, u: "Yes" if v == 1 else "No",
+                lambda d: 1.0 if d == "Yes" else 0.0,
+                lambda u: ""),
+            "typeID": (
+                self.itemIDCallback,
+                None,  # we could probably convert these back if we really tried hard enough
+                lambda u: ""),
+            "groupID": (
+                self.groupIDCallback,
+                None,
+                lambda u: ""),
+            "attributeID": (
+                self.attributeIDCallback,
+                None,
+                lambda u: ""),
+        }
+
+    @staticmethod
+    def itemIDCallback(v):
+        v = int(v)
+        item = eos.db.getItem(int(v))
+        return "%s (%d)" % (item.name, v) if item is not None else str(v)
+
+    @staticmethod
+    def groupIDCallback(v):
+        v = int(v)
+        group = eos.db.getGroup(v)
+        return "%s (%d)" % (group.name, v) if group is not None else str(v)
+
+    @staticmethod
+    def attributeIDCallback(v):
+        v = int(v)
+        if not v:  # some attributes come through with a value of 0? See #1387
+            return "%d" % (v)
+        attribute = eos.db.getAttributeInfo(v, eager=("unit"))
+        return "%s (%d)" % (attribute.name.capitalize(), v)
+
+    def TranslateValue(self, value):
+        """Attributes have to be translated certain ways based on their unit (ex: decimals converting to percentages).
+        This allows us to get an easy representation of how the attribute should be printed """
+
+        override = self.translations.get(self.name)
+        if override is not None:
+            return override[0](value), override[2](self.displayName)
+
+        return value, self.displayName
+
+    def ComplicateValue(self, value):
+        """Takes the display value and turns it back into the internal representation of it"""
+
+        override = self.translations.get(self.name)
+        if override is not None:
+            return override[1](value)
+
+        return value
 
 
 class Traits(EqBase):

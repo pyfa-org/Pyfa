@@ -95,7 +95,7 @@ class Fit(object):
         fits = eos.db.getFitsWithShip(shipID)
         names = []
         for fit in fits:
-            names.append((fit.ID, fit.name, fit.booster, fit.modified or fit.created or datetime.datetime.fromtimestamp(fit.timestamp), fit.notes))
+            names.append((fit.ID, fit.name, fit.booster, fit.modified or fit.created or datetime.datetime.fromtimestamp(fit.timestamp), fit.notes, fit.ship.item.graphicID))
 
         return names
 
@@ -379,7 +379,10 @@ class Fit(object):
             thing = eos.db.getItem(thing,
                                    eager=("attributes", "group.category"))
 
-        if isinstance(thing, FitType):
+        if isinstance(thing, es_Module):
+            thing = copy.deepcopy(thing)
+            fit.projectedModules.append(thing)
+        elif isinstance(thing, FitType):
             if thing in fit.projectedFits:
                 return
 
@@ -517,6 +520,13 @@ class Fit(object):
         eos.db.commit()
         self.recalc(fit)
 
+    def changeMutatedValue(self, mutator, value):
+        pyfalog.debug("Changing mutated value for {} / {}: {} => {}".format(mutator.module, mutator.module.mutaplasmid, mutator.value, value))
+        mutator.value = value
+
+        eos.db.commit()
+        return mutator.value
+
     def appendModule(self, fitID, itemID):
         pyfalog.debug("Appending module for fit ({0}) using item: {1}", fitID, itemID)
         fit = eos.db.getFit(fitID)
@@ -574,6 +584,37 @@ class Fit(object):
         fit.fill()
         eos.db.commit()
         return numSlots != len(fit.modules)
+
+    def convertMutaplasmid(self, fitID, position, mutaplasmid):
+        # this is mostly the same thing as the self.changeModule method, however it initializes an abyssal module with
+        # the old module as it's base, and then replaces it
+        fit = eos.db.getFit(fitID)
+        base = fit.modules[position]
+        fit.modules.toDummy(position)
+
+        try:
+            m = es_Module(mutaplasmid.resultingItem, base.item, mutaplasmid)
+        except ValueError:
+            pyfalog.warning("Invalid item: {0} AHHHH")
+            return False
+
+        if m.fits(fit):
+            m.owner = fit
+            fit.modules.toModule(position, m)
+            if m.isValidState(State.ACTIVE):
+                m.state = State.ACTIVE
+
+            # As some items may affect state-limiting attributes of the ship, calculate new attributes first
+            self.recalc(fit)
+            # Then, check states of all modules and change where needed. This will recalc if needed
+            self.checkStates(fit, m)
+
+            fit.fill()
+            eos.db.commit()
+
+            return True
+        else:
+            return None
 
     def changeModule(self, fitID, position, newItemID):
         fit = eos.db.getFit(fitID)
@@ -667,11 +708,12 @@ class Fit(object):
                 cargo.amount -= 1
 
         if not module.isEmpty:  # if module is placeholder, we don't want to convert/add it
-            for x in fit.cargo.find(module.item):
+            moduleItem = module.item if not module.item.isAbyssal else module.baseItem
+            for x in fit.cargo.find(moduleItem ):
                 x.amount += 1
                 break
             else:
-                moduleP = es_Cargo(module.item)
+                moduleP = es_Cargo(moduleItem )
                 moduleP.amount = 1
                 fit.cargo.insert(cargoIdx, moduleP)
 

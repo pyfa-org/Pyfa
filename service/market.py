@@ -121,13 +121,13 @@ class SearchWorkerThread(threading.Thread):
             if len(request) >= config.minItemSearchLength:
                 results = eos.db.searchItems(request, where=filter_,
                                              join=(types_Item.group, types_Group.category),
-                                             eager=("icon", "group.category", "metaGroup", "metaGroup.parent"))
+                                             eager=("group.category", "metaGroup", "metaGroup.parent"))
 
             jargon_results = []
             if len(jargon_request) >= config.minItemSearchLength:
                 jargon_results = eos.db.searchItems(jargon_request, where=filter_,
                                              join=(types_Item.group, types_Group.category),
-                                             eager=("icon", "group.category", "metaGroup", "metaGroup.parent"))
+                                             eager=("group.category", "metaGroup", "metaGroup.parent"))
 
             items = set()
             # Return only published items, consult with Market service this time
@@ -676,8 +676,8 @@ class Market(object):
 
     def getIconByMarketGroup(self, mg):
         """Return icon associated to marketgroup"""
-        if mg.icon:
-            return mg.icon.iconFile
+        if mg.iconID:
+            return mg.iconID
         else:
             while mg and not mg.hasTypes:
                 mg = mg.parent
@@ -692,7 +692,7 @@ class Market(object):
                 except KeyError:
                     return ""
 
-                return item.icon.iconFile if item.icon else ""
+                return item.iconID if item.icon else ""
             elif self.getMarketGroupChildren(mg) > 0:
                 kids = self.getMarketGroupChildren(mg)
                 mktGroups = self.getIconByMarketGroup(kids)
@@ -725,7 +725,7 @@ class Market(object):
         """
         root = set()
         for id_ in self.ROOT_MARKET_GROUPS:
-            mg = self.getMarketGroup(id_, eager="icon")
+            mg = self.getMarketGroup(id_)
             root.add(mg)
 
         return root
@@ -752,7 +752,7 @@ class Market(object):
         filter_ = types_Category.name.in_(["Ship", "Structure"])
         results = eos.db.searchItems(name, where=filter_,
                                      join=(types_Item.group, types_Group.category),
-                                     eager=("icon", "group.category", "metaGroup", "metaGroup.parent"))
+                                     eager=("group.category", "metaGroup", "metaGroup.parent"))
         ships = set()
         for item in results:
             if self.getPublicityByItem(item):

@@ -18,6 +18,7 @@
 # ===============================================================================
 
 from logbook import Logger
+from copy import deepcopy
 
 from sqlalchemy.orm import validates, reconstructor
 from math import floor
@@ -27,6 +28,7 @@ from eos.effectHandlerHelpers import HandledItem, HandledCharge
 from eos.enum import Enum
 from eos.modifiedAttributeDict import ModifiedAttributeDict, ItemAttrShortcut, ChargeAttrShortcut
 from eos.saveddata.citadel import Citadel
+from eos.saveddata.mutator import Mutator
 
 pyfalog = Logger(__name__)
 
@@ -74,15 +76,31 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
     MINING_ATTRIBUTES = ("miningAmount",)
     SYSTEM_GROUPS = ("Effect Beacon", "MassiveEnvironments", "Abyssal Hazards", "Non-Interactable Object")
 
-    def __init__(self, item):
+    def __init__(self, item, baseItem=None, mutaplasmid=None):
         """Initialize a module from the program"""
-        self.__item = item
+
+        self.itemID = item.ID if item is not None else None
+        self.baseItemID = baseItem.ID if baseItem is not None else None
+        self.mutaplasmidID = mutaplasmid.ID if mutaplasmid is not None else None
+
+        if baseItem is not None:
+            # we're working with a mutated module, need to get abyssal module loaded with the base attributes
+            # Note: there may be a better way of doing this, such as a metho on this classe to convert(mutaplamid). This
+            # will require a bit more research though, considering there has never been a need to "swap" out the item of a Module
+            # before, and there may be assumptions taken with regards to the item never changing (pre-calculated / cached results, for example)
+            self.__item = eos.db.getItemWithBaseItemAttribute(self.itemID, self.baseItemID)
+            self.__baseItem = baseItem
+            self.__mutaplasmid = mutaplasmid
+        else:
+            self.__item = item
+            self.__baseItem = baseItem
+            self.__mutaplasmid = mutaplasmid
 
         if item is not None and self.isInvalid:
             raise ValueError("Passed item is not a Module")
 
         self.__charge = None
-        self.itemID = item.ID if item is not None else None
+
         self.projected = False
         self.state = State.ONLINE
         self.build()
@@ -91,7 +109,9 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
     def init(self):
         """Initialize a module from the database and validate"""
         self.__item = None
+        self.__baseItem = None
         self.__charge = None
+        self.__mutaplasmid = None
 
         # we need this early if module is invalid and returns early
         self.__slot = self.dummySlot
@@ -100,6 +120,14 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
             self.__item = eos.db.getItem(self.itemID)
             if self.__item is None:
                 pyfalog.error("Item (id: {0}) does not exist", self.itemID)
+                return
+
+        if self.baseItemID:
+            self.__item = eos.db.getItemWithBaseItemAttribute(self.itemID, self.baseItemID)
+            self.__baseItem = eos.db.getItem(self.baseItemID)
+            self.__mutaplasmid = eos.db.getMutaplasmid(self.mutaplasmidID)
+            if self.__baseItem is None:
+                pyfalog.error("Base Item (id: {0}) does not exist", self.itemID)
                 return
 
         if self.isInvalid:
@@ -133,9 +161,22 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
             self.__itemModifiedAttributes.overrides = self.__item.overrides
             self.__hardpoint = self.__calculateHardpoint(self.__item)
             self.__slot = self.__calculateSlot(self.__item)
+
+            # Instantiate / remove mutators if this is a mutated module
+            if self.__baseItem:
+                for x in self.mutaplasmid.attributes:
+                    attr = self.item.attributes[x.name]
+                    id = attr.ID
+                    if id not in self.mutators:  # create the mutator
+                        Mutator(self, attr, attr.value)
+                # @todo: remove attributes that are no longer part of the mutaplasmid.
+
+            self.__itemModifiedAttributes.mutators = self.mutators
+
         if self.__charge:
             self.__chargeModifiedAttributes.original = self.__charge.attributes
             self.__chargeModifiedAttributes.overrides = self.__charge.overrides
+
 
     @classmethod
     def buildEmpty(cls, slot):
@@ -162,11 +203,17 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
 
     @property
     def isInvalid(self):
+        # todo: validate baseItem as well if it's set.
         if self.isEmpty:
             return False
         return self.__item is None or \
                (self.__item.category.name not in ("Module", "Subsystem", "Structure Module") and
-                self.__item.group.name not in self.SYSTEM_GROUPS)
+                self.__item.group.name not in self.SYSTEM_GROUPS) or \
+               (self.item.isAbyssal and (not self.baseItemID or not self.mutaplasmidID) )
+
+    @property
+    def isMutated(self):
+        return self.baseItemID or self.mutaplasmidID
 
     @property
     def numCharges(self):
@@ -305,6 +352,14 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
     @property
     def item(self):
         return self.__item if self.__item != 0 else None
+
+    @property
+    def baseItem(self):
+        return self.__baseItem
+
+    @property
+    def mutaplasmid(self):
+        return self.__mutaplasmid
 
     @property
     def charge(self):
@@ -572,7 +627,7 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
         for i in range(5):
             itemChargeGroup = self.getModifiedItemAttr('chargeGroup' + str(i), None)
             if itemChargeGroup is not None:
-                g = eos.db.getGroup(int(itemChargeGroup), eager=("items.icon", "items.attributes"))
+                g = eos.db.getGroup(int(itemChargeGroup), eager=("items.attributes"))
                 if g is None:
                     continue
                 for singleItem in g.items:
@@ -783,9 +838,13 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
         if item is None:
             copy = Module.buildEmpty(self.slot)
         else:
-            copy = Module(self.item)
+            copy = Module(self.item, self.baseItem, self.mutaplasmid)
         copy.charge = self.charge
         copy.state = self.state
+
+        for x in self.mutators.values():
+            Mutator(copy, x.attribute, x.value)
+
         return copy
 
     def __repr__(self):

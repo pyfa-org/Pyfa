@@ -1,2 +1,2 @@
-__all__ = ["attribute", "category", "effect", "group", "metaData",
-           "icon", "item", "marketGroup", "metaGroup", "unit", "alphaClones"]
+__all__ = ["attribute", "category", "effect", "group", "metaData", "dynamicAttributes",
+           "item", "marketGroup", "metaGroup", "unit", "alphaClones"]

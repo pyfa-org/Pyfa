@@ -40,7 +40,7 @@ class MaxRange(ViewColumn):
         info = sAttr.getAttributeInfo("maxRange")
         self.info = info
         if params["showIcon"]:
-            iconFile = info.icon.iconFile if info.icon else None
+            iconFile = info.iconID
             if iconFile:
                 self.imageId = fittingView.imageList.GetImageIndex(iconFile, "icons")
                 self.bitmap = BitmapLoader.getBitmap(iconFile, "icons")

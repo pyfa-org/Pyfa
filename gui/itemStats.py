@@ -34,6 +34,9 @@ from gui.builtinItemStatsViews.itemDependants import ItemDependents
 from gui.builtinItemStatsViews.itemEffects import ItemEffects
 from gui.builtinItemStatsViews.itemAffectedBy import ItemAffectedBy
 from gui.builtinItemStatsViews.itemProperties import ItemProperties
+from gui.builtinItemStatsViews.itemMutator import ItemMutator
+
+from eos.saveddata.module import Module
 
 
 class ItemStatsDialog(wx.Dialog):
@@ -79,10 +82,8 @@ class ItemStatsDialog(wx.Dialog):
             item = sMkt.getItem(victim.ID)
             victim = None
         self.context = itmContext
-        if item.icon is not None:
-            before, sep, after = item.icon.iconFile.rpartition("_")
-            iconFile = "%s%s%s" % (before, sep, "0%s" % after if len(after) < 2 else after)
-            itemImg = BitmapLoader.getBitmap(iconFile, "icons")
+        if item.iconID is not None:
+            itemImg = BitmapLoader.getBitmap(item.iconID, "icons")
             if itemImg is not None:
                 self.SetIcon(wx.Icon(itemImg))
         self.SetTitle("%s: %s%s" % ("%s Stats" % itmContext if itmContext is not None else "Stats", item.name,
@@ -146,7 +147,7 @@ class ItemStatsDialog(wx.Dialog):
             ItemStatsDialog.counter -= 1
         self.parentWnd.UnregisterStatsWindow(self)
 
-        self.Destroy()
+        event.Skip()
 
 
 class ItemStatsContainer(wx.Panel):
@@ -162,6 +163,10 @@ class ItemStatsContainer(wx.Panel):
         if item.traits is not None:
             self.traits = ItemTraits(self.nbContainer, stuff, item)
             self.nbContainer.AddPage(self.traits, "Traits")
+
+        if isinstance(stuff, Module) and stuff.isMutated:
+            self.mutator = ItemMutator(self.nbContainer, stuff, item)
+            self.nbContainer.AddPage(self.mutator, "Mutations")
 
         self.desc = ItemDescription(self.nbContainer, stuff, item)
         self.nbContainer.AddPage(self.desc, "Description")

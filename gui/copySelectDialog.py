@@ -36,7 +36,7 @@ class CopySelectDialog(wx.Dialog):
                            style=wx.DEFAULT_DIALOG_STYLE)
         mainSizer = wx.BoxSizer(wx.VERTICAL)
 
-        copyFormats = ["EFT", "EFT (Implants)", "XML", "DNA", "CREST", "MultiBuy", "EFS"]
+        copyFormats = ["EFT", "EFT (Implants)", "XML", "DNA", "ESI", "MultiBuy", "EFS"]
         copyFormatTooltips = {CopySelectDialog.copyFormatEft: "EFT text format",
                               CopySelectDialog.copyFormatEftImps: "EFT text format",
                               CopySelectDialog.copyFormatXml: "EVE native XML format",

@@ -7,8 +7,6 @@ import wx
 from .helpers import AutoListCtrl
 
 from gui.bitmap_loader import BitmapLoader
-from service.market import Market
-from service.attribute import Attribute
 from gui.utils.numberFormatter import formatAmount
 
 
@@ -86,7 +84,8 @@ class ItemParams(wx.Panel):
     def RefreshValues(self, event):
         self._fetchValues()
         self.UpdateList()
-        event.Skip()
+        if event:
+            event.Skip()
 
     def ToggleViewMode(self, event):
         self.toggleView *= -1
@@ -174,7 +173,12 @@ class ItemParams(wx.Panel):
             info = self.attrInfo.get(name)
             att = self.attrValues[name]
 
-            valDefault = getattr(info, "value", None)
+            # If we're working with a stuff object, we should get the original value from our getBaseAttrValue function,
+            # which will return the value with respect to the effective base (with mutators / overrides in place)
+            valDefault = getattr(info, "value", None)  # Get default value from attribute
+            if self.stuff is not None:
+                # if it's a stuff, overwrite default (with fallback to current value)
+                valDefault = self.stuff.getBaseAttrValue(name, valDefault)
             valueDefault = valDefault if valDefault is not None else att
 
             val = getattr(att, "value", None)
@@ -189,8 +193,8 @@ class ItemParams(wx.Panel):
                 attrName += " ({})".format(info.ID)
 
             if info:
-                if info.icon is not None:
-                    iconFile = info.icon.iconFile
+                if info.iconID is not None:
+                    iconFile = info.iconID
                     icon = BitmapLoader.getBitmap(iconFile, "icons")
 
                     if icon is None:
@@ -198,9 +202,9 @@ class ItemParams(wx.Panel):
 
                     attrIcon = self.imageList.Add(icon)
                 else:
-                    attrIcon = self.imageList.Add(BitmapLoader.getBitmap("7_15", "icons"))
+                    attrIcon = self.imageList.Add(BitmapLoader.getBitmap("0", "icons"))
             else:
-                attrIcon = self.imageList.Add(BitmapLoader.getBitmap("7_15", "icons"))
+                attrIcon = self.imageList.Add(BitmapLoader.getBitmap("0", "icons"))
 
             index = self.paramList.InsertItem(self.paramList.GetItemCount(), attrName, attrIcon)
             idNameMap[idCount] = attrName
@@ -210,14 +214,14 @@ class ItemParams(wx.Panel):
             if self.toggleView != 1:
                 valueUnit = str(value)
             elif info and info.unit:
-                valueUnit = self.TranslateValueUnit(value, info.unit.displayName, info.unit.name)
+                valueUnit = self.FormatValue(*info.unit.TranslateValue(value))
             else:
                 valueUnit = formatAmount(value, 3, 0, 0)
 
             if self.toggleView != 1:
                 valueUnitDefault = str(valueDefault)
             elif info and info.unit:
-                valueUnitDefault = self.TranslateValueUnit(valueDefault, info.unit.displayName, info.unit.name)
+                valueUnitDefault = self.FormatValue(*info.unit.TranslateValue(valueDefault))
             else:
                 valueUnitDefault = formatAmount(valueDefault, 3, 0, 0)
 
@@ -232,44 +236,11 @@ class ItemParams(wx.Panel):
         self.Layout()
 
     @staticmethod
-    def TranslateValueUnit(value, unitName, unitDisplayName):
-        def itemIDCallback():
-            item = Market.getInstance().getItem(value)
-            return "%s (%d)" % (item.name, value) if item is not None else str(value)
-
-        def groupIDCallback():
-            group = Market.getInstance().getGroup(value)
-            return "%s (%d)" % (group.name, value) if group is not None else str(value)
-
-        def attributeIDCallback():
-            if not value:  # some attributes come through with a value of 0? See #1387
-                return "%d" % (value)
-            attribute = Attribute.getInstance().getAttributeInfo(value)
-            return "%s (%d)" % (attribute.name.capitalize(), value)
-
-        trans = {
-            "Inverse Absolute Percent" : (lambda: (1 - value) * 100, unitName),
-            "Inversed Modifier Percent": (lambda: (1 - value) * 100, unitName),
-            "Modifier Percent"         : (
-                lambda: ("%+.2f" if ((value - 1) * 100) % 1 else "%+d") % ((value - 1) * 100), unitName),
-            "Volume"                   : (lambda: value, "m\u00B3"),
-            "Sizeclass"                : (lambda: value, ""),
-            "Absolute Percent"         : (lambda: (value * 100), unitName),
-            "Milliseconds"             : (lambda: value / 1000.0, unitName),
-            "typeID"                   : (itemIDCallback, ""),
-            "groupID"                  : (groupIDCallback, ""),
-            "attributeID"              : (attributeIDCallback, "")
-        }
-
-        override = trans.get(unitDisplayName)
-        if override is not None:
-            v = override[0]()
-            if isinstance(v, str):
-                fvalue = v
-            elif isinstance(v, (int, float)):
-                fvalue = formatAmount(v, 3, 0, 0)
-            else:
-                fvalue = v
-            return "%s %s" % (fvalue, override[1])
+    def FormatValue(value, unit):
+        """Formats a value / unit combination into a string
+        @todo: move this to a more central location, since this is also used in the item mutator panel"""
+        if isinstance(value, (int, float)):
+            fvalue = formatAmount(value, 3, 0, 0)
         else:
-            return "%s %s" % (formatAmount(value, 3, 0), unitName)
+            fvalue = value
+        return "%s %s" % (fvalue, unit)
