@@ -592,7 +592,7 @@ class Unit(EqBase):
                 lambda d: d * 1000.0,
                 lambda u: u),
             "Boolean": (
-                lambda v, u: "Yes" if v == 1 else "No",
+                lambda v: "Yes" if v == 1 else "No",
                 lambda d: 1.0 if d == "Yes" else 0.0,
                 lambda u: ""),
             "typeID": (
