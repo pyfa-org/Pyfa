@@ -33,7 +33,7 @@ from eos.saveddata.fighter import Fighter as es_Fighter
 from eos.saveddata.implant import Implant as es_Implant
 from eos.saveddata.ship import Ship as es_Ship
 from eos.saveddata.module import Module as es_Module, State, Slot
-from eos.saveddata.fit import Fit as FitType
+from eos.saveddata.fit import Fit as FitType, ImplantLocation
 from service.character import Character
 from service.damagePattern import DamagePattern
 from service.settings import SettingsProvider
@@ -61,6 +61,7 @@ class Fit(object):
 
         serviceFittingDefaultOptions = {
             "useGlobalCharacter": False,
+            "useCharacterImplantsByDefault": True,
             "useGlobalDamagePattern": False,
             "defaultCharacter": self.character.ID,
             "useGlobalForceReload": False,
@@ -147,6 +148,8 @@ class Fit(object):
         fit.targetResists = self.targetResists
         fit.character = self.character
         fit.booster = self.booster
+        useCharImplants = self.serviceFittingOptions["useCharacterImplantsByDefault"]
+        fit.implantLocation = ImplantLocation.CHARACTER if useCharImplants else ImplantLocation.FIT
         eos.db.save(fit)
         self.recalc(fit)
         return fit.ID
@@ -198,7 +201,11 @@ class Fit(object):
     def copyFit(fitID):
         pyfalog.debug("Creating copy of fit ID: {0}", fitID)
         fit = eos.db.getFit(fitID)
+        pyfalog.error(fit.name)
+        pyfalog.error(fit.implantLocation)
         newFit = copy.deepcopy(fit)
+        pyfalog.error(newFit.name)
+        pyfalog.error(newFit.implantLocation)
         eos.db.save(newFit)
         return newFit.ID
 

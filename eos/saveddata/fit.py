@@ -1580,6 +1580,7 @@ class Fit(object):
         copy_ship.name = "%s copy" % self.name
         copy_ship.damagePattern = self.damagePattern
         copy_ship.targetResists = self.targetResists
+        copy_ship.implantLocation = self.implantLocation
         copy_ship.notes = self.notes
 
         toCopy = (
