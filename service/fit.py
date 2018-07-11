@@ -201,11 +201,7 @@ class Fit(object):
     def copyFit(fitID):
         pyfalog.debug("Creating copy of fit ID: {0}", fitID)
         fit = eos.db.getFit(fitID)
-        pyfalog.error(fit.name)
-        pyfalog.error(fit.implantLocation)
         newFit = copy.deepcopy(fit)
-        pyfalog.error(newFit.name)
-        pyfalog.error(newFit.implantLocation)
         eos.db.save(newFit)
         return newFit.ID
 
