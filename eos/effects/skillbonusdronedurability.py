@@ -1,6 +1,8 @@
 # skillBonusDroneDurability
 #
 # Used by:
+# Implant: CreoDron 'Bumblebee' Drone Tuner T10-5D
+# Implant: CreoDron 'Yellowjacket' Drone Tuner D5-10T
 # Skill: Drone Durability
 type = "passive"
 
