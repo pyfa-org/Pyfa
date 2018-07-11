@@ -33,7 +33,7 @@ from eos.saveddata.fighter import Fighter as es_Fighter
 from eos.saveddata.implant import Implant as es_Implant
 from eos.saveddata.ship import Ship as es_Ship
 from eos.saveddata.module import Module as es_Module, State, Slot
-from eos.saveddata.fit import Fit as FitType
+from eos.saveddata.fit import Fit as FitType, ImplantLocation
 from service.character import Character
 from service.damagePattern import DamagePattern
 from service.settings import SettingsProvider
@@ -60,6 +60,7 @@ class Fit(object):
         self.dirtyFitIDs = set()
 
         serviceFittingDefaultOptions = {
+            "useCharecterImplantsByDefault": True,
             "useGlobalCharacter": False,
             "useGlobalDamagePattern": False,
             "defaultCharacter": self.character.ID,
@@ -147,6 +148,9 @@ class Fit(object):
         fit.targetResists = self.targetResists
         fit.character = self.character
         fit.booster = self.booster
+        fit.implantLocation = ImplantLocation.CHARACTER if\
+                              self.serviceFittingOptions["useCharecterImplantsByDefault"] else\
+                              ImplantLocation.FIT
         eos.db.save(fit)
         self.recalc(fit)
         return fit.ID

@@ -102,7 +102,7 @@ class ItemStatsDialog(wx.Dialog):
         if "wxGTK" in wx.PlatformInfo:
             self.closeBtn = wx.Button(self, wx.ID_ANY, "Close", wx.DefaultPosition, wx.DefaultSize, 0)
             self.mainSizer.Add(self.closeBtn, 0, wx.ALL | wx.ALIGN_RIGHT, 5)
-            self.closeBtn.Bind(wx.EVT_BUTTON, self.closeEvent)
+            self.closeBtn.Bind(wx.EVT_BUTTON, (lambda e: self.Close()))
 
         self.SetSizer(self.mainSizer)
 
