@@ -34,13 +34,13 @@ class PFGeneralPref(PreferenceView):
         self.m_staticline1 = wx.StaticLine(panel, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.LI_HORIZONTAL)
         mainSizer.Add(self.m_staticline1, 0, wx.EXPAND | wx.TOP | wx.BOTTOM, 5)
 
-        self.cbDefaultCharImplants = wx.CheckBox(panel, wx.ID_ANY, "Have new fits default to character implants",
-                                                 wx.DefaultPosition, wx.DefaultSize, 0)
-        mainSizer.Add(self.cbDefaultCharImplants, 0, wx.ALL | wx.EXPAND, 5)
-
         self.cbGlobalChar = wx.CheckBox(panel, wx.ID_ANY, "Use global character", wx.DefaultPosition, wx.DefaultSize,
                                         0)
         mainSizer.Add(self.cbGlobalChar, 0, wx.ALL | wx.EXPAND, 5)
+
+        self.cbDefaultCharImplants = wx.CheckBox(panel, wx.ID_ANY, "Use character implants by default for new fits",
+                                                 wx.DefaultPosition, wx.DefaultSize, 0)
+        mainSizer.Add(self.cbDefaultCharImplants, 0, wx.ALL | wx.EXPAND, 5)
 
         self.cbGlobalDmgPattern = wx.CheckBox(panel, wx.ID_ANY, "Use global damage pattern", wx.DefaultPosition,
                                               wx.DefaultSize, 0)
@@ -122,8 +122,8 @@ class PFGeneralPref(PreferenceView):
 
         self.sFit = Fit.getInstance()
 
-        self.cbDefaultCharImplants.SetValue(self.sFit.serviceFittingOptions["useCharecterImplantsByDefault"])
         self.cbGlobalChar.SetValue(self.sFit.serviceFittingOptions["useGlobalCharacter"])
+        self.cbDefaultCharImplants.SetValue(self.sFit.serviceFittingOptions["useCharecterImplantsByDefault"])
         self.cbGlobalDmgPattern.SetValue(self.sFit.serviceFittingOptions["useGlobalDamagePattern"])
         self.cbFitColorSlots.SetValue(self.sFit.serviceFittingOptions["colorFitBySlot"] or False)
         self.cbRackSlots.SetValue(self.sFit.serviceFittingOptions["rackSlots"] or False)
@@ -140,8 +140,8 @@ class PFGeneralPref(PreferenceView):
         self.cbShowShipBrowserTooltip.SetValue(self.sFit.serviceFittingOptions["showShipBrowserTooltip"])
         self.intDelay.SetValue(self.sFit.serviceFittingOptions["marketSearchDelay"])
 
-        self.cbDefaultCharImplants.Bind(wx.EVT_CHECKBOX, self.OnCBDefaultCharImplantsStateChange)
         self.cbGlobalChar.Bind(wx.EVT_CHECKBOX, self.OnCBGlobalCharStateChange)
+        self.cbDefaultCharImplants.Bind(wx.EVT_CHECKBOX, self.OnCBDefaultCharImplantsStateChange)
         self.cbGlobalDmgPattern.Bind(wx.EVT_CHECKBOX, self.OnCBGlobalDmgPatternStateChange)
         self.cbFitColorSlots.Bind(wx.EVT_CHECKBOX, self.onCBGlobalColorBySlot)
         self.cbRackSlots.Bind(wx.EVT_CHECKBOX, self.onCBGlobalRackSlots)
@@ -189,12 +189,12 @@ class PFGeneralPref(PreferenceView):
         wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fitID))
         event.Skip()
 
-    def OnCBDefaultCharImplantsStateChange(self, event):
-        self.sFit.serviceFittingOptions["useCharecterImplantsByDefault"] = self.cbDefaultCharImplants.GetValue()
-        event.Skip()
-
     def OnCBGlobalCharStateChange(self, event):
         self.sFit.serviceFittingOptions["useGlobalCharacter"] = self.cbGlobalChar.GetValue()
+        event.Skip()
+
+    def OnCBDefaultCharImplantsStateChange(self, event):
+        self.sFit.serviceFittingOptions["useCharecterImplantsByDefault"] = self.cbDefaultCharImplants.GetValue()
         event.Skip()
 
     def OnCBGlobalDmgPatternStateChange(self, event):
