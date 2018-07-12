@@ -291,6 +291,10 @@ class Fighter(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
     def __deepcopy__(self, memo):
         copy = Fighter(self.item)
         copy.amount = self.amount
+        copy.active = self.active
+        for ability in self.abilities:
+            copyAbility = next(filter(lambda a: a.effectID == ability.effectID, copy.abilities))
+            copyAbility.active = ability.active
         return copy
 
     def fits(self, fit):
