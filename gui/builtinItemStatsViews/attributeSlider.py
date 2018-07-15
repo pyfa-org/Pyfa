@@ -100,16 +100,17 @@ class AttributeSlider(wx.Panel):
         slider_percentage = 0
         if mod < 1:
             modEnd = self.UserMinValue
-            slider_percentage = (1-mod)/(1 - modEnd) * -100
+            slider_percentage = (1 - mod) / (1 - modEnd) * -100
         elif mod > 1:
             modEnd = self.UserMaxValue
-            slider_percentage = ((mod-1)/(modEnd-1)) * 100
+            slider_percentage = ((mod - 1) / (modEnd - 1)) * 100
         # print(slider_percentage)
         if self.inverse:
             slider_percentage *= -1
         self.slider.SetValue(slider_percentage)
         if post_event:
             wx.PostEvent(self, ValueChanged(self, None, value, None, slider_percentage))
+
 
 class TestAttributeSlider(wx.Frame):
 
@@ -245,4 +246,3 @@ if __name__ == "__main__":
 #         else:
 #             self.statxt2.SetLabel("{0:.3f} ({1:+.3f})".format(newValue, newValue - self.base_value, ))
 #             self.statxt2.SetToolTip("{0:+f}%".format(new_mod*100))
-

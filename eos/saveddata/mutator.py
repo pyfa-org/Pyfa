@@ -79,7 +79,7 @@ class Mutator(EqBase):
     @validates("value")
     def validator(self, key, val):
         """ Validates values as properly falling within the range of the modules' Mutaplasmid """
-        mod = val/self.baseValue
+        mod = val / self.baseValue
 
         if self.minMod <= mod <= self.maxMod:
             # sweet, all good
@@ -129,5 +129,3 @@ class Mutator(EqBase):
     @property
     def attribute(self):
         return self.__attr
-
-

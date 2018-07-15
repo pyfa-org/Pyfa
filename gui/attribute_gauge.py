@@ -169,7 +169,7 @@ class AttributeGauge(wx.Window):
     def SetValue(self, value, animate=True):
         """ Sets the current position of the gauge. """
 
-        print ("="*20, self._percentage)
+        print("=" * 20, self._percentage)
         if self._value == value:
             return
 
@@ -248,14 +248,15 @@ class AttributeGauge(wx.Window):
             w = min(w, half)  # Ensure that we don't overshoot our drawing area
             w = math.ceil(w)  # round up to nearest pixel, this ensures that we don't lose representation for sub pixels
 
-            # print("Percentage: {}\t\t\t\t\tValue: {}\t\t\t\t\tWidth: {}\t\t\t\t\tHalf: {}\t\t\t\t\tRect Width: {}".format(round(self._percentage, 3), round(value,3), w, half, rect.width))
+            # print("Percentage: {}\t\t\t\t\tValue: {}\t\t\t\t\tWidth: {}\t\t\t\t\tHalf: {}\t\t\t\t\tRect Width: {}".format(
+            # round(self._percentage, 3), round(value,3), w, half, rect.width))
 
             # set guide_lines every 10 pixels of the main gauge (not including borders)
             if self.guide_lines:
                 for x in range(1, 20):
                     dc.SetBrush(wx.Brush(wx.LIGHT_GREY))
                     dc.SetPen(wx.Pen(wx.LIGHT_GREY))
-                    dc.DrawRectangle(x*10, 1, 1, rect.height)
+                    dc.DrawRectangle(x * 10, 1, 1, rect.height)
 
             dc.SetBrush(wx.Brush(colour))
             dc.SetPen(wx.Pen(colour))
@@ -264,10 +265,10 @@ class AttributeGauge(wx.Window):
             # However, if there is an odd width, the middle pixel is shared between the left and right gauge
 
             if value >= 0:
-                padding = (half if is_even else math.ceil(half-1)) + 1
+                padding = (half if is_even else math.ceil(half - 1)) + 1
                 dc.DrawRectangle(padding, 1, w, rect.height)
             else:
-                padding = half - w + 1 if is_even else math.ceil(half)-(w-1)
+                padding = half - w + 1 if is_even else math.ceil(half) - (w - 1)
                 dc.DrawRectangle(padding, 1, w, rect.height)
 
             if self.leading_edge and (self.edge_on_neutral or value != 0):
@@ -277,7 +278,7 @@ class AttributeGauge(wx.Window):
                 if value > 0:
                     dc.DrawRectangle(min(padding + w, rect.width), 1, 1, rect.height)
                 else:
-                    dc.DrawRectangle(max(padding-1, 1), 1, 1, rect.height)
+                    dc.DrawRectangle(max(padding - 1, 1), 1, 1, rect.height)
 
     def OnTimer(self, event):
         old_value = self._old_percentage
@@ -332,14 +333,12 @@ if __name__ == "__main__":
             wx.Panel.__init__(self, parent, size=size)
             box = wx.BoxSizer(wx.VERTICAL)
 
-            font = wx.Font(9, wx.SWISS, wx.NORMAL, wx.NORMAL, False)
-
             self.gauge = gauge = AttributeGauge(self, size=(204, 4))
             gauge.SetBackgroundColour(wx.Colour(52, 86, 98))
             gauge.SetBarColour(wx.Colour(255, 128, 0))
             gauge.SetValue(100)
             gauge.SetFractionDigits(1)
-            box.Add(gauge, 0, wx.ALL|wx.CENTER, 10)
+            box.Add(gauge, 0, wx.ALL | wx.CENTER, 10)
 
             self.gauge11 = gauge = AttributeGauge(self, size=(204, 6))
             gauge.SetBackgroundColour(wx.Colour(52, 86, 98))
@@ -473,16 +472,16 @@ if __name__ == "__main__":
         def UpdateValue2(self, event):
             num = self.spinCtrl2.GetValue()
             self.gauge2.SetValue(num)
-            self.gauge3.SetValue(num*-1)
+            self.gauge3.SetValue(num * -1)
             self.gauge4.SetValue(num)
-            self.gauge5.SetValue(num*-1)
+            self.gauge5.SetValue(num * -1)
             self.gauge6.SetValue(num)
-            self.gauge7.SetValue(num*-1)
+            self.gauge7.SetValue(num * -1)
             self.gauge8.SetValue(num)
-            self.gauge9.SetValue(num*-1)
+            self.gauge9.SetValue(num * -1)
 
         def OnTimer(self, evt):
-            num = random.randint(-100,100)
+            num = random.randint(-100, 100)
             self.gauge.SetValue(num)
             self.gauge11.SetValue(num)
             self.gauge12.SetValue(num)

@@ -127,6 +127,7 @@ def getItemWithBaseItemAttribute(lookfor, baseItemID, eager=None):
     gamedata_session.expunge(item)
     return item
 
+
 @cachedQuery(1, "lookfor")
 def getItems(lookfor, eager=None):
     """

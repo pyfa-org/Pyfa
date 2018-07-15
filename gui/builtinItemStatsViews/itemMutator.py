@@ -9,12 +9,12 @@ from gui.contextMenu import ContextMenu
 from .itemAttributes import ItemParams
 from gui.bitmap_loader import BitmapLoader
 import gui.globalEvents as GE
-import gui.mainFrame
 import random
 
 from logbook import Logger
 
 pyfalog = Logger(__name__)
+
 
 class ItemMutator(wx.Panel):
 
@@ -76,7 +76,6 @@ class ItemMutator(wx.Panel):
             displayName.SetFont(font)
 
             headingSizer.Add(displayName, 3, wx.ALL | wx.EXPAND, 0)
-
 
             range_low = wx.StaticText(self, wx.ID_ANY, ItemParams.FormatValue(*m.attribute.unit.TranslateValue(worse_range[0])))
             range_low.SetForegroundColour(self.goodColor if worse_range[2] else self.badColor)
@@ -168,4 +167,3 @@ class ItemMutator(wx.Panel):
 
         # Send signal to GUI to update stats with current active fit
         wx.PostEvent(mainFrame, GE.FitChanged(fitID=activeFit))
-
