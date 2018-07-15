@@ -1,7 +1,8 @@
 # boosterMaxVelocityPenalty
 #
 # Used by:
-# Implants named like: Booster (12 of 33)
+# Implants named like: Crash Booster (3 of 4)
+# Items from market group: Implants & Boosters > Booster > Booster Slot 02 (9 of 13)
 type = "boosterSideEffect"
 
 # User-friendly name for the side effect

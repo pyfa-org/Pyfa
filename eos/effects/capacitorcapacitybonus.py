@@ -1,7 +1,7 @@
 # capacitorCapacityBonus
 #
 # Used by:
-# Modules from group: Capacitor Battery (27 of 27)
+# Modules from group: Capacitor Battery (30 of 30)
 type = "passive"
 
 
