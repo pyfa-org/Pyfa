@@ -1580,6 +1580,7 @@ class Fit(object):
         copy_ship.name = "%s copy" % self.name
         copy_ship.damagePattern = self.damagePattern
         copy_ship.targetResists = self.targetResists
+        copy_ship.implantLocation = self.implantLocation
         copy_ship.notes = self.notes
 
         toCopy = (
@@ -1598,11 +1599,26 @@ class Fit(object):
             for i in orig:
                 c.append(deepcopy(i))
 
-        for fit in self.projectedFits:
-            copy_ship.__projectedFits[fit.ID] = fit
-            # this bit is required -- see GH issue # 83
+        # this bit is required -- see GH issue # 83
+        def forceUpdateSavedata(fit):
             eos.db.saveddata_session.flush()
             eos.db.saveddata_session.refresh(fit)
+
+        for fit in self.commandFits:
+            copy_ship.__commandFits[fit.ID] = fit
+            forceUpdateSavedata(fit)
+            copyCommandInfo = fit.getCommandInfo(copy_ship.ID)
+            originalCommandInfo = fit.getCommandInfo(self.ID)
+            copyCommandInfo.active = originalCommandInfo.active
+            forceUpdateSavedata(fit)
+
+        for fit in self.projectedFits:
+            copy_ship.__projectedFits[fit.ID] = fit
+            forceUpdateSavedata(fit)
+            copyProjectionInfo = fit.getProjectionInfo(copy_ship.ID)
+            originalProjectionInfo = fit.getProjectionInfo(self.ID)
+            copyProjectionInfo.active = originalProjectionInfo.active
+            forceUpdateSavedata(fit)
 
         return copy_ship
 
