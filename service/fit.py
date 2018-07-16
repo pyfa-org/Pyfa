@@ -62,6 +62,7 @@ class Fit(object):
         serviceFittingDefaultOptions = {
             "useCharecterImplantsByDefault": True,
             "useGlobalCharacter": False,
+            "useCharacterImplantsByDefault": True,
             "useGlobalDamagePattern": False,
             "defaultCharacter": self.character.ID,
             "useGlobalForceReload": False,
@@ -96,7 +97,12 @@ class Fit(object):
         fits = eos.db.getFitsWithShip(shipID)
         names = []
         for fit in fits:
-            names.append((fit.ID, fit.name, fit.booster, fit.modified or fit.created or datetime.datetime.fromtimestamp(fit.timestamp), fit.notes, fit.ship.item.graphicID))
+            names.append((fit.ID,
+                          fit.name,
+                          fit.booster,
+                          fit.modified or fit.created or datetime.datetime.fromtimestamp(fit.timestamp),
+                          fit.notes,
+                          fit.ship.item.graphicID))
 
         return names
 
@@ -148,9 +154,8 @@ class Fit(object):
         fit.targetResists = self.targetResists
         fit.character = self.character
         fit.booster = self.booster
-        fit.implantLocation = ImplantLocation.CHARACTER if\
-                              self.serviceFittingOptions["useCharecterImplantsByDefault"] else\
-                              ImplantLocation.FIT
+        useCharImplants = self.serviceFittingOptions["useCharacterImplantsByDefault"]
+        fit.implantLocation = ImplantLocation.CHARACTER if useCharImplants else ImplantLocation.FIT
         eos.db.save(fit)
         self.recalc(fit)
         return fit.ID
@@ -713,11 +718,11 @@ class Fit(object):
 
         if not module.isEmpty:  # if module is placeholder, we don't want to convert/add it
             moduleItem = module.item if not module.item.isAbyssal else module.baseItem
-            for x in fit.cargo.find(moduleItem ):
+            for x in fit.cargo.find(moduleItem):
                 x.amount += 1
                 break
             else:
-                moduleP = es_Cargo(moduleItem )
+                moduleP = es_Cargo(moduleItem)
                 moduleP.amount = 1
                 fit.cargo.insert(cargoIdx, moduleP)
 

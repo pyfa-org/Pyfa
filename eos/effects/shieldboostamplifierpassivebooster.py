@@ -1,7 +1,7 @@
 # shieldBoostAmplifierPassiveBooster
 #
 # Used by:
-# Implants named like: Agency 'Hardshell' TB Dose (3 of 4)
+# Implants named like: Agency 'Hardshell' TB Dose (4 of 4)
 # Implants named like: Blue Pill Booster (5 of 5)
 # Implant: Antipharmakon Thureo
 type = "passive"

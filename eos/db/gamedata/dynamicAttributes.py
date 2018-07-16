@@ -38,8 +38,7 @@ dynamicAttributes_table = Table("mutaplasmidAttributes", gamedata_meta,
 
 dynamicApplicable_table = Table("mutaplasmidItems", gamedata_meta,
                       Column("typeID", ForeignKey("mutaplasmids.typeID"), primary_key=True),
-                      Column("applicableTypeID", ForeignKey("invtypes.typeID"), primary_key=True),
-                      )
+                      Column("applicableTypeID", ForeignKey("invtypes.typeID"), primary_key=True),)
 
 mapper(DynamicItem, dynamic_table, properties={
            "attributes": relation(DynamicItemAttribute),

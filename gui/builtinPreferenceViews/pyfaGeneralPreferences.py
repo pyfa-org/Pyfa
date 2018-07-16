@@ -123,7 +123,7 @@ class PFGeneralPref(PreferenceView):
         self.sFit = Fit.getInstance()
 
         self.cbGlobalChar.SetValue(self.sFit.serviceFittingOptions["useGlobalCharacter"])
-        self.cbDefaultCharImplants.SetValue(self.sFit.serviceFittingOptions["useCharecterImplantsByDefault"])
+        self.cbDefaultCharImplants.SetValue(self.sFit.serviceFittingOptions["useCharacterImplantsByDefault"])
         self.cbGlobalDmgPattern.SetValue(self.sFit.serviceFittingOptions["useGlobalDamagePattern"])
         self.cbFitColorSlots.SetValue(self.sFit.serviceFittingOptions["colorFitBySlot"] or False)
         self.cbRackSlots.SetValue(self.sFit.serviceFittingOptions["rackSlots"] or False)
@@ -194,7 +194,7 @@ class PFGeneralPref(PreferenceView):
         event.Skip()
 
     def OnCBDefaultCharImplantsStateChange(self, event):
-        self.sFit.serviceFittingOptions["useCharecterImplantsByDefault"] = self.cbDefaultCharImplants.GetValue()
+        self.sFit.serviceFittingOptions["useCharacterImplantsByDefault"] = self.cbDefaultCharImplants.GetValue()
         event.Skip()
 
     def OnCBGlobalDmgPatternStateChange(self, event):

@@ -29,7 +29,6 @@ mutator_table = Table("mutators", saveddata_meta,
                         Column("attrID", Integer, primary_key=True, index=True),
                         Column("value", Float, nullable=False),
                         Column("created", DateTime, nullable=True, default=datetime.datetime.now),
-                        Column("modified", DateTime, nullable=True, onupdate=datetime.datetime.now)
-                        )
+                        Column("modified", DateTime, nullable=True, onupdate=datetime.datetime.now))
 
 mapper(Mutator, mutator_table)

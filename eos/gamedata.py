@@ -536,6 +536,7 @@ class DynamicItemAttribute(EqBase):
 class DynamicItemItem(EqBase):
     pass
 
+
 class MarketGroup(EqBase):
     def __repr__(self):
         return "MarketGroup(ID={}, name={}, parent={}) at {}".format(

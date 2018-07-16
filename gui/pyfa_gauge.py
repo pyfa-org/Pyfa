@@ -130,7 +130,7 @@ class PyGauge(wx.Window):
         return self._max_range
 
     def Animate(self):
-        #sFit = Fit.getInstance()
+        # sFit = Fit.getInstance()
         if True:
             if not self._timer:
                 self._timer = wx.Timer(self, self._timer_id)

@@ -42,6 +42,7 @@ class ItemAttrShortcut(object):
 
         return return_value or default
 
+
 class ChargeAttrShortcut(object):
     def getModifiedChargeAttr(self, key, default=0):
         return_value = self.chargeModifiedAttributes.get(key)

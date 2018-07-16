@@ -1,8 +1,7 @@
 # skillBonusDroneInterfacing
 #
 # Used by:
-# Implant: CreoDron 'Bumblebee' Drone Tuner T10-5D
-# Implant: CreoDron 'Yellowjacket' Drone Tuner D5-10T
+# Implants from group: Cyber Drones (2 of 2)
 # Skill: Drone Interfacing
 type = "passive"
 

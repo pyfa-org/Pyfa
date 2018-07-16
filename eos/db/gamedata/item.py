@@ -63,8 +63,7 @@ mapper(Item, items_table,
                    primaryjoin=dynamicApplicable_table.c.applicableTypeID == items_table.c.typeID,
                    secondaryjoin=dynamicApplicable_table.c.typeID == DynamicItem.typeID,
                    secondary=dynamicApplicable_table,
-                   backref="applicableItems"
-            )
+                   backref="applicableItems")
        })
 
 Item.category = association_proxy("group", "category")
