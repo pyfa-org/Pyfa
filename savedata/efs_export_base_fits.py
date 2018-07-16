@@ -78,7 +78,7 @@ eos.db.saveddata_meta.create_all()
 
 import json
 from service.fit import Fit
-from efs_stat_export import parseNeededFitDetails
+from service.efsPort import parseNeededFitDetails
 
 from sqlalchemy import Column, String, Integer, ForeignKey, Boolean, Table
 from sqlalchemy.orm import relation, mapper, synonym, deferred

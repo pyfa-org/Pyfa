@@ -247,11 +247,27 @@ def getModuleNames(fit):
         moduleNames.append('Implants:')
         for implant in fit.implants:
             moduleNames.append(implant.item.name)
+    if len(fit.boosters) > 0:
+        moduleNames.append('')
+        moduleNames.append('Boosters:')
+        for booster in fit.boosters:
+            moduleNames.append(booster.item.name)
     if len(fit.commandFits) > 0:
         moduleNames.append('')
         moduleNames.append('Command Fits:')
         for commandFit in fit.commandFits:
             moduleNames.append(commandFit.name)
+    if len(fit.projectedModules) > 0:
+        moduleNames.append('')
+        moduleNames.append('Projected Modules:')
+        for mod in fit.projectedModules:
+            moduleNames.append(mod.item.name)
+
+    if fit.character.name != "All 5":
+        moduleNames.append('')
+        moduleNames.append('Character:')
+        moduleNames.append(fit.character.name)
+
     return moduleNames
 
 
@@ -595,7 +611,7 @@ def parseNeededFitDetails(fit, groupID):
             'maxTargetRange': fit.maxTargetRange, 'scanStrength': fit.scanStrength,
             'weaponDPS': fit.weaponDPS, 'alignTime': fit.alignTime, 'signatureRadius': fitModAttr['signatureRadius'],
             'weapons': weaponSystems, 'scanRes': fitModAttr['scanResolution'],
-            'projectedModules': fit.projectedModules, 'capUsed': fit.capUsed, 'capRecharge': fit.capRecharge,
+            'capUsed': fit.capUsed, 'capRecharge': fit.capRecharge,
             'rigSlots': fitModAttr['rigSlots'], 'lowSlots': fitModAttr['lowSlots'],
             'midSlots': fitModAttr['medSlots'], 'highSlots': fitModAttr['hiSlots'],
             'turretSlots': fitModAttr['turretSlotsLeft'], 'launcherSlots': fitModAttr['launcherSlotsLeft'],

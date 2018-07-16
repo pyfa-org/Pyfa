@@ -51,5 +51,5 @@ if [[ $EXPECTERRORS == True ]] ; then
 else
 diff -s --color=always ../shipJSON.js ~/.pyfa/shipJSON.js | grep -m 3 --color ''
 diff -s --color=always ../shipBaseJSON.js ~/.pyfa/shipBaseJSON.js | grep -m 3 --color ''
-/home/stock/scripts/Pyfa/.tox/pep8/bin/flake8 --exclude=.svn,CVS,.bzr,.hg,.git,__pycache__,venv,tests,.tox,build,dist,__init__.py,floatspin.py --ignore=E121,E126,E127,E128,E203,E731,F401,E722,E741 efs_stat_export.py --max-line-length=165
+/home/stock/scripts/Pyfa/.tox/pep8/bin/flake8 --exclude=.svn,CVS,.bzr,.hg,.git,__pycache__,venv,tests,.tox,build,dist,__init__.py,floatspin.py --ignore=E121,E126,E127,E128,E203,E731,F401,E722,E741 service/efsPort.py --max-line-length=165
 fi
