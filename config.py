@@ -24,7 +24,7 @@ saveInRoot = False
 
 # Version data
 
-version = "2.3.0"
+version = "2.3.1"
 tag = "Stable"
 expansionName = "YC120.7"
 expansionVersion = "1.2"
