@@ -596,7 +596,7 @@ class EfsPort():
             "therm": fitModAttr["shieldThermalDamageResonance"], "em": fitModAttr["shieldEmDamageResonance"]
         }
         resonance = {"hull": hullResonance, "armor": armorResonance, "shield": shieldResonance}
-        shipSize = EfsPort.getShipSize(groupID)
+        shipSize = EfsPort.getShipSize(fit.ship.item.groupID)
 
         try:
             dataDict = {

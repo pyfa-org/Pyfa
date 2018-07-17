@@ -43,7 +43,7 @@ class CopySelectDialog(wx.Dialog):
                               CopySelectDialog.copyFormatDna: "A one-line text format",
                               CopySelectDialog.copyFormatEsi: "A JSON format used for EVE CREST",
                               CopySelectDialog.copyFormatMultiBuy: "MultiBuy text format",
-                              CopySelectDialog.copyFormatEfs: u"EFS json stats format"}
+                              CopySelectDialog.copyFormatEfs: "JSON data format used by EFS"}
         selector = wx.RadioBox(self, wx.ID_ANY, label="Copy to the clipboard using:", choices=copyFormats,
                                style=wx.RA_SPECIFY_ROWS)
         selector.Bind(wx.EVT_RADIOBOX, self.Selected)
