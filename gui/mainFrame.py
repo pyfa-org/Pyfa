@@ -77,7 +77,7 @@ from eos.modifiedAttributeDict import ModifiedAttributeDict
 from eos.db.saveddata.loadDefaultDatabaseValues import DefaultDatabaseValues
 from eos.db.saveddata.queries import getFit as db_getFit
 from service.port import Port, IPortUser
-from service.efsPort import parseNeededFitDetails as exportEfsStats
+from service.efsPort import EfsPort
 from service.settings import HTMLExportSettings
 
 from time import gmtime, strftime
@@ -729,7 +729,7 @@ class MainFrame(wx.Frame):
 
     def clipboardEfs(self):
         fit = db_getFit(self.getActiveFit())
-        toClipboard(exportEfsStats(fit, 0))
+        toClipboard(EfsPort.exportEfs(fit, 0))
 
     def importFromClipboard(self, event):
         clipboard = fromClipboard()

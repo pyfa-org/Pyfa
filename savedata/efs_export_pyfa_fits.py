@@ -19,7 +19,7 @@ import eos.db
 if not os.path.exists(config.savePath):
     os.mkdir(config.savePath)
 
-from service.efsPort import parseNeededFitDetails
+from service.efsPort import EfsPort
 
 def exportPyfaFits(opts):
     nameReq = ''
@@ -48,7 +48,7 @@ def exportPyfaFits(opts):
             n += 1
             name = fit.ship.name + ': ' + fit.name
             if n >= skipTill and nameReq in name:
-                stats = parseNeededFitDetails(fit, 0)
+                stats = EfsPort.exportEfs(fit, 0)
                 output.write(stats)
                 output.write(',\n')
     output.write(']);\nexport {shipJSON};')

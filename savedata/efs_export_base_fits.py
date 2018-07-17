@@ -78,7 +78,7 @@ eos.db.saveddata_meta.create_all()
 
 import json
 from service.fit import Fit
-from service.efsPort import parseNeededFitDetails
+from service.efsPort import EfsPort
 
 from sqlalchemy import Column, String, Integer, ForeignKey, Boolean, Table
 from sqlalchemy.orm import relation, mapper, synonym, deferred
@@ -250,6 +250,6 @@ def setFitFromString(dnaString, fitName, groupID) :
     fitL.addCommandFit(fit.ID, shieldLinkShip)
     fitL.addCommandFit(fit.ID, skirmishLinkShip)
     fitL.addCommandFit(fit.ID, infoLinkShip)
-    jsonStr = parseNeededFitDetails(fit, groupID)
+    jsonStr = EfsPort.exportEfs(fit, groupID)
     Fit.deleteFit(fitID)
     return jsonStr
