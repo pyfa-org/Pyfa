@@ -60,7 +60,6 @@ class Fit(object):
         self.dirtyFitIDs = set()
 
         serviceFittingDefaultOptions = {
-            "useCharecterImplantsByDefault": True,
             "useGlobalCharacter": False,
             "useCharacterImplantsByDefault": True,
             "useGlobalDamagePattern": False,

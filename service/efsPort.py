@@ -38,7 +38,7 @@ class EfsPort():
             target[val] = source.itemModifiedAttributes[val]
 
     @staticmethod
-    def getT2MwdSpeed(fit, fitL):
+    def getT2MwdSpeed(fit, sFit):
         fitID = fit.ID
         propID = None
         shipHasMedSlots = fit.ship.itemModifiedAttributes["medSlots"] > 0
@@ -70,18 +70,18 @@ class EfsPort():
 
         if propID is None:
             return None
-        fitL.appendModule(fitID, propID)
-        fitL.recalc(fit)
+        sFit.appendModule(fitID, propID)
+        sFit.recalc(fit)
         fit = eos.db.getFit(fitID)
         mwdPropSpeed = fit.maxSpeed
         mwdPosition = list(filter(lambda mod: mod.item and mod.item.ID == propID, fit.modules))[0].position
-        fitL.removeModule(fitID, mwdPosition)
-        fitL.recalc(fit)
+        sFit.removeModule(fitID, mwdPosition)
+        sFit.recalc(fit)
         fit = eos.db.getFit(fitID)
         return mwdPropSpeed
 
     @staticmethod
-    def getPropData(fit, fitL):
+    def getPropData(fit, sFit):
         fitID = fit.ID
         propGroupId = getGroup("Propulsion Module").ID
         propMods = filter(lambda mod: mod.item and mod.item.groupID == propGroupId, fit.modules)
@@ -90,12 +90,12 @@ class EfsPort():
         if propWithBloom is not None:
             oldPropState = propWithBloom.state
             propWithBloom.state = 0
-            fitL.recalc(fit)
+            sFit.recalc(fit)
             fit = eos.db.getFit(fitID)
             sp = fit.maxSpeed
             sig = fit.ship.itemModifiedAttributes["signatureRadius"]
             propWithBloom.state = oldPropState
-            fitL.recalc(fit)
+            sFit.recalc(fit)
             fit = eos.db.getFit(fitID)
             return {"usingMWD": True, "unpropedSpeed": sp, "unpropedSig": sig}
         return {
@@ -426,7 +426,7 @@ class EfsPort():
                 mod = Module(item)
                 modSet.append(mod)
 
-        mkt = Market.getInstance()
+        sMkt = Market.getInstance()
         # Due to typed missile damage bonuses we"ll need to add extra launchers to cover all four types.
         additionalLaunchers = []
         for mod in modSet:
@@ -436,12 +436,12 @@ class EfsPort():
             charges = [clist[0]]
             if setType == "launcher":
                 # We don"t want variations of missiles we already have
-                prevCharges = list(mkt.getVariationsByItems(charges))
+                prevCharges = list(sMkt.getVariationsByItems(charges))
                 testCharges = []
                 for charge in clist:
                     if charge not in prevCharges:
                         testCharges.append(charge)
-                        prevCharges += mkt.getVariationsByItems([charge])
+                        prevCharges += sMkt.getVariationsByItems([charge])
                 for c in testCharges:
                     charges.append(c)
                     additionalLauncher = Module(mod.item)
@@ -488,7 +488,10 @@ class EfsPort():
         turrets = list(filter(lambda mod: mod.itemModifiedAttributes["damageMultiplier"], turrets))
         launchers = list(filter(lambda mod: sumDamage(mod.chargeModifiedAttributes), launchers))
         # Since the effect modules are fairly opaque a mock test fit is used to test the impact of traits.
-        tf = Fit.getInstance()
+        # standin class used to prevent . notation causing issues internally
+        class standin():
+            pass
+        tf = standin()
         tf.modules = HandledList(turrets + launchers)
         tf.character = fit.character
         tf.ship = fit.ship
@@ -517,7 +520,7 @@ class EfsPort():
         multipliers["turret"] = round(getMaxRatio(preTraitMultipliers, postTraitMultipliers, "turrets"), 6)
         multipliers["launcher"] = round(getMaxRatio(preTraitMultipliers, postTraitMultipliers, "launchers"), 6)
         multipliers["droneBandwidth"] = round(getMaxRatio(preTraitMultipliers, postTraitMultipliers, "drones"), 6)
-        tf.recalc(fit)
+        Fit.getInstance().recalc(fit)
         return multipliers
 
     @staticmethod
@@ -560,14 +563,14 @@ class EfsPort():
         else:
             fitName = fit.ship.name + ": " + fit.name
         pyfalog.info("Creating Eve Fleet Simulator data for: " + fit.name)
-        fitL = Fit.getInstance()
-        fitL.recalc(fit)
+        sFit = Fit.getInstance()
+        sFit.recalc(fit)
         fit = eos.db.getFit(fitID)
         fitModAttr = fit.ship.itemModifiedAttributes
-        propData = EfsPort.getPropData(fit, fitL)
+        propData = EfsPort.getPropData(fit, sFit)
         mwdPropSpeed = fit.maxSpeed
         if includeShipTypeData:
-            mwdPropSpeed = EfsPort.getT2MwdSpeed(fit, fitL)
+            mwdPropSpeed = EfsPort.getT2MwdSpeed(fit, sFit)
         projections = EfsPort.getOutgoingProjectionData(fit)
         moduleNames = EfsPort.getModuleNames(fit)
         weaponSystems = EfsPort.getWeaponSystemData(fit)
