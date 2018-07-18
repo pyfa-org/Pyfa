@@ -488,7 +488,7 @@ class EfsPort():
         turrets = list(filter(lambda mod: mod.itemModifiedAttributes["damageMultiplier"], turrets))
         launchers = list(filter(lambda mod: sumDamage(mod.chargeModifiedAttributes), launchers))
         # Since the effect modules are fairly opaque a mock test fit is used to test the impact of traits.
-        # standin class used to prevent . notation causing issues internally
+        # standin class used to prevent . notation causing issues when used as an arg
         class standin():
             pass
         tf = standin()
