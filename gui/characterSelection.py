@@ -45,15 +45,8 @@ class CharacterSelection(wx.Panel):
         # cache current selection to fall back in case we choose to open char editor
         self.charCache = None
 
-        #self.charChoice = wx.Choice(self)
-        #self.charChoice.Append('blarg')
-        #self.charChoice = wx.Choice(self, wx.ID_ANY, wx.Point(-1,0), wx.DefaultSize, [], style=0, validator=wx.DefaultValidator, name='welp')
-        self.charChoice = wx.ComboBox(
-            self, id=wx.ID_ANY, value="", pos=wx.DefaultPosition,
-            size=wx.DefaultSize, choices=[], style=wx.CB_READONLY, validator=wx.DefaultValidator,
-            name='welp'
-        )
-        mainSizer.Add(self.charChoice, 1, wx.ALIGN_RIGHT | wx.RIGHT | wx.LEFT, 3)
+        self.charChoice = wx.Choice(self)
+        mainSizer.Add(self.charChoice, 1, wx.ALIGN_CENTER_VERTICAL | wx.RIGHT | wx.LEFT, 3)
 
         self.refreshCharacterList()
 
@@ -81,8 +74,7 @@ class CharacterSelection(wx.Panel):
 
         self.skillReqsStaticBitmap.Bind(wx.EVT_RIGHT_UP, self.OnContextMenu)
 
-        #self.Bind(wx.EVT_CHOICE, self.charChanged)
-        self.Bind(wx.EVT_COMBOBOX, self.charChanged)
+        self.Bind(wx.EVT_CHOICE, self.charChanged)
         self.mainFrame.Bind(GE.CHAR_LIST_UPDATED, self.refreshCharacterList)
         self.mainFrame.Bind(GE.FIT_CHANGED, self.fitChanged)
 
@@ -128,91 +120,6 @@ class CharacterSelection(wx.Panel):
         selection = self.charChoice.GetCurrentSelection()
         return self.charChoice.GetClientData(selection) if selection is not -1 else None
 
-    def padChoice(self, ind):
-        return;
-        from logbook import Logger
-        pyfalog = Logger(__name__)
-        #sChar = Character.getInstance()
-        #activeChar = self.getActiveCharacter()
-        #charList = sorted(sChar.getCharacterList(), key=lambda c: (not c.ro, c.name))
-        charList = list(self.charChoice.GetItems())
-        selection = charList[ind]
-        maxOverallLength = max(map(lambda c: self.mainFrame.GetTextExtent(c).x, charList))
-        maxOverallLength = max(self.mainFrame.GetTextExtent("\u2015 Open Character Editor \u2015").x, maxOverallLength)
-        summedSizeO = sum([
-            self.btnRefresh.GetSize().x if 'btnRefresh' in dir(self) else 0,
-            self.skillReqsStaticBitmap.GetSize().x if 'skillReqsStaticBitmap' in dir(self) else 0,
-            self.mainFrame.GetTextExtent("Character: ").x,
-            self.charChoice.GetSize().x if 'charChoice' in dir(self) \
-            and self.charChoice is not None and 'GetSize' in dir(self.charChoice) else 0,
-            ])
-        summedSize = sum([
-            self.btnRefresh.GetSize().x if 'btnRefresh' in dir(self) else 0,
-            self.skillReqsStaticBitmap.GetSize().x if 'skillReqsStaticBitmap' in dir(self) else 0,
-            self.mainFrame.GetTextExtent("Character: ").x,
-            self.charCache.GetSize().x if 'charCache' in dir(self) \
-            and self.charCache is not None and 'GetSize' in dir(self.charCache) else 0
-            ])
-        realSize = self.GetSize().x
-        #sizeGap = summedSize - realSize
-        sizeGap = self.GetBestVirtualSize().x - realSize
-        paddedName = selection
-
-        maxFromContent = self.mainFrame.GetTextExtent(paddedName).x + sizeGap
-        maxLength = min(maxFromContent, maxOverallLength)
-        paddingOccured = False
-        while self.mainFrame.GetTextExtent(' ' + paddedName).x <= maxLength:
-            paddingOccured = True
-            paddedName = ' ' + paddedName
-        charIDRef = int(self.charChoice.GetClientData(ind))
-        pyfalog.error('wwwww')
-        pyfalog.error(paddedName)
-        pyfalog.error(self.mainFrame.GetTextExtent(paddedName).x)
-        pyfalog.error(maxFromContent)
-        pyfalog.error(maxOverallLength)
-        pyfalog.error('\n')
-        pyfalog.error(self.charChoice.GetContainingSizer().GetSize().x)
-        pyfalog.error(realSize)
-        pyfalog.error(self.GetBestSize().x)
-        pyfalog.error(self.GetBestVirtualSize().x)
-        pyfalog.error('\n')
-        pyfalog.error(summedSizeO)
-        pyfalog.error(summedSize)
-        pyfalog.error(
-            self.charChoice.GetSize().x if 'charChoice' in dir(self) \
-            and self.charChoice is not None and 'GetSize' in dir(self.charChoice) else 0
-            )
-        pyfalog.error(
-            self.charCache.GetSize().x if 'charCache' in dir(self) \
-            and self.charCache is not None and 'GetSize' in dir(self.charCache) else 0
-            )
-        pyfalog.error(charIDRef)
-        pyfalog.error(ind)
-        pyfalog.error(list(self.charChoice.GetItems()))
-        ###
-        import re
-        for i in range(len(self.charChoice.GetItems())):
-            origStr = list(self.charChoice.GetItems())[i]
-            idStore = int(self.charChoice.GetClientData(i))
-            self.charChoice.Delete(i)
-            trimmedStr = ''
-            for n in range(len(origStr)):
-                if trimmedStr is not '' or origStr[n] != ' ':
-                    trimmedStr += origStr[n]
-            possibleName = trimmedStr#re.split(" *", origStr)
-            pyfalog.error('uuu')
-            pyfalog.error(possibleName)
-            self.charChoice.Insert(possibleName, i, idStore)
-
-        if paddingOccured:
-            self.charChoice.Delete(ind)
-            pyfalog.error(list(self.charChoice.GetItems()))
-            self.charChoice.Insert(paddedName, ind, charIDRef)
-            self.charChoice.Select(ind)
-            pyfalog.error(list(self.charChoice.GetItems()))
-            pyfalog.error(int(self.charChoice.GetClientData(ind)))
-        pyfalog.error('wwwww')
-
     def refreshCharacterList(self, event=None):
         choice = self.charChoice
         sChar = Character.getInstance()
@@ -221,30 +128,10 @@ class CharacterSelection(wx.Panel):
         choice.Clear()
         charList = sorted(sChar.getCharacterList(), key=lambda c: (not c.ro, c.name))
         picked = False
-        from logbook import Logger
-        pyfalog = Logger(__name__)
-        maxOverallLength = max(map(lambda c: self.mainFrame.GetTextExtent(c.name).x, charList))
-        maxOverallLength = max(self.mainFrame.GetTextExtent("\u2015 Open Character Editor \u2015").x, maxOverallLength)
-        #summedSize = sum([
-        #    self.btnRefresh.GetSize().x if 'btnRefresh' in dir(self) else 0,
-        #    self.skillReqsStaticBitmap.GetSize().x if 'skillReqsStaticBitmap' in dir(self) else 0,
-         #   self.mainFrame.GetTextExtent("Character: ").x,
-        #    self.charCache.GetSize().x if 'charCache' in dir(self) and self.charCache is not None else 0,
-        #    ])
-        #realSize = self.GetSize().x
-        #sizeGap = summedSize - realSize
+
         for char in charList:
-            paddedName = char.name
-            #maxFromContent = self.mainFrame.GetTextExtent(paddedName).x + self.mainFrame.GetTextExtent("Character: ").x
-            #maxFromContent = self.mainFrame.GetTextExtent(paddedName).x + sizeGap
-            #maxLength = min(maxFromContent, maxOverallLength)
-            #while self.mainFrame.GetTextExtent(paddedName).x < maxLength:
-            #    paddedName = ' ' + paddedName
-            #currId = choice.Append(str(maxFromContent) + ' ' + \
-            #                       str(self.mainFrame.GetTextExtent(paddedName).x) + ' ' +  str(maxLength), char.ID)
-            currId = choice.Append(paddedName, char.ID)
+            currId = choice.Append(char.name, char.ID)
             if char.ID == activeChar:
-                self.padChoice(currId)
                 choice.SetSelection(currId)
                 self.charChanged(None)
                 picked = True
@@ -286,27 +173,16 @@ class CharacterSelection(wx.Panel):
 
         if charID == -1:
             # revert to previous character
-            self.padChoice(self.charCache)
-            pyfalog.error('GGG')
             self.charChoice.SetSelection(self.charCache)
-            pyfalog.error('GGG')
             self.mainFrame.showCharacterEditor(event)
-            pyfalog.error('GGG')
             return
-        self.padChoice(self.charChoice.GetCurrentSelection())
-        fitID = self.mainFrame.getActiveFit()
-        charID = self.getActiveCharacter()
-        pyfalog.error(self.getActiveCharacter())
+
         self.toggleRefreshButton()
 
-        pyfalog.error('RRR')
         sFit = Fit.getInstance()
         sFit.changeChar(fitID, charID)
         self.charCache = self.charChoice.GetCurrentSelection()
-        pyfalog.error('RRR')
-        pyfalog.error(fitID)
         wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fitID))
-        pyfalog.error('RRR')
 
     def toggleRefreshButton(self):
         charID = self.getActiveCharacter()
@@ -323,8 +199,6 @@ class CharacterSelection(wx.Panel):
         for i in range(numItems):
             id_ = choice.GetClientData(i)
             if id_ == charID:
-                print((list(choice.GetItems())[0]))
-                self.padChoice(i)
                 choice.SetSelection(i)
                 return True
 
