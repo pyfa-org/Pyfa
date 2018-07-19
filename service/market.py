@@ -277,15 +277,8 @@ class Market(object):
         # Dictionary of items with forced market group (service assumes they have no
         # market group assigned in db, otherwise they'll appear in both original and forced groups)
         self.ITEMS_FORCEDMARKETGROUP = {
-            "Advanced Cerebral Accelerator"             : 977,  # Implants & Boosters > Booster
-            "Civilian Damage Control"                   : 615,  # Ship Equipment > Hull & Armor > Damage Controls
-            "Civilian EM Ward Field"                    : 1695,
-            # Ship Equipment > Shield > Shield Hardeners > EM Shield Hardeners
-            "Civilian Explosive Deflection Field"       : 1694,
-            # Ship Equipment > Shield > Shield Hardeners > Explosive Shield Hardeners
+            "Advanced Cerebral Accelerator"             : 2487,  # Implants & Boosters > Booster > Cerebral Accelerators
             "Civilian Hobgoblin"                        : 837,  # Drones > Combat Drones > Light Scout Drones
-            "Civilian Kinetic Deflection Field"         : 1693,
-            # Ship Equipment > Shield > Shield Hardeners > Kinetic Shield Hardeners
             "Civilian Light Missile Launcher"           : 640,
             # Ship Equipment > Turrets & Bays > Missile Launchers > Light Missile Launchers
             "Civilian Scourge Light Missile"            : 920,
@@ -293,8 +286,6 @@ class Market(object):
             "Civilian Small Remote Armor Repairer"      : 1059,
             # Ship Equipment > Hull & Armor > Remote Armor Repairers > Small
             "Civilian Small Remote Shield Booster"      : 603,  # Ship Equipment > Shield > Remote Shield Boosters > Small
-            "Civilian Stasis Webifier"                  : 683,  # Ship Equipment > Electronic Warfare > Stasis Webifiers
-            "Civilian Warp Disruptor"                   : 1935,  # Ship Equipment > Electronic Warfare > Warp Disruptors
             "Hardwiring - Zainou 'Sharpshooter' ZMX10"  : 1493,
             # Implants & Boosters > Implants > Skill Hardwiring > Missile Implants > Implant Slot 06
             "Hardwiring - Zainou 'Sharpshooter' ZMX100" : 1493,
@@ -307,11 +298,9 @@ class Market(object):
             # Implants & Boosters > Implants > Skill Hardwiring > Missile Implants > Implant Slot 06
             "Hardwiring - Zainou 'Sharpshooter' ZMX1100": 1493,
             # Implants & Boosters > Implants > Skill Hardwiring > Missile Implants > Implant Slot 06
-            "Nugoehuvi Synth Blue Pill Booster"         : 977,  # Implants & Boosters > Booster
-            "Prototype Cerebral Accelerator"            : 977,  # Implants & Boosters > Booster
+            "Prototype Cerebral Accelerator"            : 2487,  # Implants & Boosters > Booster > Cerebral Accelerators
             "Prototype Iris Probe Launcher"             : 712,  # Ship Equipment > Turrets & Bays > Scan Probe Launchers
-            "Shadow"                                    : 1310,  # Drones > Combat Drones > Fighter Bombers
-            "Standard Cerebral Accelerator"             : 977,  # Implants & Boosters > Booster
+            "Standard Cerebral Accelerator"             : 2487,  # Implants & Boosters > Booster > Cerebral Accelerators
         }
 
         self.ITEMS_FORCEDMARKETGROUP_R = self.__makeRevDict(self.ITEMS_FORCEDMARKETGROUP)
@@ -538,7 +527,7 @@ class Market(object):
         categories = ['Drone', 'Fighter', 'Implant']
 
         for item in items:
-            if item.category.ID == 20:  # Implants and Boosters
+            if True and item.category.ID == 20 and item.group.ID != 303:  # Implants not Boosters
                 implant_remove_list = set()
                 implant_remove_list.add("Low-Grade ")
                 implant_remove_list.add("Low-grade ")
@@ -552,15 +541,6 @@ class Market(object):
                 implant_remove_list.add(" - Elite")
                 implant_remove_list.add(" - Improved")
                 implant_remove_list.add(" - Standard")
-                implant_remove_list.add("Copper ")
-                implant_remove_list.add("Gold ")
-                implant_remove_list.add("Silver ")
-                implant_remove_list.add("Advanced ")
-                implant_remove_list.add("Improved ")
-                implant_remove_list.add("Prototype ")
-                implant_remove_list.add("Standard ")
-                implant_remove_list.add("Strong ")
-                implant_remove_list.add("Synth ")
 
                 for implant_prefix in ("-6", "-7", "-8", "-9", "-10"):
                     for i in range(50):
@@ -595,6 +575,16 @@ class Market(object):
                 trimmed_variations_list = [variation_item for variation_item in variations_list if limit in variation_item.name]
             if trimmed_variations_list:
                 variations_list = trimmed_variations_list
+
+        # If the items are boosters then filter variations to only include boosters for the same slot.
+        BOOSTER_GROUP_ID = 303
+        if all(map(lambda i: i.group.ID == BOOSTER_GROUP_ID, items)) and len(items) > 0:
+            # 'boosterness' is the database's attribute name for Booster Slot
+            reqSlot = next(items.__iter__()).getAttribute('boosterness')
+            # If the item and it's variation both have a marketGroupID it should match for the variation to be considered valid.
+            marketGroupID = [next(filter(None, map(lambda i: i.marketGroupID, items)), None), None]
+            matchSlotAndMktGrpID = lambda v: v.getAttribute('boosterness') == reqSlot and v.marketGroupID in marketGroupID
+            variations_list = list(filter(matchSlotAndMktGrpID, variations_list))
 
         variations.update(variations_list)
         return variations
