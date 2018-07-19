@@ -527,7 +527,7 @@ class Market(object):
         categories = ['Drone', 'Fighter', 'Implant']
 
         for item in items:
-            if True and item.category.ID == 20 and item.group.ID != 303:  # Implants not Boosters
+            if item.category.ID == 20 and item.group.ID != 303:  # Implants not Boosters
                 implant_remove_list = set()
                 implant_remove_list.add("Low-Grade ")
                 implant_remove_list.add("Low-grade ")
@@ -647,6 +647,12 @@ class Market(object):
     def marketGroupHasTypesCheck(self, mg):
         """If market group has any items, return true"""
         if mg and mg.ID in self.ITEMS_FORCEDMARKETGROUP_R:
+            # This shouldn't occur normally but makes errors more mild when ITEMS_FORCEDMARKETGROUP is outdated.
+            if len(mg.children) > 0 and len(mg.items) == 0:
+                pyfalog.error(("Market group \"{0}\" contains no items and has children. "
+                    "ITEMS_FORCEDMARKETGROUP is likely outdated and will need to be "
+                    "updated for {1} to display correctly.").format(mg, self.ITEMS_FORCEDMARKETGROUP_R[mg.ID]))
+                return False
             return True
         elif len(mg.items) > 0:
             return True
