@@ -361,6 +361,9 @@ class FittingView(d.Display):
             self.parent.SetPageTextIcon(pageIndex, text, bitmap)
 
     def appendItem(self, event):
+        '''
+        Adds items that are double clicks from the market browser. We handle both modules and ammo
+        '''
         if not self:
             event.Skip()
             return
@@ -370,6 +373,7 @@ class FittingView(d.Display):
             if fitID is not None:
                 sFit = Fit.getInstance()
                 if sFit.isAmmo(itemID):
+                    # If we've selected ammo, then apply to the selected module(s)
                     modules = []
                     sel = self.GetFirstSelected()
                     while sel != -1 and sel not in self.blanks:
@@ -405,23 +409,17 @@ class FittingView(d.Display):
 
         self.mainFrame.command.Submit(cmd.FitModuleRemoveCommand(self.activeFitID, modules))
 
-    def addModule(self, x, y, srcIdx):
-        """Add a module from the market browser"""
+    def addModule(self, x, y, itemID):
+        """Add a module from the market browser (from dragging it)"""
 
         dstRow, _ = self.HitTest((x, y))
         if dstRow != -1 and dstRow not in self.blanks:
-            sFit = Fit.getInstance()
             fitID = self.mainFrame.getActiveFit()
             mod = self.mods[dstRow]
             if not isinstance(mod, Module):  # make sure we're not adding something to a T3D Mode
                 return
 
-            moduleChanged = sFit.changeModule(fitID, self.mods[dstRow].modPosition, srcIdx)
-            if moduleChanged is None:
-                # the new module doesn't fit in specified slot, try to simply append it
-                wx.PostEvent(self.mainFrame, ItemSelected(itemID=srcIdx))
-
-            wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=self.mainFrame.getActiveFit(), action="modadd", typeID=srcIdx))
+            self.mainFrame.command.Submit(cmd.FitModuleAddCommand(fitID, itemID, self.mods[dstRow].modPosition))
 
     def swapCargo(self, x, y, srcIdx):
         """Swap a module from cargo to fitting window"""
@@ -449,17 +447,12 @@ class FittingView(d.Display):
         sFit = Fit.getInstance()
         fit = sFit.getFit(self.activeFitID)
 
-        if mstate.CmdDown():
-            clone = True
-        else:
-            clone = False
-
         dstRow, _ = self.HitTest((x, y))
 
         if dstRow != -1 and dstRow not in self.blanks:
-
             mod1 = fit.modules[srcIdx]
             mod2 = self.mods[dstRow]
+
 
             if not isinstance(mod2, Module):
                 return
@@ -468,9 +461,11 @@ class FittingView(d.Display):
             if mod1.slot != mod2.slot:
                 return
 
+            clone = mstate.CmdDown() and mod2.isEmpty
+
             fitID = self.mainFrame.getActiveFit()
             if getattr(mod2, "modPosition") is not None:
-                self.mainFrame.command.Submit(cmd.FitModuleSwapOrCloneCommand(fitID, srcIdx, mod2.modPosition, clone and mod2.isEmpty))
+                self.mainFrame.command.Submit(cmd.FitModuleSwapOrCloneCommand(fitID, srcIdx, mod2.modPosition, clone))
             else:
                 pyfalog.error("Missing module position for: {0}", str(getattr(mod2, "ID", "Unknown")))
 
@@ -626,7 +621,6 @@ class FittingView(d.Display):
             else:
                 mods = self.getSelectedMods()
 
-            sFit = Fit.getInstance()
             fitID = self.mainFrame.getActiveFit()
             ctrl = event.cmdDown or event.middleIsDown
             click = "ctrl" if ctrl is True else "right" if event.GetButton() == 3 else "left"

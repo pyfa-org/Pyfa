@@ -5,8 +5,7 @@ import gui.mainFrame
 from gui import globalEvents as GE
 from collections import namedtuple
 
-ModuleInfoCache = namedtuple('ModuleInfoCache', ['modPosition', 'itemID', 'state', 'charge'])
-
+from .helpers import ModuleInfoCache
 
 class FitModuleRemoveCommand(wx.Command):
     def __init__(self, fitID, modules):
