@@ -21,6 +21,25 @@ from service.fit import Fit
 pyfalog = Logger(__name__)
 
 
+class FitRenameCommand(wx.Command):
+    def __init__(self, fitID, newName):
+        wx.Command.__init__(self, True, "FitRename")
+        self.fitID = fitID
+        self.newName = newName
+        self.mainFrame = gui.mainFrame.MainFrame.getInstance()
+        self.oldName = None
+        self.sFit = Fit.getInstance()
+
+    def Do(self):
+        self.oldName, _ = self.sFit.renameFit(self.fitID, self.newName)
+        wx.PostEvent(self.mainFrame, FitRenamed(fitID=self.fitID))
+        return True
+
+    def Undo(self):
+        self.sFit.renameFit(self.fitID, self.oldName)
+        wx.PostEvent(self.mainFrame, FitRenamed(fitID=self.fitID))
+        return True
+
 class FitItem(SFItem.SFBrowserItem):
     def __init__(self, parent, fitID=None, shipFittingInfo=("Test", "TestTrait", "cnc's avatar", 0, 0, None), shipID=None,
                  itemData=None, graphicID=None,
@@ -325,14 +344,12 @@ class FitItem(SFItem.SFBrowserItem):
             self.Refresh()
 
     def renameFit(self, event=None):
-        sFit = Fit.getInstance()
         self.tcFitName.Show(False)
         self.editWasShown = 0
         fitName = self.tcFitName.GetValue()
         if fitName:
             self.fitName = fitName
-            sFit.renameFit(self.fitID, self.fitName)
-            wx.PostEvent(self.mainFrame, FitRenamed(fitID=self.fitID))
+            self.mainFrame.command.Submit(FitRenameCommand(self.fitID, self.fitName))
         else:
             self.tcFitName.SetValue(self.fitName)
 

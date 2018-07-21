@@ -34,6 +34,7 @@ from gui.bitmap_loader import BitmapLoader
 import gui.builtinViews.emptyView
 from logbook import Logger
 from gui.chrome_tabs import EVT_NOTEBOOK_PAGE_CHANGED
+import gui.fitCommands as cmd
 
 from service.fit import Fit
 from service.market import Market
@@ -125,6 +126,8 @@ class FittingViewDrop(wx.DropTarget):
             data = dragged_data.split(':')
             self.dropFn(x, y, data)
         return t
+
+
 
 
 class FittingView(d.Display):
@@ -642,14 +645,14 @@ class FittingView(d.Display):
             fitID = self.mainFrame.getActiveFit()
             ctrl = event.cmdDown or event.middleIsDown
             click = "ctrl" if ctrl is True else "right" if event.GetButton() == 3 else "left"
-            sFit.toggleModulesState(fitID, self.mods[self.GetItemData(row)], mods, click)
+
+            self.mainFrame.command.Submit(cmd.FitModuleStateChangeCommand(fitID, self.mods[self.GetItemData(row)], mods, click))
 
             # update state tooltip
             tooltip = self.activeColumns[col].getToolTip(self.mods[self.GetItemData(row)])
             if tooltip:
                 self.SetToolTip(tooltip)
 
-            wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=self.mainFrame.getActiveFit()))
         else:
             event.Skip()
 

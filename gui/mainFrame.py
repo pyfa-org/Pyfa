@@ -170,6 +170,8 @@ class MainFrame(wx.Frame):
         i = wx.Icon(BitmapLoader.getBitmap("pyfa", "gui"))
         self.SetIcon(i)
 
+        self.command = wx.CommandProcessor()
+
         # Create the layout and windows
         mainSizer = wx.BoxSizer(wx.HORIZONTAL)
 
@@ -514,6 +516,10 @@ class MainFrame(wx.Frame):
         self.Bind(wx.EVT_MENU, self.showPreferenceDialog, id=wx.ID_PREFERENCES)
         # User guide
         self.Bind(wx.EVT_MENU, self.goWiki, id=menuBar.wikiId)
+
+        self.Bind(wx.EVT_MENU, lambda evt: MainFrame.getInstance().command.Undo(), id=wx.ID_UNDO)
+
+        self.Bind(wx.EVT_MENU, lambda evt: MainFrame.getInstance().command.Redo(), id=wx.ID_REDO)
         # EVE Forums
         self.Bind(wx.EVT_MENU, self.goForums, id=menuBar.forumId)
         # Save current character
