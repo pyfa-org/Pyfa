@@ -568,7 +568,7 @@ class Fit(object):
 
             return numSlots != len(fit.modules), m.modPosition
         else:
-            return None
+            return None, None
 
     def removeModule(self, fitID, positions):
         """Removes modules based on a number of positions."""
@@ -627,7 +627,7 @@ class Fit(object):
         else:
             return None
 
-    def changeModule(self, fitID, position, newItemID):
+    def changeModule(self, fitID, position, newItemID, recalc=True):
         fit = eos.db.getFit(fitID)
 
         # We're trying to add a charge to a slot, which won't work. Instead, try to add the charge to the module in that slot.
@@ -656,15 +656,16 @@ class Fit(object):
             if m.isValidState(State.ACTIVE):
                 m.state = State.ACTIVE
 
-            # As some items may affect state-limiting attributes of the ship, calculate new attributes first
-            self.recalc(fit)
+            if (recalc):
+                # As some items may affect state-limiting attributes of the ship, calculate new attributes first
+                self.recalc(fit)
             # Then, check states of all modules and change where needed. This will recalc if needed
             self.checkStates(fit, m)
 
             fit.fill()
             eos.db.commit()
 
-            return True
+            return m
         else:
             return None
 
@@ -1073,7 +1074,7 @@ class Fit(object):
     def isAmmo(itemID):
         return eos.db.getItem(itemID).category.name == "Charge"
 
-    def setAmmo(self, fitID, ammoID, modules):
+    def setAmmo(self, fitID, ammoID, modules, recalc=True):
         pyfalog.debug("Set ammo for fit ID: {0}", fitID)
         if fitID is None:
             return
@@ -1085,7 +1086,8 @@ class Fit(object):
             if mod.isValidCharge(ammo):
                 mod.charge = ammo
 
-        self.recalc(fit)
+        if recalc:
+            self.recalc(fit)
 
     @staticmethod
     def getTargetResists(fitID):
@@ -1259,6 +1261,8 @@ class Fit(object):
         self.recalc(fit)
 
     def recalc(self, fit):
+        if isinstance(fit, int):
+            fit = self.getFit(fit)
         start_time = time()
         pyfalog.info("=" * 10 + "recalc: {0}" + "=" * 10, fit.name)
 

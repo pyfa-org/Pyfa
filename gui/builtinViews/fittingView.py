@@ -401,18 +401,10 @@ class FittingView(d.Display):
 
     def removeModule(self, modules):
         """Removes a list of modules from the fit"""
-        sFit = Fit.getInstance()
-
         if not isinstance(modules, list):
             modules = [modules]
 
-        positions = [mod.modPosition for mod in modules]
-        result = sFit.removeModule(self.activeFitID, positions)
-
-        if result is not None:
-            self.slotsChanged()
-            ids = {mod.item.ID for mod in modules}
-            wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=self.activeFitID, action="moddel", typeID=ids))
+        self.mainFrame.command.Submit(cmd.FitModuleRemoveCommand(self.activeFitID, modules))
 
     def addModule(self, x, y, srcIdx):
         """Add a module from the market browser"""
