@@ -2,3 +2,4 @@ from .moduleStateChange import FitModuleStateChangeCommand
 from .moduleAdd import FitModuleAddCommand
 from .moduleRemove import FitModuleRemoveCommand
 from .moduleAddCharge import FitModuleAddChargeCommand
+from .moduleSwapOrClone import FitModuleSwapOrCloneCommand

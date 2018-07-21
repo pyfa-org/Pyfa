@@ -468,13 +468,9 @@ class FittingView(d.Display):
             if mod1.slot != mod2.slot:
                 return
 
+            fitID = self.mainFrame.getActiveFit()
             if getattr(mod2, "modPosition") is not None:
-                if clone and mod2.isEmpty:
-                    sFit.cloneModule(self.mainFrame.getActiveFit(), srcIdx, mod2.modPosition)
-                else:
-                    sFit.swapModules(self.mainFrame.getActiveFit(), srcIdx, mod2.modPosition)
-
-                wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=self.mainFrame.getActiveFit()))
+                self.mainFrame.command.Submit(cmd.FitModuleSwapOrCloneCommand(fitID, srcIdx, mod2.modPosition, clone and mod2.isEmpty))
             else:
                 pyfalog.error("Missing module position for: {0}", str(getattr(mod2, "ID", "Unknown")))
 
