@@ -379,8 +379,7 @@ class FittingView(d.Display):
                         sel = self.GetNextSelected(sel)
 
                     if len(modules) > 0:
-                        sFit.setAmmo(fitID, itemID, modules)
-                        wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fitID))
+                        self.mainFrame.command.Submit(cmd.FitModuleAddChargeCommand(fitID, itemID, modules))
                 else:
                     self.mainFrame.command.Submit(cmd.FitModuleAddCommand(fitID, itemID))
 

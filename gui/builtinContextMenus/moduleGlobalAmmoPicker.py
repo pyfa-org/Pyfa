@@ -7,7 +7,7 @@ from gui.builtinContextMenus.moduleAmmoPicker import ModuleAmmoPicker
 from eos.db.saveddata.queries import getFit as db_getFit
 from service.fit import Fit
 from service.settings import ContextMenuSettings
-
+import gui.fitCommands as cmd
 
 class ModuleGlobalAmmoPicker(ModuleAmmoPicker):
     def __init__(self):
@@ -40,8 +40,7 @@ class ModuleGlobalAmmoPicker(ModuleAmmoPicker):
             if mod.itemID == selectedModule.itemID:
                 allModules.append(mod)
 
-        sFit.setAmmo(fitID, charge.ID if charge is not None else None, allModules)
-        wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fitID))
+        self.mainFrame.command.Submit(cmd.FitModuleAddChargeCommand(fitID, charge.ID if charge is not None else None, allModules))
 
     def display(self, srcContext, selection):
         if not self.settings.get('moduleGlobalAmmoPicker'):

@@ -39,7 +39,7 @@ class ItemRemove(ContextMenu):
             self.mainFrame.command.Submit(cmd.FitModuleRemoveCommand(fitID, modules))
             return  # the command takes care of the PostEvent
         elif srcContext in ("fittingCharge", "projectedCharge"):
-            sFit.setAmmo(fitID, None, selection)
+            self.mainFrame.command.Submit(cmd.FitModuleAddChargeCommand(fitID, None, selection))
         elif srcContext == "droneItem":
             sFit.removeDrone(fitID, fit.drones.index(selection[0]))
         elif srcContext == "fighterItem":

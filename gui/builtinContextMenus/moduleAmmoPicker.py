@@ -11,7 +11,7 @@ import gui.globalEvents as GE
 from gui.contextMenu import ContextMenu
 from gui.bitmap_loader import BitmapLoader
 from service.settings import ContextMenuSettings
-
+import gui.fitCommands as cmd
 
 class ModuleAmmoPicker(ContextMenu):
     DAMAGE_TYPES = ("em", "explosive", "kinetic", "thermal")
@@ -228,11 +228,8 @@ class ModuleAmmoPicker(ContextMenu):
             event.Skip()
             return
 
-        sFit = Fit.getInstance()
         fitID = self.mainFrame.getActiveFit()
-
-        sFit.setAmmo(fitID, charge.ID if charge is not None else None, self.modules)
-        wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fitID))
+        self.mainFrame.command.Submit(cmd.FitModuleAddChargeCommand(fitID, charge.ID if charge is not None else None, self.modules))
 
 
 ModuleAmmoPicker.register()
