@@ -5,7 +5,7 @@ import wx
 import gui.globalEvents as GE
 from service.fit import Fit
 from service.settings import ContextMenuSettings
-
+import gui.fitCommands as cmd
 
 class ItemRemove(ContextMenu):
     def __init__(self):
@@ -35,9 +35,9 @@ class ItemRemove(ContextMenu):
         fit = sFit.getFit(fitID)
 
         if srcContext == "fittingModule":
-            for module in selection:
-                if module is not None:
-                    sFit.removeModule(fitID, fit.modules.index(module))
+            modules = [module for module in selection if module is not None]
+            self.mainFrame.command.Submit(cmd.FitModuleRemoveCommand(fitID, modules))
+            return  # the command takes care of the PostEvent
         elif srcContext in ("fittingCharge", "projectedCharge"):
             sFit.setAmmo(fitID, None, selection)
         elif srcContext == "droneItem":
