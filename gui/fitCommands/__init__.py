@@ -1,1 +1,2 @@
 from .moduleStateChange import FitModuleStateChangeCommand
+from.moduleAdd import FitModuleAddCommand

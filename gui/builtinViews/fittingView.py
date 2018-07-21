@@ -382,14 +382,12 @@ class FittingView(d.Display):
                         sFit.setAmmo(fitID, itemID, modules)
                         wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fitID))
                 else:
-                    populate = sFit.appendModule(fitID, itemID)
-                    if populate is not None:
-                        self.slotsChanged()
-                        wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fitID, action="modadd", typeID=itemID))
+                    self.mainFrame.command.Submit(cmd.FitModuleAddCommand(fitID, itemID))
 
         event.Skip()
 
     def removeItem(self, event):
+        '''Double Left Click - remove module'''
         if event.CmdDown():
             return
         row, _ = self.HitTest(event.Position)

@@ -566,7 +566,7 @@ class Fit(object):
             fit.fill()
             eos.db.commit()
 
-            return numSlots != len(fit.modules)
+            return numSlots != len(fit.modules), m.modPosition
         else:
             return None
 
