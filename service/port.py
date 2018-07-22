@@ -306,8 +306,11 @@ class Port(object):
                 fit.character = sFit.character
                 fit.damagePattern = sFit.pattern
                 fit.targetResists = sFit.targetResists
-                useCharImplants = sFit.serviceFittingOptions["useCharacterImplantsByDefault"]
-                fit.implantLocation = ImplantLocation.CHARACTER if useCharImplants else ImplantLocation.FIT
+                if len(fit.implants) > 0:
+                    fit.implantLocation = ImplantLocation.FIT
+                else:
+                    useCharImplants = sFit.serviceFittingOptions["useCharacterImplantsByDefault"]
+                    fit.implantLocation = ImplantLocation.CHARACTER if useCharImplants else ImplantLocation.FIT
                 db.save(fit)
                 # IDs.append(fit.ID)
                 if iportuser:  # Pulse
@@ -339,8 +342,11 @@ class Port(object):
             fit.character = sFit.character
             fit.damagePattern = sFit.pattern
             fit.targetResists = sFit.targetResists
-            useCharImplants = sFit.serviceFittingOptions["useCharacterImplantsByDefault"]
-            fit.implantLocation = ImplantLocation.CHARACTER if useCharImplants else ImplantLocation.FIT
+            if len(fit.implants) > 0:
+                fit.implantLocation = ImplantLocation.FIT
+            else:
+                useCharImplants = sFit.serviceFittingOptions["useCharacterImplantsByDefault"]
+                fit.implantLocation = ImplantLocation.CHARACTER if useCharImplants else ImplantLocation.FIT
             db.save(fit)
         return fits
 
