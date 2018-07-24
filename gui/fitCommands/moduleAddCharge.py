@@ -5,7 +5,7 @@ import gui.mainFrame
 from gui import globalEvents as GE
 
 
-class FitModuleAddChargeCommand(wx.Command):
+class GuiModuleAddChargeCommand(wx.Command):
     def __init__(self, fitID, itemID, modules):
         wx.Command.__init__(self, True, "Module Charge Add")
         # todo: evaluate mutaplasmid modules

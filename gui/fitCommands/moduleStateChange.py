@@ -5,7 +5,7 @@ import gui.mainFrame
 from gui import globalEvents as GE
 
 
-class FitModuleStateChangeCommand(wx.Command):
+class GuiModuleStateChangeCommand(wx.Command):
     def __init__(self, fitID, baseMod, modules, click):
         # todo: instead of modules, needs to be positions. Dead objects are a thing
         wx.Command.__init__(self, True, "Module State Change")

@@ -37,7 +37,7 @@ from eos.saveddata.fit import Fit as FitType, ImplantLocation
 from service.character import Character
 from service.damagePattern import DamagePattern
 from service.settings import SettingsProvider
-
+from utils.deprecated import deprecated
 pyfalog = Logger(__name__)
 
 
@@ -538,6 +538,7 @@ class Fit(object):
         eos.db.commit()
         return mutator.value
 
+    @deprecated
     def appendModule(self, fitID, itemID):
         pyfalog.debug("Appending module for fit ({0}) using item: {1}", fitID, itemID)
         fit = eos.db.getFit(fitID)
@@ -570,6 +571,7 @@ class Fit(object):
         else:
             return None, None
 
+    @deprecated
     def removeModule(self, fitID, positions):
         """Removes modules based on a number of positions."""
         pyfalog.debug("Removing module from position ({0}) for fit ID: {1}", positions, fitID)
@@ -627,6 +629,7 @@ class Fit(object):
         else:
             return None
 
+    @deprecated
     def changeModule(self, fitID, position, newItemID, recalc=True):
         fit = eos.db.getFit(fitID)
 

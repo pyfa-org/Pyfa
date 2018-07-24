@@ -6,8 +6,10 @@ from gui import globalEvents as GE
 from collections import namedtuple
 
 from .helpers import ModuleInfoCache
+from .fitRemoveModule import FitRemoveModuleCommand
 
-class FitModuleRemoveCommand(wx.Command):
+
+class GuiModuleRemoveCommand(wx.Command):
     def __init__(self, fitID, modules):
         # todo: evaluate mutaplasmid modules
         wx.Command.__init__(self, True, "Module Remove")
@@ -15,22 +17,19 @@ class FitModuleRemoveCommand(wx.Command):
         self.sFit = Fit.getInstance()
         self.fitID = fitID
         self.modCache = [ModuleInfoCache(mod.modPosition, mod.item.ID, mod.state, mod.charge) for mod in modules]
+        self.internal_history = wx.CommandProcessor()
 
     def Do(self):
-        self.sFit.getFit(self.fitID)
-        result = self.sFit.removeModule(self.fitID, [mod.modPosition for mod in self.modCache])
+        # todo: what happens when one remove in an array of removes fucks up? (it really shouldn't it's easy peasy)
+        success = self.internal_history.Submit(FitRemoveModuleCommand(self.fitID, [mod.modPosition for mod in self.modCache]))
 
-        if result is not None:
+        if success is not None:
             # self.slotsChanged() # todo: fix
             wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=self.fitID, action="moddel", typeID=set([mod.itemID for mod in self.modCache])))
-        return True
+            return True
 
     def Undo(self):
-        for mod in self.modCache:
-            m = self.sFit.changeModule(self.fitID, mod.modPosition, mod.itemID, False)
-            m.state = mod.state
-            m.charge = mod.charge
-        self.sFit.recalc(self.fitID)
+        for x in self.internal_history.Commands:
+            self.internal_history.Undo()
         wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=self.fitID, action="modadd", typeID=set([mod.itemID for mod in self.modCache])))
-
         return True

@@ -5,7 +5,7 @@ import gui.mainFrame
 from gui import globalEvents as GE
 
 
-class FitModuleSwapOrCloneCommand(wx.Command):
+class GuiModuleSwapOrCloneCommand(wx.Command):
     def __init__(self, fitID, srcPosition, dstPosition, clone=False):
         # todo: instead of modules, needs to be positions. Dead objects are a thing
         wx.Command.__init__(self, True, "Module State Change")
