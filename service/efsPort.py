@@ -332,7 +332,9 @@ class EfsPort():
                 "numCharges": stats.numCharges, "numShots": stats.numShots, "reloadTime": stats.reloadTime,
                 "cycleTime": stats.cycleTime, "volley": stats.volley * n, "tracking": tracking,
                 "maxVelocity": maxVelocity, "explosionDelay": explosionDelay, "damageReductionFactor": damageReductionFactor,
-                "explosionRadius": explosionRadius, "explosionVelocity": explosionVelocity, "aoeFieldRange": aoeFieldRange
+                "explosionRadius": explosionRadius, "explosionVelocity": explosionVelocity, "aoeFieldRange": aoeFieldRange,
+                "damageMultiplierBonusMax": stats.getModifiedItemAttr("damageMultiplierBonusMax"),
+                "damageMultiplierBonusPerCycle": stats.getModifiedItemAttr("damageMultiplierBonusPerCycle")
             }
             weaponSystems.append(statDict)
         for drone in fit.drones:
