@@ -229,19 +229,6 @@ def defLogging():
             )
         ])
 
-    with logging_setup.threadbound():
-
-        # Output all stdout (print) messages as warnings
-        try:
-            sys.stdout = LoggerWriter(pyfalog.warning)
-        except:
-            pyfalog.critical("Cannot redirect.  Continuing without writing stdout to log.")
-
-        # Output all stderr (stacktrace) messages as critical
-        try:
-            sys.stderr = LoggerWriter(pyfalog.critical)
-        except:
-            pyfalog.critical("Cannot redirect.  Continuing without writing stderr to log.")
 
 
 class LoggerWriter(object):
