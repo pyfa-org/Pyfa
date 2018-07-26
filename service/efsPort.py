@@ -272,14 +272,14 @@ class EfsPort():
         abilityName = "RegularAttack" if baseRef == "fighterAbilityAttackMissile" else "MissileAttack"
         rangeSuffix = "RangeOptimal" if baseRef == "fighterAbilityAttackMissile" else "Range"
         reductionRef = baseRef if baseRef == "fighterAbilityAttackMissile" else baseRefDam
-        damageReductionFactor = log(fighterAttr[reductionRef + "ReductionFactor"]) / log(fighterAttr[reductionRef + "ReductionSensitivity"])
+        damageReductionFactor = log(fighterAttr(reductionRef + "ReductionFactor")) / log(fighterAttr(reductionRef + "ReductionSensitivity"))
         damTypes = ["EM", "Therm", "Exp", "Kin"]
-        abBaseDamage = sum(map(lambda damType: fighterAttr[baseRefDam + damType], damTypes))
-        abDamage = abBaseDamage * fighterAttr[baseRefDam + "Multiplier"]
+        abBaseDamage = sum(map(lambda damType: fighterAttr(baseRefDam + damType), damTypes))
+        abDamage = abBaseDamage * fighterAttr(baseRefDam + "Multiplier")
         return {
-            "name": abilityName, "volley": abDamage * fighter.amountActive, "explosionRadius": fighterAttr[baseRef + "ExplosionRadius"],
-            "explosionVelocity": fighterAttr[baseRef + "ExplosionVelocity"], "optimal": fighterAttr[baseRef + rangeSuffix],
-            "damageReductionFactor": damageReductionFactor, "rof": fighterAttr[baseRef + "Duration"],
+            "name": abilityName, "volley": abDamage * fighter.amountActive, "explosionRadius": fighterAttr(baseRef + "ExplosionRadius"),
+            "explosionVelocity": fighterAttr(baseRef + "ExplosionVelocity"), "optimal": fighterAttr(baseRef + rangeSuffix),
+            "damageReductionFactor": damageReductionFactor, "rof": fighterAttr(baseRef + "Duration"),
         }
 
     @staticmethod
@@ -310,11 +310,11 @@ class EfsPort():
                 name = stats.item.name + ", " + stats.charge.name
             # Bombs share most attributes with missiles despite not needing the hardpoint
             elif stats.hardpoint == Hardpoint.MISSILE or "Bomb Launcher" in stats.item.name:
-                maxVelocity = stats.chargeModifiedAttributes["maxVelocity"]
-                explosionDelay = stats.chargeModifiedAttributes["explosionDelay"]
-                damageReductionFactor = stats.chargeModifiedAttributes["aoeDamageReductionFactor"]
-                explosionRadius = stats.chargeModifiedAttributes["aoeCloudSize"]
-                explosionVelocity = stats.chargeModifiedAttributes["aoeVelocity"]
+                maxVelocity = stats.getModifiedChargeAttr("maxVelocity")
+                explosionDelay = stats.getModifiedChargeAttr("explosionDelay")
+                damageReductionFactor = stats.getModifiedChargeAttr("aoeDamageReductionFactor")
+                explosionRadius = stats.getModifiedChargeAttr("aoeCloudSize")
+                explosionVelocity = stats.getModifiedChargeAttr("aoeVelocity")
                 typeing = "Missile"
                 name = stats.item.name + ", " + stats.charge.name
             elif stats.hardpoint == Hardpoint.NONE:
@@ -335,33 +335,33 @@ class EfsPort():
             weaponSystems.append(statDict)
         for drone in fit.drones:
             if drone.dps[0] > 0 and drone.amountActive > 0:
-                droneAttr = drone.itemModifiedAttributes
+                droneAttr = drone.getModifiedItemAttr
                 # Drones are using the old tracking formula for trackingSpeed. This updates it to match turrets.
-                newTracking = droneAttr["trackingSpeed"] / (droneAttr["optimalSigRadius"] / 40000)
+                newTracking = droneAttr("trackingSpeed") / (droneAttr("optimalSigRadius") / 40000)
                 statDict = {
                     "dps": drone.dps[0], "cycleTime": drone.cycleTime, "type": "Drone",
                     "optimal": drone.maxRange, "name": drone.item.name, "falloff": drone.falloff,
-                    "maxSpeed": droneAttr["maxVelocity"], "tracking": newTracking,
+                    "maxSpeed": droneAttr("maxVelocity"), "tracking": newTracking,
                     "volley": drone.dps[1]
                 }
                 weaponSystems.append(statDict)
         for fighter in fit.fighters:
             if fighter.dps[0] > 0 and fighter.amountActive > 0:
-                fighterAttr = fighter.itemModifiedAttributes
+                fighterAttr = fighter.getModifiedItemAttr
                 abilities = []
-                if "fighterAbilityAttackMissileDamageEM" in fighterAttr:
+                if "fighterAbilityAttackMissileDamageEM" in fighter.item.attributes.keys():
                     baseRef = "fighterAbilityAttackMissile"
                     ability = EfsPort.getFighterAbilityData(fighterAttr, fighter, baseRef)
                     abilities.append(ability)
-                if "fighterAbilityMissilesDamageEM" in fighterAttr:
+                if "fighterAbilityMissilesDamageEM" in fighter.item.attributes.keys():
                     baseRef = "fighterAbilityMissiles"
                     ability = EfsPort.getFighterAbilityData(fighterAttr, fighter, baseRef)
                     abilities.append(ability)
                 statDict = {
                     "dps": fighter.dps[0], "type": "Fighter", "name": fighter.item.name,
-                    "maxSpeed": fighterAttr["maxVelocity"], "abilities": abilities,
-                    "ehp": fighterAttr["shieldCapacity"] / 0.8875 * fighter.amountActive,
-                    "volley": fighter.dps[1], "signatureRadius": fighterAttr["signatureRadius"]
+                    "maxSpeed": fighterAttr("maxVelocity"), "abilities": abilities,
+                    "ehp": fighterAttr("shieldCapacity") / 0.8875 * fighter.amountActive,
+                    "volley": fighter.dps[1], "signatureRadius": fighterAttr("signatureRadius")
                 }
                 weaponSystems.append(statDict)
         return weaponSystems
@@ -562,7 +562,7 @@ class EfsPort():
         else:
             fitName = fit.ship.name + ": " + fit.name
         pyfalog.info("Creating Eve Fleet Simulator data for: " + fit.name)
-        fitModAttr = fit.ship.itemModifiedAttributes
+        fitModAttr = fit.ship.getModifiedItemAttr
         propData = EfsPort.getPropData(fit, sFit)
         mwdPropSpeed = fit.maxSpeed
         if includeShipTypeData:
@@ -571,9 +571,9 @@ class EfsPort():
         moduleNames = EfsPort.getModuleNames(fit)
         weaponSystems = EfsPort.getWeaponSystemData(fit)
 
-        turretSlots = fitModAttr["turretSlotsLeft"] if fitModAttr["turretSlotsLeft"] is not None else 0
-        launcherSlots = fitModAttr["launcherSlotsLeft"] if fitModAttr["launcherSlotsLeft"] is not None else 0
-        droneBandwidth = fitModAttr["droneBandwidth"] if fitModAttr["droneBandwidth"] is not None else 0
+        turretSlots = fitModAttr("turretSlotsLeft") if fitModAttr("turretSlotsLeft") is not None else 0
+        launcherSlots = fitModAttr("launcherSlotsLeft") if fitModAttr("launcherSlotsLeft") is not None else 0
+        droneBandwidth = fitModAttr("droneBandwidth") if fitModAttr("droneBandwidth") is not None else 0
         weaponBonusMultipliers = EfsPort.getWeaponBonusMultipliers(fit)
         effectiveTurretSlots = round(turretSlots * weaponBonusMultipliers["turret"], 2)
         effectiveLauncherSlots = round(launcherSlots * weaponBonusMultipliers["launcher"], 2)
@@ -583,16 +583,16 @@ class EfsPort():
             effectiveTurretSlots *= 9.4
             effectiveLauncherSlots *= 15
         hullResonance = {
-            "exp": fitModAttr["explosiveDamageResonance"], "kin": fitModAttr["kineticDamageResonance"],
-            "therm": fitModAttr["thermalDamageResonance"], "em": fitModAttr["emDamageResonance"]
+            "exp": fitModAttr("explosiveDamageResonance"), "kin": fitModAttr("kineticDamageResonance"),
+            "therm": fitModAttr("thermalDamageResonance"), "em": fitModAttr("emDamageResonance")
         }
         armorResonance = {
-            "exp": fitModAttr["armorExplosiveDamageResonance"], "kin": fitModAttr["armorKineticDamageResonance"],
-            "therm": fitModAttr["armorThermalDamageResonance"], "em": fitModAttr["armorEmDamageResonance"]
+            "exp": fitModAttr("armorExplosiveDamageResonance"), "kin": fitModAttr("armorKineticDamageResonance"),
+            "therm": fitModAttr("armorThermalDamageResonance"), "em": fitModAttr("armorEmDamageResonance")
         }
         shieldResonance = {
-            "exp": fitModAttr["shieldExplosiveDamageResonance"], "kin": fitModAttr["shieldKineticDamageResonance"],
-            "therm": fitModAttr["shieldThermalDamageResonance"], "em": fitModAttr["shieldEmDamageResonance"]
+            "exp": fitModAttr("shieldExplosiveDamageResonance"), "kin": fitModAttr("shieldKineticDamageResonance"),
+            "therm": fitModAttr("shieldThermalDamageResonance"), "em": fitModAttr("shieldEmDamageResonance")
         }
         resonance = {"hull": hullResonance, "armor": armorResonance, "shield": shieldResonance}
         shipSize = EfsPort.getShipSize(fit.ship.item.groupID)
@@ -603,17 +603,17 @@ class EfsPort():
                 "droneVolley": fit.droneVolley, "hp": fit.hp, "maxTargets": fit.maxTargets,
                 "maxSpeed": fit.maxSpeed, "weaponVolley": fit.weaponVolley, "totalVolley": fit.totalVolley,
                 "maxTargetRange": fit.maxTargetRange, "scanStrength": fit.scanStrength,
-                "weaponDPS": fit.weaponDPS, "alignTime": fit.alignTime, "signatureRadius": fitModAttr["signatureRadius"],
-                "weapons": weaponSystems, "scanRes": fitModAttr["scanResolution"],
+                "weaponDPS": fit.weaponDPS, "alignTime": fit.alignTime, "signatureRadius": fitModAttr("signatureRadius"),
+                "weapons": weaponSystems, "scanRes": fitModAttr("scanResolution"),
                 "capUsed": fit.capUsed, "capRecharge": fit.capRecharge,
-                "rigSlots": fitModAttr["rigSlots"], "lowSlots": fitModAttr["lowSlots"],
-                "midSlots": fitModAttr["medSlots"], "highSlots": fitModAttr["hiSlots"],
-                "turretSlots": fitModAttr["turretSlotsLeft"], "launcherSlots": fitModAttr["launcherSlotsLeft"],
-                "powerOutput": fitModAttr["powerOutput"], "cpuOutput": fitModAttr["cpuOutput"],
-                "rigSize": fitModAttr["rigSize"], "effectiveTurrets": effectiveTurretSlots,
+                "rigSlots": fitModAttr("rigSlots"), "lowSlots": fitModAttr("lowSlots"),
+                "midSlots": fitModAttr("medSlots"), "highSlots": fitModAttr("hiSlots"),
+                "turretSlots": fitModAttr("turretSlotsLeft"), "launcherSlots": fitModAttr("launcherSlotsLeft"),
+                "powerOutput": fitModAttr("powerOutput"), "cpuOutput": fitModAttr("cpuOutput"),
+                "rigSize": fitModAttr("rigSize"), "effectiveTurrets": effectiveTurretSlots,
                 "effectiveLaunchers": effectiveLauncherSlots, "effectiveDroneBandwidth": effectiveDroneBandwidth,
                 "resonance": resonance, "typeID": fit.shipID, "groupID": fit.ship.item.groupID, "shipSize": shipSize,
-                "droneControlRange": fitModAttr["droneControlRange"], "mass": fitModAttr["mass"],
+                "droneControlRange": fitModAttr("droneControlRange"), "mass": fitModAttr("mass"),
                 "moduleNames": moduleNames, "projections": projections,
                 "unpropedSpeed": propData["unpropedSpeed"], "unpropedSig": propData["unpropedSig"],
                 "usingMWD": propData["usingMWD"], "mwdPropSpeed": mwdPropSpeed
