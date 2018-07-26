@@ -1077,7 +1077,8 @@ class Fit(object):
 
     @staticmethod
     def isAmmo(itemID):
-        return eos.db.getItem(itemID).category.name == "Charge"
+        # todo: get rid of this form the service, use directly from item
+        return eos.db.getItem(itemID).isCharge
 
     @deprecated
     def setAmmo(self, fitID, ammoID, modules, recalc=True):

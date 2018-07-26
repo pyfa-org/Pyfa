@@ -22,6 +22,8 @@ class GuiModuleAddCommand(wx.Command):
     def Do(self):
         success = False
         # if we have a position set, try to apply the module to that position
+
+        # todo: check to see if item is a charge. if it is, dont try to add module, but instead set amm
         if self.new_position:
             success = self.internal_history.Submit(FitReplaceModuleCommand(self.fitID, self.new_position, self.itemID))
             if not success:
