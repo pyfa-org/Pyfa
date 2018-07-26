@@ -466,7 +466,7 @@ class Fit(object):
         elif isinstance(thing, es_Fighter):
             thing.active = not thing.active
         elif isinstance(thing, es_Module):
-            thing.state = self.__getProposedState(thing, click)
+            thing.state = es_Module.getProposedState(thing, click)
             if not thing.canHaveState(thing.state, fit):
                 thing.state = State.OFFLINE
         elif isinstance(thing, FitType):
@@ -1190,14 +1190,14 @@ class Fit(object):
     def toggleModulesState(self, fitID, base, modules, click):
         pyfalog.debug("Toggle module state for fit ID: {0}", fitID)
         changed = False
-        proposedState = self.__getProposedState(base, click)
+        proposedState = es_Module.getProposedState(base, click)
 
         if proposedState != base.state:
             changed = True
             base.state = proposedState
             for mod in modules:
                 if mod != base:
-                    p = self.__getProposedState(mod, click, proposedState)
+                    p = es_Module.getProposedState(mod, click, proposedState)
                     mod.state = p
                     if p != mod.state:
                         changed = True
@@ -1212,34 +1212,7 @@ class Fit(object):
             self.checkStates(fit, base)
 
 
-    @deprecated
-    def __getProposedState(self, mod, click, proposedState=None):
-        pyfalog.debug("Get proposed state for module.")
-        if mod.slot == Slot.SUBSYSTEM or mod.isEmpty:
-            return State.ONLINE
 
-        if mod.slot == Slot.SYSTEM:
-            transitionMap = ProjectedSystem
-        else:
-            transitionMap = ProjectedMap if mod.projected else LocalMap
-
-        currState = mod.state
-
-        if proposedState is not None:
-            state = proposedState
-        elif click == "right":
-            state = State.OVERHEATED
-        elif click == "ctrl":
-            state = State.OFFLINE
-        else:
-            state = transitionMap[currState]
-            if not mod.isValidState(state):
-                state = -1
-
-        if mod.isValidState(state):
-            return state
-        else:
-            return currState
 
     def refreshFit(self, fitID):
         pyfalog.debug("Refresh fit for fit ID: {0}", fitID)

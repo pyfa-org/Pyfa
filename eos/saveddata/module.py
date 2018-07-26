@@ -29,6 +29,7 @@ from eos.enum import Enum
 from eos.modifiedAttributeDict import ModifiedAttributeDict, ItemAttrShortcut, ChargeAttrShortcut
 from eos.saveddata.citadel import Citadel
 from eos.saveddata.mutator import Mutator
+from utils.deprecated import deprecated
 
 pyfalog = Logger(__name__)
 
@@ -855,6 +856,36 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
                 return capUsed
         else:
             return 0
+
+    @staticmethod
+    def getProposedState(mod, click, proposedState=None):
+        # todo: instead of passing in module, make this a instanced function.
+        pyfalog.debug("Get proposed state for module.")
+        if mod.slot == Slot.SUBSYSTEM or mod.isEmpty:
+            return State.ONLINE
+
+        if mod.slot == Slot.SYSTEM:
+            transitionMap = ProjectedSystem
+        else:
+            transitionMap = ProjectedMap if mod.projected else LocalMap
+
+        currState = mod.state
+
+        if proposedState is not None:
+            state = proposedState
+        elif click == "right":
+            state = State.OVERHEATED
+        elif click == "ctrl":
+            state = State.OFFLINE
+        else:
+            state = transitionMap[currState]
+            if not mod.isValidState(state):
+                state = -1
+
+        if mod.isValidState(state):
+            return state
+        else:
+            return currState
 
     def __deepcopy__(self, memo):
         item = self.item
