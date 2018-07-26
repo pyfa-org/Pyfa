@@ -736,6 +736,7 @@ class Fit(object):
         self.recalc(fit)
 
     @staticmethod
+    @deprecated
     def swapModules(fitID, src, dst):
         pyfalog.debug("Swapping modules from source ({0}) to destination ({1}) for fit ID: {1}", src, dst, fitID)
         fit = eos.db.getFit(fitID)
@@ -751,6 +752,7 @@ class Fit(object):
 
         eos.db.commit()
 
+    @deprecated
     def cloneModule(self, fitID, src, dst):
         """
         Clone a module from src to dst

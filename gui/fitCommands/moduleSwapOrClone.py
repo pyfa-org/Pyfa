@@ -3,7 +3,8 @@ from service.fit import Fit
 
 import gui.mainFrame
 from gui import globalEvents as GE
-
+from .fitSwapModule import FitSwapModuleCommand
+from .fitCloneModule import FitCloneModduleCommand
 
 class GuiModuleSwapOrCloneCommand(wx.Command):
     def __init__(self, fitID, srcPosition, dstPosition, clone=False):
@@ -15,20 +16,21 @@ class GuiModuleSwapOrCloneCommand(wx.Command):
         self.srcPosition = srcPosition
         self.dstPosition = dstPosition
         self.clone = clone
+        self.internal_history = wx.CommandProcessor()
 
     def Do(self):
+        result = None
         if self.clone:
-            self.sFit.cloneModule(self.fitID, self.srcPosition, self.dstPosition)
+            result = self.internal_history.Submit(FitCloneModduleCommand(self.fitID, self.srcPosition, self.dstPosition))
         else:
-            self.sFit.swapModules(self.fitID, self.srcPosition, self.dstPosition)
-        wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=self.fitID))
-        return True
+            result = self.internal_history.Submit(FitSwapModuleCommand(self.fitID, self.srcPosition, self.dstPosition))
+
+        if result:
+            wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=self.fitID))
+        return result
 
     def Undo(self):
-        if self.clone:
-            # if we had cloned, the destinations was originally an empty slot, hence we can just remove the module
-            self.sFit.removeModule(self.fitID, [self.dstPosition])
-        else:
-            self.sFit.swapModules(self.fitID, self.dstPosition, self.srcPosition)
+        for _ in self.internal_history.Commands:
+            self.internal_history.Undo()
         wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=self.fitID))
         return True
