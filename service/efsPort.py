@@ -11,7 +11,7 @@ from math import log
 from service.fit import Fit
 from service.market import Market
 from eos.enum import Enum
-from eos.saveddata.module import Hardpoint, Slot, Module
+from eos.saveddata.module import Hardpoint, Slot, Module, State
 from eos.saveddata.drone import Drone
 from eos.effectHandlerHelpers import HandledList
 from eos.db import gamedata_session, getItemsByCategory, getCategory, getAttributeInfo, getGroup
@@ -82,13 +82,12 @@ class EfsPort():
     @staticmethod
     def getPropData(fit, sFit):
         fitID = fit.ID
-        propGroupId = getGroup("Propulsion Module").ID
-        propMods = filter(lambda mod: mod.item and mod.item.groupID == propGroupId, fit.modules)
+        propMods = filter(lambda mod: mod.item and mod.item.group.name == "Propulsion Module", fit.modules)
         activePropWBloomFilter = lambda mod: mod.state > 0 and "signatureRadiusBonus" in mod.item.attributes
         propWithBloom = next(filter(activePropWBloomFilter, propMods), None)
         if propWithBloom is not None:
             oldPropState = propWithBloom.state
-            propWithBloom.state = 0
+            propWithBloom.state = State.ONLINE
             sFit.recalc(fit)
             fit = eos.db.getFit(fitID)
             sp = fit.maxSpeed
