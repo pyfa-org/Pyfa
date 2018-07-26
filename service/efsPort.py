@@ -18,7 +18,6 @@ from eos.db import gamedata_session, getItemsByCategory, getCategory, getAttribu
 from eos.gamedata import Category, Group, Item, Traits, Attribute, Effect, ItemEffect
 from logbook import Logger
 pyfalog = Logger(__name__)
-eos.db.saveddata_meta.create_all()
 
 
 class RigSize(Enum):
@@ -555,17 +554,14 @@ class EfsPort():
         return sizeNotFoundMsg
 
     @staticmethod
-    def exportEfs(fit, groupID):
-        includeShipTypeData = groupID > 0
-        fitID = fit.ID
+    def exportEfs(fit, typeNotFitFlag):
+        sFit = Fit.getInstance()
+        includeShipTypeData = typeNotFitFlag > 0
         if includeShipTypeData:
             fitName = fit.name
         else:
             fitName = fit.ship.name + ": " + fit.name
         pyfalog.info("Creating Eve Fleet Simulator data for: " + fit.name)
-        sFit = Fit.getInstance()
-        sFit.recalc(fit)
-        fit = eos.db.getFit(fitID)
         fitModAttr = fit.ship.itemModifiedAttributes
         propData = EfsPort.getPropData(fit, sFit)
         mwdPropSpeed = fit.maxSpeed
@@ -583,7 +579,7 @@ class EfsPort():
         effectiveLauncherSlots = round(launcherSlots * weaponBonusMultipliers["launcher"], 2)
         effectiveDroneBandwidth = round(droneBandwidth * weaponBonusMultipliers["droneBandwidth"], 2)
         # Assume a T2 siege module for dreads
-        if groupID == getGroup("Dreadnought").ID:
+        if fit.ship.item.groupID == getGroup("Dreadnought").ID:
             effectiveTurretSlots *= 9.4
             effectiveLauncherSlots *= 15
         hullResonance = {
@@ -616,7 +612,7 @@ class EfsPort():
                 "powerOutput": fitModAttr["powerOutput"], "cpuOutput": fitModAttr["cpuOutput"],
                 "rigSize": fitModAttr["rigSize"], "effectiveTurrets": effectiveTurretSlots,
                 "effectiveLaunchers": effectiveLauncherSlots, "effectiveDroneBandwidth": effectiveDroneBandwidth,
-                "resonance": resonance, "typeID": fit.shipID, "groupID": groupID, "shipSize": shipSize,
+                "resonance": resonance, "typeID": fit.shipID, "groupID": fit.ship.item.groupID, "shipSize": shipSize,
                 "droneControlRange": fitModAttr["droneControlRange"], "mass": fitModAttr["mass"],
                 "moduleNames": moduleNames, "projections": projections,
                 "unpropedSpeed": propData["unpropedSpeed"], "unpropedSig": propData["unpropedSig"],
