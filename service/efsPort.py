@@ -116,18 +116,15 @@ class EfsPort():
             "Ancillary Remote Shield Booster", "Ancillary Remote Armor Repairer",
             "Titan Phenomena Generator", "Non-Repeating Hardeners"
         ]
-        modGroupIds = list(map(lambda s: getGroup(s).ID, modGroupNames))
-        modGroupData = dict(map(lambda name, gid: (name, {"name": name, "id": gid}),
-                                    modGroupNames, modGroupIds))
-        projectedMods = list(filter(lambda mod: mod.item and mod.item.groupID in modGroupIds, fit.modules))
+        projectedMods = list(filter(lambda mod: mod.item and mod.item.group.name in modGroupNames, fit.modules))
         projections = []
         for mod in projectedMods:
             stats = {}
-            if mod.item.groupID in [modGroupData["Stasis Web"]["id"], modGroupData["Stasis Grappler"]["id"]]:
+            if mod.item.group.name in ["Stasis Web", "Stasis Grappler"]:
                 stats["type"] = "Stasis Web"
                 stats["optimal"] = mod.itemModifiedAttributes["maxRange"]
                 EfsPort.attrDirectMap(["duration", "speedFactor"], stats, mod)
-            elif mod.item.groupID == modGroupData["Weapon Disruptor"]["id"]:
+            elif mod.item.group.name == "Weapon Disruptor":
                 stats["type"] = "Weapon Disruptor"
                 stats["optimal"] = mod.itemModifiedAttributes["maxRange"]
                 stats["falloff"] = mod.itemModifiedAttributes["falloffEffectiveness"]
@@ -135,50 +132,50 @@ class EfsPort():
                     "trackingSpeedBonus", "maxRangeBonus", "falloffBonus", "aoeCloudSizeBonus",
                     "aoeVelocityBonus", "missileVelocityBonus", "explosionDelayBonus"
                 ], stats, mod)
-            elif mod.item.groupID == modGroupData["Energy Nosferatu"]["id"]:
+            elif mod.item.group.name == "Energy Nosferatu":
                 stats["type"] = "Energy Nosferatu"
                 EfsPort.attrDirectMap(["powerTransferAmount", "energyNeutralizerSignatureResolution"], stats, mod)
-            elif mod.item.groupID == modGroupData["Energy Neutralizer"]["id"]:
+            elif mod.item.group.name == "Energy Neutralizer":
                 stats["type"] = "Energy Neutralizer"
                 EfsPort.attrDirectMap([
                     "energyNeutralizerSignatureResolution", "entityCapacitorLevelModifierSmall",
                     "entityCapacitorLevelModifierMedium", "entityCapacitorLevelModifierLarge",
                     "energyNeutralizerAmount"
                 ], stats, mod)
-            elif mod.item.groupID in [modGroupData["Remote Shield Booster"]["id"],
-                                      modGroupData["Ancillary Remote Shield Booster"]["id"]]:
+            elif mod.item.group.name in ["Remote Shield Booster", "Ancillary Remote Shield Booster"]:
                 stats["type"] = "Remote Shield Booster"
                 EfsPort.attrDirectMap(["shieldBonus"], stats, mod)
-            elif mod.item.groupID in [modGroupData["Remote Armor Repairer"]["id"],
-                                      modGroupData["Ancillary Remote Armor Repairer"]["id"]]:
+            elif mod.item.group.name in ["Remote Armor Repairer", "Ancillary Remote Armor Repairer"]:
                 stats["type"] = "Remote Armor Repairer"
                 EfsPort.attrDirectMap(["armorDamageAmount"], stats, mod)
-            elif mod.item.groupID == modGroupData["Warp Scrambler"]["id"]:
+            elif mod.item.group.name == "Warp Scrambler":
                 stats["type"] = "Warp Scrambler"
                 EfsPort.attrDirectMap(["activationBlockedStrenght", "warpScrambleStrength"], stats, mod)
-            elif mod.item.groupID == modGroupData["Target Painter"]["id"]:
+            elif mod.item.group.name == "Target Painter":
                 stats["type"] = "Target Painter"
                 EfsPort.attrDirectMap(["signatureRadiusBonus"], stats, mod)
-            elif mod.item.groupID == modGroupData["Sensor Dampener"]["id"]:
+            elif mod.item.group.name == "Sensor Dampener":
                 stats["type"] = "Sensor Dampener"
                 EfsPort.attrDirectMap(["maxTargetRangeBonus", "scanResolutionBonus"], stats, mod)
-            elif mod.item.groupID == modGroupData["ECM"]["id"]:
+            elif mod.item.group.name == "ECM":
                 stats["type"] = "ECM"
                 EfsPort.attrDirectMap([
                     "scanGravimetricStrengthBonus", "scanMagnetometricStrengthBonus",
                     "scanRadarStrengthBonus", "scanLadarStrengthBonus",
                 ], stats, mod)
-            elif mod.item.groupID == modGroupData["Burst Jammer"]["id"]:
+            elif mod.item.group.name == "Burst Jammer":
                 stats["type"] = "Burst Jammer"
                 mod.itemModifiedAttributes["maxRange"] = mod.itemModifiedAttributes["ecmBurstRange"]
                 EfsPort.attrDirectMap([
                     "scanGravimetricStrengthBonus", "scanMagnetometricStrengthBonus",
                     "scanRadarStrengthBonus", "scanLadarStrengthBonus",
                 ], stats, mod)
-            elif mod.item.groupID == modGroupData["Micro Jump Drive"]["id"]:
+            elif mod.item.group.name == "Micro Jump Drive":
                 stats["type"] = "Micro Jump Drive"
                 mod.itemModifiedAttributes["maxRange"] = 0
                 EfsPort.attrDirectMap(["moduleReactivationDelay"], stats, mod)
+            else:
+                pyfalog.error("Projected module {0} lacks efs export implementation".format(mod.item.name))
             if mod.itemModifiedAttributes["maxRange"] is None:
                 pyfalog.error("Projected module {0} has no maxRange".format(mod.item.name))
             stats["optimal"] = mod.itemModifiedAttributes["maxRange"] or 0
@@ -489,6 +486,7 @@ class EfsPort():
                 mod.owner = fit
         turrets = list(filter(lambda mod: mod.itemModifiedAttributes["damageMultiplier"], turrets))
         launchers = list(filter(lambda mod: sumDamage(mod.chargeModifiedAttributes), launchers))
+
         # Since the effect modules are fairly opaque a mock test fit is used to test the impact of traits.
         # standin class used to prevent . notation causing issues when used as an arg
         class standin():
