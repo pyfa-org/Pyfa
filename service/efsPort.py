@@ -458,13 +458,13 @@ class EfsPort():
         def sumDamage(attr):
             totalDamage = 0
             for damageType in ["emDamage", "thermalDamage", "kineticDamage", "explosiveDamage"]:
-                if attr[damageType] is not None:
-                    totalDamage += attr[damageType]
+                if attr(damageType) is not None:
+                    totalDamage += attr(damageType)
             return totalDamage
 
         def getCurrentMultipliers(tf):
             fitMultipliers = {}
-            getDroneMulti = lambda d: sumDamage(d.itemModifiedAttributes) * d.getModifiedItemAttr("damageMultiplier")
+            getDroneMulti = lambda d: sumDamage(d.getModifiedItemAttr) * d.getModifiedItemAttr("damageMultiplier")
             fitMultipliers["drones"] = list(map(getDroneMulti, tf.drones))
 
             getFitTurrets = lambda f: filter(lambda mod: mod.hardpoint == Hardpoint.TURRET, f.modules)
@@ -472,7 +472,7 @@ class EfsPort():
             fitMultipliers["turrets"] = list(map(getTurretMulti, getFitTurrets(tf)))
 
             getFitLaunchers = lambda f: filter(lambda mod: mod.hardpoint == Hardpoint.MISSILE, f.modules)
-            getLauncherMulti = lambda mod: sumDamage(mod.chargeModifiedAttributes) / mod.cycleTime
+            getLauncherMulti = lambda mod: sumDamage(mod.getModifiedChargeAttr) / mod.cycleTime
             fitMultipliers["launchers"] = list(map(getLauncherMulti, getFitLaunchers(tf)))
             return fitMultipliers
 
@@ -484,7 +484,7 @@ class EfsPort():
             for mod in weaponTypeSet:
                 mod.owner = fit
         turrets = list(filter(lambda mod: mod.getModifiedItemAttr("damageMultiplier"), turrets))
-        launchers = list(filter(lambda mod: sumDamage(mod.chargeModifiedAttributes), launchers))
+        launchers = list(filter(lambda mod: sumDamage(mod.getModifiedChargeAttr), launchers))
 
         # Since the effect modules are fairly opaque a mock test fit is used to test the impact of traits.
         # standin class used to prevent . notation causing issues when used as an arg
