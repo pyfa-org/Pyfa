@@ -34,18 +34,18 @@ class EfsPort():
     @staticmethod
     def attrDirectMap(values, target, source):
         for val in values:
-            target[val] = source.itemModifiedAttributes[val]
+            target[val] = source.getModifiedItemAttr(val)
 
     @staticmethod
     def getT2MwdSpeed(fit, sFit):
         fitID = fit.ID
         propID = None
-        shipHasMedSlots = fit.ship.itemModifiedAttributes["medSlots"] > 0
-        shipPower = fit.ship.itemModifiedAttributes["powerOutput"]
+        shipHasMedSlots = fit.ship.getModifiedItemAttr("medSlots") > 0
+        shipPower = fit.ship.getModifiedItemAttr("powerOutput")
         # Monitors have a 99% reduction to prop mod power requirements
         if fit.ship.name == "Monitor":
             shipPower *= 100
-        rigSize = fit.ship.itemModifiedAttributes["rigSize"]
+        rigSize = fit.ship.getModifiedItemAttr("rigSize")
         if not shipHasMedSlots:
             return None
 
@@ -91,7 +91,7 @@ class EfsPort():
             sFit.recalc(fit)
             fit = eos.db.getFit(fitID)
             sp = fit.maxSpeed
-            sig = fit.ship.itemModifiedAttributes["signatureRadius"]
+            sig = fit.ship.getModifiedItemAttr("signatureRadius")
             propWithBloom.state = oldPropState
             sFit.recalc(fit)
             fit = eos.db.getFit(fitID)
@@ -99,7 +99,7 @@ class EfsPort():
         return {
             "usingMWD": False,
             "unpropedSpeed": fit.maxSpeed,
-            "unpropedSig": fit.ship.itemModifiedAttributes["signatureRadius"]
+            "unpropedSig": fit.ship.getModifiedItemAttr("signatureRadius")
         }
 
     @staticmethod
@@ -117,15 +117,17 @@ class EfsPort():
         projectedMods = list(filter(lambda mod: mod.item and mod.item.group.name in modGroupNames, fit.modules))
         projections = []
         for mod in projectedMods:
+            maxRangeDefault = 0
+            falloffDefault = 0
             stats = {}
             if mod.item.group.name in ["Stasis Web", "Stasis Grappler"]:
                 stats["type"] = "Stasis Web"
-                stats["optimal"] = mod.itemModifiedAttributes["maxRange"]
+                stats["optimal"] = mod.getModifiedItemAttr("maxRange")
                 EfsPort.attrDirectMap(["duration", "speedFactor"], stats, mod)
             elif mod.item.group.name == "Weapon Disruptor":
                 stats["type"] = "Weapon Disruptor"
-                stats["optimal"] = mod.itemModifiedAttributes["maxRange"]
-                stats["falloff"] = mod.itemModifiedAttributes["falloffEffectiveness"]
+                stats["optimal"] = mod.getModifiedItemAttr("maxRange")
+                stats["falloff"] = mod.getModifiedItemAttr("falloffEffectiveness")
                 EfsPort.attrDirectMap([
                     "trackingSpeedBonus", "maxRangeBonus", "falloffBonus", "aoeCloudSizeBonus",
                     "aoeVelocityBonus", "missileVelocityBonus", "explosionDelayBonus"
@@ -163,21 +165,20 @@ class EfsPort():
                 ], stats, mod)
             elif mod.item.group.name == "Burst Jammer":
                 stats["type"] = "Burst Jammer"
-                mod.itemModifiedAttributes["maxRange"] = mod.itemModifiedAttributes["ecmBurstRange"]
+                maxRangeDefault = mod.getModifiedItemAttr("ecmBurstRange")
                 EfsPort.attrDirectMap([
                     "scanGravimetricStrengthBonus", "scanMagnetometricStrengthBonus",
                     "scanRadarStrengthBonus", "scanLadarStrengthBonus",
                 ], stats, mod)
             elif mod.item.group.name == "Micro Jump Drive":
                 stats["type"] = "Micro Jump Drive"
-                mod.itemModifiedAttributes["maxRange"] = 0
                 EfsPort.attrDirectMap(["moduleReactivationDelay"], stats, mod)
             else:
                 pyfalog.error("Projected module {0} lacks efs export implementation".format(mod.item.name))
-            if mod.itemModifiedAttributes["maxRange"] is None:
+            if mod.getModifiedItemAttr("maxRange", None) is None:
                 pyfalog.error("Projected module {0} has no maxRange".format(mod.item.name))
-            stats["optimal"] = mod.itemModifiedAttributes["maxRange"] or 0
-            stats["falloff"] = mod.itemModifiedAttributes["falloffEffectiveness"] or 0
+            stats["optimal"] = mod.getModifiedItemAttr("maxRange", maxRangeDefault)
+            stats["falloff"] = mod.getModifiedItemAttr("falloffEffectiveness", falloffDefault)
             EfsPort.attrDirectMap(["duration", "capacitorNeed"], stats, mod)
             projections.append(stats)
         return projections
@@ -304,7 +305,7 @@ class EfsPort():
             explosionVelocity = 0
             aoeFieldRange = 0
             if stats.hardpoint == Hardpoint.TURRET:
-                tracking = stats.itemModifiedAttributes["trackingSpeed"]
+                tracking = stats.getModifiedItemAttr("trackingSpeed")
                 typeing = "Turret"
                 name = stats.item.name + ", " + stats.charge.name
             # Bombs share most attributes with missiles despite not needing the hardpoint
@@ -317,7 +318,7 @@ class EfsPort():
                 typeing = "Missile"
                 name = stats.item.name + ", " + stats.charge.name
             elif stats.hardpoint == Hardpoint.NONE:
-                aoeFieldRange = stats.itemModifiedAttributes["empFieldRange"]
+                aoeFieldRange = stats.getModifiedItemAttr("empFieldRange")
                 # This also covers non-bomb weapons with dps values and no hardpoints, most notably targeted doomsdays.
                 typeing = "SmartBomb"
                 name = stats.item.name
@@ -428,7 +429,7 @@ class EfsPort():
         additionalLaunchers = []
         for mod in modSet:
             clist = list(gamedata_session.query(Item).options().
-                    filter(Item.groupID == mod.itemModifiedAttributes["chargeGroup1"]).all())
+                    filter(Item.groupID == mod.getModifiedItemAttr("chargeGroup1")).all())
             mods = [mod]
             charges = [clist[0]]
             if setType == "launcher":
@@ -463,11 +464,11 @@ class EfsPort():
 
         def getCurrentMultipliers(tf):
             fitMultipliers = {}
-            getDroneMulti = lambda d: sumDamage(d.itemModifiedAttributes) * d.itemModifiedAttributes["damageMultiplier"]
+            getDroneMulti = lambda d: sumDamage(d.itemModifiedAttributes) * d.getModifiedItemAttr("damageMultiplier")
             fitMultipliers["drones"] = list(map(getDroneMulti, tf.drones))
 
             getFitTurrets = lambda f: filter(lambda mod: mod.hardpoint == Hardpoint.TURRET, f.modules)
-            getTurretMulti = lambda mod: mod.itemModifiedAttributes["damageMultiplier"] / mod.cycleTime
+            getTurretMulti = lambda mod: mod.getModifiedItemAttr("damageMultiplier") / mod.cycleTime
             fitMultipliers["turrets"] = list(map(getTurretMulti, getFitTurrets(tf)))
 
             getFitLaunchers = lambda f: filter(lambda mod: mod.hardpoint == Hardpoint.MISSILE, f.modules)
@@ -482,7 +483,7 @@ class EfsPort():
         for weaponTypeSet in [turrets, launchers, drones]:
             for mod in weaponTypeSet:
                 mod.owner = fit
-        turrets = list(filter(lambda mod: mod.itemModifiedAttributes["damageMultiplier"], turrets))
+        turrets = list(filter(lambda mod: mod.getModifiedItemAttr("damageMultiplier"), turrets))
         launchers = list(filter(lambda mod: sumDamage(mod.chargeModifiedAttributes), launchers))
 
         # Since the effect modules are fairly opaque a mock test fit is used to test the impact of traits.
