@@ -1077,6 +1077,7 @@ class Fit(object):
     def isAmmo(itemID):
         return eos.db.getItem(itemID).category.name == "Charge"
 
+    @deprecated
     def setAmmo(self, fitID, ammoID, modules, recalc=True):
         pyfalog.debug("Set ammo for fit ID: {0}", fitID)
         if fitID is None:
