@@ -32,7 +32,7 @@ from eos.saveddata.drone import Drone as es_Drone
 from eos.saveddata.fighter import Fighter as es_Fighter
 from eos.saveddata.implant import Implant as es_Implant
 from eos.saveddata.ship import Ship as es_Ship
-from eos.saveddata.module import Module as es_Module, State, Slot
+from eos.saveddata.module import Module as es_Module, State, Slot, ProjectedMap, ProjectedSystem, LocalMap
 from eos.saveddata.fit import Fit as FitType, ImplantLocation
 from service.character import Character
 from service.damagePattern import DamagePattern
@@ -1186,6 +1186,7 @@ class Fit(object):
         if changed:
             self.recalc(fit)
 
+    @deprecated
     def toggleModulesState(self, fitID, base, modules, click):
         pyfalog.debug("Toggle module state for fit ID: {0}", fitID)
         changed = False
@@ -1210,31 +1211,17 @@ class Fit(object):
             # Then, check states of all modules and change where needed. This will recalc if needed
             self.checkStates(fit, base)
 
-    # Old state : New State
-    localMap = {
-        State.OVERHEATED: State.ACTIVE,
-        State.ACTIVE: State.ONLINE,
-        State.OFFLINE: State.ONLINE,
-        State.ONLINE: State.ACTIVE}
-    projectedMap = {
-        State.OVERHEATED: State.ACTIVE,
-        State.ACTIVE: State.OFFLINE,
-        State.OFFLINE: State.ACTIVE,
-        State.ONLINE: State.ACTIVE}  # Just in case
-    # For system effects. They should only ever be online or offline
-    projectedSystem = {
-        State.OFFLINE: State.ONLINE,
-        State.ONLINE: State.OFFLINE}
 
+    @deprecated
     def __getProposedState(self, mod, click, proposedState=None):
         pyfalog.debug("Get proposed state for module.")
         if mod.slot == Slot.SUBSYSTEM or mod.isEmpty:
             return State.ONLINE
 
         if mod.slot == Slot.SYSTEM:
-            transitionMap = self.projectedSystem
+            transitionMap = ProjectedSystem
         else:
-            transitionMap = self.projectedMap if mod.projected else self.localMap
+            transitionMap = ProjectedMap if mod.projected else LocalMap
 
         currState = mod.state
 

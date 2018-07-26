@@ -64,6 +64,30 @@ class Slot(Enum):
     FS_HEAVY = 15
 
 
+ProjectedMap = {
+    State.OVERHEATED: State.ACTIVE,
+    State.ACTIVE: State.OFFLINE,
+    State.OFFLINE: State.ACTIVE,
+    State.ONLINE: State.ACTIVE  # Just in case
+}
+
+
+# Old state : New State
+LocalMap = {
+    State.OVERHEATED: State.ACTIVE,
+    State.ACTIVE: State.ONLINE,
+    State.OFFLINE: State.ONLINE,
+    State.ONLINE: State.ACTIVE
+}
+
+
+# For system effects. They should only ever be online or offline
+ProjectedSystem = {
+    State.OFFLINE: State.ONLINE,
+    State.ONLINE: State.OFFLINE
+}
+
+
 class Hardpoint(Enum):
     NONE = 0
     MISSILE = 1
