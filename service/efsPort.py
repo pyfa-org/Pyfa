@@ -183,88 +183,98 @@ class EfsPort():
             projections.append(stats)
         return projections
 
+    # Note that unless padTypeIDs is True all 0s will be removed from modTypeIDs in the return.
+    # They always are added initally for the sake of brevity, as this option may not be retained long term.
     @staticmethod
-    def getModuleNames(fit):
+    def getModuleInfo(fit, padTypeIDs=False):
         moduleNames = []
-        highSlotNames = []
-        midSlotNames = []
-        lowSlotNames = []
-        rigSlotNames = []
-        miscSlotNames = []  # subsystems ect
+        modTypeIDs = []
+        moduleNameSets = {Slot.LOW: [], Slot.MED: [], Slot.HIGH: [], Slot.RIG: [], Slot.SUBSYSTEM: []}
+        modTypeIDSets = {Slot.LOW: [], Slot.MED: [], Slot.HIGH: [], Slot.RIG: [], Slot.SUBSYSTEM: []}
         for mod in fit.modules:
-            if mod.slot == 3:
-                modSlotNames = highSlotNames
-            elif mod.slot == 2:
-                modSlotNames = midSlotNames
-            elif mod.slot == 1:
-                modSlotNames = lowSlotNames
-            elif mod.slot == 4:
-                modSlotNames = rigSlotNames
-            elif mod.slot == 5:
-                modSlotNames = miscSlotNames
             try:
                 if mod.item is not None:
                     if mod.charge is not None:
-                        modSlotNames.append(mod.item.name + ":  " + mod.charge.name)
+                        modTypeIDSets[mod.slot].append([mod.item.typeID, mod.charge.typeID])
+                        moduleNameSets[mod.slot].append(mod.item.name + ":  " + mod.charge.name)
                     else:
-                        modSlotNames.append(mod.item.name)
+                        modTypeIDSets[mod.slot].append(mod.item.typeID)
+                        moduleNameSets[mod.slot].append(mod.item.name)
                 else:
-                    modSlotNames.append("Empty Slot")
+                    modTypeIDSets[mod.slot].append(0)
+                    moduleNameSets[mod.slot].append("Empty Slot")
             except:
                 pyfalog.error("Could not find name for module {0}".format(vars(mod)))
+
         for modInfo in [
-            ["High Slots:"], highSlotNames, ["", "Med Slots:"], midSlotNames,
-            ["", "Low Slots:"], lowSlotNames, ["", "Rig Slots:"], rigSlotNames
+            ["High Slots:"], moduleNameSets[Slot.HIGH], ["", "Med Slots:"], moduleNameSets[Slot.MED],
+            ["", "Low Slots:"], moduleNameSets[Slot.LOW], ["", "Rig Slots:"], moduleNameSets[Slot.RIG]
         ]:
             moduleNames.extend(modInfo)
+        if len(moduleNameSets[Slot.SUBSYSTEM]) > 0:
+            moduleNames.extend(["", "Subsystems:"])
+            moduleNames.extend(moduleNameSets[Slot.SUBSYSTEM])
 
-        if len(miscSlotNames) > 0:
-            moduleNames.append("")
-            moduleNames.append("Subsystems:")
-            moduleNames.extend(miscSlotNames)
+        for slotType in [Slot.HIGH, Slot.MED, Slot.LOW, Slot.RIG, Slot.SUBSYSTEM]:
+            if slotType is not Slot.SUBSYSTEM or len(modTypeIDSets[slotType]) > 0:
+                modTypeIDs.extend([0, 0] if slotType is not Slot.HIGH else [0])
+                modTypeIDs.extend(modTypeIDSets[slotType])
+
         droneNames = []
+        droneIDs = []
         fighterNames = []
+        fighterIDs = []
         for drone in fit.drones:
             if drone.amountActive > 0:
+                droneIDs.append(drone.item.typeID)
                 droneNames.append("%s x%s" % (drone.item.name, drone.amount))
         for fighter in fit.fighters:
             if fighter.amountActive > 0:
+                fighterIDs.append(fighter.item.typeID)
                 fighterNames.append("%s x%s" % (fighter.item.name, fighter.amountActive))
         if len(droneNames) > 0:
-            moduleNames.append("")
-            moduleNames.append("Drones:")
+            modTypeIDs.extend([0, 0])
+            modTypeIDs.extend(droneIDs)
+            moduleNames.extend(["", "Drones:"])
             moduleNames.extend(droneNames)
         if len(fighterNames) > 0:
-            moduleNames.append("")
-            moduleNames.append("Fighters:")
+            modTypeIDs.extend([0, 0])
+            modTypeIDs.extend(fighterIDs)
+            moduleNames.extend(["", "Fighters:"])
             moduleNames.extend(fighterNames)
         if len(fit.implants) > 0:
-            moduleNames.append("")
-            moduleNames.append("Implants:")
+            modTypeIDs.extend([0, 0])
+            moduleNames.extend(["", "Implants:"])
             for implant in fit.implants:
+                modTypeIDs.append(implant.item.typeID)
                 moduleNames.append(implant.item.name)
         if len(fit.boosters) > 0:
-            moduleNames.append("")
-            moduleNames.append("Boosters:")
+            modTypeIDs.extend([0, 0])
+            moduleNames.extend(["", "Boosters:"])
             for booster in fit.boosters:
+                modTypeIDs.append(booster.item.typeID)
                 moduleNames.append(booster.item.name)
         if len(fit.commandFits) > 0:
-            moduleNames.append("")
-            moduleNames.append("Command Fits:")
+            modTypeIDs.extend([0, 0])
+            moduleNames.extend(["", "Command Fits:"])
             for commandFit in fit.commandFits:
+                modTypeIDs.append(commandFit.ship.item.typeID)
                 moduleNames.append(commandFit.name)
         if len(fit.projectedModules) > 0:
-            moduleNames.append("")
-            moduleNames.append("Projected Modules:")
+            modTypeIDs.extend([0, 0])
+            moduleNames.extend(["", "Projected Modules:"])
             for mod in fit.projectedModules:
+                modTypeIDs.append(mod.item.typeID)
                 moduleNames.append(mod.item.name)
 
         if fit.character.name != "All 5":
-            moduleNames.append("")
-            moduleNames.append("Character:")
+            modTypeIDs.extend([0, 0, 0])
+            moduleNames.extend(["", "Character:"])
             moduleNames.append(fit.character.name)
-
-        return moduleNames
+        if padTypeIDs is not True:
+            modTypeIDsUnpadded = [mod for mod in modTypeIDs if mod != 0]
+            modTypeIDs = modTypeIDsUnpadded
+        return {"moduleNames": moduleNames, "modTypeIDs": modTypeIDs}
 
     @staticmethod
     def getFighterAbilityData(fighterAttr, fighter, baseRef):
@@ -568,7 +578,9 @@ class EfsPort():
         if includeShipTypeData:
             mwdPropSpeed = EfsPort.getT2MwdSpeed(fit, sFit)
         projections = EfsPort.getOutgoingProjectionData(fit)
-        moduleNames = EfsPort.getModuleNames(fit)
+        modInfo = EfsPort.getModuleInfo(fit)
+        moduleNames = modInfo["moduleNames"]
+        modTypeIDs = modInfo["modTypeIDs"]
         weaponSystems = EfsPort.getWeaponSystemData(fit)
 
         turretSlots = fitModAttr("turretSlotsLeft") if fitModAttr("turretSlotsLeft") is not None else 0
@@ -579,7 +591,7 @@ class EfsPort():
         effectiveLauncherSlots = round(launcherSlots * weaponBonusMultipliers["launcher"], 2)
         effectiveDroneBandwidth = round(droneBandwidth * weaponBonusMultipliers["droneBandwidth"], 2)
         # Assume a T2 siege module for dreads
-        if fit.ship.item.groupID == getGroup("Dreadnought").ID:
+        if fit.ship.item.group.name == "Dreadnought":
             effectiveTurretSlots *= 9.4
             effectiveLauncherSlots *= 15
         hullResonance = {
@@ -614,9 +626,9 @@ class EfsPort():
                 "effectiveLaunchers": effectiveLauncherSlots, "effectiveDroneBandwidth": effectiveDroneBandwidth,
                 "resonance": resonance, "typeID": fit.shipID, "groupID": fit.ship.item.groupID, "shipSize": shipSize,
                 "droneControlRange": fitModAttr("droneControlRange"), "mass": fitModAttr("mass"),
-                "moduleNames": moduleNames, "projections": projections,
                 "unpropedSpeed": propData["unpropedSpeed"], "unpropedSig": propData["unpropedSig"],
-                "usingMWD": propData["usingMWD"], "mwdPropSpeed": mwdPropSpeed
+                "usingMWD": propData["usingMWD"], "mwdPropSpeed": mwdPropSpeed, "projections": projections,
+                "modTypeIDs": modTypeIDs, "moduleNames": moduleNames
             }
         except TypeError:
             pyfalog.error("Error parsing fit:" + str(fit))
