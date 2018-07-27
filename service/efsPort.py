@@ -8,6 +8,7 @@ import json
 import eos.db
 
 from math import log
+from config import version as pyfaVersion
 from service.fit import Fit
 from service.market import Market
 from eos.enum import Enum
@@ -30,6 +31,7 @@ class RigSize(Enum):
 
 class EfsPort():
     wepTestSet = {}
+    version = 0.01
 
     @staticmethod
     def attrDirectMap(values, target, source):
@@ -608,7 +610,6 @@ class EfsPort():
         }
         resonance = {"hull": hullResonance, "armor": armorResonance, "shield": shieldResonance}
         shipSize = EfsPort.getShipSize(fit.ship.item.groupID)
-
         try:
             dataDict = {
                 "name": fitName, "ehp": fit.ehp, "droneDPS": fit.droneDPS,
@@ -628,7 +629,8 @@ class EfsPort():
                 "droneControlRange": fitModAttr("droneControlRange"), "mass": fitModAttr("mass"),
                 "unpropedSpeed": propData["unpropedSpeed"], "unpropedSig": propData["unpropedSig"],
                 "usingMWD": propData["usingMWD"], "mwdPropSpeed": mwdPropSpeed, "projections": projections,
-                "modTypeIDs": modTypeIDs, "moduleNames": moduleNames
+                "modTypeIDs": modTypeIDs, "moduleNames": moduleNames,
+                "pyfaVersion": pyfaVersion, "efsExportVersion": EfsPort.version
             }
         except TypeError:
             pyfalog.error("Error parsing fit:" + str(fit))
