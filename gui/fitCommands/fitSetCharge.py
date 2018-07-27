@@ -37,7 +37,7 @@ class FitSetChargeCommand(wx.Command):
         result = False
 
         for mod in modules:
-            if mod.isValidCharge(ammo):
+            if not mod.isEmpty and mod.isValidCharge(ammo):
                 result = True
                 mod.charge = ammo
         eos.db.commit()

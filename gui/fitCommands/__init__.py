@@ -3,3 +3,7 @@ from .moduleAdd import GuiModuleAddCommand
 from .moduleRemove import GuiModuleRemoveCommand
 from .moduleAddCharge import GuiModuleAddChargeCommand
 from .moduleSwapOrClone import GuiModuleSwapOrCloneCommand
+from .guiRemoveCargo import GuiRemoveCargoCommand
+from .guiAddCargo import GuiAddCargoCommand
+from .fitAddCargo import FitAddCargoCommand
+from .fitRemoveCargo import FitRemoveCargoCommand

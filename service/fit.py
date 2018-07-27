@@ -672,6 +672,7 @@ class Fit(object):
         else:
             return None
 
+    @deprecated
     def moveCargoToModule(self, fitID, moduleIdx, cargoIdx, copyMod=False):
         """
         Moves cargo to fitting window. Can either do a copy, move, or swap with current module
@@ -775,6 +776,7 @@ class Fit(object):
             eos.db.commit()
             self.recalc(fit)
 
+    @deprecated
     def addCargo(self, fitID, itemID, amount=1, replace=False):
         """
         Adds cargo via typeID of item. If replace = True, we replace amount with
@@ -812,6 +814,7 @@ class Fit(object):
 
         return True
 
+    @deprecated
     def removeCargo(self, fitID, position):
         pyfalog.debug("Removing cargo from position ({0}) fit ID: {1}", position, fitID)
         if fitID is None:

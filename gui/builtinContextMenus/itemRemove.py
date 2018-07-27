@@ -49,7 +49,8 @@ class ItemRemove(ContextMenu):
         elif srcContext == "boosterItem":
             sFit.removeBooster(fitID, fit.boosters.index(selection[0]))
         elif srcContext == "cargoItem":
-            sFit.removeCargo(fitID, fit.cargo.index(selection[0]))
+            self.mainFrame.command.Submit(cmd.GuiRemoveCargoCommand(fitID, selection[0].itemID))
+            return  # the command takes care of the PostEvent
         elif srcContext in ("projectedFit", "projectedModule", "projectedDrone", "projectedFighter"):
             sFit.removeProjected(fitID, selection[0])
         elif srcContext == "commandFit":
