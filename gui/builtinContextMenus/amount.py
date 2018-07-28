@@ -9,7 +9,7 @@ from service.fit import Fit
 from eos.saveddata.cargo import Cargo as es_Cargo
 from eos.saveddata.fighter import Fighter as es_Fighter
 from service.settings import ContextMenuSettings
-
+import gui.fitCommands as cmd
 
 class ChangeAmount(ContextMenu):
     def __init__(self):
@@ -45,7 +45,8 @@ class ChangeAmount(ContextMenu):
             cleanInput = re.sub(r'[^0-9.]', '', dlg.input.GetLineText(0).strip())
 
             if isinstance(thing, es_Cargo):
-                sFit.addCargo(fitID, thing.item.ID, int(float(cleanInput)), replace=True)
+                self.mainFrame.command.Submit(cmd.GuiAddCargoCommand(fitID, thing.item.ID, int(float(cleanInput)), replace=True))
+                return  # no need for post event here
             elif isinstance(thing, es_Fit):
                 sFit.changeAmount(fitID, thing, int(float(cleanInput)))
             elif isinstance(thing, es_Fighter):

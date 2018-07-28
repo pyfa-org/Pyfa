@@ -7,3 +7,5 @@ from .guiRemoveCargo import GuiRemoveCargoCommand
 from .guiAddCargo import GuiAddCargoCommand
 from .fitAddCargo import FitAddCargoCommand
 from .fitRemoveCargo import FitRemoveCargoCommand
+from .guiRemoveImplant import GuiRemoveImplantCommand
+from .guiAddImplant import GuiAddImplantCommand

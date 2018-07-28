@@ -319,6 +319,7 @@ class Fit(object):
                 fit.notes))
         return fits
 
+    @deprecated
     def addImplant(self, fitID, itemID, recalc=True):
         pyfalog.debug("Adding implant to fit ({0}) for item ID: {1}", fitID, itemID)
         if fitID is None:
@@ -337,6 +338,7 @@ class Fit(object):
             self.recalc(fit)
         return True
 
+    @deprecated
     def removeImplant(self, fitID, position, recalc=True):
         pyfalog.debug("Removing implant from position ({0}) for fit ID: {1}", position, fitID)
         if fitID is None:

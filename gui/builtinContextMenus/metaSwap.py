@@ -15,7 +15,7 @@ from eos.saveddata.drone import Drone
 from eos.saveddata.fighter import Fighter
 from eos.saveddata.implant import Implant
 from eos.saveddata.cargo import Cargo
-
+import gui.fitCommands as cmd
 
 class MetaSwap(ContextMenu):
     def __init__(self):
@@ -183,16 +183,18 @@ class MetaSwap(ContextMenu):
             elif isinstance(selected_item, Implant):
                 for idx, implant_stack in enumerate(fit.implants):
                     if implant_stack is selected_item:
-                        sFit.removeImplant(fitID, idx, False)
-                        sFit.addImplant(fitID, item.ID, True)
-                        break
+                        self.mainFrame.command.Submit(cmd.GuiRemoveImplantCommand(fitID, idx))
+                        self.mainFrame.command.Submit(cmd.GuiAddImplantCommand(fitID, item.ID))
+                        return
 
             elif isinstance(selected_item, Cargo):
                 for idx, cargo_stack in enumerate(fit.cargo):
                     if cargo_stack is selected_item:
+                        # todo: make a command to change varieance of all items, or maybe per item type, which would
+                        # utilize the two fitting commands that we need to remove then add?
                         sFit.removeCargo(fitID, idx)
-                        sFit.addCargo(fitID, item.ID, cargo_stack.amount, True)
-                        break
+                        self.mainFrame.command.Submit(cmd.GuiAddCargoCommand(fitID, item.ID, cargo_stack.amount, True))
+                        return  # don't need the post event
 
         wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fitID))
 

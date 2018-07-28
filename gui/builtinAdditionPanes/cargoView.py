@@ -26,6 +26,7 @@ import gui.globalEvents as GE
 from gui.utils.staticHelpers import DragDropHelper
 from service.fit import Fit
 from service.market import Market
+import gui.fitCommands as cmd
 
 
 class CargoViewDrop(wx.DropTarget):
@@ -80,9 +81,7 @@ class CargoView(d.Display):
         if data[0] == "fitting":
             self.swapModule(x, y, int(data[1]))
         elif data[0] == "market":
-            sFit = Fit.getInstance()
-            sFit.addCargo(self.mainFrame.getActiveFit(), int(data[1]), 1)
-            wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=self.mainFrame.getActiveFit()))
+            self.mainFrame.command.Submit(cmd.GuiAddCargoCommand(self.mainFrame.getActiveFit(), int(data[1])))
 
     def startDrag(self, event):
         row = event.GetIndex()
