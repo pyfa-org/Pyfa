@@ -41,6 +41,20 @@ from utils.deprecated import deprecated
 pyfalog = Logger(__name__)
 
 
+class DeferRecalc():
+    def __init__(self, fitID):
+        self.fitID = fitID
+        self.sFit = Fit.getInstance()
+
+    def __enter__(self):
+        self._recalc = self.sFit.recalc
+        self.sFit.recalc = lambda x: print('Deferred Recalc')
+
+    def __exit__(self, *args):
+        self.sFit.recalc = self._recalc
+        self.sFit.recalc(self.fitID)
+
+
 class Fit(object):
     instance = None
 

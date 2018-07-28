@@ -1,10 +1,6 @@
 import wx
-from service.fit import Fit
 
-import gui.mainFrame
-from gui import globalEvents as GE
 #from .helpers import ModuleInfoCache
-from eos.saveddata.module import Module, State
 import eos.db
 from logbook import Logger
 pyfalog = Logger(__name__)
@@ -47,7 +43,7 @@ class FitRemoveCargoCommand(wx.Command):
         return True
 
     def Undo(self):
-        from .fitAddCargo import FitAddCargoCommand  # Avoid circular import
+        from gui.fitCommands.calc.fitAddCargo import FitAddCargoCommand  # Avoid circular import
         cmd = FitAddCargoCommand(self.fitID, self.itemID, self.old_amount, True)
         cmd.Do()
         return True

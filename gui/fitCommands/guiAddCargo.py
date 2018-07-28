@@ -3,7 +3,7 @@ from service.fit import Fit
 
 import gui.mainFrame
 from gui import globalEvents as GE
-from .fitAddCargo import FitAddCargoCommand
+from .calc.fitAddCargo import FitAddCargoCommand
 
 class GuiAddCargoCommand(wx.Command):
     def __init__(self, fitID, itemID, amount=1, replace=False):

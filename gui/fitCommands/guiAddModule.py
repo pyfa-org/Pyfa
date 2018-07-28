@@ -3,9 +3,8 @@ from service.fit import Fit
 
 import gui.mainFrame
 from gui import globalEvents as GE
-from .helpers import ModuleInfoCache
-from .fitAddModule import FitAddModuleCommand
-from .fitReplaceModule import FitReplaceModuleCommand
+from .calc.fitAddModule import FitAddModuleCommand
+from .calc.fitReplaceModule import FitReplaceModuleCommand
 
 class GuiModuleAddCommand(wx.Command):
     def __init__(self, fitID, itemID, position=None):

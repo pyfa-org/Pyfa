@@ -3,7 +3,7 @@ from service.fit import Fit
 
 import gui.mainFrame
 from gui import globalEvents as GE
-from .fitRemoveImplant import FitRemoveImplantCommand
+from .calc.fitRemoveImplant import FitRemoveImplantCommand
 
 class GuiRemoveImplantCommand(wx.Command):
     def __init__(self, fitID, position):

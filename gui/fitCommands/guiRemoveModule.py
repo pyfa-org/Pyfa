@@ -5,7 +5,7 @@ import gui.mainFrame
 from gui import globalEvents as GE
 
 from .helpers import ModuleInfoCache
-from .fitRemoveModule import FitRemoveModuleCommand
+from .calc.fitRemoveModule import FitRemoveModuleCommand
 
 
 class GuiModuleRemoveCommand(wx.Command):

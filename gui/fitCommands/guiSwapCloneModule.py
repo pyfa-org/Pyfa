@@ -3,8 +3,8 @@ from service.fit import Fit
 
 import gui.mainFrame
 from gui import globalEvents as GE
-from .fitSwapModule import FitSwapModuleCommand
-from .fitCloneModule import FitCloneModduleCommand
+from gui.fitCommands.calc.fitSwapModule import FitSwapModuleCommand
+from .calc.fitCloneModule import FitCloneModduleCommand
 
 class GuiModuleSwapOrCloneCommand(wx.Command):
     def __init__(self, fitID, srcPosition, dstPosition, clone=False):

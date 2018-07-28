@@ -3,7 +3,7 @@ from service.fit import Fit
 
 import gui.mainFrame
 from gui import globalEvents as GE
-from .fitChangeState import FitChangeStatesCommand
+from .calc.fitChangeState import FitChangeStatesCommand
 
 class GuiModuleStateChangeCommand(wx.Command):
     def __init__(self, fitID, baseMod, modules, click):
