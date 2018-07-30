@@ -1,5 +1,4 @@
 import wx
-from service.fit import Fit
 
 import gui.mainFrame
 from gui import globalEvents as GE
@@ -22,7 +21,7 @@ class GuiModuleAddCommand(wx.Command):
         success = False
         # if we have a position set, try to apply the module to that position
 
-        # todo: check to see if item is a charge. if it is, dont try to add module, but instead set amm
+        # todo: check to see if item is a charge. if it is, dont try to add module, but instead set ammo
         if self.new_position:
             success = self.internal_history.Submit(FitReplaceModuleCommand(self.fitID, self.new_position, self.itemID))
             if not success:
@@ -34,6 +33,7 @@ class GuiModuleAddCommand(wx.Command):
             success = self.internal_history.Submit(FitAddModuleCommand(self.fitID, self.itemID))
 
         if success:
+            self.sFit.recalc(self.fitID)
             wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=self.fitID, action="modadd", typeID=self.itemID))
             return True
         return False
@@ -48,5 +48,6 @@ class GuiModuleAddCommand(wx.Command):
     def Undo(self):
         for _ in self.internal_history.Commands:
             self.internal_history.Undo()
+        self.sFit.recalc(self.fitID)
         wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=self.fitID, action="moddel", typeID=self.itemID))
         return True

@@ -24,11 +24,13 @@ class GuiModuleRemoveCommand(wx.Command):
 
         if success is not None:
             # self.slotsChanged() # todo: fix
+            self.sFit.recalc(self.fitID)
             wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=self.fitID, action="moddel", typeID=set([mod.itemID for mod in self.modCache])))
             return True
 
     def Undo(self):
         for x in self.internal_history.Commands:
             self.internal_history.Undo()
+        self.sFit.recalc(self.fitID)
         wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=self.fitID, action="modadd", typeID=set([mod.itemID for mod in self.modCache])))
         return True
