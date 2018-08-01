@@ -4,6 +4,7 @@ import gui.mainFrame
 from gui import globalEvents as GE
 from .calc.fitAddModule import FitAddModuleCommand
 from .calc.fitReplaceModule import FitReplaceModuleCommand
+from service.fit import Fit
 
 class GuiModuleAddCommand(wx.Command):
     def __init__(self, fitID, itemID, position=None):

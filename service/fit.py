@@ -1256,5 +1256,5 @@ class Fit(object):
         fit.clear()
 
         fit.calculateModifiedAttributes()
-
+        fit.fill()
         pyfalog.info("=" * 10 + "recalc time: " + str(time() - start_time) + "=" * 10)
