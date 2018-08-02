@@ -13,10 +13,11 @@ class GuiModuleAddChargeCommand(wx.Command):
         self.internal_history = wx.CommandProcessor()
         self.fitID = fitID
         # can set his up no to not have to set variables on our object
-        self.cmd = FitSetChargeCommand(fitID, modules, itemID)
+        self.cmd = FitSetChargeCommand(fitID, [mod.modPosition for mod in modules], itemID)
 
     def Do(self):
         if self.internal_history.Submit(self.cmd):
+            self.sFit.recalc(self.fitID)
             wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=self.fitID))
             return True
         return False
@@ -24,6 +25,7 @@ class GuiModuleAddChargeCommand(wx.Command):
     def Undo(self):
         for x in self.internal_history.Commands:
             self.internal_history.Undo()
-            wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=self.fitID))
+        self.sFit.recalc(self.fitID)
+        wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=self.fitID))
         return True
 

@@ -16,10 +16,12 @@ class FitAddModuleCommand(wx.Command):
 
     from sFit.appendModule
     """
-    def __init__(self, fitID, itemID):
+    def __init__(self, fitID, itemID, mutaplasmidID=None, baseID=None):
         wx.Command.__init__(self, True, "Module Add")
         self.fitID = fitID
         self.itemID = itemID
+        self.mutaplasmidID = mutaplasmidID
+        self.baseID = baseID
         self.new_position = None
         self.change = None
 
@@ -30,8 +32,11 @@ class FitAddModuleCommand(wx.Command):
         fit = eos.db.getFit(fitID)
         item = eos.db.getItem(itemID, eager=("attributes", "group.category"))
 
+        bItem = eos.db.getItem(self.baseID) if self.baseID else None
+        mItem = next((x for x in bItem.mutaplasmids if x.ID == self.mutaplasmidID)) if self.mutaplasmidID else None
+
         try:
-            self.module = Module(item)
+            self.module = Module(item, bItem, mItem)
         except ValueError:
             pyfalog.warning("Invalid item: {0}", itemID)
             return False
@@ -52,7 +57,7 @@ class FitAddModuleCommand(wx.Command):
             # Then, check states of all modules and change where needed. This will recalc if needed
             # self.checkStates(fit, m)
 
-            fit.fill()
+            #fit.fill()
             eos.db.commit()
 
             self.change = numSlots != len(fit.modules)

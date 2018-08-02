@@ -27,10 +27,10 @@ class FitRemoveModuleCommand(wx.Command):
         for x in self.positions:
             mod = fit.modules[x]
             if not mod.isEmpty:
-                self.modCache.append(ModuleInfoCache(mod.modPosition, mod.item.ID, mod.state, mod.charge))
+                self.modCache.append(ModuleInfoCache(mod.modPosition, mod.item.ID, mod.state, mod.charge, mod.baseItemID, mod.mutaplasmidID))
                 fit.modules.toDummy(x)
 
-        # if no modules have changes, report back None
+        # if no modules have changes, skip command
         if not len(self.modCache) > 0:
             return False
 
@@ -38,7 +38,7 @@ class FitRemoveModuleCommand(wx.Command):
         # todo: determine if we need to do this still
         # self.recalc(fit)
         # self.checkStates(fit, None)
-        fit.fill()
+        # fit.fill()
         eos.db.commit()
         self.slotsChanged = numSlots != len(fit.modules)
         return True
@@ -46,7 +46,8 @@ class FitRemoveModuleCommand(wx.Command):
     def Undo(self):
         from gui.fitCommands.calc.fitAddModule import FitAddModuleCommand  # avoids circular import
         for mod in self.modCache:
-            cmd = FitAddModuleCommand(self.fitID, mod.itemID)
+            # todo, send the state and charge?
+            cmd = FitAddModuleCommand(self.fitID, mod.itemID, mod.mutaplasmidID, mod.baseID)
             cmd.Do()
             cmd.module.state = mod.state
             cmd.module.charge = mod.charge
