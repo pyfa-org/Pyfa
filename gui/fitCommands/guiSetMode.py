@@ -3,17 +3,17 @@ from service.fit import Fit
 
 import gui.mainFrame
 from gui import globalEvents as GE
-from .calc.fitSetCharge import FitSetChargeCommand
+from .calc.fitSetMode import FitSetModeCommand
 
-class GuiModuleAddChargeCommand(wx.Command):
-    def __init__(self, fitID, itemID, modules):
-        wx.Command.__init__(self, True, "Module Charge Add")
+class GuiSetModeCommand(wx.Command):
+    def __init__(self, fitID, mode):
+        wx.Command.__init__(self, True, "Cargo Add")
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
         self.sFit = Fit.getInstance()
         self.internal_history = wx.CommandProcessor()
         self.fitID = fitID
         # can set his up no to not have to set variables on our object
-        self.cmd = FitSetChargeCommand(fitID, [mod.modPosition for mod in modules], itemID)
+        self.cmd = FitSetModeCommand(fitID, mode)
 
     def Do(self):
         if self.internal_history.Submit(self.cmd):

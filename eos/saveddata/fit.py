@@ -35,7 +35,6 @@ from eos.saveddata.character import Character
 from eos.saveddata.citadel import Citadel
 from eos.saveddata.module import Module, State, Slot, Hardpoint
 from logbook import Logger
-
 pyfalog = Logger(__name__)
 
 
@@ -913,6 +912,9 @@ class Fit(object):
         Fill this fit's module slots with enough dummy slots so that all slots are used.
         This is mostly for making the life of gui's easier.
         GUI's can call fill() and then stop caring about empty slots completely.
+
+        todo: want to get rid of using this from the gui/commands, and instead make it a more built-in feature within
+        recalc. Figure out a way to keep track of any changes to slot layout and call this automatically
         """
         if self.ship is None:
             return

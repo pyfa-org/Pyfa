@@ -9,35 +9,37 @@ pyfalog = Logger(__name__)
 import eos.db
 
 class FitSetChargeCommand(wx.Command):
-    def __init__(self, fitID, modules, chargeID=None):
+    def __init__(self, fitID, positions, chargeID=None):
         # todo: determine if this command really should be used with a group of modules, or a simple per module basis
         wx.Command.__init__(self, True, "Module Charge Add")
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
         self.sFit = Fit.getInstance()
         self.fitID = fitID
         self.chargeID = chargeID
-        self.modules = modules
-        self.positions = {mod.modPosition: mod.chargeID for mod in modules}
+        self.positions = positions
+        self.cache = None
 
     def Do(self):
-        pyfalog.debug("Set ammo for fit ID: {0}", self.fitID)
-        if self.fitID is None:
-            return False
-        return self.__setAmmo(self.modules, self.chargeID)
+        return self.__setAmmo(self.positions, self.chargeID)
 
     def Undo(self):
-        fit = eos.db.getFit(self.fitID)
-        for position, chargeID in self.positions.items():
-            self.__setAmmo([fit.modules[position]], chargeID)
+        for position, chargeID in self.cache.items():
+            self.__setAmmo([position], chargeID)
         return True
 
-    @staticmethod
-    def __setAmmo(modules, chargeID):
+    def __setAmmo(self, positions, chargeID):
+        fit = eos.db.getFit(self.fitID)
+        self.cache = {fit.modules[i].modPosition: fit.modules[i].chargeID for i in positions}
         ammo = eos.db.getItem(chargeID) if chargeID else None
+
+        if ammo is not None and not ammo.isCharge:
+            return False
         result = False
 
-        for mod in modules:
+        for pos in positions:
+            mod = fit.modules[pos]
             if not mod.isEmpty and mod.isValidCharge(ammo):
+                pyfalog.debug("Set ammo {} for {} on fit {}", ammo, mod, self.fitID)
                 result = True
                 mod.charge = ammo
         eos.db.commit()

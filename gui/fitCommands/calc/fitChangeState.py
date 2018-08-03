@@ -9,42 +9,53 @@ pyfalog = Logger(__name__)
 import eos.db
 
 class FitChangeStatesCommand(wx.Command):
-    def __init__(self, fitID, baseMod, modules, click):
+    """
+    Fitting command that trys to change the state of modules in [positions]. We use the base module to determine the
+    state that we will try to apply for all modules.
+
+
+    """
+    def __init__(self, fitID, baseModPos, positions, click):
         # todo: instead of modules, needs to be positions. Dead objects are a thing
         wx.Command.__init__(self, True, "Module State Change")
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
         self.sFit = Fit.getInstance()
         self.fitID = fitID
-        self.baseMod = baseMod
-        self.modules = modules
+        self.baseModPos = baseModPos
+        self.positions = positions
         self.click = click
         self.changed = None
         self.old_states = {}
-        for mod in modules:
-            # we don't use the actual module as the key, because it may have been deleted in subsequent calls (even if
-            # we undo a deletion, wouldn't be the same obj). So, we store the position
-            self.old_states[mod.modPosition] = mod.state
 
     def Do(self):
-        # todo: determine if we've changed state (recalc). If not, store that so we don't attempt to recalc on undo
-        # self.sFit.toggleModulesState(self.fitID, self.baseMod, self.modules, self.click)
+        fit = eos.db.getFit(self.fitID)
 
-        pyfalog.debug("Toggle module state for fit ID: {0}", self.fitID)
-        changed = False
-        proposedState = Module.getProposedState(self.baseMod, self.click)
+        baseMod = fit.modules[self.baseModPos]
 
-        if proposedState != self.baseMod.state:
-            changed = True
-            self.baseMod.state = proposedState
-            for mod in self.modules:
-                if mod != self.baseMod:
-                    p = Module.getProposedState(mod, self.click, proposedState)
-                    mod.state = p
-                    if p != mod.state:
-                        changed = True
+        # make sure positions only include non-empty positions
+        self.positions = [x for x in self.positions if not fit.modules[x].isEmpty]
 
-        if changed:
-            self.changed = changed
+        for x in self.positions:
+            self.old_states[x] = fit.modules[x].state
+
+        proposedState = Module.getProposedState(baseMod, self.click)
+        pyfalog.debug("Attempting to change modules to {}", proposedState)
+
+        if proposedState != baseMod.state:
+            pyfalog.debug("Toggle {} state: {} for fit ID: {}", baseMod, proposedState, self.fitID)
+
+            self.changed = True
+            baseMod.state = proposedState
+            for i in [x for x in self.positions if x != self.baseModPos]:  # dont consider base module position
+                mod = fit.modules[i]
+                p = Module.getProposedState(mod, self.click, proposedState)
+                mod.state = p
+                if p != mod.state:
+                    pyfalog.debug("Toggle {} state: {} for fit ID: {}", mod, p, self.fitID)
+                    self.changed = True
+
+        # if we haven't change the state (eg, overheat -> overheat), simply fail the command
+        if self.changed:
             eos.db.commit()
             # As some items may affect state-limiting attributes of the ship, calculate new attributes first
             # self.recalc(fit)
@@ -57,5 +68,7 @@ class FitChangeStatesCommand(wx.Command):
         # todo: some sanity checking to make sure that we are applying state back to the same modules?
         fit = self.sFit.getFit(self.fitID)
         for k, v in self.old_states.items():
-            fit.modules[k].state = v
+            mod = fit.modules[k]
+            pyfalog.debug("Reverting {} to state {} for fit ID", mod, v, self.fitID)
+            mod.state = v
         return True

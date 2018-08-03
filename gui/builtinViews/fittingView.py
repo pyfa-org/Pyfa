@@ -268,7 +268,9 @@ class FittingView(d.Display):
         sel = []
         row = self.GetFirstSelected()
         while row != -1:
-            sel.append(self.mods[self.GetItemData(row)])
+            mod = self.mods[self.GetItemData(row)]
+            if mod and not isinstance(mod, Rack):
+                sel.append(mod)
             row = self.GetNextSelected(row)
 
         return sel
@@ -629,7 +631,7 @@ class FittingView(d.Display):
             ctrl = event.cmdDown or event.middleIsDown
             click = "ctrl" if ctrl is True else "right" if event.GetButton() == 3 else "left"
 
-            self.mainFrame.command.Submit(cmd.GuiModuleStateChangeCommand(fitID, self.mods[self.GetItemData(row)], mods, click))
+            self.mainFrame.command.Submit(cmd.GuiModuleStateChangeCommand(fitID, self.mods[self.GetItemData(row)].modPosition, [mod.modPosition for mod in mods], click))
 
             # update state tooltip
             tooltip = self.activeColumns[col].getToolTip(self.mods[self.GetItemData(row)])

@@ -1159,6 +1159,7 @@ class Fit(object):
 
         self.recalc(fit)
 
+    @deprecated
     def setMode(self, fitID, mode):
         pyfalog.debug("Set mode for fit ID: {0}", fitID)
         if fitID is None:
@@ -1260,5 +1261,5 @@ class Fit(object):
         fit.clear()
 
         fit.calculateModifiedAttributes()
-
+        fit.fill()
         pyfalog.info("=" * 10 + "recalc time: " + str(time() - start_time) + "=" * 10)

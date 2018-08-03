@@ -18,6 +18,7 @@
 # ===============================================================================
 
 from logbook import Logger
+from utils.deprecated import deprecated
 
 pyfalog = Logger(__name__)
 
@@ -163,6 +164,7 @@ class HandledModuleList(HandledList):
         mod.position = index
         self[index] = mod
 
+    @deprecated
     def freeSlot(self, slot):
         for i in range(len(self)):
             mod = self[i]
