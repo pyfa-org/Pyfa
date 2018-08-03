@@ -11,6 +11,7 @@ from .calc.fitRemoveModule import FitRemoveModuleCommand
 class GuiModuleRemoveCommand(wx.Command):
     def __init__(self, fitID, modules):
         """
+        Handles removing modules from fit.modules,
 
         :param fitID: The fit ID that we are modifying
         :param modules: A list of Module objects that we are attempting to remove.

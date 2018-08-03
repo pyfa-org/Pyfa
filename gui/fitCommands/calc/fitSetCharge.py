@@ -20,7 +20,6 @@ class FitSetChargeCommand(wx.Command):
         self.cache = None
 
     def Do(self):
-        pyfalog.debug("Set ammo for fit ID: {0}", self.fitID)
         return self.__setAmmo(self.positions, self.chargeID)
 
     def Undo(self):
@@ -40,6 +39,7 @@ class FitSetChargeCommand(wx.Command):
         for pos in positions:
             mod = fit.modules[pos]
             if not mod.isEmpty and mod.isValidCharge(ammo):
+                pyfalog.debug("Set ammo {} for {} on fit {}", ammo, mod, self.fitID)
                 result = True
                 mod.charge = ammo
         eos.db.commit()

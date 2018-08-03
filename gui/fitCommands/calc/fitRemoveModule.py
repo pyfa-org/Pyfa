@@ -13,7 +13,7 @@ class FitRemoveModuleCommand(wx.Command):
     from sFit.removeModule
     """
     def __init__(self, fitID: int, positions: list = None):
-        wx.Command.__init__(self, True, "Module Remove")
+        wx.Command.__init__(self, True)
         self.fitID = fitID
         self.positions = positions
         self.modCache = []
@@ -21,12 +21,14 @@ class FitRemoveModuleCommand(wx.Command):
 
     def Do(self):
         fitID = self.fitID
-        pyfalog.debug("Removing module from position ({0}) for fit ID: {1}", self.positions, fitID)
         fit = eos.db.getFit(fitID)
+
+        pyfalog.debug("Removing module from position ({0}) for fit ID: {1}", self.positions, fitID)
 
         for x in self.positions:
             mod = fit.modules[x]
             if not mod.isEmpty:
+                pyfalog.debug(" -- Removing {}", mod)
                 self.modCache.append(ModuleInfoCache(mod.modPosition, mod.item.ID, mod.state, mod.charge, mod.baseItemID, mod.mutaplasmidID))
                 fit.modules.toDummy(x)
 
@@ -44,8 +46,11 @@ class FitRemoveModuleCommand(wx.Command):
         return True
 
     def Undo(self):
+        pyfalog.debug("Reapplying {} removed module(s) for {}", len(self.modCache), self.fitID)
+
         from gui.fitCommands.calc.fitAddModule import FitAddModuleCommand  # avoids circular import
         for mod in self.modCache:
+            pyfalog.debug(" -- {}", mod)
             # todo, send the state and charge?
             cmd = FitAddModuleCommand(self.fitID, mod.itemID, mod.mutaplasmidID, mod.baseID)
             cmd.Do()
