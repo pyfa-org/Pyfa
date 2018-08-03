@@ -7,3 +7,4 @@ from .guiRemoveCargo import GuiRemoveCargoCommand
 from .guiAddCargo import GuiAddCargoCommand
 from .guiRemoveImplant import GuiRemoveImplantCommand
 from .guiAddImplant import GuiAddImplantCommand
+from .guiSetMode import GuiSetModeCommand
