@@ -10,7 +10,7 @@ from logbook import Logger
 pyfalog = Logger(__name__)
 import copy
 
-class FitCloneModduleCommand(wx.Command):
+class FitCloneModuleCommand(wx.Command):
     """
     Clone a module from src to dst
     This will overwrite dst! Checking for empty module must be
@@ -25,7 +25,6 @@ class FitCloneModduleCommand(wx.Command):
         self.dst = dst
 
     def Do(self):
-        pyfalog.debug("Cloning modules from source ({0}) to destination ({1}) for fit ID: {1}", self.src, self.dst, self.fitID)
         fit = eos.db.getFit(self.fitID)
         # Gather modules
         srcMod = fit.modules[self.src]
@@ -34,6 +33,7 @@ class FitCloneModduleCommand(wx.Command):
         new = copy.deepcopy(srcMod)
         new.owner = fit
         if new.fits(fit):
+            pyfalog.debug("Cloning {} from source {} to destination {} for fit ID {}", srcMod, self.src, self.dst, self.fitID)
             # insert copy if module meets hardpoint restrictions
             fit.modules.remove(dstMod)
             fit.modules.insert(self.dst, new)

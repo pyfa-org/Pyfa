@@ -23,7 +23,7 @@ class GuiModuleAddChargeCommand(wx.Command):
         return False
 
     def Undo(self):
-        for x in self.internal_history.Commands:
+        for _ in self.internal_history.Commands:
             self.internal_history.Undo()
         self.sFit.recalc(self.fitID)
         wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=self.fitID))

@@ -5,6 +5,7 @@ import gui.mainFrame
 from gui import globalEvents as GE
 from .calc.fitChangeState import FitChangeStatesCommand
 
+
 class GuiModuleStateChangeCommand(wx.Command):
     def __init__(self, fitID, baseMod, modules, click):
         # todo: instead of modules, needs to be positions. Dead objects are a thing
@@ -16,16 +17,19 @@ class GuiModuleStateChangeCommand(wx.Command):
         self.modules = modules
         self.click = click
         self.internal_history = wx.CommandProcessor()
+        self.cmd = FitChangeStatesCommand(self.fitID, self.baseMod, self.modules, self.click)
 
     def Do(self):
-        # todo: determine if we've changed state (recalc). If not, store that so we don't attempt to recalc on undo
-        self.internal_history.Submit(FitChangeStatesCommand(self.fitID, self.baseMod, self.modules, self.click))
-        wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=self.fitID))
-        return True
+        if self.internal_history.Submit(self.cmd):
+            self.sFit.recalc(self.fitID)
+            wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=self.fitID))
+            return True
+        return False
 
     def Undo(self):
-        for x in self.internal_history.Commands:
+        for _ in self.internal_history.Commands:
             self.internal_history.Undo()
-            wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=self.fitID))
+        self.sFit.recalc(self.fitID)
+        wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=self.fitID))
         return True
 

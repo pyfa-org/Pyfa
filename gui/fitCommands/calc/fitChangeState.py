@@ -26,9 +26,6 @@ class FitChangeStatesCommand(wx.Command):
             self.old_states[mod.modPosition] = mod.state
 
     def Do(self):
-        # todo: determine if we've changed state (recalc). If not, store that so we don't attempt to recalc on undo
-        # self.sFit.toggleModulesState(self.fitID, self.baseMod, self.modules, self.click)
-
         pyfalog.debug("Toggle module state for fit ID: {0}", self.fitID)
         changed = False
         proposedState = Module.getProposedState(self.baseMod, self.click)
@@ -43,6 +40,7 @@ class FitChangeStatesCommand(wx.Command):
                     if p != mod.state:
                         changed = True
 
+        # if we haven't change the state (eg, overheat -> overheat), simply fail the command
         if changed:
             self.changed = changed
             eos.db.commit()
