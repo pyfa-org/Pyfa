@@ -32,7 +32,7 @@ class FitSetChargeCommand(wx.Command):
         self.cache = {fit.modules[i].modPosition: fit.modules[i].chargeID for i in positions}
         ammo = eos.db.getItem(chargeID) if chargeID else None
 
-        if not ammo.isCharge:
+        if ammo is not None and not ammo.isCharge:
             return False
         result = False
 
