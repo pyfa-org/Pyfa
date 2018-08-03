@@ -48,7 +48,8 @@ class ItemRemove(ContextMenu):
             self.mainFrame.command.Submit(cmd.GuiRemoveImplantCommand(fitID, fit.implants.index(selection[0])))
             return  # the command takes care of the PostEvent
         elif srcContext == "boosterItem":
-            sFit.removeBooster(fitID, fit.boosters.index(selection[0]))
+            self.mainFrame.command.Submit(cmd.GuiRemoveBoosterCommand(fitID, fit.boosters.index(selection[0])))
+            return  # the command takes care of the PostEvent
         elif srcContext == "cargoItem":
             self.mainFrame.command.Submit(cmd.GuiRemoveCargoCommand(fitID, selection[0].itemID))
             return  # the command takes care of the PostEvent

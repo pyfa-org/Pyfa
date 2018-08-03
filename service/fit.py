@@ -365,6 +365,7 @@ class Fit(object):
             self.recalc(fit)
         return True
 
+    @deprecated
     def addBooster(self, fitID, itemID, recalc=True):
         pyfalog.debug("Adding booster ({0}) to fit ID: {1}", itemID, fitID)
         if fitID is None:
@@ -383,6 +384,7 @@ class Fit(object):
             self.recalc(fit)
         return True
 
+    @deprecated
     def removeBooster(self, fitID, position, recalc=True):
         pyfalog.debug("Removing booster from position ({0}) for fit ID: {1}", position, fitID)
         if fitID is None:
@@ -451,6 +453,7 @@ class Fit(object):
         self.recalc(fit)
         return True
 
+    @deprecated
     def addCommandFit(self, fitID, thing):
         pyfalog.debug("Projecting command fit ({0}) onto: {1}", fitID, thing)
         if fitID is None:
@@ -461,7 +464,7 @@ class Fit(object):
         if thing in fit.commandFits:
             return
 
-        fit.__commandFits[thing.ID] = thing
+        fit.commandFitDict[thing.ID] = thing
 
         # this bit is required -- see GH issue # 83
         eos.db.saveddata_session.flush()
@@ -539,10 +542,11 @@ class Fit(object):
         eos.db.commit()
         self.recalc(fit)
 
+    @deprecated
     def removeCommand(self, fitID, thing):
         pyfalog.debug("Removing command projection from fit ({0}) for: {1}", fitID, thing)
         fit = eos.db.getFit(fitID)
-        del fit.__commandFits[thing.ID]
+        del fit.commandFitDict[thing.ID]
 
         eos.db.commit()
         self.recalc(fit)

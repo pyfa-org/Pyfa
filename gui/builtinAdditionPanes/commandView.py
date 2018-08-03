@@ -30,7 +30,7 @@ from gui.builtinViewColumns.state import State
 from gui.contextMenu import ContextMenu
 from gui.utils.staticHelpers import DragDropHelper
 from service.fit import Fit
-
+import gui.fitCommands as cmd
 
 class DummyItem(object):
     def __init__(self, txt):
@@ -111,10 +111,11 @@ class CommandView(d.Display):
         if type == "fit":
             activeFit = self.mainFrame.getActiveFit()
             if activeFit:
-                sFit = Fit.getInstance()
-                draggedFit = sFit.getFit(fitID)
-                sFit.addCommandFit(activeFit, draggedFit)
-                wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=activeFit))
+                # sFit = Fit.getInstance()
+                # draggedFit = sFit.getFit(fitID)
+                # sFit.addCommandFit(activeFit, draggedFit)
+                # wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=activeFit))
+                self.mainFrame.command.Submit(cmd.GuiAddCommandCommand(activeFit, fitID))
 
     def startDrag(self, event):
         row = event.GetIndex()

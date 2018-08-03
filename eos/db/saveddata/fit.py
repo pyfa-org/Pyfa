@@ -138,7 +138,7 @@ es_Fit._Fit__projectedFits = association_proxy(
         creator=lambda sourceID, source_fit: ProjectedFit(sourceID, source_fit)
 )
 
-es_Fit._Fit__commandFits = association_proxy(
+es_Fit.commandFitDict = association_proxy(
         "boostedOf",  # look at the boostedOf association...
         "booster_fit",  # .. and return the booster fit
         creator=lambda boosterID, booster_fit: CommandFit(boosterID, booster_fit)

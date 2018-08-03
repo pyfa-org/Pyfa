@@ -1,6 +1,7 @@
 import wx
 
 import gui.mainFrame
+from service.fit import Fit
 from gui import globalEvents as GE
 from .calc.fitAddModule import FitAddModuleCommand
 from .calc.fitReplaceModule import FitReplaceModuleCommand

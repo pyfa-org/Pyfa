@@ -140,6 +140,7 @@ class MetaSwap(ContextMenu):
             if isinstance(selected_item, Module):
                 pos = fit.modules.index(selected_item)
                 sFit.changeModule(fitID, pos, item.ID)
+                wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fitID))
 
             elif isinstance(selected_item, Drone):
                 drone_count = None
@@ -152,6 +153,7 @@ class MetaSwap(ContextMenu):
 
                 if drone_count:
                     sFit.addDrone(fitID, item.ID, drone_count, True)
+                wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fitID))
 
             elif isinstance(selected_item, Fighter):
                 fighter_count = None
@@ -172,12 +174,13 @@ class MetaSwap(ContextMenu):
                         break
 
                 sFit.addFighter(fitID, item.ID, True)
+                wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fitID))
 
             elif isinstance(selected_item, Booster):
                 for idx, booster_stack in enumerate(fit.boosters):
                     if booster_stack is selected_item:
-                        sFit.removeBooster(fitID, idx, False)
-                        sFit.addBooster(fitID, item.ID, True)
+                        self.mainFrame.command.Submit(cmd.GuiRemoveBoosterCommand(fitID, idx))
+                        self.mainFrame.command.Submit(cmd.GuiAddBoosterCommand(fitID, item.ID))
                         break
 
             elif isinstance(selected_item, Implant):
@@ -185,7 +188,7 @@ class MetaSwap(ContextMenu):
                     if implant_stack is selected_item:
                         self.mainFrame.command.Submit(cmd.GuiRemoveImplantCommand(fitID, idx))
                         self.mainFrame.command.Submit(cmd.GuiAddImplantCommand(fitID, item.ID))
-                        return
+                        break
 
             elif isinstance(selected_item, Cargo):
                 for idx, cargo_stack in enumerate(fit.cargo):
@@ -194,9 +197,8 @@ class MetaSwap(ContextMenu):
                         # utilize the two fitting commands that we need to remove then add?
                         sFit.removeCargo(fitID, idx)
                         self.mainFrame.command.Submit(cmd.GuiAddCargoCommand(fitID, item.ID, cargo_stack.amount, True))
-                        return  # don't need the post event
+                        break
 
-        wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fitID))
 
 
 MetaSwap.register()

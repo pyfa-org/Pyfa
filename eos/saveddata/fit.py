@@ -262,7 +262,7 @@ class Fit(object):
 
     @property
     def commandFits(self):
-        return [fit for fit in list(self.__commandFits.values()) if not fit.isInvalid]
+        return [fit for fit in list(self.commandFitDict.values()) if not fit.isInvalid]
 
     def getProjectionInfo(self, fitID):
         return self.projectedOnto.get(fitID, None)
@@ -1605,7 +1605,7 @@ class Fit(object):
             eos.db.saveddata_session.refresh(fit)
 
         for fit in self.commandFits:
-            copy_ship.__commandFits[fit.ID] = fit
+            copy_ship.commandFitDict[fit.ID] = fit
             forceUpdateSavedata(fit)
             copyCommandInfo = fit.getCommandInfo(copy_ship.ID)
             originalCommandInfo = fit.getCommandInfo(self.ID)

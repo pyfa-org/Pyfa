@@ -26,7 +26,7 @@ from gui.builtinViewColumns.state import State
 from gui.contextMenu import ContextMenu
 from gui.utils.staticHelpers import DragDropHelper
 from service.fit import Fit
-
+import gui.fitCommands as cmd
 
 class BoosterViewDrop(wx.DropTarget):
     def __init__(self, dropFn, *args, **kwargs):
@@ -134,9 +134,7 @@ class BoosterView(d.Display):
             event.Skip()
             return
 
-        trigger = sFit.addBooster(fitID, event.itemID)
-        if trigger:
-            wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fitID))
+        if self.mainFrame.command.Submit(cmd.GuiAddBoosterCommand(fitID, event.itemID)):
             self.mainFrame.additionsPane.select("Boosters")
 
         event.Skip()
@@ -150,9 +148,7 @@ class BoosterView(d.Display):
 
     def removeBooster(self, booster):
         fitID = self.mainFrame.getActiveFit()
-        sFit = Fit.getInstance()
-        sFit.removeBooster(fitID, self.origional.index(booster))
-        wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fitID))
+        self.mainFrame.command.Submit(cmd.GuiRemoveImplantCommand(fitID, self.origional.index(booster)))
 
     def click(self, event):
         event.Skip()
