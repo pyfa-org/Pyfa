@@ -496,6 +496,7 @@ class Fit(object):
         eos.db.commit()
         self.recalc(fit)
 
+    @deprecated
     def toggleCommandFit(self, fitID, thing):
         pyfalog.debug("Toggle command fit ({0}) for: {1}", fitID, thing)
         fit = eos.db.getFit(fitID)

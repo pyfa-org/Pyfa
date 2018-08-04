@@ -12,3 +12,4 @@ from .guiRemoveBooster import GuiRemoveBoosterCommand
 from .guiAddCommand import GuiAddCommandCommand
 from .guiRemoveCommand import GuiRemoveCommandCommand
 from .guiSetMode import GuiSetModeCommand
+from .guiToggleCommand import GuiToggleCommandCommand
