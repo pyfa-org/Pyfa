@@ -17,7 +17,7 @@ from .events import ImportSelected, SearchSelected, FitSelected, BoosterListUpda
 from gui.bitmap_loader import BitmapLoader
 from gui.builtinShipBrowser.pfBitmapFrame import PFBitmapFrame
 from service.fit import Fit
-
+import gui.fitCommands as cmd
 pyfalog = Logger(__name__)
 
 
@@ -209,11 +209,8 @@ class FitItem(SFItem.SFBrowserItem):
     def OnAddCommandFit(self, event):
         activeFit = self.mainFrame.getActiveFit()
         if activeFit:
-            sFit = Fit.getInstance()
-            commandFit = sFit.getFit(self.fitID)
-            sFit.addCommandFit(activeFit, commandFit)
-            wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=activeFit))
-            self.mainFrame.additionsPane.select("Command")
+            if self.mainFrame.command.Submit(cmd.GuiAddCommandCommand(activeFit, self.fitID)):
+                self.mainFrame.additionsPane.select("Command")
 
     def OnMouseCaptureLost(self, event):
         """ Destroy drag information (GH issue #479)"""

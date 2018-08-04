@@ -18,12 +18,14 @@ class GuiAddCommandCommand(wx.Command):
     def Do(self):
         if self.internal_history.Submit(self.cmd):
             wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=self.fitID))
+            self.sFit.recalc(self.fitID)
             return True
         return False
 
     def Undo(self):
-        for x in self.internal_history.Commands:
+        for _ in self.internal_history.Commands:
             self.internal_history.Undo()
+        self.sFit.recalc(self.fitID)
         wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=self.fitID))
         return True
 
