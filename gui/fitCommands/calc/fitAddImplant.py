@@ -25,6 +25,10 @@ class FitAddImplantCommand(wx.Command):
 
         fit = eos.db.getFit(self.fitID)
         item = eos.db.getItem(self.itemID, eager="attributes")
+
+        if next((x for x in fit.implants if x.itemID == self.itemID), None):
+            return False  # already have item in list of implants
+
         try:
             implant = Implant(item)
         except ValueError:

@@ -20,11 +20,16 @@ class FitAddBoosterCommand(wx.Command):
         self.itemID = itemID
         self.new_index = None
         self.old_item = None
+        
     def Do(self):
         pyfalog.debug("Adding booster ({0}) to fit ID: {1}", self.itemID, self.fitID)
 
         fit = eos.db.getFit(self.fitID)
         item = eos.db.getItem(self.itemID, eager="attributes")
+
+        if next((x for x in fit.boosters if x.itemID == self.itemID), None):
+            return False  # already have item in list of boosters
+
         try:
             booster = Booster(item)
         except ValueError:
@@ -32,7 +37,6 @@ class FitAddBoosterCommand(wx.Command):
             return False
 
         self.old_item = fit.boosters.makeRoom(booster)
-
         fit.boosters.append(booster)
         self.new_index = fit.boosters.index(booster)
         return True
