@@ -32,6 +32,7 @@ from gui.contextMenu import ContextMenu
 from gui.utils.staticHelpers import DragDropHelper
 from service.fit import Fit
 from service.market import Market
+import gui.fitCommands as cmd
 
 pyfalog = Logger(__name__)
 
@@ -100,6 +101,7 @@ class ProjectedView(d.Display):
             data[1] is typeID or index of data we want to manipulate
         """
         sFit = Fit.getInstance()
+        fitID = self.mainFrame.getActiveFit()
         fit = sFit.getFit(self.mainFrame.getActiveFit())
 
         if data[0] == "projected":
@@ -109,12 +111,14 @@ class ProjectedView(d.Display):
             dstRow, _ = self.HitTest((x, y))
             # Gather module information to get position
             module = fit.modules[int(data[1])]
-            sFit.project(fit.ID, module)
-            wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fit.ID))
+            self.mainFrame.command.Submit(cmd.GuiAddProjectedCommand(fitID, module.itemID, 'item'))
+            # sFit.project(fit.ID, module)
+            # wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fit.ID))
         elif data[0] == "market":
-            sFit = Fit.getInstance()
-            sFit.project(fit.ID, int(data[1]))
-            wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fit.ID))
+            # sFit = Fit.getInstance()
+            self.mainFrame.command.Submit(cmd.GuiAddProjectedCommand(fitID, int(data[1]), 'item'))
+            # sFit.project(fit.ID, int(data[1]))
+            # wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fit.ID))
 
     def kbEvent(self, event):
         keycode = event.GetKeyCode()
@@ -131,10 +135,7 @@ class ProjectedView(d.Display):
         if type == "fit":
             activeFit = self.mainFrame.getActiveFit()
             if activeFit:
-                sFit = Fit.getInstance()
-                draggedFit = sFit.getFit(fitID)
-                sFit.project(activeFit, draggedFit)
-                wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=activeFit))
+                self.mainFrame.command.Submit(cmd.GuiAddProjectedCommand(activeFit, fitID, 'fit'))
 
     def startDrag(self, event):
         row = event.GetIndex()

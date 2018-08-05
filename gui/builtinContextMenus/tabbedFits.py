@@ -51,7 +51,6 @@ class TabbedFits(ContextMenu):
         return m
 
     def handleSelection(self, event):
-        sFit = Fit.getInstance()
         fitID = self.mainFrame.getActiveFit()
 
         fit = self.fitLookup[event.Id]
@@ -59,8 +58,7 @@ class TabbedFits(ContextMenu):
         if self.context == 'commandView':
             self.mainFrame.command.Submit(cmd.GuiAddCommandCommand(fitID, fit.ID))
         elif self.context == 'projected':
-            sFit.project(fitID, fit)
-            wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fitID))
+            self.mainFrame.command.Submit(cmd.GuiAddProjectedCommand(fitID, fit.ID, 'fit'))
 
 
 TabbedFits.register()

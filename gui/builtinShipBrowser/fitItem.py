@@ -202,9 +202,8 @@ class FitItem(SFItem.SFBrowserItem):
         if activeFit:
             sFit = Fit.getInstance()
             projectedFit = sFit.getFit(self.fitID)
-            sFit.project(activeFit, projectedFit)
-            wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=activeFit))
-            self.mainFrame.additionsPane.select("Projected")
+            if self.mainFrame.command.Submit(cmd.GuiAddProjectedCommand(activeFit, projectedFit.ID, 'fit')):
+                self.mainFrame.additionsPane.select("Projected")
 
     def OnAddCommandFit(self, event):
         activeFit = self.mainFrame.getActiveFit()

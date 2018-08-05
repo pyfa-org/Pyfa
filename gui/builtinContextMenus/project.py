@@ -5,7 +5,7 @@ import gui.globalEvents as GE
 import wx
 from service.fit import Fit
 from service.settings import ContextMenuSettings
-
+import gui.fitCommands as cmd
 
 class Project(ContextMenu):
     def __init__(self):
@@ -35,10 +35,12 @@ class Project(ContextMenu):
     def activate(self, fullContext, selection, i):
         sFit = Fit.getInstance()
         fitID = self.mainFrame.getActiveFit()
-        trigger = sFit.project(fitID, selection[0])
-        if trigger:
-            wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fitID))
-            self.mainFrame.additionsPane.select("Projected")
+        self.mainFrame.command.Submit(cmd.GuiAddProjectedCommand(fitID, selection[0].ID, 'item'))
+
+        # trigger = sFit.project(fitID, selection[0])
+        # if trigger:
+        #     wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fitID))
+        #     self.mainFrame.additionsPane.select("Projected")
 
 
 Project.register()

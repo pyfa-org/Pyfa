@@ -397,6 +397,7 @@ class Fit(object):
             self.recalc(fit)
         return True
 
+    @deprecated
     def project(self, fitID, thing):
         pyfalog.debug("Projecting fit ({0}) onto: {1}", fitID, thing)
         if fitID is None:
