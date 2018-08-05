@@ -3,9 +3,9 @@ from service.fit import Fit
 
 import gui.mainFrame
 from gui import globalEvents as GE
-from .calc.fitAddCommand import FitAddCommandCommand
+from .calc.fitToggleCommand import FitToggleCommandCommand
 
-class GuiAddCommandCommand(wx.Command):
+class GuiToggleCommandCommand(wx.Command):
     def __init__(self, fitID, commandFitID):
         wx.Command.__init__(self, True, "")
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
@@ -13,12 +13,12 @@ class GuiAddCommandCommand(wx.Command):
         self.internal_history = wx.CommandProcessor()
         self.fitID = fitID
         # can set his up no to not have to set variables on our object
-        self.cmd = FitAddCommandCommand(fitID, commandFitID)
+        self.cmd = FitToggleCommandCommand(fitID, commandFitID)
 
     def Do(self):
         if self.internal_history.Submit(self.cmd):
-            wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=self.fitID))
             self.sFit.recalc(self.fitID)
+            wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=self.fitID))
             return True
         return False
 

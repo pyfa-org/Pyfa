@@ -8,7 +8,7 @@ import gui.mainFrame
 import gui.globalEvents as GE
 from gui.contextMenu import ContextMenu
 from gui.builtinViews.emptyView import BlankPage
-
+import gui.fitCommands as cmd
 
 class TabbedFits(ContextMenu):
     def __init__(self):
@@ -51,17 +51,14 @@ class TabbedFits(ContextMenu):
         return m
 
     def handleSelection(self, event):
-        sFit = Fit.getInstance()
         fitID = self.mainFrame.getActiveFit()
 
         fit = self.fitLookup[event.Id]
 
         if self.context == 'commandView':
-            sFit.addCommandFit(fitID, fit)
+            self.mainFrame.command.Submit(cmd.GuiAddCommandCommand(fitID, fit.ID))
         elif self.context == 'projected':
-            sFit.project(fitID, fit)
-
-        wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fitID))
+            self.mainFrame.command.Submit(cmd.GuiAddProjectedCommand(fitID, fit.ID, 'fit'))
 
 
 TabbedFits.register()

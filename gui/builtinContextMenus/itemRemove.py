@@ -56,8 +56,8 @@ class ItemRemove(ContextMenu):
         elif srcContext in ("projectedFit", "projectedModule", "projectedDrone", "projectedFighter"):
             sFit.removeProjected(fitID, selection[0])
         elif srcContext == "commandFit":
-            sFit.removeCommand(fitID, selection[0])
-
+            self.mainFrame.command.Submit(cmd.GuiRemoveCommandCommand(fitID, selection[0].ID))
+            return
         wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fitID))
 
 

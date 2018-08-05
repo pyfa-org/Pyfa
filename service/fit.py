@@ -397,6 +397,7 @@ class Fit(object):
             self.recalc(fit)
         return True
 
+    @deprecated
     def project(self, fitID, thing):
         pyfalog.debug("Projecting fit ({0}) onto: {1}", fitID, thing)
         if fitID is None:
@@ -496,6 +497,7 @@ class Fit(object):
         eos.db.commit()
         self.recalc(fit)
 
+    @deprecated
     def toggleCommandFit(self, fitID, thing):
         pyfalog.debug("Toggle command fit ({0}) for: {1}", fitID, thing)
         fit = eos.db.getFit(fitID)

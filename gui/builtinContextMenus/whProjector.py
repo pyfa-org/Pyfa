@@ -8,7 +8,7 @@ from service.fit import Fit
 from service.settings import ContextMenuSettings
 from itertools import chain
 import re
-
+import gui.fitCommands as cmd
 
 class WhProjector(ContextMenu):
 
@@ -87,10 +87,8 @@ class WhProjector(ContextMenu):
             event.Skip()
             return
 
-        sFit = Fit.getInstance()
         fitID = self.mainFrame.getActiveFit()
-        sFit.project(fitID, swObj)
-        wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fitID))
+        self.mainFrame.command.Submit(cmd.GuiAddProjectedCommand(fitID, swObj.ID, 'item'))
 
     def buildMenu(self, data, local_menu, rootMenu, msw):
         for swType in sorted(data):
