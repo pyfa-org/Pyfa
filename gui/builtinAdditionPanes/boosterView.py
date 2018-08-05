@@ -148,7 +148,7 @@ class BoosterView(d.Display):
 
     def removeBooster(self, booster):
         fitID = self.mainFrame.getActiveFit()
-        self.mainFrame.command.Submit(cmd.GuiRemoveImplantCommand(fitID, self.origional.index(booster)))
+        self.mainFrame.command.Submit(cmd.GuiRemoveBoosterCommand(fitID, self.origional.index(booster)))
 
     def click(self, event):
         event.Skip()
