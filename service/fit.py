@@ -528,6 +528,7 @@ class Fit(object):
         eos.db.commit()
         self.recalc(fit)
 
+    @deprecated
     def removeProjected(self, fitID, thing):
         pyfalog.debug("Removing projection on fit ({0}) from: {1}", fitID, thing)
         fit = eos.db.getFit(fitID)

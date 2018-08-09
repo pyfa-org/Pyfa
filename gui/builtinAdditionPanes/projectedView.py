@@ -323,5 +323,4 @@ class ProjectedView(d.Display):
                 sFit = Fit.getInstance()
                 thing = self.get(row)
                 if thing:  # thing doesn't exist if it's the dummy value
-                    sFit.removeProjected(fitID, thing)
-                    wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fitID))
+                    self.mainFrame.command.Submit(cmd.GuiRemoveProjectedCommand(fitID, thing))

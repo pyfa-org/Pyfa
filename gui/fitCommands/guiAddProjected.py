@@ -5,6 +5,7 @@ import gui.mainFrame
 from gui import globalEvents as GE
 from eos.saveddata.module import Module
 from .calc.fitAddProjectedModule import FitAddProjectedModuleCommand
+from .calc.fitAddProjectedEnv import FitAddProjectedEnvCommand
 from logbook import Logger
 import eos.db
 pyfalog = Logger(__name__)
@@ -46,10 +47,7 @@ class GuiAddProjectedCommand(wx.Command):
                 # fighter = Fighter(item)
                 # fit.projectedFighters.append(fighter)
             elif item.group.name in Module.SYSTEM_GROUPS:
-                pyfalog.warn("WH PROJECTION NOT IMPLEMENTED")
-                # module = Module(item)
-                # module.state = State.ONLINE
-                # fit.projectedModules.append(module)
+                result = self.internal_history.Submit(FitAddProjectedEnvCommand(self.fitID, self.id))
             else:
                 # attempt a regular module projection
                 result = self.internal_history.Submit(FitAddProjectedModuleCommand(self.fitID, self.id))

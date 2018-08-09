@@ -236,12 +236,7 @@ class HandledProjectedModList(HandledList):
         isSystemEffect = proj.item.group.name == "Effect Beacon"
 
         if isSystemEffect:
-            # remove other system effects - only 1 per fit plz
-            oldEffect = next((m for m in self if m.item.group.name == "Effect Beacon"), None)
-
-            if oldEffect:
-                pyfalog.info("System effect occupied with {0}, replacing with {1}", oldEffect.item.name, proj.item.name)
-                self.remove(oldEffect)
+            self.makeRoom(proj)
 
         HandledList.append(self, proj)
 
@@ -249,6 +244,15 @@ class HandledProjectedModList(HandledList):
         if not proj.item.isType("projected") and not isSystemEffect:
             self.remove(proj)
 
+    def makeRoom(self, proj):
+        # remove other system effects - only 1 per fit plz
+        oldEffect = next((m for m in self if m.item.group.name == "Effect Beacon"), None)
+
+        if oldEffect:
+            pyfalog.info("System effect occupied with {0}, replacing with {1}", oldEffect.item.name, proj.item.name)
+            self.remove(oldEffect)
+            return oldEffect.itemID
+        return None
 
 class HandledProjectedDroneList(HandledDroneCargoList):
     def append(self, proj):
