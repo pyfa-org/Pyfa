@@ -416,7 +416,7 @@ class Fit(object):
             if thing in fit.projectedFits:
                 return
 
-            fit.__projectedFits[thing.ID] = thing
+            fit.projectedFitDict[thing.ID] = thing
 
             # this bit is required -- see GH issue # 83
             eos.db.saveddata_session.flush()
@@ -539,7 +539,7 @@ class Fit(object):
         elif isinstance(thing, es_Fighter):
             fit.projectedFighters.remove(thing)
         else:
-            del fit.__projectedFits[thing.ID]
+            del fit.projectedFitDict[thing.ID]
             # fit.projectedFits.remove(thing)
 
         eos.db.commit()

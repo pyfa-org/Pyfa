@@ -132,7 +132,7 @@ class CommandFit(object):
         )
 
 
-es_Fit._Fit__projectedFits = association_proxy(
+es_Fit.projectedFitDict = association_proxy(
         "victimOf",  # look at the victimOf association...
         "source_fit",  # .. and return the source fits
         creator=lambda sourceID, source_fit: ProjectedFit(sourceID, source_fit)

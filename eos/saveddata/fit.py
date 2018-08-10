@@ -257,7 +257,7 @@ class Fit(object):
     def projectedFits(self):
         # only in extreme edge cases will the fit be invalid, but to be sure do
         # not return them.
-        return [fit for fit in list(self.__projectedFits.values()) if not fit.isInvalid]
+        return [fit for fit in list(self.projectedFitDict.values()) if not fit.isInvalid]
 
     @property
     def commandFits(self):
@@ -1615,7 +1615,7 @@ class Fit(object):
             forceUpdateSavedata(fit)
 
         for fit in self.projectedFits:
-            copy_ship.__projectedFits[fit.ID] = fit
+            copy_ship.projectedFitDict[fit.ID] = fit
             forceUpdateSavedata(fit)
             copyProjectionInfo = fit.getProjectionInfo(copy_ship.ID)
             originalProjectionInfo = fit.getProjectionInfo(self.ID)

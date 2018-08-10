@@ -6,6 +6,7 @@ from gui import globalEvents as GE
 from eos.saveddata.module import Module
 from .calc.fitAddProjectedModule import FitAddProjectedModuleCommand
 from .calc.fitAddProjectedEnv import FitAddProjectedEnvCommand
+from .calc.fitAddProjectedFit import FitAddProjectedFitCommand
 from logbook import Logger
 import eos.db
 pyfalog = Logger(__name__)
@@ -52,7 +53,7 @@ class GuiAddProjectedCommand(wx.Command):
                 # attempt a regular module projection
                 result = self.internal_history.Submit(FitAddProjectedModuleCommand(self.fitID, self.id))
         elif self.type == 'fit':
-            pyfalog.warn("FIT PROJECTION NOT IMPLEMENTED")
+            result = self.internal_history.Submit(FitAddProjectedFitCommand(self.fitID, self.id))
 
         if result:
             self.sFit.recalc(self.fitID)
