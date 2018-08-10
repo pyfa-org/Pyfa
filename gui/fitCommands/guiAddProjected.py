@@ -7,6 +7,7 @@ from eos.saveddata.module import Module
 from .calc.fitAddProjectedModule import FitAddProjectedModuleCommand
 from .calc.fitAddProjectedEnv import FitAddProjectedEnvCommand
 from .calc.fitAddProjectedFit import FitAddProjectedFitCommand
+from .calc.fitAddProjectedFighter import FitAddProjectedFighterCommand
 from logbook import Logger
 import eos.db
 pyfalog = Logger(__name__)
@@ -44,13 +45,10 @@ class GuiAddProjectedCommand(wx.Command):
                 #
                 # drone.amount += 1
             elif item.category.name == "Fighter":
-                pyfalog.warn("FIGHTER PROJECTION NOT IMPLEMENTED")
-                # fighter = Fighter(item)
-                # fit.projectedFighters.append(fighter)
+                result = self.internal_history.Submit(FitAddProjectedFighterCommand(self.fitID, self.id))
             elif item.group.name in Module.SYSTEM_GROUPS:
                 result = self.internal_history.Submit(FitAddProjectedEnvCommand(self.fitID, self.id))
             else:
-                # attempt a regular module projection
                 result = self.internal_history.Submit(FitAddProjectedModuleCommand(self.fitID, self.id))
         elif self.type == 'fit':
             result = self.internal_history.Submit(FitAddProjectedFitCommand(self.fitID, self.id))

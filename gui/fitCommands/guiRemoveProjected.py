@@ -7,6 +7,7 @@ from eos.saveddata.module import Module
 from .calc.fitRemoveProjectedModule import FitRemoveProjectedModuleCommand
 from .calc.fitRemoveProjectedEnv import FitRemoveProjectedEnvCommand
 from .calc.fitRemoveProjectedFit import FitRemoveProjectedFitCommand
+from .calc.fitRemoveProjectedFighter import FitRemoveProjectedFighterCommand
 from logbook import Logger
 import eos.db
 pyfalog = Logger(__name__)
@@ -54,6 +55,8 @@ class GuiRemoveProjectedCommand(wx.Command):
             result = self.internal_history.Submit(FitRemoveProjectedEnvCommand(self.fitID, self.data))
         elif self.type == 'fit':
             result = self.internal_history.Submit(FitRemoveProjectedFitCommand(self.fitID, self.data))
+        elif self.type == 'fighter':
+            result = self.internal_history.Submit(FitRemoveProjectedFighterCommand(self.fitID, self.data))
 
         # if item.category.name == "Drone":
         #     pyfalog.warn("DRONE REMOVE PROJECTION NOT IMPLEMENTED")
