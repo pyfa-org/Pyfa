@@ -9,8 +9,9 @@ from .calc.fitRemoveProjectedEnv import FitRemoveProjectedEnvCommand
 from .calc.fitRemoveProjectedFit import FitRemoveProjectedFitCommand
 from .calc.fitRemoveProjectedFighter import FitRemoveProjectedFighterCommand
 from logbook import Logger
-import eos.db
+from .calc.fitRemoveProjectedDrone import FitRemoveProjectedDroneCommand
 pyfalog = Logger(__name__)
+import eos.db
 
 from eos.saveddata.drone import Drone
 from eos.saveddata.module import Module
@@ -18,6 +19,14 @@ from eos.saveddata.fighter import Fighter
 
 
 class GuiRemoveProjectedCommand(wx.Command):
+    mapping = {
+        'fit': FitRemoveProjectedFitCommand,
+        'module': FitRemoveProjectedModuleCommand,
+        'fighter': FitRemoveProjectedFighterCommand,
+        'env': FitRemoveProjectedEnvCommand,
+        'drone': FitRemoveProjectedDroneCommand
+    }
+
     def __init__(self, fitID, thing):
         wx.Command.__init__(self, True, "Projected Add")
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
@@ -49,14 +58,11 @@ class GuiRemoveProjectedCommand(wx.Command):
         result = False
         # since we can project various types, we need to switch of the fit command. We can't do this switch easily in
         # the fit command since each type might have a different kind of undo, easier to split it out
-        if self.type == 'module':
-            result = self.internal_history.Submit(FitRemoveProjectedModuleCommand(self.fitID, self.data))
-        elif self.type == 'env':
-            result = self.internal_history.Submit(FitRemoveProjectedEnvCommand(self.fitID, self.data))
-        elif self.type == 'fit':
-            result = self.internal_history.Submit(FitRemoveProjectedFitCommand(self.fitID, self.data))
-        elif self.type == 'fighter':
-            result = self.internal_history.Submit(FitRemoveProjectedFighterCommand(self.fitID, self.data))
+
+        cls = self.mapping.get(self.type, None)
+        if cls:
+            cmd = cls(self.fitID, self.data)
+            result = self.internal_history.Submit(cmd)
 
         # if item.category.name == "Drone":
         #     pyfalog.warn("DRONE REMOVE PROJECTION NOT IMPLEMENTED")

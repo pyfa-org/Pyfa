@@ -8,6 +8,7 @@ from .calc.fitAddProjectedModule import FitAddProjectedModuleCommand
 from .calc.fitAddProjectedEnv import FitAddProjectedEnvCommand
 from .calc.fitAddProjectedFit import FitAddProjectedFitCommand
 from .calc.fitAddProjectedFighter import FitAddProjectedFighterCommand
+from .calc.fitAddProjectedDrone import FitAddProjectedDroneCommand
 from logbook import Logger
 import eos.db
 pyfalog = Logger(__name__)
@@ -31,19 +32,7 @@ class GuiAddProjectedCommand(wx.Command):
             item = eos.db.getItem(self.id, eager=("attributes", "group.category"))
 
             if item.category.name == "Drone":
-                # @todo: this may need to be reworked once we visit drone commands
-                pyfalog.warn("DRONE PROJECTION NOT IMPLEMENTED")
-                # drone = None
-                # for d in fit.projectedDrones.find(item):
-                #     if d is None or d.amountActive == d.amount or d.amount >= 5:
-                #         drone = d
-                #         break
-                #
-                # if drone is None:
-                #     drone = Drone(item)
-                #     fit.projectedDrones.append(drone)
-                #
-                # drone.amount += 1
+                result = self.internal_history.Submit(FitAddProjectedDroneCommand(self.fitID, self.id))
             elif item.category.name == "Fighter":
                 result = self.internal_history.Submit(FitAddProjectedFighterCommand(self.fitID, self.id))
             elif item.group.name in Module.SYSTEM_GROUPS:
