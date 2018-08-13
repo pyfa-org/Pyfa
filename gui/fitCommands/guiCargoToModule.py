@@ -6,6 +6,7 @@ from gui import globalEvents as GE
 from gui.fitCommands.calc.fitSetCharge import FitSetChargeCommand
 from gui.fitCommands.calc.fitReplaceModule import FitReplaceModuleCommand
 from gui.fitCommands.calc.fitRemoveCargo import FitRemoveCargoCommand
+from .calc.fitAddCargo import FitAddCargoCommand
 from logbook import Logger
 pyfalog = Logger(__name__)
 
@@ -43,12 +44,22 @@ class GuiCargoToModuleCommand(wx.Command):
             pyfalog.debug("Moving cargo item to module for fit ID: {0}", self.fitID)
 
             self.addCmd = FitReplaceModuleCommand(self.fitID, module.modPosition, cargo.itemID)
+
             result = self.internal_history.Submit(self.addCmd)
+
             if not result:
-                # module failed
+                # creating module failed for whatever reason
                 return False
 
-            if not self.copy:
+            if self.addCmd.old_module is not None:
+                # we're swapping with an existing module, so remove cargo and add module
+                self.removeCmd = FitRemoveCargoCommand(self.fitID, cargo.itemID)
+                result = self.internal_history.Submit(self.removeCmd)
+
+                self.addCargoCmd = FitAddCargoCommand(self.fitID, self.addCmd.old_module.itemID)
+                result = self.internal_history.Submit(self.addCargoCmd)
+            elif not self.copy:
+                # move, not copying, so remove cargo
                 self.removeCmd = FitRemoveCargoCommand(self.fitID, cargo.itemID)
                 result = self.internal_history.Submit(self.removeCmd)
 

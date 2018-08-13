@@ -130,6 +130,10 @@ class CargoView(d.Display):
             if mstate.cmdDown:  # if copying, append to cargo
                 sFit.addCargo(self.mainFrame.getActiveFit(), module.item.ID if not module.item.isAbyssal else module.baseItemID)
             else:  # else, move / swap
+                # self.mainFrame.command.Submit(cmd.GuiCargoToModuleCommand(
+                #     self.mainFrame.getActiveFit(),
+                #     module.modPosition,
+                #     dstRow))
                 sFit.moveCargoToModule(self.mainFrame.getActiveFit(), module.position, dstRow)
         else:  # dragging to blank spot, append
             sFit.addCargo(self.mainFrame.getActiveFit(), module.item.ID if not module.item.isAbyssal else module.baseItemID)
