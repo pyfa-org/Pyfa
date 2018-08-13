@@ -34,7 +34,7 @@ class GuiCargoToModuleCommand(wx.Command):
         fit = sFit.getFit(self.fitID)
         module = fit.modules[self.moduleIdx]
         cargo = fit.cargo[self.cargoIdx]
-        result = None
+        result = False
 
         # We're trying to move a charge from cargo to a slot. Use SetCharge command (don't respect move vs copy)
         if sFit.isAmmo(cargo.item.ID):
@@ -64,6 +64,7 @@ class GuiCargoToModuleCommand(wx.Command):
                 result = self.internal_history.Submit(self.removeCmd)
 
         if result:
+            sFit.recalc(self.fitID)
             wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=self.fitID))
         return result
 

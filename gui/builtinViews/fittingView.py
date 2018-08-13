@@ -434,18 +434,11 @@ class FittingView(d.Display):
             if not isinstance(module, Module):
                 return
 
-            sFit = Fit.getInstance()
-            fit = sFit.getFit(self.activeFitID)
-            typeID = fit.cargo[srcIdx].item.ID
-
             self.mainFrame.command.Submit(cmd.GuiCargoToModuleCommand(
                     self.mainFrame.getActiveFit(),
                     module.modPosition,
                     srcIdx,
                     mstate.CmdDown() and module.isEmpty))
-
-
-            # wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=self.mainFrame.getActiveFit(), action="modadd", typeID=typeID))
 
     def swapItems(self, x, y, srcIdx):
         """Swap two modules in fitting window"""

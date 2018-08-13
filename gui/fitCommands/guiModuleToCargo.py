@@ -58,9 +58,10 @@ class GuiModuleToCargoCommand(wx.Command):
             if not self.copy:  # if not copying, remove module
                 self.internal_history.Submit(FitRemoveModuleCommand(self.mainFrame.getActiveFit(), [self.moduleIdx]))
 
-
         if result:
+            sFit.recalc(self.fitID)
             wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=self.fitID, action="moddel", typeID=module.item.ID))
+
         return result
 
     def Undo(self):
