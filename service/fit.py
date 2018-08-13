@@ -897,6 +897,7 @@ class Fit(object):
         else:
             return False
 
+    @deprecated
     def removeFighter(self, fitID, i, recalc=True):
         pyfalog.debug("Removing fighters from fit ID: {0}", fitID)
         fit = eos.db.getFit(fitID)

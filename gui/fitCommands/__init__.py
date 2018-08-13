@@ -17,3 +17,5 @@ from .guiAddProjected import GuiAddProjectedCommand
 from .guiRemoveProjected import GuiRemoveProjectedCommand
 from .guiCargoToModule import GuiCargoToModuleCommand
 from .guiModuleToCargo import GuiModuleToCargoCommand
+from .guiAddFighter import GuiAddFighterCommand
+from .guiRemoveFighter import GuiRemoveFighterCommand

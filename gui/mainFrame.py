@@ -245,7 +245,7 @@ class MainFrame(wx.Frame):
         self.Bind(GE.EVT_SSO_LOGGING_IN, self.ShowSsoLogin)
 
     @property
-    def command(self):
+    def command(self) -> wx.CommandProcessor:
         return Fit.getCommandProcessor(self.getActiveFit())
 
     def ShowSsoLogin(self, event):

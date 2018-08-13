@@ -43,7 +43,8 @@ class ItemRemove(ContextMenu):
         elif srcContext == "droneItem":
             sFit.removeDrone(fitID, fit.drones.index(selection[0]))
         elif srcContext == "fighterItem":
-            sFit.removeFighter(fitID, fit.fighters.index(selection[0]))
+            self.mainFrame.command.Submit(cmd.GuiRemoveFighterCommand(fitID, fit.fighters.index(selection[0])))
+            return  # the command takes care of the PostEvent
         elif srcContext == "implantItem":
             self.mainFrame.command.Submit(cmd.GuiRemoveImplantCommand(fitID, fit.implants.index(selection[0])))
             return  # the command takes care of the PostEvent
