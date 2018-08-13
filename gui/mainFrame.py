@@ -170,8 +170,6 @@ class MainFrame(wx.Frame):
         i = wx.Icon(BitmapLoader.getBitmap("pyfa", "gui"))
         self.SetIcon(i)
 
-        self.command = wx.CommandProcessor()
-
         # Create the layout and windows
         mainSizer = wx.BoxSizer(wx.HORIZONTAL)
 
@@ -245,6 +243,10 @@ class MainFrame(wx.Frame):
 
         self.Bind(GE.EVT_SSO_LOGIN, self.onSSOLogin)
         self.Bind(GE.EVT_SSO_LOGGING_IN, self.ShowSsoLogin)
+
+    @property
+    def command(self):
+        return Fit.getCommandProcessor(self.getActiveFit())
 
     def ShowSsoLogin(self, event):
         if getattr(event, "login_mode", LoginMethod.SERVER) == LoginMethod.MANUAL and getattr(event, "sso_mode", SsoMode.AUTO) == SsoMode.AUTO:

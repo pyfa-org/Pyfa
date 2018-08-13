@@ -38,6 +38,8 @@ from service.character import Character
 from service.damagePattern import DamagePattern
 from service.settings import SettingsProvider
 from utils.deprecated import deprecated
+import wx
+
 pyfalog = Logger(__name__)
 
 
@@ -57,6 +59,7 @@ class DeferRecalc():
 
 class Fit(object):
     instance = None
+    processors = {}
 
     @classmethod
     def getInstance(cls):
@@ -213,11 +216,20 @@ class Fit(object):
 
         eos.db.remove(fit)
 
+        if fitID in Fit.__class__.processors:
+            del Fit.__class__.processors[fitID]
+
         pyfalog.debug("    Need to refresh {} fits: {}", len(refreshFits), refreshFits)
         for fit in refreshFits:
             eos.db.saveddata_session.refresh(fit)
 
         eos.db.saveddata_session.commit()
+
+    @classmethod
+    def getCommandProcessor(cls, fitID):
+        if fitID not in cls.processors:
+            cls.processors[fitID] = wx.CommandProcessor()
+        return cls.processors[fitID]
 
     @staticmethod
     def copyFit(fitID):
