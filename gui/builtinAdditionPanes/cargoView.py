@@ -126,22 +126,14 @@ class CargoView(d.Display):
             if not result:
                 return
 
-        if dstRow != -1:  # we're swapping with cargo
-            if mstate.cmdDown:  # if copying, append to cargo
-                sFit.addCargo(self.mainFrame.getActiveFit(), module.item.ID if not module.item.isAbyssal else module.baseItemID)
-            else:  # else, move / swap
-                # self.mainFrame.command.Submit(cmd.GuiCargoToModuleCommand(
-                #     self.mainFrame.getActiveFit(),
-                #     module.modPosition,
-                #     dstRow))
-                sFit.moveCargoToModule(self.mainFrame.getActiveFit(), module.position, dstRow)
-        else:  # dragging to blank spot, append
-            sFit.addCargo(self.mainFrame.getActiveFit(), module.item.ID if not module.item.isAbyssal else module.baseItemID)
+        cargoPos = dstRow if dstRow > -1 else None
 
-            if not mstate.cmdDown:  # if not copying, remove module
-                sFit.removeModule(self.mainFrame.getActiveFit(), module.position)
-
-        wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=self.mainFrame.getActiveFit(), action="moddel", typeID=module.item.ID))
+        self.mainFrame.command.Submit(cmd.GuiModuleToCargoCommand(
+            self.mainFrame.getActiveFit(),
+            module.modPosition,
+            cargoPos,
+            mstate.cmdDown
+        ))
 
     def fitChanged(self, event):
         sFit = Fit.getInstance()

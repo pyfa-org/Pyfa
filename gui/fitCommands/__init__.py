@@ -16,3 +16,4 @@ from .guiToggleCommand import GuiToggleCommandCommand
 from .guiAddProjected import GuiAddProjectedCommand
 from .guiRemoveProjected import GuiRemoveProjectedCommand
 from .guiCargoToModule import GuiCargoToModuleCommand
+from .guiModuleToCargo import GuiModuleToCargoCommand
