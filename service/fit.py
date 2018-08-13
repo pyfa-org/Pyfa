@@ -861,6 +861,7 @@ class Fit(object):
         self.recalc(fit)
         return True
 
+    @deprecated
     def addFighter(self, fitID, itemID, recalc=True):
         pyfalog.debug("Adding fighters ({0}) to fit ID: {1}", itemID, fitID)
         if fitID is None:
@@ -880,19 +881,6 @@ class Fit(object):
                 fighter = es_Fighter(item)
                 used = fit.getSlotsUsed(fighter.slot)
                 total = fit.getNumSlots(fighter.slot)
-                standardAttackActive = False
-                for ability in fighter.abilities:
-                    if ability.effect.isImplemented and ability.effect.handlerName == 'fighterabilityattackm':
-                        # Activate "standard attack" if available
-                        ability.active = True
-                        standardAttackActive = True
-                    else:
-                        # Activate all other abilities (Neut, Web, etc) except propmods if no standard attack is active
-                        if ability.effect.isImplemented and \
-                                standardAttackActive is False and \
-                                ability.effect.handlerName != 'fighterabilitymicrowarpdrive' and \
-                                ability.effect.handlerName != 'fighterabilityevasivemaneuvers':
-                            ability.active = True
 
                 if used >= total:
                     fighter.active = False
