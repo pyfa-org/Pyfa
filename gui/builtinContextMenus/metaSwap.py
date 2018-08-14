@@ -122,82 +122,86 @@ class MetaSwap(ContextMenu):
             id = ContextMenu.nextID()
             mitem = wx.MenuItem(rootMenu, id, item.name)
             bindmenu.Bind(wx.EVT_MENU, self.handleModule, mitem)
-            self.moduleLookup[id] = item
+            print(context)
+            self.moduleLookup[id] = item, context
             m.Append(mitem)
         return m
 
     def handleModule(self, event):
-        item = self.moduleLookup.get(event.Id, None)
+        item, context = self.moduleLookup.get(event.Id, None)
         if item is None:
             event.Skip()
             return
 
-        sFit = Fit.getInstance()
         fitID = self.mainFrame.getActiveFit()
-        fit = sFit.getFit(fitID)
 
-        for selected_item in self.selection:
-            if isinstance(selected_item, Module):
-                pos = fit.modules.index(selected_item)
-                sFit.changeModule(fitID, pos, item.ID)
-                wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fitID))
+        self.mainFrame.command.Submit(cmd.GuiMetaSwapCommand(fitID, context, item.ID, self.selection))
 
-            elif isinstance(selected_item, Drone):
-                drone_count = None
-
-                for idx, drone_stack in enumerate(fit.drones):
-                    if drone_stack is selected_item:
-                        drone_count = drone_stack.amount
-                        sFit.removeDrone(fitID, idx, drone_count, False)
-                        break
-
-                if drone_count:
-                    sFit.addDrone(fitID, item.ID, drone_count, True)
-                wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fitID))
-
-            elif isinstance(selected_item, Fighter):
-                fighter_count = None
-
-                for idx, fighter_stack in enumerate(fit.fighters):
-                    # Right now fighters always will have max stack size.
-                    # Including this for future improvement, so if adjustable
-                    # fighter stacks get added we're ready for it.
-                    if fighter_stack is selected_item:
-                        if fighter_stack.amount > 0:
-                            fighter_count = fighter_stack.amount
-                        elif fighter_stack.amount == -1:
-                            fighter_count = fighter_stack.amountActive
-                        else:
-                            fighter_count.amount = 0
-
-                        sFit.removeFighter(fitID, idx, False)
-                        break
-
-                sFit.addFighter(fitID, item.ID, True)
-                wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fitID))
-
-            elif isinstance(selected_item, Booster):
-                for idx, booster_stack in enumerate(fit.boosters):
-                    if booster_stack is selected_item:
-                        self.mainFrame.command.Submit(cmd.GuiRemoveBoosterCommand(fitID, idx))
-                        self.mainFrame.command.Submit(cmd.GuiAddBoosterCommand(fitID, item.ID))
-                        break
-
-            elif isinstance(selected_item, Implant):
-                for idx, implant_stack in enumerate(fit.implants):
-                    if implant_stack is selected_item:
-                        self.mainFrame.command.Submit(cmd.GuiRemoveImplantCommand(fitID, idx))
-                        self.mainFrame.command.Submit(cmd.GuiAddImplantCommand(fitID, item.ID))
-                        break
-
-            elif isinstance(selected_item, Cargo):
-                for idx, cargo_stack in enumerate(fit.cargo):
-                    if cargo_stack is selected_item:
-                        # todo: make a command to change varieance of all items, or maybe per item type, which would
-                        # utilize the two fitting commands that we need to remove then add?
-                        sFit.removeCargo(fitID, idx)
-                        self.mainFrame.command.Submit(cmd.GuiAddCargoCommand(fitID, item.ID, cargo_stack.amount, True))
-                        break
+        # for selected_item in self.selection:
+        #     if isinstance(selected_item, Module):
+        #         pos = fit.modules.index(selected_item)
+        #         self.mainFrame.command.Submit(cmd.GuiModuleAddCommand(fitID, item.ID, pos))
+        #
+        #
+        #         sFit.changeModule(fitID, pos, item.ID)
+        #         wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fitID))
+        #
+        #     elif isinstance(selected_item, Drone):
+        #         drone_count = None
+        #
+        #         for idx, drone_stack in enumerate(fit.drones):
+        #             if drone_stack is selected_item:
+        #                 drone_count = drone_stack.amount
+        #                 sFit.removeDrone(fitID, idx, drone_count, False)
+        #                 break
+        #
+        #         if drone_count:
+        #             sFit.addDrone(fitID, item.ID, drone_count, True)
+        #         wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fitID))
+        #
+        #     elif isinstance(selected_item, Fighter):
+        #         fighter_count = None
+        #
+        #         for idx, fighter_stack in enumerate(fit.fighters):
+        #             # Right now fighters always will have max stack size.
+        #             # Including this for future improvement, so if adjustable
+        #             # fighter stacks get added we're ready for it.
+        #             if fighter_stack is selected_item:
+        #                 if fighter_stack.amount > 0:
+        #                     fighter_count = fighter_stack.amount
+        #                 elif fighter_stack.amount == -1:
+        #                     fighter_count = fighter_stack.amountActive
+        #                 else:
+        #                     fighter_count.amount = 0
+        #
+        #                 sFit.removeFighter(fitID, idx, False)
+        #                 break
+        #
+        #         sFit.addFighter(fitID, item.ID, True)
+        #         wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fitID))
+        #
+        #     elif isinstance(selected_item, Booster):
+        #         for idx, booster_stack in enumerate(fit.boosters):
+        #             if booster_stack is selected_item:
+        #                 self.mainFrame.command.Submit(cmd.GuiRemoveBoosterCommand(fitID, idx))
+        #                 self.mainFrame.command.Submit(cmd.GuiAddBoosterCommand(fitID, item.ID))
+        #                 break
+        #
+        #     elif isinstance(selected_item, Implant):
+        #         for idx, implant_stack in enumerate(fit.implants):
+        #             if implant_stack is selected_item:
+        #                 self.mainFrame.command.Submit(cmd.GuiRemoveImplantCommand(fitID, idx))
+        #                 self.mainFrame.command.Submit(cmd.GuiAddImplantCommand(fitID, item.ID))
+        #                 break
+        #
+        #     elif isinstance(selected_item, Cargo):
+        #         for idx, cargo_stack in enumerate(fit.cargo):
+        #             if cargo_stack is selected_item:
+        #                 # todo: make a command to change varieance of all items, or maybe per item type, which would
+        #                 # utilize the two fitting commands that we need to remove then add?
+        #                 sFit.removeCargo(fitID, idx)
+        #                 self.mainFrame.command.Submit(cmd.GuiAddCargoCommand(fitID, item.ID, cargo_stack.amount, True))
+        #                 break
 
 
 

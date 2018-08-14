@@ -14,7 +14,7 @@ class FitAddFighterCommand(wx.Command):
     """"
     from sFit.addFighter
     """
-    def __init__(self, fitID, itemID, amount=1, replace=False):
+    def __init__(self, fitID, itemID):
         wx.Command.__init__(self, True, "Cargo add")
         self.fitID = fitID
         self.itemID = itemID
