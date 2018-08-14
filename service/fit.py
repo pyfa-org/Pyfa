@@ -1022,6 +1022,7 @@ class Fit(object):
         self.recalc(fit)
         return True
 
+    @deprecated
     def toggleFighter(self, fitID, i):
         pyfalog.debug("Toggling fighters for fit ID: {0}", fitID)
         fit = eos.db.getFit(fitID)
@@ -1032,6 +1033,7 @@ class Fit(object):
         self.recalc(fit)
         return True
 
+    @deprecated
     def toggleImplant(self, fitID, i):
         pyfalog.debug("Toggling implant for fit ID: {0}", fitID)
         fit = eos.db.getFit(fitID)
@@ -1066,6 +1068,7 @@ class Fit(object):
         self.recalc(fit)
         return True
 
+    @deprecated
     def toggleBooster(self, fitID, i):
         pyfalog.debug("Toggling booster for fit ID: {0}", fitID)
         fit = eos.db.getFit(fitID)

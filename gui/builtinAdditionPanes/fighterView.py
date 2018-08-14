@@ -296,10 +296,8 @@ class FighterDisplay(d.Display):
             col = self.getColumn(event.Position)
             if col == self.getColIndex(State):
                 fitID = self.mainFrame.getActiveFit()
-                sFit = Fit.getInstance()
                 fighter = self.fighters[row]
-                sFit.toggleFighter(fitID, self.original.index(fighter))
-                wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fitID))
+                self.mainFrame.command.Submit(cmd.GuiToggleFighterCommand(fitID, self.original.index(fighter)))
 
     def scheduleMenu(self, event):
         event.Skip()

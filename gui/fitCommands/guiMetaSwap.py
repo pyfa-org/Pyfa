@@ -13,6 +13,7 @@ from .calc.fitReplaceModule import FitReplaceModuleCommand
 from .calc.fitAddFighter import FitAddFighterCommand
 from .calc.fitRemoveFighter import FitRemoveFighterCommand
 
+
 class GuiMetaSwapCommand(wx.Command):
     def __init__(self, fitID, context, itemID, selection: list):
         wx.Command.__init__(self, True, "Meta Swap")
