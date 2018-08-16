@@ -626,8 +626,8 @@ class Fit(object):
 
     def changeModule(self, fitID, position, newItemID):
         fit = eos.db.getFit(fitID)
-        module = fit.modules[position] #needed for dummy preservation and ammo check
-        
+        module = fit.modules[position]
+
         # We're trying to add a charge to a slot, which won't work. Instead, try to add the charge to the module in that slot.
         if self.isAmmo(newItemID) and not module.isEmpty:
             self.setAmmo(fitID, newItemID, [module])
@@ -639,15 +639,16 @@ class Fit(object):
 
         # Dummy it out in case the next bit fails
         fit.modules.toDummy(position)
-        
+
         try:
             m = es_Module(item)
         except ValueError:
             pyfalog.warning("Invalid item: {0}", newItemID)
             return False
         if not module.isEmpty and m.slot != module.slot:
-            fit.modules.toModule(position,module)#put the dummy module back if our item doesn't fit
-            return None #fits, but we selected wrong slot type, so don't want to overwrite because we will append on failure (none)
+            fit.modules.toModule(position, module)
+            # Fits, but we selected wrong slot type, so don't want to overwrite because we will append on failure (none)
+            return None 
         elif m.fits(fit):
             m.owner = fit
             fit.modules.toModule(position, m)
