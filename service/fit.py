@@ -639,14 +639,13 @@ class Fit(object):
 
         # Dummy it out in case the next bit fails
         fit.modules.toDummy(position)
-
         ret = None
         try:
             m = es_Module(item)
         except ValueError:
             pyfalog.warning("Invalid item: {0}", newItemID)
             return False
-        if not module.isEmpty and m.slot != module.slot:
+        if m.slot != module.slot:
             fit.modules.toModule(position, module)
             # Fits, but we selected wrong slot type, so don't want to overwrite because we will append on failure (none)
             ret = None
