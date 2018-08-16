@@ -640,6 +640,7 @@ class Fit(object):
         # Dummy it out in case the next bit fails
         fit.modules.toDummy(position)
 
+        ret = None
         try:
             m = es_Module(item)
         except ValueError:
@@ -648,7 +649,7 @@ class Fit(object):
         if not module.isEmpty and m.slot != module.slot:
             fit.modules.toModule(position, module)
             # Fits, but we selected wrong slot type, so don't want to overwrite because we will append on failure (none)
-            return None 
+            ret = None
         elif m.fits(fit):
             m.owner = fit
             fit.modules.toModule(position, m)
@@ -663,10 +664,8 @@ class Fit(object):
             fit.fill()
             eos.db.commit()
 
-            return True
-
-        else:
-            return None
+            ret = True
+        return ret
 
     def moveCargoToModule(self, fitID, moduleIdx, cargoIdx, copyMod=False):
         """
