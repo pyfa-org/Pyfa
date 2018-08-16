@@ -71,5 +71,6 @@ class GuiCargoToModuleCommand(wx.Command):
     def Undo(self):
         for _ in self.internal_history.Commands:
             self.internal_history.Undo()
+        self.sFit.recalc(self.fitID)
         wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=self.fitID))
         return True

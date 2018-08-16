@@ -12,18 +12,19 @@ class GuiAddImplantCommand(wx.Command):
         self.sFit = Fit.getInstance()
         self.internal_history = wx.CommandProcessor()
         self.fitID = fitID
-        # can set his up no to not have to set variables on our object
-        self.cmd = FitAddImplantCommand(fitID, itemID)
+        self.itemID = itemID
 
     def Do(self):
-        if self.internal_history.Submit(self.cmd):
+        if self.internal_history.Submit(FitAddImplantCommand(self.fitID, self.itemID)):
+            self.sFit.recalc(self.fitID)
             wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=self.fitID))
             return True
         return False
 
     def Undo(self):
-        for x in self.internal_history.Commands:
+        for _ in self.internal_history.Commands:
             self.internal_history.Undo()
-            wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=self.fitID))
+        self.sFit.recalc(self.fitID)
+        wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=self.fitID))
         return True
 

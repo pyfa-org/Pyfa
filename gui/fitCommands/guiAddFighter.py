@@ -15,8 +15,7 @@ class GuiAddFighterCommand(wx.Command):
         self.itemID = itemID
 
     def Do(self):
-        cmd = FitAddFighterCommand(self.fitID, self.itemID)
-        if self.internal_history.Submit(cmd):
+        if self.internal_history.Submit(FitAddFighterCommand(self.fitID, self.itemID)):
             self.sFit.recalc(self.fitID)
             wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=self.fitID))
             return True
@@ -25,6 +24,7 @@ class GuiAddFighterCommand(wx.Command):
     def Undo(self):
         for _ in self.internal_history.Commands:
             self.internal_history.Undo()
+        self.sFit.recalc(self.fitID)
         wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=self.fitID))
         return True
 
