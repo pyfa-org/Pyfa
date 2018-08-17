@@ -23,3 +23,4 @@ from .guiMetaSwap import GuiMetaSwapCommand
 from .guiToggleFighter import GuiToggleFighterCommand
 from .guiToggleImplant import GuiToggleImplantCommand
 from .guiToggleBooster import GuiToggleImplantCommand
+from .guiAddDrone import GuiAddDroneCommand

@@ -35,6 +35,34 @@ pyfalog = Logger(__name__)
 
 
 class FitDeprecated(object):
+    @deprecated
+    def addDrone(self, fitID, itemID, numDronesToAdd=1, recalc=True):
+        pyfalog.debug("Adding {0} drones ({1}) to fit ID: {2}", numDronesToAdd, itemID, fitID)
+        if fitID is None:
+            return False
+
+        fit = eos.db.getFit(fitID)
+        item = eos.db.getItem(itemID, eager=("attributes", "group.category"))
+        if item.category.name == "Drone":
+            drone = None
+            for d in fit.drones.find(item):
+                if d is not None and d.amountActive == 0 and d.amount < max(5, fit.extraAttributes["maxActiveDrones"]):
+                    drone = d
+                    break
+
+            if drone is None:
+                drone = es_Drone(item)
+                if drone.fits(fit) is True:
+                    fit.drones.append(drone)
+                else:
+                    return False
+            drone.amount += numDronesToAdd
+            eos.db.commit()
+            if recalc:
+                self.recalc(fit)
+            return True
+        else:
+            return False
 
     @deprecated
     def addImplant(self, fitID, itemID, recalc=True):

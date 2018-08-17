@@ -29,7 +29,7 @@ from gui.contextMenu import ContextMenu
 from gui.utils.staticHelpers import DragDropHelper
 from service.fit import Fit
 from service.market import Market
-
+import gui.fitCommands as cmd
 
 class DroneViewDrop(wx.DropTarget):
     def __init__(self, dropFn, *args, **kwargs):
@@ -213,9 +213,7 @@ class DroneView(Display):
             event.Skip()
             return
 
-        trigger = sFit.addDrone(fitID, event.itemID)
-        if trigger:
-            wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fitID))
+        if self.mainFrame.command.Submit(cmd.GuiAddDroneCommand(fitID, event.itemID)):
             self.mainFrame.additionsPane.select("Drones")
 
         event.Skip()

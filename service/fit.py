@@ -37,6 +37,7 @@ from eos.saveddata.fit import Fit as FitType, ImplantLocation
 from service.character import Character
 from service.damagePattern import DamagePattern
 from service.settings import SettingsProvider
+from utils.deprecated import deprecated
 import wx
 
 pyfalog = Logger(__name__)
@@ -427,6 +428,7 @@ class Fit(FitDeprecated):
         else:
             return None
 
+    @deprecated
     def addDrone(self, fitID, itemID, numDronesToAdd=1, recalc=True):
         pyfalog.debug("Adding {0} drones ({1}) to fit ID: {2}", numDronesToAdd, itemID, fitID)
         if fitID is None:
