@@ -111,7 +111,7 @@ class EsiAccess(object):
         return '%s/oauth/token' % self.sso_url
 
     def getInsurance(self):
-        return self.get_nochar(ESIEndpoints.INSURANCE)
+        return self.get(None, ESIEndpoints.INSURANCE)
 
     def getSkills(self, char):
         return self.get(char, ESIEndpoints.CHAR_SKILLS, character_id=char.characterID)
@@ -272,12 +272,9 @@ class EsiAccess(object):
 
         return resp
 
-    def get_nochar(self, endpoint, *args, **kwargs):
-        endpoint = endpoint.format(**kwargs)
-        return self._after_request(self._session.get("{}{}".format(self.esi_url, endpoint)))
-
     def get(self, ssoChar, endpoint, *args, **kwargs):
-        self._before_request(ssoChar)
+        if ssoChar:
+            self._before_request(ssoChar)
         endpoint = endpoint.format(**kwargs)
         return self._after_request(self._session.get("{}{}".format(self.esi_url, endpoint)))
 
