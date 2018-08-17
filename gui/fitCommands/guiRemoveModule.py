@@ -3,7 +3,6 @@ from service.fit import Fit
 
 import gui.mainFrame
 from gui import globalEvents as GE
-
 from .helpers import ModuleInfoCache
 from .calc.fitRemoveModule import FitRemoveModuleCommand
 

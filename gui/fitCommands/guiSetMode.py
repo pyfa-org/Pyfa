@@ -12,11 +12,10 @@ class GuiSetModeCommand(wx.Command):
         self.sFit = Fit.getInstance()
         self.internal_history = wx.CommandProcessor()
         self.fitID = fitID
-        # can set his up no to not have to set variables on our object
-        self.cmd = FitSetModeCommand(fitID, mode)
+        self.mode = mode
 
     def Do(self):
-        if self.internal_history.Submit(self.cmd):
+        if self.internal_history.Submit(FitSetModeCommand(self.fitID, self.mode)):
             self.sFit.recalc(self.fitID)
             wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=self.fitID))
             return True

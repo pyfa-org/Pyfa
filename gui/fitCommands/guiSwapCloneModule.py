@@ -42,5 +42,9 @@ class GuiModuleSwapOrCloneCommand(wx.Command):
         pyfalog.debug("{} Undo()".format(self))
         for _ in self.internal_history.Commands:
             self.internal_history.Undo()
+
+        if self.clone:
+            self.sFit.recalc(self.fitID)
+
         wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=self.fitID))
         return True

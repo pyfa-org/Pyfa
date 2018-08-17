@@ -17,10 +17,9 @@ class GuiModuleStateChangeCommand(wx.Command):
         self.modules = modules
         self.click = click
         self.internal_history = wx.CommandProcessor()
-        self.cmd = FitChangeStatesCommand(self.fitID, self.baseMod, self.modules, self.click)
 
     def Do(self):
-        if self.internal_history.Submit(self.cmd):
+        if self.internal_history.Submit(FitChangeStatesCommand(self.fitID, self.baseMod, self.modules, self.click)):
             self.sFit.recalc(self.fitID)
             wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=self.fitID))
             return True
