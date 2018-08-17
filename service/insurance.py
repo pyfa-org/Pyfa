@@ -1,6 +1,7 @@
 import sys
-from logbook import Logger
+import wx
 import threading
+from logbook import Logger
 from service.esi import Esi
 
 pyfalog = Logger(__name__)
@@ -17,18 +18,22 @@ class Insurance():
         return cls.instance
 
     def __init__(self):
-        self.__testvariable = 5
+        self.allInsurance = None
 
-    def apiFetch(self, callback):
-        thread = InsuranceImportThread((self.apiFetchCallback, callback))
+    def apiFetch(self, callerCallback):
+        thread = InsuranceApiThread((self.insuranceApiCallback, callerCallback))
         thread.start()
 
-    def apiFetchCallback(self, response, othercallback, e=None):
-        pyfalog.info(response)
-        wx.CallAfter(othercallback, e)
+    # Modify the Insurance class with data from the threaded api call if there were no errors
+    def insuranceApiCallback(self, response, callerCallback, e=None):
+        if e:
+            wx.CallAfter(callerCallback, e)
+        else:
+            self.allInsurance = response
+            wx.CallAfter(callerCallback, response)
 
 
-class InsuranceImportThread(threading.Thread):
+class InsuranceApiThread(threading.Thread):
     def __init__(self, callback):
         threading.Thread.__init__(self)
         self.name = "InsuranceImport"
@@ -41,4 +46,4 @@ class InsuranceImportThread(threading.Thread):
             self.callback[0](resp, self.callback[1])
         except Exception as ex:
             pyfalog.warn(ex)
-            self.callback[0](None, self.callback[1](sys.exc_info()))
+            self.callback[0](None, self.callback[1], sys.exc_info())
