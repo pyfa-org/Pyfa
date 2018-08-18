@@ -32,6 +32,14 @@ class Insurance():
             self.allInsurance = response
             wx.CallAfter(callerCallback, response)
 
+    def getInsurance(self, typeID):
+        if self.allInsurance:
+            # Search the insurance list for the first item that has the typeID we are looking for
+            try:
+                return next(iter([item for item in self.allInsurance if item.get('type_id') == typeID]))['levels']
+            except StopIteration:
+                return None
+
 
 class InsuranceApiThread(threading.Thread):
     def __init__(self, callback):
