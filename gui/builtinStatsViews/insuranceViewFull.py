@@ -39,13 +39,6 @@ class InsuranceViewFull(StatsView):
         self.panel = contentPanel
         self.headerPanel = headerPanel
 
-        headerContentSizer = wx.BoxSizer(wx.HORIZONTAL)
-        hsizer = headerPanel.GetSizer()
-        hsizer.Add(headerContentSizer, 0, 0, 0)
-        self.labelEMStatus = wx.StaticText(headerPanel, wx.ID_ANY, "")
-        headerContentSizer.Add(self.labelEMStatus)
-        headerPanel.GetParent().AddToggleItem(self.labelEMStatus)
-
         gridInsuranceValues = wx.GridSizer(5, 3, 0, 0)
         contentSizer.Add(gridInsuranceValues, 0, wx.EXPAND | wx.ALL, 0)
 
@@ -73,7 +66,6 @@ class InsuranceViewFull(StatsView):
 
     def refreshPanel(self, fit):
         if fit is not None:
-            self.labelEMStatus.SetLabel("Updating Insurance...")
             sInsurance = Insurance.getInstance()
             self.insuranceLevels = sInsurance.getInsurance(fit.ship.item.ID)
 
