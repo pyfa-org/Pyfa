@@ -157,7 +157,7 @@ class BoosterView(d.Display):
             col = self.getColumn(event.Position)
             if col == self.getColIndex(State):
                 fitID = self.mainFrame.getActiveFit()
-                self.mainFrame.command.Submit(cmd.GuiToggleImplantCommand(fitID, row))
+                self.mainFrame.command.Submit(cmd.GuiToggleBoosterCommand(fitID, row))
 
     def scheduleMenu(self, event):
         event.Skip()

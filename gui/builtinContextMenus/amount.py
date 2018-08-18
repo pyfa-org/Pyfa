@@ -42,15 +42,18 @@ class ChangeAmount(ContextMenu):
                 return
 
             sFit = Fit.getInstance()
+            fit = sFit.getFit(fitID)
             cleanInput = re.sub(r'[^0-9.]', '', dlg.input.GetLineText(0).strip())
 
             if isinstance(thing, es_Cargo):
-                self.mainFrame.command.Submit(cmd.GuiAddCargoCommand(fitID, thing.item.ID, int(float(cleanInput)), replace=True))
+                self.mainFrame.command.Submit(cmd.GuiChangeCargoQty(fitID, fit.cargo.index(thing), int(float(cleanInput))))
                 return  # no need for post event here
             elif isinstance(thing, es_Fit):
-                sFit.changeAmount(fitID, thing, int(float(cleanInput)))
+                self.mainFrame.command.Submit(cmd.GuiChangeProjectedFitQty(fitID, thing.ID, int(float(cleanInput))))
+                return
             elif isinstance(thing, es_Fighter):
-                sFit.changeActiveFighters(fitID, thing, int(float(cleanInput)))
+                self.mainFrame.command.Submit(cmd.GuiChangeFighterQty(fitID, fit.fighters.index(thing), int(float(cleanInput))))
+                return
 
             wx.PostEvent(mainFrame, GE.FitChanged(fitID=fitID))
 

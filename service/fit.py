@@ -369,25 +369,6 @@ class Fit(FitDeprecated):
         self.recalc(fit)
 
 
-    def changeAmount(self, fitID, projected_fit, amount):
-        """Change amount of projected fits"""
-        pyfalog.debug("Changing fit ({0}) for projected fit ({1}) to new amount: {2}", fitID, projected_fit.getProjectionInfo(fitID), amount)
-        fit = eos.db.getFit(fitID)
-        amount = min(20, max(1, amount))  # 1 <= a <= 20
-        projectionInfo = projected_fit.getProjectionInfo(fitID)
-        if projectionInfo:
-            projectionInfo.amount = amount
-
-        eos.db.commit()
-        self.recalc(fit)
-
-    def changeActiveFighters(self, fitID, fighter, amount):
-        pyfalog.debug("Changing active fighters ({0}) for fit ({1}) to amount: {2}", fighter.itemID, fitID, amount)
-        fit = eos.db.getFit(fitID)
-        fighter.amountActive = amount
-
-        eos.db.commit()
-        self.recalc(fit)
 
 
     def changeMutatedValue(self, mutator, value):
@@ -513,6 +494,7 @@ class Fit(FitDeprecated):
         fit = eos.db.getFit(fitID)
         self.splitDrones(fit, d, amount, fit.drones)
 
+    @deprecated
     def removeDrone(self, fitID, i, numDronesToRemove=1, recalc=True):
         pyfalog.debug("Removing {0} drones for fit ID: {1}", numDronesToRemove, fitID)
         fit = eos.db.getFit(fitID)

@@ -20,6 +20,7 @@ class FitAddDroneCommand(wx.Command):
         self.itemID = itemID
         self.amount = amount  # add x amount. If this goes over amount, removes stack
         self.replace = replace  # if this is false, we increment.
+        self.index = None
 
     def Do(self):
         pyfalog.debug("Adding {0} drones ({1}) to fit ID: {2}", self.amount, self.itemID, self.fitID)
@@ -44,10 +45,10 @@ class FitAddDroneCommand(wx.Command):
 
         drone.amount += self.amount
         eos.db.commit()
+        self.index = fit.drones.index(drone)
         return True
 
     def Undo(self):
-        from .fitRemoveCargo import FitRemoveCargoCommand  # Avoid circular import
-        cmd = FitRemoveCargoCommand(self.fitID, self.itemID, self.amount)
-        cmd.Do()
-        return True
+        from .fitRemoveDrone import FitRemoveDroneCommand  # Avoid circular import
+        cmd = FitRemoveDroneCommand(self.fitID, self.index, self.amount)
+        return cmd.Do()

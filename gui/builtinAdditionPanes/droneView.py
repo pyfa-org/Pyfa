@@ -228,9 +228,7 @@ class DroneView(Display):
 
     def removeDrone(self, drone):
         fitID = self.mainFrame.getActiveFit()
-        sFit = Fit.getInstance()
-        sFit.removeDrone(fitID, self.original.index(drone))
-        wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fitID))
+        self.mainFrame.command.Submit(cmd.GuiRemoveDroneCommand(fitID, self.original.index(drone)))
 
     def click(self, event):
         event.Skip()

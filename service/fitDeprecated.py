@@ -35,6 +35,30 @@ pyfalog = Logger(__name__)
 
 
 class FitDeprecated(object):
+
+    @deprecated
+    def changeAmount(self, fitID, projected_fit, amount):
+        """Change amount of projected fits"""
+        pyfalog.debug("Changing fit ({0}) for projected fit ({1}) to new amount: {2}", fitID,
+                      projected_fit.getProjectionInfo(fitID), amount)
+        fit = eos.db.getFit(fitID)
+        amount = min(20, max(1, amount))  # 1 <= a <= 20
+        projectionInfo = projected_fit.getProjectionInfo(fitID)
+        if projectionInfo:
+            projectionInfo.amount = amount
+
+        eos.db.commit()
+        self.recalc(fit)
+
+    @deprecated
+    def changeActiveFighters(self, fitID, fighter, amount):
+        pyfalog.debug("Changing active fighters ({0}) for fit ({1}) to amount: {2}", fighter.itemID, fitID, amount)
+        fit = eos.db.getFit(fitID)
+        fighter.amountActive = amount
+
+        eos.db.commit()
+        self.recalc(fit)
+
     @deprecated
     def addDrone(self, fitID, itemID, numDronesToAdd=1, recalc=True):
         pyfalog.debug("Adding {0} drones ({1}) to fit ID: {2}", numDronesToAdd, itemID, fitID)

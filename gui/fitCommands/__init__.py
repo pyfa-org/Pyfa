@@ -22,5 +22,9 @@ from .guiRemoveFighter import GuiRemoveFighterCommand
 from .guiMetaSwap import GuiMetaSwapCommand
 from .guiToggleFighter import GuiToggleFighterCommand
 from .guiToggleImplant import GuiToggleImplantCommand
-from .guiToggleBooster import GuiToggleImplantCommand
+from .guiToggleBooster import GuiToggleBoosterCommand
 from .guiAddDrone import GuiAddDroneCommand
+from .guiRemoveDrone import GuiRemoveDroneCommand
+from .guiChangeFighterQty import GuiChangeFighterQty
+from .guiChangeCargoQty import GuiChangeCargoQty
+from .guiChangeProjectedFitQty import GuiChangeProjectedFitQty
