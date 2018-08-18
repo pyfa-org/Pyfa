@@ -38,9 +38,9 @@ class InsuranceViewFull(StatsView):
         contentSizer = contentPanel.GetSizer()
         self.panel = contentPanel
         self.headerPanel = headerPanel
-        
+
         # Column description
-        gridInsuranceValues = wx.GridSizer(1, 3, 0, 0)
+        gridInsuranceValues = wx.GridSizer(1, 4, 0, 0)
         contentSizer.Add(gridInsuranceValues, 0, wx.EXPAND | wx.ALL, 0)
 
         box = wx.BoxSizer(wx.VERTICAL)
@@ -55,9 +55,13 @@ class InsuranceViewFull(StatsView):
         gridInsuranceValues.Add(box, 0, wx.ALIGN_TOP)
         box.Add(wx.StaticText(contentPanel, wx.ID_ANY, "Payout"), 0, wx.ALIGN_CENTER)
 
-        gridInsuranceValues = wx.GridSizer(5, 3, 0, 0)
+        box = wx.BoxSizer(wx.VERTICAL)
+        gridInsuranceValues.Add(box, 0, wx.ALIGN_TOP)
+        box.Add(wx.StaticText(contentPanel, wx.ID_ANY, "Difference"), 0, wx.ALIGN_CENTER)
+
+        gridInsuranceValues = wx.GridSizer(5, 4, 0, 0)
         contentSizer.Add(gridInsuranceValues, 0, wx.EXPAND | wx.ALL, 0)
-        
+
         for level in ["Basic", "Bronze", "Silver", "Gold", "Platinum"]:
             # Insurance type
             box = wx.BoxSizer(wx.VERTICAL)
@@ -80,6 +84,14 @@ class InsuranceViewFull(StatsView):
             gridInsuranceValues.Add(box, 0, wx.ALIGN_TOP)
             box.Add(lbl, 0, wx.ALIGN_LEFT)
 
+            # Difference
+            lbl = wx.StaticText(contentPanel, wx.ID_ANY, "0.00 ISK")
+            setattr(self, "labelInsuranceDifference%s" % level, lbl)
+
+            box = wx.BoxSizer(wx.VERTICAL)
+            gridInsuranceValues.Add(box, 0, wx.ALIGN_TOP)
+            box.Add(lbl, 0, wx.ALIGN_LEFT)
+
     def refreshPanel(self, fit):
         if fit is not None:
             sInsurance = Insurance.getInstance()
@@ -90,20 +102,35 @@ class InsuranceViewFull(StatsView):
 
     def refreshInsurancePanelPrices(self):
         if self.insuranceLevels:
-            self.labelInsuranceCostBasic.SetLabel("%s ISK" % formatAmount(self.insuranceLevels[0].get('cost'), 3, 3, 9, currency=True))
-            self.labelInsurancePayoutBasic.SetLabel("%s ISK" % formatAmount(self.insuranceLevels[0].get('payout'), 3, 3, 9, currency=True))
+            cost = self.insuranceLevels[0].get('cost')
+            payout = self.insuranceLevels[0].get('payout')
+            self.labelInsuranceCostBasic.SetLabel("%s ISK" % formatAmount(cost, 3, 3, 9, currency=True))
+            self.labelInsurancePayoutBasic.SetLabel("%s ISK" % formatAmount(payout, 3, 3, 9, currency=True))
+            self.labelInsuranceDifferenceBasic.SetLabel("%s ISK" % formatAmount(payout - cost, 3, 3, 9, currency=True))
 
-            self.labelInsuranceCostBronze.SetLabel("%s ISK" % formatAmount(self.insuranceLevels[1].get('cost'), 3, 3, 9, currency=True))
-            self.labelInsurancePayoutBronze.SetLabel("%s ISK" % formatAmount(self.insuranceLevels[1].get('payout'), 3, 3, 9, currency=True))
+            cost = self.insuranceLevels[1].get('cost')
+            payout = self.insuranceLevels[1].get('payout')
+            self.labelInsuranceCostBronze.SetLabel("%s ISK" % formatAmount(cost, 3, 3, 9, currency=True))
+            self.labelInsurancePayoutBronze.SetLabel("%s ISK" % formatAmount(payout, 3, 3, 9, currency=True))
+            self.labelInsuranceDifferenceBronze.SetLabel("%s ISK" % formatAmount(payout - cost, 3, 3, 9, currency=True))
 
-            self.labelInsuranceCostSilver.SetLabel("%s ISK" % formatAmount(self.insuranceLevels[2].get('cost'), 3, 3, 9, currency=True))
-            self.labelInsurancePayoutSilver.SetLabel("%s ISK" % formatAmount(self.insuranceLevels[2].get('payout'), 3, 3, 9, currency=True))
+            cost = self.insuranceLevels[2].get('cost')
+            payout = self.insuranceLevels[2].get('payout')
+            self.labelInsuranceCostSilver.SetLabel("%s ISK" % formatAmount(cost, 3, 3, 9, currency=True))
+            self.labelInsurancePayoutSilver.SetLabel("%s ISK" % formatAmount(payout, 3, 3, 9, currency=True))
+            self.labelInsuranceDifferenceSilver.SetLabel("%s ISK" % formatAmount(payout - cost, 3, 3, 9, currency=True))
 
-            self.labelInsuranceCostGold.SetLabel("%s ISK" % formatAmount(self.insuranceLevels[3].get('cost'), 3, 3, 9, currency=True))
-            self.labelInsurancePayoutGold.SetLabel("%s ISK" % formatAmount(self.insuranceLevels[3].get('payout'), 3, 3, 9, currency=True))
+            cost = self.insuranceLevels[3].get('cost')
+            payout = self.insuranceLevels[3].get('payout')
+            self.labelInsuranceCostGold.SetLabel("%s ISK" % formatAmount(cost, 3, 3, 9, currency=True))
+            self.labelInsurancePayoutGold.SetLabel("%s ISK" % formatAmount(payout, 3, 3, 9, currency=True))
+            self.labelInsuranceDifferenceGold.SetLabel("%s ISK" % formatAmount(payout - cost, 3, 3, 9, currency=True))
 
-            self.labelInsuranceCostPlatinum.SetLabel("%s ISK" % formatAmount(self.insuranceLevels[4].get('cost'), 3, 3, 9, currency=True))
-            self.labelInsurancePayoutPlatinum.SetLabel("%s ISK" % formatAmount(self.insuranceLevels[4].get('payout'), 3, 3, 9, currency=True))
+            cost = self.insuranceLevels[4].get('cost')
+            payout = self.insuranceLevels[4].get('payout')
+            self.labelInsuranceCostPlatinum.SetLabel("%s ISK" % formatAmount(cost, 3, 3, 9, currency=True))
+            self.labelInsurancePayoutPlatinum.SetLabel("%s ISK" % formatAmount(payout, 3, 3, 9, currency=True))
+            self.labelInsuranceDifferencePlatinum.SetLabel("%s ISK" % formatAmount(payout - cost, 3, 3, 9, currency=True))
 
 
 InsuranceViewFull.register()
