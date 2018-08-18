@@ -38,10 +38,26 @@ class InsuranceViewFull(StatsView):
         contentSizer = contentPanel.GetSizer()
         self.panel = contentPanel
         self.headerPanel = headerPanel
+        
+        # Column description
+        gridInsuranceValues = wx.GridSizer(1, 3, 0, 0)
+        contentSizer.Add(gridInsuranceValues, 0, wx.EXPAND | wx.ALL, 0)
+
+        box = wx.BoxSizer(wx.VERTICAL)
+        gridInsuranceValues.Add(box, 0, wx.ALIGN_TOP)
+        box.Add(wx.StaticText(contentPanel, wx.ID_ANY, "Level"), 0, wx.ALIGN_CENTER)
+
+        box = wx.BoxSizer(wx.VERTICAL)
+        gridInsuranceValues.Add(box, 0, wx.ALIGN_TOP)
+        box.Add(wx.StaticText(contentPanel, wx.ID_ANY, "Cost"), 0, wx.ALIGN_CENTER)
+
+        box = wx.BoxSizer(wx.VERTICAL)
+        gridInsuranceValues.Add(box, 0, wx.ALIGN_TOP)
+        box.Add(wx.StaticText(contentPanel, wx.ID_ANY, "Payout"), 0, wx.ALIGN_CENTER)
 
         gridInsuranceValues = wx.GridSizer(5, 3, 0, 0)
         contentSizer.Add(gridInsuranceValues, 0, wx.EXPAND | wx.ALL, 0)
-
+        
         for level in ["Basic", "Bronze", "Silver", "Gold", "Platinum"]:
             # Insurance type
             box = wx.BoxSizer(wx.VERTICAL)
