@@ -21,7 +21,7 @@ class ChangeAmount(ContextMenu):
         if not self.settings.get('amount'):
             return False
 
-        return srcContext in ("droneItem", "cargoItem", "projectedFit", "fighterItem", "projectedFighter")
+        return srcContext in ("droneItem", "projectedDrone", "cargoItem", "projectedFit", "fighterItem", "projectedFighter")
 
     def getText(self, itmContext, selection):
         return u"Change {0} Quantity".format(itmContext)
@@ -30,7 +30,7 @@ class ChangeAmount(ContextMenu):
         thing = selection[0]
         mainFrame = gui.mainFrame.MainFrame.getInstance()
         fitID = mainFrame.getActiveFit()
-
+        srcContext = fullContext[0]
         if isinstance(thing, es_Fit):
             value = thing.getProjectionInfo(fitID).amount
         else:
@@ -50,7 +50,10 @@ class ChangeAmount(ContextMenu):
                 self.mainFrame.command.Submit(cmd.GuiChangeCargoQty(fitID, fit.cargo.index(thing), int(float(cleanInput))))
                 return  # no need for post event here
             elif isinstance(thing, Drone):
-                self.mainFrame.command.Submit(cmd.GuiChangeDroneQty(fitID, fit.drones.index(thing), int(float(cleanInput))))
+                if srcContext == "droneItem":
+                    self.mainFrame.command.Submit(cmd.GuiChangeDroneQty(fitID, fit.drones.index(thing), int(float(cleanInput))))
+                else:
+                    self.mainFrame.command.Submit(cmd.GuiChangeProjectedDroneQty(fitID, fit.projectedDrones.index(thing), int(float(cleanInput))))
             elif isinstance(thing, es_Fit):
                 self.mainFrame.command.Submit(cmd.GuiChangeProjectedFitQty(fitID, thing.ID, int(float(cleanInput))))
                 return

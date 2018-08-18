@@ -29,3 +29,4 @@ from .guiChangeFighterQty import GuiChangeFighterQty
 from .guiChangeCargoQty import GuiChangeCargoQty
 from .guiChangeProjectedFitQty import GuiChangeProjectedFitQty
 from .guiChangeDroneQty import GuiChangeDroneQty
+from.guiChangeProjectedDroneQty import GuiChangeProjectedDroneQty

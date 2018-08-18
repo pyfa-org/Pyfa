@@ -91,7 +91,7 @@ class MetaSwap(ContextMenu):
 
         # Sort items by metalevel, and group within that metalevel
         items = list(self.variations)
-        print(context)
+
         if "implantItem" in context:
             # sort implants based on name
             items.sort(key=lambda x: x.name)
@@ -122,7 +122,7 @@ class MetaSwap(ContextMenu):
             id = ContextMenu.nextID()
             mitem = wx.MenuItem(rootMenu, id, item.name)
             bindmenu.Bind(wx.EVT_MENU, self.handleModule, mitem)
-            print(context)
+
             self.moduleLookup[id] = item, context
             m.Append(mitem)
         return m
