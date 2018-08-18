@@ -431,6 +431,7 @@ class StatViewSettings(object):
             "miningyield"  : 2,
             "drones"       : 2,
             "outgoing"     : 2,
+            "insurance"    : 2,
         }
 
         # We don't have these....yet
