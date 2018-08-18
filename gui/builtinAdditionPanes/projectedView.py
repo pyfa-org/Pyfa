@@ -106,7 +106,9 @@ class ProjectedView(d.Display):
 
         if data[0] == "projected":
             # if source is coming from projected, we are trying to combine drones.
-            self.mergeDrones(x, y, int(data[1]))
+            pass
+            # removing merge functionality - if people complain about it, can add it back as a command
+            # self.mergeDrones(x, y, int(data[1]))
         elif data[0] == "fitting":
             dstRow, _ = self.HitTest((x, y))
             # Gather module information to get position

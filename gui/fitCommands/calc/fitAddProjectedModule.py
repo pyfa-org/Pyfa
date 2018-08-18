@@ -30,6 +30,8 @@ class FitAddProjectedModuleCommand(wx.Command):
 
         try:
             module = Module(item)
+            if not module.item.isType("projected"):
+                return False
         except ValueError:
             return False
 

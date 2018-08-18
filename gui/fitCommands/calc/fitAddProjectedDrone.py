@@ -37,6 +37,8 @@ class FitAddProjectedDroneCommand(wx.Command):
 
         if drone is None:
             drone = Drone(item)
+            if not drone.item.isType("projected"):
+                return False
             fit.projectedDrones.append(drone)
 
         self.index = fit.projectedDrones.index(drone)

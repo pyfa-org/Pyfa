@@ -144,10 +144,12 @@ class DroneView(Display):
             data[1] is typeID or index of data we want to manipulate
         """
         if data[0] == "drone":  # we want to merge drones
-            srcRow = int(data[1])
-            dstRow, _ = self.HitTest((x, y))
-            if srcRow != -1 and dstRow != -1:
-                self._merge(srcRow, dstRow)
+            pass
+            # remove merge functionality, if people complain in the next while, can add it back
+            # srcRow = int(data[1])
+            # dstRow, _ = self.HitTest((x, y))
+            # if srcRow != -1 and dstRow != -1:
+            #     self._merge(srcRow, dstRow)
         elif data[0] == "market":
             wx.PostEvent(self.mainFrame, ItemSelected(itemID=int(data[1])))
 
