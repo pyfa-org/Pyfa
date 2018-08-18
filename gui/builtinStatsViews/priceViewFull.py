@@ -85,16 +85,26 @@ class PriceViewFull(StatsView):
         gridInsuranceHeader.Add(box, 0, wx.ALIGN_TOP)
         box.Add(wx.StaticText(contentPanel, wx.ID_ANY, "Insurance Prices:"), 0, wx.ALIGN_LEFT)
 
-        gridInsuranceValues = wx.GridSizer(5, 2, 0, 0)
+        gridInsuranceValues = wx.GridSizer(5, 3, 0, 0)
         contentSizer.Add(gridInsuranceValues, 0, wx.EXPAND | wx.ALL, 0)
 
         for level in ["Basic", "Bronze", "Silver", "Gold", "Platinum"]:
+            # Insurance type
             box = wx.BoxSizer(wx.VERTICAL)
             gridInsuranceValues.Add(box, 0, wx.ALIGN_TOP)
             box.Add(wx.StaticText(contentPanel, wx.ID_ANY, level), 0, wx.ALIGN_CENTER)
 
+            # Insurance cost
             lbl = wx.StaticText(contentPanel, wx.ID_ANY, "0.00 ISK")
-            setattr(self, "insurancePrice%s" % level, lbl)
+            setattr(self, "labelInsuranceCost%s" % level, lbl)
+
+            box = wx.BoxSizer(wx.VERTICAL)
+            gridInsuranceValues.Add(box, 0, wx.ALIGN_TOP)
+            box.Add(lbl, 0, wx.ALIGN_LEFT)
+
+            # Insurance payout
+            lbl = wx.StaticText(contentPanel, wx.ID_ANY, "0.00 ISK")
+            setattr(self, "labelInsurancePayout%s" % level, lbl)
 
             box = wx.BoxSizer(wx.VERTICAL)
             gridInsuranceValues.Add(box, 0, wx.ALIGN_TOP)
@@ -114,11 +124,25 @@ class PriceViewFull(StatsView):
             self.insuranceLevels = sInsurance.getInsurance(fit.ship.item.ID)
 
         self.refreshPanelPrices(fit)
-        self.refreshInsurancePrices(fit)
+        self.refreshInsurancePrices()
         self.panel.Layout()
 
-    def refreshInsurancePrices(self, fit=None):
-        pass
+    def refreshInsurancePrices(self):
+        if self.insuranceLevels:
+            self.labelInsuranceCostBasic.SetLabel("%s ISK" % formatAmount(self.insuranceLevels[0].get('cost'), 3, 3, 9, currency=True))
+            self.labelInsurancePayoutBasic.SetLabel("%s ISK" % formatAmount(self.insuranceLevels[0].get('payout'), 3, 3, 9, currency=True))
+
+            self.labelInsuranceCostBronze.SetLabel("%s ISK" % formatAmount(self.insuranceLevels[1].get('cost'), 3, 3, 9, currency=True))
+            self.labelInsurancePayoutBronze.SetLabel("%s ISK" % formatAmount(self.insuranceLevels[1].get('payout'), 3, 3, 9, currency=True))
+
+            self.labelInsuranceCostSilver.SetLabel("%s ISK" % formatAmount(self.insuranceLevels[2].get('cost'), 3, 3, 9, currency=True))
+            self.labelInsurancePayoutSilver.SetLabel("%s ISK" % formatAmount(self.insuranceLevels[2].get('payout'), 3, 3, 9, currency=True))
+
+            self.labelInsuranceCostGold.SetLabel("%s ISK" % formatAmount(self.insuranceLevels[3].get('cost'), 3, 3, 9, currency=True))
+            self.labelInsurancePayoutGold.SetLabel("%s ISK" % formatAmount(self.insuranceLevels[3].get('payout'), 3, 3, 9, currency=True))
+
+            self.labelInsuranceCostPlatinum.SetLabel("%s ISK" % formatAmount(self.insuranceLevels[4].get('cost'), 3, 3, 9, currency=True))
+            self.labelInsurancePayoutPlatinum.SetLabel("%s ISK" % formatAmount(self.insuranceLevels[4].get('payout'), 3, 3, 9, currency=True))
 
     def refreshPanelPrices(self, fit=None):
 
