@@ -239,10 +239,8 @@ class DroneView(Display):
             col = self.getColumn(event.Position)
             if col == self.getColIndex(State):
                 fitID = self.mainFrame.getActiveFit()
-                sFit = Fit.getInstance()
                 drone = self.drones[row]
-                sFit.toggleDrone(fitID, self.original.index(drone))
-                wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fitID))
+                self.mainFrame.command.Submit(cmd.GuiToggleDroneCommand(fitID, self.original.index(drone)))
 
     def scheduleMenu(self, event):
         event.Skip()

@@ -37,6 +37,97 @@ pyfalog = Logger(__name__)
 class FitDeprecated(object):
 
     @deprecated
+    def toggleDrone(self, fitID, i):
+        pyfalog.debug("Toggling drones for fit ID: {0}", fitID)
+        fit = eos.db.getFit(fitID)
+        d = fit.drones[i]
+        if d.amount == d.amountActive:
+            d.amountActive = 0
+        else:
+            d.amountActive = d.amount
+
+        eos.db.commit()
+        self.recalc(fit)
+        return True
+
+    @deprecated
+    def mergeDrones(self, fitID, d1, d2, projected=False):
+        pyfalog.debug("Merging drones on fit ID: {0}", fitID)
+        if fitID is None:
+            return False
+
+        fit = eos.db.getFit(fitID)
+        if d1.item != d2.item:
+            return False
+
+        if projected:
+            fit.projectedDrones.remove(d1)
+        else:
+            fit.drones.remove(d1)
+
+        d2.amount += d1.amount
+        d2.amountActive += d1.amountActive
+
+        # If we have less than the total number of drones active, make them all active. Fixes #728
+        # This could be removed if we ever add an enhancement to make drone stacks partially active.
+        if d2.amount > d2.amountActive:
+            d2.amountActive = d2.amount
+
+        eos.db.commit()
+        self.recalc(fit)
+        return True
+
+    @staticmethod
+    @deprecated
+    def splitDrones(fit, d, amount, l):
+        pyfalog.debug("Splitting drones for fit ID: {0}", fit)
+        total = d.amount
+        active = d.amountActive > 0
+        d.amount = amount
+        d.amountActive = amount if active else 0
+
+        newD = es_Drone(d.item)
+        newD.amount = total - amount
+        newD.amountActive = newD.amount if active else 0
+        l.append(newD)
+        eos.db.commit()
+
+    @deprecated
+    def splitProjectedDroneStack(self, fitID, d, amount):
+        pyfalog.debug("Splitting projected drone stack for fit ID: {0}", fitID)
+        if fitID is None:
+            return False
+
+        fit = eos.db.getFit(fitID)
+        self.splitDrones(fit, d, amount, fit.projectedDrones)
+
+    @deprecated
+    def splitDroneStack(self, fitID, d, amount):
+        pyfalog.debug("Splitting drone stack for fit ID: {0}", fitID)
+        if fitID is None:
+            return False
+
+        fit = eos.db.getFit(fitID)
+        self.splitDrones(fit, d, amount, fit.drones)
+
+    @deprecated
+    def removeDrone(self, fitID, i, numDronesToRemove=1, recalc=True):
+        pyfalog.debug("Removing {0} drones for fit ID: {1}", numDronesToRemove, fitID)
+        fit = eos.db.getFit(fitID)
+        d = fit.drones[i]
+        d.amount -= numDronesToRemove
+        if d.amountActive > 0:
+            d.amountActive -= numDronesToRemove
+
+        if d.amount == 0:
+            del fit.drones[i]
+
+        eos.db.commit()
+        if recalc:
+            self.recalc(fit)
+        return True
+
+    @deprecated
     def changeAmount(self, fitID, projected_fit, amount):
         """Change amount of projected fits"""
         pyfalog.debug("Changing fit ({0}) for projected fit ({1}) to new amount: {2}", fitID,
