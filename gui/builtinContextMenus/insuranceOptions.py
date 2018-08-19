@@ -1,5 +1,4 @@
 import wx
-
 import gui.mainFrame
 from gui.contextMenu import ContextMenu
 from service.settings import InsuranceMenuSettings
