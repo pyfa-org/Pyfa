@@ -21,6 +21,7 @@ import wx
 from gui.statsView import StatsView
 from gui.utils.numberFormatter import formatAmount
 from service.insurance import Insurance
+from service.settings import InsuranceMenuSettings
 
 
 class InsuranceViewFull(StatsView):
@@ -30,107 +31,90 @@ class InsuranceViewFull(StatsView):
         StatsView.__init__(self)
         self.parent = parent
         self.insuranceLevels = None
+        self.settings = InsuranceMenuSettings.getInstance()
+        self.displayColumns = self.getDisplayColumns(self.settings)
+
+    def getDisplayColumns(self, settings):
+        return {'cost': self.settings.get("cost"), 'payout': self.settings.get("payout"), 'difference': self.settings.get("difference")}
+
+    ''' Future use when repopulate can be called during runtime, might need rewrite from changing displayColumns from list to dict
+    def settingsDiffer(self, settings):
+        newColumns = self.getDisplayColumns(settings)
+        if self.displayColumns == newColumns:
+            return False
+        self.displayColumns = newColumns
+        return True
+    '''
 
     def getHeaderText(self, fit):
         return "Insurance"
 
-    def populatePanel(self, contentPanel, headerPanel):
+    def newBoxText(self, grid, contentPanel, text):
+        box = wx.BoxSizer(wx.VERTICAL)
+        grid.Add(box, 0, wx.ALIGN_TOP)
+        box.Add(wx.StaticText(contentPanel, wx.ID_ANY, text), 0, wx.ALIGN_CENTER)
+
+    def newBoxLabel(self, grid, contentPanel, labeltype, label):
+        lbl = wx.StaticText(contentPanel, wx.ID_ANY, "0.00 ISK")
+        setattr(self, "labelInsurance{}{}".format(labeltype, label), lbl)
+        box = wx.BoxSizer(wx.VERTICAL)
+        grid.Add(box, 0, wx.ALIGN_TOP)
+        box.Add(lbl, 0, wx.ALIGN_LEFT)
+
+    def populatePanel(self, contentPanel, headerPanel, reset=False):
         contentSizer = contentPanel.GetSizer()
         self.panel = contentPanel
         self.headerPanel = headerPanel
 
-        # Column description
-        gridInsuranceValues = wx.GridSizer(1, 4, 0, 0)
+        columnCount = sum(self.displayColumns.values()) + 1
+
+        gridInsuranceValues = wx.GridSizer(6, columnCount, 0, 0)
         contentSizer.Add(gridInsuranceValues, 0, wx.EXPAND | wx.ALL, 0)
 
-        box = wx.BoxSizer(wx.VERTICAL)
-        gridInsuranceValues.Add(box, 0, wx.ALIGN_TOP)
-        box.Add(wx.StaticText(contentPanel, wx.ID_ANY, "Level"), 0, wx.ALIGN_CENTER)
+        self.newBoxText(gridInsuranceValues, contentPanel, "Level")
 
-        box = wx.BoxSizer(wx.VERTICAL)
-        gridInsuranceValues.Add(box, 0, wx.ALIGN_TOP)
-        box.Add(wx.StaticText(contentPanel, wx.ID_ANY, "Cost"), 0, wx.ALIGN_CENTER)
-
-        box = wx.BoxSizer(wx.VERTICAL)
-        gridInsuranceValues.Add(box, 0, wx.ALIGN_TOP)
-        box.Add(wx.StaticText(contentPanel, wx.ID_ANY, "Payout"), 0, wx.ALIGN_CENTER)
-
-        box = wx.BoxSizer(wx.VERTICAL)
-        gridInsuranceValues.Add(box, 0, wx.ALIGN_TOP)
-        box.Add(wx.StaticText(contentPanel, wx.ID_ANY, "Difference"), 0, wx.ALIGN_CENTER)
-
-        gridInsuranceValues = wx.GridSizer(5, 4, 0, 0)
-        contentSizer.Add(gridInsuranceValues, 0, wx.EXPAND | wx.ALL, 0)
+        if (self.settings.get("cost")):
+            self.newBoxText(gridInsuranceValues, contentPanel, "Cost")
+        if (self.settings.get("payout")):
+            self.newBoxText(gridInsuranceValues, contentPanel, "Payout")
+        if (self.settings.get("difference")):
+            self.newBoxText(gridInsuranceValues, contentPanel, "Difference")
 
         for level in ["Basic", "Bronze", "Silver", "Gold", "Platinum"]:
-            # Insurance type
-            box = wx.BoxSizer(wx.VERTICAL)
-            gridInsuranceValues.Add(box, 0, wx.ALIGN_TOP)
-            box.Add(wx.StaticText(contentPanel, wx.ID_ANY, level), 0, wx.ALIGN_CENTER)
-
-            # Insurance cost
-            lbl = wx.StaticText(contentPanel, wx.ID_ANY, "0.00 ISK")
-            setattr(self, "labelInsuranceCost%s" % level, lbl)
-
-            box = wx.BoxSizer(wx.VERTICAL)
-            gridInsuranceValues.Add(box, 0, wx.ALIGN_TOP)
-            box.Add(lbl, 0, wx.ALIGN_LEFT)
-
-            # Insurance payout
-            lbl = wx.StaticText(contentPanel, wx.ID_ANY, "0.00 ISK")
-            setattr(self, "labelInsurancePayout%s" % level, lbl)
-
-            box = wx.BoxSizer(wx.VERTICAL)
-            gridInsuranceValues.Add(box, 0, wx.ALIGN_TOP)
-            box.Add(lbl, 0, wx.ALIGN_LEFT)
-
-            # Difference
-            lbl = wx.StaticText(contentPanel, wx.ID_ANY, "0.00 ISK")
-            setattr(self, "labelInsuranceDifference%s" % level, lbl)
-
-            box = wx.BoxSizer(wx.VERTICAL)
-            gridInsuranceValues.Add(box, 0, wx.ALIGN_TOP)
-            box.Add(lbl, 0, wx.ALIGN_LEFT)
+            self.newBoxText(gridInsuranceValues, contentPanel, level)
+            if (self.settings.get("cost")):
+                self.newBoxLabel(gridInsuranceValues, contentPanel, "Cost", level)
+            if (self.settings.get("payout")):
+                self.newBoxLabel(gridInsuranceValues, contentPanel, "Payout", level)
+            if (self.settings.get("difference")):
+                self.newBoxLabel(gridInsuranceValues, contentPanel, "Difference", level)
 
     def refreshPanel(self, fit):
         if fit is not None:
             sInsurance = Insurance.getInstance()
             self.insuranceLevels = sInsurance.getInsurance(fit.ship.item.ID)
 
+        # Currently populate is only called on init from statsPane.py, so a restart is required for repopulate
+        # Could also create the 6 different configurations and enable/disable, but it looks like work is being
+        # done to add runtime repopulation of panels, so I'm going to just require restart for column view change
+        # to take effect, and then enable this function when the changes for runtime repopulation go live
+        # if self.settingsDiffer(self.settings):
+            # self.populatePanel(self.panel, self.headerPanel, True)
+
         self.refreshInsurancePanelPrices()
         self.panel.Layout()
 
     def refreshInsurancePanelPrices(self):
         if self.insuranceLevels:
-            cost = self.insuranceLevels[0].get('cost')
-            payout = self.insuranceLevels[0].get('payout')
-            self.labelInsuranceCostBasic.SetLabel("%s ISK" % formatAmount(cost, 3, 3, 9, currency=True))
-            self.labelInsurancePayoutBasic.SetLabel("%s ISK" % formatAmount(payout, 3, 3, 9, currency=True))
-            self.labelInsuranceDifferenceBasic.SetLabel("%s ISK" % formatAmount(payout - cost, 3, 3, 9, currency=True))
-
-            cost = self.insuranceLevels[1].get('cost')
-            payout = self.insuranceLevels[1].get('payout')
-            self.labelInsuranceCostBronze.SetLabel("%s ISK" % formatAmount(cost, 3, 3, 9, currency=True))
-            self.labelInsurancePayoutBronze.SetLabel("%s ISK" % formatAmount(payout, 3, 3, 9, currency=True))
-            self.labelInsuranceDifferenceBronze.SetLabel("%s ISK" % formatAmount(payout - cost, 3, 3, 9, currency=True))
-
-            cost = self.insuranceLevels[2].get('cost')
-            payout = self.insuranceLevels[2].get('payout')
-            self.labelInsuranceCostSilver.SetLabel("%s ISK" % formatAmount(cost, 3, 3, 9, currency=True))
-            self.labelInsurancePayoutSilver.SetLabel("%s ISK" % formatAmount(payout, 3, 3, 9, currency=True))
-            self.labelInsuranceDifferenceSilver.SetLabel("%s ISK" % formatAmount(payout - cost, 3, 3, 9, currency=True))
-
-            cost = self.insuranceLevels[3].get('cost')
-            payout = self.insuranceLevels[3].get('payout')
-            self.labelInsuranceCostGold.SetLabel("%s ISK" % formatAmount(cost, 3, 3, 9, currency=True))
-            self.labelInsurancePayoutGold.SetLabel("%s ISK" % formatAmount(payout, 3, 3, 9, currency=True))
-            self.labelInsuranceDifferenceGold.SetLabel("%s ISK" % formatAmount(payout - cost, 3, 3, 9, currency=True))
-
-            cost = self.insuranceLevels[4].get('cost')
-            payout = self.insuranceLevels[4].get('payout')
-            self.labelInsuranceCostPlatinum.SetLabel("%s ISK" % formatAmount(cost, 3, 3, 9, currency=True))
-            self.labelInsurancePayoutPlatinum.SetLabel("%s ISK" % formatAmount(payout, 3, 3, 9, currency=True))
-            self.labelInsuranceDifferencePlatinum.SetLabel("%s ISK" % formatAmount(payout - cost, 3, 3, 9, currency=True))
+            for index, label in enumerate(["Basic", "Bronze", "Silver", "Gold", "Platinum"]):
+                cost = self.insuranceLevels[index].get('cost')
+                payout = self.insuranceLevels[index].get('payout')
+                if self.displayColumns["cost"]:
+                    getattr(self, "labelInsuranceCost%s" % label).SetLabel("%s ISK" % formatAmount(cost, 3, 3, 9, currency=True))
+                if self.displayColumns["payout"]:
+                    getattr(self, "labelInsurancePayout%s" % label).SetLabel("%s ISK" % formatAmount(payout, 3, 3, 9, currency=True))
+                if self.displayColumns["difference"]:
+                    getattr(self, "labelInsuranceDifference%s" % label).SetLabel("%s ISK" % formatAmount(payout - cost, 3, 3, 9, currency=True))
 
 
 InsuranceViewFull.register()
