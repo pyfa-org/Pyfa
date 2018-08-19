@@ -469,7 +469,7 @@ class InsuranceMenuSettings(object):
             "difference" : 1
         }
 
-        self.InsuranceMenuDefaultSettings = SettingsProvider.getInstance().getSettings("pyfaInsuranceMenuSettings", 
+        self.InsuranceMenuDefaultSettings = SettingsProvider.getInstance().getSettings("pyfaInsuranceMenuSettings",
                                                                                         InsuranceMenuDefaultSettings)
 
     def get(self, type):

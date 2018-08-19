@@ -42,7 +42,7 @@ class InsuranceViewFull(StatsView):
         grid.Add(box, 0, wx.ALIGN_TOP)
         box.Add(lbl, 0, wx.ALIGN_LEFT)
 
-    def populatePanel(self, contentPanel, headerPanel, reset=False):
+    def populatePanel(self, contentPanel, headerPanel):
         contentSizer = contentPanel.GetSizer()
         self.panel = contentPanel
         self.headerPanel = headerPanel
