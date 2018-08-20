@@ -477,7 +477,7 @@ class FittingView(d.Display):
                 return
 
             if getattr(mod2, "modPosition") is not None:
-                if clone and mod2.isEmpty and mod1.getModifiedItemAttr("maxGroupFitted", None) < 1:
+                if clone and mod2.isEmpty and mod1.getModifiedItemAttr("maxGroupFitted", 0) < 1.0:
                     sFit.cloneModule(self.mainFrame.getActiveFit(), srcIdx, mod2.modPosition)
                 else:
                     sFit.swapModules(self.mainFrame.getActiveFit(), srcIdx, mod2.modPosition)
