@@ -1,11 +1,11 @@
 # noinspection PyPackageRequirements
 import wx
-from gui.bitmapLoader import BitmapLoader
+from gui.bitmap_loader import BitmapLoader
 
 
-class BaseValidator(wx.PyValidator):
+class BaseValidator(wx.Validator):
     def __init__(self):
-        wx.PyValidator.__init__(self)
+        wx.Validator.__init__(self)
 
     def Validate(self, win):
         raise NotImplementedError()
@@ -22,7 +22,9 @@ class TextEntryValidatedDialog(wx.TextEntryDialog):
         wx.TextEntryDialog.__init__(self, parent, *args, **kargs)
         self.parent = parent
 
-        self.txtctrl = self.FindWindowById(3000)
+        # See https://github.com/wxWidgets/Phoenix/issues/611
+        self.txtctrl = self.FindWindowById(3000, self)
+
         if validator:
             self.txtctrl.SetValidator(validator())
 
@@ -42,7 +44,7 @@ class EntityEditor(wx.Panel):
 
         self.choices = []
         self.choices.sort(key=lambda p: p.name)
-        self.entityChoices = wx.Choice(self, choices=map(lambda p: p.name, self.choices))
+        self.entityChoices = wx.Choice(self, choices=[p.name for p in self.choices])
         self.navSizer.Add(self.entityChoices, 1, wx.ALL, 5)
 
         buttons = (("new", wx.ART_NEW, self.OnNew),
@@ -60,7 +62,7 @@ class EntityEditor(wx.Panel):
             btn.SetMinSize(size)
             btn.SetMaxSize(size)
 
-            btn.SetToolTipString("{} {}".format(name.capitalize(), self.entityName))
+            btn.SetToolTip("{} {}".format(name.capitalize(), self.entityName))
             btn.Bind(wx.EVT_BUTTON, func)
             setattr(self, "btn%s" % name.capitalize(), btn)
             self.navSizer.Add(btn, 0, wx.ALL | wx.ALIGN_CENTER_VERTICAL, 2)
@@ -96,8 +98,8 @@ class EntityEditor(wx.Panel):
 
     def OnNew(self, event):
         dlg = TextEntryValidatedDialog(self, self.validator,
-                                       u"Enter a name for your new {}:".format(self.entityName),
-                                       u"New {}".format(self.entityName))
+                                       "Enter a name for your new {}:".format(self.entityName),
+                                       "New {}".format(self.entityName))
         dlg.CenterOnParent()
 
         if dlg.ShowModal() == wx.ID_OK:
@@ -110,10 +112,10 @@ class EntityEditor(wx.Panel):
 
     def OnCopy(self, event):
         dlg = TextEntryValidatedDialog(self, self.validator,
-                                       u"Enter a name for your {} copy:".format(self.entityName),
-                                       u"Copy {}".format(self.entityName))
+                                       "Enter a name for your {} copy:".format(self.entityName),
+                                       "Copy {}".format(self.entityName))
         active = self.getActiveEntity()
-        dlg.SetValue(u"{} Copy".format(active.name))
+        dlg.SetValue("{} Copy".format(active.name))
         dlg.txtctrl.SetInsertionPointEnd()
         dlg.CenterOnParent()
 
@@ -124,8 +126,8 @@ class EntityEditor(wx.Panel):
 
     def OnRename(self, event):
         dlg = TextEntryValidatedDialog(self, self.validator,
-                                       u"Enter a new name for your {}:".format(self.entityName),
-                                       u"Rename {}".format(self.entityName))
+                                       "Enter a new name for your {}:".format(self.entityName),
+                                       "Rename {}".format(self.entityName))
         active = self.getActiveEntity()
         dlg.SetValue(active.name)
         dlg.txtctrl.SetInsertionPointEnd()
@@ -138,9 +140,9 @@ class EntityEditor(wx.Panel):
 
     def OnDelete(self, event):
         dlg = wx.MessageDialog(self,
-                               u"Do you really want to delete the {} {}?".format(self.getActiveEntity().name,
+                               "Do you really want to delete the {} {}?".format(self.getActiveEntity().name,
                                                                                 self.entityName),
-                               u"Confirm Delete", wx.YES | wx.NO | wx.ICON_QUESTION)
+                               "Confirm Delete", wx.YES | wx.NO | wx.ICON_QUESTION)
         dlg.CenterOnParent()
 
         if dlg.ShowModal() == wx.ID_YES:
@@ -152,7 +154,7 @@ class EntityEditor(wx.Panel):
         self.choices = self.getEntitiesFromContext()
         self.entityChoices.Clear()
 
-        self.entityChoices.AppendItems(map(lambda p: p.name, self.choices))
+        self.entityChoices.AppendItems([p.name for p in self.choices])
         if selected:
             idx = self.choices.index(selected)
             self.entityChoices.SetSelection(idx)

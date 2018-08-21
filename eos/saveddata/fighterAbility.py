@@ -57,7 +57,7 @@ class FighterAbility(object):
         self.__effect = None
 
         if self.effectID:
-            self.__effect = next((x for x in self.fighter.item.effects.itervalues() if x.ID == self.effectID), None)
+            self.__effect = next((x for x in self.fighter.item.effects.values() if x.ID == self.effectID), None)
             if self.__effect is None:
                 pyfalog.error("Effect (id: {0}) does not exist", self.effectID)
                 return
@@ -127,8 +127,8 @@ class FighterAbility(object):
 
                 if self.attrPrefix == "fighterAbilityLaunchBomb":
                     # bomb calcs
-                    volley = sum(map(lambda attr: (self.fighter.getModifiedChargeAttr("%sDamage" % attr) or 0) * (
-                        1 - getattr(targetResists, "%sAmount" % attr, 0)), self.DAMAGE_TYPES))
+                    volley = sum([(self.fighter.getModifiedChargeAttr("%sDamage" % attr) or 0) * (
+                        1 - getattr(targetResists, "%sAmount" % attr, 0)) for attr in self.DAMAGE_TYPES])
                 else:
                     volley = sum(map(lambda d2, d:
                                      (self.fighter.getModifiedItemAttr(

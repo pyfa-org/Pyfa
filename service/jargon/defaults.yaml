@@ -1,0 +1,306 @@
+#Default jargon - comment out as necessary.
+
+#Note that some of these are experimental abbreviations which don't have any real purpose and are simply there to play with
+
+#shortcuts
+
+1: I
+2: II
+lrg: Large
+hvy: Heavy
+# med: Medium # (ineffective)
+sml: Small
+# mic: Micro # (ineffective)
+xl: X-Large
+
+# Derp.
+large: heavy
+heavy: large
+
+#language fixes (american/british differences)
+
+armour: armor
+neutraliser: neutralizer
+stabiliser: stabilizer
+energised: energized
+economiser: economizer
+
+#definitions
+
+cn: Caldari Navy
+rf: Republic Fleet
+in: Imperial Navy
+fn: Federation Navy
+
+#weapons
+
+ac: AutoCannon
+rt: Artillery
+arty: Artillery
+bs: Blaster
+rg: Railgun
+pl: Pulse Laser
+bl: Beam Laser
+ml: Missile Launcher
+lnb: Light Neutron Blaster
+lib: Light Ion Blaster
+leb: Light Electron Blaster
+hnb: Heavy Neutron Blaster
+hib: Heavy Ion Blaster
+heb: Heavy Electron Blaster
+nbc: Neutron Blaster Cannon
+ibc: Ion Blaster Cannon
+ebc: Electron Blaster Cannon
+isb: Ion Siege Blaster
+capbc: Ion Siege Blaster
+hawbc: Triple Neutron
+tnb: Triple Neutron
+125rg: 125mm Railgun
+150rg: 150mm Railgun #also catches dual 150mm railguns
+75rg: 75mm
+200rg: 200mm Railgun
+250rg: 250mm Railgun #also catches dual 250mm railguns
+350rg: 350mm Railgun
+425rg: 425mm Railgun
+caprg: 1000mm Railgun
+1000rg: 1000mm Railgun
+125ac: 125mm AutoCannon
+150ac: 150mm AutoCannon
+200ac: 200mm AutoCannon
+220ac: 220mm AutoCannon
+180ac: 180mm AutoCannon
+425ac: 425mm AutoCannon #catches both regular 425mm and dual
+650ac: 650mm Repeating Cannon
+800ac: 800mm Repeating Cannon #catches both regular 800mm and quad
+hawac: Quad 800mm #for those who want to quickly find the HAW ac
+2500ac: 2500mm Repeating Cannon
+capac: 2500mm Repeating Cannon
+250rt: 250mm Artillery
+280rt: 280mm Artillery
+650rt: 650mm Artillery
+720rt: 720mm Artillery
+1200rt: 1200mm Artillery
+1400rt: 1400mm Artillery
+3500rt: 3500mm Artillery
+caprt: 3500mm Artillery
+dlp: Dual Light Pulse
+gpl: Gatling Pulse Laser
+sfp: Small Focused Pulse
+fmp: Focused Medium Pulse
+hpl: Heavy Pulse Laser #also catches dual heavy
+mpl: Mega Pulse Laser #also catches quad mega
+cappl: Dual Giga Pulse
+gpl: Dual Giga Pulse
+hawpl: Quad Mega Pulse
+sfb: Small Focused Beam
+dlb: Dual Light Beam
+fmb: Focused Medium Beam
+qlb: Quad Light Beam
+hbl: Heavy Beam Laser #catches dual heavy
+mbl: Mega Beam Laser
+tbl: Tachyon Beam Laser
+gbl: Dual Giga Beam Laser
+capbl: Dual Giga Beam Laser
+lml: Light Missile Launcher #gets RLML too
+rl: Rocket Launcher
+rlml: Rapid Light Missile Launcher
+haml: Heavy Assault Missile Launcher
+hal: Heavy Assault Missile Launcher
+hml: Heavy Missile Launcher #gets HAM + RHML launcher too?
+rhml: Rapid Heavy Missile Launcher
+cml: Cruise Missile Launcher
+tpl: Torpedo Launcher
+tl: Torpedo Launcher
+rtl: Rapid Torpedo Launcher
+hawml: Rapid Torpedo Launcher
+hawtl: Rapid Torpedo Launcher
+captl: XL Torpedo Launcher
+xltl: XL Torpedo Launcher
+xlcml: XL Cruise Missile Launcher
+capcml: XL Cruise Missile Launcher
+xlcl: XL Cruise Missile Launcher
+capcl: XL Cruise Missile Launcher
+dd: Doomsday
+rp: Reaper
+disco: Smartbomb
+sbomb: Smartbomb
+
+#Propulsion Modules
+
+ab: Afterburner
+mwd: Microwarpdrive
+smwd: 5mn
+sab: 1mn
+mmwd: 50mn
+mab: 10mn
+lmwd: 500mn
+lab: 100mn
+cmwd: 50000mn
+cab: 10000mn
+mjd: Micro Jump Drive
+mmjd: Medium Micro Jump Drive
+lmjd: Large Micro Jump Drive
+istab: Inertial Stabilizer
+odi: Overdrive Injector
+wcs: Warp Core Stabilizer
+nano: Nanofiber Internal Structure
+boosh: Micro Jump Field Generator
+mjfg: Micro Jump Field Generator
+
+#Tank Modules
+
+100pl: 100mm Plates
+200pl: 200mm Plates
+400pl: 400mm Plates
+800pl: 800mm Plates
+1600pl: 1600mm Plates
+25000pl: 25000mm Plates
+aar: Ancillary Armor Repairer
+ain: Adaptive Invulnerability Field
+anp: Adaptive Nano Plating
+asb: Ancillary Shield Booster
+car: Capital Armor Repairer
+cpl: 25000mm Plates
+dc: Damage Control
+dcu: Damage Control
+eanm: Energized Adaptive Nano Membrane
+enam: Energized Adaptive Nano Membrane
+laar: Large Ancillary Armor Repairer
+lar: Large Armor Repairer
+lasb: Large Ancillary Shield Booster
+lsb: Large Shield Booster
+lse: Large Shield Extender
+lap: 1600mm Plates
+maar: Medium Ancillary Armor Repairer
+masb: Medium Ancillary Shield Booster
+mar: Medium Armor Repairer
+msb: Medium Shield Booster
+mse: Medium Shield Extender
+rah: Reactive Armor Hardener
+saar: Small Ancillary Armor Repairer
+sar: Small Armor Repairer
+sasb: Small Ancillary Shield Booster
+sfc: Shield Flux Coil
+ssb: Small Shield Booster
+sse: Small Shield Extender
+xlasb: X-Large Ancillary Shield Booster
+xlsb: X-Large Shield Booster
+sb: Shield Booster
+thrf: Thermal Dissipation Field
+knrf: Kinetic Deflection Field
+emrf: EM Ward Field
+exrf: Explosive Deflection Field
+thra: Thermal Dissipation Amplifier
+knra: Kinetic Deflection Amplifier
+emra: EM Ward Amplifier
+exra: Explosive Deflection Amplifier
+
+#Weapon Upgrades
+
+bcs: Ballistic Control System
+bcu: Ballistic Control System
+bc: Ballistic Control System
+mge: Missile Guidance Enhancer
+mgc: Missile Guidance Computer
+magstab: Magnetic Field Stabilizer
+mfs: Magnetic Field Stabilizer
+ms: Magnetic Field Stabilizer
+te: Tracking Enhancer
+tc: Tracking Computer
+mlu: Mining Laser Upgrade
+dla: Drone Link Augmentor
+fsu: Fighter Support Unit
+otl: Omnidirectional Tracking Link
+ote: Omnidirectional Tracking Enhancer
+dda: Drone Damage Amplifier
+dnc: Drone Navigation Computer
+gs: Gyrostabilizer
+hs: Heat Sink
+
+# Fleet Assistance
+
+rsebo: Remote Sensor Booster
+rct: Remote Capacitor Transmitter
+rar: Remote Armor Repairer
+rsb: Remote Shield Booster
+rr: Remote
+rtc: Remote Tracking Computer
+tl: Remote Tracking Computer
+cmdb: Command Burst
+cdb: Command Burst
+cp: Command Processor
+
+# EWAR
+
+wd: Warp Disruptor
+ws: Warp Scrambler
+sw: Stasis Webifier
+sg: Stasis Grappler
+hws: Heavy Warp Scrambler
+hwd: Heavy Warp Disruptor
+wdfg: Warp Disruption Field Generator
+infinipoint: Warp Disruption Field Generator
+infiniscram: Warp Disruption Field Generator
+rsd: Remote Sensor Dampener
+td: Tracking Disruptor
+tp: Target Painter
+sd: Remote Sensor Dampener
+gd: Guidance Disruptor
+md: Guidance Disruptor
+point: Warp Disruptor
+
+# Engineering
+
+cpr: Capacitor Power Relay
+cpu: Co-Processor
+coproc: Co-Processor
+eccm: Sensor Booster
+jam: ECM
+pdu: Power Diagnostic Unit
+rcu: Reactor Control Unit
+sebo: Sensor Booster
+spr: Shield Power Relay
+cb: Capacitor Booster
+cbat: Cap Battery
+cbst: Capacitor Booster
+sigamp: Signal Amplifier
+mapc: Micro Auxiliary Power Core
+
+# Ammo/Charges
+
+am: Antimatter
+cnam: Caldari Navy Antimatter
+fnam: Federation Navy Antimatter
+inmf: Imperial Navy Multifrequency
+pp: Phased Plasma
+mf: Multifrequency
+lm: Light Missile
+lo: Liquid Ozone
+ham: Heavy Assault Missile
+hm: Heavy Missile
+cm: Cruise Missile
+ncb: Navy Cap Booster
+mw: Microwave
+mc: Mining Crystal
+nrp: Nanite Repair Paste
+np: Nanite Repair Paste
+wdp: Warp Disrupt Probe
+sp: Scanner Probe
+bubble: Warp Disrupt Probe
+ars: Armor Resistance Script
+
+# Rigs
+
+acr: Ancillary Current Router
+ccc: Capacitor Control Circuit
+smc: Semiconductor Memory Cell
+tap: Trimark Armor Pump
+aap: Anti- Pump
+pcu: Processor Overclocking Unit
+asr: Anti- Screen Reinforcer
+cdfe: Core Defense Field Extender
+
+# Implants
+lg: Low-grade
+mg: Mid-grade
+hg: High-grade

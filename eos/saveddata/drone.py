@@ -73,7 +73,8 @@ class Drone(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
         self.__itemModifiedAttributes.overrides = self.__item.overrides
 
         self.__chargeModifiedAttributes = ModifiedAttributeDict()
-        chargeID = self.getModifiedItemAttr("entityMissileTypeID")
+        # pheonix todo: check the attribute itself, not the modified. this will always return 0 now.
+        chargeID = self.getModifiedItemAttr("entityMissileTypeID", None)
         if chargeID is not None:
             charge = eos.db.getItem(int(chargeID))
             self.__charge = charge
@@ -102,7 +103,7 @@ class Drone(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
 
     @property
     def cycleTime(self):
-        return max(self.getModifiedItemAttr("duration"), 0)
+        return max(self.getModifiedItemAttr("duration", 0), 0)
 
     @property
     def dealsDamage(self):
@@ -138,8 +139,7 @@ class Drone(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
                 cycleTime = self.getModifiedItemAttr(attr)
 
                 volley = sum(
-                        map(lambda d: (getter("%sDamage" % d) or 0) * (1 - getattr(targetResists, "%sAmount" % d, 0)),
-                            self.DAMAGE_TYPES))
+                        [(getter("%sDamage" % d) or 0) * (1 - getattr(targetResists, "%sAmount" % d, 0)) for d in self.DAMAGE_TYPES])
                 volley *= self.amountActive
                 volley *= self.getModifiedItemAttr("damageMultiplier") or 1
                 self.__volley = volley
@@ -155,7 +155,7 @@ class Drone(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
                 getter = self.getModifiedItemAttr
 
                 cycleTime = self.getModifiedItemAttr(attr)
-                volley = sum(map(lambda d: getter(d), self.MINING_ATTRIBUTES)) * self.amountActive
+                volley = sum([getter(d) for d in self.MINING_ATTRIBUTES]) * self.amountActive
                 self.__miningyield = volley / (cycleTime / 1000.0)
             else:
                 self.__miningyield = 0
@@ -168,7 +168,7 @@ class Drone(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
                  "energyDestabilizationRange", "empFieldRange",
                  "ecmBurstRange", "maxRange")
         for attr in attrs:
-            maxRange = self.getModifiedItemAttr(attr)
+            maxRange = self.getModifiedItemAttr(attr, None)
             if maxRange is not None:
                 return maxRange
         if self.charge is not None:
@@ -184,7 +184,7 @@ class Drone(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
     def falloff(self):
         attrs = ("falloff", "falloffEffectiveness")
         for attr in attrs:
-            falloff = self.getModifiedItemAttr(attr)
+            falloff = self.getModifiedItemAttr(attr, None)
             if falloff is not None:
                 return falloff
 
@@ -236,7 +236,7 @@ class Drone(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
             context = ("drone",)
             projected = False
 
-        for effect in self.item.effects.itervalues():
+        for effect in self.item.effects.values():
             if effect.runTime == runTime and \
                     effect.activeByDefault and \
                     ((projected is True and effect.isType("projected")) or
@@ -251,7 +251,7 @@ class Drone(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
                         i += 1
 
         if self.charge:
-            for effect in self.charge.effects.itervalues():
+            for effect in self.charge.effects.values():
                 if effect.runTime == runTime and effect.activeByDefault:
                     effect.handler(fit, self, ("droneCharge",))
 
@@ -263,8 +263,8 @@ class Drone(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
 
     def fits(self, fit):
         fitDroneGroupLimits = set()
-        for i in xrange(1, 3):
-            groneGrp = fit.ship.getModifiedItemAttr("allowedDroneGroup%d" % i)
+        for i in range(1, 3):
+            groneGrp = fit.ship.getModifiedItemAttr("allowedDroneGroup%d" % i, None)
             if groneGrp is not None:
                 fitDroneGroupLimits.add(int(groneGrp))
         if len(fitDroneGroupLimits) == 0:

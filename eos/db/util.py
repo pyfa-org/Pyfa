@@ -39,7 +39,7 @@ def processEager(eager):
         return tuple()
     else:
         l = []
-        if isinstance(eager, basestring):
+        if isinstance(eager, str):
             eager = (eager,)
 
         for e in eager:
@@ -50,7 +50,7 @@ def processEager(eager):
 
 def _replacements(eagerString):
     splitEager = eagerString.split(".")
-    for i in xrange(len(splitEager)):
+    for i in range(len(splitEager)):
         part = splitEager[i]
         replacement = replace.get(part)
         if replacement:

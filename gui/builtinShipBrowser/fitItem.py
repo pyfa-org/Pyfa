@@ -2,6 +2,7 @@
 
 import re
 import time
+import config
 
 import wx
 from logbook import Logger
@@ -9,11 +10,11 @@ from logbook import Logger
 import gui.builtinShipBrowser.sfBrowserItem as SFItem
 import gui.globalEvents as GE
 import gui.mainFrame
-import gui.utils.colorUtils as colorUtils
-import gui.utils.drawUtils as drawUtils
+import gui.utils.color as colorUtils
+import gui.utils.draw as drawUtils
 import gui.utils.fonts as fonts
-import events
-from gui.bitmapLoader import BitmapLoader
+from .events import ImportSelected, SearchSelected, FitSelected, BoosterListUpdated, Stage3Selected, FitRenamed, FitRemoved
+from gui.bitmap_loader import BitmapLoader
 from gui.builtinShipBrowser.pfBitmapFrame import PFBitmapFrame
 from service.fit import Fit
 
@@ -58,6 +59,9 @@ class FitItem(SFItem.SFBrowserItem):
         self.shipFittingInfo = shipFittingInfo
         self.shipName, self.shipTrait, self.fitName, self.fitBooster, self.timestamp, self.notes = shipFittingInfo
 
+        if config.debug:
+            self.fitName = '({}) {}'.format(self.fitID, self.fitName)
+
         self.shipTrait = re.sub("<.*?>", " ", self.shipTrait)
         # see GH issue #62
 
@@ -72,9 +76,9 @@ class FitItem(SFItem.SFBrowserItem):
         self.acceptBmp = BitmapLoader.getBitmap("faccept_small", "gui")
         self.shipEffBk = BitmapLoader.getBitmap("fshipbk_big", "gui")
 
-        img = wx.ImageFromBitmap(self.shipEffBk)
+        img = self.shipEffBk.ConvertToImage()
         img = img.Mirror(False)
-        self.shipEffBkMirrored = wx.BitmapFromImage(img)
+        self.shipEffBkMirrored = wx.Bitmap(img)
 
         self.dragTLFBmp = None
 
@@ -154,8 +158,8 @@ class FitItem(SFItem.SFBrowserItem):
         if self.shipTrait and sFit.serviceFittingOptions["showShipBrowserTooltip"]:
             notes = ""
             if self.notes:
-                notes = u'─' * 20 + u"\nNotes: {}\n".format(self.notes[:197] + '...' if len(self.notes) > 200 else self.notes)
-            self.SetToolTip(wx.ToolTip(u'{}\n{}{}\n{}'.format(self.shipName, notes, u'─' * 20, self.shipTrait)))
+                notes = '─' * 20 + "\nNotes: {}\n".format(self.notes[:197] + '...' if len(self.notes) > 200 else self.notes)
+            self.SetToolTip(wx.ToolTip('{}\n{}{}\n{}'.format(self.shipName, notes, '─' * 20, self.shipTrait)))
 
     def OnKeyUp(self, event):
         if event.GetKeyCode() in (32, 13):  # space and enter
@@ -171,7 +175,7 @@ class FitItem(SFItem.SFBrowserItem):
         self.fitBooster = not self.fitBooster
         self.boosterBtn.Show(self.fitBooster)
         self.Refresh()
-        wx.PostEvent(self.mainFrame, events.BoosterListUpdated())
+        wx.PostEvent(self.mainFrame, BoosterListUpdated())
         event.Skip()
 
     def OnProjectToFit(self, event):
@@ -285,6 +289,7 @@ class FitItem(SFItem.SFBrowserItem):
     def editLostFocus(self, event):
         self.RestoreEditButton()
         self.Refresh()
+        event.Skip()
 
     def editCheckEsc(self, event):
         if event.GetKeyCode() == wx.WXK_ESCAPE:
@@ -303,8 +308,8 @@ class FitItem(SFItem.SFBrowserItem):
         sFit = Fit.getInstance()
         fitID = sFit.copyFit(self.fitID)
         self.shipBrowser.fitIDMustEditName = fitID
-        wx.PostEvent(self.shipBrowser, events.Stage3Selected(shipID=self.shipID))
-        wx.PostEvent(self.mainFrame, events.FitSelected(fitID=fitID))
+        wx.PostEvent(self.shipBrowser, Stage3Selected(shipID=self.shipID))
+        wx.PostEvent(self.mainFrame, FitSelected(fitID=fitID))
 
     def renameBtnCB(self):
         if self.tcFitName.IsShown():
@@ -327,7 +332,7 @@ class FitItem(SFItem.SFBrowserItem):
         if fitName:
             self.fitName = fitName
             sFit.renameFit(self.fitID, self.fitName)
-            wx.PostEvent(self.mainFrame, events.FitRenamed(fitID=self.fitID))
+            wx.PostEvent(self.mainFrame, FitRenamed(fitID=self.fitID))
         else:
             self.tcFitName.SetValue(self.fitName)
 
@@ -337,7 +342,7 @@ class FitItem(SFItem.SFBrowserItem):
             return
 
         # to prevent accidental deletion, give dialog confirmation unless shift is depressed
-        if wx.GetMouseState().ShiftDown() or wx.GetMouseState().MiddleDown():
+        if wx.GetMouseState().ShiftDown() or wx.GetMouseState().MiddleIsDown():
             self.deleteFit()
         else:
             dlg = wx.MessageDialog(
@@ -369,21 +374,21 @@ class FitItem(SFItem.SFBrowserItem):
         sFit.deleteFit(self.fitID)
 
         # Notify other areas that a fit has been deleted
-        wx.PostEvent(self.mainFrame, events.FitRemoved(fitID=self.fitID))
+        wx.PostEvent(self.mainFrame, FitRemoved(fitID=self.fitID))
 
         # todo: would a simple RefreshList() work here instead of posting that a stage has been selected?
         if self.shipBrowser.GetActiveStage() == 5:
-            wx.PostEvent(self.shipBrowser, events.ImportSelected(fits=self.shipBrowser.lastdata, recent=self.shipBrowser.recentFits))
+            wx.PostEvent(self.shipBrowser, ImportSelected(fits=self.shipBrowser.lastdata, recent=self.shipBrowser.recentFits))
         elif self.shipBrowser.GetActiveStage() == 4:
-            wx.PostEvent(self.shipBrowser, events.SearchSelected(text=self.shipBrowser.navpanel.lastSearch, back=True))
+            wx.PostEvent(self.shipBrowser, SearchSelected(text=self.shipBrowser.navpanel.lastSearch, back=True))
         else:
-            wx.PostEvent(self.shipBrowser, events.Stage3Selected(shipID=self.shipID))
+            wx.PostEvent(self.shipBrowser, Stage3Selected(shipID=self.shipID))
 
     def MouseLeftUp(self, event):
         if self.dragging and self.dragged:
             self.OnMouseCaptureLost(event)
 
-            targetWnd = wx.FindWindowAtPointer()
+            targetWnd, _ = wx.FindWindowAtPointer()
 
             if not targetWnd:
                 return
@@ -433,9 +438,9 @@ class FitItem(SFItem.SFBrowserItem):
 
     def selectFit(self, event=None, newTab=False):
         if newTab:
-            wx.PostEvent(self.mainFrame, events.FitSelected(fitID=self.fitID, startup=2))
+            wx.PostEvent(self.mainFrame, FitSelected(fitID=self.fitID, startup=2))
         else:
-            wx.PostEvent(self.mainFrame, events.FitSelected(fitID=self.fitID))
+            wx.PostEvent(self.mainFrame, FitSelected(fitID=self.fitID))
 
     def RestoreEditButton(self):
         self.tcFitName.Show(False)
@@ -480,8 +485,8 @@ class FitItem(SFItem.SFBrowserItem):
     def DrawItem(self, mdc):
         rect = self.GetRect()
 
-        windowColor = wx.SystemSettings_GetColour(wx.SYS_COLOUR_WINDOW)
-        textColor = colorUtils.GetSuitableColor(windowColor, 1)
+        windowColor = wx.SystemSettings.GetColour(wx.SYS_COLOUR_WINDOW)
+        textColor = colorUtils.GetSuitable(windowColor, 1)
 
         mdc.SetTextForeground(textColor)
 
@@ -521,7 +526,7 @@ class FitItem(SFItem.SFBrowserItem):
             self.AdjustControlSizePos(self.tcFitName, self.textStartx, self.toolbarx - self.editWidth - self.padding)
 
         tdc = wx.MemoryDC()
-        self.dragTLFBmp = wx.EmptyBitmap((self.toolbarx if self.toolbarx < 200 else 200), rect.height, 24)
+        self.dragTLFBmp = wx.Bitmap((self.toolbarx if self.toolbarx < 200 else 200), rect.height, 24)
         tdc.SelectObject(self.dragTLFBmp)
         tdc.Blit(0, 0, (self.toolbarx if self.toolbarx < 200 else 200), rect.height, mdc, 0, 0, wx.COPY)
         tdc.SelectObject(wx.NullBitmap)
@@ -569,7 +574,7 @@ class FitItem(SFItem.SFBrowserItem):
     def RenderBackground(self):
         rect = self.GetRect()
 
-        windowColor = wx.SystemSettings_GetColour(wx.SYS_COLOUR_WINDOW)
+        windowColor = wx.SystemSettings.GetColour(wx.SYS_COLOUR_WINDOW)
 
         # activeFitID = self.mainFrame.getActiveFit()
         state = self.GetState()

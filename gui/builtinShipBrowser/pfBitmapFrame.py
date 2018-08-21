@@ -7,7 +7,7 @@ class PFBitmapFrame(wx.Frame):
                           style=wx.NO_BORDER | wx.FRAME_NO_TASKBAR | wx.STAY_ON_TOP)
         img = bitmap.ConvertToImage()
         img = img.ConvertToGreyscale()
-        bitmap = wx.BitmapFromImage(img)
+        bitmap = wx.Bitmap(img)
         self.bitmap = bitmap
         self.SetSize((bitmap.GetWidth(), bitmap.GetHeight()))
         self.Bind(wx.EVT_PAINT, self.OnWindowPaint)
@@ -18,6 +18,8 @@ class PFBitmapFrame(wx.Frame):
         self.direction = 1
         self.transp = 0
         self.SetSize((bitmap.GetWidth(), bitmap.GetHeight()))
+
+        self.SetBackgroundStyle(wx.BG_STYLE_PAINT)
 
         self.SetTransparent(0)
         self.Refresh()
@@ -49,8 +51,12 @@ class PFBitmapFrame(wx.Frame):
         pass
 
     def OnWindowPaint(self, event):
+        # todo: evaluate wx.DragImage, might make this class obsolete, however might also lose our customizations
+        # (like the sexy fade-in animation)
         rect = self.GetRect()
-        canvas = wx.EmptyBitmap(rect.width, rect.height)
+        canvas = wx.Bitmap(rect.width, rect.height)
+        # todo: convert to context manager after updating to wxPython >v4.0.1 (4.0.1 has a bug, see #1421)
+        # See #1418 for discussion
         mdc = wx.BufferedPaintDC(self)
         mdc.SelectObject(canvas)
         mdc.DrawBitmap(self.bitmap, 0, 0)

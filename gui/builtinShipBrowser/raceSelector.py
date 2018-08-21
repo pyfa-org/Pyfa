@@ -3,11 +3,11 @@
 import wx
 from logbook import Logger
 
-import gui.utils.animEffects as animEffects
-import gui.utils.colorUtils as colorUtils
-import gui.utils.drawUtils as drawUtils
-import events
-from gui.bitmapLoader import BitmapLoader
+import gui.utils.anim_effects as animEffects
+import gui.utils.color as colorUtils
+import gui.utils.draw as drawUtils
+from .events import Stage2Selected
+from gui.bitmap_loader import BitmapLoader
 
 pyfalog = Logger(__name__)
 
@@ -70,7 +70,7 @@ class RaceSelector(wx.Window):
         if layout == wx.VERTICAL:
             img = img.Scale(self.minWidth, 8, wx.IMAGE_QUALITY_HIGH)
 
-        self.bmpArrow = wx.BitmapFromImage(img)
+        self.bmpArrow = wx.Bitmap(img)
 
         self.RebuildRaces(self.shipBrowser.RACE_ORDER)
 
@@ -85,6 +85,8 @@ class RaceSelector(wx.Window):
 
         self.Layout()
 
+        self.SetBackgroundStyle(wx.BG_STYLE_PAINT)
+
     def OnMouseMove(self, event):
         mx, my = event.GetPosition()
 
@@ -93,9 +95,9 @@ class RaceSelector(wx.Window):
             self.hoveredItem = location
             self.Refresh()
             if location is not None:
-                self.SetCursor(wx.StockCursor(wx.CURSOR_HAND))
+                self.SetCursor(wx.Cursor(wx.CURSOR_HAND))
             else:
-                self.SetCursor(wx.StockCursor(wx.CURSOR_ARROW))
+                self.SetCursor(wx.Cursor(wx.CURSOR_ARROW))
 
     def OnSizeUpdate(self, event):
         self.CalcButtonsBarPos()
@@ -134,7 +136,7 @@ class RaceSelector(wx.Window):
 
             if stage == 2:
                 categoryID = self.shipBrowser.GetStageData(stage)
-                wx.PostEvent(self.shipBrowser, events.Stage2Selected(categoryID=categoryID, back=True))
+                wx.PostEvent(self.shipBrowser, Stage2Selected(categoryID=categoryID, back=True))
         event.Skip()
 
     def HitTest(self, mx, my):
@@ -166,11 +168,11 @@ class RaceSelector(wx.Window):
     def OnPaint(self, event):
         rect = self.GetRect()
 
-        windowColor = wx.SystemSettings_GetColour(wx.SYS_COLOUR_WINDOW)
-        # bkColor = colorUtils.GetSuitableColor(windowColor, 0.1)
-        sepColor = colorUtils.GetSuitableColor(windowColor, 0.2)
+        windowColor = wx.SystemSettings.GetColour(wx.SYS_COLOUR_WINDOW)
+        # bkColor = colorUtils.GetSuitable(windowColor, 0.1)
+        sepColor = colorUtils.GetSuitable(windowColor, 0.2)
 
-        mdc = wx.BufferedPaintDC(self)
+        mdc = wx.AutoBufferedPaintDC(self)
 
         bkBitmap = drawUtils.RenderGradientBar(windowColor, rect.width, rect.height, 0.1, 0.1, 0.2, 2)
         mdc.DrawBitmap(bkBitmap, 0, 0, True)
@@ -184,12 +186,12 @@ class RaceSelector(wx.Window):
                 if self.shipBrowser.GetRaceFilterState(self.raceNames[self.raceBmps.index(raceBmp)]):
                     bmp = raceBmp
                 else:
-                    img = wx.ImageFromBitmap(raceBmp)
+                    img = raceBmp.ConvertToImage()
                     if self.hoveredItem == self.raceBmps.index(raceBmp):
                         img = img.AdjustChannels(1, 1, 1, 0.7)
                     else:
                         img = img.AdjustChannels(1, 1, 1, 0.4)
-                    bmp = wx.BitmapFromImage(img)
+                    bmp = wx.Bitmap(img)
 
                 if self.layout == wx.VERTICAL:
                     mdc.DrawBitmap(dropShadow, rect.width - self.buttonsPadding - bmp.GetWidth() + 1, y + 1)
@@ -257,7 +259,7 @@ class RaceSelector(wx.Window):
     def OnWindowLeave(self, event):
         if self.hoveredItem is not None:
             self.hoveredItem = None
-            self.SetCursor(wx.StockCursor(wx.CURSOR_ARROW))
+            self.SetCursor(wx.Cursor(wx.CURSOR_ARROW))
             self.Refresh()
 
         if not self.animate:

@@ -24,7 +24,7 @@ from service.fit import Fit
 from service.market import Market
 import gui.mainFrame
 from gui.viewColumn import ViewColumn
-from gui.bitmapLoader import BitmapLoader
+from gui.bitmap_loader import BitmapLoader
 from gui.utils.numberFormatter import formatAmount
 from gui.utils.listFormatter import formatList
 from eos.saveddata.drone import Drone
@@ -76,12 +76,59 @@ class Miscellanea(ViewColumn):
             stuff.getModifiedItemAttr("boosterDuration")
             text = "{0} min".format(formatAmount(stuff.getModifiedItemAttr("boosterDuration") / 1000 / 60, 3, 0, 3))
             return text, "Booster Duration"
+        elif itemGroup in ("Super Weapon", "Structure Doomsday Weapon"):
+            doomsday_duration = stuff.getModifiedItemAttr("doomsdayDamageDuration", 1)
+            doomsday_dottime = stuff.getModifiedItemAttr("doomsdayDamageCycleTime", 1)
+            func = stuff.getModifiedItemAttr
+
+            volley = sum(
+                map(
+                    lambda attr: (func("%sDamage" % attr) or 0),
+                    ("em", "thermal", "kinetic", "explosive")
+                )
+            )
+            volley *= stuff.getModifiedItemAttr("damageMultiplier") or 1
+
+            if volley <= 0:
+                text = ""
+                tooltip = ""
+            elif max(doomsday_duration / doomsday_dottime, 1) > 1:
+                text = "{0} dmg over {1} s".format(formatAmount(volley * (doomsday_duration / doomsday_dottime), 3, 0, 3), doomsday_duration / 1000)
+                tooltip = "Raw damage done over time"
+            else:
+                text = "{0} dmg".format(formatAmount(volley * (doomsday_duration / doomsday_dottime), 3, 0, 3))
+                tooltip = "Raw damage done"
+            return text, tooltip
+
+            pass
         elif itemGroup in ("Energy Weapon", "Hybrid Weapon", "Projectile Weapon", "Combat Drone", "Fighter Drone"):
             trackingSpeed = stuff.getModifiedItemAttr("trackingSpeed")
             if not trackingSpeed:
                 return "", None
             text = "{0}".format(formatAmount(trackingSpeed, 3, 0, 3))
             tooltip = "Tracking speed"
+            return text, tooltip
+        elif itemGroup == "Precursor Weapon":
+            info = []
+            trackingSpeed = stuff.getModifiedItemAttr("trackingSpeed")
+            if trackingSpeed:
+                text = "{0}".format(formatAmount(trackingSpeed, 3, 0, 3))
+                tooltip = "tracking speed"
+                info.append((text, tooltip))
+            maxBonusDamage = stuff.getModifiedItemAttr("damageMultiplierBonusMax")
+            bonusDamagePerCycle = stuff.getModifiedItemAttr("damageMultiplierBonusPerCycle")
+            cycleTime = stuff.getModifiedItemAttr("speed")
+            if maxBonusDamage and bonusDamagePerCycle and cycleTime:
+                cyclesToFullDamage = int(maxBonusDamage / bonusDamagePerCycle)
+                timeToFullDamage = (cycleTime / 1000) * cyclesToFullDamage
+                if cyclesToFullDamage:
+                    text = "{0}s".format(formatAmount(timeToFullDamage, 3, 0, 3))
+                    tooltip = "spool-up time"
+                    info.append((text, tooltip))
+            if not info:
+                return "", None
+            text = ' | '.join(i[0] for i in info)
+            tooltip = ' and '.join(i[1] for i in info).capitalize()
             return text, tooltip
         elif itemCategory == "Subsystem":
             slots = ("hi", "med", "low")
@@ -176,7 +223,7 @@ class Miscellanea(ViewColumn):
                 "falloff range": falloffRangeBonus,
                 "tracking speed": trackingSpeedBonus}
 
-            isTrackingDisruptor = any(map(lambda x: x is not None and x != 0, trackingDisruptorAttributes.values()))
+            isTrackingDisruptor = any([x is not None and x != 0 for x in list(trackingDisruptorAttributes.values())])
 
             # Then get the attributes for guidance disruptors
             explosionVelocityBonus = stuff.getModifiedItemAttr("aoeVelocityBonus")
@@ -191,7 +238,7 @@ class Miscellanea(ViewColumn):
                 "flight time": flightTimeBonus,
                 "missile velocity": missileVelocityBonus}
 
-            isGuidanceDisruptor = any(map(lambda x: x is not None and x != 0, guidanceDisruptorAttributes.values()))
+            isGuidanceDisruptor = any([x is not None and x != 0 for x in list(guidanceDisruptorAttributes.values())])
 
             if isTrackingDisruptor:
                 attributes = trackingDisruptorAttributes
@@ -200,12 +247,12 @@ class Miscellanea(ViewColumn):
             else:
                 return "", None
 
-            display = max(attributes.values(), key=lambda x: abs(x))
+            display = max(list(attributes.values()), key=lambda x: abs(x))
 
             text = "{0}%".format(formatAmount(display, 3, 0, 3, forceSign=True))
 
             ttEntries = []
-            for attributeName, attributeValue in attributes.items():
+            for attributeName, attributeValue in list(attributes.items()):
                 if attributeValue == display:
                     ttEntries.append(attributeName)
 

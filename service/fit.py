@@ -74,7 +74,7 @@ class Fit(object):
             "exportCharges": True,
             "openFitInNew": False,
             "priceSystem": "Jita",
-            "priceSource": "eve-central.com",
+            "priceSource": "eve-marketdata.com",
             "showShipBrowserTooltip": True,
             "marketSearchDelay": 250
         }
@@ -142,7 +142,7 @@ class Fit(object):
         except ValueError:
             ship = es_Citadel(eos.db.getItem(shipID))
         fit = FitType(ship)
-        fit.name = name if name is not None else u"New %s" % fit.ship.item.name
+        fit.name = name if name is not None else "New %s" % fit.ship.item.name
         fit.damagePattern = self.pattern
         fit.targetResists = self.targetResists
         fit.character = self.character
@@ -178,11 +178,11 @@ class Fit(object):
         # it will be refreshed first during the projected loop and throw an
         # error during the command loop
         refreshFits = set()
-        for projection in fit.projectedOnto.values():
+        for projection in list(fit.projectedOnto.values()):
             if projection.victim_fit != fit and projection.victim_fit in eos.db.saveddata_session:  # GH issue #359
                 refreshFits.add(projection.victim_fit)
 
-        for booster in fit.boostedOnto.values():
+        for booster in list(fit.boostedOnto.values()):
             if booster.boosted_fit != fit and booster.boosted_fit in eos.db.saveddata_session:  # GH issue #359
                 refreshFits.add(booster.boosted_fit)
 
@@ -297,7 +297,7 @@ class Fit(object):
         results = eos.db.searchFits(name)
         fits = []
 
-        for fit in results:
+        for fit in sorted(results, key=lambda f: (f.ship.item.group.name, f.ship.item.name, f.name)):
             fits.append((
                 fit.ID,
                 fit.name,
@@ -403,12 +403,15 @@ class Fit(object):
         elif thing.category.name == "Fighter":
             fighter = es_Fighter(thing)
             fit.projectedFighters.append(fighter)
-        elif thing.group.name == "Effect Beacon":
+        elif thing.group.name in es_Module.SYSTEM_GROUPS:
             module = es_Module(thing)
             module.state = State.ONLINE
             fit.projectedModules.append(module)
         else:
-            module = es_Module(thing)
+            try:
+                module = es_Module(thing)
+            except ValueError:
+                return False
             module.state = State.ACTIVE
             if not module.canHaveState(module.state, fit):
                 module.state = State.OFFLINE
@@ -782,7 +785,7 @@ class Fit(object):
                 total = fit.getNumSlots(fighter.slot)
                 standardAttackActive = False
                 for ability in fighter.abilities:
-                    if ability.effect.isImplemented and ability.effect.handlerName == u'fighterabilityattackm':
+                    if ability.effect.isImplemented and ability.effect.handlerName == 'fighterabilityattackm':
                         # Activate "standard attack" if available
                         ability.active = True
                         standardAttackActive = True
@@ -790,8 +793,8 @@ class Fit(object):
                         # Activate all other abilities (Neut, Web, etc) except propmods if no standard attack is active
                         if ability.effect.isImplemented and \
                                 standardAttackActive is False and \
-                                ability.effect.handlerName != u'fighterabilitymicrowarpdrive' and \
-                                ability.effect.handlerName != u'fighterabilityevasivemaneuvers':
+                                ability.effect.handlerName != 'fighterabilitymicrowarpdrive' and \
+                                ability.effect.handlerName != 'fighterabilityevasivemaneuvers':
                             ability.active = True
 
                 if used >= total:
@@ -970,7 +973,7 @@ class Fit(object):
         # remove invalid modules when switching back to enabled fitting restrictions
         if not fit.ignoreRestrictions:
             for m in fit.modules:
-                if not m.isEmpty and not m.fits(fit):
+                if not m.isEmpty and not m.fits(fit, False):
                     self.removeModule(fit.ID, m.modPosition)
 
         eos.db.commit()
@@ -1204,9 +1207,9 @@ class Fit(object):
 
     def recalc(self, fit):
         start_time = time()
-        pyfalog.info(u"=" * 10 + u"recalc: {0}" + u"=" * 10, fit.name)
-        if fit.factorReload is not self.serviceFittingOptions["useGlobalForceReload"]:
-            fit.factorReload = self.serviceFittingOptions["useGlobalForceReload"]
+        pyfalog.info("=" * 10 + "recalc: {0}" + "=" * 10, fit.name)
+
+        fit.factorReload = self.serviceFittingOptions["useGlobalForceReload"]
         fit.clear()
 
         fit.calculateModifiedAttributes()

@@ -21,7 +21,7 @@
 import wx
 from eos.saveddata.fighter import Fighter
 from gui.viewColumn import ViewColumn
-from gui.bitmapLoader import BitmapLoader
+from gui.bitmap_loader import BitmapLoader
 
 
 class Ammo(ViewColumn):

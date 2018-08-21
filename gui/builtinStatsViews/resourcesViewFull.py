@@ -20,10 +20,11 @@
 # noinspection PyPackageRequirements
 import wx
 from gui.statsView import StatsView
-from gui.bitmapLoader import BitmapLoader
-from gui.pygauge import PyGauge
+from gui.bitmap_loader import BitmapLoader
+from gui.pyfa_gauge import PyGauge
 import gui.mainFrame
-from gui.chromeTabs import EVT_NOTEBOOK_PAGE_CHANGED
+from gui.chrome_tabs import EVT_NOTEBOOK_PAGE_CHANGED
+from gui.utils import fonts
 
 from eos.saveddata.module import Hardpoint
 
@@ -101,7 +102,7 @@ class ResourcesViewFull(StatsView):
         panel = "full"
 
         base = sizerResources
-        sizer.AddSpacer((0, 0), 1, wx.EXPAND, 5)
+        sizer.AddStretchSpacer()
         # Turrets & launcher hardslots display
         tooltipText = {"turret": "Turret hardpoints", "launcher": "Launcher hardpoints", "drones": "Drones active",
                        "fighter": "Fighter squadrons active", "calibration": "Calibration"}
@@ -133,7 +134,9 @@ class ResourcesViewFull(StatsView):
             # Hack - We add a spacer after each thing, but we are always hiding something. The spacer is stil there.
             # This way, we only have one space after the drones/fighters
             if type_ != "drones":
-                sizer.AddSpacer((0, 0), 1, wx.EXPAND, 5)
+                sizer.AddStretchSpacer()
+
+        gauge_font = wx.Font(fonts.NORMAL, wx.SWISS, wx.NORMAL, wx.NORMAL, False)
 
         # PG, Cpu & drone stuff
         tooltipText = {"cpu": "CPU", "pg": "PowerGrid", "droneBay": "Drone bay", "fighterBay": "Fighter bay",
@@ -169,14 +172,14 @@ class ResourcesViewFull(StatsView):
                 setattr(self, "label%sTotal%s" % (panel.capitalize(), capitalizedType), lbl)
                 absolute.Add(lbl, 0, wx.ALIGN_LEFT)
 
-                units = {"cpu": " tf", "pg": " MW", "droneBandwidth": " mbit/s", "droneBay": u" m\u00B3",
-                         "fighterBay": u" m\u00B3", "cargoBay": u" m\u00B3"}
+                units = {"cpu": " tf", "pg": " MW", "droneBandwidth": " mbit/s", "droneBay": " m\u00B3",
+                         "fighterBay": " m\u00B3", "cargoBay": " m\u00B3"}
                 lbl = wx.StaticText(parent, wx.ID_ANY, "%s" % units[type_])
                 absolute.Add(lbl, 0, wx.ALIGN_LEFT)
 
                 # Gauges modif. - Darriele
 
-                gauge = PyGauge(parent, wx.ID_ANY, 1)
+                gauge = PyGauge(parent, gauge_font, 1)
                 gauge.SetValueRange(0, 0)
                 gauge.SetMinSize((self.getTextExtentW("1.999M/1.99M MW"), 23))
                 gauge.SetFractionDigits(2)
@@ -275,7 +278,7 @@ class ResourcesViewFull(StatsView):
                 totalCalibrationPoints = value
                 labelTCP = label
 
-            if isinstance(value, basestring):
+            if isinstance(value, str):
                 label.SetLabel(value)
                 label.SetToolTip(wx.ToolTip(value))
             else:
@@ -283,7 +286,7 @@ class ResourcesViewFull(StatsView):
                 label.SetToolTip(wx.ToolTip("%.1f" % value))
 
         colorWarn = wx.Colour(204, 51, 51)
-        colorNormal = wx.SystemSettings_GetColour(wx.SYS_COLOUR_WINDOWTEXT)
+        colorNormal = wx.SystemSettings.GetColour(wx.SYS_COLOUR_WINDOWTEXT)
 
         if usedTurretHardpoints > totalTurretHardpoints:
             colorT = colorWarn

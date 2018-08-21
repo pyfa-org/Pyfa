@@ -28,7 +28,9 @@ from eos.saveddata.fighter import Fighter
 from eos.saveddata.module import Module, Slot, Rack
 from eos.saveddata.fit import Fit
 from service.fit import Fit as FitSvc
+from service.market import Market
 from gui.viewColumn import ViewColumn
+from gui.builtinContextMenus.whProjector import WhProjector
 import gui.mainFrame
 
 pyfalog = Logger(__name__)
@@ -71,12 +73,21 @@ class BaseName(ViewColumn):
         elif isinstance(stuff, Rack):
             if FitSvc.getInstance().serviceFittingOptions["rackLabels"]:
                 if stuff.slot == Slot.MODE:
-                    return u'─ Tactical Mode ─'
+                    return '─ Tactical Mode ─'
                 else:
-                    return u'─ {} Slots ─'.format(Slot.getName(stuff.slot).capitalize())
+                    return '─ {} {} Slot{}─'.format(stuff.num, Slot.getName(stuff.slot).capitalize(), '' if stuff.num == 1 else 's')
             else:
                 return ""
         elif isinstance(stuff, Module):
+            if self.projectedView:
+                # check for projected abyssal name
+                name_check = stuff.item.name[0:-2]
+                type = WhProjector.abyssal_mapping.get(name_check, None)
+                if type:
+                    sMkt = Market.getInstance()
+                    type = sMkt.getItem(type)
+                    return "{} {}".format(type.name, stuff.item.name[-1:])
+
             if stuff.isEmpty:
                 return "%s Slot" % Slot.getName(stuff.slot).capitalize()
             else:
@@ -91,7 +102,7 @@ class BaseName(ViewColumn):
 
                 if marketShortcut:
                     # use unicode subscript to display shortcut value
-                    shortcut = unichr(marketShortcut + 8320) + u" "
+                    shortcut = chr(marketShortcut + 8320) + " "
                     del item.marketShortcut
                     return shortcut + item.name
 

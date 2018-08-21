@@ -63,10 +63,10 @@ class FitDpsGraph(Graph):
         ew['signatureRadius'].sort(key=abssort)
         ew['velocity'].sort(key=abssort)
 
-        for attr, values in ew.iteritems():
+        for attr, values in ew.items():
             val = data[attr]
             try:
-                for i in xrange(len(values)):
+                for i in range(len(values)):
                     bonus = values[i]
                     val *= 1 + (bonus - 1) * exp(- i ** 2 / 7.1289)
                 data[attr] = val
@@ -81,7 +81,7 @@ class FitDpsGraph(Graph):
                     total += dps * self.calculateTurretMultiplier(mod, data)
 
             elif mod.hardpoint == Hardpoint.MISSILE:
-                if mod.state >= State.ACTIVE and mod.maxRange >= distance:
+                if mod.state >= State.ACTIVE and mod.maxRange is not None and mod.maxRange >= distance:
                     total += dps * self.calculateMissileMultiplier(mod, data)
 
         if distance <= fit.extraAttributes["droneControlRange"]:
@@ -141,14 +141,14 @@ class FitDpsGraph(Graph):
         targetVelocity = data["velocity"]
         explosionRadius = ability.fighter.getModifiedItemAttr("{}ExplosionRadius".format(prefix))
         explosionVelocity = ability.fighter.getModifiedItemAttr("{}ExplosionVelocity".format(prefix))
-        damageReductionFactor = ability.fighter.getModifiedItemAttr("{}ReductionFactor".format(prefix))
+        damageReductionFactor = ability.fighter.getModifiedItemAttr("{}ReductionFactor".format(prefix), None)
 
         # the following conditionals are because CCP can't keep a decent naming convention, as if fighter implementation
         # wasn't already fucked.
         if damageReductionFactor is None:
             damageReductionFactor = ability.fighter.getModifiedItemAttr("{}DamageReductionFactor".format(prefix))
 
-        damageReductionSensitivity = ability.fighter.getModifiedItemAttr("{}ReductionSensitivity".format(prefix))
+        damageReductionSensitivity = ability.fighter.getModifiedItemAttr("{}ReductionSensitivity".format(prefix), None)
         if damageReductionSensitivity is None:
             damageReductionSensitivity = ability.fighter.getModifiedItemAttr(
                     "{}DamageReductionSensitivity".format(prefix))

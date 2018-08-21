@@ -3,7 +3,7 @@ import wx
 from wx.lib.intctrl import IntCtrl
 
 from gui.preferenceView import PreferenceView
-from gui.bitmapLoader import BitmapLoader
+from gui.bitmap_loader import BitmapLoader
 
 import gui.mainFrame
 import gui.globalEvents as GE
@@ -21,7 +21,7 @@ class PFGeneralPref(PreferenceView):
         self.openFitsSettings = SettingsProvider.getInstance().getSettings("pyfaPrevOpenFits",
                                                                            {"enabled": False, "pyfaOpenFits": []})
 
-        helpCursor = wx.StockCursor(wx.CURSOR_QUESTION_ARROW)
+        helpCursor = wx.Cursor(wx.CURSOR_QUESTION_ARROW)
 
         mainSizer = wx.BoxSizer(wx.VERTICAL)
 
@@ -34,59 +34,59 @@ class PFGeneralPref(PreferenceView):
         self.m_staticline1 = wx.StaticLine(panel, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.LI_HORIZONTAL)
         mainSizer.Add(self.m_staticline1, 0, wx.EXPAND | wx.TOP | wx.BOTTOM, 5)
 
-        self.cbGlobalChar = wx.CheckBox(panel, wx.ID_ANY, u"Use global character", wx.DefaultPosition, wx.DefaultSize,
+        self.cbGlobalChar = wx.CheckBox(panel, wx.ID_ANY, "Use global character", wx.DefaultPosition, wx.DefaultSize,
                                         0)
         mainSizer.Add(self.cbGlobalChar, 0, wx.ALL | wx.EXPAND, 5)
 
-        self.cbGlobalDmgPattern = wx.CheckBox(panel, wx.ID_ANY, u"Use global damage pattern", wx.DefaultPosition,
+        self.cbGlobalDmgPattern = wx.CheckBox(panel, wx.ID_ANY, "Use global damage pattern", wx.DefaultPosition,
                                               wx.DefaultSize, 0)
         mainSizer.Add(self.cbGlobalDmgPattern, 0, wx.ALL | wx.EXPAND, 5)
 
-        self.cbCompactSkills = wx.CheckBox(panel, wx.ID_ANY, u"Compact skills needed tooltip", wx.DefaultPosition,
+        self.cbCompactSkills = wx.CheckBox(panel, wx.ID_ANY, "Compact skills needed tooltip", wx.DefaultPosition,
                                            wx.DefaultSize, 0)
         mainSizer.Add(self.cbCompactSkills, 0, wx.ALL | wx.EXPAND, 5)
 
-        self.cbFitColorSlots = wx.CheckBox(panel, wx.ID_ANY, u"Color fitting view by slot", wx.DefaultPosition,
+        self.cbFitColorSlots = wx.CheckBox(panel, wx.ID_ANY, "Color fitting view by slot", wx.DefaultPosition,
                                            wx.DefaultSize, 0)
         mainSizer.Add(self.cbFitColorSlots, 0, wx.ALL | wx.EXPAND, 5)
 
-        self.cbReopenFits = wx.CheckBox(panel, wx.ID_ANY, u"Reopen previous fits on startup", wx.DefaultPosition,
+        self.cbReopenFits = wx.CheckBox(panel, wx.ID_ANY, "Reopen previous fits on startup", wx.DefaultPosition,
                                         wx.DefaultSize, 0)
         mainSizer.Add(self.cbReopenFits, 0, wx.ALL | wx.EXPAND, 5)
 
-        self.cbRackSlots = wx.CheckBox(panel, wx.ID_ANY, u"Separate Racks", wx.DefaultPosition, wx.DefaultSize, 0)
+        self.cbRackSlots = wx.CheckBox(panel, wx.ID_ANY, "Separate Racks", wx.DefaultPosition, wx.DefaultSize, 0)
         mainSizer.Add(self.cbRackSlots, 0, wx.ALL | wx.EXPAND, 5)
 
         labelSizer = wx.BoxSizer(wx.VERTICAL)
-        self.cbRackLabels = wx.CheckBox(panel, wx.ID_ANY, u"Show Rack Labels", wx.DefaultPosition, wx.DefaultSize, 0)
+        self.cbRackLabels = wx.CheckBox(panel, wx.ID_ANY, "Show Rack Labels", wx.DefaultPosition, wx.DefaultSize, 0)
         labelSizer.Add(self.cbRackLabels, 0, wx.ALL | wx.EXPAND, 5)
         mainSizer.Add(labelSizer, 0, wx.LEFT | wx.EXPAND, 30)
 
-        self.cbShowTooltip = wx.CheckBox(panel, wx.ID_ANY, u"Show tab tooltips", wx.DefaultPosition, wx.DefaultSize, 0)
+        self.cbShowTooltip = wx.CheckBox(panel, wx.ID_ANY, "Show tab tooltips", wx.DefaultPosition, wx.DefaultSize, 0)
         mainSizer.Add(self.cbShowTooltip, 0, wx.ALL | wx.EXPAND, 5)
 
-        self.cbMarketShortcuts = wx.CheckBox(panel, wx.ID_ANY, u"Show market shortcuts", wx.DefaultPosition,
+        self.cbMarketShortcuts = wx.CheckBox(panel, wx.ID_ANY, "Show market shortcuts", wx.DefaultPosition,
                                              wx.DefaultSize, 0)
         mainSizer.Add(self.cbMarketShortcuts, 0, wx.ALL | wx.EXPAND, 5)
 
-        self.cbGaugeAnimation = wx.CheckBox(panel, wx.ID_ANY, u"Animate gauges", wx.DefaultPosition, wx.DefaultSize, 0)
+        self.cbGaugeAnimation = wx.CheckBox(panel, wx.ID_ANY, "Animate gauges", wx.DefaultPosition, wx.DefaultSize, 0)
         mainSizer.Add(self.cbGaugeAnimation, 0, wx.ALL | wx.EXPAND, 5)
 
-        self.cbExportCharges = wx.CheckBox(panel, wx.ID_ANY, u"Export loaded charges", wx.DefaultPosition,
+        self.cbExportCharges = wx.CheckBox(panel, wx.ID_ANY, "Export loaded charges", wx.DefaultPosition,
                                            wx.DefaultSize, 0)
         mainSizer.Add(self.cbExportCharges, 0, wx.ALL | wx.EXPAND, 5)
 
-        self.cbOpenFitInNew = wx.CheckBox(panel, wx.ID_ANY, u"Open fittings in a new page by default",
+        self.cbOpenFitInNew = wx.CheckBox(panel, wx.ID_ANY, "Open fittings in a new page by default",
                                           wx.DefaultPosition, wx.DefaultSize, 0)
         mainSizer.Add(self.cbOpenFitInNew, 0, wx.ALL | wx.EXPAND, 5)
 
-        self.cbShowShipBrowserTooltip = wx.CheckBox(panel, wx.ID_ANY, u"Show ship browser tooltip",
+        self.cbShowShipBrowserTooltip = wx.CheckBox(panel, wx.ID_ANY, "Show ship browser tooltip",
                                           wx.DefaultPosition, wx.DefaultSize, 0)
         mainSizer.Add(self.cbShowShipBrowserTooltip, 0, wx.ALL | wx.EXPAND, 5)
 
         priceSizer = wx.BoxSizer(wx.HORIZONTAL)
 
-        self.stDefaultSystem = wx.StaticText(panel, wx.ID_ANY, u"Default Market Prices:", wx.DefaultPosition, wx.DefaultSize, 0)
+        self.stDefaultSystem = wx.StaticText(panel, wx.ID_ANY, "Default Market Prices:", wx.DefaultPosition, wx.DefaultSize, 0)
         self.stDefaultSystem.Wrap(-1)
         priceSizer.Add(self.stDefaultSystem, 0, wx.ALL | wx.ALIGN_CENTER_VERTICAL, 5)
         self.stDefaultSystem.SetCursor(helpCursor)
@@ -95,7 +95,7 @@ class PFGeneralPref(PreferenceView):
                        'source fails. The system you choose is absolute and requests will not be made against other systems.'))
 
         self.chPriceSource = wx.Choice(panel, choices=sorted(Price.sources.keys()))
-        self.chPriceSystem = wx.Choice(panel, choices=Price.systemsList.keys())
+        self.chPriceSystem = wx.Choice(panel, choices=list(Price.systemsList.keys()))
         priceSizer.Add(self.chPriceSource, 1, wx.ALL | wx.EXPAND, 5)
         priceSizer.Add(self.chPriceSystem, 1, wx.ALL | wx.EXPAND, 5)
 
@@ -103,7 +103,7 @@ class PFGeneralPref(PreferenceView):
 
         delayTimer = wx.BoxSizer(wx.HORIZONTAL)
 
-        self.stMarketDelay = wx.StaticText(panel, wx.ID_ANY, u"Market Search Delay (ms):", wx.DefaultPosition, wx.DefaultSize, 0)
+        self.stMarketDelay = wx.StaticText(panel, wx.ID_ANY, "Market Search Delay (ms):", wx.DefaultPosition, wx.DefaultSize, 0)
         self.stMarketDelay.Wrap(-1)
         self.stMarketDelay.SetCursor(helpCursor)
         self.stMarketDelay.SetToolTip(

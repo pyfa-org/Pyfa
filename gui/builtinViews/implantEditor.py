@@ -5,7 +5,7 @@ from wx.lib.buttons import GenBitmapButton
 
 import gui.builtinMarketBrowser.pfSearchBox as SBox
 import gui.display as d
-from gui.bitmapLoader import BitmapLoader
+from gui.bitmap_loader import BitmapLoader
 from gui.marketBrowser import SearchBox
 from service.market import Market
 
@@ -23,7 +23,7 @@ class BaseImplantEditorView(wx.Panel):
     def __init__(self, parent):
         wx.Panel.__init__(self, parent, id=wx.ID_ANY, pos=wx.DefaultPosition, size=wx.DefaultSize,
                           style=wx.TAB_TRAVERSAL)
-        self.SetBackgroundColour(wx.SystemSettings_GetColour(wx.SYS_COLOUR_WINDOW))
+        self.SetBackgroundColour(wx.SystemSettings.GetColour(wx.SYS_COLOUR_WINDOW))
 
         pmainSizer = wx.BoxSizer(wx.HORIZONTAL)
 
@@ -54,7 +54,7 @@ class BaseImplantEditorView(wx.Panel):
         pmainSizer.Add(availableSizer, 1, wx.ALL | wx.EXPAND, 5)
 
         buttonSizer = wx.BoxSizer(wx.VERTICAL)
-        buttonSizer.AddSpacer((0, 0), 1)
+        buttonSizer.AddStretchSpacer()
 
         self.btnAdd = GenBitmapButton(self, wx.ID_ADD, BitmapLoader.getBitmap("fit_add_small", "gui"),
                                       style=wx.BORDER_NONE)
@@ -64,7 +64,7 @@ class BaseImplantEditorView(wx.Panel):
                                          style=wx.BORDER_NONE)
         buttonSizer.Add(self.btnRemove, 0)
 
-        buttonSizer.AddSpacer((0, 0), 1)
+        buttonSizer.AddStretchSpacer()
         pmainSizer.Add(buttonSizer, 0, wx.EXPAND, 0)
 
         characterImplantSizer = wx.BoxSizer(wx.VERTICAL)
@@ -79,7 +79,7 @@ class BaseImplantEditorView(wx.Panel):
         sMkt = Market.getInstance()
         for mktGrp in sMkt.getImplantTree():
             iconId = self.addMarketViewImage(sMkt.getIconByMarketGroup(mktGrp))
-            childId = self.availableImplantsTree.AppendItem(root, mktGrp.name, iconId, data=wx.TreeItemData(mktGrp.ID))
+            childId = self.availableImplantsTree.AppendItem(root, mktGrp.name, iconId, data=mktGrp.ID)
             if sMkt.marketGroupHasTypesCheck(mktGrp) is False:
                 self.availableImplantsTree.AppendItem(childId, "dummy")
 
@@ -142,10 +142,10 @@ class BaseImplantEditorView(wx.Panel):
         # if the dummy item is a market group, replace with actual market groups
         if text == "dummy":
             # Add 'real stoof!' instead
-            currentMktGrp = sMkt.getMarketGroup(tree.GetPyData(parent), eager="children")
+            currentMktGrp = sMkt.getMarketGroup(tree.GetItemData(parent), eager="children")
             for childMktGrp in sMkt.getMarketGroupChildren(currentMktGrp):
                 iconId = self.addMarketViewImage(sMkt.getIconByMarketGroup(childMktGrp))
-                childId = tree.AppendItem(parent, childMktGrp.name, iconId, data=wx.TreeItemData(childMktGrp.ID))
+                childId = tree.AppendItem(parent, childMktGrp.name, iconId, data=childMktGrp.ID)
                 if sMkt.marketGroupHasTypesCheck(childMktGrp) is False:
                     tree.AppendItem(childId, "dummy")
                 else:
@@ -153,11 +153,11 @@ class BaseImplantEditorView(wx.Panel):
 
         # replace dummy with actual items
         if text == "itemdummy":
-            currentMktGrp = sMkt.getMarketGroup(tree.GetPyData(parent))
+            currentMktGrp = sMkt.getMarketGroup(tree.GetItemData(parent))
             items = sMkt.getItemsByMarketGroup(currentMktGrp)
             for item in items:
                 iconId = self.addMarketViewImage(item.icon.iconFile)
-                tree.AppendItem(parent, item.name, iconId, data=wx.TreeItemData(item))
+                tree.AppendItem(parent, item.name, iconId, data=item)
 
         tree.SortChildren(parent)
 
@@ -185,7 +185,7 @@ class BaseImplantEditorView(wx.Panel):
 
             nchilds = self.availableImplantsTree.GetChildrenCount(root)
             if nchilds == 0:
-                item = self.availableImplantsTree.GetPyData(root)
+                item = self.availableImplantsTree.GetItemData(root)
                 self.addImplantToContext(item)
             else:
                 event.Skip()

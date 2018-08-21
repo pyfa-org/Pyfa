@@ -1,9 +1,7 @@
-import sys
-
 # noinspection PyPackageRequirements
 import wx
 
-from helpers import AutoListCtrl
+from .helpers import AutoListCtrl
 from service.price import Price as ServicePrice
 from service.market import Market
 from service.attribute import Attribute
@@ -30,17 +28,17 @@ class ItemCompare(wx.Panel):
         self.sortReverse = False
         self.item = item
         self.items = sorted(items,
-                            key=lambda x: x.attributes['metaLevel'].value if 'metaLevel' in x.attributes else None)
+                            key=lambda x: x.attributes['metaLevel'].value if 'metaLevel' in x.attributes else 0)
         self.attrs = {}
 
         # get a dict of attrName: attrInfo of all unique attributes across all items
         for item in self.items:
-            for attr in item.attributes.keys():
+            for attr in list(item.attributes.keys()):
                 if item.attributes[attr].info.displayName:
                     self.attrs[attr] = item.attributes[attr].info
 
         # Process attributes for items and find ones that differ
-        for attr in self.attrs.keys():
+        for attr in list(self.attrs.keys()):
             value = None
 
             for item in self.items:
@@ -65,14 +63,14 @@ class ItemCompare(wx.Panel):
         mainSizer.Add(self.m_staticline, 0, wx.EXPAND)
         bSizer = wx.BoxSizer(wx.HORIZONTAL)
 
-        self.totalAttrsLabel = wx.StaticText(self, wx.ID_ANY, u" ", wx.DefaultPosition, wx.DefaultSize, 0)
+        self.totalAttrsLabel = wx.StaticText(self, wx.ID_ANY, " ", wx.DefaultPosition, wx.DefaultSize, 0)
         bSizer.Add(self.totalAttrsLabel, 0, wx.ALIGN_CENTER_VERTICAL | wx.RIGHT)
 
-        self.toggleViewBtn = wx.ToggleButton(self, wx.ID_ANY, u"Toggle view mode", wx.DefaultPosition,
+        self.toggleViewBtn = wx.ToggleButton(self, wx.ID_ANY, "Toggle view mode", wx.DefaultPosition,
                                              wx.DefaultSize, 0)
         bSizer.Add(self.toggleViewBtn, 0, wx.ALIGN_CENTER_VERTICAL)
 
-        self.refreshBtn = wx.Button(self, wx.ID_ANY, u"Refresh", wx.DefaultPosition, wx.DefaultSize,
+        self.refreshBtn = wx.Button(self, wx.ID_ANY, "Refresh", wx.DefaultPosition, wx.DefaultSize,
                                     wx.BU_EXACTFIT)
         bSizer.Add(self.refreshBtn, 0, wx.ALIGN_CENTER_VERTICAL)
         self.refreshBtn.Bind(wx.EVT_BUTTON, self.RefreshValues)
@@ -109,7 +107,7 @@ class ItemCompare(wx.Panel):
 
     def processPrices(self, prices):
         for i, price in enumerate(prices):
-            self.paramList.SetStringItem(i, len(self.attrs) + 1, formatAmount(price.value, 3, 3, 9, currency=True))
+            self.paramList.SetItem(i, len(self.attrs) + 1, formatAmount(price.value, 3, 3, 9, currency=True))
 
     def PopulateList(self, sort=None):
 
@@ -126,7 +124,7 @@ class ItemCompare(wx.Panel):
                 try:
                     # Remember to reduce by 1, because the attrs array
                     # starts at 0 while the list has the item name as column 0.
-                    attr = str(self.attrs.keys()[sort - 1])
+                    attr = str(list(self.attrs.keys())[sort - 1])
                     func = lambda _val: _val.attributes[attr].value if attr in _val.attributes else None
                 except IndexError:
                     # Clicked on a column that's not part of our array (price most likely)
@@ -147,7 +145,7 @@ class ItemCompare(wx.Panel):
         self.paramList.SetColumnWidth(len(self.attrs) + 1, 60)
 
         for item in self.items:
-            i = self.paramList.InsertStringItem(sys.maxint, item.name)
+            i = self.paramList.InsertItem(self.paramList.GetItemCount(), item.name)
             for x, attr in enumerate(self.attrs.keys()):
                 if attr in item.attributes:
                     info = self.attrs[attr]
@@ -159,10 +157,10 @@ class ItemCompare(wx.Panel):
                     else:
                         valueUnit = formatAmount(value, 3, 0, 0)
 
-                    self.paramList.SetStringItem(i, x + 1, valueUnit)
+                    self.paramList.SetItem(i, x + 1, valueUnit)
 
             # Add prices
-            self.paramList.SetStringItem(i, len(self.attrs) + 1, formatAmount(item.price.price, 3, 3, 9, currency=True))
+            self.paramList.SetItem(i, len(self.attrs) + 1, formatAmount(item.price.price, 3, 3, 9, currency=True))
 
         self.paramList.RefreshRows()
         self.Layout()
@@ -185,7 +183,7 @@ class ItemCompare(wx.Panel):
             "Inverse Absolute Percent" : (lambda: (1 - value) * 100, unitName),
             "Inversed Modifier Percent": (lambda: (1 - value) * 100, unitName),
             "Modifier Percent"         : (lambda: ("%+.2f" if ((value - 1) * 100) % 1 else "%+d") % ((value - 1) * 100), unitName),
-            "Volume"                   : (lambda: value, u"m\u00B3"),
+            "Volume"                   : (lambda: value, "m\u00B3"),
             "Sizeclass"                : (lambda: value, ""),
             "Absolute Percent"         : (lambda: (value * 100), unitName),
             "Milliseconds"             : (lambda: value / 1000.0, unitName),
@@ -199,7 +197,7 @@ class ItemCompare(wx.Panel):
             v = override[0]()
             if isinstance(v, str):
                 fvalue = v
-            elif isinstance(v, (int, float, long)):
+            elif isinstance(v, (int, float)):
                 fvalue = formatAmount(v, 3, 0, 0)
             else:
                 fvalue = v

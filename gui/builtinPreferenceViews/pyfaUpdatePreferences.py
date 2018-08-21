@@ -2,7 +2,7 @@
 import wx
 
 from gui.preferenceView import PreferenceView
-from gui.bitmapLoader import BitmapLoader
+from gui.bitmap_loader import BitmapLoader
 from service.settings import UpdateSettings
 
 
@@ -33,7 +33,7 @@ class PFUpdatePref(PreferenceView):
         self.stDesc.Wrap(dlgWidth - 50)
         mainSizer.Add(self.stDesc, 0, wx.ALL, 5)
 
-        self.suppressPrerelease = wx.CheckBox(panel, wx.ID_ANY, u"Allow pre-release notifications", wx.DefaultPosition,
+        self.suppressPrerelease = wx.CheckBox(panel, wx.ID_ANY, "Allow pre-release notifications", wx.DefaultPosition,
                                               wx.DefaultSize, 0)
         self.suppressPrerelease.Bind(wx.EVT_CHECKBOX, self.OnPrereleaseStateChange)
         self.suppressPrerelease.SetValue(not self.UpdateSettings.get('prerelease'))
@@ -52,11 +52,11 @@ class PFUpdatePref(PreferenceView):
                                 "You can choose to reset notification suppression for this release, "
                                 "or download the new release from GitHub.")
 
-            self.versionSizer.AddSpacer((5, 5), 0, wx.EXPAND, 5)
+            self.versionSizer.AddStretchSpacer()
 
             self.versionSizer.Add(wx.StaticLine(panel, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.LI_HORIZONTAL),
                                   0, wx.EXPAND, 5)
-            self.versionSizer.AddSpacer((5, 5), 0, wx.EXPAND, 5)
+            self.versionSizer.AddStretchSpacer()
 
             self.versionSizer.Add(self.versionTitle, 0, wx.EXPAND, 5)
             self.versionDesc = wx.StaticText(panel, wx.ID_ANY, self.versionInfo, wx.DefaultPosition, wx.DefaultSize, 0)

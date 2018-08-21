@@ -258,11 +258,11 @@ class Fit(object):
     def projectedFits(self):
         # only in extreme edge cases will the fit be invalid, but to be sure do
         # not return them.
-        return [fit for fit in self.__projectedFits.values() if not fit.isInvalid]
+        return [fit for fit in list(self.__projectedFits.values()) if not fit.isInvalid]
 
     @property
     def commandFits(self):
-        return [fit for fit in self.__commandFits.values() if not fit.isInvalid]
+        return [fit for fit in list(self.__commandFits.values()) if not fit.isInvalid]
 
     def getProjectionInfo(self, fitID):
         return self.projectedOnto.get(fitID, None)
@@ -492,7 +492,7 @@ class Fit(object):
 
     def __runCommandBoosts(self, runTime="normal"):
         pyfalog.debug("Applying gang boosts for {0}", repr(self))
-        for warfareBuffID in self.commandBonuses.keys():
+        for warfareBuffID in list(self.commandBonuses.keys()):
             # Unpack all data required to run effect properly
             effect_runTime, value, thing, effect = self.commandBonuses[warfareBuffID]
 
@@ -672,11 +672,77 @@ class Fit(object):
                     groups = ("Energy Weapon", "Hybrid Weapon")
                     self.modules.filteredItemBoost(lambda mod: mod.item.group.name in groups, "maxRange", value, stackingPenalties=True)
 
+                # Localized environment effects
+
+                if warfareBuffID == 79:  # AOE_Beacon_bioluminescence_cloud
+                    self.ship.boostItemAttr("signatureRadius", value, stackingPenalties=True)
+
+                if warfareBuffID == 80:  # AOE_Beacon_caustic_cloud_local_repair
+                    self.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill("Repair Systems"),
+                                                   "armorDamageAmount", value, stackingPenalties=True)
+
+                if warfareBuffID == 81:  # AOE_Beacon_caustic_cloud_remote_repair
+                    self.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill("Remote Armor Repair Systems"),
+                                                   "armorDamageAmount", value, stackingPenalties=True)
+
+                if warfareBuffID == 88:  # AOE_Beacon_filament_cloud_shield_booster
+                    self.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill("Shield Operation") or
+                                                               mod.item.requiresSkill("Shield Emission Systems"),
+                                                   "capacitorNeed", value, stackingPenalties=True)
+
+                if warfareBuffID == 89:  # AOE_Beacon_filament_cloud_ancillary_charge_usage
+                    self.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill("Shield Operation") or
+                                                               mod.item.requiresSkill("Shield Emission Systems"),
+                                                   "chargeRate", value, stackingPenalties=True)
+
+                # Abysmal Weather Effects
+
+                if warfareBuffID == 90:  # Weather_electric_storm_EM_resistance_penalty
+                    for tankType in ("shield", "armor"):
+                        self.ship.boostItemAttr("{}EmDamageResonance".format(tankType), value)
+                    self.ship.boostItemAttr("emDamageResonance", value)  # for hull
+
+                if warfareBuffID == 92:  # Weather_electric_storm_capacitor_recharge_bonus
+                    self.ship.boostItemAttr("rechargeRate", value, stackingPenalties=True)
+
+                if warfareBuffID == 93:  # Weather_xenon_gas_explosive_resistance_penalty
+                    for tankType in ("shield", "armor"):
+                        self.ship.boostItemAttr("{}ExplosiveDamageResonance".format(tankType), value)
+                    self.ship.boostItemAttr("explosiveDamageResonance", value)  # for hull
+
+                if warfareBuffID == 94:  # Weather_xenon_gas_shield_hp_bonus
+                    self.ship.boostItemAttr("shieldCapacity", value)  # for hull
+
+                if warfareBuffID == 95:  # Weather_infernal_thermal_resistance_penalty
+                    for tankType in ("shield", "armor"):
+                        self.ship.boostItemAttr("{}ThermalDamageResonance".format(tankType), value)
+                    self.ship.boostItemAttr("thermalDamageResonance", value)  # for hull
+
+                if warfareBuffID == 96:  # Weather_infernal_armor_hp_bonus
+                    self.ship.boostItemAttr("armorHP", value)  # for hull
+
+                if warfareBuffID == 97:  # Weather_darkness_turret_range_penalty
+                    self.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill("Gunnery"),
+                                                   "maxRange", value, stackingPenalties=True)
+                    self.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill("Gunnery"),
+                                                   "falloff", value, stackingPenalties=True)
+
+                if warfareBuffID == 98:  # Weather_darkness_velocity_bonus
+                    self.ship.boostItemAttr("maxVelocity", value)
+
+                if warfareBuffID == 99:  # Weather_caustic_toxin_kinetic_resistance_penalty
+                    for tankType in ("shield", "armor"):
+                        self.ship.boostItemAttr("{}KineticDamageResonance".format(tankType), value)
+                    self.ship.boostItemAttr("kineticDamageResonance", value)  # for hull
+
+                if warfareBuffID == 100:  # Weather_caustic_toxin_scan_resolution_bonus
+                    self.ship.boostItemAttr("scanResolution", value, stackingPenalties=True)
+
             del self.commandBonuses[warfareBuffID]
 
     def __resetDependentCalcs(self):
         self.calculated = False
-        for value in self.projectedOnto.values():
+        for value in list(self.projectedOnto.values()):
             if value.victim_fit:  # removing a self-projected fit causes victim fit to be None. @todo: look into why. :3
                 value.victim_fit.calculated = False
 
@@ -707,14 +773,14 @@ class Fit(object):
             self.__resetDependentCalcs()
 
             # For fits that are under local's Command, we do the same thing
-            for value in self.boostedOnto.values():
+            for value in list(self.boostedOnto.values()):
                 # apparently this is a thing that happens when removing a command fit from a fit and then switching to
                 # that command fit. Same as projected clears, figure out why.
                 if value.boosted_fit:
                     value.boosted_fit.__resetDependentCalcs()
 
         if targetFit and type == CalcType.PROJECTED:
-            pyfalog.debug(u"Calculating projections from {0} to target {1}", repr(self), repr(targetFit))
+            pyfalog.debug("Calculating projections from {0} to target {1}", repr(self), repr(targetFit))
             projectionInfo = self.getProjectionInfo(targetFit.ID)
 
         # Start applying any command fits that we may have.
@@ -756,7 +822,7 @@ class Fit(object):
 
         # Loop through our run times here. These determine which effects are run in which order.
         for runTime in ("early", "normal", "late"):
-            pyfalog.debug("Run time: {0}", runTime)
+            # pyfalog.debug("Run time: {0}", runTime)
             # Items that are unrestricted. These items are run on the local fit
             # first and then projected onto the target fit it one is designated
             u = [
@@ -795,7 +861,7 @@ class Fit(object):
                         # targetFit.register(item, origin=self)
                         item.calculateModifiedAttributes(targetFit, runTime, False, True)
 
-            pyfalog.debug("Command Bonuses: {}".format(self.commandBonuses))
+            # pyfalog.debug("Command Bonuses: {}".format(self.commandBonuses))
 
             # If we are calculating our local or projected fit and have command bonuses, apply them
             if type != CalcType.COMMAND and self.commandBonuses:
@@ -838,7 +904,7 @@ class Fit(object):
         for item in c:
             if item is not None:
                 # apply effects onto target fit x amount of times
-                for _ in xrange(projectionInfo.amount):
+                for _ in range(projectionInfo.amount):
                     targetFit.register(item, origin=self)
                     item.calculateModifiedAttributes(targetFit, runTime, True)
 
@@ -854,7 +920,7 @@ class Fit(object):
         for slotType in (Slot.LOW, Slot.MED, Slot.HIGH, Slot.RIG, Slot.SUBSYSTEM, Slot.SERVICE):
             amount = self.getSlotsFree(slotType, True)
             if amount > 0:
-                for _ in xrange(int(amount)):
+                for _ in range(int(amount)):
                     self.modules.append(Module.buildEmpty(slotType))
 
             if amount < 0:
@@ -870,7 +936,7 @@ class Fit(object):
                     self.modules.remove(mod)
 
     def unfill(self):
-        for i in xrange(len(self.modules) - 1, -1, -1):
+        for i in range(len(self.modules) - 1, -1, -1):
             mod = self.modules[i]
             if mod.isEmpty:
                 del self.modules[i]
@@ -878,7 +944,7 @@ class Fit(object):
     @property
     def modCount(self):
         x = 0
-        for i in xrange(len(self.modules) - 1, -1, -1):
+        for i in range(len(self.modules) - 1, -1, -1):
             mod = self.modules[i]
             if not mod.isEmpty:
                 x += 1
@@ -949,6 +1015,16 @@ class Fit(object):
 
     def getNumSlots(self, type):
         return self.ship.getModifiedItemAttr(self.slots[type]) or 0
+
+    def getHardpointsFree(self, type):
+        if type == Hardpoint.NONE:
+            return 1
+        elif type == Hardpoint.TURRET:
+            return self.ship.getModifiedItemAttr('turretSlotsLeft') - self.getHardpointsUsed(Hardpoint.TURRET)
+        elif type == Hardpoint.MISSILE:
+            return self.ship.getModifiedItemAttr('launcherSlotsLeft') - self.getHardpointsUsed(Hardpoint.MISSILE)
+        else:
+            raise ValueError("%d is not a valid value for Hardpoint Enum", type)
 
     @property
     def calibrationUsed(self):
@@ -1084,7 +1160,7 @@ class Fit(object):
 
     def calculateSustainableTank(self, effective=True):
         if self.__sustainableTank is None:
-            if self.capStable:
+            if self.capStable and not self.factorReload:
                 sustainable = {
                     "armorRepair" : self.extraAttributes["armorRepair"],
                     "shieldRepair": self.extraAttributes["shieldRepair"],
@@ -1142,16 +1218,38 @@ class Fit(object):
                                         usesCap = False
                                 except AttributeError:
                                     usesCap = False
-                                # Modules which do not use cap are not penalized based on cap use
-                                if usesCap:
-                                    cycleTime = mod.getModifiedItemAttr("duration")
+
+                                # Normal Repairers
+                                if usesCap and not mod.charge:
+                                    cycleTime = mod.rawCycleTime
                                     amount = mod.getModifiedItemAttr(groupAttrMap[mod.item.group.name])
                                     sustainable[attr] -= amount / (cycleTime / 1000.0)
                                     repairers.append(mod)
+                                # Ancillary Armor reps etc
+                                elif usesCap and mod.charge:
+                                    cycleTime = mod.rawCycleTime
+                                    amount = mod.getModifiedItemAttr(groupAttrMap[mod.item.group.name])
+                                    if mod.charge.name == "Nanite Repair Paste":
+                                        multiplier = mod.getModifiedItemAttr("chargedArmorDamageMultiplier") or 1
+                                    else:
+                                        multiplier = 1
+                                    sustainable[attr] -= amount * multiplier / (cycleTime / 1000.0)
+                                    repairers.append(mod)
+                                # Ancillary Shield boosters etc
+                                elif not usesCap and mod.item.group.name in ("Ancillary Shield Booster", "Ancillary Remote Shield Booster"):
+                                    cycleTime = mod.rawCycleTime
+                                    amount = mod.getModifiedItemAttr(groupAttrMap[mod.item.group.name])
+                                    if self.factorReload and mod.charge:
+                                        reloadtime = mod.reloadTime
+                                    else:
+                                        reloadtime = 0.0
+                                    offdutycycle = reloadtime / ((max(mod.numShots, 1) * cycleTime) + reloadtime)
+                                    sustainable[attr] -= amount * offdutycycle / (cycleTime / 1000.0)
 
                 # Sort repairers by efficiency. We want to use the most efficient repairers first
                 repairers.sort(key=lambda _mod: _mod.getModifiedItemAttr(
-                        groupAttrMap[_mod.item.group.name]) / _mod.getModifiedItemAttr("capacitorNeed"), reverse=True)
+                    groupAttrMap[_mod.item.group.name]) * (_mod.getModifiedItemAttr(
+                        "chargedArmorDamageMultiplier") or 1) / _mod.getModifiedItemAttr("capacitorNeed"), reverse=True)
 
                 # Loop through every module until we're above peak recharge
                 # Most efficient first, as we sorted earlier.
@@ -1160,15 +1258,35 @@ class Fit(object):
                 for mod in repairers:
                     if capUsed > totalPeakRecharge:
                         break
-                    cycleTime = mod.cycleTime
+
+                    if self.factorReload and mod.charge:
+                        reloadtime = mod.reloadTime
+                    else:
+                        reloadtime = 0.0
+
+                    cycleTime = mod.rawCycleTime
                     capPerSec = mod.capUse
+
                     if capPerSec is not None and cycleTime is not None:
                         # Check how much this repper can work
                         sustainability = min(1, (totalPeakRecharge - capUsed) / capPerSec)
-
-                        # Add the sustainable amount
                         amount = mod.getModifiedItemAttr(groupAttrMap[mod.item.group.name])
-                        sustainable[groupStoreMap[mod.item.group.name]] += sustainability * (amount / (cycleTime / 1000.0))
+                        # Add the sustainable amount
+
+                        if not mod.charge:
+                            sustainable[groupStoreMap[mod.item.group.name]] += sustainability * amount / (
+                                    cycleTime / 1000.0)
+                        else:
+                            if mod.charge.name == "Nanite Repair Paste":
+                                multiplier = mod.getModifiedItemAttr("chargedArmorDamageMultiplier") or 1
+                            else:
+                                multiplier = 1
+                            ondutycycle = (max(mod.numShots, 1) * cycleTime) / (
+                                    (max(mod.numShots, 1) * cycleTime) + reloadtime)
+                            sustainable[groupStoreMap[
+                                mod.item.group.name]] += sustainability * amount * ondutycycle * multiplier / (
+                                    cycleTime / 1000.0)
+
                         capUsed += capPerSec
 
             sustainable["passiveShield"] = self.calculateShieldRecharge()
@@ -1186,7 +1304,7 @@ class Fit(object):
         rechargeRate = self.ship.getModifiedItemAttr("shieldRechargeRate") / 1000.0
         return 10 / rechargeRate * sqrt(percent) * (1 - sqrt(percent)) * capacity
 
-    def addDrain(self, src, cycleTime, capNeed, clipSize=0):
+    def addDrain(self, src, cycleTime, capNeed, clipSize=0, reloadTime=0):
         """ Used for both cap drains and cap fills (fills have negative capNeed) """
 
         energyNeutralizerSignatureResolution = src.getModifiedItemAttr("energyNeutralizerSignatureResolution")
@@ -1196,7 +1314,7 @@ class Fit(object):
         if energyNeutralizerSignatureResolution:
             capNeed = capNeed * min(1, signatureRadius / energyNeutralizerSignatureResolution)
 
-        self.__extraDrains.append((cycleTime, capNeed, clipSize))
+        self.__extraDrains.append((cycleTime, capNeed, clipSize, reloadTime))
 
     def removeDrain(self, i):
         del self.__extraDrains[i]
@@ -1214,6 +1332,7 @@ class Fit(object):
                     cycleTime = mod.rawCycleTime or 0
                     reactivationTime = mod.getModifiedItemAttr("moduleReactivationDelay") or 0
                     fullCycleTime = cycleTime + reactivationTime
+                    reloadTime = mod.reloadTime
                     if fullCycleTime > 0:
                         capNeed = mod.capUse
                         if capNeed > 0:
@@ -1225,11 +1344,11 @@ class Fit(object):
                         disableStagger = mod.hardpoint == Hardpoint.TURRET
 
                         drains.append((int(fullCycleTime), mod.getModifiedItemAttr("capacitorNeed") or 0,
-                                       mod.numShots or 0, disableStagger))
+                                       mod.numShots or 0, disableStagger, reloadTime))
 
-        for fullCycleTime, capNeed, clipSize in self.iterDrains():
+        for fullCycleTime, capNeed, clipSize, reloadTime in self.iterDrains():
             # Stagger incoming effects for cap simulation
-            drains.append((int(fullCycleTime), capNeed, clipSize, False))
+            drains.append((int(fullCycleTime), capNeed, clipSize, False, reloadTime))
             if capNeed > 0:
                 capUsed += capNeed / (fullCycleTime / 1000.0)
             else:
@@ -1488,11 +1607,11 @@ class Fit(object):
         return copy_ship
 
     def __repr__(self):
-        return u"Fit(ID={}, ship={}, name={}) at {}".format(
+        return "Fit(ID={}, ship={}, name={}) at {}".format(
                 self.ID, self.ship.item.name, self.name, hex(id(self))
-        ).encode('utf8')
+        )
 
     def __str__(self):
-        return u"{} ({})".format(
+        return "{} ({})".format(
                 self.name, self.ship.item.name
-        ).encode('utf8')
+        )

@@ -47,12 +47,12 @@ class DummyEntry(object):
         self.item = DummyItem(txt)
 
 
-class ProjectedViewDrop(wx.PyDropTarget):
+class ProjectedViewDrop(wx.DropTarget):
     def __init__(self, dropFn, *args, **kwargs):
         super(ProjectedViewDrop, self).__init__(*args, **kwargs)
         self.dropFn = dropFn
         # this is really transferring an EVE itemID
-        self.dropData = wx.PyTextDataObject()
+        self.dropData = wx.TextDataObject()
         self.SetDataObject(self.dropData)
 
     def OnData(self, x, y, t):
@@ -110,12 +110,11 @@ class ProjectedView(d.Display):
             # Gather module information to get position
             module = fit.modules[int(data[1])]
             sFit.project(fit.ID, module.item.ID)
-            wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=self.mainFrame.getActiveFit()))
+            wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fit.ID))
         elif data[0] == "market":
             sFit = Fit.getInstance()
-            fitID = self.mainFrame.getActiveFit()
             sFit.project(fit.ID, int(data[1]))
-            wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=self.mainFrame.getActiveFit()))
+            wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fit.ID))
 
     def kbEvent(self, event):
         keycode = event.GetKeyCode()
@@ -140,7 +139,7 @@ class ProjectedView(d.Display):
     def startDrag(self, event):
         row = event.GetIndex()
         if row != -1 and isinstance(self.get(row), es_Drone):
-            data = wx.PyTextDataObject()
+            data = wx.TextDataObject()
             dataStr = "projected:" + str(self.GetItemData(row))
             data.SetText(dataStr)
 
@@ -229,6 +228,8 @@ class ProjectedView(d.Display):
             stuff = [DummyEntry("Drag an item or fit, or use right-click menu for wormhole effects")]
 
         self.update(stuff)
+
+        event.Skip()
 
     def get(self, row):
         if row == -1:

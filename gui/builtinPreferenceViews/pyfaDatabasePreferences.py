@@ -1,7 +1,7 @@
 import wx
 
 from gui.preferenceView import PreferenceView
-from gui.bitmapLoader import BitmapLoader
+from gui.bitmap_loader import BitmapLoader
 from gui.utils import helpers_wxPython as wxHelpers
 import config
 from eos.db.saveddata.queries import clearPrices, clearDamagePatterns, clearTargetResists
@@ -24,7 +24,7 @@ class PFGeneralPref(PreferenceView):
         self.stTitle.SetFont(wx.Font(12, 70, 90, 90, False, wx.EmptyString))
         mainSizer.Add(self.stTitle, 0, wx.ALL, 5)
 
-        self.stSubTitle = wx.StaticText(panel, wx.ID_ANY, u"(Cannot be changed while pyfa is running. Set via command line switches.)",
+        self.stSubTitle = wx.StaticText(panel, wx.ID_ANY, "(Cannot be changed while pyfa is running. Set via command line switches.)",
                                         wx.DefaultPosition, wx.DefaultSize, 0)
         self.stSubTitle.Wrap(-1)
         mainSizer.Add(self.stSubTitle, 0, wx.ALL, 3)
@@ -33,11 +33,11 @@ class PFGeneralPref(PreferenceView):
         mainSizer.Add(self.m_staticline1, 0, wx.EXPAND | wx.TOP | wx.BOTTOM, 5)
 
         # Save in Root
-        self.cbsaveInRoot = wx.CheckBox(panel, wx.ID_ANY, u"Using Executable Path for Saved Fit Database and Settings", wx.DefaultPosition, wx.DefaultSize, 0)
+        self.cbsaveInRoot = wx.CheckBox(panel, wx.ID_ANY, "Using Executable Path for Saved Fit Database and Settings", wx.DefaultPosition, wx.DefaultSize, 0)
         mainSizer.Add(self.cbsaveInRoot, 0, wx.ALL | wx.EXPAND, 5)
 
         # Database path
-        self.stSetUserPath = wx.StaticText(panel, wx.ID_ANY, u"pyfa User Path:", wx.DefaultPosition, wx.DefaultSize, 0)
+        self.stSetUserPath = wx.StaticText(panel, wx.ID_ANY, "pyfa User Path:", wx.DefaultPosition, wx.DefaultSize, 0)
         self.stSetUserPath.Wrap(-1)
         mainSizer.Add(self.stSetUserPath, 0, wx.ALL | wx.ALIGN_CENTER_VERTICAL, 5)
         self.inputUserPath = wx.TextCtrl(panel, wx.ID_ANY, config.savePath, wx.DefaultPosition, wx.DefaultSize, 0)
@@ -46,7 +46,7 @@ class PFGeneralPref(PreferenceView):
         mainSizer.Add(self.inputUserPath, 0, wx.ALL | wx.ALIGN_CENTER_VERTICAL | wx.EXPAND, 5)
 
         # Save DB
-        self.stFitDB = wx.StaticText(panel, wx.ID_ANY, u"Fitting Database:", wx.DefaultPosition, wx.DefaultSize, 0)
+        self.stFitDB = wx.StaticText(panel, wx.ID_ANY, "Fitting Database:", wx.DefaultPosition, wx.DefaultSize, 0)
         self.stFitDB.Wrap(-1)
         mainSizer.Add(self.stFitDB, 0, wx.ALL | wx.ALIGN_CENTER_VERTICAL, 5)
 
@@ -56,7 +56,7 @@ class PFGeneralPref(PreferenceView):
         mainSizer.Add(self.inputFitDB, 0, wx.ALL | wx.ALIGN_CENTER_VERTICAL | wx.EXPAND, 5)
 
         # Game Data DB
-        self.stGameDB = wx.StaticText(panel, wx.ID_ANY, u"Game Database:", wx.DefaultPosition, wx.DefaultSize, 0)
+        self.stGameDB = wx.StaticText(panel, wx.ID_ANY, "Game Database:", wx.DefaultPosition, wx.DefaultSize, 0)
         self.stGameDB.Wrap(-1)
         mainSizer.Add(self.stGameDB, 0, wx.ALL | wx.ALIGN_CENTER_VERTICAL, 5)
 
@@ -76,15 +76,15 @@ class PFGeneralPref(PreferenceView):
         mainSizer.Add(self.m_staticline3, 0, wx.EXPAND | wx.TOP | wx.BOTTOM, 5)
 
         btnSizer = wx.BoxSizer(wx.VERTICAL)
-        btnSizer.AddSpacer((0, 0), 1, wx.EXPAND, 5)
+        btnSizer.AddStretchSpacer()
 
-        self.btnDeleteDamagePatterns = wx.Button(panel, wx.ID_ANY, u"Delete All Damage Pattern Profiles", wx.DefaultPosition, wx.DefaultSize, 0)
+        self.btnDeleteDamagePatterns = wx.Button(panel, wx.ID_ANY, "Delete All Damage Pattern Profiles", wx.DefaultPosition, wx.DefaultSize, 0)
         btnSizer.Add(self.btnDeleteDamagePatterns, 0, wx.ALL, 5)
 
-        self.btnDeleteTargetResists = wx.Button(panel, wx.ID_ANY, u"Delete All Target Resist Profiles", wx.DefaultPosition, wx.DefaultSize, 0)
+        self.btnDeleteTargetResists = wx.Button(panel, wx.ID_ANY, "Delete All Target Resist Profiles", wx.DefaultPosition, wx.DefaultSize, 0)
         btnSizer.Add(self.btnDeleteTargetResists, 0, wx.ALL, 5)
 
-        self.btnPrices = wx.Button(panel, wx.ID_ANY, u"Delete All Prices", wx.DefaultPosition, wx.DefaultSize, 0)
+        self.btnPrices = wx.Button(panel, wx.ID_ANY, "Delete All Prices", wx.DefaultPosition, wx.DefaultSize, 0)
         btnSizer.Add(self.btnPrices, 0, wx.ALL, 5)
 
         mainSizer.Add(btnSizer, 0, wx.EXPAND, 5)
@@ -97,17 +97,17 @@ class PFGeneralPref(PreferenceView):
         panel.Layout()
 
     def DeleteDamagePatterns(self, event):
-        question = u"This is a destructive action that will delete all damage pattern profiles.\nAre you sure you want to do this?"
+        question = "This is a destructive action that will delete all damage pattern profiles.\nAre you sure you want to do this?"
         if wxHelpers.YesNoDialog(question, "Confirm"):
             clearDamagePatterns()
 
     def DeleteTargetResists(self, event):
-        question = u"This is a destructive action that will delete all target resist profiles.\nAre you sure you want to do this?"
+        question = "This is a destructive action that will delete all target resist profiles.\nAre you sure you want to do this?"
         if wxHelpers.YesNoDialog(question, "Confirm"):
             clearTargetResists()
 
     def DeletePrices(self, event):
-        question = u"This is a destructive action that will delete all cached prices out of the database.\nAre you sure you want to do this?"
+        question = "This is a destructive action that will delete all cached prices out of the database.\nAre you sure you want to do this?"
         if wxHelpers.YesNoDialog(question, "Confirm"):
             clearPrices()
 

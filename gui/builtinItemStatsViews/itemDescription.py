@@ -11,8 +11,8 @@ class ItemDescription(wx.Panel):
         mainSizer = wx.BoxSizer(wx.VERTICAL)
         self.SetSizer(mainSizer)
 
-        bgcolor = wx.SystemSettings_GetColour(wx.SYS_COLOUR_WINDOW)
-        fgcolor = wx.SystemSettings_GetColour(wx.SYS_COLOUR_WINDOWTEXT)
+        bgcolor = wx.SystemSettings.GetColour(wx.SYS_COLOUR_WINDOW)
+        fgcolor = wx.SystemSettings.GetColour(wx.SYS_COLOUR_WINDOWTEXT)
 
         self.description = wx.html.HtmlWindow(self)
 
@@ -31,3 +31,36 @@ class ItemDescription(wx.Panel):
 
         mainSizer.Add(self.description, 1, wx.ALL | wx.EXPAND, 0)
         self.Layout()
+
+        self.description.Bind(wx.EVT_CONTEXT_MENU, self.onPopupMenu)
+        self.description.Bind(wx.EVT_KEY_DOWN, self.onKeyDown)
+
+        self.popupMenu = wx.Menu()
+        copyItem = wx.MenuItem(self.popupMenu, 1, 'Copy')
+        self.popupMenu.Append(copyItem)
+        self.popupMenu.Bind(wx.EVT_MENU, self.menuClickHandler, copyItem)
+
+    def onPopupMenu(self, event):
+        self.PopupMenu(self.popupMenu)
+
+    def menuClickHandler(self, event):
+        selectedMenuItem = event.GetId()
+        if selectedMenuItem == 1:  # Copy was chosen
+            self.copySelectionToClipboard()
+
+    def onKeyDown(self, event):
+        keyCode = event.GetKeyCode()
+        # Ctrl + C
+        if keyCode == 67 and event.ControlDown():
+            self.copySelectionToClipboard()
+        # Ctrl + A
+        if keyCode == 65 and event.ControlDown():
+            self.description.SelectAll()
+
+    def copySelectionToClipboard(self):
+        selectedText = self.description.SelectionToText()
+        if selectedText == '':  # if no selection, copy all content
+            selectedText = self.description.ToText()
+        if wx.TheClipboard.Open():
+            wx.TheClipboard.SetData(wx.TextDataObject(selectedText))
+            wx.TheClipboard.Close()

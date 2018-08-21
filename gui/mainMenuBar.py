@@ -25,14 +25,13 @@ from service.character import Character
 from service.fit import Fit
 import gui.graphFrame
 import gui.globalEvents as GE
-from gui.bitmapLoader import BitmapLoader
+from gui.bitmap_loader import BitmapLoader
 
 from logbook import Logger
-pyfalog = Logger(__name__)
+# from service.crest import Crest
+# from service.crest import CrestModes
 
-if 'wxMac' not in wx.PlatformInfo or ('wxMac' in wx.PlatformInfo and wx.VERSION >= (3, 0)):
-    from service.crest import Crest
-    from service.crest import CrestModes
+pyfalog = Logger(__name__)
 
 
 class MainMenuBar(wx.MenuBar):
@@ -59,7 +58,9 @@ class MainMenuBar(wx.MenuBar):
         self.toggleOverridesId = wx.NewId()
         self.importDatabaseDefaultsId = wx.NewId()
         self.toggleIgnoreRestrictionID = wx.NewId()
+        self.devToolsId = wx.NewId()
 
+        # pheonix: evaluate if this is needed
         if 'wxMac' in wx.PlatformInfo and wx.VERSION >= (3, 0):
             wx.ID_COPY = wx.NewId()
             wx.ID_PASTE = wx.NewId()
@@ -107,23 +108,23 @@ class MainMenuBar(wx.MenuBar):
 
         charEditItem = wx.MenuItem(windowMenu, self.characterEditorId, "&Character Editor\tCTRL+E")
         charEditItem.SetBitmap(BitmapLoader.getBitmap("character_small", "gui"))
-        windowMenu.AppendItem(charEditItem)
+        windowMenu.Append(charEditItem)
 
         damagePatternEditItem = wx.MenuItem(windowMenu, self.damagePatternEditorId, "Damage Pattern Editor\tCTRL+D")
         damagePatternEditItem.SetBitmap(BitmapLoader.getBitmap("damagePattern_small", "gui"))
-        windowMenu.AppendItem(damagePatternEditItem)
+        windowMenu.Append(damagePatternEditItem)
 
         targetResistsEditItem = wx.MenuItem(windowMenu, self.targetResistsEditorId, "Target Resists Editor\tCTRL+R")
         targetResistsEditItem.SetBitmap(BitmapLoader.getBitmap("explosive_small", "gui"))
-        windowMenu.AppendItem(targetResistsEditItem)
+        windowMenu.Append(targetResistsEditItem)
 
         implantSetEditItem = wx.MenuItem(windowMenu, self.implantSetEditorId, "Implant Set Editor\tCTRL+I")
         implantSetEditItem.SetBitmap(BitmapLoader.getBitmap("hardwire_small", "gui"))
-        windowMenu.AppendItem(implantSetEditItem)
+        windowMenu.Append(implantSetEditItem)
 
         graphFrameItem = wx.MenuItem(windowMenu, self.graphFrameId, "Graphs\tCTRL+G")
         graphFrameItem.SetBitmap(BitmapLoader.getBitmap("graphs_small", "gui"))
-        windowMenu.AppendItem(graphFrameItem)
+        windowMenu.Append(graphFrameItem)
 
         if not gui.graphFrame.graphFrame_enabled:
             self.Enable(self.graphFrameId, False)
@@ -131,31 +132,28 @@ class MainMenuBar(wx.MenuBar):
         preferencesShortCut = "CTRL+," if 'wxMac' in wx.PlatformInfo else "CTRL+P"
         preferencesItem = wx.MenuItem(windowMenu, wx.ID_PREFERENCES, "Preferences\t" + preferencesShortCut)
         preferencesItem.SetBitmap(BitmapLoader.getBitmap("preferences_small", "gui"))
-        windowMenu.AppendItem(preferencesItem)
+        windowMenu.Append(preferencesItem)
 
-        if 'wxMac' not in wx.PlatformInfo or ('wxMac' in wx.PlatformInfo and wx.VERSION >= (3, 0)):
-            self.sCrest = Crest.getInstance()
+        # self.sEsi = Crest.getInstance()
 
-            # CREST Menu
-            crestMenu = wx.Menu()
-            self.Append(crestMenu, "&CREST")
-            if self.sCrest.settings.get('mode') != CrestModes.IMPLICIT:
-                crestMenu.Append(self.ssoLoginId, "Manage Characters")
-            else:
-                crestMenu.Append(self.ssoLoginId, "Login to EVE")
-            crestMenu.Append(self.eveFittingsId, "Browse EVE Fittings")
-            crestMenu.Append(self.exportToEveId, "Export To EVE")
+        # CREST Menu
+        esiMMenu = wx.Menu()
+        self.Append(esiMMenu, "EVE &SSO")
 
-            if self.sCrest.settings.get('mode') == CrestModes.IMPLICIT or len(self.sCrest.getCrestCharacters()) == 0:
-                self.Enable(self.eveFittingsId, False)
-                self.Enable(self.exportToEveId, False)
+        esiMMenu.Append(self.ssoLoginId, "Manage Characters")
+        esiMMenu.Append(self.eveFittingsId, "Browse EVE Fittings")
+        esiMMenu.Append(self.exportToEveId, "Export To EVE")
 
-            if not self.mainFrame.disableOverrideEditor:
-                windowMenu.AppendSeparator()
-                attrItem = wx.MenuItem(windowMenu, self.attrEditorId, "Attribute Overrides\tCTRL+B")
-                attrItem.SetBitmap(BitmapLoader.getBitmap("fit_rename_small", "gui"))
-                windowMenu.AppendItem(attrItem)
-                windowMenu.Append(self.toggleOverridesId, "Turn Overrides On")
+        # if self.sEsi.settings.get('mode') == CrestModes.IMPLICIT or len(self.sEsi.getCrestCharacters()) == 0:
+        self.Enable(self.eveFittingsId, True)
+        self.Enable(self.exportToEveId, True)
+
+        if not self.mainFrame.disableOverrideEditor:
+            windowMenu.AppendSeparator()
+            attrItem = wx.MenuItem(windowMenu, self.attrEditorId, "Attribute Overrides\tCTRL+B")
+            attrItem.SetBitmap(BitmapLoader.getBitmap("fit_rename_small", "gui"))
+            windowMenu.Append(attrItem)
+            windowMenu.Append(self.toggleOverridesId, "Turn Overrides On")
 
         # Help menu
         helpMenu = wx.Menu()
@@ -170,6 +168,8 @@ class MainMenuBar(wx.MenuBar):
         if config.debug:
             helpMenu.Append(self.mainFrame.widgetInspectMenuID, "Open Widgets Inspect tool",
                             "Open Widgets Inspect tool")
+            helpMenu.Append(self.devToolsId, "Open Dev Tools",
+                            "Dev Tools")
 
         self.mainFrame.Bind(GE.FIT_CHANGED, self.fitChanged)
 

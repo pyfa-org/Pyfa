@@ -1,7 +1,7 @@
 # warpScramble
 #
 # Used by:
-# Modules named like: Warp Disruptor (27 of 27)
+# Modules named like: Warp Disruptor (28 of 28)
 type = "projected", "active"
 
 

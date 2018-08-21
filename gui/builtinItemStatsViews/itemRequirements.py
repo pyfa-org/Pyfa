@@ -1,7 +1,7 @@
 # noinspection PyPackageRequirements
 import wx
 
-from gui.bitmapLoader import BitmapLoader
+from gui.bitmap_loader import BitmapLoader
 
 
 class ItemRequirements(wx.Panel):
@@ -19,7 +19,7 @@ class ItemRequirements(wx.Panel):
 
         self.SetSizer(mainSizer)
         self.root = self.reqTree.AddRoot("WINRARZOR")
-        self.reqTree.SetPyData(self.root, None)
+        self.reqTree.SetItemData(self.root, None)
 
         self.imageList = wx.ImageList(16, 16)
         self.reqTree.SetImageList(self.imageList)
@@ -32,7 +32,7 @@ class ItemRequirements(wx.Panel):
         self.Layout()
 
     def getFullSkillTree(self, parentSkill, parent, sbIconId):
-        for skill, level in parentSkill.requiredSkills.iteritems():
+        for skill, level in parentSkill.requiredSkills.items():
             child = self.reqTree.AppendItem(parent, "%s  %s" % (skill.name, self.romanNb[int(level)]), sbIconId)
             if skill.ID not in self.skillIdHistory:
                 self.getFullSkillTree(skill, child, sbIconId)

@@ -1,7 +1,7 @@
 # armorRepair
 #
 # Used by:
-# Modules from group: Armor Repair Unit (105 of 105)
+# Modules from group: Armor Repair Unit (108 of 108)
 runTime = "late"
 type = "active"
 

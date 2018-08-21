@@ -2,7 +2,7 @@
 #
 # Used by:
 # Modules from group: Capacitor Booster (59 of 59)
-# Modules from group: Energy Neutralizer (51 of 51)
+# Modules from group: Energy Neutralizer (54 of 54)
 # Modules from group: Energy Nosferatu (51 of 51)
 # Modules from group: Hull Repair Unit (25 of 25)
 # Modules from group: Remote Armor Repairer (39 of 39)

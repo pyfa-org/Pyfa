@@ -5,8 +5,11 @@
 # Modules from group: Capacitor Power Relay (20 of 20)
 # Modules from group: Power Diagnostic System (23 of 23)
 # Modules from group: Reactor Control Unit (22 of 22)
+# Variations of structure module: Standup Reactor Control Unit I (2 of 2)
 type = "passive"
 
 
 def handler(fit, module, context):
-    fit.ship.multiplyItemAttr("powerOutput", module.getModifiedItemAttr("powerOutputMultiplier"))
+    # We default this to None as there are times when the source attribute doesn't exist (for example, Cap Power Relay).
+    # It will return 0 as it doesn't exist, which would nullify whatever the target attribute is
+    fit.ship.multiplyItemAttr("powerOutput", module.getModifiedItemAttr("powerOutputMultiplier", None))

@@ -1,5 +1,6 @@
 import wx
 
+import config
 import gui.builtinMarketBrowser.pfSearchBox as SBox
 from gui.contextMenu import ContextMenu
 from gui.display import Display
@@ -9,7 +10,7 @@ from gui.utils.staticHelpers import DragDropHelper
 
 from logbook import Logger
 
-import events
+from gui.builtinMarketBrowser.events import RECENTLY_USED_MODULES, MAX_RECENTLY_USED_MODULES, ItemSelected
 
 pyfalog = Logger(__name__)
 
@@ -66,7 +67,7 @@ class ItemView(Display):
         row = self.GetFirstSelected()
 
         if row != -1:
-            data = wx.PyTextDataObject()
+            data = wx.TextDataObject()
             dataStr = "market:" + str(self.active[row].ID)
             pyfalog.debug("Dragging from market: " + dataStr)
 
@@ -89,10 +90,10 @@ class ItemView(Display):
             for itemID in self.sMkt.serviceMarketRecentlyUsedModules["pyfaMarketRecentlyUsedModules"]:
                 self.recentlyUsedModules.add(self.sMkt.getItem(itemID))
 
-            wx.PostEvent(self.mainFrame, events.ItemSelected(itemID=self.active[sel].ID))
+            wx.PostEvent(self.mainFrame, ItemSelected(itemID=self.active[sel].ID))
 
     def storeRecentlyUsedMarketItem(self, itemID):
-        if len(self.sMkt.serviceMarketRecentlyUsedModules["pyfaMarketRecentlyUsedModules"]) > events.MAX_RECENTLY_USED_MODULES:
+        if len(self.sMkt.serviceMarketRecentlyUsedModules["pyfaMarketRecentlyUsedModules"]) > MAX_RECENTLY_USED_MODULES:
             self.sMkt.serviceMarketRecentlyUsedModules["pyfaMarketRecentlyUsedModules"].pop(0)
 
         self.sMkt.serviceMarketRecentlyUsedModules["pyfaMarketRecentlyUsedModules"].append(itemID)
@@ -103,8 +104,8 @@ class ItemView(Display):
         sel = self.marketView.GetSelection()
         if sel.IsOk():
             # Get data field of the selected item (which is a marketGroup ID if anything was selected)
-            seldata = self.marketView.GetPyData(sel)
-            if seldata is not None and seldata != events.RECENTLY_USED_MODULES:
+            seldata = self.marketView.GetItemData(sel)
+            if seldata is not None and seldata != RECENTLY_USED_MODULES:
                 # If market group treeview item doesn't have children (other market groups or dummies),
                 # then it should have items in it and we want to request them
                 if self.marketView.ItemHasChildren(sel) is False:
@@ -117,7 +118,7 @@ class ItemView(Display):
                     items = set()
             else:
                 # If method was called but selection wasn't actually made or we have a hit on recently used modules
-                if seldata == events.RECENTLY_USED_MODULES:
+                if seldata == RECENTLY_USED_MODULES:
                     items = self.recentlyUsedModules
                 else:
                     items = set()
@@ -126,7 +127,7 @@ class ItemView(Display):
             self.updateItemStore(items)
 
             # Set toggle buttons / use search mode flag if recently used modules category is selected (in order to have all modules listed and not filtered)
-            if seldata is not events.RECENTLY_USED_MODULES:
+            if seldata is not RECENTLY_USED_MODULES:
                 self.setToggles()
             else:
                 self.marketBrowser.searchMode = True
@@ -170,10 +171,6 @@ class ItemView(Display):
         if len(realsearch) == 0:
             self.selectionMade()
             return
-        # Show nothing if query is too short
-        elif len(realsearch) < 3:
-            self.clearSearch()
-            return
 
         self.marketBrowser.searchMode = True
         self.sMkt.searchItems(search, self.populateSearch)
@@ -204,13 +201,14 @@ class ItemView(Display):
         try:
             mktgrpid = sMkt.getMarketGroupByItem(item).ID
         except AttributeError:
-            mktgrpid = None
-            print("unable to find market group for", item.name)
+            mktgrpid = -1
+            print(("unable to find market group for", item.name))
         parentname = sMkt.getParentItemByItem(item).name
         # Get position of market group
         metagrpid = sMkt.getMetaGroupIdByItem(item)
         metatab = self.metaMap.get(metagrpid)
         metalvl = self.metalvls.get(item.ID, 0)
+
         return catname, mktgrpid, parentname, metatab, metalvl, item.name
 
     def contextMenu(self, event):
@@ -266,7 +264,7 @@ class ItemView(Display):
         """
         revmap = {}
         i = 0
-        for mgids in self.sMkt.META_MAP.itervalues():
+        for mgids in self.sMkt.META_MAP.values():
             for mgid in mgids:
                 revmap[mgid] = i
             i += 1

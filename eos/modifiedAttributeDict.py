@@ -28,23 +28,17 @@ cappingAttrKeyCache = {}
 
 
 class ItemAttrShortcut(object):
-    def getModifiedItemAttr(self, key, default=None):
+    def getModifiedItemAttr(self, key, default=0):
         return_value = self.itemModifiedAttributes.get(key)
 
-        if return_value is None and default is not None:
-            return_value = default
-
-        return return_value
+        return return_value or default
 
 
 class ChargeAttrShortcut(object):
-    def getModifiedChargeAttr(self, key, default=None):
+    def getModifiedChargeAttr(self, key, default=0):
         return_value = self.chargeModifiedAttributes.get(key)
 
-        if return_value is None and default is not None:
-            return_value = default
-
-        return return_value
+        return return_value or default
 
 
 class ModifiedAttributeDict(collections.MutableMapping):
@@ -165,9 +159,9 @@ class ModifiedAttributeDict(collections.MutableMapping):
 
     def __len__(self):
         keys = set()
-        keys.update(self.original.iterkeys())
-        keys.update(self.__modified.iterkeys())
-        keys.update(self.__intermediary.iterkeys())
+        keys.update(iter(self.original.keys()))
+        keys.update(iter(self.__modified.keys()))
+        keys.update(iter(self.__intermediary.keys()))
         return len(keys)
 
     def __calculateValue(self, key):
@@ -231,11 +225,11 @@ class ModifiedAttributeDict(collections.MutableMapping):
         val *= multiplier
         # Each group is penalized independently
         # Things in different groups will not be stack penalized between each other
-        for penalizedMultipliers in penalizedMultiplierGroups.itervalues():
+        for penalizedMultipliers in penalizedMultiplierGroups.values():
             # A quick explanation of how this works:
             # 1: Bonuses and penalties are calculated seperately, so we'll have to filter each of them
-            l1 = filter(lambda _val: _val > 1, penalizedMultipliers)
-            l2 = filter(lambda _val: _val < 1, penalizedMultipliers)
+            l1 = [_val for _val in penalizedMultipliers if _val > 1]
+            l2 = [_val for _val in penalizedMultipliers if _val < 1]
             # 2: The most significant bonuses take the smallest penalty,
             # This means we'll have to sort
             abssort = lambda _val: -abs(_val - 1)
@@ -245,7 +239,7 @@ class ModifiedAttributeDict(collections.MutableMapping):
             # Any module after the first takes penalties according to:
             # 1 + (multiplier - 1) * math.exp(- math.pow(i, 2) / 7.1289)
             for l in (l1, l2):
-                for i in xrange(len(l)):
+                for i in range(len(l)):
                     bonus = l[i]
                     val *= 1 + (bonus - 1) * exp(- i ** 2 / 7.1289)
         val += postIncrease
@@ -388,7 +382,7 @@ class ModifiedAttributeDict(collections.MutableMapping):
         """Force value to attribute and prohibit any changes to it"""
         self.__forced[attributeName] = value
         self.__placehold(attributeName)
-        self.__afflict(attributeName, u"\u2263", value)
+        self.__afflict(attributeName, "\u2263", value)
 
     @staticmethod
     def getResistance(fit, effect):
