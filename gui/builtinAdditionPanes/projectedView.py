@@ -39,7 +39,7 @@ pyfalog = Logger(__name__)
 class DummyItem(object):
     def __init__(self, txt):
         self.name = txt
-        self.icon = None
+        self.iconID = None
 
 
 class DummyEntry(object):
@@ -109,7 +109,7 @@ class ProjectedView(d.Display):
             dstRow, _ = self.HitTest((x, y))
             # Gather module information to get position
             module = fit.modules[int(data[1])]
-            sFit.project(fit.ID, module.item.ID)
+            sFit.project(fit.ID, module)
             wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fit.ID))
         elif data[0] == "market":
             sFit = Fit.getInstance()

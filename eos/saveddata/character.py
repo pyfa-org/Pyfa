@@ -57,8 +57,15 @@ class Character(object):
     def init(self):
 
         self.__skillIdMap = {}
+
         for skill in self.__skills:
             self.__skillIdMap[skill.itemID] = skill
+
+        # get a list of skills that the character does no have, and add them (removal of old skills happens in the
+        # Skill loading)
+        for skillID in set(self.getSkillIDMap().keys()).difference(set(self.__skillIdMap.keys())):
+            self.addSkill(Skill(self, skillID, self.defaultLevel))
+
         self.dirtySkills = set()
 
         self.alphaClone = None
@@ -118,9 +125,16 @@ class Character(object):
 
         return all0
 
+    def apiUpdateCharSheet(self, skills, secStatus=0.00):
+        self.clearSkills()
+        for skillRow in skills:
+            self.addSkill(Skill(self, skillRow["typeID"], skillRow["level"]))
+        self.secStatus = float(secStatus)
+
     def clearSkills(self):
         del self.__skills[:]
         self.__skillIdMap.clear()
+        self.dirtySkills.clear()
 
     @property
     def ro(self):

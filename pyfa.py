@@ -25,6 +25,7 @@ import traceback
 from optparse import AmbiguousOptionError, BadOptionError, OptionParser
 from service.prereqsCheck import PreCheckException, PreCheckMessage, version_precheck, version_block
 import config
+import datetime
 
 # ascii_text = '''
 # ++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -69,10 +70,12 @@ parser.add_option("-d", "--debug", action="store_true", dest="debug", help="Set 
 parser.add_option("-t", "--title", action="store", dest="title", help="Set Window Title", default=None)
 parser.add_option("-s", "--savepath", action="store", dest="savepath", help="Set the folder for savedata", default=None)
 parser.add_option("-l", "--logginglevel", action="store", dest="logginglevel", help="Set desired logging level [Critical|Error|Warning|Info|Debug]", default="Error")
+parser.add_option("-p", "--profile", action="store", dest="profile_path", help="Set location to save profileing.", default=None)
 
 (options, args) = parser.parse_args()
 
 if __name__ == "__main__":
+
     try:
         # first and foremost - check required libraries
         version_precheck()
@@ -134,7 +137,14 @@ if __name__ == "__main__":
         pyfa = wx.App(False)
         mf = MainFrame(options.title)
         ErrorHandler.SetParent(mf)
-        pyfa.MainLoop()
+
+        if options.profile_path:
+            profile_path = os.path.join(options.profile_path, 'pyfa-{}.profile'.format(datetime.datetime.now().strftime('%Y%m%d_%H%M%S')))
+            pyfalog.debug("Starting pyfa with a profiler, saving to {}".format(profile_path))
+            import cProfile
+            cProfile.run('pyfa.MainLoop()', profile_path)
+        else:
+            pyfa.MainLoop()
 
         # TODO: Add some thread cleanup code here. Right now we bail, and that can lead to orphaned threads or threads not properly exiting.
         sys.exit()

@@ -6,4 +6,4 @@ type = "passive"
 
 
 def handler(fit, module, context):
-    fit.ship.boostItemAttr("agility", module.getModifiedItemAttr("agilityMultiplier"), stackingPenalties=True)
+    fit.ship.boostItemAttr("agility", module.getModifiedItemAttr("agilityBonus"), stackingPenalties=True)

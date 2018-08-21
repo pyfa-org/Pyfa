@@ -39,6 +39,7 @@ from service.fit import Fit
 from service.market import Market
 
 from gui.utils.staticHelpers import DragDropHelper
+import gui.utils.fonts as fonts
 
 import gui.globalEvents as GE
 
@@ -148,6 +149,7 @@ class FittingView(d.Display):
         self.mainFrame.Bind(EVT_FIT_RENAMED, self.fitRenamed)
         self.mainFrame.Bind(EVT_FIT_REMOVED, self.fitRemoved)
         self.mainFrame.Bind(ITEM_SELECTED, self.appendItem)
+        self.font = wx.SystemSettings.GetFont(wx.SYS_DEFAULT_GUI_FONT)
 
         self.Bind(wx.EVT_LEFT_DCLICK, self.removeItem)
         self.Bind(wx.EVT_LIST_BEGIN_DRAG, self.startDrag)
@@ -679,14 +681,27 @@ class FittingView(d.Display):
             slot = Slot.getValue(slotType)
             slotMap[slot] = fit.getSlotsFree(slot) < 0
 
-        font = wx.Font(self.GetClassDefaultAttributes().font)
-
         for i, mod in enumerate(self.mods):
             self.SetItemBackgroundColour(i, self.GetBackgroundColour())
 
             #  only consider changing color if we're dealing with a Module
             if type(mod) is Module:
-                if slotMap[mod.slot] or getattr(mod, 'restrictionOverridden', None):  # Color too many modules as red
+                hasRestrictionOverriden = getattr(mod, 'restrictionOverridden', None)
+                # If module had broken fitting restrictions but now doesn't,
+                # ensure it is now valid, and remove restrictionOverridden
+                # variable. More in #1519
+                if not fit.ignoreRestrictions and hasRestrictionOverriden:
+                    clean = False
+                    if mod.fits(fit, False):
+                        if not mod.hardpoint:
+                            clean = True
+                        elif fit.getHardpointsFree(mod.hardpoint) >= 0:
+                            clean = True
+                    if clean:
+                        del mod.restrictionOverridden
+                        hasRestrictionOverriden = not hasRestrictionOverriden
+
+                if slotMap[mod.slot] or hasRestrictionOverriden:  # Color too many modules as red
                     self.SetItemBackgroundColour(i, wx.Colour(204, 51, 51))
                 elif sFit.serviceFittingOptions["colorFitBySlot"]:  # Color by slot it enabled
                     self.SetItemBackgroundColour(i, self.slotColour(mod.slot))
@@ -695,11 +710,11 @@ class FittingView(d.Display):
             if isinstance(mod, Rack) and \
                     sFit.serviceFittingOptions["rackSlots"] and \
                     sFit.serviceFittingOptions["rackLabels"]:
-                font.SetWeight(wx.FONTWEIGHT_BOLD)
-                self.SetItemFont(i, font)
+                self.font.SetWeight(wx.FONTWEIGHT_BOLD)
+                self.SetItemFont(i, self.font)
             else:
-                font.SetWeight(wx.FONTWEIGHT_NORMAL)
-                self.SetItemFont(i, font)
+                self.font.SetWeight(wx.FONTWEIGHT_NORMAL)
+                self.SetItemFont(i, self.font)
 
         self.Thaw()
         self.itemCount = self.GetItemCount()
@@ -726,13 +741,12 @@ class FittingView(d.Display):
     # noinspection PyPropertyAccess
     def MakeSnapshot(self, maxColumns=1337):
         if self.FVsnapshot:
-            del self.FVsnapshot
+            self.FVsnapshot = None
 
         tbmp = wx.Bitmap(16, 16)
         tdc = wx.MemoryDC()
         tdc.SelectObject(tbmp)
-        font = wx.SystemSettings.GetFont(wx.SYS_DEFAULT_GUI_FONT)
-        tdc.SetFont(font)
+        tdc.SetFont(self.font)
 
         columnsWidths = []
         for i in range(len(self.DEFAULT_COLS)):
@@ -828,7 +842,7 @@ class FittingView(d.Display):
         mdc.SetBackground(wx.Brush(wx.SystemSettings.GetColour(wx.SYS_COLOUR_WINDOW)))
         mdc.Clear()
 
-        mdc.SetFont(font)
+        mdc.SetFont(self.font)
         mdc.SetTextForeground(wx.SystemSettings.GetColour(wx.SYS_COLOUR_WINDOWTEXT))
 
         cx = padding

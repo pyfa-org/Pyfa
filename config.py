@@ -24,10 +24,10 @@ saveInRoot = False
 
 # Version data
 
-version = "2.1.0"
+version = "2.3.1"
 tag = "Stable"
-expansionName = "Into the Abyss"
-expansionVersion = "1.1"
+expansionName = "YC120.7"
+expansionVersion = "1.2"
 evemonMinVersion = "4081"
 
 minItemSearchLength = 3

@@ -46,7 +46,7 @@ from eos.saveddata.fighter import Fighter
 from eos.saveddata.module import Module, State, Slot
 from eos.saveddata.ship import Ship
 from eos.saveddata.citadel import Citadel
-from eos.saveddata.fit import Fit
+from eos.saveddata.fit import Fit, ImplantLocation
 from service.market import Market
 from utils.strfunctions import sequential_rep, replace_ltgt
 from abc import ABCMeta, abstractmethod
@@ -306,6 +306,11 @@ class Port(object):
                 fit.character = sFit.character
                 fit.damagePattern = sFit.pattern
                 fit.targetResists = sFit.targetResists
+                if len(fit.implants) > 0:
+                    fit.implantLocation = ImplantLocation.FIT
+                else:
+                    useCharImplants = sFit.serviceFittingOptions["useCharacterImplantsByDefault"]
+                    fit.implantLocation = ImplantLocation.CHARACTER if useCharImplants else ImplantLocation.FIT
                 db.save(fit)
                 # IDs.append(fit.ID)
                 if iportuser:  # Pulse
@@ -337,6 +342,11 @@ class Port(object):
             fit.character = sFit.character
             fit.damagePattern = sFit.pattern
             fit.targetResists = sFit.targetResists
+            if len(fit.implants) > 0:
+                fit.implantLocation = ImplantLocation.FIT
+            else:
+                useCharImplants = sFit.serviceFittingOptions["useCharacterImplantsByDefault"]
+                fit.implantLocation = ImplantLocation.CHARACTER if useCharImplants else ImplantLocation.FIT
             db.save(fit)
         return fits
 

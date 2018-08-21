@@ -208,5 +208,6 @@ from gui.builtinContextMenus import (  # noqa: E402,F401
     fighterAbilities,
     boosterSideEffects,
     commandFits,
-    tabbedFits
+    tabbedFits,
+    mutaplasmids,
 )

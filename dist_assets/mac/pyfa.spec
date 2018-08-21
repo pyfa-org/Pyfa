@@ -73,4 +73,7 @@ exe = EXE(pyz,
 app = BUNDLE(exe,
              name='pyfa.app',
              icon=icon,
-             bundle_identifier=None)
+             bundle_identifier=None,
+             info_plist={
+                'NSHighResolutionCapable': 'True'
+             })

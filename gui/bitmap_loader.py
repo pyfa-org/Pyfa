@@ -32,12 +32,15 @@ logging = Logger(__name__)
 
 
 class BitmapLoader(object):
-    try:
-        archive = zipfile.ZipFile(os.path.join(config.pyfaPath, 'imgs.zip'), 'r')
-        logging.info("Using zipped image files.")
-    except (IOError, TypeError):
-        logging.info("Using local image files.")
-        archive = None
+    # try:
+    #     archive = zipfile.ZipFile(os.path.join(config.pyfaPath, 'imgs.zip'), 'r')
+    #     logging.info("Using zipped image files.")
+    # except (IOError, TypeError):
+    #     logging.info("Using local image files.")
+    #     archive = None
+
+    logging.info("Using local image files.")
+    archive = None
 
     cached_bitmaps = OrderedDict()
     dont_use_cached_bitmaps = False
@@ -46,7 +49,7 @@ class BitmapLoader(object):
     @classmethod
     def getStaticBitmap(cls, name, parent, location):
         static = wx.StaticBitmap(parent)
-        static.SetBitmap(cls.getBitmap(name, location))
+        static.SetBitmap(cls.getBitmap(name or 0, location))
         return static
 
     @classmethod

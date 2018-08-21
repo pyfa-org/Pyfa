@@ -131,7 +131,7 @@ class Ship(ItemAttrShortcut, HandledItem):
             return None
 
         items = []
-        g = eos.db.getGroup("Ship Modifiers", eager=("items.icon", "items.attributes"))
+        g = eos.db.getGroup("Ship Modifiers", eager=("items.attributes"))
         for item in g.items:
             # Rely on name detection because race is not reliable
             if item.name.lower().startswith(self.item.name.lower()):

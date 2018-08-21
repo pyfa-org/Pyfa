@@ -142,14 +142,8 @@ class Booster(HandledItem, ItemAttrShortcut):
         copy = Booster(self.item)
         copy.active = self.active
 
-        # Legacy booster side effect code, disabling as not currently implemented
-        '''
-        origSideEffects = list(self.iterSideEffects())
-        copySideEffects = list(copy.iterSideEffects())
-        i = 0
-        while i < len(origSideEffects):
-            copySideEffects[i].active = origSideEffects[i].active
-            i += 1
-        '''
+        for sideEffect in self.sideEffects:
+            copyEffect = next(filter(lambda eff: eff.effectID == sideEffect.effectID, copy.sideEffects))
+            copyEffect.active = sideEffect.active
 
         return copy

@@ -216,7 +216,7 @@ def main(old, new, groups=True, effects=True, attributes=True, renames=True):
                 # Initialize container for the data for each item with empty stuff besides groupID
                 dictionary[itemid] = [groupID, set(), {}]
             # Add items filtered by group
-            query = 'SELECT it.typeID, it.groupID FROM invtypes AS it INNER JOIN invgroups AS ig ON it.groupID = ig.groupID WHERE it.published = 1 AND ig.groupName IN ("Effect Beacon", "Ship Modifiers", "Mutaplasmids", "MassiveEnvironments", "Uninteractable Localized Effect Beacon", "Non-Interactable Object")'
+            query = 'SELECT it.typeID, it.groupID FROM invtypes AS it INNER JOIN invgroups AS ig ON it.groupID = ig.groupID WHERE it.published = 1 AND ig.groupName IN ("Effect Beacon", "Ship Modifiers", "Mutaplasmids", "MassiveEnvironments", "Abyssal Hazards", "Non-Interactable Object")'
             cursor.execute(query)
             for row in cursor:
                 itemid = row[0]

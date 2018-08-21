@@ -157,6 +157,19 @@ class EveFittings(wx.Frame):
                 self.statusbar.SetStatusText(msg)
 
 
+class ESIServerExceptionHandler(object):
+    def __init__(self, parentWindow, ex):
+        dlg = wx.MessageDialog(parentWindow,
+                               "There was an issue starting up the localized server, try setting "
+                               "Login Authentication Method to Manual by going to Preferences -> EVE SS0 -> "
+                               "Login Authentication Method. If this doesn't fix the problem please file an "
+                               "issue on Github.",
+                               "Add Character Error",
+                                wx.OK | wx.ICON_ERROR)
+        dlg.ShowModal()
+        pyfalog.error(ex)
+
+
 class ESIExceptionHandler(object):
     # todo: make this a generate excetpion handler for all calls
     def __init__(self, parentWindow, ex):
@@ -231,6 +244,7 @@ class ExportToEve(wx.Frame):
         return self.charChoice.GetClientData(selection) if selection is not None else None
 
     def exportFitting(self, event):
+        sPort = Port.getInstance()
         fitID = self.mainFrame.getActiveFit()
 
         self.statusbar.SetStatusText("", 0)
@@ -240,27 +254,32 @@ class ExportToEve(wx.Frame):
             return
 
         self.statusbar.SetStatusText("Sending request and awaiting response", 1)
+        sEsi = Esi.getInstance()
+
+        sFit = Fit.getInstance()
+        data = sPort.exportESI(sFit.getFit(fitID))
+        res = sEsi.postFitting(self.getActiveCharacter(), data)
 
         try:
-
+            res.raise_for_status()
             self.statusbar.SetStatusText("", 0)
-            self.statusbar.SetStatusText("", 1)
-            # try:
-            #     text = json.loads(res.text)
-            #     self.statusbar.SetStatusText(text['message'], 1)
-            # except ValueError:
-            #     pyfalog.warning("Value error on loading JSON.")
-            #     self.statusbar.SetStatusText("", 1)
+            self.statusbar.SetStatusText(res.reason, 1)
         except requests.exceptions.ConnectionError:
             msg = "Connection error, please check your internet connection"
             pyfalog.error(msg)
-            self.statusbar.SetStatusText(msg)
+            self.statusbar.SetStatusText("ERROR", 0)
+            self.statusbar.SetStatusText(msg, 1)
         except ESIExportException as ex:
             pyfalog.error(ex)
             self.statusbar.SetStatusText("ERROR", 0)
-            self.statusbar.SetStatusText(ex.args[0], 1)
+            self.statusbar.SetStatusText("{} - {}".format(res.status_code, res.reason), 1)
         except APIException as ex:
-            ESIExceptionHandler(self, ex)
+            try:
+                ESIExceptionHandler(self, ex)
+            except Exception as ex:
+                self.statusbar.SetStatusText("ERROR", 0)
+                self.statusbar.SetStatusText("{} - {}".format(res.status_code, res.reason), 1)
+                pyfalog.error(ex)
 
 
 class SsoCharacterMgmt(wx.Dialog):
@@ -319,10 +338,12 @@ class SsoCharacterMgmt(wx.Dialog):
         self.lcCharacters.SetColumnWidth(0, wx.LIST_AUTOSIZE)
         self.lcCharacters.SetColumnWidth(1, wx.LIST_AUTOSIZE)
 
-    @staticmethod
-    def addChar(event):
-        sEsi = Esi.getInstance()
-        sEsi.login()
+    def addChar(self, event):
+        try:
+            sEsi = Esi.getInstance()
+            sEsi.login()
+        except Exception as ex:
+            ESIServerExceptionHandler(self, ex)
 
     def delChar(self, event):
         item = self.lcCharacters.GetFirstSelected()
