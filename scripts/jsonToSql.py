@@ -25,11 +25,7 @@ import re
 
 # Add eos root path to sys.path so we can import ourselves
 path = os.path.dirname(__file__)
-<<<<<<< HEAD
 sys.path.insert(0, os.path.realpath(os.path.join(path, '..')))
-=======
-sys.path.insert(0, os.path.realpath(os.path.join(path, "..")))
->>>>>>> master
 
 import json
 import argparse
@@ -58,7 +54,6 @@ def main(db, json_path):
 
     # Config dict
     tables = {
-<<<<<<< HEAD
         'clonegrades': eos.gamedata.AlphaCloneSkill,
         'dgmattribs': eos.gamedata.AttributeInfo,
         'dgmeffects': eos.gamedata.Effect,
@@ -74,22 +69,6 @@ def main(db, json_path):
         'phbtraits': eos.gamedata.Traits,
         'phbmetadata': eos.gamedata.MetaData,
         'mapbulk_marketGroups': eos.gamedata.MarketGroup,
-=======
-        "clonegrades": eos.gamedata.AlphaCloneSkill,
-        "dgmattribs": eos.gamedata.AttributeInfo,
-        "dgmeffects": eos.gamedata.Effect,
-        "dgmtypeattribs": eos.gamedata.Attribute,
-        "dgmtypeeffects": eos.gamedata.ItemEffect,
-        "dgmunits": eos.gamedata.Unit,
-        "evecategories": eos.gamedata.Category,
-        "evegroups": eos.gamedata.Group,
-        "invmetagroups": eos.gamedata.MetaGroup,
-        "invmetatypes": eos.gamedata.MetaType,
-        "evetypes": eos.gamedata.Item,
-        "phbtraits": eos.gamedata.Traits,
-        "phbmetadata": eos.gamedata.MetaData,
-        "mapbulk_marketGroups": eos.gamedata.MarketGroup,
->>>>>>> master
     }
 
     fieldMapping = {
@@ -209,11 +188,7 @@ def main(db, json_path):
             tableData = convertIcons(tableData)
         if jsonName == 'phbtraits':
             tableData = convertTraits(tableData)
-<<<<<<< HEAD
         if jsonName == 'clonegrades':
-=======
-        if jsonName == "clonegrades":
->>>>>>> master
             tableData = convertClones(tableData)
         data[jsonName] = tableData
 
@@ -282,7 +257,7 @@ def main(db, json_path):
                 eos.db.gamedata_session.add(instance)
 
     # quick and dirty hack to get this data in
-    with open(os.path.join(jsonPath, "dynamicAttributes.json"), encoding="utf-8") as f:
+    with open(os.path.join(jsonPath, 'dynamicAttributes.json'), encoding='utf-8') as f:
         bulkdata = json.load(f)
         for mutaID, data in bulkdata.items():
             muta = eos.gamedata.DynamicItem()
@@ -311,23 +286,18 @@ def main(db, json_path):
     # pyfa, we can do it here as a post-processing step
     eos.db.gamedata_engine.execute('UPDATE dgmtypeattribs SET value = 4.0 WHERE attributeID = ?', (1367,))
 
-<<<<<<< HEAD
-    eos.db.gamedata_engine.execute('UPDATE invtypes SET published = 0 WHERE typeName LIKE '%abyssal%'')
-    print('done')
-=======
-    eos.db.gamedata_engine.execute("UPDATE invtypes  SET published = 0 WHERE typeName LIKE '%abyssal%'")
+    eos.db.gamedata_engine.execute('UPDATE invtypes  SET published = 0 WHERE typeName LIKE \'%abyssal%\'')
 
     print()
     for x in CATEGORIES_TO_REMOVE:
         cat = eos.db.gamedata_session.query(eos.gamedata.Category).filter(eos.gamedata.Category.ID == x).first()
-        print ("Removing Category: {}".format(cat.name))
+        print ('Removing Category: {}'.format(cat.name))
         eos.db.gamedata_session.delete(cat)
 
     eos.db.gamedata_session.commit()
-    eos.db.gamedata_engine.execute("VACUUM")
+    eos.db.gamedata_engine.execute('VACUUM')
 
-    print("done")
->>>>>>> master
+    print('done')
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='This scripts dumps effects from an sqlite cache dump to mongo')
