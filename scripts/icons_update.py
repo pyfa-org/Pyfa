@@ -192,7 +192,10 @@ if toadd:
     print(('Adding {} icons...'.format(len(toadd))))
     missing = set()
     for fname in sorted(toadd):
-        icon = icon_json[str(fname)]
+        icon = icon_json.get(str(fname), None)
+        if icon is None:
+            print("Can't find iconID {}".format(fname))
+            continue
         key = icon['iconFile'].lower()
         icon = get_icon_file(key, ICON_SIZE)
         if icon is None:
