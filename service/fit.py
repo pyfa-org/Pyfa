@@ -187,11 +187,11 @@ class Fit(object):
         # error during the command loop
         refreshFits = set()
         for projection in list(fit.projectedOnto.values()):
-            if projection.victim_fit != fit and projection.victim_fit in eos.db.saveddata_session:  # GH issue #359
+            if projection.victim_fit and projection.victim_fit != fit and projection.victim_fit in eos.db.saveddata_session:  # GH issue #359
                 refreshFits.add(projection.victim_fit)
 
         for booster in list(fit.boostedOnto.values()):
-            if booster.boosted_fit != fit and booster.boosted_fit in eos.db.saveddata_session:  # GH issue #359
+            if booster.boosted_fit and booster.boosted_fit != fit and booster.boosted_fit in eos.db.saveddata_session:  # GH issue #359
                 refreshFits.add(booster.boosted_fit)
 
         eos.db.remove(fit)
