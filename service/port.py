@@ -24,7 +24,6 @@ from logbook import Logger
 import collections
 import json
 import threading
-import locale
 from bs4 import UnicodeDammit
 
 
@@ -33,6 +32,7 @@ from codecs import open
 import xml.parsers.expat
 
 from eos import db
+from eos.db.gamedata.queries import getAttributeInfo
 from service.fit import Fit as svcFit
 
 # noinspection PyPackageRequirements
@@ -1075,6 +1075,11 @@ class Port(object):
         header = '[{}, {}]'.format(fit.ship.item.name, fit.name)
 
         # Section 1: modules, rigs, subsystems, services
+        def formatAttrVal(val):
+            if int(val) == val:
+                return int(val)
+            return val
+
         offineSuffix = ' /OFFLINE'
         modsBySlotType = {}
         sFit = svcFit.getInstance()
@@ -1082,11 +1087,25 @@ class Port(object):
             slot = module.slot
             slotTypeMods = modsBySlotType.setdefault(slot, [])
             if module.item:
+                mutatedMod = bool(module.mutators)
+                # if module was mutated, use base item name for export
+                if mutatedMod:
+                    modName = module.baseItem.name
+                else:
+                    modName = module.item.name
                 modOfflineSuffix = offineSuffix if module.state == State.OFFLINE else ''
                 if module.charge and sFit.serviceFittingOptions['exportCharges']:
-                    slotTypeMods.append('{}, {}{}'.format(module.item.name, module.charge.name, modOfflineSuffix))
+                    slotTypeMods.append('{}, {}{}'.format(modName, module.charge.name, modOfflineSuffix))
                 else:
-                    slotTypeMods.append('{}{}'.format(module.item.name, modOfflineSuffix))
+                    slotTypeMods.append('{}{}'.format(modName, modOfflineSuffix))
+                if mutatedMod and mutations:
+                    mutationGrade = module.mutaplasmid.item.name.split(' ', 1)[0].lower()
+                    mutatedAttrs = {}
+                    for attrID, mutator in module.mutators.items():
+                        attrName = getAttributeInfo(attrID).name
+                        mutatedAttrs[attrName] = mutator.value
+                    customAttrsLine = ', '.join('{} {}'.format(a, formatAttrVal(mutatedAttrs[a])) for a in sorted(mutatedAttrs))
+                    slotTypeMods.append('  {}: {}'.format(mutationGrade, customAttrsLine))
             else:
                 slotTypeMods.append('[Empty {} slot]'.format(Slot.getName(slot).capitalize() if slot is not None else ''))
         modSection = []
