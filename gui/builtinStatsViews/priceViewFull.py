@@ -24,6 +24,8 @@ from gui.bitmap_loader import BitmapLoader
 from gui.utils.numberFormatter import formatAmount
 from service.price import Price
 from service.settings import PriceMenuSettings
+import gui.mainFrame
+import gui.globalEvents as GE
 
 
 class PriceViewFull(StatsView):
@@ -33,6 +35,7 @@ class PriceViewFull(StatsView):
         StatsView.__init__(self)
         self.parent = parent
         self.settings = PriceMenuSettings.getInstance()
+        self.mainFrame = gui.mainFrame.MainFrame.getInstance()
 
     def getHeaderText(self, fit):
         return "Price"
@@ -160,6 +163,7 @@ class PriceViewFull(StatsView):
         self.labelPriceCharacter.SetToolTip(wx.ToolTip('{:,.2f}'.format(booster_price + implant_price)))
 
     def processPrices(self, prices):
+        wx.PostEvent(self.mainFrame, GE.PriceChanged(fitID=self.mainFrame.getActiveFit()))
         self.refreshPanelPrices(self.fit)
 
         self.labelEMStatus.SetLabel("")
