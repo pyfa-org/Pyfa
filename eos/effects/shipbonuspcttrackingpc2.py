@@ -1,6 +1,7 @@
 # shipbonusPCTTrackingPC2
 #
 # Used by:
+# Ship: Tiamat
 # Ship: Vedmak
 type = "passive"
 

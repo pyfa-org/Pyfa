@@ -1,7 +1,7 @@
 # eliteBonusCoverOpsScanProbeStrength2
 #
 # Used by:
-# Ships from group: Covert Ops (7 of 7)
+# Ships from group: Covert Ops (8 of 8)
 type = "passive"
 
 

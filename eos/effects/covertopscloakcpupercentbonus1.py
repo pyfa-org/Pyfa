@@ -1,7 +1,7 @@
 # covertOpsCloakCpuPercentBonus1
 #
 # Used by:
-# Ships from group: Covert Ops (5 of 7)
+# Ships from group: Covert Ops (6 of 8)
 type = "passive"
 runTime = "early"
 
