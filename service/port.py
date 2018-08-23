@@ -1066,7 +1066,7 @@ class Port(object):
 
 
     @classmethod
-    def exportEft(cls, fit, mutations=False, implants=False):
+    def exportEft(cls, fit, mutations=True, implants=False):
         # EFT formatted export is split in several sections, each section is
         # separated from another using 2 blank lines. Sections might have several
         # sub-sections, which are separated by 1 blank line
@@ -1075,37 +1075,33 @@ class Port(object):
         header = '[{}, {}]'.format(fit.ship.item.name, fit.name)
 
         # Section 1: modules, rigs, subsystems, services
-        def formatAttrVal(val):
-            if int(val) == val:
-                return int(val)
-            return val
-
         offineSuffix = ' /OFFLINE'
         modsBySlotType = {}
+        # Format: {reference number: module}
+        mutants = {}
+        mutantReference = 1
         sFit = svcFit.getInstance()
         for module in fit.modules:
             slot = module.slot
             slotTypeMods = modsBySlotType.setdefault(slot, [])
             if module.item:
-                mutatedMod = bool(module.mutators)
+                mutated = bool(module.mutators)
                 # if module was mutated, use base item name for export
-                if mutatedMod:
+                if mutated:
                     modName = module.baseItem.name
                 else:
                     modName = module.item.name
+                if mutated and mutations:
+                    mutants[mutantReference] = module
+                    mutationSuffix = ' [{}]'.format(mutantReference)
+                    mutantReference += 1
+                else:
+                    mutationSuffix = ''
                 modOfflineSuffix = offineSuffix if module.state == State.OFFLINE else ''
                 if module.charge and sFit.serviceFittingOptions['exportCharges']:
-                    slotTypeMods.append('{}, {}{}'.format(modName, module.charge.name, modOfflineSuffix))
+                    slotTypeMods.append('{}, {}{}{}'.format(modName, module.charge.name, modOfflineSuffix, mutationSuffix))
                 else:
-                    slotTypeMods.append('{}{}'.format(modName, modOfflineSuffix))
-                if mutatedMod and mutations:
-                    mutationGrade = module.mutaplasmid.item.name.split(' ', 1)[0].lower()
-                    mutatedAttrs = {}
-                    for attrID, mutator in module.mutators.items():
-                        attrName = getAttributeInfo(attrID).name
-                        mutatedAttrs[attrName] = mutator.value
-                    customAttrsLine = ', '.join('{} {}'.format(a, formatAttrVal(mutatedAttrs[a])) for a in sorted(mutatedAttrs))
-                    slotTypeMods.append('  {}: {}'.format(mutationGrade, customAttrsLine))
+                    slotTypeMods.append('{}{}{}'.format(modName, modOfflineSuffix, mutationSuffix))
             else:
                 slotTypeMods.append('[Empty {} slot]'.format(Slot.getName(slot).capitalize() if slot is not None else ''))
         modSection = []
@@ -1156,6 +1152,28 @@ class Port(object):
             cargoLines.append('{} x{}'.format(cargo.item.name, cargo.amount))
         if cargoLines:
             sections.append('\n'.join(cargoLines))
+
+        # Section 5: mutated modules' details
+        mutationLines = []
+        if mutants and mutations:
+
+            def formatAttrVal(val):
+                if int(val) == val:
+                    return int(val)
+                return val
+
+            for mutantReference in sorted(mutants):
+                mutant = mutants[mutantReference]
+                mutatedAttrs = {}
+                for attrID, mutator in mutant.mutators.items():
+                    attrName = getAttributeInfo(attrID).name
+                    mutatedAttrs[attrName] = mutator.value
+                mutationLines.append('[{}] {}'.format(mutantReference, mutant.baseItem.name))
+                mutationLines.append('  {}'.format(mutant.mutaplasmid.item.name))
+                customAttrsLine = ', '.join('{} {}'.format(a, formatAttrVal(mutatedAttrs[a])) for a in sorted(mutatedAttrs))
+                mutationLines.append('  {}'.format(customAttrsLine))
+        if mutationLines:
+            sections.append('\n'.join(mutationLines))
 
         return '{}\n\n{}'.format(header, '\n\n\n'.join(sections))
 
