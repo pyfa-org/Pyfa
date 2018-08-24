@@ -658,6 +658,91 @@ class Port(object):
             pyfalog.warning("Exception caught in importEft")
             return
 
+        def sectionIter(lines):
+            section = []
+            for line in lines:
+                if not line:
+                    if section:
+                        yield section
+                        section = []
+                section.append(line)
+            if section:
+                yield section
+
+        stubPattern = '^\[.+\]$'
+        modulePattern = '^(?P<typeName>[^,/]+)(, (?P<charge>[^,/]+))?(?P<offline> /OFFLINE)?( \[(?P<mutation>\d+)\])?$'
+        droneCargoPattern = '^(?P<typeName>[^,/]+) x(?P<amount>\d+)$'
+
+        sections = []
+        for section in sectionIter(lines):
+            sectionItemData = []
+            for line in section:
+                # Stub line
+                if re.match(stubPattern, line):
+                    sectionItemData.append({'type': 'stub'})
+                    continue
+                # Items with quantity specifier
+                m = re.match(droneCargoPattern, line)
+                if m:
+                    sectionItemData.append({
+                        'type': 'multi',
+                        'typeName': m.group('typeName'),
+                        'amount': int(m.group('amount'))})
+                    continue
+                # All other items
+                m = re.match(modulePattern, line)
+                if m:
+                    sectionItemData.append({
+                        'type': 'normal',
+                        'typeName': m.group('typeName'),
+                        'chargeName': m.group('charge'),
+                        'offline': True if m.group('offline') else False,
+                        'mutation': int(m.group('mutation')) if m.group('mutation') else None})
+            # Strip stubs from tail
+            while sectionItemData and sectionItemData[-1]['type'] == 'stub':
+                del sectionItemData[-1]
+            if sectionItemData:
+                sections.append(sectionItemData)
+
+
+
+        for sectionItemData in sections:
+            sectionCats = set()
+            for entry in sectionItemData:
+                if entry['type'] == 'stub':
+                    continue
+                try:
+                    item = sMkt.getItem(entry['typeName'], eager='group.category')
+                except:
+                    pyfalog.warning('no data can be found (old names)')
+                    entry['type'] = 'stub'
+                    continue
+                entry['item'] = item
+                import sys
+                sys.stderr.write('{}\n'.format(item.slot))
+                sectionCats.add(item.category.name)
+            processStubs = (
+                # To process stubs, we must make sure that all the items in section
+                # are from the same category
+                len(sectionCats) == 1 and tuple(sectionCats)[0] == 'Module' and
+                # And that they do not contain items with quantity specifier
+                all(i['type'] in ('stub', 'normal') for i in sectionItemData))
+            isDronebay = (
+                len(sectionCats) == 1 and tuple(sectionCats)[0] == 'Drone' and
+                all(i['type'] == 'multi' for i in sectionItemData))
+            isFighterbay = (
+                len(sectionCats) == 1 and tuple(sectionCats)[0] == 'Fighter' and
+                all(i['type'] == 'multi' for i in sectionItemData))
+
+
+
+
+
+
+
+
+
+
         # maintain map of drones and their quantities
         droneMap = {}
         cargoMap = {}
