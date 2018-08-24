@@ -1081,10 +1081,9 @@ class Port(object):
         for module in fit.modules:
             slot = module.slot
             modsBySlotType.setdefault(slot, []).append(module)
-        # Format: {reference number: module}
         modSection = []
         offineSuffix = ' /OFFLINE'
-        mutants = {}
+        mutants = {}  # Format: {reference number: module}
         mutantReference = 1
         for slotType in EFT_SLOT_ORDER:
             rackLines = []
