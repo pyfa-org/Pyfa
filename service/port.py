@@ -625,21 +625,28 @@ class Port(object):
 
     @staticmethod
     def importEft(eftString):
+        # Split passed string in lines and clean them up
+        lines = eftString.splitlines()
+        for i in range(len(lines)):
+            lines[i] = lines[i].strip()
+        while lines and not lines[0]:
+            del lines[0]
+        while lines and not lines[-1]:
+            del lines[-1]
+
         sMkt = Market.getInstance()
-        offineSuffix = " /OFFLINE"
+        offineSuffix = ' /OFFLINE'
 
         fit = Fit()
-        eftString = eftString.strip()
-        lines = re.split('[\n\r]+', eftString)
-        info = lines[0][1:-1].split(",", 1)
 
-        if len(info) == 2:
-            shipType = info[0].strip()
-            fitName = info[1].strip()
-        else:
-            shipType = info[0].strip()
-            fitName = "Imported %s" % shipType
-
+        # Ship and fit name from header
+        header = lines.pop(0)
+        m = re.match('\[(?P<shipType>[\w\s]+), (?P<fitName>.+)\]', header)
+        if not m:
+            pyfalog.warning('Corrupted fit header in importEft')
+            return
+        shipType = m.group('shipType').strip()
+        fitName = m.group('fitName').strip()
         try:
             ship = sMkt.getItem(shipType)
             try:
