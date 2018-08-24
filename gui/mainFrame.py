@@ -77,6 +77,7 @@ from eos.modifiedAttributeDict import ModifiedAttributeDict
 from eos.db.saveddata.loadDefaultDatabaseValues import DefaultDatabaseValues
 from eos.db.saveddata.queries import getFit as db_getFit
 from service.port import Port, IPortUser
+from service.efsPort import EfsPort
 from service.settings import HTMLExportSettings
 
 from time import gmtime, strftime
@@ -734,6 +735,10 @@ class MainFrame(wx.Frame):
         fit = db_getFit(self.getActiveFit())
         toClipboard(Port.exportMultiBuy(fit))
 
+    def clipboardEfs(self):
+        fit = db_getFit(self.getActiveFit())
+        toClipboard(EfsPort.exportEfs(fit, 0))
+
     def importFromClipboard(self, event):
         clipboard = fromClipboard()
         try:
@@ -749,7 +754,8 @@ class MainFrame(wx.Frame):
                           CopySelectDialog.copyFormatXml: self.clipboardXml,
                           CopySelectDialog.copyFormatDna: self.clipboardDna,
                           CopySelectDialog.copyFormatEsi: self.clipboardEsi,
-                          CopySelectDialog.copyFormatMultiBuy: self.clipboardMultiBuy}
+                          CopySelectDialog.copyFormatMultiBuy: self.clipboardMultiBuy,
+                          CopySelectDialog.copyFormatEfs: self.clipboardEfs}
         dlg = CopySelectDialog(self)
         dlg.ShowModal()
         selected = dlg.GetSelected()
