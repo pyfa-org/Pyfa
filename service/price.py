@@ -228,10 +228,11 @@ class PriceWorkerThread(threading.Thread):
     def trigger(self, prices, callbacks):
         self.queue.put((callbacks, prices))
 
-    def setToWait(self, itemID, callback):
-        if itemID not in self.wait:
-            self.wait[itemID] = []
-        self.wait[itemID].append(callback)
+    def setToWait(self, prices, callback):
+        for x in prices:
+            if x.typeID not in self.wait:
+                self.wait[x.typeID] = []
+            self.wait[x.typeID].append(callback)
 
 
 from service.marketSources import evemarketer, evemarketdata  # noqa: E402
