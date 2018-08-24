@@ -33,6 +33,7 @@ import xml.parsers.expat
 
 from eos import db
 from eos.db.gamedata.queries import getAttributeInfo
+from gui.utils.numberFormatter import roundToPrec
 from service.fit import Fit as svcFit
 
 # noinspection PyPackageRequirements
@@ -1075,41 +1076,40 @@ class Port(object):
         header = '[{}, {}]'.format(fit.ship.item.name, fit.name)
 
         # Section 1: modules, rigs, subsystems, services
-        offineSuffix = ' /OFFLINE'
         modsBySlotType = {}
-        # Format: {reference number: module}
-        mutants = {}
-        mutantReference = 1
         sFit = svcFit.getInstance()
         for module in fit.modules:
             slot = module.slot
-            slotTypeMods = modsBySlotType.setdefault(slot, [])
-            if module.item:
-                mutated = bool(module.mutators)
-                # if module was mutated, use base item name for export
-                if mutated:
-                    modName = module.baseItem.name
-                else:
-                    modName = module.item.name
-                if mutated and mutations:
-                    mutants[mutantReference] = module
-                    mutationSuffix = ' [{}]'.format(mutantReference)
-                    mutantReference += 1
-                else:
-                    mutationSuffix = ''
-                modOfflineSuffix = offineSuffix if module.state == State.OFFLINE else ''
-                if module.charge and sFit.serviceFittingOptions['exportCharges']:
-                    slotTypeMods.append('{}, {}{}{}'.format(modName, module.charge.name, modOfflineSuffix, mutationSuffix))
-                else:
-                    slotTypeMods.append('{}{}{}'.format(modName, modOfflineSuffix, mutationSuffix))
-            else:
-                slotTypeMods.append('[Empty {} slot]'.format(Slot.getName(slot).capitalize() if slot is not None else ''))
+            modsBySlotType.setdefault(slot, []).append(module)
+        # Format: {reference number: module}
         modSection = []
+        offineSuffix = ' /OFFLINE'
+        mutants = {}
+        mutantReference = 1
         for slotType in EFT_SLOT_ORDER:
             rackLines = []
-            data = modsBySlotType.get(slotType, ())
-            for line in data:
-                rackLines.append(line)
+            modules = modsBySlotType.get(slotType, ())
+            for module in modules:
+                if module.item:
+                    mutated = bool(module.mutators)
+                    # if module was mutated, use base item name for export
+                    if mutated:
+                        modName = module.baseItem.name
+                    else:
+                        modName = module.item.name
+                    if mutated and mutations:
+                        mutants[mutantReference] = module
+                        mutationSuffix = ' [{}]'.format(mutantReference)
+                        mutantReference += 1
+                    else:
+                        mutationSuffix = ''
+                    modOfflineSuffix = offineSuffix if module.state == State.OFFLINE else ''
+                    if module.charge and sFit.serviceFittingOptions['exportCharges']:
+                        rackLines.append('{}, {}{}{}'.format(modName, module.charge.name, modOfflineSuffix, mutationSuffix))
+                    else:
+                        rackLines.append('{}{}{}'.format(modName, modOfflineSuffix, mutationSuffix))
+                else:
+                    rackLines.append('[Empty {} slot]'.format(Slot.getName(slotType).capitalize() if slotType is not None else ''))
             if rackLines:
                 modSection.append('\n'.join(rackLines))
         if modSection:
@@ -1156,12 +1156,6 @@ class Port(object):
         # Section 5: mutated modules' details
         mutationLines = []
         if mutants and mutations:
-
-            def formatAttrVal(val):
-                if int(val) == val:
-                    return int(val)
-                return val
-
             for mutantReference in sorted(mutants):
                 mutant = mutants[mutantReference]
                 mutatedAttrs = {}
@@ -1170,7 +1164,8 @@ class Port(object):
                     mutatedAttrs[attrName] = mutator.value
                 mutationLines.append('[{}] {}'.format(mutantReference, mutant.baseItem.name))
                 mutationLines.append('  {}'.format(mutant.mutaplasmid.item.name))
-                customAttrsLine = ', '.join('{} {}'.format(a, formatAttrVal(mutatedAttrs[a])) for a in sorted(mutatedAttrs))
+                # Round to 7th significant number to avoid exporting float errors
+                customAttrsLine = ', '.join('{} {}'.format(a, roundToPrec(mutatedAttrs[a], 7)) for a in sorted(mutatedAttrs))
                 mutationLines.append('  {}'.format(customAttrsLine))
         if mutationLines:
             sections.append('\n'.join(mutationLines))
