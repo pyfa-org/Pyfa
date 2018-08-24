@@ -1103,11 +1103,13 @@ class Port(object):
                         mutationSuffix = ''
                     modOfflineSuffix = offineSuffix if module.state == State.OFFLINE else ''
                     if module.charge and sFit.serviceFittingOptions['exportCharges']:
-                        rackLines.append('{}, {}{}{}'.format(modName, module.charge.name, modOfflineSuffix, mutationSuffix))
+                        rackLines.append('{}, {}{}{}'.format(
+                            modName, module.charge.name, modOfflineSuffix, mutationSuffix))
                     else:
                         rackLines.append('{}{}{}'.format(modName, modOfflineSuffix, mutationSuffix))
                 else:
-                    rackLines.append('[Empty {} slot]'.format(Slot.getName(slotType).capitalize() if slotType is not None else ''))
+                    rackLines.append('[Empty {} slot]'.format(
+                        Slot.getName(slotType).capitalize() if slotType is not None else ''))
             if rackLines:
                 modSection.append('\n'.join(rackLines))
         if modSection:
@@ -1146,7 +1148,10 @@ class Port(object):
 
         # Section 4: cargo
         cargoLines = []
-        for cargo in sorted(fit.cargo, key=lambda c: (c.item.group.category.name, c.item.group.name, c.item.name)):
+        for cargo in sorted(
+            fit.cargo,
+            key=lambda c: (c.item.group.category.name, c.item.group.name, c.item.name)
+        ):
             cargoLines.append('{} x{}'.format(cargo.item.name, cargo.amount))
         if cargoLines:
             sections.append('\n'.join(cargoLines))
@@ -1163,7 +1168,9 @@ class Port(object):
                 mutationLines.append('[{}] {}'.format(mutantReference, mutant.baseItem.name))
                 mutationLines.append('  {}'.format(mutant.mutaplasmid.item.name))
                 # Round to 7th significant number to avoid exporting float errors
-                customAttrsLine = ', '.join('{} {}'.format(a, roundToPrec(mutatedAttrs[a], 7)) for a in sorted(mutatedAttrs))
+                customAttrsLine = ', '.join(
+                    '{} {}'.format(a, roundToPrec(mutatedAttrs[a], 7))
+                    for a in sorted(mutatedAttrs))
                 mutationLines.append('  {}'.format(customAttrsLine))
         if mutationLines:
             sections.append('\n'.join(mutationLines))
