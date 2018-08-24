@@ -1079,8 +1079,7 @@ class Port(object):
         modsBySlotType = {}
         sFit = svcFit.getInstance()
         for module in fit.modules:
-            slot = module.slot
-            modsBySlotType.setdefault(slot, []).append(module)
+            modsBySlotType.setdefault(module.slot, []).append(module)
         modSection = []
         offineSuffix = ' /OFFLINE'
         mutants = {}  # Format: {reference number: module}
