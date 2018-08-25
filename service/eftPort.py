@@ -23,9 +23,15 @@ import re
 from logbook import Logger
 
 from eos.db.gamedata.queries import getAttributeInfo
+from eos.saveddata.cargo import Cargo
 from eos.saveddata.citadel import Citadel
-from eos.saveddata.module import Module, Slot, State
+from eos.saveddata.booster import Booster
+from eos.saveddata.drone import Drone
+from eos.saveddata.fighter import Fighter
+from eos.saveddata.implant import Implant
+from eos.saveddata.module import Module, State, Slot
 from eos.saveddata.ship import Ship
+from eos.saveddata.fit import Fit
 from gui.utils.numberFormatter import roundToPrec
 from service.fit import Fit as svcFit
 from service.market import Market
@@ -33,76 +39,74 @@ from service.market import Market
 
 pyfalog = Logger(__name__)
 
+MODULE_CATS = ('Module', 'Subsystem', 'Structure Module')
+SLOT_ORDER = (Slot.LOW, Slot.MED, Slot.HIGH, Slot.RIG, Slot.SUBSYSTEM, Slot.SERVICE)
+OFFLINE_SUFFIX = ' /OFFLINE'
+
 
 def fetchItem(typeName, eagerCat=True):
     sMkt = Market.getInstance()
     eager = 'group.category' if eagerCat else None
     try:
-        return sMkt.getItem(typeName, eager=eager)
+        item = sMkt.getItem(typeName, eager=eager)
     except:
         pyfalog.warning('EftPort: unable to fetch item "{}"'.format(typeName))
-        return
+        return None
+    if sMkt.getPublicityByItem(item):
+        return item
+    else:
+        return None
+
+
+def clearTail(lst):
+    while lst and lst[-1] is None:
+        del lst[-1]
 
 
 class EftImportError(Exception):
-    """Exception class emitted and consumed by EFT importer/exporter internally."""
+    """Exception class emitted and consumed by EFT importer internally."""
     ...
-
-
-class AmountMap(dict):
-
-    def add(self, entity, amount):
-        if entity not in self:
-            self[entity] = 0
-        self[entity] += amount
-
-
-class AbstractFit:
-
-    def __init__(self):
-        self.modulesHigh = []
-        self.modulesMed = []
-        self.modulesLow = []
-        self.rigs = []
-        self.subsystems = []
-        self.services = []
-        self.drones = AmountMap()
-        self.fighters = AmountMap()
-        self.implants = set()
-        self.boosters = set()
-        self.cargo = AmountMap()
-
-    # def addModule(self, m):
-    #     modContMap = {
-    #         Slot.HIGH: self.modulesHigh,
-    #         Slot.MED: self.modulesMed,
-    #         Slot.LOW: self.modulesLow,
-    #         Slot.RIG: self.rigs,
-    #         Slot.SUBSYSTEM: self.subsystems,
-    #         Slot.SERVICE: self.services}
 
 
 class Section:
 
     def __init__(self):
         self.lines = []
-        self.itemData = []
+        self.itemSpecs = []
         self.__itemDataCats = None
 
     @property
     def itemDataCats(self):
         if self.__itemDataCats is None:
             cats = set()
-            for itemSpec in self.itemData:
+            for itemSpec in self.itemSpecs:
                 if itemSpec is None:
                     continue
                 cats.add(itemSpec.item.category.name)
             self.__itemDataCats = tuple(sorted(cats))
         return self.__itemDataCats
 
-    def cleanItemDataTail(self):
-        while self.itemData and self.itemData[-1] is None:
-            del self.itemData[-1]
+    @property
+    def isModuleRack(self):
+        return all(i is None or i.isModule for i in self.itemSpecs)
+
+    @property
+    def isImplantRack(self):
+        return all(i is not None and i.isImplant for i in self.itemSpecs)
+
+    @property
+    def isDroneBay(self):
+        return all(i is not None and i.isDrone for i in self.itemSpecs)
+
+    @property
+    def isFighterBay(self):
+        return all(i is not None and i.isFighter for i in self.itemSpecs)
+
+    @property
+    def isCargoHold(self):
+        return (
+            all(i is not None and i.isCargo for i in self.itemSpecs) and
+            not self.isDroneBay and not self.isFighterBay)
 
 
 class BaseItemSpec:
@@ -114,8 +118,28 @@ class BaseItemSpec:
         self.typeName = typeName
         self.item = item
 
+    @property
+    def isModule(self):
+        return False
 
-class ItemSpec(BaseItemSpec):
+    @property
+    def isImplant(self):
+        return False
+
+    @property
+    def isDrone(self):
+        return False
+
+    @property
+    def isFighter(self):
+        return False
+
+    @property
+    def isCargo(self):
+        return False
+
+
+class RegularItemSpec(BaseItemSpec):
 
     def __init__(self, typeName, chargeName=None):
         super().__init__(typeName)
@@ -132,6 +156,17 @@ class ItemSpec(BaseItemSpec):
             charge = None
         return charge
 
+    @property
+    def isModule(self):
+        return self.item.category.name in MODULE_CATS
+
+    @property
+    def isImplant(self):
+        return (
+            self.item.category.name == 'Implant' and (
+                'implantness' in self.item.attributes or
+                'boosterness' in self.item.attributes))
+
 
 class MultiItemSpec(BaseItemSpec):
 
@@ -139,11 +174,126 @@ class MultiItemSpec(BaseItemSpec):
         super().__init__(typeName)
         self.amount = 0
 
+    @property
+    def isDrone(self):
+        return self.item.category.name == 'Drone'
+
+    @property
+    def isFighter(self):
+        return self.item.category.name == 'Fighter'
+
+    @property
+    def isCargo(self):
+        return True
+
+
+class AbstractFit:
+
+    def __init__(self):
+        # Modules
+        self.modulesHigh = []
+        self.modulesMed = []
+        self.modulesLow = []
+        self.rigs = []
+        self.subsystems = []
+        self.services = []
+        # Non-modules
+        self.implants = []
+        self.boosters = []
+        self.drones = {}  # Format: {item: Drone}
+        self.fighters = []
+        self.cargo = {}  # Format: {item: Cargo}
+
+    @property
+    def modContMap(self):
+        return {
+            Slot.HIGH: self.modulesHigh,
+            Slot.MED: self.modulesMed,
+            Slot.LOW: self.modulesLow,
+            Slot.RIG: self.rigs,
+            Slot.SUBSYSTEM: self.subsystems,
+            Slot.SERVICE: self.services}
+
+    def addModules(self, itemSpecs):
+        modules = []
+        slotTypes = set()
+        for itemSpec in itemSpecs:
+            if itemSpec is None:
+                modules.append(None)
+                continue
+            m = self.__makeModule(itemSpec)
+            if m is None:
+                modules.append(None)
+                continue
+            modules.append(m)
+            slotTypes.add(m.slot)
+        clearTail(modules)
+        modContMap = self.modContMap
+        # If all the modules have same slot type, put them to appropriate
+        # container with stubs
+        if len(slotTypes) == 1:
+            slotType = tuple(slotTypes)[0]
+            modContMap[slotType].extend(modules)
+        # Otherwise, put just modules
+        else:
+            for m in modules:
+                if m is None:
+                    continue
+                modContMap[m.slot].append(m)
+
+    def addModule(self, itemSpec):
+        if itemSpec is None:
+            return
+        m = self.__makeModule(itemSpec)
+        if m is not None:
+            self.modContMap[m.slot].append(m)
+
+    def __makeModule(self, itemSpec):
+        try:
+            m = Module(itemSpec.item)
+        except ValueError:
+            return None
+        if itemSpec.charge is not None and m.isValidCharge(itemSpec.charge):
+            m.charge = itemSpec.charge
+        if itemSpec.offline and m.isValidState(State.OFFLINE):
+            m.state = State.OFFLINE
+        elif m.isValidState(State.ACTIVE):
+            m.state = State.ACTIVE
+        return m
+
+    def addImplant(self, itemSpec):
+        if itemSpec is None:
+            return
+        if 'implantness' in itemSpec.item.attributes:
+            self.implants.append(Implant(itemSpec.item))
+        elif 'boosterness' in itemSpec.item.attributes:
+            self.boosters.append(Booster(itemSpec.item))
+        else:
+            pyfalog.error('Failed to import implant: {}', itemSpec.typeName)
+
+    def addDrone(self, itemSpec):
+        if itemSpec is None:
+            return
+        if itemSpec.item not in self.drones:
+            self.drones[itemSpec.item] = Drone(itemSpec.item)
+        self.drones[itemSpec.item].amount += itemSpec.amount
+
+    def addFighter(self, itemSpec):
+        if itemSpec is None:
+            return
+        fighter = Fighter(itemSpec.item)
+        fighter.amount = itemSpec.amount
+        self.fighters.append(fighter)
+
+    def addCargo(self, itemSpec):
+        if itemSpec is None:
+            return
+        if itemSpec.item not in self.cargo:
+            self.cargo[itemSpec.item] = Cargo(itemSpec.item)
+        self.cargo[itemSpec.item].amount += itemSpec.amount
+
 
 class EftPort:
-
-    SLOT_ORDER = [Slot.LOW, Slot.MED, Slot.HIGH, Slot.RIG, Slot.SUBSYSTEM, Slot.SERVICE]
-    OFFLINE_SUFFIX = ' /OFFLINE'
 
     @classmethod
     def exportEft(cls, fit, mutations, implants):
@@ -163,7 +313,7 @@ class EftPort:
 
         mutants = {}  # Format: {reference number: module}
         mutantReference = 1
-        for slotType in cls.SLOT_ORDER:
+        for slotType in SLOT_ORDER:
             rackLines = []
             modules = modsBySlotType.get(slotType, ())
             for module in modules:
@@ -180,7 +330,7 @@ class EftPort:
                         mutantReference += 1
                     else:
                         mutationSuffix = ''
-                    modOfflineSuffix = cls.OFFLINE_SUFFIX if module.state == State.OFFLINE else ''
+                    modOfflineSuffix = OFFLINE_SUFFIX if module.state == State.OFFLINE else ''
                     if module.charge and sFit.serviceFittingOptions['exportCharges']:
                         rackLines.append('{}, {}{}{}'.format(
                             modName, module.charge.name, modOfflineSuffix, mutationSuffix))
@@ -267,16 +417,15 @@ class EftPort:
         aFit = AbstractFit()
 
         stubPattern = '^\[.+\]$'
-        modulePattern = '^(?P<typeName>[^,/]+)(, (?P<chargeName>[^,/]+))?(?P<offline>{})?( \[(?P<mutation>\d+)\])?$'.format(cls.OFFLINE_SUFFIX)
+        modulePattern = '^(?P<typeName>[^,/]+)(, (?P<chargeName>[^,/]+))?(?P<offline>{})?( \[(?P<mutation>\d+)\])?$'.format(OFFLINE_SUFFIX)
         droneCargoPattern = '^(?P<typeName>[^,/]+) x(?P<amount>\d+)$'
 
-        dronebaySeen = False
-        fightersSeen = False
+        sections = []
         for section in cls.__importSectionIter(lines):
             for line in section.lines:
                 # Stub line
                 if re.match(stubPattern, line):
-                    section.itemData.append(None)
+                    section.itemSpecs.append(None)
                     continue
                 # Items with quantity specifier
                 m = re.match(droneCargoPattern, line)
@@ -285,197 +434,96 @@ class EftPort:
                         itemSpec = MultiItemSpec(m.group('typeName'))
                     # Items which cannot be fetched are considered as stubs
                     except EftImportError:
-                        section.itemData.append(None)
+                        section.itemSpecs.append(None)
                     else:
                         itemSpec.amount = int(m.group('amount'))
-                        section.itemData.append(itemSpec)
+                        section.itemSpecs.append(itemSpec)
                 # All other items
                 m = re.match(modulePattern, line)
                 if m:
                     try:
-                        itemSpec = ItemSpec(m.group('typeName'), chargeName=m.group('chargeName'))
+                        itemSpec = RegularItemSpec(m.group('typeName'), chargeName=m.group('chargeName'))
                     # Items which cannot be fetched are considered as stubs
                     except EftImportError:
-                        section.itemData.append(None)
+                        section.itemSpecs.append(None)
                     else:
                         if m.group('offline'):
                             itemSpec.offline = True
                         if m.group('mutation'):
                             itemSpec.mutationIdx = int(m.group('mutation'))
-                        section.itemData.append(itemSpec)
-            section.cleanItemDataTail()
-            # Finally, start putting items into intermediate containers
-            # All items in section have quantity specifier
-            if all(isinstance(id, MultiItemSpec) for id in section.itemData):
-                # Dronebay
-                if len(section.itemDataCats) == 1 and section.itemDataCats[0] == 'Drone' and not dronebaySeen:
-                    for entry in section.itemData:
-                        aFit.drones.add(entry['typeName'], entry['amount'])
-                    dronebaySeen = True
-                # Fighters
-                elif len(section.itemDataCats) == 1 and section.itemDataCats[0] == 'Fighter' and not fightersSeen:
-                    for entry in section.itemData:
-                        aFit.fighters.add(entry['typeName'], entry['amount'])
-                    fightersSeen = True
-                # Cargo
-                else:
-                    for entry in section.itemData:
-                        aFit.cargo.add(entry['typeName'], entry['amount'])
-            # All of items are normal or stubs
-            elif all(isinstance(id, ItemSpec) or id is None for id in section.itemData):
-                if len(section.itemDataCats) == 1:
-                    if section.itemDataCats[0] in ('Module', 'Subsystem', 'Structure Module'):
-                        slotTypes = set()
-                        for entry in itemData:
-                            if entry['type'] == 'stub':
-                                continue
-                            try:
-                                m = Module(entry['item'])
-                            except ValueError:
-                                m = None
-                            else:
-                                slotTypes.add(m.slot)
-                            entry['module'] = m
-                        # If whole section uses container of the same type,
-                        if len(slotTypes) == 1:
-                            pass
-                        else:
-                            pass
+                        section.itemSpecs.append(itemSpec)
+            clearTail(section.itemSpecs)
+            sections.append(section)
 
-                    else:
-                        pass
-                else:
-                    pass
-
-            # Mix between all types
+        hasDroneBay = any(s.isDroneBay for s in sections)
+        hasFighterBay = any(s.isFighterBay for s in sections)
+        for section in sections:
+            if section.isModuleRack:
+                aFit.addModules(section.itemSpecs)
+            elif section.isImplantRack:
+                for itemSpec in section.itemSpecs:
+                    aFit.addImplant(itemSpec)
+            elif section.isDroneBay:
+                for itemSpec in section.itemSpecs:
+                    aFit.addDrone(itemSpec)
+            elif section.isFighterBay:
+                for itemSpec in section.itemSpecs:
+                    aFit.addFighter(itemSpec)
+            elif section.isCargoHold:
+                for itemSpec in section.itemSpecs:
+                    aFit.addCargo(itemSpec)
+            # Mix between different kinds of item specs (can happen when some
+            # blank lines are removed)
             else:
-                pass
+                for itemSpec in section.itemSpecs:
+                    if itemSpec is None:
+                        continue
+                    if itemSpec.isModule:
+                        aFit.addModule(itemSpec)
+                    elif itemSpec.isImplant:
+                        aFit.addImplant(itemSpec)
+                    elif itemSpec.isDrone and not hasDroneBay:
+                        aFit.addDrone(itemSpec)
+                    elif itemSpec.isFighter and not hasFighterBay:
+                        aFit.addFighter(itemSpec)
+                    elif itemSpec.isCargo:
+                        aFit.addCargo(itemSpec)
 
-
-
-        # maintain map of drones and their quantities
-        droneMap = {}
-        cargoMap = {}
-        moduleList = []
-        for i in range(1, len(lines)):
-            ammoName = None
-            extraAmount = None
-
-            line = lines[i].strip()
-            if not line:
+        # Subsystems first because they modify slot amount
+        for subsystem in aFit.subsystems:
+            if subsystem is None:
                 continue
-
-            setOffline = line.endswith(offineSuffix)
-            if setOffline is True:
-                # remove offline suffix from line
-                line = line[:len(line) - len(offineSuffix)]
-
-            modAmmo = line.split(",")
-            # matches drone and cargo with x{qty}
-            modExtra = modAmmo[0].split(" x")
-
-            if len(modAmmo) == 2:
-                # line with a module and ammo
-                ammoName = modAmmo[1].strip()
-                modName = modAmmo[0].strip()
-            elif len(modExtra) == 2:
-                # line with drone/cargo and qty
-                extraAmount = modExtra[1].strip()
-                modName = modExtra[0].strip()
-            else:
-                # line with just module
-                modName = modExtra[0].strip()
-
-            try:
-                # get item information. If we are on a Drone/Cargo line, throw out cargo
-                item = sMkt.getItem(modName, eager="group.category")
-            except:
-                # if no data can be found (old names)
-                pyfalog.warning("no data can be found (old names)")
-                continue
-
-            if not item.published:
-                continue
-
-            if item.category.name == "Drone":
-                extraAmount = int(extraAmount) if extraAmount is not None else 1
-                if modName not in droneMap:
-                    droneMap[modName] = 0
-                droneMap[modName] += extraAmount
-            elif item.category.name == "Fighter":
-                extraAmount = int(extraAmount) if extraAmount is not None else 1
-                fighterItem = Fighter(item)
-                if extraAmount > fighterItem.fighterSquadronMaxSize:  # Amount bigger then max fightergroup size
-                    extraAmount = fighterItem.fighterSquadronMaxSize
-                if fighterItem.fits(fit):
-                    fit.fighters.append(fighterItem)
-
-            if len(modExtra) == 2 and item.category.name != "Drone" and item.category.name != "Fighter":
-                extraAmount = int(extraAmount) if extraAmount is not None else 1
-                if modName not in cargoMap:
-                    cargoMap[modName] = 0
-                cargoMap[modName] += extraAmount
-            elif item.category.name == "Implant":
-                if "implantness" in item.attributes:
-                    fit.implants.append(Implant(item))
-                elif "boosterness" in item.attributes:
-                    fit.boosters.append(Booster(item))
-                else:
-                    pyfalog.error("Failed to import implant: {0}", line)
-            # elif item.category.name == "Subsystem":
-            #     try:
-            #         subsystem = Module(item)
-            #     except ValueError:
-            #         continue
-            #
-            #     if subsystem.fits(fit):
-            #         fit.modules.append(subsystem)
-            else:
-                try:
-                    m = Module(item)
-                except ValueError:
-                    continue
-                # Add subsystems before modules to make sure T3 cruisers have subsystems installed
-                if item.category.name == "Subsystem":
-                    if m.fits(fit):
-                        fit.modules.append(m)
-                else:
-                    if ammoName:
-                        try:
-                            ammo = sMkt.getItem(ammoName)
-                            if m.isValidCharge(ammo) and m.charge is None:
-                                m.charge = ammo
-                        except:
-                            pass
-
-                    if setOffline is True and m.isValidState(State.OFFLINE):
-                        m.state = State.OFFLINE
-                    elif m.isValidState(State.ACTIVE):
-                        m.state = State.ACTIVE
-
-                    moduleList.append(m)
-
-        # Recalc to get slot numbers correct for T3 cruisers
+            if subsystem.fits(fit):
+                subsystem.owner = fit
+                fit.modules.append(subsystem)
         svcFit.getInstance().recalc(fit)
 
-        for m in moduleList:
-            if m.fits(fit):
-                m.owner = fit
-                if not m.isValidState(m.state):
-                    pyfalog.warning("Error: Module {0} cannot have state {1}", m, m.state)
-
-                fit.modules.append(m)
-
-        for droneName in droneMap:
-            d = Drone(sMkt.getItem(droneName))
-            d.amount = droneMap[droneName]
-            fit.drones.append(d)
-
-        for cargoName in cargoMap:
-            c = Cargo(sMkt.getItem(cargoName))
-            c.amount = cargoMap[cargoName]
-            fit.cargo.append(c)
-
+        # Other stuff
+        for modRack in (
+            aFit.rigs,
+            aFit.services,
+            aFit.modulesHigh,
+            aFit.modulesMed,
+            aFit.modulesLow,
+        ):
+            for m in modRack:
+                if m is None:
+                    continue
+                if m.fits(fit):
+                    m.owner = fit
+                    if not m.isValidState(m.state):
+                        pyfalog.warning('EftPort.importEft: module {} cannot have state {}', m, m.state)
+                    fit.modules.append(m)
+        for implant in aFit.implants:
+            fit.implants.append(implant)
+        for booster in aFit.boosters:
+            fit.boosters.append(booster)
+        for drone in aFit.drones.values():
+            fit.drones.append(drone)
+        for fighter in aFit.fighters:
+            fit.fighters.append(fighter)
+        for cargo in aFit.cargo.values():
+            fit.cargo.append(cargo)
         return fit
 
     @staticmethod
