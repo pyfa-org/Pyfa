@@ -51,7 +51,7 @@ from utils.strfunctions import sequential_rep, replace_ltgt
 from abc import ABCMeta, abstractmethod
 
 from service.esi import Esi
-from service.eftPort import EftPort
+from service.eftPort import EftPort, SLOT_ORDER as EFT_SLOT_ORDER
 from collections import OrderedDict
 
 
