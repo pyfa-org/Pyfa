@@ -205,7 +205,7 @@ class AbstractFit:
         self.cargo = {}  # Format: {item: Cargo}
 
     @property
-    def modContMap(self):
+    def __slotContainerMap(self):
         return {
             Slot.HIGH: self.modulesHigh,
             Slot.MED: self.modulesMed,
@@ -213,6 +213,17 @@ class AbstractFit:
             Slot.RIG: self.rigs,
             Slot.SUBSYSTEM: self.subsystems,
             Slot.SERVICE: self.services}
+
+    def getContainerBySlot(self, slotType):
+        return self.__slotContainerMap.get(slotType)
+
+    def getSlotByContainer(self, container):
+        slotType = None
+        for k, v in self.__slotContainerMap.items():
+            if v is container:
+                slotType = k
+                break
+        return slotType
 
     def addModules(self, itemSpecs):
         modules = []
@@ -228,25 +239,24 @@ class AbstractFit:
             modules.append(m)
             slotTypes.add(m.slot)
         clearTail(modules)
-        modContMap = self.modContMap
         # If all the modules have same slot type, put them to appropriate
         # container with stubs
         if len(slotTypes) == 1:
             slotType = tuple(slotTypes)[0]
-            modContMap[slotType].extend(modules)
+            self.getContainerBySlot(slotType).extend(modules)
         # Otherwise, put just modules
         else:
             for m in modules:
                 if m is None:
                     continue
-                modContMap[m.slot].append(m)
+                self.getContainerBySlot(m.slot).append(m)
 
     def addModule(self, itemSpec):
         if itemSpec is None:
             return
         m = self.__makeModule(itemSpec)
         if m is not None:
-            self.modContMap[m.slot].append(m)
+            self.getContainerBySlot(m.slot).append(m)
 
     def __makeModule(self, itemSpec):
         try:
@@ -492,12 +502,15 @@ class EftPort:
                         aFit.addCargo(itemSpec)
 
         # Subsystems first because they modify slot amount
-        for subsystem in aFit.subsystems:
-            if subsystem is None:
-                continue
-            if subsystem.fits(fit):
-                subsystem.owner = fit
-                fit.modules.append(subsystem)
+        for m in aFit.subsystems:
+            if m is None:
+                dummy = Module.buildEmpty(aFit.getSlotByContainer(aFit.subsystems))
+                dummy.owner = fit
+                fit.modules.appendIgnoreEmpty(dummy)
+            elif m.fits(fit):
+                m.owner = fit
+                pyfalog.error('kurwa {}'.format(type(fit.modules)))
+                fit.modules.appendIgnoreEmpty(m)
         svcFit.getInstance().recalc(fit)
 
         # Other stuff
@@ -510,12 +523,14 @@ class EftPort:
         ):
             for m in modRack:
                 if m is None:
-                    continue
-                if m.fits(fit):
+                    dummy = Module.buildEmpty(aFit.getSlotByContainer(modRack))
+                    dummy.owner = fit
+                    fit.modules.appendIgnoreEmpty(dummy)
+                elif m.fits(fit):
                     m.owner = fit
                     if not m.isValidState(m.state):
                         pyfalog.warning('EftPort.importEft: module {} cannot have state {}', m, m.state)
-                    fit.modules.append(m)
+                    fit.modules.appendIgnoreEmpty(m)
         for implant in aFit.implants:
             fit.implants.append(implant)
         for booster in aFit.boosters:
