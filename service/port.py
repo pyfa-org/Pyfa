@@ -32,8 +32,6 @@ from codecs import open
 import xml.parsers.expat
 
 from eos import db
-from eos.db.gamedata.queries import getAttributeInfo
-from gui.utils.numberFormatter import roundToPrec
 from service.fit import Fit as svcFit
 
 # noinspection PyPackageRequirements
@@ -53,6 +51,7 @@ from utils.strfunctions import sequential_rep, replace_ltgt
 from abc import ABCMeta, abstractmethod
 
 from service.esi import Esi
+from service.eftPort import EftPort
 from collections import OrderedDict
 
 
@@ -62,7 +61,6 @@ class ESIExportException(Exception):
 
 pyfalog = Logger(__name__)
 
-EFT_SLOT_ORDER = [Slot.LOW, Slot.MED, Slot.HIGH, Slot.RIG, Slot.SUBSYSTEM, Slot.SERVICE]
 INV_FLAGS = {
     Slot.LOW: 11,
     Slot.MED: 19,
@@ -213,11 +211,7 @@ class IPortUser(metaclass=ABCMeta):
 
 
 class Port(object):
-    """
-    2017/03/31 NOTE: About change
-        1. want to keep the description recorded in fit
-        2. i think should not write wx.CallAfter in here
-    """
+    """Service which houses all import/export format functions"""
     instance = None
     __tag_replace_flag = True
 
@@ -350,8 +344,6 @@ class Port(object):
                 fit.implantLocation = ImplantLocation.CHARACTER if useCharImplants else ImplantLocation.FIT
             db.save(fit)
         return fits
-
-    """Service which houses all import/export format functions"""
 
     @classmethod
     def exportESI(cls, ofit, callback=None):
@@ -625,248 +617,7 @@ class Port(object):
 
     @staticmethod
     def importEft(eftString):
-        # Split passed string in lines and clean them up
-        lines = eftString.splitlines()
-        for i in range(len(lines)):
-            lines[i] = lines[i].strip()
-        while lines and not lines[0]:
-            del lines[0]
-        while lines and not lines[-1]:
-            del lines[-1]
-
-        sMkt = Market.getInstance()
-        offineSuffix = ' /OFFLINE'
-
-        fit = Fit()
-
-        # Ship and fit name from header
-        header = lines.pop(0)
-        m = re.match('\[(?P<shipType>[\w\s]+), (?P<fitName>.+)\]', header)
-        if not m:
-            pyfalog.warning('Corrupted fit header in importEft')
-            return
-        shipType = m.group('shipType').strip()
-        fitName = m.group('fitName').strip()
-        try:
-            ship = sMkt.getItem(shipType)
-            try:
-                fit.ship = Ship(ship)
-            except ValueError:
-                fit.ship = Citadel(ship)
-            fit.name = fitName
-        except:
-            pyfalog.warning("Exception caught in importEft")
-            return
-
-        def sectionIter(lines):
-            section = []
-            for line in lines:
-                if not line:
-                    if section:
-                        yield section
-                        section = []
-                section.append(line)
-            if section:
-                yield section
-
-        stubPattern = '^\[.+\]$'
-        modulePattern = '^(?P<typeName>[^,/]+)(, (?P<charge>[^,/]+))?(?P<offline> /OFFLINE)?( \[(?P<mutation>\d+)\])?$'
-        droneCargoPattern = '^(?P<typeName>[^,/]+) x(?P<amount>\d+)$'
-
-        sections = []
-        for section in sectionIter(lines):
-            sectionItemData = []
-            for line in section:
-                # Stub line
-                if re.match(stubPattern, line):
-                    sectionItemData.append({'type': 'stub'})
-                    continue
-                # Items with quantity specifier
-                m = re.match(droneCargoPattern, line)
-                if m:
-                    sectionItemData.append({
-                        'type': 'multi',
-                        'typeName': m.group('typeName'),
-                        'amount': int(m.group('amount'))})
-                    continue
-                # All other items
-                m = re.match(modulePattern, line)
-                if m:
-                    sectionItemData.append({
-                        'type': 'normal',
-                        'typeName': m.group('typeName'),
-                        'chargeName': m.group('charge'),
-                        'offline': True if m.group('offline') else False,
-                        'mutation': int(m.group('mutation')) if m.group('mutation') else None})
-            # Strip stubs from tail
-            while sectionItemData and sectionItemData[-1]['type'] == 'stub':
-                del sectionItemData[-1]
-            if sectionItemData:
-                sections.append(sectionItemData)
-
-
-
-        for sectionItemData in sections:
-            sectionCats = set()
-            for entry in sectionItemData:
-                if entry['type'] == 'stub':
-                    continue
-                try:
-                    item = sMkt.getItem(entry['typeName'], eager='group.category')
-                except:
-                    pyfalog.warning('no data can be found (old names)')
-                    entry['type'] = 'stub'
-                    continue
-                entry['item'] = item
-                import sys
-                sys.stderr.write('{}\n'.format(item.slot))
-                sectionCats.add(item.category.name)
-            processStubs = (
-                # To process stubs, we must make sure that all the items in section
-                # are from the same category
-                len(sectionCats) == 1 and tuple(sectionCats)[0] == 'Module' and
-                # And that they do not contain items with quantity specifier
-                all(i['type'] in ('stub', 'normal') for i in sectionItemData))
-            isDronebay = (
-                len(sectionCats) == 1 and tuple(sectionCats)[0] == 'Drone' and
-                all(i['type'] == 'multi' for i in sectionItemData))
-            isFighterbay = (
-                len(sectionCats) == 1 and tuple(sectionCats)[0] == 'Fighter' and
-                all(i['type'] == 'multi' for i in sectionItemData))
-
-
-
-
-
-
-
-
-
-
-        # maintain map of drones and their quantities
-        droneMap = {}
-        cargoMap = {}
-        moduleList = []
-        for i in range(1, len(lines)):
-            ammoName = None
-            extraAmount = None
-
-            line = lines[i].strip()
-            if not line:
-                continue
-
-            setOffline = line.endswith(offineSuffix)
-            if setOffline is True:
-                # remove offline suffix from line
-                line = line[:len(line) - len(offineSuffix)]
-
-            modAmmo = line.split(",")
-            # matches drone and cargo with x{qty}
-            modExtra = modAmmo[0].split(" x")
-
-            if len(modAmmo) == 2:
-                # line with a module and ammo
-                ammoName = modAmmo[1].strip()
-                modName = modAmmo[0].strip()
-            elif len(modExtra) == 2:
-                # line with drone/cargo and qty
-                extraAmount = modExtra[1].strip()
-                modName = modExtra[0].strip()
-            else:
-                # line with just module
-                modName = modExtra[0].strip()
-
-            try:
-                # get item information. If we are on a Drone/Cargo line, throw out cargo
-                item = sMkt.getItem(modName, eager="group.category")
-            except:
-                # if no data can be found (old names)
-                pyfalog.warning("no data can be found (old names)")
-                continue
-
-            if not item.published:
-                continue
-
-            if item.category.name == "Drone":
-                extraAmount = int(extraAmount) if extraAmount is not None else 1
-                if modName not in droneMap:
-                    droneMap[modName] = 0
-                droneMap[modName] += extraAmount
-            elif item.category.name == "Fighter":
-                extraAmount = int(extraAmount) if extraAmount is not None else 1
-                fighterItem = Fighter(item)
-                if extraAmount > fighterItem.fighterSquadronMaxSize:  # Amount bigger then max fightergroup size
-                    extraAmount = fighterItem.fighterSquadronMaxSize
-                if fighterItem.fits(fit):
-                    fit.fighters.append(fighterItem)
-
-            if len(modExtra) == 2 and item.category.name != "Drone" and item.category.name != "Fighter":
-                extraAmount = int(extraAmount) if extraAmount is not None else 1
-                if modName not in cargoMap:
-                    cargoMap[modName] = 0
-                cargoMap[modName] += extraAmount
-            elif item.category.name == "Implant":
-                if "implantness" in item.attributes:
-                    fit.implants.append(Implant(item))
-                elif "boosterness" in item.attributes:
-                    fit.boosters.append(Booster(item))
-                else:
-                    pyfalog.error("Failed to import implant: {0}", line)
-            # elif item.category.name == "Subsystem":
-            #     try:
-            #         subsystem = Module(item)
-            #     except ValueError:
-            #         continue
-            #
-            #     if subsystem.fits(fit):
-            #         fit.modules.append(subsystem)
-            else:
-                try:
-                    m = Module(item)
-                except ValueError:
-                    continue
-                # Add subsystems before modules to make sure T3 cruisers have subsystems installed
-                if item.category.name == "Subsystem":
-                    if m.fits(fit):
-                        fit.modules.append(m)
-                else:
-                    if ammoName:
-                        try:
-                            ammo = sMkt.getItem(ammoName)
-                            if m.isValidCharge(ammo) and m.charge is None:
-                                m.charge = ammo
-                        except:
-                            pass
-
-                    if setOffline is True and m.isValidState(State.OFFLINE):
-                        m.state = State.OFFLINE
-                    elif m.isValidState(State.ACTIVE):
-                        m.state = State.ACTIVE
-
-                    moduleList.append(m)
-
-        # Recalc to get slot numbers correct for T3 cruisers
-        svcFit.getInstance().recalc(fit)
-
-        for m in moduleList:
-            if m.fits(fit):
-                m.owner = fit
-                if not m.isValidState(m.state):
-                    pyfalog.warning("Error: Module {0} cannot have state {1}", m, m.state)
-
-                fit.modules.append(m)
-
-        for droneName in droneMap:
-            d = Drone(sMkt.getItem(droneName))
-            d.amount = droneMap[droneName]
-            fit.drones.append(d)
-
-        for cargoName in cargoMap:
-            c = Cargo(sMkt.getItem(cargoName))
-            c.amount = cargoMap[cargoName]
-            fit.cargo.append(c)
-
-        return fit
+        return EftPort.importEft(eftString)
 
     @staticmethod
     def importEftCfg(shipname, contents, iportuser=None):
@@ -1159,119 +910,12 @@ class Port(object):
 
 
     @classmethod
-    def exportEft(cls, fit, mutations=True, implants=False):
-        # EFT formatted export is split in several sections, each section is
-        # separated from another using 2 blank lines. Sections might have several
-        # sub-sections, which are separated by 1 blank line
-        sections = []
-
-        header = '[{}, {}]'.format(fit.ship.item.name, fit.name)
-
-        # Section 1: modules, rigs, subsystems, services
-        modsBySlotType = {}
-        sFit = svcFit.getInstance()
-        for module in fit.modules:
-            modsBySlotType.setdefault(module.slot, []).append(module)
-        modSection = []
-        offineSuffix = ' /OFFLINE'
-        mutants = {}  # Format: {reference number: module}
-        mutantReference = 1
-        for slotType in EFT_SLOT_ORDER:
-            rackLines = []
-            modules = modsBySlotType.get(slotType, ())
-            for module in modules:
-                if module.item:
-                    mutated = bool(module.mutators)
-                    # if module was mutated, use base item name for export
-                    if mutated:
-                        modName = module.baseItem.name
-                    else:
-                        modName = module.item.name
-                    if mutated and mutations:
-                        mutants[mutantReference] = module
-                        mutationSuffix = ' [{}]'.format(mutantReference)
-                        mutantReference += 1
-                    else:
-                        mutationSuffix = ''
-                    modOfflineSuffix = offineSuffix if module.state == State.OFFLINE else ''
-                    if module.charge and sFit.serviceFittingOptions['exportCharges']:
-                        rackLines.append('{}, {}{}{}'.format(
-                            modName, module.charge.name, modOfflineSuffix, mutationSuffix))
-                    else:
-                        rackLines.append('{}{}{}'.format(modName, modOfflineSuffix, mutationSuffix))
-                else:
-                    rackLines.append('[Empty {} slot]'.format(
-                        Slot.getName(slotType).capitalize() if slotType is not None else ''))
-            if rackLines:
-                modSection.append('\n'.join(rackLines))
-        if modSection:
-            sections.append('\n\n'.join(modSection))
-
-        # Section 2: drones, fighters
-        minionSection = []
-        droneLines = []
-        for drone in sorted(fit.drones, key=lambda d: d.item.name):
-            droneLines.append('{} x{}'.format(drone.item.name, drone.amount))
-        if droneLines:
-            minionSection.append('\n'.join(droneLines))
-        fighterLines = []
-        for fighter in sorted(fit.fighters, key=lambda f: f.item.name):
-            fighterLines.append('{} x{}'.format(fighter.item.name, fighter.amountActive))
-        if fighterLines:
-            minionSection.append('\n'.join(fighterLines))
-        if minionSection:
-            sections.append('\n\n'.join(minionSection))
-
-        # Section 3: implants, boosters
-        if implants:
-            charSection = []
-            implantLines = []
-            for implant in fit.implants:
-                implantLines.append(implant.item.name)
-            if implantLines:
-                charSection.append('\n'.join(implantLines))
-            boosterLines = []
-            for booster in fit.boosters:
-                boosterLines.append(booster.item.name)
-            if boosterLines:
-                charSection.append('\n'.join(boosterLines))
-            if charSection:
-                sections.append('\n\n'.join(charSection))
-
-        # Section 4: cargo
-        cargoLines = []
-        for cargo in sorted(
-            fit.cargo,
-            key=lambda c: (c.item.group.category.name, c.item.group.name, c.item.name)
-        ):
-            cargoLines.append('{} x{}'.format(cargo.item.name, cargo.amount))
-        if cargoLines:
-            sections.append('\n'.join(cargoLines))
-
-        # Section 5: mutated modules' details
-        mutationLines = []
-        if mutants and mutations:
-            for mutantReference in sorted(mutants):
-                mutant = mutants[mutantReference]
-                mutatedAttrs = {}
-                for attrID, mutator in mutant.mutators.items():
-                    attrName = getAttributeInfo(attrID).name
-                    mutatedAttrs[attrName] = mutator.value
-                mutationLines.append('[{}] {}'.format(mutantReference, mutant.baseItem.name))
-                mutationLines.append('  {}'.format(mutant.mutaplasmid.item.name))
-                # Round to 7th significant number to avoid exporting float errors
-                customAttrsLine = ', '.join(
-                    '{} {}'.format(a, roundToPrec(mutatedAttrs[a], 7))
-                    for a in sorted(mutatedAttrs))
-                mutationLines.append('  {}'.format(customAttrsLine))
-        if mutationLines:
-            sections.append('\n'.join(mutationLines))
-
-        return '{}\n\n{}'.format(header, '\n\n\n'.join(sections))
+    def exportEft(cls, fit):
+        return EftPort.exportEft(fit, mutations=False, implants=False)
 
     @classmethod
     def exportEftImps(cls, fit):
-        return cls.exportEft(fit, implants=True)
+        return EftPort.exportEft(fit, mutations=False, implants=True)
 
     @staticmethod
     def exportDna(fit):
@@ -1478,7 +1122,8 @@ class Port(object):
 
 
 class PortProcessing(object):
-    """Port Processing class """
+    """Port Processing class"""
+
     @staticmethod
     def backupFits(path, iportuser):
         success = True
