@@ -438,6 +438,7 @@ class EftPort:
                     else:
                         itemSpec.amount = int(m.group('amount'))
                         section.itemSpecs.append(itemSpec)
+                    continue
                 # All other items
                 m = re.match(modulePattern, line)
                 if m:
@@ -452,6 +453,7 @@ class EftPort:
                         if m.group('mutation'):
                             itemSpec.mutationIdx = int(m.group('mutation'))
                         section.itemSpecs.append(itemSpec)
+                    continue
             clearTail(section.itemSpecs)
             sections.append(section)
 
@@ -524,6 +526,7 @@ class EftPort:
             fit.fighters.append(fighter)
         for cargo in aFit.cargo.values():
             fit.cargo.append(cargo)
+
         return fit
 
     @staticmethod
