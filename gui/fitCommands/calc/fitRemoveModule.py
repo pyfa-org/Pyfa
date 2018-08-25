@@ -48,11 +48,11 @@ class FitRemoveModuleCommand(wx.Command):
     def Undo(self):
         pyfalog.debug("Reapplying {} removed module(s) for {}", len(self.modCache), self.fitID)
 
-        from gui.fitCommands.calc.fitAddModule import FitAddModuleCommand  # avoids circular import
+        from gui.fitCommands.calc.fitReplaceModule import FitReplaceModuleCommand  # avoids circular import
         for mod in self.modCache:
             pyfalog.debug(" -- {}", mod)
             # todo, send the state and charge?
-            cmd = FitAddModuleCommand(self.fitID, mod.itemID, mod.mutaplasmidID, mod.baseID)
+            cmd = FitReplaceModuleCommand(self.fitID, mod.modPosition, mod.itemID)
             cmd.Do()
             cmd.module.state = mod.state
             cmd.module.charge = mod.charge
