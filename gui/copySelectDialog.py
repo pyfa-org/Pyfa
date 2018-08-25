@@ -21,6 +21,7 @@
 # noinspection PyPackageRequirements
 import wx
 from service.eftPort import EFT_OPTIONS
+from service.settings import SettingsProvider
 
 
 class CopySelectDialog(wx.Dialog):
@@ -35,6 +36,8 @@ class CopySelectDialog(wx.Dialog):
         wx.Dialog.__init__(self, parent, id=wx.ID_ANY, title="Select a format", size=(-1, -1),
                            style=wx.DEFAULT_DIALOG_STYLE)
         mainSizer = wx.BoxSizer(wx.VERTICAL)
+
+        self.settings = SettingsProvider.getInstance().getSettings("pyfaExport", {"format": 0, "options": 0})
 
         self.copyFormats = {
             "EFT": CopySelectDialog.copyFormatEft,
@@ -51,9 +54,10 @@ class CopySelectDialog(wx.Dialog):
             else:
                 rdo = wx.RadioButton(self, wx.ID_ANY, format)
             rdo.Bind(wx.EVT_RADIOBUTTON, self.Selected)
+            if self.settings['format'] == self.copyFormats[format]:
+                rdo.SetValue(True)
+                self.copyFormat = self.copyFormats[format]
             mainSizer.Add(rdo, 0, wx.EXPAND | wx.ALL, 5)
-
-        self.copyFormat = CopySelectDialog.copyFormatEft
 
         # some sizer magic to deal with https://github.com/wxWidgets/Phoenix/issues/974
         self.box1 = wx.StaticBox(self, -1, "EFT Options")
@@ -68,6 +72,8 @@ class CopySelectDialog(wx.Dialog):
         for x, v in EFT_OPTIONS.items():
             ch = wx.CheckBox(self.box1, -1, v['name'])
             self.options[x] = ch
+            if self.settings['options'] & x:
+                ch.SetValue(True)
             self.bsizer2.Add(ch, 1, wx.EXPAND)
 
         self.box1.SetSizer(self.bsizer1)
@@ -76,6 +82,8 @@ class CopySelectDialog(wx.Dialog):
         buttonSizer = self.CreateButtonSizer(wx.OK | wx.CANCEL)
         if buttonSizer:
             mainSizer.Add(buttonSizer, 0, wx.EXPAND | wx.ALL, 5)
+
+        self.box1.Show(self.GetSelected() == CopySelectDialog.copyFormatEft)
 
         self.SetSizer(mainSizer)
         self.Fit()
@@ -95,6 +103,6 @@ class CopySelectDialog(wx.Dialog):
         i = 0
         for x, v in self.options.items():
             if v.IsChecked():
-                i = i ^ x.value
+                i = i ^ x
         return i
 

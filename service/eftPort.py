@@ -51,11 +51,11 @@ SLOT_ORDER = (Slot.LOW, Slot.MED, Slot.HIGH, Slot.RIG, Slot.SUBSYSTEM, Slot.SERV
 OFFLINE_SUFFIX = ' /OFFLINE'
 
 EFT_OPTIONS = {
-    Options.IMPLANTS: {
+    Options.IMPLANTS.value: {
         "name": "Implants",
         "description": "Exports implants"
     },
-    Options.MUTATIONS: {
+    Options.MUTATIONS.value: {
         "name": "Abyssal",
         "description": "Exports Abyssal stats"
     }

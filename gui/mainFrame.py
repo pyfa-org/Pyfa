@@ -752,6 +752,11 @@ class MainFrame(wx.Frame):
         dlg.ShowModal()
         selected = dlg.GetSelected()
         options = dlg.GetOptions()
+
+        settings = SettingsProvider.getInstance().getSettings("pyfaExport")
+        settings["format"] = selected
+        settings["options"] = options
+
         CopySelectDict[selected](options)
 
         try:
