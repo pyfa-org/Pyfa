@@ -22,7 +22,7 @@ import re
 
 from logbook import Logger
 
-from eos.db.gamedata.queries import getAttributeInfo
+from eos.db.gamedata.queries import getAttributeInfo, getDynamicItem
 from eos.saveddata.cargo import Cargo
 from eos.saveddata.citadel import Citadel
 from eos.saveddata.booster import Booster
@@ -44,7 +44,7 @@ SLOT_ORDER = (Slot.LOW, Slot.MED, Slot.HIGH, Slot.RIG, Slot.SUBSYSTEM, Slot.SERV
 OFFLINE_SUFFIX = ' /OFFLINE'
 
 
-def fetchItem(typeName, eagerCat=True):
+def fetchItem(typeName, eagerCat=False):
     sMkt = Market.getInstance()
     eager = 'group.category' if eagerCat else None
     try:
@@ -150,7 +150,7 @@ class RegularItemSpec(BaseItemSpec):
     def __fetchCharge(self, chargeName):
         if chargeName:
             charge = fetchItem(chargeName, eagerCat=True)
-            if charge.category.name != 'Charge':
+            if not charge or charge.category.name != 'Charge':
                 charge = None
         else:
             charge = None
@@ -203,6 +203,8 @@ class AbstractFit:
         self.drones = {}  # Format: {item: Drone}
         self.fighters = []
         self.cargo = {}  # Format: {item: Cargo}
+        # Other stuff
+        self.mutations = {}  # Format: {reference: (mutaplamid item, {attr ID: attr value})}
 
     @property
     def __slotContainerMap(self):
@@ -259,10 +261,28 @@ class AbstractFit:
             self.getContainerBySlot(m.slot).append(m)
 
     def __makeModule(self, itemSpec):
-        try:
-            m = Module(itemSpec.item)
-        except ValueError:
-            return None
+        # Mutate item if needed
+        m = None
+        if itemSpec.mutationIdx in self.mutations:
+            mutaItem, mutaAttrs = self.mutations[itemSpec.mutationIdx]
+            mutaplasmid = getDynamicItem(mutaItem.ID)
+            if mutaplasmid:
+                try:
+                    m = Module(mutaplasmid.resultingItem, itemSpec.item, mutaplasmid)
+                except ValueError:
+                    pass
+                else:
+                    for attrID, mutator in m.mutators.items():
+                        if attrID in mutaAttrs:
+                            mutator.value = mutaAttrs[attrID]
+        # If we still don't have item (item is not mutated or we
+        # failed to construct mutated item), try to make regular item
+        if m is None:
+            try:
+                m = Module(itemSpec.item)
+            except ValueError:
+                return None
+
         if itemSpec.charge is not None and m.isValidCharge(itemSpec.charge):
             m.charge = itemSpec.charge
         if itemSpec.offline and m.isValidState(State.OFFLINE):
@@ -425,10 +445,13 @@ class EftPort:
             return
 
         aFit = AbstractFit()
+        aFit.mutations = cls.__getMutationData(lines)
+        pyfalog.error('{}'.format(aFit.mutations))
 
+        nameChars = '[^,/\[\]]'  # Characters which are allowed to be used in name
         stubPattern = '^\[.+\]$'
-        modulePattern = '^(?P<typeName>[^,/]+)(, (?P<chargeName>[^,/]+))?(?P<offline>{})?( \[(?P<mutation>\d+)\])?$'.format(OFFLINE_SUFFIX)
-        droneCargoPattern = '^(?P<typeName>[^,/]+) x(?P<amount>\d+)$'
+        modulePattern = '^(?P<typeName>{0}+)(, (?P<chargeName>{0}+))?(?P<offline>{1})?( \[(?P<mutation>\d+)\])?$'.format(nameChars, OFFLINE_SUFFIX)
+        droneCargoPattern = '^(?P<typeName>{}+) x(?P<amount>\d+)$'.format(nameChars)
 
         sections = []
         for section in cls.__importSectionIter(lines):
@@ -466,6 +489,7 @@ class EftPort:
                     continue
             clearTail(section.itemSpecs)
             sections.append(section)
+
 
         hasDroneBay = any(s.isDroneBay for s in sections)
         hasFighterBay = any(s.isFighterBay for s in sections)
@@ -555,28 +579,61 @@ class EftPort:
             del lines[-1]
         return lines
 
-    @classmethod
-    def __createFit(cls, lines):
-        """Create fit and set top-level entity (ship or citadel)."""
-        fit = Fit()
-        header = lines.pop(0)
-        m = re.match('\[(?P<shipType>[\w\s]+), (?P<fitName>.+)\]', header)
-        if not m:
-            pyfalog.warning('EftPort.importEft: corrupted fit header')
-            raise EftImportError
-        shipType = m.group('shipType').strip()
-        fitName = m.group('fitName').strip()
-        try:
-            ship = fetchItem(shipType, eagerCat=False)
-            try:
-                fit.ship = Ship(ship)
-            except ValueError:
-                fit.ship = Citadel(ship)
-            fit.name = fitName
-        except:
-            pyfalog.warning('EftPort.importEft: exception caught when parsing header')
-            raise EftImportError
-        return fit
+    @staticmethod
+    def __getMutationData(lines):
+        data = {}
+        consumedIndices = set()
+        for i in range(len(lines)):
+            line = lines[i]
+            m = re.match('^\[(?P<ref>\d+)\]', line)
+            if m:
+                ref = int(m.group('ref'))
+                # Attempt to apply mutation is useless w/o mutaplasmid, so skip it
+                # altogether if we have no info on it
+                try:
+                    mutaName = lines[i + 1]
+                except IndexError:
+                    continue
+                else:
+                    consumedIndices.add(i)
+                    consumedIndices.add(i + 1)
+                # Get custom attribute values
+                mutaAttrs = {}
+                try:
+                    mutaAttrsLine = lines[i + 2]
+                except IndexError:
+                    pass
+                else:
+                    consumedIndices.add(i + 2)
+                    pairs = [p.strip() for p in mutaAttrsLine.split(',')]
+                    for pair in pairs:
+                        try:
+                            attrName, value = pair.split(' ')
+                        except ValueError:
+                            continue
+                        try:
+                            value = float(value)
+                        except (ValueError, TypeError):
+                            continue
+                        attrInfo = getAttributeInfo(attrName.strip())
+                        if attrInfo is None:
+                            continue
+                        mutaAttrs[attrInfo.ID] = value
+                mutaItem = fetchItem(mutaName)
+                if mutaItem is None:
+                    continue
+                data[ref] = (mutaItem, mutaAttrs)
+                # If we got here, we have seen at least correct reference line and
+                # mutaplasmid name line
+                i += 2
+                # Bonus points for seeing correct attrs line. Worst case we
+                # will have to scan it once again
+                if mutaAttrs:
+                    i += 1
+        # Cleanup the lines from mutaplasmid info
+        for i in sorted(consumedIndices, reverse=True):
+            del lines[i]
+        return data
 
     @staticmethod
     def __importSectionIter(lines):
@@ -590,3 +647,26 @@ class EftPort:
                 section.lines.append(line)
         if section.lines:
             yield section
+
+    @classmethod
+    def __createFit(cls, lines):
+        """Create fit and set top-level entity (ship or citadel)."""
+        fit = Fit()
+        header = lines.pop(0)
+        m = re.match('\[(?P<shipType>[\w\s]+), (?P<fitName>.+)\]', header)
+        if not m:
+            pyfalog.warning('EftPort.importEft: corrupted fit header')
+            raise EftImportError
+        shipType = m.group('shipType').strip()
+        fitName = m.group('fitName').strip()
+        try:
+            ship = fetchItem(shipType)
+            try:
+                fit.ship = Ship(ship)
+            except ValueError:
+                fit.ship = Citadel(ship)
+            fit.name = fitName
+        except:
+            pyfalog.warning('EftPort.importEft: exception caught when parsing header')
+            raise EftImportError
+        return fit

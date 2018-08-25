@@ -396,6 +396,21 @@ def getAbyssalTypes():
     return set([r.resultingTypeID for r in gamedata_session.query(DynamicItem.resultingTypeID).distinct()])
 
 
+@cachedQuery(1, "itemID")
+def getDynamicItem(itemID, eager=None):
+    try:
+        if isinstance(itemID, int):
+            if eager is None:
+                result = gamedata_session.query(DynamicItem).filter(DynamicItem.ID == itemID).one()
+            else:
+                result = gamedata_session.query(DynamicItem).options(*processEager(eager)).filter(DynamicItem.ID == itemID).one()
+        else:
+            raise TypeError("Need integer as argument")
+    except exc.NoResultFound:
+        result = None
+    return result
+
+
 def getRequiredFor(itemID, attrMapping):
     Attribute1 = aliased(Attribute)
     Attribute2 = aliased(Attribute)
