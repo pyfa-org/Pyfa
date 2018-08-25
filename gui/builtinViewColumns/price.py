@@ -51,9 +51,9 @@ class Price(ViewColumn):
             return False
 
         if isinstance(stuff, Drone) or isinstance(stuff, Cargo):
-            price *= stuff.amount
+            price.price *= stuff.amount
 
-        return formatAmount(price, 3, 3, 9, currency=True)
+        return formatAmount(price.price, 3, 3, 9, currency=True)
 
     def delayedText(self, mod, display, colItem):
         sPrice = ServicePrice.getInstance()
