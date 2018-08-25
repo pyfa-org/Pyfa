@@ -217,8 +217,8 @@ class Fit(FitDeprecated):
 
         eos.db.remove(fit)
 
-        if fitID in Fit.__class__.processors:
-            del Fit.__class__.processors[fitID]
+        if fitID in Fit.processors:
+            del Fit.processors[fitID]
 
         pyfalog.debug("    Need to refresh {} fits: {}", len(refreshFits), refreshFits)
         for fit in refreshFits:
