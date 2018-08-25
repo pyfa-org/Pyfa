@@ -20,41 +20,59 @@
 
 # noinspection PyPackageRequirements
 import wx
+from service.eftPort import EFT_OPTIONS
 
 
 class CopySelectDialog(wx.Dialog):
     copyFormatEft = 0
-    copyFormatEftImps = 1
-    copyFormatXml = 2
-    copyFormatDna = 3
-    copyFormatEsi = 4
-    copyFormatMultiBuy = 5
-    copyFormatEfs = 6
+    copyFormatXml = 1
+    copyFormatDna = 2
+    copyFormatEsi = 3
+    copyFormatMultiBuy = 4
+    copyFormatEfs = 5
 
     def __init__(self, parent):
         wx.Dialog.__init__(self, parent, id=wx.ID_ANY, title="Select a format", size=(-1, -1),
                            style=wx.DEFAULT_DIALOG_STYLE)
         mainSizer = wx.BoxSizer(wx.VERTICAL)
 
-        copyFormats = ["EFT", "EFT (Implants)", "XML", "DNA", "ESI", "MultiBuy", "EFS"]
-        copyFormatTooltips = {CopySelectDialog.copyFormatEft: "EFT text format",
-                              CopySelectDialog.copyFormatEftImps: "EFT text format",
-                              CopySelectDialog.copyFormatXml: "EVE native XML format",
-                              CopySelectDialog.copyFormatDna: "A one-line text format",
-                              CopySelectDialog.copyFormatEsi: "A JSON format used for ESI",
-                              CopySelectDialog.copyFormatMultiBuy: "MultiBuy text format",
-                              CopySelectDialog.copyFormatEfs: "JSON data format used by EFS"}
-        selector = wx.RadioBox(self, wx.ID_ANY, label="Copy to the clipboard using:", choices=copyFormats,
-                               style=wx.RA_SPECIFY_ROWS)
-        selector.Bind(wx.EVT_RADIOBOX, self.Selected)
-        for format, tooltip in copyFormatTooltips.items():
-            selector.SetItemToolTip(format, tooltip)
+        self.copyFormats = {
+            "EFT": CopySelectDialog.copyFormatEft,
+            "XML": CopySelectDialog.copyFormatXml,
+            "DNA": CopySelectDialog.copyFormatDna,
+            "ESI": CopySelectDialog.copyFormatEsi,
+            "MultiBuy": CopySelectDialog.copyFormatMultiBuy,
+            "EFS": CopySelectDialog.copyFormatEfs
+        }
+
+        for i, format in enumerate(self.copyFormats.keys()):
+            if i == 0:
+                rdo = wx.RadioButton(self, wx.ID_ANY, format, style=wx.RB_GROUP)
+            else:
+                rdo = wx.RadioButton(self, wx.ID_ANY, format)
+            rdo.Bind(wx.EVT_RADIOBUTTON, self.Selected)
+            mainSizer.Add(rdo, 0, wx.EXPAND | wx.ALL, 5)
 
         self.copyFormat = CopySelectDialog.copyFormatEft
-        selector.SetSelection(self.copyFormat)
 
-        mainSizer.Add(selector, 0, wx.EXPAND | wx.ALL, 5)
+        # some sizer magic to deal with https://github.com/wxWidgets/Phoenix/issues/974
+        self.box1 = wx.StaticBox(self, -1, "EFT Options")
+        self.bsizer1 = wx.BoxSizer(wx.VERTICAL)
+        self.bsizer2 = wx.BoxSizer(wx.VERTICAL)
+        self.bsizer1.AddSpacer(10)
 
+        self.bsizer1.Add(self.bsizer2, 1, wx.EXPAND | wx.TOP | wx.LEFT | wx.RIGHT | wx.BOTTOM, 10)
+
+        self.options = {}
+
+        for x, v in EFT_OPTIONS.items():
+            ch = wx.CheckBox(self.box1, -1, v['name'])
+            self.options[x] = ch
+            self.bsizer2.Add(ch, 1, wx.EXPAND)
+
+        self.box1.SetSizer(self.bsizer1)
+
+        mainSizer.Add(self.box1, 0, wx.EXPAND | wx.ALL, 5)
         buttonSizer = self.CreateButtonSizer(wx.OK | wx.CANCEL)
         if buttonSizer:
             mainSizer.Add(buttonSizer, 0, wx.EXPAND | wx.ALL, 5)
@@ -64,7 +82,19 @@ class CopySelectDialog(wx.Dialog):
         self.Center()
 
     def Selected(self, event):
-        self.copyFormat = event.GetSelection()
+        obj = event.GetEventObject()
+        format = obj.GetLabel()
+        self.box1.Show(format == "EFT")
+        self.Fit()
+        self.copyFormat = self.copyFormats[format]
 
     def GetSelected(self):
         return self.copyFormat
+
+    def GetOptions(self):
+        i = 0
+        for x, v in self.options.items():
+            if v.IsChecked():
+                i = i ^ x.value
+        return i
+

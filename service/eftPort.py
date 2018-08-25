@@ -35,13 +35,32 @@ from eos.saveddata.fit import Fit
 from gui.utils.numberFormatter import roundToPrec
 from service.fit import Fit as svcFit
 from service.market import Market
+from enum import Enum
 
 
 pyfalog = Logger(__name__)
 
+
+class Options(Enum):
+    IMPLANTS = 1
+    MUTATIONS = 2
+
+
 MODULE_CATS = ('Module', 'Subsystem', 'Structure Module')
 SLOT_ORDER = (Slot.LOW, Slot.MED, Slot.HIGH, Slot.RIG, Slot.SUBSYSTEM, Slot.SERVICE)
 OFFLINE_SUFFIX = ' /OFFLINE'
+
+EFT_OPTIONS = {
+    Options.IMPLANTS: {
+        "name": "Implants",
+        "description": "Exports implants"
+    },
+    Options.MUTATIONS: {
+        "name": "Abyssal",
+        "description": "Exports Abyssal stats"
+    }
+    # 4: []
+}
 
 
 def fetchItem(typeName, eagerCat=False):
@@ -326,7 +345,7 @@ class AbstractFit:
 class EftPort:
 
     @classmethod
-    def exportEft(cls, fit, mutations, implants):
+    def exportEft(cls, fit, options):
         # EFT formatted export is split in several sections, each section is
         # separated from another using 2 blank lines. Sections might have several
         # sub-sections, which are separated by 1 blank line
@@ -354,7 +373,7 @@ class EftPort:
                         modName = module.baseItem.name
                     else:
                         modName = module.item.name
-                    if mutated and mutations:
+                    if mutated and options & Options.MUTATIONS.value:
                         mutants[mutantReference] = module
                         mutationSuffix = ' [{}]'.format(mutantReference)
                         mutantReference += 1
@@ -390,7 +409,7 @@ class EftPort:
             sections.append('\n\n'.join(minionSection))
 
         # Section 3: implants, boosters
-        if implants:
+        if options & Options.IMPLANTS.value:
             charSection = []
             implantLines = []
             for implant in fit.implants:
@@ -417,7 +436,7 @@ class EftPort:
 
         # Section 5: mutated modules' details
         mutationLines = []
-        if mutants and mutations:
+        if mutants and options & Options.MUTATIONS.value:
             for mutantReference in sorted(mutants):
                 mutant = mutants[mutantReference]
                 mutatedAttrs = {}

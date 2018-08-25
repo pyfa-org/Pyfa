@@ -909,8 +909,8 @@ class Port(object):
         return fit_list
 
     @classmethod
-    def exportEft(cls, fit):
-        return EftPort.exportEft(fit, mutations=False, implants=False)
+    def exportEft(cls, fit, options):
+        return EftPort.exportEft(fit, options)
 
     @classmethod
     def exportEftImps(cls, fit):
