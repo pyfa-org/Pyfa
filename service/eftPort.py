@@ -465,7 +465,6 @@ class EftPort:
 
         aFit = AbstractFit()
         aFit.mutations = cls.__getMutationData(lines)
-        pyfalog.error('{}'.format(aFit.mutations))
 
         nameChars = '[^,/\[\]]'  # Characters which are allowed to be used in name
         stubPattern = '^\[.+\]$'
@@ -552,7 +551,6 @@ class EftPort:
                 fit.modules.appendIgnoreEmpty(dummy)
             elif m.fits(fit):
                 m.owner = fit
-                pyfalog.error('kurwa {}'.format(type(fit.modules)))
                 fit.modules.appendIgnoreEmpty(m)
         svcFit.getInstance().recalc(fit)
 
