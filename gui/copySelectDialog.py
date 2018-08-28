@@ -20,7 +20,7 @@
 
 # noinspection PyPackageRequirements
 import wx
-from service.eftPort import EFT_OPTIONS
+from service.port.eft import EFT_OPTIONS
 from service.settings import SettingsProvider
 
 

@@ -76,8 +76,7 @@ from service.esiAccess import SsoMode
 from eos.modifiedAttributeDict import ModifiedAttributeDict
 from eos.db.saveddata.loadDefaultDatabaseValues import DefaultDatabaseValues
 from eos.db.saveddata.queries import getFit as db_getFit
-from service.port import Port, IPortUser
-from service.efsPort import EfsPort
+from service.port import Port, IPortUser, EfsPort
 from service.settings import HTMLExportSettings
 
 from time import gmtime, strftime
