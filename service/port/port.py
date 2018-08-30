@@ -38,8 +38,6 @@ from service.fit import Fit as svcFit
 import wx
 
 from eos.saveddata.cargo import Cargo
-from eos.saveddata.implant import Implant
-from eos.saveddata.booster import Booster
 from eos.saveddata.drone import Drone
 from eos.saveddata.fighter import Fighter
 from eos.saveddata.module import Module, State, Slot
@@ -52,6 +50,7 @@ from abc import ABCMeta, abstractmethod
 
 from service.esi import Esi
 from service.port.eft import EftPort, SLOT_ORDER as EFT_SLOT_ORDER
+from service.port.shared import processing_notify
 from collections import OrderedDict
 
 
@@ -235,10 +234,26 @@ class Port(object):
     @staticmethod
     def backupFits(path, iportuser):
         pyfalog.debug("Starting backup fits thread.")
-#         thread = FitBackupThread(path, callback)
-#         thread.start()
+
+        def backupFitsWorkerFunc(path, iportuser):
+            success = True
+            try:
+                iportuser.on_port_process_start()
+                backedUpFits = Port.exportXml(iportuser,
+                                              *svcFit.getInstance().getAllFits())
+                backupFile = open(path, "w", encoding="utf-8")
+                backupFile.write(backedUpFits)
+                backupFile.close()
+            except UserCancelException:
+                success = False
+            # Send done signal to GUI
+            #         wx.CallAfter(callback, -1, "Done.")
+            flag = IPortUser.ID_ERROR if not success else IPortUser.ID_DONE
+            iportuser.on_port_processing(IPortUser.PROCESS_EXPORT | flag,
+                                         "User canceled or some error occurrence." if not success else "Done.")
+
         threading.Thread(
-            target=PortProcessing.backupFits,
+            target=backupFitsWorkerFunc,
             args=(path, iportuser)
         ).start()
 
@@ -251,10 +266,14 @@ class Port(object):
         :rtype: None
         """
         pyfalog.debug("Starting import fits thread.")
-#         thread = FitImportThread(paths, iportuser)
-#         thread.start()
+
+        def importFitsFromFileWorkerFunc(paths, iportuser):
+            iportuser.on_port_process_start()
+            success, result = Port.importFitFromFiles(paths, iportuser)
+            flag = IPortUser.ID_ERROR if not success else IPortUser.ID_DONE
+            iportuser.on_port_processing(IPortUser.PROCESS_IMPORT | flag, result)
         threading.Thread(
-            target=PortProcessing.importFitsFromFile,
+            target=importFitsFromFileWorkerFunc,
             args=(paths, iportuser)
         ).start()
 
@@ -275,7 +294,7 @@ class Port(object):
                 if iportuser:  # Pulse
                     msg = "Processing file:\n%s" % path
                     pyfalog.debug(msg)
-                    PortProcessing.notify(iportuser, IPortUser.PROCESS_IMPORT | IPortUser.ID_UPDATE, msg)
+                    processing_notify(iportuser, IPortUser.PROCESS_IMPORT | IPortUser.ID_UPDATE, msg)
                     # wx.CallAfter(callback, 1, msg)
 
                 with open(path, "rb") as file_:
@@ -310,7 +329,7 @@ class Port(object):
                 # IDs.append(fit.ID)
                 if iportuser:  # Pulse
                     pyfalog.debug("Processing complete, saving fits to database: {0}/{1}", idx + 1, numFits)
-                    PortProcessing.notify(
+                    processing_notify(
                         iportuser, IPortUser.PROCESS_IMPORT | IPortUser.ID_UPDATE,
                         "Processing complete, saving fits to database\n(%d/%d) %s" % (idx + 1, numFits, fit.ship.name)
                     )
@@ -621,196 +640,7 @@ class Port(object):
 
     @staticmethod
     def importEftCfg(shipname, contents, iportuser=None):
-        """Handle import from EFT config store file"""
-
-        # Check if we have such ship in database, bail if we don't
-        sMkt = Market.getInstance()
-        try:
-            sMkt.getItem(shipname)
-        except:
-            return []  # empty list is expected
-
-        fits = []  # List for fits
-        fitIndices = []  # List for starting line numbers for each fit
-        lines = re.split('[\n\r]+', contents)  # Separate string into lines
-
-        for line in lines:
-            # Detect fit header
-            if line[:1] == "[" and line[-1:] == "]":
-                # Line index where current fit starts
-                startPos = lines.index(line)
-                fitIndices.append(startPos)
-
-        for i, startPos in enumerate(fitIndices):
-            # End position is last file line if we're trying to get it for last fit,
-            # or start position of next fit minus 1
-            endPos = len(lines) if i == len(fitIndices) - 1 else fitIndices[i + 1]
-
-            # Finally, get lines for current fitting
-            fitLines = lines[startPos:endPos]
-
-            try:
-                # Create fit object
-                fitobj = Fit()
-                # Strip square brackets and pull out a fit name
-                fitobj.name = fitLines[0][1:-1]
-                # Assign ship to fitting
-                try:
-                    fitobj.ship = Ship(sMkt.getItem(shipname))
-                except ValueError:
-                    fitobj.ship = Citadel(sMkt.getItem(shipname))
-
-                moduleList = []
-                for x in range(1, len(fitLines)):
-                    line = fitLines[x]
-                    if not line:
-                        continue
-
-                    # Parse line into some data we will need
-                    misc = re.match("(Drones|Implant|Booster)_(Active|Inactive)=(.+)", line)
-                    cargo = re.match("Cargohold=(.+)", line)
-                    # 2017/03/27 NOTE: store description from EFT
-                    description = re.match("Description=(.+)", line)
-
-                    if misc:
-                        entityType = misc.group(1)
-                        entityState = misc.group(2)
-                        entityData = misc.group(3)
-                        if entityType == "Drones":
-                            droneData = re.match("(.+),([0-9]+)", entityData)
-                            # Get drone name and attempt to detect drone number
-                            droneName = droneData.group(1) if droneData else entityData
-                            droneAmount = int(droneData.group(2)) if droneData else 1
-                            # Bail if we can't get item or it's not from drone category
-                            try:
-                                droneItem = sMkt.getItem(droneName, eager="group.category")
-                            except:
-                                pyfalog.warning("Cannot get item.")
-                                continue
-                            if droneItem.category.name == "Drone":
-                                # Add drone to the fitting
-                                d = Drone(droneItem)
-                                d.amount = droneAmount
-                                if entityState == "Active":
-                                    d.amountActive = droneAmount
-                                elif entityState == "Inactive":
-                                    d.amountActive = 0
-                                fitobj.drones.append(d)
-                            elif droneItem.category.name == "Fighter":  # EFT saves fighter as drones
-                                ft = Fighter(droneItem)
-                                ft.amount = int(droneAmount) if ft.amount <= ft.fighterSquadronMaxSize else ft.fighterSquadronMaxSize
-                                fitobj.fighters.append(ft)
-                            else:
-                                continue
-                        elif entityType == "Implant":
-                            # Bail if we can't get item or it's not from implant category
-                            try:
-                                implantItem = sMkt.getItem(entityData, eager="group.category")
-                            except:
-                                pyfalog.warning("Cannot get item.")
-                                continue
-                            if implantItem.category.name != "Implant":
-                                continue
-                            # Add implant to the fitting
-                            imp = Implant(implantItem)
-                            if entityState == "Active":
-                                imp.active = True
-                            elif entityState == "Inactive":
-                                imp.active = False
-                            fitobj.implants.append(imp)
-                        elif entityType == "Booster":
-                            # Bail if we can't get item or it's not from implant category
-                            try:
-                                boosterItem = sMkt.getItem(entityData, eager="group.category")
-                            except:
-                                pyfalog.warning("Cannot get item.")
-                                continue
-                            # All boosters have implant category
-                            if boosterItem.category.name != "Implant":
-                                continue
-                            # Add booster to the fitting
-                            b = Booster(boosterItem)
-                            if entityState == "Active":
-                                b.active = True
-                            elif entityState == "Inactive":
-                                b.active = False
-                            fitobj.boosters.append(b)
-                    # If we don't have any prefixes, then it's a module
-                    elif cargo:
-                        cargoData = re.match("(.+),([0-9]+)", cargo.group(1))
-                        cargoName = cargoData.group(1) if cargoData else cargo.group(1)
-                        cargoAmount = int(cargoData.group(2)) if cargoData else 1
-                        # Bail if we can't get item
-                        try:
-                            item = sMkt.getItem(cargoName)
-                        except:
-                            pyfalog.warning("Cannot get item.")
-                            continue
-                        # Add Cargo to the fitting
-                        c = Cargo(item)
-                        c.amount = cargoAmount
-                        fitobj.cargo.append(c)
-                    # 2017/03/27 NOTE: store description from EFT
-                    elif description:
-                        fitobj.notes = description.group(1).replace("|", "\n")
-                    else:
-                        withCharge = re.match("(.+),(.+)", line)
-                        modName = withCharge.group(1) if withCharge else line
-                        chargeName = withCharge.group(2) if withCharge else None
-                        # If we can't get module item, skip it
-                        try:
-                            modItem = sMkt.getItem(modName)
-                        except:
-                            pyfalog.warning("Cannot get item.")
-                            continue
-
-                        # Create module
-                        m = Module(modItem)
-
-                        # Add subsystems before modules to make sure T3 cruisers have subsystems installed
-                        if modItem.category.name == "Subsystem":
-                            if m.fits(fitobj):
-                                fitobj.modules.append(m)
-                        else:
-                            m.owner = fitobj
-                            # Activate mod if it is activable
-                            if m.isValidState(State.ACTIVE):
-                                m.state = State.ACTIVE
-                            # Add charge to mod if applicable, on any errors just don't add anything
-                            if chargeName:
-                                try:
-                                    chargeItem = sMkt.getItem(chargeName, eager="group.category")
-                                    if chargeItem.category.name == "Charge":
-                                        m.charge = chargeItem
-                                except:
-                                    pyfalog.warning("Cannot get item.")
-                                    pass
-                            # Append module to fit
-                            moduleList.append(m)
-
-                # Recalc to get slot numbers correct for T3 cruisers
-                svcFit.getInstance().recalc(fitobj)
-
-                for module in moduleList:
-                    if module.fits(fitobj):
-                        fitobj.modules.append(module)
-
-                # Append fit to list of fits
-                fits.append(fitobj)
-
-                if iportuser:  # NOTE: Send current processing status
-                    PortProcessing.notify(
-                        iportuser, IPortUser.PROCESS_IMPORT | IPortUser.ID_UPDATE,
-                        "%s:\n%s" % (fitobj.ship.name, fitobj.name)
-                    )
-
-            # Skip fit silently if we get an exception
-            except Exception as e:
-                pyfalog.error("Caught exception on fit.")
-                pyfalog.error(e)
-                pass
-
-        return fits
+        return EftPort.importEftCfg(shipname, contents, iportuser)
 
     @staticmethod
     def importXml(text, iportuser=None):
@@ -901,7 +731,7 @@ class Port(object):
 
             fit_list.append(fitobj)
             if iportuser:  # NOTE: Send current processing status
-                PortProcessing.notify(
+                processing_notify(
                     iportuser, IPortUser.PROCESS_IMPORT | IPortUser.ID_UPDATE,
                     "Processing %s\n%s" % (fitobj.ship.name, fitobj.name)
                 )
@@ -911,10 +741,6 @@ class Port(object):
     @classmethod
     def exportEft(cls, fit, options):
         return EftPort.exportEft(fit, options)
-
-    @classmethod
-    def exportEftImps(cls, fit):
-        return EftPort.exportEft(fit, mutations=False, implants=True)
 
     @staticmethod
     def exportDna(fit):
@@ -1065,7 +891,7 @@ class Port(object):
                 continue
             finally:
                 if iportuser:
-                    PortProcessing.notify(
+                    processing_notify(
                         iportuser, IPortUser.PROCESS_EXPORT | IPortUser.ID_UPDATE,
                         (i, "convert to xml (%s/%s) %s" % (i + 1, fit_count, fit.ship.name))
                     )
@@ -1118,36 +944,3 @@ class Port(object):
             export = export[:-1]
 
         return export
-
-
-class PortProcessing(object):
-    """Port Processing class"""
-
-    @staticmethod
-    def backupFits(path, iportuser):
-        success = True
-        try:
-            iportuser.on_port_process_start()
-            backedUpFits = Port.exportXml(iportuser, *svcFit.getInstance().getAllFits())
-            backupFile = open(path, "w", encoding="utf-8")
-            backupFile.write(backedUpFits)
-            backupFile.close()
-        except UserCancelException:
-            success = False
-        # Send done signal to GUI
-#         wx.CallAfter(callback, -1, "Done.")
-        flag = IPortUser.ID_ERROR if not success else IPortUser.ID_DONE
-        iportuser.on_port_processing(IPortUser.PROCESS_EXPORT | flag,
-                                   "User canceled or some error occurrence." if not success else "Done.")
-
-    @staticmethod
-    def importFitsFromFile(paths, iportuser):
-        iportuser.on_port_process_start()
-        success, result = Port.importFitFromFiles(paths, iportuser)
-        flag = IPortUser.ID_ERROR if not success else IPortUser.ID_DONE
-        iportuser.on_port_processing(IPortUser.PROCESS_IMPORT | flag, result)
-
-    @staticmethod
-    def notify(iportuser, flag, data):
-        if not iportuser.on_port_processing(flag, data):
-            raise UserCancelException
