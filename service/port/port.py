@@ -300,11 +300,11 @@ class Port(object):
     # ESI-related methods
     @staticmethod
     def importESI(string):
-        importESI(string)
+        return importESI(string)
 
     @staticmethod
     def exportESI(fit):
-        exportESI(fit)
+        return exportESI(fit)
 
     # XML-related methods
     @staticmethod
@@ -313,4 +313,4 @@ class Port(object):
 
     @staticmethod
     def exportXml(iportuser=None, *fits):
-        exportXml(iportuser, *fits)
+        return exportXml(iportuser, *fits)
