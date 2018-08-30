@@ -48,6 +48,8 @@ class CopySelectDialog(wx.Dialog):
             "EFS": CopySelectDialog.copyFormatEfs
         }
 
+        self.options = {}
+
         for i, format in enumerate(self.copyFormats.keys()):
             if i == 0:
                 rdo = wx.RadioButton(self, wx.ID_ANY, format, style=wx.RB_GROUP)
@@ -59,32 +61,22 @@ class CopySelectDialog(wx.Dialog):
                 self.copyFormat = self.copyFormats[format]
             mainSizer.Add(rdo, 0, wx.EXPAND | wx.ALL, 5)
 
-        # some sizer magic to deal with https://github.com/wxWidgets/Phoenix/issues/974
-        self.box1 = wx.StaticBox(self, -1, "EFT Options")
-        self.bsizer1 = wx.BoxSizer(wx.VERTICAL)
-        self.bsizer2 = wx.BoxSizer(wx.VERTICAL)
-        self.bsizer1.AddSpacer(10)
+            if format == "EFT":
+                bsizer = wx.BoxSizer(wx.VERTICAL)
 
-        self.bsizer1.Add(self.bsizer2, 1, wx.EXPAND | wx.TOP | wx.LEFT | wx.RIGHT | wx.BOTTOM, 10)
+                for x, v in EFT_OPTIONS.items():
+                    ch = wx.CheckBox(self, -1, v['name'])
+                    self.options[x] = ch
+                    if self.settings['options'] & x:
+                        ch.SetValue(True)
+                    bsizer.Add(ch, 1, wx.EXPAND | wx.TOP | wx.BOTTOM, 3)
+                mainSizer.Add(bsizer, 1, wx.EXPAND | wx.LEFT, 20)
 
-        self.options = {}
-
-        for x, v in EFT_OPTIONS.items():
-            ch = wx.CheckBox(self.box1, -1, v['name'])
-            self.options[x] = ch
-            if self.settings['options'] & x:
-                ch.SetValue(True)
-            self.bsizer2.Add(ch, 1, wx.EXPAND)
-
-        self.box1.SetSizer(self.bsizer1)
-
-        mainSizer.Add(self.box1, 0, wx.EXPAND | wx.ALL, 5)
         buttonSizer = self.CreateButtonSizer(wx.OK | wx.CANCEL)
         if buttonSizer:
             mainSizer.Add(buttonSizer, 0, wx.EXPAND | wx.ALL, 5)
 
-        self.box1.Show(self.GetSelected() == CopySelectDialog.copyFormatEft)
-
+        self.toggleOptions()
         self.SetSizer(mainSizer)
         self.Fit()
         self.Center()
@@ -92,9 +84,13 @@ class CopySelectDialog(wx.Dialog):
     def Selected(self, event):
         obj = event.GetEventObject()
         format = obj.GetLabel()
-        self.box1.Show(format == "EFT")
-        self.Fit()
         self.copyFormat = self.copyFormats[format]
+        self.toggleOptions()
+        self.Fit()
+
+    def toggleOptions(self):
+        for ch in self.options.values():
+            ch.Enable(self.GetSelected() == CopySelectDialog.copyFormatEft)
 
     def GetSelected(self):
         return self.copyFormat

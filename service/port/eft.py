@@ -56,7 +56,7 @@ EFT_OPTIONS = {
         "description": "Exports implants"
     },
     Options.MUTATIONS.value: {
-        "name": "Abyssal",
+        "name": "Mutated Attributes",
         "description": "Exports Abyssal stats"
     }
     # 4: []
