@@ -48,7 +48,7 @@ class Options(Enum):
 
 MODULE_CATS = ('Module', 'Subsystem', 'Structure Module')
 SLOT_ORDER = (Slot.LOW, Slot.MED, Slot.HIGH, Slot.RIG, Slot.SUBSYSTEM, Slot.SERVICE)
-OFFLINE_SUFFIX = ' /OFFLINE'
+OFFLINE_SUFFIX = '/OFFLINE'
 
 EFT_OPTIONS = {
     Options.IMPLANTS.value: {
@@ -379,7 +379,7 @@ class EftPort:
                         mutantReference += 1
                     else:
                         mutationSuffix = ''
-                    modOfflineSuffix = OFFLINE_SUFFIX if module.state == State.OFFLINE else ''
+                    modOfflineSuffix = ' {}'.format(OFFLINE_SUFFIX) if module.state == State.OFFLINE else ''
                     if module.charge and sFit.serviceFittingOptions['exportCharges']:
                         rackLines.append('{}, {}{}{}'.format(
                             modName, module.charge.name, modOfflineSuffix, mutationSuffix))
@@ -467,9 +467,9 @@ class EftPort:
         aFit.mutations = cls.__getMutationData(lines)
 
         nameChars = '[^,/\[\]]'  # Characters which are allowed to be used in name
-        stubPattern = '^\[.+\]$'
-        modulePattern = '^(?P<typeName>{0}+)(, (?P<chargeName>{0}+))?(?P<offline>{1})?( \[(?P<mutation>\d+)\])?$'.format(nameChars, OFFLINE_SUFFIX)
-        droneCargoPattern = '^(?P<typeName>{}+) x(?P<amount>\d+)$'.format(nameChars)
+        stubPattern = '^\[.+?\]$'
+        modulePattern = '^(?P<typeName>{0}+?)(,\s*(?P<chargeName>{0}+?))?(?P<offline>\s*{1})?(\s*\[(?P<mutation>\d+?)\])?$'.format(nameChars, OFFLINE_SUFFIX)
+        droneCargoPattern = '^(?P<typeName>{}+?) x(?P<amount>\d+?)$'.format(nameChars)
 
         sections = []
         for section in cls.__importSectionIter(lines):
@@ -670,7 +670,7 @@ class EftPort:
         """Create fit and set top-level entity (ship or citadel)."""
         fit = Fit()
         header = lines.pop(0)
-        m = re.match('\[(?P<shipType>[\w\s]+), (?P<fitName>.+)\]', header)
+        m = re.match('\[(?P<shipType>[\w\s]+),\s*(?P<fitName>.+)\]', header)
         if not m:
             pyfalog.warning('EftPort.importEft: corrupted fit header')
             raise EftImportError

@@ -814,7 +814,7 @@ class Port(object):
 
     @staticmethod
     def importXml(text, iportuser=None):
-        # type: (basestring, IPortUser, basestring) -> list[eos.saveddata.fit.Fit]
+        # type: (str, IPortUser) -> list[eos.saveddata.fit.Fit]
         sMkt = Market.getInstance()
         doc = xml.dom.minidom.parseString(text)
         # NOTE:
