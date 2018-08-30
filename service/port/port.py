@@ -32,8 +32,8 @@ from eos import db
 from eos.saveddata.fit import ImplantLocation
 from service.fit import Fit as svcFit
 from service.port.dna import exportDna, importDna
-from service.port.eft import EftPort
-from service.port.esi import importESI, exportESI
+from service.port.eft import exportEft, importEft, importEftCfg
+from service.port.esi import exportESI, importESI
 from service.port.multibuy import exportMultiBuy
 from service.port.shared import IPortUser, UserCancelException, processing_notify
 from service.port.xml import importXml, exportXml
@@ -234,15 +234,15 @@ class Port(object):
     ### EFT-related methods
     @staticmethod
     def importEft(eftString):
-        return EftPort.importEft(eftString)
+        return importEft(eftString)
 
     @staticmethod
     def importEftCfg(shipname, contents, iportuser=None):
-        return EftPort.importEftCfg(shipname, contents, iportuser)
+        return importEftCfg(shipname, contents, iportuser)
 
     @classmethod
     def exportEft(cls, fit, options):
-        return EftPort.exportEft(fit, options)
+        return exportEft(fit, options)
 
     ### DNA-related methods
     @staticmethod
