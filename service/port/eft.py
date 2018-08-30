@@ -288,7 +288,7 @@ def importEft(eftString):
             elif m.fits(fit):
                 m.owner = fit
                 if not m.isValidState(m.state):
-                    pyfalog.warning('EftPort.importEft: module {} cannot have state {}', m, m.state)
+                    pyfalog.warning('service.port.eft.importEft: module {} cannot have state {}', m, m.state)
                 fit.modules.appendIgnoreEmpty(m)
     for implant in aFit.implants:
         fit.implants.append(implant)
@@ -582,7 +582,7 @@ def _importCreateFit(lines):
     header = lines.pop(0)
     m = re.match('\[(?P<shipType>[\w\s]+),\s*(?P<fitName>.+)\]', header)
     if not m:
-        pyfalog.warning('EftPort.importEft: corrupted fit header')
+        pyfalog.warning('service.port.eft.importEft: corrupted fit header')
         raise EftImportError
     shipType = m.group('shipType').strip()
     fitName = m.group('fitName').strip()
@@ -594,7 +594,7 @@ def _importCreateFit(lines):
             fit.ship = Citadel(ship)
         fit.name = fitName
     except:
-        pyfalog.warning('EftPort.importEft: exception caught when parsing header')
+        pyfalog.warning('service.port.eft.importEft: exception caught when parsing header')
         raise EftImportError
     return fit
 
@@ -605,7 +605,7 @@ def _fetchItem(typeName, eagerCat=False):
     try:
         item = sMkt.getItem(typeName, eager=eager)
     except:
-        pyfalog.warning('EftPort: unable to fetch item "{}"'.format(typeName))
+        pyfalog.warning('service.port.eft: unable to fetch item "{}"'.format(typeName))
         return None
     if sMkt.getPublicityByItem(item):
         return item
