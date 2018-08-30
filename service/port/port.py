@@ -17,6 +17,7 @@
 # along with pyfa.  If not, see <http://www.gnu.org/licenses/>.
 # =============================================================================
 
+
 import re
 import os
 import threading
@@ -31,8 +32,9 @@ from eos import db
 from eos.saveddata.fit import ImplantLocation
 from service.fit import Fit as svcFit
 from service.port.dna import exportDna, importDna
-from service.port.eft import EftPort, SLOT_ORDER as EFT_SLOT_ORDER
+from service.port.eft import EftPort
 from service.port.esi import importESI, exportESI
+from service.port.multibuy import exportMultiBuy
 from service.port.shared import IPortUser, UserCancelException, processing_notify
 from service.port.xml import importXml, exportXml
 
@@ -229,53 +231,7 @@ class Port(object):
         # Use DNA format for all other cases
         return "DNA", (cls.importDna(string),)
 
-    @staticmethod
-    def exportMultiBuy(fit):
-        export = "%s\n" % fit.ship.item.name
-        stuff = {}
-        sFit = svcFit.getInstance()
-        for module in fit.modules:
-            slot = module.slot
-            if slot not in stuff:
-                stuff[slot] = []
-            curr = "%s\n" % module.item.name if module.item else ""
-            if module.charge and sFit.serviceFittingOptions["exportCharges"]:
-                curr += "%s x%s\n" % (module.charge.name, module.numCharges)
-            stuff[slot].append(curr)
-
-        for slotType in EFT_SLOT_ORDER:
-            data = stuff.get(slotType)
-            if data is not None:
-                # export += "\n"
-                for curr in data:
-                    export += curr
-
-        if len(fit.drones) > 0:
-            for drone in fit.drones:
-                export += "%s x%s\n" % (drone.item.name, drone.amount)
-
-        if len(fit.cargo) > 0:
-            for cargo in fit.cargo:
-                export += "%s x%s\n" % (cargo.item.name, cargo.amount)
-
-        if len(fit.implants) > 0:
-            for implant in fit.implants:
-                export += "%s\n" % implant.item.name
-
-        if len(fit.boosters) > 0:
-            for booster in fit.boosters:
-                export += "%s\n" % booster.item.name
-
-        if len(fit.fighters) > 0:
-            for fighter in fit.fighters:
-                export += "%s x%s\n" % (fighter.item.name, fighter.amountActive)
-
-        if export[-1] == "\n":
-            export = export[:-1]
-
-        return export
-
-    # EFT-related methods
+    ### EFT-related methods
     @staticmethod
     def importEft(eftString):
         return EftPort.importEft(eftString)
@@ -288,7 +244,7 @@ class Port(object):
     def exportEft(cls, fit, options):
         return EftPort.exportEft(fit, options)
 
-    # DNA-related methods
+    ### DNA-related methods
     @staticmethod
     def importDna(string):
         return importDna(string)
@@ -297,7 +253,7 @@ class Port(object):
     def exportDna(fit):
         return exportDna(fit)
 
-    # ESI-related methods
+    ### ESI-related methods
     @staticmethod
     def importESI(string):
         return importESI(string)
@@ -306,7 +262,7 @@ class Port(object):
     def exportESI(fit):
         return exportESI(fit)
 
-    # XML-related methods
+    ### XML-related methods
     @staticmethod
     def importXml(text, iportuser=None):
         return importXml(text, iportuser)
@@ -314,3 +270,8 @@ class Port(object):
     @staticmethod
     def exportXml(iportuser=None, *fits):
         return exportXml(iportuser, *fits)
+
+    ### Multibuy-related methods
+    @staticmethod
+    def exportMultiBuy(fit):
+        return exportMultiBuy(fit)
