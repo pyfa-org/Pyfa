@@ -1064,7 +1064,6 @@ class Port(object):
 
         return fit_list
 
-
     @classmethod
     def exportEft(cls, fit, mutations=False, implants=False):
         # EFT formatted export is split in several sections, each section is

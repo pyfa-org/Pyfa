@@ -145,6 +145,7 @@ class FittingView(d.Display):
         d.Display.__init__(self, parent, size=(0, 0), style=wx.BORDER_NONE)
         self.Show(False)
         self.parent = parent
+        self.mainFrame.Bind(GE.PRICE_CHANGED, self.priceChanged)
         self.mainFrame.Bind(GE.FIT_CHANGED, self.fitChanged)
         self.mainFrame.Bind(EVT_FIT_RENAMED, self.fitRenamed)
         self.mainFrame.Bind(EVT_FIT_REMOVED, self.fitRemoved)
@@ -540,8 +541,12 @@ class FittingView(d.Display):
         self.generateMods()
         self.populate(self.mods)
 
-    def fitChanged(self, event):
-        print('====== Fit Changed: {} {} activeFitID: {}, eventFitID: {}'.format(repr(self), str(bool(self)), self.activeFitID, event.fitID))
+    def priceChanged(self, event):
+        # This event does the exact same thing as fitChange but only fittingView is registered to the PRICE_CHANGED event
+        self.fitChanged(event, "Price")
+
+    def fitChanged(self, event, label="Fit"):
+        print('====== {} Changed: {} {} activeFitID: {}, eventFitID: {}'.format(label, repr(self), str(bool(self)), self.activeFitID, event.fitID))
         if not self:
             event.Skip()
             return
