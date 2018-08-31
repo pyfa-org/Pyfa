@@ -51,9 +51,6 @@ class CharacterImportThread(threading.Thread):
         self.callback = callback
 
     def run(self):
-        wx.CallAfter(self.callback)
-        # todo: Fix character import (don't need CCP SML anymore, only support evemon?)
-        return
         paths = self.paths
         sCharacter = Character.getInstance()
         all5_character = es_Character("All 5", 5)

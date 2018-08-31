@@ -33,7 +33,7 @@ from eos.saveddata.fighter import Fighter as es_Fighter
 from eos.saveddata.implant import Implant as es_Implant
 from eos.saveddata.ship import Ship as es_Ship
 from eos.saveddata.module import Module as es_Module, State, Slot
-from eos.saveddata.fit import Fit as FitType
+from eos.saveddata.fit import Fit as FitType, ImplantLocation
 from service.character import Character
 from service.damagePattern import DamagePattern
 from service.settings import SettingsProvider
@@ -61,6 +61,7 @@ class Fit(object):
 
         serviceFittingDefaultOptions = {
             "useGlobalCharacter": False,
+            "useCharacterImplantsByDefault": True,
             "useGlobalDamagePattern": False,
             "defaultCharacter": self.character.ID,
             "useGlobalForceReload": False,
@@ -95,7 +96,12 @@ class Fit(object):
         fits = eos.db.getFitsWithShip(shipID)
         names = []
         for fit in fits:
-            names.append((fit.ID, fit.name, fit.booster, fit.modified or fit.created or datetime.datetime.fromtimestamp(fit.timestamp), fit.notes))
+            names.append((fit.ID,
+                          fit.name,
+                          fit.booster,
+                          fit.modified or fit.created or datetime.datetime.fromtimestamp(fit.timestamp),
+                          fit.notes,
+                          fit.ship.item.graphicID))
 
         return names
 
@@ -147,6 +153,8 @@ class Fit(object):
         fit.targetResists = self.targetResists
         fit.character = self.character
         fit.booster = self.booster
+        useCharImplants = self.serviceFittingOptions["useCharacterImplantsByDefault"]
+        fit.implantLocation = ImplantLocation.CHARACTER if useCharImplants else ImplantLocation.FIT
         eos.db.save(fit)
         self.recalc(fit)
         return fit.ID
@@ -179,11 +187,11 @@ class Fit(object):
         # error during the command loop
         refreshFits = set()
         for projection in list(fit.projectedOnto.values()):
-            if projection.victim_fit != fit and projection.victim_fit in eos.db.saveddata_session:  # GH issue #359
+            if projection.victim_fit and projection.victim_fit != fit and projection.victim_fit in eos.db.saveddata_session:  # GH issue #359
                 refreshFits.add(projection.victim_fit)
 
         for booster in list(fit.boostedOnto.values()):
-            if booster.boosted_fit != fit and booster.boosted_fit in eos.db.saveddata_session:  # GH issue #359
+            if booster.boosted_fit and booster.boosted_fit != fit and booster.boosted_fit in eos.db.saveddata_session:  # GH issue #359
                 refreshFits.add(booster.boosted_fit)
 
         eos.db.remove(fit)
@@ -379,7 +387,10 @@ class Fit(object):
             thing = eos.db.getItem(thing,
                                    eager=("attributes", "group.category"))
 
-        if isinstance(thing, FitType):
+        if isinstance(thing, es_Module):
+            thing = copy.deepcopy(thing)
+            fit.projectedModules.append(thing)
+        elif isinstance(thing, FitType):
             if thing in fit.projectedFits:
                 return
 
@@ -517,6 +528,13 @@ class Fit(object):
         eos.db.commit()
         self.recalc(fit)
 
+    def changeMutatedValue(self, mutator, value):
+        pyfalog.debug("Changing mutated value for {} / {}: {} => {}".format(mutator.module, mutator.module.mutaplasmid, mutator.value, value))
+        mutator.value = value
+
+        eos.db.commit()
+        return mutator.value
+
     def appendModule(self, fitID, itemID):
         pyfalog.debug("Appending module for fit ({0}) using item: {1}", fitID, itemID)
         fit = eos.db.getFit(fitID)
@@ -575,27 +593,17 @@ class Fit(object):
         eos.db.commit()
         return numSlots != len(fit.modules)
 
-    def changeModule(self, fitID, position, newItemID):
+    def convertMutaplasmid(self, fitID, position, mutaplasmid):
+        # this is mostly the same thing as the self.changeModule method, however it initializes an abyssal module with
+        # the old module as it's base, and then replaces it
         fit = eos.db.getFit(fitID)
-
-        # We're trying to add a charge to a slot, which won't work. Instead, try to add the charge to the module in that slot.
-        if self.isAmmo(newItemID):
-            module = fit.modules[position]
-            if not module.isEmpty:
-                self.setAmmo(fitID, newItemID, [module])
-            return True
-
-        pyfalog.debug("Changing position of module from position ({0}) for fit ID: {1}", position, fitID)
-
-        item = eos.db.getItem(newItemID, eager=("attributes", "group.category"))
-
-        # Dummy it out in case the next bit fails
+        base = fit.modules[position]
         fit.modules.toDummy(position)
 
         try:
-            m = es_Module(item)
+            m = es_Module(mutaplasmid.resultingItem, base.item, mutaplasmid)
         except ValueError:
-            pyfalog.warning("Invalid item: {0}", newItemID)
+            pyfalog.warning("Invalid item: {0} AHHHH")
             return False
 
         if m.fits(fit):
@@ -615,6 +623,48 @@ class Fit(object):
             return True
         else:
             return None
+
+    def changeModule(self, fitID, position, newItemID):
+        fit = eos.db.getFit(fitID)
+        module = fit.modules[position]
+
+        # We're trying to add a charge to a slot, which won't work. Instead, try to add the charge to the module in that slot.
+        if self.isAmmo(newItemID) and not module.isEmpty:
+            self.setAmmo(fitID, newItemID, [module])
+            return True
+
+        pyfalog.debug("Changing position of module from position ({0}) for fit ID: {1}", position, fitID)
+
+        item = eos.db.getItem(newItemID, eager=("attributes", "group.category"))
+
+        # Dummy it out in case the next bit fails
+        fit.modules.toDummy(position)
+        ret = None
+        try:
+            m = es_Module(item)
+        except ValueError:
+            pyfalog.warning("Invalid item: {0}", newItemID)
+            return False
+        if m.slot != module.slot:
+            fit.modules.toModule(position, module)
+            # Fits, but we selected wrong slot type, so don't want to overwrite because we will append on failure (none)
+            ret = None
+        elif m.fits(fit):
+            m.owner = fit
+            fit.modules.toModule(position, m)
+            if m.isValidState(State.ACTIVE):
+                m.state = State.ACTIVE
+
+            # As some items may affect state-limiting attributes of the ship, calculate new attributes first
+            self.recalc(fit)
+            # Then, check states of all modules and change where needed. This will recalc if needed
+            self.checkStates(fit, m)
+
+            fit.fill()
+            eos.db.commit()
+
+            ret = True
+        return ret
 
     def moveCargoToModule(self, fitID, moduleIdx, cargoIdx, copyMod=False):
         """
@@ -667,11 +717,12 @@ class Fit(object):
                 cargo.amount -= 1
 
         if not module.isEmpty:  # if module is placeholder, we don't want to convert/add it
-            for x in fit.cargo.find(module.item):
+            moduleItem = module.item if not module.item.isAbyssal else module.baseItem
+            for x in fit.cargo.find(moduleItem):
                 x.amount += 1
                 break
             else:
-                moduleP = es_Cargo(module.item)
+                moduleP = es_Cargo(moduleItem)
                 moduleP.amount = 1
                 fit.cargo.insert(cargoIdx, moduleP)
 

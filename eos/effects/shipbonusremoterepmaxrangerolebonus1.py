@@ -2,7 +2,9 @@
 #
 # Used by:
 # Ship: Damavik
+# Ship: Hydra
 # Ship: Leshak
+# Ship: Tiamat
 # Ship: Vedmak
 type = "passive"
 

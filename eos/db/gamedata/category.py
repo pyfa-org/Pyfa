@@ -21,18 +21,17 @@ from sqlalchemy import Column, String, Integer, ForeignKey, Boolean, Table
 from sqlalchemy.orm import relation, mapper, synonym, deferred
 
 from eos.db import gamedata_meta
-from eos.gamedata import Category, Icon
+from eos.gamedata import Category
 
 categories_table = Table("invcategories", gamedata_meta,
                          Column("categoryID", Integer, primary_key=True),
                          Column("categoryName", String),
                          Column("description", String),
                          Column("published", Boolean),
-                         Column("iconID", Integer, ForeignKey("icons.iconID")))
+                         Column("iconID", Integer))
 
 mapper(Category, categories_table,
        properties={
-           "icon"       : relation(Icon),
            "ID"         : synonym("categoryID"),
            "name"       : synonym("categoryName"),
            "description": deferred(categories_table.c.description)

@@ -43,7 +43,7 @@ class AmmoIcon(ViewColumn):
         if stuff.charge is None:
             return -1
         else:
-            iconFile = stuff.charge.icon.iconFile if stuff.charge.icon else ""
+            iconFile = stuff.charge.iconID if stuff.charge.iconID else ""
             if iconFile:
                 return self.fittingView.imageList.GetImageIndex(iconFile, "icons")
             else:

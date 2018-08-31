@@ -49,7 +49,7 @@ class BitmapLoader(object):
     @classmethod
     def getStaticBitmap(cls, name, parent, location):
         static = wx.StaticBitmap(parent)
-        static.SetBitmap(cls.getBitmap(name, location))
+        static.SetBitmap(cls.getBitmap(name or 0, location))
         return static
 
     @classmethod

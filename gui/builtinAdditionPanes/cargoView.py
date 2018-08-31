@@ -118,13 +118,22 @@ class CargoView(d.Display):
         # Gather module information to get position
         module = fit.modules[modIdx]
 
+        if module.item.isAbyssal:
+            dlg = wx.MessageDialog(self,
+               "Moving this Abyssal module to the cargo will convert it to the base module. Do you wish to proceed?",
+               "Confirm", wx.YES_NO | wx.ICON_QUESTION)
+            result = dlg.ShowModal() == wx.ID_YES
+
+            if not result:
+                return
+
         if dstRow != -1:  # we're swapping with cargo
             if mstate.cmdDown:  # if copying, append to cargo
-                sFit.addCargo(self.mainFrame.getActiveFit(), module.item.ID)
+                sFit.addCargo(self.mainFrame.getActiveFit(), module.item.ID if not module.item.isAbyssal else module.baseItemID)
             else:  # else, move / swap
                 sFit.moveCargoToModule(self.mainFrame.getActiveFit(), module.position, dstRow)
         else:  # dragging to blank spot, append
-            sFit.addCargo(self.mainFrame.getActiveFit(), module.item.ID)
+            sFit.addCargo(self.mainFrame.getActiveFit(), module.item.ID if not module.item.isAbyssal else module.baseItemID)
 
             if not mstate.cmdDown:  # if not copying, remove module
                 sFit.removeModule(self.mainFrame.getActiveFit(), module.position)

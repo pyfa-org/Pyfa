@@ -248,6 +248,11 @@ class NetworkSettings(object):
             proto = "{0}://".format(prefix)
             if proxyline[:len(proto)] == proto:
                 proxyline = proxyline[len(proto):]
+            # sometimes proxyline contains "user:password@" section before proxy address
+            # remove it if present, so later split by ":" works
+            if '@' in proxyline:
+                userPass, proxyline = proxyline.split("@")
+                # TODO: do something with user/password?
             proxAddr, proxPort = proxyline.split(":")
             proxPort = int(proxPort.rstrip("/"))
             proxy = (proxAddr, proxPort)

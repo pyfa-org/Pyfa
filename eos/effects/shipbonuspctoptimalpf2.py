@@ -2,6 +2,7 @@
 #
 # Used by:
 # Ship: Damavik
+# Ship: Hydra
 type = "passive"
 
 

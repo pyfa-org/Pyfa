@@ -1,6 +1,7 @@
 __all__ = [
     "character",
     "fit",
+    "mutator",
     "module",
     "user",
     "skill",

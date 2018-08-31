@@ -1,7 +1,7 @@
 # armorAllRepairSystemsAmountBonusPassive
 #
 # Used by:
-# Implants named like: Agency 'Hardshell' TB Dose (3 of 4)
+# Implants named like: Agency 'Hardshell' TB Dose (4 of 4)
 # Implants named like: Exile Booster (4 of 4)
 # Implant: Antipharmakon Kosybo
 type = "passive"

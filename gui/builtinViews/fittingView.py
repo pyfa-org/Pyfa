@@ -477,7 +477,7 @@ class FittingView(d.Display):
                 return
 
             if getattr(mod2, "modPosition") is not None:
-                if clone and mod2.isEmpty:
+                if clone and mod2.isEmpty and mod1.getModifiedItemAttr("maxGroupFitted", 0) < 1.0:
                     sFit.cloneModule(self.mainFrame.getActiveFit(), srcIdx, mod2.modPosition)
                 else:
                     sFit.swapModules(self.mainFrame.getActiveFit(), srcIdx, mod2.modPosition)
@@ -741,7 +741,7 @@ class FittingView(d.Display):
     # noinspection PyPropertyAccess
     def MakeSnapshot(self, maxColumns=1337):
         if self.FVsnapshot:
-            del self.FVsnapshot
+            self.FVsnapshot = None
 
         tbmp = wx.Bitmap(16, 16)
         tdc = wx.MemoryDC()

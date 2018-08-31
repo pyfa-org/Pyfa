@@ -24,7 +24,6 @@ from logbook import Logger
 import collections
 import json
 import threading
-import locale
 from bs4 import UnicodeDammit
 
 
@@ -33,6 +32,7 @@ from codecs import open
 import xml.parsers.expat
 
 from eos import db
+from eos.db.gamedata.queries import getAttributeInfo
 from service.fit import Fit as svcFit
 
 # noinspection PyPackageRequirements
@@ -46,7 +46,7 @@ from eos.saveddata.fighter import Fighter
 from eos.saveddata.module import Module, State, Slot
 from eos.saveddata.ship import Ship
 from eos.saveddata.citadel import Citadel
-from eos.saveddata.fit import Fit
+from eos.saveddata.fit import Fit, ImplantLocation
 from service.market import Market
 from utils.strfunctions import sequential_rep, replace_ltgt
 from abc import ABCMeta, abstractmethod
@@ -306,6 +306,11 @@ class Port(object):
                 fit.character = sFit.character
                 fit.damagePattern = sFit.pattern
                 fit.targetResists = sFit.targetResists
+                if len(fit.implants) > 0:
+                    fit.implantLocation = ImplantLocation.FIT
+                else:
+                    useCharImplants = sFit.serviceFittingOptions["useCharacterImplantsByDefault"]
+                    fit.implantLocation = ImplantLocation.CHARACTER if useCharImplants else ImplantLocation.FIT
                 db.save(fit)
                 # IDs.append(fit.ID)
                 if iportuser:  # Pulse
@@ -337,6 +342,11 @@ class Port(object):
             fit.character = sFit.character
             fit.damagePattern = sFit.pattern
             fit.targetResists = sFit.targetResists
+            if len(fit.implants) > 0:
+                fit.implantLocation = ImplantLocation.FIT
+            else:
+                useCharImplants = sFit.serviceFittingOptions["useCharacterImplantsByDefault"]
+                fit.implantLocation = ImplantLocation.CHARACTER if useCharImplants else ImplantLocation.FIT
             db.save(fit)
         return fits
 
@@ -1054,85 +1064,104 @@ class Port(object):
 
         return fit_list
 
-    @staticmethod
-    def _exportEftBase(fit):
-        """Basically EFT format does not require blank lines
-            also, it's OK to arrange modules randomly?
-        """
-        offineSuffix = " /OFFLINE"
-        export = "[%s, %s]\n" % (fit.ship.item.name, fit.name)
-        stuff = {}
+
+    @classmethod
+    def exportEft(cls, fit, mutations=False, implants=False):
+        # EFT formatted export is split in several sections, each section is
+        # separated from another using 2 blank lines. Sections might have several
+        # sub-sections, which are separated by 1 blank line
+        sections = []
+
+        header = '[{}, {}]'.format(fit.ship.item.name, fit.name)
+
+        # Section 1: modules, rigs, subsystems, services
+        def formatAttrVal(val):
+            if int(val) == val:
+                return int(val)
+            return val
+
+        offineSuffix = ' /OFFLINE'
+        modsBySlotType = {}
         sFit = svcFit.getInstance()
         for module in fit.modules:
             slot = module.slot
-            if slot not in stuff:
-                stuff[slot] = []
-            curr = module.item.name if module.item \
-                else ("[Empty %s slot]" % Slot.getName(slot).capitalize() if slot is not None else "")
-            if module.charge and sFit.serviceFittingOptions["exportCharges"]:
-                curr += ", %s" % module.charge.name
-            if module.state == State.OFFLINE:
-                curr += offineSuffix
-            curr += "\n"
-            stuff[slot].append(curr)
-
+            slotTypeMods = modsBySlotType.setdefault(slot, [])
+            if module.item:
+                mutatedMod = bool(module.mutators)
+                # if module was mutated, use base item name for export
+                if mutatedMod:
+                    modName = module.baseItem.name
+                else:
+                    modName = module.item.name
+                modOfflineSuffix = offineSuffix if module.state == State.OFFLINE else ''
+                if module.charge and sFit.serviceFittingOptions['exportCharges']:
+                    slotTypeMods.append('{}, {}{}'.format(modName, module.charge.name, modOfflineSuffix))
+                else:
+                    slotTypeMods.append('{}{}'.format(modName, modOfflineSuffix))
+                if mutatedMod and mutations:
+                    mutationGrade = module.mutaplasmid.item.name.split(' ', 1)[0].lower()
+                    mutatedAttrs = {}
+                    for attrID, mutator in module.mutators.items():
+                        attrName = getAttributeInfo(attrID).name
+                        mutatedAttrs[attrName] = mutator.value
+                    customAttrsLine = ', '.join('{} {}'.format(a, formatAttrVal(mutatedAttrs[a])) for a in sorted(mutatedAttrs))
+                    slotTypeMods.append('  {}: {}'.format(mutationGrade, customAttrsLine))
+            else:
+                slotTypeMods.append('[Empty {} slot]'.format(Slot.getName(slot).capitalize() if slot is not None else ''))
+        modSection = []
         for slotType in EFT_SLOT_ORDER:
-            data = stuff.get(slotType)
-            if data is not None:
-                export += "\n"
-                for curr in data:
-                    export += curr
+            rackLines = []
+            data = modsBySlotType.get(slotType, ())
+            for line in data:
+                rackLines.append(line)
+            if rackLines:
+                modSection.append('\n'.join(rackLines))
+        if modSection:
+            sections.append('\n\n'.join(modSection))
 
-        if len(fit.drones) > 0:
-            export += "\n\n"
-            for drone in fit.drones:
-                export += "%s x%s\n" % (drone.item.name, drone.amount)
+        # Section 2: drones, fighters
+        minionSection = []
+        droneLines = []
+        for drone in sorted(fit.drones, key=lambda d: d.item.name):
+            droneLines.append('{} x{}'.format(drone.item.name, drone.amount))
+        if droneLines:
+            minionSection.append('\n'.join(droneLines))
+        fighterLines = []
+        for fighter in sorted(fit.fighters, key=lambda f: f.item.name):
+            fighterLines.append('{} x{}'.format(fighter.item.name, fighter.amountActive))
+        if fighterLines:
+            minionSection.append('\n'.join(fighterLines))
+        if minionSection:
+            sections.append('\n\n'.join(minionSection))
 
-        if len(fit.fighters) > 0:
-            export += "\n\n"
-            for fighter in fit.fighters:
-                export += "%s x%s\n" % (fighter.item.name, fighter.amountActive)
+        # Section 3: implants, boosters
+        if implants:
+            charSection = []
+            implantLines = []
+            for implant in fit.implants:
+                implantLines.append(implant.item.name)
+            if implantLines:
+                charSection.append('\n'.join(implantLines))
+            boosterLines = []
+            for booster in fit.boosters:
+                boosterLines.append(booster.item.name)
+            if boosterLines:
+                charSection.append('\n'.join(boosterLines))
+            if charSection:
+                sections.append('\n\n'.join(charSection))
 
-        if export[-1] == "\n":
-            export = export[:-1]
+        # Section 4: cargo
+        cargoLines = []
+        for cargo in sorted(fit.cargo, key=lambda c: (c.item.group.category.name, c.item.group.name, c.item.name)):
+            cargoLines.append('{} x{}'.format(cargo.item.name, cargo.amount))
+        if cargoLines:
+            sections.append('\n'.join(cargoLines))
 
-        return export
-
-    @classmethod
-    def exportEft(cls, fit):
-        export = cls._exportEftBase(fit)
-
-        if len(fit.cargo) > 0:
-            export += "\n\n\n"
-            for cargo in fit.cargo:
-                export += "%s x%s\n" % (cargo.item.name, cargo.amount)
-        if export[-1] == "\n":
-            export = export[:-1]
-
-        return export
+        return '{}\n\n{}'.format(header, '\n\n\n'.join(sections))
 
     @classmethod
     def exportEftImps(cls, fit):
-        export = cls._exportEftBase(fit)
-
-        if len(fit.implants) > 0 or len(fit.boosters) > 0:
-            export += "\n\n\n"
-            for implant in fit.implants:
-                export += "%s\n" % implant.item.name
-            for booster in fit.boosters:
-                export += "%s\n" % booster.item.name
-
-        if export[-1] == "\n":
-            export = export[:-1]
-
-        if len(fit.cargo) > 0:
-            export += "\n\n\n"
-            for cargo in fit.cargo:
-                export += "%s x%s\n" % (cargo.item.name, cargo.amount)
-        if export[-1] == "\n":
-            export = export[:-1]
-
-        return export
+        return cls.exportEft(fit, implants=True)
 
     @staticmethod
     def exportDna(fit):
