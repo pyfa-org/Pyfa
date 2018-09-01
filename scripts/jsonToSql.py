@@ -72,33 +72,33 @@ def main(db, json_path):
 
     fieldMapping = {
         'dgmattribs': {
-            'displayName_en-us': 'displayName'
+            'displayName': 'displayName'
         },
         'dgmeffects': {
-            'displayName_en-us': 'displayName',
-            'description_en-us': 'description'
+            'displayName': 'displayName',
+            'description': 'description'
         },
         'dgmunits': {
-            'displayName_en-us': 'displayName'
+            'displayName': 'displayName'
         },
         #icons???
         'evecategories': {
-            'categoryName_en-us': 'categoryName'
+            'categoryName': 'categoryName'
         },
         'evegroups': {
-            'groupName_en-us': 'groupName'
+            'groupName': 'groupName'
         },
         'invmetagroups': {
-            'metaGroupName_en-us': 'metaGroupName'
+            'metaGroupName': 'metaGroupName'
         },
         'evetypes': {
-            'typeName_en-us': 'typeName',
-            'description_en-us': 'description'
+            'typeName': 'typeName',
+            'description': 'description'
         },
         #phbtraits???
         'mapbulk_marketGroups': {
-            'marketGroupName_en-us': 'marketGroupName',
-            'description_en-us': 'description'
+            'marketGroupName': 'marketGroupName',
+            'description': 'description'
         }
 
     }
@@ -163,7 +163,7 @@ def main(db, json_path):
         for row in data:
             typeLines = []
             typeId = row['typeID']
-            traitData = row['traits_en-us']
+            traitData = row['traits']
             for skillData in sorted(traitData.get('skills', ()), key=lambda i: i['header']):
                 typeLines.append(convertSection(skillData))
             if 'role' in traitData:
@@ -198,7 +198,7 @@ def main(db, json_path):
     for row in data['evetypes']:
         if (row['published']
             or row['groupID'] == 1306  # group Ship Modifiers, for items like tactical t3 ship modes
-            or row['typeName_en-us'].startswith('Civilian') # Civilian weapons
+            or row['typeName'].startswith('Civilian') # Civilian weapons
             or row['typeID'] in (41549, 41548, 41551, 41550)  # Micro Bombs (Fighters)
             or row['groupID'] in (
                         1882,
@@ -225,7 +225,7 @@ def main(db, json_path):
         for row in table:
             # We don't care about some kind of rows, filter it out if so
             if not isIgnored(jsonName, row):
-                if jsonName == 'evetypes' and row['typeName_en-us'].startswith('Civilian'):  # Apparently people really want Civilian modules available
+                if jsonName == 'evetypes' and row['typeName'].startswith('Civilian'):  # Apparently people really want Civilian modules available
                     row['published'] = True
 
                 instance = tables[jsonName]()
@@ -286,6 +286,9 @@ def main(db, json_path):
     eos.db.gamedata_engine.execute('UPDATE dgmtypeattribs SET value = 4.0 WHERE attributeID = ?', (1367,))
 
     eos.db.gamedata_engine.execute('UPDATE invtypes  SET published = 0 WHERE typeName LIKE \'%abyssal%\'')
+
+    # fix for #1722 until CCP gets their shit together
+    eos.db.gamedata_engine.execute('UPDATE invtypes SET typeName = \'Small Abyssal Energy Nosferatu\' WHERE typeID = ? AND typeName = ?', (48419, ''))
 
     print()
     for x in CATEGORIES_TO_REMOVE:
