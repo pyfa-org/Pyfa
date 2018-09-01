@@ -231,7 +231,7 @@ class Port(object):
         # Use DNA format for all other cases
         return "DNA", (cls.importDna(string),)
 
-    ### EFT-related methods
+    # EFT-related methods
     @staticmethod
     def importEft(eftString):
         return importEft(eftString)
@@ -244,7 +244,7 @@ class Port(object):
     def exportEft(cls, fit, options):
         return exportEft(fit, options)
 
-    ### DNA-related methods
+    # DNA-related methods
     @staticmethod
     def importDna(string):
         return importDna(string)
@@ -253,7 +253,7 @@ class Port(object):
     def exportDna(fit):
         return exportDna(fit)
 
-    ### ESI-related methods
+    # ESI-related methods
     @staticmethod
     def importESI(string):
         return importESI(string)
@@ -262,7 +262,7 @@ class Port(object):
     def exportESI(fit):
         return exportESI(fit)
 
-    ### XML-related methods
+    # XML-related methods
     @staticmethod
     def importXml(text, iportuser=None):
         return importXml(text, iportuser)
@@ -271,7 +271,7 @@ class Port(object):
     def exportXml(iportuser=None, *fits):
         return exportXml(iportuser, *fits)
 
-    ### Multibuy-related methods
+    # Multibuy-related methods
     @staticmethod
     def exportMultiBuy(fit):
         return exportMultiBuy(fit)

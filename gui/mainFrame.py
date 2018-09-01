@@ -741,7 +741,7 @@ class MainFrame(wx.Frame):
 
     def exportToClipboard(self, event):
         CopySelectDict = {CopySelectDialog.copyFormatEft: self.clipboardEft,
-                          #CopySelectDialog.copyFormatEftImps: self.clipboardEftImps,
+                          # CopySelectDialog.copyFormatEftImps: self.clipboardEftImps,
                           CopySelectDialog.copyFormatXml: self.clipboardXml,
                           CopySelectDialog.copyFormatDna: self.clipboardDna,
                           CopySelectDialog.copyFormatEsi: self.clipboardEsi,

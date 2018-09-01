@@ -226,7 +226,6 @@ def importEft(eftString):
         _clearTail(section.itemSpecs)
         sections.append(section)
 
-
     hasDroneBay = any(s.isDroneBay for s in sections)
     hasFighterBay = any(s.isFighterBay for s in sections)
     for section in sections:
@@ -506,6 +505,7 @@ def _importPrepareString(eftString):
     while lines and not lines[-1]:
         del lines[-1]
     return lines
+
 
 def _importGetMutationData(lines):
     data = {}

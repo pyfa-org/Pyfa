@@ -101,4 +101,3 @@ class CopySelectDialog(wx.Dialog):
             if v.IsChecked():
                 i = i ^ x
         return i
-
