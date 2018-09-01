@@ -76,8 +76,7 @@ from service.esiAccess import SsoMode
 from eos.modifiedAttributeDict import ModifiedAttributeDict
 from eos.db.saveddata.loadDefaultDatabaseValues import DefaultDatabaseValues
 from eos.db.saveddata.queries import getFit as db_getFit
-from service.port import Port, IPortUser
-from service.efsPort import EfsPort
+from service.port import Port, IPortUser, EfsPort
 from service.settings import HTMLExportSettings
 
 from time import gmtime, strftime
@@ -703,31 +702,31 @@ class MainFrame(wx.Frame):
         else:
             self.marketBrowser.search.Focus()
 
-    def clipboardEft(self):
+    def clipboardEft(self, options):
         fit = db_getFit(self.getActiveFit())
-        toClipboard(Port.exportEft(fit))
+        toClipboard(Port.exportEft(fit, options))
 
-    def clipboardEftImps(self):
+    def clipboardEftImps(self, options):
         fit = db_getFit(self.getActiveFit())
         toClipboard(Port.exportEftImps(fit))
 
-    def clipboardDna(self):
+    def clipboardDna(self, options):
         fit = db_getFit(self.getActiveFit())
         toClipboard(Port.exportDna(fit))
 
-    def clipboardEsi(self):
+    def clipboardEsi(self, options):
         fit = db_getFit(self.getActiveFit())
         toClipboard(Port.exportESI(fit))
 
-    def clipboardXml(self):
+    def clipboardXml(self, options):
         fit = db_getFit(self.getActiveFit())
         toClipboard(Port.exportXml(None, fit))
 
-    def clipboardMultiBuy(self):
+    def clipboardMultiBuy(self, options):
         fit = db_getFit(self.getActiveFit())
         toClipboard(Port.exportMultiBuy(fit))
 
-    def clipboardEfs(self):
+    def clipboardEfs(self, options):
         fit = db_getFit(self.getActiveFit())
         toClipboard(EfsPort.exportEfs(fit, 0))
 
@@ -742,7 +741,7 @@ class MainFrame(wx.Frame):
 
     def exportToClipboard(self, event):
         CopySelectDict = {CopySelectDialog.copyFormatEft: self.clipboardEft,
-                          CopySelectDialog.copyFormatEftImps: self.clipboardEftImps,
+                          # CopySelectDialog.copyFormatEftImps: self.clipboardEftImps,
                           CopySelectDialog.copyFormatXml: self.clipboardXml,
                           CopySelectDialog.copyFormatDna: self.clipboardDna,
                           CopySelectDialog.copyFormatEsi: self.clipboardEsi,
@@ -751,8 +750,13 @@ class MainFrame(wx.Frame):
         dlg = CopySelectDialog(self)
         dlg.ShowModal()
         selected = dlg.GetSelected()
+        options = dlg.GetOptions()
 
-        CopySelectDict[selected]()
+        settings = SettingsProvider.getInstance().getSettings("pyfaExport")
+        settings["format"] = selected
+        settings["options"] = options
+
+        CopySelectDict[selected](options)
 
         try:
             dlg.Destroy()
