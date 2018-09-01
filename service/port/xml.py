@@ -129,6 +129,7 @@ def _resolve_module(hardware, sMkt, b_localized):
 
 
 def importXml(text, iportuser):
+    from .port import Port
     # type: (str, IPortUser) -> list[eos.saveddata.fit.Fit]
     sMkt = Market.getInstance()
     doc = xml.dom.minidom.parseString(text)
