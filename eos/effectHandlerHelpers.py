@@ -114,6 +114,7 @@ class HandledList(list):
 
 
 class HandledModuleList(HandledList):
+
     def append(self, mod):
         emptyPosition = float("Inf")
         for i in range(len(self)):
@@ -131,6 +132,9 @@ class HandledModuleList(HandledList):
                 self.remove(mod)
             return
 
+        self.appendIgnoreEmpty(mod)
+
+    def appendIgnoreEmpty(self, mod):
         mod.position = len(self)
         HandledList.append(self, mod)
         if mod.isInvalid:
