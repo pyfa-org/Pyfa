@@ -74,6 +74,15 @@ class DamagePattern(object):
     }
 
     @classmethod
+    def oneType(cls, damageType, amount=100):
+        pattern = DamagePattern()
+        pattern.update(amount if damageType == "em" else 0,
+                       amount if damageType == "thermal" else 0,
+                       amount if damageType == "kinetic" else 0,
+                       amount if damageType == "explosive" else 0)
+        return pattern
+
+    @classmethod
     def importPatterns(cls, text):
         lines = re.split('[\n\r]+', text)
         patterns = []

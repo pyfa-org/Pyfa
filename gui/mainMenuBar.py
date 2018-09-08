@@ -48,6 +48,7 @@ class MainMenuBar(wx.MenuBar):
         self.exportHtmlId = wx.NewId()
         self.wikiId = wx.NewId()
         self.forumId = wx.NewId()
+        self.fitStatsToClipboardId = wx.NewId()
         self.saveCharId = wx.NewId()
         self.saveCharAsId = wx.NewId()
         self.revertCharId = wx.NewId()
@@ -95,6 +96,8 @@ class MainMenuBar(wx.MenuBar):
 
         editMenu.Append(wx.ID_COPY, "To Clipboard\tCTRL+C", "Export a fit to the clipboard")
         editMenu.Append(wx.ID_PASTE, "From Clipboard\tCTRL+V", "Import a fit from the clipboard")
+        editMenu.Append(self.fitStatsToClipboardId, "Fit Stats To Clipboard\tCTRL+ALT+C",
+                        "Export the stats of the current fit to clipboard")
         editMenu.AppendSeparator()
         editMenu.Append(self.saveCharId, "Save Character")
         editMenu.Append(self.saveCharAsId, "Save Character As...")
@@ -177,6 +180,7 @@ class MainMenuBar(wx.MenuBar):
         enable = event.fitID is not None
         self.Enable(wx.ID_SAVEAS, enable)
         self.Enable(wx.ID_COPY, enable)
+        self.Enable(self.fitStatsToClipboardId, enable)
         self.Enable(self.exportSkillsNeededId, enable)
 
         sChar = Character.getInstance()
