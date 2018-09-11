@@ -198,13 +198,16 @@ if toadd:
             print("Can't find iconID {}".format(fname))
             continue
         key = icon['iconFile'].lower()
-        icon = get_icon_file(key, ICON_SIZE)
-        if icon is None:
-            missing.add(fname)
-            continue
-        fullname = '{}.png'.format(fname)
-        fullpath = os.path.join(icons_dir, fullname)
-        icon.save(fullpath, 'png')
+
+        for i in range(2):
+            scale = i+1
+            icon = get_icon_file(key, tuple([x*scale for x in ICON_SIZE]))
+            if icon is None:
+                missing.add(fname)
+                continue
+            fullname = '{}@{}x.png'.format(fname, scale)
+            fullpath = os.path.join(icons_dir, fullname)
+            icon.save(fullpath, 'png')
     if missing:
         print(('  {} icons are missing in export:'.format(len(missing))))
         for fname in sorted(missing):
@@ -229,15 +232,18 @@ if toadd:
     print(('Adding {} icons...'.format(len(toadd))))
     missing = set()
     for fname in sorted(toadd):
-        icon = graphics_py_ob[int(fname)]
-        icon = "{}/{}_64.png".format(icon, fname)
-        icon = get_icon_file(icon, RENDER_SIZE)
-        if icon is None:
-            missing.add(fname)
-            continue
-        fullname = '{}.png'.format(fname)
-        fullpath = os.path.join(render_dir, fullname)
-        icon.save(fullpath, 'png')
+        key = graphics_py_ob[int(fname)]
+        key = "{}/{}_64.png".format(key, fname)
+
+        for i in range(2):
+            scale = i+1
+            icon = get_icon_file(key, tuple([x*scale for x in RENDER_SIZE]))
+            if icon is None:
+                missing.add(fname)
+                continue
+            fullname = '{}@{}x.png'.format(fname, scale)
+            fullpath = os.path.join(render_dir, fullname)
+            icon.save(fullpath, 'png')
     if missing:
         print(('  {} icons are missing in export:'.format(len(missing))))
         for fname in sorted(missing):
