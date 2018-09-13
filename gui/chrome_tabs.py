@@ -552,24 +552,6 @@ class _TabRenderer:
                     bmp,
                     self.left_width + self.padding - bmp.GetWidth() / 2,
                     (height - bmp.GetHeight()) / 2)
-            text_start = self.left_width + self.padding + bmp.GetWidth() / 2
-        else:
-            text_start = self.left_width
-
-        mdc.SetFont(self.font)
-
-        maxsize = self.tab_width \
-            - text_start \
-            - self.right_width \
-            - self.padding * 4
-        color = self.selected_color if self.selected else self.inactive_color
-
-        mdc.SetTextForeground(color_utils.GetSuitable(color, 1))
-
-        # draw text (with no ellipses)
-        text = draw.GetPartialText(mdc, self.text, maxsize, "")
-        tx, ty = mdc.GetTextExtent(text)
-        mdc.DrawText(text, text_start + self.padding, height / 2 - ty / 2)
 
         # draw close button
         if self.closeable:
@@ -595,6 +577,30 @@ class _TabRenderer:
 
         bmp = wx.Bitmap(img)
         self.tab_bitmap = bmp
+
+    # We draw the text separately in order to draw it directly on the native DC, rather than a memory one, because
+    # drawing text on a memory DC draws it blurry on HD/Retina screens
+    def DrawText(self, dc):
+        height = self.tab_height
+        dc.SetFont(self.font)
+
+        if self.tab_img:
+            text_start = self.left_width + self.padding + self.tab_img.GetWidth() / 2
+        else:
+            text_start = self.left_width
+
+        maxsize = self.tab_width \
+            - text_start \
+            - self.right_width \
+            - self.padding * 4
+        color = self.selected_color if self.selected else self.inactive_color
+
+        dc.SetTextForeground(color_utils.GetSuitable(color, 1))
+
+        # draw text (with no ellipses)
+        text = draw.GetPartialText(dc, self.text, maxsize, "")
+        tx, ty = dc.GetTextExtent(text)
+        dc.DrawText(text, text_start + self.padding, height / 2 - ty / 2)
 
     def __repr__(self):
         return "_TabRenderer(text={}, disabled={}) at {}".format(
@@ -1145,6 +1151,10 @@ class _TabsContainer(wx.Panel):
                 img = img.AdjustChannels(1, 1, 1, 0.85)
                 bmp = wx.Bitmap(img)
                 mdc.DrawBitmap(bmp, posx, posy, True)
+
+                mdc.SetDeviceOrigin(posx, posy)
+                tab.DrawText(mdc)
+                mdc.SetDeviceOrigin(0, 0)
             else:
                 selected = tab
 
@@ -1163,6 +1173,10 @@ class _TabsContainer(wx.Panel):
                 bmp = wx.Bitmap(img)
 
             mdc.DrawBitmap(bmp, posx, posy, True)
+
+            mdc.SetDeviceOrigin(posx, posy)
+            selected.DrawText(mdc)
+            mdc.SetDeviceOrigin(0, 0)
 
     def OnErase(self, event):
         pass
