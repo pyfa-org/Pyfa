@@ -31,3 +31,4 @@ from .guiChangeProjectedFitQty import GuiChangeProjectedFitQty
 from .guiChangeDroneQty import GuiChangeDroneQty
 from .guiChangeProjectedDroneQty import GuiChangeProjectedDroneQty
 from .guiToggleDrone import GuiToggleDroneCommand
+from .guiFitRename import GuiFitRenameCommand

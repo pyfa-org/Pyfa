@@ -186,15 +186,6 @@ class Fit(FitDeprecated):
         eos.db.commit()
 
     @staticmethod
-    def renameFit(fitID, newName):
-        pyfalog.debug("Renaming fit ({0}) to: {1}", fitID, newName)
-        fit = eos.db.getFit(fitID)
-        old_name = fit.name
-        fit.name = newName
-        eos.db.commit()
-        return old_name,  newName
-
-    @staticmethod
     def deleteFit(fitID):
         fit = eos.db.getFit(fitID)
         pyfalog.debug("Fit::deleteFit - Deleting fit: {}", fit)
