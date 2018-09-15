@@ -5,6 +5,7 @@ import gui.mainFrame
 from gui import globalEvents as GE
 from .calc.fitSetCharge import FitSetChargeCommand
 
+
 class GuiModuleAddChargeCommand(wx.Command):
     def __init__(self, fitID, itemID, modules):
         wx.Command.__init__(self, True, "Module Charge Add")
@@ -28,4 +29,3 @@ class GuiModuleAddChargeCommand(wx.Command):
         self.sFit.recalc(self.fitID)
         wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=self.fitID))
         return True
-

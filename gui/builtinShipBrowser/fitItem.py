@@ -20,6 +20,7 @@ from service.fit import Fit
 import gui.fitCommands as cmd
 pyfalog = Logger(__name__)
 
+
 class FitItem(SFItem.SFBrowserItem):
     def __init__(self, parent, fitID=None, shipFittingInfo=("Test", "TestTrait", "cnc's avatar", 0, 0, None), shipID=None,
                  itemData=None, graphicID=None,

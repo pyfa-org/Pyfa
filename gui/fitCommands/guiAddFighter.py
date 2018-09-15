@@ -5,6 +5,7 @@ import gui.mainFrame
 from gui import globalEvents as GE
 from .calc.fitAddFighter import FitAddFighterCommand
 
+
 class GuiAddFighterCommand(wx.Command):
     def __init__(self, fitID, itemID):
         wx.Command.__init__(self, True, "Cargo Add")
@@ -27,4 +28,3 @@ class GuiAddFighterCommand(wx.Command):
         self.sFit.recalc(self.fitID)
         wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=self.fitID))
         return True
-

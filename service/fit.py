@@ -39,10 +39,10 @@ from service.damagePattern import DamagePattern
 from service.settings import SettingsProvider
 from utils.deprecated import deprecated
 import wx
+from service.fitDeprecated import FitDeprecated
 
 pyfalog = Logger(__name__)
 
-from service.fitDeprecated import FitDeprecated
 
 class DeferRecalc():
     def __init__(self, fitID):
@@ -358,9 +358,6 @@ class Fit(FitDeprecated):
 
         eos.db.commit()
         self.recalc(fit)
-
-
-
 
     def changeMutatedValue(self, mutator, value):
         pyfalog.debug("Changing mutated value for {} / {}: {} => {}".format(mutator.module, mutator.module.mutaplasmid, mutator.value, value))

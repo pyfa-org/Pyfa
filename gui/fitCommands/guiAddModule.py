@@ -1,7 +1,6 @@
 import wx
 import eos.db
 import gui.mainFrame
-from service.fit import Fit
 from gui import globalEvents as GE
 from .calc.fitAddModule import FitAddModuleCommand
 from .calc.fitReplaceModule import FitReplaceModuleCommand
@@ -59,7 +58,6 @@ class GuiModuleAddCommand(wx.Command):
             wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=self.fitID, action="modadd", typeID=self.itemID))
             return True
         return False
-
 
     def Undo(self):
         pyfalog.debug("{} Undo()".format(self))

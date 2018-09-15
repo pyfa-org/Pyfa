@@ -12,6 +12,7 @@ from .calc.fitAddCargo import FitAddCargoCommand
 from logbook import Logger
 pyfalog = Logger(__name__)
 
+
 class GuiModuleToCargoCommand(wx.Command):
     def __init__(self, fitID, moduleIdx, cargoIdx, copy=False):
         wx.Command.__init__(self, True, "Module State Change")
@@ -31,7 +32,8 @@ class GuiModuleToCargoCommand(wx.Command):
 
         if self.cargoIdx:  # we're swapping with cargo
             if self.copy:  # if copying, simply add item to cargo
-                result = self.internal_history.Submit(FitAddCargoCommand(self.mainFrame.getActiveFit(), module.item.ID if not module.item.isAbyssal else module.baseItemID))
+                result = self.internal_history.Submit(FitAddCargoCommand(
+                    self.mainFrame.getActiveFit(), module.item.ID if not module.item.isAbyssal else module.baseItemID))
             else:  # otherwise, try to swap by replacing module with cargo item. If successful, remove old cargo and add new cargo
 
                 cargo = fit.cargo[self.cargoIdx]

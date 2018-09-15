@@ -3,19 +3,18 @@ from service.fit import Fit
 
 import gui.mainFrame
 from gui import globalEvents as GE
-from eos.saveddata.module import Module
 from .calc.fitRemoveProjectedModule import FitRemoveProjectedModuleCommand
 from .calc.fitRemoveProjectedEnv import FitRemoveProjectedEnvCommand
 from .calc.fitRemoveProjectedFit import FitRemoveProjectedFitCommand
 from .calc.fitRemoveProjectedFighter import FitRemoveProjectedFighterCommand
 from logbook import Logger
 from .calc.fitRemoveProjectedDrone import FitRemoveProjectedDroneCommand
-pyfalog = Logger(__name__)
-import eos.db
 
 from eos.saveddata.drone import Drone
 from eos.saveddata.module import Module
 from eos.saveddata.fighter import Fighter
+
+pyfalog = Logger(__name__)
 
 
 class GuiRemoveProjectedCommand(wx.Command):
@@ -88,4 +87,3 @@ class GuiRemoveProjectedCommand(wx.Command):
         self.sFit.recalc(self.fitID)
         wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=self.fitID))
         return True
-

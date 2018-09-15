@@ -8,6 +8,7 @@ from service.fit import Fit
 from service.settings import ContextMenuSettings
 import gui.fitCommands as cmd
 
+
 class TacticalMode(ContextMenu):
     def __init__(self):
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()

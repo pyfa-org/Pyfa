@@ -12,6 +12,7 @@ from eos.saveddata.fighter import Fighter as es_Fighter
 from service.settings import ContextMenuSettings
 import gui.fitCommands as cmd
 
+
 class ChangeAmount(ContextMenu):
     def __init__(self):
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()

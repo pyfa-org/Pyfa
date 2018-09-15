@@ -17,6 +17,7 @@ from eos.saveddata.implant import Implant
 from eos.saveddata.cargo import Cargo
 import gui.fitCommands as cmd
 
+
 class MetaSwap(ContextMenu):
     def __init__(self):
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
@@ -151,7 +152,6 @@ class MetaSwap(ContextMenu):
         #
         #         if drone_count:
         #             sFit.addDrone(fitID, item.ID, drone_count, True)
-
 
 
 MetaSwap.register()

@@ -5,6 +5,7 @@ import gui.mainFrame
 from gui import globalEvents as GE
 from .calc.fitSetMode import FitSetModeCommand
 
+
 class GuiSetModeCommand(wx.Command):
     def __init__(self, fitID, mode):
         wx.Command.__init__(self, True, "Cargo Add")
@@ -27,4 +28,3 @@ class GuiSetModeCommand(wx.Command):
         self.sFit.recalc(self.fitID)
         wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=self.fitID))
         return True
-

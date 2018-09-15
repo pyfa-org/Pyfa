@@ -258,6 +258,7 @@ class HandledProjectedModList(HandledList):
             return oldEffect.itemID
         return None
 
+
 class HandledProjectedDroneList(HandledDroneCargoList):
     def append(self, proj):
         proj.projected = True

@@ -5,6 +5,7 @@ import gui.mainFrame
 from gui import globalEvents as GE
 from .calc.fitRemoveImplant import FitRemoveImplantCommand
 
+
 class GuiRemoveImplantCommand(wx.Command):
     def __init__(self, fitID, position):
         wx.Command.__init__(self, True, "")
@@ -25,4 +26,3 @@ class GuiRemoveImplantCommand(wx.Command):
             self.internal_history.Undo()
         wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=self.fitID))
         return True
-

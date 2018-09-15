@@ -5,6 +5,7 @@ import gui.mainFrame
 from gui import globalEvents as GE
 from .calc.fitAddBooster import FitAddBoosterCommand
 
+
 class GuiAddBoosterCommand(wx.Command):
     def __init__(self, fitID, itemID):
         wx.Command.__init__(self, True, "Booster Add")
@@ -27,4 +28,3 @@ class GuiAddBoosterCommand(wx.Command):
         self.sFit.recalc(self.fitID)
         wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=self.fitID))
         return True
-

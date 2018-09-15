@@ -31,6 +31,7 @@ from service.fit import Fit
 from service.market import Market
 import gui.fitCommands as cmd
 
+
 class DroneViewDrop(wx.DropTarget):
     def __init__(self, dropFn, *args, **kwargs):
         super(DroneViewDrop, self).__init__(*args, **kwargs)

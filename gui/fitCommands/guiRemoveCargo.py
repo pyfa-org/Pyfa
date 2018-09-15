@@ -5,6 +5,7 @@ import gui.mainFrame
 from gui import globalEvents as GE
 from .calc.fitRemoveCargo import FitRemoveCargoCommand
 
+
 class GuiRemoveCargoCommand(wx.Command):
     def __init__(self, fitID, itemID):
         wx.Command.__init__(self, True, "Module Charge Add")
@@ -25,4 +26,3 @@ class GuiRemoveCargoCommand(wx.Command):
             self.internal_history.Undo()
         wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=self.fitID))
         return True
-

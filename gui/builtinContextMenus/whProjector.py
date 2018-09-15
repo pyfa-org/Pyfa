@@ -10,6 +10,7 @@ from itertools import chain
 import re
 import gui.fitCommands as cmd
 
+
 class WhProjector(ContextMenu):
 
     # CCP doesn't currently provide a mapping between the general Environment, and the specific environment effect

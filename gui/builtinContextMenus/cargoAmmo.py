@@ -6,6 +6,7 @@ from service.settings import ContextMenuSettings
 from service.fit import Fit
 import gui.fitCommands as cmd
 
+
 class CargoAmmo(ContextMenu):
     def __init__(self):
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()

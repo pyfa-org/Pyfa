@@ -28,6 +28,7 @@ from gui.utils.staticHelpers import DragDropHelper
 from service.fit import Fit
 import gui.fitCommands as cmd
 
+
 class BoosterViewDrop(wx.DropTarget):
     def __init__(self, dropFn, *args, **kwargs):
         super(BoosterViewDrop, self).__init__(*args, **kwargs)

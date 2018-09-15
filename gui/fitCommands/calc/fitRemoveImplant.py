@@ -1,6 +1,4 @@
 import wx
-
-#from .helpers import ModuleInfoCache
 import eos.db
 from logbook import Logger
 pyfalog = Logger(__name__)
@@ -28,7 +26,7 @@ class FitRemoveImplantCommand(wx.Command):
         return True
 
     def Undo(self):
-        from gui.fitCommands.calc.fitAddImplant import FitAddImplantCommand # Avoid circular import
+        from gui.fitCommands.calc.fitAddImplant import FitAddImplantCommand  # Avoid circular import
         cmd = FitAddImplantCommand(self.fitID, self.old_implant)
         cmd.Do()
         return True

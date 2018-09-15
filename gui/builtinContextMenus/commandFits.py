@@ -9,6 +9,7 @@ from gui.contextMenu import ContextMenu
 from service.settings import ContextMenuSettings
 import gui.fitCommands as cmd
 
+
 class CommandFits(ContextMenu):
     # Get list of items that define a command fit
     sMkt = Market.getInstance()
@@ -97,7 +98,6 @@ class CommandFits(ContextMenu):
             event.Skip()
             return
 
-        sFit = Fit.getInstance()
         fitID = self.mainFrame.getActiveFit()
         self.mainFrame.command.Submit(cmd.GuiAddCommandCommand(fitID, fit.ID))
 

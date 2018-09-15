@@ -19,7 +19,8 @@ class GuiModuleRemoveCommand(wx.Command):
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
         self.sFit = Fit.getInstance()
         self.fitID = fitID
-        self.modCache = [ModuleInfoCache(mod.modPosition, mod.item.ID, mod.state, mod.charge, mod.baseItemID, mod.mutaplasmidID) for mod in modules if not mod.isEmpty]
+        self.modCache = [ModuleInfoCache(
+            mod.modPosition, mod.item.ID, mod.state, mod.charge, mod.baseItemID, mod.mutaplasmidID) for mod in modules if not mod.isEmpty]
         self.internal_history = wx.CommandProcessor()
 
     def Do(self):

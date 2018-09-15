@@ -5,8 +5,9 @@ import gui.mainFrame
 from gui import globalEvents as GE
 from eos.saveddata.module import Module
 from logbook import Logger
-pyfalog = Logger(__name__)
 import eos.db
+pyfalog = Logger(__name__)
+
 
 class FitSetChargeCommand(wx.Command):
     def __init__(self, fitID, positions, chargeID=None):

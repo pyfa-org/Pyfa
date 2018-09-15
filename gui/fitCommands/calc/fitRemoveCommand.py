@@ -1,16 +1,10 @@
 import wx
-from service.fit import Fit
-
-import gui.mainFrame
-from gui import globalEvents as GE
-#from .helpers import ModuleInfoCache
-from eos.saveddata.module import Module, State
 import eos.db
 from logbook import Logger
 pyfalog = Logger(__name__)
 
 
-class FitRemoveCommandCommand(wx.Command):  # well that's an unfrtunate name
+class FitRemoveCommandCommand(wx.Command):  # well that's an unfortunate name
     """"
     from sFit.removeCommand
     """

@@ -44,7 +44,7 @@ class FitDeprecated(object):
         old_name = fit.name
         fit.name = newName
         eos.db.commit()
-        return old_name,  newName
+        return old_name, newName
 
     @deprecated
     def toggleDrone(self, fitID, i):

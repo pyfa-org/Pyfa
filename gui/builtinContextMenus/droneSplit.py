@@ -111,7 +111,6 @@ class DroneStackSplit(wx.Dialog):
             return False
 
 
-
 class DroneSpinner(wx.Dialog):
     def __init__(self, parent, drone, context):
         wx.Dialog.__init__(self, parent, title="Select Amount", size=wx.Size(220, 60))

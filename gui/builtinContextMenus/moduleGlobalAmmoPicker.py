@@ -9,6 +9,7 @@ from service.fit import Fit
 from service.settings import ContextMenuSettings
 import gui.fitCommands as cmd
 
+
 class ModuleGlobalAmmoPicker(ModuleAmmoPicker):
     def __init__(self):
         super(ModuleGlobalAmmoPicker, self).__init__()
@@ -28,7 +29,6 @@ class ModuleGlobalAmmoPicker(ModuleAmmoPicker):
             event.Skip()
             return
 
-        sFit = Fit.getInstance()
         fitID = self.mainFrame.getActiveFit()
         fit = db_getFit(fitID)
 

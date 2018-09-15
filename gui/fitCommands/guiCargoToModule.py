@@ -10,6 +10,7 @@ from .calc.fitAddCargo import FitAddCargoCommand
 from logbook import Logger
 pyfalog = Logger(__name__)
 
+
 class GuiCargoToModuleCommand(wx.Command):
     """
     Moves cargo to fitting window. Can either do a copy, move, or swap with current module

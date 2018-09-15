@@ -1,8 +1,5 @@
 import wx
-import eos.db
 import gui.mainFrame
-from service.fit import Fit
-from gui import globalEvents as GE
 from .calc.fitRename import FitRenameCommand
 from service.fit import Fit
 from logbook import Logger
@@ -24,7 +21,6 @@ class GuiFitRenameCommand(wx.Command):
             wx.PostEvent(self.mainFrame, FitRenamed(fitID=self.fitID))
             return True
         return False
-
 
     def Undo(self):
         pyfalog.debug("{} Undo()".format(self))

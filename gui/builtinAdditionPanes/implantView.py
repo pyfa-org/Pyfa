@@ -30,6 +30,7 @@ from service.fit import Fit
 from service.market import Market
 import gui.fitCommands as cmd
 
+
 class ImplantView(wx.Panel):
     def __init__(self, parent):
         wx.Panel.__init__(self, parent, id=wx.ID_ANY, pos=wx.DefaultPosition, style=wx.TAB_TRAVERSAL)

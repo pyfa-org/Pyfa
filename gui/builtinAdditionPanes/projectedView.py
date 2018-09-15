@@ -322,7 +322,6 @@ class ProjectedView(d.Display):
             col = self.getColumn(event.Position)
             if col != self.getColIndex(State):
                 fitID = self.mainFrame.getActiveFit()
-                sFit = Fit.getInstance()
                 thing = self.get(row)
                 if thing:  # thing doesn't exist if it's the dummy value
                     self.mainFrame.command.Submit(cmd.GuiRemoveProjectedCommand(fitID, thing))

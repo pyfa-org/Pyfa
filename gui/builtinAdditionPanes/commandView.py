@@ -32,6 +32,7 @@ from gui.utils.staticHelpers import DragDropHelper
 from service.fit import Fit
 import gui.fitCommands as cmd
 
+
 class DummyItem(object):
     def __init__(self, txt):
         self.name = txt
@@ -100,7 +101,6 @@ class CommandView(d.Display):
         keycode = event.GetKeyCode()
         if keycode == wx.WXK_DELETE or keycode == wx.WXK_NUMPAD_DELETE:
             fitID = self.mainFrame.getActiveFit()
-            sFit = Fit.getInstance()
             row = self.GetFirstSelected()
             if row != -1:
                 self.mainFrame.command.Submit(cmd.GuiRemoveCommandCommand(fitID, self.get(row).ID))
@@ -218,7 +218,6 @@ class CommandView(d.Display):
             col = self.getColumn(event.Position)
             if col != self.getColIndex(State):
                 fitID = self.mainFrame.getActiveFit()
-                sFit = Fit.getInstance()
                 thing = self.get(row)
                 if thing:  # thing doesn't exist if it's the dummy value
                     self.mainFrame.command.Submit(cmd.GuiRemoveCommandCommand(fitID, thing.ID))

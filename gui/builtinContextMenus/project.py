@@ -7,6 +7,7 @@ from service.fit import Fit
 from service.settings import ContextMenuSettings
 import gui.fitCommands as cmd
 
+
 class Project(ContextMenu):
     def __init__(self):
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
@@ -33,7 +34,6 @@ class Project(ContextMenu):
         return "Project {0} onto Fit".format(itmContext)
 
     def activate(self, fullContext, selection, i):
-        sFit = Fit.getInstance()
         fitID = self.mainFrame.getActiveFit()
         self.mainFrame.command.Submit(cmd.GuiAddProjectedCommand(fitID, selection[0].ID, 'item'))
 

@@ -450,7 +450,6 @@ class FittingView(d.Display):
             mod1 = fit.modules[srcIdx]
             mod2 = self.mods[dstRow]
 
-
             if not isinstance(mod2, Module):
                 return
 
@@ -622,7 +621,8 @@ class FittingView(d.Display):
             ctrl = event.cmdDown or event.middleIsDown
             click = "ctrl" if ctrl is True else "right" if event.GetButton() == 3 else "left"
 
-            self.mainFrame.command.Submit(cmd.GuiModuleStateChangeCommand(fitID, self.mods[self.GetItemData(row)].modPosition, [mod.modPosition for mod in mods], click))
+            self.mainFrame.command.Submit(cmd.GuiModuleStateChangeCommand(
+                fitID, self.mods[self.GetItemData(row)].modPosition, [mod.modPosition for mod in mods], click))
 
             # update state tooltip
             tooltip = self.activeColumns[col].getToolTip(self.mods[self.GetItemData(row)])

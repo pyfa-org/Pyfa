@@ -5,6 +5,7 @@ import gui.mainFrame
 from gui import globalEvents as GE
 from .calc.fitRemoveDrone import FitRemoveDroneCommand
 
+
 class GuiRemoveDroneCommand(wx.Command):
     def __init__(self, fitID, position, amount=1):
         wx.Command.__init__(self, True, "Cargo Add")
@@ -28,4 +29,3 @@ class GuiRemoveDroneCommand(wx.Command):
             self.internal_history.Undo()
         wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=self.fitID))
         return True
-

@@ -5,6 +5,7 @@ import gui.mainFrame
 from gui import globalEvents as GE
 from .calc.fitRemoveCommand import FitRemoveCommandCommand
 
+
 class GuiRemoveCommandCommand(wx.Command):
     def __init__(self, fitID, commandFitID):
         wx.Command.__init__(self, True, "")
@@ -27,4 +28,3 @@ class GuiRemoveCommandCommand(wx.Command):
         self.sFit.recalc(self.fitID)
         wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=self.fitID))
         return True
-

@@ -1,6 +1,4 @@
 import wx
-
-#from .helpers import ModuleInfoCache
 import eos.db
 from logbook import Logger
 pyfalog = Logger(__name__)

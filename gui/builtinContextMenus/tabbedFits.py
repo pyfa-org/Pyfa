@@ -10,6 +10,7 @@ from gui.contextMenu import ContextMenu
 from gui.builtinViews.emptyView import BlankPage
 import gui.fitCommands as cmd
 
+
 class TabbedFits(ContextMenu):
     def __init__(self):
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()

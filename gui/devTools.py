@@ -88,7 +88,7 @@ class DevTools(wx.Dialog):
             print(None)
 
     def cmd_print(self, evt):
-        print("="*20)
+        print("=" * 20)
         for x in self.mainFrame.command.GetCommands():
             print("{}{} {}".format("==> " if x == self.mainFrame.command.GetCurrentCommand() else "", x.GetName(), x))
 

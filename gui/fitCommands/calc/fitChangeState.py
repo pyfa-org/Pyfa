@@ -1,12 +1,13 @@
 import wx
-from service.fit import Fit
+from logbook import Logger
 
 import gui.mainFrame
-from gui import globalEvents as GE
-from logbook import Logger
 from eos.saveddata.module import Module
-pyfalog = Logger(__name__)
+from service.fit import Fit
 import eos.db
+
+pyfalog = Logger(__name__)
+
 
 class FitChangeStatesCommand(wx.Command):
     """

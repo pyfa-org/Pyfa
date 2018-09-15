@@ -5,6 +5,7 @@ import gui.mainFrame
 from gui import globalEvents as GE
 from .calc.fitAddImplant import FitAddImplantCommand
 
+
 class GuiAddImplantCommand(wx.Command):
     def __init__(self, fitID, itemID):
         wx.Command.__init__(self, True, "Implant Add")
@@ -27,4 +28,3 @@ class GuiAddImplantCommand(wx.Command):
         self.sFit.recalc(self.fitID)
         wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=self.fitID))
         return True
-

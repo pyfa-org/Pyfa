@@ -13,6 +13,7 @@ from gui.bitmap_loader import BitmapLoader
 from service.settings import ContextMenuSettings
 import gui.fitCommands as cmd
 
+
 class ModuleAmmoPicker(ContextMenu):
     DAMAGE_TYPES = ("em", "explosive", "kinetic", "thermal")
     MISSILE_ORDER = ("em", "thermal", "kinetic", "explosive", "mixed")
