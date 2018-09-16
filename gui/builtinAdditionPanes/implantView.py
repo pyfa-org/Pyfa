@@ -28,6 +28,7 @@ import gui.globalEvents as GE
 from eos.saveddata.fit import ImplantLocation
 from service.fit import Fit
 from service.market import Market
+import gui.fitCommands as cmd
 
 
 class ImplantView(wx.Panel):
@@ -155,9 +156,7 @@ class ImplantDisplay(d.Display):
             event.Skip()
             return
 
-        trigger = sFit.addImplant(fitID, event.itemID)
-        if trigger:
-            wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fitID))
+        if self.mainFrame.command.Submit(cmd.GuiAddImplantCommand(fitID, event.itemID)):
             self.mainFrame.additionsPane.select("Implants")
 
         event.Skip()
@@ -175,10 +174,7 @@ class ImplantDisplay(d.Display):
 
     def removeImplant(self, implant):
         fitID = self.mainFrame.getActiveFit()
-        sFit = Fit.getInstance()
-
-        sFit.removeImplant(fitID, self.original.index(implant))
-        wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fitID))
+        self.mainFrame.command.Submit(cmd.GuiRemoveImplantCommand(fitID, self.original.index(implant)))
 
     def click(self, event):
         event.Skip()
@@ -192,9 +188,7 @@ class ImplantDisplay(d.Display):
             col = self.getColumn(event.Position)
             if col == self.getColIndex(State):
                 fitID = self.mainFrame.getActiveFit()
-                sFit = Fit.getInstance()
-                sFit.toggleImplant(fitID, row)
-                wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fitID))
+                self.mainFrame.command.Submit(cmd.GuiToggleImplantCommand(fitID, row))
 
     def scheduleMenu(self, event):
         event.Skip()

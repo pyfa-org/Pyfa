@@ -4,6 +4,7 @@ import gui.globalEvents as GE
 import wx
 from service.settings import ContextMenuSettings
 from service.fit import Fit
+import gui.fitCommands as cmd
 
 
 class CargoAmmo(ContextMenu):
@@ -28,13 +29,10 @@ class CargoAmmo(ContextMenu):
         return "Add {0} to Cargo (x1000)".format(itmContext)
 
     def activate(self, fullContext, selection, i):
-        sFit = Fit.getInstance()
         fitID = self.mainFrame.getActiveFit()
-
         typeID = int(selection[0].ID)
-        sFit.addCargo(fitID, typeID, 1000)
+        self.mainFrame.command.Submit(cmd.GuiAddCargoCommand(fitID, typeID, 1000))
         self.mainFrame.additionsPane.select("Cargo")
-        wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fitID))
 
 
 CargoAmmo.register()

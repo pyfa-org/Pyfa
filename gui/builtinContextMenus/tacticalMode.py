@@ -6,6 +6,7 @@ import gui.mainFrame
 import gui.globalEvents as GE
 from service.fit import Fit
 from service.settings import ContextMenuSettings
+import gui.fitCommands as cmd
 
 
 class TacticalMode(ContextMenu):
@@ -60,10 +61,8 @@ class TacticalMode(ContextMenu):
             event.Skip()
             return
 
-        sFit = Fit.getInstance()
         fitID = self.mainFrame.getActiveFit()
-        sFit.setMode(fitID, self.modeIds[event.Id])
-        wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fitID))
+        self.mainFrame.command.Submit(cmd.GuiSetModeCommand(fitID, self.modeIds[event.Id]))
 
 
 TacticalMode.register()

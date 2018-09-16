@@ -7,6 +7,7 @@ import gui.mainFrame
 import gui.globalEvents as GE
 from gui.contextMenu import ContextMenu
 from service.settings import ContextMenuSettings
+import gui.fitCommands as cmd
 
 
 class CommandFits(ContextMenu):
@@ -97,11 +98,8 @@ class CommandFits(ContextMenu):
             event.Skip()
             return
 
-        sFit = Fit.getInstance()
         fitID = self.mainFrame.getActiveFit()
-
-        sFit.addCommandFit(fitID, fit)
-        wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fitID))
+        self.mainFrame.command.Submit(cmd.GuiAddCommandCommand(fitID, fit.ID))
 
 
 CommandFits.populateFits(None)

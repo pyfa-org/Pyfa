@@ -53,6 +53,20 @@ class Fighter(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
 
         self.build()
 
+        standardAttackActive = False
+        for ability in self.abilities:
+            if ability.effect.isImplemented and ability.effect.handlerName == 'fighterabilityattackm':
+                # Activate "standard attack" if available
+                ability.active = True
+                standardAttackActive = True
+            else:
+                # Activate all other abilities (Neut, Web, etc) except propmods if no standard attack is active
+                if ability.effect.isImplemented and \
+                                standardAttackActive is False and \
+                                ability.effect.handlerName != 'fighterabilitymicrowarpdrive' and \
+                                ability.effect.handlerName != 'fighterabilityevasivemaneuvers':
+                    ability.active = True
+
     @reconstructor
     def init(self):
         """Initialize a fighter from the database and validate"""

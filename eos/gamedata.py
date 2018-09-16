@@ -476,6 +476,10 @@ class Item(EqBase):
     def getAbyssalYypes(cls):
         cls.ABYSSAL_TYPES = eos.db.getAbyssalTypes()
 
+    @property
+    def isCharge(self):
+        return self.category.name == "Charge"
+
     def __repr__(self):
         return "Item(ID={}, name={}) at {}".format(
                 self.ID, self.name, hex(id(self))

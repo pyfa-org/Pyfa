@@ -244,6 +244,10 @@ class MainFrame(wx.Frame):
         self.Bind(GE.EVT_SSO_LOGIN, self.onSSOLogin)
         self.Bind(GE.EVT_SSO_LOGGING_IN, self.ShowSsoLogin)
 
+    @property
+    def command(self) -> wx.CommandProcessor:
+        return Fit.getCommandProcessor(self.getActiveFit())
+
     def ShowSsoLogin(self, event):
         if getattr(event, "login_mode", LoginMethod.SERVER) == LoginMethod.MANUAL and getattr(event, "sso_mode", SsoMode.AUTO) == SsoMode.AUTO:
             dlg = SsoLogin(self)
@@ -514,6 +518,10 @@ class MainFrame(wx.Frame):
         self.Bind(wx.EVT_MENU, self.showPreferenceDialog, id=wx.ID_PREFERENCES)
         # User guide
         self.Bind(wx.EVT_MENU, self.goWiki, id=menuBar.wikiId)
+
+        self.Bind(wx.EVT_MENU, lambda evt: MainFrame.getInstance().command.Undo(), id=wx.ID_UNDO)
+
+        self.Bind(wx.EVT_MENU, lambda evt: MainFrame.getInstance().command.Redo(), id=wx.ID_REDO)
         # EVE Forums
         self.Bind(wx.EVT_MENU, self.goForums, id=menuBar.forumId)
         # Save current character

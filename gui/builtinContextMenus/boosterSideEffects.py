@@ -50,7 +50,7 @@ class BoosterSideEffect(ContextMenu):
             if not effect.effect.isImplemented:
                 continue
             menuItem = self.addEffect(rootMenu if msw else sub, effect)
-            sub.AppendItem(menuItem)
+            sub.Append(menuItem)
             menuItem.Check(effect.active)
 
         return sub
