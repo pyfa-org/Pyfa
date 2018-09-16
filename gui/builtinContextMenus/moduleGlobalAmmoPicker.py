@@ -1,13 +1,10 @@
 # -*- coding: utf-8 -*-
-import gui.mainFrame
-# noinspection PyPackageRequirements
-import wx
-import gui.globalEvents as GE
-from gui.builtinContextMenus.moduleAmmoPicker import ModuleAmmoPicker
-from eos.db.saveddata.queries import getFit as db_getFit
-from service.fit import Fit
-from service.settings import ContextMenuSettings
 import gui.fitCommands as cmd
+import gui.mainFrame
+from eos.db.saveddata.queries import getFit as db_getFit
+# noinspection PyPackageRequirements
+from gui.builtinContextMenus.moduleAmmoPicker import ModuleAmmoPicker
+from service.settings import ContextMenuSettings
 
 
 class ModuleGlobalAmmoPicker(ModuleAmmoPicker):

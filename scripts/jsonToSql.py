@@ -18,10 +18,9 @@
 # License along with eos.  If not, see <http://www.gnu.org/licenses/>.
 #======================================================================
 
+import functools
 import os
 import sys
-import functools
-import re
 
 # Add eos root path to sys.path so we can import ourselves
 path = os.path.dirname(__file__)
@@ -46,7 +45,6 @@ def main(db, json_path):
     eos.config.debug = False
 
     # Now thats done, we can import the eos modules using the config
-    import eos.db
     import eos.gamedata
 
     # Create the database tables

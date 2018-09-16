@@ -1,13 +1,12 @@
 # noinspection PyPackageRequirements
 import wx
 
+import gui.fitCommands as cmd
+import gui.mainFrame
+from gui.contextMenu import ContextMenu
 from service.fit import Fit
 from service.market import Market
-import gui.mainFrame
-import gui.globalEvents as GE
-from gui.contextMenu import ContextMenu
 from service.settings import ContextMenuSettings
-import gui.fitCommands as cmd
 
 
 class CommandFits(ContextMenu):

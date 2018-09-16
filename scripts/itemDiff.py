@@ -29,7 +29,6 @@ import argparse
 import os.path
 import re
 import sqlite3
-import sys
 
 script_dir = os.path.dirname(__file__)
 default_old = os.path.join(script_dir, "..", "eve.db")

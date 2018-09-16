@@ -17,15 +17,15 @@
 # along with eos.  If not, see <http://www.gnu.org/licenses/>.
 # ===============================================================================
 
-from sqlalchemy import Column, String, Integer, Boolean, ForeignKey, Table, Float
+from sqlalchemy import Boolean, Column, Float, ForeignKey, Integer, String, Table
 from sqlalchemy.ext.associationproxy import association_proxy
-from sqlalchemy.orm import relation, mapper, synonym, deferred, backref
+from sqlalchemy.orm import backref, deferred, mapper, relation, synonym
 from sqlalchemy.orm.collections import attribute_mapped_collection
-from eos.db.gamedata.effect import typeeffects_table
 
 from eos.db import gamedata_meta
-from eos.gamedata import Attribute, Effect, Group, Item, MetaType, Traits, DynamicItemItem, DynamicItem
-from eos.db.gamedata.dynamicAttributes import dynamicApplicable_table, dynamic_table
+from eos.db.gamedata.dynamicAttributes import dynamicApplicable_table
+from eos.db.gamedata.effect import typeeffects_table
+from eos.gamedata import Attribute, DynamicItem, Effect, Group, Item, MetaType, Traits
 
 items_table = Table("invtypes", gamedata_meta,
                     Column("typeID", Integer, primary_key=True),

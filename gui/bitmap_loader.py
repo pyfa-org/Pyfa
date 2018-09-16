@@ -19,15 +19,14 @@
 
 import io
 import os.path
-import zipfile
 from collections import OrderedDict
 
 # noinspection PyPackageRequirements
 import wx
+from logbook import Logger
 
 import config
 
-from logbook import Logger
 logging = Logger(__name__)
 
 

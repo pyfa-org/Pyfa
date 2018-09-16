@@ -17,76 +17,62 @@
 # along with pyfa.  If not, see <http://www.gnu.org/licenses/>.
 # =============================================================================
 
-import sys
-import os.path
-from logbook import Logger
-
-import sqlalchemy
-# noinspection PyPackageRequirements
-import wx
-# noinspection PyPackageRequirements
-from wx.lib.wordwrap import wordwrap
-# noinspection PyPackageRequirements
-from wx.lib.inspection import InspectionTool
-import time
-
-from codecs import open
-
-import config
-
-from eos.config import gamedata_version, gamedata_date
 import datetime
-
-import gui.aboutData
-from gui.chrome_tabs import ChromeNotebook
-import gui.globalEvents as GE
-
-from gui.bitmap_loader import BitmapLoader
-from gui.mainMenuBar import MainMenuBar
-from gui.additionsPane import AdditionsPane
-from gui.marketBrowser import MarketBrowser
-from gui.builtinMarketBrowser.events import ItemSelected
-from gui.multiSwitch import MultiSwitch
-from gui.statsPane import StatsPane
-from gui.shipBrowser import ShipBrowser
-from gui.builtinShipBrowser.events import FitSelected, ImportSelected, Stage3Selected
-from gui.characterEditor import CharacterEditor
-from gui.characterSelection import CharacterSelection
-from gui.patternEditor import DmgPatternEditorDlg
-from gui.resistsEditor import ResistsEditorDlg
-from gui.setEditor import ImplantSetEditorDlg
-from gui.devTools import DevTools
-from gui.preferenceDialog import PreferenceDialog
-from gui.graphFrame import GraphFrame
-from gui.ssoLogin import SsoLogin
-from gui.copySelectDialog import CopySelectDialog
-from gui.utils.clipboard import toClipboard, fromClipboard
-from gui.updateDialog import UpdateDialog
-# noinspection PyUnresolvedReferences
-from gui.builtinViews import emptyView, entityEditor, fittingView, implantEditor  # noqa: F401
-from gui import graphFrame
-
-from service.settings import SettingsProvider
-from service.fit import Fit
-from service.character import Character
-from service.update import Update
-from service.esiAccess import SsoMode
-
-# import this to access override setting
-from eos.modifiedAttributeDict import ModifiedAttributeDict
-from eos.db.saveddata.loadDefaultDatabaseValues import DefaultDatabaseValues
-from eos.db.saveddata.queries import getFit as db_getFit
-from service.port import Port, IPortUser, EfsPort
-from service.settings import HTMLExportSettings
-
+import os.path
+import threading
+import time
+import webbrowser
+from codecs import open
 from time import gmtime, strftime
 
-import threading
-import webbrowser
+# noinspection PyPackageRequirements
+import wx
 import wx.adv
+from logbook import Logger
+# noinspection PyPackageRequirements
+# noinspection PyPackageRequirements
+from wx.lib.inspection import InspectionTool
 
-from service.esi import Esi, LoginMethod
+import config
+import gui.globalEvents as GE
+from eos.config import gamedata_date, gamedata_version
+from eos.db.saveddata.loadDefaultDatabaseValues import DefaultDatabaseValues
+from eos.db.saveddata.queries import getFit as db_getFit
+# import this to access override setting
+from eos.modifiedAttributeDict import ModifiedAttributeDict
+from gui import graphFrame
+from gui.additionsPane import AdditionsPane
+from gui.bitmap_loader import BitmapLoader
+from gui.builtinMarketBrowser.events import ItemSelected
+from gui.builtinShipBrowser.events import FitSelected, ImportSelected, Stage3Selected
+# noinspection PyUnresolvedReferences
+from gui.builtinViews import emptyView, entityEditor, fittingView, implantEditor  # noqa: F401
+from gui.characterEditor import CharacterEditor
+from gui.characterSelection import CharacterSelection
+from gui.chrome_tabs import ChromeNotebook
+from gui.copySelectDialog import CopySelectDialog
+from gui.devTools import DevTools
 from gui.esiFittings import EveFittings, ExportToEve, SsoCharacterMgmt
+from gui.graphFrame import GraphFrame
+from gui.mainMenuBar import MainMenuBar
+from gui.marketBrowser import MarketBrowser
+from gui.multiSwitch import MultiSwitch
+from gui.patternEditor import DmgPatternEditorDlg
+from gui.preferenceDialog import PreferenceDialog
+from gui.resistsEditor import ResistsEditorDlg
+from gui.setEditor import ImplantSetEditorDlg
+from gui.shipBrowser import ShipBrowser
+from gui.ssoLogin import SsoLogin
+from gui.statsPane import StatsPane
+from gui.updateDialog import UpdateDialog
+from gui.utils.clipboard import fromClipboard, toClipboard
+from service.character import Character
+from service.esi import Esi, LoginMethod
+from service.esiAccess import SsoMode
+from service.fit import Fit
+from service.port import EfsPort, IPortUser, Port
+from service.settings import HTMLExportSettings, SettingsProvider
+from service.update import Update
 
 disableOverrideEditor = False
 

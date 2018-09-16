@@ -1,7 +1,6 @@
-import sys
-import inspect
-import re
 import platform
+import re
+import sys
 
 version_block = ''
 

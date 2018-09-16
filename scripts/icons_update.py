@@ -6,14 +6,12 @@ This script updates only market/item icons.
 
 
 import argparse
-import os
-import re
-import sqlite3
 import json
+import os
+import sqlite3
+from shutil import copyfile
 
 from PIL import Image
-
-from shutil import copyfile
 
 parser = argparse.ArgumentParser(description='This script updates module icons for pyfa')
 parser.add_argument('-e', '--eve', required=True, type=str, help='path to eve\'s ')

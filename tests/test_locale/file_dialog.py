@@ -1,8 +1,8 @@
 # noinspection PyPackageRequirements
-import wx
-import sys
 import os
 import sys
+
+import wx
 
 script_dir = os.path.dirname(os.path.abspath(__file__))
 # Add root to python paths, this allows us to import submodules

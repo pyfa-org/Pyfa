@@ -2,22 +2,22 @@
 
 import re
 import time
-import config
 
 import wx
 from logbook import Logger
 
+import config
 import gui.builtinShipBrowser.sfBrowserItem as SFItem
-import gui.globalEvents as GE
+import gui.fitCommands as cmd
 import gui.mainFrame
 import gui.utils.color as colorUtils
 import gui.utils.draw as drawUtils
 import gui.utils.fonts as fonts
-from .events import ImportSelected, SearchSelected, FitSelected, BoosterListUpdated, Stage3Selected, FitRenamed, FitRemoved
 from gui.bitmap_loader import BitmapLoader
 from gui.builtinShipBrowser.pfBitmapFrame import PFBitmapFrame
 from service.fit import Fit
-import gui.fitCommands as cmd
+from .events import BoosterListUpdated, FitRemoved, FitSelected, ImportSelected, SearchSelected, Stage3Selected
+
 pyfalog = Logger(__name__)
 
 

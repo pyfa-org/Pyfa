@@ -17,8 +17,8 @@
 # along with eos.  If not, see <http://www.gnu.org/licenses/>.
 # ===============================================================================
 
-from sqlalchemy import Column, String, Integer, ForeignKey, Boolean, Table
-from sqlalchemy.orm import relation, mapper, synonym, deferred
+from sqlalchemy import Boolean, Column, Integer, String, Table
+from sqlalchemy.orm import deferred, mapper, synonym
 
 from eos.db import gamedata_meta
 from eos.gamedata import Category

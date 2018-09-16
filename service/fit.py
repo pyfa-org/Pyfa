@@ -18,28 +18,26 @@
 # ===============================================================================
 
 import copy
-from logbook import Logger
-from time import time
 import datetime
+from time import time
+
+import wx
+from logbook import Logger
 
 import eos.db
-from eos.saveddata.booster import Booster as es_Booster
-from eos.saveddata.cargo import Cargo as es_Cargo
 from eos.saveddata.character import Character as saveddata_Character
 from eos.saveddata.citadel import Citadel as es_Citadel
 from eos.saveddata.damagePattern import DamagePattern as es_DamagePattern
 from eos.saveddata.drone import Drone as es_Drone
 from eos.saveddata.fighter import Fighter as es_Fighter
-from eos.saveddata.implant import Implant as es_Implant
-from eos.saveddata.ship import Ship as es_Ship
-from eos.saveddata.module import Module as es_Module, State, Slot, ProjectedMap, ProjectedSystem, LocalMap
 from eos.saveddata.fit import Fit as FitType, ImplantLocation
+from eos.saveddata.module import Module as es_Module, State
+from eos.saveddata.ship import Ship as es_Ship
 from service.character import Character
 from service.damagePattern import DamagePattern
+from service.fitDeprecated import FitDeprecated
 from service.settings import SettingsProvider
 from utils.deprecated import deprecated
-import wx
-from service.fitDeprecated import FitDeprecated
 
 pyfalog = Logger(__name__)
 

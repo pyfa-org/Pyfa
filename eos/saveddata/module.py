@@ -17,19 +17,17 @@
 # along with eos.  If not, see <http://www.gnu.org/licenses/>.
 # ===============================================================================
 
-from logbook import Logger
-from copy import deepcopy
-
-from sqlalchemy.orm import validates, reconstructor
 from math import floor
 
+from logbook import Logger
+from sqlalchemy.orm import reconstructor, validates
+
 import eos.db
-from eos.effectHandlerHelpers import HandledItem, HandledCharge
+from eos.effectHandlerHelpers import HandledCharge, HandledItem
 from eos.enum import Enum
-from eos.modifiedAttributeDict import ModifiedAttributeDict, ItemAttrShortcut, ChargeAttrShortcut
+from eos.modifiedAttributeDict import ChargeAttrShortcut, ItemAttrShortcut, ModifiedAttributeDict
 from eos.saveddata.citadel import Citadel
 from eos.saveddata.mutator import Mutator
-from utils.deprecated import deprecated
 
 pyfalog = Logger(__name__)
 

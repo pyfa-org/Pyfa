@@ -1,11 +1,9 @@
-from gui.contextMenu import ContextMenu
+import gui.fitCommands as cmd
 import gui.mainFrame
-import gui.globalEvents as GE
+from gui.contextMenu import ContextMenu
 # noinspection PyPackageRequirements
-import wx
 from service.fit import Fit
 from service.settings import ContextMenuSettings
-import gui.fitCommands as cmd
 
 
 class Cargo(ContextMenu):
