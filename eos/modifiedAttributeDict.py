@@ -34,10 +34,10 @@ class ItemAttrShortcut(object):
         return return_value or default
 
     def getBaseAttrValue(self, key, default=0):
-        '''
+        """
         Gets base value in this order:
         Mutated value > override value > attribute value
-        '''
+        """
         return_value = self.itemModifiedAttributes.getOriginal(key)
 
         return return_value or default

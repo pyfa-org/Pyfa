@@ -1,4 +1,4 @@
-'''
+"""
 
 A lot of the inspiration (and straight up code copying!) for this class comes from EsiPy <https://github.com/Kyria/EsiPy>
 Much of the credit goes to the maintainer of that package, Kyria <tweetfleet slack: @althalus>. The reasoning for no
@@ -7,7 +7,7 @@ low level.
 
 Eventually I'll rewrite this to be a bit cleaner and a bit more generic, but for now, it works!
 
-'''
+"""
 
 # noinspection PyPackageRequirements
 from logbook import Logger

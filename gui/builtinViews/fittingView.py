@@ -358,9 +358,9 @@ class FittingView(d.Display):
             self.parent.SetPageTextIcon(pageIndex, text, bitmap)
 
     def appendItem(self, event):
-        '''
+        """
         Adds items that are double clicks from the market browser. We handle both modules and ammo
-        '''
+        """
         if not self:
             event.Skip()
             return
@@ -387,7 +387,7 @@ class FittingView(d.Display):
         event.Skip()
 
     def removeItem(self, event):
-        '''Double Left Click - remove module'''
+        """Double Left Click - remove module"""
         if event.CmdDown():
             return
         row, _ = self.HitTest(event.Position)

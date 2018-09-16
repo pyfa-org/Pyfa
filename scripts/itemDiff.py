@@ -19,11 +19,11 @@
 #===============================================================================
 
 
-'''
+"""
 This script is used to compare two different database versions.
 It shows removed/changed/new items with list of changed effects,
 changed attributes and effects which were renamed
-'''
+"""
 
 import argparse
 import os.path
