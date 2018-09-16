@@ -26,7 +26,7 @@ class RigSize(Enum):
     CAPITAL = 4
 
 
-class EfsPort():
+class EfsPort:
     wepTestSet = {}
     version = 0.01
 
@@ -497,7 +497,7 @@ class EfsPort():
 
         # Since the effect modules are fairly opaque a mock test fit is used to test the impact of traits.
         # standin class used to prevent . notation causing issues when used as an arg
-        class standin():
+        class standin:
             pass
         tf = standin()
         tf.modules = HandledList(turrets + launchers)

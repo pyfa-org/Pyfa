@@ -138,7 +138,7 @@ class Esi(EsiAccess):
     def handleLogin(self, message):
 
         # we already have authenticated stuff for the auto mode
-        if (self.settings.get('ssoMode') == SsoMode.AUTO):
+        if self.settings.get('ssoMode') == SsoMode.AUTO:
             ssoInfo = message['SSOInfo'][0]
             auth_response = json.loads(base64.b64decode(ssoInfo))
         else:

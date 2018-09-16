@@ -337,7 +337,7 @@ class Character(object):
     @staticmethod
     def getApiDetails(charID):
         # todo: fix this (or get rid of?)
-        return ("", "", "", [])
+        return "", "", "", []
         char = eos.db.getCharacter(charID)
         if char.chars is not None:
             chars = json.loads(char.chars)

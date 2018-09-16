@@ -42,7 +42,7 @@ from utils.deprecated import deprecated
 pyfalog = Logger(__name__)
 
 
-class DeferRecalc():
+class DeferRecalc:
     def __init__(self, fitID):
         self.fitID = fitID
         self.sFit = Fit.getInstance()

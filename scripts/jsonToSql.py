@@ -239,7 +239,7 @@ def main(db, json_path):
                     row['iconFile'] = row['iconFile'].lower().replace('modules/', '').replace('.png', '')
 
                 if jsonName is 'clonegrades':
-                    if (row['alphaCloneID'] not in tmp):
+                    if row['alphaCloneID'] not in tmp:
                         cloneParent = eos.gamedata.AlphaClone()
                         setattr(cloneParent, 'alphaCloneID', row['alphaCloneID'])
                         setattr(cloneParent, 'alphaCloneName', row['alphaCloneName'])
@@ -247,7 +247,7 @@ def main(db, json_path):
                         tmp.append(row['alphaCloneID'])
 
                 for k, v in row.items():
-                    if (isinstance(v, str)):
+                    if isinstance(v, str):
                         v = v.strip()
                     setattr(instance, fieldMap.get(k, k), v)
 

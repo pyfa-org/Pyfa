@@ -65,7 +65,7 @@ graphics = graphicIDsLoader.load(os.path.join(to_path, 'graphicIDs.fsdbinary'))
 
 graphics_py_ob = {}
 for x, v in graphics.items():
-    if (hasattr(v, 'iconFolder')):
+    if hasattr(v, 'iconFolder'):
         graphics_py_ob[x] = v.iconFolder
 
 # Add children to market group list
