@@ -26,6 +26,7 @@ import traceback
 import config
 from logbook import Logger
 from service.prereqsCheck import version_block
+import datetime
 
 pyfalog = Logger(__name__)
 
@@ -63,6 +64,11 @@ class ErrorFrame(wx.Frame):
         wx.Frame.__init__(self, parent, id=wx.ID_ANY, title="pyfa error", pos=wx.DefaultPosition, size=wx.Size(500, 600),
                           style=wx.DEFAULT_FRAME_STYLE ^ wx.RESIZE_BORDER | wx.STAY_ON_TOP)
 
+        from eos.config import gamedata_version, gamedata_date
+
+        time = datetime.datetime.fromtimestamp(int(gamedata_date)).strftime('%Y-%m-%d %H:%M:%S')
+        version = "pyfa v" + config.getVersion() + '\nEVE Data Version: {} ({})\n\n'.format(gamedata_version, time)  # gui.aboutData.versionString
+
         desc = "pyfa has experienced an unexpected issue. Below is a message that contains crucial\n" \
                "information about how this was triggered. Please contact the developers with the\n" \
                "information provided through the EVE Online forums or file a GitHub issue."
@@ -97,7 +103,7 @@ class ErrorFrame(wx.Frame):
 
         # mainSizer.AddSpacer((0, 5), 0, wx.EXPAND, 5)
 
-        self.errorTextCtrl = wx.TextCtrl(self, wx.ID_ANY, version_block.strip(), wx.DefaultPosition,
+        self.errorTextCtrl = wx.TextCtrl(self, wx.ID_ANY, version + version_block.strip(), wx.DefaultPosition,
                                          (-1, 400), wx.TE_MULTILINE | wx.TE_READONLY | wx.TE_RICH2 | wx.TE_DONTWRAP)
         self.errorTextCtrl.SetFont(wx.Font(8, wx.FONTFAMILY_TELETYPE, wx.NORMAL, wx.NORMAL))
         mainSizer.Add(self.errorTextCtrl, 0, wx.EXPAND | wx.ALL | wx.ALIGN_CENTER, 5)
