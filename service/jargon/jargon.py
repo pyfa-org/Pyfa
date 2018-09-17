@@ -17,9 +17,6 @@
 # along with pyfa.  If not, see <http://www.gnu.org/licenses/>.
 # =============================================================================
 
-import config
-import pkg_resources
-
 
 class Jargon(object):
     def __init__(self, rawdata: dict):

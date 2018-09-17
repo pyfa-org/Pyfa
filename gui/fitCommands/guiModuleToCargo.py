@@ -1,15 +1,14 @@
 import wx
-from service.fit import Fit
+from logbook import Logger
 
 import gui.mainFrame
 from gui import globalEvents as GE
-from gui.fitCommands.calc.fitSetCharge import FitSetChargeCommand
-from gui.fitCommands.calc.fitReplaceModule import FitReplaceModuleCommand
 from gui.fitCommands.calc.fitRemoveCargo import FitRemoveCargoCommand
 from gui.fitCommands.calc.fitRemoveModule import FitRemoveModuleCommand
-
+from gui.fitCommands.calc.fitReplaceModule import FitReplaceModuleCommand
+from service.fit import Fit
 from .calc.fitAddCargo import FitAddCargoCommand
-from logbook import Logger
+
 pyfalog = Logger(__name__)
 
 

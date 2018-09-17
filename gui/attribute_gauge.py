@@ -1,10 +1,13 @@
-import copy
 import wx
 import math
 
-from gui.utils import color as color_utils
-from gui.utils import draw, anim_effects
-from service.fit import Fit
+from gui.utils import anim_effects
+import math
+
+import wx
+
+from gui.utils import anim_effects
+
 
 # todo: clean class up. Took from pyfa gauge, has a bunch of extra shit we don't need
 

@@ -1,8 +1,8 @@
 import wx
-
-from gui.fitCommands.helpers import ModuleInfoCache
-import eos.db
 from logbook import Logger
+
+import eos.db
+
 pyfalog = Logger(__name__)
 
 

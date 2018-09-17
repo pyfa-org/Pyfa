@@ -3,12 +3,11 @@
 # noinspection PyPackageRequirements
 import wx
 
-from service.fit import Fit
-import gui.mainFrame
-import gui.globalEvents as GE
-from gui.contextMenu import ContextMenu
-from gui.builtinViews.emptyView import BlankPage
 import gui.fitCommands as cmd
+import gui.mainFrame
+from gui.builtinViews.emptyView import BlankPage
+from gui.contextMenu import ContextMenu
+from service.fit import Fit
 
 
 class TabbedFits(ContextMenu):

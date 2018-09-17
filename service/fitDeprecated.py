@@ -458,7 +458,7 @@ class FitDeprecated(object):
             if m.isValidState(State.ACTIVE):
                 m.state = State.ACTIVE
 
-            if (recalc):
+            if recalc:
                 # As some items may affect state-limiting attributes of the ship, calculate new attributes first
                 self.recalc(fit)
             # Then, check states of all modules and change where needed. This will recalc if needed

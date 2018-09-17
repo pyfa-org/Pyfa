@@ -3,19 +3,11 @@
 # noinspection PyPackageRequirements
 import wx
 
-from service.fit import Fit
-from service.market import Market
-import gui.mainFrame
-import gui.globalEvents as GE
-from gui.contextMenu import ContextMenu
-from service.settings import ContextMenuSettings
-from eos.saveddata.booster import Booster
-from eos.saveddata.module import Module
-from eos.saveddata.drone import Drone
-from eos.saveddata.fighter import Fighter
-from eos.saveddata.implant import Implant
-from eos.saveddata.cargo import Cargo
 import gui.fitCommands as cmd
+import gui.mainFrame
+from gui.contextMenu import ContextMenu
+from service.market import Market
+from service.settings import ContextMenuSettings
 
 
 class MetaSwap(ContextMenu):

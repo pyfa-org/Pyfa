@@ -38,7 +38,7 @@ call([
     iscc,
     os.path.join(os.getcwd(), "dist_assets", "win", "pyfa-setup.iss"),
     "/dMyAppVersion=%s" % (config['version']),
-    "/dMyAppExpansion=%s" % (expansion),
+    "/dMyAppExpansion=%s" % expansion,
     "/dMyAppDir=%s" % source,
     "/dMyOutputDir=%s" % os.path.join(os.getcwd(), "dist"),
     "/dMyOutputFile=%s" % fileName])  # stdout=devnull, stderr=devnull

@@ -319,7 +319,7 @@ class SsoCharacterMgmt(wx.Dialog):
         self.Centre(wx.BOTH)
 
     def ssoLogin(self, event):
-        if (self):
+        if self:
             # todo: these events don't unbind properly when window is closed (?), hence the `if`. Figure out better way of doing this.
             self.popCharList()
             event.Skip()
@@ -384,7 +384,7 @@ class FittingsTreeView(wx.Panel):
         dict = {}
         fits = data
         for fit in fits:
-            if (fit['fitting_id'] in sEsi.fittings_deleted):
+            if fit['fitting_id'] in sEsi.fittings_deleted:
                 continue
             ship = getItem(fit['ship_type_id'])
             if ship is None:

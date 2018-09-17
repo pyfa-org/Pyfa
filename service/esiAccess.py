@@ -1,4 +1,4 @@
-'''
+"""
 
 A lot of the inspiration (and straight up code copying!) for this class comes from EsiPy <https://github.com/Kyria/EsiPy>
 Much of the credit goes to the maintainer of that package, Kyria <tweetfleet slack: @althalus>. The reasoning for no
@@ -7,7 +7,7 @@ low level.
 
 Eventually I'll rewrite this to be a bit cleaner and a bit more generic, but for now, it works!
 
-'''
+"""
 
 # noinspection PyPackageRequirements
 from logbook import Logger
@@ -63,7 +63,7 @@ class APIException(Exception):
         elif 'message' in self.response:
             return 'HTTP Error %s: %s' % (self.status_code,
                                           self.response['message'])
-        return 'HTTP Error %s' % (self.status_code)
+        return 'HTTP Error %s' % self.status_code
 
 
 class ESIEndpoints(Enum):
@@ -89,7 +89,7 @@ class EsiAccess(object):
 
     @property
     def sso_url(self):
-        if (self.settings.get("ssoMode") == SsoMode.CUSTOM):
+        if self.settings.get("ssoMode") == SsoMode.CUSTOM:
             return "https://login.eveonline.com"
         return "https://www.pyfa.io"
 
@@ -136,7 +136,7 @@ class EsiAccess(object):
     def getLoginURI(self, redirect=None):
         self.state = str(uuid.uuid4())
 
-        if (self.settings.get("ssoMode") == SsoMode.AUTO):
+        if self.settings.get("ssoMode") == SsoMode.AUTO:
             args = {
                 'state': self.state,
                 'pyfa_version': config.version,
@@ -256,7 +256,7 @@ class EsiAccess(object):
             self._session.headers.update(self.get_oauth_header(ssoChar.accessToken))
 
     def _after_request(self, resp):
-        if ("warning" in resp.headers):
+        if "warning" in resp.headers:
             pyfalog.warn("{} - {}".format(resp.headers["warning"], resp.url))
 
         if resp.status_code >= 400:

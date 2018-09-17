@@ -1,10 +1,7 @@
-from gui.contextMenu import ContextMenu
-import gui.mainFrame
-import gui.globalEvents as GE
-import wx
-from service.settings import ContextMenuSettings
-from service.fit import Fit
 import gui.fitCommands as cmd
+import gui.mainFrame
+from gui.contextMenu import ContextMenu
+from service.settings import ContextMenuSettings
 
 
 class CargoAmmo(ContextMenu):

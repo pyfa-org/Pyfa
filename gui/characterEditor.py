@@ -17,35 +17,30 @@
 # along with pyfa.  If not, see <http://www.gnu.org/licenses/>.
 # =============================================================================
 
+import re
+
+import roman
 # noinspection PyPackageRequirements
 import wx
 import wx.dataview
 import wx.lib.agw.hyperlink
-
 # noinspection PyPackageRequirements
 import wx.lib.newevent
+from logbook import Logger
 # noinspection PyPackageRequirements
 from wx.dataview import TreeListCtrl
-from gui.bitmap_loader import BitmapLoader
-from gui.contextMenu import ContextMenu
-import gui.globalEvents as GE
-from gui.builtinViews.implantEditor import BaseImplantEditorView
-from gui.builtinViews.entityEditor import EntityEditor, BaseValidator, TextEntryValidatedDialog
-from service.fit import Fit
-from service.character import Character
-from service.esi import Esi
-from service.network import AuthenticationError, TimeoutError
-from service.market import Market
-from logbook import Logger
-
 from wx.lib.agw.floatspin import FloatSpin
 
-
-from gui.utils.clipboard import toClipboard, fromClipboard
-
-import roman
-import re
-import webbrowser
+import gui.globalEvents as GE
+from gui.bitmap_loader import BitmapLoader
+from gui.builtinViews.entityEditor import BaseValidator, EntityEditor, TextEntryValidatedDialog
+from gui.builtinViews.implantEditor import BaseImplantEditorView
+from gui.contextMenu import ContextMenu
+from gui.utils.clipboard import fromClipboard, toClipboard
+from service.character import Character
+from service.esi import Esi
+from service.fit import Fit
+from service.market import Market
 
 pyfalog = Logger(__name__)
 

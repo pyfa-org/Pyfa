@@ -9,8 +9,6 @@ print(script_dir)
 sys.path.append(script_dir)
 
 # noinspection PyPackageRequirements
-from _development.helpers import DBInMemory as DB, Gamedata, Saveddata
-from _development.helpers_fits import RifterFit
 
 def test_multiply_stacking_penalties(DB, Saveddata, RifterFit):
     """

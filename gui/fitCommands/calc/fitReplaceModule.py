@@ -1,12 +1,10 @@
 import wx
-from service.fit import Fit
-
-import gui.mainFrame
-from gui import globalEvents as GE
-from gui.fitCommands.helpers import ModuleInfoCache
-from eos.saveddata.module import Module, State
-import eos.db
 from logbook import Logger
+
+import eos.db
+from eos.saveddata.module import Module, State
+from gui.fitCommands.helpers import ModuleInfoCache
+
 pyfalog = Logger(__name__)
 
 

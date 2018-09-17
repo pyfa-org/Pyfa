@@ -3,12 +3,9 @@
 
 # noinspection PyPackageRequirements
 import wx
-import copy
 
-from gui.preferenceView import PreferenceView
 from gui.bitmap_loader import BitmapLoader
-from gui.utils.color import CalculateTransition
-import gui.utils.draw as drawUtils
+from gui.preferenceView import PreferenceView
 
 
 ###########################################################################

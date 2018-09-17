@@ -21,28 +21,25 @@
 import wx
 # noinspection PyPackageRequirements
 import wx.lib.newevent
-import gui.mainFrame
-from gui.builtinMarketBrowser.events import ItemSelected, ITEM_SELECTED
+from logbook import Logger
+
+import gui.builtinViews.emptyView
 import gui.display as d
-from gui.contextMenu import ContextMenu
-from gui.builtinShipBrowser.events import EVT_FIT_RENAMED, EVT_FIT_REMOVED, FitSelected, EVT_FIT_SELECTED
+import gui.fitCommands as cmd
+import gui.globalEvents as GE
+import gui.mainFrame
 import gui.multiSwitch
 from eos.saveddata.mode import Mode
-from eos.saveddata.module import Module, Slot, Rack
-from gui.builtinViewColumns.state import State
+from eos.saveddata.module import Module, Rack, Slot
 from gui.bitmap_loader import BitmapLoader
-import gui.builtinViews.emptyView
-from logbook import Logger
+from gui.builtinMarketBrowser.events import ITEM_SELECTED
+from gui.builtinShipBrowser.events import EVT_FIT_REMOVED, EVT_FIT_RENAMED, EVT_FIT_SELECTED, FitSelected
+from gui.builtinViewColumns.state import State
 from gui.chrome_tabs import EVT_NOTEBOOK_PAGE_CHANGED
-import gui.fitCommands as cmd
-
+from gui.contextMenu import ContextMenu
+from gui.utils.staticHelpers import DragDropHelper
 from service.fit import Fit
 from service.market import Market
-
-from gui.utils.staticHelpers import DragDropHelper
-import gui.utils.fonts as fonts
-
-import gui.globalEvents as GE
 
 pyfalog = Logger(__name__)
 
@@ -361,9 +358,9 @@ class FittingView(d.Display):
             self.parent.SetPageTextIcon(pageIndex, text, bitmap)
 
     def appendItem(self, event):
-        '''
+        """
         Adds items that are double clicks from the market browser. We handle both modules and ammo
-        '''
+        """
         if not self:
             event.Skip()
             return
@@ -390,7 +387,7 @@ class FittingView(d.Display):
         event.Skip()
 
     def removeItem(self, event):
-        '''Double Left Click - remove module'''
+        """Double Left Click - remove module"""
         if event.CmdDown():
             return
         row, _ = self.HitTest(event.Position)

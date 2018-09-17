@@ -1,11 +1,9 @@
-from gui.contextMenu import ContextMenu
+import gui.fitCommands as cmd
 import gui.mainFrame
+from gui.contextMenu import ContextMenu
 # noinspection PyPackageRequirements
-import wx
-import gui.globalEvents as GE
 from service.fit import Fit
 from service.settings import ContextMenuSettings
-import gui.fitCommands as cmd
 
 
 class ItemRemove(ContextMenu):

@@ -3,15 +3,13 @@
 # noinspection PyPackageRequirements
 import wx
 
-from service.fit import Fit
-from service.market import Market
-from eos.saveddata.module import Hardpoint
-import gui.mainFrame
-import gui.globalEvents as GE
-from gui.contextMenu import ContextMenu
-from gui.bitmap_loader import BitmapLoader
-from service.settings import ContextMenuSettings
 import gui.fitCommands as cmd
+import gui.mainFrame
+from eos.saveddata.module import Hardpoint
+from gui.bitmap_loader import BitmapLoader
+from gui.contextMenu import ContextMenu
+from service.market import Market
+from service.settings import ContextMenuSettings
 
 
 class ModuleAmmoPicker(ContextMenu):

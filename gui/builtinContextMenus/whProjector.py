@@ -1,14 +1,14 @@
-from gui.contextMenu import ContextMenu
-import gui.mainFrame
-import gui.globalEvents as GE
+import re
+from itertools import chain
+
 # noinspection PyPackageRequirements
 import wx
-from service.market import Market
-from service.fit import Fit
-from service.settings import ContextMenuSettings
-from itertools import chain
-import re
+
 import gui.fitCommands as cmd
+import gui.mainFrame
+from gui.contextMenu import ContextMenu
+from service.market import Market
+from service.settings import ContextMenuSettings
 
 
 class WhProjector(ContextMenu):

@@ -1,11 +1,10 @@
 import wx
+from logbook import Logger
+
+import eos.db
+import gui.mainFrame
 from service.fit import Fit
 
-import gui.mainFrame
-from gui import globalEvents as GE
-from eos.saveddata.module import Module
-from logbook import Logger
-import eos.db
 pyfalog = Logger(__name__)
 
 
