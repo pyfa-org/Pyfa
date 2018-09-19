@@ -234,3 +234,5 @@ class PriceWorkerThread(threading.Thread):
             self.wait[x.typeID].append(callback)
 
 
+# Import market sources only to initialize price source modules, they register on their own
+from .marketSources import *

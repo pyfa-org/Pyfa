@@ -50,10 +50,13 @@ class Price(ViewColumn):
         if not price or not price.isValid:
             return False
 
-        if isinstance(stuff, Drone) or isinstance(stuff, Cargo):
-            price.price *= stuff.amount
+        # Fetch actual price as float to not modify its value on Price object
+        price = price.price
 
-        return formatAmount(price.price, 3, 3, 9, currency=True)
+        if isinstance(stuff, Drone) or isinstance(stuff, Cargo):
+            price *= stuff.amount
+
+        return formatAmount(price, 3, 3, 9, currency=True)
 
     def delayedText(self, mod, display, colItem):
         sPrice = ServicePrice.getInstance()
