@@ -685,15 +685,13 @@ class Fit(object):
                     self.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill("Remote Armor Repair Systems"),
                                                    "armorDamageAmount", value, stackingPenalties=True)
 
-                if warfareBuffID == 88:  # AOE_Beacon_filament_cloud_shield_booster
-                    self.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill("Shield Operation") or
-                                                               mod.item.requiresSkill("Shield Emission Systems"),
-                                                   "capacitorNeed", value, stackingPenalties=True)
+                if warfareBuffID == 88:  # AOE_Beacon_filament_cloud_shield_booster_shield_bonus
+                    self.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill("Shield Operation"),
+                                                   "shieldBonus", value, stackingPenalties=True)
 
-                if warfareBuffID == 89:  # AOE_Beacon_filament_cloud_ancillary_charge_usage
-                    self.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill("Shield Operation") or
-                                                               mod.item.requiresSkill("Shield Emission Systems"),
-                                                   "chargeRate", value, stackingPenalties=True)
+                if warfareBuffID == 89:  # AOE_Beacon_filament_cloud_shield_booster_duration
+                    self.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill("Shield Operation"),
+                                                   "duration", value, stackingPenalties=True)
 
                 # Abysmal Weather Effects
 
