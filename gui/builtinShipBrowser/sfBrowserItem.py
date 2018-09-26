@@ -1,6 +1,7 @@
 # noinspection PyPackageRequirements
 import wx
 import gui.utils.draw as drawUtils
+import gui.mainFrame
 
 SB_ITEM_NORMAL = 0
 SB_ITEM_SELECTED = 1
@@ -245,6 +246,7 @@ class SFBrowserItem(wx.Window):
         self.highlighted = False
         self.selected = False
         self.bkBitmap = None
+        self.mainFrame = gui.mainFrame.MainFrame.getInstance()
 
         self.canBeDragged = False
 
@@ -311,6 +313,10 @@ class SFBrowserItem(wx.Window):
         self.canBeDragged = mode
 
     def OnLeftUp(self, event):
+        if self.mainFrame.supress_left_up:
+            wx.Yield()
+            self.mainFrame.supress_left_up = False
+            return
 
         if self.HasCapture():
             self.ReleaseMouse()
