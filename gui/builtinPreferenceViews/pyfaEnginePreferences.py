@@ -4,8 +4,10 @@ import wx
 
 from service.fit import Fit
 from gui.bitmap_loader import BitmapLoader
+import gui.globalEvents as GE
 from gui.preferenceView import PreferenceView
 from service.settings import EOSSettings
+import gui.mainFrame
 
 logger = logging.getLogger(__name__)
 
@@ -21,6 +23,7 @@ class PFFittingEnginePref(PreferenceView):
 
     # noinspection PyAttributeOutsideInit
     def populatePanel(self, panel):
+        self.mainFrame = gui.mainFrame.MainFrame.getInstance()
 
         mainSizer = wx.BoxSizer(wx.VERTICAL)
 
@@ -98,6 +101,9 @@ class PFFittingEnginePref(PreferenceView):
 
     def OnCBGlobalForceReloadStateChange(self, event):
         self.sFit.serviceFittingOptions["useGlobalForceReload"] = self.cbGlobalForceReload.GetValue()
+        fitID = self.mainFrame.getActiveFit()
+        self.sFit.refreshFit(fitID)
+        wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fitID))
 
     def OnCBStrictSkillLevelsChange(self, event):
         self.engine_settings.set("strictSkillLevels", self.cbStrictSkillLevels.GetValue())
