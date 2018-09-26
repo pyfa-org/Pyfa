@@ -125,11 +125,11 @@ class ItemCompare(wx.Panel):
                     # Remember to reduce by 1, because the attrs array
                     # starts at 0 while the list has the item name as column 0.
                     attr = str(list(self.attrs.keys())[sort - 1])
-                    func = lambda _val: _val.attributes[attr].value if attr in _val.attributes else None
+                    func = lambda _val: _val.attributes[attr].value if attr in _val.attributes else 0.0
                 except IndexError:
                     # Clicked on a column that's not part of our array (price most likely)
                     self.sortReverse = False
-                    func = lambda _val: _val.attributes['metaLevel'].value if 'metaLevel' in _val.attributes else None
+                    func = lambda _val: _val.attributes['metaLevel'].value if 'metaLevel' in _val.attributes else 0.0
 
             self.items = sorted(self.items, key=func, reverse=self.sortReverse)
 
