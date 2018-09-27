@@ -153,6 +153,13 @@ class EfsPort():
             elif mod.item.group.name == "Warp Scrambler":
                 stats["type"] = "Warp Scrambler"
                 EfsPort.attrDirectMap(["activationBlockedStrenght", "warpScrambleStrength"], stats, mod)
+            elif mod.item.group.name == "Warp Disrupt Field Generator":
+                maxRangeDefault = mod.getModifiedItemAttr("warpScrambleRange")
+                stats["type"] = "Warp Scrambler"
+                EfsPort.attrDirectMap(["activationBlockedStrenght", "warpScrambleStrength"], stats, mod)
+                if maxRangeDefault >= 30000:
+                    # We want this to be 0 for disruption scripts as we have no other way to tell scrams from points.
+                    stats["activationBlockedStrenght"] = 0
             elif mod.item.group.name == "Target Painter":
                 stats["type"] = "Target Painter"
                 EfsPort.attrDirectMap(["signatureRadiusBonus"], stats, mod)
