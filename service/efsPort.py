@@ -31,7 +31,7 @@ class RigSize(Enum):
 
 class EfsPort():
     wepTestSet = {}
-    version = 0.01
+    version = 0.02
 
     @staticmethod
     def attrDirectMap(values, target, source):
