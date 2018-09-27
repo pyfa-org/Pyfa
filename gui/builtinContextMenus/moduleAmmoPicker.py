@@ -195,7 +195,7 @@ class ModuleAmmoPicker(ContextMenu):
 
                     type_ = currType
                     item = wx.MenuItem(m, wx.ID_ANY, type_.capitalize())
-                    bitmap = BitmapLoader.getBitmap("%s_small" % type, "gui")
+                    bitmap = BitmapLoader.getBitmap("%s_small" % type_, "gui")
                     if bitmap is not None:
                         item.SetBitmap(bitmap)
 

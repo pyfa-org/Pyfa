@@ -155,6 +155,7 @@ class MainFrame(wx.Frame):
         pyfalog.debug("Initialize MainFrame")
         self.title = title
         wx.Frame.__init__(self, None, wx.ID_ANY, self.title)
+        self.supress_left_up = False
 
         MainFrame.__instance = self
 
@@ -433,6 +434,7 @@ class MainFrame(wx.Frame):
                             style=wx.FD_SAVE,
                             defaultFile=defaultFile)
         if dlg.ShowModal() == wx.ID_OK:
+            self.supress_left_up = True
             format_ = dlg.GetFilterIndex()
             path = dlg.GetPath()
             if format_ == 0:
@@ -977,6 +979,7 @@ class MainFrame(wx.Frame):
         )
 
         if dlg.ShowModal() == wx.ID_OK:
+            self.supress_left_up = True
             self.waitDialog = wx.BusyInfo("Importing Character...")
             sCharacter = Character.getInstance()
             sCharacter.importCharacter(dlg.GetPaths(), self.importCharacterCallback)

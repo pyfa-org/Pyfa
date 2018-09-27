@@ -141,6 +141,7 @@ def get_icon_file(res_path, size):
     icon for it. Return as PIL image object down-
     scaled for use in pyfa.
     """
+    res_path = res_path.replace('//', '/')  #1703
     if res_path not in res_index:
         return None
     res_icon = res_index[res_path]
@@ -192,7 +193,10 @@ if toadd:
     print(('Adding {} icons...'.format(len(toadd))))
     missing = set()
     for fname in sorted(toadd):
-        icon = icon_json[str(fname)]
+        icon = icon_json.get(str(fname), None)
+        if icon is None:
+            print("Can't find iconID {}".format(fname))
+            continue
         key = icon['iconFile'].lower()
         icon = get_icon_file(key, ICON_SIZE)
         if icon is None:

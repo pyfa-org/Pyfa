@@ -1,6 +1,7 @@
 # shipbonusPCTDamagePC1
 #
 # Used by:
+# Ship: Tiamat
 # Ship: Vedmak
 type = "passive"
 
