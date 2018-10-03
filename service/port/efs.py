@@ -1,6 +1,6 @@
 import json
-import json
 from math import log
+from numbers import Number
 
 from logbook import Logger
 
@@ -14,6 +14,9 @@ from eos.saveddata.drone import Drone
 from eos.saveddata.module import Hardpoint, Module, Slot, State
 from service.fit import Fit
 from service.market import Market
+import gui.mainFrame
+from gui.fitCommands.calc.fitAddModule import FitAddModuleCommand
+from gui.fitCommands.calc.fitRemoveModule import FitRemoveModuleCommand
 
 pyfalog = Logger(__name__)
 
@@ -68,12 +71,12 @@ class EfsPort:
 
         if propID is None:
             return None
-        sFit.appendModule(fitID, propID)
+        FitAddModuleCommand(fitID, propID).Do()
         sFit.recalc(fit)
         fit = eos.db.getFit(fitID)
         mwdPropSpeed = fit.maxSpeed
         mwdPosition = list(filter(lambda mod: mod.item and mod.item.ID == propID, fit.modules))[0].position
-        sFit.removeModule(fitID, mwdPosition)
+        FitRemoveModuleCommand(fitID, [mwdPosition]).Do()
         sFit.recalc(fit)
         fit = eos.db.getFit(fitID)
         return mwdPropSpeed
@@ -607,6 +610,26 @@ class EfsPort:
         }
         resonance = {"hull": hullResonance, "armor": armorResonance, "shield": shieldResonance}
         shipSize = EfsPort.getShipSize(fit.ship.item.groupID)
+
+        def roundNumbers(data, digits):
+            if isinstance(data, str):
+                return
+            if isinstance(data, dict):
+                for key in data:
+                    if isinstance(data[key], Number):
+                        data[key] = round(data[key], digits)
+                    else:
+                        roundNumbers(data[key], digits)
+            if isinstance(data, list) or isinstance(data, tuple):
+                for val in data:
+                    roundNumbers(val, digits)
+            if isinstance(data, Number):
+                rounded = round(data, digits)
+                if data != rounded:
+                    pyfalog.error("Error rounding numbers for EFS export, export may be inconsistant."
+                                  "This suggests the format has been broken somewhere.")
+            return
+
         try:
             dataDict = {
                 "name": fitName, "ehp": fit.ehp, "droneDPS": fit.droneDPS,
@@ -629,9 +652,12 @@ class EfsPort:
                 "modTypeIDs": modTypeIDs, "moduleNames": moduleNames,
                 "pyfaVersion": pyfaVersion, "efsExportVersion": EfsPort.version
             }
-        except TypeError:
+            # Recursively round any numbers in dicts to 6 decimal places.
+            # This prevents meaningless rounding errors from changing the output whenever pyfa changes.
+            roundNumbers(dataDict, 6)
+        except TypeError as e:
             pyfalog.error("Error parsing fit:" + str(fit))
-            pyfalog.error(TypeError)
+            pyfalog.error(e)
             dataDict = {"name": fitName + "Fit could not be correctly parsed"}
         export = json.dumps(dataDict, skipkeys=True)
         return export
