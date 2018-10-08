@@ -31,7 +31,7 @@ class RigSize(Enum):
 
 class EfsPort():
     wepTestSet = {}
-    version = 0.01
+    version = 0.02
 
     @staticmethod
     def attrDirectMap(values, target, source):
@@ -91,12 +91,10 @@ class EfsPort():
             oldPropState = propWithBloom.state
             propWithBloom.state = State.ONLINE
             sFit.recalc(fit)
-            fit = eos.db.getFit(fitID)
             sp = fit.maxSpeed
             sig = fit.ship.getModifiedItemAttr("signatureRadius")
             propWithBloom.state = oldPropState
             sFit.recalc(fit)
-            fit = eos.db.getFit(fitID)
             return {"usingMWD": True, "unpropedSpeed": sp, "unpropedSig": sig}
         return {
             "usingMWD": False,
@@ -153,6 +151,13 @@ class EfsPort():
             elif mod.item.group.name == "Warp Scrambler":
                 stats["type"] = "Warp Scrambler"
                 EfsPort.attrDirectMap(["activationBlockedStrenght", "warpScrambleStrength"], stats, mod)
+            elif mod.item.group.name == "Warp Disrupt Field Generator":
+                maxRangeDefault = mod.getModifiedItemAttr("warpScrambleRange")
+                stats["type"] = "Warp Scrambler"
+                EfsPort.attrDirectMap(["activationBlockedStrenght", "warpScrambleStrength"], stats, mod)
+                if maxRangeDefault >= 30000:
+                    # We want this to be 0 for disruption scripts as we have no other way to tell scrams from points.
+                    stats["activationBlockedStrenght"] = 0
             elif mod.item.group.name == "Target Painter":
                 stats["type"] = "Target Painter"
                 EfsPort.attrDirectMap(["signatureRadiusBonus"], stats, mod)
@@ -316,10 +321,13 @@ class EfsPort():
             explosionRadius = 0
             explosionVelocity = 0
             aoeFieldRange = 0
+            if stats.charge:
+                name = stats.item.name + ", " + stats.charge.name
+            else:
+                name = stats.item.name
             if stats.hardpoint == Hardpoint.TURRET:
                 tracking = stats.getModifiedItemAttr("trackingSpeed")
                 typeing = "Turret"
-                name = stats.item.name + ", " + stats.charge.name
             # Bombs share most attributes with missiles despite not needing the hardpoint
             elif stats.hardpoint == Hardpoint.MISSILE or "Bomb Launcher" in stats.item.name:
                 maxVelocity = stats.getModifiedChargeAttr("maxVelocity")
@@ -328,15 +336,18 @@ class EfsPort():
                 explosionRadius = stats.getModifiedChargeAttr("aoeCloudSize")
                 explosionVelocity = stats.getModifiedChargeAttr("aoeVelocity")
                 typeing = "Missile"
-                name = stats.item.name + ", " + stats.charge.name
             elif stats.hardpoint == Hardpoint.NONE:
                 aoeFieldRange = stats.getModifiedItemAttr("empFieldRange")
                 # This also covers non-bomb weapons with dps values and no hardpoints, most notably targeted doomsdays.
                 typeing = "SmartBomb"
-                name = stats.item.name
+            # Targeted DDs are the only non drone/fighter weapon without an explict max range
+            if stats.item.group.name == 'Super Weapon' and stats.maxRange == None:
+                maxRange = 300000
+            else:
+                maxRange = stats.maxRange
             statDict = {
                 "dps": stats.dps * n, "capUse": stats.capUse * n, "falloff": stats.falloff,
-                "type": typeing, "name": name, "optimal": stats.maxRange,
+                "type": typeing, "name": name, "optimal": maxRange,
                 "numCharges": stats.numCharges, "numShots": stats.numShots, "reloadTime": stats.reloadTime,
                 "cycleTime": stats.cycleTime, "volley": stats.volley * n, "tracking": tracking,
                 "maxVelocity": maxVelocity, "explosionDelay": explosionDelay, "damageReductionFactor": damageReductionFactor,
