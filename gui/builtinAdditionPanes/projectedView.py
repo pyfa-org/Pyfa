@@ -188,7 +188,7 @@ class ProjectedView(d.Display):
     def fitChanged(self, event):
         sFit = Fit.getInstance()
         fit = sFit.getFit(event.fitID)
-        pyfalog.debug("ProjectedView::fitChanged: {}", repr(fit))
+        # pyfalog.debug("ProjectedView::fitChanged: {}", repr(fit))
 
         self.Parent.Parent.DisablePage(self, not fit or fit.isStructure)
 

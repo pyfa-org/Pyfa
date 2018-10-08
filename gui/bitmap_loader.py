@@ -81,7 +81,7 @@ class BitmapLoader(object):
             import gui.mainFrame
             cls.scaling_factor = int(gui.mainFrame.MainFrame.getInstance().GetContentScaleFactor())
         scale = cls.scaling_factor
-        print(cls.scaling_factor)
+
         filenameScaled = "{0}@{1}x.png".format(name, scale)
         img = cls.loadImage(filenameScaled, location)
 
@@ -92,6 +92,7 @@ class BitmapLoader(object):
             scale = 1
 
         if img is None:
+            print(("Missing icon file: {0}/{1}".format(location, filename)))
             return None
 
         bmp: wx.Bitmap = img.ConvertToBitmap()
@@ -118,4 +119,4 @@ class BitmapLoader(object):
             if os.path.exists(path):
                 return wx.Image(path)
             else:
-                print(("Missing icon file: {0}".format(path)))
+                return None
