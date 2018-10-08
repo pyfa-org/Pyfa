@@ -51,7 +51,9 @@ class Price(ViewColumn):
             return False
 
         if isinstance(stuff, Drone) or isinstance(stuff, Cargo):
-            price.price *= stuff.amount
+            # Don't set price.price, or it updates the database #1759
+            return formatAmount(price.price * stuff.amount, 3, 3, 9,
+                                currency=True)
 
         return formatAmount(price.price, 3, 3, 9, currency=True)
 
