@@ -166,14 +166,14 @@ class Effect(EqBase):
 
             t = t if isinstance(t, tuple) or t is None else (t,)
             self.__type = t
-        except (ImportError) as e:
+        except ImportError as e:
             # Effect probably doesn't exist, so create a dummy effect and flag it with a warning.
             self.__handler = effectDummy
             self.__runTime = "normal"
             self.__activeByDefault = True
             self.__type = None
             pyfalog.debug("ImportError generating handler: {0}", e)
-        except (AttributeError) as e:
+        except AttributeError as e:
             # Effect probably exists but there is an issue with it.  Turn it into a dummy effect so we can continue, but flag it with an error.
             self.__handler = effectDummy
             self.__runTime = "normal"
@@ -476,6 +476,10 @@ class Item(EqBase):
     def getAbyssalYypes(cls):
         cls.ABYSSAL_TYPES = eos.db.getAbyssalTypes()
 
+    @property
+    def isCharge(self):
+        return self.category.name == "Charge"
+
     def __repr__(self):
         return "Item(ID={}, name={}) at {}".format(
                 self.ID, self.name, hex(id(self))
@@ -626,8 +630,8 @@ class Unit(EqBase):
     def attributeIDCallback(v):
         v = int(v)
         if not v:  # some attributes come through with a value of 0? See #1387
-            return "%d" % (v)
-        attribute = eos.db.getAttributeInfo(v, eager=("unit"))
+            return "%d" % v
+        attribute = eos.db.getAttributeInfo(v, eager="unit")
         return "%s (%d)" % (attribute.name.capitalize(), v)
 
     def TranslateValue(self, value):

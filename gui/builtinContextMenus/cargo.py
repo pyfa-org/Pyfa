@@ -1,8 +1,7 @@
-from gui.contextMenu import ContextMenu
+import gui.fitCommands as cmd
 import gui.mainFrame
-import gui.globalEvents as GE
+from gui.contextMenu import ContextMenu
 # noinspection PyPackageRequirements
-import wx
 from service.fit import Fit
 from service.settings import ContextMenuSettings
 
@@ -32,13 +31,12 @@ class Cargo(ContextMenu):
         return "Add {0} to Cargo".format(itmContext)
 
     def activate(self, fullContext, selection, i):
-        sFit = Fit.getInstance()
         fitID = self.mainFrame.getActiveFit()
 
         typeID = int(selection[0].ID)
-        sFit.addCargo(fitID, typeID)
+
+        self.mainFrame.command.Submit(cmd.GuiAddCargoCommand(fitID, typeID))
         self.mainFrame.additionsPane.select("Cargo")
-        wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fitID))
 
 
 Cargo.register()

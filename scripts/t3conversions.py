@@ -2,11 +2,11 @@
 # Requires eve-old.db file (which is the previous releases database so that we can lookup the old items)
 # See https://community.eveonline.com/news/patch-notes/patch-notes-for-july-2017-release
 
-import sys
-from os.path import realpath, join, dirname, abspath
-from sqlalchemy import MetaData, create_engine
-from sqlalchemy.orm import sessionmaker
 import csv
+import sys
+from os.path import abspath, dirname, join, realpath
+
+from sqlalchemy import create_engine
 
 newDB = create_engine('sqlite:///' + unicode(realpath(join(dirname(abspath(__file__)), "..", "eve.db")), sys.getfilesystemencoding()))
 oldDB = create_engine('sqlite:///' + unicode(realpath(join(dirname(abspath(__file__)), "..", "eve-old.db")), sys.getfilesystemencoding()))

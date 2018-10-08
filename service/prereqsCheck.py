@@ -1,7 +1,6 @@
-import sys
-import inspect
-import re
 import platform
+import re
+import sys
 
 version_block = ''
 
@@ -10,7 +9,7 @@ class PreCheckException(Exception):
     pass
 
 
-class PreCheckMessage():
+class PreCheckMessage:
     def __init__(self, msg):
         # wx may not be installed, in which case print to console. For all other prechecks, should pop up a MessageDialog
         try:

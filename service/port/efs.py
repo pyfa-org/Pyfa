@@ -1,23 +1,20 @@
-import inspect
-import os
-import platform
-import re
-import sys
-import traceback
 import json
-import eos.db
-
+import json
 from math import log
+
+from logbook import Logger
+
+import eos.db
 from config import version as pyfaVersion
+from eos.db import gamedata_session, getAttributeInfo, getCategory, getGroup
+from eos.effectHandlerHelpers import HandledList
+from eos.enum import Enum
+from eos.gamedata import Attribute, Effect, Group, Item, ItemEffect
+from eos.saveddata.drone import Drone
+from eos.saveddata.module import Hardpoint, Module, Slot, State
 from service.fit import Fit
 from service.market import Market
-from eos.enum import Enum
-from eos.saveddata.module import Hardpoint, Slot, Module, State
-from eos.saveddata.drone import Drone
-from eos.effectHandlerHelpers import HandledList
-from eos.db import gamedata_session, getItemsByCategory, getCategory, getAttributeInfo, getGroup
-from eos.gamedata import Category, Group, Item, Traits, Attribute, Effect, ItemEffect
-from logbook import Logger
+
 pyfalog = Logger(__name__)
 
 
@@ -29,7 +26,7 @@ class RigSize(Enum):
     CAPITAL = 4
 
 
-class EfsPort():
+class EfsPort:
     wepTestSet = {}
     version = 0.01
 
@@ -500,7 +497,7 @@ class EfsPort():
 
         # Since the effect modules are fairly opaque a mock test fit is used to test the impact of traits.
         # standin class used to prevent . notation causing issues when used as an arg
-        class standin():
+        class standin:
             pass
         tf = standin()
         tf.modules = HandledList(turrets + launchers)

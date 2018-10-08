@@ -17,9 +17,10 @@
 # along with eos.  If not, see <http://www.gnu.org/licenses/>.
 # ===============================================================================
 
-from sqlalchemy import Table, Column, Integer, ForeignKey, Boolean, DateTime, Float
-from sqlalchemy.orm import mapper
 import datetime
+
+from sqlalchemy import Column, DateTime, Float, ForeignKey, Integer, Table
+from sqlalchemy.orm import mapper
 
 from eos.db import saveddata_meta
 from eos.saveddata.mutator import Mutator

@@ -6,14 +6,12 @@ This script updates only market/item icons.
 
 
 import argparse
-import os
-import re
-import sqlite3
 import json
+import os
+import sqlite3
+from shutil import copyfile
 
 from PIL import Image
-
-from shutil import copyfile
 
 parser = argparse.ArgumentParser(description='This script updates module icons for pyfa')
 parser.add_argument('-e', '--eve', required=True, type=str, help='path to eve\'s ')
@@ -67,7 +65,7 @@ graphics = graphicIDsLoader.load(os.path.join(to_path, 'graphicIDs.fsdbinary'))
 
 graphics_py_ob = {}
 for x, v in graphics.items():
-    if (hasattr(v, 'iconFolder')):
+    if hasattr(v, 'iconFolder'):
         graphics_py_ob[x] = v.iconFolder
 
 # Add children to market group list

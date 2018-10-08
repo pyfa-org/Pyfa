@@ -17,25 +17,22 @@
 # along with pyfa.  If not, see <http://www.gnu.org/licenses/>.
 # ===============================================================================
 
-import re
-import threading
-from logbook import Logger
 import queue
-from itertools import chain
+import threading
+from collections import OrderedDict
 
 # noinspection PyPackageRequirements
 import wx
+from logbook import Logger
 from sqlalchemy.sql import or_
 
 import config
 import eos.db
-from service import conversions
-from service.settings import SettingsProvider
-from service.jargon import JargonLoader
-
 from eos.gamedata import Category as types_Category, Group as types_Group, Item as types_Item, MarketGroup as types_MarketGroup, \
     MetaGroup as types_MetaGroup, MetaType as types_MetaType
-from collections import OrderedDict
+from service import conversions
+from service.jargon import JargonLoader
+from service.settings import SettingsProvider
 
 pyfalog = Logger(__name__)
 

@@ -17,21 +17,19 @@
 # along with pyfa.  If not, see <http://www.gnu.org/licenses/>.
 # =============================================================================
 
-import threading
-import json
 import calendar
+import threading
 
 # noinspection PyPackageRequirements
-import wx
-# noinspection PyPackageRequirements
 import dateutil.parser
+# noinspection PyPackageRequirements
+import wx
+from logbook import Logger
+from packaging.version import Version
 
 import config
 from service.network import Network
 from service.settings import UpdateSettings
-from logbook import Logger
-from packaging.version import Version
-
 
 pyfalog = Logger(__name__)
 

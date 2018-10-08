@@ -6,13 +6,8 @@ This script will generate a dynamicItemAttributes.json file using res files
 
 
 import argparse
-import os
-import re
-import sqlite3
 import json
-
-from PIL import Image
-
+import os
 from shutil import copyfile
 
 parser = argparse.ArgumentParser(description='This script updates module icons for pyfa')

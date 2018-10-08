@@ -30,6 +30,7 @@ from gui.builtinViewColumns.state import State
 from gui.contextMenu import ContextMenu
 from gui.utils.staticHelpers import DragDropHelper
 from service.fit import Fit
+import gui.fitCommands as cmd
 
 
 class DummyItem(object):
@@ -100,21 +101,16 @@ class CommandView(d.Display):
         keycode = event.GetKeyCode()
         if keycode == wx.WXK_DELETE or keycode == wx.WXK_NUMPAD_DELETE:
             fitID = self.mainFrame.getActiveFit()
-            sFit = Fit.getInstance()
             row = self.GetFirstSelected()
             if row != -1:
-                sFit.removeCommand(fitID, self.get(row))
-                wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fitID))
+                self.mainFrame.command.Submit(cmd.GuiRemoveCommandCommand(fitID, self.get(row).ID))
 
     def handleDrag(self, type, fitID):
         # Those are drags coming from pyfa sources, NOT builtin wx drags
         if type == "fit":
             activeFit = self.mainFrame.getActiveFit()
             if activeFit:
-                sFit = Fit.getInstance()
-                draggedFit = sFit.getFit(fitID)
-                sFit.addCommandFit(activeFit, draggedFit)
-                wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=activeFit))
+                self.mainFrame.command.Submit(cmd.GuiAddCommandCommand(activeFit, fitID))
 
     def startDrag(self, event):
         row = event.GetIndex()
@@ -190,9 +186,7 @@ class CommandView(d.Display):
             col = self.getColumn(event.Position)
             if col == self.getColIndex(State):
                 fitID = self.mainFrame.getActiveFit()
-                sFit = Fit.getInstance()
-                sFit.toggleCommandFit(fitID, item)
-                wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fitID))
+                self.mainFrame.command.Submit(cmd.GuiToggleCommandCommand(fitID, item.ID))
 
     def scheduleMenu(self, event):
         event.Skip()
@@ -224,8 +218,6 @@ class CommandView(d.Display):
             col = self.getColumn(event.Position)
             if col != self.getColIndex(State):
                 fitID = self.mainFrame.getActiveFit()
-                sFit = Fit.getInstance()
                 thing = self.get(row)
                 if thing:  # thing doesn't exist if it's the dummy value
-                    sFit.removeCommand(fitID, thing)
-                    wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fitID))
+                    self.mainFrame.command.Submit(cmd.GuiRemoveCommandCommand(fitID, thing.ID))

@@ -1,11 +1,11 @@
 # noinspection PyPackageRequirements
 import wx
 
+import gui.fitCommands as cmd
+import gui.mainFrame
+from gui.contextMenu import ContextMenu
 from service.fit import Fit
 from service.market import Market
-import gui.mainFrame
-import gui.globalEvents as GE
-from gui.contextMenu import ContextMenu
 from service.settings import ContextMenuSettings
 
 
@@ -25,7 +25,7 @@ class CommandFits(ContextMenu):
             if evt is not None:
                 ids = getattr(evt, 'typeID')
                 if not isinstance(ids, set):
-                    ids = set([ids])
+                    ids = {ids}
 
             if evt is None or not ids.isdisjoint(cls.commandTypeIDs):
                 # we are adding or removing an item that defines a command fit. Need to refresh fit list
@@ -97,11 +97,8 @@ class CommandFits(ContextMenu):
             event.Skip()
             return
 
-        sFit = Fit.getInstance()
         fitID = self.mainFrame.getActiveFit()
-
-        sFit.addCommandFit(fitID, fit)
-        wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fitID))
+        self.mainFrame.command.Submit(cmd.GuiAddCommandCommand(fitID, fit.ID))
 
 
 CommandFits.populateFits(None)

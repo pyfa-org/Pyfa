@@ -17,33 +17,32 @@
 # along with eos.  If not, see <http://www.gnu.org/licenses/>.
 # ===============================================================================
 
-from sqlalchemy.ext.associationproxy import association_proxy
-from sqlalchemy.orm.collections import attribute_mapped_collection
-from sqlalchemy.sql import and_
-from sqlalchemy.orm import relation, reconstructor, mapper, relationship
-from sqlalchemy import ForeignKey, Column, Integer, String, Table, Boolean, DateTime
 import datetime
 
-from eos.db import saveddata_meta
-from eos.db import saveddata_session
+from sqlalchemy import Boolean, Column, DateTime, ForeignKey, Integer, String, Table
+from sqlalchemy.ext.associationproxy import association_proxy
+from sqlalchemy.orm import mapper, reconstructor, relation, relationship
+from sqlalchemy.orm.collections import attribute_mapped_collection
+from sqlalchemy.sql import and_
+
+from eos.db import saveddata_meta, saveddata_session
 from eos.db.saveddata.cargo import cargo_table
 from eos.db.saveddata.drone import drones_table
 from eos.db.saveddata.fighter import fighters_table
 from eos.db.saveddata.implant import fitImplants_table
 from eos.db.saveddata.module import modules_table
-from eos.effectHandlerHelpers import HandledModuleList, HandledImplantBoosterList, HandledProjectedModList, \
-    HandledDroneCargoList, HandledProjectedDroneList
-from eos.saveddata.implant import Implant
-from eos.saveddata.character import Character
-from eos.saveddata.user import User
-from eos.saveddata.fighter import Fighter
-from eos.saveddata.fit import Fit as es_Fit, ImplantLocation
-from eos.saveddata.drone import Drone
+from eos.effectHandlerHelpers import HandledDroneCargoList, HandledImplantBoosterList, HandledModuleList, HandledProjectedDroneList, HandledProjectedModList
 from eos.saveddata.booster import Booster
-from eos.saveddata.module import Module
 from eos.saveddata.cargo import Cargo
+from eos.saveddata.character import Character
 from eos.saveddata.damagePattern import DamagePattern
+from eos.saveddata.drone import Drone
+from eos.saveddata.fighter import Fighter
+from eos.saveddata.fit import Fit as es_Fit
+from eos.saveddata.implant import Implant
+from eos.saveddata.module import Module
 from eos.saveddata.targetResists import TargetResists
+from eos.saveddata.user import User
 
 fits_table = Table("fits", saveddata_meta,
                    Column("ID", Integer, primary_key=True),
@@ -132,13 +131,13 @@ class CommandFit(object):
         )
 
 
-es_Fit._Fit__projectedFits = association_proxy(
+es_Fit.projectedFitDict = association_proxy(
         "victimOf",  # look at the victimOf association...
         "source_fit",  # .. and return the source fits
         creator=lambda sourceID, source_fit: ProjectedFit(sourceID, source_fit)
 )
 
-es_Fit._Fit__commandFits = association_proxy(
+es_Fit.commandFitDict = association_proxy(
         "boostedOf",  # look at the boostedOf association...
         "booster_fit",  # .. and return the booster fit
         creator=lambda boosterID, booster_fit: CommandFit(boosterID, booster_fit)

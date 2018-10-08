@@ -26,6 +26,7 @@ import gui.globalEvents as GE
 from gui.utils.staticHelpers import DragDropHelper
 from service.fit import Fit
 from service.market import Market
+import gui.fitCommands as cmd
 
 
 class CargoViewDrop(wx.DropTarget):
@@ -80,9 +81,7 @@ class CargoView(d.Display):
         if data[0] == "fitting":
             self.swapModule(x, y, int(data[1]))
         elif data[0] == "market":
-            sFit = Fit.getInstance()
-            sFit.addCargo(self.mainFrame.getActiveFit(), int(data[1]), 1)
-            wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=self.mainFrame.getActiveFit()))
+            self.mainFrame.command.Submit(cmd.GuiAddCargoCommand(self.mainFrame.getActiveFit(), int(data[1])))
 
     def startDrag(self, event):
         row = event.GetIndex()
@@ -127,18 +126,14 @@ class CargoView(d.Display):
             if not result:
                 return
 
-        if dstRow != -1:  # we're swapping with cargo
-            if mstate.cmdDown:  # if copying, append to cargo
-                sFit.addCargo(self.mainFrame.getActiveFit(), module.item.ID if not module.item.isAbyssal else module.baseItemID)
-            else:  # else, move / swap
-                sFit.moveCargoToModule(self.mainFrame.getActiveFit(), module.position, dstRow)
-        else:  # dragging to blank spot, append
-            sFit.addCargo(self.mainFrame.getActiveFit(), module.item.ID if not module.item.isAbyssal else module.baseItemID)
+        cargoPos = dstRow if dstRow > -1 else None
 
-            if not mstate.cmdDown:  # if not copying, remove module
-                sFit.removeModule(self.mainFrame.getActiveFit(), module.position)
-
-        wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=self.mainFrame.getActiveFit(), action="moddel", typeID=module.item.ID))
+        self.mainFrame.command.Submit(cmd.GuiModuleToCargoCommand(
+            self.mainFrame.getActiveFit(),
+            module.modPosition,
+            cargoPos,
+            mstate.cmdDown
+        ))
 
     def fitChanged(self, event):
         sFit = Fit.getInstance()

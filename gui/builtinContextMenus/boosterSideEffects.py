@@ -16,7 +16,7 @@ class BoosterSideEffect(ContextMenu):
         # if not self.settings.get('fighterAbilities'):
         #     return False
 
-        if self.mainFrame.getActiveFit() is None or srcContext not in ("boosterItem"):
+        if self.mainFrame.getActiveFit() is None or srcContext not in "boosterItem":
             return False
 
         self.booster = selection[0]
@@ -50,7 +50,7 @@ class BoosterSideEffect(ContextMenu):
             if not effect.effect.isImplemented:
                 continue
             menuItem = self.addEffect(rootMenu if msw else sub, effect)
-            sub.AppendItem(menuItem)
+            sub.Append(menuItem)
             menuItem.Check(effect.active)
 
         return sub

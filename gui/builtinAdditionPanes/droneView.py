@@ -29,6 +29,7 @@ from gui.contextMenu import ContextMenu
 from gui.utils.staticHelpers import DragDropHelper
 from service.fit import Fit
 from service.market import Market
+import gui.fitCommands as cmd
 
 
 class DroneViewDrop(wx.DropTarget):
@@ -144,10 +145,12 @@ class DroneView(Display):
             data[1] is typeID or index of data we want to manipulate
         """
         if data[0] == "drone":  # we want to merge drones
-            srcRow = int(data[1])
-            dstRow, _ = self.HitTest((x, y))
-            if srcRow != -1 and dstRow != -1:
-                self._merge(srcRow, dstRow)
+            pass
+            # remove merge functionality, if people complain in the next while, can add it back
+            # srcRow = int(data[1])
+            # dstRow, _ = self.HitTest((x, y))
+            # if srcRow != -1 and dstRow != -1:
+            #     self._merge(srcRow, dstRow)
         elif data[0] == "market":
             wx.PostEvent(self.mainFrame, ItemSelected(itemID=int(data[1])))
 
@@ -213,9 +216,7 @@ class DroneView(Display):
             event.Skip()
             return
 
-        trigger = sFit.addDrone(fitID, event.itemID)
-        if trigger:
-            wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fitID))
+        if self.mainFrame.command.Submit(cmd.GuiAddDroneCommand(fitID, event.itemID)):
             self.mainFrame.additionsPane.select("Drones")
 
         event.Skip()
@@ -230,9 +231,7 @@ class DroneView(Display):
 
     def removeDrone(self, drone):
         fitID = self.mainFrame.getActiveFit()
-        sFit = Fit.getInstance()
-        sFit.removeDrone(fitID, self.original.index(drone))
-        wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fitID))
+        self.mainFrame.command.Submit(cmd.GuiRemoveDroneCommand(fitID, self.original.index(drone)))
 
     def click(self, event):
         event.Skip()
@@ -241,10 +240,8 @@ class DroneView(Display):
             col = self.getColumn(event.Position)
             if col == self.getColIndex(State):
                 fitID = self.mainFrame.getActiveFit()
-                sFit = Fit.getInstance()
                 drone = self.drones[row]
-                sFit.toggleDrone(fitID, self.original.index(drone))
-                wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fitID))
+                self.mainFrame.command.Submit(cmd.GuiToggleDroneCommand(fitID, self.original.index(drone)))
 
     def scheduleMenu(self, event):
         event.Skip()
