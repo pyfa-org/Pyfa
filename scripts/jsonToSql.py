@@ -45,6 +45,7 @@ def main(db, json_path):
     eos.config.debug = False
 
     # Now thats done, we can import the eos modules using the config
+    import eos.db
     import eos.gamedata
 
     # Create the database tables
