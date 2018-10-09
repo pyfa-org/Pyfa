@@ -66,6 +66,7 @@ miners = (
     TraitMiner(staticcache_miner, bulkdata_miner, trans),
     SqliteMiner(rvr.paths.root, trans),
     CachedCallsMiner(rvr, trans),
+    DynamicAttributesMiner(rvr),
     pickle_miner
 )
 
@@ -76,6 +77,6 @@ writers = (
 list = "dgmexpressions,dgmattribs,dgmeffects,dgmtypeattribs,dgmtypeeffects,"\
        "dgmunits,invcategories,invgroups,invmetagroups,invmetatypes,"\
        "invtypes,mapbulk_marketGroups,phbmetadata,phbtraits,fsdTypeOverrides,"\
-       "evegroups,evetypes,evecategories,mapbulk_marketGroups,clonegrades"
+       "evegroups,evetypes,evecategories,mapbulk_marketGroups,clonegrades,dynamicattributes"
 
 FlowManager(miners, writers).run(list, "en-us")
