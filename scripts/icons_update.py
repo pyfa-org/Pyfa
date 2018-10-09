@@ -65,8 +65,8 @@ graphics = graphicIDsLoader.load(os.path.join(to_path, 'graphicIDs.fsdbinary'))
 
 graphics_py_ob = {}
 for x, v in graphics.items():
-    if hasattr(v, 'iconFolder'):
-        graphics_py_ob[x] = v.iconFolder
+    if hasattr(v, 'iconInfo') and hasattr(v.iconInfo, 'folder'):
+        graphics_py_ob[x] = v.iconInfo.folder
 
 # Add children to market group list
 # {parent: {children}}
@@ -230,7 +230,11 @@ if toadd:
     print(('Adding {} icons...'.format(len(toadd))))
     missing = set()
     for fname in sorted(toadd):
-        key = graphics_py_ob[int(fname)]
+        try:
+            key = graphics_py_ob[int(fname)]
+        except KeyError:
+            print("Can't find graphicID {}".format(fname))
+
         key = "{}/{}_64.png".format(key, fname)
 
         for i in range(2):
