@@ -3,8 +3,9 @@ import config
 
 # noinspection PyPackageRequirements
 import wx
+import wx.lib.agw.hypertreelist
+from gui.builtinItemStatsViews.helpers import AutoListCtrl
 
-from .helpers import AutoListCtrl
 
 from gui.bitmap_loader import BitmapLoader
 from gui.utils.numberFormatter import formatAmount
@@ -15,8 +16,8 @@ class ItemParams(wx.Panel):
         wx.Panel.__init__(self, parent)
         mainSizer = wx.BoxSizer(wx.VERTICAL)
 
-        self.paramList = AutoListCtrl(self, wx.ID_ANY,
-                                      style=wx.LC_REPORT | wx.LC_SINGLE_SEL | wx.LC_VRULES | wx.NO_BORDER)
+        self.paramList = wx.lib.agw.hypertreelist.HyperTreeList(self, wx.ID_ANY, agwStyle=wx.TR_HIDE_ROOT | wx.TR_NO_LINES | wx.TR_FULL_ROW_HIGHLIGHT)
+
         mainSizer.Add(self.paramList, 1, wx.ALL | wx.EXPAND, 0)
         self.SetSizer(mainSizer)
 
@@ -152,17 +153,18 @@ class ItemParams(wx.Panel):
                 )
 
     def PopulateList(self):
-        self.paramList.InsertColumn(0, "Attribute")
-        self.paramList.InsertColumn(1, "Current Value")
+        self.paramList.AddColumn("Attribute")
+        self.paramList.AddColumn("Current Value")
         if self.stuff is not None:
-            self.paramList.InsertColumn(2, "Base Value")
-        self.paramList.SetColumnWidth(0, 110)
-        self.paramList.SetColumnWidth(1, 90)
-        if self.stuff is not None:
-            self.paramList.SetColumnWidth(2, 90)
-        self.paramList.setResizeColumn(0)
+            self.paramList.AddColumn("Base Value")
+
+        self.paramList.SetMainColumn(0)  # the one with the tree in it...
+        self.paramList.SetColumnWidth(0, 175)
+
+        root = self.paramList.AddRoot("The Root Item")
+        # self.paramList.setResizeColumn(0)
         self.imageList = wx.ImageList(16, 16)
-        self.paramList.SetImageList(self.imageList, wx.IMAGE_LIST_SMALL)
+        self.paramList.AssignImageList(self.imageList)
 
         names = list(self.attrValues.keys())
         names.sort()
@@ -206,9 +208,9 @@ class ItemParams(wx.Panel):
             else:
                 attrIcon = self.imageList.Add(BitmapLoader.getBitmap("0", "icons"))
 
-            index = self.paramList.InsertItem(self.paramList.GetItemCount(), attrName, attrIcon)
+            index = self.paramList.AppendItem(root, attrName)
             idNameMap[idCount] = attrName
-            self.paramList.SetItemData(index, idCount)
+            self.paramList.SetPyData(index, idCount)
             idCount += 1
 
             if self.toggleView != 1:
@@ -225,14 +227,18 @@ class ItemParams(wx.Panel):
             else:
                 valueUnitDefault = formatAmount(valueDefault, 3, 0, 0)
 
-            self.paramList.SetItem(index, 1, valueUnit)
+            self.paramList.SetItemText(index, valueUnit, 1)
             if self.stuff is not None:
-                self.paramList.SetItem(index, 2, valueUnitDefault)
+                self.paramList.SetItemText(index, valueUnitDefault,2)
+            self.paramList.SetItemImage(index, attrIcon, which=wx.TreeItemIcon_Normal)
         # @todo: pheonix, this lamda used cmp() which no longer exists in py3. Probably a better way to do this in the
         # long run, take a look
-        self.paramList.SortItems(lambda id1, id2: (idNameMap[id1] > idNameMap[id2]) - (idNameMap[id1] < idNameMap[id2]))
-        self.paramList.RefreshRows()
+
+
+        # self.paramList.SortItems(lambda id1, id2: (idNameMap[id1] > idNameMap[id2]) - (idNameMap[id1] < idNameMap[id2]))
+        # self.paramList.RefreshRows()
         self.totalAttrsLabel.SetLabel("%d attributes. " % idCount)
+
         self.Layout()
 
     @staticmethod
@@ -244,3 +250,39 @@ class ItemParams(wx.Panel):
         else:
             fvalue = value
         return "%s %s" % (fvalue, unit)
+
+
+
+if __name__ == "__main__":
+
+    import eos.db
+    # need to set up some paths, since bitmap loader requires config to have things
+    # Should probably change that so that it's not dependant on config
+    import os
+    os.chdir('..')
+    import config
+    config.defPaths(None)
+
+    class Frame(wx.Frame):
+        def __init__(self, title):
+            super().__init__(None, title=title, size=(1000, 500))
+
+            if 'wxMSW' in wx.PlatformInfo:
+                color = wx.SystemSettings.GetColour(wx.SYS_COLOUR_BTNFACE)
+                self.SetBackgroundColour(color)
+
+            main_sizer = wx.BoxSizer(wx.HORIZONTAL)
+
+            item = eos.db.getItem(23773)  # Ragnarok
+
+            panel = ItemParams(self, None, item)
+
+
+            main_sizer.Add(panel, 1, wx.EXPAND | wx.ALL, 2)
+
+            self.SetSizer(main_sizer)
+
+    app = wx.App(redirect=False)   # Error messages go to popup window
+    top = Frame("Test Item Attributes")
+    top.Show()
+    app.MainLoop()

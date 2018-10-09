@@ -78,8 +78,7 @@ class BitmapLoader(object):
     @classmethod
     def loadBitmap(cls, name, location):
         if cls.scaling_factor is None:
-            import gui.mainFrame
-            cls.scaling_factor = int(gui.mainFrame.MainFrame.getInstance().GetContentScaleFactor())
+            cls.scaling_factor = int(wx.GetApp().GetTopWindow().GetContentScaleFactor())
         scale = cls.scaling_factor
 
         filenameScaled = "{0}@{1}x.png".format(name, scale)
