@@ -9,15 +9,206 @@ from gui.builtinItemStatsViews.helpers import AutoListCtrl
 
 from gui.bitmap_loader import BitmapLoader
 from gui.utils.numberFormatter import formatAmount
+from enum import Enum
 
+
+class AttrGrouping(Enum):
+    # These are self-explanatory
+    NORMAL = 1
+    RESIST = 2
+    SENSOR = 3
+
+
+attr_order = {
+    "Fighter": {
+        "Fighters":{
+            AttrGrouping.NORMAL: [
+                "mass",
+                "maxVelocity",
+                "agility",
+                "volume",
+                "signatureRadius",
+                "fighterSquadronMaxSize",
+                "fighterSquadronOrbitRange",
+                "fighterRefuelingTime",
+            ]
+        },
+        "Shield": { # break these up into various constants, since this can be used in fighters as well as ships maybe?
+            AttrGrouping.NORMAL: [
+                "shieldCapacity",
+                "shieldRechargeRate"
+            ],
+            AttrGrouping.RESIST: [
+                ("em", "shieldEmDamageResonance"),
+                ("thermal","shieldExplosiveDamageResonance"),
+                ("kinetic", "shieldKineticDamageResonance"),
+                ("explosive", "shieldThermalDamageResonance")
+            ]
+        },
+        "Targeting": {
+            AttrGrouping.NORMAL: [
+                "maxTargetRange",
+                "maxLockedTargets",
+                "scanRadarStrength",
+                "scanLadarStrength",
+                "scanMagnetometricStrength",
+                "scanGravimetricStrength",
+                "scanResolution",
+            ]
+        }
+    },
+    'default': {
+"Structure": {
+    AttrGrouping.NORMAL: [
+          "hp",
+          "capacity",
+          "mass",
+          "volume",
+          "agility",
+          "droneCapacity",
+          "droneBandwidth",
+          "specialOreHoldCapacity",
+          "specialGasHoldCapacity",
+          "specialMineralHoldCapacity",
+          "specialSalvageHoldCapacity",
+          "specialShipHoldCapacity",
+          "specialSmallShipHoldCapacity",
+          "specialMediumShipHoldCapacity",
+          "specialLargeShipHoldCapacity",
+          "specialIndustrialShipHoldCapacity",
+          "specialAmmoHoldCapacity",
+          "specialCommandCenterHoldCapacity",
+          "specialPlanetaryCommoditiesHoldCapacity",
+          "structureDamageLimit",
+          "specialSubsystemHoldCapacity",
+      ],
+    AttrGrouping.RESIST:  [
+          ("em", "emDamageResonance"),
+          ("thermal", "thermalDamageResonance"),
+          ("kinetic", "kineticDamageResonance"),
+          ("explosive", "explosiveDamageResonance")
+      ]
+    },
+    "Armor": {
+        AttrGrouping.NORMAL: [
+          "armorHP",
+          "armorDamageLimit"
+      ],
+        AttrGrouping.RESIST: [
+        ("em","armorEmDamageResonance"),
+        ("thermal","armorThermalDamageResonance"),
+          ("kinetic", "armorKineticDamageResonance"),
+          ("explosive","armorExplosiveDamageResonance")
+      ]
+
+    },
+    "Shield": {
+        AttrGrouping.NORMAL: [
+          "shieldCapacity",
+          "shieldRechargeRate",
+          "shieldDamageLimit"
+      ],
+        AttrGrouping.RESIST: [
+            ("em", "shieldEmDamageResonance"),
+            ("thermal", "shieldExplosiveDamageResonance"),
+            ("kinetic", "shieldKineticDamageResonance"),
+            ("explosive", "shieldThermalDamageResonance")
+        ]
+
+    },
+    "Electronic Resistances": {
+      AttrGrouping.NORMAL: [
+          "ECMResistance",
+          "remoteAssistanceImpedance",
+          "remoteRepairImpedance",
+          "energyWarfareResistance",
+          "sensorDampenerResistance",
+          "stasisWebifierResistance",
+          "targetPainterResistance",
+          "weaponDisruptionResistance",
+      ]
+    },
+    "Capacitor": {
+        AttrGrouping.NORMAL: [
+"capacitorCapacity",
+          "rechargeRate",
+      ]
+    },
+    "Targeting": {
+        AttrGrouping.NORMAL: [
+          "maxTargetRange",
+          "maxRange",
+          "maxLockedTargets",
+          "signatureRadius",
+          "optimalSigRadius",
+          "scanResolution",
+          "proximityRange",
+          "falloff",
+          "trackingSpeed",
+      ],
+        AttrGrouping.SENSOR: [
+            "scanLadarStrength",
+            "scanMagnetometricStrength",
+            "scanGravimetricStrength",
+            "scanRadarStrength",
+        ]
+    },
+    "Shared Facilities": {
+        AttrGrouping.NORMAL: ["shipMaintenanceBayCapacity",
+"fleetHangarCapacity",
+"maxJumpClones",
+      ]
+    },
+    "Fighter Squadron Facilities": {
+        AttrGrouping.NORMAL: [
+          "fighterCapacity",
+          "fighterTubes",
+          "fighterLightSlots",
+          "fighterSupportSlots",
+          "fighterHeavySlots",
+          "fighterStandupLightSlots",
+          "fighterStandupSupportSlots",
+          "fighterStandupHeavySlots",
+      ]
+    },
+    "On Death": {
+        AttrGrouping.NORMAL: [
+          "onDeathDamageEM",
+"onDeathDamageTherm",
+"onDeathDamageKin",
+"onDeathDamageExp",
+"onDeathAOERadius",
+"onDeathSignatureRadius",
+      ]
+    },
+    "Jump Drive Systems": {
+        AttrGrouping.NORMAL: [
+          "jumpDriveCapacitorNeed",
+          "jumpDriveRange",
+          "jumpDriveConsumptionType",
+          "jumpDriveConsumptionAmount",
+          "jumpPortalCapacitorNeed",
+          "jumpDriveDuration",
+          "specialFuelBayCapacity",
+          "jumpPortalConsumptionMassFactor",
+          "jumpPortalDuration",
+      ]
+    },
+    "Propulsion": {
+        AttrGrouping.NORMAL: [
+        "maxVelocity"
+      ]
+    }
+    }
+}
 
 class ItemParams(wx.Panel):
     def __init__(self, parent, stuff, item, context=None):
         wx.Panel.__init__(self, parent)
         mainSizer = wx.BoxSizer(wx.VERTICAL)
 
-        self.paramList = wx.lib.agw.hypertreelist.HyperTreeList(self, wx.ID_ANY, agwStyle=wx.TR_HIDE_ROOT | wx.TR_NO_LINES | wx.TR_FULL_ROW_HIGHLIGHT)
-
+        self.paramList = wx.lib.agw.hypertreelist.HyperTreeList(self, wx.ID_ANY, agwStyle=wx.TR_HIDE_ROOT | wx.TR_NO_LINES | wx.TR_FULL_ROW_HIGHLIGHT | wx.TR_HAS_BUTTONS)
+        self.paramList.SetBackgroundColour(wx.SystemSettings.GetColour(wx.SYS_COLOUR_WINDOW))
         mainSizer.Add(self.paramList, 1, wx.ALL | wx.EXPAND, 0)
         self.SetSizer(mainSizer)
 
@@ -166,71 +357,86 @@ class ItemParams(wx.Panel):
         self.imageList = wx.ImageList(16, 16)
         self.paramList.AssignImageList(self.imageList)
 
+        processed_attribs = set()
+
+        misc_parent = root
+
+        if self.item.category.categoryName in ("Ship", "Fighter"):
+            order = attr_order.get(self.item.category.categoryName, attr_order.get("default"))
+            # start building out the tree
+            for heading, data in order.items():
+                header_item = self.paramList.AppendItem(root, heading)
+
+                for attr in data.get(AttrGrouping.NORMAL, []):
+                    if attr in self.attrValues:
+                        attrIcon, attrName, currentVal, baseVal = self.GetData(attr)
+                        attr_item = self.paramList.AppendItem(header_item, attrName)
+
+                        self.paramList.SetItemText(attr_item , currentVal, 1)
+                        if self.stuff is not None:
+                            self.paramList.SetItemText(attr_item , baseVal, 2)
+                        self.paramList.SetItemImage(attr_item , attrIcon, which=wx.TreeItemIcon_Normal)
+                        attr_item.SetTextX(-100)
+
+                        print("{} has x: {}".format(attrName, attr_item.GetTextX()))
+                        processed_attribs.add(attr)
+
+                resists = data.get(AttrGrouping.RESIST, [])
+                if len(resists) > 0:
+                    resist_item = self.paramList.AppendItem(header_item, "Resistances")
+                    for _, attr  in data.get(AttrGrouping.RESIST, []):
+                        if attr in self.attrValues:
+                            attrIcon, attrName, currentVal, baseVal = self.GetData(attr)
+                            attr_item = self.paramList.AppendItem(resist_item , attrName)
+
+                            self.paramList.SetItemText(attr_item , currentVal, 1)
+                            if self.stuff is not None:
+                                self.paramList.SetItemText(attr_item , baseVal, 2)
+                            self.paramList.SetItemImage(attr_item , attrIcon, which=wx.TreeItemIcon_Normal)
+                            processed_attribs.add(attr)
+                            print("{} has x: {}".format(attrName, attr_item.GetTextX()))
+                    self.paramList.Expand(resist_item)
+
+                sensors = data.get(AttrGrouping.SENSOR, [])
+                if len(sensors) > 0:
+                    sensor_item = self.paramList.AppendItem(header_item, "Sensor Strengths")
+                    for attr in data.get(AttrGrouping.SENSOR, []):
+                        if attr in self.attrValues:
+                            attrIcon, attrName, currentVal, baseVal = self.GetData(attr)
+                            attr_item = self.paramList.AppendItem(sensor_item, attrName)
+
+                            self.paramList.SetItemText(attr_item, currentVal, 1)
+                            if self.stuff is not None:
+                                self.paramList.SetItemText(attr_item, baseVal, 2)
+                            self.paramList.SetItemImage(attr_item, attrIcon, which=wx.TreeItemIcon_Normal)
+                            processed_attribs.add(attr)
+                            print("{} has x: {}".format(attrName, attr_item.GetTextX()))
+                    self.paramList.Expand(sensor_item)
+
+                self.paramList.Expand(header_item)
+
+            misc_parent = self.paramList.AppendItem(root, "Miscellaneous")
+
         names = list(self.attrValues.keys())
         names.sort()
 
         idNameMap = {}
         idCount = 0
         for name in names:
-            info = self.attrInfo.get(name)
-            att = self.attrValues[name]
+            if name in processed_attribs:
+                continue
 
-            # If we're working with a stuff object, we should get the original value from our getBaseAttrValue function,
-            # which will return the value with respect to the effective base (with mutators / overrides in place)
-            valDefault = getattr(info, "value", None)  # Get default value from attribute
+
+            attrIcon, attrName, currentVal, baseVal = self.GetData(name)
+            attr_item = self.paramList.AppendItem(misc_parent, attrName)
+
+            self.paramList.SetItemText(attr_item, currentVal, 1)
             if self.stuff is not None:
-                # if it's a stuff, overwrite default (with fallback to current value)
-                valDefault = self.stuff.getBaseAttrValue(name, valDefault)
-            valueDefault = valDefault if valDefault is not None else att
+                self.paramList.SetItemText(attr_item, baseVal, 2)
+            self.paramList.SetItemImage(attr_item, attrIcon, which=wx.TreeItemIcon_Normal)
 
-            val = getattr(att, "value", None)
-            value = val if val is not None else att
+        self.paramList.Expand(misc_parent)
 
-            if info and info.displayName and self.toggleView == 1:
-                attrName = info.displayName
-            else:
-                attrName = name
-
-            if info and config.debug:
-                attrName += " ({})".format(info.ID)
-
-            if info:
-                if info.iconID is not None:
-                    iconFile = info.iconID
-                    icon = BitmapLoader.getBitmap(iconFile, "icons")
-
-                    if icon is None:
-                        icon = BitmapLoader.getBitmap("transparent16x16", "gui")
-
-                    attrIcon = self.imageList.Add(icon)
-                else:
-                    attrIcon = self.imageList.Add(BitmapLoader.getBitmap("0", "icons"))
-            else:
-                attrIcon = self.imageList.Add(BitmapLoader.getBitmap("0", "icons"))
-
-            index = self.paramList.AppendItem(root, attrName)
-            idNameMap[idCount] = attrName
-            self.paramList.SetPyData(index, idCount)
-            idCount += 1
-
-            if self.toggleView != 1:
-                valueUnit = str(value)
-            elif info and info.unit:
-                valueUnit = self.FormatValue(*info.unit.TranslateValue(value))
-            else:
-                valueUnit = formatAmount(value, 3, 0, 0)
-
-            if self.toggleView != 1:
-                valueUnitDefault = str(valueDefault)
-            elif info and info.unit:
-                valueUnitDefault = self.FormatValue(*info.unit.TranslateValue(valueDefault))
-            else:
-                valueUnitDefault = formatAmount(valueDefault, 3, 0, 0)
-
-            self.paramList.SetItemText(index, valueUnit, 1)
-            if self.stuff is not None:
-                self.paramList.SetItemText(index, valueUnitDefault,2)
-            self.paramList.SetItemImage(index, attrIcon, which=wx.TreeItemIcon_Normal)
         # @todo: pheonix, this lamda used cmp() which no longer exists in py3. Probably a better way to do this in the
         # long run, take a look
 
@@ -240,6 +446,69 @@ class ItemParams(wx.Panel):
         self.totalAttrsLabel.SetLabel("%d attributes. " % idCount)
 
         self.Layout()
+
+    def GetData(self, attr):
+        info = self.attrInfo.get(attr)
+        att = self.attrValues[attr]
+
+        # If we're working with a stuff object, we should get the original value from our getBaseAttrValue function,
+        # which will return the value with respect to the effective base (with mutators / overrides in place)
+        valDefault = getattr(info, "value", None)  # Get default value from attribute
+        if self.stuff is not None:
+            # if it's a stuff, overwrite default (with fallback to current value)
+            valDefault = self.stuff.getBaseAttrValue(attr, valDefault)
+        valueDefault = valDefault if valDefault is not None else att
+
+        val = getattr(att, "value", None)
+        value = val if val is not None else att
+
+        if info and info.displayName and self.toggleView == 1:
+            attrName = info.displayName
+        else:
+            attrName = attr
+
+        if info and config.debug:
+            attrName += " ({})".format(info.ID)
+
+        if info:
+            if info.iconID is not None:
+                iconFile = info.iconID
+                icon = BitmapLoader.getBitmap(iconFile, "icons")
+
+                if icon is None:
+                    icon = BitmapLoader.getBitmap("transparent16x16", "gui")
+
+                attrIcon = self.imageList.Add(icon)
+            else:
+                attrIcon = self.imageList.Add(BitmapLoader.getBitmap("0", "icons"))
+        else:
+            attrIcon = self.imageList.Add(BitmapLoader.getBitmap("0", "icons"))
+
+        # index = self.paramList.AppendItem(root, attrName)
+        # idNameMap[idCount] = attrName
+        # self.paramList.SetPyData(index, idCount)
+        # idCount += 1
+
+        if self.toggleView != 1:
+            valueUnit = str(value)
+        elif info and info.unit:
+            valueUnit = self.FormatValue(*info.unit.TranslateValue(value))
+        else:
+            valueUnit = formatAmount(value, 3, 0, 0)
+
+        if self.toggleView != 1:
+            valueUnitDefault = str(valueDefault)
+        elif info and info.unit:
+            valueUnitDefault = self.FormatValue(*info.unit.TranslateValue(valueDefault))
+        else:
+            valueUnitDefault = formatAmount(valueDefault, 3, 0, 0)
+
+        return (attrIcon, attrName, valueUnit, valueUnitDefault)
+
+        # self.paramList.SetItemText(index, valueUnit, 1)
+        # if self.stuff is not None:
+        #     self.paramList.SetItemText(index, valueUnitDefault, 2)
+        # self.paramList.SetItemImage(index, attrIcon, which=wx.TreeItemIcon_Normal)
 
     @staticmethod
     def FormatValue(value, unit):
@@ -273,7 +542,7 @@ if __name__ == "__main__":
 
             main_sizer = wx.BoxSizer(wx.HORIZONTAL)
 
-            item = eos.db.getItem(23773)  # Ragnarok
+            item = eos.db.getItem(22452)  # Ragnarok
 
             panel = ItemParams(self, None, item)
 
