@@ -1,4 +1,4 @@
-type = "passive"
+type = "active"
 
 
 def handler(fit, src, context):
