@@ -559,8 +559,8 @@ class Fit(FitDeprecated):
                 changed = True
 
         # If any state was changed, recalculate attributes again
-        if changed:
-            self.recalc(fit)
+        # if changed:
+        #     self.recalc(fit)
 
     def refreshFit(self, fitID):
         pyfalog.debug("Refresh fit for fit ID: {0}", fitID)

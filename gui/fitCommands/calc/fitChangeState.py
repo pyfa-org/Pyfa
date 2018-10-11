@@ -30,7 +30,7 @@ class FitChangeStatesCommand(wx.Command):
 
     def Do(self):
         fit = eos.db.getFit(self.fitID)
-
+        sFit = Fit.getInstance()
         baseMod = fit.modules[self.baseModPos]
 
         # make sure positions only include non-empty positions
@@ -61,6 +61,7 @@ class FitChangeStatesCommand(wx.Command):
             # As some items may affect state-limiting attributes of the ship, calculate new attributes first
             # self.recalc(fit)
             # # Then, check states of all modules and change where needed. This will recalc if needed
+            sFit.checkStates(fit, baseMod)
             # self.checkStates(fit, base)
             return True
         return False
