@@ -24,9 +24,9 @@ saveInRoot = False
 
 # Version data
 
-version = "2.4.0"
+version = "2.5.0"
 tag = "Stable"
-expansionName = "YC120.8"
+expansionName = "YC120.10"
 expansionVersion = "1.0"
 evemonMinVersion = "4081"
 
@@ -228,20 +228,6 @@ def defLogging():
                     bubble=False
             )
         ])
-
-    with logging_setup.threadbound():
-
-        # Output all stdout (print) messages as warnings
-        try:
-            sys.stdout = LoggerWriter(pyfalog.warning)
-        except:
-            pyfalog.critical("Cannot redirect.  Continuing without writing stdout to log.")
-
-        # Output all stderr (stacktrace) messages as critical
-        try:
-            sys.stderr = LoggerWriter(pyfalog.critical)
-        except:
-            pyfalog.critical("Cannot redirect.  Continuing without writing stderr to log.")
 
 
 class LoggerWriter(object):

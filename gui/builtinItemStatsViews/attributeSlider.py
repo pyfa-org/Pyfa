@@ -1,9 +1,7 @@
 import wx
 import wx.lib.newevent
-from gui.attribute_gauge import AttributeGauge
 
-import eos
-import eos.db
+from gui.attribute_gauge import AttributeGauge
 
 _ValueChanged, EVT_VALUE_CHANGED = wx.lib.newevent.NewEvent()
 

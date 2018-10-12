@@ -19,13 +19,14 @@
 # ==============================================================================
 
 
+import datetime
 import os
 import sys
-import traceback
 from optparse import AmbiguousOptionError, BadOptionError, OptionParser
-from service.prereqsCheck import PreCheckException, PreCheckMessage, version_precheck, version_block
+
 import config
-import datetime
+from service.prereqsCheck import PreCheckException, PreCheckMessage, version_block, version_precheck
+
 
 # ascii_text = '''
 # ++++++++++++++++++++++++++++++++++++++++++++++++++

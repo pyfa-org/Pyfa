@@ -21,27 +21,25 @@
 import wx
 # noinspection PyPackageRequirements
 import wx.lib.newevent
-import gui.mainFrame
-from gui.builtinMarketBrowser.events import ItemSelected, ITEM_SELECTED
+from logbook import Logger
+
+import gui.builtinViews.emptyView
 import gui.display as d
-from gui.contextMenu import ContextMenu
-from gui.builtinShipBrowser.events import EVT_FIT_RENAMED, EVT_FIT_REMOVED, FitSelected, EVT_FIT_SELECTED
+import gui.fitCommands as cmd
+import gui.globalEvents as GE
+import gui.mainFrame
 import gui.multiSwitch
 from eos.saveddata.mode import Mode
-from eos.saveddata.module import Module, Slot, Rack
-from gui.builtinViewColumns.state import State
+from eos.saveddata.module import Module, Rack, Slot
 from gui.bitmap_loader import BitmapLoader
-import gui.builtinViews.emptyView
-from logbook import Logger
+from gui.builtinMarketBrowser.events import ITEM_SELECTED
+from gui.builtinShipBrowser.events import EVT_FIT_REMOVED, EVT_FIT_RENAMED, EVT_FIT_SELECTED, FitSelected
+from gui.builtinViewColumns.state import State
 from gui.chrome_tabs import EVT_NOTEBOOK_PAGE_CHANGED
-
+from gui.contextMenu import ContextMenu
+from gui.utils.staticHelpers import DragDropHelper
 from service.fit import Fit
 from service.market import Market
-
-from gui.utils.staticHelpers import DragDropHelper
-import gui.utils.fonts as fonts
-
-import gui.globalEvents as GE
 
 pyfalog = Logger(__name__)
 
@@ -265,7 +263,9 @@ class FittingView(d.Display):
         sel = []
         row = self.GetFirstSelected()
         while row != -1:
-            sel.append(self.mods[self.GetItemData(row)])
+            mod = self.mods[self.GetItemData(row)]
+            if mod and not isinstance(mod, Rack):
+                sel.append(mod)
             row = self.GetNextSelected(row)
 
         return sel
@@ -358,6 +358,9 @@ class FittingView(d.Display):
             self.parent.SetPageTextIcon(pageIndex, text, bitmap)
 
     def appendItem(self, event):
+        """
+        Adds items that are double clicks from the market browser. We handle both modules and ammo
+        """
         if not self:
             event.Skip()
             return
@@ -367,6 +370,7 @@ class FittingView(d.Display):
             if fitID is not None:
                 sFit = Fit.getInstance()
                 if sFit.isAmmo(itemID):
+                    # If we've selected ammo, then apply to the selected module(s)
                     modules = []
                     sel = self.GetFirstSelected()
                     while sel != -1 and sel not in self.blanks:
@@ -376,17 +380,14 @@ class FittingView(d.Display):
                         sel = self.GetNextSelected(sel)
 
                     if len(modules) > 0:
-                        sFit.setAmmo(fitID, itemID, modules)
-                        wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fitID))
+                        self.mainFrame.command.Submit(cmd.GuiModuleAddChargeCommand(fitID, itemID, modules))
                 else:
-                    populate = sFit.appendModule(fitID, itemID)
-                    if populate is not None:
-                        self.slotsChanged()
-                        wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fitID, action="modadd", typeID=itemID))
+                    self.mainFrame.command.Submit(cmd.GuiModuleAddCommand(fitID, itemID))
 
         event.Skip()
 
     def removeItem(self, event):
+        """Double Left Click - remove module"""
         if event.CmdDown():
             return
         row, _ = self.HitTest(event.Position)
@@ -400,36 +401,22 @@ class FittingView(d.Display):
 
     def removeModule(self, modules):
         """Removes a list of modules from the fit"""
-        sFit = Fit.getInstance()
-
         if not isinstance(modules, list):
             modules = [modules]
 
-        positions = [mod.modPosition for mod in modules]
-        result = sFit.removeModule(self.activeFitID, positions)
+        self.mainFrame.command.Submit(cmd.GuiModuleRemoveCommand(self.activeFitID, modules))
 
-        if result is not None:
-            self.slotsChanged()
-            ids = {mod.item.ID for mod in modules}
-            wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=self.activeFitID, action="moddel", typeID=ids))
-
-    def addModule(self, x, y, srcIdx):
-        """Add a module from the market browser"""
+    def addModule(self, x, y, itemID):
+        """Add a module from the market browser (from dragging it)"""
 
         dstRow, _ = self.HitTest((x, y))
         if dstRow != -1 and dstRow not in self.blanks:
-            sFit = Fit.getInstance()
             fitID = self.mainFrame.getActiveFit()
             mod = self.mods[dstRow]
             if not isinstance(mod, Module):  # make sure we're not adding something to a T3D Mode
                 return
 
-            moduleChanged = sFit.changeModule(fitID, self.mods[dstRow].modPosition, srcIdx)
-            if moduleChanged is None:
-                # the new module doesn't fit in specified slot, try to simply append it
-                wx.PostEvent(self.mainFrame, ItemSelected(itemID=srcIdx))
-
-            wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=self.mainFrame.getActiveFit(), action="modadd", typeID=srcIdx))
+            self.mainFrame.command.Submit(cmd.GuiModuleAddCommand(fitID, itemID, self.mods[dstRow].modPosition))
 
     def swapCargo(self, x, y, srcIdx):
         """Swap a module from cargo to fitting window"""
@@ -442,14 +429,11 @@ class FittingView(d.Display):
             if not isinstance(module, Module):
                 return
 
-            sFit = Fit.getInstance()
-            fit = sFit.getFit(self.activeFitID)
-            typeID = fit.cargo[srcIdx].item.ID
-
-            sFit.moveCargoToModule(self.mainFrame.getActiveFit(), module.modPosition, srcIdx,
-                                   mstate.CmdDown() and module.isEmpty)
-
-            wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=self.mainFrame.getActiveFit(), action="modadd", typeID=typeID))
+            self.mainFrame.command.Submit(cmd.GuiCargoToModuleCommand(
+                    self.mainFrame.getActiveFit(),
+                    module.modPosition,
+                    srcIdx,
+                    mstate.CmdDown() and module.isEmpty))
 
     def swapItems(self, x, y, srcIdx):
         """Swap two modules in fitting window"""
@@ -457,15 +441,9 @@ class FittingView(d.Display):
         sFit = Fit.getInstance()
         fit = sFit.getFit(self.activeFitID)
 
-        if mstate.CmdDown():
-            clone = True
-        else:
-            clone = False
-
         dstRow, _ = self.HitTest((x, y))
 
         if dstRow != -1 and dstRow not in self.blanks:
-
             mod1 = fit.modules[srcIdx]
             mod2 = self.mods[dstRow]
 
@@ -476,13 +454,11 @@ class FittingView(d.Display):
             if mod1.slot != mod2.slot:
                 return
 
-            if getattr(mod2, "modPosition") is not None:
-                if clone and mod2.isEmpty and mod1.getModifiedItemAttr("maxGroupFitted", 0) < 1.0:
-                    sFit.cloneModule(self.mainFrame.getActiveFit(), srcIdx, mod2.modPosition)
-                else:
-                    sFit.swapModules(self.mainFrame.getActiveFit(), srcIdx, mod2.modPosition)
+            clone = mstate.CmdDown() and mod2.isEmpty
 
-                wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=self.mainFrame.getActiveFit()))
+            fitID = self.mainFrame.getActiveFit()
+            if getattr(mod2, "modPosition") is not None:
+                self.mainFrame.command.Submit(cmd.GuiModuleSwapOrCloneCommand(fitID, srcIdx, mod2.modPosition, clone))
             else:
                 pyfalog.error("Missing module position for: {0}", str(getattr(mod2, "ID", "Unknown")))
 
@@ -541,7 +517,7 @@ class FittingView(d.Display):
         self.populate(self.mods)
 
     def fitChanged(self, event):
-        print('====== Fit Changed: {} {} activeFitID: {}, eventFitID: {}'.format(repr(self), str(bool(self)), self.activeFitID, event.fitID))
+        # print('====== Fit Changed: {} {} activeFitID: {}, eventFitID: {}'.format(repr(self), str(bool(self)), self.activeFitID, event.fitID))
         if not self:
             event.Skip()
             return
@@ -638,18 +614,18 @@ class FittingView(d.Display):
             else:
                 mods = self.getSelectedMods()
 
-            sFit = Fit.getInstance()
             fitID = self.mainFrame.getActiveFit()
             ctrl = event.cmdDown or event.middleIsDown
             click = "ctrl" if ctrl is True else "right" if event.GetButton() == 3 else "left"
-            sFit.toggleModulesState(fitID, self.mods[self.GetItemData(row)], mods, click)
+
+            self.mainFrame.command.Submit(cmd.GuiModuleStateChangeCommand(
+                fitID, self.mods[self.GetItemData(row)].modPosition, [mod.modPosition for mod in mods], click))
 
             # update state tooltip
             tooltip = self.activeColumns[col].getToolTip(self.mods[self.GetItemData(row)])
             if tooltip:
                 self.SetToolTip(tooltip)
 
-            wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=self.mainFrame.getActiveFit()))
         else:
             event.Skip()
 

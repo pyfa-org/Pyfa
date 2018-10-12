@@ -3,18 +3,11 @@
 # noinspection PyPackageRequirements
 import wx
 
-from service.fit import Fit
-from service.market import Market
+import gui.fitCommands as cmd
 import gui.mainFrame
-import gui.globalEvents as GE
 from gui.contextMenu import ContextMenu
+from service.market import Market
 from service.settings import ContextMenuSettings
-from eos.saveddata.booster import Booster
-from eos.saveddata.module import Module
-from eos.saveddata.drone import Drone
-from eos.saveddata.fighter import Fighter
-from eos.saveddata.implant import Implant
-from eos.saveddata.cargo import Cargo
 
 
 class MetaSwap(ContextMenu):
@@ -91,7 +84,7 @@ class MetaSwap(ContextMenu):
 
         # Sort items by metalevel, and group within that metalevel
         items = list(self.variations)
-        print(context)
+
         if "implantItem" in context:
             # sort implants based on name
             items.sort(key=lambda x: x.name)
@@ -122,79 +115,35 @@ class MetaSwap(ContextMenu):
             id = ContextMenu.nextID()
             mitem = wx.MenuItem(rootMenu, id, item.name)
             bindmenu.Bind(wx.EVT_MENU, self.handleModule, mitem)
-            self.moduleLookup[id] = item
+
+            self.moduleLookup[id] = item, context
             m.Append(mitem)
         return m
 
     def handleModule(self, event):
-        item = self.moduleLookup.get(event.Id, None)
+        item, context = self.moduleLookup.get(event.Id, None)
         if item is None:
             event.Skip()
             return
 
-        sFit = Fit.getInstance()
         fitID = self.mainFrame.getActiveFit()
-        fit = sFit.getFit(fitID)
 
-        for selected_item in self.selection:
-            if isinstance(selected_item, Module):
-                pos = fit.modules.index(selected_item)
-                sFit.changeModule(fitID, pos, item.ID)
+        self.mainFrame.command.Submit(cmd.GuiMetaSwapCommand(fitID, context, item.ID, self.selection))
 
-            elif isinstance(selected_item, Drone):
-                drone_count = None
+        # for selected_item in self.selection:
 
-                for idx, drone_stack in enumerate(fit.drones):
-                    if drone_stack is selected_item:
-                        drone_count = drone_stack.amount
-                        sFit.removeDrone(fitID, idx, drone_count, False)
-                        break
-
-                if drone_count:
-                    sFit.addDrone(fitID, item.ID, drone_count, True)
-
-            elif isinstance(selected_item, Fighter):
-                fighter_count = None
-
-                for idx, fighter_stack in enumerate(fit.fighters):
-                    # Right now fighters always will have max stack size.
-                    # Including this for future improvement, so if adjustable
-                    # fighter stacks get added we're ready for it.
-                    if fighter_stack is selected_item:
-                        if fighter_stack.amount > 0:
-                            fighter_count = fighter_stack.amount
-                        elif fighter_stack.amount == -1:
-                            fighter_count = fighter_stack.amountActive
-                        else:
-                            fighter_count.amount = 0
-
-                        sFit.removeFighter(fitID, idx, False)
-                        break
-
-                sFit.addFighter(fitID, item.ID, True)
-
-            elif isinstance(selected_item, Booster):
-                for idx, booster_stack in enumerate(fit.boosters):
-                    if booster_stack is selected_item:
-                        sFit.removeBooster(fitID, idx, False)
-                        sFit.addBooster(fitID, item.ID, True)
-                        break
-
-            elif isinstance(selected_item, Implant):
-                for idx, implant_stack in enumerate(fit.implants):
-                    if implant_stack is selected_item:
-                        sFit.removeImplant(fitID, idx, False)
-                        sFit.addImplant(fitID, item.ID, True)
-                        break
-
-            elif isinstance(selected_item, Cargo):
-                for idx, cargo_stack in enumerate(fit.cargo):
-                    if cargo_stack is selected_item:
-                        sFit.removeCargo(fitID, idx)
-                        sFit.addCargo(fitID, item.ID, cargo_stack.amount, True)
-                        break
-
-        wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fitID))
+        #
+        #     elif isinstance(selected_item, Drone):
+        #         drone_count = None
+        #
+        #         for idx, drone_stack in enumerate(fit.drones):
+        #             if drone_stack is selected_item:
+        #                 drone_count = drone_stack.amount
+        #                 sFit.removeDrone(fitID, idx, drone_count, False)
+        #                 break
+        #
+        #         if drone_count:
+        #             sFit.addDrone(fitID, item.ID, drone_count, True)
 
 
 MetaSwap.register()

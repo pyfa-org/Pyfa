@@ -1,16 +1,13 @@
 import wx
-
-import config
-import gui.builtinMarketBrowser.pfSearchBox as SBox
-from gui.contextMenu import ContextMenu
-from gui.display import Display
-from service.attribute import Attribute
-from service.fit import Fit
-from gui.utils.staticHelpers import DragDropHelper
-
 from logbook import Logger
 
-from gui.builtinMarketBrowser.events import RECENTLY_USED_MODULES, MAX_RECENTLY_USED_MODULES, ItemSelected
+import gui.builtinMarketBrowser.pfSearchBox as SBox
+from gui.builtinMarketBrowser.events import ItemSelected, MAX_RECENTLY_USED_MODULES, RECENTLY_USED_MODULES
+from gui.contextMenu import ContextMenu
+from gui.display import Display
+from gui.utils.staticHelpers import DragDropHelper
+from service.attribute import Attribute
+from service.fit import Fit
 
 pyfalog = Logger(__name__)
 

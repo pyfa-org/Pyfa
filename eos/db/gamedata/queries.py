@@ -17,16 +17,16 @@
 # along with eos.  If not, see <http://www.gnu.org/licenses/>.
 # ===============================================================================
 
-from sqlalchemy.orm import join, exc, aliased, joinedload, subqueryload
-from sqlalchemy.sql import and_, or_, select
 from sqlalchemy.inspection import inspect
+from sqlalchemy.orm import aliased, exc, join
+from sqlalchemy.sql import and_, or_, select
 
 import eos.config
 from eos.db import gamedata_session
-from eos.db.gamedata.metaGroup import metatypes_table, items_table
 from eos.db.gamedata.group import groups_table
+from eos.db.gamedata.metaGroup import items_table, metatypes_table
 from eos.db.util import processEager, processWhere
-from eos.gamedata import AlphaClone, Attribute, Category, Group, Item, MarketGroup, MetaGroup, AttributeInfo, MetaData, DynamicItem
+from eos.gamedata import AlphaClone, Attribute, AttributeInfo, Category, DynamicItem, Group, Item, MarketGroup, MetaData, MetaGroup
 
 cache = {}
 configVal = getattr(eos.config, "gamedataCache", None)
@@ -394,6 +394,21 @@ def directAttributeRequest(itemIDs, attrIDs):
 
 def getAbyssalTypes():
     return set([r.resultingTypeID for r in gamedata_session.query(DynamicItem.resultingTypeID).distinct()])
+
+
+@cachedQuery(1, "itemID")
+def getDynamicItem(itemID, eager=None):
+    try:
+        if isinstance(itemID, int):
+            if eager is None:
+                result = gamedata_session.query(DynamicItem).filter(DynamicItem.ID == itemID).one()
+            else:
+                result = gamedata_session.query(DynamicItem).options(*processEager(eager)).filter(DynamicItem.ID == itemID).one()
+        else:
+            raise TypeError("Need integer as argument")
+    except exc.NoResultFound:
+        result = None
+    return result
 
 
 def getRequiredFor(itemID, attrMapping):

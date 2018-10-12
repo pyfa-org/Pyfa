@@ -4,14 +4,11 @@
 # This must be done on every test in order to pass in Travis
 import os
 import sys
-from copy import deepcopy
 
 script_dir = os.path.dirname(os.path.abspath(__file__))
 sys.path.append(os.path.realpath(os.path.join(script_dir, '..', '..', '..', '..')))
 
 # noinspection PyPackageRequirements
-from _development.helpers import DBInMemory as DB, Gamedata, Saveddata
-from _development.helpers_fits import RifterFit, KeepstarFit, HeronFit
 
 
 def test_calculateModifiedAttributes(DB, RifterFit, KeepstarFit):

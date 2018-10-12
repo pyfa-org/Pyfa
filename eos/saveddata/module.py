@@ -17,16 +17,15 @@
 # along with eos.  If not, see <http://www.gnu.org/licenses/>.
 # ===============================================================================
 
-from logbook import Logger
-from copy import deepcopy
-
-from sqlalchemy.orm import validates, reconstructor
 from math import floor
 
+from logbook import Logger
+from sqlalchemy.orm import reconstructor, validates
+
 import eos.db
-from eos.effectHandlerHelpers import HandledItem, HandledCharge
+from eos.effectHandlerHelpers import HandledCharge, HandledItem
 from eos.enum import Enum
-from eos.modifiedAttributeDict import ModifiedAttributeDict, ItemAttrShortcut, ChargeAttrShortcut
+from eos.modifiedAttributeDict import ChargeAttrShortcut, ItemAttrShortcut, ModifiedAttributeDict
 from eos.saveddata.citadel import Citadel
 from eos.saveddata.mutator import Mutator
 
@@ -62,6 +61,30 @@ class Slot(Enum):
     FS_LIGHT = 13
     FS_SUPPORT = 14
     FS_HEAVY = 15
+
+
+ProjectedMap = {
+    State.OVERHEATED: State.ACTIVE,
+    State.ACTIVE: State.OFFLINE,
+    State.OFFLINE: State.ACTIVE,
+    State.ONLINE: State.ACTIVE  # Just in case
+}
+
+
+# Old state : New State
+LocalMap = {
+    State.OVERHEATED: State.ACTIVE,
+    State.ACTIVE: State.ONLINE,
+    State.OFFLINE: State.ONLINE,
+    State.ONLINE: State.ACTIVE
+}
+
+
+# For system effects. They should only ever be online or offline
+ProjectedSystem = {
+    State.OFFLINE: State.ONLINE,
+    State.ONLINE: State.OFFLINE
+}
 
 
 class Hardpoint(Enum):
@@ -626,7 +649,7 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
         for i in range(5):
             itemChargeGroup = self.getModifiedItemAttr('chargeGroup' + str(i), None)
             if itemChargeGroup is not None:
-                g = eos.db.getGroup(int(itemChargeGroup), eager=("items.attributes"))
+                g = eos.db.getGroup(int(itemChargeGroup), eager="items.attributes")
                 if g is None:
                     continue
                 for singleItem in g.items:
@@ -831,6 +854,36 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
                 return capUsed
         else:
             return 0
+
+    @staticmethod
+    def getProposedState(mod, click, proposedState=None):
+        # todo: instead of passing in module, make this a instanced function.
+        pyfalog.debug("Get proposed state for module.")
+        if mod.slot == Slot.SUBSYSTEM or mod.isEmpty:
+            return State.ONLINE
+
+        if mod.slot == Slot.SYSTEM:
+            transitionMap = ProjectedSystem
+        else:
+            transitionMap = ProjectedMap if mod.projected else LocalMap
+
+        currState = mod.state
+
+        if proposedState is not None:
+            state = proposedState
+        elif click == "right":
+            state = State.OVERHEATED
+        elif click == "ctrl":
+            state = State.OFFLINE
+        else:
+            state = transitionMap[currState]
+            if not mod.isValidState(state):
+                state = -1
+
+        if mod.isValidState(state):
+            return state
+        else:
+            return currState
 
     def __deepcopy__(self, memo):
         item = self.item

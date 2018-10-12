@@ -1,6 +1,6 @@
-'''
+"""
  string manipulation module
-'''
+"""
 import re
 
 

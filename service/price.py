@@ -18,18 +18,17 @@
 # =============================================================================
 
 
-import time
-import threading
 import queue
-from xml.dom import minidom
+import threading
+import time
 
-from logbook import Logger
 import wx
+from logbook import Logger
 
 from eos import db
-from service.network import Network, TimeoutError
 from service.fit import Fit
 from service.market import Market
+from service.network import TimeoutError
 
 pyfalog = Logger(__name__)
 
@@ -235,4 +234,5 @@ class PriceWorkerThread(threading.Thread):
             self.wait[x.typeID].append(callback)
 
 
-from service.marketSources import evemarketer, evemarketdata  # noqa: E402
+# Import market sources only to initialize price source modules, they register on their own
+from .marketSources import *

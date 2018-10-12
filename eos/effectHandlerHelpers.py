@@ -18,6 +18,7 @@
 # ===============================================================================
 
 from logbook import Logger
+from utils.deprecated import deprecated
 
 pyfalog = Logger(__name__)
 
@@ -113,6 +114,7 @@ class HandledList(list):
 
 
 class HandledModuleList(HandledList):
+
     def append(self, mod):
         emptyPosition = float("Inf")
         for i in range(len(self)):
@@ -130,6 +132,9 @@ class HandledModuleList(HandledList):
                 self.remove(mod)
             return
 
+        self.appendIgnoreEmpty(mod)
+
+    def appendIgnoreEmpty(self, mod):
         mod.position = len(self)
         HandledList.append(self, mod)
         if mod.isInvalid:
@@ -163,6 +168,7 @@ class HandledModuleList(HandledList):
         mod.position = index
         self[index] = mod
 
+    @deprecated
     def freeSlot(self, slot):
         for i in range(len(self)):
             mod = self[i]
@@ -195,14 +201,20 @@ class HandledImplantBoosterList(HandledList):
             self.remove(thing)
             return
 
+        self.makeRoom(thing)
+        HandledList.append(self, thing)
+
+    def makeRoom(self, thing):
         # if needed, remove booster that was occupying slot
         oldObj = next((m for m in self if m.slot == thing.slot), None)
         if oldObj:
-            pyfalog.info("Slot {0} occupied with {1}, replacing with {2}", thing.slot, oldObj.item.name, thing.item.name)
+            pyfalog.info("Slot {0} occupied with {1}, replacing with {2}", thing.slot, oldObj.item.name,
+                         thing.item.name)
+            itemID = oldObj.itemID
             oldObj.itemID = 0  # hack to remove from DB. See GH issue #324
             self.remove(oldObj)
-
-        HandledList.append(self, thing)
+            return itemID
+        return None
 
 
 class HandledSsoCharacterList(list):
@@ -228,18 +240,23 @@ class HandledProjectedModList(HandledList):
         isSystemEffect = proj.item.group.name == "Effect Beacon"
 
         if isSystemEffect:
-            # remove other system effects - only 1 per fit plz
-            oldEffect = next((m for m in self if m.item.group.name == "Effect Beacon"), None)
-
-            if oldEffect:
-                pyfalog.info("System effect occupied with {0}, replacing with {1}", oldEffect.item.name, proj.item.name)
-                self.remove(oldEffect)
+            self.makeRoom(proj)
 
         HandledList.append(self, proj)
 
         # Remove non-projectable modules
         if not proj.item.isType("projected") and not isSystemEffect:
             self.remove(proj)
+
+    def makeRoom(self, proj):
+        # remove other system effects - only 1 per fit plz
+        oldEffect = next((m for m in self if m.item.group.name == "Effect Beacon"), None)
+
+        if oldEffect:
+            pyfalog.info("System effect occupied with {0}, replacing with {1}", oldEffect.item.name, proj.item.name)
+            self.remove(oldEffect)
+            return oldEffect.itemID
+        return None
 
 
 class HandledProjectedDroneList(HandledDroneCargoList):

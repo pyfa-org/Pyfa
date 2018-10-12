@@ -30,7 +30,7 @@ PageAdded, EVT_NOTEBOOK_PAGE_ADDED = wx.lib.newevent.NewEvent()
 PageClosed, EVT_NOTEBOOK_PAGE_CLOSED = wx.lib.newevent.NewEvent()
 
 
-class VetoAble():
+class VetoAble:
     def __init__(self):
         self.__vetoed = False
 
@@ -41,7 +41,7 @@ class VetoAble():
         return self.__vetoed
 
 
-class NotebookTabChangeEvent():
+class NotebookTabChangeEvent:
     def __init__(self, old, new):
         self.__old = old
         self.__new = new

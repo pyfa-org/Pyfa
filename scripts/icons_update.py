@@ -6,14 +6,12 @@ This script updates only market/item icons.
 
 
 import argparse
-import os
-import re
-import sqlite3
 import json
+import os
+import sqlite3
+from shutil import copyfile
 
 from PIL import Image
-
-from shutil import copyfile
 
 parser = argparse.ArgumentParser(description='This script updates module icons for pyfa')
 parser.add_argument('-e', '--eve', required=True, type=str, help='path to eve\'s ')
@@ -67,8 +65,8 @@ graphics = graphicIDsLoader.load(os.path.join(to_path, 'graphicIDs.fsdbinary'))
 
 graphics_py_ob = {}
 for x, v in graphics.items():
-    if (hasattr(v, 'iconFolder')):
-        graphics_py_ob[x] = v.iconFolder
+    if hasattr(v, 'iconInfo') and hasattr(v.iconInfo, 'folder'):
+        graphics_py_ob[x] = v.iconInfo.folder
 
 # Add children to market group list
 # {parent: {children}}
@@ -198,13 +196,16 @@ if toadd:
             print("Can't find iconID {}".format(fname))
             continue
         key = icon['iconFile'].lower()
-        icon = get_icon_file(key, ICON_SIZE)
-        if icon is None:
-            missing.add(fname)
-            continue
-        fullname = '{}.png'.format(fname)
-        fullpath = os.path.join(icons_dir, fullname)
-        icon.save(fullpath, 'png')
+
+        for i in range(2):
+            scale = i+1
+            icon = get_icon_file(key, tuple([x*scale for x in ICON_SIZE]))
+            if icon is None:
+                missing.add(fname)
+                continue
+            fullname = '{}@{}x.png'.format(fname, scale)
+            fullpath = os.path.join(icons_dir, fullname)
+            icon.save(fullpath, 'png')
     if missing:
         print(('  {} icons are missing in export:'.format(len(missing))))
         for fname in sorted(missing):
@@ -229,15 +230,22 @@ if toadd:
     print(('Adding {} icons...'.format(len(toadd))))
     missing = set()
     for fname in sorted(toadd):
-        icon = graphics_py_ob[int(fname)]
-        icon = "{}/{}_64.png".format(icon, fname)
-        icon = get_icon_file(icon, RENDER_SIZE)
-        if icon is None:
-            missing.add(fname)
-            continue
-        fullname = '{}.png'.format(fname)
-        fullpath = os.path.join(render_dir, fullname)
-        icon.save(fullpath, 'png')
+        try:
+            key = graphics_py_ob[int(fname)]
+        except KeyError:
+            print("Can't find graphicID {}".format(fname))
+
+        key = "{}/{}_64.png".format(key, fname)
+
+        for i in range(2):
+            scale = i+1
+            icon = get_icon_file(key, tuple([x*scale for x in RENDER_SIZE]))
+            if icon is None:
+                missing.add(fname)
+                continue
+            fullname = '{}@{}x.png'.format(fname, scale)
+            fullpath = os.path.join(render_dir, fullname)
+            icon.save(fullpath, 'png')
     if missing:
         print(('  {} icons are missing in export:'.format(len(missing))))
         for fname in sorted(missing):

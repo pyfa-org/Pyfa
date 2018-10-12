@@ -35,7 +35,7 @@ class DevTools(wx.Dialog):
 
     def __init__(self, parent):
         wx.Dialog.__init__(self, parent, id=wx.ID_ANY, title="Damage Pattern Editor", size=wx.Size(400, 240))
-
+        self.mainFrame = parent
         self.block = False
         self.SetSizeHints(wx.DefaultSize, wx.DefaultSize)
 
@@ -56,13 +56,19 @@ class DevTools(wx.Dialog):
         self.fitTest = wx.Button(self, wx.ID_ANY, "Test fits", wx.DefaultPosition, wx.DefaultSize, 0)
         mainSizer.Add(self.fitTest, 0, wx.EXPAND | wx.TOP | wx.BOTTOM, 5)
 
-        self.fitTest .Bind(wx.EVT_BUTTON, self.fit_test)
+        self.fitTest.Bind(wx.EVT_BUTTON, self.fit_test)
+
+        self.cmdPrint = wx.Button(self, wx.ID_ANY, "Command Print", wx.DefaultPosition, wx.DefaultSize, 0)
+        mainSizer.Add(self.cmdPrint, 0, wx.EXPAND | wx.TOP | wx.BOTTOM, 5)
+
+        self.cmdPrint.Bind(wx.EVT_BUTTON, self.cmd_print)
 
         self.SetSizer(mainSizer)
 
         self.Layout()
         self.CenterOnParent()
         self.Show()
+        print(parent)
 
     def objects_by_id(self, evt):
         input = self.id_get.GetValue()
@@ -80,6 +86,11 @@ class DevTools(wx.Dialog):
                 break
         else:
             print(None)
+
+    def cmd_print(self, evt):
+        print("=" * 20)
+        for x in self.mainFrame.command.GetCommands():
+            print("{}{} {}".format("==> " if x == self.mainFrame.command.GetCurrentCommand() else "", x.GetName(), x))
 
     def gc_collect(self, evt):
         print(gc.collect())

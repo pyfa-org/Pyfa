@@ -1,8 +1,8 @@
-'''
+"""
 A change to EVE Online's cache format rendered Reverence unable to correctly dump the icons file. As a stop gap, this
 reads the offical SDE iconIDs.yaml and populates our own icons.json file. This files should then be transferred to the
 other JSON files Phobos dumps before being converted to SQL
-'''
+"""
 
 import yaml
 import json

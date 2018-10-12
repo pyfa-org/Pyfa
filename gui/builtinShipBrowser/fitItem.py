@@ -2,21 +2,21 @@
 
 import re
 import time
-import config
 
 import wx
 from logbook import Logger
 
+import config
 import gui.builtinShipBrowser.sfBrowserItem as SFItem
-import gui.globalEvents as GE
+import gui.fitCommands as cmd
 import gui.mainFrame
 import gui.utils.color as colorUtils
 import gui.utils.draw as drawUtils
 import gui.utils.fonts as fonts
-from .events import ImportSelected, SearchSelected, FitSelected, BoosterListUpdated, Stage3Selected, FitRenamed, FitRemoved
 from gui.bitmap_loader import BitmapLoader
 from gui.builtinShipBrowser.pfBitmapFrame import PFBitmapFrame
 from service.fit import Fit
+from .events import BoosterListUpdated, FitRemoved, FitSelected, ImportSelected, SearchSelected, Stage3Selected
 
 pyfalog = Logger(__name__)
 
@@ -183,18 +183,14 @@ class FitItem(SFItem.SFBrowserItem):
         if activeFit:
             sFit = Fit.getInstance()
             projectedFit = sFit.getFit(self.fitID)
-            sFit.project(activeFit, projectedFit)
-            wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=activeFit))
-            self.mainFrame.additionsPane.select("Projected")
+            if self.mainFrame.command.Submit(cmd.GuiAddProjectedCommand(activeFit, projectedFit.ID, 'fit')):
+                self.mainFrame.additionsPane.select("Projected")
 
     def OnAddCommandFit(self, event):
         activeFit = self.mainFrame.getActiveFit()
         if activeFit:
-            sFit = Fit.getInstance()
-            commandFit = sFit.getFit(self.fitID)
-            sFit.addCommandFit(activeFit, commandFit)
-            wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=activeFit))
-            self.mainFrame.additionsPane.select("Command")
+            if self.mainFrame.command.Submit(cmd.GuiAddCommandCommand(activeFit, self.fitID)):
+                self.mainFrame.additionsPane.select("Command")
 
     def OnMouseCaptureLost(self, event):
         """ Destroy drag information (GH issue #479)"""
@@ -325,14 +321,12 @@ class FitItem(SFItem.SFBrowserItem):
             self.Refresh()
 
     def renameFit(self, event=None):
-        sFit = Fit.getInstance()
         self.tcFitName.Show(False)
         self.editWasShown = 0
         fitName = self.tcFitName.GetValue()
         if fitName:
             self.fitName = fitName
-            sFit.renameFit(self.fitID, self.fitName)
-            wx.PostEvent(self.mainFrame, FitRenamed(fitID=self.fitID))
+            self.mainFrame.command.Submit(cmd.GuiFitRenameCommand(self.fitID, self.fitName))
         else:
             self.tcFitName.SetValue(self.fitName)
 

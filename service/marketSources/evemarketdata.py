@@ -18,12 +18,12 @@
 # =============================================================================
 
 import time
-from logbook import Logger
 from xml.dom import minidom
 
-from service.network import Network
-from service.price import Price, VALIDITY, TIMEOUT, TimeoutError
+from logbook import Logger
 
+from service.network import Network
+from service.price import Price, TIMEOUT, VALIDITY
 
 pyfalog = Logger(__name__)
 

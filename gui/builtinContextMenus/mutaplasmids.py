@@ -18,7 +18,7 @@ class MutaplasmidCM(ContextMenu):
         # if not self.settings.get('ammoPattern'):
         #     return False
 
-        if srcContext not in ("fittingModule") or self.mainFrame.getActiveFit() is None:
+        if srcContext not in "fittingModule" or self.mainFrame.getActiveFit() is None:
             return False
 
         mod = selection[0]

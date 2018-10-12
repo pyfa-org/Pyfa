@@ -14,11 +14,10 @@
 # ===============================================================================
 
 import copy
+
 import wx
 
-from gui.utils import color as color_utils
-from gui.utils import draw, anim_effects
-from service.fit import Fit
+from gui.utils import anim_effects, color as color_utils, draw
 
 
 class PyGauge(wx.Window):

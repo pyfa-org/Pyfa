@@ -1,17 +1,13 @@
 # noinspection PyPackageRequirements
 import wx
 
-from gui.preferenceView import PreferenceView
-from gui.bitmap_loader import BitmapLoader
-
 import gui.mainFrame
-
+from gui.bitmap_loader import BitmapLoader
+from gui.preferenceView import PreferenceView
 from service.settings import EsiSettings
 
-# noinspection PyPackageRequirements
-from wx.lib.intctrl import IntCtrl
 
-from service.esi import Esi
+# noinspection PyPackageRequirements
 
 
 class PFEsiPref(PreferenceView):

@@ -125,15 +125,15 @@ class PriceViewMinimal(StatsView):
 
         total_price = 0
 
-        if (self.settings.get("ship")):
+        if self.settings.get("ship"):
             total_price += ship_price
-        if (self.settings.get("modules")):
+        if self.settings.get("modules"):
             total_price += module_price
-        if (self.settings.get("drones")):
+        if self.settings.get("drones"):
             total_price += drone_price + fighter_price
-        if (self.settings.get("cargo")):
+        if self.settings.get("cargo"):
             total_price += cargo_price
-        if (self.settings.get("character")):
+        if self.settings.get("character"):
             total_price += booster_price + implant_price
 
         self.labelPriceShip.SetLabel("%s ISK" % formatAmount(ship_price, 3, 3, 9, currency=True))
