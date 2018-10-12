@@ -235,4 +235,4 @@ class PriceWorkerThread(threading.Thread):
 
 
 # Import market sources only to initialize price source modules, they register on their own
-from .marketSources import *
+from service.marketSources import evemarketer, evemarketdata  # noqa: E402
