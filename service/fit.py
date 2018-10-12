@@ -558,6 +558,7 @@ class Fit(FitDeprecated):
                 drone.amountActive = 0
                 changed = True
 
+        return changed
         # If any state was changed, recalculate attributes again
         # if changed:
         #     self.recalc(fit)

@@ -1,5 +1,4 @@
 import json
-import json
 from math import log
 
 from logbook import Logger
