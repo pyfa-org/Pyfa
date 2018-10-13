@@ -73,7 +73,11 @@ class BitmapLoader(object):
 
     @classmethod
     def getImage(cls, name, location):
-        return cls.getBitmap(name, location).ConvertToImage()
+        bmp = cls.getBitmap(name, location)
+        if bmp is not None:
+            return bmp.ConvertToImage()
+        else:
+            return None
 
     @classmethod
     def loadBitmap(cls, name, location):
