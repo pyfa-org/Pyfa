@@ -76,10 +76,11 @@ class ImplantView(wx.Panel):
 
     def OnRadioSelect(self, event):
         fitID = self.mainFrame.getActiveFit()
-        sFit = Fit.getInstance()
-        sFit.toggleImplantSource(fitID, ImplantLocation.FIT if self.rbFit.GetValue() else ImplantLocation.CHARACTER)
+        if fitID is not None:
+            sFit = Fit.getInstance()
+            sFit.toggleImplantSource(fitID, ImplantLocation.FIT if self.rbFit.GetValue() else ImplantLocation.CHARACTER)
 
-        wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fitID))
+            wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fitID))
 
 
 class ImplantDisplay(d.Display):

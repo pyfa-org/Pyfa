@@ -1,7 +1,3 @@
-import wx
-import math
-
-from gui.utils import anim_effects
 import math
 
 import wx

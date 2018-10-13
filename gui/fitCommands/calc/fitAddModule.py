@@ -2,6 +2,7 @@ import wx
 from eos.saveddata.module import Module, State
 import eos.db
 from logbook import Logger
+from service.fit import Fit
 pyfalog = Logger(__name__)
 
 
@@ -23,6 +24,7 @@ class FitAddModuleCommand(wx.Command):
         self.replace_cmd = None
 
     def Do(self):
+        sFit = Fit.getInstance()
         fitID = self.fitID
         itemID = self.itemID
         fit = eos.db.getFit(fitID)
@@ -57,7 +59,7 @@ class FitAddModuleCommand(wx.Command):
             # As some items may affect state-limiting attributes of the ship, calculate new attributes first
             # self.recalc(fit)
             # Then, check states of all modules and change where needed. This will recalc if needed
-            # self.checkStates(fit, m)
+            sFit.checkStates(fit, self.module)
 
             # fit.fill()
             eos.db.commit()
