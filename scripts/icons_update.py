@@ -150,6 +150,11 @@ def get_icon_file(res_path, size):
     if not os.path.isfile(fullpath):
         return None
     img = Image.open(fullpath)
+
+    if size > img.size:
+        # if we are requesting a size that is bigger than the source, return None. See #1769
+        return None
+
     img = crop_image(img)
     img.thumbnail(size, Image.ANTIALIAS)
 
