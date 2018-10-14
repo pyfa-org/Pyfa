@@ -26,21 +26,36 @@ class AttrGroup(Enum):
     FIGHTERS = 12
 
 
+# todo: instead of defining the attribute grouping as "grouped attributes" vs "normal attributes",
+# define the liast of grouped attributes outside. When iterating over attributes, can then find
+# the first one and apply them all
 RequiredSkillAttrs = sum((["requiredSkill{}".format(x), "requiredSkill{}Level".format(x)] for x in range(1, 7)), [])
-
 
 AttrGroupDict = {
     AttrGroup.FITTING           : {
-        AttrGroupingType.LABEL: "Fitting",
+        AttrGroupingType.LABEL : "Fitting",
         AttrGroupingType.NORMAL: [
+            # parent-level attributes
+            "cpuOutput",
+            "powerOutput",
+            "upgradeCapacity",
+            "hiSlots",
+            "medSlots",
+            "lowSlots",
+            "serviceSlots",
+            "turretSlotsLeft",
+            "launcherSlotsLeft",
+            "upgradeSlotsLeft",
+            # child-level attributes
             "cpu",
             "power",
             "rigSize",
             "upgradeCost",
-            "attributeMass", ]
+            # "mass",
+        ]
     },
     AttrGroup.STRUCTURE         : {
-        AttrGroupingType.LABEL: "Structure",
+        AttrGroupingType.LABEL : "Structure",
         AttrGroupingType.NORMAL: [
             "hp",
             "capacity",
@@ -72,7 +87,7 @@ AttrGroupDict = {
         ]
     },
     AttrGroup.ARMOR             : {
-        AttrGroupingType.LABEL: "Armor",
+        AttrGroupingType.LABEL : "Armor",
         AttrGroupingType.NORMAL: [
             "armorHP",
             "armorDamageLimit"
@@ -86,7 +101,7 @@ AttrGroupDict = {
 
     },
     AttrGroup.SHIELD            : {
-        AttrGroupingType.LABEL: "Shield",
+        AttrGroupingType.LABEL : "Shield",
         AttrGroupingType.NORMAL: [
             "shieldCapacity",
             "shieldRechargeRate",
@@ -101,7 +116,7 @@ AttrGroupDict = {
 
     },
     AttrGroup.EWAR_RESISTS      : {
-        AttrGroupingType.LABEL: "Electronic Warfare",
+        AttrGroupingType.LABEL : "Electronic Warfare",
         AttrGroupingType.NORMAL: [
             "ECMResistance",
             "remoteAssistanceImpedance",
@@ -114,14 +129,14 @@ AttrGroupDict = {
         ]
     },
     AttrGroup.CAPACITOR         : {
-        AttrGroupingType.LABEL: "Capacitor",
+        AttrGroupingType.LABEL : "Capacitor",
         AttrGroupingType.NORMAL: [
             "capacitorCapacity",
             "rechargeRate",
         ]
     },
     AttrGroup.TARGETING         : {
-        AttrGroupingType.LABEL: "Targeting",
+        AttrGroupingType.LABEL : "Targeting",
         AttrGroupingType.NORMAL: [
             "maxTargetRange",
             "maxRange",
@@ -134,22 +149,22 @@ AttrGroupDict = {
             "trackingSpeed",
         ],
         AttrGroupingType.SENSOR: [
-            "scanLadarStrength",
+            "scanRadarStrength",
             "scanMagnetometricStrength",
             "scanGravimetricStrength",
-            "scanRadarStrength",
+            "scanLadarStrength",
         ]
     },
     AttrGroup.SHARED_FACILITIES : {
-        AttrGroupingType.LABEL: "Shared Facilities",
+        AttrGroupingType.LABEL : "Shared Facilities",
         AttrGroupingType.NORMAL: [
-            "shipMaintenanceBayCapacity",
             "fleetHangarCapacity",
+            "shipMaintenanceBayCapacity",
             "maxJumpClones",
         ]
     },
     AttrGroup.FIGHTER_FACILITIES: {
-        AttrGroupingType.LABEL: "Fighter Squadron Facilities",
+        AttrGroupingType.LABEL : "Fighter Squadron Facilities",
         AttrGroupingType.NORMAL: [
             "fighterCapacity",
             "fighterTubes",
@@ -162,7 +177,7 @@ AttrGroupDict = {
         ]
     },
     AttrGroup.ON_DEATH          : {
-        AttrGroupingType.LABEL: "On Death",
+        AttrGroupingType.LABEL : "On Death",
         AttrGroupingType.NORMAL: [
             "onDeathDamageEM",
             "onDeathDamageTherm",
@@ -173,7 +188,7 @@ AttrGroupDict = {
         ]
     },
     AttrGroup.JUMP_SYSTEMS      : {
-        AttrGroupingType.LABEL: "Jump Drive Systems",
+        AttrGroupingType.LABEL : "Jump Drive Systems",
         AttrGroupingType.NORMAL: [
             "jumpDriveCapacitorNeed",
             "jumpDriveRange",
@@ -187,13 +202,13 @@ AttrGroupDict = {
         ]
     },
     AttrGroup.PROPULSIONS       : {
-        AttrGroupingType.LABEL: "Propulsion",
+        AttrGroupingType.LABEL : "Propulsion",
         AttrGroupingType.NORMAL: [
             "maxVelocity"
         ]
     },
     AttrGroup.FIGHTERS          : {
-        AttrGroupingType.LABEL: "Fighters",
+        AttrGroupingType.LABEL : "Fighters",
         AttrGroupingType.NORMAL: [
             "mass",
             "maxVelocity",
@@ -208,6 +223,7 @@ AttrGroupDict = {
 }
 
 Group1 = [
+    AttrGroup.FITTING,
     AttrGroup.STRUCTURE,
     AttrGroup.ARMOR,
     AttrGroup.SHIELD,

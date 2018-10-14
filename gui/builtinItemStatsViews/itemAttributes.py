@@ -9,8 +9,12 @@ from gui.builtinItemStatsViews.helpers import AutoListCtrl
 
 from gui.bitmap_loader import BitmapLoader
 from gui.utils.numberFormatter import formatAmount
-from enum import Enum
+from enum import IntEnum
 from gui.builtinItemStatsViews.attributeGrouping import *
+
+class AttributeView(IntEnum):
+    NORMAL = 1
+    RAW = -1
 
 
 class ItemParams(wx.Panel):
@@ -189,9 +193,6 @@ class ItemParams(wx.Panel):
                         if self.stuff is not None:
                             self.paramList.SetItemText(attr_item , baseVal, 2)
                         self.paramList.SetItemImage(attr_item , attrIcon, which=wx.TreeItemIcon_Normal)
-                        attr_item.SetTextX(-100)
-
-                        print("{} has x: {}".format(attrName, attr_item.GetTextX()))
                         processed_attribs.add(attr)
 
                 resists = data.get(AttrGroupingType.RESIST, [])
@@ -207,8 +208,11 @@ class ItemParams(wx.Panel):
                                 self.paramList.SetItemText(attr_item , baseVal, 2)
                             self.paramList.SetItemImage(attr_item , attrIcon, which=wx.TreeItemIcon_Normal)
                             processed_attribs.add(attr)
-                            print("{} has x: {}".format(attrName, attr_item.GetTextX()))
-                    self.paramList.Expand(resist_item)
+
+                    if self.paramList.GetChildrenCount(resist_item) == 0:
+                        self.paramList.Delete(resist_item)
+                    else:
+                        self.paramList.Expand(resist_item)
 
                 sensors = data.get(AttrGroupingType.SENSOR, [])
                 if len(sensors) > 0:
@@ -223,10 +227,16 @@ class ItemParams(wx.Panel):
                                 self.paramList.SetItemText(attr_item, baseVal, 2)
                             self.paramList.SetItemImage(attr_item, attrIcon, which=wx.TreeItemIcon_Normal)
                             processed_attribs.add(attr)
-                            print("{} has x: {}".format(attrName, attr_item.GetTextX()))
-                    self.paramList.Expand(sensor_item)
 
-                self.paramList.Expand(header_item)
+                    if self.paramList.GetChildrenCount(resist_item) == 0:
+                        self.paramList.Delete(sensor_item)
+                    else:
+                        self.paramList.Expand(sensor_item)
+
+                if self.paramList.GetChildrenCount(header_item) == 0:
+                    self.paramList.Delete(header_item)
+                else:
+                    self.paramList.Expand(header_item)
 
             misc_parent = self.paramList.AppendItem(root, "Miscellaneous")
 
@@ -239,6 +249,8 @@ class ItemParams(wx.Panel):
             if name in processed_attribs:
                 continue
 
+            if self.toggleView == AttributeView.NORMAL and not self.attrInfo.get(name).published:
+                continue
 
             attrIcon, attrName, currentVal, baseVal = self.GetData(name)
             attr_item = self.paramList.AppendItem(misc_parent, attrName)
@@ -316,7 +328,8 @@ class ItemParams(wx.Panel):
         else:
             valueUnitDefault = formatAmount(valueDefault, 3, 0, 0)
 
-        return (attrIcon, attrName, valueUnit, valueUnitDefault)
+        #  todo: attribute that point to another item should load that item's icon.
+        return (attrIcon, attrName + " {}".format(info.published), valueUnit, valueUnitDefault)
 
         # self.paramList.SetItemText(index, valueUnit, 1)
         # if self.stuff is not None:
@@ -344,10 +357,15 @@ if __name__ == "__main__":
     os.chdir('..')
     import config
     config.defPaths(None)
-
+    config.debug = True
     class Frame(wx.Frame):
         def __init__(self, ):
-            item = eos.db.getItem(23773)  # Ragnarok
+            # item = eos.db.getItem(23773)  # Ragnarok
+            # item = eos.db.getItem(23061)  # Einherji I
+            item = eos.db.getItem(24483)  # Nidhoggur
+            # item = eos.db.getItem(587)    # Rifter
+            # item = eos.db.getItem(2486)   # Warrior I
+            #item = eos.db.getItem(526)    # Stasis Webifier I
             super().__init__(None, title="Test Attribute Window | {} - {}".format(item.ID, item.name), size=(1000, 500))
 
             if 'wxMSW' in wx.PlatformInfo:
