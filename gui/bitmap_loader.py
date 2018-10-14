@@ -84,10 +84,15 @@ class BitmapLoader(object):
         if cls.scaling_factor is None:
             import gui.mainFrame
             cls.scaling_factor = int(gui.mainFrame.MainFrame.getInstance().GetContentScaleFactor())
-        scale = cls.scaling_factor
 
-        filenameScaled = "{0}@{1}x.png".format(name, scale)
-        img = cls.loadImage(filenameScaled, location)
+        scaledNameTemplate = "{0}@{1}x.png"
+        img = None
+        scale = cls.scaling_factor + 1
+
+        while img is None and scale > 1:
+            scale -= 1
+            filename = scaledNameTemplate.format(name, scale)
+            img = cls.loadImage(filename, location)
 
         if img is None:
             # can't find the scaled image, fallback to no scaling
