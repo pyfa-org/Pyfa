@@ -1,29 +1,21 @@
-from enum import Enum
-
-
-class AttrGroupingType(Enum):
-    # These are self-explanatory
-    LABEL = 0
-    NORMAL = 1
-    RESIST = 2
-    SENSOR = 3
+from enum import Enum, auto
 
 
 # Define the various groups of attributes
 class AttrGroup(Enum):
-    FITTING = 0
-    STRUCTURE = 1
-    SHIELD = 2
-    ARMOR = 3
-    TARGETING = 4
-    EWAR_RESISTS = 5
-    CAPACITOR = 6
-    SHARED_FACILITIES = 7
-    FIGHTER_FACILITIES = 8
-    ON_DEATH = 9
-    JUMP_SYSTEMS = 10
-    PROPULSIONS = 11
-    FIGHTERS = 12
+    FITTING = auto()
+    STRUCTURE = auto()
+    SHIELD = auto()
+    ARMOR = auto()
+    TARGETING = auto()
+    EWAR_RESISTS = auto()
+    CAPACITOR = auto()
+    SHARED_FACILITIES = auto()
+    FIGHTER_FACILITIES = auto()
+    ON_DEATH = auto()
+    JUMP_SYSTEMS = auto()
+    PROPULSIONS = auto()
+    FIGHTERS = auto()
 
 
 # todo: instead of defining the attribute grouping as "grouped attributes" vs "normal attributes",
@@ -31,10 +23,33 @@ class AttrGroup(Enum):
 # the first one and apply them all
 RequiredSkillAttrs = sum((["requiredSkill{}".format(x), "requiredSkill{}Level".format(x)] for x in range(1, 7)), [])
 
+#todo: maybe moved some of these basic definitions into eos proper? Can really be useful with effect writing as a lot of these are used over and over
+damage_types = ["em", "thermal", "kinetic", "explosive"]
+scan_types = ["radar", "magnetometric", "gravimetric", "ladar"]
+
+DamageAttrs = ["{}Damage".format(x) for x in damage_types]
+HullResistsAttrs = ["{}DamageResonance".format(x) for x in damage_types]
+ArmorResistsAttrs = ["armor{}DamageResonance".format(x.capitalize()) for x in damage_types]
+ShieldResistsAttrs = ["shield{}DamageResonance".format(x.capitalize()) for x in damage_types]
+ScanStrAttrs = ["scan{}Strength".format(x.capitalize()) for x in scan_types]
+
+# convert to named tuples
+AttrGroups = [
+    (DamageAttrs, "Damage"),
+    (HullResistsAttrs, "Resistances"),
+    (ArmorResistsAttrs, "Resistances"),
+    (ShieldResistsAttrs, "Resistances"),
+    (ScanStrAttrs, "Sensor Strengths")
+]
+
+GroupedAttributes = []
+for x in AttrGroups:
+    GroupedAttributes += x[0]
+
 AttrGroupDict = {
     AttrGroup.FITTING           : {
-        AttrGroupingType.LABEL : "Fitting",
-        AttrGroupingType.NORMAL: [
+        "label" : "Fitting",
+        "attributes": [
             # parent-level attributes
             "cpuOutput",
             "powerOutput",
@@ -55,8 +70,8 @@ AttrGroupDict = {
         ]
     },
     AttrGroup.STRUCTURE         : {
-        AttrGroupingType.LABEL : "Structure",
-        AttrGroupingType.NORMAL: [
+        "label" : "Structure",
+        "attributes": [
             "hp",
             "capacity",
             "mass",
@@ -78,46 +93,40 @@ AttrGroupDict = {
             "specialPlanetaryCommoditiesHoldCapacity",
             "structureDamageLimit",
             "specialSubsystemHoldCapacity",
-        ],
-        AttrGroupingType.RESIST: [
-            ("em", "emDamageResonance"),
-            ("thermal", "thermalDamageResonance"),
-            ("kinetic", "kineticDamageResonance"),
-            ("explosive", "explosiveDamageResonance")
+            "emDamageResonance",
+            "thermalDamageResonance",
+            "kineticDamageResonance",
+            "explosiveDamageResonance"
         ]
     },
     AttrGroup.ARMOR             : {
-        AttrGroupingType.LABEL : "Armor",
-        AttrGroupingType.NORMAL: [
+       "label": "Armor",
+        "attributes":[
             "armorHP",
-            "armorDamageLimit"
-        ],
-        AttrGroupingType.RESIST: [
-            ("em", "armorEmDamageResonance"),
-            ("thermal", "armorThermalDamageResonance"),
-            ("kinetic", "armorKineticDamageResonance"),
-            ("explosive", "armorExplosiveDamageResonance")
+            "armorDamageLimit",
+            "armorEmDamageResonance",
+            "armorThermalDamageResonance",
+            "armorKineticDamageResonance",
+            "armorExplosiveDamageResonance",
         ]
 
     },
     AttrGroup.SHIELD            : {
-        AttrGroupingType.LABEL : "Shield",
-        AttrGroupingType.NORMAL: [
+        "label": "Shield",
+        "attributes": [
             "shieldCapacity",
             "shieldRechargeRate",
-            "shieldDamageLimit"
-        ],
-        AttrGroupingType.RESIST: [
-            ("em", "shieldEmDamageResonance"),
-            ("thermal", "shieldExplosiveDamageResonance"),
-            ("kinetic", "shieldKineticDamageResonance"),
-            ("explosive", "shieldThermalDamageResonance")
+            "shieldDamageLimit",
+            "shieldEmDamageResonance",
+            "shieldExplosiveDamageResonance",
+            "shieldKineticDamageResonance",
+            "shieldThermalDamageResonance",
         ]
 
     },
     AttrGroup.EWAR_RESISTS      : {
-        AttrGroupingType.LABEL : "Electronic Warfare",
-        AttrGroupingType.NORMAL: [
+        "label": "Electronic Warfare",
+        "attributes": [
             "ECMResistance",
             "remoteAssistanceImpedance",
             "remoteRepairImpedance",
@@ -129,15 +138,15 @@ AttrGroupDict = {
         ]
     },
     AttrGroup.CAPACITOR         : {
-        AttrGroupingType.LABEL : "Capacitor",
-        AttrGroupingType.NORMAL: [
+        "label": "Capacitor",
+        "attributes": [
             "capacitorCapacity",
             "rechargeRate",
         ]
     },
     AttrGroup.TARGETING         : {
-        AttrGroupingType.LABEL : "Targeting",
-        AttrGroupingType.NORMAL: [
+        "label": "Targeting",
+        "attributes": [
             "maxTargetRange",
             "maxRange",
             "maxLockedTargets",
@@ -147,8 +156,6 @@ AttrGroupDict = {
             "proximityRange",
             "falloff",
             "trackingSpeed",
-        ],
-        AttrGroupingType.SENSOR: [
             "scanRadarStrength",
             "scanMagnetometricStrength",
             "scanGravimetricStrength",
@@ -156,16 +163,16 @@ AttrGroupDict = {
         ]
     },
     AttrGroup.SHARED_FACILITIES : {
-        AttrGroupingType.LABEL : "Shared Facilities",
-        AttrGroupingType.NORMAL: [
+        "label" : "Shared Facilities",
+        "attributes": [
             "fleetHangarCapacity",
             "shipMaintenanceBayCapacity",
             "maxJumpClones",
         ]
     },
     AttrGroup.FIGHTER_FACILITIES: {
-        AttrGroupingType.LABEL : "Fighter Squadron Facilities",
-        AttrGroupingType.NORMAL: [
+        "label": "Fighter Squadron Facilities",
+        "attributes": [
             "fighterCapacity",
             "fighterTubes",
             "fighterLightSlots",
@@ -177,8 +184,8 @@ AttrGroupDict = {
         ]
     },
     AttrGroup.ON_DEATH          : {
-        AttrGroupingType.LABEL : "On Death",
-        AttrGroupingType.NORMAL: [
+        "label": "On Death",
+        "attributes": [
             "onDeathDamageEM",
             "onDeathDamageTherm",
             "onDeathDamageKin",
@@ -188,8 +195,8 @@ AttrGroupDict = {
         ]
     },
     AttrGroup.JUMP_SYSTEMS      : {
-        AttrGroupingType.LABEL : "Jump Drive Systems",
-        AttrGroupingType.NORMAL: [
+        "label": "Jump Drive Systems",
+        "attributes": [
             "jumpDriveCapacitorNeed",
             "jumpDriveRange",
             "jumpDriveConsumptionType",
@@ -202,14 +209,14 @@ AttrGroupDict = {
         ]
     },
     AttrGroup.PROPULSIONS       : {
-        AttrGroupingType.LABEL : "Propulsion",
-        AttrGroupingType.NORMAL: [
+        "label": "Propulsion",
+        "attributes": [
             "maxVelocity"
         ]
     },
     AttrGroup.FIGHTERS          : {
-        AttrGroupingType.LABEL : "Fighters",
-        AttrGroupingType.NORMAL: [
+        "label": "Fighters",
+        "attributes": [
             "mass",
             "maxVelocity",
             "agility",

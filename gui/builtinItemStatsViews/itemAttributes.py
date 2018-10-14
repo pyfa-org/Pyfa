@@ -41,7 +41,7 @@ class ItemParams(wx.Panel):
         self.totalAttrsLabel = wx.StaticText(self, wx.ID_ANY, " ", wx.DefaultPosition, wx.DefaultSize, 0)
         bSizer.Add(self.totalAttrsLabel, 0, wx.ALIGN_CENTER_VERTICAL | wx.RIGHT)
 
-        self.toggleViewBtn = wx.ToggleButton(self, wx.ID_ANY, "Toggle view mode", wx.DefaultPosition, wx.DefaultSize,
+        self.toggleViewBtn = wx.ToggleButton(self, wx.ID_ANY, "Veiw Raw Data", wx.DefaultPosition, wx.DefaultSize,
                                              0)
         bSizer.Add(self.toggleViewBtn, 0, wx.ALIGN_CENTER_VERTICAL)
 
@@ -158,6 +158,28 @@ class ItemParams(wx.Panel):
                         ]
                 )
 
+    def AddAttribute(self, parent, attr):
+        if attr in self.attrValues and attr not in self.processed_attribs:
+
+            data = self.GetData(attr)
+            if data is None:
+                return
+
+            attrIcon, attrName, currentVal, baseVal = data
+            attr_item = self.paramList.AppendItem(parent, attrName)
+
+            self.paramList.SetItemText(attr_item, currentVal, 1)
+            if self.stuff is not None:
+                self.paramList.SetItemText(attr_item, baseVal, 2)
+            self.paramList.SetItemImage(attr_item, attrIcon, which=wx.TreeItemIcon_Normal)
+            self.processed_attribs.add(attr)
+
+    def ExpandOrDelete(self, item):
+        if self.paramList.GetChildrenCount(item) == 0:
+            self.paramList.Delete(item)
+        else:
+            self.paramList.Expand(item)
+
     def PopulateList(self):
         self.paramList.AddColumn("Attribute")
         self.paramList.AddColumn("Current Value")
@@ -172,73 +194,41 @@ class ItemParams(wx.Panel):
         self.imageList = wx.ImageList(16, 16)
         self.paramList.AssignImageList(self.imageList)
 
-        processed_attribs = set()
+        self.processed_attribs = set()
 
         misc_parent = root
 
-        if self.item.category.categoryName in ("Ship", "Fighter"):
-            order = CategoryGroups.get(self.item.category.categoryName, {})
-            # start building out the tree
-            for data in [AttrGroupDict[o] for o in order]:
-                heading = data.get(AttrGroupingType.LABEL)
 
-                header_item = self.paramList.AppendItem(root, heading)
+        order = CategoryGroups.get(self.item.category.categoryName, [AttrGroup.FITTING])
+        # start building out the tree
+        for data in [AttrGroupDict[o] for o in order]:
+            heading = data.get("label")
 
-                for attr in data.get(AttrGroupingType.NORMAL, []):
-                    if attr in self.attrValues:
-                        attrIcon, attrName, currentVal, baseVal = self.GetData(attr)
-                        attr_item = self.paramList.AppendItem(header_item, attrName)
+            header_item = self.paramList.AppendItem(root, heading)
+            for attr in data.get("attributes", []):
 
-                        self.paramList.SetItemText(attr_item , currentVal, 1)
-                        if self.stuff is not None:
-                            self.paramList.SetItemText(attr_item , baseVal, 2)
-                        self.paramList.SetItemImage(attr_item , attrIcon, which=wx.TreeItemIcon_Normal)
-                        processed_attribs.add(attr)
+                # if attr in self.processed_attribs:
+                #     continue
 
-                resists = data.get(AttrGroupingType.RESIST, [])
-                if len(resists) > 0:
-                    resist_item = self.paramList.AppendItem(header_item, "Resistances")
-                    for _, attr  in data.get(AttrGroupingType.RESIST, []):
-                        if attr in self.attrValues:
-                            attrIcon, attrName, currentVal, baseVal = self.GetData(attr)
-                            attr_item = self.paramList.AppendItem(resist_item , attrName)
+                if attr in GroupedAttributes:
+                    # find which group it's in
+                    for grouping in AttrGroups:
+                        if attr in grouping[0]:
+                            break
 
-                            self.paramList.SetItemText(attr_item , currentVal, 1)
-                            if self.stuff is not None:
-                                self.paramList.SetItemText(attr_item , baseVal, 2)
-                            self.paramList.SetItemImage(attr_item , attrIcon, which=wx.TreeItemIcon_Normal)
-                            processed_attribs.add(attr)
+                    # get all attributes in group
+                    item = self.paramList.AppendItem(header_item, grouping[1])
+                    for attr2 in grouping[0]:
+                        self.AddAttribute(item, attr2)
 
-                    if self.paramList.GetChildrenCount(resist_item) == 0:
-                        self.paramList.Delete(resist_item)
-                    else:
-                        self.paramList.Expand(resist_item)
+                    self.ExpandOrDelete(item)
+                    continue
 
-                sensors = data.get(AttrGroupingType.SENSOR, [])
-                if len(sensors) > 0:
-                    sensor_item = self.paramList.AppendItem(header_item, "Sensor Strengths")
-                    for attr in data.get(AttrGroupingType.SENSOR, []):
-                        if attr in self.attrValues:
-                            attrIcon, attrName, currentVal, baseVal = self.GetData(attr)
-                            attr_item = self.paramList.AppendItem(sensor_item, attrName)
+                self.AddAttribute(header_item, attr)
 
-                            self.paramList.SetItemText(attr_item, currentVal, 1)
-                            if self.stuff is not None:
-                                self.paramList.SetItemText(attr_item, baseVal, 2)
-                            self.paramList.SetItemImage(attr_item, attrIcon, which=wx.TreeItemIcon_Normal)
-                            processed_attribs.add(attr)
+            self.ExpandOrDelete(header_item)
 
-                    if self.paramList.GetChildrenCount(resist_item) == 0:
-                        self.paramList.Delete(sensor_item)
-                    else:
-                        self.paramList.Expand(sensor_item)
-
-                if self.paramList.GetChildrenCount(header_item) == 0:
-                    self.paramList.Delete(header_item)
-                else:
-                    self.paramList.Expand(header_item)
-
-            misc_parent = self.paramList.AppendItem(root, "Miscellaneous")
+        # misc_parent = self.paramList.AppendItem(root, "Other")
 
         names = list(self.attrValues.keys())
         names.sort()
@@ -246,21 +236,9 @@ class ItemParams(wx.Panel):
         idNameMap = {}
         idCount = 0
         for name in names:
-            if name in processed_attribs:
-                continue
+            self.AddAttribute(root, name)
 
-            if self.toggleView == AttributeView.NORMAL and not self.attrInfo.get(name).published:
-                continue
 
-            attrIcon, attrName, currentVal, baseVal = self.GetData(name)
-            attr_item = self.paramList.AppendItem(misc_parent, attrName)
-
-            self.paramList.SetItemText(attr_item, currentVal, 1)
-            if self.stuff is not None:
-                self.paramList.SetItemText(attr_item, baseVal, 2)
-            self.paramList.SetItemImage(attr_item, attrIcon, which=wx.TreeItemIcon_Normal)
-
-        self.paramList.Expand(misc_parent)
 
         # @todo: pheonix, this lamda used cmp() which no longer exists in py3. Probably a better way to do this in the
         # long run, take a look
@@ -286,6 +264,9 @@ class ItemParams(wx.Panel):
 
         val = getattr(att, "value", None)
         value = val if val is not None else att
+
+        if  self.toggleView == AttributeView.NORMAL and (not value or not info.published or attr in RequiredSkillAttrs):
+            return None
 
         if info and info.displayName and self.toggleView == 1:
             attrName = info.displayName
@@ -329,7 +310,7 @@ class ItemParams(wx.Panel):
             valueUnitDefault = formatAmount(valueDefault, 3, 0, 0)
 
         #  todo: attribute that point to another item should load that item's icon.
-        return (attrIcon, attrName + " {}".format(info.published), valueUnit, valueUnitDefault)
+        return (attrIcon, attrName, valueUnit, valueUnitDefault)
 
         # self.paramList.SetItemText(index, valueUnit, 1)
         # if self.stuff is not None:
@@ -363,8 +344,8 @@ if __name__ == "__main__":
             # item = eos.db.getItem(23773)  # Ragnarok
             # item = eos.db.getItem(23061)  # Einherji I
             item = eos.db.getItem(24483)  # Nidhoggur
-            # item = eos.db.getItem(587)    # Rifter
-            # item = eos.db.getItem(2486)   # Warrior I
+            #item = eos.db.getItem(587)    # Rifter
+            item = eos.db.getItem(2486)   # Warrior I
             #item = eos.db.getItem(526)    # Stasis Webifier I
             super().__init__(None, title="Test Attribute Window | {} - {}".format(item.ID, item.name), size=(1000, 500))
 
