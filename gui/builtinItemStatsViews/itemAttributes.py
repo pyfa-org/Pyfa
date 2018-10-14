@@ -10,197 +10,8 @@ from gui.builtinItemStatsViews.helpers import AutoListCtrl
 from gui.bitmap_loader import BitmapLoader
 from gui.utils.numberFormatter import formatAmount
 from enum import Enum
+from gui.builtinItemStatsViews.attributeGrouping import *
 
-
-class AttrGrouping(Enum):
-    # These are self-explanatory
-    NORMAL = 1
-    RESIST = 2
-    SENSOR = 3
-
-
-attr_order = {
-    "Fighter": {
-        "Fighters":{
-            AttrGrouping.NORMAL: [
-                "mass",
-                "maxVelocity",
-                "agility",
-                "volume",
-                "signatureRadius",
-                "fighterSquadronMaxSize",
-                "fighterSquadronOrbitRange",
-                "fighterRefuelingTime",
-            ]
-        },
-        "Shield": { # break these up into various constants, since this can be used in fighters as well as ships maybe?
-            AttrGrouping.NORMAL: [
-                "shieldCapacity",
-                "shieldRechargeRate"
-            ],
-            AttrGrouping.RESIST: [
-                ("em", "shieldEmDamageResonance"),
-                ("thermal","shieldExplosiveDamageResonance"),
-                ("kinetic", "shieldKineticDamageResonance"),
-                ("explosive", "shieldThermalDamageResonance")
-            ]
-        },
-        "Targeting": {
-            AttrGrouping.NORMAL: [
-                "maxTargetRange",
-                "maxLockedTargets",
-                "scanRadarStrength",
-                "scanLadarStrength",
-                "scanMagnetometricStrength",
-                "scanGravimetricStrength",
-                "scanResolution",
-            ]
-        }
-    },
-    'default': {
-"Structure": {
-    AttrGrouping.NORMAL: [
-          "hp",
-          "capacity",
-          "mass",
-          "volume",
-          "agility",
-          "droneCapacity",
-          "droneBandwidth",
-          "specialOreHoldCapacity",
-          "specialGasHoldCapacity",
-          "specialMineralHoldCapacity",
-          "specialSalvageHoldCapacity",
-          "specialShipHoldCapacity",
-          "specialSmallShipHoldCapacity",
-          "specialMediumShipHoldCapacity",
-          "specialLargeShipHoldCapacity",
-          "specialIndustrialShipHoldCapacity",
-          "specialAmmoHoldCapacity",
-          "specialCommandCenterHoldCapacity",
-          "specialPlanetaryCommoditiesHoldCapacity",
-          "structureDamageLimit",
-          "specialSubsystemHoldCapacity",
-      ],
-    AttrGrouping.RESIST:  [
-          ("em", "emDamageResonance"),
-          ("thermal", "thermalDamageResonance"),
-          ("kinetic", "kineticDamageResonance"),
-          ("explosive", "explosiveDamageResonance")
-      ]
-    },
-    "Armor": {
-        AttrGrouping.NORMAL: [
-          "armorHP",
-          "armorDamageLimit"
-      ],
-        AttrGrouping.RESIST: [
-        ("em","armorEmDamageResonance"),
-        ("thermal","armorThermalDamageResonance"),
-          ("kinetic", "armorKineticDamageResonance"),
-          ("explosive","armorExplosiveDamageResonance")
-      ]
-
-    },
-    "Shield": {
-        AttrGrouping.NORMAL: [
-          "shieldCapacity",
-          "shieldRechargeRate",
-          "shieldDamageLimit"
-      ],
-        AttrGrouping.RESIST: [
-            ("em", "shieldEmDamageResonance"),
-            ("thermal", "shieldExplosiveDamageResonance"),
-            ("kinetic", "shieldKineticDamageResonance"),
-            ("explosive", "shieldThermalDamageResonance")
-        ]
-
-    },
-    "Electronic Resistances": {
-      AttrGrouping.NORMAL: [
-          "ECMResistance",
-          "remoteAssistanceImpedance",
-          "remoteRepairImpedance",
-          "energyWarfareResistance",
-          "sensorDampenerResistance",
-          "stasisWebifierResistance",
-          "targetPainterResistance",
-          "weaponDisruptionResistance",
-      ]
-    },
-    "Capacitor": {
-        AttrGrouping.NORMAL: [
-"capacitorCapacity",
-          "rechargeRate",
-      ]
-    },
-    "Targeting": {
-        AttrGrouping.NORMAL: [
-          "maxTargetRange",
-          "maxRange",
-          "maxLockedTargets",
-          "signatureRadius",
-          "optimalSigRadius",
-          "scanResolution",
-          "proximityRange",
-          "falloff",
-          "trackingSpeed",
-      ],
-        AttrGrouping.SENSOR: [
-            "scanLadarStrength",
-            "scanMagnetometricStrength",
-            "scanGravimetricStrength",
-            "scanRadarStrength",
-        ]
-    },
-    "Shared Facilities": {
-        AttrGrouping.NORMAL: ["shipMaintenanceBayCapacity",
-"fleetHangarCapacity",
-"maxJumpClones",
-      ]
-    },
-    "Fighter Squadron Facilities": {
-        AttrGrouping.NORMAL: [
-          "fighterCapacity",
-          "fighterTubes",
-          "fighterLightSlots",
-          "fighterSupportSlots",
-          "fighterHeavySlots",
-          "fighterStandupLightSlots",
-          "fighterStandupSupportSlots",
-          "fighterStandupHeavySlots",
-      ]
-    },
-    "On Death": {
-        AttrGrouping.NORMAL: [
-          "onDeathDamageEM",
-"onDeathDamageTherm",
-"onDeathDamageKin",
-"onDeathDamageExp",
-"onDeathAOERadius",
-"onDeathSignatureRadius",
-      ]
-    },
-    "Jump Drive Systems": {
-        AttrGrouping.NORMAL: [
-          "jumpDriveCapacitorNeed",
-          "jumpDriveRange",
-          "jumpDriveConsumptionType",
-          "jumpDriveConsumptionAmount",
-          "jumpPortalCapacitorNeed",
-          "jumpDriveDuration",
-          "specialFuelBayCapacity",
-          "jumpPortalConsumptionMassFactor",
-          "jumpPortalDuration",
-      ]
-    },
-    "Propulsion": {
-        AttrGrouping.NORMAL: [
-        "maxVelocity"
-      ]
-    }
-    }
-}
 
 class ItemParams(wx.Panel):
     def __init__(self, parent, stuff, item, context=None):
@@ -268,10 +79,10 @@ class ItemParams(wx.Panel):
 
     def UpdateList(self):
         self.Freeze()
-        self.paramList.ClearAll()
+        self.paramList.DeleteRoot()
         self.PopulateList()
         self.Thaw()
-        self.paramList.resizeLastColumn(100)
+        # self.paramList.resizeLastColumn(100)
 
     def RefreshValues(self, event):
         self._fetchValues()
@@ -350,7 +161,7 @@ class ItemParams(wx.Panel):
             self.paramList.AddColumn("Base Value")
 
         self.paramList.SetMainColumn(0)  # the one with the tree in it...
-        self.paramList.SetColumnWidth(0, 175)
+        self.paramList.SetColumnWidth(0, 300)
 
         root = self.paramList.AddRoot("The Root Item")
         # self.paramList.setResizeColumn(0)
@@ -362,12 +173,14 @@ class ItemParams(wx.Panel):
         misc_parent = root
 
         if self.item.category.categoryName in ("Ship", "Fighter"):
-            order = attr_order.get(self.item.category.categoryName, attr_order.get("default"))
+            order = CategoryGroups.get(self.item.category.categoryName, {})
             # start building out the tree
-            for heading, data in order.items():
+            for data in [AttrGroupDict[o] for o in order]:
+                heading = data.get(AttrGroupingType.LABEL)
+
                 header_item = self.paramList.AppendItem(root, heading)
 
-                for attr in data.get(AttrGrouping.NORMAL, []):
+                for attr in data.get(AttrGroupingType.NORMAL, []):
                     if attr in self.attrValues:
                         attrIcon, attrName, currentVal, baseVal = self.GetData(attr)
                         attr_item = self.paramList.AppendItem(header_item, attrName)
@@ -381,10 +194,10 @@ class ItemParams(wx.Panel):
                         print("{} has x: {}".format(attrName, attr_item.GetTextX()))
                         processed_attribs.add(attr)
 
-                resists = data.get(AttrGrouping.RESIST, [])
+                resists = data.get(AttrGroupingType.RESIST, [])
                 if len(resists) > 0:
                     resist_item = self.paramList.AppendItem(header_item, "Resistances")
-                    for _, attr  in data.get(AttrGrouping.RESIST, []):
+                    for _, attr  in data.get(AttrGroupingType.RESIST, []):
                         if attr in self.attrValues:
                             attrIcon, attrName, currentVal, baseVal = self.GetData(attr)
                             attr_item = self.paramList.AppendItem(resist_item , attrName)
@@ -397,10 +210,10 @@ class ItemParams(wx.Panel):
                             print("{} has x: {}".format(attrName, attr_item.GetTextX()))
                     self.paramList.Expand(resist_item)
 
-                sensors = data.get(AttrGrouping.SENSOR, [])
+                sensors = data.get(AttrGroupingType.SENSOR, [])
                 if len(sensors) > 0:
                     sensor_item = self.paramList.AppendItem(header_item, "Sensor Strengths")
-                    for attr in data.get(AttrGrouping.SENSOR, []):
+                    for attr in data.get(AttrGroupingType.SENSOR, []):
                         if attr in self.attrValues:
                             attrIcon, attrName, currentVal, baseVal = self.GetData(attr)
                             attr_item = self.paramList.AppendItem(sensor_item, attrName)
@@ -533,8 +346,9 @@ if __name__ == "__main__":
     config.defPaths(None)
 
     class Frame(wx.Frame):
-        def __init__(self, title):
-            super().__init__(None, title=title, size=(1000, 500))
+        def __init__(self, ):
+            item = eos.db.getItem(23773)  # Ragnarok
+            super().__init__(None, title="Test Attribute Window | {} - {}".format(item.ID, item.name), size=(1000, 500))
 
             if 'wxMSW' in wx.PlatformInfo:
                 color = wx.SystemSettings.GetColour(wx.SYS_COLOUR_BTNFACE)
@@ -542,7 +356,7 @@ if __name__ == "__main__":
 
             main_sizer = wx.BoxSizer(wx.HORIZONTAL)
 
-            item = eos.db.getItem(22452)  # Ragnarok
+
 
             panel = ItemParams(self, None, item)
 
@@ -552,6 +366,6 @@ if __name__ == "__main__":
             self.SetSizer(main_sizer)
 
     app = wx.App(redirect=False)   # Error messages go to popup window
-    top = Frame("Test Item Attributes")
+    top = Frame()
     top.Show()
     app.MainLoop()
