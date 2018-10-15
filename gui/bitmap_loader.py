@@ -85,20 +85,14 @@ class BitmapLoader(object):
             import gui.mainFrame
             cls.scaling_factor = int(gui.mainFrame.MainFrame.getInstance().GetContentScaleFactor())
 
-        scaledNameTemplate = "{0}@{1}x.png"
-        img = None
-        scale = cls.scaling_factor + 1
+        scale = cls.scaling_factor
 
-        while img is None and scale > 1:
+        filename, img = cls.loadScaledBitmap(name, location, scale)
+
+        while img is None and scale > 0:
+            # can't find the correctly scaled image, fallback to smaller scales
             scale -= 1
-            filename = scaledNameTemplate.format(name, scale)
-            img = cls.loadImage(filename, location)
-
-        if img is None:
-            # can't find the scaled image, fallback to no scaling
-            filename = "{0}.png".format(name)
-            img = cls.loadImage(filename, location)
-            scale = 1
+            filename, img = cls.loadScaledBitmap(name, location, scale)
 
         if img is None:
             print(("Missing icon file: {0}/{1}".format(location, filename)))
@@ -108,6 +102,23 @@ class BitmapLoader(object):
         if scale > 1:
             bmp.SetSize((int(bmp.GetWidth()/scale), int(bmp.GetHeight()/scale)))
         return bmp
+
+    @classmethod
+    def loadScaledBitmap(cls, name, location, scale=0):
+        """Attempts to load a scaled bitmap.
+
+        Args:
+            name (str): TypeID or basename of the image being requested.
+            location (str): Path to a location that may contain the image.
+            scale (int): Scale factor of the image variant to load. If ``0``, attempts to load the unscaled variant.
+
+        Returns:
+            (str, wx.Image): Tuple of the filename that may have been loaded and the image at that location. The
+                filename will always be present, but the image may be ``None``.
+        """
+        filename = "{0}@{1}x.png".format(name, scale) if scale > 0 else "{0}.png".format(name)
+        img = cls.loadImage(filename, location)
+        return filename, img
 
     @classmethod
     def loadImage(cls, filename, location):
