@@ -48,7 +48,6 @@ class GuiMetaSwapCommand(wx.Command):
             for x in selection:
                 self.data.append(((FitChangeDroneVariationCommand, fitID, fit.drones.index(x), itemID),),)
 
-
     def Do(self):
         for cmds in self.data:
             for cmd in cmds:
