@@ -12,6 +12,7 @@ from .calc.fitAddCargo import FitAddCargoCommand
 from .calc.fitReplaceModule import FitReplaceModuleCommand
 from .calc.fitAddFighter import FitAddFighterCommand
 from .calc.fitRemoveFighter import FitRemoveFighterCommand
+from .calc.fitChangeDroneVariation import FitChangeDroneVariationCommand
 
 
 class GuiMetaSwapCommand(wx.Command):
@@ -44,7 +45,9 @@ class GuiMetaSwapCommand(wx.Command):
             for x in selection:
                 self.data.append(((FitRemoveFighterCommand, fitID, fit.fighters.index(x)), (FitAddFighterCommand, fitID, itemID)))
         elif context == 'droneItem':
-            raise NotImplementedError()
+            for x in selection:
+                self.data.append(((FitChangeDroneVariationCommand, fitID, fit.drones.index(x), itemID),),)
+
 
     def Do(self):
         for cmds in self.data:
