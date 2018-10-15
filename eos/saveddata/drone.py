@@ -124,6 +124,10 @@ class Drone(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
     def dps(self):
         return self.damageStats()
 
+    def changeType(self, typeID):
+        self.itemID = typeID
+        self.init()
+
     def damageStats(self, targetResists=None):
         if self.__dps is None:
             self.__volley = 0
