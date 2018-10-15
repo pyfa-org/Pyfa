@@ -100,7 +100,7 @@ class BitmapLoader(object):
 
         bmp: wx.Bitmap = img.ConvertToBitmap()
         if scale > 1:
-            bmp.SetSize((int(bmp.GetWidth()/scale), int(bmp.GetHeight()/scale)))
+            bmp.SetSize((bmp.GetWidth() // scale, bmp.GetHeight() // scale))
         return bmp
 
     @classmethod
