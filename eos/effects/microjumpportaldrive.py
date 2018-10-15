@@ -5,5 +5,6 @@
 type = "active"
 
 
-def handler(fit, src, context):
-    pass
+def handler(fit, module, context):
+    fit.ship.boostItemAttr("signatureRadius", module.getModifiedItemAttr("signatureRadiusBonusPercent"),
+                           stackingPenalties=True)
