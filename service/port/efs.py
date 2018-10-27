@@ -83,7 +83,6 @@ class EfsPort():
 
     @staticmethod
     def getPropData(fit, sFit):
-        fitID = fit.ID
         propMods = filter(lambda mod: mod.item and mod.item.group.name == "Propulsion Module", fit.modules)
         activePropWBloomFilter = lambda mod: mod.state > 0 and "signatureRadiusBonus" in mod.item.attributes
         propWithBloom = next(filter(activePropWBloomFilter, propMods), None)
@@ -341,7 +340,7 @@ class EfsPort():
                 # This also covers non-bomb weapons with dps values and no hardpoints, most notably targeted doomsdays.
                 typeing = "SmartBomb"
             # Targeted DDs are the only non drone/fighter weapon without an explict max range
-            if stats.item.group.name == 'Super Weapon' and stats.maxRange == None:
+            if stats.item.group.name == 'Super Weapon' and stats.maxRange is None:
                 maxRange = 300000
             else:
                 maxRange = stats.maxRange
