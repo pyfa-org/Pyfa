@@ -1,4 +1,5 @@
 import csv
+import config
 
 # noinspection PyPackageRequirements
 import wx
@@ -260,7 +261,7 @@ class ItemParams(wx.Panel):
         val = getattr(att, "value", None)
         value = val if val is not None else att
 
-        if self.toggleView == AttributeView.NORMAL and ((attr not in GroupedAttributes and not value) or not info.published or attr in RequiredSkillAttrs):
+        if self.toggleView == AttributeView.NORMAL and ((attr not in GroupedAttributes and not value) or info is None or not info.published or attr in RequiredSkillAttrs):
             return None
 
         if info and info.displayName and self.toggleView == 1:
