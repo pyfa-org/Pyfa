@@ -18,9 +18,6 @@ class AttrGroup(Enum):
     FIGHTERS = auto()
 
 
-# todo: instead of defining the attribute grouping as "grouped attributes" vs "normal attributes",
-# define the liast of grouped attributes outside. When iterating over attributes, can then find
-# the first one and apply them all
 RequiredSkillAttrs = sum((["requiredSkill{}".format(x), "requiredSkill{}Level".format(x)] for x in range(1, 7)), [])
 
 #todo: maybe moved some of these basic definitions into eos proper? Can really be useful with effect writing as a lot of these are used over and over
@@ -33,7 +30,7 @@ ArmorResistsAttrs = ["armor{}DamageResonance".format(x.capitalize()) for x in da
 ShieldResistsAttrs = ["shield{}DamageResonance".format(x.capitalize()) for x in damage_types]
 ScanStrAttrs = ["scan{}Strength".format(x.capitalize()) for x in scan_types]
 
-# convert to named tuples
+# todo: convert to named tuples?
 AttrGroups = [
     (DamageAttrs, "Damage"),
     (HullResistsAttrs, "Resistances"),
@@ -46,6 +43,7 @@ GroupedAttributes = []
 for x in AttrGroups:
     GroupedAttributes += x[0]
 
+# Start defining all the known attribute groups
 AttrGroupDict = {
     AttrGroup.FITTING           : {
         "label" : "Fitting",
@@ -215,7 +213,7 @@ AttrGroupDict = {
         ]
     },
     AttrGroup.FIGHTERS          : {
-        "label": "Fighters",
+        "label": "Fighter",
         "attributes": [
             "mass",
             "maxVelocity",
@@ -223,8 +221,8 @@ AttrGroupDict = {
             "volume",
             "signatureRadius",
             "fighterSquadronMaxSize",
-            "fighterSquadronOrbitRange",
             "fighterRefuelingTime",
+            "fighterSquadronOrbitRange",
         ]
     },
 }

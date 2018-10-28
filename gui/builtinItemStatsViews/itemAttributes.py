@@ -1,16 +1,15 @@
 import csv
-import config
 
 # noinspection PyPackageRequirements
 import wx
 import wx.lib.agw.hypertreelist
 from gui.builtinItemStatsViews.helpers import AutoListCtrl
 
-
 from gui.bitmap_loader import BitmapLoader
 from gui.utils.numberFormatter import formatAmount
 from enum import IntEnum
 from gui.builtinItemStatsViews.attributeGrouping import *
+
 
 class AttributeView(IntEnum):
     NORMAL = 1
@@ -24,6 +23,7 @@ class ItemParams(wx.Panel):
 
         self.paramList = wx.lib.agw.hypertreelist.HyperTreeList(self, wx.ID_ANY, agwStyle=wx.TR_HIDE_ROOT | wx.TR_NO_LINES | wx.TR_FULL_ROW_HIGHLIGHT | wx.TR_HAS_BUTTONS)
         self.paramList.SetBackgroundColour(wx.SystemSettings.GetColour(wx.SYS_COLOUR_WINDOW))
+
         mainSizer.Add(self.paramList, 1, wx.ALL | wx.EXPAND, 0)
         self.SetSizer(mainSizer)
 
@@ -34,12 +34,17 @@ class ItemParams(wx.Panel):
         self.attrValues = {}
         self._fetchValues()
 
+        self.paramList.AddColumn("Attribute")
+        self.paramList.AddColumn("Current Value")
+        if self.stuff is not None:
+            self.paramList.AddColumn("Base Value")
+
+        self.paramList.SetMainColumn(0)  # the one with the tree in it...
+        self.paramList.SetColumnWidth(0, 300)
+
         self.m_staticline = wx.StaticLine(self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.LI_HORIZONTAL)
         mainSizer.Add(self.m_staticline, 0, wx.EXPAND)
         bSizer = wx.BoxSizer(wx.HORIZONTAL)
-
-        self.totalAttrsLabel = wx.StaticText(self, wx.ID_ANY, " ", wx.DefaultPosition, wx.DefaultSize, 0)
-        bSizer.Add(self.totalAttrsLabel, 0, wx.ALIGN_CENTER_VERTICAL | wx.RIGHT)
 
         self.toggleViewBtn = wx.ToggleButton(self, wx.ID_ANY, "Veiw Raw Data", wx.DefaultPosition, wx.DefaultSize,
                                              0)
@@ -181,24 +186,15 @@ class ItemParams(wx.Panel):
             self.paramList.Expand(item)
 
     def PopulateList(self):
-        self.paramList.AddColumn("Attribute")
-        self.paramList.AddColumn("Current Value")
-        if self.stuff is not None:
-            self.paramList.AddColumn("Base Value")
-
-        self.paramList.SetMainColumn(0)  # the one with the tree in it...
-        self.paramList.SetColumnWidth(0, 300)
-
-        root = self.paramList.AddRoot("The Root Item")
         # self.paramList.setResizeColumn(0)
         self.imageList = wx.ImageList(16, 16)
         self.paramList.AssignImageList(self.imageList)
 
         self.processed_attribs = set()
-
+        root = self.paramList.AddRoot("The Root Item")
         misc_parent = root
 
-
+        # We must first deet4ermine if it's categorey already has defined groupings set for it. Otherwise, we default to just using the fitting group
         order = CategoryGroups.get(self.item.category.categoryName, [AttrGroup.FITTING])
         # start building out the tree
         for data in [AttrGroupDict[o] for o in order]:
@@ -206,19 +202,17 @@ class ItemParams(wx.Panel):
 
             header_item = self.paramList.AppendItem(root, heading)
             for attr in data.get("attributes", []):
-
-                # if attr in self.processed_attribs:
-                #     continue
-
+                # Attribute is a "grouped" attr (eg: damage, sensor strengths, etc). Automatically group these into a child item
                 if attr in GroupedAttributes:
                     # find which group it's in
                     for grouping in AttrGroups:
                         if attr in grouping[0]:
                             break
 
-                    # get all attributes in group
+                    # create a child item with the groups label
                     item = self.paramList.AppendItem(header_item, grouping[1])
                     for attr2 in grouping[0]:
+                        # add each attribute in the group
                         self.AddAttribute(item, attr2)
 
                     self.ExpandOrDelete(item)
@@ -228,25 +222,26 @@ class ItemParams(wx.Panel):
 
             self.ExpandOrDelete(header_item)
 
-        # misc_parent = self.paramList.AppendItem(root, "Other")
-
         names = list(self.attrValues.keys())
         names.sort()
 
-        idNameMap = {}
-        idCount = 0
+        # this will take care of any attributes that weren't collected withe the defined grouping (or all attributes if the item ddidn't have anything defined)
         for name in names:
+            if name in GroupedAttributes:
+                # find which group it's in
+                for grouping in AttrGroups:
+                    if name in grouping[0]:
+                        break
+
+                # get all attributes in group
+                item = self.paramList.AppendItem(root, grouping[1])
+                for attr2 in grouping[0]:
+                    self.AddAttribute(item, attr2)
+
+                self.ExpandOrDelete(item)
+                continue
+
             self.AddAttribute(root, name)
-
-
-
-        # @todo: pheonix, this lamda used cmp() which no longer exists in py3. Probably a better way to do this in the
-        # long run, take a look
-
-
-        # self.paramList.SortItems(lambda id1, id2: (idNameMap[id1] > idNameMap[id2]) - (idNameMap[id1] < idNameMap[id2]))
-        # self.paramList.RefreshRows()
-        self.totalAttrsLabel.SetLabel("%d attributes. " % idCount)
 
         self.Layout()
 
@@ -265,7 +260,7 @@ class ItemParams(wx.Panel):
         val = getattr(att, "value", None)
         value = val if val is not None else att
 
-        if  self.toggleView == AttributeView.NORMAL and (not value or not info.published or attr in RequiredSkillAttrs):
+        if self.toggleView == AttributeView.NORMAL and ((attr not in GroupedAttributes and not value) or not info.published or attr in RequiredSkillAttrs):
             return None
 
         if info and info.displayName and self.toggleView == 1:
@@ -328,7 +323,6 @@ class ItemParams(wx.Panel):
         return "%s %s" % (fvalue, unit)
 
 
-
 if __name__ == "__main__":
 
     import eos.db
@@ -342,11 +336,13 @@ if __name__ == "__main__":
     class Frame(wx.Frame):
         def __init__(self, ):
             # item = eos.db.getItem(23773)  # Ragnarok
-            # item = eos.db.getItem(23061)  # Einherji I
-            item = eos.db.getItem(24483)  # Nidhoggur
+            item = eos.db.getItem(23061)  # Einherji I
+            #item = eos.db.getItem(24483)  # Nidhoggur
             #item = eos.db.getItem(587)    # Rifter
-            item = eos.db.getItem(2486)   # Warrior I
+            #item = eos.db.getItem(2486)   # Warrior I
             #item = eos.db.getItem(526)    # Stasis Webifier I
+            item = eos.db.getItem(486)  # 200mm AutoCannon I
+            #item = eos.db.getItem(200)  # Phased Plasma L
             super().__init__(None, title="Test Attribute Window | {} - {}".format(item.ID, item.name), size=(1000, 500))
 
             if 'wxMSW' in wx.PlatformInfo:
@@ -355,10 +351,7 @@ if __name__ == "__main__":
 
             main_sizer = wx.BoxSizer(wx.HORIZONTAL)
 
-
-
             panel = ItemParams(self, None, item)
-
 
             main_sizer.Add(panel, 1, wx.EXPAND | wx.ALL, 2)
 
