@@ -17,6 +17,7 @@ class GuiRemoveImplantCommand(wx.Command):
 
     def Do(self):
         if self.internal_history.Submit(FitRemoveImplantCommand(self.fitID, self.position)):
+            self.sFit.recalc(self.fitID)
             wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=self.fitID))
             return True
         return False
@@ -24,5 +25,6 @@ class GuiRemoveImplantCommand(wx.Command):
     def Undo(self):
         for _ in self.internal_history.Commands:
             self.internal_history.Undo()
+        self.sFit.recalc(self.fitID)
         wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=self.fitID))
         return True
