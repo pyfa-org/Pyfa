@@ -34,6 +34,8 @@ class ItemCompare(wx.Panel):
         # get a dict of attrName: attrInfo of all unique attributes across all items
         for item in self.items:
             for attr in list(item.attributes.keys()):
+                if attr == 'rigSlots':
+                    continue  # see #1785
                 if item.attributes[attr].info.displayName:
                     self.attrs[attr] = item.attributes[attr].info
 
@@ -110,7 +112,6 @@ class ItemCompare(wx.Panel):
             self.paramList.SetItem(i, len(self.attrs) + 1, formatAmount(price.value, 3, 3, 9, currency=True))
 
     def PopulateList(self, sort=None):
-
         if sort is not None and self.currentSort == sort:
             self.sortReverse = not self.sortReverse
         else:
@@ -135,7 +136,6 @@ class ItemCompare(wx.Panel):
 
         self.paramList.InsertColumn(0, "Item")
         self.paramList.SetColumnWidth(0, 200)
-
         for i, attr in enumerate(self.attrs.keys()):
             name = self.attrs[attr].displayName if self.attrs[attr].displayName else attr
             self.paramList.InsertColumn(i + 1, name)
