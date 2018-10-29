@@ -424,15 +424,6 @@ class Fit(FitDeprecated):
         else:
             return False
 
-    def toggleImplantSource(self, fitID, source):
-        pyfalog.debug("Toggling implant source for fit ID: {0}", fitID)
-        fit = eos.db.getFit(fitID)
-        fit.implantSource = source
-
-        eos.db.commit()
-        self.recalc(fit)
-        return True
-
     def toggleRestrictionIgnore(self, fitID):
         pyfalog.debug("Toggling restriction ignore for fit ID: {0}", fitID)
         fit = eos.db.getFit(fitID)
