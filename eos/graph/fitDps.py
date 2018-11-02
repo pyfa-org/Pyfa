@@ -75,7 +75,7 @@ class FitDpsGraph(Graph):
                 pyfalog.critical(e)
 
         for mod in fit.modules:
-            dps, _ = mod.damageStats(fit.targetResists)
+            dps = mod.damageStats(fit.targetResists)[1]
             if mod.hardpoint == Hardpoint.TURRET:
                 if mod.state >= State.ACTIVE:
                     total += dps * self.calculateTurretMultiplier(mod, data)
@@ -88,7 +88,7 @@ class FitDpsGraph(Graph):
             for drone in fit.drones:
                 multiplier = 1 if drone.getModifiedItemAttr("maxVelocity") > 1 else self.calculateTurretMultiplier(
                         drone, data)
-                dps, _ = drone.damageStats(fit.targetResists)
+                dps = drone.damageStats(fit.targetResists)[0]
                 total += dps * multiplier
 
         # this is janky as fuck
@@ -96,7 +96,7 @@ class FitDpsGraph(Graph):
             for ability in fighter.abilities:
                 if ability.dealsDamage and ability.active:
                     multiplier = self.calculateFighterMissileMultiplier(ability, data)
-                    dps, _ = ability.damageStats(fit.targetResists)
+                    dps = ability.damageStats(fit.targetResists)[0]
                     total += dps * multiplier
 
         return total

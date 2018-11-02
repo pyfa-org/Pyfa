@@ -148,10 +148,10 @@ class FirepowerViewFull(StatsView):
         else:
             self.stEff.Hide()
 
-        stats = (("labelFullDpsWeapon", lambda: fit.weaponDPS, 3, 0, 0, "%s DPS", None),
-                 ("labelFullDpsDrone", lambda: fit.droneDPS, 3, 0, 0, "%s DPS", None),
-                 ("labelFullVolleyTotal", lambda: fit.totalVolley, 3, 0, 0, "%s", "Volley: %.1f"),
-                 ("labelFullDpsTotal", lambda: fit.totalDPS, 3, 0, 0, "%s", None))
+        stats = (("labelFullDpsWeapon", lambda: fit.getWeaponDps(spool=True), 3, 0, 0, "%s DPS", None),
+                 ("labelFullDpsDrone", lambda: fit.getDroneDps(), 3, 0, 0, "%s DPS", None),
+                 ("labelFullVolleyTotal", lambda: fit.getTotalVolley(spool=True), 3, 0, 0, "%s", "Volley: %.1f"),
+                 ("labelFullDpsTotal", lambda: fit.getTotalDps(spool=True), 3, 0, 0, "%s", None))
         # See GH issue #
         # if fit is not None and fit.totalYield > 0:
         #    self.miningyield.Show()
