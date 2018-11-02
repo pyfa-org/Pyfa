@@ -1,3 +1,7 @@
+# shipBonusPBC1DisintegratorDamage
+#
+# Used by:
+# Ship: Drekavac
 type = "passive"
 
 

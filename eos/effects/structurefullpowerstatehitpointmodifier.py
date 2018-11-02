@@ -1,7 +1,7 @@
 # structureFullPowerStateHitpointModifier
 #
 # Used by:
-# Items from category: Structure (14 of 14)
+# Items from category: Structure (17 of 17)
 type = "passive"
 
 

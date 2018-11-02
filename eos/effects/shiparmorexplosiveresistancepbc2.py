@@ -1,3 +1,7 @@
+# shipArmorExplosiveResistancePBC2
+#
+# Used by:
+# Ship: Drekavac
 type = "passive"
 
 

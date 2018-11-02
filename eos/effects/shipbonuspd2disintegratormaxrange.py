@@ -1,3 +1,7 @@
+# shipBonusPD2DisintegratorMaxRange
+#
+# Used by:
+# Ship: Kikimora
 type = "passive"
 
 

@@ -1,3 +1,7 @@
+# eliteBonusCovertOps3PCTdamagePerCycle
+#
+# Used by:
+# Ship: Hydra
 type = "passive"
 
 

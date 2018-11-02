@@ -1,3 +1,7 @@
+# shipRoleDisintegratorMaxRangeCBC
+#
+# Used by:
+# Ship: Drekavac
 type = "passive"
 
 

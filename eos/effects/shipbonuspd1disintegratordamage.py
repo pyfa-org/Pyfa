@@ -1,3 +1,7 @@
+# shipBonusPD1DisintegratorDamage
+#
+# Used by:
+# Ship: Kikimora
 type = "passive"
 
 

@@ -1,7 +1,7 @@
 # energyWeaponDamageMultiply
 #
 # Used by:
-# Modules from group: Heat Sink (18 of 18)
+# Modules from group: Heat Sink (19 of 19)
 type = "passive"
 
 

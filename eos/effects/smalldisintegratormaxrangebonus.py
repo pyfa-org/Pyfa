@@ -1,3 +1,7 @@
+# smallDisintegratorMaxRangeBonus
+#
+# Used by:
+# Ship: Kikimora
 type = "passive"
 
 
