@@ -1,4 +1,4 @@
-# structureArmorHPMultiply
+# structureArmorHPBonus
 #
 # Used by:
 # Structure Modules from group: Structure Armor Reinforcer (2 of 2)
@@ -7,4 +7,4 @@ runTime = "early"
 
 
 def handler(fit, src, context):
-    fit.ship.multiplyItemAttr("hiddenArmorHPMultiplier", src.getModifiedItemAttr("armorHPMultiplier"))
+    fit.ship.boostItemAttr("hiddenArmorHPMultiplier", src.getModifiedItemAttr("armorHpBonus"), stackingPenalties=True)
