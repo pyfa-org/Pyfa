@@ -24,9 +24,9 @@ saveInRoot = False
 
 # Version data
 
-version = "2.5.1"
+version = "2.6.0"
 tag = "Stable"
-expansionName = "YC120.10"
+expansionName = "Onslaught"
 expansionVersion = "1.0"
 evemonMinVersion = "4081"
 
