@@ -66,9 +66,9 @@ class AttributeSlider(wx.Panel):
         # Additionally, since we want the slider to be accurate to 3 decimal places, we need to blow out the two ends here
         # (if we have a slider that needs to land on 66.66% towards the right, it will actually be converted to 66%. Se we need it to support 6,666)
         #
-        self.SliderMinValue = -100
-        self.SliderMaxValue = 100
-        self.SliderValue = 0
+        # self.SliderMinValue = -100
+        # self.SliderMaxValue = 100
+        # self.SliderValue = 0
 
         range = [self.UserMinValue, self.UserMaxValue]
 
@@ -92,7 +92,7 @@ class AttributeSlider(wx.Panel):
         evt.Skip()
 
     def SetValue(self, value, post_event=True):
-        # todo: check this against values that might be 2.5x and whatnot
+        self.ctrl.SetValue(value)
         invert_factor = -1 if self.inverse else 1
         if value >= self.base_value:
             slider_percentage = (value - self.base_value) / (self.UserMaxValue - self.base_value) * 100 * invert_factor
