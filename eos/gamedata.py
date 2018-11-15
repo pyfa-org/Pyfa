@@ -567,6 +567,10 @@ class Unit(EqBase):
         """ This is a mapping of various tweaks that we have to do between the internal representation of an attribute
         value and the display (for example, 'Millisecond' units have the display name of 's', so we have to convert value
         from ms to s) """
+        # Each entry contains:
+        # Function to convert value to display value
+        # Function to convert display value to value
+        # Function which controls attribute unit name used with attribute
         return {
             "Inverse Absolute Percent": (
                 lambda v: (1 - v) * 100,
@@ -652,7 +656,6 @@ class Unit(EqBase):
             return override[1](value)
 
         return value
-
 
 class Traits(EqBase):
     pass
