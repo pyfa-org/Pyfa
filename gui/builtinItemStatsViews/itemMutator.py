@@ -61,10 +61,10 @@ class ItemMutator(wx.Panel):
 
             headingSizer.Add(displayName, 3, wx.ALL | wx.EXPAND, 0)
 
-            range_low = wx.StaticText(self, wx.ID_ANY, ItemParams.FormatValue(*m.attribute.unit.TranslateValue(round(worse_range[0], 3))))
+            range_low = wx.StaticText(self, wx.ID_ANY, ItemParams.FormatValue(*m.attribute.unit.PreformatValue(round(worse_range[0], 3))))
             range_low.SetForegroundColour(self.goodColor if worse_range[2] else self.badColor)
 
-            range_high = wx.StaticText(self, wx.ID_ANY, ItemParams.FormatValue(*m.attribute.unit.TranslateValue(round(better_range[0], 3))))
+            range_high = wx.StaticText(self, wx.ID_ANY, ItemParams.FormatValue(*m.attribute.unit.PreformatValue(round(better_range[0], 3))))
             range_high.SetForegroundColour(self.goodColor if better_range[2] else self.badColor)
 
             headingSizer.Add(range_low, 0, wx.ALL | wx.EXPAND, 0)
@@ -74,11 +74,11 @@ class ItemMutator(wx.Panel):
             mainSizer.Add(headingSizer, 0, wx.ALL | wx.EXPAND, 5)
 
             slider = AttributeSlider(parent=self,
-                                     baseValue=m.attribute.unit.TranslateValue(m.baseValue)[0],
-                                     minValue=m.attribute.unit.TranslateValue(min_t[0])[0],
-                                     maxValue=m.attribute.unit.TranslateValue(max_t[0])[0],
+                                     baseValue=m.attribute.unit.SimplifyValue(m.baseValue),
+                                     minValue=m.attribute.unit.SimplifyValue(min_t[0]),
+                                     maxValue=m.attribute.unit.SimplifyValue(max_t[0]),
                                      inverse=better_range is min_t)
-            slider.SetValue(m.attribute.unit.TranslateValue(m.value)[0], False)
+            slider.SetValue(m.attribute.unit.SimplifyValue(m.value), False)
             slider.Bind(EVT_VALUE_CHANGED, self.changeMutatedValue)
             self.event_mapping[slider] = m
             mainSizer.Add(slider, 0, wx.RIGHT | wx.LEFT | wx.EXPAND, 10)
@@ -127,7 +127,7 @@ class ItemMutator(wx.Panel):
 
         for slider, m in self.event_mapping.items():
             value = sFit.changeMutatedValue(m, m.baseValue)
-            value = m.attribute.unit.TranslateValue(value)[0]
+            value = m.attribute.unit.SimplifyValue(value)
             slider.SetValue(value)
 
         evt.Skip()
@@ -138,7 +138,7 @@ class ItemMutator(wx.Panel):
         for slider, m in self.event_mapping.items():
             value = random.uniform(m.minValue, m.maxValue)
             value = sFit.changeMutatedValue(m, value)
-            value = m.attribute.unit.TranslateValue(value)[0]
+            value = m.attribute.unit.SimplifyValue(value)
             slider.SetValue(value)
 
         evt.Skip()

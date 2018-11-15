@@ -214,14 +214,14 @@ class ItemParams(wx.Panel):
             if self.toggleView != 1:
                 valueUnit = str(value)
             elif info and info.unit:
-                valueUnit = self.FormatValue(*info.unit.TranslateValue(value))
+                valueUnit = self.FormatValue(*info.unit.PreformatValue(value))
             else:
                 valueUnit = formatAmount(value, 3, 0, 0)
 
             if self.toggleView != 1:
                 valueUnitDefault = str(valueDefault)
             elif info and info.unit:
-                valueUnitDefault = self.FormatValue(*info.unit.TranslateValue(valueDefault))
+                valueUnitDefault = self.FormatValue(*info.unit.PreformatValue(valueDefault))
             else:
                 valueUnitDefault = formatAmount(valueDefault, 3, 0, 0)
 
