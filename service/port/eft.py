@@ -32,9 +32,9 @@ from eos.saveddata.implant import Implant
 from eos.saveddata.module import Module, State, Slot
 from eos.saveddata.ship import Ship
 from eos.saveddata.fit import Fit
-from gui.utils.numberFormatter import roundToPrec
 from service.fit import Fit as svcFit
 from service.market import Market
+from service.port.muta import exportMutant
 from service.port.shared import IPortUser, processing_notify
 from enum import Enum
 
@@ -157,17 +157,7 @@ def exportEft(fit, options):
     if mutants and options & Options.MUTATIONS.value:
         for mutantReference in sorted(mutants):
             mutant = mutants[mutantReference]
-            mutatedAttrs = {}
-            for attrID, mutator in mutant.mutators.items():
-                attrName = getAttributeInfo(attrID).name
-                mutatedAttrs[attrName] = mutator.value
-            mutationLines.append('[{}] {}'.format(mutantReference, mutant.baseItem.name))
-            mutationLines.append('  {}'.format(mutant.mutaplasmid.item.name))
-            # Round to 7th significant number to avoid exporting float errors
-            customAttrsLine = ', '.join(
-                '{} {}'.format(a, roundToPrec(mutatedAttrs[a], 7))
-                for a in sorted(mutatedAttrs))
-            mutationLines.append('  {}'.format(customAttrsLine))
+            mutationLines.append(exportMutant(mutant, firstPrefix='[{}] '.format(mutantReference), prefix='  '))
     if mutationLines:
         sections.append('\n'.join(mutationLines))
 
