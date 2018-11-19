@@ -20,6 +20,7 @@
 
 from eos.db.gamedata.queries import getAttributeInfo
 from gui.utils.numberFormatter import roundToPrec
+from service.port.shared import fetchItem
 
 
 def exportMutant(mutant, firstPrefix='', prefix=''):
@@ -36,3 +37,17 @@ def exportMutant(mutant, firstPrefix='', prefix=''):
         for a in sorted(mutatedAttrs))
     exportLines.append('{}{}'.format(prefix, customAttrsLine))
     return '\n'.join(exportLines)
+
+
+def importMutant(lines):
+    try:
+        baseName = lines[0]
+    except IndexError:
+        return None
+    baseName = baseName.strip()
+    mutant = fetchItem(baseName)
+    # try:
+    #     mutaName = lines[1]
+    # except IndexError:
+    #     return mutant
+

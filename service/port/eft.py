@@ -35,7 +35,7 @@ from eos.saveddata.fit import Fit
 from service.fit import Fit as svcFit
 from service.market import Market
 from service.port.muta import exportMutant
-from service.port.shared import IPortUser, processing_notify
+from service.port.shared import IPortUser, fetchItem, processing_notify
 from enum import Enum
 
 
@@ -536,7 +536,7 @@ def _importGetMutationData(lines):
                     if attrInfo is None:
                         continue
                     mutaAttrs[attrInfo.ID] = value
-            mutaItem = _fetchItem(mutaName)
+            mutaItem = fetchItem(mutaName)
             if mutaItem is None:
                 continue
             data[ref] = (mutaItem, mutaAttrs)
@@ -577,7 +577,7 @@ def _importCreateFit(lines):
     shipType = m.group('shipType').strip()
     fitName = m.group('fitName').strip()
     try:
-        ship = _fetchItem(shipType)
+        ship = fetchItem(shipType)
         try:
             fit.ship = Ship(ship)
         except ValueError:
@@ -587,20 +587,6 @@ def _importCreateFit(lines):
         pyfalog.warning('service.port.eft.importEft: exception caught when parsing header')
         raise EftImportError
     return fit
-
-
-def _fetchItem(typeName, eagerCat=False):
-    sMkt = Market.getInstance()
-    eager = 'group.category' if eagerCat else None
-    try:
-        item = sMkt.getItem(typeName, eager=eager)
-    except:
-        pyfalog.warning('service.port.eft: unable to fetch item "{}"'.format(typeName))
-        return None
-    if sMkt.getPublicityByItem(item):
-        return item
-    else:
-        return None
 
 
 def _clearTail(lst):
@@ -657,7 +643,7 @@ class Section:
 class BaseItemSpec:
 
     def __init__(self, typeName):
-        item = _fetchItem(typeName, eagerCat=True)
+        item = fetchItem(typeName, eagerCat=True)
         if item is None:
             raise EftImportError
         self.typeName = typeName
@@ -694,7 +680,7 @@ class RegularItemSpec(BaseItemSpec):
 
     def __fetchCharge(self, chargeName):
         if chargeName:
-            charge = _fetchItem(chargeName, eagerCat=True)
+            charge = fetchItem(chargeName, eagerCat=True)
             if not charge or charge.category.name != 'Charge':
                 charge = None
         else:
