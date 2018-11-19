@@ -7,7 +7,7 @@ import wx
 from .helpers import AutoListCtrl
 
 from gui.bitmap_loader import BitmapLoader
-from gui.utils.numberFormatter import formatAmount
+from gui.utils.numberFormatter import formatAmount, roundDec
 
 
 class ItemParams(wx.Panel):
@@ -236,11 +236,13 @@ class ItemParams(wx.Panel):
         self.Layout()
 
     @staticmethod
-    def FormatValue(value, unit):
+    def FormatValue(value, unit, rounding='prec', digits=3):
         """Formats a value / unit combination into a string
         @todo: move this to a more central location, since this is also used in the item mutator panel"""
-        if isinstance(value, (int, float)):
-            fvalue = formatAmount(value, 3, 0, 0)
+        if isinstance(value, (int, float)) and rounding == 'prec':
+            fvalue = formatAmount(value, digits, 0, 0)
+        elif isinstance(value, (int, float)) and rounding == 'dec':
+            fvalue = roundDec(value, digits)
         else:
             fvalue = value
         return "%s %s" % (fvalue, unit)
