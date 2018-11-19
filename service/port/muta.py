@@ -18,7 +18,8 @@
 # =============================================================================
 
 
-from eos.db.gamedata.queries import getAttributeInfo
+from eos.db.gamedata.queries import getAttributeInfo, getDynamicItem
+from eos.saveddata.module import Module
 from gui.utils.numberFormatter import roundToPrec
 from service.port.shared import fetchItem
 
@@ -40,14 +41,51 @@ def exportMutant(mutant, firstPrefix='', prefix=''):
 
 
 def importMutant(lines):
+    # Fetch base item type
     try:
         baseName = lines[0]
     except IndexError:
         return None
-    baseName = baseName.strip()
-    mutant = fetchItem(baseName)
-    # try:
-    #     mutaName = lines[1]
-    # except IndexError:
-    #     return mutant
+    baseType = fetchItem(baseName.strip())
+    # Fetch mutaplasmid item type and actual item
+    try:
+        mutaName = lines[1]
+    except IndexError:
+        return _makeModule(baseType)
+    mutaplasmidType = fetchItem(mutaName.strip())
+    if mutaplasmidType is None:
+        return _makeModule(baseType)
+    mutaplasmid = getDynamicItem(mutaplasmidType.ID)
+    module = _makeModule(mutaplasmid.resultingItem, baseType, mutaplasmid)
+    # Process mutated attribute values
+    try:
+        mutaAttrsLine = lines[2]
+    except IndexError:
+        return module
+    mutaAttrs = {}
+    pairs = [p.strip() for p in mutaAttrsLine.split(',')]
+    for pair in pairs:
+        try:
+            attrName, value = pair.split(' ')
+        except ValueError:
+            continue
+        try:
+            value = float(value)
+        except (ValueError, TypeError):
+            continue
+        attrInfo = getAttributeInfo(attrName.strip())
+        if attrInfo is None:
+            continue
+        mutaAttrs[attrInfo.ID] = value
+    for attrID, mutator in module.mutators.items():
+        if attrID in mutaAttrs:
+            mutator.value = mutaAttrs[attrID]
+    return module
+
+
+def _makeModule(item, *args, **kwargs):
+    try:
+        return Module(item, *args, **kwargs)
+    except ValueError:
+        return None
 
