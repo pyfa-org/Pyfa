@@ -73,6 +73,7 @@ from service.fit import Fit
 from service.port import EfsPort, IPortUser, Port
 from service.settings import HTMLExportSettings, SettingsProvider
 from service.update import Update
+import gui.fitCommands as cmd
 
 disableOverrideEditor = False
 
@@ -728,12 +729,17 @@ class MainFrame(wx.Frame):
 
     def importFromClipboard(self, event):
         clipboard = fromClipboard()
+        activeFit = self.getActiveFit()
         try:
-            fits = Port().importFitFromBuffer(clipboard, self.getActiveFit())
+            import_type, data = Port().importFitFromBuffer(clipboard, activeFit)
+            if import_type == "Abyssal":
+                # we've imported an Abyssal module, need to fire off the command to add it to the fit
+                self.command.Submit(cmd.GuiImportAbyssalModuleCommand(activeFit, data[0]))
+                return  # no need to do anything else
         except:
             pyfalog.error("Attempt to import failed:\n{0}", clipboard)
         else:
-            self._openAfterImport(fits)
+            self._openAfterImport(data)
 
     def exportToClipboard(self, event):
         CopySelectDict = {CopySelectDialog.copyFormatEft: self.clipboardEft,
