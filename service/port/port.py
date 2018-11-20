@@ -231,11 +231,16 @@ class Port(object):
         if re.match("\[.*,.*\]", firstLine):
             return "EFT", (cls.importEft(string),)
 
+        # Check if string is in DNA format
+        if re.match("\d+(:\d+(;\d+))*::", firstLine):
+            return "DNA", (cls.importDna(string),)
+
+        # Assume that we import stand-alone abyssal module if all else fails
         try:
             return "Abyssal", (parseMutant(string.split("\n")),)
         except:
-            # Use DNA format for all other cases
-            return "DNA", (cls.importDna(string),)
+            pass
+
 
     # EFT-related methods
     @staticmethod
