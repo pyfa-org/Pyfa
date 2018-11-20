@@ -11,7 +11,7 @@ pyfalog = Logger(__name__)
 class GuiImportMutatedModuleCommand(wx.Command):
 
     def __init__(self, fitID, baseItem, mutaItem, attrMap):
-        wx.Command.__init__(self, True, "Mutated Module Import: {} {} {}".format(baseItem.id, mutaItem.id, attrMap))
+        wx.Command.__init__(self, True, "Mutated Module Import: {} {} {}".format(baseItem, mutaItem, attrMap))
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
         self.sFit = Fit.getInstance()
         self.fitID = fitID

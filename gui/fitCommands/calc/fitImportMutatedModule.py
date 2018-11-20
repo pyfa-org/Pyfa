@@ -30,19 +30,22 @@ class FitImportMutatedCommand(wx.Command):
             pyfalog.warning("Unable to build non-mutated module: no base item to build from")
             return False
 
-        mutaplasmid = getDynamicItem(self.mutaItem.ID)
+
+        mutaplasmid = getDynamicItem(getattr(self.mutaItem, 'ID'))
         # Try to build simple item even though no mutaplasmid found
         if mutaplasmid is None:
             try:
                 module = Module(self.baseItem)
             except ValueError:
-                pyfalog.warning("Unable to build non-mutated module: typeID {}", self.baseItem.id)
+                pyfalog.warning("Unable to build non-mutated module: {}", self.baseItem)
                 return False
+        # Build mutated module otherwise
         else:
             try:
                 module = Module(mutaplasmid.resultingItem, self.baseItem, mutaplasmid)
             except ValueError:
-                pass
+                pyfalog.warning("Unable to build mutated module: {} {}", self.baseItem, self.mutaItem)
+                return False
             else:
                 for attrID, mutator in module.mutators.items():
                     if attrID in self.attrMap:
