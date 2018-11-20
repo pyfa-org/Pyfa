@@ -513,7 +513,7 @@ def _importGetMutationData(lines):
             mutaLinesMap[currentMutaRef] = currentMutaLines
 
     for i, line in enumerate(lines):
-        m = re.match(mutantHeaderPattern, line)
+        m = mutantHeaderPattern.match(line)
         # Start and reset at header line
         if m:
             completeMutaLines()
