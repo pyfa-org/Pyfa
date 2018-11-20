@@ -31,7 +31,7 @@ class FitImportMutatedCommand(wx.Command):
             return False
 
 
-        mutaplasmid = getDynamicItem(getattr(self.mutaItem, 'ID'))
+        mutaplasmid = getDynamicItem(getattr(self.mutaItem, 'ID', None))
         # Try to build simple item even though no mutaplasmid found
         if mutaplasmid is None:
             try:
