@@ -2,25 +2,28 @@ import wx
 import eos.db
 import gui.mainFrame
 from gui import globalEvents as GE
-from .calc.fitImportAbyssalModule import FitImportAbyssalCommand
+from .calc.fitImportMutatedModule import FitImportMutatedCommand
 from service.fit import Fit
 from logbook import Logger
 pyfalog = Logger(__name__)
 
 
-class GuiImportAbyssalModuleCommand(wx.Command):
-    def __init__(self, fitID, module):
-        wx.Command.__init__(self, True, "Abyssal Module Import: {}".format(module))
+class GuiImportMutatedModuleCommand(wx.Command):
+
+    def __init__(self, fitID, baseItem, mutaItem, attrMap):
+        wx.Command.__init__(self, True, "Mutated Module Import: {} {} {}".format(baseItem.id, mutaItem.id, attrMap))
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
         self.sFit = Fit.getInstance()
         self.fitID = fitID
-        self.module = module
+        self.baseItem = baseItem
+        self.mutaItem = mutaItem
+        self.attrMap = attrMap
         self.internal_history = wx.CommandProcessor()
 
     def Do(self):
         pyfalog.debug("{} Do()".format(self))
 
-        if self.internal_history.Submit(FitImportAbyssalCommand(self.fitID, self.module)):
+        if self.internal_history.Submit(FitImportMutatedCommand(self.fitID, self.baseItem, self.mutaItem, self.attrMap)):
             self.sFit.recalc(self.fitID)
             wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=self.fitID, action="modadd"))
             return True

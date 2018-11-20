@@ -189,10 +189,10 @@ class Port(object):
         # TODO: catch the exception?
         # activeFit is reserved?, bufferStr is unicode? (assume only clipboard string?
         sFit = svcFit.getInstance()
-        import_type, fits = Port.importAuto(bufferStr, activeFit=activeFit)
+        importType, importData = Port.importAuto(bufferStr, activeFit=activeFit)
 
-        if import_type != 'Abyssal':
-            for fit in fits:
+        if importType != "MutatedItem":
+            for fit in importData:
                 fit.character = sFit.character
                 fit.damagePattern = sFit.pattern
                 fit.targetResists = sFit.targetResists
@@ -202,7 +202,7 @@ class Port(object):
                     useCharImplants = sFit.serviceFittingOptions["useCharacterImplantsByDefault"]
                     fit.implantLocation = ImplantLocation.CHARACTER if useCharImplants else ImplantLocation.FIT
                 db.save(fit)
-        return import_type, fits
+        return importType, importData
 
     @classmethod
     def importAuto(cls, string, path=None, activeFit=None, iportuser=None):
@@ -237,7 +237,7 @@ class Port(object):
 
         # Assume that we import stand-alone abyssal module if all else fails
         try:
-            return "Abyssal", (parseMutant(string.split("\n")),)
+            return "MutatedItem", (parseMutant(string.split("\n")),)
         except:
             pass
 
