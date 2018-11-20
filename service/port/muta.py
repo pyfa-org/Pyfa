@@ -18,13 +18,12 @@
 # =============================================================================
 
 
-from eos.db.gamedata.queries import getAttributeInfo, getDynamicItem
-from eos.saveddata.module import Module
+from eos.db.gamedata.queries import getAttributeInfo
 from gui.utils.numberFormatter import roundToPrec
 from service.port.shared import fetchItem
 
 
-def exportMutant(mutant, firstPrefix='', prefix=''):
+def renderMutant(mutant, firstPrefix='', prefix=''):
     exportLines = []
     mutatedAttrs = {}
     for attrID, mutator in mutant.mutators.items():
@@ -40,28 +39,28 @@ def exportMutant(mutant, firstPrefix='', prefix=''):
     return '\n'.join(exportLines)
 
 
-def importMutant(lines):
+def parseMutant(lines):
     # Fetch base item type
     try:
         baseName = lines[0]
     except IndexError:
         return None
     baseType = fetchItem(baseName.strip())
+    if baseType is None:
+        return None, None, {}
     # Fetch mutaplasmid item type and actual item
     try:
         mutaName = lines[1]
     except IndexError:
-        return _makeModule(baseType)
-    mutaplasmidType = fetchItem(mutaName.strip())
-    if mutaplasmidType is None:
-        return _makeModule(baseType)
-    mutaplasmid = getDynamicItem(mutaplasmidType.ID)
-    module = _makeModule(mutaplasmid.resultingItem, baseType, mutaplasmid)
+        return baseType, None, {}
+    mutaType = fetchItem(mutaName.strip())
+    if mutaType is None:
+        return baseType, None, {}
     # Process mutated attribute values
     try:
         mutaAttrsLine = lines[2]
     except IndexError:
-        return module
+        return baseType, mutaType, {}
     mutaAttrs = {}
     pairs = [p.strip() for p in mutaAttrsLine.split(',')]
     for pair in pairs:
@@ -77,15 +76,4 @@ def importMutant(lines):
         if attrInfo is None:
             continue
         mutaAttrs[attrInfo.ID] = value
-    for attrID, mutator in module.mutators.items():
-        if attrID in mutaAttrs:
-            mutator.value = mutaAttrs[attrID]
-    return module
-
-
-def _makeModule(item, *args, **kwargs):
-    try:
-        return Module(item, *args, **kwargs)
-    except ValueError:
-        return None
-
+    return baseType, mutaType, mutaAttrs

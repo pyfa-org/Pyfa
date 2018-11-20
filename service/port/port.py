@@ -37,7 +37,7 @@ from service.port.esi import exportESI, importESI
 from service.port.multibuy import exportMultiBuy
 from service.port.shared import IPortUser, UserCancelException, processing_notify
 from service.port.xml import importXml, exportXml
-from service.port.muta import importMutant
+from service.port.muta import parseMutant
 
 
 pyfalog = Logger(__name__)
@@ -232,7 +232,7 @@ class Port(object):
             return "EFT", (cls.importEft(string),)
 
         try:
-            return "Abyssal", (importMutant(string.split("\n")),)
+            return "Abyssal", (parseMutant(string.split("\n")),)
         except:
             # Use DNA format for all other cases
             return "DNA", (cls.importDna(string),)
