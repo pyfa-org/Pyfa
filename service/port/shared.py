@@ -20,6 +20,13 @@
 
 from abc import ABCMeta, abstractmethod
 
+from logbook import Logger
+
+from service.market import Market
+
+
+pyfalog = Logger(__name__)
+
 
 class UserCancelException(Exception):
     """when user cancel on port processing."""
@@ -68,3 +75,17 @@ class IPortUser(metaclass=ABCMeta):
 def processing_notify(iportuser, flag, data):
     if not iportuser.on_port_processing(flag, data):
         raise UserCancelException
+
+
+def fetchItem(typeName, eagerCat=False):
+    sMkt = Market.getInstance()
+    eager = 'group.category' if eagerCat else None
+    try:
+        item = sMkt.getItem(typeName, eager=eager)
+    except:
+        pyfalog.warning('service.port.shared: unable to fetch item "{}"'.format(typeName))
+        return None
+    if sMkt.getPublicityByItem(item):
+        return item
+    else:
+        return None
