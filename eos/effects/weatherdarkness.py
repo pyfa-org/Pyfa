@@ -4,6 +4,7 @@
 # Celestial: darkness_weather_1
 # Celestial: darkness_weather_2
 # Celestial: darkness_weather_3
+# Celestial: pvp_weather_1
 runTime = "early"
 type = ("projected", "passive", "gang")
 
