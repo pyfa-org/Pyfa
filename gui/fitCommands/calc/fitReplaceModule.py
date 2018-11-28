@@ -23,6 +23,13 @@ class FitReplaceModuleCommand(wx.Command):
         self.old_module = None
 
     def Do(self):
+        fit = eos.db.getFit(self.fitID)
+
+        mod = fit.modules[self.position]
+        if not mod.isEmpty:
+            self.old_module = ModuleInfoCache(mod.modPosition, mod.item.ID, mod.state, mod.charge, mod.baseItemID,
+                                              mod.mutaplasmidID)
+
         return self.change_module(self.fitID, self.position, self.itemID)
 
     def Undo(self):
@@ -30,7 +37,6 @@ class FitReplaceModuleCommand(wx.Command):
             fit = eos.db.getFit(self.fitID)
             fit.modules.toDummy(self.position)
             return True
-
         self.change_module(self.fitID, self.position, self.old_module.itemID)
         self.module.state = self.old_module.state
         self.module.charge = self.old_module.charge
@@ -52,10 +58,7 @@ class FitReplaceModuleCommand(wx.Command):
         pyfalog.debug("Changing position of module from position ({0}) for fit ID: {1}", self.position, fitID)
 
         item = eos.db.getItem(itemID, eager=("attributes", "group.category"))
-
         mod = fit.modules[self.position]
-        if not mod.isEmpty:
-            self.old_module = ModuleInfoCache(mod.modPosition, mod.item.ID, mod.state, mod.charge, mod.baseItemID, mod.mutaplasmidID)
 
         try:
             self.module = Module(item)
@@ -74,6 +77,9 @@ class FitReplaceModuleCommand(wx.Command):
             fit.modules.toModule(self.position, self.module)
             if self.module.isValidState(State.ACTIVE):
                 self.module.state = State.ACTIVE
+
+            if self.old_module.charge and self.module.isValidCharge(self.old_module.charge):
+                self.module.charge = self.old_module.charge
 
             # Then, check states of all modules and change where needed. This will recalc if needed
             # self.checkStates(fit, m)
