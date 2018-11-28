@@ -93,6 +93,8 @@ class FitDpsGraph(Graph):
 
         # this is janky as fuck
         for fighter in fit.fighters:
+            if not fighter.active:
+                continue
             for ability in fighter.abilities:
                 if ability.dealsDamage and ability.active:
                     multiplier = self.calculateFighterMissileMultiplier(ability, data)

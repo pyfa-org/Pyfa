@@ -1,8 +1,7 @@
 # shipBonusForceAuxiliaryC2ShieldResists
 #
 # Used by:
-# Ship: Loggerhead
-# Ship: Minokawa
+# Variations of ship: Minokawa (2 of 2)
 type = "passive"
 
 

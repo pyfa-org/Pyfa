@@ -1,3 +1,11 @@
+# roleBonusWarpSpeed
+#
+# Used by:
+# Ship: Cynabal
+# Ship: Dramiel
+# Ship: Leopard
+# Ship: Machariel
+# Ship: Victorieux Luxury Yacht
 type = "passive"
 
 

@@ -696,7 +696,7 @@ class Fit(object):
                     self.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill("Shield Operation"),
                                                    "duration", value, stackingPenalties=True)
 
-                # Abysmal Weather Effects
+                # Abyssal Weather Effects
 
                 if warfareBuffID == 90:  # Weather_electric_storm_EM_resistance_penalty
                     for tankType in ("shield", "armor"):

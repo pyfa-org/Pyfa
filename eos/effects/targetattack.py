@@ -1,7 +1,7 @@
 # targetAttack
 #
 # Used by:
-# Drones from group: Combat Drone (74 of 74)
+# Drones from group: Combat Drone (75 of 75)
 # Modules from group: Energy Weapon (212 of 214)
 type = 'active'
 

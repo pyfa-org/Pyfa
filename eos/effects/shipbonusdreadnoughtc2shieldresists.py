@@ -1,8 +1,7 @@
 # shipBonusDreadnoughtC2ShieldResists
 #
 # Used by:
-# Ship: Caiman
-# Ship: Phoenix
+# Variations of ship: Phoenix (2 of 2)
 type = "passive"
 
 

@@ -1,3 +1,7 @@
+# massEntanglerEffect5
+#
+# Used by:
+# Module: Zero-Point Mass Entangler
 type = "active"
 
 
