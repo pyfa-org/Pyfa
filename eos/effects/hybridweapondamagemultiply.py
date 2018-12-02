@@ -1,7 +1,7 @@
 # hybridWeaponDamageMultiply
 #
 # Used by:
-# Modules from group: Magnetic Field Stabilizer (14 of 14)
+# Modules from group: Magnetic Field Stabilizer (15 of 15)
 type = "passive"
 
 

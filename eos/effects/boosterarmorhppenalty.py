@@ -1,7 +1,7 @@
 # boosterArmorHpPenalty
 #
 # Used by:
-# Implants named like: Booster (12 of 33)
+# Implants named like: Booster (12 of 35)
 type = "boosterSideEffect"
 
 # User-friendly name for the side effect

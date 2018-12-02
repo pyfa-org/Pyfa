@@ -9,7 +9,7 @@ pyfalog = Logger(__name__)
 
 
 class FitSetChargeCommand(wx.Command):
-    def __init__(self, fitID, positions, chargeID=None):
+    def __init__(self, fitID, positions, chargeID=None, projected=False):
         # todo: determine if this command really should be used with a group of modules, or a simple per module basis
         wx.Command.__init__(self, True, "Module Charge Add")
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
@@ -17,6 +17,7 @@ class FitSetChargeCommand(wx.Command):
         self.fitID = fitID
         self.chargeID = chargeID
         self.positions = positions
+        self.projected = projected
         self.cache = None
 
     def Do(self):
@@ -29,7 +30,8 @@ class FitSetChargeCommand(wx.Command):
 
     def __setAmmo(self, positions, chargeID):
         fit = eos.db.getFit(self.fitID)
-        self.cache = {fit.modules[i].modPosition: fit.modules[i].chargeID for i in positions}
+        source = fit.modules if not self.projected else fit.projectedModules
+        self.cache = {source[i].modPosition: source[i].chargeID for i in positions}
         ammo = eos.db.getItem(chargeID) if chargeID else None
 
         if ammo is not None and not ammo.isCharge:
@@ -37,7 +39,7 @@ class FitSetChargeCommand(wx.Command):
         result = False
 
         for pos in positions:
-            mod = fit.modules[pos]
+            mod = source[pos]
             if not mod.isEmpty and mod.isValidCharge(ammo):
                 pyfalog.debug("Set ammo {} for {} on fit {}", ammo, mod, self.fitID)
                 result = True

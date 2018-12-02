@@ -1,7 +1,7 @@
 # skillBonusDroneDurability
 #
 # Used by:
-# Implants from group: Cyber Drones (2 of 2)
+# Implants from group: Cyber Drones (4 of 4)
 # Skill: Drone Durability
 type = "passive"
 

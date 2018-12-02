@@ -30,17 +30,9 @@ class ItemMutator(wx.Panel):
         self.event_mapping = {}
 
         for m in sorted(stuff.mutators.values(), key=lambda x: x.attribute.displayName):
-            baseValueFormated = m.attribute.unit.TranslateValue(m.baseValue)[0]
-            valueFormated = m.attribute.unit.TranslateValue(m.value)[0]
-            slider = AttributeSlider(self, baseValueFormated, m.minMod, m.maxMod, not m.highIsGood)
-            slider.SetValue(valueFormated, False)
-            slider.Bind(EVT_VALUE_CHANGED, self.changeMutatedValue)
-            self.event_mapping[slider] = m
-            headingSizer = wx.BoxSizer(wx.HORIZONTAL)
-
             # create array for the two ranges
-            min_t = [round(m.minValue, 3), m.minMod, None]
-            max_t = [round(m.maxValue, 3), m.maxMod, None]
+            min_t = [m.minValue, m.minMod, None]
+            max_t = [m.maxValue, m.maxMod, None]
 
             # Then we need to determine if it's better than original, which will be the color
             min_t[2] = min_t[1] < 1 if not m.highIsGood else 1 < min_t[1]
@@ -56,14 +48,8 @@ class ItemMutator(wx.Panel):
                 worse_range = max_t
             else:
                 worse_range = min_t
-            #
-            # print("{}: \nHigh is good: {}".format(m.attribute.displayName, m.attribute.highIsGood))
-            # print("Value {}".format(m.baseValue))
-            #
-            # print(min_t)
-            # print(max_t)
-            # print(better_range)
-            # print(worse_range)
+
+            headingSizer = wx.BoxSizer(wx.HORIZONTAL)
 
             font = parent.GetFont()
             font.SetWeight(wx.BOLD)
@@ -75,19 +61,30 @@ class ItemMutator(wx.Panel):
 
             headingSizer.Add(displayName, 3, wx.ALL | wx.EXPAND, 0)
 
-            range_low = wx.StaticText(self, wx.ID_ANY, ItemParams.FormatValue(*m.attribute.unit.TranslateValue(worse_range[0])))
-            range_low.SetForegroundColour(self.goodColor if worse_range[2] else self.badColor)
+            worst_val = ItemParams.FormatValue(*m.attribute.unit.PreformatValue(worse_range[0]), rounding='dec')
+            worst_text = wx.StaticText(self, wx.ID_ANY, worst_val)
+            worst_text.SetForegroundColour(self.goodColor if worse_range[2] else self.badColor)
 
-            range_high = wx.StaticText(self, wx.ID_ANY, ItemParams.FormatValue(*m.attribute.unit.TranslateValue(better_range[0])))
-            range_high.SetForegroundColour(self.goodColor if better_range[2] else self.badColor)
+            best_val = ItemParams.FormatValue(*m.attribute.unit.PreformatValue(better_range[0]), rounding='dec')
+            best_text = wx.StaticText(self, wx.ID_ANY, best_val)
+            best_text.SetForegroundColour(self.goodColor if better_range[2] else self.badColor)
 
-            headingSizer.Add(range_low, 0, wx.ALL | wx.EXPAND, 0)
+            headingSizer.Add(worst_text, 0, wx.ALL | wx.EXPAND, 0)
             headingSizer.Add(wx.StaticText(self, wx.ID_ANY, " ─ "), 0, wx.RIGHT | wx.LEFT | wx.EXPAND, 5)
-            headingSizer.Add(range_high, 0, wx.RIGHT | wx.EXPAND, 10)
+            headingSizer.Add(best_text, 0, wx.RIGHT | wx.EXPAND, 10)
 
             mainSizer.Add(headingSizer, 0, wx.ALL | wx.EXPAND, 5)
 
+            slider = AttributeSlider(parent=self,
+                                     baseValue=m.attribute.unit.SimplifyValue(m.baseValue),
+                                     minValue=m.attribute.unit.SimplifyValue(min_t[0]),
+                                     maxValue=m.attribute.unit.SimplifyValue(max_t[0]),
+                                     inverse=better_range is min_t)
+            slider.SetValue(m.attribute.unit.SimplifyValue(m.value), False)
+            slider.Bind(EVT_VALUE_CHANGED, self.changeMutatedValue)
+            self.event_mapping[slider] = m
             mainSizer.Add(slider, 0, wx.RIGHT | wx.LEFT | wx.EXPAND, 10)
+
             mainSizer.Add(wx.StaticLine(self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.LI_HORIZONTAL), 0, wx.ALL | wx.EXPAND, 5)
 
         mainSizer.AddStretchSpacer()
@@ -132,7 +129,7 @@ class ItemMutator(wx.Panel):
 
         for slider, m in self.event_mapping.items():
             value = sFit.changeMutatedValue(m, m.baseValue)
-            value = m.attribute.unit.TranslateValue(value)[0]
+            value = m.attribute.unit.SimplifyValue(value)
             slider.SetValue(value)
 
         evt.Skip()
@@ -143,7 +140,7 @@ class ItemMutator(wx.Panel):
         for slider, m in self.event_mapping.items():
             value = random.uniform(m.minValue, m.maxValue)
             value = sFit.changeMutatedValue(m, value)
-            value = m.attribute.unit.TranslateValue(value)[0]
+            value = m.attribute.unit.SimplifyValue(value)
             slider.SetValue(value)
 
         evt.Skip()

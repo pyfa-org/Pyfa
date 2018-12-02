@@ -37,6 +37,7 @@ from service.port.esi import exportESI, importESI
 from service.port.multibuy import exportMultiBuy
 from service.port.shared import IPortUser, UserCancelException, processing_notify
 from service.port.xml import importXml, exportXml
+from service.port.muta import parseMutant
 
 
 pyfalog = Logger(__name__)
@@ -188,18 +189,20 @@ class Port(object):
         # TODO: catch the exception?
         # activeFit is reserved?, bufferStr is unicode? (assume only clipboard string?
         sFit = svcFit.getInstance()
-        _, fits = Port.importAuto(bufferStr, activeFit=activeFit)
-        for fit in fits:
-            fit.character = sFit.character
-            fit.damagePattern = sFit.pattern
-            fit.targetResists = sFit.targetResists
-            if len(fit.implants) > 0:
-                fit.implantLocation = ImplantLocation.FIT
-            else:
-                useCharImplants = sFit.serviceFittingOptions["useCharacterImplantsByDefault"]
-                fit.implantLocation = ImplantLocation.CHARACTER if useCharImplants else ImplantLocation.FIT
-            db.save(fit)
-        return fits
+        importType, importData = Port.importAuto(bufferStr, activeFit=activeFit)
+
+        if importType != "MutatedItem":
+            for fit in importData:
+                fit.character = sFit.character
+                fit.damagePattern = sFit.pattern
+                fit.targetResists = sFit.targetResists
+                if len(fit.implants) > 0:
+                    fit.implantLocation = ImplantLocation.FIT
+                else:
+                    useCharImplants = sFit.serviceFittingOptions["useCharacterImplantsByDefault"]
+                    fit.implantLocation = ImplantLocation.CHARACTER if useCharImplants else ImplantLocation.FIT
+                db.save(fit)
+        return importType, importData
 
     @classmethod
     def importAuto(cls, string, path=None, activeFit=None, iportuser=None):
@@ -228,8 +231,16 @@ class Port(object):
         if re.match("\[.*,.*\]", firstLine):
             return "EFT", (cls.importEft(string),)
 
-        # Use DNA format for all other cases
-        return "DNA", (cls.importDna(string),)
+        # Check if string is in DNA format
+        if re.match("\d+(:\d+(;\d+))*::", firstLine):
+            return "DNA", (cls.importDna(string),)
+
+        # Assume that we import stand-alone abyssal module if all else fails
+        try:
+            return "MutatedItem", (parseMutant(string.split("\n")),)
+        except:
+            pass
+
 
     # EFT-related methods
     @staticmethod

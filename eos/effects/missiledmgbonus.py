@@ -1,7 +1,7 @@
 # missileDMGBonus
 #
 # Used by:
-# Modules from group: Ballistic Control system (20 of 20)
+# Modules from group: Ballistic Control system (21 of 21)
 type = "passive"
 
 

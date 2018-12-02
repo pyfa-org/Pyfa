@@ -272,7 +272,17 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
     @property
     def modPosition(self):
         if self.owner:
-            return self.owner.modules.index(self)
+            return self.owner.modules.index(self) if not self.isProjected else self.owner.projectedModules.index(self)
+
+    @property
+    def isProjected(self):
+        if self.owner:
+            return self in self.owner.projectedModules
+        return None
+
+    @property
+    def isExclusiveSystemEffect(self):
+        return self.item.group.name in ("Effect Beacon", "Non-Interactable Object", "MassiveEnvironments")
 
     @property
     def isCapitalSize(self):

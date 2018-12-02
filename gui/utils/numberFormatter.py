@@ -110,3 +110,9 @@ def roundToPrec(val, prec):
     if int(val) == val:
         val = int(val)
     return val
+
+
+def roundDec(val, prec):
+    if int(val) == val:
+        return int(val)
+    return round(val, prec)
