@@ -281,6 +281,10 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
         return None
 
     @property
+    def isExclusiveSystemEffect(self):
+        return self.item.group.name in ("Effect Beacon", "Non-Interactable Object", "MassiveEnvironments")
+
+    @property
     def isCapitalSize(self):
         return self.getModifiedItemAttr("volume", 0) >= 4000
 
