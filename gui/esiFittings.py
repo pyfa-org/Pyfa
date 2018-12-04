@@ -131,7 +131,7 @@ class EveFittings(wx.Frame):
             return
         data = self.fitTree.fittingsTreeCtrl.GetItemData(selection)
         sPort = Port.getInstance()
-        fits = sPort.importFitFromBuffer(data)
+        import_type, fits = sPort.importFitFromBuffer(data)
         self.mainFrame._openAfterImport(fits)
 
     def deleteFitting(self, event):

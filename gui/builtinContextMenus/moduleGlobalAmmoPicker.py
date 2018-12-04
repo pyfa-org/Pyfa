@@ -30,8 +30,9 @@ class ModuleGlobalAmmoPicker(ModuleAmmoPicker):
         fit = db_getFit(fitID)
 
         selectedModule = self.modules[0]
+        source = fit.modules if not selectedModule.isProjected else fit.projectedModules
         allModules = []
-        for mod in fit.modules:
+        for mod in source:
             if mod.itemID is None:
                 continue
             if mod.itemID == selectedModule.itemID:

@@ -28,11 +28,12 @@ class FitAddProjectedEnvCommand(wx.Command):
 
         # todo: thing to check for existing environmental effects
 
-        self.old_item = fit.projectedModules.makeRoom(module)
-
         module.state = State.ONLINE
-        fit.projectedModules.append(module)
+        if module.isExclusiveSystemEffect:
+            # if this is an exclusive system effect, we need to cache the old one. We make room for the new one here, which returns the old one
+            self.old_item = fit.projectedModules.makeRoom(module)
 
+        fit.projectedModules.append(module)
         eos.db.commit()
         self.new_index = fit.projectedModules.index(module)
         return True

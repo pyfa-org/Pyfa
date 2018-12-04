@@ -167,8 +167,6 @@ class AttributeGauge(wx.Window):
 
     def SetValue(self, value, animate=True):
         """ Sets the current position of the gauge. """
-
-        print("=" * 20, self._percentage)
         if self._value == value:
             return
 

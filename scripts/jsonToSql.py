@@ -255,7 +255,7 @@ def main(db, json_path):
                 eos.db.gamedata_session.add(instance)
 
     # quick and dirty hack to get this data in
-    with open(os.path.join(jsonPath, 'dynamicAttributes.json'), encoding='utf-8') as f:
+    with open(os.path.join(jsonPath, 'dynamicattributes.json'), encoding='utf-8') as f:
         bulkdata = json.load(f)
         for mutaID, data in bulkdata.items():
             muta = eos.gamedata.DynamicItem()
