@@ -78,7 +78,7 @@ class FitReplaceModuleCommand(wx.Command):
             if self.module.isValidState(State.ACTIVE):
                 self.module.state = State.ACTIVE
 
-            if self.old_module.charge and self.module.isValidCharge(self.old_module.charge):
+            if self.old_module and self.old_module.charge and self.module.isValidCharge(self.old_module.charge):
                 self.module.charge = self.old_module.charge
 
             # Then, check states of all modules and change where needed. This will recalc if needed
