@@ -34,10 +34,10 @@ def calculateSpoolup(modMaxValue, modStepValue, modCycleTime, spoolType, spoolAm
     if spoolType == SpoolType.SCALE:
         return int(floatUnerr(spoolAmount * modMaxValue / modStepValue)) * modStepValue
     elif spoolType == SpoolType.TIME:
-        # Stub
-        return 0
+        cycles = int(floatUnerr(spoolAmount / modCycleTime))
+        return min(modMaxValue, cycles * modStepValue)
     elif spoolType == SpoolType.CYCLES:
-        cycles = round(spoolAmount)
+        cycles = int(spoolAmount)
         return min(modMaxValue, cycles * modStepValue)
     else:
         return 0
