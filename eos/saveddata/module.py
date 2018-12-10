@@ -28,6 +28,8 @@ from eos.enum import Enum
 from eos.modifiedAttributeDict import ChargeAttrShortcut, ItemAttrShortcut, ModifiedAttributeDict
 from eos.saveddata.citadel import Citadel
 from eos.saveddata.mutator import Mutator
+from eos.utils.spoolSupport import SpoolType, calculateSpoolup
+from eos.utils.float import floatUnerr
 
 pyfalog = Logger(__name__)
 
@@ -169,9 +171,11 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
             self.__charge = None
 
         self.__dps = None
-        self.__dpsSpool = None
+        self.__dpsSpoolZero = None
+        self.__dpsSpoolFull = None
         self.__volley = None
-        self.__volleySpool = None
+        self.__volleySpoolZero = None
+        self.__volleySpoolFull = None
         self.__miningyield = None
         self.__reloadTime = None
         self.__reloadForce = None
@@ -249,8 +253,8 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
             if chargeVolume is None or containerCapacity is None:
                 charges = 0
             else:
-                charges = floor(containerCapacity / chargeVolume)
-        return int(charges)
+                charges = int(floatUnerr(containerCapacity / chargeVolume))
+        return charges
 
     @property
     def numShots(self):
@@ -416,9 +420,11 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
     def damageStats(self, targetResists):
         if self.__dps is None:
             self.__dps = 0
-            self.__dpsSpool = 0
+            self.__dpsSpoolZero = 0
+            self.__dpsSpoolFull = 0
             self.__volley = 0
-            self.__volleySpool = 0
+            self.__volleySpoolZero = 0
+            self.__volleySpoolFull = 0
 
             if not self.isEmpty and self.state >= State.ACTIVE:
                 if self.charge:
@@ -426,12 +432,24 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
                 else:
                     func = self.getModifiedItemAttr
 
-                volley = sum([(func("%sDamage" % attr) or 0) * (1 - getattr(targetResists, "%sAmount" % attr, 0)) for attr in self.DAMAGE_TYPES])
-                volley *= self.getModifiedItemAttr("damageMultiplier") or 1
-                # Disintegrator-specific ramp-up multiplier
-                volleySpool = volley * ((self.getModifiedItemAttr("damageMultiplierBonusMax") or 0) + 1)
-                if volley:
-                    cycleTime = self.cycleTime
+                cycleTime = self.cycleTime
+
+                # Base volley
+                volleyBase = sum([(func("%sDamage" % attr) or 0) * (1 - getattr(targetResists, "%sAmount" % attr, 0)) for attr in self.DAMAGE_TYPES])
+                volleyBase *= self.getModifiedItemAttr("damageMultiplier") or 1
+                spoolMultMax = self.getModifiedItemAttr("damageMultiplierBonusMax") or 0
+                spoolMultPerCycle = self.getModifiedItemAttr("damageMultiplierBonusPerCycle") or 0
+                # Volley affected by module-specific spoolup
+                if spoolMultMax:
+                    volley = volleyBase * (1 + calculateSpoolup(spoolMultMax, spoolMultPerCycle, cycleTime, self.spoolType, self.spoolAmount))
+                else:
+                    volley = volleyBase
+                # Full spoolup
+                if spoolMultMax:
+                    volleySpoolFull = volleyBase * (1 + calculateSpoolup(spoolMultMax, spoolMultPerCycle, cycleTime, SpoolType.SCALE, 1))
+                else:
+                    volleySpoolFull = volleyBase
+                if volleyBase:
                     # Some weapons repeat multiple times in one cycle (think doomsdays)
                     # Get the number of times it fires off
                     weaponDoT = max(
@@ -440,12 +458,12 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
                     )
 
                     self.__volley = volley
-                    self.__volleySpool = volleySpool
+                    self.__volleySpoolFull = volleySpoolFull
                     dpsFactor = weaponDoT / (cycleTime / 1000.0)
                     self.__dps = volley * dpsFactor
-                    self.__dpsSpool = volleySpool * dpsFactor
+                    self.__dpsSpoolFull = volleySpoolFull * dpsFactor
 
-        return self.__dps, self.__dpsSpool, self.__volley, self.__volleySpool
+        return self.__dps, self.__dpsSpoolFull, self.__volley, self.__volleySpoolFull
 
     @property
     def miningStats(self):
@@ -730,6 +748,11 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
 
     def clear(self):
         self.__dps = None
+        self.__dpsSpoolZero = None
+        self.__dpsSpoolFull = None
+        self.__volley = None
+        self.__volleySpoolZero = None
+        self.__volleySpoolFull = None
         self.__miningyield = None
         self.__volley = None
         self.__reloadTime = None
