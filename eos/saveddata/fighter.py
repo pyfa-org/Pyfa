@@ -172,9 +172,11 @@ class Fighter(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
     def hasAmmo(self):
         return self.charge is not None
 
-    @property
-    def dps(self):
-        return self.damageStats()
+    def getDps(self):
+        return self.damageStats()[0]
+
+    def getVolley(self):
+        return self.damageStats()[1]
 
     def damageStats(self, targetResists=None):
         if self.__dps is None:

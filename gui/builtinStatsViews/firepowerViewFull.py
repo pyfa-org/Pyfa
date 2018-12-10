@@ -147,28 +147,36 @@ class FirepowerViewFull(StatsView):
             self.stEff.Show()
         else:
             self.stEff.Hide()
+            
+        def dpsToolTip(preSpool, postSpool, fmt_options):
+            if preSpool == postSpool:
+                return "{}".format(formatAmount(preSpool, *fmt_options))
+            else:
+                return "{}-{}".format(formatAmount(preSpool, *fmt_options), formatAmount(postSpool, *fmt_options))
 
-        stats = (("labelFullDpsWeapon", lambda: fit.weaponDPS, 3, 0, 0, "%s DPS", None),
-                 ("labelFullDpsDrone", lambda: fit.droneDPS, 3, 0, 0, "%s DPS", None),
-                 ("labelFullVolleyTotal", lambda: fit.totalVolley, 3, 0, 0, "%s", "Volley: %.1f"),
-                 ("labelFullDpsTotal", lambda: fit.totalDPS, 3, 0, 0, "%s", None))
+        stats = (("labelFullDpsWeapon", lambda: fit.getWeaponDps(spool=False), lambda: fit.getWeaponDps(spool=True), 3, 0, 0, "%s DPS", None),
+                 ("labelFullDpsDrone", lambda: fit.getDroneDps(), lambda: fit.getDroneDps(), 3, 0, 0, "%s DPS", None),
+                 ("labelFullVolleyTotal", lambda: fit.getTotalVolley(spool=False), lambda: fit.getTotalVolley(spool=True), 3, 0, 0, "%s", "Volley: %.1f"),
+                 ("labelFullDpsTotal", lambda: fit.getTotalDps(spool=False), lambda: fit.getTotalDps(spool=True), 3, 0, 0, "%s", "DPS: %s"))
         # See GH issue #
         # if fit is not None and fit.totalYield > 0:
         #    self.miningyield.Show()
         # else:
         #    self.miningyield.Hide()
 
+        showPostSpool = True
         counter = 0
-        for labelName, value, prec, lowest, highest, valueFormat, altFormat in stats:
+        for labelName, preSpoolVal, postSpoolVal, prec, lowest, highest, valueFormat, altFormat in stats:
             label = getattr(self, labelName)
-            value = value() if fit is not None else 0
-            value = value if value is not None else 0
-            if self._cachedValues[counter] != value:
-                valueStr = formatAmount(value, prec, lowest, highest)
+            val = (postSpoolVal() if showPostSpool else preSpoolVal()) if fit is not None else 0
+            val = val if val is not None else 0
+            if self._cachedValues[counter] != val:
+                valueStr = formatAmount(val, prec, lowest, highest)
                 label.SetLabel(valueFormat % valueStr)
-                tipStr = valueFormat % valueStr if altFormat is None else altFormat % value
+                valueStrTooltip = dpsToolTip(preSpoolVal(), postSpoolVal(), (prec, lowest, highest))
+                tipStr = valueFormat % valueStrTooltip  # if altFormat is None else altFormat % val
                 label.SetToolTip(wx.ToolTip(tipStr))
-                self._cachedValues[counter] = value
+                self._cachedValues[counter] = val
             counter += 1
 
         self.panel.Layout()

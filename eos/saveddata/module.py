@@ -169,8 +169,10 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
             self.__charge = None
 
         self.__dps = None
-        self.__miningyield = None
+        self.__dpsSpool = None
         self.__volley = None
+        self.__volleySpool = None
+        self.__miningyield = None
         self.__reloadTime = None
         self.__reloadForce = None
         self.__chargeCycles = None
@@ -414,7 +416,9 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
     def damageStats(self, targetResists):
         if self.__dps is None:
             self.__dps = 0
+            self.__dpsSpool = 0
             self.__volley = 0
+            self.__volleySpool = 0
 
             if not self.isEmpty and self.state >= State.ACTIVE:
                 if self.charge:
@@ -425,7 +429,7 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
                 volley = sum([(func("%sDamage" % attr) or 0) * (1 - getattr(targetResists, "%sAmount" % attr, 0)) for attr in self.DAMAGE_TYPES])
                 volley *= self.getModifiedItemAttr("damageMultiplier") or 1
                 # Disintegrator-specific ramp-up multiplier
-                volley *= (self.getModifiedItemAttr("damageMultiplierBonusMax") or 0) + 1
+                volleySpool = volley * ((self.getModifiedItemAttr("damageMultiplierBonusMax") or 0) + 1)
                 if volley:
                     cycleTime = self.cycleTime
                     # Some weapons repeat multiple times in one cycle (think doomsdays)
@@ -436,9 +440,12 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
                     )
 
                     self.__volley = volley
-                    self.__dps = (volley * weaponDoT) / (cycleTime / 1000.0)
+                    self.__volleySpool = volleySpool
+                    dpsFactor = weaponDoT / (cycleTime / 1000.0)
+                    self.__dps = volley * dpsFactor
+                    self.__dpsSpool = volleySpool * dpsFactor
 
-        return self.__dps, self.__volley
+        return self.__dps, self.__dpsSpool, self.__volley, self.__volleySpool
 
     @property
     def miningStats(self):
@@ -459,13 +466,17 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
 
         return self.__miningyield
 
-    @property
-    def dps(self):
-        return self.damageStats(None)[0]
+    def getDps(self, spool=False):
+        if spool:
+            return self.damageStats(None)[1]
+        else:
+            return self.damageStats(None)[0]
 
-    @property
-    def volley(self):
-        return self.damageStats(None)[1]
+    def getVolley(self, spool=False):
+        if spool:
+            return self.damageStats(None)[3]
+        else:
+            return self.damageStats(None)[2]
 
     @property
     def reloadTime(self):
