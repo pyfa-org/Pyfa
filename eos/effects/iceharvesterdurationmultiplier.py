@@ -1,6 +1,7 @@
 # iceHarvesterDurationMultiplier
 #
 # Used by:
+# Module: Frostline 'Omnivore' Harvester Upgrade
 # Ship: Endurance
 type = "passive"
 
