@@ -31,6 +31,12 @@ class SpoolType(IntEnum):
 
 
 def calculateSpoolup(modMaxValue, modStepValue, modCycleTime, spoolType, spoolAmount):
+    """
+    Calculate damage multiplier increment based on passed parameters. Module cycle time
+    is specified in seconds.
+    """
+    if not modMaxValue or not modStepValue:
+        return 0
     if spoolType == SpoolType.SCALE:
         return int(floatUnerr(spoolAmount * modMaxValue / modStepValue)) * modStepValue
     elif spoolType == SpoolType.TIME:

@@ -433,22 +433,14 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
                     func = self.getModifiedItemAttr
 
                 cycleTime = self.cycleTime
+                spoolMultMax = self.getModifiedItemAttr("damageMultiplierBonusMax") or 0
+                spoolMultPerCycle = self.getModifiedItemAttr("damageMultiplierBonusPerCycle") or 0
 
                 # Base volley
                 volleyBase = sum([(func("%sDamage" % attr) or 0) * (1 - getattr(targetResists, "%sAmount" % attr, 0)) for attr in self.DAMAGE_TYPES])
                 volleyBase *= self.getModifiedItemAttr("damageMultiplier") or 1
-                spoolMultMax = self.getModifiedItemAttr("damageMultiplierBonusMax") or 0
-                spoolMultPerCycle = self.getModifiedItemAttr("damageMultiplierBonusPerCycle") or 0
-                # Volley affected by module-specific spoolup
-                if spoolMultMax:
-                    volley = volleyBase * (1 + calculateSpoolup(spoolMultMax, spoolMultPerCycle, cycleTime, self.spoolType, self.spoolAmount))
-                else:
-                    volley = volleyBase
-                # Full spoolup
-                if spoolMultMax:
-                    volleySpoolFull = volleyBase * (1 + calculateSpoolup(spoolMultMax, spoolMultPerCycle, cycleTime, SpoolType.SCALE, 1))
-                else:
-                    volleySpoolFull = volleyBase
+                volleySpoolDefault = volleyBase * (1 + calculateSpoolup(spoolMultMax, spoolMultPerCycle, cycleTime / 1000, self.spoolType, self.spoolAmount))
+                volleySpoolFull = volleyBase * (1 + calculateSpoolup(spoolMultMax, spoolMultPerCycle, cycleTime / 1000, SpoolType.SCALE, 1))
                 if volleyBase:
                     # Some weapons repeat multiple times in one cycle (think doomsdays)
                     # Get the number of times it fires off
@@ -457,10 +449,12 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
                             1
                     )
 
-                    self.__volley = volley
+                    self.__volley = volleySpoolDefault
+                    self.__volleySpoolZero = volleyBase
                     self.__volleySpoolFull = volleySpoolFull
                     dpsFactor = weaponDoT / (cycleTime / 1000.0)
-                    self.__dps = volley * dpsFactor
+                    self.__dps = volleySpoolDefault * dpsFactor
+                    self.__dpsSpoolZero = volleyBase * dpsFactor
                     self.__dpsSpoolFull = volleySpoolFull * dpsFactor
 
         return self.__dps, self.__dpsSpoolFull, self.__volley, self.__volleySpoolFull
@@ -754,7 +748,6 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
         self.__volleySpoolZero = None
         self.__volleySpoolFull = None
         self.__miningyield = None
-        self.__volley = None
         self.__reloadTime = None
         self.__reloadForce = None
         self.__chargeCycles = None
