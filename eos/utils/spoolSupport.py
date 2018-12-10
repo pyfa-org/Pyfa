@@ -32,7 +32,7 @@ class SpoolType(IntEnum):
 
 def calculateSpoolup(modMaxValue, modStepValue, modCycleTime, spoolType, spoolAmount):
     if spoolType == SpoolType.SCALE:
-        return (floatUnerr(spoolAmount * modMaxValue) // modStepValue) * modStepValue
+        return int(floatUnerr(spoolAmount * modMaxValue / modStepValue)) * modStepValue
     elif spoolType == SpoolType.TIME:
         # Stub
         return 0
