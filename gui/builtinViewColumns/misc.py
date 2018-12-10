@@ -332,7 +332,7 @@ class Miscellanea(ViewColumn):
             text = "{0}s".format(formatAmount(float(recalibration) / 1000, 3, 0, 3))
             tooltip = "Sensor recalibration time"
             return text, tooltip
-        elif itemGroup == "Remote Armor Repairer":
+        elif itemGroup in ("Remote Armor Repairer", "Mutadaptive Remote Armor Repairer"):
             repAmount = stuff.getModifiedItemAttr("armorDamageAmount")
             cycleTime = stuff.getModifiedItemAttr("duration")
             if not repAmount or not cycleTime:

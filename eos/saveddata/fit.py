@@ -1423,12 +1423,13 @@ class Fit(object):
                 continue
 
             remote_module_groups = {
-                "Remote Armor Repairer"          : "Armor",
+                "Remote Armor Repairer": "Armor",
                 "Ancillary Remote Armor Repairer": "Armor",
-                "Remote Hull Repairer"           : "Hull",
-                "Remote Shield Booster"          : "Shield",
+                "Mutadaptive Remote Armor Repairer": "Armor",
+                "Remote Hull Repairer": "Hull",
+                "Remote Shield Booster": "Shield",
                 "Ancillary Remote Shield Booster": "Shield",
-                "Remote Capacitor Transmitter"   : "Capacitor",
+                "Remote Capacitor Transmitter": "Capacitor",
             }
 
             module_group = stuff.item.group.name
