@@ -23,6 +23,7 @@ import gui.mainFrame
 from gui.statsView import StatsView
 from gui.bitmap_loader import BitmapLoader
 from gui.utils.numberFormatter import formatAmount
+from eos.utils.spoolSupport import SpoolType
 from service.fit import Fit
 
 
@@ -154,24 +155,43 @@ class FirepowerViewFull(StatsView):
             else:
                 return "{}-{}".format(formatAmount(preSpool, *fmt_options), formatAmount(postSpool, *fmt_options))
 
-        stats = (("labelFullDpsWeapon", lambda: fit.getWeaponDps(), lambda: fit.getWeaponDps(), 3, 0, 0, "%s DPS", None),
-                 ("labelFullDpsDrone", lambda: fit.getDroneDps(), lambda: fit.getDroneDps(), 3, 0, 0, "%s DPS", None),
-                 ("labelFullVolleyTotal", lambda: fit.getTotalVolley(), lambda: fit.getTotalVolley(), 3, 0, 0, "%s", "Volley: %.1f"),
-                 ("labelFullDpsTotal", lambda: fit.getTotalDps(), lambda: fit.getTotalDps(), 3, 0, 0, "%s", "DPS: %s"))
+        stats = (
+            (
+                "labelFullDpsWeapon",
+                lambda: fit.getWeaponDps(),
+                lambda: fit.getWeaponDps(spoolType=SpoolType.SCALE, spoolAmount=0),
+                lambda: fit.getWeaponDps(spoolType=SpoolType.SCALE, spoolAmount=1),
+                3, 0, 0, "%s DPS", None),
+            (
+                "labelFullDpsDrone",
+                lambda: fit.getDroneDps(),
+                lambda: fit.getDroneDps(),
+                lambda: fit.getDroneDps(),
+                3, 0, 0, "%s DPS", None),
+            (
+                "labelFullVolleyTotal",
+                lambda: fit.getTotalVolley(),
+                lambda: fit.getTotalVolley(spoolType=SpoolType.SCALE, spoolAmount=0),
+                lambda: fit.getTotalVolley(spoolType=SpoolType.SCALE, spoolAmount=1),
+                3, 0, 0, "%s", "Volley: %.1f"),
+            (
+                "labelFullDpsTotal",
+                lambda: fit.getTotalDps(),
+                lambda: fit.getTotalDps(spoolType=SpoolType.SCALE, spoolAmount=0),
+                lambda: fit.getTotalDps(spoolType=SpoolType.SCALE, spoolAmount=1),
+                3, 0, 0, "%s", "DPS: %s"))
         # See GH issue #
         # if fit is not None and fit.totalYield > 0:
         #    self.miningyield.Show()
         # else:
         #    self.miningyield.Hide()
 
-        showPostSpool = True
         counter = 0
-        for labelName, preSpoolVal, postSpoolVal, prec, lowest, highest, valueFormat, altFormat in stats:
+        for labelName, val, preSpoolVal, postSpoolVal, prec, lowest, highest, valueFormat, altFormat in stats:
             label = getattr(self, labelName)
             preSpoolVal = preSpoolVal() if fit is not None else 0
             postSpoolVal = postSpoolVal() if fit is not None else 0
-            val = (postSpoolVal if showPostSpool else preSpoolVal) if fit is not None else 0
-            val = val if val is not None else 0
+            val = val() if fit is not None else 0
             if self._cachedValues[counter] != val:
                 valueStr = formatAmount(val, prec, lowest, highest)
                 label.SetLabel(valueFormat % valueStr)
