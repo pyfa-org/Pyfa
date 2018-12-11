@@ -161,7 +161,7 @@ class FirepowerViewFull(StatsView):
         stats = (
             (
                 "labelFullDpsWeapon",
-                lambda: fit.getWeaponDps().total,
+                lambda: fit.getWeaponDps(spoolType=SpoolType.SCALE, spoolAmount=1).total,
                 lambda: fit.getWeaponDps(spoolType=SpoolType.SCALE, spoolAmount=0).total,
                 lambda: fit.getWeaponDps(spoolType=SpoolType.SCALE, spoolAmount=1).total,
                 3, 0, 0, "%s DPS", "DPS"),
@@ -173,13 +173,13 @@ class FirepowerViewFull(StatsView):
                 3, 0, 0, "%s DPS", "DPS"),
             (
                 "labelFullVolleyTotal",
-                lambda: fit.getTotalVolley().total,
+                lambda: fit.getTotalVolley(spoolType=SpoolType.SCALE, spoolAmount=1).total,
                 lambda: fit.getTotalVolley(spoolType=SpoolType.SCALE, spoolAmount=0).total,
                 lambda: fit.getTotalVolley(spoolType=SpoolType.SCALE, spoolAmount=1).total,
                 3, 0, 0, "%s", "volley"),
             (
                 "labelFullDpsTotal",
-                lambda: fit.getTotalDps().total,
+                lambda: fit.getTotalDps(spoolType=SpoolType.SCALE, spoolAmount=1).total,
                 lambda: fit.getTotalDps(spoolType=SpoolType.SCALE, spoolAmount=0).total,
                 lambda: fit.getTotalDps(spoolType=SpoolType.SCALE, spoolAmount=1).total,
                 3, 0, 0, "%s", "DPS"))
