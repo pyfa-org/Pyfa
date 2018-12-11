@@ -155,9 +155,7 @@ class Fit(object):
     def targetResists(self, targetResists):
         self.__targetResists = targetResists
         self.__weaponDps = None
-        self.__weaponDpsSpool = None
         self.__weaponVolley = None
-        self.__weaponVolleySpool = None
         self.__droneDps = None
         self.__droneVolley = None
 
@@ -279,25 +277,15 @@ class Fit(object):
     def projectedFighters(self):
         return self.__projectedFighters
 
-    def getWeaponDps(self, spool=False):
-        if spool:
-            if self.__weaponDpsSpool is None:
-                self.calculateWeaponStats()
-            return self.__weaponDpsSpool
-        else:
-            if self.__weaponDps is None:
-                self.calculateWeaponStats()
-            return self.__weaponDps
+    def getWeaponDps(self):
+        if self.__weaponDps is None:
+            self.calculateWeaponStats()
+        return self.__weaponDps
 
-    def getWeaponVolley(self, spool=False):
-        if spool:
-            if self.__weaponVolleySpool is None:
-                self.calculateWeaponStats()
-            return self.__weaponVolleySpool
-        else:
-            if self.__weaponVolley is None:
-                self.calculateWeaponStats()
-            return self.__weaponVolley
+    def getWeaponVolley(self):
+        if self.__weaponVolley is None:
+            self.calculateWeaponStats()
+        return self.__weaponVolley
 
     def getDroneDps(self):
         if self.__droneDps is None:
@@ -309,11 +297,11 @@ class Fit(object):
             self.calculateWeaponStats()
         return self.__droneVolley
 
-    def getTotalDps(self, spool=False):
-        return self.getDroneDps() + self.getWeaponDps(spool=spool)
+    def getTotalDps(self):
+        return self.getDroneDps() + self.getWeaponDps()
 
-    def getTotalVolley(self, spool=False):
-        return self.getDroneVolley() + self.getWeaponVolley(spool=spool)
+    def getTotalVolley(self):
+        return self.getDroneVolley() + self.getWeaponVolley()
 
     @property
     def minerYield(self):
@@ -412,9 +400,7 @@ class Fit(object):
     def clear(self, projected=False, command=False):
         self.__effectiveTank = None
         self.__weaponDps = None
-        self.__weaponDpsSpool = None
         self.__weaponVolley = None
-        self.__weaponVolleySpool = None
         self.__minerYield = None
         self.__effectiveSustainableTank = None
         self.__sustainableTank = None
@@ -1543,34 +1529,25 @@ class Fit(object):
         self.__droneYield = droneYield
 
     def calculateWeaponStats(self):
-        weaponDps = 0
-        weaponDpsSpool = 0
-        droneDps = 0
         weaponVolley = 0
-        weaponVolleySpool = 0
         droneVolley = 0
+        weaponDps = 0
+        droneDps = 0
 
         for mod in self.modules:
-            dps, dpsSpool, volley, volleySpool = mod.damageStats(self.targetResists)
-            weaponDps += dps
-            weaponDpsSpool += dpsSpool
-            weaponVolley += volley
-            weaponVolleySpool += volleySpool
+            weaponVolley += mod.getVolley(targetResists=self.targetResists).total
+            weaponDps += mod.getDps(targetResists=self.targetResists).total
 
         for drone in self.drones:
-            dps, volley = drone.damageStats(self.targetResists)
-            droneDps += dps
-            droneVolley += volley
+            droneVolley += drone.getVolley(targetResists=self.targetResists).total
+            droneDps += drone.getDps(targetResists=self.targetResists).total
 
         for fighter in self.fighters:
-            dps, volley = fighter.damageStats(self.targetResists)
-            droneDps += dps
-            droneVolley += volley
+            droneVolley += fighter.getVolley(targetResists=self.targetResists).total
+            droneDps += fighter.getDps(targetResists=self.targetResists).total
 
         self.__weaponDps = weaponDps
-        self.__weaponDpsSpool = weaponDpsSpool
         self.__weaponVolley = weaponVolley
-        self.__weaponVolleySpool = weaponVolleySpool
         self.__droneDps = droneDps
         self.__droneVolley = droneVolley
 
