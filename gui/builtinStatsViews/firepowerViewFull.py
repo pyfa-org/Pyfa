@@ -161,27 +161,27 @@ class FirepowerViewFull(StatsView):
         stats = (
             (
                 "labelFullDpsWeapon",
-                lambda: fit.getWeaponDps(),
-                lambda: fit.getWeaponDps(spoolType=SpoolType.SCALE, spoolAmount=0),
-                lambda: fit.getWeaponDps(spoolType=SpoolType.SCALE, spoolAmount=1),
+                lambda: fit.getWeaponDps().total,
+                lambda: fit.getWeaponDps(spoolType=SpoolType.SCALE, spoolAmount=0).total,
+                lambda: fit.getWeaponDps(spoolType=SpoolType.SCALE, spoolAmount=1).total,
                 3, 0, 0, "%s DPS", "DPS"),
             (
                 "labelFullDpsDrone",
-                lambda: fit.getDroneDps(),
-                lambda: fit.getDroneDps(),
-                lambda: fit.getDroneDps(),
+                lambda: fit.getDroneDps().total,
+                lambda: fit.getDroneDps().total,
+                lambda: fit.getDroneDps().total,
                 3, 0, 0, "%s DPS", "DPS"),
             (
                 "labelFullVolleyTotal",
-                lambda: fit.getTotalVolley(),
-                lambda: fit.getTotalVolley(spoolType=SpoolType.SCALE, spoolAmount=0),
-                lambda: fit.getTotalVolley(spoolType=SpoolType.SCALE, spoolAmount=1),
+                lambda: fit.getTotalVolley().total,
+                lambda: fit.getTotalVolley(spoolType=SpoolType.SCALE, spoolAmount=0).total,
+                lambda: fit.getTotalVolley(spoolType=SpoolType.SCALE, spoolAmount=1).total,
                 3, 0, 0, "%s", "volley"),
             (
                 "labelFullDpsTotal",
-                lambda: fit.getTotalDps(),
-                lambda: fit.getTotalDps(spoolType=SpoolType.SCALE, spoolAmount=0),
-                lambda: fit.getTotalDps(spoolType=SpoolType.SCALE, spoolAmount=1),
+                lambda: fit.getTotalDps().total,
+                lambda: fit.getTotalDps(spoolType=SpoolType.SCALE, spoolAmount=0).total,
+                lambda: fit.getTotalDps(spoolType=SpoolType.SCALE, spoolAmount=1).total,
                 3, 0, 0, "%s", "DPS"))
 
         counter = 0

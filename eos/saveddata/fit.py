@@ -34,6 +34,7 @@ from eos.saveddata.drone import Drone
 from eos.saveddata.character import Character
 from eos.saveddata.citadel import Citadel
 from eos.saveddata.module import Module, State, Slot, Hardpoint
+from eos.utils.stats import DmgTypes
 from logbook import Logger
 pyfalog = Logger(__name__)
 
@@ -1529,27 +1530,27 @@ class Fit(object):
         self.__droneYield = droneYield
 
     def calculateWeaponDmgStats(self, spoolType, spoolAmount):
-        weaponVolley = 0
-        weaponDps = 0
+        weaponVolley = DmgTypes(0, 0, 0, 0)
+        weaponDps = DmgTypes(0, 0, 0, 0)
 
         for mod in self.modules:
-            weaponVolley += mod.getVolley(spoolType=spoolType, spoolAmount=spoolAmount, targetResists=self.targetResists).total
-            weaponDps += mod.getDps(spoolType=spoolType, spoolAmount=spoolAmount, targetResists=self.targetResists).total
+            weaponVolley += mod.getVolley(spoolType=spoolType, spoolAmount=spoolAmount, targetResists=self.targetResists)
+            weaponDps += mod.getDps(spoolType=spoolType, spoolAmount=spoolAmount, targetResists=self.targetResists)
 
         self.__weaponVolleyMap[(spoolType, spoolAmount)] = weaponVolley
         self.__weaponDpsMap[(spoolType, spoolAmount)] = weaponDps
 
     def calculateDroneDmgStats(self):
-        droneVolley = 0
-        droneDps = 0
+        droneVolley = DmgTypes(0, 0, 0, 0)
+        droneDps = DmgTypes(0, 0, 0, 0)
 
         for drone in self.drones:
-            droneVolley += drone.getVolley(targetResists=self.targetResists).total
-            droneDps += drone.getDps(targetResists=self.targetResists).total
+            droneVolley += drone.getVolley(targetResists=self.targetResists)
+            droneDps += drone.getDps(targetResists=self.targetResists)
 
         for fighter in self.fighters:
-            droneVolley += fighter.getVolley(targetResists=self.targetResists).total
-            droneDps += fighter.getDps(targetResists=self.targetResists).total
+            droneVolley += fighter.getVolley(targetResists=self.targetResists)
+            droneDps += fighter.getDps(targetResists=self.targetResists)
 
         self.__droneDps = droneDps
         self.__droneVolley = droneVolley

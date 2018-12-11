@@ -26,7 +26,7 @@ class DmgTypes:
         self.thermal = thermal
         self.kinetic = kinetic
         self.explosive = explosive
-        self.total = em + thermal + kinetic + explosive
+        self._calcTotal()
 
     # Iterator is needed to support tuple-style unpacking
     def __iter__(self):
@@ -51,11 +51,20 @@ class DmgTypes:
             self.em, self.thermal, self.kinetic,
             self.explosive, self.total))
 
-    def __hash__(self):
-        return hash((
-            DmgTypes.__qualname__,
-            self.em,
-            self.thermal,
-            self.kinetic,
-            self.explosive,
-            self.total))
+    def _calcTotal(self):
+        self.total = self.em + self.thermal + self.kinetic + self.explosive
+
+    def __add__(self, other):
+        return type(self)(
+            em=self.em + other.em,
+            thermal=self.thermal + other.thermal,
+            kinetic=self.kinetic + other.kinetic,
+            explosive=self.explosive + other.explosive)
+
+    def __iadd__(self, other):
+        self.em += other.em
+        self.thermal += other.thermal
+        self.kinetic += other.kinetic
+        self.explosive += other.explosive
+        self._calcTotal()
+        return self

@@ -623,11 +623,11 @@ class EfsPort():
         shipSize = EfsPort.getShipSize(fit.ship.item.groupID)
         try:
             dataDict = {
-                "name": fitName, "ehp": fit.ehp, "droneDPS": fit.getDroneDps(),
+                "name": fitName, "ehp": fit.ehp, "droneDPS": fit.getDroneDps().total,
                 "droneVolley": fit.getDroneVolley(), "hp": fit.hp, "maxTargets": fit.maxTargets,
-                "maxSpeed": fit.maxSpeed, "weaponVolley": fit.getWeaponVolley(), "totalVolley": fit.getTotalVolley(),
+                "maxSpeed": fit.maxSpeed, "weaponVolley": fit.getWeaponVolley().total, "totalVolley": fit.getTotalVolley().total,
                 "maxTargetRange": fit.maxTargetRange, "scanStrength": fit.scanStrength,
-                "weaponDPS": fit.getWeaponDps(), "alignTime": fit.alignTime, "signatureRadius": fitModAttr("signatureRadius"),
+                "weaponDPS": fit.getWeaponDps().total, "alignTime": fit.alignTime, "signatureRadius": fitModAttr("signatureRadius"),
                 "weapons": weaponSystems, "scanRes": fitModAttr("scanResolution"),
                 "capUsed": fit.capUsed, "capRecharge": fit.capRecharge,
                 "rigSlots": fitModAttr("rigSlots"), "lowSlots": fitModAttr("lowSlots"),
