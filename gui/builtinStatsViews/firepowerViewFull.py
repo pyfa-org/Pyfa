@@ -147,7 +147,7 @@ class FirepowerViewFull(StatsView):
             self.stEff.Show()
         else:
             self.stEff.Hide()
-            
+
         def dpsToolTip(preSpool, postSpool, fmt_options):
             if preSpool == postSpool:
                 return "{}".format(formatAmount(preSpool, *fmt_options))
@@ -168,12 +168,14 @@ class FirepowerViewFull(StatsView):
         counter = 0
         for labelName, preSpoolVal, postSpoolVal, prec, lowest, highest, valueFormat, altFormat in stats:
             label = getattr(self, labelName)
-            val = (postSpoolVal() if showPostSpool else preSpoolVal()) if fit is not None else 0
+            preSpoolVal = preSpoolVal() if fit is not None else 0
+            postSpoolVal = postSpoolVal() if fit is not None else 0
+            val = (postSpoolVal if showPostSpool else preSpoolVal) if fit is not None else 0
             val = val if val is not None else 0
             if self._cachedValues[counter] != val:
                 valueStr = formatAmount(val, prec, lowest, highest)
                 label.SetLabel(valueFormat % valueStr)
-                valueStrTooltip = dpsToolTip(preSpoolVal(), postSpoolVal(), (prec, lowest, highest))
+                valueStrTooltip = dpsToolTip(preSpoolVal, postSpoolVal, (prec, lowest, highest))
                 tipStr = valueFormat % valueStrTooltip  # if altFormat is None else altFormat % val
                 label.SetToolTip(wx.ToolTip(tipStr))
                 self._cachedValues[counter] = val
