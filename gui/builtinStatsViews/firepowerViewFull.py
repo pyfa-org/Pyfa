@@ -190,7 +190,7 @@ class FirepowerViewFull(StatsView):
             val = val() if fit is not None else 0
             preSpoolVal = preSpoolVal() if fit is not None else 0
             fullSpoolVal = fullSpoolVal() if fit is not None else 0
-            # TODO: temporary override, should be removed when spoolup settings are implemented
+            # TODO: use spoolup options to fetch main value
             val = fullSpoolVal
             if self._cachedValues[counter] != val:
                 valueStr = formatAmount(val, prec, lowest, highest)
