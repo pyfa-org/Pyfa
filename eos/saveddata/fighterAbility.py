@@ -122,16 +122,16 @@ class FighterAbility(object):
         if not self.dealsDamage or not self.active:
             return DmgTypes(0, 0, 0, 0)
         if self.attrPrefix == "fighterAbilityLaunchBomb":
-            em = self.fighter.getModifiedChargeAttr("emDamage") or 0
-            therm = self.fighter.getModifiedChargeAttr("thermalDamage") or 0
-            kin = self.fighter.getModifiedChargeAttr("kineticDamage") or 0
-            exp = self.fighter.getModifiedChargeAttr("explosiveDamage") or 0
+            em = self.fighter.getModifiedChargeAttr("emDamage", 0)
+            therm = self.fighter.getModifiedChargeAttr("thermalDamage", 0)
+            kin = self.fighter.getModifiedChargeAttr("kineticDamage", 0)
+            exp = self.fighter.getModifiedChargeAttr("explosiveDamage", 0)
         else:
-            em = self.fighter.getModifiedItemAttr("{}DamageEM".format(self.attrPrefix)) or 0
-            therm = self.fighter.getModifiedItemAttr("{}DamageTherm".format(self.attrPrefix)) or 0
-            kin = self.fighter.getModifiedItemAttr("{}DamageKin".format(self.attrPrefix)) or 0
-            exp = self.fighter.getModifiedItemAttr("{}DamageExp".format(self.attrPrefix)) or 0
-        dmgMult = self.fighter.amountActive * (self.fighter.getModifiedItemAttr("{}DamageMultiplier".format(self.attrPrefix)) or 1)
+            em = self.fighter.getModifiedItemAttr("{}DamageEM".format(self.attrPrefix), 0)
+            therm = self.fighter.getModifiedItemAttr("{}DamageTherm".format(self.attrPrefix), 0)
+            kin = self.fighter.getModifiedItemAttr("{}DamageKin".format(self.attrPrefix), 0)
+            exp = self.fighter.getModifiedItemAttr("{}DamageExp".format(self.attrPrefix), 0)
+        dmgMult = self.fighter.amountActive * self.fighter.getModifiedItemAttr("{}DamageMultiplier".format(self.attrPrefix), 1)
         volley = DmgTypes(
             em=em * dmgMult * (1 - getattr(targetResists, "emAmount", 0)),
             thermal=therm * dmgMult * (1 - getattr(targetResists, "thermalAmount", 0)),

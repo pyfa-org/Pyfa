@@ -67,6 +67,7 @@ class Drone(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
         """ Build object. Assumes proper and valid item already set """
         self.__charge = None
         self.__baseVolley = None
+        self.__baseRemoteReps = None
         self.__miningyield = None
         self.__itemModifiedAttributes = ModifiedAttributeDict()
         self.__itemModifiedAttributes.original = self.__item.attributes
@@ -125,12 +126,12 @@ class Drone(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
             return DmgTypes(0, 0, 0, 0)
         if self.__baseVolley is None:
             dmgGetter = self.getModifiedChargeAttr if self.hasAmmo else self.getModifiedItemAttr
-            dmgMult = self.amountActive * (self.getModifiedItemAttr("damageMultiplier") or 1)
+            dmgMult = self.amountActive * (self.getModifiedItemAttr("damageMultiplier", 1))
             self.__baseVolley = DmgTypes(
-                em=(dmgGetter("emDamage") or 0) * dmgMult,
-                thermal=(dmgGetter("thermalDamage") or 0) * dmgMult,
-                kinetic=(dmgGetter("kineticDamage") or 0) * dmgMult,
-                explosive=(dmgGetter("explosiveDamage") or 0) * dmgMult)
+                em=(dmgGetter("emDamage", 0)) * dmgMult,
+                thermal=(dmgGetter("thermalDamage", 0)) * dmgMult,
+                kinetic=(dmgGetter("kineticDamage", 0)) * dmgMult,
+                explosive=(dmgGetter("explosiveDamage", 0)) * dmgMult)
         volley = DmgTypes(
             em=self.__baseVolley.em * (1 - getattr(targetResists, "emAmount", 0)),
             thermal=self.__baseVolley.thermal * (1 - getattr(targetResists, "thermalAmount", 0)),
@@ -151,6 +152,30 @@ class Drone(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
             kinetic=volley.kinetic * dpsFactor,
             explosive=volley.explosive * dpsFactor)
         return dps
+
+    def getRemoteReps(self):
+        if self.amountActive <= 0:
+            return (None, 0)
+        if self.__baseRemoteReps is None:
+            droneShield = self.getModifiedItemAttr("shieldBonus", 0)
+            droneArmor = self.getModifiedItemAttr("armorDamageAmount", 0)
+            droneHull = self.getModifiedItemAttr("structureDamageAmount", 0)
+            if droneShield:
+                rrType = "Shield"
+                rrAmount = droneShield
+            elif droneArmor:
+                rrType = "Armor"
+                rrAmount = droneArmor
+            elif droneHull:
+                rrType = "Hull"
+                rrAmount = droneHull
+            else:
+                rrType = None
+                rrAmount = 0
+            if rrAmount:
+                rrAmount *= self.amountActive / (self.cycleTime / 1000)
+            self.__baseRemoteReps = (rrType, rrAmount)
+        return self.__baseRemoteReps
 
     def changeType(self, typeID):
         self.itemID = typeID
@@ -214,6 +239,7 @@ class Drone(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
 
     def clear(self):
         self.__baseVolley = None
+        self.__baseRemoteReps = None
         self.__miningyield = None
         self.itemModifiedAttributes.clear()
         self.chargeModifiedAttributes.clear()

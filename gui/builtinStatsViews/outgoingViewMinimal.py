@@ -21,6 +21,7 @@
 import wx
 from gui.statsView import StatsView
 from gui.utils.numberFormatter import formatAmount
+from eos.utils.spoolSupport import SpoolType
 
 
 class OutgoingViewMinimal(StatsView):
@@ -50,10 +51,10 @@ class OutgoingViewMinimal(StatsView):
         counter = 0
 
         rr_list = [
-            ("RemoteCapacitor", "Capacitor:", "capacitorInfo", "Capacitor GJ/s per second transferred remotely."),
-            ("RemoteShield", "Shield:", "shieldActive", "Shield hitpoints per second repaired remotely."),
-            ("RemoteArmor", "Armor:", "armorActive", "Armor hitpoints per second repaired remotely."),
-            ("RemoteHull", "Hull:", "hullActive", "Hull hitpoints per second repaired remotely."),
+            ("RemoteCapacitor", "Capacitor:", "capacitorInfo", "Capacitor GJ per second restored remotely"),
+            ("RemoteShield", "Shield:", "shieldActive", "Shield HP per second repaired remotely"),
+            ("RemoteArmor", "Armor:", "armorActive", "Armor HP per second repaired remotely"),
+            ("RemoteHull", "Hull:", "hullActive", "Hull HP per second repaired remotely"),
         ]
 
         for outgoingType, label, image, tooltip in rr_list:
@@ -80,23 +81,43 @@ class OutgoingViewMinimal(StatsView):
         # If we did anything intresting, we'd update our labels to reflect the new fit's stats here
 
         stats = [
-            ("labelRemoteArmor", lambda: fit.remoteReps["Armor"], 3, 0, 0, "%s HP/s", None),
-            ("labelRemoteShield", lambda: fit.remoteReps["Shield"], 3, 0, 0, "%s HP/s", None),
-            ("labelRemoteHull", lambda: fit.remoteReps["Hull"], 3, 0, 0, "%s HP/s", None),
-            ("labelRemoteCapacitor", lambda: fit.remoteReps["Capacitor"], 3, 0, 0, "%s GJ/s", None),
-        ]
+            (
+                "labelRemoteArmor",
+                lambda: fit.getRemoteReps().get("Armor"),
+                lambda: fit.getRemoteReps(spoolType=SpoolType.SCALE, spoolAmount=0).get("Armor", 0),
+                lambda: fit.getRemoteReps(spoolType=SpoolType.SCALE, spoolAmount=1).get("Armor", 0),
+                3, 0, 0, "%s HP/s", None),
+            (
+                "labelRemoteShield",
+                lambda: fit.getRemoteReps().get("Shield"),
+                lambda: fit.getRemoteReps(spoolType=SpoolType.SCALE, spoolAmount=0).get("Shield", 0),
+                lambda: fit.getRemoteReps(spoolType=SpoolType.SCALE, spoolAmount=1).get("Shield", 0),
+                3, 0, 0, "%s HP/s", None),
+            (
+                "labelRemoteHull",
+                lambda: fit.getRemoteReps().get("Hull"),
+                lambda: fit.getRemoteReps(spoolType=SpoolType.SCALE, spoolAmount=0).get("Hull", 0),
+                lambda: fit.getRemoteReps(spoolType=SpoolType.SCALE, spoolAmount=1).get("Hull", 0),
+                3, 0, 0, "%s HP/s", None),
+            (
+                "labelRemoteCapacitor",
+                lambda: fit.getRemoteReps().get("Capacitor"),
+                lambda: fit.getRemoteReps(spoolType=SpoolType.SCALE, spoolAmount=0).get("Capacitor", 0),
+                lambda: fit.getRemoteReps(spoolType=SpoolType.SCALE, spoolAmount=1).get("Capacitor", 0),
+                3, 0, 0, "%s GJ/s", None)]
 
         counter = 0
-        for labelName, value, prec, lowest, highest, valueFormat, altFormat in stats:
+        for labelName, val, preSpoolVal, fullSpoolVal, prec, lowest, highest, valueFormat, altFormat in stats:
             label = getattr(self, labelName)
-            value = value() if fit is not None else 0
-            value = value if value is not None else 0
-            if self._cachedValues[counter] != value:
-                valueStr = formatAmount(value, prec, lowest, highest)
+            val = val() if fit is not None else 0
+            preSpoolVal = preSpoolVal() if fit is not None else 0
+            fullSpoolVal = fullSpoolVal() if fit is not None else 0
+            # TODO: temporary override, should be removed when spoolup settings are implemented
+            val = fullSpoolVal
+            if self._cachedValues[counter] != val:
+                valueStr = formatAmount(val, prec, lowest, highest)
                 label.SetLabel(valueFormat % valueStr)
-                tipStr = valueFormat % valueStr if altFormat is None else altFormat % value
-                label.SetToolTip(wx.ToolTip(tipStr))
-                self._cachedValues[counter] = value
+                self._cachedValues[counter] = val
             counter += 1
         self.panel.Layout()
         self.headerPanel.Layout()

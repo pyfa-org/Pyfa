@@ -153,7 +153,7 @@ class FirepowerViewFull(StatsView):
             if preSpool == postSpool:
                 return None
             else:
-                return "Spoolup {} spread: {}-{}".format(
+                return "Spoolup {}: {}-{}".format(
                     statName,
                     formatAmount(preSpool, *fmt_options),
                     formatAmount(postSpool, *fmt_options))
@@ -161,7 +161,7 @@ class FirepowerViewFull(StatsView):
         stats = (
             (
                 "labelFullDpsWeapon",
-                lambda: fit.getWeaponDps(spoolType=SpoolType.SCALE, spoolAmount=1).total,
+                lambda: fit.getWeaponDps().total,
                 lambda: fit.getWeaponDps(spoolType=SpoolType.SCALE, spoolAmount=0).total,
                 lambda: fit.getWeaponDps(spoolType=SpoolType.SCALE, spoolAmount=1).total,
                 3, 0, 0, "%s DPS", "DPS"),
@@ -173,27 +173,29 @@ class FirepowerViewFull(StatsView):
                 3, 0, 0, "%s DPS", "DPS"),
             (
                 "labelFullVolleyTotal",
-                lambda: fit.getTotalVolley(spoolType=SpoolType.SCALE, spoolAmount=1).total,
+                lambda: fit.getTotalVolley().total,
                 lambda: fit.getTotalVolley(spoolType=SpoolType.SCALE, spoolAmount=0).total,
                 lambda: fit.getTotalVolley(spoolType=SpoolType.SCALE, spoolAmount=1).total,
                 3, 0, 0, "%s", "volley"),
             (
                 "labelFullDpsTotal",
-                lambda: fit.getTotalDps(spoolType=SpoolType.SCALE, spoolAmount=1).total,
+                lambda: fit.getTotalDps().total,
                 lambda: fit.getTotalDps(spoolType=SpoolType.SCALE, spoolAmount=0).total,
                 lambda: fit.getTotalDps(spoolType=SpoolType.SCALE, spoolAmount=1).total,
                 3, 0, 0, "%s", "DPS"))
 
         counter = 0
-        for labelName, val, preSpoolVal, postSpoolVal, prec, lowest, highest, valueFormat, statName in stats:
+        for labelName, val, preSpoolVal, fullSpoolVal, prec, lowest, highest, valueFormat, statName in stats:
             label = getattr(self, labelName)
-            preSpoolVal = preSpoolVal() if fit is not None else 0
-            postSpoolVal = postSpoolVal() if fit is not None else 0
             val = val() if fit is not None else 0
+            preSpoolVal = preSpoolVal() if fit is not None else 0
+            fullSpoolVal = fullSpoolVal() if fit is not None else 0
+            # TODO: temporary override, should be removed when spoolup settings are implemented
+            val = fullSpoolVal
             if self._cachedValues[counter] != val:
                 valueStr = formatAmount(val, prec, lowest, highest)
                 label.SetLabel(valueFormat % valueStr)
-                valueStrTooltip = dpsToolTip(preSpoolVal, postSpoolVal, statName, (prec, lowest, highest))
+                valueStrTooltip = dpsToolTip(preSpoolVal, fullSpoolVal, statName, (prec, lowest, highest))
                 if valueStrTooltip:
                     label.SetToolTip(wx.ToolTip(valueStrTooltip))
                 self._cachedValues[counter] = val

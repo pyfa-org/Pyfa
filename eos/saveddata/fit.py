@@ -123,6 +123,7 @@ class Fit(object):
         self.__ehp = None
         self.__weaponDpsMap = {}
         self.__weaponVolleyMap = {}
+        self.__remoteRepMap = {}
         self.__minerYield = None
         self.__droneDps = None
         self.__droneVolley = None
@@ -136,12 +137,6 @@ class Fit(object):
         self.__capUsed = None
         self.__capRecharge = None
         self.__calculatedTargets = []
-        self.__remoteReps = {
-            "Armor"    : None,
-            "Shield"   : None,
-            "Hull"     : None,
-            "Capacitor": None,
-        }
         self.factorReload = False
         self.boostsFits = set()
         self.gangBoosts = None
@@ -402,6 +397,7 @@ class Fit(object):
         self.__effectiveTank = None
         self.__weaponDpsMap = {}
         self.__weaponVolleyMap = {}
+        self.__remoteRepMap = {}
         self.__minerYield = None
         self.__effectiveSustainableTank = None
         self.__sustainableTank = None
@@ -416,9 +412,6 @@ class Fit(object):
         self.__capRecharge = None
         self.ecmProjectedStr = 1
         # self.commandBonuses = {}
-
-        for remoterep_type in self.__remoteReps:
-            self.__remoteReps[remoterep_type] = None
 
         del self.__calculatedTargets[:]
         del self.__extraDrains[:]
@@ -1368,93 +1361,27 @@ class Fit(object):
             self.__capStable = True
             self.__capState = 100
 
-    @property
-    def remoteReps(self):
-        force_recalc = False
-        for remote_type in self.__remoteReps:
-            if self.__remoteReps[remote_type] is None:
-                force_recalc = True
-                break
+    def getRemoteReps(self, spoolType=None, spoolAmount=None):
+        if (spoolType, spoolAmount) not in self.__remoteRepMap:
+            remoteReps = {}
 
-        if force_recalc is False:
-            return self.__remoteReps
+            for module in self.modules:
+                rrType, rrAmount = module.getRemoteReps(spoolType=spoolType, spoolAmount=spoolAmount)
+                if rrType:
+                    if rrType not in remoteReps:
+                        remoteReps[rrType] = 0
+                    remoteReps[rrType] += rrAmount
 
-        # We are rerunning the recalcs. Explicitly set to 0 to make sure we don't duplicate anything and correctly set
-        # all values to 0.
-        for remote_type in self.__remoteReps:
-            self.__remoteReps[remote_type] = 0
+            for drone in self.drones:
+                rrType, rrAmount = drone.getRemoteReps()
+                if rrType:
+                    if rrType not in remoteReps:
+                        remoteReps[rrType] = 0
+                    remoteReps[rrType] += rrAmount
 
-        for stuff in chain(self.modules, self.drones):
-            if stuff.item:
-                if stuff.item.ID == 10250:
-                    pass
-            remote_type = None
+            self.__remoteRepMap[(spoolType, spoolAmount)] = remoteReps
 
-            # Only apply the charged multiplier if we have a charge in our ancil reppers (#1135)
-            if stuff.charge:
-                modifier = stuff.getModifiedItemAttr("chargedArmorDamageMultiplier", 1)
-            else:
-                modifier = 1
-
-            if isinstance(stuff, Module) and (stuff.isEmpty or stuff.state < State.ACTIVE):
-                continue
-            elif isinstance(stuff, Drone):
-                # drones don't have fueled charges, so simply override modifier with the amount of drones active
-                modifier = stuff.amountActive
-
-            # Covert cycleTime to seconds
-            duration = stuff.cycleTime / 1000
-
-            # Skip modules with no duration.
-            if not duration:
-                continue
-
-            remote_module_groups = {
-                "Remote Armor Repairer": "Armor",
-                "Ancillary Remote Armor Repairer": "Armor",
-                "Mutadaptive Remote Armor Repairer": "Armor",
-                "Remote Hull Repairer": "Hull",
-                "Remote Shield Booster": "Shield",
-                "Ancillary Remote Shield Booster": "Shield",
-                "Remote Capacitor Transmitter": "Capacitor",
-            }
-
-            module_group = stuff.item.group.name
-
-            if module_group in remote_module_groups:
-                remote_type = remote_module_groups[module_group]
-            elif not isinstance(stuff, Drone):
-                # Module isn't in our list of remote rep modules, bail
-                continue
-
-            if remote_type == "Hull":
-                hp = stuff.getModifiedItemAttr("structureDamageAmount", 0)
-            elif remote_type == "Armor":
-                hp = stuff.getModifiedItemAttr("armorDamageAmount", 0)
-            elif remote_type == "Shield":
-                hp = stuff.getModifiedItemAttr("shieldBonus", 0)
-            elif remote_type == "Capacitor":
-                hp = stuff.getModifiedItemAttr("powerTransferAmount", 0)
-            else:
-                droneShield = stuff.getModifiedItemAttr("shieldBonus", 0)
-                droneArmor = stuff.getModifiedItemAttr("armorDamageAmount", 0)
-                droneHull = stuff.getModifiedItemAttr("structureDamageAmount", 0)
-                if droneShield:
-                    remote_type = "Shield"
-                    hp = droneShield
-                elif droneArmor:
-                    remote_type = "Armor"
-                    hp = droneArmor
-                elif droneHull:
-                    remote_type = "Hull"
-                    hp = droneHull
-                else:
-                    hp = 0
-
-            if hp > 0 and duration > 0:
-                self.__remoteReps[remote_type] += (hp * modifier) / duration
-
-        return self.__remoteReps
+        return self.__remoteRepMap[(spoolType, spoolAmount)]
 
     @property
     def hp(self):

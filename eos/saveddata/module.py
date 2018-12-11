@@ -171,6 +171,7 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
             self.__charge = None
 
         self.__baseVolley = None
+        self.__baseRemoteReps = None
         self.__miningyield = None
         self.__reloadTime = None
         self.__reloadForce = None
@@ -436,15 +437,15 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
             return DmgTypes(0, 0, 0, 0)
         if self.__baseVolley is None:
             dmgGetter = self.getModifiedChargeAttr if self.charge else self.getModifiedItemAttr
-            dmgMult = self.getModifiedItemAttr("damageMultiplier") or 1
+            dmgMult = self.getModifiedItemAttr("damageMultiplier", 1)
             self.__baseVolley = DmgTypes(
-                em=(dmgGetter("emDamage") or 0) * dmgMult,
-                thermal=(dmgGetter("thermalDamage") or 0) * dmgMult,
-                kinetic=(dmgGetter("kineticDamage") or 0) * dmgMult,
-                explosive=(dmgGetter("explosiveDamage") or 0) * dmgMult)
+                em=(dmgGetter("emDamage", 0)) * dmgMult,
+                thermal=(dmgGetter("thermalDamage", 0)) * dmgMult,
+                kinetic=(dmgGetter("kineticDamage", 0)) * dmgMult,
+                explosive=(dmgGetter("explosiveDamage", 0)) * dmgMult)
         spoolMultiplier = 1 + calculateSpoolup(
-            self.getModifiedItemAttr("damageMultiplierBonusMax") or 0,
-            self.getModifiedItemAttr("damageMultiplierBonusPerCycle") or 0,
+            self.getModifiedItemAttr("damageMultiplierBonusMax", 0),
+            self.getModifiedItemAttr("damageMultiplierBonusPerCycle", 0),
             self.cycleTime / 1000,
             spoolType if spoolType is not None else self.spoolType,
             # Using spool type as condition as it should define if we're using
@@ -471,6 +472,55 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
             kinetic=volley.kinetic * dpsFactor,
             explosive=volley.explosive * dpsFactor)
         return dps
+
+    def getRemoteReps(self, spoolType=None, spoolAmount=None):
+        if self.isEmpty or self.state < State.ACTIVE:
+            return (None, 0)
+
+        def getBaseRemoteReps(module):
+            remoteModuleGroups = {
+                "Remote Armor Repairer": "Armor",
+                "Ancillary Remote Armor Repairer": "Armor",
+                "Mutadaptive Remote Armor Repairer": "Armor",
+                "Remote Hull Repairer": "Hull",
+                "Remote Shield Booster": "Shield",
+                "Ancillary Remote Shield Booster": "Shield",
+                "Remote Capacitor Transmitter": "Capacitor"}
+            rrType = remoteModuleGroups.get(module.item.group.name, None)
+            if not rrType:
+                return None, 0
+            if rrType == "Hull":
+                rrAmount = module.getModifiedItemAttr("structureDamageAmount", 0)
+            elif rrType == "Armor":
+                rrAmount = module.getModifiedItemAttr("armorDamageAmount", 0)
+            elif rrType == "Shield":
+                rrAmount = module.getModifiedItemAttr("shieldBonus", 0)
+            elif rrType == "Capacitor":
+                rrAmount = module.getModifiedItemAttr("powerTransferAmount", 0)
+            else:
+                return None, 0
+            if rrAmount:
+                rrAmount *= 1 / (self.cycleTime / 1000)
+                if module.item.group.name == "Ancillary Remote Armor Repairer" and module.charge:
+                    rrAmount *= module.getModifiedItemAttr("chargedArmorDamageMultiplier", 1)
+
+            return rrType, rrAmount
+
+        if self.__baseRemoteReps is None:
+            self.__baseRemoteReps = getBaseRemoteReps(self)
+
+        rrType, rrAmount = self.__baseRemoteReps
+        if rrType and rrAmount and self.item.group.name == "Mutadaptive Remote Armor Repairer":
+            spoolMultiplier = 1 + calculateSpoolup(
+                self.getModifiedItemAttr("repairMultiplierBonusMax", 0),
+                self.getModifiedItemAttr("repairMultiplierBonusPerCycle", 0),
+                self.cycleTime / 1000,
+                spoolType if spoolType is not None else self.spoolType,
+                # Using spool type as condition as it should define if we're using
+                # passed spoolup parameters or not
+                spoolAmount if spoolType is not None else self.spoolAmount)
+            rrAmount *= spoolMultiplier
+        return rrType, rrAmount
 
     @property
     def reloadTime(self):
@@ -724,6 +774,7 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
 
     def clear(self):
         self.__baseVolley = None
+        self.__baseRemoteReps = None
         self.__miningyield = None
         self.__reloadTime = None
         self.__reloadForce = None
