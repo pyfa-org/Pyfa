@@ -149,11 +149,14 @@ class FirepowerViewFull(StatsView):
         else:
             self.stEff.Hide()
 
-        def dpsToolTip(preSpool, postSpool, fmt_options):
+        def dpsToolTip(preSpool, postSpool, statName, fmt_options):
             if preSpool == postSpool:
-                return "{}".format(formatAmount(preSpool, *fmt_options))
+                return None
             else:
-                return "{}-{}".format(formatAmount(preSpool, *fmt_options), formatAmount(postSpool, *fmt_options))
+                return "Spoolup {} spread: {}-{}".format(
+                    statName,
+                    formatAmount(preSpool, *fmt_options),
+                    formatAmount(postSpool, *fmt_options))
 
         stats = (
             (
@@ -161,33 +164,28 @@ class FirepowerViewFull(StatsView):
                 lambda: fit.getWeaponDps(),
                 lambda: fit.getWeaponDps(spoolType=SpoolType.SCALE, spoolAmount=0),
                 lambda: fit.getWeaponDps(spoolType=SpoolType.SCALE, spoolAmount=1),
-                3, 0, 0, "%s DPS", None),
+                3, 0, 0, "%s DPS", "DPS"),
             (
                 "labelFullDpsDrone",
                 lambda: fit.getDroneDps(),
                 lambda: fit.getDroneDps(),
                 lambda: fit.getDroneDps(),
-                3, 0, 0, "%s DPS", None),
+                3, 0, 0, "%s DPS", "DPS"),
             (
                 "labelFullVolleyTotal",
                 lambda: fit.getTotalVolley(),
                 lambda: fit.getTotalVolley(spoolType=SpoolType.SCALE, spoolAmount=0),
                 lambda: fit.getTotalVolley(spoolType=SpoolType.SCALE, spoolAmount=1),
-                3, 0, 0, "%s", "Volley: %.1f"),
+                3, 0, 0, "%s", "volley"),
             (
                 "labelFullDpsTotal",
                 lambda: fit.getTotalDps(),
                 lambda: fit.getTotalDps(spoolType=SpoolType.SCALE, spoolAmount=0),
                 lambda: fit.getTotalDps(spoolType=SpoolType.SCALE, spoolAmount=1),
-                3, 0, 0, "%s", "DPS: %s"))
-        # See GH issue #
-        # if fit is not None and fit.totalYield > 0:
-        #    self.miningyield.Show()
-        # else:
-        #    self.miningyield.Hide()
+                3, 0, 0, "%s", "DPS"))
 
         counter = 0
-        for labelName, val, preSpoolVal, postSpoolVal, prec, lowest, highest, valueFormat, altFormat in stats:
+        for labelName, val, preSpoolVal, postSpoolVal, prec, lowest, highest, valueFormat, statName in stats:
             label = getattr(self, labelName)
             preSpoolVal = preSpoolVal() if fit is not None else 0
             postSpoolVal = postSpoolVal() if fit is not None else 0
@@ -195,9 +193,9 @@ class FirepowerViewFull(StatsView):
             if self._cachedValues[counter] != val:
                 valueStr = formatAmount(val, prec, lowest, highest)
                 label.SetLabel(valueFormat % valueStr)
-                valueStrTooltip = dpsToolTip(preSpoolVal, postSpoolVal, (prec, lowest, highest))
-                tipStr = valueFormat % valueStrTooltip  # if altFormat is None else altFormat % val
-                label.SetToolTip(wx.ToolTip(tipStr))
+                valueStrTooltip = dpsToolTip(preSpoolVal, postSpoolVal, statName, (prec, lowest, highest))
+                if valueStrTooltip:
+                    label.SetToolTip(wx.ToolTip(valueStrTooltip))
                 self._cachedValues[counter] = val
             counter += 1
 
