@@ -120,9 +120,9 @@ class Fit(object):
     def build(self):
         self.__extraDrains = []
         self.__ehp = None
-        self.__weaponDps = None
+        self.__weaponDpsMap = {}
+        self.__weaponVolleyMap = {}
         self.__minerYield = None
-        self.__weaponVolley = None
         self.__droneDps = None
         self.__droneVolley = None
         self.__droneYield = None
@@ -154,8 +154,8 @@ class Fit(object):
     @targetResists.setter
     def targetResists(self, targetResists):
         self.__targetResists = targetResists
-        self.__weaponDps = None
-        self.__weaponVolley = None
+        self.__weaponDpsMap = {}
+        self.__weaponVolleyMap = {}
         self.__droneDps = None
         self.__droneVolley = None
 
@@ -277,31 +277,31 @@ class Fit(object):
     def projectedFighters(self):
         return self.__projectedFighters
 
-    def getWeaponDps(self):
-        if self.__weaponDps is None:
-            self.calculateWeaponStats()
-        return self.__weaponDps
+    def getWeaponDps(self, spoolType=None, spoolAmount=None):
+        if (spoolType, spoolAmount) not in self.__weaponDpsMap:
+            self.calculateWeaponDmgStats(spoolType, spoolAmount)
+        return self.__weaponDpsMap[(spoolType, spoolAmount)]
 
-    def getWeaponVolley(self):
-        if self.__weaponVolley is None:
-            self.calculateWeaponStats()
-        return self.__weaponVolley
+    def getWeaponVolley(self, spoolType=None, spoolAmount=None):
+        if (spoolType, spoolAmount) not in self.__weaponVolleyMap:
+            self.calculateWeaponDmgStats(spoolType, spoolAmount)
+        return self.__weaponVolleyMap[(spoolType, spoolAmount)]
 
     def getDroneDps(self):
         if self.__droneDps is None:
-            self.calculateWeaponStats()
+            self.calculateDroneDmgStats()
         return self.__droneDps
 
     def getDroneVolley(self):
         if self.__droneVolley is None:
-            self.calculateWeaponStats()
+            self.calculateDroneDmgStats()
         return self.__droneVolley
 
-    def getTotalDps(self):
-        return self.getDroneDps() + self.getWeaponDps()
+    def getTotalDps(self, spoolType=None, spoolAmount=None):
+        return self.getDroneDps() + self.getWeaponDps(spoolType=spoolType, spoolAmount=spoolAmount)
 
-    def getTotalVolley(self):
-        return self.getDroneVolley() + self.getWeaponVolley()
+    def getTotalVolley(self, spoolType=None, spoolAmount=None):
+        return self.getDroneVolley() + self.getWeaponVolley(spoolType=spoolType, spoolAmount=spoolAmount)
 
     @property
     def minerYield(self):
@@ -399,8 +399,8 @@ class Fit(object):
 
     def clear(self, projected=False, command=False):
         self.__effectiveTank = None
-        self.__weaponDps = None
-        self.__weaponVolley = None
+        self.__weaponDpsMap = {}
+        self.__weaponVolleyMap = {}
         self.__minerYield = None
         self.__effectiveSustainableTank = None
         self.__sustainableTank = None
@@ -1528,15 +1528,20 @@ class Fit(object):
         self.__minerYield = minerYield
         self.__droneYield = droneYield
 
-    def calculateWeaponStats(self):
+    def calculateWeaponDmgStats(self, spoolType, spoolAmount):
         weaponVolley = 0
-        droneVolley = 0
         weaponDps = 0
-        droneDps = 0
 
         for mod in self.modules:
-            weaponVolley += mod.getVolley(targetResists=self.targetResists).total
-            weaponDps += mod.getDps(targetResists=self.targetResists).total
+            weaponVolley += mod.getVolley(spoolType=spoolType, spoolAmount=spoolAmount, targetResists=self.targetResists).total
+            weaponDps += mod.getDps(spoolType=spoolType, spoolAmount=spoolAmount, targetResists=self.targetResists).total
+
+        self.__weaponVolleyMap[(spoolType, spoolAmount)] = weaponVolley
+        self.__weaponDpsMap[(spoolType, spoolAmount)] = weaponDps
+
+    def calculateDroneDmgStats(self):
+        droneVolley = 0
+        droneDps = 0
 
         for drone in self.drones:
             droneVolley += drone.getVolley(targetResists=self.targetResists).total
@@ -1546,8 +1551,6 @@ class Fit(object):
             droneVolley += fighter.getVolley(targetResists=self.targetResists).total
             droneDps += fighter.getDps(targetResists=self.targetResists).total
 
-        self.__weaponDps = weaponDps
-        self.__weaponVolley = weaponVolley
         self.__droneDps = droneDps
         self.__droneVolley = droneVolley
 
