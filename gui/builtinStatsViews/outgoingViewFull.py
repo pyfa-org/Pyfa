@@ -21,8 +21,35 @@
 import wx
 from gui.statsView import StatsView
 from gui.bitmap_loader import BitmapLoader
-from gui.utils.numberFormatter import formatAmount
+from gui.utils.numberFormatter import formatAmount, roundToPrec
 from eos.utils.spoolSupport import SpoolType
+
+
+stats = [
+    (
+        "labelRemoteCapacitor", "Capacitor:", "{} GJ/s", "capacitorInfo", "Capacitor restored",
+        lambda fit: fit.getRemoteReps().get("Capacitor"),
+        lambda fit: fit.getRemoteReps(spoolType=SpoolType.SCALE, spoolAmount=0).get("Capacitor", 0),
+        lambda fit: fit.getRemoteReps(spoolType=SpoolType.SCALE, spoolAmount=1).get("Capacitor", 0),
+        3, 0, 0),
+    (
+        "labelRemoteShield", "Shield:", "{} HP/s", "shieldActive", "Shield restored",
+        lambda fit: fit.getRemoteReps().get("Shield"),
+        lambda fit: fit.getRemoteReps(spoolType=SpoolType.SCALE, spoolAmount=0).get("Shield", 0),
+        lambda fit: fit.getRemoteReps(spoolType=SpoolType.SCALE, spoolAmount=1).get("Shield", 0),
+        3, 0, 0),
+    (
+        "labelRemoteArmor", "Armor:", "{} HP/s", "armorActive", "Armor restored",
+        lambda fit: fit.getRemoteReps().get("Armor"),
+        lambda fit: fit.getRemoteReps(spoolType=SpoolType.SCALE, spoolAmount=0).get("Armor", 0),
+        lambda fit: fit.getRemoteReps(spoolType=SpoolType.SCALE, spoolAmount=1).get("Armor", 0),
+        3, 0, 0),
+    (
+        "labelRemoteHull", "Hull:", "{} HP/s", "hullActive", "Hull restored",
+        lambda fit: fit.getRemoteReps().get("Hull"),
+        lambda fit: fit.getRemoteReps(spoolType=SpoolType.SCALE, spoolAmount=0).get("Hull", 0),
+        lambda fit: fit.getRemoteReps(spoolType=SpoolType.SCALE, spoolAmount=1).get("Hull", 0),
+        3, 0, 0)]
 
 
 class OutgoingViewFull(StatsView):
@@ -49,68 +76,43 @@ class OutgoingViewFull(StatsView):
 
         contentSizer.Add(sizerOutgoing, 0, wx.EXPAND, 0)
 
-        counter = 0
-
-        rr_list = [
-            ("labelRemoteCapacitor", "Capacitor:", "0 GJ/s", "capacitorInfo", "Capacitor restored"),
-            ("labelRemoteShield", "Shield:", "0 HP/s", "shieldActive", "Shield restored"),
-            ("labelRemoteArmor", "Armor:", "0 HP/s", "armorActive", "Armor restored"),
-            ("labelRemoteHull", "Hull:", "0 HP/s", "hullActive", "Hull restored"),
-        ]
-
-        for labelName, labelDesc, labelAmount, image, tooltip in rr_list:
+        for labelName, labelDesc, valueFormat, image, tooltip, val, preSpoolVal, fullSpoolVal, prec, lowest, highest in stats:
             baseBox = wx.BoxSizer(wx.VERTICAL)
 
             baseBox.Add(BitmapLoader.getStaticBitmap("%s_big" % image, parent, "gui"), 0, wx.ALIGN_CENTER)
 
-            lbl = wx.StaticText(parent, wx.ID_ANY, labelAmount)
+            lbl = wx.StaticText(parent, wx.ID_ANY, valueFormat.format(0))
             lbl.SetToolTip(wx.ToolTip(tooltip))
             setattr(self, labelName, lbl)
 
             baseBox.Add(lbl, 0, wx.ALIGN_CENTER)
             self._cachedValues.append(0)
-            counter += 1
 
             sizerOutgoing.Add(baseBox, 1, wx.ALIGN_LEFT)
 
     def refreshPanel(self, fit):
-        stats = [
-            (
-                "labelRemoteArmor",
-                lambda: fit.getRemoteReps().get("Armor"),
-                lambda: fit.getRemoteReps(spoolType=SpoolType.SCALE, spoolAmount=0).get("Armor", 0),
-                lambda: fit.getRemoteReps(spoolType=SpoolType.SCALE, spoolAmount=1).get("Armor", 0),
-                3, 0, 0, "%s HP/s", None),
-            (
-                "labelRemoteShield",
-                lambda: fit.getRemoteReps().get("Shield"),
-                lambda: fit.getRemoteReps(spoolType=SpoolType.SCALE, spoolAmount=0).get("Shield", 0),
-                lambda: fit.getRemoteReps(spoolType=SpoolType.SCALE, spoolAmount=1).get("Shield", 0),
-                3, 0, 0, "%s HP/s", None),
-            (
-                "labelRemoteHull",
-                lambda: fit.getRemoteReps().get("Hull"),
-                lambda: fit.getRemoteReps(spoolType=SpoolType.SCALE, spoolAmount=0).get("Hull", 0),
-                lambda: fit.getRemoteReps(spoolType=SpoolType.SCALE, spoolAmount=1).get("Hull", 0),
-                3, 0, 0, "%s HP/s", None),
-            (
-                "labelRemoteCapacitor",
-                lambda: fit.getRemoteReps().get("Capacitor"),
-                lambda: fit.getRemoteReps(spoolType=SpoolType.SCALE, spoolAmount=0).get("Capacitor", 0),
-                lambda: fit.getRemoteReps(spoolType=SpoolType.SCALE, spoolAmount=1).get("Capacitor", 0),
-                3, 0, 0, "%s GJ/s", None)]
+
+        def formatTooltip(text, preSpool, fullSpool, prec, lowest, highest):
+            if roundToPrec(preSpool, prec) == roundToPrec(fullSpool, prec):
+                return text
+            else:
+                return "{}, spoolup {}-{}".format(
+                    text,
+                    formatAmount(preSpool, prec, lowest, highest),
+                    formatAmount(fullSpool, prec, lowest, highest))
 
         counter = 0
-        for labelName, val, preSpoolVal, fullSpoolVal, prec, lowest, highest, valueFormat, altFormat in stats:
+        for labelName, labelDesc, valueFormat, image, tooltip, val, preSpoolVal, fullSpoolVal, prec, lowest, highest in stats:
             label = getattr(self, labelName)
-            val = val() if fit is not None else 0
-            preSpoolVal = preSpoolVal() if fit is not None else 0
-            fullSpoolVal = fullSpoolVal() if fit is not None else 0
+            val = val(fit) if fit is not None else 0
+            preSpoolVal = preSpoolVal(fit) if fit is not None else 0
+            fullSpoolVal = fullSpoolVal(fit) if fit is not None else 0
             # TODO: use spoolup options to fetch main value
             val = fullSpoolVal
             if self._cachedValues[counter] != val:
-                valueStr = formatAmount(val, prec, lowest, highest)
-                label.SetLabel(valueFormat % valueStr)
+                label.SetLabel(valueFormat.format(formatAmount(val, prec, lowest, highest)))
+                tooltipText = formatTooltip(tooltip, preSpoolVal, fullSpoolVal, prec, lowest, highest)
+                label.SetToolTip(wx.ToolTip(tooltipText))
                 self._cachedValues[counter] = val
             counter += 1
         self.panel.Layout()

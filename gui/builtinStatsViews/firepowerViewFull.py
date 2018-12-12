@@ -22,7 +22,7 @@ import wx
 import gui.mainFrame
 from gui.statsView import StatsView
 from gui.bitmap_loader import BitmapLoader
-from gui.utils.numberFormatter import formatAmount
+from gui.utils.numberFormatter import formatAmount, roundToPrec
 from eos.utils.spoolSupport import SpoolType
 from service.fit import Fit
 
@@ -149,14 +149,14 @@ class FirepowerViewFull(StatsView):
         else:
             self.stEff.Hide()
 
-        def dpsToolTip(preSpool, postSpool, statName, fmt_options):
-            if preSpool == postSpool:
-                return None
+        def dpsToolTip(preSpool, fullSpool, statName, prec, lowest, highest):
+            if roundToPrec(preSpool, prec) == roundToPrec(fullSpool, prec):
+                return ""
             else:
                 return "Spoolup {}: {}-{}".format(
                     statName,
-                    formatAmount(preSpool, *fmt_options),
-                    formatAmount(postSpool, *fmt_options))
+                    formatAmount(preSpool, prec, lowest, highest),
+                    formatAmount(fullSpool, prec, lowest, highest))
 
         stats = (
             (
@@ -195,9 +195,8 @@ class FirepowerViewFull(StatsView):
             if self._cachedValues[counter] != val:
                 valueStr = formatAmount(val, prec, lowest, highest)
                 label.SetLabel(valueFormat % valueStr)
-                valueStrTooltip = dpsToolTip(preSpoolVal, fullSpoolVal, statName, (prec, lowest, highest))
-                if valueStrTooltip:
-                    label.SetToolTip(wx.ToolTip(valueStrTooltip))
+                tooltipText = dpsToolTip(preSpoolVal, fullSpoolVal, statName, prec, lowest, highest)
+                label.SetToolTip(wx.ToolTip(tooltipText))
                 self._cachedValues[counter] = val
             counter += 1
 
