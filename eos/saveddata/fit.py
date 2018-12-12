@@ -1404,11 +1404,14 @@ class Fit(object):
 
     @property
     def tank(self):
-        hps = {"passiveShield": self.calculateShieldRecharge()}
-        for type in ("shield", "armor", "hull"):
-            hps["%sRepair" % type] = self.extraAttributes["%sRepair" % type]
-
-        return hps
+        reps = {
+            "passiveShield": self.calculateShieldRecharge(),
+            "shieldRepair": self.extraAttributes["shieldRepair"],
+            "armorRepair": self.extraAttributes["armorRepair"],
+            "armorRepairPreSpool": self.extraAttributes["armorRepairPreSpool"],
+            "armorRepairFullSpool": self.extraAttributes["armorRepairFullSpool"],
+            "hullRepair": self.extraAttributes["hullRepair"]}
+        return reps
 
     @property
     def effectiveTank(self):
@@ -1416,7 +1419,7 @@ class Fit(object):
             if self.damagePattern is None:
                 ehps = self.tank
             else:
-                ehps = self.damagePattern.calculateEffectiveTank(self, self.extraAttributes)
+                ehps = self.damagePattern.calculateEffectiveTank(self, self.tank)
 
             self.__effectiveTank = ehps
 
