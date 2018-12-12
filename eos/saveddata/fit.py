@@ -1366,7 +1366,7 @@ class Fit(object):
             remoteReps = {}
 
             for module in self.modules:
-                rrType, rrAmount = module.getRemoteReps(spoolType=spoolType, spoolAmount=spoolAmount)
+                rrType, rrAmount, spoolTime = module.getRemoteReps(spoolType=spoolType, spoolAmount=spoolAmount)
                 if rrType:
                     if rrType not in remoteReps:
                         remoteReps[rrType] = 0
@@ -1461,8 +1461,8 @@ class Fit(object):
         weaponDps = DmgTypes(0, 0, 0, 0)
 
         for mod in self.modules:
-            weaponVolley += mod.getVolley(spoolType=spoolType, spoolAmount=spoolAmount, targetResists=self.targetResists)
-            weaponDps += mod.getDps(spoolType=spoolType, spoolAmount=spoolAmount, targetResists=self.targetResists)
+            weaponVolley += mod.getVolley(spoolType=spoolType, spoolAmount=spoolAmount, targetResists=self.targetResists)[0]
+            weaponDps += mod.getDps(spoolType=spoolType, spoolAmount=spoolAmount, targetResists=self.targetResists)[0]
 
         self.__weaponVolleyMap[(spoolType, spoolAmount)] = weaponVolley
         self.__weaponDpsMap[(spoolType, spoolAmount)] = weaponDps

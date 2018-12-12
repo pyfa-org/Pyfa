@@ -75,7 +75,7 @@ class FitDpsGraph(Graph):
                 pyfalog.critical(e)
 
         for mod in fit.modules:
-            dps = mod.getDps(targetResists=fit.targetResists).total
+            dps = mod.getDps(targetResists=fit.targetResists)[0].total
             if mod.hardpoint == Hardpoint.TURRET:
                 if mod.state >= State.ACTIVE:
                     total += dps * self.calculateTurretMultiplier(mod, data)

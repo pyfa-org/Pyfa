@@ -303,7 +303,7 @@ class EfsPort():
         weaponSystems = []
         groups = {}
         for mod in fit.modules:
-            if mod.getDps().total > 0:
+            if mod.getDps()[0].total > 0:
                 # Group weapon + ammo combinations that occur more than once
                 keystr = str(mod.itemID) + "-" + str(mod.chargeID)
                 if keystr in groups:
@@ -346,10 +346,10 @@ class EfsPort():
             else:
                 maxRange = stats.maxRange
             statDict = {
-                "dps": stats.getDps().total * n, "capUse": stats.capUse * n, "falloff": stats.falloff,
+                "dps": stats.getDps()[0].total * n, "capUse": stats.capUse * n, "falloff": stats.falloff,
                 "type": typeing, "name": name, "optimal": maxRange,
                 "numCharges": stats.numCharges, "numShots": stats.numShots, "reloadTime": stats.reloadTime,
-                "cycleTime": stats.cycleTime, "volley": stats.getVolley().total * n, "tracking": tracking,
+                "cycleTime": stats.cycleTime, "volley": stats.getVolley()[0].total * n, "tracking": tracking,
                 "maxVelocity": maxVelocity, "explosionDelay": explosionDelay, "damageReductionFactor": damageReductionFactor,
                 "explosionRadius": explosionRadius, "explosionVelocity": explosionVelocity, "aoeFieldRange": aoeFieldRange,
                 "damageMultiplierBonusMax": stats.getModifiedItemAttr("damageMultiplierBonusMax"),

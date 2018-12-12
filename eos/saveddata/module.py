@@ -434,7 +434,7 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
 
     def getVolley(self, spoolType=None, spoolAmount=None, targetResists=None):
         if self.isEmpty or self.state < State.ACTIVE:
-            return DmgTypes(0, 0, 0, 0)
+            return DmgTypes(0, 0, 0, 0), 0
         if self.__baseVolley is None:
             dmgGetter = self.getModifiedChargeAttr if self.charge else self.getModifiedItemAttr
             dmgMult = self.getModifiedItemAttr("damageMultiplier", 1)
@@ -443,25 +443,26 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
                 thermal=(dmgGetter("thermalDamage", 0)) * dmgMult,
                 kinetic=(dmgGetter("kineticDamage", 0)) * dmgMult,
                 explosive=(dmgGetter("explosiveDamage", 0)) * dmgMult)
-        spoolMultiplier = 1 + calculateSpoolup(
+        spoolBoost, spoolTime = calculateSpoolup(
             self.getModifiedItemAttr("damageMultiplierBonusMax", 0),
             self.getModifiedItemAttr("damageMultiplierBonusPerCycle", 0),
             self.cycleTime / 1000,
             spoolType if spoolType is not None else self.spoolType,
             # Using spool type as condition as it should define if we're using
             # passed spoolup parameters or not
-            spoolAmount if spoolType is not None else self.spoolAmount)[0]
+            spoolAmount if spoolType is not None else self.spoolAmount)
+        spoolMultiplier = 1 + spoolBoost
         volley = DmgTypes(
             em=self.__baseVolley.em * spoolMultiplier * (1 - getattr(targetResists, "emAmount", 0)),
             thermal=self.__baseVolley.thermal * spoolMultiplier * (1 - getattr(targetResists, "thermalAmount", 0)),
             kinetic=self.__baseVolley.kinetic * spoolMultiplier * (1 - getattr(targetResists, "kineticAmount", 0)),
             explosive=self.__baseVolley.explosive * spoolMultiplier * (1 - getattr(targetResists, "explosiveAmount", 0)))
-        return volley
+        return volley, spoolTime
 
     def getDps(self, spoolType=None, spoolAmount=None, targetResists=None):
-        volley = self.getVolley(spoolType=spoolType, spoolAmount=spoolAmount, targetResists=targetResists)
+        volley, spoolTime = self.getVolley(spoolType=spoolType, spoolAmount=spoolAmount, targetResists=targetResists)
         if not volley:
-            return DmgTypes(0, 0, 0, 0)
+            return DmgTypes(0, 0, 0, 0), 0
         # Some weapons repeat multiple times in one cycle (bosonic doomsdays)
         # Get the number of times it fires off
         volleysPerCycle = max(self.getModifiedItemAttr("doomsdayDamageDuration", 1) / self.getModifiedItemAttr("doomsdayDamageCycleTime", 1), 1)
@@ -471,11 +472,11 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
             thermal=volley.thermal * dpsFactor,
             kinetic=volley.kinetic * dpsFactor,
             explosive=volley.explosive * dpsFactor)
-        return dps
+        return dps, spoolTime
 
     def getRemoteReps(self, spoolType=None, spoolAmount=None, ignoreState=False):
         if self.isEmpty or (self.state < State.ACTIVE and not ignoreState):
-            return (None, 0)
+            return (None, 0, 0)
 
         def getBaseRemoteReps(module):
             remoteModuleGroups = {
@@ -510,17 +511,20 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
             self.__baseRemoteReps = getBaseRemoteReps(self)
 
         rrType, rrAmount = self.__baseRemoteReps
+        spoolTime = 0
+
         if rrType and rrAmount and self.item.group.name == "Mutadaptive Remote Armor Repairer":
-            spoolMultiplier = 1 + calculateSpoolup(
+            spoolBoost, spoolTime = calculateSpoolup(
                 self.getModifiedItemAttr("repairMultiplierBonusMax", 0),
                 self.getModifiedItemAttr("repairMultiplierBonusPerCycle", 0),
                 self.cycleTime / 1000,
                 spoolType if spoolType is not None else self.spoolType,
                 # Using spool type as condition as it should define if we're using
                 # passed spoolup parameters or not
-                spoolAmount if spoolType is not None else self.spoolAmount)[0]
-            rrAmount *= spoolMultiplier
-        return rrType, rrAmount
+                spoolAmount if spoolType is not None else self.spoolAmount)
+            rrAmount *= (1 + spoolBoost)
+
+        return rrType, rrAmount, spoolTime
 
     @property
     def reloadTime(self):
