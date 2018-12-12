@@ -14,5 +14,6 @@ def handler(fit, container, context, **kwargs):
         cycleTime = container.getModifiedItemAttr("duration") / 1000.0
         repSpoolMax = container.getModifiedItemAttr("repairMultiplierBonusMax")
         repSpoolPerCycle = container.getModifiedItemAttr("repairMultiplierBonusPerCycle")
-        repAmount = repAmountBase * (1 + calculateSpoolup(repSpoolMax, repSpoolPerCycle, cycleTime, container.spoolType, container.spoolAmount))
+        # TODO: use spoolup options to fetch main value
+        repAmount = repAmountBase * (1 + calculateSpoolup(repSpoolMax, repSpoolPerCycle, cycleTime, SpoolType.SCALE, 1))
         fit.extraAttributes.increase("armorRepair", repAmount / cycleTime, **kwargs)
