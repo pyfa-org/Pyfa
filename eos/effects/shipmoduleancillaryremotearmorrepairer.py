@@ -17,4 +17,7 @@ def handler(fit, module, context, **kwargs):
 
     amount = module.getModifiedItemAttr("armorDamageAmount") * multiplier
     speed = module.getModifiedItemAttr("duration") / 1000.0
-    fit.extraAttributes.increase("armorRepair", amount / speed, **kwargs)
+    rps = amount / speed
+    fit.extraAttributes.increase("armorRepair", rps)
+    fit.extraAttributes.increase("armorRepairPreSpool", rps)
+    fit.extraAttributes.increase("armorRepairFullSpool", rps)
