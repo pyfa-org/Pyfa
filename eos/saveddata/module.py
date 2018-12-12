@@ -432,8 +432,8 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
 
         return self.__miningyield
 
-    def getVolley(self, spoolType=None, spoolAmount=None, targetResists=None):
-        if self.isEmpty or self.state < State.ACTIVE:
+    def getVolley(self, spoolType=None, spoolAmount=None, targetResists=None, ignoreState=False):
+        if self.isEmpty or (self.state < State.ACTIVE and not ignoreState):
             return DmgTypes(0, 0, 0, 0), 0
         if self.__baseVolley is None:
             dmgGetter = self.getModifiedChargeAttr if self.charge else self.getModifiedItemAttr
@@ -446,7 +446,7 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
         spoolBoost, spoolTime = calculateSpoolup(
             self.getModifiedItemAttr("damageMultiplierBonusMax", 0),
             self.getModifiedItemAttr("damageMultiplierBonusPerCycle", 0),
-            self.cycleTime / 1000,
+            self.rawCycleTime / 1000,
             spoolType if spoolType is not None else self.spoolType,
             # Using spool type as condition as it should define if we're using
             # passed spoolup parameters or not
@@ -459,12 +459,11 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
             explosive=self.__baseVolley.explosive * spoolMultiplier * (1 - getattr(targetResists, "explosiveAmount", 0)))
         return volley, spoolTime
 
-    def getDps(self, spoolType=None, spoolAmount=None, targetResists=None):
-        volley, spoolTime = self.getVolley(spoolType=spoolType, spoolAmount=spoolAmount, targetResists=targetResists)
+    def getDps(self, spoolType=None, spoolAmount=None, targetResists=None, ignoreState=False):
+        volley, spoolTime = self.getVolley(spoolType=spoolType, spoolAmount=spoolAmount, targetResists=targetResists, ignoreState=ignoreState)
         if not volley:
             return DmgTypes(0, 0, 0, 0), 0
-        # Some weapons repeat multiple times in one cycle (bosonic doomsdays)
-        # Get the number of times it fires off
+        # Some weapons repeat multiple times in one cycle (bosonic doomsdays). Get the number of times it fires off
         volleysPerCycle = max(self.getModifiedItemAttr("doomsdayDamageDuration", 1) / self.getModifiedItemAttr("doomsdayDamageCycleTime", 1), 1)
         dpsFactor = volleysPerCycle / (self.cycleTime / 1000)
         dps = DmgTypes(
@@ -517,7 +516,7 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
             spoolBoost, spoolTime = calculateSpoolup(
                 self.getModifiedItemAttr("repairMultiplierBonusMax", 0),
                 self.getModifiedItemAttr("repairMultiplierBonusPerCycle", 0),
-                self.cycleTime / 1000,
+                self.rawCycleTime / 1000,
                 spoolType if spoolType is not None else self.spoolType,
                 # Using spool type as condition as it should define if we're using
                 # passed spoolup parameters or not
