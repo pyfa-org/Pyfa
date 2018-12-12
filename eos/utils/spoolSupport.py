@@ -25,9 +25,9 @@ from eos.utils.float import floatUnerr
 
 @unique
 class SpoolType(IntEnum):
-    SCALE = 0  #  [0..1]
-    TIME = 1  # Expressed via time in seconds since spoolup started
-    CYCLES = 2  # Expressed in amount of cycles since spoolup started
+    SCALE = 0  # [0..1]
+    TIME = 1  # Expressed via time in seconds since spool up started
+    CYCLES = 2  # Expressed in amount of cycles since spool up started
 
 
 def calculateSpoolup(modMaxValue, modStepValue, modCycleTime, spoolType, spoolAmount):
@@ -36,14 +36,15 @@ def calculateSpoolup(modMaxValue, modStepValue, modCycleTime, spoolType, spoolAm
     is specified in seconds.
     """
     if not modMaxValue or not modStepValue:
-        return 0
+        return 0, 0
     if spoolType == SpoolType.SCALE:
-        return int(floatUnerr(spoolAmount * modMaxValue / modStepValue)) * modStepValue
+        cycles = int(floatUnerr(spoolAmount * modMaxValue / modStepValue))
+        return cycles * modStepValue, cycles * modCycleTime
     elif spoolType == SpoolType.TIME:
-        cycles = int(floatUnerr(spoolAmount / modCycleTime))
-        return min(modMaxValue, cycles * modStepValue)
+        cycles = min(int(floatUnerr(spoolAmount / modCycleTime)), int(floatUnerr(modMaxValue / modStepValue)))
+        return cycles * modStepValue, cycles * modCycleTime
     elif spoolType == SpoolType.CYCLES:
-        cycles = int(spoolAmount)
-        return min(modMaxValue, cycles * modStepValue)
+        cycles = min(int(spoolAmount), int(floatUnerr(modMaxValue / modStepValue)))
+        return cycles * modStepValue, cycles * modCycleTime
     else:
-        return 0
+        return 0, 0

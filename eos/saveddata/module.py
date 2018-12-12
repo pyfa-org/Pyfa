@@ -450,7 +450,7 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
             spoolType if spoolType is not None else self.spoolType,
             # Using spool type as condition as it should define if we're using
             # passed spoolup parameters or not
-            spoolAmount if spoolType is not None else self.spoolAmount)
+            spoolAmount if spoolType is not None else self.spoolAmount)[0]
         volley = DmgTypes(
             em=self.__baseVolley.em * spoolMultiplier * (1 - getattr(targetResists, "emAmount", 0)),
             thermal=self.__baseVolley.thermal * spoolMultiplier * (1 - getattr(targetResists, "thermalAmount", 0)),
@@ -518,7 +518,7 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
                 spoolType if spoolType is not None else self.spoolType,
                 # Using spool type as condition as it should define if we're using
                 # passed spoolup parameters or not
-                spoolAmount if spoolType is not None else self.spoolAmount)
+                spoolAmount if spoolType is not None else self.spoolAmount)[0]
             rrAmount *= spoolMultiplier
         return rrType, rrAmount
 
