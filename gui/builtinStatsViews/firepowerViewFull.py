@@ -153,7 +153,7 @@ class FirepowerViewFull(StatsView):
             if roundToPrec(preSpool, prec) == roundToPrec(fullSpool, prec):
                 return ""
             else:
-                return "Spoolup {}: {}-{}".format(
+                return "Spool up {}: {}-{}".format(
                     statName,
                     formatAmount(preSpool, prec, lowest, highest),
                     formatAmount(fullSpool, prec, lowest, highest))

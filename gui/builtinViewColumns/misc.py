@@ -348,7 +348,7 @@ class Miscellanea(ViewColumn):
             if not rps:
                 return "", None
             text = "{0}/s".format(formatAmount(rps, 3, 0, 3, forceSign=True))
-            tooltip = "Armor repaired per second, spoolup {}-{}".format(
+            tooltip = "Armor repaired per second, spool up {}-{}".format(
                 formatAmount(rpsPreSpool, 3, 0, 3),
                 formatAmount(rpsFullSpool, 3, 0, 3))
             return text, tooltip

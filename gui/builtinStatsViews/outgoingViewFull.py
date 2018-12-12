@@ -96,7 +96,7 @@ class OutgoingViewFull(StatsView):
             if roundToPrec(preSpool, prec) == roundToPrec(fullSpool, prec):
                 return text
             else:
-                return "{}, spoolup {}-{}".format(
+                return "{}, spool up {}-{}".format(
                     text,
                     formatAmount(preSpool, prec, lowest, highest),
                     formatAmount(fullSpool, prec, lowest, highest))
