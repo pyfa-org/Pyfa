@@ -1,7 +1,6 @@
 # mediumRemoteRepFittingAdjustment
 #
 # Used by:
-# Modules from group: Mutadaptive Remote Armor Repairer (4 of 5)
 # Variations of module: Medium Remote Armor Repairer I (12 of 12)
 # Variations of module: Medium Remote Shield Booster I (11 of 11)
 # Module: Medium Ancillary Remote Armor Repairer
