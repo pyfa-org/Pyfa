@@ -340,17 +340,26 @@ class Miscellanea(ViewColumn):
             tooltip = "Armor repaired per second"
             return text, tooltip
         elif itemGroup == "Mutadaptive Remote Armor Repairer":
-            rps = stuff.getRemoteReps(ignoreState=True)[1]
-            rpsPreSpool = stuff.getRemoteReps(spoolType=SpoolType.SCALE, spoolAmount=0, ignoreState=True)[1]
-            rpsFullSpool = stuff.getRemoteReps(spoolType=SpoolType.SCALE, spoolAmount=1, ignoreState=True)[1]
+            rrType, rps, spoolTime = stuff.getRemoteReps(ignoreState=True)
+            rrTypePre, rpsPre, spoolTimePre = stuff.getRemoteReps(spoolType=SpoolType.SCALE, spoolAmount=0, ignoreState=True)
+            rrTypeFull, rpsFull, spoolTimeFull = stuff.getRemoteReps(spoolType=SpoolType.SCALE, spoolAmount=1, ignoreState=True)
             # TODO: use spoolup options to fetch main value
-            rps = rpsFullSpool
+            rrType, rps, spoolTime = rrTypeFull, rpsFull, spoolTimeFull
             if not rps:
                 return "", None
-            text = "{0}/s".format(formatAmount(rps, 3, 0, 3, forceSign=True))
-            tooltip = "Armor repaired per second, spool up {}-{}".format(
-                formatAmount(rpsPreSpool, 3, 0, 3),
-                formatAmount(rpsFullSpool, 3, 0, 3))
+            text = []
+            tooltip = []
+            text.append("{}/s".format(formatAmount(rps, 3, 0, 3, forceSign=True)))
+            tooltip.append("Armor repaired per second")
+            if spoolTime:
+                text.append("{}s".format(formatAmount(spoolTime, 3, 0, 3)))
+                tooltip.append("spool up time")
+            text = " | ".join(text)
+            tooltip = " and ".join(tooltip)
+            tooltip = "{}\nSpool up amount {}-{}".format(
+                tooltip,
+                formatAmount(rpsPre, 3, 0, 3),
+                formatAmount(rpsFull, 3, 0, 3))
             return text, tooltip
         elif itemGroup == "Remote Shield Booster":
             rps = stuff.getRemoteReps(ignoreState=True)[1]
