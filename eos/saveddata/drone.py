@@ -153,27 +153,27 @@ class Drone(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
             explosive=volley.explosive * dpsFactor)
         return dps
 
-    def getRemoteReps(self, stateOverride=False):
-        if self.amountActive <= 0 and not stateOverride:
+    def getRemoteReps(self, ignoreState=False):
+        if self.amountActive <= 0 and not ignoreState:
             return (None, 0)
         if self.__baseRemoteReps is None:
-            droneShield = self.getModifiedItemAttr("shieldBonus", 0)
-            droneArmor = self.getModifiedItemAttr("armorDamageAmount", 0)
-            droneHull = self.getModifiedItemAttr("structureDamageAmount", 0)
-            if droneShield:
+            rrShield = self.getModifiedItemAttr("shieldBonus", 0)
+            rrArmor = self.getModifiedItemAttr("armorDamageAmount", 0)
+            rrHull = self.getModifiedItemAttr("structureDamageAmount", 0)
+            if rrShield:
                 rrType = "Shield"
-                rrAmount = droneShield
-            elif droneArmor:
+                rrAmount = rrShield
+            elif rrArmor:
                 rrType = "Armor"
-                rrAmount = droneArmor
-            elif droneHull:
+                rrAmount = rrArmor
+            elif rrHull:
                 rrType = "Hull"
-                rrAmount = droneHull
+                rrAmount = rrHull
             else:
                 rrType = None
                 rrAmount = 0
             if rrAmount:
-                droneAmount = self.amount if stateOverride else self.amountActive
+                droneAmount = self.amount if ignoreState else self.amountActive
                 rrAmount *= droneAmount / (self.cycleTime / 1000)
             self.__baseRemoteReps = (rrType, rrAmount)
         return self.__baseRemoteReps

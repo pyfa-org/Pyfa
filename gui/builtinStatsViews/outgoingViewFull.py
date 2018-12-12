@@ -52,10 +52,10 @@ class OutgoingViewFull(StatsView):
         counter = 0
 
         rr_list = [
-            ("RemoteCapacitor", "Capacitor:", "capacitorInfo", "Capacitor GJ per second restored remotely"),
-            ("RemoteShield", "Shield:", "shieldActive", "Shield HP per second repaired remotely"),
-            ("RemoteArmor", "Armor:", "armorActive", "Armor HP per second repaired remotely"),
-            ("RemoteHull", "Hull:", "hullActive", "Hull HP per second repaired remotely"),
+            ("RemoteCapacitor", "Capacitor:", "capacitorInfo", "Capacitor restored"),
+            ("RemoteShield", "Shield:", "shieldActive", "Shield restored"),
+            ("RemoteArmor", "Armor:", "armorActive", "Armor restored"),
+            ("RemoteHull", "Hull:", "hullActive", "Hull restored"),
         ]
 
         for outgoingType, label, image, tooltip in rr_list:
@@ -79,8 +79,6 @@ class OutgoingViewFull(StatsView):
             sizerOutgoing.Add(baseBox, 1, wx.ALIGN_LEFT)
 
     def refreshPanel(self, fit):
-        # If we did anything intresting, we'd update our labels to reflect the new fit's stats here
-
         stats = [
             (
                 "labelRemoteArmor",

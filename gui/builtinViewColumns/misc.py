@@ -333,16 +333,16 @@ class Miscellanea(ViewColumn):
             tooltip = "Sensor recalibration time"
             return text, tooltip
         elif itemGroup == "Remote Armor Repairer":
-            rps = stuff.getRemoteReps(stateOverride=True)[1]
+            rps = stuff.getRemoteReps(ignoreState=True)[1]
             if not rps:
                 return "", None
             text = "{0}/s".format(formatAmount(rps, 3, 0, 3, forceSign=True))
             tooltip = "Armor repaired per second"
             return text, tooltip
         elif itemGroup == "Mutadaptive Remote Armor Repairer":
-            rps = stuff.getRemoteReps(stateOverride=True)[1]
-            rpsPreSpool = stuff.getRemoteReps(spoolType=SpoolType.SCALE, spoolAmount=0, stateOverride=True)[1]
-            rpsFullSpool = stuff.getRemoteReps(spoolType=SpoolType.SCALE, spoolAmount=1, stateOverride=True)[1]
+            rps = stuff.getRemoteReps(ignoreState=True)[1]
+            rpsPreSpool = stuff.getRemoteReps(spoolType=SpoolType.SCALE, spoolAmount=0, ignoreState=True)[1]
+            rpsFullSpool = stuff.getRemoteReps(spoolType=SpoolType.SCALE, spoolAmount=1, ignoreState=True)[1]
             # TODO: use spoolup options to fetch main value
             rps = rpsFullSpool
             if not rps:
@@ -353,21 +353,21 @@ class Miscellanea(ViewColumn):
                 formatAmount(rpsFullSpool, 3, 0, 3))
             return text, tooltip
         elif itemGroup == "Remote Shield Booster":
-            rps = stuff.getRemoteReps(stateOverride=True)[1]
+            rps = stuff.getRemoteReps(ignoreState=True)[1]
             if not rps:
                 return "", None
             text = "{0}/s".format(formatAmount(rps, 3, 0, 3, forceSign=True))
             tooltip = "Shield transferred per second"
             return text, tooltip
         elif itemGroup == "Remote Capacitor Transmitter":
-            rps = stuff.getRemoteReps(stateOverride=True)[1]
+            rps = stuff.getRemoteReps(ignoreState=True)[1]
             if not rps:
                 return "", None
             text = "{0}/s".format(formatAmount(rps, 3, 0, 3, forceSign=True))
             tooltip = "Energy transferred per second"
             return text, tooltip
         elif itemGroup == "Remote Hull Repairer":
-            rps = stuff.getRemoteReps(stateOverride=True)[1]
+            rps = stuff.getRemoteReps(ignoreState=True)[1]
             if not rps:
                 return "", None
             text = "{0}/s".format(formatAmount(rps, 3, 0, 3, forceSign=True))
@@ -468,7 +468,7 @@ class Miscellanea(ViewColumn):
             tooltip = "Mining Yield per second ({0} per hour)".format(formatAmount(minePerSec * 3600, 3, 0, 3))
             return text, tooltip
         elif itemGroup == "Logistic Drone":
-            repType, rps = stuff.getRemoteReps(stateOverride=True)
+            repType, rps = stuff.getRemoteReps(ignoreState=True)
             if not repType:
                 return "", None
             text = "{}/s".format(formatAmount(rps, 3, 0, 3))

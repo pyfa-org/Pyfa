@@ -473,8 +473,8 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
             explosive=volley.explosive * dpsFactor)
         return dps
 
-    def getRemoteReps(self, spoolType=None, spoolAmount=None, stateOverride=False):
-        if self.isEmpty or (self.state < State.ACTIVE and not stateOverride):
+    def getRemoteReps(self, spoolType=None, spoolAmount=None, ignoreState=False):
+        if self.isEmpty or (self.state < State.ACTIVE and not ignoreState):
             return (None, 0)
 
         def getBaseRemoteReps(module):
