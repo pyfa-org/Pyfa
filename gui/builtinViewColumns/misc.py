@@ -352,10 +352,11 @@ class Miscellanea(ViewColumn):
                 tooltip.append("spool up time")
             text = " | ".join(text)
             tooltip = " and ".join(tooltip)
-            tooltip = "{}\nSpool up amount {}-{}".format(
+            tooltip = "{}\nSpool up amount {}-{} over {}s".format(
                 tooltip,
                 formatAmount(rpsPre, 3, 0, 3),
-                formatAmount(rpsFull, 3, 0, 3))
+                formatAmount(rpsFull, 3, 0, 3),
+                formatAmount(spoolTimeFull - spoolTimePre, 3, 0, 3))
             return text, tooltip
         elif itemGroup == "Remote Shield Booster":
             rps = stuff.getRemoteReps(ignoreState=True)[1]
