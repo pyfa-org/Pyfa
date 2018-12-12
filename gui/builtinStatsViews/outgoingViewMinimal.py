@@ -51,25 +51,20 @@ class OutgoingViewMinimal(StatsView):
         counter = 0
 
         rr_list = [
-            ("RemoteCapacitor", "Capacitor:", "capacitorInfo", "Capacitor restored"),
-            ("RemoteShield", "Shield:", "shieldActive", "Shield restored"),
-            ("RemoteArmor", "Armor:", "armorActive", "Armor restored"),
-            ("RemoteHull", "Hull:", "hullActive", "Hull restored"),
+            ("labelRemoteCapacitor", "Capacitor:", "0 GJ/s", "capacitorInfo", "Capacitor restored"),
+            ("labelRemoteShield", "Shield:", "0 HP/s", "shieldActive", "Shield restored"),
+            ("labelRemoteArmor", "Armor:", "0 HP/s", "armorActive", "Armor restored"),
+            ("labelRemoteHull", "Hull:", "0 HP/s", "hullActive", "Hull restored"),
         ]
 
-        for outgoingType, label, image, tooltip in rr_list:
+        for labelName, labelDesc, labelAmount, image, tooltip in rr_list:
             baseBox = wx.BoxSizer(wx.VERTICAL)
 
-            baseBox.Add(wx.StaticText(contentPanel, wx.ID_ANY, label), 0, wx.ALIGN_CENTER)
+            baseBox.Add(wx.StaticText(contentPanel, wx.ID_ANY, labelDesc), 0, wx.ALIGN_CENTER)
 
-            if "Capacitor" in outgoingType:
-                lbl = wx.StaticText(parent, wx.ID_ANY, "0 GJ/s")
-            else:
-                lbl = wx.StaticText(parent, wx.ID_ANY, "0 HP/s")
-
+            lbl = wx.StaticText(parent, wx.ID_ANY, labelAmount)
             lbl.SetToolTip(wx.ToolTip(tooltip))
-
-            setattr(self, "label%s" % outgoingType, lbl)
+            setattr(self, labelName, lbl)
 
             baseBox.Add(lbl, 0, wx.ALIGN_CENTER)
             self._cachedValues.append(0)
