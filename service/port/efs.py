@@ -17,6 +17,7 @@ from eos.saveddata.drone import Drone
 from eos.effectHandlerHelpers import HandledList
 from eos.db import gamedata_session, getItemsByCategory, getCategory, getAttributeInfo, getGroup
 from eos.gamedata import Category, Group, Item, Traits, Attribute, Effect, ItemEffect
+from eos.utils.spoolSupport import SpoolType, SpoolOptions
 from logbook import Logger
 pyfalog = Logger(__name__)
 
@@ -345,11 +346,14 @@ class EfsPort():
                 maxRange = 300000
             else:
                 maxRange = stats.maxRange
+            # TODO: fetch spoolup option
+            defaultSpoolValue = 1
+            spoolOptions = SpoolOptions(SpoolType.SCALE, defaultSpoolValue, False)
             statDict = {
-                "dps": stats.getDps()[0].total * n, "capUse": stats.capUse * n, "falloff": stats.falloff,
+                "dps": stats.getDps(spoolOptions=spoolOptions)[0].total * n, "capUse": stats.capUse * n, "falloff": stats.falloff,
                 "type": typeing, "name": name, "optimal": maxRange,
                 "numCharges": stats.numCharges, "numShots": stats.numShots, "reloadTime": stats.reloadTime,
-                "cycleTime": stats.cycleTime, "volley": stats.getVolley()[0].total * n, "tracking": tracking,
+                "cycleTime": stats.cycleTime, "volley": stats.getVolley(spoolOptions=spoolOptions)[0].total * n, "tracking": tracking,
                 "maxVelocity": maxVelocity, "explosionDelay": explosionDelay, "damageReductionFactor": damageReductionFactor,
                 "explosionRadius": explosionRadius, "explosionVelocity": explosionVelocity, "aoeFieldRange": aoeFieldRange,
                 "damageMultiplierBonusMax": stats.getModifiedItemAttr("damageMultiplierBonusMax"),
@@ -621,15 +625,18 @@ class EfsPort():
         }
         resonance = {"hull": hullResonance, "armor": armorResonance, "shield": shieldResonance}
         shipSize = EfsPort.getShipSize(fit.ship.item.groupID)
+        # TODO: fetch spoolup option
+        defaultSpoolValue = 1
+        spoolOptions = SpoolOptions(SpoolType.SCALE, defaultSpoolValue, False)
         try:
             dataDict = {
                 "name": fitName, "ehp": fit.ehp, "droneDPS": fit.getDroneDps().total,
-                "droneVolley": fit.getDroneVolley(), "hp": fit.hp, "maxTargets": fit.maxTargets,
-                "maxSpeed": fit.maxSpeed, "weaponVolley": fit.getWeaponVolley().total, "totalVolley": fit.getTotalVolley().total,
-                "maxTargetRange": fit.maxTargetRange, "scanStrength": fit.scanStrength,
-                "weaponDPS": fit.getWeaponDps().total, "alignTime": fit.alignTime, "signatureRadius": fitModAttr("signatureRadius"),
-                "weapons": weaponSystems, "scanRes": fitModAttr("scanResolution"),
-                "capUsed": fit.capUsed, "capRecharge": fit.capRecharge,
+                "droneVolley": fit.getDroneVolley().total, "hp": fit.hp, "maxTargets": fit.maxTargets,
+                "maxSpeed": fit.maxSpeed, "weaponVolley": fit.getWeaponVolley(spoolOptions=spoolOptions).total,
+                "totalVolley": fit.getTotalVolley(spoolOptions=spoolOptions).total, "maxTargetRange": fit.maxTargetRange,
+                "scanStrength": fit.scanStrength, "weaponDPS": fit.getWeaponDps(spoolOptions=spoolOptions).total,
+                "alignTime": fit.alignTime, "signatureRadius": fitModAttr("signatureRadius"), "weapons": weaponSystems,
+                "scanRes": fitModAttr("scanResolution"), "capUsed": fit.capUsed, "capRecharge": fit.capRecharge,
                 "rigSlots": fitModAttr("rigSlots"), "lowSlots": fitModAttr("lowSlots"),
                 "midSlots": fitModAttr("medSlots"), "highSlots": fitModAttr("hiSlots"),
                 "turretSlots": fitModAttr("turretSlotsLeft"), "launcherSlots": fitModAttr("launcherSlotsLeft"),
