@@ -30,24 +30,23 @@ class ItemMutator(wx.Panel):
         self.event_mapping = {}
 
         for m in sorted(stuff.mutators.values(), key=lambda x: x.attribute.displayName):
-            # create array for the two ranges
-            min_t = [m.minValue, m.minMod, None]
-            max_t = [m.maxValue, m.maxMod, None]
+            # Format: [raw value, modifier applied to base raw value, display value]
+            range1 = (m.minValue, m.minMod, m.attribute.unit.SimplifyValue(m.minValue))
+            range2 = (m.maxValue, m.maxMod, m.attribute.unit.SimplifyValue(m.maxValue))
 
-            # Then we need to determine if it's better than original, which will be the color
-            min_t[2] = min_t[1] < 1 if not m.highIsGood else 1 < min_t[1]
-            max_t[2] = max_t[1] < 1 if not m.highIsGood else 1 < max_t[1]
-
-            # Lastly, we need to determine which range value is "worse" (left side) or "better" (right side)
-            if (m.highIsGood and min_t[1] > max_t[1]) or (not m.highIsGood and min_t[1] < max_t[1]):
-                better_range = min_t
+            if (m.highIsGood and range1[0] >= range2[0]) or (not m.highIsGood and range1[0] <= range2[0]):
+                betterRange = range1
+                worseRange = range2
             else:
-                better_range = max_t
+                betterRange = range2
+                worseRange = range1
 
-            if (m.highIsGood and max_t[1] < min_t[1]) or (not m.highIsGood and max_t[1] > min_t[1]):
-                worse_range = max_t
+            if range1[2] >= range2[2]:
+                displayMaxRange = range1
+                displayMinRange = range2
             else:
-                worse_range = min_t
+                displayMaxRange = range2
+                displayMinRange = range1
 
             headingSizer = wx.BoxSizer(wx.HORIZONTAL)
 
@@ -61,25 +60,25 @@ class ItemMutator(wx.Panel):
 
             headingSizer.Add(displayName, 3, wx.ALL | wx.EXPAND, 0)
 
-            worst_val = ItemParams.FormatValue(*m.attribute.unit.PreformatValue(worse_range[0]), rounding='dec')
-            worst_text = wx.StaticText(self, wx.ID_ANY, worst_val)
-            worst_text.SetForegroundColour(self.goodColor if worse_range[2] else self.badColor)
+            leftVal = ItemParams.FormatValue(*m.attribute.unit.PreformatValue(displayMinRange[0]), rounding='dec')
+            leftText = wx.StaticText(self, wx.ID_ANY, leftVal)
+            leftText.SetForegroundColour(self.goodColor if displayMinRange is betterRange else self.badColor)
 
-            best_val = ItemParams.FormatValue(*m.attribute.unit.PreformatValue(better_range[0]), rounding='dec')
-            best_text = wx.StaticText(self, wx.ID_ANY, best_val)
-            best_text.SetForegroundColour(self.goodColor if better_range[2] else self.badColor)
+            rightVal = ItemParams.FormatValue(*m.attribute.unit.PreformatValue(displayMaxRange[0]), rounding='dec')
+            rightText = wx.StaticText(self, wx.ID_ANY, rightVal)
+            rightText.SetForegroundColour(self.goodColor if displayMaxRange is betterRange else self.badColor)
 
-            headingSizer.Add(worst_text, 0, wx.ALL | wx.EXPAND, 0)
+            headingSizer.Add(leftText, 0, wx.ALL | wx.EXPAND, 0)
             headingSizer.Add(wx.StaticText(self, wx.ID_ANY, " ─ "), 0, wx.RIGHT | wx.LEFT | wx.EXPAND, 5)
-            headingSizer.Add(best_text, 0, wx.RIGHT | wx.EXPAND, 10)
+            headingSizer.Add(rightText, 0, wx.RIGHT | wx.EXPAND, 10)
 
             mainSizer.Add(headingSizer, 0, wx.ALL | wx.EXPAND, 5)
 
             slider = AttributeSlider(parent=self,
                                      baseValue=m.attribute.unit.SimplifyValue(m.baseValue),
-                                     minValue=m.attribute.unit.SimplifyValue(min_t[0]),
-                                     maxValue=m.attribute.unit.SimplifyValue(max_t[0]),
-                                     inverse=better_range is min_t)
+                                     minValue=displayMinRange[2],
+                                     maxValue=displayMaxRange[2],
+                                     inverse=displayMaxRange is worseRange)
             slider.SetValue(m.attribute.unit.SimplifyValue(m.value), False)
             slider.Bind(EVT_VALUE_CHANGED, self.changeMutatedValue)
             self.event_mapping[slider] = m
