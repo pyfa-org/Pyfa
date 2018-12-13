@@ -133,7 +133,7 @@ class RechargeViewFull(StatsView):
                 else:
                     ttText = ""
 
-                lbl.SetLabel("{:.1f}{}".format(amount, "*" if ttText else ""))
+                lbl.SetLabel("{:.1f}{}".format(amount, "\u02e2" if ttText else ""))
                 lbl.SetToolTip(wx.ToolTip(ttText))
                 unitlbl.SetToolTip(wx.ToolTip(ttText))
 

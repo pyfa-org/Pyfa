@@ -112,7 +112,7 @@ class OutgoingViewMinimal(StatsView):
                 hasSpool, tooltipText = formatTooltip(tooltip, preSpoolVal, fullSpoolVal, prec, lowest, highest)
                 label.SetLabel(valueFormat.format(
                     formatAmount(val, prec, lowest, highest),
-                    "*" if hasSpool else ""))
+                    "\u02e2" if hasSpool else ""))
                 label.SetToolTip(wx.ToolTip(tooltipText))
                 self._cachedValues[counter] = val
             counter += 1

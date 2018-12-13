@@ -195,7 +195,7 @@ class FirepowerViewFull(StatsView):
                 tooltipText = dpsToolTip(preSpoolVal, fullSpoolVal, prec, lowest, highest)
                 label.SetLabel(valueFormat.format(
                     formatAmount(val, prec, lowest, highest),
-                    "*" if tooltipText else ""))
+                    "\u02e2" if tooltipText else ""))
                 label.SetToolTip(wx.ToolTip(tooltipText))
                 self._cachedValues[counter] = val
             counter += 1
