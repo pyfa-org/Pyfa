@@ -1,3 +1,5 @@
+import math
+
 import wx
 import wx.lib.newevent
 
@@ -72,8 +74,23 @@ class AttributeSlider(wx.Panel):
 
         range = [self.UserMinValue, self.UserMaxValue]
 
-        self.ctrl = wx.SpinCtrlDouble(self, min=min(range), max=max(range))
+        def getStep(valRange):
+            """
+            Find step for the passed range, which is based on 1, 2 or 5.
+            Step returned will make sure that range fits 10..50 of them,
+            as close to 10 as possible.
+            """
+            steps = {1: None, 2: None, 5: None}
+            for baseInc in steps:
+                baseIncAmount = valRange / baseInc
+                incScale = math.floor(math.log10(baseIncAmount) - 1)
+                steps[baseInc] = baseInc * 10 ** incScale
+            chosenBase = min(steps, key=lambda base: valRange / steps[base])
+            return steps[chosenBase]
+
+        self.ctrl = wx.SpinCtrlDouble(self, min=min(range), max=max(range), inc=getStep(max(range) - min(range)))
         self.ctrl.SetDigits(3)
+
 
         self.ctrl.Bind(wx.EVT_SPINCTRLDOUBLE, self.UpdateValue)
 
