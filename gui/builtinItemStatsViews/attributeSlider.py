@@ -60,20 +60,6 @@ class AttributeSlider(wx.Panel):
 
         self.inverse = inverse
 
-        # The internal slider basically represents the percentage towards the end of the range. It has to be normalized
-        # in this way, otherwise when we start off with a base, if the range is skewed to one side, the base value won't
-        # be centered. We use a range of -100,100 so that we can depend on the SliderValue to contain the percentage
-        # toward one end
-
-        # Additionally, since we want the slider to be accurate to 3 decimal places, we need to blow out the two ends here
-        # (if we have a slider that needs to land on 66.66% towards the right, it will actually be converted to 66%. Se we need it to support 6,666)
-        #
-        # self.SliderMinValue = -100
-        # self.SliderMaxValue = 100
-        # self.SliderValue = 0
-
-        range = [self.UserMinValue, self.UserMaxValue]
-
         def getStep(valRange):
             """
             Find step for the passed range, which is based on 1, 2 or 5.
@@ -86,9 +72,14 @@ class AttributeSlider(wx.Panel):
                 incScale = math.floor(math.log10(baseIncAmount) - 1)
                 steps[baseInc] = baseInc * 10 ** incScale
             chosenBase = min(steps, key=lambda base: valRange / steps[base])
-            return steps[chosenBase]
+            chosenStep = steps[chosenBase]
+            if inverse:
+                chosenStep *= -1
+            return chosenStep
 
-        self.ctrl = wx.SpinCtrlDouble(self, min=min(range), max=max(range), inc=getStep(max(range) - min(range)))
+        self.ctrl = wx.SpinCtrlDouble(
+            self, min=self.UserMinValue, max=self.UserMaxValue,
+            inc=getStep(self.UserMaxValue - self.UserMinValue))
         self.ctrl.SetDigits(3)
 
 

@@ -60,17 +60,17 @@ class ItemMutator(wx.Panel):
 
             headingSizer.Add(displayName, 3, wx.ALL | wx.EXPAND, 0)
 
-            leftVal = ItemParams.FormatValue(*m.attribute.unit.PreformatValue(displayMinRange[0]), rounding='dec')
-            leftText = wx.StaticText(self, wx.ID_ANY, leftVal)
-            leftText.SetForegroundColour(self.goodColor if displayMinRange is betterRange else self.badColor)
+            worseVal = ItemParams.FormatValue(*m.attribute.unit.PreformatValue(worseRange[0]), rounding='dec')
+            worseText = wx.StaticText(self, wx.ID_ANY, worseVal)
+            worseText.SetForegroundColour(self.badColor)
 
-            rightVal = ItemParams.FormatValue(*m.attribute.unit.PreformatValue(displayMaxRange[0]), rounding='dec')
-            rightText = wx.StaticText(self, wx.ID_ANY, rightVal)
-            rightText.SetForegroundColour(self.goodColor if displayMaxRange is betterRange else self.badColor)
+            betterVal = ItemParams.FormatValue(*m.attribute.unit.PreformatValue(betterRange[0]), rounding='dec')
+            betterText = wx.StaticText(self, wx.ID_ANY, betterVal)
+            betterText.SetForegroundColour(self.goodColor)
 
-            headingSizer.Add(leftText, 0, wx.ALL | wx.EXPAND, 0)
+            headingSizer.Add(worseText, 0, wx.ALL | wx.EXPAND, 0)
             headingSizer.Add(wx.StaticText(self, wx.ID_ANY, " ─ "), 0, wx.RIGHT | wx.LEFT | wx.EXPAND, 5)
-            headingSizer.Add(rightText, 0, wx.RIGHT | wx.EXPAND, 10)
+            headingSizer.Add(betterText, 0, wx.RIGHT | wx.EXPAND, 10)
 
             mainSizer.Add(headingSizer, 0, wx.ALL | wx.EXPAND, 5)
 
