@@ -119,7 +119,7 @@ class Miscellanea(ViewColumn):
             volley, spoolTime = stuff.getVolley(spoolType=SpoolType.SCALE, spoolAmount=1, ignoreState=True)
             if spoolTime:
                 text = "{0}s".format(formatAmount(spoolTime, 3, 0, 3))
-                tooltip = "spool-up time"
+                tooltip = "spool up time"
                 info.append((text, tooltip))
             if not info:
                 return "", None

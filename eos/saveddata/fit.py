@@ -1135,149 +1135,6 @@ class Fit(object):
 
         return self.__capRecharge
 
-    @property
-    def sustainableTank(self):
-        if self.__sustainableTank is None:
-            self.calculateSustainableTank()
-
-        return self.__sustainableTank
-
-    def calculateSustainableTank(self, effective=True):
-        if self.__sustainableTank is None:
-            if self.capStable and not self.factorReload:
-                sustainable = {
-                    "armorRepair" : self.extraAttributes["armorRepair"],
-                    "shieldRepair": self.extraAttributes["shieldRepair"],
-                    "hullRepair"  : self.extraAttributes["hullRepair"]
-                }
-            else:
-                sustainable = {}
-
-                repairers = []
-                # Map a repairer type to the attribute it uses
-                groupAttrMap = {
-                    "Shield Booster": "shieldBonus",
-                    "Ancillary Shield Booster": "shieldBonus",
-                    "Remote Shield Booster": "shieldBonus",
-                    "Ancillary Remote Shield Booster": "shieldBonus",
-
-                    "Armor Repair Unit": "armorDamageAmount",
-                    "Ancillary Armor Repairer": "armorDamageAmount",
-                    "Remote Armor Repairer": "armorDamageAmount",
-                    "Ancillary Remote Armor Repairer": "armorDamageAmount",
-
-                    "Hull Repair Unit": "structureDamageAmount",
-                    "Remote Hull Repairer": "structureDamageAmount",
-                }
-                # Map repairer type to attribute
-                groupStoreMap = {
-                    "Shield Booster": "shieldRepair",
-                    "Remote Shield Booster": "shieldRepair",
-                    "Ancillary Shield Booster": "shieldRepair",
-                    "Ancillary Remote Shield Booster": "shieldRepair",
-
-                    "Armor Repair Unit": "armorRepair",
-                    "Remote Armor Repairer": "armorRepair",
-                    "Ancillary Armor Repairer": "armorRepair",
-                    "Ancillary Remote Armor Repairer": "armorRepair",
-
-                    "Hull Repair Unit": "hullRepair",
-                    "Remote Hull Repairer": "hullRepair",
-                }
-
-                capUsed = self.capUsed
-                for attr in ("shieldRepair", "armorRepair", "hullRepair"):
-                    sustainable[attr] = self.extraAttributes[attr]
-                    dict = self.extraAttributes.getAfflictions(attr)
-                    if self in dict:
-                        for mod, _, amount, used in dict[self]:
-                            if not used:
-                                continue
-                            if mod.projected is False:
-                                usesCap = True
-                                try:
-                                    if mod.capUse:
-                                        capUsed -= mod.capUse
-                                    else:
-                                        usesCap = False
-                                except AttributeError:
-                                    usesCap = False
-
-                                # Normal Repairers
-                                if usesCap and not mod.charge:
-                                    cycleTime = mod.rawCycleTime
-                                    amount = mod.getModifiedItemAttr(groupAttrMap[mod.item.group.name])
-                                    sustainable[attr] -= amount / (cycleTime / 1000.0)
-                                    repairers.append(mod)
-                                # Ancillary Armor reps etc
-                                elif usesCap and mod.charge:
-                                    cycleTime = mod.rawCycleTime
-                                    amount = mod.getModifiedItemAttr(groupAttrMap[mod.item.group.name])
-                                    if mod.charge.name == "Nanite Repair Paste":
-                                        multiplier = mod.getModifiedItemAttr("chargedArmorDamageMultiplier") or 1
-                                    else:
-                                        multiplier = 1
-                                    sustainable[attr] -= amount * multiplier / (cycleTime / 1000.0)
-                                    repairers.append(mod)
-                                # Ancillary Shield boosters etc
-                                elif not usesCap and mod.item.group.name in ("Ancillary Shield Booster", "Ancillary Remote Shield Booster"):
-                                    cycleTime = mod.rawCycleTime
-                                    amount = mod.getModifiedItemAttr(groupAttrMap[mod.item.group.name])
-                                    if self.factorReload and mod.charge:
-                                        reloadtime = mod.reloadTime
-                                    else:
-                                        reloadtime = 0.0
-                                    offdutycycle = reloadtime / ((max(mod.numShots, 1) * cycleTime) + reloadtime)
-                                    sustainable[attr] -= amount * offdutycycle / (cycleTime / 1000.0)
-
-                # Sort repairers by efficiency. We want to use the most efficient repairers first
-                repairers.sort(key=lambda _mod: _mod.getModifiedItemAttr(
-                    groupAttrMap[_mod.item.group.name]) * (_mod.getModifiedItemAttr(
-                        "chargedArmorDamageMultiplier") or 1) / _mod.getModifiedItemAttr("capacitorNeed"), reverse=True)
-
-                # Loop through every module until we're above peak recharge
-                # Most efficient first, as we sorted earlier.
-                # calculate how much the repper can rep stability & add to total
-                totalPeakRecharge = self.capRecharge
-                for mod in repairers:
-                    if capUsed > totalPeakRecharge:
-                        break
-
-                    if self.factorReload and mod.charge:
-                        reloadtime = mod.reloadTime
-                    else:
-                        reloadtime = 0.0
-
-                    cycleTime = mod.rawCycleTime
-                    capPerSec = mod.capUse
-
-                    if capPerSec is not None and cycleTime is not None:
-                        # Check how much this repper can work
-                        sustainability = min(1, (totalPeakRecharge - capUsed) / capPerSec)
-                        amount = mod.getModifiedItemAttr(groupAttrMap[mod.item.group.name])
-                        # Add the sustainable amount
-
-                        if not mod.charge:
-                            sustainable[groupStoreMap[mod.item.group.name]] += sustainability * amount / (
-                                    cycleTime / 1000.0)
-                        else:
-                            if mod.charge.name == "Nanite Repair Paste":
-                                multiplier = mod.getModifiedItemAttr("chargedArmorDamageMultiplier") or 1
-                            else:
-                                multiplier = 1
-                            ondutycycle = (max(mod.numShots, 1) * cycleTime) / (
-                                    (max(mod.numShots, 1) * cycleTime) + reloadtime)
-                            sustainable[groupStoreMap[
-                                mod.item.group.name]] += sustainability * amount * ondutycycle * multiplier / (
-                                    cycleTime / 1000.0)
-
-                        capUsed += capPerSec
-
-            sustainable["passiveShield"] = self.calculateShieldRecharge()
-            self.__sustainableTank = sustainable
-
-        return self.__sustainableTank
-
     def calculateCapRecharge(self, percent=PEAK_RECHARGE):
         capacity = self.ship.getModifiedItemAttr("capacitorCapacity")
         rechargeRate = self.ship.getModifiedItemAttr("rechargeRate") / 1000.0
@@ -1426,16 +1283,143 @@ class Fit(object):
         return self.__effectiveTank
 
     @property
+    def sustainableTank(self):
+        if self.__sustainableTank is None:
+            self.calculateSustainableTank()
+
+        return self.__sustainableTank
+
+    @property
     def effectiveSustainableTank(self):
         if self.__effectiveSustainableTank is None:
             if self.damagePattern is None:
-                eshps = self.sustainableTank
+                tank = self.sustainableTank
             else:
-                eshps = self.damagePattern.calculateEffectiveTank(self, self.sustainableTank)
-
-            self.__effectiveSustainableTank = eshps
-
+                tank = self.damagePattern.calculateEffectiveTank(self, self.sustainableTank)
+            self.__effectiveSustainableTank = tank
         return self.__effectiveSustainableTank
+
+    def calculateSustainableTank(self):
+        if self.__sustainableTank is None:
+            sustainable = {
+                "passiveShield": self.calculateShieldRecharge(),
+                "shieldRepair": self.extraAttributes["shieldRepair"],
+                "armorRepair": self.extraAttributes["armorRepair"],
+                "armorRepairPreSpool": self.extraAttributes["armorRepairPreSpool"],
+                "armorRepairFullSpool": self.extraAttributes["armorRepairFullSpool"],
+                "hullRepair": self.extraAttributes["hullRepair"]}
+            if not self.capStable or self.factorReload:
+                # Map a local repairer type to the attribute it uses
+                groupAttrMap = {
+                    "Shield Booster": "shieldBonus",
+                    "Ancillary Shield Booster": "shieldBonus",
+                    "Armor Repair Unit": "armorDamageAmount",
+                    "Ancillary Armor Repairer": "armorDamageAmount",
+                    "Hull Repair Unit": "structureDamageAmount"}
+                # Map local repairer type to tank type
+                groupStoreMap = {
+                    "Shield Booster": "shieldRepair",
+                    "Ancillary Shield Booster": "shieldRepair",
+                    "Armor Repair Unit": "armorRepair",
+                    "Ancillary Armor Repairer": "armorRepair",
+                    "Hull Repair Unit": "hullRepair"}
+                repairers = []
+                localAdjustment = {"shieldRepair": 0, "armorRepair": 0, "hullRepair": 0}
+                capUsed = self.capUsed
+                for tankType in localAdjustment:
+                    dict = self.extraAttributes.getAfflictions(tankType)
+                    if self in dict:
+                        for mod, _, amount, used in dict[self]:
+                            if not used:
+                                continue
+                            if mod.projected:
+                                continue
+                            usesCap = True
+                            try:
+                                if mod.capUse:
+                                    capUsed -= mod.capUse
+                                else:
+                                    usesCap = False
+                            except AttributeError:
+                                usesCap = False
+
+                            # Normal Repairers
+                            if usesCap and not mod.charge:
+                                cycleTime = mod.rawCycleTime
+                                amount = mod.getModifiedItemAttr(groupAttrMap[mod.item.group.name])
+                                localAdjustment[tankType] -= amount / (cycleTime / 1000.0)
+                                repairers.append(mod)
+                            # Ancillary Armor reps etc
+                            elif usesCap and mod.charge:
+                                cycleTime = mod.rawCycleTime
+                                amount = mod.getModifiedItemAttr(groupAttrMap[mod.item.group.name])
+                                if mod.charge.name == "Nanite Repair Paste":
+                                    multiplier = mod.getModifiedItemAttr("chargedArmorDamageMultiplier") or 1
+                                else:
+                                    multiplier = 1
+                                localAdjustment[tankType] -= amount * multiplier / (cycleTime / 1000.0)
+                                repairers.append(mod)
+                            # Ancillary Shield boosters etc
+                            elif not usesCap and mod.item.group.name in ("Ancillary Shield Booster", "Ancillary Remote Shield Booster"):
+                                cycleTime = mod.rawCycleTime
+                                amount = mod.getModifiedItemAttr(groupAttrMap[mod.item.group.name])
+                                if self.factorReload and mod.charge:
+                                    reloadtime = mod.reloadTime
+                                else:
+                                    reloadtime = 0.0
+                                offdutycycle = reloadtime / ((max(mod.numShots, 1) * cycleTime) + reloadtime)
+                                localAdjustment[tankType] -= amount * offdutycycle / (cycleTime / 1000.0)
+
+                # Sort repairers by efficiency. We want to use the most efficient repairers first
+                repairers.sort(key=lambda _mod: _mod.getModifiedItemAttr(
+                    groupAttrMap[_mod.item.group.name]) * (_mod.getModifiedItemAttr(
+                        "chargedArmorDamageMultiplier") or 1) / _mod.getModifiedItemAttr("capacitorNeed"), reverse=True)
+
+                # Loop through every module until we're above peak recharge
+                # Most efficient first, as we sorted earlier.
+                # calculate how much the repper can rep stability & add to total
+                totalPeakRecharge = self.capRecharge
+                for mod in repairers:
+                    if capUsed > totalPeakRecharge:
+                        break
+
+                    if self.factorReload and mod.charge:
+                        reloadtime = mod.reloadTime
+                    else:
+                        reloadtime = 0.0
+
+                    cycleTime = mod.rawCycleTime
+                    capPerSec = mod.capUse
+
+                    if capPerSec is not None and cycleTime is not None:
+                        # Check how much this repper can work
+                        sustainability = min(1, (totalPeakRecharge - capUsed) / capPerSec)
+                        amount = mod.getModifiedItemAttr(groupAttrMap[mod.item.group.name])
+                        # Add the sustainable amount
+                        if not mod.charge:
+                            localAdjustment[groupStoreMap[mod.item.group.name]] += sustainability * amount / (
+                                    cycleTime / 1000.0)
+                        else:
+                            if mod.charge.name == "Nanite Repair Paste":
+                                multiplier = mod.getModifiedItemAttr("chargedArmorDamageMultiplier") or 1
+                            else:
+                                multiplier = 1
+                            ondutycycle = (max(mod.numShots, 1) * cycleTime) / (
+                                    (max(mod.numShots, 1) * cycleTime) + reloadtime)
+                            localAdjustment[groupStoreMap[
+                                mod.item.group.name]] += sustainability * amount * ondutycycle * multiplier / (
+                                    cycleTime / 1000.0)
+
+                        capUsed += capPerSec
+                sustainable["shieldRepair"] += localAdjustment["shieldRepair"]
+                sustainable["armorRepair"] += localAdjustment["armorRepair"]
+                sustainable["armorRepairPreSpool"] += localAdjustment["armorRepair"]
+                sustainable["armorRepairFullSpool"] += localAdjustment["armorRepair"]
+                sustainable["hullRepair"] += localAdjustment["hullRepair"]
+
+            self.__sustainableTank = sustainable
+
+        return self.__sustainableTank
 
     def calculateLockTime(self, radius):
         scanRes = self.ship.getModifiedItemAttr("scanResolution")
