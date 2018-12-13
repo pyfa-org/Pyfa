@@ -352,7 +352,7 @@ class Miscellanea(ViewColumn):
                 tooltip.append("spool up time")
             text = " | ".join(text)
             tooltip = " and ".join(tooltip)
-            tooltip = "{}\nSpool up amount {}-{} over {}s".format(
+            tooltip = "{}\nSpool up: {}-{} over {}s".format(
                 tooltip,
                 formatAmount(rpsPre, 3, 0, 3),
                 formatAmount(rpsFull, 3, 0, 3),

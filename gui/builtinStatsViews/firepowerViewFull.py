@@ -149,12 +149,11 @@ class FirepowerViewFull(StatsView):
         else:
             self.stEff.Hide()
 
-        def dpsToolTip(preSpool, fullSpool, statName, prec, lowest, highest):
+        def dpsToolTip(preSpool, fullSpool, prec, lowest, highest):
             if roundToPrec(preSpool, prec) == roundToPrec(fullSpool, prec):
                 return ""
             else:
-                return "Spool up {}: {}-{}".format(
-                    statName,
+                return "Spool up: {}-{}".format(
                     formatAmount(preSpool, prec, lowest, highest),
                     formatAmount(fullSpool, prec, lowest, highest))
 
@@ -164,28 +163,28 @@ class FirepowerViewFull(StatsView):
                 lambda: fit.getWeaponDps().total,
                 lambda: fit.getWeaponDps(spoolType=SpoolType.SCALE, spoolAmount=0).total,
                 lambda: fit.getWeaponDps(spoolType=SpoolType.SCALE, spoolAmount=1).total,
-                3, 0, 0, "%s DPS", "DPS"),
+                3, 0, 0, "%s DPS"),
             (
                 "labelFullDpsDrone",
                 lambda: fit.getDroneDps().total,
                 lambda: fit.getDroneDps().total,
                 lambda: fit.getDroneDps().total,
-                3, 0, 0, "%s DPS", "DPS"),
+                3, 0, 0, "%s DPS"),
             (
                 "labelFullVolleyTotal",
                 lambda: fit.getTotalVolley().total,
                 lambda: fit.getTotalVolley(spoolType=SpoolType.SCALE, spoolAmount=0).total,
                 lambda: fit.getTotalVolley(spoolType=SpoolType.SCALE, spoolAmount=1).total,
-                3, 0, 0, "%s", "volley"),
+                3, 0, 0, "%s"),
             (
                 "labelFullDpsTotal",
                 lambda: fit.getTotalDps().total,
                 lambda: fit.getTotalDps(spoolType=SpoolType.SCALE, spoolAmount=0).total,
                 lambda: fit.getTotalDps(spoolType=SpoolType.SCALE, spoolAmount=1).total,
-                3, 0, 0, "%s", "DPS"))
+                3, 0, 0, "%s"))
 
         counter = 0
-        for labelName, val, preSpoolVal, fullSpoolVal, prec, lowest, highest, valueFormat, statName in stats:
+        for labelName, val, preSpoolVal, fullSpoolVal, prec, lowest, highest, valueFormat in stats:
             label = getattr(self, labelName)
             val = val() if fit is not None else 0
             preSpoolVal = preSpoolVal() if fit is not None else 0
@@ -195,7 +194,7 @@ class FirepowerViewFull(StatsView):
             if self._cachedValues[counter] != val:
                 valueStr = formatAmount(val, prec, lowest, highest)
                 label.SetLabel(valueFormat % valueStr)
-                tooltipText = dpsToolTip(preSpoolVal, fullSpoolVal, statName, prec, lowest, highest)
+                tooltipText = dpsToolTip(preSpoolVal, fullSpoolVal, prec, lowest, highest)
                 label.SetToolTip(wx.ToolTip(tooltipText))
                 self._cachedValues[counter] = val
             counter += 1
