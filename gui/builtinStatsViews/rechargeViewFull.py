@@ -63,15 +63,20 @@ class RechargeViewFull(StatsView):
 
         # Add an empty label first for correct alignment.
         sizerTankStats.Add(wx.StaticText(contentPanel, wx.ID_ANY, ""), 0)
-        toolTipText = {"shieldPassive": "Passive shield recharge", "shieldActive": "Active shield boost",
-                       "armorActive": "Armor repair amount", "hullActive": "Hull repair amount"}
+        toolTipText = {
+            "shieldPassive": "Passive shield recharge",
+            "shieldActive": "Active shield boost",
+            "armorActive": "Armor repair amount",
+            "hullActive": "Hull repair amount"}
         for tankType in ("shieldPassive", "shieldActive", "armorActive", "hullActive"):
             bitmap = BitmapLoader.getStaticBitmap("%s_big" % tankType, contentPanel, "gui")
             tooltip = wx.ToolTip(toolTipText[tankType])
             bitmap.SetToolTip(tooltip)
             sizerTankStats.Add(bitmap, 0, wx.ALIGN_CENTER)
 
-        toolTipText = {"reinforced": "Reinforced", "sustained": "Sustained"}
+        toolTipText = {
+            "reinforced": "Reinforced",
+            "sustained": "Sustained"}
         for stability in ("reinforced", "sustained"):
             bitmap = BitmapLoader.getStaticBitmap("regen%s_big" % stability.capitalize(), contentPanel, "gui")
             tooltip = wx.ToolTip(toolTipText[stability])
@@ -115,9 +120,22 @@ class RechargeViewFull(StatsView):
                 unitlbl = getattr(self, "unitLabelTank%s%sActive" % (stability.capitalize(), name.capitalize()))
                 unitlbl.SetLabel(unit)
                 if tank is not None:
-                    lbl.SetLabel("%.1f" % tank["%sRepair" % name])
+                    amount = tank["{}Repair".format(name)]
                 else:
-                    lbl.SetLabel("0.0")
+                    amount = 0
+                lbl.SetLabel("{:.1f}".format(amount))
+
+                if tank is not None and name == "armor":
+                    preSpoolAmount = tank["armorRepairPreSpool"]
+                    fullSpoolAmount = tank["armorRepairFullSpool"]
+                    if round(preSpoolAmount, 1) != round(fullSpoolAmount, 1):
+                        ttText = "Spool up: {:.1f}-{:.1f}".format(preSpoolAmount, fullSpoolAmount)
+                    else:
+                        ttText = ""
+                else:
+                    ttText = ""
+                lbl.SetToolTip(wx.ToolTip(ttText))
+                unitlbl.SetToolTip(wx.ToolTip(ttText))
 
         if fit is not None:
             label = getattr(self, "labelTankSustainedShieldPassive")
