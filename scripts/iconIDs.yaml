@@ -10432,3 +10432,6 @@
 22076:
   description: Gift Box with Ribbon
   iconFile: res:/ui/texture/icons/76_64_3.png
+22091:
+  description: Manually added mutadaptive RR icon path
+  iconFile: res:/ui/texture/icons/modules/abyssalremoterepairer.png
