@@ -4,6 +4,7 @@ import wx
 import wx.lib.newevent
 
 from gui.attribute_gauge import AttributeGauge
+from eos.utils.float import floatUnerr
 
 _ValueChanged, EVT_VALUE_CHANGED = wx.lib.newevent.NewEvent()
 
@@ -57,6 +58,7 @@ class AttributeSlider(wx.Panel):
 
         self.UserMinValue = minValue
         self.UserMaxValue = maxValue
+        print(self.UserMinValue, self.UserMaxValue)
 
         self.inverse = inverse
 
@@ -77,10 +79,23 @@ class AttributeSlider(wx.Panel):
                 chosenStep *= -1
             return chosenStep
 
-        self.ctrl = wx.SpinCtrlDouble(
-            self, min=self.UserMinValue, max=self.UserMaxValue,
-            inc=getStep(self.UserMaxValue - self.UserMinValue))
-        self.ctrl.SetDigits(3)
+        def getDigitPlaces(minValue, maxValue):
+            minDigits = 3
+            maxDigits = 5
+            currentDecision = minDigits
+            for value in (floatUnerr(minValue), floatUnerr(maxValue)):
+                for currentDigit in range(minDigits, maxDigits + 1):
+                    if round(value, currentDigit) == value:
+                        if currentDigit > currentDecision:
+                            currentDecision = currentDigit
+                        break
+                # Max decimal places we can afford to show was not enough
+                else:
+                     return maxDigits
+            return currentDecision
+
+        self.ctrl = wx.SpinCtrlDouble(self, min=minValue, max=maxValue, inc=getStep(maxValue - minValue))
+        self.ctrl.SetDigits(getDigitPlaces(minValue, maxValue))
 
 
         self.ctrl.Bind(wx.EVT_SPINCTRLDOUBLE, self.UpdateValue)
