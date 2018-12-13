@@ -26,25 +26,25 @@ from eos.utils.spoolSupport import SpoolType, SpoolOptions
 
 stats = [
     (
-        "labelRemoteCapacitor", "Capacitor:", "{} GJ/s", "capacitorInfo", "Capacitor restored",
+        "labelRemoteCapacitor", "Capacitor:", "{}{} GJ/s", "capacitorInfo", "Capacitor restored",
         lambda fit, spool: fit.getRemoteReps(spoolOptions=SpoolOptions(SpoolType.SCALE, spool, False)).get("Capacitor"),
         lambda fit: fit.getRemoteReps(spoolOptions=SpoolOptions(SpoolType.SCALE, 0, True)).get("Capacitor", 0),
         lambda fit: fit.getRemoteReps(spoolOptions=SpoolOptions(SpoolType.SCALE, 1, True)).get("Capacitor", 0),
         3, 0, 0),
     (
-        "labelRemoteShield", "Shield:", "{} HP/s", "shieldActive", "Shield restored",
+        "labelRemoteShield", "Shield:", "{}{} HP/s", "shieldActive", "Shield restored",
         lambda fit, spool: fit.getRemoteReps(spoolOptions=SpoolOptions(SpoolType.SCALE, spool, False)).get("Shield"),
         lambda fit: fit.getRemoteReps(spoolOptions=SpoolOptions(SpoolType.SCALE, 0, True)).get("Shield", 0),
         lambda fit: fit.getRemoteReps(spoolOptions=SpoolOptions(SpoolType.SCALE, 1, True)).get("Shield", 0),
         3, 0, 0),
     (
-        "labelRemoteArmor", "Armor:", "{} HP/s", "armorActive", "Armor restored",
+        "labelRemoteArmor", "Armor:", "{}{} HP/s", "armorActive", "Armor restored",
         lambda fit, spool: fit.getRemoteReps(spoolOptions=SpoolOptions(SpoolType.SCALE, spool, False)).get("Armor"),
         lambda fit: fit.getRemoteReps(spoolOptions=SpoolOptions(SpoolType.SCALE, 0, True)).get("Armor", 0),
         lambda fit: fit.getRemoteReps(spoolOptions=SpoolOptions(SpoolType.SCALE, 1, True)).get("Armor", 0),
         3, 0, 0),
     (
-        "labelRemoteHull", "Hull:", "{} HP/s", "hullActive", "Hull restored",
+        "labelRemoteHull", "Hull:", "{}{} HP/s", "hullActive", "Hull restored",
         lambda fit, spool: fit.getRemoteReps(spoolOptions=SpoolOptions(SpoolType.SCALE, spool, False)).get("Hull"),
         lambda fit: fit.getRemoteReps(spoolOptions=SpoolOptions(SpoolType.SCALE, 0, True)).get("Hull", 0),
         lambda fit: fit.getRemoteReps(spoolOptions=SpoolOptions(SpoolType.SCALE, 1, True)).get("Hull", 0),
@@ -80,7 +80,7 @@ class OutgoingViewMinimal(StatsView):
 
             baseBox.Add(wx.StaticText(contentPanel, wx.ID_ANY, labelDesc), 0, wx.ALIGN_CENTER)
 
-            lbl = wx.StaticText(parent, wx.ID_ANY, valueFormat.format(0))
+            lbl = wx.StaticText(parent, wx.ID_ANY, valueFormat.format(0, ""))
             lbl.SetToolTip(wx.ToolTip(tooltip))
             setattr(self, labelName, lbl)
 
@@ -93,9 +93,9 @@ class OutgoingViewMinimal(StatsView):
 
         def formatTooltip(text, preSpool, fullSpool, prec, lowest, highest):
             if roundToPrec(preSpool, prec) == roundToPrec(fullSpool, prec):
-                return text
+                return False, text
             else:
-                return "{}\nSpool up: {}-{}".format(
+                return True, "{}\nSpool up: {}-{}".format(
                     text,
                     formatAmount(preSpool, prec, lowest, highest),
                     formatAmount(fullSpool, prec, lowest, highest))
@@ -109,8 +109,10 @@ class OutgoingViewMinimal(StatsView):
             preSpoolVal = preSpoolVal(fit) if fit is not None else 0
             fullSpoolVal = fullSpoolVal(fit) if fit is not None else 0
             if self._cachedValues[counter] != val:
-                label.SetLabel(valueFormat.format(formatAmount(val, prec, lowest, highest)))
-                tooltipText = formatTooltip(tooltip, preSpoolVal, fullSpoolVal, prec, lowest, highest)
+                hasSpool, tooltipText = formatTooltip(tooltip, preSpoolVal, fullSpoolVal, prec, lowest, highest)
+                label.SetLabel(valueFormat.format(
+                    formatAmount(val, prec, lowest, highest),
+                    "*" if hasSpool else ""))
                 label.SetToolTip(wx.ToolTip(tooltipText))
                 self._cachedValues[counter] = val
             counter += 1

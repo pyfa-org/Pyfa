@@ -18,9 +18,7 @@ def handler(fit, container, context, **kwargs):
         repSpoolPerCycle = container.getModifiedItemAttr("repairMultiplierBonusPerCycle")
         # TODO: fetch spoolup option
         defaultSpoolValue = 1
-        spoolType, spoolAmount = resolveSpoolOptions(
-            SpoolOptions(SpoolType.SCALE, defaultSpoolValue, False),
-            container)
+        spoolType, spoolAmount = resolveSpoolOptions(SpoolOptions(SpoolType.SCALE, defaultSpoolValue, False), container)
         rps = repAmountBase * (1 + calculateSpoolup(repSpoolMax, repSpoolPerCycle, cycleTime, spoolType, spoolAmount)[0]) / cycleTime
         rpsPreSpool = repAmountBase * (1 + calculateSpoolup(repSpoolMax, repSpoolPerCycle, cycleTime, SpoolType.SCALE, 0)[0]) / cycleTime
         rpsFullSpool = repAmountBase * (1 + calculateSpoolup(repSpoolMax, repSpoolPerCycle, cycleTime, SpoolType.SCALE, 1)[0]) / cycleTime

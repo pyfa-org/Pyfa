@@ -90,7 +90,6 @@ class RechargeViewFull(StatsView):
                 tankTypeCap = tankType[0].capitalize() + tankType[1:]
                 lbl = wx.StaticText(contentPanel, wx.ID_ANY, "0.0", style=wx.ALIGN_RIGHT)
                 setattr(self, "labelTank%s%s" % (stability.capitalize(), tankTypeCap), lbl)
-
                 box = wx.BoxSizer(wx.HORIZONTAL)
                 box.Add(lbl, 0, wx.EXPAND)
 
@@ -123,7 +122,6 @@ class RechargeViewFull(StatsView):
                     amount = tank["{}Repair".format(name)]
                 else:
                     amount = 0
-                lbl.SetLabel("{:.1f}".format(amount))
 
                 if tank is not None and name == "armor":
                     preSpoolAmount = tank["armorRepairPreSpool"]
@@ -134,6 +132,8 @@ class RechargeViewFull(StatsView):
                         ttText = ""
                 else:
                     ttText = ""
+
+                lbl.SetLabel("{:.1f}{}".format(amount, "*" if ttText else ""))
                 lbl.SetToolTip(wx.ToolTip(ttText))
                 unitlbl.SetToolTip(wx.ToolTip(ttText))
 

@@ -165,25 +165,25 @@ class FirepowerViewFull(StatsView):
                 lambda: fit.getWeaponDps(spoolOptions=SpoolOptions(SpoolType.SCALE, defaultSpoolValue, False)).total,
                 lambda: fit.getWeaponDps(spoolOptions=SpoolOptions(SpoolType.SCALE, 0, True)).total,
                 lambda: fit.getWeaponDps(spoolOptions=SpoolOptions(SpoolType.SCALE, 1, True)).total,
-                3, 0, 0, "%s DPS"),
+                3, 0, 0, "{}{} DPS"),
             (
                 "labelFullDpsDrone",
                 lambda: fit.getDroneDps().total,
                 lambda: fit.getDroneDps().total,
                 lambda: fit.getDroneDps().total,
-                3, 0, 0, "%s DPS"),
+                3, 0, 0, "{}{} DPS"),
             (
                 "labelFullVolleyTotal",
                 lambda: fit.getTotalVolley(spoolOptions=SpoolOptions(SpoolType.SCALE, defaultSpoolValue, False)).total,
                 lambda: fit.getTotalVolley(spoolOptions=SpoolOptions(SpoolType.SCALE, 0, True)).total,
                 lambda: fit.getTotalVolley(spoolOptions=SpoolOptions(SpoolType.SCALE, 1, True)).total,
-                3, 0, 0, "%s"),
+                3, 0, 0, "{}{}"),
             (
                 "labelFullDpsTotal",
                 lambda: fit.getTotalDps(spoolOptions=SpoolOptions(SpoolType.SCALE, defaultSpoolValue, False)).total,
                 lambda: fit.getTotalDps(spoolOptions=SpoolOptions(SpoolType.SCALE, 0, True)).total,
                 lambda: fit.getTotalDps(spoolOptions=SpoolOptions(SpoolType.SCALE, 1, True)).total,
-                3, 0, 0, "%s"))
+                3, 0, 0, "{}{}"))
 
         counter = 0
         for labelName, val, preSpoolVal, fullSpoolVal, prec, lowest, highest, valueFormat in stats:
@@ -192,9 +192,10 @@ class FirepowerViewFull(StatsView):
             preSpoolVal = preSpoolVal() if fit is not None else 0
             fullSpoolVal = fullSpoolVal() if fit is not None else 0
             if self._cachedValues[counter] != val:
-                valueStr = formatAmount(val, prec, lowest, highest)
-                label.SetLabel(valueFormat % valueStr)
                 tooltipText = dpsToolTip(preSpoolVal, fullSpoolVal, prec, lowest, highest)
+                label.SetLabel(valueFormat.format(
+                    formatAmount(val, prec, lowest, highest),
+                    "*" if tooltipText else ""))
                 label.SetToolTip(wx.ToolTip(tooltipText))
                 self._cachedValues[counter] = val
             counter += 1
