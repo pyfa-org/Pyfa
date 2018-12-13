@@ -29,7 +29,7 @@ from eos.modifiedAttributeDict import ChargeAttrShortcut, ItemAttrShortcut, Modi
 from eos.saveddata.citadel import Citadel
 from eos.saveddata.mutator import Mutator
 from eos.utils.float import floatUnerr
-from eos.utils.spoolSupport import calculateSpoolup
+from eos.utils.spoolSupport import calculateSpoolup, resolveSpoolOptions
 from eos.utils.stats import DmgTypes
 
 pyfalog = Logger(__name__)
@@ -432,7 +432,7 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
 
         return self.__miningyield
 
-    def getVolley(self, spoolType=None, spoolAmount=None, targetResists=None, ignoreState=False):
+    def getVolley(self, spoolOptions=None, targetResists=None, ignoreState=False):
         if self.isEmpty or (self.state < State.ACTIVE and not ignoreState):
             return DmgTypes(0, 0, 0, 0), 0
         if self.__baseVolley is None:
@@ -443,14 +443,11 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
                 thermal=(dmgGetter("thermalDamage", 0)) * dmgMult,
                 kinetic=(dmgGetter("kineticDamage", 0)) * dmgMult,
                 explosive=(dmgGetter("explosiveDamage", 0)) * dmgMult)
+        spoolType, spoolAmount = resolveSpoolOptions(spoolOptions, self)
         spoolBoost, spoolTime = calculateSpoolup(
             self.getModifiedItemAttr("damageMultiplierBonusMax", 0),
             self.getModifiedItemAttr("damageMultiplierBonusPerCycle", 0),
-            self.rawCycleTime / 1000,
-            spoolType if spoolType is not None else self.spoolType,
-            # Using spool type as condition as it should define if we're using
-            # passed spoolup parameters or not
-            spoolAmount if spoolType is not None else self.spoolAmount)
+            self.rawCycleTime / 1000, spoolType, spoolAmount)
         spoolMultiplier = 1 + spoolBoost
         volley = DmgTypes(
             em=self.__baseVolley.em * spoolMultiplier * (1 - getattr(targetResists, "emAmount", 0)),
@@ -459,8 +456,8 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
             explosive=self.__baseVolley.explosive * spoolMultiplier * (1 - getattr(targetResists, "explosiveAmount", 0)))
         return volley, spoolTime
 
-    def getDps(self, spoolType=None, spoolAmount=None, targetResists=None, ignoreState=False):
-        volley, spoolTime = self.getVolley(spoolType=spoolType, spoolAmount=spoolAmount, targetResists=targetResists, ignoreState=ignoreState)
+    def getDps(self, spoolOptions=None, targetResists=None, ignoreState=False):
+        volley, spoolTime = self.getVolley(spoolOptions=spoolOptions, targetResists=targetResists, ignoreState=ignoreState)
         if not volley:
             return DmgTypes(0, 0, 0, 0), 0
         # Some weapons repeat multiple times in one cycle (bosonic doomsdays). Get the number of times it fires off
@@ -473,7 +470,7 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
             explosive=volley.explosive * dpsFactor)
         return dps, spoolTime
 
-    def getRemoteReps(self, spoolType=None, spoolAmount=None, ignoreState=False):
+    def getRemoteReps(self, spoolOptions=None, ignoreState=False):
         if self.isEmpty or (self.state < State.ACTIVE and not ignoreState):
             return (None, 0, 0)
 
@@ -513,14 +510,11 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
         spoolTime = 0
 
         if rrType and rrAmount and self.item.group.name == "Mutadaptive Remote Armor Repairer":
+            spoolType, spoolAmount = resolveSpoolOptions(spoolOptions, self)
             spoolBoost, spoolTime = calculateSpoolup(
                 self.getModifiedItemAttr("repairMultiplierBonusMax", 0),
                 self.getModifiedItemAttr("repairMultiplierBonusPerCycle", 0),
-                self.rawCycleTime / 1000,
-                spoolType if spoolType is not None else self.spoolType,
-                # Using spool type as condition as it should define if we're using
-                # passed spoolup parameters or not
-                spoolAmount if spoolType is not None else self.spoolAmount)
+                self.rawCycleTime / 1000, spoolType, spoolAmount)
             rrAmount *= (1 + spoolBoost)
 
         return rrType, rrAmount, spoolTime

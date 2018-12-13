@@ -21,33 +21,33 @@
 import wx
 from gui.statsView import StatsView
 from gui.utils.numberFormatter import formatAmount, roundToPrec
-from eos.utils.spoolSupport import SpoolType
+from eos.utils.spoolSupport import SpoolType, SpoolOptions
 
 
 stats = [
     (
         "labelRemoteCapacitor", "Capacitor:", "{} GJ/s", "capacitorInfo", "Capacitor restored",
-        lambda fit: fit.getRemoteReps().get("Capacitor"),
-        lambda fit: fit.getRemoteReps(spoolType=SpoolType.SCALE, spoolAmount=0).get("Capacitor", 0),
-        lambda fit: fit.getRemoteReps(spoolType=SpoolType.SCALE, spoolAmount=1).get("Capacitor", 0),
+        lambda fit, spool: fit.getRemoteReps(spoolOptions=SpoolOptions(SpoolType.SCALE, spool, False)).get("Capacitor"),
+        lambda fit: fit.getRemoteReps(spoolOptions=SpoolOptions(SpoolType.SCALE, 0, True)).get("Capacitor", 0),
+        lambda fit: fit.getRemoteReps(spoolOptions=SpoolOptions(SpoolType.SCALE, 1, True)).get("Capacitor", 0),
         3, 0, 0),
     (
         "labelRemoteShield", "Shield:", "{} HP/s", "shieldActive", "Shield restored",
-        lambda fit: fit.getRemoteReps().get("Shield"),
-        lambda fit: fit.getRemoteReps(spoolType=SpoolType.SCALE, spoolAmount=0).get("Shield", 0),
-        lambda fit: fit.getRemoteReps(spoolType=SpoolType.SCALE, spoolAmount=1).get("Shield", 0),
+        lambda fit, spool: fit.getRemoteReps(spoolOptions=SpoolOptions(SpoolType.SCALE, spool, False)).get("Shield"),
+        lambda fit: fit.getRemoteReps(spoolOptions=SpoolOptions(SpoolType.SCALE, 0, True)).get("Shield", 0),
+        lambda fit: fit.getRemoteReps(spoolOptions=SpoolOptions(SpoolType.SCALE, 1, True)).get("Shield", 0),
         3, 0, 0),
     (
         "labelRemoteArmor", "Armor:", "{} HP/s", "armorActive", "Armor restored",
-        lambda fit: fit.getRemoteReps().get("Armor"),
-        lambda fit: fit.getRemoteReps(spoolType=SpoolType.SCALE, spoolAmount=0).get("Armor", 0),
-        lambda fit: fit.getRemoteReps(spoolType=SpoolType.SCALE, spoolAmount=1).get("Armor", 0),
+        lambda fit, spool: fit.getRemoteReps(spoolOptions=SpoolOptions(SpoolType.SCALE, spool, False)).get("Armor"),
+        lambda fit: fit.getRemoteReps(spoolOptions=SpoolOptions(SpoolType.SCALE, 0, True)).get("Armor", 0),
+        lambda fit: fit.getRemoteReps(spoolOptions=SpoolOptions(SpoolType.SCALE, 1, True)).get("Armor", 0),
         3, 0, 0),
     (
         "labelRemoteHull", "Hull:", "{} HP/s", "hullActive", "Hull restored",
-        lambda fit: fit.getRemoteReps().get("Hull"),
-        lambda fit: fit.getRemoteReps(spoolType=SpoolType.SCALE, spoolAmount=0).get("Hull", 0),
-        lambda fit: fit.getRemoteReps(spoolType=SpoolType.SCALE, spoolAmount=1).get("Hull", 0),
+        lambda fit, spool: fit.getRemoteReps(spoolOptions=SpoolOptions(SpoolType.SCALE, spool, False)).get("Hull"),
+        lambda fit: fit.getRemoteReps(spoolOptions=SpoolOptions(SpoolType.SCALE, 0, True)).get("Hull", 0),
+        lambda fit: fit.getRemoteReps(spoolOptions=SpoolOptions(SpoolType.SCALE, 1, True)).get("Hull", 0),
         3, 0, 0)]
 
 
@@ -100,14 +100,14 @@ class OutgoingViewMinimal(StatsView):
                     formatAmount(preSpool, prec, lowest, highest),
                     formatAmount(fullSpool, prec, lowest, highest))
 
+        # TODO: fetch spoolup option
+        defaultSpoolValue = 1
         counter = 0
         for labelName, labelDesc, valueFormat, image, tooltip, val, preSpoolVal, fullSpoolVal, prec, lowest, highest in stats:
             label = getattr(self, labelName)
-            val = val(fit) if fit is not None else 0
+            val = val(fit, defaultSpoolValue) if fit is not None else 0
             preSpoolVal = preSpoolVal(fit) if fit is not None else 0
             fullSpoolVal = fullSpoolVal(fit) if fit is not None else 0
-            # TODO: use spoolup options to fetch main value
-            val = fullSpoolVal
             if self._cachedValues[counter] != val:
                 label.SetLabel(valueFormat.format(formatAmount(val, prec, lowest, highest)))
                 tooltipText = formatTooltip(tooltip, preSpoolVal, fullSpoolVal, prec, lowest, highest)

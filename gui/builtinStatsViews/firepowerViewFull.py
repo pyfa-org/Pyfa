@@ -23,7 +23,7 @@ import gui.mainFrame
 from gui.statsView import StatsView
 from gui.bitmap_loader import BitmapLoader
 from gui.utils.numberFormatter import formatAmount, roundToPrec
-from eos.utils.spoolSupport import SpoolType
+from eos.utils.spoolSupport import SpoolType, SpoolOptions
 from service.fit import Fit
 
 
@@ -157,12 +157,14 @@ class FirepowerViewFull(StatsView):
                     formatAmount(preSpool, prec, lowest, highest),
                     formatAmount(fullSpool, prec, lowest, highest))
 
+        # TODO: fetch spoolup option
+        defaultSpoolValue = 1
         stats = (
             (
                 "labelFullDpsWeapon",
-                lambda: fit.getWeaponDps().total,
-                lambda: fit.getWeaponDps(spoolType=SpoolType.SCALE, spoolAmount=0).total,
-                lambda: fit.getWeaponDps(spoolType=SpoolType.SCALE, spoolAmount=1).total,
+                lambda: fit.getWeaponDps(spoolOptions=SpoolOptions(SpoolType.SCALE, defaultSpoolValue, False)).total,
+                lambda: fit.getWeaponDps(spoolOptions=SpoolOptions(SpoolType.SCALE, 0, True)).total,
+                lambda: fit.getWeaponDps(spoolOptions=SpoolOptions(SpoolType.SCALE, 1, True)).total,
                 3, 0, 0, "%s DPS"),
             (
                 "labelFullDpsDrone",
@@ -172,15 +174,15 @@ class FirepowerViewFull(StatsView):
                 3, 0, 0, "%s DPS"),
             (
                 "labelFullVolleyTotal",
-                lambda: fit.getTotalVolley().total,
-                lambda: fit.getTotalVolley(spoolType=SpoolType.SCALE, spoolAmount=0).total,
-                lambda: fit.getTotalVolley(spoolType=SpoolType.SCALE, spoolAmount=1).total,
+                lambda: fit.getTotalVolley(spoolOptions=SpoolOptions(SpoolType.SCALE, defaultSpoolValue, False)).total,
+                lambda: fit.getTotalVolley(spoolOptions=SpoolOptions(SpoolType.SCALE, 0, True)).total,
+                lambda: fit.getTotalVolley(spoolOptions=SpoolOptions(SpoolType.SCALE, 1, True)).total,
                 3, 0, 0, "%s"),
             (
                 "labelFullDpsTotal",
-                lambda: fit.getTotalDps().total,
-                lambda: fit.getTotalDps(spoolType=SpoolType.SCALE, spoolAmount=0).total,
-                lambda: fit.getTotalDps(spoolType=SpoolType.SCALE, spoolAmount=1).total,
+                lambda: fit.getTotalDps(spoolOptions=SpoolOptions(SpoolType.SCALE, defaultSpoolValue, False)).total,
+                lambda: fit.getTotalDps(spoolOptions=SpoolOptions(SpoolType.SCALE, 0, True)).total,
+                lambda: fit.getTotalDps(spoolOptions=SpoolOptions(SpoolType.SCALE, 1, True)).total,
                 3, 0, 0, "%s"))
 
         counter = 0
@@ -189,8 +191,6 @@ class FirepowerViewFull(StatsView):
             val = val() if fit is not None else 0
             preSpoolVal = preSpoolVal() if fit is not None else 0
             fullSpoolVal = fullSpoolVal() if fit is not None else 0
-            # TODO: use spoolup options to fetch main value
-            val = fullSpoolVal
             if self._cachedValues[counter] != val:
                 valueStr = formatAmount(val, prec, lowest, highest)
                 label.SetLabel(valueFormat % valueStr)

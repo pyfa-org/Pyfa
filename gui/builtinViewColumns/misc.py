@@ -27,7 +27,7 @@ from gui.viewColumn import ViewColumn
 from gui.bitmap_loader import BitmapLoader
 from gui.utils.numberFormatter import formatAmount
 from gui.utils.listFormatter import formatList
-from eos.utils.spoolSupport import SpoolType
+from eos.utils.spoolSupport import SpoolType, SpoolOptions
 
 
 class Miscellanea(ViewColumn):
@@ -115,8 +115,11 @@ class Miscellanea(ViewColumn):
                 text = "{0}".format(formatAmount(trackingSpeed, 3, 0, 3))
                 tooltip = "tracking speed"
                 info.append((text, tooltip))
-            # TODO: use spoolup options to fetch main value
-            volley, spoolTime = stuff.getVolley(spoolType=SpoolType.SCALE, spoolAmount=1, ignoreState=True)
+            # TODO: fetch spoolup option
+            defaultSpoolValue = 1
+            spoolTime = stuff.getVolley(
+                spoolOptions=SpoolOptions(SpoolType.SCALE, defaultSpoolValue, False),
+                ignoreState=True)[1]
             if spoolTime:
                 text = "{0}s".format(formatAmount(spoolTime, 3, 0, 3))
                 tooltip = "spool up time"
@@ -336,11 +339,17 @@ class Miscellanea(ViewColumn):
             tooltip = "Armor repaired per second"
             return text, tooltip
         elif itemGroup == "Mutadaptive Remote Armor Repairer":
-            rrType, rps, spoolTime = stuff.getRemoteReps(ignoreState=True)
-            rrTypePre, rpsPre, spoolTimePre = stuff.getRemoteReps(spoolType=SpoolType.SCALE, spoolAmount=0, ignoreState=True)
-            rrTypeFull, rpsFull, spoolTimeFull = stuff.getRemoteReps(spoolType=SpoolType.SCALE, spoolAmount=1, ignoreState=True)
-            # TODO: use spoolup options to fetch main value
-            rrType, rps, spoolTime = rrTypeFull, rpsFull, spoolTimeFull
+            # TODO: fetch spoolup option
+            defaultSpoolValue = 1
+            rrType, rps, spoolTime = stuff.getRemoteReps(
+                spoolOptions=SpoolOptions(SpoolType.SCALE, defaultSpoolValue, False),
+                ignoreState=True)
+            rrTypePre, rpsPre, spoolTimePre = stuff.getRemoteReps(
+                spoolOptions=SpoolOptions(SpoolType.SCALE, 0, True),
+                ignoreState=True)
+            rrTypeFull, rpsFull, spoolTimeFull = stuff.getRemoteReps(
+                spoolOptions=SpoolOptions(SpoolType.SCALE, 1, True),
+                ignoreState=True)
             if not rps:
                 return "", None
             text = []

@@ -18,9 +18,13 @@
 # ===============================================================================
 
 
+from collections import namedtuple
 from enum import IntEnum, unique
 
 from eos.utils.float import floatUnerr
+
+
+SpoolOptions = namedtuple('SpoolOptions', ('spoolType', 'spoolAmount', 'force'))
 
 
 @unique
@@ -48,3 +52,17 @@ def calculateSpoolup(modMaxValue, modStepValue, modCycleTime, spoolType, spoolAm
         return cycles * modStepValue, cycles * modCycleTime
     else:
         return 0, 0
+
+
+def resolveSpoolOptions(spoolOptions, module):
+    # Rely on passed options if they are forcing us to do so
+    if spoolOptions is not None and spoolOptions.force:
+        return spoolOptions.spoolType, spoolOptions.spoolAmount
+    # If we're not forced to use options and module has options set, prefer on-module values
+    elif module is not None and module.spoolType is not None:
+        return module.spoolType, module.spoolAmount
+    # Otherwise - rely on passed options
+    elif spoolOptions is not None:
+        return spoolOptions.spoolType, spoolOptions.spoolAmount
+    else:
+        return None, None

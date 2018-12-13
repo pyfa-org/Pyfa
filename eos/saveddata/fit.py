@@ -273,15 +273,15 @@ class Fit(object):
     def projectedFighters(self):
         return self.__projectedFighters
 
-    def getWeaponDps(self, spoolType=None, spoolAmount=None):
-        if (spoolType, spoolAmount) not in self.__weaponDpsMap:
-            self.calculateWeaponDmgStats(spoolType, spoolAmount)
-        return self.__weaponDpsMap[(spoolType, spoolAmount)]
+    def getWeaponDps(self, spoolOptions=None):
+        if spoolOptions not in self.__weaponDpsMap:
+            self.calculateWeaponDmgStats(spoolOptions)
+        return self.__weaponDpsMap[spoolOptions]
 
-    def getWeaponVolley(self, spoolType=None, spoolAmount=None):
-        if (spoolType, spoolAmount) not in self.__weaponVolleyMap:
-            self.calculateWeaponDmgStats(spoolType, spoolAmount)
-        return self.__weaponVolleyMap[(spoolType, spoolAmount)]
+    def getWeaponVolley(self, spoolOptions=None):
+        if spoolOptions not in self.__weaponVolleyMap:
+            self.calculateWeaponDmgStats(spoolOptions)
+        return self.__weaponVolleyMap[spoolOptions]
 
     def getDroneDps(self):
         if self.__droneDps is None:
@@ -293,11 +293,11 @@ class Fit(object):
             self.calculateDroneDmgStats()
         return self.__droneVolley
 
-    def getTotalDps(self, spoolType=None, spoolAmount=None):
-        return self.getDroneDps() + self.getWeaponDps(spoolType=spoolType, spoolAmount=spoolAmount)
+    def getTotalDps(self, spoolOptions=None):
+        return self.getDroneDps() + self.getWeaponDps(spoolOptions=spoolOptions)
 
-    def getTotalVolley(self, spoolType=None, spoolAmount=None):
-        return self.getDroneVolley() + self.getWeaponVolley(spoolType=spoolType, spoolAmount=spoolAmount)
+    def getTotalVolley(self, spoolOptions=None):
+        return self.getDroneVolley() + self.getWeaponVolley(spoolOptions=spoolOptions)
 
     @property
     def minerYield(self):
@@ -1218,12 +1218,12 @@ class Fit(object):
             self.__capStable = True
             self.__capState = 100
 
-    def getRemoteReps(self, spoolType=None, spoolAmount=None):
-        if (spoolType, spoolAmount) not in self.__remoteRepMap:
+    def getRemoteReps(self, spoolOptions=None):
+        if spoolOptions not in self.__remoteRepMap:
             remoteReps = {}
 
             for module in self.modules:
-                rrType, rrAmount, spoolTime = module.getRemoteReps(spoolType=spoolType, spoolAmount=spoolAmount)
+                rrType, rrAmount, spoolTime = module.getRemoteReps(spoolOptions=spoolOptions)
                 if rrType:
                     if rrType not in remoteReps:
                         remoteReps[rrType] = 0
@@ -1236,9 +1236,9 @@ class Fit(object):
                         remoteReps[rrType] = 0
                     remoteReps[rrType] += rrAmount
 
-            self.__remoteRepMap[(spoolType, spoolAmount)] = remoteReps
+            self.__remoteRepMap[spoolOptions] = remoteReps
 
-        return self.__remoteRepMap[(spoolType, spoolAmount)]
+        return self.__remoteRepMap[spoolOptions]
 
     @property
     def hp(self):
@@ -1443,16 +1443,16 @@ class Fit(object):
         self.__minerYield = minerYield
         self.__droneYield = droneYield
 
-    def calculateWeaponDmgStats(self, spoolType, spoolAmount):
+    def calculateWeaponDmgStats(self, spoolOptions):
         weaponVolley = DmgTypes(0, 0, 0, 0)
         weaponDps = DmgTypes(0, 0, 0, 0)
 
         for mod in self.modules:
-            weaponVolley += mod.getVolley(spoolType=spoolType, spoolAmount=spoolAmount, targetResists=self.targetResists)[0]
-            weaponDps += mod.getDps(spoolType=spoolType, spoolAmount=spoolAmount, targetResists=self.targetResists)[0]
+            weaponVolley += mod.getVolley(spoolOptions=spoolOptions, targetResists=self.targetResists)[0]
+            weaponDps += mod.getDps(spoolOptions=spoolOptions, targetResists=self.targetResists)[0]
 
-        self.__weaponVolleyMap[(spoolType, spoolAmount)] = weaponVolley
-        self.__weaponDpsMap[(spoolType, spoolAmount)] = weaponDps
+        self.__weaponVolleyMap[spoolOptions] = weaponVolley
+        self.__weaponDpsMap[spoolOptions] = weaponDps
 
     def calculateDroneDmgStats(self):
         droneVolley = DmgTypes(0, 0, 0, 0)
