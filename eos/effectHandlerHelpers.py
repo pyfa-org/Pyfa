@@ -148,13 +148,20 @@ class HandledModuleList(HandledList):
     def __replace(self, mod, position):
         if mod.isEmpty and self[position].isEmpty:
             return
-        old = self[position]
-        del self[position]
+        listIndex = None
+        for i, m in enumerate(self):
+            if m.position == position:
+                listIndex = i
+                break
+        if listIndex is None:
+            return
+        old = self[listIndex]
+        del self[listIndex]
         mod.position = position
         HandledList.insert(self, position, mod)
         if mod.isInvalid:
             self.remove(mod)
-            self.insert(position, old)
+            self.insert(listIndex, old)
 
     def replaceRackPosition(self, rackPosition, mod):
         rackPositions = []
