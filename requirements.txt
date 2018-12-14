@@ -3,7 +3,7 @@ logbook >= 1.0.0
 matplotlib >= 2.0.0
 python-dateutil
 requests >= 2.0.0
-sqlalchemy >= 1.0.5
+sqlalchemy == 1.0.5
 cryptography
 diskcache
 markdown2
@@ -11,3 +11,4 @@ packaging
 roman
 beautifulsoup4
 PyYAML
+PyInstaller == 3.3
