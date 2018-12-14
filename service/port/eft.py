@@ -251,14 +251,14 @@ def importEft(eftString):
                     aFit.addCargo(itemSpec)
 
     # Subsystems first because they modify slot amount
-    for m in aFit.subsystems:
+    for i, m in enumerate(aFit.subsystems):
         if m is None:
             dummy = Module.buildEmpty(aFit.getSlotByContainer(aFit.subsystems))
             dummy.owner = fit
-            fit.modules.appendIgnoreEmpty(dummy)
+            fit.modules.replaceRackPosition(i, dummy)
         elif m.fits(fit):
             m.owner = fit
-            fit.modules.appendIgnoreEmpty(m)
+            fit.modules.replaceRackPosition(i, m)
     svcFit.getInstance().recalc(fit)
 
     # Other stuff
@@ -269,16 +269,16 @@ def importEft(eftString):
         aFit.modulesMed,
         aFit.modulesLow,
     ):
-        for m in modRack:
+        for i, m in enumerate(modRack):
             if m is None:
                 dummy = Module.buildEmpty(aFit.getSlotByContainer(modRack))
                 dummy.owner = fit
-                fit.modules.appendIgnoreEmpty(dummy)
+                fit.modules.replaceRackPosition(i, dummy)
             elif m.fits(fit):
                 m.owner = fit
                 if not m.isValidState(m.state):
                     pyfalog.warning('service.port.eft.importEft: module {} cannot have state {}', m, m.state)
-                fit.modules.appendIgnoreEmpty(m)
+                fit.modules.replaceRackPosition(i, m)
     for implant in aFit.implants:
         fit.implants.append(implant)
     for booster in aFit.boosters:
