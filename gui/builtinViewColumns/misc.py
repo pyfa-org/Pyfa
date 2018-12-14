@@ -117,9 +117,7 @@ class Miscellanea(ViewColumn):
                 info.append((text, tooltip))
             # TODO: fetch spoolup option
             defaultSpoolValue = 1
-            spoolTime = stuff.getVolley(
-                spoolOptions=SpoolOptions(SpoolType.SCALE, defaultSpoolValue, False),
-                ignoreState=True)[1]
+            spoolTime = stuff.getSpoolData(spoolOptions=SpoolOptions(SpoolType.SCALE, defaultSpoolValue, False))[1]
             if spoolTime:
                 text = "{0}s".format(formatAmount(spoolTime, 3, 0, 3))
                 tooltip = "spool up time"
@@ -341,31 +339,32 @@ class Miscellanea(ViewColumn):
         elif itemGroup == "Mutadaptive Remote Armor Repairer":
             # TODO: fetch spoolup option
             defaultSpoolValue = 1
-            rrType, rps, spoolTime = stuff.getRemoteReps(
-                spoolOptions=SpoolOptions(SpoolType.SCALE, defaultSpoolValue, False),
-                ignoreState=True)
-            rrTypePre, rpsPre, spoolTimePre = stuff.getRemoteReps(
-                spoolOptions=SpoolOptions(SpoolType.SCALE, 0, True),
-                ignoreState=True)
-            rrTypeFull, rpsFull, spoolTimeFull = stuff.getRemoteReps(
-                spoolOptions=SpoolOptions(SpoolType.SCALE, 1, True),
-                ignoreState=True)
+            spoolOptDefault = SpoolOptions(SpoolType.SCALE, defaultSpoolValue, False)
+            spoolOptPre = SpoolOptions(SpoolType.SCALE, 0, True)
+            spoolOptFull = SpoolOptions(SpoolType.SCALE, 1, True)
+            rrType, rps = stuff.getRemoteReps(spoolOptions=spoolOptDefault, ignoreState=True)
+            rrTypePre, rpsPre = stuff.getRemoteReps(spoolOptions=spoolOptPre, ignoreState=True)
+            rrTypeFull, rpsFull = stuff.getRemoteReps(spoolOptions=spoolOptFull, ignoreState=True)
             if not rps:
                 return "", None
             text = []
             tooltip = []
             text.append("{}/s".format(formatAmount(rps, 3, 0, 3, forceSign=True)))
             tooltip.append("Armor repaired per second")
+            spoolTime = stuff.getSpoolData(spoolOptDefault)[1]
             if spoolTime:
                 text.append("{}s".format(formatAmount(spoolTime, 3, 0, 3)))
                 tooltip.append("spool up time")
             text = " | ".join(text)
             tooltip = " and ".join(tooltip)
-            tooltip = "{}\nSpool up: {}-{} over {}s".format(
-                tooltip,
-                formatAmount(rpsPre, 3, 0, 3),
-                formatAmount(rpsFull, 3, 0, 3),
-                formatAmount(spoolTimeFull - spoolTimePre, 3, 0, 3))
+            spoolTimePre = stuff.getSpoolData(spoolOptPre)[1]
+            spoolTimeFull = stuff.getSpoolData(spoolOptFull)[1]
+            if spoolTimePre != spoolTimeFull:
+                tooltip = "{}\nSpool up: {}-{} over {}s".format(
+                    tooltip,
+                    formatAmount(rpsPre, 3, 0, 3),
+                    formatAmount(rpsFull, 3, 0, 3),
+                    formatAmount(spoolTimeFull - spoolTimePre, 3, 0, 3))
             return text, tooltip
         elif itemGroup == "Remote Shield Booster":
             rps = stuff.getRemoteReps(ignoreState=True)[1]

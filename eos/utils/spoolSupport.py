@@ -38,20 +38,22 @@ def calculateSpoolup(modMaxValue, modStepValue, modCycleTime, spoolType, spoolAm
     """
     Calculate damage multiplier increment based on passed parameters. Module cycle time
     is specified in seconds.
+
+    Returns spoolup value, amount of cycles to reach it and time to reach it.
     """
     if not modMaxValue or not modStepValue:
-        return 0, 0
+        return 0, 0, 0
     if spoolType == SpoolType.SCALE:
         cycles = int(floatUnerr(spoolAmount * modMaxValue / modStepValue))
-        return cycles * modStepValue, cycles * modCycleTime
+        return cycles * modStepValue, cycles, cycles * modCycleTime
     elif spoolType == SpoolType.TIME:
         cycles = min(int(floatUnerr(spoolAmount / modCycleTime)), int(floatUnerr(modMaxValue / modStepValue)))
-        return cycles * modStepValue, cycles * modCycleTime
+        return cycles * modStepValue, cycles, cycles * modCycleTime
     elif spoolType == SpoolType.CYCLES:
         cycles = min(int(spoolAmount), int(floatUnerr(modMaxValue / modStepValue)))
-        return cycles * modStepValue, cycles * modCycleTime
+        return cycles * modStepValue, cycles, cycles * modCycleTime
     else:
-        return 0, 0
+        return 0, 0, 0
 
 
 def resolveSpoolOptions(spoolOptions, module):

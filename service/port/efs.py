@@ -303,8 +303,11 @@ class EfsPort():
     def getWeaponSystemData(fit):
         weaponSystems = []
         groups = {}
+        # TODO: fetch spoolup option
+        defaultSpoolValue = 1
+        spoolOptions = SpoolOptions(SpoolType.SCALE, defaultSpoolValue, False)
         for mod in fit.modules:
-            if mod.getDps()[0].total > 0:
+            if mod.getDps(spoolOptions=spoolOptions).total > 0:
                 # Group weapon + ammo combinations that occur more than once
                 keystr = str(mod.itemID) + "-" + str(mod.chargeID)
                 if keystr in groups:
@@ -346,14 +349,11 @@ class EfsPort():
                 maxRange = 300000
             else:
                 maxRange = stats.maxRange
-            # TODO: fetch spoolup option
-            defaultSpoolValue = 1
-            spoolOptions = SpoolOptions(SpoolType.SCALE, defaultSpoolValue, False)
             statDict = {
-                "dps": stats.getDps(spoolOptions=spoolOptions)[0].total * n, "capUse": stats.capUse * n, "falloff": stats.falloff,
+                "dps": stats.getDps(spoolOptions=spoolOptions).total * n, "capUse": stats.capUse * n, "falloff": stats.falloff,
                 "type": typeing, "name": name, "optimal": maxRange,
                 "numCharges": stats.numCharges, "numShots": stats.numShots, "reloadTime": stats.reloadTime,
-                "cycleTime": stats.cycleTime, "volley": stats.getVolley(spoolOptions=spoolOptions)[0].total * n, "tracking": tracking,
+                "cycleTime": stats.cycleTime, "volley": stats.getVolley(spoolOptions=spoolOptions).total * n, "tracking": tracking,
                 "maxVelocity": maxVelocity, "explosionDelay": explosionDelay, "damageReductionFactor": damageReductionFactor,
                 "explosionRadius": explosionRadius, "explosionVelocity": explosionVelocity, "aoeFieldRange": aoeFieldRange,
                 "damageMultiplierBonusMax": stats.getModifiedItemAttr("damageMultiplierBonusMax"),
