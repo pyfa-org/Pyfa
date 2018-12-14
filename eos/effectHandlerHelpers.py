@@ -116,58 +116,30 @@ class HandledList(list):
 class HandledModuleList(HandledList):
 
     def append(self, mod):
-        """
-        Add module to list, replacing first seen empty slot for
-        its rack by passed module.
-        """
-
-        # Get first seen empty position
-        emptyPosition = None
-        for currMod in self:
-            if currMod.isEmpty and currMod.slot == mod.slot:
-                currPos = mod.position
-                if emptyPosition is None or currPos < emptyPosition:
+        emptyPosition = float("Inf")
+        for i in range(len(self)):
+            currMod = self[i]
+            if currMod.isEmpty and not mod.isEmpty and currMod.slot == mod.slot:
+                currPos = mod.position or i
+                if currPos < emptyPosition:
                     emptyPosition = currPos
 
-        # Replacing empty by empty
-        if emptyPosition is not None and mod.isEmpty:
+        if emptyPosition < len(self):
+            del self[emptyPosition]
+            mod.position = emptyPosition
+            HandledList.insert(self, emptyPosition, mod)
+            if mod.isInvalid:
+                self.remove(mod)
             return
 
-        # Replacing empty by non-empty
-        if emptyPosition is not None and not mod.isEmpty:
-            self.__replace(mod, emptyPosition)
+        self.appendIgnoreEmpty(mod)
 
-        self.__appendToEnd(mod)
-
-    def __appendToEnd(self, mod):
+    def appendIgnoreEmpty(self, mod):
         mod.position = len(self)
         HandledList.append(self, mod)
         if mod.isInvalid:
             self.remove(mod)
-
-    def __replace(self, mod, position):
-        if mod.isEmpty and self[position].isEmpty:
             return
-        old = self[position]
-        del self[position]
-        mod.position = position
-        HandledList.insert(self, position, mod)
-        if mod.isInvalid:
-            self.remove(mod)
-            self.insert(position, old)
-
-    def replaceRackPosition(self, rackPosition, mod):
-        rackPositions = []
-        for currMod in self:
-            if currMod.slot == mod.slot:
-                rackPositions.append(currMod.position)
-        rackPositions.sort()
-        try:
-            modPosition = rackPositions[rackPosition]
-        except IndexError:
-            self.__appendToEnd(mod)
-        else:
-            self.__replace(mod, modPosition)
 
     def insert(self, index, mod):
         mod.position = index
