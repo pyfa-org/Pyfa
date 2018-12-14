@@ -2,7 +2,9 @@
 #
 # Used by:
 # Modules from group: Remote Armor Repairer (39 of 39)
+
 type = "projected", "active"
+runTime = "late"
 
 
 def handler(fit, container, context, **kwargs):

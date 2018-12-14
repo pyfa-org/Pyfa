@@ -8,6 +8,7 @@ from eos.utils.spoolSupport import SpoolType, SpoolOptions, calculateSpoolup, re
 
 
 type = "projected", "active"
+runTime = "late"
 
 
 def handler(fit, container, context, **kwargs):
