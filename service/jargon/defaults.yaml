@@ -257,7 +257,8 @@ cpu: Co-Processor
 coproc: Co-Processor
 eccm: Sensor Booster
 jam: ECM
-pdu: Power Diagnostic Unit
+pdu: Power Diagnostic System
+pds: Power Diagnostic System
 rcu: Reactor Control Unit
 sebo: Sensor Booster
 spr: Shield Power Relay
