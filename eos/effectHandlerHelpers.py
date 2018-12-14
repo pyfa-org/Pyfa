@@ -132,6 +132,9 @@ class HandledModuleList(HandledList):
                 self.remove(mod)
             return
 
+        self.appendIgnoreEmpty(mod)
+
+    def appendIgnoreEmpty(self, mod):
         mod.position = len(self)
         HandledList.append(self, mod)
         if mod.isInvalid:
@@ -147,7 +150,7 @@ class HandledModuleList(HandledList):
         try:
             modListPosition = listPositions[rackPosition]
         except IndexError:
-            self.append(mod)
+            self.appendIgnoreEmpty(mod)
         else:
             self.toDummy(modListPosition)
             if not mod.isEmpty:
