@@ -24,10 +24,10 @@ saveInRoot = False
 
 # Version data
 
-version = "2.6.1"
+version = "2.7.0b1"
 tag = "Stable"
-expansionName = "Onslaught"
-expansionVersion = "1.5"
+expansionName = "December"
+expansionVersion = "1.0"
 evemonMinVersion = "4081"
 
 minItemSearchLength = 3
