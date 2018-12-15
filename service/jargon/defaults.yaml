@@ -212,6 +212,7 @@ hs: Heat Sink
 
 # Fleet Assistance
 rsebo: Remote Sensor Booster
+reccm: Remote Sensor Booster
 rct: Remote Capacitor Transmitter
 et: Remote Capacitor Transmitter
 rar: Remote Armor Repairer
@@ -255,6 +256,7 @@ spr: Shield Power Relay
 cb: Capacitor Booster
 cbat: Cap Battery
 cbst: Capacitor Booster
+sa: Signal Amplifier
 sigamp: Signal Amplifier
 mapc: Micro Auxiliary Power Core
 
