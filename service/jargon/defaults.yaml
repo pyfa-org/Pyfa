@@ -12,6 +12,10 @@ sml: Small
 # mic: Micro # (ineffective)
 xl: X-Large
 
+# sizes
+large: heavy
+heavy: large
+
 # language fixes (american/british differences)
 armour: armor
 neutraliser: neutralizer
