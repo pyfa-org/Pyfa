@@ -1334,6 +1334,8 @@ class Fit(object):
                                 continue
                             if mod.projected:
                                 continue
+                            if mod.item.group.name not in groupAttrMap:
+                                continue
                             usesCap = True
                             try:
                                 if mod.capUse:
