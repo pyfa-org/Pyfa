@@ -93,7 +93,9 @@ class Miscellanea(ViewColumn):
                 text = ""
                 tooltip = ""
             elif max(doomsday_duration / doomsday_dottime, 1) > 1:
-                text = "{0} dmg over {1} s".format(formatAmount(volley * (doomsday_duration / doomsday_dottime), 3, 0, 3), doomsday_duration / 1000)
+                text = "{} over {}s".format(
+                    formatAmount(volley * (doomsday_duration / doomsday_dottime), 3, 0, 6),
+                    formatAmount((doomsday_duration / 1000), 0, 0, 0))
                 tooltip = "Raw damage done over time"
             else:
                 text = "{0} dmg".format(formatAmount(volley * (doomsday_duration / doomsday_dottime), 3, 0, 3))
