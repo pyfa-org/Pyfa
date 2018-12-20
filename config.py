@@ -24,7 +24,7 @@ saveInRoot = False
 
 # Version data
 
-version = "2.7.0b1"
+version = "2.7.0"
 tag = "Stable"
 expansionName = "December"
 expansionVersion = "1.0"
