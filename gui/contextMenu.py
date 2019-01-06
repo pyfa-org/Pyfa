@@ -184,6 +184,7 @@ from gui.builtinContextMenus import (  # noqa: E402,F401
     moduleGlobalAmmoPicker,
     moduleAmmoPicker,
     itemStats,
+    spoolUp,
     damagePattern,
     marketJump,
     # droneSplit,
