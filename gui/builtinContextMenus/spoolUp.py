@@ -60,7 +60,7 @@ class SpoolUpChanger(wx.Dialog):
 
     spoolTypes = {
         None: ("Default", "pyfa defaults to using 'scale' calculation with 100%"),
-        SpoolType.SCALE: ("Scale", "Amount is a percentage from 0 - 100; rounds down to closest module cycle."),
+        SpoolType.SCALE: ("Percentage", "Amount is a percentage from 0 - 100; rounds down to closest module cycle."),
         SpoolType.TIME: ("Time (s)", "Amount defines time in seconds since spoolup module was activated."),
         SpoolType.CYCLES: ("Cycles", "Amount is number of cycles module went through since being activated.")
     }
