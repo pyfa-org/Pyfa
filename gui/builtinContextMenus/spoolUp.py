@@ -4,6 +4,8 @@ from gui.contextMenu import ContextMenu
 from service.settings import ContextMenuSettings
 import wx
 from eos.utils.spoolSupport import SpoolType
+import gui.fitCommands as cmd
+
 
 class SpoolUp(ContextMenu):
     def __init__(self):
@@ -47,10 +49,8 @@ class SpoolUp(ContextMenu):
             if type is None:
                 amount = None
 
-            thing.spoolType = type
-            thing.spoolAmount = amount
-            break
-
+            self.mainFrame.command.Submit(cmd.GuiSetSpoolup(fitID, thing, type, amount))
+            return
 
 
 SpoolUp.register()
@@ -106,6 +106,7 @@ class SpoolUpChanger(wx.Dialog):
         bSizer3.Add(self.CreateStdDialogButtonSizer(wx.OK | wx.CANCEL), 0, wx.EXPAND)
         bSizer1.Add(bSizer3, 0, wx.ALL | wx.EXPAND, 10)
 
+        self.input.SetValue(module.spoolAmount or 0)
         self.input.SetFocus()
         self.input.Bind(wx.EVT_TEXT_ENTER, self.processEnter)
         self.SetSizer(bSizer1)
@@ -113,8 +114,7 @@ class SpoolUpChanger(wx.Dialog):
         self.Fit()
 
     def spoolTypeChanged(self, evt):
-        if evt.ClientData is None:
-            self.input.Enable(False)
+        self.input.Enable(evt.ClientData is not None)
         self.spoolDesc.SetLabel(self.spoolTypes[evt.ClientData][1])
         self.Layout()
 
