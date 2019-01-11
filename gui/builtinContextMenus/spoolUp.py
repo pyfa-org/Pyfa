@@ -21,7 +21,7 @@ class SpoolUp(ContextMenu):
 
         item = selection[0]
 
-        return item.item.group.name in ('Precursor Weapon')
+        return item.item.group.name in ("Precursor Weapon", "Mutadaptive Remote Armor Repairer", "Mutadaptive Remote Armor Repairer Blueprint")
 
     def getText(self, itmContext, selection):
         return "Set Spoolup".format(itmContext)
