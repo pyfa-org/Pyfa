@@ -194,8 +194,22 @@ class Display(wx.ListCtrl):
                         self.DeleteItem(self.getLastItem())
                     self.Refresh()
 
+            # List of entries that should not count in knowing if a tab is empty
+            dummyEntries = [
+                gui.builtinAdditionPanes.commandView.DummyEntry,
+                gui.builtinAdditionPanes.projectedView.DummyEntry
+            ]
+
+            tabHasStuff = True
+            # The tab is empty
+            if len(stuff) == 0:
+                tabHasStuff = False
+            # The tab only has a dummy entry
+            elif len(stuff) == 1 and type(stuff[0]) in dummyEntries:
+                tabHasStuff = False
+
             try:
-                if stuffItemCount > 0:
+                if tabHasStuff > 0:
                     self.boldTitle()
                 else:
                     self.resetTitle()
