@@ -274,5 +274,5 @@ class Display(wx.ListCtrl):
         view.font = wx.Font(fonts.NORMAL, wx.FONTFAMILY_SWISS, wx.FONTSTYLE_NORMAL, wx.FONTWEIGHT_BOLD, False)
 
     def resetTitle(self):
-        view = self.Parent.Parent.Parent.GetTab(self)
+        view = self.Parent.Parent.GetTab(self)
         view.font = wx.Font(fonts.NORMAL, wx.FONTFAMILY_SWISS, wx.FONTSTYLE_NORMAL, wx.FONTWEIGHT_NORMAL, False)
