@@ -59,6 +59,7 @@ class BoosterView(d.Display):
         d.Display.__init__(self, parent, style=wx.LC_SINGLE_SEL | wx.BORDER_NONE)
 
         self.lastFitId = None
+        self.title = "Boosters"
 
         self.mainFrame.Bind(GE.FIT_CHANGED, self.fitChanged)
         self.mainFrame.Bind(ITEM_SELECTED, self.addItem)

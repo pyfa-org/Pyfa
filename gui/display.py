@@ -22,6 +22,7 @@ import wx
 import gui.mainFrame
 from gui.viewColumn import ViewColumn
 from gui.cachingImageList import CachingImageList
+from gui.utils import fonts
 
 
 class Display(wx.ListCtrl):
@@ -193,6 +194,16 @@ class Display(wx.ListCtrl):
                         self.DeleteItem(self.getLastItem())
                     self.Refresh()
 
+            try:
+                if stuffItemCount > 0:
+                    self.boldTitle()
+                else:
+                    self.resetTitle()
+
+            except AttributeError:
+                pass
+
+
     def refresh(self, stuff):
         if stuff is None:
             return
@@ -257,3 +268,11 @@ class Display(wx.ListCtrl):
     def getColumn(self, point):
         row, _, col = self.HitTestSubItem(point)
         return col
+
+    def boldTitle(self):
+        view = self.Parent.Parent.GetTab(self)
+        view.font = wx.Font(fonts.NORMAL, wx.FONTFAMILY_SWISS, wx.FONTSTYLE_NORMAL, wx.FONTWEIGHT_BOLD, False)
+
+    def resetTitle(self):
+        view = self.Parent.Parent.Parent.GetTab(self)
+        view.font = wx.Font(fonts.NORMAL, wx.FONTFAMILY_SWISS, wx.FONTSTYLE_NORMAL, wx.FONTWEIGHT_NORMAL, False)

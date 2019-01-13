@@ -64,6 +64,7 @@ class DroneView(Display):
         Display.__init__(self, parent, style=wx.LC_SINGLE_SEL | wx.BORDER_NONE)
 
         self.lastFitId = None
+        self.title = "Drones"
 
         self.hoveredRow = None
         self.hoveredColumn = None

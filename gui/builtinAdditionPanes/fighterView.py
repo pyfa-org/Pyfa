@@ -53,6 +53,7 @@ class FighterView(wx.Panel):
     def __init__(self, parent):
         wx.Panel.__init__(self, parent, id=wx.ID_ANY, pos=wx.DefaultPosition, style=wx.TAB_TRAVERSAL)
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
+        self.title = "Fighters"
         self.labels = ["Light", "Heavy", "Support"]
 
         mainSizer = wx.BoxSizer(wx.VERTICAL)

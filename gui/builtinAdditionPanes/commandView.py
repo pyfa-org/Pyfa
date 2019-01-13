@@ -67,6 +67,7 @@ class CommandView(d.Display):
         d.Display.__init__(self, parent, style=wx.LC_SINGLE_SEL | wx.BORDER_NONE)
 
         self.lastFitId = None
+        self.title = "Command"
 
         self.mainFrame.Bind(GE.FIT_CHANGED, CommandFits.fitChanged)
         self.mainFrame.Bind(EVT_FIT_REMOVED, CommandFits.populateFits)

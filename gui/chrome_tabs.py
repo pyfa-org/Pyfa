@@ -127,6 +127,10 @@ class ChromeNotebook(wx.Panel):
     def GetPage(self, i):
         return self._pages[i]
 
+    def GetTab(self, view):
+        tabs = [tab for tab in self.tabs_container.tabs if tab.text == view.title]
+        return tabs[0]
+
     def SetPage(self, i, page):
         if i >= len(self._pages) or i is None or page is None:
             return

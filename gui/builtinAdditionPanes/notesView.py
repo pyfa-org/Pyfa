@@ -10,7 +10,9 @@ class NotesView(wx.Panel):
     def __init__(self, parent):
         wx.Panel.__init__(self, parent)
         self.lastFitId = None
+        self.title = "Notes"
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
+
         mainSizer = wx.BoxSizer(wx.VERTICAL)
         self.editNotes = wx.TextCtrl(self, style=wx.TE_MULTILINE | wx.BORDER_NONE, )
         mainSizer.Add(self.editNotes, 1, wx.EXPAND)

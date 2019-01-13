@@ -59,28 +59,28 @@ class AdditionsPane(TogglePanel):
         notesImg = BitmapLoader.getImage("skill_small", "gui")
 
         self.drone = DroneView(self.notebook)
-        self.notebook.AddPage(self.drone, "Drones", image=droneImg, closeable=False)
+        self.notebook.AddPage(self.drone, self.drone.title, image=droneImg, closeable=False)
 
         self.fighter = FighterView(self.notebook)
-        self.notebook.AddPage(self.fighter, "Fighters", image=fighterImg, closeable=False)
+        self.notebook.AddPage(self.fighter, self.fighter.title, image=fighterImg, closeable=False)
 
         self.cargo = CargoView(self.notebook)
-        self.notebook.AddPage(self.cargo, "Cargo", image=cargoImg, closeable=False)
+        self.notebook.AddPage(self.cargo, self.cargo.title, image=cargoImg, closeable=False)
 
         self.implant = ImplantView(self.notebook)
-        self.notebook.AddPage(self.implant, "Implants", image=implantImg, closeable=False)
+        self.notebook.AddPage(self.implant, self.implant.title, image=implantImg, closeable=False)
 
         self.booster = BoosterView(self.notebook)
-        self.notebook.AddPage(self.booster, "Boosters", image=boosterImg, closeable=False)
+        self.notebook.AddPage(self.booster, self.booster.title, image=boosterImg, closeable=False)
 
         self.projectedPage = ProjectedView(self.notebook)
-        self.notebook.AddPage(self.projectedPage, "Projected", image=projectedImg, closeable=False)
+        self.notebook.AddPage(self.projectedPage, self.projectedPage.title, image=projectedImg, closeable=False)
 
         self.gangPage = CommandView(self.notebook)
-        self.notebook.AddPage(self.gangPage, "Command", image=gangImg, closeable=False)
+        self.notebook.AddPage(self.gangPage, self.gangPage.title, image=gangImg, closeable=False)
 
         self.notes = NotesView(self.notebook)
-        self.notebook.AddPage(self.notes, "Notes", image=notesImg, closeable=False)
+        self.notebook.AddPage(self.notes, self.notes.title, image=notesImg, closeable=False)
 
         self.notebook.SetSelection(0)
 
