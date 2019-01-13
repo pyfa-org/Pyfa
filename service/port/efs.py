@@ -17,6 +17,7 @@ from eos.saveddata.drone import Drone
 from eos.effectHandlerHelpers import HandledList
 from eos.db import gamedata_session, getItemsByCategory, getCategory, getAttributeInfo, getGroup
 from eos.gamedata import Category, Group, Item, Traits, Attribute, Effect, ItemEffect
+from eos.utils.spoolSupport import SpoolType, SpoolOptions
 from logbook import Logger
 pyfalog = Logger(__name__)
 
@@ -302,8 +303,11 @@ class EfsPort():
     def getWeaponSystemData(fit):
         weaponSystems = []
         groups = {}
+        # TODO: fetch spoolup option
+        defaultSpoolValue = 1
+        spoolOptions = SpoolOptions(SpoolType.SCALE, defaultSpoolValue, False)
         for mod in fit.modules:
-            if mod.dps > 0:
+            if mod.getDps(spoolOptions=spoolOptions).total > 0:
                 # Group weapon + ammo combinations that occur more than once
                 keystr = str(mod.itemID) + "-" + str(mod.chargeID)
                 if keystr in groups:
@@ -320,6 +324,7 @@ class EfsPort():
             explosionRadius = 0
             explosionVelocity = 0
             aoeFieldRange = 0
+            typeing = 'None'
             if stats.charge:
                 name = stats.item.name + ", " + stats.charge.name
             else:
@@ -345,10 +350,10 @@ class EfsPort():
             else:
                 maxRange = stats.maxRange
             statDict = {
-                "dps": stats.dps * n, "capUse": stats.capUse * n, "falloff": stats.falloff,
+                "dps": stats.getDps(spoolOptions=spoolOptions).total * n, "capUse": stats.capUse * n, "falloff": stats.falloff,
                 "type": typeing, "name": name, "optimal": maxRange,
                 "numCharges": stats.numCharges, "numShots": stats.numShots, "reloadTime": stats.reloadTime,
-                "cycleTime": stats.cycleTime, "volley": stats.volley * n, "tracking": tracking,
+                "cycleTime": stats.cycleTime, "volley": stats.getVolley(spoolOptions=spoolOptions).total * n, "tracking": tracking,
                 "maxVelocity": maxVelocity, "explosionDelay": explosionDelay, "damageReductionFactor": damageReductionFactor,
                 "explosionRadius": explosionRadius, "explosionVelocity": explosionVelocity, "aoeFieldRange": aoeFieldRange,
                 "damageMultiplierBonusMax": stats.getModifiedItemAttr("damageMultiplierBonusMax"),
@@ -356,19 +361,19 @@ class EfsPort():
             }
             weaponSystems.append(statDict)
         for drone in fit.drones:
-            if drone.dps[0] > 0 and drone.amountActive > 0:
+            if drone.getDps().total > 0 and drone.amountActive > 0:
                 droneAttr = drone.getModifiedItemAttr
                 # Drones are using the old tracking formula for trackingSpeed. This updates it to match turrets.
                 newTracking = droneAttr("trackingSpeed") / (droneAttr("optimalSigRadius") / 40000)
                 statDict = {
-                    "dps": drone.dps[0], "cycleTime": drone.cycleTime, "type": "Drone",
+                    "dps": drone.getDps().total, "cycleTime": drone.cycleTime, "type": "Drone",
                     "optimal": drone.maxRange, "name": drone.item.name, "falloff": drone.falloff,
                     "maxSpeed": droneAttr("maxVelocity"), "tracking": newTracking,
-                    "volley": drone.dps[1]
+                    "volley": drone.getVolley().total
                 }
                 weaponSystems.append(statDict)
         for fighter in fit.fighters:
-            if fighter.dps[0] > 0 and fighter.amountActive > 0:
+            if fighter.getDps().total > 0 and fighter.amountActive > 0:
                 fighterAttr = fighter.getModifiedItemAttr
                 abilities = []
                 if "fighterAbilityAttackMissileDamageEM" in fighter.item.attributes.keys():
@@ -380,10 +385,10 @@ class EfsPort():
                     ability = EfsPort.getFighterAbilityData(fighterAttr, fighter, baseRef)
                     abilities.append(ability)
                 statDict = {
-                    "dps": fighter.dps[0], "type": "Fighter", "name": fighter.item.name,
+                    "dps": fighter.getDps().total, "type": "Fighter", "name": fighter.item.name,
                     "maxSpeed": fighterAttr("maxVelocity"), "abilities": abilities,
                     "ehp": fighterAttr("shieldCapacity") / 0.8875 * fighter.amountActive,
-                    "volley": fighter.dps[1], "signatureRadius": fighterAttr("signatureRadius")
+                    "volley": fighter.getVolley().total, "signatureRadius": fighterAttr("signatureRadius")
                 }
                 weaponSystems.append(statDict)
         return weaponSystems
@@ -620,15 +625,18 @@ class EfsPort():
         }
         resonance = {"hull": hullResonance, "armor": armorResonance, "shield": shieldResonance}
         shipSize = EfsPort.getShipSize(fit.ship.item.groupID)
+        # TODO: fetch spoolup option
+        defaultSpoolValue = 1
+        spoolOptions = SpoolOptions(SpoolType.SCALE, defaultSpoolValue, False)
         try:
             dataDict = {
-                "name": fitName, "ehp": fit.ehp, "droneDPS": fit.droneDPS,
-                "droneVolley": fit.droneVolley, "hp": fit.hp, "maxTargets": fit.maxTargets,
-                "maxSpeed": fit.maxSpeed, "weaponVolley": fit.weaponVolley, "totalVolley": fit.totalVolley,
-                "maxTargetRange": fit.maxTargetRange, "scanStrength": fit.scanStrength,
-                "weaponDPS": fit.weaponDPS, "alignTime": fit.alignTime, "signatureRadius": fitModAttr("signatureRadius"),
-                "weapons": weaponSystems, "scanRes": fitModAttr("scanResolution"),
-                "capUsed": fit.capUsed, "capRecharge": fit.capRecharge,
+                "name": fitName, "ehp": fit.ehp, "droneDPS": fit.getDroneDps().total,
+                "droneVolley": fit.getDroneVolley().total, "hp": fit.hp, "maxTargets": fit.maxTargets,
+                "maxSpeed": fit.maxSpeed, "weaponVolley": fit.getWeaponVolley(spoolOptions=spoolOptions).total,
+                "totalVolley": fit.getTotalVolley(spoolOptions=spoolOptions).total, "maxTargetRange": fit.maxTargetRange,
+                "scanStrength": fit.scanStrength, "weaponDPS": fit.getWeaponDps(spoolOptions=spoolOptions).total,
+                "alignTime": fit.alignTime, "signatureRadius": fitModAttr("signatureRadius"), "weapons": weaponSystems,
+                "scanRes": fitModAttr("scanResolution"), "capUsed": fit.capUsed, "capRecharge": fit.capRecharge,
                 "rigSlots": fitModAttr("rigSlots"), "lowSlots": fitModAttr("lowSlots"),
                 "midSlots": fitModAttr("medSlots"), "highSlots": fitModAttr("hiSlots"),
                 "turretSlots": fitModAttr("turretSlotsLeft"), "launcherSlots": fitModAttr("launcherSlotsLeft"),

@@ -10,9 +10,9 @@ environment:
 
     # Python 2.7.10 is the latest version and is not pre-installed.
 
-    - PYTHON: "C:\\Python27.10"
-      PYTHON_VERSION: "2.7.10"
-      PYTHON_ARCH: "32"
+  #    - PYTHON: "C:\\Python27.10"
+  #      PYTHON_VERSION: "2.7.10"
+  #      PYTHON_ARCH: "32"
 
     #- PYTHON: "C:\\Python27.10-x64"
     #  PYTHON_VERSION: "2.7.10"
@@ -59,9 +59,9 @@ environment:
     #  PYTHON_VERSION: "2.6.6"
     #  PYTHON_ARCH: "64"
 
-    #- PYTHON: "C:\\Python35"
-    #  PYTHON_VERSION: "3.5.0"
-    #  PYTHON_ARCH: "32"
+    - PYTHON: "C:\\Python36"
+      PYTHON_VERSION: "3.6.x"
+      PYTHON_ARCH: "32"
 
     #- PYTHON: "C:\\Python35-x64"
     #  PYTHON_VERSION: "3.5.0"
@@ -89,20 +89,23 @@ install:
         Where-Object pullRequestId -eq $env:APPVEYOR_PULL_REQUEST_NUMBER)[0].buildNumber) { `
           throw "There are newer queued builds for this pull request, failing early." }
 
-  # Install wxPython
-  - 'ECHO Downloading wxPython.'
-  - "appveyor DownloadFile https://goo.gl/yvO8PB -FileName C:\\wxpython.exe"
-  #- "appveyor DownloadFile https://goo.gl/Uj0jV3 -FileName C:\\wxpython64.exe"
-
-  - 'ECHO Install wxPython'
-  - "C:\\wxpython.exe /SP- /VERYSILENT /NORESTART"
-  #- "C:\\wxpython64.exe /SP- /VERYSILENT /NORESTART"
+#  # Install wxPython
+#  - 'ECHO Downloading wxPython.'
+#  - "appveyor DownloadFile https://goo.gl/yvO8PB -FileName C:\\wxpython.exe"
+#  #- "appveyor DownloadFile https://goo.gl/Uj0jV3 -FileName C:\\wxpython64.exe"
+#
+#  - 'ECHO Install wxPython'
+#  - "C:\\wxpython.exe /SP- /VERYSILENT /NORESTART"
+#  #- "C:\\wxpython64.exe /SP- /VERYSILENT /NORESTART"
 
   - ECHO "Filesystem root:"
   - ps: "ls \"C:/\""
 
+  - ECHO "Filesystem projects root:"
+  - ps: "ls \"C:\\projects\\\""
+
   - ECHO "Filesystem pyfa root:"
-  - ps: "ls \"C:\\projects\\pyfa\\\""
+  - ps: "ls \"C:\\projects\\$env:APPVEYOR_PROJECT_SLUG\""
 
   - ECHO "Installed SDKs:"
   - ps: "ls \"C:/Program Files/Microsoft SDKs/Windows\""
@@ -131,15 +134,17 @@ install:
   # C:\\projects\\eve-gnosis\\
   - ECHO "Install pip requirements:"
   - "pip install -r requirements.txt"
-  - "pip install -r requirements_test.txt"
-  - "pip install -r requirements_build_windows.txt"
+  - "pip install PyInstaller"
+#  - "pip install -r requirements_test.txt"
+#  - "pip install -r requirements_build_windows.txt"
 
 build_script:
   # Build the compiled extension
   # - "python setup.py build"
   - ECHO "Build pyfa:"
   #- copy C:\projects\pyfa\dist_assets\win\pyfa.spec C:\projects\pyfa\pyfa.spec
-  - "python C:\\projects\\pyfa\\setup.py build"
+  - ps: cd C:\projects\$env:APPVEYOR_PROJECT_SLUG
+  - "python -m PyInstaller --noupx --clean --windowed --noconsole -m ./dist_assets/win/pyfa.exe.manifest -y ./dist_assets/win/pyfa.spec"
 
   #- ECHO "Build pyfa (Debug):"
   #- copy C:\projects\pyfa\dist_assets\win\pyfa_debug.spec C:\projects\pyfa\pyfa_debug.spec
@@ -150,12 +155,12 @@ build: on
 after_build:
   - ps: "ls \"./\""
   #- ps: "ls \"C:\\projects\\pyfa\\build\\pyfa\\\""
-  - ps: "ls \"C:\\projects\\pyfa\\build\\\""
-  - ps: "ls \"C:\\projects\\pyfa\\build\\exe.win32-2.7\\\""
+  - ps: "ls \"C:\\projects\\$env:APPVEYOR_PROJECT_SLUG\\dist\\\""
+#  - ps: "ls \"C:\\projects\\$env:APPVEYOR_PROJECT_SLUG\\build\\exe.win32-2.7\\\""
   # Zip
   # APPVEYOR_PULL_REQUEST_NUMBER -and $env:APPVEYOR_BUILD_NUMBER
   #- 7z a build.zip -r C:\projects\pyfa\build\pyfa\*.*
-  - 7z a pyfa.zip -r C:\projects\pyfa\build\exe.win32-2.7\*.*
+  - ps: 7z a pyfa.zip -r C:\projects\$env:APPVEYOR_PROJECT_SLUG\dist\pyfa\*.*
   #- 7z a pyfa_debug.zip -r C:\projects\pyfa\dist\pyfa_debug\*.*
 
 on_success:

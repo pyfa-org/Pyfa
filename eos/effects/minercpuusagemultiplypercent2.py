@@ -2,6 +2,7 @@
 #
 # Used by:
 # Variations of module: Mining Laser Upgrade I (5 of 5)
+# Module: Frostline 'Omnivore' Harvester Upgrade
 type = "passive"
 
 

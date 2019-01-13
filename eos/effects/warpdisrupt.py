@@ -1,4 +1,4 @@
-# warpScramble
+# warpDisrupt
 #
 # Used by:
 # Modules named like: Warp Disruptor (28 of 28)

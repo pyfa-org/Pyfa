@@ -1,3 +1,7 @@
+# eliteBonusReconShip3PCTdamagePerCycle
+#
+# Used by:
+# Ship: Tiamat
 type = "passive"
 
 

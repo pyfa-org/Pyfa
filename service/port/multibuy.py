@@ -19,50 +19,45 @@
 
 
 from service.fit import Fit as svcFit
-from service.port.eft import SLOT_ORDER as EFT_SLOT_ORDER
 
 
 def exportMultiBuy(fit):
-    export = "%s\n" % fit.ship.item.name
-    stuff = {}
-    sFit = svcFit.getInstance()
+    itemCounts = {}
+
+    def addItem(item, quantity=1):
+        if item not in itemCounts:
+            itemCounts[item] = 0
+        itemCounts[item] += quantity
+
+    exportCharges = svcFit.getInstance().serviceFittingOptions["exportCharges"]
     for module in fit.modules:
-        slot = module.slot
-        if slot not in stuff:
-            stuff[slot] = []
-        curr = "%s\n" % module.item.name if module.item else ""
-        if module.charge and sFit.serviceFittingOptions["exportCharges"]:
-            curr += "%s x%s\n" % (module.charge.name, module.numCharges)
-        stuff[slot].append(curr)
+        if module.item:
+            addItem(module.item)
+        if exportCharges and module.charge:
+            addItem(module.charge, module.numCharges)
 
-    for slotType in EFT_SLOT_ORDER:
-        data = stuff.get(slotType)
-        if data is not None:
-            # export += "\n"
-            for curr in data:
-                export += curr
+    for drone in fit.drones:
+        addItem(drone.item, drone.amount)
 
-    if len(fit.drones) > 0:
-        for drone in fit.drones:
-            export += "%s x%s\n" % (drone.item.name, drone.amount)
+    for fighter in fit.fighters:
+        addItem(fighter.item, fighter.amountActive)
 
-    if len(fit.cargo) > 0:
-        for cargo in fit.cargo:
-            export += "%s x%s\n" % (cargo.item.name, cargo.amount)
+    for cargo in fit.cargo:
+        addItem(cargo.item, cargo.amount)
 
-    if len(fit.implants) > 0:
-        for implant in fit.implants:
-            export += "%s\n" % implant.item.name
+    for implant in fit.implants:
+        addItem(implant.item)
 
-    if len(fit.boosters) > 0:
-        for booster in fit.boosters:
-            export += "%s\n" % booster.item.name
+    for booster in fit.boosters:
+        addItem(booster.item)
 
-    if len(fit.fighters) > 0:
-        for fighter in fit.fighters:
-            export += "%s x%s\n" % (fighter.item.name, fighter.amountActive)
+    exportLines = []
+    exportLines.append(fit.ship.item.name)
+    for item in sorted(itemCounts, key=lambda i: (i.group.category.name, i.group.name, i.name)):
+        count = itemCounts[item]
+        if count == 1:
+            exportLines.append(item.name)
+        else:
+            exportLines.append('{} x{}'.format(item.name, count))
 
-    if export[-1] == "\n":
-        export = export[:-1]
-
-    return export
+    return "\n".join(exportLines)

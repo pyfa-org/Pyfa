@@ -6,4 +6,4 @@ type = "passive"
 
 
 def handler(fit, module, context):
-    fit.ship.boostItemAttr("signatureRadius", module.getModifiedItemAttr("signatureRadiusBonus"))
+    fit.ship.boostItemAttr("signatureRadius", module.getModifiedItemAttr("signatureRadiusBonus"), stackingPenalties=True)

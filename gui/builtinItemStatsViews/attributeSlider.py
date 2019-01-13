@@ -1,7 +1,10 @@
+import math
+
 import wx
 import wx.lib.newevent
 
 from gui.attribute_gauge import AttributeGauge
+from eos.utils.float import floatUnerr
 
 _ValueChanged, EVT_VALUE_CHANGED = wx.lib.newevent.NewEvent()
 
@@ -46,34 +49,54 @@ class AttributeSlider(wx.Panel):
     # Slider which abstracts users values from internal values (because the built in slider does not deal with floats
     # and the like), based on http://wxpython-users.wxwidgets.narkive.com/ekgBzA7u/anyone-ever-thought-of-a-floating-point-slider
 
-    def __init__(self, parent, baseValue, minMod, maxMod, inverse=False, id=-1):
+    def __init__(self, parent, baseValue, minValue, maxValue, inverse=False, id=-1):
         wx.Panel.__init__(self, parent, id=id)
 
         self.parent = parent
 
-        self.inverse = inverse
-
         self.base_value = baseValue
 
-        self.UserMinValue = minMod
-        self.UserMaxValue = maxMod
+        self.UserMinValue = minValue
+        self.UserMaxValue = maxValue
+        print(self.UserMinValue, self.UserMaxValue)
 
-        # The internal slider basically represents the percentage towards the end of the range. It has to be normalized
-        # in this way, otherwise when we start off with a base, if the range is skewed to one side, the base value won't
-        # be centered. We use a range of -100,100 so that we can depend on the SliderValue to contain the percentage
-        # toward one end
+        self.inverse = inverse
 
-        # Additionally, since we want the slider to be accurate to 3 decimal places, we need to blow out the two ends here
-        # (if we have a slider that needs to land on 66.66% towards the right, it will actually be converted to 66%. Se we need it to support 6,666)
+        def getStep(valRange):
+            """
+            Find step for the passed range, which is based on 1, 2 or 5.
+            Step returned will make sure that range fits 10..50 of them,
+            as close to 10 as possible.
+            """
+            steps = {1: None, 2: None, 5: None}
+            for baseInc in steps:
+                baseIncAmount = valRange / baseInc
+                incScale = math.floor(math.log10(baseIncAmount) - 1)
+                steps[baseInc] = baseInc * 10 ** incScale
+            chosenBase = min(steps, key=lambda base: valRange / steps[base])
+            chosenStep = steps[chosenBase]
+            if inverse:
+                chosenStep *= -1
+            return chosenStep
 
-        self.SliderMinValue = -100
-        self.SliderMaxValue = 100
-        self.SliderValue = 0
+        def getDigitPlaces(minValue, maxValue):
+            minDigits = 3
+            maxDigits = 5
+            currentDecision = minDigits
+            for value in (floatUnerr(minValue), floatUnerr(maxValue)):
+                for currentDigit in range(minDigits, maxDigits + 1):
+                    if round(value, currentDigit) == value:
+                        if currentDigit > currentDecision:
+                            currentDecision = currentDigit
+                        break
+                # Max decimal places we can afford to show was not enough
+                else:
+                     return maxDigits
+            return currentDecision
 
-        range = [(self.UserMinValue * self.base_value), (self.UserMaxValue * self.base_value)]
+        self.ctrl = wx.SpinCtrlDouble(self, min=minValue, max=maxValue, inc=getStep(maxValue - minValue))
+        self.ctrl.SetDigits(getDigitPlaces(minValue, maxValue))
 
-        self.ctrl = wx.SpinCtrlDouble(self, min=min(range), max=max(range))
-        self.ctrl.SetDigits(3)
 
         self.ctrl.Bind(wx.EVT_SPINCTRLDOUBLE, self.UpdateValue)
 
@@ -92,19 +115,12 @@ class AttributeSlider(wx.Panel):
         evt.Skip()
 
     def SetValue(self, value, post_event=True):
-        # todo: check this against values that might be 2.5x and whatnot
-        mod = value / self.base_value
         self.ctrl.SetValue(value)
-        slider_percentage = 0
-        if mod < 1:
-            modEnd = self.UserMinValue
-            slider_percentage = (1 - mod) / (1 - modEnd) * -100
-        elif mod > 1:
-            modEnd = self.UserMaxValue
-            slider_percentage = ((mod - 1) / (modEnd - 1)) * 100
-        # print(slider_percentage)
-        if self.inverse:
-            slider_percentage *= -1
+        invert_factor = -1 if self.inverse else 1
+        if value >= self.base_value:
+            slider_percentage = (value - self.base_value) / (self.UserMaxValue - self.base_value) * 100 * invert_factor
+        else:
+            slider_percentage = (value - self.base_value) / (self.base_value - self.UserMinValue) * 100 * invert_factor
         self.slider.SetValue(slider_percentage)
         if post_event:
             wx.PostEvent(self, ValueChanged(self, None, value, None, slider_percentage))

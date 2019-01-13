@@ -1,8 +1,7 @@
 # shipBonusTitanA3WarpStrength
 #
 # Used by:
-# Ship: Avatar
-# Ship: Molok
+# Variations of ship: Avatar (2 of 2)
 type = "passive"
 
 

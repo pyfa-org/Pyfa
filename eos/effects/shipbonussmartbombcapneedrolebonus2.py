@@ -2,10 +2,14 @@
 #
 # Used by:
 # Ship: Damavik
+# Ship: Drekavac
 # Ship: Hydra
+# Ship: Kikimora
 # Ship: Leshak
+# Ship: Rodiva
 # Ship: Tiamat
 # Ship: Vedmak
+# Ship: Zarmazd
 type = "passive"
 
 

@@ -2,7 +2,9 @@
 #
 # Used by:
 # Ship: Damavik
+# Ship: Drekavac
 # Ship: Hydra
+# Ship: Kikimora
 # Ship: Leshak
 # Ship: Tiamat
 # Ship: Vedmak

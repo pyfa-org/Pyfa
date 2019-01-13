@@ -21,12 +21,12 @@ from logbook import Logger
 
 from sqlalchemy.orm import reconstructor
 
+from eos.utils.stats import DmgTypes
+
 pyfalog = Logger(__name__)
 
 
 class FighterAbility(object):
-    DAMAGE_TYPES = ("em", "kinetic", "explosive", "thermal")
-    DAMAGE_TYPES2 = ("EM", "Kin", "Exp", "Therm")
 
     # We aren't able to get data on the charges that can be stored with fighters. So we hardcode that data here, keyed
     # with the fighter squadron role
@@ -118,30 +118,38 @@ class FighterAbility(object):
 
         return speed
 
-    def damageStats(self, targetResists=None):
-        if self.__dps is None:
-            self.__volley = 0
-            self.__dps = 0
-            if self.dealsDamage and self.active:
-                cycleTime = self.cycleTime
+    def getVolley(self, targetResists=None):
+        if not self.dealsDamage or not self.active:
+            return DmgTypes(0, 0, 0, 0)
+        if self.attrPrefix == "fighterAbilityLaunchBomb":
+            em = self.fighter.getModifiedChargeAttr("emDamage", 0)
+            therm = self.fighter.getModifiedChargeAttr("thermalDamage", 0)
+            kin = self.fighter.getModifiedChargeAttr("kineticDamage", 0)
+            exp = self.fighter.getModifiedChargeAttr("explosiveDamage", 0)
+        else:
+            em = self.fighter.getModifiedItemAttr("{}DamageEM".format(self.attrPrefix), 0)
+            therm = self.fighter.getModifiedItemAttr("{}DamageTherm".format(self.attrPrefix), 0)
+            kin = self.fighter.getModifiedItemAttr("{}DamageKin".format(self.attrPrefix), 0)
+            exp = self.fighter.getModifiedItemAttr("{}DamageExp".format(self.attrPrefix), 0)
+        dmgMult = self.fighter.amountActive * self.fighter.getModifiedItemAttr("{}DamageMultiplier".format(self.attrPrefix), 1)
+        volley = DmgTypes(
+            em=em * dmgMult * (1 - getattr(targetResists, "emAmount", 0)),
+            thermal=therm * dmgMult * (1 - getattr(targetResists, "thermalAmount", 0)),
+            kinetic=kin * dmgMult * (1 - getattr(targetResists, "kineticAmount", 0)),
+            explosive=exp * dmgMult * (1 - getattr(targetResists, "explosiveAmount", 0)))
+        return volley
 
-                if self.attrPrefix == "fighterAbilityLaunchBomb":
-                    # bomb calcs
-                    volley = sum([(self.fighter.getModifiedChargeAttr("%sDamage" % attr) or 0) * (
-                        1 - getattr(targetResists, "%sAmount" % attr, 0)) for attr in self.DAMAGE_TYPES])
-                else:
-                    volley = sum(map(lambda d2, d:
-                                     (self.fighter.getModifiedItemAttr(
-                                             "{}Damage{}".format(self.attrPrefix, d2)) or 0) *
-                                     (1 - getattr(targetResists, "{}Amount".format(d), 0)),
-                                     self.DAMAGE_TYPES2, self.DAMAGE_TYPES))
-
-                volley *= self.fighter.amountActive
-                volley *= self.fighter.getModifiedItemAttr("{}DamageMultiplier".format(self.attrPrefix)) or 1
-                self.__volley += volley
-                self.__dps += volley / (cycleTime / 1000.0)
-
-        return self.__dps, self.__volley
+    def getDps(self, targetResists=None):
+        volley = self.getVolley(targetResists=targetResists)
+        if not volley:
+            return DmgTypes(0, 0, 0, 0)
+        dpsFactor = 1 / (self.cycleTime / 1000)
+        dps = DmgTypes(
+            em=volley.em * dpsFactor,
+            thermal=volley.thermal * dpsFactor,
+            kinetic=volley.kinetic * dpsFactor,
+            explosive=volley.explosive * dpsFactor)
+        return dps
 
     def clear(self):
         self.__dps = None

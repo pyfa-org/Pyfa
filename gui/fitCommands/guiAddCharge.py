@@ -15,9 +15,10 @@ class GuiModuleAddChargeCommand(wx.Command):
         self.fitID = fitID
         self.itemID = itemID
         self.positions = [mod.modPosition for mod in modules]
+        self.projected = modules[0].isProjected
 
     def Do(self):
-        if self.internal_history.Submit(FitSetChargeCommand(self.fitID, self.positions, self.itemID)):
+        if self.internal_history.Submit(FitSetChargeCommand(self.fitID, self.positions, self.itemID, self.projected)):
             self.sFit.recalc(self.fitID)
             wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=self.fitID))
             return True

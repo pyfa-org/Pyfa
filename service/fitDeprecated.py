@@ -47,6 +47,16 @@ class FitDeprecated(object):
         return old_name, newName
 
     @deprecated
+    def toggleImplantSource(self, fitID, source):
+        pyfalog.debug("Toggling implant source for fit ID: {0}", fitID)
+        fit = eos.db.getFit(fitID)
+        fit.implantSource = source
+
+        eos.db.commit()
+        self.recalc(fit)
+        return True
+
+    @deprecated
     def toggleDrone(self, fitID, i):
         pyfalog.debug("Toggling drones for fit ID: {0}", fitID)
         fit = eos.db.getFit(fitID)

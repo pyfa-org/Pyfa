@@ -567,51 +567,67 @@ class Unit(EqBase):
         """ This is a mapping of various tweaks that we have to do between the internal representation of an attribute
         value and the display (for example, 'Millisecond' units have the display name of 's', so we have to convert value
         from ms to s) """
+        # Each entry contains:
+        # Function to convert value to display value
+        # Function to convert value to display format (which sometimes can be a string)
+        # Function which controls unit name used with attribute
+        # Function to convert display value to value
         return {
             "Inverse Absolute Percent": (
                 lambda v: (1 - v) * 100,
-                lambda d: -1 * (d / 100) + 1,
-                lambda u: u),
+                lambda v: (1 - v) * 100,
+                lambda u: u,
+                lambda d: -1 * (d / 100) + 1),
             "Inversed Modifier Percent": (
                 lambda v: (1 - v) * 100,
-                lambda d: -1 * (d / 100) + 1,
-                lambda u: u),
+                lambda v: (1 - v) * 100,
+                lambda u: u,
+                lambda d: -1 * (d / 100) + 1),
             "Modifier Percent": (
+                lambda v: (v - 1) * 100,
                 lambda v: ("%+.2f" if ((v - 1) * 100) % 1 else "%+d") % ((v - 1) * 100),
-                lambda d: (d / 100) + 1,
-                lambda u: u),
+                lambda u: u,
+                lambda d: (d / 100) + 1),
             "Volume": (
                 lambda v: v,
-                lambda d: d,
-                lambda u: "m³"),
+                lambda v: v,
+                lambda u: "m³",
+                lambda d: d),
             "Sizeclass": (
                 lambda v: v,
-                lambda d: d,
-                lambda u: ""),
+                lambda v: v,
+                lambda u: "",
+                lambda d: d),
             "Absolute Percent": (
-                lambda v: (v * 100),
-                lambda d: d / 100,
-                lambda u: u),
+                lambda v: v * 100,
+                lambda v: v * 100,
+                lambda u: u,
+                lambda d: d / 100),
             "Milliseconds": (
-                lambda v: v / 1000.0,
-                lambda d: d * 1000.0,
-                lambda u: u),
+                lambda v: v / 1000,
+                lambda v: v / 1000,
+                lambda u: u,
+                lambda d: d * 1000),
             "Boolean": (
-                lambda v: "Yes" if v == 1 else "No",
-                lambda d: 1.0 if d == "Yes" else 0.0,
-                lambda u: ""),
+                lambda v: True if v else False,
+                lambda v: "Yes" if v else "No",
+                lambda u: "",
+                lambda d: 1.0 if d == "Yes" else 0.0),
             "typeID": (
                 self.itemIDCallback,
-                None,  # we could probably convert these back if we really tried hard enough
-                lambda u: ""),
+                self.itemIDCallback,
+                lambda u: "",
+                None),  # we could probably convert these back if we really tried hard enough
             "groupID": (
                 self.groupIDCallback,
-                None,
-                lambda u: ""),
+                self.groupIDCallback,
+                lambda u: "",
+                None),
             "attributeID": (
                 self.attributeIDCallback,
-                None,
-                lambda u: ""),
+                self.attributeIDCallback,
+                lambda u: "",
+                None),
         }
 
     @staticmethod
@@ -634,25 +650,33 @@ class Unit(EqBase):
         attribute = eos.db.getAttributeInfo(v, eager="unit")
         return "%s (%d)" % (attribute.name.capitalize(), v)
 
-    def TranslateValue(self, value):
+    def PreformatValue(self, value):
         """Attributes have to be translated certain ways based on their unit (ex: decimals converting to percentages).
         This allows us to get an easy representation of how the attribute should be printed """
 
         override = self.translations.get(self.name)
         if override is not None:
-            return override[0](value), override[2](self.displayName)
+            return override[1](value), override[2](self.displayName)
 
         return value, self.displayName
+
+    def SimplifyValue(self, value):
+        """Takes the internal representation value and convert it into the display value"""
+
+        override = self.translations.get(self.name)
+        if override is not None:
+            return override[0](value)
+
+        return value
 
     def ComplicateValue(self, value):
         """Takes the display value and turns it back into the internal representation of it"""
 
         override = self.translations.get(self.name)
         if override is not None:
-            return override[1](value)
+            return override[3](value)
 
         return value
-
 
 class Traits(EqBase):
     pass

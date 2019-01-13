@@ -22,7 +22,7 @@ import re
 
 from logbook import Logger
 
-from eos.db.gamedata.queries import getAttributeInfo, getDynamicItem
+from eos.db.gamedata.queries import getDynamicItem
 from eos.saveddata.cargo import Cargo
 from eos.saveddata.citadel import Citadel
 from eos.saveddata.booster import Booster
@@ -32,10 +32,10 @@ from eos.saveddata.implant import Implant
 from eos.saveddata.module import Module, State, Slot
 from eos.saveddata.ship import Ship
 from eos.saveddata.fit import Fit
-from gui.utils.numberFormatter import roundToPrec
 from service.fit import Fit as svcFit
 from service.market import Market
-from service.port.shared import IPortUser, processing_notify
+from service.port.muta import parseMutant, renderMutant
+from service.port.shared import IPortUser, fetchItem, processing_notify
 from enum import Enum
 
 
@@ -157,17 +157,7 @@ def exportEft(fit, options):
     if mutants and options & Options.MUTATIONS.value:
         for mutantReference in sorted(mutants):
             mutant = mutants[mutantReference]
-            mutatedAttrs = {}
-            for attrID, mutator in mutant.mutators.items():
-                attrName = getAttributeInfo(attrID).name
-                mutatedAttrs[attrName] = mutator.value
-            mutationLines.append('[{}] {}'.format(mutantReference, mutant.baseItem.name))
-            mutationLines.append('  {}'.format(mutant.mutaplasmid.item.name))
-            # Round to 7th significant number to avoid exporting float errors
-            customAttrsLine = ', '.join(
-                '{} {}'.format(a, roundToPrec(mutatedAttrs[a], 7))
-                for a in sorted(mutatedAttrs))
-            mutationLines.append('  {}'.format(customAttrsLine))
+            mutationLines.append(renderMutant(mutant, firstPrefix='[{}] '.format(mutantReference), prefix='  '))
     if mutationLines:
         sections.append('\n'.join(mutationLines))
 
@@ -261,14 +251,14 @@ def importEft(eftString):
                     aFit.addCargo(itemSpec)
 
     # Subsystems first because they modify slot amount
-    for m in aFit.subsystems:
+    for i, m in enumerate(aFit.subsystems):
         if m is None:
             dummy = Module.buildEmpty(aFit.getSlotByContainer(aFit.subsystems))
             dummy.owner = fit
-            fit.modules.appendIgnoreEmpty(dummy)
+            fit.modules.replaceRackPosition(i, dummy)
         elif m.fits(fit):
             m.owner = fit
-            fit.modules.appendIgnoreEmpty(m)
+            fit.modules.replaceRackPosition(i, m)
     svcFit.getInstance().recalc(fit)
 
     # Other stuff
@@ -279,16 +269,16 @@ def importEft(eftString):
         aFit.modulesMed,
         aFit.modulesLow,
     ):
-        for m in modRack:
+        for i, m in enumerate(modRack):
             if m is None:
                 dummy = Module.buildEmpty(aFit.getSlotByContainer(modRack))
                 dummy.owner = fit
-                fit.modules.appendIgnoreEmpty(dummy)
+                fit.modules.replaceRackPosition(i, dummy)
             elif m.fits(fit):
                 m.owner = fit
                 if not m.isValidState(m.state):
                     pyfalog.warning('service.port.eft.importEft: module {} cannot have state {}', m, m.state)
-                fit.modules.appendIgnoreEmpty(m)
+                fit.modules.replaceRackPosition(i, m)
     for implant in aFit.implants:
         fit.implants.append(implant)
     for booster in aFit.boosters:
@@ -507,59 +497,48 @@ def _importPrepareString(eftString):
     return lines
 
 
+mutantHeaderPattern = re.compile('^\[(?P<ref>\d+)\](?P<tail>.*)')
+
+
 def _importGetMutationData(lines):
     data = {}
+    # Format: {ref: [lines]}
+    mutaLinesMap = {}
+    currentMutaRef = None
+    currentMutaLines = []
     consumedIndices = set()
-    for i in range(len(lines)):
-        line = lines[i]
-        m = re.match('^\[(?P<ref>\d+)\]', line)
+
+    def completeMutaLines():
+        if currentMutaRef is not None and currentMutaLines:
+            mutaLinesMap[currentMutaRef] = currentMutaLines
+
+    for i, line in enumerate(lines):
+        m = mutantHeaderPattern.match(line)
+        # Start and reset at header line
         if m:
-            ref = int(m.group('ref'))
-            # Attempt to apply mutation is useless w/o mutaplasmid, so skip it
-            # altogether if we have no info on it
-            try:
-                mutaName = lines[i + 1]
-            except IndexError:
-                continue
-            else:
-                consumedIndices.add(i)
-                consumedIndices.add(i + 1)
-            # Get custom attribute values
-            mutaAttrs = {}
-            try:
-                mutaAttrsLine = lines[i + 2]
-            except IndexError:
-                pass
-            else:
-                consumedIndices.add(i + 2)
-                pairs = [p.strip() for p in mutaAttrsLine.split(',')]
-                for pair in pairs:
-                    try:
-                        attrName, value = pair.split(' ')
-                    except ValueError:
-                        continue
-                    try:
-                        value = float(value)
-                    except (ValueError, TypeError):
-                        continue
-                    attrInfo = getAttributeInfo(attrName.strip())
-                    if attrInfo is None:
-                        continue
-                    mutaAttrs[attrInfo.ID] = value
-            mutaItem = _fetchItem(mutaName)
-            if mutaItem is None:
-                continue
-            data[ref] = (mutaItem, mutaAttrs)
-            # If we got here, we have seen at least correct reference line and
-            # mutaplasmid name line
-            i += 2
-            # Bonus points for seeing correct attrs line. Worst case we
-            # will have to scan it once again
-            if mutaAttrs:
-                i += 1
-    # Cleanup the lines from mutaplasmid info
+            completeMutaLines()
+            currentMutaRef = int(m.group('ref'))
+            currentMutaLines = []
+            currentMutaLines.append(m.group('tail'))
+            consumedIndices.add(i)
+        # Reset at blank line
+        elif not line:
+            completeMutaLines()
+            currentMutaRef = None
+            currentMutaLines = []
+        elif currentMutaRef is not None:
+            currentMutaLines.append(line)
+            consumedIndices.add(i)
+    else:
+        completeMutaLines()
+    # Clear mutant info from source
     for i in sorted(consumedIndices, reverse=True):
         del lines[i]
+    # Run parsing
+    data = {}
+    for ref, mutaLines in mutaLinesMap.items():
+        _, mutaType, mutaAttrs = parseMutant(mutaLines)
+        data[ref] = (mutaType, mutaAttrs)
     return data
 
 
@@ -587,7 +566,7 @@ def _importCreateFit(lines):
     shipType = m.group('shipType').strip()
     fitName = m.group('fitName').strip()
     try:
-        ship = _fetchItem(shipType)
+        ship = fetchItem(shipType)
         try:
             fit.ship = Ship(ship)
         except ValueError:
@@ -597,20 +576,6 @@ def _importCreateFit(lines):
         pyfalog.warning('service.port.eft.importEft: exception caught when parsing header')
         raise EftImportError
     return fit
-
-
-def _fetchItem(typeName, eagerCat=False):
-    sMkt = Market.getInstance()
-    eager = 'group.category' if eagerCat else None
-    try:
-        item = sMkt.getItem(typeName, eager=eager)
-    except:
-        pyfalog.warning('service.port.eft: unable to fetch item "{}"'.format(typeName))
-        return None
-    if sMkt.getPublicityByItem(item):
-        return item
-    else:
-        return None
 
 
 def _clearTail(lst):
@@ -667,7 +632,7 @@ class Section:
 class BaseItemSpec:
 
     def __init__(self, typeName):
-        item = _fetchItem(typeName, eagerCat=True)
+        item = fetchItem(typeName, eagerCat=True)
         if item is None:
             raise EftImportError
         self.typeName = typeName
@@ -704,7 +669,7 @@ class RegularItemSpec(BaseItemSpec):
 
     def __fetchCharge(self, chargeName):
         if chargeName:
-            charge = _fetchItem(chargeName, eagerCat=True)
+            charge = fetchItem(chargeName, eagerCat=True)
             if not charge or charge.category.name != 'Charge':
                 charge = None
         else:

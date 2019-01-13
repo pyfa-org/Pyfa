@@ -1,7 +1,7 @@
 # missileLauncherSpeedMultiplier
 #
 # Used by:
-# Modules from group: Ballistic Control system (20 of 20)
+# Modules from group: Ballistic Control system (22 of 22)
 type = "passive"
 
 

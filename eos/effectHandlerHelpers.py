@@ -141,6 +141,23 @@ class HandledModuleList(HandledList):
             self.remove(mod)
             return
 
+    def replaceRackPosition(self, rackPosition, mod):
+        listPositions = []
+        for currMod in self:
+            if currMod.slot == mod.slot:
+                listPositions.append(currMod.position)
+        listPositions.sort()
+        try:
+            modListPosition = listPositions[rackPosition]
+        except IndexError:
+            self.appendIgnoreEmpty(mod)
+        else:
+            self.toDummy(modListPosition)
+            if not mod.isEmpty:
+                self.toModule(modListPosition, mod)
+                if mod.isInvalid:
+                    self.toDummy(modListPosition)
+
     def insert(self, index, mod):
         mod.position = index
         i = index
@@ -237,20 +254,23 @@ class HandledProjectedModList(HandledList):
             return
 
         proj.projected = True
-        isSystemEffect = proj.item.group.name == "Effect Beacon"
 
-        if isSystemEffect:
+        if proj.isExclusiveSystemEffect:
             self.makeRoom(proj)
 
         HandledList.append(self, proj)
 
         # Remove non-projectable modules
-        if not proj.item.isType("projected") and not isSystemEffect:
+        if not proj.item.isType("projected") and not proj.isExclusiveSystemEffect:
             self.remove(proj)
+
+    @property
+    def currentSystemEffect(self):
+        return next((m for m in self if m.isExclusiveSystemEffect), None)
 
     def makeRoom(self, proj):
         # remove other system effects - only 1 per fit plz
-        oldEffect = next((m for m in self if m.item.group.name == "Effect Beacon"), None)
+        oldEffect = self.currentSystemEffect
 
         if oldEffect:
             pyfalog.info("System effect occupied with {0}, replacing with {1}", oldEffect.item.name, proj.item.name)

@@ -2,6 +2,8 @@
 #
 # Used by:
 # Modules named like: Drone Speed Augmentor (6 of 8)
+# Implant: Overmind 'Goliath' Drone Tuner T25-10S
+# Implant: Overmind 'Hawkmoth' Drone Tuner S10-25T
 type = "passive"
 
 

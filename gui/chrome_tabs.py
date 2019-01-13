@@ -740,6 +740,7 @@ class _TabsContainer(wx.Panel):
         self.Bind(wx.EVT_ERASE_BACKGROUND, self.OnErase)
         self.Bind(wx.EVT_LEFT_DOWN, self.OnLeftDown)
         self.Bind(wx.EVT_LEFT_UP, self.OnLeftUp)
+        self.Bind(wx.EVT_MIDDLE_UP, self.OnMiddleUp)
         self.Bind(wx.EVT_MOTION, self.OnMotion)
         self.Bind(wx.EVT_SIZE, self.OnSize)
         self.Bind(wx.EVT_SYS_COLOUR_CHANGED, self.OnSysColourChanged)
@@ -779,6 +780,29 @@ class _TabsContainer(wx.Panel):
                 self.Refresh()
 
             self.dragged_tab = tab
+
+    def OnMiddleUp(self, event):
+        mposx, mposy = event.GetPosition()
+
+        tab = self.FindTabAtPos(mposx, mposy)
+
+        if tab is None or not tab.closeable:  # if not able to close, return False
+            return False
+
+        index = self.tabs.index(tab)
+        ev = PageClosing(index)
+        wx.PostEvent(self.Parent, ev)
+
+        if ev.isVetoed():
+            return False
+
+        index = self.GetTabIndex(tab)
+        self.Parent.DeletePage(index)
+        wx.PostEvent(self.Parent, PageClosed(index=index))
+
+        sel = self.GetSelected()
+        if sel is not None:
+            wx.PostEvent(self.Parent, PageChanged(-1, sel))
 
     def OnMotion(self, event):
         """

@@ -15,7 +15,7 @@ class WhProjector(ContextMenu):
 
     # CCP doesn't currently provide a mapping between the general Environment, and the specific environment effect
     # (which can be random when going into Abyssal space). This is how we currently define it:
-    # environment type: specific type name previx
+    # environment type: specific type name prefix
     abyssal_mapping = {
         'caustic_toxin_weather': 47862,  # Exotic Particle Storm
         'darkness_weather': 47863,  # Dark Matter Field
@@ -50,13 +50,13 @@ class WhProjector(ContextMenu):
         wormhole_item.SetSubMenu(wormhole_menu)
         sub.Append(wormhole_item)
 
-        effdata = self.getEffectBeacons()
-        self.buildMenu(effdata, wormhole_menu, rootMenu, msw)
+        grouped_data, flat_data = self.getEffectBeacons()
+        self.buildMenu(grouped_data, flat_data, wormhole_menu, rootMenu, msw)
 
         # Incursions
 
-        effdata = self.getEffectBeacons(incursions=True)
-        self.buildMenu(effdata, sub, rootMenu, msw)
+        grouped_data, flat_data = self.getEffectBeacons(incursions=True)
+        self.buildMenu(grouped_data, flat_data, sub, rootMenu, msw)
 
         # Abyssal Weather
 
@@ -65,8 +65,8 @@ class WhProjector(ContextMenu):
         abyssal_item.SetSubMenu(abyssal_menu)
         sub.Append(abyssal_item)
 
-        effdata = self.getAbyssalWeather()
-        self.buildMenu(effdata, abyssal_menu, rootMenu, msw)
+        grouped_data, flat_data = self.getAbyssalWeather()
+        self.buildMenu(grouped_data, flat_data, abyssal_menu, rootMenu, msw)
 
         # Localized Weather
 
@@ -75,8 +75,8 @@ class WhProjector(ContextMenu):
         local_item.SetSubMenu(local_menu)
         sub.Append(local_item)
 
-        effdata = self.getLocalizedEnvironments()
-        self.buildMenu(effdata, local_menu, rootMenu, msw)
+        grouped_data, flat_data = self.getLocalizedEnvironments()
+        self.buildMenu(grouped_data, flat_data, local_menu, rootMenu, msw)
 
         return sub
 
@@ -91,33 +91,38 @@ class WhProjector(ContextMenu):
         fitID = self.mainFrame.getActiveFit()
         self.mainFrame.command.Submit(cmd.GuiAddProjectedCommand(fitID, swObj.ID, 'item'))
 
-    def buildMenu(self, data, local_menu, rootMenu, msw):
-        for swType in sorted(data):
+    def buildMenu(self, grouped_data, flat_data, local_menu, rootMenu, msw):
+
+        def processFlat(data, root, sub):
+            for swData in sorted(data, key=lambda tpl: tpl[2]):
+                wxid = ContextMenu.nextID()
+                swObj, swName, swClass = swData
+                self.idmap[wxid] = (swObj, swName)
+                subItem = wx.MenuItem(sub, wxid, swClass)
+                if msw:
+                    root.Bind(wx.EVT_MENU, self.handleSelection, subItem)
+                else:
+                    sub.Bind(wx.EVT_MENU, self.handleSelection, subItem)
+                sub.Append(subItem)
+
+        for swType in sorted(grouped_data):
             subItem = wx.MenuItem(local_menu, wx.ID_ANY, swType)
             grandSub = wx.Menu()
             subItem.SetSubMenu(grandSub)
             local_menu.Append(subItem)
+            processFlat(grouped_data[swType], rootMenu, grandSub)
 
-            for swData in sorted(data[swType], key=lambda tpl: tpl[2]):
-                wxid = ContextMenu.nextID()
-                swObj, swName, swClass = swData
-                self.idmap[wxid] = (swObj, swName)
-                grandSubItem = wx.MenuItem(grandSub, wxid, swClass)
-                if msw:
-                    rootMenu.Bind(wx.EVT_MENU, self.handleSelection, grandSubItem)
-                else:
-                    grandSub.Bind(wx.EVT_MENU, self.handleSelection, grandSubItem)
-                grandSub.Append(grandSubItem)
+        processFlat(flat_data, rootMenu, local_menu)
 
     def getEffectBeacons(self, incursions=False):
         """
-        Get dictionary with system-wide effects
+        Get dictionary with wormhole system-wide effects
         """
         sMkt = Market.getInstance()
 
         # todo: rework this
         # Container for system-wide effects
-        effects = {}
+        grouped = {}
 
         # Expressions for matching when detecting effects we're looking for
         if incursions:
@@ -158,13 +163,13 @@ class WhProjector(ContextMenu):
                         groupname = re.sub(garbage, "", groupname)
                     groupname = re.sub(" {2,}", " ", groupname).strip()
                     # Add stuff to dictionary
-                    if groupname not in effects:
-                        effects[groupname] = set()
-                    effects[groupname].add((beacon, beaconname, shortname))
+                    if groupname not in grouped:
+                        grouped[groupname] = set()
+                    grouped[groupname].add((beacon, beaconname, shortname))
                     # Break loop on 1st result
                     break
 
-        return effects
+        return grouped, ()
 
     def getAbyssalWeather(self):
         sMkt = Market.getInstance()
@@ -172,7 +177,8 @@ class WhProjector(ContextMenu):
         environments = {x.ID: x for x in sMkt.getGroup("Abyssal Environment").items}
         items = chain(sMkt.getGroup("MassiveEnvironments").items, sMkt.getGroup("Non-Interactable Object").items)
 
-        effects = {}
+        grouped = {}
+        flat = set()
 
         for beacon in items:
             if not beacon.isType('projected'):
@@ -183,20 +189,23 @@ class WhProjector(ContextMenu):
             if type is None:
                 continue
 
-            if type.name not in effects:
-                effects[type.name] = set()
+            if type.name not in grouped:
+                grouped[type.name] = set()
 
             display_name = "{} {}".format(type.name, beacon.name[-1:])
-            effects[type.name].add((beacon, display_name, display_name))
+            grouped[type.name].add((beacon, display_name, display_name))
 
-        return effects
+        # PVP weather
+        flat.add((sMkt.getItem(49766), 'PvP Weather', 'PvP Weather'))
+
+        return grouped, flat
 
     def getLocalizedEnvironments(self):
         sMkt = Market.getInstance()
 
         grp = sMkt.getGroup("Abyssal Hazards")
 
-        effects = dict()
+        grouped = dict()
 
         for beacon in grp.items:
             if not beacon.isType('projected'):
@@ -206,12 +215,12 @@ class WhProjector(ContextMenu):
             name_parts = beacon.name.split(" ")
 
             key = name_parts[1].strip()
-            if key not in effects:
-                effects[key] = set()
+            if key not in grouped:
+                grouped[key] = set()
 
-            effects[key].add((beacon, beacon.name, beacon.name))
+            grouped[key].add((beacon, beacon.name, beacon.name))
 
-        return effects
+        return grouped, ()
 
 
 WhProjector.register()
