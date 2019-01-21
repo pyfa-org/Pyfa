@@ -27,8 +27,9 @@ added_files = [
              ('../../.version', '.'),
              ]
 
-
-import_these = []
+import_these = [
+    'numpy.core._dtype_ctypes'  # https://github.com/pyinstaller/pyinstaller/issues/3982
+]
 
 icon = os.path.join(os.getcwd(), "dist_assets", "mac", "pyfa.icns")
 

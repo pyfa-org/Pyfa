@@ -29,7 +29,9 @@ added_files = [
              ('../../.version', '.'),
              ]
 
-import_these = []
+import_these = [
+    'numpy.core._dtype_ctypes'  # https://github.com/pyinstaller/pyinstaller/issues/3982
+]
 
 # Walk directories that do dynamic importing
 paths = ('eos/effects', 'eos/db/migrations', 'service/conversions')
