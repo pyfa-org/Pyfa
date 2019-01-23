@@ -209,7 +209,7 @@ class Display(wx.ListCtrl):
                 tabHasStuff = False
 
             try:
-                if tabHasStuff > 0:
+                if tabHasStuff:
                     self.boldTitle()
                 else:
                     self.resetTitle()
