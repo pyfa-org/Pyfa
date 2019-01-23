@@ -4,7 +4,7 @@ import wx
 from service.fit import Fit
 import gui.globalEvents as GE
 import gui.mainFrame
-
+from gui.utils import fonts
 
 class NotesView(wx.Panel):
     def __init__(self, parent):
@@ -41,6 +41,13 @@ class NotesView(wx.Panel):
         elif event.fitID != self.lastFitId:
             self.lastFitId = event.fitID
             self.editNotes.SetValue(fit.notes or "")
+
+        if(len(self.editNotes.GetValue()) > 0):
+            view = self.Parent.Parent.GetTab(self)
+            view.font = wx.Font(fonts.NORMAL, wx.FONTFAMILY_SWISS, wx.FONTSTYLE_NORMAL, wx.FONTWEIGHT_BOLD, False)
+        else:
+            view = self.Parent.Parent.GetTab(self)
+            view.font = wx.Font(fonts.NORMAL, wx.FONTFAMILY_SWISS, wx.FONTSTYLE_NORMAL, wx.FONTWEIGHT_NORMAL, False)
 
         event.Skip()
 
