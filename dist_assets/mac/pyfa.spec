@@ -24,11 +24,13 @@ added_files = [
              ('../../eve.db', '.'),
              ('../../README.md', '.'),
              ('../../LICENSE', '.'),
-             ('../../.version', '.'),
+             ('../../version.yml', '.'),
              ]
 
 
-import_these = []
+import_these = [
+    'numpy.core._dtype_ctypes'  # https://github.com/pyinstaller/pyinstaller/issues/3982
+]
 
 icon = os.path.join(os.getcwd(), "dist_assets", "mac", "pyfa.icns")
 
@@ -54,8 +56,10 @@ a = Analysis([r'../../pyfa.py'],
              win_no_prefer_redirects=False,
              win_private_assemblies=False,
              cipher=block_cipher)
+
 pyz = PYZ(a.pure, a.zipped_data,
              cipher=block_cipher)
+
 exe = EXE(pyz,
           a.scripts,
           a.binaries,
@@ -70,10 +74,16 @@ exe = EXE(pyz,
           icon=icon,
           )
 
-app = BUNDLE(exe,
-             name='pyfa.app',
-             icon=icon,
-             bundle_identifier=None,
-             info_plist={
-                'NSHighResolutionCapable': 'True'
-             })
+app = BUNDLE(
+    exe,
+    name='pyfa.app',
+    icon=icon,
+    bundle_identifier=None,
+    info_plist={
+        'NSHighResolutionCapable': 'True',
+        'NSPrincipalClass': 'NSApplication',
+        'CFBundleName': 'pyfa',
+        'CFBundleDisplayName': 'pyfa',
+        'CFBundleIdentifier': 'org.pyfaorg.pyfa',
+    }
+)
