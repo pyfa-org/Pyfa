@@ -53,12 +53,12 @@ OFFLINE_SUFFIX = '/OFFLINE'
 
 EFT_OPTIONS = {
     Options.IMPLANTS.value: {
-        "name": "Implants",
-        "description": "Exports implants"
+        'name': 'Implants && Boosters',
+        'description': 'Exports implants and boosters'
     },
     Options.MUTATIONS.value: {
-        "name": "Mutated Attributes",
-        "description": "Exports Abyssal stats"
+        'name': 'Mutated Attributes',
+        'description': 'Exports mutated modules\' stats'
     }
 }
 
