@@ -18,8 +18,11 @@
 # =============================================================================
 
 
+from collections import OrderedDict
+
 # noinspection PyPackageRequirements
 import wx
+
 from service.port.eft import EFT_OPTIONS
 from service.settings import SettingsProvider
 
@@ -39,14 +42,14 @@ class CopySelectDialog(wx.Dialog):
 
         self.settings = SettingsProvider.getInstance().getSettings("pyfaExport", {"format": 0, "options": 0})
 
-        self.copyFormats = {
-            "EFT": CopySelectDialog.copyFormatEft,
-            "XML": CopySelectDialog.copyFormatXml,
-            "DNA": CopySelectDialog.copyFormatDna,
-            "ESI": CopySelectDialog.copyFormatEsi,
-            "MultiBuy": CopySelectDialog.copyFormatMultiBuy,
-            "EFS": CopySelectDialog.copyFormatEfs
-        }
+        self.copyFormats = OrderedDict((
+            ("EFT", CopySelectDialog.copyFormatEft),
+            ("XML", CopySelectDialog.copyFormatXml),
+            ("DNA", CopySelectDialog.copyFormatDna),
+            ("ESI", CopySelectDialog.copyFormatEsi),
+            ("MultiBuy", CopySelectDialog.copyFormatMultiBuy),
+            ("EFS", CopySelectDialog.copyFormatEfs),
+        ))
 
         self.options = {}
 
