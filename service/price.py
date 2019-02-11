@@ -172,8 +172,8 @@ class Price(object):
     def getPrices(self, objitems, callback, waitforthread=False):
         """Get prices for multiple typeIDs"""
         requests = []
+        sMkt = Market.getInstance()
         for objitem in objitems:
-            sMkt = Market.getInstance()
             item = sMkt.getItem(objitem)
             requests.append(item.price)
 
