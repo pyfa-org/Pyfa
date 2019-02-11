@@ -80,13 +80,12 @@ def exportEft(fit, options):
         modules = modsBySlotType.get(slotType, ())
         for module in modules:
             if module.item:
-                mutated = bool(module.mutators)
                 # if module was mutated, use base item name for export
-                if mutated:
+                if module.isMutated:
                     modName = module.baseItem.name
                 else:
                     modName = module.item.name
-                if mutated and options & Options.MUTATIONS.value:
+                if module.isMutated and options & Options.MUTATIONS.value:
                     mutants[mutantReference] = module
                     mutationSuffix = ' [{}]'.format(mutantReference)
                     mutantReference += 1

@@ -45,6 +45,9 @@ def exportMultiBuy(fit, options):
     exportCharges = svcFit.getInstance().serviceFittingOptions["exportCharges"]
     for module in fit.modules:
         if module.item:
+            # Mutated items are of no use for multibuy
+            if module.isMutated:
+                continue
             addItem(module.item)
         if exportCharges and module.charge:
             addItem(module.charge, module.numCharges)
