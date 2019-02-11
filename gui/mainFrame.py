@@ -703,10 +703,6 @@ class MainFrame(wx.Frame):
         fit = db_getFit(self.getActiveFit())
         toClipboard(Port.exportEft(fit, options))
 
-    def clipboardEftImps(self, options):
-        fit = db_getFit(self.getActiveFit())
-        toClipboard(Port.exportEftImps(fit))
-
     def clipboardDna(self, options):
         fit = db_getFit(self.getActiveFit())
         toClipboard(Port.exportDna(fit))
@@ -744,7 +740,6 @@ class MainFrame(wx.Frame):
 
     def exportToClipboard(self, event):
         CopySelectDict = {CopySelectDialog.copyFormatEft: self.clipboardEft,
-                          # CopySelectDialog.copyFormatEftImps: self.clipboardEftImps,
                           CopySelectDialog.copyFormatXml: self.clipboardXml,
                           CopySelectDialog.copyFormatDna: self.clipboardDna,
                           CopySelectDialog.copyFormatEsi: self.clipboardEsi,
@@ -758,8 +753,7 @@ class MainFrame(wx.Frame):
         settings = SettingsProvider.getInstance().getSettings("pyfaExport")
         settings["format"] = selected
         settings["options"] = options
-
-        CopySelectDict[selected](options)
+        CopySelectDict[selected](options.get(selected))
 
         try:
             dlg.Destroy()

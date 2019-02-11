@@ -40,37 +40,44 @@ class CopySelectDialog(wx.Dialog):
                            style=wx.DEFAULT_DIALOG_STYLE)
         mainSizer = wx.BoxSizer(wx.VERTICAL)
 
-        self.settings = SettingsProvider.getInstance().getSettings("pyfaExport", {"format": 0, "options": 0})
+        self.settings = SettingsProvider.getInstance().getSettings("pyfaExport", {"format": 0, "options": {}})
+        # Overwrite older options format which was plain int storing EFT options
+        if not isinstance(self.settings["options"], dict):
+            self.settings["options"] = {CopySelectDialog.copyFormatEft: self.settings["options"]}
 
         self.copyFormats = OrderedDict((
-            ("EFT", CopySelectDialog.copyFormatEft),
-            ("XML", CopySelectDialog.copyFormatXml),
-            ("DNA", CopySelectDialog.copyFormatDna),
-            ("ESI", CopySelectDialog.copyFormatEsi),
-            ("MultiBuy", CopySelectDialog.copyFormatMultiBuy),
-            ("EFS", CopySelectDialog.copyFormatEfs),
+            ("EFT", (CopySelectDialog.copyFormatEft, EFT_OPTIONS)),
+            ("XML", (CopySelectDialog.copyFormatXml, None)),
+            ("DNA", (CopySelectDialog.copyFormatDna, None)),
+            ("ESI", (CopySelectDialog.copyFormatEsi, None)),
+            ("MultiBuy", (CopySelectDialog.copyFormatMultiBuy, None)),
+            ("EFS", (CopySelectDialog.copyFormatEfs, None)),
         ))
 
         self.options = {}
 
-        for i, format in enumerate(self.copyFormats.keys()):
-            if i == 0:
-                rdo = wx.RadioButton(self, wx.ID_ANY, format, style=wx.RB_GROUP)
+        initialized = False
+        for formatName, formatData in self.copyFormats.items():
+            formatId, formatOptions = formatData
+            if not initialized:
+                rdo = wx.RadioButton(self, wx.ID_ANY, formatName, style=wx.RB_GROUP)
+                initialized = True
             else:
-                rdo = wx.RadioButton(self, wx.ID_ANY, format)
+                rdo = wx.RadioButton(self, wx.ID_ANY, formatName)
             rdo.Bind(wx.EVT_RADIOBUTTON, self.Selected)
-            if self.settings['format'] == self.copyFormats[format]:
+            if self.settings['format'] == formatId:
                 rdo.SetValue(True)
-                self.copyFormat = self.copyFormats[format]
+                self.copyFormat = formatId
             mainSizer.Add(rdo, 0, wx.EXPAND | wx.ALL, 5)
 
-            if format == "EFT":
+            if formatOptions:
                 bsizer = wx.BoxSizer(wx.VERTICAL)
+                self.options[formatId] = {}
 
-                for optId, optName, optDesc in EFT_OPTIONS:
+                for optId, optName, optDesc in formatOptions:
                     ch = wx.CheckBox(self, -1, optName)
-                    self.options[optId] = ch
-                    if self.settings['options'] & optId:
+                    self.options[formatId][optId] = ch
+                    if self.settings['options'].get(formatId, 0) & optId:
                         ch.SetValue(True)
                     bsizer.Add(ch, 1, wx.EXPAND | wx.TOP | wx.BOTTOM, 3)
                 mainSizer.Add(bsizer, 1, wx.EXPAND | wx.LEFT, 20)
@@ -86,21 +93,25 @@ class CopySelectDialog(wx.Dialog):
 
     def Selected(self, event):
         obj = event.GetEventObject()
-        format = obj.GetLabel()
-        self.copyFormat = self.copyFormats[format]
+        formatName = obj.GetLabel()
+        self.copyFormat = self.copyFormats[formatName][0]
         self.toggleOptions()
         self.Fit()
 
     def toggleOptions(self):
-        for ch in self.options.values():
-            ch.Enable(self.GetSelected() == CopySelectDialog.copyFormatEft)
+        for formatId in self.options:
+            for optId, checkbox in self.options[formatId].items():
+                checkbox.Enable(self.GetSelected() == formatId)
 
     def GetSelected(self):
         return self.copyFormat
 
     def GetOptions(self):
-        i = 0
-        for x, v in self.options.items():
-            if v.IsChecked():
-                i = i ^ x
-        return i
+        options = {}
+        for formatId in self.options:
+            optVal = 0
+            for optId, checkbox in self.options[formatId].items():
+                if checkbox.IsChecked():
+                    optVal = optVal ^ optId
+            options[formatId] = optVal
+        return options
