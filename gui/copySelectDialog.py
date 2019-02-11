@@ -64,10 +64,10 @@ class CopySelectDialog(wx.Dialog):
             if format == "EFT":
                 bsizer = wx.BoxSizer(wx.VERTICAL)
 
-                for x, v in EFT_OPTIONS.items():
-                    ch = wx.CheckBox(self, -1, v['name'])
-                    self.options[x] = ch
-                    if self.settings['options'] & x:
+                for optId, optName, optDesc in EFT_OPTIONS:
+                    ch = wx.CheckBox(self, -1, optName)
+                    self.options[optId] = ch
+                    if self.settings['options'] & optId:
                         ch.SetValue(True)
                     bsizer.Add(ch, 1, wx.EXPAND | wx.TOP | wx.BOTTOM, 3)
                 mainSizer.Add(bsizer, 1, wx.EXPAND | wx.LEFT, 20)

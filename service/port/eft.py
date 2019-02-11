@@ -51,16 +51,10 @@ MODULE_CATS = ('Module', 'Subsystem', 'Structure Module')
 SLOT_ORDER = (Slot.LOW, Slot.MED, Slot.HIGH, Slot.RIG, Slot.SUBSYSTEM, Slot.SERVICE)
 OFFLINE_SUFFIX = '/OFFLINE'
 
-EFT_OPTIONS = {
-    Options.IMPLANTS.value: {
-        'name': 'Implants && Boosters',
-        'description': 'Exports implants and boosters'
-    },
-    Options.MUTATIONS.value: {
-        'name': 'Mutated Attributes',
-        'description': 'Exports mutated modules\' stats'
-    }
-}
+EFT_OPTIONS = (
+    (Options.IMPLANTS.value, 'Implants && Boosters', 'Exports implants and boosters'),
+    (Options.MUTATIONS.value, 'Mutated Attributes', 'Exports mutated modules\' stats'),
+)
 
 
 def exportEft(fit, options):
