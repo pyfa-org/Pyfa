@@ -24,6 +24,7 @@ from collections import OrderedDict
 import wx
 
 from service.port.eft import EFT_OPTIONS
+from service.port.multibuy import MULTIBUY_OPTIONS
 from service.settings import SettingsProvider
 
 
@@ -50,7 +51,7 @@ class CopySelectDialog(wx.Dialog):
             ("XML", (CopySelectDialog.copyFormatXml, None)),
             ("DNA", (CopySelectDialog.copyFormatDna, None)),
             ("ESI", (CopySelectDialog.copyFormatEsi, None)),
-            ("MultiBuy", (CopySelectDialog.copyFormatMultiBuy, None)),
+            ("MultiBuy", (CopySelectDialog.copyFormatMultiBuy, MULTIBUY_OPTIONS)),
             ("EFS", (CopySelectDialog.copyFormatEfs, None)),
         ))
 

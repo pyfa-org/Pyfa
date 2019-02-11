@@ -18,10 +18,21 @@
 # =============================================================================
 
 
+from enum import Enum
+
 from service.fit import Fit as svcFit
 
 
-def exportMultiBuy(fit):
+class Options(Enum):
+    IMPLANTS = 1
+
+
+MULTIBUY_OPTIONS = (
+    (Options.IMPLANTS.value, 'Implants && Boosters', 'Exports implants and boosters'),
+)
+
+
+def exportMultiBuy(fit, options):
     itemCounts = {}
 
     def addItem(item, quantity=1):
@@ -45,11 +56,12 @@ def exportMultiBuy(fit):
     for cargo in fit.cargo:
         addItem(cargo.item, cargo.amount)
 
-    for implant in fit.implants:
-        addItem(implant.item)
+    if options & Options.IMPLANTS.value:
+        for implant in fit.implants:
+            addItem(implant.item)
 
-    for booster in fit.boosters:
-        addItem(booster.item)
+        for booster in fit.boosters:
+            addItem(booster.item)
 
     exportLines = []
     exportLines.append(fit.ship.item.name)

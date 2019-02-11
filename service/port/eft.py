@@ -19,6 +19,7 @@
 
 
 import re
+from enum import Enum
 
 from logbook import Logger
 
@@ -36,7 +37,6 @@ from service.fit import Fit as svcFit
 from service.market import Market
 from service.port.muta import parseMutant, renderMutant
 from service.port.shared import IPortUser, fetchItem, processing_notify
-from enum import Enum
 
 
 pyfalog = Logger(__name__)
@@ -47,14 +47,15 @@ class Options(Enum):
     MUTATIONS = 2
 
 
-MODULE_CATS = ('Module', 'Subsystem', 'Structure Module')
-SLOT_ORDER = (Slot.LOW, Slot.MED, Slot.HIGH, Slot.RIG, Slot.SUBSYSTEM, Slot.SERVICE)
-OFFLINE_SUFFIX = '/OFFLINE'
-
 EFT_OPTIONS = (
     (Options.IMPLANTS.value, 'Implants && Boosters', 'Exports implants and boosters'),
     (Options.MUTATIONS.value, 'Mutated Attributes', 'Exports mutated modules\' stats'),
 )
+
+
+MODULE_CATS = ('Module', 'Subsystem', 'Structure Module')
+SLOT_ORDER = (Slot.LOW, Slot.MED, Slot.HIGH, Slot.RIG, Slot.SUBSYSTEM, Slot.SERVICE)
+OFFLINE_SUFFIX = '/OFFLINE'
 
 
 def exportEft(fit, options):

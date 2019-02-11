@@ -717,7 +717,7 @@ class MainFrame(wx.Frame):
 
     def clipboardMultiBuy(self, options):
         fit = db_getFit(self.getActiveFit())
-        toClipboard(Port.exportMultiBuy(fit))
+        toClipboard(Port.exportMultiBuy(fit, options))
 
     def clipboardEfs(self, options):
         fit = db_getFit(self.getActiveFit())
