@@ -25,10 +25,12 @@ from service.fit import Fit as svcFit
 
 class Options(Enum):
     IMPLANTS = 1
+    CARGO = 2
 
 
 MULTIBUY_OPTIONS = (
-    (Options.IMPLANTS.value, 'Implants && Boosters', 'Exports implants and boosters'),
+    (Options.IMPLANTS.value, 'Implants && Boosters', 'Export implants and boosters'),
+    (Options.CARGO.value, 'Cargo', 'Export cargo contents'),
 )
 
 
@@ -53,8 +55,9 @@ def exportMultiBuy(fit, options):
     for fighter in fit.fighters:
         addItem(fighter.item, fighter.amountActive)
 
-    for cargo in fit.cargo:
-        addItem(cargo.item, cargo.amount)
+    if options & Options.CARGO.value:
+        for cargo in fit.cargo:
+            addItem(cargo.item, cargo.amount)
 
     if options & Options.IMPLANTS.value:
         for implant in fit.implants:

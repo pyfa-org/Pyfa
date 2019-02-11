@@ -76,11 +76,11 @@ class CopySelectDialog(wx.Dialog):
                 self.options[formatId] = {}
 
                 for optId, optName, optDesc in formatOptions:
-                    ch = wx.CheckBox(self, -1, optName)
-                    self.options[formatId][optId] = ch
+                    checkbox = wx.CheckBox(self, -1, optName)
+                    self.options[formatId][optId] = checkbox
                     if self.settings['options'].get(formatId, 0) & optId:
-                        ch.SetValue(True)
-                    bsizer.Add(ch, 1, wx.EXPAND | wx.TOP | wx.BOTTOM, 3)
+                        checkbox.SetValue(True)
+                    bsizer.Add(checkbox, 1, wx.EXPAND | wx.TOP | wx.BOTTOM, 3)
                 mainSizer.Add(bsizer, 1, wx.EXPAND | wx.LEFT, 20)
 
         buttonSizer = self.CreateButtonSizer(wx.OK | wx.CANCEL)
