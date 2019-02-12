@@ -45,13 +45,19 @@ class Price(ViewColumn):
             if stuff.isEmpty:
                 return ""
 
-        price = stuff.item.price
+        priceObj = stuff.item.priceObj
 
-        if not price or not price.isValid:
+        if not priceObj:
+            return ""
+
+        if not priceObj.isValid:
             return False
 
         # Fetch actual price as float to not modify its value on Price object
-        price = price.price
+        price = priceObj.price
+
+        if price == 0:
+            return ""
 
         if isinstance(stuff, Drone) or isinstance(stuff, Cargo):
             price *= stuff.amount

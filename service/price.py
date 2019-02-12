@@ -167,15 +167,16 @@ class Price(object):
         sMkt = Market.getInstance()
         item = sMkt.getItem(objitem)
 
-        return item.price.price
+        return item.price
 
     def getPrices(self, objitems, callback, waitforthread=False):
         """Get prices for multiple typeIDs"""
         requests = []
         sMkt = Market.getInstance()
         for objitem in objitems:
-            item = sMkt.getItem(objitem)
-            requests.append(item.price)
+            priceobj = sMkt.getItem(objitem).priceObj
+            if priceobj:
+                requests.append(priceobj)
 
         def cb():
             try:
@@ -197,6 +198,7 @@ class Price(object):
 
 
 class PriceWorkerThread(threading.Thread):
+
     def __init__(self):
         threading.Thread.__init__(self)
         self.name = "PriceWorker"
