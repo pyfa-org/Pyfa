@@ -965,10 +965,6 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
         else:
             return currState
 
-    @property
-    def isMutated(self):
-        return bool(self.mutators)
-
     def __deepcopy__(self, memo):
         item = self.item
         if item is None:
