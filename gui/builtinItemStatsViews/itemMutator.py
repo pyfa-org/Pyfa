@@ -31,22 +31,22 @@ class ItemMutator(wx.Panel):
 
         for m in sorted(stuff.mutators.values(), key=lambda x: x.attribute.displayName):
             # Format: [raw value, modifier applied to base raw value, display value]
-            range1 = (m.minValue, m.attribute.unit.SimplifyValue(m.minValue))
-            range2 = (m.maxValue, m.attribute.unit.SimplifyValue(m.maxValue))
+            minRange = (m.minValue, m.attribute.unit.SimplifyValue(m.minValue))
+            maxRange = (m.maxValue, m.attribute.unit.SimplifyValue(m.maxValue))
 
-            if (m.highIsGood and range1[0] >= range2[0]) or (not m.highIsGood and range1[0] <= range2[0]):
-                betterRange = range1
-                worseRange = range2
+            if (m.highIsGood and minRange[0] >= maxRange[0]) or (not m.highIsGood and minRange[0] <= maxRange[0]):
+                betterRange = minRange
+                worseRange = maxRange
             else:
-                betterRange = range2
-                worseRange = range1
+                betterRange = maxRange
+                worseRange = minRange
 
-            if range1[1] >= range2[1]:
-                displayMaxRange = range1
-                displayMinRange = range2
+            if minRange[1] >= maxRange[1]:
+                displayMaxRange = minRange
+                displayMinRange = maxRange
             else:
-                displayMaxRange = range2
-                displayMinRange = range1
+                displayMaxRange = maxRange
+                displayMinRange = minRange
 
             # If base value is outside of mutation range, make sure that center of slider
             # corresponds to the value which is closest available to actual base value. It's
