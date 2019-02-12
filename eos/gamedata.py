@@ -459,7 +459,10 @@ class Item(EqBase):
                 pyfalog.debug("Creating a price for {}".format(self.ID))
                 self.__price = types_Price(self.ID)
                 eos.db.add(self.__price)
-                eos.db.commit()
+                # Commented out by DarkPhoenix: it caused issues when opening stats for item with many
+                # variations, as each commit takes ~50 ms, for items with 30 variations time to open stats
+                # window could reach 2 seconds. Hopefully just adding it is sufficient.
+                # eos.db.commit()
             else:
                 self.__price = db_price
 
