@@ -28,7 +28,7 @@ class ItemCompare(wx.Panel):
         self.sortReverse = False
         self.item = item
         self.items = sorted(items,
-                            key=lambda x: x.attributes['metaLevel'].value if 'metaLevel' in x.attributes else 0)
+                            key=lambda x: (x.attributes['metaLevel'].value if 'metaLevel' in x.attributes else 0, x.name))
         self.attrs = {}
 
         # get a dict of attrName: attrInfo of all unique attributes across all items
