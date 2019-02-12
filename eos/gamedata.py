@@ -471,12 +471,12 @@ class Item(EqBase):
     @property
     def isAbyssal(self):
         if Item.ABYSSAL_TYPES is None:
-            Item.getAbyssalYypes()
+            Item.getAbyssalTypes()
 
         return self.ID in Item.ABYSSAL_TYPES
 
     @classmethod
-    def getAbyssalYypes(cls):
+    def getAbyssalTypes(cls):
         cls.ABYSSAL_TYPES = eos.db.getAbyssalTypes()
 
     @property
