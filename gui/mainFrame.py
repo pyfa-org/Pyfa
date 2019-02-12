@@ -746,14 +746,16 @@ class MainFrame(wx.Frame):
                           CopySelectDialog.copyFormatMultiBuy: self.clipboardMultiBuy,
                           CopySelectDialog.copyFormatEfs: self.clipboardEfs}
         dlg = CopySelectDialog(self)
-        dlg.ShowModal()
-        selected = dlg.GetSelected()
-        options = dlg.GetOptions()
+        btnPressed = dlg.ShowModal()
+        
+        if btnPressed == wx.ID_OK:
+            selected = dlg.GetSelected()
+            options = dlg.GetOptions()
 
-        settings = SettingsProvider.getInstance().getSettings("pyfaExport")
-        settings["format"] = selected
-        settings["options"] = options
-        CopySelectDict[selected](options.get(selected))
+            settings = SettingsProvider.getInstance().getSettings("pyfaExport")
+            settings["format"] = selected
+            settings["options"] = options
+            CopySelectDict[selected](options.get(selected))
 
         try:
             dlg.Destroy()
