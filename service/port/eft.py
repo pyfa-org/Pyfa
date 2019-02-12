@@ -86,14 +86,14 @@ def exportEft(fit, options):
                     modName = module.baseItem.name
                 else:
                     modName = module.item.name
-                if module.isMutated and options & Options.MUTATIONS.value:
+                if module.isMutated and options[Options.MUTATIONS.value]:
                     mutants[mutantReference] = module
                     mutationSuffix = ' [{}]'.format(mutantReference)
                     mutantReference += 1
                 else:
                     mutationSuffix = ''
                 modOfflineSuffix = ' {}'.format(OFFLINE_SUFFIX) if module.state == State.OFFLINE else ''
-                if module.charge and options & Options.LOADED_CHARGES.value:
+                if module.charge and options[Options.LOADED_CHARGES.value]:
                     rackLines.append('{}, {}{}{}'.format(
                         modName, module.charge.name, modOfflineSuffix, mutationSuffix))
                 else:
@@ -122,7 +122,7 @@ def exportEft(fit, options):
         sections.append('\n\n'.join(minionSection))
 
     # Section 3: implants, boosters
-    if options & Options.IMPLANTS.value:
+    if options[Options.IMPLANTS.value]:
         charSection = []
         implantLines = []
         for implant in fit.implants:
@@ -149,7 +149,7 @@ def exportEft(fit, options):
 
     # Section 5: mutated modules' details
     mutationLines = []
-    if mutants and options & Options.MUTATIONS.value:
+    if mutants and options[Options.MUTATIONS.value]:
         for mutantReference in sorted(mutants):
             mutant = mutants[mutantReference]
             mutationLines.append(renderMutant(mutant, firstPrefix='[{}] '.format(mutantReference), prefix='  '))

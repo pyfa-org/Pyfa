@@ -43,24 +43,20 @@ class CopySelectDialog(wx.Dialog):
 
         self.copyFormats = OrderedDict((
             ("EFT", (CopySelectDialog.copyFormatEft, EFT_OPTIONS)),
+            ("MultiBuy", (CopySelectDialog.copyFormatMultiBuy, MULTIBUY_OPTIONS)),
+            ("ESI", (CopySelectDialog.copyFormatEsi, None)),
+            ("EFS", (CopySelectDialog.copyFormatEfs, None)),
             # ("XML", (CopySelectDialog.copyFormatXml, None)),
             # ("DNA", (CopySelectDialog.copyFormatDna, None)),
-            ("ESI", (CopySelectDialog.copyFormatEsi, None)),
-            ("MultiBuy", (CopySelectDialog.copyFormatMultiBuy, MULTIBUY_OPTIONS)),
-            ("EFS", (CopySelectDialog.copyFormatEfs, None)),
         ))
 
         defaultFormatOptions = {}
         for formatId, formatOptions in self.copyFormats.values():
             if formatOptions is None:
                 continue
-            defaultFormatOptions[formatId] = self._GetFormatOptions(
-                {option[0]: option[3] for option in formatOptions})
+            defaultFormatOptions[formatId] = {opt[0]: opt[3] for opt in formatOptions}
 
         self.settings = SettingsProvider.getInstance().getSettings("pyfaExport", {"format": 0, "options": defaultFormatOptions})
-        # Overwrite older options format which was plain int storing EFT options
-        if not isinstance(self.settings["options"], dict):
-            self.settings["options"] = {CopySelectDialog.copyFormatEft: self.settings["options"]}
 
         self.options = {}
 
@@ -85,7 +81,7 @@ class CopySelectDialog(wx.Dialog):
                 for optId, optName, optDesc, optDefault in formatOptions:
                     checkbox = wx.CheckBox(self, -1, optName)
                     self.options[formatId][optId] = checkbox
-                    if self.settings['options'].get(formatId, 0) & optId:
+                    if self.settings['options'].get(formatId, {}).get(optId, defaultFormatOptions.get(formatId, {}).get(optId)):
                         checkbox.SetValue(True)
                     bsizer.Add(checkbox, 1, wx.EXPAND | wx.TOP | wx.BOTTOM, 3)
                 mainSizer.Add(bsizer, 1, wx.EXPAND | wx.LEFT, 20)
@@ -117,13 +113,5 @@ class CopySelectDialog(wx.Dialog):
     def GetOptions(self):
         options = {}
         for formatId in self.options:
-            options[formatId] = self._GetFormatOptions(
-                {optId: ch.IsChecked() for optId, ch in self.options[formatId].items()})
+            options[formatId] = {optId: ch.IsChecked() for optId, ch in self.options[formatId].items()}
         return options
-
-    def _GetFormatOptions(self, optMap):
-        optVal = 0
-        for optId, optState in optMap.items():
-            if optState:
-                optVal = optVal ^ optId
-        return optVal

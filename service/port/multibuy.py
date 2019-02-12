@@ -48,7 +48,7 @@ def exportMultiBuy(fit, options):
             if module.isMutated:
                 continue
             addItem(module.item)
-        if module.charge and options & Options.LOADED_CHARGES.value:
+        if module.charge and options[Options.LOADED_CHARGES.value]:
             addItem(module.charge, module.numCharges)
 
     for drone in fit.drones:
@@ -57,11 +57,11 @@ def exportMultiBuy(fit, options):
     for fighter in fit.fighters:
         addItem(fighter.item, fighter.amountActive)
 
-    if options & Options.CARGO.value:
+    if options[Options.CARGO.value]:
         for cargo in fit.cargo:
             addItem(cargo.item, cargo.amount)
 
-    if options & Options.IMPLANTS.value:
+    if options[Options.IMPLANTS.value]:
         for implant in fit.implants:
             addItem(implant.item)
 
