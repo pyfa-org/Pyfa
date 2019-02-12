@@ -28,7 +28,7 @@ from service.price import Price, VALIDITY
 pyfalog = Logger(__name__)
 
 
-class EveCentral(object):
+class EveMarketer(object):
 
     name = "evemarketer"
 
@@ -67,4 +67,4 @@ class EveCentral(object):
             del priceMap[typeID]
 
 
-Price.register(EveCentral)
+Price.register(EveMarketer)

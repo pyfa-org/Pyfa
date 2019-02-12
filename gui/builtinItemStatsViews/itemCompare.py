@@ -133,7 +133,7 @@ class ItemCompare(wx.Panel):
                 except IndexError:
                     # Price
                     if sort == len(self.attrs) + 1:
-                        func = lambda i: i.price.price if i.price.price != 0 else float("Inf")
+                        func = lambda i: i.price if i.price != 0 else float("Inf")
                     # Something else
                     else:
                         self.sortReverse = False
@@ -168,7 +168,7 @@ class ItemCompare(wx.Panel):
                     self.paramList.SetItem(i, x + 1, valueUnit)
 
             # Add prices
-            self.paramList.SetItem(i, len(self.attrs) + 1, formatAmount(item.price.price, 3, 3, 9, currency=True))
+            self.paramList.SetItem(i, len(self.attrs) + 1, formatAmount(item.price, 3, 3, 9, currency=True) if item.price else "")
 
         self.paramList.RefreshRows()
         self.Layout()
