@@ -31,8 +31,8 @@ class ItemMutator(wx.Panel):
 
         for m in sorted(stuff.mutators.values(), key=lambda x: x.attribute.displayName):
             # Format: [raw value, modifier applied to base raw value, display value]
-            range1 = (m.minValue, m.minMod, m.attribute.unit.SimplifyValue(m.minValue))
-            range2 = (m.maxValue, m.maxMod, m.attribute.unit.SimplifyValue(m.maxValue))
+            range1 = (m.minValue, m.attribute.unit.SimplifyValue(m.minValue))
+            range2 = (m.maxValue, m.attribute.unit.SimplifyValue(m.maxValue))
 
             if (m.highIsGood and range1[0] >= range2[0]) or (not m.highIsGood and range1[0] <= range2[0]):
                 betterRange = range1
@@ -41,12 +41,20 @@ class ItemMutator(wx.Panel):
                 betterRange = range2
                 worseRange = range1
 
-            if range1[2] >= range2[2]:
+            if range1[1] >= range2[1]:
                 displayMaxRange = range1
                 displayMinRange = range2
             else:
                 displayMaxRange = range2
                 displayMinRange = range1
+
+            # If base value is outside of mutation range, make sure that center of slider
+            # corresponds to the value which is closest available to actual base value. It's
+            # how EVE handles it
+            if m.minValue <= m.baseValue <= m.maxValue:
+                sliderBaseValue = m.baseValue
+            else:
+                sliderBaseValue = max(m.minValue, min(m.maxValue, m.baseValue))
 
             headingSizer = wx.BoxSizer(wx.HORIZONTAL)
 
@@ -75,9 +83,9 @@ class ItemMutator(wx.Panel):
             mainSizer.Add(headingSizer, 0, wx.ALL | wx.EXPAND, 5)
 
             slider = AttributeSlider(parent=self,
-                                     baseValue=m.attribute.unit.SimplifyValue(m.baseValue),
-                                     minValue=displayMinRange[2],
-                                     maxValue=displayMaxRange[2],
+                                     baseValue=m.attribute.unit.SimplifyValue(sliderBaseValue),
+                                     minValue=displayMinRange[1],
+                                     maxValue=displayMaxRange[1],
                                      inverse=displayMaxRange is worseRange)
             slider.SetValue(m.attribute.unit.SimplifyValue(m.value), False)
             slider.Bind(EVT_VALUE_CHANGED, self.changeMutatedValue)
