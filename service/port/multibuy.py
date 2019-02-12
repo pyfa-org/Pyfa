@@ -20,15 +20,15 @@
 
 from enum import Enum
 
-from service.fit import Fit as svcFit
-
 
 class Options(Enum):
     IMPLANTS = 1
     CARGO = 2
+    LOADED_CHARGES = 3
 
 
 MULTIBUY_OPTIONS = (
+    (Options.LOADED_CHARGES.value, 'Loaded Charges', 'Export charges loaded into modules', True),
     (Options.IMPLANTS.value, 'Implants && Boosters', 'Export implants and boosters', False),
     (Options.CARGO.value, 'Cargo', 'Export cargo contents', True),
 )
@@ -42,14 +42,13 @@ def exportMultiBuy(fit, options):
             itemCounts[item] = 0
         itemCounts[item] += quantity
 
-    exportCharges = svcFit.getInstance().serviceFittingOptions["exportCharges"]
     for module in fit.modules:
         if module.item:
             # Mutated items are of no use for multibuy
             if module.isMutated:
                 continue
             addItem(module.item)
-        if exportCharges and module.charge:
+        if module.charge and options & Options.LOADED_CHARGES.value:
             addItem(module.charge, module.numCharges)
 
     for drone in fit.drones:

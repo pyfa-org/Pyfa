@@ -45,11 +45,13 @@ pyfalog = Logger(__name__)
 class Options(Enum):
     IMPLANTS = 1
     MUTATIONS = 2
+    LOADED_CHARGES = 3
 
 
 EFT_OPTIONS = (
-    (Options.IMPLANTS.value, 'Implants && Boosters', 'Export implants and boosters', True),
+    (Options.LOADED_CHARGES.value, 'Loaded Charges', 'Export charges loaded into modules', True),
     (Options.MUTATIONS.value, 'Mutated Attributes', 'Export mutated modules\' stats', True),
+    (Options.IMPLANTS.value, 'Implants && Boosters', 'Export implants and boosters', True),
 )
 
 
@@ -68,7 +70,6 @@ def exportEft(fit, options):
 
     # Section 1: modules, rigs, subsystems, services
     modsBySlotType = {}
-    sFit = svcFit.getInstance()
     for module in fit.modules:
         modsBySlotType.setdefault(module.slot, []).append(module)
     modSection = []
@@ -92,7 +93,7 @@ def exportEft(fit, options):
                 else:
                     mutationSuffix = ''
                 modOfflineSuffix = ' {}'.format(OFFLINE_SUFFIX) if module.state == State.OFFLINE else ''
-                if module.charge and sFit.serviceFittingOptions['exportCharges']:
+                if module.charge and options & Options.LOADED_CHARGES.value:
                     rackLines.append('{}, {}{}{}'.format(
                         modName, module.charge.name, modOfflineSuffix, mutationSuffix))
                 else:
