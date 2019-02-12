@@ -29,8 +29,8 @@ class Options(Enum):
 
 
 MULTIBUY_OPTIONS = (
-    (Options.IMPLANTS.value, 'Implants && Boosters', 'Export implants and boosters'),
-    (Options.CARGO.value, 'Cargo', 'Export cargo contents'),
+    (Options.IMPLANTS.value, 'Implants && Boosters', 'Export implants and boosters', False),
+    (Options.CARGO.value, 'Cargo', 'Export cargo contents', True),
 )
 
 

@@ -48,8 +48,8 @@ class Options(Enum):
 
 
 EFT_OPTIONS = (
-    (Options.IMPLANTS.value, 'Implants && Boosters', 'Export implants and boosters'),
-    (Options.MUTATIONS.value, 'Mutated Attributes', 'Export mutated modules\' stats'),
+    (Options.IMPLANTS.value, 'Implants && Boosters', 'Export implants and boosters', True),
+    (Options.MUTATIONS.value, 'Mutated Attributes', 'Export mutated modules\' stats', True),
 )
 
 
