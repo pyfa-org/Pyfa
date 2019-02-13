@@ -215,6 +215,8 @@ class ModifiedAttributeDict(collections.MutableMapping):
         if force is not None:
             if cappingValue is not None:
                 force = min(force, cappingValue)
+            if key in (50, 30, 48, 11):
+                force = round(force, 2)
             return force
         # Grab our values if they're there, otherwise we'll take default values
         preIncrease = self.__preIncreases.get(key, 0)
@@ -268,7 +270,8 @@ class ModifiedAttributeDict(collections.MutableMapping):
         # Cap value if we have cap defined
         if cappingValue is not None:
             val = min(val, cappingValue)
-
+        if key in (50, 30, 48, 11):
+            val = round(val, 2)
         return val
 
     def __handleSkill(self, skillName):
