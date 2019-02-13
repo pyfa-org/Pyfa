@@ -100,32 +100,32 @@ class PriceViewFull(StatsView):
         implant_price = 0
 
         if fit:
-            ship_price = fit.ship.item.price
+            ship_price = fit.ship.item.price.price
 
             if fit.modules:
                 for module in fit.modules:
                     if not module.isEmpty:
-                        module_price += module.item.price
+                        module_price += module.item.price.price
 
             if fit.drones:
                 for drone in fit.drones:
-                    drone_price += drone.item.price * drone.amount
+                    drone_price += drone.item.price.price * drone.amount
 
             if fit.fighters:
                 for fighter in fit.fighters:
-                    fighter_price += fighter.item.price * fighter.amountActive
+                    fighter_price += fighter.item.price.price * fighter.amountActive
 
             if fit.cargo:
                 for cargo in fit.cargo:
-                    cargo_price += cargo.item.price * cargo.amount
+                    cargo_price += cargo.item.price.price * cargo.amount
 
             if fit.boosters:
                 for booster in fit.boosters:
-                    booster_price += booster.item.price
+                    booster_price += booster.item.price.price
 
             if fit.implants:
                 for implant in fit.implants:
-                    implant_price += implant.item.price
+                    implant_price += implant.item.price.price
 
         total_price = 0
 

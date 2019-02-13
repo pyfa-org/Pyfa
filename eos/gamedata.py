@@ -446,17 +446,6 @@ class Item(EqBase):
 
     @property
     def price(self):
-        priceObj = self.priceObj
-        if not priceObj:
-            return 0
-        else:
-            return priceObj.price
-
-    @property
-    def priceObj(self):
-        if not self.marketGroupID:
-            return None
-
         # todo: use `from sqlalchemy import inspect` instead (mac-deprecated doesn't have inspect(), was imp[lemented in 0.8)
         if self.__priceObj is not None and getattr(self.__priceObj, '_sa_instance_state', None) and self.__priceObj._sa_instance_state.deleted:
             pyfalog.debug("Price data for {} was deleted (probably from a cache reset), resetting object".format(self.ID))
@@ -469,10 +458,7 @@ class Item(EqBase):
                 pyfalog.debug("Creating a price for {}".format(self.ID))
                 self.__priceObj = types_Price(self.ID)
                 eos.db.add(self.__priceObj)
-                # Commented out by DarkPhoenix: it caused issues when opening stats for item with many
-                # variations, as each commit takes ~50 ms, for items with 30 variations time to open stats
-                # window could reach 2 seconds. Hopefully just adding it is sufficient.
-                # eos.db.commit()
+                eos.db.commit()
             else:
                 self.__priceObj = db_price
 

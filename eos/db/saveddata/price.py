@@ -17,17 +17,20 @@
 # along with eos.  If not, see <http://www.gnu.org/licenses/>.
 # ===============================================================================
 
+
 from sqlalchemy import Table, Column, Float, Integer
 from sqlalchemy.orm import mapper
 
 from eos.db import saveddata_meta
 from eos.saveddata.price import Price
 
+
 prices_table = Table("prices", saveddata_meta,
                      Column("typeID", Integer, primary_key=True),
                      Column("price", Float, default=0.0),
                      Column("time", Integer, nullable=False),
-                     Column("failed", Integer))
+                     Column("status", Integer, nullable=False))
+
 
 mapper(Price, prices_table, properties={
     "_Price__price": prices_table.c.price,
