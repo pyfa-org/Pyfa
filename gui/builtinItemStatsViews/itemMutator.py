@@ -22,9 +22,20 @@ class ItemMutator(wx.Panel):
         self.item = item
         self.timer = None
         self.activeFit = gui.mainFrame.MainFrame.getInstance().getActiveFit()
+
+        font = parent.GetFont()
+        font.SetWeight(wx.BOLD)
+
         mainSizer = wx.BoxSizer(wx.VERTICAL)
 
-        baseItemSizer = wx.BoxSizer(wx.VERTICAL)
+        sourceItemsSizer = wx.BoxSizer(wx.HORIZONTAL)
+        sourceItemsSizer.Add(BitmapLoader.getStaticBitmap(stuff.item.iconID, self, "icons"), 0, wx.LEFT, 5)
+        sourceItemsSizer.Add(BitmapLoader.getStaticBitmap(stuff.mutaplasmid.item.iconID, self, "icons"), 0, wx.LEFT, 0)
+        sourceItemShort = "{} {}".format(stuff.mutaplasmid.item.name.split(" ")[0], stuff.baseItem.name)
+        sourceItemText = wx.StaticText(self, wx.ID_ANY, sourceItemShort)
+        sourceItemText.SetFont(font)
+        sourceItemsSizer.Add(sourceItemText, 0, wx.LEFT, 10)
+        mainSizer.Add(sourceItemsSizer, 0, wx.TOP | wx.BOTTOM | wx.EXPAND, 10)
 
         self.goodColor = wx.Colour(96, 191, 0)
         self.badColor = wx.Colour(255, 64, 0)
@@ -59,9 +70,6 @@ class ItemMutator(wx.Panel):
                 sliderBaseValue = max(m.minValue, min(m.maxValue, m.baseValue))
 
             headingSizer = wx.BoxSizer(wx.HORIZONTAL)
-
-            font = parent.GetFont()
-            font.SetWeight(wx.BOLD)
 
             headingSizer.Add(BitmapLoader.getStaticBitmap(m.attribute.iconID, self, "icons"), 0, wx.RIGHT, 10)
 

@@ -91,7 +91,7 @@ class ItemStatsDialog(wx.Dialog):
 
         self.SetMinSize((300, 200))
         if "wxGTK" in wx.PlatformInfo:  # GTK has huge tab widgets, give it a bit more room
-            self.SetSize((630, 500))
+            self.SetSize((630, 550))
         else:
             self.SetSize((550, 500))
         # self.SetMaxSize((500, -1))
