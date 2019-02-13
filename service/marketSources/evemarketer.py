@@ -22,6 +22,7 @@ from xml.dom import minidom
 
 from logbook import Logger
 
+from eos.saveddata.price import PriceStatus
 from service.network import Network
 from service.price import Price, VALIDITY
 
@@ -61,7 +62,7 @@ class EveMarketer(object):
             priceobj = priceMap[typeID]
             priceobj.price = percprice
             priceobj.time = time.time() + VALIDITY
-            priceobj.failed = None
+            priceobj.status = PriceStatus.success
 
             # delete price from working dict
             del priceMap[typeID]

@@ -22,6 +22,7 @@ from xml.dom import minidom
 
 from logbook import Logger
 
+from eos.saveddata.price import PriceStatus
 from service.network import Network
 from service.price import Price, TIMEOUT, VALIDITY
 
@@ -52,6 +53,7 @@ class EveMarketData(object):
                 price = float(type_.firstChild.data)
             except (TypeError, ValueError):
                 pyfalog.warning("Failed to get price for: {0}", type_)
+                continue
 
             # Fill price data
             priceobj = priceMap[typeID]
@@ -61,10 +63,9 @@ class EveMarketData(object):
             if price != 0:
                 priceobj.price = price
                 priceobj.time = time.time() + VALIDITY
+                priceobj.status = PriceStatus.success
             else:
                 priceobj.time = time.time() + TIMEOUT
-
-            priceobj.failed = None
 
             # delete price from working dict
             del priceMap[typeID]
