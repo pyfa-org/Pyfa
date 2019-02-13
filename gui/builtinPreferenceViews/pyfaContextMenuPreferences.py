@@ -81,6 +81,11 @@ class PFContextMenuPref(PreferenceView):
         rbSizerRow3.Add(self.rbBox7, 1, wx.TOP | wx.RIGHT, 5)
         self.rbBox7.Bind(wx.EVT_RADIOBOX, self.OnSetting7Change)
 
+        self.rbBox8 = wx.RadioBox(panel, -1, "Fill with module", wx.DefaultPosition, wx.DefaultSize, ['Disabled', 'Enabled'], 1, wx.RA_SPECIFY_COLS)
+        self.rbBox8.SetSelection(self.settings.get('moduleFill'))
+        rbSizerRow3.Add(self.rbBox8, 1, wx.TOP | wx.RIGHT, 5)
+        self.rbBox8.Bind(wx.EVT_RADIOBOX, self.OnSetting8Change)
+
         mainSizer.Add(rbSizerRow3, 1, wx.ALL | wx.EXPAND, 0)
 
         panel.SetSizer(mainSizer)
@@ -106,6 +111,9 @@ class PFContextMenuPref(PreferenceView):
 
     def OnSetting7Change(self, event):
         self.settings.set('project', event.GetInt())
+
+    def OnSetting8Change(self, event):
+        self.settings.set('moduleFill', event.GetInt())
 
     def getImage(self):
         return BitmapLoader.getBitmap("settings_menu", "gui")

@@ -15,7 +15,6 @@ class ItemDescription(wx.Panel):
         fgcolor = wx.SystemSettings.GetColour(wx.SYS_COLOUR_WINDOWTEXT)
 
         self.description = wx.html.HtmlWindow(self)
-
         if not item.description:
             return
 
