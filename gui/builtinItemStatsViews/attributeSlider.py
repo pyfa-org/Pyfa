@@ -58,7 +58,6 @@ class AttributeSlider(wx.Panel):
 
         self.UserMinValue = minValue
         self.UserMaxValue = maxValue
-        print(self.UserMinValue, self.UserMaxValue)
 
         self.inverse = inverse
 

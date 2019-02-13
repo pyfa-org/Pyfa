@@ -91,7 +91,7 @@ class ItemStatsDialog(wx.Dialog):
 
         self.SetMinSize((300, 200))
         if "wxGTK" in wx.PlatformInfo:  # GTK has huge tab widgets, give it a bit more room
-            self.SetSize((580, 500))
+            self.SetSize((630, 500))
         else:
             self.SetSize((550, 500))
         # self.SetMaxSize((500, -1))
@@ -168,8 +168,9 @@ class ItemStatsContainer(wx.Panel):
             self.mutator = ItemMutator(self.nbContainer, stuff, item)
             self.nbContainer.AddPage(self.mutator, "Mutations")
 
-        self.desc = ItemDescription(self.nbContainer, stuff, item)
-        self.nbContainer.AddPage(self.desc, "Description")
+        if item.description:
+            self.desc = ItemDescription(self.nbContainer, stuff, item)
+            self.nbContainer.AddPage(self.desc, "Description")
 
         self.params = ItemParams(self.nbContainer, stuff, item, context)
         self.nbContainer.AddPage(self.params, "Attributes")
