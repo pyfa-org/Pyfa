@@ -35,7 +35,9 @@ class ItemMutator(wx.Panel):
         sourceItemText = wx.StaticText(self, wx.ID_ANY, sourceItemShort)
         sourceItemText.SetFont(font)
         sourceItemsSizer.Add(sourceItemText, 0, wx.LEFT, 10)
-        mainSizer.Add(sourceItemsSizer, 0, wx.TOP | wx.BOTTOM | wx.EXPAND, 10)
+        mainSizer.Add(sourceItemsSizer, 0, wx.TOP | wx.EXPAND, 10)
+
+        mainSizer.Add(wx.StaticLine(self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.LI_HORIZONTAL), 0, wx.ALL | wx.EXPAND, 5)
 
         self.goodColor = wx.Colour(96, 191, 0)
         self.badColor = wx.Colour(255, 64, 0)
