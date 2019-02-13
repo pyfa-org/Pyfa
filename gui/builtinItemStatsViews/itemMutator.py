@@ -24,6 +24,8 @@ class ItemMutator(wx.Panel):
         self.activeFit = gui.mainFrame.MainFrame.getInstance().getActiveFit()
         mainSizer = wx.BoxSizer(wx.VERTICAL)
 
+        baseItemSizer = wx.BoxSizer(wx.VERTICAL)
+
         self.goodColor = wx.Colour(96, 191, 0)
         self.badColor = wx.Colour(255, 64, 0)
 
