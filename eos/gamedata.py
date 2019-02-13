@@ -458,7 +458,7 @@ class Item(EqBase):
                 pyfalog.debug("Creating a price for {}".format(self.ID))
                 self.__priceObj = types_Price(self.ID)
                 eos.db.add(self.__priceObj)
-                eos.db.commit()
+                eos.db.flush()
             else:
                 self.__priceObj = db_price
 

@@ -542,7 +542,17 @@ def commit():
     with sd_lock:
         try:
             saveddata_session.commit()
-        except Exception as ex:
+        except Exception:
+            saveddata_session.rollback()
+            exc_info = sys.exc_info()
+            raise exc_info[0](exc_info[1]).with_traceback(exc_info[2])
+
+
+def flush():
+    with sd_lock:
+        try:
+            saveddata_session.flush()
+        except Exception:
             saveddata_session.rollback()
             exc_info = sys.exc_info()
             raise exc_info[0](exc_info[1]).with_traceback(exc_info[2])
