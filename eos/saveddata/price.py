@@ -49,7 +49,7 @@ class Price(object):
 
     @property
     def price(self):
-        if self.status in (PriceStatus.fail, PriceStatus.notSupported):
+        if self.status != PriceStatus.success:
             return 0
         else:
             return self.__price or 0
