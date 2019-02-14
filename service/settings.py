@@ -525,6 +525,7 @@ class ContextMenuSettings(object):
             "tacticalMode"          : 1,
             "targetResists"         : 1,
             "whProjector"           : 1,
+            "moduleFill"            : 1,
         }
 
         self.ContextMenuDefaultSettings = SettingsProvider.getInstance().getSettings("pyfaContextMenuSettings", ContextMenuDefaultSettings)

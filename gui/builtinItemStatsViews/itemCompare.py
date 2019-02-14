@@ -8,6 +8,10 @@ from service.attribute import Attribute
 from gui.utils.numberFormatter import formatAmount
 
 
+def defaultSort(item):
+    return (item.attributes['metaLevel'].value if 'metaLevel' in item.attributes else 0, item.name)
+
+
 class ItemCompare(wx.Panel):
     def __init__(self, parent, stuff, item, items, context=None):
         # Start dealing with Price stuff to get that thread going
@@ -27,8 +31,7 @@ class ItemCompare(wx.Panel):
         self.currentSort = None
         self.sortReverse = False
         self.item = item
-        self.items = sorted(items,
-                            key=lambda x: x.attributes['metaLevel'].value if 'metaLevel' in x.attributes else 0)
+        self.items = sorted(items, key=defaultSort)
         self.attrs = {}
 
         # get a dict of attrName: attrInfo of all unique attributes across all items
@@ -126,10 +129,15 @@ class ItemCompare(wx.Panel):
                     # starts at 0 while the list has the item name as column 0.
                     attr = str(list(self.attrs.keys())[sort - 1])
                     func = lambda _val: _val.attributes[attr].value if attr in _val.attributes else 0.0
+                # Clicked on a column that's not part of our array (price most likely)
                 except IndexError:
-                    # Clicked on a column that's not part of our array (price most likely)
-                    self.sortReverse = False
-                    func = lambda _val: _val.attributes['metaLevel'].value if 'metaLevel' in _val.attributes else 0.0
+                    # Price
+                    if sort == len(self.attrs) + 1:
+                        func = lambda i: i.price.price if i.price.price != 0 else float("Inf")
+                    # Something else
+                    else:
+                        self.sortReverse = False
+                        func = defaultSort
 
             self.items = sorted(self.items, key=func, reverse=self.sortReverse)
 
@@ -160,7 +168,7 @@ class ItemCompare(wx.Panel):
                     self.paramList.SetItem(i, x + 1, valueUnit)
 
             # Add prices
-            self.paramList.SetItem(i, len(self.attrs) + 1, formatAmount(item.price.price, 3, 3, 9, currency=True))
+            self.paramList.SetItem(i, len(self.attrs) + 1, formatAmount(item.price.price, 3, 3, 9, currency=True) if item.price.price else "")
 
         self.paramList.RefreshRows()
         self.Layout()
