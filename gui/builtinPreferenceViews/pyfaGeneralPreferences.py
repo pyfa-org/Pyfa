@@ -166,6 +166,8 @@ class PFGeneralPref(PreferenceView):
         fitID = self.mainFrame.getActiveFit()
         self.sFit.refreshFit(fitID)
         wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fitID))
+        iView = self.mainFrame.marketBrowser.itemView;
+        iView.update(iView.active)
         event.Skip()
 
     def onCBGlobalRackSlots(self, event):

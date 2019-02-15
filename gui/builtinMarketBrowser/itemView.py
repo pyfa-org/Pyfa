@@ -28,6 +28,7 @@ class ItemView(Display):
         self.recentlyUsedModules = set()
         self.sMkt = marketBrowser.sMkt
         self.searchMode = marketBrowser.searchMode
+        self.sFit = Fit.getInstance()
 
         self.marketBrowser = marketBrowser
         self.marketView = marketBrowser.marketView
@@ -266,3 +267,14 @@ class ItemView(Display):
                 revmap[mgid] = i
             i += 1
         return revmap
+
+    slotColourMap = { 'loPower' : wx.Colour(250, 235, 204),
+                      'medPower': wx.Colour(188, 215, 241),
+                      'hiPower' : wx.Colour(235, 204, 209) }
+
+    def columnBackground(self, colItem, item):
+        if self.sFit.serviceFittingOptions["colorFitBySlot"]:
+            for effectName in self.slotColourMap:
+                if effectName in item.effects:
+                    return self.slotColourMap[effectName]
+        return wx.Colour(255, 255, 255)
