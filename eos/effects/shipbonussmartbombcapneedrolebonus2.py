@@ -1,15 +1,14 @@
 # shipBonusSmartbombCapNeedRoleBonus2
 #
 # Used by:
+# Variations of ship: Rodiva (2 of 2)
 # Ship: Damavik
 # Ship: Drekavac
 # Ship: Hydra
 # Ship: Kikimora
 # Ship: Leshak
-# Ship: Rodiva
 # Ship: Tiamat
 # Ship: Vedmak
-# Ship: Zarmazd
 type = "passive"
 
 
