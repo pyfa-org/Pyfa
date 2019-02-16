@@ -181,28 +181,31 @@ def main(db, json_path):
         def compareAttrs(attrs1, attrs2, attrHig):
             """
             Compares received attribute sets. Returns:
-            - 0 if sets are different
-            - 1 if sets are exactly the same
-            - 2 if first set is strictly better
-            - 3 if second set is strictly better
+            - 0 if sets have no attributes for comparison
+            - 1 if sets are different
+            - 2 if sets are exactly the same
+            - 3 if first set is strictly better
+            - 4 if second set is strictly better
             """
-            if set(attrs1) != set(attrs2):
+            if len(attrs1) == 0 and len(attrs2) == 0:
                 return 0
-            if all(attrs1[aid] == attrs2[aid] for aid in attrs1):
+            if set(attrs1) != set(attrs2):
                 return 1
+            if all(attrs1[aid] == attrs2[aid] for aid in attrs1):
+                return 2
             if all(
                 (attrs1[aid] >= attrs2[aid] and attrHig[aid]) or
                 (attrs1[aid] <= attrs2[aid] and not attrHig[aid])
                 for aid in attrs1
             ):
-                return 2
+                return 3
             if all(
                 (attrs2[aid] >= attrs1[aid] and attrHig[aid]) or
                 (attrs2[aid] <= attrs1[aid] and not attrHig[aid])
                 for aid in attrs1
             ):
-                return 3
-            return 0
+                return 4
+            return 1
 
         skillReqAttribs = {
             182: 277,
@@ -274,14 +277,14 @@ def main(db, json_path):
             for type1, type2 in itertools.combinations(groupData, 2):
                 comparisonResult = compareAttrs(type1[1], type2[1], attrHig)
                 # Equal
-                if comparisonResult == 1:
+                if comparisonResult == 2:
                     same.setdefault(type1[0], set()).add(type2[0])
                     same.setdefault(type2[0], set()).add(type1[0])
                 # First is better
-                elif comparisonResult == 2:
+                elif comparisonResult == 3:
                     better.setdefault(type2[0], set()).add(type1[0])
                 # Second is better
-                elif comparisonResult == 3:
+                elif comparisonResult == 4:
                     better.setdefault(type1[0], set()).add(type2[0])
         # Put this data into types table so that normal process hooks it up
         for row in tables['evetypes']:
