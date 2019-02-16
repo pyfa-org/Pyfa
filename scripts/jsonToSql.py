@@ -220,10 +220,20 @@ def main(db, json_path):
         typesNormalAttribs = {}
         typesSkillAttribs = {}
         for row in tables['dgmtypeattribs']:
-            # TODO: add attribute ignore stuff (like meta level) here
-            typesAttribs = typesSkillAttribs if row['attributeID'] in skillReqAttribsFlat else typesNormalAttribs
-            typeAttribs = typesAttribs.setdefault(row['typeID'], {})
-            typeAttribs[row['attributeID']] = row['value']
+            attributeID = row['attributeID']
+            if attributeID in skillReqAttribsFlat:
+                typeSkillAttribs = typesSkillAttribs.setdefault(row['typeID'], {})
+                typeSkillAttribs[row['attributeID']] = row['value']
+            # Ignore these attributes for comparison purposes
+            elif attributeID in (
+                422,  # techLevel
+                633,  # metaLevel
+                1692  # metaGroupID
+            ):
+                continue
+            else:
+                typeNormalAttribs = typesNormalAttribs.setdefault(row['typeID'], {})
+                typeNormalAttribs[row['attributeID']] = row['value']
         # Get data on skill requirements
         typesSkillReqs = {}
         for typeID, typeAttribs in typesSkillAttribs.items():
