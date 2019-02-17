@@ -798,11 +798,16 @@ class Market(object):
 
     def getReplacements(self, identity, includeBetter=False):
         item = self.getItem(identity)
+        # We already store needed type IDs in database
         replTypeIDs = {int(i) for i in item.replaceSame.split(",") if i}
         if includeBetter:
             replTypeIDs.update({int(i) for i in item.replaceBetter.split(",") if i})
         if not replTypeIDs:
             return ()
+        # But as these replacements were generated with only item group and item skill
+        # requirements in mind, they sometimes include stuff we do not want to include.
+        # So here we also filter by variation group (implementing it during database
+        # generation is not trivial and here it can be customized by overrides)
         variationItems = self.getVariationsByItems([item])
         replacementItems = {i for i in variationItems if i.ID in replTypeIDs}
         return replacementItems
