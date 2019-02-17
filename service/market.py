@@ -795,3 +795,14 @@ class Market(object):
         """Filter items by meta lvl"""
         filtered = set([item for item in items if self.getMetaGroupIdByItem(item) in metas])
         return filtered
+
+    def getReplacements(self, identity, includeBetter=False):
+        item = self.getItem(identity)
+        replTypeIDs = {int(i) for i in item.replaceSame.split(",") if i}
+        if includeBetter:
+            replTypeIDs.update({int(i) for i in item.replaceBetter.split(",") if i})
+        if not replTypeIDs:
+            return ()
+        variationItems = self.getVariationsByItems([item])
+        replacementItems = {i for i in variationItems if i.ID in replTypeIDs}
+        return replacementItems
