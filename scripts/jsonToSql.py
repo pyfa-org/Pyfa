@@ -189,23 +189,21 @@ def main(db, json_path):
             """
             if len(attrs1) == 0 and len(attrs2) == 0:
                 return 0
-            if (
-                set(attrs1) != set(attrs2) or any(
-                    attrs1[aid] != attrs2[aid] and
-                    attrHig[aid] == 2 for aid in attrs1)
-            ):
+            if set(attrs1) != set(attrs2):
                 return 1
             if all(attrs1[aid] == attrs2[aid] for aid in attrs1):
                 return 2
             if all(
+                (attrs1[aid] <= attrs2[aid] and attrHig[aid] == 0) or
                 (attrs1[aid] >= attrs2[aid] and attrHig[aid] == 1) or
-                (attrs1[aid] <= attrs2[aid] and attrHig[aid] == 0)
+                (attrs1[aid] == attrs2[aid] and attrHig[aid] == 2)
                 for aid in attrs1
             ):
                 return 3
             if all(
+                (attrs2[aid] <= attrs1[aid] and attrHig[aid] == 0) or
                 (attrs2[aid] >= attrs1[aid] and attrHig[aid] == 1) or
-                (attrs2[aid] <= attrs1[aid] and attrHig[aid] == 0)
+                (attrs1[aid] == attrs2[aid] and attrHig[aid] == 2)
                 for aid in attrs1
             ):
                 return 4
