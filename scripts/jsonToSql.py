@@ -189,24 +189,29 @@ def main(db, json_path):
             """
             if len(attrs1) == 0 and len(attrs2) == 0:
                 return 0
-            if set(attrs1) != set(attrs2):
+            if (
+                set(attrs1) != set(attrs2) or any(
+                    attrs1[aid] != attrs2[aid] and
+                    attrHig[aid] == 2 for aid in attrs1)
+            ):
                 return 1
             if all(attrs1[aid] == attrs2[aid] for aid in attrs1):
                 return 2
             if all(
-                (attrs1[aid] >= attrs2[aid] and attrHig[aid]) or
-                (attrs1[aid] <= attrs2[aid] and not attrHig[aid])
+                (attrs1[aid] >= attrs2[aid] and attrHig[aid] == 1) or
+                (attrs1[aid] <= attrs2[aid] and attrHig[aid] == 0)
                 for aid in attrs1
             ):
                 return 3
             if all(
-                (attrs2[aid] >= attrs1[aid] and attrHig[aid]) or
-                (attrs2[aid] <= attrs1[aid] and not attrHig[aid])
+                (attrs2[aid] >= attrs1[aid] and attrHig[aid] == 1) or
+                (attrs2[aid] <= attrs1[aid] and attrHig[aid] == 0)
                 for aid in attrs1
             ):
                 return 4
             return 1
 
+        print('finding replacements')
         skillReqAttribs = {
             182: 277,
             183: 278,
@@ -216,10 +221,12 @@ def main(db, json_path):
             1290: 1288}
         skillReqAttribsFlat = set(skillReqAttribs.keys()).union(skillReqAttribs.values())
         # Get data on type groups
+        # Format: {type ID: group ID}
         typesGroups = {}
         for row in tables['evetypes']:
             typesGroups[row['typeID']] = row['groupID']
         # Get data on type attributes
+        # Format: {type ID: {attribute ID: attribute value}}
         typesNormalAttribs = {}
         typesSkillAttribs = {}
         for row in tables['dgmtypeattribs']:
@@ -229,6 +236,7 @@ def main(db, json_path):
                 typeSkillAttribs[row['attributeID']] = row['value']
             # Ignore these attributes for comparison purposes
             elif attributeID in (
+                124,  # mainColor
                 422,  # techLevel
                 633,  # metaLevel
                 1692  # metaGroupID
@@ -238,6 +246,7 @@ def main(db, json_path):
                 typeNormalAttribs = typesNormalAttribs.setdefault(row['typeID'], {})
                 typeNormalAttribs[row['attributeID']] = row['value']
         # Get data on skill requirements
+        # Format: {type ID: {skill type ID: skill level}}
         typesSkillReqs = {}
         for typeID, typeAttribs in typesSkillAttribs.items():
             typeSkillAttribs = typesSkillAttribs.get(typeID, {})
@@ -252,11 +261,19 @@ def main(db, json_path):
                     continue
                 typeSkillReqs[skillType] = skillLevel
         # Get data on attribute highIsGood flag
+        # Format: {type ID: 0 if high is bad, 1 if high is good, 2 if neither}
         attrHig = {}
         for row in tables['dgmattribs']:
-            attrHig[row['attributeID']] = bool(row['highIsGood'])
+            attrHig[row['attributeID']] = 1 if row['highIsGood'] else 0
+        # As CCP data is not really consistent, do some overrides
+        attrHig[4] = 0  # mass
+        attrHig[161] = 0  # volume
+        # Also do some customizations; some attributes are neither good nor bad when they change
+        attrHig[128] = 2  # chargeSize
+        attrHig[1547] = 2  # rigSize
         # As EVE affects various types mostly depending on their group or skill requirements,
         # we're going to group various types up this way
+        # Format: {(group ID, frozenset(skillreq, type, IDs)): [type ID, {attribute ID: attribute value}]}
         groupedData = {}
         for row in tables['evetypes']:
             typeID = row['typeID']
@@ -269,6 +286,7 @@ def main(db, json_path):
             typeGroup = typesGroups[typeID]
             groupData = groupedData.setdefault((typeGroup, typeSkillreqs), [])
             groupData.append((typeID, typeAttribs))
+        # Format: {type ID: set(type IDs)}
         same = {}
         better = {}
         # Now, go through composed groups and for every item within it find items which are
