@@ -504,7 +504,7 @@ class Miscellanea(ViewColumn):
             text = "{0}s".format(cycleTime)
             tooltip = "Spoolup time"
             return text, tooltip
-        elif itemGroup in ("Siege Module", "Cynosural Field"):
+        elif itemGroup in ("Siege Module", "Cynosural Field Generator"):
             amt = stuff.getModifiedItemAttr("consumptionQuantity")
             if amt:
                 typeID = stuff.getModifiedItemAttr("consumptionType")

@@ -1016,11 +1016,11 @@ class Fit(object):
 
     @property
     def pgUsed(self):
-        return self.getItemAttrOnlineSum(self.modules, "power")
+        return round(self.getItemAttrOnlineSum(self.modules, "power"), 2)
 
     @property
     def cpuUsed(self):
-        return self.getItemAttrOnlineSum(self.modules, "cpu")
+        return round(self.getItemAttrOnlineSum(self.modules, "cpu"), 2)
 
     @property
     def droneBandwidthUsed(self):
