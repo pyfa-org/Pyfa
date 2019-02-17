@@ -1,7 +1,7 @@
 # cynosuralGeneration
 #
 # Used by:
-# Modules from group: Cynosural Field (2 of 2)
+# Modules from group: Cynosural Field Generator (2 of 2)
 type = "active"
 
 
