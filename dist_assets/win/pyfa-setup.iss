@@ -7,15 +7,12 @@
 #ifndef MyAppVersion
     #define MyAppVersion "2.1.0"
 #endif
-#ifndef MyAppExpansion
-    #define MyAppExpansion "Vanguard 1.0"
-#endif
 
 ; Other config
 
 #define MyAppName "pyfa"
 #define MyAppPublisher "pyfa"
-#define MyAppURL "https://forums.eveonline.com/t/27156"
+#define MyAppURL "https://github.com/pyfa-org/Pyfa/"
 #define MyAppExeName "pyfa.exe"
 
 ; What version starts with the new structure (1.x.0). This is used to determine if we run directory structure cleanup
@@ -23,7 +20,7 @@
 #define MinorVersionFlag 0
 
 #ifndef MyOutputFile
-    #define MyOutputFile LowerCase(StringChange(MyAppName+'-'+MyAppVersion+'-'+MyAppExpansion+'-win-wx3', " ", "-"))
+    #define MyOutputFile LowerCase(StringChange(MyAppName+'-'+MyAppVersion+'-win', " ", "-"))
 #endif
 #ifndef MyAppDir
     #define MyAppDir "pyfa"
@@ -39,7 +36,7 @@
 ; (To generate a new GUID, click Tools | Generate GUID inside the IDE.)
 AppId={{3DA39096-C08D-49CD-90E0-1D177F32C8AA}
 AppName={#MyAppName}
-AppVersion={#MyAppVersion} ({#MyAppExpansion})
+AppVersion={#MyAppVersion}
 AppPublisher={#MyAppPublisher}
 AppPublisherURL={#MyAppURL}
 AppSupportURL={#MyAppURL}
@@ -51,10 +48,8 @@ LicenseFile={#MyAppDir}\LICENSE
 OutputDir={#MyOutputDir}
 OutputBaseFilename={#MyOutputFile}
 SetupIconFile={#MyAppDir}\pyfa.ico
-Compression=lzma
 SolidCompression=yes
 CloseApplications=yes
-AppReadmeFile=https://github.com/pyfa-org/Pyfa/blob/v{#MyAppVersion}/readme.txt
 
 [Languages]
 Name: "english"; MessagesFile: "compiler:Default.isl"

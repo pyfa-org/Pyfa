@@ -1,36 +1,28 @@
-dist: trusty
-sudo: required
+os: linux
 language: python
-cache: pip
 python:
-  - '3.6'
-env:
-  - TOXENV=pep8
-addons:
-  apt:
-    packages:
+  - 3.6
+matrix:
+  include:
+  - os: osx
+    osx_image: xcode7.3
+    language: generic
+    env: PYTHON=3.6.1
 before_install:
-  - sudo apt-get update && sudo apt-get --reinstall install -qq language-pack-en language-pack-ru language-pack-he language-pack-zh-hans
-  - pip install tox
-  # We're not actually installing Tox, but have to run it before we install wxPython via Conda. This is fugly but vOv
-  - tox
-  - pip install -U -f https://extras.wxpython.org/wxPython4/extras/linux/gtk2/ubuntu-14.04 wxPython==4.0.0b2
-#  # get Conda
-#  - if [[ "$TRAVIS_PYTHON_VERSION" == "2.7" ]]; then
-#      wget https://repo.continuum.io/miniconda/Miniconda-latest-Linux-x86_64.sh -O miniconda.sh;
-#    else
-#      wget https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh -O miniconda.sh;
-#    fi
-#  - bash miniconda.sh -b -p $HOME/miniconda
-#  - export PATH="$HOME/miniconda/bin:$PATH"
-#  - hash -r
-#  - conda config --set always_yes yes --set changeps1 no
-#  - conda update -q conda
-#  # Useful for debugging any issues with conda
-#  - conda info -a
-#install:
-  # install wxPython 3.0.0.0
- # - conda install -c https://conda.anaconda.org/travis wxpython=4.0.0b2
-script:
-  - tox
-
+  - bash scripts/setup-osx.sh
+install:
+  - export PYFA_VERSION="$(python3 scripts/dump_version.py)"
+  - bash scripts/package-osx.sh
+before_deploy:
+  - export RELEASE_PKG_FILE=$(ls *.deb)
+  - echo "deploying $RELEASE_PKG_FILE to GitHub releases"
+deploy:
+  provider: releases
+  api_key:
+    secure: hBxkenj8FCtM7O5qw/ikdp1rErJiqp/3A/fY8Y273TNVii+y+EEqcwERcUz3fOYj0CuxquU/1aeKMlTfypEPU6fGt0FMlgRDul61yZrs0Dnig4ZwjgQ0SAE6Y+RjztCLp3IzxZXXMxSfRpyKVsc3Nfv3K97ReNkzrj3cKtSpDF9xhW7MV7MOjK8vzol/aGDA2YmHPR7dFJotSebAXQWBrxAgWOWgmaZL0dFtLgrjVUOcM4o2XWNDmByJr9q86r9qIPkPp8M7dRCBzAYkWnAEqfj8h2W9Bp5p/HWhmznO5Ph5/wzEvPpG2YLofgoyRopdBX21eikfA9bI/fCH/ii+eyX8ainZWFfZiDPVH6IXCNfBd+ux6/a8Cq/rcaZ2a9/1MTTMtZqQ5PcMDaoaeghDjHx8H/QWguPTSZMxZ5FCeKpoYJad7/J3a/w4MVb6bdwB23pnXol//vlQd66FXy80SeP3tc0NIdpN3pS/UtDTn5cAqKn2XNWMkQfOZi8GC5tFnEkWRCob+OLN/sJOJxtPrqCEB29W/t/BfjhHyQznKQt3hWZYms1103naj4BBAFWi2rp83ZptkAxS6MlRPi7AkDjIisUlZfJ6ppsxB+fbayAJOxqPnbWgZ/xDRx6ihTRZZR1X9g9OMBtpRdV6yT+XQvE1eGSp4kjgvESiqT/EyHY=
+  file_glob: true
+  file: "dist/pyfa-*.zip"
+  skip_cleanup: true
+  draft: true
+  on:
+    tags: true
