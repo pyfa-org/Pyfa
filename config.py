@@ -86,7 +86,7 @@ def defPaths(customSavePath=None):
     global pyfaPath
     global savePath
     global saveDB
-    global gameDB
+    global gameDB 
     global saveInRoot
     global logPath
     global cipher
