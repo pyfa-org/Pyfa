@@ -109,7 +109,7 @@ class EfsPort:
             "Burst Projectors", "Warp Disrupt Field Generator", "Armor Resistance Shift Hardener",
             "Target Breaker", "Micro Jump Drive", "Ship Modifiers", "Stasis Grappler",
             "Ancillary Remote Shield Booster", "Ancillary Remote Armor Repairer",
-            "Titan Phenomena Generator", "Non-Repeating Hardeners"
+            "Titan Phenomena Generator", "Non-Repeating Hardeners", "Mutadaptive Remote Armor Repairer"
         ]
         projectedMods = list(filter(lambda mod: mod.item and mod.item.group.name in modGroupNames, fit.modules))
         # Sort projections to prevent the order needlessly changing as pyfa updates.
@@ -145,7 +145,9 @@ class EfsPort:
             elif mod.item.group.name in ["Remote Shield Booster", "Ancillary Remote Shield Booster"]:
                 stats["type"] = "Remote Shield Booster"
                 EfsPort.attrDirectMap(["shieldBonus"], stats, mod)
-            elif mod.item.group.name in ["Remote Armor Repairer", "Ancillary Remote Armor Repairer"]:
+            elif mod.item.group.name in [
+                    "Remote Armor Repairer", "Ancillary Remote Armor Repairer", "Mutadaptive Remote Armor Repairer"
+            ]:
                 stats["type"] = "Remote Armor Repairer"
                 EfsPort.attrDirectMap(["armorDamageAmount"], stats, mod)
             elif mod.item.group.name == "Warp Scrambler":

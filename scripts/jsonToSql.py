@@ -28,6 +28,8 @@ sys.path.insert(0, os.path.realpath(os.path.join(path, '..')))
 
 import json
 import argparse
+import itertools
+
 
 CATEGORIES_TO_REMOVE = [
     30  # Apparel
@@ -174,6 +176,119 @@ def main(db, json_path):
             newData.append(newRow)
         return newData
 
+    def fillReplacements(tables):
+
+        def compareAttrs(attrs1, attrs2, attrHig):
+            """
+            Compares received attribute sets. Returns:
+            - 0 if sets are different
+            - 1 if sets are exactly the same
+            - 2 if first set is strictly better
+            - 3 if second set is strictly better
+            """
+            if set(attrs1) != set(attrs2):
+                return 0
+            if all(attrs1[aid] == attrs2[aid] for aid in attrs1):
+                return 1
+            if all(
+                (attrs1[aid] >= attrs2[aid] and attrHig[aid]) or
+                (attrs1[aid] <= attrs2[aid] and not attrHig[aid])
+                for aid in attrs1
+            ):
+                return 2
+            if all(
+                (attrs2[aid] >= attrs1[aid] and attrHig[aid]) or
+                (attrs2[aid] <= attrs1[aid] and not attrHig[aid])
+                for aid in attrs1
+            ):
+                return 3
+            return 0
+
+        skillReqAttribs = {
+            182: 277,
+            183: 278,
+            184: 279,
+            1285: 1286,
+            1289: 1287,
+            1290: 1288}
+        skillReqAttribsFlat = set(skillReqAttribs.keys()).union(skillReqAttribs.values())
+        # Get data on type groups
+        typesGroups = {}
+        for row in tables['evetypes']:
+            typesGroups[row['typeID']] = row['groupID']
+        # Get data on type attributes
+        typesNormalAttribs = {}
+        typesSkillAttribs = {}
+        for row in tables['dgmtypeattribs']:
+            attributeID = row['attributeID']
+            if attributeID in skillReqAttribsFlat:
+                typeSkillAttribs = typesSkillAttribs.setdefault(row['typeID'], {})
+                typeSkillAttribs[row['attributeID']] = row['value']
+            # Ignore these attributes for comparison purposes
+            elif attributeID in (
+                422,  # techLevel
+                633,  # metaLevel
+                1692  # metaGroupID
+            ):
+                continue
+            else:
+                typeNormalAttribs = typesNormalAttribs.setdefault(row['typeID'], {})
+                typeNormalAttribs[row['attributeID']] = row['value']
+        # Get data on skill requirements
+        typesSkillReqs = {}
+        for typeID, typeAttribs in typesSkillAttribs.items():
+            typeSkillAttribs = typesSkillAttribs.get(typeID, {})
+            if not typeSkillAttribs:
+                continue
+            typeSkillReqs = typesSkillReqs.setdefault(typeID, {})
+            for skillreqTypeAttr, skillreqLevelAttr in skillReqAttribs.items():
+                try:
+                    skillType = int(typeSkillAttribs[skillreqTypeAttr])
+                    skillLevel = int(typeSkillAttribs[skillreqLevelAttr])
+                except (KeyError, ValueError):
+                    continue
+                typeSkillReqs[skillType] = skillLevel
+        # Get data on attribute highIsGood flag
+        attrHig = {}
+        for row in tables['dgmattribs']:
+            attrHig[row['attributeID']] = bool(row['highIsGood'])
+        # As EVE affects various types mostly depending on their group or skill requirements,
+        # we're going to group various types up this way
+        groupedData = {}
+        for row in tables['evetypes']:
+            typeID = row['typeID']
+            typeAttribs = typesNormalAttribs.get(typeID, {})
+            # Ignore stuff w/o attributes
+            if not typeAttribs:
+                continue
+            # We need only skill types, not levels for keys
+            typeSkillreqs = frozenset(typesSkillReqs.get(typeID, {}))
+            typeGroup = typesGroups[typeID]
+            groupData = groupedData.setdefault((typeGroup, typeSkillreqs), [])
+            groupData.append((typeID, typeAttribs))
+        same = {}
+        better = {}
+        # Now, go through composed groups and for every item within it find items which are
+        # the same and which are better
+        for groupData in groupedData.values():
+            for type1, type2 in itertools.combinations(groupData, 2):
+                comparisonResult = compareAttrs(type1[1], type2[1], attrHig)
+                # Equal
+                if comparisonResult == 1:
+                    same.setdefault(type1[0], set()).add(type2[0])
+                    same.setdefault(type2[0], set()).add(type1[0])
+                # First is better
+                elif comparisonResult == 2:
+                    better.setdefault(type2[0], set()).add(type1[0])
+                # Second is better
+                elif comparisonResult == 3:
+                    better.setdefault(type1[0], set()).add(type2[0])
+        # Put this data into types table so that normal process hooks it up
+        for row in tables['evetypes']:
+            typeID = row['typeID']
+            row['replaceSame'] = ','.join('{}'.format(tid) for tid in sorted(same.get(typeID, ())))
+            row['replaceBetter'] = ','.join('{}'.format(tid) for tid in sorted(better.get(typeID, ())))
+
     data = {}
 
     # Dump all data to memory so we can easely cross check ignored rows
@@ -189,6 +304,8 @@ def main(db, json_path):
         if jsonName == 'clonegrades':
             tableData = convertClones(tableData)
         data[jsonName] = tableData
+
+    fillReplacements(data)
 
     # Set with typeIDs which we will have in our database
     # Sometimes CCP unpublishes some items we want to have published, we
