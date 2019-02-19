@@ -17,30 +17,30 @@
 # along with pyfa.  If not, see <http://www.gnu.org/licenses/>.
 # =============================================================================
 
-import time
+
 from xml.dom import minidom
 
 from logbook import Logger
 
 from eos.saveddata.price import PriceStatus
 from service.network import Network
-from service.price import Price, TIMEOUT, VALIDITY
+from service.price import Price
 
 pyfalog = Logger(__name__)
 
 
-class EveMarketData(object):
+class EveMarketData:
 
     name = "eve-marketdata.com"
 
-    def __init__(self, types, system, priceMap):
+    def __init__(self, priceMap, system, timeout):
         data = {}
         baseurl = "https://eve-marketdata.com/api/item_prices.xml"
-        data["system_id"] = system  # Use Jita for market
-        data["type_ids"] = ','.join(str(x) for x in types)
+        data["system_id"] = system
+        data["type_ids"] = ','.join(str(typeID) for typeID in priceMap)
 
         network = Network.getInstance()
-        data = network.request(baseurl, network.PRICES, params=data)
+        data = network.request(baseurl, network.PRICES, params=data, timeout=timeout)
         xml = minidom.parseString(data.text)
         types = xml.getElementsByTagName("eve").item(0).getElementsByTagName("price")
 
@@ -55,19 +55,10 @@ class EveMarketData(object):
                 pyfalog.warning("Failed to get price for: {0}", type_)
                 continue
 
-            # Fill price data
-            priceobj = priceMap[typeID]
-
-            # eve-marketdata returns 0 if price data doesn't even exist for the item. In this case, don't reset the
-            # cached price, and set the price timeout to TIMEOUT (every 15 minutes currently). Se GH issue #1334
-            if price != 0:
-                priceobj.price = price
-                priceobj.time = time.time() + VALIDITY
-                priceobj.status = PriceStatus.success
-            else:
-                priceobj.time = time.time() + TIMEOUT
-
-            # delete price from working dict
+            # eve-marketdata returns 0 if price data doesn't even exist for the item
+            if price == 0:
+                continue
+            priceMap[typeID].update(PriceStatus.fetchSuccess, price)
             del priceMap[typeID]
 
 

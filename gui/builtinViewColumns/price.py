@@ -22,11 +22,22 @@ import wx
 
 from eos.saveddata.cargo import Cargo
 from eos.saveddata.drone import Drone
+from eos.saveddata.fighter import Fighter
 from eos.saveddata.price import PriceStatus
 from service.price import Price as ServicePrice
 from gui.viewColumn import ViewColumn
 from gui.bitmap_loader import BitmapLoader
 from gui.utils.numberFormatter import formatAmount
+
+
+def formatPrice(stuff, priceObj):
+    textItems = []
+    if priceObj.price:
+        mult = stuff.amount if isinstance(stuff, (Drone, Cargo, Fighter)) else 1
+        textItems.append(formatAmount(priceObj.price * mult, 3, 3, 9, currency=True))
+    if priceObj.status in (PriceStatus.fetchFail, PriceStatus.fetchTimeout):
+        textItems.append("(!)")
+    return " ".join(textItems)
 
 
 class Price(ViewColumn):
@@ -51,28 +62,14 @@ class Price(ViewColumn):
         if not priceObj.isValid:
             return False
 
-        # Fetch actual price as float to not modify its value on Price object
-        price = priceObj.price
-
-        if price == 0:
-            return ""
-
-        if isinstance(stuff, Drone) or isinstance(stuff, Cargo):
-            price *= stuff.amount
-
-        return formatAmount(price, 3, 3, 9, currency=True)
+        return formatPrice(stuff, priceObj)
 
     def delayedText(self, mod, display, colItem):
         sPrice = ServicePrice.getInstance()
 
         def callback(item):
-            price = item[0]
-            textItems = []
-            if price.price:
-                textItems.append(formatAmount(price.price, 3, 3, 9, currency=True))
-            if price.status == PriceStatus.fail:
-                textItems.append("(!)")
-            colItem.SetText(" ".join(textItems))
+            priceObj = item[0]
+            colItem.SetText(formatPrice(mod, priceObj))
 
             display.SetItem(colItem)
 

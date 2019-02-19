@@ -20,7 +20,6 @@
 
 import queue
 import threading
-import time
 
 import wx
 from logbook import Logger
@@ -31,15 +30,11 @@ from service.fit import Fit
 from service.market import Market
 from service.network import TimeoutError
 
+
 pyfalog = Logger(__name__)
 
 
-VALIDITY = 24 * 60 * 60  # Price validity period, 24 hours
-REREQUEST = 4 * 60 * 60  # Re-request delay for failed fetches, 4 hours
-TIMEOUT = 15 * 60  # Network timeout delay for connection issues, 15 minutes
-
-
-class Price(object):
+class Price:
     instance = None
 
     systemsList = {
@@ -69,38 +64,34 @@ class Price(object):
         return cls.instance
 
     @classmethod
-    def fetchPrices(cls, prices):
+    def fetchPrices(cls, prices, timeout=5):
         """Fetch all prices passed to this method"""
 
         # Dictionary for our price objects
         priceMap = {}
-        # Check all provided price objects, and add invalid ones to dictionary
+        # Check all provided price objects, and add those we want to update to
+        # dictionary
         for price in prices:
             if not price.isValid:
                 priceMap[price.typeID] = price
 
-        if len(priceMap) == 0:
+        if not priceMap:
             return
-
-        # Set of items which are still to be requested from this service
-        toRequest = set()
 
         # Compose list of items we're going to request
         for typeID in tuple(priceMap):
             # Get item object
             item = db.getItem(typeID)
-            # We're not going to request items only with market group, as eve-central
-            # doesn't provide any data for items not on the market
+            # We're not going to request items only with market group, as our current market
+            # sources do not provide any data for items not on the market
             if item is None:
                 continue
             if not item.marketGroupID:
-                priceMap[typeID].status = PriceStatus.notSupported
+                priceMap[typeID].update(PriceStatus.notSupported)
                 del priceMap[typeID]
                 continue
-            toRequest.add(typeID)
 
-        # Do not waste our time if all items are not on the market
-        if len(toRequest) == 0:
+        if not priceMap:
             return
 
         sFit = Fit.getInstance()
@@ -113,33 +104,34 @@ class Price(object):
         sourcesToTry = list(cls.sources.keys())
         curr = sFit.serviceFittingOptions["priceSource"] if sFit.serviceFittingOptions["priceSource"] in sourcesToTry else sourcesToTry[0]
 
-        while len(sourcesToTry) > 0:
+        # Record timeouts as it will affect our final decision
+        timeouts = {}
+
+        while priceMap and sourcesToTry:
+            timeouts[curr] = False
             sourcesToTry.remove(curr)
             try:
                 sourceCls = cls.sources.get(curr)
-                sourceCls(toRequest, cls.systemsList[sFit.serviceFittingOptions["priceSystem"]], priceMap)
-                break
-                # If getting or processing data returned any errors
+                sourceCls(priceMap, cls.systemsList[sFit.serviceFittingOptions["priceSystem"]], timeout)
             except TimeoutError:
-                # Timeout error deserves special treatment
-                pyfalog.warning("Price fetch timout")
-                for typeID in tuple(priceMap):
-                    priceobj = priceMap[typeID]
-                    priceobj.time = time.time() + TIMEOUT
-                    priceobj.status = PriceStatus.fail
-                    del priceMap[typeID]
-            except Exception as ex:
-                # something happened, try another source
-                pyfalog.warn('Failed to fetch prices from price source {}: {}'.format(curr, ex, sourcesToTry[0]))
-                if len(sourcesToTry) > 0:
-                    pyfalog.warn('Trying {}'.format(sourcesToTry[0]))
-                    curr = sourcesToTry[0]
+                pyfalog.warning("Price fetch timeout for source {}".format(curr))
+                timeouts[curr] = True
+            except Exception as e:
+                pyfalog.warn('Failed to fetch prices from price source {}: {}'.format(curr, e))
+            if sourcesToTry:
+                curr = sourcesToTry[0]
+                pyfalog.warn('Trying {}'.format(curr))
 
-        # if we get to this point, then we've got an error in all of our sources. Set to REREQUEST delay
-        for typeID in priceMap.keys():
-            priceobj = priceMap[typeID]
-            priceobj.time = time.time() + REREQUEST
-            priceobj.status = PriceStatus.fail
+        # If we get to this point, then we've failed to get price with all our sources
+        # If all sources failed due to timeouts, set one status
+        if all(to is True for to in timeouts.values()):
+            for typeID in priceMap.keys():
+                priceMap[typeID].update(PriceStatus.fetchTimeout)
+        # If some sources failed due to any other reason, then it's definitely not network
+        # timeout and we just set another status
+        else:
+            for typeID in priceMap.keys():
+                priceMap[typeID].update(PriceStatus.fetchFail)
 
     @classmethod
     def fitItemsList(cls, fit):

@@ -17,33 +17,31 @@
 # along with pyfa.  If not, see <http://www.gnu.org/licenses/>.
 # =============================================================================
 
-import time
+
 from xml.dom import minidom
 
 from logbook import Logger
 
 from eos.saveddata.price import PriceStatus
 from service.network import Network
-from service.price import Price, VALIDITY
+from service.price import Price
 
 pyfalog = Logger(__name__)
 
 
-class EveMarketer(object):
+class EveMarketer:
 
     name = "evemarketer"
 
-    def __init__(self, types, system, priceMap):
+    def __init__(self, priceMap, system, timeout):
         data = {}
         baseurl = "https://api.evemarketer.com/ec/marketstat"
 
-        data["usesystem"] = system  # Use Jita for market
-        data["typeid"] = set()
-        for typeID in types:  # Add all typeID arguments
-            data["typeid"].add(typeID)
+        data["usesystem"] = system
+        data["typeid"] = {typeID for typeID in priceMap}
 
         network = Network.getInstance()
-        data = network.request(baseurl, network.PRICES, params=data)
+        data = network.request(baseurl, network.PRICES, params=data, timeout=timeout)
         xml = minidom.parseString(data.text)
         types = xml.getElementsByTagName("marketstat").item(0).getElementsByTagName("type")
         # Cycle through all types we've got from request
@@ -56,15 +54,10 @@ class EveMarketer(object):
                 percprice = float(sell.getElementsByTagName("percentile").item(0).firstChild.data)
             except (TypeError, ValueError):
                 pyfalog.warning("Failed to get price for: {0}", type_)
-                percprice = 0
+                continue
 
             # Fill price data
-            priceobj = priceMap[typeID]
-            priceobj.price = percprice
-            priceobj.time = time.time() + VALIDITY
-            priceobj.status = PriceStatus.success
-
-            # delete price from working dict
+            priceMap[typeID].update(PriceStatus.fetchSuccess, percprice)
             del priceMap[typeID]
 
 
