@@ -122,8 +122,8 @@ class FighterDisplay(d.Display):
                     # "Max Range",
                     # "Miscellanea",
                     "attr:maxVelocity",
-                    "Fighter Abilities"
-                    # "Price",
+                    "Fighter Abilities",
+                    "Price",
                     ]
 
     def __init__(self, parent):
