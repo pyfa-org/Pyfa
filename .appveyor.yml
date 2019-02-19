@@ -1,5 +1,4 @@
 environment:
-
   global:
     # SDK v7.0 MSVC Express 2008's SetEnv.cmd script will fail if the
     # /E:ON and /V:ON options are not enabled in the batch script intepreter
@@ -8,76 +7,11 @@ environment:
 
   matrix:
 
-    # Python 2.7.10 is the latest version and is not pre-installed.
-
-  #    - PYTHON: "C:\\Python27.10"
-  #      PYTHON_VERSION: "2.7.10"
-  #      PYTHON_ARCH: "32"
-
-    #- PYTHON: "C:\\Python27.10-x64"
-    #  PYTHON_VERSION: "2.7.10"
-    #  PYTHON_ARCH: "64"
-
-    # Pre-installed Python versions, which Appveyor may upgrade to
-    # a later point release.
-    # See: http://www.appveyor.com/docs/installed-software#python
-
-    #- PYTHON: "C:\\Python27"
-    #  PYTHON_VERSION: "2.7.x" # currently 2.7.9
-    #  PYTHON_ARCH: "32"
-
-    #- PYTHON: "C:\\Python27-x64"
-    #  PYTHON_VERSION: "2.7.x" # currently 2.7.9
-    #  PYTHON_ARCH: "64"
-
-    #- PYTHON: "C:\\Python33"
-    #  PYTHON_VERSION: "3.3.x" # currently 3.3.5
-    #  PYTHON_ARCH: "32"
-
-    #- PYTHON: "C:\\Python33-x64"
-    #  PYTHON_VERSION: "3.3.x" # currently 3.3.5
-    #  PYTHON_ARCH: "64"
-
-    #- PYTHON: "C:\\Python34"
-    #  PYTHON_VERSION: "3.4.x" # currently 3.4.3
-    #  PYTHON_ARCH: "32"
-
-    #- PYTHON: "C:\\Python34-x64"
-    #  PYTHON_VERSION: "3.4.x" # currently 3.4.3
-    #  PYTHON_ARCH: "64"
-
-    # Python versions not pre-installed
-
-    # Python 2.6.6 is the latest Python 2.6 with a Windows installer
-    # See: https://github.com/ogrisel/python-appveyor-demo/issues/10
-
-    #- PYTHON: "C:\\Python266"
-    #  PYTHON_VERSION: "2.6.6"
-    #  PYTHON_ARCH: "32"
-
-    #- PYTHON: "C:\\Python266-x64"
-    #  PYTHON_VERSION: "2.6.6"
-    #  PYTHON_ARCH: "64"
-
     - PYTHON: "C:\\Python36"
       PYTHON_VERSION: "3.6.x"
       PYTHON_ARCH: "32"
-
-    #- PYTHON: "C:\\Python35-x64"
-    #  PYTHON_VERSION: "3.5.0"
-    #  PYTHON_ARCH: "64"
-
-    # Major and minor releases (i.e x.0.0 and x.y.0) prior to 3.3.0 use
-    # a different naming scheme.
-
-    #- PYTHON: "C:\\Python270"
-    #  PYTHON_VERSION: "2.7.0"
-    #  PYTHON_ARCH: "32"
-
-    #- PYTHON: "C:\\Python270-x64"
-    #  PYTHON_VERSION: "2.7.0"
-    #  PYTHON_ARCH: "64"
-
+init:
+  - ps: iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
 install:
   # If there is a newer build queued for the same PR, cancel this one.
   # The AppVeyor 'rollout builds' option is supposed to serve the same
@@ -88,15 +22,6 @@ install:
         https://ci.appveyor.com/api/projects/$env:APPVEYOR_ACCOUNT_NAME/$env:APPVEYOR_PROJECT_SLUG/history?recordsNumber=50).builds | `
         Where-Object pullRequestId -eq $env:APPVEYOR_PULL_REQUEST_NUMBER)[0].buildNumber) { `
           throw "There are newer queued builds for this pull request, failing early." }
-
-#  # Install wxPython
-#  - 'ECHO Downloading wxPython.'
-#  - "appveyor DownloadFile https://goo.gl/yvO8PB -FileName C:\\wxpython.exe"
-#  #- "appveyor DownloadFile https://goo.gl/Uj0jV3 -FileName C:\\wxpython64.exe"
-#
-#  - 'ECHO Install wxPython'
-#  - "C:\\wxpython.exe /SP- /VERYSILENT /NORESTART"
-#  #- "C:\\wxpython64.exe /SP- /VERYSILENT /NORESTART"
 
   - ECHO "Filesystem root:"
   - ps: "ls \"C:/\""
@@ -110,16 +35,11 @@ install:
   - ECHO "Installed SDKs:"
   - ps: "ls \"C:/Program Files/Microsoft SDKs/Windows\""
 
-  # Install Python (from the official .msi of http://python.org) and pip when
-  # not already installed.
-  # - ps: if (-not(Test-Path($env:PYTHON))) { & appveyor\install.ps1 }
-
   # Prepend newly installed Python to the PATH of this build (this cannot be
   # done from inside the powershell script as it would require to restart
   # the parent CMD process).
   - "SET PATH=%PYTHON%;%PYTHON%\\Scripts;%PATH%"
 
-  # Check that we have the expected version and architecture for Python
   - "python --version"
   - "python -c \"import struct; print(struct.calcsize('P') * 8)\""
 
@@ -131,21 +51,36 @@ install:
   # compiled extensions and are not provided as pre-built wheel packages,
   # pip will build them from source using the MSVC compiler matching the
   # target Python version and architecture
-  # C:\\projects\\eve-gnosis\\
   - ECHO "Install pip requirements:"
   - "pip install -r requirements.txt"
   - "pip install PyInstaller"
-#  - "pip install -r requirements_test.txt"
-#  - "pip install -r requirements_build_windows.txt"
+
+before_build:
+    # directory that will contain the built files
+  - ps: $env:PYFA_DIST_DIR = "c:\projects\$env:APPVEYOR_PROJECT_SLUG\dist"
+  - ps: $env:PYFA_VERSION = (python ./scripts/dump_version.py)
+  - ps: echo("pyfa version ")
+  - ps: echo ($env:PYFA_VERSION)
 
 build_script:
-  # Build the compiled extension
-  # - "python setup.py build"
   - ECHO "Build pyfa:"
-  #- copy C:\projects\pyfa\dist_assets\win\pyfa.spec C:\projects\pyfa\pyfa.spec
-  - ps: cd C:\projects\$env:APPVEYOR_PROJECT_SLUG
-  - "python -m PyInstaller --noupx --clean --windowed --noconsole -m ./dist_assets/win/pyfa.exe.manifest -y ./dist_assets/win/pyfa.spec"
 
+  ##########
+  # PyInstaller - create binaries for pyfa
+  ##########
+  # Build command for PyInstaller
+  - "python -m PyInstaller --noupx --clean --windowed --noconsole -y pyfa.spec"
+  # Copy over manifest (See pyfa-org/pyfa#1622)
+  - ps: xcopy /y dist_assets\win\pyfa.exe.manifest $env:PYFA_DIST_DIR\pyfa\
+  # Not really sure if this is needed, but why not
+  - ps: xcopy /y dist_assets\win\Microsoft.VC90.CRT.manifest $env:PYFA_DIST_DIR\pyfa\
+
+  ##########
+  # InnoScript EXE building
+  # This is in a separate script because I don't feel like copying over the logic to AppVeyor script right now...
+  ##########
+  - "python dist_assets/win/dist.py"
+  - ps: dir $env:PYFA_DIST_DIR/
   #- ECHO "Build pyfa (Debug):"
   #- copy C:\projects\pyfa\dist_assets\win\pyfa_debug.spec C:\projects\pyfa\pyfa_debug.spec
   #- "pyinstaller.exe --clean --noconfirm --windowed --upx-dir=C:\\projects\\pyfa\\scripts\\upx.exe C:\\projects\\pyfa\\pyfa_debug.spec"
@@ -155,12 +90,11 @@ build: on
 after_build:
   - ps: "ls \"./\""
   #- ps: "ls \"C:\\projects\\pyfa\\build\\pyfa\\\""
-  - ps: "ls \"C:\\projects\\$env:APPVEYOR_PROJECT_SLUG\\dist\\\""
 #  - ps: "ls \"C:\\projects\\$env:APPVEYOR_PROJECT_SLUG\\build\\exe.win32-2.7\\\""
   # Zip
   # APPVEYOR_PULL_REQUEST_NUMBER -and $env:APPVEYOR_BUILD_NUMBER
   #- 7z a build.zip -r C:\projects\pyfa\build\pyfa\*.*
-  - ps: 7z a pyfa.zip -r C:\projects\$env:APPVEYOR_PROJECT_SLUG\dist\pyfa\*.*
+  - ps: 7z a "pyfa-$env:PYFA_VERSION-win.zip" -r "$env:PYFA_DIST_DIR\pyfa\*.*"
   #- 7z a pyfa_debug.zip -r C:\projects\pyfa\dist\pyfa_debug\*.*
 
 on_success:
@@ -181,11 +115,21 @@ after_test:
 
 artifacts:
   # Archive the generated packages in the ci.appveyor.com build report.
-  - path: pyfa.zip
-    name: 'pyfa.zip'
+  - path: pyfa*-win.zip
+  - path: pyfa*-win.exe
   #- path: pyfa_debug.zip
   #  name: Pyfa_debug
-
+  
+deploy:
+  tag: $(pyfa_version)
+  release: pyfa $(pyfa_version)
+  description: 'Release description'
+  provider: GitHub
+  auth_token:
+    secure: BfNHO66ff5hVx2O2ORbl49X0U/5h2V2T0IuRZDwm7fd1HvsVluF0wRCbl29oRp1M
+  draft: true
+  on:
+    APPVEYOR_REPO_TAG: true        # deploy on tag push only
 #on_success:
 #  - TODO: upload the content of dist/*.whl to a public wheelhouse
 #

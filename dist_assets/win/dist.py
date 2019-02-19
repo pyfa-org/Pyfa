@@ -3,44 +3,35 @@
 import os.path
 from subprocess import call
 import zipfile
+from packaging.version import Version
+import yaml
 
 
-def zipdir(path, zip):
-    for root, dirs, files in os.walk(path):
-        for file in files:
-            zip.write(os.path.join(root, file))
+with open("version.yml", 'r') as file:
+    data = yaml.load(file)
+    version = data['version']
 
-config = {}
+os.environ["PYFA_DIST_DIR"] = os.path.join(os.getcwd(), 'dist')
 
-exec(compile(open("config.py").read(), "config.py", 'exec'), config)
+os.environ["PYFA_VERSION"] = version
+iscc = "C:\Program Files (x86)\Inno Setup 5\ISCC.exe" # inno script location via wine
 
-iscc =  "C:\Program Files (x86)\Inno Setup 5\ISCC.exe" # inno script location via wine
+source = os.path.join(os.environ["PYFA_DIST_DIR"], "pyfa")
 
-print("Creating archive")
-
-source = os.path.join(os.getcwd(), "dist", "pyfa")
-
-fileName = "pyfa-{}-{}-{}-win".format(
-    config['version'],
-    config['expansionName'].lower(),
-    config['expansionVersion']
-)
-
-archive = zipfile.ZipFile(os.path.join(os.getcwd(), "dist", fileName + ".zip"), 'w', compression=zipfile.ZIP_DEFLATED)
-zipdir(source, archive)
-archive.close()
+fileName = "pyfa-{}-win".format(os.environ["PYFA_VERSION"])
 
 print("Compiling EXE")
 
-expansion = "%s %s" % (config['expansionName'], config['expansionVersion']),
+v = Version(version)
+
+print(v)
 
 call([
     iscc,
     os.path.join(os.getcwd(), "dist_assets", "win", "pyfa-setup.iss"),
-    "/dMyAppVersion=%s" % (config['version']),
-    "/dMyAppExpansion=%s" % expansion,
+    "/dMyAppVersion=%s" % v,
     "/dMyAppDir=%s" % source,
-    "/dMyOutputDir=%s" % os.path.join(os.getcwd(), "dist"),
+    "/dMyOutputDir=%s" % os.path.join(os.getcwd()),
     "/dMyOutputFile=%s" % fileName])  # stdout=devnull, stderr=devnull
 
 print("Done")

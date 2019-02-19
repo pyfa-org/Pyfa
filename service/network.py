@@ -83,8 +83,7 @@ class Network(object):
             raise Error("Access not enabled - please enable in Preferences > Network")
 
         # Set up some things for the request
-        versionString = "{0} {1} - {2} {3}".format(config.version, config.tag, config.expansionName,
-                                                   config.expansionVersion)
+        versionString = "{0}".format(config.version)
         headers = {"User-Agent": "pyfa {0} (python-requests {1})".format(versionString, requests.__version__)}
         # user-agent: pyfa 2.0.0b4 git -YC120.2 1.2 (python-requests 2.18.4)
 
