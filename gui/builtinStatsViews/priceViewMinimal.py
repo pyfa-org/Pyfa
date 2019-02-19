@@ -77,7 +77,7 @@ class PriceViewMinimal(StatsView):
             fit_items = Price.fitItemsList(fit)
 
             sPrice = Price.getInstance()
-            sPrice.getPrices(fit_items, self.processPrices)
+            sPrice.getPrices(fit_items, self.processPrices, fetchTimeout=30)
             self.labelEMStatus.SetLabel("Updating prices...")
 
         self.refreshPanelPrices(fit)

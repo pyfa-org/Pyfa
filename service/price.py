@@ -64,7 +64,7 @@ class Price:
         return cls.instance
 
     @classmethod
-    def fetchPrices(cls, prices, timeout=5):
+    def fetchPrices(cls, prices, fetchTimeout):
         """Fetch all prices passed to this method"""
 
         # Dictionary for our price objects
@@ -112,7 +112,7 @@ class Price:
             sourcesToTry.remove(curr)
             try:
                 sourceCls = cls.sources.get(curr)
-                sourceCls(priceMap, cls.systemsList[sFit.serviceFittingOptions["priceSystem"]], timeout)
+                sourceCls(priceMap, cls.systemsList[sFit.serviceFittingOptions["priceSystem"]], fetchTimeout)
             except TimeoutError:
                 pyfalog.warning("Price fetch timeout for source {}".format(curr))
                 timeouts[curr] = True
@@ -166,7 +166,7 @@ class Price:
 
         return item.price.price
 
-    def getPrices(self, objitems, callback, waitforthread=False):
+    def getPrices(self, objitems, callback, fetchTimeout=30, waitforthread=False):
         """Get prices for multiple typeIDs"""
         requests = []
         sMkt = Market.getInstance()
@@ -186,7 +186,7 @@ class Price:
         if waitforthread:
             self.priceWorkerThread.setToWait(requests, cb)
         else:
-            self.priceWorkerThread.trigger(requests, cb)
+            self.priceWorkerThread.trigger(requests, cb, fetchTimeout)
 
     def clearPriceCache(self):
         pyfalog.debug("Clearing Prices")
@@ -206,11 +206,11 @@ class PriceWorkerThread(threading.Thread):
         queue = self.queue
         while True:
             # Grab our data
-            callback, requests = queue.get()
+            callback, requests, fetchTimeout = queue.get()
 
             # Grab prices, this is the time-consuming part
             if len(requests) > 0:
-                Price.fetchPrices(requests)
+                Price.fetchPrices(requests, fetchTimeout)
 
             wx.CallAfter(callback)
             queue.task_done()
@@ -222,14 +222,13 @@ class PriceWorkerThread(threading.Thread):
                     for callback in callbacks:
                         wx.CallAfter(callback)
 
-    def trigger(self, prices, callbacks):
-        self.queue.put((callbacks, prices))
+    def trigger(self, prices, callbacks, fetchTimeout):
+        self.queue.put((callbacks, prices, fetchTimeout))
 
     def setToWait(self, prices, callback):
-        for x in prices:
-            if x.typeID not in self.wait:
-                self.wait[x.typeID] = []
-            self.wait[x.typeID].append(callback)
+        for price in prices:
+            callbacks = self.wait.setdefault(price.typeID, [])
+            callbacks.append(callback)
 
 
 # Import market sources only to initialize price source modules, they register on their own

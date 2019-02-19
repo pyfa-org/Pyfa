@@ -33,14 +33,14 @@ class EveMarketData:
 
     name = "eve-marketdata.com"
 
-    def __init__(self, priceMap, system, timeout):
+    def __init__(self, priceMap, system, fetchTimeout):
         data = {}
         baseurl = "https://eve-marketdata.com/api/item_prices.xml"
         data["system_id"] = system
         data["type_ids"] = ','.join(str(typeID) for typeID in priceMap)
 
         network = Network.getInstance()
-        data = network.request(baseurl, network.PRICES, params=data, timeout=timeout)
+        data = network.request(baseurl, network.PRICES, params=data, timeout=fetchTimeout)
         xml = minidom.parseString(data.text)
         types = xml.getElementsByTagName("eve").item(0).getElementsByTagName("price")
 

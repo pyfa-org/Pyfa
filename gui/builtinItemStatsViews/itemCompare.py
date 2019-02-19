@@ -16,7 +16,7 @@ class ItemCompare(wx.Panel):
     def __init__(self, parent, stuff, item, items, context=None):
         # Start dealing with Price stuff to get that thread going
         sPrice = ServicePrice.getInstance()
-        sPrice.getPrices(items, self.UpdateList)
+        sPrice.getPrices(items, self.UpdateList, fetchTimeout=90)
 
         wx.Panel.__init__(self, parent)
         mainSizer = wx.BoxSizer(wx.VERTICAL)

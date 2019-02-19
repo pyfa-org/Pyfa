@@ -33,7 +33,7 @@ class EveMarketer:
 
     name = "evemarketer"
 
-    def __init__(self, priceMap, system, timeout):
+    def __init__(self, priceMap, system, fetchTimeout):
         data = {}
         baseurl = "https://api.evemarketer.com/ec/marketstat"
 
@@ -41,7 +41,7 @@ class EveMarketer:
         data["typeid"] = {typeID for typeID in priceMap}
 
         network = Network.getInstance()
-        data = network.request(baseurl, network.PRICES, params=data, timeout=timeout)
+        data = network.request(baseurl, network.PRICES, params=data, timeout=fetchTimeout)
         xml = minidom.parseString(data.text)
         types = xml.getElementsByTagName("marketstat").item(0).getElementsByTagName("type")
         # Cycle through all types we've got from request

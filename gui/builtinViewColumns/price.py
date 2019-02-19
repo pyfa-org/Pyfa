@@ -33,7 +33,11 @@ from gui.utils.numberFormatter import formatAmount
 def formatPrice(stuff, priceObj):
     textItems = []
     if priceObj.price:
-        mult = stuff.amount if isinstance(stuff, (Drone, Cargo, Fighter)) else 1
+        mult = 1
+        if isinstance(stuff, (Drone, Cargo)):
+            mult = stuff.amount
+        elif isinstance(stuff, Fighter):
+            mult = stuff.amountActive
         textItems.append(formatAmount(priceObj.price * mult, 3, 3, 9, currency=True))
     if priceObj.status in (PriceStatus.fetchFail, PriceStatus.fetchTimeout):
         textItems.append("(!)")
@@ -73,7 +77,7 @@ class Price(ViewColumn):
 
             display.SetItem(colItem)
 
-        sPrice.getPrices([mod.item], callback, True)
+        sPrice.getPrices([mod.item], callback, waitforthread=True)
 
     def getImageId(self, mod):
         return -1
