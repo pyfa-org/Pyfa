@@ -46,8 +46,18 @@ class ItemMutator(wx.Panel):
 
         for m in sorted(stuff.mutators.values(), key=lambda x: x.attribute.displayName):
             # Format: [raw value, modifier applied to base raw value, display value]
-            minRange = (m.minValue, m.attribute.unit.SimplifyValue(m.minValue))
-            maxRange = (m.maxValue, m.attribute.unit.SimplifyValue(m.maxValue))
+            range1 = (m.minValue, m.attribute.unit.SimplifyValue(m.minValue))
+            range2 = (m.maxValue, m.attribute.unit.SimplifyValue(m.maxValue))
+
+            # minValue/maxValue do not always correspond to min/max, because these are
+            # just base value multiplied by minMod/maxMod, and in case base is negative
+            # minValue is actually bigger than maxValue
+            if range1[0] <= range2[0]:
+                minRange = range1
+                maxRange = range2
+            else:
+                minRange = range2
+                maxRange = range1
 
             if (m.highIsGood and minRange[0] >= maxRange[0]) or (not m.highIsGood and minRange[0] <= maxRange[0]):
                 betterRange = minRange
@@ -66,10 +76,10 @@ class ItemMutator(wx.Panel):
             # If base value is outside of mutation range, make sure that center of slider
             # corresponds to the value which is closest available to actual base value. It's
             # how EVE handles it
-            if m.minValue <= m.baseValue <= m.maxValue:
+            if minRange[0] <= m.baseValue <= maxRange[0]:
                 sliderBaseValue = m.baseValue
             else:
-                sliderBaseValue = max(m.minValue, min(m.maxValue, m.baseValue))
+                sliderBaseValue = max(minRange[0], min(maxRange[0], m.baseValue))
 
             headingSizer = wx.BoxSizer(wx.HORIZONTAL)
 
