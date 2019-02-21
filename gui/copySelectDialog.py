@@ -78,7 +78,7 @@ class CopySelectDialog(wx.Dialog):
                 bsizer = wx.BoxSizer(wx.VERTICAL)
                 self.options[formatId] = {}
 
-                for optId, optName, optDesc, optDefault in formatOptions:
+                for optId, optName, optDesc, _ in formatOptions:
                     checkbox = wx.CheckBox(self, -1, optName)
                     self.options[formatId][optId] = checkbox
                     if self.settings['options'].get(formatId, {}).get(optId, defaultFormatOptions.get(formatId, {}).get(optId)):
@@ -104,7 +104,7 @@ class CopySelectDialog(wx.Dialog):
 
     def toggleOptions(self):
         for formatId in self.options:
-            for optId, checkbox in self.options[formatId].items():
+            for checkbox in self.options[formatId].values():
                 checkbox.Enable(self.GetSelected() == formatId)
 
     def GetSelected(self):

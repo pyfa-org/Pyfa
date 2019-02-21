@@ -747,7 +747,7 @@ class MainFrame(wx.Frame):
                           CopySelectDialog.copyFormatEfs: self.clipboardEfs}
         dlg = CopySelectDialog(self)
         btnPressed = dlg.ShowModal()
-        
+
         if btnPressed == wx.ID_OK:
             selected = dlg.GetSelected()
             options = dlg.GetOptions()
