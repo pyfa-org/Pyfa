@@ -208,8 +208,8 @@ class Port(object):
     def importAuto(cls, string, path=None, activeFit=None, iportuser=None):
         # type: (Port, str, str, object, IPortUser) -> object
         # Get first line and strip space symbols of it to avoid possible detection errors
-        firstLine = re.split("[\n\r]+", string.strip(), maxsplit=1)[0]
-        firstLine = firstLine.strip()
+        splitLines = re.split("[\n\r]+", string.strip())
+        firstLine = splitLines[0].strip()
 
         # If XML-style start of tag encountered, detect as XML
         if re.search(RE_XML_START, firstLine):
@@ -237,7 +237,7 @@ class Port(object):
 
         # Assume that we import stand-alone abyssal module if all else fails
         try:
-            return "MutatedItem", (parseMutant(string.split("\n")),)
+            return "MutatedItem", (parseMutant(splitLines),)
         except:
             pass
 
