@@ -101,30 +101,39 @@ class Price:
             return
 
         # attempt to find user's selected price source, otherwise get first one
-        sourcesToTry = list(cls.sources.keys())
-        curr = sFit.serviceFittingOptions["priceSource"] if sFit.serviceFittingOptions["priceSource"] in sourcesToTry else sourcesToTry[0]
+        sourceAll = list(cls.sources.keys())
+        sourcePrimary = sFit.serviceFittingOptions["priceSource"] if sFit.serviceFittingOptions["priceSource"] in sourceAll else sourceAll[0]
+
+        # Format: {source name: timeout weight}
+        sources = {sourcePrimary: len(sourceAll)}
+        for source in sourceAll:
+            if source == sourcePrimary:
+                continue
+            sources[source] = min(sources.values()) - 1
+        timeoutWeightMult = fetchTimeout / sum(sources.values())
 
         # Record timeouts as it will affect our final decision
-        timeouts = {}
+        timedOutSources = {}
 
-        while priceMap and sourcesToTry:
-            timeouts[curr] = False
-            sourcesToTry.remove(curr)
+        for source, timeoutWeight in sources.items():
+            pyfalog.info('Trying {}'.format(source))
+            timedOutSources[source] = False
+            sourceFetchTimeout = timeoutWeight * timeoutWeightMult
             try:
-                sourceCls = cls.sources.get(curr)
-                sourceCls(priceMap, cls.systemsList[sFit.serviceFittingOptions["priceSystem"]], fetchTimeout)
+                sourceCls = cls.sources.get(source)
+                sourceCls(priceMap, cls.systemsList[sFit.serviceFittingOptions["priceSystem"]], sourceFetchTimeout)
             except TimeoutError:
-                pyfalog.warning("Price fetch timeout for source {}".format(curr))
-                timeouts[curr] = True
+                pyfalog.warning("Price fetch timeout for source {}".format(source))
+                timedOutSources[source] = True
             except Exception as e:
-                pyfalog.warn('Failed to fetch prices from price source {}: {}'.format(curr, e))
-            if sourcesToTry:
-                curr = sourcesToTry[0]
-                pyfalog.warn('Trying {}'.format(curr))
+                pyfalog.warn('Failed to fetch prices from price source {}: {}'.format(source, e))
+            # Sources remove price map items as they fetch info, if none remain then we're done
+            if not priceMap:
+                break
 
         # If we get to this point, then we've failed to get price with all our sources
         # If all sources failed due to timeouts, set one status
-        if all(to is True for to in timeouts.values()):
+        if all(to is True for to in timedOutSources.values()):
             for typeID in priceMap.keys():
                 priceMap[typeID].update(PriceStatus.fetchTimeout)
         # If some sources failed due to any other reason, then it's definitely not network
