@@ -703,10 +703,6 @@ class MainFrame(wx.Frame):
         fit = db_getFit(self.getActiveFit())
         toClipboard(Port.exportEft(fit, options))
 
-    def clipboardEftImps(self, options):
-        fit = db_getFit(self.getActiveFit())
-        toClipboard(Port.exportEftImps(fit))
-
     def clipboardDna(self, options):
         fit = db_getFit(self.getActiveFit())
         toClipboard(Port.exportDna(fit))
@@ -721,7 +717,7 @@ class MainFrame(wx.Frame):
 
     def clipboardMultiBuy(self, options):
         fit = db_getFit(self.getActiveFit())
-        toClipboard(Port.exportMultiBuy(fit))
+        toClipboard(Port.exportMultiBuy(fit, options))
 
     def clipboardEfs(self, options):
         fit = db_getFit(self.getActiveFit())
@@ -744,22 +740,22 @@ class MainFrame(wx.Frame):
 
     def exportToClipboard(self, event):
         CopySelectDict = {CopySelectDialog.copyFormatEft: self.clipboardEft,
-                          # CopySelectDialog.copyFormatEftImps: self.clipboardEftImps,
                           CopySelectDialog.copyFormatXml: self.clipboardXml,
                           CopySelectDialog.copyFormatDna: self.clipboardDna,
                           CopySelectDialog.copyFormatEsi: self.clipboardEsi,
                           CopySelectDialog.copyFormatMultiBuy: self.clipboardMultiBuy,
                           CopySelectDialog.copyFormatEfs: self.clipboardEfs}
         dlg = CopySelectDialog(self)
-        dlg.ShowModal()
-        selected = dlg.GetSelected()
-        options = dlg.GetOptions()
+        btnPressed = dlg.ShowModal()
 
-        settings = SettingsProvider.getInstance().getSettings("pyfaExport")
-        settings["format"] = selected
-        settings["options"] = options
+        if btnPressed == wx.ID_OK:
+            selected = dlg.GetSelected()
+            options = dlg.GetOptions()
 
-        CopySelectDict[selected](options)
+            settings = SettingsProvider.getInstance().getSettings("pyfaExport")
+            settings["format"] = selected
+            settings["options"] = options
+            CopySelectDict[selected](options.get(selected))
 
         try:
             dlg.Destroy()
