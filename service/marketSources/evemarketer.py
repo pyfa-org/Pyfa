@@ -34,14 +34,18 @@ class EveMarketer:
     name = "evemarketer"
 
     def __init__(self, priceMap, system, fetchTimeout):
-        data = {}
+        # Try selected system first
+        self.fetchPrices(priceMap, fetchTimeout, system)
+        # If price was not available - try globally
+        self.fetchPrices(priceMap, fetchTimeout)
+
+    def fetchPrices(self, priceMap, fetchTimeout, system=None):
+        params = {"typeid": {typeID for typeID in priceMap}}
+        if system is not None:
+            params["usesystem"] = system
         baseurl = "https://api.evemarketer.com/ec/marketstat"
-
-        data["usesystem"] = system
-        data["typeid"] = {typeID for typeID in priceMap}
-
         network = Network.getInstance()
-        data = network.request(baseurl, network.PRICES, params=data, timeout=fetchTimeout)
+        data = network.request(baseurl, network.PRICES, params=params, timeout=fetchTimeout)
         xml = minidom.parseString(data.text)
         types = xml.getElementsByTagName("marketstat").item(0).getElementsByTagName("type")
         # Cycle through all types we've got from request
@@ -56,7 +60,12 @@ class EveMarketer:
                 pyfalog.warning("Failed to get price for: {0}", type_)
                 continue
 
-            # Fill price data
+            # Price is 0 if evemarketer has info on this item, but it is not available
+            # for current scope limit. If we provided scope limit - make sure to skip
+            # such items to check globally, and do not skip if requested globally
+            if percprice == 0 and system is not None:
+                continue
+
             priceMap[typeID].update(PriceStatus.fetchSuccess, percprice)
             del priceMap[typeID]
 
