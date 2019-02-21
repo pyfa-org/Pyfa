@@ -37,7 +37,8 @@ class EveMarketer:
         # Try selected system first
         self.fetchPrices(priceMap, max(2 * fetchTimeout / 3, 2), system)
         # If price was not available - try globally
-        self.fetchPrices(priceMap, max(fetchTimeout / 3, 2))
+        if priceMap:
+            self.fetchPrices(priceMap, max(fetchTimeout / 3, 2))
 
     def fetchPrices(self, priceMap, fetchTimeout, system=None):
         params = {"typeid": {typeID for typeID in priceMap}}
