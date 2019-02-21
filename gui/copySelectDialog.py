@@ -57,6 +57,10 @@ class CopySelectDialog(wx.Dialog):
             defaultFormatOptions[formatId] = {opt[0]: opt[3] for opt in formatOptions}
 
         self.settings = SettingsProvider.getInstance().getSettings("pyfaExport", {"format": 0, "options": defaultFormatOptions})
+        # Options used to be stored as int (EFT export options only),
+        # overwrite them with new format when needed
+        if isinstance(self.settings["options"], int):
+            self.settings["options"] = defaultFormatOptions
 
         self.options = {}
 
