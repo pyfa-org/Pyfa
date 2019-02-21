@@ -284,5 +284,5 @@ class Port(object):
 
     # Multibuy-related methods
     @staticmethod
-    def exportMultiBuy(fit):
-        return exportMultiBuy(fit)
+    def exportMultiBuy(fit, options):
+        return exportMultiBuy(fit, options)

@@ -97,7 +97,7 @@ def exportESI(ofit):
         item['type_id'] = module.item.ID
         fit['items'].append(item)
 
-        if module.charge and sFit.serviceFittingOptions["exportCharges"]:
+        if module.charge:
             if module.chargeID not in charges:
                 charges[module.chargeID] = 0
             # `or 1` because some charges (ie scripts) are without qty
