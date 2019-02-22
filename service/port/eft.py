@@ -159,8 +159,8 @@ def exportEft(fit, options):
     return '{}\n\n{}'.format(header, '\n\n\n'.join(sections))
 
 
-def importEft(eftString):
-    lines = _importPrepareString(eftString)
+def importEft(lines):
+    lines = _importPrepare(lines)
     try:
         fit = _importCreateFit(lines)
     except EftImportError:
@@ -288,7 +288,7 @@ def importEft(eftString):
     return fit
 
 
-def importEftCfg(shipname, contents, iportuser):
+def importEftCfg(shipname, lines, iportuser):
     """Handle import from EFT config store file"""
 
     # Check if we have such ship in database, bail if we don't
@@ -300,7 +300,6 @@ def importEftCfg(shipname, contents, iportuser):
 
     fits = []  # List for fits
     fitIndices = []  # List for starting line numbers for each fit
-    lines = re.split('[\n\r]+', contents)  # Separate string into lines
 
     for line in lines:
         # Detect fit header
@@ -481,8 +480,7 @@ def importEftCfg(shipname, contents, iportuser):
     return fits
 
 
-def _importPrepareString(eftString):
-    lines = eftString.splitlines()
+def _importPrepare(lines):
     for i in range(len(lines)):
         lines[i] = lines[i].strip()
     while lines and not lines[0]:
