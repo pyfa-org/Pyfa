@@ -137,11 +137,11 @@ def exportESI(ofit):
     return json.dumps(fit)
 
 
-def importESI(str_):
+def importESI(string):
 
     sMkt = Market.getInstance()
     fitobj = Fit()
-    refobj = json.loads(str_)
+    refobj = json.loads(string)
     items = refobj['items']
     # "<" and ">" is replace to "&lt;", "&gt;" by EVE client
     fitobj.name = refobj['name']
