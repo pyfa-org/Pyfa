@@ -194,16 +194,14 @@ def main(db, json_path):
             if all(attrs1[aid] == attrs2[aid] for aid in attrs1):
                 return 2
             if all(
-                (attrs1[aid] <= attrs2[aid] and attrHig[aid] == 0) or
-                (attrs1[aid] >= attrs2[aid] and attrHig[aid] == 1) or
-                (attrs1[aid] == attrs2[aid] and attrHig[aid] == 2)
+                (attrs1[aid] <= attrs2[aid] and not attrHig[aid]) or
+                (attrs1[aid] >= attrs2[aid] and attrHig[aid])
                 for aid in attrs1
             ):
                 return 3
             if all(
-                (attrs2[aid] <= attrs1[aid] and attrHig[aid] == 0) or
-                (attrs2[aid] >= attrs1[aid] and attrHig[aid] == 1) or
-                (attrs1[aid] == attrs2[aid] and attrHig[aid] == 2)
+                (attrs2[aid] <= attrs1[aid] and not attrHig[aid]) or
+                (attrs2[aid] >= attrs1[aid] and attrHig[aid])
                 for aid in attrs1
             ):
                 return 4
@@ -223,6 +221,11 @@ def main(db, json_path):
         typesGroups = {}
         for row in tables['evetypes']:
             typesGroups[row['typeID']] = row['groupID']
+        # Get data on item effects
+        # Format: {type ID: set(effect, IDs)}
+        typesEffects = {}
+        for row in tables['dgmtypeeffects']:
+            typesEffects.setdefault(row['typeID'], set()).add(row['effectID'])
         # Get data on type attributes
         # Format: {type ID: {attribute ID: attribute value}}
         typesNormalAttribs = {}
@@ -258,17 +261,19 @@ def main(db, json_path):
                 except (KeyError, ValueError):
                     continue
                 typeSkillReqs[skillType] = skillLevel
+        # Get data on type parent types
+        # Format: {type ID: parent type ID}
+        typesParents = {}
+        for row in tables['invmetatypes']:
+            typesParents[row['typeID']] = row['parentTypeID']
         # Get data on attribute highIsGood flag
         # Format: {type ID: 0 if high is bad, 1 if high is good, 2 if neither}
         attrHig = {}
         for row in tables['dgmattribs']:
-            attrHig[row['attributeID']] = 1 if row['highIsGood'] else 0
+            attrHig[row['attributeID']] = bool(row['highIsGood'])
         # As CCP data is not really consistent, do some overrides
-        attrHig[4] = 0  # mass
-        attrHig[161] = 0  # volume
-        # Also do some customizations; some attributes are neither good nor bad when they change
-        attrHig[128] = 2  # chargeSize
-        attrHig[1547] = 2  # rigSize
+        attrHig[4] = False  # mass
+        attrHig[161] = False  # volume
         # As EVE affects various types mostly depending on their group or skill requirements,
         # we're going to group various types up this way
         # Format: {(group ID, frozenset(skillreq, type, IDs)): [type ID, {attribute ID: attribute value}]}
@@ -282,7 +287,9 @@ def main(db, json_path):
             # We need only skill types, not levels for keys
             typeSkillreqs = frozenset(typesSkillReqs.get(typeID, {}))
             typeGroup = typesGroups[typeID]
-            groupData = groupedData.setdefault((typeGroup, typeSkillreqs), [])
+            typeParent = typesParents.get(typeID, typeID)
+            typeEffects = frozenset(typesEffects.get(typeID, ()))
+            groupData = groupedData.setdefault((typeGroup, typeSkillreqs, typeParent, typeEffects), [])
             groupData.append((typeID, typeAttribs))
         # Format: {type ID: set(type IDs)}
         same = {}
