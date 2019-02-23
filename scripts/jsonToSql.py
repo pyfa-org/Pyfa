@@ -237,7 +237,11 @@ def main(db, json_path):
                 typeSkillAttribs[row['attributeID']] = row['value']
             # Ignore these attributes for comparison purposes
             elif attributeID in (
+                # We do not need mass as it participates in calculations only when carried by ships
+                # (and we're not going to replace ships), but it's wildly inconsistent for other items
+                4,  # mass
                 124,  # mainColor
+                162,  # radius
                 422,  # techLevel
                 633,  # metaLevel
                 1692  # metaGroupID
