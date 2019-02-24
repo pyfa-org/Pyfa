@@ -4,6 +4,7 @@ import wx
 from service.fit import Fit
 import gui.globalEvents as GE
 import gui.mainFrame
+from gui.utils.helpers_wxPython import HandleCtrlBackspace
 
 
 class NotesView(wx.Panel):
@@ -17,8 +18,15 @@ class NotesView(wx.Panel):
         self.SetSizer(mainSizer)
         self.mainFrame.Bind(GE.FIT_CHANGED, self.fitChanged)
         self.Bind(wx.EVT_TEXT, self.onText)
+        self.editNotes.Bind(wx.EVT_KEY_DOWN, self.OnKeyDown)
         self.saveTimer = wx.Timer(self)
         self.Bind(wx.EVT_TIMER, self.delayedSave, self.saveTimer)
+
+    def OnKeyDown(self, event):
+        if event.RawControlDown() and event.GetKeyCode() == wx.WXK_BACK:
+            HandleCtrlBackspace(self.editNotes)
+        else:
+            event.Skip()
 
     def fitChanged(self, event):
         sFit = Fit.getInstance()
