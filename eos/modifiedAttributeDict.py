@@ -33,6 +33,15 @@ class ItemAttrShortcut(object):
 
         return return_value or default
 
+    def getBaseAttrValue(self, key, default=0):
+        """
+        Gets base value in this order:
+        Mutated value > override value > attribute value
+        """
+        return_value = self.itemModifiedAttributes.getOriginal(key)
+
+        return return_value or default
+
 
 class ChargeAttrShortcut(object):
     def getModifiedChargeAttr(self, key, default=0):
@@ -59,8 +68,10 @@ class ModifiedAttributeDict(collections.MutableMapping):
         self.__modified = {}
         # Affected by entities
         self.__affectedBy = {}
-        # Overrides
+        # Overrides (per item)
         self.__overrides = {}
+        # Mutators (per module)
+        self.__mutators = {}
         # Dictionaries for various value modification types
         self.__forced = {}
         self.__preAssigns = {}
@@ -100,6 +111,14 @@ class ModifiedAttributeDict(collections.MutableMapping):
     def overrides(self, val):
         self.__overrides = val
 
+    @property
+    def mutators(self):
+        return {x.attribute.name: x for x in self.__mutators.values()}
+
+    @mutators.setter
+    def mutators(self, val):
+        self.__mutators = val
+
     def __getitem__(self, key):
         # Check if we have final calculated value
         key_value = self.__modified.get(key)
@@ -128,14 +147,16 @@ class ModifiedAttributeDict(collections.MutableMapping):
             del self.__intermediary[key]
 
     def getOriginal(self, key, default=None):
+        val = None
         if self.overrides_enabled and self.overrides:
-            val = self.overrides.get(key, None)
-        else:
-            val = None
+            val = self.overrides.get(key, val)
+
+        # mutators are overriden by overrides. x_x
+        val = self.mutators.get(key, val)
 
         if val is None:
             if self.original:
-                val = self.original.get(key, None)
+                val = self.original.get(key, val)
 
         if val is None and val != default:
             val = default
@@ -194,6 +215,8 @@ class ModifiedAttributeDict(collections.MutableMapping):
         if force is not None:
             if cappingValue is not None:
                 force = min(force, cappingValue)
+            if key in (50, 30, 48, 11):
+                force = round(force, 2)
             return force
         # Grab our values if they're there, otherwise we'll take default values
         preIncrease = self.__preIncreases.get(key, 0)
@@ -247,7 +270,8 @@ class ModifiedAttributeDict(collections.MutableMapping):
         # Cap value if we have cap defined
         if cappingValue is not None:
             val = min(val, cappingValue)
-
+        if key in (50, 30, 48, 11):
+            val = round(val, 2)
         return val
 
     def __handleSkill(self, skillName):
@@ -361,7 +385,7 @@ class ModifiedAttributeDict(collections.MutableMapping):
         if resist:
             afflictPenal += "r"
 
-        self.__afflict(attributeName, "%s*" % (afflictPenal), multiplier, multiplier != 1)
+        self.__afflict(attributeName, "%s*" % afflictPenal, multiplier, multiplier != 1)
 
     def boost(self, attributeName, boostFactor, skill=None, *args, **kwargs):
         """Boost value by some percentage"""

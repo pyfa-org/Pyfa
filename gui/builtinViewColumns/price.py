@@ -22,6 +22,7 @@ import wx
 
 from eos.saveddata.cargo import Cargo
 from eos.saveddata.drone import Drone
+from eos.saveddata.price import PriceStatus
 from service.price import Price as ServicePrice
 from gui.viewColumn import ViewColumn
 from gui.bitmap_loader import BitmapLoader
@@ -45,9 +46,15 @@ class Price(ViewColumn):
             if stuff.isEmpty:
                 return ""
 
-        price = stuff.item.price.price
+        priceObj = stuff.item.price
 
-        if not price:
+        if not priceObj.isValid:
+            return False
+
+        # Fetch actual price as float to not modify its value on Price object
+        price = priceObj.price
+
+        if price == 0:
             return ""
 
         if isinstance(stuff, Drone) or isinstance(stuff, Cargo):
@@ -59,11 +66,13 @@ class Price(ViewColumn):
         sPrice = ServicePrice.getInstance()
 
         def callback(item):
-            price = item.item.price
-            text = formatAmount(price.price, 3, 3, 9, currency=True) if price.price else ""
-            if price.failed:
-                text += " (!)"
-            colItem.SetText(text)
+            price = item[0]
+            textItems = []
+            if price.price:
+                textItems.append(formatAmount(price.price, 3, 3, 9, currency=True))
+            if price.status == PriceStatus.fail:
+                textItems.append("(!)")
+            colItem.SetText(" ".join(textItems))
 
             display.SetItem(colItem)
 

@@ -1,7 +1,7 @@
 # fueledArmorRepair
 #
 # Used by:
-# Modules from group: Ancillary Armor Repairer (4 of 4)
+# Modules from group: Ancillary Armor Repairer (7 of 7)
 runTime = "late"
 type = "active"
 
@@ -14,4 +14,7 @@ def handler(fit, module, context):
 
     amount = module.getModifiedItemAttr("armorDamageAmount") * multiplier
     speed = module.getModifiedItemAttr("duration") / 1000.0
-    fit.extraAttributes.increase("armorRepair", amount / speed)
+    rps = amount / speed
+    fit.extraAttributes.increase("armorRepair", rps)
+    fit.extraAttributes.increase("armorRepairPreSpool", rps)
+    fit.extraAttributes.increase("armorRepairFullSpool", rps)

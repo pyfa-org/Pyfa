@@ -17,16 +17,20 @@
 # along with eos.  If not, see <http://www.gnu.org/licenses/>.
 # ===============================================================================
 
-from logbook import Logger
-
-from sqlalchemy.orm import validates, reconstructor
 from math import floor
 
+from logbook import Logger
+from sqlalchemy.orm import reconstructor, validates
+
 import eos.db
-from eos.effectHandlerHelpers import HandledItem, HandledCharge
+from eos.effectHandlerHelpers import HandledCharge, HandledItem
 from eos.enum import Enum
-from eos.modifiedAttributeDict import ModifiedAttributeDict, ItemAttrShortcut, ChargeAttrShortcut
+from eos.modifiedAttributeDict import ChargeAttrShortcut, ItemAttrShortcut, ModifiedAttributeDict
 from eos.saveddata.citadel import Citadel
+from eos.saveddata.mutator import Mutator
+from eos.utils.float import floatUnerr
+from eos.utils.spoolSupport import calculateSpoolup, resolveSpoolOptions
+from eos.utils.stats import DmgTypes
 
 pyfalog = Logger(__name__)
 
@@ -62,6 +66,30 @@ class Slot(Enum):
     FS_HEAVY = 15
 
 
+ProjectedMap = {
+    State.OVERHEATED: State.ACTIVE,
+    State.ACTIVE: State.OFFLINE,
+    State.OFFLINE: State.ACTIVE,
+    State.ONLINE: State.ACTIVE  # Just in case
+}
+
+
+# Old state : New State
+LocalMap = {
+    State.OVERHEATED: State.ACTIVE,
+    State.ACTIVE: State.ONLINE,
+    State.OFFLINE: State.ONLINE,
+    State.ONLINE: State.ACTIVE
+}
+
+
+# For system effects. They should only ever be online or offline
+ProjectedSystem = {
+    State.OFFLINE: State.ONLINE,
+    State.ONLINE: State.OFFLINE
+}
+
+
 class Hardpoint(Enum):
     NONE = 0
     MISSILE = 1
@@ -70,18 +98,34 @@ class Hardpoint(Enum):
 
 class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
     """An instance of this class represents a module together with its charge and modified attributes"""
-    DAMAGE_TYPES = ("em", "thermal", "kinetic", "explosive")
     MINING_ATTRIBUTES = ("miningAmount",)
+    SYSTEM_GROUPS = ("Effect Beacon", "MassiveEnvironments", "Abyssal Hazards", "Non-Interactable Object")
 
-    def __init__(self, item):
+    def __init__(self, item, baseItem=None, mutaplasmid=None):
         """Initialize a module from the program"""
-        self.__item = item
+
+        self.itemID = item.ID if item is not None else None
+        self.baseItemID = baseItem.ID if baseItem is not None else None
+        self.mutaplasmidID = mutaplasmid.ID if mutaplasmid is not None else None
+
+        if baseItem is not None:
+            # we're working with a mutated module, need to get abyssal module loaded with the base attributes
+            # Note: there may be a better way of doing this, such as a metho on this classe to convert(mutaplamid). This
+            # will require a bit more research though, considering there has never been a need to "swap" out the item of a Module
+            # before, and there may be assumptions taken with regards to the item never changing (pre-calculated / cached results, for example)
+            self.__item = eos.db.getItemWithBaseItemAttribute(self.itemID, self.baseItemID)
+            self.__baseItem = baseItem
+            self.__mutaplasmid = mutaplasmid
+        else:
+            self.__item = item
+            self.__baseItem = baseItem
+            self.__mutaplasmid = mutaplasmid
 
         if item is not None and self.isInvalid:
             raise ValueError("Passed item is not a Module")
 
         self.__charge = None
-        self.itemID = item.ID if item is not None else None
+
         self.projected = False
         self.state = State.ONLINE
         self.build()
@@ -90,7 +134,9 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
     def init(self):
         """Initialize a module from the database and validate"""
         self.__item = None
+        self.__baseItem = None
         self.__charge = None
+        self.__mutaplasmid = None
 
         # we need this early if module is invalid and returns early
         self.__slot = self.dummySlot
@@ -99,6 +145,14 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
             self.__item = eos.db.getItem(self.itemID)
             if self.__item is None:
                 pyfalog.error("Item (id: {0}) does not exist", self.itemID)
+                return
+
+        if self.baseItemID:
+            self.__item = eos.db.getItemWithBaseItemAttribute(self.itemID, self.baseItemID)
+            self.__baseItem = eos.db.getItem(self.baseItemID)
+            self.__mutaplasmid = eos.db.getMutaplasmid(self.mutaplasmidID)
+            if self.__baseItem is None:
+                pyfalog.error("Base Item (id: {0}) does not exist", self.itemID)
                 return
 
         if self.isInvalid:
@@ -116,9 +170,9 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
         if self.__charge and self.__charge.category.name != "Charge":
             self.__charge = None
 
-        self.__dps = None
+        self.__baseVolley = None
+        self.__baseRemoteReps = None
         self.__miningyield = None
-        self.__volley = None
         self.__reloadTime = None
         self.__reloadForce = None
         self.__chargeCycles = None
@@ -132,6 +186,18 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
             self.__itemModifiedAttributes.overrides = self.__item.overrides
             self.__hardpoint = self.__calculateHardpoint(self.__item)
             self.__slot = self.__calculateSlot(self.__item)
+
+            # Instantiate / remove mutators if this is a mutated module
+            if self.__baseItem:
+                for x in self.mutaplasmid.attributes:
+                    attr = self.item.attributes[x.name]
+                    id = attr.ID
+                    if id not in self.mutators:  # create the mutator
+                        Mutator(self, attr, attr.value)
+                # @todo: remove attributes that are no longer part of the mutaplasmid.
+
+            self.__itemModifiedAttributes.mutators = self.mutators
+
         if self.__charge:
             self.__chargeModifiedAttributes.original = self.__charge.attributes
             self.__chargeModifiedAttributes.overrides = self.__charge.overrides
@@ -144,10 +210,11 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
         return empty
 
     @classmethod
-    def buildRack(cls, slot):
+    def buildRack(cls, slot, num=None):
         empty = Rack(None)
         empty.__slot = slot
         empty.dummySlot = slot
+        empty.num = num
         return empty
 
     @property
@@ -160,11 +227,17 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
 
     @property
     def isInvalid(self):
+        # todo: validate baseItem as well if it's set.
         if self.isEmpty:
             return False
         return self.__item is None or \
                (self.__item.category.name not in ("Module", "Subsystem", "Structure Module") and
-                self.__item.group.name != "Effect Beacon")
+                self.__item.group.name not in self.SYSTEM_GROUPS) or \
+               (self.item.isAbyssal and (not self.baseItemID or not self.mutaplasmidID))
+
+    @property
+    def isMutated(self):
+        return self.baseItemID or self.mutaplasmidID
 
     @property
     def numCharges(self):
@@ -176,8 +249,8 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
             if chargeVolume is None or containerCapacity is None:
                 charges = 0
             else:
-                charges = floor(containerCapacity / chargeVolume)
-        return int(charges)
+                charges = int(floatUnerr(containerCapacity / chargeVolume))
+        return charges
 
     @property
     def numShots(self):
@@ -201,7 +274,17 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
     @property
     def modPosition(self):
         if self.owner:
-            return self.owner.modules.index(self)
+            return self.owner.modules.index(self) if not self.isProjected else self.owner.projectedModules.index(self)
+
+    @property
+    def isProjected(self):
+        if self.owner:
+            return self in self.owner.projectedModules
+        return None
+
+    @property
+    def isExclusiveSystemEffect(self):
+        return self.item.group.name in ("Effect Beacon", "Non-Interactable Object", "MassiveEnvironments")
 
     @property
     def isCapitalSize(self):
@@ -305,6 +388,14 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
         return self.__item if self.__item != 0 else None
 
     @property
+    def baseItem(self):
+        return self.__baseItem
+
+    @property
+    def mutaplasmid(self):
+        return self.__mutaplasmid
+
+    @property
     def charge(self):
         return self.__charge if self.__charge != 0 else None
 
@@ -321,33 +412,6 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
             self.__chargeModifiedAttributes.overrides = {}
 
         self.__itemModifiedAttributes.clear()
-
-    def damageStats(self, targetResists):
-        if self.__dps is None:
-            self.__dps = 0
-            self.__volley = 0
-
-            if not self.isEmpty and self.state >= State.ACTIVE:
-                if self.charge:
-                    func = self.getModifiedChargeAttr
-                else:
-                    func = self.getModifiedItemAttr
-
-                volley = sum([(func("%sDamage" % attr) or 0) * (1 - getattr(targetResists, "%sAmount" % attr, 0)) for attr in self.DAMAGE_TYPES])
-                volley *= self.getModifiedItemAttr("damageMultiplier") or 1
-                if volley:
-                    cycleTime = self.cycleTime
-                    # Some weapons repeat multiple times in one cycle (think doomsdays)
-                    # Get the number of times it fires off
-                    weaponDoT = max(
-                            self.getModifiedItemAttr("doomsdayDamageDuration", 1) / self.getModifiedItemAttr("doomsdayDamageCycleTime", 1),
-                            1
-                    )
-
-                    self.__volley = volley
-                    self.__dps = (volley * weaponDoT) / (cycleTime / 1000.0)
-
-        return self.__dps, self.__volley
 
     @property
     def miningStats(self):
@@ -368,13 +432,110 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
 
         return self.__miningyield
 
-    @property
-    def dps(self):
-        return self.damageStats(None)[0]
+    def getVolley(self, spoolOptions=None, targetResists=None, ignoreState=False):
+        if self.isEmpty or (self.state < State.ACTIVE and not ignoreState):
+            return DmgTypes(0, 0, 0, 0)
+        if self.__baseVolley is None:
+            dmgGetter = self.getModifiedChargeAttr if self.charge else self.getModifiedItemAttr
+            dmgMult = self.getModifiedItemAttr("damageMultiplier", 1)
+            self.__baseVolley = DmgTypes(
+                em=(dmgGetter("emDamage", 0)) * dmgMult,
+                thermal=(dmgGetter("thermalDamage", 0)) * dmgMult,
+                kinetic=(dmgGetter("kineticDamage", 0)) * dmgMult,
+                explosive=(dmgGetter("explosiveDamage", 0)) * dmgMult)
+        spoolType, spoolAmount = resolveSpoolOptions(spoolOptions, self)
+        spoolBoost = calculateSpoolup(
+            self.getModifiedItemAttr("damageMultiplierBonusMax", 0),
+            self.getModifiedItemAttr("damageMultiplierBonusPerCycle", 0),
+            self.rawCycleTime / 1000, spoolType, spoolAmount)[0]
+        spoolMultiplier = 1 + spoolBoost
+        volley = DmgTypes(
+            em=self.__baseVolley.em * spoolMultiplier * (1 - getattr(targetResists, "emAmount", 0)),
+            thermal=self.__baseVolley.thermal * spoolMultiplier * (1 - getattr(targetResists, "thermalAmount", 0)),
+            kinetic=self.__baseVolley.kinetic * spoolMultiplier * (1 - getattr(targetResists, "kineticAmount", 0)),
+            explosive=self.__baseVolley.explosive * spoolMultiplier * (1 - getattr(targetResists, "explosiveAmount", 0)))
+        return volley
 
-    @property
-    def volley(self):
-        return self.damageStats(None)[1]
+    def getDps(self, spoolOptions=None, targetResists=None, ignoreState=False):
+        volley = self.getVolley(spoolOptions=spoolOptions, targetResists=targetResists, ignoreState=ignoreState)
+        if not volley:
+            return DmgTypes(0, 0, 0, 0)
+        # Some weapons repeat multiple times in one cycle (bosonic doomsdays). Get the number of times it fires off
+        volleysPerCycle = max(self.getModifiedItemAttr("doomsdayDamageDuration", 1) / self.getModifiedItemAttr("doomsdayDamageCycleTime", 1), 1)
+        dpsFactor = volleysPerCycle / (self.cycleTime / 1000)
+        dps = DmgTypes(
+            em=volley.em * dpsFactor,
+            thermal=volley.thermal * dpsFactor,
+            kinetic=volley.kinetic * dpsFactor,
+            explosive=volley.explosive * dpsFactor)
+        return dps
+
+    def getRemoteReps(self, spoolOptions=None, ignoreState=False):
+        if self.isEmpty or (self.state < State.ACTIVE and not ignoreState):
+            return None, 0
+
+        def getBaseRemoteReps(module):
+            remoteModuleGroups = {
+                "Remote Armor Repairer": "Armor",
+                "Ancillary Remote Armor Repairer": "Armor",
+                "Mutadaptive Remote Armor Repairer": "Armor",
+                "Remote Hull Repairer": "Hull",
+                "Remote Shield Booster": "Shield",
+                "Ancillary Remote Shield Booster": "Shield",
+                "Remote Capacitor Transmitter": "Capacitor"}
+            rrType = remoteModuleGroups.get(module.item.group.name, None)
+            if not rrType:
+                return None, 0
+            if rrType == "Hull":
+                rrAmount = module.getModifiedItemAttr("structureDamageAmount", 0)
+            elif rrType == "Armor":
+                rrAmount = module.getModifiedItemAttr("armorDamageAmount", 0)
+            elif rrType == "Shield":
+                rrAmount = module.getModifiedItemAttr("shieldBonus", 0)
+            elif rrType == "Capacitor":
+                rrAmount = module.getModifiedItemAttr("powerTransferAmount", 0)
+            else:
+                return None, 0
+            if rrAmount:
+                rrAmount *= 1 / (self.cycleTime / 1000)
+                if module.item.group.name == "Ancillary Remote Armor Repairer" and module.charge:
+                    rrAmount *= module.getModifiedItemAttr("chargedArmorDamageMultiplier", 1)
+
+            return rrType, rrAmount
+
+        if self.__baseRemoteReps is None:
+            self.__baseRemoteReps = getBaseRemoteReps(self)
+
+        rrType, rrAmount = self.__baseRemoteReps
+
+        if rrType and rrAmount and self.item.group.name == "Mutadaptive Remote Armor Repairer":
+            spoolType, spoolAmount = resolveSpoolOptions(spoolOptions, self)
+            spoolBoost = calculateSpoolup(
+                self.getModifiedItemAttr("repairMultiplierBonusMax", 0),
+                self.getModifiedItemAttr("repairMultiplierBonusPerCycle", 0),
+                self.rawCycleTime / 1000, spoolType, spoolAmount)[0]
+            rrAmount *= (1 + spoolBoost)
+
+        return rrType, rrAmount
+
+    def getSpoolData(self, spoolOptions=None):
+        weaponMultMax = self.getModifiedItemAttr("damageMultiplierBonusMax", 0)
+        weaponMultPerCycle = self.getModifiedItemAttr("damageMultiplierBonusPerCycle", 0)
+        if weaponMultMax and weaponMultPerCycle:
+            spoolType, spoolAmount = resolveSpoolOptions(spoolOptions, self)
+            _, spoolCycles, spoolTime = calculateSpoolup(
+                weaponMultMax, weaponMultPerCycle,
+                self.rawCycleTime / 1000, spoolType, spoolAmount)
+            return spoolCycles, spoolTime
+        rrMultMax = self.getModifiedItemAttr("repairMultiplierBonusMax", 0)
+        rrMultPerCycle = self.getModifiedItemAttr("repairMultiplierBonusPerCycle", 0)
+        if rrMultMax and rrMultPerCycle:
+            spoolType, spoolAmount = resolveSpoolOptions(spoolOptions, self)
+            _, spoolCycles, spoolTime = calculateSpoolup(
+                rrMultMax, rrMultPerCycle,
+                self.rawCycleTime / 1000, spoolType, spoolAmount)
+            return spoolCycles, spoolTime
+        return 0, 0
 
     @property
     def reloadTime(self):
@@ -468,7 +629,8 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
         if max is not None:
             current = 0  # if self.owner != fit else -1  # Disabled, see #1278
             for mod in fit.modules:
-                if mod.item and mod.item.groupID == self.item.groupID:
+                if (mod.item and mod.item.groupID == self.item.groupID and
+                        self.modPosition != mod.modPosition):
                     current += 1
 
             if current >= max:
@@ -476,12 +638,8 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
 
         # Check this only if we're told to do so
         if hardpointLimit:
-            if self.hardpoint == Hardpoint.TURRET:
-                if fit.ship.getModifiedItemAttr('turretSlotsLeft') - fit.getHardpointsUsed(Hardpoint.TURRET) < 1:
-                    return False
-            elif self.hardpoint == Hardpoint.MISSILE:
-                if fit.ship.getModifiedItemAttr('launcherSlotsLeft') - fit.getHardpointsUsed(Hardpoint.MISSILE) < 1:
-                    return False
+            if fit.getHardpointsFree(self.hardpoint) < 1:
+                return False
 
         return True
 
@@ -571,7 +729,7 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
         for i in range(5):
             itemChargeGroup = self.getModifiedItemAttr('chargeGroup' + str(i), None)
             if itemChargeGroup is not None:
-                g = eos.db.getGroup(int(itemChargeGroup), eager=("items.icon", "items.attributes"))
+                g = eos.db.getGroup(int(itemChargeGroup), eager="items.attributes")
                 if g is None:
                     continue
                 for singleItem in g.items:
@@ -611,7 +769,7 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
         for effectName, slot in effectSlotMap.items():
             if effectName in item.effects:
                 return slot
-        if item.group.name == "Effect Beacon":
+        if item.group.name in Module.SYSTEM_GROUPS:
             return Slot.SYSTEM
 
         raise ValueError("Passed item does not fit in any known slot")
@@ -630,9 +788,9 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
             return val
 
     def clear(self):
-        self.__dps = None
+        self.__baseVolley = None
+        self.__baseRemoteReps = None
         self.__miningyield = None
-        self.__volley = None
         self.__reloadTime = None
         self.__reloadForce = None
         self.__chargeCycles = None
@@ -777,14 +935,48 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
         else:
             return 0
 
+    @staticmethod
+    def getProposedState(mod, click, proposedState=None):
+        # todo: instead of passing in module, make this a instanced function.
+        pyfalog.debug("Get proposed state for module.")
+        if mod.slot == Slot.SUBSYSTEM or mod.isEmpty:
+            return State.ONLINE
+
+        if mod.slot == Slot.SYSTEM:
+            transitionMap = ProjectedSystem
+        else:
+            transitionMap = ProjectedMap if mod.projected else LocalMap
+
+        currState = mod.state
+
+        if proposedState is not None:
+            state = proposedState
+        elif click == "right":
+            state = State.OVERHEATED
+        elif click == "ctrl":
+            state = State.OFFLINE
+        else:
+            state = transitionMap[currState]
+            if not mod.isValidState(state):
+                state = -1
+
+        if mod.isValidState(state):
+            return state
+        else:
+            return currState
+
     def __deepcopy__(self, memo):
         item = self.item
         if item is None:
             copy = Module.buildEmpty(self.slot)
         else:
-            copy = Module(self.item)
+            copy = Module(self.item, self.baseItem, self.mutaplasmid)
         copy.charge = self.charge
         copy.state = self.state
+
+        for x in self.mutators.values():
+            Mutator(copy, x.attribute, x.value)
+
         return copy
 
     def __repr__(self):
@@ -799,6 +991,7 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
 class Rack(Module):
     """
     This is simply the Module class named something else to differentiate
-    it for app logic. This class does not do anything special
+    it for app logic. The only thing interesting about it is the num property,
+    which is the number of slots for this rack
     """
-    pass
+    num = None

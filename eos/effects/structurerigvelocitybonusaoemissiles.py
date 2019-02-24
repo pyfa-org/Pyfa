@@ -1,4 +1,8 @@
-# Not used by any item
+# structureRigVelocityBonusAoeMissiles
+#
+# Used by:
+# Structure Modules from group: Structure Combat Rig L - AoE Launcher Application and Projection (2 of 2)
+# Structure Modules from group: Structure Combat Rig XL - Missile and AoE Missile (2 of 2)
 type = "passive"
 
 

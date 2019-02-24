@@ -2,8 +2,9 @@
 #
 # Used by:
 # Modules from group: Ancillary Remote Shield Booster (4 of 4)
-runTime = "late"
+
 type = "projected", "active"
+runTime = "late"
 
 
 def handler(fit, module, context, **kwargs):

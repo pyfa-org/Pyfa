@@ -2,6 +2,7 @@
 #
 # Used by:
 # Module: Sensor Dampening Burst Projector
+# Structure Module: Standup Sensor Dampening Burst Projector
 type = "projected", "active"
 
 

@@ -1,7 +1,7 @@
 # fueledShieldBoosting
 #
 # Used by:
-# Modules from group: Ancillary Shield Booster (5 of 5)
+# Modules from group: Ancillary Shield Booster (8 of 8)
 runTime = "late"
 type = "active"
 

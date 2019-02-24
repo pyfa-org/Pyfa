@@ -30,6 +30,7 @@ from gui.contextMenu import ContextMenu
 from gui.utils.staticHelpers import DragDropHelper
 from service.fit import Fit
 from service.market import Market
+import gui.fitCommands as cmd
 
 
 class FighterViewDrop(wx.DropTarget):
@@ -269,11 +270,9 @@ class FighterDisplay(d.Display):
         event.Skip()
 
     def addItem(self, event):
-        sFit = Fit.getInstance()
         fitID = self.mainFrame.getActiveFit()
-        trigger = sFit.addFighter(fitID, event.itemID)
-        if trigger:
-            wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fitID))
+
+        if self.mainFrame.command.Submit(cmd.GuiAddFighterCommand(fitID, event.itemID)):
             self.mainFrame.additionsPane.select("Fighters")
 
         event.Skip()
@@ -288,9 +287,7 @@ class FighterDisplay(d.Display):
 
     def removeFighter(self, fighter):
         fitID = self.mainFrame.getActiveFit()
-        sFit = Fit.getInstance()
-        sFit.removeFighter(fitID, self.original.index(fighter))
-        wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fitID))
+        self.mainFrame.command.Submit(cmd.GuiRemoveFighterCommand(fitID, self.original.index(fighter)))
 
     def click(self, event):
         event.Skip()
@@ -299,10 +296,8 @@ class FighterDisplay(d.Display):
             col = self.getColumn(event.Position)
             if col == self.getColIndex(State):
                 fitID = self.mainFrame.getActiveFit()
-                sFit = Fit.getInstance()
                 fighter = self.fighters[row]
-                sFit.toggleFighter(fitID, self.original.index(fighter))
-                wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fitID))
+                self.mainFrame.command.Submit(cmd.GuiToggleFighterCommand(fitID, self.original.index(fighter)))
 
     def scheduleMenu(self, event):
         event.Skip()

@@ -1,4 +1,4 @@
-#===============================================================================
+# ===============================================================================
 #
 # ToDo: Bug - when selecting close on a tab, sometimes the tab to the right is
 #       selected, most likely due to determination of mouse position
@@ -11,7 +11,7 @@
 #       tab index?). This will also help with finding close buttons.
 # ToDo: Fix page preview code (PFNotebookPagePreview)
 #
-#= ==============================================================================
+# ===============================================================================
 
 import wx
 import wx.lib.newevent
@@ -20,6 +20,7 @@ from gui.bitmap_loader import BitmapLoader
 from gui.utils import draw
 from gui.utils import color as color_utils
 from service.fit import Fit
+from gui.utils import fonts
 
 _PageChanging, EVT_NOTEBOOK_PAGE_CHANGING = wx.lib.newevent.NewEvent()
 _PageChanged, EVT_NOTEBOOK_PAGE_CHANGED = wx.lib.newevent.NewEvent()
@@ -29,7 +30,7 @@ PageAdded, EVT_NOTEBOOK_PAGE_ADDED = wx.lib.newevent.NewEvent()
 PageClosed, EVT_NOTEBOOK_PAGE_CLOSED = wx.lib.newevent.NewEvent()
 
 
-class VetoAble():
+class VetoAble:
     def __init__(self):
         self.__vetoed = False
 
@@ -40,7 +41,7 @@ class VetoAble():
         return self.__vetoed
 
 
-class NotebookTabChangeEvent():
+class NotebookTabChangeEvent:
     def __init__(self, old, new):
         self.__old = old
         self.__new = new
@@ -357,7 +358,7 @@ class _TabRenderer:
         self.tab_bitmap = None
         self.tab_back_bitmap = None
         self.padding = 4
-        self.font = wx.Font(10, wx.SWISS, wx.NORMAL, wx.NORMAL, False)
+        self.font = wx.Font(fonts.NORMAL, wx.FONTFAMILY_SWISS, wx.FONTSTYLE_NORMAL, wx.FONTWEIGHT_NORMAL, False)
 
         self.tab_img = img
         self.position = (0, 0)  # Not used internally for rendering - helper for tab container
@@ -413,7 +414,7 @@ class _TabRenderer:
         mdc.SelectObject(ebmp)
         mdc.SetFont(self.font)
         textSizeX, textSizeY = mdc.GetTextExtent(self.text)
-        totalSize = self.left_width + self.right_width + textSizeX + self.close_btn_width / 2 + 16 + self.padding* 2
+        totalSize = self.left_width + self.right_width + textSizeX + self.close_btn_width / 2 + 16 + self.padding * 2
         mdc.SelectObject(wx.NullBitmap)
         return totalSize, self.tab_height
 
@@ -551,24 +552,6 @@ class _TabRenderer:
                     bmp,
                     self.left_width + self.padding - bmp.GetWidth() / 2,
                     (height - bmp.GetHeight()) / 2)
-            text_start = self.left_width + self.padding + bmp.GetWidth() / 2
-        else:
-            text_start = self.left_width
-
-        mdc.SetFont(self.font)
-
-        maxsize = self.tab_width \
-            - text_start \
-            - self.right_width \
-            - self.padding * 4
-        color = self.selected_color if self.selected else self.inactive_color
-
-        mdc.SetTextForeground(color_utils.GetSuitable(color, 1))
-
-        # draw text (with no ellipses)
-        text = draw.GetPartialText(mdc, self.text, maxsize, "")
-        tx, ty = mdc.GetTextExtent(text)
-        mdc.DrawText(text, text_start + self.padding, height / 2 - ty / 2)
 
         # draw close button
         if self.closeable:
@@ -594,6 +577,30 @@ class _TabRenderer:
 
         bmp = wx.Bitmap(img)
         self.tab_bitmap = bmp
+
+    # We draw the text separately in order to draw it directly on the native DC, rather than a memory one, because
+    # drawing text on a memory DC draws it blurry on HD/Retina screens
+    def DrawText(self, dc):
+        height = self.tab_height
+        dc.SetFont(self.font)
+
+        if self.tab_img:
+            text_start = self.left_width + self.padding + self.tab_img.GetWidth() / 2
+        else:
+            text_start = self.left_width
+
+        maxsize = self.tab_width \
+            - text_start \
+            - self.right_width \
+            - self.padding * 4
+        color = self.selected_color if self.selected else self.inactive_color
+
+        dc.SetTextForeground(color_utils.GetSuitable(color, 1))
+
+        # draw text (with no ellipses)
+        text = draw.GetPartialText(dc, self.text, maxsize, "")
+        tx, ty = dc.GetTextExtent(text)
+        dc.DrawText(text, text_start + self.padding, height / 2 - ty / 2)
 
     def __repr__(self):
         return "_TabRenderer(text={}, disabled={}) at {}".format(
@@ -729,6 +736,7 @@ class _TabsContainer(wx.Panel):
         self.Bind(wx.EVT_ERASE_BACKGROUND, self.OnErase)
         self.Bind(wx.EVT_LEFT_DOWN, self.OnLeftDown)
         self.Bind(wx.EVT_LEFT_UP, self.OnLeftUp)
+        self.Bind(wx.EVT_MIDDLE_UP, self.OnMiddleUp)
         self.Bind(wx.EVT_MOTION, self.OnMotion)
         self.Bind(wx.EVT_SIZE, self.OnSize)
         self.Bind(wx.EVT_SYS_COLOUR_CHANGED, self.OnSysColourChanged)
@@ -768,6 +776,29 @@ class _TabsContainer(wx.Panel):
                 self.Refresh()
 
             self.dragged_tab = tab
+
+    def OnMiddleUp(self, event):
+        mposx, mposy = event.GetPosition()
+
+        tab = self.FindTabAtPos(mposx, mposy)
+
+        if tab is None or not tab.closeable:  # if not able to close, return False
+            return False
+
+        index = self.tabs.index(tab)
+        ev = PageClosing(index)
+        wx.PostEvent(self.Parent, ev)
+
+        if ev.isVetoed():
+            return False
+
+        index = self.GetTabIndex(tab)
+        self.Parent.DeletePage(index)
+        wx.PostEvent(self.Parent, PageClosed(index=index))
+
+        sel = self.GetSelected()
+        if sel is not None:
+            wx.PostEvent(self.Parent, PageChanged(-1, sel))
 
     def OnMotion(self, event):
         """
@@ -1144,6 +1175,10 @@ class _TabsContainer(wx.Panel):
                 img = img.AdjustChannels(1, 1, 1, 0.85)
                 bmp = wx.Bitmap(img)
                 mdc.DrawBitmap(bmp, posx, posy, True)
+
+                mdc.SetDeviceOrigin(posx, posy)
+                tab.DrawText(mdc)
+                mdc.SetDeviceOrigin(0, 0)
             else:
                 selected = tab
 
@@ -1162,6 +1197,10 @@ class _TabsContainer(wx.Panel):
                 bmp = wx.Bitmap(img)
 
             mdc.DrawBitmap(bmp, posx, posy, True)
+
+            mdc.SetDeviceOrigin(posx, posy)
+            selected.DrawText(mdc)
+            mdc.SetDeviceOrigin(0, 0)
 
     def OnErase(self, event):
         pass
@@ -1322,7 +1361,7 @@ class PFNotebookPagePreview(wx.Frame):
         self.padding = 15
         self.transp = 0
 
-        hfont = wx.Font(10, wx.SWISS, wx.NORMAL, wx.NORMAL, False)
+        hfont = wx.Font(fonts.NORMAL, wx.FONTFAMILY_SWISS, wx.FONTSTYLE_NORMAL, wx.FONTWEIGHT_NORMAL, False)
         self.SetFont(hfont)
 
         tx, ty = self.GetTextExtent(self.title)
@@ -1384,7 +1423,7 @@ class PFNotebookPagePreview(wx.Frame):
         mdc.SetBackground(wx.Brush(color))
         mdc.Clear()
 
-        font = wx.Font(10, wx.SWISS, wx.NORMAL, wx.NORMAL, False)
+        font = wx.Font(11, wx.FONTFAMILY_SWISS, wx.FONTSTYLE_NORMAL, wx.FONTWEIGHT_NORMAL, False)
         mdc.SetFont(font)
 
         x, y = mdc.GetTextExtent(self.title)
@@ -1478,4 +1517,3 @@ if __name__ == "__main__":
     top = Frame("Test Chrome Tabs")
     top.Show()
     app.MainLoop()
-

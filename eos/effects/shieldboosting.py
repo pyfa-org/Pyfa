@@ -1,7 +1,7 @@
 # shieldBoosting
 #
 # Used by:
-# Modules from group: Shield Booster (93 of 93)
+# Modules from group: Shield Booster (97 of 97)
 runTime = "late"
 type = "active"
 

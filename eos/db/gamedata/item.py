@@ -17,14 +17,15 @@
 # along with eos.  If not, see <http://www.gnu.org/licenses/>.
 # ===============================================================================
 
-from sqlalchemy import Column, String, Integer, Boolean, ForeignKey, Table, Float
+from sqlalchemy import Boolean, Column, Float, ForeignKey, Integer, String, Table
 from sqlalchemy.ext.associationproxy import association_proxy
-from sqlalchemy.orm import relation, mapper, synonym, deferred
+from sqlalchemy.orm import backref, deferred, mapper, relation, synonym
 from sqlalchemy.orm.collections import attribute_mapped_collection
-from eos.db.gamedata.effect import typeeffects_table
 
 from eos.db import gamedata_meta
-from eos.gamedata import Attribute, Effect, Group, Icon, Item, MetaType, Traits
+from eos.db.gamedata.dynamicAttributes import dynamicApplicable_table
+from eos.db.gamedata.effect import typeeffects_table
+from eos.gamedata import Attribute, DynamicItem, Effect, Group, Item, MetaType, Traits
 
 items_table = Table("invtypes", gamedata_meta,
                     Column("typeID", Integer, primary_key=True),
@@ -37,16 +38,18 @@ items_table = Table("invtypes", gamedata_meta,
                     Column("capacity", Float),
                     Column("published", Boolean),
                     Column("marketGroupID", Integer, ForeignKey("invmarketgroups.marketGroupID")),
-                    Column("iconID", Integer, ForeignKey("icons.iconID")),
-                    Column("groupID", Integer, ForeignKey("invgroups.groupID"), index=True))
+                    Column("iconID", Integer),
+                    Column("graphicID", Integer),
+                    Column("groupID", Integer, ForeignKey("invgroups.groupID"), index=True),
+                    Column("replaceSame", String),
+                    Column("replaceBetter", String))
 
 from .metaGroup import metatypes_table  # noqa
 from .traits import traits_table  # noqa
 
 mapper(Item, items_table,
        properties={
-           "group"            : relation(Group, backref="items"),
-           "icon"             : relation(Icon),
+           "group"            : relation(Group, backref=backref("items", cascade="all,delete")),
            "_Item__attributes": relation(Attribute, cascade='all, delete, delete-orphan', collection_class=attribute_mapped_collection('name')),
            "effects": relation(Effect, secondary=typeeffects_table, collection_class=attribute_mapped_collection('name')),
            "metaGroup"        : relation(MetaType,
@@ -57,7 +60,12 @@ mapper(Item, items_table,
            "description"      : deferred(items_table.c.description),
            "traits"           : relation(Traits,
                                          primaryjoin=traits_table.c.typeID == items_table.c.typeID,
-                                         uselist=False)
+                                         uselist=False),
+           "mutaplasmids": relation(DynamicItem,
+                   primaryjoin=dynamicApplicable_table.c.applicableTypeID == items_table.c.typeID,
+                   secondaryjoin=dynamicApplicable_table.c.typeID == DynamicItem.typeID,
+                   secondary=dynamicApplicable_table,
+                   backref="applicableItems")
        })
 
 Item.category = association_proxy("group", "category")

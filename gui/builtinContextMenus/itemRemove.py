@@ -5,6 +5,7 @@ import wx
 import gui.globalEvents as GE
 from service.fit import Fit
 from service.settings import ContextMenuSettings
+import gui.fitCommands as cmd
 
 
 class ItemRemove(ContextMenu):
@@ -35,26 +36,33 @@ class ItemRemove(ContextMenu):
         fit = sFit.getFit(fitID)
 
         if srcContext == "fittingModule":
-            for module in selection:
-                if module is not None:
-                    sFit.removeModule(fitID, fit.modules.index(module))
+            modules = [module for module in selection if module is not None]
+            self.mainFrame.command.Submit(cmd.GuiModuleRemoveCommand(fitID, modules))
+            return  # the command takes care of the PostEvent
         elif srcContext in ("fittingCharge", "projectedCharge"):
-            sFit.setAmmo(fitID, None, selection)
+            self.mainFrame.command.Submit(cmd.GuiModuleAddChargeCommand(fitID, None, selection))
+            return
         elif srcContext == "droneItem":
-            sFit.removeDrone(fitID, fit.drones.index(selection[0]))
+            self.mainFrame.command.Submit(cmd.GuiRemoveDroneCommand(fitID, fit.drones.index(selection[0])))
+            return
         elif srcContext == "fighterItem":
-            sFit.removeFighter(fitID, fit.fighters.index(selection[0]))
+            self.mainFrame.command.Submit(cmd.GuiRemoveFighterCommand(fitID, fit.fighters.index(selection[0])))
+            return  # the command takes care of the PostEvent
         elif srcContext == "implantItem":
-            sFit.removeImplant(fitID, fit.implants.index(selection[0]))
+            self.mainFrame.command.Submit(cmd.GuiRemoveImplantCommand(fitID, fit.implants.index(selection[0])))
+            return  # the command takes care of the PostEvent
         elif srcContext == "boosterItem":
-            sFit.removeBooster(fitID, fit.boosters.index(selection[0]))
+            self.mainFrame.command.Submit(cmd.GuiRemoveBoosterCommand(fitID, fit.boosters.index(selection[0])))
+            return  # the command takes care of the PostEvent
         elif srcContext == "cargoItem":
-            sFit.removeCargo(fitID, fit.cargo.index(selection[0]))
+            self.mainFrame.command.Submit(cmd.GuiRemoveCargoCommand(fitID, selection[0].itemID))
+            return  # the command takes care of the PostEvent
         elif srcContext in ("projectedFit", "projectedModule", "projectedDrone", "projectedFighter"):
-            sFit.removeProjected(fitID, selection[0])
+            self.mainFrame.command.Submit(cmd.GuiRemoveProjectedCommand(fitID, selection[0]))
+            return  # the command takes care of the PostEvent
         elif srcContext == "commandFit":
-            sFit.removeCommand(fitID, selection[0])
-
+            self.mainFrame.command.Submit(cmd.GuiRemoveCommandCommand(fitID, selection[0].ID))
+            return  # the command takes care of the PostEvent
         wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fitID))
 
 

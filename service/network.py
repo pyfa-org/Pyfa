@@ -83,8 +83,7 @@ class Network(object):
             raise Error("Access not enabled - please enable in Preferences > Network")
 
         # Set up some things for the request
-        versionString = "{0} {1} - {2} {3}".format(config.version, config.tag, config.expansionName,
-                                                   config.expansionVersion)
+        versionString = "{0}".format(config.version)
         headers = {"User-Agent": "pyfa {0} (python-requests {1})".format(versionString, requests.__version__)}
         # user-agent: pyfa 2.0.0b4 git -YC120.2 1.2 (python-requests 2.18.4)
 
@@ -93,25 +92,7 @@ class Network(object):
         # or with HTTP Basic auth support: proxies = {'http': 'http://user:pass@10.10.1.10:3128/'}
         # then you do: requests.get('http://example.org', proxies=proxies)
 
-        proxies = None
-        proxy_settings = NetworkSettings.getInstance().getProxySettings()
-        # proxy_settings is a tuple of (host, port), like  ('192.168.20.1', 3128), or None
-
-        if proxy_settings is not None:
-            # form proxy address in format "http://host:port
-            proxy_host_port = '{}:{}'.format(proxy_settings[0], proxy_settings[1])
-            proxy_auth_details = NetworkSettings.getInstance().getProxyAuthDetails()
-            # proxy_auth_details is a tuple of (login, password), or None
-            user_pass = ''
-            if proxy_auth_details is not None:
-                # construct prefix in form "user:password@"
-                user_pass = '{}:{}@'.format(proxy_auth_details[0], proxy_auth_details[1])
-            proxies = {
-                'http': 'http://' + user_pass + proxy_host_port,
-                'https': 'http://' + user_pass + proxy_host_port
-            }
-            # final form: { 'http': 'http://user:password@host:port', ... }, or
-            #             { 'http': 'http://host:port', ... }   if no auth info.
+        proxies = NetworkSettings.getInstance().getProxySettingsInRequestsFormat()
 
         try:
             resp = requests.get(url, headers=headers, proxies=proxies, **kwargs)

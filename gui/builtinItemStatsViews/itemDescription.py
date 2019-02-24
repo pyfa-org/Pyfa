@@ -15,7 +15,6 @@ class ItemDescription(wx.Panel):
         fgcolor = wx.SystemSettings.GetColour(wx.SYS_COLOUR_WINDOWTEXT)
 
         self.description = wx.html.HtmlWindow(self)
-
         if not item.description:
             return
 
@@ -24,10 +23,46 @@ class ItemDescription(wx.Panel):
         desc = re.sub("<( *)font( *)color( *)=(.*?)>(?P<inside>.*?)<( *)/( *)font( *)>", "\g<inside>", desc)
         # Strip URLs
         desc = re.sub("<( *)a(.*?)>(?P<inside>.*?)<( *)/( *)a( *)>", "\g<inside>", desc)
-        desc = "<body bgcolor='" + bgcolor.GetAsString(wx.C2S_HTML_SYNTAX) + "' text='" + fgcolor.GetAsString(
-                wx.C2S_HTML_SYNTAX) + "' >" + desc + "</body>"
+        desc = "<body style='background-color: {}; color: {}'>{}</body>".format(
+            bgcolor.GetAsString(wx.C2S_CSS_SYNTAX),
+            fgcolor.GetAsString(wx.C2S_CSS_SYNTAX),
+            desc
+        )
 
         self.description.SetPage(desc)
 
         mainSizer.Add(self.description, 1, wx.ALL | wx.EXPAND, 0)
         self.Layout()
+
+        self.description.Bind(wx.EVT_CONTEXT_MENU, self.onPopupMenu)
+        self.description.Bind(wx.EVT_KEY_DOWN, self.onKeyDown)
+
+        self.popupMenu = wx.Menu()
+        copyItem = wx.MenuItem(self.popupMenu, 1, 'Copy')
+        self.popupMenu.Append(copyItem)
+        self.popupMenu.Bind(wx.EVT_MENU, self.menuClickHandler, copyItem)
+
+    def onPopupMenu(self, event):
+        self.PopupMenu(self.popupMenu)
+
+    def menuClickHandler(self, event):
+        selectedMenuItem = event.GetId()
+        if selectedMenuItem == 1:  # Copy was chosen
+            self.copySelectionToClipboard()
+
+    def onKeyDown(self, event):
+        keyCode = event.GetKeyCode()
+        # Ctrl + C
+        if keyCode == 67 and event.ControlDown():
+            self.copySelectionToClipboard()
+        # Ctrl + A
+        if keyCode == 65 and event.ControlDown():
+            self.description.SelectAll()
+
+    def copySelectionToClipboard(self):
+        selectedText = self.description.SelectionToText()
+        if selectedText == '':  # if no selection, copy all content
+            selectedText = self.description.ToText()
+        if wx.TheClipboard.Open():
+            wx.TheClipboard.SetData(wx.TextDataObject(selectedText))
+            wx.TheClipboard.Close()

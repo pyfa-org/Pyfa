@@ -3,6 +3,7 @@ import urllib.parse
 import socket
 import threading
 from logbook import Logger
+import socketserver
 
 pyfalog = Logger(__name__)
 
@@ -105,9 +106,15 @@ class AuthHandler(http.server.BaseHTTPRequestHandler):
 
 
 # http://code.activestate.com/recipes/425210-simple-stoppable-server-using-socket-timeout/
-class StoppableHTTPServer(http.server.HTTPServer):
+class StoppableHTTPServer(socketserver.TCPServer):
     def server_bind(self):
-        http.server.HTTPServer.server_bind(self)
+        # Can't use HTTPServer due to reliance on socket.getfqdn() which seems to be bugged.
+        # See https://github.com/pyfa-org/Pyfa/issues/1560#issuecomment-390095101
+        socketserver.TCPServer.server_bind(self)
+        host, port = self.server_address[:2]
+        self.server_name = host
+        self.server_port = port
+
         # self.settings = CRESTSettings.getInstance()
 
         # Allow listening for x seconds

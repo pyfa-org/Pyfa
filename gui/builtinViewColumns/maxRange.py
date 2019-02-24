@@ -40,7 +40,7 @@ class MaxRange(ViewColumn):
         info = sAttr.getAttributeInfo("maxRange")
         self.info = info
         if params["showIcon"]:
-            iconFile = info.icon.iconFile if info.icon else None
+            iconFile = info.iconID
             if iconFile:
                 self.imageId = fittingView.imageList.GetImageIndex(iconFile, "icons")
                 self.bitmap = BitmapLoader.getBitmap(iconFile, "icons")
@@ -60,7 +60,7 @@ class MaxRange(ViewColumn):
 
         maxRange = stuff.maxRange if hasattr(stuff, "maxRange") else stuff.getModifiedItemAttr("maxRange", None)
         falloff = stuff.falloff
-        if falloff:
+        if falloff and falloff >= 5:
             falloff = "+%sm" % formatAmount(falloff, 3, 0, 3)
         else:
             falloff = ""

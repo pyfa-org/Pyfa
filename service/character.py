@@ -51,9 +51,6 @@ class CharacterImportThread(threading.Thread):
         self.callback = callback
 
     def run(self):
-        wx.CallAfter(self.callback)
-        # todo: Fix character import (don't need CCP SML anymore, only support evemon?)
-        return
         paths = self.paths
         sCharacter = Character.getInstance()
         all5_character = es_Character("All 5", 5)
@@ -122,6 +119,7 @@ class SkillBackupThread(threading.Thread):
                 backupFile.write(backupData)
 
         wx.CallAfter(self.callback)
+
 
 class Character(object):
     instance = None
@@ -339,7 +337,7 @@ class Character(object):
     @staticmethod
     def getApiDetails(charID):
         # todo: fix this (or get rid of?)
-        return ("", "", "", [])
+        return "", "", "", []
         char = eos.db.getCharacter(charID)
         if char.chars is not None:
             chars = json.loads(char.chars)

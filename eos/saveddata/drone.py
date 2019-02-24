@@ -24,12 +24,13 @@ from sqlalchemy.orm import validates, reconstructor
 import eos.db
 from eos.effectHandlerHelpers import HandledItem, HandledCharge
 from eos.modifiedAttributeDict import ModifiedAttributeDict, ItemAttrShortcut, ChargeAttrShortcut
+from eos.utils.stats import DmgTypes
+
 
 pyfalog = Logger(__name__)
 
 
 class Drone(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
-    DAMAGE_TYPES = ("em", "kinetic", "explosive", "thermal")
     MINING_ATTRIBUTES = ("miningAmount",)
 
     def __init__(self, item):
@@ -65,8 +66,8 @@ class Drone(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
     def build(self):
         """ Build object. Assumes proper and valid item already set """
         self.__charge = None
-        self.__dps = None
-        self.__volley = None
+        self.__baseVolley = None
+        self.__baseRemoteReps = None
         self.__miningyield = None
         self.__itemModifiedAttributes = ModifiedAttributeDict()
         self.__itemModifiedAttributes.original = self.__item.attributes
@@ -120,32 +121,66 @@ class Drone(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
     def hasAmmo(self):
         return self.charge is not None
 
-    @property
-    def dps(self):
-        return self.damageStats()
+    def getVolley(self, targetResists=None):
+        if not self.dealsDamage or self.amountActive <= 0:
+            return DmgTypes(0, 0, 0, 0)
+        if self.__baseVolley is None:
+            dmgGetter = self.getModifiedChargeAttr if self.hasAmmo else self.getModifiedItemAttr
+            dmgMult = self.amountActive * (self.getModifiedItemAttr("damageMultiplier", 1))
+            self.__baseVolley = DmgTypes(
+                em=(dmgGetter("emDamage", 0)) * dmgMult,
+                thermal=(dmgGetter("thermalDamage", 0)) * dmgMult,
+                kinetic=(dmgGetter("kineticDamage", 0)) * dmgMult,
+                explosive=(dmgGetter("explosiveDamage", 0)) * dmgMult)
+        volley = DmgTypes(
+            em=self.__baseVolley.em * (1 - getattr(targetResists, "emAmount", 0)),
+            thermal=self.__baseVolley.thermal * (1 - getattr(targetResists, "thermalAmount", 0)),
+            kinetic=self.__baseVolley.kinetic * (1 - getattr(targetResists, "kineticAmount", 0)),
+            explosive=self.__baseVolley.explosive * (1 - getattr(targetResists, "explosiveAmount", 0)))
+        return volley
 
-    def damageStats(self, targetResists=None):
-        if self.__dps is None:
-            self.__volley = 0
-            self.__dps = 0
-            if self.dealsDamage is True and self.amountActive > 0:
-                if self.hasAmmo:
-                    attr = "missileLaunchDuration"
-                    getter = self.getModifiedChargeAttr
-                else:
-                    attr = "speed"
-                    getter = self.getModifiedItemAttr
+    def getDps(self, targetResists=None):
+        volley = self.getVolley(targetResists=targetResists)
+        if not volley:
+            return DmgTypes(0, 0, 0, 0)
+        cycleAttr = "missileLaunchDuration" if self.hasAmmo else "speed"
+        cycleTime = self.getModifiedItemAttr(cycleAttr)
+        dpsFactor = 1 / (cycleTime / 1000)
+        dps = DmgTypes(
+            em=volley.em * dpsFactor,
+            thermal=volley.thermal * dpsFactor,
+            kinetic=volley.kinetic * dpsFactor,
+            explosive=volley.explosive * dpsFactor)
+        return dps
 
-                cycleTime = self.getModifiedItemAttr(attr)
+    def getRemoteReps(self, ignoreState=False):
+        if self.amountActive <= 0 and not ignoreState:
+            return (None, 0)
+        if self.__baseRemoteReps is None:
+            rrShield = self.getModifiedItemAttr("shieldBonus", 0)
+            rrArmor = self.getModifiedItemAttr("armorDamageAmount", 0)
+            rrHull = self.getModifiedItemAttr("structureDamageAmount", 0)
+            if rrShield:
+                rrType = "Shield"
+                rrAmount = rrShield
+            elif rrArmor:
+                rrType = "Armor"
+                rrAmount = rrArmor
+            elif rrHull:
+                rrType = "Hull"
+                rrAmount = rrHull
+            else:
+                rrType = None
+                rrAmount = 0
+            if rrAmount:
+                droneAmount = self.amount if ignoreState else self.amountActive
+                rrAmount *= droneAmount / (self.cycleTime / 1000)
+            self.__baseRemoteReps = (rrType, rrAmount)
+        return self.__baseRemoteReps
 
-                volley = sum(
-                        [(getter("%sDamage" % d) or 0) * (1 - getattr(targetResists, "%sAmount" % d, 0)) for d in self.DAMAGE_TYPES])
-                volley *= self.amountActive
-                volley *= self.getModifiedItemAttr("damageMultiplier") or 1
-                self.__volley = volley
-                self.__dps = volley / (cycleTime / 1000.0)
-
-        return self.__dps, self.__volley
+    def changeType(self, typeID):
+        self.itemID = typeID
+        self.init()
 
     @property
     def miningStats(self):
@@ -204,8 +239,8 @@ class Drone(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
             return val
 
     def clear(self):
-        self.__dps = None
-        self.__volley = None
+        self.__baseVolley = None
+        self.__baseRemoteReps = None
         self.__miningyield = None
         self.itemModifiedAttributes.clear()
         self.chargeModifiedAttributes.clear()

@@ -18,18 +18,18 @@
 # =============================================================================
 
 
-import time
-import threading
 import queue
-from xml.dom import minidom
+import threading
+import time
 
-from logbook import Logger
 import wx
+from logbook import Logger
 
 from eos import db
-from service.network import Network, TimeoutError
+from eos.saveddata.price import PriceStatus
 from service.fit import Fit
 from service.market import Market
+from service.network import TimeoutError
 
 pyfalog = Logger(__name__)
 
@@ -86,13 +86,18 @@ class Price(object):
         toRequest = set()
 
         # Compose list of items we're going to request
-        for typeID in priceMap:
+        for typeID in tuple(priceMap):
             # Get item object
             item = db.getItem(typeID)
             # We're not going to request items only with market group, as eve-central
             # doesn't provide any data for items not on the market
-            if item is not None and item.marketGroupID:
-                toRequest.add(typeID)
+            if item is None:
+                continue
+            if not item.marketGroupID:
+                priceMap[typeID].status = PriceStatus.notSupported
+                del priceMap[typeID]
+                continue
+            toRequest.add(typeID)
 
         # Do not waste our time if all items are not on the market
         if len(toRequest) == 0:
@@ -118,11 +123,10 @@ class Price(object):
             except TimeoutError:
                 # Timeout error deserves special treatment
                 pyfalog.warning("Price fetch timout")
-                for typeID in priceMap.keys():
+                for typeID in tuple(priceMap):
                     priceobj = priceMap[typeID]
                     priceobj.time = time.time() + TIMEOUT
-                    priceobj.failed = True
-
+                    priceobj.status = PriceStatus.fail
                     del priceMap[typeID]
             except Exception as ex:
                 # something happened, try another source
@@ -135,7 +139,7 @@ class Price(object):
         for typeID in priceMap.keys():
             priceobj = priceMap[typeID]
             priceobj.time = time.time() + REREQUEST
-            priceobj.failed = True
+            priceobj.status = PriceStatus.fail
 
     @classmethod
     def fitItemsList(cls, fit):
@@ -173,8 +177,8 @@ class Price(object):
     def getPrices(self, objitems, callback, waitforthread=False):
         """Get prices for multiple typeIDs"""
         requests = []
+        sMkt = Market.getInstance()
         for objitem in objitems:
-            sMkt = Market.getInstance()
             item = sMkt.getItem(objitem)
             requests.append(item.price)
 
@@ -198,6 +202,7 @@ class Price(object):
 
 
 class PriceWorkerThread(threading.Thread):
+
     def __init__(self):
         threading.Thread.__init__(self)
         self.name = "PriceWorker"
@@ -228,10 +233,12 @@ class PriceWorkerThread(threading.Thread):
     def trigger(self, prices, callbacks):
         self.queue.put((callbacks, prices))
 
-    def setToWait(self, itemID, callback):
-        if itemID not in self.wait:
-            self.wait[itemID] = []
-        self.wait[itemID].append(callback)
+    def setToWait(self, prices, callback):
+        for x in prices:
+            if x.typeID not in self.wait:
+                self.wait[x.typeID] = []
+            self.wait[x.typeID].append(callback)
 
 
+# Import market sources only to initialize price source modules, they register on their own
 from service.marketSources import evemarketer, evemarketdata  # noqa: E402

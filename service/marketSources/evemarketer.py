@@ -18,17 +18,18 @@
 # =============================================================================
 
 import time
-from logbook import Logger
 from xml.dom import minidom
 
-from service.network import Network
-from service.price import Price, VALIDITY, TIMEOUT, TimeoutError
+from logbook import Logger
 
+from eos.saveddata.price import PriceStatus
+from service.network import Network
+from service.price import Price, VALIDITY
 
 pyfalog = Logger(__name__)
 
 
-class EveCentral(object):
+class EveMarketer(object):
 
     name = "evemarketer"
 
@@ -61,10 +62,10 @@ class EveCentral(object):
             priceobj = priceMap[typeID]
             priceobj.price = percprice
             priceobj.time = time.time() + VALIDITY
-            priceobj.failed = None
+            priceobj.status = PriceStatus.success
 
             # delete price from working dict
             del priceMap[typeID]
 
 
-Price.register(EveCentral)
+Price.register(EveMarketer)

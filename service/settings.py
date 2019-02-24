@@ -248,6 +248,11 @@ class NetworkSettings(object):
             proto = "{0}://".format(prefix)
             if proxyline[:len(proto)] == proto:
                 proxyline = proxyline[len(proto):]
+            # sometimes proxyline contains "user:password@" section before proxy address
+            # remove it if present, so later split by ":" works
+            if '@' in proxyline:
+                userPass, proxyline = proxyline.split("@")
+                # TODO: do something with user/password?
             proxAddr, proxPort = proxyline.split(":")
             proxPort = int(proxPort.rstrip("/"))
             proxy = (proxAddr, proxPort)
@@ -283,6 +288,23 @@ class NetworkSettings(object):
             return
         self.serviceNetworkSettings["login"] = login
         self.serviceNetworkSettings["password"] = password
+
+    def getProxySettingsInRequestsFormat(self) -> dict:
+        proxies = {}
+        proxy_settings = self.getProxySettings()
+        if proxy_settings is not None:
+            # form proxy address in format "http://host:port
+            proxy_host_port = '{}:{}'.format(proxy_settings[0], proxy_settings[1])
+            proxy_auth_details = self.getProxyAuthDetails()
+            user_pass = ''
+            if proxy_auth_details is not None:
+                # construct prefix in form "user:password@"
+                user_pass = '{}:{}@'.format(proxy_auth_details[0], proxy_auth_details[1])
+            proxies = {
+                'http': 'http://' + user_pass + proxy_host_port,
+                'https': 'http://' + user_pass + proxy_host_port
+            }
+        return proxies
 
 
 class HTMLExportSettings(object):
@@ -363,10 +385,18 @@ class EsiSettings(object):
         return cls._instance
 
     def __init__(self):
+        # SSO Mode:
+        # 0 - pyfa.io
+        # 1 - custom application
         # LoginMode:
         # 0 - Server Start Up
         # 1 - User copy and paste data from website to pyfa
-        defaults = {"loginMode": 0, "clientID": "", "clientSecret": "", "timeout": 60}
+        defaults = {
+            "ssoMode": 0,
+            "loginMode": 0,
+            "clientID": "",
+            "clientSecret": "",
+            "timeout": 60}
 
         self.settings = SettingsProvider.getInstance().getSettings(
                 "pyfaServiceEsiSettings",
@@ -495,6 +525,7 @@ class ContextMenuSettings(object):
             "tacticalMode"          : 1,
             "targetResists"         : 1,
             "whProjector"           : 1,
+            "moduleFill"            : 1,
         }
 
         self.ContextMenuDefaultSettings = SettingsProvider.getInstance().getSettings("pyfaContextMenuSettings", ContextMenuDefaultSettings)

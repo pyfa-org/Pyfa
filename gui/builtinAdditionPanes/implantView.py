@@ -23,11 +23,29 @@ import gui.display as d
 from gui.builtinMarketBrowser.events import ITEM_SELECTED
 import gui.mainFrame
 from gui.builtinViewColumns.state import State
+from gui.utils.staticHelpers import DragDropHelper
 from gui.contextMenu import ContextMenu
 import gui.globalEvents as GE
 from eos.saveddata.fit import ImplantLocation
 from service.fit import Fit
 from service.market import Market
+import gui.fitCommands as cmd
+
+
+class ImplantViewDrop(wx.DropTarget):
+    def __init__(self, dropFn, *args, **kwargs):
+        super(ImplantViewDrop, self).__init__(*args, **kwargs)
+        self.dropFn = dropFn
+        # this is really transferring an EVE itemID
+        self.dropData = wx.TextDataObject()
+        self.SetDataObject(self.dropData)
+
+    def OnData(self, x, y, t):
+        if self.GetData():
+            dragged_data = DragDropHelper.data
+            data = dragged_data.split(':')
+            self.dropFn(x, y, data)
+        return t
 
 
 class ImplantView(wx.Panel):
@@ -75,10 +93,8 @@ class ImplantView(wx.Panel):
 
     def OnRadioSelect(self, event):
         fitID = self.mainFrame.getActiveFit()
-        sFit = Fit.getInstance()
-        sFit.toggleImplantSource(fitID, ImplantLocation.FIT if self.rbFit.GetValue() else ImplantLocation.CHARACTER)
-
-        wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fitID))
+        if fitID is not None:
+            self.mainFrame.command.Submit(cmd.GuiChangeImplantLocation(fitID, ImplantLocation.FIT if self.rbFit.GetValue() else ImplantLocation.CHARACTER))
 
 
 class ImplantDisplay(d.Display):
@@ -100,11 +116,26 @@ class ImplantDisplay(d.Display):
         self.Bind(wx.EVT_LEFT_DCLICK, self.removeItem)
         self.Bind(wx.EVT_LEFT_DOWN, self.click)
         self.Bind(wx.EVT_KEY_UP, self.kbEvent)
+        self.SetDropTarget(ImplantViewDrop(self.handleListDrag))
+
 
         if "__WXGTK__" in wx.PlatformInfo:
             self.Bind(wx.EVT_RIGHT_UP, self.scheduleMenu)
         else:
             self.Bind(wx.EVT_RIGHT_DOWN, self.scheduleMenu)
+
+    def handleListDrag(self, x, y, data):
+        """
+        Handles dragging of items from various pyfa displays which support it
+
+        data is list with two indices:
+            data[0] is hard-coded str of originating source
+            data[1] is typeID or index of data we want to manipulate
+        """
+
+        if data[0] == "market":
+            if self.mainFrame.command.Submit(cmd.GuiAddImplantCommand(self.mainFrame.getActiveFit(), int(data[1]))):
+                self.mainFrame.additionsPane.select("Implants")
 
     def kbEvent(self, event):
         keycode = event.GetKeyCode()
@@ -155,9 +186,7 @@ class ImplantDisplay(d.Display):
             event.Skip()
             return
 
-        trigger = sFit.addImplant(fitID, event.itemID)
-        if trigger:
-            wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fitID))
+        if self.mainFrame.command.Submit(cmd.GuiAddImplantCommand(fitID, event.itemID)):
             self.mainFrame.additionsPane.select("Implants")
 
         event.Skip()
@@ -175,10 +204,7 @@ class ImplantDisplay(d.Display):
 
     def removeImplant(self, implant):
         fitID = self.mainFrame.getActiveFit()
-        sFit = Fit.getInstance()
-
-        sFit.removeImplant(fitID, self.original.index(implant))
-        wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fitID))
+        self.mainFrame.command.Submit(cmd.GuiRemoveImplantCommand(fitID, self.original.index(implant)))
 
     def click(self, event):
         event.Skip()
@@ -192,9 +218,7 @@ class ImplantDisplay(d.Display):
             col = self.getColumn(event.Position)
             if col == self.getColIndex(State):
                 fitID = self.mainFrame.getActiveFit()
-                sFit = Fit.getInstance()
-                sFit.toggleImplant(fitID, row)
-                wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fitID))
+                self.mainFrame.command.Submit(cmd.GuiToggleImplantCommand(fitID, row))
 
     def scheduleMenu(self, event):
         event.Skip()

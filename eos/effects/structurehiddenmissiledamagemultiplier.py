@@ -1,4 +1,7 @@
-# Not used by any item
+# structureHiddenMissileDamageMultiplier
+#
+# Used by:
+# Items from category: Structure (14 of 17)
 type = "passive"
 
 

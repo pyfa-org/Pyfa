@@ -166,14 +166,14 @@ class Effect(EqBase):
 
             t = t if isinstance(t, tuple) or t is None else (t,)
             self.__type = t
-        except (ImportError) as e:
+        except ImportError as e:
             # Effect probably doesn't exist, so create a dummy effect and flag it with a warning.
             self.__handler = effectDummy
             self.__runTime = "normal"
             self.__activeByDefault = True
             self.__type = None
             pyfalog.debug("ImportError generating handler: {0}", e)
-        except (AttributeError) as e:
+        except AttributeError as e:
             # Effect probably exists but there is an issue with it.  Turn it into a dummy effect so we can continue, but flag it with an error.
             self.__handler = effectDummy
             self.__runTime = "normal"
@@ -208,6 +208,8 @@ class Item(EqBase):
 
     MOVE_ATTR_INFO = None
 
+    ABYSSAL_TYPES = None
+
     @classmethod
     def getMoveAttrInfo(cls):
         info = getattr(cls, "MOVE_ATTR_INFO", None)
@@ -237,7 +239,7 @@ class Item(EqBase):
         self.__offensive = None
         self.__assistive = None
         self.__overrides = None
-        self.__price = None
+        self.__priceObj = None
 
     @property
     def attributes(self):
@@ -372,7 +374,8 @@ class Item(EqBase):
                     12 : "sisters",  # Amarr + Gallente
                     16 : "jove",
                     32 : "sansha",  # Incrusion Sansha
-                    128: "ore"
+                    128: "ore",
+                    135: "triglavian"
                 }
                 # Race is None by default
                 race = None
@@ -443,24 +446,38 @@ class Item(EqBase):
 
     @property
     def price(self):
-
         # todo: use `from sqlalchemy import inspect` instead (mac-deprecated doesn't have inspect(), was imp[lemented in 0.8)
-        if self.__price is not None and getattr(self.__price, '_sa_instance_state', None) and self.__price._sa_instance_state.deleted:
+        if self.__priceObj is not None and getattr(self.__priceObj, '_sa_instance_state', None) and self.__priceObj._sa_instance_state.deleted:
             pyfalog.debug("Price data for {} was deleted (probably from a cache reset), resetting object".format(self.ID))
-            self.__price = None
+            self.__priceObj = None
 
-        if self.__price is None:
+        if self.__priceObj is None:
             db_price = eos.db.getPrice(self.ID)
             # do not yet have a price in the database for this item, create one
             if db_price is None:
                 pyfalog.debug("Creating a price for {}".format(self.ID))
-                self.__price = types_Price(self.ID)
-                eos.db.add(self.__price)
-                eos.db.commit()
+                self.__priceObj = types_Price(self.ID)
+                eos.db.add(self.__priceObj)
+                eos.db.flush()
             else:
-                self.__price = db_price
+                self.__priceObj = db_price
 
-        return self.__price
+        return self.__priceObj
+
+    @property
+    def isAbyssal(self):
+        if Item.ABYSSAL_TYPES is None:
+            Item.getAbyssalTypes()
+
+        return self.ID in Item.ABYSSAL_TYPES
+
+    @classmethod
+    def getAbyssalTypes(cls):
+        cls.ABYSSAL_TYPES = eos.db.getAbyssalTypes()
+
+    @property
+    def isCharge(self):
+        return self.category.name == "Charge"
 
     def __repr__(self):
         return "Item(ID={}, name={}) at {}".format(
@@ -511,7 +528,15 @@ class Group(EqBase):
     pass
 
 
-class Icon(EqBase):
+class DynamicItem(EqBase):
+    pass
+
+
+class DynamicItemAttribute(EqBase):
+    pass
+
+
+class DynamicItemItem(EqBase):
     pass
 
 
@@ -531,8 +556,126 @@ class MetaType(EqBase):
 
 
 class Unit(EqBase):
-    pass
 
+    def __init__(self):
+        self.name = None
+        self.displayName = None
+
+    @property
+    def translations(self):
+        """ This is a mapping of various tweaks that we have to do between the internal representation of an attribute
+        value and the display (for example, 'Millisecond' units have the display name of 's', so we have to convert value
+        from ms to s) """
+        # Each entry contains:
+        # Function to convert value to display value
+        # Function to convert value to display format (which sometimes can be a string)
+        # Function which controls unit name used with attribute
+        # Function to convert display value to value
+        return {
+            "Inverse Absolute Percent": (
+                lambda v: (1 - v) * 100,
+                lambda v: (1 - v) * 100,
+                lambda u: u,
+                lambda d: -1 * (d / 100) + 1),
+            "Inversed Modifier Percent": (
+                lambda v: (1 - v) * 100,
+                lambda v: (1 - v) * 100,
+                lambda u: u,
+                lambda d: -1 * (d / 100) + 1),
+            "Modifier Percent": (
+                lambda v: (v - 1) * 100,
+                lambda v: ("%+.2f" if ((v - 1) * 100) % 1 else "%+d") % ((v - 1) * 100),
+                lambda u: u,
+                lambda d: (d / 100) + 1),
+            "Volume": (
+                lambda v: v,
+                lambda v: v,
+                lambda u: "m³",
+                lambda d: d),
+            "Sizeclass": (
+                lambda v: v,
+                lambda v: v,
+                lambda u: "",
+                lambda d: d),
+            "Absolute Percent": (
+                lambda v: v * 100,
+                lambda v: v * 100,
+                lambda u: u,
+                lambda d: d / 100),
+            "Milliseconds": (
+                lambda v: v / 1000,
+                lambda v: v / 1000,
+                lambda u: u,
+                lambda d: d * 1000),
+            "Boolean": (
+                lambda v: True if v else False,
+                lambda v: "Yes" if v else "No",
+                lambda u: "",
+                lambda d: 1.0 if d == "Yes" else 0.0),
+            "typeID": (
+                self.itemIDCallback,
+                self.itemIDCallback,
+                lambda u: "",
+                None),  # we could probably convert these back if we really tried hard enough
+            "groupID": (
+                self.groupIDCallback,
+                self.groupIDCallback,
+                lambda u: "",
+                None),
+            "attributeID": (
+                self.attributeIDCallback,
+                self.attributeIDCallback,
+                lambda u: "",
+                None),
+        }
+
+    @staticmethod
+    def itemIDCallback(v):
+        v = int(v)
+        item = eos.db.getItem(int(v))
+        return "%s (%d)" % (item.name, v) if item is not None else str(v)
+
+    @staticmethod
+    def groupIDCallback(v):
+        v = int(v)
+        group = eos.db.getGroup(v)
+        return "%s (%d)" % (group.name, v) if group is not None else str(v)
+
+    @staticmethod
+    def attributeIDCallback(v):
+        v = int(v)
+        if not v:  # some attributes come through with a value of 0? See #1387
+            return "%d" % v
+        attribute = eos.db.getAttributeInfo(v, eager="unit")
+        return "%s (%d)" % (attribute.name.capitalize(), v)
+
+    def PreformatValue(self, value):
+        """Attributes have to be translated certain ways based on their unit (ex: decimals converting to percentages).
+        This allows us to get an easy representation of how the attribute should be printed """
+
+        override = self.translations.get(self.name)
+        if override is not None:
+            return override[1](value), override[2](self.displayName)
+
+        return value, self.displayName
+
+    def SimplifyValue(self, value):
+        """Takes the internal representation value and convert it into the display value"""
+
+        override = self.translations.get(self.name)
+        if override is not None:
+            return override[0](value)
+
+        return value
+
+    def ComplicateValue(self, value):
+        """Takes the display value and turns it back into the internal representation of it"""
+
+        override = self.translations.get(self.name)
+        if override is not None:
+            return override[3](value)
+
+        return value
 
 class Traits(EqBase):
     pass

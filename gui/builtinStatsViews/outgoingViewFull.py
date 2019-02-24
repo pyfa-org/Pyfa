@@ -21,7 +21,35 @@
 import wx
 from gui.statsView import StatsView
 from gui.bitmap_loader import BitmapLoader
-from gui.utils.numberFormatter import formatAmount
+from gui.utils.numberFormatter import formatAmount, roundToPrec
+from eos.utils.spoolSupport import SpoolType, SpoolOptions
+
+
+stats = [
+    (
+        "labelRemoteCapacitor", "Capacitor:", "{}{} GJ/s", "capacitorInfo", "Capacitor restored",
+        lambda fit, spool: fit.getRemoteReps(spoolOptions=SpoolOptions(SpoolType.SCALE, spool, False)).get("Capacitor", 0),
+        lambda fit: fit.getRemoteReps(spoolOptions=SpoolOptions(SpoolType.SCALE, 0, True)).get("Capacitor", 0),
+        lambda fit: fit.getRemoteReps(spoolOptions=SpoolOptions(SpoolType.SCALE, 1, True)).get("Capacitor", 0),
+        3, 0, 0),
+    (
+        "labelRemoteShield", "Shield:", "{}{} HP/s", "shieldActive", "Shield restored",
+        lambda fit, spool: fit.getRemoteReps(spoolOptions=SpoolOptions(SpoolType.SCALE, spool, False)).get("Shield", 0),
+        lambda fit: fit.getRemoteReps(spoolOptions=SpoolOptions(SpoolType.SCALE, 0, True)).get("Shield", 0),
+        lambda fit: fit.getRemoteReps(spoolOptions=SpoolOptions(SpoolType.SCALE, 1, True)).get("Shield", 0),
+        3, 0, 0),
+    (
+        "labelRemoteArmor", "Armor:", "{}{} HP/s", "armorActive", "Armor restored",
+        lambda fit, spool: fit.getRemoteReps(spoolOptions=SpoolOptions(SpoolType.SCALE, spool, False)).get("Armor", 0),
+        lambda fit: fit.getRemoteReps(spoolOptions=SpoolOptions(SpoolType.SCALE, 0, True)).get("Armor", 0),
+        lambda fit: fit.getRemoteReps(spoolOptions=SpoolOptions(SpoolType.SCALE, 1, True)).get("Armor", 0),
+        3, 0, 0),
+    (
+        "labelRemoteHull", "Hull:", "{}{} HP/s", "hullActive", "Hull restored",
+        lambda fit, spool: fit.getRemoteReps(spoolOptions=SpoolOptions(SpoolType.SCALE, spool, False)).get("Hull", 0),
+        lambda fit: fit.getRemoteReps(spoolOptions=SpoolOptions(SpoolType.SCALE, 0, True)).get("Hull", 0),
+        lambda fit: fit.getRemoteReps(spoolOptions=SpoolOptions(SpoolType.SCALE, 1, True)).get("Hull", 0),
+        3, 0, 0)]
 
 
 class OutgoingViewFull(StatsView):
@@ -48,56 +76,46 @@ class OutgoingViewFull(StatsView):
 
         contentSizer.Add(sizerOutgoing, 0, wx.EXPAND, 0)
 
-        counter = 0
-
-        rr_list = [
-            ("RemoteCapacitor", "Capacitor:", "capacitorInfo", "Capacitor GJ/s per second transferred remotely."),
-            ("RemoteShield", "Shield:", "shieldActive", "Shield hitpoints per second repaired remotely."),
-            ("RemoteArmor", "Armor:", "armorActive", "Armor hitpoints per second repaired remotely."),
-            ("RemoteHull", "Hull:", "hullActive", "Hull hitpoints per second repaired remotely."),
-        ]
-
-        for outgoingType, label, image, tooltip in rr_list:
+        for labelName, labelDesc, valueFormat, image, tooltip, val, preSpoolVal, fullSpoolVal, prec, lowest, highest in stats:
             baseBox = wx.BoxSizer(wx.VERTICAL)
 
             baseBox.Add(BitmapLoader.getStaticBitmap("%s_big" % image, parent, "gui"), 0, wx.ALIGN_CENTER)
 
-            if "Capacitor" in outgoingType:
-                lbl = wx.StaticText(parent, wx.ID_ANY, "0 GJ/s")
-            else:
-                lbl = wx.StaticText(parent, wx.ID_ANY, "0 HP/s")
-
+            lbl = wx.StaticText(parent, wx.ID_ANY, valueFormat.format(0, ""))
             lbl.SetToolTip(wx.ToolTip(tooltip))
-
-            setattr(self, "label%s" % outgoingType, lbl)
+            setattr(self, labelName, lbl)
 
             baseBox.Add(lbl, 0, wx.ALIGN_CENTER)
             self._cachedValues.append(0)
-            counter += 1
 
             sizerOutgoing.Add(baseBox, 1, wx.ALIGN_LEFT)
 
     def refreshPanel(self, fit):
-        # If we did anything intresting, we'd update our labels to reflect the new fit's stats here
 
-        stats = [
-            ("labelRemoteArmor", lambda: fit.remoteReps["Armor"], 3, 0, 0, "%s HP/s", None),
-            ("labelRemoteShield", lambda: fit.remoteReps["Shield"], 3, 0, 0, "%s HP/s", None),
-            ("labelRemoteHull", lambda: fit.remoteReps["Hull"], 3, 0, 0, "%s HP/s", None),
-            ("labelRemoteCapacitor", lambda: fit.remoteReps["Capacitor"], 3, 0, 0, "%s GJ/s", None),
-        ]
+        def formatTooltip(text, preSpool, fullSpool, prec, lowest, highest):
+            if roundToPrec(preSpool, prec) == roundToPrec(fullSpool, prec):
+                return False, text
+            else:
+                return True, "{}\nSpool up: {}-{}".format(
+                    text,
+                    formatAmount(preSpool, prec, lowest, highest),
+                    formatAmount(fullSpool, prec, lowest, highest))
 
+        # TODO: fetch spoolup option
+        defaultSpoolValue = 1
         counter = 0
-        for labelName, value, prec, lowest, highest, valueFormat, altFormat in stats:
+        for labelName, labelDesc, valueFormat, image, tooltip, val, preSpoolVal, fullSpoolVal, prec, lowest, highest in stats:
             label = getattr(self, labelName)
-            value = value() if fit is not None else 0
-            value = value if value is not None else 0
-            if self._cachedValues[counter] != value:
-                valueStr = formatAmount(value, prec, lowest, highest)
-                label.SetLabel(valueFormat % valueStr)
-                tipStr = valueFormat % valueStr if altFormat is None else altFormat % value
-                label.SetToolTip(wx.ToolTip(tipStr))
-                self._cachedValues[counter] = value
+            val = val(fit, defaultSpoolValue) if fit is not None else 0
+            preSpoolVal = preSpoolVal(fit) if fit is not None else 0
+            fullSpoolVal = fullSpoolVal(fit) if fit is not None else 0
+            if self._cachedValues[counter] != val:
+                hasSpool, tooltipText = formatTooltip(tooltip, preSpoolVal, fullSpoolVal, prec, lowest, highest)
+                label.SetLabel(valueFormat.format(
+                    formatAmount(val, prec, lowest, highest),
+                    "\u02e2" if hasSpool else ""))
+                label.SetToolTip(wx.ToolTip(tooltipText))
+                self._cachedValues[counter] = val
             counter += 1
         self.panel.Layout()
         self.headerPanel.Layout()

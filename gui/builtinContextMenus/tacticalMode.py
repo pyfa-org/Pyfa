@@ -1,9 +1,9 @@
 # noinspection PyPackageRequirements
 import wx
-from gui.contextMenu import ContextMenu
-import gui.mainFrame
 
-import gui.globalEvents as GE
+import gui.fitCommands as cmd
+import gui.mainFrame
+from gui.contextMenu import ContextMenu
 from service.fit import Fit
 from service.settings import ContextMenuSettings
 
@@ -60,10 +60,8 @@ class TacticalMode(ContextMenu):
             event.Skip()
             return
 
-        sFit = Fit.getInstance()
         fitID = self.mainFrame.getActiveFit()
-        sFit.setMode(fitID, self.modeIds[event.Id])
-        wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fitID))
+        self.mainFrame.command.Submit(cmd.GuiSetModeCommand(fitID, self.modeIds[event.Id]))
 
 
 TacticalMode.register()

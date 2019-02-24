@@ -1,5 +1,6 @@
 import os
 import sys
+import yaml
 
 from logbook import CRITICAL, DEBUG, ERROR, FingersCrossedHandler, INFO, Logger, NestedSetup, NullHandler, \
     StreamHandler, TimedRotatingFileHandler, WARNING
@@ -22,12 +23,6 @@ debug = False
 # Defines if our saveddata will be in pyfa root or not
 saveInRoot = False
 
-# Version data
-
-version = "2.0.0"
-tag = "Stable"
-expansionName = "YC120.3"
-expansionVersion = "1.8"
 evemonMinVersion = "4081"
 
 minItemSearchLength = 3
@@ -42,7 +37,6 @@ logging_setup = None
 cipher = None
 clientHash = None
 
-ESI_AUTH_PROXY = "https://www.pyfa.io" # "http://localhost:5015"
 ESI_CACHE = 'esi_cache'
 
 LOGLEVEL_MAP = {
@@ -80,12 +74,7 @@ def getPyfaRoot():
 
 
 def getVersion():
-    if os.path.isfile(os.path.join(pyfaPath, '.version')):
-        with open(os.path.join(pyfaPath, '.version')) as f:
-            gitVersion = f.readline()
-        return gitVersion
-    # if no version file exists, then user is running from source or not an official build
-    return version + " (git)"
+    return version
 
 
 def getDefaultSave():
@@ -97,11 +86,12 @@ def defPaths(customSavePath=None):
     global pyfaPath
     global savePath
     global saveDB
-    global gameDB
+    global gameDB 
     global saveInRoot
     global logPath
     global cipher
     global clientHash
+    global version
 
     pyfalog.debug("Configuring Pyfa")
 
@@ -110,6 +100,12 @@ def defPaths(customSavePath=None):
     pyfaPath = getattr(configforced, "pyfaPath", pyfaPath)
     if pyfaPath is None:
         pyfaPath = getPyfaRoot()
+
+    # Version data
+
+    with open(os.path.join(pyfaPath, "version.yml"), 'r') as file:
+        data = yaml.load(file)
+        version = data['version']
 
     # Where we store the saved fits etc, default is the current users home directory
     if saveInRoot is True:
@@ -229,20 +225,6 @@ def defLogging():
                     bubble=False
             )
         ])
-
-    with logging_setup.threadbound():
-
-        # Output all stdout (print) messages as warnings
-        try:
-            sys.stdout = LoggerWriter(pyfalog.warning)
-        except:
-            pyfalog.critical("Cannot redirect.  Continuing without writing stdout to log.")
-
-        # Output all stderr (stacktrace) messages as critical
-        try:
-            sys.stderr = LoggerWriter(pyfalog.critical)
-        except:
-            pyfalog.critical("Cannot redirect.  Continuing without writing stderr to log.")
 
 
 class LoggerWriter(object):

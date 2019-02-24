@@ -2,6 +2,7 @@
 #
 # Used by:
 # Module: Energy Neutralization Burst Projector
+# Structure Module: Standup Energy Neutralization Burst Projector
 from eos.saveddata.module import State
 from eos.modifiedAttributeDict import ModifiedAttributeDict
 

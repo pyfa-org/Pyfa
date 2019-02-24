@@ -2,6 +2,7 @@
 #
 # Used by:
 # Modules from group: Missile Guidance Enhancer (3 of 3)
+# Module: ML-EKP 'Polybolos' Ballistic Control System
 type = "passive"
 
 

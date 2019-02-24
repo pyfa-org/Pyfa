@@ -1,4 +1,7 @@
-# Not used by any item
+# structureHiddenArmorHPMultiplier
+#
+# Used by:
+# Items from category: Structure (17 of 17)
 type = "passive"
 
 

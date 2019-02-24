@@ -18,18 +18,26 @@
 # License along with eos.  If not, see <http://www.gnu.org/licenses/>.
 #======================================================================
 
+import functools
 import os
 import sys
-import re
 
 # Add eos root path to sys.path so we can import ourselves
-path = os.path.dirname(str(__file__, sys.getfilesystemencoding()))
-sys.path.append(os.path.realpath(os.path.join(path, "..")))
+path = os.path.dirname(__file__)
+sys.path.insert(0, os.path.realpath(os.path.join(path, '..')))
 
 import json
 import argparse
+import itertools
+
+
+CATEGORIES_TO_REMOVE = [
+    30  # Apparel
+]
 
 def main(db, json_path):
+    if os.path.isfile(db):
+        os.remove(db)
 
     jsonPath = os.path.expanduser(json_path)
 
@@ -47,66 +55,65 @@ def main(db, json_path):
 
     # Config dict
     tables = {
-        "clonegrades": eos.gamedata.AlphaCloneSkill,
-        "dgmattribs": eos.gamedata.AttributeInfo,
-        "dgmeffects": eos.gamedata.Effect,
-        "dgmtypeattribs": eos.gamedata.Attribute,
-        "dgmtypeeffects": eos.gamedata.ItemEffect,
-        "dgmunits": eos.gamedata.Unit,
-        "icons": eos.gamedata.Icon,
-        "evecategories": eos.gamedata.Category,
-        "evegroups": eos.gamedata.Group,
-        "invmetagroups": eos.gamedata.MetaGroup,
-        "invmetatypes": eos.gamedata.MetaType,
-        "evetypes": eos.gamedata.Item,
-        "phbtraits": eos.gamedata.Traits,
-        "phbmetadata": eos.gamedata.MetaData,
-        "mapbulk_marketGroups": eos.gamedata.MarketGroup,
+        'clonegrades': eos.gamedata.AlphaCloneSkill,
+        'dgmattribs': eos.gamedata.AttributeInfo,
+        'dgmeffects': eos.gamedata.Effect,
+        'dgmtypeattribs': eos.gamedata.Attribute,
+        'dgmtypeeffects': eos.gamedata.ItemEffect,
+        'dgmunits': eos.gamedata.Unit,
+        'evecategories': eos.gamedata.Category,
+        'evegroups': eos.gamedata.Group,
+        'invmetagroups': eos.gamedata.MetaGroup,
+        'invmetatypes': eos.gamedata.MetaType,
+        'evetypes': eos.gamedata.Item,
+        'phbtraits': eos.gamedata.Traits,
+        'phbmetadata': eos.gamedata.MetaData,
+        'mapbulk_marketGroups': eos.gamedata.MarketGroup,
     }
 
     fieldMapping = {
-        "dgmattribs": {
-            "displayName_en-us": "displayName"
+        'dgmattribs': {
+            'displayName': 'displayName'
         },
-        "dgmeffects": {
-            "displayName_en-us": "displayName",
-            "description_en-us": "description"
+        'dgmeffects': {
+            'displayName': 'displayName',
+            'description': 'description'
         },
-        "dgmunits": {
-            "displayName_en-us": "displayName"
+        'dgmunits': {
+            'displayName': 'displayName'
         },
         #icons???
-        "evecategories": {
-            "categoryName_en-us": "categoryName"
+        'evecategories': {
+            'categoryName': 'categoryName'
         },
-        "evegroups": {
-            "groupName_en-us": "groupName"
+        'evegroups': {
+            'groupName': 'groupName'
         },
-        "invmetagroups": {
-            "metaGroupName_en-us": "metaGroupName"
+        'invmetagroups': {
+            'metaGroupName': 'metaGroupName'
         },
-        "evetypes": {
-            "typeName_en-us": "typeName",
-            "description_en-us": "description"
+        'evetypes': {
+            'typeName': 'typeName',
+            'description': 'description'
         },
         #phbtraits???
-        "mapbulk_marketGroups": {
-            "marketGroupName_en-us": "marketGroupName",
-            "description_en-us": "description"
+        'mapbulk_marketGroups': {
+            'marketGroupName': 'marketGroupName',
+            'description': 'description'
         }
 
     }
 
     rowsInValues = (
-        "evetypes",
-        "evegroups",
-        "evecategories"
+        'evetypes',
+        'evegroups',
+        'evecategories'
     )
 
     def convertIcons(data):
         new = []
         for k, v in list(data.items()):
-            v["iconID"] = k
+            v['iconID'] = k
             new.append(v)
         return new
 
@@ -120,23 +127,23 @@ def main(db, json_path):
         check = {}
 
         for ID in data:
-            for skill in data[ID]["skills"]:
+            for skill in data[ID]['skills']:
                 newData.append({
-                    "alphaCloneID": int(ID),
-                    "alphaCloneName": "Alpha Clone",
-                    "typeID": skill["typeID"],
-                    "level": skill["level"]})
+                    'alphaCloneID': int(ID),
+                    'alphaCloneName': 'Alpha Clone',
+                    'typeID': skill['typeID'],
+                    'level': skill['level']})
                 if ID not in check:
                     check[ID] = {}
-                check[ID][int(skill["typeID"])] = int(skill["level"])
+                check[ID][int(skill['typeID'])] = int(skill['level'])
 
-        if not reduce(lambda a, b: a if a == b else False, [v for _, v in check.iteritems()]):
-            raise Exception("Alpha Clones not all equal")
+        if not functools.reduce(lambda a, b: a if a == b else False, [v for _, v in check.items()]):
+            raise Exception('Alpha Clones not all equal')
 
         newData = [x for x in newData if x['alphaCloneID'] == 1]
 
         if len(newData) == 0:
-            raise Exception("Alpha Clone processing failed")
+            raise Exception('Alpha Clone processing failed')
 
         return newData
 
@@ -144,79 +151,183 @@ def main(db, json_path):
 
         def convertSection(sectionData):
             sectionLines = []
-            headerText = "<b>{}</b>".format(sectionData["header"])
+            headerText = '<b>{}</b>'.format(sectionData['header'])
             sectionLines.append(headerText)
-            for bonusData in sectionData["bonuses"]:
-                prefix = "{} ".format(bonusData["number"]) if "number" in bonusData else ""
-                bonusText = "{}{}".format(prefix, bonusData["text"].replace("\u00B7", "\u2022 "))
+            for bonusData in sectionData['bonuses']:
+                prefix = '{} '.format(bonusData['number']) if 'number' in bonusData else ''
+                bonusText = '{}{}'.format(prefix, bonusData['text'].replace('\u00B7', '\u2022 '))
                 sectionLines.append(bonusText)
-            sectionLine = "<br />\n".join(sectionLines)
+            sectionLine = '<br />\n'.join(sectionLines)
             return sectionLine
 
         newData = []
         for row in data:
             typeLines = []
-            typeId = row["typeID"]
-            traitData = row["traits"]
-            for skillData in sorted(traitData.get("skills", ()), key=lambda i: i["header"]):
+            typeId = row['typeID']
+            traitData = row['traits']
+            for skillData in sorted(traitData.get('skills', ()), key=lambda i: i['header']):
                 typeLines.append(convertSection(skillData))
-            if "role" in traitData:
-                typeLines.append(convertSection(traitData["role"]))
-            if "misc" in traitData:
-                typeLines.append(convertSection(traitData["misc"]))
-            traitLine = "<br />\n<br />\n".join(typeLines)
-            newRow = {"typeID": typeId, "traitText": traitLine}
+            if 'role' in traitData:
+                typeLines.append(convertSection(traitData['role']))
+            if 'misc' in traitData:
+                typeLines.append(convertSection(traitData['misc']))
+            traitLine = '<br />\n<br />\n'.join(typeLines)
+            newRow = {'typeID': typeId, 'traitText': traitLine}
             newData.append(newRow)
         return newData
 
-    def convertTypes(typesData):
-        """
-        Add factionID column to evetypes table.
-        """
-        factionMap = {}
-        with open(os.path.join(jsonPath, "fsdTypeOverrides.json")) as f:
-            overridesData = json.load(f)
-        for typeID, typeData in list(overridesData.items()):
-            factionID = typeData.get("factionID")
-            if factionID is not None:
-                factionMap[int(typeID)] = factionID
-        for row in typesData:
-            row['factionID'] = factionMap.get(int(row['typeID']))
-        return typesData
+    def fillReplacements(tables):
+
+        def compareAttrs(attrs1, attrs2, attrHig):
+            """
+            Compares received attribute sets. Returns:
+            - 0 if sets are different
+            - 1 if sets are exactly the same
+            - 2 if first set is strictly better
+            - 3 if second set is strictly better
+            """
+            if set(attrs1) != set(attrs2):
+                return 0
+            if all(attrs1[aid] == attrs2[aid] for aid in attrs1):
+                return 1
+            if all(
+                (attrs1[aid] >= attrs2[aid] and attrHig[aid]) or
+                (attrs1[aid] <= attrs2[aid] and not attrHig[aid])
+                for aid in attrs1
+            ):
+                return 2
+            if all(
+                (attrs2[aid] >= attrs1[aid] and attrHig[aid]) or
+                (attrs2[aid] <= attrs1[aid] and not attrHig[aid])
+                for aid in attrs1
+            ):
+                return 3
+            return 0
+
+        skillReqAttribs = {
+            182: 277,
+            183: 278,
+            184: 279,
+            1285: 1286,
+            1289: 1287,
+            1290: 1288}
+        skillReqAttribsFlat = set(skillReqAttribs.keys()).union(skillReqAttribs.values())
+        # Get data on type groups
+        typesGroups = {}
+        for row in tables['evetypes']:
+            typesGroups[row['typeID']] = row['groupID']
+        # Get data on type attributes
+        typesNormalAttribs = {}
+        typesSkillAttribs = {}
+        for row in tables['dgmtypeattribs']:
+            attributeID = row['attributeID']
+            if attributeID in skillReqAttribsFlat:
+                typeSkillAttribs = typesSkillAttribs.setdefault(row['typeID'], {})
+                typeSkillAttribs[row['attributeID']] = row['value']
+            # Ignore these attributes for comparison purposes
+            elif attributeID in (
+                422,  # techLevel
+                633,  # metaLevel
+                1692  # metaGroupID
+            ):
+                continue
+            else:
+                typeNormalAttribs = typesNormalAttribs.setdefault(row['typeID'], {})
+                typeNormalAttribs[row['attributeID']] = row['value']
+        # Get data on skill requirements
+        typesSkillReqs = {}
+        for typeID, typeAttribs in typesSkillAttribs.items():
+            typeSkillAttribs = typesSkillAttribs.get(typeID, {})
+            if not typeSkillAttribs:
+                continue
+            typeSkillReqs = typesSkillReqs.setdefault(typeID, {})
+            for skillreqTypeAttr, skillreqLevelAttr in skillReqAttribs.items():
+                try:
+                    skillType = int(typeSkillAttribs[skillreqTypeAttr])
+                    skillLevel = int(typeSkillAttribs[skillreqLevelAttr])
+                except (KeyError, ValueError):
+                    continue
+                typeSkillReqs[skillType] = skillLevel
+        # Get data on attribute highIsGood flag
+        attrHig = {}
+        for row in tables['dgmattribs']:
+            attrHig[row['attributeID']] = bool(row['highIsGood'])
+        # As EVE affects various types mostly depending on their group or skill requirements,
+        # we're going to group various types up this way
+        groupedData = {}
+        for row in tables['evetypes']:
+            typeID = row['typeID']
+            typeAttribs = typesNormalAttribs.get(typeID, {})
+            # Ignore stuff w/o attributes
+            if not typeAttribs:
+                continue
+            # We need only skill types, not levels for keys
+            typeSkillreqs = frozenset(typesSkillReqs.get(typeID, {}))
+            typeGroup = typesGroups[typeID]
+            groupData = groupedData.setdefault((typeGroup, typeSkillreqs), [])
+            groupData.append((typeID, typeAttribs))
+        same = {}
+        better = {}
+        # Now, go through composed groups and for every item within it find items which are
+        # the same and which are better
+        for groupData in groupedData.values():
+            for type1, type2 in itertools.combinations(groupData, 2):
+                comparisonResult = compareAttrs(type1[1], type2[1], attrHig)
+                # Equal
+                if comparisonResult == 1:
+                    same.setdefault(type1[0], set()).add(type2[0])
+                    same.setdefault(type2[0], set()).add(type1[0])
+                # First is better
+                elif comparisonResult == 2:
+                    better.setdefault(type2[0], set()).add(type1[0])
+                # Second is better
+                elif comparisonResult == 3:
+                    better.setdefault(type1[0], set()).add(type2[0])
+        # Put this data into types table so that normal process hooks it up
+        for row in tables['evetypes']:
+            typeID = row['typeID']
+            row['replaceSame'] = ','.join('{}'.format(tid) for tid in sorted(same.get(typeID, ())))
+            row['replaceBetter'] = ','.join('{}'.format(tid) for tid in sorted(better.get(typeID, ())))
 
     data = {}
 
     # Dump all data to memory so we can easely cross check ignored rows
     for jsonName, cls in tables.items():
-        with open(os.path.join(jsonPath, "{}.json".format(jsonName))) as f:
+        with open(os.path.join(jsonPath, '{}.json'.format(jsonName)), encoding='utf-8') as f:
             tableData = json.load(f)
         if jsonName in rowsInValues:
             tableData = list(tableData.values())
-        if jsonName == "icons":
+        if jsonName == 'icons':
             tableData = convertIcons(tableData)
-        if jsonName == "phbtraits":
+        if jsonName == 'phbtraits':
             tableData = convertTraits(tableData)
-        if jsonName == "evetypes":
-            tableData = convertTypes(tableData)
-        if jsonName == "clonegrades":
+        if jsonName == 'clonegrades':
             tableData = convertClones(tableData)
         data[jsonName] = tableData
+
+    fillReplacements(data)
 
     # Set with typeIDs which we will have in our database
     # Sometimes CCP unpublishes some items we want to have published, we
     # can do it here - just add them to initial set
     eveTypes = set()
-    for row in data["evetypes"]:
-        if (row["published"]
+    for row in data['evetypes']:
+        if (row['published']
             or row['groupID'] == 1306  # group Ship Modifiers, for items like tactical t3 ship modes
             or row['typeName'].startswith('Civilian') # Civilian weapons
-            or row['typeID'] in (41549, 41548, 41551,41550)  # Micro Bombs (Fighters)
+            or row['typeID'] in (41549, 41548, 41551, 41550)  # Micro Bombs (Fighters)
+            or row['groupID'] in (
+                        1882,
+                        1975,
+                        1971,
+                        1983  # the "container" for the abyssal environments
+                )  # Abyssal weather (environment)
         ):
-            eveTypes.add(row["typeID"])
+            eveTypes.add(row['typeID'])
 
     # ignore checker
     def isIgnored(file, row):
-        if file in ("evetypes", "dgmtypeeffects", "dgmtypeattribs", "invmetatypes") and row['typeID'] not in eveTypes:
+        if file in ('evetypes', 'dgmtypeeffects', 'dgmtypeattribs', 'invmetatypes') and row['typeID'] not in eveTypes:
             return True
         return False
 
@@ -225,54 +336,92 @@ def main(db, json_path):
         fieldMap = fieldMapping.get(jsonName, {})
         tmp = []
 
-        print("processing {}".format(jsonName))
+        print('processing {}'.format(jsonName))
 
         for row in table:
             # We don't care about some kind of rows, filter it out if so
             if not isIgnored(jsonName, row):
-                if jsonName == 'evetypes' and row["typeName"].startswith('Civilian'):  # Apparently people really want Civilian modules available
-                    row["published"] = True
+                if jsonName == 'evetypes' and row['typeName'].startswith('Civilian'):  # Apparently people really want Civilian modules available
+                    row['published'] = True
 
                 instance = tables[jsonName]()
                 # fix for issue 80
-                if jsonName is "icons" and "res:/ui/texture/icons/" in str(row["iconFile"]).lower():
-                    row["iconFile"] = row["iconFile"].lower().replace("res:/ui/texture/icons/", "").replace(".png", "")
+                if jsonName is 'icons' and 'res:/ui/texture/icons/' in str(row['iconFile']).lower():
+                    row['iconFile'] = row['iconFile'].lower().replace('res:/ui/texture/icons/', '').replace('.png', '')
                     # with res:/ui... references, it points to the actual icon file (including it's size variation of #_size_#)
                     # strip this info out and get the identifying info
                     split = row['iconFile'].split('_')
                     if len(split) == 3:
-                        row['iconFile'] = "{}_{}".format(split[0], split[2])
-                if jsonName is "icons" and "modules/" in str(row["iconFile"]).lower():
-                    row["iconFile"] = row["iconFile"].lower().replace("modules/", "").replace(".png", "")
+                        row['iconFile'] = '{}_{}'.format(split[0], split[2])
+                if jsonName is 'icons' and 'modules/' in str(row['iconFile']).lower():
+                    row['iconFile'] = row['iconFile'].lower().replace('modules/', '').replace('.png', '')
 
-                if jsonName is "clonegrades":
-                    if (row["alphaCloneID"] not in tmp):
+                if jsonName is 'clonegrades':
+                    if row['alphaCloneID'] not in tmp:
                         cloneParent = eos.gamedata.AlphaClone()
-                        setattr(cloneParent, "alphaCloneID", row["alphaCloneID"])
-                        setattr(cloneParent, "alphaCloneName", row["alphaCloneName"])
+                        setattr(cloneParent, 'alphaCloneID', row['alphaCloneID'])
+                        setattr(cloneParent, 'alphaCloneName', row['alphaCloneName'])
                         eos.db.gamedata_session.add(cloneParent)
                         tmp.append(row['alphaCloneID'])
 
                 for k, v in row.items():
-                    if (isinstance(v, str)):
+                    if isinstance(v, str):
                         v = v.strip()
                     setattr(instance, fieldMap.get(k, k), v)
 
                 eos.db.gamedata_session.add(instance)
+
+    # quick and dirty hack to get this data in
+    with open(os.path.join(jsonPath, 'dynamicattributes.json'), encoding='utf-8') as f:
+        bulkdata = json.load(f)
+        for mutaID, data in bulkdata.items():
+            muta = eos.gamedata.DynamicItem()
+            muta.typeID = mutaID
+            muta.resultingTypeID = data['inputOutputMapping'][0]['resultingType']
+            eos.db.gamedata_session.add(muta)
+
+            for x in data['inputOutputMapping'][0]['applicableTypes']:
+                item = eos.gamedata.DynamicItemItem()
+                item.typeID = mutaID
+                item.applicableTypeID = x
+                eos.db.gamedata_session.add(item)
+
+            for attrID, attrData in data['attributeIDs'].items():
+                attr = eos.gamedata.DynamicItemAttribute()
+                attr.typeID = mutaID
+                attr.attributeID = attrID
+                attr.min = attrData['min']
+                attr.max = attrData['max']
+                eos.db.gamedata_session.add(attr)
 
     eos.db.gamedata_session.commit()
 
     # CCP still has 5 subsystems assigned to T3Cs, even though only 4 are available / usable. They probably have some
     # old legacy requirement or assumption that makes it difficult for them to change this value in the data. But for
     # pyfa, we can do it here as a post-processing step
-    eos.db.gamedata_engine.execute("UPDATE dgmtypeattribs SET value = 4.0 WHERE attributeID = ?", (1367,))
+    eos.db.gamedata_engine.execute('UPDATE dgmtypeattribs SET value = 4.0 WHERE attributeID = ?', (1367,))
 
-    print("done")
+    eos.db.gamedata_engine.execute('UPDATE invtypes  SET published = 0 WHERE typeName LIKE \'%abyssal%\'')
 
-if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description="This scripts dumps effects from an sqlite cache dump to mongo")
-    parser.add_argument("-d", "--db", required=True, type=str, help="The sqlalchemy connectionstring, example: sqlite:///c:/tq.db")
-    parser.add_argument("-j", "--json", required=True, type=str, help="The path to the json dump")
+    # fix for #1722 until CCP gets their shit together
+    eos.db.gamedata_engine.execute('UPDATE invtypes SET typeName = \'Small Abyssal Energy Nosferatu\' WHERE typeID = ? AND typeName = ?', (48419, ''))
+
+    print()
+    for x in CATEGORIES_TO_REMOVE:
+        cat = eos.db.gamedata_session.query(eos.gamedata.Category).filter(eos.gamedata.Category.ID == x).first()
+        print ('Removing Category: {}'.format(cat.name))
+        eos.db.gamedata_session.delete(cat)
+
+    eos.db.gamedata_session.commit()
+    eos.db.gamedata_engine.execute('VACUUM')
+
+    print('done')
+
+if __name__ == '__main__':
+    parser = argparse.ArgumentParser(description='This scripts dumps effects from an sqlite cache dump to mongo')
+    parser.add_argument('-d', '--db', required=True, type=str, help='The sqlalchemy connectionstring, example: sqlite:///c:/tq.db')
+    parser.add_argument('-j', '--json', required=True, type=str, help='The path to the json dump')
     args = parser.parse_args()
 
     main(args.db, args.json)
+

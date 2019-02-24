@@ -19,7 +19,7 @@
 
 import config
 
-versionString = "{0} {1} - {2} {3}".format(config.version, config.tag, config.expansionName, config.expansionVersion)
+versionString = "{0}".format(config.version)
 licenses = (
     "pyfa is released under GNU GPLv3 - see included LICENSE file",
     "All EVE-Online related materials are property of CCP hf.",

@@ -6,9 +6,11 @@ import gui.globalEvents as GE
 import wx
 import re
 from service.fit import Fit
+from eos.saveddata.drone import Drone
 from eos.saveddata.cargo import Cargo as es_Cargo
 from eos.saveddata.fighter import Fighter as es_Fighter
 from service.settings import ContextMenuSettings
+import gui.fitCommands as cmd
 
 
 class ChangeAmount(ContextMenu):
@@ -20,7 +22,7 @@ class ChangeAmount(ContextMenu):
         if not self.settings.get('amount'):
             return False
 
-        return srcContext in ("cargoItem", "projectedFit", "fighterItem", "projectedFighter")
+        return srcContext in ("droneItem", "projectedDrone", "cargoItem", "projectedFit", "fighterItem", "projectedFighter")
 
     def getText(self, itmContext, selection):
         return u"Change {0} Quantity".format(itmContext)
@@ -29,7 +31,7 @@ class ChangeAmount(ContextMenu):
         thing = selection[0]
         mainFrame = gui.mainFrame.MainFrame.getInstance()
         fitID = mainFrame.getActiveFit()
-
+        srcContext = fullContext[0]
         if isinstance(thing, es_Fit):
             value = thing.getProjectionInfo(fitID).amount
         else:
@@ -42,14 +44,23 @@ class ChangeAmount(ContextMenu):
                 return
 
             sFit = Fit.getInstance()
+            fit = sFit.getFit(fitID)
             cleanInput = re.sub(r'[^0-9.]', '', dlg.input.GetLineText(0).strip())
 
             if isinstance(thing, es_Cargo):
-                sFit.addCargo(fitID, thing.item.ID, int(float(cleanInput)), replace=True)
+                self.mainFrame.command.Submit(cmd.GuiChangeCargoQty(fitID, fit.cargo.index(thing), int(float(cleanInput))))
+                return  # no need for post event here
+            elif isinstance(thing, Drone):
+                if srcContext == "droneItem":
+                    self.mainFrame.command.Submit(cmd.GuiChangeDroneQty(fitID, fit.drones.index(thing), int(float(cleanInput))))
+                else:
+                    self.mainFrame.command.Submit(cmd.GuiChangeProjectedDroneQty(fitID, fit.projectedDrones.index(thing), int(float(cleanInput))))
             elif isinstance(thing, es_Fit):
-                sFit.changeAmount(fitID, thing, int(float(cleanInput)))
+                self.mainFrame.command.Submit(cmd.GuiChangeProjectedFitQty(fitID, thing.ID, int(float(cleanInput))))
+                return
             elif isinstance(thing, es_Fighter):
-                sFit.changeActiveFighters(fitID, thing, int(float(cleanInput)))
+                self.mainFrame.command.Submit(cmd.GuiChangeFighterQty(fitID, fit.fighters.index(thing), int(float(cleanInput))))
+                return
 
             wx.PostEvent(mainFrame, GE.FitChanged(fitID=fitID))
 

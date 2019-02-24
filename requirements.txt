@@ -3,12 +3,11 @@ logbook >= 1.0.0
 matplotlib >= 2.0.0
 python-dateutil
 requests >= 2.0.0
-sqlalchemy >= 1.0.5
-esipy == 0.3.4
-cryptography
-diskcache
-markdown2
-packaging
-roman
-beautifulsoup4
-PyYAML
+sqlalchemy == 1.0.5
+cryptography ==2.2.2
+markdown2==2.3.5
+packaging==16.8
+roman==2.0.0
+beautifulsoup4==4.6.0
+PyYAML==3.12
+PyInstaller == 3.3

@@ -17,15 +17,16 @@
 # along with eos.  If not, see <http://www.gnu.org/licenses/>.
 # ===============================================================================
 
-from sqlalchemy.orm import join, exc, aliased
+from sqlalchemy.inspection import inspect
+from sqlalchemy.orm import aliased, exc, join
 from sqlalchemy.sql import and_, or_, select
 
 import eos.config
 from eos.db import gamedata_session
-from eos.db.gamedata.metaGroup import metatypes_table, items_table
 from eos.db.gamedata.group import groups_table
+from eos.db.gamedata.metaGroup import items_table, metatypes_table
 from eos.db.util import processEager, processWhere
-from eos.gamedata import AlphaClone, Attribute, Category, Group, Item, MarketGroup, MetaGroup, AttributeInfo, MetaData
+from eos.gamedata import AlphaClone, Attribute, AttributeInfo, Category, DynamicItem, Group, Item, MarketGroup, MetaData, MetaGroup
 
 cache = {}
 configVal = getattr(eos.config, "gamedataCache", None)
@@ -94,6 +95,36 @@ def getItem(lookfor, eager=None):
             itemNameMap[lookfor] = item.ID
     else:
         raise TypeError("Need integer or string as argument")
+    return item
+
+
+def getMutaplasmid(lookfor, eager=None):
+    if isinstance(lookfor, int):
+        item = gamedata_session.query(DynamicItem).filter(DynamicItem.ID == lookfor).first()
+    else:
+        raise TypeError("Need integer as argument")
+    return item
+
+
+def getItemWithBaseItemAttribute(lookfor, baseItemID, eager=None):
+    # A lot of this is described in more detail in #1597
+    item = gamedata_session.query(Item).get(lookfor)
+    base = getItem(baseItemID)
+
+    # we have to load all attributes for this object, otherwise we'll lose access to them when we expunge.
+    # todo: figure out a way to eagerly load all these via the query...
+    for x in [*inspect(Item).relationships.keys(), 'description']:
+        getattr(item, x)
+
+    # Copy over the attributes from the base, but ise the items attributes when there's an overlap
+    # WARNING: the attribute object still has the old typeID. I don't believe we access this typeID anywhere in the code,
+    # but should keep this in mind for now.
+    item._Item__attributes = {**base.attributes, **item.attributes}
+
+    # Expunge the item form the session. This is required to have different Abyssal / Base combinations loaded in memory.
+    # Without expunging it, once one Abyssal Web is created, SQLAlchmey will use it for all others. We don't want this,
+    # we want to generate a completely new object to work with
+    gamedata_session.expunge(item)
     return item
 
 
@@ -358,6 +389,25 @@ def directAttributeRequest(itemIDs, attrIDs):
                from_obj=[join(Attribute, Item)])
 
     result = gamedata_session.execute(q).fetchall()
+    return result
+
+
+def getAbyssalTypes():
+    return set([r.resultingTypeID for r in gamedata_session.query(DynamicItem.resultingTypeID).distinct()])
+
+
+@cachedQuery(1, "itemID")
+def getDynamicItem(itemID, eager=None):
+    try:
+        if isinstance(itemID, int):
+            if eager is None:
+                result = gamedata_session.query(DynamicItem).filter(DynamicItem.ID == itemID).one()
+            else:
+                result = gamedata_session.query(DynamicItem).options(*processEager(eager)).filter(DynamicItem.ID == itemID).one()
+        else:
+            raise TypeError("Need integer as argument")
+    except exc.NoResultFound:
+        result = None
     return result
 
 

@@ -6,7 +6,7 @@ type = "passive"
 
 
 def handler(fit, src, context):
-    lvl = src.level
+    lvl = src.level if "skill" in context else 1
     fit.drones.filteredItemBoost(lambda mod: mod.item.requiresSkill("Drones"), "maxRange",
                                  src.getModifiedItemAttr("rangeSkillBonus") * lvl)
     fit.fighters.filteredItemBoost(lambda mod: mod.item.requiresSkill("Fighters"), "fighterAbilityMissilesRange",

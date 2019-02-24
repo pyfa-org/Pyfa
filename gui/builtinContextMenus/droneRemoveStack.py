@@ -1,8 +1,7 @@
-from gui.contextMenu import ContextMenu
+import gui.fitCommands as cmd
 import gui.mainFrame
+from gui.contextMenu import ContextMenu
 # noinspection PyPackageRequirements
-import wx
-import gui.globalEvents as GE
 from service.fit import Fit
 from service.settings import ContextMenuSettings
 
@@ -27,9 +26,7 @@ class ItemRemove(ContextMenu):
         fit = sFit.getFit(fitID)
 
         idx = fit.drones.index(selection[0])
-        sFit.removeDrone(fitID, idx, numDronesToRemove=fit.drones[idx].amount)
-
-        wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fitID))
+        self.mainFrame.command.Submit(cmd.GuiRemoveDroneCommand(fitID, idx, fit.drones[idx].amount))
 
 
 ItemRemove.register()

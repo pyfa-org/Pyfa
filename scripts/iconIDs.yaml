@@ -5,6 +5,9 @@
   description: Asteroid
   iconFile: res:/ui/texture/icons/5_64_11.png
 16:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: CargoContainer
   iconFile: res:/ui/texture/icons/26_64_11.png
 21:
@@ -20,6 +23,9 @@
   description: Commodity - SpicedWine
   iconFile: res:/ui/texture/icons/6_64_11.png
 28:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Commodity - Antibiotics
   iconFile: res:/ui/texture/icons/6_64_9.png
 29:
@@ -35,6 +41,9 @@
   description: Skill
   iconFile: res:/ui/texture/icons/50_64_11.png
 34:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: CloneBasic
   iconFile: res:/ui/texture/icons/8_64_16.png
 67:
@@ -47,7 +56,16 @@
   description: Module - Shield
   iconFile: res:/ui/texture/icons/1_64_13.png
 70:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Module - PowerCore
+  foregrounds:
+  - faction
+  - officer
+  - storyline
+  - structureTech2
+  - tech2
   iconFile: res:/ui/texture/icons/2_64_7.png
 71:
   description: Module - CargoHold
@@ -59,43 +77,120 @@
   description: Module - Capsule
   iconFile: res:/ui/texture/icons/2_64_14.png
 74:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Module - Sensors
+  foregrounds:
+  - faction
+  - officer
+  - storyline
+  - tech2
   iconFile: res:/ui/texture/icons/3_64_9.png
 75:
   description: Module - StructureEnhancer
   iconFile: res:/ui/texture/icons/2_64_13.png
 76:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Module - StructurePlating
+  foregrounds:
+  - faction
+  - storyline
+  - tech2
   iconFile: res:/ui/texture/icons/2_64_10.png
 77:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Module - DamageControl
+  foregrounds:
+  - faction
+  - officer
+  - storyline
+  - tech2
   iconFile: res:/ui/texture/icons/2_64_11.png
 78:
   description: Module - ArmorEnhancer
   iconFile: res:/ui/texture/icons/1_64_12.png
 79:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Module - ArmoredPlates
+  foregrounds:
+  - abyssal
+  - faction
+  - storyline
+  - structureFaction
+  - structureTech2
+  - tech2
   iconFile: res:/ui/texture/icons/1_64_10.png
 80:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Module - Armor Repair
+  foregrounds:
+  - abyssal
+  - deadspace
+  - faction
+  - officer
+  - storyline
+  - tech2
   iconFile: res:/ui/texture/icons/1_64_11.png
 81:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Module - ShieldEnhancer
+  foregrounds:
+  - deadspace
+  - faction
+  - officer
+  - storyline
+  - tech2
   iconFile: res:/ui/texture/icons/2_64_2.png
 82:
   description: Module - ShieldExtender
   iconFile: res:/ui/texture/icons/2_64_4.png
 83:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Module - ShieldRecharger
+  foregrounds:
+  - faction
+  - storyline
+  - tech2
   iconFile: res:/ui/texture/icons/1_64_15.png
 84:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Module - ShieldBooster
+  foregrounds:
+  - abyssal
+  - deadspace
+  - faction
+  - officer
+  - storyline
+  - tech2
   iconFile: res:/ui/texture/icons/2_64_3.png
 85:
   description: Module - ShieldDischarger
   iconFile: res:/ui/texture/icons/2_64_1.png
 86:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Module - ShieldTransporter
+  foregrounds:
+  - deadspace
+  - faction
+  - storyline
+  - tech2
   iconFile: res:/ui/texture/icons/1_64_16.png
 87:
   description: Module - GeneratorSteelplates
@@ -104,16 +199,42 @@
   description: Module - ShieldExchanger
   iconFile: res:/ui/texture/icons/4_64_8.png
 89:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Capacitor Battery
+  foregrounds:
+  - abyssal
+  - faction
+  - storyline
+  - structureFaction
+  - structureTech2
+  - tech2
   iconFile: res:/ui/texture/icons/1_64_4.png
 90:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Module - PowerRecharger
+  foregrounds:
+  - faction
+  - officer
+  - storyline
+  - structureTech2
+  - tech2
   iconFile: res:/ui/texture/icons/1_64_1.png
 91:
-  description: Module - ProtectiveShell
-  iconFile: res:/ui/texture/icons/2_64_8.png
+  description: 'Buff bar: Tethered'
+  iconFile: res:/UI/Texture/Icons/StatusEffects/tether.png
 92:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Module - StorageEnhancer
+  foregrounds:
+  - faction
+  - storyline
+  - tech2
   iconFile: res:/ui/texture/icons/4_64_13.png
 93:
   description: Module - FrostCompartment
@@ -125,85 +246,260 @@
   description: Module - ArmoredBulkheads
   iconFile: res:/ui/texture/icons/3_64_14.png
 96:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Module - Afterburner
+  foregrounds:
+  - abyssal
+  - deadspace
+  - faction
+  - officer
+  - storyline
+  - tech2
   iconFile: res:/ui/texture/icons/3_64_2.png
 97:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Module - JumpEnhancer
+  foregrounds:
+  - storyline
+  - tech2
   iconFile: res:/ui/texture/icons/3_64_8.png
 98:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Module - ThrusterEnhancer
+  foregrounds:
+  - faction
+  - storyline
+  - tech2
   iconFile: res:/ui/texture/icons/3_64_5.png
 104:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Module - EnhancedSensors
+  foregrounds:
+  - faction
+  - storyline
+  - structureTech2
+  - tech2
   iconFile: res:/ui/texture/icons/4_64_10.png
 105:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Module - ReinforcedSensors
+  foregrounds:
+  - faction
+  - storyline
+  - structureTech2
+  - tech2
   iconFile: res:/ui/texture/icons/4_64_11.png
 106:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Module - CargoScanner
+  foregrounds:
+  - tech2
   iconFile: res:/ui/texture/icons/3_64_11.png
 107:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Module - ShipScanner
+  foregrounds:
+  - tech2
   iconFile: res:/ui/texture/icons/3_64_10.png
 109:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Module - Jammer
+  foregrounds:
+  - faction
+  - officer
+  - storyline
+  - structureFaction
+  - structureTech2
+  - tech2
   iconFile: res:/ui/texture/icons/4_64_12.png
 110:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Module - AntiJammer
+  foregrounds:
+  - tech2
   iconFile: res:/ui/texture/icons/5_64_1.png
 111:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Module - JumpScrambler
+  foregrounds:
+  - abyssal
+  - faction
+  - officer
+  - storyline
+  - tech2
   iconFile: res:/ui/texture/icons/4_64_9.png
 112:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Module - ECMShutdownWave
+  foregrounds:
+  - faction
+  - officer
+  - storyline
+  - tech2
   iconFile: res:/ui/texture/icons/3_64_4.png
 138:
   description: Turret - Mining - MinerBasic
   iconFile: res:/ui/texture/icons/4_64_1.png
 168:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: MissileLauncherBasic
+  foregrounds:
+  - faction
+  - storyline
+  - tech2
   iconFile: res:/ui/texture/icons/12_64_12.png
 169:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: MissileLauncherAdvanced
+  foregrounds:
+  - faction
+  - storyline
+  - tech2
   iconFile: res:/ui/texture/icons/21_64_12.png
 170:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: MissileLauncherDeluxe
+  foregrounds:
+  - faction
+  - officer
+  - storyline
+  - tech2
   iconFile: res:/ui/texture/icons/21_64_16.png
 182:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Basic missile - Paradise Missile
+  foregrounds:
+  - faction
+  - tech2
   iconFile: res:/ui/texture/icons/20_64_16.png
 183:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Rapid missile - Wrath Missile
+  foregrounds:
+  - faction
+  - tech2
   iconFile: res:/ui/texture/icons/20_64_4.png
 184:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Trek missile - Cataclysm missile
+  foregrounds:
+  - faction
+  - tech2
   iconFile: res:/ui/texture/icons/20_64_8.png
 185:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Discharge missile - Devastatormissile
+  foregrounds:
+  - faction
+  - tech2
   iconFile: res:/ui/texture/icons/20_64_12.png
 186:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Standard missile - HavocMissile
+  foregrounds:
+  - faction
+  - tech2
   iconFile: res:/ui/texture/icons/20_64_10.png
 187:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Tiger missile - ThunderboltMissile
+  foregrounds:
+  - faction
+  - tech2
   iconFile: res:/ui/texture/icons/20_64_14.png
 188:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Widowmaker missile - WidowmakerMissile
+  foregrounds:
+  - faction
+  - tech2
   iconFile: res:/ui/texture/icons/20_64_6.png
 189:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Blast missile - Deathbringer
+  foregrounds:
+  - faction
+  - tech2
   iconFile: res:/ui/texture/icons/20_64_2.png
 190:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Regular missile - Bloodclaw
+  foregrounds:
+  - faction
+  - tech2
   iconFile: res:/ui/texture/icons/13_64_4.png
 191:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Flameburst missile - FlameburstMissile
+  foregrounds:
+  - faction
+  - tech2
   iconFile: res:/ui/texture/icons/13_64_8.png
 192:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Sabretooth missile - SabretoothMissile
+  foregrounds:
+  - faction
+  - tech2
   iconFile: res:/ui/texture/icons/13_64_16.png
 193:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Pirahna missile - PirahnaMissile
+  foregrounds:
+  - faction
+  - tech2
   iconFile: res:/ui/texture/icons/13_64_12.png
 230:
   description: Asteroid1
@@ -224,61 +520,193 @@
   description: Ship slot - LoSlot
   iconFile: res:/ui/texture/icons/8_64_9.png
 349:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: 75mmGatlingRail
+  foregrounds:
+  - faction
+  - storyline
+  - tech2
   iconFile: res:/ui/texture/icons/13_64_5.png
 350:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: GatlingPulseLaser
+  foregrounds:
+  - faction
+  - storyline
+  - tech2
   iconFile: res:/ui/texture/icons/13_64_13.png
 352:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: DualLightBeamLaser
+  foregrounds:
+  - faction
+  - storyline
+  - tech2
   iconFile: res:/ui/texture/icons/13_64_9.png
 355:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: QuadLightBeamLaser
+  foregrounds:
+  - faction
+  - storyline
+  - tech2
   iconFile: res:/ui/texture/icons/13_64_10.png
 356:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: FocusedMediumPulseLaser
+  foregrounds:
+  - faction
+  - storyline
+  - tech2
   iconFile: res:/ui/texture/icons/13_64_14.png
 360:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: DualHeavyPulseLaser
+  foregrounds:
+  - faction
+  - officer
+  - storyline
+  - tech2
   iconFile: res:/ui/texture/icons/13_64_15.png
 361:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: DualHeavyBeamLaser
+  foregrounds:
+  - faction
+  - officer
+  - storyline
+  - tech2
   iconFile: res:/ui/texture/icons/13_64_11.png
 365:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Caldari - IonBlasterCannon
+  foregrounds:
+  - faction
+  - officer
+  - storyline
+  - tech2
   iconFile: res:/ui/texture/icons/13_64_3.png
 366:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Caldari - 425mmRailgun
+  foregrounds:
+  - faction
+  - officer
+  - storyline
+  - tech2
   iconFile: res:/ui/texture/icons/13_64_7.png
 370:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: 250mmRailgun
+  foregrounds:
+  - faction
+  - storyline
+  - tech2
   iconFile: res:/ui/texture/icons/13_64_6.png
 371:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: HeavyIonBlaster
+  foregrounds:
+  - faction
+  - storyline
+  - tech2
   iconFile: res:/ui/texture/icons/13_64_2.png
 376:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Caldari - LightNeutronBlaster
+  foregrounds:
+  - faction
+  - storyline
+  - tech2
   iconFile: res:/ui/texture/icons/13_64_1.png
 379:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: LargeArtilleryRocket
+  foregrounds:
+  - faction
+  - officer
+  - storyline
+  - tech2
   iconFile: res:/ui/texture/icons/12_64_15.png
 381:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: 800mmArtilleryCannon
+  foregrounds:
+  - faction
+  - officer
+  - storyline
+  - tech2
   iconFile: res:/ui/texture/icons/12_64_11.png
 384:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: MediumArtilleryRocket
+  foregrounds:
+  - faction
+  - storyline
+  - tech2
   iconFile: res:/ui/texture/icons/12_64_14.png
 386:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: 425mmAutoCannon
+  foregrounds:
+  - faction
+  - storyline
+  - tech2
   iconFile: res:/ui/texture/icons/12_64_10.png
 387:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: 220mmVulcanAutoCannon
+  foregrounds:
+  - faction
+  - storyline
+  - tech2
   iconFile: res:/ui/texture/icons/12_64_9.png
 389:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: SmallArtilleryRocket
+  foregrounds:
+  - faction
+  - storyline
+  - tech2
   iconFile: res:/ui/texture/icons/12_64_13.png
 398:
-  description: Corpse floating in space (male?). - Corpse
+  description: chemical item
   iconFile: res:/ui/texture/icons/11_64_5.png
 400:
   description: Mineral - Pyerite
@@ -311,76 +739,220 @@
   description: Error Message box Icon - Unknown
   iconFile: res:/ui/texture/icons/9_64_8.png
 1004:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Unknown
+  foregrounds:
+  - faction
+  - tech2
   iconFile: res:/ui/texture/icons/14_64_1.png
 1007:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Hex Mine - HexMine
   iconFile: res:/ui/texture/icons/21_64_8.png
 1029:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Capacitor vampire
+  foregrounds:
+  - abyssal
+  - deadspace
+  - faction
+  - officer
+  - storyline
+  - tech2
   iconFile: res:/ui/texture/icons/1_64_3.png
 1030:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: ArmorCoating
+  foregrounds:
+  - deadspace
+  - faction
+  - officer
+  - tech2
   iconFile: res:/ui/texture/icons/1_64_8.png
 1031:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Capacitor Booster
+  foregrounds:
+  - faction
+  - officer
+  - storyline
+  - tech2
   iconFile: res:/ui/texture/icons/1_64_6.png
 1033:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Capacitor Booster Charge
+  foregrounds:
+  - faction
   iconFile: res:/ui/texture/icons/1_64_7.png
 1035:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Energy transfer array - Unknown
+  foregrounds:
+  - deadspace
+  - faction
+  - storyline
+  - tech2
   iconFile: res:/ui/texture/icons/1_64_2.png
 1036:
   description: Power Manager - Unknown
   iconFile: res:/ui/texture/icons/2_64_6.png
 1041:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Agility Enhancement
+  foregrounds:
+  - faction
+  - storyline
+  - tech2
   iconFile: res:/ui/texture/icons/3_64_6.png
 1042:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Internal structure mods
+  foregrounds:
+  - faction
+  - storyline
+  - tech2
   iconFile: res:/ui/texture/icons/2_64_12.png
 1044:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Shield Extender
+  foregrounds:
+  - abyssal
+  - faction
+  - storyline
+  - tech2
   iconFile: res:/ui/texture/icons/2_64_5.png
 1046:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Gyrostabilizer - Unknown
+  foregrounds:
+  - abyssal
+  - faction
+  - officer
+  - storyline
+  - tech2
   iconFile: res:/ui/texture/icons/5_64_12.png
 1047:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: hybrid ammo  - Antimatter Charge S
+  foregrounds:
+  - faction
+  - tech2
   iconFile: res:/ui/texture/icons/15_64_9.png
 1061:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Mining Laser - Mining Laser
+  foregrounds:
+  - faction
+  - storyline
+  - tech2
   iconFile: res:/ui/texture/icons/12_64_8.png
 1063:
   description: ammo capacity bonus - Unknown
   iconFile: res:/ui/texture/icons/5_64_16.png
 1084:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Unknown
+  foregrounds:
+  - faction
+  - tech2
   iconFile: res:/ui/texture/icons/11_64_16.png
 1131:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: MultiFrequencyCrystalSmall - Unknown
+  foregrounds:
+  - faction
+  - tech2
   iconFile: res:/ui/texture/icons/8_64_1.png
 1139:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: FreqCrystal Gamma small - Unknown
+  foregrounds:
+  - faction
+  - tech2
   iconFile: res:/ui/texture/icons/8_64_2.png
 1140:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: FreqCrystal Roentgen small - Unknown
+  foregrounds:
+  - faction
+  - tech2
   iconFile: res:/ui/texture/icons/8_64_3.png
 1141:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: FreqCrystal UV small - Unknown
+  foregrounds:
+  - faction
+  - tech2
   iconFile: res:/ui/texture/icons/8_64_4.png
 1142:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: FreqCrystal Standard small - Unknown
+  foregrounds:
+  - faction
   iconFile: res:/ui/texture/icons/8_64_5.png
 1143:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: FreqCrystal Microwave - Unknown
+  foregrounds:
+  - faction
+  - tech2
   iconFile: res:/ui/texture/icons/8_64_6.png
 1144:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: FreqCrystal Infrared small - Unknown
+  foregrounds:
+  - faction
   iconFile: res:/ui/texture/icons/8_64_7.png
 1145:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: FreqCrystal Radio small - Unknown
+  foregrounds:
+  - faction
+  - tech2
   iconFile: res:/ui/texture/icons/8_64_8.png
 1156:
   description: cargo_Hangar
@@ -413,18 +985,33 @@
   description: RadiationS_Cargo
   iconFile: res:/ui/texture/icons/27_64_14.png
 1171:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: SecureL_Cargo
   iconFile: res:/ui/texture/icons/27_64_5.png
 1172:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: SecureM_Cargo
   iconFile: res:/ui/texture/icons/26_64_16.png
 1173:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: SecureS_Cargo
   iconFile: res:/ui/texture/icons/26_64_15.png
 1174:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: StandardL_Cargo
   iconFile: res:/ui/texture/icons/26_64_13.png
 1175:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: StandardM_Cargo
   iconFile: res:/ui/texture/icons/26_64_12.png
 1177:
@@ -500,6 +1087,9 @@
   description: Nocxium
   iconFile: res:/ui/texture/icons/11_64_9.png
 1204:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Slaves
   iconFile: res:/ui/texture/icons/11_64_12.png
 1205:
@@ -545,211 +1135,600 @@
   description: Blue Studlaberg Asteroid
   iconFile: res:/ui/texture/icons/23_64_10.png
 1283:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Unknown
+  foregrounds:
+  - abyssal
+  - deadspace
+  - faction
+  - officer
+  - storyline
+  - structureFaction
+  - structureTech2
+  - tech2
   iconFile: res:/ui/texture/icons/12_64_4.png
 1284:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Unknown
+  foregrounds:
+  - abyssal
+  - faction
+  - officer
+  - structureTech2
+  - tech2
   iconFile: res:/ui/texture/icons/12_64_6.png
 1285:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Depleted Uranium S
+  foregrounds:
+  - faction
+  - tech2
   iconFile: res:/ui/texture/icons/14_64_2.png
 1286:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: EMP S
+  foregrounds:
+  - faction
   iconFile: res:/ui/texture/icons/14_64_3.png
 1287:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Fusion S
+  foregrounds:
+  - faction
   iconFile: res:/ui/texture/icons/14_64_4.png
 1288:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Nuclear S
+  foregrounds:
+  - faction
+  - tech2
   iconFile: res:/ui/texture/icons/14_64_5.png
 1289:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Phased plasma S
+  foregrounds:
+  - faction
   iconFile: res:/ui/texture/icons/14_64_6.png
 1290:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Photon S
+  foregrounds:
+  - faction
   iconFile: res:/ui/texture/icons/14_64_7.png
 1291:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Titanium Sabot S
+  foregrounds:
+  - faction
+  - tech2
   iconFile: res:/ui/texture/icons/14_64_8.png
 1292:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Carbonized Lead M
+  foregrounds:
+  - faction
+  - tech2
   iconFile: res:/ui/texture/icons/14_64_9.png
 1293:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Depleted Uranium M
+  foregrounds:
+  - faction
+  - tech2
   iconFile: res:/ui/texture/icons/14_64_10.png
 1294:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: EMP M
+  foregrounds:
+  - faction
   iconFile: res:/ui/texture/icons/14_64_11.png
 1295:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Fusion M
+  foregrounds:
+  - faction
   iconFile: res:/ui/texture/icons/14_64_12.png
 1296:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Nuclear M
+  foregrounds:
+  - faction
+  - tech2
   iconFile: res:/ui/texture/icons/14_64_13.png
 1297:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Phased plasma M
+  foregrounds:
+  - faction
   iconFile: res:/ui/texture/icons/14_64_14.png
 1298:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Photon M
+  foregrounds:
+  - faction
   iconFile: res:/ui/texture/icons/14_64_15.png
 1299:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Titanium Sabot M
+  foregrounds:
+  - faction
+  - tech2
   iconFile: res:/ui/texture/icons/14_64_16.png
 1300:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Carbonized Lead L
+  foregrounds:
+  - faction
+  - tech2
   iconFile: res:/ui/texture/icons/15_64_1.png
 1301:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Depleted Uranium L
+  foregrounds:
+  - faction
+  - tech2
   iconFile: res:/ui/texture/icons/15_64_2.png
 1302:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: EMP L
+  foregrounds:
+  - faction
   iconFile: res:/ui/texture/icons/15_64_3.png
 1303:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Fusion L
+  foregrounds:
+  - faction
   iconFile: res:/ui/texture/icons/15_64_4.png
 1304:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Nuclear L
+  foregrounds:
+  - faction
+  - tech2
   iconFile: res:/ui/texture/icons/15_64_5.png
 1305:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Phased Plasma L
+  foregrounds:
+  - faction
   iconFile: res:/ui/texture/icons/15_64_6.png
 1306:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Photon L
+  foregrounds:
+  - faction
   iconFile: res:/ui/texture/icons/15_64_7.png
 1307:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Titanium Sabot L
+  foregrounds:
+  - faction
+  - tech2
   iconFile: res:/ui/texture/icons/15_64_8.png
 1310:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Iridium Charge S
+  foregrounds:
+  - faction
+  - tech2
   iconFile: res:/ui/texture/icons/15_64_10.png
 1311:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Iron Charge S
+  foregrounds:
+  - faction
   iconFile: res:/ui/texture/icons/15_64_11.png
 1312:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Lead Charge S
+  foregrounds:
+  - faction
   iconFile: res:/ui/texture/icons/15_64_12.png
 1313:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Plutonium Charge S
+  foregrounds:
+  - faction
+  - tech2
   iconFile: res:/ui/texture/icons/15_64_13.png
 1314:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Thorium Charge S
+  foregrounds:
+  - faction
+  - tech2
   iconFile: res:/ui/texture/icons/15_64_14.png
 1315:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Tungsten Charge S
+  foregrounds:
+  - faction
   iconFile: res:/ui/texture/icons/15_64_15.png
 1316:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Uranium Charge S
+  foregrounds:
+  - faction
+  - tech2
   iconFile: res:/ui/texture/icons/15_64_16.png
 1317:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Antimatter Charge M
+  foregrounds:
+  - faction
+  - tech2
   iconFile: res:/ui/texture/icons/16_64_1.png
 1318:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Iridium Charge M
+  foregrounds:
+  - faction
+  - tech2
   iconFile: res:/ui/texture/icons/16_64_2.png
 1319:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Iron Charge M
+  foregrounds:
+  - faction
   iconFile: res:/ui/texture/icons/16_64_3.png
 1320:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Lead Charge M
+  foregrounds:
+  - faction
   iconFile: res:/ui/texture/icons/16_64_4.png
 1321:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Plutonium Charge M
+  foregrounds:
+  - faction
+  - tech2
   iconFile: res:/ui/texture/icons/16_64_5.png
 1322:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Thorium Charge M
+  foregrounds:
+  - faction
+  - tech2
   iconFile: res:/ui/texture/icons/16_64_6.png
 1323:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Tungsten Charge M
+  foregrounds:
+  - faction
   iconFile: res:/ui/texture/icons/16_64_7.png
 1324:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Uranium Charge M
+  foregrounds:
+  - faction
   iconFile: res:/ui/texture/icons/16_64_8.png
 1325:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Antimatter Charge L
+  foregrounds:
+  - faction
+  - tech2
   iconFile: res:/ui/texture/icons/16_64_9.png
 1326:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Iridium Charge L
+  foregrounds:
+  - faction
+  - tech2
   iconFile: res:/ui/texture/icons/16_64_10.png
 1327:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Iron Charge L
+  foregrounds:
+  - faction
   iconFile: res:/ui/texture/icons/16_64_11.png
 1328:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Lead Charge L
+  foregrounds:
+  - faction
   iconFile: res:/ui/texture/icons/16_64_12.png
 1329:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Plutonium Charge L
+  foregrounds:
+  - faction
+  - tech2
   iconFile: res:/ui/texture/icons/16_64_13.png
 1330:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Thorium Charge L
+  foregrounds:
+  - faction
+  - tech2
   iconFile: res:/ui/texture/icons/16_64_14.png
 1331:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Tungsten Charge L
+  foregrounds:
+  - faction
   iconFile: res:/ui/texture/icons/16_64_15.png
 1332:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Uranium Charge L
+  foregrounds:
+  - faction
   iconFile: res:/ui/texture/icons/16_64_16.png
 1333:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Small FOF kinetic - Unknown
+  foregrounds:
+  - faction
   iconFile: res:/ui/texture/icons/20_64_1.png
 1334:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: small thermal FOF - Unknown
+  foregrounds:
+  - faction
   iconFile: res:/ui/texture/icons/20_64_5.png
 1335:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: small explosive FOF - Unknown
+  foregrounds:
+  - faction
   iconFile: res:/ui/texture/icons/20_64_9.png
 1336:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: small EM FOF - Unknown
+  foregrounds:
+  - faction
   iconFile: res:/ui/texture/icons/20_64_13.png
 1337:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: medium thermal FOF - Unknown
+  foregrounds:
+  - faction
   iconFile: res:/ui/texture/icons/20_64_7.png
 1338:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: medium explosive FOF - Unknown
+  foregrounds:
+  - faction
   iconFile: res:/ui/texture/icons/20_64_11.png
 1339:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: medium EM FOF - Unknown
+  foregrounds:
+  - faction
   iconFile: res:/ui/texture/icons/20_64_15.png
 1340:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: medium kinetic FOF - Unknown
+  foregrounds:
+  - faction
   iconFile: res:/ui/texture/icons/20_64_3.png
 1341:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: large kinetic FOF - Unknown
+  foregrounds:
+  - faction
   iconFile: res:/ui/texture/icons/21_64_1.png
 1342:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: large thermal FOF - Unknown
+  foregrounds:
+  - faction
   iconFile: res:/ui/texture/icons/21_64_5.png
 1343:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: large explosive FOF - Unknown
+  foregrounds:
+  - faction
   iconFile: res:/ui/texture/icons/21_64_9.png
 1344:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: large EM FOF - Unknown
+  foregrounds:
+  - faction
   iconFile: res:/ui/texture/icons/21_64_13.png
 1345:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Assault missile launcher - Unknown
+  foregrounds:
+  - faction
+  - storyline
+  - tech2
   iconFile: res:/ui/texture/icons/12_64_16.png
 1346:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Kinetic Torpedo - Unknown
+  foregrounds:
+  - faction
+  - tech2
   iconFile: res:/ui/texture/icons/21_64_2.png
 1347:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Thermal Torpedo - Unknown
+  foregrounds:
+  - faction
+  - tech2
   iconFile: res:/ui/texture/icons/21_64_6.png
 1348:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Explosive Torpedo - Unknown
+  foregrounds:
+  - faction
+  - tech2
   iconFile: res:/ui/texture/icons/21_64_10.png
 1349:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: EM Torpedo - Unknown
+  foregrounds:
+  - faction
+  - tech2
   iconFile: res:/ui/texture/icons/21_64_14.png
 1350:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: kinetic rocket - Unknown
+  foregrounds:
+  - faction
+  - tech2
   iconFile: res:/ui/texture/icons/21_64_3.png
 1351:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Thermal rocket - Unknown
+  foregrounds:
+  - faction
+  - tech2
   iconFile: res:/ui/texture/icons/21_64_7.png
 1352:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: em rocket - Unknown
+  foregrounds:
+  - faction
+  - tech2
   iconFile: res:/ui/texture/icons/21_64_15.png
 1353:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: explosive rocket - Unknown
+  foregrounds:
+  - faction
+  - tech2
   iconFile: res:/ui/texture/icons/21_64_11.png
 1356:
   description: Scordite ore - Unknown
@@ -770,6 +1749,9 @@
   description: Guidance System - Unknown
   iconFile: res:/ui/texture/icons/24_64_7.png
 1362:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Consumer Electronics - Unknown
   iconFile: res:/ui/texture/icons/24_64_8.png
 1363:
@@ -782,12 +1764,18 @@
   description: Miniature Electronics - Unknown
   iconFile: res:/ui/texture/icons/24_64_11.png
 1366:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Small arms - Unknown
   iconFile: res:/ui/texture/icons/24_64_12.png
 1367:
   description: Planetary Vehicles - Unknown
   iconFile: res:/ui/texture/icons/24_64_13.png
 1368:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Robotics - Unknown
   iconFile: res:/ui/texture/icons/24_64_14.png
 1369:
@@ -845,15 +1833,27 @@
   description: duration - Unknown
   iconFile: res:/ui/texture/icons/22_32_16.png
 1393:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Kinetic Damage - Resistance
   iconFile: res:/ui/texture/icons/22_32_17.png
 1394:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Thermal Damage - Resistance
   iconFile: res:/ui/texture/icons/22_32_18.png
 1395:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Explosive Damage - Resistance
   iconFile: res:/ui/texture/icons/22_32_19.png
 1396:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: EM Damage - Resistance
   iconFile: res:/ui/texture/icons/22_32_20.png
 1397:
@@ -872,7 +1872,16 @@
   description: agility - Unknown
   iconFile: res:/ui/texture/icons/22_32_24.png
 1405:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: cpu - Unknown
+  foregrounds:
+  - faction
+  - officer
+  - storyline
+  - structureTech2
+  - tech2
   iconFile: res:/ui/texture/icons/12_64_7.png
 1406:
   description: frozen longlimb roes - Unknown
@@ -914,6 +1923,9 @@
   description: ship icon - Unknown
   iconFile: res:/ui/texture/icons/9_64_5.png
 1444:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: command - Unknown
   iconFile: res:/ui/texture/icons/25_64_4.png
 1445:
@@ -1317,12 +2329,30 @@
   description: Brutor Bloodline
   iconFile: res:/ui/texture/icons/29_128_4.png
 1639:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Tracking Disrupter - Unknown
+  foregrounds:
+  - storyline
+  - structureTech2
+  - tech2
   iconFile: res:/ui/texture/icons/5_64_7.png
 1640:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Tracking enhancer - Unknown
+  foregrounds:
+  - faction
+  - officer
+  - storyline
+  - tech2
   iconFile: res:/ui/texture/icons/5_64_14.png
 1641:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Liberal Holders
   iconFile: res:/ui/texture/icons/30_64_1.png
 1642:
@@ -1410,13 +2440,27 @@
   description: Missile_Bladestorm
   iconFile: res:/ui/texture/icons/27_64_4.png
 1721:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Missile_Firestorm
   iconFile: res:/ui/texture/icons/34_64_1.png
 1722:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Missile_Thunderstorm
+  foregrounds:
+  - faction
   iconFile: res:/ui/texture/icons/34_64_2.png
 1723:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Missile_Hellstorm
+  foregrounds:
+  - faction
+  - storyline
   iconFile: res:/ui/texture/icons/27_64_9.png
 1724:
   description: Research Facility Icon - Unknown
@@ -1444,11 +2488,16 @@
   iconFile: res:/ui/texture/icons/34_64_6.png
 2039:
   description: Security box - Unknown
+  foregrounds:
+  - faction
   iconFile: res:/ui/texture/icons/34_64_7.png
 2040:
   description: Dogtags - Unknown
   iconFile: res:/ui/texture/icons/34_64_8.png
 2041:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Religious artifact - Unknown
   iconFile: res:/ui/texture/icons/34_64_9.png
 2042:
@@ -1458,10 +2507,20 @@
   description: Ship upgrade - Unknown
   iconFile: res:/ui/texture/icons/34_64_11.png
 2053:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Perception implant (ocular filter) - Unknown
+  foregrounds:
+  - tech2
   iconFile: res:/ui/texture/icons/34_64_12.png
 2054:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Willpower implant (neural boost) - Unknown
+  foregrounds:
+  - tech2
   iconFile: res:/ui/texture/icons/34_64_15.png
 2055:
   description: Charisma booster - Unknown
@@ -1479,16 +2538,40 @@
   description: Perception booster - Unknown
   iconFile: res:/ui/texture/icons/31_64_13.png
 2060:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Charisma implant (social adaptation chip) - Unknown
+  foregrounds:
+  - tech2
   iconFile: res:/ui/texture/icons/31_64_14.png
 2061:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Memory implant (Memory augmentation) - Unknown
+  foregrounds:
+  - tech2
   iconFile: res:/ui/texture/icons/31_64_15.png
 2062:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Intelligence implant (Cybernetic subprocessor) - Unknown
+  foregrounds:
+  - tech2
   iconFile: res:/ui/texture/icons/31_64_16.png
 2066:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Energized Plating
+  foregrounds:
+  - deadspace
+  - faction
+  - officer
+  - storyline
+  - tech2
   iconFile: res:/ui/texture/icons/34_64_16.png
 2070:
   description: A33colonialruin
@@ -1561,12 +2644,21 @@
   iconFile: res:/ui/texture/icons/35_64_7.png
 2096:
   description: Aidonis Honorary Fellow Medallion
+  foregrounds:
+  - faction
+  - tech2
   iconFile: res:/ui/texture/icons/35_64_9.png
 2100:
   description: Liberty tattoo of the Minmatar nation
   iconFile: res:/ui/texture/icons/35_64_8.png
 2101:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Deep Core Miner
+  foregrounds:
+  - faction
+  - tech2
   iconFile: res:/ui/texture/icons/35_64_1.png
 2102:
   description: Mercoxit
@@ -1575,99 +2667,206 @@
   description: Morphite
   iconFile: res:/ui/texture/icons/35_64_2.png
 2104:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Shield Booster Amplifier
+  foregrounds:
+  - deadspace
+  - faction
+  - officer
+  - storyline
+  - tech2
   iconFile: res:/ui/texture/icons/35_64_15.png
 2105:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Secondary Power Core
+  foregrounds:
+  - faction
+  - tech2
   iconFile: res:/ui/texture/icons/35_64_14.png
 2106:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Cloaking device
+  foregrounds:
+  - faction
+  - officer
+  - storyline
+  - tech2
   iconFile: res:/ui/texture/icons/35_64_12.png
 2176:
   description: Pax Amarria book icon - Unknown
   iconFile: res:/ui/texture/icons/35_64_4.png
 2177:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Magpulse Thruster - Unknown
   iconFile: res:/ui/texture/icons/37_64_1.png
 2178:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Ion Thruster - Unknown
   iconFile: res:/ui/texture/icons/37_64_2.png
 2179:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Plasma Thruster - Unknown
   iconFile: res:/ui/texture/icons/37_64_3.png
 2180:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Fusion Thruster - Unknown
   iconFile: res:/ui/texture/icons/37_64_4.png
 2181:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Gravimetric Sensor Cluster - Unknown
   iconFile: res:/ui/texture/icons/37_64_5.png
 2182:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Magnetometric Sensor Cluster - Unknown
   iconFile: res:/ui/texture/icons/37_64_6.png
 2183:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Ladar Sensor Cluster - Unknown
   iconFile: res:/ui/texture/icons/37_64_7.png
 2184:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Radar Sensor Cluster - Unknown
   iconFile: res:/ui/texture/icons/37_64_8.png
 2185:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Quantum Microprocessor - Unknown
   iconFile: res:/ui/texture/icons/37_64_9.png
 2186:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Photon Microprocessor - Unknown
   iconFile: res:/ui/texture/icons/37_64_10.png
 2187:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Nanomechanical Microprocessor - Unknown
   iconFile: res:/ui/texture/icons/37_64_11.png
 2188:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Nanoelectrical Microprocessor - Unknown
   iconFile: res:/ui/texture/icons/37_64_12.png
 2189:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Trimorphite Armor Plate - Unknown
   iconFile: res:/ui/texture/icons/37_64_13.png
 2190:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Carbonite Armor Plate - Unknown
   iconFile: res:/ui/texture/icons/37_64_14.png
 2191:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Ceramite Composite Armor Plate - Unknown
   iconFile: res:/ui/texture/icons/37_64_15.png
 2192:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Rolled Mexalite Armor Plate - Unknown
   iconFile: res:/ui/texture/icons/37_64_16.png
 2193:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Graviton Reactor Unit - Unknown
   iconFile: res:/ui/texture/icons/39_64_1.png
 2194:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Fusion Reactor Unit - Unknown
   iconFile: res:/ui/texture/icons/39_64_2.png
 2195:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Nuclear Reactor Unit - Unknown
   iconFile: res:/ui/texture/icons/39_64_3.png
 2196:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Antimatter Reactor Unit - Unknown
   iconFile: res:/ui/texture/icons/39_64_4.png
 2197:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Scalar Capacitor Unit - Unknown
   iconFile: res:/ui/texture/icons/39_64_5.png
 2198:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Oscillator Capacitor Unit - Unknown
   iconFile: res:/ui/texture/icons/39_64_6.png
 2199:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Electrolytic Capacitor Unit - Unknown
   iconFile: res:/ui/texture/icons/39_64_7.png
 2200:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Tesseract Capacitor Unit - Unknown
   iconFile: res:/ui/texture/icons/39_64_8.png
 2201:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Sustained Shield Emitter - Unknown
   iconFile: res:/ui/texture/icons/39_64_9.png
 2202:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Pulse Shield Emitter - Unknown
   iconFile: res:/ui/texture/icons/39_64_10.png
 2203:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Deflection Shield Emitter - Unknown
   iconFile: res:/ui/texture/icons/39_64_11.png
 2204:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Linear Shield Emitter - Unknown
   iconFile: res:/ui/texture/icons/39_64_12.png
 2205:
@@ -1722,42 +2921,85 @@
   description: Crystal Mineral Compound - Unknown
   iconFile: res:/ui/texture/icons/40_64_13.png
 2222:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: HyperNet Uplink (research tool) - Unknown
+  foregrounds:
+  - faction
   iconFile: res:/ui/texture/icons/40_64_14.png
 2223:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Molecular Sequencer (Duplication Tool) - Unknown
   iconFile: res:/ui/texture/icons/40_64_15.png
 2224:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Data Extractor (Reverse Engineered BP research tool) - Unknown
+  foregrounds:
+  - tech2
   iconFile: res:/ui/texture/icons/40_64_16.png
 2225:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Database Uplink (BP research tool) - Unknown
   iconFile: res:/ui/texture/icons/41_64_1.png
 2226:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Microassembler Array (manufacturing tool) - Unknown
   iconFile: res:/ui/texture/icons/41_64_2.png
 2227:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Superconductor Rails - Unknown
   iconFile: res:/ui/texture/icons/41_64_5.png
 2228:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Electrothermal Combustion Chamber - Unknown
   iconFile: res:/ui/texture/icons/41_64_7.png
 2229:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Graviton Pulse Generator - Unknown
   iconFile: res:/ui/texture/icons/41_64_9.png
 2230:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Plasma Pulse Generator - Unknown
   iconFile: res:/ui/texture/icons/41_64_10.png
 2231:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Nuclear Pulse Generator - Unknown
   iconFile: res:/ui/texture/icons/41_64_11.png
 2232:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: EMP Pulse Generator - Unknown
   iconFile: res:/ui/texture/icons/41_64_12.png
 2233:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Particle Accelerator Chamber - Unknown
   iconFile: res:/ui/texture/icons/41_64_6.png
 2234:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Laser Focusing Crystal - Unknown
   iconFile: res:/ui/texture/icons/41_64_8.png
 2243:
@@ -1773,7 +3015,13 @@
   description: Crash-test dummies, commodity - Unknown
   iconFile: res:/ui/texture/icons/41_64_4.png
 2309:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Warp Disruptor
+  foregrounds:
+  - faction
+  - tech2
   iconFile: res:/ui/texture/icons/36_64_15.png
 2310:
   description: Angel Bronze Dog Tags - Unknown
@@ -1875,10 +3123,22 @@
   description: ISK (InterStellar Kredits) - Unknown
   iconFile: res:/ui/texture/icons/7_64_12.png
 2526:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: IceHarvester
+  foregrounds:
+  - faction
+  - tech2
   iconFile: res:/ui/texture/icons/49_64_6.png
 2527:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Megaminer
+  foregrounds:
+  - faction
+  - tech2
   iconFile: res:/ui/texture/icons/49_64_5.png
 2528:
   description: Luxury vehicles - Unknown
@@ -1887,10 +3147,23 @@
   description: Scrapmetal commodity - Unknown
   iconFile: res:/ui/texture/icons/45_64_10.png
 2530:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Cruise launcher - Unknown
+  foregrounds:
+  - faction
+  - officer
+  - storyline
+  - tech2
   iconFile: res:/ui/texture/icons/45_64_11.png
 2531:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Ballistic Control System (for missile launchers) - Unknown
+  foregrounds:
+  - structureTech2
   iconFile: res:/ui/texture/icons/45_64_12.png
 2532:
   description: Red star medal - Unknown
@@ -2037,63 +3310,155 @@
   description: Titanium - Unknown
   iconFile: res:/ui/texture/icons/47_64_16.png
 2645:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Arkonor Mining Cr
+  foregrounds:
+  - tech2
   iconFile: res:/ui/texture/icons/48_64_14.png
 2646:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Bistot Mining Cr
+  foregrounds:
+  - tech2
   iconFile: res:/ui/texture/icons/48_64_13.png
 2647:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Crokite Mining Cr
+  foregrounds:
+  - tech2
   iconFile: res:/ui/texture/icons/48_64_12.png
 2648:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Dark Ochre Mining Cr
+  foregrounds:
+  - tech2
   iconFile: res:/ui/texture/icons/48_64_11.png
 2649:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Gneiss Mining Cr
+  foregrounds:
+  - tech2
   iconFile: res:/ui/texture/icons/48_64_10.png
 2650:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Hedbergite Mining Cr
+  foregrounds:
+  - tech2
   iconFile: res:/ui/texture/icons/48_64_9.png
 2651:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Hemorphite Mining Cr
+  foregrounds:
+  - tech2
   iconFile: res:/ui/texture/icons/48_64_8.png
 2652:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Jaspet Mining Cr
+  foregrounds:
+  - tech2
   iconFile: res:/ui/texture/icons/48_64_7.png
 2653:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Kernite Mining Cr
+  foregrounds:
+  - tech2
   iconFile: res:/ui/texture/icons/48_64_6.png
 2654:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Mercoxit Mining Cr
+  foregrounds:
+  - tech2
   iconFile: res:/ui/texture/icons/48_64_16.png
 2655:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Omber Mining Cr
+  foregrounds:
+  - tech2
   iconFile: res:/ui/texture/icons/48_64_5.png
 2656:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Plagioclase Mining Cr
+  foregrounds:
+  - tech2
   iconFile: res:/ui/texture/icons/48_64_4.png
 2657:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Pyroxeres Mining Cr
+  foregrounds:
+  - tech2
   iconFile: res:/ui/texture/icons/48_64_3.png
 2658:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Scordite Mining Cr
+  foregrounds:
+  - tech2
   iconFile: res:/ui/texture/icons/48_64_2.png
 2659:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Spodumain Mining Cr
+  foregrounds:
+  - tech2
   iconFile: res:/ui/texture/icons/48_64_15.png
 2660:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Veldspar Mining Cr
+  foregrounds:
+  - tech2
   iconFile: res:/ui/texture/icons/48_64_1.png
 2661:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Phe
   iconFile: res:/ui/texture/icons/50_64_1.png
 2662:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Syl
   iconFile: res:/ui/texture/icons/50_64_2.png
 2663:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: 'Survey '
   iconFile: res:/ui/texture/icons/50_64_3.png
 2664:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Com
   iconFile: res:/ui/texture/icons/50_64_4.png
 2665:
@@ -2127,33 +3492,66 @@
   description: Notes
   iconFile: res:/ui/texture/icons/49_64_4.png
 2677:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: probelauncher
+  foregrounds:
+  - faction
+  - tech2
   iconFile: res:/ui/texture/icons/49_64_7.png
 2678:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: ferrogel
   iconFile: res:/ui/texture/icons/49_64_8.png
 2679:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: gmetal
   iconFile: res:/ui/texture/icons/49_64_9.png
 2680:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: mmetal
   iconFile: res:/ui/texture/icons/49_64_10.png
 2681:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: cmetal
   iconFile: res:/ui/texture/icons/49_64_11.png
 2682:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: ametal
   iconFile: res:/ui/texture/icons/49_64_12.png
 2683:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: ferm
   iconFile: res:/ui/texture/icons/49_64_13.png
 2684:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Fulleride
   iconFile: res:/ui/texture/icons/49_64_14.png
 2685:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: synaptic
   iconFile: res:/ui/texture/icons/49_64_15.png
 2686:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: nanotrnasistors
   iconFile: res:/ui/texture/icons/49_64_16.png
 2693:
@@ -2187,7 +3585,12 @@
   description: Red Cross Medal - Unknown
   iconFile: res:/ui/texture/icons/50_64_16.png
 2732:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Bioscanner/Asteroid Scanner - Unknown
+  foregrounds:
+  - tech2
   iconFile: res:/ui/texture/icons/3_64_12.png
 2733:
   description: Caldari propulsion jamming strength - Unknown
@@ -2205,84 +3608,227 @@
   description: Safe deposit box - Unknown
   iconFile: res:/ui/texture/icons/7_64_13.png
 2827:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: XL Carbonized Lead Ammo - Unknown
+  foregrounds:
+  - faction
+  - tech2
   iconFile: res:/ui/texture/icons/52_64_1.png
 2828:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: XL Depleted Uranium Ammo - Unknown
+  foregrounds:
+  - faction
+  - tech2
   iconFile: res:/ui/texture/icons/52_64_2.png
 2829:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: XL EMP Ammo - Unknown
+  foregrounds:
+  - faction
   iconFile: res:/ui/texture/icons/52_64_3.png
 2830:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: XL Fusion Ammo - Unknown
+  foregrounds:
+  - faction
   iconFile: res:/ui/texture/icons/52_64_4.png
 2831:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: XL Nuclear (explosive) Ammo - Unknown
+  foregrounds:
+  - faction
+  - tech2
   iconFile: res:/ui/texture/icons/52_64_5.png
 2832:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: XL Phased Plasma Ammo - Unknown
+  foregrounds:
+  - faction
   iconFile: res:/ui/texture/icons/52_64_6.png
 2833:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: XL Proton (Photon) Ammo - Unknown
+  foregrounds:
+  - faction
   iconFile: res:/ui/texture/icons/52_64_7.png
 2834:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: XL Titanium Sabot Ammo - Unknown
+  foregrounds:
+  - faction
+  - tech2
   iconFile: res:/ui/texture/icons/52_64_8.png
 2835:
   description: Aura's (Ship computer) Face - Unknown
   iconFile: res:/ui/texture/icons/52_64_9.png
 2836:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Siege Blaster Cannon - Unknown
+  foregrounds:
+  - faction
+  - tech2
   iconFile: res:/ui/texture/icons/52_64_10.png
 2837:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Siege Beam Laser - Unknown
+  foregrounds:
+  - faction
+  - tech2
   iconFile: res:/ui/texture/icons/52_64_11.png
 2838:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Siege Autocannon - Unknown
+  foregrounds:
+  - faction
+  - tech2
   iconFile: res:/ui/texture/icons/52_64_12.png
 2839:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Siege (XL) Missile Launcher - Unknown
+  foregrounds:
+  - faction
+  - tech2
   iconFile: res:/ui/texture/icons/52_64_13.png
 2840:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Siege Railgun - Unknown
+  foregrounds:
+  - faction
+  - tech2
   iconFile: res:/ui/texture/icons/52_64_14.png
 2841:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Siege Pulse Laser - Unknown
+  foregrounds:
+  - faction
+  - tech2
   iconFile: res:/ui/texture/icons/52_64_15.png
 2842:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Siege Artillery (XL) - Unknown
+  foregrounds:
+  - faction
+  - tech2
   iconFile: res:/ui/texture/icons/52_64_16.png
 2843:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: XL Antimatter Charge - Unknown
+  foregrounds:
+  - faction
+  - tech2
   iconFile: res:/ui/texture/icons/53_64_1.png
 2844:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: XL Iridium Charge - Unknown
+  foregrounds:
+  - faction
+  - tech2
   iconFile: res:/ui/texture/icons/53_64_2.png
 2845:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: XL Iron Charge - Unknown
+  foregrounds:
+  - faction
   iconFile: res:/ui/texture/icons/53_64_3.png
 2846:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: XL Lead Charge - Unknown
+  foregrounds:
+  - faction
   iconFile: res:/ui/texture/icons/53_64_4.png
 2847:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: XL Plutonium Charge - Unknown
+  foregrounds:
+  - faction
+  - tech2
   iconFile: res:/ui/texture/icons/53_64_5.png
 2848:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: XL Thorium Charge - Unknown
+  foregrounds:
+  - faction
+  - tech2
   iconFile: res:/ui/texture/icons/53_64_6.png
 2849:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: XL Tungsten Charge - Unknown
+  foregrounds:
+  - faction
   iconFile: res:/ui/texture/icons/53_64_7.png
 2850:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: XL Uranium Charge - Unknown
+  foregrounds:
+  - faction
   iconFile: res:/ui/texture/icons/53_64_8.png
 2851:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Siege Mode Module - Unknown
+  foregrounds:
+  - tech2
   iconFile: res:/ui/texture/icons/53_64_9.png
 2852:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Drill (mission item) - Unknown
+  foregrounds:
+  - tech2
   iconFile: res:/ui/texture/icons/53_64_10.png
 2853:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Treasure Map (Electronic) - Unknown
   iconFile: res:/ui/texture/icons/53_64_11.png
 2854:
@@ -2292,90 +3838,184 @@
   description: Corpse icon - Unknown
   iconFile: res:/ui/texture/icons/53_64_13.png
 2856:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Codebreaker Module - Unknown
+  foregrounds:
+  - storyline
+  - tech2
   iconFile: res:/ui/texture/icons/53_64_14.png
 2857:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Analyzer Module (ancient artifact scanner) - Unknown
+  foregrounds:
+  - tech2
   iconFile: res:/ui/texture/icons/53_64_15.png
 2858:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Leadership Module - Unknown
+  foregrounds:
+  - tech2
   iconFile: res:/ui/texture/icons/53_64_16.png
 2859:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Capital Propulsion Engine - Unknown
   iconFile: res:/ui/texture/icons/54_64_1.png
 2860:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Capital Turret Hardpoint - Unknown
   iconFile: res:/ui/texture/icons/54_64_2.png
 2861:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Capital Sensor Array - Unknown
   iconFile: res:/ui/texture/icons/54_64_3.png
 2862:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Capital Armor Plates - Unknown
   iconFile: res:/ui/texture/icons/54_64_4.png
 2863:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Capital Capacitor Battery - Unknown
   iconFile: res:/ui/texture/icons/54_64_5.png
 2864:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Capital Power Generator - Unknown
   iconFile: res:/ui/texture/icons/54_64_6.png
 2865:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Capital Shield Generator - Unknown
   iconFile: res:/ui/texture/icons/54_64_7.png
 2866:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Capital Jump Drive - Unknown
   iconFile: res:/ui/texture/icons/54_64_8.png
 2867:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Capital Cargo Bay - Unknown
   iconFile: res:/ui/texture/icons/54_64_9.png
 2868:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Capital Drone Bay - Unknown
   iconFile: res:/ui/texture/icons/54_64_10.png
 2869:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Capital Computer System - Unknown
   iconFile: res:/ui/texture/icons/54_64_11.png
 2870:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Capital Construction Parts - Unknown
   iconFile: res:/ui/texture/icons/54_64_12.png
 2871:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Capital Siege Array - Unknown
   iconFile: res:/ui/texture/icons/54_64_13.png
 2872:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Capital Launcher Hardpoint - Unknown
   iconFile: res:/ui/texture/icons/54_64_14.png
 2873:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Station Mission Network - Unknown
   iconFile: res:/ui/texture/icons/54_64_15.png
 2874:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Station Office Center - Unknown
   iconFile: res:/ui/texture/icons/54_64_16.png
 2875:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Station Construction Parts - Unknown
   iconFile: res:/ui/texture/icons/55_64_1.png
 2876:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Station Hangar Array - Unknown
   iconFile: res:/ui/texture/icons/55_64_2.png
 2877:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Station Storage Bay - Unknown
   iconFile: res:/ui/texture/icons/55_64_3.png
 2878:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Station Laboratory - Unknown
   iconFile: res:/ui/texture/icons/55_64_4.png
 2879:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Station Factory - Unknown
   iconFile: res:/ui/texture/icons/55_64_5.png
 2880:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Station Repair Facility - Unknown
   iconFile: res:/ui/texture/icons/55_64_6.png
 2881:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Station Reprocessing Plant - Unknown
   iconFile: res:/ui/texture/icons/55_64_7.png
 2882:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Station Docking Array - Unknown
   iconFile: res:/ui/texture/icons/55_64_8.png
 2883:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Station Market Network - Unknown
   iconFile: res:/ui/texture/icons/55_64_9.png
 2884:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Station Medical Center - Unknown
   iconFile: res:/ui/texture/icons/55_64_10.png
 2885:
@@ -2406,36 +4046,84 @@
   description: Official Document - Unknown
   iconFile: res:/ui/texture/icons/7_64_3.png
 2934:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Ion
+  foregrounds:
+  - structureFaction
   iconFile: res:/ui/texture/icons/56_64_2.png
 2943:
   description: Snowball missile - Snowball
   iconFile: res:/ui/texture/icons/57_64_4.png
 2971:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Stealth module icon - Unknown
   iconFile: res:/ui/texture/icons/36_64_13.png
 2974:
   description: Ballistic Control System (heat thingamajig) - Unknown
   iconFile: res:/ui/texture/icons/36_64_16.png
 2983:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Target Painter - Unknown
+  foregrounds:
+  - faction
+  - storyline
+  - structureTech2
+  - tech2
   iconFile: res:/ui/texture/icons/56_64_1.png
 2985:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Jump Portal Module - Unknown
   iconFile: res:/ui/texture/icons/56_64_3.png
 2986:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Tractor Beam - Unknown
+  foregrounds:
+  - tech2
   iconFile: res:/ui/texture/icons/56_64_4.png
 2987:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Drone Command Module - Unknown
+  foregrounds:
+  - faction
+  - officer
+  - tech2
   iconFile: res:/ui/texture/icons/56_64_5.png
 2988:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Drone Navigation Module - Unknown
+  foregrounds:
+  - faction
+  - officer
+  - tech2
   iconFile: res:/ui/texture/icons/56_64_6.png
 2989:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Drone Range Link Module - Unknown
+  foregrounds:
+  - officer
+  - storyline
+  - tech2
   iconFile: res:/ui/texture/icons/56_64_7.png
 2990:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Probe Launcher - Unknown
   iconFile: res:/ui/texture/icons/56_64_8.png
 2991:
@@ -2481,9 +4169,17 @@
   description: Starbase Charter (Gallente) - Unknown
   iconFile: res:/ui/texture/icons/57_64_8.png
 3006:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Manufacturing & Research (All activities) - Unknown
+  foregrounds:
+  - structureFaction
   iconFile: res:/ui/texture/icons/57_64_9.png
 3007:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Manufacturing - Unknown
   iconFile: res:/ui/texture/icons/57_64_10.png
 3008:
@@ -2502,9 +4198,15 @@
   description: Reverse Engineering - Unknown
   iconFile: res:/ui/texture/icons/57_64_15.png
 3013:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Technology Research - Unknown
   iconFile: res:/ui/texture/icons/57_64_16.png
 3019:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Capital Clone Bay - Unknown
   iconFile: res:/ui/texture/icons/58_64_1.png
 3021:
@@ -2559,7 +4261,13 @@
   description: News Service Icon - Unknown
   iconFile: res:/ui/texture/icons/17_128_3.png
 3074:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Gasminer
+  foregrounds:
+  - faction
+  - tech2
   iconFile: res:/ui/texture/icons/35_64_3.png
 3127:
   description: Willpower attribute icon, large - Unknown
@@ -2604,99 +4312,218 @@
   description: 'Character creation: Special Operations - Unknown'
   iconFile: res:/ui/texture/icons/66_128_4.png
 3181:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Caldari Module Data Interface - Unknown
   iconFile: res:/ui/texture/icons/63_64_1.png
 3182:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Gallente Module Data Interface - Unknown
   iconFile: res:/ui/texture/icons/63_64_2.png
 3183:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Minmatar Module Data Interface - Unknown
   iconFile: res:/ui/texture/icons/63_64_3.png
 3184:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Amarr Module Data Interface - Unknown
   iconFile: res:/ui/texture/icons/63_64_4.png
 3185:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Caldari Ship Data Interface - Unknown
   iconFile: res:/ui/texture/icons/63_64_5.png
 3186:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Gallenete Ship Data Interface - Unknown
   iconFile: res:/ui/texture/icons/63_64_6.png
 3187:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Minmatar Ship Data Interface - Unknown
   iconFile: res:/ui/texture/icons/63_64_7.png
 3188:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Amarr Ship Data Interface - Unknown
   iconFile: res:/ui/texture/icons/63_64_8.png
 3189:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Caldari Rig Data Interface - Unknown
   iconFile: res:/ui/texture/icons/63_64_9.png
 3190:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Gallente Rig Data Interface - Unknown
   iconFile: res:/ui/texture/icons/63_64_10.png
 3191:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Minmatar Rig Data Interface - Unknown
   iconFile: res:/ui/texture/icons/63_64_11.png
 3192:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Amarr Rig Data Interface - Unknown
   iconFile: res:/ui/texture/icons/63_64_12.png
 3193:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Rig Shields - Unknown
+  foregrounds:
+  - tech2
   iconFile: res:/ui/texture/icons/68_64_9.png
 3194:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Rig Armor - Unknown
+  foregrounds:
+  - tech2
   iconFile: res:/ui/texture/icons/68_64_10.png
 3195:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Rig Capacitor - Unknown
+  foregrounds:
+  - structureTech2
+  - tech2
   iconFile: res:/ui/texture/icons/68_64_11.png
 3196:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Rig Astronautic - Unknown
+  foregrounds:
+  - tech2
   iconFile: res:/ui/texture/icons/68_64_12.png
 3197:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Rig Launchers - Unknown
+  foregrounds:
+  - structureTech2
+  - tech2
   iconFile: res:/ui/texture/icons/68_64_13.png
 3198:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Rig EW - Unknown
+  foregrounds:
+  - structureTech2
+  - tech2
   iconFile: res:/ui/texture/icons/68_64_14.png
 3199:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Rig CPU - Unknown
+  foregrounds:
+  - tech2
   iconFile: res:/ui/texture/icons/68_64_15.png
 3200:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Rig Drones - Unknown
+  foregrounds:
+  - structureTech2
+  - tech2
   iconFile: res:/ui/texture/icons/68_64_16.png
 3201:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Rig Projectiles - Unknown
+  foregrounds:
+  - tech2
   iconFile: res:/ui/texture/icons/68_64_2.png
 3202:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Rig Hybrid - Unknown
+  foregrounds:
+  - tech2
   iconFile: res:/ui/texture/icons/68_64_3.png
 3203:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Rig Laser - Unknown
+  foregrounds:
+  - tech2
   iconFile: res:/ui/texture/icons/68_64_4.png
 3208:
   description: Bounty Office service icon for stations - Unknown
   iconFile: res:/ui/texture/icons/61_128_2.png
 3210:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Crash Booster - Unknown
   iconFile: res:/ui/texture/icons/62_64_1.png
 3211:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Exile Booster - Unknown
   iconFile: res:/ui/texture/icons/62_64_2.png
 3212:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Drop Booster - Unknown
   iconFile: res:/ui/texture/icons/62_64_3.png
 3213:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Frentix Booster - Unknown
   iconFile: res:/ui/texture/icons/62_64_4.png
 3214:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Mindflood Booster - Unknown
   iconFile: res:/ui/texture/icons/62_64_5.png
 3215:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Blue Pill Booster - Unknown
   iconFile: res:/ui/texture/icons/62_64_6.png
 3216:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Sooth Sayer Booster - Unknown
   iconFile: res:/ui/texture/icons/62_64_7.png
 3217:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: X-Instinct Booster - Unknown
   iconFile: res:/ui/texture/icons/62_64_8.png
 3218:
@@ -2724,16 +4551,44 @@
   description: Orange Harvestable Cloud - Unknown
   iconFile: res:/ui/texture/icons/62_64_16.png
 3226:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Caldari (blue) target scrambler - Unknown
+  foregrounds:
+  - faction
+  - storyline
+  - tech2
   iconFile: res:/ui/texture/icons/63_64_13.png
 3227:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Gallente (green) target scrambler - Unknown
+  foregrounds:
+  - faction
+  - storyline
+  - tech2
   iconFile: res:/ui/texture/icons/63_64_14.png
 3228:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Minmatar (red) target scrambler - Unknown
+  foregrounds:
+  - faction
+  - storyline
+  - tech2
   iconFile: res:/ui/texture/icons/63_64_15.png
 3229:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Amarr (gold) target scrambler - Unknown
+  foregrounds:
+  - faction
+  - storyline
+  - tech2
   iconFile: res:/ui/texture/icons/63_64_16.png
 3230:
   description: Datacore (physics) - Unknown
@@ -2748,16 +4603,40 @@
   description: Datacore (Science) - Unknown
   iconFile: res:/ui/texture/icons/64_64_4.png
 3234:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Assault Missile (Kinetic) - Unknown
+  foregrounds:
+  - faction
+  - tech2
   iconFile: res:/ui/texture/icons/64_64_5.png
 3235:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Assault Missile (Heat) - Unknown
+  foregrounds:
+  - faction
+  - tech2
   iconFile: res:/ui/texture/icons/64_64_6.png
 3236:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Assault Missile (Explosive) - Unknown
+  foregrounds:
+  - faction
+  - tech2
   iconFile: res:/ui/texture/icons/64_64_7.png
 3237:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Assault Missile (EMP) - Unknown
+  foregrounds:
+  - faction
+  - tech2
   iconFile: res:/ui/texture/icons/64_64_8.png
 3238:
   description: Contract (Freeform) - Unknown
@@ -2766,10 +4645,21 @@
   description: Contract (MASTER) - Unknown
   iconFile: res:/ui/texture/icons/64_64_10.png
 3240:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Salvaging Module - Unknown
+  foregrounds:
+  - tech2
   iconFile: res:/ui/texture/icons/64_64_11.png
 3241:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Large Assault Launcher - Unknown
+  foregrounds:
+  - faction
+  - tech2
   iconFile: res:/ui/texture/icons/64_64_12.png
 3242:
   description: Contract (Courier) - Unknown
@@ -2853,33 +4743,62 @@
   description: Male icon
   iconFile: res:/ui/texture/icons/70_64_2.png
 3278:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: BombEM
   iconFile: res:/ui/texture/icons/70_64_5.png
 3279:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: BombExplosives
   iconFile: res:/ui/texture/icons/70_64_8.png
 3280:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: BombKinetic
   iconFile: res:/ui/texture/icons/70_64_6.png
 3281:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: BombThermic
   iconFile: res:/ui/texture/icons/70_64_7.png
 3282:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: BombEnergy
   iconFile: res:/ui/texture/icons/70_64_3.png
 3283:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: BombECM
   iconFile: res:/ui/texture/icons/70_64_4.png
 3299:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: RemoteECMBurst
   iconFile: res:/ui/texture/icons/70_64_9.png
 3300:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: TriageModule
+  foregrounds:
+  - tech2
   iconFile: res:/ui/texture/icons/70_64_10.png
 3301:
   description: Lpstore
   iconFile: res:/ui/texture/icons/70_64_11.png
 3302:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Nanite Repair - Nanite Repair
   iconFile: res:/ui/texture/icons/70_64_12.png
 3303:
@@ -2895,75 +4814,147 @@
   description: Outpost upgrade offices
   iconFile: res:/ui/texture/icons/70_64_16.png
 3307:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Compressed Arkonor - Compressed Arkonor
   iconFile: res:/ui/texture/icons/71_64_1.png
 3308:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Compressed Bistot - Compressed Bistot
   iconFile: res:/ui/texture/icons/71_64_2.png
 3309:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Compressed Crokite - Compressed Crokite
   iconFile: res:/ui/texture/icons/71_64_3.png
 3310:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Compressed Dark Ochre - Compressed Dark Ochre
   iconFile: res:/ui/texture/icons/71_64_4.png
 3311:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Compressed Hedbergite - Compressed Hedbergite
   iconFile: res:/ui/texture/icons/71_64_5.png
 3312:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Compressed Hemorphite - Compressed Hemorphite
   iconFile: res:/ui/texture/icons/71_64_6.png
 3313:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Compressed Jaspet - Compressed Jaspet
   iconFile: res:/ui/texture/icons/71_64_7.png
 3314:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Compressed Kernite - Compressed Kernite
   iconFile: res:/ui/texture/icons/71_64_8.png
 3315:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Compressed Omber - Compressed Omber
   iconFile: res:/ui/texture/icons/71_64_9.png
 3316:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Compressed Spodumain - Compressed Spodumain
   iconFile: res:/ui/texture/icons/71_64_10.png
 3317:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Compressed Scordite - Compressed Scordite
   iconFile: res:/ui/texture/icons/71_64_11.png
 3318:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Compressed Pyroxeres - Compressed Pyroxeres
   iconFile: res:/ui/texture/icons/71_64_12.png
 3319:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Compressed Veldspar - Compressed Veldspar
   iconFile: res:/ui/texture/icons/71_64_13.png
 3320:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Compressed Plagioclase - Compressed Plagioclase
   iconFile: res:/ui/texture/icons/71_64_14.png
 3321:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Compressed Gneiss - Compressed Gneiss
   iconFile: res:/ui/texture/icons/71_64_15.png
 3322:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Compressed Mercoxit - Compressed Mercoxit
   iconFile: res:/ui/texture/icons/71_64_16.png
 3323:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Compressed Glare Crust - Compressed Glare Crust
   iconFile: res:/ui/texture/icons/72_64_1.png
 3324:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Compressed Enriched Clear Icicle - Compressed Enriched Clear Icicle
   iconFile: res:/ui/texture/icons/72_64_2.png
 3325:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Compressed Dark Glitter - Compressed Dark Glitter
   iconFile: res:/ui/texture/icons/72_64_3.png
 3326:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Compressed Glacial Mass - Compressed Glacial Mass
   iconFile: res:/ui/texture/icons/72_64_4.png
 3327:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Compressed Think Blue Ice - Compressed Think Blue Ice
   iconFile: res:/ui/texture/icons/72_64_5.png
 3328:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Compressed Gelidus - Compressed Gelidus
   iconFile: res:/ui/texture/icons/72_64_6.png
 3329:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Compressed White Glaze - Compressed White Glaze
   iconFile: res:/ui/texture/icons/72_64_8.png
 3330:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Compressed Krystallos - Compressed Krystallos
   iconFile: res:/ui/texture/icons/72_64_9.png
 3333:
@@ -2985,34 +4976,66 @@
   description: Rogue Drone Component 6 - Rogue Drone Component 6
   iconFile: res:/ui/texture/icons/72_64_15.png
 3339:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: sensor booster - scan resolution - sensor booster - scan resolution
   iconFile: res:/ui/texture/icons/74_64_1.png
 3340:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: sensor booster - range - sensor booster - range
   iconFile: res:/ui/texture/icons/74_64_2.png
 3341:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Remote Sensor Dampener - scan resolution - Remote Sensor Dampener -
     scan resolution
   iconFile: res:/ui/texture/icons/74_64_3.png
 3342:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Remote Sensor Dampener - range - Remote Sensor Dampener - range
   iconFile: res:/ui/texture/icons/74_64_4.png
 3343:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Tracking Disruptor - tracking - Tracking Disruptor - tracking
   iconFile: res:/ui/texture/icons/74_64_5.png
 3344:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Tracking Disruptor - range - Tracking Disruptor - range
   iconFile: res:/ui/texture/icons/74_64_6.png
 3345:
   description: Warp Scrambler - focusing - Warp Scrambler - focusing
   iconFile: res:/ui/texture/icons/74_64_7.png
 3346:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Tracking Computer - Tracking Computer
+  foregrounds:
+  - faction
+  - officer
+  - storyline
+  - tech2
   iconFile: res:/ui/texture/icons/74_64_8.png
 3347:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Tracking Computer / link - tracking - Tracking Computer / link - tracking
   iconFile: res:/ui/texture/icons/74_64_9.png
 3348:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Tracking Computer / link - range - Tracking Computer / link - range
   iconFile: res:/ui/texture/icons/74_64_10.png
 3369:
@@ -3028,7 +5051,16 @@
   description: Tribal Liberation Force - Unknown
   iconFile: res:/ui/texture/corps/47_128_4.png
 3433:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Warp Scrambler Icon - Unknown
+  foregrounds:
+  - abyssal
+  - faction
+  - officer
+  - storyline
+  - tech2
   iconFile: res:/ui/texture/icons/76_64_1.png
 3435:
   description: Commodity - starCake
@@ -3079,36 +5111,79 @@
   description: Commodity - kuashi
   iconFile: res:/ui/texture/icons/78_64_16.png
 3626:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Amarr Cruiser 5 - Subsystem 1 Variation 1
+  foregrounds:
+  - tech3
   iconFile: res:/ui/texture/icons/76_64_9.png
 3631:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Amarr Cruiser 5 - Subsystem 2 Variation 1
+  foregrounds:
+  - tech3
   iconFile: res:/ui/texture/icons/76_64_6.png
 3636:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Amarr Cruiser 5 - Subsystem 3 Variation 1
+  foregrounds:
+  - tech3
   iconFile: res:/ui/texture/icons/76_64_7.png
 3641:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Amarr Cruiser 5 - Subsystem 4 Variation 1
+  foregrounds:
+  - tech3
   iconFile: res:/ui/texture/icons/76_64_5.png
 3646:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Amarr Cruiser 5 - Subsystem 5 Variation 1
+  foregrounds:
+  - tech3
   iconFile: res:/ui/texture/icons/76_64_8.png
 3716:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: electronic hybrid component  - HybridComponentElectronic
   iconFile: res:/ui/texture/icons/76_64_14.png
 3717:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: propulsion component  - HybridComponentPropulsion
   iconFile: res:/ui/texture/icons/76_64_12.png
 3718:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: generic component - HybridComponentGeneric
   iconFile: res:/ui/texture/icons/76_64_15.png
 3719:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: offensive component - HybridComponentOffensive
   iconFile: res:/ui/texture/icons/76_64_10.png
 3720:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: engineering hybrid component - HybridComponentEngineering
   iconFile: res:/ui/texture/icons/76_64_13.png
 3721:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: defensive hybrid component - HybridComponentDefensive
   iconFile: res:/ui/texture/icons/76_64_11.png
 3722:
@@ -3163,12 +5238,21 @@
   description: propulsion ancient relic - AncientRelicPropulsion
   iconFile: res:/ui/texture/icons/84_64_7.png
 3739:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: common red polymer 1 - PolymerCommon1
   iconFile: res:/ui/texture/icons/83_64_1.png
 3740:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: common polymer blue - PolymerCommon2
   iconFile: res:/ui/texture/icons/83_64_2.png
 3741:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: common polymer brownish - PolymerCommon3
   iconFile: res:/ui/texture/icons/83_64_3.png
 3742:
@@ -3178,12 +5262,21 @@
   description: green common polymer - PolymerCommon5
   iconFile: res:/ui/texture/icons/84_64_1.png
 3744:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: less common polymer 1 - polymerLessCommon1
   iconFile: res:/ui/texture/icons/83_64_5.png
 3745:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: less common polymer 2 - polymerLessCommon2
   iconFile: res:/ui/texture/icons/83_64_6.png
 3746:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: less common polymer 3 - polymerLessCommon3
   iconFile: res:/ui/texture/icons/83_64_7.png
 3747:
@@ -3196,15 +5289,24 @@
   description: rare polymer 1 - polymerRare1
   iconFile: res:/ui/texture/icons/83_64_9.png
 3750:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: rare polymer 2 - polymerRare2
   iconFile: res:/ui/texture/icons/83_64_10.png
 3751:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: polymer rare 3 - polymerRare3
   iconFile: res:/ui/texture/icons/83_64_11.png
 3752:
   description: rare polymer 4 - polymerRare4
   iconFile: res:/ui/texture/icons/83_64_12.png
 3753:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: rare polymer 5 - polymerRare5
   iconFile: res:/ui/texture/icons/84_64_9.png
 3754:
@@ -3220,16 +5322,36 @@
   description: Warp Icon - Warp
   iconFile: res:/ui/texture/icons/76_64_16.png
 3762:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Tengu
+  foregrounds:
+  - tech3
   iconFile: res:/ui/texture/icons/89_128_1.png
 3763:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Legion
+  foregrounds:
+  - tech3
   iconFile: res:/ui/texture/icons/89_128_2.png
 3764:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Loki
+  foregrounds:
+  - tech3
   iconFile: res:/ui/texture/icons/89_128_3.png
 3765:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Proteus
+  foregrounds:
+  - tech3
   iconFile: res:/ui/texture/icons/89_128_4.png
 3766:
   description: ancient hull relic - AncientRelicHull
@@ -3262,40 +5384,72 @@
   description: Smash_and_Grab
   iconFile: res:/UI/netres/mission_content/smash_and_grab.png
 3943:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: inv_upgrade_wormhole
   iconFile: res:/ui/texture/icons/95_64_11.png
 3945:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: inv_upgrade_cynosupression
   iconFile: res:/ui/texture/icons/95_64_2.png
 3946:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: inv_upgrade_cynonavigation
   iconFile: res:/ui/texture/icons/95_64_3.png
 3947:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: inv_upgrade_entrapment
   iconFile: res:/ui/texture/icons/95_64_4.png
 3948:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: inv_upgrade_oreprospect
   iconFile: res:/ui/texture/icons/95_64_6.png
 3949:
   description: inv_upgrade_supercarrierDock
   iconFile: res:/ui/texture/icons/95_64_7.png
 3950:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: inv_upgrade_supercarrierConstruct
   iconFile: res:/ui/texture/icons/95_64_8.png
 3951:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: inv_upgrade_pirateMagnet
   iconFile: res:/ui/texture/icons/95_64_10.png
 3952:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: inv_upgrade_AdvLogiNetwork
   iconFile: res:/ui/texture/icons/95_64_12.png
 3953:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: inv_upgrade_surveyNetwork
   iconFile: res:/ui/texture/icons/95_64_14.png
 3954:
   description: inv_upgrade_constructionMatrix
   iconFile: res:/ui/texture/icons/95_64_15.png
 3955:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: citadel_cruise_launcher
+  foregrounds:
+  - faction
   iconFile: res:/ui/texture/icons/95_64_5.png
 5003:
   iconFile: res:/Texture/Landmark/amarr.jpg
@@ -3691,10 +5845,23 @@
   description: oceanic planet
   iconFile: res:/ui/texture/icons/104_128_2.png
 10144:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: This is the icon for the implant that is going in the 2010 EVE Box
   iconFile: res:/ui/texture/icons/99_64_9.png
 10149:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: mwd icon
+  foregrounds:
+  - abyssal
+  - deadspace
+  - faction
+  - officer
+  - storyline
+  - tech2
   iconFile: res:/ui/texture/icons/79_64_9.png
 10150:
   description: Female Marine
@@ -3721,6 +5888,9 @@
   description: Generic Alien Looking Creature
   iconFile: res:/ui/texture/icons/101_64_3.png
 10158:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Generic High-Tech Object
   iconFile: res:/ui/texture/icons/101_64_4.png
 10159:
@@ -4670,15 +6840,27 @@
   description: This is t he icon used for the Aurum token.
   iconFile: res:/UI/Texture/Icons/aurcoin.png
 10833:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Gallente Fuel Block
   iconFile: res:/UI/Texture/Icons/ComprFuel_Gallente.png
 10834:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Caldari Fuel Block
   iconFile: res:/UI/Texture/Icons/ComprFuel_Caldari.png
 10835:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Amarr Fuel Block
   iconFile: res:/UI/Texture/Icons/ComprFuel_Amarr.png
 10836:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Minmatar Fuel Block
   iconFile: res:/UI/Texture/Icons/ComprFuel_Minmatar.png
 10838:
@@ -4892,6 +7074,9 @@
   description: icon_veh_hav_ga
   iconFile: res:/UI/Texture/Icons/dust_icon_veh_hav_ga.png
 10913:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: icon_mod_shield_remoteshieldrecharger
   iconFile: res:/UI/Texture/Icons/dust_icon_mod_shield_remoteshieldrecharger.png
 10914:
@@ -4922,16 +7107,37 @@
   description: icon_mod_shield_booster
   iconFile: res:/UI/Texture/Icons/dust_icon_mod_shield_booster.png
 10932:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Module - Target Breaker
   iconFile: res:/ui/texture/icons/105_32_46.png
 10933:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Module - Shifting Armor Hardener
+  foregrounds:
+  - faction
+  - tech2
   iconFile: res:/ui/texture/icons/105_32_47.png
 10934:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Module - Drone Damage Mod
+  foregrounds:
+  - faction
+  - officer
+  - tech2
   iconFile: res:/ui/texture/icons/105_32_48.png
 10935:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Module - Fueled Shield Booster
+  foregrounds:
+  - abyssal
   iconFile: res:/ui/texture/icons/105_32_49.png
 10936:
   description: icon_eq_remoteexplosive
@@ -4943,12 +7149,21 @@
   description: icon_tur_missile
   iconFile: res:/UI/Texture/Icons/dust_icon_tur_missile.png
 10940:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Tactical Laser S
   iconFile: res:/ui/texture/icons/107_64_1.png
 10941:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Tactical Hybrid S
   iconFile: res:/ui/texture/icons/107_64_2.png
 10942:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Tactical Projectile S
   iconFile: res:/ui/texture/icons/107_64_3.png
 10946:
@@ -4961,64 +7176,234 @@
   description: icon_aug_voicetransmitter
   iconFile: res:/UI/Texture/Icons/dust_icon_aug_voicetransmitter.png
 20939:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Passive Shield Hardener - Kinetic
+  foregrounds:
+  - deadspace
+  - faction
+  - officer
+  - storyline
+  - tech2
   iconFile: res:/ui/texture/icons/108_64_5.png
 20940:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Passive Shield Hardener - Thermal
+  foregrounds:
+  - deadspace
+  - faction
+  - officer
+  - storyline
+  - tech2
   iconFile: res:/ui/texture/icons/108_64_6.png
 20941:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Passive Shield Hardener - Explosive
+  foregrounds:
+  - deadspace
+  - faction
+  - officer
+  - storyline
+  - tech2
   iconFile: res:/ui/texture/icons/108_64_7.png
 20942:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Passive Shield Hardener - EM
+  foregrounds:
+  - deadspace
+  - faction
+  - officer
+  - storyline
+  - tech2
   iconFile: res:/ui/texture/icons/108_64_8.png
 20943:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Active Armor Hardener - Explosive
+  foregrounds:
+  - deadspace
+  - faction
+  - officer
+  - tech2
   iconFile: res:/ui/texture/icons/108_64_12.png
 20944:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Active Armor Hardener - EM
+  foregrounds:
+  - deadspace
+  - faction
+  - officer
+  - tech2
   iconFile: res:/ui/texture/icons/108_64_13.png
 20945:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Active Armor Hardener - Kinetic
+  foregrounds:
+  - deadspace
+  - faction
+  - officer
+  - tech2
   iconFile: res:/ui/texture/icons/108_64_10.png
 20946:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Active Armor Hardener - Thermal
+  foregrounds:
+  - deadspace
+  - faction
+  - officer
+  - tech2
   iconFile: res:/ui/texture/icons/108_64_11.png
 20947:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Active Shield Hardener - Explosive
+  foregrounds:
+  - deadspace
+  - faction
+  - officer
+  - storyline
+  - tech2
   iconFile: res:/ui/texture/icons/108_64_3.png
 20948:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Active Shield Hardener - EM
+  foregrounds:
+  - deadspace
+  - faction
+  - officer
+  - storyline
+  - tech2
   iconFile: res:/ui/texture/icons/108_64_4.png
 20949:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Active Shield Hardener - Kinetic
+  foregrounds:
+  - deadspace
+  - faction
+  - officer
+  - storyline
+  - tech2
   iconFile: res:/ui/texture/icons/108_64_1.png
 20950:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Active Shield Hardener - Thermal
+  foregrounds:
+  - deadspace
+  - faction
+  - officer
+  - storyline
+  - tech2
   iconFile: res:/ui/texture/icons/108_64_2.png
 20951:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Energized Armor Hardener - Explosive
+  foregrounds:
+  - deadspace
+  - faction
+  - officer
+  - tech2
   iconFile: res:/ui/texture/icons/108_64_20.png
 20952:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Energized Armor Hardener - EM
+  foregrounds:
+  - deadspace
+  - faction
+  - officer
+  - tech2
   iconFile: res:/ui/texture/icons/108_64_21.png
 20953:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Energized Armor Hardener - Kinetic
+  foregrounds:
+  - deadspace
+  - faction
+  - officer
+  - storyline
+  - tech2
   iconFile: res:/ui/texture/icons/108_64_18.png
 20954:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Energized Armor Hardener - Thermal
+  foregrounds:
+  - deadspace
+  - faction
+  - officer
+  - storyline
+  - tech2
   iconFile: res:/ui/texture/icons/108_64_19.png
 20955:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Passive Armor Hardener - Explosive
+  foregrounds:
+  - deadspace
+  - faction
+  - officer
+  - tech2
   iconFile: res:/ui/texture/icons/108_64_16.png
 20956:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Passive Armor Hardener - EM
+  foregrounds:
+  - deadspace
+  - faction
+  - officer
+  - tech2
   iconFile: res:/ui/texture/icons/108_64_17.png
 20957:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Passive Armor Hardener - Kinetic
+  foregrounds:
+  - deadspace
+  - faction
+  - officer
+  - tech2
   iconFile: res:/ui/texture/icons/108_64_14.png
 20958:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Passive Armor Hardener - Thermal
+  foregrounds:
+  - deadspace
+  - faction
+  - officer
+  - tech2
   iconFile: res:/ui/texture/icons/108_64_15.png
 20959:
   description: Amarr Empire Market Icon
@@ -5036,9 +7421,15 @@
   description: Fleet Icon
   iconFile: res:/UI/Texture/Icons/94_64_9.png
 20970:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Warfare Link Icon
   iconFile: res:/UI/Texture/Icons/53_64_16.png
 20971:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Micro Jump Drive
   iconFile: res:/UI/Texture/Icons/108_64_22.png
 20973:
@@ -5139,13 +7530,28 @@
 21023:
   iconFile: res:/UI/Texture/Icons/110_128_03.png
 21025:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Scan Acquisition Module Icon
+  foregrounds:
+  - tech2
   iconFile: res:/ui/texture/icons/107_64_10.png
 21026:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Scan Pinpointing Module Icon
+  foregrounds:
+  - tech2
   iconFile: res:/ui/texture/icons/107_64_11.png
 21027:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Scan Rangefinding Module Icon
+  foregrounds:
+  - tech2
   iconFile: res:/ui/texture/icons/107_64_12.png
 21028:
   description: Pirate Tag Bronze
@@ -5223,9 +7629,19 @@
   description: 33488_male_TopMiddle_ShirtQM01_Types_lvm01
   iconFile: res:/UI/Asset/mannequin/topmiddle/33488_male_TopMiddle_ShirtQM01_Types_lvm01.png
 21074:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Rapid Heavy Missile Launcher
+  foregrounds:
+  - faction
+  - officer
+  - tech2
   iconFile: res:/ui/texture/icons/109_64_1.png
 21075:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Marauder Bastion Module
   iconFile: res:/ui/texture/icons/109_64_2.png
 21078:
@@ -5984,9 +8400,18 @@
   description: 34211_female_TopMiddle_ShirtQF01_Types_lvf02.png
   iconFile: res:/UI/Asset/mannequin/topmiddle/34211_female_TopMiddle_ShirtQF01_Types_lvf02.png
 21378:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Module - Hull Repair
+  foregrounds:
+  - storyline
+  - tech2
   iconFile: res:/ui/texture/icons/1337_64_22.png
 21379:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Cynosural field generators
   iconFile: res:/ui/texture/icons/1337_64_21.png
 21380:
@@ -6084,6 +8509,8 @@
   iconFile: res:/UI/Asset/mannequin/topmiddle/34825_female_TopMiddle_ShirtQF01_Types_ff2015f01.png
 21417:
   description: Sequence Icon
+  foregrounds:
+  - structureFaction
   iconFile: res:/ui/texture/icons/99_64_10.png
 21418:
   description: Index Icon
@@ -6095,7 +8522,12 @@
   description: SKIN market icon
   iconFile: res:/UI/Texture/Icons/skin-icon-16.png
 21421:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Entosis Link Icon
+  foregrounds:
+  - tech2
   iconFile: res:/UI/Texture/Icons/118_64_7.png
 21424:
   description: 35681_male_topMiddle_ShirtQM01_Types_soerfm02
@@ -6104,10 +8536,23 @@
   description: 35682_female_TopMiddle_ShirtQF01_Types_soerff02
   iconFile: res:/UI/Asset/mannequin/topmiddle/35682_female_TopMiddle_ShirtQF01_Types_soerff02.png
 21426:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Module - Remote Armor Repair
+  foregrounds:
+  - deadspace
+  - faction
+  - storyline
+  - tech2
   iconFile: res:/UI/Texture/Icons/remote_armor_repair.png
 21428:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Module - Remote Hull Repair
+  foregrounds:
+  - tech2
   iconFile: res:/UI/Texture/Icons/remote_hull_repairer.png
 21430:
   description: stationServiceResearch
@@ -6128,18 +8573,45 @@
   description: repairshop
   iconFile: res:/UI/Texture/WindowIcons/repairshop.png
 21437:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Missile Guidance Computer
+  foregrounds:
+  - storyline
+  - tech2
   iconFile: res:/UI/Texture/Icons/5_64_17.png
 21439:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Missile Guidance Enhancer
+  foregrounds:
+  - structureTech2
+  - tech2
   iconFile: res:/UI/Texture/Icons/5_64_18.png
 21440:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Ballistic Control System (new)
+  foregrounds:
+  - abyssal
+  - faction
+  - officer
+  - storyline
+  - tech2
   iconFile: res:/UI/Texture/Icons/5_64_19.png
 21441:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Missile Guidance Computer Range Script
   iconFile: res:/UI/Texture/Icons/5_64_20.png
 21442:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Missile Guidance Computer Precision Script
   iconFile: res:/UI/Texture/Icons/5_64_21.png
 21445:
@@ -6254,6 +8726,9 @@
   description: Pilot's License Extensio (PLEX)
   iconFile: res:/UI/Texture/Icons/plex.png
 21482:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Icon for the Coalesced Element
   iconFile: res:/ui/texture/icons/118_64_5.png
 21483:
@@ -6272,7 +8747,13 @@
   description: Icon for Antipharmakon Iokira
   iconFile: res:/ui/texture/icons/118_64_14.png
 21489:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Module - WarpDisruptionFieldGenerator
+  foregrounds:
+  - faction
+  - tech2
   iconFile: res:/ui/texture/icons/118_64_2.png
 21493:
   description: 37600_female_Outer_ArmorSuitCF01_Types_ArmorSuitCF01_Black.png
@@ -6332,6 +8813,9 @@
   description: icon for the station service slot
   iconFile: res:/UI/Texture/classes/Fitting/stationServiceSlot.png
 21513:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Focused Warp Scrambling Script
   iconFile: res:/ui/texture/icons/118_64_12.png
 21514:
@@ -6383,60 +8867,125 @@
   description: Skill Injector
   iconFile: res:/UI/Texture/Icons/skillInjector_64.png
 21532:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Structure Electromagnetic Sensor
   iconFile: res:/ui/texture/icons/118_64_3.png
 21533:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Structure Acceleration Coils
   iconFile: res:/ui/texture/icons/118_64_4.png
 21534:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Structure Advertisement Nexus
   iconFile: res:/ui/texture/icons/118_64_8.png
 21560:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Structure Repulsor Field
   iconFile: res:/ui/texture/icons/123_64_5.png
 21561:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Structure Point Defense Battery
+  foregrounds:
+  - structureTech2
   iconFile: res:/ui/texture/icons/123_64_6.png
 21562:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Structure Resistance Switcher
   iconFile: res:/ui/texture/icons/123_64_7.png
 21563:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Structure Ship Tractor Beam
   iconFile: res:/ui/texture/icons/123_64_8.png
 21564:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Structure Guided Bomb Launcher
+  foregrounds:
+  - structureTech2
   iconFile: res:/ui/texture/icons/123_64_9.png
 21565:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Structure Anticapital Launcher
+  foregrounds:
+  - structureTech2
   iconFile: res:/ui/texture/icons/123_64_10.png
 21566:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Structure Antisubcapital Launcher
+  foregrounds:
+  - structureTech2
   iconFile: res:/ui/texture/icons/123_64_11.png
 21567:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Structure Long Range Anticapital Missile
   iconFile: res:/ui/texture/icons/124_64_5.png
 21568:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Structure Long Range Antisubcapital Missile
   iconFile: res:/ui/texture/icons/124_64_6.png
 21569:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Structure Antibattleship Guided Bomb
   iconFile: res:/ui/texture/icons/124_64_7.png
 21570:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Structure Medium Range Anticapital Missile
   iconFile: res:/ui/texture/icons/124_64_9.png
 21571:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Structure Medium Range Antisubcapital Missile
   iconFile: res:/ui/texture/icons/124_64_10.png
 21572:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Structure Capacitor Draining Guided Bomb
   iconFile: res:/ui/texture/icons/124_64_11.png
 21573:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Structure Short Range Anticapital Missile
   iconFile: res:/ui/texture/icons/124_64_13.png
 21574:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Structure Short Range Antisubcapital Missile
   iconFile: res:/ui/texture/icons/124_64_14.png
 21575:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Structure Antifrigate Guided Bomb
   iconFile: res:/ui/texture/icons/124_64_15.png
 21578:
@@ -6446,7 +8995,13 @@
   description: 41049_female_Makeup_Augmentations_Face_01_Types_Face_01_F_V0
   iconFile: res:/UI/Asset/mannequin/makeup_augmentations/41049_female_Makeup_Augmentations_Face_01_Types_Face_01_F_V0_.png
 21581:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Stasis Grappler
+  foregrounds:
+  - faction
+  - tech2
   iconFile: res:/UI/Texture/Icons/125_64_1.png
 21582:
   description: 41036_male_Makeup_Augmentations_Face_01_Types_Face_01_M_V2
@@ -6482,21 +9037,43 @@
   description: 41045_male_Makeup_Augmentations_Face_01_Types_Face_01_M_V0
   iconFile: res:/UI/Asset/mannequin/makeup_augmentations/41045_male_Makeup_Augmentations_Face_01_Types_Face_01_M_V0_.png
 21593:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: ECCM Script
   iconFile: res:/UI/Texture/Icons/126_64_1.png
 21594:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Structure Rig Point Defense Battery
+  foregrounds:
+  - structureFaction
+  - structureTech2
+  - tech2
   iconFile: res:/ui/texture/icons/127_64_9.png
 21595:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Structure Service Market Hub
   iconFile: res:/ui/texture/icons/127_64_2.png
 21596:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Structure Service Cloning Center
   iconFile: res:/ui/texture/icons/127_64_1.png
 21597:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Structure Service Reprocessing Plant
   iconFile: res:/ui/texture/icons/127_64_3.png
 21598:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Structure Service Compression
   iconFile: res:/ui/texture/icons/127_64_4.png
 21599:
@@ -6506,37 +9083,94 @@
   description: Structure Rig Market
   iconFile: res:/ui/texture/icons/127_64_6.png
 21601:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Structure Rig Doomsday
+  foregrounds:
+  - structureTech2
+  - tech2
   iconFile: res:/ui/texture/icons/127_64_10.png
 21602:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Structure Rig Reprocessing
+  foregrounds:
+  - structureFaction
+  - structureTech2
+  - tech2
   iconFile: res:/ui/texture/icons/127_64_7.png
 21603:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Emergency Hull Energizer
+  foregrounds:
+  - faction
+  - tech2
   iconFile: res:/UI/Texture/Icons/Modules/emergencyHullEnergizer.png
 21604:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Burst Projector ECM
+  foregrounds:
+  - structureFaction
   iconFile: res:/UI/Texture/Icons/Modules/burstProjectorECM.png
 21605:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Burst Projector Energy Neutralization
+  foregrounds:
+  - structureFaction
   iconFile: res:/UI/Texture/Icons/Modules/burstProjectorEnergyNeutralization.png
 21606:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Burst Projector Guidance Disruption
   iconFile: res:/UI/Texture/Icons/Modules/burstProjectorGuidanceDisruption.png
 21607:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Burst Projector Sensor Dampening
+  foregrounds:
+  - structureFaction
   iconFile: res:/UI/Texture/Icons/Modules/burstProjectorSensorDampening.png
 21608:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Burst Projector Stasis Webification
+  foregrounds:
+  - structureFaction
   iconFile: res:/UI/Texture/Icons/Modules/burstProjectorStasisWebification.png
 21609:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Burst Projector Target illumination
+  foregrounds:
+  - structureFaction
   iconFile: res:/UI/Texture/Icons/Modules/burstProjectorTargetIllumination.png
 21610:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Burst Projector Tracking Disruption
+  foregrounds:
+  - structureFaction
   iconFile: res:/UI/Texture/Icons/Modules/burstProjectorTrackingDisruption.png
 21611:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Burst Projector Warp Disruption
+  foregrounds:
+  - structureFaction
   iconFile: res:/UI/Texture/Icons/Modules/burstProjectorWarpDisruption.png
 21613:
   description: Module - FighterTackle
@@ -6551,7 +9185,12 @@
   description: Multi Use Analyzer Icon
   iconFile: res:/UI/Texture/Icons/Modules/emergencyHullEnergizer.png
 21618:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Multi Use Analyzer Icon
+  foregrounds:
+  - storyline
   iconFile: res:/UI/Texture/Icons/Modules/multiUseAnalyzer_64.png
 21620:
   description: Icon for Copper Ouroboros
@@ -6728,75 +9367,157 @@
   description: 42906_male_Accessories_Glasses_Goggles_01_Types_goggles_01_orange
   iconFile: res:/UI/Asset/mannequin/accessories_glasses/42906_male_Accessories_Glasses_Goggles_01_Types_goggles_01_orange.png
 21683:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Avatar Titan Effect Generator
   iconFile: res:/UI/Texture/Icons/Modules/titanGeneratorAmarr.png
 21684:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Leviathan Titan Effect Generator
   iconFile: res:/UI/Texture/Icons/Modules/titanGeneratorCaldari.png
 21685:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Erebus Titan Effect Generator
   iconFile: res:/UI/Texture/Icons/Modules/titanGeneratorGallente.png
 21686:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Ragnarok Titan Effect Generator
   iconFile: res:/UI/Texture/Icons/Modules/titanGeneratorMinmatar.png
 21687:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Armored Command Burst - Base
+  foregrounds:
+  - tech2
   iconFile: res:/UI/Texture/Icons/Modules/fleetBoost_ArmorBase.png
 21688:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Armored Command Burst - Armor Reinforcement
   iconFile: res:/UI/Texture/Icons/Modules/fleetBoost_ArmorBuffer.png
 21689:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Armored Command Burst - Rapid Repair
   iconFile: res:/UI/Texture/Icons/Modules/fleetBoost_ArmorRepair.png
 21690:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Armored Command Burst - Armor Energizing
   iconFile: res:/UI/Texture/Icons/Modules/fleetBoost_ArmorResists.png
 21691:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Information Command Burst - Base
+  foregrounds:
+  - tech2
   iconFile: res:/UI/Texture/Icons/Modules/fleetBoost_InfoBase.png
 21692:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Information Command Burst - Electronic Superiority
   iconFile: res:/UI/Texture/Icons/Modules/fleetBoost_InfoEwar.png
 21693:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Information Command Burst - Sensor Optimization
   iconFile: res:/UI/Texture/Icons/Modules/fleetBoost_InfoSensors.png
 21694:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Information Command Burst - Electronic Hardening
   iconFile: res:/UI/Texture/Icons/Modules/fleetBoost_InfoTargeting.png
 21695:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Mining Foreman Burst - Base
+  foregrounds:
+  - tech2
   iconFile: res:/UI/Texture/Icons/Modules/fleetBoost_MiningBase.png
 21696:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Mining Foreman Burst - Mining Equipment Preservation
   iconFile: res:/UI/Texture/Icons/Modules/fleetBoost_MiningCrystal.png
 21698:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Mining Foreman Burst - Mining Laser Optimization
   iconFile: res:/UI/Texture/Icons/Modules/fleetBoost_MiningCycle.png
 21699:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Mining Foreman Burst - Mining Laser Field Enhancement
   iconFile: res:/UI/Texture/Icons/Modules/fleetBoost_MiningRange.png
 21700:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Shield Command Burst - Base
+  foregrounds:
+  - tech2
   iconFile: res:/UI/Texture/Icons/Modules/fleetBoost_ShieldBase.png
 21701:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Shield Command Burst - Shield Extension
   iconFile: res:/UI/Texture/Icons/Modules/fleetBoost_ShieldBuffer.png
 21702:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Shield Command Burst - Active Shielding
   iconFile: res:/UI/Texture/Icons/Modules/fleetBoost_ShieldRepair.png
 21703:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Shield Command Burst - Shield Harmonizing
   iconFile: res:/UI/Texture/Icons/Modules/fleetBoost_ShieldResists.png
 21704:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Skirmish Command Burst - Base
+  foregrounds:
+  - tech2
   iconFile: res:/UI/Texture/Icons/Modules/fleetBoost_SkirmishBase.png
 21705:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Skirmish Command Burst - Evasive Maneuvers
   iconFile: res:/UI/Texture/Icons/Modules/fleetBoost_SkirmishSignature.png
 21706:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Skirmish Command Burst - Rapid Deployment
   iconFile: res:/UI/Texture/Icons/Modules/fleetBoost_SkirmishSpeed.png
 21707:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Skirmish Command Burst - Interdiction Maneuvers
   iconFile: res:/UI/Texture/Icons/Modules/fleetBoost_SkirmishWeb.png
 21708:
@@ -6854,9 +9575,19 @@
   description: Icon for the NPE Reward Crates
   iconFile: res:/ui/texture/icons/inventory/empireCrate.png
 21729:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Structure Rig Engineering
+  foregrounds:
+  - structureFaction
+  - structureTech2
+  - tech2
   iconFile: res:/ui/texture/icons/127_64_8.png
 21730:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Pulse Activated Nexus Invulnerability Core
   iconFile: res:/UI/Texture/Icons/Modules/panicModule.png
 21731:
@@ -6890,7 +9621,12 @@
   description: Icon for the Xmas crates
   iconFile: res:/UI/Texture/Icons/Inventory/holidayCrate.png
 21743:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Focused Warp Disruption Script
+  foregrounds:
+  - structureTech2
   iconFile: res:/ui/texture/icons/118_64_15.png
 21744:
   description: SOE Exploration Suit Female
@@ -6964,6 +9700,7 @@
 21771:
   description: 45743_male_TopMiddle_TshirtM01_Types_TshirtM01_Exo.png
   iconFile: res:/UI/Asset/mannequin/topmiddle/45743_male_TopMiddle_TshirtM01_Types_TshirtM01_Exo.png
+  obsolete: false
 21772:
   description: 45744_male_outer_LabCoatM01_Types_LabCoatM01_Exo.png
   iconFile: res:/UI/Asset/mannequin/outer/45744_male_outer_LabCoatM01_Types_LabCoatM01_Exo.png
@@ -6971,6 +9708,9 @@
   description: 45745_male_Accessories_Glasses_Glasses_Exo_M01_Types_Glasses_Exo_M01_clear.png
   iconFile: res:/UI/Asset/mannequin/accessories_glasses/45745_male_Accessories_Glasses_Glasses_Exo_M01_Types_Glasses_Exo_M01_clear.png
 21774:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Structure Moon Drilling Service Module
   iconFile: res:/UI/Texture/Icons/128_64_1.png
 21775:
@@ -6995,21 +9735,42 @@
   description: Valkyrie Data Core
   iconFile: res:/UI/Texture/Icons/Inventory/dataCore.png
 21785:
-  description: Valkyrie Relic Vault
+  description: Triglavian Data Vault
   iconFile: res:/UI/Texture/Icons/Inventory/relicVault.png
 21787:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: refinery rig drill
+  foregrounds:
+  - structureFaction
+  - structureTech2
   iconFile: res:/UI/Texture/Icons/Modules/refinery_ChunkStabilization.png
 21788:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: refinery rig reactions
+  foregrounds:
+  - structureFaction
+  - structureTech2
   iconFile: res:/UI/Texture/Icons/Modules/refinery_MiningYield.png
 21789:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: refinery reaction module booster
   iconFile: res:/UI/Texture/Icons/Modules/refinery_BoosterReactions.png
 21790:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: refinery module hybrid reactions
   iconFile: res:/UI/Texture/Icons/Modules/refinery_HybridReactions.png
 21791:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: refinery module adv reactions
   iconFile: res:/UI/Texture/Icons/Modules/refinery_T2Reactions.png
 21792:
@@ -7093,6 +9854,7 @@
 21819:
   description: 46674_male_outer_JacketCMM01_Types_JacketCMM01_Minmatar_RW.png
   iconFile: res:/UI/Asset/mannequin/outer/46674_male_outer_JacketCMM01_Types_JacketCMM01_Minmatar_RW.png
+  obsolete: false
 21820:
   description: 46671_female_Outer_JacketCMF01_Types_JacketCMF01_Caldari_RW.png
   iconFile: res:/UI/Asset/mannequin/outer/46671_female_Outer_JacketCMF01_Types_JacketCMF01_Caldari_RW.png
@@ -7106,6 +9868,9 @@
   description: Resource Wars Asteroid Icon
   iconFile: res:/UI/Texture/Icons/Inventory/rwAsteroid.png
 21829:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Biochemical materials
   iconFile: res:/ui/texture/icons/Inventory/biochemMaterials.png
 21830:
@@ -7120,3 +9885,613 @@
 21833:
   description: Minmatar RW reward crate icon
   iconFile: res:/UI/Texture/Icons/Inventory/crateMinmatar.png
+21835:
+  description: Alpha Injector Icon
+  iconFile: res:/UI/Texture/Icons/Inventory/skillInjectorAlpha.png
+21836:
+  description: 47031_female_Outer_JacketSLF_01_Types_JacketSLF_01_JinMeiOpera.png
+  iconFile: res:/UI/Asset/mannequin/outer/47031_female_Outer_JacketSLF_01_Types_JacketSLF_01_JinMeiOpera.png
+21837:
+  description: 47032_male_outer_JacketALM01_Types_JacketALM01_JinMeiOpera.png
+  iconFile: res:/UI/Asset/mannequin/outer/47032_male_outer_JacketALM01_Types_JacketALM01_JinMeiOpera.png
+21839:
+  description: Agency damage booster
+  iconFile: res:/UI/Texture/Icons/Inventory/boosterAgencyDamage.png
+21840:
+  description: Agency speed booster
+  iconFile: res:/UI/Texture/Icons/Inventory/boosterAgencySpeed.png
+21841:
+  description: Agency tank booster
+  iconFile: res:/UI/Texture/Icons/Inventory/boosterAgencyTank.png
+21843:
+  description: stolen tokens
+  iconFile: res:/ui/texture/icons/25_64_16.png
+21844:
+  description: generic guidebook
+  iconFile: res:/ui/texture/icons/25_64_3.png
+21845:
+  description: 47191_male_hair_HeadWear_Cap_M01_Types_HeadWear_Cap_M01_XV_BlackOrange.png
+  iconFile: res:/UI/Asset/mannequin/hair/47191_male_hair_HeadWear_Cap_M01_Types_HeadWear_Cap_M01_XV_BlackOrange.png
+21846:
+  description: 47192_female_TopMiddle_TshirtF01_Types_TshirtF01_XV_StarOrange.png
+  iconFile: res:/UI/Asset/mannequin/topmiddle/47192_female_TopMiddle_TshirtF01_Types_TshirtF01_XV_StarOrange.png
+21847:
+  description: 47182_male_TopMiddle_TshirtM01_Types_TshirtM01_XV_Amarr.png
+  iconFile: res:/UI/Asset/mannequin/topmiddle/47182_male_TopMiddle_TshirtM01_Types_TshirtM01_XV_Amarr.png
+21848:
+  description: 47183_male_TopMiddle_TshirtM01_Types_TshirtM01_XV_Minmatar.png
+  iconFile: res:/UI/Asset/mannequin/topmiddle/47183_male_TopMiddle_TshirtM01_Types_TshirtM01_XV_Minmatar.png
+21849:
+  description: 47184_male_TopMiddle_TshirtM01_Types_TshirtM01_XV_Gallente.png
+  iconFile: res:/UI/Asset/mannequin/topmiddle/47184_male_TopMiddle_TshirtM01_Types_TshirtM01_XV_Gallente.png
+21850:
+  description: 47185_female_TopMiddle_TshirtF01_Types_TshirtF01_XV_Gallente.png
+  iconFile: res:/UI/Asset/mannequin/topmiddle/47185_female_TopMiddle_TshirtF01_Types_TshirtF01_XV_Gallente.png
+21851:
+  description: 47186_female_TopMiddle_TshirtF01_Types_TshirtF01_XV_Amarr.png
+  iconFile: res:/UI/Asset/mannequin/topmiddle/47186_female_TopMiddle_TshirtF01_Types_TshirtF01_XV_Amarr.png
+21853:
+  description: 47188_male_TopMiddle_TshirtM01_Types_TshirtM01_XV_Caldari.png
+  iconFile: res:/UI/Asset/mannequin/topmiddle/47188_male_TopMiddle_TshirtM01_Types_TshirtM01_XV_Caldari.png
+21854:
+  description: 47189_female_TopMiddle_TshirtF01_Types_TshirtF01_XV_Caldari.png
+  iconFile: res:/UI/Asset/mannequin/topmiddle/47189_female_TopMiddle_TshirtF01_Types_TshirtF01_XV_Caldari.png
+21855:
+  description: 47190_male_TopMiddle_TshirtM01_Types_TshirtM01_XV_StarOrange.png
+  iconFile: res:/UI/Asset/mannequin/topmiddle/47190_male_TopMiddle_TshirtM01_Types_TshirtM01_XV_StarOrange.png
+21857:
+  description: 47187_female_TopMiddle_TshirtF01_Types_TshirtF01_XV_Minmatar.png
+  iconFile: res:/UI/Asset/mannequin/topmiddle/47187_female_TopMiddle_TshirtF01_Types_TshirtF01_XV_Minmatar.png
+21858:
+  description: 47193_female_hair_HeadWear_Cap_F01_Types_HeadWear_Cap_F01_XV_BlackOrange.png
+  iconFile: res:/UI/Asset/mannequin/hair/47193_female_hair_HeadWear_Cap_F01_Types_HeadWear_Cap_F01_XV_BlackOrange.png
+21860:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
+  description: Assault Damage Control
+  foregrounds:
+  - faction
+  - tech2
+  iconFile: res:/UI/Texture/Icons/Modules/AssaultDamageControl.png
+21872:
+  description: 47287_female_Outer_ArmorSuitCF01_Types_ArmorSuitCF01_SWAT.png
+  iconFile: res:/UI/Asset/mannequin/outer/47287_female_Outer_ArmorSuitCF01_Types_ArmorSuitCF01_SWAT.png
+21873:
+  description: 47286_male_outer_ArmorSuitMM01_Types_ArmorSuitMM01_SWAT.png
+  iconFile: res:/UI/Asset/mannequin/outer/47286_male_outer_ArmorSuitMM01_Types_ArmorSuitMM01_SWAT.png
+21877:
+  description: 'Buff bar: Tether Blocked'
+  iconFile: res:/UI/Texture/Icons/StatusEffects/tetherDisabled.png
+21878:
+  description: 47477_female_hair_HeadWear_Cap_F01_Types_HeadWear_Cap_F01_XV_FF.png
+  iconFile: res:/UI/Asset/mannequin/hair/47477_female_hair_HeadWear_Cap_F01_Types_HeadWear_Cap_F01_XV_FF.png
+21879:
+  description: 47478_male_hair_HeadWear_Cap_M01_Types_HeadWear_Cap_M01_XV_FF.png
+  iconFile: res:/UI/Asset/mannequin/hair/47478_male_hair_HeadWear_Cap_M01_Types_HeadWear_Cap_M01_XV_FF.png
+21880:
+  description: 47475_female_Outer_ExplorationSuit_F01_Types_ExplorationSuit_F01_XV.png
+  iconFile: res:/UI/Asset/mannequin/outer/47475_female_Outer_ExplorationSuit_F01_Types_ExplorationSuit_F01_XV.png
+21881:
+  description: 47476_male_outer_ExplorationSuit_M01_Types_ExplorationSuit_M01_XV.png
+  iconFile: res:/UI/Asset/mannequin/outer/47476_male_outer_ExplorationSuit_M01_Types_ExplorationSuit_M01_XV.png
+21882:
+  description: 47479_female_TopMiddle_TshirtF01_Types_TshirtF01_XV_FF.png
+  iconFile: res:/UI/Asset/mannequin/topmiddle/47479_female_TopMiddle_TshirtF01_Types_TshirtF01_XV_FF.png
+21883:
+  description: 47480_male_TopMiddle_TshirtM01_Types_TshirtM01_XV_FF.png
+  iconFile: res:/UI/Asset/mannequin/topmiddle/47480_male_TopMiddle_TshirtM01_Types_TshirtM01_XV_FF.png
+21888:
+  description: Decayed Mutaplasmid
+  iconFile: res:/ui/texture/icons/Modules/mutatorDecayed.png
+21890:
+  description: Gravid Mutaplasmid
+  iconFile: res:/ui/texture/icons/Modules/mutatorGravid.png
+21891:
+  description: Unstable Mutaplasmid
+  iconFile: res:/ui/texture/icons/Modules/mutatorUnstable.png
+21892:
+  description: Abyssal Afterburner
+  iconFile: res:/ui/texture/icons/Modules/abyssalAfterburner.png
+21893:
+  description: Abyssal Microwarp Drive
+  iconFile: res:/ui/texture/icons/Modules/abyssalMWD.png
+21894:
+  description: Abyssal Armor Plate
+  iconFile: res:/ui/texture/icons/Modules/abyssalPlate.png
+21895:
+  description: Abyssal Armor Repairer
+  iconFile: res:/ui/texture/icons/Modules/abyssalRepairer.png
+21896:
+  description: Abyssal Energy Neutralizer
+  iconFile: res:/ui/texture/icons/Modules/abyssalNeut.png
+21897:
+  description: Abyssal Nosferatu
+  iconFile: res:/ui/texture/icons/Modules/abyssalNosferatu.png
+21898:
+  description: Crate - Capsuleer Day Theme
+  iconFile: res:/UI/Texture/Icons/Inventory/crateCapsuleerDay.png
+21899:
+  description: Crate - Yoiul Festival Theme
+  iconFile: res:/UI/Texture/Icons/Inventory/crateChristmas.png
+21900:
+  description: Crate - Crimson Harvest Theme
+  iconFile: res:/UI/Texture/Icons/Inventory/crateCrimsonHarvest.png
+21901:
+  description: Crate - Guardian's Gala Theme
+  iconFile: res:/UI/Texture/Icons/Inventory/crateGuardiansGala.png
+21902:
+  description: Crate - Generic Celebration Theme
+  iconFile: res:/UI/Texture/Icons/Inventory/crateNewYears.png
+21903:
+  description: Abyssal Weather Electrical
+  iconFile: res:/UI/Texture/Icons/StatusEffects/weatherLightning.png
+21904:
+  description: Abyssal Weather Xenon
+  iconFile: res:/UI/Texture/Icons/StatusEffects/weatherXenonGas.png
+21905:
+  description: Abyssal Weather Caustic
+  iconFile: res:/UI/Texture/Icons/StatusEffects/weatherCaustic.png
+21906:
+  description: Abyssal Weather Dark
+  iconFile: res:/UI/Texture/Icons/StatusEffects/weatherDarkness.png
+21907:
+  description: Abyssal Weather Infernal
+  iconFile: res:/UI/Texture/Icons/StatusEffects/weatherInfernal.png
+21909:
+  description: Abyssal Plate
+  iconFile: res:/ui/texture/icons/Modules/abyssalPlate.png
+21910:
+  description: Abyssal Stasis Webifier
+  iconFile: res:/ui/texture/icons/Modules/abyssalStasisWebifier.png
+21911:
+  description: Abyssal Warp Scrambler
+  iconFile: res:/ui/texture/icons/Modules/abyssalWarpScrambler.png
+21912:
+  description: Abyssal Warp Disruptor
+  iconFile: res:/ui/texture/icons/Modules/abyssalWarpDisruptor.png
+21913:
+  description: Abyssal Shield Booster
+  iconFile: res:/ui/texture/icons/Modules/abyssalShieldBooster.png
+21914:
+  description: Abyssal Shield Extender
+  iconFile: res:/ui/texture/icons/Modules/abyssalShieldExtender.png
+21916:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
+  description: Gluon Charge Bottle
+  iconFile: res:/ui/texture/icons/ammo/disintegratorChargeGluon.png
+21917:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
+  description: Charge Bottle Lepton
+  iconFile: res:/ui/texture/icons/ammo/disintegratorChargeLepton.png
+21918:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
+  description: Charge Bottle Quark
+  iconFile: res:/ui/texture/icons/ammo/disintegratorChargeQuark.png
+21919:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
+  description: Charge Bottle Mystic
+  foregrounds:
+  - tech2
+  iconFile: res:/ui/texture/icons/ammo/disintegratorChargeMystic.png
+21920:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
+  description: Charge Bottle Occult
+  foregrounds:
+  - tech2
+  iconFile: res:/ui/texture/icons/ammo/disintegratorChargeOccult.png
+21921:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
+  description: Disintegrator Large
+  foregrounds:
+  - faction
+  - tech2
+  iconFile: res:/ui/texture/icons/Modules/disintegratorCannonL.png
+21922:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
+  description: Disintegrator Medium
+  foregrounds:
+  - faction
+  - tech2
+  iconFile: res:/ui/texture/icons/Modules/disintegratorCannonM.png
+21923:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
+  description: Disintegrator Small
+  foregrounds:
+  - faction
+  - tech2
+  iconFile: res:/ui/texture/icons/Modules/disintegratorCannonS.png
+21924:
+  description: Abyssal Filament 1
+  iconFile: res:/UI/Texture/Icons/Inventory/abyssalFilamentL1.png
+21925:
+  description: Abyssal Filament 2
+  iconFile: res:/UI/Texture/Icons/Inventory/abyssalFilamentL2.png
+21926:
+  description: Abyssal Filament 3
+  iconFile: res:/UI/Texture/Icons/Inventory/abyssalFilamentL3.png
+21927:
+  description: Abyssal Filament 4
+  iconFile: res:/UI/Texture/Icons/Inventory/abyssalFilamentL4.png
+21928:
+  description: Abyssal Filament 5
+  iconFile: res:/UI/Texture/Icons/Inventory/abyssalFilamentL5.png
+21931:
+  description: 48081_female_Outer_VanguardF01_Types_VanguardF01_TG.png
+  iconFile: res:/UI/Asset/mannequin/outer/48081_female_Outer_VanguardF01_Types_VanguardF01_TG.png
+21932:
+  description: 48082_male_outer_VanguardM01_Types_VanguardM01_TG.png
+  iconFile: res:/UI/Asset/mannequin/outer/48082_male_outer_VanguardM01_Types_VanguardM01_TG.png
+21933:
+  description: 48083_male_bottomOuter_PantsEngM01_Types_PantsEngM01_silver.png
+  iconFile: res:/UI/Asset/mannequin/bottomouter/48083_male_bottomOuter_PantsEngM01_Types_PantsEngM01_silver.png
+21934:
+  description: Unused Material
+  iconFile: res:/ui/texture/icons/86_64_2.png
+21936:
+  description: AOE Bioluminescence dbuff icon
+  iconFile: res:/UI/Texture/Icons/StatusEffects/bioluminescence.png
+21937:
+  description: AOE Caustic dbuff icon
+  iconFile: res:/UI/Texture/Icons/StatusEffects/causticCloud.png
+21938:
+  description: AOE Filament dbuff icon
+  iconFile: res:/UI/Texture/Icons/StatusEffects/filamentCloud.png
+21939:
+  description: AOE Point Defense dbuff icon
+  iconFile: res:/UI/Texture/Icons/StatusEffects/pointDefenseBattery.png
+21941:
+  description: AOE Pulse Battery dbuff icon
+  iconFile: res:/UI/Texture/Icons/StatusEffects/pulseBattery.png
+21980:
+  description: Crystalline Isogen-10
+  iconFile: res:/UI/Texture/Icons/Inventory/crystallineIsogen10.png
+21981:
+  description: Mutaplasmid Residue
+  iconFile: res:/UI/Texture/Icons/Inventory/mutaPlasmidResidue.png
+21982:
+  description: Triglavian Survey Data
+  iconFile: res:/UI/Texture/Icons/Inventory/triglavianSurveyData.png
+21983:
+  description: Zero-Point Condensate
+  iconFile: res:/UI/Texture/Icons/Inventory/zeroPointCondensate.png
+21984:
+  description: Decayed Afterburner Mutaplasmid
+  iconFile: res:/ui/texture/icons/modules/mutaDecayedAfterburner.png
+21985:
+  description: Decayed Shield Extender Mutaplasmid
+  iconFile: res:/ui/texture/icons/Modules/mutaDecayedExtender.png
+21986:
+  description: Decayed MWD Mutaplasmid
+  iconFile: res:/ui/texture/icons/Modules/mutaDecayedMWD.png
+21987:
+  description: Decayed Energy Neutralizer Mutaplasmid
+  iconFile: res:/ui/texture/icons/Modules/mutaDecayedNeut.png
+21988:
+  description: Decayed Nosferatu Mutaplasmid
+  iconFile: res:/ui/texture/icons/Modules/mutaDecayedNosferatu.png
+21989:
+  description: Decayed Armor Plate Mutaplasmid
+  iconFile: res:/ui/texture/icons/Modules/mutaDecayedPlate.png
+21990:
+  description: Decayed Armor Repairer Mutaplasmid
+  iconFile: res:/ui/texture/icons/Modules/mutaDecayedRepairer.png
+21991:
+  description: Decayed Shield Booster Mutaplasmid
+  iconFile: res:/ui/texture/icons/Modules/mutaDecayedShieldBooster.png
+21992:
+  description: Decayed Stasis Webifier Mutaplasmid
+  iconFile: res:/ui/texture/icons/Modules/mutaDecayedStasisWebifier.png
+21993:
+  description: Decayed Warp Disruptor Mutaplasmid
+  iconFile: res:/ui/texture/icons/Modules/mutaDecayedWarpDisruptor.png
+21994:
+  description: Decayed Warp Scrambler Mutaplasmid
+  iconFile: res:/ui/texture/icons/Modules/mutaDecayedWarpScrambler.png
+21995:
+  description: Gravid Afterburner Mutaplasmid
+  iconFile: res:/ui/texture/icons/modules/mutaGravidAfterburner.png
+21996:
+  description: Gravid Shield Extender Mutaplasmid
+  iconFile: res:/ui/texture/icons/modules/mutaGravidExtender.png
+21997:
+  description: Gravid MWD Mutaplasmid
+  iconFile: res:/ui/texture/icons/modules/mutaGravidMWD.png
+21998:
+  description: Gravid Energy Neutralizer Mutaplasmid
+  iconFile: res:/ui/texture/icons/modules/mutaGravidNeut.png
+21999:
+  description: Gravid Nosferatu Mutaplasmid
+  iconFile: res:/ui/texture/icons/modules/mutaGravidNosferatu.png
+22000:
+  description: Gravid Armor Plate Mutaplasmid
+  iconFile: res:/ui/texture/icons/modules/mutaGravidPlate.png
+22001:
+  description: Gravid Armor Repairer Mutaplasmid
+  iconFile: res:/ui/texture/icons/modules/mutaGravidRepairer.png
+22002:
+  description: Gravid Shield Booster Mutaplasmid
+  iconFile: res:/ui/texture/icons/modules/mutaGravidShieldBooster.png
+22003:
+  description: Gravid Stasis Webifier Mutaplasmid
+  iconFile: res:/ui/texture/icons/modules/mutaGravidStasisWebifier.png
+22004:
+  description: Gravid Warp Disruptor Mutaplasmid
+  iconFile: res:/ui/texture/icons/modules/mutaGravidWarpDisruptor.png
+22005:
+  description: Gravid Warp Scrambler Mutaplasmid
+  iconFile: res:/ui/texture/icons/modules/mutaGravidWarpScrambler.png
+22006:
+  description: Unstable Afterburner Mutaplasmid
+  iconFile: res:/ui/texture/icons/modules/mutaUnstableAfterburner.png
+22007:
+  description: Unstable Shield Extender Mutaplasmid
+  iconFile: res:/ui/texture/icons/modules/mutaUnstableExtender.png
+22008:
+  description: Unstable MWD Mutaplasmid
+  iconFile: res:/ui/texture/icons/modules/mutaUnstableMWD.png
+22009:
+  description: Unstable Energy Neutralizer Mutaplasmid
+  iconFile: res:/ui/texture/icons/modules/mutaUnstableNeut.png
+22010:
+  description: Unstable Nosferatu Mutaplasmid
+  iconFile: res:/ui/texture/icons/modules/mutaUnstableNosferatu.png
+22011:
+  description: Unstable Armor Plate Mutaplasmid
+  iconFile: res:/ui/texture/icons/modules/mutaUnstablePlate.png
+22012:
+  description: Unstable Armor Repairer Mutaplasmid
+  iconFile: res:/ui/texture/icons/modules/mutaUnstableRepairer.png
+22013:
+  description: Unstable Shield Booster Mutaplasmid
+  iconFile: res:/ui/texture/icons/modules/mutaUnstableShieldBooster.png
+22014:
+  description: Unstable Stasis Webifier Mutaplasmid
+  iconFile: res:/ui/texture/icons/modules/mutaUnstableStasisWebifier.png
+22016:
+  description: Unstable Warp Disruptor Mutaplasmid
+  iconFile: res:/ui/texture/icons/modules/mutaUnstableWarpDisruptor.png
+22018:
+  description: Unstable Warp Scrambler Mutaplasmid
+  iconFile: res:/ui/texture/icons/modules/mutaUnstableWarpScrambler.png
+22020:
+  description: Abyssal Boundry
+  iconFile: res:/UI/Texture/Icons/StatusEffects/boundary.png
+22021:
+  description: 48386_female_Outer_VanguardF01_Types_VanguardF01_RED.png
+  iconFile: res:/UI/Asset/mannequin/outer/48386_female_Outer_VanguardF01_Types_VanguardF01_RED.png
+22022:
+  description: 48380_female_Outer_VanguardF01_Types_VanguardF01_GREEN.png
+  iconFile: res:/UI/Asset/mannequin/outer/48380_female_Outer_VanguardF01_Types_VanguardF01_GREEN.png
+22023:
+  description: 48381_female_Outer_VanguardF01_Types_VanguardF01_GOLD.png
+  iconFile: res:/UI/Asset/mannequin/outer/48381_female_Outer_VanguardF01_Types_VanguardF01_GOLD.png
+22024:
+  description: 48382_female_Outer_VanguardF01_Types_VanguardF01_BLUE.png
+  iconFile: res:/UI/Asset/mannequin/outer/48382_female_Outer_VanguardF01_Types_VanguardF01_BLUE.png
+22025:
+  description: 48383_male_outer_VanguardM01_Types_VanguardM01_GREEN.png
+  iconFile: res:/UI/Asset/mannequin/outer/48383_male_outer_VanguardM01_Types_VanguardM01_GREEN.png
+22026:
+  description: 48384_male_outer_VanguardM01_Types_VanguardM01_GOLD.png
+  iconFile: res:/UI/Asset/mannequin/outer/48384_male_outer_VanguardM01_Types_VanguardM01_GOLD.png
+22027:
+  description: 48385_male_outer_VanguardM01_Types_VanguardM01_BLUE.png
+  iconFile: res:/UI/Asset/mannequin/outer/48385_male_outer_VanguardM01_Types_VanguardM01_BLUE.png
+22028:
+  description: 48387_male_outer_VanguardM01_Types_VanguardM01_RED.png
+  iconFile: res:/UI/Asset/mannequin/outer/48387_male_outer_VanguardM01_Types_VanguardM01_RED.png
+22029:
+  description: Decayed Cap Battery Mutaplasmid
+  iconFile: res:/ui/texture/icons/Modules/mutaDecayedCapBattery.png
+22030:
+  description: Gravid Cap Battery Mutaplasmid
+  iconFile: res:/ui/texture/icons/Modules/mutaGravidCapBattery.png
+22031:
+  description: Unstable Cap Battery Mutaplasmid
+  iconFile: res:/ui/texture/icons/Modules/mutaUnstableCapBattery.png
+22034:
+  description: Dice
+  iconFile: res:/ui/texture/icons/25_64_13.png
+22036:
+  description: Medicinal Herbs
+  iconFile: res:/ui/texture/icons/medicinal_herbs.png
+22037:
+  description: Soda Pop Brown
+  iconFile: res:/ui/texture/icons/soda_pop_brown.png
+22038:
+  description: Soda Pop Green
+  iconFile: res:/ui/texture/icons/soda_pop_green.png
+22039:
+  description: Soft Drink Bottles
+  iconFile: res:/ui/texture/icons/soft_drink_bottles.png
+22040:
+  description: Tea Service
+  iconFile: res:/ui/texture/icons/tea_service.png
+22041:
+  description: Bundle of Sharp Sticks
+  iconFile: res:/ui/texture/icons/4_64_4.png
+22042:
+  description: blank sheets
+  iconFile: res:/ui/texture/icons/1337_64_15.png
+22043:
+  description: 49668_Female_Makeup_Augmentations_Face_Paint_F01_Types_Face_Paint_F01_V0.png
+  iconFile: res:/UI/Asset/mannequin/makeup_augmentations/49668_Female_Makeup_Augmentations_Face_Paint_F01_Types_Face_Paint_F01_V0.png
+22044:
+  description: 49669_Female_Makeup_Augmentations_Face_Paint_F01_Types_Face_Paint_F01_V1.png
+  iconFile: res:/UI/Asset/mannequin/makeup_augmentations/49669_Female_Makeup_Augmentations_Face_Paint_F01_Types_Face_Paint_F01_V1.png
+22045:
+  description: 49670_Female_Makeup_Augmentations_Face_Paint_F01_Types_Face_Paint_F01_V2.png
+  iconFile: res:/UI/Asset/mannequin/makeup_augmentations/49670_Female_Makeup_Augmentations_Face_Paint_F01_Types_Face_Paint_F01_V2.png
+22046:
+  description: 49671_Female_Makeup_Augmentations_Face_Paint_F01_Types_Face_Paint_F01_V3.png
+  iconFile: res:/UI/Asset/mannequin/makeup_augmentations/49671_Female_Makeup_Augmentations_Face_Paint_F01_Types_Face_Paint_F01_V3.png
+22047:
+  description: 49672_Female_Makeup_Augmentations_Face_Paint_F01_Types_Face_Paint_F01_V4.png
+  iconFile: res:/UI/Asset/mannequin/makeup_augmentations/49672_Female_Makeup_Augmentations_Face_Paint_F01_Types_Face_Paint_F01_V4.png
+22048:
+  description: 49673_Female_Makeup_Augmentations_Face_Paint_F01_Types_Face_Paint_F01_V5.png
+  iconFile: res:/UI/Asset/mannequin/makeup_augmentations/49673_Female_Makeup_Augmentations_Face_Paint_F01_Types_Face_Paint_F01_V5.png
+22049:
+  description: 49674_Female_Makeup_Augmentations_Face_Paint_F01_Types_Face_Paint_F01_V6.png
+  iconFile: res:/UI/Asset/mannequin/makeup_augmentations/49674_Female_Makeup_Augmentations_Face_Paint_F01_Types_Face_Paint_F01_V6.png
+22050:
+  description: 49675_Female_Makeup_Augmentations_Face_Paint_F01_Types_Face_Paint_F01_V7.png
+  iconFile: res:/UI/Asset/mannequin/makeup_augmentations/49675_Female_Makeup_Augmentations_Face_Paint_F01_Types_Face_Paint_F01_V7.png
+22051:
+  description: 49676_Female_Makeup_Augmentations_Face_Paint_F01_Types_Face_Paint_F01_V8.png
+  iconFile: res:/UI/Asset/mannequin/makeup_augmentations/49676_Female_Makeup_Augmentations_Face_Paint_F01_Types_Face_Paint_F01_V8.png
+22052:
+  description: 49677_Male_Makeup_Augmentations_Face_Paint_M01_Types_Face_Paint_M01_V0.png
+  iconFile: res:/UI/Asset/mannequin/makeup_augmentations/49677_Male_Makeup_Augmentations_Face_Paint_M01_Types_Face_Paint_M01_V0.png
+22053:
+  description: 49678_Male_Makeup_Augmentations_Face_Paint_M01_Types_Face_Paint_M01_V1.png
+  iconFile: res:/UI/Asset/mannequin/makeup_augmentations/49678_Male_Makeup_Augmentations_Face_Paint_M01_Types_Face_Paint_M01_V1.png
+22054:
+  description: 49679_Male_Makeup_Augmentations_Face_Paint_M01_Types_Face_Paint_M01_V2.png
+  iconFile: res:/UI/Asset/mannequin/makeup_augmentations/49679_Male_Makeup_Augmentations_Face_Paint_M01_Types_Face_Paint_M01_V2.png
+22055:
+  description: 49680_Male_Makeup_Augmentations_Face_Paint_M01_Types_Face_Paint_M01_V3.png
+  iconFile: res:/UI/Asset/mannequin/makeup_augmentations/49680_Male_Makeup_Augmentations_Face_Paint_M01_Types_Face_Paint_M01_V3.png
+22056:
+  description: 49681_Male_Makeup_Augmentations_Face_Paint_M01_Types_Face_Paint_M01_V4.png
+  iconFile: res:/UI/Asset/mannequin/makeup_augmentations/49681_Male_Makeup_Augmentations_Face_Paint_M01_Types_Face_Paint_M01_V4.png
+22057:
+  description: 49682_Male_Makeup_Augmentations_Face_Paint_M01_Types_Face_Paint_M01_V5.png
+  iconFile: res:/UI/Asset/mannequin/makeup_augmentations/49682_Male_Makeup_Augmentations_Face_Paint_M01_Types_Face_Paint_M01_V5.png
+22058:
+  description: 49683_Male_Makeup_Augmentations_Face_Paint_M01_Types_Face_Paint_M01_V6.png
+  iconFile: res:/UI/Asset/mannequin/makeup_augmentations/49683_Male_Makeup_Augmentations_Face_Paint_M01_Types_Face_Paint_M01_V6.png
+22059:
+  description: 49684_Male_Makeup_Augmentations_Face_Paint_M01_Types_Face_Paint_M01_V7.png
+  iconFile: res:/UI/Asset/mannequin/makeup_augmentations/49684_Male_Makeup_Augmentations_Face_Paint_M01_Types_Face_Paint_M01_V7.png
+22060:
+  description: 49685_Male_Makeup_Augmentations_Face_Paint_M01_Types_Face_Paint_M01_V8.png
+  iconFile: res:/UI/Asset/mannequin/makeup_augmentations/49685_Male_Makeup_Augmentations_Face_Paint_M01_Types_Face_Paint_M01_V8.png
+22061:
+  description: Preview for reward track augmentations
+  iconFile: res:/UI/Texture/Icons/Inventory/FacialAugmentOrange.png
+22062:
+  description: Preview for reward track augmentations
+  iconFile: res:/UI/Texture/Icons/Inventory/FacialAugmentBlue.png
+22063:
+  description: Crate Splash for Facial Augments
+  iconFile: res:/UI/Texture/Icons/Inventory/FacialAugmentsPackBlue.png
+22064:
+  description: Decayed Gyrostabilizer Mutaplasmid
+  iconFile: res:/UI/Texture/Icons/Modules/mutaDecayedGyro.png
+22065:
+  description: Gravid Gyrostabilizer Mutaplasmid
+  iconFile: res:/UI/Texture/Icons/Modules/mutaGravidGyro.png
+22066:
+  description: Unstable Gyrostabilizer Mutaplasmid
+  iconFile: res:/UI/Texture/Icons/Modules/mutaUnstableGyro.png
+22067:
+  description: Unstable Ballistic Control System Mutaplasmid
+  iconFile: res:/UI/Texture/Icons/Modules/mutaUnstableBallisticControl.png
+22068:
+  description: Gravid Ballistic Control System Mutapalsmid
+  iconFile: res:/UI/Texture/Icons/Modules/mutaGravidBallisticControl.png
+22069:
+  description: Decayed Ballistic Control Mutaplasmid
+  iconFile: res:/UI/Texture/Icons/Modules/mutaDecayedBallisticControl.png
+22070:
+  description: Decayed Drone Damage Amplifier Mutaplasmid
+  iconFile: res:/UI/Texture/Icons/Modules/mutaDecayedDroneDamage.png
+22071:
+  description: Gravid Drone Damage Amplifer Mutaplasmid
+  iconFile: res:/UI/Texture/Icons/Modules/mutaGravidDroneDamage.png
+22072:
+  description: Unstable Drone Damage Amplifer Mutaplasmid
+  iconFile: res:/UI/Texture/Icons/Modules/mutaUnstableDroneDamage.png
+22073:
+  description: Cyno Beacon Service Module
+  iconFile: res:/UI/Texture/Icons/Modules/navigation_CynoBeacon.png
+22074:
+  description: Cyno Jammer Service Module
+  iconFile: res:/UI/Texture/Icons/Modules/navigation_CynoJammer.png
+22075:
+  description: Jump Gate Service Module
+  iconFile: res:/UI/Texture/Icons/Modules/navigation_JumpGate.png
+22076:
+  description: Gift Box with Ribbon
+  iconFile: res:/ui/texture/icons/76_64_3.png
+22077:
+  description: 49978_Male_outer_ExplorationSuit_M01_Types_ExplorationSuit_M01_W.png
+  iconFile: res:/UI/Asset/mannequin/outer/49978_Male_outer_ExplorationSuit_M01_Types_ExplorationSuit_M01_W.png
+22078:
+  description: 49980_Female_Outer_ExplorationSuit_F01_Types_ExplorationSuit_F01_W.png
+  iconFile: res:/UI/Asset/mannequin/outer/49980_Female_Outer_ExplorationSuit_F01_Types_ExplorationSuit_F01_W.png
+22079:
+  description: Preview for reward track augmentations
+  iconFile: res:/UI/Texture/Icons/RewardTrack/reward_Holiday2018_Augmentation1.png
+22080:
+  description: Preview for reward track augmentations
+  iconFile: res:/UI/Texture/Icons/RewardTrack/reward_Holiday2018_Augmentation2.png
+22081:
+  description: Holiday'18 Crate - Drake/Rupture Splash
+  iconFile: res:/UI/Texture/classes/ItemPacks/SplashImages/Holiday2018/splash_Holiday2018_DrakeRupture.png
+22082:
+  description: Holiday'18 Crate - ExpSuits
+  iconFile: res:/UI/Texture/classes/ItemPacks/SplashImages/Holiday2018/splash_Holiday2018_ExplorationSuits.png
+22084:
+  description: Holiday'18 Crate - Augmentation Set 1
+  iconFile: res:/UI/Texture/classes/ItemPacks/SplashImages/Holiday2018/splash_Holiday2018_FaceAugmentation1.png
+22085:
+  description: Holiday'18 Crate - Augmentation Set 2
+  iconFile: res:/UI/Texture/classes/ItemPacks/SplashImages/Holiday2018/splash_Holiday2018_FaceAugmentation2.png
+22086:
+  description: Holiday'18 Crate - Gnosis/Punisher Splash
+  iconFile: res:/UI/Texture/classes/ItemPacks/SplashImages/Holiday2018/splash_Holiday2018_GnosisPunisher.png
+22087:
+  description: 49978_Male_outer_ExplorationSuit_M01_Types_ExplorationSuit_M01_W.png
+  iconFile: res:/UI/Asset/mannequin/outer/49978_Male_outer_ExplorationSuit_M01_Types_ExplorationSuit_M01_W.png
+22088:
+  description: 49980_Female_Outer_ExplorationSuit_F01_Types_ExplorationSuit_F01_W.png
+  iconFile: res:/UI/Asset/mannequin/outer/49980_Female_Outer_ExplorationSuit_F01_Types_ExplorationSuit_F01_W.png
+22089:
+  description: 49984_Female_Makeup_Augmentations_Face_Paint_F01_Types_Face_Paint_F01_V0_Blue.png
+  iconFile: res:/UI/Asset/mannequin/makeup_augmentations/49984_Female_Makeup_Augmentations_Face_Paint_F01_Types_Face_Paint_F01_V0_Blue.png
+22090:
+  description: 49985_Female_Makeup_Augmentations_Face_Paint_F01_Types_Face_Paint_F01_V10_W.png
+  iconFile: res:/UI/Asset/mannequin/makeup_augmentations/49985_Female_Makeup_Augmentations_Face_Paint_F01_Types_Face_Paint_F01_V10_W.png
+22091:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
+  description: Mutadaptive Remote Repairer
+  foregrounds:
+  - faction
+  - tech2
+  iconFile: res:/ui/texture/icons/modules/abyssalRemoteRepairer.png
+22092:
+  description: 49987_Male_Makeup_Augmentations_Face_Paint_M01_Types_Face_Paint_M01_V6_Blue.png
+  iconFile: res:/UI/Asset/mannequin/makeup_augmentations/49987_Male_Makeup_Augmentations_Face_Paint_M01_Types_Face_Paint_M01_V6_Blue.png
+22093:
+  description: Generic SKIN icon for crates containing multiple SKINs
+  iconFile: res:/UI/Texture/Icons/RewardTrack/crateSkinContainer.png
+22094:
+  description: Preview icon for exploration suit reward track winter'18
+  iconFile: res:/UI/Texture/Icons/RewardTrack/crateWinterExplorationSuit.png
+22095:
+  description: 49986_male_Makeup_Augmentations_Face_Paint_M01_Types_Face_Paint_M01_V10_W.png
+  iconFile: res:/UI/Asset/mannequin/makeup_augmentations/49986_male_Makeup_Augmentations_Face_Paint_M01_Types_Face_Paint_M01_V10_W.png
+22096:
+  description: Winter Login Campaign Banner
+  iconFile: res:/UI/Texture/LoginCampaigns/Winter_2018.png

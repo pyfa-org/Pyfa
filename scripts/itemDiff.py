@@ -19,17 +19,16 @@
 #===============================================================================
 
 
-'''
+"""
 This script is used to compare two different database versions.
 It shows removed/changed/new items with list of changed effects,
 changed attributes and effects which were renamed
-'''
+"""
 
 import argparse
 import os.path
 import re
 import sqlite3
-import sys
 
 script_dir = os.path.dirname(__file__)
 default_old = os.path.join(script_dir, "..", "eve.db")
@@ -216,7 +215,7 @@ def main(old, new, groups=True, effects=True, attributes=True, renames=True):
                 # Initialize container for the data for each item with empty stuff besides groupID
                 dictionary[itemid] = [groupID, set(), {}]
             # Add items filtered by group
-            query = 'SELECT it.typeID, it.groupID FROM invtypes AS it INNER JOIN invgroups AS ig ON it.groupID = ig.groupID WHERE it.published = 1 AND ig.groupName IN ("Effect Beacon", "Ship Modifiers", "Mutaplasmids")'
+            query = 'SELECT it.typeID, it.groupID FROM invtypes AS it INNER JOIN invgroups AS ig ON it.groupID = ig.groupID WHERE it.published = 1 AND ig.groupName IN ("Effect Beacon", "Ship Modifiers", "Mutaplasmids", "MassiveEnvironments", "Abyssal Hazards", "Non-Interactable Object")'
             cursor.execute(query)
             for row in cursor:
                 itemid = row[0]
@@ -282,14 +281,12 @@ def main(old, new, groups=True, effects=True, attributes=True, renames=True):
             oldgroup = old_itmdata[item][0]
             groupdata = (S["unchanged"], oldgroup, None)
             # Set old set of effects and mark all as unchanged
-            effectsdata = {}
-            effectsdata[S["unchanged"]] = set()
+            effectsdata = {S["unchanged"]: set()}
             if effects:
                 oldeffects = old_itmdata[item][1]
                 effectsdata[S["unchanged"]].update(oldeffects)
             # Set old set of attributes and mark all as unchanged
-            attrdata = {}
-            attrdata[S["unchanged"]] = {}
+            attrdata = {S["unchanged"]: {}}
             if attributes:
                 oldattrs = old_itmdata[item][2]
                 for attr in oldattrs:
@@ -307,14 +304,12 @@ def main(old, new, groups=True, effects=True, attributes=True, renames=True):
             newgroup = new_itmdata[item][0]
             groupdata = (S["unchanged"], None, newgroup)
             # Set new set of effects and mark all as unchanged
-            effectsdata = {}
-            effectsdata[S["unchanged"]] = set()
+            effectsdata = {S["unchanged"]: set()}
             if effects:
                 neweffects = new_itmdata[item][1]
                 effectsdata[S["unchanged"]].update(neweffects)
             # Set new set of attributes and mark all as unchanged
-            attrdata = {}
-            attrdata[S["unchanged"]] = {}
+            attrdata = {S["unchanged"]: {}}
             if attributes:
                 newattrs = new_itmdata[item][2]
                 for attr in newattrs:

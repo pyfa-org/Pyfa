@@ -64,8 +64,8 @@ def print_db_info():
     import eos
     print()
     print("------------ data base connection info ------------")
-    print((eos.db.saveddata_engine))
-    print((eos.db.gamedata_engine))
+    print(eos.db.saveddata_engine)
+    print(eos.db.gamedata_engine)
     print()
 
 

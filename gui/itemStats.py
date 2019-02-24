@@ -34,6 +34,9 @@ from gui.builtinItemStatsViews.itemDependants import ItemDependents
 from gui.builtinItemStatsViews.itemEffects import ItemEffects
 from gui.builtinItemStatsViews.itemAffectedBy import ItemAffectedBy
 from gui.builtinItemStatsViews.itemProperties import ItemProperties
+from gui.builtinItemStatsViews.itemMutator import ItemMutator
+
+from eos.saveddata.module import Module
 
 
 class ItemStatsDialog(wx.Dialog):
@@ -79,10 +82,8 @@ class ItemStatsDialog(wx.Dialog):
             item = sMkt.getItem(victim.ID)
             victim = None
         self.context = itmContext
-        if item.icon is not None:
-            before, sep, after = item.icon.iconFile.rpartition("_")
-            iconFile = "%s%s%s" % (before, sep, "0%s" % after if len(after) < 2 else after)
-            itemImg = BitmapLoader.getBitmap(iconFile, "icons")
+        if item.iconID is not None:
+            itemImg = BitmapLoader.getBitmap(item.iconID, "icons")
             if itemImg is not None:
                 self.SetIcon(wx.Icon(itemImg))
         self.SetTitle("%s: %s%s" % ("%s Stats" % itmContext if itmContext is not None else "Stats", item.name,
@@ -90,7 +91,7 @@ class ItemStatsDialog(wx.Dialog):
 
         self.SetMinSize((300, 200))
         if "wxGTK" in wx.PlatformInfo:  # GTK has huge tab widgets, give it a bit more room
-            self.SetSize((580, 500))
+            self.SetSize((630, 550))
         else:
             self.SetSize((550, 500))
         # self.SetMaxSize((500, -1))
@@ -101,7 +102,7 @@ class ItemStatsDialog(wx.Dialog):
         if "wxGTK" in wx.PlatformInfo:
             self.closeBtn = wx.Button(self, wx.ID_ANY, "Close", wx.DefaultPosition, wx.DefaultSize, 0)
             self.mainSizer.Add(self.closeBtn, 0, wx.ALL | wx.ALIGN_RIGHT, 5)
-            self.closeBtn.Bind(wx.EVT_BUTTON, self.closeEvent)
+            self.closeBtn.Bind(wx.EVT_BUTTON, (lambda e: self.Close()))
 
         self.SetSizer(self.mainSizer)
 
@@ -146,7 +147,7 @@ class ItemStatsDialog(wx.Dialog):
             ItemStatsDialog.counter -= 1
         self.parentWnd.UnregisterStatsWindow(self)
 
-        self.Destroy()
+        event.Skip()
 
 
 class ItemStatsContainer(wx.Panel):
@@ -163,8 +164,13 @@ class ItemStatsContainer(wx.Panel):
             self.traits = ItemTraits(self.nbContainer, stuff, item)
             self.nbContainer.AddPage(self.traits, "Traits")
 
-        self.desc = ItemDescription(self.nbContainer, stuff, item)
-        self.nbContainer.AddPage(self.desc, "Description")
+        if isinstance(stuff, Module) and stuff.isMutated:
+            self.mutator = ItemMutator(self.nbContainer, stuff, item)
+            self.nbContainer.AddPage(self.mutator, "Mutations")
+
+        if item.description:
+            self.desc = ItemDescription(self.nbContainer, stuff, item)
+            self.nbContainer.AddPage(self.desc, "Description")
 
         self.params = ItemParams(self.nbContainer, stuff, item, context)
         self.nbContainer.AddPage(self.params, "Attributes")

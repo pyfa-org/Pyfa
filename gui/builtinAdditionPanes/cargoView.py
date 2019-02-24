@@ -26,6 +26,7 @@ import gui.globalEvents as GE
 from gui.utils.staticHelpers import DragDropHelper
 from service.fit import Fit
 from service.market import Market
+import gui.fitCommands as cmd
 
 
 class CargoViewDrop(wx.DropTarget):
@@ -80,9 +81,7 @@ class CargoView(d.Display):
         if data[0] == "fitting":
             self.swapModule(x, y, int(data[1]))
         elif data[0] == "market":
-            sFit = Fit.getInstance()
-            sFit.addCargo(self.mainFrame.getActiveFit(), int(data[1]), 1)
-            wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=self.mainFrame.getActiveFit()))
+            self.mainFrame.command.Submit(cmd.GuiAddCargoCommand(self.mainFrame.getActiveFit(), int(data[1])))
 
     def startDrag(self, event):
         row = event.GetIndex()
@@ -118,18 +117,23 @@ class CargoView(d.Display):
         # Gather module information to get position
         module = fit.modules[modIdx]
 
-        if dstRow != -1:  # we're swapping with cargo
-            if mstate.cmdDown:  # if copying, append to cargo
-                sFit.addCargo(self.mainFrame.getActiveFit(), module.item.ID)
-            else:  # else, move / swap
-                sFit.moveCargoToModule(self.mainFrame.getActiveFit(), module.position, dstRow)
-        else:  # dragging to blank spot, append
-            sFit.addCargo(self.mainFrame.getActiveFit(), module.item.ID)
+        if module.item.isAbyssal:
+            dlg = wx.MessageDialog(self,
+               "Moving this Abyssal module to the cargo will convert it to the base module. Do you wish to proceed?",
+               "Confirm", wx.YES_NO | wx.ICON_QUESTION)
+            result = dlg.ShowModal() == wx.ID_YES
 
-            if not mstate.cmdDown:  # if not copying, remove module
-                sFit.removeModule(self.mainFrame.getActiveFit(), module.position)
+            if not result:
+                return
 
-        wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=self.mainFrame.getActiveFit(), action="moddel", typeID=module.item.ID))
+        cargoPos = dstRow if dstRow > -1 else None
+
+        self.mainFrame.command.Submit(cmd.GuiModuleToCargoCommand(
+            self.mainFrame.getActiveFit(),
+            module.modPosition,
+            cargoPos,
+            mstate.cmdDown
+        ))
 
     def fitChanged(self, event):
         sFit = Fit.getInstance()
@@ -147,7 +151,7 @@ class CargoView(d.Display):
         self.original = fit.cargo if fit is not None else None
         self.cargo = stuff = fit.cargo if fit is not None else None
         if stuff is not None:
-            stuff.sort(key=lambda cargo: cargo.itemID)
+            stuff.sort(key=lambda c: (c.item.group.category.name, c.item.group.name, c.item.name))
 
         if event.fitID != self.lastFitId:
             self.lastFitId = event.fitID

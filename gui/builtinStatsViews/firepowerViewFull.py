@@ -22,7 +22,8 @@ import wx
 import gui.mainFrame
 from gui.statsView import StatsView
 from gui.bitmap_loader import BitmapLoader
-from gui.utils.numberFormatter import formatAmount
+from gui.utils.numberFormatter import formatAmount, roundToPrec
+from eos.utils.spoolSupport import SpoolType, SpoolOptions
 from service.fit import Fit
 
 
@@ -129,7 +130,7 @@ class FirepowerViewFull(StatsView):
         # Remove effective label
         hsizer = self.headerPanel.GetSizer()
         hsizer.Hide(self.stEff)
-        #self.stEff.Destroy()
+        # self.stEff.Destroy()
 
         # Get the new view
         view = StatsView.getView("miningyieldViewFull")(self.parent)
@@ -148,27 +149,55 @@ class FirepowerViewFull(StatsView):
         else:
             self.stEff.Hide()
 
-        stats = (("labelFullDpsWeapon", lambda: fit.weaponDPS, 3, 0, 0, "%s DPS", None),
-                 ("labelFullDpsDrone", lambda: fit.droneDPS, 3, 0, 0, "%s DPS", None),
-                 ("labelFullVolleyTotal", lambda: fit.totalVolley, 3, 0, 0, "%s", "Volley: %.1f"),
-                 ("labelFullDpsTotal", lambda: fit.totalDPS, 3, 0, 0, "%s", None))
-        # See GH issue #
-        # if fit is not None and fit.totalYield > 0:
-        #    self.miningyield.Show()
-        # else:
-        #    self.miningyield.Hide()
+        def dpsToolTip(preSpool, fullSpool, prec, lowest, highest):
+            if roundToPrec(preSpool, prec) == roundToPrec(fullSpool, prec):
+                return ""
+            else:
+                return "Spool up: {}-{}".format(
+                    formatAmount(preSpool, prec, lowest, highest),
+                    formatAmount(fullSpool, prec, lowest, highest))
+
+        # TODO: fetch spoolup option
+        defaultSpoolValue = 1
+        stats = (
+            (
+                "labelFullDpsWeapon",
+                lambda: fit.getWeaponDps(spoolOptions=SpoolOptions(SpoolType.SCALE, defaultSpoolValue, False)).total,
+                lambda: fit.getWeaponDps(spoolOptions=SpoolOptions(SpoolType.SCALE, 0, True)).total,
+                lambda: fit.getWeaponDps(spoolOptions=SpoolOptions(SpoolType.SCALE, 1, True)).total,
+                3, 0, 0, "{}{} DPS"),
+            (
+                "labelFullDpsDrone",
+                lambda: fit.getDroneDps().total,
+                lambda: fit.getDroneDps().total,
+                lambda: fit.getDroneDps().total,
+                3, 0, 0, "{}{} DPS"),
+            (
+                "labelFullVolleyTotal",
+                lambda: fit.getTotalVolley(spoolOptions=SpoolOptions(SpoolType.SCALE, defaultSpoolValue, False)).total,
+                lambda: fit.getTotalVolley(spoolOptions=SpoolOptions(SpoolType.SCALE, 0, True)).total,
+                lambda: fit.getTotalVolley(spoolOptions=SpoolOptions(SpoolType.SCALE, 1, True)).total,
+                3, 0, 0, "{}{}"),
+            (
+                "labelFullDpsTotal",
+                lambda: fit.getTotalDps(spoolOptions=SpoolOptions(SpoolType.SCALE, defaultSpoolValue, False)).total,
+                lambda: fit.getTotalDps(spoolOptions=SpoolOptions(SpoolType.SCALE, 0, True)).total,
+                lambda: fit.getTotalDps(spoolOptions=SpoolOptions(SpoolType.SCALE, 1, True)).total,
+                3, 0, 0, "{}{}"))
 
         counter = 0
-        for labelName, value, prec, lowest, highest, valueFormat, altFormat in stats:
+        for labelName, val, preSpoolVal, fullSpoolVal, prec, lowest, highest, valueFormat in stats:
             label = getattr(self, labelName)
-            value = value() if fit is not None else 0
-            value = value if value is not None else 0
-            if self._cachedValues[counter] != value:
-                valueStr = formatAmount(value, prec, lowest, highest)
-                label.SetLabel(valueFormat % valueStr)
-                tipStr = valueFormat % valueStr if altFormat is None else altFormat % value
-                label.SetToolTip(wx.ToolTip(tipStr))
-                self._cachedValues[counter] = value
+            val = val() if fit is not None else 0
+            preSpoolVal = preSpoolVal() if fit is not None else 0
+            fullSpoolVal = fullSpoolVal() if fit is not None else 0
+            if self._cachedValues[counter] != val:
+                tooltipText = dpsToolTip(preSpoolVal, fullSpoolVal, prec, lowest, highest)
+                label.SetLabel(valueFormat.format(
+                    formatAmount(val, prec, lowest, highest),
+                    "\u02e2" if tooltipText else ""))
+                label.SetToolTip(wx.ToolTip(tooltipText))
+                self._cachedValues[counter] = val
             counter += 1
 
         self.panel.Layout()

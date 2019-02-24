@@ -3,6 +3,7 @@
 # Used by:
 # Modules from group: Drone Damage Modules (11 of 11)
 # Modules named like: C3 'Hivaa Saitsuo' Ballistic Control System (2 of 2)
+# Module: Abyssal Ballistic Control System
 type = "passive"
 
 

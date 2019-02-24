@@ -90,8 +90,8 @@ class MainMenuBar(wx.MenuBar):
         editMenu = wx.Menu()
         self.Append(editMenu, "&Edit")
 
-        # editMenu.Append(wx.ID_UNDO)
-        # editMenu.Append(wx.ID_REDO)
+        editMenu.Append(wx.ID_UNDO)
+        editMenu.Append(wx.ID_REDO)
 
         editMenu.Append(wx.ID_COPY, "To Clipboard\tCTRL+C", "Export a fit to the clipboard")
         editMenu.Append(wx.ID_PASTE, "From Clipboard\tCTRL+V", "Import a fit from the clipboard")

@@ -2,6 +2,7 @@
 #
 # Used by:
 # Modules from group: Sensor Dampener (6 of 6)
+# Starbases from group: Sensor Dampening Battery (3 of 3)
 type = "projected", "active"
 
 

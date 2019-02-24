@@ -1,7 +1,7 @@
 # projectileWeaponDamageMultiply
 #
 # Used by:
-# Modules from group: Gyrostabilizer (13 of 13)
+# Modules from group: Gyrostabilizer (14 of 14)
 type = "passive"
 
 

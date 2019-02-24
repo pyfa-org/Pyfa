@@ -26,6 +26,7 @@ from eos.effectHandlerHelpers import HandledItem, HandledCharge
 from eos.modifiedAttributeDict import ModifiedAttributeDict, ItemAttrShortcut, ChargeAttrShortcut
 from eos.saveddata.fighterAbility import FighterAbility
 from eos.saveddata.module import Slot
+from eos.utils.stats import DmgTypes
 
 pyfalog = Logger(__name__)
 
@@ -53,6 +54,20 @@ class Fighter(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
 
         self.build()
 
+        standardAttackActive = False
+        for ability in self.abilities:
+            if ability.effect.isImplemented and ability.effect.handlerName == 'fighterabilityattackm':
+                # Activate "standard attack" if available
+                ability.active = True
+                standardAttackActive = True
+            else:
+                # Activate all other abilities (Neut, Web, etc) except propmods if no standard attack is active
+                if ability.effect.isImplemented and \
+                                standardAttackActive is False and \
+                                ability.effect.handlerName != 'fighterabilitymicrowarpdrive' and \
+                                ability.effect.handlerName != 'fighterabilityevasivemaneuvers':
+                    ability.active = True
+
     @reconstructor
     def init(self):
         """Initialize a fighter from the database and validate"""
@@ -73,8 +88,7 @@ class Fighter(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
     def build(self):
         """ Build object. Assumes proper and valid item already set """
         self.__charge = None
-        self.__dps = None
-        self.__volley = None
+        self.__baseVolley = None
         self.__miningyield = None
         self.__itemModifiedAttributes = ModifiedAttributeDict()
         self.__chargeModifiedAttributes = ModifiedAttributeDict()
@@ -158,43 +172,88 @@ class Fighter(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
     def hasAmmo(self):
         return self.charge is not None
 
-    @property
-    def dps(self):
-        return self.damageStats()
+    def getVolley(self, targetResists=None):
+        if not self.active or self.amountActive <= 0:
+            return DmgTypes(0, 0, 0, 0)
+        if self.__baseVolley is None:
+            em = 0
+            therm = 0
+            kin = 0
+            exp = 0
+            for ability in self.abilities:
+                # Not passing resists here as we want to calculate and store base volley
+                abilityVolley = ability.getVolley()
+                em += abilityVolley.em
+                therm += abilityVolley.thermal
+                kin += abilityVolley.kinetic
+                exp += abilityVolley.explosive
+            self.__baseVolley = DmgTypes(em, therm, kin, exp)
+        volley = DmgTypes(
+            em=self.__baseVolley.em * (1 - getattr(targetResists, "emAmount", 0)),
+            thermal=self.__baseVolley.thermal * (1 - getattr(targetResists, "thermalAmount", 0)),
+            kinetic=self.__baseVolley.kinetic * (1 - getattr(targetResists, "kineticAmount", 0)),
+            explosive=self.__baseVolley.explosive * (1 - getattr(targetResists, "explosiveAmount", 0)))
+        return volley
 
-    def damageStats(self, targetResists=None):
-        if self.__dps is None:
-            self.__volley = 0
-            self.__dps = 0
-            if self.active and self.amountActive > 0:
-                for ability in self.abilities:
-                    dps, volley = ability.damageStats(targetResists)
-                    self.__dps += dps
-                    self.__volley += volley
-
-                # For forward compatability this assumes a fighter
-                # can have more than 2 damaging abilities and/or
-                # multiple that use charges.
-                if self.owner.factorReload:
-                    activeTimes = []
-                    reloadTimes = []
-                    constantDps = 0
-                    for ability in self.abilities:
-                        if not ability.active:
-                            continue
-                        if ability.numShots == 0:
-                            dps, volley = ability.damageStats(targetResists)
-                            constantDps += dps
-                            continue
-                        activeTimes.append(ability.numShots * ability.cycleTime)
-                        reloadTimes.append(ability.reloadTime)
-
-                    if len(activeTimes) > 0:
-                        shortestActive = sorted(activeTimes)[0]
-                        longestReload = sorted(reloadTimes, reverse=True)[0]
-                        self.__dps = max(constantDps, self.__dps * shortestActive / (shortestActive + longestReload))
-
-        return self.__dps, self.__volley
+    def getDps(self, targetResists=None):
+        if not self.active or self.amountActive <= 0:
+            return DmgTypes(0, 0, 0, 0)
+        # Analyze cooldowns when reload is factored in
+        if self.owner.factorReload:
+            activeTimes = []
+            reloadTimes = []
+            peakEm = 0
+            peakTherm = 0
+            peakKin = 0
+            peakExp = 0
+            steadyEm = 0
+            steadyTherm = 0
+            steadyKin = 0
+            steadyExp = 0
+            for ability in self.abilities:
+                abilityDps = ability.getDps(targetResists=targetResists)
+                # Peak dps
+                peakEm += abilityDps.em
+                peakTherm += abilityDps.thermal
+                peakKin += abilityDps.kinetic
+                peakExp += abilityDps.explosive
+                # Infinite use - add to steady dps
+                if ability.numShots == 0:
+                    steadyEm += abilityDps.em
+                    steadyTherm += abilityDps.thermal
+                    steadyKin += abilityDps.kinetic
+                    steadyExp += abilityDps.explosive
+                else:
+                    activeTimes.append(ability.numShots * ability.cycleTime)
+                    reloadTimes.append(ability.reloadTime)
+            steadyDps = DmgTypes(steadyEm, steadyTherm, steadyKin, steadyExp)
+            if len(activeTimes) > 0:
+                shortestActive = sorted(activeTimes)[0]
+                longestReload = sorted(reloadTimes, reverse=True)[0]
+                peakDps = DmgTypes(peakEm, peakTherm, peakKin, peakExp)
+                peakAdjustFactor = shortestActive / (shortestActive + longestReload)
+                peakDpsAdjusted = DmgTypes(
+                    em=peakDps.em * peakAdjustFactor,
+                    thermal=peakDps.thermal * peakAdjustFactor,
+                    kinetic=peakDps.kinetic * peakAdjustFactor,
+                    explosive=peakDps.explosive * peakAdjustFactor)
+                dps = max(steadyDps, peakDpsAdjusted, key=lambda d: d.total)
+                return dps
+            else:
+                return steadyDps
+        # Just sum all abilities when not taking reload into consideration
+        else:
+            em = 0
+            therm = 0
+            kin = 0
+            exp = 0
+            for ability in self.abilities:
+                abilityDps = ability.getDps(targetResists=targetResists)
+                em += abilityDps.em
+                therm += abilityDps.thermal
+                kin += abilityDps.kinetic
+                exp += abilityDps.explosive
+            return DmgTypes(em, therm, kin, exp)
 
     @property
     def maxRange(self):
@@ -237,8 +296,7 @@ class Fighter(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
             return val
 
     def clear(self):
-        self.__dps = None
-        self.__volley = None
+        self.__baseVolley = None
         self.__miningyield = None
         self.itemModifiedAttributes.clear()
         self.chargeModifiedAttributes.clear()
@@ -291,6 +349,10 @@ class Fighter(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
     def __deepcopy__(self, memo):
         copy = Fighter(self.item)
         copy.amount = self.amount
+        copy.active = self.active
+        for ability in self.abilities:
+            copyAbility = next(filter(lambda a: a.effectID == ability.effectID, copy.abilities))
+            copyAbility.active = ability.active
         return copy
 
     def fits(self, fit):
