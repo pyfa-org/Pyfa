@@ -20,6 +20,7 @@
 
 import queue
 import threading
+from itertools import chain
 
 import wx
 from logbook import Logger
@@ -144,29 +145,36 @@ class Price:
 
     @classmethod
     def fitItemsList(cls, fit):
-        # Compose a list of all the data we need & request it
-        fit_items = [fit.ship.item]
+        return list(set(cls.fitItemIter(fit, includeShip=True)))
+
+    @classmethod
+    def fitObjectIter(cls, fit, includeShip=True):
+        if includeShip:
+            yield fit.ship
 
         for mod in fit.modules:
             if not mod.isEmpty:
-                fit_items.append(mod.item)
+                yield mod
 
         for drone in fit.drones:
-            fit_items.append(drone.item)
+            yield drone
 
         for fighter in fit.fighters:
-            fit_items.append(fighter.item)
+            yield fighter
+
+        for implant in fit.implants:
+            yield implant
+
+        for booster in fit.boosters:
+            yield booster
 
         for cargo in fit.cargo:
-            fit_items.append(cargo.item)
+            yield cargo
 
-        for boosters in fit.boosters:
-            fit_items.append(boosters.item)
-
-        for implants in fit.implants:
-            fit_items.append(implants.item)
-
-        return list(set(fit_items))
+    @classmethod
+    def fitItemIter(cls, fit, includeShip=True):
+        for fitobj in cls.fitObjectIter(fit, includeShip=includeShip):
+            yield fitobj.item
 
     def getPriceNow(self, objitem):
         """Get price for provided typeID"""
@@ -201,6 +209,17 @@ class Price:
         pyfalog.debug("Clearing Prices")
         db.clearPrices()
 
+    def findCheaperReplacements(self, fit, includeBetter=False):
+        sMkt = Market.getInstance()
+        itemsRepls = {}
+        for item in self.fitItemIter(fit, includeShip=False):
+            if item in itemsRepls:
+                continue
+            itemRepls = sMkt.getReplacements(item, includeBetter=includeBetter)
+            if itemRepls:
+                itemsRepls[item] = itemRepls
+        itemsToFetch = {i for i in chain(itemsRepls.keys(), *itemsRepls.values())}
+        # self.getPrices(itemsToFetch, None, fetchTimeout=10)
 
 class PriceWorkerThread(threading.Thread):
 
