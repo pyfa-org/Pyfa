@@ -19,7 +19,7 @@
 
 
 import re
-from enum import Enum
+from enum import IntEnum, unique
 
 from logbook import Logger
 
@@ -42,7 +42,8 @@ from service.port.shared import IPortUser, fetchItem, processing_notify
 pyfalog = Logger(__name__)
 
 
-class Options(Enum):
+@unique
+class Options(IntEnum):
     IMPLANTS = 1
     MUTATIONS = 2
     LOADED_CHARGES = 3

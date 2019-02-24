@@ -146,35 +146,23 @@ class Price:
 
     @classmethod
     def fitItemsList(cls, fit):
-        return list(set(cls.fitItemIter(fit, includeShip=True)))
+        return list(set(cls.fitItemIter(fit)))
 
     @classmethod
-    def fitObjectIter(cls, fit, includeShip=True):
-        if includeShip:
-            yield fit.ship
+    def fitObjectIter(cls, fit):
+        yield fit.ship
 
         for mod in fit.modules:
             if not mod.isEmpty:
                 yield mod
 
-        for drone in fit.drones:
-            yield drone
-
-        for fighter in fit.fighters:
-            yield fighter
-
-        for implant in fit.implants:
-            yield implant
-
-        for booster in fit.boosters:
-            yield booster
-
-        for cargo in fit.cargo:
-            yield cargo
+        for container in (fit.drones, fit.fighters, fit.implants, fit.boosters, fit.cargo):
+            for obj in container:
+                yield obj
 
     @classmethod
-    def fitItemIter(cls, fit, includeShip=True):
-        for fitobj in cls.fitObjectIter(fit, includeShip=includeShip):
+    def fitItemIter(cls, fit):
+        for fitobj in cls.fitObjectIter(fit):
             yield fitobj.item
             charge = getattr(fitobj, 'charge', None)
             if charge:
@@ -213,11 +201,11 @@ class Price:
         pyfalog.debug("Clearing Prices")
         db.clearPrices()
 
-    def findCheaperReplacements(self, callback, fit, includeBetter=False, fetchTimeout=10):
+    def findCheaperReplacements(self, items, callback, includeBetter=False, fetchTimeout=10):
         sMkt = Market.getInstance()
 
         potential = {}  # All possible item replacements
-        for item in self.fitItemIter(fit, includeShip=False):
+        for item in items:
             if item in potential:
                 continue
             itemRepls = sMkt.getReplacements(item, includeBetter=includeBetter)
@@ -225,7 +213,7 @@ class Price:
                 potential[item] = itemRepls
         itemsToFetch = {i for i in chain(potential.keys(), *potential.values())}
 
-        def cb():
+        def cb(requests):
             # Decide what we are going to replace
             actual = {}  # Items which should be replaced
             for replacee, replacers in potential.items():

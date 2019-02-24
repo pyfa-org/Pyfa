@@ -18,19 +18,24 @@
 # =============================================================================
 
 
-from enum import Enum
+from enum import IntEnum, unique
+
+from service.price import Price as sPrc
 
 
-class Options(Enum):
+@unique
+class Options(IntEnum):
     IMPLANTS = 1
     CARGO = 2
     LOADED_CHARGES = 3
+    OPTIMIZE_PRICES = 4
 
 
 MULTIBUY_OPTIONS = (
     (Options.LOADED_CHARGES.value, 'Loaded Charges', 'Export charges loaded into modules', True),
     (Options.IMPLANTS.value, 'Implants && Boosters', 'Export implants and boosters', False),
     (Options.CARGO.value, 'Cargo', 'Export cargo contents', True),
+    (Options.OPTIMIZE_PRICES.value, 'Optimize Prices', 'Replace items by cheaper alternatives', False),
 )
 
 
@@ -67,6 +72,14 @@ def exportMultiBuy(fit, options):
 
         for booster in fit.boosters:
             addItem(booster.item)
+
+    if options[Options.OPTIMIZE_PRICES.value]:
+
+        def cb(replacements):
+            pass
+
+        priceSvc = sPrc.getInstance()
+        priceSvc.findCheaperReplacements(itemCounts, cb)
 
     exportLines = []
     exportLines.append(fit.ship.item.name)
