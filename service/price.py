@@ -18,6 +18,7 @@
 # =============================================================================
 
 
+import math
 import queue
 import threading
 from itertools import chain
@@ -175,6 +176,9 @@ class Price:
     def fitItemIter(cls, fit, includeShip=True):
         for fitobj in cls.fitObjectIter(fit, includeShip=includeShip):
             yield fitobj.item
+            charge = getattr(fitobj, 'charge', None)
+            if charge:
+                yield charge
 
     def getPriceNow(self, objitem):
         """Get price for provided typeID"""
@@ -195,7 +199,7 @@ class Price:
             try:
                 callback(requests)
             except Exception as e:
-                pyfalog.critical("Callback failed.")
+                pyfalog.critical("Execution of callback from getPrices failed.")
                 pyfalog.critical(e)
 
             db.commit()
@@ -209,17 +213,34 @@ class Price:
         pyfalog.debug("Clearing Prices")
         db.clearPrices()
 
-    def findCheaperReplacements(self, fit, includeBetter=False):
+    def findCheaperReplacements(self, callback, fit, includeBetter=False, fetchTimeout=10):
         sMkt = Market.getInstance()
-        itemsRepls = {}
+
+        potential = {}  # All possible item replacements
         for item in self.fitItemIter(fit, includeShip=False):
-            if item in itemsRepls:
+            if item in potential:
                 continue
             itemRepls = sMkt.getReplacements(item, includeBetter=includeBetter)
             if itemRepls:
-                itemsRepls[item] = itemRepls
-        itemsToFetch = {i for i in chain(itemsRepls.keys(), *itemsRepls.values())}
-        # self.getPrices(itemsToFetch, None, fetchTimeout=10)
+                potential[item] = itemRepls
+        itemsToFetch = {i for i in chain(potential.keys(), *potential.values())}
+
+        def cb():
+            # Decide what we are going to replace
+            actual = {}  # Items which should be replaced
+            for replacee, replacers in potential.items():
+                replacer = min(replacers, key=lambda i: i.price.price or math.inf)
+                if (replacer.price.price or math.inf) < (replacee.price.price or math.inf):
+                    actual[replacee] = replacer
+            try:
+                callback(actual)
+            except Exception as e:
+                pyfalog.critical("Execution of callback from findCheaperReplacements failed.")
+                pyfalog.critical(e)
+
+        # TODO: add validity override
+        self.getPrices(itemsToFetch, cb, fetchTimeout=fetchTimeout)
+
 
 class PriceWorkerThread(threading.Thread):
 
