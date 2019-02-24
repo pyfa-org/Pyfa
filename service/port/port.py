@@ -207,9 +207,14 @@ class Port(object):
     @classmethod
     def importAuto(cls, string, path=None, activeFit=None, iportuser=None):
         # type: (Port, str, str, object, IPortUser) -> object
+        lines = string.splitlines()
         # Get first line and strip space symbols of it to avoid possible detection errors
-        splitLines = re.split("[\n\r]+", string.strip())
-        firstLine = splitLines[0].strip()
+        firstLine = ''
+        for line in lines:
+            line = line.strip()
+            if line:
+                firstLine = line
+                break
 
         # If XML-style start of tag encountered, detect as XML
         if re.search(RE_XML_START, firstLine):
@@ -224,12 +229,12 @@ class Port(object):
         if re.match("\[.*\]", firstLine) and path is not None:
             filename = os.path.split(path)[1]
             shipName = filename.rsplit('.')[0]
-            return "EFT Config", cls.importEftCfg(shipName, string, iportuser)
+            return "EFT Config", cls.importEftCfg(shipName, lines, iportuser)
 
         # If no file is specified and there's comma between brackets,
         # consider that we have [ship, setup name] and detect like eft export format
         if re.match("\[.*,.*\]", firstLine):
-            return "EFT", (cls.importEft(string),)
+            return "EFT", (cls.importEft(lines),)
 
         # Check if string is in DNA format
         if re.match("\d+(:\d+(;\d+))*::", firstLine):
@@ -237,19 +242,19 @@ class Port(object):
 
         # Assume that we import stand-alone abyssal module if all else fails
         try:
-            return "MutatedItem", (parseMutant(splitLines),)
+            return "MutatedItem", (parseMutant(lines),)
         except:
             pass
 
 
     # EFT-related methods
     @staticmethod
-    def importEft(eftString):
-        return importEft(eftString)
+    def importEft(lines):
+        return importEft(lines)
 
     @staticmethod
-    def importEftCfg(shipname, contents, iportuser=None):
-        return importEftCfg(shipname, contents, iportuser)
+    def importEftCfg(shipname, lines, iportuser=None):
+        return importEftCfg(shipname, lines, iportuser)
 
     @classmethod
     def exportEft(cls, fit, options):
