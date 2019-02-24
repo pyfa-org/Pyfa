@@ -2,6 +2,7 @@
 import wx
 import gui.utils.color as colorUtils
 import gui.utils.draw as drawUtils
+from gui.utils.helpers_wxPython import HandleCtrlBackspace
 
 SearchButton, EVT_SEARCH_BTN = wx.lib.newevent.NewEvent()
 CancelButton, EVT_CANCEL_BTN = wx.lib.newevent.NewEvent()
@@ -55,7 +56,7 @@ class PFSearchBox(wx.Window):
 
         self.EditBox.Bind(wx.EVT_SET_FOCUS, self.OnEditSetFocus)
         self.EditBox.Bind(wx.EVT_KILL_FOCUS, self.OnEditKillFocus)
-
+        self.EditBox.Bind(wx.EVT_KEY_DOWN, self.OnKeyPress)
         self.EditBox.Bind(wx.EVT_TEXT, self.OnText)
         self.EditBox.Bind(wx.EVT_TEXT_ENTER, self.OnTextEnter)
 
@@ -82,6 +83,12 @@ class PFSearchBox(wx.Window):
         if self.EditBox.GetValue() == "":
             self.Clear()
         event.Skip()
+
+    def OnKeyPress(self, event):
+        if event.RawControlDown() and event.GetKeyCode() == wx.WXK_BACK:
+           HandleCtrlBackspace(self.EditBox)
+        else:
+            event.Skip()
 
     def Clear(self):
         self.EditBox.Clear()
