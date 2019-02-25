@@ -40,7 +40,8 @@ class EveMarketer:
         if priceMap:
             self.fetchPrices(priceMap, max(fetchTimeout / 3, 2))
 
-    def fetchPrices(self, priceMap, fetchTimeout, system=None):
+    @staticmethod
+    def fetchPrices(priceMap, fetchTimeout, system=None):
         params = {"typeid": {typeID for typeID in priceMap}}
         if system is not None:
             params["usesystem"] = system
