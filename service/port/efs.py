@@ -583,7 +583,7 @@ class EfsPort:
         return sizeNotFoundMsg
 
     @staticmethod
-    def exportEfs(fit, typeNotFitFlag):
+    def exportEfs(fit, typeNotFitFlag, callback):
         sFit = Fit.getInstance()
         includeShipTypeData = typeNotFitFlag > 0
         if includeShipTypeData:
@@ -680,4 +680,8 @@ class EfsPort:
             pyfalog.error(e)
             dataDict = {"name": fitName + "Fit could not be correctly parsed"}
         export = json.dumps(dataDict, skipkeys=True)
-        return export
+
+        if callback:
+            callback(export)
+        else:
+            return export

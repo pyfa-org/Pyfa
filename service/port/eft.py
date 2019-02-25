@@ -61,7 +61,7 @@ SLOT_ORDER = (Slot.LOW, Slot.MED, Slot.HIGH, Slot.RIG, Slot.SUBSYSTEM, Slot.SERV
 OFFLINE_SUFFIX = '/OFFLINE'
 
 
-def exportEft(fit, options):
+def exportEft(fit, options, callback):
     # EFT formatted export is split in several sections, each section is
     # separated from another using 2 blank lines. Sections might have several
     # sub-sections, which are separated by 1 blank line
@@ -157,7 +157,12 @@ def exportEft(fit, options):
     if mutationLines:
         sections.append('\n'.join(mutationLines))
 
-    return '{}\n\n{}'.format(header, '\n\n\n'.join(sections))
+    text = '{}\n\n{}'.format(header, '\n\n\n'.join(sections))
+
+    if callback:
+        callback(text)
+    else:
+        return text
 
 
 def importEft(lines):

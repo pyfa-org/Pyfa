@@ -699,29 +699,29 @@ class MainFrame(wx.Frame):
         else:
             self.marketBrowser.search.Focus()
 
-    def clipboardEft(self, options):
+    def exportEft(self, options, callback):
         fit = db_getFit(self.getActiveFit())
-        toClipboard(Port.exportEft(fit, options))
+        Port.exportEft(fit, options, callback)
 
-    def clipboardDna(self, options):
+    def exportDna(self, options, callback):
         fit = db_getFit(self.getActiveFit())
-        toClipboard(Port.exportDna(fit))
+        Port.exportDna(fit, callback)
 
-    def clipboardEsi(self, options):
+    def exportEsi(self, options, callback):
         fit = db_getFit(self.getActiveFit())
-        toClipboard(Port.exportESI(fit))
+        Port.exportESI(fit, callback)
 
-    def clipboardXml(self, options):
+    def exportXml(self, options, callback):
         fit = db_getFit(self.getActiveFit())
-        toClipboard(Port.exportXml(None, fit))
+        Port.exportXml(None, fit, callback)
 
-    def clipboardMultiBuy(self, options):
+    def exportMultiBuy(self, options, callback):
         fit = db_getFit(self.getActiveFit())
-        toClipboard(Port.exportMultiBuy(fit, options))
+        Port.exportMultiBuy(fit, options, callback)
 
-    def clipboardEfs(self, options):
+    def exportEfs(self, options, callback):
         fit = db_getFit(self.getActiveFit())
-        toClipboard(EfsPort.exportEfs(fit, 0))
+        EfsPort.exportEfs(fit, 0, callback)
 
     def importFromClipboard(self, event):
         clipboard = fromClipboard()
@@ -739,14 +739,20 @@ class MainFrame(wx.Frame):
             self._openAfterImport(importData)
 
     def exportToClipboard(self, event):
-        CopySelectDict = {CopySelectDialog.copyFormatEft: self.clipboardEft,
-                          CopySelectDialog.copyFormatXml: self.clipboardXml,
-                          CopySelectDialog.copyFormatDna: self.clipboardDna,
-                          CopySelectDialog.copyFormatEsi: self.clipboardEsi,
-                          CopySelectDialog.copyFormatMultiBuy: self.clipboardMultiBuy,
-                          CopySelectDialog.copyFormatEfs: self.clipboardEfs}
+        CopySelectDict = {CopySelectDialog.copyFormatEft: self.exportEft,
+                          CopySelectDialog.copyFormatXml: self.exportXml,
+                          CopySelectDialog.copyFormatDna: self.exportDna,
+                          CopySelectDialog.copyFormatEsi: self.exportEsi,
+                          CopySelectDialog.copyFormatMultiBuy: self.exportMultiBuy,
+                          CopySelectDialog.copyFormatEfs: self.exportEfs}
         dlg = CopySelectDialog(self)
         btnPressed = dlg.ShowModal()
+
+        def killDialog():
+            try:
+                dlg.Destroy()
+            except RuntimeError:
+                pyfalog.error("Tried to destroy an object that doesn't exist in <exportToClipboard>.")
 
         if btnPressed == wx.ID_OK:
             selected = dlg.GetSelected()
@@ -755,12 +761,14 @@ class MainFrame(wx.Frame):
             settings = SettingsProvider.getInstance().getSettings("pyfaExport")
             settings["format"] = selected
             settings["options"] = options
-            CopySelectDict[selected](options.get(selected))
 
-        try:
-            dlg.Destroy()
-        except RuntimeError:
-            pyfalog.error("Tried to destroy an object that doesn't exist in <exportToClipboard>.")
+            def cb(text):
+                toClipboard(text)
+                killDialog()
+
+            CopySelectDict[selected](options.get(selected), callback=cb)
+        else:
+            killDialog()
 
     def exportSkillsNeeded(self, event):
         """ Exports skills needed for active fit and active character """

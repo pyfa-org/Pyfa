@@ -39,52 +39,65 @@ MULTIBUY_OPTIONS = (
 )
 
 
-def exportMultiBuy(fit, options):
-    itemCounts = {}
-
-    def addItem(item, quantity=1):
-        if item not in itemCounts:
-            itemCounts[item] = 0
-        itemCounts[item] += quantity
+def exportMultiBuy(fit, options, callback):
+    itemAmounts = {}
 
     for module in fit.modules:
         if module.item:
             # Mutated items are of no use for multibuy
             if module.isMutated:
                 continue
-            addItem(module.item)
+            _addItem(itemAmounts, module.item)
         if module.charge and options[Options.LOADED_CHARGES.value]:
-            addItem(module.charge, module.numCharges)
+            _addItem(itemAmounts, module.charge, module.numCharges)
 
     for drone in fit.drones:
-        addItem(drone.item, drone.amount)
+        _addItem(itemAmounts, drone.item, drone.amount)
 
     for fighter in fit.fighters:
-        addItem(fighter.item, fighter.amountActive)
+        _addItem(itemAmounts, fighter.item, fighter.amountActive)
 
     if options[Options.CARGO.value]:
         for cargo in fit.cargo:
-            addItem(cargo.item, cargo.amount)
+            _addItem(itemAmounts, cargo.item, cargo.amount)
 
     if options[Options.IMPLANTS.value]:
         for implant in fit.implants:
-            addItem(implant.item)
+            _addItem(itemAmounts, implant.item)
 
         for booster in fit.boosters:
-            addItem(booster.item)
+            _addItem(itemAmounts, booster.item)
 
     if options[Options.OPTIMIZE_PRICES.value]:
 
         def cb(replacements):
-            pass
+            updatedAmounts = {}
+            for item, itemAmount in itemAmounts.items():
+                _addItem(updatedAmounts, replacements.get(item, item), itemAmount)
+            string = _prepareString(fit.ship.item, updatedAmounts)
+            callback(string)
 
         priceSvc = sPrc.getInstance()
-        priceSvc.findCheaperReplacements(itemCounts, cb)
+        priceSvc.findCheaperReplacements(itemAmounts, cb)
+    else:
+        string = _prepareString(fit.ship.item, itemAmounts)
+        if callback:
+            callback(string)
+        else:
+            return string
 
+
+def _addItem(container, item, quantity=1):
+    if item not in container:
+        container[item] = 0
+    container[item] += quantity
+
+
+def _prepareString(shipItem, itemAmounts):
     exportLines = []
-    exportLines.append(fit.ship.item.name)
-    for item in sorted(itemCounts, key=lambda i: (i.group.category.name, i.group.name, i.name)):
-        count = itemCounts[item]
+    exportLines.append(shipItem.name)
+    for item in sorted(itemAmounts, key=lambda i: (i.group.category.name, i.group.name, i.name)):
+        count = itemAmounts[item]
         if count == 1:
             exportLines.append(item.name)
         else:
