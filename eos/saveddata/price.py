@@ -49,14 +49,13 @@ class Price(object):
         self.price = 0
         self.status = PriceStatus.initialized
 
-    @property
-    def isValid(self):
+    def isValid(self, validityOverride=None):
         # Always attempt to update prices which were just initialized, and prices
         # of unsupported items (maybe we start supporting them at some point)
         if self.status in (PriceStatus.initialized, PriceStatus.notSupported):
             return False
         elif self.status == PriceStatus.fetchSuccess:
-            return time() <= self.time + VALIDITY
+            return time() <= self.time + (validityOverride if validityOverride is not None else VALIDITY)
         elif self.status == PriceStatus.fetchFail:
             return time() <= self.time + REREQUEST
         elif self.status == PriceStatus.fetchTimeout:

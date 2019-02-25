@@ -78,7 +78,7 @@ def exportMultiBuy(fit, options, callback):
             callback(string)
 
         priceSvc = sPrc.getInstance()
-        priceSvc.findCheaperReplacements(itemAmounts, cb)
+        priceSvc.findCheaperReplacements(itemAmounts, cb, includeBetter=True)
     else:
         string = _prepareString(fit.ship.item, itemAmounts)
         if callback:

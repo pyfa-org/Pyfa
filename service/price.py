@@ -66,7 +66,7 @@ class Price:
         return cls.instance
 
     @classmethod
-    def fetchPrices(cls, prices, fetchTimeout):
+    def fetchPrices(cls, prices, fetchTimeout, validityOverride):
         """Fetch all prices passed to this method"""
 
         # Dictionary for our price objects
@@ -74,7 +74,7 @@ class Price:
         # Check all provided price objects, and add those we want to update to
         # dictionary
         for price in prices:
-            if not price.isValid:
+            if not price.isValid(validityOverride):
                 priceMap[price.typeID] = price
 
         if not priceMap:
@@ -175,7 +175,7 @@ class Price:
 
         return item.price.price
 
-    def getPrices(self, objitems, callback, fetchTimeout=30, waitforthread=False):
+    def getPrices(self, objitems, callback, fetchTimeout=30, waitforthread=False, validityOverride=None):
         """Get prices for multiple typeIDs"""
         requests = []
         sMkt = Market.getInstance()
@@ -195,7 +195,7 @@ class Price:
         if waitforthread:
             self.priceWorkerThread.setToWait(requests, cb)
         else:
-            self.priceWorkerThread.trigger(requests, cb, fetchTimeout)
+            self.priceWorkerThread.trigger(requests, cb, fetchTimeout, validityOverride)
 
     def clearPriceCache(self):
         pyfalog.debug("Clearing Prices")
@@ -226,8 +226,9 @@ class Price:
                 pyfalog.critical("Execution of callback from findCheaperReplacements failed.")
                 pyfalog.critical(e)
 
-        # TODO: add validity override
-        self.getPrices(itemsToFetch, cb, fetchTimeout=fetchTimeout)
+        # Prices older than 2 hours have to be refetched
+        validityOverride = 2 * 60 * 60
+        self.getPrices(itemsToFetch, cb, fetchTimeout=fetchTimeout, validityOverride=validityOverride)
 
 
 class PriceWorkerThread(threading.Thread):
@@ -243,11 +244,11 @@ class PriceWorkerThread(threading.Thread):
         queue = self.queue
         while True:
             # Grab our data
-            callback, requests, fetchTimeout = queue.get()
+            callback, requests, fetchTimeout, validityOverride = queue.get()
 
             # Grab prices, this is the time-consuming part
             if len(requests) > 0:
-                Price.fetchPrices(requests, fetchTimeout)
+                Price.fetchPrices(requests, fetchTimeout, validityOverride)
 
             wx.CallAfter(callback)
             queue.task_done()
@@ -259,8 +260,8 @@ class PriceWorkerThread(threading.Thread):
                     for callback in callbacks:
                         wx.CallAfter(callback)
 
-    def trigger(self, prices, callbacks, fetchTimeout):
-        self.queue.put((callbacks, prices, fetchTimeout))
+    def trigger(self, prices, callbacks, fetchTimeout, validityOverride):
+        self.queue.put((callbacks, prices, fetchTimeout, validityOverride))
 
     def setToWait(self, prices, callback):
         for price in prices:

@@ -63,7 +63,7 @@ class Price(ViewColumn):
 
         priceObj = stuff.item.price
 
-        if not priceObj.isValid:
+        if not priceObj.isValid():
             return False
 
         return formatPrice(stuff, priceObj)
