@@ -97,7 +97,7 @@ def exportESI(ofit):
         item['type_id'] = module.item.ID
         fit['items'].append(item)
 
-        if module.charge and sFit.serviceFittingOptions["exportCharges"]:
+        if module.charge:
             if module.chargeID not in charges:
                 charges[module.chargeID] = 0
             # `or 1` because some charges (ie scripts) are without qty
@@ -137,11 +137,11 @@ def exportESI(ofit):
     return json.dumps(fit)
 
 
-def importESI(str_):
+def importESI(string):
 
     sMkt = Market.getInstance()
     fitobj = Fit()
-    refobj = json.loads(str_)
+    refobj = json.loads(string)
     items = refobj['items']
     # "<" and ">" is replace to "&lt;", "&gt;" by EVE client
     fitobj.name = refobj['name']

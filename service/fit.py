@@ -89,7 +89,6 @@ class Fit(FitDeprecated):
             "showTooltip": True,
             "showMarketShortcuts": False,
             "enableGaugeAnimation": True,
-            "exportCharges": True,
             "openFitInNew": False,
             "priceSystem": "Jita",
             "priceSource": "eve-marketdata.com",

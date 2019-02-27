@@ -11,6 +11,5 @@ def handler(fit, module, context):
             bonus = "%s%sDamageResonance" % (attrPrefix, damageType)
             bonus = "%s%s" % (bonus[0].lower(), bonus[1:])
             booster = "%s%sDamageResonance" % (layer, damageType)
-            penalize = False if layer == 'hull' else True
             fit.ship.multiplyItemAttr(bonus, module.getModifiedItemAttr(booster),
-                                      stackingPenalties=penalize, penaltyGroup="preMul")
+                                      stackingPenalties=True, penaltyGroup="preMul")
