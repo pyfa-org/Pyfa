@@ -796,7 +796,7 @@ class Market(object):
         filtered = set([item for item in items if self.getMetaGroupIdByItem(item) in metas])
         return filtered
 
-    def getReplacements(self, identity, includeBetter=False):
+    def getReplacements(self, identity, includeBetter):
         item = self.getItem(identity)
         # We already store needed type IDs in database
         replTypeIDs = {int(i) for i in item.replaceSame.split(",") if i}

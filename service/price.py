@@ -201,14 +201,14 @@ class Price:
         pyfalog.debug("Clearing Prices")
         db.clearPrices()
 
-    def findCheaperReplacements(self, items, callback, includeBetter=False, fetchTimeout=10):
+    def findCheaperReplacements(self, items, callback, includeBetter, fetchTimeout=10):
         sMkt = Market.getInstance()
 
         potential = {}  # All possible item replacements
         for item in items:
             if item in potential:
                 continue
-            itemRepls = sMkt.getReplacements(item, includeBetter=includeBetter)
+            itemRepls = sMkt.getReplacements(item, includeBetter)
             if itemRepls:
                 potential[item] = itemRepls
         itemsToFetch = {i for i in chain(potential.keys(), *potential.values())}
@@ -229,6 +229,29 @@ class Price:
         # Prices older than 2 hours have to be refetched
         validityOverride = 2 * 60 * 60
         self.getPrices(itemsToFetch, cb, fetchTimeout=fetchTimeout, validityOverride=validityOverride)
+
+    def optimizeFitPrice(self, fit, callback, includeBetter, fetchTimeout=10):
+
+        def cb(replacementMap):
+            changes = False
+            for fitobj in self.fitObjectIter(fit):
+                if fitobj.item in replacementMap:
+                    fitobj.item = replacementMap[fitobj.item]
+                    changes = True
+                charge = getattr(fitobj, 'charge', None)
+                if charge and charge in replacementMap:
+                    fitobj.charge = replacementMap[charge]
+                    changes = True
+            if changes:
+                Fit.getInstance().refreshFit(fit.ID)
+            try:
+                callback()
+            except Exception as e:
+                pyfalog.critical("Execution of callback from optimizeFitPrice failed.")
+                pyfalog.critical(e)
+
+        fitItems = {i for i in self.fitItemIter(fit) if i is not fit.ship.item}
+        self.findCheaperReplacements(fitItems, cb, includeBetter, fetchTimeout=fetchTimeout)
 
 
 class PriceWorkerThread(threading.Thread):
