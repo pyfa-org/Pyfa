@@ -36,7 +36,6 @@ from eos.saveddata.ship import Ship as es_Ship
 from service.character import Character
 from service.damagePattern import DamagePattern
 from service.fitDeprecated import FitDeprecated
-from service.price import Price
 from service.settings import SettingsProvider
 from utils.deprecated import deprecated
 

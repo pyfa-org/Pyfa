@@ -71,6 +71,7 @@ from service.esi import Esi, LoginMethod
 from service.esiAccess import SsoMode
 from service.fit import Fit
 from service.port import EfsPort, IPortUser, Port
+from service.price import Price
 from service.settings import HTMLExportSettings, SettingsProvider
 from service.update import Update
 import gui.fitCommands as cmd
@@ -519,6 +520,8 @@ class MainFrame(wx.Frame):
         self.Bind(wx.EVT_MENU, self.saveCharAs, id=menuBar.saveCharAsId)
         # Save current character
         self.Bind(wx.EVT_MENU, self.revertChar, id=menuBar.revertCharId)
+        # Optimize fit price
+        self.Bind(wx.EVT_MENU, self.optimizeFitPrice, id=menuBar.optimizeFitPrice)
 
         # Browse fittings
         self.Bind(wx.EVT_MENU, self.eveFittings, id=menuBar.eveFittingsId)
@@ -665,6 +668,17 @@ class MainFrame(wx.Frame):
         charID = self.charSelection.getActiveCharacter()
         sChr.revertCharacter(charID)
         wx.PostEvent(self, GE.CharListUpdated())
+
+    def optimizeFitPrice(self, event):
+        sPrice = Price.getInstance()
+        fit = Fit.getInstance().getFit(self.getActiveFit())
+        if fit:
+            # TODO: block/unblock UI while pyfa is working
+
+            def cb():
+                pass
+
+            sPrice.optimizeFitPrice(fit, cb, includeBetter=True, fetchTimeout=10)
 
     def AdditionsTabSelect(self, event):
         selTab = self.additionsSelect.index(event.GetId())

@@ -28,8 +28,6 @@ import gui.globalEvents as GE
 from gui.bitmap_loader import BitmapLoader
 
 from logbook import Logger
-# from service.crest import Crest
-# from service.crest import CrestModes
 
 pyfalog = Logger(__name__)
 
@@ -59,6 +57,7 @@ class MainMenuBar(wx.MenuBar):
         self.importDatabaseDefaultsId = wx.NewId()
         self.toggleIgnoreRestrictionID = wx.NewId()
         self.devToolsId = wx.NewId()
+        self.optimizeFitPrice = wx.NewId()
 
         # pheonix: evaluate if this is needed
         if 'wxMac' in wx.PlatformInfo and wx.VERSION >= (3, 0):
@@ -101,6 +100,9 @@ class MainMenuBar(wx.MenuBar):
         editMenu.Append(self.revertCharId, "Revert Character")
         editMenu.AppendSeparator()
         self.ignoreRestrictionItem = editMenu.Append(self.toggleIgnoreRestrictionID, "Ignore Fitting Restrictions")
+        editMenu.AppendSeparator()
+        editMenu.Append(self.optimizeFitPrice, "Optimize Fit Price")
+
 
         # Character menu
         windowMenu = wx.Menu()
@@ -133,8 +135,6 @@ class MainMenuBar(wx.MenuBar):
         preferencesItem = wx.MenuItem(windowMenu, wx.ID_PREFERENCES, "Preferences\t" + preferencesShortCut)
         preferencesItem.SetBitmap(BitmapLoader.getBitmap("preferences_small", "gui"))
         windowMenu.Append(preferencesItem)
-
-        # self.sEsi = Crest.getInstance()
 
         # CREST Menu
         esiMMenu = wx.Menu()
