@@ -95,7 +95,7 @@ class EsiAccess(object):
 
     @property
     def esi_url(self):
-        return "https://esi.tech.ccp.is"
+        return "https://esi.evetech.net"
 
     @property
     def oauth_verify(self):

@@ -6,5 +6,5 @@ type = "passive"
 
 
 def handler(fit, ship, context):
-    fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == "Cynosural Field",
+    fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == "Cynosural Field Generator",
                                   "duration", ship.getModifiedItemAttr("durationBonus"))

@@ -283,7 +283,7 @@ def exportXml(iportuser, *fits):
                 hardware.setAttribute("slot", "%s slot %d" % (slotName, slotId))
                 fitting.appendChild(hardware)
 
-                if module.charge and sFit.serviceFittingOptions["exportCharges"]:
+                if module.charge:
                     if module.charge.name not in charges:
                         charges[module.charge.name] = 0
                     # `or 1` because some charges (ie scripts) are without qty

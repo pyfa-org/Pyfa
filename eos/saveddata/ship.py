@@ -29,14 +29,16 @@ pyfalog = Logger(__name__)
 
 class Ship(ItemAttrShortcut, HandledItem):
     EXTRA_ATTRIBUTES = {
-        "armorRepair"               : 0,
-        "hullRepair"                : 0,
-        "shieldRepair"              : 0,
-        "maxActiveDrones"           : 0,
+        "armorRepair": 0,
+        "armorRepairPreSpool": 0,
+        "armorRepairFullSpool": 0,
+        "hullRepair": 0,
+        "shieldRepair": 0,
+        "maxActiveDrones": 0,
         "maxTargetsLockedFromSkills": 2,
-        "droneControlRange"         : 20000,
-        "cloaked"                   : False,
-        "siege"                     : False
+        "droneControlRange": 20000,
+        "cloaked": False,
+        "siege": False
         # We also have speedLimit for Entosis Link, but there seems to be an
         # issue with naming it exactly "speedLimit" due to unknown reasons.
         # Regardless, we don't have to put it here anyways - it will come up

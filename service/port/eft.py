@@ -19,6 +19,7 @@
 
 
 import re
+from enum import Enum
 
 from logbook import Logger
 
@@ -36,7 +37,6 @@ from service.fit import Fit as svcFit
 from service.market import Market
 from service.port.muta import parseMutant, renderMutant
 from service.port.shared import IPortUser, fetchItem, processing_notify
-from enum import Enum
 
 
 pyfalog = Logger(__name__)
@@ -45,22 +45,19 @@ pyfalog = Logger(__name__)
 class Options(Enum):
     IMPLANTS = 1
     MUTATIONS = 2
+    LOADED_CHARGES = 3
+
+
+EFT_OPTIONS = (
+    (Options.LOADED_CHARGES.value, 'Loaded Charges', 'Export charges loaded into modules', True),
+    (Options.MUTATIONS.value, 'Mutated Attributes', 'Export mutated modules\' stats', True),
+    (Options.IMPLANTS.value, 'Implants && Boosters', 'Export implants and boosters', True),
+)
 
 
 MODULE_CATS = ('Module', 'Subsystem', 'Structure Module')
 SLOT_ORDER = (Slot.LOW, Slot.MED, Slot.HIGH, Slot.RIG, Slot.SUBSYSTEM, Slot.SERVICE)
 OFFLINE_SUFFIX = '/OFFLINE'
-
-EFT_OPTIONS = {
-    Options.IMPLANTS.value: {
-        "name": "Implants",
-        "description": "Exports implants"
-    },
-    Options.MUTATIONS.value: {
-        "name": "Mutated Attributes",
-        "description": "Exports Abyssal stats"
-    }
-}
 
 
 def exportEft(fit, options):
@@ -73,7 +70,6 @@ def exportEft(fit, options):
 
     # Section 1: modules, rigs, subsystems, services
     modsBySlotType = {}
-    sFit = svcFit.getInstance()
     for module in fit.modules:
         modsBySlotType.setdefault(module.slot, []).append(module)
     modSection = []
@@ -85,20 +81,19 @@ def exportEft(fit, options):
         modules = modsBySlotType.get(slotType, ())
         for module in modules:
             if module.item:
-                mutated = bool(module.mutators)
                 # if module was mutated, use base item name for export
-                if mutated:
+                if module.isMutated:
                     modName = module.baseItem.name
                 else:
                     modName = module.item.name
-                if mutated and options & Options.MUTATIONS.value:
+                if module.isMutated and options[Options.MUTATIONS.value]:
                     mutants[mutantReference] = module
                     mutationSuffix = ' [{}]'.format(mutantReference)
                     mutantReference += 1
                 else:
                     mutationSuffix = ''
                 modOfflineSuffix = ' {}'.format(OFFLINE_SUFFIX) if module.state == State.OFFLINE else ''
-                if module.charge and sFit.serviceFittingOptions['exportCharges']:
+                if module.charge and options[Options.LOADED_CHARGES.value]:
                     rackLines.append('{}, {}{}{}'.format(
                         modName, module.charge.name, modOfflineSuffix, mutationSuffix))
                 else:
@@ -127,7 +122,7 @@ def exportEft(fit, options):
         sections.append('\n\n'.join(minionSection))
 
     # Section 3: implants, boosters
-    if options & Options.IMPLANTS.value:
+    if options[Options.IMPLANTS.value]:
         charSection = []
         implantLines = []
         for implant in fit.implants:
@@ -154,7 +149,7 @@ def exportEft(fit, options):
 
     # Section 5: mutated modules' details
     mutationLines = []
-    if mutants and options & Options.MUTATIONS.value:
+    if mutants and options[Options.MUTATIONS.value]:
         for mutantReference in sorted(mutants):
             mutant = mutants[mutantReference]
             mutationLines.append(renderMutant(mutant, firstPrefix='[{}] '.format(mutantReference), prefix='  '))
@@ -164,8 +159,8 @@ def exportEft(fit, options):
     return '{}\n\n{}'.format(header, '\n\n\n'.join(sections))
 
 
-def importEft(eftString):
-    lines = _importPrepareString(eftString)
+def importEft(lines):
+    lines = _importPrepare(lines)
     try:
         fit = _importCreateFit(lines)
     except EftImportError:
@@ -251,14 +246,14 @@ def importEft(eftString):
                     aFit.addCargo(itemSpec)
 
     # Subsystems first because they modify slot amount
-    for m in aFit.subsystems:
+    for i, m in enumerate(aFit.subsystems):
         if m is None:
             dummy = Module.buildEmpty(aFit.getSlotByContainer(aFit.subsystems))
             dummy.owner = fit
-            fit.modules.appendIgnoreEmpty(dummy)
+            fit.modules.replaceRackPosition(i, dummy)
         elif m.fits(fit):
             m.owner = fit
-            fit.modules.appendIgnoreEmpty(m)
+            fit.modules.replaceRackPosition(i, m)
     svcFit.getInstance().recalc(fit)
 
     # Other stuff
@@ -269,16 +264,16 @@ def importEft(eftString):
         aFit.modulesMed,
         aFit.modulesLow,
     ):
-        for m in modRack:
+        for i, m in enumerate(modRack):
             if m is None:
                 dummy = Module.buildEmpty(aFit.getSlotByContainer(modRack))
                 dummy.owner = fit
-                fit.modules.appendIgnoreEmpty(dummy)
+                fit.modules.replaceRackPosition(i, dummy)
             elif m.fits(fit):
                 m.owner = fit
                 if not m.isValidState(m.state):
                     pyfalog.warning('service.port.eft.importEft: module {} cannot have state {}', m, m.state)
-                fit.modules.appendIgnoreEmpty(m)
+                fit.modules.replaceRackPosition(i, m)
     for implant in aFit.implants:
         fit.implants.append(implant)
     for booster in aFit.boosters:
@@ -293,7 +288,7 @@ def importEft(eftString):
     return fit
 
 
-def importEftCfg(shipname, contents, iportuser):
+def importEftCfg(shipname, lines, iportuser):
     """Handle import from EFT config store file"""
 
     # Check if we have such ship in database, bail if we don't
@@ -305,7 +300,6 @@ def importEftCfg(shipname, contents, iportuser):
 
     fits = []  # List for fits
     fitIndices = []  # List for starting line numbers for each fit
-    lines = re.split('[\n\r]+', contents)  # Separate string into lines
 
     for line in lines:
         # Detect fit header
@@ -486,8 +480,7 @@ def importEftCfg(shipname, contents, iportuser):
     return fits
 
 
-def _importPrepareString(eftString):
-    lines = eftString.splitlines()
+def _importPrepare(lines):
     for i in range(len(lines)):
         lines[i] = lines[i].strip()
     while lines and not lines[0]:

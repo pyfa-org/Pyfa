@@ -1,7 +1,7 @@
 # remoteCapacitorTransmitterPowerNeedBonusEffect
 #
 # Used by:
-# Ships from group: Logistics (3 of 6)
+# Ships from group: Logistics (3 of 7)
 type = "passive"
 
 

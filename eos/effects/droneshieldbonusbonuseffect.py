@@ -1,7 +1,7 @@
 # droneShieldBonusBonusEffect
 #
 # Used by:
-# Ships from group: Logistics (5 of 6)
+# Ships from group: Logistics (6 of 7)
 # Ship: Exequror
 # Ship: Scythe
 type = "passive"

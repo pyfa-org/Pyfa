@@ -17,7 +17,7 @@
 # along with eos.  If not, see <http://www.gnu.org/licenses/>.
 # ===============================================================================
 
-from sqlalchemy import Table, Column, Integer, ForeignKey, CheckConstraint, Boolean, DateTime
+from sqlalchemy import Table, Column, Integer, Float, ForeignKey, CheckConstraint, Boolean, DateTime
 from sqlalchemy.orm.collections import attribute_mapped_collection
 from sqlalchemy.orm import relation, mapper
 import datetime
@@ -40,6 +40,8 @@ modules_table = Table("modules", saveddata_meta,
                       Column("position", Integer),
                       Column("created", DateTime, nullable=True, default=datetime.datetime.now),
                       Column("modified", DateTime, nullable=True, onupdate=datetime.datetime.now),
+                      Column("spoolType", Integer, nullable=True),
+                      Column("spoolAmount", Float, nullable=True),
                       CheckConstraint('("dummySlot" = NULL OR "itemID" = NULL) AND "dummySlot" != "itemID"'))
 
 mapper(Module, modules_table,

@@ -2,6 +2,7 @@
 #
 # Used by:
 # Implants named like: Inquest 'Eros' Stasis Webifier MR (3 of 3)
+# Implants named like: Inquest 'Hedone' Entanglement Optimizer WS (3 of 3)
 type = "passive"
 
 

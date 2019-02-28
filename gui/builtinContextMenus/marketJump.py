@@ -26,7 +26,10 @@ class MarketJump(ContextMenu):
 
         sMkt = Market.getInstance()
         item = getattr(selection[0], "item", selection[0])
+        isMutated = getattr(selection[0], "isMutated", False)
         mktGrp = sMkt.getMarketGroupByItem(item)
+        if mktGrp is None and isMutated:
+            mktGrp = sMkt.getMarketGroupByItem(selection[0].baseItem)
 
         # 1663 is Special Edition Festival Assets, we don't have root group for it
         if mktGrp is None or mktGrp.ID == 1663:
@@ -43,7 +46,10 @@ class MarketJump(ContextMenu):
         if srcContext in ("fittingCharge", "projectedCharge"):
             item = selection[0].charge
         elif hasattr(selection[0], "item"):
-            item = selection[0].item
+            if getattr(selection[0], "isMutated", False):
+                item = selection[0].baseItem
+            else:
+                item = selection[0].item
         else:
             item = selection[0]
 

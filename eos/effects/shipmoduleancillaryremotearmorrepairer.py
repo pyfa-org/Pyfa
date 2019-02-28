@@ -2,8 +2,9 @@
 #
 # Used by:
 # Modules from group: Ancillary Remote Armor Repairer (4 of 4)
-runTime = "late"
+
 type = "projected", "active"
+runTime = "late"
 
 
 def handler(fit, module, context, **kwargs):
@@ -17,4 +18,7 @@ def handler(fit, module, context, **kwargs):
 
     amount = module.getModifiedItemAttr("armorDamageAmount") * multiplier
     speed = module.getModifiedItemAttr("duration") / 1000.0
-    fit.extraAttributes.increase("armorRepair", amount / speed, **kwargs)
+    rps = amount / speed
+    fit.extraAttributes.increase("armorRepair", rps)
+    fit.extraAttributes.increase("armorRepairPreSpool", rps)
+    fit.extraAttributes.increase("armorRepairFullSpool", rps)

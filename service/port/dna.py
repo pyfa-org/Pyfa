@@ -138,7 +138,7 @@ def exportDna(fit):
                 mods[mod.itemID] = 0
             mods[mod.itemID] += 1
 
-            if mod.charge and sFit.serviceFittingOptions["exportCharges"]:
+            if mod.charge:
                 if mod.chargeID not in charges:
                     charges[mod.chargeID] = 0
                 # `or 1` because some charges (ie scripts) are without qty

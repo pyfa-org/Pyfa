@@ -28,6 +28,9 @@ from eos.enum import Enum
 from eos.modifiedAttributeDict import ChargeAttrShortcut, ItemAttrShortcut, ModifiedAttributeDict
 from eos.saveddata.citadel import Citadel
 from eos.saveddata.mutator import Mutator
+from eos.utils.float import floatUnerr
+from eos.utils.spoolSupport import calculateSpoolup, resolveSpoolOptions
+from eos.utils.stats import DmgTypes
 
 pyfalog = Logger(__name__)
 
@@ -95,7 +98,6 @@ class Hardpoint(Enum):
 
 class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
     """An instance of this class represents a module together with its charge and modified attributes"""
-    DAMAGE_TYPES = ("em", "thermal", "kinetic", "explosive")
     MINING_ATTRIBUTES = ("miningAmount",)
     SYSTEM_GROUPS = ("Effect Beacon", "MassiveEnvironments", "Abyssal Hazards", "Non-Interactable Object")
 
@@ -168,9 +170,9 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
         if self.__charge and self.__charge.category.name != "Charge":
             self.__charge = None
 
-        self.__dps = None
+        self.__baseVolley = None
+        self.__baseRemoteReps = None
         self.__miningyield = None
-        self.__volley = None
         self.__reloadTime = None
         self.__reloadForce = None
         self.__chargeCycles = None
@@ -247,8 +249,8 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
             if chargeVolume is None or containerCapacity is None:
                 charges = 0
             else:
-                charges = floor(containerCapacity / chargeVolume)
-        return int(charges)
+                charges = int(floatUnerr(containerCapacity / chargeVolume))
+        return charges
 
     @property
     def numShots(self):
@@ -411,35 +413,6 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
 
         self.__itemModifiedAttributes.clear()
 
-    def damageStats(self, targetResists):
-        if self.__dps is None:
-            self.__dps = 0
-            self.__volley = 0
-
-            if not self.isEmpty and self.state >= State.ACTIVE:
-                if self.charge:
-                    func = self.getModifiedChargeAttr
-                else:
-                    func = self.getModifiedItemAttr
-
-                volley = sum([(func("%sDamage" % attr) or 0) * (1 - getattr(targetResists, "%sAmount" % attr, 0)) for attr in self.DAMAGE_TYPES])
-                volley *= self.getModifiedItemAttr("damageMultiplier") or 1
-                # Disintegrator-specific ramp-up multiplier
-                volley *= (self.getModifiedItemAttr("damageMultiplierBonusMax") or 0) + 1
-                if volley:
-                    cycleTime = self.cycleTime
-                    # Some weapons repeat multiple times in one cycle (think doomsdays)
-                    # Get the number of times it fires off
-                    weaponDoT = max(
-                            self.getModifiedItemAttr("doomsdayDamageDuration", 1) / self.getModifiedItemAttr("doomsdayDamageCycleTime", 1),
-                            1
-                    )
-
-                    self.__volley = volley
-                    self.__dps = (volley * weaponDoT) / (cycleTime / 1000.0)
-
-        return self.__dps, self.__volley
-
     @property
     def miningStats(self):
         if self.__miningyield is None:
@@ -459,13 +432,110 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
 
         return self.__miningyield
 
-    @property
-    def dps(self):
-        return self.damageStats(None)[0]
+    def getVolley(self, spoolOptions=None, targetResists=None, ignoreState=False):
+        if self.isEmpty or (self.state < State.ACTIVE and not ignoreState):
+            return DmgTypes(0, 0, 0, 0)
+        if self.__baseVolley is None:
+            dmgGetter = self.getModifiedChargeAttr if self.charge else self.getModifiedItemAttr
+            dmgMult = self.getModifiedItemAttr("damageMultiplier", 1)
+            self.__baseVolley = DmgTypes(
+                em=(dmgGetter("emDamage", 0)) * dmgMult,
+                thermal=(dmgGetter("thermalDamage", 0)) * dmgMult,
+                kinetic=(dmgGetter("kineticDamage", 0)) * dmgMult,
+                explosive=(dmgGetter("explosiveDamage", 0)) * dmgMult)
+        spoolType, spoolAmount = resolveSpoolOptions(spoolOptions, self)
+        spoolBoost = calculateSpoolup(
+            self.getModifiedItemAttr("damageMultiplierBonusMax", 0),
+            self.getModifiedItemAttr("damageMultiplierBonusPerCycle", 0),
+            self.rawCycleTime / 1000, spoolType, spoolAmount)[0]
+        spoolMultiplier = 1 + spoolBoost
+        volley = DmgTypes(
+            em=self.__baseVolley.em * spoolMultiplier * (1 - getattr(targetResists, "emAmount", 0)),
+            thermal=self.__baseVolley.thermal * spoolMultiplier * (1 - getattr(targetResists, "thermalAmount", 0)),
+            kinetic=self.__baseVolley.kinetic * spoolMultiplier * (1 - getattr(targetResists, "kineticAmount", 0)),
+            explosive=self.__baseVolley.explosive * spoolMultiplier * (1 - getattr(targetResists, "explosiveAmount", 0)))
+        return volley
 
-    @property
-    def volley(self):
-        return self.damageStats(None)[1]
+    def getDps(self, spoolOptions=None, targetResists=None, ignoreState=False):
+        volley = self.getVolley(spoolOptions=spoolOptions, targetResists=targetResists, ignoreState=ignoreState)
+        if not volley:
+            return DmgTypes(0, 0, 0, 0)
+        # Some weapons repeat multiple times in one cycle (bosonic doomsdays). Get the number of times it fires off
+        volleysPerCycle = max(self.getModifiedItemAttr("doomsdayDamageDuration", 1) / self.getModifiedItemAttr("doomsdayDamageCycleTime", 1), 1)
+        dpsFactor = volleysPerCycle / (self.cycleTime / 1000)
+        dps = DmgTypes(
+            em=volley.em * dpsFactor,
+            thermal=volley.thermal * dpsFactor,
+            kinetic=volley.kinetic * dpsFactor,
+            explosive=volley.explosive * dpsFactor)
+        return dps
+
+    def getRemoteReps(self, spoolOptions=None, ignoreState=False):
+        if self.isEmpty or (self.state < State.ACTIVE and not ignoreState):
+            return None, 0
+
+        def getBaseRemoteReps(module):
+            remoteModuleGroups = {
+                "Remote Armor Repairer": "Armor",
+                "Ancillary Remote Armor Repairer": "Armor",
+                "Mutadaptive Remote Armor Repairer": "Armor",
+                "Remote Hull Repairer": "Hull",
+                "Remote Shield Booster": "Shield",
+                "Ancillary Remote Shield Booster": "Shield",
+                "Remote Capacitor Transmitter": "Capacitor"}
+            rrType = remoteModuleGroups.get(module.item.group.name, None)
+            if not rrType:
+                return None, 0
+            if rrType == "Hull":
+                rrAmount = module.getModifiedItemAttr("structureDamageAmount", 0)
+            elif rrType == "Armor":
+                rrAmount = module.getModifiedItemAttr("armorDamageAmount", 0)
+            elif rrType == "Shield":
+                rrAmount = module.getModifiedItemAttr("shieldBonus", 0)
+            elif rrType == "Capacitor":
+                rrAmount = module.getModifiedItemAttr("powerTransferAmount", 0)
+            else:
+                return None, 0
+            if rrAmount:
+                rrAmount *= 1 / (self.cycleTime / 1000)
+                if module.item.group.name == "Ancillary Remote Armor Repairer" and module.charge:
+                    rrAmount *= module.getModifiedItemAttr("chargedArmorDamageMultiplier", 1)
+
+            return rrType, rrAmount
+
+        if self.__baseRemoteReps is None:
+            self.__baseRemoteReps = getBaseRemoteReps(self)
+
+        rrType, rrAmount = self.__baseRemoteReps
+
+        if rrType and rrAmount and self.item.group.name == "Mutadaptive Remote Armor Repairer":
+            spoolType, spoolAmount = resolveSpoolOptions(spoolOptions, self)
+            spoolBoost = calculateSpoolup(
+                self.getModifiedItemAttr("repairMultiplierBonusMax", 0),
+                self.getModifiedItemAttr("repairMultiplierBonusPerCycle", 0),
+                self.rawCycleTime / 1000, spoolType, spoolAmount)[0]
+            rrAmount *= (1 + spoolBoost)
+
+        return rrType, rrAmount
+
+    def getSpoolData(self, spoolOptions=None):
+        weaponMultMax = self.getModifiedItemAttr("damageMultiplierBonusMax", 0)
+        weaponMultPerCycle = self.getModifiedItemAttr("damageMultiplierBonusPerCycle", 0)
+        if weaponMultMax and weaponMultPerCycle:
+            spoolType, spoolAmount = resolveSpoolOptions(spoolOptions, self)
+            _, spoolCycles, spoolTime = calculateSpoolup(
+                weaponMultMax, weaponMultPerCycle,
+                self.rawCycleTime / 1000, spoolType, spoolAmount)
+            return spoolCycles, spoolTime
+        rrMultMax = self.getModifiedItemAttr("repairMultiplierBonusMax", 0)
+        rrMultPerCycle = self.getModifiedItemAttr("repairMultiplierBonusPerCycle", 0)
+        if rrMultMax and rrMultPerCycle:
+            spoolType, spoolAmount = resolveSpoolOptions(spoolOptions, self)
+            _, spoolCycles, spoolTime = calculateSpoolup(
+                rrMultMax, rrMultPerCycle,
+                self.rawCycleTime / 1000, spoolType, spoolAmount)
+            return spoolCycles, spoolTime
+        return 0, 0
 
     @property
     def reloadTime(self):
@@ -718,9 +788,9 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
             return val
 
     def clear(self):
-        self.__dps = None
+        self.__baseVolley = None
+        self.__baseRemoteReps = None
         self.__miningyield = None
-        self.__volley = None
         self.__reloadTime = None
         self.__reloadForce = None
         self.__chargeCycles = None

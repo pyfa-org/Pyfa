@@ -22,7 +22,22 @@ class ItemMutator(wx.Panel):
         self.item = item
         self.timer = None
         self.activeFit = gui.mainFrame.MainFrame.getInstance().getActiveFit()
+
+        font = parent.GetFont()
+        font.SetWeight(wx.BOLD)
+
         mainSizer = wx.BoxSizer(wx.VERTICAL)
+
+        sourceItemsSizer = wx.BoxSizer(wx.HORIZONTAL)
+        sourceItemsSizer.Add(BitmapLoader.getStaticBitmap(stuff.item.iconID, self, "icons"), 0, wx.LEFT, 5)
+        sourceItemsSizer.Add(BitmapLoader.getStaticBitmap(stuff.mutaplasmid.item.iconID, self, "icons"), 0, wx.LEFT, 0)
+        sourceItemShort = "{} {}".format(stuff.mutaplasmid.item.name.split(" ")[0], stuff.baseItem.name)
+        sourceItemText = wx.StaticText(self, wx.ID_ANY, sourceItemShort)
+        sourceItemText.SetFont(font)
+        sourceItemsSizer.Add(sourceItemText, 0, wx.LEFT, 10)
+        mainSizer.Add(sourceItemsSizer, 0, wx.TOP | wx.EXPAND, 10)
+
+        mainSizer.Add(wx.StaticLine(self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.LI_HORIZONTAL), 0, wx.ALL | wx.EXPAND, 5)
 
         self.goodColor = wx.Colour(96, 191, 0)
         self.badColor = wx.Colour(255, 64, 0)
@@ -30,29 +45,43 @@ class ItemMutator(wx.Panel):
         self.event_mapping = {}
 
         for m in sorted(stuff.mutators.values(), key=lambda x: x.attribute.displayName):
-            # create array for the two ranges
-            min_t = [m.minValue, m.minMod, None]
-            max_t = [m.maxValue, m.maxMod, None]
+            # Format: [raw value, modifier applied to base raw value, display value]
+            range1 = (m.minValue, m.attribute.unit.SimplifyValue(m.minValue))
+            range2 = (m.maxValue, m.attribute.unit.SimplifyValue(m.maxValue))
 
-            # Then we need to determine if it's better than original, which will be the color
-            min_t[2] = min_t[1] < 1 if not m.highIsGood else 1 < min_t[1]
-            max_t[2] = max_t[1] < 1 if not m.highIsGood else 1 < max_t[1]
-
-            # Lastly, we need to determine which range value is "worse" (left side) or "better" (right side)
-            if (m.highIsGood and min_t[1] > max_t[1]) or (not m.highIsGood and min_t[1] < max_t[1]):
-                better_range = min_t
+            # minValue/maxValue do not always correspond to min/max, because these are
+            # just base value multiplied by minMod/maxMod, and in case base is negative
+            # minValue is actually bigger than maxValue
+            if range1[0] <= range2[0]:
+                minRange = range1
+                maxRange = range2
             else:
-                better_range = max_t
+                minRange = range2
+                maxRange = range1
 
-            if (m.highIsGood and max_t[1] < min_t[1]) or (not m.highIsGood and max_t[1] > min_t[1]):
-                worse_range = max_t
+            if (m.highIsGood and minRange[0] >= maxRange[0]) or (not m.highIsGood and minRange[0] <= maxRange[0]):
+                betterRange = minRange
+                worseRange = maxRange
             else:
-                worse_range = min_t
+                betterRange = maxRange
+                worseRange = minRange
+
+            if minRange[1] >= maxRange[1]:
+                displayMaxRange = minRange
+                displayMinRange = maxRange
+            else:
+                displayMaxRange = maxRange
+                displayMinRange = minRange
+
+            # If base value is outside of mutation range, make sure that center of slider
+            # corresponds to the value which is closest available to actual base value. It's
+            # how EVE handles it
+            if minRange[0] <= m.baseValue <= maxRange[0]:
+                sliderBaseValue = m.baseValue
+            else:
+                sliderBaseValue = max(minRange[0], min(maxRange[0], m.baseValue))
 
             headingSizer = wx.BoxSizer(wx.HORIZONTAL)
-
-            font = parent.GetFont()
-            font.SetWeight(wx.BOLD)
 
             headingSizer.Add(BitmapLoader.getStaticBitmap(m.attribute.iconID, self, "icons"), 0, wx.RIGHT, 10)
 
@@ -61,25 +90,25 @@ class ItemMutator(wx.Panel):
 
             headingSizer.Add(displayName, 3, wx.ALL | wx.EXPAND, 0)
 
-            worst_val = ItemParams.FormatValue(*m.attribute.unit.PreformatValue(worse_range[0]), rounding='dec')
-            worst_text = wx.StaticText(self, wx.ID_ANY, worst_val)
-            worst_text.SetForegroundColour(self.goodColor if worse_range[2] else self.badColor)
+            worseVal = ItemParams.FormatValue(*m.attribute.unit.PreformatValue(worseRange[0]), rounding='dec')
+            worseText = wx.StaticText(self, wx.ID_ANY, worseVal)
+            worseText.SetForegroundColour(self.badColor)
 
-            best_val = ItemParams.FormatValue(*m.attribute.unit.PreformatValue(better_range[0]), rounding='dec')
-            best_text = wx.StaticText(self, wx.ID_ANY, best_val)
-            best_text.SetForegroundColour(self.goodColor if better_range[2] else self.badColor)
+            betterVal = ItemParams.FormatValue(*m.attribute.unit.PreformatValue(betterRange[0]), rounding='dec')
+            betterText = wx.StaticText(self, wx.ID_ANY, betterVal)
+            betterText.SetForegroundColour(self.goodColor)
 
-            headingSizer.Add(worst_text, 0, wx.ALL | wx.EXPAND, 0)
+            headingSizer.Add(worseText, 0, wx.ALL | wx.EXPAND, 0)
             headingSizer.Add(wx.StaticText(self, wx.ID_ANY, " ─ "), 0, wx.RIGHT | wx.LEFT | wx.EXPAND, 5)
-            headingSizer.Add(best_text, 0, wx.RIGHT | wx.EXPAND, 10)
+            headingSizer.Add(betterText, 0, wx.RIGHT | wx.EXPAND, 10)
 
             mainSizer.Add(headingSizer, 0, wx.ALL | wx.EXPAND, 5)
 
             slider = AttributeSlider(parent=self,
-                                     baseValue=m.attribute.unit.SimplifyValue(m.baseValue),
-                                     minValue=m.attribute.unit.SimplifyValue(min_t[0]),
-                                     maxValue=m.attribute.unit.SimplifyValue(max_t[0]),
-                                     inverse=better_range is min_t)
+                                     baseValue=m.attribute.unit.SimplifyValue(sliderBaseValue),
+                                     minValue=displayMinRange[1],
+                                     maxValue=displayMaxRange[1],
+                                     inverse=displayMaxRange is worseRange)
             slider.SetValue(m.attribute.unit.SimplifyValue(m.value), False)
             slider.Bind(EVT_VALUE_CHANGED, self.changeMutatedValue)
             self.event_mapping[slider] = m

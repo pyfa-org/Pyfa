@@ -706,7 +706,7 @@
   - tech2
   iconFile: res:/ui/texture/icons/12_64_13.png
 398:
-  description: Corpse floating in space (male?). - Corpse
+  description: chemical item
   iconFile: res:/ui/texture/icons/11_64_5.png
 400:
   description: Mineral - Pyerite
@@ -10432,3 +10432,66 @@
 22076:
   description: Gift Box with Ribbon
   iconFile: res:/ui/texture/icons/76_64_3.png
+22077:
+  description: 49978_Male_outer_ExplorationSuit_M01_Types_ExplorationSuit_M01_W.png
+  iconFile: res:/UI/Asset/mannequin/outer/49978_Male_outer_ExplorationSuit_M01_Types_ExplorationSuit_M01_W.png
+22078:
+  description: 49980_Female_Outer_ExplorationSuit_F01_Types_ExplorationSuit_F01_W.png
+  iconFile: res:/UI/Asset/mannequin/outer/49980_Female_Outer_ExplorationSuit_F01_Types_ExplorationSuit_F01_W.png
+22079:
+  description: Preview for reward track augmentations
+  iconFile: res:/UI/Texture/Icons/RewardTrack/reward_Holiday2018_Augmentation1.png
+22080:
+  description: Preview for reward track augmentations
+  iconFile: res:/UI/Texture/Icons/RewardTrack/reward_Holiday2018_Augmentation2.png
+22081:
+  description: Holiday'18 Crate - Drake/Rupture Splash
+  iconFile: res:/UI/Texture/classes/ItemPacks/SplashImages/Holiday2018/splash_Holiday2018_DrakeRupture.png
+22082:
+  description: Holiday'18 Crate - ExpSuits
+  iconFile: res:/UI/Texture/classes/ItemPacks/SplashImages/Holiday2018/splash_Holiday2018_ExplorationSuits.png
+22084:
+  description: Holiday'18 Crate - Augmentation Set 1
+  iconFile: res:/UI/Texture/classes/ItemPacks/SplashImages/Holiday2018/splash_Holiday2018_FaceAugmentation1.png
+22085:
+  description: Holiday'18 Crate - Augmentation Set 2
+  iconFile: res:/UI/Texture/classes/ItemPacks/SplashImages/Holiday2018/splash_Holiday2018_FaceAugmentation2.png
+22086:
+  description: Holiday'18 Crate - Gnosis/Punisher Splash
+  iconFile: res:/UI/Texture/classes/ItemPacks/SplashImages/Holiday2018/splash_Holiday2018_GnosisPunisher.png
+22087:
+  description: 49978_Male_outer_ExplorationSuit_M01_Types_ExplorationSuit_M01_W.png
+  iconFile: res:/UI/Asset/mannequin/outer/49978_Male_outer_ExplorationSuit_M01_Types_ExplorationSuit_M01_W.png
+22088:
+  description: 49980_Female_Outer_ExplorationSuit_F01_Types_ExplorationSuit_F01_W.png
+  iconFile: res:/UI/Asset/mannequin/outer/49980_Female_Outer_ExplorationSuit_F01_Types_ExplorationSuit_F01_W.png
+22089:
+  description: 49984_Female_Makeup_Augmentations_Face_Paint_F01_Types_Face_Paint_F01_V0_Blue.png
+  iconFile: res:/UI/Asset/mannequin/makeup_augmentations/49984_Female_Makeup_Augmentations_Face_Paint_F01_Types_Face_Paint_F01_V0_Blue.png
+22090:
+  description: 49985_Female_Makeup_Augmentations_Face_Paint_F01_Types_Face_Paint_F01_V10_W.png
+  iconFile: res:/UI/Asset/mannequin/makeup_augmentations/49985_Female_Makeup_Augmentations_Face_Paint_F01_Types_Face_Paint_F01_V10_W.png
+22091:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
+  description: Mutadaptive Remote Repairer
+  foregrounds:
+  - faction
+  - tech2
+  iconFile: res:/ui/texture/icons/modules/abyssalRemoteRepairer.png
+22092:
+  description: 49987_Male_Makeup_Augmentations_Face_Paint_M01_Types_Face_Paint_M01_V6_Blue.png
+  iconFile: res:/UI/Asset/mannequin/makeup_augmentations/49987_Male_Makeup_Augmentations_Face_Paint_M01_Types_Face_Paint_M01_V6_Blue.png
+22093:
+  description: Generic SKIN icon for crates containing multiple SKINs
+  iconFile: res:/UI/Texture/Icons/RewardTrack/crateSkinContainer.png
+22094:
+  description: Preview icon for exploration suit reward track winter'18
+  iconFile: res:/UI/Texture/Icons/RewardTrack/crateWinterExplorationSuit.png
+22095:
+  description: 49986_male_Makeup_Augmentations_Face_Paint_M01_Types_Face_Paint_M01_V10_W.png
+  iconFile: res:/UI/Asset/mannequin/makeup_augmentations/49986_male_Makeup_Augmentations_Face_Paint_M01_Types_Face_Paint_M01_V10_W.png
+22096:
+  description: Winter Login Campaign Banner
+  iconFile: res:/UI/Texture/LoginCampaigns/Winter_2018.png

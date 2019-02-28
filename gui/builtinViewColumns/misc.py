@@ -27,7 +27,7 @@ from gui.viewColumn import ViewColumn
 from gui.bitmap_loader import BitmapLoader
 from gui.utils.numberFormatter import formatAmount
 from gui.utils.listFormatter import formatList
-from eos.saveddata.drone import Drone
+from eos.utils.spoolSupport import SpoolType, SpoolOptions
 
 
 class Miscellanea(ViewColumn):
@@ -93,7 +93,9 @@ class Miscellanea(ViewColumn):
                 text = ""
                 tooltip = ""
             elif max(doomsday_duration / doomsday_dottime, 1) > 1:
-                text = "{0} dmg over {1} s".format(formatAmount(volley * (doomsday_duration / doomsday_dottime), 3, 0, 3), doomsday_duration / 1000)
+                text = "{} over {}s".format(
+                    formatAmount(volley * (doomsday_duration / doomsday_dottime), 3, 0, 6),
+                    formatAmount((doomsday_duration / 1000), 0, 0, 0))
                 tooltip = "Raw damage done over time"
             else:
                 text = "{0} dmg".format(formatAmount(volley * (doomsday_duration / doomsday_dottime), 3, 0, 3))
@@ -115,16 +117,13 @@ class Miscellanea(ViewColumn):
                 text = "{0}".format(formatAmount(trackingSpeed, 3, 0, 3))
                 tooltip = "tracking speed"
                 info.append((text, tooltip))
-            maxBonusDamage = stuff.getModifiedItemAttr("damageMultiplierBonusMax")
-            bonusDamagePerCycle = stuff.getModifiedItemAttr("damageMultiplierBonusPerCycle")
-            cycleTime = stuff.getModifiedItemAttr("speed")
-            if maxBonusDamage and bonusDamagePerCycle and cycleTime:
-                cyclesToFullDamage = int(maxBonusDamage / bonusDamagePerCycle)
-                timeToFullDamage = (cycleTime / 1000) * cyclesToFullDamage
-                if cyclesToFullDamage:
-                    text = "{0}s".format(formatAmount(timeToFullDamage, 3, 0, 3))
-                    tooltip = "spool-up time"
-                    info.append((text, tooltip))
+            # TODO: fetch spoolup option
+            defaultSpoolValue = 1
+            spoolTime = stuff.getSpoolData(spoolOptions=SpoolOptions(SpoolType.SCALE, defaultSpoolValue, False))[1]
+            if spoolTime:
+                text = "{0}s".format(formatAmount(spoolTime, 3, 0, 3))
+                tooltip = "spool up time"
+                info.append((text, tooltip))
             if not info:
                 return "", None
             text = ' | '.join(i[0] for i in info)
@@ -333,39 +332,61 @@ class Miscellanea(ViewColumn):
             tooltip = "Sensor recalibration time"
             return text, tooltip
         elif itemGroup == "Remote Armor Repairer":
-            repAmount = stuff.getModifiedItemAttr("armorDamageAmount")
-            cycleTime = stuff.getModifiedItemAttr("duration")
-            if not repAmount or not cycleTime:
+            rps = stuff.getRemoteReps(ignoreState=True)[1]
+            if not rps:
                 return "", None
-            repPerSec = float(repAmount) * 1000 / cycleTime
-            text = "{0}/s".format(formatAmount(repPerSec, 3, 0, 3, forceSign=True))
+            text = "{0}/s".format(formatAmount(rps, 3, 0, 3, forceSign=True))
             tooltip = "Armor repaired per second"
             return text, tooltip
-        elif itemGroup == "Remote Shield Booster":
-            repAmount = stuff.getModifiedItemAttr("shieldBonus")
-            cycleTime = stuff.cycleTime
-            if not repAmount or not cycleTime:
+        elif itemGroup == "Mutadaptive Remote Armor Repairer":
+            # TODO: fetch spoolup option
+            defaultSpoolValue = 1
+            spoolOptDefault = SpoolOptions(SpoolType.SCALE, defaultSpoolValue, False)
+            spoolOptPre = SpoolOptions(SpoolType.SCALE, 0, True)
+            spoolOptFull = SpoolOptions(SpoolType.SCALE, 1, True)
+            rrType, rps = stuff.getRemoteReps(spoolOptions=spoolOptDefault, ignoreState=True)
+            rrTypePre, rpsPre = stuff.getRemoteReps(spoolOptions=spoolOptPre, ignoreState=True)
+            rrTypeFull, rpsFull = stuff.getRemoteReps(spoolOptions=spoolOptFull, ignoreState=True)
+            if not rps:
                 return "", None
-            repPerSec = float(repAmount) * 1000 / cycleTime
-            text = "{0}/s".format(formatAmount(repPerSec, 3, 0, 3, forceSign=True))
+            text = []
+            tooltip = []
+            text.append("{}/s".format(formatAmount(rps, 3, 0, 3, forceSign=True)))
+            tooltip.append("Armor repaired per second")
+            spoolTime = stuff.getSpoolData(spoolOptDefault)[1]
+            if spoolTime:
+                text.append("{}s".format(formatAmount(spoolTime, 3, 0, 3)))
+                tooltip.append("spool up time")
+            text = " | ".join(text)
+            tooltip = " and ".join(tooltip)
+            spoolTimePre = stuff.getSpoolData(spoolOptPre)[1]
+            spoolTimeFull = stuff.getSpoolData(spoolOptFull)[1]
+            if spoolTimePre != spoolTimeFull:
+                tooltip = "{}\nSpool up: {}-{} over {}s".format(
+                    tooltip,
+                    formatAmount(rpsPre, 3, 0, 3),
+                    formatAmount(rpsFull, 3, 0, 3),
+                    formatAmount(spoolTimeFull - spoolTimePre, 3, 0, 3))
+            return text, tooltip
+        elif itemGroup == "Remote Shield Booster":
+            rps = stuff.getRemoteReps(ignoreState=True)[1]
+            if not rps:
+                return "", None
+            text = "{0}/s".format(formatAmount(rps, 3, 0, 3, forceSign=True))
             tooltip = "Shield transferred per second"
             return text, tooltip
         elif itemGroup == "Remote Capacitor Transmitter":
-            repAmount = stuff.getModifiedItemAttr("powerTransferAmount")
-            cycleTime = stuff.cycleTime
-            if not repAmount or not cycleTime:
+            rps = stuff.getRemoteReps(ignoreState=True)[1]
+            if not rps:
                 return "", None
-            repPerSec = float(repAmount) * 1000 / cycleTime
-            text = "{0}/s".format(formatAmount(repPerSec, 3, 0, 3, forceSign=True))
+            text = "{0}/s".format(formatAmount(rps, 3, 0, 3, forceSign=True))
             tooltip = "Energy transferred per second"
             return text, tooltip
         elif itemGroup == "Remote Hull Repairer":
-            repAmount = stuff.getModifiedItemAttr("structureDamageAmount")
-            cycleTime = stuff.cycleTime
-            if not repAmount or not cycleTime:
+            rps = stuff.getRemoteReps(ignoreState=True)[1]
+            if not rps:
                 return "", None
-            repPerSec = float(repAmount) * 1000 / cycleTime
-            text = "{0}/s".format(formatAmount(repPerSec, 3, 0, 3, forceSign=True))
+            text = "{0}/s".format(formatAmount(rps, 3, 0, 3, forceSign=True))
             tooltip = "Structure repaired per second"
             return text, tooltip
         elif itemGroup == "Gang Coordinator":
@@ -463,28 +484,11 @@ class Miscellanea(ViewColumn):
             tooltip = "Mining Yield per second ({0} per hour)".format(formatAmount(minePerSec * 3600, 3, 0, 3))
             return text, tooltip
         elif itemGroup == "Logistic Drone":
-            armorAmount = stuff.getModifiedItemAttr("armorDamageAmount")
-            shieldAmount = stuff.getModifiedItemAttr("shieldBonus")
-            hullAmount = stuff.getModifiedItemAttr("structureDamageAmount")
-            repAmount = armorAmount or shieldAmount or hullAmount
-            cycleTime = stuff.getModifiedItemAttr("duration")
-            if not repAmount or not cycleTime:
+            repType, rps = stuff.getRemoteReps(ignoreState=True)
+            if not repType:
                 return "", None
-            repPerSecPerDrone = repPerSec = float(repAmount) * 1000 / cycleTime
-
-            if isinstance(stuff, Drone):
-                repPerSec *= stuff.amount
-
-            text = "{0}/s".format(formatAmount(repPerSec, 3, 0, 3))
-            ttEntries = []
-            if hullAmount is not None and repAmount == hullAmount:
-                ttEntries.append("structure")
-            if armorAmount is not None and repAmount == armorAmount:
-                ttEntries.append("armor")
-            if shieldAmount is not None and repAmount == shieldAmount:
-                ttEntries.append("shield")
-
-            tooltip = "{0} HP repaired per second\n{1} HP/s per drone".format(formatList(ttEntries).capitalize(), repPerSecPerDrone)
+            text = "{}/s".format(formatAmount(rps, 3, 0, 3))
+            tooltip = "{} HP repaired per second\n{} HP/s per drone".format(repType, formatAmount(rps / stuff.amount, 3, 0, 3))
             return text, tooltip
         elif itemGroup == "Energy Neutralizer Drone":
             neutAmount = stuff.getModifiedItemAttr("energyNeutralizerAmount")
@@ -500,7 +504,7 @@ class Miscellanea(ViewColumn):
             text = "{0}s".format(cycleTime)
             tooltip = "Spoolup time"
             return text, tooltip
-        elif itemGroup in ("Siege Module", "Cynosural Field"):
+        elif itemGroup in ("Siege Module", "Cynosural Field Generator"):
             amt = stuff.getModifiedItemAttr("consumptionQuantity")
             if amt:
                 typeID = stuff.getModifiedItemAttr("consumptionType")

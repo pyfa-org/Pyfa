@@ -141,6 +141,23 @@ class HandledModuleList(HandledList):
             self.remove(mod)
             return
 
+    def replaceRackPosition(self, rackPosition, mod):
+        listPositions = []
+        for currMod in self:
+            if currMod.slot == mod.slot:
+                listPositions.append(currMod.position)
+        listPositions.sort()
+        try:
+            modListPosition = listPositions[rackPosition]
+        except IndexError:
+            self.appendIgnoreEmpty(mod)
+        else:
+            self.toDummy(modListPosition)
+            if not mod.isEmpty:
+                self.toModule(modListPosition, mod)
+                if mod.isInvalid:
+                    self.toDummy(modListPosition)
+
     def insert(self, index, mod):
         mod.position = index
         i = index

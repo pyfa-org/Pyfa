@@ -1,13 +1,8 @@
-import inspect
-import os
-import platform
-import re
-import sys
-import traceback
 import json
 import eos.db
 
 from math import log
+from numbers import Number
 from config import version as pyfaVersion
 from service.fit import Fit
 from service.market import Market
@@ -15,8 +10,11 @@ from eos.enum import Enum
 from eos.saveddata.module import Hardpoint, Slot, Module, State
 from eos.saveddata.drone import Drone
 from eos.effectHandlerHelpers import HandledList
-from eos.db import gamedata_session, getItemsByCategory, getCategory, getAttributeInfo, getGroup
-from eos.gamedata import Category, Group, Item, Traits, Attribute, Effect, ItemEffect
+from eos.db import gamedata_session, getCategory, getAttributeInfo, getGroup
+from eos.gamedata import Attribute, Effect, Group, Item, ItemEffect
+from eos.utils.spoolSupport import SpoolType, SpoolOptions
+from gui.fitCommands.calc.fitAddModule import FitAddModuleCommand
+from gui.fitCommands.calc.fitRemoveModule import FitRemoveModuleCommand
 from logbook import Logger
 pyfalog = Logger(__name__)
 
@@ -29,9 +27,9 @@ class RigSize(Enum):
     CAPITAL = 4
 
 
-class EfsPort():
+class EfsPort:
     wepTestSet = {}
-    version = 0.02
+    version = 0.03
 
     @staticmethod
     def attrDirectMap(values, target, source):
@@ -71,12 +69,12 @@ class EfsPort():
 
         if propID is None:
             return None
-        sFit.appendModule(fitID, propID)
+        FitAddModuleCommand(fitID, propID).Do()
         sFit.recalc(fit)
         fit = eos.db.getFit(fitID)
         mwdPropSpeed = fit.maxSpeed
         mwdPosition = list(filter(lambda mod: mod.item and mod.item.ID == propID, fit.modules))[0].position
-        sFit.removeModule(fitID, mwdPosition)
+        FitRemoveModuleCommand(fitID, [mwdPosition]).Do()
         sFit.recalc(fit)
         fit = eos.db.getFit(fitID)
         return mwdPropSpeed
@@ -111,9 +109,12 @@ class EfsPort():
             "Burst Projectors", "Warp Disrupt Field Generator", "Armor Resistance Shift Hardener",
             "Target Breaker", "Micro Jump Drive", "Ship Modifiers", "Stasis Grappler",
             "Ancillary Remote Shield Booster", "Ancillary Remote Armor Repairer",
-            "Titan Phenomena Generator", "Non-Repeating Hardeners"
+            "Titan Phenomena Generator", "Non-Repeating Hardeners", "Mutadaptive Remote Armor Repairer"
         ]
         projectedMods = list(filter(lambda mod: mod.item and mod.item.group.name in modGroupNames, fit.modules))
+        # Sort projections to prevent the order needlessly changing as pyfa updates.
+        projectedMods.sort(key=lambda mod: mod.item.ID)
+        projectedMods.sort(key=lambda mod: mod.item.group.ID)
         projections = []
         for mod in projectedMods:
             maxRangeDefault = 0
@@ -144,7 +145,9 @@ class EfsPort():
             elif mod.item.group.name in ["Remote Shield Booster", "Ancillary Remote Shield Booster"]:
                 stats["type"] = "Remote Shield Booster"
                 EfsPort.attrDirectMap(["shieldBonus"], stats, mod)
-            elif mod.item.group.name in ["Remote Armor Repairer", "Ancillary Remote Armor Repairer"]:
+            elif mod.item.group.name in [
+                    "Remote Armor Repairer", "Ancillary Remote Armor Repairer", "Mutadaptive Remote Armor Repairer"
+            ]:
                 stats["type"] = "Remote Armor Repairer"
                 EfsPort.attrDirectMap(["armorDamageAmount"], stats, mod)
             elif mod.item.group.name == "Warp Scrambler":
@@ -190,7 +193,7 @@ class EfsPort():
         return projections
 
     # Note that unless padTypeIDs is True all 0s will be removed from modTypeIDs in the return.
-    # They always are added initally for the sake of brevity, as this option may not be retained long term.
+    # They always are added initially for the sake of brevity, as this option may not be retained long term.
     @staticmethod
     def getModuleInfo(fit, padTypeIDs=False):
         moduleNames = []
@@ -302,8 +305,11 @@ class EfsPort():
     def getWeaponSystemData(fit):
         weaponSystems = []
         groups = {}
+        # Export at maximum spool for consistency, spoolup data is exported anyway.
+        defaultSpoolValue = 1
+        spoolOptions = SpoolOptions(SpoolType.SCALE, defaultSpoolValue, True)
         for mod in fit.modules:
-            if mod.dps > 0:
+            if mod.getDps(spoolOptions=spoolOptions).total > 0:
                 # Group weapon + ammo combinations that occur more than once
                 keystr = str(mod.itemID) + "-" + str(mod.chargeID)
                 if keystr in groups:
@@ -320,6 +326,7 @@ class EfsPort():
             explosionRadius = 0
             explosionVelocity = 0
             aoeFieldRange = 0
+            typeing = 'None'
             if stats.charge:
                 name = stats.item.name + ", " + stats.charge.name
             else:
@@ -339,16 +346,16 @@ class EfsPort():
                 aoeFieldRange = stats.getModifiedItemAttr("empFieldRange")
                 # This also covers non-bomb weapons with dps values and no hardpoints, most notably targeted doomsdays.
                 typeing = "SmartBomb"
-            # Targeted DDs are the only non drone/fighter weapon without an explict max range
+            # Targeted DDs are the only non drone/fighter weapon without an explicit max range
             if stats.item.group.name == 'Super Weapon' and stats.maxRange is None:
                 maxRange = 300000
             else:
                 maxRange = stats.maxRange
             statDict = {
-                "dps": stats.dps * n, "capUse": stats.capUse * n, "falloff": stats.falloff,
+                "dps": stats.getDps(spoolOptions=spoolOptions).total * n, "capUse": stats.capUse * n, "falloff": stats.falloff,
                 "type": typeing, "name": name, "optimal": maxRange,
                 "numCharges": stats.numCharges, "numShots": stats.numShots, "reloadTime": stats.reloadTime,
-                "cycleTime": stats.cycleTime, "volley": stats.volley * n, "tracking": tracking,
+                "cycleTime": stats.cycleTime, "volley": stats.getVolley(spoolOptions=spoolOptions).total * n, "tracking": tracking,
                 "maxVelocity": maxVelocity, "explosionDelay": explosionDelay, "damageReductionFactor": damageReductionFactor,
                 "explosionRadius": explosionRadius, "explosionVelocity": explosionVelocity, "aoeFieldRange": aoeFieldRange,
                 "damageMultiplierBonusMax": stats.getModifiedItemAttr("damageMultiplierBonusMax"),
@@ -356,19 +363,19 @@ class EfsPort():
             }
             weaponSystems.append(statDict)
         for drone in fit.drones:
-            if drone.dps[0] > 0 and drone.amountActive > 0:
+            if drone.getDps().total > 0 and drone.amountActive > 0:
                 droneAttr = drone.getModifiedItemAttr
                 # Drones are using the old tracking formula for trackingSpeed. This updates it to match turrets.
                 newTracking = droneAttr("trackingSpeed") / (droneAttr("optimalSigRadius") / 40000)
                 statDict = {
-                    "dps": drone.dps[0], "cycleTime": drone.cycleTime, "type": "Drone",
+                    "dps": drone.getDps().total, "cycleTime": drone.cycleTime, "type": "Drone",
                     "optimal": drone.maxRange, "name": drone.item.name, "falloff": drone.falloff,
                     "maxSpeed": droneAttr("maxVelocity"), "tracking": newTracking,
-                    "volley": drone.dps[1]
+                    "volley": drone.getVolley().total
                 }
                 weaponSystems.append(statDict)
         for fighter in fit.fighters:
-            if fighter.dps[0] > 0 and fighter.amountActive > 0:
+            if fighter.getDps().total > 0 and fighter.amountActive > 0:
                 fighterAttr = fighter.getModifiedItemAttr
                 abilities = []
                 if "fighterAbilityAttackMissileDamageEM" in fighter.item.attributes.keys():
@@ -380,10 +387,10 @@ class EfsPort():
                     ability = EfsPort.getFighterAbilityData(fighterAttr, fighter, baseRef)
                     abilities.append(ability)
                 statDict = {
-                    "dps": fighter.dps[0], "type": "Fighter", "name": fighter.item.name,
+                    "dps": fighter.getDps().total, "type": "Fighter", "name": fighter.item.name,
                     "maxSpeed": fighterAttr("maxVelocity"), "abilities": abilities,
                     "ehp": fighterAttr("shieldCapacity") / 0.8875 * fighter.amountActive,
-                    "volley": fighter.dps[1], "signatureRadius": fighterAttr("signatureRadius")
+                    "volley": fighter.getVolley().total, "signatureRadius": fighterAttr("signatureRadius")
                 }
                 weaponSystems.append(statDict)
         return weaponSystems
@@ -510,7 +517,7 @@ class EfsPort():
 
         # Since the effect modules are fairly opaque a mock test fit is used to test the impact of traits.
         # standin class used to prevent . notation causing issues when used as an arg
-        class standin():
+        class standin:
             pass
         tf = standin()
         tf.modules = HandledList(turrets + launchers)
@@ -546,7 +553,7 @@ class EfsPort():
 
     @staticmethod
     def getShipSize(groupID):
-        # Size groupings are somewhat arbitrary but allow for a more managable number of top level groupings in a tree structure.
+        # Size groupings are somewhat arbitrary but allow for a more manageable number of top level groupings in a tree structure.
         frigateGroupNames = ["Frigate", "Shuttle", "Corvette", "Assault Frigate", "Covert Ops", "Interceptor",
                              "Stealth Bomber", "Electronic Attack Ship", "Expedition Frigate", "Logistics Frigate"]
         destroyerGroupNames = ["Destroyer", "Interdictor", "Tactical Destroyer", "Command Destroyer"]
@@ -620,15 +627,38 @@ class EfsPort():
         }
         resonance = {"hull": hullResonance, "armor": armorResonance, "shield": shieldResonance}
         shipSize = EfsPort.getShipSize(fit.ship.item.groupID)
+        # Export at maximum spool for consistency, spoolup data is exported anyway.
+        defaultSpoolValue = 1
+        spoolOptions = SpoolOptions(SpoolType.SCALE, defaultSpoolValue, True)
+
+        def roundNumbers(data, digits):
+            if isinstance(data, str):
+                return
+            if isinstance(data, dict):
+                for key in data:
+                    if isinstance(data[key], Number):
+                        data[key] = round(data[key], digits)
+                    else:
+                        roundNumbers(data[key], digits)
+            if isinstance(data, list) or isinstance(data, tuple):
+                for val in data:
+                    roundNumbers(val, digits)
+            if isinstance(data, Number):
+                rounded = round(data, digits)
+                if data != rounded:
+                    pyfalog.error("Error rounding numbers for EFS export, export may be inconsistent."
+                                  "This suggests the format has been broken somewhere.")
+            return
+
         try:
             dataDict = {
-                "name": fitName, "ehp": fit.ehp, "droneDPS": fit.droneDPS,
-                "droneVolley": fit.droneVolley, "hp": fit.hp, "maxTargets": fit.maxTargets,
-                "maxSpeed": fit.maxSpeed, "weaponVolley": fit.weaponVolley, "totalVolley": fit.totalVolley,
-                "maxTargetRange": fit.maxTargetRange, "scanStrength": fit.scanStrength,
-                "weaponDPS": fit.weaponDPS, "alignTime": fit.alignTime, "signatureRadius": fitModAttr("signatureRadius"),
-                "weapons": weaponSystems, "scanRes": fitModAttr("scanResolution"),
-                "capUsed": fit.capUsed, "capRecharge": fit.capRecharge,
+                "name": fitName, "ehp": fit.ehp, "droneDPS": fit.getDroneDps().total,
+                "droneVolley": fit.getDroneVolley().total, "hp": fit.hp, "maxTargets": fit.maxTargets,
+                "maxSpeed": fit.maxSpeed, "weaponVolley": fit.getWeaponVolley(spoolOptions=spoolOptions).total,
+                "totalVolley": fit.getTotalVolley(spoolOptions=spoolOptions).total, "maxTargetRange": fit.maxTargetRange,
+                "scanStrength": fit.scanStrength, "weaponDPS": fit.getWeaponDps(spoolOptions=spoolOptions).total,
+                "alignTime": fit.alignTime, "signatureRadius": fitModAttr("signatureRadius"), "weapons": weaponSystems,
+                "scanRes": fitModAttr("scanResolution"), "capUsed": fit.capUsed, "capRecharge": fit.capRecharge,
                 "rigSlots": fitModAttr("rigSlots"), "lowSlots": fitModAttr("lowSlots"),
                 "midSlots": fitModAttr("medSlots"), "highSlots": fitModAttr("hiSlots"),
                 "turretSlots": fitModAttr("turretSlotsLeft"), "launcherSlots": fitModAttr("launcherSlotsLeft"),
@@ -642,9 +672,12 @@ class EfsPort():
                 "modTypeIDs": modTypeIDs, "moduleNames": moduleNames,
                 "pyfaVersion": pyfaVersion, "efsExportVersion": EfsPort.version
             }
-        except TypeError:
+            # Recursively round any numbers in dicts to 6 decimal places.
+            # This prevents meaningless rounding errors from changing the output whenever pyfa changes.
+            roundNumbers(dataDict, 6)
+        except TypeError as e:
             pyfalog.error("Error parsing fit:" + str(fit))
-            pyfalog.error(TypeError)
+            pyfalog.error(e)
             dataDict = {"name": fitName + "Fit could not be correctly parsed"}
         export = json.dumps(dataDict, skipkeys=True)
         return export

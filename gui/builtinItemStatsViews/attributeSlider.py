@@ -1,7 +1,10 @@
+import math
+
 import wx
 import wx.lib.newevent
 
 from gui.attribute_gauge import AttributeGauge
+from eos.utils.float import floatUnerr
 
 _ValueChanged, EVT_VALUE_CHANGED = wx.lib.newevent.NewEvent()
 
@@ -58,22 +61,41 @@ class AttributeSlider(wx.Panel):
 
         self.inverse = inverse
 
-        # The internal slider basically represents the percentage towards the end of the range. It has to be normalized
-        # in this way, otherwise when we start off with a base, if the range is skewed to one side, the base value won't
-        # be centered. We use a range of -100,100 so that we can depend on the SliderValue to contain the percentage
-        # toward one end
+        def getStep(valRange):
+            """
+            Find step for the passed range, which is based on 1, 2 or 5.
+            Step returned will make sure that range fits 10..50 of them,
+            as close to 10 as possible.
+            """
+            steps = {1: None, 2: None, 5: None}
+            for baseInc in steps:
+                baseIncAmount = valRange / baseInc
+                incScale = math.floor(math.log10(baseIncAmount) - 1)
+                steps[baseInc] = baseInc * 10 ** incScale
+            chosenBase = min(steps, key=lambda base: valRange / steps[base])
+            chosenStep = steps[chosenBase]
+            if inverse:
+                chosenStep *= -1
+            return chosenStep
 
-        # Additionally, since we want the slider to be accurate to 3 decimal places, we need to blow out the two ends here
-        # (if we have a slider that needs to land on 66.66% towards the right, it will actually be converted to 66%. Se we need it to support 6,666)
-        #
-        # self.SliderMinValue = -100
-        # self.SliderMaxValue = 100
-        # self.SliderValue = 0
+        def getDigitPlaces(minValue, maxValue):
+            minDigits = 3
+            maxDigits = 5
+            currentDecision = minDigits
+            for value in (floatUnerr(minValue), floatUnerr(maxValue)):
+                for currentDigit in range(minDigits, maxDigits + 1):
+                    if round(value, currentDigit) == value:
+                        if currentDigit > currentDecision:
+                            currentDecision = currentDigit
+                        break
+                # Max decimal places we can afford to show was not enough
+                else:
+                     return maxDigits
+            return currentDecision
 
-        range = [self.UserMinValue, self.UserMaxValue]
+        self.ctrl = wx.SpinCtrlDouble(self, min=minValue, max=maxValue, inc=getStep(maxValue - minValue))
+        self.ctrl.SetDigits(getDigitPlaces(minValue, maxValue))
 
-        self.ctrl = wx.SpinCtrlDouble(self, min=min(range), max=max(range))
-        self.ctrl.SetDigits(3)
 
         self.ctrl.Bind(wx.EVT_SPINCTRLDOUBLE, self.UpdateValue)
 

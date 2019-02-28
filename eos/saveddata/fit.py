@@ -34,6 +34,7 @@ from eos.saveddata.drone import Drone
 from eos.saveddata.character import Character
 from eos.saveddata.citadel import Citadel
 from eos.saveddata.module import Module, State, Slot, Hardpoint
+from eos.utils.stats import DmgTypes
 from logbook import Logger
 pyfalog = Logger(__name__)
 
@@ -120,10 +121,11 @@ class Fit(object):
     def build(self):
         self.__extraDrains = []
         self.__ehp = None
-        self.__weaponDPS = None
+        self.__weaponDpsMap = {}
+        self.__weaponVolleyMap = {}
+        self.__remoteRepMap = {}
         self.__minerYield = None
-        self.__weaponVolley = None
-        self.__droneDPS = None
+        self.__droneDps = None
         self.__droneVolley = None
         self.__droneYield = None
         self.__sustainableTank = None
@@ -135,12 +137,6 @@ class Fit(object):
         self.__capUsed = None
         self.__capRecharge = None
         self.__calculatedTargets = []
-        self.__remoteReps = {
-            "Armor"    : None,
-            "Shield"   : None,
-            "Hull"     : None,
-            "Capacitor": None,
-        }
         self.factorReload = False
         self.boostsFits = set()
         self.gangBoosts = None
@@ -154,9 +150,9 @@ class Fit(object):
     @targetResists.setter
     def targetResists(self, targetResists):
         self.__targetResists = targetResists
-        self.__weaponDPS = None
-        self.__weaponVolley = None
-        self.__droneDPS = None
+        self.__weaponDpsMap = {}
+        self.__weaponVolleyMap = {}
+        self.__droneDps = None
         self.__droneVolley = None
 
     @property
@@ -277,41 +273,31 @@ class Fit(object):
     def projectedFighters(self):
         return self.__projectedFighters
 
-    @property
-    def weaponDPS(self):
-        if self.__weaponDPS is None:
-            self.calculateWeaponStats()
+    def getWeaponDps(self, spoolOptions=None):
+        if spoolOptions not in self.__weaponDpsMap:
+            self.calculateWeaponDmgStats(spoolOptions)
+        return self.__weaponDpsMap[spoolOptions]
 
-        return self.__weaponDPS
+    def getWeaponVolley(self, spoolOptions=None):
+        if spoolOptions not in self.__weaponVolleyMap:
+            self.calculateWeaponDmgStats(spoolOptions)
+        return self.__weaponVolleyMap[spoolOptions]
 
-    @property
-    def weaponVolley(self):
-        if self.__weaponVolley is None:
-            self.calculateWeaponStats()
+    def getDroneDps(self):
+        if self.__droneDps is None:
+            self.calculateDroneDmgStats()
+        return self.__droneDps
 
-        return self.__weaponVolley
-
-    @property
-    def droneDPS(self):
-        if self.__droneDPS is None:
-            self.calculateWeaponStats()
-
-        return self.__droneDPS
-
-    @property
-    def droneVolley(self):
+    def getDroneVolley(self):
         if self.__droneVolley is None:
-            self.calculateWeaponStats()
-
+            self.calculateDroneDmgStats()
         return self.__droneVolley
 
-    @property
-    def totalDPS(self):
-        return self.droneDPS + self.weaponDPS
+    def getTotalDps(self, spoolOptions=None):
+        return self.getDroneDps() + self.getWeaponDps(spoolOptions=spoolOptions)
 
-    @property
-    def totalVolley(self):
-        return self.droneVolley + self.weaponVolley
+    def getTotalVolley(self, spoolOptions=None):
+        return self.getDroneVolley() + self.getWeaponVolley(spoolOptions=spoolOptions)
 
     @property
     def minerYield(self):
@@ -409,12 +395,13 @@ class Fit(object):
 
     def clear(self, projected=False, command=False):
         self.__effectiveTank = None
-        self.__weaponDPS = None
+        self.__weaponDpsMap = {}
+        self.__weaponVolleyMap = {}
+        self.__remoteRepMap = {}
         self.__minerYield = None
-        self.__weaponVolley = None
         self.__effectiveSustainableTank = None
         self.__sustainableTank = None
-        self.__droneDPS = None
+        self.__droneDps = None
         self.__droneVolley = None
         self.__droneYield = None
         self.__ehp = None
@@ -425,9 +412,6 @@ class Fit(object):
         self.__capRecharge = None
         self.ecmProjectedStr = 1
         # self.commandBonuses = {}
-
-        for remoterep_type in self.__remoteReps:
-            self.__remoteReps[remoterep_type] = None
 
         del self.__calculatedTargets[:]
         del self.__extraDrains[:]
@@ -1032,11 +1016,11 @@ class Fit(object):
 
     @property
     def pgUsed(self):
-        return self.getItemAttrOnlineSum(self.modules, "power")
+        return round(self.getItemAttrOnlineSum(self.modules, "power"), 2)
 
     @property
     def cpuUsed(self):
-        return self.getItemAttrOnlineSum(self.modules, "cpu")
+        return round(self.getItemAttrOnlineSum(self.modules, "cpu"), 2)
 
     @property
     def droneBandwidthUsed(self):
@@ -1151,149 +1135,6 @@ class Fit(object):
 
         return self.__capRecharge
 
-    @property
-    def sustainableTank(self):
-        if self.__sustainableTank is None:
-            self.calculateSustainableTank()
-
-        return self.__sustainableTank
-
-    def calculateSustainableTank(self, effective=True):
-        if self.__sustainableTank is None:
-            if self.capStable and not self.factorReload:
-                sustainable = {
-                    "armorRepair" : self.extraAttributes["armorRepair"],
-                    "shieldRepair": self.extraAttributes["shieldRepair"],
-                    "hullRepair"  : self.extraAttributes["hullRepair"]
-                }
-            else:
-                sustainable = {}
-
-                repairers = []
-                # Map a repairer type to the attribute it uses
-                groupAttrMap = {
-                    "Shield Booster": "shieldBonus",
-                    "Ancillary Shield Booster": "shieldBonus",
-                    "Remote Shield Booster": "shieldBonus",
-                    "Ancillary Remote Shield Booster": "shieldBonus",
-
-                    "Armor Repair Unit": "armorDamageAmount",
-                    "Ancillary Armor Repairer": "armorDamageAmount",
-                    "Remote Armor Repairer": "armorDamageAmount",
-                    "Ancillary Remote Armor Repairer": "armorDamageAmount",
-
-                    "Hull Repair Unit": "structureDamageAmount",
-                    "Remote Hull Repairer": "structureDamageAmount",
-                }
-                # Map repairer type to attribute
-                groupStoreMap = {
-                    "Shield Booster": "shieldRepair",
-                    "Remote Shield Booster": "shieldRepair",
-                    "Ancillary Shield Booster": "shieldRepair",
-                    "Ancillary Remote Shield Booster": "shieldRepair",
-
-                    "Armor Repair Unit": "armorRepair",
-                    "Remote Armor Repairer": "armorRepair",
-                    "Ancillary Armor Repairer": "armorRepair",
-                    "Ancillary Remote Armor Repairer": "armorRepair",
-
-                    "Hull Repair Unit": "hullRepair",
-                    "Remote Hull Repairer": "hullRepair",
-                }
-
-                capUsed = self.capUsed
-                for attr in ("shieldRepair", "armorRepair", "hullRepair"):
-                    sustainable[attr] = self.extraAttributes[attr]
-                    dict = self.extraAttributes.getAfflictions(attr)
-                    if self in dict:
-                        for mod, _, amount, used in dict[self]:
-                            if not used:
-                                continue
-                            if mod.projected is False:
-                                usesCap = True
-                                try:
-                                    if mod.capUse:
-                                        capUsed -= mod.capUse
-                                    else:
-                                        usesCap = False
-                                except AttributeError:
-                                    usesCap = False
-
-                                # Normal Repairers
-                                if usesCap and not mod.charge:
-                                    cycleTime = mod.rawCycleTime
-                                    amount = mod.getModifiedItemAttr(groupAttrMap[mod.item.group.name])
-                                    sustainable[attr] -= amount / (cycleTime / 1000.0)
-                                    repairers.append(mod)
-                                # Ancillary Armor reps etc
-                                elif usesCap and mod.charge:
-                                    cycleTime = mod.rawCycleTime
-                                    amount = mod.getModifiedItemAttr(groupAttrMap[mod.item.group.name])
-                                    if mod.charge.name == "Nanite Repair Paste":
-                                        multiplier = mod.getModifiedItemAttr("chargedArmorDamageMultiplier") or 1
-                                    else:
-                                        multiplier = 1
-                                    sustainable[attr] -= amount * multiplier / (cycleTime / 1000.0)
-                                    repairers.append(mod)
-                                # Ancillary Shield boosters etc
-                                elif not usesCap and mod.item.group.name in ("Ancillary Shield Booster", "Ancillary Remote Shield Booster"):
-                                    cycleTime = mod.rawCycleTime
-                                    amount = mod.getModifiedItemAttr(groupAttrMap[mod.item.group.name])
-                                    if self.factorReload and mod.charge:
-                                        reloadtime = mod.reloadTime
-                                    else:
-                                        reloadtime = 0.0
-                                    offdutycycle = reloadtime / ((max(mod.numShots, 1) * cycleTime) + reloadtime)
-                                    sustainable[attr] -= amount * offdutycycle / (cycleTime / 1000.0)
-
-                # Sort repairers by efficiency. We want to use the most efficient repairers first
-                repairers.sort(key=lambda _mod: _mod.getModifiedItemAttr(
-                    groupAttrMap[_mod.item.group.name]) * (_mod.getModifiedItemAttr(
-                        "chargedArmorDamageMultiplier") or 1) / _mod.getModifiedItemAttr("capacitorNeed"), reverse=True)
-
-                # Loop through every module until we're above peak recharge
-                # Most efficient first, as we sorted earlier.
-                # calculate how much the repper can rep stability & add to total
-                totalPeakRecharge = self.capRecharge
-                for mod in repairers:
-                    if capUsed > totalPeakRecharge:
-                        break
-
-                    if self.factorReload and mod.charge:
-                        reloadtime = mod.reloadTime
-                    else:
-                        reloadtime = 0.0
-
-                    cycleTime = mod.rawCycleTime
-                    capPerSec = mod.capUse
-
-                    if capPerSec is not None and cycleTime is not None:
-                        # Check how much this repper can work
-                        sustainability = min(1, (totalPeakRecharge - capUsed) / capPerSec)
-                        amount = mod.getModifiedItemAttr(groupAttrMap[mod.item.group.name])
-                        # Add the sustainable amount
-
-                        if not mod.charge:
-                            sustainable[groupStoreMap[mod.item.group.name]] += sustainability * amount / (
-                                    cycleTime / 1000.0)
-                        else:
-                            if mod.charge.name == "Nanite Repair Paste":
-                                multiplier = mod.getModifiedItemAttr("chargedArmorDamageMultiplier") or 1
-                            else:
-                                multiplier = 1
-                            ondutycycle = (max(mod.numShots, 1) * cycleTime) / (
-                                    (max(mod.numShots, 1) * cycleTime) + reloadtime)
-                            sustainable[groupStoreMap[
-                                mod.item.group.name]] += sustainability * amount * ondutycycle * multiplier / (
-                                    cycleTime / 1000.0)
-
-                        capUsed += capPerSec
-
-            sustainable["passiveShield"] = self.calculateShieldRecharge()
-            self.__sustainableTank = sustainable
-
-        return self.__sustainableTank
-
     def calculateCapRecharge(self, percent=PEAK_RECHARGE):
         capacity = self.ship.getModifiedItemAttr("capacitorCapacity")
         rechargeRate = self.ship.getModifiedItemAttr("rechargeRate") / 1000.0
@@ -1377,92 +1218,27 @@ class Fit(object):
             self.__capStable = True
             self.__capState = 100
 
-    @property
-    def remoteReps(self):
-        force_recalc = False
-        for remote_type in self.__remoteReps:
-            if self.__remoteReps[remote_type] is None:
-                force_recalc = True
-                break
+    def getRemoteReps(self, spoolOptions=None):
+        if spoolOptions not in self.__remoteRepMap:
+            remoteReps = {}
 
-        if force_recalc is False:
-            return self.__remoteReps
+            for module in self.modules:
+                rrType, rrAmount = module.getRemoteReps(spoolOptions=spoolOptions)
+                if rrType:
+                    if rrType not in remoteReps:
+                        remoteReps[rrType] = 0
+                    remoteReps[rrType] += rrAmount
 
-        # We are rerunning the recalcs. Explicitly set to 0 to make sure we don't duplicate anything and correctly set
-        # all values to 0.
-        for remote_type in self.__remoteReps:
-            self.__remoteReps[remote_type] = 0
+            for drone in self.drones:
+                rrType, rrAmount = drone.getRemoteReps()
+                if rrType:
+                    if rrType not in remoteReps:
+                        remoteReps[rrType] = 0
+                    remoteReps[rrType] += rrAmount
 
-        for stuff in chain(self.modules, self.drones):
-            if stuff.item:
-                if stuff.item.ID == 10250:
-                    pass
-            remote_type = None
+            self.__remoteRepMap[spoolOptions] = remoteReps
 
-            # Only apply the charged multiplier if we have a charge in our ancil reppers (#1135)
-            if stuff.charge:
-                modifier = stuff.getModifiedItemAttr("chargedArmorDamageMultiplier", 1)
-            else:
-                modifier = 1
-
-            if isinstance(stuff, Module) and (stuff.isEmpty or stuff.state < State.ACTIVE):
-                continue
-            elif isinstance(stuff, Drone):
-                # drones don't have fueled charges, so simply override modifier with the amount of drones active
-                modifier = stuff.amountActive
-
-            # Covert cycleTime to seconds
-            duration = stuff.cycleTime / 1000
-
-            # Skip modules with no duration.
-            if not duration:
-                continue
-
-            remote_module_groups = {
-                "Remote Armor Repairer"          : "Armor",
-                "Ancillary Remote Armor Repairer": "Armor",
-                "Remote Hull Repairer"           : "Hull",
-                "Remote Shield Booster"          : "Shield",
-                "Ancillary Remote Shield Booster": "Shield",
-                "Remote Capacitor Transmitter"   : "Capacitor",
-            }
-
-            module_group = stuff.item.group.name
-
-            if module_group in remote_module_groups:
-                remote_type = remote_module_groups[module_group]
-            elif not isinstance(stuff, Drone):
-                # Module isn't in our list of remote rep modules, bail
-                continue
-
-            if remote_type == "Hull":
-                hp = stuff.getModifiedItemAttr("structureDamageAmount", 0)
-            elif remote_type == "Armor":
-                hp = stuff.getModifiedItemAttr("armorDamageAmount", 0)
-            elif remote_type == "Shield":
-                hp = stuff.getModifiedItemAttr("shieldBonus", 0)
-            elif remote_type == "Capacitor":
-                hp = stuff.getModifiedItemAttr("powerTransferAmount", 0)
-            else:
-                droneShield = stuff.getModifiedItemAttr("shieldBonus", 0)
-                droneArmor = stuff.getModifiedItemAttr("armorDamageAmount", 0)
-                droneHull = stuff.getModifiedItemAttr("structureDamageAmount", 0)
-                if droneShield:
-                    remote_type = "Shield"
-                    hp = droneShield
-                elif droneArmor:
-                    remote_type = "Armor"
-                    hp = droneArmor
-                elif droneHull:
-                    remote_type = "Hull"
-                    hp = droneHull
-                else:
-                    hp = 0
-
-            if hp > 0 and duration > 0:
-                self.__remoteReps[remote_type] += (hp * modifier) / duration
-
-        return self.__remoteReps
+        return self.__remoteRepMap[spoolOptions]
 
     @property
     def hp(self):
@@ -1485,11 +1261,14 @@ class Fit(object):
 
     @property
     def tank(self):
-        hps = {"passiveShield": self.calculateShieldRecharge()}
-        for type in ("shield", "armor", "hull"):
-            hps["%sRepair" % type] = self.extraAttributes["%sRepair" % type]
-
-        return hps
+        reps = {
+            "passiveShield": self.calculateShieldRecharge(),
+            "shieldRepair": self.extraAttributes["shieldRepair"],
+            "armorRepair": self.extraAttributes["armorRepair"],
+            "armorRepairPreSpool": self.extraAttributes["armorRepairPreSpool"],
+            "armorRepairFullSpool": self.extraAttributes["armorRepairFullSpool"],
+            "hullRepair": self.extraAttributes["hullRepair"]}
+        return reps
 
     @property
     def effectiveTank(self):
@@ -1497,23 +1276,152 @@ class Fit(object):
             if self.damagePattern is None:
                 ehps = self.tank
             else:
-                ehps = self.damagePattern.calculateEffectiveTank(self, self.extraAttributes)
+                ehps = self.damagePattern.calculateEffectiveTank(self, self.tank)
 
             self.__effectiveTank = ehps
 
         return self.__effectiveTank
 
     @property
+    def sustainableTank(self):
+        if self.__sustainableTank is None:
+            self.calculateSustainableTank()
+
+        return self.__sustainableTank
+
+    @property
     def effectiveSustainableTank(self):
         if self.__effectiveSustainableTank is None:
             if self.damagePattern is None:
-                eshps = self.sustainableTank
+                tank = self.sustainableTank
             else:
-                eshps = self.damagePattern.calculateEffectiveTank(self, self.sustainableTank)
-
-            self.__effectiveSustainableTank = eshps
-
+                tank = self.damagePattern.calculateEffectiveTank(self, self.sustainableTank)
+            self.__effectiveSustainableTank = tank
         return self.__effectiveSustainableTank
+
+    def calculateSustainableTank(self):
+        if self.__sustainableTank is None:
+            sustainable = {
+                "passiveShield": self.calculateShieldRecharge(),
+                "shieldRepair": self.extraAttributes["shieldRepair"],
+                "armorRepair": self.extraAttributes["armorRepair"],
+                "armorRepairPreSpool": self.extraAttributes["armorRepairPreSpool"],
+                "armorRepairFullSpool": self.extraAttributes["armorRepairFullSpool"],
+                "hullRepair": self.extraAttributes["hullRepair"]}
+            if not self.capStable or self.factorReload:
+                # Map a local repairer type to the attribute it uses
+                groupAttrMap = {
+                    "Shield Booster": "shieldBonus",
+                    "Ancillary Shield Booster": "shieldBonus",
+                    "Armor Repair Unit": "armorDamageAmount",
+                    "Ancillary Armor Repairer": "armorDamageAmount",
+                    "Hull Repair Unit": "structureDamageAmount"}
+                # Map local repairer type to tank type
+                groupStoreMap = {
+                    "Shield Booster": "shieldRepair",
+                    "Ancillary Shield Booster": "shieldRepair",
+                    "Armor Repair Unit": "armorRepair",
+                    "Ancillary Armor Repairer": "armorRepair",
+                    "Hull Repair Unit": "hullRepair"}
+                repairers = []
+                localAdjustment = {"shieldRepair": 0, "armorRepair": 0, "hullRepair": 0}
+                capUsed = self.capUsed
+                for tankType in localAdjustment:
+                    dict = self.extraAttributes.getAfflictions(tankType)
+                    if self in dict:
+                        for mod, _, amount, used in dict[self]:
+                            if not used:
+                                continue
+                            if mod.projected:
+                                continue
+                            if mod.item.group.name not in groupAttrMap:
+                                continue
+                            usesCap = True
+                            try:
+                                if mod.capUse:
+                                    capUsed -= mod.capUse
+                                else:
+                                    usesCap = False
+                            except AttributeError:
+                                usesCap = False
+
+                            # Normal Repairers
+                            if usesCap and not mod.charge:
+                                cycleTime = mod.rawCycleTime
+                                amount = mod.getModifiedItemAttr(groupAttrMap[mod.item.group.name])
+                                localAdjustment[tankType] -= amount / (cycleTime / 1000.0)
+                                repairers.append(mod)
+                            # Ancillary Armor reps etc
+                            elif usesCap and mod.charge:
+                                cycleTime = mod.rawCycleTime
+                                amount = mod.getModifiedItemAttr(groupAttrMap[mod.item.group.name])
+                                if mod.charge.name == "Nanite Repair Paste":
+                                    multiplier = mod.getModifiedItemAttr("chargedArmorDamageMultiplier") or 1
+                                else:
+                                    multiplier = 1
+                                localAdjustment[tankType] -= amount * multiplier / (cycleTime / 1000.0)
+                                repairers.append(mod)
+                            # Ancillary Shield boosters etc
+                            elif not usesCap and mod.item.group.name in ("Ancillary Shield Booster", "Ancillary Remote Shield Booster"):
+                                cycleTime = mod.rawCycleTime
+                                amount = mod.getModifiedItemAttr(groupAttrMap[mod.item.group.name])
+                                if self.factorReload and mod.charge:
+                                    reloadtime = mod.reloadTime
+                                else:
+                                    reloadtime = 0.0
+                                offdutycycle = reloadtime / ((max(mod.numShots, 1) * cycleTime) + reloadtime)
+                                localAdjustment[tankType] -= amount * offdutycycle / (cycleTime / 1000.0)
+
+                # Sort repairers by efficiency. We want to use the most efficient repairers first
+                repairers.sort(key=lambda _mod: _mod.getModifiedItemAttr(
+                    groupAttrMap[_mod.item.group.name]) * (_mod.getModifiedItemAttr(
+                        "chargedArmorDamageMultiplier") or 1) / _mod.getModifiedItemAttr("capacitorNeed"), reverse=True)
+
+                # Loop through every module until we're above peak recharge
+                # Most efficient first, as we sorted earlier.
+                # calculate how much the repper can rep stability & add to total
+                totalPeakRecharge = self.capRecharge
+                for mod in repairers:
+                    if capUsed > totalPeakRecharge:
+                        break
+
+                    if self.factorReload and mod.charge:
+                        reloadtime = mod.reloadTime
+                    else:
+                        reloadtime = 0.0
+
+                    cycleTime = mod.rawCycleTime
+                    capPerSec = mod.capUse
+
+                    if capPerSec is not None and cycleTime is not None:
+                        # Check how much this repper can work
+                        sustainability = min(1, (totalPeakRecharge - capUsed) / capPerSec)
+                        amount = mod.getModifiedItemAttr(groupAttrMap[mod.item.group.name])
+                        # Add the sustainable amount
+                        if not mod.charge:
+                            localAdjustment[groupStoreMap[mod.item.group.name]] += sustainability * amount / (
+                                    cycleTime / 1000.0)
+                        else:
+                            if mod.charge.name == "Nanite Repair Paste":
+                                multiplier = mod.getModifiedItemAttr("chargedArmorDamageMultiplier") or 1
+                            else:
+                                multiplier = 1
+                            ondutycycle = (max(mod.numShots, 1) * cycleTime) / (
+                                    (max(mod.numShots, 1) * cycleTime) + reloadtime)
+                            localAdjustment[groupStoreMap[
+                                mod.item.group.name]] += sustainability * amount * ondutycycle * multiplier / (
+                                    cycleTime / 1000.0)
+
+                        capUsed += capPerSec
+                sustainable["shieldRepair"] += localAdjustment["shieldRepair"]
+                sustainable["armorRepair"] += localAdjustment["armorRepair"]
+                sustainable["armorRepairPreSpool"] += localAdjustment["armorRepair"]
+                sustainable["armorRepairFullSpool"] += localAdjustment["armorRepair"]
+                sustainable["hullRepair"] += localAdjustment["hullRepair"]
+
+            self.__sustainableTank = sustainable
+
+        return self.__sustainableTank
 
     def calculateLockTime(self, radius):
         scanRes = self.ship.getModifiedItemAttr("scanResolution")
@@ -1537,30 +1445,30 @@ class Fit(object):
         self.__minerYield = minerYield
         self.__droneYield = droneYield
 
-    def calculateWeaponStats(self):
-        weaponDPS = 0
-        droneDPS = 0
-        weaponVolley = 0
-        droneVolley = 0
+    def calculateWeaponDmgStats(self, spoolOptions):
+        weaponVolley = DmgTypes(0, 0, 0, 0)
+        weaponDps = DmgTypes(0, 0, 0, 0)
 
         for mod in self.modules:
-            dps, volley = mod.damageStats(self.targetResists)
-            weaponDPS += dps
-            weaponVolley += volley
+            weaponVolley += mod.getVolley(spoolOptions=spoolOptions, targetResists=self.targetResists)
+            weaponDps += mod.getDps(spoolOptions=spoolOptions, targetResists=self.targetResists)
+
+        self.__weaponVolleyMap[spoolOptions] = weaponVolley
+        self.__weaponDpsMap[spoolOptions] = weaponDps
+
+    def calculateDroneDmgStats(self):
+        droneVolley = DmgTypes(0, 0, 0, 0)
+        droneDps = DmgTypes(0, 0, 0, 0)
 
         for drone in self.drones:
-            dps, volley = drone.damageStats(self.targetResists)
-            droneDPS += dps
-            droneVolley += volley
+            droneVolley += drone.getVolley(targetResists=self.targetResists)
+            droneDps += drone.getDps(targetResists=self.targetResists)
 
         for fighter in self.fighters:
-            dps, volley = fighter.damageStats(self.targetResists)
-            droneDPS += dps
-            droneVolley += volley
+            droneVolley += fighter.getVolley(targetResists=self.targetResists)
+            droneDps += fighter.getDps(targetResists=self.targetResists)
 
-        self.__weaponDPS = weaponDPS
-        self.__weaponVolley = weaponVolley
-        self.__droneDPS = droneDPS
+        self.__droneDps = droneDps
         self.__droneVolley = droneVolley
 
     @property

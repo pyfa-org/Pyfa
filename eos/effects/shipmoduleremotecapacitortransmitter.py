@@ -2,8 +2,13 @@
 #
 # Used by:
 # Modules from group: Remote Capacitor Transmitter (41 of 41)
+
+
 from eos.modifiedAttributeDict import ModifiedAttributeDict
+
+
 type = "projected", "active"
+runTime = "late"
 
 
 def handler(fit, src, context, **kwargs):

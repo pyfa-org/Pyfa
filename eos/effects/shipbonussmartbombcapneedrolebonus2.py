@@ -1,6 +1,7 @@
 # shipBonusSmartbombCapNeedRoleBonus2
 #
 # Used by:
+# Variations of ship: Rodiva (2 of 2)
 # Ship: Damavik
 # Ship: Drekavac
 # Ship: Hydra

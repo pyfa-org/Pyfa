@@ -11,6 +11,7 @@ import gui.utils.fonts as fonts
 from .events import FitSelected, SearchSelected, ImportSelected, Stage1Selected, Stage2Selected, Stage3Selected
 from gui.bitmap_loader import BitmapLoader
 from service.fit import Fit
+from gui.utils.helpers_wxPython import HandleCtrlBackspace
 
 pyfalog = Logger(__name__)
 
@@ -72,7 +73,7 @@ class NavigationPanel(SFItem.SFBrowserItem):
 
         # self.BrowserSearchBox.Bind(wx.EVT_TEXT_ENTER, self.OnBrowserSearchBoxEnter)
         # self.BrowserSearchBox.Bind(wx.EVT_KILL_FOCUS, self.OnBrowserSearchBoxLostFocus)
-        self.BrowserSearchBox.Bind(wx.EVT_KEY_DOWN, self.OnBrowserSearchBoxEsc)
+        self.BrowserSearchBox.Bind(wx.EVT_KEY_DOWN, self.OnBrowserSearchBoxKeyPress)
         self.BrowserSearchBox.Bind(wx.EVT_TEXT, self.OnScheduleSearch)
 
         self.SetMinSize(size)
@@ -103,9 +104,11 @@ class NavigationPanel(SFItem.SFBrowserItem):
     def OnBrowserSearchBoxLostFocus(self, event):
         self.BrowserSearchBox.Show(False)
 
-    def OnBrowserSearchBoxEsc(self, event):
+    def OnBrowserSearchBoxKeyPress(self, event):
         if event.GetKeyCode() == wx.WXK_ESCAPE:
             self.BrowserSearchBox.Show(False)
+        elif event.RawControlDown() and event.GetKeyCode() == wx.WXK_BACK:
+            HandleCtrlBackspace(self.BrowserSearchBox)
         else:
             event.Skip()
 

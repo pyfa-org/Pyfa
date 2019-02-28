@@ -18,51 +18,63 @@
 # =============================================================================
 
 
-from service.fit import Fit as svcFit
-from service.port.eft import SLOT_ORDER as EFT_SLOT_ORDER
+from enum import Enum
 
 
-def exportMultiBuy(fit):
-    export = "%s\n" % fit.ship.item.name
-    stuff = {}
-    sFit = svcFit.getInstance()
+class Options(Enum):
+    IMPLANTS = 1
+    CARGO = 2
+    LOADED_CHARGES = 3
+
+
+MULTIBUY_OPTIONS = (
+    (Options.LOADED_CHARGES.value, 'Loaded Charges', 'Export charges loaded into modules', True),
+    (Options.IMPLANTS.value, 'Implants && Boosters', 'Export implants and boosters', False),
+    (Options.CARGO.value, 'Cargo', 'Export cargo contents', True),
+)
+
+
+def exportMultiBuy(fit, options):
+    itemCounts = {}
+
+    def addItem(item, quantity=1):
+        if item not in itemCounts:
+            itemCounts[item] = 0
+        itemCounts[item] += quantity
+
     for module in fit.modules:
-        slot = module.slot
-        if slot not in stuff:
-            stuff[slot] = []
-        curr = "%s\n" % module.item.name if module.item else ""
-        if module.charge and sFit.serviceFittingOptions["exportCharges"]:
-            curr += "%s x%s\n" % (module.charge.name, module.numCharges)
-        stuff[slot].append(curr)
+        if module.item:
+            # Mutated items are of no use for multibuy
+            if module.isMutated:
+                continue
+            addItem(module.item)
+        if module.charge and options[Options.LOADED_CHARGES.value]:
+            addItem(module.charge, module.numCharges)
 
-    for slotType in EFT_SLOT_ORDER:
-        data = stuff.get(slotType)
-        if data is not None:
-            # export += "\n"
-            for curr in data:
-                export += curr
+    for drone in fit.drones:
+        addItem(drone.item, drone.amount)
 
-    if len(fit.drones) > 0:
-        for drone in fit.drones:
-            export += "%s x%s\n" % (drone.item.name, drone.amount)
+    for fighter in fit.fighters:
+        addItem(fighter.item, fighter.amountActive)
 
-    if len(fit.cargo) > 0:
+    if options[Options.CARGO.value]:
         for cargo in fit.cargo:
-            export += "%s x%s\n" % (cargo.item.name, cargo.amount)
+            addItem(cargo.item, cargo.amount)
 
-    if len(fit.implants) > 0:
+    if options[Options.IMPLANTS.value]:
         for implant in fit.implants:
-            export += "%s\n" % implant.item.name
+            addItem(implant.item)
 
-    if len(fit.boosters) > 0:
         for booster in fit.boosters:
-            export += "%s\n" % booster.item.name
+            addItem(booster.item)
 
-    if len(fit.fighters) > 0:
-        for fighter in fit.fighters:
-            export += "%s x%s\n" % (fighter.item.name, fighter.amountActive)
+    exportLines = []
+    exportLines.append(fit.ship.item.name)
+    for item in sorted(itemCounts, key=lambda i: (i.group.category.name, i.group.name, i.name)):
+        count = itemCounts[item]
+        if count == 1:
+            exportLines.append(item.name)
+        else:
+            exportLines.append('{} x{}'.format(item.name, count))
 
-    if export[-1] == "\n":
-        export = export[:-1]
-
-    return export
+    return "\n".join(exportLines)
