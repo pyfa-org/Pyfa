@@ -1,6 +1,7 @@
 import os
 import sys
 import yaml
+import wx
 
 from logbook import CRITICAL, DEBUG, ERROR, FingersCrossedHandler, INFO, Logger, NestedSetup, NullHandler, \
     StreamHandler, TimedRotatingFileHandler, WARNING
@@ -47,6 +48,11 @@ LOGLEVEL_MAP = {
     "debug": DEBUG,
 }
 
+slotColourMap = {1: wx.Colour(250, 235, 204),  # yellow = low slots
+                 2: wx.Colour(188, 215, 241),  # blue   = mid slots
+                 3: wx.Colour(235, 204, 209),  # red    = high slots
+                 4: '',
+                 5: '' }
 
 def getClientSecret():
     return clientHash
