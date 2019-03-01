@@ -268,13 +268,13 @@ class ItemView(Display):
             i += 1
         return revmap
 
-    slotColourMap = { 'loPower' : wx.Colour(250, 235, 204),
-                      'medPower': wx.Colour(188, 215, 241),
-                      'hiPower' : wx.Colour(235, 204, 209) }
+    slotColourMap = { 1: wx.Colour(250, 235, 204),
+                      2: wx.Colour(188, 215, 241),
+                      3: wx.Colour(235, 204, 209) }
 
     def columnBackground(self, colItem, item):
         if self.sFit.serviceFittingOptions["colorFitBySlot"]:
-            for effectName in self.slotColourMap:
-                if effectName in item.effects:
-                    return self.slotColourMap[effectName]
+            slot = item.slot;
+            if slot in self.slotColourMap:
+                return self.slotColourMap[slot]
         return wx.Colour(255, 255, 255)

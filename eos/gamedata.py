@@ -240,6 +240,7 @@ class Item(EqBase):
         self.__assistive = None
         self.__overrides = None
         self.__priceObj = None
+        self.__slot = None
 
     @property
     def attributes(self):
@@ -478,6 +479,21 @@ class Item(EqBase):
     @property
     def isCharge(self):
         return self.category.name == "Charge"
+
+    effectSlots = { 'loPower'  : 1,
+                    'medPower' : 2,
+                    'hiPower'  : 3,
+                    'rigSlot'  : 4,
+                    'subSystem': 5 }
+    @property
+    def slot(self):
+        if self.__slot is None:
+            self.__slot = 0
+            for effectName in self.effectSlots:
+                if effectName in self.effects:
+                    self.__slot = self.effectSlots[effectName]
+                    break
+        return self.__slot;
 
     def __repr__(self):
         return "Item(ID={}, name={}) at {}".format(
