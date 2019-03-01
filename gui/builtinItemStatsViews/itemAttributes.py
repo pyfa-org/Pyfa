@@ -189,7 +189,6 @@ class ItemParams(wx.Panel):
     def PopulateList(self):
         # self.paramList.setResizeColumn(0)
         self.imageList = wx.ImageList(16, 16)
-        self.paramList.AssignImageList(self.imageList)
 
         self.processed_attribs = set()
         root = self.paramList.AddRoot("The Root Item")
@@ -244,6 +243,7 @@ class ItemParams(wx.Panel):
 
             self.AddAttribute(root, name)
 
+        self.paramList.AssignImageList(self.imageList)
         self.Layout()
 
     def GetData(self, attr):
