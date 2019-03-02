@@ -3,11 +3,18 @@ import config
 
 # noinspection PyPackageRequirements
 import wx
-
-from .helpers import AutoListCtrl
+import wx.lib.agw.hypertreelist
+from gui.builtinItemStatsViews.helpers import AutoListCtrl
 
 from gui.bitmap_loader import BitmapLoader
 from gui.utils.numberFormatter import formatAmount, roundDec
+from enum import IntEnum
+from gui.builtinItemStatsViews.attributeGrouping import *
+
+
+class AttributeView(IntEnum):
+    NORMAL = 1
+    RAW = -1
 
 
 class ItemParams(wx.Panel):
@@ -15,8 +22,9 @@ class ItemParams(wx.Panel):
         wx.Panel.__init__(self, parent)
         mainSizer = wx.BoxSizer(wx.VERTICAL)
 
-        self.paramList = AutoListCtrl(self, wx.ID_ANY,
-                                      style=wx.LC_REPORT | wx.LC_SINGLE_SEL | wx.LC_VRULES | wx.NO_BORDER)
+        self.paramList = wx.lib.agw.hypertreelist.HyperTreeList(self, wx.ID_ANY, agwStyle=wx.TR_HIDE_ROOT | wx.TR_NO_LINES | wx.TR_FULL_ROW_HIGHLIGHT | wx.TR_HAS_BUTTONS)
+        self.paramList.SetBackgroundColour(wx.SystemSettings.GetColour(wx.SYS_COLOUR_WINDOW))
+
         mainSizer.Add(self.paramList, 1, wx.ALL | wx.EXPAND, 0)
         self.SetSizer(mainSizer)
 
@@ -27,14 +35,19 @@ class ItemParams(wx.Panel):
         self.attrValues = {}
         self._fetchValues()
 
+        self.paramList.AddColumn("Attribute")
+        self.paramList.AddColumn("Current Value")
+        if self.stuff is not None:
+            self.paramList.AddColumn("Base Value")
+
+        self.paramList.SetMainColumn(0)  # the one with the tree in it...
+        self.paramList.SetColumnWidth(0, 300)
+
         self.m_staticline = wx.StaticLine(self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.LI_HORIZONTAL)
         mainSizer.Add(self.m_staticline, 0, wx.EXPAND)
         bSizer = wx.BoxSizer(wx.HORIZONTAL)
 
-        self.totalAttrsLabel = wx.StaticText(self, wx.ID_ANY, " ", wx.DefaultPosition, wx.DefaultSize, 0)
-        bSizer.Add(self.totalAttrsLabel, 0, wx.ALIGN_CENTER_VERTICAL | wx.RIGHT)
-
-        self.toggleViewBtn = wx.ToggleButton(self, wx.ID_ANY, "Toggle view mode", wx.DefaultPosition, wx.DefaultSize,
+        self.toggleViewBtn = wx.ToggleButton(self, wx.ID_ANY, "Veiw Raw Data", wx.DefaultPosition, wx.DefaultSize,
                                              0)
         bSizer.Add(self.toggleViewBtn, 0, wx.ALIGN_CENTER_VERTICAL)
 
@@ -76,10 +89,10 @@ class ItemParams(wx.Panel):
 
     def UpdateList(self):
         self.Freeze()
-        self.paramList.ClearAll()
+        self.paramList.DeleteRoot()
         self.PopulateList()
         self.Thaw()
-        self.paramList.resizeLastColumn(100)
+        # self.paramList.resizeLastColumn(100)
 
     def RefreshValues(self, event):
         self._fetchValues()
@@ -151,89 +164,154 @@ class ItemParams(wx.Panel):
                         ]
                 )
 
+    def AddAttribute(self, parent, attr):
+        if attr in self.attrValues and attr not in self.processed_attribs:
+
+            data = self.GetData(attr)
+            if data is None:
+                return
+
+            attrIcon, attrName, currentVal, baseVal = data
+            attr_item = self.paramList.AppendItem(parent, attrName)
+
+            self.paramList.SetItemText(attr_item, currentVal, 1)
+            if self.stuff is not None:
+                self.paramList.SetItemText(attr_item, baseVal, 2)
+            self.paramList.SetItemImage(attr_item, attrIcon, which=wx.TreeItemIcon_Normal)
+            self.processed_attribs.add(attr)
+
+    def ExpandOrDelete(self, item):
+        if self.paramList.GetChildrenCount(item) == 0:
+            self.paramList.Delete(item)
+        else:
+            self.paramList.Expand(item)
+
     def PopulateList(self):
-        self.paramList.InsertColumn(0, "Attribute")
-        self.paramList.InsertColumn(1, "Current Value")
-        if self.stuff is not None:
-            self.paramList.InsertColumn(2, "Base Value")
-        self.paramList.SetColumnWidth(0, 110)
-        self.paramList.SetColumnWidth(1, 90)
-        if self.stuff is not None:
-            self.paramList.SetColumnWidth(2, 90)
-        self.paramList.setResizeColumn(0)
+        # self.paramList.setResizeColumn(0)
         self.imageList = wx.ImageList(16, 16)
-        self.paramList.SetImageList(self.imageList, wx.IMAGE_LIST_SMALL)
+
+        self.processed_attribs = set()
+        root = self.paramList.AddRoot("The Root Item")
+        misc_parent = root
+
+        # We must first deet4ermine if it's categorey already has defined groupings set for it. Otherwise, we default to just using the fitting group
+        order = CategoryGroups.get(self.item.category.categoryName, [AttrGroup.FITTING])
+        # start building out the tree
+        for data in [AttrGroupDict[o] for o in order]:
+            heading = data.get("label")
+
+            header_item = self.paramList.AppendItem(root, heading)
+            for attr in data.get("attributes", []):
+                # Attribute is a "grouped" attr (eg: damage, sensor strengths, etc). Automatically group these into a child item
+                if attr in GroupedAttributes:
+                    # find which group it's in
+                    for grouping in AttrGroups:
+                        if attr in grouping[0]:
+                            break
+
+                    # create a child item with the groups label
+                    item = self.paramList.AppendItem(header_item, grouping[1])
+                    for attr2 in grouping[0]:
+                        # add each attribute in the group
+                        self.AddAttribute(item, attr2)
+
+                    self.ExpandOrDelete(item)
+                    continue
+
+                self.AddAttribute(header_item, attr)
+
+            self.ExpandOrDelete(header_item)
 
         names = list(self.attrValues.keys())
         names.sort()
 
-        idNameMap = {}
-        idCount = 0
+        # this will take care of any attributes that weren't collected withe the defined grouping (or all attributes if the item ddidn't have anything defined)
         for name in names:
-            info = self.attrInfo.get(name)
-            att = self.attrValues[name]
+            if name in GroupedAttributes:
+                # find which group it's in
+                for grouping in AttrGroups:
+                    if name in grouping[0]:
+                        break
 
-            # If we're working with a stuff object, we should get the original value from our getBaseAttrValue function,
-            # which will return the value with respect to the effective base (with mutators / overrides in place)
-            valDefault = getattr(info, "value", None)  # Get default value from attribute
-            if self.stuff is not None:
-                # if it's a stuff, overwrite default (with fallback to current value)
-                valDefault = self.stuff.getBaseAttrValue(name, valDefault)
-            valueDefault = valDefault if valDefault is not None else att
+                # get all attributes in group
+                item = self.paramList.AppendItem(root, grouping[1])
+                for attr2 in grouping[0]:
+                    self.AddAttribute(item, attr2)
 
-            val = getattr(att, "value", None)
-            value = val if val is not None else att
+                self.ExpandOrDelete(item)
+                continue
 
-            if info and info.displayName and self.toggleView == 1:
-                attrName = info.displayName
-            else:
-                attrName = name
+            self.AddAttribute(root, name)
 
-            if info and config.debug:
-                attrName += " ({})".format(info.ID)
+        self.paramList.AssignImageList(self.imageList)
+        self.Layout()
 
-            if info:
-                if info.iconID is not None:
-                    iconFile = info.iconID
-                    icon = BitmapLoader.getBitmap(iconFile, "icons")
+    def GetData(self, attr):
+        info = self.attrInfo.get(attr)
+        att = self.attrValues[attr]
 
-                    if icon is None:
-                        icon = BitmapLoader.getBitmap("transparent16x16", "gui")
+        # If we're working with a stuff object, we should get the original value from our getBaseAttrValue function,
+        # which will return the value with respect to the effective base (with mutators / overrides in place)
+        valDefault = getattr(info, "value", None)  # Get default value from attribute
+        if self.stuff is not None:
+            # if it's a stuff, overwrite default (with fallback to current value)
+            valDefault = self.stuff.getBaseAttrValue(attr, valDefault)
+        valueDefault = valDefault if valDefault is not None else att
 
-                    attrIcon = self.imageList.Add(icon)
-                else:
-                    attrIcon = self.imageList.Add(BitmapLoader.getBitmap("0", "icons"))
+        val = getattr(att, "value", None)
+        value = val if val is not None else att
+
+        if self.toggleView == AttributeView.NORMAL and ((attr not in GroupedAttributes and not value) or info is None or not info.published or attr in RequiredSkillAttrs):
+            return None
+
+        if info and info.displayName and self.toggleView == 1:
+            attrName = info.displayName
+        else:
+            attrName = attr
+
+        if info and config.debug:
+            attrName += " ({})".format(info.ID)
+
+        if info:
+            if info.iconID is not None:
+                iconFile = info.iconID
+                icon = BitmapLoader.getBitmap(iconFile, "icons")
+
+                if icon is None:
+                    icon = BitmapLoader.getBitmap("transparent16x16", "gui")
+
+                attrIcon = self.imageList.Add(icon)
             else:
                 attrIcon = self.imageList.Add(BitmapLoader.getBitmap("0", "icons"))
+        else:
+            attrIcon = self.imageList.Add(BitmapLoader.getBitmap("0", "icons"))
 
-            index = self.paramList.InsertItem(self.paramList.GetItemCount(), attrName, attrIcon)
-            idNameMap[idCount] = attrName
-            self.paramList.SetItemData(index, idCount)
-            idCount += 1
+        # index = self.paramList.AppendItem(root, attrName)
+        # idNameMap[idCount] = attrName
+        # self.paramList.SetPyData(index, idCount)
+        # idCount += 1
 
-            if self.toggleView != 1:
-                valueUnit = str(value)
-            elif info and info.unit:
-                valueUnit = self.FormatValue(*info.unit.PreformatValue(value))
-            else:
-                valueUnit = formatAmount(value, 3, 0, 0)
+        if self.toggleView != 1:
+            valueUnit = str(value)
+        elif info and info.unit:
+            valueUnit = self.FormatValue(*info.unit.PreformatValue(value))
+        else:
+            valueUnit = formatAmount(value, 3, 0, 0)
 
-            if self.toggleView != 1:
-                valueUnitDefault = str(valueDefault)
-            elif info and info.unit:
-                valueUnitDefault = self.FormatValue(*info.unit.PreformatValue(valueDefault))
-            else:
-                valueUnitDefault = formatAmount(valueDefault, 3, 0, 0)
+        if self.toggleView != 1:
+            valueUnitDefault = str(valueDefault)
+        elif info and info.unit:
+            valueUnitDefault = self.FormatValue(*info.unit.PreformatValue(valueDefault))
+        else:
+            valueUnitDefault = formatAmount(valueDefault, 3, 0, 0)
 
-            self.paramList.SetItem(index, 1, valueUnit)
-            if self.stuff is not None:
-                self.paramList.SetItem(index, 2, valueUnitDefault)
-        # @todo: pheonix, this lamda used cmp() which no longer exists in py3. Probably a better way to do this in the
-        # long run, take a look
-        self.paramList.SortItems(lambda id1, id2: (idNameMap[id1] > idNameMap[id2]) - (idNameMap[id1] < idNameMap[id2]))
-        self.paramList.RefreshRows()
-        self.totalAttrsLabel.SetLabel("%d attributes. " % idCount)
-        self.Layout()
+        #  todo: attribute that point to another item should load that item's icon.
+        return (attrIcon, attrName, valueUnit, valueUnitDefault)
+
+        # self.paramList.SetItemText(index, valueUnit, 1)
+        # if self.stuff is not None:
+        #     self.paramList.SetItemText(index, valueUnitDefault, 2)
+        # self.paramList.SetItemImage(index, attrIcon, which=wx.TreeItemIcon_Normal)
 
     @staticmethod
     def FormatValue(value, unit, rounding='prec', digits=3):
@@ -246,3 +324,43 @@ class ItemParams(wx.Panel):
         else:
             fvalue = value
         return "%s %s" % (fvalue, unit)
+
+
+if __name__ == "__main__":
+
+    import eos.db
+    # need to set up some paths, since bitmap loader requires config to have things
+    # Should probably change that so that it's not dependant on config
+    import os
+    os.chdir('..')
+    import config
+    config.defPaths(None)
+    config.debug = True
+    class Frame(wx.Frame):
+        def __init__(self, ):
+            # item = eos.db.getItem(23773)  # Ragnarok
+            item = eos.db.getItem(23061)  # Einherji I
+            #item = eos.db.getItem(24483)  # Nidhoggur
+            #item = eos.db.getItem(587)    # Rifter
+            #item = eos.db.getItem(2486)   # Warrior I
+            #item = eos.db.getItem(526)    # Stasis Webifier I
+            item = eos.db.getItem(486)  # 200mm AutoCannon I
+            #item = eos.db.getItem(200)  # Phased Plasma L
+            super().__init__(None, title="Test Attribute Window | {} - {}".format(item.ID, item.name), size=(1000, 500))
+
+            if 'wxMSW' in wx.PlatformInfo:
+                color = wx.SystemSettings.GetColour(wx.SYS_COLOUR_BTNFACE)
+                self.SetBackgroundColour(color)
+
+            main_sizer = wx.BoxSizer(wx.HORIZONTAL)
+
+            panel = ItemParams(self, None, item)
+
+            main_sizer.Add(panel, 1, wx.EXPAND | wx.ALL, 2)
+
+            self.SetSizer(main_sizer)
+
+    app = wx.App(redirect=False)   # Error messages go to popup window
+    top = Frame()
+    top.Show()
+    app.MainLoop()

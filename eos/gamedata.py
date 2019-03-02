@@ -578,6 +578,15 @@ class Unit(EqBase):
         self.displayName = None
 
     @property
+    def rigSizes(self):
+        return {
+            1: "Small",
+            2: "Medium",
+            3: "Large",
+            4: "X-Large"
+        }
+
+    @property
     def translations(self):
         """ This is a mapping of various tweaks that we have to do between the internal representation of an attribute
         value and the display (for example, 'Millisecond' units have the display name of 's', so we have to convert value
@@ -609,10 +618,10 @@ class Unit(EqBase):
                 lambda u: "m³",
                 lambda d: d),
             "Sizeclass": (
-                lambda v: v,
-                lambda v: v,
-                lambda u: "",
-                lambda d: d),
+                lambda v: self.rigSizes[v],
+                lambda v: self.rigSizes[v],
+                lambda d: next(i for i in self.rigSizes.keys() if self.rigSizes[i] == 'Medium'),
+                lambda u: ""),
             "Absolute Percent": (
                 lambda v: v * 100,
                 lambda v: v * 100,
