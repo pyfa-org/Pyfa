@@ -1,6 +1,7 @@
 import wx
 from logbook import Logger
 
+from eos.saveddata.module import Module
 import gui.builtinMarketBrowser.pfSearchBox as SBox
 from gui.builtinMarketBrowser.events import ItemSelected, MAX_RECENTLY_USED_MODULES, RECENTLY_USED_MODULES
 from gui.contextMenu import ContextMenu
@@ -271,7 +272,6 @@ class ItemView(Display):
 
     def columnBackground(self, colItem, item):
         if self.sFit.serviceFittingOptions["colorFitBySlot"]:
-            slot = item.slot
-            return slotColourMap.get(slot) or self.GetBackgroundColour()
+            return slotColourMap.get(Module.calculateSlot(item)) or self.GetBackgroundColour()
         else:
             return self.GetBackgroundColour()
