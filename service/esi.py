@@ -118,8 +118,9 @@ class Esi(EsiAccess):
 
     def stopServer(self):
         pyfalog.debug("Stopping Server")
-        self.httpd.stop()
-        self.httpd = None
+        if self.httpd:
+            self.httpd.stop()
+            self.httpd = None
 
     def startServer(self, port):  # todo: break this out into two functions: starting the server, and getting the URI
         pyfalog.debug("Starting server")
