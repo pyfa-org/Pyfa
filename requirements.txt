@@ -9,5 +9,5 @@ markdown2==2.3.5
 packaging==16.8
 roman==2.0.0
 beautifulsoup4==4.6.0
-pyyaml>=4.2b1
+pyyaml>=5.1b1
 PyInstaller == 3.3
