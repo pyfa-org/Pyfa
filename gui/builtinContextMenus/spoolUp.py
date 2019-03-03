@@ -34,11 +34,16 @@ class SpoolUp(ContextMenu):
 
         while True:
             dlg = SpoolUpChanger(self.mainFrame, thing)
-            if dlg.ShowModal() != wx.ID_OK:
-                break
+            result = dlg.ShowModal()
 
-            type = dlg.spoolChoice.GetClientData(dlg.spoolChoice.GetSelection())
-            amount = dlg.input.GetValue()
+            if result == wx.ID_CANCEL:
+                break
+            if result == wx.ID_DEFAULT:
+                type = None
+                amount = None
+            else:
+                type = SpoolType.CYCLES  # dlg.spoolChoice.GetClientData(dlg.spoolChoice.GetSelection())
+                amount = dlg.input.GetValue()
 
             if type == SpoolType.SCALE:
                 if amount < 0 or amount > 100:
@@ -73,37 +78,54 @@ class SpoolUpChanger(wx.Dialog):
 
         bSizer2 = wx.BoxSizer(wx.VERTICAL)
 
-        text = wx.StaticText(self, wx.ID_ANY, "Type:")
-        bSizer2.Add(text, 0)
+        # This code allows the user to select the type of spoolup. Commented out to keep simpple, can introduce an
+        # text = wx.StaticText(self, wx.ID_ANY, "Type:")
+        # bSizer2.Add(text, 0)
+        #
+        # "advanced" functionality later
+        # self.spoolChoice = wx.Choice(self, wx.ID_ANY, style=0)
+        #
+        # for k, v in self.spoolTypes.items():
+        #     i = self.spoolChoice.Append(v[0], k)
+        #     if module.spoolType == k:
+        #         self.spoolChoice.SetSelection(i)
+        #
+        # self.spoolChoice.Bind(wx.EVT_CHOICE, self.spoolTypeChanged)
+        #
+        # bSizer2.Add(self.spoolChoice, 0, wx.TOP | wx.BOTTOM | wx.EXPAND, 5)
+        #
+        # self.spoolDesc = wx.StaticText(self, wx.ID_ANY, self.spoolTypes[module.spoolType][1])
 
-        self.spoolChoice = wx.Choice(self, wx.ID_ANY, style=0)
-
-        for k, v in self.spoolTypes.items():
-            i = self.spoolChoice.Append(v[0], k)
-            if module.spoolType == k:
-                self.spoolChoice.SetSelection(i)
-
-        self.spoolChoice.Bind(wx.EVT_CHOICE, self.spoolTypeChanged)
-
-
-        bSizer2.Add(self.spoolChoice, 0, wx.TOP | wx.BOTTOM | wx.EXPAND, 5)
-
-        self.spoolDesc = wx.StaticText(self, wx.ID_ANY, self.spoolTypes[module.spoolType][1])
+        self.spoolDesc = wx.StaticText(self, wx.ID_ANY, "Specify the number of cycles that you wish to set the module to")
         bSizer2.Add(self.spoolDesc, 1)
-
-        text1 = wx.StaticText(self, wx.ID_ANY, "Amount:")
-        bSizer2.Add(text1, 0, wx.TOP, 10)
+        #
+        # text1 = wx.StaticText(self, wx.ID_ANY, "Amount:")
+        # bSizer2.Add(text1, 0, wx.TOP, 10)
 
         bSizer1.Add(bSizer2, 0, wx.ALL, 10)
 
         self.input = wx.SpinCtrlDouble(self, min=0, max=1000)
-
         bSizer1.Add(self.input, 0, wx.LEFT | wx.RIGHT | wx.EXPAND, 10)
 
         bSizer3 = wx.BoxSizer(wx.VERTICAL)
         bSizer3.Add(wx.StaticLine(self, wx.ID_ANY), 0, wx.BOTTOM | wx.EXPAND, 15)
 
-        bSizer3.Add(self.CreateStdDialogButtonSizer(wx.OK | wx.CANCEL), 0, wx.EXPAND)
+        bSizerButtons = wx.BoxSizer(wx.HORIZONTAL)
+
+        self.btnRevert = wx.Button(self, wx.ID_DEFAULT, "Reset to Global Default")
+        self.btnOK = wx.Button(self, wx.ID_OK)
+        self.btnCancel = wx.Button(self, wx.ID_CANCEL)
+
+        bSizerButtons.Add(self.btnRevert, 0, wx.ALL, 5)
+        bSizerButtons.AddStretchSpacer()
+        bSizerButtons.Add(self.btnOK, 0, wx.ALL, 5)
+        bSizerButtons.Add(self.btnCancel, 0, wx.ALL, 5)
+
+        self.btnCancel.Bind(wx.EVT_BUTTON, self.OnBtnCancel)
+        self.btnRevert.Bind(wx.EVT_BUTTON, self.OnBtnRevert)
+        self.btnOK.Bind(wx.EVT_BUTTON, self.OnBtnOk)
+
+        bSizer3.Add(bSizerButtons, 0, wx.EXPAND, 5)
         bSizer1.Add(bSizer3, 0, wx.ALL | wx.EXPAND, 10)
 
         self.input.SetValue(module.spoolAmount or 0)
@@ -112,6 +134,15 @@ class SpoolUpChanger(wx.Dialog):
         self.SetSizer(bSizer1)
         self.CenterOnParent()
         self.Fit()
+
+    def OnBtnCancel(self, event):
+        self.EndModal(wx.ID_CANCEL)
+
+    def OnBtnOk(self, event):
+        self.EndModal(wx.ID_OK)
+
+    def OnBtnRevert(self, event):
+        self.EndModal(wx.ID_DEFAULT)
 
     def spoolTypeChanged(self, evt):
         self.input.Enable(evt.ClientData is not None)
