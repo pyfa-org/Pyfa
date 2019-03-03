@@ -112,7 +112,7 @@ class SpoolUpChanger(wx.Dialog):
 
         bSizerButtons = wx.BoxSizer(wx.HORIZONTAL)
 
-        self.btnRevert = wx.Button(self, wx.ID_DEFAULT, "Reset to Global Default")
+        self.btnRevert = wx.Button(self, wx.ID_DEFAULT, "Reset to Default")
         self.btnOK = wx.Button(self, wx.ID_OK)
         self.btnCancel = wx.Button(self, wx.ID_CANCEL)
 
