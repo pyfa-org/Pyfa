@@ -234,18 +234,19 @@ class Price:
 
         def cb(replacementMap):
             changes = False
-            for fitobj in self.fitObjectIter(fit):
-                if fitobj.item in replacementMap:
-                    fitobj.item = replacementMap[fitobj.item]
-                    changes = True
-                charge = getattr(fitobj, 'charge', None)
-                if charge and charge in replacementMap:
-                    fitobj.charge = replacementMap[charge]
-                    changes = True
+            for container in (fit.modules,):
+                for obj in container:
+                    charge = getattr(obj, 'charge', None)
+                    if charge is not None and charge in replacementMap:
+                        obj.charge = replacementMap[charge]
+                        changes = True
+                    if obj.item in replacementMap:
+                        obj.rebase(replacementMap[obj.item])
+                        changes = True
             if changes:
                 Fit.getInstance().refreshFit(fit.ID)
             try:
-                callback()
+                callback(changes)
             except Exception as e:
                 pyfalog.critical("Execution of callback from optimizeFitPrice failed.")
                 pyfalog.critical(e)

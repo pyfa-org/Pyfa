@@ -671,12 +671,13 @@ class MainFrame(wx.Frame):
 
     def optimizeFitPrice(self, event):
         sPrice = Price.getInstance()
-        fit = Fit.getInstance().getFit(self.getActiveFit())
+        fitID = self.getActiveFit()
+        fit = Fit.getInstance().getFit(fitID)
         if fit:
             # TODO: block/unblock UI while pyfa is working
-
-            def cb():
-                pass
+            def cb(changes):
+                if changes:
+                    wx.PostEvent(self, GE.FitChanged(fitID=fitID))
 
             sPrice.optimizeFitPrice(fit, cb, includeBetter=True, fetchTimeout=10)
 
