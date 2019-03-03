@@ -272,6 +272,7 @@ def main(db, json_path):
             attrHig[row['attributeID']] = bool(row['highIsGood'])
         # As CCP data is not really consistent, do some overrides
         attrHig[4] = False  # mass
+        attrHig[151] = False  # agilityBonus
         attrHig[161] = False  # volume
         # Format: {group ID: category ID}
         groupCategories = {}
