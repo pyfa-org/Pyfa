@@ -234,7 +234,7 @@ class Price:
 
         def cb(replacementMap):
             changes = False
-            for container in (fit.modules, fit.drones, fit.fighters):
+            for container in (fit.modules, fit.drones, fit.fighters, fit.implants, fit.boosters, fit.cargo):
                 for obj in container:
                     charge = getattr(obj, 'charge', None)
                     if charge is not None and charge in replacementMap:
