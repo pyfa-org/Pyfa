@@ -8,6 +8,7 @@ import gui.globalEvents as GE
 from gui.preferenceView import PreferenceView
 from service.settings import EOSSettings
 import gui.mainFrame
+from wx.lib.intctrl import IntCtrl
 
 logger = logging.getLogger(__name__)
 
@@ -61,6 +62,22 @@ class PFFittingEnginePref(PreferenceView):
                                                             wx.DefaultPosition, wx.DefaultSize, 0)
         mainSizer.Add(self.cbUniversalAdaptiveArmorHardener, 0, wx.ALL | wx.EXPAND, 5)
 
+
+        spoolup_sizer = wx.BoxSizer(wx.HORIZONTAL)
+
+        self.spool_up_label = wx.StaticText(panel, wx.ID_ANY, "Global Default Spoolup Percentage:", wx.DefaultPosition, wx.DefaultSize, 0)
+        self.spool_up_label.Wrap(-1)
+        self.spool_up_label.SetCursor(helpCursor)
+        self.spool_up_label.SetToolTip(
+            wx.ToolTip('The amount of spoolup to use by default on module which support it. Can be changed on a per-module basis'))
+
+        spoolup_sizer.Add(self.spool_up_label, 0, wx.ALL | wx.ALIGN_CENTER_VERTICAL, 5)
+
+        self.spoolup_value = IntCtrl(panel, min=0, max=100, limited=True)
+        spoolup_sizer.Add(self.spoolup_value , 0, wx.ALL, 5)
+
+        mainSizer.Add(spoolup_sizer, 0, wx.ALL | wx.EXPAND, 0)
+
         # Future code once new cap sim is implemented
         '''
         self.cbGlobalForceReactivationTimer = wx.CheckBox( panel, wx.ID_ANY, u"Factor in reactivation timer", wx.DefaultPosition, wx.DefaultSize, 0 )
@@ -96,8 +113,14 @@ class PFFittingEnginePref(PreferenceView):
         self.cbUniversalAdaptiveArmorHardener.SetValue(self.engine_settings.get("useStaticAdaptiveArmorHardener"))
         self.cbUniversalAdaptiveArmorHardener.Bind(wx.EVT_CHECKBOX, self.OnCBUniversalAdaptiveArmorHardenerChange)
 
+        self.spoolup_value.SetValue(int(self.engine_settings.get("globalDefaultSpoolupPercentage") * 100))
+        self.spoolup_value.Bind(wx.lib.intctrl.EVT_INT, self.OnSpoolupChange)
+
         panel.SetSizer(mainSizer)
         panel.Layout()
+
+    def OnSpoolupChange(self, event):
+        self.engine_settings.set("globalDefaultSpoolupPercentage", self.spoolup_value.GetValue() / 100)
 
     def OnCBGlobalForceReloadStateChange(self, event):
         self.sFit.serviceFittingOptions["useGlobalForceReload"] = self.cbGlobalForceReload.GetValue()
