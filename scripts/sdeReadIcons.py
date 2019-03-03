@@ -10,7 +10,7 @@ import json
 iconDict = {}
 
 stream = open('iconIDs.yaml', 'r')
-docs = yaml.load_all(stream)
+docs = yaml.load_all(stream, Loader=yaml.FullLoader)
 
 for doc in docs:
     for k,v in list(doc.items()):

@@ -117,13 +117,7 @@ class StoppableHTTPServer(socketserver.TCPServer):
 
         # self.settings = CRESTSettings.getInstance()
 
-        # Allow listening for x seconds
-        sec = 120
-        pyfalog.debug("Running server for {0} seconds", sec)
-
         self.socket.settimeout(1)
-        self.max_tries = sec / self.socket.gettimeout()
-        self.tries = 0
         self.run = True
 
     def get_request(self):
@@ -139,13 +133,6 @@ class StoppableHTTPServer(socketserver.TCPServer):
     def stop(self):
         pyfalog.warning("Setting pyfa server to stop.")
         self.run = False
-
-    def handle_timeout(self):
-        pyfalog.debug("Number of tries: {0}", self.tries)
-        self.tries += 1
-        if self.tries == self.max_tries:
-            pyfalog.debug("Server timed out waiting for connection")
-            self.stop()
 
     def serve(self, callback=None):
         self.callback = callback

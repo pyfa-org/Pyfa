@@ -1,9 +1,12 @@
 import os
 import sys
+import yaml
+import wx
 
 from logbook import CRITICAL, DEBUG, ERROR, FingersCrossedHandler, INFO, Logger, NestedSetup, NullHandler, \
     StreamHandler, TimedRotatingFileHandler, WARNING
 import hashlib
+from eos.const import Slot
 
 from cryptography.fernet import Fernet
 
@@ -22,12 +25,6 @@ debug = False
 # Defines if our saveddata will be in pyfa root or not
 saveInRoot = False
 
-# Version data
-
-version = "2.7.0"
-tag = "Stable"
-expansionName = "December"
-expansionVersion = "1.0"
 evemonMinVersion = "4081"
 
 minItemSearchLength = 3
@@ -52,6 +49,13 @@ LOGLEVEL_MAP = {
     "debug": DEBUG,
 }
 
+slotColourMap = {
+    Slot.LOW: wx.Colour(250, 235, 204),  # yellow = low slots
+    Slot.MED: wx.Colour(188, 215, 241),  # blue   = mid slots
+    Slot.HIGH: wx.Colour(235, 204, 209),  # red    = high slots
+    Slot.RIG: '',
+    Slot.SUBSYSTEM: ''
+}
 
 def getClientSecret():
     return clientHash
@@ -79,12 +83,7 @@ def getPyfaRoot():
 
 
 def getVersion():
-    if os.path.isfile(os.path.join(pyfaPath, '.version')):
-        with open(os.path.join(pyfaPath, '.version')) as f:
-            gitVersion = f.readline()
-        return gitVersion
-    # if no version file exists, then user is running from source or not an official build
-    return version + " (git)"
+    return version
 
 
 def getDefaultSave():
@@ -96,11 +95,12 @@ def defPaths(customSavePath=None):
     global pyfaPath
     global savePath
     global saveDB
-    global gameDB
+    global gameDB 
     global saveInRoot
     global logPath
     global cipher
     global clientHash
+    global version
 
     pyfalog.debug("Configuring Pyfa")
 
@@ -109,6 +109,12 @@ def defPaths(customSavePath=None):
     pyfaPath = getattr(configforced, "pyfaPath", pyfaPath)
     if pyfaPath is None:
         pyfaPath = getPyfaRoot()
+
+    # Version data
+
+    with open(os.path.join(pyfaPath, "version.yml"), 'r') as file:
+        data = yaml.load(file, Loader=yaml.FullLoader)
+        version = data['version']
 
     # Where we store the saved fits etc, default is the current users home directory
     if saveInRoot is True:

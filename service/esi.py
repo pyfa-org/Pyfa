@@ -13,9 +13,11 @@ from eos.enum import Enum
 from eos.saveddata.ssocharacter import SsoCharacter
 from service.esiAccess import APIException, SsoMode
 import gui.globalEvents as GE
+from gui.ssoLogin import SsoLogin, SsoLoginServer
 from service.server import StoppableHTTPServer, AuthHandler
 from service.settings import EsiSettings
 from service.esiAccess import EsiAccess
+import gui.mainFrame
 
 from requests import Session
 
@@ -104,19 +106,21 @@ class Esi(EsiAccess):
         self.fittings_deleted.add(fittingID)
 
     def login(self):
-        serverAddr = None
         # always start the local server if user is using client details. Otherwise, start only if they choose to do so.
         if self.settings.get('ssoMode') == SsoMode.CUSTOM or self.settings.get('loginMode') == LoginMethod.SERVER:
-            # random port, or if it's custom application, use a defined port
-            serverAddr = self.startServer(6461 if self.settings.get('ssoMode') == SsoMode.CUSTOM else 0)
-        uri = self.getLoginURI(serverAddr)
-        webbrowser.open(uri)
-        wx.PostEvent(self.mainFrame, GE.SsoLoggingIn(sso_mode=self.settings.get('ssoMode'), login_mode=self.settings.get('loginMode')))
+            dlg = gui.ssoLogin.SsoLoginServer(6461 if self.settings.get('ssoMode') == SsoMode.CUSTOM else 0)
+            dlg.ShowModal()
+        else:
+            dlg = gui.ssoLogin.SsoLogin()
+
+            if dlg.ShowModal() == wx.ID_OK:
+                self.handleLogin({'SSOInfo': [dlg.ssoInfoCtrl.Value.strip()]})
 
     def stopServer(self):
         pyfalog.debug("Stopping Server")
-        self.httpd.stop()
-        self.httpd = None
+        if self.httpd:
+            self.httpd.stop()
+            self.httpd = None
 
     def startServer(self, port):  # todo: break this out into two functions: starting the server, and getting the URI
         pyfalog.debug("Starting server")

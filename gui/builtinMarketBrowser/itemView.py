@@ -1,6 +1,7 @@
 import wx
 from logbook import Logger
 
+from eos.saveddata.module import Module
 import gui.builtinMarketBrowser.pfSearchBox as SBox
 from gui.builtinMarketBrowser.events import ItemSelected, MAX_RECENTLY_USED_MODULES, RECENTLY_USED_MODULES
 from gui.contextMenu import ContextMenu
@@ -8,6 +9,7 @@ from gui.display import Display
 from gui.utils.staticHelpers import DragDropHelper
 from service.attribute import Attribute
 from service.fit import Fit
+from config import slotColourMap
 
 pyfalog = Logger(__name__)
 
@@ -28,6 +30,7 @@ class ItemView(Display):
         self.recentlyUsedModules = set()
         self.sMkt = marketBrowser.sMkt
         self.searchMode = marketBrowser.searchMode
+        self.sFit = Fit.getInstance()
 
         self.marketBrowser = marketBrowser
         self.marketView = marketBrowser.marketView
@@ -266,3 +269,9 @@ class ItemView(Display):
                 revmap[mgid] = i
             i += 1
         return revmap
+
+    def columnBackground(self, colItem, item):
+        if self.sFit.serviceFittingOptions["colorFitBySlot"]:
+            return slotColourMap.get(Module.calculateSlot(item)) or self.GetBackgroundColour()
+        else:
+            return self.GetBackgroundColour()

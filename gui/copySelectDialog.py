@@ -18,9 +18,13 @@
 # =============================================================================
 
 
+from collections import OrderedDict
+
 # noinspection PyPackageRequirements
 import wx
+
 from service.port.eft import EFT_OPTIONS
+from service.port.multibuy import MULTIBUY_OPTIONS
 from service.settings import SettingsProvider
 
 
@@ -37,39 +41,53 @@ class CopySelectDialog(wx.Dialog):
                            style=wx.DEFAULT_DIALOG_STYLE)
         mainSizer = wx.BoxSizer(wx.VERTICAL)
 
-        self.settings = SettingsProvider.getInstance().getSettings("pyfaExport", {"format": 0, "options": 0})
+        self.copyFormats = OrderedDict((
+            ("EFT", (CopySelectDialog.copyFormatEft, EFT_OPTIONS)),
+            ("MultiBuy", (CopySelectDialog.copyFormatMultiBuy, MULTIBUY_OPTIONS)),
+            ("ESI", (CopySelectDialog.copyFormatEsi, None)),
+            ("EFS", (CopySelectDialog.copyFormatEfs, None)),
+            # ("XML", (CopySelectDialog.copyFormatXml, None)),
+            # ("DNA", (CopySelectDialog.copyFormatDna, None)),
+        ))
 
-        self.copyFormats = {
-            "EFT": CopySelectDialog.copyFormatEft,
-            "XML": CopySelectDialog.copyFormatXml,
-            "DNA": CopySelectDialog.copyFormatDna,
-            "ESI": CopySelectDialog.copyFormatEsi,
-            "MultiBuy": CopySelectDialog.copyFormatMultiBuy,
-            "EFS": CopySelectDialog.copyFormatEfs
-        }
+        defaultFormatOptions = {}
+        for formatId, formatOptions in self.copyFormats.values():
+            if formatOptions is None:
+                continue
+            defaultFormatOptions[formatId] = {opt[0]: opt[3] for opt in formatOptions}
+
+        self.settings = SettingsProvider.getInstance().getSettings("pyfaExport", {"format": 0, "options": defaultFormatOptions})
+        # Options used to be stored as int (EFT export options only),
+        # overwrite them with new format when needed
+        if isinstance(self.settings["options"], int):
+            self.settings["options"] = defaultFormatOptions
 
         self.options = {}
 
-        for i, format in enumerate(self.copyFormats.keys()):
-            if i == 0:
-                rdo = wx.RadioButton(self, wx.ID_ANY, format, style=wx.RB_GROUP)
+        initialized = False
+        for formatName, formatData in self.copyFormats.items():
+            formatId, formatOptions = formatData
+            if not initialized:
+                rdo = wx.RadioButton(self, wx.ID_ANY, formatName, style=wx.RB_GROUP)
+                initialized = True
             else:
-                rdo = wx.RadioButton(self, wx.ID_ANY, format)
+                rdo = wx.RadioButton(self, wx.ID_ANY, formatName)
             rdo.Bind(wx.EVT_RADIOBUTTON, self.Selected)
-            if self.settings['format'] == self.copyFormats[format]:
+            if self.settings['format'] == formatId:
                 rdo.SetValue(True)
-                self.copyFormat = self.copyFormats[format]
+                self.copyFormat = formatId
             mainSizer.Add(rdo, 0, wx.EXPAND | wx.ALL, 5)
 
-            if format == "EFT":
+            if formatOptions:
                 bsizer = wx.BoxSizer(wx.VERTICAL)
+                self.options[formatId] = {}
 
-                for x, v in EFT_OPTIONS.items():
-                    ch = wx.CheckBox(self, -1, v['name'])
-                    self.options[x] = ch
-                    if self.settings['options'] & x:
-                        ch.SetValue(True)
-                    bsizer.Add(ch, 1, wx.EXPAND | wx.TOP | wx.BOTTOM, 3)
+                for optId, optName, optDesc, _ in formatOptions:
+                    checkbox = wx.CheckBox(self, -1, optName)
+                    self.options[formatId][optId] = checkbox
+                    if self.settings['options'].get(formatId, {}).get(optId, defaultFormatOptions.get(formatId, {}).get(optId)):
+                        checkbox.SetValue(True)
+                    bsizer.Add(checkbox, 1, wx.EXPAND | wx.TOP | wx.BOTTOM, 3)
                 mainSizer.Add(bsizer, 1, wx.EXPAND | wx.LEFT, 20)
 
         buttonSizer = self.CreateButtonSizer(wx.OK | wx.CANCEL)
@@ -83,21 +101,21 @@ class CopySelectDialog(wx.Dialog):
 
     def Selected(self, event):
         obj = event.GetEventObject()
-        format = obj.GetLabel()
-        self.copyFormat = self.copyFormats[format]
+        formatName = obj.GetLabel()
+        self.copyFormat = self.copyFormats[formatName][0]
         self.toggleOptions()
         self.Fit()
 
     def toggleOptions(self):
-        for ch in self.options.values():
-            ch.Enable(self.GetSelected() == CopySelectDialog.copyFormatEft)
+        for formatId in self.options:
+            for checkbox in self.options[formatId].values():
+                checkbox.Enable(self.GetSelected() == formatId)
 
     def GetSelected(self):
         return self.copyFormat
 
     def GetOptions(self):
-        i = 0
-        for x, v in self.options.items():
-            if v.IsChecked():
-                i = i ^ x
-        return i
+        options = {}
+        for formatId in self.options:
+            options[formatId] = {optId: ch.IsChecked() for optId, ch in self.options[formatId].items()}
+        return options

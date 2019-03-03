@@ -18,12 +18,22 @@
 # along with eos.  If not, see <http://www.gnu.org/licenses/>.
 # ===============================================================================
 
-import time
 
-from sqlalchemy.orm import reconstructor
+import time
+from enum import IntEnum, unique
+
 from logbook import Logger
 
+
 pyfalog = Logger(__name__)
+
+
+@unique
+class PriceStatus(IntEnum):
+    notFetched = 0
+    success = 1
+    fail = 2
+    notSupported = 3
 
 
 class Price(object):
@@ -31,11 +41,7 @@ class Price(object):
         self.typeID = typeID
         self.time = 0
         self.__price = 0
-        self.failed = None
-
-    @reconstructor
-    def init(self):
-        self.__item = None
+        self.status = PriceStatus.notFetched
 
     @property
     def isValid(self):
@@ -43,7 +49,10 @@ class Price(object):
 
     @property
     def price(self):
-        return self.__price or 0.0
+        if self.status != PriceStatus.success:
+            return 0
+        else:
+            return self.__price or 0
 
     @price.setter
     def price(self, price):

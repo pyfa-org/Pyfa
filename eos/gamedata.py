@@ -239,7 +239,7 @@ class Item(EqBase):
         self.__offensive = None
         self.__assistive = None
         self.__overrides = None
-        self.__price = None
+        self.__priceObj = None
 
     @property
     def attributes(self):
@@ -446,34 +446,33 @@ class Item(EqBase):
 
     @property
     def price(self):
-
         # todo: use `from sqlalchemy import inspect` instead (mac-deprecated doesn't have inspect(), was imp[lemented in 0.8)
-        if self.__price is not None and getattr(self.__price, '_sa_instance_state', None) and self.__price._sa_instance_state.deleted:
+        if self.__priceObj is not None and getattr(self.__priceObj, '_sa_instance_state', None) and self.__priceObj._sa_instance_state.deleted:
             pyfalog.debug("Price data for {} was deleted (probably from a cache reset), resetting object".format(self.ID))
-            self.__price = None
+            self.__priceObj = None
 
-        if self.__price is None:
+        if self.__priceObj is None:
             db_price = eos.db.getPrice(self.ID)
             # do not yet have a price in the database for this item, create one
             if db_price is None:
                 pyfalog.debug("Creating a price for {}".format(self.ID))
-                self.__price = types_Price(self.ID)
-                eos.db.add(self.__price)
-                eos.db.commit()
+                self.__priceObj = types_Price(self.ID)
+                eos.db.add(self.__priceObj)
+                eos.db.flush()
             else:
-                self.__price = db_price
+                self.__priceObj = db_price
 
-        return self.__price
+        return self.__priceObj
 
     @property
     def isAbyssal(self):
         if Item.ABYSSAL_TYPES is None:
-            Item.getAbyssalYypes()
+            Item.getAbyssalTypes()
 
         return self.ID in Item.ABYSSAL_TYPES
 
     @classmethod
-    def getAbyssalYypes(cls):
+    def getAbyssalTypes(cls):
         cls.ABYSSAL_TYPES = eos.db.getAbyssalTypes()
 
     @property
@@ -563,6 +562,15 @@ class Unit(EqBase):
         self.displayName = None
 
     @property
+    def rigSizes(self):
+        return {
+            1: "Small",
+            2: "Medium",
+            3: "Large",
+            4: "X-Large"
+        }
+
+    @property
     def translations(self):
         """ This is a mapping of various tweaks that we have to do between the internal representation of an attribute
         value and the display (for example, 'Millisecond' units have the display name of 's', so we have to convert value
@@ -594,10 +602,10 @@ class Unit(EqBase):
                 lambda u: "m³",
                 lambda d: d),
             "Sizeclass": (
-                lambda v: v,
-                lambda v: v,
-                lambda u: "",
-                lambda d: d),
+                lambda v: self.rigSizes[v],
+                lambda v: self.rigSizes[v],
+                lambda d: next(i for i in self.rigSizes.keys() if self.rigSizes[i] == 'Medium'),
+                lambda u: ""),
             "Absolute Percent": (
                 lambda v: v * 100,
                 lambda v: v * 100,

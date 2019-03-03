@@ -62,13 +62,11 @@ from gui.preferenceDialog import PreferenceDialog
 from gui.resistsEditor import ResistsEditorDlg
 from gui.setEditor import ImplantSetEditorDlg
 from gui.shipBrowser import ShipBrowser
-from gui.ssoLogin import SsoLogin
 from gui.statsPane import StatsPane
 from gui.updateDialog import UpdateDialog
 from gui.utils.clipboard import fromClipboard, toClipboard
 from service.character import Character
-from service.esi import Esi, LoginMethod
-from service.esiAccess import SsoMode
+from service.esi import Esi
 from service.fit import Fit
 from service.port import EfsPort, IPortUser, Port
 from service.settings import HTMLExportSettings, SettingsProvider
@@ -230,19 +228,10 @@ class MainFrame(wx.Frame):
         self.sUpdate.CheckUpdate(self.ShowUpdateBox)
 
         self.Bind(GE.EVT_SSO_LOGIN, self.onSSOLogin)
-        self.Bind(GE.EVT_SSO_LOGGING_IN, self.ShowSsoLogin)
 
     @property
     def command(self) -> wx.CommandProcessor:
         return Fit.getCommandProcessor(self.getActiveFit())
-
-    def ShowSsoLogin(self, event):
-        if getattr(event, "login_mode", LoginMethod.SERVER) == LoginMethod.MANUAL and getattr(event, "sso_mode", SsoMode.AUTO) == SsoMode.AUTO:
-            dlg = SsoLogin(self)
-            if dlg.ShowModal() == wx.ID_OK:
-                sEsi = Esi.getInstance()
-                # todo: verify that this is a correct SSO Info block
-                sEsi.handleLogin({'SSOInfo': [dlg.ssoInfoCtrl.Value.strip()]})
 
     def ShowUpdateBox(self, release, version):
         dlg = UpdateDialog(self, release, version)
@@ -703,10 +692,6 @@ class MainFrame(wx.Frame):
         fit = db_getFit(self.getActiveFit())
         toClipboard(Port.exportEft(fit, options))
 
-    def clipboardEftImps(self, options):
-        fit = db_getFit(self.getActiveFit())
-        toClipboard(Port.exportEftImps(fit))
-
     def clipboardDna(self, options):
         fit = db_getFit(self.getActiveFit())
         toClipboard(Port.exportDna(fit))
@@ -721,7 +706,7 @@ class MainFrame(wx.Frame):
 
     def clipboardMultiBuy(self, options):
         fit = db_getFit(self.getActiveFit())
-        toClipboard(Port.exportMultiBuy(fit))
+        toClipboard(Port.exportMultiBuy(fit, options))
 
     def clipboardEfs(self, options):
         fit = db_getFit(self.getActiveFit())
@@ -744,22 +729,22 @@ class MainFrame(wx.Frame):
 
     def exportToClipboard(self, event):
         CopySelectDict = {CopySelectDialog.copyFormatEft: self.clipboardEft,
-                          # CopySelectDialog.copyFormatEftImps: self.clipboardEftImps,
                           CopySelectDialog.copyFormatXml: self.clipboardXml,
                           CopySelectDialog.copyFormatDna: self.clipboardDna,
                           CopySelectDialog.copyFormatEsi: self.clipboardEsi,
                           CopySelectDialog.copyFormatMultiBuy: self.clipboardMultiBuy,
                           CopySelectDialog.copyFormatEfs: self.clipboardEfs}
         dlg = CopySelectDialog(self)
-        dlg.ShowModal()
-        selected = dlg.GetSelected()
-        options = dlg.GetOptions()
+        btnPressed = dlg.ShowModal()
 
-        settings = SettingsProvider.getInstance().getSettings("pyfaExport")
-        settings["format"] = selected
-        settings["options"] = options
+        if btnPressed == wx.ID_OK:
+            selected = dlg.GetSelected()
+            options = dlg.GetOptions()
 
-        CopySelectDict[selected](options)
+            settings = SettingsProvider.getInstance().getSettings("pyfaExport")
+            settings["format"] = selected
+            settings["options"] = options
+            CopySelectDict[selected](options.get(selected))
 
         try:
             dlg.Destroy()
