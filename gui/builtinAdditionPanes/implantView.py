@@ -204,7 +204,10 @@ class ImplantDisplay(d.Display):
 
     def removeImplant(self, implant):
         fitID = self.mainFrame.getActiveFit()
-        self.mainFrame.command.Submit(cmd.GuiRemoveImplantCommand(fitID, self.original.index(implant)))
+        sFit = Fit.getInstance()
+        fit = sFit.getFit(fitID)
+        if fit.implantLocation == ImplantLocation.FIT:
+            self.mainFrame.command.Submit(cmd.GuiRemoveImplantCommand(fitID, self.original.index(implant)))
 
     def click(self, event):
         event.Skip()
