@@ -237,7 +237,7 @@ def main(db, json_path):
                 typeSkillAttribs[row['attributeID']] = row['value']
             # Ignore these attributes for comparison purposes
             elif attributeID in (
-                # We do not need mass as it participates in calculations only when carried by ships
+                # We do not need mass as it affects final ship stats only when carried by ship itself
                 # (and we're not going to replace ships), but it's wildly inconsistent for other items
                 4,  # mass
                 124,  # mainColor
@@ -265,11 +265,6 @@ def main(db, json_path):
                 except (KeyError, ValueError):
                     continue
                 typeSkillReqs[skillType] = skillLevel
-        # Get data on type parent types
-        # Format: {type ID: parent type ID}
-        typesParents = {}
-        for row in tables['invmetatypes']:
-            typesParents[row['typeID']] = row['parentTypeID']
         # Get data on attribute highIsGood flag
         # Format: {type ID: 0 if high is bad, 1 if high is good, 2 if neither}
         attrHig = {}
@@ -278,22 +273,41 @@ def main(db, json_path):
         # As CCP data is not really consistent, do some overrides
         attrHig[4] = False  # mass
         attrHig[161] = False  # volume
+        # Format: {group ID: category ID}
+        groupCategories = {}
+        for row in tables['evegroups']:
+            groupCategories[row['groupID']] = row['categoryID']
         # As EVE affects various types mostly depending on their group or skill requirements,
         # we're going to group various types up this way
-        # Format: {(group ID, frozenset(skillreq, type, IDs)): [type ID, {attribute ID: attribute value}]}
+        # Format: {(group ID, frozenset(skillreq, type, IDs), frozenset(type, effect, IDs): [type ID, {attribute ID: attribute value}]}
         groupedData = {}
         for row in tables['evetypes']:
             typeID = row['typeID']
+            # Ignore items outside of categories we need
+            if groupCategories[typesGroups[typeID]] not in (
+                6,  # Ship
+                7,  # Module
+                8,  # Charge
+                18,  # Drone
+                20,  # Implant
+                22,  # Deployable
+                23,  # Starbase
+                32,  # Subsystem
+                35,  # Decryptors
+                65,  # Structure
+                66,  # Structure Module
+                87,  # Fighter
+            ):
+                continue
             typeAttribs = typesNormalAttribs.get(typeID, {})
-            # Ignore stuff w/o attributes
+            # Ignore items w/o attributes
             if not typeAttribs:
                 continue
             # We need only skill types, not levels for keys
             typeSkillreqs = frozenset(typesSkillReqs.get(typeID, {}))
             typeGroup = typesGroups[typeID]
-            typeParent = typesParents.get(typeID, typeID)
             typeEffects = frozenset(typesEffects.get(typeID, ()))
-            groupData = groupedData.setdefault((typeGroup, typeSkillreqs, typeParent, typeEffects), [])
+            groupData = groupedData.setdefault((typeGroup, typeSkillreqs, typeEffects), [])
             groupData.append((typeID, typeAttribs))
         # Format: {type ID: set(type IDs)}
         same = {}
