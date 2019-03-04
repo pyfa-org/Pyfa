@@ -194,14 +194,16 @@ def main(db, json_path):
             if all(attrs1[aid] == attrs2[aid] for aid in attrs1):
                 return 2
             if all(
-                (attrs1[aid] <= attrs2[aid] and not attrHig[aid]) or
-                (attrs1[aid] >= attrs2[aid] and attrHig[aid])
+                (attrs1[aid] <= attrs2[aid] and attrHig[aid] == 0) or
+                (attrs1[aid] >= attrs2[aid] and attrHig[aid] == 1) or
+                (attrs1[aid] == attrs2[aid] and attrHig[aid] == 2)
                 for aid in attrs1
             ):
                 return 3
             if all(
-                (attrs2[aid] <= attrs1[aid] and not attrHig[aid]) or
-                (attrs2[aid] >= attrs1[aid] and attrHig[aid])
+                (attrs2[aid] <= attrs1[aid] and attrHig[aid] == 0) or
+                (attrs2[aid] >= attrs1[aid] and attrHig[aid] == 1) or
+                (attrs2[aid] == attrs1[aid] and attrHig[aid] == 2)
                 for aid in attrs1
             ):
                 return 4
@@ -269,11 +271,36 @@ def main(db, json_path):
         # Format: {type ID: 0 if high is bad, 1 if high is good, 2 if neither}
         attrHig = {}
         for row in tables['dgmattribs']:
-            attrHig[row['attributeID']] = bool(row['highIsGood'])
+            attrHig[row['attributeID']] = 1 if row['highIsGood'] else 0
         # As CCP data is not really consistent, do some overrides
-        attrHig[4] = False  # mass
-        attrHig[151] = False  # agilityBonus
-        attrHig[161] = False  # volume
+        attrHig[4] = 0  # mass
+        # Sometimes high is positive, sometimes it's not (e.g. AB cycle bonus vs smartbomb cycle bonus)
+        attrHig[66] = 2  # durationBonus
+        # Sometimes high is positive, sometimes it's not (e.g. invuln cycle vs rep cycle)
+        attrHig[73] = 2  # duration
+        attrHig[151] = 0  # agilityBonus
+        attrHig[161] = 0  # volume
+        attrHig[293] = 0  # rofBonus
+        attrHig[310] = 0  # cpuNeedBonus
+        attrHig[312] = 0  # durationSkillBonus
+        attrHig[314] = 0  # capRechargeBonus
+        attrHig[317] = 0  # capNeedBonus
+        attrHig[319] = 0  # warpCapacitorNeedBonus
+        attrHig[323] = 0  # powerNeedBonus
+        attrHig[331] = 2  # implantness
+        attrHig[338] = 0  # rechargeratebonus
+        attrHig[440] = 0  # manufacturingTimeBonus
+        attrHig[441] = 0  # turretSpeeBonus
+        attrHig[452] = 0  # copySpeedBonus
+        attrHig[453] = 0  # blueprintmanufactureTimeBonus
+        attrHig[468] = 0  # mineralNeedResearchBonus
+        attrHig[780] = 0  # iceHarvestCycleBonus
+        attrHig[848] = 0  # aoeCloudSizeBonus
+        attrHig[927] = 0  # miningUpgradeCPUReductionBonus
+        attrHig[1087] = 2  # boosterness
+        attrHig[1125] = 0  # boosterChanceBonus
+        attrHig[1126] = 0  # boosterAttributeModifier
+        attrHig[1156] = 0  # maxScanDeviationModifier
         # Format: {group ID: category ID}
         groupCategories = {}
         for row in tables['evegroups']:

@@ -204,44 +204,44 @@ class Price:
     def findCheaperReplacements(self, items, callback, includeBetter, fetchTimeout=10):
         sMkt = Market.getInstance()
 
-        potential = {}  # All possible item replacements
+        replacementsAll = {}  # All possible item replacements
         for item in items:
-            if item in potential:
+            if item in replacementsAll:
                 continue
             itemRepls = sMkt.getReplacements(item, includeBetter)
             if itemRepls:
-                potential[item] = itemRepls
-        itemsToFetch = {i for i in chain(potential.keys(), *potential.values())}
+                replacementsAll[item] = itemRepls
+        itemsToFetch = {i for i in chain(replacementsAll.keys(), *replacementsAll.values())}
 
-        def cb(requests):
+        def makeCheapMapCb(requests):
             # Decide what we are going to replace
-            actual = {}  # Items which should be replaced
-            for replacee, replacers in potential.items():
+            replacementsCheaper = {}  # Items which should be replaced
+            for replacee, replacers in replacementsAll.items():
                 replacer = min(replacers, key=lambda i: i.price.price or math.inf)
                 if (replacer.price.price or math.inf) < (replacee.price.price or math.inf):
-                    actual[replacee] = replacer
+                    replacementsCheaper[replacee] = replacer
             try:
-                callback(actual)
+                callback(replacementsCheaper)
             except Exception as e:
                 pyfalog.critical("Execution of callback from findCheaperReplacements failed.")
                 pyfalog.critical(e)
 
         # Prices older than 2 hours have to be refetched
         validityOverride = 2 * 60 * 60
-        self.getPrices(itemsToFetch, cb, fetchTimeout=fetchTimeout, validityOverride=validityOverride)
+        self.getPrices(itemsToFetch, makeCheapMapCb, fetchTimeout=fetchTimeout, validityOverride=validityOverride)
 
     def optimizeFitPrice(self, fit, callback, includeBetter, fetchTimeout=10):
 
-        def cb(replacementMap):
+        def updateFitCb(replacementsCheaper):
             changes = False
             for container in (fit.modules, fit.drones, fit.fighters, fit.implants, fit.boosters, fit.cargo):
                 for obj in container:
                     charge = getattr(obj, 'charge', None)
-                    if charge is not None and charge in replacementMap:
-                        obj.charge = replacementMap[charge]
+                    if charge is not None and charge in replacementsCheaper:
+                        obj.charge = replacementsCheaper[charge]
                         changes = True
-                    if obj.item in replacementMap:
-                        obj.rebase(replacementMap[obj.item])
+                    if obj.item in replacementsCheaper:
+                        obj.rebase(replacementsCheaper[obj.item])
                         changes = True
             if changes:
                 Fit.getInstance().refreshFit(fit.ID)
@@ -252,7 +252,7 @@ class Price:
                 pyfalog.critical(e)
 
         fitItems = {i for i in self.fitItemIter(fit) if i is not fit.ship.item}
-        self.findCheaperReplacements(fitItems, cb, includeBetter, fetchTimeout=fetchTimeout)
+        self.findCheaperReplacements(fitItems, updateFitCb, includeBetter, fetchTimeout=fetchTimeout)
 
 
 class PriceWorkerThread(threading.Thread):
