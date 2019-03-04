@@ -25,6 +25,7 @@ import eos.db
 from .eqBase import EqBase
 from eos.saveddata.price import Price as types_Price
 from collections import OrderedDict
+import importlib
 
 
 from logbook import Logger
@@ -156,9 +157,19 @@ class Effect(EqBase):
         Grab the handler, type and runTime from the effect code if it exists,
         if it doesn't, set dummy values and add a dummy handler
         """
-
         try:
-            self.__effectModule = effectModule = __import__('eos.effects.' + self.handlerName, fromlist=True)
+            import eos.effects.all as all
+            func = getattr(all, self.handlerName)
+            self.__effectModule = effectModule = func()
+            self.__handler = getattr(effectModule, "handler", effectDummy)
+            self.__runTime = getattr(effectModule, "runTime", "normal")
+            self.__activeByDefault = getattr(effectModule, "activeByDefault", True)
+            t = getattr(effectModule, "type", None)
+
+            t = t if isinstance(t, tuple) or t is None else (t,)
+            self.__type = t
+        except ImportError as e:
+            self.__effectModule = effectModule = importlib.import_module('eos.effects.' + self.handlerName)
             self.__handler = getattr(effectModule, "handler", effectDummy)
             self.__runTime = getattr(effectModule, "runTime", "normal")
             self.__activeByDefault = getattr(effectModule, "activeByDefault", True)
