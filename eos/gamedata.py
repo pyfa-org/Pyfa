@@ -161,22 +161,22 @@ class Effect(EqBase):
             import eos.effects.all as all
             func = getattr(all, self.handlerName)
             self.__effectModule = effectModule = func()
-            self.__handler = getattr(effectModule, "handler", effectDummy)
-            self.__runTime = getattr(effectModule, "runTime", "normal")
-            self.__activeByDefault = getattr(effectModule, "activeByDefault", True)
-            t = getattr(effectModule, "type", None)
+            self.__handler = effectModule.get("handler", effectDummy)
+            self.__runTime = effectModule.get("runTime", "normal")
+            self.__activeByDefault = effectModule.get("activeByDefault", True)
+            t = effectModule.get("type", None)
 
             t = t if isinstance(t, tuple) or t is None else (t,)
             self.__type = t
-        except ImportError as e:
-            self.__effectModule = effectModule = importlib.import_module('eos.effects.' + self.handlerName)
-            self.__handler = getattr(effectModule, "handler", effectDummy)
-            self.__runTime = getattr(effectModule, "runTime", "normal")
-            self.__activeByDefault = getattr(effectModule, "activeByDefault", True)
-            t = getattr(effectModule, "type", None)
-
-            t = t if isinstance(t, tuple) or t is None else (t,)
-            self.__type = t
+        # except ImportError as e:
+        #     self.__effectModule = effectModule = importlib.import_module('eos.effects.' + self.handlerName)
+        #     self.__handler = getattr(effectModule, "handler", effectDummy)
+        #     self.__runTime = getattr(effectModule, "runTime", "normal")
+        #     self.__activeByDefault = getattr(effectModule, "activeByDefault", True)
+        #     t = getattr(effectModule, "type", None)
+        #
+        #     t = t if isinstance(t, tuple) or t is None else (t,)
+        #     self.__type = t
         except ImportError as e:
             # Effect probably doesn't exist, so create a dummy effect and flag it with a warning.
             self.__handler = effectDummy
@@ -205,7 +205,10 @@ class Effect(EqBase):
         if not self.__generated:
             self.__generateHandler()
 
-        return getattr(self.__effectModule, key, None)
+        try:
+            return self.__effectModule.get(key, None)
+        except:
+            return getattr(self.__effectModule, key, None)
 
 
 def effectDummy(*args, **kwargs):
