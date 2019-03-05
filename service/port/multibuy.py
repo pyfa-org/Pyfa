@@ -70,15 +70,15 @@ def exportMultiBuy(fit, options, callback):
 
     if options[Options.OPTIMIZE_PRICES.value]:
 
-        def cb(replacements):
+        def processCheaperMapCb(replacementsCheaper):
             updatedAmounts = {}
             for item, itemAmount in itemAmounts.items():
-                _addItem(updatedAmounts, replacements.get(item, item), itemAmount)
+                _addItem(updatedAmounts, replacementsCheaper.get(item, item), itemAmount)
             string = _prepareString(fit.ship.item, updatedAmounts)
             callback(string)
 
         priceSvc = sPrc.getInstance()
-        priceSvc.findCheaperReplacements(itemAmounts, cb, includeBetter=True)
+        priceSvc.findCheaperReplacements(itemAmounts, processCheaperMapCb)
     else:
         string = _prepareString(fit.ship.item, itemAmounts)
         if callback:

@@ -178,36 +178,15 @@ def main(db, json_path):
 
     def fillReplacements(tables):
 
-        def compareAttrs(attrs1, attrs2, attrHig):
-            """
-            Compares received attribute sets. Returns:
-            - 0 if sets have no attributes for comparison
-            - 1 if sets are different
-            - 2 if sets are exactly the same
-            - 3 if first set is strictly better
-            - 4 if second set is strictly better
-            """
+        def compareAttrs(attrs1, attrs2):
+            # Consider items as different if they have no attrs
             if len(attrs1) == 0 and len(attrs2) == 0:
-                return 0
+                return False
             if set(attrs1) != set(attrs2):
-                return 1
+                return False
             if all(attrs1[aid] == attrs2[aid] for aid in attrs1):
-                return 2
-            if all(
-                (attrs1[aid] <= attrs2[aid] and attrHig[aid] == 0) or
-                (attrs1[aid] >= attrs2[aid] and attrHig[aid] == 1) or
-                (attrs1[aid] == attrs2[aid] and attrHig[aid] == 2)
-                for aid in attrs1
-            ):
-                return 3
-            if all(
-                (attrs2[aid] <= attrs1[aid] and attrHig[aid] == 0) or
-                (attrs2[aid] >= attrs1[aid] and attrHig[aid] == 1) or
-                (attrs2[aid] == attrs1[aid] and attrHig[aid] == 2)
-                for aid in attrs1
-            ):
-                return 4
-            return 1
+                return True
+            return False
 
         print('finding replacements')
         skillReqAttribs = {
@@ -240,13 +219,15 @@ def main(db, json_path):
             # Ignore these attributes for comparison purposes
             elif attributeID in (
                 # We do not need mass as it affects final ship stats only when carried by ship itself
-                # (and we're not going to replace ships), but it's wildly inconsistent for other items
+                # (and we're not going to replace ships), but it's wildly inconsistent for other items,
+                # which otherwise would be the same
                 4,  # mass
                 124,  # mainColor
                 162,  # radius
                 422,  # techLevel
                 633,  # metaLevel
-                1692  # metaGroupID
+                1692,  # metaGroupID
+                1768  # typeColorScheme
             ):
                 continue
             else:
@@ -267,40 +248,6 @@ def main(db, json_path):
                 except (KeyError, ValueError):
                     continue
                 typeSkillReqs[skillType] = skillLevel
-        # Get data on attribute highIsGood flag
-        # Format: {type ID: 0 if high is bad, 1 if high is good, 2 if neither}
-        attrHig = {}
-        for row in tables['dgmattribs']:
-            attrHig[row['attributeID']] = 1 if row['highIsGood'] else 0
-        # As CCP data is not really consistent, do some overrides
-        attrHig[4] = 0  # mass
-        # Sometimes high is positive, sometimes it's not (e.g. AB cycle bonus vs smartbomb cycle bonus)
-        attrHig[66] = 2  # durationBonus
-        # Sometimes high is positive, sometimes it's not (e.g. invuln cycle vs rep cycle)
-        attrHig[73] = 2  # duration
-        attrHig[151] = 0  # agilityBonus
-        attrHig[161] = 0  # volume
-        attrHig[293] = 0  # rofBonus
-        attrHig[310] = 0  # cpuNeedBonus
-        attrHig[312] = 0  # durationSkillBonus
-        attrHig[314] = 0  # capRechargeBonus
-        attrHig[317] = 0  # capNeedBonus
-        attrHig[319] = 0  # warpCapacitorNeedBonus
-        attrHig[323] = 0  # powerNeedBonus
-        attrHig[331] = 2  # implantness
-        attrHig[338] = 0  # rechargeratebonus
-        attrHig[440] = 0  # manufacturingTimeBonus
-        attrHig[441] = 0  # turretSpeeBonus
-        attrHig[452] = 0  # copySpeedBonus
-        attrHig[453] = 0  # blueprintmanufactureTimeBonus
-        attrHig[468] = 0  # mineralNeedResearchBonus
-        attrHig[780] = 0  # iceHarvestCycleBonus
-        attrHig[848] = 0  # aoeCloudSizeBonus
-        attrHig[927] = 0  # miningUpgradeCPUReductionBonus
-        attrHig[1087] = 2  # boosterness
-        attrHig[1125] = 0  # boosterChanceBonus
-        attrHig[1126] = 0  # boosterAttributeModifier
-        attrHig[1156] = 0  # maxScanDeviationModifier
         # Format: {group ID: category ID}
         groupCategories = {}
         for row in tables['evegroups']:
@@ -338,28 +285,17 @@ def main(db, json_path):
             groupData = groupedData.setdefault((typeGroup, typeSkillreqs, typeEffects), [])
             groupData.append((typeID, typeAttribs))
         # Format: {type ID: set(type IDs)}
-        same = {}
-        better = {}
-        # Now, go through composed groups and for every item within it find items which are
-        # the same and which are better
+        replacements = {}
+        # Now, go through composed groups and for every item within it
+        # find items which are the same
         for groupData in groupedData.values():
             for type1, type2 in itertools.combinations(groupData, 2):
-                comparisonResult = compareAttrs(type1[1], type2[1], attrHig)
-                # Equal
-                if comparisonResult == 2:
-                    same.setdefault(type1[0], set()).add(type2[0])
-                    same.setdefault(type2[0], set()).add(type1[0])
-                # First is better
-                elif comparisonResult == 3:
-                    better.setdefault(type2[0], set()).add(type1[0])
-                # Second is better
-                elif comparisonResult == 4:
-                    better.setdefault(type1[0], set()).add(type2[0])
+                if compareAttrs(type1[1], type2[1]):
+                    replacements.setdefault(type1[0], set()).add(type2[0])
+                    replacements.setdefault(type2[0], set()).add(type1[0])
         # Put this data into types table so that normal process hooks it up
         for row in tables['evetypes']:
-            typeID = row['typeID']
-            row['replaceSame'] = ','.join('{}'.format(tid) for tid in sorted(same.get(typeID, ())))
-            row['replaceBetter'] = ','.join('{}'.format(tid) for tid in sorted(better.get(typeID, ())))
+            row['replacements'] = ','.join('{}'.format(tid) for tid in sorted(replacements.get(row['typeID'], ())))
 
     data = {}
 

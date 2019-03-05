@@ -679,7 +679,7 @@ class MainFrame(wx.Frame):
                 if changes:
                     wx.PostEvent(self, GE.FitChanged(fitID=fitID))
 
-            sPrice.optimizeFitPrice(fit, cb, includeBetter=True, fetchTimeout=10)
+            sPrice.optimizeFitPrice(fit, cb, fetchTimeout=10)
 
     def AdditionsTabSelect(self, event):
         selTab = self.additionsSelect.index(event.GetId())

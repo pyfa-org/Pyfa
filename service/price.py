@@ -201,14 +201,14 @@ class Price:
         pyfalog.debug("Clearing Prices")
         db.clearPrices()
 
-    def findCheaperReplacements(self, items, callback, includeBetter, fetchTimeout=10):
+    def findCheaperReplacements(self, items, callback, fetchTimeout=10):
         sMkt = Market.getInstance()
 
         replacementsAll = {}  # All possible item replacements
         for item in items:
             if item in replacementsAll:
                 continue
-            itemRepls = sMkt.getReplacements(item, includeBetter)
+            itemRepls = sMkt.getReplacements(item)
             if itemRepls:
                 replacementsAll[item] = itemRepls
         itemsToFetch = {i for i in chain(replacementsAll.keys(), *replacementsAll.values())}
@@ -230,16 +230,19 @@ class Price:
         validityOverride = 2 * 60 * 60
         self.getPrices(itemsToFetch, makeCheapMapCb, fetchTimeout=fetchTimeout, validityOverride=validityOverride)
 
-    def optimizeFitPrice(self, fit, callback, includeBetter, fetchTimeout=10):
+    def optimizeFitPrice(self, fit, callback, fetchTimeout=10):
 
         def updateFitCb(replacementsCheaper):
             changes = False
-            for container in (fit.modules, fit.drones, fit.fighters, fit.implants, fit.boosters, fit.cargo):
+            for mod in fit.modules:
+                if mod.item in replacementsCheaper:
+                    mod.rebase(replacementsCheaper[mod.item])
+                    changes = True
+                if mod.charge in replacementsCheaper:
+                    mod.charge = replacementsCheaper[mod.charge]
+                    changes = True
+            for container in (fit.drones, fit.fighters, fit.implants, fit.boosters, fit.cargo):
                 for obj in container:
-                    charge = getattr(obj, 'charge', None)
-                    if charge is not None and charge in replacementsCheaper:
-                        obj.charge = replacementsCheaper[charge]
-                        changes = True
                     if obj.item in replacementsCheaper:
                         obj.rebase(replacementsCheaper[obj.item])
                         changes = True
@@ -252,7 +255,7 @@ class Price:
                 pyfalog.critical(e)
 
         fitItems = {i for i in self.fitItemIter(fit) if i is not fit.ship.item}
-        self.findCheaperReplacements(fitItems, updateFitCb, includeBetter, fetchTimeout=fetchTimeout)
+        self.findCheaperReplacements(fitItems, updateFitCb, fetchTimeout=fetchTimeout)
 
 
 class PriceWorkerThread(threading.Thread):

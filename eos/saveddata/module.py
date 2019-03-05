@@ -984,7 +984,8 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
         charge = self.charge
         Module.__init__(self, item, self.baseItem, self.mutaplasmid)
         self.state = state
-        self.charge = charge
+        if self.isValidCharge(charge):
+            self.charge = charge
         for x in self.mutators.values():
             Mutator(self, x.attribute, x.value)
 
