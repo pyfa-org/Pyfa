@@ -61,6 +61,8 @@ before_build:
   - ps: $env:PYFA_VERSION = (python ./scripts/dump_version.py)
   - ps: echo("pyfa version ")
   - ps: echo ($env:PYFA_VERSION)
+  - ps: python ./scripts/effect_rollup.py
+
 
 build_script:
   - ECHO "Build pyfa:"
