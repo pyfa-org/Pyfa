@@ -206,15 +206,18 @@ class Display(wx.ListCtrl):
                 colItem = self.GetItem(item, i)
                 oldText = colItem.GetText()
                 oldImageId = colItem.GetImage()
+                oldColour = colItem.GetBackgroundColour();
                 newText = col.getText(st)
                 if newText is False:
                     col.delayedText(st, self, colItem)
                     newText = "\u21bb"
+                newColour = self.columnBackground(colItem, st);
 
                 newImageId = col.getImageId(st)
 
                 colItem.SetText(newText)
                 colItem.SetImage(newImageId)
+                colItem.SetBackgroundColour(newColour)
 
                 mask = 0
 
@@ -228,6 +231,9 @@ class Display(wx.ListCtrl):
                 if mask:
                     colItem.SetMask(mask)
                     self.SetItem(colItem)
+                else:
+                    if newColour != oldColour:
+                        self.SetItem(colItem)
 
                 self.SetItemData(item, id_)
 
@@ -257,3 +263,6 @@ class Display(wx.ListCtrl):
     def getColumn(self, point):
         row, _, col = self.HitTestSubItem(point)
         return col
+
+    def columnBackground(self, colItem, item):
+        return colItem.GetBackgroundColour()

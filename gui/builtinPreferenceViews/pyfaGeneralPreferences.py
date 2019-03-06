@@ -162,9 +162,16 @@ class PFGeneralPref(PreferenceView):
         event.Skip()
 
     def onCBGlobalColorBySlot(self, event):
+        # todo: maybe create a SettingChanged event that we can fire, and have other things hook into, instead of having the preference panel itself handle the
+        # updating of things related to settings.
         self.sFit.serviceFittingOptions["colorFitBySlot"] = self.cbFitColorSlots.GetValue()
         fitID = self.mainFrame.getActiveFit()
         self.sFit.refreshFit(fitID)
+
+        iView = self.mainFrame.marketBrowser.itemView
+        if iView.active:
+            iView.update(iView.active)
+
         wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fitID))
         event.Skip()
 

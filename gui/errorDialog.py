@@ -67,7 +67,7 @@ class ErrorFrame(wx.Frame):
         from eos.config import gamedata_version, gamedata_date
 
         time = datetime.datetime.fromtimestamp(int(gamedata_date)).strftime('%Y-%m-%d %H:%M:%S')
-        version = "pyfa v" + config.getVersion() + '\nEVE Data Version: {} ({})\n\n'.format(gamedata_version, time)  # gui.aboutData.versionString
+        version = "pyfa " + config.getVersion() + '\nEVE Data Version: {} ({})\n\n'.format(gamedata_version, time)  # gui.aboutData.versionString
 
         desc = "pyfa has experienced an unexpected issue. Below is a message that contains crucial\n" \
                "information about how this was triggered. Please contact the developers with the\n" \
