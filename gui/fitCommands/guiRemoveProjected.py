@@ -27,7 +27,7 @@ class GuiRemoveProjectedCommand(wx.Command):
     }
 
     def __init__(self, fitID, thing):
-        wx.Command.__init__(self, True, "Projected Add")
+        wx.Command.__init__(self, True, "Projected Remove")
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
         self.sFit = Fit.getInstance()
         self.internal_history = wx.CommandProcessor()

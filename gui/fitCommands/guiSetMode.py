@@ -8,7 +8,7 @@ from .calc.fitSetMode import FitSetModeCommand
 
 class GuiSetModeCommand(wx.Command):
     def __init__(self, fitID, mode):
-        wx.Command.__init__(self, True, "Cargo Add")
+        wx.Command.__init__(self, True, "Mode Set")
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
         self.sFit = Fit.getInstance()
         self.internal_history = wx.CommandProcessor()

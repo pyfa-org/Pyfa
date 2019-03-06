@@ -8,7 +8,7 @@ from .calc.fitRemoveCargo import FitRemoveCargoCommand
 
 class GuiRemoveCargoCommand(wx.Command):
     def __init__(self, fitID, itemID):
-        wx.Command.__init__(self, True, "Module Charge Add")
+        wx.Command.__init__(self, True, "Cargo Remove")
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
         self.sFit = Fit.getInstance()
         self.internal_history = wx.CommandProcessor()
