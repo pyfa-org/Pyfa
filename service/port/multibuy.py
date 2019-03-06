@@ -19,18 +19,14 @@
 
 
 from enum import Enum
+from eos.const import MultiBuy_ItemType
 
-
-class Options(Enum):
-    IMPLANTS = 1
-    CARGO = 2
-    LOADED_CHARGES = 3
 
 
 MULTIBUY_OPTIONS = (
-    (Options.LOADED_CHARGES.value, 'Loaded Charges', 'Export charges loaded into modules', True),
-    (Options.IMPLANTS.value, 'Implants && Boosters', 'Export implants and boosters', False),
-    (Options.CARGO.value, 'Cargo', 'Export cargo contents', True),
+    (MultiBuy_ItemType.LOADED_CHARGES.value, 'Loaded Charges', 'Export charges loaded into modules', True),
+    (MultiBuy_ItemType.IMPLANTS.value, 'Implants && Boosters', 'Export implants and boosters', False),
+    (MultiBuy_ItemType.CARGO.value, 'Cargo', 'Export cargo contents', True),
 )
 
 
@@ -48,7 +44,7 @@ def exportMultiBuy(fit, options):
             if module.isMutated:
                 continue
             addItem(module.item)
-        if module.charge and options[Options.LOADED_CHARGES.value]:
+        if module.charge and options[MultiBuy_ItemType.LOADED_CHARGES.value]:
             addItem(module.charge, module.numCharges)
 
     for drone in fit.drones:
@@ -57,11 +53,11 @@ def exportMultiBuy(fit, options):
     for fighter in fit.fighters:
         addItem(fighter.item, fighter.amountActive)
 
-    if options[Options.CARGO.value]:
+    if options[MultiBuy_ItemType.CARGO.value]:
         for cargo in fit.cargo:
             addItem(cargo.item, cargo.amount)
 
-    if options[Options.IMPLANTS.value]:
+    if options[MultiBuy_ItemType.IMPLANTS.value]:
         for implant in fit.implants:
             addItem(implant.item)
 

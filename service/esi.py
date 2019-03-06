@@ -10,6 +10,7 @@ import webbrowser
 
 import eos.db
 from eos.enum import Enum
+from eos.const import LoginMethod
 from eos.saveddata.ssocharacter import SsoCharacter
 from service.esiAccess import APIException, SsoMode
 import gui.globalEvents as GE
@@ -22,11 +23,6 @@ import gui.mainFrame
 from requests import Session
 
 pyfalog = Logger(__name__)
-
-
-class LoginMethod(Enum):
-    SERVER = 0
-    MANUAL = 1
 
 
 class Esi(EsiAccess):

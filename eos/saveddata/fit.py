@@ -29,6 +29,7 @@ import eos.db
 from eos import capSim
 from eos.effectHandlerHelpers import HandledModuleList, HandledDroneCargoList, HandledImplantBoosterList, HandledProjectedDroneList, HandledProjectedModList
 from eos.enum import Enum
+from eos.const import ImplantLocation, CalcType
 from eos.saveddata.ship import Ship
 from eos.saveddata.drone import Drone
 from eos.saveddata.character import Character
@@ -36,18 +37,8 @@ from eos.saveddata.citadel import Citadel
 from eos.saveddata.module import Module, State, Slot, Hardpoint
 from eos.utils.stats import DmgTypes
 from logbook import Logger
+
 pyfalog = Logger(__name__)
-
-
-class ImplantLocation(Enum):
-    FIT = 0
-    CHARACTER = 1
-
-
-class CalcType(Enum):
-    LOCAL = 0
-    PROJECTED = 1
-    COMMAND = 2
 
 
 class Fit(object):

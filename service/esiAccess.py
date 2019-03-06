@@ -18,6 +18,7 @@ import base64
 
 import datetime
 from eos.enum import Enum
+from eos.const import SsoMode, ESIEndpoints
 from service.settings import EsiSettings, NetworkSettings
 
 from requests import Session
@@ -42,11 +43,6 @@ scopes = [
 ]
 
 
-class SsoMode(Enum):
-    AUTO = 0
-    CUSTOM = 1
-
-
 class APIException(Exception):
     """ Exception for SSO related errors """
 
@@ -64,13 +60,6 @@ class APIException(Exception):
             return 'HTTP Error %s: %s' % (self.status_code,
                                           self.response['message'])
         return 'HTTP Error %s' % self.status_code
-
-
-class ESIEndpoints(Enum):
-    CHAR = "/v4/characters/{character_id}/"
-    CHAR_SKILLS = "/v4/characters/{character_id}/skills/"
-    CHAR_FITTINGS = "/v1/characters/{character_id}/fittings/"
-    CHAR_DEL_FIT = "/v1/characters/{character_id}/fittings/{fitting_id}/"
 
 
 class EsiAccess(object):

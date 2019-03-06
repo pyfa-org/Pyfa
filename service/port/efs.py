@@ -19,14 +19,6 @@ from logbook import Logger
 pyfalog = Logger(__name__)
 
 
-class RigSize(Enum):
-    # Matches to item attribute "rigSize" on ship and rig items
-    SMALL = 1
-    MEDIUM = 2
-    LARGE = 3
-    CAPITAL = 4
-
-
 class EfsPort:
     wepTestSet = {}
     version = 0.03

@@ -23,7 +23,7 @@ from logbook import Logger
 from sqlalchemy.orm import reconstructor, validates
 
 import eos.db
-from eos.const import Slot
+from eos.const import Slot, State, Hardpoint
 from eos.effectHandlerHelpers import HandledCharge, HandledItem
 from eos.enum import Enum
 from eos.modifiedAttributeDict import ChargeAttrShortcut, ItemAttrShortcut, ModifiedAttributeDict
@@ -34,14 +34,6 @@ from eos.utils.spoolSupport import calculateSpoolup, resolveSpoolOptions
 from eos.utils.stats import DmgTypes
 
 pyfalog = Logger(__name__)
-
-
-class State(Enum):
-    OFFLINE = -1
-    ONLINE = 0
-    ACTIVE = 1
-    OVERHEATED = 2
-
 
 ProjectedMap = {
     State.OVERHEATED: State.ACTIVE,
@@ -65,12 +57,6 @@ ProjectedSystem = {
     State.OFFLINE: State.ONLINE,
     State.ONLINE: State.OFFLINE
 }
-
-
-class Hardpoint(Enum):
-    NONE = 0
-    MISSILE = 1
-    TURRET = 2
 
 
 class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):

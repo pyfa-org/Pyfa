@@ -1,6 +1,5 @@
 from enum import Enum, auto
 
-
 # Define the various groups of attributes
 class AttrGroup(Enum):
     FITTING = auto()

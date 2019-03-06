@@ -20,6 +20,8 @@
 
 import re
 from enum import Enum
+from eos.const import RigSize
+from eos.const import Options
 
 from logbook import Logger
 
@@ -40,13 +42,6 @@ from service.port.shared import IPortUser, fetchItem, processing_notify
 
 
 pyfalog = Logger(__name__)
-
-
-class Options(Enum):
-    IMPLANTS = 1
-    MUTATIONS = 2
-    LOADED_CHARGES = 3
-
 
 EFT_OPTIONS = (
     (Options.LOADED_CHARGES.value, 'Loaded Charges', 'Export charges loaded into modules', True),
