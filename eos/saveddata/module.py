@@ -23,6 +23,7 @@ from logbook import Logger
 from sqlalchemy.orm import reconstructor, validates
 
 import eos.db
+from eos.const import Slot
 from eos.effectHandlerHelpers import HandledCharge, HandledItem
 from eos.enum import Enum
 from eos.modifiedAttributeDict import ChargeAttrShortcut, ItemAttrShortcut, ModifiedAttributeDict
@@ -40,30 +41,6 @@ class State(Enum):
     ONLINE = 0
     ACTIVE = 1
     OVERHEATED = 2
-
-
-class Slot(Enum):
-    # These are self-explanatory
-    LOW = 1
-    MED = 2
-    HIGH = 3
-    RIG = 4
-    SUBSYSTEM = 5
-    # not a real slot, need for pyfa display rack separation
-    MODE = 6
-    # system effects. They are projected "modules" and pyfa assumes all modules
-    # have a slot. In this case, make one up.
-    SYSTEM = 7
-    # used for citadel services
-    SERVICE = 8
-    # fighter 'slots'. Just easier to put them here...
-    F_LIGHT = 10
-    F_SUPPORT = 11
-    F_HEAVY = 12
-    # fighter 'slots' (for structures)
-    FS_LIGHT = 13
-    FS_SUPPORT = 14
-    FS_HEAVY = 15
 
 
 ProjectedMap = {
@@ -185,7 +162,7 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
             self.__itemModifiedAttributes.original = self.__item.attributes
             self.__itemModifiedAttributes.overrides = self.__item.overrides
             self.__hardpoint = self.__calculateHardpoint(self.__item)
-            self.__slot = self.__calculateSlot(self.__item)
+            self.__slot = self.calculateSlot(self.__item)
 
             # Instantiate / remove mutators if this is a mutated module
             if self.__baseItem:
@@ -755,7 +732,7 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
         return Hardpoint.NONE
 
     @staticmethod
-    def __calculateSlot(item):
+    def calculateSlot(item):
         effectSlotMap = {
             "rigSlot"    : Slot.RIG,
             "loPower"    : Slot.LOW,
@@ -772,7 +749,7 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
         if item.group.name in Module.SYSTEM_GROUPS:
             return Slot.SYSTEM
 
-        raise ValueError("Passed item does not fit in any known slot")
+        return None
 
     @validates("ID", "itemID", "ammoID")
     def validator(self, key, val):

@@ -39,6 +39,8 @@ attributes_table = Table("dgmattribs", gamedata_meta,
                          Column("displayName", String),
                          Column("highIsGood", Boolean),
                          Column("iconID", Integer),
+                         Column("attributeCategory", Integer),
+                         Column("tooltipDescription", Integer),
                          Column("unitID", Integer, ForeignKey("dgmunits.unitID")))
 
 mapper(Attribute, typeattributes_table,

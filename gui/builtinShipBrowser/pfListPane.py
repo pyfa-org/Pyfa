@@ -158,4 +158,5 @@ class PFListPane(wx.ScrolledWindow):
         for widget in self._wList:
             widget.Destroy()
 
+        self.Scroll(0, 0)
         self._wList = []

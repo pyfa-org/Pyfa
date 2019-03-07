@@ -62,13 +62,11 @@ from gui.preferenceDialog import PreferenceDialog
 from gui.resistsEditor import ResistsEditorDlg
 from gui.setEditor import ImplantSetEditorDlg
 from gui.shipBrowser import ShipBrowser
-from gui.ssoLogin import SsoLogin
 from gui.statsPane import StatsPane
 from gui.updateDialog import UpdateDialog
 from gui.utils.clipboard import fromClipboard, toClipboard
 from service.character import Character
-from service.esi import Esi, LoginMethod
-from service.esiAccess import SsoMode
+from service.esi import Esi
 from service.fit import Fit
 from service.port import EfsPort, IPortUser, Port
 from service.price import Price
@@ -231,19 +229,10 @@ class MainFrame(wx.Frame):
         self.sUpdate.CheckUpdate(self.ShowUpdateBox)
 
         self.Bind(GE.EVT_SSO_LOGIN, self.onSSOLogin)
-        self.Bind(GE.EVT_SSO_LOGGING_IN, self.ShowSsoLogin)
 
     @property
     def command(self) -> wx.CommandProcessor:
         return Fit.getCommandProcessor(self.getActiveFit())
-
-    def ShowSsoLogin(self, event):
-        if getattr(event, "login_mode", LoginMethod.SERVER) == LoginMethod.MANUAL and getattr(event, "sso_mode", SsoMode.AUTO) == SsoMode.AUTO:
-            dlg = SsoLogin(self)
-            if dlg.ShowModal() == wx.ID_OK:
-                sEsi = Esi.getInstance()
-                # todo: verify that this is a correct SSO Info block
-                sEsi.handleLogin({'SSOInfo': [dlg.ssoInfoCtrl.Value.strip()]})
 
     def ShowUpdateBox(self, release, version):
         dlg = UpdateDialog(self, release, version)
