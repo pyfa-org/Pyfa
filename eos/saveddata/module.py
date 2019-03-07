@@ -23,7 +23,7 @@ from logbook import Logger
 from sqlalchemy.orm import reconstructor, validates
 
 import eos.db
-from eos.const import Slot, State, Hardpoint
+from eos.const import FittingSlot, FittingModuleState, FittingHardpoint
 from eos.effectHandlerHelpers import HandledCharge, HandledItem
 from eos.enum import Enum
 from eos.modifiedAttributeDict import ChargeAttrShortcut, ItemAttrShortcut, ModifiedAttributeDict
@@ -36,26 +36,26 @@ from eos.utils.stats import DmgTypes
 pyfalog = Logger(__name__)
 
 ProjectedMap = {
-    State.OVERHEATED: State.ACTIVE,
-    State.ACTIVE: State.OFFLINE,
-    State.OFFLINE: State.ACTIVE,
-    State.ONLINE: State.ACTIVE  # Just in case
+    FittingModuleState.OVERHEATED: FittingModuleState.ACTIVE,
+    FittingModuleState.ACTIVE: FittingModuleState.OFFLINE,
+    FittingModuleState.OFFLINE: FittingModuleState.ACTIVE,
+    FittingModuleState.ONLINE: FittingModuleState.ACTIVE  # Just in case
 }
 
 
 # Old state : New State
 LocalMap = {
-    State.OVERHEATED: State.ACTIVE,
-    State.ACTIVE: State.ONLINE,
-    State.OFFLINE: State.ONLINE,
-    State.ONLINE: State.ACTIVE
+    FittingModuleState.OVERHEATED: FittingModuleState.ACTIVE,
+    FittingModuleState.ACTIVE: FittingModuleState.ONLINE,
+    FittingModuleState.OFFLINE: FittingModuleState.ONLINE,
+    FittingModuleState.ONLINE: FittingModuleState.ACTIVE
 }
 
 
 # For system effects. They should only ever be online or offline
 ProjectedSystem = {
-    State.OFFLINE: State.ONLINE,
-    State.ONLINE: State.OFFLINE
+    FittingModuleState.OFFLINE: FittingModuleState.ONLINE,
+    FittingModuleState.ONLINE: FittingModuleState.OFFLINE
 }
 
 
@@ -90,7 +90,7 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
         self.__charge = None
 
         self.projected = False
-        self.state = State.ONLINE
+        self.state = FittingModuleState.ONLINE
         self.build()
 
     @reconstructor
@@ -139,7 +139,7 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
         self.__reloadTime = None
         self.__reloadForce = None
         self.__chargeCycles = None
-        self.__hardpoint = Hardpoint.NONE
+        self.__hardpoint = FittingHardpoint.NONE
         self.__itemModifiedAttributes = ModifiedAttributeDict(parent=self)
         self.__chargeModifiedAttributes = ModifiedAttributeDict(parent=self)
         self.__slot = self.dummySlot  # defaults to None
@@ -382,7 +382,7 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
             if self.isEmpty:
                 self.__miningyield = 0
             else:
-                if self.state >= State.ACTIVE:
+                if self.state >= FittingModuleState.ACTIVE:
                     volley = self.getModifiedItemAttr("specialtyMiningAmount") or self.getModifiedItemAttr(
                             "miningAmount") or 0
                     if volley:
@@ -396,7 +396,7 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
         return self.__miningyield
 
     def getVolley(self, spoolOptions=None, targetResists=None, ignoreState=False):
-        if self.isEmpty or (self.state < State.ACTIVE and not ignoreState):
+        if self.isEmpty or (self.state < FittingModuleState.ACTIVE and not ignoreState):
             return DmgTypes(0, 0, 0, 0)
         if self.__baseVolley is None:
             dmgGetter = self.getModifiedChargeAttr if self.charge else self.getModifiedItemAttr
@@ -434,7 +434,7 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
         return dps
 
     def getRemoteReps(self, spoolOptions=None, ignoreState=False):
-        if self.isEmpty or (self.state < State.ACTIVE and not ignoreState):
+        if self.isEmpty or (self.state < FittingModuleState.ACTIVE and not ignoreState):
             return None, 0
 
         def getBaseRemoteReps(module):
@@ -576,14 +576,14 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
             return False
 
         # If the mod is a subsystem, don't let two subs in the same slot fit
-        if self.slot == Slot.SUBSYSTEM:
+        if self.slot == FittingSlot.SUBSYSTEM:
             subSlot = self.getModifiedItemAttr("subSystemSlot")
             for mod in fit.modules:
                 if mod.getModifiedItemAttr("subSystemSlot") == subSlot:
                     return False
 
         # Check rig sizes
-        if self.slot == Slot.RIG:
+        if self.slot == FittingSlot.RIG:
             if self.getModifiedItemAttr("rigSize") != fit.ship.getModifiedItemAttr("rigSize"):
                 return False
 
@@ -613,9 +613,9 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
         # Check if we're within bounds
         if state < -1 or state > 2:
             return False
-        elif state >= State.ACTIVE and not self.item.isType("active"):
+        elif state >= FittingModuleState.ACTIVE and not self.item.isType("active"):
             return False
-        elif state == State.OVERHEATED and not self.item.isType("overheat"):
+        elif state == FittingModuleState.OVERHEATED and not self.item.isType("overheat"):
             return False
         else:
             return True
@@ -627,7 +627,7 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
         # If we're going to set module to offline or online for local modules or offline for projected,
         # it should be fine for all cases
         item = self.item
-        if (state <= State.ONLINE and projectedOnto is None) or (state <= State.OFFLINE):
+        if (state <= FittingModuleState.ONLINE and projectedOnto is None) or (state <= FittingModuleState.OFFLINE):
             return True
 
         # Check if the local module is over it's max limit; if it's not, we're fine
@@ -641,7 +641,7 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
             group = item.group.name
             for mod in self.owner.modules:
                 currItem = getattr(mod, "item", None)
-                if mod.state >= State.ACTIVE and currItem is not None and currItem.group.name == group:
+                if mod.state >= FittingModuleState.ACTIVE and currItem is not None and currItem.group.name == group:
                     currActive += 1
                 if currActive > maxGroupActive:
                     break
@@ -704,28 +704,28 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
     @staticmethod
     def __calculateHardpoint(item):
         effectHardpointMap = {
-            "turretFitted"  : Hardpoint.TURRET,
-            "launcherFitted": Hardpoint.MISSILE
+            "turretFitted"  : FittingHardpoint.TURRET,
+            "launcherFitted": FittingHardpoint.MISSILE
         }
 
         if item is None:
-            return Hardpoint.NONE
+            return FittingHardpoint.NONE
 
         for effectName, slot in effectHardpointMap.items():
             if effectName in item.effects:
                 return slot
 
-        return Hardpoint.NONE
+        return FittingHardpoint.NONE
 
     @staticmethod
     def calculateSlot(item):
         effectSlotMap = {
-            "rigSlot"    : Slot.RIG,
-            "loPower"    : Slot.LOW,
-            "medPower"   : Slot.MED,
-            "hiPower"    : Slot.HIGH,
-            "subSystem"  : Slot.SUBSYSTEM,
-            "serviceSlot": Slot.SERVICE
+            "rigSlot"    : FittingSlot.RIG,
+            "loPower"    : FittingSlot.LOW,
+            "medPower"   : FittingSlot.MED,
+            "hiPower"    : FittingSlot.HIGH,
+            "subSystem"  : FittingSlot.SUBSYSTEM,
+            "serviceSlot": FittingSlot.SERVICE
         }
         if item is None:
             return None
@@ -733,7 +733,7 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
             if effectName in item.effects:
                 return slot
         if item.group.name in Module.SYSTEM_GROUPS:
-            return Slot.SYSTEM
+            return FittingSlot.SYSTEM
 
         return None
 
@@ -787,8 +787,8 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
                     if effect.runTime == runTime and \
                             effect.activeByDefault and \
                             (effect.isType("offline") or
-                                 (effect.isType("passive") and self.state >= State.ONLINE) or
-                                 (effect.isType("active") and self.state >= State.ACTIVE)) and \
+                             (effect.isType("passive") and self.state >= FittingModuleState.ONLINE) or
+                             (effect.isType("active") and self.state >= FittingModuleState.ACTIVE)) and \
                             (not gang or (gang and effect.isType("gang"))):
 
                         chargeContext = ("moduleCharge",)
@@ -801,7 +801,7 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
                             effect.handler(fit, self, chargeContext)
 
         if self.item:
-            if self.state >= State.OVERHEATED:
+            if self.state >= FittingModuleState.OVERHEATED:
                 for effect in self.item.effects.values():
                     if effect.runTime == runTime and \
                             effect.isType("overheat") \
@@ -814,8 +814,8 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
                 if effect.runTime == runTime and \
                         effect.activeByDefault and \
                         (effect.isType("offline") or
-                             (effect.isType("passive") and self.state >= State.ONLINE) or
-                             (effect.isType("active") and self.state >= State.ACTIVE)) \
+                         (effect.isType("passive") and self.state >= FittingModuleState.ONLINE) or
+                         (effect.isType("active") and self.state >= FittingModuleState.ACTIVE)) \
                         and ((projected and effect.isType("projected")) or not projected) \
                         and ((gang and effect.isType("gang")) or not gang):
                     try:
@@ -890,7 +890,7 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
     @property
     def capUse(self):
         capNeed = self.getModifiedItemAttr("capacitorNeed")
-        if capNeed and self.state >= State.ACTIVE:
+        if capNeed and self.state >= FittingModuleState.ACTIVE:
             cycleTime = self.cycleTime
             if cycleTime > 0:
                 capUsed = capNeed / (cycleTime / 1000.0)
@@ -902,10 +902,10 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
     def getProposedState(mod, click, proposedState=None):
         # todo: instead of passing in module, make this a instanced function.
         pyfalog.debug("Get proposed state for module.")
-        if mod.slot == Slot.SUBSYSTEM or mod.isEmpty:
-            return State.ONLINE
+        if mod.slot == FittingSlot.SUBSYSTEM or mod.isEmpty:
+            return FittingModuleState.ONLINE
 
-        if mod.slot == Slot.SYSTEM:
+        if mod.slot == FittingSlot.SYSTEM:
             transitionMap = ProjectedSystem
         else:
             transitionMap = ProjectedMap if mod.projected else LocalMap
@@ -915,9 +915,9 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
         if proposedState is not None:
             state = proposedState
         elif click == "right":
-            state = State.OVERHEATED
+            state = FittingModuleState.OVERHEATED
         elif click == "ctrl":
-            state = State.OFFLINE
+            state = FittingModuleState.OFFLINE
         else:
             state = transitionMap[currState]
             if not mod.isValidState(state):

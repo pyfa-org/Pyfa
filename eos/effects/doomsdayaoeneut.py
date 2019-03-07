@@ -3,15 +3,15 @@
 # Used by:
 # Module: Energy Neutralization Burst Projector
 # Structure Module: Standup Energy Neutralization Burst Projector
-from eos.saveddata.module import State
+from eos.saveddata.module import FittingModuleState
 from eos.modifiedAttributeDict import ModifiedAttributeDict
 
 type = "active", "projected"
 
 
 def handler(fit, src, context, **kwargs):
-    if "projected" in context and ((hasattr(src, "state") and src.state >= State.ACTIVE) or
-                                    hasattr(src, "amountActive")):
+    if "projected" in context and ((hasattr(src, "state") and src.state >= FittingModuleState.ACTIVE) or
+                                   hasattr(src, "amountActive")):
         amount = src.getModifiedItemAttr("energyNeutralizerAmount")
 
         if 'effect' in kwargs:

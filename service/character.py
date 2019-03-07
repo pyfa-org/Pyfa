@@ -37,7 +37,7 @@ from service.esi import Esi
 
 from eos.saveddata.implant import Implant as es_Implant
 from eos.saveddata.character import Character as es_Character, Skill
-from eos.saveddata.module import Slot as es_Slot, Module as es_Module
+from eos.saveddata.module import FittingSlot as es_Slot, Module as es_Module
 from eos.saveddata.fighter import Fighter as es_Fighter
 
 pyfalog = Logger(__name__)

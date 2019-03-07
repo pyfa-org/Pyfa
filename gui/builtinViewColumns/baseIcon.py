@@ -2,7 +2,7 @@
 import wx
 from eos.saveddata.implant import Implant
 from eos.saveddata.drone import Drone
-from eos.saveddata.module import Module, Slot, Rack
+from eos.saveddata.module import Module, FittingSlot, Rack
 from eos.saveddata.fit import Fit
 from gui.viewColumn import ViewColumn
 
@@ -32,7 +32,7 @@ class BaseIcon(ViewColumn):
                 return self.shipImage
         elif isinstance(stuff, Module):
             if stuff.isEmpty:
-                return self.fittingView.imageList.GetImageIndex("slot_%s_small" % Slot.getName(stuff.slot).lower(),
+                return self.fittingView.imageList.GetImageIndex("slot_%s_small" % FittingSlot.getName(stuff.slot).lower(),
                                                                 "gui")
             else:
                 return self.loadIconFile(stuff.item.iconID or "")

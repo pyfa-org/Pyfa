@@ -1,8 +1,29 @@
+# =============================================================================
+# Copyright (C) 2019 Ryan Holmes
+#
+# This file is part of pyfa.
+#
+# pyfa is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# pyfa is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with pyfa.  If not, see <http://www.gnu.org/licenses/>.
+# =============================================================================
+
 from eos.enum import Enum
 from enum import IntEnum
 
-
-class Slot(Enum):
+class FittingSlot(Enum):
+    """
+    Contains slots for ship fittings
+    """
     # These are self-explanatory
     LOW = 1
     MED = 2
@@ -25,54 +46,81 @@ class Slot(Enum):
     FS_SUPPORT = 14
     FS_HEAVY = 15
 
-
 class ImplantLocation(Enum):
+    """
+    Contains location of the implant
+    """
     FIT = 0
     CHARACTER = 1
 
-
 class CalcType(Enum):
+    """
+    Contains location of the calculation
+    """
     LOCAL = 0
     PROJECTED = 1
     COMMAND = 2
 
-class State(Enum):
+class FittingModuleState(Enum):
+    """
+    Contains the state of a fitting module
+    """
     OFFLINE = -1
     ONLINE = 0
     ACTIVE = 1
     OVERHEATED = 2
 
-class Hardpoint(Enum):
+class FittingHardpoint(Enum):
+    """
+    Contains the types of a fitting hardpoint
+    """
     NONE = 0
     MISSILE = 1
     TURRET = 2
 
-class LoginMethod(Enum):
+class EsiLoginMethod(Enum):
+    """
+    Contains the method of ESI login
+    """
     SERVER = 0
     MANUAL = 1
 
-class SsoMode(Enum):
+class EsiSsoMode(Enum):
+    """
+    Contains the mode of ESI sso mode
+    """
     AUTO = 0
     CUSTOM = 1
 
-class ESIEndpoints(Enum):
+class EsiEndpoints(Enum):
+    """
+    Contains the endpoint paths for the ESI access
+    """
     CHAR = "/v4/characters/{character_id}/"
     CHAR_SKILLS = "/v4/characters/{character_id}/skills/"
     CHAR_FITTINGS = "/v1/characters/{character_id}/fittings/"
     CHAR_DEL_FIT = "/v1/characters/{character_id}/fittings/{fitting_id}/"
 
-class MultiBuy_ItemType(IntEnum):
+class PortMultiBuyItemType(IntEnum):
+    """
+    Contains different types of items to multibuy export
+    """
     IMPLANTS = 1
     CARGO = 2
     LOADED_CHARGES = 3
 
-class Options(IntEnum):
+class PortEftOptions(IntEnum):
+    """
+    Contains different options for eft-export
+    """
     IMPLANTS = 1
     MUTATIONS = 2
     LOADED_CHARGES = 3
 
-class RigSize(Enum):
-    # Matches to item attribute "rigSize" on ship and rig items
+class PortEftRigSize(Enum):
+    """
+    Contains different sizes of ship rigs
+    """
     SMALL = 1
     MEDIUM = 2
     LARGE = 3

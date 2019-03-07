@@ -2,15 +2,15 @@
 #
 # Used by:
 # Drones from group: Energy Neutralizer Drone (3 of 3)
-from eos.saveddata.module import State
+from eos.saveddata.module import FittingModuleState
 from eos.modifiedAttributeDict import ModifiedAttributeDict
 
 type = "active", "projected"
 
 
 def handler(fit, src, context, **kwargs):
-    if "projected" in context and ((hasattr(src, "state") and src.state >= State.ACTIVE) or
-                                    hasattr(src, "amountActive")):
+    if "projected" in context and ((hasattr(src, "state") and src.state >= FittingModuleState.ACTIVE) or
+                                   hasattr(src, "amountActive")):
         amount = src.getModifiedItemAttr("energyNeutralizerAmount")
         time = src.getModifiedItemAttr("energyNeutralizerDuration")
 

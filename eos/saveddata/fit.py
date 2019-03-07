@@ -34,7 +34,7 @@ from eos.saveddata.ship import Ship
 from eos.saveddata.drone import Drone
 from eos.saveddata.character import Character
 from eos.saveddata.citadel import Citadel
-from eos.saveddata.module import Module, State, Slot, Hardpoint
+from eos.saveddata.module import Module, FittingModuleState, FittingSlot, FittingHardpoint
 from eos.utils.stats import DmgTypes
 from logbook import Logger
 
@@ -892,7 +892,7 @@ class Fit(object):
         if self.ship is None:
             return
 
-        for slotType in (Slot.LOW, Slot.MED, Slot.HIGH, Slot.RIG, Slot.SUBSYSTEM, Slot.SERVICE):
+        for slotType in (FittingSlot.LOW, FittingSlot.MED, FittingSlot.HIGH, FittingSlot.RIG, FittingSlot.SUBSYSTEM, FittingSlot.SERVICE):
             amount = self.getSlotsFree(slotType, True)
             if amount > 0:
                 for _ in range(int(amount)):
@@ -939,7 +939,7 @@ class Fit(object):
     def getItemAttrOnlineSum(dict, attr):
         amount = 0
         for mod in dict:
-            add = mod.getModifiedItemAttr(attr) if mod.state >= State.ONLINE else None
+            add = mod.getModifiedItemAttr(attr) if mod.state >= FittingModuleState.ONLINE else None
             if add is not None:
                 amount += add
 
@@ -958,29 +958,29 @@ class Fit(object):
 
         for mod in chain(self.modules, self.fighters):
             if mod.slot is type and (not getattr(mod, "isEmpty", False) or countDummies):
-                if type in (Slot.F_HEAVY, Slot.F_SUPPORT, Slot.F_LIGHT, Slot.FS_HEAVY, Slot.FS_LIGHT, Slot.FS_SUPPORT) and not mod.active:
+                if type in (FittingSlot.F_HEAVY, FittingSlot.F_SUPPORT, FittingSlot.F_LIGHT, FittingSlot.FS_HEAVY, FittingSlot.FS_LIGHT, FittingSlot.FS_SUPPORT) and not mod.active:
                     continue
                 amount += 1
 
         return amount
 
     slots = {
-        Slot.LOW      : "lowSlots",
-        Slot.MED      : "medSlots",
-        Slot.HIGH     : "hiSlots",
-        Slot.RIG      : "rigSlots",
-        Slot.SUBSYSTEM: "maxSubSystems",
-        Slot.SERVICE  : "serviceSlots",
-        Slot.F_LIGHT  : "fighterLightSlots",
-        Slot.F_SUPPORT: "fighterSupportSlots",
-        Slot.F_HEAVY  : "fighterHeavySlots",
-        Slot.FS_LIGHT: "fighterStandupLightSlots",
-        Slot.FS_SUPPORT: "fighterStandupSupportSlots",
-        Slot.FS_HEAVY: "fighterStandupHeavySlots",
+        FittingSlot.LOW      : "lowSlots",
+        FittingSlot.MED      : "medSlots",
+        FittingSlot.HIGH     : "hiSlots",
+        FittingSlot.RIG      : "rigSlots",
+        FittingSlot.SUBSYSTEM: "maxSubSystems",
+        FittingSlot.SERVICE  : "serviceSlots",
+        FittingSlot.F_LIGHT  : "fighterLightSlots",
+        FittingSlot.F_SUPPORT: "fighterSupportSlots",
+        FittingSlot.F_HEAVY  : "fighterHeavySlots",
+        FittingSlot.FS_LIGHT: "fighterStandupLightSlots",
+        FittingSlot.FS_SUPPORT: "fighterStandupSupportSlots",
+        FittingSlot.FS_HEAVY: "fighterStandupHeavySlots",
     }
 
     def getSlotsFree(self, type, countDummies=False):
-        if type in (Slot.MODE, Slot.SYSTEM):
+        if type in (FittingSlot.MODE, FittingSlot.SYSTEM):
             # These slots don't really exist, return default 0
             return 0
 
@@ -992,12 +992,12 @@ class Fit(object):
         return self.ship.getModifiedItemAttr(self.slots[type]) or 0
 
     def getHardpointsFree(self, type):
-        if type == Hardpoint.NONE:
+        if type == FittingHardpoint.NONE:
             return 1
-        elif type == Hardpoint.TURRET:
-            return self.ship.getModifiedItemAttr('turretSlotsLeft') - self.getHardpointsUsed(Hardpoint.TURRET)
-        elif type == Hardpoint.MISSILE:
-            return self.ship.getModifiedItemAttr('launcherSlotsLeft') - self.getHardpointsUsed(Hardpoint.MISSILE)
+        elif type == FittingHardpoint.TURRET:
+            return self.ship.getModifiedItemAttr('turretSlotsLeft') - self.getHardpointsUsed(FittingHardpoint.TURRET)
+        elif type == FittingHardpoint.MISSILE:
+            return self.ship.getModifiedItemAttr('launcherSlotsLeft') - self.getHardpointsUsed(FittingHardpoint.MISSILE)
         else:
             raise ValueError("%d is not a valid value for Hardpoint Enum", type)
 
@@ -1159,7 +1159,7 @@ class Fit(object):
         capUsed = 0
         capAdded = 0
         for mod in self.modules:
-            if mod.state >= State.ACTIVE:
+            if mod.state >= FittingModuleState.ACTIVE:
                 if (mod.getModifiedItemAttr("capacitorNeed") or 0) != 0:
                     cycleTime = mod.rawCycleTime or 0
                     reactivationTime = mod.getModifiedItemAttr("moduleReactivationDelay") or 0
@@ -1173,7 +1173,7 @@ class Fit(object):
                             capAdded -= capNeed
 
                         # If this is a turret, don't stagger activations
-                        disableStagger = mod.hardpoint == Hardpoint.TURRET
+                        disableStagger = mod.hardpoint == FittingHardpoint.TURRET
 
                         drains.append((int(fullCycleTime), mod.getModifiedItemAttr("capacitorNeed") or 0,
                                        mod.numShots or 0, disableStagger, reloadTime))

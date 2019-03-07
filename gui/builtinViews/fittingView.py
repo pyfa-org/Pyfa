@@ -30,7 +30,7 @@ import gui.globalEvents as GE
 import gui.mainFrame
 import gui.multiSwitch
 from eos.saveddata.mode import Mode
-from eos.saveddata.module import Module, Rack, Slot
+from eos.saveddata.module import Module, Rack, FittingSlot
 from gui.bitmap_loader import BitmapLoader
 from gui.builtinMarketBrowser.events import ITEM_SELECTED
 from gui.builtinShipBrowser.events import EVT_FIT_REMOVED, EVT_FIT_RENAMED, EVT_FIT_SELECTED, FitSelected
@@ -474,7 +474,7 @@ class FittingView(d.Display):
         sFit = Fit.getInstance()
         fit = sFit.getFit(self.activeFitID)
 
-        slotOrder = [Slot.SUBSYSTEM, Slot.HIGH, Slot.MED, Slot.LOW, Slot.RIG, Slot.SERVICE]
+        slotOrder = [FittingSlot.SUBSYSTEM, FittingSlot.HIGH, FittingSlot.MED, FittingSlot.LOW, FittingSlot.RIG, FittingSlot.SERVICE]
 
         if fit is not None:
             self.mods = fit.modules[:]
@@ -507,7 +507,7 @@ class FittingView(d.Display):
                 # while also marking the mode header position in the Blanks list
                 if sFit.serviceFittingOptions["rackSlots"]:
                     self.blanks.append(len(self.mods))
-                    self.mods.append(Rack.buildRack(Slot.MODE, None))
+                    self.mods.append(Rack.buildRack(FittingSlot.MODE, None))
 
                 self.mods.append(fit.mode)
         else:
@@ -648,8 +648,8 @@ class FittingView(d.Display):
         slotMap = {}
 
         # test for too many modules (happens with t3s / CCP change in slot layout)
-        for slotType in Slot.getTypes():
-            slot = Slot.getValue(slotType)
+        for slotType in FittingSlot.getTypes():
+            slot = FittingSlot.getValue(slotType)
             slotMap[slot] = fit.getSlotsFree(slot) < 0
 
         for i, mod in enumerate(self.mods):
@@ -735,8 +735,8 @@ class FittingView(d.Display):
             return
 
         slotMap = {}
-        for slotType in Slot.getTypes():
-            slot = Slot.getValue(slotType)
+        for slotType in FittingSlot.getTypes():
+            slot = FittingSlot.getValue(slotType)
             slotMap[slot] = fit.getSlotsFree(slot) < 0
 
         padding = 2

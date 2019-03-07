@@ -1,5 +1,5 @@
 import wx
-from eos.saveddata.module import Module, State
+from eos.saveddata.module import Module, FittingModuleState
 import eos.db
 from logbook import Logger
 from service.fit import Fit
@@ -52,8 +52,8 @@ class FitAddModuleCommand(wx.Command):
             self.module.owner = fit
             numSlots = len(fit.modules)
             fit.modules.append(self.module)
-            if self.module.isValidState(State.ACTIVE):
-                self.module.state = State.ACTIVE
+            if self.module.isValidState(FittingModuleState.ACTIVE):
+                self.module.state = FittingModuleState.ACTIVE
 
             # todo: fix these
             # As some items may affect state-limiting attributes of the ship, calculate new attributes first

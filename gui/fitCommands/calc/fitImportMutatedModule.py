@@ -1,5 +1,5 @@
 import wx
-from eos.saveddata.module import Module, State
+from eos.saveddata.module import Module, FittingModuleState
 import eos.db
 from eos.db.gamedata.queries import getDynamicItem
 from logbook import Logger
@@ -62,8 +62,8 @@ class FitImportMutatedCommand(wx.Command):
             module.owner = fit
             numSlots = len(fit.modules)
             fit.modules.append(module)
-            if module.isValidState(State.ACTIVE):
-                module.state = State.ACTIVE
+            if module.isValidState(FittingModuleState.ACTIVE):
+                module.state = FittingModuleState.ACTIVE
 
             # todo: fix these
             # As some items may affect state-limiting attributes of the ship, calculate new attributes first

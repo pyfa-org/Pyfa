@@ -25,7 +25,7 @@ from eos.saveddata.cargo import Cargo
 from eos.saveddata.implant import Implant
 from eos.saveddata.drone import Drone
 from eos.saveddata.fighter import Fighter
-from eos.saveddata.module import Module, Slot, Rack
+from eos.saveddata.module import Module, FittingSlot, Rack
 from eos.saveddata.fit import Fit
 from service.fit import Fit as FitSvc
 from service.market import Market
@@ -72,10 +72,10 @@ class BaseName(ViewColumn):
                 return "%s (%s)" % (stuff.name, stuff.ship.item.name)
         elif isinstance(stuff, Rack):
             if FitSvc.getInstance().serviceFittingOptions["rackLabels"]:
-                if stuff.slot == Slot.MODE:
+                if stuff.slot == FittingSlot.MODE:
                     return '─ Tactical Mode ─'
                 else:
-                    return '─ {} {} Slot{}─'.format(stuff.num, Slot.getName(stuff.slot).capitalize(), '' if stuff.num == 1 else 's')
+                    return '─ {} {} Slot{}─'.format(stuff.num, FittingSlot.getName(stuff.slot).capitalize(), '' if stuff.num == 1 else 's')
             else:
                 return ""
         elif isinstance(stuff, Module):
@@ -89,7 +89,7 @@ class BaseName(ViewColumn):
                     return "{} {}".format(type.name, stuff.item.name[-1:])
 
             if stuff.isEmpty:
-                return "%s Slot" % Slot.getName(stuff.slot).capitalize()
+                return "%s Slot" % FittingSlot.getName(stuff.slot).capitalize()
             else:
                 return stuff.item.name
         elif isinstance(stuff, Implant):

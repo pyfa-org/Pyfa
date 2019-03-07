@@ -1,5 +1,5 @@
 import wx
-from eos.saveddata.module import Module, State
+from eos.saveddata.module import Module, FittingModuleState
 import eos.db
 from logbook import Logger
 pyfalog = Logger(__name__)
@@ -28,7 +28,7 @@ class FitAddProjectedEnvCommand(wx.Command):
 
         # todo: thing to check for existing environmental effects
 
-        module.state = State.ONLINE
+        module.state = FittingModuleState.ONLINE
         if module.isExclusiveSystemEffect:
             # if this is an exclusive system effect, we need to cache the old one. We make room for the new one here, which returns the old one
             self.old_item = fit.projectedModules.makeRoom(module)

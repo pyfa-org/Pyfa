@@ -7,7 +7,7 @@ from config import version as pyfaVersion
 from service.fit import Fit
 from service.market import Market
 from eos.enum import Enum
-from eos.saveddata.module import Hardpoint, Slot, Module, State
+from eos.saveddata.module import FittingHardpoint, FittingSlot, Module, FittingModuleState
 from eos.saveddata.drone import Drone
 from eos.effectHandlerHelpers import HandledList
 from eos.db import gamedata_session, getCategory, getAttributeInfo, getGroup
@@ -78,7 +78,7 @@ class EfsPort:
         propWithBloom = next(filter(activePropWBloomFilter, propMods), None)
         if propWithBloom is not None:
             oldPropState = propWithBloom.state
-            propWithBloom.state = State.ONLINE
+            propWithBloom.state = FittingModuleState.ONLINE
             sFit.recalc(fit)
             sp = fit.maxSpeed
             sig = fit.ship.getModifiedItemAttr("signatureRadius")
@@ -190,8 +190,8 @@ class EfsPort:
     def getModuleInfo(fit, padTypeIDs=False):
         moduleNames = []
         modTypeIDs = []
-        moduleNameSets = {Slot.LOW: [], Slot.MED: [], Slot.HIGH: [], Slot.RIG: [], Slot.SUBSYSTEM: []}
-        modTypeIDSets = {Slot.LOW: [], Slot.MED: [], Slot.HIGH: [], Slot.RIG: [], Slot.SUBSYSTEM: []}
+        moduleNameSets = {FittingSlot.LOW: [], FittingSlot.MED: [], FittingSlot.HIGH: [], FittingSlot.RIG: [], FittingSlot.SUBSYSTEM: []}
+        modTypeIDSets = {FittingSlot.LOW: [], FittingSlot.MED: [], FittingSlot.HIGH: [], FittingSlot.RIG: [], FittingSlot.SUBSYSTEM: []}
         for mod in fit.modules:
             try:
                 if mod.item is not None:
@@ -208,17 +208,17 @@ class EfsPort:
                 pyfalog.error("Could not find name for module {0}".format(vars(mod)))
 
         for modInfo in [
-            ["High Slots:"], moduleNameSets[Slot.HIGH], ["", "Med Slots:"], moduleNameSets[Slot.MED],
-            ["", "Low Slots:"], moduleNameSets[Slot.LOW], ["", "Rig Slots:"], moduleNameSets[Slot.RIG]
+            ["High Slots:"], moduleNameSets[FittingSlot.HIGH], ["", "Med Slots:"], moduleNameSets[FittingSlot.MED],
+            ["", "Low Slots:"], moduleNameSets[FittingSlot.LOW], ["", "Rig Slots:"], moduleNameSets[FittingSlot.RIG]
         ]:
             moduleNames.extend(modInfo)
-        if len(moduleNameSets[Slot.SUBSYSTEM]) > 0:
+        if len(moduleNameSets[FittingSlot.SUBSYSTEM]) > 0:
             moduleNames.extend(["", "Subsystems:"])
-            moduleNames.extend(moduleNameSets[Slot.SUBSYSTEM])
+            moduleNames.extend(moduleNameSets[FittingSlot.SUBSYSTEM])
 
-        for slotType in [Slot.HIGH, Slot.MED, Slot.LOW, Slot.RIG, Slot.SUBSYSTEM]:
-            if slotType is not Slot.SUBSYSTEM or len(modTypeIDSets[slotType]) > 0:
-                modTypeIDs.extend([0, 0] if slotType is not Slot.HIGH else [0])
+        for slotType in [FittingSlot.HIGH, FittingSlot.MED, FittingSlot.LOW, FittingSlot.RIG, FittingSlot.SUBSYSTEM]:
+            if slotType is not FittingSlot.SUBSYSTEM or len(modTypeIDSets[slotType]) > 0:
+                modTypeIDs.extend([0, 0] if slotType is not FittingSlot.HIGH else [0])
                 modTypeIDs.extend(modTypeIDSets[slotType])
 
         droneNames = []
@@ -323,18 +323,18 @@ class EfsPort:
                 name = stats.item.name + ", " + stats.charge.name
             else:
                 name = stats.item.name
-            if stats.hardpoint == Hardpoint.TURRET:
+            if stats.hardpoint == FittingHardpoint.TURRET:
                 tracking = stats.getModifiedItemAttr("trackingSpeed")
                 typeing = "Turret"
             # Bombs share most attributes with missiles despite not needing the hardpoint
-            elif stats.hardpoint == Hardpoint.MISSILE or "Bomb Launcher" in stats.item.name:
+            elif stats.hardpoint == FittingHardpoint.MISSILE or "Bomb Launcher" in stats.item.name:
                 maxVelocity = stats.getModifiedChargeAttr("maxVelocity")
                 explosionDelay = stats.getModifiedChargeAttr("explosionDelay")
                 damageReductionFactor = stats.getModifiedChargeAttr("aoeDamageReductionFactor")
                 explosionRadius = stats.getModifiedChargeAttr("aoeCloudSize")
                 explosionVelocity = stats.getModifiedChargeAttr("aoeVelocity")
                 typeing = "Missile"
-            elif stats.hardpoint == Hardpoint.NONE:
+            elif stats.hardpoint == FittingHardpoint.NONE:
                 aoeFieldRange = stats.getModifiedItemAttr("empFieldRange")
                 # This also covers non-bomb weapons with dps values and no hardpoints, most notably targeted doomsdays.
                 typeing = "SmartBomb"
@@ -488,11 +488,11 @@ class EfsPort:
             getDroneMulti = lambda d: sumDamage(d.getModifiedItemAttr) * d.getModifiedItemAttr("damageMultiplier")
             fitMultipliers["drones"] = list(map(getDroneMulti, tf.drones))
 
-            getFitTurrets = lambda f: filter(lambda mod: mod.hardpoint == Hardpoint.TURRET, f.modules)
+            getFitTurrets = lambda f: filter(lambda mod: mod.hardpoint == FittingHardpoint.TURRET, f.modules)
             getTurretMulti = lambda mod: mod.getModifiedItemAttr("damageMultiplier") / mod.cycleTime
             fitMultipliers["turrets"] = list(map(getTurretMulti, getFitTurrets(tf)))
 
-            getFitLaunchers = lambda f: filter(lambda mod: mod.hardpoint == Hardpoint.MISSILE, f.modules)
+            getFitLaunchers = lambda f: filter(lambda mod: mod.hardpoint == FittingHardpoint.MISSILE, f.modules)
             getLauncherMulti = lambda mod: sumDamage(mod.getModifiedChargeAttr) / mod.cycleTime
             fitMultipliers["launchers"] = list(map(getLauncherMulti, getFitLaunchers(tf)))
             return fitMultipliers
@@ -530,7 +530,7 @@ class EfsPort:
                 if effect._Effect__effectModule is not None:
                     effect.handler(tf, fit.mode, [])
         if fit.ship.item.groupID == getGroup("Strategic Cruiser").ID:
-            subSystems = list(filter(lambda mod: mod.slot == Slot.SUBSYSTEM and mod.item, fit.modules))
+            subSystems = list(filter(lambda mod: mod.slot == FittingSlot.SUBSYSTEM and mod.item, fit.modules))
             for sub in subSystems:
                 for effect in sub.item.effects.values():
                     if effect._Effect__effectModule is not None:

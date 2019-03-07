@@ -6,7 +6,7 @@ import wx
 from logbook import CRITICAL, DEBUG, ERROR, FingersCrossedHandler, INFO, Logger, NestedSetup, NullHandler, \
     StreamHandler, TimedRotatingFileHandler, WARNING
 import hashlib
-from eos.const import Slot
+from eos.const import FittingSlot
 
 from cryptography.fernet import Fernet
 
@@ -50,11 +50,11 @@ LOGLEVEL_MAP = {
 }
 
 slotColourMap = {
-    Slot.LOW: wx.Colour(250, 235, 204),  # yellow = low slots
-    Slot.MED: wx.Colour(188, 215, 241),  # blue   = mid slots
-    Slot.HIGH: wx.Colour(235, 204, 209),  # red    = high slots
-    Slot.RIG: '',
-    Slot.SUBSYSTEM: ''
+    FittingSlot.LOW: wx.Colour(250, 235, 204),  # yellow = low slots
+    FittingSlot.MED: wx.Colour(188, 215, 241),  # blue   = mid slots
+    FittingSlot.HIGH: wx.Colour(235, 204, 209),  # red    = high slots
+    FittingSlot.RIG: '',
+    FittingSlot.SUBSYSTEM: ''
 }
 
 def getClientSecret():
