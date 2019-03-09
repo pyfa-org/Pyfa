@@ -51,7 +51,7 @@ class PriceViewFull(StatsView):
 
         gridPrice = wx.GridSizer(2, 3, 0, 0)
         contentSizer.Add(gridPrice, 0, wx.EXPAND | wx.ALL, 0)
-        for _type in ("ship", "fittings", "total", "drones", "cargoBay", "character"):
+        for _type in ("ship", "fittings", "character", "drones", "cargoBay", "total"):
             if _type in "ship":
                 image = "ship_big"
             elif _type in ("fittings", "total"):
