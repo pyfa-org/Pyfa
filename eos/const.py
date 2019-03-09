@@ -20,7 +20,8 @@
 from eos.enum import Enum
 from enum import IntEnum,unique
 
-class FittingSlot(Enum):
+@unique
+class FittingSlot(IntEnum):
     """
     Contains slots for ship fittings
     """

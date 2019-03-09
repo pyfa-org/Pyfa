@@ -7,11 +7,12 @@ from config import version as pyfaVersion
 from service.fit import Fit
 from service.market import Market
 from eos.enum import Enum
-from eos.saveddata.module import FittingHardpoint, FittingSlot, Module, FittingModuleState
+from eos.saveddata.module import FittingHardpoint,  Module, FittingModuleState
 from eos.saveddata.drone import Drone
 from eos.effectHandlerHelpers import HandledList
 from eos.db import gamedata_session, getCategory, getAttributeInfo, getGroup
 from eos.gamedata import Attribute, Effect, Group, Item, ItemEffect
+from eos.const import FittingSlot
 from eos.utils.spoolSupport import SpoolType, SpoolOptions
 from gui.fitCommands.calc.fitAddModule import FitAddModuleCommand
 from gui.fitCommands.calc.fitRemoveModule import FitRemoveModuleCommand

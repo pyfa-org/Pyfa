@@ -30,7 +30,8 @@ import gui.globalEvents as GE
 import gui.mainFrame
 import gui.multiSwitch
 from eos.saveddata.mode import Mode
-from eos.saveddata.module import Module, Rack, FittingSlot
+from eos.saveddata.module import Module, Rack
+from eos.const import FittingSlot
 from gui.bitmap_loader import BitmapLoader
 from gui.builtinMarketBrowser.events import ITEM_SELECTED
 from gui.builtinShipBrowser.events import EVT_FIT_REMOVED, EVT_FIT_RENAMED, EVT_FIT_SELECTED, FitSelected
@@ -648,8 +649,7 @@ class FittingView(d.Display):
         slotMap = {}
 
         # test for too many modules (happens with t3s / CCP change in slot layout)
-        for slotType in FittingSlot.getTypes():
-            slot = FittingSlot.getValue(slotType)
+        for slot in [e.value for e in FittingSlot]:
             slotMap[slot] = fit.getSlotsFree(slot) < 0
 
         for i, mod in enumerate(self.mods):
@@ -735,8 +735,8 @@ class FittingView(d.Display):
             return
 
         slotMap = {}
-        for slotType in FittingSlot.getTypes():
-            slot = FittingSlot.getValue(slotType)
+
+        for slot in [e.value for e in FittingSlot]:
             slotMap[slot] = fit.getSlotsFree(slot) < 0
 
         padding = 2

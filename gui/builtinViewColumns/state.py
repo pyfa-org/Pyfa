@@ -46,7 +46,7 @@ class State(ViewColumn):
 
     def getToolTip(self, mod):
         if isinstance(mod, Module) and not mod.isEmpty:
-            return State_.getName(mod.state).title()
+            return State_(mod.state).name.title()
 
     def getImageId(self, stuff):
         generic_active = self.fittingView.imageList.GetImageIndex("state_%s_small" % State_(1).name.lower(), "gui")

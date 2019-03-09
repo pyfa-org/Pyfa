@@ -28,8 +28,9 @@ from eos.saveddata.citadel import Citadel
 from eos.saveddata.drone import Drone
 from eos.saveddata.fighter import Fighter
 from eos.saveddata.fit import Fit
-from eos.saveddata.module import Module, FittingModuleState, FittingSlot
+from eos.saveddata.module import Module, FittingModuleState
 from eos.saveddata.ship import Ship
+from eos.const import FittingSlot
 from service.fit import Fit as svcFit
 from service.market import Market
 from utils.strfunctions import sequential_rep, replace_ltgt
@@ -278,7 +279,7 @@ def exportXml(iportuser, *fits):
 
                 hardware = doc.createElement("hardware")
                 hardware.setAttribute("type", module.item.name)
-                slotName = FittingSlot.getName(slot).lower()
+                slotName = FittingSlot(slot).name.lower()
                 slotName = slotName if slotName != "high" else "hi"
                 hardware.setAttribute("slot", "%s slot %d" % (slotName, slotId))
                 fitting.appendChild(hardware)

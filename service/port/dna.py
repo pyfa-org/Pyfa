@@ -28,8 +28,9 @@ from eos.saveddata.citadel import Citadel
 from eos.saveddata.drone import Drone
 from eos.saveddata.fighter import Fighter
 from eos.saveddata.fit import Fit
-from eos.saveddata.module import Module, FittingModuleState, FittingSlot
+from eos.saveddata.module import Module, FittingModuleState
 from eos.saveddata.ship import Ship
+from eos.const import FittingSlot
 from service.fit import Fit as svcFit
 from service.market import Market
 

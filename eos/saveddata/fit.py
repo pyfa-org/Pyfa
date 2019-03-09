@@ -29,12 +29,12 @@ import eos.db
 from eos import capSim
 from eos.effectHandlerHelpers import HandledModuleList, HandledDroneCargoList, HandledImplantBoosterList, HandledProjectedDroneList, HandledProjectedModList
 from eos.enum import Enum
-from eos.const import ImplantLocation, CalcType
+from eos.const import ImplantLocation, CalcType, FittingSlot
 from eos.saveddata.ship import Ship
 from eos.saveddata.drone import Drone
 from eos.saveddata.character import Character
 from eos.saveddata.citadel import Citadel
-from eos.saveddata.module import Module, FittingModuleState, FittingSlot, FittingHardpoint
+from eos.saveddata.module import Module, FittingModuleState, FittingHardpoint
 from eos.utils.stats import DmgTypes
 from logbook import Logger
 
@@ -892,7 +892,7 @@ class Fit(object):
         if self.ship is None:
             return
 
-        for slotType in (FittingSlot.LOW, FittingSlot.MED, FittingSlot.HIGH, FittingSlot.RIG, FittingSlot.SUBSYSTEM, FittingSlot.SERVICE):
+        for slotType in (FittingSlot.LOW.value, FittingSlot.MED.value, FittingSlot.HIGH.value, FittingSlot.RIG.value, FittingSlot.SUBSYSTEM.value, FittingSlot.SERVICE.value):
             amount = self.getSlotsFree(slotType, True)
             if amount > 0:
                 for _ in range(int(amount)):

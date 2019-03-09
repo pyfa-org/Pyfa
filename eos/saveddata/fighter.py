@@ -25,8 +25,8 @@ import eos.db
 from eos.effectHandlerHelpers import HandledItem, HandledCharge
 from eos.modifiedAttributeDict import ModifiedAttributeDict, ItemAttrShortcut, ChargeAttrShortcut
 from eos.saveddata.fighterAbility import FighterAbility
-from eos.saveddata.module import FittingSlot
 from eos.utils.stats import DmgTypes
+from eos.const import FittingSlot
 
 pyfalog = Logger(__name__)
 

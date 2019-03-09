@@ -32,9 +32,10 @@ from eos.saveddata.booster import Booster
 from eos.saveddata.drone import Drone
 from eos.saveddata.fighter import Fighter
 from eos.saveddata.implant import Implant
-from eos.saveddata.module import Module, FittingModuleState, FittingSlot
+from eos.saveddata.module import Module, FittingModuleState
 from eos.saveddata.ship import Ship
 from eos.saveddata.fit import Fit
+from eos.const import FittingSlot
 from service.fit import Fit as svcFit
 from service.market import Market
 from service.port.muta import parseMutant, renderMutant
@@ -95,7 +96,7 @@ def exportEft(fit, options):
                     rackLines.append('{}{}{}'.format(modName, modOfflineSuffix, mutationSuffix))
             else:
                 rackLines.append('[Empty {} slot]'.format(
-                    FittingSlot.getName(slotType).capitalize() if slotType is not None else ''))
+                    FittingSlot(slotType).name.capitalize() if slotType is not None else ''))
         if rackLines:
             modSection.append('\n'.join(rackLines))
     if modSection:

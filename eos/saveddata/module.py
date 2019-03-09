@@ -23,7 +23,7 @@ from logbook import Logger
 from sqlalchemy.orm import reconstructor, validates
 
 import eos.db
-from eos.const import FittingSlot, FittingModuleState, FittingHardpoint
+from eos.const import FittingModuleState, FittingHardpoint, FittingSlot
 from eos.effectHandlerHelpers import HandledCharge, HandledItem
 from eos.enum import Enum
 from eos.modifiedAttributeDict import ChargeAttrShortcut, ItemAttrShortcut, ModifiedAttributeDict
@@ -720,12 +720,12 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
     @staticmethod
     def calculateSlot(item):
         effectSlotMap = {
-            "rigSlot"    : FittingSlot.RIG,
-            "loPower"    : FittingSlot.LOW,
-            "medPower"   : FittingSlot.MED,
-            "hiPower"    : FittingSlot.HIGH,
-            "subSystem"  : FittingSlot.SUBSYSTEM,
-            "serviceSlot": FittingSlot.SERVICE
+            "rigSlot"    : FittingSlot.RIG.value,
+            "loPower"    : FittingSlot.LOW.value,
+            "medPower"   : FittingSlot.MED.value,
+            "hiPower"    : FittingSlot.HIGH.value,
+            "subSystem"  : FittingSlot.SUBSYSTEM.value,
+            "serviceSlot": FittingSlot.SERVICE.value
         }
         if item is None:
             return None

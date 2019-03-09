@@ -25,7 +25,8 @@ from gui.builtinMarketBrowser.events import ItemSelected, ITEM_SELECTED
 import gui.mainFrame
 import gui.display as d
 from gui.builtinViewColumns.state import State
-from eos.saveddata.module import FittingSlot
+#from eos.saveddata.module import FittingSlot
+from eos.const import FittingSlot
 from gui.contextMenu import ContextMenu
 from gui.utils.staticHelpers import DragDropHelper
 from service.fit import Fit
