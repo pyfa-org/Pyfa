@@ -18,7 +18,7 @@
 # =============================================================================
 
 from eos.enum import Enum
-from enum import IntEnum
+from enum import IntEnum,unique
 
 class FittingSlot(Enum):
     """
@@ -101,7 +101,8 @@ class EsiEndpoints(Enum):
     CHAR_FITTINGS = "/v1/characters/{character_id}/fittings/"
     CHAR_DEL_FIT = "/v1/characters/{character_id}/fittings/{fitting_id}/"
 
-class PortMultiBuyItemType(IntEnum):
+@unique
+class PortMultiBuyOptions(IntEnum):
     """
     Contains different types of items to multibuy export
     """
@@ -109,6 +110,7 @@ class PortMultiBuyItemType(IntEnum):
     CARGO = 2
     LOADED_CHARGES = 3
 
+@unique
 class PortEftOptions(IntEnum):
     """
     Contains different options for eft-export
