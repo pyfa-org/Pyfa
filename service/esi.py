@@ -9,7 +9,6 @@ import config
 import webbrowser
 
 import eos.db
-from eos.enum import Enum
 from eos.const import EsiLoginMethod
 from eos.saveddata.ssocharacter import SsoCharacter
 from service.esiAccess import APIException, EsiSsoMode

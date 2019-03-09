@@ -6,7 +6,6 @@ from numbers import Number
 from config import version as pyfaVersion
 from service.fit import Fit
 from service.market import Market
-from eos.enum import Enum
 from eos.saveddata.module import FittingHardpoint,  Module, FittingModuleState
 from eos.saveddata.drone import Drone
 from eos.effectHandlerHelpers import HandledList

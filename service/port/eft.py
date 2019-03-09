@@ -19,7 +19,6 @@
 
 
 import re
-from enum import Enum
 from eos.const import PortEftRigSize
 from eos.const import PortEftOptions
 

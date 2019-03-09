@@ -195,7 +195,7 @@ class ItemParams(wx.Panel):
         misc_parent = root
 
         # We must first deet4ermine if it's categorey already has defined groupings set for it. Otherwise, we default to just using the fitting group
-        order = CategoryGroups.get(self.item.category.categoryName, [AttrGroup.FITTING])
+        order = CategoryGroups.get(self.item.category.categoryName, [FittingAttrGroup.FITTING])
         # start building out the tree
         for data in [AttrGroupDict[o] for o in order]:
             heading = data.get("label")

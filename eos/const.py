@@ -17,8 +17,7 @@
 # along with pyfa.  If not, see <http://www.gnu.org/licenses/>.
 # =============================================================================
 
-from eos.enum import Enum
-from enum import IntEnum,unique
+from enum import Enum,IntEnum,unique,auto
 
 @unique
 class FittingSlot(IntEnum):
@@ -84,6 +83,25 @@ class FittingHardpoint(IntEnum):
     TURRET = 2
 
 @unique
+class FittingAttrGroup(IntEnum):
+    """
+    Define the various groups of attributes
+    """
+    FITTING = auto()
+    STRUCTURE = auto()
+    SHIELD = auto()
+    ARMOR = auto()
+    TARGETING = auto()
+    EWAR_RESISTS = auto()
+    CAPACITOR = auto()
+    SHARED_FACILITIES = auto()
+    FIGHTER_FACILITIES = auto()
+    ON_DEATH = auto()
+    JUMP_SYSTEMS = auto()
+    PROPULSIONS = auto()
+    FIGHTERS = auto()
+
+@unique
 class EsiLoginMethod(IntEnum):
     """
     Contains the method of ESI login
@@ -126,7 +144,8 @@ class PortEftOptions(IntEnum):
     MUTATIONS = 2
     LOADED_CHARGES = 3
 
-class PortEftRigSize(Enum):
+@unique
+class PortEftRigSize(IntEnum):
     """
     Contains different sizes of ship rigs
     """

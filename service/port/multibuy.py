@@ -18,7 +18,6 @@
 # =============================================================================
 
 
-from enum import Enum
 from eos.const import PortMultiBuyOptions
 
 

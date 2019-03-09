@@ -28,7 +28,6 @@ from sqlalchemy.orm import validates, reconstructor
 import eos.db
 from eos import capSim
 from eos.effectHandlerHelpers import HandledModuleList, HandledDroneCargoList, HandledImplantBoosterList, HandledProjectedDroneList, HandledProjectedModList
-from eos.enum import Enum
 from eos.const import ImplantLocation, CalcType, FittingSlot
 from eos.saveddata.ship import Ship
 from eos.saveddata.drone import Drone
