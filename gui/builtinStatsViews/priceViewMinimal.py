@@ -22,7 +22,7 @@ import wx
 from gui.statsView import StatsView
 from gui.bitmap_loader import BitmapLoader
 from gui.utils.numberFormatter import formatAmount
-from service.price import Price
+from service.price import Fit, Price
 from service.settings import PriceMenuSettings
 
 
@@ -73,11 +73,8 @@ class PriceViewMinimal(StatsView):
     def refreshPanel(self, fit):
         if fit is not None:
             self.fit = fit
-
-            fit_items = Price.fitItemsList(fit)
-
-            sPrice = Price.getInstance()
-            sPrice.getPrices(fit_items, self.processPrices, fetchTimeout=30)
+            fit_items = set(Fit.fitItemIter(fit))
+            Price.getInstance().getPrices(fit_items, self.processPrices, fetchTimeout=30)
             self.labelEMStatus.SetLabel("Updating prices...")
 
         self.refreshPanelPrices(fit)

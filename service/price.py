@@ -28,6 +28,7 @@ from logbook import Logger
 
 from eos import db
 from eos.saveddata.price import PriceStatus
+from gui.fitCommands.guiRebaseItems import GuiRebaseItemsCommand
 from service.fit import Fit
 from service.market import Market
 from service.network import TimeoutError
@@ -144,30 +145,6 @@ class Price:
             for typeID in priceMap.keys():
                 priceMap[typeID].update(PriceStatus.fetchFail)
 
-    @classmethod
-    def fitItemsList(cls, fit):
-        return list(set(cls.fitItemIter(fit)))
-
-    @classmethod
-    def fitObjectIter(cls, fit):
-        yield fit.ship
-
-        for mod in fit.modules:
-            if not mod.isEmpty:
-                yield mod
-
-        for container in (fit.drones, fit.fighters, fit.implants, fit.boosters, fit.cargo):
-            for obj in container:
-                yield obj
-
-    @classmethod
-    def fitItemIter(cls, fit):
-        for fitobj in cls.fitObjectIter(fit):
-            yield fitobj.item
-            charge = getattr(fitobj, 'charge', None)
-            if charge:
-                yield charge
-
     def getPriceNow(self, objitem):
         """Get price for provided typeID"""
         sMkt = Market.getInstance()
@@ -230,32 +207,7 @@ class Price:
         validityOverride = 2 * 60 * 60
         self.getPrices(itemsToFetch, makeCheapMapCb, fetchTimeout=fetchTimeout, validityOverride=validityOverride)
 
-    def optimizeFitPrice(self, fit, callback, fetchTimeout=10):
 
-        def updateFitCb(replacementsCheaper):
-            changes = False
-            for mod in fit.modules:
-                if mod.item in replacementsCheaper:
-                    mod.rebase(replacementsCheaper[mod.item])
-                    changes = True
-                if mod.charge in replacementsCheaper:
-                    mod.charge = replacementsCheaper[mod.charge]
-                    changes = True
-            for container in (fit.drones, fit.fighters, fit.implants, fit.boosters, fit.cargo):
-                for obj in container:
-                    if obj.item in replacementsCheaper:
-                        obj.rebase(replacementsCheaper[obj.item])
-                        changes = True
-            if changes:
-                Fit.getInstance().refreshFit(fit.ID)
-            try:
-                callback(changes)
-            except Exception as e:
-                pyfalog.critical("Execution of callback from optimizeFitPrice failed.")
-                pyfalog.critical(e)
-
-        fitItems = {i for i in self.fitItemIter(fit) if i is not fit.ship.item}
-        self.findCheaperReplacements(fitItems, updateFitCb, fetchTimeout=fetchTimeout)
 
 
 class PriceWorkerThread(threading.Thread):

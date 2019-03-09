@@ -659,16 +659,19 @@ class MainFrame(wx.Frame):
         wx.PostEvent(self, GE.CharListUpdated())
 
     def optimizeFitPrice(self, event):
-        sPrice = Price.getInstance()
         fitID = self.getActiveFit()
-        fit = Fit.getInstance().getFit(fitID)
+        sFit = Fit.getInstance()
+        fit = sFit.getFit(fitID)
         if fit:
-            # TODO: block/unblock UI while pyfa is working
-            def cb(changes):
-                if changes:
-                    wx.PostEvent(self, GE.FitChanged(fitID=fitID))
 
-            sPrice.optimizeFitPrice(fit, cb, fetchTimeout=10)
+            def updateFitCb(replacementsCheaper):
+                rebaseMap = {k.ID: v.ID for k, v in replacementsCheaper.items()}
+                self.command.Submit(cmd.GuiRebaseItemsCommand(fitID, rebaseMap))
+
+            # TODO: block/unblock UI while pyfa is working
+            fitItems = {i for i in Fit.fitItemIter(fit) if i is not fit.ship.item}
+            Price.getInstance().findCheaperReplacements(fitItems, updateFitCb, fetchTimeout=10)
+
 
     def AdditionsTabSelect(self, event):
         selTab = self.additionsSelect.index(event.GetId())
