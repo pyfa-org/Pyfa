@@ -49,8 +49,8 @@ class State(ViewColumn):
             return State_.getName(mod.state).title()
 
     def getImageId(self, stuff):
-        generic_active = self.fittingView.imageList.GetImageIndex("state_%s_small" % State_.getName(1).lower(), "gui")
-        generic_inactive = self.fittingView.imageList.GetImageIndex("state_%s_small" % State_.getName(-1).lower(),
+        generic_active = self.fittingView.imageList.GetImageIndex("state_%s_small" % State_(1).name.lower(), "gui")
+        generic_inactive = self.fittingView.imageList.GetImageIndex("state_%s_small" % State_(-1).name.lower(),
                                                                     "gui")
 
         if isinstance(stuff, Drone):
@@ -64,7 +64,7 @@ class State(ViewColumn):
             if stuff.isEmpty:
                 return -1
             else:
-                return self.fittingView.imageList.GetImageIndex("state_%s_small" % State_.getName(stuff.state).lower(),
+                return self.fittingView.imageList.GetImageIndex("state_%s_small" % State_(stuff.state).name.lower(),
                                                                 "gui")
         elif isinstance(stuff, Fit):
             fitID = self.mainFrame.getActiveFit()
@@ -83,7 +83,7 @@ class State(ViewColumn):
             return generic_inactive
         elif isinstance(stuff, Implant) and stuff.character:
             # if we're showing character implants, show an "online" state, which should not be changed
-            return self.fittingView.imageList.GetImageIndex("state_%s_small" % State_.getName(0).lower(), "gui")
+            return self.fittingView.imageList.GetImageIndex("state_%s_small" % State_(0).name.lower(), "gui")
         else:
             active = getattr(stuff, "active", None)
             if active is None:

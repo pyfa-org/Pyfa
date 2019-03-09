@@ -46,14 +46,16 @@ class FittingSlot(Enum):
     FS_SUPPORT = 14
     FS_HEAVY = 15
 
-class ImplantLocation(Enum):
+@unique
+class ImplantLocation(IntEnum):
     """
     Contains location of the implant
     """
     FIT = 0
     CHARACTER = 1
 
-class CalcType(Enum):
+@unique
+class CalcType(IntEnum):
     """
     Contains location of the calculation
     """
@@ -61,7 +63,8 @@ class CalcType(Enum):
     PROJECTED = 1
     COMMAND = 2
 
-class FittingModuleState(Enum):
+@unique
+class FittingModuleState(IntEnum):
     """
     Contains the state of a fitting module
     """
@@ -70,7 +73,8 @@ class FittingModuleState(Enum):
     ACTIVE = 1
     OVERHEATED = 2
 
-class FittingHardpoint(Enum):
+@unique
+class FittingHardpoint(IntEnum):
     """
     Contains the types of a fitting hardpoint
     """
@@ -78,14 +82,16 @@ class FittingHardpoint(Enum):
     MISSILE = 1
     TURRET = 2
 
-class EsiLoginMethod(Enum):
+@unique
+class EsiLoginMethod(IntEnum):
     """
     Contains the method of ESI login
     """
     SERVER = 0
     MANUAL = 1
 
-class EsiSsoMode(Enum):
+@unique
+class EsiSsoMode(IntEnum):
     """
     Contains the mode of ESI sso mode
     """

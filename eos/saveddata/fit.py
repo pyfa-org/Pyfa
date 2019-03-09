@@ -732,7 +732,7 @@ class Fit(object):
                 The type of calculation our current iteration is in. This helps us determine the interactions between
                 fits that rely on others for proper calculations
         """
-        pyfalog.info("Starting fit calculation on: {0}, calc: {1}", repr(self), CalcType.getName(type))
+        pyfalog.info("Starting fit calculation on: {0}, calc: {1}", repr(self), CalcType(type).name)
 
         # If we are projecting this fit onto another one, collect the projection info for later use
 
