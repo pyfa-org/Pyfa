@@ -28,7 +28,7 @@ class ItemParams(wx.Panel):
         mainSizer.Add(self.paramList, 1, wx.ALL | wx.EXPAND, 0)
         self.SetSizer(mainSizer)
 
-        self.toggleView = 1
+        self.toggleView = AttributeView.NORMAL
         self.stuff = stuff
         self.item = item
         self.attrInfo = {}
@@ -273,7 +273,7 @@ class ItemParams(wx.Panel):
         if self.toggleView == AttributeView.NORMAL and ((attr not in GroupedAttributes and not value) or info is None or not info.published or attr in RequiredSkillAttrs):
             return None
 
-        if info and info.displayName and self.toggleView == 1:
+        if info and info.displayName and self.toggleView == AttributeView.NORMAL:
             attrName = info.displayName
         else:
             attrName = attr
@@ -300,14 +300,14 @@ class ItemParams(wx.Panel):
         # self.paramList.SetPyData(index, idCount)
         # idCount += 1
 
-        if self.toggleView != 1:
+        if self.toggleView == AttributeView.RAW:
             valueUnit = str(value)
         elif info and info.unit:
             valueUnit = self.FormatValue(*info.unit.PreformatValue(value))
         else:
             valueUnit = formatAmount(value, 3, 0, 0)
 
-        if self.toggleView != 1:
+        if self.toggleView == AttributeView.RAW:
             valueUnitDefault = str(valueDefault)
         elif info and info.unit:
             valueUnitDefault = self.FormatValue(*info.unit.PreformatValue(valueDefault))
