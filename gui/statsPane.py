@@ -44,6 +44,7 @@ class StatsPane(wx.Panel):
         "capacitor",
         "targetingMisc",
         "price",
+        "insurance",
     ]
 
     # Don't have these....yet....

@@ -99,6 +99,12 @@ class PFStatViewPref(PreferenceView):
         self.rbOutgoing.SetSelection(self.settings.get('outgoing'))
         rbSizerRow3.Add(self.rbOutgoing, 1, wx.TOP | wx.RIGHT, 5)
         self.rbOutgoing.Bind(wx.EVT_RADIOBOX, self.OnOutgoingChange)
+
+        self.rbInsurance = wx.RadioBox(panel, -1, "Insurance", wx.DefaultPosition, wx.DefaultSize, ['None', 'Minimal', 'Full'], 1, wx.RA_SPECIFY_COLS)
+        self.rbInsurance.EnableItem(1, False)
+        self.rbInsurance.SetSelection(self.settings.get('insurance'))
+        rbSizerRow3.Add(self.rbInsurance, 1, wx.TOP | wx.RIGHT, 5)
+        self.rbInsurance.Bind(wx.EVT_RADIOBOX, self.OnInsuranceChange)
         #  We don't have views for these.....yet
         '''
         self.rbMining = wx.RadioBox(panel, -1, "Mining", wx.DefaultPosition, wx.DefaultSize,
@@ -142,6 +148,9 @@ class PFStatViewPref(PreferenceView):
 
     def OnOutgoingChange(self, event):
         self.settings.set('outgoing', event.GetInt())
+
+    def OnInsuranceChange(self, event):
+        self.settings.set('insurance', event.GetInt())
 
     def OnMiningYieldChange(self, event):
         self.settings.set('miningyield', event.GetInt())

@@ -71,6 +71,7 @@ class ESIEndpoints(Enum):
     CHAR_SKILLS = "/v4/characters/{character_id}/skills/"
     CHAR_FITTINGS = "/v1/characters/{character_id}/fittings/"
     CHAR_DEL_FIT = "/v1/characters/{character_id}/fittings/{fitting_id}/"
+    INSURANCE = "/v1/insurance/prices/"
 
 
 class EsiAccess(object):
@@ -108,6 +109,9 @@ class EsiAccess(object):
     @property
     def oauth_token(self):
         return '%s/oauth/token' % self.sso_url
+
+    def getInsurance(self):
+        return self.get(None, ESIEndpoints.INSURANCE)
 
     def getSkills(self, char):
         return self.get(char, ESIEndpoints.CHAR_SKILLS, character_id=char.characterID)
@@ -269,7 +273,8 @@ class EsiAccess(object):
         return resp
 
     def get(self, ssoChar, endpoint, *args, **kwargs):
-        self._before_request(ssoChar)
+        if ssoChar:
+            self._before_request(ssoChar)
         endpoint = endpoint.format(**kwargs)
         return self._after_request(self._session.get("{}{}".format(self.esi_url, endpoint)))
 

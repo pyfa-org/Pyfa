@@ -79,6 +79,10 @@ class Esi(EsiAccess):
         eos.db.commit()
         return char
 
+    def getInsurance(self):
+        resp = super().getInsurance()
+        return resp.json()
+
     def getSkills(self, id):
         char = self.getSsoCharacter(id)
         resp = super().getSkills(char)

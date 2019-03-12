@@ -436,6 +436,7 @@ class StatViewSettings(object):
             "miningyield"  : 2,
             "drones"       : 2,
             "outgoing"     : 2,
+            "insurance"    : 2,
         }
 
         # We don't have these....yet
@@ -451,6 +452,36 @@ class StatViewSettings(object):
 
     def set(self, type, value):
         self.serviceStatViewDefaultSettings[type] = value
+
+
+class InsuranceMenuSettings(object):
+    _instance = None
+
+    @classmethod
+    def getInstance(cls):
+        if cls._instance is None:
+            cls._instance = InsuranceMenuSettings()
+
+        return cls._instance
+
+    def __init__(self):
+        # mode
+        # 0 - Do not add to total
+        # 1 - Add to total
+        InsuranceMenuDefaultSettings = {
+            "cost" : 1,
+            "payout" : 1,
+            "difference" : 1
+        }
+
+        self.InsuranceMenuDefaultSettings = SettingsProvider.getInstance().getSettings("pyfaInsuranceMenuSettings",
+                                                                                        InsuranceMenuDefaultSettings)
+
+    def get(self, type):
+        return self.InsuranceMenuDefaultSettings[type]
+
+    def set(self, type, value):
+        self.InsuranceMenuDefaultSettings[type] = value
 
 
 class PriceMenuSettings(object):

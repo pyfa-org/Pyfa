@@ -139,6 +139,11 @@ if __name__ == "__main__":
         mf = MainFrame(options.title)
         ErrorHandler.SetParent(mf)
 
+        from service.insurance import Insurance
+        # Needs to be performed after wx init
+        sInsurance = Insurance.getInstance()
+        sInsurance.apiFetch(lambda response: pyfalog.debug(str(response)))
+
         if options.profile_path:
             profile_path = os.path.join(options.profile_path, 'pyfa-{}.profile'.format(datetime.datetime.now().strftime('%Y%m%d_%H%M%S')))
             pyfalog.debug("Starting pyfa with a profiler, saving to {}".format(profile_path))
