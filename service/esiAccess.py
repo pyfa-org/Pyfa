@@ -17,7 +17,7 @@ import config
 import base64
 
 import datetime
-from eos.const import EsiSsoMode, EsiEndpoints
+from service.const import EsiSsoMode, EsiEndpoints
 from service.settings import EsiSettings, NetworkSettings
 
 from requests import Session

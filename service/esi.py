@@ -9,9 +9,9 @@ import config
 import webbrowser
 
 import eos.db
-from eos.const import EsiLoginMethod
+from service.const import EsiLoginMethod, EsiSsoMode
 from eos.saveddata.ssocharacter import SsoCharacter
-from service.esiAccess import APIException, EsiSsoMode
+from service.esiAccess import APIException
 import gui.globalEvents as GE
 from gui.ssoLogin import SsoLogin, SsoLoginServer
 from service.server import StoppableHTTPServer, AuthHandler

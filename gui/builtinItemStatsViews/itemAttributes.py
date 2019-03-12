@@ -1,15 +1,14 @@
 import csv
-import config
 
 # noinspection PyPackageRequirements
 import wx
 import wx.lib.agw.hypertreelist
-from gui.builtinItemStatsViews.helpers import AutoListCtrl
 
 from gui.bitmap_loader import BitmapLoader
 from gui.utils.numberFormatter import formatAmount, roundDec
 from enum import IntEnum
 from gui.builtinItemStatsViews.attributeGrouping import *
+from service.const import GuiAttrGroup
 
 
 class AttributeView(IntEnum):
@@ -195,7 +194,7 @@ class ItemParams(wx.Panel):
         misc_parent = root
 
         # We must first deet4ermine if it's categorey already has defined groupings set for it. Otherwise, we default to just using the fitting group
-        order = CategoryGroups.get(self.item.category.categoryName, [FittingAttrGroup.FITTING])
+        order = CategoryGroups.get(self.item.category.categoryName, [GuiAttrGroup.FITTING])
         # start building out the tree
         for data in [AttrGroupDict[o] for o in order]:
             heading = data.get("label")

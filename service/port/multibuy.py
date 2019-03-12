@@ -18,9 +18,7 @@
 # =============================================================================
 
 
-from eos.const import PortMultiBuyOptions
-
-
+from service.const import PortMultiBuyOptions
 
 MULTIBUY_OPTIONS = (
     (PortMultiBuyOptions.LOADED_CHARGES.value, 'Loaded Charges', 'Export charges loaded into modules', True),

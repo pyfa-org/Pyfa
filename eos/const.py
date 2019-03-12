@@ -17,7 +17,8 @@
 # along with pyfa.  If not, see <http://www.gnu.org/licenses/>.
 # =============================================================================
 
-from enum import Enum,IntEnum,unique,auto
+from enum import IntEnum,unique
+
 
 @unique
 class FittingSlot(IntEnum):
@@ -82,74 +83,3 @@ class FittingHardpoint(IntEnum):
     MISSILE = 1
     TURRET = 2
 
-@unique
-class FittingAttrGroup(IntEnum):
-    """
-    Define the various groups of attributes
-    """
-    FITTING = auto()
-    STRUCTURE = auto()
-    SHIELD = auto()
-    ARMOR = auto()
-    TARGETING = auto()
-    EWAR_RESISTS = auto()
-    CAPACITOR = auto()
-    SHARED_FACILITIES = auto()
-    FIGHTER_FACILITIES = auto()
-    ON_DEATH = auto()
-    JUMP_SYSTEMS = auto()
-    PROPULSIONS = auto()
-    FIGHTERS = auto()
-
-@unique
-class EsiLoginMethod(IntEnum):
-    """
-    Contains the method of ESI login
-    """
-    SERVER = 0
-    MANUAL = 1
-
-@unique
-class EsiSsoMode(IntEnum):
-    """
-    Contains the mode of ESI sso mode
-    """
-    AUTO = 0
-    CUSTOM = 1
-
-class EsiEndpoints(Enum):
-    """
-    Contains the endpoint paths for the ESI access
-    """
-    CHAR = "/v4/characters/{character_id}/"
-    CHAR_SKILLS = "/v4/characters/{character_id}/skills/"
-    CHAR_FITTINGS = "/v1/characters/{character_id}/fittings/"
-    CHAR_DEL_FIT = "/v1/characters/{character_id}/fittings/{fitting_id}/"
-
-@unique
-class PortMultiBuyOptions(IntEnum):
-    """
-    Contains different types of items to multibuy export
-    """
-    IMPLANTS = 1
-    CARGO = 2
-    LOADED_CHARGES = 3
-
-@unique
-class PortEftOptions(IntEnum):
-    """
-    Contains different options for eft-export
-    """
-    IMPLANTS = 1
-    MUTATIONS = 2
-    LOADED_CHARGES = 3
-
-@unique
-class PortEftRigSize(IntEnum):
-    """
-    Contains different sizes of ship rigs
-    """
-    SMALL = 1
-    MEDIUM = 2
-    LARGE = 3
-    CAPITAL = 4

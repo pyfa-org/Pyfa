@@ -19,8 +19,7 @@
 
 
 import re
-from eos.const import PortEftRigSize
-from eos.const import PortEftOptions
+from service.const import PortEftOptions, PortEftRigSize
 
 from logbook import Logger
 
