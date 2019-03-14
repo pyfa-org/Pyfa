@@ -6,13 +6,13 @@ from numbers import Number
 from config import version as pyfaVersion
 from service.fit import Fit
 from service.market import Market
-from eos.const import FittingModuleState, FittingHardpoint
+from eos.const import FittingModuleState, FittingHardpoint, FittingSlot
+from service.const import PortEftRigSize
 from eos.saveddata.module import Module
 from eos.saveddata.drone import Drone
 from eos.effectHandlerHelpers import HandledList
 from eos.db import gamedata_session, getCategory, getAttributeInfo, getGroup
 from eos.gamedata import Attribute, Effect, Group, Item, ItemEffect
-from eos.const import FittingSlot
 from eos.utils.spoolSupport import SpoolType, SpoolOptions
 from gui.fitCommands.calc.fitAddModule import FitAddModuleCommand
 from gui.fitCommands.calc.fitRemoveModule import FitRemoveModuleCommand
@@ -51,13 +51,13 @@ class EfsPort:
         mwd50mn = mapPropData("50MN Microwarpdrive II")
         mwd500mn = mapPropData("500MN Microwarpdrive II")
         mwd50000mn = mapPropData("50000MN Microwarpdrive II")
-        if rigSize == RigSize.SMALL or rigSize is None:
+        if rigSize == PortEftRigSize.SMALL or rigSize is None:
             propID = mwd5mn["id"] if shipPower > mwd5mn["powerReq"] else None
-        elif rigSize == RigSize.MEDIUM:
+        elif rigSize == PortEftRigSize.MEDIUM:
             propID = mwd50mn["id"] if shipPower > mwd50mn["powerReq"] else mwd5mn["id"]
-        elif rigSize == RigSize.LARGE:
+        elif rigSize == PortEftRigSize.LARGE:
             propID = mwd500mn["id"] if shipPower > mwd500mn["powerReq"] else mwd50mn["id"]
-        elif rigSize == RigSize.CAPITAL:
+        elif rigSize == PortEftRigSize.CAPITAL:
             propID = mwd50000mn["id"] if shipPower > mwd50000mn["powerReq"] else mwd500mn["id"]
 
         if propID is None:

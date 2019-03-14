@@ -1,4 +1,5 @@
 import csv
+import config
 
 # noinspection PyPackageRequirements
 import wx

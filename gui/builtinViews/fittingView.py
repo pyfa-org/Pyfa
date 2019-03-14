@@ -475,7 +475,14 @@ class FittingView(d.Display):
         sFit = Fit.getInstance()
         fit = sFit.getFit(self.activeFitID)
 
-        slotOrder = [FittingSlot.SUBSYSTEM, FittingSlot.HIGH, FittingSlot.MED, FittingSlot.LOW, FittingSlot.RIG, FittingSlot.SERVICE]
+        slotOrder = [
+            FittingSlot.SUBSYSTEM,
+            FittingSlot.HIGH,
+            FittingSlot.MED,
+            FittingSlot.LOW,
+            FittingSlot.RIG,
+            FittingSlot.SERVICE
+        ]
 
         if fit is not None:
             self.mods = fit.modules[:]
