@@ -147,6 +147,11 @@ class Fit(FitDeprecated):
         return eos.db.countAllFits()
 
     @staticmethod
+    def countAllFitsGroupedByShip():
+        count = eos.db.countFitGroupedByShip()
+        return count
+
+    @staticmethod
     def countFitsWithShip(stuff):
         pyfalog.debug("Getting count of all fits for: {0}", stuff)
         count = eos.db.countFitsWithShip(stuff)

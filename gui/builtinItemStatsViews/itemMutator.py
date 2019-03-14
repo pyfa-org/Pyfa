@@ -43,8 +43,12 @@ class ItemMutator(wx.Panel):
         self.badColor = wx.Colour(255, 64, 0)
 
         self.event_mapping = {}
+        higOverrides = {
+            ('Stasis Web', 'speedFactor'): False,
+        }
 
         for m in sorted(stuff.mutators.values(), key=lambda x: x.attribute.displayName):
+            highIsGood = higOverrides.get((stuff.item.group.name, m.attribute.name), m.highIsGood)
             # Format: [raw value, modifier applied to base raw value, display value]
             range1 = (m.minValue, m.attribute.unit.SimplifyValue(m.minValue))
             range2 = (m.maxValue, m.attribute.unit.SimplifyValue(m.maxValue))
@@ -59,7 +63,7 @@ class ItemMutator(wx.Panel):
                 minRange = range2
                 maxRange = range1
 
-            if (m.highIsGood and minRange[0] >= maxRange[0]) or (not m.highIsGood and minRange[0] <= maxRange[0]):
+            if (highIsGood and minRange[0] >= maxRange[0]) or (not highIsGood and minRange[0] <= maxRange[0]):
                 betterRange = minRange
                 worseRange = maxRange
             else:
