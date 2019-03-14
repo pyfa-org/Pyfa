@@ -20,7 +20,7 @@
 from math import log, sin, radians, exp
 
 from eos.graph import Graph
-from eos.saveddata.module import FittingModuleState, FittingHardpoint
+from eos.const import FittingModuleState, FittingHardpoint
 from logbook import Logger
 
 pyfalog = Logger(__name__)

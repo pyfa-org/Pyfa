@@ -27,7 +27,8 @@ from eos.saveddata.cargo import Cargo as es_Cargo
 from eos.saveddata.drone import Drone as es_Drone
 from eos.saveddata.fighter import Fighter as es_Fighter
 from eos.saveddata.implant import Implant as es_Implant
-from eos.saveddata.module import Module as es_Module, FittingModuleState
+from eos.saveddata.module import Module as es_Module
+from eos.const import FittingModuleState
 from eos.saveddata.fit import Fit as FitType
 from utils.deprecated import deprecated
 

@@ -2,7 +2,7 @@
 #
 # Used by:
 # Structure Modules from group: Structure Warp Scrambler (2 of 2)
-from eos.saveddata.module import FittingModuleState
+from eos.const import FittingModuleState
 
 # Not used by any item
 runTime = "early"

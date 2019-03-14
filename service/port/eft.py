@@ -30,10 +30,10 @@ from eos.saveddata.booster import Booster
 from eos.saveddata.drone import Drone
 from eos.saveddata.fighter import Fighter
 from eos.saveddata.implant import Implant
-from eos.saveddata.module import Module, FittingModuleState
+from eos.saveddata.module import Module
 from eos.saveddata.ship import Ship
 from eos.saveddata.fit import Fit
-from eos.const import FittingSlot
+from eos.const import FittingSlot, FittingModuleState
 from service.fit import Fit as svcFit
 from service.market import Market
 from service.port.muta import parseMutant, renderMutant

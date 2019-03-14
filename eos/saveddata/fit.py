@@ -33,7 +33,8 @@ from eos.saveddata.ship import Ship
 from eos.saveddata.drone import Drone
 from eos.saveddata.character import Character
 from eos.saveddata.citadel import Citadel
-from eos.saveddata.module import Module, FittingModuleState, FittingHardpoint
+from eos.const import FittingModuleState, FittingHardpoint
+from eos.saveddata.module import Module
 from eos.utils.stats import DmgTypes
 from logbook import Logger
 

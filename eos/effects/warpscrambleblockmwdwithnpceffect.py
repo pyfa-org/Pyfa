@@ -2,7 +2,7 @@
 #
 # Used by:
 # Modules named like: Warp Scrambler (27 of 27)
-from eos.saveddata.module import FittingModuleState
+from eos.const import FittingModuleState
 
 runTime = "early"
 type = "projected", "active"

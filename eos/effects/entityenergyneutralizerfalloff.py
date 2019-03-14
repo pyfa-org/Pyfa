@@ -2,7 +2,7 @@
 #
 # Used by:
 # Drones from group: Energy Neutralizer Drone (3 of 3)
-from eos.saveddata.module import FittingModuleState
+from eos.const import FittingModuleState
 from eos.modifiedAttributeDict import ModifiedAttributeDict
 
 type = "active", "projected"

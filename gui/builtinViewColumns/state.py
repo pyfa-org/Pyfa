@@ -24,7 +24,8 @@ import wx
 from eos.saveddata.fit import Fit
 from eos.saveddata.implant import Implant
 from eos.saveddata.drone import Drone
-from eos.saveddata.module import Module, FittingModuleState as State_, Rack
+from eos.saveddata.module import Module, Rack
+from eos.const import FittingModuleState as State_
 from gui.viewColumn import ViewColumn
 
 import gui.mainFrame

@@ -5,7 +5,7 @@ import wx
 
 import gui.fitCommands as cmd
 import gui.mainFrame
-from eos.saveddata.module import FittingHardpoint
+from eos.const import FittingHardpoint
 from gui.bitmap_loader import BitmapLoader
 from gui.contextMenu import ContextMenu
 from service.market import Market

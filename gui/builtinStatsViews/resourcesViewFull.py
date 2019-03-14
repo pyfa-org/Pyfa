@@ -26,7 +26,7 @@ import gui.mainFrame
 from gui.chrome_tabs import EVT_NOTEBOOK_PAGE_CHANGED
 from gui.utils import fonts
 
-from eos.saveddata.module import FittingHardpoint
+from eos.const import FittingHardpoint
 
 from gui.utils.numberFormatter import formatAmount
 

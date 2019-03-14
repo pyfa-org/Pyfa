@@ -2,7 +2,7 @@
 #
 # Used by:
 # Structure Modules from group: Structure Energy Neutralizer (5 of 5)
-from eos.saveddata.module import FittingModuleState
+from eos.const import FittingModuleState
 from eos.modifiedAttributeDict import ModifiedAttributeDict
 
 type = "active", "projected"

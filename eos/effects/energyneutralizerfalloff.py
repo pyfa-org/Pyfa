@@ -2,7 +2,7 @@
 #
 # Used by:
 # Modules from group: Energy Neutralizer (54 of 54)
-from eos.saveddata.module import FittingModuleState
+from eos.const import FittingModuleState
 from eos.modifiedAttributeDict import ModifiedAttributeDict
 
 type = "active", "projected"

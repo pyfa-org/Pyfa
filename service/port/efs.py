@@ -6,7 +6,8 @@ from numbers import Number
 from config import version as pyfaVersion
 from service.fit import Fit
 from service.market import Market
-from eos.saveddata.module import FittingHardpoint,  Module, FittingModuleState
+from eos.const import FittingModuleState, FittingHardpoint
+from eos.saveddata.module import Module
 from eos.saveddata.drone import Drone
 from eos.effectHandlerHelpers import HandledList
 from eos.db import gamedata_session, getCategory, getAttributeInfo, getGroup

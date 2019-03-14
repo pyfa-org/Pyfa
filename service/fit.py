@@ -30,8 +30,9 @@ from eos.saveddata.citadel import Citadel as es_Citadel
 from eos.saveddata.damagePattern import DamagePattern as es_DamagePattern
 from eos.saveddata.drone import Drone as es_Drone
 from eos.saveddata.fighter import Fighter as es_Fighter
-from eos.saveddata.fit import Fit as FitType, ImplantLocation
-from eos.saveddata.module import Module as es_Module, FittingModuleState
+from eos.const import ImplantLocation, FittingModuleState
+from eos.saveddata.fit import Fit as FitType
+from eos.saveddata.module import Module as es_Module
 from eos.saveddata.ship import Ship as es_Ship
 from service.character import Character
 from service.damagePattern import DamagePattern

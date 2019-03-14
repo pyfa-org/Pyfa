@@ -1,5 +1,6 @@
 import wx
-from eos.saveddata.module import Module, FittingModuleState
+from eos.saveddata.module import Module
+from eos.const import FittingModuleState
 import eos.db
 from logbook import Logger
 from service.fit import Fit

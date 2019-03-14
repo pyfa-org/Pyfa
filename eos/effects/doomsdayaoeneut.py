@@ -3,7 +3,7 @@
 # Used by:
 # Module: Energy Neutralization Burst Projector
 # Structure Module: Standup Energy Neutralization Burst Projector
-from eos.saveddata.module import FittingModuleState
+from eos.const import FittingModuleState
 from eos.modifiedAttributeDict import ModifiedAttributeDict
 
 type = "active", "projected"

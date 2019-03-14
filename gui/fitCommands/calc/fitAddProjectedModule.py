@@ -1,7 +1,8 @@
 import wx
 import eos.db
 from logbook import Logger
-from eos.saveddata.module import Module, FittingModuleState
+from eos.saveddata.module import Module
+from eos.const import FittingModuleState
 pyfalog = Logger(__name__)
 
 

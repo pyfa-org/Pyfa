@@ -7,7 +7,7 @@
 #
 # Used by:
 # Modules from group: Warp Disrupt Field Generator (7 of 7)
-from eos.saveddata.module import FittingModuleState
+from eos.const import FittingModuleState
 
 type = "projected", "active"
 runTime = "early"
