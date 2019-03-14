@@ -25,7 +25,6 @@ from sqlalchemy.orm import reconstructor, validates
 import eos.db
 from eos.const import FittingModuleState, FittingHardpoint, FittingSlot
 from eos.effectHandlerHelpers import HandledCharge, HandledItem
-from enum import Enum
 from eos.modifiedAttributeDict import ChargeAttrShortcut, ItemAttrShortcut, ModifiedAttributeDict
 from eos.saveddata.citadel import Citadel
 from eos.saveddata.mutator import Mutator
