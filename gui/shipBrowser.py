@@ -164,11 +164,12 @@ class ShipBrowser(wx.Panel):
             self.categoryList = list(sMkt.getShipRoot())
             self.categoryList.sort(key=lambda _ship: _ship.name)
 
+            counts = sFit.countAllFitsGroupedByShip()
+
             # set map & cache of fittings per category
             for cat in self.categoryList:
                 itemIDs = [x.ID for x in cat.items]
-                num = sFit.countFitsWithShip(itemIDs)
-                self.categoryFitCache[cat.ID] = num > 0
+                self.categoryFitCache[cat.ID] = sum([count for shipID, count in counts if shipID in itemIDs]) > 0
 
         for ship in self.categoryList:
             if self.filterShipsWithNoFits and not self.categoryFitCache[ship.ID]:
