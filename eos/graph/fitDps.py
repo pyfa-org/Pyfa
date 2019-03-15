@@ -20,7 +20,7 @@
 from math import log, sin, radians, exp
 
 from eos.graph import Graph
-from eos.saveddata.module import State, Hardpoint
+from eos.const import FittingModuleState, FittingHardpoint
 from logbook import Logger
 
 pyfalog = Logger(__name__)
@@ -46,7 +46,7 @@ class FitDpsGraph(Graph):
         abssort = lambda _val: -abs(_val - 1)
 
         for mod in fit.modules:
-            if not mod.isEmpty and mod.state >= State.ACTIVE:
+            if not mod.isEmpty and mod.state >= FittingModuleState.ACTIVE:
                 if "remoteTargetPaintFalloff" in mod.item.effects or "structureModuleEffectTargetPainter" in mod.item.effects:
                     ew['signatureRadius'].append(
                             1 + (mod.getModifiedItemAttr("signatureRadiusBonus") / 100) * self.calculateModuleMultiplier(
@@ -76,12 +76,12 @@ class FitDpsGraph(Graph):
 
         for mod in fit.modules:
             dps = mod.getDps(targetResists=fit.targetResists).total
-            if mod.hardpoint == Hardpoint.TURRET:
-                if mod.state >= State.ACTIVE:
+            if mod.hardpoint == FittingHardpoint.TURRET:
+                if mod.state >= FittingModuleState.ACTIVE:
                     total += dps * self.calculateTurretMultiplier(mod, data)
 
-            elif mod.hardpoint == Hardpoint.MISSILE:
-                if mod.state >= State.ACTIVE and mod.maxRange is not None and mod.maxRange >= distance:
+            elif mod.hardpoint == FittingHardpoint.MISSILE:
+                if mod.state >= FittingModuleState.ACTIVE and mod.maxRange is not None and mod.maxRange >= distance:
                     total += dps * self.calculateMissileMultiplier(mod, data)
 
         if distance <= fit.extraAttributes["droneControlRange"]:
