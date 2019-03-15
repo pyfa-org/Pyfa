@@ -278,12 +278,16 @@ class ResourcesViewFull(StatsView):
                 totalCalibrationPoints = value
                 labelTCP = label
 
+            # See #1877
+            shown = label.Shown
+            label.Show(True)
             if isinstance(value, str):
                 label.SetLabel(value)
                 label.SetToolTip(wx.ToolTip(value))
             else:
                 label.SetLabel(formatAmount(value, prec, lowest, highest))
                 label.SetToolTip(wx.ToolTip("%.1f" % value))
+            label.Show(shown)
 
         colorWarn = wx.Colour(204, 51, 51)
         colorNormal = wx.SystemSettings.GetColour(wx.SYS_COLOUR_WINDOWTEXT)
