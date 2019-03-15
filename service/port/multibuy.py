@@ -18,24 +18,15 @@
 # =============================================================================
 
 
-from enum import IntEnum, unique
-
+from service.const import PortMultiBuyOptions
 from service.price import Price as sPrc
 
 
-@unique
-class Options(IntEnum):
-    IMPLANTS = 1
-    CARGO = 2
-    LOADED_CHARGES = 3
-    OPTIMIZE_PRICES = 4
-
-
 MULTIBUY_OPTIONS = (
-    (Options.LOADED_CHARGES.value, 'Loaded Charges', 'Export charges loaded into modules', True),
-    (Options.IMPLANTS.value, 'Implants && Boosters', 'Export implants and boosters', False),
-    (Options.CARGO.value, 'Cargo', 'Export cargo contents', True),
-    (Options.OPTIMIZE_PRICES.value, 'Optimize Prices', 'Replace items by cheaper alternatives', False),
+    (PortMultiBuyOptions.LOADED_CHARGES.value, 'Loaded Charges', 'Export charges loaded into modules', True),
+    (PortMultiBuyOptions.IMPLANTS.value, 'Implants && Boosters', 'Export implants and boosters', False),
+    (PortMultiBuyOptions.CARGO.value, 'Cargo', 'Export cargo contents', True),
+    (PortMultiBuyOptions.OPTIMIZE_PRICES.value, 'Optimize Prices', 'Replace items by cheaper alternatives', False),
 )
 
 
@@ -48,7 +39,7 @@ def exportMultiBuy(fit, options, callback):
             if module.isMutated:
                 continue
             _addItem(itemAmounts, module.item)
-        if module.charge and options[Options.LOADED_CHARGES.value]:
+        if module.charge and options[PortMultiBuyOptions.LOADED_CHARGES.value]:
             _addItem(itemAmounts, module.charge, module.numCharges)
 
     for drone in fit.drones:
@@ -57,18 +48,18 @@ def exportMultiBuy(fit, options, callback):
     for fighter in fit.fighters:
         _addItem(itemAmounts, fighter.item, fighter.amountActive)
 
-    if options[Options.CARGO.value]:
+    if options[PortMultiBuyOptions.CARGO.value]:
         for cargo in fit.cargo:
             _addItem(itemAmounts, cargo.item, cargo.amount)
 
-    if options[Options.IMPLANTS.value]:
+    if options[PortMultiBuyOptions.IMPLANTS.value]:
         for implant in fit.implants:
             _addItem(itemAmounts, implant.item)
 
         for booster in fit.boosters:
             _addItem(itemAmounts, booster.item)
 
-    if options[Options.OPTIMIZE_PRICES.value]:
+    if options[PortMultiBuyOptions.OPTIMIZE_PRICES.value]:
 
         def formatCheaperExportCb(replacementsCheaper):
             updatedAmounts = {}

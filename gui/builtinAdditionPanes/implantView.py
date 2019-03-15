@@ -26,7 +26,7 @@ from gui.builtinViewColumns.state import State
 from gui.utils.staticHelpers import DragDropHelper
 from gui.contextMenu import ContextMenu
 import gui.globalEvents as GE
-from eos.saveddata.fit import ImplantLocation
+from eos.const import ImplantLocation
 from service.fit import Fit
 from service.market import Market
 import gui.fitCommands as cmd

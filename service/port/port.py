@@ -29,7 +29,7 @@ from bs4 import UnicodeDammit
 from logbook import Logger
 
 from eos import db
-from eos.saveddata.fit import ImplantLocation
+from eos.const import ImplantLocation
 from service.fit import Fit as svcFit
 from service.port.dna import exportDna, importDna
 from service.port.eft import exportEft, importEft, importEftCfg

@@ -26,7 +26,7 @@ import gui.mainFrame
 from gui.chrome_tabs import EVT_NOTEBOOK_PAGE_CHANGED
 from gui.utils import fonts
 
-from eos.saveddata.module import Hardpoint
+from eos.const import FittingHardpoint
 
 from gui.utils.numberFormatter import formatAmount
 
@@ -196,9 +196,9 @@ class ResourcesViewFull(StatsView):
         # If we did anything intresting, we'd update our labels to reflect the new fit's stats here
 
         stats = (
-            ("label%sUsedTurretHardpoints", lambda: fit.getHardpointsUsed(Hardpoint.TURRET), 0, 0, 0),
+            ("label%sUsedTurretHardpoints", lambda: fit.getHardpointsUsed(FittingHardpoint.TURRET), 0, 0, 0),
             ("label%sTotalTurretHardpoints", lambda: fit.ship.getModifiedItemAttr('turretSlotsLeft'), 0, 0, 0),
-            ("label%sUsedLauncherHardpoints", lambda: fit.getHardpointsUsed(Hardpoint.MISSILE), 0, 0, 0),
+            ("label%sUsedLauncherHardpoints", lambda: fit.getHardpointsUsed(FittingHardpoint.MISSILE), 0, 0, 0),
             ("label%sTotalLauncherHardpoints", lambda: fit.ship.getModifiedItemAttr('launcherSlotsLeft'), 0, 0, 0),
             ("label%sUsedDronesActive", lambda: fit.activeDrones, 0, 0, 0),
             ("label%sTotalDronesActive", lambda: fit.extraAttributes["maxActiveDrones"], 0, 0, 0),
