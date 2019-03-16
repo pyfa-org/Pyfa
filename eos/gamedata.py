@@ -20,7 +20,7 @@
 import re
 
 from sqlalchemy.orm import reconstructor
-
+import eos.config as config
 import eos.db
 from .eqBase import EqBase
 from eos.saveddata.price import Price as types_Price
@@ -161,7 +161,7 @@ class Effect(EqBase):
         if it doesn't, set dummy values and add a dummy handler
         """
         try:
-            if all_effects_module:
+            if all_effects_module and config.use_all_effect_module:
                 func = getattr(all_effects_module, self.handlerName)
                 self.__effectModule = effectModule = func()
                 self.__handler = effectModule.get("handler", effectDummy)
