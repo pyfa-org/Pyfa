@@ -32,6 +32,11 @@ from logbook import Logger
 
 pyfalog = Logger(__name__)
 
+try:
+    import eos.effects.all as all_effects_module
+except ImportError:
+    all_effects_module = None
+
 
 class Effect(EqBase):
     """
@@ -44,8 +49,6 @@ class Effect(EqBase):
     @ivar description: The description of this effect, this is usualy pretty useless
     @ivar published: Wether this effect is published or not, unpublished effects are typicaly unused.
     """
-    # Filter to change names of effects to valid python method names
-    nameFilter = re.compile("[^A-Za-z0-9]")
 
     @reconstructor
     def init(self):
@@ -54,7 +57,7 @@ class Effect(EqBase):
         """
         self.__generated = False
         self.__effectModule = None
-        self.handlerName = re.sub(self.nameFilter, "", self.name).lower()
+        self.handlerName = "effect{}".format(self.ID)
 
     @property
     def handler(self):
@@ -158,25 +161,25 @@ class Effect(EqBase):
         if it doesn't, set dummy values and add a dummy handler
         """
         try:
-            import eos.effects.all as all
-            func = getattr(all, self.handlerName)
-            self.__effectModule = effectModule = func()
-            self.__handler = effectModule.get("handler", effectDummy)
-            self.__runTime = effectModule.get("runTime", "normal")
-            self.__activeByDefault = effectModule.get("activeByDefault", True)
-            t = effectModule.get("type", None)
+            if all_effects_module:
+                func = getattr(all_effects_module, self.handlerName)
+                self.__effectModule = effectModule = func()
+                self.__handler = effectModule.get("handler", effectDummy)
+                self.__runTime = effectModule.get("runTime", "normal")
+                self.__activeByDefault = effectModule.get("activeByDefault", True)
+                t = effectModule.get("type", None)
 
-            t = t if isinstance(t, tuple) or t is None else (t,)
-            self.__type = t
-        # except ImportError as e:
-        #     self.__effectModule = effectModule = importlib.import_module('eos.effects.' + self.handlerName)
-        #     self.__handler = getattr(effectModule, "handler", effectDummy)
-        #     self.__runTime = getattr(effectModule, "runTime", "normal")
-        #     self.__activeByDefault = getattr(effectModule, "activeByDefault", True)
-        #     t = getattr(effectModule, "type", None)
-        #
-        #     t = t if isinstance(t, tuple) or t is None else (t,)
-        #     self.__type = t
+                t = t if isinstance(t, tuple) or t is None else (t,)
+                self.__type = t
+            else:
+                self.__effectModule = effectModule = importlib.import_module('eos.effects.' + self.handlerName)
+                self.__handler = getattr(effectModule, "handler", effectDummy)
+                self.__runTime = getattr(effectModule, "runTime", "normal")
+                self.__activeByDefault = getattr(effectModule, "activeByDefault", True)
+                t = getattr(effectModule, "type", None)
+
+                t = t if isinstance(t, tuple) or t is None else (t,)
+                self.__type = t
         except ImportError as e:
             # Effect probably doesn't exist, so create a dummy effect and flag it with a warning.
             self.__handler = effectDummy
