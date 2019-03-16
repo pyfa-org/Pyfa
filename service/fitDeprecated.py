@@ -27,7 +27,8 @@ from eos.saveddata.cargo import Cargo as es_Cargo
 from eos.saveddata.drone import Drone as es_Drone
 from eos.saveddata.fighter import Fighter as es_Fighter
 from eos.saveddata.implant import Implant as es_Implant
-from eos.saveddata.module import Module as es_Module, State
+from eos.saveddata.module import Module as es_Module
+from eos.const import FittingModuleState
 from eos.saveddata.fit import Fit as FitType
 from utils.deprecated import deprecated
 
@@ -304,16 +305,16 @@ class FitDeprecated(object):
             fit.projectedFighters.append(fighter)
         elif thing.group.name in es_Module.SYSTEM_GROUPS:
             module = es_Module(thing)
-            module.state = State.ONLINE
+            module.state = FittingModuleState.ONLINE
             fit.projectedModules.append(module)
         else:
             try:
                 module = es_Module(thing)
             except ValueError:
                 return False
-            module.state = State.ACTIVE
+            module.state = FittingModuleState.ACTIVE
             if not module.canHaveState(module.state, fit):
-                module.state = State.OFFLINE
+                module.state = FittingModuleState.OFFLINE
             fit.projectedModules.append(module)
 
         eos.db.commit()
@@ -396,8 +397,8 @@ class FitDeprecated(object):
             m.owner = fit
             numSlots = len(fit.modules)
             fit.modules.append(m)
-            if m.isValidState(State.ACTIVE):
-                m.state = State.ACTIVE
+            if m.isValidState(FittingModuleState.ACTIVE):
+                m.state = FittingModuleState.ACTIVE
 
             # As some items may affect state-limiting attributes of the ship, calculate new attributes first
             self.recalc(fit)
@@ -465,8 +466,8 @@ class FitDeprecated(object):
         if m.fits(fit):
             m.owner = fit
             fit.modules.toModule(position, m)
-            if m.isValidState(State.ACTIVE):
-                m.state = State.ACTIVE
+            if m.isValidState(FittingModuleState.ACTIVE):
+                m.state = FittingModuleState.ACTIVE
 
             if recalc:
                 # As some items may affect state-limiting attributes of the ship, calculate new attributes first
@@ -508,8 +509,8 @@ class FitDeprecated(object):
         try:
             cargoP = es_Module(cargo.item)
             cargoP.owner = fit
-            if cargoP.isValidState(State.ACTIVE):
-                cargoP.state = State.ACTIVE
+            if cargoP.isValidState(FittingModuleState.ACTIVE):
+                cargoP.state = FittingModuleState.ACTIVE
         except:
             pyfalog.warning("Invalid item: {0}", cargo.item)
             return

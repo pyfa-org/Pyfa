@@ -3,7 +3,7 @@ from service.fit import Fit
 
 import gui.mainFrame
 from gui import globalEvents as GE
-from eos.saveddata.fit import ImplantLocation
+from eos.const import ImplantLocation
 from .calc.fitAddImplant import FitAddImplantCommand
 from .calc.fitChangeImplantLocation import FitChangeImplantLocation
 

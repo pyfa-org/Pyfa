@@ -24,7 +24,8 @@ import wx
 from eos.saveddata.fit import Fit
 from eos.saveddata.implant import Implant
 from eos.saveddata.drone import Drone
-from eos.saveddata.module import Module, State as State_, Rack
+from eos.saveddata.module import Module, Rack
+from eos.const import FittingModuleState as State_
 from gui.viewColumn import ViewColumn
 
 import gui.mainFrame
@@ -46,12 +47,11 @@ class State(ViewColumn):
 
     def getToolTip(self, mod):
         if isinstance(mod, Module) and not mod.isEmpty:
-            return State_.getName(mod.state).title()
+            return State_(mod.state).name.title()
 
     def getImageId(self, stuff):
-        generic_active = self.fittingView.imageList.GetImageIndex("state_%s_small" % State_.getName(1).lower(), "gui")
-        generic_inactive = self.fittingView.imageList.GetImageIndex("state_%s_small" % State_.getName(-1).lower(),
-                                                                    "gui")
+        generic_active = self.fittingView.imageList.GetImageIndex("state_%s_small" % State_.ACTIVE.name.lower(), "gui")
+        generic_inactive = self.fittingView.imageList.GetImageIndex("state_%s_small" % State_.OFFLINE.name.lower(), "gui")
 
         if isinstance(stuff, Drone):
             if stuff.amountActive > 0:
@@ -64,7 +64,7 @@ class State(ViewColumn):
             if stuff.isEmpty:
                 return -1
             else:
-                return self.fittingView.imageList.GetImageIndex("state_%s_small" % State_.getName(stuff.state).lower(),
+                return self.fittingView.imageList.GetImageIndex("state_%s_small" % State_(stuff.state).name.lower(),
                                                                 "gui")
         elif isinstance(stuff, Fit):
             fitID = self.mainFrame.getActiveFit()
@@ -83,7 +83,7 @@ class State(ViewColumn):
             return generic_inactive
         elif isinstance(stuff, Implant) and stuff.character:
             # if we're showing character implants, show an "online" state, which should not be changed
-            return self.fittingView.imageList.GetImageIndex("state_%s_small" % State_.getName(0).lower(), "gui")
+            return self.fittingView.imageList.GetImageIndex("state_%s_small" % State_.ONLINE.name.lower(), "gui")
         else:
             active = getattr(stuff, "active", None)
             if active is None:

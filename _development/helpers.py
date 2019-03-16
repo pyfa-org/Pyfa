@@ -129,7 +129,8 @@ def Saveddata():
     from eos.saveddata.ship import Ship
     from eos.saveddata.fit import Fit
     from eos.saveddata.character import Character
-    from eos.saveddata.module import Module, State
+    from eos.saveddata.module import Module
+    from eos.const import FittingModuleState
     from eos.saveddata.citadel import Citadel
     from eos.saveddata.booster import Booster
 
@@ -139,7 +140,7 @@ def Saveddata():
         'Fit'      : Fit,
         'Character': Character,
         'Module'   : Module,
-        'State'    : State,
+        'State'    : FittingModuleState,
         'Booster'  : Booster,
     }
     return helper
