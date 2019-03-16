@@ -162,6 +162,7 @@ class Effect(EqBase):
         """
         try:
             if all_effects_module and config.use_all_effect_module:
+                pyfalog.debug("Loading {0} from all module".format(self.handlerName))
                 func = getattr(all_effects_module, self.handlerName)
                 self.__effectModule = effectModule = func()
                 self.__handler = effectModule.get("handler", effectDummy)
@@ -172,6 +173,7 @@ class Effect(EqBase):
                 t = t if isinstance(t, tuple) or t is None else (t,)
                 self.__type = t
             else:
+                pyfalog.debug("Loading {0} from effect file".format(self.handlerName))
                 self.__effectModule = effectModule = importlib.import_module('eos.effects.' + self.handlerName)
                 self.__handler = getattr(effectModule, "handler", effectDummy)
                 self.__runTime = getattr(effectModule, "runTime", "normal")
