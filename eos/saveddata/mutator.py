@@ -34,7 +34,7 @@ class Mutator(EqBase):
 
     A note on the different attributes on this object:
     * attribute: points to the definition of the attribute from dgmattribs.
-    * baseAttribute: points to the attribute defined for the base item (contains the base value with with to mutate)
+    * baseAttribute: points to the attribute defined for the base item (contains the base value with which to mutate)
     * dynamicAttribute: points to the Mutaplasmid definition of the attribute, including min/max
 
     This could probably be cleaned up with smarter relationships, but whatever
@@ -71,7 +71,7 @@ class Mutator(EqBase):
         try:
             # dynamic attribute links to the Mutaplasmids attribute definition for this mutated definition
             self.dynamicAttribute = next(a for a in self.module.mutaplasmid.attributes if a.attributeID == self.attrID)
-            # base attribute links to the base ite's attribute for this mutated definition (contains original, base value)
+            # base attribute links to the base item's attribute for this mutated definition (contains original, base value)
             self.baseAttribute = self.module.item.attributes[self.dynamicAttribute.name]
         except:
             self.module = None
@@ -104,7 +104,7 @@ class Mutator(EqBase):
 
     @property
     def highIsGood(self):
-        return self.attribute.highIsGood
+        return self.baseAttribute.highIsGood
 
     @property
     def minMod(self):

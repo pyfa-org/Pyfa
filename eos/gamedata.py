@@ -498,6 +498,15 @@ class AttributeInfo(EqBase):
 
 
 class Attribute(EqBase):
+    higOverrides = {
+        ('Stasis Web', 'speedFactor'): False,
+    }
+
+    @property
+    def highIsGood(self):
+        return self.higOverrides.get((self.item.group.name, self.name), self.info.highIsGood)
+    pass
+
     pass
 
 
