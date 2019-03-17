@@ -19,7 +19,8 @@ class AttributeView(IntEnum):
 
 class ItemParams(wx.Panel):
     def __init__(self, parent, stuff, item, context=None):
-        wx.Panel.__init__(self, parent)
+        # Had to manually set the size here, otherwise column widths couldn't be calculated correctly. See #1878
+        wx.Panel.__init__(self, parent, size=(1000, 1000))
         mainSizer = wx.BoxSizer(wx.VERTICAL)
 
         self.paramList = wx.lib.agw.hypertreelist.HyperTreeList(self, wx.ID_ANY, agwStyle=wx.TR_HIDE_ROOT | wx.TR_NO_LINES | wx.TR_FULL_ROW_HIGHLIGHT | wx.TR_HAS_BUTTONS)
@@ -39,9 +40,6 @@ class ItemParams(wx.Panel):
         self.paramList.AddColumn("Current Value")
         if self.stuff is not None:
             self.paramList.AddColumn("Base Value")
-
-        self.paramList.SetMainColumn(0)  # the one with the tree in it...
-        self.paramList.SetColumnWidth(0, 300)
 
         self.m_staticline = wx.StaticLine(self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.LI_HORIZONTAL)
         mainSizer.Add(self.m_staticline, 0, wx.EXPAND)
@@ -255,6 +253,9 @@ class ItemParams(wx.Panel):
 
         self.Layout()
 
+        for i in range(self.paramList.GetMainWindow().GetColumnCount()):
+            self.paramList.SetColumnWidth(i, wx.LIST_AUTOSIZE)
+
     def GetData(self, attr):
         info = self.attrInfo.get(attr)
         att = self.attrValues[attr]
@@ -355,6 +356,7 @@ if __name__ == "__main__":
             #item = eos.db.getItem(526)    # Stasis Webifier I
             item = eos.db.getItem(486)  # 200mm AutoCannon I
             #item = eos.db.getItem(200)  # Phased Plasma L
+
             super().__init__(None, title="Test Attribute Window | {} - {}".format(item.ID, item.name), size=(1000, 500))
 
             if 'wxMSW' in wx.PlatformInfo:
@@ -368,6 +370,7 @@ if __name__ == "__main__":
             main_sizer.Add(panel, 1, wx.EXPAND | wx.ALL, 2)
 
             self.SetSizer(main_sizer)
+            self.Layout()
 
     app = wx.App(redirect=False)   # Error messages go to popup window
     top = Frame()
