@@ -353,7 +353,7 @@ class SkillTreeView(wx.Panel):
         self.skillBookDirtyImageId = self.imageList.Add(wx.Icon(BitmapLoader.getBitmap("skill_small_red", "gui")))
 
         tree.AppendColumn("Skill")
-        tree.AppendColumn("Level")
+        tree.AppendColumn("Level", align=wx.ALIGN_RIGHT)
         # tree.SetMainColumn(0)
 
         self.root = tree.GetRootItem()
