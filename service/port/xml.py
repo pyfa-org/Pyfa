@@ -28,8 +28,9 @@ from eos.saveddata.citadel import Citadel
 from eos.saveddata.drone import Drone
 from eos.saveddata.fighter import Fighter
 from eos.saveddata.fit import Fit
-from eos.saveddata.module import Module, State, Slot
+from eos.saveddata.module import Module
 from eos.saveddata.ship import Ship
+from eos.const import FittingSlot, FittingModuleState
 from service.fit import Fit as svcFit
 from service.market import Market
 from utils.strfunctions import sequential_rep, replace_ltgt
@@ -198,8 +199,8 @@ def importXml(text, iportuser):
                             m.owner = fitobj
                             fitobj.modules.append(m)
                     else:
-                        if m.isValidState(State.ACTIVE):
-                            m.state = State.ACTIVE
+                        if m.isValidState(FittingModuleState.ACTIVE):
+                            m.state = FittingModuleState.ACTIVE
 
                         moduleList.append(m)
 
@@ -265,7 +266,7 @@ def exportXml(iportuser, callback, *fits):
 
                 slot = module.slot
 
-                if slot == Slot.SUBSYSTEM:
+                if slot == FittingSlot.SUBSYSTEM:
                     # Order of subsystem matters based on this attr. See GH issue #130
                     slotId = module.getModifiedItemAttr("subSystemSlot") - 125
                 else:
@@ -277,7 +278,7 @@ def exportXml(iportuser, callback, *fits):
 
                 hardware = doc.createElement("hardware")
                 hardware.setAttribute("type", module.item.name)
-                slotName = Slot.getName(slot).lower()
+                slotName = FittingSlot(slot).name.lower()
                 slotName = slotName if slotName != "high" else "hi"
                 hardware.setAttribute("slot", "%s slot %d" % (slotName, slotId))
                 fitting.appendChild(hardware)

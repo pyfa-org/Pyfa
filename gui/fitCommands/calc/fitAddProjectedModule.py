@@ -1,7 +1,8 @@
 import wx
 import eos.db
 from logbook import Logger
-from eos.saveddata.module import Module, State
+from eos.saveddata.module import Module
+from eos.const import FittingModuleState
 pyfalog = Logger(__name__)
 
 
@@ -27,9 +28,9 @@ class FitAddProjectedModuleCommand(wx.Command):
         except ValueError:
             return False
 
-        module.state = State.ACTIVE
+        module.state = FittingModuleState.ACTIVE
         if not module.canHaveState(module.state, fit):
-            module.state = State.OFFLINE
+            module.state = FittingModuleState.OFFLINE
         fit.projectedModules.append(module)
 
         eos.db.commit()

@@ -1,22 +1,4 @@
-from enum import Enum, auto
-
-
-# Define the various groups of attributes
-class AttrGroup(Enum):
-    FITTING = auto()
-    STRUCTURE = auto()
-    SHIELD = auto()
-    ARMOR = auto()
-    TARGETING = auto()
-    EWAR_RESISTS = auto()
-    CAPACITOR = auto()
-    SHARED_FACILITIES = auto()
-    FIGHTER_FACILITIES = auto()
-    ON_DEATH = auto()
-    JUMP_SYSTEMS = auto()
-    PROPULSIONS = auto()
-    FIGHTERS = auto()
-
+from service.const import GuiAttrGroup
 
 RequiredSkillAttrs = sum((["requiredSkill{}".format(x), "requiredSkill{}Level".format(x)] for x in range(1, 7)), [])
 
@@ -45,7 +27,7 @@ for x in AttrGroups:
 
 # Start defining all the known attribute groups
 AttrGroupDict = {
-    AttrGroup.FITTING           : {
+    GuiAttrGroup.FITTING           : {
         "label" : "Fitting",
         "attributes": [
             # parent-level attributes
@@ -67,7 +49,7 @@ AttrGroupDict = {
             # "mass",
         ]
     },
-    AttrGroup.STRUCTURE         : {
+    GuiAttrGroup.STRUCTURE         : {
         "label" : "Structure",
         "attributes": [
             "hp",
@@ -97,7 +79,7 @@ AttrGroupDict = {
             "explosiveDamageResonance"
         ]
     },
-    AttrGroup.ARMOR             : {
+    GuiAttrGroup.ARMOR             : {
        "label": "Armor",
         "attributes":[
             "armorHP",
@@ -109,7 +91,7 @@ AttrGroupDict = {
         ]
 
     },
-    AttrGroup.SHIELD            : {
+    GuiAttrGroup.SHIELD            : {
         "label": "Shield",
         "attributes": [
             "shieldCapacity",
@@ -122,7 +104,7 @@ AttrGroupDict = {
         ]
 
     },
-    AttrGroup.EWAR_RESISTS      : {
+    GuiAttrGroup.EWAR_RESISTS      : {
         "label": "Electronic Warfare",
         "attributes": [
             "ECMResistance",
@@ -135,14 +117,14 @@ AttrGroupDict = {
             "weaponDisruptionResistance",
         ]
     },
-    AttrGroup.CAPACITOR         : {
+    GuiAttrGroup.CAPACITOR         : {
         "label": "Capacitor",
         "attributes": [
             "capacitorCapacity",
             "rechargeRate",
         ]
     },
-    AttrGroup.TARGETING         : {
+    GuiAttrGroup.TARGETING         : {
         "label": "Targeting",
         "attributes": [
             "maxTargetRange",
@@ -160,7 +142,7 @@ AttrGroupDict = {
             "scanLadarStrength",
         ]
     },
-    AttrGroup.SHARED_FACILITIES : {
+    GuiAttrGroup.SHARED_FACILITIES : {
         "label" : "Shared Facilities",
         "attributes": [
             "fleetHangarCapacity",
@@ -168,7 +150,7 @@ AttrGroupDict = {
             "maxJumpClones",
         ]
     },
-    AttrGroup.FIGHTER_FACILITIES: {
+    GuiAttrGroup.FIGHTER_FACILITIES: {
         "label": "Fighter Squadron Facilities",
         "attributes": [
             "fighterCapacity",
@@ -181,7 +163,7 @@ AttrGroupDict = {
             "fighterStandupHeavySlots",
         ]
     },
-    AttrGroup.ON_DEATH          : {
+    GuiAttrGroup.ON_DEATH          : {
         "label": "On Death",
         "attributes": [
             "onDeathDamageEM",
@@ -192,7 +174,7 @@ AttrGroupDict = {
             "onDeathSignatureRadius",
         ]
     },
-    AttrGroup.JUMP_SYSTEMS      : {
+    GuiAttrGroup.JUMP_SYSTEMS      : {
         "label": "Jump Drive Systems",
         "attributes": [
             "jumpDriveCapacitorNeed",
@@ -206,13 +188,13 @@ AttrGroupDict = {
             "jumpPortalDuration",
         ]
     },
-    AttrGroup.PROPULSIONS       : {
+    GuiAttrGroup.PROPULSIONS       : {
         "label": "Propulsion",
         "attributes": [
             "maxVelocity"
         ]
     },
-    AttrGroup.FIGHTERS          : {
+    GuiAttrGroup.FIGHTERS          : {
         "label": "Fighter",
         "attributes": [
             "mass",
@@ -228,25 +210,25 @@ AttrGroupDict = {
 }
 
 Group1 = [
-    AttrGroup.FITTING,
-    AttrGroup.STRUCTURE,
-    AttrGroup.ARMOR,
-    AttrGroup.SHIELD,
-    AttrGroup.EWAR_RESISTS,
-    AttrGroup.CAPACITOR,
-    AttrGroup.TARGETING,
-    AttrGroup.SHARED_FACILITIES,
-    AttrGroup.FIGHTER_FACILITIES,
-    AttrGroup.ON_DEATH,
-    AttrGroup.JUMP_SYSTEMS,
-    AttrGroup.PROPULSIONS,
+    GuiAttrGroup.FITTING,
+    GuiAttrGroup.STRUCTURE,
+    GuiAttrGroup.ARMOR,
+    GuiAttrGroup.SHIELD,
+    GuiAttrGroup.EWAR_RESISTS,
+    GuiAttrGroup.CAPACITOR,
+    GuiAttrGroup.TARGETING,
+    GuiAttrGroup.SHARED_FACILITIES,
+    GuiAttrGroup.FIGHTER_FACILITIES,
+    GuiAttrGroup.ON_DEATH,
+    GuiAttrGroup.JUMP_SYSTEMS,
+    GuiAttrGroup.PROPULSIONS,
 ]
 
 CategoryGroups = {
     "Fighter"  : [
-        AttrGroup.FIGHTERS,
-        AttrGroup.SHIELD,
-        AttrGroup.TARGETING,
+        GuiAttrGroup.FIGHTERS,
+        GuiAttrGroup.SHIELD,
+        GuiAttrGroup.TARGETING,
     ],
     "Ship"     : Group1,
     "Drone"    : Group1,

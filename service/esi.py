@@ -9,9 +9,9 @@ import config
 import webbrowser
 
 import eos.db
-from eos.enum import Enum
+from service.const import EsiLoginMethod, EsiSsoMode
 from eos.saveddata.ssocharacter import SsoCharacter
-from service.esiAccess import APIException, SsoMode
+from service.esiAccess import APIException
 import gui.globalEvents as GE
 from gui.ssoLogin import SsoLogin, SsoLoginServer
 from service.server import StoppableHTTPServer, AuthHandler
@@ -22,11 +22,6 @@ import gui.mainFrame
 from requests import Session
 
 pyfalog = Logger(__name__)
-
-
-class LoginMethod(Enum):
-    SERVER = 0
-    MANUAL = 1
 
 
 class Esi(EsiAccess):
@@ -107,8 +102,8 @@ class Esi(EsiAccess):
 
     def login(self):
         # always start the local server if user is using client details. Otherwise, start only if they choose to do so.
-        if self.settings.get('ssoMode') == SsoMode.CUSTOM or self.settings.get('loginMode') == LoginMethod.SERVER:
-            dlg = gui.ssoLogin.SsoLoginServer(6461 if self.settings.get('ssoMode') == SsoMode.CUSTOM else 0)
+        if self.settings.get('ssoMode') == EsiSsoMode.CUSTOM or self.settings.get('loginMode') == EsiLoginMethod.SERVER:
+            dlg = gui.ssoLogin.SsoLoginServer(6461 if self.settings.get('ssoMode') == EsiSsoMode.CUSTOM else 0)
             dlg.ShowModal()
         else:
             dlg = gui.ssoLogin.SsoLogin()
@@ -142,7 +137,7 @@ class Esi(EsiAccess):
     def handleLogin(self, message):
 
         # we already have authenticated stuff for the auto mode
-        if self.settings.get('ssoMode') == SsoMode.AUTO:
+        if self.settings.get('ssoMode') == EsiSsoMode.AUTO:
             ssoInfo = message['SSOInfo'][0]
             auth_response = json.loads(base64.b64decode(ssoInfo))
         else:

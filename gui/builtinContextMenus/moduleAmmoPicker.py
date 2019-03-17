@@ -5,7 +5,7 @@ import wx
 
 import gui.fitCommands as cmd
 import gui.mainFrame
-from eos.saveddata.module import Hardpoint
+from eos.const import FittingHardpoint
 from gui.bitmap_loader import BitmapLoader
 from gui.contextMenu import ContextMenu
 from service.market import Market
@@ -136,7 +136,7 @@ class ModuleAmmoPicker(ContextMenu):
         hardpoint = self.module.hardpoint
         moduleName = self.module.item.name
         # Make sure we do not consider mining turrets as combat turrets
-        if hardpoint == Hardpoint.TURRET and self.module.getModifiedItemAttr("miningAmount", None) is None:
+        if hardpoint == FittingHardpoint.TURRET and self.module.getModifiedItemAttr("miningAmount", None) is None:
             self.addSeperator(m, "Long Range")
             items = []
             range_ = None
@@ -180,7 +180,7 @@ class ModuleAmmoPicker(ContextMenu):
                 m.Append(item)
 
             self.addSeperator(m, "Short Range")
-        elif hardpoint == Hardpoint.MISSILE and moduleName != 'Festival Launcher':
+        elif hardpoint == FittingHardpoint.MISSILE and moduleName != 'Festival Launcher':
             self.charges.sort(key=self.missileSorter)
             type_ = None
             sub = None
