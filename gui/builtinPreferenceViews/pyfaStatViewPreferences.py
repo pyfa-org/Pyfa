@@ -107,7 +107,12 @@ class PFStatViewPref(PreferenceView):
         self.tbTotalPriceCargo = wx.CheckBox(panel, -1, "Cargo", wx.DefaultPosition, wx.DefaultSize, 1)
         self.tbTotalPriceCargo.SetValue(self.priceSettings.get("cargo"))
         self.tbTotalPriceImplant = wx.CheckBox(panel, -1, "Implants", wx.DefaultPosition, wx.DefaultSize, 1)
-        self.tbTotalPriceImplant.SetValue(self.priceSettings.get("character")) #TODO: Value sometimes loaded wrong
+        self.tbTotalPriceImplant.SetValue(self.priceSettings.get("character"))
+        '''
+        Adding spacers to bring visuals in line with neighbours. 
+        Using checkbox-sizes didn't work well. Tested with Windows10.
+        TODO: Check visuals with other OS.
+        '''
         self.tbTotalPriceBox.AddSpacer(5)
         self.tbTotalPriceBox.Add(self.tbTotalPriceDrones)
         self.tbTotalPriceBox.AddSpacer(10)
