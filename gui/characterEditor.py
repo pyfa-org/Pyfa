@@ -427,7 +427,8 @@ class SkillTreeView(wx.Panel):
         self.levelChangeMenu.Bind(wx.EVT_MENU, self.changeLevel)
         self.SetSizer(pmainSizer)
 
-        self.Layout()
+        # This cuases issues with GTK, see #1866
+        # self.Layout()
 
     def importSkills(self, evt):
 
