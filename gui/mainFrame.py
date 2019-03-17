@@ -662,16 +662,16 @@ class MainFrame(wx.Frame):
         fitID = self.getActiveFit()
         sFit = Fit.getInstance()
         fit = sFit.getFit(fitID)
-        if fit:
 
+        if fit:
             def updateFitCb(replacementsCheaper):
+                del self.waitDialog
                 rebaseMap = {k.ID: v.ID for k, v in replacementsCheaper.items()}
                 self.command.Submit(cmd.GuiRebaseItemsCommand(fitID, rebaseMap))
 
-            # TODO: block/unblock UI while pyfa is working
             fitItems = {i for i in Fit.fitItemIter(fit) if i is not fit.ship.item}
+            self.waitDialog = wx.BusyInfo("Please Wait...", parent=self)
             Price.getInstance().findCheaperReplacements(fitItems, updateFitCb, fetchTimeout=10)
-
 
     def AdditionsTabSelect(self, event):
         selTab = self.additionsSelect.index(event.GetId())
