@@ -1,6 +1,7 @@
 # noinspection PyPackageRequirements
 import wx
 
+import eos.config
 import gui.mainFrame
 from eos.utils.spoolSupport import SpoolType, SpoolOptions
 from gui import globalEvents as GE
@@ -32,12 +33,17 @@ class SpoolUp(ContextMenu):
 
     def getSubMenu(self, context, selection, rootMenu, i, pitem):
         m = wx.Menu()
-        cyclesMin = self.mod.getSpoolData(spoolOptions=SpoolOptions(SpoolType.SCALE, 0, True))[0]
-        cyclesMax = self.mod.getSpoolData(spoolOptions=SpoolOptions(SpoolType.SCALE, 1, True))[0]
+        cycleCurrent = self.mod.getSpoolData(spoolOptions=SpoolOptions(SpoolType.SCALE, eos.config.settings['globalDefaultSpoolupPercentage'], False))[0]
+        cycleMin = self.mod.getSpoolData(spoolOptions=SpoolOptions(SpoolType.SCALE, 0, True))[0]
+        cycleMax = self.mod.getSpoolData(spoolOptions=SpoolOptions(SpoolType.SCALE, 1, True))[0]
 
-        for cycle in range(cyclesMin, cyclesMax + 1):
+        for cycle in range(cycleMin, cycleMax + 1):
             menuId = ContextMenu.nextID()
-            item = wx.MenuItem(m, menuId, "{}".format(cycle))
+            if cycleCurrent == cycle:
+                text = "- {} -".format(cycle)
+            else:
+                text = "{}".format(cycle)
+            item = wx.MenuItem(m, menuId, text)
             m.Bind(wx.EVT_MENU, self.handleSpoolChange, item)
             m.Append(item)
             self.cycleMap[menuId] = cycle
