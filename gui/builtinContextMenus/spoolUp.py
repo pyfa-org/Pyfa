@@ -55,7 +55,7 @@ class SpoolUp(ContextMenu):
             self.cycleMap[menuId] = cycle
 
         self.resetId = ContextMenu.nextID()
-        item = wx.MenuItem(m, self.resetId, "Default")
+        item = wx.MenuItem(m, self.resetId, "Reset")
         m.Bind(wx.EVT_MENU, self.handleSpoolChange, item)
         m.Append(item)
 
