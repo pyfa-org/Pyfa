@@ -1,16 +1,20 @@
-import gui.mainFrame
-from gui.contextMenu import ContextMenu
 # noinspection PyPackageRequirements
-from service.settings import ContextMenuSettings
 import wx
-from eos.utils.spoolSupport import SpoolType
-import gui.fitCommands as cmd
+
+import gui.mainFrame
+from eos.utils.spoolSupport import SpoolType, SpoolOptions
+from gui import globalEvents as GE
+from gui.contextMenu import ContextMenu
+from service.settings import ContextMenuSettings
+from service.fit import Fit
 
 
 class SpoolUp(ContextMenu):
     def __init__(self):
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
         self.settings = ContextMenuSettings.getInstance()
+        self.cycleMap = {}
+        self.resetId = None
 
     def display(self, srcContext, selection):
         if not self.settings.get('project'):
@@ -19,135 +23,43 @@ class SpoolUp(ContextMenu):
         if srcContext not in ("fittingModule") or self.mainFrame.getActiveFit() is None:
             return False
 
-        item = selection[0]
+        self.mod = selection[0]
 
-        return item.item.group.name in ("Precursor Weapon", "Mutadaptive Remote Armor Repairer", "Mutadaptive Remote Armor Repairer Blueprint")
+        return self.mod.item.group.name in ("Precursor Weapon", "Mutadaptive Remote Armor Repairer")
 
     def getText(self, itmContext, selection):
-        return "Set Spoolup".format(itmContext)
+        return "Spoolup"
 
-    def activate(self, fullContext, selection, i):
-        thing = selection[0]
-        mainFrame = gui.mainFrame.MainFrame.getInstance()
-        fitID = mainFrame.getActiveFit()
-        srcContext = fullContext[0]
+    def getSubMenu(self, context, selection, rootMenu, i, pitem):
+        m = wx.Menu()
+        cyclesMin = self.mod.getSpoolData(spoolOptions=SpoolOptions(SpoolType.SCALE, 0, True))[0]
+        cyclesMax = self.mod.getSpoolData(spoolOptions=SpoolOptions(SpoolType.SCALE, 1, True))[0]
 
-        while True:
-            dlg = SpoolUpChanger(self.mainFrame, thing)
-            result = dlg.ShowModal()
+        for cycle in range(cyclesMin, cyclesMax + 1):
+            menuId = ContextMenu.nextID()
+            item = wx.MenuItem(m, menuId, "{}".format(cycle))
+            m.Bind(wx.EVT_MENU, self.handleSpoolChange, item)
+            m.Append(item)
+            self.cycleMap[menuId] = cycle
 
-            if result == wx.ID_CANCEL:
-                break
-            if result == wx.ID_DEFAULT:
-                type = None
-                amount = None
-            else:
-                type = SpoolType.CYCLES  # dlg.spoolChoice.GetClientData(dlg.spoolChoice.GetSelection())
-                amount = dlg.input.GetValue()
+        self.resetId = ContextMenu.nextID()
+        item = wx.MenuItem(m, self.resetId, "Default")
+        m.Bind(wx.EVT_MENU, self.handleSpoolChange, item)
+        m.Append(item)
 
-            if type == SpoolType.SCALE:
-                if amount < 0 or amount > 100:
-                    dlg = wx.MessageDialog(self.mainFrame, "The amount provided  isn't within the range of 0 - 100.", "Error", wx.OK | wx.ICON_ERROR)
-                    dlg.ShowModal()
-                    continue
-                amount = amount / 100
-            if type is None:
-                amount = None
+        return m
 
-            self.mainFrame.command.Submit(cmd.GuiSetSpoolup(fitID, thing, type, amount))
-            return
+    def handleSpoolChange(self, event):
+        if event.Id == self.resetId:
+            self.mod.spoolType = None
+            self.mod.spoolAmount = None
+        elif event.Id in self.cycleMap:
+            cycles = self.cycleMap[event.Id]
+            self.mod.spoolType = SpoolType.CYCLES
+            self.mod.spoolAmount = cycles
+        fitID = self.mainFrame.getActiveFit()
+        Fit.getInstance().recalc(fitID)
+        wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fitID))
 
 
 SpoolUp.register()
-
-
-class SpoolUpChanger(wx.Dialog):
-
-    spoolTypes = {
-        None: ("Default", "pyfa defaults to using 'scale' calculation with 100%"),
-        SpoolType.SCALE: ("Percentage", "Amount is a percentage from 0 - 100; rounds down to closest module cycle."),
-        SpoolType.TIME: ("Time (s)", "Amount defines time in seconds since spoolup module was activated."),
-        SpoolType.CYCLES: ("Cycles", "Amount is number of cycles module went through since being activated.")
-    }
-
-    def __init__(self, parent, module):
-        wx.Dialog.__init__(self, parent, title="Change Spool-Up")
-        self.SetMinSize((346, 156))
-
-        bSizer1 = wx.BoxSizer(wx.VERTICAL)
-
-        bSizer2 = wx.BoxSizer(wx.VERTICAL)
-
-        # This code allows the user to select the type of spoolup. Commented out to keep simpple, can introduce an
-        # text = wx.StaticText(self, wx.ID_ANY, "Type:")
-        # bSizer2.Add(text, 0)
-        #
-        # "advanced" functionality later
-        # self.spoolChoice = wx.Choice(self, wx.ID_ANY, style=0)
-        #
-        # for k, v in self.spoolTypes.items():
-        #     i = self.spoolChoice.Append(v[0], k)
-        #     if module.spoolType == k:
-        #         self.spoolChoice.SetSelection(i)
-        #
-        # self.spoolChoice.Bind(wx.EVT_CHOICE, self.spoolTypeChanged)
-        #
-        # bSizer2.Add(self.spoolChoice, 0, wx.TOP | wx.BOTTOM | wx.EXPAND, 5)
-        #
-        # self.spoolDesc = wx.StaticText(self, wx.ID_ANY, self.spoolTypes[module.spoolType][1])
-
-        self.spoolDesc = wx.StaticText(self, wx.ID_ANY, "Specify the number of cycles that you wish to set the module to")
-        bSizer2.Add(self.spoolDesc, 1)
-        #
-        # text1 = wx.StaticText(self, wx.ID_ANY, "Amount:")
-        # bSizer2.Add(text1, 0, wx.TOP, 10)
-
-        bSizer1.Add(bSizer2, 0, wx.ALL, 10)
-
-        self.input = wx.SpinCtrlDouble(self, min=0, max=1000)
-        bSizer1.Add(self.input, 0, wx.LEFT | wx.RIGHT | wx.EXPAND, 10)
-
-        bSizer3 = wx.BoxSizer(wx.VERTICAL)
-        bSizer3.Add(wx.StaticLine(self, wx.ID_ANY), 0, wx.BOTTOM | wx.EXPAND, 15)
-
-        bSizerButtons = wx.BoxSizer(wx.HORIZONTAL)
-
-        self.btnRevert = wx.Button(self, wx.ID_DEFAULT, "Reset to Default")
-        self.btnOK = wx.Button(self, wx.ID_OK)
-        self.btnCancel = wx.Button(self, wx.ID_CANCEL)
-
-        bSizerButtons.Add(self.btnRevert, 0, wx.ALL, 5)
-        bSizerButtons.AddStretchSpacer()
-        bSizerButtons.Add(self.btnOK, 0, wx.ALL, 5)
-        bSizerButtons.Add(self.btnCancel, 0, wx.ALL, 5)
-
-        self.btnCancel.Bind(wx.EVT_BUTTON, self.OnBtnCancel)
-        self.btnRevert.Bind(wx.EVT_BUTTON, self.OnBtnRevert)
-        self.btnOK.Bind(wx.EVT_BUTTON, self.OnBtnOk)
-
-        bSizer3.Add(bSizerButtons, 0, wx.EXPAND, 5)
-        bSizer1.Add(bSizer3, 0, wx.ALL | wx.EXPAND, 10)
-
-        self.input.SetValue(module.spoolAmount or 0)
-        self.input.SetFocus()
-        self.input.Bind(wx.EVT_TEXT_ENTER, self.processEnter)
-        self.SetSizer(bSizer1)
-        self.CenterOnParent()
-        self.Fit()
-
-    def OnBtnCancel(self, event):
-        self.EndModal(wx.ID_CANCEL)
-
-    def OnBtnOk(self, event):
-        self.EndModal(wx.ID_OK)
-
-    def OnBtnRevert(self, event):
-        self.EndModal(wx.ID_DEFAULT)
-
-    def spoolTypeChanged(self, evt):
-        self.input.Enable(evt.ClientData is not None)
-        self.spoolDesc.SetLabel(self.spoolTypes[evt.ClientData][1])
-        self.Layout()
-
-    def processEnter(self, evt):
-        self.EndModal(wx.ID_OK)
