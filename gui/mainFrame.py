@@ -666,10 +666,12 @@ class MainFrame(wx.Frame):
         if fit:
             def updateFitCb(replacementsCheaper):
                 del self.waitDialog
+                del self.disablerAll
                 rebaseMap = {k.ID: v.ID for k, v in replacementsCheaper.items()}
                 self.command.Submit(cmd.GuiRebaseItemsCommand(fitID, rebaseMap))
 
             fitItems = {i for i in Fit.fitItemIter(fit) if i is not fit.ship.item}
+            self.disablerAll = wx.WindowDisabler()
             self.waitDialog = wx.BusyInfo("Please Wait...", parent=self)
             Price.getInstance().findCheaperReplacements(fitItems, updateFitCb, fetchTimeout=10)
 
