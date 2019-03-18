@@ -33,14 +33,20 @@ class SpoolUp(ContextMenu):
 
     def getSubMenu(self, context, selection, rootMenu, i, pitem):
         m = wx.Menu()
+        isNotDefault = self.mod.spoolType is not None and self.mod.spoolAmount is not None
+        cycleDefault = self.mod.getSpoolData(spoolOptions=SpoolOptions(SpoolType.SCALE, eos.config.settings['globalDefaultSpoolupPercentage'], True))[0]
         cycleCurrent = self.mod.getSpoolData(spoolOptions=SpoolOptions(SpoolType.SCALE, eos.config.settings['globalDefaultSpoolupPercentage'], False))[0]
         cycleMin = self.mod.getSpoolData(spoolOptions=SpoolOptions(SpoolType.SCALE, 0, True))[0]
         cycleMax = self.mod.getSpoolData(spoolOptions=SpoolOptions(SpoolType.SCALE, 1, True))[0]
 
         for cycle in range(cycleMin, cycleMax + 1):
             menuId = ContextMenu.nextID()
-            if cycleCurrent == cycle:
-                text = "- {} -".format(cycle)
+            # Show selected only for current value and when overriden by user
+            if isNotDefault and cycle == cycleCurrent:
+                text = "{} (selected)".format(cycle)
+            # Show default only for current value and when not overriden
+            elif not isNotDefault and cycle == cycleDefault:
+                text = "{} (default)".format(cycle)
             else:
                 text = "{}".format(cycle)
             item = wx.MenuItem(m, menuId, text)
