@@ -36,7 +36,7 @@ class PFContextMenuPref(PreferenceView):
 
         self.rbBox1 = wx.RadioBox(panel, -1, "Set as Damage Pattern", wx.DefaultPosition, wx.DefaultSize, ['Disabled', 'Enabled'], 1, wx.RA_SPECIFY_COLS)
         self.rbBox1.SetSelection(self.settings.get('ammoPattern'))
-        rbSizerRow1.Add(self.rbBox1, 1, wx.TOP | wx.RIGHT, 5)
+        rbSizerRow1.Add(self.rbBox1, 1, wx.ALL, 5)
         self.rbBox1.Bind(wx.EVT_RADIOBOX, self.OnSetting1Change)
 
         self.rbBox2 = wx.RadioBox(panel, -1, "Change Skills", wx.DefaultPosition, wx.DefaultSize, ['Disabled', 'Enabled'], 1, wx.RA_SPECIFY_COLS)
@@ -56,35 +56,38 @@ class PFContextMenuPref(PreferenceView):
 
         self.rbBox4 = wx.RadioBox(panel, -1, "Variations", wx.DefaultPosition, wx.DefaultSize, ['Disabled', 'Enabled'], 1, wx.RA_SPECIFY_COLS)
         self.rbBox4.SetSelection(self.settings.get('metaSwap'))
-        rbSizerRow2.Add(self.rbBox4, 1, wx.TOP | wx.RIGHT, 5)
+        rbSizerRow2.Add(self.rbBox4, 1, wx.ALL, 5)
         self.rbBox4.Bind(wx.EVT_RADIOBOX, self.OnSetting4Change)
 
-        '''
-        self.rbBox5 = wx.RadioBox(panel, -1, "Charge", wx.DefaultPosition, wx.DefaultSize, ['Disabled', 'Enabled'], 1, wx.RA_SPECIFY_COLS)
-        self.rbBox5.SetSelection(self.settings.get('moduleAmmoPicker'))
-        rbSizerRow2.Add(self.rbBox5, 1, wx.ALL, 5)
-        self.rbBox5.Bind(wx.EVT_RADIOBOX, self.OnSetting5Change)
-        '''
+        # self.rbBox5 = wx.RadioBox(panel, -1, "Charge", wx.DefaultPosition, wx.DefaultSize, ['Disabled', 'Enabled'], 1, wx.RA_SPECIFY_COLS)
+        # self.rbBox5.SetSelection(self.settings.get('moduleAmmoPicker'))
+        # rbSizerRow2.Add(self.rbBox5, 0, wx.ALL, 5)
+        # self.rbBox5.Bind(wx.EVT_RADIOBOX, self.OnSetting5Change)
 
         self.rbBox6 = wx.RadioBox(panel, -1, "Charge (All)", wx.DefaultPosition, wx.DefaultSize, ['Disabled', 'Enabled'], 1, wx.RA_SPECIFY_COLS)
         self.rbBox6.SetSelection(self.settings.get('moduleGlobalAmmoPicker'))
         rbSizerRow2.Add(self.rbBox6, 1, wx.ALL, 5)
         self.rbBox6.Bind(wx.EVT_RADIOBOX, self.OnSetting6Change)
 
+        self.rbBox7 = wx.RadioBox(panel, -1, "Project onto Fit", wx.DefaultPosition, wx.DefaultSize, ['Disabled', 'Enabled'], 1, wx.RA_SPECIFY_COLS)
+        self.rbBox7.SetSelection(self.settings.get('project'))
+        rbSizerRow2.Add(self.rbBox7, 1, wx.ALL, 5)
+        self.rbBox7.Bind(wx.EVT_RADIOBOX, self.OnSetting7Change)
+
         mainSizer.Add(rbSizerRow2, 1, wx.ALL | wx.EXPAND, 0)
 
         # Row 3
         rbSizerRow3 = wx.BoxSizer(wx.HORIZONTAL)
 
-        self.rbBox7 = wx.RadioBox(panel, -1, "Project onto Fit", wx.DefaultPosition, wx.DefaultSize, ['Disabled', 'Enabled'], 1, wx.RA_SPECIFY_COLS)
-        self.rbBox7.SetSelection(self.settings.get('project'))
-        rbSizerRow3.Add(self.rbBox7, 1, wx.TOP | wx.RIGHT, 5)
-        self.rbBox7.Bind(wx.EVT_RADIOBOX, self.OnSetting7Change)
-
         self.rbBox8 = wx.RadioBox(panel, -1, "Fill with module", wx.DefaultPosition, wx.DefaultSize, ['Disabled', 'Enabled'], 1, wx.RA_SPECIFY_COLS)
         self.rbBox8.SetSelection(self.settings.get('moduleFill'))
-        rbSizerRow3.Add(self.rbBox8, 1, wx.TOP | wx.RIGHT, 5)
+        rbSizerRow3.Add(self.rbBox8, 1, wx.ALL, 5)
         self.rbBox8.Bind(wx.EVT_RADIOBOX, self.OnSetting8Change)
+
+        self.rbBox9 = wx.RadioBox(panel, -1, "Spoolup", wx.DefaultPosition, wx.DefaultSize, ['Disabled', 'Enabled'], 1, wx.RA_SPECIFY_COLS)
+        self.rbBox9.SetSelection(self.settings.get('spoolup'))
+        rbSizerRow3.Add(self.rbBox9, 1, wx.ALL, 5)
+        self.rbBox9.Bind(wx.EVT_RADIOBOX, self.OnSetting9Change)
 
         mainSizer.Add(rbSizerRow3, 1, wx.ALL | wx.EXPAND, 0)
 
@@ -114,6 +117,9 @@ class PFContextMenuPref(PreferenceView):
 
     def OnSetting8Change(self, event):
         self.settings.set('moduleFill', event.GetInt())
+
+    def OnSetting9Change(self, event):
+        self.settings.set('spoolup', event.GetInt())
 
     def getImage(self):
         return BitmapLoader.getBitmap("settings_menu", "gui")

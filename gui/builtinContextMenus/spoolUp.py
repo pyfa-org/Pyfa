@@ -17,7 +17,7 @@ class SpoolUp(ContextMenu):
         self.resetId = None
 
     def display(self, srcContext, selection):
-        if not self.settings.get('project'):
+        if not self.settings.get('spoolup'):
             return False
 
         if srcContext not in ("fittingModule") or self.mainFrame.getActiveFit() is None:
