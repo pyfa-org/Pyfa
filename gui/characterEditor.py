@@ -150,7 +150,7 @@ class CharacterEntityEditor(EntityEditor):
 class CharacterEditor(wx.Frame):
     def __init__(self, parent):
         wx.Frame.__init__(self, parent, id=wx.ID_ANY, title="pyfa: Character Editor", pos=wx.DefaultPosition,
-                          size=wx.Size(640, 600), style=wx.DEFAULT_FRAME_STYLE ^ wx.RESIZE_BORDER)
+                          size=wx.Size(640, 600), style=wx.DEFAULT_FRAME_STYLE ^ wx.RESIZE_BORDER | wx.FRAME_FLOAT_ON_PARENT)
 
         i = wx.Icon(BitmapLoader.getBitmap("character_small", "gui"))
         self.SetIcon(i)
@@ -353,7 +353,7 @@ class SkillTreeView(wx.Panel):
         self.skillBookDirtyImageId = self.imageList.Add(wx.Icon(BitmapLoader.getBitmap("skill_small_red", "gui")))
 
         tree.AppendColumn("Skill")
-        tree.AppendColumn("Level")
+        tree.AppendColumn("Level", align=wx.ALIGN_RIGHT)
         # tree.SetMainColumn(0)
 
         self.root = tree.GetRootItem()
@@ -427,7 +427,8 @@ class SkillTreeView(wx.Panel):
         self.levelChangeMenu.Bind(wx.EVT_MENU, self.changeLevel)
         self.SetSizer(pmainSizer)
 
-        self.Layout()
+        # This cuases issues with GTK, see #1866
+        # self.Layout()
 
     def importSkills(self, evt):
 
