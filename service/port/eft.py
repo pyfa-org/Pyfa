@@ -19,7 +19,7 @@
 
 
 import re
-from enum import Enum
+from service.const import PortEftOptions, PortEftRigSize
 
 from logbook import Logger
 
@@ -30,9 +30,10 @@ from eos.saveddata.booster import Booster
 from eos.saveddata.drone import Drone
 from eos.saveddata.fighter import Fighter
 from eos.saveddata.implant import Implant
-from eos.saveddata.module import Module, State, Slot
+from eos.saveddata.module import Module
 from eos.saveddata.ship import Ship
 from eos.saveddata.fit import Fit
+from eos.const import FittingSlot, FittingModuleState
 from service.fit import Fit as svcFit
 from service.market import Market
 from service.port.muta import parseMutant, renderMutant
@@ -41,22 +42,15 @@ from service.port.shared import IPortUser, fetchItem, processing_notify
 
 pyfalog = Logger(__name__)
 
-
-class Options(Enum):
-    IMPLANTS = 1
-    MUTATIONS = 2
-    LOADED_CHARGES = 3
-
-
 EFT_OPTIONS = (
-    (Options.LOADED_CHARGES.value, 'Loaded Charges', 'Export charges loaded into modules', True),
-    (Options.MUTATIONS.value, 'Mutated Attributes', 'Export mutated modules\' stats', True),
-    (Options.IMPLANTS.value, 'Implants && Boosters', 'Export implants and boosters', True),
+    (PortEftOptions.LOADED_CHARGES.value, 'Loaded Charges', 'Export charges loaded into modules', True),
+    (PortEftOptions.MUTATIONS.value, 'Mutated Attributes', 'Export mutated modules\' stats', True),
+    (PortEftOptions.IMPLANTS.value, 'Implants && Boosters', 'Export implants and boosters', True),
 )
 
 
 MODULE_CATS = ('Module', 'Subsystem', 'Structure Module')
-SLOT_ORDER = (Slot.LOW, Slot.MED, Slot.HIGH, Slot.RIG, Slot.SUBSYSTEM, Slot.SERVICE)
+SLOT_ORDER = (FittingSlot.LOW, FittingSlot.MED, FittingSlot.HIGH, FittingSlot.RIG, FittingSlot.SUBSYSTEM, FittingSlot.SERVICE)
 OFFLINE_SUFFIX = '/OFFLINE'
 
 
@@ -86,21 +80,21 @@ def exportEft(fit, options):
                     modName = module.baseItem.name
                 else:
                     modName = module.item.name
-                if module.isMutated and options[Options.MUTATIONS.value]:
+                if module.isMutated and options[PortEftOptions.MUTATIONS.value]:
                     mutants[mutantReference] = module
                     mutationSuffix = ' [{}]'.format(mutantReference)
                     mutantReference += 1
                 else:
                     mutationSuffix = ''
-                modOfflineSuffix = ' {}'.format(OFFLINE_SUFFIX) if module.state == State.OFFLINE else ''
-                if module.charge and options[Options.LOADED_CHARGES.value]:
+                modOfflineSuffix = ' {}'.format(OFFLINE_SUFFIX) if module.state == FittingModuleState.OFFLINE else ''
+                if module.charge and options[PortEftOptions.LOADED_CHARGES.value]:
                     rackLines.append('{}, {}{}{}'.format(
                         modName, module.charge.name, modOfflineSuffix, mutationSuffix))
                 else:
                     rackLines.append('{}{}{}'.format(modName, modOfflineSuffix, mutationSuffix))
             else:
                 rackLines.append('[Empty {} slot]'.format(
-                    Slot.getName(slotType).capitalize() if slotType is not None else ''))
+                    FittingSlot(slotType).name.capitalize() if slotType is not None else ''))
         if rackLines:
             modSection.append('\n'.join(rackLines))
     if modSection:
@@ -122,7 +116,7 @@ def exportEft(fit, options):
         sections.append('\n\n'.join(minionSection))
 
     # Section 3: implants, boosters
-    if options[Options.IMPLANTS.value]:
+    if options[PortEftOptions.IMPLANTS.value]:
         charSection = []
         implantLines = []
         for implant in fit.implants:
@@ -149,7 +143,7 @@ def exportEft(fit, options):
 
     # Section 5: mutated modules' details
     mutationLines = []
-    if mutants and options[Options.MUTATIONS.value]:
+    if mutants and options[PortEftOptions.MUTATIONS.value]:
         for mutantReference in sorted(mutants):
             mutant = mutants[mutantReference]
             mutationLines.append(renderMutant(mutant, firstPrefix='[{}] '.format(mutantReference), prefix='  '))
@@ -441,8 +435,8 @@ def importEftCfg(shipname, lines, iportuser):
                     else:
                         m.owner = fitobj
                         # Activate mod if it is activable
-                        if m.isValidState(State.ACTIVE):
-                            m.state = State.ACTIVE
+                        if m.isValidState(FittingModuleState.ACTIVE):
+                            m.state = FittingModuleState.ACTIVE
                         # Add charge to mod if applicable, on any errors just don't add anything
                         if chargeName:
                             try:
@@ -722,12 +716,12 @@ class AbstractFit:
     @property
     def __slotContainerMap(self):
         return {
-            Slot.HIGH: self.modulesHigh,
-            Slot.MED: self.modulesMed,
-            Slot.LOW: self.modulesLow,
-            Slot.RIG: self.rigs,
-            Slot.SUBSYSTEM: self.subsystems,
-            Slot.SERVICE: self.services}
+            FittingSlot.HIGH: self.modulesHigh,
+            FittingSlot.MED: self.modulesMed,
+            FittingSlot.LOW: self.modulesLow,
+            FittingSlot.RIG: self.rigs,
+            FittingSlot.SUBSYSTEM: self.subsystems,
+            FittingSlot.SERVICE: self.services}
 
     def getContainerBySlot(self, slotType):
         return self.__slotContainerMap.get(slotType)
@@ -798,10 +792,10 @@ class AbstractFit:
 
         if itemSpec.charge is not None and m.isValidCharge(itemSpec.charge):
             m.charge = itemSpec.charge
-        if itemSpec.offline and m.isValidState(State.OFFLINE):
-            m.state = State.OFFLINE
-        elif m.isValidState(State.ACTIVE):
-            m.state = State.ACTIVE
+        if itemSpec.offline and m.isValidState(FittingModuleState.OFFLINE):
+            m.state = FittingModuleState.OFFLINE
+        elif m.isValidState(FittingModuleState.ACTIVE):
+            m.state = FittingModuleState.ACTIVE
         return m
 
     def addImplant(self, itemSpec):

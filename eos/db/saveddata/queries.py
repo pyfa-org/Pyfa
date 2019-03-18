@@ -21,6 +21,7 @@ import sys
 
 from sqlalchemy.sql import and_
 from sqlalchemy import desc, select
+from sqlalchemy import func
 
 from eos.db import saveddata_session, sd_lock
 from eos.db.saveddata.fit import projectedFits_table
@@ -280,6 +281,12 @@ def getFitsWithModules(typeIDs, eager=None):
 def countAllFits():
     with sd_lock:
         count = saveddata_session.query(Fit).count()
+    return count
+
+
+def countFitGroupedByShip():
+    with sd_lock:
+        count = eos.db.saveddata_session.query(Fit.shipID, func.count(Fit.shipID)).group_by(Fit.shipID).all()
     return count
 
 
