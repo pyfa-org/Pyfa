@@ -353,7 +353,7 @@ class SkillTreeView(wx.Panel):
         self.skillBookDirtyImageId = self.imageList.Add(wx.Icon(BitmapLoader.getBitmap("skill_small_red", "gui")))
 
         tree.AppendColumn("Skill")
-        tree.AppendColumn("Level", align=wx.ALIGN_RIGHT)
+        tree.AppendColumn("Level", align=wx.ALIGN_CENTER)
         # tree.SetMainColumn(0)
 
         self.root = tree.GetRootItem()
@@ -361,7 +361,10 @@ class SkillTreeView(wx.Panel):
         #
         # tree.SetItemText(self.root, 1, "Levels")
 
-        # tree.SetColumnWidth(0, 300)
+        # first one doesn't work right in Windows. Second one doesn't work right in GTK. Together, we make sure it works.
+        # Gotta love wx
+        tree.SetColumnWidth(0, 525)
+        tree.SetColumnWidth(1, 100)
 
         self.btnSecStatus = wx.Button(self, wx.ID_ANY, "Sec Status: {0:.2f}".format(char.secStatus or 0.0))
         self.btnSecStatus.Bind(wx.EVT_BUTTON, self.onSecStatus)
