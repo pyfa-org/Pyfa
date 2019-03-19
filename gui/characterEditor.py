@@ -368,6 +368,7 @@ class SkillTreeView(wx.Panel):
 
         self.populateSkillTree()
 
+        tree.Bind(wx.dataview.EVT_TREELIST_ITEM_ACTIVATED, self.expand)
         tree.Bind(wx.dataview.EVT_TREELIST_ITEM_EXPANDING, self.expandLookup)
         tree.Bind(wx.dataview.EVT_TREELIST_ITEM_CONTEXT_MENU, self.scheduleMenu)
 
@@ -555,9 +556,18 @@ class SkillTreeView(wx.Panel):
         if event:
             event.Skip()
 
+    def expand(self, event):
+        root = event.GetItem()
+        tree = self.skillTreeListCtrl
+        if tree.IsExpanded(root):
+            tree.Collapse(root)
+        else:
+            tree.Expand(root)
+
     def expandLookup(self, event):
         root = event.GetItem()
         tree = self.skillTreeListCtrl
+
         child = tree.GetFirstChild(root)
         if tree.GetItemText(child) == "dummy":
             tree.DeleteItem(child)
