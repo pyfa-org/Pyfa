@@ -37,7 +37,6 @@ import config
 import gui.globalEvents as GE
 from eos.config import gamedata_date, gamedata_version
 from eos.db.saveddata.loadDefaultDatabaseValues import DefaultDatabaseValues
-from eos.db.saveddata.queries import getFit as db_getFit
 # import this to access override setting
 from eos.modifiedAttributeDict import ModifiedAttributeDict
 from gui import graphFrame
@@ -64,11 +63,11 @@ from gui.setEditor import ImplantSetEditorDlg
 from gui.shipBrowser import ShipBrowser
 from gui.statsPane import StatsPane
 from gui.updateDialog import UpdateDialog
-from gui.utils.clipboard import fromClipboard, toClipboard
+from gui.utils.clipboard import fromClipboard
 from service.character import Character
 from service.esi import Esi
 from service.fit import Fit
-from service.port import EfsPort, IPortUser, Port
+from service.port import IPortUser, Port
 from service.price import Price
 from service.settings import HTMLExportSettings, SettingsProvider
 from service.update import Update
@@ -708,30 +707,6 @@ class MainFrame(wx.Frame):
         else:
             self.marketBrowser.search.Focus()
 
-    def exportEft(self, options, callback):
-        fit = db_getFit(self.getActiveFit())
-        Port.exportEft(fit, options, callback)
-
-    def exportDna(self, options, callback):
-        fit = db_getFit(self.getActiveFit())
-        Port.exportDna(fit, callback)
-
-    def exportEsi(self, options, callback):
-        fit = db_getFit(self.getActiveFit())
-        Port.exportESI(fit, callback)
-
-    def exportXml(self, options, callback):
-        fit = db_getFit(self.getActiveFit())
-        Port.exportXml(None, fit, callback)
-
-    def exportMultiBuy(self, options, callback):
-        fit = db_getFit(self.getActiveFit())
-        Port.exportMultiBuy(fit, options, callback)
-
-    def exportEfs(self, options, callback):
-        fit = db_getFit(self.getActiveFit())
-        EfsPort.exportEfs(fit, 0, callback)
-
     def importFromClipboard(self, event):
         clipboard = fromClipboard()
         activeFit = self.getActiveFit()
@@ -748,36 +723,8 @@ class MainFrame(wx.Frame):
             self._openAfterImport(importData)
 
     def exportToClipboard(self, event):
-        CopySelectDict = {CopySelectDialog.copyFormatEft: self.exportEft,
-                          CopySelectDialog.copyFormatXml: self.exportXml,
-                          CopySelectDialog.copyFormatDna: self.exportDna,
-                          CopySelectDialog.copyFormatEsi: self.exportEsi,
-                          CopySelectDialog.copyFormatMultiBuy: self.exportMultiBuy,
-                          CopySelectDialog.copyFormatEfs: self.exportEfs}
-        dlg = CopySelectDialog(self)
-        btnPressed = dlg.ShowModal()
-
-        def killDialog():
-            try:
-                dlg.Destroy()
-            except RuntimeError:
-                pyfalog.error("Tried to destroy an object that doesn't exist in <exportToClipboard>.")
-
-        if btnPressed == wx.ID_OK:
-            selected = dlg.GetSelected()
-            options = dlg.GetOptions()
-
-            settings = SettingsProvider.getInstance().getSettings("pyfaExport")
-            settings["format"] = selected
-            settings["options"] = options
-
-            def cb(text):
-                toClipboard(text)
-                killDialog()
-
-            CopySelectDict[selected](options.get(selected), callback=cb)
-        else:
-            killDialog()
+        with CopySelectDialog(self) as dlg:
+            dlg.ShowModal()
 
     def exportSkillsNeeded(self, event):
         """ Exports skills needed for active fit and active character """

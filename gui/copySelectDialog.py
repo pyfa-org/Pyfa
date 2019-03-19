@@ -26,6 +26,10 @@ import wx
 from service.port.eft import EFT_OPTIONS
 from service.port.multibuy import MULTIBUY_OPTIONS
 from service.settings import SettingsProvider
+from service.port import EfsPort, Port
+from service.const import PortMultiBuyOptions
+from eos.db import getFit
+from gui.utils.clipboard import toClipboard
 
 
 class CopySelectDialog(wx.Dialog):
@@ -39,6 +43,17 @@ class CopySelectDialog(wx.Dialog):
     def __init__(self, parent):
         wx.Dialog.__init__(self, parent, id=wx.ID_ANY, title="Select a format", size=(-1, -1),
                            style=wx.DEFAULT_DIALOG_STYLE)
+
+        self.CopySelectDict = {
+            CopySelectDialog.copyFormatEft     : self.exportEft,
+            CopySelectDialog.copyFormatXml     : self.exportXml,
+            CopySelectDialog.copyFormatDna     : self.exportDna,
+            CopySelectDialog.copyFormatEsi     : self.exportEsi,
+            CopySelectDialog.copyFormatMultiBuy: self.exportMultiBuy,
+            CopySelectDialog.copyFormatEfs     : self.exportEfs
+        }
+
+        self.mainFrame = parent
         mainSizer = wx.BoxSizer(wx.VERTICAL)
 
         self.copyFormats = OrderedDict((
@@ -99,6 +114,29 @@ class CopySelectDialog(wx.Dialog):
         self.Fit()
         self.Center()
 
+    def Validate(self):
+        selected = self.GetSelected()
+        options = self.GetOptions()
+
+        settings = SettingsProvider.getInstance().getSettings("pyfaExport")
+        settings["format"] = selected
+        settings["options"] = options
+        self.waitDialog = None
+
+        def cb(text):
+            if self.waitDialog:
+                del self.waitDialog
+q            toClipboard(text)
+            self.EndModal(wx.ID_OK)
+
+        export_options = options.get(selected)
+        if selected == CopySelectDialog.copyFormatMultiBuy and export_options.get(PortMultiBuyOptions.OPTIMIZE_PRICES, False):
+            self.waitDialog = wx.BusyInfo("Optimizing Prices", parent=self)
+
+        self.CopySelectDict[selected](export_options, callback=cb)
+
+        return False
+
     def Selected(self, event):
         obj = event.GetEventObject()
         formatName = obj.GetLabel()
@@ -119,3 +157,27 @@ class CopySelectDialog(wx.Dialog):
         for formatId in self.options:
             options[formatId] = {optId: ch.IsChecked() for optId, ch in self.options[formatId].items()}
         return options
+
+    def exportEft(self, options, callback):
+        fit = getFit(self.mainFrame.getActiveFit())
+        Port.exportEft(fit, options, callback)
+
+    def exportDna(self, options, callback):
+        fit = getFit(self.mainFrame.getActiveFit())
+        Port.exportDna(fit, callback)
+
+    def exportEsi(self, options, callback):
+        fit = getFit(self.mainFrame.getActiveFit())
+        Port.exportESI(fit, callback)
+
+    def exportXml(self, options, callback):
+        fit = getFit(self.mainFrame.getActiveFit())
+        Port.exportXml(None, fit, callback)
+
+    def exportMultiBuy(self, options, callback):
+        fit = getFit(self.mainFrame.getActiveFit())
+        Port.exportMultiBuy(fit, options, callback)
+
+    def exportEfs(self, options, callback):
+        fit = getFit(self.mainFrame.getActiveFit())
+        EfsPort.exportEfs(fit, 0, callback)
