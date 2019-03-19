@@ -29,10 +29,15 @@ class SpoolUp(ContextMenu):
         return self.mod.item.group.name in ("Precursor Weapon", "Mutadaptive Remote Armor Repairer")
 
     def getText(self, itmContext, selection):
-        return "Spoolup"
+        return "Spoolup Cycles"
 
     def getSubMenu(self, context, selection, rootMenu, i, pitem):
         m = wx.Menu()
+        if "wxMSW" in wx.PlatformInfo:
+            bindmenu = rootMenu
+        else:
+            bindmenu = m
+
         isNotDefault = self.mod.spoolType is not None and self.mod.spoolAmount is not None
         cycleDefault = self.mod.getSpoolData(spoolOptions=SpoolOptions(SpoolType.SCALE, eos.config.settings['globalDefaultSpoolupPercentage'], True))[0]
         cycleCurrent = self.mod.getSpoolData(spoolOptions=SpoolOptions(SpoolType.SCALE, eos.config.settings['globalDefaultSpoolupPercentage'], False))[0]
@@ -41,22 +46,22 @@ class SpoolUp(ContextMenu):
 
         for cycle in range(cycleMin, cycleMax + 1):
             menuId = ContextMenu.nextID()
-            # Show selected only for current value and when overriden by user
-            if isNotDefault and cycle == cycleCurrent:
-                text = "{} (selected)".format(cycle)
+
             # Show default only for current value and when not overriden
-            elif not isNotDefault and cycle == cycleDefault:
+            if not isNotDefault and cycle == cycleDefault:
                 text = "{} (default)".format(cycle)
             else:
                 text = "{}".format(cycle)
-            item = wx.MenuItem(m, menuId, text)
-            m.Bind(wx.EVT_MENU, self.handleSpoolChange, item)
+
+            item = wx.MenuItem(m, menuId, text, kind=wx.ITEM_CHECK)
+            bindmenu.Bind(wx.EVT_MENU, self.handleSpoolChange, item)
             m.Append(item)
+            item.Check(isNotDefault and cycle == cycleCurrent)
             self.cycleMap[menuId] = cycle
 
         self.resetId = ContextMenu.nextID()
         item = wx.MenuItem(m, self.resetId, "Reset")
-        m.Bind(wx.EVT_MENU, self.handleSpoolChange, item)
+        bindmenu.Bind(wx.EVT_MENU, self.handleSpoolChange, item)
         m.Append(item)
 
         return m
