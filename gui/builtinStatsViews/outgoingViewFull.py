@@ -23,6 +23,7 @@ from gui.statsView import StatsView
 from gui.bitmap_loader import BitmapLoader
 from gui.utils.numberFormatter import formatAmount, roundToPrec
 from eos.utils.spoolSupport import SpoolType, SpoolOptions
+import eos.config
 
 
 stats = [
@@ -101,8 +102,7 @@ class OutgoingViewFull(StatsView):
                     formatAmount(preSpool, prec, lowest, highest),
                     formatAmount(fullSpool, prec, lowest, highest))
 
-        # TODO: fetch spoolup option
-        defaultSpoolValue = 1
+        defaultSpoolValue = eos.config.settings['globalDefaultSpoolupPercentage']
         counter = 0
         for labelName, labelDesc, valueFormat, image, tooltip, val, preSpoolVal, fullSpoolVal, prec, lowest, highest in stats:
             label = getattr(self, labelName)
