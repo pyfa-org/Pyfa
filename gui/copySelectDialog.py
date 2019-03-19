@@ -115,6 +115,8 @@ class CopySelectDialog(wx.Dialog):
         self.Center()
 
     def Validate(self):
+        # Since this dialog is shown through aa ShowModal(), we hook into the Validate function to veto the closing of the dialog until we're ready.
+        # This always returns False, and when we're ready will EndModal()
         selected = self.GetSelected()
         options = self.GetOptions()
 
