@@ -25,7 +25,7 @@ from gui.bitmap_loader import BitmapLoader
 from gui.utils.numberFormatter import formatAmount, roundToPrec
 from eos.utils.spoolSupport import SpoolType, SpoolOptions
 from service.fit import Fit
-
+import eos.config
 
 class FirepowerViewFull(StatsView):
     name = "firepowerViewFull"
@@ -157,8 +157,7 @@ class FirepowerViewFull(StatsView):
                     formatAmount(preSpool, prec, lowest, highest),
                     formatAmount(fullSpool, prec, lowest, highest))
 
-        # TODO: fetch spoolup option
-        defaultSpoolValue = 1
+        defaultSpoolValue = eos.config.settings['globalDefaultSpoolupPercentage']
         stats = (
             (
                 "labelFullDpsWeapon",

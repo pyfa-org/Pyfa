@@ -35,3 +35,4 @@ from .guiToggleDrone import GuiToggleDroneCommand
 from .guiFitRename import GuiFitRenameCommand
 from .guiChangeImplantLocation import GuiChangeImplantLocation
 from .guiImportMutatedModule import GuiImportMutatedModuleCommand
+from .guiSetSpoolup import GuiSetSpoolup

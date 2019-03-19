@@ -5,7 +5,7 @@
 
 
 from eos.utils.spoolSupport import SpoolType, SpoolOptions, calculateSpoolup, resolveSpoolOptions
-
+import eos.config
 
 type = "projected", "active"
 runTime = "late"
@@ -17,8 +17,7 @@ def handler(fit, container, context, **kwargs):
         cycleTime = container.getModifiedItemAttr("duration") / 1000.0
         repSpoolMax = container.getModifiedItemAttr("repairMultiplierBonusMax")
         repSpoolPerCycle = container.getModifiedItemAttr("repairMultiplierBonusPerCycle")
-        # TODO: fetch spoolup option
-        defaultSpoolValue = 1
+        defaultSpoolValue = eos.config.settings['globalDefaultSpoolupPercentage']
         spoolType, spoolAmount = resolveSpoolOptions(SpoolOptions(SpoolType.SCALE, defaultSpoolValue, False), container)
         rps = repAmountBase * (1 + calculateSpoolup(repSpoolMax, repSpoolPerCycle, cycleTime, spoolType, spoolAmount)[0]) / cycleTime
         rpsPreSpool = repAmountBase * (1 + calculateSpoolup(repSpoolMax, repSpoolPerCycle, cycleTime, SpoolType.SCALE, 0)[0]) / cycleTime
