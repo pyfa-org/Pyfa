@@ -19,7 +19,6 @@
 
 
 import re
-from service.const import PortEftOptions, PortEftRigSize
 
 from logbook import Logger
 
@@ -34,6 +33,7 @@ from eos.saveddata.module import Module
 from eos.saveddata.ship import Ship
 from eos.saveddata.fit import Fit
 from eos.const import FittingSlot, FittingModuleState
+from service.const import PortEftOptions, PortEftRigSize
 from service.fit import Fit as svcFit
 from service.market import Market
 from service.port.muta import parseMutant, renderMutant
@@ -54,7 +54,7 @@ SLOT_ORDER = (FittingSlot.LOW, FittingSlot.MED, FittingSlot.HIGH, FittingSlot.RI
 OFFLINE_SUFFIX = '/OFFLINE'
 
 
-def exportEft(fit, options):
+def exportEft(fit, options, callback):
     # EFT formatted export is split in several sections, each section is
     # separated from another using 2 blank lines. Sections might have several
     # sub-sections, which are separated by 1 blank line
@@ -150,7 +150,12 @@ def exportEft(fit, options):
     if mutationLines:
         sections.append('\n'.join(mutationLines))
 
-    return '{}\n\n{}'.format(header, '\n\n\n'.join(sections))
+    text = '{}\n\n{}'.format(header, '\n\n\n'.join(sections))
+
+    if callback:
+        callback(text)
+    else:
+        return text
 
 
 def importEft(lines):

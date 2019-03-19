@@ -53,7 +53,7 @@ class TimeoutError(Exception):
     pass
 
 
-class Network(object):
+class Network:
     # Request constants - every request must supply this, as it is checked if
     # enabled or not via settings
     ENABLED = 1

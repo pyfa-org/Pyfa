@@ -8,7 +8,7 @@ from .calc.fitAddDrone import FitAddDroneCommand
 
 class GuiAddDroneCommand(wx.Command):
     def __init__(self, fitID, itemID):
-        wx.Command.__init__(self, True, "Cargo Add")
+        wx.Command.__init__(self, True, "Drone Add")
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
         self.sFit = Fit.getInstance()
         self.internal_history = wx.CommandProcessor()

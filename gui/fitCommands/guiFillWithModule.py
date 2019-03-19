@@ -17,7 +17,7 @@ class GuiFillWithModuleCommand(wx.Command):
                        set the charge on the underlying module (requires position)
         :param position: Optional. The position in fit.modules that we are attempting to set the item to
         """
-        wx.Command.__init__(self, True, "Module Add: {}".format(itemID))
+        wx.Command.__init__(self, True, "Module Fill: {}".format(itemID))
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
         self.sFit = Fit.getInstance()
         self.fitID = fitID

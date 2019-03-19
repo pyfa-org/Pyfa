@@ -36,3 +36,4 @@ from .guiFitRename import GuiFitRenameCommand
 from .guiChangeImplantLocation import GuiChangeImplantLocation
 from .guiImportMutatedModule import GuiImportMutatedModuleCommand
 from .guiSetSpoolup import GuiSetSpoolup
+from .guiRebaseItems import GuiRebaseItemsCommand

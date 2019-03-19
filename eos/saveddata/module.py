@@ -941,6 +941,16 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
 
         return copy
 
+    def rebase(self, item):
+        state = self.state
+        charge = self.charge
+        Module.__init__(self, item, self.baseItem, self.mutaplasmid)
+        self.state = state
+        if self.isValidCharge(charge):
+            self.charge = charge
+        for x in self.mutators.values():
+            Mutator(self, x.attribute, x.value)
+
     def __repr__(self):
         if self.item:
             return "Module(ID={}, name={}) at {}".format(

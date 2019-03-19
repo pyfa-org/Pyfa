@@ -41,8 +41,7 @@ items_table = Table("invtypes", gamedata_meta,
                     Column("iconID", Integer),
                     Column("graphicID", Integer),
                     Column("groupID", Integer, ForeignKey("invgroups.groupID"), index=True),
-                    Column("replaceSame", String),
-                    Column("replaceBetter", String))
+                    Column("replacements", String))
 
 from .metaGroup import metatypes_table  # noqa
 from .traits import traits_table  # noqa
