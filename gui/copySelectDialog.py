@@ -126,7 +126,7 @@ class CopySelectDialog(wx.Dialog):
         def cb(text):
             if self.waitDialog:
                 del self.waitDialog
-q            toClipboard(text)
+            toClipboard(text)
             self.EndModal(wx.ID_OK)
 
         export_options = options.get(selected)
