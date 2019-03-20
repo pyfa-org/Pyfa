@@ -47,6 +47,7 @@ class FittingSlot(IntEnum):
     FS_SUPPORT = 14
     FS_HEAVY = 15
 
+
 @unique
 class ImplantLocation(IntEnum):
     """
@@ -54,6 +55,7 @@ class ImplantLocation(IntEnum):
     """
     FIT = 0
     CHARACTER = 1
+
 
 @unique
 class CalcType(IntEnum):
@@ -63,6 +65,7 @@ class CalcType(IntEnum):
     LOCAL = 0
     PROJECTED = 1
     COMMAND = 2
+
 
 @unique
 class FittingModuleState(IntEnum):
@@ -74,6 +77,7 @@ class FittingModuleState(IntEnum):
     ACTIVE = 1
     OVERHEATED = 2
 
+
 @unique
 class FittingHardpoint(IntEnum):
     """
@@ -82,4 +86,3 @@ class FittingHardpoint(IntEnum):
     NONE = 0
     MISSILE = 1
     TURRET = 2
-
