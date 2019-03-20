@@ -539,34 +539,8 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
         return fits
 
     def __fitRestrictions(self, fit, hardpointLimit=True):
-        # Check ship type restrictions
-        fitsOnType = set()
-        fitsOnGroup = set()
 
-        shipType = self.getModifiedItemAttr("fitsToShipType", None)
-        if shipType is not None:
-            fitsOnType.add(shipType)
-
-        for attr in list(self.itemModifiedAttributes.keys()):
-            if attr.startswith("canFitShipType"):
-                shipType = self.getModifiedItemAttr(attr, None)
-                if shipType is not None:
-                    fitsOnType.add(shipType)
-
-        for attr in list(self.itemModifiedAttributes.keys()):
-            if attr.startswith("canFitShipGroup"):
-                shipGroup = self.getModifiedItemAttr(attr, None)
-                if shipGroup is not None:
-                    fitsOnGroup.add(shipGroup)
-
-        if (len(fitsOnGroup) > 0 or len(fitsOnType) > 0) \
-                and fit.ship.item.group.ID not in fitsOnGroup \
-                and fit.ship.item.ID not in fitsOnType:
-            return False
-
-        # Citadel modules are now under a new category, so we can check this to ensure only structure modules can fit on a citadel
-        if isinstance(fit.ship, Citadel) and self.item.category.name != "Structure Module" or \
-                not isinstance(fit.ship, Citadel) and self.item.category.name == "Structure Module":
+        if not fit.canFit(self.item):
             return False
 
         # EVE doesn't let capital modules be fit onto subcapital hulls. Confirmed by CCP Larrikin that this is dictated
