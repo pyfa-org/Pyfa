@@ -4,8 +4,9 @@
 # Modules from group: Mutadaptive Remote Armor Repairer (5 of 5)
 
 
-from eos.utils.spoolSupport import SpoolType, SpoolOptions, calculateSpoolup, resolveSpoolOptions
 import eos.config
+from eos.utils.spoolSupport import SpoolType, SpoolOptions, calculateSpoolup, resolveSpoolOptions
+
 
 type = "projected", "active"
 runTime = "late"
