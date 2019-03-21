@@ -23,10 +23,10 @@ from service.price import Price as sPrc
 
 
 MULTIBUY_OPTIONS = (
-    (PortMultiBuyOptions.LOADED_CHARGES.value, 'Loaded Charges', 'Export charges loaded into modules', True),
-    (PortMultiBuyOptions.IMPLANTS.value, 'Implants && Boosters', 'Export implants and boosters', False),
-    (PortMultiBuyOptions.CARGO.value, 'Cargo', 'Export cargo contents', True),
-    (PortMultiBuyOptions.OPTIMIZE_PRICES.value, 'Optimize Prices', 'Replace items by cheaper alternatives', False),
+    (PortMultiBuyOptions.LOADED_CHARGES, 'Loaded Charges', 'Export charges loaded into modules', True),
+    (PortMultiBuyOptions.IMPLANTS, 'Implants && Boosters', 'Export implants and boosters', False),
+    (PortMultiBuyOptions.CARGO, 'Cargo', 'Export cargo contents', True),
+    (PortMultiBuyOptions.OPTIMIZE_PRICES, 'Optimize Prices', 'Replace items by cheaper alternatives', False),
 )
 
 
@@ -39,7 +39,7 @@ def exportMultiBuy(fit, options, callback):
             if module.isMutated:
                 continue
             _addItem(itemAmounts, module.item)
-        if module.charge and options[PortMultiBuyOptions.LOADED_CHARGES.value]:
+        if module.charge and options[PortMultiBuyOptions.LOADED_CHARGES]:
             _addItem(itemAmounts, module.charge, module.numCharges)
 
     for drone in fit.drones:
@@ -48,18 +48,18 @@ def exportMultiBuy(fit, options, callback):
     for fighter in fit.fighters:
         _addItem(itemAmounts, fighter.item, fighter.amountActive)
 
-    if options[PortMultiBuyOptions.CARGO.value]:
+    if options[PortMultiBuyOptions.CARGO]:
         for cargo in fit.cargo:
             _addItem(itemAmounts, cargo.item, cargo.amount)
 
-    if options[PortMultiBuyOptions.IMPLANTS.value]:
+    if options[PortMultiBuyOptions.IMPLANTS]:
         for implant in fit.implants:
             _addItem(itemAmounts, implant.item)
 
         for booster in fit.boosters:
             _addItem(itemAmounts, booster.item)
 
-    if options[PortMultiBuyOptions.OPTIMIZE_PRICES.value]:
+    if options[PortMultiBuyOptions.OPTIMIZE_PRICES]:
 
         def formatCheaperExportCb(replacementsCheaper):
             updatedAmounts = {}

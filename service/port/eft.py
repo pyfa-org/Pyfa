@@ -43,9 +43,9 @@ from service.port.shared import IPortUser, fetchItem, processing_notify
 pyfalog = Logger(__name__)
 
 EFT_OPTIONS = (
-    (PortEftOptions.LOADED_CHARGES.value, 'Loaded Charges', 'Export charges loaded into modules', True),
-    (PortEftOptions.MUTATIONS.value, 'Mutated Attributes', 'Export mutated modules\' stats', True),
-    (PortEftOptions.IMPLANTS.value, 'Implants && Boosters', 'Export implants and boosters', True),
+    (PortEftOptions.LOADED_CHARGES, 'Loaded Charges', 'Export charges loaded into modules', True),
+    (PortEftOptions.MUTATIONS, 'Mutated Attributes', 'Export mutated modules\' stats', True),
+    (PortEftOptions.IMPLANTS, 'Implants && Boosters', 'Export implants and boosters', True),
 )
 
 
@@ -80,14 +80,14 @@ def exportEft(fit, options, callback):
                     modName = module.baseItem.name
                 else:
                     modName = module.item.name
-                if module.isMutated and options[PortEftOptions.MUTATIONS.value]:
+                if module.isMutated and options[PortEftOptions.MUTATIONS]:
                     mutants[mutantReference] = module
                     mutationSuffix = ' [{}]'.format(mutantReference)
                     mutantReference += 1
                 else:
                     mutationSuffix = ''
                 modOfflineSuffix = ' {}'.format(OFFLINE_SUFFIX) if module.state == FittingModuleState.OFFLINE else ''
-                if module.charge and options[PortEftOptions.LOADED_CHARGES.value]:
+                if module.charge and options[PortEftOptions.LOADED_CHARGES]:
                     rackLines.append('{}, {}{}{}'.format(
                         modName, module.charge.name, modOfflineSuffix, mutationSuffix))
                 else:
@@ -116,15 +116,15 @@ def exportEft(fit, options, callback):
         sections.append('\n\n'.join(minionSection))
 
     # Section 3: implants, boosters
-    if options[PortEftOptions.IMPLANTS.value]:
+    if options[PortEftOptions.IMPLANTS]:
         charSection = []
         implantLines = []
-        for implant in fit.implants:
+        for implant in sorted(fit.implants, key=lambda i: i.slot or 0):
             implantLines.append(implant.item.name)
         if implantLines:
             charSection.append('\n'.join(implantLines))
         boosterLines = []
-        for booster in fit.boosters:
+        for booster in sorted(fit.boosters, key=lambda b: b.slot or 0):
             boosterLines.append(booster.item.name)
         if boosterLines:
             charSection.append('\n'.join(boosterLines))
@@ -143,7 +143,7 @@ def exportEft(fit, options, callback):
 
     # Section 5: mutated modules' details
     mutationLines = []
-    if mutants and options[PortEftOptions.MUTATIONS.value]:
+    if mutants and options[PortEftOptions.MUTATIONS]:
         for mutantReference in sorted(mutants):
             mutant = mutants[mutantReference]
             mutationLines.append(renderMutant(mutant, firstPrefix='[{}] '.format(mutantReference), prefix='  '))

@@ -2,6 +2,7 @@ import threading
 import time
 # noinspection PyPackageRequirements
 import wx
+from service.const import PortEftOptions
 from service.settings import HTMLExportSettings
 from service.fit import Fit
 from service.port import Port
@@ -208,8 +209,10 @@ class exportHtmlThread(threading.Thread):
                         if self.stopRunning:
                             return
                         try:
-                            eftFit = Port.exportEft(getFit(fit[0]))
-                            print(eftFit)
+                            eftFit = Port.exportEft(getFit(fit[0]), options={
+                                PortEftOptions.IMPLANTS: True,
+                                PortEftOptions.MUTATIONS: True,
+                                PortEftOptions.LOADED_CHARGES: True})
 
                             HTMLfit = (
                                     '           <li data-role="collapsible" data-iconpos="right" data-shadow="false" '
