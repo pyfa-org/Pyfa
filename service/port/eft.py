@@ -124,7 +124,7 @@ def exportEft(fit, options, callback):
         if implantLines:
             charSection.append('\n'.join(implantLines))
         boosterLines = []
-        for booster in sorted(fit.boosters, key=lambda b: b.slot):
+        for booster in sorted(fit.boosters, key=lambda b: b.slot or 0):
             boosterLines.append(booster.item.name)
         if boosterLines:
             charSection.append('\n'.join(boosterLines))
