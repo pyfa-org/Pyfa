@@ -115,6 +115,11 @@ class Implant(HandledItem, ItemAttrShortcut):
         copy.active = self.active
         return copy
 
+    def rebase(self, item):
+        active = self.active
+        Implant.__init__(self, item)
+        self.active = active
+
     def __repr__(self):
         return "Implant(ID={}, name={}) at {}".format(
                 self.item.ID, self.item.name, hex(id(self))

@@ -29,7 +29,7 @@ from bs4 import UnicodeDammit
 from logbook import Logger
 
 from eos import db
-from eos.saveddata.fit import ImplantLocation
+from eos.const import ImplantLocation
 from service.fit import Fit as svcFit
 from service.port.dna import exportDna, importDna
 from service.port.eft import exportEft, importEft, importEftCfg
@@ -257,8 +257,8 @@ class Port(object):
         return importEftCfg(shipname, lines, iportuser)
 
     @classmethod
-    def exportEft(cls, fit, options):
-        return exportEft(fit, options)
+    def exportEft(cls, fit, options, callback=None):
+        return exportEft(fit, options, callback=callback)
 
     # DNA-related methods
     @staticmethod
@@ -266,8 +266,8 @@ class Port(object):
         return importDna(string)
 
     @staticmethod
-    def exportDna(fit):
-        return exportDna(fit)
+    def exportDna(fit, callback=None):
+        return exportDna(fit, callback=callback)
 
     # ESI-related methods
     @staticmethod
@@ -275,8 +275,8 @@ class Port(object):
         return importESI(string)
 
     @staticmethod
-    def exportESI(fit):
-        return exportESI(fit)
+    def exportESI(fit, callback=None):
+        return exportESI(fit, callback=callback)
 
     # XML-related methods
     @staticmethod
@@ -284,10 +284,10 @@ class Port(object):
         return importXml(text, iportuser)
 
     @staticmethod
-    def exportXml(iportuser=None, *fits):
-        return exportXml(iportuser, *fits)
+    def exportXml(iportuser=None, callback=None, *fits):
+        return exportXml(iportuser, callback=callback, *fits)
 
     # Multibuy-related methods
     @staticmethod
-    def exportMultiBuy(fit, options):
-        return exportMultiBuy(fit, options)
+    def exportMultiBuy(fit, options, callback=None):
+        return exportMultiBuy(fit, options, callback=callback)

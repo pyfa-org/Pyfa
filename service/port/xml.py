@@ -28,8 +28,9 @@ from eos.saveddata.citadel import Citadel
 from eos.saveddata.drone import Drone
 from eos.saveddata.fighter import Fighter
 from eos.saveddata.fit import Fit
-from eos.saveddata.module import Module, State, Slot
+from eos.saveddata.module import Module
 from eos.saveddata.ship import Ship
+from eos.const import FittingSlot, FittingModuleState
 from service.fit import Fit as svcFit
 from service.market import Market
 from utils.strfunctions import sequential_rep, replace_ltgt
@@ -198,8 +199,8 @@ def importXml(text, iportuser):
                             m.owner = fitobj
                             fitobj.modules.append(m)
                     else:
-                        if m.isValidState(State.ACTIVE):
-                            m.state = State.ACTIVE
+                        if m.isValidState(FittingModuleState.ACTIVE):
+                            m.state = FittingModuleState.ACTIVE
 
                         moduleList.append(m)
 
@@ -225,14 +226,13 @@ def importXml(text, iportuser):
     return fit_list
 
 
-def exportXml(iportuser, *fits):
+def exportXml(iportuser, callback, *fits):
     doc = xml.dom.minidom.Document()
     fittings = doc.createElement("fittings")
     # fit count
     fit_count = len(fits)
     fittings.setAttribute("count", "%s" % fit_count)
     doc.appendChild(fittings)
-    sFit = svcFit.getInstance()
 
     for i, fit in enumerate(fits):
         try:
@@ -266,7 +266,7 @@ def exportXml(iportuser, *fits):
 
                 slot = module.slot
 
-                if slot == Slot.SUBSYSTEM:
+                if slot == FittingSlot.SUBSYSTEM:
                     # Order of subsystem matters based on this attr. See GH issue #130
                     slotId = module.getModifiedItemAttr("subSystemSlot") - 125
                 else:
@@ -278,7 +278,7 @@ def exportXml(iportuser, *fits):
 
                 hardware = doc.createElement("hardware")
                 hardware.setAttribute("type", module.item.name)
-                slotName = Slot.getName(slot).lower()
+                slotName = FittingSlot(slot).name.lower()
                 slotName = slotName if slotName != "high" else "hi"
                 hardware.setAttribute("slot", "%s slot %d" % (slotName, slotId))
                 fitting.appendChild(hardware)
@@ -323,4 +323,9 @@ def exportXml(iportuser, *fits):
                     iportuser, IPortUser.PROCESS_EXPORT | IPortUser.ID_UPDATE,
                     (i, "convert to xml (%s/%s) %s" % (i + 1, fit_count, fit.ship.name))
                 )
-    return doc.toprettyxml()
+    text = doc.toprettyxml()
+
+    if callback:
+        callback(text)
+    else:
+        return text

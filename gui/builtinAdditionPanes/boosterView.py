@@ -110,6 +110,9 @@ class BoosterView(d.Display):
 
         self.origional = fit.boosters if fit is not None else None
         self.boosters = stuff = fit.boosters[:] if fit is not None else None
+        if stuff is not None:
+            stuff.sort(key=lambda booster: booster.slot or 0)
+
 
         if event.fitID != self.lastFitId:
             self.lastFitId = event.fitID

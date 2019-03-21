@@ -25,8 +25,8 @@ import eos.db
 from eos.effectHandlerHelpers import HandledItem, HandledCharge
 from eos.modifiedAttributeDict import ModifiedAttributeDict, ItemAttrShortcut, ChargeAttrShortcut
 from eos.saveddata.fighterAbility import FighterAbility
-from eos.saveddata.module import Slot
 from eos.utils.stats import DmgTypes
+from eos.const import FittingSlot
 
 pyfalog = Logger(__name__)
 
@@ -116,12 +116,12 @@ class Fighter(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
 
     def __calculateSlot(self, item):
         types = {
-            "Light"  : Slot.F_LIGHT,
-            "Support": Slot.F_SUPPORT,
-            "Heavy"  : Slot.F_HEAVY,
-            "StandupLight": Slot.FS_LIGHT,
-            "StandupSupport": Slot.FS_SUPPORT,
-            "StandupHeavy": Slot.FS_HEAVY
+            "Light"  : FittingSlot.F_LIGHT,
+            "Support": FittingSlot.F_SUPPORT,
+            "Heavy"  : FittingSlot.F_HEAVY,
+            "StandupLight": FittingSlot.FS_LIGHT,
+            "StandupSupport": FittingSlot.FS_SUPPORT,
+            "StandupHeavy": FittingSlot.FS_HEAVY
         }
 
         for t, slot in types.items():
@@ -354,6 +354,17 @@ class Fighter(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
             copyAbility = next(filter(lambda a: a.effectID == ability.effectID, copy.abilities))
             copyAbility.active = ability.active
         return copy
+
+    def rebase(self, item):
+        amount = self.amount
+        active = self.active
+        abilityEffectStates = {a.effectID: a.active for a in self.abilities}
+        Fighter.__init__(self, item)
+        self.amount = amount
+        self.active = active
+        for ability in self.abilities:
+            if ability.effectID in abilityEffectStates:
+                ability.active = abilityEffectStates[ability.effectID]
 
     def fits(self, fit):
         # If ships doesn't support this type of fighter, don't add it

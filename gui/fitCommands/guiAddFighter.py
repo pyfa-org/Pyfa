@@ -8,7 +8,7 @@ from .calc.fitAddFighter import FitAddFighterCommand
 
 class GuiAddFighterCommand(wx.Command):
     def __init__(self, fitID, itemID):
-        wx.Command.__init__(self, True, "Cargo Add")
+        wx.Command.__init__(self, True, "Fighter Add")
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
         self.sFit = Fit.getInstance()
         self.internal_history = wx.CommandProcessor()

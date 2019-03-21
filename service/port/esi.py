@@ -28,7 +28,8 @@ from eos.saveddata.citadel import Citadel
 from eos.saveddata.drone import Drone
 from eos.saveddata.fighter import Fighter
 from eos.saveddata.fit import Fit
-from eos.saveddata.module import Module, State, Slot
+from eos.saveddata.module import Module
+from eos.const import FittingSlot, FittingModuleState
 from eos.saveddata.ship import Ship
 from service.fit import Fit as svcFit
 from service.market import Market
@@ -41,12 +42,12 @@ class ESIExportException(Exception):
 pyfalog = Logger(__name__)
 
 INV_FLAGS = {
-    Slot.LOW: 11,
-    Slot.MED: 19,
-    Slot.HIGH: 27,
-    Slot.RIG: 92,
-    Slot.SUBSYSTEM: 125,
-    Slot.SERVICE: 164
+    FittingSlot.LOW: 11,
+    FittingSlot.MED: 19,
+    FittingSlot.HIGH: 27,
+    FittingSlot.RIG: 92,
+    FittingSlot.SUBSYSTEM: 125,
+    FittingSlot.SERVICE: 164
 }
 
 INV_FLAG_CARGOBAY = 5
@@ -54,7 +55,7 @@ INV_FLAG_DRONEBAY = 87
 INV_FLAG_FIGHTER = 158
 
 
-def exportESI(ofit):
+def exportESI(ofit, callback):
     # A few notes:
     # max fit name length is 50 characters
     # Most keys are created simply because they are required, but bogus data is okay
@@ -82,7 +83,7 @@ def exportESI(ofit):
         item = nested_dict()
         slot = module.slot
 
-        if slot == Slot.SUBSYSTEM:
+        if slot == FittingSlot.SUBSYSTEM:
             # Order of subsystem matters based on this attr. See GH issue #130
             slot = int(module.getModifiedItemAttr("subSystemSlot"))
             item['flag'] = slot
@@ -134,7 +135,12 @@ def exportESI(ofit):
     if len(fit['items']) == 0:
         raise ESIExportException("Cannot export fitting: module list cannot be empty.")
 
-    return json.dumps(fit)
+    text = json.dumps(fit)
+
+    if callback:
+        callback(text)
+    else:
+        return text
 
 
 def importESI(string):
@@ -189,8 +195,8 @@ def importESI(string):
                     if m.fits(fitobj):
                         fitobj.modules.append(m)
                 else:
-                    if m.isValidState(State.ACTIVE):
-                        m.state = State.ACTIVE
+                    if m.isValidState(FittingModuleState.ACTIVE):
+                        m.state = FittingModuleState.ACTIVE
 
                     moduleList.append(m)
 

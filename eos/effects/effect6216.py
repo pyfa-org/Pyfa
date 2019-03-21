@@ -2,7 +2,7 @@
 #
 # Used by:
 # Structure Modules from group: Structure Energy Neutralizer (5 of 5)
-from eos.saveddata.module import State
+from eos.const import FittingModuleState
 from eos.modifiedAttributeDict import ModifiedAttributeDict
 
 type = "active", "projected"
@@ -11,7 +11,7 @@ type = "active", "projected"
 def handler(fit, src, context, **kwargs):
     amount = 0
     if "projected" in context:
-        if (hasattr(src, "state") and src.state >= State.ACTIVE) or hasattr(src, "amountActive"):
+        if (hasattr(src, "state") and src.state >= FittingModuleState.ACTIVE) or hasattr(src, "amountActive"):
             amount = src.getModifiedItemAttr("energyNeutralizerAmount")
 
             if 'effect' in kwargs:

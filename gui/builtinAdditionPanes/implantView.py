@@ -26,7 +26,7 @@ from gui.builtinViewColumns.state import State
 from gui.utils.staticHelpers import DragDropHelper
 from gui.contextMenu import ContextMenu
 import gui.globalEvents as GE
-from eos.saveddata.fit import ImplantLocation
+from eos.const import ImplantLocation
 from service.fit import Fit
 from service.market import Market
 import gui.fitCommands as cmd
@@ -204,7 +204,10 @@ class ImplantDisplay(d.Display):
 
     def removeImplant(self, implant):
         fitID = self.mainFrame.getActiveFit()
-        self.mainFrame.command.Submit(cmd.GuiRemoveImplantCommand(fitID, self.original.index(implant)))
+        sFit = Fit.getInstance()
+        fit = sFit.getFit(fitID)
+        if fit.implantLocation == ImplantLocation.FIT:
+            self.mainFrame.command.Submit(cmd.GuiRemoveImplantCommand(fitID, self.original.index(implant)))
 
     def click(self, event):
         event.Skip()

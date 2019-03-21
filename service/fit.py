@@ -30,8 +30,9 @@ from eos.saveddata.citadel import Citadel as es_Citadel
 from eos.saveddata.damagePattern import DamagePattern as es_DamagePattern
 from eos.saveddata.drone import Drone as es_Drone
 from eos.saveddata.fighter import Fighter as es_Fighter
-from eos.saveddata.fit import Fit as FitType, ImplantLocation
-from eos.saveddata.module import Module as es_Module, State
+from eos.const import ImplantLocation, FittingModuleState
+from eos.saveddata.fit import Fit as FitType
+from eos.saveddata.module import Module as es_Module
 from eos.saveddata.ship import Ship as es_Ship
 from service.character import Character
 from service.damagePattern import DamagePattern
@@ -145,6 +146,11 @@ class Fit(FitDeprecated):
     def countAllFits():
         pyfalog.debug("Getting count of all fits.")
         return eos.db.countAllFits()
+
+    @staticmethod
+    def countAllFitsGroupedByShip():
+        count = eos.db.countFitGroupedByShip()
+        return count
 
     @staticmethod
     def countFitsWithShip(stuff):
@@ -347,7 +353,7 @@ class Fit(FitDeprecated):
         elif isinstance(thing, es_Module):
             thing.state = es_Module.getProposedState(thing, click)
             if not thing.canHaveState(thing.state, fit):
-                thing.state = State.OFFLINE
+                thing.state = FittingModuleState.OFFLINE
         elif isinstance(thing, FitType):
             projectionInfo = thing.getProjectionInfo(fitID)
             if projectionInfo:
@@ -379,8 +385,8 @@ class Fit(FitDeprecated):
         if m.fits(fit):
             m.owner = fit
             fit.modules.toModule(position, m)
-            if m.isValidState(State.ACTIVE):
-                m.state = State.ACTIVE
+            if m.isValidState(FittingModuleState.ACTIVE):
+                m.state = FittingModuleState.ACTIVE
 
             # As some items may affect state-limiting attributes of the ship, calculate new attributes first
             self.recalc(fit)
@@ -534,13 +540,13 @@ class Fit(FitDeprecated):
             if mod != base:
                 # fix for #529, where a module may be in incorrect state after CCP changes mechanics of module
                 if not mod.canHaveState(mod.state) or not mod.isValidState(mod.state):
-                    mod.state = State.ONLINE
+                    mod.state = FittingModuleState.ONLINE
                     changed = True
 
         for mod in fit.projectedModules:
             # fix for #529, where a module may be in incorrect state after CCP changes mechanics of module
             if not mod.canHaveState(mod.state, fit) or not mod.isValidState(mod.state):
-                mod.state = State.OFFLINE
+                mod.state = FittingModuleState.OFFLINE
                 changed = True
 
         for drone in fit.projectedDrones:
@@ -549,9 +555,26 @@ class Fit(FitDeprecated):
                 changed = True
 
         return changed
-        # If any state was changed, recalculate attributes again
-        # if changed:
-        #     self.recalc(fit)
+
+    @classmethod
+    def fitObjectIter(cls, fit):
+        yield fit.ship
+
+        for mod in fit.modules:
+            if not mod.isEmpty:
+                yield mod
+
+        for container in (fit.drones, fit.fighters, fit.implants, fit.boosters, fit.cargo):
+            for obj in container:
+                yield obj
+
+    @classmethod
+    def fitItemIter(cls, fit):
+        for fitobj in cls.fitObjectIter(fit):
+            yield fitobj.item
+            charge = getattr(fitobj, 'charge', None)
+            if charge:
+                yield charge
 
     def refreshFit(self, fitID):
         pyfalog.debug("Refresh fit for fit ID: {0}", fitID)

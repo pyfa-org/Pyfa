@@ -14,7 +14,7 @@ pyfalog = Logger(__name__)
 
 class GuiModuleToCargoCommand(wx.Command):
     def __init__(self, fitID, moduleIdx, cargoIdx, copy=False):
-        wx.Command.__init__(self, True, "Module State Change")
+        wx.Command.__init__(self, True, "Module to Cargo")
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
         self.sFit = Fit.getInstance()
         self.fitID = fitID

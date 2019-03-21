@@ -17,33 +17,37 @@
 # along with pyfa.  If not, see <http://www.gnu.org/licenses/>.
 # =============================================================================
 
-import time
+
 from xml.dom import minidom
 
 from logbook import Logger
 
 from eos.saveddata.price import PriceStatus
 from service.network import Network
-from service.price import Price, VALIDITY
+from service.price import Price
 
 pyfalog = Logger(__name__)
 
 
-class EveMarketer(object):
+class EveMarketer:
 
     name = "evemarketer"
 
-    def __init__(self, types, system, priceMap):
-        data = {}
+    def __init__(self, priceMap, system, fetchTimeout):
+        # Try selected system first
+        self.fetchPrices(priceMap, max(2 * fetchTimeout / 3, 2), system)
+        # If price was not available - try globally
+        if priceMap:
+            self.fetchPrices(priceMap, max(fetchTimeout / 3, 2))
+
+    @staticmethod
+    def fetchPrices(priceMap, fetchTimeout, system=None):
+        params = {"typeid": {typeID for typeID in priceMap}}
+        if system is not None:
+            params["usesystem"] = system
         baseurl = "https://api.evemarketer.com/ec/marketstat"
-
-        data["usesystem"] = system  # Use Jita for market
-        data["typeid"] = set()
-        for typeID in types:  # Add all typeID arguments
-            data["typeid"].add(typeID)
-
         network = Network.getInstance()
-        data = network.request(baseurl, network.PRICES, params=data)
+        data = network.request(baseurl, network.PRICES, params=params, timeout=fetchTimeout)
         xml = minidom.parseString(data.text)
         types = xml.getElementsByTagName("marketstat").item(0).getElementsByTagName("type")
         # Cycle through all types we've got from request
@@ -56,15 +60,15 @@ class EveMarketer(object):
                 percprice = float(sell.getElementsByTagName("percentile").item(0).firstChild.data)
             except (TypeError, ValueError):
                 pyfalog.warning("Failed to get price for: {0}", type_)
-                percprice = 0
+                continue
 
-            # Fill price data
-            priceobj = priceMap[typeID]
-            priceobj.price = percprice
-            priceobj.time = time.time() + VALIDITY
-            priceobj.status = PriceStatus.success
+            # Price is 0 if evemarketer has info on this item, but it is not available
+            # for current scope limit. If we provided scope limit - make sure to skip
+            # such items to check globally, and do not skip if requested globally
+            if percprice == 0 and system is not None:
+                continue
 
-            # delete price from working dict
+            priceMap[typeID].update(PriceStatus.fetchSuccess, percprice)
             del priceMap[typeID]
 
 

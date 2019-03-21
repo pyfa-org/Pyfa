@@ -4,12 +4,12 @@ import config
 # noinspection PyPackageRequirements
 import wx
 import wx.lib.agw.hypertreelist
-from gui.builtinItemStatsViews.helpers import AutoListCtrl
 
 from gui.bitmap_loader import BitmapLoader
 from gui.utils.numberFormatter import formatAmount, roundDec
 from enum import IntEnum
 from gui.builtinItemStatsViews.attributeGrouping import *
+from service.const import GuiAttrGroup
 
 
 class AttributeView(IntEnum):
@@ -19,7 +19,8 @@ class AttributeView(IntEnum):
 
 class ItemParams(wx.Panel):
     def __init__(self, parent, stuff, item, context=None):
-        wx.Panel.__init__(self, parent)
+        # Had to manually set the size here, otherwise column widths couldn't be calculated correctly. See #1878
+        wx.Panel.__init__(self, parent, size=(1000, 1000))
         mainSizer = wx.BoxSizer(wx.VERTICAL)
 
         self.paramList = wx.lib.agw.hypertreelist.HyperTreeList(self, wx.ID_ANY, agwStyle=wx.TR_HIDE_ROOT | wx.TR_NO_LINES | wx.TR_FULL_ROW_HIGHLIGHT | wx.TR_HAS_BUTTONS)
@@ -28,7 +29,7 @@ class ItemParams(wx.Panel):
         mainSizer.Add(self.paramList, 1, wx.ALL | wx.EXPAND, 0)
         self.SetSizer(mainSizer)
 
-        self.toggleView = 1
+        self.toggleView = AttributeView.NORMAL
         self.stuff = stuff
         self.item = item
         self.attrInfo = {}
@@ -39,9 +40,6 @@ class ItemParams(wx.Panel):
         self.paramList.AddColumn("Current Value")
         if self.stuff is not None:
             self.paramList.AddColumn("Base Value")
-
-        self.paramList.SetMainColumn(0)  # the one with the tree in it...
-        self.paramList.SetColumnWidth(0, 300)
 
         self.m_staticline = wx.StaticLine(self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.LI_HORIZONTAL)
         mainSizer.Add(self.m_staticline, 0, wx.EXPAND)
@@ -61,6 +59,8 @@ class ItemParams(wx.Panel):
             self.refreshBtn.Bind(wx.EVT_BUTTON, self.RefreshValues)
 
         mainSizer.Add(bSizer, 0, wx.ALIGN_RIGHT)
+
+        self.imageList = wx.ImageList(16, 16)
 
         self.PopulateList()
 
@@ -164,10 +164,24 @@ class ItemParams(wx.Panel):
                         ]
                 )
 
+    def SetupImageList(self):
+        self.imageList.RemoveAll()
+
+        self.blank_icon = self.imageList.Add(BitmapLoader.getBitmap("transparent16x16", "gui"))
+        self.unknown_icon = self.imageList.Add(BitmapLoader.getBitmap("0", "icons"))
+
+        self.paramList.AssignImageList(self.imageList)
+
     def AddAttribute(self, parent, attr):
+        display = None
+
+        if isinstance(attr, tuple):
+            display = attr[1]
+            attr = attr[0]
+
         if attr in self.attrValues and attr not in self.processed_attribs:
 
-            data = self.GetData(attr)
+            data = self.GetData(attr, display)
             if data is None:
                 return
 
@@ -188,14 +202,14 @@ class ItemParams(wx.Panel):
 
     def PopulateList(self):
         # self.paramList.setResizeColumn(0)
-        self.imageList = wx.ImageList(16, 16)
+        self.SetupImageList()
 
         self.processed_attribs = set()
         root = self.paramList.AddRoot("The Root Item")
         misc_parent = root
 
         # We must first deet4ermine if it's categorey already has defined groupings set for it. Otherwise, we default to just using the fitting group
-        order = CategoryGroups.get(self.item.category.categoryName, [AttrGroup.FITTING])
+        order = CategoryGroups.get(self.item.category.categoryName, [GuiAttrGroup.FITTING, GuiAttrGroup.SHIP_GROUP])
         # start building out the tree
         for data in [AttrGroupDict[o] for o in order]:
             heading = data.get("label")
@@ -243,10 +257,14 @@ class ItemParams(wx.Panel):
 
             self.AddAttribute(root, name)
 
-        self.paramList.AssignImageList(self.imageList)
         self.Layout()
 
+        for i in range(self.paramList.GetMainWindow().GetColumnCount()):
+            self.paramList.SetColumnWidth(i, wx.LIST_AUTOSIZE)
+
     def GetData(self, attr):
+
+    def GetData(self, attr, displayOveride = None):
         info = self.attrInfo.get(attr)
         att = self.attrValues[attr]
 
@@ -264,8 +282,8 @@ class ItemParams(wx.Panel):
         if self.toggleView == AttributeView.NORMAL and ((attr not in GroupedAttributes and not value) or info is None or not info.published or attr in RequiredSkillAttrs):
             return None
 
-        if info and info.displayName and self.toggleView == 1:
-            attrName = info.displayName
+        if info and info.displayName and self.toggleView == AttributeView.NORMAL:
+            attrName = displayOveride or info.displayName
         else:
             attrName = attr
 
@@ -278,27 +296,27 @@ class ItemParams(wx.Panel):
                 icon = BitmapLoader.getBitmap(iconFile, "icons")
 
                 if icon is None:
-                    icon = BitmapLoader.getBitmap("transparent16x16", "gui")
-
-                attrIcon = self.imageList.Add(icon)
+                    attrIcon = self.blank_icon
+                else:
+                    attrIcon = self.imageList.Add(icon)
             else:
-                attrIcon = self.imageList.Add(BitmapLoader.getBitmap("0", "icons"))
+                attrIcon = self.unknown_icon
         else:
-            attrIcon = self.imageList.Add(BitmapLoader.getBitmap("0", "icons"))
+            attrIcon = self.unknown_icon
 
         # index = self.paramList.AppendItem(root, attrName)
         # idNameMap[idCount] = attrName
         # self.paramList.SetPyData(index, idCount)
         # idCount += 1
 
-        if self.toggleView != 1:
+        if self.toggleView == AttributeView.RAW:
             valueUnit = str(value)
         elif info and info.unit:
             valueUnit = self.FormatValue(*info.unit.PreformatValue(value))
         else:
             valueUnit = formatAmount(value, 3, 0, 0)
 
-        if self.toggleView != 1:
+        if self.toggleView == AttributeView.RAW:
             valueUnitDefault = str(valueDefault)
         elif info and info.unit:
             valueUnitDefault = self.FormatValue(*info.unit.PreformatValue(valueDefault))
@@ -346,6 +364,7 @@ if __name__ == "__main__":
             #item = eos.db.getItem(526)    # Stasis Webifier I
             item = eos.db.getItem(486)  # 200mm AutoCannon I
             #item = eos.db.getItem(200)  # Phased Plasma L
+
             super().__init__(None, title="Test Attribute Window | {} - {}".format(item.ID, item.name), size=(1000, 500))
 
             if 'wxMSW' in wx.PlatformInfo:
@@ -359,6 +378,7 @@ if __name__ == "__main__":
             main_sizer.Add(panel, 1, wx.EXPAND | wx.ALL, 2)
 
             self.SetSizer(main_sizer)
+            self.Layout()
 
     app = wx.App(redirect=False)   # Error messages go to popup window
     top = Frame()

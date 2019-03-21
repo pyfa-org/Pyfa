@@ -25,7 +25,7 @@ from gui.builtinMarketBrowser.events import ItemSelected, ITEM_SELECTED
 import gui.mainFrame
 import gui.display as d
 from gui.builtinViewColumns.state import State
-from eos.saveddata.module import Slot
+from eos.const import FittingSlot
 from gui.contextMenu import ContextMenu
 from gui.utils.staticHelpers import DragDropHelper
 from service.fit import Fit
@@ -93,9 +93,9 @@ class FighterView(wx.Panel):
         if fit:
             for x in self.labels:
                 if fit.isStructure:
-                    slot = getattr(Slot, "FS_{}".format(x.upper()))
+                    slot = getattr(FittingSlot, "FS_{}".format(x.upper()))
                 else:
-                    slot = getattr(Slot, "F_{}".format(x.upper()))
+                    slot = getattr(FittingSlot, "F_{}".format(x.upper()))
                 used = fit.getSlotsUsed(slot)
                 total = fit.getNumSlots(slot)
                 color = wx.Colour(204, 51, 51) if used > total else wx.SystemSettings.GetColour(
@@ -122,8 +122,8 @@ class FighterDisplay(d.Display):
                     # "Max Range",
                     # "Miscellanea",
                     "attr:maxVelocity",
-                    "Fighter Abilities"
-                    # "Price",
+                    "Fighter Abilities",
+                    "Price",
                     ]
 
     def __init__(self, parent):

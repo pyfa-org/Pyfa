@@ -8,7 +8,7 @@ from .calc.fitRemoveFighter import FitRemoveFighterCommand
 
 class GuiRemoveFighterCommand(wx.Command):
     def __init__(self, fitID, position):
-        wx.Command.__init__(self, True, "Module Remove")
+        wx.Command.__init__(self, True, "Fighter Remove")
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
         self.sFit = Fit.getInstance()
         self.fitID = fitID

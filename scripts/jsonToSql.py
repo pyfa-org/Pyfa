@@ -178,32 +178,17 @@ def main(db, json_path):
 
     def fillReplacements(tables):
 
-        def compareAttrs(attrs1, attrs2, attrHig):
-            """
-            Compares received attribute sets. Returns:
-            - 0 if sets are different
-            - 1 if sets are exactly the same
-            - 2 if first set is strictly better
-            - 3 if second set is strictly better
-            """
+        def compareAttrs(attrs1, attrs2):
+            # Consider items as different if they have no attrs
+            if len(attrs1) == 0 and len(attrs2) == 0:
+                return False
             if set(attrs1) != set(attrs2):
-                return 0
+                return False
             if all(attrs1[aid] == attrs2[aid] for aid in attrs1):
-                return 1
-            if all(
-                (attrs1[aid] >= attrs2[aid] and attrHig[aid]) or
-                (attrs1[aid] <= attrs2[aid] and not attrHig[aid])
-                for aid in attrs1
-            ):
-                return 2
-            if all(
-                (attrs2[aid] >= attrs1[aid] and attrHig[aid]) or
-                (attrs2[aid] <= attrs1[aid] and not attrHig[aid])
-                for aid in attrs1
-            ):
-                return 3
-            return 0
+                return True
+            return False
 
+        print('finding replacements')
         skillReqAttribs = {
             182: 277,
             183: 278,
@@ -213,10 +198,17 @@ def main(db, json_path):
             1290: 1288}
         skillReqAttribsFlat = set(skillReqAttribs.keys()).union(skillReqAttribs.values())
         # Get data on type groups
+        # Format: {type ID: group ID}
         typesGroups = {}
         for row in tables['evetypes']:
             typesGroups[row['typeID']] = row['groupID']
+        # Get data on item effects
+        # Format: {type ID: set(effect, IDs)}
+        typesEffects = {}
+        for row in tables['dgmtypeeffects']:
+            typesEffects.setdefault(row['typeID'], set()).add(row['effectID'])
         # Get data on type attributes
+        # Format: {type ID: {attribute ID: attribute value}}
         typesNormalAttribs = {}
         typesSkillAttribs = {}
         for row in tables['dgmtypeattribs']:
@@ -226,15 +218,23 @@ def main(db, json_path):
                 typeSkillAttribs[row['attributeID']] = row['value']
             # Ignore these attributes for comparison purposes
             elif attributeID in (
+                # We do not need mass as it affects final ship stats only when carried by ship itself
+                # (and we're not going to replace ships), but it's wildly inconsistent for other items,
+                # which otherwise would be the same
+                4,  # mass
+                124,  # mainColor
+                162,  # radius
                 422,  # techLevel
                 633,  # metaLevel
-                1692  # metaGroupID
+                1692,  # metaGroupID
+                1768  # typeColorScheme
             ):
                 continue
             else:
                 typeNormalAttribs = typesNormalAttribs.setdefault(row['typeID'], {})
                 typeNormalAttribs[row['attributeID']] = row['value']
         # Get data on skill requirements
+        # Format: {type ID: {skill type ID: skill level}}
         typesSkillReqs = {}
         for typeID, typeAttribs in typesSkillAttribs.items():
             typeSkillAttribs = typesSkillAttribs.get(typeID, {})
@@ -248,46 +248,54 @@ def main(db, json_path):
                 except (KeyError, ValueError):
                     continue
                 typeSkillReqs[skillType] = skillLevel
-        # Get data on attribute highIsGood flag
-        attrHig = {}
-        for row in tables['dgmattribs']:
-            attrHig[row['attributeID']] = bool(row['highIsGood'])
+        # Format: {group ID: category ID}
+        groupCategories = {}
+        for row in tables['evegroups']:
+            groupCategories[row['groupID']] = row['categoryID']
         # As EVE affects various types mostly depending on their group or skill requirements,
         # we're going to group various types up this way
+        # Format: {(group ID, frozenset(skillreq, type, IDs), frozenset(type, effect, IDs): [type ID, {attribute ID: attribute value}]}
         groupedData = {}
         for row in tables['evetypes']:
             typeID = row['typeID']
+            # Ignore items outside of categories we need
+            if groupCategories[typesGroups[typeID]] not in (
+                6,  # Ship
+                7,  # Module
+                8,  # Charge
+                18,  # Drone
+                20,  # Implant
+                22,  # Deployable
+                23,  # Starbase
+                32,  # Subsystem
+                35,  # Decryptors
+                65,  # Structure
+                66,  # Structure Module
+                87,  # Fighter
+            ):
+                continue
             typeAttribs = typesNormalAttribs.get(typeID, {})
-            # Ignore stuff w/o attributes
+            # Ignore items w/o attributes
             if not typeAttribs:
                 continue
             # We need only skill types, not levels for keys
             typeSkillreqs = frozenset(typesSkillReqs.get(typeID, {}))
             typeGroup = typesGroups[typeID]
-            groupData = groupedData.setdefault((typeGroup, typeSkillreqs), [])
+            typeEffects = frozenset(typesEffects.get(typeID, ()))
+            groupData = groupedData.setdefault((typeGroup, typeSkillreqs, typeEffects), [])
             groupData.append((typeID, typeAttribs))
-        same = {}
-        better = {}
-        # Now, go through composed groups and for every item within it find items which are
-        # the same and which are better
+        # Format: {type ID: set(type IDs)}
+        replacements = {}
+        # Now, go through composed groups and for every item within it
+        # find items which are the same
         for groupData in groupedData.values():
             for type1, type2 in itertools.combinations(groupData, 2):
-                comparisonResult = compareAttrs(type1[1], type2[1], attrHig)
-                # Equal
-                if comparisonResult == 1:
-                    same.setdefault(type1[0], set()).add(type2[0])
-                    same.setdefault(type2[0], set()).add(type1[0])
-                # First is better
-                elif comparisonResult == 2:
-                    better.setdefault(type2[0], set()).add(type1[0])
-                # Second is better
-                elif comparisonResult == 3:
-                    better.setdefault(type1[0], set()).add(type2[0])
+                if compareAttrs(type1[1], type2[1]):
+                    replacements.setdefault(type1[0], set()).add(type2[0])
+                    replacements.setdefault(type2[0], set()).add(type1[0])
         # Put this data into types table so that normal process hooks it up
         for row in tables['evetypes']:
-            typeID = row['typeID']
-            row['replaceSame'] = ','.join('{}'.format(tid) for tid in sorted(same.get(typeID, ())))
-            row['replaceBetter'] = ','.join('{}'.format(tid) for tid in sorted(better.get(typeID, ())))
+            row['replacements'] = ','.join('{}'.format(tid) for tid in sorted(replacements.get(row['typeID'], ())))
 
     data = {}
 

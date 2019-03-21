@@ -2,7 +2,8 @@ import wx
 from logbook import Logger
 
 import eos.db
-from eos.saveddata.module import Module, State
+from eos.saveddata.module import Module
+from eos.const import FittingModuleState
 from gui.fitCommands.helpers import ModuleInfoCache
 
 pyfalog = Logger(__name__)
@@ -72,19 +73,21 @@ class FitReplaceModuleCommand(wx.Command):
         # Dummy it out in case the next bit fails
         fit.modules.toDummy(self.position)
 
-        if self.module.fits(fit):
-            self.module.owner = fit
-            fit.modules.toModule(self.position, self.module)
-            if self.module.isValidState(State.ACTIVE):
-                self.module.state = State.ACTIVE
+        if not self.module.fits(fit):
+            self.Undo()
+            return False
 
-            if self.old_module and self.old_module.charge and self.module.isValidCharge(self.old_module.charge):
-                self.module.charge = self.old_module.charge
+        self.module.owner = fit
+        fit.modules.toModule(self.position, self.module)
+        if self.module.isValidState(FittingModuleState.ACTIVE):
+            self.module.state = FittingModuleState.ACTIVE
 
-            # Then, check states of all modules and change where needed. This will recalc if needed
-            # self.checkStates(fit, m)
+        if self.old_module and self.old_module.charge and self.module.isValidCharge(self.old_module.charge):
+            self.module.charge = self.old_module.charge
 
-            # fit.fill()
-            eos.db.commit()
-            return True
-        return False
+        # Then, check states of all modules and change where needed. This will recalc if needed
+        # self.checkStates(fit, m)
+
+        # fit.fill()
+        eos.db.commit()
+        return True

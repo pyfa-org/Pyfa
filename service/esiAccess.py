@@ -17,7 +17,7 @@ import config
 import base64
 
 import datetime
-from eos.enum import Enum
+from service.const import EsiSsoMode, EsiEndpoints
 from service.settings import EsiSettings, NetworkSettings
 
 from requests import Session
@@ -42,11 +42,6 @@ scopes = [
 ]
 
 
-class SsoMode(Enum):
-    AUTO = 0
-    CUSTOM = 1
-
-
 class APIException(Exception):
     """ Exception for SSO related errors """
 
@@ -66,13 +61,6 @@ class APIException(Exception):
         return 'HTTP Error %s' % self.status_code
 
 
-class ESIEndpoints(Enum):
-    CHAR = "/v4/characters/{character_id}/"
-    CHAR_SKILLS = "/v4/characters/{character_id}/skills/"
-    CHAR_FITTINGS = "/v1/characters/{character_id}/fittings/"
-    CHAR_DEL_FIT = "/v1/characters/{character_id}/fittings/{fitting_id}/"
-
-
 class EsiAccess(object):
     def __init__(self):
         self.settings = EsiSettings.getInstance()
@@ -89,7 +77,7 @@ class EsiAccess(object):
 
     @property
     def sso_url(self):
-        if self.settings.get("ssoMode") == SsoMode.CUSTOM:
+        if self.settings.get("ssoMode") == EsiSsoMode.CUSTOM:
             return "https://login.eveonline.com"
         return "https://www.pyfa.io"
 
@@ -110,20 +98,20 @@ class EsiAccess(object):
         return '%s/oauth/token' % self.sso_url
 
     def getSkills(self, char):
-        return self.get(char, ESIEndpoints.CHAR_SKILLS, character_id=char.characterID)
+        return self.get(char, EsiEndpoints.CHAR_SKILLS.value, character_id=char.characterID)
 
     def getSecStatus(self, char):
-        return self.get(char, ESIEndpoints.CHAR, character_id=char.characterID)
+        return self.get(char, EsiEndpoints.CHAR.value, character_id=char.characterID)
 
     def getFittings(self, char):
-        return self.get(char, ESIEndpoints.CHAR_FITTINGS, character_id=char.characterID)
+        return self.get(char, EsiEndpoints.CHAR_FITTINGS.value, character_id=char.characterID)
 
     def postFitting(self, char, json_str):
         # @todo: new fitting ID can be recovered from resp.data,
-        return self.post(char, ESIEndpoints.CHAR_FITTINGS, json_str, character_id=char.characterID)
+        return self.post(char, EsiEndpoints.CHAR_FITTINGS.value, json_str, character_id=char.characterID)
 
     def delFitting(self, char, fittingID):
-        return self.delete(char, ESIEndpoints.CHAR_DEL_FIT, character_id=char.characterID, fitting_id=fittingID)
+        return self.delete(char, EsiEndpoints.CHAR_DEL_FIT.value, character_id=char.characterID, fitting_id=fittingID)
 
     @staticmethod
     def update_token(char, tokenResponse):
@@ -136,7 +124,7 @@ class EsiAccess(object):
     def getLoginURI(self, redirect=None):
         self.state = str(uuid.uuid4())
 
-        if self.settings.get("ssoMode") == SsoMode.AUTO:
+        if self.settings.get("ssoMode") == EsiSsoMode.AUTO:
             args = {
                 'state': self.state,
                 'pyfa_version': config.version,
@@ -183,7 +171,7 @@ class EsiAccess(object):
             'refresh_token': refreshToken,
         }
 
-        if self.settings.get('ssoMode') == SsoMode.AUTO:
+        if self.settings.get('ssoMode') == EsiSsoMode.AUTO:
             # data is all we really need, the rest is handled automatically by pyfa.io
             return {
                 'data': data,

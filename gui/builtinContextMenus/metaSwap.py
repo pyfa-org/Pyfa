@@ -8,6 +8,7 @@ import gui.mainFrame
 from gui.contextMenu import ContextMenu
 from service.market import Market
 from service.settings import ContextMenuSettings
+from service.fit import Fit
 
 
 class MetaSwap(ContextMenu):
@@ -53,6 +54,8 @@ class MetaSwap(ContextMenu):
 
     def getSubMenu(self, context, selection, rootMenu, i, pitem):
         self.moduleLookup = {}
+        sFit = Fit.getInstance()
+        fit = sFit.getFit(self.mainFrame.getActiveFit())
 
         def get_metalevel(x):
             if "metaLevel" not in x.attributes:
@@ -114,6 +117,7 @@ class MetaSwap(ContextMenu):
 
             id = ContextMenu.nextID()
             mitem = wx.MenuItem(rootMenu, id, item.name)
+            mitem.Enable(fit.canFit(item))
             bindmenu.Bind(wx.EVT_MENU, self.handleModule, mitem)
 
             self.moduleLookup[id] = item, context

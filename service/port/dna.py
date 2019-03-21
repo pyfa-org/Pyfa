@@ -28,8 +28,9 @@ from eos.saveddata.citadel import Citadel
 from eos.saveddata.drone import Drone
 from eos.saveddata.fighter import Fighter
 from eos.saveddata.fit import Fit
-from eos.saveddata.module import Module, State, Slot
+from eos.saveddata.module import Module
 from eos.saveddata.ship import Ship
+from eos.const import FittingSlot, FittingModuleState
 from service.fit import Fit as svcFit
 from service.market import Market
 
@@ -106,8 +107,8 @@ def importDna(string):
                             f.modules.append(m)
                     else:
                         m.owner = f
-                        if m.isValidState(State.ACTIVE):
-                            m.state = State.ACTIVE
+                        if m.isValidState(FittingModuleState.ACTIVE):
+                            m.state = FittingModuleState.ACTIVE
                         moduleList.append(m)
 
     # Recalc to get slot numbers correct for T3 cruisers
@@ -116,14 +117,14 @@ def importDna(string):
     for module in moduleList:
         if module.fits(f):
             module.owner = f
-            if module.isValidState(State.ACTIVE):
-                module.state = State.ACTIVE
+            if module.isValidState(FittingModuleState.ACTIVE):
+                module.state = FittingModuleState.ACTIVE
             f.modules.append(module)
 
     return f
 
 
-def exportDna(fit):
+def exportDna(fit, callback):
     dna = str(fit.shipID)
     subsystems = []  # EVE cares which order you put these in
     mods = OrderedDict()
@@ -131,7 +132,7 @@ def exportDna(fit):
     sFit = svcFit.getInstance()
     for mod in fit.modules:
         if not mod.isEmpty:
-            if mod.slot == Slot.SUBSYSTEM:
+            if mod.slot == FittingSlot.SUBSYSTEM:
                 subsystems.append(mod)
                 continue
             if mod.itemID not in mods:
@@ -173,4 +174,9 @@ def exportDna(fit):
     for charge in charges:
         dna += ":{0};{1}".format(charge, charges[charge])
 
-    return dna + "::"
+    text = dna + "::"
+
+    if callback:
+        callback(text)
+    else:
+        return text

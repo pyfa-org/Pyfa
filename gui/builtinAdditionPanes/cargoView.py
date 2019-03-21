@@ -81,7 +81,9 @@ class CargoView(d.Display):
         if data[0] == "fitting":
             self.swapModule(x, y, int(data[1]))
         elif data[0] == "market":
-            self.mainFrame.command.Submit(cmd.GuiAddCargoCommand(self.mainFrame.getActiveFit(), int(data[1])))
+            fit = self.mainFrame.getActiveFit()
+            if fit:
+                self.mainFrame.command.Submit(cmd.GuiAddCargoCommand(fit, int(data[1])))
 
     def startDrag(self, event):
         row = event.GetIndex()

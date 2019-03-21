@@ -18,28 +18,26 @@
 # =============================================================================
 
 
+import math
 import queue
 import threading
-import time
+from itertools import chain
 
 import wx
 from logbook import Logger
 
 from eos import db
 from eos.saveddata.price import PriceStatus
+from gui.fitCommands.guiRebaseItems import GuiRebaseItemsCommand
 from service.fit import Fit
 from service.market import Market
 from service.network import TimeoutError
 
+
 pyfalog = Logger(__name__)
 
 
-VALIDITY = 24 * 60 * 60  # Price validity period, 24 hours
-REREQUEST = 4 * 60 * 60  # Re-request delay for failed fetches, 4 hours
-TIMEOUT = 15 * 60  # Network timeout delay for connection issues, 15 minutes
-
-
-class Price(object):
+class Price:
     instance = None
 
     systemsList = {
@@ -69,38 +67,34 @@ class Price(object):
         return cls.instance
 
     @classmethod
-    def fetchPrices(cls, prices):
+    def fetchPrices(cls, prices, fetchTimeout, validityOverride):
         """Fetch all prices passed to this method"""
 
         # Dictionary for our price objects
         priceMap = {}
-        # Check all provided price objects, and add invalid ones to dictionary
+        # Check all provided price objects, and add those we want to update to
+        # dictionary
         for price in prices:
-            if not price.isValid:
+            if not price.isValid(validityOverride):
                 priceMap[price.typeID] = price
 
-        if len(priceMap) == 0:
+        if not priceMap:
             return
-
-        # Set of items which are still to be requested from this service
-        toRequest = set()
 
         # Compose list of items we're going to request
         for typeID in tuple(priceMap):
             # Get item object
             item = db.getItem(typeID)
-            # We're not going to request items only with market group, as eve-central
-            # doesn't provide any data for items not on the market
+            # We're not going to request items only with market group, as our current market
+            # sources do not provide any data for items not on the market
             if item is None:
                 continue
             if not item.marketGroupID:
-                priceMap[typeID].status = PriceStatus.notSupported
+                priceMap[typeID].update(PriceStatus.notSupported)
                 del priceMap[typeID]
                 continue
-            toRequest.add(typeID)
 
-        # Do not waste our time if all items are not on the market
-        if len(toRequest) == 0:
+        if not priceMap:
             return
 
         sFit = Fit.getInstance()
@@ -110,62 +104,46 @@ class Price(object):
             return
 
         # attempt to find user's selected price source, otherwise get first one
-        sourcesToTry = list(cls.sources.keys())
-        curr = sFit.serviceFittingOptions["priceSource"] if sFit.serviceFittingOptions["priceSource"] in sourcesToTry else sourcesToTry[0]
+        sourceAll = list(cls.sources.keys())
+        sourcePrimary = sFit.serviceFittingOptions["priceSource"] if sFit.serviceFittingOptions["priceSource"] in sourceAll else sourceAll[0]
 
-        while len(sourcesToTry) > 0:
-            sourcesToTry.remove(curr)
+        # Format: {source name: timeout weight}
+        sources = {sourcePrimary: len(sourceAll)}
+        for source in sourceAll:
+            if source == sourcePrimary:
+                continue
+            sources[source] = min(sources.values()) - 1
+        timeoutWeightMult = fetchTimeout / sum(sources.values())
+
+        # Record timeouts as it will affect our final decision
+        timedOutSources = {}
+
+        for source, timeoutWeight in sources.items():
+            pyfalog.info('Trying {}'.format(source))
+            timedOutSources[source] = False
+            sourceFetchTimeout = timeoutWeight * timeoutWeightMult
             try:
-                sourceCls = cls.sources.get(curr)
-                sourceCls(toRequest, cls.systemsList[sFit.serviceFittingOptions["priceSystem"]], priceMap)
-                break
-                # If getting or processing data returned any errors
+                sourceCls = cls.sources.get(source)
+                sourceCls(priceMap, cls.systemsList[sFit.serviceFittingOptions["priceSystem"]], sourceFetchTimeout)
             except TimeoutError:
-                # Timeout error deserves special treatment
-                pyfalog.warning("Price fetch timout")
-                for typeID in tuple(priceMap):
-                    priceobj = priceMap[typeID]
-                    priceobj.time = time.time() + TIMEOUT
-                    priceobj.status = PriceStatus.fail
-                    del priceMap[typeID]
-            except Exception as ex:
-                # something happened, try another source
-                pyfalog.warn('Failed to fetch prices from price source {}: {}'.format(curr, ex, sourcesToTry[0]))
-                if len(sourcesToTry) > 0:
-                    pyfalog.warn('Trying {}'.format(sourcesToTry[0]))
-                    curr = sourcesToTry[0]
+                pyfalog.warning("Price fetch timeout for source {}".format(source))
+                timedOutSources[source] = True
+            except Exception as e:
+                pyfalog.warn('Failed to fetch prices from price source {}: {}'.format(source, e))
+            # Sources remove price map items as they fetch info, if none remain then we're done
+            if not priceMap:
+                break
 
-        # if we get to this point, then we've got an error in all of our sources. Set to REREQUEST delay
-        for typeID in priceMap.keys():
-            priceobj = priceMap[typeID]
-            priceobj.time = time.time() + REREQUEST
-            priceobj.status = PriceStatus.fail
-
-    @classmethod
-    def fitItemsList(cls, fit):
-        # Compose a list of all the data we need & request it
-        fit_items = [fit.ship.item]
-
-        for mod in fit.modules:
-            if not mod.isEmpty:
-                fit_items.append(mod.item)
-
-        for drone in fit.drones:
-            fit_items.append(drone.item)
-
-        for fighter in fit.fighters:
-            fit_items.append(fighter.item)
-
-        for cargo in fit.cargo:
-            fit_items.append(cargo.item)
-
-        for boosters in fit.boosters:
-            fit_items.append(boosters.item)
-
-        for implants in fit.implants:
-            fit_items.append(implants.item)
-
-        return list(set(fit_items))
+        # If we get to this point, then we've failed to get price with all our sources
+        # If all sources failed due to timeouts, set one status
+        if all(to is True for to in timedOutSources.values()):
+            for typeID in priceMap.keys():
+                priceMap[typeID].update(PriceStatus.fetchTimeout)
+        # If some sources failed due to any other reason, then it's definitely not network
+        # timeout and we just set another status
+        else:
+            for typeID in priceMap.keys():
+                priceMap[typeID].update(PriceStatus.fetchFail)
 
     def getPriceNow(self, objitem):
         """Get price for provided typeID"""
@@ -174,7 +152,7 @@ class Price(object):
 
         return item.price.price
 
-    def getPrices(self, objitems, callback, waitforthread=False):
+    def getPrices(self, objitems, callback, fetchTimeout=30, waitforthread=False, validityOverride=None):
         """Get prices for multiple typeIDs"""
         requests = []
         sMkt = Market.getInstance()
@@ -186,7 +164,7 @@ class Price(object):
             try:
                 callback(requests)
             except Exception as e:
-                pyfalog.critical("Callback failed.")
+                pyfalog.critical("Execution of callback from getPrices failed.")
                 pyfalog.critical(e)
 
             db.commit()
@@ -194,11 +172,42 @@ class Price(object):
         if waitforthread:
             self.priceWorkerThread.setToWait(requests, cb)
         else:
-            self.priceWorkerThread.trigger(requests, cb)
+            self.priceWorkerThread.trigger(requests, cb, fetchTimeout, validityOverride)
 
     def clearPriceCache(self):
         pyfalog.debug("Clearing Prices")
         db.clearPrices()
+
+    def findCheaperReplacements(self, items, callback, fetchTimeout=10):
+        sMkt = Market.getInstance()
+
+        replacementsAll = {}  # All possible item replacements
+        for item in items:
+            if item in replacementsAll:
+                continue
+            itemRepls = sMkt.getReplacements(item)
+            if itemRepls:
+                replacementsAll[item] = itemRepls
+        itemsToFetch = {i for i in chain(replacementsAll.keys(), *replacementsAll.values())}
+
+        def makeCheapMapCb(requests):
+            # Decide what we are going to replace
+            replacementsCheaper = {}  # Items which should be replaced
+            for replacee, replacers in replacementsAll.items():
+                replacer = min(replacers, key=lambda i: i.price.price or math.inf)
+                if (replacer.price.price or math.inf) < (replacee.price.price or math.inf):
+                    replacementsCheaper[replacee] = replacer
+            try:
+                callback(replacementsCheaper)
+            except Exception as e:
+                pyfalog.critical("Execution of callback from findCheaperReplacements failed.")
+                pyfalog.critical(e)
+
+        # Prices older than 2 hours have to be refetched
+        validityOverride = 2 * 60 * 60
+        self.getPrices(itemsToFetch, makeCheapMapCb, fetchTimeout=fetchTimeout, validityOverride=validityOverride)
+
+
 
 
 class PriceWorkerThread(threading.Thread):
@@ -214,11 +223,11 @@ class PriceWorkerThread(threading.Thread):
         queue = self.queue
         while True:
             # Grab our data
-            callback, requests = queue.get()
+            callback, requests, fetchTimeout, validityOverride = queue.get()
 
             # Grab prices, this is the time-consuming part
             if len(requests) > 0:
-                Price.fetchPrices(requests)
+                Price.fetchPrices(requests, fetchTimeout, validityOverride)
 
             wx.CallAfter(callback)
             queue.task_done()
@@ -230,14 +239,13 @@ class PriceWorkerThread(threading.Thread):
                     for callback in callbacks:
                         wx.CallAfter(callback)
 
-    def trigger(self, prices, callbacks):
-        self.queue.put((callbacks, prices))
+    def trigger(self, prices, callbacks, fetchTimeout, validityOverride):
+        self.queue.put((callbacks, prices, fetchTimeout, validityOverride))
 
     def setToWait(self, prices, callback):
-        for x in prices:
-            if x.typeID not in self.wait:
-                self.wait[x.typeID] = []
-            self.wait[x.typeID].append(callback)
+        for price in prices:
+            callbacks = self.wait.setdefault(price.typeID, [])
+            callbacks.append(callback)
 
 
 # Import market sources only to initialize price source modules, they register on their own
