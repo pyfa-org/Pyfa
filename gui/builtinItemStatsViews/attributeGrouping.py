@@ -207,7 +207,14 @@ AttrGroupDict = {
             "fighterSquadronOrbitRange",
         ]
     },
+    GuiAttrGroup.SHIP_GROUP           : {
+        "label" : "Can Fit To",
+        "attributes": []
+    },
 }
+
+AttrGroupDict[GuiAttrGroup.SHIP_GROUP]["attributes"].extend([("canFitShipGroup{:02d}".format(i+1), "Group") for i in range(20)])
+AttrGroupDict[GuiAttrGroup.SHIP_GROUP]["attributes"].extend([("canFitShipType{:01d}".format(i+1), "Ship") for i in range(20)])
 
 Group1 = [
     GuiAttrGroup.FITTING,
@@ -222,6 +229,7 @@ Group1 = [
     GuiAttrGroup.ON_DEATH,
     GuiAttrGroup.JUMP_SYSTEMS,
     GuiAttrGroup.PROPULSIONS,
+    GuiAttrGroup.SHIP_GROUP
 ]
 
 CategoryGroups = {

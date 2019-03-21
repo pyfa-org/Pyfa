@@ -173,9 +173,15 @@ class ItemParams(wx.Panel):
         self.paramList.AssignImageList(self.imageList)
 
     def AddAttribute(self, parent, attr):
+        display = None
+
+        if isinstance(attr, tuple):
+            display = attr[1]
+            attr = attr[0]
+
         if attr in self.attrValues and attr not in self.processed_attribs:
 
-            data = self.GetData(attr)
+            data = self.GetData(attr, display)
             if data is None:
                 return
 
@@ -203,7 +209,7 @@ class ItemParams(wx.Panel):
         misc_parent = root
 
         # We must first deet4ermine if it's categorey already has defined groupings set for it. Otherwise, we default to just using the fitting group
-        order = CategoryGroups.get(self.item.category.categoryName, [GuiAttrGroup.FITTING])
+        order = CategoryGroups.get(self.item.category.categoryName, [GuiAttrGroup.FITTING, GuiAttrGroup.SHIP_GROUP])
         # start building out the tree
         for data in [AttrGroupDict[o] for o in order]:
             heading = data.get("label")
@@ -257,6 +263,8 @@ class ItemParams(wx.Panel):
             self.paramList.SetColumnWidth(i, wx.LIST_AUTOSIZE)
 
     def GetData(self, attr):
+
+    def GetData(self, attr, displayOveride = None):
         info = self.attrInfo.get(attr)
         att = self.attrValues[attr]
 
@@ -275,7 +283,7 @@ class ItemParams(wx.Panel):
             return None
 
         if info and info.displayName and self.toggleView == AttributeView.NORMAL:
-            attrName = info.displayName
+            attrName = displayOveride or info.displayName
         else:
             attrName = attr
 
