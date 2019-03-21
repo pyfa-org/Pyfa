@@ -119,12 +119,12 @@ def exportEft(fit, options, callback):
     if options[PortEftOptions.IMPLANTS]:
         charSection = []
         implantLines = []
-        for implant in fit.implants:
+        for implant in sorted(fit.implants, key=lambda i: i.slot or 0):
             implantLines.append(implant.item.name)
         if implantLines:
             charSection.append('\n'.join(implantLines))
         boosterLines = []
-        for booster in fit.boosters:
+        for booster in sorted(fit.boosters, key=lambda b: b.slot):
             boosterLines.append(booster.item.name)
         if boosterLines:
             charSection.append('\n'.join(boosterLines))
