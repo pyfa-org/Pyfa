@@ -17,17 +17,17 @@
 # along with eos.  If not, see <http://www.gnu.org/licenses/>.
 # ===============================================================================
 
-import re
 
-from sqlalchemy.orm import reconstructor
-
-import eos.db
-from .eqBase import EqBase
-from eos.saveddata.price import Price as types_Price
 from collections import OrderedDict
 
-
 from logbook import Logger
+from sqlalchemy.orm import reconstructor
+
+import eos.effects
+import eos.db
+from eos.saveddata.price import Price as types_Price
+from .eqBase import EqBase
+
 
 pyfalog = Logger(__name__)
 
@@ -43,8 +43,6 @@ class Effect(EqBase):
     @ivar description: The description of this effect, this is usualy pretty useless
     @ivar published: Wether this effect is published or not, unpublished effects are typicaly unused.
     """
-    # Filter to change names of effects to valid python method names
-    nameFilter = re.compile("[^A-Za-z0-9]")
 
     @reconstructor
     def init(self):
@@ -52,8 +50,7 @@ class Effect(EqBase):
         Reconstructor, composes the object as we grab it from the database
         """
         self.__generated = False
-        self.__effectModule = None
-        self.handlerName = re.sub(self.nameFilter, "", self.name).lower()
+        self.__effectDef = None
 
     @property
     def handler(self):
@@ -143,7 +140,7 @@ class Effect(EqBase):
         Whether this effect is implemented in code or not,
         unimplemented effects simply do nothing at all when run
         """
-        return self.handler != effectDummy
+        return self.handler is not eos.effects.EffectDef.handler
 
     def isType(self, type):
         """
@@ -156,32 +153,32 @@ class Effect(EqBase):
         Grab the handler, type and runTime from the effect code if it exists,
         if it doesn't, set dummy values and add a dummy handler
         """
-
         try:
-            self.__effectModule = effectModule = __import__('eos.effects.' + self.handlerName, fromlist=True)
-            self.__handler = getattr(effectModule, "handler", effectDummy)
-            self.__runTime = getattr(effectModule, "runTime", "normal")
-            self.__activeByDefault = getattr(effectModule, "activeByDefault", True)
-            t = getattr(effectModule, "type", None)
-
-            t = t if isinstance(t, tuple) or t is None else (t,)
-            self.__type = t
+            effectDefName = "Effect{}".format(self.ID)
+            pyfalog.debug("Loading {0} ({1})".format(self.name, effectDefName))
+            self.__effectDef = effectDef = getattr(eos.effects, effectDefName)
+            self.__handler = getattr(effectDef, "handler", eos.effects.EffectDef.handler)
+            self.__runTime = getattr(effectDef, "runTime", "normal")
+            self.__activeByDefault = getattr(effectDef, "activeByDefault", True)
+            effectType = getattr(effectDef, "type", None)
+            effectType = effectType if isinstance(effectType, tuple) or effectType is None else (effectType,)
+            self.__type = effectType
         except ImportError as e:
             # Effect probably doesn't exist, so create a dummy effect and flag it with a warning.
-            self.__handler = effectDummy
+            self.__handler = eos.effects.EffectDef.handler
             self.__runTime = "normal"
             self.__activeByDefault = True
             self.__type = None
             pyfalog.debug("ImportError generating handler: {0}", e)
         except AttributeError as e:
             # Effect probably exists but there is an issue with it.  Turn it into a dummy effect so we can continue, but flag it with an error.
-            self.__handler = effectDummy
+            self.__handler = eos.effects.EffectDef.handler
             self.__runTime = "normal"
             self.__activeByDefault = True
             self.__type = None
             pyfalog.error("AttributeError generating handler: {0}", e)
         except Exception as e:
-            self.__handler = effectDummy
+            self.__handler = eos.effects.EffectDef.handler
             self.__runTime = "normal"
             self.__activeByDefault = True
             self.__type = None
@@ -194,11 +191,10 @@ class Effect(EqBase):
         if not self.__generated:
             self.__generateHandler()
 
-        return getattr(self.__effectModule, key, None)
-
-
-def effectDummy(*args, **kwargs):
-    pass
+        try:
+            return self.__effectDef.get(key, None)
+        except:
+            return getattr(self.__effectDef, key, None)
 
 
 class Item(EqBase):
