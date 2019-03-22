@@ -31,6 +31,12 @@ class EffectDef:
 
 
 class Effect4(EffectDef):
+    """
+    shieldBoosting
+
+    Used by:
+    Modules from group: Shield Booster (97 of 97)
+    """
 
     runTime = 'late'
     type = 'active'
@@ -43,6 +49,13 @@ class Effect4(EffectDef):
 
 
 class Effect10(EffectDef):
+    """
+    targetAttack
+
+    Used by:
+    Drones from group: Combat Drone (75 of 75)
+    Modules from group: Energy Weapon (212 of 214)
+    """
 
     type = 'active'
 
@@ -53,6 +66,12 @@ class Effect10(EffectDef):
 
 
 class Effect17(EffectDef):
+    """
+    mining
+
+    Used by:
+    Drones from group: Mining Drone (10 of 10)
+    """
 
     grouped = True
     type = 'passive'
@@ -67,6 +86,13 @@ class Effect17(EffectDef):
 
 
 class Effect21(EffectDef):
+    """
+    shieldCapacityBonusOnline
+
+    Used by:
+    Modules from group: Shield Extender (36 of 36)
+    Modules from group: Shield Resistance Amplifier (88 of 88)
+    """
 
     type = 'passive'
 
@@ -76,6 +102,12 @@ class Effect21(EffectDef):
 
 
 class Effect25(EffectDef):
+    """
+    capacitorCapacityBonus
+
+    Used by:
+    Modules from group: Capacitor Battery (30 of 30)
+    """
 
     type = 'passive'
 
@@ -85,6 +117,12 @@ class Effect25(EffectDef):
 
 
 class Effect26(EffectDef):
+    """
+    structureRepair
+
+    Used by:
+    Modules from group: Hull Repair Unit (25 of 25)
+    """
 
     runTime = 'late'
     type = 'active'
@@ -97,6 +135,12 @@ class Effect26(EffectDef):
 
 
 class Effect27(EffectDef):
+    """
+    armorRepair
+
+    Used by:
+    Modules from group: Armor Repair Unit (108 of 108)
+    """
 
     runTime = 'late'
     type = 'active'
@@ -112,6 +156,13 @@ class Effect27(EffectDef):
 
 
 class Effect34(EffectDef):
+    """
+    projectileFired
+
+    Used by:
+    Modules from group: Hybrid Weapon (221 of 221)
+    Modules from group: Projectile Weapon (165 of 165)
+    """
 
     type = 'active'
 
@@ -126,11 +177,23 @@ class Effect34(EffectDef):
 
 
 class Effect38(EffectDef):
+    """
+    empWave
+
+    Used by:
+    Modules from group: Smart Bomb (118 of 118)
+    """
 
     type = 'active'
 
 
 class Effect39(EffectDef):
+    """
+    warpDisrupt
+
+    Used by:
+    Modules named like: Warp Disruptor (28 of 28)
+    """
 
     type = 'projected', 'active'
 
@@ -141,6 +204,12 @@ class Effect39(EffectDef):
 
 
 class Effect48(EffectDef):
+    """
+    powerBooster
+
+    Used by:
+    Modules from group: Capacitor Booster (59 of 59)
+    """
 
     type = 'active'
 
@@ -158,6 +227,16 @@ class Effect48(EffectDef):
 
 
 class Effect50(EffectDef):
+    """
+    modifyShieldRechargeRate
+
+    Used by:
+    Modules from group: Capacitor Power Relay (20 of 20)
+    Modules from group: Power Diagnostic System (23 of 23)
+    Modules from group: Reactor Control Unit (22 of 22)
+    Modules from group: Shield Recharger (4 of 4)
+    Modules named like: Flux Coil (12 of 12)
+    """
 
     type = 'passive'
 
@@ -167,6 +246,17 @@ class Effect50(EffectDef):
 
 
 class Effect51(EffectDef):
+    """
+    modifyPowerRechargeRate
+
+    Used by:
+    Modules from group: Capacitor Flux Coil (6 of 6)
+    Modules from group: Capacitor Power Relay (20 of 20)
+    Modules from group: Capacitor Recharger (18 of 18)
+    Modules from group: Power Diagnostic System (23 of 23)
+    Modules from group: Reactor Control Unit (22 of 22)
+    Modules from group: Shield Power Relay (6 of 6)
+    """
 
     type = 'passive'
 
@@ -176,11 +266,27 @@ class Effect51(EffectDef):
 
 
 class Effect55(EffectDef):
+    """
+    targetHostiles
+
+    Used by:
+    Modules from group: Automated Targeting System (6 of 6)
+    """
 
     type = 'active'
 
 
 class Effect56(EffectDef):
+    """
+    powerOutputMultiply
+
+    Used by:
+    Modules from group: Capacitor Flux Coil (6 of 6)
+    Modules from group: Capacitor Power Relay (20 of 20)
+    Modules from group: Power Diagnostic System (23 of 23)
+    Modules from group: Reactor Control Unit (22 of 22)
+    Variations of structure module: Standup Reactor Control Unit I (2 of 2)
+    """
 
     type = 'passive'
 
@@ -192,6 +298,15 @@ class Effect56(EffectDef):
 
 
 class Effect57(EffectDef):
+    """
+    shieldCapacityMultiply
+
+    Used by:
+    Modules from group: Capacitor Power Relay (20 of 20)
+    Modules from group: Power Diagnostic System (23 of 23)
+    Modules from group: Reactor Control Unit (22 of 22)
+    Modules named like: Flux Coil (12 of 12)
+    """
 
     type = 'passive'
 
@@ -203,6 +318,16 @@ class Effect57(EffectDef):
 
 
 class Effect58(EffectDef):
+    """
+    capacitorCapacityMultiply
+
+    Used by:
+    Modules from group: Capacitor Flux Coil (6 of 6)
+    Modules from group: Capacitor Power Relay (20 of 20)
+    Modules from group: Power Diagnostic System (23 of 23)
+    Modules from group: Propulsion Module (68 of 133)
+    Modules from group: Reactor Control Unit (22 of 22)
+    """
 
     type = 'passive'
 
@@ -214,6 +339,14 @@ class Effect58(EffectDef):
 
 
 class Effect59(EffectDef):
+    """
+    cargoCapacityMultiply
+
+    Used by:
+    Modules from group: Expanded Cargohold (7 of 7)
+    Modules from group: Overdrive Injector System (7 of 7)
+    Modules from group: Reinforced Bulkhead (8 of 8)
+    """
 
     type = 'passive'
 
@@ -223,6 +356,13 @@ class Effect59(EffectDef):
 
 
 class Effect60(EffectDef):
+    """
+    structureHPMultiply
+
+    Used by:
+    Modules from group: Nanofiber Internal Structure (7 of 7)
+    Modules from group: Reinforced Bulkhead (8 of 8)
+    """
 
     type = 'passive'
 
@@ -232,6 +372,12 @@ class Effect60(EffectDef):
 
 
 class Effect61(EffectDef):
+    """
+    agilityBonus
+
+    Used by:
+    Subsystems named like: Propulsion Interdiction Nullifier (4 of 4)
+    """
 
     type = 'passive'
 
@@ -241,6 +387,13 @@ class Effect61(EffectDef):
 
 
 class Effect63(EffectDef):
+    """
+    armorHPMultiply
+
+    Used by:
+    Modules from group: Armor Coating (202 of 202)
+    Modules from group: Armor Plating Energized (187 of 187)
+    """
 
     type = 'passive'
 
@@ -250,6 +403,15 @@ class Effect63(EffectDef):
 
 
 class Effect67(EffectDef):
+    """
+    miningLaser
+
+    Used by:
+    Modules from group: Frequency Mining Laser (3 of 3)
+    Modules from group: Mining Laser (15 of 15)
+    Modules from group: Strip Miner (5 of 5)
+    Module: Citizen Miner
+    """
 
     type = 'active'
 
@@ -260,6 +422,12 @@ class Effect67(EffectDef):
 
 
 class Effect89(EffectDef):
+    """
+    projectileWeaponSpeedMultiply
+
+    Used by:
+    Modules from group: Gyrostabilizer (14 of 14)
+    """
 
     type = 'passive'
 
@@ -271,6 +439,12 @@ class Effect89(EffectDef):
 
 
 class Effect91(EffectDef):
+    """
+    energyWeaponDamageMultiply
+
+    Used by:
+    Modules from group: Heat Sink (19 of 19)
+    """
 
     type = 'passive'
 
@@ -282,6 +456,12 @@ class Effect91(EffectDef):
 
 
 class Effect92(EffectDef):
+    """
+    projectileWeaponDamageMultiply
+
+    Used by:
+    Modules from group: Gyrostabilizer (14 of 14)
+    """
 
     type = 'passive'
 
@@ -293,6 +473,12 @@ class Effect92(EffectDef):
 
 
 class Effect93(EffectDef):
+    """
+    hybridWeaponDamageMultiply
+
+    Used by:
+    Modules from group: Magnetic Field Stabilizer (15 of 15)
+    """
 
     type = 'passive'
 
@@ -304,6 +490,12 @@ class Effect93(EffectDef):
 
 
 class Effect95(EffectDef):
+    """
+    energyWeaponSpeedMultiply
+
+    Used by:
+    Modules from group: Heat Sink (19 of 19)
+    """
 
     type = 'passive'
 
@@ -315,6 +507,12 @@ class Effect95(EffectDef):
 
 
 class Effect96(EffectDef):
+    """
+    hybridWeaponSpeedMultiply
+
+    Used by:
+    Modules from group: Magnetic Field Stabilizer (15 of 15)
+    """
 
     type = 'passive'
 
@@ -326,6 +524,15 @@ class Effect96(EffectDef):
 
 
 class Effect101(EffectDef):
+    """
+    useMissiles
+
+    Used by:
+    Modules from group: Missile Launcher Heavy (12 of 12)
+    Modules from group: Missile Launcher Rocket (15 of 15)
+    Modules named like: Launcher (154 of 154)
+    Structure Modules named like: Standup Launcher (7 of 7)
+    """
 
     type = 'active', 'projected'
 
@@ -355,6 +562,12 @@ class Effect101(EffectDef):
 
 
 class Effect118(EffectDef):
+    """
+    electronicAttributeModifyOnline
+
+    Used by:
+    Modules from group: Automated Targeting System (6 of 6)
+    """
 
     type = 'passive'
 
@@ -364,6 +577,13 @@ class Effect118(EffectDef):
 
 
 class Effect157(EffectDef):
+    """
+    largeHybridTurretDamageMultiplierBonusPostPercentDamageMultiplierLocationShipModulesRequiringLargeHybridTurret
+
+    Used by:
+    Implants named like: Zainou 'Deadeye' Large Hybrid Turret LH (6 of 6)
+    Skill: Large Hybrid Turret
+    """
 
     type = 'passive'
 
@@ -375,6 +595,13 @@ class Effect157(EffectDef):
 
 
 class Effect159(EffectDef):
+    """
+    mediumEnergyTurretDamageMultiplierBonusPostPercentDamageMultiplierLocationShipModulesRequiringMediumEnergyTurret
+
+    Used by:
+    Implants named like: Inherent Implants 'Lancer' Medium Energy Turret ME (6 of 6)
+    Skill: Medium Energy Turret
+    """
 
     type = 'passive'
 
@@ -386,6 +613,13 @@ class Effect159(EffectDef):
 
 
 class Effect160(EffectDef):
+    """
+    mediumHybridTurretDamageMultiplierBonusPostPercentDamageMultiplierLocationShipModulesRequiringMediumHybridTurret
+
+    Used by:
+    Implants named like: Zainou 'Deadeye' Medium Hybrid Turret MH (6 of 6)
+    Skill: Medium Hybrid Turret
+    """
 
     type = 'passive'
 
@@ -397,6 +631,13 @@ class Effect160(EffectDef):
 
 
 class Effect161(EffectDef):
+    """
+    mediumProjectileTurretDamageMultiplierBonusPostPercentDamageMultiplierLocationShipModulesRequiringMediumProjectileTurret
+
+    Used by:
+    Implants named like: Eifyr and Co. 'Gunslinger' Medium Projectile Turret MP (6 of 6)
+    Skill: Medium Projectile Turret
+    """
 
     type = 'passive'
 
@@ -408,6 +649,14 @@ class Effect161(EffectDef):
 
 
 class Effect162(EffectDef):
+    """
+    largeEnergyTurretDamageMultiplierBonusPostPercentDamageMultiplierLocationShipModulesRequiringLargeEnergyTurret
+
+    Used by:
+    Implants named like: Inherent Implants 'Lancer' Large Energy Turret LE (6 of 6)
+    Implant: Pashan's Turret Handling Mindlink
+    Skill: Large Energy Turret
+    """
 
     type = 'passive'
 
@@ -419,6 +668,13 @@ class Effect162(EffectDef):
 
 
 class Effect172(EffectDef):
+    """
+    smallEnergyTurretDamageMultiplierBonusPostPercentDamageMultiplierLocationShipModulesRequiringSmallEnergyTurret
+
+    Used by:
+    Implants named like: Inherent Implants 'Lancer' Small Energy Turret SE (6 of 6)
+    Skill: Small Energy Turret
+    """
 
     type = 'passive'
 
@@ -430,6 +686,13 @@ class Effect172(EffectDef):
 
 
 class Effect173(EffectDef):
+    """
+    smallHybridTurretDamageMultiplierBonusPostPercentDamageMultiplierLocationShipModulesRequiringSmallHybridTurret
+
+    Used by:
+    Implants named like: Zainou 'Deadeye' Small Hybrid Turret SH (6 of 6)
+    Skill: Small Hybrid Turret
+    """
 
     type = 'passive'
 
@@ -441,6 +704,13 @@ class Effect173(EffectDef):
 
 
 class Effect174(EffectDef):
+    """
+    smallProjectileTurretDamageMultiplierBonusPostPercentDamageMultiplierLocationShipModulesRequiringSmallProjectileTurret
+
+    Used by:
+    Implants named like: Eifyr and Co. 'Gunslinger' Small Projectile Turret SP (6 of 6)
+    Skill: Small Projectile Turret
+    """
 
     type = 'passive'
 
@@ -452,6 +722,14 @@ class Effect174(EffectDef):
 
 
 class Effect212(EffectDef):
+    """
+    sensorUpgradesCpuNeedBonusPostPercentCpuLocationShipModulesRequiringSensorUpgrades
+
+    Used by:
+    Implants named like: Zainou 'Gypsy' Electronics Upgrades EU (6 of 6)
+    Modules named like: Liquid Cooled Electronics (8 of 8)
+    Skill: Electronics Upgrades
+    """
 
     type = 'passive'
 
@@ -463,6 +741,12 @@ class Effect212(EffectDef):
 
 
 class Effect214(EffectDef):
+    """
+    targetingMaxTargetBonusModAddMaxLockedTargetsLocationChar
+
+    Used by:
+    Skills named like: Target Management (2 of 2)
+    """
 
     type = 'passive', 'structure'
 
@@ -473,6 +757,13 @@ class Effect214(EffectDef):
 
 
 class Effect223(EffectDef):
+    """
+    navigationVelocityBonusPostPercentMaxVelocityLocationShip
+
+    Used by:
+    Implant: Low-grade Snake Alpha
+    Implant: Mid-grade Snake Alpha
+    """
 
     type = 'passive'
 
@@ -482,6 +773,12 @@ class Effect223(EffectDef):
 
 
 class Effect227(EffectDef):
+    """
+    accerationControlCapNeedBonusPostPercentCapacitorNeedLocationShipGroupAfterburner
+
+    Used by:
+    Modules named like: Dynamic Fuel Valve (8 of 8)
+    """
 
     type = 'passive'
 
@@ -492,6 +789,14 @@ class Effect227(EffectDef):
 
 
 class Effect230(EffectDef):
+    """
+    afterburnerDurationBonusPostPercentDurationLocationShipModulesRequiringAfterburner
+
+    Used by:
+    Implants named like: Eifyr and Co. 'Rogue' Afterburner AB (6 of 6)
+    Implant: Zor's Custom Navigation Link
+    Skill: Afterburner
+    """
 
     type = 'passive'
 
@@ -503,6 +808,12 @@ class Effect230(EffectDef):
 
 
 class Effect235(EffectDef):
+    """
+    warpdriveoperationWarpCapacitorNeedBonusPostPercentWarpCapacitorNeedLocationShip
+
+    Used by:
+    Implants named like: Eifyr and Co. 'Rogue' Warp Drive Operation WD (6 of 6)
+    """
 
     type = 'passive'
 
@@ -512,6 +823,12 @@ class Effect235(EffectDef):
 
 
 class Effect242(EffectDef):
+    """
+    accerationControlSpeedFBonusPostPercentSpeedFactorLocationShipGroupAfterburner
+
+    Used by:
+    Implants named like: Eifyr and Co. 'Rogue' Acceleration Control AC (6 of 6)
+    """
 
     type = 'passive'
 
@@ -522,6 +839,13 @@ class Effect242(EffectDef):
 
 
 class Effect244(EffectDef):
+    """
+    highSpeedManuveringCapacitorNeedMultiplierPostPercentCapacitorNeedLocationShipModulesRequiringHighSpeedManuvering
+
+    Used by:
+    Implants named like: Eifyr and Co. 'Rogue' High Speed Maneuvering HS (6 of 6)
+    Skill: High Speed Maneuvering
+    """
 
     type = 'passive'
 
@@ -533,6 +857,16 @@ class Effect244(EffectDef):
 
 
 class Effect271(EffectDef):
+    """
+    hullUpgradesArmorHpBonusPostPercentHpLocationShip
+
+    Used by:
+    Implants named like: grade Slave (15 of 18)
+    Modules named like: Trimark Armor Pump (8 of 8)
+    Implant: Low-grade Snake Epsilon
+    Implant: Mid-grade Snake Epsilon
+    Skill: Hull Upgrades
+    """
 
     type = 'passive'
 
@@ -543,6 +877,15 @@ class Effect271(EffectDef):
 
 
 class Effect272(EffectDef):
+    """
+    repairSystemsDurationBonusPostPercentDurationLocationShipModulesRequiringRepairSystems
+
+    Used by:
+    Implants named like: Inherent Implants 'Noble' Repair Systems RS (6 of 6)
+    Modules named like: Nanobot Accelerator (8 of 8)
+    Implant: Numon Family Heirloom
+    Skill: Repair Systems
+    """
 
     type = 'passive'
 
@@ -554,6 +897,14 @@ class Effect272(EffectDef):
 
 
 class Effect273(EffectDef):
+    """
+    shieldUpgradesPowerNeedBonusPostPercentPowerLocationShipModulesRequiringShieldUpgrades
+
+    Used by:
+    Implants named like: Zainou 'Gnome' Shield Upgrades SU (6 of 6)
+    Modules named like: Core Defense Charge Economizer (8 of 8)
+    Skill: Shield Upgrades
+    """
 
     type = 'passive'
 
@@ -565,6 +916,12 @@ class Effect273(EffectDef):
 
 
 class Effect277(EffectDef):
+    """
+    tacticalshieldManipulationSkillBoostUniformityBonus
+
+    Used by:
+    Skill: Tactical Shield Manipulation
+    """
 
     type = 'passive'
 
@@ -574,6 +931,13 @@ class Effect277(EffectDef):
 
 
 class Effect279(EffectDef):
+    """
+    shieldEmmisionSystemsCapNeedBonusPostPercentCapacitorNeedLocationShipModulesRequiringShieldEmmisionSystems
+
+    Used by:
+    Implants named like: Zainou 'Gnome' Shield Emission Systems SE (6 of 6)
+    Skill: Shield Emission Systems
+    """
 
     type = 'passive'
 
@@ -585,6 +949,13 @@ class Effect279(EffectDef):
 
 
 class Effect287(EffectDef):
+    """
+    controlledBurstsCapNeedBonusPostPercentCapacitorNeedLocationShipModulesRequiringGunnery
+
+    Used by:
+    Implants named like: Inherent Implants 'Lancer' Controlled Bursts CB (6 of 6)
+    Skill: Controlled Bursts
+    """
 
     type = 'passive'
 
@@ -596,6 +967,14 @@ class Effect287(EffectDef):
 
 
 class Effect290(EffectDef):
+    """
+    sharpshooterRangeSkillBonusPostPercentMaxRangeLocationShipModulesRequiringGunnery
+
+    Used by:
+    Implants named like: Frentix Booster (4 of 4)
+    Implants named like: Zainou 'Deadeye' Sharpshooter ST (6 of 6)
+    Skill: Sharpshooter
+    """
 
     type = 'passive'
 
@@ -607,6 +986,14 @@ class Effect290(EffectDef):
 
 
 class Effect298(EffectDef):
+    """
+    surgicalStrikeFalloffBonusPostPercentFalloffLocationShipModulesRequiringGunnery
+
+    Used by:
+    Implants named like: Sooth Sayer Booster (4 of 4)
+    Implants named like: Zainou 'Deadeye' Trajectory Analysis TA (6 of 6)
+    Skill: Trajectory Analysis
+    """
 
     type = 'passive'
 
@@ -618,6 +1005,12 @@ class Effect298(EffectDef):
 
 
 class Effect315(EffectDef):
+    """
+    dronesSkillBoostMaxActiveDroneBonus
+
+    Used by:
+    Skill: Drones
+    """
 
     type = 'passive'
 
@@ -628,6 +1021,15 @@ class Effect315(EffectDef):
 
 
 class Effect391(EffectDef):
+    """
+    astrogeologyMiningAmountBonusPostPercentMiningAmountLocationShipModulesRequiringMining
+
+    Used by:
+    Implants named like: Inherent Implants 'Highwall' Mining MX (3 of 3)
+    Implant: Michi's Excavation Augmentor
+    Skill: Astrogeology
+    Skill: Mining
+    """
 
     type = 'passive'
 
@@ -639,6 +1041,14 @@ class Effect391(EffectDef):
 
 
 class Effect392(EffectDef):
+    """
+    mechanicHullHpBonusPostPercentHpShip
+
+    Used by:
+    Implants named like: Inherent Implants 'Noble' Mechanic MC (6 of 6)
+    Modules named like: Transverse Bulkhead (8 of 8)
+    Skill: Mechanics
+    """
 
     type = 'passive'
 
@@ -649,6 +1059,17 @@ class Effect392(EffectDef):
 
 
 class Effect394(EffectDef):
+    """
+    navigationVelocityBonusPostPercentMaxVelocityShip
+
+    Used by:
+    Modules from group: Rig Anchor (4 of 4)
+    Implants named like: Agency 'Overclocker' SB Dose (4 of 4)
+    Implants named like: grade Snake (16 of 18)
+    Modules named like: Auxiliary Thrusters (8 of 8)
+    Implant: Quafe Zero
+    Skill: Navigation
+    """
 
     type = 'passive'
 
@@ -661,6 +1082,18 @@ class Effect394(EffectDef):
 
 
 class Effect395(EffectDef):
+    """
+    evasiveManeuveringAgilityBonusPostPercentAgilityShip
+
+    Used by:
+    Modules from group: Rig Anchor (4 of 4)
+    Implants named like: Eifyr and Co. 'Rogue' Evasive Maneuvering EM (6 of 6)
+    Implants named like: grade Nomad (10 of 12)
+    Modules named like: Low Friction Nozzle Joints (8 of 8)
+    Implant: Genolution Core Augmentation CA-4
+    Skill: Evasive Maneuvering
+    Skill: Spaceship Command
+    """
 
     type = 'passive'
 
@@ -672,6 +1105,14 @@ class Effect395(EffectDef):
 
 
 class Effect396(EffectDef):
+    """
+    energyGridUpgradesCpuNeedBonusPostPercentCpuLocationShipModulesRequiringEnergyGridUpgrades
+
+    Used by:
+    Implants named like: Inherent Implants 'Squire' Energy Grid Upgrades EU (6 of 6)
+    Modules named like: Powergrid Subroutine Maximizer (8 of 8)
+    Skill: Energy Grid Upgrades
+    """
 
     type = 'passive'
 
@@ -683,6 +1124,16 @@ class Effect396(EffectDef):
 
 
 class Effect397(EffectDef):
+    """
+    electronicsCpuOutputBonusPostPercentCpuOutputLocationShipGroupComputer
+
+    Used by:
+    Implants named like: Zainou 'Gypsy' CPU Management EE (6 of 6)
+    Modules named like: Processor Overclocking Unit (8 of 8)
+    Subsystems named like: Core Electronic Efficiency Gate (2 of 2)
+    Implant: Genolution Core Augmentation CA-2
+    Skill: CPU Management
+    """
 
     type = 'passive'
 
@@ -693,6 +1144,13 @@ class Effect397(EffectDef):
 
 
 class Effect408(EffectDef):
+    """
+    largeProjectileTurretDamageMultiplierBonusPostPercentDamageMultiplierLocationShipModulesRequiringLargeProjectileTurret
+
+    Used by:
+    Implants named like: Eifyr and Co. 'Gunslinger' Large Projectile Turret LP (6 of 6)
+    Skill: Large Projectile Turret
+    """
 
     type = 'passive'
 
@@ -704,6 +1162,14 @@ class Effect408(EffectDef):
 
 
 class Effect414(EffectDef):
+    """
+    gunneryTurretSpeeBonusPostPercentSpeedLocationShipModulesRequiringGunnery
+
+    Used by:
+    Implants named like: Inherent Implants 'Lancer' Gunnery RF (6 of 6)
+    Implant: Pashan's Turret Customization Mindlink
+    Skill: Gunnery
+    """
 
     type = 'passive'
 
@@ -715,6 +1181,16 @@ class Effect414(EffectDef):
 
 
 class Effect446(EffectDef):
+    """
+    shieldManagementShieldCapacityBonusPostPercentCapacityLocationShipGroupShield
+
+    Used by:
+    Implants named like: Zainou 'Gnome' Shield Management SM (6 of 6)
+    Modules named like: Core Defense Field Extender (8 of 8)
+    Implant: Genolution Core Augmentation CA-3
+    Implant: Sansha Modified 'Gnome' Implant
+    Skill: Shield Management
+    """
 
     type = 'passive'
 
@@ -725,6 +1201,15 @@ class Effect446(EffectDef):
 
 
 class Effect485(EffectDef):
+    """
+    energysystemsoperationCapRechargeBonusPostPercentRechargeRateLocationShipGroupCapacitor
+
+    Used by:
+    Implants named like: Inherent Implants 'Squire' Capacitor Systems Operation EO (6 of 6)
+    Modules named like: Capacitor Control Circuit (8 of 8)
+    Implant: Genolution Core Augmentation CA-2
+    Skill: Capacitor Systems Operation
+    """
 
     type = 'passive'
 
@@ -735,6 +1220,15 @@ class Effect485(EffectDef):
 
 
 class Effect486(EffectDef):
+    """
+    shieldOperationRechargeratebonusPostPercentRechargeRateLocationShipGroupShield
+
+    Used by:
+    Implants named like: Zainou 'Gnome' Shield Operation SP (6 of 6)
+    Modules named like: Core Defense Field Purger (8 of 8)
+    Implant: Sansha Modified 'Gnome' Implant
+    Skill: Shield Operation
+    """
 
     type = 'passive'
 
@@ -745,6 +1239,16 @@ class Effect486(EffectDef):
 
 
 class Effect490(EffectDef):
+    """
+    engineeringPowerEngineeringOutputBonusPostPercentPowerOutputLocationShipGroupPowerCore
+
+    Used by:
+    Implants named like: Inherent Implants 'Squire' Power Grid Management EG (6 of 6)
+    Modules named like: Ancillary Current Router (8 of 8)
+    Subsystems named like: Core Augmented Reactor (4 of 4)
+    Implant: Genolution Core Augmentation CA-1
+    Skill: Power Grid Management
+    """
 
     type = 'passive'
 
@@ -755,6 +1259,13 @@ class Effect490(EffectDef):
 
 
 class Effect494(EffectDef):
+    """
+    warpDriveOperationWarpCapacitorNeedBonusPostPercentWarpCapacitorNeedLocationShipGroupPropulsion
+
+    Used by:
+    Modules named like: Warp Core Optimizer (8 of 8)
+    Skill: Warp Drive Operation
+    """
 
     type = 'passive'
 
@@ -766,6 +1277,13 @@ class Effect494(EffectDef):
 
 
 class Effect504(EffectDef):
+    """
+    scoutDroneOperationDroneRangeBonusModAddDroneControlDistanceChar
+
+    Used by:
+    Modules named like: Drone Control Range Augmentor (8 of 8)
+    Skills named like: Drone Avionics (2 of 2)
+    """
 
     type = 'passive'
 
@@ -777,6 +1295,13 @@ class Effect504(EffectDef):
 
 
 class Effect506(EffectDef):
+    """
+    fuelConservationCapNeedBonusPostPercentCapacitorNeedLocationShipModulesRequiringAfterburner
+
+    Used by:
+    Skill: Afterburner
+    Skill: Fuel Conservation
+    """
 
     type = 'passive'
 
@@ -787,6 +1312,13 @@ class Effect506(EffectDef):
 
 
 class Effect507(EffectDef):
+    """
+    longRangeTargetingMaxTargetRangeBonusPostPercentMaxTargetRangeLocationShipGroupElectronic
+
+    Used by:
+    Implants named like: Zainou 'Gypsy' Long Range Targeting LT (6 of 6)
+    Skill: Long Range Targeting
+    """
 
     type = 'passive'
 
@@ -797,6 +1329,18 @@ class Effect507(EffectDef):
 
 
 class Effect508(EffectDef):
+    """
+    shipPDmgBonusMF
+
+    Used by:
+    Ship: Cheetah
+    Ship: Freki
+    Ship: Republic Fleet Firetail
+    Ship: Rifter
+    Ship: Slasher
+    Ship: Stiletto
+    Ship: Wolf
+    """
 
     type = 'passive'
 
@@ -807,6 +1351,18 @@ class Effect508(EffectDef):
 
 
 class Effect511(EffectDef):
+    """
+    shipEnergyTCapNeedBonusAF
+
+    Used by:
+    Ship: Crusader
+    Ship: Executioner
+    Ship: Gold Magnate
+    Ship: Punisher
+    Ship: Retribution
+    Ship: Silver Magnate
+    Ship: Tormentor
+    """
 
     type = 'passive'
 
@@ -817,6 +1373,17 @@ class Effect511(EffectDef):
 
 
 class Effect512(EffectDef):
+    """
+    shipSHTDmgBonusGF
+
+    Used by:
+    Variations of ship: Incursus (3 of 3)
+    Ship: Atron
+    Ship: Federation Navy Comet
+    Ship: Helios
+    Ship: Pacifier
+    Ship: Taranis
+    """
 
     type = 'passive'
 
@@ -827,6 +1394,15 @@ class Effect512(EffectDef):
 
 
 class Effect514(EffectDef):
+    """
+    shipSETDmgBonusAF
+
+    Used by:
+    Ship: Executioner
+    Ship: Gold Magnate
+    Ship: Silver Magnate
+    Ship: Tormentor
+    """
 
     type = 'passive'
 
@@ -837,6 +1413,14 @@ class Effect514(EffectDef):
 
 
 class Effect516(EffectDef):
+    """
+    shipTCapNeedBonusAC
+
+    Used by:
+    Ship: Devoter
+    Ship: Omen
+    Ship: Zealot
+    """
 
     type = 'passive'
 
@@ -847,6 +1431,12 @@ class Effect516(EffectDef):
 
 
 class Effect521(EffectDef):
+    """
+    shipHRangeBonusCC
+
+    Used by:
+    Ship: Eagle
+    """
 
     type = 'passive'
 
@@ -857,6 +1447,14 @@ class Effect521(EffectDef):
 
 
 class Effect527(EffectDef):
+    """
+    shipVelocityBonusMI
+
+    Used by:
+    Variations of ship: Mammoth (2 of 2)
+    Ship: Hoarder
+    Ship: Prowler
+    """
 
     type = 'passive'
 
@@ -866,6 +1464,13 @@ class Effect527(EffectDef):
 
 
 class Effect529(EffectDef):
+    """
+    shipCargoBonusAI
+
+    Used by:
+    Variations of ship: Sigil (2 of 2)
+    Ship: Bestower
+    """
 
     type = 'passive'
 
@@ -875,6 +1480,13 @@ class Effect529(EffectDef):
 
 
 class Effect536(EffectDef):
+    """
+    cpuMultiplierPostMulCpuOutputShip
+
+    Used by:
+    Modules from group: CPU Enhancer (19 of 19)
+    Variations of structure module: Standup Co-Processor Array I (2 of 2)
+    """
 
     type = 'passive'
 
@@ -884,6 +1496,13 @@ class Effect536(EffectDef):
 
 
 class Effect542(EffectDef):
+    """
+    shipCapNeedBonusAB
+
+    Used by:
+    Variations of ship: Armageddon (3 of 5)
+    Ship: Apocalypse Imperial Issue
+    """
 
     type = 'passive'
 
@@ -894,6 +1513,14 @@ class Effect542(EffectDef):
 
 
 class Effect549(EffectDef):
+    """
+    shipPTDmgBonusMB
+
+    Used by:
+    Variations of ship: Tempest (3 of 4)
+    Ship: Machariel
+    Ship: Panther
+    """
 
     type = 'passive'
 
@@ -905,6 +1532,17 @@ class Effect549(EffectDef):
 
 
 class Effect550(EffectDef):
+    """
+    shipHTDmgBonusGB
+
+    Used by:
+    Ship: Dominix Navy Issue
+    Ship: Hyperion
+    Ship: Kronos
+    Ship: Marshal
+    Ship: Megathron Federate Issue
+    Ship: Sin
+    """
 
     type = 'passive'
 
@@ -916,6 +1554,12 @@ class Effect550(EffectDef):
 
 
 class Effect553(EffectDef):
+    """
+    shipHTTrackingBonusGB
+
+    Used by:
+    Ship: Vindicator
+    """
 
     type = 'passive'
 
@@ -926,6 +1570,19 @@ class Effect553(EffectDef):
 
 
 class Effect562(EffectDef):
+    """
+    shipHTDmgBonusfixedGC
+
+    Used by:
+    Ship: Adrestia
+    Ship: Arazu
+    Ship: Deimos
+    Ship: Enforcer
+    Ship: Exequror Navy Issue
+    Ship: Guardian-Vexor
+    Ship: Thorax
+    Ship: Vexor
+    """
 
     type = 'passive'
 
@@ -936,6 +1593,13 @@ class Effect562(EffectDef):
 
 
 class Effect581(EffectDef):
+    """
+    weaponUpgradesCpuNeedBonusPostPercentCpuLocationShipModulesRequiringGunnery
+
+    Used by:
+    Implants named like: Zainou 'Gnome' Weapon Upgrades WU (6 of 6)
+    Skill: Weapon Upgrades
+    """
 
     type = 'passive'
 
@@ -947,6 +1611,12 @@ class Effect581(EffectDef):
 
 
 class Effect582(EffectDef):
+    """
+    rapidFiringRofBonusPostPercentSpeedLocationShipModulesRequiringGunnery
+
+    Used by:
+    Skill: Rapid Firing
+    """
 
     type = 'passive'
 
@@ -957,6 +1627,14 @@ class Effect582(EffectDef):
 
 
 class Effect584(EffectDef):
+    """
+    surgicalStrikeDamageMultiplierBonusPostPercentDamageMultiplierLocationShipModulesRequiringGunnery
+
+    Used by:
+    Implants named like: Agency 'Pyrolancea' DB Dose (4 of 4)
+    Implants named like: Eifyr and Co. 'Gunslinger' Surgical Strike SS (6 of 6)
+    Implant: Standard Cerebral Accelerator
+    """
 
     type = 'passive'
 
@@ -967,6 +1645,12 @@ class Effect584(EffectDef):
 
 
 class Effect587(EffectDef):
+    """
+    surgicalStrikeDamageMultiplierBonusPostPercentDamageMultiplierLocationShipGroupEnergyWeapon
+
+    Used by:
+    Skill: Surgical Strike
+    """
 
     type = 'passive'
 
@@ -977,6 +1661,12 @@ class Effect587(EffectDef):
 
 
 class Effect588(EffectDef):
+    """
+    surgicalStrikeDamageMultiplierBonusPostPercentDamageMultiplierLocationShipGroupProjectileWeapon
+
+    Used by:
+    Skill: Surgical Strike
+    """
 
     type = 'passive'
 
@@ -987,6 +1677,12 @@ class Effect588(EffectDef):
 
 
 class Effect589(EffectDef):
+    """
+    surgicalStrikeDamageMultiplierBonusPostPercentDamageMultiplierLocationShipGroupHybridWeapon
+
+    Used by:
+    Skill: Surgical Strike
+    """
 
     type = 'passive'
 
@@ -997,6 +1693,13 @@ class Effect589(EffectDef):
 
 
 class Effect590(EffectDef):
+    """
+    energyPulseWeaponsDurationBonusPostPercentDurationLocationShipModulesRequiringEnergyPulseWeapons
+
+    Used by:
+    Implants named like: Inherent Implants 'Squire' Energy Pulse Weapons EP (6 of 6)
+    Skill: Energy Pulse Weapons
+    """
 
     type = 'passive'
 
@@ -1008,6 +1711,12 @@ class Effect590(EffectDef):
 
 
 class Effect596(EffectDef):
+    """
+    ammoInfluenceRange
+
+    Used by:
+    Items from category: Charge (587 of 949)
+    """
 
     type = 'passive'
 
@@ -1017,6 +1726,14 @@ class Effect596(EffectDef):
 
 
 class Effect598(EffectDef):
+    """
+    ammoSpeedMultiplier
+
+    Used by:
+    Charges from group: Festival Charges (26 of 26)
+    Charges from group: Interdiction Probe (2 of 2)
+    Items from market group: Special Edition Assets > Special Edition Festival Assets (30 of 33)
+    """
 
     type = 'passive'
 
@@ -1026,6 +1743,17 @@ class Effect598(EffectDef):
 
 
 class Effect599(EffectDef):
+    """
+    ammoFallofMultiplier
+
+    Used by:
+    Charges from group: Advanced Artillery Ammo (8 of 8)
+    Charges from group: Advanced Autocannon Ammo (8 of 8)
+    Charges from group: Advanced Beam Laser Crystal (8 of 8)
+    Charges from group: Advanced Blaster Charge (8 of 8)
+    Charges from group: Advanced Pulse Laser Crystal (8 of 8)
+    Charges from group: Advanced Railgun Charge (8 of 8)
+    """
 
     type = 'passive'
 
@@ -1035,6 +1763,13 @@ class Effect599(EffectDef):
 
 
 class Effect600(EffectDef):
+    """
+    ammoTrackingMultiplier
+
+    Used by:
+    Items from category: Charge (182 of 949)
+    Charges from group: Projectile Ammo (128 of 128)
+    """
 
     type = 'passive'
 
@@ -1044,6 +1779,16 @@ class Effect600(EffectDef):
 
 
 class Effect602(EffectDef):
+    """
+    shipPTurretSpeedBonusMC
+
+    Used by:
+    Variations of ship: Rupture (3 of 3)
+    Variations of ship: Stabber (3 of 3)
+    Ship: Enforcer
+    Ship: Huginn
+    Ship: Scythe Fleet Issue
+    """
 
     type = 'passive'
 
@@ -1054,6 +1799,16 @@ class Effect602(EffectDef):
 
 
 class Effect604(EffectDef):
+    """
+    shipPTspeedBonusMB2
+
+    Used by:
+    Variations of ship: Tempest (4 of 4)
+    Ship: Maelstrom
+    Ship: Marshal
+    Ship: Panther
+    Ship: Typhoon Fleet Issue
+    """
 
     type = 'passive'
 
@@ -1064,6 +1819,12 @@ class Effect604(EffectDef):
 
 
 class Effect607(EffectDef):
+    """
+    cloaking
+
+    Used by:
+    Modules from group: Cloaking Device (10 of 14)
+    """
 
     runTime = 'early'
     type = 'active'
@@ -1079,6 +1840,13 @@ class Effect607(EffectDef):
 
 
 class Effect623(EffectDef):
+    """
+    miningDroneOperationMiningAmountBonusPostPercentMiningDroneAmountPercentChar
+
+    Used by:
+    Modules named like: Drone Mining Augmentor (8 of 8)
+    Skill: Mining Drone Operation
+    """
 
     type = 'passive'
 
@@ -1091,6 +1859,12 @@ class Effect623(EffectDef):
 
 
 class Effect627(EffectDef):
+    """
+    powerIncrease
+
+    Used by:
+    Modules from group: Auxiliary Power Core (5 of 5)
+    """
 
     type = 'passive'
 
@@ -1100,6 +1874,14 @@ class Effect627(EffectDef):
 
 
 class Effect657(EffectDef):
+    """
+    agilityMultiplierEffect
+
+    Used by:
+    Modules from group: Inertial Stabilizer (7 of 7)
+    Modules from group: Nanofiber Internal Structure (7 of 7)
+    Modules from group: Reinforced Bulkhead (8 of 8)
+    """
 
     type = 'passive'
 
@@ -1111,6 +1893,14 @@ class Effect657(EffectDef):
 
 
 class Effect660(EffectDef):
+    """
+    missileEMDmgBonus
+
+    Used by:
+    Skills named like: Missiles (5 of 7)
+    Skill: Rockets
+    Skill: Torpedoes
+    """
 
     type = 'passive'
 
@@ -1121,6 +1911,14 @@ class Effect660(EffectDef):
 
 
 class Effect661(EffectDef):
+    """
+    missileExplosiveDmgBonus
+
+    Used by:
+    Skills named like: Missiles (5 of 7)
+    Skill: Rockets
+    Skill: Torpedoes
+    """
 
     type = 'passive'
 
@@ -1131,6 +1929,14 @@ class Effect661(EffectDef):
 
 
 class Effect662(EffectDef):
+    """
+    missileThermalDmgBonus
+
+    Used by:
+    Skills named like: Missiles (5 of 7)
+    Skill: Rockets
+    Skill: Torpedoes
+    """
 
     type = 'passive'
 
@@ -1141,6 +1947,14 @@ class Effect662(EffectDef):
 
 
 class Effect668(EffectDef):
+    """
+    missileKineticDmgBonus2
+
+    Used by:
+    Skills named like: Missiles (5 of 7)
+    Skill: Rockets
+    Skill: Torpedoes
+    """
 
     type = 'passive'
 
@@ -1151,6 +1965,12 @@ class Effect668(EffectDef):
 
 
 class Effect670(EffectDef):
+    """
+    antiWarpScramblingPassive
+
+    Used by:
+    Modules from group: Warp Core Stabilizer (8 of 8)
+    """
 
     type = 'passive'
 
@@ -1160,6 +1980,12 @@ class Effect670(EffectDef):
 
 
 class Effect675(EffectDef):
+    """
+    weaponUpgradesCpuNeedBonusPostPercentCpuLocationShipModulesRequiringEnergyPulseWeapons
+
+    Used by:
+    Skill: Weapon Upgrades
+    """
 
     type = 'passive'
 
@@ -1170,6 +1996,13 @@ class Effect675(EffectDef):
 
 
 class Effect677(EffectDef):
+    """
+    weaponUpgradesCpuNeedBonusPostPercentCpuLocationShipModulesRequiringMissileLauncherOperation
+
+    Used by:
+    Implants named like: Zainou 'Gnome' Launcher CPU Efficiency LE (6 of 6)
+    Skill: Weapon Upgrades
+    """
 
     type = 'passive'
 
@@ -1181,6 +2014,15 @@ class Effect677(EffectDef):
 
 
 class Effect699(EffectDef):
+    """
+    signatureAnalysisScanResolutionBonusPostPercentScanResolutionShip
+
+    Used by:
+    Implants named like: Zainou 'Gypsy' Signature Analysis SA (6 of 6)
+    Modules named like: Targeting System Subcontroller (8 of 8)
+    Implant: Quafe Zero
+    Skill: Signature Analysis
+    """
 
     type = 'passive'
 
@@ -1193,6 +2035,12 @@ class Effect699(EffectDef):
 
 
 class Effect706(EffectDef):
+    """
+    covertOpsWarpResistance
+
+    Used by:
+    Ships from group: Covert Ops (5 of 8)
+    """
 
     type = 'passive'
 
@@ -1202,6 +2050,14 @@ class Effect706(EffectDef):
 
 
 class Effect726(EffectDef):
+    """
+    shipBonusCargo2GI
+
+    Used by:
+    Variations of ship: Miasmos (3 of 4)
+    Variations of ship: Nereus (2 of 2)
+    Ship: Iteron Mark V
+    """
 
     type = 'passive'
 
@@ -1217,6 +2073,13 @@ class Effect726(EffectDef):
 
 
 class Effect727(EffectDef):
+    """
+    shipBonusCargoCI
+
+    Used by:
+    Variations of ship: Badger (2 of 2)
+    Ship: Tayra
+    """
 
     type = 'passive'
 
@@ -1226,6 +2089,13 @@ class Effect727(EffectDef):
 
 
 class Effect728(EffectDef):
+    """
+    shipBonusCargoMI
+
+    Used by:
+    Variations of ship: Wreathe (2 of 2)
+    Ship: Mammoth
+    """
 
     type = 'passive'
 
@@ -1235,6 +2105,16 @@ class Effect728(EffectDef):
 
 
 class Effect729(EffectDef):
+    """
+    shipBonusVelocityGI
+
+    Used by:
+    Variations of ship: Epithal (2 of 2)
+    Variations of ship: Miasmos (4 of 4)
+    Ship: Iteron Mark V
+    Ship: Kryos
+    Ship: Viator
+    """
 
     type = 'passive'
 
@@ -1250,6 +2130,13 @@ class Effect729(EffectDef):
 
 
 class Effect730(EffectDef):
+    """
+    shipBonusVelocityCI
+
+    Used by:
+    Variations of ship: Tayra (2 of 2)
+    Ship: Crane
+    """
 
     type = 'passive'
 
@@ -1259,6 +2146,13 @@ class Effect730(EffectDef):
 
 
 class Effect732(EffectDef):
+    """
+    shipVelocityBonusAI
+
+    Used by:
+    Variations of ship: Bestower (2 of 2)
+    Ship: Prorator
+    """
 
     type = 'passive'
 
@@ -1268,6 +2162,13 @@ class Effect732(EffectDef):
 
 
 class Effect736(EffectDef):
+    """
+    shipBonusCapCapAB
+
+    Used by:
+    Ship: Apocalypse Imperial Issue
+    Ship: Paladin
+    """
 
     type = 'passive'
 
@@ -1277,6 +2178,13 @@ class Effect736(EffectDef):
 
 
 class Effect744(EffectDef):
+    """
+    surveyScanspeedBonusPostPercentDurationLocationShipModulesRequiringElectronics
+
+    Used by:
+    Modules named like: Signal Focusing Kit (8 of 8)
+    Skill: Survey
+    """
 
     type = 'passive'
 
@@ -1288,6 +2196,12 @@ class Effect744(EffectDef):
 
 
 class Effect754(EffectDef):
+    """
+    shipHybridDamageBonusCF
+
+    Used by:
+    Ship: Raptor
+    """
 
     type = 'passive'
 
@@ -1298,6 +2212,15 @@ class Effect754(EffectDef):
 
 
 class Effect757(EffectDef):
+    """
+    shipETDamageAF
+
+    Used by:
+    Ship: Crucifier Navy Issue
+    Ship: Crusader
+    Ship: Imperial Navy Slicer
+    Ship: Pacifier
+    """
 
     type = 'passive'
 
@@ -1308,6 +2231,14 @@ class Effect757(EffectDef):
 
 
 class Effect760(EffectDef):
+    """
+    shipBonusSmallMissileRoFCF2
+
+    Used by:
+    Ship: Buzzard
+    Ship: Hawk
+    Ship: Pacifier
+    """
 
     type = 'passive'
 
@@ -1318,6 +2249,12 @@ class Effect760(EffectDef):
 
 
 class Effect763(EffectDef):
+    """
+    missileDMGBonus
+
+    Used by:
+    Modules from group: Ballistic Control system (22 of 22)
+    """
 
     type = 'passive'
 
@@ -1331,6 +2268,15 @@ class Effect763(EffectDef):
 
 
 class Effect784(EffectDef):
+    """
+    missileBombardmentMaxFlightTimeBonusPostPercentExplosionDelayOwnerCharModulesRequiringMissileLauncherOperation
+
+    Used by:
+    Implants named like: Zainou 'Deadeye' Missile Bombardment MB (6 of 6)
+    Modules named like: Rocket Fuel Cache Partition (8 of 8)
+    Implant: Antipharmakon Toxot
+    Skill: Missile Bombardment
+    """
 
     type = 'passive'
 
@@ -1344,6 +2290,12 @@ class Effect784(EffectDef):
 
 
 class Effect804(EffectDef):
+    """
+    ammoInfluenceCapNeed
+
+    Used by:
+    Items from category: Charge (493 of 949)
+    """
 
     type = 'passive'
 
@@ -1357,6 +2309,12 @@ class Effect804(EffectDef):
 
 
 class Effect836(EffectDef):
+    """
+    skillFreightBonus
+
+    Used by:
+    Modules named like: Cargohold Optimization (8 of 8)
+    """
 
     type = 'passive'
 
@@ -1366,6 +2324,12 @@ class Effect836(EffectDef):
 
 
 class Effect848(EffectDef):
+    """
+    cloakingTargetingDelayBonusPostPercentCloakingTargetingDelayBonusForShipModulesRequiringCloaking
+
+    Used by:
+    Skill: Cloaking
+    """
 
     type = 'passive'
 
@@ -1377,6 +2341,12 @@ class Effect848(EffectDef):
 
 
 class Effect854(EffectDef):
+    """
+    cloakingScanResolutionMultiplier
+
+    Used by:
+    Modules from group: Cloaking Device (12 of 14)
+    """
 
     type = 'offline'
 
@@ -1388,6 +2358,14 @@ class Effect854(EffectDef):
 
 
 class Effect856(EffectDef):
+    """
+    warpSkillSpeed
+
+    Used by:
+    Implants named like: Eifyr and Co. 'Rogue' Warp Drive Speed WS (6 of 6)
+    Implants named like: grade Ascendancy (10 of 12)
+    Modules named like: Hyperspatial Velocity Optimizer (8 of 8)
+    """
 
     type = 'passive'
 
@@ -1399,6 +2377,12 @@ class Effect856(EffectDef):
 
 
 class Effect874(EffectDef):
+    """
+    shipProjectileOptimalBonuseMF2
+
+    Used by:
+    Ship: Cheetah
+    """
 
     type = 'passive'
 
@@ -1409,6 +2393,13 @@ class Effect874(EffectDef):
 
 
 class Effect882(EffectDef):
+    """
+    shipHybridRangeBonusCF2
+
+    Used by:
+    Ship: Harpy
+    Ship: Raptor
+    """
 
     type = 'passive'
 
@@ -1419,6 +2410,12 @@ class Effect882(EffectDef):
 
 
 class Effect887(EffectDef):
+    """
+    shipETspeedBonusAB2
+
+    Used by:
+    Variations of ship: Armageddon (3 of 5)
+    """
 
     type = 'passive'
 
@@ -1429,6 +2426,12 @@ class Effect887(EffectDef):
 
 
 class Effect889(EffectDef):
+    """
+    missileLauncherSpeedMultiplier
+
+    Used by:
+    Modules from group: Ballistic Control system (22 of 22)
+    """
 
     type = 'passive'
 
@@ -1440,6 +2443,12 @@ class Effect889(EffectDef):
 
 
 class Effect891(EffectDef):
+    """
+    shipCruiseMissileVelocityBonusCB3
+
+    Used by:
+    Variations of ship: Raven (3 of 4)
+    """
 
     type = 'passive'
 
@@ -1450,6 +2459,12 @@ class Effect891(EffectDef):
 
 
 class Effect892(EffectDef):
+    """
+    shipTorpedosVelocityBonusCB3
+
+    Used by:
+    Variations of ship: Raven (3 of 4)
+    """
 
     type = 'passive'
 
@@ -1460,6 +2475,13 @@ class Effect892(EffectDef):
 
 
 class Effect896(EffectDef):
+    """
+    covertOpsCpuBonus1
+
+    Used by:
+    Ships from group: Stealth Bomber (4 of 5)
+    Subsystems named like: Defensive Covert Reconfiguration (4 of 4)
+    """
 
     type = 'passive'
 
@@ -1470,6 +2492,14 @@ class Effect896(EffectDef):
 
 
 class Effect898(EffectDef):
+    """
+    shipMissileKineticDamageCF
+
+    Used by:
+    Ship: Buzzard
+    Ship: Condor
+    Ship: Hawk
+    """
 
     type = 'passive'
 
@@ -1480,6 +2510,14 @@ class Effect898(EffectDef):
 
 
 class Effect899(EffectDef):
+    """
+    shipMissileKineticDamageCC
+
+    Used by:
+    Ship: Cerberus
+    Ship: Onyx
+    Ship: Orthrus
+    """
 
     type = 'passive'
 
@@ -1490,6 +2528,12 @@ class Effect899(EffectDef):
 
 
 class Effect900(EffectDef):
+    """
+    shipDroneScoutThermalDamageGF2
+
+    Used by:
+    Ship: Helios
+    """
 
     type = 'passive'
 
@@ -1500,6 +2544,13 @@ class Effect900(EffectDef):
 
 
 class Effect907(EffectDef):
+    """
+    shipLaserRofAC2
+
+    Used by:
+    Ship: Omen
+    Ship: Zealot
+    """
 
     type = 'passive'
 
@@ -1510,6 +2561,12 @@ class Effect907(EffectDef):
 
 
 class Effect909(EffectDef):
+    """
+    shipArmorHpAC2
+
+    Used by:
+    Ship: Augoror Navy Issue
+    """
 
     type = 'passive'
 
@@ -1519,6 +2576,12 @@ class Effect909(EffectDef):
 
 
 class Effect912(EffectDef):
+    """
+    shipMissileLauncherRofCC2
+
+    Used by:
+    Ship: Onyx
+    """
 
     type = 'passive'
 
@@ -1529,6 +2592,12 @@ class Effect912(EffectDef):
 
 
 class Effect918(EffectDef):
+    """
+    shipDronesMaxGC2
+
+    Used by:
+    Ship: Guardian-Vexor
+    """
 
     type = 'passive'
 
@@ -1538,6 +2607,13 @@ class Effect918(EffectDef):
 
 
 class Effect919(EffectDef):
+    """
+    shipHybridTrackingGC2
+
+    Used by:
+    Ship: Enforcer
+    Ship: Thorax
+    """
 
     type = 'passive'
 
@@ -1548,6 +2624,12 @@ class Effect919(EffectDef):
 
 
 class Effect958(EffectDef):
+    """
+    shipArmorEmResistanceAC2
+
+    Used by:
+    Ship: Maller
+    """
 
     type = 'passive'
 
@@ -1557,6 +2639,12 @@ class Effect958(EffectDef):
 
 
 class Effect959(EffectDef):
+    """
+    shipArmorExplosiveResistanceAC2
+
+    Used by:
+    Ship: Maller
+    """
 
     type = 'passive'
 
@@ -1567,6 +2655,12 @@ class Effect959(EffectDef):
 
 
 class Effect960(EffectDef):
+    """
+    shipArmorKineticResistanceAC2
+
+    Used by:
+    Ship: Maller
+    """
 
     type = 'passive'
 
@@ -1577,6 +2671,12 @@ class Effect960(EffectDef):
 
 
 class Effect961(EffectDef):
+    """
+    shipArmorThermalResistanceAC2
+
+    Used by:
+    Ship: Maller
+    """
 
     type = 'passive'
 
@@ -1587,6 +2687,14 @@ class Effect961(EffectDef):
 
 
 class Effect968(EffectDef):
+    """
+    shipProjectileDmgMC2
+
+    Used by:
+    Variations of ship: Rupture (3 of 3)
+    Ship: Cynabal
+    Ship: Moracha
+    """
 
     type = 'passive'
 
@@ -1598,6 +2706,12 @@ class Effect968(EffectDef):
 
 
 class Effect980(EffectDef):
+    """
+    cloakingWarpSafe
+
+    Used by:
+    Modules named like: Covert Ops Cloaking Device II (2 of 2)
+    """
 
     runTime = 'early'
     type = 'active'
@@ -1609,6 +2723,14 @@ class Effect980(EffectDef):
 
 
 class Effect989(EffectDef):
+    """
+    eliteBonusGunshipHybridOptimal1
+
+    Used by:
+    Ship: Enyo
+    Ship: Harpy
+    Ship: Ishkur
+    """
 
     type = 'passive'
 
@@ -1619,6 +2741,12 @@ class Effect989(EffectDef):
 
 
 class Effect991(EffectDef):
+    """
+    eliteBonusGunshipLaserOptimal1
+
+    Used by:
+    Ship: Retribution
+    """
 
     type = 'passive'
 
@@ -1629,6 +2757,12 @@ class Effect991(EffectDef):
 
 
 class Effect996(EffectDef):
+    """
+    eliteBonusGunshipHybridTracking2
+
+    Used by:
+    Ship: Enyo
+    """
 
     type = 'passive'
 
@@ -1640,6 +2774,12 @@ class Effect996(EffectDef):
 
 
 class Effect998(EffectDef):
+    """
+    eliteBonusGunshipProjectileFalloff2
+
+    Used by:
+    Ship: Wolf
+    """
 
     type = 'passive'
 
@@ -1650,6 +2790,12 @@ class Effect998(EffectDef):
 
 
 class Effect999(EffectDef):
+    """
+    eliteBonusGunshipShieldBoost2
+
+    Used by:
+    Ship: Hawk
+    """
 
     type = 'passive'
 
@@ -1661,6 +2807,12 @@ class Effect999(EffectDef):
 
 
 class Effect1001(EffectDef):
+    """
+    eliteBonusGunshipCapRecharge2
+
+    Used by:
+    Ship: Vengeance
+    """
 
     type = 'passive'
 
@@ -1670,6 +2822,12 @@ class Effect1001(EffectDef):
 
 
 class Effect1003(EffectDef):
+    """
+    selfT2SmallLaserPulseDamageBonus
+
+    Used by:
+    Skill: Small Pulse Laser Specialization
+    """
 
     type = 'passive'
 
@@ -1680,6 +2838,12 @@ class Effect1003(EffectDef):
 
 
 class Effect1004(EffectDef):
+    """
+    selfT2SmallLaserBeamDamageBonus
+
+    Used by:
+    Skill: Small Beam Laser Specialization
+    """
 
     type = 'passive'
 
@@ -1690,6 +2854,12 @@ class Effect1004(EffectDef):
 
 
 class Effect1005(EffectDef):
+    """
+    selfT2SmallHybridBlasterDamageBonus
+
+    Used by:
+    Skill: Small Blaster Specialization
+    """
 
     type = 'passive'
 
@@ -1700,6 +2870,12 @@ class Effect1005(EffectDef):
 
 
 class Effect1006(EffectDef):
+    """
+    selfT2SmallHybridRailDamageBonus
+
+    Used by:
+    Skill: Small Railgun Specialization
+    """
 
     type = 'passive'
 
@@ -1710,6 +2886,12 @@ class Effect1006(EffectDef):
 
 
 class Effect1007(EffectDef):
+    """
+    selfT2SmallProjectileACDamageBonus
+
+    Used by:
+    Skill: Small Autocannon Specialization
+    """
 
     type = 'passive'
 
@@ -1720,6 +2902,12 @@ class Effect1007(EffectDef):
 
 
 class Effect1008(EffectDef):
+    """
+    selfT2SmallProjectileArtyDamageBonus
+
+    Used by:
+    Skill: Small Artillery Specialization
+    """
 
     type = 'passive'
 
@@ -1730,6 +2918,12 @@ class Effect1008(EffectDef):
 
 
 class Effect1009(EffectDef):
+    """
+    selfT2MediumLaserPulseDamageBonus
+
+    Used by:
+    Skill: Medium Pulse Laser Specialization
+    """
 
     type = 'passive'
 
@@ -1740,6 +2934,12 @@ class Effect1009(EffectDef):
 
 
 class Effect1010(EffectDef):
+    """
+    selfT2MediumLaserBeamDamageBonus
+
+    Used by:
+    Skill: Medium Beam Laser Specialization
+    """
 
     type = 'passive'
 
@@ -1750,6 +2950,12 @@ class Effect1010(EffectDef):
 
 
 class Effect1011(EffectDef):
+    """
+    selfT2MediumHybridBlasterDamageBonus
+
+    Used by:
+    Skill: Medium Blaster Specialization
+    """
 
     type = 'passive'
 
@@ -1760,6 +2966,12 @@ class Effect1011(EffectDef):
 
 
 class Effect1012(EffectDef):
+    """
+    selfT2MediumHybridRailDamageBonus
+
+    Used by:
+    Skill: Medium Railgun Specialization
+    """
 
     type = 'passive'
 
@@ -1770,6 +2982,12 @@ class Effect1012(EffectDef):
 
 
 class Effect1013(EffectDef):
+    """
+    selfT2MediumProjectileACDamageBonus
+
+    Used by:
+    Skill: Medium Autocannon Specialization
+    """
 
     type = 'passive'
 
@@ -1780,6 +2998,12 @@ class Effect1013(EffectDef):
 
 
 class Effect1014(EffectDef):
+    """
+    selfT2MediumProjectileArtyDamageBonus
+
+    Used by:
+    Skill: Medium Artillery Specialization
+    """
 
     type = 'passive'
 
@@ -1790,6 +3014,12 @@ class Effect1014(EffectDef):
 
 
 class Effect1015(EffectDef):
+    """
+    selfT2LargeLaserPulseDamageBonus
+
+    Used by:
+    Skill: Large Pulse Laser Specialization
+    """
 
     type = 'passive'
 
@@ -1800,6 +3030,12 @@ class Effect1015(EffectDef):
 
 
 class Effect1016(EffectDef):
+    """
+    selfT2LargeLaserBeamDamageBonus
+
+    Used by:
+    Skill: Large Beam Laser Specialization
+    """
 
     type = 'passive'
 
@@ -1810,6 +3046,12 @@ class Effect1016(EffectDef):
 
 
 class Effect1017(EffectDef):
+    """
+    selfT2LargeHybridBlasterDamageBonus
+
+    Used by:
+    Skill: Large Blaster Specialization
+    """
 
     type = 'passive'
 
@@ -1820,6 +3062,12 @@ class Effect1017(EffectDef):
 
 
 class Effect1018(EffectDef):
+    """
+    selfT2LargeHybridRailDamageBonus
+
+    Used by:
+    Skill: Large Railgun Specialization
+    """
 
     type = 'passive'
 
@@ -1830,6 +3078,12 @@ class Effect1018(EffectDef):
 
 
 class Effect1019(EffectDef):
+    """
+    selfT2LargeProjectileACDamageBonus
+
+    Used by:
+    Skill: Large Autocannon Specialization
+    """
 
     type = 'passive'
 
@@ -1840,6 +3094,12 @@ class Effect1019(EffectDef):
 
 
 class Effect1020(EffectDef):
+    """
+    selfT2LargeProjectileArtyDamageBonus
+
+    Used by:
+    Skill: Large Artillery Specialization
+    """
 
     type = 'passive'
 
@@ -1850,6 +3110,12 @@ class Effect1020(EffectDef):
 
 
 class Effect1021(EffectDef):
+    """
+    eliteBonusGunshipHybridDmg2
+
+    Used by:
+    Ship: Harpy
+    """
 
     type = 'passive'
 
@@ -1861,6 +3127,13 @@ class Effect1021(EffectDef):
 
 
 class Effect1024(EffectDef):
+    """
+    shipMissileHeavyVelocityBonusCC2
+
+    Used by:
+    Ship: Caracal
+    Ship: Osprey Navy Issue
+    """
 
     type = 'passive'
 
@@ -1871,6 +3144,13 @@ class Effect1024(EffectDef):
 
 
 class Effect1025(EffectDef):
+    """
+    shipMissileLightVelocityBonusCC2
+
+    Used by:
+    Ship: Caracal
+    Ship: Osprey Navy Issue
+    """
 
     type = 'passive'
 
@@ -1881,6 +3161,14 @@ class Effect1025(EffectDef):
 
 
 class Effect1030(EffectDef):
+    """
+    remoteArmorSystemsCapNeedBonusPostPercentCapacitorNeedLocationShipModulesRequiringRemoteArmorSystems
+
+    Used by:
+    Implants named like: Inherent Implants 'Noble' Remote Armor Repair Systems RA (6 of 6)
+    Modules named like: Remote Repair Augmentor (6 of 8)
+    Skill: Remote Armor Repair Systems
+    """
 
     type = 'passive'
 
@@ -1892,6 +3180,12 @@ class Effect1030(EffectDef):
 
 
 class Effect1033(EffectDef):
+    """
+    eliteBonusLogisticRemoteArmorRepairCapNeed1
+
+    Used by:
+    Ship: Oneiros
+    """
 
     type = 'passive'
 
@@ -1902,6 +3196,13 @@ class Effect1033(EffectDef):
 
 
 class Effect1034(EffectDef):
+    """
+    eliteBonusLogisticRemoteArmorRepairCapNeed2
+
+    Used by:
+    Ship: Guardian
+    Ship: Rabisu
+    """
 
     type = 'passive'
 
@@ -1912,6 +3213,12 @@ class Effect1034(EffectDef):
 
 
 class Effect1035(EffectDef):
+    """
+    eliteBonusLogisticShieldTransferCapNeed2
+
+    Used by:
+    Ship: Scimitar
+    """
 
     type = 'passive'
 
@@ -1922,6 +3229,13 @@ class Effect1035(EffectDef):
 
 
 class Effect1036(EffectDef):
+    """
+    eliteBonusLogisticShieldTransferCapNeed1
+
+    Used by:
+    Ship: Basilisk
+    Ship: Etana
+    """
 
     type = 'passive'
 
@@ -1932,6 +3246,12 @@ class Effect1036(EffectDef):
 
 
 class Effect1046(EffectDef):
+    """
+    shipRemoteArmorRangeGC1
+
+    Used by:
+    Ship: Oneiros
+    """
 
     type = 'passive'
 
@@ -1942,6 +3262,12 @@ class Effect1046(EffectDef):
 
 
 class Effect1047(EffectDef):
+    """
+    shipRemoteArmorRangeAC2
+
+    Used by:
+    Ship: Guardian
+    """
 
     type = 'passive'
 
@@ -1952,6 +3278,13 @@ class Effect1047(EffectDef):
 
 
 class Effect1048(EffectDef):
+    """
+    shipShieldTransferRangeCC1
+
+    Used by:
+    Ship: Basilisk
+    Ship: Etana
+    """
 
     type = 'passive'
 
@@ -1962,6 +3295,12 @@ class Effect1048(EffectDef):
 
 
 class Effect1049(EffectDef):
+    """
+    shipShieldTransferRangeMC2
+
+    Used by:
+    Ship: Scimitar
+    """
 
     type = 'passive'
 
@@ -1972,6 +3311,12 @@ class Effect1049(EffectDef):
 
 
 class Effect1056(EffectDef):
+    """
+    eliteBonusHeavyGunshipHybridOptimal1
+
+    Used by:
+    Ship: Eagle
+    """
 
     type = 'passive'
 
@@ -1983,6 +3328,12 @@ class Effect1056(EffectDef):
 
 
 class Effect1057(EffectDef):
+    """
+    eliteBonusHeavyGunshipProjectileOptimal1
+
+    Used by:
+    Ship: Muninn
+    """
 
     type = 'passive'
 
@@ -1994,6 +3345,12 @@ class Effect1057(EffectDef):
 
 
 class Effect1058(EffectDef):
+    """
+    eliteBonusHeavyGunshipLaserOptimal1
+
+    Used by:
+    Ship: Zealot
+    """
 
     type = 'passive'
 
@@ -2005,6 +3362,12 @@ class Effect1058(EffectDef):
 
 
 class Effect1060(EffectDef):
+    """
+    eliteBonusHeavyGunshipProjectileFallOff1
+
+    Used by:
+    Ship: Vagabond
+    """
 
     type = 'passive'
 
@@ -2016,6 +3379,13 @@ class Effect1060(EffectDef):
 
 
 class Effect1061(EffectDef):
+    """
+    eliteBonusHeavyGunshipHybridDmg2
+
+    Used by:
+    Ship: Deimos
+    Ship: Eagle
+    """
 
     type = 'passive'
 
@@ -2027,6 +3397,12 @@ class Effect1061(EffectDef):
 
 
 class Effect1062(EffectDef):
+    """
+    eliteBonusHeavyGunshipLaserDmg2
+
+    Used by:
+    Ship: Zealot
+    """
 
     type = 'passive'
 
@@ -2038,6 +3414,12 @@ class Effect1062(EffectDef):
 
 
 class Effect1063(EffectDef):
+    """
+    eliteBonusHeavyGunshipProjectileTracking2
+
+    Used by:
+    Ship: Muninn
+    """
 
     type = 'passive'
 
@@ -2049,6 +3431,12 @@ class Effect1063(EffectDef):
 
 
 class Effect1080(EffectDef):
+    """
+    eliteBonusHeavyGunshipHybridFallOff1
+
+    Used by:
+    Ship: Deimos
+    """
 
     type = 'passive'
 
@@ -2060,6 +3448,12 @@ class Effect1080(EffectDef):
 
 
 class Effect1081(EffectDef):
+    """
+    eliteBonusHeavyGunshipHeavyMissileFlightTime1
+
+    Used by:
+    Ship: Cerberus
+    """
 
     type = 'passive'
 
@@ -2071,6 +3465,12 @@ class Effect1081(EffectDef):
 
 
 class Effect1082(EffectDef):
+    """
+    eliteBonusHeavyGunshipLightMissileFlightTime1
+
+    Used by:
+    Ship: Cerberus
+    """
 
     type = 'passive'
 
@@ -2082,6 +3482,12 @@ class Effect1082(EffectDef):
 
 
 class Effect1084(EffectDef):
+    """
+    eliteBonusHeavyGunshipDroneControlRange1
+
+    Used by:
+    Ship: Ishtar
+    """
 
     type = 'passive'
 
@@ -2092,6 +3498,12 @@ class Effect1084(EffectDef):
 
 
 class Effect1087(EffectDef):
+    """
+    eliteBonusHeavyGunshipProjectileDmg2
+
+    Used by:
+    Ship: Vagabond
+    """
 
     type = 'passive'
 
@@ -2103,6 +3515,14 @@ class Effect1087(EffectDef):
 
 
 class Effect1099(EffectDef):
+    """
+    shipProjectileTrackingMF2
+
+    Used by:
+    Variations of ship: Slasher (3 of 3)
+    Ship: Republic Fleet Firetail
+    Ship: Wolf
+    """
 
     type = 'passive'
 
@@ -2113,6 +3533,13 @@ class Effect1099(EffectDef):
 
 
 class Effect1176(EffectDef):
+    """
+    accerationControlSkillAb&MwdSpeedBoost
+
+    Used by:
+    Implant: Zor's Custom Navigation Hyper-Link
+    Skill: Acceleration Control
+    """
 
     type = 'passive'
 
@@ -2124,6 +3551,12 @@ class Effect1176(EffectDef):
 
 
 class Effect1179(EffectDef):
+    """
+    eliteBonusGunshipLaserDamage2
+
+    Used by:
+    Ship: Retribution
+    """
 
     type = 'passive'
 
@@ -2135,6 +3568,12 @@ class Effect1179(EffectDef):
 
 
 class Effect1181(EffectDef):
+    """
+    eliteBonusLogisticEnergyTransferCapNeed1
+
+    Used by:
+    Ship: Guardian
+    """
 
     type = 'passive'
 
@@ -2146,6 +3585,12 @@ class Effect1181(EffectDef):
 
 
 class Effect1182(EffectDef):
+    """
+    shipEnergyTransferRange1
+
+    Used by:
+    Ship: Guardian
+    """
 
     type = 'passive'
 
@@ -2156,6 +3601,13 @@ class Effect1182(EffectDef):
 
 
 class Effect1183(EffectDef):
+    """
+    eliteBonusLogisticEnergyTransferCapNeed2
+
+    Used by:
+    Ship: Basilisk
+    Ship: Etana
+    """
 
     type = 'passive'
 
@@ -2167,6 +3619,13 @@ class Effect1183(EffectDef):
 
 
 class Effect1184(EffectDef):
+    """
+    shipEnergyTransferRange2
+
+    Used by:
+    Ship: Basilisk
+    Ship: Etana
+    """
 
     type = 'passive'
 
@@ -2177,6 +3636,13 @@ class Effect1184(EffectDef):
 
 
 class Effect1185(EffectDef):
+    """
+    structureStealthEmitterArraySigDecrease
+
+    Used by:
+    Implants named like: X Instinct Booster (4 of 4)
+    Implants named like: grade Halo (15 of 18)
+    """
 
     type = 'passive'
 
@@ -2186,6 +3652,14 @@ class Effect1185(EffectDef):
 
 
 class Effect1190(EffectDef):
+    """
+    iceHarvestCycleTimeModulesRequiringIceHarvesting
+
+    Used by:
+    Implants named like: Inherent Implants 'Yeti' Ice Harvesting IH (3 of 3)
+    Module: Medium Ice Harvester Accelerator I
+    Skill: Ice Harvesting
+    """
 
     type = 'passive'
 
@@ -2197,6 +3671,13 @@ class Effect1190(EffectDef):
 
 
 class Effect1200(EffectDef):
+    """
+    miningInfoMultiplier
+
+    Used by:
+    Charges from group: Mining Crystal (40 of 40)
+    Charges named like: Mining Crystal (42 of 42)
+    """
 
     type = 'passive'
 
@@ -2208,6 +3689,12 @@ class Effect1200(EffectDef):
 
 
 class Effect1212(EffectDef):
+    """
+    crystalMiningamountInfo2
+
+    Used by:
+    Modules from group: Frequency Mining Laser (3 of 3)
+    """
 
     runTime = 'late'
     type = 'passive'
@@ -2218,6 +3705,14 @@ class Effect1212(EffectDef):
 
 
 class Effect1215(EffectDef):
+    """
+    shipEnergyDrainAmountAF1
+
+    Used by:
+    Ship: Caedes
+    Ship: Cruor
+    Ship: Sentinel
+    """
 
     type = 'passive'
 
@@ -2228,6 +3723,14 @@ class Effect1215(EffectDef):
 
 
 class Effect1218(EffectDef):
+    """
+    shipBonusPirateSmallHybridDmg
+
+    Used by:
+    Ship: Daredevil
+    Ship: Hecate
+    Ship: Sunesis
+    """
 
     type = 'passive'
 
@@ -2238,6 +3741,12 @@ class Effect1218(EffectDef):
 
 
 class Effect1219(EffectDef):
+    """
+    shipEnergyVampireTransferAmountBonusAB
+
+    Used by:
+    Ship: Bhaalgorn
+    """
 
     type = 'passive'
 
@@ -2249,6 +3758,14 @@ class Effect1219(EffectDef):
 
 
 class Effect1220(EffectDef):
+    """
+    shipEnergyVampireTransferAmountBonusAc
+
+    Used by:
+    Ship: Ashimmu
+    Ship: Rabisu
+    Ship: Vangel
+    """
 
     type = 'passive'
 
@@ -2259,6 +3776,12 @@ class Effect1220(EffectDef):
 
 
 class Effect1221(EffectDef):
+    """
+    shipStasisWebRangeBonusMB
+
+    Used by:
+    Ship: Bhaalgorn
+    """
 
     type = 'passive'
 
@@ -2269,6 +3792,12 @@ class Effect1221(EffectDef):
 
 
 class Effect1222(EffectDef):
+    """
+    shipStasisWebRangeBonusMC2
+
+    Used by:
+    Ship: Ashimmu
+    """
 
     type = 'passive'
 
@@ -2279,6 +3808,13 @@ class Effect1222(EffectDef):
 
 
 class Effect1228(EffectDef):
+    """
+    shipProjectileTrackingGF
+
+    Used by:
+    Ship: Chremoas
+    Ship: Dramiel
+    """
 
     type = 'passive'
 
@@ -2289,6 +3825,14 @@ class Effect1228(EffectDef):
 
 
 class Effect1230(EffectDef):
+    """
+    shipMissileVelocityPirateFactionFrigate
+
+    Used by:
+    Ship: Barghest
+    Ship: Garmur
+    Ship: Orthrus
+    """
 
     type = 'passive'
 
@@ -2299,6 +3843,13 @@ class Effect1230(EffectDef):
 
 
 class Effect1232(EffectDef):
+    """
+    shipProjectileRofPirateCruiser
+
+    Used by:
+    Ship: Cynabal
+    Ship: Moracha
+    """
 
     type = 'passive'
 
@@ -2309,6 +3860,13 @@ class Effect1232(EffectDef):
 
 
 class Effect1233(EffectDef):
+    """
+    shipHybridDmgPirateCruiser
+
+    Used by:
+    Ship: Gnosis
+    Ship: Vigilant
+    """
 
     type = 'passive'
 
@@ -2319,6 +3877,13 @@ class Effect1233(EffectDef):
 
 
 class Effect1234(EffectDef):
+    """
+    shipMissileVelocityPirateFactionLight
+
+    Used by:
+    Ship: Corax
+    Ship: Talwar
+    """
 
     type = 'passive'
 
@@ -2329,6 +3894,12 @@ class Effect1234(EffectDef):
 
 
 class Effect1239(EffectDef):
+    """
+    shipProjectileRofPirateBattleship
+
+    Used by:
+    Ship: Machariel
+    """
 
     type = 'passive'
 
@@ -2339,6 +3910,12 @@ class Effect1239(EffectDef):
 
 
 class Effect1240(EffectDef):
+    """
+    shipHybridDmgPirateBattleship
+
+    Used by:
+    Ship: Vindicator
+    """
 
     type = 'passive'
 
@@ -2349,6 +3926,12 @@ class Effect1240(EffectDef):
 
 
 class Effect1255(EffectDef):
+    """
+    setBonusBloodraider
+
+    Used by:
+    Implants named like: grade Talisman (18 of 18)
+    """
 
     runTime = 'early'
     type = 'passive'
@@ -2360,6 +3943,12 @@ class Effect1255(EffectDef):
 
 
 class Effect1256(EffectDef):
+    """
+    setBonusBloodraiderNosferatu
+
+    Used by:
+    Implants named like: grade Talisman (15 of 18)
+    """
 
     type = 'passive'
 
@@ -2370,6 +3959,12 @@ class Effect1256(EffectDef):
 
 
 class Effect1261(EffectDef):
+    """
+    setBonusSerpentis
+
+    Used by:
+    Implants named like: grade Snake (18 of 18)
+    """
 
     runTime = 'early'
     type = 'passive'
@@ -2381,6 +3976,12 @@ class Effect1261(EffectDef):
 
 
 class Effect1264(EffectDef):
+    """
+    interceptor2HybridTracking
+
+    Used by:
+    Ship: Taranis
+    """
 
     type = 'passive'
 
@@ -2392,6 +3993,12 @@ class Effect1264(EffectDef):
 
 
 class Effect1268(EffectDef):
+    """
+    interceptor2LaserTracking
+
+    Used by:
+    Ship: Crusader
+    """
 
     type = 'passive'
 
@@ -2403,6 +4010,14 @@ class Effect1268(EffectDef):
 
 
 class Effect1281(EffectDef):
+    """
+    structuralAnalysisEffect
+
+    Used by:
+    Implants named like: Inherent Implants 'Noble' Repair Proficiency RP (6 of 6)
+    Modules named like: Auxiliary Nano Pump (8 of 8)
+    Implant: Imperial Navy Modified 'Noble' Implant
+    """
 
     type = 'passive'
 
@@ -2415,6 +4030,13 @@ class Effect1281(EffectDef):
 
 
 class Effect1318(EffectDef):
+    """
+    ewSkillScanStrengthBonus
+
+    Used by:
+    Modules named like: Particle Dispersion Augmentor (8 of 8)
+    Skill: Signal Dispersion
+    """
 
     type = 'passive'
 
@@ -2430,6 +4052,13 @@ class Effect1318(EffectDef):
 
 
 class Effect1360(EffectDef):
+    """
+    ewSkillRsdCapNeedBonusSkillLevel
+
+    Used by:
+    Implants named like: Zainou 'Gypsy' Sensor Linking SL (6 of 6)
+    Skill: Sensor Linking
+    """
 
     type = 'passive'
 
@@ -2441,6 +4070,13 @@ class Effect1360(EffectDef):
 
 
 class Effect1361(EffectDef):
+    """
+    ewSkillTdCapNeedBonusSkillLevel
+
+    Used by:
+    Implants named like: Zainou 'Gypsy' Weapon Disruption WD (6 of 6)
+    Skill: Weapon Disruption
+    """
 
     type = 'passive'
 
@@ -2452,6 +4088,13 @@ class Effect1361(EffectDef):
 
 
 class Effect1370(EffectDef):
+    """
+    ewSkillTpCapNeedBonusSkillLevel
+
+    Used by:
+    Implants named like: Zainou 'Gypsy' Target Painting TG (6 of 6)
+    Skill: Target Painting
+    """
 
     type = 'passive'
 
@@ -2463,6 +4106,14 @@ class Effect1370(EffectDef):
 
 
 class Effect1372(EffectDef):
+    """
+    ewSkillEwCapNeedSkillLevel
+
+    Used by:
+    Implants named like: Zainou 'Gypsy' Electronic Warfare EW (6 of 6)
+    Modules named like: Signal Disruption Amplifier (8 of 8)
+    Skill: Electronic Warfare
+    """
 
     type = 'passive'
 
@@ -2474,6 +4125,12 @@ class Effect1372(EffectDef):
 
 
 class Effect1395(EffectDef):
+    """
+    shieldBoostAmplifierPassive
+
+    Used by:
+    Implants named like: grade Crystal (15 of 18)
+    """
 
     type = 'passive'
 
@@ -2484,6 +4141,12 @@ class Effect1395(EffectDef):
 
 
 class Effect1397(EffectDef):
+    """
+    setBonusGuristas
+
+    Used by:
+    Implants named like: grade Crystal (18 of 18)
+    """
 
     runTime = 'early'
     type = 'passive'
@@ -2495,6 +4158,14 @@ class Effect1397(EffectDef):
 
 
 class Effect1409(EffectDef):
+    """
+    systemScanDurationSkillAstrometrics
+
+    Used by:
+    Implants named like: Poteque 'Prospector' Astrometric Acquisition AQ (3 of 3)
+    Skill: Astrometric Acquisition
+    Skill: Astrometrics
+    """
 
     type = 'passive'
 
@@ -2506,6 +4177,13 @@ class Effect1409(EffectDef):
 
 
 class Effect1410(EffectDef):
+    """
+    propulsionSkillCapNeedBonusSkillLevel
+
+    Used by:
+    Implants named like: Zainou 'Gypsy' Propulsion Jamming PJ (6 of 6)
+    Skill: Propulsion Jamming
+    """
 
     type = 'passive'
 
@@ -2519,6 +4197,12 @@ class Effect1410(EffectDef):
 
 
 class Effect1412(EffectDef):
+    """
+    shipBonusHybridOptimalCB
+
+    Used by:
+    Ship: Rokh
+    """
 
     type = 'passive'
 
@@ -2529,6 +4213,12 @@ class Effect1412(EffectDef):
 
 
 class Effect1434(EffectDef):
+    """
+    caldariShipEwStrengthCB
+
+    Used by:
+    Ship: Scorpion
+    """
 
     type = 'passive'
 
@@ -2542,6 +4232,12 @@ class Effect1434(EffectDef):
 
 
 class Effect1441(EffectDef):
+    """
+    caldariShipEwOptimalRangeCB3
+
+    Used by:
+    Ship: Scorpion
+    """
 
     type = 'passive'
 
@@ -2552,6 +4248,12 @@ class Effect1441(EffectDef):
 
 
 class Effect1442(EffectDef):
+    """
+    caldariShipEwOptimalRangeCC2
+
+    Used by:
+    Ship: Blackbird
+    """
 
     type = 'passive'
 
@@ -2562,6 +4264,14 @@ class Effect1442(EffectDef):
 
 
 class Effect1443(EffectDef):
+    """
+    caldariShipEwCapacitorNeedCC
+
+    Used by:
+    Ship: Chameleon
+    Ship: Falcon
+    Ship: Rook
+    """
 
     type = 'passive'
 
@@ -2572,6 +4282,13 @@ class Effect1443(EffectDef):
 
 
 class Effect1445(EffectDef):
+    """
+    ewSkillRsdMaxRangeBonus
+
+    Used by:
+    Modules named like: Particle Dispersion Projector (8 of 8)
+    Skill: Long Distance Jamming
+    """
 
     type = 'passive'
 
@@ -2584,6 +4301,13 @@ class Effect1445(EffectDef):
 
 
 class Effect1446(EffectDef):
+    """
+    ewSkillTpMaxRangeBonus
+
+    Used by:
+    Modules named like: Particle Dispersion Projector (8 of 8)
+    Skill: Long Distance Jamming
+    """
 
     type = 'passive'
 
@@ -2596,6 +4320,13 @@ class Effect1446(EffectDef):
 
 
 class Effect1448(EffectDef):
+    """
+    ewSkillTdMaxRangeBonus
+
+    Used by:
+    Modules named like: Particle Dispersion Projector (8 of 8)
+    Skill: Long Distance Jamming
+    """
 
     type = 'passive'
 
@@ -2608,6 +4339,12 @@ class Effect1448(EffectDef):
 
 
 class Effect1449(EffectDef):
+    """
+    ewSkillRsdFallOffBonus
+
+    Used by:
+    Skill: Frequency Modulation
+    """
 
     type = 'passive'
 
@@ -2618,6 +4355,12 @@ class Effect1449(EffectDef):
 
 
 class Effect1450(EffectDef):
+    """
+    ewSkillTpFallOffBonus
+
+    Used by:
+    Skill: Frequency Modulation
+    """
 
     type = 'passive'
 
@@ -2628,6 +4371,12 @@ class Effect1450(EffectDef):
 
 
 class Effect1451(EffectDef):
+    """
+    ewSkillTdFallOffBonus
+
+    Used by:
+    Skill: Frequency Modulation
+    """
 
     type = 'passive'
 
@@ -2638,6 +4387,14 @@ class Effect1451(EffectDef):
 
 
 class Effect1452(EffectDef):
+    """
+    ewSkillEwMaxRangeBonus
+
+    Used by:
+    Implants named like: grade Centurion (10 of 12)
+    Modules named like: Particle Dispersion Projector (8 of 8)
+    Skill: Long Distance Jamming
+    """
 
     type = 'passive'
 
@@ -2650,6 +4407,12 @@ class Effect1452(EffectDef):
 
 
 class Effect1453(EffectDef):
+    """
+    ewSkillEwFallOffBonus
+
+    Used by:
+    Skill: Frequency Modulation
+    """
 
     type = 'passive'
 
@@ -2660,6 +4423,14 @@ class Effect1453(EffectDef):
 
 
 class Effect1472(EffectDef):
+    """
+    missileSkillAoeCloudSizeBonus
+
+    Used by:
+    Implants named like: Zainou 'Deadeye' Guided Missile Precision GP (6 of 6)
+    Modules named like: Warhead Rigor Catalyst (8 of 8)
+    Skill: Guided Missile Precision
+    """
 
     type = 'passive'
 
@@ -2673,6 +4444,13 @@ class Effect1472(EffectDef):
 
 
 class Effect1500(EffectDef):
+    """
+    shieldOperationSkillBoostCapacitorNeedBonus
+
+    Used by:
+    Modules named like: Core Defense Capacitor Safeguard (8 of 8)
+    Skill: Shield Compensation
+    """
 
     type = 'passive'
 
@@ -2684,6 +4462,12 @@ class Effect1500(EffectDef):
 
 
 class Effect1550(EffectDef):
+    """
+    ewSkillTargetPaintingStrengthBonus
+
+    Used by:
+    Skill: Signature Focusing
+    """
 
     type = 'passive'
 
@@ -2695,6 +4479,13 @@ class Effect1550(EffectDef):
 
 
 class Effect1551(EffectDef):
+    """
+    minmatarShipEwTargetPainterMF2
+
+    Used by:
+    Ship: Hyena
+    Ship: Vigil
+    """
 
     type = 'passive'
 
@@ -2706,6 +4497,12 @@ class Effect1551(EffectDef):
 
 
 class Effect1577(EffectDef):
+    """
+    angelsetbonus
+
+    Used by:
+    Implants named like: grade Halo (18 of 18)
+    """
 
     runTime = 'early'
     type = 'passive'
@@ -2720,6 +4517,13 @@ class Effect1577(EffectDef):
 
 
 class Effect1579(EffectDef):
+    """
+    setBonusSansha
+
+    Used by:
+    Implants named like: grade Slave (18 of 18)
+    Implant: High-grade Halo Omega
+    """
 
     runTime = 'early'
     type = 'passive'
@@ -2731,6 +4535,12 @@ class Effect1579(EffectDef):
 
 
 class Effect1581(EffectDef):
+    """
+    jumpDriveSkillsRangeBonus
+
+    Used by:
+    Skill: Jump Drive Calibration
+    """
 
     type = 'passive'
 
@@ -2740,6 +4550,12 @@ class Effect1581(EffectDef):
 
 
 class Effect1585(EffectDef):
+    """
+    capitalTurretSkillLaserDamage
+
+    Used by:
+    Skill: Capital Energy Turret
+    """
 
     type = 'passive'
 
@@ -2750,6 +4566,12 @@ class Effect1585(EffectDef):
 
 
 class Effect1586(EffectDef):
+    """
+    capitalTurretSkillProjectileDamage
+
+    Used by:
+    Skill: Capital Projectile Turret
+    """
 
     type = 'passive'
 
@@ -2760,6 +4582,12 @@ class Effect1586(EffectDef):
 
 
 class Effect1587(EffectDef):
+    """
+    capitalTurretSkillHybridDamage
+
+    Used by:
+    Skill: Capital Hybrid Turret
+    """
 
     type = 'passive'
 
@@ -2770,6 +4598,13 @@ class Effect1587(EffectDef):
 
 
 class Effect1588(EffectDef):
+    """
+    capitalLauncherSkillCitadelKineticDamage
+
+    Used by:
+    Implants named like: Hardwiring Zainou 'Sharpshooter' ZMX (6 of 6)
+    Skill: XL Torpedoes
+    """
 
     type = 'passive'
 
@@ -2781,6 +4616,14 @@ class Effect1588(EffectDef):
 
 
 class Effect1590(EffectDef):
+    """
+    missileSkillAoeVelocityBonus
+
+    Used by:
+    Implants named like: Zainou 'Deadeye' Target Navigation Prediction TN (6 of 6)
+    Modules named like: Warhead Flare Catalyst (8 of 8)
+    Skill: Target Navigation Prediction
+    """
 
     type = 'passive'
 
@@ -2794,6 +4637,13 @@ class Effect1590(EffectDef):
 
 
 class Effect1592(EffectDef):
+    """
+    capitalLauncherSkillCitadelEmDamage
+
+    Used by:
+    Implants named like: Hardwiring Zainou 'Sharpshooter' ZMX (6 of 6)
+    Skill: XL Torpedoes
+    """
 
     type = 'passive'
 
@@ -2805,6 +4655,13 @@ class Effect1592(EffectDef):
 
 
 class Effect1593(EffectDef):
+    """
+    capitalLauncherSkillCitadelExplosiveDamage
+
+    Used by:
+    Implants named like: Hardwiring Zainou 'Sharpshooter' ZMX (6 of 6)
+    Skill: XL Torpedoes
+    """
 
     type = 'passive'
 
@@ -2816,6 +4673,13 @@ class Effect1593(EffectDef):
 
 
 class Effect1594(EffectDef):
+    """
+    capitalLauncherSkillCitadelThermalDamage
+
+    Used by:
+    Implants named like: Hardwiring Zainou 'Sharpshooter' ZMX (6 of 6)
+    Skill: XL Torpedoes
+    """
 
     type = 'passive'
 
@@ -2827,6 +4691,13 @@ class Effect1594(EffectDef):
 
 
 class Effect1595(EffectDef):
+    """
+    missileSkillWarheadUpgradesEmDamageBonus
+
+    Used by:
+    Implants named like: Agency 'Pyrolancea' DB Dose (4 of 4)
+    Skill: Warhead Upgrades
+    """
 
     type = 'passive'
 
@@ -2838,6 +4709,13 @@ class Effect1595(EffectDef):
 
 
 class Effect1596(EffectDef):
+    """
+    missileSkillWarheadUpgradesExplosiveDamageBonus
+
+    Used by:
+    Implants named like: Agency 'Pyrolancea' DB Dose (4 of 4)
+    Skill: Warhead Upgrades
+    """
 
     type = 'passive'
 
@@ -2849,6 +4727,13 @@ class Effect1596(EffectDef):
 
 
 class Effect1597(EffectDef):
+    """
+    missileSkillWarheadUpgradesKineticDamageBonus
+
+    Used by:
+    Implants named like: Agency 'Pyrolancea' DB Dose (4 of 4)
+    Skill: Warhead Upgrades
+    """
 
     type = 'passive'
 
@@ -2860,6 +4745,12 @@ class Effect1597(EffectDef):
 
 
 class Effect1615(EffectDef):
+    """
+    shipAdvancedSpaceshipCommandAgilityBonus
+
+    Used by:
+    Items from market group: Ships > Capital Ships (40 of 40)
+    """
 
     type = 'passive'
 
@@ -2871,6 +4762,12 @@ class Effect1615(EffectDef):
 
 
 class Effect1616(EffectDef):
+    """
+    skillCapitalShipsAdvancedAgility
+
+    Used by:
+    Skill: Capital Ships
+    """
 
     type = 'passive'
 
@@ -2881,6 +4778,12 @@ class Effect1616(EffectDef):
 
 
 class Effect1617(EffectDef):
+    """
+    shipCapitalAgilityBonus
+
+    Used by:
+    Items from market group: Ships > Capital Ships (31 of 40)
+    """
 
     type = 'passive'
 
@@ -2890,6 +4793,13 @@ class Effect1617(EffectDef):
 
 
 class Effect1634(EffectDef):
+    """
+    capitalShieldOperationSkillCapacitorNeedBonus
+
+    Used by:
+    Modules named like: Core Defense Capacitor Safeguard (8 of 8)
+    Skill: Capital Shield Operation
+    """
 
     type = 'passive'
 
@@ -2901,6 +4811,13 @@ class Effect1634(EffectDef):
 
 
 class Effect1635(EffectDef):
+    """
+    capitalRepairSystemsSkillDurationBonus
+
+    Used by:
+    Modules named like: Nanobot Accelerator (8 of 8)
+    Skill: Capital Repair Systems
+    """
 
     type = 'passive'
 
@@ -2913,6 +4830,12 @@ class Effect1635(EffectDef):
 
 
 class Effect1638(EffectDef):
+    """
+    skillAdvancedWeaponUpgradesPowerNeedBonus
+
+    Used by:
+    Skill: Advanced Weapon Upgrades
+    """
 
     type = 'passive'
 
@@ -2924,6 +4847,14 @@ class Effect1638(EffectDef):
 
 
 class Effect1643(EffectDef):
+    """
+    armoredCommandMindlink
+
+    Used by:
+    Implant: Armored Command Mindlink
+    Implant: Federation Navy Command Mindlink
+    Implant: Imperial Navy Command Mindlink
+    """
 
     type = 'passive'
 
@@ -2942,6 +4873,14 @@ class Effect1643(EffectDef):
 
 
 class Effect1644(EffectDef):
+    """
+    skirmishCommandMindlink
+
+    Used by:
+    Implant: Federation Navy Command Mindlink
+    Implant: Republic Fleet Command Mindlink
+    Implant: Skirmish Command Mindlink
+    """
 
     type = 'passive'
 
@@ -2960,6 +4899,12 @@ class Effect1644(EffectDef):
 
 
 class Effect1645(EffectDef):
+    """
+    shieldCommandMindlink
+
+    Used by:
+    Implants from group: Cyber Leadership (4 of 10)
+    """
 
     type = 'passive'
 
@@ -2978,6 +4923,14 @@ class Effect1645(EffectDef):
 
 
 class Effect1646(EffectDef):
+    """
+    informationCommandMindlink
+
+    Used by:
+    Implant: Caldari Navy Command Mindlink
+    Implant: Imperial Navy Command Mindlink
+    Implant: Information Command Mindlink
+    """
 
     type = 'passive'
 
@@ -2996,6 +4949,12 @@ class Effect1646(EffectDef):
 
 
 class Effect1650(EffectDef):
+    """
+    skillSiegeModuleConsumptionQuantityBonus
+
+    Used by:
+    Skill: Tactical Weapon Reconfiguration
+    """
 
     type = 'passive'
 
@@ -3007,6 +4966,13 @@ class Effect1650(EffectDef):
 
 
 class Effect1657(EffectDef):
+    """
+    missileSkillWarheadUpgradesThermalDamageBonus
+
+    Used by:
+    Implants named like: Agency 'Pyrolancea' DB Dose (4 of 4)
+    Skill: Warhead Upgrades
+    """
 
     type = 'passive'
 
@@ -3018,6 +4984,12 @@ class Effect1657(EffectDef):
 
 
 class Effect1668(EffectDef):
+    """
+    freighterCargoBonusA2
+
+    Used by:
+    Variations of ship: Providence (2 of 2)
+    """
 
     type = 'passive'
 
@@ -3027,6 +4999,12 @@ class Effect1668(EffectDef):
 
 
 class Effect1669(EffectDef):
+    """
+    freighterCargoBonusC2
+
+    Used by:
+    Variations of ship: Charon (2 of 2)
+    """
 
     type = 'passive'
 
@@ -3036,6 +5014,12 @@ class Effect1669(EffectDef):
 
 
 class Effect1670(EffectDef):
+    """
+    freighterCargoBonusG2
+
+    Used by:
+    Variations of ship: Obelisk (2 of 2)
+    """
 
     type = 'passive'
 
@@ -3045,6 +5029,12 @@ class Effect1670(EffectDef):
 
 
 class Effect1671(EffectDef):
+    """
+    freighterCargoBonusM2
+
+    Used by:
+    Variations of ship: Fenrir (2 of 2)
+    """
 
     type = 'passive'
 
@@ -3054,6 +5044,12 @@ class Effect1671(EffectDef):
 
 
 class Effect1672(EffectDef):
+    """
+    freighterMaxVelocityBonusA1
+
+    Used by:
+    Ship: Providence
+    """
 
     type = 'passive'
 
@@ -3063,6 +5059,12 @@ class Effect1672(EffectDef):
 
 
 class Effect1673(EffectDef):
+    """
+    freighterMaxVelocityBonusC1
+
+    Used by:
+    Ship: Charon
+    """
 
     type = 'passive'
 
@@ -3072,6 +5074,12 @@ class Effect1673(EffectDef):
 
 
 class Effect1674(EffectDef):
+    """
+    freighterMaxVelocityBonusG1
+
+    Used by:
+    Ship: Obelisk
+    """
 
     type = 'passive'
 
@@ -3081,6 +5089,12 @@ class Effect1674(EffectDef):
 
 
 class Effect1675(EffectDef):
+    """
+    freighterMaxVelocityBonusM1
+
+    Used by:
+    Ship: Fenrir
+    """
 
     type = 'passive'
 
@@ -3090,6 +5104,13 @@ class Effect1675(EffectDef):
 
 
 class Effect1720(EffectDef):
+    """
+    shieldBoostAmplifier
+
+    Used by:
+    Modules from group: Capacitor Power Relay (20 of 20)
+    Modules from group: Shield Boost Amplifier (25 of 25)
+    """
 
     type = 'passive'
 
@@ -3102,6 +5123,12 @@ class Effect1720(EffectDef):
 
 
 class Effect1722(EffectDef):
+    """
+    jumpDriveSkillsCapacitorNeedBonus
+
+    Used by:
+    Skill: Jump Drive Operation
+    """
 
     type = 'passive'
 
@@ -3112,6 +5139,12 @@ class Effect1722(EffectDef):
 
 
 class Effect1730(EffectDef):
+    """
+    droneDmgBonus
+
+    Used by:
+    Skills from group: Drones (8 of 26)
+    """
 
     type = 'passive'
 
@@ -3122,11 +5155,27 @@ class Effect1730(EffectDef):
 
 
 class Effect1738(EffectDef):
+    """
+    doHacking
+
+    Used by:
+    Modules from group: Data Miners (10 of 10)
+    """
 
     type = 'active'
 
 
 class Effect1763(EffectDef):
+    """
+    missileSkillRapidLauncherRoF
+
+    Used by:
+    Implants named like: Zainou 'Deadeye' Rapid Launch RL (6 of 6)
+    Implant: Standard Cerebral Accelerator
+    Implant: Whelan Machorin's Ballistic Smartlink
+    Skill: Missile Launcher Operation
+    Skill: Rapid Launch
+    """
 
     type = 'passive'
 
@@ -3138,6 +5187,14 @@ class Effect1763(EffectDef):
 
 
 class Effect1764(EffectDef):
+    """
+    missileSkillMissileProjectileVelocityBonus
+
+    Used by:
+    Implants named like: Zainou 'Deadeye' Missile Projection MP (6 of 6)
+    Modules named like: Hydraulic Bay Thrusters (8 of 8)
+    Skill: Missile Projection
+    """
 
     type = 'passive'
 
@@ -3151,6 +5208,13 @@ class Effect1764(EffectDef):
 
 
 class Effect1773(EffectDef):
+    """
+    shipBonusSHTFalloffGF2
+
+    Used by:
+    Ship: Atron
+    Ship: Daredevil
+    """
 
     type = 'passive'
 
@@ -3161,6 +5225,14 @@ class Effect1773(EffectDef):
 
 
 class Effect1804(EffectDef):
+    """
+    shipArmorEMResistanceAF1
+
+    Used by:
+    Ship: Astero
+    Ship: Malice
+    Ship: Punisher
+    """
 
     type = 'passive'
 
@@ -3170,6 +5242,14 @@ class Effect1804(EffectDef):
 
 
 class Effect1805(EffectDef):
+    """
+    shipArmorTHResistanceAF1
+
+    Used by:
+    Ship: Astero
+    Ship: Malice
+    Ship: Punisher
+    """
 
     type = 'passive'
 
@@ -3180,6 +5260,14 @@ class Effect1805(EffectDef):
 
 
 class Effect1806(EffectDef):
+    """
+    shipArmorKNResistanceAF1
+
+    Used by:
+    Ship: Astero
+    Ship: Malice
+    Ship: Punisher
+    """
 
     type = 'passive'
 
@@ -3190,6 +5278,14 @@ class Effect1806(EffectDef):
 
 
 class Effect1807(EffectDef):
+    """
+    shipArmorEXResistanceAF1
+
+    Used by:
+    Ship: Astero
+    Ship: Malice
+    Ship: Punisher
+    """
 
     type = 'passive'
 
@@ -3200,6 +5296,12 @@ class Effect1807(EffectDef):
 
 
 class Effect1812(EffectDef):
+    """
+    shipShieldEMResistanceCC2
+
+    Used by:
+    Variations of ship: Moa (3 of 4)
+    """
 
     type = 'passive'
 
@@ -3209,6 +5311,12 @@ class Effect1812(EffectDef):
 
 
 class Effect1813(EffectDef):
+    """
+    shipShieldThermalResistanceCC2
+
+    Used by:
+    Variations of ship: Moa (3 of 4)
+    """
 
     type = 'passive'
 
@@ -3219,6 +5327,12 @@ class Effect1813(EffectDef):
 
 
 class Effect1814(EffectDef):
+    """
+    shipShieldKineticResistanceCC2
+
+    Used by:
+    Variations of ship: Moa (3 of 4)
+    """
 
     type = 'passive'
 
@@ -3229,6 +5343,12 @@ class Effect1814(EffectDef):
 
 
 class Effect1815(EffectDef):
+    """
+    shipShieldExplosiveResistanceCC2
+
+    Used by:
+    Variations of ship: Moa (3 of 4)
+    """
 
     type = 'passive'
 
@@ -3239,6 +5359,14 @@ class Effect1815(EffectDef):
 
 
 class Effect1816(EffectDef):
+    """
+    shipShieldEMResistanceCF2
+
+    Used by:
+    Variations of ship: Merlin (3 of 4)
+    Ship: Cambion
+    Ship: Whiptail
+    """
 
     type = 'passive'
 
@@ -3248,6 +5376,14 @@ class Effect1816(EffectDef):
 
 
 class Effect1817(EffectDef):
+    """
+    shipShieldThermalResistanceCF2
+
+    Used by:
+    Variations of ship: Merlin (3 of 4)
+    Ship: Cambion
+    Ship: Whiptail
+    """
 
     type = 'passive'
 
@@ -3258,6 +5394,14 @@ class Effect1817(EffectDef):
 
 
 class Effect1819(EffectDef):
+    """
+    shipShieldKineticResistanceCF2
+
+    Used by:
+    Variations of ship: Merlin (3 of 4)
+    Ship: Cambion
+    Ship: Whiptail
+    """
 
     type = 'passive'
 
@@ -3268,6 +5412,14 @@ class Effect1819(EffectDef):
 
 
 class Effect1820(EffectDef):
+    """
+    shipShieldExplosiveResistanceCF2
+
+    Used by:
+    Variations of ship: Merlin (3 of 4)
+    Ship: Cambion
+    Ship: Whiptail
+    """
 
     type = 'passive'
 
@@ -3278,6 +5430,13 @@ class Effect1820(EffectDef):
 
 
 class Effect1848(EffectDef):
+    """
+    miningForemanMindlink
+
+    Used by:
+    Implant: Mining Foreman Mindlink
+    Implant: ORE Mining Director Mindlink
+    """
 
     type = 'passive'
 
@@ -3296,6 +5455,14 @@ class Effect1848(EffectDef):
 
 
 class Effect1851(EffectDef):
+    """
+    selfRof
+
+    Used by:
+    Skills named like: Missile Specialization (4 of 5)
+    Skill: Rocket Specialization
+    Skill: Torpedo Specialization
+    """
 
     type = 'passive'
 
@@ -3306,6 +5473,12 @@ class Effect1851(EffectDef):
 
 
 class Effect1862(EffectDef):
+    """
+    shipMissileEMDamageCF2
+
+    Used by:
+    Ship: Garmur
+    """
 
     type = 'passive'
 
@@ -3316,6 +5489,12 @@ class Effect1862(EffectDef):
 
 
 class Effect1863(EffectDef):
+    """
+    shipMissileThermalDamageCF2
+
+    Used by:
+    Ship: Garmur
+    """
 
     type = 'passive'
 
@@ -3326,6 +5505,12 @@ class Effect1863(EffectDef):
 
 
 class Effect1864(EffectDef):
+    """
+    shipMissileExplosiveDamageCF2
+
+    Used by:
+    Ship: Garmur
+    """
 
     type = 'passive'
 
@@ -3337,6 +5522,13 @@ class Effect1864(EffectDef):
 
 
 class Effect1882(EffectDef):
+    """
+    miningYieldMultiplyPercent
+
+    Used by:
+    Variations of module: Mining Laser Upgrade I (5 of 5)
+    Module: Frostline 'Omnivore' Harvester Upgrade
+    """
 
     type = 'passive'
 
@@ -3347,6 +5539,13 @@ class Effect1882(EffectDef):
 
 
 class Effect1885(EffectDef):
+    """
+    shipCruiseLauncherROFBonus2CB
+
+    Used by:
+    Ship: Raven
+    Ship: Raven State Issue
+    """
 
     type = 'passive'
 
@@ -3357,6 +5556,13 @@ class Effect1885(EffectDef):
 
 
 class Effect1886(EffectDef):
+    """
+    shipSiegeLauncherROFBonus2CB
+
+    Used by:
+    Ship: Raven
+    Ship: Raven State Issue
+    """
 
     type = 'passive'
 
@@ -3367,6 +5573,12 @@ class Effect1886(EffectDef):
 
 
 class Effect1896(EffectDef):
+    """
+    eliteBargeBonusIceHarvestingCycleTimeBarge3
+
+    Used by:
+    Ships from group: Exhumer (3 of 3)
+    """
 
     type = 'passive'
 
@@ -3377,6 +5589,13 @@ class Effect1896(EffectDef):
 
 
 class Effect1910(EffectDef):
+    """
+    eliteBonusVampireDrainAmount2
+
+    Used by:
+    Ship: Curse
+    Ship: Pilgrim
+    """
 
     type = 'passive'
 
@@ -3388,6 +5607,14 @@ class Effect1910(EffectDef):
 
 
 class Effect1911(EffectDef):
+    """
+    eliteReconBonusGravimetricStrength2
+
+    Used by:
+    Ship: Chameleon
+    Ship: Falcon
+    Ship: Rook
+    """
 
     type = 'passive'
 
@@ -3399,6 +5626,14 @@ class Effect1911(EffectDef):
 
 
 class Effect1912(EffectDef):
+    """
+    eliteReconBonusMagnetometricStrength2
+
+    Used by:
+    Ship: Chameleon
+    Ship: Falcon
+    Ship: Rook
+    """
 
     type = 'passive'
 
@@ -3410,6 +5645,14 @@ class Effect1912(EffectDef):
 
 
 class Effect1913(EffectDef):
+    """
+    eliteReconBonusRadarStrength2
+
+    Used by:
+    Ship: Chameleon
+    Ship: Falcon
+    Ship: Rook
+    """
 
     type = 'passive'
 
@@ -3421,6 +5664,14 @@ class Effect1913(EffectDef):
 
 
 class Effect1914(EffectDef):
+    """
+    eliteReconBonusLadarStrength2
+
+    Used by:
+    Ship: Chameleon
+    Ship: Falcon
+    Ship: Rook
+    """
 
     type = 'passive'
 
@@ -3432,6 +5683,15 @@ class Effect1914(EffectDef):
 
 
 class Effect1921(EffectDef):
+    """
+    eliteReconStasisWebBonus2
+
+    Used by:
+    Ship: Huginn
+    Ship: Moracha
+    Ship: Rapier
+    Ship: Victor
+    """
 
     type = 'passive'
 
@@ -3442,6 +5702,14 @@ class Effect1921(EffectDef):
 
 
 class Effect1922(EffectDef):
+    """
+    eliteReconScramblerRangeBonus2
+
+    Used by:
+    Ship: Arazu
+    Ship: Enforcer
+    Ship: Lachesis
+    """
 
     type = 'passive'
 
@@ -3452,6 +5720,12 @@ class Effect1922(EffectDef):
 
 
 class Effect1959(EffectDef):
+    """
+    armorReinforcerMassAdd
+
+    Used by:
+    Modules from group: Armor Reinforcer (51 of 51)
+    """
 
     type = 'passive'
 
@@ -3461,6 +5735,12 @@ class Effect1959(EffectDef):
 
 
 class Effect1964(EffectDef):
+    """
+    shipBonusShieldTransferCapneed1
+
+    Used by:
+    Ship: Osprey
+    """
 
     type = 'passive'
 
@@ -3471,6 +5751,12 @@ class Effect1964(EffectDef):
 
 
 class Effect1969(EffectDef):
+    """
+    shipBonusRemoteArmorRepairCapNeedGC1
+
+    Used by:
+    Ship: Exequror
+    """
 
     type = 'passive'
 
@@ -3481,6 +5767,13 @@ class Effect1969(EffectDef):
 
 
 class Effect1996(EffectDef):
+    """
+    caldariShipEwCapacitorNeedCF2
+
+    Used by:
+    Ship: Griffin
+    Ship: Kitsune
+    """
 
     type = 'passive'
 
@@ -3491,6 +5784,12 @@ class Effect1996(EffectDef):
 
 
 class Effect2000(EffectDef):
+    """
+    droneRangeBonusAdd
+
+    Used by:
+    Modules from group: Drone Control Range Module (7 of 7)
+    """
 
     type = 'passive'
 
@@ -3501,6 +5800,12 @@ class Effect2000(EffectDef):
 
 
 class Effect2008(EffectDef):
+    """
+    cynosuralDurationBonus
+
+    Used by:
+    Ships from group: Force Recon Ship (8 of 9)
+    """
 
     type = 'passive'
 
@@ -3511,6 +5816,14 @@ class Effect2008(EffectDef):
 
 
 class Effect2013(EffectDef):
+    """
+    droneMaxVelocityBonus
+
+    Used by:
+    Modules named like: Drone Speed Augmentor (6 of 8)
+    Implant: Overmind 'Goliath' Drone Tuner T25-10S
+    Implant: Overmind 'Hawkmoth' Drone Tuner S10-25T
+    """
 
     type = 'passive'
 
@@ -3522,6 +5835,12 @@ class Effect2013(EffectDef):
 
 
 class Effect2014(EffectDef):
+    """
+    droneMaxRangeBonus
+
+    Used by:
+    Modules named like: Drone Scope Chip (6 of 8)
+    """
 
     type = 'passive'
 
@@ -3536,6 +5855,12 @@ class Effect2014(EffectDef):
 
 
 class Effect2015(EffectDef):
+    """
+    droneDurabilityShieldCapBonus
+
+    Used by:
+    Modules named like: Drone Durability Enhancer (6 of 8)
+    """
 
     type = 'passive'
 
@@ -3546,6 +5871,12 @@ class Effect2015(EffectDef):
 
 
 class Effect2016(EffectDef):
+    """
+    droneDurabilityArmorHPBonus
+
+    Used by:
+    Modules named like: Drone Durability Enhancer (6 of 8)
+    """
 
     type = 'passive'
 
@@ -3556,6 +5887,12 @@ class Effect2016(EffectDef):
 
 
 class Effect2017(EffectDef):
+    """
+    droneDurabilityHPBonus
+
+    Used by:
+    Modules named like: Drone Durability Enhancer (6 of 8)
+    """
 
     type = 'passive'
 
@@ -3567,6 +5904,13 @@ class Effect2017(EffectDef):
 
 
 class Effect2019(EffectDef):
+    """
+    repairDroneShieldBonusBonus
+
+    Used by:
+    Modules named like: Drone Repair Augmentor (8 of 8)
+    Skill: Repair Drone Operation
+    """
 
     type = 'passive'
 
@@ -3578,6 +5922,13 @@ class Effect2019(EffectDef):
 
 
 class Effect2020(EffectDef):
+    """
+    repairDroneArmorDamageAmountBonus
+
+    Used by:
+    Modules named like: Drone Repair Augmentor (8 of 8)
+    Skill: Repair Drone Operation
+    """
 
     type = 'passive'
 
@@ -3590,6 +5941,13 @@ class Effect2020(EffectDef):
 
 
 class Effect2029(EffectDef):
+    """
+    addToSignatureRadius2
+
+    Used by:
+    Modules from group: Missile Launcher Bomb (2 of 2)
+    Modules from group: Shield Extender (36 of 36)
+    """
 
     type = 'passive'
 
@@ -3599,6 +5957,13 @@ class Effect2029(EffectDef):
 
 
 class Effect2041(EffectDef):
+    """
+    modifyArmorResonancePostPercent
+
+    Used by:
+    Modules from group: Armor Coating (202 of 202)
+    Modules from group: Armor Plating Energized (187 of 187)
+    """
 
     type = 'passive'
 
@@ -3611,6 +5976,12 @@ class Effect2041(EffectDef):
 
 
 class Effect2052(EffectDef):
+    """
+    modifyShieldResonancePostPercent
+
+    Used by:
+    Modules from group: Shield Resistance Amplifier (88 of 88)
+    """
 
     type = 'passive'
 
@@ -3623,6 +5994,12 @@ class Effect2052(EffectDef):
 
 
 class Effect2053(EffectDef):
+    """
+    emShieldCompensationHardeningBonusGroupShieldAmp
+
+    Used by:
+    Skill: EM Shield Compensation
+    """
 
     type = 'passive'
 
@@ -3633,6 +6010,12 @@ class Effect2053(EffectDef):
 
 
 class Effect2054(EffectDef):
+    """
+    explosiveShieldCompensationHardeningBonusGroupShieldAmp
+
+    Used by:
+    Skill: Explosive Shield Compensation
+    """
 
     type = 'passive'
 
@@ -3644,6 +6027,12 @@ class Effect2054(EffectDef):
 
 
 class Effect2055(EffectDef):
+    """
+    kineticShieldCompensationHardeningBonusGroupShieldAmp
+
+    Used by:
+    Skill: Kinetic Shield Compensation
+    """
 
     type = 'passive'
 
@@ -3655,6 +6044,12 @@ class Effect2055(EffectDef):
 
 
 class Effect2056(EffectDef):
+    """
+    thermalShieldCompensationHardeningBonusGroupShieldAmp
+
+    Used by:
+    Skill: Thermal Shield Compensation
+    """
 
     type = 'passive'
 
@@ -3666,6 +6061,12 @@ class Effect2056(EffectDef):
 
 
 class Effect2105(EffectDef):
+    """
+    emArmorCompensationHardeningBonusGroupArmorCoating
+
+    Used by:
+    Skill: EM Armor Compensation
+    """
 
     type = 'passive'
 
@@ -3676,6 +6077,12 @@ class Effect2105(EffectDef):
 
 
 class Effect2106(EffectDef):
+    """
+    explosiveArmorCompensationHardeningBonusGroupArmorCoating
+
+    Used by:
+    Skill: Explosive Armor Compensation
+    """
 
     type = 'passive'
 
@@ -3687,6 +6094,12 @@ class Effect2106(EffectDef):
 
 
 class Effect2107(EffectDef):
+    """
+    kineticArmorCompensationHardeningBonusGroupArmorCoating
+
+    Used by:
+    Skill: Kinetic Armor Compensation
+    """
 
     type = 'passive'
 
@@ -3698,6 +6111,12 @@ class Effect2107(EffectDef):
 
 
 class Effect2108(EffectDef):
+    """
+    thermicArmorCompensationHardeningBonusGroupArmorCoating
+
+    Used by:
+    Skill: Thermal Armor Compensation
+    """
 
     type = 'passive'
 
@@ -3709,6 +6128,12 @@ class Effect2108(EffectDef):
 
 
 class Effect2109(EffectDef):
+    """
+    emArmorCompensationHardeningBonusGroupEnergized
+
+    Used by:
+    Skill: EM Armor Compensation
+    """
 
     type = 'passive'
 
@@ -3719,6 +6144,12 @@ class Effect2109(EffectDef):
 
 
 class Effect2110(EffectDef):
+    """
+    explosiveArmorCompensationHardeningBonusGroupEnergized
+
+    Used by:
+    Skill: Explosive Armor Compensation
+    """
 
     type = 'passive'
 
@@ -3730,6 +6161,12 @@ class Effect2110(EffectDef):
 
 
 class Effect2111(EffectDef):
+    """
+    kineticArmorCompensationHardeningBonusGroupEnergized
+
+    Used by:
+    Skill: Kinetic Armor Compensation
+    """
 
     type = 'passive'
 
@@ -3741,6 +6178,12 @@ class Effect2111(EffectDef):
 
 
 class Effect2112(EffectDef):
+    """
+    thermicArmorCompensationHardeningBonusGroupEnergized
+
+    Used by:
+    Skill: Thermal Armor Compensation
+    """
 
     type = 'passive'
 
@@ -3752,6 +6195,13 @@ class Effect2112(EffectDef):
 
 
 class Effect2130(EffectDef):
+    """
+    smallHybridMaxRangeBonus
+
+    Used by:
+    Ship: Catalyst
+    Ship: Cormorant
+    """
 
     type = 'passive'
 
@@ -3762,6 +6212,14 @@ class Effect2130(EffectDef):
 
 
 class Effect2131(EffectDef):
+    """
+    smallEnergyMaxRangeBonus
+
+    Used by:
+    Ship: Coercer
+    Ship: Gold Magnate
+    Ship: Silver Magnate
+    """
 
     type = 'passive'
 
@@ -3772,6 +6230,12 @@ class Effect2131(EffectDef):
 
 
 class Effect2132(EffectDef):
+    """
+    smallProjectileMaxRangeBonus
+
+    Used by:
+    Ship: Thrasher
+    """
 
     type = 'passive'
 
@@ -3782,6 +6246,13 @@ class Effect2132(EffectDef):
 
 
 class Effect2133(EffectDef):
+    """
+    energyTransferArrayMaxRangeBonus
+
+    Used by:
+    Ship: Augoror
+    Ship: Osprey
+    """
 
     type = 'passive'
 
@@ -3792,6 +6263,15 @@ class Effect2133(EffectDef):
 
 
 class Effect2134(EffectDef):
+    """
+    shieldTransporterMaxRangeBonus
+
+    Used by:
+    Ships from group: Industrial Command Ship (2 of 2)
+    Ship: Osprey
+    Ship: Rorqual
+    Ship: Scythe
+    """
 
     type = 'passive'
 
@@ -3804,6 +6284,16 @@ class Effect2134(EffectDef):
 
 
 class Effect2135(EffectDef):
+    """
+    armorRepairProjectorMaxRangeBonus
+
+    Used by:
+    Variations of ship: Navitas (2 of 2)
+    Ship: Augoror
+    Ship: Deacon
+    Ship: Exequror
+    Ship: Inquisitor
+    """
 
     type = 'passive'
 
@@ -3816,6 +6306,12 @@ class Effect2135(EffectDef):
 
 
 class Effect2143(EffectDef):
+    """
+    minmatarShipEwTargetPainterMC2
+
+    Used by:
+    Ship: Huginn
+    """
 
     type = 'passive'
 
@@ -3827,6 +6323,12 @@ class Effect2143(EffectDef):
 
 
 class Effect2155(EffectDef):
+    """
+    eliteBonusCommandShipProjectileDamageCS1
+
+    Used by:
+    Ship: Sleipnir
+    """
 
     type = 'passive'
 
@@ -3838,6 +6340,12 @@ class Effect2155(EffectDef):
 
 
 class Effect2156(EffectDef):
+    """
+    eliteBonusCommandShipProjectileFalloffCS2
+
+    Used by:
+    Ship: Sleipnir
+    """
 
     type = 'passive'
 
@@ -3848,6 +6356,12 @@ class Effect2156(EffectDef):
 
 
 class Effect2157(EffectDef):
+    """
+    eliteBonusCommandShipLaserDamageCS1
+
+    Used by:
+    Ship: Absolution
+    """
 
     type = 'passive'
 
@@ -3859,6 +6373,12 @@ class Effect2157(EffectDef):
 
 
 class Effect2158(EffectDef):
+    """
+    eliteBonusCommandShipLaserROFCS2
+
+    Used by:
+    Ship: Absolution
+    """
 
     type = 'passive'
 
@@ -3869,6 +6389,12 @@ class Effect2158(EffectDef):
 
 
 class Effect2160(EffectDef):
+    """
+    eliteBonusCommandShipHybridFalloffCS2
+
+    Used by:
+    Ship: Astarte
+    """
 
     type = 'passive'
 
@@ -3879,6 +6405,12 @@ class Effect2160(EffectDef):
 
 
 class Effect2161(EffectDef):
+    """
+    eliteBonusCommandShipHybridOptimalCS1
+
+    Used by:
+    Ship: Vulture
+    """
 
     type = 'passive'
 
@@ -3890,6 +6422,14 @@ class Effect2161(EffectDef):
 
 
 class Effect2179(EffectDef):
+    """
+    shipBonusDroneHitpointsGC2
+
+    Used by:
+    Ships named like: Stratios (2 of 2)
+    Ship: Vexor
+    Ship: Vexor Navy Issue
+    """
 
     type = 'passive'
 
@@ -3901,6 +6441,12 @@ class Effect2179(EffectDef):
 
 
 class Effect2181(EffectDef):
+    """
+    shipBonusDroneHitpointsFixedAC2
+
+    Used by:
+    Variations of ship: Arbitrator (3 of 3)
+    """
 
     type = 'passive'
 
@@ -3912,6 +6458,13 @@ class Effect2181(EffectDef):
 
 
 class Effect2186(EffectDef):
+    """
+    shipBonusDroneHitpointsGB2
+
+    Used by:
+    Variations of ship: Dominix (3 of 3)
+    Ship: Nestor
+    """
 
     type = 'passive'
 
@@ -3923,6 +6476,13 @@ class Effect2186(EffectDef):
 
 
 class Effect2187(EffectDef):
+    """
+    shipBonusDroneDamageMultiplierGB2
+
+    Used by:
+    Variations of ship: Dominix (3 of 3)
+    Ship: Nestor
+    """
 
     type = 'passive'
 
@@ -3934,6 +6494,14 @@ class Effect2187(EffectDef):
 
 
 class Effect2188(EffectDef):
+    """
+    shipBonusDroneDamageMultiplierGC2
+
+    Used by:
+    Ships named like: Stratios (2 of 2)
+    Ship: Vexor
+    Ship: Vexor Navy Issue
+    """
 
     type = 'passive'
 
@@ -3944,6 +6512,12 @@ class Effect2188(EffectDef):
 
 
 class Effect2189(EffectDef):
+    """
+    shipBonusDroneDamageMultiplierAC2
+
+    Used by:
+    Variations of ship: Arbitrator (3 of 3)
+    """
 
     type = 'passive'
 
@@ -3954,6 +6528,12 @@ class Effect2189(EffectDef):
 
 
 class Effect2200(EffectDef):
+    """
+    eliteBonusInterdictorsMissileKineticDamage1
+
+    Used by:
+    Ship: Flycatcher
+    """
 
     type = 'passive'
 
@@ -3965,6 +6545,12 @@ class Effect2200(EffectDef):
 
 
 class Effect2201(EffectDef):
+    """
+    eliteBonusInterdictorsProjectileFalloff1
+
+    Used by:
+    Ship: Sabre
+    """
 
     type = 'passive'
 
@@ -3975,6 +6561,15 @@ class Effect2201(EffectDef):
 
 
 class Effect2215(EffectDef):
+    """
+    shipBonusPirateFrigateProjDamage
+
+    Used by:
+    Ship: Chremoas
+    Ship: Dramiel
+    Ship: Sunesis
+    Ship: Svipul
+    """
 
     type = 'passive'
 
@@ -3985,6 +6580,12 @@ class Effect2215(EffectDef):
 
 
 class Effect2232(EffectDef):
+    """
+    scanStrengthBonusPercentOnline
+
+    Used by:
+    Modules from group: Signal Amplifier (7 of 7)
+    """
 
     type = 'passive'
 
@@ -3997,6 +6598,12 @@ class Effect2232(EffectDef):
 
 
 class Effect2249(EffectDef):
+    """
+    shipBonusDroneMiningAmountAC2
+
+    Used by:
+    Ship: Arbitrator
+    """
 
     type = 'passive'
 
@@ -4007,6 +6614,13 @@ class Effect2249(EffectDef):
 
 
 class Effect2250(EffectDef):
+    """
+    shipBonusDroneMiningAmountGC2
+
+    Used by:
+    Ship: Vexor
+    Ship: Vexor Navy Issue
+    """
 
     type = 'passive'
 
@@ -4017,6 +6631,14 @@ class Effect2250(EffectDef):
 
 
 class Effect2251(EffectDef):
+    """
+    commandshipMultiRelayEffect
+
+    Used by:
+    Ships from group: Command Ship (8 of 8)
+    Ships from group: Industrial Command Ship (2 of 2)
+    Ship: Rorqual
+    """
 
     type = 'passive'
 
@@ -4029,6 +6651,21 @@ class Effect2251(EffectDef):
 
 
 class Effect2252(EffectDef):
+    """
+    covertOpsAndReconOpsCloakModuleDelayBonus
+
+    Used by:
+    Ships from group: Black Ops (5 of 5)
+    Ships from group: Blockade Runner (4 of 4)
+    Ships from group: Covert Ops (8 of 8)
+    Ships from group: Expedition Frigate (2 of 2)
+    Ships from group: Force Recon Ship (9 of 9)
+    Ships from group: Stealth Bomber (5 of 5)
+    Ships named like: Stratios (2 of 2)
+    Subsystems named like: Defensive Covert Reconfiguration (4 of 4)
+    Ship: Astero
+    Ship: Rabisu
+    """
 
     type = 'passive'
 
@@ -4040,6 +6677,18 @@ class Effect2252(EffectDef):
 
 
 class Effect2253(EffectDef):
+    """
+    covertOpsStealthBomberTargettingDelayBonus
+
+    Used by:
+    Ships from group: Black Ops (5 of 5)
+    Ships from group: Stealth Bomber (5 of 5)
+    Ship: Caedes
+    Ship: Chremoas
+    Ship: Endurance
+    Ship: Etana
+    Ship: Rabisu
+    """
 
     type = 'passive'
 
@@ -4051,11 +6700,24 @@ class Effect2253(EffectDef):
 
 
 class Effect2255(EffectDef):
+    """
+    tractorBeamCan
+
+    Used by:
+    Deployables from group: Mobile Tractor Unit (3 of 3)
+    Modules from group: Tractor Beam (4 of 4)
+    """
 
     type = 'active'
 
 
 class Effect2298(EffectDef):
+    """
+    scanStrengthBonusPercentPassive
+
+    Used by:
+    Implants named like: High grade (20 of 66)
+    """
 
     type = 'passive'
 
@@ -4069,6 +6731,12 @@ class Effect2298(EffectDef):
 
 
 class Effect2302(EffectDef):
+    """
+    damageControl
+
+    Used by:
+    Modules from group: Damage Control (22 of 27)
+    """
 
     type = 'passive'
 
@@ -4084,6 +6752,13 @@ class Effect2302(EffectDef):
 
 
 class Effect2305(EffectDef):
+    """
+    eliteReconBonusEnergyNeutAmount2
+
+    Used by:
+    Ship: Curse
+    Ship: Pilgrim
+    """
 
     type = 'passive'
 
@@ -4095,6 +6770,13 @@ class Effect2305(EffectDef):
 
 
 class Effect2354(EffectDef):
+    """
+    capitalRemoteArmorRepairerCapNeedBonusSkill
+
+    Used by:
+    Variations of module: Capital Remote Repair Augmentor I (2 of 2)
+    Skill: Capital Remote Armor Repair Systems
+    """
 
     type = 'passive'
 
@@ -4106,6 +6788,12 @@ class Effect2354(EffectDef):
 
 
 class Effect2355(EffectDef):
+    """
+    capitalRemoteShieldTransferCapNeedBonusSkill
+
+    Used by:
+    Skill: Capital Shield Emission Systems
+    """
 
     type = 'passive'
 
@@ -4117,6 +6805,12 @@ class Effect2355(EffectDef):
 
 
 class Effect2356(EffectDef):
+    """
+    capitalRemoteEnergyTransferCapNeedBonusSkill
+
+    Used by:
+    Skill: Capital Capacitor Emission Systems
+    """
 
     type = 'passive'
 
@@ -4127,6 +6821,12 @@ class Effect2356(EffectDef):
 
 
 class Effect2402(EffectDef):
+    """
+    skillSuperWeaponDmgBonus
+
+    Used by:
+    Skill: Doomsday Operation
+    """
 
     type = 'passive'
 
@@ -4141,6 +6841,14 @@ class Effect2402(EffectDef):
 
 
 class Effect2422(EffectDef):
+    """
+    implantVelocityBonus
+
+    Used by:
+    Implants named like: Eifyr and Co. 'Rogue' Navigation NN (6 of 6)
+    Implant: Genolution Core Augmentation CA-3
+    Implant: Shaqil's Speed Enhancer
+    """
 
     type = 'passive'
 
@@ -4150,6 +6858,17 @@ class Effect2422(EffectDef):
 
 
 class Effect2432(EffectDef):
+    """
+    energyManagementCapacitorBonusPostPercentCapacityLocationShipGroupCapacitorCapacityBonus
+
+    Used by:
+    Implants named like: Inherent Implants 'Squire' Capacitor Management EM (6 of 6)
+    Implants named like: Mindflood Booster (4 of 4)
+    Modules named like: Semiconductor Memory Cell (8 of 8)
+    Implant: Antipharmakon Aeolis
+    Implant: Genolution Core Augmentation CA-1
+    Skill: Capacitor Management
+    """
 
     type = 'passive'
 
@@ -4160,6 +6879,13 @@ class Effect2432(EffectDef):
 
 
 class Effect2444(EffectDef):
+    """
+    minerCpuUsageMultiplyPercent2
+
+    Used by:
+    Variations of module: Mining Laser Upgrade I (5 of 5)
+    Module: Frostline 'Omnivore' Harvester Upgrade
+    """
 
     type = 'passive'
 
@@ -4170,6 +6896,12 @@ class Effect2444(EffectDef):
 
 
 class Effect2445(EffectDef):
+    """
+    iceMinerCpuUsagePercent
+
+    Used by:
+    Variations of module: Ice Harvester Upgrade I (5 of 5)
+    """
 
     type = 'passive'
 
@@ -4180,6 +6912,13 @@ class Effect2445(EffectDef):
 
 
 class Effect2456(EffectDef):
+    """
+    miningUpgradeCPUPenaltyReductionModulesRequiringMiningUpgradePercent
+
+    Used by:
+    Implants named like: Inherent Implants 'Highwall' Mining Upgrades MU (3 of 3)
+    Skill: Mining Upgrades
+    """
 
     type = 'passive'
 
@@ -4192,6 +6931,13 @@ class Effect2456(EffectDef):
 
 
 class Effect2465(EffectDef):
+    """
+    shipBonusArmorResistAB
+
+    Used by:
+    Ship: Abaddon
+    Ship: Nestor
+    """
 
     type = 'passive'
 
@@ -4203,6 +6949,13 @@ class Effect2465(EffectDef):
 
 
 class Effect2479(EffectDef):
+    """
+    iceHarvestCycleTimeModulesRequiringIceHarvestingOnline
+
+    Used by:
+    Variations of module: Ice Harvester Upgrade I (5 of 5)
+    Module: Frostline 'Omnivore' Harvester Upgrade
+    """
 
     type = 'passive'
 
@@ -4213,6 +6966,15 @@ class Effect2479(EffectDef):
 
 
 class Effect2485(EffectDef):
+    """
+    implantArmorHpBonus2
+
+    Used by:
+    Implants named like: Inherent Implants 'Noble' Hull Upgrades HG (7 of 7)
+    Implant: Genolution Core Augmentation CA-4
+    Implant: Imperial Navy Modified 'Noble' Implant
+    Implant: Imperial Special Ops Field Enhancer - Standard
+    """
 
     type = 'passive'
 
@@ -4222,6 +6984,12 @@ class Effect2485(EffectDef):
 
 
 class Effect2488(EffectDef):
+    """
+    implantVelocityBonus2
+
+    Used by:
+    Implant: Republic Special Ops Field Enhancer - Gamma
+    """
 
     type = 'passive'
 
@@ -4231,6 +6999,12 @@ class Effect2488(EffectDef):
 
 
 class Effect2489(EffectDef):
+    """
+    shipBonusRemoteTrackingComputerFalloffMC
+
+    Used by:
+    Ship: Scimitar
+    """
 
     type = 'passive'
 
@@ -4242,6 +7016,12 @@ class Effect2489(EffectDef):
 
 
 class Effect2490(EffectDef):
+    """
+    shipBonusRemoteTrackingComputerFalloffGC2
+
+    Used by:
+    Ship: Oneiros
+    """
 
     type = 'passive'
 
@@ -4253,6 +7033,13 @@ class Effect2490(EffectDef):
 
 
 class Effect2491(EffectDef):
+    """
+    ewSkillEcmBurstRangeBonus
+
+    Used by:
+    Modules named like: Particle Dispersion Projector (8 of 8)
+    Skill: Long Distance Jamming
+    """
 
     type = 'passive'
 
@@ -4265,6 +7052,14 @@ class Effect2491(EffectDef):
 
 
 class Effect2492(EffectDef):
+    """
+    ewSkillEcmBurstCapNeedBonus
+
+    Used by:
+    Implants named like: Zainou 'Gypsy' Electronic Warfare EW (6 of 6)
+    Modules named like: Signal Disruption Amplifier (8 of 8)
+    Skill: Electronic Warfare
+    """
 
     type = 'passive'
 
@@ -4276,6 +7071,13 @@ class Effect2492(EffectDef):
 
 
 class Effect2503(EffectDef):
+    """
+    shipHTTrackingBonusGB2
+
+    Used by:
+    Ships named like: Megathron (3 of 3)
+    Ship: Marshal
+    """
 
     type = 'passive'
 
@@ -4287,6 +7089,15 @@ class Effect2503(EffectDef):
 
 
 class Effect2504(EffectDef):
+    """
+    shipBonusHybridTrackingGF2
+
+    Used by:
+    Ship: Ares
+    Ship: Federation Navy Comet
+    Ship: Pacifier
+    Ship: Tristan
+    """
 
     type = 'passive'
 
@@ -4297,6 +7108,12 @@ class Effect2504(EffectDef):
 
 
 class Effect2561(EffectDef):
+    """
+    eliteBonusAssaultShipMissileVelocity1
+
+    Used by:
+    Ship: Hawk
+    """
 
     type = 'passive'
 
@@ -4308,6 +7125,13 @@ class Effect2561(EffectDef):
 
 
 class Effect2589(EffectDef):
+    """
+    modifyBoosterEffectChanceWithBoosterChanceBonusPostPercent
+
+    Used by:
+    Implants named like: Eifyr and Co. 'Alchemist' Neurotoxin Recovery NR (2 of 2)
+    Skill: Neurotoxin Recovery
+    """
 
     type = 'passive'
 
@@ -4321,6 +7145,14 @@ class Effect2589(EffectDef):
 
 
 class Effect2602(EffectDef):
+    """
+    shipBonusEmShieldResistanceCB2
+
+    Used by:
+    Ship: Rattlesnake
+    Ship: Rokh
+    Ship: Scorpion Navy Issue
+    """
 
     type = 'passive'
 
@@ -4331,6 +7163,14 @@ class Effect2602(EffectDef):
 
 
 class Effect2603(EffectDef):
+    """
+    shipBonusExplosiveShieldResistanceCB2
+
+    Used by:
+    Ship: Rattlesnake
+    Ship: Rokh
+    Ship: Scorpion Navy Issue
+    """
 
     type = 'passive'
 
@@ -4341,6 +7181,14 @@ class Effect2603(EffectDef):
 
 
 class Effect2604(EffectDef):
+    """
+    shipBonusKineticShieldResistanceCB2
+
+    Used by:
+    Ship: Rattlesnake
+    Ship: Rokh
+    Ship: Scorpion Navy Issue
+    """
 
     type = 'passive'
 
@@ -4351,6 +7199,14 @@ class Effect2604(EffectDef):
 
 
 class Effect2605(EffectDef):
+    """
+    shipBonusThermicShieldResistanceCB2
+
+    Used by:
+    Ship: Rattlesnake
+    Ship: Rokh
+    Ship: Scorpion Navy Issue
+    """
 
     type = 'passive'
 
@@ -4361,6 +7217,12 @@ class Effect2605(EffectDef):
 
 
 class Effect2611(EffectDef):
+    """
+    eliteBonusGunshipProjectileDamage1
+
+    Used by:
+    Ship: Wolf
+    """
 
     type = 'passive'
 
@@ -4372,6 +7234,12 @@ class Effect2611(EffectDef):
 
 
 class Effect2644(EffectDef):
+    """
+    increaseSignatureRadiusOnline
+
+    Used by:
+    Modules from group: Inertial Stabilizer (7 of 7)
+    """
 
     type = 'passive'
 
@@ -4381,6 +7249,13 @@ class Effect2644(EffectDef):
 
 
 class Effect2645(EffectDef):
+    """
+    scanResolutionMultiplierOnline
+
+    Used by:
+    Modules from group: Warp Core Stabilizer (8 of 8)
+    Module: Target Spectrum Breaker
+    """
 
     type = 'passive'
 
@@ -4391,6 +7266,12 @@ class Effect2645(EffectDef):
 
 
 class Effect2646(EffectDef):
+    """
+    maxTargetRangeBonus
+
+    Used by:
+    Modules from group: Warp Core Stabilizer (8 of 8)
+    """
 
     type = 'passive'
 
@@ -4401,6 +7282,12 @@ class Effect2646(EffectDef):
 
 
 class Effect2647(EffectDef):
+    """
+    eliteBonusHeavyGunshipHeavyMissileLaunhcerRof2
+
+    Used by:
+    Ship: Cerberus
+    """
 
     type = 'passive'
 
@@ -4412,6 +7299,12 @@ class Effect2647(EffectDef):
 
 
 class Effect2648(EffectDef):
+    """
+    eliteBonusHeavyGunshipHeavyAssaultMissileLaunhcerRof2
+
+    Used by:
+    Ship: Cerberus
+    """
 
     type = 'passive'
 
@@ -4423,6 +7316,12 @@ class Effect2648(EffectDef):
 
 
 class Effect2649(EffectDef):
+    """
+    eliteBonusHeavyGunshipAssaultMissileLaunhcerRof2
+
+    Used by:
+    Ship: Cerberus
+    """
 
     type = 'passive'
 
@@ -4434,6 +7333,12 @@ class Effect2649(EffectDef):
 
 
 class Effect2670(EffectDef):
+    """
+    sensorBoosterActivePercentage
+
+    Used by:
+    Modules from group: Sensor Booster (16 of 16)
+    """
 
     type = 'active'
 
@@ -4453,6 +7358,12 @@ class Effect2670(EffectDef):
 
 
 class Effect2688(EffectDef):
+    """
+    capNeedBonusEffectLasers
+
+    Used by:
+    Modules named like: Energy Discharge Elutriation (8 of 8)
+    """
 
     type = 'passive'
 
@@ -4463,6 +7374,12 @@ class Effect2688(EffectDef):
 
 
 class Effect2689(EffectDef):
+    """
+    capNeedBonusEffectHybrids
+
+    Used by:
+    Modules named like: Hybrid Discharge Elutriation (8 of 8)
+    """
 
     type = 'passive'
 
@@ -4473,6 +7390,12 @@ class Effect2689(EffectDef):
 
 
 class Effect2690(EffectDef):
+    """
+    cpuNeedBonusEffectLasers
+
+    Used by:
+    Modules named like: Algid Energy Administrations Unit (8 of 8)
+    """
 
     type = 'passive'
 
@@ -4483,6 +7406,12 @@ class Effect2690(EffectDef):
 
 
 class Effect2691(EffectDef):
+    """
+    cpuNeedBonusEffectHybrid
+
+    Used by:
+    Modules named like: Algid Hybrid Administrations Unit (8 of 8)
+    """
 
     type = 'passive'
 
@@ -4493,6 +7422,12 @@ class Effect2691(EffectDef):
 
 
 class Effect2693(EffectDef):
+    """
+    falloffBonusEffectLasers
+
+    Used by:
+    Modules named like: Energy Ambit Extension (8 of 8)
+    """
 
     type = 'passive'
 
@@ -4504,6 +7439,12 @@ class Effect2693(EffectDef):
 
 
 class Effect2694(EffectDef):
+    """
+    falloffBonusEffectHybrids
+
+    Used by:
+    Modules named like: Hybrid Ambit Extension (8 of 8)
+    """
 
     type = 'passive'
 
@@ -4515,6 +7456,12 @@ class Effect2694(EffectDef):
 
 
 class Effect2695(EffectDef):
+    """
+    falloffBonusEffectProjectiles
+
+    Used by:
+    Modules named like: Projectile Ambit Extension (8 of 8)
+    """
 
     type = 'passive'
 
@@ -4526,6 +7473,12 @@ class Effect2695(EffectDef):
 
 
 class Effect2696(EffectDef):
+    """
+    maxRangeBonusEffectLasers
+
+    Used by:
+    Modules named like: Energy Locus Coordinator (8 of 8)
+    """
 
     type = 'passive'
 
@@ -4537,6 +7490,12 @@ class Effect2696(EffectDef):
 
 
 class Effect2697(EffectDef):
+    """
+    maxRangeBonusEffectHybrids
+
+    Used by:
+    Modules named like: Hybrid Locus Coordinator (8 of 8)
+    """
 
     type = 'passive'
 
@@ -4548,6 +7507,12 @@ class Effect2697(EffectDef):
 
 
 class Effect2698(EffectDef):
+    """
+    maxRangeBonusEffectProjectiles
+
+    Used by:
+    Modules named like: Projectile Locus Coordinator (8 of 8)
+    """
 
     type = 'passive'
 
@@ -4559,6 +7524,12 @@ class Effect2698(EffectDef):
 
 
 class Effect2706(EffectDef):
+    """
+    drawbackPowerNeedLasers
+
+    Used by:
+    Modules from group: Rig Energy Weapon (56 of 56)
+    """
 
     type = 'passive'
 
@@ -4569,6 +7540,12 @@ class Effect2706(EffectDef):
 
 
 class Effect2707(EffectDef):
+    """
+    drawbackPowerNeedHybrids
+
+    Used by:
+    Modules from group: Rig Hybrid Weapon (56 of 56)
+    """
 
     type = 'passive'
 
@@ -4579,6 +7556,12 @@ class Effect2707(EffectDef):
 
 
 class Effect2708(EffectDef):
+    """
+    drawbackPowerNeedProjectiles
+
+    Used by:
+    Modules from group: Rig Projectile Weapon (40 of 40)
+    """
 
     type = 'passive'
 
@@ -4589,6 +7572,12 @@ class Effect2708(EffectDef):
 
 
 class Effect2712(EffectDef):
+    """
+    drawbackArmorHP
+
+    Used by:
+    Modules from group: Rig Navigation (48 of 64)
+    """
 
     type = 'passive'
 
@@ -4598,6 +7587,12 @@ class Effect2712(EffectDef):
 
 
 class Effect2713(EffectDef):
+    """
+    drawbackCPUOutput
+
+    Used by:
+    Modules from group: Rig Drones (58 of 64)
+    """
 
     type = 'passive'
 
@@ -4607,6 +7602,12 @@ class Effect2713(EffectDef):
 
 
 class Effect2714(EffectDef):
+    """
+    drawbackCPUNeedLaunchers
+
+    Used by:
+    Modules from group: Rig Launcher (48 of 48)
+    """
 
     type = 'passive'
 
@@ -4617,6 +7618,13 @@ class Effect2714(EffectDef):
 
 
 class Effect2716(EffectDef):
+    """
+    drawbackSigRad
+
+    Used by:
+    Modules from group: Rig Shield (72 of 72)
+    Modules named like: Optimizer (16 of 16)
+    """
 
     type = 'passive'
 
@@ -4626,6 +7634,13 @@ class Effect2716(EffectDef):
 
 
 class Effect2717(EffectDef):
+    """
+    drawbackMaxVelocity
+
+    Used by:
+    Modules from group: Rig Armor (48 of 72)
+    Modules from group: Rig Resource Processing (8 of 10)
+    """
 
     type = 'passive'
 
@@ -4636,6 +7651,14 @@ class Effect2717(EffectDef):
 
 
 class Effect2718(EffectDef):
+    """
+    drawbackShieldCapacity
+
+    Used by:
+    Modules from group: Rig Electronic Systems (40 of 48)
+    Modules from group: Rig Targeting (16 of 16)
+    Modules named like: Signal Focusing Kit (8 of 8)
+    """
 
     type = 'passive'
 
@@ -4645,11 +7668,23 @@ class Effect2718(EffectDef):
 
 
 class Effect2726(EffectDef):
+    """
+    miningClouds
+
+    Used by:
+    Modules from group: Gas Cloud Harvester (5 of 5)
+    """
 
     type = 'active'
 
 
 class Effect2727(EffectDef):
+    """
+    gasCloudHarvestingMaxGroupSkillLevel
+
+    Used by:
+    Skill: Gas Cloud Harvesting
+    """
 
     type = 'passive'
 
@@ -4660,6 +7695,12 @@ class Effect2727(EffectDef):
 
 
 class Effect2734(EffectDef):
+    """
+    shipECMScanStrengthBonusCF
+
+    Used by:
+    Variations of ship: Griffin (3 of 3)
+    """
 
     type = 'passive'
 
@@ -4672,6 +7713,12 @@ class Effect2734(EffectDef):
 
 
 class Effect2735(EffectDef):
+    """
+    boosterArmorHpPenalty
+
+    Used by:
+    Implants named like: Booster (12 of 35)
+    """
 
     attr = 'boosterArmorHPPenalty'
     displayName = 'Armor Capacity'
@@ -4683,6 +7730,14 @@ class Effect2735(EffectDef):
 
 
 class Effect2736(EffectDef):
+    """
+    boosterArmorRepairAmountPenalty
+
+    Used by:
+    Implants named like: Drop Booster (3 of 4)
+    Implants named like: Mindflood Booster (3 of 4)
+    Implants named like: Sooth Sayer Booster (3 of 4)
+    """
 
     attr = 'boosterArmorRepairAmountPenalty'
     displayName = 'Armor Repair Amount'
@@ -4695,6 +7750,12 @@ class Effect2736(EffectDef):
 
 
 class Effect2737(EffectDef):
+    """
+    boosterShieldCapacityPenalty
+
+    Used by:
+    Implants from group: Booster (12 of 70)
+    """
 
     attr = 'boosterShieldCapacityPenalty'
     displayName = 'Shield Capacity'
@@ -4706,6 +7767,14 @@ class Effect2737(EffectDef):
 
 
 class Effect2739(EffectDef):
+    """
+    boosterTurretOptimalRangePenalty
+
+    Used by:
+    Implants named like: Blue Pill Booster (3 of 5)
+    Implants named like: Mindflood Booster (3 of 4)
+    Implants named like: Sooth Sayer Booster (3 of 4)
+    """
 
     attr = 'boosterTurretOptimalRangePenalty'
     displayName = 'Turret Optimal Range'
@@ -4718,6 +7787,13 @@ class Effect2739(EffectDef):
 
 
 class Effect2741(EffectDef):
+    """
+    boosterTurretFalloffPenalty
+
+    Used by:
+    Implants named like: Drop Booster (3 of 4)
+    Implants named like: X Instinct Booster (3 of 4)
+    """
 
     attr = 'boosterTurretFalloffPenalty'
     displayName = 'Turret Falloff'
@@ -4730,6 +7806,13 @@ class Effect2741(EffectDef):
 
 
 class Effect2745(EffectDef):
+    """
+    boosterCapacitorCapacityPenalty
+
+    Used by:
+    Implants named like: Blue Pill Booster (3 of 5)
+    Implants named like: Exile Booster (3 of 4)
+    """
 
     attr = 'boosterCapacitorCapacityPenalty'
     displayName = 'Cap Capacity'
@@ -4741,6 +7824,13 @@ class Effect2745(EffectDef):
 
 
 class Effect2746(EffectDef):
+    """
+    boosterMaxVelocityPenalty
+
+    Used by:
+    Implants named like: Crash Booster (3 of 4)
+    Items from market group: Implants & Boosters > Booster > Booster Slot 02 (9 of 13)
+    """
 
     attr = 'boosterMaxVelocityPenalty'
     displayName = 'Velocity'
@@ -4752,6 +7842,13 @@ class Effect2746(EffectDef):
 
 
 class Effect2747(EffectDef):
+    """
+    boosterTurretTrackingPenalty
+
+    Used by:
+    Implants named like: Exile Booster (3 of 4)
+    Implants named like: Frentix Booster (3 of 4)
+    """
 
     attr = 'boosterTurretTrackingPenalty'
     displayName = 'Turret Tracking'
@@ -4764,6 +7861,13 @@ class Effect2747(EffectDef):
 
 
 class Effect2748(EffectDef):
+    """
+    boosterMissileVelocityPenalty
+
+    Used by:
+    Implants named like: Crash Booster (3 of 4)
+    Implants named like: X Instinct Booster (3 of 4)
+    """
 
     attr = 'boosterMissileVelocityPenalty'
     displayName = 'Missile Velocity'
@@ -4776,6 +7880,12 @@ class Effect2748(EffectDef):
 
 
 class Effect2749(EffectDef):
+    """
+    boosterMissileExplosionVelocityPenalty
+
+    Used by:
+    Implants named like: Blue Pill Booster (3 of 5)
+    """
 
     attr = 'boosterAOEVelocityPenalty'
     displayName = 'Missile Explosion Velocity'
@@ -4788,6 +7898,12 @@ class Effect2749(EffectDef):
 
 
 class Effect2756(EffectDef):
+    """
+    shipBonusECMStrengthBonusCC
+
+    Used by:
+    Ship: Blackbird
+    """
 
     type = 'passive'
 
@@ -4800,11 +7916,25 @@ class Effect2756(EffectDef):
 
 
 class Effect2757(EffectDef):
+    """
+    salvaging
+
+    Used by:
+    Modules from group: Salvager (3 of 3)
+    """
 
     type = 'active'
 
 
 class Effect2760(EffectDef):
+    """
+    boosterModifyBoosterArmorPenalties
+
+    Used by:
+    Implants named like: Eifyr and Co. 'Alchemist' Neurotoxin Control NC (2 of 2)
+    Implants named like: grade Edge (10 of 12)
+    Skill: Neurotoxin Control
+    """
 
     runTime = 'early'
     type = 'passive'
@@ -4819,6 +7949,14 @@ class Effect2760(EffectDef):
 
 
 class Effect2763(EffectDef):
+    """
+    boosterModifyBoosterShieldPenalty
+
+    Used by:
+    Implants named like: Eifyr and Co. 'Alchemist' Neurotoxin Control NC (2 of 2)
+    Implants named like: grade Edge (10 of 12)
+    Skill: Neurotoxin Control
+    """
 
     type = 'passive'
 
@@ -4834,6 +7972,14 @@ class Effect2763(EffectDef):
 
 
 class Effect2766(EffectDef):
+    """
+    boosterModifyBoosterMaxVelocityAndCapacitorPenalty
+
+    Used by:
+    Implants named like: Eifyr and Co. 'Alchemist' Neurotoxin Control NC (2 of 2)
+    Implants named like: grade Edge (10 of 12)
+    Skill: Neurotoxin Control
+    """
 
     type = 'passive'
 
@@ -4847,6 +7993,14 @@ class Effect2766(EffectDef):
 
 
 class Effect2776(EffectDef):
+    """
+    boosterModifyBoosterMissilePenalty
+
+    Used by:
+    Implants named like: Eifyr and Co. 'Alchemist' Neurotoxin Control NC (2 of 2)
+    Implants named like: grade Edge (10 of 12)
+    Skill: Neurotoxin Control
+    """
 
     type = 'passive'
 
@@ -4860,6 +8014,14 @@ class Effect2776(EffectDef):
 
 
 class Effect2778(EffectDef):
+    """
+    boosterModifyBoosterTurretPenalty
+
+    Used by:
+    Implants named like: Eifyr and Co. 'Alchemist' Neurotoxin Control NC (2 of 2)
+    Implants named like: grade Edge (10 of 12)
+    Skill: Neurotoxin Control
+    """
 
     type = 'passive'
 
@@ -4873,6 +8035,13 @@ class Effect2778(EffectDef):
 
 
 class Effect2791(EffectDef):
+    """
+    boosterMissileExplosionCloudPenaltyFixed
+
+    Used by:
+    Implants named like: Exile Booster (3 of 4)
+    Implants named like: Mindflood Booster (3 of 4)
+    """
 
     attr = 'boosterMissileAOECloudPenalty'
     displayName = 'Missile Explosion Radius'
@@ -4885,6 +8054,12 @@ class Effect2791(EffectDef):
 
 
 class Effect2792(EffectDef):
+    """
+    modifyArmorResonancePostPercentPassive
+
+    Used by:
+    Modules named like: Anti Pump (32 of 32)
+    """
 
     type = 'passive'
 
@@ -4897,6 +8072,13 @@ class Effect2792(EffectDef):
 
 
 class Effect2794(EffectDef):
+    """
+    salvagingAccessDifficultyBonusEffectPassive
+
+    Used by:
+    Modules from group: Rig Resource Processing (8 of 10)
+    Implant: Poteque 'Prospector' Salvaging SV-905
+    """
 
     type = 'passive'
 
@@ -4908,6 +8090,12 @@ class Effect2794(EffectDef):
 
 
 class Effect2795(EffectDef):
+    """
+    modifyShieldResonancePostPercentPassive
+
+    Used by:
+    Modules named like: Anti Screen Reinforcer (32 of 32)
+    """
 
     type = 'passive'
 
@@ -4920,6 +8108,12 @@ class Effect2795(EffectDef):
 
 
 class Effect2796(EffectDef):
+    """
+    massReductionBonusPassive
+
+    Used by:
+    Modules from group: Rig Anchor (4 of 4)
+    """
 
     type = 'passive'
 
@@ -4929,6 +8123,12 @@ class Effect2796(EffectDef):
 
 
 class Effect2797(EffectDef):
+    """
+    projectileWeaponSpeedMultiplyPassive
+
+    Used by:
+    Modules named like: Projectile Burst Aerator (8 of 8)
+    """
 
     type = 'passive'
 
@@ -4940,6 +8140,12 @@ class Effect2797(EffectDef):
 
 
 class Effect2798(EffectDef):
+    """
+    projectileWeaponDamageMultiplyPassive
+
+    Used by:
+    Modules named like: Projectile Collision Accelerator (8 of 8)
+    """
 
     type = 'passive'
 
@@ -4951,6 +8157,12 @@ class Effect2798(EffectDef):
 
 
 class Effect2799(EffectDef):
+    """
+    missileLauncherSpeedMultiplierPassive
+
+    Used by:
+    Modules named like: Bay Loading Accelerator (8 of 8)
+    """
 
     type = 'passive'
 
@@ -4962,6 +8174,12 @@ class Effect2799(EffectDef):
 
 
 class Effect2801(EffectDef):
+    """
+    energyWeaponSpeedMultiplyPassive
+
+    Used by:
+    Modules named like: Energy Burst Aerator (8 of 8)
+    """
 
     type = 'passive'
 
@@ -4973,6 +8191,12 @@ class Effect2801(EffectDef):
 
 
 class Effect2802(EffectDef):
+    """
+    hybridWeaponDamageMultiplyPassive
+
+    Used by:
+    Modules named like: Hybrid Collision Accelerator (8 of 8)
+    """
 
     type = 'passive'
 
@@ -4984,6 +8208,12 @@ class Effect2802(EffectDef):
 
 
 class Effect2803(EffectDef):
+    """
+    energyWeaponDamageMultiplyPassive
+
+    Used by:
+    Modules named like: Energy Collision Accelerator (8 of 8)
+    """
 
     type = 'passive'
 
@@ -4995,6 +8225,12 @@ class Effect2803(EffectDef):
 
 
 class Effect2804(EffectDef):
+    """
+    hybridWeaponSpeedMultiplyPassive
+
+    Used by:
+    Modules named like: Hybrid Burst Aerator (8 of 8)
+    """
 
     type = 'passive'
 
@@ -5006,6 +8242,13 @@ class Effect2804(EffectDef):
 
 
 class Effect2805(EffectDef):
+    """
+    shipBonusLargeEnergyWeaponDamageAB2
+
+    Used by:
+    Ship: Abaddon
+    Ship: Marshal
+    """
 
     type = 'passive'
 
@@ -5017,6 +8260,13 @@ class Effect2805(EffectDef):
 
 
 class Effect2809(EffectDef):
+    """
+    shipMissileAssaultMissileVelocityBonusCC2
+
+    Used by:
+    Ship: Caracal
+    Ship: Osprey Navy Issue
+    """
 
     type = 'passive'
 
@@ -5027,6 +8277,12 @@ class Effect2809(EffectDef):
 
 
 class Effect2810(EffectDef):
+    """
+    eliteBonusHeavyGunshipAssaultMissileFlightTime1
+
+    Used by:
+    Ship: Cerberus
+    """
 
     type = 'passive'
 
@@ -5038,6 +8294,12 @@ class Effect2810(EffectDef):
 
 
 class Effect2812(EffectDef):
+    """
+    caldariShipECMBurstOptimalRangeCB3
+
+    Used by:
+    Ship: Scorpion
+    """
 
     type = 'passive'
 
@@ -5048,6 +8310,12 @@ class Effect2812(EffectDef):
 
 
 class Effect2837(EffectDef):
+    """
+    armorHPBonusAdd
+
+    Used by:
+    Modules from group: Armor Reinforcer (51 of 51)
+    """
 
     type = 'passive'
 
@@ -5057,6 +8325,16 @@ class Effect2837(EffectDef):
 
 
 class Effect2847(EffectDef):
+    """
+    trackingSpeedBonusPassiveRequiringGunneryTrackingSpeedBonus
+
+    Used by:
+    Implants named like: Drop Booster (4 of 4)
+    Implants named like: Eifyr and Co. 'Gunslinger' Motion Prediction MR (6 of 6)
+    Implant: Antipharmakon Iokira
+    Implant: Ogdin's Eye Coordination Enhancer
+    Skill: Motion Prediction
+    """
 
     type = 'passive'
 
@@ -5068,6 +8346,14 @@ class Effect2847(EffectDef):
 
 
 class Effect2848(EffectDef):
+    """
+    accessDifficultyBonusModifierRequiringArchaelogy
+
+    Used by:
+    Modules named like: Emission Scope Sharpener (8 of 8)
+    Implant: Poteque 'Prospector' Archaeology AC-905
+    Implant: Poteque 'Prospector' Environmental Analysis EY-1005
+    """
 
     type = 'passive'
 
@@ -5079,6 +8365,15 @@ class Effect2848(EffectDef):
 
 
 class Effect2849(EffectDef):
+    """
+    accessDifficultyBonusModifierRequiringHacking
+
+    Used by:
+    Modules named like: Memetic Algorithm Bank (8 of 8)
+    Implant: Neural Lace 'Blackglass' Net Intrusion 920-40
+    Implant: Poteque 'Prospector' Environmental Analysis EY-1005
+    Implant: Poteque 'Prospector' Hacking HC-905
+    """
 
     type = 'passive'
 
@@ -5090,6 +8385,12 @@ class Effect2849(EffectDef):
 
 
 class Effect2850(EffectDef):
+    """
+    durationBonusForGroupAfterburner
+
+    Used by:
+    Modules named like: Engine Thermal Shielding (8 of 8)
+    """
 
     type = 'passive'
 
@@ -5100,6 +8401,12 @@ class Effect2850(EffectDef):
 
 
 class Effect2851(EffectDef):
+    """
+    missileDMGBonusPassive
+
+    Used by:
+    Modules named like: Warhead Calefaction Catalyst (8 of 8)
+    """
 
     type = 'passive'
 
@@ -5113,6 +8420,12 @@ class Effect2851(EffectDef):
 
 
 class Effect2853(EffectDef):
+    """
+    cloakingTargetingDelayBonusLRSMCloakingPassive
+
+    Used by:
+    Modules named like: Targeting Systems Stabilizer (8 of 8)
+    """
 
     type = 'passive'
 
@@ -5123,6 +8436,12 @@ class Effect2853(EffectDef):
 
 
 class Effect2857(EffectDef):
+    """
+    cynosuralGeneration
+
+    Used by:
+    Modules from group: Cynosural Field Generator (2 of 2)
+    """
 
     type = 'active'
 
@@ -5132,6 +8451,14 @@ class Effect2857(EffectDef):
 
 
 class Effect2865(EffectDef):
+    """
+    velocityBonusOnline
+
+    Used by:
+    Modules from group: Entosis Link (6 of 6)
+    Modules from group: Nanofiber Internal Structure (7 of 7)
+    Modules from group: Overdrive Injector System (7 of 7)
+    """
 
     type = 'passive'
 
@@ -5142,6 +8469,13 @@ class Effect2865(EffectDef):
 
 
 class Effect2866(EffectDef):
+    """
+    biologyTimeBonusFixed
+
+    Used by:
+    Implants named like: Eifyr and Co. 'Alchemist' Biology BY (2 of 2)
+    Skill: Biology
+    """
 
     type = 'passive'
 
@@ -5153,6 +8487,12 @@ class Effect2866(EffectDef):
 
 
 class Effect2867(EffectDef):
+    """
+    sentryDroneDamageBonus
+
+    Used by:
+    Modules named like: Sentry Damage Augmentor (8 of 8)
+    """
 
     type = 'passive'
 
@@ -5164,6 +8504,12 @@ class Effect2867(EffectDef):
 
 
 class Effect2868(EffectDef):
+    """
+    armorDamageAmountBonusCapitalArmorRepairers
+
+    Used by:
+    Modules named like: Auxiliary Nano Pump (8 of 8)
+    """
 
     type = 'passive'
 
@@ -5175,6 +8521,12 @@ class Effect2868(EffectDef):
 
 
 class Effect2872(EffectDef):
+    """
+    missileVelocityBonusDefender
+
+    Used by:
+    Implants named like: Zainou 'Snapshot' Defender Missiles DM (6 of 6)
+    """
 
     type = 'passive'
 
@@ -5185,6 +8537,12 @@ class Effect2872(EffectDef):
 
 
 class Effect2881(EffectDef):
+    """
+    missileEMDmgBonusCruise3
+
+    Used by:
+    Implants named like: Zainou 'Snapshot' Cruise Missiles CM (6 of 6)
+    """
 
     type = 'passive'
 
@@ -5195,6 +8553,12 @@ class Effect2881(EffectDef):
 
 
 class Effect2882(EffectDef):
+    """
+    missileExplosiveDmgBonusCruise3
+
+    Used by:
+    Implants named like: Zainou 'Snapshot' Cruise Missiles CM (6 of 6)
+    """
 
     type = 'passive'
 
@@ -5205,6 +8569,12 @@ class Effect2882(EffectDef):
 
 
 class Effect2883(EffectDef):
+    """
+    missileKineticDmgBonusCruise3
+
+    Used by:
+    Implants named like: Zainou 'Snapshot' Cruise Missiles CM (6 of 6)
+    """
 
     type = 'passive'
 
@@ -5215,6 +8585,12 @@ class Effect2883(EffectDef):
 
 
 class Effect2884(EffectDef):
+    """
+    missileThermalDmgBonusCruise3
+
+    Used by:
+    Implants named like: Zainou 'Snapshot' Cruise Missiles CM (6 of 6)
+    """
 
     type = 'passive'
 
@@ -5225,6 +8601,12 @@ class Effect2884(EffectDef):
 
 
 class Effect2885(EffectDef):
+    """
+    gasHarvestingCycleTimeModulesRequiringGasCloudHarvesting
+
+    Used by:
+    Implants named like: Eifyr and Co. 'Alchemist' Gas Harvesting GH (3 of 3)
+    """
 
     type = 'passive'
 
@@ -5235,6 +8617,12 @@ class Effect2885(EffectDef):
 
 
 class Effect2887(EffectDef):
+    """
+    missileEMDmgBonusRocket
+
+    Used by:
+    Implants named like: Zainou 'Snapshot' Rockets RD (6 of 6)
+    """
 
     type = 'passive'
 
@@ -5245,6 +8633,12 @@ class Effect2887(EffectDef):
 
 
 class Effect2888(EffectDef):
+    """
+    missileExplosiveDmgBonusRocket
+
+    Used by:
+    Implants named like: Zainou 'Snapshot' Rockets RD (6 of 6)
+    """
 
     type = 'passive'
 
@@ -5255,6 +8649,12 @@ class Effect2888(EffectDef):
 
 
 class Effect2889(EffectDef):
+    """
+    missileKineticDmgBonusRocket
+
+    Used by:
+    Implants named like: Zainou 'Snapshot' Rockets RD (6 of 6)
+    """
 
     type = 'passive'
 
@@ -5265,6 +8665,12 @@ class Effect2889(EffectDef):
 
 
 class Effect2890(EffectDef):
+    """
+    missileThermalDmgBonusRocket
+
+    Used by:
+    Implants named like: Zainou 'Snapshot' Rockets RD (6 of 6)
+    """
 
     type = 'passive'
 
@@ -5275,6 +8681,12 @@ class Effect2890(EffectDef):
 
 
 class Effect2891(EffectDef):
+    """
+    missileEMDmgBonusStandard
+
+    Used by:
+    Implants named like: Zainou 'Snapshot' Light Missiles LM (6 of 6)
+    """
 
     type = 'passive'
 
@@ -5285,6 +8697,12 @@ class Effect2891(EffectDef):
 
 
 class Effect2892(EffectDef):
+    """
+    missileExplosiveDmgBonusStandard
+
+    Used by:
+    Implants named like: Zainou 'Snapshot' Light Missiles LM (6 of 6)
+    """
 
     type = 'passive'
 
@@ -5295,6 +8713,12 @@ class Effect2892(EffectDef):
 
 
 class Effect2893(EffectDef):
+    """
+    missileKineticDmgBonusStandard
+
+    Used by:
+    Implants named like: Zainou 'Snapshot' Light Missiles LM (6 of 6)
+    """
 
     type = 'passive'
 
@@ -5305,6 +8729,12 @@ class Effect2893(EffectDef):
 
 
 class Effect2894(EffectDef):
+    """
+    missileThermalDmgBonusStandard
+
+    Used by:
+    Implants named like: Zainou 'Snapshot' Light Missiles LM (6 of 6)
+    """
 
     type = 'passive'
 
@@ -5315,6 +8745,12 @@ class Effect2894(EffectDef):
 
 
 class Effect2899(EffectDef):
+    """
+    missileEMDmgBonusHeavy
+
+    Used by:
+    Implants named like: Zainou 'Snapshot' Heavy Missiles HM (6 of 6)
+    """
 
     type = 'passive'
 
@@ -5325,6 +8761,12 @@ class Effect2899(EffectDef):
 
 
 class Effect2900(EffectDef):
+    """
+    missileExplosiveDmgBonusHeavy
+
+    Used by:
+    Implants named like: Zainou 'Snapshot' Heavy Missiles HM (6 of 6)
+    """
 
     type = 'passive'
 
@@ -5335,6 +8777,12 @@ class Effect2900(EffectDef):
 
 
 class Effect2901(EffectDef):
+    """
+    missileKineticDmgBonusHeavy
+
+    Used by:
+    Implants named like: Zainou 'Snapshot' Heavy Missiles HM (6 of 6)
+    """
 
     type = 'passive'
 
@@ -5345,6 +8793,12 @@ class Effect2901(EffectDef):
 
 
 class Effect2902(EffectDef):
+    """
+    missileThermalDmgBonusHeavy
+
+    Used by:
+    Implants named like: Zainou 'Snapshot' Heavy Missiles HM (6 of 6)
+    """
 
     type = 'passive'
 
@@ -5355,6 +8809,12 @@ class Effect2902(EffectDef):
 
 
 class Effect2903(EffectDef):
+    """
+    missileEMDmgBonusHAM
+
+    Used by:
+    Implants named like: Zainou 'Snapshot' Heavy Assault Missiles AM (6 of 6)
+    """
 
     type = 'passive'
 
@@ -5365,6 +8825,12 @@ class Effect2903(EffectDef):
 
 
 class Effect2904(EffectDef):
+    """
+    missileExplosiveDmgBonusHAM
+
+    Used by:
+    Implants named like: Zainou 'Snapshot' Heavy Assault Missiles AM (6 of 6)
+    """
 
     type = 'passive'
 
@@ -5375,6 +8841,12 @@ class Effect2904(EffectDef):
 
 
 class Effect2905(EffectDef):
+    """
+    missileKineticDmgBonusHAM
+
+    Used by:
+    Implants named like: Zainou 'Snapshot' Heavy Assault Missiles AM (6 of 6)
+    """
 
     type = 'passive'
 
@@ -5385,6 +8857,12 @@ class Effect2905(EffectDef):
 
 
 class Effect2906(EffectDef):
+    """
+    missileThermalDmgBonusHAM
+
+    Used by:
+    Implants named like: Zainou 'Snapshot' Heavy Assault Missiles AM (6 of 6)
+    """
 
     type = 'passive'
 
@@ -5395,6 +8873,12 @@ class Effect2906(EffectDef):
 
 
 class Effect2907(EffectDef):
+    """
+    missileEMDmgBonusTorpedo
+
+    Used by:
+    Implants named like: Zainou 'Snapshot' Torpedoes TD (6 of 6)
+    """
 
     type = 'passive'
 
@@ -5405,6 +8889,12 @@ class Effect2907(EffectDef):
 
 
 class Effect2908(EffectDef):
+    """
+    missileExplosiveDmgBonusTorpedo
+
+    Used by:
+    Implants named like: Zainou 'Snapshot' Torpedoes TD (6 of 6)
+    """
 
     type = 'passive'
 
@@ -5415,6 +8905,12 @@ class Effect2908(EffectDef):
 
 
 class Effect2909(EffectDef):
+    """
+    missileKineticDmgBonusTorpedo
+
+    Used by:
+    Implants named like: Zainou 'Snapshot' Torpedoes TD (6 of 6)
+    """
 
     type = 'passive'
 
@@ -5425,6 +8921,12 @@ class Effect2909(EffectDef):
 
 
 class Effect2910(EffectDef):
+    """
+    missileThermalDmgBonusTorpedo
+
+    Used by:
+    Implants named like: Zainou 'Snapshot' Torpedoes TD (6 of 6)
+    """
 
     type = 'passive'
 
@@ -5435,6 +8937,12 @@ class Effect2910(EffectDef):
 
 
 class Effect2911(EffectDef):
+    """
+    dataminerModuleDurationReduction
+
+    Used by:
+    Implant: Poteque 'Prospector' Environmental Analysis EY-1005
+    """
 
     type = 'passive'
 
@@ -5445,6 +8953,12 @@ class Effect2911(EffectDef):
 
 
 class Effect2967(EffectDef):
+    """
+    skillTriageModuleConsumptionQuantityBonus
+
+    Used by:
+    Skill: Tactical Logistics Reconfiguration
+    """
 
     type = 'passive'
 
@@ -5456,6 +8970,9 @@ class Effect2967(EffectDef):
 
 
 class Effect2977(EffectDef):
+    """
+    Not used by any item
+    """
 
     type = 'passive'
 
@@ -5466,6 +8983,12 @@ class Effect2977(EffectDef):
 
 
 class Effect2980(EffectDef):
+    """
+    skillCapitalRemoteHullRepairSystemsCapNeedBonus
+
+    Used by:
+    Skill: Capital Remote Hull Repair Systems
+    """
 
     type = 'passive'
 
@@ -5476,6 +8999,12 @@ class Effect2980(EffectDef):
 
 
 class Effect2982(EffectDef):
+    """
+    skillRemoteECMDurationBonus
+
+    Used by:
+    Skill: Burst Projector Operation
+    """
 
     type = 'passive'
 
@@ -5509,6 +9038,14 @@ class Effect2982(EffectDef):
 
 
 class Effect3001(EffectDef):
+    """
+    overloadRofBonus
+
+    Used by:
+    Modules from group: Missile Launcher Torpedo (22 of 22)
+    Items from market group: Ship Equipment > Turrets & Bays (429 of 883)
+    Module: Interdiction Sphere Launcher I
+    """
 
     type = 'overheat'
 
@@ -5518,6 +9055,24 @@ class Effect3001(EffectDef):
 
 
 class Effect3002(EffectDef):
+    """
+    overloadSelfDurationBonus
+
+    Used by:
+    Modules from group: Ancillary Remote Shield Booster (4 of 4)
+    Modules from group: Capacitor Booster (59 of 59)
+    Modules from group: Energy Neutralizer (54 of 54)
+    Modules from group: Energy Nosferatu (54 of 54)
+    Modules from group: Hull Repair Unit (25 of 25)
+    Modules from group: Remote Armor Repairer (39 of 39)
+    Modules from group: Remote Capacitor Transmitter (41 of 41)
+    Modules from group: Remote Shield Booster (38 of 38)
+    Modules from group: Smart Bomb (118 of 118)
+    Modules from group: Warp Disrupt Field Generator (7 of 7)
+    Modules named like: Remote Repairer (56 of 56)
+    Module: Reactive Armor Hardener
+    Module: Target Spectrum Breaker
+    """
 
     type = 'overheat'
 
@@ -5527,6 +9082,13 @@ class Effect3002(EffectDef):
 
 
 class Effect3024(EffectDef):
+    """
+    eliteBonusCoverOpsBombExplosiveDmg1
+
+    Used by:
+    Ship: Hound
+    Ship: Virtuoso
+    """
 
     type = 'passive'
 
@@ -5538,6 +9100,15 @@ class Effect3024(EffectDef):
 
 
 class Effect3025(EffectDef):
+    """
+    overloadSelfDamageBonus
+
+    Used by:
+    Modules from group: Energy Weapon (101 of 214)
+    Modules from group: Hybrid Weapon (105 of 221)
+    Modules from group: Precursor Weapon (15 of 15)
+    Modules from group: Projectile Weapon (99 of 165)
+    """
 
     type = 'overheat'
 
@@ -5547,6 +9118,12 @@ class Effect3025(EffectDef):
 
 
 class Effect3026(EffectDef):
+    """
+    eliteBonusCoverOpsBombKineticDmg1
+
+    Used by:
+    Ship: Manticore
+    """
 
     type = 'passive'
 
@@ -5558,6 +9135,13 @@ class Effect3026(EffectDef):
 
 
 class Effect3027(EffectDef):
+    """
+    eliteBonusCoverOpsBombThermalDmg1
+
+    Used by:
+    Ship: Nemesis
+    Ship: Virtuoso
+    """
 
     type = 'passive'
 
@@ -5569,6 +9153,12 @@ class Effect3027(EffectDef):
 
 
 class Effect3028(EffectDef):
+    """
+    eliteBonusCoverOpsBombEmDmg1
+
+    Used by:
+    Ship: Purifier
+    """
 
     type = 'passive'
 
@@ -5579,6 +9169,14 @@ class Effect3028(EffectDef):
 
 
 class Effect3029(EffectDef):
+    """
+    overloadSelfEmHardeningBonus
+
+    Used by:
+    Variations of module: Armor EM Hardener I (39 of 39)
+    Variations of module: EM Ward Field I (19 of 19)
+    Module: Civilian EM Ward Field
+    """
 
     type = 'overheat'
 
@@ -5588,6 +9186,14 @@ class Effect3029(EffectDef):
 
 
 class Effect3030(EffectDef):
+    """
+    overloadSelfThermalHardeningBonus
+
+    Used by:
+    Variations of module: Armor Thermal Hardener I (39 of 39)
+    Variations of module: Thermal Dissipation Field I (19 of 19)
+    Module: Civilian Thermal Dissipation Field
+    """
 
     type = 'overheat'
 
@@ -5597,6 +9203,14 @@ class Effect3030(EffectDef):
 
 
 class Effect3031(EffectDef):
+    """
+    overloadSelfExplosiveHardeningBonus
+
+    Used by:
+    Variations of module: Armor Explosive Hardener I (39 of 39)
+    Variations of module: Explosive Deflection Field I (19 of 19)
+    Module: Civilian Explosive Deflection Field
+    """
 
     type = 'overheat'
 
@@ -5606,6 +9220,14 @@ class Effect3031(EffectDef):
 
 
 class Effect3032(EffectDef):
+    """
+    overloadSelfKineticHardeningBonus
+
+    Used by:
+    Variations of module: Armor Kinetic Hardener I (39 of 39)
+    Variations of module: Kinetic Deflection Field I (19 of 19)
+    Module: Civilian Kinetic Deflection Field
+    """
 
     type = 'overheat'
 
@@ -5615,6 +9237,13 @@ class Effect3032(EffectDef):
 
 
 class Effect3035(EffectDef):
+    """
+    overloadSelfHardeningInvulnerabilityBonus
+
+    Used by:
+    Modules named like: Capital Flex Hardener (9 of 9)
+    Variations of module: Adaptive Invulnerability Field I (17 of 17)
+    """
 
     type = 'overheat'
 
@@ -5626,6 +9255,12 @@ class Effect3035(EffectDef):
 
 
 class Effect3036(EffectDef):
+    """
+    skillBombDeploymentModuleReactivationDelayBonus
+
+    Used by:
+    Skill: Bomb Deployment
+    """
 
     type = 'passive'
 
@@ -5636,6 +9271,12 @@ class Effect3036(EffectDef):
 
 
 class Effect3046(EffectDef):
+    """
+    modifyMaxVelocityOfShipPassive
+
+    Used by:
+    Modules from group: Expanded Cargohold (7 of 7)
+    """
 
     type = 'passive'
 
@@ -5645,6 +9286,12 @@ class Effect3046(EffectDef):
 
 
 class Effect3047(EffectDef):
+    """
+    structureHPMultiplyPassive
+
+    Used by:
+    Modules from group: Expanded Cargohold (7 of 7)
+    """
 
     type = 'passive'
 
@@ -5654,6 +9301,12 @@ class Effect3047(EffectDef):
 
 
 class Effect3061(EffectDef):
+    """
+    heatDamageBonus
+
+    Used by:
+    Modules from group: Shield Boost Amplifier (25 of 25)
+    """
 
     type = 'passive'
 
@@ -5664,6 +9317,12 @@ class Effect3061(EffectDef):
 
 
 class Effect3169(EffectDef):
+    """
+    shieldTransportCpuNeedBonusEffect
+
+    Used by:
+    Ships from group: Logistics (3 of 7)
+    """
 
     type = 'passive'
 
@@ -5674,6 +9333,14 @@ class Effect3169(EffectDef):
 
 
 class Effect3172(EffectDef):
+    """
+    droneArmorDamageBonusEffect
+
+    Used by:
+    Ships from group: Logistics (6 of 7)
+    Ship: Exequror
+    Ship: Scythe
+    """
 
     type = 'passive'
 
@@ -5686,6 +9353,14 @@ class Effect3172(EffectDef):
 
 
 class Effect3173(EffectDef):
+    """
+    droneShieldBonusBonusEffect
+
+    Used by:
+    Ships from group: Logistics (6 of 7)
+    Ship: Exequror
+    Ship: Scythe
+    """
 
     type = 'passive'
 
@@ -5698,6 +9373,14 @@ class Effect3173(EffectDef):
 
 
 class Effect3174(EffectDef):
+    """
+    overloadSelfRangeBonus
+
+    Used by:
+    Modules from group: Stasis Grappler (7 of 7)
+    Modules from group: Stasis Web (19 of 19)
+    Modules from group: Warp Scrambler (54 of 55)
+    """
 
     type = 'overheat'
 
@@ -5708,6 +9391,12 @@ class Effect3174(EffectDef):
 
 
 class Effect3175(EffectDef):
+    """
+    overloadSelfSpeedBonus
+
+    Used by:
+    Modules from group: Propulsion Module (133 of 133)
+    """
 
     type = 'overheat'
 
@@ -5718,6 +9407,13 @@ class Effect3175(EffectDef):
 
 
 class Effect3182(EffectDef):
+    """
+    overloadSelfECMStrenghtBonus
+
+    Used by:
+    Modules from group: Burst Jammer (11 of 11)
+    Modules from group: ECM (39 of 39)
+    """
 
     type = 'overheat'
 
@@ -5731,6 +9427,12 @@ class Effect3182(EffectDef):
 
 
 class Effect3196(EffectDef):
+    """
+    thermodynamicsSkillDamageBonus
+
+    Used by:
+    Skill: Thermodynamics
+    """
 
     type = 'passive'
 
@@ -5741,6 +9443,13 @@ class Effect3196(EffectDef):
 
 
 class Effect3200(EffectDef):
+    """
+    overloadSelfArmorDamageAmountDurationBonus
+
+    Used by:
+    Modules from group: Ancillary Armor Repairer (7 of 7)
+    Modules from group: Armor Repair Unit (108 of 108)
+    """
 
     type = 'overheat'
 
@@ -5752,6 +9461,13 @@ class Effect3200(EffectDef):
 
 
 class Effect3201(EffectDef):
+    """
+    overloadSelfShieldBonusDurationBonus
+
+    Used by:
+    Modules from group: Ancillary Shield Booster (8 of 8)
+    Modules from group: Shield Booster (97 of 97)
+    """
 
     type = 'overheat'
 
@@ -5762,6 +9478,12 @@ class Effect3201(EffectDef):
 
 
 class Effect3212(EffectDef):
+    """
+    missileSkillFoFAoeCloudSizeBonus
+
+    Used by:
+    Implants named like: Zainou 'Snapshot' Auto Targeting Explosion Radius FR (6 of 6)
+    """
 
     type = 'passive'
 
@@ -5773,6 +9495,13 @@ class Effect3212(EffectDef):
 
 
 class Effect3234(EffectDef):
+    """
+    shipRocketExplosiveDmgAF
+
+    Used by:
+    Ship: Anathema
+    Ship: Vengeance
+    """
 
     type = 'passive'
 
@@ -5783,6 +9512,13 @@ class Effect3234(EffectDef):
 
 
 class Effect3235(EffectDef):
+    """
+    shipRocketKineticDmgAF
+
+    Used by:
+    Ship: Anathema
+    Ship: Vengeance
+    """
 
     type = 'passive'
 
@@ -5793,6 +9529,13 @@ class Effect3235(EffectDef):
 
 
 class Effect3236(EffectDef):
+    """
+    shipRocketThermalDmgAF
+
+    Used by:
+    Ship: Anathema
+    Ship: Vengeance
+    """
 
     type = 'passive'
 
@@ -5803,6 +9546,13 @@ class Effect3236(EffectDef):
 
 
 class Effect3237(EffectDef):
+    """
+    shipRocketEmDmgAF
+
+    Used by:
+    Ship: Anathema
+    Ship: Vengeance
+    """
 
     type = 'passive'
 
@@ -5813,6 +9563,12 @@ class Effect3237(EffectDef):
 
 
 class Effect3241(EffectDef):
+    """
+    eliteBonusGunshipArmorEmResistance1
+
+    Used by:
+    Ship: Vengeance
+    """
 
     type = 'passive'
 
@@ -5823,6 +9579,12 @@ class Effect3241(EffectDef):
 
 
 class Effect3242(EffectDef):
+    """
+    eliteBonusGunshipArmorThermalResistance1
+
+    Used by:
+    Ship: Vengeance
+    """
 
     type = 'passive'
 
@@ -5833,6 +9595,12 @@ class Effect3242(EffectDef):
 
 
 class Effect3243(EffectDef):
+    """
+    eliteBonusGunshipArmorKineticResistance1
+
+    Used by:
+    Ship: Vengeance
+    """
 
     type = 'passive'
 
@@ -5843,6 +9611,12 @@ class Effect3243(EffectDef):
 
 
 class Effect3244(EffectDef):
+    """
+    eliteBonusGunshipArmorExplosiveResistance1
+
+    Used by:
+    Ship: Vengeance
+    """
 
     type = 'passive'
 
@@ -5853,6 +9627,12 @@ class Effect3244(EffectDef):
 
 
 class Effect3249(EffectDef):
+    """
+    shipCapRecharge2AF
+
+    Used by:
+    Ship: Anathema
+    """
 
     type = 'passive'
 
@@ -5862,6 +9642,12 @@ class Effect3249(EffectDef):
 
 
 class Effect3264(EffectDef):
+    """
+    skillIndustrialReconfigurationConsumptionQuantityBonus
+
+    Used by:
+    Skill: Industrial Reconfiguration
+    """
 
     type = 'passive'
 
@@ -5873,6 +9659,12 @@ class Effect3264(EffectDef):
 
 
 class Effect3267(EffectDef):
+    """
+    shipConsumptionQuantityBonusIndustrialReconfigurationORECapital1
+
+    Used by:
+    Ship: Rorqual
+    """
 
     type = 'passive'
 
@@ -5884,6 +9676,12 @@ class Effect3267(EffectDef):
 
 
 class Effect3297(EffectDef):
+    """
+    shipEnergyNeutralizerTransferAmountBonusAB
+
+    Used by:
+    Ship: Bhaalgorn
+    """
 
     type = 'passive'
 
@@ -5895,6 +9693,13 @@ class Effect3297(EffectDef):
 
 
 class Effect3298(EffectDef):
+    """
+    shipEnergyNeutralizerTransferAmountBonusAC
+
+    Used by:
+    Ship: Ashimmu
+    Ship: Vangel
+    """
 
     type = 'passive'
 
@@ -5906,6 +9711,14 @@ class Effect3298(EffectDef):
 
 
 class Effect3299(EffectDef):
+    """
+    shipEnergyNeutralizerTransferAmountBonusAF
+
+    Used by:
+    Ship: Caedes
+    Ship: Cruor
+    Ship: Sentinel
+    """
 
     type = 'passive'
 
@@ -5917,6 +9730,12 @@ class Effect3299(EffectDef):
 
 
 class Effect3313(EffectDef):
+    """
+    cloneVatMaxJumpCloneBonusSkillNew
+
+    Used by:
+    Skill: Cloning Facility Operation
+    """
 
     type = 'passive'
 
@@ -5926,6 +9745,12 @@ class Effect3313(EffectDef):
 
 
 class Effect3331(EffectDef):
+    """
+    eliteBonusCommandShipArmorHP1
+
+    Used by:
+    Ship: Damnation
+    """
 
     type = 'passive'
 
@@ -5935,6 +9760,12 @@ class Effect3331(EffectDef):
 
 
 class Effect3335(EffectDef):
+    """
+    shipArmorEmResistanceMC2
+
+    Used by:
+    Ship: Mimir
+    """
 
     type = 'passive'
 
@@ -5944,6 +9775,12 @@ class Effect3335(EffectDef):
 
 
 class Effect3336(EffectDef):
+    """
+    shipArmorExplosiveResistanceMC2
+
+    Used by:
+    Ship: Mimir
+    """
 
     type = 'passive'
 
@@ -5954,6 +9791,12 @@ class Effect3336(EffectDef):
 
 
 class Effect3339(EffectDef):
+    """
+    shipArmorKineticResistanceMC2
+
+    Used by:
+    Ship: Mimir
+    """
 
     type = 'passive'
 
@@ -5964,6 +9807,12 @@ class Effect3339(EffectDef):
 
 
 class Effect3340(EffectDef):
+    """
+    shipArmorThermalResistanceMC2
+
+    Used by:
+    Ship: Mimir
+    """
 
     type = 'passive'
 
@@ -5974,6 +9823,12 @@ class Effect3340(EffectDef):
 
 
 class Effect3343(EffectDef):
+    """
+    eliteBonusHeavyInterdictorsProjectileFalloff1
+
+    Used by:
+    Ship: Broadsword
+    """
 
     type = 'passive'
 
@@ -5985,6 +9840,12 @@ class Effect3343(EffectDef):
 
 
 class Effect3355(EffectDef):
+    """
+    eliteBonusHeavyInterdictorHeavyMissileVelocityBonus1
+
+    Used by:
+    Ship: Onyx
+    """
 
     type = 'passive'
 
@@ -5996,6 +9857,12 @@ class Effect3355(EffectDef):
 
 
 class Effect3356(EffectDef):
+    """
+    eliteBonusHeavyInterdictorHeavyAssaultMissileVelocityBonus
+
+    Used by:
+    Ship: Onyx
+    """
 
     type = 'passive'
 
@@ -6007,6 +9874,12 @@ class Effect3356(EffectDef):
 
 
 class Effect3357(EffectDef):
+    """
+    eliteBonusHeavyInterdictorLightMissileVelocityBonus
+
+    Used by:
+    Ship: Onyx
+    """
 
     type = 'passive'
 
@@ -6018,6 +9891,13 @@ class Effect3357(EffectDef):
 
 
 class Effect3366(EffectDef):
+    """
+    shipRemoteSensorDampenerCapNeedGF
+
+    Used by:
+    Ship: Keres
+    Ship: Maulus
+    """
 
     type = 'passive'
 
@@ -6028,6 +9908,12 @@ class Effect3366(EffectDef):
 
 
 class Effect3367(EffectDef):
+    """
+    eliteBonusElectronicAttackShipWarpScramblerMaxRange1
+
+    Used by:
+    Ship: Keres
+    """
 
     type = 'passive'
 
@@ -6039,6 +9925,12 @@ class Effect3367(EffectDef):
 
 
 class Effect3369(EffectDef):
+    """
+    eliteBonusElectronicAttackShipECMOptimalRange1
+
+    Used by:
+    Ship: Kitsune
+    """
 
     type = 'passive'
 
@@ -6050,6 +9942,12 @@ class Effect3369(EffectDef):
 
 
 class Effect3370(EffectDef):
+    """
+    eliteBonusElectronicAttackShipStasisWebMaxRange1
+
+    Used by:
+    Ship: Hyena
+    """
 
     type = 'passive'
 
@@ -6061,6 +9959,12 @@ class Effect3370(EffectDef):
 
 
 class Effect3371(EffectDef):
+    """
+    eliteBonusElectronicAttackShipWarpScramblerCapNeed2
+
+    Used by:
+    Ship: Keres
+    """
 
     type = 'passive'
 
@@ -6072,6 +9976,12 @@ class Effect3371(EffectDef):
 
 
 class Effect3374(EffectDef):
+    """
+    eliteBonusElectronicAttackShipSignatureRadius2
+
+    Used by:
+    Ship: Hyena
+    """
 
     type = 'passive'
 
@@ -6082,6 +9992,12 @@ class Effect3374(EffectDef):
 
 
 class Effect3379(EffectDef):
+    """
+    implantHardwiringABcapacitorNeed
+
+    Used by:
+    Implants named like: Eifyr and Co. 'Rogue' Fuel Conservation FC (6 of 6)
+    """
 
     type = 'passive'
 
@@ -6092,6 +10008,12 @@ class Effect3379(EffectDef):
 
 
 class Effect3380(EffectDef):
+    """
+    warpDisruptSphere
+
+    Used by:
+    Modules from group: Warp Disrupt Field Generator (7 of 7)
+    """
 
     runTime = 'early'
     type = 'projected', 'active'
@@ -6120,6 +10042,12 @@ class Effect3380(EffectDef):
 
 
 class Effect3392(EffectDef):
+    """
+    eliteBonusBlackOpsLargeEnergyTurretTracking1
+
+    Used by:
+    Ship: Redeemer
+    """
 
     type = 'passive'
 
@@ -6130,6 +10058,12 @@ class Effect3392(EffectDef):
 
 
 class Effect3403(EffectDef):
+    """
+    eliteBonusBlackOpsCloakVelocity2
+
+    Used by:
+    Ships from group: Black Ops (5 of 5)
+    """
 
     type = 'passive'
 
@@ -6140,6 +10074,12 @@ class Effect3403(EffectDef):
 
 
 class Effect3406(EffectDef):
+    """
+    eliteBonusBlackOpsMaxVelocity1
+
+    Used by:
+    Ship: Panther
+    """
 
     type = 'passive'
 
@@ -6149,6 +10089,12 @@ class Effect3406(EffectDef):
 
 
 class Effect3415(EffectDef):
+    """
+    eliteBonusViolatorsLargeEnergyTurretDamageRole1
+
+    Used by:
+    Ship: Paladin
+    """
 
     type = 'passive'
 
@@ -6159,6 +10105,12 @@ class Effect3415(EffectDef):
 
 
 class Effect3416(EffectDef):
+    """
+    eliteBonusViolatorsLargeHybridTurretDamageRole1
+
+    Used by:
+    Ship: Kronos
+    """
 
     type = 'passive'
 
@@ -6169,6 +10121,12 @@ class Effect3416(EffectDef):
 
 
 class Effect3417(EffectDef):
+    """
+    eliteBonusViolatorsLargeProjectileTurretDamageRole1
+
+    Used by:
+    Ship: Vargur
+    """
 
     type = 'passive'
 
@@ -6179,6 +10137,12 @@ class Effect3417(EffectDef):
 
 
 class Effect3424(EffectDef):
+    """
+    eliteBonusViolatorsLargeHybridTurretTracking1
+
+    Used by:
+    Ship: Kronos
+    """
 
     type = 'passive'
 
@@ -6189,6 +10153,12 @@ class Effect3424(EffectDef):
 
 
 class Effect3425(EffectDef):
+    """
+    eliteBonusViolatorsLargeProjectileTurretTracking1
+
+    Used by:
+    Ship: Vargur
+    """
 
     type = 'passive'
 
@@ -6199,6 +10169,12 @@ class Effect3425(EffectDef):
 
 
 class Effect3427(EffectDef):
+    """
+    eliteBonusViolatorsTractorBeamMaxRangeRole2
+
+    Used by:
+    Ships from group: Marauder (4 of 4)
+    """
 
     type = 'passive'
 
@@ -6209,6 +10185,12 @@ class Effect3427(EffectDef):
 
 
 class Effect3439(EffectDef):
+    """
+    eliteBonusViolatorsEwTargetPainting1
+
+    Used by:
+    Ship: Golem
+    """
 
     type = 'passive'
 
@@ -6220,6 +10202,13 @@ class Effect3439(EffectDef):
 
 
 class Effect3447(EffectDef):
+    """
+    shipBonusPTFalloffMB1
+
+    Used by:
+    Ship: Marshal
+    Ship: Vargur
+    """
 
     type = 'passive'
 
@@ -6230,6 +10219,12 @@ class Effect3447(EffectDef):
 
 
 class Effect3466(EffectDef):
+    """
+    eliteBonusElectronicAttackShipRechargeRate2
+
+    Used by:
+    Ship: Sentinel
+    """
 
     type = 'passive'
 
@@ -6240,6 +10235,12 @@ class Effect3466(EffectDef):
 
 
 class Effect3467(EffectDef):
+    """
+    eliteBonusElectronicAttackShipCapacitorCapacity2
+
+    Used by:
+    Ship: Kitsune
+    """
 
     type = 'passive'
 
@@ -6250,6 +10251,12 @@ class Effect3467(EffectDef):
 
 
 class Effect3468(EffectDef):
+    """
+    eliteBonusHeavyInterdictorsWarpDisruptFieldGeneratorWarpScrambleRange2
+
+    Used by:
+    Ships from group: Heavy Interdiction Cruiser (5 of 5)
+    """
 
     type = 'passive'
 
@@ -6261,6 +10268,12 @@ class Effect3468(EffectDef):
 
 
 class Effect3473(EffectDef):
+    """
+    eliteBonusViolatorsTractorBeamMaxTractorVelocityRole3
+
+    Used by:
+    Ships from group: Marauder (4 of 4)
+    """
 
     type = 'passive'
 
@@ -6271,6 +10284,13 @@ class Effect3473(EffectDef):
 
 
 class Effect3478(EffectDef):
+    """
+    shipLaserDamagePirateBattleship
+
+    Used by:
+    Ship: Bhaalgorn
+    Ship: Nightmare
+    """
 
     type = 'passive'
 
@@ -6281,6 +10301,12 @@ class Effect3478(EffectDef):
 
 
 class Effect3480(EffectDef):
+    """
+    shipTrackingBonusAB
+
+    Used by:
+    Ship: Nightmare
+    """
 
     type = 'passive'
 
@@ -6291,6 +10317,15 @@ class Effect3480(EffectDef):
 
 
 class Effect3483(EffectDef):
+    """
+    shipBonusMediumEnergyTurretDamagePirateFaction
+
+    Used by:
+    Ship: Ashimmu
+    Ship: Fiend
+    Ship: Gnosis
+    Ship: Phantasm
+    """
 
     type = 'passive'
 
@@ -6301,6 +10336,13 @@ class Effect3483(EffectDef):
 
 
 class Effect3484(EffectDef):
+    """
+    shipBonusMediumEnergyTurretTrackingAC2
+
+    Used by:
+    Ship: Fiend
+    Ship: Phantasm
+    """
 
     type = 'passive'
 
@@ -6311,6 +10353,17 @@ class Effect3484(EffectDef):
 
 
 class Effect3487(EffectDef):
+    """
+    shipBonusSmallEnergyTurretDamagePirateFaction
+
+    Used by:
+    Ship: Caedes
+    Ship: Confessor
+    Ship: Cruor
+    Ship: Imp
+    Ship: Succubus
+    Ship: Sunesis
+    """
 
     type = 'passive'
 
@@ -6321,6 +10374,13 @@ class Effect3487(EffectDef):
 
 
 class Effect3489(EffectDef):
+    """
+    shipBonusSmallEnergyTurretTracking2AF
+
+    Used by:
+    Ship: Imp
+    Ship: Succubus
+    """
 
     type = 'passive'
 
@@ -6331,6 +10391,12 @@ class Effect3489(EffectDef):
 
 
 class Effect3493(EffectDef):
+    """
+    rorqualCargoScanRangeBonus
+
+    Used by:
+    Ship: Rorqual
+    """
 
     type = 'passive'
 
@@ -6341,6 +10407,12 @@ class Effect3493(EffectDef):
 
 
 class Effect3494(EffectDef):
+    """
+    rorqualSurveyScannerRangeBonus
+
+    Used by:
+    Ship: Rorqual
+    """
 
     type = 'passive'
 
@@ -6351,6 +10423,16 @@ class Effect3494(EffectDef):
 
 
 class Effect3495(EffectDef):
+    """
+    shipCapPropulsionJamming
+
+    Used by:
+    Ships from group: Interceptor (10 of 10)
+    Ship: Atron
+    Ship: Condor
+    Ship: Executioner
+    Ship: Slasher
+    """
 
     type = 'passive'
 
@@ -6362,6 +10444,12 @@ class Effect3495(EffectDef):
 
 
 class Effect3496(EffectDef):
+    """
+    setBonusThukker
+
+    Used by:
+    Implants named like: grade Nomad (12 of 12)
+    """
 
     runTime = 'early'
     type = 'passive'
@@ -6373,6 +10461,12 @@ class Effect3496(EffectDef):
 
 
 class Effect3498(EffectDef):
+    """
+    setBonusSisters
+
+    Used by:
+    Implants named like: grade Virtue (12 of 12)
+    """
 
     runTime = 'early'
     type = 'passive'
@@ -6384,6 +10478,12 @@ class Effect3498(EffectDef):
 
 
 class Effect3499(EffectDef):
+    """
+    setBonusSyndicate
+
+    Used by:
+    Implants named like: grade Edge (12 of 12)
+    """
 
     runTime = 'early'
     type = 'passive'
@@ -6396,6 +10496,12 @@ class Effect3499(EffectDef):
 
 
 class Effect3513(EffectDef):
+    """
+    setBonusMordus
+
+    Used by:
+    Implants named like: grade Centurion (12 of 12)
+    """
 
     runTime = 'early'
     type = 'passive'
@@ -6407,6 +10513,12 @@ class Effect3513(EffectDef):
 
 
 class Effect3514(EffectDef):
+    """
+    Interceptor2WarpScrambleRange
+
+    Used by:
+    Ships from group: Interceptor (6 of 10)
+    """
 
     type = 'passive'
 
@@ -6417,6 +10529,12 @@ class Effect3514(EffectDef):
 
 
 class Effect3519(EffectDef):
+    """
+    weaponUpgradesCpuNeedBonusPostPercentCpuLocationShipModulesRequiringBombLauncher
+
+    Used by:
+    Skill: Weapon Upgrades
+    """
 
     type = 'passive'
 
@@ -6427,6 +10545,12 @@ class Effect3519(EffectDef):
 
 
 class Effect3520(EffectDef):
+    """
+    skillAdvancedWeaponUpgradesPowerNeedBonusBombLaunchers
+
+    Used by:
+    Skill: Advanced Weapon Upgrades
+    """
 
     type = 'passive'
 
@@ -6437,6 +10561,13 @@ class Effect3520(EffectDef):
 
 
 class Effect3526(EffectDef):
+    """
+    cynosuralTheoryConsumptionBonus
+
+    Used by:
+    Ships from group: Force Recon Ship (8 of 9)
+    Skill: Cynosural Field Theory
+    """
 
     type = 'passive'
 
@@ -6449,6 +10580,12 @@ class Effect3526(EffectDef):
 
 
 class Effect3530(EffectDef):
+    """
+    eliteBonusBlackOpsAgiliy1
+
+    Used by:
+    Ship: Sin
+    """
 
     type = 'passive'
 
@@ -6458,6 +10595,12 @@ class Effect3530(EffectDef):
 
 
 class Effect3532(EffectDef):
+    """
+    skillJumpDriveConsumptionAmountBonusPercentage
+
+    Used by:
+    Skill: Jump Fuel Conservation
+    """
 
     type = 'passive'
 
@@ -6468,6 +10611,13 @@ class Effect3532(EffectDef):
 
 
 class Effect3561(EffectDef):
+    """
+    ewSkillTrackingDisruptionTrackingSpeedBonus
+
+    Used by:
+    Modules named like: Tracking Diagnostic Subroutines (8 of 8)
+    Skill: Weapon Destabilization
+    """
 
     type = 'passive'
 
@@ -6480,6 +10630,12 @@ class Effect3561(EffectDef):
 
 
 class Effect3568(EffectDef):
+    """
+    eliteBonusLogisticsTrackingLinkMaxRangeBonus1
+
+    Used by:
+    Ship: Scimitar
+    """
 
     type = 'passive'
 
@@ -6491,6 +10647,12 @@ class Effect3568(EffectDef):
 
 
 class Effect3569(EffectDef):
+    """
+    eliteBonusLogisticsTrackingLinkMaxRangeBonus2
+
+    Used by:
+    Ship: Oneiros
+    """
 
     type = 'passive'
 
@@ -6502,6 +10664,12 @@ class Effect3569(EffectDef):
 
 
 class Effect3570(EffectDef):
+    """
+    eliteBonusLogisticsTrackingLinkTrackingSpeedBonus2
+
+    Used by:
+    Ship: Oneiros
+    """
 
     type = 'passive'
 
@@ -6513,6 +10681,12 @@ class Effect3570(EffectDef):
 
 
 class Effect3571(EffectDef):
+    """
+    eliteBonusLogisticsTrackingLinkTrackingSpeedBonus1
+
+    Used by:
+    Ship: Scimitar
+    """
 
     type = 'passive'
 
@@ -6524,6 +10698,13 @@ class Effect3571(EffectDef):
 
 
 class Effect3586(EffectDef):
+    """
+    ewSkillSignalSuppressionScanResolutionBonus
+
+    Used by:
+    Modules named like: Inverted Signal Field Projector (8 of 8)
+    Skill: Signal Suppression
+    """
 
     type = 'passive'
 
@@ -6538,6 +10719,12 @@ class Effect3586(EffectDef):
 
 
 class Effect3587(EffectDef):
+    """
+    shipBonusEwRemoteSensorDampenerMaxTargetRangeBonusGC2
+
+    Used by:
+    Variations of ship: Celestis (3 of 3)
+    """
 
     type = 'passive'
 
@@ -6549,6 +10736,13 @@ class Effect3587(EffectDef):
 
 
 class Effect3588(EffectDef):
+    """
+    shipBonusEwRemoteSensorDampenerMaxTargetRangeBonusGF2
+
+    Used by:
+    Ship: Keres
+    Ship: Maulus
+    """
 
     type = 'passive'
 
@@ -6560,6 +10754,13 @@ class Effect3588(EffectDef):
 
 
 class Effect3589(EffectDef):
+    """
+    shipBonusEwRemoteSensorDampenerScanResolutionBonusGF2
+
+    Used by:
+    Ship: Keres
+    Ship: Maulus
+    """
 
     type = 'passive'
 
@@ -6571,6 +10772,12 @@ class Effect3589(EffectDef):
 
 
 class Effect3590(EffectDef):
+    """
+    shipBonusEwRemoteSensorDampenerScanResolutionBonusGC2
+
+    Used by:
+    Variations of ship: Celestis (3 of 3)
+    """
 
     type = 'passive'
 
@@ -6582,6 +10789,13 @@ class Effect3590(EffectDef):
 
 
 class Effect3591(EffectDef):
+    """
+    ewSkillSignalSuppressionMaxTargetRangeBonus
+
+    Used by:
+    Modules named like: Inverted Signal Field Projector (8 of 8)
+    Skill: Signal Suppression
+    """
 
     type = 'passive'
 
@@ -6594,6 +10808,12 @@ class Effect3591(EffectDef):
 
 
 class Effect3592(EffectDef):
+    """
+    eliteBonusJumpFreighterHullHP1
+
+    Used by:
+    Ships from group: Jump Freighter (4 of 4)
+    """
 
     type = 'passive'
 
@@ -6603,6 +10823,12 @@ class Effect3592(EffectDef):
 
 
 class Effect3593(EffectDef):
+    """
+    eliteBonusJumpFreighterJumpDriveConsumptionAmount2
+
+    Used by:
+    Ships from group: Jump Freighter (4 of 4)
+    """
 
     type = 'passive'
 
@@ -6613,6 +10839,13 @@ class Effect3593(EffectDef):
 
 
 class Effect3597(EffectDef):
+    """
+    scriptSensorBoosterScanResolutionBonusBonus
+
+    Used by:
+    Charges from group: Sensor Booster Script (3 of 3)
+    Charges from group: Sensor Dampener Script (2 of 2)
+    """
 
     type = 'passive'
 
@@ -6622,6 +10855,13 @@ class Effect3597(EffectDef):
 
 
 class Effect3598(EffectDef):
+    """
+    scriptSensorBoosterMaxTargetRangeBonusBonus
+
+    Used by:
+    Charges from group: Sensor Booster Script (3 of 3)
+    Charges from group: Sensor Dampener Script (2 of 2)
+    """
 
     type = 'passive'
 
@@ -6631,6 +10871,13 @@ class Effect3598(EffectDef):
 
 
 class Effect3599(EffectDef):
+    """
+    scriptTrackingComputerTrackingSpeedBonusBonus
+
+    Used by:
+    Charges from group: Tracking Disruption Script (2 of 2)
+    Charges from group: Tracking Script (2 of 2)
+    """
 
     type = 'passive'
 
@@ -6640,6 +10887,13 @@ class Effect3599(EffectDef):
 
 
 class Effect3600(EffectDef):
+    """
+    scriptTrackingComputerMaxRangeBonusBonus
+
+    Used by:
+    Charges from group: Tracking Disruption Script (2 of 2)
+    Charges from group: Tracking Script (2 of 2)
+    """
 
     type = 'passive'
 
@@ -6649,6 +10903,12 @@ class Effect3600(EffectDef):
 
 
 class Effect3601(EffectDef):
+    """
+    scriptWarpDisruptionFieldGeneratorSetDisallowInEmpireSpace
+
+    Used by:
+    Charges from group: Warp Disruption Script (2 of 2)
+    """
 
     type = 'passive'
 
@@ -6658,6 +10918,12 @@ class Effect3601(EffectDef):
 
 
 class Effect3602(EffectDef):
+    """
+    scriptDurationBonus
+
+    Used by:
+    Charges from group: Warp Disruption Script (2 of 2)
+    """
 
     type = 'passive'
 
@@ -6667,6 +10933,12 @@ class Effect3602(EffectDef):
 
 
 class Effect3617(EffectDef):
+    """
+    scriptSignatureRadiusBonusBonus
+
+    Used by:
+    Charges from group: Warp Disruption Script (2 of 2)
+    """
 
     runTime = 'early'
     type = 'passive'
@@ -6677,6 +10949,12 @@ class Effect3617(EffectDef):
 
 
 class Effect3618(EffectDef):
+    """
+    scriptMassBonusPercentageBonus
+
+    Used by:
+    Charges from group: Warp Disruption Script (2 of 2)
+    """
 
     runTime = 'early'
     type = 'passive'
@@ -6687,6 +10965,12 @@ class Effect3618(EffectDef):
 
 
 class Effect3619(EffectDef):
+    """
+    scriptSpeedBoostFactorBonusBonus
+
+    Used by:
+    Charges from group: Warp Disruption Script (2 of 2)
+    """
 
     runTime = 'early'
     type = 'passive'
@@ -6697,6 +10981,12 @@ class Effect3619(EffectDef):
 
 
 class Effect3620(EffectDef):
+    """
+    scriptSpeedFactorBonusBonus
+
+    Used by:
+    Charges from group: Warp Disruption Script (2 of 2)
+    """
 
     runTime = 'early'
     type = 'passive'
@@ -6707,6 +10997,12 @@ class Effect3620(EffectDef):
 
 
 class Effect3648(EffectDef):
+    """
+    scriptWarpScrambleRangeBonus
+
+    Used by:
+    Charges from group: Warp Disruption Script (2 of 2)
+    """
 
     type = 'passive'
 
@@ -6716,6 +11012,12 @@ class Effect3648(EffectDef):
 
 
 class Effect3649(EffectDef):
+    """
+    eliteBonusViolatorsLargeEnergyTurretDamage1
+
+    Used by:
+    Ship: Paladin
+    """
 
     type = 'passive'
 
@@ -6727,6 +11029,12 @@ class Effect3649(EffectDef):
 
 
 class Effect3650(EffectDef):
+    """
+    ewGroupRsdMaxRangeBonus
+
+    Used by:
+    Implants named like: grade Centurion (10 of 12)
+    """
 
     type = 'passive'
 
@@ -6737,6 +11045,12 @@ class Effect3650(EffectDef):
 
 
 class Effect3651(EffectDef):
+    """
+    ewGroupTpMaxRangeBonus
+
+    Used by:
+    Implants named like: grade Centurion (10 of 12)
+    """
 
     type = 'passive'
 
@@ -6747,6 +11061,12 @@ class Effect3651(EffectDef):
 
 
 class Effect3652(EffectDef):
+    """
+    ewGroupTdMaxRangeBonus
+
+    Used by:
+    Implants named like: grade Centurion (10 of 12)
+    """
 
     type = 'passive'
 
@@ -6757,6 +11077,12 @@ class Effect3652(EffectDef):
 
 
 class Effect3653(EffectDef):
+    """
+    ewGroupEcmBurstMaxRangeBonus
+
+    Used by:
+    Implants named like: grade Centurion (10 of 12)
+    """
 
     type = 'passive'
 
@@ -6767,6 +11093,12 @@ class Effect3653(EffectDef):
 
 
 class Effect3655(EffectDef):
+    """
+    gunneryMaxRangeBonusOnline
+
+    Used by:
+    Modules from group: Tracking Enhancer (10 of 10)
+    """
 
     type = 'passive'
 
@@ -6778,6 +11110,12 @@ class Effect3655(EffectDef):
 
 
 class Effect3656(EffectDef):
+    """
+    gunneryTrackingSpeedBonusOnline
+
+    Used by:
+    Modules from group: Tracking Enhancer (10 of 10)
+    """
 
     type = 'passive'
 
@@ -6789,6 +11127,13 @@ class Effect3656(EffectDef):
 
 
 class Effect3657(EffectDef):
+    """
+    shipScanResolutionBonusOnline
+
+    Used by:
+    Modules from group: Signal Amplifier (7 of 7)
+    Structure Modules from group: Structure Signal Amplifier (2 of 2)
+    """
 
     type = 'passive'
 
@@ -6799,6 +11144,13 @@ class Effect3657(EffectDef):
 
 
 class Effect3659(EffectDef):
+    """
+    shipMaxTargetRangeBonusOnline
+
+    Used by:
+    Modules from group: Signal Amplifier (7 of 7)
+    Structure Modules from group: Structure Signal Amplifier (2 of 2)
+    """
 
     type = 'passive'
 
@@ -6809,6 +11161,13 @@ class Effect3659(EffectDef):
 
 
 class Effect3660(EffectDef):
+    """
+    shipMaxLockedTargetsBonusAddOnline
+
+    Used by:
+    Modules from group: Signal Amplifier (7 of 7)
+    Structure Modules from group: Structure Signal Amplifier (2 of 2)
+    """
 
     type = 'passive'
 
@@ -6818,6 +11177,12 @@ class Effect3660(EffectDef):
 
 
 class Effect3668(EffectDef):
+    """
+    miningLaserRangeBonus
+
+    Used by:
+    Implants named like: grade Harvest (10 of 12)
+    """
 
     type = 'passive'
 
@@ -6828,6 +11193,12 @@ class Effect3668(EffectDef):
 
 
 class Effect3669(EffectDef):
+    """
+    frequencyMiningLaserMaxRangeBonus
+
+    Used by:
+    Implants named like: grade Harvest (10 of 12)
+    """
 
     type = 'passive'
 
@@ -6838,6 +11209,12 @@ class Effect3669(EffectDef):
 
 
 class Effect3670(EffectDef):
+    """
+    stripMinerMaxRangeBonus
+
+    Used by:
+    Implants named like: grade Harvest (10 of 12)
+    """
 
     type = 'passive'
 
@@ -6848,6 +11225,12 @@ class Effect3670(EffectDef):
 
 
 class Effect3671(EffectDef):
+    """
+    gasHarvesterMaxRangeBonus
+
+    Used by:
+    Implants named like: grade Harvest (10 of 12)
+    """
 
     type = 'passive'
 
@@ -6858,6 +11241,12 @@ class Effect3671(EffectDef):
 
 
 class Effect3672(EffectDef):
+    """
+    setBonusOre
+
+    Used by:
+    Implants named like: grade Harvest (12 of 12)
+    """
 
     runTime = 'early'
     type = 'passive'
@@ -6869,6 +11258,13 @@ class Effect3672(EffectDef):
 
 
 class Effect3677(EffectDef):
+    """
+    shipBonusLargeEnergyTurretMaxRangeAB2
+
+    Used by:
+    Ship: Apocalypse
+    Ship: Apocalypse Navy Issue
+    """
 
     type = 'passive'
 
@@ -6879,6 +11275,13 @@ class Effect3677(EffectDef):
 
 
 class Effect3678(EffectDef):
+    """
+    eliteBonusJumpFreighterShieldHP1
+
+    Used by:
+    Ship: Nomad
+    Ship: Rhea
+    """
 
     type = 'passive'
 
@@ -6889,6 +11292,13 @@ class Effect3678(EffectDef):
 
 
 class Effect3679(EffectDef):
+    """
+    eliteBonusJumpFreighterArmorHP1
+
+    Used by:
+    Ship: Anshar
+    Ship: Ark
+    """
 
     type = 'passive'
 
@@ -6898,6 +11308,12 @@ class Effect3679(EffectDef):
 
 
 class Effect3680(EffectDef):
+    """
+    freighterAgilityBonusC1
+
+    Used by:
+    Ship: Rhea
+    """
 
     type = 'passive'
 
@@ -6907,6 +11323,12 @@ class Effect3680(EffectDef):
 
 
 class Effect3681(EffectDef):
+    """
+    freighterAgilityBonusM1
+
+    Used by:
+    Ship: Nomad
+    """
 
     type = 'passive'
 
@@ -6916,6 +11338,12 @@ class Effect3681(EffectDef):
 
 
 class Effect3682(EffectDef):
+    """
+    freighterAgilityBonusG1
+
+    Used by:
+    Ship: Anshar
+    """
 
     type = 'passive'
 
@@ -6925,6 +11353,12 @@ class Effect3682(EffectDef):
 
 
 class Effect3683(EffectDef):
+    """
+    freighterAgilityBonusA1
+
+    Used by:
+    Ship: Ark
+    """
 
     type = 'passive'
 
@@ -6934,6 +11368,13 @@ class Effect3683(EffectDef):
 
 
 class Effect3686(EffectDef):
+    """
+    scriptTrackingComputerFalloffBonusBonus
+
+    Used by:
+    Charges from group: Tracking Disruption Script (2 of 2)
+    Charges from group: Tracking Script (2 of 2)
+    """
 
     type = 'passive'
 
@@ -6943,6 +11384,12 @@ class Effect3686(EffectDef):
 
 
 class Effect3703(EffectDef):
+    """
+    shipMissileLauncherSpeedBonusMC2
+
+    Used by:
+    Ship: Bellicose
+    """
 
     type = 'passive'
 
@@ -6954,6 +11401,13 @@ class Effect3703(EffectDef):
 
 
 class Effect3705(EffectDef):
+    """
+    shipHybridTurretROFBonusGC2
+
+    Used by:
+    Ship: Exequror Navy Issue
+    Ship: Phobos
+    """
 
     type = 'passive'
 
@@ -6964,6 +11418,12 @@ class Effect3705(EffectDef):
 
 
 class Effect3706(EffectDef):
+    """
+    shipBonusProjectileTrackingMC2
+
+    Used by:
+    Ship: Stabber Fleet Issue
+    """
 
     type = 'passive'
 
@@ -6974,6 +11434,12 @@ class Effect3706(EffectDef):
 
 
 class Effect3726(EffectDef):
+    """
+    agilityMultiplierEffectPassive
+
+    Used by:
+    Modules named like: Polycarbon Engine Housing (8 of 8)
+    """
 
     type = 'passive'
 
@@ -6983,6 +11449,12 @@ class Effect3726(EffectDef):
 
 
 class Effect3727(EffectDef):
+    """
+    velocityBonusPassive
+
+    Used by:
+    Modules named like: Polycarbon Engine Housing (8 of 8)
+    """
 
     type = 'passive'
 
@@ -6993,6 +11465,12 @@ class Effect3727(EffectDef):
 
 
 class Effect3739(EffectDef):
+    """
+    zColinOrcaTractorRangeBonus
+
+    Used by:
+    Ships from group: Industrial Command Ship (2 of 2)
+    """
 
     type = 'passive'
 
@@ -7003,6 +11481,12 @@ class Effect3739(EffectDef):
 
 
 class Effect3740(EffectDef):
+    """
+    zColinOrcaTractorVelocityBonus
+
+    Used by:
+    Ships from group: Industrial Command Ship (2 of 2)
+    """
 
     type = 'passive'
 
@@ -7013,6 +11497,12 @@ class Effect3740(EffectDef):
 
 
 class Effect3742(EffectDef):
+    """
+    cargoAndOreHoldCapacityBonusICS1
+
+    Used by:
+    Ships from group: Industrial Command Ship (2 of 2)
+    """
 
     type = 'passive'
 
@@ -7028,6 +11518,12 @@ class Effect3742(EffectDef):
 
 
 class Effect3744(EffectDef):
+    """
+    miningForemanBurstBonusICS2
+
+    Used by:
+    Ships from group: Industrial Command Ship (2 of 2)
+    """
 
     type = 'passive'
 
@@ -7046,6 +11542,12 @@ class Effect3744(EffectDef):
 
 
 class Effect3745(EffectDef):
+    """
+    zColinOrcaSurveyScannerBonus
+
+    Used by:
+    Ships from group: Industrial Command Ship (2 of 2)
+    """
 
     type = 'passive'
 
@@ -7056,6 +11558,12 @@ class Effect3745(EffectDef):
 
 
 class Effect3765(EffectDef):
+    """
+    covertOpsStealthBomberSiegeMissileLauncherPowerNeedBonus
+
+    Used by:
+    Ships from group: Stealth Bomber (5 of 5)
+    """
 
     type = 'passive'
 
@@ -7066,6 +11574,12 @@ class Effect3765(EffectDef):
 
 
 class Effect3766(EffectDef):
+    """
+    interceptorMWDSignatureRadiusBonus
+
+    Used by:
+    Ships from group: Interceptor (10 of 10)
+    """
 
     type = 'passive'
 
@@ -7077,6 +11591,12 @@ class Effect3766(EffectDef):
 
 
 class Effect3767(EffectDef):
+    """
+    eliteBonusCommandShipsHeavyMissileExplosionVelocityCS2
+
+    Used by:
+    Ship: Claymore
+    """
 
     type = 'passive'
 
@@ -7088,6 +11608,12 @@ class Effect3767(EffectDef):
 
 
 class Effect3771(EffectDef):
+    """
+    armorHPBonusAddPassive
+
+    Used by:
+    Subsystems from group: Defensive Systems (9 of 12)
+    """
 
     type = 'passive'
 
@@ -7097,6 +11623,12 @@ class Effect3771(EffectDef):
 
 
 class Effect3773(EffectDef):
+    """
+    hardPointModifierEffect
+
+    Used by:
+    Subsystems from group: Offensive Systems (12 of 12)
+    """
 
     type = 'passive'
 
@@ -7107,6 +11639,12 @@ class Effect3773(EffectDef):
 
 
 class Effect3774(EffectDef):
+    """
+    slotModifier
+
+    Used by:
+    Items from category: Subsystem (48 of 48)
+    """
 
     type = 'passive'
 
@@ -7118,6 +11656,12 @@ class Effect3774(EffectDef):
 
 
 class Effect3782(EffectDef):
+    """
+    powerOutputAddPassive
+
+    Used by:
+    Subsystems from group: Offensive Systems (8 of 12)
+    """
 
     type = 'passive'
 
@@ -7127,6 +11671,12 @@ class Effect3782(EffectDef):
 
 
 class Effect3783(EffectDef):
+    """
+    cpuOutputAddCpuOutputPassive
+
+    Used by:
+    Subsystems from group: Offensive Systems (8 of 12)
+    """
 
     type = 'passive'
 
@@ -7136,6 +11686,12 @@ class Effect3783(EffectDef):
 
 
 class Effect3797(EffectDef):
+    """
+    droneBandwidthAddPassive
+
+    Used by:
+    Subsystems from group: Offensive Systems (12 of 12)
+    """
 
     type = 'passive'
 
@@ -7145,6 +11701,12 @@ class Effect3797(EffectDef):
 
 
 class Effect3799(EffectDef):
+    """
+    droneCapacityAdddroneCapacityPassive
+
+    Used by:
+    Subsystems from group: Offensive Systems (12 of 12)
+    """
 
     type = 'passive'
 
@@ -7154,6 +11716,12 @@ class Effect3799(EffectDef):
 
 
 class Effect3807(EffectDef):
+    """
+    maxTargetRangeAddPassive
+
+    Used by:
+    Subsystems named like: Propulsion Interdiction Nullifier (4 of 4)
+    """
 
     type = 'passive'
 
@@ -7163,6 +11731,13 @@ class Effect3807(EffectDef):
 
 
 class Effect3808(EffectDef):
+    """
+    signatureRadiusAddPassive
+
+    Used by:
+    Subsystems from group: Defensive Systems (8 of 12)
+    Subsystems named like: Propulsion Interdiction Nullifier (4 of 4)
+    """
 
     type = 'passive'
 
@@ -7172,6 +11747,13 @@ class Effect3808(EffectDef):
 
 
 class Effect3810(EffectDef):
+    """
+    capacityAddPassive
+
+    Used by:
+    Subsystems named like: Defensive Covert Reconfiguration (4 of 4)
+    Subsystem: Legion Defensive - Nanobot Injector
+    """
 
     type = 'passive'
 
@@ -7181,6 +11763,12 @@ class Effect3810(EffectDef):
 
 
 class Effect3811(EffectDef):
+    """
+    capacitorCapacityAddPassive
+
+    Used by:
+    Items from category: Subsystem (20 of 48)
+    """
 
     type = 'passive'
 
@@ -7190,6 +11778,12 @@ class Effect3811(EffectDef):
 
 
 class Effect3831(EffectDef):
+    """
+    shieldCapacityAddPassive
+
+    Used by:
+    Subsystems from group: Defensive Systems (8 of 12)
+    """
 
     type = 'passive'
 
@@ -7199,6 +11793,12 @@ class Effect3831(EffectDef):
 
 
 class Effect3857(EffectDef):
+    """
+    subsystemBonusAmarrPropulsionMaxVelocity
+
+    Used by:
+    Subsystem: Legion Propulsion - Intercalated Nanofibers
+    """
 
     type = 'passive'
 
@@ -7209,6 +11809,12 @@ class Effect3857(EffectDef):
 
 
 class Effect3859(EffectDef):
+    """
+    subsystemBonusCaldariPropulsionMaxVelocity
+
+    Used by:
+    Subsystem: Tengu Propulsion - Chassis Optimization
+    """
 
     type = 'passive'
 
@@ -7219,6 +11825,12 @@ class Effect3859(EffectDef):
 
 
 class Effect3860(EffectDef):
+    """
+    subsystemBonusMinmatarPropulsionMaxVelocity
+
+    Used by:
+    Subsystem: Loki Propulsion - Intercalated Nanofibers
+    """
 
     type = 'passive'
 
@@ -7229,6 +11841,12 @@ class Effect3860(EffectDef):
 
 
 class Effect3861(EffectDef):
+    """
+    subsystemBonusMinmatarPropulsionAfterburnerSpeedFactor
+
+    Used by:
+    Subsystem: Loki Propulsion - Wake Limiter
+    """
 
     type = 'passive'
 
@@ -7240,6 +11858,12 @@ class Effect3861(EffectDef):
 
 
 class Effect3863(EffectDef):
+    """
+    subsystemBonusCaldariPropulsionAfterburnerSpeedFactor
+
+    Used by:
+    Subsystem: Tengu Propulsion - Fuel Catalyst
+    """
 
     type = 'passive'
 
@@ -7251,6 +11875,12 @@ class Effect3863(EffectDef):
 
 
 class Effect3864(EffectDef):
+    """
+    subsystemBonusAmarrPropulsionAfterburnerSpeedFactor
+
+    Used by:
+    Subsystem: Legion Propulsion - Wake Limiter
+    """
 
     type = 'passive'
 
@@ -7262,6 +11892,12 @@ class Effect3864(EffectDef):
 
 
 class Effect3865(EffectDef):
+    """
+    subsystemBonusAmarrPropulsion2Agility
+
+    Used by:
+    Subsystem: Legion Propulsion - Intercalated Nanofibers
+    """
 
     type = 'passive'
 
@@ -7272,6 +11908,12 @@ class Effect3865(EffectDef):
 
 
 class Effect3866(EffectDef):
+    """
+    subsystemBonusCaldariPropulsion2Agility
+
+    Used by:
+    Subsystem: Tengu Propulsion - Chassis Optimization
+    """
 
     type = 'passive'
 
@@ -7282,6 +11924,12 @@ class Effect3866(EffectDef):
 
 
 class Effect3867(EffectDef):
+    """
+    subsystemBonusGallentePropulsion2Agility
+
+    Used by:
+    Subsystem: Proteus Propulsion - Hyperspatial Optimization
+    """
 
     type = 'passive'
 
@@ -7292,6 +11940,12 @@ class Effect3867(EffectDef):
 
 
 class Effect3868(EffectDef):
+    """
+    subsystemBonusMinmatarPropulsion2Agility
+
+    Used by:
+    Subsystem: Loki Propulsion - Intercalated Nanofibers
+    """
 
     type = 'passive'
 
@@ -7302,6 +11956,12 @@ class Effect3868(EffectDef):
 
 
 class Effect3869(EffectDef):
+    """
+    subsystemBonusMinmatarPropulsion2MWDPenalty
+
+    Used by:
+    Subsystem: Loki Propulsion - Wake Limiter
+    """
 
     type = 'passive'
 
@@ -7313,6 +11973,12 @@ class Effect3869(EffectDef):
 
 
 class Effect3872(EffectDef):
+    """
+    subsystemBonusAmarrPropulsion2MWDPenalty
+
+    Used by:
+    Subsystem: Legion Propulsion - Wake Limiter
+    """
 
     type = 'passive'
 
@@ -7324,6 +11990,12 @@ class Effect3872(EffectDef):
 
 
 class Effect3875(EffectDef):
+    """
+    subsystemBonusGallentePropulsionABMWDCapNeed
+
+    Used by:
+    Subsystem: Proteus Propulsion - Localized Injectors
+    """
 
     type = 'passive'
 
@@ -7335,6 +12007,12 @@ class Effect3875(EffectDef):
 
 
 class Effect3893(EffectDef):
+    """
+    subsystemBonusMinmatarCoreScanStrengthLADAR
+
+    Used by:
+    Subsystem: Loki Core - Dissolution Sequencer
+    """
 
     type = 'passive'
 
@@ -7345,6 +12023,12 @@ class Effect3893(EffectDef):
 
 
 class Effect3895(EffectDef):
+    """
+    subsystemBonusGallenteCoreScanStrengthMagnetometric
+
+    Used by:
+    Subsystem: Proteus Core - Electronic Efficiency Gate
+    """
 
     type = 'passive'
 
@@ -7355,6 +12039,12 @@ class Effect3895(EffectDef):
 
 
 class Effect3897(EffectDef):
+    """
+    subsystemBonusCaldariCoreScanStrengthGravimetric
+
+    Used by:
+    Subsystem: Tengu Core - Electronic Efficiency Gate
+    """
 
     type = 'passive'
 
@@ -7364,6 +12054,12 @@ class Effect3897(EffectDef):
 
 
 class Effect3900(EffectDef):
+    """
+    subsystemBonusAmarrCoreScanStrengthRADAR
+
+    Used by:
+    Subsystem: Legion Core - Dissolution Sequencer
+    """
 
     type = 'passive'
 
@@ -7374,6 +12070,13 @@ class Effect3900(EffectDef):
 
 
 class Effect3959(EffectDef):
+    """
+    subsystemBonusAmarrDefensiveArmorRepairAmount
+
+    Used by:
+    Subsystem: Legion Defensive - Covert Reconfiguration
+    Subsystem: Legion Defensive - Nanobot Injector
+    """
 
     type = 'passive'
 
@@ -7385,6 +12088,13 @@ class Effect3959(EffectDef):
 
 
 class Effect3961(EffectDef):
+    """
+    subsystemBonusGallenteDefensiveArmorRepairAmount
+
+    Used by:
+    Subsystem: Proteus Defensive - Covert Reconfiguration
+    Subsystem: Proteus Defensive - Nanobot Injector
+    """
 
     type = 'passive'
 
@@ -7396,6 +12106,13 @@ class Effect3961(EffectDef):
 
 
 class Effect3962(EffectDef):
+    """
+    subsystemBonusMinmatarDefensiveShieldArmorRepairAmount
+
+    Used by:
+    Subsystem: Loki Defensive - Adaptive Defense Node
+    Subsystem: Loki Defensive - Covert Reconfiguration
+    """
 
     type = 'passive'
 
@@ -7410,6 +12127,13 @@ class Effect3962(EffectDef):
 
 
 class Effect3964(EffectDef):
+    """
+    subsystemBonusCaldariDefensiveShieldBoostAmount
+
+    Used by:
+    Subsystem: Tengu Defensive - Amplification Node
+    Subsystem: Tengu Defensive - Covert Reconfiguration
+    """
 
     type = 'passive'
 
@@ -7421,6 +12145,12 @@ class Effect3964(EffectDef):
 
 
 class Effect3976(EffectDef):
+    """
+    subsystemBonusCaldariDefensiveShieldHP
+
+    Used by:
+    Subsystem: Tengu Defensive - Supplemental Screening
+    """
 
     type = 'passive'
 
@@ -7431,6 +12161,12 @@ class Effect3976(EffectDef):
 
 
 class Effect3979(EffectDef):
+    """
+    subsystemBonusMinmatarDefensiveShieldArmorHP
+
+    Used by:
+    Subsystem: Loki Defensive - Augmented Durability
+    """
 
     type = 'passive'
 
@@ -7443,6 +12179,12 @@ class Effect3979(EffectDef):
 
 
 class Effect3980(EffectDef):
+    """
+    subsystemBonusGallenteDefensiveArmorHP
+
+    Used by:
+    Subsystem: Proteus Defensive - Augmented Plating
+    """
 
     type = 'passive'
 
@@ -7453,6 +12195,12 @@ class Effect3980(EffectDef):
 
 
 class Effect3982(EffectDef):
+    """
+    subsystemBonusAmarrDefensiveArmorHP
+
+    Used by:
+    Subsystem: Legion Defensive - Augmented Plating
+    """
 
     type = 'passive'
 
@@ -7463,6 +12211,12 @@ class Effect3982(EffectDef):
 
 
 class Effect3992(EffectDef):
+    """
+    systemShieldHP
+
+    Used by:
+    Celestials named like: Pulsar Effect Beacon Class (6 of 6)
+    """
 
     runTime = 'early'
     type = ('projected', 'passive')
@@ -7473,6 +12227,13 @@ class Effect3992(EffectDef):
 
 
 class Effect3993(EffectDef):
+    """
+    systemTargetingRange
+
+    Used by:
+    Celestials named like: Black Hole Effect Beacon Class (6 of 6)
+    Celestials named like: Magnetar Effect Beacon Class (6 of 6)
+    """
 
     runTime = 'early'
     type = ('projected', 'passive')
@@ -7484,6 +12245,13 @@ class Effect3993(EffectDef):
 
 
 class Effect3995(EffectDef):
+    """
+    systemSignatureRadius
+
+    Used by:
+    Celestials named like: Pulsar Effect Beacon Class (6 of 6)
+    Celestials named like: Wolf Rayet Effect Beacon Class (6 of 6)
+    """
 
     runTime = 'early'
     type = ('projected', 'passive')
@@ -7495,6 +12263,13 @@ class Effect3995(EffectDef):
 
 
 class Effect3996(EffectDef):
+    """
+    systemArmorEmResistance
+
+    Used by:
+    Celestials named like: Incursion Effect (2 of 2)
+    Celestials named like: Pulsar Effect Beacon Class (6 of 6)
+    """
 
     runTime = 'early'
     type = ('projected', 'passive')
@@ -7506,6 +12281,13 @@ class Effect3996(EffectDef):
 
 
 class Effect3997(EffectDef):
+    """
+    systemArmorExplosiveResistance
+
+    Used by:
+    Celestials named like: Incursion Effect (2 of 2)
+    Celestials named like: Pulsar Effect Beacon Class (6 of 6)
+    """
 
     runTime = 'early'
     type = ('projected', 'passive')
@@ -7518,6 +12300,13 @@ class Effect3997(EffectDef):
 
 
 class Effect3998(EffectDef):
+    """
+    systemArmorKineticResistance
+
+    Used by:
+    Celestials named like: Incursion Effect (2 of 2)
+    Celestials named like: Pulsar Effect Beacon Class (6 of 6)
+    """
 
     runTime = 'early'
     type = ('projected', 'passive')
@@ -7530,6 +12319,13 @@ class Effect3998(EffectDef):
 
 
 class Effect3999(EffectDef):
+    """
+    systemArmorThermalResistance
+
+    Used by:
+    Celestials named like: Incursion Effect (2 of 2)
+    Celestials named like: Pulsar Effect Beacon Class (6 of 6)
+    """
 
     runTime = 'early'
     type = ('projected', 'passive')
@@ -7542,6 +12338,12 @@ class Effect3999(EffectDef):
 
 
 class Effect4002(EffectDef):
+    """
+    systemMissileVelocity
+
+    Used by:
+    Celestials named like: Black Hole Effect Beacon Class (6 of 6)
+    """
 
     runTime = 'early'
     type = ('projected', 'passive')
@@ -7554,6 +12356,12 @@ class Effect4002(EffectDef):
 
 
 class Effect4003(EffectDef):
+    """
+    systemMaxVelocity
+
+    Used by:
+    Celestials named like: Black Hole Effect Beacon Class (6 of 6)
+    """
 
     runTime = 'early'
     type = ('projected', 'passive')
@@ -7565,6 +12373,12 @@ class Effect4003(EffectDef):
 
 
 class Effect4016(EffectDef):
+    """
+    systemDamageMultiplierGunnery
+
+    Used by:
+    Celestials named like: Magnetar Effect Beacon Class (6 of 6)
+    """
 
     runTime = 'early'
     type = ('projected', 'passive')
@@ -7577,6 +12391,12 @@ class Effect4016(EffectDef):
 
 
 class Effect4017(EffectDef):
+    """
+    systemDamageThermalMissiles
+
+    Used by:
+    Celestials named like: Magnetar Effect Beacon Class (6 of 6)
+    """
 
     runTime = 'early'
     type = ('projected', 'passive')
@@ -7589,6 +12409,12 @@ class Effect4017(EffectDef):
 
 
 class Effect4018(EffectDef):
+    """
+    systemDamageEmMissiles
+
+    Used by:
+    Celestials named like: Magnetar Effect Beacon Class (6 of 6)
+    """
 
     runTime = 'early'
     type = ('projected', 'passive')
@@ -7601,6 +12427,12 @@ class Effect4018(EffectDef):
 
 
 class Effect4019(EffectDef):
+    """
+    systemDamageExplosiveMissiles
+
+    Used by:
+    Celestials named like: Magnetar Effect Beacon Class (6 of 6)
+    """
 
     runTime = 'early'
     type = ('projected', 'passive')
@@ -7613,6 +12445,12 @@ class Effect4019(EffectDef):
 
 
 class Effect4020(EffectDef):
+    """
+    systemDamageKineticMissiles
+
+    Used by:
+    Celestials named like: Magnetar Effect Beacon Class (6 of 6)
+    """
 
     runTime = 'early'
     type = ('projected', 'passive')
@@ -7625,6 +12463,12 @@ class Effect4020(EffectDef):
 
 
 class Effect4021(EffectDef):
+    """
+    systemDamageDrones
+
+    Used by:
+    Celestials named like: Magnetar Effect Beacon Class (6 of 6)
+    """
 
     runTime = 'early'
     type = ('projected', 'passive')
@@ -7637,6 +12481,12 @@ class Effect4021(EffectDef):
 
 
 class Effect4022(EffectDef):
+    """
+    systemTracking
+
+    Used by:
+    Celestials named like: Magnetar Effect Beacon Class (6 of 6)
+    """
 
     runTime = 'early'
     type = ('projected', 'passive')
@@ -7649,6 +12499,12 @@ class Effect4022(EffectDef):
 
 
 class Effect4023(EffectDef):
+    """
+    systemAoeVelocity
+
+    Used by:
+    Celestials named like: Black Hole Effect Beacon Class (6 of 6)
+    """
 
     runTime = 'early'
     type = ('projected', 'passive')
@@ -7660,6 +12516,12 @@ class Effect4023(EffectDef):
 
 
 class Effect4033(EffectDef):
+    """
+    systemHeatDamage
+
+    Used by:
+    Celestials named like: Red Giant Beacon Class (6 of 6)
+    """
 
     runTime = 'early'
     type = ('projected', 'passive')
@@ -7671,6 +12533,12 @@ class Effect4033(EffectDef):
 
 
 class Effect4034(EffectDef):
+    """
+    systemOverloadArmor
+
+    Used by:
+    Celestials named like: Red Giant Beacon Class (6 of 6)
+    """
 
     runTime = 'early'
     type = ('projected', 'passive')
@@ -7682,6 +12550,12 @@ class Effect4034(EffectDef):
 
 
 class Effect4035(EffectDef):
+    """
+    systemOverloadDamageModifier
+
+    Used by:
+    Celestials named like: Red Giant Beacon Class (6 of 6)
+    """
 
     runTime = 'early'
     type = ('projected', 'passive')
@@ -7693,6 +12567,12 @@ class Effect4035(EffectDef):
 
 
 class Effect4036(EffectDef):
+    """
+    systemOverloadDurationBonus
+
+    Used by:
+    Celestials named like: Red Giant Beacon Class (6 of 6)
+    """
 
     runTime = 'early'
     type = ('projected', 'passive')
@@ -7704,6 +12584,12 @@ class Effect4036(EffectDef):
 
 
 class Effect4037(EffectDef):
+    """
+    systemOverloadEccmStrength
+
+    Used by:
+    Celestials named like: Red Giant Beacon Class (6 of 6)
+    """
 
     runTime = 'early'
     type = ('projected', 'passive')
@@ -7715,6 +12601,12 @@ class Effect4037(EffectDef):
 
 
 class Effect4038(EffectDef):
+    """
+    systemOverloadEcmStrength
+
+    Used by:
+    Celestials named like: Red Giant Beacon Class (6 of 6)
+    """
 
     runTime = 'early'
     type = ('projected', 'passive')
@@ -7726,6 +12618,12 @@ class Effect4038(EffectDef):
 
 
 class Effect4039(EffectDef):
+    """
+    systemOverloadHardening
+
+    Used by:
+    Celestials named like: Red Giant Beacon Class (6 of 6)
+    """
 
     runTime = 'early'
     type = ('projected', 'passive')
@@ -7737,6 +12635,12 @@ class Effect4039(EffectDef):
 
 
 class Effect4040(EffectDef):
+    """
+    systemOverloadRange
+
+    Used by:
+    Celestials named like: Red Giant Beacon Class (6 of 6)
+    """
 
     runTime = 'early'
     type = ('projected', 'passive')
@@ -7748,6 +12652,12 @@ class Effect4040(EffectDef):
 
 
 class Effect4041(EffectDef):
+    """
+    systemOverloadRof
+
+    Used by:
+    Celestials named like: Red Giant Beacon Class (6 of 6)
+    """
 
     runTime = 'early'
     type = ('projected', 'passive')
@@ -7759,6 +12669,12 @@ class Effect4041(EffectDef):
 
 
 class Effect4042(EffectDef):
+    """
+    systemOverloadSelfDuration
+
+    Used by:
+    Celestials named like: Red Giant Beacon Class (6 of 6)
+    """
 
     runTime = 'early'
     type = ('projected', 'passive')
@@ -7770,6 +12686,12 @@ class Effect4042(EffectDef):
 
 
 class Effect4043(EffectDef):
+    """
+    systemOverloadShieldBonus
+
+    Used by:
+    Celestials named like: Red Giant Beacon Class (6 of 6)
+    """
 
     runTime = 'early'
     type = ('projected', 'passive')
@@ -7781,6 +12703,12 @@ class Effect4043(EffectDef):
 
 
 class Effect4044(EffectDef):
+    """
+    systemOverloadSpeedFactor
+
+    Used by:
+    Celestials named like: Red Giant Beacon Class (6 of 6)
+    """
 
     runTime = 'early'
     type = ('projected', 'passive')
@@ -7792,6 +12720,12 @@ class Effect4044(EffectDef):
 
 
 class Effect4045(EffectDef):
+    """
+    systemSmartBombRange
+
+    Used by:
+    Celestials named like: Red Giant Beacon Class (6 of 6)
+    """
 
     runTime = 'early'
     type = ('projected', 'passive')
@@ -7803,6 +12737,12 @@ class Effect4045(EffectDef):
 
 
 class Effect4046(EffectDef):
+    """
+    systemSmartBombEmDamage
+
+    Used by:
+    Celestials named like: Red Giant Beacon Class (6 of 6)
+    """
 
     runTime = 'early'
     type = ('projected', 'passive')
@@ -7814,6 +12754,12 @@ class Effect4046(EffectDef):
 
 
 class Effect4047(EffectDef):
+    """
+    systemSmartBombThermalDamage
+
+    Used by:
+    Celestials named like: Red Giant Beacon Class (6 of 6)
+    """
 
     runTime = 'early'
     type = ('projected', 'passive')
@@ -7825,6 +12771,12 @@ class Effect4047(EffectDef):
 
 
 class Effect4048(EffectDef):
+    """
+    systemSmartBombKineticDamage
+
+    Used by:
+    Celestials named like: Red Giant Beacon Class (6 of 6)
+    """
 
     runTime = 'early'
     type = ('projected', 'passive')
@@ -7836,6 +12788,12 @@ class Effect4048(EffectDef):
 
 
 class Effect4049(EffectDef):
+    """
+    systemSmartBombExplosiveDamage
+
+    Used by:
+    Celestials named like: Red Giant Beacon Class (6 of 6)
+    """
 
     runTime = 'early'
     type = ('projected', 'passive')
@@ -7847,6 +12805,12 @@ class Effect4049(EffectDef):
 
 
 class Effect4054(EffectDef):
+    """
+    systemSmallEnergyDamage
+
+    Used by:
+    Celestials named like: Wolf Rayet Effect Beacon Class (6 of 6)
+    """
 
     runTime = 'early'
     type = ('projected', 'passive')
@@ -7859,6 +12823,12 @@ class Effect4054(EffectDef):
 
 
 class Effect4055(EffectDef):
+    """
+    systemSmallProjectileDamage
+
+    Used by:
+    Celestials named like: Wolf Rayet Effect Beacon Class (6 of 6)
+    """
 
     runTime = 'early'
     type = ('projected', 'passive')
@@ -7871,6 +12841,12 @@ class Effect4055(EffectDef):
 
 
 class Effect4056(EffectDef):
+    """
+    systemSmallHybridDamage
+
+    Used by:
+    Celestials named like: Wolf Rayet Effect Beacon Class (6 of 6)
+    """
 
     runTime = 'early'
     type = ('projected', 'passive')
@@ -7883,6 +12859,12 @@ class Effect4056(EffectDef):
 
 
 class Effect4057(EffectDef):
+    """
+    systemRocketEmDamage
+
+    Used by:
+    Celestials named like: Wolf Rayet Effect Beacon Class (6 of 6)
+    """
 
     runTime = 'early'
     type = ('projected', 'passive')
@@ -7895,6 +12877,12 @@ class Effect4057(EffectDef):
 
 
 class Effect4058(EffectDef):
+    """
+    systemRocketExplosiveDamage
+
+    Used by:
+    Celestials named like: Wolf Rayet Effect Beacon Class (6 of 6)
+    """
 
     runTime = 'early'
     type = ('projected', 'passive')
@@ -7907,6 +12895,12 @@ class Effect4058(EffectDef):
 
 
 class Effect4059(EffectDef):
+    """
+    systemRocketKineticDamage
+
+    Used by:
+    Celestials named like: Wolf Rayet Effect Beacon Class (6 of 6)
+    """
 
     runTime = 'early'
     type = ('projected', 'passive')
@@ -7919,6 +12913,12 @@ class Effect4059(EffectDef):
 
 
 class Effect4060(EffectDef):
+    """
+    systemRocketThermalDamage
+
+    Used by:
+    Celestials named like: Wolf Rayet Effect Beacon Class (6 of 6)
+    """
 
     runTime = 'early'
     type = ('projected', 'passive')
@@ -7931,6 +12931,12 @@ class Effect4060(EffectDef):
 
 
 class Effect4061(EffectDef):
+    """
+    systemStandardMissileThermalDamage
+
+    Used by:
+    Celestials named like: Wolf Rayet Effect Beacon Class (6 of 6)
+    """
 
     runTime = 'early'
     type = ('projected', 'passive')
@@ -7943,6 +12949,12 @@ class Effect4061(EffectDef):
 
 
 class Effect4062(EffectDef):
+    """
+    systemStandardMissileEmDamage
+
+    Used by:
+    Celestials named like: Wolf Rayet Effect Beacon Class (6 of 6)
+    """
 
     runTime = 'early'
     type = ('projected', 'passive')
@@ -7955,6 +12967,12 @@ class Effect4062(EffectDef):
 
 
 class Effect4063(EffectDef):
+    """
+    systemStandardMissileExplosiveDamage
+
+    Used by:
+    Celestials named like: Wolf Rayet Effect Beacon Class (6 of 6)
+    """
 
     runTime = 'early'
     type = ('projected', 'passive')
@@ -7967,6 +12985,12 @@ class Effect4063(EffectDef):
 
 
 class Effect4086(EffectDef):
+    """
+    systemArmorRepairAmount
+
+    Used by:
+    Celestials named like: Cataclysmic Variable Effect Beacon Class (6 of 6)
+    """
 
     runTime = 'early'
     type = ('projected', 'passive')
@@ -7980,6 +13004,12 @@ class Effect4086(EffectDef):
 
 
 class Effect4088(EffectDef):
+    """
+    systemArmorRemoteRepairAmount
+
+    Used by:
+    Celestials named like: Cataclysmic Variable Effect Beacon Class (6 of 6)
+    """
 
     runTime = 'early'
     type = ('projected', 'passive')
@@ -7993,6 +13023,12 @@ class Effect4088(EffectDef):
 
 
 class Effect4089(EffectDef):
+    """
+    systemShieldRemoteRepairAmount
+
+    Used by:
+    Celestials named like: Cataclysmic Variable Effect Beacon Class (6 of 6)
+    """
 
     runTime = 'early'
     type = ('projected', 'passive')
@@ -8005,6 +13041,12 @@ class Effect4089(EffectDef):
 
 
 class Effect4090(EffectDef):
+    """
+    systemCapacitorCapacity
+
+    Used by:
+    Celestials named like: Cataclysmic Variable Effect Beacon Class (6 of 6)
+    """
 
     runTime = 'early'
     type = ('projected', 'passive')
@@ -8015,6 +13057,13 @@ class Effect4090(EffectDef):
 
 
 class Effect4091(EffectDef):
+    """
+    systemCapacitorRecharge
+
+    Used by:
+    Celestials named like: Cataclysmic Variable Effect Beacon Class (6 of 6)
+    Celestials named like: Pulsar Effect Beacon Class (6 of 6)
+    """
 
     runTime = 'early'
     type = ('projected', 'passive')
@@ -8025,6 +13074,12 @@ class Effect4091(EffectDef):
 
 
 class Effect4093(EffectDef):
+    """
+    subsystemBonusAmarrOffensiveEnergyWeaponDamageMultiplier
+
+    Used by:
+    Subsystem: Legion Offensive - Liquid Crystal Magnifiers
+    """
 
     type = 'passive'
 
@@ -8036,6 +13091,12 @@ class Effect4093(EffectDef):
 
 
 class Effect4104(EffectDef):
+    """
+    subsystemBonusCaldariOffensiveHybridWeaponMaxRange
+
+    Used by:
+    Subsystem: Tengu Offensive - Magnetic Infusion Basin
+    """
 
     type = 'passive'
 
@@ -8047,6 +13108,12 @@ class Effect4104(EffectDef):
 
 
 class Effect4106(EffectDef):
+    """
+    subsystemBonusGallenteOffensiveHybridWeaponFalloff
+
+    Used by:
+    Subsystem: Proteus Offensive - Hybrid Encoding Platform
+    """
 
     type = 'passive'
 
@@ -8058,6 +13125,12 @@ class Effect4106(EffectDef):
 
 
 class Effect4114(EffectDef):
+    """
+    subsystemBonusMinmatarOffensiveProjectileWeaponFalloff
+
+    Used by:
+    Subsystem: Loki Offensive - Projectile Scoping Array
+    """
 
     type = 'passive'
 
@@ -8069,6 +13142,12 @@ class Effect4114(EffectDef):
 
 
 class Effect4115(EffectDef):
+    """
+    subsystemBonusMinmatarOffensiveProjectileWeaponMaxRange
+
+    Used by:
+    Subsystem: Loki Offensive - Projectile Scoping Array
+    """
 
     type = 'passive'
 
@@ -8080,6 +13159,12 @@ class Effect4115(EffectDef):
 
 
 class Effect4122(EffectDef):
+    """
+    subsystemBonusCaldariOffensive1LauncherROF
+
+    Used by:
+    Subsystem: Tengu Offensive - Accelerated Ejection Bay
+    """
 
     type = 'passive'
 
@@ -8091,6 +13176,12 @@ class Effect4122(EffectDef):
 
 
 class Effect4135(EffectDef):
+    """
+    systemShieldEmResistance
+
+    Used by:
+    Celestials named like: Wolf Rayet Effect Beacon Class (6 of 6)
+    """
 
     runTime = 'early'
     type = ('projected', 'passive')
@@ -8102,6 +13193,12 @@ class Effect4135(EffectDef):
 
 
 class Effect4136(EffectDef):
+    """
+    systemShieldExplosiveResistance
+
+    Used by:
+    Celestials named like: Wolf Rayet Effect Beacon Class (6 of 6)
+    """
 
     runTime = 'early'
     type = ('projected', 'passive')
@@ -8114,6 +13211,12 @@ class Effect4136(EffectDef):
 
 
 class Effect4137(EffectDef):
+    """
+    systemShieldKineticResistance
+
+    Used by:
+    Celestials named like: Wolf Rayet Effect Beacon Class (6 of 6)
+    """
 
     runTime = 'early'
     type = ('projected', 'passive')
@@ -8126,6 +13229,12 @@ class Effect4137(EffectDef):
 
 
 class Effect4138(EffectDef):
+    """
+    systemShieldThermalResistance
+
+    Used by:
+    Celestials named like: Wolf Rayet Effect Beacon Class (6 of 6)
+    """
 
     runTime = 'early'
     type = ('projected', 'passive')
@@ -8138,6 +13247,12 @@ class Effect4138(EffectDef):
 
 
 class Effect4152(EffectDef):
+    """
+    subsystemBonusAmarrEngineeringHeatDamageReduction
+
+    Used by:
+    Subsystem: Legion Core - Energy Parasitic Complex
+    """
 
     type = 'passive'
 
@@ -8149,6 +13264,12 @@ class Effect4152(EffectDef):
 
 
 class Effect4153(EffectDef):
+    """
+    subsystemBonusCaldariEngineeringHeatDamageReduction
+
+    Used by:
+    Subsystem: Tengu Core - Obfuscation Manifold
+    """
 
     type = 'passive'
 
@@ -8160,6 +13281,12 @@ class Effect4153(EffectDef):
 
 
 class Effect4154(EffectDef):
+    """
+    subsystemBonusGallenteEngineeringHeatDamageReduction
+
+    Used by:
+    Subsystem: Proteus Core - Friction Extension Processor
+    """
 
     type = 'passive'
 
@@ -8171,6 +13298,12 @@ class Effect4154(EffectDef):
 
 
 class Effect4155(EffectDef):
+    """
+    subsystemBonusMinmatarEngineeringHeatDamageReduction
+
+    Used by:
+    Subsystem: Loki Core - Immobility Drivers
+    """
 
     type = 'passive'
 
@@ -8182,6 +13315,12 @@ class Effect4155(EffectDef):
 
 
 class Effect4158(EffectDef):
+    """
+    subsystemBonusCaldariCoreCapacitorCapacity
+
+    Used by:
+    Subsystem: Tengu Core - Augmented Graviton Reactor
+    """
 
     type = 'passive'
 
@@ -8192,6 +13331,12 @@ class Effect4158(EffectDef):
 
 
 class Effect4159(EffectDef):
+    """
+    subsystemBonusAmarrCoreCapacitorCapacity
+
+    Used by:
+    Subsystem: Legion Core - Augmented Antimatter Reactor
+    """
 
     type = 'passive'
 
@@ -8201,6 +13346,14 @@ class Effect4159(EffectDef):
 
 
 class Effect4161(EffectDef):
+    """
+    baseMaxScanDeviationModifierRequiringAstrometrics
+
+    Used by:
+    Implants named like: Poteque 'Prospector' Astrometric Pinpointing AP (3 of 3)
+    Skill: Astrometric Pinpointing
+    Skill: Astrometrics
+    """
 
     type = 'passive'
 
@@ -8213,6 +13366,17 @@ class Effect4161(EffectDef):
 
 
 class Effect4162(EffectDef):
+    """
+    baseSensorStrengthModifierRequiringAstrometrics
+
+    Used by:
+    Modules from group: Scan Probe Launcher (4 of 7)
+    Implants named like: Poteque 'Prospector' Astrometric Rangefinding AR (3 of 3)
+    Implants named like: grade Virtue (10 of 12)
+    Modules named like: Gravity Capacitor Upgrade (8 of 8)
+    Skill: Astrometric Rangefinding
+    Skill: Astrometrics
+    """
 
     type = 'passive'
 
@@ -8226,6 +13390,12 @@ class Effect4162(EffectDef):
 
 
 class Effect4165(EffectDef):
+    """
+    shipBonusScanProbeStrengthCF
+
+    Used by:
+    Ship: Heron
+    """
 
     type = 'passive'
 
@@ -8237,6 +13407,12 @@ class Effect4165(EffectDef):
 
 
 class Effect4166(EffectDef):
+    """
+    shipBonusScanProbeStrengthMF
+
+    Used by:
+    Ship: Probe
+    """
 
     type = 'passive'
 
@@ -8248,6 +13424,12 @@ class Effect4166(EffectDef):
 
 
 class Effect4167(EffectDef):
+    """
+    shipBonusScanProbeStrengthGF
+
+    Used by:
+    Ship: Imicus
+    """
 
     type = 'passive'
 
@@ -8259,6 +13441,12 @@ class Effect4167(EffectDef):
 
 
 class Effect4168(EffectDef):
+    """
+    eliteBonusCoverOpsScanProbeStrength2
+
+    Used by:
+    Ships from group: Covert Ops (8 of 8)
+    """
 
     type = 'passive'
 
@@ -8270,6 +13458,12 @@ class Effect4168(EffectDef):
 
 
 class Effect4187(EffectDef):
+    """
+    shipBonusStrategicCruiserAmarrHeatDamage
+
+    Used by:
+    Ship: Legion
+    """
 
     type = 'passive'
 
@@ -8281,6 +13475,12 @@ class Effect4187(EffectDef):
 
 
 class Effect4188(EffectDef):
+    """
+    shipBonusStrategicCruiserCaldariHeatDamage
+
+    Used by:
+    Ship: Tengu
+    """
 
     type = 'passive'
 
@@ -8292,6 +13492,12 @@ class Effect4188(EffectDef):
 
 
 class Effect4189(EffectDef):
+    """
+    shipBonusStrategicCruiserGallenteHeatDamage
+
+    Used by:
+    Ship: Proteus
+    """
 
     type = 'passive'
 
@@ -8303,6 +13509,12 @@ class Effect4189(EffectDef):
 
 
 class Effect4190(EffectDef):
+    """
+    shipBonusStrategicCruiserMinmatarHeatDamage
+
+    Used by:
+    Ship: Loki
+    """
 
     type = 'passive'
 
@@ -8314,6 +13526,12 @@ class Effect4190(EffectDef):
 
 
 class Effect4215(EffectDef):
+    """
+    subsystemBonusAmarrOffensive2EnergyWeaponCapacitorNeed
+
+    Used by:
+    Subsystem: Legion Offensive - Liquid Crystal Magnifiers
+    """
 
     type = 'passive'
 
@@ -8325,6 +13543,12 @@ class Effect4215(EffectDef):
 
 
 class Effect4216(EffectDef):
+    """
+    subsystemBonusAmarrCore2EnergyVampireAmount
+
+    Used by:
+    Subsystem: Legion Core - Energy Parasitic Complex
+    """
 
     type = 'passive'
 
@@ -8335,6 +13559,12 @@ class Effect4216(EffectDef):
 
 
 class Effect4217(EffectDef):
+    """
+    subsystemBonusAmarrCore2EnergyDestabilizerAmount
+
+    Used by:
+    Subsystem: Legion Core - Energy Parasitic Complex
+    """
 
     type = 'passive'
 
@@ -8345,6 +13575,12 @@ class Effect4217(EffectDef):
 
 
 class Effect4248(EffectDef):
+    """
+    subsystemBonusCaldariOffensive2MissileLauncherKineticDamage
+
+    Used by:
+    Subsystem: Tengu Offensive - Accelerated Ejection Bay
+    """
 
     type = 'passive'
 
@@ -8362,6 +13598,12 @@ class Effect4248(EffectDef):
 
 
 class Effect4250(EffectDef):
+    """
+    subsystemBonusGallenteOffensiveDroneDamageHP
+
+    Used by:
+    Subsystem: Proteus Offensive - Drone Synthesis Projector
+    """
 
     type = 'passive'
 
@@ -8382,6 +13624,12 @@ class Effect4250(EffectDef):
 
 
 class Effect4251(EffectDef):
+    """
+    subsystemBonusMinmatarOffensive2ProjectileWeaponDamageMultiplier
+
+    Used by:
+    Subsystem: Loki Offensive - Projectile Scoping Array
+    """
 
     type = 'passive'
 
@@ -8393,6 +13641,12 @@ class Effect4251(EffectDef):
 
 
 class Effect4256(EffectDef):
+    """
+    subsystemBonusMinmatarOffensive2MissileLauncherROF
+
+    Used by:
+    Subsystem: Loki Offensive - Launcher Efficiency Configuration
+    """
 
     type = 'passive'
 
@@ -8405,6 +13659,12 @@ class Effect4256(EffectDef):
 
 
 class Effect4264(EffectDef):
+    """
+    subsystemBonusMinmatarCoreCapacitorRecharge
+
+    Used by:
+    Subsystem: Loki Core - Augmented Nuclear Reactor
+    """
 
     type = 'passive'
 
@@ -8415,6 +13675,12 @@ class Effect4264(EffectDef):
 
 
 class Effect4265(EffectDef):
+    """
+    subsystemBonusGallenteCoreCapacitorRecharge
+
+    Used by:
+    Subsystem: Proteus Core - Augmented Fusion Reactor
+    """
 
     type = 'passive'
 
@@ -8425,6 +13691,12 @@ class Effect4265(EffectDef):
 
 
 class Effect4269(EffectDef):
+    """
+    subsystemBonusAmarrCore3ScanResolution
+
+    Used by:
+    Subsystem: Legion Core - Dissolution Sequencer
+    """
 
     type = 'passive'
 
@@ -8435,6 +13707,12 @@ class Effect4269(EffectDef):
 
 
 class Effect4270(EffectDef):
+    """
+    subsystemBonusMinmatarCore3ScanResolution
+
+    Used by:
+    Subsystem: Loki Core - Dissolution Sequencer
+    """
 
     type = 'passive'
 
@@ -8445,6 +13723,12 @@ class Effect4270(EffectDef):
 
 
 class Effect4271(EffectDef):
+    """
+    subsystemBonusCaldariCore2MaxTargetingRange
+
+    Used by:
+    Subsystem: Tengu Core - Electronic Efficiency Gate
+    """
 
     type = 'passive'
 
@@ -8454,6 +13738,12 @@ class Effect4271(EffectDef):
 
 
 class Effect4272(EffectDef):
+    """
+    subsystemBonusGallenteCore2MaxTargetingRange
+
+    Used by:
+    Subsystem: Proteus Core - Electronic Efficiency Gate
+    """
 
     type = 'passive'
 
@@ -8464,6 +13754,12 @@ class Effect4272(EffectDef):
 
 
 class Effect4273(EffectDef):
+    """
+    subsystemBonusGallenteCore2WarpScrambleRange
+
+    Used by:
+    Subsystem: Proteus Core - Friction Extension Processor
+    """
 
     type = 'passive'
 
@@ -8474,6 +13770,12 @@ class Effect4273(EffectDef):
 
 
 class Effect4274(EffectDef):
+    """
+    subsystemBonusMinmatarCore2StasisWebifierRange
+
+    Used by:
+    Subsystem: Loki Core - Immobility Drivers
+    """
 
     type = 'passive'
 
@@ -8484,6 +13786,12 @@ class Effect4274(EffectDef):
 
 
 class Effect4275(EffectDef):
+    """
+    subsystemBonusCaldariPropulsion2WarpSpeed
+
+    Used by:
+    Subsystem: Tengu Propulsion - Interdiction Nullifier
+    """
 
     type = 'passive'
 
@@ -8494,6 +13802,12 @@ class Effect4275(EffectDef):
 
 
 class Effect4277(EffectDef):
+    """
+    subsystemBonusGallentePropulsionWarpCapacitor
+
+    Used by:
+    Subsystem: Proteus Propulsion - Interdiction Nullifier
+    """
 
     type = 'passive'
 
@@ -8504,6 +13818,12 @@ class Effect4277(EffectDef):
 
 
 class Effect4278(EffectDef):
+    """
+    subsystemBonusGallentePropulsion2WarpSpeed
+
+    Used by:
+    Subsystem: Proteus Propulsion - Interdiction Nullifier
+    """
 
     type = 'passive'
 
@@ -8514,6 +13834,12 @@ class Effect4278(EffectDef):
 
 
 class Effect4280(EffectDef):
+    """
+    systemAgility
+
+    Used by:
+    Celestials named like: Black Hole Effect Beacon Class (6 of 6)
+    """
 
     runTime = 'early'
     type = ('projected', 'passive')
@@ -8524,6 +13850,12 @@ class Effect4280(EffectDef):
 
 
 class Effect4282(EffectDef):
+    """
+    subsystemBonusGallenteOffensive2HybridWeaponDamageMultiplier
+
+    Used by:
+    Subsystem: Proteus Offensive - Hybrid Encoding Platform
+    """
 
     type = 'passive'
 
@@ -8535,6 +13867,12 @@ class Effect4282(EffectDef):
 
 
 class Effect4283(EffectDef):
+    """
+    subsystemBonusCaldariOffensive2HybridWeaponDamageMultiplier
+
+    Used by:
+    Subsystem: Tengu Offensive - Magnetic Infusion Basin
+    """
 
     type = 'passive'
 
@@ -8546,6 +13884,12 @@ class Effect4283(EffectDef):
 
 
 class Effect4286(EffectDef):
+    """
+    subsystemBonusAmarrOffensive2RemoteArmorRepairCapUse
+
+    Used by:
+    Subsystem: Legion Offensive - Support Processor
+    """
 
     type = 'passive'
 
@@ -8556,6 +13900,12 @@ class Effect4286(EffectDef):
 
 
 class Effect4288(EffectDef):
+    """
+    subsystemBonusGallenteOffensive2RemoteArmorRepairCapUse
+
+    Used by:
+    Subsystem: Proteus Offensive - Support Processor
+    """
 
     type = 'passive'
 
@@ -8566,6 +13916,12 @@ class Effect4288(EffectDef):
 
 
 class Effect4290(EffectDef):
+    """
+    subsystemBonusMinmatarOffensive2RemoteRepCapUse
+
+    Used by:
+    Subsystem: Loki Offensive - Support Processor
+    """
 
     type = 'passive'
 
@@ -8577,6 +13933,12 @@ class Effect4290(EffectDef):
 
 
 class Effect4292(EffectDef):
+    """
+    subsystemBonusCaldariOffensive2RemoteShieldBoosterCapUse
+
+    Used by:
+    Subsystem: Tengu Offensive - Support Processor
+    """
 
     type = 'passive'
 
@@ -8588,6 +13950,12 @@ class Effect4292(EffectDef):
 
 
 class Effect4321(EffectDef):
+    """
+    subsystemBonusCaldariCore2ECMStrengthRange
+
+    Used by:
+    Subsystem: Tengu Core - Obfuscation Manifold
+    """
 
     type = 'passive'
 
@@ -8606,6 +13974,12 @@ class Effect4321(EffectDef):
 
 
 class Effect4327(EffectDef):
+    """
+    subsystemBonusAmarrOffensive3DroneDamageHP
+
+    Used by:
+    Subsystem: Legion Offensive - Assault Optimization
+    """
 
     type = 'passive'
 
@@ -8622,6 +13996,12 @@ class Effect4327(EffectDef):
 
 
 class Effect4330(EffectDef):
+    """
+    subsystemBonusAmarrOffensive3EnergyWeaponMaxRange
+
+    Used by:
+    Subsystem: Legion Offensive - Liquid Crystal Magnifiers
+    """
 
     type = 'passive'
 
@@ -8633,6 +14013,12 @@ class Effect4330(EffectDef):
 
 
 class Effect4331(EffectDef):
+    """
+    subsystemBonusCaldariOffensive3HMLHAMVelocity
+
+    Used by:
+    Subsystem: Tengu Offensive - Accelerated Ejection Bay
+    """
 
     type = 'passive'
 
@@ -8644,6 +14030,12 @@ class Effect4331(EffectDef):
 
 
 class Effect4342(EffectDef):
+    """
+    subsystemBonusMinmatarCore2MaxTargetingRange
+
+    Used by:
+    Subsystem: Loki Core - Dissolution Sequencer
+    """
 
     type = 'passive'
 
@@ -8654,6 +14046,12 @@ class Effect4342(EffectDef):
 
 
 class Effect4343(EffectDef):
+    """
+    subsystemBonusAmarrCore2MaxTargetingRange
+
+    Used by:
+    Subsystem: Legion Core - Dissolution Sequencer
+    """
 
     type = 'passive'
 
@@ -8664,6 +14062,13 @@ class Effect4343(EffectDef):
 
 
 class Effect4347(EffectDef):
+    """
+    subsystemBonusGallenteOffensive3TurretTracking
+
+    Used by:
+    Subsystem: Proteus Offensive - Drone Synthesis Projector
+    Subsystem: Proteus Offensive - Hybrid Encoding Platform
+    """
 
     type = 'passive'
 
@@ -8675,6 +14080,12 @@ class Effect4347(EffectDef):
 
 
 class Effect4351(EffectDef):
+    """
+    subsystemBonusMinmatarOffensive3TurretTracking
+
+    Used by:
+    Subsystem: Loki Offensive - Projectile Scoping Array
+    """
 
     type = 'passive'
 
@@ -8686,6 +14097,12 @@ class Effect4351(EffectDef):
 
 
 class Effect4358(EffectDef):
+    """
+    ecmRangeBonusModuleEffect
+
+    Used by:
+    Modules from group: ECM Stabilizer (6 of 6)
+    """
 
     type = 'passive'
 
@@ -8697,6 +14114,12 @@ class Effect4358(EffectDef):
 
 
 class Effect4360(EffectDef):
+    """
+    subsystemBonusAmarrOffensiveMissileLauncherROF
+
+    Used by:
+    Subsystem: Legion Offensive - Assault Optimization
+    """
 
     type = 'passive'
 
@@ -8708,6 +14131,12 @@ class Effect4360(EffectDef):
 
 
 class Effect4362(EffectDef):
+    """
+    subsystemBonusAmarrOffensive2MissileDamage
+
+    Used by:
+    Subsystem: Legion Offensive - Assault Optimization
+    """
 
     type = 'passive'
 
@@ -8724,6 +14153,12 @@ class Effect4362(EffectDef):
 
 
 class Effect4366(EffectDef):
+    """
+    shipBonusMediumHybridDmgCC2
+
+    Used by:
+    Ship: Falcon
+    """
 
     type = 'passive'
 
@@ -8734,6 +14169,12 @@ class Effect4366(EffectDef):
 
 
 class Effect4369(EffectDef):
+    """
+    subsystemBonusWarpBubbleImmune
+
+    Used by:
+    Subsystems named like: Propulsion Interdiction Nullifier (4 of 4)
+    """
 
     type = 'passive'
 
@@ -8743,6 +14184,12 @@ class Effect4369(EffectDef):
 
 
 class Effect4370(EffectDef):
+    """
+    caldariShipEwFalloffRangeCC2
+
+    Used by:
+    Ship: Blackbird
+    """
 
     type = 'passive'
 
@@ -8754,6 +14201,12 @@ class Effect4370(EffectDef):
 
 
 class Effect4372(EffectDef):
+    """
+    caldariShipEwFalloffRangeCB3
+
+    Used by:
+    Ship: Scorpion
+    """
 
     type = 'passive'
 
@@ -8765,6 +14218,12 @@ class Effect4372(EffectDef):
 
 
 class Effect4373(EffectDef):
+    """
+    subSystemBonusAmarrOffensiveCommandBursts
+
+    Used by:
+    Subsystem: Legion Offensive - Support Processor
+    """
 
     type = 'passive'
 
@@ -8805,6 +14264,13 @@ class Effect4373(EffectDef):
 
 
 class Effect4377(EffectDef):
+    """
+    shipBonusTorpedoVelocityGF2
+
+    Used by:
+    Ship: Nemesis
+    Ship: Virtuoso
+    """
 
     type = 'passive'
 
@@ -8815,6 +14281,12 @@ class Effect4377(EffectDef):
 
 
 class Effect4378(EffectDef):
+    """
+    shipBonusTorpedoVelocityMF2
+
+    Used by:
+    Ship: Hound
+    """
 
     type = 'passive'
 
@@ -8825,6 +14297,12 @@ class Effect4378(EffectDef):
 
 
 class Effect4379(EffectDef):
+    """
+    shipBonusTorpedoVelocity2AF
+
+    Used by:
+    Ship: Purifier
+    """
 
     type = 'passive'
 
@@ -8835,6 +14313,12 @@ class Effect4379(EffectDef):
 
 
 class Effect4380(EffectDef):
+    """
+    shipBonusTorpedoVelocityCF2
+
+    Used by:
+    Ship: Manticore
+    """
 
     type = 'passive'
 
@@ -8845,6 +14329,12 @@ class Effect4380(EffectDef):
 
 
 class Effect4384(EffectDef):
+    """
+    eliteReconBonusHeavyMissileVelocity
+
+    Used by:
+    Ship: Rook
+    """
 
     type = 'passive'
 
@@ -8856,6 +14346,12 @@ class Effect4384(EffectDef):
 
 
 class Effect4385(EffectDef):
+    """
+    eliteReconBonusHeavyAssaultMissileVelocity
+
+    Used by:
+    Ship: Rook
+    """
 
     type = 'passive'
 
@@ -8867,6 +14363,13 @@ class Effect4385(EffectDef):
 
 
 class Effect4393(EffectDef):
+    """
+    shipBonusEliteCover2TorpedoThermalDamage
+
+    Used by:
+    Ship: Nemesis
+    Ship: Virtuoso
+    """
 
     type = 'passive'
 
@@ -8878,6 +14381,12 @@ class Effect4393(EffectDef):
 
 
 class Effect4394(EffectDef):
+    """
+    shipBonusEliteCover2TorpedoEMDamage
+
+    Used by:
+    Ship: Purifier
+    """
 
     type = 'passive'
 
@@ -8888,6 +14397,13 @@ class Effect4394(EffectDef):
 
 
 class Effect4395(EffectDef):
+    """
+    shipBonusEliteCover2TorpedoExplosiveDamage
+
+    Used by:
+    Ship: Hound
+    Ship: Virtuoso
+    """
 
     type = 'passive'
 
@@ -8899,6 +14415,12 @@ class Effect4395(EffectDef):
 
 
 class Effect4396(EffectDef):
+    """
+    shipBonusEliteCover2TorpedoKineticDamage
+
+    Used by:
+    Ship: Manticore
+    """
 
     type = 'passive'
 
@@ -8910,6 +14432,12 @@ class Effect4396(EffectDef):
 
 
 class Effect4397(EffectDef):
+    """
+    shipBonusGFTorpedoExplosionVelocity
+
+    Used by:
+    Ship: Nemesis
+    """
 
     type = 'passive'
 
@@ -8920,6 +14448,13 @@ class Effect4397(EffectDef):
 
 
 class Effect4398(EffectDef):
+    """
+    shipBonusMF1TorpedoExplosionVelocity
+
+    Used by:
+    Ship: Hound
+    Ship: Virtuoso
+    """
 
     type = 'passive'
 
@@ -8930,6 +14465,12 @@ class Effect4398(EffectDef):
 
 
 class Effect4399(EffectDef):
+    """
+    shipBonusCF1TorpedoExplosionVelocity
+
+    Used by:
+    Ship: Manticore
+    """
 
     type = 'passive'
 
@@ -8940,6 +14481,12 @@ class Effect4399(EffectDef):
 
 
 class Effect4400(EffectDef):
+    """
+    shipBonusAF1TorpedoExplosionVelocity
+
+    Used by:
+    Ship: Purifier
+    """
 
     type = 'passive'
 
@@ -8950,6 +14497,12 @@ class Effect4400(EffectDef):
 
 
 class Effect4413(EffectDef):
+    """
+    shipBonusGF1TorpedoFlightTime
+
+    Used by:
+    Ship: Nemesis
+    """
 
     type = 'passive'
 
@@ -8960,6 +14513,13 @@ class Effect4413(EffectDef):
 
 
 class Effect4415(EffectDef):
+    """
+    shipBonusMF1TorpedoFlightTime
+
+    Used by:
+    Ship: Hound
+    Ship: Virtuoso
+    """
 
     type = 'passive'
 
@@ -8970,6 +14530,12 @@ class Effect4415(EffectDef):
 
 
 class Effect4416(EffectDef):
+    """
+    shipBonusCF1TorpedoFlightTime
+
+    Used by:
+    Ship: Manticore
+    """
 
     type = 'passive'
 
@@ -8980,6 +14546,12 @@ class Effect4416(EffectDef):
 
 
 class Effect4417(EffectDef):
+    """
+    shipBonusAF1TorpedoFlightTime
+
+    Used by:
+    Ship: Purifier
+    """
 
     type = 'passive'
 
@@ -8990,6 +14562,12 @@ class Effect4417(EffectDef):
 
 
 class Effect4451(EffectDef):
+    """
+    ScanRadarStrengthModifierEffect
+
+    Used by:
+    Implants named like: Low grade Grail (5 of 6)
+    """
 
     type = 'passive'
 
@@ -8999,6 +14577,12 @@ class Effect4451(EffectDef):
 
 
 class Effect4452(EffectDef):
+    """
+    ScanLadarStrengthModifierEffect
+
+    Used by:
+    Implants named like: Low grade Jackal (5 of 6)
+    """
 
     type = 'passive'
 
@@ -9008,6 +14592,12 @@ class Effect4452(EffectDef):
 
 
 class Effect4453(EffectDef):
+    """
+    ScanGravimetricStrengthModifierEffect
+
+    Used by:
+    Implants named like: Low grade Talon (5 of 6)
+    """
 
     type = 'passive'
 
@@ -9017,6 +14607,12 @@ class Effect4453(EffectDef):
 
 
 class Effect4454(EffectDef):
+    """
+    ScanMagnetometricStrengthModifierEffect
+
+    Used by:
+    Implants named like: Low grade Spur (5 of 6)
+    """
 
     type = 'passive'
 
@@ -9027,6 +14623,12 @@ class Effect4454(EffectDef):
 
 
 class Effect4456(EffectDef):
+    """
+    federationsetbonus3
+
+    Used by:
+    Implants named like: High grade Spur (6 of 6)
+    """
 
     runTime = 'early'
     type = 'passive'
@@ -9039,6 +14641,12 @@ class Effect4456(EffectDef):
 
 
 class Effect4457(EffectDef):
+    """
+    imperialsetbonus3
+
+    Used by:
+    Implants named like: High grade Grail (6 of 6)
+    """
 
     runTime = 'early'
     type = 'passive'
@@ -9051,6 +14659,12 @@ class Effect4457(EffectDef):
 
 
 class Effect4458(EffectDef):
+    """
+    republicsetbonus3
+
+    Used by:
+    Implants named like: High grade Jackal (6 of 6)
+    """
 
     runTime = 'early'
     type = 'passive'
@@ -9063,6 +14677,12 @@ class Effect4458(EffectDef):
 
 
 class Effect4459(EffectDef):
+    """
+    caldarisetbonus3
+
+    Used by:
+    Implants named like: High grade Talon (6 of 6)
+    """
 
     runTime = 'early'
     type = 'passive'
@@ -9075,6 +14695,12 @@ class Effect4459(EffectDef):
 
 
 class Effect4460(EffectDef):
+    """
+    imperialsetLGbonus
+
+    Used by:
+    Implants named like: Low grade Grail (6 of 6)
+    """
 
     runTime = 'early'
     type = 'passive'
@@ -9087,6 +14713,12 @@ class Effect4460(EffectDef):
 
 
 class Effect4461(EffectDef):
+    """
+    federationsetLGbonus
+
+    Used by:
+    Implants named like: Low grade Spur (6 of 6)
+    """
 
     runTime = 'early'
     type = 'passive'
@@ -9099,6 +14731,12 @@ class Effect4461(EffectDef):
 
 
 class Effect4462(EffectDef):
+    """
+    caldarisetLGbonus
+
+    Used by:
+    Implants named like: Low grade Talon (6 of 6)
+    """
 
     runTime = 'early'
     type = 'passive'
@@ -9111,6 +14749,12 @@ class Effect4462(EffectDef):
 
 
 class Effect4463(EffectDef):
+    """
+    republicsetLGbonus
+
+    Used by:
+    Implants named like: Low grade Jackal (6 of 6)
+    """
 
     runTime = 'early'
     type = 'passive'
@@ -9123,6 +14767,12 @@ class Effect4463(EffectDef):
 
 
 class Effect4464(EffectDef):
+    """
+    shipProjectileRofMF
+
+    Used by:
+    Ship: Claw
+    """
 
     type = 'passive'
 
@@ -9133,6 +14783,14 @@ class Effect4464(EffectDef):
 
 
 class Effect4471(EffectDef):
+    """
+    shipBonusStasisMF2
+
+    Used by:
+    Ship: Caedes
+    Ship: Cruor
+    Ship: Freki
+    """
 
     type = 'passive'
 
@@ -9143,6 +14801,12 @@ class Effect4471(EffectDef):
 
 
 class Effect4472(EffectDef):
+    """
+    shipProjectileDmgMC
+
+    Used by:
+    Ship: Mimir
+    """
 
     type = 'passive'
 
@@ -9153,6 +14817,13 @@ class Effect4472(EffectDef):
 
 
 class Effect4473(EffectDef):
+    """
+    shipVelocityBonusATC1
+
+    Used by:
+    Ship: Adrestia
+    Ship: Mimir
+    """
 
     type = 'passive'
 
@@ -9162,6 +14833,12 @@ class Effect4473(EffectDef):
 
 
 class Effect4474(EffectDef):
+    """
+    shipMTMaxRangeBonusATC
+
+    Used by:
+    Ship: Mimir
+    """
 
     type = 'passive'
 
@@ -9172,6 +14849,12 @@ class Effect4474(EffectDef):
 
 
 class Effect4475(EffectDef):
+    """
+    shipMTFalloffBonusATC
+
+    Used by:
+    Ship: Mimir
+    """
 
     type = 'passive'
 
@@ -9182,6 +14865,12 @@ class Effect4475(EffectDef):
 
 
 class Effect4476(EffectDef):
+    """
+    shipMTFalloffBonusATF
+
+    Used by:
+    Ship: Freki
+    """
 
     type = 'passive'
 
@@ -9192,6 +14881,12 @@ class Effect4476(EffectDef):
 
 
 class Effect4477(EffectDef):
+    """
+    shipMTMaxRangeBonusATF
+
+    Used by:
+    Ship: Freki
+    """
 
     type = 'passive'
 
@@ -9202,6 +14897,12 @@ class Effect4477(EffectDef):
 
 
 class Effect4478(EffectDef):
+    """
+    shipBonusAfterburnerCapNeedATF
+
+    Used by:
+    Ship: Freki
+    """
 
     type = 'passive'
 
@@ -9212,6 +14913,12 @@ class Effect4478(EffectDef):
 
 
 class Effect4479(EffectDef):
+    """
+    shipBonusSurveyProbeExplosionDelaySkillSurveyCovertOps3
+
+    Used by:
+    Ships from group: Covert Ops (5 of 8)
+    """
 
     type = 'passive'
 
@@ -9223,6 +14930,13 @@ class Effect4479(EffectDef):
 
 
 class Effect4482(EffectDef):
+    """
+    shipETOptimalRange2AF
+
+    Used by:
+    Ship: Imperial Navy Slicer
+    Ship: Pacifier
+    """
 
     type = 'passive'
 
@@ -9233,6 +14947,12 @@ class Effect4482(EffectDef):
 
 
 class Effect4484(EffectDef):
+    """
+    shipPTurretFalloffBonusGB
+
+    Used by:
+    Ship: Machariel
+    """
 
     type = 'passive'
 
@@ -9243,6 +14963,12 @@ class Effect4484(EffectDef):
 
 
 class Effect4485(EffectDef):
+    """
+    shipBonusStasisWebSpeedFactorMB
+
+    Used by:
+    Ship: Vindicator
+    """
 
     type = 'passive'
 
@@ -9253,26 +14979,57 @@ class Effect4485(EffectDef):
 
 
 class Effect4489(EffectDef):
+    """
+    superWeaponAmarr
+
+    Used by:
+    Module: 'Judgment' Electromagnetic Doomsday
+    """
 
     type = 'active'
 
 
 class Effect4490(EffectDef):
+    """
+    superWeaponCaldari
+
+    Used by:
+    Module: 'Oblivion' Kinetic Doomsday
+    """
 
     type = 'active'
 
 
 class Effect4491(EffectDef):
+    """
+    superWeaponGallente
+
+    Used by:
+    Module: 'Aurora Ominae' Thermal Doomsday
+    """
 
     type = 'active'
 
 
 class Effect4492(EffectDef):
+    """
+    superWeaponMinmatar
+
+    Used by:
+    Module: 'Gjallarhorn' Explosive Doomsday
+    """
 
     type = 'active'
 
 
 class Effect4510(EffectDef):
+    """
+    shipStasisWebStrengthBonusMC2
+
+    Used by:
+    Ship: Victor
+    Ship: Vigilant
+    """
 
     type = 'passive'
 
@@ -9283,6 +15040,13 @@ class Effect4510(EffectDef):
 
 
 class Effect4512(EffectDef):
+    """
+    shipPTurretFalloffBonusGC
+
+    Used by:
+    Ship: Cynabal
+    Ship: Moracha
+    """
 
     type = 'passive'
 
@@ -9293,6 +15057,13 @@ class Effect4512(EffectDef):
 
 
 class Effect4513(EffectDef):
+    """
+    shipStasisWebStrengthBonusMF2
+
+    Used by:
+    Ship: Daredevil
+    Ship: Virtuoso
+    """
 
     type = 'passive'
 
@@ -9303,6 +15074,13 @@ class Effect4513(EffectDef):
 
 
 class Effect4515(EffectDef):
+    """
+    shipFalloffBonusMF
+
+    Used by:
+    Ship: Chremoas
+    Ship: Dramiel
+    """
 
     type = 'passive'
 
@@ -9313,6 +15091,13 @@ class Effect4515(EffectDef):
 
 
 class Effect4516(EffectDef):
+    """
+    shipHTurretFalloffBonusGC
+
+    Used by:
+    Ship: Victor
+    Ship: Vigilant
+    """
 
     type = 'passive'
 
@@ -9323,6 +15108,12 @@ class Effect4516(EffectDef):
 
 
 class Effect4527(EffectDef):
+    """
+    gunneryFalloffBonusOnline
+
+    Used by:
+    Modules from group: Tracking Enhancer (10 of 10)
+    """
 
     type = 'passive'
 
@@ -9334,6 +15125,12 @@ class Effect4527(EffectDef):
 
 
 class Effect4555(EffectDef):
+    """
+    capitalLauncherSkillCruiseCitadelEmDamage1
+
+    Used by:
+    Skill: XL Cruise Missiles
+    """
 
     type = 'passive'
 
@@ -9344,6 +15141,12 @@ class Effect4555(EffectDef):
 
 
 class Effect4556(EffectDef):
+    """
+    capitalLauncherSkillCruiseCitadelExplosiveDamage1
+
+    Used by:
+    Skill: XL Cruise Missiles
+    """
 
     type = 'passive'
 
@@ -9354,6 +15157,12 @@ class Effect4556(EffectDef):
 
 
 class Effect4557(EffectDef):
+    """
+    capitalLauncherSkillCruiseCitadelKineticDamage1
+
+    Used by:
+    Skill: XL Cruise Missiles
+    """
 
     type = 'passive'
 
@@ -9364,6 +15173,12 @@ class Effect4557(EffectDef):
 
 
 class Effect4558(EffectDef):
+    """
+    capitalLauncherSkillCruiseCitadelThermalDamage1
+
+    Used by:
+    Skill: XL Cruise Missiles
+    """
 
     type = 'passive'
 
@@ -9374,6 +15189,12 @@ class Effect4558(EffectDef):
 
 
 class Effect4559(EffectDef):
+    """
+    gunneryMaxRangeFalloffTrackingSpeedBonus
+
+    Used by:
+    Modules from group: Tracking Computer (11 of 11)
+    """
 
     type = 'active'
 
@@ -9386,6 +15207,12 @@ class Effect4559(EffectDef):
 
 
 class Effect4575(EffectDef):
+    """
+    industrialCoreEffect2
+
+    Used by:
+    Variations of module: Industrial Core I (2 of 2)
+    """
 
     runTime = 'early'
     type = 'active'
@@ -9500,6 +15327,12 @@ class Effect4575(EffectDef):
 
 
 class Effect4576(EffectDef):
+    """
+    eliteBonusLogisticsTrackingLinkFalloffBonus1
+
+    Used by:
+    Ship: Scimitar
+    """
 
     type = 'passive'
 
@@ -9511,6 +15344,12 @@ class Effect4576(EffectDef):
 
 
 class Effect4577(EffectDef):
+    """
+    eliteBonusLogisticsTrackingLinkFalloffBonus2
+
+    Used by:
+    Ship: Oneiros
+    """
 
     type = 'passive'
 
@@ -9522,6 +15361,12 @@ class Effect4577(EffectDef):
 
 
 class Effect4579(EffectDef):
+    """
+    droneRigStasisWebSpeedFactorBonus
+
+    Used by:
+    Modules named like: Stasis Drone Augmentor (8 of 8)
+    """
 
     type = 'passive'
 
@@ -9532,6 +15377,12 @@ class Effect4579(EffectDef):
 
 
 class Effect4619(EffectDef):
+    """
+    shipBonusDroneDamageGF2
+
+    Used by:
+    Ship: Utu
+    """
 
     type = 'passive'
 
@@ -9542,6 +15393,13 @@ class Effect4619(EffectDef):
 
 
 class Effect4620(EffectDef):
+    """
+    shipBonusWarpScramblerMaxRangeGF2
+
+    Used by:
+    Ship: Garmur
+    Ship: Utu
+    """
 
     type = 'passive'
 
@@ -9552,6 +15410,14 @@ class Effect4620(EffectDef):
 
 
 class Effect4621(EffectDef):
+    """
+    shipBonusHeatDamageATF1
+
+    Used by:
+    Ship: Cambion
+    Ship: Etana
+    Ship: Utu
+    """
 
     type = 'passive'
 
@@ -9562,6 +15428,12 @@ class Effect4621(EffectDef):
 
 
 class Effect4622(EffectDef):
+    """
+    shipBonusSmallHybridMaxRangeATF2
+
+    Used by:
+    Ship: Utu
+    """
 
     type = 'passive'
 
@@ -9572,6 +15444,12 @@ class Effect4622(EffectDef):
 
 
 class Effect4623(EffectDef):
+    """
+    shipBonusSmallHybridTrackingSpeedATF2
+
+    Used by:
+    Ship: Utu
+    """
 
     type = 'passive'
 
@@ -9582,6 +15460,12 @@ class Effect4623(EffectDef):
 
 
 class Effect4624(EffectDef):
+    """
+    shipBonusHybridTrackingATC2
+
+    Used by:
+    Ship: Adrestia
+    """
 
     type = 'passive'
 
@@ -9592,6 +15476,12 @@ class Effect4624(EffectDef):
 
 
 class Effect4625(EffectDef):
+    """
+    shipBonusHybridFalloffATC2
+
+    Used by:
+    Ship: Adrestia
+    """
 
     type = 'passive'
 
@@ -9602,6 +15492,13 @@ class Effect4625(EffectDef):
 
 
 class Effect4626(EffectDef):
+    """
+    shipBonusWarpScramblerMaxRangeGC2
+
+    Used by:
+    Ship: Adrestia
+    Ship: Orthrus
+    """
 
     type = 'passive'
 
@@ -9612,6 +15509,12 @@ class Effect4626(EffectDef):
 
 
 class Effect4635(EffectDef):
+    """
+    eliteBonusMaraudersCruiseAndTorpedoDamageRole1
+
+    Used by:
+    Ship: Golem
+    """
 
     type = 'passive'
 
@@ -9625,6 +15528,12 @@ class Effect4635(EffectDef):
 
 
 class Effect4636(EffectDef):
+    """
+    shipBonusAoeVelocityCruiseAndTorpedoCB2
+
+    Used by:
+    Ship: Golem
+    """
 
     type = 'passive'
 
@@ -9636,6 +15545,13 @@ class Effect4636(EffectDef):
 
 
 class Effect4637(EffectDef):
+    """
+    shipCruiseAndTorpedoVelocityBonusCB3
+
+    Used by:
+    Ship: Golem
+    Ship: Widow
+    """
 
     type = 'passive'
 
@@ -9647,6 +15563,14 @@ class Effect4637(EffectDef):
 
 
 class Effect4640(EffectDef):
+    """
+    shipArmorEMAndExpAndkinAndThmResistanceAC2
+
+    Used by:
+    Ships named like: Stratios (2 of 2)
+    Ship: Sacrilege
+    Ship: Vangel
+    """
 
     type = 'passive'
 
@@ -9659,6 +15583,12 @@ class Effect4640(EffectDef):
 
 
 class Effect4643(EffectDef):
+    """
+    shipHeavyAssaultMissileEMAndExpAndKinAndThmDmgAC1
+
+    Used by:
+    Ship: Sacrilege
+    """
 
     type = 'passive'
 
@@ -9672,6 +15602,12 @@ class Effect4643(EffectDef):
 
 
 class Effect4645(EffectDef):
+    """
+    eliteBonusHeavyGunshipHeavyAndHeavyAssaultAndAssaultMissileLauncherROF
+
+    Used by:
+    Ship: Sacrilege
+    """
 
     type = 'passive'
 
@@ -9684,6 +15620,12 @@ class Effect4645(EffectDef):
 
 
 class Effect4648(EffectDef):
+    """
+    eliteBonusBlackOpsECMGravAndLadarAndMagnetometricAndRadarStrength1
+
+    Used by:
+    Ship: Widow
+    """
 
     type = 'passive'
 
@@ -9696,6 +15638,12 @@ class Effect4648(EffectDef):
 
 
 class Effect4649(EffectDef):
+    """
+    shipCruiseAndSiegeLauncherROFBonus2CB
+
+    Used by:
+    Ship: Widow
+    """
 
     type = 'passive'
 
@@ -9707,6 +15655,12 @@ class Effect4649(EffectDef):
 
 
 class Effect4667(EffectDef):
+    """
+    shipBonusNoctisSalvageCycle
+
+    Used by:
+    Ship: Noctis
+    """
 
     type = 'passive'
 
@@ -9718,6 +15672,12 @@ class Effect4667(EffectDef):
 
 
 class Effect4668(EffectDef):
+    """
+    shipBonusNoctisTractorCycle
+
+    Used by:
+    Ship: Noctis
+    """
 
     type = 'passive'
 
@@ -9729,6 +15689,12 @@ class Effect4668(EffectDef):
 
 
 class Effect4669(EffectDef):
+    """
+    shipBonusNoctisTractorVelocity
+
+    Used by:
+    Ship: Noctis
+    """
 
     type = 'passive'
 
@@ -9740,6 +15706,12 @@ class Effect4669(EffectDef):
 
 
 class Effect4670(EffectDef):
+    """
+    shipBonusNoctisTractorRange
+
+    Used by:
+    Ship: Noctis
+    """
 
     type = 'passive'
 
@@ -9751,6 +15723,13 @@ class Effect4670(EffectDef):
 
 
 class Effect4728(EffectDef):
+    """
+    OffensiveDefensiveReduction
+
+    Used by:
+    Celestials named like: Drifter Incursion (6 of 6)
+    Celestials named like: Incursion ship attributes effects (3 of 3)
+    """
 
     runTime = 'early'
     type = ('projected', 'passive')
@@ -9782,6 +15761,12 @@ class Effect4728(EffectDef):
 
 
 class Effect4760(EffectDef):
+    """
+    subsystemBonusCaldariPropulsionWarpCapacitor
+
+    Used by:
+    Subsystem: Tengu Propulsion - Interdiction Nullifier
+    """
 
     type = 'passive'
 
@@ -9792,6 +15777,12 @@ class Effect4760(EffectDef):
 
 
 class Effect4775(EffectDef):
+    """
+    shipEnergyNeutralizerTransferAmountBonusAF2
+
+    Used by:
+    Ship: Malice
+    """
 
     type = 'passive'
 
@@ -9803,6 +15794,12 @@ class Effect4775(EffectDef):
 
 
 class Effect4782(EffectDef):
+    """
+    shipBonusSmallEnergyWeaponOptimalRangeATF2
+
+    Used by:
+    Ship: Malice
+    """
 
     type = 'passive'
 
@@ -9813,6 +15810,12 @@ class Effect4782(EffectDef):
 
 
 class Effect4789(EffectDef):
+    """
+    shipBonusSmallEnergyTurretDamageATF1
+
+    Used by:
+    Ship: Malice
+    """
 
     type = 'passive'
 
@@ -9823,6 +15826,12 @@ class Effect4789(EffectDef):
 
 
 class Effect4793(EffectDef):
+    """
+    shipBonusMissileLauncherHeavyROFATC1
+
+    Used by:
+    Ship: Vangel
+    """
 
     type = 'passive'
 
@@ -9833,6 +15842,12 @@ class Effect4793(EffectDef):
 
 
 class Effect4794(EffectDef):
+    """
+    shipBonusMissileLauncherAssaultROFATC1
+
+    Used by:
+    Ship: Vangel
+    """
 
     type = 'passive'
 
@@ -9843,6 +15858,12 @@ class Effect4794(EffectDef):
 
 
 class Effect4795(EffectDef):
+    """
+    shipBonusMissileLauncherHeavyAssaultROFATC1
+
+    Used by:
+    Ship: Vangel
+    """
 
     type = 'passive'
 
@@ -9853,6 +15874,12 @@ class Effect4795(EffectDef):
 
 
 class Effect4799(EffectDef):
+    """
+    eliteBonusBlackOpsECMBurstGravAndLadarAndMagnetoAndRadar
+
+    Used by:
+    Ship: Widow
+    """
 
     type = 'passive'
 
@@ -9866,6 +15893,14 @@ class Effect4799(EffectDef):
 
 
 class Effect4804(EffectDef):
+    """
+    dataMiningSkillBoostAccessDifficultyBonusAbsolutePercent
+
+    Used by:
+    Skill: Archaeology
+    Skill: Hacking
+    Skill: Salvaging
+    """
 
     type = 'passive'
 
@@ -9876,6 +15911,12 @@ class Effect4804(EffectDef):
 
 
 class Effect4809(EffectDef):
+    """
+    ecmGravimetricStrengthBonusPercent
+
+    Used by:
+    Modules from group: ECM Stabilizer (6 of 6)
+    """
 
     type = 'passive'
 
@@ -9887,6 +15928,12 @@ class Effect4809(EffectDef):
 
 
 class Effect4810(EffectDef):
+    """
+    ecmLadarStrengthBonusPercent
+
+    Used by:
+    Modules from group: ECM Stabilizer (6 of 6)
+    """
 
     type = 'passive'
 
@@ -9898,6 +15945,12 @@ class Effect4810(EffectDef):
 
 
 class Effect4811(EffectDef):
+    """
+    ecmMagnetometricStrengthBonusPercent
+
+    Used by:
+    Modules from group: ECM Stabilizer (6 of 6)
+    """
 
     type = 'passive'
 
@@ -9910,6 +15963,12 @@ class Effect4811(EffectDef):
 
 
 class Effect4812(EffectDef):
+    """
+    ecmRadarStrengthBonusPercent
+
+    Used by:
+    Modules from group: ECM Stabilizer (6 of 6)
+    """
 
     type = 'passive'
 
@@ -9921,6 +15980,12 @@ class Effect4812(EffectDef):
 
 
 class Effect4814(EffectDef):
+    """
+    jumpPortalConsumptionBonusPercentSkill
+
+    Used by:
+    Skill: Jump Portal Generation
+    """
 
     type = 'passive'
 
@@ -9931,6 +15996,12 @@ class Effect4814(EffectDef):
 
 
 class Effect4817(EffectDef):
+    """
+    salvagerModuleDurationReduction
+
+    Used by:
+    Implant: Poteque 'Prospector' Environmental Analysis EY-1005
+    """
 
     type = 'passive'
 
@@ -9941,6 +16012,12 @@ class Effect4817(EffectDef):
 
 
 class Effect4820(EffectDef):
+    """
+    bcLargeEnergyTurretPowerNeedBonus
+
+    Used by:
+    Ship: Oracle
+    """
 
     type = 'passive'
 
@@ -9951,6 +16028,13 @@ class Effect4820(EffectDef):
 
 
 class Effect4821(EffectDef):
+    """
+    bcLargeHybridTurretPowerNeedBonus
+
+    Used by:
+    Ship: Naga
+    Ship: Talos
+    """
 
     type = 'passive'
 
@@ -9961,6 +16045,12 @@ class Effect4821(EffectDef):
 
 
 class Effect4822(EffectDef):
+    """
+    bcLargeProjectileTurretPowerNeedBonus
+
+    Used by:
+    Ship: Tornado
+    """
 
     type = 'passive'
 
@@ -9971,6 +16061,12 @@ class Effect4822(EffectDef):
 
 
 class Effect4823(EffectDef):
+    """
+    bcLargeEnergyTurretCPUNeedBonus
+
+    Used by:
+    Ship: Oracle
+    """
 
     type = 'passive'
 
@@ -9981,6 +16077,13 @@ class Effect4823(EffectDef):
 
 
 class Effect4824(EffectDef):
+    """
+    bcLargeHybridTurretCPUNeedBonus
+
+    Used by:
+    Ship: Naga
+    Ship: Talos
+    """
 
     type = 'passive'
 
@@ -9991,6 +16094,12 @@ class Effect4824(EffectDef):
 
 
 class Effect4825(EffectDef):
+    """
+    bcLargeProjectileTurretCPUNeedBonus
+
+    Used by:
+    Ship: Tornado
+    """
 
     type = 'passive'
 
@@ -10001,6 +16110,12 @@ class Effect4825(EffectDef):
 
 
 class Effect4826(EffectDef):
+    """
+    bcLargeEnergyTurretCapacitorNeedBonus
+
+    Used by:
+    Ship: Oracle
+    """
 
     type = 'passive'
 
@@ -10011,6 +16126,13 @@ class Effect4826(EffectDef):
 
 
 class Effect4827(EffectDef):
+    """
+    bcLargeHybridTurretCapacitorNeedBonus
+
+    Used by:
+    Ship: Naga
+    Ship: Talos
+    """
 
     type = 'passive'
 
@@ -10021,6 +16143,12 @@ class Effect4827(EffectDef):
 
 
 class Effect4867(EffectDef):
+    """
+    setBonusChristmasPowergrid
+
+    Used by:
+    Implants named like: Genolution Core Augmentation CA (4 of 4)
+    """
 
     runTime = 'early'
     type = 'passive'
@@ -10033,6 +16161,12 @@ class Effect4867(EffectDef):
 
 
 class Effect4868(EffectDef):
+    """
+    setBonusChristmasCapacitorCapacity
+
+    Used by:
+    Implants named like: Genolution Core Augmentation CA (4 of 4)
+    """
 
     runTime = 'early'
     type = 'passive'
@@ -10045,6 +16179,12 @@ class Effect4868(EffectDef):
 
 
 class Effect4869(EffectDef):
+    """
+    setBonusChristmasCPUOutput
+
+    Used by:
+    Implants named like: Genolution Core Augmentation CA (4 of 4)
+    """
 
     runTime = 'early'
     type = 'passive'
@@ -10056,6 +16196,12 @@ class Effect4869(EffectDef):
 
 
 class Effect4871(EffectDef):
+    """
+    setBonusChristmasCapacitorRecharge2
+
+    Used by:
+    Implants named like: Genolution Core Augmentation CA (4 of 4)
+    """
 
     runTime = 'early'
     type = 'passive'
@@ -10067,6 +16213,12 @@ class Effect4871(EffectDef):
 
 
 class Effect4896(EffectDef):
+    """
+    shipBonusDroneHitpointsGF2
+
+    Used by:
+    Ship: Ishkur
+    """
 
     type = 'passive'
 
@@ -10077,6 +16229,12 @@ class Effect4896(EffectDef):
 
 
 class Effect4897(EffectDef):
+    """
+    shipBonusDroneArmorHitpointsGF2
+
+    Used by:
+    Ship: Ishkur
+    """
 
     type = 'passive'
 
@@ -10087,6 +16245,12 @@ class Effect4897(EffectDef):
 
 
 class Effect4898(EffectDef):
+    """
+    shipBonusDroneShieldHitpointsGF2
+
+    Used by:
+    Ship: Ishkur
+    """
 
     type = 'passive'
 
@@ -10097,6 +16261,12 @@ class Effect4898(EffectDef):
 
 
 class Effect4901(EffectDef):
+    """
+    shipMissileSpeedBonusAF
+
+    Used by:
+    Ship: Vengeance
+    """
 
     type = 'passive'
 
@@ -10107,6 +16277,14 @@ class Effect4901(EffectDef):
 
 
 class Effect4902(EffectDef):
+    """
+    MWDSignatureRadiusRoleBonus
+
+    Used by:
+    Ships from group: Assault Frigate (8 of 12)
+    Ships from group: Command Destroyer (4 of 4)
+    Ships from group: Heavy Assault Cruiser (8 of 11)
+    """
 
     type = 'passive'
 
@@ -10117,6 +16295,12 @@ class Effect4902(EffectDef):
 
 
 class Effect4906(EffectDef):
+    """
+    systemDamageFighters
+
+    Used by:
+    Celestials named like: Magnetar Effect Beacon Class (6 of 6)
+    """
 
     runTime = 'early'
     type = ('projected', 'passive')
@@ -10129,6 +16313,12 @@ class Effect4906(EffectDef):
 
 
 class Effect4911(EffectDef):
+    """
+    modifyShieldRechargeRatePassive
+
+    Used by:
+    Modules named like: Processor Overclocking Unit (8 of 8)
+    """
 
     type = 'passive'
 
@@ -10138,6 +16328,12 @@ class Effect4911(EffectDef):
 
 
 class Effect4921(EffectDef):
+    """
+    microJumpDrive
+
+    Used by:
+    Modules from group: Micro Jump Drive (2 of 2)
+    """
 
     type = 'active'
 
@@ -10147,6 +16343,12 @@ class Effect4921(EffectDef):
 
 
 class Effect4923(EffectDef):
+    """
+    skillMJDdurationBonus
+
+    Used by:
+    Skill: Micro Jump Drive Operation
+    """
 
     type = 'passive'
 
@@ -10157,6 +16359,12 @@ class Effect4923(EffectDef):
 
 
 class Effect4928(EffectDef):
+    """
+    adaptiveArmorHardener
+
+    Used by:
+    Module: Reactive Armor Hardener
+    """
 
     runTime = 'late'
     type = 'active'
@@ -10282,6 +16490,12 @@ class Effect4928(EffectDef):
 
 
 class Effect4934(EffectDef):
+    """
+    shipArmorRepairingGF2
+
+    Used by:
+    Ship: Incursus
+    """
 
     type = 'passive'
 
@@ -10293,6 +16507,12 @@ class Effect4934(EffectDef):
 
 
 class Effect4936(EffectDef):
+    """
+    fueledShieldBoosting
+
+    Used by:
+    Modules from group: Ancillary Shield Booster (8 of 8)
+    """
 
     runTime = 'late'
     type = 'active'
@@ -10305,6 +16525,13 @@ class Effect4936(EffectDef):
 
 
 class Effect4941(EffectDef):
+    """
+    shipHybridDamageBonusCF2
+
+    Used by:
+    Ship: Griffin Navy Issue
+    Ship: Merlin
+    """
 
     type = 'passive'
 
@@ -10315,11 +16542,23 @@ class Effect4941(EffectDef):
 
 
 class Effect4942(EffectDef):
+    """
+    targetBreaker
+
+    Used by:
+    Module: Target Spectrum Breaker
+    """
 
     type = 'active'
 
 
 class Effect4945(EffectDef):
+    """
+    skillTargetBreakerDurationBonus2
+
+    Used by:
+    Skill: Target Breaker Amplification
+    """
 
     type = 'passive'
 
@@ -10330,6 +16569,12 @@ class Effect4945(EffectDef):
 
 
 class Effect4946(EffectDef):
+    """
+    skillTargetBreakerCapNeedBonus2
+
+    Used by:
+    Skill: Target Breaker Amplification
+    """
 
     type = 'passive'
 
@@ -10340,6 +16585,12 @@ class Effect4946(EffectDef):
 
 
 class Effect4950(EffectDef):
+    """
+    shipBonusShieldBoosterMB1a
+
+    Used by:
+    Ship: Maelstrom
+    """
 
     type = 'passive'
 
@@ -10350,6 +16601,14 @@ class Effect4950(EffectDef):
 
 
 class Effect4951(EffectDef):
+    """
+    shieldBoostAmplifierPassiveBooster
+
+    Used by:
+    Implants named like: Agency 'Hardshell' TB Dose (4 of 4)
+    Implants named like: Blue Pill Booster (5 of 5)
+    Implant: Antipharmakon Thureo
+    """
 
     type = 'passive'
 
@@ -10361,6 +16620,12 @@ class Effect4951(EffectDef):
 
 
 class Effect4961(EffectDef):
+    """
+    systemShieldRepairAmountShieldSkills
+
+    Used by:
+    Celestials named like: Cataclysmic Variable Effect Beacon Class (6 of 6)
+    """
 
     runTime = 'early'
     type = ('projected', 'passive')
@@ -10374,6 +16639,12 @@ class Effect4961(EffectDef):
 
 
 class Effect4967(EffectDef):
+    """
+    shieldBoosterDurationBonusShieldSkills
+
+    Used by:
+    Modules named like: Core Defense Operational Solidifier (8 of 8)
+    """
 
     type = 'passive'
 
@@ -10385,6 +16656,14 @@ class Effect4967(EffectDef):
 
 
 class Effect4970(EffectDef):
+    """
+    boosterShieldBoostAmountPenaltyShieldSkills
+
+    Used by:
+    Implants named like: Crash Booster (3 of 4)
+    Implants named like: Frentix Booster (3 of 4)
+    Implants named like: Mindflood Booster (3 of 4)
+    """
 
     attr = 'boosterShieldBoostAmountPenalty'
     displayName = 'Shield Boost'
@@ -10399,6 +16678,12 @@ class Effect4970(EffectDef):
 
 
 class Effect4972(EffectDef):
+    """
+    eliteBonusAssaultShipLightMissileROF
+
+    Used by:
+    Ship: Cambion
+    """
 
     type = 'passive'
 
@@ -10409,6 +16694,12 @@ class Effect4972(EffectDef):
 
 
 class Effect4973(EffectDef):
+    """
+    eliteBonusAssaultShipRocketROF
+
+    Used by:
+    Ship: Cambion
+    """
 
     type = 'passive'
 
@@ -10419,6 +16710,13 @@ class Effect4973(EffectDef):
 
 
 class Effect4974(EffectDef):
+    """
+    eliteBonusMarauderShieldBonus2a
+
+    Used by:
+    Ship: Golem
+    Ship: Vargur
+    """
 
     type = 'passive'
 
@@ -10429,6 +16727,12 @@ class Effect4974(EffectDef):
 
 
 class Effect4975(EffectDef):
+    """
+    shipBonusMissileKineticlATF2
+
+    Used by:
+    Ship: Cambion
+    """
 
     type = 'passive'
 
@@ -10439,6 +16743,12 @@ class Effect4975(EffectDef):
 
 
 class Effect4976(EffectDef):
+    """
+    skillReactiveArmorHardenerDurationBonus
+
+    Used by:
+    Skill: Resistance Phasing
+    """
 
     type = 'passive'
 
@@ -10452,6 +16762,12 @@ class Effect4976(EffectDef):
 
 
 class Effect4989(EffectDef):
+    """
+    missileSkillAoeCloudSizeBonusAllIncludingCapitals
+
+    Used by:
+    Implants named like: Crash Booster (4 of 4)
+    """
 
     type = 'passive'
 
@@ -10462,6 +16778,13 @@ class Effect4989(EffectDef):
 
 
 class Effect4990(EffectDef):
+    """
+    shipEnergyTCapNeedBonusRookie
+
+    Used by:
+    Ship: Hematos
+    Ship: Impairor
+    """
 
     type = 'passive'
 
@@ -10472,6 +16795,14 @@ class Effect4990(EffectDef):
 
 
 class Effect4991(EffectDef):
+    """
+    shipSETDmgBonusRookie
+
+    Used by:
+    Ship: Hematos
+    Ship: Immolator
+    Ship: Impairor
+    """
 
     type = 'passive'
 
@@ -10482,6 +16813,16 @@ class Effect4991(EffectDef):
 
 
 class Effect4994(EffectDef):
+    """
+    shipArmorEMResistanceRookie
+
+    Used by:
+    Ship: Devoter
+    Ship: Gold Magnate
+    Ship: Impairor
+    Ship: Phobos
+    Ship: Silver Magnate
+    """
 
     type = 'passive'
 
@@ -10491,6 +16832,16 @@ class Effect4994(EffectDef):
 
 
 class Effect4995(EffectDef):
+    """
+    shipArmorEXResistanceRookie
+
+    Used by:
+    Ship: Devoter
+    Ship: Gold Magnate
+    Ship: Impairor
+    Ship: Phobos
+    Ship: Silver Magnate
+    """
 
     type = 'passive'
 
@@ -10500,6 +16851,16 @@ class Effect4995(EffectDef):
 
 
 class Effect4996(EffectDef):
+    """
+    shipArmorKNResistanceRookie
+
+    Used by:
+    Ship: Devoter
+    Ship: Gold Magnate
+    Ship: Impairor
+    Ship: Phobos
+    Ship: Silver Magnate
+    """
 
     type = 'passive'
 
@@ -10509,6 +16870,16 @@ class Effect4996(EffectDef):
 
 
 class Effect4997(EffectDef):
+    """
+    shipArmorTHResistanceRookie
+
+    Used by:
+    Ship: Devoter
+    Ship: Gold Magnate
+    Ship: Impairor
+    Ship: Phobos
+    Ship: Silver Magnate
+    """
 
     type = 'passive'
 
@@ -10518,6 +16889,12 @@ class Effect4997(EffectDef):
 
 
 class Effect4999(EffectDef):
+    """
+    shipHybridRangeBonusRookie
+
+    Used by:
+    Ship: Ibis
+    """
 
     type = 'passive'
 
@@ -10528,6 +16905,12 @@ class Effect4999(EffectDef):
 
 
 class Effect5000(EffectDef):
+    """
+    shipMissileKineticDamageRookie
+
+    Used by:
+    Ship: Ibis
+    """
 
     type = 'passive'
 
@@ -10538,6 +16921,14 @@ class Effect5000(EffectDef):
 
 
 class Effect5008(EffectDef):
+    """
+    shipShieldEMResistanceRookie
+
+    Used by:
+    Ships from group: Heavy Interdiction Cruiser (3 of 5)
+    Ship: Ibis
+    Ship: Taipan
+    """
 
     type = 'passive'
 
@@ -10547,6 +16938,14 @@ class Effect5008(EffectDef):
 
 
 class Effect5009(EffectDef):
+    """
+    shipShieldExplosiveResistanceRookie
+
+    Used by:
+    Ships from group: Heavy Interdiction Cruiser (3 of 5)
+    Ship: Ibis
+    Ship: Taipan
+    """
 
     type = 'passive'
 
@@ -10556,6 +16955,14 @@ class Effect5009(EffectDef):
 
 
 class Effect5011(EffectDef):
+    """
+    shipShieldKineticResistanceRookie
+
+    Used by:
+    Ships from group: Heavy Interdiction Cruiser (3 of 5)
+    Ship: Ibis
+    Ship: Taipan
+    """
 
     type = 'passive'
 
@@ -10565,6 +16972,14 @@ class Effect5011(EffectDef):
 
 
 class Effect5012(EffectDef):
+    """
+    shipShieldThermalResistanceRookie
+
+    Used by:
+    Ships from group: Heavy Interdiction Cruiser (3 of 5)
+    Ship: Ibis
+    Ship: Taipan
+    """
 
     type = 'passive'
 
@@ -10574,6 +16989,14 @@ class Effect5012(EffectDef):
 
 
 class Effect5013(EffectDef):
+    """
+    shipSHTDmgBonusRookie
+
+    Used by:
+    Ship: Velator
+    Ship: Violator
+    Ship: Virtuoso
+    """
 
     type = 'passive'
 
@@ -10584,6 +17007,16 @@ class Effect5013(EffectDef):
 
 
 class Effect5014(EffectDef):
+    """
+    shipBonusDroneDamageMultiplierRookie
+
+    Used by:
+    Ship: Gnosis
+    Ship: Praxis
+    Ship: Sunesis
+    Ship: Taipan
+    Ship: Velator
+    """
 
     type = 'passive'
 
@@ -10594,6 +17027,12 @@ class Effect5014(EffectDef):
 
 
 class Effect5015(EffectDef):
+    """
+    shipBonusEwRemoteSensorDampenerMaxTargetRangeBonusRookie
+
+    Used by:
+    Ship: Velator
+    """
 
     type = 'passive'
 
@@ -10604,6 +17043,12 @@ class Effect5015(EffectDef):
 
 
 class Effect5016(EffectDef):
+    """
+    shipBonusEwRemoteSensorDampenerScanResolutionBonusRookie
+
+    Used by:
+    Ship: Velator
+    """
 
     type = 'passive'
 
@@ -10614,6 +17059,12 @@ class Effect5016(EffectDef):
 
 
 class Effect5017(EffectDef):
+    """
+    shipArmorRepairingRookie
+
+    Used by:
+    Ship: Velator
+    """
 
     type = 'passive'
 
@@ -10624,6 +17075,12 @@ class Effect5017(EffectDef):
 
 
 class Effect5018(EffectDef):
+    """
+    shipVelocityBonusRookie
+
+    Used by:
+    Ship: Reaper
+    """
 
     type = 'passive'
 
@@ -10633,6 +17090,12 @@ class Effect5018(EffectDef):
 
 
 class Effect5019(EffectDef):
+    """
+    minmatarShipEwTargetPainterRookie
+
+    Used by:
+    Ship: Reaper
+    """
 
     type = 'passive'
 
@@ -10643,6 +17106,13 @@ class Effect5019(EffectDef):
 
 
 class Effect5020(EffectDef):
+    """
+    shipSPTDmgBonusRookie
+
+    Used by:
+    Ship: Echo
+    Ship: Reaper
+    """
 
     type = 'passive'
 
@@ -10653,6 +17123,13 @@ class Effect5020(EffectDef):
 
 
 class Effect5021(EffectDef):
+    """
+    shipShieldBoostRookie
+
+    Used by:
+    Ship: Immolator
+    Ship: Reaper
+    """
 
     type = 'passive'
 
@@ -10663,6 +17140,12 @@ class Effect5021(EffectDef):
 
 
 class Effect5028(EffectDef):
+    """
+    shipECMScanStrengthBonusRookie
+
+    Used by:
+    Ship: Ibis
+    """
 
     type = 'passive'
 
@@ -10675,6 +17158,12 @@ class Effect5028(EffectDef):
 
 
 class Effect5029(EffectDef):
+    """
+    shipBonusDroneMiningAmountRole
+
+    Used by:
+    Ships from group: Industrial Command Ship (2 of 2)
+    """
 
     type = 'passive'
 
@@ -10687,6 +17176,15 @@ class Effect5029(EffectDef):
 
 
 class Effect5030(EffectDef):
+    """
+    shipBonusMiningDroneAmountPercentRookie
+
+    Used by:
+    Ship: Gnosis
+    Ship: Praxis
+    Ship: Taipan
+    Ship: Velator
+    """
 
     type = 'passive'
 
@@ -10697,6 +17195,17 @@ class Effect5030(EffectDef):
 
 
 class Effect5035(EffectDef):
+    """
+    shipBonusDroneHitpointsRookie
+
+    Used by:
+    Variations of ship: Procurer (2 of 2)
+    Ship: Gnosis
+    Ship: Praxis
+    Ship: Sunesis
+    Ship: Taipan
+    Ship: Velator
+    """
 
     type = 'passive'
 
@@ -10708,6 +17217,12 @@ class Effect5035(EffectDef):
 
 
 class Effect5036(EffectDef):
+    """
+    shipBonusSalvageCycleAF
+
+    Used by:
+    Ship: Magnate
+    """
 
     type = 'passive'
 
@@ -10718,6 +17233,12 @@ class Effect5036(EffectDef):
 
 
 class Effect5045(EffectDef):
+    """
+    shipBonusSalvageCycleCF
+
+    Used by:
+    Ship: Heron
+    """
 
     type = 'passive'
 
@@ -10728,6 +17249,12 @@ class Effect5045(EffectDef):
 
 
 class Effect5048(EffectDef):
+    """
+    shipBonusSalvageCycleGF
+
+    Used by:
+    Ship: Imicus
+    """
 
     type = 'passive'
 
@@ -10738,6 +17265,12 @@ class Effect5048(EffectDef):
 
 
 class Effect5051(EffectDef):
+    """
+    shipBonusSalvageCycleMF
+
+    Used by:
+    Ship: Probe
+    """
 
     type = 'passive'
 
@@ -10748,6 +17281,12 @@ class Effect5051(EffectDef):
 
 
 class Effect5055(EffectDef):
+    """
+    iceHarvesterDurationMultiplier
+
+    Used by:
+    Ship: Endurance
+    """
 
     type = 'passive'
 
@@ -10758,6 +17297,12 @@ class Effect5055(EffectDef):
 
 
 class Effect5058(EffectDef):
+    """
+    miningYieldMultiplyPassive
+
+    Used by:
+    Variations of ship: Venture (3 of 3)
+    """
 
     type = 'passive'
 
@@ -10768,6 +17313,13 @@ class Effect5058(EffectDef):
 
 
 class Effect5059(EffectDef):
+    """
+    shipBonusIceHarvesterDurationORE3
+
+    Used by:
+    Ships from group: Exhumer (3 of 3)
+    Ships from group: Mining Barge (3 of 3)
+    """
 
     type = 'passive'
 
@@ -10778,6 +17330,13 @@ class Effect5059(EffectDef):
 
 
 class Effect5066(EffectDef):
+    """
+    shipBonusTargetPainterOptimalMF1
+
+    Used by:
+    Ship: Hyena
+    Ship: Vigil
+    """
 
     type = 'passive'
 
@@ -10788,6 +17347,12 @@ class Effect5066(EffectDef):
 
 
 class Effect5067(EffectDef):
+    """
+    shipBonusOreHoldORE2
+
+    Used by:
+    Variations of ship: Retriever (2 of 2)
+    """
 
     type = 'passive'
 
@@ -10797,6 +17362,12 @@ class Effect5067(EffectDef):
 
 
 class Effect5068(EffectDef):
+    """
+    shipBonusShieldCapacityORE2
+
+    Used by:
+    Variations of ship: Procurer (2 of 2)
+    """
 
     type = 'passive'
 
@@ -10806,6 +17377,12 @@ class Effect5068(EffectDef):
 
 
 class Effect5069(EffectDef):
+    """
+    mercoxitCrystalBonus
+
+    Used by:
+    Module: Medium Mercoxit Mining Crystal Optimization I
+    """
 
     runTime = 'early'
     type = 'passive'
@@ -10818,6 +17395,12 @@ class Effect5069(EffectDef):
 
 
 class Effect5079(EffectDef):
+    """
+    shipMissileKineticDamageCF2
+
+    Used by:
+    Ship: Garmur
+    """
 
     type = 'passive'
 
@@ -10828,6 +17411,14 @@ class Effect5079(EffectDef):
 
 
 class Effect5080(EffectDef):
+    """
+    shipMissileVelocityCF
+
+    Used by:
+    Ship: Caldari Navy Hookbill
+    Ship: Crow
+    Ship: Kestrel
+    """
 
     type = 'passive'
 
@@ -10838,6 +17429,12 @@ class Effect5080(EffectDef):
 
 
 class Effect5081(EffectDef):
+    """
+    maxTargetingRangeBonusPostPercentPassive
+
+    Used by:
+    Modules named like: Ionic Field Projector (8 of 8)
+    """
 
     type = 'passive'
 
@@ -10848,6 +17445,14 @@ class Effect5081(EffectDef):
 
 
 class Effect5087(EffectDef):
+    """
+    shipBonusDroneHitpointsGF
+
+    Used by:
+    Ship: Astero
+    Ship: Maulus Navy Issue
+    Ship: Tristan
+    """
 
     type = 'passive'
 
@@ -10859,6 +17464,13 @@ class Effect5087(EffectDef):
 
 
 class Effect5090(EffectDef):
+    """
+    shipShieldBoostMF
+
+    Used by:
+    Ship: Breacher
+    Ship: Jaguar
+    """
 
     type = 'passive'
 
@@ -10869,6 +17481,12 @@ class Effect5090(EffectDef):
 
 
 class Effect5103(EffectDef):
+    """
+    shipBonusShieldTransferCapNeedCF
+
+    Used by:
+    Variations of ship: Bantam (2 of 2)
+    """
 
     type = 'passive'
 
@@ -10879,6 +17497,12 @@ class Effect5103(EffectDef):
 
 
 class Effect5104(EffectDef):
+    """
+    shipBonusShieldTransferBoostAmountCF2
+
+    Used by:
+    Variations of ship: Bantam (2 of 2)
+    """
 
     type = 'passive'
 
@@ -10889,6 +17513,12 @@ class Effect5104(EffectDef):
 
 
 class Effect5105(EffectDef):
+    """
+    shipBonusShieldTransferCapNeedMF
+
+    Used by:
+    Variations of ship: Burst (2 of 2)
+    """
 
     type = 'passive'
 
@@ -10899,6 +17529,12 @@ class Effect5105(EffectDef):
 
 
 class Effect5106(EffectDef):
+    """
+    shipBonusShieldTransferBoostAmountMF2
+
+    Used by:
+    Variations of ship: Burst (2 of 2)
+    """
 
     type = 'passive'
 
@@ -10909,6 +17545,12 @@ class Effect5106(EffectDef):
 
 
 class Effect5107(EffectDef):
+    """
+    shipBonusRemoteArmorRepairCapNeedGF
+
+    Used by:
+    Variations of ship: Navitas (2 of 2)
+    """
 
     type = 'passive'
 
@@ -10919,6 +17561,12 @@ class Effect5107(EffectDef):
 
 
 class Effect5108(EffectDef):
+    """
+    shipBonusRemoteArmorRepairAmountGF2
+
+    Used by:
+    Variations of ship: Navitas (2 of 2)
+    """
 
     type = 'passive'
 
@@ -10930,6 +17578,13 @@ class Effect5108(EffectDef):
 
 
 class Effect5109(EffectDef):
+    """
+    shipBonusRemoteArmorRepairCapNeedAF
+
+    Used by:
+    Ship: Deacon
+    Ship: Inquisitor
+    """
 
     type = 'passive'
 
@@ -10940,6 +17595,13 @@ class Effect5109(EffectDef):
 
 
 class Effect5110(EffectDef):
+    """
+    shipBonusRemoteArmorRepairAmount2AF
+
+    Used by:
+    Ship: Deacon
+    Ship: Inquisitor
+    """
 
     type = 'passive'
 
@@ -10950,6 +17612,13 @@ class Effect5110(EffectDef):
 
 
 class Effect5111(EffectDef):
+    """
+    shipBonusDroneTrackingGF
+
+    Used by:
+    Ship: Maulus Navy Issue
+    Ship: Tristan
+    """
 
     type = 'passive'
 
@@ -10960,6 +17629,12 @@ class Effect5111(EffectDef):
 
 
 class Effect5119(EffectDef):
+    """
+    shipBonusScanProbeStrength2AF
+
+    Used by:
+    Ship: Magnate
+    """
 
     type = 'passive'
 
@@ -10971,6 +17646,13 @@ class Effect5119(EffectDef):
 
 
 class Effect5121(EffectDef):
+    """
+    energyTransferArrayTransferAmountBonus
+
+    Used by:
+    Ship: Augoror
+    Ship: Osprey
+    """
 
     type = 'passive'
 
@@ -10981,6 +17663,12 @@ class Effect5121(EffectDef):
 
 
 class Effect5122(EffectDef):
+    """
+    shipBonusShieldTransferCapneedMC1
+
+    Used by:
+    Ship: Scythe
+    """
 
     type = 'passive'
 
@@ -10991,6 +17679,12 @@ class Effect5122(EffectDef):
 
 
 class Effect5123(EffectDef):
+    """
+    shipBonusRemoteArmorRepairCapNeedAC1
+
+    Used by:
+    Ship: Augoror
+    """
 
     type = 'passive'
 
@@ -11001,6 +17695,12 @@ class Effect5123(EffectDef):
 
 
 class Effect5124(EffectDef):
+    """
+    shipBonusRemoteArmorRepairAmountAC2
+
+    Used by:
+    Ship: Augoror
+    """
 
     type = 'passive'
 
@@ -11011,6 +17711,12 @@ class Effect5124(EffectDef):
 
 
 class Effect5125(EffectDef):
+    """
+    shipBonusRemoteArmorRepairAmountGC2
+
+    Used by:
+    Ship: Exequror
+    """
 
     type = 'passive'
 
@@ -11022,6 +17728,12 @@ class Effect5125(EffectDef):
 
 
 class Effect5126(EffectDef):
+    """
+    shipBonusShieldTransferBoostAmountCC2
+
+    Used by:
+    Ship: Osprey
+    """
 
     type = 'passive'
 
@@ -11032,6 +17744,12 @@ class Effect5126(EffectDef):
 
 
 class Effect5127(EffectDef):
+    """
+    shipBonusShieldTransferBoostAmountMC2
+
+    Used by:
+    Ship: Scythe
+    """
 
     type = 'passive'
 
@@ -11042,6 +17760,12 @@ class Effect5127(EffectDef):
 
 
 class Effect5128(EffectDef):
+    """
+    shipBonusEwRemoteSensorDampenerOptimalBonusGC1
+
+    Used by:
+    Ship: Celestis
+    """
 
     type = 'passive'
 
@@ -11052,6 +17776,13 @@ class Effect5128(EffectDef):
 
 
 class Effect5129(EffectDef):
+    """
+    minmatarShipEwTargetPainterMC1
+
+    Used by:
+    Ship: Bellicose
+    Ship: Rapier
+    """
 
     type = 'passive'
 
@@ -11063,6 +17794,13 @@ class Effect5129(EffectDef):
 
 
 class Effect5131(EffectDef):
+    """
+    shipMissileRofCC
+
+    Used by:
+    Ships named like: Caracal (2 of 2)
+    Ship: Enforcer
+    """
 
     type = 'passive'
 
@@ -11074,6 +17812,13 @@ class Effect5131(EffectDef):
 
 
 class Effect5132(EffectDef):
+    """
+    shipPTurretFalloffBonusMC2
+
+    Used by:
+    Ship: Enforcer
+    Ship: Stabber
+    """
 
     type = 'passive'
 
@@ -11084,6 +17829,12 @@ class Effect5132(EffectDef):
 
 
 class Effect5133(EffectDef):
+    """
+    shipHTDamageBonusCC
+
+    Used by:
+    Ship: Moa
+    """
 
     type = 'passive'
 
@@ -11094,6 +17845,15 @@ class Effect5133(EffectDef):
 
 
 class Effect5136(EffectDef):
+    """
+    shipMETCDamageBonusAC
+
+    Used by:
+    Ship: Augoror Navy Issue
+    Ship: Enforcer
+    Ship: Maller
+    Ship: Omen Navy Issue
+    """
 
     type = 'passive'
 
@@ -11104,6 +17864,12 @@ class Effect5136(EffectDef):
 
 
 class Effect5139(EffectDef):
+    """
+    shipMiningBonusOREfrig1
+
+    Used by:
+    Variations of ship: Venture (3 of 3)
+    """
 
     type = 'passive'
 
@@ -11115,6 +17881,13 @@ class Effect5139(EffectDef):
 
 
 class Effect5142(EffectDef):
+    """
+    GCHYieldMultiplyPassive
+
+    Used by:
+    Ship: Prospect
+    Ship: Venture
+    """
 
     type = 'passive'
 
@@ -11125,6 +17898,13 @@ class Effect5142(EffectDef):
 
 
 class Effect5153(EffectDef):
+    """
+    shipMissileVelocityPirateFactionRocket
+
+    Used by:
+    Ship: Corax
+    Ship: Talwar
+    """
 
     type = 'passive'
 
@@ -11135,6 +17915,13 @@ class Effect5153(EffectDef):
 
 
 class Effect5156(EffectDef):
+    """
+    shipGCHYieldBonusOREfrig2
+
+    Used by:
+    Ship: Prospect
+    Ship: Venture
+    """
 
     type = 'passive'
 
@@ -11145,6 +17932,12 @@ class Effect5156(EffectDef):
 
 
 class Effect5162(EffectDef):
+    """
+    skillReactiveArmorHardenerCapNeedBonus
+
+    Used by:
+    Skill: Resistance Phasing
+    """
 
     type = 'passive'
 
@@ -11158,6 +17951,13 @@ class Effect5162(EffectDef):
 
 
 class Effect5165(EffectDef):
+    """
+    shipBonusDroneMWDboostrole
+
+    Used by:
+    Ship: Algos
+    Ship: Dragoon
+    """
 
     type = 'passive'
 
@@ -11168,6 +17968,12 @@ class Effect5165(EffectDef):
 
 
 class Effect5168(EffectDef):
+    """
+    droneSalvageBonus
+
+    Used by:
+    Skill: Salvage Drone Operation
+    """
 
     type = 'passive'
 
@@ -11179,6 +17985,12 @@ class Effect5168(EffectDef):
 
 
 class Effect5180(EffectDef):
+    """
+    sensorCompensationSensorStrengthBonusGravimetric
+
+    Used by:
+    Skill: Gravimetric Sensor Compensation
+    """
 
     type = 'passive'
 
@@ -11189,6 +18001,12 @@ class Effect5180(EffectDef):
 
 
 class Effect5181(EffectDef):
+    """
+    sensorCompensationSensorStrengthBonusLadar
+
+    Used by:
+    Skill: Ladar Sensor Compensation
+    """
 
     type = 'passive'
 
@@ -11198,6 +18016,12 @@ class Effect5181(EffectDef):
 
 
 class Effect5182(EffectDef):
+    """
+    sensorCompensationSensorStrengthBonusMagnetometric
+
+    Used by:
+    Skill: Magnetometric Sensor Compensation
+    """
 
     type = 'passive'
 
@@ -11208,6 +18032,12 @@ class Effect5182(EffectDef):
 
 
 class Effect5183(EffectDef):
+    """
+    sensorCompensationSensorStrengthBonusRadar
+
+    Used by:
+    Skill: Radar Sensor Compensation
+    """
 
     type = 'passive'
 
@@ -11217,6 +18047,12 @@ class Effect5183(EffectDef):
 
 
 class Effect5185(EffectDef):
+    """
+    shipEnergyVampireAmountBonusFixedAF2
+
+    Used by:
+    Ship: Malice
+    """
 
     type = 'passive'
 
@@ -11228,6 +18064,12 @@ class Effect5185(EffectDef):
 
 
 class Effect5187(EffectDef):
+    """
+    shipBonusEwRemoteSensorDampenerFalloffBonusGC1
+
+    Used by:
+    Ship: Celestis
+    """
 
     type = 'passive'
 
@@ -11239,6 +18081,12 @@ class Effect5187(EffectDef):
 
 
 class Effect5188(EffectDef):
+    """
+    trackingSpeedBonusEffectHybrids
+
+    Used by:
+    Modules named like: Hybrid Metastasis Adjuster (8 of 8)
+    """
 
     type = 'passive'
 
@@ -11250,6 +18098,12 @@ class Effect5188(EffectDef):
 
 
 class Effect5189(EffectDef):
+    """
+    trackingSpeedBonusEffectLasers
+
+    Used by:
+    Modules named like: Energy Metastasis Adjuster (8 of 8)
+    """
 
     type = 'passive'
 
@@ -11261,6 +18115,12 @@ class Effect5189(EffectDef):
 
 
 class Effect5190(EffectDef):
+    """
+    trackingSpeedBonusEffectProjectiles
+
+    Used by:
+    Modules named like: Projectile Metastasis Adjuster (8 of 8)
+    """
 
     type = 'passive'
 
@@ -11272,6 +18132,12 @@ class Effect5190(EffectDef):
 
 
 class Effect5201(EffectDef):
+    """
+    armorUpgradesMassPenaltyReductionBonus
+
+    Used by:
+    Skill: Armor Layering
+    """
 
     type = 'passive'
 
@@ -11283,6 +18149,12 @@ class Effect5201(EffectDef):
 
 
 class Effect5205(EffectDef):
+    """
+    shipSETTrackingBonusRookie
+
+    Used by:
+    Ship: Immolator
+    """
 
     type = 'passive'
 
@@ -11293,6 +18165,12 @@ class Effect5205(EffectDef):
 
 
 class Effect5206(EffectDef):
+    """
+    shipSETOptimalBonusRookie
+
+    Used by:
+    Ship: Immolator
+    """
 
     type = 'passive'
 
@@ -11303,6 +18181,12 @@ class Effect5206(EffectDef):
 
 
 class Effect5207(EffectDef):
+    """
+    shipNOSTransferAmountBonusRookie
+
+    Used by:
+    Ship: Hematos
+    """
 
     type = 'passive'
 
@@ -11313,6 +18197,12 @@ class Effect5207(EffectDef):
 
 
 class Effect5208(EffectDef):
+    """
+    shipNeutDestabilizationAmountBonusRookie
+
+    Used by:
+    Ship: Hematos
+    """
 
     type = 'passive'
 
@@ -11323,6 +18213,13 @@ class Effect5208(EffectDef):
 
 
 class Effect5209(EffectDef):
+    """
+    shipWebVelocityBonusRookie
+
+    Used by:
+    Ship: Hematos
+    Ship: Violator
+    """
 
     type = 'passive'
 
@@ -11333,6 +18230,12 @@ class Effect5209(EffectDef):
 
 
 class Effect5212(EffectDef):
+    """
+    shipDroneMWDSpeedBonusRookie
+
+    Used by:
+    Ship: Taipan
+    """
 
     type = 'passive'
 
@@ -11343,6 +18246,12 @@ class Effect5212(EffectDef):
 
 
 class Effect5213(EffectDef):
+    """
+    shipRocketMaxVelocityBonusRookie
+
+    Used by:
+    Ship: Taipan
+    """
 
     type = 'passive'
 
@@ -11353,6 +18262,12 @@ class Effect5213(EffectDef):
 
 
 class Effect5214(EffectDef):
+    """
+    shipLightMissileMaxVelocityBonusRookie
+
+    Used by:
+    Ship: Taipan
+    """
 
     type = 'passive'
 
@@ -11363,6 +18278,12 @@ class Effect5214(EffectDef):
 
 
 class Effect5215(EffectDef):
+    """
+    shipSHTTrackingSpeedBonusRookie
+
+    Used by:
+    Ship: Violator
+    """
 
     type = 'passive'
 
@@ -11373,6 +18294,12 @@ class Effect5215(EffectDef):
 
 
 class Effect5216(EffectDef):
+    """
+    shipSHTFalloffBonusRookie
+
+    Used by:
+    Ship: Violator
+    """
 
     type = 'passive'
 
@@ -11383,6 +18310,12 @@ class Effect5216(EffectDef):
 
 
 class Effect5217(EffectDef):
+    """
+    shipSPTTrackingSpeedBonusRookie
+
+    Used by:
+    Ship: Echo
+    """
 
     type = 'passive'
 
@@ -11393,6 +18326,12 @@ class Effect5217(EffectDef):
 
 
 class Effect5218(EffectDef):
+    """
+    shipSPTFalloffBonusRookie
+
+    Used by:
+    Ship: Echo
+    """
 
     type = 'passive'
 
@@ -11403,6 +18342,12 @@ class Effect5218(EffectDef):
 
 
 class Effect5219(EffectDef):
+    """
+    shipSPTOptimalRangeBonusRookie
+
+    Used by:
+    Ship: Echo
+    """
 
     type = 'passive'
 
@@ -11413,6 +18358,12 @@ class Effect5219(EffectDef):
 
 
 class Effect5220(EffectDef):
+    """
+    shipProjectileDmgPirateCruiser
+
+    Used by:
+    Ship: Gnosis
+    """
 
     type = 'passive'
 
@@ -11423,6 +18374,12 @@ class Effect5220(EffectDef):
 
 
 class Effect5221(EffectDef):
+    """
+    shipHeavyAssaultMissileEMDmgPirateCruiser
+
+    Used by:
+    Ship: Gnosis
+    """
 
     type = 'passive'
 
@@ -11433,6 +18390,12 @@ class Effect5221(EffectDef):
 
 
 class Effect5222(EffectDef):
+    """
+    shipHeavyAssaultMissileKinDmgPirateCruiser
+
+    Used by:
+    Ship: Gnosis
+    """
 
     type = 'passive'
 
@@ -11443,6 +18406,12 @@ class Effect5222(EffectDef):
 
 
 class Effect5223(EffectDef):
+    """
+    shipHeavyAssaultMissileThermDmgPirateCruiser
+
+    Used by:
+    Ship: Gnosis
+    """
 
     type = 'passive'
 
@@ -11453,6 +18422,12 @@ class Effect5223(EffectDef):
 
 
 class Effect5224(EffectDef):
+    """
+    shipHeavyAssaultMissileExpDmgPirateCruiser
+
+    Used by:
+    Ship: Gnosis
+    """
 
     type = 'passive'
 
@@ -11463,6 +18438,12 @@ class Effect5224(EffectDef):
 
 
 class Effect5225(EffectDef):
+    """
+    shipHeavyMissileEMDmgPirateCruiser
+
+    Used by:
+    Ship: Gnosis
+    """
 
     type = 'passive'
 
@@ -11473,6 +18454,12 @@ class Effect5225(EffectDef):
 
 
 class Effect5226(EffectDef):
+    """
+    shipHeavyMissileExpDmgPirateCruiser
+
+    Used by:
+    Ship: Gnosis
+    """
 
     type = 'passive'
 
@@ -11483,6 +18470,12 @@ class Effect5226(EffectDef):
 
 
 class Effect5227(EffectDef):
+    """
+    shipHeavyMissileKinDmgPirateCruiser
+
+    Used by:
+    Ship: Gnosis
+    """
 
     type = 'passive'
 
@@ -11493,6 +18486,12 @@ class Effect5227(EffectDef):
 
 
 class Effect5228(EffectDef):
+    """
+    shipHeavyMissileThermDmgPirateCruiser
+
+    Used by:
+    Ship: Gnosis
+    """
 
     type = 'passive'
 
@@ -11503,6 +18502,16 @@ class Effect5228(EffectDef):
 
 
 class Effect5229(EffectDef):
+    """
+    shipScanProbeStrengthBonusPirateCruiser
+
+    Used by:
+    Ships named like: Stratios (2 of 2)
+    Ship: Astero
+    Ship: Gnosis
+    Ship: Praxis
+    Ship: Sunesis
+    """
 
     type = 'passive'
 
@@ -11513,6 +18522,13 @@ class Effect5229(EffectDef):
 
 
 class Effect5230(EffectDef):
+    """
+    modifyActiveShieldResonancePostPercent
+
+    Used by:
+    Modules from group: Flex Shield Hardener (5 of 5)
+    Modules from group: Shield Hardener (97 of 97)
+    """
 
     type = 'active'
 
@@ -11525,6 +18541,13 @@ class Effect5230(EffectDef):
 
 
 class Effect5231(EffectDef):
+    """
+    modifyActiveArmorResonancePostPercent
+
+    Used by:
+    Modules from group: Armor Hardener (156 of 156)
+    Modules from group: Flex Armor Hardener (4 of 4)
+    """
 
     type = 'active'
 
@@ -11537,6 +18560,13 @@ class Effect5231(EffectDef):
 
 
 class Effect5234(EffectDef):
+    """
+    shipSmallMissileExpDmgCF2
+
+    Used by:
+    Ship: Caldari Navy Hookbill
+    Ship: Kestrel
+    """
 
     type = 'passive'
 
@@ -11548,6 +18578,12 @@ class Effect5234(EffectDef):
 
 
 class Effect5237(EffectDef):
+    """
+    shipSmallMissileKinDmgCF2
+
+    Used by:
+    Ship: Kestrel
+    """
 
     type = 'passive'
 
@@ -11559,6 +18595,13 @@ class Effect5237(EffectDef):
 
 
 class Effect5240(EffectDef):
+    """
+    shipSmallMissileThermDmgCF2
+
+    Used by:
+    Ship: Caldari Navy Hookbill
+    Ship: Kestrel
+    """
 
     type = 'passive'
 
@@ -11570,6 +18613,13 @@ class Effect5240(EffectDef):
 
 
 class Effect5243(EffectDef):
+    """
+    shipSmallMissileEMDmgCF2
+
+    Used by:
+    Ship: Caldari Navy Hookbill
+    Ship: Kestrel
+    """
 
     type = 'passive'
 
@@ -11581,6 +18631,12 @@ class Effect5243(EffectDef):
 
 
 class Effect5259(EffectDef):
+    """
+    reconShipCloakCpuBonus1
+
+    Used by:
+    Ships from group: Force Recon Ship (7 of 9)
+    """
 
     runTime = 'early'
     type = 'passive'
@@ -11592,6 +18648,12 @@ class Effect5259(EffectDef):
 
 
 class Effect5260(EffectDef):
+    """
+    covertOpsCloakCpuPercentBonus1
+
+    Used by:
+    Ships from group: Covert Ops (6 of 8)
+    """
 
     runTime = 'early'
     type = 'passive'
@@ -11603,6 +18665,13 @@ class Effect5260(EffectDef):
 
 
 class Effect5261(EffectDef):
+    """
+    CovertCloakCPUAddition
+
+    Used by:
+    Modules named like: Covert Ops Cloaking Device II (2 of 2)
+    Module: Covert Cynosural Field Generator I
+    """
 
     type = 'passive'
 
@@ -11612,6 +18681,12 @@ class Effect5261(EffectDef):
 
 
 class Effect5262(EffectDef):
+    """
+    covertOpsCloakCpuPenalty
+
+    Used by:
+    Subsystems from group: Defensive Systems (8 of 12)
+    """
 
     type = 'passive'
 
@@ -11622,6 +18697,12 @@ class Effect5262(EffectDef):
 
 
 class Effect5263(EffectDef):
+    """
+    covertCynoCpuPenalty
+
+    Used by:
+    Subsystems from group: Defensive Systems (8 of 12)
+    """
 
     type = 'passive'
 
@@ -11632,6 +18713,13 @@ class Effect5263(EffectDef):
 
 
 class Effect5264(EffectDef):
+    """
+    warfareLinkCPUAddition
+
+    Used by:
+    Modules from group: Command Burst (10 of 10)
+    Modules from group: Gang Coordinator (6 of 6)
+    """
 
     type = 'passive'
 
@@ -11641,6 +18729,12 @@ class Effect5264(EffectDef):
 
 
 class Effect5265(EffectDef):
+    """
+    warfareLinkCpuPenalty
+
+    Used by:
+    Subsystems from group: Offensive Systems (8 of 12)
+    """
 
     type = 'passive'
 
@@ -11651,6 +18745,12 @@ class Effect5265(EffectDef):
 
 
 class Effect5266(EffectDef):
+    """
+    blockadeRunnerCloakCpuPercentBonus
+
+    Used by:
+    Ships from group: Blockade Runner (4 of 4)
+    """
 
     runTime = 'early'
     type = 'passive'
@@ -11663,6 +18763,13 @@ class Effect5266(EffectDef):
 
 
 class Effect5267(EffectDef):
+    """
+    drawbackRepairSystemsPGNeed
+
+    Used by:
+    Modules named like: Auxiliary Nano Pump (6 of 8)
+    Modules named like: Nanobot Accelerator (6 of 8)
+    """
 
     type = 'passive'
 
@@ -11673,6 +18780,13 @@ class Effect5267(EffectDef):
 
 
 class Effect5268(EffectDef):
+    """
+    drawbackCapRepPGNeed
+
+    Used by:
+    Variations of module: Capital Auxiliary Nano Pump I (2 of 2)
+    Variations of module: Capital Nanobot Accelerator I (2 of 2)
+    """
 
     type = 'passive'
 
@@ -11683,6 +18797,12 @@ class Effect5268(EffectDef):
 
 
 class Effect5275(EffectDef):
+    """
+    fueledArmorRepair
+
+    Used by:
+    Modules from group: Ancillary Armor Repairer (7 of 7)
+    """
 
     runTime = 'late'
     type = 'active'
@@ -11703,6 +18823,12 @@ class Effect5275(EffectDef):
 
 
 class Effect5293(EffectDef):
+    """
+    shipLaserCapNeed2AD1
+
+    Used by:
+    Ship: Coercer
+    """
 
     type = 'passive'
 
@@ -11713,6 +18839,12 @@ class Effect5293(EffectDef):
 
 
 class Effect5294(EffectDef):
+    """
+    shipLaserTracking2AD2
+
+    Used by:
+    Ship: Coercer
+    """
 
     type = 'passive'
 
@@ -11723,6 +18855,12 @@ class Effect5294(EffectDef):
 
 
 class Effect5295(EffectDef):
+    """
+    shipBonusDroneDamageMultiplierAD1
+
+    Used by:
+    Variations of ship: Dragoon (2 of 2)
+    """
 
     type = 'passive'
 
@@ -11733,6 +18871,12 @@ class Effect5295(EffectDef):
 
 
 class Effect5300(EffectDef):
+    """
+    shipBonusDroneHitpointsAD1
+
+    Used by:
+    Variations of ship: Dragoon (2 of 2)
+    """
 
     type = 'passive'
 
@@ -11747,6 +18891,12 @@ class Effect5300(EffectDef):
 
 
 class Effect5303(EffectDef):
+    """
+    shipHybridRange1CD1
+
+    Used by:
+    Ship: Cormorant
+    """
 
     type = 'passive'
 
@@ -11757,6 +18907,12 @@ class Effect5303(EffectDef):
 
 
 class Effect5304(EffectDef):
+    """
+    shipHybridTrackingCD2
+
+    Used by:
+    Ship: Cormorant
+    """
 
     type = 'passive'
 
@@ -11767,6 +18923,12 @@ class Effect5304(EffectDef):
 
 
 class Effect5305(EffectDef):
+    """
+    shipBonusFrigateSizedMissileKineticDamageCD1
+
+    Used by:
+    Ship: Corax
+    """
 
     type = 'passive'
 
@@ -11778,6 +18940,12 @@ class Effect5305(EffectDef):
 
 
 class Effect5306(EffectDef):
+    """
+    shipRocketKineticDmgCD1
+
+    Used by:
+    Ship: Corax
+    """
 
     type = 'passive'
 
@@ -11789,6 +18957,12 @@ class Effect5306(EffectDef):
 
 
 class Effect5307(EffectDef):
+    """
+    shipBonusAoeVelocityRocketsCD2
+
+    Used by:
+    Ship: Corax
+    """
 
     type = 'passive'
 
@@ -11799,6 +18973,12 @@ class Effect5307(EffectDef):
 
 
 class Effect5308(EffectDef):
+    """
+    shipBonusAoeVelocityStandardMissilesCD2
+
+    Used by:
+    Ship: Corax
+    """
 
     type = 'passive'
 
@@ -11809,6 +18989,12 @@ class Effect5308(EffectDef):
 
 
 class Effect5309(EffectDef):
+    """
+    shipHybridFallOff1GD1
+
+    Used by:
+    Ship: Catalyst
+    """
 
     type = 'passive'
 
@@ -11819,6 +19005,13 @@ class Effect5309(EffectDef):
 
 
 class Effect5310(EffectDef):
+    """
+    shipHybridTracking1GD2
+
+    Used by:
+    Variations of ship: Catalyst (2 of 2)
+    Ship: Algos
+    """
 
     type = 'passive'
 
@@ -11829,6 +19022,12 @@ class Effect5310(EffectDef):
 
 
 class Effect5311(EffectDef):
+    """
+    shipBonusDroneDamageMultiplierGD1
+
+    Used by:
+    Variations of ship: Algos (2 of 2)
+    """
 
     type = 'passive'
 
@@ -11839,6 +19038,12 @@ class Effect5311(EffectDef):
 
 
 class Effect5316(EffectDef):
+    """
+    shipBonusDroneHitpointsGD1
+
+    Used by:
+    Variations of ship: Algos (2 of 2)
+    """
 
     type = 'passive'
 
@@ -11853,6 +19058,12 @@ class Effect5316(EffectDef):
 
 
 class Effect5317(EffectDef):
+    """
+    shipProjectileDamageMD1
+
+    Used by:
+    Variations of ship: Thrasher (2 of 2)
+    """
 
     type = 'passive'
 
@@ -11864,6 +19075,12 @@ class Effect5317(EffectDef):
 
 
 class Effect5318(EffectDef):
+    """
+    shipProjectileTracking1MD2
+
+    Used by:
+    Variations of ship: Thrasher (2 of 2)
+    """
 
     type = 'passive'
 
@@ -11874,6 +19091,12 @@ class Effect5318(EffectDef):
 
 
 class Effect5319(EffectDef):
+    """
+    shipBonusFrigateSizedLightMissileExplosiveDamageMD1
+
+    Used by:
+    Ship: Talwar
+    """
 
     type = 'passive'
 
@@ -11885,6 +19108,12 @@ class Effect5319(EffectDef):
 
 
 class Effect5320(EffectDef):
+    """
+    shipRocketExplosiveDmgMD1
+
+    Used by:
+    Ship: Talwar
+    """
 
     type = 'passive'
 
@@ -11896,6 +19125,12 @@ class Effect5320(EffectDef):
 
 
 class Effect5321(EffectDef):
+    """
+    shipBonusMWDSignatureRadiusMD2
+
+    Used by:
+    Ship: Talwar
+    """
 
     type = 'passive'
 
@@ -11907,6 +19142,13 @@ class Effect5321(EffectDef):
 
 
 class Effect5322(EffectDef):
+    """
+    shipArmorEMResistance1ABC1
+
+    Used by:
+    Variations of ship: Prophecy (2 of 2)
+    Ship: Absolution
+    """
 
     type = 'passive'
 
@@ -11917,6 +19159,13 @@ class Effect5322(EffectDef):
 
 
 class Effect5323(EffectDef):
+    """
+    shipArmorExplosiveResistance1ABC1
+
+    Used by:
+    Variations of ship: Prophecy (2 of 2)
+    Ship: Absolution
+    """
 
     type = 'passive'
 
@@ -11927,6 +19176,13 @@ class Effect5323(EffectDef):
 
 
 class Effect5324(EffectDef):
+    """
+    shipArmorKineticResistance1ABC1
+
+    Used by:
+    Variations of ship: Prophecy (2 of 2)
+    Ship: Absolution
+    """
 
     type = 'passive'
 
@@ -11937,6 +19193,13 @@ class Effect5324(EffectDef):
 
 
 class Effect5325(EffectDef):
+    """
+    shipArmorThermResistance1ABC1
+
+    Used by:
+    Variations of ship: Prophecy (2 of 2)
+    Ship: Absolution
+    """
 
     type = 'passive'
 
@@ -11947,6 +19210,12 @@ class Effect5325(EffectDef):
 
 
 class Effect5326(EffectDef):
+    """
+    shipBonusDroneDamageMultiplierABC2
+
+    Used by:
+    Ship: Prophecy
+    """
 
     type = 'passive'
 
@@ -11958,6 +19227,12 @@ class Effect5326(EffectDef):
 
 
 class Effect5331(EffectDef):
+    """
+    shipBonusDroneHitpointsABC2
+
+    Used by:
+    Ship: Prophecy
+    """
 
     type = 'passive'
 
@@ -11969,6 +19244,12 @@ class Effect5331(EffectDef):
 
 
 class Effect5332(EffectDef):
+    """
+    shipLaserCapABC1
+
+    Used by:
+    Ship: Harbinger
+    """
 
     type = 'passive'
 
@@ -11980,6 +19261,12 @@ class Effect5332(EffectDef):
 
 
 class Effect5333(EffectDef):
+    """
+    shipLaserDamageBonusABC2
+
+    Used by:
+    Ships named like: Harbinger (2 of 2)
+    """
 
     type = 'passive'
 
@@ -11991,6 +19278,12 @@ class Effect5333(EffectDef):
 
 
 class Effect5334(EffectDef):
+    """
+    shipHybridOptimal1CBC1
+
+    Used by:
+    Variations of ship: Ferox (2 of 2)
+    """
 
     type = 'passive'
 
@@ -12001,6 +19294,14 @@ class Effect5334(EffectDef):
 
 
 class Effect5335(EffectDef):
+    """
+    shipShieldEmResistance1CBC2
+
+    Used by:
+    Ship: Drake
+    Ship: Nighthawk
+    Ship: Vulture
+    """
 
     type = 'passive'
 
@@ -12011,6 +19312,14 @@ class Effect5335(EffectDef):
 
 
 class Effect5336(EffectDef):
+    """
+    shipShieldExplosiveResistance1CBC2
+
+    Used by:
+    Ship: Drake
+    Ship: Nighthawk
+    Ship: Vulture
+    """
 
     type = 'passive'
 
@@ -12021,6 +19330,14 @@ class Effect5336(EffectDef):
 
 
 class Effect5337(EffectDef):
+    """
+    shipShieldKineticResistance1CBC2
+
+    Used by:
+    Ship: Drake
+    Ship: Nighthawk
+    Ship: Vulture
+    """
 
     type = 'passive'
 
@@ -12031,6 +19348,14 @@ class Effect5337(EffectDef):
 
 
 class Effect5338(EffectDef):
+    """
+    shipShieldThermalResistance1CBC2
+
+    Used by:
+    Ship: Drake
+    Ship: Nighthawk
+    Ship: Vulture
+    """
 
     type = 'passive'
 
@@ -12041,6 +19366,13 @@ class Effect5338(EffectDef):
 
 
 class Effect5339(EffectDef):
+    """
+    shipBonusHeavyAssaultMissileKineticDamageCBC1
+
+    Used by:
+    Ship: Drake
+    Ship: Nighthawk
+    """
 
     type = 'passive'
 
@@ -12052,6 +19384,13 @@ class Effect5339(EffectDef):
 
 
 class Effect5340(EffectDef):
+    """
+    shipBonusHeavyMissileKineticDamageCBC1
+
+    Used by:
+    Ship: Drake
+    Ship: Nighthawk
+    """
 
     type = 'passive'
 
@@ -12063,6 +19402,12 @@ class Effect5340(EffectDef):
 
 
 class Effect5341(EffectDef):
+    """
+    shipHybridDmg1GBC1
+
+    Used by:
+    Variations of ship: Brutix (3 of 3)
+    """
 
     type = 'passive'
 
@@ -12074,6 +19419,14 @@ class Effect5341(EffectDef):
 
 
 class Effect5342(EffectDef):
+    """
+    shipArmorRepairing1GBC2
+
+    Used by:
+    Variations of ship: Myrmidon (2 of 2)
+    Ship: Astarte
+    Ship: Brutix
+    """
 
     type = 'passive'
 
@@ -12085,6 +19438,12 @@ class Effect5342(EffectDef):
 
 
 class Effect5343(EffectDef):
+    """
+    shipBonusDroneDamageMultiplierGBC1
+
+    Used by:
+    Variations of ship: Myrmidon (2 of 2)
+    """
 
     type = 'passive'
 
@@ -12096,6 +19455,12 @@ class Effect5343(EffectDef):
 
 
 class Effect5348(EffectDef):
+    """
+    shipBonusDroneHitpointsGBC1
+
+    Used by:
+    Variations of ship: Myrmidon (2 of 2)
+    """
 
     type = 'passive'
 
@@ -12107,6 +19472,12 @@ class Effect5348(EffectDef):
 
 
 class Effect5349(EffectDef):
+    """
+    shipBonusHeavyMissileLauncherRofMBC2
+
+    Used by:
+    Variations of ship: Cyclone (2 of 2)
+    """
 
     type = 'passive'
 
@@ -12117,6 +19488,12 @@ class Effect5349(EffectDef):
 
 
 class Effect5350(EffectDef):
+    """
+    shipBonusHeavyAssaultMissileLauncherRofMBC2
+
+    Used by:
+    Variations of ship: Cyclone (2 of 2)
+    """
 
     type = 'passive'
 
@@ -12127,6 +19504,13 @@ class Effect5350(EffectDef):
 
 
 class Effect5351(EffectDef):
+    """
+    shipShieldBoost1MBC1
+
+    Used by:
+    Variations of ship: Cyclone (2 of 2)
+    Ship: Sleipnir
+    """
 
     type = 'passive'
 
@@ -12138,6 +19522,12 @@ class Effect5351(EffectDef):
 
 
 class Effect5352(EffectDef):
+    """
+    shipBonusProjectileDamageMBC1
+
+    Used by:
+    Ships named like: Hurricane (2 of 2)
+    """
 
     type = 'passive'
 
@@ -12149,6 +19539,12 @@ class Effect5352(EffectDef):
 
 
 class Effect5353(EffectDef):
+    """
+    shipProjectileRof1MBC2
+
+    Used by:
+    Ship: Hurricane
+    """
 
     type = 'passive'
 
@@ -12159,6 +19555,12 @@ class Effect5353(EffectDef):
 
 
 class Effect5354(EffectDef):
+    """
+    shipLargeLaserCapABC1
+
+    Used by:
+    Ship: Oracle
+    """
 
     type = 'passive'
 
@@ -12170,6 +19572,12 @@ class Effect5354(EffectDef):
 
 
 class Effect5355(EffectDef):
+    """
+    shipLargeLaserDamageBonusABC2
+
+    Used by:
+    Ship: Oracle
+    """
 
     type = 'passive'
 
@@ -12181,6 +19589,12 @@ class Effect5355(EffectDef):
 
 
 class Effect5356(EffectDef):
+    """
+    shipHybridRangeBonusCBC1
+
+    Used by:
+    Ship: Naga
+    """
 
     type = 'passive'
 
@@ -12191,6 +19605,12 @@ class Effect5356(EffectDef):
 
 
 class Effect5357(EffectDef):
+    """
+    shipHybridDamageBonusCBC2
+
+    Used by:
+    Ship: Naga
+    """
 
     type = 'passive'
 
@@ -12202,6 +19622,12 @@ class Effect5357(EffectDef):
 
 
 class Effect5358(EffectDef):
+    """
+    shipLargeHybridTrackingBonusGBC1
+
+    Used by:
+    Ship: Talos
+    """
 
     type = 'passive'
 
@@ -12213,6 +19639,12 @@ class Effect5358(EffectDef):
 
 
 class Effect5359(EffectDef):
+    """
+    shipHybridDamageBonusGBC2
+
+    Used by:
+    Ship: Talos
+    """
 
     type = 'passive'
 
@@ -12224,6 +19656,12 @@ class Effect5359(EffectDef):
 
 
 class Effect5360(EffectDef):
+    """
+    shipProjectileRofBonusMBC1
+
+    Used by:
+    Ship: Tornado
+    """
 
     type = 'passive'
 
@@ -12234,6 +19672,12 @@ class Effect5360(EffectDef):
 
 
 class Effect5361(EffectDef):
+    """
+    shipProjectileFalloffBonusMBC2
+
+    Used by:
+    Ship: Tornado
+    """
 
     type = 'passive'
 
@@ -12244,6 +19688,14 @@ class Effect5361(EffectDef):
 
 
 class Effect5364(EffectDef):
+    """
+    armorAllRepairSystemsAmountBonusPassive
+
+    Used by:
+    Implants named like: Agency 'Hardshell' TB Dose (4 of 4)
+    Implants named like: Exile Booster (4 of 4)
+    Implant: Antipharmakon Kosybo
+    """
 
     type = 'passive'
 
@@ -12255,6 +19707,13 @@ class Effect5364(EffectDef):
 
 
 class Effect5365(EffectDef):
+    """
+    eliteBonusViolatorsRepairSystemsArmorDamageAmount2
+
+    Used by:
+    Ship: Kronos
+    Ship: Paladin
+    """
 
     type = 'passive'
 
@@ -12266,6 +19725,12 @@ class Effect5365(EffectDef):
 
 
 class Effect5366(EffectDef):
+    """
+    shipBonusRepairSystemsBonusATC2
+
+    Used by:
+    Ship: Vangel
+    """
 
     type = 'passive'
 
@@ -12276,6 +19741,12 @@ class Effect5366(EffectDef):
 
 
 class Effect5367(EffectDef):
+    """
+    shipBonusRepairSystemsArmorRepairAmountGB2
+
+    Used by:
+    Ship: Hyperion
+    """
 
     type = 'passive'
 
@@ -12287,6 +19758,12 @@ class Effect5367(EffectDef):
 
 
 class Effect5378(EffectDef):
+    """
+    shipHeavyMissileAOECloudSizeCBC1
+
+    Used by:
+    Ship: Drake Navy Issue
+    """
 
     type = 'passive'
 
@@ -12298,6 +19775,12 @@ class Effect5378(EffectDef):
 
 
 class Effect5379(EffectDef):
+    """
+    shipHeavyAssaultMissileAOECloudSizeCBC1
+
+    Used by:
+    Ship: Drake Navy Issue
+    """
 
     type = 'passive'
 
@@ -12309,6 +19792,12 @@ class Effect5379(EffectDef):
 
 
 class Effect5380(EffectDef):
+    """
+    shipHybridTrackingGBC2
+
+    Used by:
+    Ship: Brutix Navy Issue
+    """
 
     type = 'passive'
 
@@ -12320,6 +19809,12 @@ class Effect5380(EffectDef):
 
 
 class Effect5381(EffectDef):
+    """
+    shipEnergyTrackingABC1
+
+    Used by:
+    Ship: Harbinger Navy Issue
+    """
 
     type = 'passive'
 
@@ -12331,6 +19826,13 @@ class Effect5381(EffectDef):
 
 
 class Effect5382(EffectDef):
+    """
+    shipBonusMETOptimalAC2
+
+    Used by:
+    Ship: Enforcer
+    Ship: Omen Navy Issue
+    """
 
     type = 'passive'
 
@@ -12341,6 +19843,13 @@ class Effect5382(EffectDef):
 
 
 class Effect5383(EffectDef):
+    """
+    shipMissileEMDamageCC
+
+    Used by:
+    Ship: Orthrus
+    Ship: Osprey Navy Issue
+    """
 
     type = 'passive'
 
@@ -12351,6 +19860,13 @@ class Effect5383(EffectDef):
 
 
 class Effect5384(EffectDef):
+    """
+    shipMissileThermDamageCC
+
+    Used by:
+    Ship: Orthrus
+    Ship: Osprey Navy Issue
+    """
 
     type = 'passive'
 
@@ -12361,6 +19877,13 @@ class Effect5384(EffectDef):
 
 
 class Effect5385(EffectDef):
+    """
+    shipMissileExpDamageCC
+
+    Used by:
+    Ship: Orthrus
+    Ship: Osprey Navy Issue
+    """
 
     type = 'passive'
 
@@ -12371,6 +19894,12 @@ class Effect5385(EffectDef):
 
 
 class Effect5386(EffectDef):
+    """
+    shipMissileKinDamageCC2
+
+    Used by:
+    Ship: Rook
+    """
 
     type = 'passive'
 
@@ -12381,6 +19910,12 @@ class Effect5386(EffectDef):
 
 
 class Effect5387(EffectDef):
+    """
+    shipHeavyAssaultMissileAOECloudSizeCC2
+
+    Used by:
+    Ship: Caracal Navy Issue
+    """
 
     type = 'passive'
 
@@ -12391,6 +19926,12 @@ class Effect5387(EffectDef):
 
 
 class Effect5388(EffectDef):
+    """
+    shipHeavyMissileAOECloudSizeCC2
+
+    Used by:
+    Ship: Caracal Navy Issue
+    """
 
     type = 'passive'
 
@@ -12401,6 +19942,12 @@ class Effect5388(EffectDef):
 
 
 class Effect5389(EffectDef):
+    """
+    shipBonusDroneTrackingGC
+
+    Used by:
+    Ship: Vexor Navy Issue
+    """
 
     type = 'passive'
 
@@ -12411,6 +19958,12 @@ class Effect5389(EffectDef):
 
 
 class Effect5390(EffectDef):
+    """
+    shipBonusDroneMWDboostGC
+
+    Used by:
+    Ship: Vexor Navy Issue
+    """
 
     type = 'passive'
 
@@ -12421,6 +19974,12 @@ class Effect5390(EffectDef):
 
 
 class Effect5397(EffectDef):
+    """
+    baseMaxScanDeviationModifierModuleOnline2None
+
+    Used by:
+    Variations of module: Scan Pinpointing Array I (2 of 2)
+    """
 
     type = 'passive'
 
@@ -12433,6 +19992,12 @@ class Effect5397(EffectDef):
 
 
 class Effect5398(EffectDef):
+    """
+    systemScanDurationModuleModifier
+
+    Used by:
+    Modules from group: Scanning Upgrade Time (2 of 2)
+    """
 
     type = 'passive'
 
@@ -12443,6 +20008,12 @@ class Effect5398(EffectDef):
 
 
 class Effect5399(EffectDef):
+    """
+    baseSensorStrengthModifierModule
+
+    Used by:
+    Variations of module: Scan Rangefinding Array I (2 of 2)
+    """
 
     type = 'passive'
 
@@ -12454,6 +20025,12 @@ class Effect5399(EffectDef):
 
 
 class Effect5402(EffectDef):
+    """
+    shipMissileHeavyAssaultVelocityABC2
+
+    Used by:
+    Ship: Damnation
+    """
 
     type = 'passive'
 
@@ -12465,6 +20042,12 @@ class Effect5402(EffectDef):
 
 
 class Effect5403(EffectDef):
+    """
+    shipMissileHeavyVelocityABC2
+
+    Used by:
+    Ship: Damnation
+    """
 
     type = 'passive'
 
@@ -12476,6 +20059,12 @@ class Effect5403(EffectDef):
 
 
 class Effect5410(EffectDef):
+    """
+    shipLaserCap1ABC2
+
+    Used by:
+    Ship: Absolution
+    """
 
     type = 'passive'
 
@@ -12487,6 +20076,12 @@ class Effect5410(EffectDef):
 
 
 class Effect5411(EffectDef):
+    """
+    shipMissileVelocityCD1
+
+    Used by:
+    Ship: Flycatcher
+    """
 
     type = 'passive'
 
@@ -12497,6 +20092,12 @@ class Effect5411(EffectDef):
 
 
 class Effect5417(EffectDef):
+    """
+    shipBonusDroneDamageMultiplierAB
+
+    Used by:
+    Ship: Armageddon
+    """
 
     type = 'passive'
 
@@ -12507,6 +20108,12 @@ class Effect5417(EffectDef):
 
 
 class Effect5418(EffectDef):
+    """
+    shipBonusDroneArmorHitPointsAB
+
+    Used by:
+    Ship: Armageddon
+    """
 
     type = 'passive'
 
@@ -12517,6 +20124,12 @@ class Effect5418(EffectDef):
 
 
 class Effect5419(EffectDef):
+    """
+    shipBonusDroneShieldHitPointsAB
+
+    Used by:
+    Ship: Armageddon
+    """
 
     type = 'passive'
 
@@ -12527,6 +20140,12 @@ class Effect5419(EffectDef):
 
 
 class Effect5420(EffectDef):
+    """
+    shipBonusDroneStructureHitPointsAB
+
+    Used by:
+    Ship: Armageddon
+    """
 
     type = 'passive'
 
@@ -12537,6 +20156,13 @@ class Effect5420(EffectDef):
 
 
 class Effect5424(EffectDef):
+    """
+    shipLargeHybridTurretRofGB
+
+    Used by:
+    Ship: Megathron
+    Ship: Megathron Navy Issue
+    """
 
     type = 'passive'
 
@@ -12547,6 +20173,12 @@ class Effect5424(EffectDef):
 
 
 class Effect5427(EffectDef):
+    """
+    shipBonusDroneTrackingGB
+
+    Used by:
+    Ship: Dominix
+    """
 
     type = 'passive'
 
@@ -12557,6 +20189,12 @@ class Effect5427(EffectDef):
 
 
 class Effect5428(EffectDef):
+    """
+    shipBonusDroneOptimalRangeGB
+
+    Used by:
+    Ship: Dominix
+    """
 
     type = 'passive'
 
@@ -12567,6 +20205,12 @@ class Effect5428(EffectDef):
 
 
 class Effect5429(EffectDef):
+    """
+    shipBonusMissileAoeVelocityMB2
+
+    Used by:
+    Ship: Typhoon
+    """
 
     type = 'passive'
 
@@ -12578,6 +20222,12 @@ class Effect5429(EffectDef):
 
 
 class Effect5430(EffectDef):
+    """
+    shipBonusAoeVelocityCruiseMissilesMB2
+
+    Used by:
+    Ship: Typhoon
+    """
 
     type = 'passive'
 
@@ -12589,6 +20239,13 @@ class Effect5430(EffectDef):
 
 
 class Effect5431(EffectDef):
+    """
+    shipBonusLargeEnergyTurretTrackingAB
+
+    Used by:
+    Ship: Apocalypse
+    Ship: Apocalypse Navy Issue
+    """
 
     type = 'passive'
 
@@ -12599,6 +20256,16 @@ class Effect5431(EffectDef):
 
 
 class Effect5433(EffectDef):
+    """
+    hackingSkillVirusBonus
+
+    Used by:
+    Modules named like: Memetic Algorithm Bank (8 of 8)
+    Implant: Neural Lace 'Blackglass' Net Intrusion 920-40
+    Implant: Poteque 'Prospector' Environmental Analysis EY-1005
+    Implant: Poteque 'Prospector' Hacking HC-905
+    Skill: Hacking
+    """
 
     type = 'passive'
 
@@ -12610,6 +20277,15 @@ class Effect5433(EffectDef):
 
 
 class Effect5437(EffectDef):
+    """
+    archaeologySkillVirusBonus
+
+    Used by:
+    Modules named like: Emission Scope Sharpener (8 of 8)
+    Implant: Poteque 'Prospector' Archaeology AC-905
+    Implant: Poteque 'Prospector' Environmental Analysis EY-1005
+    Skill: Archaeology
+    """
 
     type = 'passive'
 
@@ -12621,6 +20297,12 @@ class Effect5437(EffectDef):
 
 
 class Effect5440(EffectDef):
+    """
+    systemStandardMissileKineticDamage
+
+    Used by:
+    Celestials named like: Wolf Rayet Effect Beacon Class (6 of 6)
+    """
 
     runTime = 'early'
     type = ('projected', 'passive')
@@ -12633,6 +20315,12 @@ class Effect5440(EffectDef):
 
 
 class Effect5444(EffectDef):
+    """
+    shipTorpedoAOECloudSize1CB
+
+    Used by:
+    Ship: Raven Navy Issue
+    """
 
     type = 'passive'
 
@@ -12643,6 +20331,12 @@ class Effect5444(EffectDef):
 
 
 class Effect5445(EffectDef):
+    """
+    shipCruiseMissileAOECloudSize1CB
+
+    Used by:
+    Ship: Raven Navy Issue
+    """
 
     type = 'passive'
 
@@ -12653,6 +20347,12 @@ class Effect5445(EffectDef):
 
 
 class Effect5456(EffectDef):
+    """
+    shipCruiseMissileROFCB
+
+    Used by:
+    Ship: Scorpion Navy Issue
+    """
 
     type = 'passive'
 
@@ -12663,6 +20363,12 @@ class Effect5456(EffectDef):
 
 
 class Effect5457(EffectDef):
+    """
+    shipTorpedoROFCB
+
+    Used by:
+    Ship: Scorpion Navy Issue
+    """
 
     type = 'passive'
 
@@ -12673,6 +20379,12 @@ class Effect5457(EffectDef):
 
 
 class Effect5459(EffectDef):
+    """
+    hackingVirusStrengthBonus
+
+    Used by:
+    Implant: Neural Lace 'Blackglass' Net Intrusion 920-40
+    """
 
     type = 'passive'
 
@@ -12682,6 +20394,20 @@ class Effect5459(EffectDef):
 
 
 class Effect5460(EffectDef):
+    """
+    minigameVirusStrengthBonus
+
+    Used by:
+    Ships from group: Covert Ops (7 of 8)
+    Ships named like: Stratios (2 of 2)
+    Subsystems named like: Defensive Covert Reconfiguration (4 of 4)
+    Ship: Astero
+    Ship: Heron
+    Ship: Imicus
+    Ship: Magnate
+    Ship: Nestor
+    Ship: Probe
+    """
 
     type = 'passive'
 
@@ -12694,6 +20420,12 @@ class Effect5460(EffectDef):
 
 
 class Effect5461(EffectDef):
+    """
+    shieldOperationRechargeratebonusPostPercentOnline
+
+    Used by:
+    Modules from group: Shield Power Relay (6 of 6)
+    """
 
     type = 'passive'
 
@@ -12703,6 +20435,12 @@ class Effect5461(EffectDef):
 
 
 class Effect5468(EffectDef):
+    """
+    shipBonusAgilityCI2
+
+    Used by:
+    Ship: Badger
+    """
 
     type = 'passive'
 
@@ -12712,6 +20450,12 @@ class Effect5468(EffectDef):
 
 
 class Effect5469(EffectDef):
+    """
+    shipBonusAgilityMI2
+
+    Used by:
+    Ship: Wreathe
+    """
 
     type = 'passive'
 
@@ -12721,6 +20465,12 @@ class Effect5469(EffectDef):
 
 
 class Effect5470(EffectDef):
+    """
+    shipBonusAgilityGI2
+
+    Used by:
+    Ship: Nereus
+    """
 
     type = 'passive'
 
@@ -12730,6 +20480,12 @@ class Effect5470(EffectDef):
 
 
 class Effect5471(EffectDef):
+    """
+    shipBonusAgilityAI2
+
+    Used by:
+    Ship: Sigil
+    """
 
     type = 'passive'
 
@@ -12739,6 +20495,12 @@ class Effect5471(EffectDef):
 
 
 class Effect5476(EffectDef):
+    """
+    shipBonusOreCapacityGI2
+
+    Used by:
+    Ship: Miasmos
+    """
 
     type = 'passive'
 
@@ -12749,6 +20511,12 @@ class Effect5476(EffectDef):
 
 
 class Effect5477(EffectDef):
+    """
+    shipBonusAmmoBayMI2
+
+    Used by:
+    Ship: Hoarder
+    """
 
     type = 'passive'
 
@@ -12759,6 +20527,12 @@ class Effect5477(EffectDef):
 
 
 class Effect5478(EffectDef):
+    """
+    shipBonusPICommoditiesHoldGI2
+
+    Used by:
+    Ship: Epithal
+    """
 
     type = 'passive'
 
@@ -12769,6 +20543,12 @@ class Effect5478(EffectDef):
 
 
 class Effect5479(EffectDef):
+    """
+    shipBonusMineralBayGI2
+
+    Used by:
+    Ship: Kryos
+    """
 
     type = 'passive'
 
@@ -12779,6 +20559,12 @@ class Effect5479(EffectDef):
 
 
 class Effect5480(EffectDef):
+    """
+    setBonusChristmasBonusVelocity
+
+    Used by:
+    Implants named like: Genolution Core Augmentation CA (4 of 4)
+    """
 
     runTime = 'early'
     type = 'passive'
@@ -12790,6 +20576,12 @@ class Effect5480(EffectDef):
 
 
 class Effect5482(EffectDef):
+    """
+    setBonusChristmasAgilityBonus
+
+    Used by:
+    Implants named like: Genolution Core Augmentation CA (4 of 4)
+    """
 
     runTime = 'early'
     type = 'passive'
@@ -12801,6 +20593,12 @@ class Effect5482(EffectDef):
 
 
 class Effect5483(EffectDef):
+    """
+    setBonusChristmasShieldCapacityBonus
+
+    Used by:
+    Implants named like: Genolution Core Augmentation CA (4 of 4)
+    """
 
     runTime = 'early'
     type = 'passive'
@@ -12812,6 +20610,12 @@ class Effect5483(EffectDef):
 
 
 class Effect5484(EffectDef):
+    """
+    setBonusChristmasArmorHPBonus2
+
+    Used by:
+    Implants named like: Genolution Core Augmentation CA (4 of 4)
+    """
 
     runTime = 'early'
     type = 'passive'
@@ -12823,6 +20627,12 @@ class Effect5484(EffectDef):
 
 
 class Effect5485(EffectDef):
+    """
+    shipSPTOptimalBonusMF
+
+    Used by:
+    Ship: Chremoas
+    """
 
     type = 'passive'
 
@@ -12833,6 +20643,12 @@ class Effect5485(EffectDef):
 
 
 class Effect5486(EffectDef):
+    """
+    shipBonusProjectileDamageMBC2
+
+    Used by:
+    Ship: Sleipnir
+    """
 
     type = 'passive'
 
@@ -12844,6 +20660,13 @@ class Effect5486(EffectDef):
 
 
 class Effect5496(EffectDef):
+    """
+    eliteBonusCommandShipHAMRoFCS1
+
+    Used by:
+    Ship: Claymore
+    Ship: Nighthawk
+    """
 
     type = 'passive'
 
@@ -12854,6 +20677,13 @@ class Effect5496(EffectDef):
 
 
 class Effect5497(EffectDef):
+    """
+    eliteBonusCommandShipHMRoFCS1
+
+    Used by:
+    Ship: Claymore
+    Ship: Nighthawk
+    """
 
     type = 'passive'
 
@@ -12864,6 +20694,12 @@ class Effect5497(EffectDef):
 
 
 class Effect5498(EffectDef):
+    """
+    eliteBonusCommandShipsHeavyAssaultMissileExplosionVelocityCS2
+
+    Used by:
+    Ship: Claymore
+    """
 
     type = 'passive'
 
@@ -12875,6 +20711,12 @@ class Effect5498(EffectDef):
 
 
 class Effect5499(EffectDef):
+    """
+    eliteBonusCommandShipsHeavyAssaultMissileExplosionRadiusCS2
+
+    Used by:
+    Ship: Nighthawk
+    """
 
     type = 'passive'
 
@@ -12886,6 +20728,12 @@ class Effect5499(EffectDef):
 
 
 class Effect5500(EffectDef):
+    """
+    eliteBonusCommandShipsHeavyMissileExplosionRadiusCS2
+
+    Used by:
+    Ship: Nighthawk
+    """
 
     type = 'passive'
 
@@ -12897,6 +20745,12 @@ class Effect5500(EffectDef):
 
 
 class Effect5501(EffectDef):
+    """
+    eliteBonusCommandShipMediumHybridDamageCS2
+
+    Used by:
+    Ship: Vulture
+    """
 
     type = 'passive'
 
@@ -12908,6 +20762,12 @@ class Effect5501(EffectDef):
 
 
 class Effect5502(EffectDef):
+    """
+    eliteBonusCommandShipMediumHybridTrackingCS1
+
+    Used by:
+    Ship: Eos
+    """
 
     type = 'passive'
 
@@ -12919,6 +20779,12 @@ class Effect5502(EffectDef):
 
 
 class Effect5503(EffectDef):
+    """
+    eliteBonusCommandShipHeavyDroneTrackingCS2
+
+    Used by:
+    Ship: Eos
+    """
 
     type = 'passive'
 
@@ -12930,6 +20796,12 @@ class Effect5503(EffectDef):
 
 
 class Effect5504(EffectDef):
+    """
+    eliteBonusCommandShipHeavyDroneVelocityCS2
+
+    Used by:
+    Ship: Eos
+    """
 
     type = 'passive'
 
@@ -12941,6 +20813,12 @@ class Effect5504(EffectDef):
 
 
 class Effect5505(EffectDef):
+    """
+    eliteBonusCommandShipMediumHybridRoFCS1
+
+    Used by:
+    Ship: Astarte
+    """
 
     type = 'passive'
 
@@ -12951,6 +20829,12 @@ class Effect5505(EffectDef):
 
 
 class Effect5514(EffectDef):
+    """
+    eliteBonusCommandShipHeavyAssaultMissileDamageCS2
+
+    Used by:
+    Ship: Damnation
+    """
 
     type = 'passive'
 
@@ -12964,6 +20848,12 @@ class Effect5514(EffectDef):
 
 
 class Effect5521(EffectDef):
+    """
+    eliteBonusCommandShipHeavyMissileDamageCS2
+
+    Used by:
+    Ship: Damnation
+    """
 
     type = 'passive'
 
@@ -12977,6 +20867,12 @@ class Effect5521(EffectDef):
 
 
 class Effect5539(EffectDef):
+    """
+    shipBonusHMLKineticDamageAC
+
+    Used by:
+    Ship: Sacrilege
+    """
 
     type = 'passive'
 
@@ -12987,6 +20883,12 @@ class Effect5539(EffectDef):
 
 
 class Effect5540(EffectDef):
+    """
+    shipBonusHMLEMDamageAC
+
+    Used by:
+    Ship: Sacrilege
+    """
 
     type = 'passive'
 
@@ -12997,6 +20899,12 @@ class Effect5540(EffectDef):
 
 
 class Effect5541(EffectDef):
+    """
+    shipBonusHMLThermDamageAC
+
+    Used by:
+    Ship: Sacrilege
+    """
 
     type = 'passive'
 
@@ -13007,6 +20915,12 @@ class Effect5541(EffectDef):
 
 
 class Effect5542(EffectDef):
+    """
+    shipBonusHMLExploDamageAC
+
+    Used by:
+    Ship: Sacrilege
+    """
 
     type = 'passive'
 
@@ -13017,6 +20931,12 @@ class Effect5542(EffectDef):
 
 
 class Effect5552(EffectDef):
+    """
+    shipBonusHMLVelocityEliteBonusHeavyGunship1
+
+    Used by:
+    Ship: Sacrilege
+    """
 
     type = 'passive'
 
@@ -13028,6 +20948,12 @@ class Effect5552(EffectDef):
 
 
 class Effect5553(EffectDef):
+    """
+    shipBonusHAMVelocityEliteBonusHeavyGunship1
+
+    Used by:
+    Ship: Sacrilege
+    """
 
     type = 'passive'
 
@@ -13039,6 +20965,12 @@ class Effect5553(EffectDef):
 
 
 class Effect5554(EffectDef):
+    """
+    shipBonusArmorRepAmountGC2
+
+    Used by:
+    Ship: Deimos
+    """
 
     type = 'passive'
 
@@ -13050,6 +20982,12 @@ class Effect5554(EffectDef):
 
 
 class Effect5555(EffectDef):
+    """
+    shipBonusHeavyDroneSpeedGC
+
+    Used by:
+    Ship: Ishtar
+    """
 
     type = 'passive'
 
@@ -13060,6 +20998,12 @@ class Effect5555(EffectDef):
 
 
 class Effect5556(EffectDef):
+    """
+    shipBonusHeavyDRoneTrackingGC
+
+    Used by:
+    Ship: Ishtar
+    """
 
     type = 'passive'
 
@@ -13070,6 +21014,12 @@ class Effect5556(EffectDef):
 
 
 class Effect5557(EffectDef):
+    """
+    shipBonusSentryDroneOptimalRangeEliteBonusHeavyGunship2
+
+    Used by:
+    Ship: Ishtar
+    """
 
     type = 'passive'
 
@@ -13081,6 +21031,12 @@ class Effect5557(EffectDef):
 
 
 class Effect5558(EffectDef):
+    """
+    shipBonusSentryDroneTrackingEliteBonusHeavyGunship2
+
+    Used by:
+    Ship: Ishtar
+    """
 
     type = 'passive'
 
@@ -13092,6 +21048,12 @@ class Effect5558(EffectDef):
 
 
 class Effect5559(EffectDef):
+    """
+    shipBonusShieldBoostAmountMC2
+
+    Used by:
+    Ship: Vagabond
+    """
 
     type = 'passive'
 
@@ -13102,6 +21064,12 @@ class Effect5559(EffectDef):
 
 
 class Effect5560(EffectDef):
+    """
+    roleBonusMarauderMJDRReactivationDelayBonus
+
+    Used by:
+    Ships from group: Marauder (4 of 4)
+    """
 
     type = 'passive'
 
@@ -13112,6 +21080,12 @@ class Effect5560(EffectDef):
 
 
 class Effect5564(EffectDef):
+    """
+    subSystemBonusCaldariOffensiveCommandBursts
+
+    Used by:
+    Subsystem: Tengu Offensive - Support Processor
+    """
 
     type = 'passive'
 
@@ -13152,6 +21126,12 @@ class Effect5564(EffectDef):
 
 
 class Effect5568(EffectDef):
+    """
+    subSystemBonusGallenteOffensiveCommandBursts
+
+    Used by:
+    Subsystem: Proteus Offensive - Support Processor
+    """
 
     type = 'passive'
 
@@ -13192,6 +21172,12 @@ class Effect5568(EffectDef):
 
 
 class Effect5570(EffectDef):
+    """
+    subSystemBonusMinmatarOffensiveCommandBursts
+
+    Used by:
+    Subsystem: Loki Offensive - Support Processor
+    """
 
     type = 'passive'
 
@@ -13233,6 +21219,12 @@ class Effect5570(EffectDef):
 
 
 class Effect5572(EffectDef):
+    """
+    eliteBonusCommandShipArmoredCS3
+
+    Used by:
+    Ships from group: Command Ship (4 of 8)
+    """
 
     type = 'passive'
 
@@ -13251,6 +21243,12 @@ class Effect5572(EffectDef):
 
 
 class Effect5573(EffectDef):
+    """
+    eliteBonusCommandShipSiegeCS3
+
+    Used by:
+    Ships from group: Command Ship (4 of 8)
+    """
 
     type = 'passive'
 
@@ -13269,6 +21267,12 @@ class Effect5573(EffectDef):
 
 
 class Effect5574(EffectDef):
+    """
+    eliteBonusCommandShipSkirmishCS3
+
+    Used by:
+    Ships from group: Command Ship (4 of 8)
+    """
 
     type = 'passive'
 
@@ -13287,6 +21291,12 @@ class Effect5574(EffectDef):
 
 
 class Effect5575(EffectDef):
+    """
+    eliteBonusCommandShipInformationCS3
+
+    Used by:
+    Ships from group: Command Ship (4 of 8)
+    """
 
     type = 'passive'
 
@@ -13305,6 +21315,14 @@ class Effect5575(EffectDef):
 
 
 class Effect5607(EffectDef):
+    """
+    capacitorEmissionSystemskill
+
+    Used by:
+    Implants named like: Inherent Implants 'Squire' Capacitor Emission Systems ES (6 of 6)
+    Modules named like: Egress Port Maximizer (8 of 8)
+    Skill: Capacitor Emission Systems
+    """
 
     type = 'passive'
 
@@ -13316,6 +21334,13 @@ class Effect5607(EffectDef):
 
 
 class Effect5610(EffectDef):
+    """
+    shipBonusLargeEnergyTurretMaxRangeAB
+
+    Used by:
+    Ship: Marshal
+    Ship: Paladin
+    """
 
     type = 'passive'
 
@@ -13326,6 +21351,12 @@ class Effect5610(EffectDef):
 
 
 class Effect5611(EffectDef):
+    """
+    shipBonusHTFalloffGB2
+
+    Used by:
+    Ship: Kronos
+    """
 
     type = 'passive'
 
@@ -13336,6 +21367,13 @@ class Effect5611(EffectDef):
 
 
 class Effect5618(EffectDef):
+    """
+    shipBonusRHMLROF2CB
+
+    Used by:
+    Ship: Raven
+    Ship: Widow
+    """
 
     type = 'passive'
 
@@ -13346,6 +21384,12 @@ class Effect5618(EffectDef):
 
 
 class Effect5619(EffectDef):
+    """
+    shipBonusRHMLROFCB
+
+    Used by:
+    Ship: Scorpion Navy Issue
+    """
 
     type = 'passive'
 
@@ -13356,6 +21400,12 @@ class Effect5619(EffectDef):
 
 
 class Effect5620(EffectDef):
+    """
+    shipBonusRHMLROFMB
+
+    Used by:
+    Ship: Typhoon
+    """
 
     type = 'passive'
 
@@ -13366,6 +21416,12 @@ class Effect5620(EffectDef):
 
 
 class Effect5621(EffectDef):
+    """
+    shipBonusCruiseROFMB
+
+    Used by:
+    Ship: Typhoon
+    """
 
     type = 'passive'
 
@@ -13376,6 +21432,12 @@ class Effect5621(EffectDef):
 
 
 class Effect5622(EffectDef):
+    """
+    shipBonusTorpedoROFMB
+
+    Used by:
+    Ship: Typhoon
+    """
 
     type = 'passive'
 
@@ -13386,6 +21448,12 @@ class Effect5622(EffectDef):
 
 
 class Effect5628(EffectDef):
+    """
+    shipBonusCruiseMissileEMDmgMB
+
+    Used by:
+    Ship: Typhoon Fleet Issue
+    """
 
     type = 'passive'
 
@@ -13396,6 +21464,12 @@ class Effect5628(EffectDef):
 
 
 class Effect5629(EffectDef):
+    """
+    shipBonusCruiseMissileThermDmgMB
+
+    Used by:
+    Ship: Typhoon Fleet Issue
+    """
 
     type = 'passive'
 
@@ -13407,6 +21481,12 @@ class Effect5629(EffectDef):
 
 
 class Effect5630(EffectDef):
+    """
+    shipBonusCruiseMissileKineticDmgMB
+
+    Used by:
+    Ship: Typhoon Fleet Issue
+    """
 
     type = 'passive'
 
@@ -13418,6 +21498,12 @@ class Effect5630(EffectDef):
 
 
 class Effect5631(EffectDef):
+    """
+    shipBonusCruiseMissileExploDmgMB
+
+    Used by:
+    Ship: Typhoon Fleet Issue
+    """
 
     type = 'passive'
 
@@ -13429,6 +21515,12 @@ class Effect5631(EffectDef):
 
 
 class Effect5632(EffectDef):
+    """
+    shipBonusTorpedoMissileExploDmgMB
+
+    Used by:
+    Ship: Typhoon Fleet Issue
+    """
 
     type = 'passive'
 
@@ -13440,6 +21532,12 @@ class Effect5632(EffectDef):
 
 
 class Effect5633(EffectDef):
+    """
+    shipBonusTorpedoMissileEMDmgMB
+
+    Used by:
+    Ship: Typhoon Fleet Issue
+    """
 
     type = 'passive'
 
@@ -13450,6 +21548,12 @@ class Effect5633(EffectDef):
 
 
 class Effect5634(EffectDef):
+    """
+    shipBonusTorpedoMissileThermDmgMB
+
+    Used by:
+    Ship: Typhoon Fleet Issue
+    """
 
     type = 'passive'
 
@@ -13461,6 +21565,12 @@ class Effect5634(EffectDef):
 
 
 class Effect5635(EffectDef):
+    """
+    shipBonusTorpedoMissileKineticDmgMB
+
+    Used by:
+    Ship: Typhoon Fleet Issue
+    """
 
     type = 'passive'
 
@@ -13472,6 +21582,12 @@ class Effect5635(EffectDef):
 
 
 class Effect5636(EffectDef):
+    """
+    shipBonusHeavyMissileEMDmgMB
+
+    Used by:
+    Ship: Typhoon Fleet Issue
+    """
 
     type = 'passive'
 
@@ -13482,6 +21598,12 @@ class Effect5636(EffectDef):
 
 
 class Effect5637(EffectDef):
+    """
+    shipBonusHeavyMissileThermDmgMB
+
+    Used by:
+    Ship: Typhoon Fleet Issue
+    """
 
     type = 'passive'
 
@@ -13493,6 +21615,12 @@ class Effect5637(EffectDef):
 
 
 class Effect5638(EffectDef):
+    """
+    shipBonusHeavyMissileKineticDmgMB
+
+    Used by:
+    Ship: Typhoon Fleet Issue
+    """
 
     type = 'passive'
 
@@ -13504,6 +21632,12 @@ class Effect5638(EffectDef):
 
 
 class Effect5639(EffectDef):
+    """
+    shipBonusHeavyMissileExploDmgMB
+
+    Used by:
+    Ship: Typhoon Fleet Issue
+    """
 
     type = 'passive'
 
@@ -13515,6 +21649,12 @@ class Effect5639(EffectDef):
 
 
 class Effect5644(EffectDef):
+    """
+    shipBonusMissileVelocityCC2
+
+    Used by:
+    Ship: Cerberus
+    """
 
     type = 'passive'
 
@@ -13525,6 +21665,18 @@ class Effect5644(EffectDef):
 
 
 class Effect5647(EffectDef):
+    """
+    covertOpsCloakCPUPercentRoleBonus
+
+    Used by:
+    Ships from group: Expedition Frigate (2 of 2)
+    Ship: Astero
+    Ship: Enforcer
+    Ship: Pacifier
+    Ship: Victor
+    Ship: Victorieux Luxury Yacht
+    Ship: Virtuoso
+    """
 
     runTime = 'early'
     type = 'passive'
@@ -13536,6 +21688,12 @@ class Effect5647(EffectDef):
 
 
 class Effect5650(EffectDef):
+    """
+    shipArmorResistanceAF1
+
+    Used by:
+    Ship: Malediction
+    """
 
     type = 'passive'
 
@@ -13548,6 +21706,12 @@ class Effect5650(EffectDef):
 
 
 class Effect5657(EffectDef):
+    """
+    Interceptor2ShieldResist
+
+    Used by:
+    Ship: Raptor
+    """
 
     type = 'passive'
 
@@ -13560,6 +21724,12 @@ class Effect5657(EffectDef):
 
 
 class Effect5673(EffectDef):
+    """
+    interceptor2ProjectileDamage
+
+    Used by:
+    Ship: Claw
+    """
 
     type = 'passive'
 
@@ -13571,6 +21741,12 @@ class Effect5673(EffectDef):
 
 
 class Effect5676(EffectDef):
+    """
+    shipBonusSmallMissileExplosionRadiusCD2
+
+    Used by:
+    Ship: Flycatcher
+    """
 
     type = 'passive'
 
@@ -13582,6 +21758,12 @@ class Effect5676(EffectDef):
 
 
 class Effect5688(EffectDef):
+    """
+    shipBonusMissileVelocityAD2
+
+    Used by:
+    Ship: Heretic
+    """
 
     type = 'passive'
 
@@ -13592,6 +21774,12 @@ class Effect5688(EffectDef):
 
 
 class Effect5695(EffectDef):
+    """
+    eliteBonusInterdictorsArmorResist1
+
+    Used by:
+    Ship: Heretic
+    """
 
     type = 'passive'
 
@@ -13603,6 +21791,12 @@ class Effect5695(EffectDef):
 
 
 class Effect5717(EffectDef):
+    """
+    implantSetWarpSpeed
+
+    Used by:
+    Implants named like: grade Ascendancy (12 of 12)
+    """
 
     runTime = 'early'
     type = 'passive'
@@ -13614,6 +21808,12 @@ class Effect5717(EffectDef):
 
 
 class Effect5721(EffectDef):
+    """
+    shipBonusMETOptimalRangePirateFaction
+
+    Used by:
+    Ships named like: Stratios (2 of 2)
+    """
 
     type = 'passive'
 
@@ -13624,6 +21824,12 @@ class Effect5721(EffectDef):
 
 
 class Effect5722(EffectDef):
+    """
+    shipHybridOptimalGD1
+
+    Used by:
+    Ship: Eris
+    """
 
     type = 'passive'
 
@@ -13634,6 +21840,12 @@ class Effect5722(EffectDef):
 
 
 class Effect5723(EffectDef):
+    """
+    eliteBonusInterdictorsMWDSigRadius2
+
+    Used by:
+    Ships from group: Interdictor (4 of 4)
+    """
 
     type = 'passive'
 
@@ -13645,6 +21857,12 @@ class Effect5723(EffectDef):
 
 
 class Effect5724(EffectDef):
+    """
+    shipSHTOptimalBonusGF
+
+    Used by:
+    Ship: Ares
+    """
 
     type = 'passive'
 
@@ -13655,6 +21873,12 @@ class Effect5724(EffectDef):
 
 
 class Effect5725(EffectDef):
+    """
+    shipBonusRemoteRepairAmountPirateFaction
+
+    Used by:
+    Ship: Nestor
+    """
 
     type = 'passive'
 
@@ -13665,6 +21889,12 @@ class Effect5725(EffectDef):
 
 
 class Effect5726(EffectDef):
+    """
+    shipBonusLETOptimalRangePirateFaction
+
+    Used by:
+    Ship: Nestor
+    """
 
     type = 'passive'
 
@@ -13675,6 +21905,12 @@ class Effect5726(EffectDef):
 
 
 class Effect5733(EffectDef):
+    """
+    eliteBonusMaraudersHeavyMissileDamageExpRole1
+
+    Used by:
+    Ship: Golem
+    """
 
     type = 'passive'
 
@@ -13685,6 +21921,12 @@ class Effect5733(EffectDef):
 
 
 class Effect5734(EffectDef):
+    """
+    eliteBonusMaraudersHeavyMissileDamageKinRole1
+
+    Used by:
+    Ship: Golem
+    """
 
     type = 'passive'
 
@@ -13695,6 +21937,12 @@ class Effect5734(EffectDef):
 
 
 class Effect5735(EffectDef):
+    """
+    eliteBonusMaraudersHeavyMissileDamageEMRole1
+
+    Used by:
+    Ship: Golem
+    """
 
     type = 'passive'
 
@@ -13705,6 +21953,12 @@ class Effect5735(EffectDef):
 
 
 class Effect5736(EffectDef):
+    """
+    eliteBonusMaraudersHeavyMissileDamageThermRole1
+
+    Used by:
+    Ship: Golem
+    """
 
     type = 'passive'
 
@@ -13715,6 +21969,12 @@ class Effect5736(EffectDef):
 
 
 class Effect5737(EffectDef):
+    """
+    shipScanProbeStrengthBonusPirateFaction
+
+    Used by:
+    Ship: Nestor
+    """
 
     type = 'passive'
 
@@ -13725,6 +21985,12 @@ class Effect5737(EffectDef):
 
 
 class Effect5738(EffectDef):
+    """
+    shipBonusRemoteRepairRangePirateFaction2
+
+    Used by:
+    Ship: Nestor
+    """
 
     type = 'passive'
 
@@ -13737,6 +22003,13 @@ class Effect5738(EffectDef):
 
 
 class Effect5754(EffectDef):
+    """
+    overloadSelfTrackingModuleBonus
+
+    Used by:
+    Modules named like: Tracking Computer (19 of 19)
+    Variations of module: Tracking Disruptor I (6 of 6)
+    """
 
     type = 'overheat'
 
@@ -13748,6 +22021,14 @@ class Effect5754(EffectDef):
 
 
 class Effect5757(EffectDef):
+    """
+    overloadSelfSensorModuleBonus
+
+    Used by:
+    Modules from group: Remote Sensor Booster (8 of 8)
+    Modules from group: Sensor Booster (16 of 16)
+    Modules from group: Sensor Dampener (6 of 6)
+    """
 
     type = 'overheat'
 
@@ -13766,6 +22047,12 @@ class Effect5757(EffectDef):
 
 
 class Effect5758(EffectDef):
+    """
+    overloadSelfPainterBonus
+
+    Used by:
+    Modules from group: Target Painter (8 of 8)
+    """
 
     type = 'overheat'
 
@@ -13775,6 +22062,13 @@ class Effect5758(EffectDef):
 
 
 class Effect5769(EffectDef):
+    """
+    repairDroneHullBonusBonus
+
+    Used by:
+    Modules named like: Drone Repair Augmentor (8 of 8)
+    Skill: Repair Drone Operation
+    """
 
     type = 'passive'
 
@@ -13786,6 +22080,13 @@ class Effect5769(EffectDef):
 
 
 class Effect5778(EffectDef):
+    """
+    shipMissileRoFMF2
+
+    Used by:
+    Ship: Breacher
+    Ship: Jaguar
+    """
 
     type = 'passive'
 
@@ -13796,6 +22097,13 @@ class Effect5778(EffectDef):
 
 
 class Effect5779(EffectDef):
+    """
+    shipBonusSPTFalloffMF2
+
+    Used by:
+    Ship: Pacifier
+    Ship: Rifter
+    """
 
     type = 'passive'
 
@@ -13806,6 +22114,13 @@ class Effect5779(EffectDef):
 
 
 class Effect5793(EffectDef):
+    """
+    ewSkillTrackingDisruptionRangeDisruptionBonus
+
+    Used by:
+    Modules named like: Tracking Diagnostic Subroutines (8 of 8)
+    Skill: Weapon Destabilization
+    """
 
     type = 'passive'
 
@@ -13818,6 +22133,12 @@ class Effect5793(EffectDef):
 
 
 class Effect5802(EffectDef):
+    """
+    shipBonusAfterburnerSpeedFactor2CB
+
+    Used by:
+    Ship: Nightmare
+    """
 
     type = 'passive'
 
@@ -13828,6 +22149,12 @@ class Effect5802(EffectDef):
 
 
 class Effect5803(EffectDef):
+    """
+    shipBonusSentryDroneDamageMultiplierPirateFaction
+
+    Used by:
+    Ship: Rattlesnake
+    """
 
     type = 'passive'
 
@@ -13838,6 +22165,12 @@ class Effect5803(EffectDef):
 
 
 class Effect5804(EffectDef):
+    """
+    shipBonusHeavyDroneDamageMultiplierPirateFaction
+
+    Used by:
+    Ship: Rattlesnake
+    """
 
     type = 'passive'
 
@@ -13848,6 +22181,12 @@ class Effect5804(EffectDef):
 
 
 class Effect5805(EffectDef):
+    """
+    shipBonusSentryDroneHPPirateFaction
+
+    Used by:
+    Ship: Rattlesnake
+    """
 
     type = 'passive'
 
@@ -13858,6 +22197,12 @@ class Effect5805(EffectDef):
 
 
 class Effect5806(EffectDef):
+    """
+    shipBonusSentryDroneArmorHpPirateFaction
+
+    Used by:
+    Ship: Rattlesnake
+    """
 
     type = 'passive'
 
@@ -13868,6 +22213,12 @@ class Effect5806(EffectDef):
 
 
 class Effect5807(EffectDef):
+    """
+    shipBonusSentryDroneShieldHpPirateFaction
+
+    Used by:
+    Ship: Rattlesnake
+    """
 
     type = 'passive'
 
@@ -13878,6 +22229,12 @@ class Effect5807(EffectDef):
 
 
 class Effect5808(EffectDef):
+    """
+    shipBonusHeavyDroneShieldHpPirateFaction
+
+    Used by:
+    Ship: Rattlesnake
+    """
 
     type = 'passive'
 
@@ -13888,6 +22245,12 @@ class Effect5808(EffectDef):
 
 
 class Effect5809(EffectDef):
+    """
+    shipBonusHeavyDroneArmorHpPirateFaction
+
+    Used by:
+    Ship: Rattlesnake
+    """
 
     type = 'passive'
 
@@ -13898,6 +22261,12 @@ class Effect5809(EffectDef):
 
 
 class Effect5810(EffectDef):
+    """
+    shipBonusHeavyDroneHPPirateFaction
+
+    Used by:
+    Ship: Rattlesnake
+    """
 
     type = 'passive'
 
@@ -13908,6 +22277,12 @@ class Effect5810(EffectDef):
 
 
 class Effect5811(EffectDef):
+    """
+    shipBonusKineticMissileDamageGB2
+
+    Used by:
+    Ship: Rattlesnake
+    """
 
     type = 'passive'
 
@@ -13919,6 +22294,12 @@ class Effect5811(EffectDef):
 
 
 class Effect5812(EffectDef):
+    """
+    shipBonusThermalMissileDamageGB2
+
+    Used by:
+    Ship: Rattlesnake
+    """
 
     type = 'passive'
 
@@ -13930,6 +22311,13 @@ class Effect5812(EffectDef):
 
 
 class Effect5813(EffectDef):
+    """
+    shipBonusAfterburnerSpeedFactorCF2
+
+    Used by:
+    Ship: Imp
+    Ship: Succubus
+    """
 
     type = 'passive'
 
@@ -13940,6 +22328,13 @@ class Effect5813(EffectDef):
 
 
 class Effect5814(EffectDef):
+    """
+    shipBonusKineticMissileDamageGF
+
+    Used by:
+    Ship: Whiptail
+    Ship: Worm
+    """
 
     type = 'passive'
 
@@ -13950,6 +22345,13 @@ class Effect5814(EffectDef):
 
 
 class Effect5815(EffectDef):
+    """
+    shipBonusThermalMissileDamageGF
+
+    Used by:
+    Ship: Whiptail
+    Ship: Worm
+    """
 
     type = 'passive'
 
@@ -13960,6 +22362,13 @@ class Effect5815(EffectDef):
 
 
 class Effect5816(EffectDef):
+    """
+    shipBonusLightDroneDamageMultiplierPirateFaction
+
+    Used by:
+    Ship: Whiptail
+    Ship: Worm
+    """
 
     type = 'passive'
 
@@ -13970,6 +22379,13 @@ class Effect5816(EffectDef):
 
 
 class Effect5817(EffectDef):
+    """
+    shipBonusLightDroneHPPirateFaction
+
+    Used by:
+    Ship: Whiptail
+    Ship: Worm
+    """
 
     type = 'passive'
 
@@ -13980,6 +22396,13 @@ class Effect5817(EffectDef):
 
 
 class Effect5818(EffectDef):
+    """
+    shipBonusLightDroneArmorHPPirateFaction
+
+    Used by:
+    Ship: Whiptail
+    Ship: Worm
+    """
 
     type = 'passive'
 
@@ -13990,6 +22413,13 @@ class Effect5818(EffectDef):
 
 
 class Effect5819(EffectDef):
+    """
+    shipBonusLightDroneShieldHPPirateFaction
+
+    Used by:
+    Ship: Whiptail
+    Ship: Worm
+    """
 
     type = 'passive'
 
@@ -14000,6 +22430,13 @@ class Effect5819(EffectDef):
 
 
 class Effect5820(EffectDef):
+    """
+    shipBonusAfterburnerSpeedFactorCC2
+
+    Used by:
+    Ship: Fiend
+    Ship: Phantasm
+    """
 
     type = 'passive'
 
@@ -14010,6 +22447,13 @@ class Effect5820(EffectDef):
 
 
 class Effect5821(EffectDef):
+    """
+    shipBonusMediumDroneDamageMultiplierPirateFaction
+
+    Used by:
+    Ship: Chameleon
+    Ship: Gila
+    """
 
     type = 'passive'
 
@@ -14020,6 +22464,13 @@ class Effect5821(EffectDef):
 
 
 class Effect5822(EffectDef):
+    """
+    shipBonusMediumDroneHPPirateFaction
+
+    Used by:
+    Ship: Chameleon
+    Ship: Gila
+    """
 
     type = 'passive'
 
@@ -14030,6 +22481,13 @@ class Effect5822(EffectDef):
 
 
 class Effect5823(EffectDef):
+    """
+    shipBonusMediumDroneArmorHPPirateFaction
+
+    Used by:
+    Ship: Chameleon
+    Ship: Gila
+    """
 
     type = 'passive'
 
@@ -14040,6 +22498,13 @@ class Effect5823(EffectDef):
 
 
 class Effect5824(EffectDef):
+    """
+    shipBonusMediumDroneShieldHPPirateFaction
+
+    Used by:
+    Ship: Chameleon
+    Ship: Gila
+    """
 
     type = 'passive'
 
@@ -14050,6 +22515,13 @@ class Effect5824(EffectDef):
 
 
 class Effect5825(EffectDef):
+    """
+    shipBonusKineticMissileDamageGC2
+
+    Used by:
+    Ship: Chameleon
+    Ship: Gila
+    """
 
     type = 'passive'
 
@@ -14060,6 +22532,13 @@ class Effect5825(EffectDef):
 
 
 class Effect5826(EffectDef):
+    """
+    shipBonusThermalMissileDamageGC2
+
+    Used by:
+    Ship: Chameleon
+    Ship: Gila
+    """
 
     type = 'passive'
 
@@ -14070,6 +22549,12 @@ class Effect5826(EffectDef):
 
 
 class Effect5827(EffectDef):
+    """
+    shipBonusTDOptimalBonusAF1
+
+    Used by:
+    Ship: Crucifier
+    """
 
     type = 'passive'
 
@@ -14080,6 +22565,13 @@ class Effect5827(EffectDef):
 
 
 class Effect5829(EffectDef):
+    """
+    shipBonusMiningDurationORE3
+
+    Used by:
+    Ships from group: Exhumer (3 of 3)
+    Ships from group: Mining Barge (3 of 3)
+    """
 
     type = 'passive'
 
@@ -14090,6 +22582,12 @@ class Effect5829(EffectDef):
 
 
 class Effect5832(EffectDef):
+    """
+    shipBonusMiningIceHarvestingRangeORE2
+
+    Used by:
+    Variations of ship: Covetor (2 of 2)
+    """
 
     type = 'passive'
 
@@ -14101,6 +22599,12 @@ class Effect5832(EffectDef):
 
 
 class Effect5839(EffectDef):
+    """
+    eliteBargeShieldResistance1
+
+    Used by:
+    Ships from group: Exhumer (3 of 3)
+    """
 
     type = 'passive'
 
@@ -14112,6 +22616,12 @@ class Effect5839(EffectDef):
 
 
 class Effect5840(EffectDef):
+    """
+    eliteBargeBonusMiningDurationBarge2
+
+    Used by:
+    Ships from group: Exhumer (3 of 3)
+    """
 
     type = 'passive'
 
@@ -14122,6 +22632,12 @@ class Effect5840(EffectDef):
 
 
 class Effect5852(EffectDef):
+    """
+    eliteBonusExpeditionMining1
+
+    Used by:
+    Ship: Prospect
+    """
 
     type = 'passive'
 
@@ -14133,6 +22649,12 @@ class Effect5852(EffectDef):
 
 
 class Effect5853(EffectDef):
+    """
+    eliteBonusExpeditionSigRadius2
+
+    Used by:
+    Ship: Prospect
+    """
 
     type = 'passive'
 
@@ -14143,6 +22665,12 @@ class Effect5853(EffectDef):
 
 
 class Effect5862(EffectDef):
+    """
+    shipMissileEMDamageCB
+
+    Used by:
+    Ship: Barghest
+    """
 
     type = 'passive'
 
@@ -14153,6 +22681,12 @@ class Effect5862(EffectDef):
 
 
 class Effect5863(EffectDef):
+    """
+    shipMissileKinDamageCB
+
+    Used by:
+    Ship: Barghest
+    """
 
     type = 'passive'
 
@@ -14164,6 +22698,12 @@ class Effect5863(EffectDef):
 
 
 class Effect5864(EffectDef):
+    """
+    shipMissileThermDamageCB
+
+    Used by:
+    Ship: Barghest
+    """
 
     type = 'passive'
 
@@ -14175,6 +22715,12 @@ class Effect5864(EffectDef):
 
 
 class Effect5865(EffectDef):
+    """
+    shipMissileExploDamageCB
+
+    Used by:
+    Ship: Barghest
+    """
 
     type = 'passive'
 
@@ -14186,6 +22732,12 @@ class Effect5865(EffectDef):
 
 
 class Effect5866(EffectDef):
+    """
+    shipBonusWarpScrambleMaxRangeGB
+
+    Used by:
+    Ship: Barghest
+    """
 
     type = 'passive'
 
@@ -14196,6 +22748,14 @@ class Effect5866(EffectDef):
 
 
 class Effect5867(EffectDef):
+    """
+    shipBonusMissileExplosionDelayPirateFaction2
+
+    Used by:
+    Ship: Barghest
+    Ship: Garmur
+    Ship: Orthrus
+    """
 
     type = 'passive'
 
@@ -14206,6 +22766,12 @@ class Effect5867(EffectDef):
 
 
 class Effect5868(EffectDef):
+    """
+    drawbackCargoCapacity
+
+    Used by:
+    Modules named like: Transverse Bulkhead (8 of 8)
+    """
 
     type = 'passive'
 
@@ -14215,6 +22781,12 @@ class Effect5868(EffectDef):
 
 
 class Effect5869(EffectDef):
+    """
+    eliteIndustrialWarpSpeedBonus1
+
+    Used by:
+    Ships from group: Blockade Runner (4 of 4)
+    """
 
     type = 'passive'
 
@@ -14225,6 +22797,12 @@ class Effect5869(EffectDef):
 
 
 class Effect5870(EffectDef):
+    """
+    shipBonusShieldBoostCI2
+
+    Used by:
+    Ship: Bustard
+    """
 
     type = 'passive'
 
@@ -14235,6 +22813,12 @@ class Effect5870(EffectDef):
 
 
 class Effect5871(EffectDef):
+    """
+    shipBonusShieldBoostMI2
+
+    Used by:
+    Ship: Mastodon
+    """
 
     type = 'passive'
 
@@ -14245,6 +22829,12 @@ class Effect5871(EffectDef):
 
 
 class Effect5872(EffectDef):
+    """
+    shipBonusArmorRepairAI2
+
+    Used by:
+    Ship: Impel
+    """
 
     type = 'passive'
 
@@ -14256,6 +22846,12 @@ class Effect5872(EffectDef):
 
 
 class Effect5873(EffectDef):
+    """
+    shipBonusArmorRepairGI2
+
+    Used by:
+    Ship: Occator
+    """
 
     type = 'passive'
 
@@ -14267,6 +22863,12 @@ class Effect5873(EffectDef):
 
 
 class Effect5874(EffectDef):
+    """
+    eliteIndustrialFleetCapacity1
+
+    Used by:
+    Ships from group: Deep Space Transport (4 of 4)
+    """
 
     type = 'passive'
 
@@ -14277,6 +22879,13 @@ class Effect5874(EffectDef):
 
 
 class Effect5881(EffectDef):
+    """
+    eliteIndustrialShieldResists2
+
+    Used by:
+    Ship: Bustard
+    Ship: Mastodon
+    """
 
     type = 'passive'
 
@@ -14288,6 +22897,13 @@ class Effect5881(EffectDef):
 
 
 class Effect5888(EffectDef):
+    """
+    eliteIndustrialArmorResists2
+
+    Used by:
+    Ship: Impel
+    Ship: Occator
+    """
 
     type = 'passive'
 
@@ -14299,6 +22915,12 @@ class Effect5888(EffectDef):
 
 
 class Effect5889(EffectDef):
+    """
+    eliteIndustrialABHeatBonus
+
+    Used by:
+    Ships from group: Deep Space Transport (4 of 4)
+    """
 
     type = 'passive'
 
@@ -14309,6 +22931,12 @@ class Effect5889(EffectDef):
 
 
 class Effect5890(EffectDef):
+    """
+    eliteIndustrialMWDHeatBonus
+
+    Used by:
+    Ships from group: Deep Space Transport (4 of 4)
+    """
 
     type = 'passive'
 
@@ -14319,6 +22947,12 @@ class Effect5890(EffectDef):
 
 
 class Effect5891(EffectDef):
+    """
+    eliteIndustrialArmorHardenerHeatBonus
+
+    Used by:
+    Ships from group: Deep Space Transport (4 of 4)
+    """
 
     type = 'passive'
 
@@ -14329,6 +22963,12 @@ class Effect5891(EffectDef):
 
 
 class Effect5892(EffectDef):
+    """
+    eliteIndustrialReactiveArmorHardenerHeatBonus
+
+    Used by:
+    Ships from group: Deep Space Transport (4 of 4)
+    """
 
     type = 'passive'
 
@@ -14339,6 +22979,12 @@ class Effect5892(EffectDef):
 
 
 class Effect5893(EffectDef):
+    """
+    eliteIndustrialShieldHardenerHeatBonus
+
+    Used by:
+    Ships from group: Deep Space Transport (4 of 4)
+    """
 
     type = 'passive'
 
@@ -14349,6 +22995,12 @@ class Effect5893(EffectDef):
 
 
 class Effect5896(EffectDef):
+    """
+    eliteIndustrialShieldBoosterHeatBonus
+
+    Used by:
+    Ships from group: Deep Space Transport (4 of 4)
+    """
 
     type = 'passive'
 
@@ -14361,6 +23013,12 @@ class Effect5896(EffectDef):
 
 
 class Effect5899(EffectDef):
+    """
+    eliteIndustrialArmorRepairHeatBonus
+
+    Used by:
+    Ships from group: Deep Space Transport (4 of 4)
+    """
 
     type = 'passive'
 
@@ -14373,6 +23031,12 @@ class Effect5899(EffectDef):
 
 
 class Effect5900(EffectDef):
+    """
+    warpSpeedAddition
+
+    Used by:
+    Modules from group: Warp Accelerator (3 of 3)
+    """
 
     type = 'passive'
 
@@ -14382,6 +23046,13 @@ class Effect5900(EffectDef):
 
 
 class Effect5901(EffectDef):
+    """
+    roleBonusBulkheadCPU
+
+    Used by:
+    Ships from group: Freighter (4 of 5)
+    Ships from group: Jump Freighter (4 of 4)
+    """
 
     type = 'passive'
 
@@ -14392,6 +23063,12 @@ class Effect5901(EffectDef):
 
 
 class Effect5911(EffectDef):
+    """
+    onlineJumpDriveConsumptionAmountBonusPercentage
+
+    Used by:
+    Modules from group: Jump Drive Economizer (3 of 3)
+    """
 
     runTime = 'early'
     type = ('projected', 'passive')
@@ -14403,6 +23080,12 @@ class Effect5911(EffectDef):
 
 
 class Effect5912(EffectDef):
+    """
+    systemRemoteCapTransmitterAmount
+
+    Used by:
+    Celestials named like: Cataclysmic Variable Effect Beacon Class (6 of 6)
+    """
 
     runTime = 'early'
     type = ('projected', 'passive')
@@ -14415,6 +23098,12 @@ class Effect5912(EffectDef):
 
 
 class Effect5913(EffectDef):
+    """
+    systemArmorHP
+
+    Used by:
+    Celestials named like: Wolf Rayet Effect Beacon Class (6 of 6)
+    """
 
     runTime = 'early'
     type = ('projected', 'passive')
@@ -14425,6 +23114,12 @@ class Effect5913(EffectDef):
 
 
 class Effect5914(EffectDef):
+    """
+    systemEnergyNeutMultiplier
+
+    Used by:
+    Celestials named like: Pulsar Effect Beacon Class (6 of 6)
+    """
 
     runTime = 'early'
     type = ('projected', 'passive')
@@ -14438,6 +23133,12 @@ class Effect5914(EffectDef):
 
 
 class Effect5915(EffectDef):
+    """
+    systemEnergyVampireMultiplier
+
+    Used by:
+    Celestials named like: Pulsar Effect Beacon Class (6 of 6)
+    """
 
     runTime = 'early'
     type = ('projected', 'passive')
@@ -14451,6 +23152,12 @@ class Effect5915(EffectDef):
 
 
 class Effect5916(EffectDef):
+    """
+    systemDamageExplosiveBombs
+
+    Used by:
+    Celestials named like: Red Giant Beacon Class (6 of 6)
+    """
 
     runTime = 'early'
     type = ('projected', 'passive')
@@ -14463,6 +23170,12 @@ class Effect5916(EffectDef):
 
 
 class Effect5917(EffectDef):
+    """
+    systemDamageKineticBombs
+
+    Used by:
+    Celestials named like: Red Giant Beacon Class (6 of 6)
+    """
 
     runTime = 'early'
     type = ('projected', 'passive')
@@ -14475,6 +23188,12 @@ class Effect5917(EffectDef):
 
 
 class Effect5918(EffectDef):
+    """
+    systemDamageThermalBombs
+
+    Used by:
+    Celestials named like: Red Giant Beacon Class (6 of 6)
+    """
 
     runTime = 'early'
     type = ('projected', 'passive')
@@ -14487,6 +23206,12 @@ class Effect5918(EffectDef):
 
 
 class Effect5919(EffectDef):
+    """
+    systemDamageEMBombs
+
+    Used by:
+    Celestials named like: Red Giant Beacon Class (6 of 6)
+    """
 
     runTime = 'early'
     type = ('projected', 'passive')
@@ -14499,6 +23224,12 @@ class Effect5919(EffectDef):
 
 
 class Effect5920(EffectDef):
+    """
+    systemAoeCloudSize
+
+    Used by:
+    Celestials named like: Magnetar Effect Beacon Class (6 of 6)
+    """
 
     runTime = 'early'
     type = ('projected', 'passive')
@@ -14510,6 +23241,12 @@ class Effect5920(EffectDef):
 
 
 class Effect5921(EffectDef):
+    """
+    systemTargetPainterMultiplier
+
+    Used by:
+    Celestials named like: Magnetar Effect Beacon Class (6 of 6)
+    """
 
     runTime = 'early'
     type = ('projected', 'passive')
@@ -14523,6 +23260,12 @@ class Effect5921(EffectDef):
 
 
 class Effect5922(EffectDef):
+    """
+    systemWebifierStrengthMultiplier
+
+    Used by:
+    Celestials named like: Black Hole Effect Beacon Class (6 of 6)
+    """
 
     runTime = 'early'
     type = ('projected', 'passive')
@@ -14535,6 +23278,12 @@ class Effect5922(EffectDef):
 
 
 class Effect5923(EffectDef):
+    """
+    systemNeutBombs
+
+    Used by:
+    Celestials named like: Red Giant Beacon Class (6 of 6)
+    """
 
     runTime = 'early'
     type = ('projected', 'passive')
@@ -14548,6 +23297,12 @@ class Effect5923(EffectDef):
 
 
 class Effect5924(EffectDef):
+    """
+    systemGravimetricECMBomb
+
+    Used by:
+    Celestials named like: Red Giant Beacon Class (6 of 6)
+    """
 
     runTime = 'early'
     type = ('projected', 'passive')
@@ -14561,6 +23316,12 @@ class Effect5924(EffectDef):
 
 
 class Effect5925(EffectDef):
+    """
+    systemLadarECMBomb
+
+    Used by:
+    Celestials named like: Red Giant Beacon Class (6 of 6)
+    """
 
     runTime = 'early'
     type = ('projected', 'passive')
@@ -14574,6 +23335,12 @@ class Effect5925(EffectDef):
 
 
 class Effect5926(EffectDef):
+    """
+    systemMagnetrometricECMBomb
+
+    Used by:
+    Celestials named like: Red Giant Beacon Class (6 of 6)
+    """
 
     runTime = 'early'
     type = ('projected', 'passive')
@@ -14587,6 +23354,12 @@ class Effect5926(EffectDef):
 
 
 class Effect5927(EffectDef):
+    """
+    systemRadarECMBomb
+
+    Used by:
+    Celestials named like: Red Giant Beacon Class (6 of 6)
+    """
 
     runTime = 'early'
     type = ('projected', 'passive')
@@ -14600,6 +23373,12 @@ class Effect5927(EffectDef):
 
 
 class Effect5929(EffectDef):
+    """
+    systemDroneTracking
+
+    Used by:
+    Celestials named like: Magnetar Effect Beacon Class (6 of 6)
+    """
 
     runTime = 'early'
     type = ('projected', 'passive')
@@ -14612,6 +23391,12 @@ class Effect5929(EffectDef):
 
 
 class Effect5934(EffectDef):
+    """
+    warpScrambleBlockMWDWithNPCEffect
+
+    Used by:
+    Modules named like: Warp Scrambler (27 of 27)
+    """
 
     runTime = 'early'
     type = 'projected', 'active'
@@ -14635,6 +23420,12 @@ class Effect5934(EffectDef):
 
 
 class Effect5938(EffectDef):
+    """
+    shipBonusSmallMissileExplosionRadiusCF2
+
+    Used by:
+    Ship: Crow
+    """
 
     type = 'passive'
 
@@ -14646,6 +23437,12 @@ class Effect5938(EffectDef):
 
 
 class Effect5939(EffectDef):
+    """
+    shipRocketRoFBonusAF2
+
+    Used by:
+    Ship: Malediction
+    """
 
     type = 'passive'
 
@@ -14656,6 +23453,12 @@ class Effect5939(EffectDef):
 
 
 class Effect5940(EffectDef):
+    """
+    eliteBonusInterdictorsSHTRoF1
+
+    Used by:
+    Ship: Eris
+    """
 
     type = 'passive'
 
@@ -14666,6 +23469,12 @@ class Effect5940(EffectDef):
 
 
 class Effect5944(EffectDef):
+    """
+    shipMissileLauncherRoFAD1Fixed
+
+    Used by:
+    Ship: Heretic
+    """
 
     type = 'passive'
 
@@ -14676,6 +23485,12 @@ class Effect5944(EffectDef):
 
 
 class Effect5945(EffectDef):
+    """
+    cloakingPrototype
+
+    Used by:
+    Modules named like: Prototype Cloaking Device I (2 of 2)
+    """
 
     runTime = 'early'
     type = 'active'
@@ -14691,6 +23506,12 @@ class Effect5945(EffectDef):
 
 
 class Effect5951(EffectDef):
+    """
+    drawbackWarpSpeed
+
+    Used by:
+    Modules from group: Rig Anchor (4 of 4)
+    """
 
     type = 'passive'
 
@@ -14700,6 +23521,12 @@ class Effect5951(EffectDef):
 
 
 class Effect5956(EffectDef):
+    """
+    shipMETDamageBonusAC2
+
+    Used by:
+    Ship: Devoter
+    """
 
     type = 'passive'
 
@@ -14710,6 +23537,12 @@ class Effect5956(EffectDef):
 
 
 class Effect5957(EffectDef):
+    """
+    eliteBonusHeavyInterdictorsMETOptimal
+
+    Used by:
+    Ship: Devoter
+    """
 
     type = 'passive'
 
@@ -14721,6 +23554,13 @@ class Effect5957(EffectDef):
 
 
 class Effect5958(EffectDef):
+    """
+    shipHybridTrackingGC
+
+    Used by:
+    Ship: Lachesis
+    Ship: Phobos
+    """
 
     type = 'passive'
 
@@ -14731,6 +23571,12 @@ class Effect5958(EffectDef):
 
 
 class Effect5959(EffectDef):
+    """
+    eliteBonusHeavyInterdictorsHybridOptimal1
+
+    Used by:
+    Ship: Phobos
+    """
 
     type = 'passive'
 
@@ -14742,6 +23588,12 @@ class Effect5959(EffectDef):
 
 
 class Effect5994(EffectDef):
+    """
+    resistanceKillerHullAll
+
+    Used by:
+    Modules named like: Polarized (12 of 18)
+    """
 
     type = 'passive'
 
@@ -14753,6 +23605,12 @@ class Effect5994(EffectDef):
 
 
 class Effect5995(EffectDef):
+    """
+    resistanceKillerShieldArmorAll
+
+    Used by:
+    Modules named like: Polarized (12 of 18)
+    """
 
     type = 'passive'
 
@@ -14765,6 +23623,12 @@ class Effect5995(EffectDef):
 
 
 class Effect5998(EffectDef):
+    """
+    freighterSMACapacityBonusO1
+
+    Used by:
+    Ship: Bowhead
+    """
 
     type = 'passive'
 
@@ -14776,6 +23640,12 @@ class Effect5998(EffectDef):
 
 
 class Effect6001(EffectDef):
+    """
+    freighterAgilityBonus2O2
+
+    Used by:
+    Ship: Bowhead
+    """
 
     type = 'passive'
 
@@ -14786,6 +23656,12 @@ class Effect6001(EffectDef):
 
 
 class Effect6006(EffectDef):
+    """
+    shipSETDamageAmarrTacticalDestroyer1
+
+    Used by:
+    Ship: Confessor
+    """
 
     type = 'passive'
 
@@ -14797,6 +23673,12 @@ class Effect6006(EffectDef):
 
 
 class Effect6007(EffectDef):
+    """
+    shipSETCapNeedAmarrTacticalDestroyer2
+
+    Used by:
+    Ship: Confessor
+    """
 
     type = 'passive'
 
@@ -14808,6 +23690,12 @@ class Effect6007(EffectDef):
 
 
 class Effect6008(EffectDef):
+    """
+    shipHeatDamageAmarrTacticalDestroyer3
+
+    Used by:
+    Ship: Confessor
+    """
 
     type = 'passive'
 
@@ -14819,6 +23707,13 @@ class Effect6008(EffectDef):
 
 
 class Effect6009(EffectDef):
+    """
+    probeLauncherCPUPercentRoleBonusT3
+
+    Used by:
+    Ships from group: Strategic Cruiser (4 of 4)
+    Ships from group: Tactical Destroyer (4 of 4)
+    """
 
     type = 'passive'
 
@@ -14828,6 +23723,12 @@ class Effect6009(EffectDef):
 
 
 class Effect6010(EffectDef):
+    """
+    shipModeMaxTargetRangePostDiv
+
+    Used by:
+    Modules named like: Sharpshooter Mode (4 of 4)
+    """
 
     type = 'passive'
 
@@ -14842,6 +23743,12 @@ class Effect6010(EffectDef):
 
 
 class Effect6011(EffectDef):
+    """
+    shipModeSETOptimalRangePostDiv
+
+    Used by:
+    Module: Confessor Sharpshooter Mode
+    """
 
     type = 'passive'
 
@@ -14857,6 +23764,12 @@ class Effect6011(EffectDef):
 
 
 class Effect6012(EffectDef):
+    """
+    shipModeScanStrengthPostDiv
+
+    Used by:
+    Modules named like: Sharpshooter Mode (4 of 4)
+    """
 
     type = 'passive'
 
@@ -14872,6 +23785,13 @@ class Effect6012(EffectDef):
 
 
 class Effect6014(EffectDef):
+    """
+    modeSigRadiusPostDiv
+
+    Used by:
+    Module: Confessor Defense Mode
+    Module: Jackdaw Defense Mode
+    """
 
     type = 'passive'
 
@@ -14882,6 +23802,12 @@ class Effect6014(EffectDef):
 
 
 class Effect6015(EffectDef):
+    """
+    modeArmorResonancePostDiv
+
+    Used by:
+    Modules named like: Defense Mode (3 of 4)
+    """
 
     type = 'passive'
 
@@ -14902,6 +23828,12 @@ class Effect6015(EffectDef):
 
 
 class Effect6016(EffectDef):
+    """
+    modeAgilityPostDiv
+
+    Used by:
+    Modules named like: Propulsion Mode (4 of 4)
+    """
 
     type = 'passive'
 
@@ -14916,6 +23848,12 @@ class Effect6016(EffectDef):
 
 
 class Effect6017(EffectDef):
+    """
+    modeVelocityPostDiv
+
+    Used by:
+    Module: Jackdaw Propulsion Mode
+    """
 
     type = 'passive'
 
@@ -14930,6 +23868,12 @@ class Effect6017(EffectDef):
 
 
 class Effect6020(EffectDef):
+    """
+    shipBonusEnergyNeutOptimalRS3
+
+    Used by:
+    Ship: Pilgrim
+    """
 
     type = 'passive'
 
@@ -14940,6 +23884,12 @@ class Effect6020(EffectDef):
 
 
 class Effect6021(EffectDef):
+    """
+    shipBonusEnergyNosOptimalRS3
+
+    Used by:
+    Ship: Pilgrim
+    """
 
     type = 'passive'
 
@@ -14950,6 +23900,12 @@ class Effect6021(EffectDef):
 
 
 class Effect6025(EffectDef):
+    """
+    eliteReconBonusMHTOptimalRange1
+
+    Used by:
+    Ship: Lachesis
+    """
 
     type = 'passive'
 
@@ -14960,6 +23916,12 @@ class Effect6025(EffectDef):
 
 
 class Effect6027(EffectDef):
+    """
+    eliteReconBonusMPTdamage1
+
+    Used by:
+    Ship: Huginn
+    """
 
     type = 'passive'
 
@@ -14971,6 +23933,12 @@ class Effect6027(EffectDef):
 
 
 class Effect6032(EffectDef):
+    """
+    remoteCapacitorTransmitterPowerNeedBonusEffect
+
+    Used by:
+    Ships from group: Logistics (3 of 7)
+    """
 
     type = 'passive'
 
@@ -14981,6 +23949,12 @@ class Effect6032(EffectDef):
 
 
 class Effect6036(EffectDef):
+    """
+    shipHeatDamageMinmatarTacticalDestroyer3
+
+    Used by:
+    Ship: Svipul
+    """
 
     type = 'passive'
 
@@ -14992,6 +23966,12 @@ class Effect6036(EffectDef):
 
 
 class Effect6037(EffectDef):
+    """
+    shipSPTDamageMinmatarTacticalDestroyer1
+
+    Used by:
+    Ship: Svipul
+    """
 
     type = 'passive'
 
@@ -15003,6 +23983,12 @@ class Effect6037(EffectDef):
 
 
 class Effect6038(EffectDef):
+    """
+    shipSPTOptimalMinmatarTacticalDestroyer2
+
+    Used by:
+    Ship: Svipul
+    """
 
     type = 'passive'
 
@@ -15014,6 +24000,12 @@ class Effect6038(EffectDef):
 
 
 class Effect6039(EffectDef):
+    """
+    shipModeSPTTrackingPostDiv
+
+    Used by:
+    Module: Svipul Sharpshooter Mode
+    """
 
     type = 'passive'
 
@@ -15029,6 +24021,12 @@ class Effect6039(EffectDef):
 
 
 class Effect6040(EffectDef):
+    """
+    modeMWDSigRadiusPostDiv
+
+    Used by:
+    Module: Svipul Defense Mode
+    """
 
     type = 'passive'
 
@@ -15044,6 +24042,13 @@ class Effect6040(EffectDef):
 
 
 class Effect6041(EffectDef):
+    """
+    modeShieldResonancePostDiv
+
+    Used by:
+    Module: Jackdaw Defense Mode
+    Module: Svipul Defense Mode
+    """
 
     type = 'passive'
 
@@ -15064,6 +24069,12 @@ class Effect6041(EffectDef):
 
 
 class Effect6045(EffectDef):
+    """
+    shipBonusSentryDamageMultiplierGC3
+
+    Used by:
+    Ship: Ishtar
+    """
 
     type = 'passive'
 
@@ -15074,6 +24085,12 @@ class Effect6045(EffectDef):
 
 
 class Effect6046(EffectDef):
+    """
+    shipBonusSentryHPGC3
+
+    Used by:
+    Ship: Ishtar
+    """
 
     type = 'passive'
 
@@ -15084,6 +24101,12 @@ class Effect6046(EffectDef):
 
 
 class Effect6047(EffectDef):
+    """
+    shipBonusSentryArmorHPGC3
+
+    Used by:
+    Ship: Ishtar
+    """
 
     type = 'passive'
 
@@ -15094,6 +24117,12 @@ class Effect6047(EffectDef):
 
 
 class Effect6048(EffectDef):
+    """
+    shipBonusSentryShieldHPGC3
+
+    Used by:
+    Ship: Ishtar
+    """
 
     type = 'passive'
 
@@ -15104,6 +24133,12 @@ class Effect6048(EffectDef):
 
 
 class Effect6051(EffectDef):
+    """
+    shipBonusLightDroneDamageMultiplierGC2
+
+    Used by:
+    Ship: Ishtar
+    """
 
     type = 'passive'
 
@@ -15114,6 +24149,12 @@ class Effect6051(EffectDef):
 
 
 class Effect6052(EffectDef):
+    """
+    shipBonusMediumDroneDamageMultiplierGC2
+
+    Used by:
+    Ship: Ishtar
+    """
 
     type = 'passive'
 
@@ -15124,6 +24165,12 @@ class Effect6052(EffectDef):
 
 
 class Effect6053(EffectDef):
+    """
+    shipBonusHeavyDroneDamageMultiplierGC2
+
+    Used by:
+    Ship: Ishtar
+    """
 
     type = 'passive'
 
@@ -15134,6 +24181,12 @@ class Effect6053(EffectDef):
 
 
 class Effect6054(EffectDef):
+    """
+    shipBonusHeavyDroneHPGC2
+
+    Used by:
+    Ship: Ishtar
+    """
 
     type = 'passive'
 
@@ -15144,6 +24197,12 @@ class Effect6054(EffectDef):
 
 
 class Effect6055(EffectDef):
+    """
+    shipBonusHeavyDroneArmorHPGC2
+
+    Used by:
+    Ship: Ishtar
+    """
 
     type = 'passive'
 
@@ -15154,6 +24213,12 @@ class Effect6055(EffectDef):
 
 
 class Effect6056(EffectDef):
+    """
+    shipBonusHeavyDroneShieldHPGC2
+
+    Used by:
+    Ship: Ishtar
+    """
 
     type = 'passive'
 
@@ -15164,6 +24229,12 @@ class Effect6056(EffectDef):
 
 
 class Effect6057(EffectDef):
+    """
+    shipBonusMediumDroneShieldHPGC2
+
+    Used by:
+    Ship: Ishtar
+    """
 
     type = 'passive'
 
@@ -15174,6 +24245,12 @@ class Effect6057(EffectDef):
 
 
 class Effect6058(EffectDef):
+    """
+    shipBonusMediumDroneArmorHPGC2
+
+    Used by:
+    Ship: Ishtar
+    """
 
     type = 'passive'
 
@@ -15184,6 +24261,12 @@ class Effect6058(EffectDef):
 
 
 class Effect6059(EffectDef):
+    """
+    shipBonusMediumDroneHPGC2
+
+    Used by:
+    Ship: Ishtar
+    """
 
     type = 'passive'
 
@@ -15194,6 +24277,12 @@ class Effect6059(EffectDef):
 
 
 class Effect6060(EffectDef):
+    """
+    shipBonusLightDroneHPGC2
+
+    Used by:
+    Ship: Ishtar
+    """
 
     type = 'passive'
 
@@ -15204,6 +24293,12 @@ class Effect6060(EffectDef):
 
 
 class Effect6061(EffectDef):
+    """
+    shipBonusLightDroneArmorHPGC2
+
+    Used by:
+    Ship: Ishtar
+    """
 
     type = 'passive'
 
@@ -15214,6 +24309,12 @@ class Effect6061(EffectDef):
 
 
 class Effect6062(EffectDef):
+    """
+    shipBonusLightDroneShieldHPGC2
+
+    Used by:
+    Ship: Ishtar
+    """
 
     type = 'passive'
 
@@ -15224,6 +24325,12 @@ class Effect6062(EffectDef):
 
 
 class Effect6063(EffectDef):
+    """
+    entosisLink
+
+    Used by:
+    Modules from group: Entosis Link (6 of 6)
+    """
 
     type = 'active'
 
@@ -15239,6 +24346,12 @@ class Effect6063(EffectDef):
 
 
 class Effect6076(EffectDef):
+    """
+    shipModeMissileVelocityPostDiv
+
+    Used by:
+    Module: Jackdaw Sharpshooter Mode
+    """
 
     type = 'passive'
 
@@ -15254,6 +24367,12 @@ class Effect6076(EffectDef):
 
 
 class Effect6077(EffectDef):
+    """
+    shipHeatDamageCaldariTacticalDestroyer3
+
+    Used by:
+    Ship: Jackdaw
+    """
 
     type = 'passive'
 
@@ -15265,6 +24384,13 @@ class Effect6077(EffectDef):
 
 
 class Effect6083(EffectDef):
+    """
+    shipSmallMissileDmgPirateFaction
+
+    Used by:
+    Ship: Jackdaw
+    Ship: Sunesis
+    """
 
     type = 'passive'
 
@@ -15277,6 +24403,12 @@ class Effect6083(EffectDef):
 
 
 class Effect6085(EffectDef):
+    """
+    shipMissileRoFCaldariTacticalDestroyer1
+
+    Used by:
+    Ship: Jackdaw
+    """
 
     type = 'passive'
 
@@ -15288,6 +24420,13 @@ class Effect6085(EffectDef):
 
 
 class Effect6088(EffectDef):
+    """
+    shipBonusHeavyAssaultMissileAllDamageMC2
+
+    Used by:
+    Ship: Rapier
+    Ship: Scythe Fleet Issue
+    """
 
     type = 'passive'
 
@@ -15300,6 +24439,13 @@ class Effect6088(EffectDef):
 
 
 class Effect6093(EffectDef):
+    """
+    shipBonusHeavyMissileAllDamageMC2
+
+    Used by:
+    Ship: Rapier
+    Ship: Scythe Fleet Issue
+    """
 
     type = 'passive'
 
@@ -15312,6 +24458,13 @@ class Effect6093(EffectDef):
 
 
 class Effect6096(EffectDef):
+    """
+    shipBonusLightMissileAllDamageMC2
+
+    Used by:
+    Ship: Rapier
+    Ship: Scythe Fleet Issue
+    """
 
     type = 'passive'
 
@@ -15324,6 +24477,12 @@ class Effect6096(EffectDef):
 
 
 class Effect6098(EffectDef):
+    """
+    shipMissileReloadTimeCaldariTacticalDestroyer2
+
+    Used by:
+    Ship: Jackdaw
+    """
 
     type = 'passive'
 
@@ -15335,6 +24494,12 @@ class Effect6098(EffectDef):
 
 
 class Effect6104(EffectDef):
+    """
+    entosisDurationMultiply
+
+    Used by:
+    Items from market group: Ships > Capital Ships (31 of 40)
+    """
 
     type = 'passive'
 
@@ -15345,6 +24510,12 @@ class Effect6104(EffectDef):
 
 
 class Effect6110(EffectDef):
+    """
+    missileVelocityBonusOnline
+
+    Used by:
+    Modules from group: Missile Guidance Enhancer (3 of 3)
+    """
 
     type = 'passive'
 
@@ -15356,6 +24527,12 @@ class Effect6110(EffectDef):
 
 
 class Effect6111(EffectDef):
+    """
+    missileExplosionDelayBonusOnline
+
+    Used by:
+    Modules from group: Missile Guidance Enhancer (3 of 3)
+    """
 
     type = 'passive'
 
@@ -15367,6 +24544,12 @@ class Effect6111(EffectDef):
 
 
 class Effect6112(EffectDef):
+    """
+    missileAOECloudSizeBonusOnline
+
+    Used by:
+    Modules from group: Missile Guidance Enhancer (3 of 3)
+    """
 
     type = 'passive'
 
@@ -15378,6 +24561,13 @@ class Effect6112(EffectDef):
 
 
 class Effect6113(EffectDef):
+    """
+    missileAOEVelocityBonusOnline
+
+    Used by:
+    Modules from group: Missile Guidance Enhancer (3 of 3)
+    Module: ML-EKP 'Polybolos' Ballistic Control System
+    """
 
     type = 'passive'
 
@@ -15389,6 +24579,13 @@ class Effect6113(EffectDef):
 
 
 class Effect6128(EffectDef):
+    """
+    scriptMissileGuidanceComputerAOECloudSizeBonusBonus
+
+    Used by:
+    Charges from group: Tracking Script (2 of 2)
+    Charges named like: Missile Script (4 of 4)
+    """
 
     type = 'passive'
 
@@ -15398,6 +24595,13 @@ class Effect6128(EffectDef):
 
 
 class Effect6129(EffectDef):
+    """
+    scriptMissileGuidanceComputerAOEVelocityBonusBonus
+
+    Used by:
+    Charges from group: Tracking Script (2 of 2)
+    Charges named like: Missile Script (4 of 4)
+    """
 
     type = 'passive'
 
@@ -15407,6 +24611,12 @@ class Effect6129(EffectDef):
 
 
 class Effect6130(EffectDef):
+    """
+    scriptMissileGuidanceComputerMissileVelocityBonusBonus
+
+    Used by:
+    Charges named like: Missile Script (4 of 4)
+    """
 
     type = 'passive'
 
@@ -15416,6 +24626,12 @@ class Effect6130(EffectDef):
 
 
 class Effect6131(EffectDef):
+    """
+    scriptMissileGuidanceComputerExplosionDelayBonusBonus
+
+    Used by:
+    Charges named like: Missile Script (4 of 4)
+    """
 
     type = 'passive'
 
@@ -15425,6 +24641,12 @@ class Effect6131(EffectDef):
 
 
 class Effect6135(EffectDef):
+    """
+    missileGuidanceComputerBonus4
+
+    Used by:
+    Modules from group: Missile Guidance Computer (3 of 3)
+    """
 
     type = 'active'
 
@@ -15442,6 +24664,12 @@ class Effect6135(EffectDef):
 
 
 class Effect6144(EffectDef):
+    """
+    overloadSelfMissileGuidanceBonus5
+
+    Used by:
+    Modules from group: Missile Guidance Computer (3 of 3)
+    """
 
     type = 'overheat'
 
@@ -15458,6 +24686,12 @@ class Effect6144(EffectDef):
 
 
 class Effect6148(EffectDef):
+    """
+    shipHeatDamageGallenteTacticalDestroyer3
+
+    Used by:
+    Ship: Hecate
+    """
 
     type = 'passive'
 
@@ -15469,6 +24703,12 @@ class Effect6148(EffectDef):
 
 
 class Effect6149(EffectDef):
+    """
+    shipSHTRoFGallenteTacticalDestroyer1
+
+    Used by:
+    Ship: Hecate
+    """
 
     type = 'passive'
 
@@ -15480,6 +24720,12 @@ class Effect6149(EffectDef):
 
 
 class Effect6150(EffectDef):
+    """
+    shipSHTTrackingGallenteTacticalDestroyer2
+
+    Used by:
+    Ship: Hecate
+    """
 
     type = 'passive'
 
@@ -15491,6 +24737,12 @@ class Effect6150(EffectDef):
 
 
 class Effect6151(EffectDef):
+    """
+    modeHullResonancePostDiv
+
+    Used by:
+    Module: Hecate Defense Mode
+    """
 
     type = 'passive'
 
@@ -15509,6 +24761,12 @@ class Effect6151(EffectDef):
 
 
 class Effect6152(EffectDef):
+    """
+    shipModeSHTOptimalRangePostDiv
+
+    Used by:
+    Module: Hecate Sharpshooter Mode
+    """
 
     type = 'passive'
 
@@ -15524,6 +24782,12 @@ class Effect6152(EffectDef):
 
 
 class Effect6153(EffectDef):
+    """
+    modeMWDCapPostDiv
+
+    Used by:
+    Module: Hecate Propulsion Mode
+    """
 
     type = 'passive'
 
@@ -15537,6 +24801,12 @@ class Effect6153(EffectDef):
 
 
 class Effect6154(EffectDef):
+    """
+    modeMWDBoostPostDiv
+
+    Used by:
+    Module: Hecate Propulsion Mode
+    """
 
     type = 'passive'
 
@@ -15552,6 +24822,12 @@ class Effect6154(EffectDef):
 
 
 class Effect6155(EffectDef):
+    """
+    modeArmorRepDurationPostDiv
+
+    Used by:
+    Module: Hecate Defense Mode
+    """
 
     type = 'passive'
 
@@ -15565,6 +24841,12 @@ class Effect6155(EffectDef):
 
 
 class Effect6163(EffectDef):
+    """
+    passiveSpeedLimit
+
+    Used by:
+    Modules from group: Entosis Link (6 of 6)
+    """
 
     runtime = 'late'
     type = 'passive'
@@ -15575,6 +24857,12 @@ class Effect6163(EffectDef):
 
 
 class Effect6164(EffectDef):
+    """
+    systemMaxVelocityPercentage
+
+    Used by:
+    Celestials named like: Drifter Incursion (6 of 6)
+    """
 
     runTime = 'early'
     type = ('projected', 'passive')
@@ -15585,6 +24873,12 @@ class Effect6164(EffectDef):
 
 
 class Effect6166(EffectDef):
+    """
+    shipBonusWDFGnullPenalties
+
+    Used by:
+    Ship: Fiend
+    """
 
     runTime = 'early'
     type = 'passive'
@@ -15600,6 +24894,12 @@ class Effect6166(EffectDef):
 
 
 class Effect6170(EffectDef):
+    """
+    entosisCPUPenalty
+
+    Used by:
+    Ships from group: Interceptor (10 of 10)
+    """
 
     type = 'passive'
 
@@ -15610,6 +24910,12 @@ class Effect6170(EffectDef):
 
 
 class Effect6171(EffectDef):
+    """
+    entosisCPUAddition
+
+    Used by:
+    Modules from group: Entosis Link (6 of 6)
+    """
 
     type = 'passive'
 
@@ -15619,6 +24925,12 @@ class Effect6171(EffectDef):
 
 
 class Effect6172(EffectDef):
+    """
+    battlecruiserMETRange
+
+    Used by:
+    Ships named like: Harbinger (2 of 2)
+    """
 
     type = 'passive'
 
@@ -15631,6 +24943,13 @@ class Effect6172(EffectDef):
 
 
 class Effect6173(EffectDef):
+    """
+    battlecruiserMHTRange
+
+    Used by:
+    Ships named like: Brutix (2 of 2)
+    Ship: Ferox
+    """
 
     type = 'passive'
 
@@ -15643,6 +24962,12 @@ class Effect6173(EffectDef):
 
 
 class Effect6174(EffectDef):
+    """
+    battlecruiserMPTRange
+
+    Used by:
+    Ships named like: Hurricane (2 of 2)
+    """
 
     type = 'passive'
 
@@ -15655,6 +24980,13 @@ class Effect6174(EffectDef):
 
 
 class Effect6175(EffectDef):
+    """
+    battlecruiserMissileRange
+
+    Used by:
+    Ships named like: Drake (2 of 2)
+    Ship: Cyclone
+    """
 
     type = 'passive'
 
@@ -15665,6 +24997,13 @@ class Effect6175(EffectDef):
 
 
 class Effect6176(EffectDef):
+    """
+    battlecruiserDroneSpeed
+
+    Used by:
+    Ship: Myrmidon
+    Ship: Prophecy
+    """
 
     type = 'passive'
 
@@ -15675,6 +25014,12 @@ class Effect6176(EffectDef):
 
 
 class Effect6177(EffectDef):
+    """
+    shipHybridDmg1CBC2
+
+    Used by:
+    Ship: Ferox
+    """
 
     type = 'passive'
 
@@ -15686,6 +25031,12 @@ class Effect6177(EffectDef):
 
 
 class Effect6178(EffectDef):
+    """
+    shipBonusProjectileTrackingMBC2
+
+    Used by:
+    Ship: Hurricane Fleet Issue
+    """
 
     type = 'passive'
 
@@ -15697,6 +25048,12 @@ class Effect6178(EffectDef):
 
 
 class Effect6184(EffectDef):
+    """
+    shipModuleRemoteCapacitorTransmitter
+
+    Used by:
+    Modules from group: Remote Capacitor Transmitter (41 of 41)
+    """
 
     runTime = 'late'
     type = 'projected', 'active'
@@ -15715,6 +25072,12 @@ class Effect6184(EffectDef):
 
 
 class Effect6185(EffectDef):
+    """
+    shipModuleRemoteHullRepairer
+
+    Used by:
+    Modules from group: Remote Hull Repairer (8 of 8)
+    """
 
     runTime = 'late'
     type = 'projected', 'active'
@@ -15729,6 +25092,12 @@ class Effect6185(EffectDef):
 
 
 class Effect6186(EffectDef):
+    """
+    shipModuleRemoteShieldBooster
+
+    Used by:
+    Modules from group: Remote Shield Booster (38 of 38)
+    """
 
     type = 'projected', 'active'
 
@@ -15741,6 +25110,12 @@ class Effect6186(EffectDef):
 
 
 class Effect6187(EffectDef):
+    """
+    energyNeutralizerFalloff
+
+    Used by:
+    Modules from group: Energy Neutralizer (54 of 54)
+    """
 
     type = 'active', 'projected'
 
@@ -15760,6 +25135,12 @@ class Effect6187(EffectDef):
 
 
 class Effect6188(EffectDef):
+    """
+    shipModuleRemoteArmorRepairer
+
+    Used by:
+    Modules from group: Remote Armor Repairer (39 of 39)
+    """
 
     runTime = 'late'
     type = 'projected', 'active'
@@ -15776,6 +25157,12 @@ class Effect6188(EffectDef):
 
 
 class Effect6195(EffectDef):
+    """
+    expeditionFrigateShieldResistance1
+
+    Used by:
+    Ship: Endurance
+    """
 
     type = 'passive'
 
@@ -15792,6 +25179,12 @@ class Effect6195(EffectDef):
 
 
 class Effect6196(EffectDef):
+    """
+    expeditionFrigateBonusIceHarvestingCycleTime2
+
+    Used by:
+    Ship: Endurance
+    """
 
     type = 'passive'
 
@@ -15802,6 +25195,12 @@ class Effect6196(EffectDef):
 
 
 class Effect6197(EffectDef):
+    """
+    energyNosferatuFalloff
+
+    Used by:
+    Modules from group: Energy Nosferatu (54 of 54)
+    """
 
     runTime = 'late'
     type = 'active', 'projected'
@@ -15822,11 +25221,23 @@ class Effect6197(EffectDef):
 
 
 class Effect6201(EffectDef):
+    """
+    doomsdaySlash
+
+    Used by:
+    Modules named like: Reaper (4 of 4)
+    """
 
     type = 'active'
 
 
 class Effect6208(EffectDef):
+    """
+    microJumpPortalDrive
+
+    Used by:
+    Module: Micro Jump Field Generator
+    """
 
     type = 'active'
 
@@ -15837,6 +25248,13 @@ class Effect6208(EffectDef):
 
 
 class Effect6214(EffectDef):
+    """
+    roleBonusCDLinksPGReduction
+
+    Used by:
+    Ships from group: Command Destroyer (4 of 4)
+    Ship: Porpoise
+    """
 
     type = 'passive'
 
@@ -15847,6 +25265,12 @@ class Effect6214(EffectDef):
 
 
 class Effect6216(EffectDef):
+    """
+    structureEnergyNeutralizerFalloff
+
+    Used by:
+    Structure Modules from group: Structure Energy Neutralizer (5 of 5)
+    """
 
     type = 'active', 'projected'
 
@@ -15867,6 +25291,12 @@ class Effect6216(EffectDef):
 
 
 class Effect6222(EffectDef):
+    """
+    structureWarpScrambleBlockMWDWithNPCEffect
+
+    Used by:
+    Structure Modules from group: Structure Warp Scrambler (2 of 2)
+    """
 
     runTime = 'early'
     type = 'projected', 'active'
@@ -15884,6 +25314,12 @@ class Effect6222(EffectDef):
 
 
 class Effect6230(EffectDef):
+    """
+    shipBonusEnergyNeutOptimalRS1
+
+    Used by:
+    Ship: Curse
+    """
 
     type = 'passive'
 
@@ -15894,6 +25330,12 @@ class Effect6230(EffectDef):
 
 
 class Effect6232(EffectDef):
+    """
+    shipBonusEnergyNeutFalloffRS2
+
+    Used by:
+    Ship: Pilgrim
+    """
 
     type = 'passive'
 
@@ -15904,6 +25346,12 @@ class Effect6232(EffectDef):
 
 
 class Effect6233(EffectDef):
+    """
+    shipBonusEnergyNeutFalloffRS3
+
+    Used by:
+    Ship: Curse
+    """
 
     type = 'passive'
 
@@ -15914,6 +25362,12 @@ class Effect6233(EffectDef):
 
 
 class Effect6234(EffectDef):
+    """
+    shipBonusEnergyNosOptimalRS1
+
+    Used by:
+    Ship: Curse
+    """
 
     type = 'passive'
 
@@ -15924,6 +25378,12 @@ class Effect6234(EffectDef):
 
 
 class Effect6237(EffectDef):
+    """
+    shipBonusEnergyNosFalloffRS2
+
+    Used by:
+    Ship: Pilgrim
+    """
 
     type = 'passive'
 
@@ -15934,6 +25394,12 @@ class Effect6237(EffectDef):
 
 
 class Effect6238(EffectDef):
+    """
+    shipBonusEnergyNosFalloffRS3
+
+    Used by:
+    Ship: Curse
+    """
 
     type = 'passive'
 
@@ -15944,6 +25410,12 @@ class Effect6238(EffectDef):
 
 
 class Effect6239(EffectDef):
+    """
+    miningFrigateBonusIceHarvestingCycleTime2
+
+    Used by:
+    Ship: Endurance
+    """
 
     type = 'passive'
 
@@ -15954,6 +25426,12 @@ class Effect6239(EffectDef):
 
 
 class Effect6241(EffectDef):
+    """
+    shipBonusEnergyNeutFalloffAD1
+
+    Used by:
+    Ship: Dragoon
+    """
 
     type = 'passive'
 
@@ -15964,6 +25442,12 @@ class Effect6241(EffectDef):
 
 
 class Effect6242(EffectDef):
+    """
+    shipBonusEnergyNeutOptimalAD2
+
+    Used by:
+    Ship: Dragoon
+    """
 
     type = 'passive'
 
@@ -15974,6 +25458,12 @@ class Effect6242(EffectDef):
 
 
 class Effect6245(EffectDef):
+    """
+    shipBonusEnergyNosOptimalAD2
+
+    Used by:
+    Ship: Dragoon
+    """
 
     type = 'passive'
 
@@ -15984,6 +25474,12 @@ class Effect6245(EffectDef):
 
 
 class Effect6246(EffectDef):
+    """
+    shipBonusEnergyNosFalloffAD1
+
+    Used by:
+    Ship: Dragoon
+    """
 
     type = 'passive'
 
@@ -15994,6 +25490,12 @@ class Effect6246(EffectDef):
 
 
 class Effect6253(EffectDef):
+    """
+    shipBonusEnergyNeutOptimalAB
+
+    Used by:
+    Ship: Armageddon
+    """
 
     type = 'passive'
 
@@ -16004,6 +25506,12 @@ class Effect6253(EffectDef):
 
 
 class Effect6256(EffectDef):
+    """
+    shipBonusEnergyNeutFalloffAB2
+
+    Used by:
+    Ship: Armageddon
+    """
 
     type = 'passive'
 
@@ -16014,6 +25522,12 @@ class Effect6256(EffectDef):
 
 
 class Effect6257(EffectDef):
+    """
+    shipBonusEnergyNosOptimalAB
+
+    Used by:
+    Ship: Armageddon
+    """
 
     type = 'passive'
 
@@ -16024,6 +25538,12 @@ class Effect6257(EffectDef):
 
 
 class Effect6260(EffectDef):
+    """
+    shipBonusEnergyNosFalloffAB2
+
+    Used by:
+    Ship: Armageddon
+    """
 
     type = 'passive'
 
@@ -16034,6 +25554,12 @@ class Effect6260(EffectDef):
 
 
 class Effect6267(EffectDef):
+    """
+    shipBonusEnergyNeutOptimalEAF1
+
+    Used by:
+    Ship: Sentinel
+    """
 
     type = 'passive'
 
@@ -16045,6 +25571,12 @@ class Effect6267(EffectDef):
 
 
 class Effect6272(EffectDef):
+    """
+    shipBonusEnergyNeutFalloffEAF3
+
+    Used by:
+    Ship: Sentinel
+    """
 
     type = 'passive'
 
@@ -16056,6 +25588,12 @@ class Effect6272(EffectDef):
 
 
 class Effect6273(EffectDef):
+    """
+    shipBonusEnergyNosOptimalEAF1
+
+    Used by:
+    Ship: Sentinel
+    """
 
     type = 'passive'
 
@@ -16067,6 +25605,12 @@ class Effect6273(EffectDef):
 
 
 class Effect6278(EffectDef):
+    """
+    shipBonusEnergyNosFalloffEAF3
+
+    Used by:
+    Ship: Sentinel
+    """
 
     type = 'passive'
 
@@ -16078,6 +25622,12 @@ class Effect6278(EffectDef):
 
 
 class Effect6281(EffectDef):
+    """
+    shipBonusEnergyNeutOptimalAF2
+
+    Used by:
+    Ship: Malice
+    """
 
     type = 'passive'
 
@@ -16088,6 +25638,12 @@ class Effect6281(EffectDef):
 
 
 class Effect6285(EffectDef):
+    """
+    shipBonusEnergyNeutFalloffAF3
+
+    Used by:
+    Ship: Malice
+    """
 
     type = 'passive'
 
@@ -16098,6 +25654,12 @@ class Effect6285(EffectDef):
 
 
 class Effect6287(EffectDef):
+    """
+    shipBonusEnergyNosOptimalAF2
+
+    Used by:
+    Ship: Malice
+    """
 
     type = 'passive'
 
@@ -16108,6 +25670,12 @@ class Effect6287(EffectDef):
 
 
 class Effect6291(EffectDef):
+    """
+    shipBonusEnergyNosFalloffAF3
+
+    Used by:
+    Ship: Malice
+    """
 
     type = 'passive'
 
@@ -16118,6 +25686,12 @@ class Effect6291(EffectDef):
 
 
 class Effect6294(EffectDef):
+    """
+    shipBonusEnergyNeutOptimalAC1
+
+    Used by:
+    Ship: Vangel
+    """
 
     type = 'passive'
 
@@ -16128,6 +25702,12 @@ class Effect6294(EffectDef):
 
 
 class Effect6299(EffectDef):
+    """
+    shipBonusEnergyNeutFalloffAC3
+
+    Used by:
+    Ship: Vangel
+    """
 
     type = 'passive'
 
@@ -16138,6 +25718,12 @@ class Effect6299(EffectDef):
 
 
 class Effect6300(EffectDef):
+    """
+    shipBonusEnergyNosOptimalAC1
+
+    Used by:
+    Ship: Vangel
+    """
 
     type = 'passive'
 
@@ -16148,6 +25734,12 @@ class Effect6300(EffectDef):
 
 
 class Effect6301(EffectDef):
+    """
+    shipBonusNosOptimalFalloffAC2
+
+    Used by:
+    Ship: Rabisu
+    """
 
     type = 'passive'
 
@@ -16160,6 +25752,12 @@ class Effect6301(EffectDef):
 
 
 class Effect6305(EffectDef):
+    """
+    shipBonusEnergyNosFalloffAC3
+
+    Used by:
+    Ship: Vangel
+    """
 
     type = 'passive'
 
@@ -16170,6 +25768,12 @@ class Effect6305(EffectDef):
 
 
 class Effect6307(EffectDef):
+    """
+    shipBonusThermMissileDmgMD1
+
+    Used by:
+    Ship: Bifrost
+    """
 
     type = 'passive'
 
@@ -16180,6 +25784,12 @@ class Effect6307(EffectDef):
 
 
 class Effect6308(EffectDef):
+    """
+    shipBonusEMMissileDmgMD1
+
+    Used by:
+    Ship: Bifrost
+    """
 
     type = 'passive'
 
@@ -16190,6 +25800,12 @@ class Effect6308(EffectDef):
 
 
 class Effect6309(EffectDef):
+    """
+    shipBonusKineticMissileDmgMD1
+
+    Used by:
+    Ship: Bifrost
+    """
 
     type = 'passive'
 
@@ -16200,6 +25816,12 @@ class Effect6309(EffectDef):
 
 
 class Effect6310(EffectDef):
+    """
+    shipBonusExplosiveMissileDmgMD1
+
+    Used by:
+    Ship: Bifrost
+    """
 
     type = 'passive'
 
@@ -16211,6 +25833,13 @@ class Effect6310(EffectDef):
 
 
 class Effect6315(EffectDef):
+    """
+    eliteBonusCommandDestroyerSkirmish1
+
+    Used by:
+    Ship: Bifrost
+    Ship: Magus
+    """
 
     type = 'passive'
 
@@ -16229,6 +25858,13 @@ class Effect6315(EffectDef):
 
 
 class Effect6316(EffectDef):
+    """
+    eliteBonusCommandDestroyerShield1
+
+    Used by:
+    Ship: Bifrost
+    Ship: Stork
+    """
 
     type = 'passive'
 
@@ -16247,6 +25883,12 @@ class Effect6316(EffectDef):
 
 
 class Effect6317(EffectDef):
+    """
+    eliteBonusCommandDestroyerMJFGspool2
+
+    Used by:
+    Ships from group: Command Destroyer (4 of 4)
+    """
 
     type = 'passive'
 
@@ -16257,6 +25899,12 @@ class Effect6317(EffectDef):
 
 
 class Effect6318(EffectDef):
+    """
+    shipBonusEMShieldResistanceMD2
+
+    Used by:
+    Ship: Bifrost
+    """
 
     type = 'passive'
 
@@ -16267,6 +25915,12 @@ class Effect6318(EffectDef):
 
 
 class Effect6319(EffectDef):
+    """
+    shipBonusKineticShieldResistanceMD2
+
+    Used by:
+    Ship: Bifrost
+    """
 
     type = 'passive'
 
@@ -16277,6 +25931,12 @@ class Effect6319(EffectDef):
 
 
 class Effect6320(EffectDef):
+    """
+    shipBonusThermalShieldResistanceMD2
+
+    Used by:
+    Ship: Bifrost
+    """
 
     type = 'passive'
 
@@ -16287,6 +25947,12 @@ class Effect6320(EffectDef):
 
 
 class Effect6321(EffectDef):
+    """
+    shipBonusExplosiveShieldResistanceMD2
+
+    Used by:
+    Ship: Bifrost
+    """
 
     type = 'passive'
 
@@ -16297,6 +25963,12 @@ class Effect6321(EffectDef):
 
 
 class Effect6322(EffectDef):
+    """
+    scriptscanGravimetricStrengthBonusBonus
+
+    Used by:
+    Charges from group: Structure ECM script (4 of 4)
+    """
 
     runTime = 'early'
     type = 'passive'
@@ -16307,6 +25979,12 @@ class Effect6322(EffectDef):
 
 
 class Effect6323(EffectDef):
+    """
+    scriptscanLadarStrengthBonusBonus
+
+    Used by:
+    Charges from group: Structure ECM script (4 of 4)
+    """
 
     runTime = 'early'
     type = 'passive'
@@ -16317,6 +25995,12 @@ class Effect6323(EffectDef):
 
 
 class Effect6324(EffectDef):
+    """
+    scriptscanMagnetometricStrengthBonusBonus
+
+    Used by:
+    Charges from group: Structure ECM script (4 of 4)
+    """
 
     runTime = 'early'
     type = 'passive'
@@ -16327,6 +26011,12 @@ class Effect6324(EffectDef):
 
 
 class Effect6325(EffectDef):
+    """
+    scriptscanRadarStrengthBonusBonus
+
+    Used by:
+    Charges from group: Structure ECM script (4 of 4)
+    """
 
     runTime = 'early'
     type = 'passive'
@@ -16337,6 +26027,12 @@ class Effect6325(EffectDef):
 
 
 class Effect6326(EffectDef):
+    """
+    shipBonusThermalMissileDamageCD1
+
+    Used by:
+    Ship: Stork
+    """
 
     type = 'passive'
 
@@ -16347,6 +26043,12 @@ class Effect6326(EffectDef):
 
 
 class Effect6327(EffectDef):
+    """
+    shipBonusEMMissileDamageCD1
+
+    Used by:
+    Ship: Stork
+    """
 
     type = 'passive'
 
@@ -16357,6 +26059,12 @@ class Effect6327(EffectDef):
 
 
 class Effect6328(EffectDef):
+    """
+    shipBonusKineticMissileDamageCD1
+
+    Used by:
+    Ship: Stork
+    """
 
     type = 'passive'
 
@@ -16367,6 +26075,12 @@ class Effect6328(EffectDef):
 
 
 class Effect6329(EffectDef):
+    """
+    shipBonusExplosiveMissileDamageCD1
+
+    Used by:
+    Ship: Stork
+    """
 
     type = 'passive'
 
@@ -16378,6 +26092,12 @@ class Effect6329(EffectDef):
 
 
 class Effect6330(EffectDef):
+    """
+    shipBonusShieldEMResistanceCD2
+
+    Used by:
+    Ship: Stork
+    """
 
     type = 'passive'
 
@@ -16388,6 +26108,12 @@ class Effect6330(EffectDef):
 
 
 class Effect6331(EffectDef):
+    """
+    shipBonusShieldThermalResistanceCD2
+
+    Used by:
+    Ship: Stork
+    """
 
     type = 'passive'
 
@@ -16398,6 +26124,12 @@ class Effect6331(EffectDef):
 
 
 class Effect6332(EffectDef):
+    """
+    shipBonusShieldKineticResistanceCD2
+
+    Used by:
+    Ship: Stork
+    """
 
     type = 'passive'
 
@@ -16408,6 +26140,12 @@ class Effect6332(EffectDef):
 
 
 class Effect6333(EffectDef):
+    """
+    shipBonusShieldExplosiveResistanceCD2
+
+    Used by:
+    Ship: Stork
+    """
 
     type = 'passive'
 
@@ -16418,6 +26156,13 @@ class Effect6333(EffectDef):
 
 
 class Effect6334(EffectDef):
+    """
+    eliteBonusCommandDestroyerInfo1
+
+    Used by:
+    Ship: Pontifex
+    Ship: Stork
+    """
 
     type = 'passive'
 
@@ -16436,6 +26181,12 @@ class Effect6334(EffectDef):
 
 
 class Effect6335(EffectDef):
+    """
+    shipBonusKineticArmorResistanceAD2
+
+    Used by:
+    Ship: Pontifex
+    """
 
     type = 'passive'
 
@@ -16446,6 +26197,12 @@ class Effect6335(EffectDef):
 
 
 class Effect6336(EffectDef):
+    """
+    shipBonusThermalArmorResistanceAD2
+
+    Used by:
+    Ship: Pontifex
+    """
 
     type = 'passive'
 
@@ -16456,6 +26213,12 @@ class Effect6336(EffectDef):
 
 
 class Effect6337(EffectDef):
+    """
+    shipBonusEMArmorResistanceAD2
+
+    Used by:
+    Ship: Pontifex
+    """
 
     type = 'passive'
 
@@ -16465,6 +26228,12 @@ class Effect6337(EffectDef):
 
 
 class Effect6338(EffectDef):
+    """
+    shipBonusExplosiveArmorResistanceAD2
+
+    Used by:
+    Ship: Pontifex
+    """
 
     type = 'passive'
 
@@ -16475,6 +26244,13 @@ class Effect6338(EffectDef):
 
 
 class Effect6339(EffectDef):
+    """
+    eliteBonusCommandDestroyerArmored1
+
+    Used by:
+    Ship: Magus
+    Ship: Pontifex
+    """
 
     type = 'passive'
 
@@ -16493,6 +26269,12 @@ class Effect6339(EffectDef):
 
 
 class Effect6340(EffectDef):
+    """
+    shipBonusKineticArmorResistanceGD2
+
+    Used by:
+    Ship: Magus
+    """
 
     type = 'passive'
 
@@ -16503,6 +26285,12 @@ class Effect6340(EffectDef):
 
 
 class Effect6341(EffectDef):
+    """
+    shipBonusEMArmorResistanceGD2
+
+    Used by:
+    Ship: Magus
+    """
 
     type = 'passive'
 
@@ -16513,6 +26301,12 @@ class Effect6341(EffectDef):
 
 
 class Effect6342(EffectDef):
+    """
+    shipBonusThermalArmorResistanceGD2
+
+    Used by:
+    Ship: Magus
+    """
 
     type = 'passive'
 
@@ -16523,6 +26317,12 @@ class Effect6342(EffectDef):
 
 
 class Effect6343(EffectDef):
+    """
+    shipBonusExplosiveArmorResistanceGD2
+
+    Used by:
+    Ship: Magus
+    """
 
     type = 'passive'
 
@@ -16533,6 +26333,12 @@ class Effect6343(EffectDef):
 
 
 class Effect6350(EffectDef):
+    """
+    shipSmallMissileKinDmgCF3
+
+    Used by:
+    Ship: Caldari Navy Hookbill
+    """
 
     type = 'passive'
 
@@ -16544,6 +26350,12 @@ class Effect6350(EffectDef):
 
 
 class Effect6351(EffectDef):
+    """
+    shipMissileKinDamageCC3
+
+    Used by:
+    Ship: Osprey Navy Issue
+    """
 
     type = 'passive'
 
@@ -16554,6 +26366,12 @@ class Effect6351(EffectDef):
 
 
 class Effect6352(EffectDef):
+    """
+    roleBonusWDRange
+
+    Used by:
+    Ship: Crucifier Navy Issue
+    """
 
     type = 'passive'
 
@@ -16566,6 +26384,12 @@ class Effect6352(EffectDef):
 
 
 class Effect6353(EffectDef):
+    """
+    roleBonusWDCapCPU
+
+    Used by:
+    Ship: Crucifier Navy Issue
+    """
 
     type = 'passive'
 
@@ -16578,6 +26402,12 @@ class Effect6353(EffectDef):
 
 
 class Effect6354(EffectDef):
+    """
+    shipBonusEwWeaponDisruptionStrengthAF2
+
+    Used by:
+    Variations of ship: Crucifier (3 of 3)
+    """
 
     type = 'passive'
 
@@ -16600,6 +26430,12 @@ class Effect6354(EffectDef):
 
 
 class Effect6355(EffectDef):
+    """
+    roleBonusECMCapCPU
+
+    Used by:
+    Ship: Griffin Navy Issue
+    """
 
     type = 'passive'
 
@@ -16611,6 +26447,12 @@ class Effect6355(EffectDef):
 
 
 class Effect6356(EffectDef):
+    """
+    roleBonusECMRange
+
+    Used by:
+    Ship: Griffin Navy Issue
+    """
 
     type = 'passive'
 
@@ -16623,6 +26465,12 @@ class Effect6356(EffectDef):
 
 
 class Effect6357(EffectDef):
+    """
+    shipBonusJustScramblerRangeGF2
+
+    Used by:
+    Ship: Maulus Navy Issue
+    """
 
     type = 'passive'
 
@@ -16633,6 +26481,12 @@ class Effect6357(EffectDef):
 
 
 class Effect6358(EffectDef):
+    """
+    roleBonusJustScramblerStrength
+
+    Used by:
+    Ship: Maulus Navy Issue
+    """
 
     type = 'passive'
 
@@ -16643,6 +26497,12 @@ class Effect6358(EffectDef):
 
 
 class Effect6359(EffectDef):
+    """
+    shipBonusAoeVelocityRocketsMF
+
+    Used by:
+    Ship: Vigil Fleet Issue
+    """
 
     type = 'passive'
 
@@ -16653,6 +26513,12 @@ class Effect6359(EffectDef):
 
 
 class Effect6360(EffectDef):
+    """
+    shipRocketEMThermKinDmgMF2
+
+    Used by:
+    Ship: Vigil Fleet Issue
+    """
 
     type = 'passive'
 
@@ -16667,6 +26533,12 @@ class Effect6360(EffectDef):
 
 
 class Effect6361(EffectDef):
+    """
+    shipRocketExpDmgMF3
+
+    Used by:
+    Ship: Vigil Fleet Issue
+    """
 
     type = 'passive'
 
@@ -16677,6 +26549,12 @@ class Effect6361(EffectDef):
 
 
 class Effect6362(EffectDef):
+    """
+    roleBonusStasisRange
+
+    Used by:
+    Ship: Vigil Fleet Issue
+    """
 
     type = 'passive'
 
@@ -16687,6 +26565,15 @@ class Effect6362(EffectDef):
 
 
 class Effect6368(EffectDef):
+    """
+    shieldTransporterFalloffBonus
+
+    Used by:
+    Variations of ship: Bantam (2 of 2)
+    Variations of ship: Burst (2 of 2)
+    Ship: Osprey
+    Ship: Scythe
+    """
 
     type = 'passive'
 
@@ -16699,6 +26586,12 @@ class Effect6368(EffectDef):
 
 
 class Effect6369(EffectDef):
+    """
+    shipShieldTransferFalloffMC2
+
+    Used by:
+    Ship: Scimitar
+    """
 
     type = 'passive'
 
@@ -16709,6 +26602,13 @@ class Effect6369(EffectDef):
 
 
 class Effect6370(EffectDef):
+    """
+    shipShieldTransferFalloffCC1
+
+    Used by:
+    Ship: Basilisk
+    Ship: Etana
+    """
 
     type = 'passive'
 
@@ -16719,6 +26619,12 @@ class Effect6370(EffectDef):
 
 
 class Effect6371(EffectDef):
+    """
+    shipRemoteArmorFalloffGC1
+
+    Used by:
+    Ship: Oneiros
+    """
 
     type = 'passive'
 
@@ -16730,6 +26636,12 @@ class Effect6371(EffectDef):
 
 
 class Effect6372(EffectDef):
+    """
+    shipRemoteArmorFalloffAC2
+
+    Used by:
+    Ship: Guardian
+    """
 
     type = 'passive'
 
@@ -16741,6 +26653,16 @@ class Effect6372(EffectDef):
 
 
 class Effect6373(EffectDef):
+    """
+    armorRepairProjectorFalloffBonus
+
+    Used by:
+    Variations of ship: Navitas (2 of 2)
+    Ship: Augoror
+    Ship: Deacon
+    Ship: Exequror
+    Ship: Inquisitor
+    """
 
     type = 'passive'
 
@@ -16753,6 +26675,14 @@ class Effect6373(EffectDef):
 
 
 class Effect6374(EffectDef):
+    """
+    droneHullRepairBonusEffect
+
+    Used by:
+    Ships from group: Logistics (6 of 7)
+    Ship: Exequror
+    Ship: Scythe
+    """
 
     type = 'passive'
 
@@ -16763,6 +26693,13 @@ class Effect6374(EffectDef):
 
 
 class Effect6377(EffectDef):
+    """
+    eliteBonusLogiFrigArmorRepSpeedCap1
+
+    Used by:
+    Ship: Deacon
+    Ship: Thalia
+    """
 
     type = 'passive'
 
@@ -16775,6 +26712,13 @@ class Effect6377(EffectDef):
 
 
 class Effect6378(EffectDef):
+    """
+    eliteBonusLogiFrigShieldRepSpeedCap1
+
+    Used by:
+    Ship: Kirin
+    Ship: Scalpel
+    """
 
     type = 'passive'
 
@@ -16787,6 +26731,12 @@ class Effect6378(EffectDef):
 
 
 class Effect6379(EffectDef):
+    """
+    eliteBonusLogiFrigArmorHP2
+
+    Used by:
+    Ship: Deacon
+    """
 
     type = 'passive'
 
@@ -16796,6 +26746,12 @@ class Effect6379(EffectDef):
 
 
 class Effect6380(EffectDef):
+    """
+    eliteBonusLogiFrigShieldHP2
+
+    Used by:
+    Ship: Kirin
+    """
 
     type = 'passive'
 
@@ -16805,6 +26761,13 @@ class Effect6380(EffectDef):
 
 
 class Effect6381(EffectDef):
+    """
+    eliteBonusLogiFrigSignature2
+
+    Used by:
+    Ship: Scalpel
+    Ship: Thalia
+    """
 
     type = 'passive'
 
@@ -16815,6 +26778,12 @@ class Effect6381(EffectDef):
 
 
 class Effect6384(EffectDef):
+    """
+    overloadSelfMissileGuidanceModuleBonus
+
+    Used by:
+    Variations of module: Guidance Disruptor I (6 of 6)
+    """
 
     type = 'overheat'
 
@@ -16830,6 +26799,12 @@ class Effect6384(EffectDef):
 
 
 class Effect6385(EffectDef):
+    """
+    ignoreCloakVelocityPenalty
+
+    Used by:
+    Ship: Endurance
+    """
 
     runTime = 'early'
     type = 'passive'
@@ -16841,6 +26816,13 @@ class Effect6385(EffectDef):
 
 
 class Effect6386(EffectDef):
+    """
+    ewSkillGuidanceDisruptionBonus
+
+    Used by:
+    Modules named like: Tracking Diagnostic Subroutines (8 of 8)
+    Skill: Weapon Destabilization
+    """
 
     type = 'passive'
 
@@ -16858,6 +26840,12 @@ class Effect6386(EffectDef):
 
 
 class Effect6395(EffectDef):
+    """
+    shipBonusEwWeaponDisruptionStrengthAC1
+
+    Used by:
+    Variations of ship: Arbitrator (3 of 3)
+    """
 
     type = 'passive'
 
@@ -16880,6 +26868,12 @@ class Effect6395(EffectDef):
 
 
 class Effect6396(EffectDef):
+    """
+    skillStructureMissileDamageBonus
+
+    Used by:
+    Skill: Structure Missile Systems
+    """
 
     type = 'passive', 'structure'
 
@@ -16893,6 +26887,12 @@ class Effect6396(EffectDef):
 
 
 class Effect6400(EffectDef):
+    """
+    skillStructureElectronicSystemsCapNeedBonus
+
+    Used by:
+    Skill: Structure Electronic Systems
+    """
 
     type = 'passive', 'structure'
 
@@ -16905,6 +26905,12 @@ class Effect6400(EffectDef):
 
 
 class Effect6401(EffectDef):
+    """
+    skillStructureEngineeringSystemsCapNeedBonus
+
+    Used by:
+    Skill: Structure Engineering Systems
+    """
 
     type = 'passive', 'structure'
 
@@ -16917,6 +26923,12 @@ class Effect6401(EffectDef):
 
 
 class Effect6402(EffectDef):
+    """
+    structureRigAoeVelocityBonusSingleTargetMissiles
+
+    Used by:
+    Structure Modules named like: Standup Set Missile (6 of 8)
+    """
 
     type = 'passive'
 
@@ -16930,6 +26942,12 @@ class Effect6402(EffectDef):
 
 
 class Effect6403(EffectDef):
+    """
+    structureRigVelocityBonusSingleTargetMissiles
+
+    Used by:
+    Structure Modules named like: Standup Set Missile (6 of 8)
+    """
 
     type = 'passive'
 
@@ -16942,6 +26960,13 @@ class Effect6403(EffectDef):
 
 
 class Effect6404(EffectDef):
+    """
+    structureRigNeutralizerMaxRangeFalloffEffectiveness
+
+    Used by:
+    Structure Modules from group: Structure Combat Rig XL - Energy Neutralizer and EW (2 of 2)
+    Structure Modules named like: Standup Set Energy Neutralizer (4 of 6)
+    """
 
     type = 'passive'
 
@@ -16957,6 +26982,13 @@ class Effect6404(EffectDef):
 
 
 class Effect6405(EffectDef):
+    """
+    structureRigNeutralizerCapacitorNeed
+
+    Used by:
+    Structure Modules from group: Structure Combat Rig XL - Energy Neutralizer and EW (2 of 2)
+    Structure Modules named like: Standup Set Energy Neutralizer (4 of 6)
+    """
 
     type = 'passive'
 
@@ -16968,6 +27000,13 @@ class Effect6405(EffectDef):
 
 
 class Effect6406(EffectDef):
+    """
+    structureRigEWMaxRangeFalloff
+
+    Used by:
+    Structure Modules from group: Structure Combat Rig M - EW projection (2 of 2)
+    Structure Modules named like: Standup Set EW (4 of 4)
+    """
 
     type = 'passive'
 
@@ -16989,6 +27028,13 @@ class Effect6406(EffectDef):
 
 
 class Effect6407(EffectDef):
+    """
+    structureRigEWCapacitorNeed
+
+    Used by:
+    Structure Modules from group: Structure Combat Rig M - EW Cap Reduction (2 of 2)
+    Structure Modules named like: Standup Set EW (4 of 4)
+    """
 
     type = 'passive'
 
@@ -17001,6 +27047,13 @@ class Effect6407(EffectDef):
 
 
 class Effect6408(EffectDef):
+    """
+    structureRigMaxTargets
+
+    Used by:
+    Structure Modules from group: Structure Combat Rig XL - Doomsday and Targeting (2 of 2)
+    Structure Modules named like: Standup Set Target (4 of 4)
+    """
 
     type = 'passive'
 
@@ -17010,6 +27063,14 @@ class Effect6408(EffectDef):
 
 
 class Effect6409(EffectDef):
+    """
+    structureRigSensorResolution
+
+    Used by:
+    Structure Modules from group: Structure Combat Rig L - Max Targets and Sensor Boosting (2 of 2)
+    Structure Modules from group: Structure Combat Rig M - Boosted Sensors (2 of 2)
+    Structure Modules from group: Structure Combat Rig XL - Doomsday and Targeting (2 of 2)
+    """
 
     type = 'passive'
 
@@ -17020,6 +27081,13 @@ class Effect6409(EffectDef):
 
 
 class Effect6410(EffectDef):
+    """
+    structureRigExplosionRadiusBonusAoEMissiles
+
+    Used by:
+    Structure Modules from group: Structure Combat Rig L - AoE Launcher Application and Projection (2 of 2)
+    Structure Modules from group: Structure Combat Rig XL - Missile and AoE Missile (2 of 2)
+    """
 
     type = 'passive'
 
@@ -17031,6 +27099,13 @@ class Effect6410(EffectDef):
 
 
 class Effect6411(EffectDef):
+    """
+    structureRigVelocityBonusAoeMissiles
+
+    Used by:
+    Structure Modules from group: Structure Combat Rig L - AoE Launcher Application and Projection (2 of 2)
+    Structure Modules from group: Structure Combat Rig XL - Missile and AoE Missile (2 of 2)
+    """
 
     type = 'passive'
 
@@ -17042,6 +27117,13 @@ class Effect6411(EffectDef):
 
 
 class Effect6412(EffectDef):
+    """
+    structureRigPDBmaxRange
+
+    Used by:
+    Structure Modules from group: Structure Combat Rig L - Point Defense Battery Application and Projection (2 of 2)
+    Structure Modules from group: Structure Combat Rig XL - Doomsday and Targeting (2 of 2)
+    """
 
     type = 'passive'
 
@@ -17053,6 +27135,13 @@ class Effect6412(EffectDef):
 
 
 class Effect6413(EffectDef):
+    """
+    structureRigPDBCapacitorNeed
+
+    Used by:
+    Structure Modules from group: Structure Combat Rig L - Point Defense Battery Application and Projection (2 of 2)
+    Structure Modules from group: Structure Combat Rig XL - Doomsday and Targeting (2 of 2)
+    """
 
     type = 'passive'
 
@@ -17064,6 +27153,12 @@ class Effect6413(EffectDef):
 
 
 class Effect6417(EffectDef):
+    """
+    structureRigDoomsdayDamageLoss
+
+    Used by:
+    Structure Modules from group: Structure Combat Rig XL - Doomsday and Targeting (2 of 2)
+    """
 
     type = 'passive'
 
@@ -17075,6 +27170,13 @@ class Effect6417(EffectDef):
 
 
 class Effect6422(EffectDef):
+    """
+    remoteSensorDampFalloff
+
+    Used by:
+    Modules from group: Sensor Dampener (6 of 6)
+    Starbases from group: Sensor Dampening Battery (3 of 3)
+    """
 
     type = 'projected', 'active'
 
@@ -17091,6 +27193,12 @@ class Effect6422(EffectDef):
 
 
 class Effect6423(EffectDef):
+    """
+    shipModuleGuidanceDisruptor
+
+    Used by:
+    Variations of module: Guidance Disruptor I (6 of 6)
+    """
 
     type = 'active', 'projected'
 
@@ -17109,6 +27217,12 @@ class Effect6423(EffectDef):
 
 
 class Effect6424(EffectDef):
+    """
+    shipModuleTrackingDisruptor
+
+    Used by:
+    Variations of module: Tracking Disruptor I (6 of 6)
+    """
 
     type = 'projected', 'active'
 
@@ -17127,6 +27241,12 @@ class Effect6424(EffectDef):
 
 
 class Effect6425(EffectDef):
+    """
+    remoteTargetPaintFalloff
+
+    Used by:
+    Modules from group: Target Painter (8 of 8)
+    """
 
     type = 'projected', 'active'
 
@@ -17138,6 +27258,14 @@ class Effect6425(EffectDef):
 
 
 class Effect6426(EffectDef):
+    """
+    remoteWebifierFalloff
+
+    Used by:
+    Modules from group: Stasis Grappler (7 of 7)
+    Modules from group: Stasis Web (19 of 19)
+    Starbases from group: Stasis Webification Battery (3 of 3)
+    """
 
     type = 'active', 'projected'
 
@@ -17150,6 +27278,12 @@ class Effect6426(EffectDef):
 
 
 class Effect6427(EffectDef):
+    """
+    remoteSensorBoostFalloff
+
+    Used by:
+    Modules from group: Remote Sensor Booster (8 of 8)
+    """
 
     type = 'projected', 'active'
 
@@ -17172,6 +27306,12 @@ class Effect6427(EffectDef):
 
 
 class Effect6428(EffectDef):
+    """
+    shipModuleRemoteTrackingComputer
+
+    Used by:
+    Modules from group: Remote Tracking Computer (8 of 8)
+    """
 
     type = 'projected', 'active'
 
@@ -17190,6 +27330,13 @@ class Effect6428(EffectDef):
 
 
 class Effect6431(EffectDef):
+    """
+    fighterAbilityMissiles
+
+    Used by:
+    Items from category: Fighter (48 of 82)
+    Fighters from group: Light Fighter (32 of 32)
+    """
 
     displayName = 'Missile Attack'
     hasCharges = True
@@ -17198,6 +27345,12 @@ class Effect6431(EffectDef):
 
 
 class Effect6434(EffectDef):
+    """
+    fighterAbilityEnergyNeutralizer
+
+    Used by:
+    Fighters named like: Cenobite (4 of 4)
+    """
 
     displayName = 'Energy Neutralizer'
     grouped = True
@@ -17218,6 +27371,12 @@ class Effect6434(EffectDef):
 
 
 class Effect6435(EffectDef):
+    """
+    fighterAbilityStasisWebifier
+
+    Used by:
+    Fighters named like: Dromi (4 of 4)
+    """
 
     displayName = 'Stasis Webifier'
     grouped = True
@@ -17233,6 +27392,12 @@ class Effect6435(EffectDef):
 
 
 class Effect6436(EffectDef):
+    """
+    fighterAbilityWarpDisruption
+
+    Used by:
+    Fighters named like: Siren (4 of 4)
+    """
 
     displayName = 'Warp Disruption'
     grouped = True
@@ -17247,6 +27412,12 @@ class Effect6436(EffectDef):
 
 
 class Effect6437(EffectDef):
+    """
+    fighterAbilityECM
+
+    Used by:
+    Fighters named like: Scarab (4 of 4)
+    """
 
     displayName = 'ECM'
     grouped = True
@@ -17268,6 +27439,12 @@ class Effect6437(EffectDef):
 
 
 class Effect6439(EffectDef):
+    """
+    fighterAbilityEvasiveManeuvers
+
+    Used by:
+    Fighters from group: Light Fighter (16 of 32)
+    """
 
     displayName = 'Evasive Maneuvers'
     grouped = True
@@ -17299,6 +27476,12 @@ class Effect6439(EffectDef):
 
 
 class Effect6441(EffectDef):
+    """
+    fighterAbilityMicroWarpDrive
+
+    Used by:
+    Items from category: Fighter (48 of 82)
+    """
 
     displayName = 'Microwarpdrive'
     grouped = True
@@ -17315,16 +27498,34 @@ class Effect6441(EffectDef):
 
 
 class Effect6443(EffectDef):
+    """
+    pointDefense
+
+    Used by:
+    Structure Modules from group: Structure Area Denial Module (2 of 2)
+    """
 
     type = 'active'
 
 
 class Effect6447(EffectDef):
+    """
+    lightningWeapon
+
+    Used by:
+    Structure Module: Standup Arcing Vorton Projector I
+    """
 
     type = 'active'
 
 
 class Effect6448(EffectDef):
+    """
+    structureMissileGuidanceEnhancer
+
+    Used by:
+    Variations of structure module: Standup Missile Guidance Enhancer I (2 of 2)
+    """
 
     type = 'passive'
 
@@ -17343,6 +27544,12 @@ class Effect6448(EffectDef):
 
 
 class Effect6449(EffectDef):
+    """
+    structureBallisticControlSystem
+
+    Used by:
+    Variations of structure module: Standup Ballistic Control System I (2 of 2)
+    """
 
     type = 'passive'
 
@@ -17363,6 +27570,13 @@ class Effect6449(EffectDef):
 
 
 class Effect6465(EffectDef):
+    """
+    fighterAbilityAttackM
+
+    Used by:
+    Items from category: Fighter (50 of 82)
+    Fighters from group: Heavy Fighter (34 of 34)
+    """
 
     displayName = 'Turret Attack'
     prefix = 'fighterAbilityAttackMissile'
@@ -17370,6 +27584,13 @@ class Effect6465(EffectDef):
 
 
 class Effect6470(EffectDef):
+    """
+    remoteECMFalloff
+
+    Used by:
+    Modules from group: ECM (39 of 39)
+    Starbases from group: Electronic Warfare Battery (12 of 12)
+    """
 
     type = 'projected', 'active'
 
@@ -17387,21 +27608,45 @@ class Effect6470(EffectDef):
 
 
 class Effect6472(EffectDef):
+    """
+    doomsdayBeamDOT
+
+    Used by:
+    Modules named like: Lance (4 of 4)
+    """
 
     type = 'active'
 
 
 class Effect6473(EffectDef):
+    """
+    doomsdayConeDOT
+
+    Used by:
+    Module: Bosonic Field Generator
+    """
 
     type = 'active'
 
 
 class Effect6474(EffectDef):
+    """
+    doomsdayHOG
+
+    Used by:
+    Module: Gravitational Transportation Field Oscillator
+    """
 
     type = 'active'
 
 
 class Effect6475(EffectDef):
+    """
+    structureRigDoomsdayTargetAmountBonus
+
+    Used by:
+    Structure Modules from group: Structure Combat Rig XL - Doomsday and Targeting (2 of 2)
+    """
 
     type = 'passive'
 
@@ -17413,6 +27658,13 @@ class Effect6475(EffectDef):
 
 
 class Effect6476(EffectDef):
+    """
+    doomsdayAOEWeb
+
+    Used by:
+    Module: Stasis Webification Burst Projector
+    Structure Module: Standup Stasis Webification Burst Projector
+    """
 
     type = 'active', 'projected'
 
@@ -17425,6 +27677,13 @@ class Effect6476(EffectDef):
 
 
 class Effect6477(EffectDef):
+    """
+    doomsdayAOENeut
+
+    Used by:
+    Module: Energy Neutralization Burst Projector
+    Structure Module: Standup Energy Neutralization Burst Projector
+    """
 
     type = 'active', 'projected'
 
@@ -17444,6 +27703,13 @@ class Effect6477(EffectDef):
 
 
 class Effect6478(EffectDef):
+    """
+    doomsdayAOEPaint
+
+    Used by:
+    Module: Target Illumination Burst Projector
+    Structure Module: Standup Target Illumination Burst Projector
+    """
 
     type = 'projected', 'active'
 
@@ -17455,6 +27721,13 @@ class Effect6478(EffectDef):
 
 
 class Effect6479(EffectDef):
+    """
+    doomsdayAOETrack
+
+    Used by:
+    Module: Weapon Disruption Burst Projector
+    Structure Module: Standup Weapon Disruption Burst Projector
+    """
 
     type = 'active', 'projected'
 
@@ -17483,6 +27756,13 @@ class Effect6479(EffectDef):
 
 
 class Effect6481(EffectDef):
+    """
+    doomsdayAOEDamp
+
+    Used by:
+    Module: Sensor Dampening Burst Projector
+    Structure Module: Standup Sensor Dampening Burst Projector
+    """
 
     type = 'projected', 'active'
 
@@ -17499,6 +27779,13 @@ class Effect6481(EffectDef):
 
 
 class Effect6482(EffectDef):
+    """
+    doomsdayAOEBubble
+
+    Used by:
+    Module: Warp Disruption Burst Projector
+    Structure Module: Standup Warp Disruption Burst Projector
+    """
 
     type = 'projected', 'active'
 
@@ -17508,6 +27795,12 @@ class Effect6482(EffectDef):
 
 
 class Effect6484(EffectDef):
+    """
+    emergencyHullEnergizer
+
+    Used by:
+    Variations of module: Capital Emergency Hull Energizer I (5 of 5)
+    """
 
     runtime = 'late'
     type = 'active'
@@ -17521,6 +27814,12 @@ class Effect6484(EffectDef):
 
 
 class Effect6485(EffectDef):
+    """
+    fighterAbilityLaunchBomb
+
+    Used by:
+    Fighters from group: Heavy Fighter (16 of 34)
+    """
 
     displayName = 'Bomb'
     hasCharges = True
@@ -17529,6 +27828,12 @@ class Effect6485(EffectDef):
 
 
 class Effect6487(EffectDef):
+    """
+    modifyEnergyWarfareResistance
+
+    Used by:
+    Modules from group: Capacitor Battery (30 of 30)
+    """
 
     type = 'passive'
 
@@ -17540,6 +27845,12 @@ class Effect6487(EffectDef):
 
 
 class Effect6488(EffectDef):
+    """
+    scriptSensorBoosterSensorStrengthBonusBonus
+
+    Used by:
+    Charges from group: Sensor Booster Script (3 of 3)
+    """
 
     type = 'active'
 
@@ -17551,6 +27862,12 @@ class Effect6488(EffectDef):
 
 
 class Effect6501(EffectDef):
+    """
+    shipBonusDreadnoughtA1DamageBonus
+
+    Used by:
+    Ship: Revelation
+    """
 
     type = 'passive'
 
@@ -17561,6 +27878,12 @@ class Effect6501(EffectDef):
 
 
 class Effect6502(EffectDef):
+    """
+    shipBonusDreadnoughtA2ArmorResists
+
+    Used by:
+    Ship: Revelation
+    """
 
     type = 'passive'
 
@@ -17577,6 +27900,12 @@ class Effect6502(EffectDef):
 
 
 class Effect6503(EffectDef):
+    """
+    shipBonusDreadnoughtA3CapNeed
+
+    Used by:
+    Ship: Revelation
+    """
 
     type = 'passive'
 
@@ -17587,6 +27916,12 @@ class Effect6503(EffectDef):
 
 
 class Effect6504(EffectDef):
+    """
+    shipBonusDreadnoughtC1DamageBonus
+
+    Used by:
+    Ship: Phoenix
+    """
 
     type = 'passive'
 
@@ -17619,6 +27954,12 @@ class Effect6504(EffectDef):
 
 
 class Effect6505(EffectDef):
+    """
+    shipBonusDreadnoughtC2ShieldResists
+
+    Used by:
+    Variations of ship: Phoenix (2 of 2)
+    """
 
     type = 'passive'
 
@@ -17635,6 +27976,12 @@ class Effect6505(EffectDef):
 
 
 class Effect6506(EffectDef):
+    """
+    shipBonusDreadnoughtG1DamageBonus
+
+    Used by:
+    Ship: Moros
+    """
 
     type = 'passive'
 
@@ -17645,6 +27992,12 @@ class Effect6506(EffectDef):
 
 
 class Effect6507(EffectDef):
+    """
+    shipBonusDreadnoughtG2ROFBonus
+
+    Used by:
+    Variations of ship: Moros (2 of 2)
+    """
 
     type = 'passive'
 
@@ -17655,6 +28008,12 @@ class Effect6507(EffectDef):
 
 
 class Effect6508(EffectDef):
+    """
+    shipBonusDreadnoughtG3RepairTime
+
+    Used by:
+    Ship: Moros
+    """
 
     type = 'passive'
 
@@ -17665,6 +28024,12 @@ class Effect6508(EffectDef):
 
 
 class Effect6509(EffectDef):
+    """
+    shipBonusDreadnoughtM1DamageBonus
+
+    Used by:
+    Ship: Naglfar
+    """
 
     type = 'passive'
 
@@ -17675,6 +28040,12 @@ class Effect6509(EffectDef):
 
 
 class Effect6510(EffectDef):
+    """
+    shipBonusDreadnoughtM2ROFBonus
+
+    Used by:
+    Ship: Naglfar
+    """
 
     type = 'passive'
 
@@ -17685,6 +28056,12 @@ class Effect6510(EffectDef):
 
 
 class Effect6511(EffectDef):
+    """
+    shipBonusDreadnoughtM3RepairTime
+
+    Used by:
+    Ship: Naglfar
+    """
 
     type = 'passive'
 
@@ -17695,6 +28072,13 @@ class Effect6511(EffectDef):
 
 
 class Effect6513(EffectDef):
+    """
+    doomsdayAOEECM
+
+    Used by:
+    Module: ECM Jammer Burst Projector
+    Structure Module: Standup ECM Jammer Burst Projector
+    """
 
     type = 'projected', 'active'
 
@@ -17712,6 +28096,12 @@ class Effect6513(EffectDef):
 
 
 class Effect6526(EffectDef):
+    """
+    shipBonusForceAuxiliaryA1RemoteRepairAndCapAmount
+
+    Used by:
+    Ship: Apostle
+    """
 
     type = 'passive'
 
@@ -17728,6 +28118,12 @@ class Effect6526(EffectDef):
 
 
 class Effect6527(EffectDef):
+    """
+    shipBonusForceAuxiliaryA2ArmorResists
+
+    Used by:
+    Ship: Apostle
+    """
 
     type = 'passive'
 
@@ -17744,6 +28140,12 @@ class Effect6527(EffectDef):
 
 
 class Effect6533(EffectDef):
+    """
+    shipBonusForceAuxiliaryA4WarfareLinksBonus
+
+    Used by:
+    Ship: Apostle
+    """
 
     type = 'passive'
 
@@ -17767,6 +28169,12 @@ class Effect6533(EffectDef):
 
 
 class Effect6534(EffectDef):
+    """
+    shipBonusForceAuxiliaryM4WarfareLinksBonus
+
+    Used by:
+    Ship: Lif
+    """
 
     type = 'passive'
 
@@ -17790,6 +28198,12 @@ class Effect6534(EffectDef):
 
 
 class Effect6535(EffectDef):
+    """
+    shipBonusForceAuxiliaryG4WarfareLinksBonus
+
+    Used by:
+    Ship: Ninazu
+    """
 
     type = 'passive'
 
@@ -17813,6 +28227,12 @@ class Effect6535(EffectDef):
 
 
 class Effect6536(EffectDef):
+    """
+    shipBonusForceAuxiliaryC4WarfareLinksBonus
+
+    Used by:
+    Ship: Minokawa
+    """
 
     type = 'passive'
 
@@ -17836,6 +28256,12 @@ class Effect6536(EffectDef):
 
 
 class Effect6537(EffectDef):
+    """
+    shipBonusRole1CommandBurstCPUBonus
+
+    Used by:
+    Ships from group: Force Auxiliary (6 of 6)
+    """
 
     type = 'passive'
 
@@ -17846,6 +28272,12 @@ class Effect6537(EffectDef):
 
 
 class Effect6545(EffectDef):
+    """
+    shipBonusForceAuxiliaryC1RemoteBoostAndCapAmount
+
+    Used by:
+    Ship: Minokawa
+    """
 
     type = 'passive'
 
@@ -17865,6 +28297,12 @@ class Effect6545(EffectDef):
 
 
 class Effect6546(EffectDef):
+    """
+    shipBonusForceAuxiliaryC2ShieldResists
+
+    Used by:
+    Variations of ship: Minokawa (2 of 2)
+    """
 
     type = 'passive'
 
@@ -17881,6 +28319,12 @@ class Effect6546(EffectDef):
 
 
 class Effect6548(EffectDef):
+    """
+    shipBonusForceAuxiliaryG1RemoteCycleTime
+
+    Used by:
+    Ship: Ninazu
+    """
 
     type = 'passive'
 
@@ -17897,6 +28341,12 @@ class Effect6548(EffectDef):
 
 
 class Effect6549(EffectDef):
+    """
+    shipBonusForceAuxiliaryG2LocalRepairAmount
+
+    Used by:
+    Ship: Ninazu
+    """
 
     type = 'passive'
 
@@ -17909,6 +28359,12 @@ class Effect6549(EffectDef):
 
 
 class Effect6551(EffectDef):
+    """
+    shipBonusForceAuxiliaryM1RemoteDuration
+
+    Used by:
+    Ship: Lif
+    """
 
     type = 'passive'
 
@@ -17926,6 +28382,12 @@ class Effect6551(EffectDef):
 
 
 class Effect6552(EffectDef):
+    """
+    shipBonusForceAuxiliaryM2LocalBoostAmount
+
+    Used by:
+    Ship: Lif
+    """
 
     type = 'passive'
 
@@ -17938,6 +28400,12 @@ class Effect6552(EffectDef):
 
 
 class Effect6555(EffectDef):
+    """
+    moduleBonusDroneNavigationComputer
+
+    Used by:
+    Modules from group: Drone Navigation Computer (8 of 8)
+    """
 
     type = 'passive'
 
@@ -17950,6 +28418,14 @@ class Effect6555(EffectDef):
 
 
 class Effect6556(EffectDef):
+    """
+    moduleBonusDroneDamageAmplifier
+
+    Used by:
+    Modules from group: Drone Damage Modules (11 of 11)
+    Modules named like: C3 'Hivaa Saitsuo' Ballistic Control System (2 of 2)
+    Module: Abyssal Ballistic Control System
+    """
 
     type = 'passive'
 
@@ -17969,6 +28445,12 @@ class Effect6556(EffectDef):
 
 
 class Effect6557(EffectDef):
+    """
+    moduleBonusOmnidirectionalTrackingLink
+
+    Used by:
+    Modules from group: Drone Tracking Modules (10 of 10)
+    """
 
     type = 'active'
 
@@ -18012,6 +28494,12 @@ class Effect6557(EffectDef):
 
 
 class Effect6558(EffectDef):
+    """
+    moduleBonusOmnidirectionalTrackingLinkOverload
+
+    Used by:
+    Modules from group: Drone Tracking Modules (10 of 10)
+    """
 
     type = 'overheat'
 
@@ -18026,6 +28514,12 @@ class Effect6558(EffectDef):
 
 
 class Effect6559(EffectDef):
+    """
+    moduleBonusOmnidirectionalTrackingEnhancer
+
+    Used by:
+    Modules from group: Drone Tracking Enhancer (10 of 10)
+    """
 
     type = 'passive'
 
@@ -18069,6 +28563,12 @@ class Effect6559(EffectDef):
 
 
 class Effect6560(EffectDef):
+    """
+    skillBonusFighters
+
+    Used by:
+    Skill: Fighters
+    """
 
     type = 'passive'
 
@@ -18087,6 +28587,12 @@ class Effect6560(EffectDef):
 
 
 class Effect6561(EffectDef):
+    """
+    skillBonusLightFighters
+
+    Used by:
+    Skill: Light Fighters
+    """
 
     type = 'passive'
 
@@ -18098,6 +28604,12 @@ class Effect6561(EffectDef):
 
 
 class Effect6562(EffectDef):
+    """
+    skillBonusSupportFightersShield
+
+    Used by:
+    Skill: Support Fighters
+    """
 
     type = 'passive'
 
@@ -18109,6 +28621,12 @@ class Effect6562(EffectDef):
 
 
 class Effect6563(EffectDef):
+    """
+    skillBonusHeavyFighters
+
+    Used by:
+    Skill: Heavy Fighters
+    """
 
     type = 'passive'
 
@@ -18127,6 +28645,12 @@ class Effect6563(EffectDef):
 
 
 class Effect6565(EffectDef):
+    """
+    citadelRigBonus
+
+    Used by:
+    Structures from group: Citadel (9 of 9)
+    """
 
     runTime = 'early'
     type = 'passive'
@@ -18151,6 +28675,12 @@ class Effect6565(EffectDef):
 
 
 class Effect6566(EffectDef):
+    """
+    moduleBonusFighterSupportUnit
+
+    Used by:
+    Modules from group: Fighter Support Unit (8 of 8)
+    """
 
     type = 'passive'
 
@@ -18172,6 +28702,12 @@ class Effect6566(EffectDef):
 
 
 class Effect6567(EffectDef):
+    """
+    moduleBonusNetworkedSensorArray
+
+    Used by:
+    Module: Networked Sensor Array
+    """
 
     type = 'active'
 
@@ -18201,6 +28737,12 @@ class Effect6567(EffectDef):
 
 
 class Effect6570(EffectDef):
+    """
+    skillBonusFighterHangarManagement
+
+    Used by:
+    Skill: Fighter Hangar Management
+    """
 
     type = 'passive'
 
@@ -18211,6 +28753,12 @@ class Effect6570(EffectDef):
 
 
 class Effect6571(EffectDef):
+    """
+    skillBonusCapitalAutocannonSpecialization
+
+    Used by:
+    Skill: Capital Autocannon Specialization
+    """
 
     type = 'passive'
 
@@ -18222,6 +28770,12 @@ class Effect6571(EffectDef):
 
 
 class Effect6572(EffectDef):
+    """
+    skillBonusCapitalArtillerySpecialization
+
+    Used by:
+    Skill: Capital Artillery Specialization
+    """
 
     type = 'passive'
 
@@ -18233,6 +28787,12 @@ class Effect6572(EffectDef):
 
 
 class Effect6573(EffectDef):
+    """
+    skillBonusCapitalBlasterSpecialization
+
+    Used by:
+    Skill: Capital Blaster Specialization
+    """
 
     type = 'passive'
 
@@ -18244,6 +28804,12 @@ class Effect6573(EffectDef):
 
 
 class Effect6574(EffectDef):
+    """
+    skillBonusCapitalRailgunSpecialization
+
+    Used by:
+    Skill: Capital Railgun Specialization
+    """
 
     type = 'passive'
 
@@ -18255,6 +28821,12 @@ class Effect6574(EffectDef):
 
 
 class Effect6575(EffectDef):
+    """
+    skillBonusCapitalPulseLaserSpecialization
+
+    Used by:
+    Skill: Capital Pulse Laser Specialization
+    """
 
     type = 'passive'
 
@@ -18266,6 +28838,12 @@ class Effect6575(EffectDef):
 
 
 class Effect6576(EffectDef):
+    """
+    skillBonusCapitalBeamLaserSpecialization
+
+    Used by:
+    Skill: Capital Beam Laser Specialization
+    """
 
     type = 'passive'
 
@@ -18277,6 +28855,12 @@ class Effect6576(EffectDef):
 
 
 class Effect6577(EffectDef):
+    """
+    skillBonusXLCruiseMissileSpecialization
+
+    Used by:
+    Skill: XL Cruise Missile Specialization
+    """
 
     type = 'passive'
 
@@ -18288,6 +28872,12 @@ class Effect6577(EffectDef):
 
 
 class Effect6578(EffectDef):
+    """
+    skillBonusXLTorpedoSpecialization
+
+    Used by:
+    Skill: XL Torpedo Specialization
+    """
 
     type = 'passive'
 
@@ -18299,6 +28889,12 @@ class Effect6578(EffectDef):
 
 
 class Effect6580(EffectDef):
+    """
+    shipBonusRole2LogisticDroneRepAmountBonus
+
+    Used by:
+    Ships from group: Force Auxiliary (5 of 6)
+    """
 
     type = 'passive'
 
@@ -18313,6 +28909,12 @@ class Effect6580(EffectDef):
 
 
 class Effect6581(EffectDef):
+    """
+    moduleBonusTriageModule
+
+    Used by:
+    Variations of module: Triage Module I (2 of 2)
+    """
 
     runTime = 'early'
     type = 'active'
@@ -18389,6 +28991,12 @@ class Effect6581(EffectDef):
 
 
 class Effect6582(EffectDef):
+    """
+    moduleBonusSiegeModule
+
+    Used by:
+    Variations of module: Siege Module I (2 of 2)
+    """
 
     runTime = 'early'
     type = 'active'
@@ -18453,6 +29061,13 @@ class Effect6582(EffectDef):
 
 
 class Effect6591(EffectDef):
+    """
+    shipBonusSupercarrierA3WarpStrength
+
+    Used by:
+    Ship: Aeon
+    Ship: Revenant
+    """
 
     type = 'passive'
 
@@ -18463,6 +29078,13 @@ class Effect6591(EffectDef):
 
 
 class Effect6592(EffectDef):
+    """
+    shipBonusSupercarrierC3WarpStrength
+
+    Used by:
+    Ship: Revenant
+    Ship: Wyvern
+    """
 
     type = 'passive'
 
@@ -18473,6 +29095,12 @@ class Effect6592(EffectDef):
 
 
 class Effect6593(EffectDef):
+    """
+    shipBonusSupercarrierG3WarpStrength
+
+    Used by:
+    Variations of ship: Nyx (2 of 2)
+    """
 
     type = 'passive'
 
@@ -18483,6 +29111,13 @@ class Effect6593(EffectDef):
 
 
 class Effect6594(EffectDef):
+    """
+    shipBonusSupercarrierM3WarpStrength
+
+    Used by:
+    Ship: Hel
+    Ship: Vendetta
+    """
 
     type = 'passive'
 
@@ -18493,6 +29128,12 @@ class Effect6594(EffectDef):
 
 
 class Effect6595(EffectDef):
+    """
+    shipBonusCarrierA4WarfareLinksBonus
+
+    Used by:
+    Ship: Archon
+    """
 
     type = 'passive'
 
@@ -18516,6 +29157,12 @@ class Effect6595(EffectDef):
 
 
 class Effect6596(EffectDef):
+    """
+    shipBonusCarrierC4WarfareLinksBonus
+
+    Used by:
+    Ship: Chimera
+    """
 
     type = 'passive'
 
@@ -18539,6 +29186,12 @@ class Effect6596(EffectDef):
 
 
 class Effect6597(EffectDef):
+    """
+    shipBonusCarrierG4WarfareLinksBonus
+
+    Used by:
+    Ship: Thanatos
+    """
 
     type = 'passive'
 
@@ -18562,6 +29215,12 @@ class Effect6597(EffectDef):
 
 
 class Effect6598(EffectDef):
+    """
+    shipBonusCarrierM4WarfareLinksBonus
+
+    Used by:
+    Ship: Nidhoggur
+    """
 
     type = 'passive'
 
@@ -18585,6 +29244,12 @@ class Effect6598(EffectDef):
 
 
 class Effect6599(EffectDef):
+    """
+    shipBonusCarrierA1ArmorResists
+
+    Used by:
+    Ship: Archon
+    """
 
     type = 'passive'
 
@@ -18601,6 +29266,12 @@ class Effect6599(EffectDef):
 
 
 class Effect6600(EffectDef):
+    """
+    shipBonusCarrierC1ShieldResists
+
+    Used by:
+    Ship: Chimera
+    """
 
     type = 'passive'
 
@@ -18617,6 +29288,12 @@ class Effect6600(EffectDef):
 
 
 class Effect6601(EffectDef):
+    """
+    shipBonusCarrierG1FighterDamage
+
+    Used by:
+    Ship: Thanatos
+    """
 
     type = 'passive'
 
@@ -18634,6 +29311,12 @@ class Effect6601(EffectDef):
 
 
 class Effect6602(EffectDef):
+    """
+    shipBonusCarrierM1FighterDamage
+
+    Used by:
+    Ship: Nidhoggur
+    """
 
     type = 'passive'
 
@@ -18651,6 +29334,13 @@ class Effect6602(EffectDef):
 
 
 class Effect6603(EffectDef):
+    """
+    shipBonusSupercarrierA1FighterDamage
+
+    Used by:
+    Ship: Aeon
+    Ship: Revenant
+    """
 
     type = 'passive'
 
@@ -18668,6 +29358,13 @@ class Effect6603(EffectDef):
 
 
 class Effect6604(EffectDef):
+    """
+    shipBonusSupercarrierC1FighterDamage
+
+    Used by:
+    Ship: Revenant
+    Ship: Wyvern
+    """
 
     type = 'passive'
 
@@ -18685,6 +29382,12 @@ class Effect6604(EffectDef):
 
 
 class Effect6605(EffectDef):
+    """
+    shipBonusSupercarrierG1FighterDamage
+
+    Used by:
+    Variations of ship: Nyx (2 of 2)
+    """
 
     type = 'passive'
 
@@ -18702,6 +29405,12 @@ class Effect6605(EffectDef):
 
 
 class Effect6606(EffectDef):
+    """
+    shipBonusSupercarrierM1FighterDamage
+
+    Used by:
+    Ship: Hel
+    """
 
     type = 'passive'
 
@@ -18719,6 +29428,12 @@ class Effect6606(EffectDef):
 
 
 class Effect6607(EffectDef):
+    """
+    shipBonusSupercarrierA5WarfareLinksBonus
+
+    Used by:
+    Ship: Aeon
+    """
 
     type = 'passive'
 
@@ -18742,6 +29457,12 @@ class Effect6607(EffectDef):
 
 
 class Effect6608(EffectDef):
+    """
+    shipBonusSupercarrierC5WarfareLinksBonus
+
+    Used by:
+    Ship: Wyvern
+    """
 
     type = 'passive'
 
@@ -18765,6 +29486,12 @@ class Effect6608(EffectDef):
 
 
 class Effect6609(EffectDef):
+    """
+    shipBonusSupercarrierG5WarfareLinksBonus
+
+    Used by:
+    Ship: Nyx
+    """
 
     type = 'passive'
 
@@ -18788,6 +29515,12 @@ class Effect6609(EffectDef):
 
 
 class Effect6610(EffectDef):
+    """
+    shipBonusSupercarrierM5WarfareLinksBonus
+
+    Used by:
+    Ship: Hel
+    """
 
     type = 'passive'
 
@@ -18811,6 +29544,12 @@ class Effect6610(EffectDef):
 
 
 class Effect6611(EffectDef):
+    """
+    shipBonusSupercarrierC2AfterburnerBonus
+
+    Used by:
+    Ship: Revenant
+    """
 
     type = 'passive'
 
@@ -18821,6 +29560,12 @@ class Effect6611(EffectDef):
 
 
 class Effect6612(EffectDef):
+    """
+    shipBonusSupercarrierA2FighterApplicationBonus
+
+    Used by:
+    Ship: Revenant
+    """
 
     type = 'passive'
 
@@ -18835,6 +29580,12 @@ class Effect6612(EffectDef):
 
 
 class Effect6613(EffectDef):
+    """
+    shipBonusSupercarrierRole1NumWarfareLinks
+
+    Used by:
+    Ships from group: Supercarrier (6 of 6)
+    """
 
     type = 'passive'
 
@@ -18845,6 +29596,12 @@ class Effect6613(EffectDef):
 
 
 class Effect6614(EffectDef):
+    """
+    shipBonusSupercarrierRole2ArmorShieldModuleBonus
+
+    Used by:
+    Ships from group: Supercarrier (6 of 6)
+    """
 
     type = 'passive'
 
@@ -18857,6 +29614,12 @@ class Effect6614(EffectDef):
 
 
 class Effect6615(EffectDef):
+    """
+    shipBonusSupercarrierA4BurstProjectorBonus
+
+    Used by:
+    Ship: Aeon
+    """
 
     type = 'passive'
 
@@ -18868,6 +29631,12 @@ class Effect6615(EffectDef):
 
 
 class Effect6616(EffectDef):
+    """
+    shipBonusSupercarrierC4BurstProjectorBonus
+
+    Used by:
+    Ship: Wyvern
+    """
 
     type = 'passive'
 
@@ -18879,6 +29648,12 @@ class Effect6616(EffectDef):
 
 
 class Effect6617(EffectDef):
+    """
+    shipBonusSupercarrierG4BurstProjectorBonus
+
+    Used by:
+    Ship: Nyx
+    """
 
     type = 'passive'
 
@@ -18890,6 +29665,12 @@ class Effect6617(EffectDef):
 
 
 class Effect6618(EffectDef):
+    """
+    shipBonusSupercarrierM4BurstProjectorBonus
+
+    Used by:
+    Ship: Hel
+    """
 
     type = 'passive'
 
@@ -18901,6 +29682,12 @@ class Effect6618(EffectDef):
 
 
 class Effect6619(EffectDef):
+    """
+    shipBonusCarrierRole1NumWarfareLinks
+
+    Used by:
+    Ships from group: Carrier (4 of 4)
+    """
 
     type = 'passive'
 
@@ -18911,6 +29698,12 @@ class Effect6619(EffectDef):
 
 
 class Effect6620(EffectDef):
+    """
+    shipBonusDreadnoughtC3ReloadBonus
+
+    Used by:
+    Ship: Phoenix
+    """
 
     type = 'passive'
 
@@ -18921,6 +29714,12 @@ class Effect6620(EffectDef):
 
 
 class Effect6621(EffectDef):
+    """
+    shipBonusSupercarrierA2ArmorResists
+
+    Used by:
+    Ship: Aeon
+    """
 
     type = 'passive'
 
@@ -18937,6 +29736,12 @@ class Effect6621(EffectDef):
 
 
 class Effect6622(EffectDef):
+    """
+    shipBonusSupercarrierC2ShieldResists
+
+    Used by:
+    Ship: Wyvern
+    """
 
     type = 'passive'
 
@@ -18953,6 +29758,12 @@ class Effect6622(EffectDef):
 
 
 class Effect6623(EffectDef):
+    """
+    shipBonusSupercarrierG2FighterHitpoints
+
+    Used by:
+    Variations of ship: Nyx (2 of 2)
+    """
 
     type = 'passive'
 
@@ -18963,6 +29774,13 @@ class Effect6623(EffectDef):
 
 
 class Effect6624(EffectDef):
+    """
+    shipBonusSupercarrierM2FighterVelocity
+
+    Used by:
+    Ship: Hel
+    Ship: Vendetta
+    """
 
     type = 'passive'
 
@@ -18973,6 +29791,12 @@ class Effect6624(EffectDef):
 
 
 class Effect6625(EffectDef):
+    """
+    shipBonusCarrierA2SupportFighterBonus
+
+    Used by:
+    Ship: Archon
+    """
 
     type = 'passive'
 
@@ -18986,6 +29810,12 @@ class Effect6625(EffectDef):
 
 
 class Effect6626(EffectDef):
+    """
+    shipBonusCarrierC2SupportFighterBonus
+
+    Used by:
+    Ship: Chimera
+    """
 
     type = 'passive'
 
@@ -18999,6 +29829,12 @@ class Effect6626(EffectDef):
 
 
 class Effect6627(EffectDef):
+    """
+    shipBonusCarrierG2SupportFighterBonus
+
+    Used by:
+    Ship: Thanatos
+    """
 
     type = 'passive'
 
@@ -19012,6 +29848,12 @@ class Effect6627(EffectDef):
 
 
 class Effect6628(EffectDef):
+    """
+    shipBonusCarrierM2SupportFighterBonus
+
+    Used by:
+    Ship: Nidhoggur
+    """
 
     type = 'passive'
 
@@ -19025,6 +29867,12 @@ class Effect6628(EffectDef):
 
 
 class Effect6629(EffectDef):
+    """
+    scriptResistanceBonusBonus
+
+    Used by:
+    Charges named like: Resistance Script (8 of 8)
+    """
 
     type = 'passive'
 
@@ -19038,6 +29886,12 @@ class Effect6629(EffectDef):
 
 
 class Effect6634(EffectDef):
+    """
+    shipBonusTitanA1DamageBonus
+
+    Used by:
+    Ship: Avatar
+    """
 
     type = 'passive'
 
@@ -19048,6 +29902,12 @@ class Effect6634(EffectDef):
 
 
 class Effect6635(EffectDef):
+    """
+    shipBonusTitanC1KinDamageBonus
+
+    Used by:
+    Ship: Leviathan
+    """
 
     type = 'passive'
 
@@ -19062,6 +29922,12 @@ class Effect6635(EffectDef):
 
 
 class Effect6636(EffectDef):
+    """
+    shipBonusTitanG1DamageBonus
+
+    Used by:
+    Ship: Erebus
+    """
 
     type = 'passive'
 
@@ -19072,6 +29938,12 @@ class Effect6636(EffectDef):
 
 
 class Effect6637(EffectDef):
+    """
+    shipBonusTitanM1DamageBonus
+
+    Used by:
+    Ship: Ragnarok
+    """
 
     type = 'passive'
 
@@ -19082,6 +29954,12 @@ class Effect6637(EffectDef):
 
 
 class Effect6638(EffectDef):
+    """
+    shipBonusTitanC2ROFBonus
+
+    Used by:
+    Variations of ship: Leviathan (2 of 2)
+    """
 
     type = 'passive'
 
@@ -19096,6 +29974,12 @@ class Effect6638(EffectDef):
 
 
 class Effect6639(EffectDef):
+    """
+    shipBonusSupercarrierA4FighterApplicationBonus
+
+    Used by:
+    Ship: Revenant
+    """
 
     type = 'passive'
 
@@ -19110,6 +29994,12 @@ class Effect6639(EffectDef):
 
 
 class Effect6640(EffectDef):
+    """
+    shipBonusRole1NumWarfareLinks
+
+    Used by:
+    Ships from group: Titan (7 of 7)
+    """
 
     type = 'passive'
 
@@ -19120,6 +30010,12 @@ class Effect6640(EffectDef):
 
 
 class Effect6641(EffectDef):
+    """
+    shipBonusRole2ArmorPlates&ShieldExtendersBonus
+
+    Used by:
+    Ships from group: Titan (7 of 7)
+    """
 
     type = 'passive'
 
@@ -19132,6 +30028,12 @@ class Effect6641(EffectDef):
 
 
 class Effect6642(EffectDef):
+    """
+    skillBonusDoomsdayRapidFiring
+
+    Used by:
+    Skill: Doomsday Rapid Firing
+    """
 
     type = 'passive'
 
@@ -19143,6 +30045,12 @@ class Effect6642(EffectDef):
 
 
 class Effect6647(EffectDef):
+    """
+    shipBonusTitanA3WarpStrength
+
+    Used by:
+    Variations of ship: Avatar (2 of 2)
+    """
 
     type = 'passive'
 
@@ -19152,6 +30060,12 @@ class Effect6647(EffectDef):
 
 
 class Effect6648(EffectDef):
+    """
+    shipBonusTitanC3WarpStrength
+
+    Used by:
+    Variations of ship: Leviathan (2 of 2)
+    """
 
     type = 'passive'
 
@@ -19161,6 +30075,13 @@ class Effect6648(EffectDef):
 
 
 class Effect6649(EffectDef):
+    """
+    shipBonusTitanG3WarpStrength
+
+    Used by:
+    Variations of ship: Erebus (2 of 2)
+    Ship: Komodo
+    """
 
     type = 'passive'
 
@@ -19170,6 +30091,12 @@ class Effect6649(EffectDef):
 
 
 class Effect6650(EffectDef):
+    """
+    shipBonusTitanM3WarpStrength
+
+    Used by:
+    Ships from group: Titan (3 of 7)
+    """
 
     type = 'passive'
 
@@ -19179,6 +30106,12 @@ class Effect6650(EffectDef):
 
 
 class Effect6651(EffectDef):
+    """
+    shipModuleAncillaryRemoteArmorRepairer
+
+    Used by:
+    Modules from group: Ancillary Remote Armor Repairer (4 of 4)
+    """
 
     runTime = 'late'
     type = 'projected', 'active'
@@ -19202,6 +30135,12 @@ class Effect6651(EffectDef):
 
 
 class Effect6652(EffectDef):
+    """
+    shipModuleAncillaryRemoteShieldBooster
+
+    Used by:
+    Modules from group: Ancillary Remote Shield Booster (4 of 4)
+    """
 
     runTime = 'late'
     type = 'projected', 'active'
@@ -19216,6 +30155,12 @@ class Effect6652(EffectDef):
 
 
 class Effect6653(EffectDef):
+    """
+    shipBonusTitanA2CapNeed
+
+    Used by:
+    Ship: Avatar
+    """
 
     type = 'passive'
 
@@ -19226,6 +30171,12 @@ class Effect6653(EffectDef):
 
 
 class Effect6654(EffectDef):
+    """
+    shipBonusTitanG2ROFBonus
+
+    Used by:
+    Variations of ship: Erebus (2 of 2)
+    """
 
     type = 'passive'
 
@@ -19236,6 +30187,12 @@ class Effect6654(EffectDef):
 
 
 class Effect6655(EffectDef):
+    """
+    shipBonusTitanM2ROFBonus
+
+    Used by:
+    Ship: Ragnarok
+    """
 
     type = 'passive'
 
@@ -19246,6 +30203,12 @@ class Effect6655(EffectDef):
 
 
 class Effect6656(EffectDef):
+    """
+    shipBonusRole3XLTorpdeoVelocityBonus
+
+    Used by:
+    Variations of ship: Leviathan (2 of 2)
+    """
 
     type = 'passive'
 
@@ -19256,6 +30219,12 @@ class Effect6656(EffectDef):
 
 
 class Effect6657(EffectDef):
+    """
+    shipBonusTitanC5AllDamageBonus
+
+    Used by:
+    Ship: Leviathan
+    """
 
     type = 'passive'
 
@@ -19282,6 +30251,12 @@ class Effect6657(EffectDef):
 
 
 class Effect6658(EffectDef):
+    """
+    moduleBonusBastionModule
+
+    Used by:
+    Module: Bastion Module I
+    """
 
     runTime = 'early'
     type = 'active'
@@ -19354,6 +30329,12 @@ class Effect6658(EffectDef):
 
 
 class Effect6661(EffectDef):
+    """
+    shipBonusCarrierM3FighterVelocity
+
+    Used by:
+    Ship: Nidhoggur
+    """
 
     type = 'passive'
 
@@ -19364,6 +30345,12 @@ class Effect6661(EffectDef):
 
 
 class Effect6662(EffectDef):
+    """
+    shipBonusCarrierG3FighterHitpoints
+
+    Used by:
+    Ship: Thanatos
+    """
 
     type = 'passive'
 
@@ -19374,6 +30361,12 @@ class Effect6662(EffectDef):
 
 
 class Effect6663(EffectDef):
+    """
+    skillBonusDroneInterfacing
+
+    Used by:
+    Skill: Drone Interfacing
+    """
 
     type = 'passive'
 
@@ -19396,6 +30389,12 @@ class Effect6663(EffectDef):
 
 
 class Effect6664(EffectDef):
+    """
+    skillBonusDroneSharpshooting
+
+    Used by:
+    Skill: Drone Sharpshooting
+    """
 
     type = 'passive'
 
@@ -19415,6 +30414,12 @@ class Effect6664(EffectDef):
 
 
 class Effect6665(EffectDef):
+    """
+    skillBonusDroneDurability
+
+    Used by:
+    Skill: Drone Durability
+    """
 
     type = 'passive'
 
@@ -19432,6 +30437,12 @@ class Effect6665(EffectDef):
 
 
 class Effect6667(EffectDef):
+    """
+    skillBonusDroneNavigation
+
+    Used by:
+    Skill: Drone Navigation
+    """
 
     type = 'passive'
 
@@ -19445,6 +30456,12 @@ class Effect6667(EffectDef):
 
 
 class Effect6669(EffectDef):
+    """
+    moduleBonusCapitalDroneDurabilityEnhancer
+
+    Used by:
+    Variations of module: Capital Drone Durability Enhancer I (2 of 2)
+    """
 
     type = 'passive'
 
@@ -19462,6 +30479,12 @@ class Effect6669(EffectDef):
 
 
 class Effect6670(EffectDef):
+    """
+    moduleBonusCapitalDroneScopeChip
+
+    Used by:
+    Variations of module: Capital Drone Scope Chip I (2 of 2)
+    """
 
     type = 'passive'
 
@@ -19481,6 +30504,12 @@ class Effect6670(EffectDef):
 
 
 class Effect6671(EffectDef):
+    """
+    moduleBonusCapitalDroneSpeedAugmentor
+
+    Used by:
+    Variations of module: Capital Drone Speed Augmentor I (2 of 2)
+    """
 
     type = 'passive'
 
@@ -19494,6 +30523,12 @@ class Effect6671(EffectDef):
 
 
 class Effect6672(EffectDef):
+    """
+    structureCombatRigSecurityModification
+
+    Used by:
+    Items from market group: Structure Modifications > Structure Combat Rigs (32 of 34)
+    """
 
     runTime = 'early'
     type = 'passive'
@@ -19515,6 +30550,12 @@ class Effect6672(EffectDef):
 
 
 class Effect6679(EffectDef):
+    """
+    skillStructureDoomsdayDurationBonus
+
+    Used by:
+    Skill: Structure Doomsday Operation
+    """
 
     type = 'passive', 'structure'
 
@@ -19526,6 +30567,12 @@ class Effect6679(EffectDef):
 
 
 class Effect6681(EffectDef):
+    """
+    shipBonusRole3NumWarfareLinks
+
+    Used by:
+    Ships from group: Force Auxiliary (6 of 6)
+    """
 
     type = 'passive'
 
@@ -19536,6 +30583,12 @@ class Effect6681(EffectDef):
 
 
 class Effect6682(EffectDef):
+    """
+    structureModuleEffectStasisWebifier
+
+    Used by:
+    Structure Modules from group: Structure Stasis Webifier (2 of 2)
+    """
 
     type = 'active', 'projected'
 
@@ -19548,6 +30601,12 @@ class Effect6682(EffectDef):
 
 
 class Effect6683(EffectDef):
+    """
+    structureModuleEffectTargetPainter
+
+    Used by:
+    Variations of structure module: Standup Target Painter I (2 of 2)
+    """
 
     type = 'projected', 'active'
 
@@ -19559,6 +30618,12 @@ class Effect6683(EffectDef):
 
 
 class Effect6684(EffectDef):
+    """
+    structureModuleEffectRemoteSensorDampener
+
+    Used by:
+    Variations of structure module: Standup Remote Sensor Dampener I (2 of 2)
+    """
 
     type = 'projected', 'active'
 
@@ -19575,6 +30640,12 @@ class Effect6684(EffectDef):
 
 
 class Effect6685(EffectDef):
+    """
+    structureModuleEffectECM
+
+    Used by:
+    Structure Modules from group: Structure ECM Battery (3 of 3)
+    """
 
     type = 'projected', 'active'
 
@@ -19588,6 +30659,12 @@ class Effect6685(EffectDef):
 
 
 class Effect6686(EffectDef):
+    """
+    structureModuleEffectWeaponDisruption
+
+    Used by:
+    Variations of structure module: Standup Weapon Disruptor I (2 of 2)
+    """
 
     type = 'active', 'projected'
 
@@ -19616,6 +30693,12 @@ class Effect6686(EffectDef):
 
 
 class Effect6687(EffectDef):
+    """
+    npcEntityRemoteArmorRepairer
+
+    Used by:
+    Drones named like: Armor Maintenance Bot (6 of 6)
+    """
 
     type = 'projected', 'active'
 
@@ -19631,6 +30714,12 @@ class Effect6687(EffectDef):
 
 
 class Effect6688(EffectDef):
+    """
+    npcEntityRemoteShieldBooster
+
+    Used by:
+    Drones named like: Shield Maintenance Bot (6 of 6)
+    """
 
     type = 'projected', 'active'
 
@@ -19643,6 +30732,12 @@ class Effect6688(EffectDef):
 
 
 class Effect6689(EffectDef):
+    """
+    npcEntityRemoteHullRepairer
+
+    Used by:
+    Drones named like: Hull Maintenance Bot (6 of 6)
+    """
 
     runTime = 'late'
     type = 'projected', 'active'
@@ -19657,6 +30752,12 @@ class Effect6689(EffectDef):
 
 
 class Effect6690(EffectDef):
+    """
+    remoteWebifierEntity
+
+    Used by:
+    Drones from group: Stasis Webifying Drone (3 of 3)
+    """
 
     type = 'active', 'projected'
 
@@ -19669,6 +30770,12 @@ class Effect6690(EffectDef):
 
 
 class Effect6691(EffectDef):
+    """
+    entityEnergyNeutralizerFalloff
+
+    Used by:
+    Drones from group: Energy Neutralizer Drone (3 of 3)
+    """
 
     type = 'active', 'projected'
 
@@ -19687,6 +30794,12 @@ class Effect6691(EffectDef):
 
 
 class Effect6692(EffectDef):
+    """
+    remoteTargetPaintEntity
+
+    Used by:
+    Drones named like: TP (3 of 3)
+    """
 
     type = 'projected', 'active'
 
@@ -19698,6 +30811,12 @@ class Effect6692(EffectDef):
 
 
 class Effect6693(EffectDef):
+    """
+    remoteSensorDampEntity
+
+    Used by:
+    Drones named like: SD (3 of 3)
+    """
 
     type = 'projected', 'active'
 
@@ -19714,6 +30833,12 @@ class Effect6693(EffectDef):
 
 
 class Effect6694(EffectDef):
+    """
+    npcEntityWeaponDisruptor
+
+    Used by:
+    Drones named like: TD (3 of 3)
+    """
 
     type = 'projected', 'active'
 
@@ -19732,6 +30857,12 @@ class Effect6694(EffectDef):
 
 
 class Effect6695(EffectDef):
+    """
+    entityECMFalloff
+
+    Used by:
+    Drones named like: EC (3 of 3)
+    """
 
     type = 'projected', 'active'
 
@@ -19749,6 +30880,12 @@ class Effect6695(EffectDef):
 
 
 class Effect6697(EffectDef):
+    """
+    rigDrawbackReductionArmor
+
+    Used by:
+    Skill: Armor Rigging
+    """
 
     type = 'passive'
 
@@ -19762,6 +30899,12 @@ class Effect6697(EffectDef):
 
 
 class Effect6698(EffectDef):
+    """
+    rigDrawbackReductionAstronautics
+
+    Used by:
+    Skill: Astronautics Rigging
+    """
 
     type = 'passive'
 
@@ -19775,6 +30918,12 @@ class Effect6698(EffectDef):
 
 
 class Effect6699(EffectDef):
+    """
+    rigDrawbackReductionDrones
+
+    Used by:
+    Skill: Drones Rigging
+    """
 
     type = 'passive'
 
@@ -19786,6 +30935,12 @@ class Effect6699(EffectDef):
 
 
 class Effect6700(EffectDef):
+    """
+    rigDrawbackReductionElectronic
+
+    Used by:
+    Skill: Electronic Superiority Rigging
+    """
 
     type = 'passive'
 
@@ -19801,6 +30956,12 @@ class Effect6700(EffectDef):
 
 
 class Effect6701(EffectDef):
+    """
+    rigDrawbackReductionProjectile
+
+    Used by:
+    Skill: Projectile Weapon Rigging
+    """
 
     type = 'passive'
 
@@ -19812,6 +30973,12 @@ class Effect6701(EffectDef):
 
 
 class Effect6702(EffectDef):
+    """
+    rigDrawbackReductionEnergyWeapon
+
+    Used by:
+    Skill: Energy Weapon Rigging
+    """
 
     type = 'passive'
 
@@ -19823,6 +30990,12 @@ class Effect6702(EffectDef):
 
 
 class Effect6703(EffectDef):
+    """
+    rigDrawbackReductionHybrid
+
+    Used by:
+    Skill: Hybrid Weapon Rigging
+    """
 
     type = 'passive'
 
@@ -19834,6 +31007,12 @@ class Effect6703(EffectDef):
 
 
 class Effect6704(EffectDef):
+    """
+    rigDrawbackReductionLauncher
+
+    Used by:
+    Skill: Launcher Rigging
+    """
 
     type = 'passive'
 
@@ -19845,6 +31024,12 @@ class Effect6704(EffectDef):
 
 
 class Effect6705(EffectDef):
+    """
+    rigDrawbackReductionShield
+
+    Used by:
+    Skill: Shield Rigging
+    """
 
     type = 'passive'
 
@@ -19856,6 +31041,12 @@ class Effect6705(EffectDef):
 
 
 class Effect6706(EffectDef):
+    """
+    setBonusAsklepian
+
+    Used by:
+    Implants named like: grade Asklepian (18 of 18)
+    """
 
     runTime = 'early'
     type = 'passive'
@@ -19867,6 +31058,12 @@ class Effect6706(EffectDef):
 
 
 class Effect6708(EffectDef):
+    """
+    armorRepairAmountBonusSubcap
+
+    Used by:
+    Implants named like: grade Asklepian (15 of 18)
+    """
 
     type = 'passive'
 
@@ -19877,6 +31074,12 @@ class Effect6708(EffectDef):
 
 
 class Effect6709(EffectDef):
+    """
+    shipBonusRole1CapitalHybridDamageBonus
+
+    Used by:
+    Ship: Vehement
+    """
 
     type = 'passive'
 
@@ -19887,6 +31090,12 @@ class Effect6709(EffectDef):
 
 
 class Effect6710(EffectDef):
+    """
+    shipBonusDreadnoughtM1WebStrengthBonus
+
+    Used by:
+    Ship: Vehement
+    """
 
     type = 'passive'
 
@@ -19897,6 +31106,12 @@ class Effect6710(EffectDef):
 
 
 class Effect6711(EffectDef):
+    """
+    shipBonusRole3CapitalHybridDamageBonus
+
+    Used by:
+    Ship: Vanquisher
+    """
 
     type = 'passive'
 
@@ -19907,6 +31122,12 @@ class Effect6711(EffectDef):
 
 
 class Effect6712(EffectDef):
+    """
+    shipBonusTitanM1WebStrengthBonus
+
+    Used by:
+    Ship: Vanquisher
+    """
 
     type = 'passive'
 
@@ -19917,6 +31138,13 @@ class Effect6712(EffectDef):
 
 
 class Effect6713(EffectDef):
+    """
+    shipBonusSupercarrierM1BurstProjectorWebBonus
+
+    Used by:
+    Ship: Hel
+    Ship: Vendetta
+    """
 
     type = 'passive'
 
@@ -19927,6 +31155,12 @@ class Effect6713(EffectDef):
 
 
 class Effect6714(EffectDef):
+    """
+    ECMBurstJammer
+
+    Used by:
+    Modules from group: Burst Jammer (11 of 11)
+    """
 
     type = 'projected', 'active'
 
@@ -19944,6 +31178,12 @@ class Effect6714(EffectDef):
 
 
 class Effect6717(EffectDef):
+    """
+    roleBonusIceOreMiningDurationCap
+
+    Used by:
+    Variations of ship: Covetor (2 of 2)
+    """
 
     type = 'passive'
 
@@ -19960,6 +31200,12 @@ class Effect6717(EffectDef):
 
 
 class Effect6720(EffectDef):
+    """
+    shipBonusDroneRepairMC1
+
+    Used by:
+    Ship: Rabisu
+    """
 
     type = 'passive'
 
@@ -19974,6 +31220,12 @@ class Effect6720(EffectDef):
 
 
 class Effect6721(EffectDef):
+    """
+    eliteBonusLogisticRemoteArmorRepairOptimalFalloff1
+
+    Used by:
+    Ship: Rabisu
+    """
 
     type = 'passive'
 
@@ -19990,6 +31242,12 @@ class Effect6721(EffectDef):
 
 
 class Effect6722(EffectDef):
+    """
+    roleBonusRemoteArmorRepairOptimalFalloff
+
+    Used by:
+    Ship: Rabisu
+    """
 
     type = 'passive'
 
@@ -20004,6 +31262,12 @@ class Effect6722(EffectDef):
 
 
 class Effect6723(EffectDef):
+    """
+    shipBonusCloakCpuMC2
+
+    Used by:
+    Ship: Rabisu
+    """
 
     type = 'passive'
 
@@ -20014,6 +31278,12 @@ class Effect6723(EffectDef):
 
 
 class Effect6724(EffectDef):
+    """
+    eliteBonusLogisticRemoteArmorRepairDuration3
+
+    Used by:
+    Ship: Rabisu
+    """
 
     type = 'passive'
 
@@ -20024,6 +31294,12 @@ class Effect6724(EffectDef):
 
 
 class Effect6725(EffectDef):
+    """
+    shipBonusSETFalloffAF2
+
+    Used by:
+    Ship: Caedes
+    """
 
     type = 'passive'
 
@@ -20034,6 +31310,12 @@ class Effect6725(EffectDef):
 
 
 class Effect6726(EffectDef):
+    """
+    shipBonusCloakCpuMF1
+
+    Used by:
+    Ship: Caedes
+    """
 
     type = 'passive'
 
@@ -20044,6 +31326,12 @@ class Effect6726(EffectDef):
 
 
 class Effect6727(EffectDef):
+    """
+    eliteBonusCoverOpsNOSNeutFalloff1
+
+    Used by:
+    Ship: Caedes
+    """
 
     type = 'passive'
 
@@ -20055,6 +31343,12 @@ class Effect6727(EffectDef):
 
 
 class Effect6730(EffectDef):
+    """
+    moduleBonusMicrowarpdrive
+
+    Used by:
+    Modules from group: Propulsion Module (68 of 133)
+    """
 
     runTime = 'late'
     type = 'active'
@@ -20071,6 +31365,12 @@ class Effect6730(EffectDef):
 
 
 class Effect6731(EffectDef):
+    """
+    moduleBonusAfterburner
+
+    Used by:
+    Modules from group: Propulsion Module (65 of 133)
+    """
 
     runTime = 'late'
     type = 'active'
@@ -20085,6 +31385,12 @@ class Effect6731(EffectDef):
 
 
 class Effect6732(EffectDef):
+    """
+    moduleBonusWarfareLinkArmor
+
+    Used by:
+    Variations of module: Armor Command Burst I (2 of 2)
+    """
 
     type = 'active', 'gang'
 
@@ -20100,6 +31406,12 @@ class Effect6732(EffectDef):
 
 
 class Effect6733(EffectDef):
+    """
+    moduleBonusWarfareLinkShield
+
+    Used by:
+    Variations of module: Shield Command Burst I (2 of 2)
+    """
 
     type = 'active', 'gang'
 
@@ -20115,6 +31427,12 @@ class Effect6733(EffectDef):
 
 
 class Effect6734(EffectDef):
+    """
+    moduleBonusWarfareLinkSkirmish
+
+    Used by:
+    Variations of module: Skirmish Command Burst I (2 of 2)
+    """
 
     type = 'active', 'gang'
 
@@ -20130,6 +31448,12 @@ class Effect6734(EffectDef):
 
 
 class Effect6735(EffectDef):
+    """
+    moduleBonusWarfareLinkInfo
+
+    Used by:
+    Variations of module: Information Command Burst I (2 of 2)
+    """
 
     type = 'active', 'gang'
 
@@ -20145,6 +31469,12 @@ class Effect6735(EffectDef):
 
 
 class Effect6736(EffectDef):
+    """
+    moduleBonusWarfareLinkMining
+
+    Used by:
+    Variations of module: Mining Foreman Burst I (2 of 2)
+    """
 
     type = 'active', 'gang'
 
@@ -20160,6 +31490,12 @@ class Effect6736(EffectDef):
 
 
 class Effect6737(EffectDef):
+    """
+    chargeBonusWarfareCharge
+
+    Used by:
+    Items from market group: Ammunition & Charges > Command Burst Charges (15 of 15)
+    """
 
     type = 'active'
 
@@ -20171,6 +31507,12 @@ class Effect6737(EffectDef):
 
 
 class Effect6753(EffectDef):
+    """
+    moduleTitanEffectGenerator
+
+    Used by:
+    Modules from group: Titan Phenomena Generator (4 of 4)
+    """
 
     type = 'active', 'gang'
 
@@ -20186,6 +31528,12 @@ class Effect6753(EffectDef):
 
 
 class Effect6762(EffectDef):
+    """
+    miningDroneSpecBonus
+
+    Used by:
+    Skill: Mining Drone Specialization
+    """
 
     type = 'passive'
 
@@ -20199,6 +31547,13 @@ class Effect6762(EffectDef):
 
 
 class Effect6763(EffectDef):
+    """
+    iceHarvestingDroneOperationDurationBonus
+
+    Used by:
+    Modules named like: Drone Mining Augmentor (8 of 8)
+    Skill: Ice Harvesting Drone Operation
+    """
 
     type = 'passive'
 
@@ -20209,6 +31564,12 @@ class Effect6763(EffectDef):
 
 
 class Effect6764(EffectDef):
+    """
+    iceHarvestingDroneSpecBonus
+
+    Used by:
+    Skill: Ice Harvesting Drone Specialization
+    """
 
     type = 'passive'
 
@@ -20222,6 +31583,12 @@ class Effect6764(EffectDef):
 
 
 class Effect6765(EffectDef):
+    """
+    spatialPhenomenaGenerationDurationBonus
+
+    Used by:
+    Skill: Spatial Phenomena Generation
+    """
 
     type = 'passive'
 
@@ -20233,6 +31600,12 @@ class Effect6765(EffectDef):
 
 
 class Effect6766(EffectDef):
+    """
+    commandProcessorEffect
+
+    Used by:
+    Modules named like: Command Processor I (4 of 4)
+    """
 
     type = 'passive'
 
@@ -20245,6 +31618,14 @@ class Effect6766(EffectDef):
 
 
 class Effect6769(EffectDef):
+    """
+    commandBurstAoEBonus
+
+    Used by:
+    Skill: Fleet Command
+    Skill: Leadership
+    Skill: Wing Command
+    """
 
     type = 'passive'
 
@@ -20255,6 +31636,12 @@ class Effect6769(EffectDef):
 
 
 class Effect6770(EffectDef):
+    """
+    armoredCommandDurationBonus
+
+    Used by:
+    Skill: Armored Command
+    """
 
     type = 'passive'
 
@@ -20266,6 +31653,12 @@ class Effect6770(EffectDef):
 
 
 class Effect6771(EffectDef):
+    """
+    shieldCommandDurationBonus
+
+    Used by:
+    Skill: Shield Command
+    """
 
     type = 'passive'
 
@@ -20277,6 +31670,12 @@ class Effect6771(EffectDef):
 
 
 class Effect6772(EffectDef):
+    """
+    informationCommandDurationBonus
+
+    Used by:
+    Skill: Information Command
+    """
 
     type = 'passive'
 
@@ -20288,6 +31687,12 @@ class Effect6772(EffectDef):
 
 
 class Effect6773(EffectDef):
+    """
+    skirmishCommandDurationBonus
+
+    Used by:
+    Skill: Skirmish Command
+    """
 
     type = 'passive'
 
@@ -20299,6 +31704,12 @@ class Effect6773(EffectDef):
 
 
 class Effect6774(EffectDef):
+    """
+    miningForemanDurationBonus
+
+    Used by:
+    Skill: Mining Foreman
+    """
 
     type = 'passive'
 
@@ -20310,6 +31721,12 @@ class Effect6774(EffectDef):
 
 
 class Effect6776(EffectDef):
+    """
+    armoredCommandStrengthBonus
+
+    Used by:
+    Skill: Armored Command Specialist
+    """
 
     type = 'passive'
 
@@ -20327,6 +31744,12 @@ class Effect6776(EffectDef):
 
 
 class Effect6777(EffectDef):
+    """
+    shieldCommandStrengthBonus
+
+    Used by:
+    Skill: Shield Command Specialist
+    """
 
     type = 'passive'
 
@@ -20344,6 +31767,12 @@ class Effect6777(EffectDef):
 
 
 class Effect6778(EffectDef):
+    """
+    informationCommandStrengthBonus
+
+    Used by:
+    Skill: Information Command Specialist
+    """
 
     type = 'passive'
 
@@ -20361,6 +31790,12 @@ class Effect6778(EffectDef):
 
 
 class Effect6779(EffectDef):
+    """
+    skirmishCommandStrengthBonus
+
+    Used by:
+    Skill: Skirmish Command Specialist
+    """
 
     type = 'passive'
 
@@ -20378,6 +31813,12 @@ class Effect6779(EffectDef):
 
 
 class Effect6780(EffectDef):
+    """
+    miningForemanStrengthBonus
+
+    Used by:
+    Skill: Mining Director
+    """
 
     type = 'passive'
 
@@ -20391,6 +31832,12 @@ class Effect6780(EffectDef):
 
 
 class Effect6782(EffectDef):
+    """
+    commandBurstReloadTimeBonus
+
+    Used by:
+    Skill: Command Burst Specialist
+    """
 
     type = 'passive'
 
@@ -20403,6 +31850,20 @@ class Effect6782(EffectDef):
 
 
 class Effect6783(EffectDef):
+    """
+    commandBurstAoERoleBonus
+
+    Used by:
+    Ships from group: Carrier (4 of 4)
+    Ships from group: Combat Battlecruiser (14 of 14)
+    Ships from group: Command Ship (8 of 8)
+    Ships from group: Force Auxiliary (6 of 6)
+    Ships from group: Supercarrier (6 of 6)
+    Ships from group: Titan (7 of 7)
+    Subsystems named like: Offensive Support Processor (4 of 4)
+    Ship: Orca
+    Ship: Rorqual
+    """
 
     type = 'passive'
 
@@ -20413,6 +31874,12 @@ class Effect6783(EffectDef):
 
 
 class Effect6786(EffectDef):
+    """
+    shieldCommandBurstBonusICS3
+
+    Used by:
+    Ship: Orca
+    """
 
     type = 'passive'
 
@@ -20431,6 +31898,12 @@ class Effect6786(EffectDef):
 
 
 class Effect6787(EffectDef):
+    """
+    shipBonusDroneHPDamageMiningICS4
+
+    Used by:
+    Ships from group: Industrial Command Ship (2 of 2)
+    """
 
     type = 'passive'
 
@@ -20468,6 +31941,12 @@ class Effect6787(EffectDef):
 
 
 class Effect6788(EffectDef):
+    """
+    shipBonusDroneIceHarvestingICS5
+
+    Used by:
+    Ships from group: Industrial Command Ship (2 of 2)
+    """
 
     type = 'passive'
 
@@ -20481,6 +31960,19 @@ class Effect6788(EffectDef):
 
 
 class Effect6789(EffectDef):
+    """
+    industrialBonusDroneDamage
+
+    Used by:
+    Ships from group: Blockade Runner (4 of 4)
+    Ships from group: Deep Space Transport (4 of 4)
+    Ships from group: Exhumer (3 of 3)
+    Ships from group: Industrial (17 of 17)
+    Ships from group: Industrial Command Ship (2 of 2)
+    Ships from group: Mining Barge (3 of 3)
+    Variations of ship: Venture (3 of 3)
+    Ship: Rorqual
+    """
 
     type = 'passive'
 
@@ -20492,6 +31984,12 @@ class Effect6789(EffectDef):
 
 
 class Effect6790(EffectDef):
+    """
+    shipBonusDroneIceHarvestingRole
+
+    Used by:
+    Ship: Orca
+    """
 
     type = 'passive'
 
@@ -20502,6 +32000,12 @@ class Effect6790(EffectDef):
 
 
 class Effect6792(EffectDef):
+    """
+    shipBonusDroneHPDamageMiningORECapital4
+
+    Used by:
+    Ship: Rorqual
+    """
 
     type = 'passive'
 
@@ -20539,6 +32043,12 @@ class Effect6792(EffectDef):
 
 
 class Effect6793(EffectDef):
+    """
+    miningForemanBurstBonusORECapital2
+
+    Used by:
+    Ship: Rorqual
+    """
 
     type = 'passive'
 
@@ -20557,6 +32067,12 @@ class Effect6793(EffectDef):
 
 
 class Effect6794(EffectDef):
+    """
+    shieldCommandBurstBonusORECapital3
+
+    Used by:
+    Ship: Rorqual
+    """
 
     type = 'passive'
 
@@ -20575,6 +32091,12 @@ class Effect6794(EffectDef):
 
 
 class Effect6795(EffectDef):
+    """
+    shipBonusDroneIceHarvestingORECapital5
+
+    Used by:
+    Ship: Rorqual
+    """
 
     type = 'passive'
 
@@ -20588,6 +32110,12 @@ class Effect6795(EffectDef):
 
 
 class Effect6796(EffectDef):
+    """
+    shipModeSHTDamagePostDiv
+
+    Used by:
+    Module: Hecate Sharpshooter Mode
+    """
 
     type = 'passive'
 
@@ -20603,6 +32131,12 @@ class Effect6796(EffectDef):
 
 
 class Effect6797(EffectDef):
+    """
+    shipModeSPTDamagePostDiv
+
+    Used by:
+    Module: Svipul Sharpshooter Mode
+    """
 
     type = 'passive'
 
@@ -20618,6 +32152,12 @@ class Effect6797(EffectDef):
 
 
 class Effect6798(EffectDef):
+    """
+    shipModeSETDamagePostDiv
+
+    Used by:
+    Module: Confessor Sharpshooter Mode
+    """
 
     type = 'passive'
 
@@ -20633,6 +32173,12 @@ class Effect6798(EffectDef):
 
 
 class Effect6799(EffectDef):
+    """
+    shipModeSmallMissileDamagePostDiv
+
+    Used by:
+    Module: Jackdaw Sharpshooter Mode
+    """
 
     type = 'passive'
 
@@ -20648,6 +32194,12 @@ class Effect6799(EffectDef):
 
 
 class Effect6800(EffectDef):
+    """
+    modeDampTDResistsPostDiv
+
+    Used by:
+    Modules named like: Sharpshooter Mode (4 of 4)
+    """
 
     type = 'passive'
 
@@ -20658,6 +32210,13 @@ class Effect6800(EffectDef):
 
 
 class Effect6801(EffectDef):
+    """
+    modeMWDandABBoostPostDiv
+
+    Used by:
+    Module: Confessor Propulsion Mode
+    Module: Svipul Propulsion Mode
+    """
 
     type = 'passive'
 
@@ -20673,6 +32232,12 @@ class Effect6801(EffectDef):
 
 
 class Effect6807(EffectDef):
+    """
+    invulnerabilityCoreDurationBonus
+
+    Used by:
+    Skill: Invulnerability Core Operation
+    """
 
     type = 'passive'
 
@@ -20686,6 +32251,12 @@ class Effect6807(EffectDef):
 
 
 class Effect6844(EffectDef):
+    """
+    skillMultiplierDefenderMissileVelocity
+
+    Used by:
+    Skill: Defender Missiles
+    """
 
     type = 'passive'
 
@@ -20696,6 +32267,12 @@ class Effect6844(EffectDef):
 
 
 class Effect6845(EffectDef):
+    """
+    shipBonusCommandDestroyerRole1DefenderBonus
+
+    Used by:
+    Ships from group: Command Destroyer (4 of 4)
+    """
 
     type = 'passive'
 
@@ -20706,6 +32283,13 @@ class Effect6845(EffectDef):
 
 
 class Effect6851(EffectDef):
+    """
+    shipBonusRole3CapitalEnergyDamageBonus
+
+    Used by:
+    Ship: Chemosh
+    Ship: Molok
+    """
 
     type = 'passive'
 
@@ -20715,6 +32299,12 @@ class Effect6851(EffectDef):
 
 
 class Effect6852(EffectDef):
+    """
+    shipBonusTitanM1WebRangeBonus
+
+    Used by:
+    Ship: Molok
+    """
 
     type = 'passive'
 
@@ -20725,6 +32315,12 @@ class Effect6852(EffectDef):
 
 
 class Effect6853(EffectDef):
+    """
+    shipBonusTitanA1EnergyWarfareAmountBonus
+
+    Used by:
+    Ship: Molok
+    """
 
     type = 'passive'
 
@@ -20737,6 +32333,12 @@ class Effect6853(EffectDef):
 
 
 class Effect6855(EffectDef):
+    """
+    shipBonusDreadnoughtA1EnergyWarfareAmountBonus
+
+    Used by:
+    Ship: Chemosh
+    """
 
     type = 'passive'
 
@@ -20749,6 +32351,12 @@ class Effect6855(EffectDef):
 
 
 class Effect6856(EffectDef):
+    """
+    shipBonusDreadnoughtM1WebRangeBonus
+
+    Used by:
+    Ship: Chemosh
+    """
 
     type = 'passive'
 
@@ -20759,6 +32367,12 @@ class Effect6856(EffectDef):
 
 
 class Effect6857(EffectDef):
+    """
+    shipBonusForceAuxiliaryA1NosferatuRangeBonus
+
+    Used by:
+    Ship: Dagon
+    """
 
     type = 'passive'
 
@@ -20771,6 +32385,12 @@ class Effect6857(EffectDef):
 
 
 class Effect6858(EffectDef):
+    """
+    shipBonusForceAuxiliaryA1NosferatuDrainAmount
+
+    Used by:
+    Ship: Dagon
+    """
 
     type = 'passive'
 
@@ -20781,6 +32401,13 @@ class Effect6858(EffectDef):
 
 
 class Effect6859(EffectDef):
+    """
+    shipBonusRole4NosferatuCPUBonus
+
+    Used by:
+    Ship: Dagon
+    Ship: Rabisu
+    """
 
     type = 'passive'
 
@@ -20790,6 +32417,12 @@ class Effect6859(EffectDef):
 
 
 class Effect6860(EffectDef):
+    """
+    shipBonusRole5RemoteArmorRepairPowergridBonus
+
+    Used by:
+    Ships from group: Logistics (3 of 7)
+    """
 
     type = 'passive'
 
@@ -20800,6 +32433,12 @@ class Effect6860(EffectDef):
 
 
 class Effect6861(EffectDef):
+    """
+    shipBonusRole5CapitalRemoteArmorRepairPowergridBonus
+
+    Used by:
+    Ship: Dagon
+    """
 
     type = 'passive'
 
@@ -20809,6 +32448,12 @@ class Effect6861(EffectDef):
 
 
 class Effect6862(EffectDef):
+    """
+    shipBonusForceAuxiliaryM1RemoteArmorRepairDuration
+
+    Used by:
+    Ship: Dagon
+    """
 
     type = 'passive'
 
@@ -20819,6 +32464,12 @@ class Effect6862(EffectDef):
 
 
 class Effect6865(EffectDef):
+    """
+    eliteBonusCoverOpsWarpVelocity1
+
+    Used by:
+    Ship: Pacifier
+    """
 
     type = 'passive'
 
@@ -20828,6 +32479,12 @@ class Effect6865(EffectDef):
 
 
 class Effect6866(EffectDef):
+    """
+    shipBonusSmallMissileFlightTimeCF1
+
+    Used by:
+    Ship: Pacifier
+    """
 
     type = 'passive'
 
@@ -20840,6 +32497,12 @@ class Effect6866(EffectDef):
 
 
 class Effect6867(EffectDef):
+    """
+    shipBonusSPTRoFMF
+
+    Used by:
+    Ship: Pacifier
+    """
 
     type = 'passive'
 
@@ -20850,6 +32513,14 @@ class Effect6867(EffectDef):
 
 
 class Effect6871(EffectDef):
+    """
+    concordSecStatusTankBonus
+
+    Used by:
+    Ship: Enforcer
+    Ship: Marshal
+    Ship: Pacifier
+    """
 
     type = 'passive'
 
@@ -20871,6 +32542,12 @@ class Effect6871(EffectDef):
 
 
 class Effect6872(EffectDef):
+    """
+    eliteReconStasisWebBonus1
+
+    Used by:
+    Ship: Enforcer
+    """
 
     type = 'passive'
 
@@ -20880,6 +32557,12 @@ class Effect6872(EffectDef):
 
 
 class Effect6873(EffectDef):
+    """
+    eliteBonusReconWarpVelocity3
+
+    Used by:
+    Ship: Enforcer
+    """
 
     type = 'passive'
 
@@ -20889,6 +32572,12 @@ class Effect6873(EffectDef):
 
 
 class Effect6874(EffectDef):
+    """
+    shipBonusMedMissileFlightTimeCC2
+
+    Used by:
+    Ship: Enforcer
+    """
 
     type = 'passive'
 
@@ -20901,6 +32590,12 @@ class Effect6874(EffectDef):
 
 
 class Effect6877(EffectDef):
+    """
+    eliteBonusBlackOpsWarpVelocity1
+
+    Used by:
+    Ship: Marshal
+    """
 
     type = 'passive'
 
@@ -20910,6 +32605,12 @@ class Effect6877(EffectDef):
 
 
 class Effect6878(EffectDef):
+    """
+    eliteBonusBlackOpsScramblerRange4
+
+    Used by:
+    Ship: Marshal
+    """
 
     type = 'passive'
 
@@ -20920,6 +32621,12 @@ class Effect6878(EffectDef):
 
 
 class Effect6879(EffectDef):
+    """
+    eliteBonusBlackOpsWebRange3
+
+    Used by:
+    Ship: Marshal
+    """
 
     type = 'passive'
 
@@ -20930,6 +32637,12 @@ class Effect6879(EffectDef):
 
 
 class Effect6880(EffectDef):
+    """
+    shipBonusLauncherRoF2CB
+
+    Used by:
+    Ship: Marshal
+    """
 
     type = 'passive'
 
@@ -20944,6 +32657,12 @@ class Effect6880(EffectDef):
 
 
 class Effect6881(EffectDef):
+    """
+    shipBonusLargeMissileFlightTimeCB1
+
+    Used by:
+    Ship: Marshal
+    """
 
     type = 'passive'
 
@@ -20956,6 +32675,12 @@ class Effect6881(EffectDef):
 
 
 class Effect6883(EffectDef):
+    """
+    shipBonusForceAuxiliaryM2LocalRepairAmount
+
+    Used by:
+    Ship: Dagon
+    """
 
     type = 'passive'
 
@@ -20968,6 +32693,12 @@ class Effect6883(EffectDef):
 
 
 class Effect6894(EffectDef):
+    """
+    subsystemEnergyNeutFittingReduction
+
+    Used by:
+    Subsystem: Legion Core - Energy Parasitic Complex
+    """
 
     type = 'passive'
 
@@ -20980,6 +32711,12 @@ class Effect6894(EffectDef):
 
 
 class Effect6895(EffectDef):
+    """
+    subsystemMETFittingReduction
+
+    Used by:
+    Subsystem: Legion Offensive - Liquid Crystal Magnifiers
+    """
 
     type = 'passive'
 
@@ -20992,6 +32729,14 @@ class Effect6895(EffectDef):
 
 
 class Effect6896(EffectDef):
+    """
+    subsystemMHTFittingReduction
+
+    Used by:
+    Subsystem: Proteus Offensive - Drone Synthesis Projector
+    Subsystem: Proteus Offensive - Hybrid Encoding Platform
+    Subsystem: Tengu Offensive - Magnetic Infusion Basin
+    """
 
     type = 'passive'
 
@@ -21004,6 +32749,12 @@ class Effect6896(EffectDef):
 
 
 class Effect6897(EffectDef):
+    """
+    subsystemMPTFittingReduction
+
+    Used by:
+    Subsystem: Loki Offensive - Projectile Scoping Array
+    """
 
     type = 'passive'
 
@@ -21016,6 +32767,12 @@ class Effect6897(EffectDef):
 
 
 class Effect6898(EffectDef):
+    """
+    subsystemMRARFittingReduction
+
+    Used by:
+    Subsystems named like: Offensive Support Processor (3 of 4)
+    """
 
     type = 'passive'
 
@@ -21030,6 +32787,13 @@ class Effect6898(EffectDef):
 
 
 class Effect6899(EffectDef):
+    """
+    subsystemMRSBFittingReduction
+
+    Used by:
+    Subsystem: Loki Offensive - Support Processor
+    Subsystem: Tengu Offensive - Support Processor
+    """
 
     type = 'passive'
 
@@ -21044,6 +32808,14 @@ class Effect6899(EffectDef):
 
 
 class Effect6900(EffectDef):
+    """
+    subsystemMMissileFittingReduction
+
+    Used by:
+    Subsystem: Legion Offensive - Assault Optimization
+    Subsystem: Loki Offensive - Launcher Efficiency Configuration
+    Subsystem: Tengu Offensive - Accelerated Ejection Bay
+    """
 
     type = 'passive'
 
@@ -21057,6 +32829,12 @@ class Effect6900(EffectDef):
 
 
 class Effect6908(EffectDef):
+    """
+    shipBonusStrategicCruiserCaldariNaniteRepairTime2
+
+    Used by:
+    Ship: Tengu
+    """
 
     type = 'passive'
 
@@ -21068,6 +32846,12 @@ class Effect6908(EffectDef):
 
 
 class Effect6909(EffectDef):
+    """
+    shipBonusStrategicCruiserAmarrNaniteRepairTime2
+
+    Used by:
+    Ship: Legion
+    """
 
     type = 'passive'
 
@@ -21079,6 +32863,12 @@ class Effect6909(EffectDef):
 
 
 class Effect6910(EffectDef):
+    """
+    shipBonusStrategicCruiserGallenteNaniteRepairTime2
+
+    Used by:
+    Ship: Proteus
+    """
 
     type = 'passive'
 
@@ -21090,6 +32880,12 @@ class Effect6910(EffectDef):
 
 
 class Effect6911(EffectDef):
+    """
+    shipBonusStrategicCruiserMinmatarNaniteRepairTime2
+
+    Used by:
+    Ship: Loki
+    """
 
     type = 'passive'
 
@@ -21101,6 +32897,13 @@ class Effect6911(EffectDef):
 
 
 class Effect6920(EffectDef):
+    """
+    structureHPBonusAddPassive
+
+    Used by:
+    Subsystems named like: Defensive Covert Reconfiguration (4 of 4)
+    Subsystem: Loki Defensive - Adaptive Defense Node
+    """
 
     type = 'passive'
 
@@ -21110,6 +32913,12 @@ class Effect6920(EffectDef):
 
 
 class Effect6921(EffectDef):
+    """
+    subSystemBonusAmarrDefensive2ScanProbeStrength
+
+    Used by:
+    Subsystem: Legion Defensive - Covert Reconfiguration
+    """
 
     type = 'passive'
 
@@ -21121,6 +32930,12 @@ class Effect6921(EffectDef):
 
 
 class Effect6923(EffectDef):
+    """
+    subsystemBonusMinmatarOffensive1HMLHAMVelo
+
+    Used by:
+    Subsystem: Loki Offensive - Launcher Efficiency Configuration
+    """
 
     type = 'passive'
 
@@ -21132,6 +32947,12 @@ class Effect6923(EffectDef):
 
 
 class Effect6924(EffectDef):
+    """
+    subsystemBonusMinmatarOffensive3MissileExpVelo
+
+    Used by:
+    Subsystem: Loki Offensive - Launcher Efficiency Configuration
+    """
 
     type = 'passive'
 
@@ -21143,6 +32964,12 @@ class Effect6924(EffectDef):
 
 
 class Effect6925(EffectDef):
+    """
+    subsystemBonusGallenteOffensive2DroneVeloTracking
+
+    Used by:
+    Subsystem: Proteus Offensive - Drone Synthesis Projector
+    """
 
     type = 'passive'
 
@@ -21157,6 +32984,12 @@ class Effect6925(EffectDef):
 
 
 class Effect6926(EffectDef):
+    """
+    subsystemBonusAmarrPropulsionWarpCapacitor
+
+    Used by:
+    Subsystem: Legion Propulsion - Interdiction Nullifier
+    """
 
     type = 'passive'
 
@@ -21166,6 +32999,12 @@ class Effect6926(EffectDef):
 
 
 class Effect6927(EffectDef):
+    """
+    subsystemBonusMinmatarPropulsionWarpCapacitor
+
+    Used by:
+    Subsystem: Loki Propulsion - Interdiction Nullifier
+    """
 
     type = 'passive'
 
@@ -21176,6 +33015,12 @@ class Effect6927(EffectDef):
 
 
 class Effect6928(EffectDef):
+    """
+    subsystemBonusCaldariPropulsion2PropModHeatBenefit
+
+    Used by:
+    Subsystem: Tengu Propulsion - Fuel Catalyst
+    """
 
     type = 'passive'
 
@@ -21187,6 +33032,12 @@ class Effect6928(EffectDef):
 
 
 class Effect6929(EffectDef):
+    """
+    subsystemBonusGallentePropulsion2PropModHeatBenefit
+
+    Used by:
+    Subsystem: Proteus Propulsion - Localized Injectors
+    """
 
     type = 'passive'
 
@@ -21198,6 +33049,12 @@ class Effect6929(EffectDef):
 
 
 class Effect6930(EffectDef):
+    """
+    subsystemBonusAmarrCore2EnergyResistance
+
+    Used by:
+    Subsystem: Legion Core - Augmented Antimatter Reactor
+    """
 
     type = 'passive'
 
@@ -21207,6 +33064,12 @@ class Effect6930(EffectDef):
 
 
 class Effect6931(EffectDef):
+    """
+    subsystemBonusMinmatarCore2EnergyResistance
+
+    Used by:
+    Subsystem: Loki Core - Augmented Nuclear Reactor
+    """
 
     type = 'passive'
 
@@ -21217,6 +33080,12 @@ class Effect6931(EffectDef):
 
 
 class Effect6932(EffectDef):
+    """
+    subsystemBonusGallenteCore2EnergyResistance
+
+    Used by:
+    Subsystem: Proteus Core - Augmented Fusion Reactor
+    """
 
     type = 'passive'
 
@@ -21227,6 +33096,12 @@ class Effect6932(EffectDef):
 
 
 class Effect6933(EffectDef):
+    """
+    subsystemBonusCaldariCore2EnergyResistance
+
+    Used by:
+    Subsystem: Tengu Core - Augmented Graviton Reactor
+    """
 
     type = 'passive'
 
@@ -21237,6 +33112,14 @@ class Effect6933(EffectDef):
 
 
 class Effect6934(EffectDef):
+    """
+    shipMaxLockedTargetsBonusAddPassive
+
+    Used by:
+    Subsystems named like: Core Dissolution Sequencer (2 of 2)
+    Subsystems named like: Core Electronic Efficiency Gate (2 of 2)
+    Subsystems named like: Offensive Support Processor (4 of 4)
+    """
 
     type = 'passive'
 
@@ -21246,6 +33129,12 @@ class Effect6934(EffectDef):
 
 
 class Effect6935(EffectDef):
+    """
+    subsystemBonusAmarrCore3EnergyWarHeatBonus
+
+    Used by:
+    Subsystem: Legion Core - Energy Parasitic Complex
+    """
 
     type = 'passive'
 
@@ -21256,6 +33145,12 @@ class Effect6935(EffectDef):
 
 
 class Effect6936(EffectDef):
+    """
+    subsystemBonusMinmatarCore3StasisWebHeatBonus
+
+    Used by:
+    Subsystem: Loki Core - Immobility Drivers
+    """
 
     type = 'passive'
 
@@ -21267,6 +33162,12 @@ class Effect6936(EffectDef):
 
 
 class Effect6937(EffectDef):
+    """
+    subsystemBonusGallenteCore3WarpScramHeatBonus
+
+    Used by:
+    Subsystem: Proteus Core - Friction Extension Processor
+    """
 
     type = 'passive'
 
@@ -21277,6 +33178,12 @@ class Effect6937(EffectDef):
 
 
 class Effect6938(EffectDef):
+    """
+    subsystemBonusCaldariCore3ECMHeatBonus
+
+    Used by:
+    Subsystem: Tengu Core - Obfuscation Manifold
+    """
 
     type = 'passive'
 
@@ -21287,6 +33194,12 @@ class Effect6938(EffectDef):
 
 
 class Effect6939(EffectDef):
+    """
+    subsystemBonusAmarrDefensive2HardenerHeat
+
+    Used by:
+    Subsystem: Legion Defensive - Augmented Plating
+    """
 
     type = 'passive'
 
@@ -21299,6 +33212,12 @@ class Effect6939(EffectDef):
 
 
 class Effect6940(EffectDef):
+    """
+    subsystemBonusGallenteDefensive2HardenerHeat
+
+    Used by:
+    Subsystem: Proteus Defensive - Augmented Plating
+    """
 
     type = 'passive'
 
@@ -21311,6 +33230,12 @@ class Effect6940(EffectDef):
 
 
 class Effect6941(EffectDef):
+    """
+    subsystemBonusCaldariDefensive2HardenerHeat
+
+    Used by:
+    Subsystem: Tengu Defensive - Supplemental Screening
+    """
 
     type = 'passive'
 
@@ -21322,6 +33247,12 @@ class Effect6941(EffectDef):
 
 
 class Effect6942(EffectDef):
+    """
+    subsystemBonusMinmatarDefensive2HardenerHeat
+
+    Used by:
+    Subsystem: Loki Defensive - Augmented Durability
+    """
 
     type = 'passive'
 
@@ -21336,6 +33267,13 @@ class Effect6942(EffectDef):
 
 
 class Effect6943(EffectDef):
+    """
+    subsystemBonusAmarrDefensive3ArmorRepHeat
+
+    Used by:
+    Subsystem: Legion Defensive - Covert Reconfiguration
+    Subsystem: Legion Defensive - Nanobot Injector
+    """
 
     type = 'passive'
 
@@ -21350,6 +33288,13 @@ class Effect6943(EffectDef):
 
 
 class Effect6944(EffectDef):
+    """
+    subsystemBonusGallenteDefensive3ArmorRepHeat
+
+    Used by:
+    Subsystem: Proteus Defensive - Covert Reconfiguration
+    Subsystem: Proteus Defensive - Nanobot Injector
+    """
 
     type = 'passive'
 
@@ -21364,6 +33309,13 @@ class Effect6944(EffectDef):
 
 
 class Effect6945(EffectDef):
+    """
+    subsystemBonusCaldariDefensive3ShieldBoostHeat
+
+    Used by:
+    Subsystem: Tengu Defensive - Amplification Node
+    Subsystem: Tengu Defensive - Covert Reconfiguration
+    """
 
     type = 'passive'
 
@@ -21378,6 +33330,13 @@ class Effect6945(EffectDef):
 
 
 class Effect6946(EffectDef):
+    """
+    subsystemBonusMinmatarDefensive3LocalRepHeat
+
+    Used by:
+    Subsystem: Loki Defensive - Adaptive Defense Node
+    Subsystem: Loki Defensive - Covert Reconfiguration
+    """
 
     type = 'passive'
 
@@ -21392,6 +33351,12 @@ class Effect6946(EffectDef):
 
 
 class Effect6947(EffectDef):
+    """
+    subSystemBonusCaldariDefensive2ScanProbeStrength
+
+    Used by:
+    Subsystem: Tengu Defensive - Covert Reconfiguration
+    """
 
     type = 'passive'
 
@@ -21403,6 +33368,12 @@ class Effect6947(EffectDef):
 
 
 class Effect6949(EffectDef):
+    """
+    subSystemBonusGallenteDefensive2ScanProbeStrength
+
+    Used by:
+    Subsystem: Proteus Defensive - Covert Reconfiguration
+    """
 
     type = 'passive'
 
@@ -21413,6 +33384,12 @@ class Effect6949(EffectDef):
 
 
 class Effect6951(EffectDef):
+    """
+    subSystemBonusMinmatarDefensive2ScanProbeStrength
+
+    Used by:
+    Subsystem: Loki Defensive - Covert Reconfiguration
+    """
 
     type = 'passive'
 
@@ -21423,6 +33400,15 @@ class Effect6951(EffectDef):
 
 
 class Effect6953(EffectDef):
+    """
+    mediumRemoteRepFittingAdjustment
+
+    Used by:
+    Variations of module: Medium Remote Armor Repairer I (12 of 12)
+    Variations of module: Medium Remote Shield Booster I (11 of 11)
+    Module: Medium Ancillary Remote Armor Repairer
+    Module: Medium Ancillary Remote Shield Booster
+    """
 
     type = 'passive'
 
@@ -21433,6 +33419,12 @@ class Effect6953(EffectDef):
 
 
 class Effect6954(EffectDef):
+    """
+    subsystemBonusCommandBurstFittingReduction
+
+    Used by:
+    Subsystems named like: Offensive Support Processor (4 of 4)
+    """
 
     type = 'passive'
 
@@ -21445,6 +33437,13 @@ class Effect6954(EffectDef):
 
 
 class Effect6955(EffectDef):
+    """
+    subsystemRemoteShieldBoostFalloffBonus
+
+    Used by:
+    Subsystem: Loki Offensive - Support Processor
+    Subsystem: Tengu Offensive - Support Processor
+    """
 
     type = 'passive'
 
@@ -21455,6 +33454,12 @@ class Effect6955(EffectDef):
 
 
 class Effect6956(EffectDef):
+    """
+    subsystemRemoteArmorRepairerOptimalBonus
+
+    Used by:
+    Subsystems named like: Offensive Support Processor (3 of 4)
+    """
 
     type = 'passive'
 
@@ -21465,6 +33470,12 @@ class Effect6956(EffectDef):
 
 
 class Effect6957(EffectDef):
+    """
+    subsystemRemoteArmorRepairerFalloffBonus
+
+    Used by:
+    Subsystems named like: Offensive Support Processor (3 of 4)
+    """
 
     type = 'passive'
 
@@ -21475,6 +33486,12 @@ class Effect6957(EffectDef):
 
 
 class Effect6958(EffectDef):
+    """
+    subsystemBonusAmarrOffensive3RemoteArmorRepairHeat
+
+    Used by:
+    Subsystem: Legion Offensive - Support Processor
+    """
 
     type = 'passive'
 
@@ -21485,6 +33502,12 @@ class Effect6958(EffectDef):
 
 
 class Effect6959(EffectDef):
+    """
+    subsystemBonusGallenteOffensive3RemoteArmorRepairHeat
+
+    Used by:
+    Subsystem: Proteus Offensive - Support Processor
+    """
 
     type = 'passive'
 
@@ -21495,6 +33518,12 @@ class Effect6959(EffectDef):
 
 
 class Effect6960(EffectDef):
+    """
+    subsystemBonusCaldariOffensive3RemoteShieldBoosterHeat
+
+    Used by:
+    Subsystem: Tengu Offensive - Support Processor
+    """
 
     type = 'passive'
 
@@ -21506,6 +33535,12 @@ class Effect6960(EffectDef):
 
 
 class Effect6961(EffectDef):
+    """
+    subsystemBonusMinmatarOffensive3RemoteRepHeat
+
+    Used by:
+    Subsystem: Loki Offensive - Support Processor
+    """
 
     type = 'passive'
 
@@ -21517,6 +33552,12 @@ class Effect6961(EffectDef):
 
 
 class Effect6962(EffectDef):
+    """
+    subsystemBonusAmarrPropulsion2WarpSpeed
+
+    Used by:
+    Subsystem: Legion Propulsion - Interdiction Nullifier
+    """
 
     type = 'passive'
 
@@ -21527,6 +33568,12 @@ class Effect6962(EffectDef):
 
 
 class Effect6963(EffectDef):
+    """
+    subsystemBonusMinmatarPropulsion2WarpSpeed
+
+    Used by:
+    Subsystem: Loki Propulsion - Interdiction Nullifier
+    """
 
     type = 'passive'
 
@@ -21537,6 +33584,12 @@ class Effect6963(EffectDef):
 
 
 class Effect6964(EffectDef):
+    """
+    subsystemBonusGallentePropulsionWarpSpeed
+
+    Used by:
+    Subsystem: Proteus Propulsion - Hyperspatial Optimization
+    """
 
     type = 'passive'
 
@@ -21547,6 +33600,12 @@ class Effect6964(EffectDef):
 
 
 class Effect6981(EffectDef):
+    """
+    shipBonusTitanG1KinThermDamageBonus
+
+    Used by:
+    Ship: Komodo
+    """
 
     type = 'passive'
 
@@ -21567,6 +33626,12 @@ class Effect6981(EffectDef):
 
 
 class Effect6982(EffectDef):
+    """
+    shipBonusTitanG2EMExplosiveDamageBonus
+
+    Used by:
+    Ship: Komodo
+    """
 
     type = 'passive'
 
@@ -21587,6 +33652,12 @@ class Effect6982(EffectDef):
 
 
 class Effect6983(EffectDef):
+    """
+    shipBonusTitanC1ShieldResists
+
+    Used by:
+    Ship: Komodo
+    """
 
     type = 'passive'
 
@@ -21599,6 +33670,13 @@ class Effect6983(EffectDef):
 
 
 class Effect6984(EffectDef):
+    """
+    shipBonusRole4FighterDamageAndHitpoints
+
+    Used by:
+    Ship: Caiman
+    Ship: Komodo
+    """
 
     type = 'passive'
 
@@ -21615,6 +33693,12 @@ class Effect6984(EffectDef):
 
 
 class Effect6985(EffectDef):
+    """
+    shipBonusDreadnoughtG1KinThermDamageBonus
+
+    Used by:
+    Ship: Caiman
+    """
 
     type = 'passive'
 
@@ -21635,6 +33719,12 @@ class Effect6985(EffectDef):
 
 
 class Effect6986(EffectDef):
+    """
+    shipBonusForceAuxiliaryG1RemoteShieldBoostAmount
+
+    Used by:
+    Ship: Loggerhead
+    """
 
     type = 'passive'
 
@@ -21645,6 +33735,12 @@ class Effect6986(EffectDef):
 
 
 class Effect6987(EffectDef):
+    """
+    shipBonusRole2LogisticDroneRepAmountAndHitpointBonus
+
+    Used by:
+    Ship: Loggerhead
+    """
 
     type = 'passive'
 
@@ -21665,6 +33761,12 @@ class Effect6987(EffectDef):
 
 
 class Effect6992(EffectDef):
+    """
+    roleBonusMHTDamage1
+
+    Used by:
+    Ship: Victor
+    """
 
     type = 'passive'
 
@@ -21674,6 +33776,13 @@ class Effect6992(EffectDef):
 
 
 class Effect6993(EffectDef):
+    """
+    roleBonus2BoosterPenaltyReduction
+
+    Used by:
+    Ship: Victor
+    Ship: Virtuoso
+    """
 
     type = 'passive'
 
@@ -21694,6 +33803,12 @@ class Effect6993(EffectDef):
 
 
 class Effect6994(EffectDef):
+    """
+    eliteReconBonusMHTDamage1
+
+    Used by:
+    Ship: Victor
+    """
 
     type = 'passive'
 
@@ -21704,6 +33819,12 @@ class Effect6994(EffectDef):
 
 
 class Effect6995(EffectDef):
+    """
+    targetABCAttack
+
+    Used by:
+    Modules from group: Precursor Weapon (15 of 15)
+    """
 
     type = 'active'
 
@@ -21714,6 +33835,12 @@ class Effect6995(EffectDef):
 
 
 class Effect6996(EffectDef):
+    """
+    eliteReconBonusArmorRepAmount3
+
+    Used by:
+    Ship: Victor
+    """
 
     type = 'passive'
 
@@ -21724,6 +33851,12 @@ class Effect6996(EffectDef):
 
 
 class Effect6997(EffectDef):
+    """
+    eliteCovertOpsBonusArmorRepAmount4
+
+    Used by:
+    Ship: Virtuoso
+    """
 
     type = 'passive'
 
@@ -21734,6 +33867,12 @@ class Effect6997(EffectDef):
 
 
 class Effect6999(EffectDef):
+    """
+    covertOpsStealthBomberSiegeMissileLauncherCPUNeedBonus
+
+    Used by:
+    Ship: Virtuoso
+    """
 
     type = 'passive'
 
@@ -21744,6 +33883,12 @@ class Effect6999(EffectDef):
 
 
 class Effect7000(EffectDef):
+    """
+    shipBonusSHTFalloffGF1
+
+    Used by:
+    Ship: Virtuoso
+    """
 
     type = 'passive'
 
@@ -21754,6 +33899,12 @@ class Effect7000(EffectDef):
 
 
 class Effect7001(EffectDef):
+    """
+    roleBonusTorpRoF1
+
+    Used by:
+    Ship: Virtuoso
+    """
 
     type = 'passive'
 
@@ -21763,6 +33914,12 @@ class Effect7001(EffectDef):
 
 
 class Effect7002(EffectDef):
+    """
+    roleBonusBombLauncherPWGCPU3
+
+    Used by:
+    Ship: Virtuoso
+    """
 
     type = 'passive'
 
@@ -21773,6 +33930,12 @@ class Effect7002(EffectDef):
 
 
 class Effect7003(EffectDef):
+    """
+    eliteBonusCovertOpsSHTDamage3
+
+    Used by:
+    Ship: Virtuoso
+    """
 
     type = 'passive'
 
@@ -21783,6 +33946,12 @@ class Effect7003(EffectDef):
 
 
 class Effect7008(EffectDef):
+    """
+    structureFullPowerStateHitpointModifier
+
+    Used by:
+    Items from category: Structure (17 of 17)
+    """
 
     type = 'passive'
 
@@ -21793,6 +33962,16 @@ class Effect7008(EffectDef):
 
 
 class Effect7009(EffectDef):
+    """
+    serviceModuleFullPowerHitpointPostAssign
+
+    Used by:
+    Structure Modules from group: Structure Citadel Service Module (2 of 2)
+    Structure Modules from group: Structure Engineering Service Module (6 of 6)
+    Structure Modules from group: Structure Navigation Service Module (3 of 3)
+    Structure Modules from group: Structure Resource Processing Service Module (4 of 4)
+    Structure Module: Standup Moon Drill I
+    """
 
     runTime = 'early'
     type = 'passive'
@@ -21803,6 +33982,12 @@ class Effect7009(EffectDef):
 
 
 class Effect7012(EffectDef):
+    """
+    moduleBonusAssaultDamageControl
+
+    Used by:
+    Variations of module: Assault Damage Control I (5 of 5)
+    """
 
     runTime = 'early'
     type = 'active'
@@ -21819,6 +34004,12 @@ class Effect7012(EffectDef):
 
 
 class Effect7013(EffectDef):
+    """
+    eliteBonusGunshipKineticMissileDamage1
+
+    Used by:
+    Ship: Jaguar
+    """
 
     type = 'passive'
 
@@ -21829,6 +34020,12 @@ class Effect7013(EffectDef):
 
 
 class Effect7014(EffectDef):
+    """
+    eliteBonusGunshipThermalMissileDamage1
+
+    Used by:
+    Ship: Jaguar
+    """
 
     type = 'passive'
 
@@ -21839,6 +34036,12 @@ class Effect7014(EffectDef):
 
 
 class Effect7015(EffectDef):
+    """
+    eliteBonusGunshipEMMissileDamage1
+
+    Used by:
+    Ship: Jaguar
+    """
 
     type = 'passive'
 
@@ -21849,6 +34052,12 @@ class Effect7015(EffectDef):
 
 
 class Effect7016(EffectDef):
+    """
+    eliteBonusGunshipExplosiveMissileDamage1
+
+    Used by:
+    Ship: Jaguar
+    """
 
     type = 'passive'
 
@@ -21859,6 +34068,12 @@ class Effect7016(EffectDef):
 
 
 class Effect7017(EffectDef):
+    """
+    eliteBonusGunshipExplosionVelocity2
+
+    Used by:
+    Ship: Jaguar
+    """
 
     type = 'passive'
 
@@ -21869,6 +34084,12 @@ class Effect7017(EffectDef):
 
 
 class Effect7018(EffectDef):
+    """
+    shipSETROFAF
+
+    Used by:
+    Ship: Retribution
+    """
 
     type = 'passive'
 
@@ -21879,6 +34100,13 @@ class Effect7018(EffectDef):
 
 
 class Effect7020(EffectDef):
+    """
+    remoteWebifierMaxRangeBonus
+
+    Used by:
+    Implants named like: Inquest 'Eros' Stasis Webifier MR (3 of 3)
+    Implants named like: Inquest 'Hedone' Entanglement Optimizer WS (3 of 3)
+    """
 
     type = 'passive'
 
@@ -21889,6 +34117,14 @@ class Effect7020(EffectDef):
 
 
 class Effect7021(EffectDef):
+    """
+    structureRigMaxTargetRange
+
+    Used by:
+    Structure Modules from group: Structure Combat Rig L - Max Targets and Sensor Boosting (2 of 2)
+    Structure Modules from group: Structure Combat Rig M - Boosted Sensors (2 of 2)
+    Structure Modules from group: Structure Combat Rig XL - Doomsday and Targeting (2 of 2)
+    """
 
     type = 'passive'
 
@@ -21898,6 +34134,12 @@ class Effect7021(EffectDef):
 
 
 class Effect7024(EffectDef):
+    """
+    shipBonusDroneTrackingEliteGunship2
+
+    Used by:
+    Ship: Ishkur
+    """
 
     type = 'passive'
 
@@ -21908,6 +34150,12 @@ class Effect7024(EffectDef):
 
 
 class Effect7026(EffectDef):
+    """
+    scriptStandupWarpScram
+
+    Used by:
+    Charge: Standup Focused Warp Scrambling Script
+    """
 
     runTime = 'early'
     type = 'passive'
@@ -21918,6 +34166,12 @@ class Effect7026(EffectDef):
 
 
 class Effect7027(EffectDef):
+    """
+    structureCapacitorCapacityBonus
+
+    Used by:
+    Structure Modules from group: Structure Capacitor Battery (2 of 2)
+    """
 
     type = 'passive'
 
@@ -21927,6 +34181,12 @@ class Effect7027(EffectDef):
 
 
 class Effect7028(EffectDef):
+    """
+    structureModifyPowerRechargeRate
+
+    Used by:
+    Structure Modules from group: Structure Capacitor Power Relay (2 of 2)
+    """
 
     type = 'passive'
 
@@ -21936,6 +34196,12 @@ class Effect7028(EffectDef):
 
 
 class Effect7029(EffectDef):
+    """
+    structureArmorHPBonus
+
+    Used by:
+    Structure Modules from group: Structure Armor Reinforcer (2 of 2)
+    """
 
     runTime = 'early'
     type = 'passive'
@@ -21946,6 +34212,13 @@ class Effect7029(EffectDef):
 
 
 class Effect7030(EffectDef):
+    """
+    structureAoERoFRoleBonus
+
+    Used by:
+    Items from category: Structure (11 of 17)
+    Structures from group: Citadel (8 of 9)
+    """
 
     type = 'passive'
 
@@ -21960,6 +34233,12 @@ class Effect7030(EffectDef):
 
 
 class Effect7031(EffectDef):
+    """
+    shipBonusHeavyMissileKineticDamageCBC2
+
+    Used by:
+    Ship: Drake Navy Issue
+    """
 
     type = 'passive'
 
@@ -21970,6 +34249,12 @@ class Effect7031(EffectDef):
 
 
 class Effect7032(EffectDef):
+    """
+    shipBonusHeavyMissileThermalDamageCBC2
+
+    Used by:
+    Ship: Drake Navy Issue
+    """
 
     type = 'passive'
 
@@ -21980,6 +34265,12 @@ class Effect7032(EffectDef):
 
 
 class Effect7033(EffectDef):
+    """
+    shipBonusHeavyMissileEMDamageCBC2
+
+    Used by:
+    Ship: Drake Navy Issue
+    """
 
     type = 'passive'
 
@@ -21990,6 +34281,12 @@ class Effect7033(EffectDef):
 
 
 class Effect7034(EffectDef):
+    """
+    shipBonusHeavyMissileExplosiveDamageCBC2
+
+    Used by:
+    Ship: Drake Navy Issue
+    """
 
     type = 'passive'
 
@@ -22000,6 +34297,12 @@ class Effect7034(EffectDef):
 
 
 class Effect7035(EffectDef):
+    """
+    shipBonusHeavyAssaultMissileExplosiveDamageCBC2
+
+    Used by:
+    Ship: Drake Navy Issue
+    """
 
     type = 'passive'
 
@@ -22010,6 +34313,12 @@ class Effect7035(EffectDef):
 
 
 class Effect7036(EffectDef):
+    """
+    shipBonusHeavyAssaultMissileEMDamageCBC2
+
+    Used by:
+    Ship: Drake Navy Issue
+    """
 
     type = 'passive'
 
@@ -22020,6 +34329,12 @@ class Effect7036(EffectDef):
 
 
 class Effect7037(EffectDef):
+    """
+    shipBonusHeavyAssaultMissileThermalDamageCBC2
+
+    Used by:
+    Ship: Drake Navy Issue
+    """
 
     type = 'passive'
 
@@ -22030,6 +34345,12 @@ class Effect7037(EffectDef):
 
 
 class Effect7038(EffectDef):
+    """
+    shipBonusHeavyAssaultMissileKineticDamageCBC2
+
+    Used by:
+    Ship: Drake Navy Issue
+    """
 
     type = 'passive'
 
@@ -22040,6 +34361,12 @@ class Effect7038(EffectDef):
 
 
 class Effect7039(EffectDef):
+    """
+    structureHiddenMissileDamageMultiplier
+
+    Used by:
+    Items from category: Structure (14 of 17)
+    """
 
     type = 'passive'
 
@@ -22053,6 +34380,12 @@ class Effect7039(EffectDef):
 
 
 class Effect7040(EffectDef):
+    """
+    structureHiddenArmorHPMultiplier
+
+    Used by:
+    Items from category: Structure (17 of 17)
+    """
 
     type = 'passive'
 
@@ -22062,6 +34395,12 @@ class Effect7040(EffectDef):
 
 
 class Effect7042(EffectDef):
+    """
+    shipArmorHitPointsAC1
+
+    Used by:
+    Ship: Monitor
+    """
 
     type = 'passive'
 
@@ -22071,6 +34410,12 @@ class Effect7042(EffectDef):
 
 
 class Effect7043(EffectDef):
+    """
+    shipShieldHitpointsCC1
+
+    Used by:
+    Ship: Monitor
+    """
 
     type = 'passive'
 
@@ -22080,6 +34425,12 @@ class Effect7043(EffectDef):
 
 
 class Effect7044(EffectDef):
+    """
+    shipAgilityBonusGC1
+
+    Used by:
+    Ship: Monitor
+    """
 
     type = 'passive'
 
@@ -22089,6 +34440,12 @@ class Effect7044(EffectDef):
 
 
 class Effect7045(EffectDef):
+    """
+    shipSignatureRadiusMC1
+
+    Used by:
+    Ship: Monitor
+    """
 
     type = 'passive'
 
@@ -22098,6 +34455,12 @@ class Effect7045(EffectDef):
 
 
 class Effect7046(EffectDef):
+    """
+    eliteBonusFlagCruiserAllResistances1
+
+    Used by:
+    Ship: Monitor
+    """
 
     type = 'passive'
 
@@ -22118,6 +34481,12 @@ class Effect7046(EffectDef):
 
 
 class Effect7047(EffectDef):
+    """
+    roleBonusFlagCruiserModuleFittingReduction
+
+    Used by:
+    Ship: Monitor
+    """
 
     type = 'passive'
 
@@ -22135,6 +34504,12 @@ class Effect7047(EffectDef):
 
 
 class Effect7050(EffectDef):
+    """
+    aoe_beacon_bioluminescence_cloud
+
+    Used by:
+    Celestials named like: Bioluminescence Cloud (3 of 3)
+    """
 
     runTime = 'early'
     type = ('projected', 'passive', 'gang')
@@ -22151,6 +34526,12 @@ class Effect7050(EffectDef):
 
 
 class Effect7051(EffectDef):
+    """
+    aoe_beacon_caustic_cloud
+
+    Used by:
+    Celestials named like: Caustic Cloud (3 of 3)
+    """
 
     runTime = 'early'
     type = ('projected', 'passive', 'gang')
@@ -22167,6 +34548,12 @@ class Effect7051(EffectDef):
 
 
 class Effect7052(EffectDef):
+    """
+    roleBonusFlagCruiserTargetPainterModifications
+
+    Used by:
+    Ship: Monitor
+    """
 
     type = 'passive'
 
@@ -22179,6 +34566,12 @@ class Effect7052(EffectDef):
 
 
 class Effect7055(EffectDef):
+    """
+    shipLargeWeaponsDamageBonus
+
+    Used by:
+    Ship: Praxis
+    """
 
     type = 'passive'
 
@@ -22217,6 +34610,12 @@ class Effect7055(EffectDef):
 
 
 class Effect7058(EffectDef):
+    """
+    aoe_beacon_filament_cloud
+
+    Used by:
+    Celestials named like: Filament Cloud (3 of 3)
+    """
 
     runTime = 'early'
     type = ('projected', 'passive', 'gang')
@@ -22233,6 +34632,14 @@ class Effect7058(EffectDef):
 
 
 class Effect7059(EffectDef):
+    """
+    weather_caustic_toxin
+
+    Used by:
+    Celestial: caustic_toxin_weather_1
+    Celestial: caustic_toxin_weather_2
+    Celestial: caustic_toxin_weather_3
+    """
 
     runTime = 'early'
     type = ('projected', 'passive', 'gang')
@@ -22249,6 +34656,15 @@ class Effect7059(EffectDef):
 
 
 class Effect7060(EffectDef):
+    """
+    weather_darkness
+
+    Used by:
+    Celestial: darkness_weather_1
+    Celestial: darkness_weather_2
+    Celestial: darkness_weather_3
+    Celestial: pvp_weather_1
+    """
 
     runTime = 'early'
     type = ('projected', 'passive', 'gang')
@@ -22264,6 +34680,14 @@ class Effect7060(EffectDef):
 
 
 class Effect7061(EffectDef):
+    """
+    weather_electric_storm
+
+    Used by:
+    Celestial: electric_storm_weather_1
+    Celestial: electric_storm_weather_2
+    Celestial: electric_storm_weather_3
+    """
 
     runTime = 'early'
     type = ('projected', 'passive', 'gang')
@@ -22280,6 +34704,14 @@ class Effect7061(EffectDef):
 
 
 class Effect7062(EffectDef):
+    """
+    weather_infernal
+
+    Used by:
+    Celestial: infernal_weather_1
+    Celestial: infernal_weather_2
+    Celestial: infernal_weather_3
+    """
 
     runTime = 'early'
     type = ('projected', 'passive', 'gang')
@@ -22296,6 +34728,14 @@ class Effect7062(EffectDef):
 
 
 class Effect7063(EffectDef):
+    """
+    weather_xenon_gas
+
+    Used by:
+    Celestial: xenon_gas_weather_1
+    Celestial: xenon_gas_weather_2
+    Celestial: xenon_gas_weather_3
+    """
 
     runTime = 'early'
     type = ('projected', 'passive', 'gang')
@@ -22312,12 +34752,24 @@ class Effect7063(EffectDef):
 
 
 class Effect7064(EffectDef):
+    """
+    weather_basic
+
+    Used by:
+    Celestial: basic_weather
+    """
 
     runTime = 'early'
     type = ('projected', 'passive')
 
 
 class Effect7071(EffectDef):
+    """
+    smallPrecursorTurretDmgBonusRequiredSkill
+
+    Used by:
+    Skill: Small Precursor Weapon
+    """
 
     type = 'passive'
 
@@ -22329,6 +34781,12 @@ class Effect7071(EffectDef):
 
 
 class Effect7072(EffectDef):
+    """
+    mediumPrecursorTurretDmgBonusRequiredSkill
+
+    Used by:
+    Skill: Medium Precursor Weapon
+    """
 
     type = 'passive'
 
@@ -22340,6 +34798,12 @@ class Effect7072(EffectDef):
 
 
 class Effect7073(EffectDef):
+    """
+    largePrecursorTurretDmgBonusRequiredSkill
+
+    Used by:
+    Skill: Large Precursor Weapon
+    """
 
     type = 'passive'
 
@@ -22351,6 +34815,12 @@ class Effect7073(EffectDef):
 
 
 class Effect7074(EffectDef):
+    """
+    smallDisintegratorSkillDmgBonus
+
+    Used by:
+    Skill: Small Disintegrator Specialization
+    """
 
     type = 'passive'
 
@@ -22362,6 +34832,12 @@ class Effect7074(EffectDef):
 
 
 class Effect7075(EffectDef):
+    """
+    mediumDisintegratorSkillDmgBonus
+
+    Used by:
+    Skill: Medium Disintegrator Specialization
+    """
 
     type = 'passive'
 
@@ -22373,6 +34849,12 @@ class Effect7075(EffectDef):
 
 
 class Effect7076(EffectDef):
+    """
+    largeDisintegratorSkillDmgBonus
+
+    Used by:
+    Skill: Large Disintegrator Specialization
+    """
 
     type = 'passive'
 
@@ -22384,6 +34866,12 @@ class Effect7076(EffectDef):
 
 
 class Effect7077(EffectDef):
+    """
+    disintegratorWeaponDamageMultiply
+
+    Used by:
+    Modules from group: Entropic Radiation Sink (4 of 4)
+    """
 
     type = 'passive'
 
@@ -22395,6 +34883,12 @@ class Effect7077(EffectDef):
 
 
 class Effect7078(EffectDef):
+    """
+    disintegratorWeaponSpeedMultiply
+
+    Used by:
+    Modules from group: Entropic Radiation Sink (4 of 4)
+    """
 
     type = 'passive'
 
@@ -22406,6 +34900,12 @@ class Effect7078(EffectDef):
 
 
 class Effect7079(EffectDef):
+    """
+    shipPCBSSPeedBonusPCBS1
+
+    Used by:
+    Ship: Leshak
+    """
 
     type = 'passive'
 
@@ -22416,6 +34916,12 @@ class Effect7079(EffectDef):
 
 
 class Effect7080(EffectDef):
+    """
+    shipPCBSDmgBonusPCBS2
+
+    Used by:
+    Ship: Leshak
+    """
 
     type = 'passive'
 
@@ -22426,6 +34932,13 @@ class Effect7080(EffectDef):
 
 
 class Effect7085(EffectDef):
+    """
+    shipbonusPCTDamagePC1
+
+    Used by:
+    Ship: Tiamat
+    Ship: Vedmak
+    """
 
     type = 'passive'
 
@@ -22436,6 +34949,13 @@ class Effect7085(EffectDef):
 
 
 class Effect7086(EffectDef):
+    """
+    shipbonusPCTTrackingPC2
+
+    Used by:
+    Ship: Tiamat
+    Ship: Vedmak
+    """
 
     type = 'passive'
 
@@ -22446,6 +34966,13 @@ class Effect7086(EffectDef):
 
 
 class Effect7087(EffectDef):
+    """
+    shipbonusPCTOptimalPF2
+
+    Used by:
+    Ship: Damavik
+    Ship: Hydra
+    """
 
     type = 'passive'
 
@@ -22456,6 +34983,13 @@ class Effect7087(EffectDef):
 
 
 class Effect7088(EffectDef):
+    """
+    shipbonusPCTDamagePF1
+
+    Used by:
+    Ship: Damavik
+    Ship: Hydra
+    """
 
     type = 'passive'
 
@@ -22466,6 +35000,12 @@ class Effect7088(EffectDef):
 
 
 class Effect7091(EffectDef):
+    """
+    shipBonusNosNeutCapNeedRoleBonus2
+
+    Used by:
+    Variations of ship: Rodiva (2 of 2)
+    """
 
     type = 'passive'
 
@@ -22475,6 +35015,18 @@ class Effect7091(EffectDef):
 
 
 class Effect7092(EffectDef):
+    """
+    shipBonusRemoteRepCapNeedRoleBonus2
+
+    Used by:
+    Ship: Damavik
+    Ship: Drekavac
+    Ship: Hydra
+    Ship: Kikimora
+    Ship: Leshak
+    Ship: Tiamat
+    Ship: Vedmak
+    """
 
     type = 'passive'
 
@@ -22485,6 +35037,19 @@ class Effect7092(EffectDef):
 
 
 class Effect7093(EffectDef):
+    """
+    shipBonusSmartbombCapNeedRoleBonus2
+
+    Used by:
+    Variations of ship: Rodiva (2 of 2)
+    Ship: Damavik
+    Ship: Drekavac
+    Ship: Hydra
+    Ship: Kikimora
+    Ship: Leshak
+    Ship: Tiamat
+    Ship: Vedmak
+    """
 
     type = 'passive'
 
@@ -22495,6 +35060,18 @@ class Effect7093(EffectDef):
 
 
 class Effect7094(EffectDef):
+    """
+    shipBonusRemoteRepMaxRangeRoleBonus1
+
+    Used by:
+    Ship: Damavik
+    Ship: Drekavac
+    Ship: Hydra
+    Ship: Kikimora
+    Ship: Leshak
+    Ship: Tiamat
+    Ship: Vedmak
+    """
 
     type = 'passive'
 
@@ -22505,6 +35082,12 @@ class Effect7094(EffectDef):
 
 
 class Effect7097(EffectDef):
+    """
+    surgicalStrikeDamageMultiplierBonusPostPercentDamageMultiplierLocationShipGroupPrecursorTurret
+
+    Used by:
+    Skill: Surgical Strike
+    """
 
     type = 'passive'
 
@@ -22515,6 +35098,12 @@ class Effect7097(EffectDef):
 
 
 class Effect7111(EffectDef):
+    """
+    systemSmallPrecursorTurretDamage
+
+    Used by:
+    Celestials named like: Wolf Rayet Effect Beacon Class (5 of 6)
+    """
 
     runTime = 'early'
     type = ('projected', 'passive')
@@ -22527,6 +35116,18 @@ class Effect7111(EffectDef):
 
 
 class Effect7112(EffectDef):
+    """
+    shipBonusNeutCapNeedRoleBonus2
+
+    Used by:
+    Ship: Damavik
+    Ship: Drekavac
+    Ship: Hydra
+    Ship: Kikimora
+    Ship: Leshak
+    Ship: Tiamat
+    Ship: Vedmak
+    """
 
     type = 'passive'
 
@@ -22537,6 +35138,12 @@ class Effect7112(EffectDef):
 
 
 class Effect7116(EffectDef):
+    """
+    eliteBonusReconScanProbeStrength2
+
+    Used by:
+    Ship: Tiamat
+    """
 
     type = 'passive'
 
@@ -22547,6 +35154,16 @@ class Effect7116(EffectDef):
 
 
 class Effect7117(EffectDef):
+    """
+    roleBonusWarpSpeed
+
+    Used by:
+    Ship: Cynabal
+    Ship: Dramiel
+    Ship: Leopard
+    Ship: Machariel
+    Ship: Victorieux Luxury Yacht
+    """
 
     type = 'passive'
 
@@ -22556,6 +35173,12 @@ class Effect7117(EffectDef):
 
 
 class Effect7118(EffectDef):
+    """
+    eliteBonusCovertOps3PCTdamagePerCycle
+
+    Used by:
+    Ship: Hydra
+    """
 
     type = 'passive'
 
@@ -22566,6 +35189,12 @@ class Effect7118(EffectDef):
 
 
 class Effect7119(EffectDef):
+    """
+    eliteBonusReconShip3PCTdamagePerCycle
+
+    Used by:
+    Ship: Tiamat
+    """
 
     type = 'passive'
 
@@ -22576,6 +35205,12 @@ class Effect7119(EffectDef):
 
 
 class Effect7142(EffectDef):
+    """
+    massEntanglerEffect5
+
+    Used by:
+    Module: Zero-Point Mass Entangler
+    """
 
     type = 'active'
 
@@ -22593,6 +35228,12 @@ class Effect7142(EffectDef):
 
 
 class Effect7154(EffectDef):
+    """
+    shipBonusPD1DisintegratorDamage
+
+    Used by:
+    Ship: Kikimora
+    """
 
     type = 'passive'
 
@@ -22604,6 +35245,12 @@ class Effect7154(EffectDef):
 
 
 class Effect7155(EffectDef):
+    """
+    shipBonusPBC1DisintegratorDamage
+
+    Used by:
+    Ship: Drekavac
+    """
 
     type = 'passive'
 
@@ -22615,6 +35262,12 @@ class Effect7155(EffectDef):
 
 
 class Effect7156(EffectDef):
+    """
+    smallDisintegratorMaxRangeBonus
+
+    Used by:
+    Ship: Kikimora
+    """
 
     type = 'passive'
 
@@ -22625,6 +35278,12 @@ class Effect7156(EffectDef):
 
 
 class Effect7157(EffectDef):
+    """
+    shipBonusPD2DisintegratorMaxRange
+
+    Used by:
+    Ship: Kikimora
+    """
 
     type = 'passive'
 
@@ -22636,6 +35295,12 @@ class Effect7157(EffectDef):
 
 
 class Effect7158(EffectDef):
+    """
+    shipArmorKineticResistancePBC2
+
+    Used by:
+    Ship: Drekavac
+    """
 
     type = 'passive'
 
@@ -22646,6 +35311,12 @@ class Effect7158(EffectDef):
 
 
 class Effect7159(EffectDef):
+    """
+    shipArmorThermalResistancePBC2
+
+    Used by:
+    Ship: Drekavac
+    """
 
     type = 'passive'
 
@@ -22656,6 +35327,12 @@ class Effect7159(EffectDef):
 
 
 class Effect7160(EffectDef):
+    """
+    shipArmorEMResistancePBC2
+
+    Used by:
+    Ship: Drekavac
+    """
 
     type = 'passive'
 
@@ -22666,6 +35343,12 @@ class Effect7160(EffectDef):
 
 
 class Effect7161(EffectDef):
+    """
+    shipArmorExplosiveResistancePBC2
+
+    Used by:
+    Ship: Drekavac
+    """
 
     type = 'passive'
 
@@ -22676,6 +35359,12 @@ class Effect7161(EffectDef):
 
 
 class Effect7162(EffectDef):
+    """
+    shipRoleDisintegratorMaxRangeCBC
+
+    Used by:
+    Ship: Drekavac
+    """
 
     type = 'passive'
 
@@ -22686,6 +35375,12 @@ class Effect7162(EffectDef):
 
 
 class Effect7166(EffectDef):
+    """
+    ShipModuleRemoteArmorMutadaptiveRepairer
+
+    Used by:
+    Modules from group: Mutadaptive Remote Armor Repairer (5 of 5)
+    """
 
     runTime = 'late'
     type = 'projected', 'active'
@@ -22708,6 +35403,12 @@ class Effect7166(EffectDef):
 
 
 class Effect7167(EffectDef):
+    """
+    shipBonusRemoteCapacitorTransferRangeRole1
+
+    Used by:
+    Variations of ship: Rodiva (2 of 2)
+    """
 
     type = 'passive'
 
@@ -22717,6 +35418,12 @@ class Effect7167(EffectDef):
 
 
 class Effect7168(EffectDef):
+    """
+    shipBonusMutadaptiveRemoteRepairRangeRole3
+
+    Used by:
+    Ship: Rodiva
+    """
 
     type = 'passive'
 
@@ -22726,6 +35433,12 @@ class Effect7168(EffectDef):
 
 
 class Effect7169(EffectDef):
+    """
+    shipBonusMutadaptiveRepAmountPC1
+
+    Used by:
+    Ship: Rodiva
+    """
 
     type = 'passive'
 
@@ -22735,6 +35448,12 @@ class Effect7169(EffectDef):
 
 
 class Effect7170(EffectDef):
+    """
+    shipBonusMutadaptiveRepCapNeedPC2
+
+    Used by:
+    Ship: Rodiva
+    """
 
     type = 'passive'
 
@@ -22744,6 +35463,12 @@ class Effect7170(EffectDef):
 
 
 class Effect7171(EffectDef):
+    """
+    shipBonusMutadaptiveRemoteRepRangePC1
+
+    Used by:
+    Ship: Zarmazd
+    """
 
     type = 'passive'
 
@@ -22753,6 +35478,12 @@ class Effect7171(EffectDef):
 
 
 class Effect7172(EffectDef):
+    """
+    shipBonusMutadaptiveRemoteRepCapNeedeliteBonusLogisitics1
+
+    Used by:
+    Ship: Zarmazd
+    """
 
     type = 'passive'
 
@@ -22762,6 +35493,12 @@ class Effect7172(EffectDef):
 
 
 class Effect7173(EffectDef):
+    """
+    shipBonusMutadaptiveRemoteRepAmounteliteBonusLogisitics2
+
+    Used by:
+    Ship: Zarmazd
+    """
 
     type = 'passive'
 
@@ -22771,6 +35508,13 @@ class Effect7173(EffectDef):
 
 
 class Effect7176(EffectDef):
+    """
+    skillBonusDroneInterfacingNotFighters
+
+    Used by:
+    Implant: CreoDron 'Bumblebee' Drone Tuner T10-5D
+    Implant: CreoDron 'Yellowjacket' Drone Tuner D5-10T
+    """
 
     type = 'passive'
 
@@ -22781,6 +35525,12 @@ class Effect7176(EffectDef):
 
 
 class Effect7177(EffectDef):
+    """
+    skillBonusDroneDurabilityNotFighters
+
+    Used by:
+    Implants from group: Cyber Drones (4 of 4)
+    """
 
     type = 'passive'
 
@@ -22795,6 +35545,12 @@ class Effect7177(EffectDef):
 
 
 class Effect7179(EffectDef):
+    """
+    stripMinerDurationMultiplier
+
+    Used by:
+    Module: Frostline 'Omnivore' Harvester Upgrade
+    """
 
     type = 'passive'
 
@@ -22805,6 +35561,12 @@ class Effect7179(EffectDef):
 
 
 class Effect7180(EffectDef):
+    """
+    miningDurationMultiplierOnline
+
+    Used by:
+    Module: Frostline 'Omnivore' Harvester Upgrade
+    """
 
     type = 'passive'
 
@@ -22815,6 +35577,12 @@ class Effect7180(EffectDef):
 
 
 class Effect7183(EffectDef):
+    """
+    implantWarpScrambleRangeBonus
+
+    Used by:
+    Implants named like: Inquest 'Hedone' Entanglement Optimizer WS (3 of 3)
+    """
 
     type = 'passive'
 

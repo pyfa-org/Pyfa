@@ -60,19 +60,13 @@ from optparse import OptionParser
 script_dir = os.path.dirname(__file__)
 
 # Form list of effects for processing
-effects_path = os.path.join(script_dir, "..", "eos", "effects")
+effects_path = os.path.join(script_dir, "..", "eos", "effects.py")
 
 usage = "usage: %prog --database=DB [--debug=DEBUG]"
 parser = OptionParser(usage=usage)
 parser.add_option("-d", "--database", help="path to eve cache data dump in \
     sqlite format, default to eve database file included in pyfa (../eve.db)",
     type="string", default=os.path.join(script_dir, "..", "eve.db"))
-parser.add_option("-e", "--effects", help="explicit comma-separated list of \
-effects to process", type="string", default="")
-parser.add_option("-r", "--remove", help="remove effect files that are not \
-used by any items", action="store_true", dest="remove", default=False)
-parser.add_option("-x", "--remove2", help="remove effect files that do not exist \
-in database", action="store_true", dest="remove2", default=False)
 parser.add_option("-u", "--debug", help="debug level, 0 by default",
                   type="int", default=0)
 (options, args) = parser.parse_args()
@@ -178,20 +172,13 @@ invmarketgroups WHERE marketGroupID = ? LIMIT 1'
 # Compose list of effects w/o symbols which eos doesn't take into
 # consideration, we'll use it to find proper effect IDs from file
 # names
-globalmap_effectnameeos_effectid = {}
-globalmap_effectnameeos_effectnamedb = {}
-STRIPSPEC = "[^A-Za-z0-9]"
+globalmap_effectid_effectnamedb = {}
 cursor.execute(QUERY_ALLEFFECTS)
 for row in cursor:
     effectid = row[0]
     effectnamedb = row[1]
-    effectnameeos = re.sub(STRIPSPEC, "", effectnamedb).lower()
-    # There may be different effects with the same name, so form
-    # sets of IDs
-    if not effectnameeos in globalmap_effectnameeos_effectid:
-        globalmap_effectnameeos_effectid[effectnameeos] = set()
-    globalmap_effectnameeos_effectid[effectnameeos].add(effectid)
-    globalmap_effectnameeos_effectnamedb[effectnameeos] = effectnamedb
+    globalmap_effectid_effectnamedb[effectid] = effectnamedb
+
 # Stage 1
 
 # Published types set
@@ -402,42 +389,31 @@ for typeid in publishedtypes:
                 (set(), len(typenamesplitted))
             globalmap_typeid_typenamecombtuple[typeid][0].add(typenamecomb)
 
-if options.effects:
-    effect_list = options.effects.split(",")
-else:
-    effect_list = []
-    for effect_file in os.listdir(effects_path):
-        if not effect_file.startswith('__'):
-            file_name, file_extension = effect_file.rsplit('.', 1)
-            # Ignore non-py files and exclude implementation-specific 'effects'
-            if file_extension == "py" and not file_name in "__init__":
-                effect_list.append(file_name)
-
 # Stage 2
 
-# Go through effect files one-by-one
-for effect_name in effect_list:
-    effect_file = "{0}.py".format(effect_name)
+effectids_eos = set()
+
+with open(effects_path) as f:
+    for line in f:
+        m = re.match("class Effect(\d+)\(", line)
+        if m:
+            effectid = int(m.group(1))
+            effectids_eos.add(effectid)
+
+# Go through effect definitions
+for effectid in effectids_eos:
     # Stage 2.1
     # Set of items which are affected by current effect
     pereffectlist_usedbytypes = set()
-    if effect_name in globalmap_effectnameeos_effectid:
-        effectids = globalmap_effectnameeos_effectid[effect_name]
-    else:
-        if options.remove2:
-            print(("Warning: effect file " + effect_name +
-              " exists but is not in database, removing"))
-            os.remove(os.path.join(effects_path, effect_file))
-        else:
-            print(("Warning: effect file " + effect_name +
-              " exists but is not in database"))
+    if effectid not in globalmap_effectid_effectnamedb:
+        print(f"Warning: effect {effectid} is defined in eos but not in database")
         continue
-    for effectid in effectids:
-        cursor.execute(QUERY_EFFECTID_TYPEID, (effectid,))
-        for row in cursor:
-            typeid = row[0]
-            if typeid in publishedtypes:
-                pereffectlist_usedbytypes.add(typeid)
+    effectnamedb = globalmap_effectid_effectnamedb[effectid]
+    cursor.execute(QUERY_EFFECTID_TYPEID, (effectid,))
+    for row in cursor:
+        typeid = row[0]
+        if typeid in publishedtypes:
+            pereffectlist_usedbytypes.add(typeid)
     # Number of items affected by current effect
     pereffect_totalaffected = len(pereffectlist_usedbytypes)
 
@@ -500,7 +476,7 @@ for effect_name in effect_list:
 
     stopdebugprints = False
     if DEBUG_LEVEL >= 1:
-        print(("\nEffect:", effect_name))
+        print(("\nEffect:", effectnamedb))
         print(("Total items affected: {0}".format(pereffect_totalaffected)))
 
     # Stage 2.2
@@ -876,20 +852,6 @@ inner score: {5:.3})"
         print(("Type name combinations:", describedbytypenamecomb))
 
     # Stage 2.1
-    # Read effect file and split it into lines
-    effectfile = open(os.path.join(effects_path, effect_file), 'r')
-    effectcontentssource = effectfile.read()
-    effectfile.close()
-    effectLines = effectcontentssource.split("\n")
-    # Delete old comments from file contents
-    numofcommentlines = 0
-    for line in effectLines:
-        if line:
-            if line[0] == "#": numofcommentlines += 1
-            else: break
-        else: break
-    for i in range(numofcommentlines):
-        del effectLines[0]
 
     # These lists will contain IDs and some metadata in tuples
     printing_types = []
@@ -990,7 +952,7 @@ inner score: {5:.3})"
         # Append line for printing to list
         catname = type[2]
         typename = type[1]
-        printstr = "# {0}: {1}".format(catname, typename)
+        printstr = "{0}: {1}".format(catname, typename)
         if validate_string(printstr):
             printing_typelines.append(printstr)
     # Do the same for groups
@@ -1002,7 +964,7 @@ inner score: {5:.3})"
         groupname = group[1]
         described = len(effectmap_groupid_typeid[group[0]][0])
         total = len(globalmap_groupid_typeid[group[0]])
-        printstr = "# {0}s from group: {1} ({2} of {3})".format(catname, groupname, described, total)
+        printstr = "{0}s from group: {1} ({2} of {3})".format(catname, groupname, described, total)
         if validate_string(printstr):
             printing_grouplines.append(printstr)
     # Process categories
@@ -1013,7 +975,7 @@ inner score: {5:.3})"
         catname = category[1]
         described = len(effectmap_categoryid_typeid[category[0]][0])
         total = len(globalmap_categoryid_typeid[category[0]])
-        printstr = "# Items from category: {0} ({1} of {2})".format(catname, described, total)
+        printstr = "Items from category: {0} ({1} of {2})".format(catname, described, total)
         if validate_string(printstr):
             printing_categorylines.append(printstr)
     # Process variations
@@ -1027,7 +989,7 @@ inner score: {5:.3})"
         basename = basetype[1]
         described = len(effectmap_basetypeid_typeid[basetype[0]][0])
         total = len(globalmap_basetypeid_typeid[basetype[0]])
-        printstr = "# Variations of {0}: {1} ({2} of {3})".format(catname, basename, described, total)
+        printstr = "Variations of {0}: {1} ({2} of {3})".format(catname, basename, described, total)
         if validate_string(printstr):
             printing_basetypelines.append(printstr)
     # Process market groups with variations
@@ -1040,7 +1002,7 @@ inner score: {5:.3})"
                         [marketgroup[0]][0])
         total = len(globalmap_marketgroupid_typeidwithvariations
                     [marketgroup[0]])
-        printstr = "# Items from market group: {0} ({1} of {2})".format(marketgroupname, described, total)
+        printstr = "Items from market group: {0} ({1} of {2})".format(marketgroupname, described, total)
         if validate_string(printstr):
             printing_marketgroupwithvarslines.append(printstr)
     # Process type name combinations
@@ -1055,7 +1017,7 @@ inner score: {5:.3})"
         described = len(effectmap_typenamecombtuple_typeid
                         [typenamecomb[0]][0])
         total = len(globalmap_typenamecombtuple_typeid[typenamecomb[0]])
-        printstr = "# {0}s named like: {1} ({2} of {3})".format(catname, namedlike, described, total)
+        printstr = "{0}s named like: {1} ({2} of {3})".format(catname, namedlike, described, total)
         if validate_string(printstr):
             printing_typenamecombtuplelines.append(printstr)
 
@@ -1065,30 +1027,37 @@ inner score: {5:.3})"
     printing_basetypelines + printing_typelines
     # Prepend list with "used by"
     if commentlines:
-        commentlines = ["# %s\n#\n# Used by:" % \
-            globalmap_effectnameeos_effectnamedb[effect_name]]+commentlines
+        commentlines = [f"{effectnamedb}\n\nUsed by:"] + commentlines
     # If effect isn't used, write it to file and to terminal
     else:
-        commentlines = ["# Not used by any item"]
-        if options.remove:
-            print(("Warning: effect file " + effect_name +
-              " is not used by any item, removing"))
-            os.remove(os.path.join(effects_path, effect_file))
-            continue
-        else:
-            print(("Warning: effect file " + effect_name +
-              " is not used by any item"))
-    # Combine "used by" comment lines and actual effect lines
-    outputlines = commentlines + effectLines
-    # Combine all lines into single string
-    effectcontentsprocessed = "\n".join(outputlines)
-    # If we're not debugging and contents actually changed - write
-    # changes to the file
-    if DEBUG_LEVEL == 0 and (effectcontentsprocessed !=
-                             effectcontentssource):
-        effectfile = open(os.path.join(effects_path, effect_file), 'w')
-        effectfile.write(effectcontentsprocessed)
-        effectfile.close()
+        commentlines = ["Not used by any item"]
+        print(f"Warning: effect {effectid} {effectnamedb} is not used by any item")
+    # Prepare docstring
+    docstring = "\n".join(commentlines)
+    docstring = ['"""'] + docstring.splitlines() + ['"""']
+    docstring = [f'    {l}' if l else '' for l in docstring]
+    # If we're not debugging - write changes to the file
+    if DEBUG_LEVEL == 0:
+        with open(effects_path) as f:
+            data = f.read()
+        lines = data.splitlines()
+        effect_idx = None
+        for lineidx, line in enumerate(lines):
+            if line.startswith(f'class Effect{effectid}('):
+                effect_idx = lineidx
+                docstart_idx = effect_idx + 1
+                # Remove docstring if it's there
+                if lines[docstart_idx].strip() == '"""':
+                    docend_idx = None
+                    for docidx, docline in enumerate(lines[docstart_idx + 1:], start=docstart_idx + 1):
+                        if docline.strip() == '"""':
+                            docend_idx = docidx
+                            break
+                    if docend_idx is not None:
+                        lines = lines[:docstart_idx] + lines[docend_idx + 1:]
+        lines = lines[:effect_idx + 1] + docstring + lines[effect_idx + 1:]
+        with open(effects_path, 'w') as f:
+            f.write('\n'.join(lines))
     elif DEBUG_LEVEL >= 2:
         print("Comment to write to file:")
         print(("\n".join(commentlines)))
