@@ -12,7 +12,6 @@ before_install:
   - bash scripts/setup-osx.sh
 install:
   - export PYFA_VERSION="$(python3 scripts/dump_version.py)"
-  - python3 ./scripts/effect_rollup.py
   - bash scripts/package-osx.sh
 before_deploy:
   - export RELEASE_PKG_FILE=$(ls *.deb)
