@@ -8969,9 +8969,12 @@ class Effect2967(EffectDef):
                                          'consumptionQuantity', amount * skill.level)
 
 
-class Effect2977(EffectDef):
+class Effect2979(EffectDef):
     """
-    Not used by any item
+    skillRemoteHullRepairSystemsCapNeedBonus
+
+    Used by:
+    Skill: Remote Hull Repair Systems
     """
 
     type = 'passive'
