@@ -1033,29 +1033,35 @@ inner score: {5:.3})"
         commentlines = ["Not used by any item"]
         print(f"Warning: effect {effectid} {effectnamedb} is not used by any item")
     # Prepare docstring
-    docstring = "\n".join(commentlines)
-    docstring = ['"""'] + docstring.splitlines() + ['"""']
-    docstring = [f'    {l}' if l else '' for l in docstring]
+    docstring_new = "\n".join(commentlines)
+    docstring_new = ['"""'] + docstring_new.splitlines() + ['"""']
+    docstring_new = [f'    {l}' if l else '' for l in docstring_new]
     # If we're not debugging - write changes to the file
     if DEBUG_LEVEL == 0:
         with open(effects_path) as f:
             data = f.read()
         lines = data.splitlines()
         effect_idx = None
+        docstart_idx = None
+        docend_idx = None
         for lineidx, line in enumerate(lines):
             if line.startswith(f'class Effect{effectid}('):
                 effect_idx = lineidx
                 docstart_idx = effect_idx + 1
                 # Remove docstring if it's there
                 if lines[docstart_idx].strip() == '"""':
-                    docend_idx = None
                     for docidx, docline in enumerate(lines[docstart_idx + 1:], start=docstart_idx + 1):
                         if docline.strip() == '"""':
                             docend_idx = docidx
                             break
-                    if docend_idx is not None:
-                        lines = lines[:docstart_idx] + lines[docend_idx + 1:]
-        lines = lines[:effect_idx + 1] + docstring + lines[effect_idx + 1:]
+                break
+        if docstart_idx is not None and docend_idx is not None:
+            docstring_old = lines[docstart_idx:docend_idx + 1]
+            if docstring_new == docstring_old:
+                continue
+            else:
+                lines = lines[:docstart_idx] + lines[docend_idx + 1:]
+        lines = lines[:effect_idx + 1] + docstring_new + lines[effect_idx + 1:] + []
         with open(effects_path, 'w') as f:
             f.write('\n'.join(lines))
     elif DEBUG_LEVEL >= 2:
