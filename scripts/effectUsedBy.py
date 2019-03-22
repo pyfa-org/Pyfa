@@ -1061,7 +1061,9 @@ inner score: {5:.3})"
                 continue
             else:
                 lines = lines[:docstart_idx] + lines[docend_idx + 1:]
-        lines = lines[:effect_idx + 1] + docstring_new + lines[effect_idx + 1:] + []
+        lines = lines[:effect_idx + 1] + docstring_new + lines[effect_idx + 1:]
+        if lines[-1].strip():
+            lines.append('')
         with open(effects_path, 'w') as f:
             f.write('\n'.join(lines))
     elif DEBUG_LEVEL >= 2:
