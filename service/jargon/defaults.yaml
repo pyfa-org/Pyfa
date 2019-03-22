@@ -192,6 +192,7 @@ thra: Thermal Dissipation Amplifier
 knra: Kinetic Deflection Amplifier
 emra: EM Ward Amplifier
 exra: Explosive Deflection Amplifier
+panic: Pulse Activated Nexus Invulnerability Core
 
 # Weapon Upgrades
 bcs: Ballistic Control System
@@ -263,6 +264,7 @@ cbst: Capacitor Booster
 sa: Signal Amplifier
 sigamp: Signal Amplifier
 mapc: Micro Auxiliary Power Core
+nsa: Networked Sensor Array
 
 # Ammo/Charges
 am: Antimatter

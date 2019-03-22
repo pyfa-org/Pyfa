@@ -19,19 +19,12 @@
 
 
 from collections import namedtuple
-from enum import IntEnum, unique
 
+from eos.const import SpoolType
 from eos.utils.float import floatUnerr
 
 
 SpoolOptions = namedtuple('SpoolOptions', ('spoolType', 'spoolAmount', 'force'))
-
-
-@unique
-class SpoolType(IntEnum):
-    SCALE = 0  # [0..1]
-    TIME = 1  # Expressed via time in seconds since spool up started
-    CYCLES = 2  # Expressed in amount of cycles since spool up started
 
 
 def calculateSpoolup(modMaxValue, modStepValue, modCycleTime, spoolType, spoolAmount):

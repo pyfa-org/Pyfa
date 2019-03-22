@@ -150,7 +150,7 @@ class CharacterEntityEditor(EntityEditor):
 class CharacterEditor(wx.Frame):
     def __init__(self, parent):
         wx.Frame.__init__(self, parent, id=wx.ID_ANY, title="pyfa: Character Editor", pos=wx.DefaultPosition,
-                          size=wx.Size(640, 600), style=wx.DEFAULT_FRAME_STYLE ^ wx.RESIZE_BORDER)
+                          size=wx.Size(640, 600), style=wx.DEFAULT_FRAME_STYLE ^ wx.RESIZE_BORDER | wx.FRAME_FLOAT_ON_PARENT)
 
         i = wx.Icon(BitmapLoader.getBitmap("character_small", "gui"))
         self.SetIcon(i)
@@ -353,7 +353,7 @@ class SkillTreeView(wx.Panel):
         self.skillBookDirtyImageId = self.imageList.Add(wx.Icon(BitmapLoader.getBitmap("skill_small_red", "gui")))
 
         tree.AppendColumn("Skill")
-        tree.AppendColumn("Level", align=wx.ALIGN_RIGHT)
+        tree.AppendColumn("Level", align=wx.ALIGN_CENTER)
         # tree.SetMainColumn(0)
 
         self.root = tree.GetRootItem()
@@ -361,13 +361,17 @@ class SkillTreeView(wx.Panel):
         #
         # tree.SetItemText(self.root, 1, "Levels")
 
-        # tree.SetColumnWidth(0, 300)
+        # first one doesn't work right in Windows. Second one doesn't work right in GTK. Together, we make sure it works.
+        # Gotta love wx
+        tree.SetColumnWidth(0, 525)
+        tree.SetColumnWidth(1, 100)
 
         self.btnSecStatus = wx.Button(self, wx.ID_ANY, "Sec Status: {0:.2f}".format(char.secStatus or 0.0))
         self.btnSecStatus.Bind(wx.EVT_BUTTON, self.onSecStatus)
 
         self.populateSkillTree()
 
+        tree.Bind(wx.dataview.EVT_TREELIST_ITEM_ACTIVATED, self.expand)
         tree.Bind(wx.dataview.EVT_TREELIST_ITEM_EXPANDING, self.expandLookup)
         tree.Bind(wx.dataview.EVT_TREELIST_ITEM_CONTEXT_MENU, self.scheduleMenu)
 
@@ -555,9 +559,18 @@ class SkillTreeView(wx.Panel):
         if event:
             event.Skip()
 
+    def expand(self, event):
+        root = event.GetItem()
+        tree = self.skillTreeListCtrl
+        if tree.IsExpanded(root):
+            tree.Collapse(root)
+        else:
+            tree.Expand(root)
+
     def expandLookup(self, event):
         root = event.GetItem()
         tree = self.skillTreeListCtrl
+
         child = tree.GetFirstChild(root)
         if tree.GetItemText(child) == "dummy":
             tree.DeleteItem(child)

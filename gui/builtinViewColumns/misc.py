@@ -28,6 +28,7 @@ from gui.bitmap_loader import BitmapLoader
 from gui.utils.numberFormatter import formatAmount
 from gui.utils.listFormatter import formatList
 from eos.utils.spoolSupport import SpoolType, SpoolOptions
+import eos.config
 
 
 class Miscellanea(ViewColumn):
@@ -117,8 +118,8 @@ class Miscellanea(ViewColumn):
                 text = "{0}".format(formatAmount(trackingSpeed, 3, 0, 3))
                 tooltip = "tracking speed"
                 info.append((text, tooltip))
-            # TODO: fetch spoolup option
-            defaultSpoolValue = 1
+
+            defaultSpoolValue = eos.config.settings['globalDefaultSpoolupPercentage']
             spoolTime = stuff.getSpoolData(spoolOptions=SpoolOptions(SpoolType.SCALE, defaultSpoolValue, False))[1]
             if spoolTime:
                 text = "{0}s".format(formatAmount(spoolTime, 3, 0, 3))
@@ -339,8 +340,7 @@ class Miscellanea(ViewColumn):
             tooltip = "Armor repaired per second"
             return text, tooltip
         elif itemGroup == "Mutadaptive Remote Armor Repairer":
-            # TODO: fetch spoolup option
-            defaultSpoolValue = 1
+            defaultSpoolValue = eos.config.settings['globalDefaultSpoolupPercentage']
             spoolOptDefault = SpoolOptions(SpoolType.SCALE, defaultSpoolValue, False)
             spoolOptPre = SpoolOptions(SpoolType.SCALE, 0, True)
             spoolOptFull = SpoolOptions(SpoolType.SCALE, 1, True)

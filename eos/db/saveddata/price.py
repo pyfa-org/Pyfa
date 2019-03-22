@@ -32,6 +32,4 @@ prices_table = Table("prices", saveddata_meta,
                      Column("status", Integer, nullable=False))
 
 
-mapper(Price, prices_table, properties={
-    "_Price__price": prices_table.c.price,
-})
+mapper(Price, prices_table)

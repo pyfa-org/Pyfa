@@ -526,6 +526,7 @@ class ContextMenuSettings(object):
             "targetResists"         : 1,
             "whProjector"           : 1,
             "moduleFill"            : 1,
+            "spoolup"               : 1,
         }
 
         self.ContextMenuDefaultSettings = SettingsProvider.getInstance().getSettings("pyfaContextMenuSettings", ContextMenuDefaultSettings)

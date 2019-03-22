@@ -30,6 +30,7 @@ pyfalog = Logger(__name__)
 
 
 class Booster(HandledItem, ItemAttrShortcut):
+
     def __init__(self, item):
         self.__item = item
 
@@ -147,3 +148,17 @@ class Booster(HandledItem, ItemAttrShortcut):
             copyEffect.active = sideEffect.active
 
         return copy
+
+    def rebase(self, item):
+        active = self.active
+        sideEffectStates = {se.effectID: se.active for se in self.sideEffects}
+        Booster.__init__(self, item)
+        self.active = active
+        for sideEffect in self.sideEffects:
+            if sideEffect.effectID in sideEffectStates:
+                sideEffect.active = sideEffectStates[sideEffect.effectID]
+
+    def __repr__(self):
+        return "Booster(ID={}, name={}) at {}".format(
+            self.item.ID, self.item.name, hex(id(self))
+        )

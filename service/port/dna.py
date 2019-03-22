@@ -124,7 +124,7 @@ def importDna(string):
     return f
 
 
-def exportDna(fit):
+def exportDna(fit, callback):
     dna = str(fit.shipID)
     subsystems = []  # EVE cares which order you put these in
     mods = OrderedDict()
@@ -174,4 +174,9 @@ def exportDna(fit):
     for charge in charges:
         dna += ":{0};{1}".format(charge, charges[charge])
 
-    return dna + "::"
+    text = dna + "::"
+
+    if callback:
+        callback(text)
+    else:
+        return text

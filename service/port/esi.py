@@ -55,7 +55,7 @@ INV_FLAG_DRONEBAY = 87
 INV_FLAG_FIGHTER = 158
 
 
-def exportESI(ofit):
+def exportESI(ofit, callback):
     # A few notes:
     # max fit name length is 50 characters
     # Most keys are created simply because they are required, but bogus data is okay
@@ -135,7 +135,12 @@ def exportESI(ofit):
     if len(fit['items']) == 0:
         raise ESIExportException("Cannot export fitting: module list cannot be empty.")
 
-    return json.dumps(fit)
+    text = json.dumps(fit)
+
+    if callback:
+        callback(text)
+    else:
+        return text
 
 
 def importESI(string):

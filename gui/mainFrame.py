@@ -37,7 +37,6 @@ import config
 import gui.globalEvents as GE
 from eos.config import gamedata_date, gamedata_version
 from eos.db.saveddata.loadDefaultDatabaseValues import DefaultDatabaseValues
-from eos.db.saveddata.queries import getFit as db_getFit
 # import this to access override setting
 from eos.modifiedAttributeDict import ModifiedAttributeDict
 from gui import graphFrame
@@ -64,11 +63,12 @@ from gui.setEditor import ImplantSetEditorDlg
 from gui.shipBrowser import ShipBrowser
 from gui.statsPane import StatsPane
 from gui.updateDialog import UpdateDialog
-from gui.utils.clipboard import fromClipboard, toClipboard
+from gui.utils.clipboard import fromClipboard
 from service.character import Character
 from service.esi import Esi
 from service.fit import Fit
-from service.port import EfsPort, IPortUser, Port
+from service.port import IPortUser, Port
+from service.price import Price
 from service.settings import HTMLExportSettings, SettingsProvider
 from service.update import Update
 import gui.fitCommands as cmd
@@ -508,6 +508,8 @@ class MainFrame(wx.Frame):
         self.Bind(wx.EVT_MENU, self.saveCharAs, id=menuBar.saveCharAsId)
         # Save current character
         self.Bind(wx.EVT_MENU, self.revertChar, id=menuBar.revertCharId)
+        # Optimize fit price
+        self.Bind(wx.EVT_MENU, self.optimizeFitPrice, id=menuBar.optimizeFitPrice)
 
         # Browse fittings
         self.Bind(wx.EVT_MENU, self.eveFittings, id=menuBar.eveFittingsId)
@@ -655,6 +657,23 @@ class MainFrame(wx.Frame):
         sChr.revertCharacter(charID)
         wx.PostEvent(self, GE.CharListUpdated())
 
+    def optimizeFitPrice(self, event):
+        fitID = self.getActiveFit()
+        sFit = Fit.getInstance()
+        fit = sFit.getFit(fitID)
+
+        if fit:
+            def updateFitCb(replacementsCheaper):
+                del self.waitDialog
+                del self.disablerAll
+                rebaseMap = {k.ID: v.ID for k, v in replacementsCheaper.items()}
+                self.command.Submit(cmd.GuiRebaseItemsCommand(fitID, rebaseMap))
+
+            fitItems = {i for i in Fit.fitItemIter(fit) if i is not fit.ship.item}
+            self.disablerAll = wx.WindowDisabler()
+            self.waitDialog = wx.BusyInfo("Please Wait...", parent=self)
+            Price.getInstance().findCheaperReplacements(fitItems, updateFitCb, fetchTimeout=10)
+
     def AdditionsTabSelect(self, event):
         selTab = self.additionsSelect.index(event.GetId())
 
@@ -688,30 +707,6 @@ class MainFrame(wx.Frame):
         else:
             self.marketBrowser.search.Focus()
 
-    def clipboardEft(self, options):
-        fit = db_getFit(self.getActiveFit())
-        toClipboard(Port.exportEft(fit, options))
-
-    def clipboardDna(self, options):
-        fit = db_getFit(self.getActiveFit())
-        toClipboard(Port.exportDna(fit))
-
-    def clipboardEsi(self, options):
-        fit = db_getFit(self.getActiveFit())
-        toClipboard(Port.exportESI(fit))
-
-    def clipboardXml(self, options):
-        fit = db_getFit(self.getActiveFit())
-        toClipboard(Port.exportXml(None, fit))
-
-    def clipboardMultiBuy(self, options):
-        fit = db_getFit(self.getActiveFit())
-        toClipboard(Port.exportMultiBuy(fit, options))
-
-    def clipboardEfs(self, options):
-        fit = db_getFit(self.getActiveFit())
-        toClipboard(EfsPort.exportEfs(fit, 0))
-
     def importFromClipboard(self, event):
         clipboard = fromClipboard()
         activeFit = self.getActiveFit()
@@ -728,28 +723,8 @@ class MainFrame(wx.Frame):
             self._openAfterImport(importData)
 
     def exportToClipboard(self, event):
-        CopySelectDict = {CopySelectDialog.copyFormatEft: self.clipboardEft,
-                          CopySelectDialog.copyFormatXml: self.clipboardXml,
-                          CopySelectDialog.copyFormatDna: self.clipboardDna,
-                          CopySelectDialog.copyFormatEsi: self.clipboardEsi,
-                          CopySelectDialog.copyFormatMultiBuy: self.clipboardMultiBuy,
-                          CopySelectDialog.copyFormatEfs: self.clipboardEfs}
-        dlg = CopySelectDialog(self)
-        btnPressed = dlg.ShowModal()
-
-        if btnPressed == wx.ID_OK:
-            selected = dlg.GetSelected()
-            options = dlg.GetOptions()
-
-            settings = SettingsProvider.getInstance().getSettings("pyfaExport")
-            settings["format"] = selected
-            settings["options"] = options
-            CopySelectDict[selected](options.get(selected))
-
-        try:
-            dlg.Destroy()
-        except RuntimeError:
-            pyfalog.error("Tried to destroy an object that doesn't exist in <exportToClipboard>.")
+        with CopySelectDialog(self) as dlg:
+            dlg.ShowModal()
 
     def exportSkillsNeeded(self, event):
         """ Exports skills needed for active fit and active character """

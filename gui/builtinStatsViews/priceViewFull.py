@@ -22,7 +22,7 @@ import wx
 from gui.statsView import StatsView
 from gui.bitmap_loader import BitmapLoader
 from gui.utils.numberFormatter import formatAmount
-from service.price import Price
+from service.price import Fit, Price
 from service.settings import PriceMenuSettings
 
 
@@ -51,7 +51,7 @@ class PriceViewFull(StatsView):
 
         gridPrice = wx.GridSizer(2, 3, 0, 0)
         contentSizer.Add(gridPrice, 0, wx.EXPAND | wx.ALL, 0)
-        for _type in ("ship", "fittings", "total", "drones", "cargoBay", "character"):
+        for _type in ("ship", "fittings", "character", "drones", "cargoBay", "total"):
             if _type in "ship":
                 image = "ship_big"
             elif _type in ("fittings", "total"):
@@ -79,11 +79,8 @@ class PriceViewFull(StatsView):
     def refreshPanel(self, fit):
         if fit is not None:
             self.fit = fit
-
-            fit_items = Price.fitItemsList(fit)
-
-            sPrice = Price.getInstance()
-            sPrice.getPrices(fit_items, self.processPrices)
+            fit_items = set(Fit.fitItemIter(fit))
+            Price.getInstance().getPrices(fit_items, self.processPrices, fetchTimeout=30)
             self.labelEMStatus.SetLabel("Updating prices...")
 
         self.refreshPanelPrices(fit)

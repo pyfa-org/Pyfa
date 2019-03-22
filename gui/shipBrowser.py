@@ -168,9 +168,8 @@ class ShipBrowser(wx.Panel):
 
             # set map & cache of fittings per category
             for cat in self.categoryList:
-                itemIDs = [x.ID for x in cat.items]
+                itemIDs = [x.ID for x in sMkt.getItemsByGroup(cat)]
                 self.categoryFitCache[cat.ID] = sum([count for shipID, count in counts if shipID in itemIDs]) > 0
-
         for ship in self.categoryList:
             if self.filterShipsWithNoFits and not self.categoryFitCache[ship.ID]:
                 continue

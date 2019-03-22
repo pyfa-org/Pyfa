@@ -384,6 +384,32 @@ class Fit(object):
         else:
             return val
 
+    def canFit(self, item):
+        # Whereas Module.fits() deals with current state of the fit in order to determine if somethign fits (for example maxGroupFitted which can be modified by effects),
+        # this function should be used against Items to see if the item is even allowed on the fit with rules that don't change
+
+        fitsOnType = set()
+        fitsOnGroup = set()
+
+        shipType = item.attributes.get("fitsToShipType", None)
+        if shipType is not None:
+            fitsOnType.add(shipType.value)
+
+        fitsOnType.update([item.attributes[attr].value for attr in item.attributes if attr.startswith("canFitShipType")])
+        fitsOnGroup.update([item.attributes[attr].value for attr in item.attributes if attr.startswith("canFitShipGroup")])
+
+        if (len(fitsOnGroup) > 0 or len(fitsOnType) > 0) \
+                and self.ship.item.group.ID not in fitsOnGroup \
+                and self.ship.item.ID not in fitsOnType:
+            return False
+
+        # Citadel modules are now under a new category, so we can check this to ensure only structure modules can fit on a citadel
+        if isinstance(self.ship, Citadel) and item.category.name != "Structure Module" or \
+                not isinstance(self.ship, Citadel) and item.category.name == "Structure Module":
+            return False
+
+        return True
+
     def clear(self, projected=False, command=False):
         self.__effectiveTank = None
         self.__weaponDpsMap = {}

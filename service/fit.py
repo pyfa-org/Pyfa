@@ -555,9 +555,26 @@ class Fit(FitDeprecated):
                 changed = True
 
         return changed
-        # If any state was changed, recalculate attributes again
-        # if changed:
-        #     self.recalc(fit)
+
+    @classmethod
+    def fitObjectIter(cls, fit):
+        yield fit.ship
+
+        for mod in fit.modules:
+            if not mod.isEmpty:
+                yield mod
+
+        for container in (fit.drones, fit.fighters, fit.implants, fit.boosters, fit.cargo):
+            for obj in container:
+                yield obj
+
+    @classmethod
+    def fitItemIter(cls, fit):
+        for fitobj in cls.fitObjectIter(fit):
+            yield fitobj.item
+            charge = getattr(fitobj, 'charge', None)
+            if charge:
+                yield charge
 
     def refreshFit(self, fitID):
         pyfalog.debug("Refresh fit for fit ID: {0}", fitID)

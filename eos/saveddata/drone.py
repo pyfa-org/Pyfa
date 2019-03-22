@@ -296,6 +296,13 @@ class Drone(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
         copy.amountActive = self.amountActive
         return copy
 
+    def rebase(self, item):
+        amount = self.amount
+        amountActive = self.amountActive
+        Drone.__init__(self, item)
+        self.amount = amount
+        self.amountActive = amountActive
+
     def fits(self, fit):
         fitDroneGroupLimits = set()
         for i in range(1, 3):

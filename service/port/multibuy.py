@@ -19,52 +19,76 @@
 
 
 from service.const import PortMultiBuyOptions
+from service.price import Price as sPrc
+
 
 MULTIBUY_OPTIONS = (
-    (PortMultiBuyOptions.LOADED_CHARGES.value, 'Loaded Charges', 'Export charges loaded into modules', True),
-    (PortMultiBuyOptions.IMPLANTS.value, 'Implants && Boosters', 'Export implants and boosters', False),
-    (PortMultiBuyOptions.CARGO.value, 'Cargo', 'Export cargo contents', True),
+    (PortMultiBuyOptions.LOADED_CHARGES, 'Loaded Charges', 'Export charges loaded into modules', True),
+    (PortMultiBuyOptions.IMPLANTS, 'Implants && Boosters', 'Export implants and boosters', False),
+    (PortMultiBuyOptions.CARGO, 'Cargo', 'Export cargo contents', True),
+    (PortMultiBuyOptions.OPTIMIZE_PRICES, 'Optimize Prices', 'Replace items by cheaper alternatives', False),
 )
 
 
-def exportMultiBuy(fit, options):
-    itemCounts = {}
-
-    def addItem(item, quantity=1):
-        if item not in itemCounts:
-            itemCounts[item] = 0
-        itemCounts[item] += quantity
+def exportMultiBuy(fit, options, callback):
+    itemAmounts = {}
 
     for module in fit.modules:
         if module.item:
             # Mutated items are of no use for multibuy
             if module.isMutated:
                 continue
-            addItem(module.item)
-        if module.charge and options[PortMultiBuyOptions.LOADED_CHARGES.value]:
-            addItem(module.charge, module.numCharges)
+            _addItem(itemAmounts, module.item)
+        if module.charge and options[PortMultiBuyOptions.LOADED_CHARGES]:
+            _addItem(itemAmounts, module.charge, module.numCharges)
 
     for drone in fit.drones:
-        addItem(drone.item, drone.amount)
+        _addItem(itemAmounts, drone.item, drone.amount)
 
     for fighter in fit.fighters:
-        addItem(fighter.item, fighter.amountActive)
+        _addItem(itemAmounts, fighter.item, fighter.amountActive)
 
-    if options[PortMultiBuyOptions.CARGO.value]:
+    if options[PortMultiBuyOptions.CARGO]:
         for cargo in fit.cargo:
-            addItem(cargo.item, cargo.amount)
+            _addItem(itemAmounts, cargo.item, cargo.amount)
 
-    if options[PortMultiBuyOptions.IMPLANTS.value]:
+    if options[PortMultiBuyOptions.IMPLANTS]:
         for implant in fit.implants:
-            addItem(implant.item)
+            _addItem(itemAmounts, implant.item)
 
         for booster in fit.boosters:
-            addItem(booster.item)
+            _addItem(itemAmounts, booster.item)
 
+    if options[PortMultiBuyOptions.OPTIMIZE_PRICES]:
+
+        def formatCheaperExportCb(replacementsCheaper):
+            updatedAmounts = {}
+            for item, itemAmount in itemAmounts.items():
+                _addItem(updatedAmounts, replacementsCheaper.get(item, item), itemAmount)
+            string = _prepareString(fit.ship.item, updatedAmounts)
+            callback(string)
+
+        priceSvc = sPrc.getInstance()
+        priceSvc.findCheaperReplacements(itemAmounts, formatCheaperExportCb)
+    else:
+        string = _prepareString(fit.ship.item, itemAmounts)
+        if callback:
+            callback(string)
+        else:
+            return string
+
+
+def _addItem(container, item, quantity=1):
+    if item not in container:
+        container[item] = 0
+    container[item] += quantity
+
+
+def _prepareString(shipItem, itemAmounts):
     exportLines = []
-    exportLines.append(fit.ship.item.name)
-    for item in sorted(itemCounts, key=lambda i: (i.group.category.name, i.group.name, i.name)):
-        count = itemCounts[item]
+    exportLines.append(shipItem.name)
+    for item in sorted(itemAmounts, key=lambda i: (i.group.category.name, i.group.name, i.name)):
+        count = itemAmounts[item]
         if count == 1:
             exportLines.append(item.name)
         else:

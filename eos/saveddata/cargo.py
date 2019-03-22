@@ -89,3 +89,13 @@ class Cargo(HandledItem, ItemAttrShortcut):
         copy = Cargo(self.item)
         copy.amount = self.amount
         return copy
+
+    def rebase(self, item):
+        amount = self.amount
+        Cargo.__init__(self, item)
+        self.amount = amount
+
+    def __repr__(self):
+        return "Cargo(ID={}, name={}) at {}".format(
+            self.item.ID, self.item.name, hex(id(self))
+        )

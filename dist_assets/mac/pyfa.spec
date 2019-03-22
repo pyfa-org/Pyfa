@@ -35,7 +35,7 @@ import_these = [
 icon = os.path.join(os.getcwd(), "dist_assets", "mac", "pyfa.icns")
 
 # Walk directories that do dynamic importing
-paths = ('eos/effects', 'eos/db/migrations', 'service/conversions')
+paths = ('eos/db/migrations', 'service/conversions')
 for root, folders, files in chain.from_iterable(os.walk(path) for path in paths):
     for file_ in files:
         if file_.endswith(".py") and not file_.startswith("_"):

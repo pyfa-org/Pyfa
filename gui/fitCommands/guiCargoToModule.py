@@ -21,7 +21,7 @@ class GuiCargoToModuleCommand(wx.Command):
     """
 
     def __init__(self, fitID, moduleIdx, cargoIdx, copy=False):
-        wx.Command.__init__(self, True, "Module State Change")
+        wx.Command.__init__(self, True, "Cargo to Module")
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
         self.sFit = Fit.getInstance()
         self.fitID = fitID

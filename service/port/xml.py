@@ -226,14 +226,13 @@ def importXml(text, iportuser):
     return fit_list
 
 
-def exportXml(iportuser, *fits):
+def exportXml(iportuser, callback, *fits):
     doc = xml.dom.minidom.Document()
     fittings = doc.createElement("fittings")
     # fit count
     fit_count = len(fits)
     fittings.setAttribute("count", "%s" % fit_count)
     doc.appendChild(fittings)
-    sFit = svcFit.getInstance()
 
     for i, fit in enumerate(fits):
         try:
@@ -324,4 +323,9 @@ def exportXml(iportuser, *fits):
                     iportuser, IPortUser.PROCESS_EXPORT | IPortUser.ID_UPDATE,
                     (i, "convert to xml (%s/%s) %s" % (i + 1, fit_count, fit.ship.name))
                 )
-    return doc.toprettyxml()
+    text = doc.toprettyxml()
+
+    if callback:
+        callback(text)
+    else:
+        return text

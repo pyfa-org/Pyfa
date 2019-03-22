@@ -355,6 +355,17 @@ class Fighter(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
             copyAbility.active = ability.active
         return copy
 
+    def rebase(self, item):
+        amount = self.amount
+        active = self.active
+        abilityEffectStates = {a.effectID: a.active for a in self.abilities}
+        Fighter.__init__(self, item)
+        self.amount = amount
+        self.active = active
+        for ability in self.abilities:
+            if ability.effectID in abilityEffectStates:
+                ability.active = abilityEffectStates[ability.effectID]
+
     def fits(self, fit):
         # If ships doesn't support this type of fighter, don't add it
         if fit.getNumSlots(self.slot) == 0:
