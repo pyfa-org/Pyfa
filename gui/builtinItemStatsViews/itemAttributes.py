@@ -262,8 +262,6 @@ class ItemParams(wx.Panel):
         for i in range(self.paramList.GetMainWindow().GetColumnCount()):
             self.paramList.SetColumnWidth(i, wx.LIST_AUTOSIZE)
 
-    def GetData(self, attr):
-
     def GetData(self, attr, displayOveride = None):
         info = self.attrInfo.get(attr)
         att = self.attrValues[attr]
