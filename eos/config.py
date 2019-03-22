@@ -15,8 +15,6 @@ gamedata_date = ""
 gamedata_connectionstring = 'sqlite:///' + realpath(join(dirname(abspath(__file__)), "..", "eve.db"))
 pyfalog.debug("Gamedata connection string: {0}", gamedata_connectionstring)
 
-use_all_effect_module = True
-
 if istravis is True or hasattr(sys, '_called_from_test'):
     # Running in Travis. Run saveddata database in memory.
     saveddata_connectionstring = 'sqlite:///:memory:'
