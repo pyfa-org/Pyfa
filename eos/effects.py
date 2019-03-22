@@ -7724,9 +7724,9 @@ class Effect2735(EffectDef):
     displayName = 'Armor Capacity'
     type = 'boosterSideEffect'
 
-    @staticmethod
-    def handler(fit, booster, context):
-        fit.ship.boostItemAttr('armorHP', booster.getModifiedItemAttr(attr))
+    @classmethod
+    def handler(cls, fit, booster, context):
+        fit.ship.boostItemAttr('armorHP', booster.getModifiedItemAttr(cls.attr))
 
 
 class Effect2736(EffectDef):
@@ -7743,10 +7743,10 @@ class Effect2736(EffectDef):
     displayName = 'Armor Repair Amount'
     type = 'boosterSideEffect'
 
-    @staticmethod
-    def handler(fit, booster, context):
+    @classmethod
+    def handler(cls, fit, booster, context):
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Armor Repair Unit',
-                                      'armorDamageAmount', booster.getModifiedItemAttr(attr))
+                                      'armorDamageAmount', booster.getModifiedItemAttr(cls.attr))
 
 
 class Effect2737(EffectDef):
@@ -7761,9 +7761,9 @@ class Effect2737(EffectDef):
     displayName = 'Shield Capacity'
     type = 'boosterSideEffect'
 
-    @staticmethod
-    def handler(fit, booster, context):
-        fit.ship.boostItemAttr('shieldCapacity', booster.getModifiedItemAttr(attr))
+    @classmethod
+    def handler(cls, fit, booster, context):
+        fit.ship.boostItemAttr('shieldCapacity', booster.getModifiedItemAttr(cls.attr))
 
 
 class Effect2739(EffectDef):
@@ -7780,10 +7780,10 @@ class Effect2739(EffectDef):
     displayName = 'Turret Optimal Range'
     type = 'boosterSideEffect'
 
-    @staticmethod
-    def handler(fit, booster, context):
+    @classmethod
+    def handler(cls, fit, booster, context):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Gunnery'),
-                                      'maxRange', booster.getModifiedItemAttr(attr))
+                                      'maxRange', booster.getModifiedItemAttr(cls.attr))
 
 
 class Effect2741(EffectDef):
@@ -7799,10 +7799,10 @@ class Effect2741(EffectDef):
     displayName = 'Turret Falloff'
     type = 'boosterSideEffect'
 
-    @staticmethod
-    def handler(fit, booster, context):
+    @classmethod
+    def handler(cls, fit, booster, context):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Gunnery'),
-                                      'falloff', booster.getModifiedItemAttr(attr))
+                                      'falloff', booster.getModifiedItemAttr(cls.attr))
 
 
 class Effect2745(EffectDef):
@@ -7818,9 +7818,9 @@ class Effect2745(EffectDef):
     displayName = 'Cap Capacity'
     type = 'boosterSideEffect'
 
-    @staticmethod
-    def handler(fit, booster, context):
-        fit.ship.boostItemAttr('capacitorCapacity', booster.getModifiedItemAttr(attr))
+    @classmethod
+    def handler(cls, fit, booster, context):
+        fit.ship.boostItemAttr('capacitorCapacity', booster.getModifiedItemAttr(cls.attr))
 
 
 class Effect2746(EffectDef):
@@ -7836,9 +7836,9 @@ class Effect2746(EffectDef):
     displayName = 'Velocity'
     type = 'boosterSideEffect'
 
-    @staticmethod
-    def handler(fit, booster, context):
-        fit.ship.boostItemAttr('maxVelocity', booster.getModifiedItemAttr(attr))
+    @classmethod
+    def handler(cls, fit, booster, context):
+        fit.ship.boostItemAttr('maxVelocity', booster.getModifiedItemAttr(cls.attr))
 
 
 class Effect2747(EffectDef):
@@ -7854,10 +7854,10 @@ class Effect2747(EffectDef):
     displayName = 'Turret Tracking'
     type = 'boosterSideEffect'
 
-    @staticmethod
-    def handler(fit, booster, context):
+    @classmethod
+    def handler(cls, fit, booster, context):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Gunnery'),
-                                      'trackingSpeed', booster.getModifiedItemAttr(attr))
+                                      'trackingSpeed', booster.getModifiedItemAttr(cls.attr))
 
 
 class Effect2748(EffectDef):
@@ -7873,10 +7873,10 @@ class Effect2748(EffectDef):
     displayName = 'Missile Velocity'
     type = 'boosterSideEffect'
 
-    @staticmethod
-    def handler(fit, booster, context):
+    @classmethod
+    def handler(cls, fit, booster, context):
         fit.modules.filteredChargeBoost(lambda mod: mod.charge.requiresSkill('Missile Launcher Operation'),
-                                        'maxVelocity', booster.getModifiedItemAttr(attr))
+                                        'maxVelocity', booster.getModifiedItemAttr(cls.attr))
 
 
 class Effect2749(EffectDef):
@@ -7891,10 +7891,10 @@ class Effect2749(EffectDef):
     displayName = 'Missile Explosion Velocity'
     type = 'boosterSideEffect'
 
-    @staticmethod
-    def handler(fit, booster, context):
+    @classmethod
+    def handler(cls, fit, booster, context):
         fit.modules.filteredChargeBoost(lambda mod: mod.charge.requiresSkill('Missile Launcher Operation'),
-                                        'aoeVelocity', booster.getModifiedItemAttr(attr))
+                                        'aoeVelocity', booster.getModifiedItemAttr(cls.attr))
 
 
 class Effect2756(EffectDef):
@@ -8047,10 +8047,10 @@ class Effect2791(EffectDef):
     displayName = 'Missile Explosion Radius'
     type = 'boosterSideEffect'
 
-    @staticmethod
-    def handler(fit, booster, context):
+    @classmethod
+    def handler(cls, fit, booster, context):
         fit.modules.filteredChargeBoost(lambda mod: mod.charge.requiresSkill('Missile Launcher Operation'),
-                                        'aoeCloudSize', booster.getModifiedItemAttr(attr))
+                                        'aoeCloudSize', booster.getModifiedItemAttr(cls.attr))
 
 
 class Effect2792(EffectDef):
