@@ -46,7 +46,6 @@ class ItemMutator(wx.Panel):
 
 
         for m in sorted(stuff.mutators.values(), key=lambda x: x.attribute.displayName):
-            highIsGood = m.highIsGood
             # Format: [raw value, modifier applied to base raw value, display value]
             range1 = (m.minValue, m.attribute.unit.SimplifyValue(m.minValue))
             range2 = (m.maxValue, m.attribute.unit.SimplifyValue(m.maxValue))
@@ -61,7 +60,7 @@ class ItemMutator(wx.Panel):
                 minRange = range2
                 maxRange = range1
 
-            if (highIsGood and minRange[0] >= maxRange[0]) or (not highIsGood and minRange[0] <= maxRange[0]):
+            if (m.highIsGoodDisplay and minRange[0] >= maxRange[0]) or (not m.highIsGoodDisplay and minRange[0] <= maxRange[0]):
                 betterRange = minRange
                 worseRange = maxRange
             else:

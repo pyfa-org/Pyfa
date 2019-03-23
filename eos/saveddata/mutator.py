@@ -107,6 +107,10 @@ class Mutator(EqBase):
         return self.baseAttribute.highIsGood
 
     @property
+    def highIsGoodDisplay(self):
+        return self.baseAttribute.highIsGoodDisplay
+
+    @property
     def minMod(self):
         return round(self.dynamicAttribute.min, 3)
 

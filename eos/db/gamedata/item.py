@@ -49,7 +49,7 @@ from .traits import traits_table  # noqa
 mapper(Item, items_table,
        properties={
            "group"            : relation(Group, backref=backref("items", cascade="all,delete")),
-           "_Item__attributes": relation(Attribute, cascade='all, delete, delete-orphan', collection_class=attribute_mapped_collection('name'), backref="item"),
+           "_Item__attributes": relation(Attribute, cascade='all, delete, delete-orphan', collection_class=attribute_mapped_collection('name'), backref='item'),
            "effects": relation(Effect, secondary=typeeffects_table, collection_class=attribute_mapped_collection('name')),
            "metaGroup"        : relation(MetaType,
                                          primaryjoin=metatypes_table.c.typeID == items_table.c.typeID,
