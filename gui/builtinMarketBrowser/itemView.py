@@ -202,7 +202,7 @@ class ItemView(Display):
             mktgrpid = sMkt.getMarketGroupByItem(item).ID
         except AttributeError:
             mktgrpid = -1
-            print(("unable to find market group for", item.name))
+            pyfalog.warning("unable to find market group for {}".format(item.name))
         parentname = sMkt.getParentItemByItem(item).name
         # Get position of market group
         metagrpid = sMkt.getMetaGroupIdByItem(item)

@@ -171,9 +171,6 @@ def defPaths(customSavePath=None):
     eos.config.saveddata_connectionstring = "sqlite:///" + saveDB + "?check_same_thread=False"
     eos.config.gamedata_connectionstring = "sqlite:///" + gameDB + "?check_same_thread=False"
 
-    print(eos.config.saveddata_connectionstring)
-    print(eos.config.gamedata_connectionstring)
-
     # initialize the settings
     from service.settings import EOSSettings
     eos.config.settings = EOSSettings.getInstance().EOSSettings  # this is kind of confusing, but whatever

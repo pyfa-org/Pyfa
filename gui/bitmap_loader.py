@@ -27,7 +27,8 @@ from logbook import Logger
 
 import config
 
-logging = Logger(__name__)
+
+pyfalog = Logger(__name__)
 
 
 class BitmapLoader(object):
@@ -38,7 +39,7 @@ class BitmapLoader(object):
     #     logging.info("Using local image files.")
     #     archive = None
 
-    logging.info("Using local image files.")
+    pyfalog.info("Using local image files.")
     archive = None
 
     cached_bitmaps = OrderedDict()
@@ -93,7 +94,7 @@ class BitmapLoader(object):
             filename, img = cls.loadScaledBitmap(name, location, scale)
 
         if img is None:
-            print(("Missing icon file: {0}/{1}".format(location, filename)))
+            pyfalog.warning("Missing icon file: {0}/{1}".format(location, filename))
             return None
 
         bmp: wx.Bitmap = img.ConvertToBitmap()
@@ -130,7 +131,7 @@ class BitmapLoader(object):
                 sbuf = io.StringIO(img_data)
                 return wx.ImageFromStream(sbuf)
             except KeyError:
-                print(("Missing icon file from zip: {0}".format(path)))
+                pyfalog.warning("Missing icon file from zip: {0}".format(path))
         else:
             path = os.path.join(config.pyfaPath, 'imgs' + os.sep + location + os.sep + filename)
 
