@@ -73,7 +73,7 @@ class FighterAbility(object):
 
     @property
     def name(self):
-        return self.__effect.getattr('displayName') or self.__effect.handlerName
+        return self.__effect.getattr('displayName') or self.__effect.name
 
     @property
     def attrPrefix(self):

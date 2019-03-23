@@ -140,7 +140,7 @@ class Effect(EqBase):
         Whether this effect is implemented in code or not,
         unimplemented effects simply do nothing at all when run
         """
-        return self.handler is not eos.effects.EffectDef.handler
+        return self.__effectDef is not None
 
     def isType(self, type):
         """
@@ -157,7 +157,7 @@ class Effect(EqBase):
             effectDefName = "Effect{}".format(self.ID)
             pyfalog.debug("Loading {0} ({1})".format(self.name, effectDefName))
             self.__effectDef = effectDef = getattr(eos.effects, effectDefName)
-            self.__handler = getattr(effectDef, "handler", eos.effects.EffectDef.handler)
+            self.__handler = getattr(effectDef, "handler", eos.effects.BaseEffect.handler)
             self.__runTime = getattr(effectDef, "runTime", "normal")
             self.__activeByDefault = getattr(effectDef, "activeByDefault", True)
             effectType = getattr(effectDef, "type", None)
@@ -165,20 +165,20 @@ class Effect(EqBase):
             self.__type = effectType
         except ImportError as e:
             # Effect probably doesn't exist, so create a dummy effect and flag it with a warning.
-            self.__handler = eos.effects.EffectDef.handler
+            self.__handler = eos.effects.DummyEffect.handler
             self.__runTime = "normal"
             self.__activeByDefault = True
             self.__type = None
             pyfalog.debug("ImportError generating handler: {0}", e)
         except AttributeError as e:
             # Effect probably exists but there is an issue with it.  Turn it into a dummy effect so we can continue, but flag it with an error.
-            self.__handler = eos.effects.EffectDef.handler
+            self.__handler = eos.effects.DummyEffect.handler
             self.__runTime = "normal"
             self.__activeByDefault = True
             self.__type = None
             pyfalog.error("AttributeError generating handler: {0}", e)
         except Exception as e:
-            self.__handler = eos.effects.EffectDef.handler
+            self.__handler = eos.effects.DummyEffect.handler
             self.__runTime = "normal"
             self.__activeByDefault = True
             self.__type = None

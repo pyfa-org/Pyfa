@@ -23,14 +23,18 @@ from eos.const import FittingModuleState
 from eos.utils.spoolSupport import SpoolType, SpoolOptions, calculateSpoolup, resolveSpoolOptions
 
 
-class EffectDef:
+class BaseEffect:
 
     @staticmethod
     def handler(fit, module, context, *args, **kwargs):
         pass
 
 
-class Effect4(EffectDef):
+class DummyEffect(BaseEffect):
+    pass
+
+
+class Effect4(BaseEffect):
     """
     shieldBoosting
 
@@ -48,7 +52,7 @@ class Effect4(EffectDef):
         fit.extraAttributes.increase('shieldRepair', amount / speed)
 
 
-class Effect10(EffectDef):
+class Effect10(BaseEffect):
     """
     targetAttack
 
@@ -65,7 +69,7 @@ class Effect10(EffectDef):
         module.reloadTime = 1000
 
 
-class Effect17(EffectDef):
+class Effect17(BaseEffect):
     """
     mining
 
@@ -85,7 +89,7 @@ class Effect17(EffectDef):
             container.multiplyItemAttr('miningAmount', miningDroneAmountPercent / 100)
 
 
-class Effect21(EffectDef):
+class Effect21(BaseEffect):
     """
     shieldCapacityBonusOnline
 
@@ -101,7 +105,7 @@ class Effect21(EffectDef):
         fit.ship.increaseItemAttr('shieldCapacity', module.getModifiedItemAttr('capacityBonus'))
 
 
-class Effect25(EffectDef):
+class Effect25(BaseEffect):
     """
     capacitorCapacityBonus
 
@@ -116,7 +120,7 @@ class Effect25(EffectDef):
         fit.ship.increaseItemAttr('capacitorCapacity', ship.getModifiedItemAttr('capacitorBonus'))
 
 
-class Effect26(EffectDef):
+class Effect26(BaseEffect):
     """
     structureRepair
 
@@ -134,7 +138,7 @@ class Effect26(EffectDef):
         fit.extraAttributes.increase('hullRepair', amount / speed)
 
 
-class Effect27(EffectDef):
+class Effect27(BaseEffect):
     """
     armorRepair
 
@@ -155,7 +159,7 @@ class Effect27(EffectDef):
         fit.extraAttributes.increase('armorRepairFullSpool', rps)
 
 
-class Effect34(EffectDef):
+class Effect34(BaseEffect):
     """
     projectileFired
 
@@ -176,7 +180,7 @@ class Effect34(EffectDef):
             module.reloadTime = rt
 
 
-class Effect38(EffectDef):
+class Effect38(BaseEffect):
     """
     empWave
 
@@ -187,7 +191,7 @@ class Effect38(EffectDef):
     type = 'active'
 
 
-class Effect39(EffectDef):
+class Effect39(BaseEffect):
     """
     warpDisrupt
 
@@ -203,7 +207,7 @@ class Effect39(EffectDef):
             fit.ship.increaseItemAttr('warpScrambleStatus', module.getModifiedItemAttr('warpScrambleStrength'))
 
 
-class Effect48(EffectDef):
+class Effect48(BaseEffect):
     """
     powerBooster
 
@@ -226,7 +230,7 @@ class Effect48(EffectDef):
         module.itemModifiedAttributes['capacitorNeed'] = -capAmount
 
 
-class Effect50(EffectDef):
+class Effect50(BaseEffect):
     """
     modifyShieldRechargeRate
 
@@ -245,7 +249,7 @@ class Effect50(EffectDef):
         fit.ship.multiplyItemAttr('shieldRechargeRate', module.getModifiedItemAttr('shieldRechargeRateMultiplier') or 1)
 
 
-class Effect51(EffectDef):
+class Effect51(BaseEffect):
     """
     modifyPowerRechargeRate
 
@@ -265,7 +269,7 @@ class Effect51(EffectDef):
         fit.ship.multiplyItemAttr('rechargeRate', module.getModifiedItemAttr('capacitorRechargeRateMultiplier'))
 
 
-class Effect55(EffectDef):
+class Effect55(BaseEffect):
     """
     targetHostiles
 
@@ -276,7 +280,7 @@ class Effect55(EffectDef):
     type = 'active'
 
 
-class Effect56(EffectDef):
+class Effect56(BaseEffect):
     """
     powerOutputMultiply
 
@@ -297,7 +301,7 @@ class Effect56(EffectDef):
         fit.ship.multiplyItemAttr('powerOutput', module.getModifiedItemAttr('powerOutputMultiplier', None))
 
 
-class Effect57(EffectDef):
+class Effect57(BaseEffect):
     """
     shieldCapacityMultiply
 
@@ -317,7 +321,7 @@ class Effect57(EffectDef):
         fit.ship.multiplyItemAttr('shieldCapacity', module.getModifiedItemAttr('shieldCapacityMultiplier', None))
 
 
-class Effect58(EffectDef):
+class Effect58(BaseEffect):
     """
     capacitorCapacityMultiply
 
@@ -338,7 +342,7 @@ class Effect58(EffectDef):
         fit.ship.multiplyItemAttr('capacitorCapacity', module.getModifiedItemAttr('capacitorCapacityMultiplier', None))
 
 
-class Effect59(EffectDef):
+class Effect59(BaseEffect):
     """
     cargoCapacityMultiply
 
@@ -355,7 +359,7 @@ class Effect59(EffectDef):
         fit.ship.multiplyItemAttr('capacity', module.getModifiedItemAttr('cargoCapacityMultiplier'))
 
 
-class Effect60(EffectDef):
+class Effect60(BaseEffect):
     """
     structureHPMultiply
 
@@ -371,7 +375,7 @@ class Effect60(EffectDef):
         fit.ship.multiplyItemAttr('hp', module.getModifiedItemAttr('structureHPMultiplier'))
 
 
-class Effect61(EffectDef):
+class Effect61(BaseEffect):
     """
     agilityBonus
 
@@ -386,7 +390,7 @@ class Effect61(EffectDef):
         fit.ship.increaseItemAttr('agility', src.getModifiedItemAttr('agilityBonusAdd'))
 
 
-class Effect63(EffectDef):
+class Effect63(BaseEffect):
     """
     armorHPMultiply
 
@@ -402,7 +406,7 @@ class Effect63(EffectDef):
         fit.ship.multiplyItemAttr('armorHP', module.getModifiedItemAttr('armorHPMultiplier'))
 
 
-class Effect67(EffectDef):
+class Effect67(BaseEffect):
     """
     miningLaser
 
@@ -421,7 +425,7 @@ class Effect67(EffectDef):
         module.reloadTime = 1000
 
 
-class Effect89(EffectDef):
+class Effect89(BaseEffect):
     """
     projectileWeaponSpeedMultiply
 
@@ -438,7 +442,7 @@ class Effect89(EffectDef):
                                          stackingPenalties=True)
 
 
-class Effect91(EffectDef):
+class Effect91(BaseEffect):
     """
     energyWeaponDamageMultiply
 
@@ -455,7 +459,7 @@ class Effect91(EffectDef):
                                          stackingPenalties=True)
 
 
-class Effect92(EffectDef):
+class Effect92(BaseEffect):
     """
     projectileWeaponDamageMultiply
 
@@ -472,7 +476,7 @@ class Effect92(EffectDef):
                                          stackingPenalties=True)
 
 
-class Effect93(EffectDef):
+class Effect93(BaseEffect):
     """
     hybridWeaponDamageMultiply
 
@@ -489,7 +493,7 @@ class Effect93(EffectDef):
                                          stackingPenalties=True)
 
 
-class Effect95(EffectDef):
+class Effect95(BaseEffect):
     """
     energyWeaponSpeedMultiply
 
@@ -506,7 +510,7 @@ class Effect95(EffectDef):
                                          stackingPenalties=True)
 
 
-class Effect96(EffectDef):
+class Effect96(BaseEffect):
     """
     hybridWeaponSpeedMultiply
 
@@ -523,7 +527,7 @@ class Effect96(EffectDef):
                                          stackingPenalties=True)
 
 
-class Effect101(EffectDef):
+class Effect101(BaseEffect):
     """
     useMissiles
 
@@ -561,7 +565,7 @@ class Effect101(EffectDef):
                     fit.ecmProjectedStr *= strModifier
 
 
-class Effect118(EffectDef):
+class Effect118(BaseEffect):
     """
     electronicAttributeModifyOnline
 
@@ -576,7 +580,7 @@ class Effect118(EffectDef):
         fit.ship.increaseItemAttr('maxLockedTargets', module.getModifiedItemAttr('maxLockedTargetsBonus'))
 
 
-class Effect157(EffectDef):
+class Effect157(BaseEffect):
     """
     largeHybridTurretDamageMultiplierBonusPostPercentDamageMultiplierLocationShipModulesRequiringLargeHybridTurret
 
@@ -594,7 +598,7 @@ class Effect157(EffectDef):
                                       'damageMultiplier', container.getModifiedItemAttr('damageMultiplierBonus') * level)
 
 
-class Effect159(EffectDef):
+class Effect159(BaseEffect):
     """
     mediumEnergyTurretDamageMultiplierBonusPostPercentDamageMultiplierLocationShipModulesRequiringMediumEnergyTurret
 
@@ -612,7 +616,7 @@ class Effect159(EffectDef):
                                       'damageMultiplier', container.getModifiedItemAttr('damageMultiplierBonus') * level)
 
 
-class Effect160(EffectDef):
+class Effect160(BaseEffect):
     """
     mediumHybridTurretDamageMultiplierBonusPostPercentDamageMultiplierLocationShipModulesRequiringMediumHybridTurret
 
@@ -630,7 +634,7 @@ class Effect160(EffectDef):
                                       'damageMultiplier', container.getModifiedItemAttr('damageMultiplierBonus') * level)
 
 
-class Effect161(EffectDef):
+class Effect161(BaseEffect):
     """
     mediumProjectileTurretDamageMultiplierBonusPostPercentDamageMultiplierLocationShipModulesRequiringMediumProjectileTurret
 
@@ -648,7 +652,7 @@ class Effect161(EffectDef):
                                       'damageMultiplier', container.getModifiedItemAttr('damageMultiplierBonus') * level)
 
 
-class Effect162(EffectDef):
+class Effect162(BaseEffect):
     """
     largeEnergyTurretDamageMultiplierBonusPostPercentDamageMultiplierLocationShipModulesRequiringLargeEnergyTurret
 
@@ -667,7 +671,7 @@ class Effect162(EffectDef):
                                       'damageMultiplier', container.getModifiedItemAttr('damageMultiplierBonus') * level)
 
 
-class Effect172(EffectDef):
+class Effect172(BaseEffect):
     """
     smallEnergyTurretDamageMultiplierBonusPostPercentDamageMultiplierLocationShipModulesRequiringSmallEnergyTurret
 
@@ -685,7 +689,7 @@ class Effect172(EffectDef):
                                       'damageMultiplier', container.getModifiedItemAttr('damageMultiplierBonus') * level)
 
 
-class Effect173(EffectDef):
+class Effect173(BaseEffect):
     """
     smallHybridTurretDamageMultiplierBonusPostPercentDamageMultiplierLocationShipModulesRequiringSmallHybridTurret
 
@@ -703,7 +707,7 @@ class Effect173(EffectDef):
                                       'damageMultiplier', container.getModifiedItemAttr('damageMultiplierBonus') * level)
 
 
-class Effect174(EffectDef):
+class Effect174(BaseEffect):
     """
     smallProjectileTurretDamageMultiplierBonusPostPercentDamageMultiplierLocationShipModulesRequiringSmallProjectileTurret
 
@@ -721,7 +725,7 @@ class Effect174(EffectDef):
                                       'damageMultiplier', container.getModifiedItemAttr('damageMultiplierBonus') * level)
 
 
-class Effect212(EffectDef):
+class Effect212(BaseEffect):
     """
     sensorUpgradesCpuNeedBonusPostPercentCpuLocationShipModulesRequiringSensorUpgrades
 
@@ -740,7 +744,7 @@ class Effect212(EffectDef):
                                       'cpu', container.getModifiedItemAttr('cpuNeedBonus') * level)
 
 
-class Effect214(EffectDef):
+class Effect214(BaseEffect):
     """
     targetingMaxTargetBonusModAddMaxLockedTargetsLocationChar
 
@@ -756,7 +760,7 @@ class Effect214(EffectDef):
         fit.extraAttributes.increase('maxTargetsLockedFromSkills', amount)
 
 
-class Effect223(EffectDef):
+class Effect223(BaseEffect):
     """
     navigationVelocityBonusPostPercentMaxVelocityLocationShip
 
@@ -772,7 +776,7 @@ class Effect223(EffectDef):
         fit.ship.boostItemAttr('maxVelocity', implant.getModifiedItemAttr('velocityBonus'))
 
 
-class Effect227(EffectDef):
+class Effect227(BaseEffect):
     """
     accerationControlCapNeedBonusPostPercentCapacitorNeedLocationShipGroupAfterburner
 
@@ -788,7 +792,7 @@ class Effect227(EffectDef):
                                       'capacitorNeed', container.getModifiedItemAttr('capNeedBonus'))
 
 
-class Effect230(EffectDef):
+class Effect230(BaseEffect):
     """
     afterburnerDurationBonusPostPercentDurationLocationShipModulesRequiringAfterburner
 
@@ -807,7 +811,7 @@ class Effect230(EffectDef):
                                       'duration', container.getModifiedItemAttr('durationBonus') * level)
 
 
-class Effect235(EffectDef):
+class Effect235(BaseEffect):
     """
     warpdriveoperationWarpCapacitorNeedBonusPostPercentWarpCapacitorNeedLocationShip
 
@@ -822,7 +826,7 @@ class Effect235(EffectDef):
         fit.ship.boostItemAttr('warpCapacitorNeed', implant.getModifiedItemAttr('warpCapacitorNeedBonus'))
 
 
-class Effect242(EffectDef):
+class Effect242(BaseEffect):
     """
     accerationControlSpeedFBonusPostPercentSpeedFactorLocationShipGroupAfterburner
 
@@ -838,7 +842,7 @@ class Effect242(EffectDef):
                                       'speedFactor', implant.getModifiedItemAttr('speedFBonus'))
 
 
-class Effect244(EffectDef):
+class Effect244(BaseEffect):
     """
     highSpeedManuveringCapacitorNeedMultiplierPostPercentCapacitorNeedLocationShipModulesRequiringHighSpeedManuvering
 
@@ -856,7 +860,7 @@ class Effect244(EffectDef):
                                       'capacitorNeed', container.getModifiedItemAttr('capNeedBonus') * level)
 
 
-class Effect271(EffectDef):
+class Effect271(BaseEffect):
     """
     hullUpgradesArmorHpBonusPostPercentHpLocationShip
 
@@ -876,7 +880,7 @@ class Effect271(EffectDef):
         fit.ship.boostItemAttr('armorHP', (container.getModifiedItemAttr('armorHpBonus') or 0) * level)
 
 
-class Effect272(EffectDef):
+class Effect272(BaseEffect):
     """
     repairSystemsDurationBonusPostPercentDurationLocationShipModulesRequiringRepairSystems
 
@@ -896,7 +900,7 @@ class Effect272(EffectDef):
                                       'duration', container.getModifiedItemAttr('durationSkillBonus') * level)
 
 
-class Effect273(EffectDef):
+class Effect273(BaseEffect):
     """
     shieldUpgradesPowerNeedBonusPostPercentPowerLocationShipModulesRequiringShieldUpgrades
 
@@ -915,7 +919,7 @@ class Effect273(EffectDef):
                                       'power', container.getModifiedItemAttr('powerNeedBonus') * level)
 
 
-class Effect277(EffectDef):
+class Effect277(BaseEffect):
     """
     tacticalshieldManipulationSkillBoostUniformityBonus
 
@@ -930,7 +934,7 @@ class Effect277(EffectDef):
         fit.ship.increaseItemAttr('shieldUniformity', skill.getModifiedItemAttr('uniformityBonus') * skill.level)
 
 
-class Effect279(EffectDef):
+class Effect279(BaseEffect):
     """
     shieldEmmisionSystemsCapNeedBonusPostPercentCapacitorNeedLocationShipModulesRequiringShieldEmmisionSystems
 
@@ -948,7 +952,7 @@ class Effect279(EffectDef):
                                       'capacitorNeed', container.getModifiedItemAttr('capNeedBonus') * level)
 
 
-class Effect287(EffectDef):
+class Effect287(BaseEffect):
     """
     controlledBurstsCapNeedBonusPostPercentCapacitorNeedLocationShipModulesRequiringGunnery
 
@@ -966,7 +970,7 @@ class Effect287(EffectDef):
                                       'capacitorNeed', container.getModifiedItemAttr('capNeedBonus') * level)
 
 
-class Effect290(EffectDef):
+class Effect290(BaseEffect):
     """
     sharpshooterRangeSkillBonusPostPercentMaxRangeLocationShipModulesRequiringGunnery
 
@@ -985,7 +989,7 @@ class Effect290(EffectDef):
                                       'maxRange', container.getModifiedItemAttr('rangeSkillBonus') * level)
 
 
-class Effect298(EffectDef):
+class Effect298(BaseEffect):
     """
     surgicalStrikeFalloffBonusPostPercentFalloffLocationShipModulesRequiringGunnery
 
@@ -1004,7 +1008,7 @@ class Effect298(EffectDef):
                                       'falloff', container.getModifiedItemAttr('falloffBonus') * level)
 
 
-class Effect315(EffectDef):
+class Effect315(BaseEffect):
     """
     dronesSkillBoostMaxActiveDroneBonus
 
@@ -1020,7 +1024,7 @@ class Effect315(EffectDef):
         fit.extraAttributes.increase('maxActiveDrones', amount)
 
 
-class Effect391(EffectDef):
+class Effect391(BaseEffect):
     """
     astrogeologyMiningAmountBonusPostPercentMiningAmountLocationShipModulesRequiringMining
 
@@ -1040,7 +1044,7 @@ class Effect391(EffectDef):
                                       'miningAmount', container.getModifiedItemAttr('miningAmountBonus') * level)
 
 
-class Effect392(EffectDef):
+class Effect392(BaseEffect):
     """
     mechanicHullHpBonusPostPercentHpShip
 
@@ -1058,7 +1062,7 @@ class Effect392(EffectDef):
         fit.ship.boostItemAttr('hp', container.getModifiedItemAttr('hullHpBonus') * level)
 
 
-class Effect394(EffectDef):
+class Effect394(BaseEffect):
     """
     navigationVelocityBonusPostPercentMaxVelocityShip
 
@@ -1081,7 +1085,7 @@ class Effect394(EffectDef):
                                stackingPenalties='skill' not in context and 'implant' not in context and 'booster' not in context)
 
 
-class Effect395(EffectDef):
+class Effect395(BaseEffect):
     """
     evasiveManeuveringAgilityBonusPostPercentAgilityShip
 
@@ -1104,7 +1108,7 @@ class Effect395(EffectDef):
                                stackingPenalties='skill' not in context and 'implant' not in context)
 
 
-class Effect396(EffectDef):
+class Effect396(BaseEffect):
     """
     energyGridUpgradesCpuNeedBonusPostPercentCpuLocationShipModulesRequiringEnergyGridUpgrades
 
@@ -1123,7 +1127,7 @@ class Effect396(EffectDef):
                                       'cpu', container.getModifiedItemAttr('cpuNeedBonus') * level)
 
 
-class Effect397(EffectDef):
+class Effect397(BaseEffect):
     """
     electronicsCpuOutputBonusPostPercentCpuOutputLocationShipGroupComputer
 
@@ -1143,7 +1147,7 @@ class Effect397(EffectDef):
         fit.ship.boostItemAttr('cpuOutput', container.getModifiedItemAttr('cpuOutputBonus2') * level)
 
 
-class Effect408(EffectDef):
+class Effect408(BaseEffect):
     """
     largeProjectileTurretDamageMultiplierBonusPostPercentDamageMultiplierLocationShipModulesRequiringLargeProjectileTurret
 
@@ -1161,7 +1165,7 @@ class Effect408(EffectDef):
                                       'damageMultiplier', container.getModifiedItemAttr('damageMultiplierBonus') * level)
 
 
-class Effect414(EffectDef):
+class Effect414(BaseEffect):
     """
     gunneryTurretSpeeBonusPostPercentSpeedLocationShipModulesRequiringGunnery
 
@@ -1180,7 +1184,7 @@ class Effect414(EffectDef):
                                       'speed', container.getModifiedItemAttr('turretSpeeBonus') * level)
 
 
-class Effect446(EffectDef):
+class Effect446(BaseEffect):
     """
     shieldManagementShieldCapacityBonusPostPercentCapacityLocationShipGroupShield
 
@@ -1200,7 +1204,7 @@ class Effect446(EffectDef):
         fit.ship.boostItemAttr('shieldCapacity', container.getModifiedItemAttr('shieldCapacityBonus') * level)
 
 
-class Effect485(EffectDef):
+class Effect485(BaseEffect):
     """
     energysystemsoperationCapRechargeBonusPostPercentRechargeRateLocationShipGroupCapacitor
 
@@ -1219,7 +1223,7 @@ class Effect485(EffectDef):
         fit.ship.boostItemAttr('rechargeRate', container.getModifiedItemAttr('capRechargeBonus') * level)
 
 
-class Effect486(EffectDef):
+class Effect486(BaseEffect):
     """
     shieldOperationRechargeratebonusPostPercentRechargeRateLocationShipGroupShield
 
@@ -1238,7 +1242,7 @@ class Effect486(EffectDef):
         fit.ship.boostItemAttr('shieldRechargeRate', container.getModifiedItemAttr('rechargeratebonus') * level)
 
 
-class Effect490(EffectDef):
+class Effect490(BaseEffect):
     """
     engineeringPowerEngineeringOutputBonusPostPercentPowerOutputLocationShipGroupPowerCore
 
@@ -1258,7 +1262,7 @@ class Effect490(EffectDef):
         fit.ship.boostItemAttr('powerOutput', container.getModifiedItemAttr('powerEngineeringOutputBonus') * level)
 
 
-class Effect494(EffectDef):
+class Effect494(BaseEffect):
     """
     warpDriveOperationWarpCapacitorNeedBonusPostPercentWarpCapacitorNeedLocationShipGroupPropulsion
 
@@ -1276,7 +1280,7 @@ class Effect494(EffectDef):
                                stackingPenalties='skill' not in context)
 
 
-class Effect504(EffectDef):
+class Effect504(BaseEffect):
     """
     scoutDroneOperationDroneRangeBonusModAddDroneControlDistanceChar
 
@@ -1294,7 +1298,7 @@ class Effect504(EffectDef):
         fit.extraAttributes.increase('droneControlRange', amount)
 
 
-class Effect506(EffectDef):
+class Effect506(BaseEffect):
     """
     fuelConservationCapNeedBonusPostPercentCapacitorNeedLocationShipModulesRequiringAfterburner
 
@@ -1311,7 +1315,7 @@ class Effect506(EffectDef):
                                       'capacitorNeed', skill.getModifiedItemAttr('capNeedBonus') * skill.level)
 
 
-class Effect507(EffectDef):
+class Effect507(BaseEffect):
     """
     longRangeTargetingMaxTargetRangeBonusPostPercentMaxTargetRangeLocationShipGroupElectronic
 
@@ -1328,7 +1332,7 @@ class Effect507(EffectDef):
         fit.ship.boostItemAttr('maxTargetRange', container.getModifiedItemAttr('maxTargetRangeBonus') * level)
 
 
-class Effect508(EffectDef):
+class Effect508(BaseEffect):
     """
     shipPDmgBonusMF
 
@@ -1350,7 +1354,7 @@ class Effect508(EffectDef):
                                       'damageMultiplier', ship.getModifiedItemAttr('shipBonusMF'), skill='Minmatar Frigate')
 
 
-class Effect511(EffectDef):
+class Effect511(BaseEffect):
     """
     shipEnergyTCapNeedBonusAF
 
@@ -1372,7 +1376,7 @@ class Effect511(EffectDef):
                                       'capacitorNeed', ship.getModifiedItemAttr('shipBonus2AF'), skill='Amarr Frigate')
 
 
-class Effect512(EffectDef):
+class Effect512(BaseEffect):
     """
     shipSHTDmgBonusGF
 
@@ -1393,7 +1397,7 @@ class Effect512(EffectDef):
                                       'damageMultiplier', ship.getModifiedItemAttr('shipBonusGF'), skill='Gallente Frigate')
 
 
-class Effect514(EffectDef):
+class Effect514(BaseEffect):
     """
     shipSETDmgBonusAF
 
@@ -1412,7 +1416,7 @@ class Effect514(EffectDef):
                                       'damageMultiplier', ship.getModifiedItemAttr('shipBonusAF'), skill='Amarr Frigate')
 
 
-class Effect516(EffectDef):
+class Effect516(BaseEffect):
     """
     shipTCapNeedBonusAC
 
@@ -1430,7 +1434,7 @@ class Effect516(EffectDef):
                                       'capacitorNeed', ship.getModifiedItemAttr('shipBonusAC'), skill='Amarr Cruiser')
 
 
-class Effect521(EffectDef):
+class Effect521(BaseEffect):
     """
     shipHRangeBonusCC
 
@@ -1446,7 +1450,7 @@ class Effect521(EffectDef):
                                       'maxRange', ship.getModifiedItemAttr('shipBonusCC'), skill='Caldari Cruiser')
 
 
-class Effect527(EffectDef):
+class Effect527(BaseEffect):
     """
     shipVelocityBonusMI
 
@@ -1463,7 +1467,7 @@ class Effect527(EffectDef):
         fit.ship.boostItemAttr('maxVelocity', ship.getModifiedItemAttr('shipBonusMI'), skill='Minmatar Industrial')
 
 
-class Effect529(EffectDef):
+class Effect529(BaseEffect):
     """
     shipCargoBonusAI
 
@@ -1479,7 +1483,7 @@ class Effect529(EffectDef):
         fit.ship.boostItemAttr('capacity', ship.getModifiedItemAttr('shipBonusAI'), skill='Amarr Industrial')
 
 
-class Effect536(EffectDef):
+class Effect536(BaseEffect):
     """
     cpuMultiplierPostMulCpuOutputShip
 
@@ -1495,7 +1499,7 @@ class Effect536(EffectDef):
         fit.ship.multiplyItemAttr('cpuOutput', module.getModifiedItemAttr('cpuMultiplier'))
 
 
-class Effect542(EffectDef):
+class Effect542(BaseEffect):
     """
     shipCapNeedBonusAB
 
@@ -1512,7 +1516,7 @@ class Effect542(EffectDef):
                                       'capacitorNeed', ship.getModifiedItemAttr('shipBonusAB'), skill='Amarr Battleship')
 
 
-class Effect549(EffectDef):
+class Effect549(BaseEffect):
     """
     shipPTDmgBonusMB
 
@@ -1531,7 +1535,7 @@ class Effect549(EffectDef):
                                       skill='Minmatar Battleship')
 
 
-class Effect550(EffectDef):
+class Effect550(BaseEffect):
     """
     shipHTDmgBonusGB
 
@@ -1553,7 +1557,7 @@ class Effect550(EffectDef):
                                       skill='Gallente Battleship')
 
 
-class Effect553(EffectDef):
+class Effect553(BaseEffect):
     """
     shipHTTrackingBonusGB
 
@@ -1569,7 +1573,7 @@ class Effect553(EffectDef):
                                       'trackingSpeed', ship.getModifiedItemAttr('shipBonusGB'), skill='Gallente Battleship')
 
 
-class Effect562(EffectDef):
+class Effect562(BaseEffect):
     """
     shipHTDmgBonusfixedGC
 
@@ -1592,7 +1596,7 @@ class Effect562(EffectDef):
                                       'damageMultiplier', ship.getModifiedItemAttr('shipBonusGC'), skill='Gallente Cruiser')
 
 
-class Effect581(EffectDef):
+class Effect581(BaseEffect):
     """
     weaponUpgradesCpuNeedBonusPostPercentCpuLocationShipModulesRequiringGunnery
 
@@ -1610,7 +1614,7 @@ class Effect581(EffectDef):
                                       'cpu', container.getModifiedItemAttr('cpuNeedBonus') * level)
 
 
-class Effect582(EffectDef):
+class Effect582(BaseEffect):
     """
     rapidFiringRofBonusPostPercentSpeedLocationShipModulesRequiringGunnery
 
@@ -1626,7 +1630,7 @@ class Effect582(EffectDef):
                                       'speed', skill.getModifiedItemAttr('rofBonus') * skill.level)
 
 
-class Effect584(EffectDef):
+class Effect584(BaseEffect):
     """
     surgicalStrikeDamageMultiplierBonusPostPercentDamageMultiplierLocationShipModulesRequiringGunnery
 
@@ -1644,7 +1648,7 @@ class Effect584(EffectDef):
                                       'damageMultiplier', implant.getModifiedItemAttr('damageMultiplierBonus'))
 
 
-class Effect587(EffectDef):
+class Effect587(BaseEffect):
     """
     surgicalStrikeDamageMultiplierBonusPostPercentDamageMultiplierLocationShipGroupEnergyWeapon
 
@@ -1660,7 +1664,7 @@ class Effect587(EffectDef):
                                       'damageMultiplier', skill.getModifiedItemAttr('damageMultiplierBonus') * skill.level)
 
 
-class Effect588(EffectDef):
+class Effect588(BaseEffect):
     """
     surgicalStrikeDamageMultiplierBonusPostPercentDamageMultiplierLocationShipGroupProjectileWeapon
 
@@ -1676,7 +1680,7 @@ class Effect588(EffectDef):
                                       'damageMultiplier', skill.getModifiedItemAttr('damageMultiplierBonus') * skill.level)
 
 
-class Effect589(EffectDef):
+class Effect589(BaseEffect):
     """
     surgicalStrikeDamageMultiplierBonusPostPercentDamageMultiplierLocationShipGroupHybridWeapon
 
@@ -1692,7 +1696,7 @@ class Effect589(EffectDef):
                                       'damageMultiplier', skill.getModifiedItemAttr('damageMultiplierBonus') * skill.level)
 
 
-class Effect590(EffectDef):
+class Effect590(BaseEffect):
     """
     energyPulseWeaponsDurationBonusPostPercentDurationLocationShipModulesRequiringEnergyPulseWeapons
 
@@ -1710,7 +1714,7 @@ class Effect590(EffectDef):
                                       'duration', container.getModifiedItemAttr('durationBonus') * level)
 
 
-class Effect596(EffectDef):
+class Effect596(BaseEffect):
     """
     ammoInfluenceRange
 
@@ -1725,7 +1729,7 @@ class Effect596(EffectDef):
         module.multiplyItemAttr('maxRange', module.getModifiedChargeAttr('weaponRangeMultiplier'))
 
 
-class Effect598(EffectDef):
+class Effect598(BaseEffect):
     """
     ammoSpeedMultiplier
 
@@ -1742,7 +1746,7 @@ class Effect598(EffectDef):
         module.multiplyItemAttr('speed', module.getModifiedChargeAttr('speedMultiplier') or 1)
 
 
-class Effect599(EffectDef):
+class Effect599(BaseEffect):
     """
     ammoFallofMultiplier
 
@@ -1762,7 +1766,7 @@ class Effect599(EffectDef):
         module.multiplyItemAttr('falloff', module.getModifiedChargeAttr('fallofMultiplier') or 1)
 
 
-class Effect600(EffectDef):
+class Effect600(BaseEffect):
     """
     ammoTrackingMultiplier
 
@@ -1778,7 +1782,7 @@ class Effect600(EffectDef):
         module.multiplyItemAttr('trackingSpeed', module.getModifiedChargeAttr('trackingSpeedMultiplier'))
 
 
-class Effect602(EffectDef):
+class Effect602(BaseEffect):
     """
     shipPTurretSpeedBonusMC
 
@@ -1798,7 +1802,7 @@ class Effect602(EffectDef):
                                       'speed', ship.getModifiedItemAttr('shipBonusMC'), skill='Minmatar Cruiser')
 
 
-class Effect604(EffectDef):
+class Effect604(BaseEffect):
     """
     shipPTspeedBonusMB2
 
@@ -1818,7 +1822,7 @@ class Effect604(EffectDef):
                                       'speed', ship.getModifiedItemAttr('shipBonusMB2'), skill='Minmatar Battleship')
 
 
-class Effect607(EffectDef):
+class Effect607(BaseEffect):
     """
     cloaking
 
@@ -1839,7 +1843,7 @@ class Effect607(EffectDef):
         fit.ship.multiplyItemAttr('maxVelocity', module.getModifiedItemAttr('maxVelocityModifier'))
 
 
-class Effect623(EffectDef):
+class Effect623(BaseEffect):
     """
     miningDroneOperationMiningAmountBonusPostPercentMiningDroneAmountPercentChar
 
@@ -1858,7 +1862,7 @@ class Effect623(EffectDef):
                                      container.getModifiedItemAttr('miningAmountBonus') * level)
 
 
-class Effect627(EffectDef):
+class Effect627(BaseEffect):
     """
     powerIncrease
 
@@ -1873,7 +1877,7 @@ class Effect627(EffectDef):
         fit.ship.increaseItemAttr('powerOutput', module.getModifiedItemAttr('powerIncrease'))
 
 
-class Effect657(EffectDef):
+class Effect657(BaseEffect):
     """
     agilityMultiplierEffect
 
@@ -1892,7 +1896,7 @@ class Effect657(EffectDef):
                                stackingPenalties=True)
 
 
-class Effect660(EffectDef):
+class Effect660(BaseEffect):
     """
     missileEMDmgBonus
 
@@ -1910,7 +1914,7 @@ class Effect660(EffectDef):
                                         'emDamage', skill.getModifiedItemAttr('damageMultiplierBonus') * skill.level)
 
 
-class Effect661(EffectDef):
+class Effect661(BaseEffect):
     """
     missileExplosiveDmgBonus
 
@@ -1928,7 +1932,7 @@ class Effect661(EffectDef):
                                         'explosiveDamage', skill.getModifiedItemAttr('damageMultiplierBonus') * skill.level)
 
 
-class Effect662(EffectDef):
+class Effect662(BaseEffect):
     """
     missileThermalDmgBonus
 
@@ -1946,7 +1950,7 @@ class Effect662(EffectDef):
                                         'thermalDamage', skill.getModifiedItemAttr('damageMultiplierBonus') * skill.level)
 
 
-class Effect668(EffectDef):
+class Effect668(BaseEffect):
     """
     missileKineticDmgBonus2
 
@@ -1964,7 +1968,7 @@ class Effect668(EffectDef):
                                         'kineticDamage', skill.getModifiedItemAttr('damageMultiplierBonus') * skill.level)
 
 
-class Effect670(EffectDef):
+class Effect670(BaseEffect):
     """
     antiWarpScramblingPassive
 
@@ -1979,7 +1983,7 @@ class Effect670(EffectDef):
         fit.ship.increaseItemAttr('warpScrambleStatus', module.getModifiedItemAttr('warpScrambleStrength'))
 
 
-class Effect675(EffectDef):
+class Effect675(BaseEffect):
     """
     weaponUpgradesCpuNeedBonusPostPercentCpuLocationShipModulesRequiringEnergyPulseWeapons
 
@@ -1995,7 +1999,7 @@ class Effect675(EffectDef):
                                       'cpu', skill.getModifiedItemAttr('cpuNeedBonus') * skill.level)
 
 
-class Effect677(EffectDef):
+class Effect677(BaseEffect):
     """
     weaponUpgradesCpuNeedBonusPostPercentCpuLocationShipModulesRequiringMissileLauncherOperation
 
@@ -2013,7 +2017,7 @@ class Effect677(EffectDef):
                                       'cpu', container.getModifiedItemAttr('cpuNeedBonus') * level)
 
 
-class Effect699(EffectDef):
+class Effect699(BaseEffect):
     """
     signatureAnalysisScanResolutionBonusPostPercentScanResolutionShip
 
@@ -2034,7 +2038,7 @@ class Effect699(EffectDef):
                                stackingPenalties=penalized)
 
 
-class Effect706(EffectDef):
+class Effect706(BaseEffect):
     """
     covertOpsWarpResistance
 
@@ -2049,7 +2053,7 @@ class Effect706(EffectDef):
         fit.ship.increaseItemAttr('warpFactor', src.getModifiedItemAttr('eliteBonusCovertOps1'), skill='Covert Ops')
 
 
-class Effect726(EffectDef):
+class Effect726(BaseEffect):
     """
     shipBonusCargo2GI
 
@@ -2072,7 +2076,7 @@ class Effect726(EffectDef):
         fit.ship.boostItemAttr('capacity', ship.getModifiedItemAttr(bonusAttr), skill='Gallente Industrial')
 
 
-class Effect727(EffectDef):
+class Effect727(BaseEffect):
     """
     shipBonusCargoCI
 
@@ -2088,7 +2092,7 @@ class Effect727(EffectDef):
         fit.ship.boostItemAttr('capacity', ship.getModifiedItemAttr('shipBonusCI'), skill='Caldari Industrial')
 
 
-class Effect728(EffectDef):
+class Effect728(BaseEffect):
     """
     shipBonusCargoMI
 
@@ -2104,7 +2108,7 @@ class Effect728(EffectDef):
         fit.ship.boostItemAttr('capacity', ship.getModifiedItemAttr('shipBonusMI'), skill='Minmatar Industrial')
 
 
-class Effect729(EffectDef):
+class Effect729(BaseEffect):
     """
     shipBonusVelocityGI
 
@@ -2129,7 +2133,7 @@ class Effect729(EffectDef):
         fit.ship.boostItemAttr('maxVelocity', ship.getModifiedItemAttr(bonusAttr), skill='Gallente Industrial')
 
 
-class Effect730(EffectDef):
+class Effect730(BaseEffect):
     """
     shipBonusVelocityCI
 
@@ -2145,7 +2149,7 @@ class Effect730(EffectDef):
         fit.ship.boostItemAttr('maxVelocity', ship.getModifiedItemAttr('shipBonusCI'), skill='Caldari Industrial')
 
 
-class Effect732(EffectDef):
+class Effect732(BaseEffect):
     """
     shipVelocityBonusAI
 
@@ -2161,7 +2165,7 @@ class Effect732(EffectDef):
         fit.ship.boostItemAttr('maxVelocity', ship.getModifiedItemAttr('shipBonusAI'), skill='Amarr Industrial')
 
 
-class Effect736(EffectDef):
+class Effect736(BaseEffect):
     """
     shipBonusCapCapAB
 
@@ -2177,7 +2181,7 @@ class Effect736(EffectDef):
         fit.ship.boostItemAttr('capacitorCapacity', ship.getModifiedItemAttr('shipBonusAB2'), skill='Amarr Battleship')
 
 
-class Effect744(EffectDef):
+class Effect744(BaseEffect):
     """
     surveyScanspeedBonusPostPercentDurationLocationShipModulesRequiringElectronics
 
@@ -2195,7 +2199,7 @@ class Effect744(EffectDef):
                                       'duration', container.getModifiedItemAttr('scanspeedBonus') * level)
 
 
-class Effect754(EffectDef):
+class Effect754(BaseEffect):
     """
     shipHybridDamageBonusCF
 
@@ -2211,7 +2215,7 @@ class Effect754(EffectDef):
                                       'damageMultiplier', ship.getModifiedItemAttr('shipBonusCF'), skill='Caldari Frigate')
 
 
-class Effect757(EffectDef):
+class Effect757(BaseEffect):
     """
     shipETDamageAF
 
@@ -2230,7 +2234,7 @@ class Effect757(EffectDef):
                                       src.getModifiedItemAttr('shipBonusAF'), skill='Amarr Frigate')
 
 
-class Effect760(EffectDef):
+class Effect760(BaseEffect):
     """
     shipBonusSmallMissileRoFCF2
 
@@ -2248,7 +2252,7 @@ class Effect760(EffectDef):
                                       'speed', ship.getModifiedItemAttr('shipBonusCF2'), skill='Caldari Frigate')
 
 
-class Effect763(EffectDef):
+class Effect763(BaseEffect):
     """
     missileDMGBonus
 
@@ -2267,7 +2271,7 @@ class Effect763(EffectDef):
                                                stackingPenalties=True)
 
 
-class Effect784(EffectDef):
+class Effect784(BaseEffect):
     """
     missileBombardmentMaxFlightTimeBonusPostPercentExplosionDelayOwnerCharModulesRequiringMissileLauncherOperation
 
@@ -2289,7 +2293,7 @@ class Effect784(EffectDef):
                                         stackingPenalties=penalized)
 
 
-class Effect804(EffectDef):
+class Effect804(BaseEffect):
     """
     ammoInfluenceCapNeed
 
@@ -2308,7 +2312,7 @@ class Effect804(EffectDef):
             module.boostItemAttr('capacitorNeed', module.getModifiedChargeAttr('capNeedBonus') or 0)
 
 
-class Effect836(EffectDef):
+class Effect836(BaseEffect):
     """
     skillFreightBonus
 
@@ -2323,7 +2327,7 @@ class Effect836(EffectDef):
         fit.ship.boostItemAttr('capacity', module.getModifiedItemAttr('cargoCapacityBonus'))
 
 
-class Effect848(EffectDef):
+class Effect848(BaseEffect):
     """
     cloakingTargetingDelayBonusPostPercentCloakingTargetingDelayBonusForShipModulesRequiringCloaking
 
@@ -2340,7 +2344,7 @@ class Effect848(EffectDef):
                                       skill.getModifiedItemAttr('cloakingTargetingDelayBonus') * skill.level)
 
 
-class Effect854(EffectDef):
+class Effect854(BaseEffect):
     """
     cloakingScanResolutionMultiplier
 
@@ -2357,7 +2361,7 @@ class Effect854(EffectDef):
                                   stackingPenalties=True, penaltyGroup='cloakingScanResolutionMultiplier')
 
 
-class Effect856(EffectDef):
+class Effect856(BaseEffect):
     """
     warpSkillSpeed
 
@@ -2376,7 +2380,7 @@ class Effect856(EffectDef):
                                stackingPenalties=penalized)
 
 
-class Effect874(EffectDef):
+class Effect874(BaseEffect):
     """
     shipProjectileOptimalBonuseMF2
 
@@ -2392,7 +2396,7 @@ class Effect874(EffectDef):
                                       'maxRange', ship.getModifiedItemAttr('shipBonusMF2'), skill='Minmatar Frigate')
 
 
-class Effect882(EffectDef):
+class Effect882(BaseEffect):
     """
     shipHybridRangeBonusCF2
 
@@ -2409,7 +2413,7 @@ class Effect882(EffectDef):
                                       'maxRange', ship.getModifiedItemAttr('shipBonusCF2'), skill='Caldari Frigate')
 
 
-class Effect887(EffectDef):
+class Effect887(BaseEffect):
     """
     shipETspeedBonusAB2
 
@@ -2425,7 +2429,7 @@ class Effect887(EffectDef):
                                       'speed', ship.getModifiedItemAttr('shipBonusAB2'), skill='Amarr Battleship')
 
 
-class Effect889(EffectDef):
+class Effect889(BaseEffect):
     """
     missileLauncherSpeedMultiplier
 
@@ -2442,7 +2446,7 @@ class Effect889(EffectDef):
                                          stackingPenalties=True)
 
 
-class Effect891(EffectDef):
+class Effect891(BaseEffect):
     """
     shipCruiseMissileVelocityBonusCB3
 
@@ -2458,7 +2462,7 @@ class Effect891(EffectDef):
                                         'maxVelocity', ship.getModifiedItemAttr('shipBonusCB3'), skill='Caldari Battleship')
 
 
-class Effect892(EffectDef):
+class Effect892(BaseEffect):
     """
     shipTorpedosVelocityBonusCB3
 
@@ -2474,7 +2478,7 @@ class Effect892(EffectDef):
                                         'maxVelocity', ship.getModifiedItemAttr('shipBonusCB3'), skill='Caldari Battleship')
 
 
-class Effect896(EffectDef):
+class Effect896(BaseEffect):
     """
     covertOpsCpuBonus1
 
@@ -2491,7 +2495,7 @@ class Effect896(EffectDef):
                                          'cpu', container.getModifiedItemAttr('cloakingCpuNeedBonus'))
 
 
-class Effect898(EffectDef):
+class Effect898(BaseEffect):
     """
     shipMissileKineticDamageCF
 
@@ -2509,7 +2513,7 @@ class Effect898(EffectDef):
                                         'kineticDamage', ship.getModifiedItemAttr('shipBonusCF'), skill='Caldari Frigate')
 
 
-class Effect899(EffectDef):
+class Effect899(BaseEffect):
     """
     shipMissileKineticDamageCC
 
@@ -2527,7 +2531,7 @@ class Effect899(EffectDef):
                                         'kineticDamage', ship.getModifiedItemAttr('shipBonusCC'), skill='Caldari Cruiser')
 
 
-class Effect900(EffectDef):
+class Effect900(BaseEffect):
     """
     shipDroneScoutThermalDamageGF2
 
@@ -2543,7 +2547,7 @@ class Effect900(EffectDef):
                                      'thermalDamage', ship.getModifiedItemAttr('shipBonusGF2'), skill='Gallente Frigate')
 
 
-class Effect907(EffectDef):
+class Effect907(BaseEffect):
     """
     shipLaserRofAC2
 
@@ -2560,7 +2564,7 @@ class Effect907(EffectDef):
                                       'speed', ship.getModifiedItemAttr('shipBonusAC2'), skill='Amarr Cruiser')
 
 
-class Effect909(EffectDef):
+class Effect909(BaseEffect):
     """
     shipArmorHpAC2
 
@@ -2575,7 +2579,7 @@ class Effect909(EffectDef):
         fit.ship.boostItemAttr('armorHP', ship.getModifiedItemAttr('shipBonusAC2'), skill='Amarr Cruiser')
 
 
-class Effect912(EffectDef):
+class Effect912(BaseEffect):
     """
     shipMissileLauncherRofCC2
 
@@ -2591,7 +2595,7 @@ class Effect912(EffectDef):
                                       'speed', ship.getModifiedItemAttr('shipBonusCC2'), skill='Caldari Cruiser')
 
 
-class Effect918(EffectDef):
+class Effect918(BaseEffect):
     """
     shipDronesMaxGC2
 
@@ -2606,7 +2610,7 @@ class Effect918(EffectDef):
         fit.extraAttributes.increase('maxActiveDrones', ship.getModifiedItemAttr('shipBonusGC2'), skill='Gallente Cruiser')
 
 
-class Effect919(EffectDef):
+class Effect919(BaseEffect):
     """
     shipHybridTrackingGC2
 
@@ -2623,7 +2627,7 @@ class Effect919(EffectDef):
                                       'trackingSpeed', ship.getModifiedItemAttr('shipBonusGC2'), skill='Gallente Cruiser')
 
 
-class Effect958(EffectDef):
+class Effect958(BaseEffect):
     """
     shipArmorEmResistanceAC2
 
@@ -2638,7 +2642,7 @@ class Effect958(EffectDef):
         fit.ship.boostItemAttr('armorEmDamageResonance', ship.getModifiedItemAttr('shipBonusAC2'), skill='Amarr Cruiser')
 
 
-class Effect959(EffectDef):
+class Effect959(BaseEffect):
     """
     shipArmorExplosiveResistanceAC2
 
@@ -2654,7 +2658,7 @@ class Effect959(EffectDef):
                                skill='Amarr Cruiser')
 
 
-class Effect960(EffectDef):
+class Effect960(BaseEffect):
     """
     shipArmorKineticResistanceAC2
 
@@ -2670,7 +2674,7 @@ class Effect960(EffectDef):
                                skill='Amarr Cruiser')
 
 
-class Effect961(EffectDef):
+class Effect961(BaseEffect):
     """
     shipArmorThermalResistanceAC2
 
@@ -2686,7 +2690,7 @@ class Effect961(EffectDef):
                                skill='Amarr Cruiser')
 
 
-class Effect968(EffectDef):
+class Effect968(BaseEffect):
     """
     shipProjectileDmgMC2
 
@@ -2705,7 +2709,7 @@ class Effect968(EffectDef):
                                       skill='Minmatar Cruiser')
 
 
-class Effect980(EffectDef):
+class Effect980(BaseEffect):
     """
     cloakingWarpSafe
 
@@ -2722,7 +2726,7 @@ class Effect980(EffectDef):
         # TODO: Implement
 
 
-class Effect989(EffectDef):
+class Effect989(BaseEffect):
     """
     eliteBonusGunshipHybridOptimal1
 
@@ -2740,7 +2744,7 @@ class Effect989(EffectDef):
                                       'maxRange', ship.getModifiedItemAttr('eliteBonusGunship1'), skill='Assault Frigates')
 
 
-class Effect991(EffectDef):
+class Effect991(BaseEffect):
     """
     eliteBonusGunshipLaserOptimal1
 
@@ -2756,7 +2760,7 @@ class Effect991(EffectDef):
                                       'maxRange', ship.getModifiedItemAttr('eliteBonusGunship1'), skill='Assault Frigates')
 
 
-class Effect996(EffectDef):
+class Effect996(BaseEffect):
     """
     eliteBonusGunshipHybridTracking2
 
@@ -2773,7 +2777,7 @@ class Effect996(EffectDef):
                                       skill='Assault Frigates')
 
 
-class Effect998(EffectDef):
+class Effect998(BaseEffect):
     """
     eliteBonusGunshipProjectileFalloff2
 
@@ -2789,7 +2793,7 @@ class Effect998(EffectDef):
                                       'falloff', ship.getModifiedItemAttr('eliteBonusGunship2'), skill='Assault Frigates')
 
 
-class Effect999(EffectDef):
+class Effect999(BaseEffect):
     """
     eliteBonusGunshipShieldBoost2
 
@@ -2806,7 +2810,7 @@ class Effect999(EffectDef):
                                       skill='Assault Frigates')
 
 
-class Effect1001(EffectDef):
+class Effect1001(BaseEffect):
     """
     eliteBonusGunshipCapRecharge2
 
@@ -2821,7 +2825,7 @@ class Effect1001(EffectDef):
         fit.ship.boostItemAttr('rechargeRate', ship.getModifiedItemAttr('eliteBonusGunship2'), skill='Assault Frigates')
 
 
-class Effect1003(EffectDef):
+class Effect1003(BaseEffect):
     """
     selfT2SmallLaserPulseDamageBonus
 
@@ -2837,7 +2841,7 @@ class Effect1003(EffectDef):
                                       'damageMultiplier', skill.getModifiedItemAttr('damageMultiplierBonus') * skill.level)
 
 
-class Effect1004(EffectDef):
+class Effect1004(BaseEffect):
     """
     selfT2SmallLaserBeamDamageBonus
 
@@ -2853,7 +2857,7 @@ class Effect1004(EffectDef):
                                       'damageMultiplier', skill.getModifiedItemAttr('damageMultiplierBonus') * skill.level)
 
 
-class Effect1005(EffectDef):
+class Effect1005(BaseEffect):
     """
     selfT2SmallHybridBlasterDamageBonus
 
@@ -2869,7 +2873,7 @@ class Effect1005(EffectDef):
                                       'damageMultiplier', skill.getModifiedItemAttr('damageMultiplierBonus') * skill.level)
 
 
-class Effect1006(EffectDef):
+class Effect1006(BaseEffect):
     """
     selfT2SmallHybridRailDamageBonus
 
@@ -2885,7 +2889,7 @@ class Effect1006(EffectDef):
                                       'damageMultiplier', skill.getModifiedItemAttr('damageMultiplierBonus') * skill.level)
 
 
-class Effect1007(EffectDef):
+class Effect1007(BaseEffect):
     """
     selfT2SmallProjectileACDamageBonus
 
@@ -2901,7 +2905,7 @@ class Effect1007(EffectDef):
                                       'damageMultiplier', skill.getModifiedItemAttr('damageMultiplierBonus') * skill.level)
 
 
-class Effect1008(EffectDef):
+class Effect1008(BaseEffect):
     """
     selfT2SmallProjectileArtyDamageBonus
 
@@ -2917,7 +2921,7 @@ class Effect1008(EffectDef):
                                       'damageMultiplier', skill.getModifiedItemAttr('damageMultiplierBonus') * skill.level)
 
 
-class Effect1009(EffectDef):
+class Effect1009(BaseEffect):
     """
     selfT2MediumLaserPulseDamageBonus
 
@@ -2933,7 +2937,7 @@ class Effect1009(EffectDef):
                                       'damageMultiplier', skill.getModifiedItemAttr('damageMultiplierBonus') * skill.level)
 
 
-class Effect1010(EffectDef):
+class Effect1010(BaseEffect):
     """
     selfT2MediumLaserBeamDamageBonus
 
@@ -2949,7 +2953,7 @@ class Effect1010(EffectDef):
                                       'damageMultiplier', skill.getModifiedItemAttr('damageMultiplierBonus') * skill.level)
 
 
-class Effect1011(EffectDef):
+class Effect1011(BaseEffect):
     """
     selfT2MediumHybridBlasterDamageBonus
 
@@ -2965,7 +2969,7 @@ class Effect1011(EffectDef):
                                       'damageMultiplier', skill.getModifiedItemAttr('damageMultiplierBonus') * skill.level)
 
 
-class Effect1012(EffectDef):
+class Effect1012(BaseEffect):
     """
     selfT2MediumHybridRailDamageBonus
 
@@ -2981,7 +2985,7 @@ class Effect1012(EffectDef):
                                       'damageMultiplier', skill.getModifiedItemAttr('damageMultiplierBonus') * skill.level)
 
 
-class Effect1013(EffectDef):
+class Effect1013(BaseEffect):
     """
     selfT2MediumProjectileACDamageBonus
 
@@ -2997,7 +3001,7 @@ class Effect1013(EffectDef):
                                       'damageMultiplier', skill.getModifiedItemAttr('damageMultiplierBonus') * skill.level)
 
 
-class Effect1014(EffectDef):
+class Effect1014(BaseEffect):
     """
     selfT2MediumProjectileArtyDamageBonus
 
@@ -3013,7 +3017,7 @@ class Effect1014(EffectDef):
                                       'damageMultiplier', skill.getModifiedItemAttr('damageMultiplierBonus') * skill.level)
 
 
-class Effect1015(EffectDef):
+class Effect1015(BaseEffect):
     """
     selfT2LargeLaserPulseDamageBonus
 
@@ -3029,7 +3033,7 @@ class Effect1015(EffectDef):
                                       'damageMultiplier', skill.getModifiedItemAttr('damageMultiplierBonus') * skill.level)
 
 
-class Effect1016(EffectDef):
+class Effect1016(BaseEffect):
     """
     selfT2LargeLaserBeamDamageBonus
 
@@ -3045,7 +3049,7 @@ class Effect1016(EffectDef):
                                       'damageMultiplier', skill.getModifiedItemAttr('damageMultiplierBonus') * skill.level)
 
 
-class Effect1017(EffectDef):
+class Effect1017(BaseEffect):
     """
     selfT2LargeHybridBlasterDamageBonus
 
@@ -3061,7 +3065,7 @@ class Effect1017(EffectDef):
                                       'damageMultiplier', skill.getModifiedItemAttr('damageMultiplierBonus') * skill.level)
 
 
-class Effect1018(EffectDef):
+class Effect1018(BaseEffect):
     """
     selfT2LargeHybridRailDamageBonus
 
@@ -3077,7 +3081,7 @@ class Effect1018(EffectDef):
                                       'damageMultiplier', skill.getModifiedItemAttr('damageMultiplierBonus') * skill.level)
 
 
-class Effect1019(EffectDef):
+class Effect1019(BaseEffect):
     """
     selfT2LargeProjectileACDamageBonus
 
@@ -3093,7 +3097,7 @@ class Effect1019(EffectDef):
                                       'damageMultiplier', skill.getModifiedItemAttr('damageMultiplierBonus') * skill.level)
 
 
-class Effect1020(EffectDef):
+class Effect1020(BaseEffect):
     """
     selfT2LargeProjectileArtyDamageBonus
 
@@ -3109,7 +3113,7 @@ class Effect1020(EffectDef):
                                       'damageMultiplier', skill.getModifiedItemAttr('damageMultiplierBonus') * skill.level)
 
 
-class Effect1021(EffectDef):
+class Effect1021(BaseEffect):
     """
     eliteBonusGunshipHybridDmg2
 
@@ -3126,7 +3130,7 @@ class Effect1021(EffectDef):
                                       skill='Assault Frigates')
 
 
-class Effect1024(EffectDef):
+class Effect1024(BaseEffect):
     """
     shipMissileHeavyVelocityBonusCC2
 
@@ -3143,7 +3147,7 @@ class Effect1024(EffectDef):
                                         'maxVelocity', ship.getModifiedItemAttr('shipBonusCC2'), skill='Caldari Cruiser')
 
 
-class Effect1025(EffectDef):
+class Effect1025(BaseEffect):
     """
     shipMissileLightVelocityBonusCC2
 
@@ -3160,7 +3164,7 @@ class Effect1025(EffectDef):
                                         'maxVelocity', ship.getModifiedItemAttr('shipBonusCC2'), skill='Caldari Cruiser')
 
 
-class Effect1030(EffectDef):
+class Effect1030(BaseEffect):
     """
     remoteArmorSystemsCapNeedBonusPostPercentCapacitorNeedLocationShipModulesRequiringRemoteArmorSystems
 
@@ -3179,7 +3183,7 @@ class Effect1030(EffectDef):
                                       'capacitorNeed', container.getModifiedItemAttr('capNeedBonus') * level)
 
 
-class Effect1033(EffectDef):
+class Effect1033(BaseEffect):
     """
     eliteBonusLogisticRemoteArmorRepairCapNeed1
 
@@ -3195,7 +3199,7 @@ class Effect1033(EffectDef):
                                       src.getModifiedItemAttr('eliteBonusLogistics1'), skill='Logistics Cruisers')
 
 
-class Effect1034(EffectDef):
+class Effect1034(BaseEffect):
     """
     eliteBonusLogisticRemoteArmorRepairCapNeed2
 
@@ -3212,7 +3216,7 @@ class Effect1034(EffectDef):
                                       src.getModifiedItemAttr('eliteBonusLogistics2'), skill='Logistics Cruisers')
 
 
-class Effect1035(EffectDef):
+class Effect1035(BaseEffect):
     """
     eliteBonusLogisticShieldTransferCapNeed2
 
@@ -3228,7 +3232,7 @@ class Effect1035(EffectDef):
                                       src.getModifiedItemAttr('eliteBonusLogistics2'), skill='Logistics Cruisers')
 
 
-class Effect1036(EffectDef):
+class Effect1036(BaseEffect):
     """
     eliteBonusLogisticShieldTransferCapNeed1
 
@@ -3245,7 +3249,7 @@ class Effect1036(EffectDef):
                                       src.getModifiedItemAttr('eliteBonusLogistics1'), skill='Logistics Cruisers')
 
 
-class Effect1046(EffectDef):
+class Effect1046(BaseEffect):
     """
     shipRemoteArmorRangeGC1
 
@@ -3261,7 +3265,7 @@ class Effect1046(EffectDef):
                                       src.getModifiedItemAttr('shipBonusGC'), skill='Gallente Cruiser')
 
 
-class Effect1047(EffectDef):
+class Effect1047(BaseEffect):
     """
     shipRemoteArmorRangeAC2
 
@@ -3277,7 +3281,7 @@ class Effect1047(EffectDef):
                                       src.getModifiedItemAttr('shipBonusAC2'), skill='Amarr Cruiser')
 
 
-class Effect1048(EffectDef):
+class Effect1048(BaseEffect):
     """
     shipShieldTransferRangeCC1
 
@@ -3294,7 +3298,7 @@ class Effect1048(EffectDef):
                                       src.getModifiedItemAttr('shipBonusCC'), skill='Caldari Cruiser')
 
 
-class Effect1049(EffectDef):
+class Effect1049(BaseEffect):
     """
     shipShieldTransferRangeMC2
 
@@ -3310,7 +3314,7 @@ class Effect1049(EffectDef):
                                       src.getModifiedItemAttr('shipBonusMC2'), skill='Minmatar Cruiser')
 
 
-class Effect1056(EffectDef):
+class Effect1056(BaseEffect):
     """
     eliteBonusHeavyGunshipHybridOptimal1
 
@@ -3327,7 +3331,7 @@ class Effect1056(EffectDef):
                                       skill='Heavy Assault Cruisers')
 
 
-class Effect1057(EffectDef):
+class Effect1057(BaseEffect):
     """
     eliteBonusHeavyGunshipProjectileOptimal1
 
@@ -3344,7 +3348,7 @@ class Effect1057(EffectDef):
                                       skill='Heavy Assault Cruisers')
 
 
-class Effect1058(EffectDef):
+class Effect1058(BaseEffect):
     """
     eliteBonusHeavyGunshipLaserOptimal1
 
@@ -3361,7 +3365,7 @@ class Effect1058(EffectDef):
                                       skill='Heavy Assault Cruisers')
 
 
-class Effect1060(EffectDef):
+class Effect1060(BaseEffect):
     """
     eliteBonusHeavyGunshipProjectileFallOff1
 
@@ -3378,7 +3382,7 @@ class Effect1060(EffectDef):
                                       skill='Heavy Assault Cruisers')
 
 
-class Effect1061(EffectDef):
+class Effect1061(BaseEffect):
     """
     eliteBonusHeavyGunshipHybridDmg2
 
@@ -3396,7 +3400,7 @@ class Effect1061(EffectDef):
                                       skill='Heavy Assault Cruisers')
 
 
-class Effect1062(EffectDef):
+class Effect1062(BaseEffect):
     """
     eliteBonusHeavyGunshipLaserDmg2
 
@@ -3413,7 +3417,7 @@ class Effect1062(EffectDef):
                                       skill='Heavy Assault Cruisers')
 
 
-class Effect1063(EffectDef):
+class Effect1063(BaseEffect):
     """
     eliteBonusHeavyGunshipProjectileTracking2
 
@@ -3430,7 +3434,7 @@ class Effect1063(EffectDef):
                                       skill='Heavy Assault Cruisers')
 
 
-class Effect1080(EffectDef):
+class Effect1080(BaseEffect):
     """
     eliteBonusHeavyGunshipHybridFallOff1
 
@@ -3447,7 +3451,7 @@ class Effect1080(EffectDef):
                                       skill='Heavy Assault Cruisers')
 
 
-class Effect1081(EffectDef):
+class Effect1081(BaseEffect):
     """
     eliteBonusHeavyGunshipHeavyMissileFlightTime1
 
@@ -3464,7 +3468,7 @@ class Effect1081(EffectDef):
                                         skill='Heavy Assault Cruisers')
 
 
-class Effect1082(EffectDef):
+class Effect1082(BaseEffect):
     """
     eliteBonusHeavyGunshipLightMissileFlightTime1
 
@@ -3481,7 +3485,7 @@ class Effect1082(EffectDef):
                                         skill='Heavy Assault Cruisers')
 
 
-class Effect1084(EffectDef):
+class Effect1084(BaseEffect):
     """
     eliteBonusHeavyGunshipDroneControlRange1
 
@@ -3497,7 +3501,7 @@ class Effect1084(EffectDef):
                                      skill='Heavy Assault Cruisers')
 
 
-class Effect1087(EffectDef):
+class Effect1087(BaseEffect):
     """
     eliteBonusHeavyGunshipProjectileDmg2
 
@@ -3514,7 +3518,7 @@ class Effect1087(EffectDef):
                                       skill='Heavy Assault Cruisers')
 
 
-class Effect1099(EffectDef):
+class Effect1099(BaseEffect):
     """
     shipProjectileTrackingMF2
 
@@ -3532,7 +3536,7 @@ class Effect1099(EffectDef):
                                       'trackingSpeed', ship.getModifiedItemAttr('shipBonusMF2'), skill='Minmatar Frigate')
 
 
-class Effect1176(EffectDef):
+class Effect1176(BaseEffect):
     """
     accerationControlSkillAb&MwdSpeedBoost
 
@@ -3550,7 +3554,7 @@ class Effect1176(EffectDef):
                                       'speedFactor', container.getModifiedItemAttr('speedFBonus') * level)
 
 
-class Effect1179(EffectDef):
+class Effect1179(BaseEffect):
     """
     eliteBonusGunshipLaserDamage2
 
@@ -3567,7 +3571,7 @@ class Effect1179(EffectDef):
                                       skill='Assault Frigates')
 
 
-class Effect1181(EffectDef):
+class Effect1181(BaseEffect):
     """
     eliteBonusLogisticEnergyTransferCapNeed1
 
@@ -3584,7 +3588,7 @@ class Effect1181(EffectDef):
                                       skill='Logistics Cruisers')
 
 
-class Effect1182(EffectDef):
+class Effect1182(BaseEffect):
     """
     shipEnergyTransferRange1
 
@@ -3600,7 +3604,7 @@ class Effect1182(EffectDef):
                                       'maxRange', ship.getModifiedItemAttr('shipBonusAC'), skill='Amarr Cruiser')
 
 
-class Effect1183(EffectDef):
+class Effect1183(BaseEffect):
     """
     eliteBonusLogisticEnergyTransferCapNeed2
 
@@ -3618,7 +3622,7 @@ class Effect1183(EffectDef):
                                       skill='Logistics Cruisers')
 
 
-class Effect1184(EffectDef):
+class Effect1184(BaseEffect):
     """
     shipEnergyTransferRange2
 
@@ -3635,7 +3639,7 @@ class Effect1184(EffectDef):
                                       'maxRange', ship.getModifiedItemAttr('shipBonusCC2'), skill='Caldari Cruiser')
 
 
-class Effect1185(EffectDef):
+class Effect1185(BaseEffect):
     """
     structureStealthEmitterArraySigDecrease
 
@@ -3651,7 +3655,7 @@ class Effect1185(EffectDef):
         fit.ship.boostItemAttr('signatureRadius', implant.getModifiedItemAttr('signatureRadiusBonus'))
 
 
-class Effect1190(EffectDef):
+class Effect1190(BaseEffect):
     """
     iceHarvestCycleTimeModulesRequiringIceHarvesting
 
@@ -3670,7 +3674,7 @@ class Effect1190(EffectDef):
                                       'duration', container.getModifiedItemAttr('iceHarvestCycleBonus') * level)
 
 
-class Effect1200(EffectDef):
+class Effect1200(BaseEffect):
     """
     miningInfoMultiplier
 
@@ -3688,7 +3692,7 @@ class Effect1200(EffectDef):
         # module.multiplyItemAttr('miningAmount', module.getModifiedChargeAttr('specialisationAsteroidYieldMultiplier'))
 
 
-class Effect1212(EffectDef):
+class Effect1212(BaseEffect):
     """
     crystalMiningamountInfo2
 
@@ -3704,7 +3708,7 @@ class Effect1212(EffectDef):
         module.preAssignItemAttr('specialtyMiningAmount', module.getModifiedItemAttr('miningAmount'))
 
 
-class Effect1215(EffectDef):
+class Effect1215(BaseEffect):
     """
     shipEnergyDrainAmountAF1
 
@@ -3722,7 +3726,7 @@ class Effect1215(EffectDef):
                                       'powerTransferAmount', ship.getModifiedItemAttr('shipBonusAF'), skill='Amarr Frigate')
 
 
-class Effect1218(EffectDef):
+class Effect1218(BaseEffect):
     """
     shipBonusPirateSmallHybridDmg
 
@@ -3740,7 +3744,7 @@ class Effect1218(EffectDef):
                                       'damageMultiplier', ship.getModifiedItemAttr('shipBonusRole7'))
 
 
-class Effect1219(EffectDef):
+class Effect1219(BaseEffect):
     """
     shipEnergyVampireTransferAmountBonusAB
 
@@ -3757,7 +3761,7 @@ class Effect1219(EffectDef):
                                       skill='Amarr Battleship')
 
 
-class Effect1220(EffectDef):
+class Effect1220(BaseEffect):
     """
     shipEnergyVampireTransferAmountBonusAc
 
@@ -3775,7 +3779,7 @@ class Effect1220(EffectDef):
                                       'powerTransferAmount', ship.getModifiedItemAttr('shipBonusAC'), skill='Amarr Cruiser')
 
 
-class Effect1221(EffectDef):
+class Effect1221(BaseEffect):
     """
     shipStasisWebRangeBonusMB
 
@@ -3791,7 +3795,7 @@ class Effect1221(EffectDef):
                                       'maxRange', ship.getModifiedItemAttr('shipBonusMB'), skill='Minmatar Battleship')
 
 
-class Effect1222(EffectDef):
+class Effect1222(BaseEffect):
     """
     shipStasisWebRangeBonusMC2
 
@@ -3807,7 +3811,7 @@ class Effect1222(EffectDef):
                                       'maxRange', ship.getModifiedItemAttr('shipBonusMC2'), skill='Minmatar Cruiser')
 
 
-class Effect1228(EffectDef):
+class Effect1228(BaseEffect):
     """
     shipProjectileTrackingGF
 
@@ -3824,7 +3828,7 @@ class Effect1228(EffectDef):
                                       'trackingSpeed', ship.getModifiedItemAttr('shipBonusGF'), skill='Gallente Frigate')
 
 
-class Effect1230(EffectDef):
+class Effect1230(BaseEffect):
     """
     shipMissileVelocityPirateFactionFrigate
 
@@ -3842,7 +3846,7 @@ class Effect1230(EffectDef):
                                         'maxVelocity', ship.getModifiedItemAttr('shipBonusRole7'))
 
 
-class Effect1232(EffectDef):
+class Effect1232(BaseEffect):
     """
     shipProjectileRofPirateCruiser
 
@@ -3859,7 +3863,7 @@ class Effect1232(EffectDef):
                                       'speed', ship.getModifiedItemAttr('shipBonusRole7'))
 
 
-class Effect1233(EffectDef):
+class Effect1233(BaseEffect):
     """
     shipHybridDmgPirateCruiser
 
@@ -3876,7 +3880,7 @@ class Effect1233(EffectDef):
                                       'damageMultiplier', ship.getModifiedItemAttr('shipBonusRole7'))
 
 
-class Effect1234(EffectDef):
+class Effect1234(BaseEffect):
     """
     shipMissileVelocityPirateFactionLight
 
@@ -3893,7 +3897,7 @@ class Effect1234(EffectDef):
                                         'maxVelocity', ship.getModifiedItemAttr('shipBonusRole7'))
 
 
-class Effect1239(EffectDef):
+class Effect1239(BaseEffect):
     """
     shipProjectileRofPirateBattleship
 
@@ -3909,7 +3913,7 @@ class Effect1239(EffectDef):
                                       'speed', ship.getModifiedItemAttr('shipBonusRole7'))
 
 
-class Effect1240(EffectDef):
+class Effect1240(BaseEffect):
     """
     shipHybridDmgPirateBattleship
 
@@ -3925,7 +3929,7 @@ class Effect1240(EffectDef):
                                       'damageMultiplier', ship.getModifiedItemAttr('shipBonusRole7'))
 
 
-class Effect1255(EffectDef):
+class Effect1255(BaseEffect):
     """
     setBonusBloodraider
 
@@ -3942,7 +3946,7 @@ class Effect1255(EffectDef):
                                                  'durationBonus', implant.getModifiedItemAttr('implantSetBloodraider'))
 
 
-class Effect1256(EffectDef):
+class Effect1256(BaseEffect):
     """
     setBonusBloodraiderNosferatu
 
@@ -3958,7 +3962,7 @@ class Effect1256(EffectDef):
                                       'duration', implant.getModifiedItemAttr('durationBonus'))
 
 
-class Effect1261(EffectDef):
+class Effect1261(BaseEffect):
     """
     setBonusSerpentis
 
@@ -3975,7 +3979,7 @@ class Effect1261(EffectDef):
                                                  'velocityBonus', implant.getModifiedItemAttr('implantSetSerpentis'))
 
 
-class Effect1264(EffectDef):
+class Effect1264(BaseEffect):
     """
     interceptor2HybridTracking
 
@@ -3992,7 +3996,7 @@ class Effect1264(EffectDef):
                                       skill='Interceptors')
 
 
-class Effect1268(EffectDef):
+class Effect1268(BaseEffect):
     """
     interceptor2LaserTracking
 
@@ -4009,7 +4013,7 @@ class Effect1268(EffectDef):
                                       skill='Interceptors')
 
 
-class Effect1281(EffectDef):
+class Effect1281(BaseEffect):
     """
     structuralAnalysisEffect
 
@@ -4029,7 +4033,7 @@ class Effect1281(EffectDef):
                                       stackingPenalties=penalized)
 
 
-class Effect1318(EffectDef):
+class Effect1318(BaseEffect):
     """
     ewSkillScanStrengthBonus
 
@@ -4051,7 +4055,7 @@ class Effect1318(EffectDef):
                                           stackingPenalties=False if 'skill' in context else True)
 
 
-class Effect1360(EffectDef):
+class Effect1360(BaseEffect):
     """
     ewSkillRsdCapNeedBonusSkillLevel
 
@@ -4069,7 +4073,7 @@ class Effect1360(EffectDef):
                                       'capacitorNeed', container.getModifiedItemAttr('capNeedBonus') * level)
 
 
-class Effect1361(EffectDef):
+class Effect1361(BaseEffect):
     """
     ewSkillTdCapNeedBonusSkillLevel
 
@@ -4087,7 +4091,7 @@ class Effect1361(EffectDef):
                                       'capacitorNeed', container.getModifiedItemAttr('capNeedBonus') * level)
 
 
-class Effect1370(EffectDef):
+class Effect1370(BaseEffect):
     """
     ewSkillTpCapNeedBonusSkillLevel
 
@@ -4105,7 +4109,7 @@ class Effect1370(EffectDef):
                                       'capacitorNeed', container.getModifiedItemAttr('capNeedBonus') * level)
 
 
-class Effect1372(EffectDef):
+class Effect1372(BaseEffect):
     """
     ewSkillEwCapNeedSkillLevel
 
@@ -4124,7 +4128,7 @@ class Effect1372(EffectDef):
                                       'capacitorNeed', container.getModifiedItemAttr('capNeedBonus') * level)
 
 
-class Effect1395(EffectDef):
+class Effect1395(BaseEffect):
     """
     shieldBoostAmplifierPassive
 
@@ -4140,7 +4144,7 @@ class Effect1395(EffectDef):
                                       'shieldBonus', container.getModifiedItemAttr('shieldBoostMultiplier'))
 
 
-class Effect1397(EffectDef):
+class Effect1397(BaseEffect):
     """
     setBonusGuristas
 
@@ -4157,7 +4161,7 @@ class Effect1397(EffectDef):
                                                  'shieldBoostMultiplier', implant.getModifiedItemAttr('implantSetGuristas'))
 
 
-class Effect1409(EffectDef):
+class Effect1409(BaseEffect):
     """
     systemScanDurationSkillAstrometrics
 
@@ -4176,7 +4180,7 @@ class Effect1409(EffectDef):
                                       'duration', container.getModifiedItemAttr('durationBonus') * level)
 
 
-class Effect1410(EffectDef):
+class Effect1410(BaseEffect):
     """
     propulsionSkillCapNeedBonusSkillLevel
 
@@ -4196,7 +4200,7 @@ class Effect1410(EffectDef):
                                       'capacitorNeed', container.getModifiedItemAttr('capNeedBonus') * level)
 
 
-class Effect1412(EffectDef):
+class Effect1412(BaseEffect):
     """
     shipBonusHybridOptimalCB
 
@@ -4212,7 +4216,7 @@ class Effect1412(EffectDef):
                                       'maxRange', ship.getModifiedItemAttr('shipBonusCB'), skill='Caldari Battleship')
 
 
-class Effect1434(EffectDef):
+class Effect1434(BaseEffect):
     """
     caldariShipEwStrengthCB
 
@@ -4231,7 +4235,7 @@ class Effect1434(EffectDef):
                                           skill='Caldari Battleship')
 
 
-class Effect1441(EffectDef):
+class Effect1441(BaseEffect):
     """
     caldariShipEwOptimalRangeCB3
 
@@ -4247,7 +4251,7 @@ class Effect1441(EffectDef):
                                       'maxRange', ship.getModifiedItemAttr('shipBonusCB3'), skill='Caldari Battleship')
 
 
-class Effect1442(EffectDef):
+class Effect1442(BaseEffect):
     """
     caldariShipEwOptimalRangeCC2
 
@@ -4263,7 +4267,7 @@ class Effect1442(EffectDef):
                                       'maxRange', ship.getModifiedItemAttr('shipBonusCC2'), skill='Caldari Cruiser')
 
 
-class Effect1443(EffectDef):
+class Effect1443(BaseEffect):
     """
     caldariShipEwCapacitorNeedCC
 
@@ -4281,7 +4285,7 @@ class Effect1443(EffectDef):
                                       'capacitorNeed', ship.getModifiedItemAttr('shipBonusCC'), skill='Caldari Cruiser')
 
 
-class Effect1445(EffectDef):
+class Effect1445(BaseEffect):
     """
     ewSkillRsdMaxRangeBonus
 
@@ -4300,7 +4304,7 @@ class Effect1445(EffectDef):
                                       stackingPenalties='skill' not in context)
 
 
-class Effect1446(EffectDef):
+class Effect1446(BaseEffect):
     """
     ewSkillTpMaxRangeBonus
 
@@ -4319,7 +4323,7 @@ class Effect1446(EffectDef):
                                       stackingPenalties='skill' not in context)
 
 
-class Effect1448(EffectDef):
+class Effect1448(BaseEffect):
     """
     ewSkillTdMaxRangeBonus
 
@@ -4338,7 +4342,7 @@ class Effect1448(EffectDef):
                                       stackingPenalties='skill' not in context)
 
 
-class Effect1449(EffectDef):
+class Effect1449(BaseEffect):
     """
     ewSkillRsdFallOffBonus
 
@@ -4354,7 +4358,7 @@ class Effect1449(EffectDef):
                                       'falloffEffectiveness', skill.getModifiedItemAttr('falloffBonus') * skill.level)
 
 
-class Effect1450(EffectDef):
+class Effect1450(BaseEffect):
     """
     ewSkillTpFallOffBonus
 
@@ -4370,7 +4374,7 @@ class Effect1450(EffectDef):
                                       'falloffEffectiveness', skill.getModifiedItemAttr('falloffBonus') * skill.level)
 
 
-class Effect1451(EffectDef):
+class Effect1451(BaseEffect):
     """
     ewSkillTdFallOffBonus
 
@@ -4386,7 +4390,7 @@ class Effect1451(EffectDef):
                                       'falloffEffectiveness', skill.getModifiedItemAttr('falloffBonus') * skill.level)
 
 
-class Effect1452(EffectDef):
+class Effect1452(BaseEffect):
     """
     ewSkillEwMaxRangeBonus
 
@@ -4406,7 +4410,7 @@ class Effect1452(EffectDef):
                                       stackingPenalties='skill' not in context and 'implant' not in context)
 
 
-class Effect1453(EffectDef):
+class Effect1453(BaseEffect):
     """
     ewSkillEwFallOffBonus
 
@@ -4422,7 +4426,7 @@ class Effect1453(EffectDef):
                                       'falloffEffectiveness', skill.getModifiedItemAttr('falloffBonus') * skill.level)
 
 
-class Effect1472(EffectDef):
+class Effect1472(BaseEffect):
     """
     missileSkillAoeCloudSizeBonus
 
@@ -4443,7 +4447,7 @@ class Effect1472(EffectDef):
                                         stackingPenalties=penalize)
 
 
-class Effect1500(EffectDef):
+class Effect1500(BaseEffect):
     """
     shieldOperationSkillBoostCapacitorNeedBonus
 
@@ -4461,7 +4465,7 @@ class Effect1500(EffectDef):
                                       'capacitorNeed', container.getModifiedItemAttr('shieldBoostCapacitorBonus') * level)
 
 
-class Effect1550(EffectDef):
+class Effect1550(BaseEffect):
     """
     ewSkillTargetPaintingStrengthBonus
 
@@ -4478,7 +4482,7 @@ class Effect1550(EffectDef):
                                       skill.getModifiedItemAttr('scanSkillTargetPaintStrengthBonus') * skill.level)
 
 
-class Effect1551(EffectDef):
+class Effect1551(BaseEffect):
     """
     minmatarShipEwTargetPainterMF2
 
@@ -4496,7 +4500,7 @@ class Effect1551(EffectDef):
                                       skill='Minmatar Frigate')
 
 
-class Effect1577(EffectDef):
+class Effect1577(BaseEffect):
     """
     angelsetbonus
 
@@ -4516,7 +4520,7 @@ class Effect1577(EffectDef):
             implant.getModifiedItemAttr('implantSetAngel'))
 
 
-class Effect1579(EffectDef):
+class Effect1579(BaseEffect):
     """
     setBonusSansha
 
@@ -4534,7 +4538,7 @@ class Effect1579(EffectDef):
                                                  'armorHpBonus', implant.getModifiedItemAttr('implantSetSansha') or 1)
 
 
-class Effect1581(EffectDef):
+class Effect1581(BaseEffect):
     """
     jumpDriveSkillsRangeBonus
 
@@ -4549,7 +4553,7 @@ class Effect1581(EffectDef):
         fit.ship.boostItemAttr('jumpDriveRange', skill.getModifiedItemAttr('jumpDriveRangeBonus') * skill.level)
 
 
-class Effect1585(EffectDef):
+class Effect1585(BaseEffect):
     """
     capitalTurretSkillLaserDamage
 
@@ -4565,7 +4569,7 @@ class Effect1585(EffectDef):
                                       'damageMultiplier', skill.getModifiedItemAttr('damageMultiplierBonus') * skill.level)
 
 
-class Effect1586(EffectDef):
+class Effect1586(BaseEffect):
     """
     capitalTurretSkillProjectileDamage
 
@@ -4581,7 +4585,7 @@ class Effect1586(EffectDef):
                                       'damageMultiplier', skill.getModifiedItemAttr('damageMultiplierBonus') * skill.level)
 
 
-class Effect1587(EffectDef):
+class Effect1587(BaseEffect):
     """
     capitalTurretSkillHybridDamage
 
@@ -4597,7 +4601,7 @@ class Effect1587(EffectDef):
                                       'damageMultiplier', skill.getModifiedItemAttr('damageMultiplierBonus') * skill.level)
 
 
-class Effect1588(EffectDef):
+class Effect1588(BaseEffect):
     """
     capitalLauncherSkillCitadelKineticDamage
 
@@ -4615,7 +4619,7 @@ class Effect1588(EffectDef):
                                         'kineticDamage', container.getModifiedItemAttr('damageMultiplierBonus') * level)
 
 
-class Effect1590(EffectDef):
+class Effect1590(BaseEffect):
     """
     missileSkillAoeVelocityBonus
 
@@ -4636,7 +4640,7 @@ class Effect1590(EffectDef):
                                         stackingPenalties=penalize)
 
 
-class Effect1592(EffectDef):
+class Effect1592(BaseEffect):
     """
     capitalLauncherSkillCitadelEmDamage
 
@@ -4654,7 +4658,7 @@ class Effect1592(EffectDef):
                                         'emDamage', container.getModifiedItemAttr('damageMultiplierBonus') * level)
 
 
-class Effect1593(EffectDef):
+class Effect1593(BaseEffect):
     """
     capitalLauncherSkillCitadelExplosiveDamage
 
@@ -4672,7 +4676,7 @@ class Effect1593(EffectDef):
                                         'explosiveDamage', container.getModifiedItemAttr('damageMultiplierBonus') * level)
 
 
-class Effect1594(EffectDef):
+class Effect1594(BaseEffect):
     """
     capitalLauncherSkillCitadelThermalDamage
 
@@ -4690,7 +4694,7 @@ class Effect1594(EffectDef):
                                         'thermalDamage', container.getModifiedItemAttr('damageMultiplierBonus') * level)
 
 
-class Effect1595(EffectDef):
+class Effect1595(BaseEffect):
     """
     missileSkillWarheadUpgradesEmDamageBonus
 
@@ -4708,7 +4712,7 @@ class Effect1595(EffectDef):
                                         'emDamage', src.getModifiedItemAttr('damageMultiplierBonus') * mod)
 
 
-class Effect1596(EffectDef):
+class Effect1596(BaseEffect):
     """
     missileSkillWarheadUpgradesExplosiveDamageBonus
 
@@ -4726,7 +4730,7 @@ class Effect1596(EffectDef):
                                         'explosiveDamage', src.getModifiedItemAttr('damageMultiplierBonus') * mod)
 
 
-class Effect1597(EffectDef):
+class Effect1597(BaseEffect):
     """
     missileSkillWarheadUpgradesKineticDamageBonus
 
@@ -4744,7 +4748,7 @@ class Effect1597(EffectDef):
                                         'kineticDamage', src.getModifiedItemAttr('damageMultiplierBonus') * mod)
 
 
-class Effect1615(EffectDef):
+class Effect1615(BaseEffect):
     """
     shipAdvancedSpaceshipCommandAgilityBonus
 
@@ -4761,7 +4765,7 @@ class Effect1615(EffectDef):
         fit.ship.boostItemAttr('agility', skill.getModifiedItemAttr('agilityBonus'), skill=skillName)
 
 
-class Effect1616(EffectDef):
+class Effect1616(BaseEffect):
     """
     skillCapitalShipsAdvancedAgility
 
@@ -4777,7 +4781,7 @@ class Effect1616(EffectDef):
             fit.ship.boostItemAttr('agility', skill.getModifiedItemAttr('agilityBonus') * skill.level)
 
 
-class Effect1617(EffectDef):
+class Effect1617(BaseEffect):
     """
     shipCapitalAgilityBonus
 
@@ -4792,7 +4796,7 @@ class Effect1617(EffectDef):
         fit.ship.multiplyItemAttr('agility', src.getModifiedItemAttr('advancedCapitalAgility'), stackingPenalties=True)
 
 
-class Effect1634(EffectDef):
+class Effect1634(BaseEffect):
     """
     capitalShieldOperationSkillCapacitorNeedBonus
 
@@ -4810,7 +4814,7 @@ class Effect1634(EffectDef):
                                       'capacitorNeed', container.getModifiedItemAttr('shieldBoostCapacitorBonus') * level)
 
 
-class Effect1635(EffectDef):
+class Effect1635(BaseEffect):
     """
     capitalRepairSystemsSkillDurationBonus
 
@@ -4829,7 +4833,7 @@ class Effect1635(EffectDef):
                                       stackingPenalties='skill' not in context)
 
 
-class Effect1638(EffectDef):
+class Effect1638(BaseEffect):
     """
     skillAdvancedWeaponUpgradesPowerNeedBonus
 
@@ -4846,7 +4850,7 @@ class Effect1638(EffectDef):
             'power', skill.getModifiedItemAttr('powerNeedBonus') * skill.level)
 
 
-class Effect1643(EffectDef):
+class Effect1643(BaseEffect):
     """
     armoredCommandMindlink
 
@@ -4872,7 +4876,7 @@ class Effect1643(EffectDef):
                                       src.getModifiedItemAttr('mindlinkBonus'))
 
 
-class Effect1644(EffectDef):
+class Effect1644(BaseEffect):
     """
     skirmishCommandMindlink
 
@@ -4898,7 +4902,7 @@ class Effect1644(EffectDef):
                                       src.getModifiedItemAttr('mindlinkBonus'))
 
 
-class Effect1645(EffectDef):
+class Effect1645(BaseEffect):
     """
     shieldCommandMindlink
 
@@ -4922,7 +4926,7 @@ class Effect1645(EffectDef):
                                       src.getModifiedItemAttr('mindlinkBonus'))
 
 
-class Effect1646(EffectDef):
+class Effect1646(BaseEffect):
     """
     informationCommandMindlink
 
@@ -4948,7 +4952,7 @@ class Effect1646(EffectDef):
                                       src.getModifiedItemAttr('mindlinkBonus'))
 
 
-class Effect1650(EffectDef):
+class Effect1650(BaseEffect):
     """
     skillSiegeModuleConsumptionQuantityBonus
 
@@ -4965,7 +4969,7 @@ class Effect1650(EffectDef):
                                          'consumptionQuantity', amount * skill.level)
 
 
-class Effect1657(EffectDef):
+class Effect1657(BaseEffect):
     """
     missileSkillWarheadUpgradesThermalDamageBonus
 
@@ -4983,7 +4987,7 @@ class Effect1657(EffectDef):
                                         'thermalDamage', src.getModifiedItemAttr('damageMultiplierBonus') * mod)
 
 
-class Effect1668(EffectDef):
+class Effect1668(BaseEffect):
     """
     freighterCargoBonusA2
 
@@ -4998,7 +5002,7 @@ class Effect1668(EffectDef):
         fit.ship.boostItemAttr('capacity', ship.getModifiedItemAttr('freighterBonusA2'), skill='Amarr Freighter')
 
 
-class Effect1669(EffectDef):
+class Effect1669(BaseEffect):
     """
     freighterCargoBonusC2
 
@@ -5013,7 +5017,7 @@ class Effect1669(EffectDef):
         fit.ship.boostItemAttr('capacity', ship.getModifiedItemAttr('freighterBonusC2'), skill='Caldari Freighter')
 
 
-class Effect1670(EffectDef):
+class Effect1670(BaseEffect):
     """
     freighterCargoBonusG2
 
@@ -5028,7 +5032,7 @@ class Effect1670(EffectDef):
         fit.ship.boostItemAttr('capacity', ship.getModifiedItemAttr('freighterBonusG2'), skill='Gallente Freighter')
 
 
-class Effect1671(EffectDef):
+class Effect1671(BaseEffect):
     """
     freighterCargoBonusM2
 
@@ -5043,7 +5047,7 @@ class Effect1671(EffectDef):
         fit.ship.boostItemAttr('capacity', ship.getModifiedItemAttr('freighterBonusM2'), skill='Minmatar Freighter')
 
 
-class Effect1672(EffectDef):
+class Effect1672(BaseEffect):
     """
     freighterMaxVelocityBonusA1
 
@@ -5058,7 +5062,7 @@ class Effect1672(EffectDef):
         fit.ship.boostItemAttr('maxVelocity', ship.getModifiedItemAttr('freighterBonusA1'), skill='Amarr Freighter')
 
 
-class Effect1673(EffectDef):
+class Effect1673(BaseEffect):
     """
     freighterMaxVelocityBonusC1
 
@@ -5073,7 +5077,7 @@ class Effect1673(EffectDef):
         fit.ship.boostItemAttr('maxVelocity', ship.getModifiedItemAttr('freighterBonusC1'), skill='Caldari Freighter')
 
 
-class Effect1674(EffectDef):
+class Effect1674(BaseEffect):
     """
     freighterMaxVelocityBonusG1
 
@@ -5088,7 +5092,7 @@ class Effect1674(EffectDef):
         fit.ship.boostItemAttr('maxVelocity', ship.getModifiedItemAttr('freighterBonusG1'), skill='Gallente Freighter')
 
 
-class Effect1675(EffectDef):
+class Effect1675(BaseEffect):
     """
     freighterMaxVelocityBonusM1
 
@@ -5103,7 +5107,7 @@ class Effect1675(EffectDef):
         fit.ship.boostItemAttr('maxVelocity', ship.getModifiedItemAttr('freighterBonusM1'), skill='Minmatar Freighter')
 
 
-class Effect1720(EffectDef):
+class Effect1720(BaseEffect):
     """
     shieldBoostAmplifier
 
@@ -5122,7 +5126,7 @@ class Effect1720(EffectDef):
             stackingPenalties=True)
 
 
-class Effect1722(EffectDef):
+class Effect1722(BaseEffect):
     """
     jumpDriveSkillsCapacitorNeedBonus
 
@@ -5138,7 +5142,7 @@ class Effect1722(EffectDef):
                                skill.getModifiedItemAttr('jumpDriveCapacitorNeedBonus') * skill.level)
 
 
-class Effect1730(EffectDef):
+class Effect1730(BaseEffect):
     """
     droneDmgBonus
 
@@ -5154,7 +5158,7 @@ class Effect1730(EffectDef):
                                      'damageMultiplier', skill.getModifiedItemAttr('damageMultiplierBonus') * skill.level)
 
 
-class Effect1738(EffectDef):
+class Effect1738(BaseEffect):
     """
     doHacking
 
@@ -5165,7 +5169,7 @@ class Effect1738(EffectDef):
     type = 'active'
 
 
-class Effect1763(EffectDef):
+class Effect1763(BaseEffect):
     """
     missileSkillRapidLauncherRoF
 
@@ -5186,7 +5190,7 @@ class Effect1763(EffectDef):
                                       'speed', container.getModifiedItemAttr('rofBonus') * level)
 
 
-class Effect1764(EffectDef):
+class Effect1764(BaseEffect):
     """
     missileSkillMissileProjectileVelocityBonus
 
@@ -5207,7 +5211,7 @@ class Effect1764(EffectDef):
                                         stackingPenalties=penalized)
 
 
-class Effect1773(EffectDef):
+class Effect1773(BaseEffect):
     """
     shipBonusSHTFalloffGF2
 
@@ -5224,7 +5228,7 @@ class Effect1773(EffectDef):
                                       'falloff', ship.getModifiedItemAttr('shipBonusGF2'), skill='Gallente Frigate')
 
 
-class Effect1804(EffectDef):
+class Effect1804(BaseEffect):
     """
     shipArmorEMResistanceAF1
 
@@ -5241,7 +5245,7 @@ class Effect1804(EffectDef):
         fit.ship.boostItemAttr('armorEmDamageResonance', ship.getModifiedItemAttr('shipBonusAF'), skill='Amarr Frigate')
 
 
-class Effect1805(EffectDef):
+class Effect1805(BaseEffect):
     """
     shipArmorTHResistanceAF1
 
@@ -5259,7 +5263,7 @@ class Effect1805(EffectDef):
                                skill='Amarr Frigate')
 
 
-class Effect1806(EffectDef):
+class Effect1806(BaseEffect):
     """
     shipArmorKNResistanceAF1
 
@@ -5277,7 +5281,7 @@ class Effect1806(EffectDef):
                                skill='Amarr Frigate')
 
 
-class Effect1807(EffectDef):
+class Effect1807(BaseEffect):
     """
     shipArmorEXResistanceAF1
 
@@ -5295,7 +5299,7 @@ class Effect1807(EffectDef):
                                skill='Amarr Frigate')
 
 
-class Effect1812(EffectDef):
+class Effect1812(BaseEffect):
     """
     shipShieldEMResistanceCC2
 
@@ -5310,7 +5314,7 @@ class Effect1812(EffectDef):
         fit.ship.boostItemAttr('shieldEmDamageResonance', ship.getModifiedItemAttr('shipBonusCC2'), skill='Caldari Cruiser')
 
 
-class Effect1813(EffectDef):
+class Effect1813(BaseEffect):
     """
     shipShieldThermalResistanceCC2
 
@@ -5326,7 +5330,7 @@ class Effect1813(EffectDef):
                                skill='Caldari Cruiser')
 
 
-class Effect1814(EffectDef):
+class Effect1814(BaseEffect):
     """
     shipShieldKineticResistanceCC2
 
@@ -5342,7 +5346,7 @@ class Effect1814(EffectDef):
                                skill='Caldari Cruiser')
 
 
-class Effect1815(EffectDef):
+class Effect1815(BaseEffect):
     """
     shipShieldExplosiveResistanceCC2
 
@@ -5358,7 +5362,7 @@ class Effect1815(EffectDef):
                                skill='Caldari Cruiser')
 
 
-class Effect1816(EffectDef):
+class Effect1816(BaseEffect):
     """
     shipShieldEMResistanceCF2
 
@@ -5375,7 +5379,7 @@ class Effect1816(EffectDef):
         fit.ship.boostItemAttr('shieldEmDamageResonance', ship.getModifiedItemAttr('shipBonusCF'), skill='Caldari Frigate')
 
 
-class Effect1817(EffectDef):
+class Effect1817(BaseEffect):
     """
     shipShieldThermalResistanceCF2
 
@@ -5393,7 +5397,7 @@ class Effect1817(EffectDef):
                                skill='Caldari Frigate')
 
 
-class Effect1819(EffectDef):
+class Effect1819(BaseEffect):
     """
     shipShieldKineticResistanceCF2
 
@@ -5411,7 +5415,7 @@ class Effect1819(EffectDef):
                                skill='Caldari Frigate')
 
 
-class Effect1820(EffectDef):
+class Effect1820(BaseEffect):
     """
     shipShieldExplosiveResistanceCF2
 
@@ -5429,7 +5433,7 @@ class Effect1820(EffectDef):
                                skill='Caldari Frigate')
 
 
-class Effect1848(EffectDef):
+class Effect1848(BaseEffect):
     """
     miningForemanMindlink
 
@@ -5454,7 +5458,7 @@ class Effect1848(EffectDef):
                                       src.getModifiedItemAttr('mindlinkBonus'))
 
 
-class Effect1851(EffectDef):
+class Effect1851(BaseEffect):
     """
     selfRof
 
@@ -5472,7 +5476,7 @@ class Effect1851(EffectDef):
                                       'speed', skill.getModifiedItemAttr('rofBonus') * skill.level)
 
 
-class Effect1862(EffectDef):
+class Effect1862(BaseEffect):
     """
     shipMissileEMDamageCF2
 
@@ -5488,7 +5492,7 @@ class Effect1862(EffectDef):
                                         'emDamage', ship.getModifiedItemAttr('shipBonusCF2'), skill='Caldari Frigate')
 
 
-class Effect1863(EffectDef):
+class Effect1863(BaseEffect):
     """
     shipMissileThermalDamageCF2
 
@@ -5504,7 +5508,7 @@ class Effect1863(EffectDef):
                                         'thermalDamage', ship.getModifiedItemAttr('shipBonusCF2'), skill='Caldari Frigate')
 
 
-class Effect1864(EffectDef):
+class Effect1864(BaseEffect):
     """
     shipMissileExplosiveDamageCF2
 
@@ -5521,7 +5525,7 @@ class Effect1864(EffectDef):
                                         skill='Caldari Frigate')
 
 
-class Effect1882(EffectDef):
+class Effect1882(BaseEffect):
     """
     miningYieldMultiplyPercent
 
@@ -5538,7 +5542,7 @@ class Effect1882(EffectDef):
                                       'miningAmount', module.getModifiedItemAttr('miningAmountBonus'))
 
 
-class Effect1885(EffectDef):
+class Effect1885(BaseEffect):
     """
     shipCruiseLauncherROFBonus2CB
 
@@ -5555,7 +5559,7 @@ class Effect1885(EffectDef):
                                       'speed', ship.getModifiedItemAttr('shipBonus2CB'), skill='Caldari Battleship')
 
 
-class Effect1886(EffectDef):
+class Effect1886(BaseEffect):
     """
     shipSiegeLauncherROFBonus2CB
 
@@ -5572,7 +5576,7 @@ class Effect1886(EffectDef):
                                       'speed', ship.getModifiedItemAttr('shipBonus2CB'), skill='Caldari Battleship')
 
 
-class Effect1896(EffectDef):
+class Effect1896(BaseEffect):
     """
     eliteBargeBonusIceHarvestingCycleTimeBarge3
 
@@ -5588,7 +5592,7 @@ class Effect1896(EffectDef):
                                       'duration', ship.getModifiedItemAttr('eliteBonusBarge2'), skill='Exhumers')
 
 
-class Effect1910(EffectDef):
+class Effect1910(BaseEffect):
     """
     eliteBonusVampireDrainAmount2
 
@@ -5606,7 +5610,7 @@ class Effect1910(EffectDef):
                                       skill='Recon Ships')
 
 
-class Effect1911(EffectDef):
+class Effect1911(BaseEffect):
     """
     eliteReconBonusGravimetricStrength2
 
@@ -5625,7 +5629,7 @@ class Effect1911(EffectDef):
                                       skill='Recon Ships')
 
 
-class Effect1912(EffectDef):
+class Effect1912(BaseEffect):
     """
     eliteReconBonusMagnetometricStrength2
 
@@ -5644,7 +5648,7 @@ class Effect1912(EffectDef):
                                       skill='Recon Ships')
 
 
-class Effect1913(EffectDef):
+class Effect1913(BaseEffect):
     """
     eliteReconBonusRadarStrength2
 
@@ -5663,7 +5667,7 @@ class Effect1913(EffectDef):
                                       skill='Recon Ships')
 
 
-class Effect1914(EffectDef):
+class Effect1914(BaseEffect):
     """
     eliteReconBonusLadarStrength2
 
@@ -5682,7 +5686,7 @@ class Effect1914(EffectDef):
                                       skill='Recon Ships')
 
 
-class Effect1921(EffectDef):
+class Effect1921(BaseEffect):
     """
     eliteReconStasisWebBonus2
 
@@ -5701,7 +5705,7 @@ class Effect1921(EffectDef):
                                       'maxRange', ship.getModifiedItemAttr('eliteBonusReconShip2'), skill='Recon Ships')
 
 
-class Effect1922(EffectDef):
+class Effect1922(BaseEffect):
     """
     eliteReconScramblerRangeBonus2
 
@@ -5719,7 +5723,7 @@ class Effect1922(EffectDef):
                                       'maxRange', ship.getModifiedItemAttr('eliteBonusReconShip2'), skill='Recon Ships')
 
 
-class Effect1959(EffectDef):
+class Effect1959(BaseEffect):
     """
     armorReinforcerMassAdd
 
@@ -5734,7 +5738,7 @@ class Effect1959(EffectDef):
         fit.ship.increaseItemAttr('mass', module.getModifiedItemAttr('massAddition'))
 
 
-class Effect1964(EffectDef):
+class Effect1964(BaseEffect):
     """
     shipBonusShieldTransferCapneed1
 
@@ -5750,7 +5754,7 @@ class Effect1964(EffectDef):
                                       src.getModifiedItemAttr('shipBonusCC'), skill='Caldari Cruiser')
 
 
-class Effect1969(EffectDef):
+class Effect1969(BaseEffect):
     """
     shipBonusRemoteArmorRepairCapNeedGC1
 
@@ -5766,7 +5770,7 @@ class Effect1969(EffectDef):
                                       src.getModifiedItemAttr('shipBonusGC'), skill='Gallente Cruiser')
 
 
-class Effect1996(EffectDef):
+class Effect1996(BaseEffect):
     """
     caldariShipEwCapacitorNeedCF2
 
@@ -5783,7 +5787,7 @@ class Effect1996(EffectDef):
                                       'capacitorNeed', ship.getModifiedItemAttr('shipBonusCF2'), skill='Caldari Frigate')
 
 
-class Effect2000(EffectDef):
+class Effect2000(BaseEffect):
     """
     droneRangeBonusAdd
 
@@ -5799,7 +5803,7 @@ class Effect2000(EffectDef):
         fit.extraAttributes.increase('droneControlRange', amount)
 
 
-class Effect2008(EffectDef):
+class Effect2008(BaseEffect):
     """
     cynosuralDurationBonus
 
@@ -5815,7 +5819,7 @@ class Effect2008(EffectDef):
                                       'duration', ship.getModifiedItemAttr('durationBonus'))
 
 
-class Effect2013(EffectDef):
+class Effect2013(BaseEffect):
     """
     droneMaxVelocityBonus
 
@@ -5834,7 +5838,7 @@ class Effect2013(EffectDef):
                                      'maxVelocity', container.getModifiedItemAttr('droneMaxVelocityBonus') * level, stackingPenalties=True)
 
 
-class Effect2014(EffectDef):
+class Effect2014(BaseEffect):
     """
     droneMaxRangeBonus
 
@@ -5854,7 +5858,7 @@ class Effect2014(EffectDef):
                                      stackingPenalties=stacking)
 
 
-class Effect2015(EffectDef):
+class Effect2015(BaseEffect):
     """
     droneDurabilityShieldCapBonus
 
@@ -5870,7 +5874,7 @@ class Effect2015(EffectDef):
                                      'shieldCapacity', module.getModifiedItemAttr('hullHpBonus'))
 
 
-class Effect2016(EffectDef):
+class Effect2016(BaseEffect):
     """
     droneDurabilityArmorHPBonus
 
@@ -5886,7 +5890,7 @@ class Effect2016(EffectDef):
                                      'armorHP', module.getModifiedItemAttr('hullHpBonus'))
 
 
-class Effect2017(EffectDef):
+class Effect2017(BaseEffect):
     """
     droneDurabilityHPBonus
 
@@ -5903,7 +5907,7 @@ class Effect2017(EffectDef):
                                      'hp', container.getModifiedItemAttr('hullHpBonus') * level)
 
 
-class Effect2019(EffectDef):
+class Effect2019(BaseEffect):
     """
     repairDroneShieldBonusBonus
 
@@ -5921,7 +5925,7 @@ class Effect2019(EffectDef):
                                      'shieldBonus', container.getModifiedItemAttr('damageHP') * level)
 
 
-class Effect2020(EffectDef):
+class Effect2020(BaseEffect):
     """
     repairDroneArmorDamageAmountBonus
 
@@ -5940,7 +5944,7 @@ class Effect2020(EffectDef):
                                      stackingPenalties=True)
 
 
-class Effect2029(EffectDef):
+class Effect2029(BaseEffect):
     """
     addToSignatureRadius2
 
@@ -5956,7 +5960,7 @@ class Effect2029(EffectDef):
         fit.ship.increaseItemAttr('signatureRadius', module.getModifiedItemAttr('signatureRadiusAdd'))
 
 
-class Effect2041(EffectDef):
+class Effect2041(BaseEffect):
     """
     modifyArmorResonancePostPercent
 
@@ -5975,7 +5979,7 @@ class Effect2041(EffectDef):
                                    stackingPenalties=True)
 
 
-class Effect2052(EffectDef):
+class Effect2052(BaseEffect):
     """
     modifyShieldResonancePostPercent
 
@@ -5993,7 +5997,7 @@ class Effect2052(EffectDef):
                                    stackingPenalties=True)
 
 
-class Effect2053(EffectDef):
+class Effect2053(BaseEffect):
     """
     emShieldCompensationHardeningBonusGroupShieldAmp
 
@@ -6009,7 +6013,7 @@ class Effect2053(EffectDef):
                                       'emDamageResistanceBonus', skill.getModifiedItemAttr('hardeningBonus') * skill.level)
 
 
-class Effect2054(EffectDef):
+class Effect2054(BaseEffect):
     """
     explosiveShieldCompensationHardeningBonusGroupShieldAmp
 
@@ -6026,7 +6030,7 @@ class Effect2054(EffectDef):
                                       skill.getModifiedItemAttr('hardeningBonus') * skill.level)
 
 
-class Effect2055(EffectDef):
+class Effect2055(BaseEffect):
     """
     kineticShieldCompensationHardeningBonusGroupShieldAmp
 
@@ -6043,7 +6047,7 @@ class Effect2055(EffectDef):
                                       skill.getModifiedItemAttr('hardeningBonus') * skill.level)
 
 
-class Effect2056(EffectDef):
+class Effect2056(BaseEffect):
     """
     thermalShieldCompensationHardeningBonusGroupShieldAmp
 
@@ -6060,7 +6064,7 @@ class Effect2056(EffectDef):
                                       skill.getModifiedItemAttr('hardeningBonus') * skill.level)
 
 
-class Effect2105(EffectDef):
+class Effect2105(BaseEffect):
     """
     emArmorCompensationHardeningBonusGroupArmorCoating
 
@@ -6076,7 +6080,7 @@ class Effect2105(EffectDef):
                                       'emDamageResistanceBonus', skill.getModifiedItemAttr('hardeningBonus') * skill.level)
 
 
-class Effect2106(EffectDef):
+class Effect2106(BaseEffect):
     """
     explosiveArmorCompensationHardeningBonusGroupArmorCoating
 
@@ -6093,7 +6097,7 @@ class Effect2106(EffectDef):
                                       skill.getModifiedItemAttr('hardeningBonus') * skill.level)
 
 
-class Effect2107(EffectDef):
+class Effect2107(BaseEffect):
     """
     kineticArmorCompensationHardeningBonusGroupArmorCoating
 
@@ -6110,7 +6114,7 @@ class Effect2107(EffectDef):
                                       skill.getModifiedItemAttr('hardeningBonus') * skill.level)
 
 
-class Effect2108(EffectDef):
+class Effect2108(BaseEffect):
     """
     thermicArmorCompensationHardeningBonusGroupArmorCoating
 
@@ -6127,7 +6131,7 @@ class Effect2108(EffectDef):
                                       skill.getModifiedItemAttr('hardeningBonus') * skill.level)
 
 
-class Effect2109(EffectDef):
+class Effect2109(BaseEffect):
     """
     emArmorCompensationHardeningBonusGroupEnergized
 
@@ -6143,7 +6147,7 @@ class Effect2109(EffectDef):
                                       'emDamageResistanceBonus', skill.getModifiedItemAttr('hardeningBonus') * skill.level)
 
 
-class Effect2110(EffectDef):
+class Effect2110(BaseEffect):
     """
     explosiveArmorCompensationHardeningBonusGroupEnergized
 
@@ -6160,7 +6164,7 @@ class Effect2110(EffectDef):
                                       skill.getModifiedItemAttr('hardeningBonus') * skill.level)
 
 
-class Effect2111(EffectDef):
+class Effect2111(BaseEffect):
     """
     kineticArmorCompensationHardeningBonusGroupEnergized
 
@@ -6177,7 +6181,7 @@ class Effect2111(EffectDef):
                                       skill.getModifiedItemAttr('hardeningBonus') * skill.level)
 
 
-class Effect2112(EffectDef):
+class Effect2112(BaseEffect):
     """
     thermicArmorCompensationHardeningBonusGroupEnergized
 
@@ -6194,7 +6198,7 @@ class Effect2112(EffectDef):
                                       skill.getModifiedItemAttr('hardeningBonus') * skill.level)
 
 
-class Effect2130(EffectDef):
+class Effect2130(BaseEffect):
     """
     smallHybridMaxRangeBonus
 
@@ -6211,7 +6215,7 @@ class Effect2130(EffectDef):
                                       'maxRange', ship.getModifiedItemAttr('maxRangeBonus'))
 
 
-class Effect2131(EffectDef):
+class Effect2131(BaseEffect):
     """
     smallEnergyMaxRangeBonus
 
@@ -6229,7 +6233,7 @@ class Effect2131(EffectDef):
                                       'maxRange', ship.getModifiedItemAttr('maxRangeBonus'))
 
 
-class Effect2132(EffectDef):
+class Effect2132(BaseEffect):
     """
     smallProjectileMaxRangeBonus
 
@@ -6245,7 +6249,7 @@ class Effect2132(EffectDef):
                                       'maxRange', ship.getModifiedItemAttr('maxRangeBonus'))
 
 
-class Effect2133(EffectDef):
+class Effect2133(BaseEffect):
     """
     energyTransferArrayMaxRangeBonus
 
@@ -6262,7 +6266,7 @@ class Effect2133(EffectDef):
                                       'maxRange', ship.getModifiedItemAttr('maxRangeBonus2'))
 
 
-class Effect2134(EffectDef):
+class Effect2134(BaseEffect):
     """
     shieldTransporterMaxRangeBonus
 
@@ -6283,7 +6287,7 @@ class Effect2134(EffectDef):
                                       ship.getModifiedItemAttr('maxRangeBonus'))
 
 
-class Effect2135(EffectDef):
+class Effect2135(BaseEffect):
     """
     armorRepairProjectorMaxRangeBonus
 
@@ -6305,7 +6309,7 @@ class Effect2135(EffectDef):
                                       src.getModifiedItemAttr('maxRangeBonus'))
 
 
-class Effect2143(EffectDef):
+class Effect2143(BaseEffect):
     """
     minmatarShipEwTargetPainterMC2
 
@@ -6322,7 +6326,7 @@ class Effect2143(EffectDef):
                                       skill='Minmatar Cruiser')
 
 
-class Effect2155(EffectDef):
+class Effect2155(BaseEffect):
     """
     eliteBonusCommandShipProjectileDamageCS1
 
@@ -6339,7 +6343,7 @@ class Effect2155(EffectDef):
                                       skill='Command Ships')
 
 
-class Effect2156(EffectDef):
+class Effect2156(BaseEffect):
     """
     eliteBonusCommandShipProjectileFalloffCS2
 
@@ -6355,7 +6359,7 @@ class Effect2156(EffectDef):
                                       'falloff', ship.getModifiedItemAttr('eliteBonusCommandShips2'), skill='Command Ships')
 
 
-class Effect2157(EffectDef):
+class Effect2157(BaseEffect):
     """
     eliteBonusCommandShipLaserDamageCS1
 
@@ -6372,7 +6376,7 @@ class Effect2157(EffectDef):
                                       skill='Command Ships')
 
 
-class Effect2158(EffectDef):
+class Effect2158(BaseEffect):
     """
     eliteBonusCommandShipLaserROFCS2
 
@@ -6388,7 +6392,7 @@ class Effect2158(EffectDef):
                                       'speed', ship.getModifiedItemAttr('eliteBonusCommandShips2'), skill='Command Ships')
 
 
-class Effect2160(EffectDef):
+class Effect2160(BaseEffect):
     """
     eliteBonusCommandShipHybridFalloffCS2
 
@@ -6404,7 +6408,7 @@ class Effect2160(EffectDef):
                                       'falloff', ship.getModifiedItemAttr('eliteBonusCommandShips2'), skill='Command Ships')
 
 
-class Effect2161(EffectDef):
+class Effect2161(BaseEffect):
     """
     eliteBonusCommandShipHybridOptimalCS1
 
@@ -6421,7 +6425,7 @@ class Effect2161(EffectDef):
                                       skill='Command Ships')
 
 
-class Effect2179(EffectDef):
+class Effect2179(BaseEffect):
     """
     shipBonusDroneHitpointsGC2
 
@@ -6440,7 +6444,7 @@ class Effect2179(EffectDef):
                                          type, ship.getModifiedItemAttr('shipBonusGC2'), skill='Gallente Cruiser')
 
 
-class Effect2181(EffectDef):
+class Effect2181(BaseEffect):
     """
     shipBonusDroneHitpointsFixedAC2
 
@@ -6457,7 +6461,7 @@ class Effect2181(EffectDef):
                                          type, ship.getModifiedItemAttr('shipBonusAC2'), skill='Amarr Cruiser')
 
 
-class Effect2186(EffectDef):
+class Effect2186(BaseEffect):
     """
     shipBonusDroneHitpointsGB2
 
@@ -6475,7 +6479,7 @@ class Effect2186(EffectDef):
                                          type, ship.getModifiedItemAttr('shipBonusGB2'), skill='Gallente Battleship')
 
 
-class Effect2187(EffectDef):
+class Effect2187(BaseEffect):
     """
     shipBonusDroneDamageMultiplierGB2
 
@@ -6493,7 +6497,7 @@ class Effect2187(EffectDef):
                                      skill='Gallente Battleship')
 
 
-class Effect2188(EffectDef):
+class Effect2188(BaseEffect):
     """
     shipBonusDroneDamageMultiplierGC2
 
@@ -6511,7 +6515,7 @@ class Effect2188(EffectDef):
                                      'damageMultiplier', ship.getModifiedItemAttr('shipBonusGC2'), skill='Gallente Cruiser')
 
 
-class Effect2189(EffectDef):
+class Effect2189(BaseEffect):
     """
     shipBonusDroneDamageMultiplierAC2
 
@@ -6527,7 +6531,7 @@ class Effect2189(EffectDef):
                                      'damageMultiplier', ship.getModifiedItemAttr('shipBonusAC2'), skill='Amarr Cruiser')
 
 
-class Effect2200(EffectDef):
+class Effect2200(BaseEffect):
     """
     eliteBonusInterdictorsMissileKineticDamage1
 
@@ -6544,7 +6548,7 @@ class Effect2200(EffectDef):
             'kineticDamage', ship.getModifiedItemAttr('eliteBonusInterdictors1'), skill='Interdictors')
 
 
-class Effect2201(EffectDef):
+class Effect2201(BaseEffect):
     """
     eliteBonusInterdictorsProjectileFalloff1
 
@@ -6560,7 +6564,7 @@ class Effect2201(EffectDef):
                                       'falloff', ship.getModifiedItemAttr('eliteBonusInterdictors1'), skill='Interdictors')
 
 
-class Effect2215(EffectDef):
+class Effect2215(BaseEffect):
     """
     shipBonusPirateFrigateProjDamage
 
@@ -6579,7 +6583,7 @@ class Effect2215(EffectDef):
                                       'damageMultiplier', ship.getModifiedItemAttr('shipBonusRole7'))
 
 
-class Effect2232(EffectDef):
+class Effect2232(BaseEffect):
     """
     scanStrengthBonusPercentOnline
 
@@ -6597,7 +6601,7 @@ class Effect2232(EffectDef):
                                    stackingPenalties=True)
 
 
-class Effect2249(EffectDef):
+class Effect2249(BaseEffect):
     """
     shipBonusDroneMiningAmountAC2
 
@@ -6613,7 +6617,7 @@ class Effect2249(EffectDef):
                                      'miningAmount', ship.getModifiedItemAttr('shipBonusAC2'), skill='Amarr Cruiser')
 
 
-class Effect2250(EffectDef):
+class Effect2250(BaseEffect):
     """
     shipBonusDroneMiningAmountGC2
 
@@ -6630,7 +6634,7 @@ class Effect2250(EffectDef):
                                      'miningAmount', ship.getModifiedItemAttr('shipBonusGC2'), skill='Gallente Cruiser')
 
 
-class Effect2251(EffectDef):
+class Effect2251(BaseEffect):
     """
     commandshipMultiRelayEffect
 
@@ -6650,7 +6654,7 @@ class Effect2251(EffectDef):
                                          src.getModifiedItemAttr('maxGangModules'))
 
 
-class Effect2252(EffectDef):
+class Effect2252(BaseEffect):
     """
     covertOpsAndReconOpsCloakModuleDelayBonus
 
@@ -6676,7 +6680,7 @@ class Effect2252(EffectDef):
                                       container.getModifiedItemAttr('covertOpsAndReconOpsCloakModuleDelay'))
 
 
-class Effect2253(EffectDef):
+class Effect2253(BaseEffect):
     """
     covertOpsStealthBomberTargettingDelayBonus
 
@@ -6699,7 +6703,7 @@ class Effect2253(EffectDef):
                                       ship.getModifiedItemAttr('covertOpsStealthBomberTargettingDelay'))
 
 
-class Effect2255(EffectDef):
+class Effect2255(BaseEffect):
     """
     tractorBeamCan
 
@@ -6711,7 +6715,7 @@ class Effect2255(EffectDef):
     type = 'active'
 
 
-class Effect2298(EffectDef):
+class Effect2298(BaseEffect):
     """
     scanStrengthBonusPercentPassive
 
@@ -6730,7 +6734,7 @@ class Effect2298(EffectDef):
                 fit.ship.boostItemAttr(sensorType, implant.getModifiedItemAttr(sensorBoost))
 
 
-class Effect2302(EffectDef):
+class Effect2302(BaseEffect):
     """
     damageControl
 
@@ -6751,7 +6755,7 @@ class Effect2302(EffectDef):
                                           stackingPenalties=True, penaltyGroup='preMul')
 
 
-class Effect2305(EffectDef):
+class Effect2305(BaseEffect):
     """
     eliteReconBonusEnergyNeutAmount2
 
@@ -6769,7 +6773,7 @@ class Effect2305(EffectDef):
                                       skill='Recon Ships')
 
 
-class Effect2354(EffectDef):
+class Effect2354(BaseEffect):
     """
     capitalRemoteArmorRepairerCapNeedBonusSkill
 
@@ -6787,7 +6791,7 @@ class Effect2354(EffectDef):
                                       'capacitorNeed', container.getModifiedItemAttr('capNeedBonus') * level)
 
 
-class Effect2355(EffectDef):
+class Effect2355(BaseEffect):
     """
     capitalRemoteShieldTransferCapNeedBonusSkill
 
@@ -6804,7 +6808,7 @@ class Effect2355(EffectDef):
                                       'capacitorNeed', container.getModifiedItemAttr('capNeedBonus') * level)
 
 
-class Effect2356(EffectDef):
+class Effect2356(BaseEffect):
     """
     capitalRemoteEnergyTransferCapNeedBonusSkill
 
@@ -6820,7 +6824,7 @@ class Effect2356(EffectDef):
                                       'capacitorNeed', skill.getModifiedItemAttr('capNeedBonus') * skill.level)
 
 
-class Effect2402(EffectDef):
+class Effect2402(BaseEffect):
     """
     skillSuperWeaponDmgBonus
 
@@ -6840,7 +6844,7 @@ class Effect2402(EffectDef):
                 dmgAttr, skill.getModifiedItemAttr('damageMultiplierBonus') * skill.level)
 
 
-class Effect2422(EffectDef):
+class Effect2422(BaseEffect):
     """
     implantVelocityBonus
 
@@ -6857,7 +6861,7 @@ class Effect2422(EffectDef):
         fit.ship.boostItemAttr('maxVelocity', implant.getModifiedItemAttr('implantBonusVelocity'))
 
 
-class Effect2432(EffectDef):
+class Effect2432(BaseEffect):
     """
     energyManagementCapacitorBonusPostPercentCapacityLocationShipGroupCapacitorCapacityBonus
 
@@ -6878,7 +6882,7 @@ class Effect2432(EffectDef):
         fit.ship.boostItemAttr('capacitorCapacity', container.getModifiedItemAttr('capacitorCapacityBonus') * level)
 
 
-class Effect2444(EffectDef):
+class Effect2444(BaseEffect):
     """
     minerCpuUsageMultiplyPercent2
 
@@ -6895,7 +6899,7 @@ class Effect2444(EffectDef):
                                       'cpu', module.getModifiedItemAttr('cpuPenaltyPercent'))
 
 
-class Effect2445(EffectDef):
+class Effect2445(BaseEffect):
     """
     iceMinerCpuUsagePercent
 
@@ -6911,7 +6915,7 @@ class Effect2445(EffectDef):
                                       'cpu', module.getModifiedItemAttr('cpuPenaltyPercent'))
 
 
-class Effect2456(EffectDef):
+class Effect2456(BaseEffect):
     """
     miningUpgradeCPUPenaltyReductionModulesRequiringMiningUpgradePercent
 
@@ -6930,7 +6934,7 @@ class Effect2456(EffectDef):
                                       container.getModifiedItemAttr('miningUpgradeCPUReductionBonus') * level)
 
 
-class Effect2465(EffectDef):
+class Effect2465(BaseEffect):
     """
     shipBonusArmorResistAB
 
@@ -6948,7 +6952,7 @@ class Effect2465(EffectDef):
                                    skill='Amarr Battleship')
 
 
-class Effect2479(EffectDef):
+class Effect2479(BaseEffect):
     """
     iceHarvestCycleTimeModulesRequiringIceHarvestingOnline
 
@@ -6965,7 +6969,7 @@ class Effect2479(EffectDef):
                                       'duration', module.getModifiedItemAttr('iceHarvestCycleBonus'))
 
 
-class Effect2485(EffectDef):
+class Effect2485(BaseEffect):
     """
     implantArmorHpBonus2
 
@@ -6983,7 +6987,7 @@ class Effect2485(EffectDef):
         fit.ship.boostItemAttr('armorHP', implant.getModifiedItemAttr('armorHpBonus2'))
 
 
-class Effect2488(EffectDef):
+class Effect2488(BaseEffect):
     """
     implantVelocityBonus2
 
@@ -6998,7 +7002,7 @@ class Effect2488(EffectDef):
         fit.ship.boostItemAttr('maxVelocity', implant.getModifiedItemAttr('velocityBonus2'))
 
 
-class Effect2489(EffectDef):
+class Effect2489(BaseEffect):
     """
     shipBonusRemoteTrackingComputerFalloffMC
 
@@ -7015,7 +7019,7 @@ class Effect2489(EffectDef):
                                       skill='Minmatar Cruiser')
 
 
-class Effect2490(EffectDef):
+class Effect2490(BaseEffect):
     """
     shipBonusRemoteTrackingComputerFalloffGC2
 
@@ -7032,7 +7036,7 @@ class Effect2490(EffectDef):
                                       skill='Gallente Cruiser')
 
 
-class Effect2491(EffectDef):
+class Effect2491(BaseEffect):
     """
     ewSkillEcmBurstRangeBonus
 
@@ -7051,7 +7055,7 @@ class Effect2491(EffectDef):
                                       stackingPenalties=False if 'skill' in context else True)
 
 
-class Effect2492(EffectDef):
+class Effect2492(BaseEffect):
     """
     ewSkillEcmBurstCapNeedBonus
 
@@ -7070,7 +7074,7 @@ class Effect2492(EffectDef):
                                       'capacitorNeed', container.getModifiedItemAttr('capNeedBonus') * level)
 
 
-class Effect2503(EffectDef):
+class Effect2503(BaseEffect):
     """
     shipHTTrackingBonusGB2
 
@@ -7088,7 +7092,7 @@ class Effect2503(EffectDef):
                                       skill='Gallente Battleship')
 
 
-class Effect2504(EffectDef):
+class Effect2504(BaseEffect):
     """
     shipBonusHybridTrackingGF2
 
@@ -7107,7 +7111,7 @@ class Effect2504(EffectDef):
                                       'trackingSpeed', ship.getModifiedItemAttr('shipBonusGF2'), skill='Gallente Frigate')
 
 
-class Effect2561(EffectDef):
+class Effect2561(BaseEffect):
     """
     eliteBonusAssaultShipMissileVelocity1
 
@@ -7124,7 +7128,7 @@ class Effect2561(EffectDef):
                                         skill='Assault Frigates')
 
 
-class Effect2589(EffectDef):
+class Effect2589(BaseEffect):
     """
     modifyBoosterEffectChanceWithBoosterChanceBonusPostPercent
 
@@ -7144,7 +7148,7 @@ class Effect2589(EffectDef):
                                            attr, container.getModifiedItemAttr('boosterChanceBonus') * level)
 
 
-class Effect2602(EffectDef):
+class Effect2602(BaseEffect):
     """
     shipBonusEmShieldResistanceCB2
 
@@ -7162,7 +7166,7 @@ class Effect2602(EffectDef):
                                skill='Caldari Battleship')
 
 
-class Effect2603(EffectDef):
+class Effect2603(BaseEffect):
     """
     shipBonusExplosiveShieldResistanceCB2
 
@@ -7180,7 +7184,7 @@ class Effect2603(EffectDef):
                                skill='Caldari Battleship')
 
 
-class Effect2604(EffectDef):
+class Effect2604(BaseEffect):
     """
     shipBonusKineticShieldResistanceCB2
 
@@ -7198,7 +7202,7 @@ class Effect2604(EffectDef):
                                skill='Caldari Battleship')
 
 
-class Effect2605(EffectDef):
+class Effect2605(BaseEffect):
     """
     shipBonusThermicShieldResistanceCB2
 
@@ -7216,7 +7220,7 @@ class Effect2605(EffectDef):
                                skill='Caldari Battleship')
 
 
-class Effect2611(EffectDef):
+class Effect2611(BaseEffect):
     """
     eliteBonusGunshipProjectileDamage1
 
@@ -7233,7 +7237,7 @@ class Effect2611(EffectDef):
                                       skill='Assault Frigates')
 
 
-class Effect2644(EffectDef):
+class Effect2644(BaseEffect):
     """
     increaseSignatureRadiusOnline
 
@@ -7248,7 +7252,7 @@ class Effect2644(EffectDef):
         fit.ship.boostItemAttr('signatureRadius', module.getModifiedItemAttr('signatureRadiusBonus'), stackingPenalties=True)
 
 
-class Effect2645(EffectDef):
+class Effect2645(BaseEffect):
     """
     scanResolutionMultiplierOnline
 
@@ -7265,7 +7269,7 @@ class Effect2645(EffectDef):
                                   stackingPenalties=True)
 
 
-class Effect2646(EffectDef):
+class Effect2646(BaseEffect):
     """
     maxTargetRangeBonus
 
@@ -7281,7 +7285,7 @@ class Effect2646(EffectDef):
                                stackingPenalties=True)
 
 
-class Effect2647(EffectDef):
+class Effect2647(BaseEffect):
     """
     eliteBonusHeavyGunshipHeavyMissileLaunhcerRof2
 
@@ -7298,7 +7302,7 @@ class Effect2647(EffectDef):
                                       skill='Heavy Assault Cruisers')
 
 
-class Effect2648(EffectDef):
+class Effect2648(BaseEffect):
     """
     eliteBonusHeavyGunshipHeavyAssaultMissileLaunhcerRof2
 
@@ -7315,7 +7319,7 @@ class Effect2648(EffectDef):
                                       skill='Heavy Assault Cruisers')
 
 
-class Effect2649(EffectDef):
+class Effect2649(BaseEffect):
     """
     eliteBonusHeavyGunshipAssaultMissileLaunhcerRof2
 
@@ -7332,7 +7336,7 @@ class Effect2649(EffectDef):
                                       skill='Heavy Assault Cruisers')
 
 
-class Effect2670(EffectDef):
+class Effect2670(BaseEffect):
     """
     sensorBoosterActivePercentage
 
@@ -7357,7 +7361,7 @@ class Effect2670(EffectDef):
             )
 
 
-class Effect2688(EffectDef):
+class Effect2688(BaseEffect):
     """
     capNeedBonusEffectLasers
 
@@ -7373,7 +7377,7 @@ class Effect2688(EffectDef):
                                       'capacitorNeed', module.getModifiedItemAttr('capNeedBonus'))
 
 
-class Effect2689(EffectDef):
+class Effect2689(BaseEffect):
     """
     capNeedBonusEffectHybrids
 
@@ -7389,7 +7393,7 @@ class Effect2689(EffectDef):
                                       'capacitorNeed', module.getModifiedItemAttr('capNeedBonus'))
 
 
-class Effect2690(EffectDef):
+class Effect2690(BaseEffect):
     """
     cpuNeedBonusEffectLasers
 
@@ -7405,7 +7409,7 @@ class Effect2690(EffectDef):
                                       'cpu', module.getModifiedItemAttr('cpuNeedBonus'))
 
 
-class Effect2691(EffectDef):
+class Effect2691(BaseEffect):
     """
     cpuNeedBonusEffectHybrid
 
@@ -7421,7 +7425,7 @@ class Effect2691(EffectDef):
                                       'cpu', module.getModifiedItemAttr('cpuNeedBonus'))
 
 
-class Effect2693(EffectDef):
+class Effect2693(BaseEffect):
     """
     falloffBonusEffectLasers
 
@@ -7438,7 +7442,7 @@ class Effect2693(EffectDef):
                                       stackingPenalties=True)
 
 
-class Effect2694(EffectDef):
+class Effect2694(BaseEffect):
     """
     falloffBonusEffectHybrids
 
@@ -7455,7 +7459,7 @@ class Effect2694(EffectDef):
                                       stackingPenalties=True)
 
 
-class Effect2695(EffectDef):
+class Effect2695(BaseEffect):
     """
     falloffBonusEffectProjectiles
 
@@ -7472,7 +7476,7 @@ class Effect2695(EffectDef):
                                       stackingPenalties=True)
 
 
-class Effect2696(EffectDef):
+class Effect2696(BaseEffect):
     """
     maxRangeBonusEffectLasers
 
@@ -7489,7 +7493,7 @@ class Effect2696(EffectDef):
                                       stackingPenalties=True)
 
 
-class Effect2697(EffectDef):
+class Effect2697(BaseEffect):
     """
     maxRangeBonusEffectHybrids
 
@@ -7506,7 +7510,7 @@ class Effect2697(EffectDef):
                                       stackingPenalties=True)
 
 
-class Effect2698(EffectDef):
+class Effect2698(BaseEffect):
     """
     maxRangeBonusEffectProjectiles
 
@@ -7523,7 +7527,7 @@ class Effect2698(EffectDef):
                                       stackingPenalties=True)
 
 
-class Effect2706(EffectDef):
+class Effect2706(BaseEffect):
     """
     drawbackPowerNeedLasers
 
@@ -7539,7 +7543,7 @@ class Effect2706(EffectDef):
                                       'power', module.getModifiedItemAttr('drawback'))
 
 
-class Effect2707(EffectDef):
+class Effect2707(BaseEffect):
     """
     drawbackPowerNeedHybrids
 
@@ -7555,7 +7559,7 @@ class Effect2707(EffectDef):
                                       'power', module.getModifiedItemAttr('drawback'))
 
 
-class Effect2708(EffectDef):
+class Effect2708(BaseEffect):
     """
     drawbackPowerNeedProjectiles
 
@@ -7571,7 +7575,7 @@ class Effect2708(EffectDef):
                                       'power', module.getModifiedItemAttr('drawback'))
 
 
-class Effect2712(EffectDef):
+class Effect2712(BaseEffect):
     """
     drawbackArmorHP
 
@@ -7586,7 +7590,7 @@ class Effect2712(EffectDef):
         fit.ship.boostItemAttr('armorHP', module.getModifiedItemAttr('drawback'))
 
 
-class Effect2713(EffectDef):
+class Effect2713(BaseEffect):
     """
     drawbackCPUOutput
 
@@ -7601,7 +7605,7 @@ class Effect2713(EffectDef):
         fit.ship.boostItemAttr('cpuOutput', module.getModifiedItemAttr('drawback'))
 
 
-class Effect2714(EffectDef):
+class Effect2714(BaseEffect):
     """
     drawbackCPUNeedLaunchers
 
@@ -7617,7 +7621,7 @@ class Effect2714(EffectDef):
                                       'cpu', module.getModifiedItemAttr('drawback'))
 
 
-class Effect2716(EffectDef):
+class Effect2716(BaseEffect):
     """
     drawbackSigRad
 
@@ -7633,7 +7637,7 @@ class Effect2716(EffectDef):
         fit.ship.boostItemAttr('signatureRadius', module.getModifiedItemAttr('drawback'), stackingPenalties=True)
 
 
-class Effect2717(EffectDef):
+class Effect2717(BaseEffect):
     """
     drawbackMaxVelocity
 
@@ -7650,7 +7654,7 @@ class Effect2717(EffectDef):
                                stackingPenalties=True)
 
 
-class Effect2718(EffectDef):
+class Effect2718(BaseEffect):
     """
     drawbackShieldCapacity
 
@@ -7667,7 +7671,7 @@ class Effect2718(EffectDef):
         fit.ship.boostItemAttr('shieldCapacity', module.getModifiedItemAttr('drawback'))
 
 
-class Effect2726(EffectDef):
+class Effect2726(BaseEffect):
     """
     miningClouds
 
@@ -7678,7 +7682,7 @@ class Effect2726(EffectDef):
     type = 'active'
 
 
-class Effect2727(EffectDef):
+class Effect2727(BaseEffect):
     """
     gasCloudHarvestingMaxGroupSkillLevel
 
@@ -7694,7 +7698,7 @@ class Effect2727(EffectDef):
                                          'maxGroupActive', skill.level)
 
 
-class Effect2734(EffectDef):
+class Effect2734(BaseEffect):
     """
     shipECMScanStrengthBonusCF
 
@@ -7712,7 +7716,7 @@ class Effect2734(EffectDef):
                                           ship.getModifiedItemAttr('shipBonusCF'), skill='Caldari Frigate')
 
 
-class Effect2735(EffectDef):
+class Effect2735(BaseEffect):
     """
     boosterArmorHpPenalty
 
@@ -7729,7 +7733,7 @@ class Effect2735(EffectDef):
         fit.ship.boostItemAttr('armorHP', booster.getModifiedItemAttr(cls.attr))
 
 
-class Effect2736(EffectDef):
+class Effect2736(BaseEffect):
     """
     boosterArmorRepairAmountPenalty
 
@@ -7749,7 +7753,7 @@ class Effect2736(EffectDef):
                                       'armorDamageAmount', booster.getModifiedItemAttr(cls.attr))
 
 
-class Effect2737(EffectDef):
+class Effect2737(BaseEffect):
     """
     boosterShieldCapacityPenalty
 
@@ -7766,7 +7770,7 @@ class Effect2737(EffectDef):
         fit.ship.boostItemAttr('shieldCapacity', booster.getModifiedItemAttr(cls.attr))
 
 
-class Effect2739(EffectDef):
+class Effect2739(BaseEffect):
     """
     boosterTurretOptimalRangePenalty
 
@@ -7786,7 +7790,7 @@ class Effect2739(EffectDef):
                                       'maxRange', booster.getModifiedItemAttr(cls.attr))
 
 
-class Effect2741(EffectDef):
+class Effect2741(BaseEffect):
     """
     boosterTurretFalloffPenalty
 
@@ -7805,7 +7809,7 @@ class Effect2741(EffectDef):
                                       'falloff', booster.getModifiedItemAttr(cls.attr))
 
 
-class Effect2745(EffectDef):
+class Effect2745(BaseEffect):
     """
     boosterCapacitorCapacityPenalty
 
@@ -7823,7 +7827,7 @@ class Effect2745(EffectDef):
         fit.ship.boostItemAttr('capacitorCapacity', booster.getModifiedItemAttr(cls.attr))
 
 
-class Effect2746(EffectDef):
+class Effect2746(BaseEffect):
     """
     boosterMaxVelocityPenalty
 
@@ -7841,7 +7845,7 @@ class Effect2746(EffectDef):
         fit.ship.boostItemAttr('maxVelocity', booster.getModifiedItemAttr(cls.attr))
 
 
-class Effect2747(EffectDef):
+class Effect2747(BaseEffect):
     """
     boosterTurretTrackingPenalty
 
@@ -7860,7 +7864,7 @@ class Effect2747(EffectDef):
                                       'trackingSpeed', booster.getModifiedItemAttr(cls.attr))
 
 
-class Effect2748(EffectDef):
+class Effect2748(BaseEffect):
     """
     boosterMissileVelocityPenalty
 
@@ -7879,7 +7883,7 @@ class Effect2748(EffectDef):
                                         'maxVelocity', booster.getModifiedItemAttr(cls.attr))
 
 
-class Effect2749(EffectDef):
+class Effect2749(BaseEffect):
     """
     boosterMissileExplosionVelocityPenalty
 
@@ -7897,7 +7901,7 @@ class Effect2749(EffectDef):
                                         'aoeVelocity', booster.getModifiedItemAttr(cls.attr))
 
 
-class Effect2756(EffectDef):
+class Effect2756(BaseEffect):
     """
     shipBonusECMStrengthBonusCC
 
@@ -7915,7 +7919,7 @@ class Effect2756(EffectDef):
                                           skill='Caldari Cruiser')
 
 
-class Effect2757(EffectDef):
+class Effect2757(BaseEffect):
     """
     salvaging
 
@@ -7926,7 +7930,7 @@ class Effect2757(EffectDef):
     type = 'active'
 
 
-class Effect2760(EffectDef):
+class Effect2760(BaseEffect):
     """
     boosterModifyBoosterArmorPenalties
 
@@ -7948,7 +7952,7 @@ class Effect2760(EffectDef):
                                            container.getModifiedItemAttr('boosterAttributeModifier') * level)
 
 
-class Effect2763(EffectDef):
+class Effect2763(BaseEffect):
     """
     boosterModifyBoosterShieldPenalty
 
@@ -7971,7 +7975,7 @@ class Effect2763(EffectDef):
                                            attr, container.getModifiedItemAttr('boosterAttributeModifier') * level)
 
 
-class Effect2766(EffectDef):
+class Effect2766(BaseEffect):
     """
     boosterModifyBoosterMaxVelocityAndCapacitorPenalty
 
@@ -7992,7 +7996,7 @@ class Effect2766(EffectDef):
                                            container.getModifiedItemAttr('boosterAttributeModifier') * level)
 
 
-class Effect2776(EffectDef):
+class Effect2776(BaseEffect):
     """
     boosterModifyBoosterMissilePenalty
 
@@ -8013,7 +8017,7 @@ class Effect2776(EffectDef):
                                            container.getModifiedItemAttr('boosterAttributeModifier') * level)
 
 
-class Effect2778(EffectDef):
+class Effect2778(BaseEffect):
     """
     boosterModifyBoosterTurretPenalty
 
@@ -8034,7 +8038,7 @@ class Effect2778(EffectDef):
                                            container.getModifiedItemAttr('boosterAttributeModifier') * level)
 
 
-class Effect2791(EffectDef):
+class Effect2791(BaseEffect):
     """
     boosterMissileExplosionCloudPenaltyFixed
 
@@ -8053,7 +8057,7 @@ class Effect2791(EffectDef):
                                         'aoeCloudSize', booster.getModifiedItemAttr(cls.attr))
 
 
-class Effect2792(EffectDef):
+class Effect2792(BaseEffect):
     """
     modifyArmorResonancePostPercentPassive
 
@@ -8071,7 +8075,7 @@ class Effect2792(EffectDef):
                                    stackingPenalties=True)
 
 
-class Effect2794(EffectDef):
+class Effect2794(BaseEffect):
     """
     salvagingAccessDifficultyBonusEffectPassive
 
@@ -8089,7 +8093,7 @@ class Effect2794(EffectDef):
                                          position='post')
 
 
-class Effect2795(EffectDef):
+class Effect2795(BaseEffect):
     """
     modifyShieldResonancePostPercentPassive
 
@@ -8107,7 +8111,7 @@ class Effect2795(EffectDef):
                                    stackingPenalties=True)
 
 
-class Effect2796(EffectDef):
+class Effect2796(BaseEffect):
     """
     massReductionBonusPassive
 
@@ -8122,7 +8126,7 @@ class Effect2796(EffectDef):
         fit.ship.boostItemAttr('mass', module.getModifiedItemAttr('massBonusPercentage'), stackingPenalties=True)
 
 
-class Effect2797(EffectDef):
+class Effect2797(BaseEffect):
     """
     projectileWeaponSpeedMultiplyPassive
 
@@ -8139,7 +8143,7 @@ class Effect2797(EffectDef):
                                          stackingPenalties=True)
 
 
-class Effect2798(EffectDef):
+class Effect2798(BaseEffect):
     """
     projectileWeaponDamageMultiplyPassive
 
@@ -8156,7 +8160,7 @@ class Effect2798(EffectDef):
                                          stackingPenalties=True)
 
 
-class Effect2799(EffectDef):
+class Effect2799(BaseEffect):
     """
     missileLauncherSpeedMultiplierPassive
 
@@ -8173,7 +8177,7 @@ class Effect2799(EffectDef):
                                          stackingPenalties=True)
 
 
-class Effect2801(EffectDef):
+class Effect2801(BaseEffect):
     """
     energyWeaponSpeedMultiplyPassive
 
@@ -8190,7 +8194,7 @@ class Effect2801(EffectDef):
                                          stackingPenalties=True)
 
 
-class Effect2802(EffectDef):
+class Effect2802(BaseEffect):
     """
     hybridWeaponDamageMultiplyPassive
 
@@ -8207,7 +8211,7 @@ class Effect2802(EffectDef):
                                          stackingPenalties=True)
 
 
-class Effect2803(EffectDef):
+class Effect2803(BaseEffect):
     """
     energyWeaponDamageMultiplyPassive
 
@@ -8224,7 +8228,7 @@ class Effect2803(EffectDef):
                                          stackingPenalties=True)
 
 
-class Effect2804(EffectDef):
+class Effect2804(BaseEffect):
     """
     hybridWeaponSpeedMultiplyPassive
 
@@ -8241,7 +8245,7 @@ class Effect2804(EffectDef):
                                          stackingPenalties=True)
 
 
-class Effect2805(EffectDef):
+class Effect2805(BaseEffect):
     """
     shipBonusLargeEnergyWeaponDamageAB2
 
@@ -8259,7 +8263,7 @@ class Effect2805(EffectDef):
                                       skill='Amarr Battleship')
 
 
-class Effect2809(EffectDef):
+class Effect2809(BaseEffect):
     """
     shipMissileAssaultMissileVelocityBonusCC2
 
@@ -8276,7 +8280,7 @@ class Effect2809(EffectDef):
                                         'maxVelocity', ship.getModifiedItemAttr('shipBonusCC2'), skill='Caldari Cruiser')
 
 
-class Effect2810(EffectDef):
+class Effect2810(BaseEffect):
     """
     eliteBonusHeavyGunshipAssaultMissileFlightTime1
 
@@ -8293,7 +8297,7 @@ class Effect2810(EffectDef):
                                         skill='Heavy Assault Cruisers')
 
 
-class Effect2812(EffectDef):
+class Effect2812(BaseEffect):
     """
     caldariShipECMBurstOptimalRangeCB3
 
@@ -8309,7 +8313,7 @@ class Effect2812(EffectDef):
                                       'ecmBurstRange', ship.getModifiedItemAttr('shipBonusCB3'), skill='Caldari Battleship')
 
 
-class Effect2837(EffectDef):
+class Effect2837(BaseEffect):
     """
     armorHPBonusAdd
 
@@ -8324,7 +8328,7 @@ class Effect2837(EffectDef):
         fit.ship.increaseItemAttr('armorHP', module.getModifiedItemAttr('armorHPBonusAdd'))
 
 
-class Effect2847(EffectDef):
+class Effect2847(BaseEffect):
     """
     trackingSpeedBonusPassiveRequiringGunneryTrackingSpeedBonus
 
@@ -8345,7 +8349,7 @@ class Effect2847(EffectDef):
                                       'trackingSpeed', container.getModifiedItemAttr('trackingSpeedBonus') * level)
 
 
-class Effect2848(EffectDef):
+class Effect2848(BaseEffect):
     """
     accessDifficultyBonusModifierRequiringArchaelogy
 
@@ -8364,7 +8368,7 @@ class Effect2848(EffectDef):
                                          container.getModifiedItemAttr('accessDifficultyBonusModifier'), position='post')
 
 
-class Effect2849(EffectDef):
+class Effect2849(BaseEffect):
     """
     accessDifficultyBonusModifierRequiringHacking
 
@@ -8384,7 +8388,7 @@ class Effect2849(EffectDef):
                                          container.getModifiedItemAttr('accessDifficultyBonusModifier'), position='post')
 
 
-class Effect2850(EffectDef):
+class Effect2850(BaseEffect):
     """
     durationBonusForGroupAfterburner
 
@@ -8400,7 +8404,7 @@ class Effect2850(EffectDef):
                                       'duration', module.getModifiedItemAttr('durationBonus'))
 
 
-class Effect2851(EffectDef):
+class Effect2851(BaseEffect):
     """
     missileDMGBonusPassive
 
@@ -8419,7 +8423,7 @@ class Effect2851(EffectDef):
                                                stackingPenalties=True)
 
 
-class Effect2853(EffectDef):
+class Effect2853(BaseEffect):
     """
     cloakingTargetingDelayBonusLRSMCloakingPassive
 
@@ -8435,7 +8439,7 @@ class Effect2853(EffectDef):
                                       'cloakingTargetingDelay', module.getModifiedItemAttr('cloakingTargetingDelayBonus'))
 
 
-class Effect2857(EffectDef):
+class Effect2857(BaseEffect):
     """
     cynosuralGeneration
 
@@ -8450,7 +8454,7 @@ class Effect2857(EffectDef):
         fit.ship.boostItemAttr('maxVelocity', module.getModifiedItemAttr('speedFactor'))
 
 
-class Effect2865(EffectDef):
+class Effect2865(BaseEffect):
     """
     velocityBonusOnline
 
@@ -8468,7 +8472,7 @@ class Effect2865(EffectDef):
                                stackingPenalties=True)
 
 
-class Effect2866(EffectDef):
+class Effect2866(BaseEffect):
     """
     biologyTimeBonusFixed
 
@@ -8486,7 +8490,7 @@ class Effect2866(EffectDef):
                                        container.getModifiedItemAttr('durationBonus') * level)
 
 
-class Effect2867(EffectDef):
+class Effect2867(BaseEffect):
     """
     sentryDroneDamageBonus
 
@@ -8503,7 +8507,7 @@ class Effect2867(EffectDef):
                                      stackingPenalties=True)
 
 
-class Effect2868(EffectDef):
+class Effect2868(BaseEffect):
     """
     armorDamageAmountBonusCapitalArmorRepairers
 
@@ -8520,7 +8524,7 @@ class Effect2868(EffectDef):
                                       stackingPenalties=True)
 
 
-class Effect2872(EffectDef):
+class Effect2872(BaseEffect):
     """
     missileVelocityBonusDefender
 
@@ -8536,7 +8540,7 @@ class Effect2872(EffectDef):
                                            'maxVelocity', container.getModifiedItemAttr('missileVelocityBonus'))
 
 
-class Effect2881(EffectDef):
+class Effect2881(BaseEffect):
     """
     missileEMDmgBonusCruise3
 
@@ -8552,7 +8556,7 @@ class Effect2881(EffectDef):
                                         'emDamage', implant.getModifiedItemAttr('damageMultiplierBonus'))
 
 
-class Effect2882(EffectDef):
+class Effect2882(BaseEffect):
     """
     missileExplosiveDmgBonusCruise3
 
@@ -8568,7 +8572,7 @@ class Effect2882(EffectDef):
                                         'explosiveDamage', container.getModifiedItemAttr('damageMultiplierBonus'))
 
 
-class Effect2883(EffectDef):
+class Effect2883(BaseEffect):
     """
     missileKineticDmgBonusCruise3
 
@@ -8584,7 +8588,7 @@ class Effect2883(EffectDef):
                                         'kineticDamage', container.getModifiedItemAttr('damageMultiplierBonus'))
 
 
-class Effect2884(EffectDef):
+class Effect2884(BaseEffect):
     """
     missileThermalDmgBonusCruise3
 
@@ -8600,7 +8604,7 @@ class Effect2884(EffectDef):
                                         'thermalDamage', container.getModifiedItemAttr('damageMultiplierBonus'))
 
 
-class Effect2885(EffectDef):
+class Effect2885(BaseEffect):
     """
     gasHarvestingCycleTimeModulesRequiringGasCloudHarvesting
 
@@ -8616,7 +8620,7 @@ class Effect2885(EffectDef):
                                       'duration', implant.getModifiedItemAttr('durationBonus'))
 
 
-class Effect2887(EffectDef):
+class Effect2887(BaseEffect):
     """
     missileEMDmgBonusRocket
 
@@ -8632,7 +8636,7 @@ class Effect2887(EffectDef):
                                         'emDamage', implant.getModifiedItemAttr('damageMultiplierBonus'))
 
 
-class Effect2888(EffectDef):
+class Effect2888(BaseEffect):
     """
     missileExplosiveDmgBonusRocket
 
@@ -8648,7 +8652,7 @@ class Effect2888(EffectDef):
                                         'explosiveDamage', container.getModifiedItemAttr('damageMultiplierBonus'))
 
 
-class Effect2889(EffectDef):
+class Effect2889(BaseEffect):
     """
     missileKineticDmgBonusRocket
 
@@ -8664,7 +8668,7 @@ class Effect2889(EffectDef):
                                         'kineticDamage', container.getModifiedItemAttr('damageMultiplierBonus'))
 
 
-class Effect2890(EffectDef):
+class Effect2890(BaseEffect):
     """
     missileThermalDmgBonusRocket
 
@@ -8680,7 +8684,7 @@ class Effect2890(EffectDef):
                                         'thermalDamage', container.getModifiedItemAttr('damageMultiplierBonus'))
 
 
-class Effect2891(EffectDef):
+class Effect2891(BaseEffect):
     """
     missileEMDmgBonusStandard
 
@@ -8696,7 +8700,7 @@ class Effect2891(EffectDef):
                                         'emDamage', implant.getModifiedItemAttr('damageMultiplierBonus'))
 
 
-class Effect2892(EffectDef):
+class Effect2892(BaseEffect):
     """
     missileExplosiveDmgBonusStandard
 
@@ -8712,7 +8716,7 @@ class Effect2892(EffectDef):
                                         'explosiveDamage', container.getModifiedItemAttr('damageMultiplierBonus'))
 
 
-class Effect2893(EffectDef):
+class Effect2893(BaseEffect):
     """
     missileKineticDmgBonusStandard
 
@@ -8728,7 +8732,7 @@ class Effect2893(EffectDef):
                                         'kineticDamage', container.getModifiedItemAttr('damageMultiplierBonus'))
 
 
-class Effect2894(EffectDef):
+class Effect2894(BaseEffect):
     """
     missileThermalDmgBonusStandard
 
@@ -8744,7 +8748,7 @@ class Effect2894(EffectDef):
                                         'thermalDamage', container.getModifiedItemAttr('damageMultiplierBonus'))
 
 
-class Effect2899(EffectDef):
+class Effect2899(BaseEffect):
     """
     missileEMDmgBonusHeavy
 
@@ -8760,7 +8764,7 @@ class Effect2899(EffectDef):
                                         'emDamage', implant.getModifiedItemAttr('damageMultiplierBonus'))
 
 
-class Effect2900(EffectDef):
+class Effect2900(BaseEffect):
     """
     missileExplosiveDmgBonusHeavy
 
@@ -8776,7 +8780,7 @@ class Effect2900(EffectDef):
                                         'explosiveDamage', container.getModifiedItemAttr('damageMultiplierBonus'))
 
 
-class Effect2901(EffectDef):
+class Effect2901(BaseEffect):
     """
     missileKineticDmgBonusHeavy
 
@@ -8792,7 +8796,7 @@ class Effect2901(EffectDef):
                                         'kineticDamage', container.getModifiedItemAttr('damageMultiplierBonus'))
 
 
-class Effect2902(EffectDef):
+class Effect2902(BaseEffect):
     """
     missileThermalDmgBonusHeavy
 
@@ -8808,7 +8812,7 @@ class Effect2902(EffectDef):
                                         'thermalDamage', container.getModifiedItemAttr('damageMultiplierBonus'))
 
 
-class Effect2903(EffectDef):
+class Effect2903(BaseEffect):
     """
     missileEMDmgBonusHAM
 
@@ -8824,7 +8828,7 @@ class Effect2903(EffectDef):
                                         'emDamage', implant.getModifiedItemAttr('damageMultiplierBonus'))
 
 
-class Effect2904(EffectDef):
+class Effect2904(BaseEffect):
     """
     missileExplosiveDmgBonusHAM
 
@@ -8840,7 +8844,7 @@ class Effect2904(EffectDef):
                                         'explosiveDamage', container.getModifiedItemAttr('damageMultiplierBonus'))
 
 
-class Effect2905(EffectDef):
+class Effect2905(BaseEffect):
     """
     missileKineticDmgBonusHAM
 
@@ -8856,7 +8860,7 @@ class Effect2905(EffectDef):
                                         'kineticDamage', container.getModifiedItemAttr('damageMultiplierBonus'))
 
 
-class Effect2906(EffectDef):
+class Effect2906(BaseEffect):
     """
     missileThermalDmgBonusHAM
 
@@ -8872,7 +8876,7 @@ class Effect2906(EffectDef):
                                         'thermalDamage', container.getModifiedItemAttr('damageMultiplierBonus'))
 
 
-class Effect2907(EffectDef):
+class Effect2907(BaseEffect):
     """
     missileEMDmgBonusTorpedo
 
@@ -8888,7 +8892,7 @@ class Effect2907(EffectDef):
                                         'emDamage', implant.getModifiedItemAttr('damageMultiplierBonus'))
 
 
-class Effect2908(EffectDef):
+class Effect2908(BaseEffect):
     """
     missileExplosiveDmgBonusTorpedo
 
@@ -8904,7 +8908,7 @@ class Effect2908(EffectDef):
                                         'explosiveDamage', container.getModifiedItemAttr('damageMultiplierBonus'))
 
 
-class Effect2909(EffectDef):
+class Effect2909(BaseEffect):
     """
     missileKineticDmgBonusTorpedo
 
@@ -8920,7 +8924,7 @@ class Effect2909(EffectDef):
                                         'kineticDamage', container.getModifiedItemAttr('damageMultiplierBonus'))
 
 
-class Effect2910(EffectDef):
+class Effect2910(BaseEffect):
     """
     missileThermalDmgBonusTorpedo
 
@@ -8936,7 +8940,7 @@ class Effect2910(EffectDef):
                                         'thermalDamage', container.getModifiedItemAttr('damageMultiplierBonus'))
 
 
-class Effect2911(EffectDef):
+class Effect2911(BaseEffect):
     """
     dataminerModuleDurationReduction
 
@@ -8952,7 +8956,7 @@ class Effect2911(EffectDef):
                                       'duration', implant.getModifiedItemAttr('durationBonus'))
 
 
-class Effect2967(EffectDef):
+class Effect2967(BaseEffect):
     """
     skillTriageModuleConsumptionQuantityBonus
 
@@ -8969,7 +8973,7 @@ class Effect2967(EffectDef):
                                          'consumptionQuantity', amount * skill.level)
 
 
-class Effect2979(EffectDef):
+class Effect2979(BaseEffect):
     """
     skillRemoteHullRepairSystemsCapNeedBonus
 
@@ -8985,7 +8989,7 @@ class Effect2979(EffectDef):
                                       'capacitorNeed', skill.getModifiedItemAttr('capNeedBonus') * skill.level)
 
 
-class Effect2980(EffectDef):
+class Effect2980(BaseEffect):
     """
     skillCapitalRemoteHullRepairSystemsCapNeedBonus
 
@@ -9001,7 +9005,7 @@ class Effect2980(EffectDef):
                                       'capacitorNeed', skill.getModifiedItemAttr('capNeedBonus') * skill.level)
 
 
-class Effect2982(EffectDef):
+class Effect2982(BaseEffect):
     """
     skillRemoteECMDurationBonus
 
@@ -9040,7 +9044,7 @@ class Effect2982(EffectDef):
                                       skill.getModifiedItemAttr('projECMDurationBonus') * skill.level)
 
 
-class Effect3001(EffectDef):
+class Effect3001(BaseEffect):
     """
     overloadRofBonus
 
@@ -9057,7 +9061,7 @@ class Effect3001(EffectDef):
         module.boostItemAttr('speed', module.getModifiedItemAttr('overloadRofBonus'))
 
 
-class Effect3002(EffectDef):
+class Effect3002(BaseEffect):
     """
     overloadSelfDurationBonus
 
@@ -9084,7 +9088,7 @@ class Effect3002(EffectDef):
         module.boostItemAttr('duration', module.getModifiedItemAttr('overloadSelfDurationBonus') or 0)
 
 
-class Effect3024(EffectDef):
+class Effect3024(BaseEffect):
     """
     eliteBonusCoverOpsBombExplosiveDmg1
 
@@ -9102,7 +9106,7 @@ class Effect3024(EffectDef):
                                         skill='Covert Ops')
 
 
-class Effect3025(EffectDef):
+class Effect3025(BaseEffect):
     """
     overloadSelfDamageBonus
 
@@ -9120,7 +9124,7 @@ class Effect3025(EffectDef):
         module.boostItemAttr('damageMultiplier', module.getModifiedItemAttr('overloadDamageModifier'))
 
 
-class Effect3026(EffectDef):
+class Effect3026(BaseEffect):
     """
     eliteBonusCoverOpsBombKineticDmg1
 
@@ -9137,7 +9141,7 @@ class Effect3026(EffectDef):
                                         skill='Covert Ops')
 
 
-class Effect3027(EffectDef):
+class Effect3027(BaseEffect):
     """
     eliteBonusCoverOpsBombThermalDmg1
 
@@ -9155,7 +9159,7 @@ class Effect3027(EffectDef):
                                         skill='Covert Ops')
 
 
-class Effect3028(EffectDef):
+class Effect3028(BaseEffect):
     """
     eliteBonusCoverOpsBombEmDmg1
 
@@ -9171,7 +9175,7 @@ class Effect3028(EffectDef):
                                         'emDamage', ship.getModifiedItemAttr('eliteBonusCovertOps1'), skill='Covert Ops')
 
 
-class Effect3029(EffectDef):
+class Effect3029(BaseEffect):
     """
     overloadSelfEmHardeningBonus
 
@@ -9188,7 +9192,7 @@ class Effect3029(EffectDef):
         module.boostItemAttr('emDamageResistanceBonus', module.getModifiedItemAttr('overloadHardeningBonus'))
 
 
-class Effect3030(EffectDef):
+class Effect3030(BaseEffect):
     """
     overloadSelfThermalHardeningBonus
 
@@ -9205,7 +9209,7 @@ class Effect3030(EffectDef):
         module.boostItemAttr('thermalDamageResistanceBonus', module.getModifiedItemAttr('overloadHardeningBonus'))
 
 
-class Effect3031(EffectDef):
+class Effect3031(BaseEffect):
     """
     overloadSelfExplosiveHardeningBonus
 
@@ -9222,7 +9226,7 @@ class Effect3031(EffectDef):
         module.boostItemAttr('explosiveDamageResistanceBonus', module.getModifiedItemAttr('overloadHardeningBonus'))
 
 
-class Effect3032(EffectDef):
+class Effect3032(BaseEffect):
     """
     overloadSelfKineticHardeningBonus
 
@@ -9239,7 +9243,7 @@ class Effect3032(EffectDef):
         module.boostItemAttr('kineticDamageResistanceBonus', module.getModifiedItemAttr('overloadHardeningBonus'))
 
 
-class Effect3035(EffectDef):
+class Effect3035(BaseEffect):
     """
     overloadSelfHardeningInvulnerabilityBonus
 
@@ -9257,7 +9261,7 @@ class Effect3035(EffectDef):
                                  module.getModifiedItemAttr('overloadHardeningBonus'))
 
 
-class Effect3036(EffectDef):
+class Effect3036(BaseEffect):
     """
     skillBombDeploymentModuleReactivationDelayBonus
 
@@ -9273,7 +9277,7 @@ class Effect3036(EffectDef):
                                       'moduleReactivationDelay', skill.getModifiedItemAttr('reactivationDelayBonus') * skill.level)
 
 
-class Effect3046(EffectDef):
+class Effect3046(BaseEffect):
     """
     modifyMaxVelocityOfShipPassive
 
@@ -9288,7 +9292,7 @@ class Effect3046(EffectDef):
         fit.ship.multiplyItemAttr('maxVelocity', module.getModifiedItemAttr('maxVelocityModifier'), stackingPenalties=True)
 
 
-class Effect3047(EffectDef):
+class Effect3047(BaseEffect):
     """
     structureHPMultiplyPassive
 
@@ -9303,7 +9307,7 @@ class Effect3047(EffectDef):
         fit.ship.multiplyItemAttr('hp', module.getModifiedItemAttr('structureHPMultiplier'))
 
 
-class Effect3061(EffectDef):
+class Effect3061(BaseEffect):
     """
     heatDamageBonus
 
@@ -9319,7 +9323,7 @@ class Effect3061(EffectDef):
                                       'heatDamage', module.getModifiedItemAttr('heatDamageBonus'))
 
 
-class Effect3169(EffectDef):
+class Effect3169(BaseEffect):
     """
     shieldTransportCpuNeedBonusEffect
 
@@ -9335,7 +9339,7 @@ class Effect3169(EffectDef):
                                       src.getModifiedItemAttr('shieldTransportCpuNeedBonus'))
 
 
-class Effect3172(EffectDef):
+class Effect3172(BaseEffect):
     """
     droneArmorDamageBonusEffect
 
@@ -9355,7 +9359,7 @@ class Effect3172(EffectDef):
                                      'armorDamageAmount', ship.getModifiedItemAttr('droneArmorDamageAmountBonus'))
 
 
-class Effect3173(EffectDef):
+class Effect3173(BaseEffect):
     """
     droneShieldBonusBonusEffect
 
@@ -9375,7 +9379,7 @@ class Effect3173(EffectDef):
                                      'shieldBonus', ship.getModifiedItemAttr('droneShieldBonusBonus'))
 
 
-class Effect3174(EffectDef):
+class Effect3174(BaseEffect):
     """
     overloadSelfRangeBonus
 
@@ -9393,7 +9397,7 @@ class Effect3174(EffectDef):
                              stackingPenalties=True)
 
 
-class Effect3175(EffectDef):
+class Effect3175(BaseEffect):
     """
     overloadSelfSpeedBonus
 
@@ -9409,7 +9413,7 @@ class Effect3175(EffectDef):
                              stackingPenalties=True)
 
 
-class Effect3182(EffectDef):
+class Effect3182(BaseEffect):
     """
     overloadSelfECMStrenghtBonus
 
@@ -9429,7 +9433,7 @@ class Effect3182(EffectDef):
                                      stackingPenalties=True)
 
 
-class Effect3196(EffectDef):
+class Effect3196(BaseEffect):
     """
     thermodynamicsSkillDamageBonus
 
@@ -9445,7 +9449,7 @@ class Effect3196(EffectDef):
                                       skill.getModifiedItemAttr('thermodynamicsHeatDamage') * skill.level)
 
 
-class Effect3200(EffectDef):
+class Effect3200(BaseEffect):
     """
     overloadSelfArmorDamageAmountDurationBonus
 
@@ -9463,7 +9467,7 @@ class Effect3200(EffectDef):
                              stackingPenalties=True)
 
 
-class Effect3201(EffectDef):
+class Effect3201(BaseEffect):
     """
     overloadSelfShieldBonusDurationBonus
 
@@ -9480,7 +9484,7 @@ class Effect3201(EffectDef):
         module.boostItemAttr('shieldBonus', module.getModifiedItemAttr('overloadShieldBonus'), stackingPenalties=True)
 
 
-class Effect3212(EffectDef):
+class Effect3212(BaseEffect):
     """
     missileSkillFoFAoeCloudSizeBonus
 
@@ -9497,7 +9501,7 @@ class Effect3212(EffectDef):
                                         'aoeCloudSize', container.getModifiedItemAttr('aoeCloudSizeBonus') * level)
 
 
-class Effect3234(EffectDef):
+class Effect3234(BaseEffect):
     """
     shipRocketExplosiveDmgAF
 
@@ -9514,7 +9518,7 @@ class Effect3234(EffectDef):
                                         'explosiveDamage', ship.getModifiedItemAttr('shipBonusAF'), skill='Amarr Frigate')
 
 
-class Effect3235(EffectDef):
+class Effect3235(BaseEffect):
     """
     shipRocketKineticDmgAF
 
@@ -9531,7 +9535,7 @@ class Effect3235(EffectDef):
                                         'kineticDamage', ship.getModifiedItemAttr('shipBonusAF'), skill='Amarr Frigate')
 
 
-class Effect3236(EffectDef):
+class Effect3236(BaseEffect):
     """
     shipRocketThermalDmgAF
 
@@ -9548,7 +9552,7 @@ class Effect3236(EffectDef):
                                         'thermalDamage', ship.getModifiedItemAttr('shipBonusAF'), skill='Amarr Frigate')
 
 
-class Effect3237(EffectDef):
+class Effect3237(BaseEffect):
     """
     shipRocketEmDmgAF
 
@@ -9565,7 +9569,7 @@ class Effect3237(EffectDef):
                                         'emDamage', ship.getModifiedItemAttr('shipBonusAF'), skill='Amarr Frigate')
 
 
-class Effect3241(EffectDef):
+class Effect3241(BaseEffect):
     """
     eliteBonusGunshipArmorEmResistance1
 
@@ -9581,7 +9585,7 @@ class Effect3241(EffectDef):
                                skill='Assault Frigates')
 
 
-class Effect3242(EffectDef):
+class Effect3242(BaseEffect):
     """
     eliteBonusGunshipArmorThermalResistance1
 
@@ -9597,7 +9601,7 @@ class Effect3242(EffectDef):
                                skill='Assault Frigates')
 
 
-class Effect3243(EffectDef):
+class Effect3243(BaseEffect):
     """
     eliteBonusGunshipArmorKineticResistance1
 
@@ -9613,7 +9617,7 @@ class Effect3243(EffectDef):
                                skill='Assault Frigates')
 
 
-class Effect3244(EffectDef):
+class Effect3244(BaseEffect):
     """
     eliteBonusGunshipArmorExplosiveResistance1
 
@@ -9629,7 +9633,7 @@ class Effect3244(EffectDef):
                                skill='Assault Frigates')
 
 
-class Effect3249(EffectDef):
+class Effect3249(BaseEffect):
     """
     shipCapRecharge2AF
 
@@ -9644,7 +9648,7 @@ class Effect3249(EffectDef):
         fit.ship.boostItemAttr('rechargeRate', ship.getModifiedItemAttr('shipBonus2AF'), skill='Amarr Frigate')
 
 
-class Effect3264(EffectDef):
+class Effect3264(BaseEffect):
     """
     skillIndustrialReconfigurationConsumptionQuantityBonus
 
@@ -9661,7 +9665,7 @@ class Effect3264(EffectDef):
                                          'consumptionQuantity', amount * skill.level)
 
 
-class Effect3267(EffectDef):
+class Effect3267(BaseEffect):
     """
     shipConsumptionQuantityBonusIndustrialReconfigurationORECapital1
 
@@ -9678,7 +9682,7 @@ class Effect3267(EffectDef):
                                       skill='Capital Industrial Ships')
 
 
-class Effect3297(EffectDef):
+class Effect3297(BaseEffect):
     """
     shipEnergyNeutralizerTransferAmountBonusAB
 
@@ -9695,7 +9699,7 @@ class Effect3297(EffectDef):
                                       skill='Amarr Battleship')
 
 
-class Effect3298(EffectDef):
+class Effect3298(BaseEffect):
     """
     shipEnergyNeutralizerTransferAmountBonusAC
 
@@ -9713,7 +9717,7 @@ class Effect3298(EffectDef):
                                       skill='Amarr Cruiser')
 
 
-class Effect3299(EffectDef):
+class Effect3299(BaseEffect):
     """
     shipEnergyNeutralizerTransferAmountBonusAF
 
@@ -9732,7 +9736,7 @@ class Effect3299(EffectDef):
                                       skill='Amarr Frigate')
 
 
-class Effect3313(EffectDef):
+class Effect3313(BaseEffect):
     """
     cloneVatMaxJumpCloneBonusSkillNew
 
@@ -9747,7 +9751,7 @@ class Effect3313(EffectDef):
         fit.ship.boostItemAttr('maxJumpClones', skill.getModifiedItemAttr('maxJumpClonesBonus') * skill.level)
 
 
-class Effect3331(EffectDef):
+class Effect3331(BaseEffect):
     """
     eliteBonusCommandShipArmorHP1
 
@@ -9762,7 +9766,7 @@ class Effect3331(EffectDef):
         fit.ship.boostItemAttr('armorHP', ship.getModifiedItemAttr('eliteBonusCommandShips1'), skill='Command Ships')
 
 
-class Effect3335(EffectDef):
+class Effect3335(BaseEffect):
     """
     shipArmorEmResistanceMC2
 
@@ -9777,7 +9781,7 @@ class Effect3335(EffectDef):
         fit.ship.boostItemAttr('armorEmDamageResonance', ship.getModifiedItemAttr('shipBonusMC2'), skill='Minmatar Cruiser')
 
 
-class Effect3336(EffectDef):
+class Effect3336(BaseEffect):
     """
     shipArmorExplosiveResistanceMC2
 
@@ -9793,7 +9797,7 @@ class Effect3336(EffectDef):
                                skill='Minmatar Cruiser')
 
 
-class Effect3339(EffectDef):
+class Effect3339(BaseEffect):
     """
     shipArmorKineticResistanceMC2
 
@@ -9809,7 +9813,7 @@ class Effect3339(EffectDef):
                                skill='Minmatar Cruiser')
 
 
-class Effect3340(EffectDef):
+class Effect3340(BaseEffect):
     """
     shipArmorThermalResistanceMC2
 
@@ -9825,7 +9829,7 @@ class Effect3340(EffectDef):
                                skill='Minmatar Cruiser')
 
 
-class Effect3343(EffectDef):
+class Effect3343(BaseEffect):
     """
     eliteBonusHeavyInterdictorsProjectileFalloff1
 
@@ -9842,7 +9846,7 @@ class Effect3343(EffectDef):
                                       skill='Heavy Interdiction Cruisers')
 
 
-class Effect3355(EffectDef):
+class Effect3355(BaseEffect):
     """
     eliteBonusHeavyInterdictorHeavyMissileVelocityBonus1
 
@@ -9859,7 +9863,7 @@ class Effect3355(EffectDef):
                                         skill='Heavy Interdiction Cruisers')
 
 
-class Effect3356(EffectDef):
+class Effect3356(BaseEffect):
     """
     eliteBonusHeavyInterdictorHeavyAssaultMissileVelocityBonus
 
@@ -9876,7 +9880,7 @@ class Effect3356(EffectDef):
                                         skill='Heavy Interdiction Cruisers')
 
 
-class Effect3357(EffectDef):
+class Effect3357(BaseEffect):
     """
     eliteBonusHeavyInterdictorLightMissileVelocityBonus
 
@@ -9893,7 +9897,7 @@ class Effect3357(EffectDef):
                                         skill='Heavy Interdiction Cruisers')
 
 
-class Effect3366(EffectDef):
+class Effect3366(BaseEffect):
     """
     shipRemoteSensorDampenerCapNeedGF
 
@@ -9910,7 +9914,7 @@ class Effect3366(EffectDef):
                                       'capacitorNeed', ship.getModifiedItemAttr('shipBonusGF'), skill='Gallente Frigate')
 
 
-class Effect3367(EffectDef):
+class Effect3367(BaseEffect):
     """
     eliteBonusElectronicAttackShipWarpScramblerMaxRange1
 
@@ -9927,7 +9931,7 @@ class Effect3367(EffectDef):
                                       skill='Electronic Attack Ships')
 
 
-class Effect3369(EffectDef):
+class Effect3369(BaseEffect):
     """
     eliteBonusElectronicAttackShipECMOptimalRange1
 
@@ -9944,7 +9948,7 @@ class Effect3369(EffectDef):
                                       skill='Electronic Attack Ships')
 
 
-class Effect3370(EffectDef):
+class Effect3370(BaseEffect):
     """
     eliteBonusElectronicAttackShipStasisWebMaxRange1
 
@@ -9961,7 +9965,7 @@ class Effect3370(EffectDef):
                                       skill='Electronic Attack Ships')
 
 
-class Effect3371(EffectDef):
+class Effect3371(BaseEffect):
     """
     eliteBonusElectronicAttackShipWarpScramblerCapNeed2
 
@@ -9978,7 +9982,7 @@ class Effect3371(EffectDef):
                                       skill='Electronic Attack Ships')
 
 
-class Effect3374(EffectDef):
+class Effect3374(BaseEffect):
     """
     eliteBonusElectronicAttackShipSignatureRadius2
 
@@ -9994,7 +9998,7 @@ class Effect3374(EffectDef):
                                skill='Electronic Attack Ships')
 
 
-class Effect3379(EffectDef):
+class Effect3379(BaseEffect):
     """
     implantHardwiringABcapacitorNeed
 
@@ -10010,7 +10014,7 @@ class Effect3379(EffectDef):
                                       'capacitorNeed', implant.getModifiedItemAttr('capNeedBonus'))
 
 
-class Effect3380(EffectDef):
+class Effect3380(BaseEffect):
     """
     warpDisruptSphere
 
@@ -10044,7 +10048,7 @@ class Effect3380(EffectDef):
             fit.ship.forceItemAttr('disallowAssistance', 1)
 
 
-class Effect3392(EffectDef):
+class Effect3392(BaseEffect):
     """
     eliteBonusBlackOpsLargeEnergyTurretTracking1
 
@@ -10060,7 +10064,7 @@ class Effect3392(EffectDef):
                                       'trackingSpeed', ship.getModifiedItemAttr('eliteBonusBlackOps1'), skill='Black Ops')
 
 
-class Effect3403(EffectDef):
+class Effect3403(BaseEffect):
     """
     eliteBonusBlackOpsCloakVelocity2
 
@@ -10076,7 +10080,7 @@ class Effect3403(EffectDef):
             fit.ship.multiplyItemAttr('maxVelocity', ship.getModifiedItemAttr('eliteBonusBlackOps2'), skill='Black Ops')
 
 
-class Effect3406(EffectDef):
+class Effect3406(BaseEffect):
     """
     eliteBonusBlackOpsMaxVelocity1
 
@@ -10091,7 +10095,7 @@ class Effect3406(EffectDef):
         fit.ship.boostItemAttr('maxVelocity', ship.getModifiedItemAttr('eliteBonusBlackOps1'), skill='Black Ops')
 
 
-class Effect3415(EffectDef):
+class Effect3415(BaseEffect):
     """
     eliteBonusViolatorsLargeEnergyTurretDamageRole1
 
@@ -10107,7 +10111,7 @@ class Effect3415(EffectDef):
                                       'damageMultiplier', ship.getModifiedItemAttr('eliteBonusViolatorsRole1'))
 
 
-class Effect3416(EffectDef):
+class Effect3416(BaseEffect):
     """
     eliteBonusViolatorsLargeHybridTurretDamageRole1
 
@@ -10123,7 +10127,7 @@ class Effect3416(EffectDef):
                                       'damageMultiplier', ship.getModifiedItemAttr('eliteBonusViolatorsRole1'))
 
 
-class Effect3417(EffectDef):
+class Effect3417(BaseEffect):
     """
     eliteBonusViolatorsLargeProjectileTurretDamageRole1
 
@@ -10139,7 +10143,7 @@ class Effect3417(EffectDef):
                                       'damageMultiplier', ship.getModifiedItemAttr('eliteBonusViolatorsRole1'))
 
 
-class Effect3424(EffectDef):
+class Effect3424(BaseEffect):
     """
     eliteBonusViolatorsLargeHybridTurretTracking1
 
@@ -10155,7 +10159,7 @@ class Effect3424(EffectDef):
                                       'trackingSpeed', ship.getModifiedItemAttr('eliteBonusViolators1'), skill='Marauders')
 
 
-class Effect3425(EffectDef):
+class Effect3425(BaseEffect):
     """
     eliteBonusViolatorsLargeProjectileTurretTracking1
 
@@ -10171,7 +10175,7 @@ class Effect3425(EffectDef):
                                       'trackingSpeed', ship.getModifiedItemAttr('eliteBonusViolators1'), skill='Marauders')
 
 
-class Effect3427(EffectDef):
+class Effect3427(BaseEffect):
     """
     eliteBonusViolatorsTractorBeamMaxRangeRole2
 
@@ -10187,7 +10191,7 @@ class Effect3427(EffectDef):
                                       'maxRange', ship.getModifiedItemAttr('eliteBonusViolatorsRole2'))
 
 
-class Effect3439(EffectDef):
+class Effect3439(BaseEffect):
     """
     eliteBonusViolatorsEwTargetPainting1
 
@@ -10204,7 +10208,7 @@ class Effect3439(EffectDef):
                                       skill='Marauders')
 
 
-class Effect3447(EffectDef):
+class Effect3447(BaseEffect):
     """
     shipBonusPTFalloffMB1
 
@@ -10221,7 +10225,7 @@ class Effect3447(EffectDef):
                                       'falloff', ship.getModifiedItemAttr('shipBonusMB'), skill='Minmatar Battleship')
 
 
-class Effect3466(EffectDef):
+class Effect3466(BaseEffect):
     """
     eliteBonusElectronicAttackShipRechargeRate2
 
@@ -10237,7 +10241,7 @@ class Effect3466(EffectDef):
                                skill='Electronic Attack Ships')
 
 
-class Effect3467(EffectDef):
+class Effect3467(BaseEffect):
     """
     eliteBonusElectronicAttackShipCapacitorCapacity2
 
@@ -10253,7 +10257,7 @@ class Effect3467(EffectDef):
                                skill='Electronic Attack Ships')
 
 
-class Effect3468(EffectDef):
+class Effect3468(BaseEffect):
     """
     eliteBonusHeavyInterdictorsWarpDisruptFieldGeneratorWarpScrambleRange2
 
@@ -10270,7 +10274,7 @@ class Effect3468(EffectDef):
                                       skill='Heavy Interdiction Cruisers')
 
 
-class Effect3473(EffectDef):
+class Effect3473(BaseEffect):
     """
     eliteBonusViolatorsTractorBeamMaxTractorVelocityRole3
 
@@ -10286,7 +10290,7 @@ class Effect3473(EffectDef):
                                       'maxTractorVelocity', ship.getModifiedItemAttr('eliteBonusViolatorsRole3'))
 
 
-class Effect3478(EffectDef):
+class Effect3478(BaseEffect):
     """
     shipLaserDamagePirateBattleship
 
@@ -10303,7 +10307,7 @@ class Effect3478(EffectDef):
                                       'damageMultiplier', ship.getModifiedItemAttr('shipBonusRole7'))
 
 
-class Effect3480(EffectDef):
+class Effect3480(BaseEffect):
     """
     shipTrackingBonusAB
 
@@ -10319,7 +10323,7 @@ class Effect3480(EffectDef):
                                       'trackingSpeed', ship.getModifiedItemAttr('shipBonusAB2'), skill='Amarr Battleship')
 
 
-class Effect3483(EffectDef):
+class Effect3483(BaseEffect):
     """
     shipBonusMediumEnergyTurretDamagePirateFaction
 
@@ -10338,7 +10342,7 @@ class Effect3483(EffectDef):
                                       'damageMultiplier', ship.getModifiedItemAttr('shipBonusRole7'))
 
 
-class Effect3484(EffectDef):
+class Effect3484(BaseEffect):
     """
     shipBonusMediumEnergyTurretTrackingAC2
 
@@ -10355,7 +10359,7 @@ class Effect3484(EffectDef):
                                       'trackingSpeed', ship.getModifiedItemAttr('shipBonusAC2'), skill='Amarr Cruiser')
 
 
-class Effect3487(EffectDef):
+class Effect3487(BaseEffect):
     """
     shipBonusSmallEnergyTurretDamagePirateFaction
 
@@ -10376,7 +10380,7 @@ class Effect3487(EffectDef):
                                       'damageMultiplier', ship.getModifiedItemAttr('shipBonusRole7'))
 
 
-class Effect3489(EffectDef):
+class Effect3489(BaseEffect):
     """
     shipBonusSmallEnergyTurretTracking2AF
 
@@ -10393,7 +10397,7 @@ class Effect3489(EffectDef):
                                       'trackingSpeed', ship.getModifiedItemAttr('shipBonus2AF'), skill='Amarr Frigate')
 
 
-class Effect3493(EffectDef):
+class Effect3493(BaseEffect):
     """
     rorqualCargoScanRangeBonus
 
@@ -10409,7 +10413,7 @@ class Effect3493(EffectDef):
                                       'cargoScanRange', ship.getModifiedItemAttr('cargoScannerRangeBonus'))
 
 
-class Effect3494(EffectDef):
+class Effect3494(BaseEffect):
     """
     rorqualSurveyScannerRangeBonus
 
@@ -10425,7 +10429,7 @@ class Effect3494(EffectDef):
                                       'surveyScanRange', ship.getModifiedItemAttr('surveyScannerRangeBonus'))
 
 
-class Effect3495(EffectDef):
+class Effect3495(BaseEffect):
     """
     shipCapPropulsionJamming
 
@@ -10446,7 +10450,7 @@ class Effect3495(EffectDef):
                                       'capacitorNeed', ship.getModifiedItemAttr('eliteBonusInterceptorRole'))
 
 
-class Effect3496(EffectDef):
+class Effect3496(BaseEffect):
     """
     setBonusThukker
 
@@ -10463,7 +10467,7 @@ class Effect3496(EffectDef):
                                                  'agilityBonus', implant.getModifiedItemAttr('implantSetThukker'))
 
 
-class Effect3498(EffectDef):
+class Effect3498(BaseEffect):
     """
     setBonusSisters
 
@@ -10480,7 +10484,7 @@ class Effect3498(EffectDef):
                                                  'scanStrengthBonus', implant.getModifiedItemAttr('implantSetSisters'))
 
 
-class Effect3499(EffectDef):
+class Effect3499(BaseEffect):
     """
     setBonusSyndicate
 
@@ -10498,7 +10502,7 @@ class Effect3499(EffectDef):
                                                  implant.getModifiedItemAttr('implantSetSyndicate'))
 
 
-class Effect3513(EffectDef):
+class Effect3513(BaseEffect):
     """
     setBonusMordus
 
@@ -10515,7 +10519,7 @@ class Effect3513(EffectDef):
                                                  'rangeSkillBonus', implant.getModifiedItemAttr('implantSetMordus'))
 
 
-class Effect3514(EffectDef):
+class Effect3514(BaseEffect):
     """
     Interceptor2WarpScrambleRange
 
@@ -10531,7 +10535,7 @@ class Effect3514(EffectDef):
                                       'maxRange', ship.getModifiedItemAttr('eliteBonusInterceptor2'), skill='Interceptors')
 
 
-class Effect3519(EffectDef):
+class Effect3519(BaseEffect):
     """
     weaponUpgradesCpuNeedBonusPostPercentCpuLocationShipModulesRequiringBombLauncher
 
@@ -10547,7 +10551,7 @@ class Effect3519(EffectDef):
                                       'cpu', skill.getModifiedItemAttr('cpuNeedBonus') * skill.level)
 
 
-class Effect3520(EffectDef):
+class Effect3520(BaseEffect):
     """
     skillAdvancedWeaponUpgradesPowerNeedBonusBombLaunchers
 
@@ -10563,7 +10567,7 @@ class Effect3520(EffectDef):
                                       'power', skill.getModifiedItemAttr('powerNeedBonus') * skill.level)
 
 
-class Effect3526(EffectDef):
+class Effect3526(BaseEffect):
     """
     cynosuralTheoryConsumptionBonus
 
@@ -10582,7 +10586,7 @@ class Effect3526(EffectDef):
                                       container.getModifiedItemAttr('consumptionQuantityBonusPercentage') * level)
 
 
-class Effect3530(EffectDef):
+class Effect3530(BaseEffect):
     """
     eliteBonusBlackOpsAgiliy1
 
@@ -10597,7 +10601,7 @@ class Effect3530(EffectDef):
         fit.ship.boostItemAttr('agility', ship.getModifiedItemAttr('eliteBonusBlackOps1'), skill='Black Ops')
 
 
-class Effect3532(EffectDef):
+class Effect3532(BaseEffect):
     """
     skillJumpDriveConsumptionAmountBonusPercentage
 
@@ -10613,7 +10617,7 @@ class Effect3532(EffectDef):
                                skill.getModifiedItemAttr('consumptionQuantityBonusPercentage') * skill.level)
 
 
-class Effect3561(EffectDef):
+class Effect3561(BaseEffect):
     """
     ewSkillTrackingDisruptionTrackingSpeedBonus
 
@@ -10632,7 +10636,7 @@ class Effect3561(EffectDef):
                                       container.getModifiedItemAttr('scanSkillEwStrengthBonus') * level)
 
 
-class Effect3568(EffectDef):
+class Effect3568(BaseEffect):
     """
     eliteBonusLogisticsTrackingLinkMaxRangeBonus1
 
@@ -10649,7 +10653,7 @@ class Effect3568(EffectDef):
                                       skill='Logistics Cruisers')
 
 
-class Effect3569(EffectDef):
+class Effect3569(BaseEffect):
     """
     eliteBonusLogisticsTrackingLinkMaxRangeBonus2
 
@@ -10666,7 +10670,7 @@ class Effect3569(EffectDef):
                                       skill='Logistics Cruisers')
 
 
-class Effect3570(EffectDef):
+class Effect3570(BaseEffect):
     """
     eliteBonusLogisticsTrackingLinkTrackingSpeedBonus2
 
@@ -10683,7 +10687,7 @@ class Effect3570(EffectDef):
                                       skill='Logistics Cruisers')
 
 
-class Effect3571(EffectDef):
+class Effect3571(BaseEffect):
     """
     eliteBonusLogisticsTrackingLinkTrackingSpeedBonus1
 
@@ -10700,7 +10704,7 @@ class Effect3571(EffectDef):
                                       skill='Logistics Cruisers')
 
 
-class Effect3586(EffectDef):
+class Effect3586(BaseEffect):
     """
     ewSkillSignalSuppressionScanResolutionBonus
 
@@ -10721,7 +10725,7 @@ class Effect3586(EffectDef):
                                       stackingPenalties=penalized)
 
 
-class Effect3587(EffectDef):
+class Effect3587(BaseEffect):
     """
     shipBonusEwRemoteSensorDampenerMaxTargetRangeBonusGC2
 
@@ -10738,7 +10742,7 @@ class Effect3587(EffectDef):
                                       skill='Gallente Cruiser')
 
 
-class Effect3588(EffectDef):
+class Effect3588(BaseEffect):
     """
     shipBonusEwRemoteSensorDampenerMaxTargetRangeBonusGF2
 
@@ -10756,7 +10760,7 @@ class Effect3588(EffectDef):
                                       skill='Gallente Frigate')
 
 
-class Effect3589(EffectDef):
+class Effect3589(BaseEffect):
     """
     shipBonusEwRemoteSensorDampenerScanResolutionBonusGF2
 
@@ -10774,7 +10778,7 @@ class Effect3589(EffectDef):
                                       skill='Gallente Frigate')
 
 
-class Effect3590(EffectDef):
+class Effect3590(BaseEffect):
     """
     shipBonusEwRemoteSensorDampenerScanResolutionBonusGC2
 
@@ -10791,7 +10795,7 @@ class Effect3590(EffectDef):
                                       skill='Gallente Cruiser')
 
 
-class Effect3591(EffectDef):
+class Effect3591(BaseEffect):
     """
     ewSkillSignalSuppressionMaxTargetRangeBonus
 
@@ -10810,7 +10814,7 @@ class Effect3591(EffectDef):
                                       container.getModifiedItemAttr('scanSkillEwStrengthBonus') * level)
 
 
-class Effect3592(EffectDef):
+class Effect3592(BaseEffect):
     """
     eliteBonusJumpFreighterHullHP1
 
@@ -10825,7 +10829,7 @@ class Effect3592(EffectDef):
         fit.ship.boostItemAttr('hp', ship.getModifiedItemAttr('eliteBonusJumpFreighter1'), skill='Jump Freighters')
 
 
-class Effect3593(EffectDef):
+class Effect3593(BaseEffect):
     """
     eliteBonusJumpFreighterJumpDriveConsumptionAmount2
 
@@ -10841,7 +10845,7 @@ class Effect3593(EffectDef):
                                skill='Jump Freighters')
 
 
-class Effect3597(EffectDef):
+class Effect3597(BaseEffect):
     """
     scriptSensorBoosterScanResolutionBonusBonus
 
@@ -10857,7 +10861,7 @@ class Effect3597(EffectDef):
         module.boostItemAttr('scanResolutionBonus', module.getModifiedChargeAttr('scanResolutionBonusBonus'))
 
 
-class Effect3598(EffectDef):
+class Effect3598(BaseEffect):
     """
     scriptSensorBoosterMaxTargetRangeBonusBonus
 
@@ -10873,7 +10877,7 @@ class Effect3598(EffectDef):
         module.boostItemAttr('maxTargetRangeBonus', module.getModifiedChargeAttr('maxTargetRangeBonusBonus'))
 
 
-class Effect3599(EffectDef):
+class Effect3599(BaseEffect):
     """
     scriptTrackingComputerTrackingSpeedBonusBonus
 
@@ -10889,7 +10893,7 @@ class Effect3599(EffectDef):
         module.boostItemAttr('trackingSpeedBonus', module.getModifiedChargeAttr('trackingSpeedBonusBonus'))
 
 
-class Effect3600(EffectDef):
+class Effect3600(BaseEffect):
     """
     scriptTrackingComputerMaxRangeBonusBonus
 
@@ -10905,7 +10909,7 @@ class Effect3600(EffectDef):
         module.boostItemAttr('maxRangeBonus', module.getModifiedChargeAttr('maxRangeBonusBonus'))
 
 
-class Effect3601(EffectDef):
+class Effect3601(BaseEffect):
     """
     scriptWarpDisruptionFieldGeneratorSetDisallowInEmpireSpace
 
@@ -10920,7 +10924,7 @@ class Effect3601(EffectDef):
         module.forceItemAttr('disallowInEmpireSpace', module.getModifiedChargeAttr('disallowInEmpireSpace'))
 
 
-class Effect3602(EffectDef):
+class Effect3602(BaseEffect):
     """
     scriptDurationBonus
 
@@ -10935,7 +10939,7 @@ class Effect3602(EffectDef):
         module.boostItemAttr('duration', module.getModifiedChargeAttr('durationBonus'))
 
 
-class Effect3617(EffectDef):
+class Effect3617(BaseEffect):
     """
     scriptSignatureRadiusBonusBonus
 
@@ -10951,7 +10955,7 @@ class Effect3617(EffectDef):
         module.boostItemAttr('signatureRadiusBonus', module.getModifiedChargeAttr('signatureRadiusBonusBonus'))
 
 
-class Effect3618(EffectDef):
+class Effect3618(BaseEffect):
     """
     scriptMassBonusPercentageBonus
 
@@ -10967,7 +10971,7 @@ class Effect3618(EffectDef):
         module.boostItemAttr('massBonusPercentage', module.getModifiedChargeAttr('massBonusPercentageBonus'))
 
 
-class Effect3619(EffectDef):
+class Effect3619(BaseEffect):
     """
     scriptSpeedBoostFactorBonusBonus
 
@@ -10983,7 +10987,7 @@ class Effect3619(EffectDef):
         module.boostItemAttr('speedBoostFactorBonus', module.getModifiedChargeAttr('speedBoostFactorBonusBonus'))
 
 
-class Effect3620(EffectDef):
+class Effect3620(BaseEffect):
     """
     scriptSpeedFactorBonusBonus
 
@@ -10999,7 +11003,7 @@ class Effect3620(EffectDef):
         module.boostItemAttr('speedFactorBonus', module.getModifiedChargeAttr('speedFactorBonusBonus'))
 
 
-class Effect3648(EffectDef):
+class Effect3648(BaseEffect):
     """
     scriptWarpScrambleRangeBonus
 
@@ -11014,7 +11018,7 @@ class Effect3648(EffectDef):
         module.boostItemAttr('warpScrambleRange', module.getModifiedChargeAttr('warpScrambleRangeBonus'))
 
 
-class Effect3649(EffectDef):
+class Effect3649(BaseEffect):
     """
     eliteBonusViolatorsLargeEnergyTurretDamage1
 
@@ -11031,7 +11035,7 @@ class Effect3649(EffectDef):
                                       skill='Marauders')
 
 
-class Effect3650(EffectDef):
+class Effect3650(BaseEffect):
     """
     ewGroupRsdMaxRangeBonus
 
@@ -11047,7 +11051,7 @@ class Effect3650(EffectDef):
                                       'maxRange', implant.getModifiedItemAttr('rangeSkillBonus'))
 
 
-class Effect3651(EffectDef):
+class Effect3651(BaseEffect):
     """
     ewGroupTpMaxRangeBonus
 
@@ -11063,7 +11067,7 @@ class Effect3651(EffectDef):
                                       'maxRange', implant.getModifiedItemAttr('rangeSkillBonus'))
 
 
-class Effect3652(EffectDef):
+class Effect3652(BaseEffect):
     """
     ewGroupTdMaxRangeBonus
 
@@ -11079,7 +11083,7 @@ class Effect3652(EffectDef):
                                       'maxRange', implant.getModifiedItemAttr('rangeSkillBonus'))
 
 
-class Effect3653(EffectDef):
+class Effect3653(BaseEffect):
     """
     ewGroupEcmBurstMaxRangeBonus
 
@@ -11095,7 +11099,7 @@ class Effect3653(EffectDef):
                                       'maxRange', implant.getModifiedItemAttr('rangeSkillBonus'))
 
 
-class Effect3655(EffectDef):
+class Effect3655(BaseEffect):
     """
     gunneryMaxRangeBonusOnline
 
@@ -11112,7 +11116,7 @@ class Effect3655(EffectDef):
                                       stackingPenalties=True)
 
 
-class Effect3656(EffectDef):
+class Effect3656(BaseEffect):
     """
     gunneryTrackingSpeedBonusOnline
 
@@ -11129,7 +11133,7 @@ class Effect3656(EffectDef):
                                       stackingPenalties=True)
 
 
-class Effect3657(EffectDef):
+class Effect3657(BaseEffect):
     """
     shipScanResolutionBonusOnline
 
@@ -11146,7 +11150,7 @@ class Effect3657(EffectDef):
                                stackingPenalties=True)
 
 
-class Effect3659(EffectDef):
+class Effect3659(BaseEffect):
     """
     shipMaxTargetRangeBonusOnline
 
@@ -11163,7 +11167,7 @@ class Effect3659(EffectDef):
                                stackingPenalties=True)
 
 
-class Effect3660(EffectDef):
+class Effect3660(BaseEffect):
     """
     shipMaxLockedTargetsBonusAddOnline
 
@@ -11179,7 +11183,7 @@ class Effect3660(EffectDef):
         fit.ship.increaseItemAttr('maxLockedTargets', module.getModifiedItemAttr('maxLockedTargetsBonus'))
 
 
-class Effect3668(EffectDef):
+class Effect3668(BaseEffect):
     """
     miningLaserRangeBonus
 
@@ -11195,7 +11199,7 @@ class Effect3668(EffectDef):
                                       'maxRange', implant.getModifiedItemAttr('maxRangeBonus'))
 
 
-class Effect3669(EffectDef):
+class Effect3669(BaseEffect):
     """
     frequencyMiningLaserMaxRangeBonus
 
@@ -11211,7 +11215,7 @@ class Effect3669(EffectDef):
                                       'maxRange', implant.getModifiedItemAttr('maxRangeBonus'))
 
 
-class Effect3670(EffectDef):
+class Effect3670(BaseEffect):
     """
     stripMinerMaxRangeBonus
 
@@ -11227,7 +11231,7 @@ class Effect3670(EffectDef):
                                       'maxRange', implant.getModifiedItemAttr('maxRangeBonus'))
 
 
-class Effect3671(EffectDef):
+class Effect3671(BaseEffect):
     """
     gasHarvesterMaxRangeBonus
 
@@ -11243,7 +11247,7 @@ class Effect3671(EffectDef):
                                       'maxRange', implant.getModifiedItemAttr('maxRangeBonus'))
 
 
-class Effect3672(EffectDef):
+class Effect3672(BaseEffect):
     """
     setBonusOre
 
@@ -11260,7 +11264,7 @@ class Effect3672(EffectDef):
                                                  'maxRangeBonus', implant.getModifiedItemAttr('implantSetORE'))
 
 
-class Effect3677(EffectDef):
+class Effect3677(BaseEffect):
     """
     shipBonusLargeEnergyTurretMaxRangeAB2
 
@@ -11277,7 +11281,7 @@ class Effect3677(EffectDef):
                                       'maxRange', ship.getModifiedItemAttr('shipBonusAB2'), skill='Amarr Battleship')
 
 
-class Effect3678(EffectDef):
+class Effect3678(BaseEffect):
     """
     eliteBonusJumpFreighterShieldHP1
 
@@ -11294,7 +11298,7 @@ class Effect3678(EffectDef):
                                skill='Jump Freighters')
 
 
-class Effect3679(EffectDef):
+class Effect3679(BaseEffect):
     """
     eliteBonusJumpFreighterArmorHP1
 
@@ -11310,7 +11314,7 @@ class Effect3679(EffectDef):
         fit.ship.boostItemAttr('armorHP', ship.getModifiedItemAttr('eliteBonusJumpFreighter1'), skill='Jump Freighters')
 
 
-class Effect3680(EffectDef):
+class Effect3680(BaseEffect):
     """
     freighterAgilityBonusC1
 
@@ -11325,7 +11329,7 @@ class Effect3680(EffectDef):
         fit.ship.boostItemAttr('agility', ship.getModifiedItemAttr('freighterBonusC1'), skill='Caldari Freighter')
 
 
-class Effect3681(EffectDef):
+class Effect3681(BaseEffect):
     """
     freighterAgilityBonusM1
 
@@ -11340,7 +11344,7 @@ class Effect3681(EffectDef):
         fit.ship.boostItemAttr('agility', ship.getModifiedItemAttr('freighterBonusM1'), skill='Minmatar Freighter')
 
 
-class Effect3682(EffectDef):
+class Effect3682(BaseEffect):
     """
     freighterAgilityBonusG1
 
@@ -11355,7 +11359,7 @@ class Effect3682(EffectDef):
         fit.ship.boostItemAttr('agility', ship.getModifiedItemAttr('freighterBonusG1'), skill='Gallente Freighter')
 
 
-class Effect3683(EffectDef):
+class Effect3683(BaseEffect):
     """
     freighterAgilityBonusA1
 
@@ -11370,7 +11374,7 @@ class Effect3683(EffectDef):
         fit.ship.boostItemAttr('agility', ship.getModifiedItemAttr('freighterBonusA1'), skill='Amarr Freighter')
 
 
-class Effect3686(EffectDef):
+class Effect3686(BaseEffect):
     """
     scriptTrackingComputerFalloffBonusBonus
 
@@ -11386,7 +11390,7 @@ class Effect3686(EffectDef):
         module.boostItemAttr('falloffBonus', module.getModifiedChargeAttr('falloffBonusBonus'))
 
 
-class Effect3703(EffectDef):
+class Effect3703(BaseEffect):
     """
     shipMissileLauncherSpeedBonusMC2
 
@@ -11403,7 +11407,7 @@ class Effect3703(EffectDef):
                                       'speed', ship.getModifiedItemAttr('shipBonusMC2'), skill='Minmatar Cruiser')
 
 
-class Effect3705(EffectDef):
+class Effect3705(BaseEffect):
     """
     shipHybridTurretROFBonusGC2
 
@@ -11420,7 +11424,7 @@ class Effect3705(EffectDef):
                                       'speed', ship.getModifiedItemAttr('shipBonusGC2'), skill='Gallente Cruiser')
 
 
-class Effect3706(EffectDef):
+class Effect3706(BaseEffect):
     """
     shipBonusProjectileTrackingMC2
 
@@ -11436,7 +11440,7 @@ class Effect3706(EffectDef):
                                       'trackingSpeed', ship.getModifiedItemAttr('shipBonusMC2'), skill='Minmatar Cruiser')
 
 
-class Effect3726(EffectDef):
+class Effect3726(BaseEffect):
     """
     agilityMultiplierEffectPassive
 
@@ -11451,7 +11455,7 @@ class Effect3726(EffectDef):
         fit.ship.boostItemAttr('agility', module.getModifiedItemAttr('agilityBonus'), stackingPenalties=True)
 
 
-class Effect3727(EffectDef):
+class Effect3727(BaseEffect):
     """
     velocityBonusPassive
 
@@ -11467,7 +11471,7 @@ class Effect3727(EffectDef):
                                stackingPenalties=True)
 
 
-class Effect3739(EffectDef):
+class Effect3739(BaseEffect):
     """
     zColinOrcaTractorRangeBonus
 
@@ -11483,7 +11487,7 @@ class Effect3739(EffectDef):
                                       src.getModifiedItemAttr('roleBonusTractorBeamRange'))
 
 
-class Effect3740(EffectDef):
+class Effect3740(BaseEffect):
     """
     zColinOrcaTractorVelocityBonus
 
@@ -11499,7 +11503,7 @@ class Effect3740(EffectDef):
                                       ship.getModifiedItemAttr('roleBonusTractorBeamVelocity'))
 
 
-class Effect3742(EffectDef):
+class Effect3742(BaseEffect):
     """
     cargoAndOreHoldCapacityBonusICS1
 
@@ -11520,7 +11524,7 @@ class Effect3742(EffectDef):
                                skill='Industrial Command Ships')
 
 
-class Effect3744(EffectDef):
+class Effect3744(BaseEffect):
     """
     miningForemanBurstBonusICS2
 
@@ -11544,7 +11548,7 @@ class Effect3744(EffectDef):
                                       src.getModifiedItemAttr('shipBonusICS2'), skill='Industrial Command Ships')
 
 
-class Effect3745(EffectDef):
+class Effect3745(BaseEffect):
     """
     zColinOrcaSurveyScannerBonus
 
@@ -11560,7 +11564,7 @@ class Effect3745(EffectDef):
                                       src.getModifiedItemAttr('roleBonusSurveyScannerRange'))
 
 
-class Effect3765(EffectDef):
+class Effect3765(BaseEffect):
     """
     covertOpsStealthBomberSiegeMissileLauncherPowerNeedBonus
 
@@ -11576,7 +11580,7 @@ class Effect3765(EffectDef):
                                          'power', ship.getModifiedItemAttr('stealthBomberLauncherPower'))
 
 
-class Effect3766(EffectDef):
+class Effect3766(BaseEffect):
     """
     interceptorMWDSignatureRadiusBonus
 
@@ -11593,7 +11597,7 @@ class Effect3766(EffectDef):
                                       skill='Interceptors')
 
 
-class Effect3767(EffectDef):
+class Effect3767(BaseEffect):
     """
     eliteBonusCommandShipsHeavyMissileExplosionVelocityCS2
 
@@ -11610,7 +11614,7 @@ class Effect3767(EffectDef):
                                         skill='Command Ships')
 
 
-class Effect3771(EffectDef):
+class Effect3771(BaseEffect):
     """
     armorHPBonusAddPassive
 
@@ -11625,7 +11629,7 @@ class Effect3771(EffectDef):
         fit.ship.increaseItemAttr('armorHP', module.getModifiedItemAttr('armorHPBonusAdd') or 0)
 
 
-class Effect3773(EffectDef):
+class Effect3773(BaseEffect):
     """
     hardPointModifierEffect
 
@@ -11641,7 +11645,7 @@ class Effect3773(EffectDef):
         fit.ship.increaseItemAttr('launcherSlotsLeft', module.getModifiedItemAttr('launcherHardPointModifier'))
 
 
-class Effect3774(EffectDef):
+class Effect3774(BaseEffect):
     """
     slotModifier
 
@@ -11658,7 +11662,7 @@ class Effect3774(EffectDef):
         fit.ship.increaseItemAttr('lowSlots', module.getModifiedItemAttr('lowSlotModifier'))
 
 
-class Effect3782(EffectDef):
+class Effect3782(BaseEffect):
     """
     powerOutputAddPassive
 
@@ -11673,7 +11677,7 @@ class Effect3782(EffectDef):
         fit.ship.increaseItemAttr('powerOutput', module.getModifiedItemAttr('powerOutput'))
 
 
-class Effect3783(EffectDef):
+class Effect3783(BaseEffect):
     """
     cpuOutputAddCpuOutputPassive
 
@@ -11688,7 +11692,7 @@ class Effect3783(EffectDef):
         fit.ship.increaseItemAttr('cpuOutput', module.getModifiedItemAttr('cpuOutput'))
 
 
-class Effect3797(EffectDef):
+class Effect3797(BaseEffect):
     """
     droneBandwidthAddPassive
 
@@ -11703,7 +11707,7 @@ class Effect3797(EffectDef):
         fit.ship.increaseItemAttr('droneBandwidth', module.getModifiedItemAttr('droneBandwidth'))
 
 
-class Effect3799(EffectDef):
+class Effect3799(BaseEffect):
     """
     droneCapacityAdddroneCapacityPassive
 
@@ -11718,7 +11722,7 @@ class Effect3799(EffectDef):
         fit.ship.increaseItemAttr('droneCapacity', module.getModifiedItemAttr('droneCapacity'))
 
 
-class Effect3807(EffectDef):
+class Effect3807(BaseEffect):
     """
     maxTargetRangeAddPassive
 
@@ -11733,7 +11737,7 @@ class Effect3807(EffectDef):
         fit.ship.increaseItemAttr('maxTargetRange', module.getModifiedItemAttr('maxTargetRange'))
 
 
-class Effect3808(EffectDef):
+class Effect3808(BaseEffect):
     """
     signatureRadiusAddPassive
 
@@ -11749,7 +11753,7 @@ class Effect3808(EffectDef):
         fit.ship.increaseItemAttr('signatureRadius', module.getModifiedItemAttr('signatureRadius'))
 
 
-class Effect3810(EffectDef):
+class Effect3810(BaseEffect):
     """
     capacityAddPassive
 
@@ -11765,7 +11769,7 @@ class Effect3810(EffectDef):
         fit.ship.increaseItemAttr('capacity', subsystem.getModifiedItemAttr('cargoCapacityAdd') or 0)
 
 
-class Effect3811(EffectDef):
+class Effect3811(BaseEffect):
     """
     capacitorCapacityAddPassive
 
@@ -11780,7 +11784,7 @@ class Effect3811(EffectDef):
         fit.ship.increaseItemAttr('capacitorCapacity', module.getModifiedItemAttr('capacitorCapacity') or 0)
 
 
-class Effect3831(EffectDef):
+class Effect3831(BaseEffect):
     """
     shieldCapacityAddPassive
 
@@ -11795,7 +11799,7 @@ class Effect3831(EffectDef):
         fit.ship.increaseItemAttr('shieldCapacity', module.getModifiedItemAttr('shieldCapacity'))
 
 
-class Effect3857(EffectDef):
+class Effect3857(BaseEffect):
     """
     subsystemBonusAmarrPropulsionMaxVelocity
 
@@ -11811,7 +11815,7 @@ class Effect3857(EffectDef):
                                skill='Amarr Propulsion Systems')
 
 
-class Effect3859(EffectDef):
+class Effect3859(BaseEffect):
     """
     subsystemBonusCaldariPropulsionMaxVelocity
 
@@ -11827,7 +11831,7 @@ class Effect3859(EffectDef):
                                skill='Caldari Propulsion Systems')
 
 
-class Effect3860(EffectDef):
+class Effect3860(BaseEffect):
     """
     subsystemBonusMinmatarPropulsionMaxVelocity
 
@@ -11843,7 +11847,7 @@ class Effect3860(EffectDef):
                                skill='Minmatar Propulsion Systems')
 
 
-class Effect3861(EffectDef):
+class Effect3861(BaseEffect):
     """
     subsystemBonusMinmatarPropulsionAfterburnerSpeedFactor
 
@@ -11860,7 +11864,7 @@ class Effect3861(EffectDef):
                                       skill='Minmatar Propulsion Systems')
 
 
-class Effect3863(EffectDef):
+class Effect3863(BaseEffect):
     """
     subsystemBonusCaldariPropulsionAfterburnerSpeedFactor
 
@@ -11877,7 +11881,7 @@ class Effect3863(EffectDef):
                                       skill='Caldari Propulsion Systems')
 
 
-class Effect3864(EffectDef):
+class Effect3864(BaseEffect):
     """
     subsystemBonusAmarrPropulsionAfterburnerSpeedFactor
 
@@ -11894,7 +11898,7 @@ class Effect3864(EffectDef):
                                       skill='Amarr Propulsion Systems')
 
 
-class Effect3865(EffectDef):
+class Effect3865(BaseEffect):
     """
     subsystemBonusAmarrPropulsion2Agility
 
@@ -11910,7 +11914,7 @@ class Effect3865(EffectDef):
                                skill='Amarr Propulsion Systems')
 
 
-class Effect3866(EffectDef):
+class Effect3866(BaseEffect):
     """
     subsystemBonusCaldariPropulsion2Agility
 
@@ -11926,7 +11930,7 @@ class Effect3866(EffectDef):
                                skill='Caldari Propulsion Systems')
 
 
-class Effect3867(EffectDef):
+class Effect3867(BaseEffect):
     """
     subsystemBonusGallentePropulsion2Agility
 
@@ -11942,7 +11946,7 @@ class Effect3867(EffectDef):
                                skill='Gallente Propulsion Systems')
 
 
-class Effect3868(EffectDef):
+class Effect3868(BaseEffect):
     """
     subsystemBonusMinmatarPropulsion2Agility
 
@@ -11958,7 +11962,7 @@ class Effect3868(EffectDef):
                                skill='Minmatar Propulsion Systems')
 
 
-class Effect3869(EffectDef):
+class Effect3869(BaseEffect):
     """
     subsystemBonusMinmatarPropulsion2MWDPenalty
 
@@ -11975,7 +11979,7 @@ class Effect3869(EffectDef):
                                       skill='Minmatar Propulsion Systems')
 
 
-class Effect3872(EffectDef):
+class Effect3872(BaseEffect):
     """
     subsystemBonusAmarrPropulsion2MWDPenalty
 
@@ -11992,7 +11996,7 @@ class Effect3872(EffectDef):
                                       skill='Amarr Propulsion Systems')
 
 
-class Effect3875(EffectDef):
+class Effect3875(BaseEffect):
     """
     subsystemBonusGallentePropulsionABMWDCapNeed
 
@@ -12009,7 +12013,7 @@ class Effect3875(EffectDef):
                                       skill='Gallente Propulsion Systems')
 
 
-class Effect3893(EffectDef):
+class Effect3893(BaseEffect):
     """
     subsystemBonusMinmatarCoreScanStrengthLADAR
 
@@ -12025,7 +12029,7 @@ class Effect3893(EffectDef):
                                skill='Minmatar Core Systems')
 
 
-class Effect3895(EffectDef):
+class Effect3895(BaseEffect):
     """
     subsystemBonusGallenteCoreScanStrengthMagnetometric
 
@@ -12041,7 +12045,7 @@ class Effect3895(EffectDef):
                                skill='Gallente Core Systems')
 
 
-class Effect3897(EffectDef):
+class Effect3897(BaseEffect):
     """
     subsystemBonusCaldariCoreScanStrengthGravimetric
 
@@ -12056,7 +12060,7 @@ class Effect3897(EffectDef):
         fit.ship.boostItemAttr('scanGravimetricStrength', src.getModifiedItemAttr('subsystemBonusCaldariCore'), skill='Caldari Core Systems')
 
 
-class Effect3900(EffectDef):
+class Effect3900(BaseEffect):
     """
     subsystemBonusAmarrCoreScanStrengthRADAR
 
@@ -12072,7 +12076,7 @@ class Effect3900(EffectDef):
                                skill='Amarr Core Systems')
 
 
-class Effect3959(EffectDef):
+class Effect3959(BaseEffect):
     """
     subsystemBonusAmarrDefensiveArmorRepairAmount
 
@@ -12090,7 +12094,7 @@ class Effect3959(EffectDef):
                                       skill='Amarr Defensive Systems')
 
 
-class Effect3961(EffectDef):
+class Effect3961(BaseEffect):
     """
     subsystemBonusGallenteDefensiveArmorRepairAmount
 
@@ -12108,7 +12112,7 @@ class Effect3961(EffectDef):
                                       skill='Gallente Defensive Systems')
 
 
-class Effect3962(EffectDef):
+class Effect3962(BaseEffect):
     """
     subsystemBonusMinmatarDefensiveShieldArmorRepairAmount
 
@@ -12129,7 +12133,7 @@ class Effect3962(EffectDef):
                                       skill='Minmatar Defensive Systems')
 
 
-class Effect3964(EffectDef):
+class Effect3964(BaseEffect):
     """
     subsystemBonusCaldariDefensiveShieldBoostAmount
 
@@ -12147,7 +12151,7 @@ class Effect3964(EffectDef):
                                       skill='Caldari Defensive Systems')
 
 
-class Effect3976(EffectDef):
+class Effect3976(BaseEffect):
     """
     subsystemBonusCaldariDefensiveShieldHP
 
@@ -12163,7 +12167,7 @@ class Effect3976(EffectDef):
                                skill='Caldari Defensive Systems')
 
 
-class Effect3979(EffectDef):
+class Effect3979(BaseEffect):
     """
     subsystemBonusMinmatarDefensiveShieldArmorHP
 
@@ -12181,7 +12185,7 @@ class Effect3979(EffectDef):
                                skill='Minmatar Defensive Systems')
 
 
-class Effect3980(EffectDef):
+class Effect3980(BaseEffect):
     """
     subsystemBonusGallenteDefensiveArmorHP
 
@@ -12197,7 +12201,7 @@ class Effect3980(EffectDef):
                                skill='Gallente Defensive Systems')
 
 
-class Effect3982(EffectDef):
+class Effect3982(BaseEffect):
     """
     subsystemBonusAmarrDefensiveArmorHP
 
@@ -12213,7 +12217,7 @@ class Effect3982(EffectDef):
                                skill='Amarr Defensive Systems')
 
 
-class Effect3992(EffectDef):
+class Effect3992(BaseEffect):
     """
     systemShieldHP
 
@@ -12229,7 +12233,7 @@ class Effect3992(EffectDef):
         fit.ship.multiplyItemAttr('shieldCapacity', beacon.getModifiedItemAttr('shieldCapacityMultiplier'))
 
 
-class Effect3993(EffectDef):
+class Effect3993(BaseEffect):
     """
     systemTargetingRange
 
@@ -12247,7 +12251,7 @@ class Effect3993(EffectDef):
                                   stackingPenalties=True, penaltyGroup='postMul')
 
 
-class Effect3995(EffectDef):
+class Effect3995(BaseEffect):
     """
     systemSignatureRadius
 
@@ -12265,7 +12269,7 @@ class Effect3995(EffectDef):
                                   stackingPenalties=True, penaltyGroup='postMul')
 
 
-class Effect3996(EffectDef):
+class Effect3996(BaseEffect):
     """
     systemArmorEmResistance
 
@@ -12283,7 +12287,7 @@ class Effect3996(EffectDef):
                                stackingPenalties=True)
 
 
-class Effect3997(EffectDef):
+class Effect3997(BaseEffect):
     """
     systemArmorExplosiveResistance
 
@@ -12302,7 +12306,7 @@ class Effect3997(EffectDef):
                                stackingPenalties=True)
 
 
-class Effect3998(EffectDef):
+class Effect3998(BaseEffect):
     """
     systemArmorKineticResistance
 
@@ -12321,7 +12325,7 @@ class Effect3998(EffectDef):
                                stackingPenalties=True)
 
 
-class Effect3999(EffectDef):
+class Effect3999(BaseEffect):
     """
     systemArmorThermalResistance
 
@@ -12340,7 +12344,7 @@ class Effect3999(EffectDef):
                                stackingPenalties=True)
 
 
-class Effect4002(EffectDef):
+class Effect4002(BaseEffect):
     """
     systemMissileVelocity
 
@@ -12358,7 +12362,7 @@ class Effect4002(EffectDef):
                                            stackingPenalties=True, penaltyGroup='postMul')
 
 
-class Effect4003(EffectDef):
+class Effect4003(BaseEffect):
     """
     systemMaxVelocity
 
@@ -12375,7 +12379,7 @@ class Effect4003(EffectDef):
                                   stackingPenalties=True, penaltyGroup='postMul')
 
 
-class Effect4016(EffectDef):
+class Effect4016(BaseEffect):
     """
     systemDamageMultiplierGunnery
 
@@ -12393,7 +12397,7 @@ class Effect4016(EffectDef):
                                          stackingPenalties=True)
 
 
-class Effect4017(EffectDef):
+class Effect4017(BaseEffect):
     """
     systemDamageThermalMissiles
 
@@ -12411,7 +12415,7 @@ class Effect4017(EffectDef):
                                            stackingPenalties=True, penaltyGroup='postMul')
 
 
-class Effect4018(EffectDef):
+class Effect4018(BaseEffect):
     """
     systemDamageEmMissiles
 
@@ -12429,7 +12433,7 @@ class Effect4018(EffectDef):
                                            stackingPenalties=True, penaltyGroup='postMul')
 
 
-class Effect4019(EffectDef):
+class Effect4019(BaseEffect):
     """
     systemDamageExplosiveMissiles
 
@@ -12447,7 +12451,7 @@ class Effect4019(EffectDef):
                                            stackingPenalties=True, penaltyGroup='postMul')
 
 
-class Effect4020(EffectDef):
+class Effect4020(BaseEffect):
     """
     systemDamageKineticMissiles
 
@@ -12465,7 +12469,7 @@ class Effect4020(EffectDef):
                                            stackingPenalties=True, penaltyGroup='postMul')
 
 
-class Effect4021(EffectDef):
+class Effect4021(BaseEffect):
     """
     systemDamageDrones
 
@@ -12483,7 +12487,7 @@ class Effect4021(EffectDef):
                                         stackingPenalties=True, penaltyGroup='postMul')
 
 
-class Effect4022(EffectDef):
+class Effect4022(BaseEffect):
     """
     systemTracking
 
@@ -12501,7 +12505,7 @@ class Effect4022(EffectDef):
                                          stackingPenalties=True, penaltyGroup='postMul')
 
 
-class Effect4023(EffectDef):
+class Effect4023(BaseEffect):
     """
     systemAoeVelocity
 
@@ -12518,7 +12522,7 @@ class Effect4023(EffectDef):
                                            'aoeVelocity', beacon.getModifiedItemAttr('aoeVelocityMultiplier'))
 
 
-class Effect4033(EffectDef):
+class Effect4033(BaseEffect):
     """
     systemHeatDamage
 
@@ -12535,7 +12539,7 @@ class Effect4033(EffectDef):
                                          'heatDamage', module.getModifiedItemAttr('heatDamageMultiplier'))
 
 
-class Effect4034(EffectDef):
+class Effect4034(BaseEffect):
     """
     systemOverloadArmor
 
@@ -12552,7 +12556,7 @@ class Effect4034(EffectDef):
                                          'overloadArmorDamageAmount', module.getModifiedItemAttr('overloadBonusMultiplier'))
 
 
-class Effect4035(EffectDef):
+class Effect4035(BaseEffect):
     """
     systemOverloadDamageModifier
 
@@ -12569,7 +12573,7 @@ class Effect4035(EffectDef):
                                          'overloadDamageModifier', module.getModifiedItemAttr('overloadBonusMultiplier'))
 
 
-class Effect4036(EffectDef):
+class Effect4036(BaseEffect):
     """
     systemOverloadDurationBonus
 
@@ -12586,7 +12590,7 @@ class Effect4036(EffectDef):
                                          'overloadDurationBonus', module.getModifiedItemAttr('overloadBonusMultiplier'))
 
 
-class Effect4037(EffectDef):
+class Effect4037(BaseEffect):
     """
     systemOverloadEccmStrength
 
@@ -12603,7 +12607,7 @@ class Effect4037(EffectDef):
                                          'overloadECCMStrenghtBonus', module.getModifiedItemAttr('overloadBonusMultiplier'))
 
 
-class Effect4038(EffectDef):
+class Effect4038(BaseEffect):
     """
     systemOverloadEcmStrength
 
@@ -12620,7 +12624,7 @@ class Effect4038(EffectDef):
                                          'overloadECMStrenghtBonus', module.getModifiedItemAttr('overloadBonusMultiplier'))
 
 
-class Effect4039(EffectDef):
+class Effect4039(BaseEffect):
     """
     systemOverloadHardening
 
@@ -12637,7 +12641,7 @@ class Effect4039(EffectDef):
                                          'overloadHardeningBonus', module.getModifiedItemAttr('overloadBonusMultiplier'))
 
 
-class Effect4040(EffectDef):
+class Effect4040(BaseEffect):
     """
     systemOverloadRange
 
@@ -12654,7 +12658,7 @@ class Effect4040(EffectDef):
                                          'overloadRangeBonus', module.getModifiedItemAttr('overloadBonusMultiplier'))
 
 
-class Effect4041(EffectDef):
+class Effect4041(BaseEffect):
     """
     systemOverloadRof
 
@@ -12671,7 +12675,7 @@ class Effect4041(EffectDef):
                                          'overloadRofBonus', module.getModifiedItemAttr('overloadBonusMultiplier'))
 
 
-class Effect4042(EffectDef):
+class Effect4042(BaseEffect):
     """
     systemOverloadSelfDuration
 
@@ -12688,7 +12692,7 @@ class Effect4042(EffectDef):
                                          'overloadSelfDurationBonus', module.getModifiedItemAttr('overloadBonusMultiplier'))
 
 
-class Effect4043(EffectDef):
+class Effect4043(BaseEffect):
     """
     systemOverloadShieldBonus
 
@@ -12705,7 +12709,7 @@ class Effect4043(EffectDef):
                                          'overloadShieldBonus', module.getModifiedItemAttr('overloadBonusMultiplier'))
 
 
-class Effect4044(EffectDef):
+class Effect4044(BaseEffect):
     """
     systemOverloadSpeedFactor
 
@@ -12722,7 +12726,7 @@ class Effect4044(EffectDef):
                                          'overloadSpeedFactorBonus', module.getModifiedItemAttr('overloadBonusMultiplier'))
 
 
-class Effect4045(EffectDef):
+class Effect4045(BaseEffect):
     """
     systemSmartBombRange
 
@@ -12739,7 +12743,7 @@ class Effect4045(EffectDef):
                                          'empFieldRange', module.getModifiedItemAttr('empFieldRangeMultiplier'))
 
 
-class Effect4046(EffectDef):
+class Effect4046(BaseEffect):
     """
     systemSmartBombEmDamage
 
@@ -12756,7 +12760,7 @@ class Effect4046(EffectDef):
                                          'emDamage', module.getModifiedItemAttr('smartbombDamageMultiplier'))
 
 
-class Effect4047(EffectDef):
+class Effect4047(BaseEffect):
     """
     systemSmartBombThermalDamage
 
@@ -12773,7 +12777,7 @@ class Effect4047(EffectDef):
                                          'thermalDamage', module.getModifiedItemAttr('smartbombDamageMultiplier'))
 
 
-class Effect4048(EffectDef):
+class Effect4048(BaseEffect):
     """
     systemSmartBombKineticDamage
 
@@ -12790,7 +12794,7 @@ class Effect4048(EffectDef):
                                          'kineticDamage', module.getModifiedItemAttr('smartbombDamageMultiplier'))
 
 
-class Effect4049(EffectDef):
+class Effect4049(BaseEffect):
     """
     systemSmartBombExplosiveDamage
 
@@ -12807,7 +12811,7 @@ class Effect4049(EffectDef):
                                          'explosiveDamage', module.getModifiedItemAttr('smartbombDamageMultiplier'))
 
 
-class Effect4054(EffectDef):
+class Effect4054(BaseEffect):
     """
     systemSmallEnergyDamage
 
@@ -12825,7 +12829,7 @@ class Effect4054(EffectDef):
                                          stackingPenalties=True)
 
 
-class Effect4055(EffectDef):
+class Effect4055(BaseEffect):
     """
     systemSmallProjectileDamage
 
@@ -12843,7 +12847,7 @@ class Effect4055(EffectDef):
                                          stackingPenalties=True)
 
 
-class Effect4056(EffectDef):
+class Effect4056(BaseEffect):
     """
     systemSmallHybridDamage
 
@@ -12861,7 +12865,7 @@ class Effect4056(EffectDef):
                                          stackingPenalties=True)
 
 
-class Effect4057(EffectDef):
+class Effect4057(BaseEffect):
     """
     systemRocketEmDamage
 
@@ -12879,7 +12883,7 @@ class Effect4057(EffectDef):
                                            stackingPenalties=True, penaltyGroup='postMul')
 
 
-class Effect4058(EffectDef):
+class Effect4058(BaseEffect):
     """
     systemRocketExplosiveDamage
 
@@ -12897,7 +12901,7 @@ class Effect4058(EffectDef):
                                            stackingPenalties=True, penaltyGroup='postMul')
 
 
-class Effect4059(EffectDef):
+class Effect4059(BaseEffect):
     """
     systemRocketKineticDamage
 
@@ -12915,7 +12919,7 @@ class Effect4059(EffectDef):
                                            stackingPenalties=True, penaltyGroup='postMul')
 
 
-class Effect4060(EffectDef):
+class Effect4060(BaseEffect):
     """
     systemRocketThermalDamage
 
@@ -12933,7 +12937,7 @@ class Effect4060(EffectDef):
                                            stackingPenalties=True, penaltyGroup='postMul')
 
 
-class Effect4061(EffectDef):
+class Effect4061(BaseEffect):
     """
     systemStandardMissileThermalDamage
 
@@ -12951,7 +12955,7 @@ class Effect4061(EffectDef):
                                            stackingPenalties=True, penaltyGroup='postMul')
 
 
-class Effect4062(EffectDef):
+class Effect4062(BaseEffect):
     """
     systemStandardMissileEmDamage
 
@@ -12969,7 +12973,7 @@ class Effect4062(EffectDef):
                                            stackingPenalties=True, penaltyGroup='postMul')
 
 
-class Effect4063(EffectDef):
+class Effect4063(BaseEffect):
     """
     systemStandardMissileExplosiveDamage
 
@@ -12987,7 +12991,7 @@ class Effect4063(EffectDef):
                                            stackingPenalties=True, penaltyGroup='postMul')
 
 
-class Effect4086(EffectDef):
+class Effect4086(BaseEffect):
     """
     systemArmorRepairAmount
 
@@ -13006,7 +13010,7 @@ class Effect4086(EffectDef):
                                          stackingPenalties=True, penaltyGroup='postMul')
 
 
-class Effect4088(EffectDef):
+class Effect4088(BaseEffect):
     """
     systemArmorRemoteRepairAmount
 
@@ -13025,7 +13029,7 @@ class Effect4088(EffectDef):
                                          stackingPenalties=True)
 
 
-class Effect4089(EffectDef):
+class Effect4089(BaseEffect):
     """
     systemShieldRemoteRepairAmount
 
@@ -13043,7 +13047,7 @@ class Effect4089(EffectDef):
                                          stackingPenalties=True, penaltyGroup='postMul')
 
 
-class Effect4090(EffectDef):
+class Effect4090(BaseEffect):
     """
     systemCapacitorCapacity
 
@@ -13059,7 +13063,7 @@ class Effect4090(EffectDef):
         fit.ship.multiplyItemAttr('capacitorCapacity', beacon.getModifiedItemAttr('capacitorCapacityMultiplierSystem'))
 
 
-class Effect4091(EffectDef):
+class Effect4091(BaseEffect):
     """
     systemCapacitorRecharge
 
@@ -13076,7 +13080,7 @@ class Effect4091(EffectDef):
         fit.ship.multiplyItemAttr('rechargeRate', beacon.getModifiedItemAttr('rechargeRateMultiplier'))
 
 
-class Effect4093(EffectDef):
+class Effect4093(BaseEffect):
     """
     subsystemBonusAmarrOffensiveEnergyWeaponDamageMultiplier
 
@@ -13093,7 +13097,7 @@ class Effect4093(EffectDef):
                                       skill='Amarr Offensive Systems')
 
 
-class Effect4104(EffectDef):
+class Effect4104(BaseEffect):
     """
     subsystemBonusCaldariOffensiveHybridWeaponMaxRange
 
@@ -13110,7 +13114,7 @@ class Effect4104(EffectDef):
                                       skill='Caldari Offensive Systems')
 
 
-class Effect4106(EffectDef):
+class Effect4106(BaseEffect):
     """
     subsystemBonusGallenteOffensiveHybridWeaponFalloff
 
@@ -13127,7 +13131,7 @@ class Effect4106(EffectDef):
                                       skill='Gallente Offensive Systems')
 
 
-class Effect4114(EffectDef):
+class Effect4114(BaseEffect):
     """
     subsystemBonusMinmatarOffensiveProjectileWeaponFalloff
 
@@ -13144,7 +13148,7 @@ class Effect4114(EffectDef):
                                       skill='Minmatar Offensive Systems')
 
 
-class Effect4115(EffectDef):
+class Effect4115(BaseEffect):
     """
     subsystemBonusMinmatarOffensiveProjectileWeaponMaxRange
 
@@ -13161,7 +13165,7 @@ class Effect4115(EffectDef):
                                       skill='Minmatar Offensive Systems')
 
 
-class Effect4122(EffectDef):
+class Effect4122(BaseEffect):
     """
     subsystemBonusCaldariOffensive1LauncherROF
 
@@ -13178,7 +13182,7 @@ class Effect4122(EffectDef):
                                       'speed', src.getModifiedItemAttr('subsystemBonusCaldariOffensive'), skill='Caldari Offensive Systems')
 
 
-class Effect4135(EffectDef):
+class Effect4135(BaseEffect):
     """
     systemShieldEmResistance
 
@@ -13195,7 +13199,7 @@ class Effect4135(EffectDef):
                                stackingPenalties=True)
 
 
-class Effect4136(EffectDef):
+class Effect4136(BaseEffect):
     """
     systemShieldExplosiveResistance
 
@@ -13213,7 +13217,7 @@ class Effect4136(EffectDef):
                                stackingPenalties=True)
 
 
-class Effect4137(EffectDef):
+class Effect4137(BaseEffect):
     """
     systemShieldKineticResistance
 
@@ -13231,7 +13235,7 @@ class Effect4137(EffectDef):
                                stackingPenalties=True)
 
 
-class Effect4138(EffectDef):
+class Effect4138(BaseEffect):
     """
     systemShieldThermalResistance
 
@@ -13249,7 +13253,7 @@ class Effect4138(EffectDef):
                                stackingPenalties=True)
 
 
-class Effect4152(EffectDef):
+class Effect4152(BaseEffect):
     """
     subsystemBonusAmarrEngineeringHeatDamageReduction
 
@@ -13266,7 +13270,7 @@ class Effect4152(EffectDef):
                                       skill='Amarr Core Systems')
 
 
-class Effect4153(EffectDef):
+class Effect4153(BaseEffect):
     """
     subsystemBonusCaldariEngineeringHeatDamageReduction
 
@@ -13283,7 +13287,7 @@ class Effect4153(EffectDef):
                                       skill='Caldari Core Systems')
 
 
-class Effect4154(EffectDef):
+class Effect4154(BaseEffect):
     """
     subsystemBonusGallenteEngineeringHeatDamageReduction
 
@@ -13300,7 +13304,7 @@ class Effect4154(EffectDef):
                                       skill='Gallente Core Systems')
 
 
-class Effect4155(EffectDef):
+class Effect4155(BaseEffect):
     """
     subsystemBonusMinmatarEngineeringHeatDamageReduction
 
@@ -13317,7 +13321,7 @@ class Effect4155(EffectDef):
                                       skill='Minmatar Core Systems')
 
 
-class Effect4158(EffectDef):
+class Effect4158(BaseEffect):
     """
     subsystemBonusCaldariCoreCapacitorCapacity
 
@@ -13333,7 +13337,7 @@ class Effect4158(EffectDef):
                                skill='Caldari Core Systems')
 
 
-class Effect4159(EffectDef):
+class Effect4159(BaseEffect):
     """
     subsystemBonusAmarrCoreCapacitorCapacity
 
@@ -13348,7 +13352,7 @@ class Effect4159(EffectDef):
         fit.ship.boostItemAttr('capacitorCapacity', src.getModifiedItemAttr('subsystemBonusAmarrCore'), skill='Amarr Core Systems')
 
 
-class Effect4161(EffectDef):
+class Effect4161(BaseEffect):
     """
     baseMaxScanDeviationModifierRequiringAstrometrics
 
@@ -13368,7 +13372,7 @@ class Effect4161(EffectDef):
                                         container.getModifiedItemAttr('maxScanDeviationModifier') * level)
 
 
-class Effect4162(EffectDef):
+class Effect4162(BaseEffect):
     """
     baseSensorStrengthModifierRequiringAstrometrics
 
@@ -13392,7 +13396,7 @@ class Effect4162(EffectDef):
                                         stackingPenalties=penalized)
 
 
-class Effect4165(EffectDef):
+class Effect4165(BaseEffect):
     """
     shipBonusScanProbeStrengthCF
 
@@ -13409,7 +13413,7 @@ class Effect4165(EffectDef):
                                         skill='Caldari Frigate')
 
 
-class Effect4166(EffectDef):
+class Effect4166(BaseEffect):
     """
     shipBonusScanProbeStrengthMF
 
@@ -13426,7 +13430,7 @@ class Effect4166(EffectDef):
                                         skill='Minmatar Frigate')
 
 
-class Effect4167(EffectDef):
+class Effect4167(BaseEffect):
     """
     shipBonusScanProbeStrengthGF
 
@@ -13443,7 +13447,7 @@ class Effect4167(EffectDef):
                                         skill='Gallente Frigate')
 
 
-class Effect4168(EffectDef):
+class Effect4168(BaseEffect):
     """
     eliteBonusCoverOpsScanProbeStrength2
 
@@ -13460,7 +13464,7 @@ class Effect4168(EffectDef):
                                         skill='Covert Ops')
 
 
-class Effect4187(EffectDef):
+class Effect4187(BaseEffect):
     """
     shipBonusStrategicCruiserAmarrHeatDamage
 
@@ -13477,7 +13481,7 @@ class Effect4187(EffectDef):
                                       skill='Amarr Strategic Cruiser')
 
 
-class Effect4188(EffectDef):
+class Effect4188(BaseEffect):
     """
     shipBonusStrategicCruiserCaldariHeatDamage
 
@@ -13494,7 +13498,7 @@ class Effect4188(EffectDef):
                                       skill='Caldari Strategic Cruiser')
 
 
-class Effect4189(EffectDef):
+class Effect4189(BaseEffect):
     """
     shipBonusStrategicCruiserGallenteHeatDamage
 
@@ -13511,7 +13515,7 @@ class Effect4189(EffectDef):
                                       skill='Gallente Strategic Cruiser')
 
 
-class Effect4190(EffectDef):
+class Effect4190(BaseEffect):
     """
     shipBonusStrategicCruiserMinmatarHeatDamage
 
@@ -13528,7 +13532,7 @@ class Effect4190(EffectDef):
                                       skill='Minmatar Strategic Cruiser')
 
 
-class Effect4215(EffectDef):
+class Effect4215(BaseEffect):
     """
     subsystemBonusAmarrOffensive2EnergyWeaponCapacitorNeed
 
@@ -13545,7 +13549,7 @@ class Effect4215(EffectDef):
                                       skill='Amarr Offensive Systems')
 
 
-class Effect4216(EffectDef):
+class Effect4216(BaseEffect):
     """
     subsystemBonusAmarrCore2EnergyVampireAmount
 
@@ -13561,7 +13565,7 @@ class Effect4216(EffectDef):
                                       src.getModifiedItemAttr('subsystemBonusAmarrCore2'), skill='Amarr Core Systems')
 
 
-class Effect4217(EffectDef):
+class Effect4217(BaseEffect):
     """
     subsystemBonusAmarrCore2EnergyDestabilizerAmount
 
@@ -13577,7 +13581,7 @@ class Effect4217(EffectDef):
                                       src.getModifiedItemAttr('subsystemBonusAmarrCore2'), skill='Amarr Core Systems')
 
 
-class Effect4248(EffectDef):
+class Effect4248(BaseEffect):
     """
     subsystemBonusCaldariOffensive2MissileLauncherKineticDamage
 
@@ -13600,7 +13604,7 @@ class Effect4248(EffectDef):
                                         skill='Caldari Offensive Systems')
 
 
-class Effect4250(EffectDef):
+class Effect4250(BaseEffect):
     """
     subsystemBonusGallenteOffensiveDroneDamageHP
 
@@ -13626,7 +13630,7 @@ class Effect4250(EffectDef):
                                      skill='Gallente Offensive Systems')
 
 
-class Effect4251(EffectDef):
+class Effect4251(BaseEffect):
     """
     subsystemBonusMinmatarOffensive2ProjectileWeaponDamageMultiplier
 
@@ -13643,7 +13647,7 @@ class Effect4251(EffectDef):
                                       skill='Minmatar Offensive Systems')
 
 
-class Effect4256(EffectDef):
+class Effect4256(BaseEffect):
     """
     subsystemBonusMinmatarOffensive2MissileLauncherROF
 
@@ -13661,7 +13665,7 @@ class Effect4256(EffectDef):
                                       skill='Minmatar Offensive Systems')
 
 
-class Effect4264(EffectDef):
+class Effect4264(BaseEffect):
     """
     subsystemBonusMinmatarCoreCapacitorRecharge
 
@@ -13677,7 +13681,7 @@ class Effect4264(EffectDef):
                                skill='Minmatar Core Systems')
 
 
-class Effect4265(EffectDef):
+class Effect4265(BaseEffect):
     """
     subsystemBonusGallenteCoreCapacitorRecharge
 
@@ -13693,7 +13697,7 @@ class Effect4265(EffectDef):
                                skill='Gallente Core Systems')
 
 
-class Effect4269(EffectDef):
+class Effect4269(BaseEffect):
     """
     subsystemBonusAmarrCore3ScanResolution
 
@@ -13709,7 +13713,7 @@ class Effect4269(EffectDef):
                                skill='Amarr Core Systems')
 
 
-class Effect4270(EffectDef):
+class Effect4270(BaseEffect):
     """
     subsystemBonusMinmatarCore3ScanResolution
 
@@ -13725,7 +13729,7 @@ class Effect4270(EffectDef):
                                skill='Minmatar Core Systems')
 
 
-class Effect4271(EffectDef):
+class Effect4271(BaseEffect):
     """
     subsystemBonusCaldariCore2MaxTargetingRange
 
@@ -13740,7 +13744,7 @@ class Effect4271(EffectDef):
         fit.ship.boostItemAttr('maxTargetRange', src.getModifiedItemAttr('subsystemBonusCaldariCore2'), skill='Caldari Core Systems')
 
 
-class Effect4272(EffectDef):
+class Effect4272(BaseEffect):
     """
     subsystemBonusGallenteCore2MaxTargetingRange
 
@@ -13756,7 +13760,7 @@ class Effect4272(EffectDef):
                                skill='Gallente Core Systems')
 
 
-class Effect4273(EffectDef):
+class Effect4273(BaseEffect):
     """
     subsystemBonusGallenteCore2WarpScrambleRange
 
@@ -13772,7 +13776,7 @@ class Effect4273(EffectDef):
                                       src.getModifiedItemAttr('subsystemBonusGallenteCore2'), skill='Gallente Core Systems')
 
 
-class Effect4274(EffectDef):
+class Effect4274(BaseEffect):
     """
     subsystemBonusMinmatarCore2StasisWebifierRange
 
@@ -13788,7 +13792,7 @@ class Effect4274(EffectDef):
                                       'maxRange', src.getModifiedItemAttr('subsystemBonusMinmatarCore2'), skill='Minmatar Core Systems')
 
 
-class Effect4275(EffectDef):
+class Effect4275(BaseEffect):
     """
     subsystemBonusCaldariPropulsion2WarpSpeed
 
@@ -13804,7 +13808,7 @@ class Effect4275(EffectDef):
                                skill='Caldari Propulsion Systems')
 
 
-class Effect4277(EffectDef):
+class Effect4277(BaseEffect):
     """
     subsystemBonusGallentePropulsionWarpCapacitor
 
@@ -13820,7 +13824,7 @@ class Effect4277(EffectDef):
                                skill='Gallente Propulsion Systems')
 
 
-class Effect4278(EffectDef):
+class Effect4278(BaseEffect):
     """
     subsystemBonusGallentePropulsion2WarpSpeed
 
@@ -13836,7 +13840,7 @@ class Effect4278(EffectDef):
                                skill='Gallente Propulsion Systems')
 
 
-class Effect4280(EffectDef):
+class Effect4280(BaseEffect):
     """
     systemAgility
 
@@ -13852,7 +13856,7 @@ class Effect4280(EffectDef):
         fit.ship.multiplyItemAttr('agility', beacon.getModifiedItemAttr('agilityMultiplier'), stackingPenalties=True)
 
 
-class Effect4282(EffectDef):
+class Effect4282(BaseEffect):
     """
     subsystemBonusGallenteOffensive2HybridWeaponDamageMultiplier
 
@@ -13869,7 +13873,7 @@ class Effect4282(EffectDef):
                                       skill='Gallente Offensive Systems')
 
 
-class Effect4283(EffectDef):
+class Effect4283(BaseEffect):
     """
     subsystemBonusCaldariOffensive2HybridWeaponDamageMultiplier
 
@@ -13886,7 +13890,7 @@ class Effect4283(EffectDef):
                                       skill='Caldari Offensive Systems')
 
 
-class Effect4286(EffectDef):
+class Effect4286(BaseEffect):
     """
     subsystemBonusAmarrOffensive2RemoteArmorRepairCapUse
 
@@ -13902,7 +13906,7 @@ class Effect4286(EffectDef):
                                       src.getModifiedItemAttr('subsystemBonusAmarrOffensive2'), skill='Amarr Offensive Systems')
 
 
-class Effect4288(EffectDef):
+class Effect4288(BaseEffect):
     """
     subsystemBonusGallenteOffensive2RemoteArmorRepairCapUse
 
@@ -13918,7 +13922,7 @@ class Effect4288(EffectDef):
                                       src.getModifiedItemAttr('subsystemBonusGallenteOffensive2'), skill='Gallente Offensive Systems')
 
 
-class Effect4290(EffectDef):
+class Effect4290(BaseEffect):
     """
     subsystemBonusMinmatarOffensive2RemoteRepCapUse
 
@@ -13935,7 +13939,7 @@ class Effect4290(EffectDef):
                                       skill='Minmatar Offensive Systems')
 
 
-class Effect4292(EffectDef):
+class Effect4292(BaseEffect):
     """
     subsystemBonusCaldariOffensive2RemoteShieldBoosterCapUse
 
@@ -13952,7 +13956,7 @@ class Effect4292(EffectDef):
                                       skill='Caldari Offensive Systems')
 
 
-class Effect4321(EffectDef):
+class Effect4321(BaseEffect):
     """
     subsystemBonusCaldariCore2ECMStrengthRange
 
@@ -13976,7 +13980,7 @@ class Effect4321(EffectDef):
                                       src.getModifiedItemAttr('subsystemBonusCaldariCore2'), skill='Caldari Core Systems')
 
 
-class Effect4327(EffectDef):
+class Effect4327(BaseEffect):
     """
     subsystemBonusAmarrOffensive3DroneDamageHP
 
@@ -13998,7 +14002,7 @@ class Effect4327(EffectDef):
                                      'damageMultiplier', src.getModifiedItemAttr('subsystemBonusAmarrOffensive3'), skill='Amarr Offensive Systems')
 
 
-class Effect4330(EffectDef):
+class Effect4330(BaseEffect):
     """
     subsystemBonusAmarrOffensive3EnergyWeaponMaxRange
 
@@ -14015,7 +14019,7 @@ class Effect4330(EffectDef):
                                       skill='Amarr Offensive Systems')
 
 
-class Effect4331(EffectDef):
+class Effect4331(BaseEffect):
     """
     subsystemBonusCaldariOffensive3HMLHAMVelocity
 
@@ -14032,7 +14036,7 @@ class Effect4331(EffectDef):
                                         skill='Caldari Offensive Systems')
 
 
-class Effect4342(EffectDef):
+class Effect4342(BaseEffect):
     """
     subsystemBonusMinmatarCore2MaxTargetingRange
 
@@ -14048,7 +14052,7 @@ class Effect4342(EffectDef):
                                skill='Minmatar Core Systems')
 
 
-class Effect4343(EffectDef):
+class Effect4343(BaseEffect):
     """
     subsystemBonusAmarrCore2MaxTargetingRange
 
@@ -14064,7 +14068,7 @@ class Effect4343(EffectDef):
                                skill='Amarr Core Systems')
 
 
-class Effect4347(EffectDef):
+class Effect4347(BaseEffect):
     """
     subsystemBonusGallenteOffensive3TurretTracking
 
@@ -14082,7 +14086,7 @@ class Effect4347(EffectDef):
                                       skill='Gallente Offensive Systems')
 
 
-class Effect4351(EffectDef):
+class Effect4351(BaseEffect):
     """
     subsystemBonusMinmatarOffensive3TurretTracking
 
@@ -14099,7 +14103,7 @@ class Effect4351(EffectDef):
                                       skill='Minmatar Offensive Systems')
 
 
-class Effect4358(EffectDef):
+class Effect4358(BaseEffect):
     """
     ecmRangeBonusModuleEffect
 
@@ -14116,7 +14120,7 @@ class Effect4358(EffectDef):
                                       stackingPenalties=True)
 
 
-class Effect4360(EffectDef):
+class Effect4360(BaseEffect):
     """
     subsystemBonusAmarrOffensiveMissileLauncherROF
 
@@ -14133,7 +14137,7 @@ class Effect4360(EffectDef):
                                       'speed', src.getModifiedItemAttr('subsystemBonusAmarrOffensive'), skill='Amarr Offensive Systems')
 
 
-class Effect4362(EffectDef):
+class Effect4362(BaseEffect):
     """
     subsystemBonusAmarrOffensive2MissileDamage
 
@@ -14155,7 +14159,7 @@ class Effect4362(EffectDef):
                                         'thermalDamage', src.getModifiedItemAttr('subsystemBonusAmarrOffensive2'), skill='Amarr Offensive Systems')
 
 
-class Effect4366(EffectDef):
+class Effect4366(BaseEffect):
     """
     shipBonusMediumHybridDmgCC2
 
@@ -14171,7 +14175,7 @@ class Effect4366(EffectDef):
                                       'damageMultiplier', ship.getModifiedItemAttr('shipBonusCC2'), skill='Caldari Cruiser')
 
 
-class Effect4369(EffectDef):
+class Effect4369(BaseEffect):
     """
     subsystemBonusWarpBubbleImmune
 
@@ -14186,7 +14190,7 @@ class Effect4369(EffectDef):
         fit.ship.forceItemAttr('warpBubbleImmune', module.getModifiedItemAttr('warpBubbleImmuneModifier'))
 
 
-class Effect4370(EffectDef):
+class Effect4370(BaseEffect):
     """
     caldariShipEwFalloffRangeCC2
 
@@ -14203,7 +14207,7 @@ class Effect4370(EffectDef):
                                       skill='Caldari Cruiser')
 
 
-class Effect4372(EffectDef):
+class Effect4372(BaseEffect):
     """
     caldariShipEwFalloffRangeCB3
 
@@ -14220,7 +14224,7 @@ class Effect4372(EffectDef):
                                       skill='Caldari Battleship')
 
 
-class Effect4373(EffectDef):
+class Effect4373(BaseEffect):
     """
     subSystemBonusAmarrOffensiveCommandBursts
 
@@ -14266,7 +14270,7 @@ class Effect4373(EffectDef):
                                       'warfareBuff4Value', src.getModifiedItemAttr('subsystemBonusAmarrOffensive'), skill='Amarr Offensive Systems')
 
 
-class Effect4377(EffectDef):
+class Effect4377(BaseEffect):
     """
     shipBonusTorpedoVelocityGF2
 
@@ -14283,7 +14287,7 @@ class Effect4377(EffectDef):
                                         'maxVelocity', ship.getModifiedItemAttr('shipBonusGF2'), skill='Gallente Frigate')
 
 
-class Effect4378(EffectDef):
+class Effect4378(BaseEffect):
     """
     shipBonusTorpedoVelocityMF2
 
@@ -14299,7 +14303,7 @@ class Effect4378(EffectDef):
                                         'maxVelocity', ship.getModifiedItemAttr('shipBonusMF2'), skill='Minmatar Frigate')
 
 
-class Effect4379(EffectDef):
+class Effect4379(BaseEffect):
     """
     shipBonusTorpedoVelocity2AF
 
@@ -14315,7 +14319,7 @@ class Effect4379(EffectDef):
                                         'maxVelocity', ship.getModifiedItemAttr('shipBonus2AF'), skill='Amarr Frigate')
 
 
-class Effect4380(EffectDef):
+class Effect4380(BaseEffect):
     """
     shipBonusTorpedoVelocityCF2
 
@@ -14331,7 +14335,7 @@ class Effect4380(EffectDef):
                                         'maxVelocity', ship.getModifiedItemAttr('shipBonusCF2'), skill='Caldari Frigate')
 
 
-class Effect4384(EffectDef):
+class Effect4384(BaseEffect):
     """
     eliteReconBonusHeavyMissileVelocity
 
@@ -14348,7 +14352,7 @@ class Effect4384(EffectDef):
                                         skill='Recon Ships')
 
 
-class Effect4385(EffectDef):
+class Effect4385(BaseEffect):
     """
     eliteReconBonusHeavyAssaultMissileVelocity
 
@@ -14365,7 +14369,7 @@ class Effect4385(EffectDef):
                                         skill='Recon Ships')
 
 
-class Effect4393(EffectDef):
+class Effect4393(BaseEffect):
     """
     shipBonusEliteCover2TorpedoThermalDamage
 
@@ -14383,7 +14387,7 @@ class Effect4393(EffectDef):
                                         skill='Covert Ops')
 
 
-class Effect4394(EffectDef):
+class Effect4394(BaseEffect):
     """
     shipBonusEliteCover2TorpedoEMDamage
 
@@ -14399,7 +14403,7 @@ class Effect4394(EffectDef):
                                         'emDamage', ship.getModifiedItemAttr('eliteBonusCovertOps2'), skill='Covert Ops')
 
 
-class Effect4395(EffectDef):
+class Effect4395(BaseEffect):
     """
     shipBonusEliteCover2TorpedoExplosiveDamage
 
@@ -14417,7 +14421,7 @@ class Effect4395(EffectDef):
                                         skill='Covert Ops')
 
 
-class Effect4396(EffectDef):
+class Effect4396(BaseEffect):
     """
     shipBonusEliteCover2TorpedoKineticDamage
 
@@ -14434,7 +14438,7 @@ class Effect4396(EffectDef):
                                         skill='Covert Ops')
 
 
-class Effect4397(EffectDef):
+class Effect4397(BaseEffect):
     """
     shipBonusGFTorpedoExplosionVelocity
 
@@ -14450,7 +14454,7 @@ class Effect4397(EffectDef):
                                         'aoeVelocity', ship.getModifiedItemAttr('shipBonusGF'), skill='Gallente Frigate')
 
 
-class Effect4398(EffectDef):
+class Effect4398(BaseEffect):
     """
     shipBonusMF1TorpedoExplosionVelocity
 
@@ -14467,7 +14471,7 @@ class Effect4398(EffectDef):
                                         'aoeVelocity', ship.getModifiedItemAttr('shipBonusMF'), skill='Minmatar Frigate')
 
 
-class Effect4399(EffectDef):
+class Effect4399(BaseEffect):
     """
     shipBonusCF1TorpedoExplosionVelocity
 
@@ -14483,7 +14487,7 @@ class Effect4399(EffectDef):
                                         'aoeVelocity', ship.getModifiedItemAttr('shipBonusCF'), skill='Caldari Frigate')
 
 
-class Effect4400(EffectDef):
+class Effect4400(BaseEffect):
     """
     shipBonusAF1TorpedoExplosionVelocity
 
@@ -14499,7 +14503,7 @@ class Effect4400(EffectDef):
                                         'aoeVelocity', ship.getModifiedItemAttr('shipBonusAF'), skill='Amarr Frigate')
 
 
-class Effect4413(EffectDef):
+class Effect4413(BaseEffect):
     """
     shipBonusGF1TorpedoFlightTime
 
@@ -14515,7 +14519,7 @@ class Effect4413(EffectDef):
                                         'explosionDelay', ship.getModifiedItemAttr('shipBonusGF'), skill='Gallente Frigate')
 
 
-class Effect4415(EffectDef):
+class Effect4415(BaseEffect):
     """
     shipBonusMF1TorpedoFlightTime
 
@@ -14532,7 +14536,7 @@ class Effect4415(EffectDef):
                                         'explosionDelay', ship.getModifiedItemAttr('shipBonusMF'), skill='Minmatar Frigate')
 
 
-class Effect4416(EffectDef):
+class Effect4416(BaseEffect):
     """
     shipBonusCF1TorpedoFlightTime
 
@@ -14548,7 +14552,7 @@ class Effect4416(EffectDef):
                                         'explosionDelay', ship.getModifiedItemAttr('shipBonusCF'), skill='Caldari Frigate')
 
 
-class Effect4417(EffectDef):
+class Effect4417(BaseEffect):
     """
     shipBonusAF1TorpedoFlightTime
 
@@ -14564,7 +14568,7 @@ class Effect4417(EffectDef):
                                         'explosionDelay', ship.getModifiedItemAttr('shipBonusAF'), skill='Amarr Frigate')
 
 
-class Effect4451(EffectDef):
+class Effect4451(BaseEffect):
     """
     ScanRadarStrengthModifierEffect
 
@@ -14579,7 +14583,7 @@ class Effect4451(EffectDef):
         fit.ship.increaseItemAttr('scanRadarStrength', implant.getModifiedItemAttr('scanRadarStrengthModifier'))
 
 
-class Effect4452(EffectDef):
+class Effect4452(BaseEffect):
     """
     ScanLadarStrengthModifierEffect
 
@@ -14594,7 +14598,7 @@ class Effect4452(EffectDef):
         fit.ship.increaseItemAttr('scanLadarStrength', implant.getModifiedItemAttr('scanLadarStrengthModifier'))
 
 
-class Effect4453(EffectDef):
+class Effect4453(BaseEffect):
     """
     ScanGravimetricStrengthModifierEffect
 
@@ -14609,7 +14613,7 @@ class Effect4453(EffectDef):
         fit.ship.increaseItemAttr('scanGravimetricStrength', implant.getModifiedItemAttr('scanGravimetricStrengthModifier'))
 
 
-class Effect4454(EffectDef):
+class Effect4454(BaseEffect):
     """
     ScanMagnetometricStrengthModifierEffect
 
@@ -14625,7 +14629,7 @@ class Effect4454(EffectDef):
                                   implant.getModifiedItemAttr('scanMagnetometricStrengthModifier'))
 
 
-class Effect4456(EffectDef):
+class Effect4456(BaseEffect):
     """
     federationsetbonus3
 
@@ -14643,7 +14647,7 @@ class Effect4456(EffectDef):
                                                  implant.getModifiedItemAttr('implantSetFederationNavy'))
 
 
-class Effect4457(EffectDef):
+class Effect4457(BaseEffect):
     """
     imperialsetbonus3
 
@@ -14661,7 +14665,7 @@ class Effect4457(EffectDef):
                                                  implant.getModifiedItemAttr('implantSetImperialNavy'))
 
 
-class Effect4458(EffectDef):
+class Effect4458(BaseEffect):
     """
     republicsetbonus3
 
@@ -14679,7 +14683,7 @@ class Effect4458(EffectDef):
                                                  implant.getModifiedItemAttr('implantSetRepublicFleet'))
 
 
-class Effect4459(EffectDef):
+class Effect4459(BaseEffect):
     """
     caldarisetbonus3
 
@@ -14697,7 +14701,7 @@ class Effect4459(EffectDef):
                                                  implant.getModifiedItemAttr('implantSetCaldariNavy'))
 
 
-class Effect4460(EffectDef):
+class Effect4460(BaseEffect):
     """
     imperialsetLGbonus
 
@@ -14715,7 +14719,7 @@ class Effect4460(EffectDef):
                                                  implant.getModifiedItemAttr('implantSetLGImperialNavy'))
 
 
-class Effect4461(EffectDef):
+class Effect4461(BaseEffect):
     """
     federationsetLGbonus
 
@@ -14733,7 +14737,7 @@ class Effect4461(EffectDef):
                                                  implant.getModifiedItemAttr('implantSetLGFederationNavy'))
 
 
-class Effect4462(EffectDef):
+class Effect4462(BaseEffect):
     """
     caldarisetLGbonus
 
@@ -14751,7 +14755,7 @@ class Effect4462(EffectDef):
                                                  implant.getModifiedItemAttr('implantSetLGCaldariNavy'))
 
 
-class Effect4463(EffectDef):
+class Effect4463(BaseEffect):
     """
     republicsetLGbonus
 
@@ -14769,7 +14773,7 @@ class Effect4463(EffectDef):
                                                  implant.getModifiedItemAttr('implantSetLGRepublicFleet'))
 
 
-class Effect4464(EffectDef):
+class Effect4464(BaseEffect):
     """
     shipProjectileRofMF
 
@@ -14785,7 +14789,7 @@ class Effect4464(EffectDef):
                                       src.getModifiedItemAttr('shipBonusMF'), stackingPenalties=True, skill='Minmatar Frigate')
 
 
-class Effect4471(EffectDef):
+class Effect4471(BaseEffect):
     """
     shipBonusStasisMF2
 
@@ -14803,7 +14807,7 @@ class Effect4471(EffectDef):
                                       'maxRange', ship.getModifiedItemAttr('shipBonusMF2'), skill='Minmatar Frigate')
 
 
-class Effect4472(EffectDef):
+class Effect4472(BaseEffect):
     """
     shipProjectileDmgMC
 
@@ -14819,7 +14823,7 @@ class Effect4472(EffectDef):
                                       'damageMultiplier', ship.getModifiedItemAttr('shipBonusMC'), skill='Minmatar Cruiser')
 
 
-class Effect4473(EffectDef):
+class Effect4473(BaseEffect):
     """
     shipVelocityBonusATC1
 
@@ -14835,7 +14839,7 @@ class Effect4473(EffectDef):
         fit.ship.boostItemAttr('maxVelocity', ship.getModifiedItemAttr('shipBonusATC1'))
 
 
-class Effect4474(EffectDef):
+class Effect4474(BaseEffect):
     """
     shipMTMaxRangeBonusATC
 
@@ -14851,7 +14855,7 @@ class Effect4474(EffectDef):
                                       'maxRange', ship.getModifiedItemAttr('shipBonusATC2'))
 
 
-class Effect4475(EffectDef):
+class Effect4475(BaseEffect):
     """
     shipMTFalloffBonusATC
 
@@ -14867,7 +14871,7 @@ class Effect4475(EffectDef):
                                       'falloff', ship.getModifiedItemAttr('shipBonusATC2'))
 
 
-class Effect4476(EffectDef):
+class Effect4476(BaseEffect):
     """
     shipMTFalloffBonusATF
 
@@ -14883,7 +14887,7 @@ class Effect4476(EffectDef):
                                       'falloff', ship.getModifiedItemAttr('shipBonusATF2'))
 
 
-class Effect4477(EffectDef):
+class Effect4477(BaseEffect):
     """
     shipMTMaxRangeBonusATF
 
@@ -14899,7 +14903,7 @@ class Effect4477(EffectDef):
                                       'maxRange', ship.getModifiedItemAttr('shipBonusATF2'))
 
 
-class Effect4478(EffectDef):
+class Effect4478(BaseEffect):
     """
     shipBonusAfterburnerCapNeedATF
 
@@ -14915,7 +14919,7 @@ class Effect4478(EffectDef):
                                       'capacitorNeed', ship.getModifiedItemAttr('shipBonusATF1'))
 
 
-class Effect4479(EffectDef):
+class Effect4479(BaseEffect):
     """
     shipBonusSurveyProbeExplosionDelaySkillSurveyCovertOps3
 
@@ -14932,7 +14936,7 @@ class Effect4479(EffectDef):
                                         skill='Covert Ops')
 
 
-class Effect4482(EffectDef):
+class Effect4482(BaseEffect):
     """
     shipETOptimalRange2AF
 
@@ -14949,7 +14953,7 @@ class Effect4482(EffectDef):
                                       'maxRange', ship.getModifiedItemAttr('shipBonus2AF'), skill='Amarr Frigate')
 
 
-class Effect4484(EffectDef):
+class Effect4484(BaseEffect):
     """
     shipPTurretFalloffBonusGB
 
@@ -14965,7 +14969,7 @@ class Effect4484(EffectDef):
                                       'falloff', ship.getModifiedItemAttr('shipBonusGB'), skill='Gallente Battleship')
 
 
-class Effect4485(EffectDef):
+class Effect4485(BaseEffect):
     """
     shipBonusStasisWebSpeedFactorMB
 
@@ -14981,7 +14985,7 @@ class Effect4485(EffectDef):
                                       'speedFactor', ship.getModifiedItemAttr('shipBonusMB'), skill='Minmatar Battleship')
 
 
-class Effect4489(EffectDef):
+class Effect4489(BaseEffect):
     """
     superWeaponAmarr
 
@@ -14992,7 +14996,7 @@ class Effect4489(EffectDef):
     type = 'active'
 
 
-class Effect4490(EffectDef):
+class Effect4490(BaseEffect):
     """
     superWeaponCaldari
 
@@ -15003,7 +15007,7 @@ class Effect4490(EffectDef):
     type = 'active'
 
 
-class Effect4491(EffectDef):
+class Effect4491(BaseEffect):
     """
     superWeaponGallente
 
@@ -15014,7 +15018,7 @@ class Effect4491(EffectDef):
     type = 'active'
 
 
-class Effect4492(EffectDef):
+class Effect4492(BaseEffect):
     """
     superWeaponMinmatar
 
@@ -15025,7 +15029,7 @@ class Effect4492(EffectDef):
     type = 'active'
 
 
-class Effect4510(EffectDef):
+class Effect4510(BaseEffect):
     """
     shipStasisWebStrengthBonusMC2
 
@@ -15042,7 +15046,7 @@ class Effect4510(EffectDef):
                                       'speedFactor', ship.getModifiedItemAttr('shipBonusMC2'), skill='Minmatar Cruiser')
 
 
-class Effect4512(EffectDef):
+class Effect4512(BaseEffect):
     """
     shipPTurretFalloffBonusGC
 
@@ -15059,7 +15063,7 @@ class Effect4512(EffectDef):
                                       'falloff', ship.getModifiedItemAttr('shipBonusGC'), skill='Gallente Cruiser')
 
 
-class Effect4513(EffectDef):
+class Effect4513(BaseEffect):
     """
     shipStasisWebStrengthBonusMF2
 
@@ -15076,7 +15080,7 @@ class Effect4513(EffectDef):
                                       'speedFactor', ship.getModifiedItemAttr('shipBonusMF2'), skill='Minmatar Frigate')
 
 
-class Effect4515(EffectDef):
+class Effect4515(BaseEffect):
     """
     shipFalloffBonusMF
 
@@ -15093,7 +15097,7 @@ class Effect4515(EffectDef):
                                       'falloff', ship.getModifiedItemAttr('shipBonusMF'), skill='Minmatar Frigate')
 
 
-class Effect4516(EffectDef):
+class Effect4516(BaseEffect):
     """
     shipHTurretFalloffBonusGC
 
@@ -15110,7 +15114,7 @@ class Effect4516(EffectDef):
                                       'falloff', ship.getModifiedItemAttr('shipBonusGC'), skill='Gallente Cruiser')
 
 
-class Effect4527(EffectDef):
+class Effect4527(BaseEffect):
     """
     gunneryFalloffBonusOnline
 
@@ -15127,7 +15131,7 @@ class Effect4527(EffectDef):
                                       stackingPenalties=True)
 
 
-class Effect4555(EffectDef):
+class Effect4555(BaseEffect):
     """
     capitalLauncherSkillCruiseCitadelEmDamage1
 
@@ -15143,7 +15147,7 @@ class Effect4555(EffectDef):
                                         'emDamage', skill.getModifiedItemAttr('damageMultiplierBonus') * skill.level)
 
 
-class Effect4556(EffectDef):
+class Effect4556(BaseEffect):
     """
     capitalLauncherSkillCruiseCitadelExplosiveDamage1
 
@@ -15159,7 +15163,7 @@ class Effect4556(EffectDef):
                                         'explosiveDamage', skill.getModifiedItemAttr('damageMultiplierBonus') * skill.level)
 
 
-class Effect4557(EffectDef):
+class Effect4557(BaseEffect):
     """
     capitalLauncherSkillCruiseCitadelKineticDamage1
 
@@ -15175,7 +15179,7 @@ class Effect4557(EffectDef):
                                         'kineticDamage', skill.getModifiedItemAttr('damageMultiplierBonus') * skill.level)
 
 
-class Effect4558(EffectDef):
+class Effect4558(BaseEffect):
     """
     capitalLauncherSkillCruiseCitadelThermalDamage1
 
@@ -15191,7 +15195,7 @@ class Effect4558(EffectDef):
                                         'thermalDamage', skill.getModifiedItemAttr('damageMultiplierBonus') * skill.level)
 
 
-class Effect4559(EffectDef):
+class Effect4559(BaseEffect):
     """
     gunneryMaxRangeFalloffTrackingSpeedBonus
 
@@ -15209,7 +15213,7 @@ class Effect4559(EffectDef):
                                           stackingPenalties=True)
 
 
-class Effect4575(EffectDef):
+class Effect4575(BaseEffect):
     """
     industrialCoreEffect2
 
@@ -15329,7 +15333,7 @@ class Effect4575(EffectDef):
         fit.ship.increaseItemAttr('disallowDocking', src.getModifiedItemAttr('disallowDocking'))
 
 
-class Effect4576(EffectDef):
+class Effect4576(BaseEffect):
     """
     eliteBonusLogisticsTrackingLinkFalloffBonus1
 
@@ -15346,7 +15350,7 @@ class Effect4576(EffectDef):
                                       skill='Logistics Cruisers')
 
 
-class Effect4577(EffectDef):
+class Effect4577(BaseEffect):
     """
     eliteBonusLogisticsTrackingLinkFalloffBonus2
 
@@ -15363,7 +15367,7 @@ class Effect4577(EffectDef):
                                       skill='Logistics Cruisers')
 
 
-class Effect4579(EffectDef):
+class Effect4579(BaseEffect):
     """
     droneRigStasisWebSpeedFactorBonus
 
@@ -15379,7 +15383,7 @@ class Effect4579(EffectDef):
                                      'speedFactor', module.getModifiedItemAttr('webSpeedFactorBonus'))
 
 
-class Effect4619(EffectDef):
+class Effect4619(BaseEffect):
     """
     shipBonusDroneDamageGF2
 
@@ -15395,7 +15399,7 @@ class Effect4619(EffectDef):
                                      'damageMultiplier', ship.getModifiedItemAttr('shipBonusGF2'), skill='Gallente Frigate')
 
 
-class Effect4620(EffectDef):
+class Effect4620(BaseEffect):
     """
     shipBonusWarpScramblerMaxRangeGF2
 
@@ -15412,7 +15416,7 @@ class Effect4620(EffectDef):
                                       'maxRange', ship.getModifiedItemAttr('shipBonusGF2'), skill='Gallente Frigate')
 
 
-class Effect4621(EffectDef):
+class Effect4621(BaseEffect):
     """
     shipBonusHeatDamageATF1
 
@@ -15430,7 +15434,7 @@ class Effect4621(EffectDef):
                                       ship.getModifiedItemAttr('shipBonusATF1'))
 
 
-class Effect4622(EffectDef):
+class Effect4622(BaseEffect):
     """
     shipBonusSmallHybridMaxRangeATF2
 
@@ -15446,7 +15450,7 @@ class Effect4622(EffectDef):
                                       'maxRange', ship.getModifiedItemAttr('shipBonusATF2'))
 
 
-class Effect4623(EffectDef):
+class Effect4623(BaseEffect):
     """
     shipBonusSmallHybridTrackingSpeedATF2
 
@@ -15462,7 +15466,7 @@ class Effect4623(EffectDef):
                                       'trackingSpeed', ship.getModifiedItemAttr('shipBonusATF2'))
 
 
-class Effect4624(EffectDef):
+class Effect4624(BaseEffect):
     """
     shipBonusHybridTrackingATC2
 
@@ -15478,7 +15482,7 @@ class Effect4624(EffectDef):
                                       'trackingSpeed', ship.getModifiedItemAttr('shipBonusATC2'))
 
 
-class Effect4625(EffectDef):
+class Effect4625(BaseEffect):
     """
     shipBonusHybridFalloffATC2
 
@@ -15494,7 +15498,7 @@ class Effect4625(EffectDef):
                                       'falloff', ship.getModifiedItemAttr('shipBonusATC2'))
 
 
-class Effect4626(EffectDef):
+class Effect4626(BaseEffect):
     """
     shipBonusWarpScramblerMaxRangeGC2
 
@@ -15511,7 +15515,7 @@ class Effect4626(EffectDef):
                                       'maxRange', ship.getModifiedItemAttr('shipBonusGC2'), skill='Gallente Cruiser')
 
 
-class Effect4635(EffectDef):
+class Effect4635(BaseEffect):
     """
     eliteBonusMaraudersCruiseAndTorpedoDamageRole1
 
@@ -15530,7 +15534,7 @@ class Effect4635(EffectDef):
                 '{0}Damage'.format(damageType), ship.getModifiedItemAttr('eliteBonusViolatorsRole1'))
 
 
-class Effect4636(EffectDef):
+class Effect4636(BaseEffect):
     """
     shipBonusAoeVelocityCruiseAndTorpedoCB2
 
@@ -15547,7 +15551,7 @@ class Effect4636(EffectDef):
             'aoeVelocity', ship.getModifiedItemAttr('shipBonus2CB'), skill='Caldari Battleship')
 
 
-class Effect4637(EffectDef):
+class Effect4637(BaseEffect):
     """
     shipCruiseAndTorpedoVelocityBonusCB3
 
@@ -15565,7 +15569,7 @@ class Effect4637(EffectDef):
             'maxVelocity', ship.getModifiedItemAttr('shipBonusCB3'), skill='Caldari Battleship')
 
 
-class Effect4640(EffectDef):
+class Effect4640(BaseEffect):
     """
     shipArmorEMAndExpAndkinAndThmResistanceAC2
 
@@ -15585,7 +15589,7 @@ class Effect4640(EffectDef):
                                    skill='Amarr Cruiser')
 
 
-class Effect4643(EffectDef):
+class Effect4643(BaseEffect):
     """
     shipHeavyAssaultMissileEMAndExpAndKinAndThmDmgAC1
 
@@ -15604,7 +15608,7 @@ class Effect4643(EffectDef):
                                             skill='Amarr Cruiser')
 
 
-class Effect4645(EffectDef):
+class Effect4645(BaseEffect):
     """
     eliteBonusHeavyGunshipHeavyAndHeavyAssaultAndAssaultMissileLauncherROF
 
@@ -15622,7 +15626,7 @@ class Effect4645(EffectDef):
                                       skill='Heavy Assault Cruisers')
 
 
-class Effect4648(EffectDef):
+class Effect4648(BaseEffect):
     """
     eliteBonusBlackOpsECMGravAndLadarAndMagnetometricAndRadarStrength1
 
@@ -15640,7 +15644,7 @@ class Effect4648(EffectDef):
                                           ship.getModifiedItemAttr('eliteBonusBlackOps1'), skill='Black Ops')
 
 
-class Effect4649(EffectDef):
+class Effect4649(BaseEffect):
     """
     shipCruiseAndSiegeLauncherROFBonus2CB
 
@@ -15657,7 +15661,7 @@ class Effect4649(EffectDef):
                                       'speed', ship.getModifiedItemAttr('shipBonus2CB'), skill='Caldari Battleship')
 
 
-class Effect4667(EffectDef):
+class Effect4667(BaseEffect):
     """
     shipBonusNoctisSalvageCycle
 
@@ -15674,7 +15678,7 @@ class Effect4667(EffectDef):
                                       skill='ORE Industrial')
 
 
-class Effect4668(EffectDef):
+class Effect4668(BaseEffect):
     """
     shipBonusNoctisTractorCycle
 
@@ -15691,7 +15695,7 @@ class Effect4668(EffectDef):
                                       skill='ORE Industrial')
 
 
-class Effect4669(EffectDef):
+class Effect4669(BaseEffect):
     """
     shipBonusNoctisTractorVelocity
 
@@ -15708,7 +15712,7 @@ class Effect4669(EffectDef):
                                       skill='ORE Industrial')
 
 
-class Effect4670(EffectDef):
+class Effect4670(BaseEffect):
     """
     shipBonusNoctisTractorRange
 
@@ -15725,7 +15729,7 @@ class Effect4670(EffectDef):
                                       skill='ORE Industrial')
 
 
-class Effect4728(EffectDef):
+class Effect4728(BaseEffect):
     """
     OffensiveDefensiveReduction
 
@@ -15763,7 +15767,7 @@ class Effect4728(EffectDef):
                                       'damageMultiplier', beacon.getModifiedItemAttr('systemEffectDamageReduction'))
 
 
-class Effect4760(EffectDef):
+class Effect4760(BaseEffect):
     """
     subsystemBonusCaldariPropulsionWarpCapacitor
 
@@ -15779,7 +15783,7 @@ class Effect4760(EffectDef):
                                skill='Caldari Propulsion Systems')
 
 
-class Effect4775(EffectDef):
+class Effect4775(BaseEffect):
     """
     shipEnergyNeutralizerTransferAmountBonusAF2
 
@@ -15796,7 +15800,7 @@ class Effect4775(EffectDef):
                                       skill='Amarr Frigate')
 
 
-class Effect4782(EffectDef):
+class Effect4782(BaseEffect):
     """
     shipBonusSmallEnergyWeaponOptimalRangeATF2
 
@@ -15812,7 +15816,7 @@ class Effect4782(EffectDef):
                                       'maxRange', ship.getModifiedItemAttr('shipBonusATF2'))
 
 
-class Effect4789(EffectDef):
+class Effect4789(BaseEffect):
     """
     shipBonusSmallEnergyTurretDamageATF1
 
@@ -15828,7 +15832,7 @@ class Effect4789(EffectDef):
                                       'damageMultiplier', ship.getModifiedItemAttr('shipBonusATF1'))
 
 
-class Effect4793(EffectDef):
+class Effect4793(BaseEffect):
     """
     shipBonusMissileLauncherHeavyROFATC1
 
@@ -15844,7 +15848,7 @@ class Effect4793(EffectDef):
                                       'speed', ship.getModifiedItemAttr('shipBonusATC1'))
 
 
-class Effect4794(EffectDef):
+class Effect4794(BaseEffect):
     """
     shipBonusMissileLauncherAssaultROFATC1
 
@@ -15860,7 +15864,7 @@ class Effect4794(EffectDef):
                                       'speed', ship.getModifiedItemAttr('shipBonusATC1'))
 
 
-class Effect4795(EffectDef):
+class Effect4795(BaseEffect):
     """
     shipBonusMissileLauncherHeavyAssaultROFATC1
 
@@ -15876,7 +15880,7 @@ class Effect4795(EffectDef):
                                       'speed', ship.getModifiedItemAttr('shipBonusATC1'))
 
 
-class Effect4799(EffectDef):
+class Effect4799(BaseEffect):
     """
     eliteBonusBlackOpsECMBurstGravAndLadarAndMagnetoAndRadar
 
@@ -15895,7 +15899,7 @@ class Effect4799(EffectDef):
                                           ship.getModifiedItemAttr('eliteBonusBlackOps1'), skill='Black Ops')
 
 
-class Effect4804(EffectDef):
+class Effect4804(BaseEffect):
     """
     dataMiningSkillBoostAccessDifficultyBonusAbsolutePercent
 
@@ -15913,7 +15917,7 @@ class Effect4804(EffectDef):
                                          skill.getModifiedItemAttr('accessDifficultyBonusAbsolutePercent') * skill.level)
 
 
-class Effect4809(EffectDef):
+class Effect4809(BaseEffect):
     """
     ecmGravimetricStrengthBonusPercent
 
@@ -15930,7 +15934,7 @@ class Effect4809(EffectDef):
                                       stackingPenalties=True)
 
 
-class Effect4810(EffectDef):
+class Effect4810(BaseEffect):
     """
     ecmLadarStrengthBonusPercent
 
@@ -15947,7 +15951,7 @@ class Effect4810(EffectDef):
                                       stackingPenalties=True)
 
 
-class Effect4811(EffectDef):
+class Effect4811(BaseEffect):
     """
     ecmMagnetometricStrengthBonusPercent
 
@@ -15965,7 +15969,7 @@ class Effect4811(EffectDef):
                                       stackingPenalties=True)
 
 
-class Effect4812(EffectDef):
+class Effect4812(BaseEffect):
     """
     ecmRadarStrengthBonusPercent
 
@@ -15982,7 +15986,7 @@ class Effect4812(EffectDef):
                                       stackingPenalties=True)
 
 
-class Effect4814(EffectDef):
+class Effect4814(BaseEffect):
     """
     jumpPortalConsumptionBonusPercentSkill
 
@@ -15998,7 +16002,7 @@ class Effect4814(EffectDef):
                                       skill.getModifiedItemAttr('consumptionQuantityBonusPercent') * skill.level)
 
 
-class Effect4817(EffectDef):
+class Effect4817(BaseEffect):
     """
     salvagerModuleDurationReduction
 
@@ -16014,7 +16018,7 @@ class Effect4817(EffectDef):
                                       'duration', implant.getModifiedItemAttr('durationBonus'))
 
 
-class Effect4820(EffectDef):
+class Effect4820(BaseEffect):
     """
     bcLargeEnergyTurretPowerNeedBonus
 
@@ -16030,7 +16034,7 @@ class Effect4820(EffectDef):
                                          'power', ship.getModifiedItemAttr('bcLargeTurretPower'))
 
 
-class Effect4821(EffectDef):
+class Effect4821(BaseEffect):
     """
     bcLargeHybridTurretPowerNeedBonus
 
@@ -16047,7 +16051,7 @@ class Effect4821(EffectDef):
                                          'power', ship.getModifiedItemAttr('bcLargeTurretPower'))
 
 
-class Effect4822(EffectDef):
+class Effect4822(BaseEffect):
     """
     bcLargeProjectileTurretPowerNeedBonus
 
@@ -16063,7 +16067,7 @@ class Effect4822(EffectDef):
                                          'power', ship.getModifiedItemAttr('bcLargeTurretPower'))
 
 
-class Effect4823(EffectDef):
+class Effect4823(BaseEffect):
     """
     bcLargeEnergyTurretCPUNeedBonus
 
@@ -16079,7 +16083,7 @@ class Effect4823(EffectDef):
                                          'cpu', ship.getModifiedItemAttr('bcLargeTurretCPU'))
 
 
-class Effect4824(EffectDef):
+class Effect4824(BaseEffect):
     """
     bcLargeHybridTurretCPUNeedBonus
 
@@ -16096,7 +16100,7 @@ class Effect4824(EffectDef):
                                          'cpu', ship.getModifiedItemAttr('bcLargeTurretCPU'))
 
 
-class Effect4825(EffectDef):
+class Effect4825(BaseEffect):
     """
     bcLargeProjectileTurretCPUNeedBonus
 
@@ -16112,7 +16116,7 @@ class Effect4825(EffectDef):
                                          'cpu', ship.getModifiedItemAttr('bcLargeTurretCPU'))
 
 
-class Effect4826(EffectDef):
+class Effect4826(BaseEffect):
     """
     bcLargeEnergyTurretCapacitorNeedBonus
 
@@ -16128,7 +16132,7 @@ class Effect4826(EffectDef):
                                          'capacitorNeed', ship.getModifiedItemAttr('bcLargeTurretCap'))
 
 
-class Effect4827(EffectDef):
+class Effect4827(BaseEffect):
     """
     bcLargeHybridTurretCapacitorNeedBonus
 
@@ -16145,7 +16149,7 @@ class Effect4827(EffectDef):
                                          'capacitorNeed', ship.getModifiedItemAttr('bcLargeTurretCap'))
 
 
-class Effect4867(EffectDef):
+class Effect4867(BaseEffect):
     """
     setBonusChristmasPowergrid
 
@@ -16163,7 +16167,7 @@ class Effect4867(EffectDef):
                                                  implant.getModifiedItemAttr('implantSetChristmas'))
 
 
-class Effect4868(EffectDef):
+class Effect4868(BaseEffect):
     """
     setBonusChristmasCapacitorCapacity
 
@@ -16181,7 +16185,7 @@ class Effect4868(EffectDef):
                                                  implant.getModifiedItemAttr('implantSetChristmas'))
 
 
-class Effect4869(EffectDef):
+class Effect4869(BaseEffect):
     """
     setBonusChristmasCPUOutput
 
@@ -16198,7 +16202,7 @@ class Effect4869(EffectDef):
                                                  'cpuOutputBonus2', implant.getModifiedItemAttr('implantSetChristmas'))
 
 
-class Effect4871(EffectDef):
+class Effect4871(BaseEffect):
     """
     setBonusChristmasCapacitorRecharge2
 
@@ -16215,7 +16219,7 @@ class Effect4871(EffectDef):
                                                  'capRechargeBonus', implant.getModifiedItemAttr('implantSetChristmas'))
 
 
-class Effect4896(EffectDef):
+class Effect4896(BaseEffect):
     """
     shipBonusDroneHitpointsGF2
 
@@ -16231,7 +16235,7 @@ class Effect4896(EffectDef):
                                      'hp', ship.getModifiedItemAttr('shipBonusGF2'), skill='Gallente Frigate')
 
 
-class Effect4897(EffectDef):
+class Effect4897(BaseEffect):
     """
     shipBonusDroneArmorHitpointsGF2
 
@@ -16247,7 +16251,7 @@ class Effect4897(EffectDef):
                                      'armorHP', ship.getModifiedItemAttr('shipBonusGF2'), skill='Gallente Frigate')
 
 
-class Effect4898(EffectDef):
+class Effect4898(BaseEffect):
     """
     shipBonusDroneShieldHitpointsGF2
 
@@ -16263,7 +16267,7 @@ class Effect4898(EffectDef):
                                      'shieldCapacity', ship.getModifiedItemAttr('shipBonusGF2'), skill='Gallente Frigate')
 
 
-class Effect4901(EffectDef):
+class Effect4901(BaseEffect):
     """
     shipMissileSpeedBonusAF
 
@@ -16279,7 +16283,7 @@ class Effect4901(EffectDef):
                                       'speed', ship.getModifiedItemAttr('shipBonus2AF'), skill='Amarr Frigate')
 
 
-class Effect4902(EffectDef):
+class Effect4902(BaseEffect):
     """
     MWDSignatureRadiusRoleBonus
 
@@ -16297,7 +16301,7 @@ class Effect4902(EffectDef):
                                       'signatureRadiusBonus', ship.getModifiedItemAttr('MWDSignatureRadiusBonus'))
 
 
-class Effect4906(EffectDef):
+class Effect4906(BaseEffect):
     """
     systemDamageFighters
 
@@ -16315,7 +16319,7 @@ class Effect4906(EffectDef):
                                         stackingPenalties=True, penaltyGroup='postMul')
 
 
-class Effect4911(EffectDef):
+class Effect4911(BaseEffect):
     """
     modifyShieldRechargeRatePassive
 
@@ -16330,7 +16334,7 @@ class Effect4911(EffectDef):
         fit.ship.multiplyItemAttr('shieldRechargeRate', module.getModifiedItemAttr('shieldRechargeRateMultiplier'))
 
 
-class Effect4921(EffectDef):
+class Effect4921(BaseEffect):
     """
     microJumpDrive
 
@@ -16345,7 +16349,7 @@ class Effect4921(EffectDef):
         fit.ship.boostItemAttr('signatureRadius', module.getModifiedItemAttr('signatureRadiusBonusPercent'))
 
 
-class Effect4923(EffectDef):
+class Effect4923(BaseEffect):
     """
     skillMJDdurationBonus
 
@@ -16361,7 +16365,7 @@ class Effect4923(EffectDef):
                                       'duration', skill.getModifiedItemAttr('durationBonus') * skill.level)
 
 
-class Effect4928(EffectDef):
+class Effect4928(BaseEffect):
     """
     adaptiveArmorHardener
 
@@ -16492,7 +16496,7 @@ class Effect4928(EffectDef):
                 fit.ship.multiplyItemAttr(attr, average[i], stackingPenalties=True, penaltyGroup='preMul')
 
 
-class Effect4934(EffectDef):
+class Effect4934(BaseEffect):
     """
     shipArmorRepairingGF2
 
@@ -16509,7 +16513,7 @@ class Effect4934(EffectDef):
                                       skill='Gallente Frigate')
 
 
-class Effect4936(EffectDef):
+class Effect4936(BaseEffect):
     """
     fueledShieldBoosting
 
@@ -16527,7 +16531,7 @@ class Effect4936(EffectDef):
         fit.extraAttributes.increase('shieldRepair', amount / speed)
 
 
-class Effect4941(EffectDef):
+class Effect4941(BaseEffect):
     """
     shipHybridDamageBonusCF2
 
@@ -16544,7 +16548,7 @@ class Effect4941(EffectDef):
                                       'damageMultiplier', ship.getModifiedItemAttr('shipBonusCF2'), skill='Caldari Frigate')
 
 
-class Effect4942(EffectDef):
+class Effect4942(BaseEffect):
     """
     targetBreaker
 
@@ -16555,7 +16559,7 @@ class Effect4942(EffectDef):
     type = 'active'
 
 
-class Effect4945(EffectDef):
+class Effect4945(BaseEffect):
     """
     skillTargetBreakerDurationBonus2
 
@@ -16571,7 +16575,7 @@ class Effect4945(EffectDef):
                                       'duration', skill.getModifiedItemAttr('durationBonus') * skill.level)
 
 
-class Effect4946(EffectDef):
+class Effect4946(BaseEffect):
     """
     skillTargetBreakerCapNeedBonus2
 
@@ -16587,7 +16591,7 @@ class Effect4946(EffectDef):
                                       'capacitorNeed', skill.getModifiedItemAttr('capNeedBonus') * skill.level)
 
 
-class Effect4950(EffectDef):
+class Effect4950(BaseEffect):
     """
     shipBonusShieldBoosterMB1a
 
@@ -16603,7 +16607,7 @@ class Effect4950(EffectDef):
                                       'shieldBonus', ship.getModifiedItemAttr('shipBonusMB'), skill='Minmatar Battleship')
 
 
-class Effect4951(EffectDef):
+class Effect4951(BaseEffect):
     """
     shieldBoostAmplifierPassiveBooster
 
@@ -16622,7 +16626,7 @@ class Effect4951(EffectDef):
             'shieldBonus', container.getModifiedItemAttr('shieldBoostMultiplier'))
 
 
-class Effect4961(EffectDef):
+class Effect4961(BaseEffect):
     """
     systemShieldRepairAmountShieldSkills
 
@@ -16641,7 +16645,7 @@ class Effect4961(EffectDef):
                                          stackingPenalties=True, penaltyGroup='postMul')
 
 
-class Effect4967(EffectDef):
+class Effect4967(BaseEffect):
     """
     shieldBoosterDurationBonusShieldSkills
 
@@ -16658,7 +16662,7 @@ class Effect4967(EffectDef):
             'duration', module.getModifiedItemAttr('durationSkillBonus'))
 
 
-class Effect4970(EffectDef):
+class Effect4970(BaseEffect):
     """
     boosterShieldBoostAmountPenaltyShieldSkills
 
@@ -16680,7 +16684,7 @@ class Effect4970(EffectDef):
                                       src.getModifiedItemAttr('boosterShieldBoostAmountPenalty'))
 
 
-class Effect4972(EffectDef):
+class Effect4972(BaseEffect):
     """
     eliteBonusAssaultShipLightMissileROF
 
@@ -16696,7 +16700,7 @@ class Effect4972(EffectDef):
                                       'speed', ship.getModifiedItemAttr('eliteBonusGunship1'), skill='Assault Frigates')
 
 
-class Effect4973(EffectDef):
+class Effect4973(BaseEffect):
     """
     eliteBonusAssaultShipRocketROF
 
@@ -16712,7 +16716,7 @@ class Effect4973(EffectDef):
                                       'speed', ship.getModifiedItemAttr('eliteBonusGunship1'), skill='Assault Frigates')
 
 
-class Effect4974(EffectDef):
+class Effect4974(BaseEffect):
     """
     eliteBonusMarauderShieldBonus2a
 
@@ -16729,7 +16733,7 @@ class Effect4974(EffectDef):
                                       'shieldBonus', ship.getModifiedItemAttr('eliteBonusViolators2'), skill='Marauders')
 
 
-class Effect4975(EffectDef):
+class Effect4975(BaseEffect):
     """
     shipBonusMissileKineticlATF2
 
@@ -16745,7 +16749,7 @@ class Effect4975(EffectDef):
                                         'kineticDamage', ship.getModifiedItemAttr('shipBonusATF2'))
 
 
-class Effect4976(EffectDef):
+class Effect4976(BaseEffect):
     """
     skillReactiveArmorHardenerDurationBonus
 
@@ -16764,7 +16768,7 @@ class Effect4976(EffectDef):
                                       src.getModifiedItemAttr('durationBonus') * lvl)
 
 
-class Effect4989(EffectDef):
+class Effect4989(BaseEffect):
     """
     missileSkillAoeCloudSizeBonusAllIncludingCapitals
 
@@ -16780,7 +16784,7 @@ class Effect4989(EffectDef):
                                         'aoeCloudSize', implant.getModifiedItemAttr('aoeCloudSizeBonus'))
 
 
-class Effect4990(EffectDef):
+class Effect4990(BaseEffect):
     """
     shipEnergyTCapNeedBonusRookie
 
@@ -16797,7 +16801,7 @@ class Effect4990(EffectDef):
                                       'capacitorNeed', ship.getModifiedItemAttr('rookieSETCapBonus'))
 
 
-class Effect4991(EffectDef):
+class Effect4991(BaseEffect):
     """
     shipSETDmgBonusRookie
 
@@ -16815,7 +16819,7 @@ class Effect4991(EffectDef):
                                       'damageMultiplier', ship.getModifiedItemAttr('rookieSETDamageBonus'))
 
 
-class Effect4994(EffectDef):
+class Effect4994(BaseEffect):
     """
     shipArmorEMResistanceRookie
 
@@ -16834,7 +16838,7 @@ class Effect4994(EffectDef):
         fit.ship.boostItemAttr('armorEmDamageResonance', ship.getModifiedItemAttr('rookieArmorResistanceBonus'))
 
 
-class Effect4995(EffectDef):
+class Effect4995(BaseEffect):
     """
     shipArmorEXResistanceRookie
 
@@ -16853,7 +16857,7 @@ class Effect4995(EffectDef):
         fit.ship.boostItemAttr('armorExplosiveDamageResonance', ship.getModifiedItemAttr('rookieArmorResistanceBonus'))
 
 
-class Effect4996(EffectDef):
+class Effect4996(BaseEffect):
     """
     shipArmorKNResistanceRookie
 
@@ -16872,7 +16876,7 @@ class Effect4996(EffectDef):
         fit.ship.boostItemAttr('armorKineticDamageResonance', ship.getModifiedItemAttr('rookieArmorResistanceBonus'))
 
 
-class Effect4997(EffectDef):
+class Effect4997(BaseEffect):
     """
     shipArmorTHResistanceRookie
 
@@ -16891,7 +16895,7 @@ class Effect4997(EffectDef):
         fit.ship.boostItemAttr('armorThermalDamageResonance', ship.getModifiedItemAttr('rookieArmorResistanceBonus'))
 
 
-class Effect4999(EffectDef):
+class Effect4999(BaseEffect):
     """
     shipHybridRangeBonusRookie
 
@@ -16907,7 +16911,7 @@ class Effect4999(EffectDef):
                                       'maxRange', ship.getModifiedItemAttr('rookieSHTOptimalBonus'))
 
 
-class Effect5000(EffectDef):
+class Effect5000(BaseEffect):
     """
     shipMissileKineticDamageRookie
 
@@ -16923,7 +16927,7 @@ class Effect5000(EffectDef):
                                         'kineticDamage', ship.getModifiedItemAttr('rookieMissileKinDamageBonus'))
 
 
-class Effect5008(EffectDef):
+class Effect5008(BaseEffect):
     """
     shipShieldEMResistanceRookie
 
@@ -16940,7 +16944,7 @@ class Effect5008(EffectDef):
         fit.ship.boostItemAttr('shieldEmDamageResonance', ship.getModifiedItemAttr('rookieShieldResistBonus'))
 
 
-class Effect5009(EffectDef):
+class Effect5009(BaseEffect):
     """
     shipShieldExplosiveResistanceRookie
 
@@ -16957,7 +16961,7 @@ class Effect5009(EffectDef):
         fit.ship.boostItemAttr('shieldExplosiveDamageResonance', ship.getModifiedItemAttr('rookieShieldResistBonus'))
 
 
-class Effect5011(EffectDef):
+class Effect5011(BaseEffect):
     """
     shipShieldKineticResistanceRookie
 
@@ -16974,7 +16978,7 @@ class Effect5011(EffectDef):
         fit.ship.boostItemAttr('shieldKineticDamageResonance', ship.getModifiedItemAttr('rookieShieldResistBonus'))
 
 
-class Effect5012(EffectDef):
+class Effect5012(BaseEffect):
     """
     shipShieldThermalResistanceRookie
 
@@ -16991,7 +16995,7 @@ class Effect5012(EffectDef):
         fit.ship.boostItemAttr('shieldThermalDamageResonance', ship.getModifiedItemAttr('rookieShieldResistBonus'))
 
 
-class Effect5013(EffectDef):
+class Effect5013(BaseEffect):
     """
     shipSHTDmgBonusRookie
 
@@ -17009,7 +17013,7 @@ class Effect5013(EffectDef):
                                       'damageMultiplier', ship.getModifiedItemAttr('rookieSHTDamageBonus'))
 
 
-class Effect5014(EffectDef):
+class Effect5014(BaseEffect):
     """
     shipBonusDroneDamageMultiplierRookie
 
@@ -17029,7 +17033,7 @@ class Effect5014(EffectDef):
                                      'damageMultiplier', ship.getModifiedItemAttr('rookieDroneBonus'))
 
 
-class Effect5015(EffectDef):
+class Effect5015(BaseEffect):
     """
     shipBonusEwRemoteSensorDampenerMaxTargetRangeBonusRookie
 
@@ -17045,7 +17049,7 @@ class Effect5015(EffectDef):
                                       'maxTargetRangeBonus', ship.getModifiedItemAttr('rookieDampStrengthBonus'))
 
 
-class Effect5016(EffectDef):
+class Effect5016(BaseEffect):
     """
     shipBonusEwRemoteSensorDampenerScanResolutionBonusRookie
 
@@ -17061,7 +17065,7 @@ class Effect5016(EffectDef):
                                       'scanResolutionBonus', ship.getModifiedItemAttr('rookieDampStrengthBonus'))
 
 
-class Effect5017(EffectDef):
+class Effect5017(BaseEffect):
     """
     shipArmorRepairingRookie
 
@@ -17077,7 +17081,7 @@ class Effect5017(EffectDef):
                                       'armorDamageAmount', ship.getModifiedItemAttr('rookieArmorRepBonus'))
 
 
-class Effect5018(EffectDef):
+class Effect5018(BaseEffect):
     """
     shipVelocityBonusRookie
 
@@ -17092,7 +17096,7 @@ class Effect5018(EffectDef):
         fit.ship.boostItemAttr('maxVelocity', ship.getModifiedItemAttr('rookieShipVelocityBonus'))
 
 
-class Effect5019(EffectDef):
+class Effect5019(BaseEffect):
     """
     minmatarShipEwTargetPainterRookie
 
@@ -17108,7 +17112,7 @@ class Effect5019(EffectDef):
                                       'signatureRadiusBonus', ship.getModifiedItemAttr('rookieTargetPainterStrengthBonus'))
 
 
-class Effect5020(EffectDef):
+class Effect5020(BaseEffect):
     """
     shipSPTDmgBonusRookie
 
@@ -17125,7 +17129,7 @@ class Effect5020(EffectDef):
                                       'damageMultiplier', ship.getModifiedItemAttr('rookieSPTDamageBonus'))
 
 
-class Effect5021(EffectDef):
+class Effect5021(BaseEffect):
     """
     shipShieldBoostRookie
 
@@ -17142,7 +17146,7 @@ class Effect5021(EffectDef):
                                       'shieldBonus', ship.getModifiedItemAttr('rookieShieldBoostBonus'))
 
 
-class Effect5028(EffectDef):
+class Effect5028(BaseEffect):
     """
     shipECMScanStrengthBonusRookie
 
@@ -17160,7 +17164,7 @@ class Effect5028(EffectDef):
                                           ship.getModifiedItemAttr('rookieECMStrengthBonus'))
 
 
-class Effect5029(EffectDef):
+class Effect5029(BaseEffect):
     """
     shipBonusDroneMiningAmountRole
 
@@ -17178,7 +17182,7 @@ class Effect5029(EffectDef):
                                      )
 
 
-class Effect5030(EffectDef):
+class Effect5030(BaseEffect):
     """
     shipBonusMiningDroneAmountPercentRookie
 
@@ -17197,7 +17201,7 @@ class Effect5030(EffectDef):
                                      'miningAmount', container.getModifiedItemAttr('rookieDroneBonus'))
 
 
-class Effect5035(EffectDef):
+class Effect5035(BaseEffect):
     """
     shipBonusDroneHitpointsRookie
 
@@ -17219,7 +17223,7 @@ class Effect5035(EffectDef):
                                          type, ship.getModifiedItemAttr('rookieDroneBonus'))
 
 
-class Effect5036(EffectDef):
+class Effect5036(BaseEffect):
     """
     shipBonusSalvageCycleAF
 
@@ -17235,7 +17239,7 @@ class Effect5036(EffectDef):
                                       'duration', ship.getModifiedItemAttr('shipBonusAF'), skill='Amarr Frigate')
 
 
-class Effect5045(EffectDef):
+class Effect5045(BaseEffect):
     """
     shipBonusSalvageCycleCF
 
@@ -17251,7 +17255,7 @@ class Effect5045(EffectDef):
                                       'duration', ship.getModifiedItemAttr('shipBonusCF'), skill='Caldari Frigate')
 
 
-class Effect5048(EffectDef):
+class Effect5048(BaseEffect):
     """
     shipBonusSalvageCycleGF
 
@@ -17267,7 +17271,7 @@ class Effect5048(EffectDef):
                                       'duration', ship.getModifiedItemAttr('shipBonusGF'), skill='Amarr Frigate')
 
 
-class Effect5051(EffectDef):
+class Effect5051(BaseEffect):
     """
     shipBonusSalvageCycleMF
 
@@ -17283,7 +17287,7 @@ class Effect5051(EffectDef):
                                       'duration', ship.getModifiedItemAttr('shipBonusMF'), skill='Minmatar Frigate')
 
 
-class Effect5055(EffectDef):
+class Effect5055(BaseEffect):
     """
     iceHarvesterDurationMultiplier
 
@@ -17299,7 +17303,7 @@ class Effect5055(EffectDef):
                                          'duration', ship.getModifiedItemAttr('iceHarvestCycleBonus'))
 
 
-class Effect5058(EffectDef):
+class Effect5058(BaseEffect):
     """
     miningYieldMultiplyPassive
 
@@ -17315,7 +17319,7 @@ class Effect5058(EffectDef):
                                          'miningAmount', module.getModifiedItemAttr('miningAmountMultiplier'))
 
 
-class Effect5059(EffectDef):
+class Effect5059(BaseEffect):
     """
     shipBonusIceHarvesterDurationORE3
 
@@ -17332,7 +17336,7 @@ class Effect5059(EffectDef):
                                       'duration', container.getModifiedItemAttr('shipBonusORE3'), skill='Mining Barge')
 
 
-class Effect5066(EffectDef):
+class Effect5066(BaseEffect):
     """
     shipBonusTargetPainterOptimalMF1
 
@@ -17349,7 +17353,7 @@ class Effect5066(EffectDef):
                                       'maxRange', ship.getModifiedItemAttr('shipBonusMF'), skill='Minmatar Frigate')
 
 
-class Effect5067(EffectDef):
+class Effect5067(BaseEffect):
     """
     shipBonusOreHoldORE2
 
@@ -17364,7 +17368,7 @@ class Effect5067(EffectDef):
         fit.ship.boostItemAttr('specialOreHoldCapacity', ship.getModifiedItemAttr('shipBonusORE2'), skill='Mining Barge')
 
 
-class Effect5068(EffectDef):
+class Effect5068(BaseEffect):
     """
     shipBonusShieldCapacityORE2
 
@@ -17379,7 +17383,7 @@ class Effect5068(EffectDef):
         fit.ship.boostItemAttr('shieldCapacity', ship.getModifiedItemAttr('shipBonusORE2'), skill='Mining Barge')
 
 
-class Effect5069(EffectDef):
+class Effect5069(BaseEffect):
     """
     mercoxitCrystalBonus
 
@@ -17397,7 +17401,7 @@ class Effect5069(EffectDef):
                                         module.getModifiedItemAttr('miningAmountBonus'))
 
 
-class Effect5079(EffectDef):
+class Effect5079(BaseEffect):
     """
     shipMissileKineticDamageCF2
 
@@ -17413,7 +17417,7 @@ class Effect5079(EffectDef):
                                         'kineticDamage', ship.getModifiedItemAttr('shipBonusCF2'), skill='Caldari Frigate')
 
 
-class Effect5080(EffectDef):
+class Effect5080(BaseEffect):
     """
     shipMissileVelocityCF
 
@@ -17431,7 +17435,7 @@ class Effect5080(EffectDef):
                                         'maxVelocity', ship.getModifiedItemAttr('shipBonusCF'), skill='Caldari Frigate')
 
 
-class Effect5081(EffectDef):
+class Effect5081(BaseEffect):
     """
     maxTargetingRangeBonusPostPercentPassive
 
@@ -17447,7 +17451,7 @@ class Effect5081(EffectDef):
                                stackingPenalties=True)
 
 
-class Effect5087(EffectDef):
+class Effect5087(BaseEffect):
     """
     shipBonusDroneHitpointsGF
 
@@ -17466,7 +17470,7 @@ class Effect5087(EffectDef):
                                          layer, ship.getModifiedItemAttr('shipBonusGF'), skill='Gallente Frigate')
 
 
-class Effect5090(EffectDef):
+class Effect5090(BaseEffect):
     """
     shipShieldBoostMF
 
@@ -17483,7 +17487,7 @@ class Effect5090(EffectDef):
                                       'shieldBonus', ship.getModifiedItemAttr('shipBonusMF'), skill='Minmatar Frigate')
 
 
-class Effect5103(EffectDef):
+class Effect5103(BaseEffect):
     """
     shipBonusShieldTransferCapNeedCF
 
@@ -17499,7 +17503,7 @@ class Effect5103(EffectDef):
                                       'capacitorNeed', ship.getModifiedItemAttr('shipBonusCF'), skill='Caldari Frigate')
 
 
-class Effect5104(EffectDef):
+class Effect5104(BaseEffect):
     """
     shipBonusShieldTransferBoostAmountCF2
 
@@ -17515,7 +17519,7 @@ class Effect5104(EffectDef):
                                       'shieldBonus', ship.getModifiedItemAttr('shipBonusCF2'), skill='Caldari Frigate')
 
 
-class Effect5105(EffectDef):
+class Effect5105(BaseEffect):
     """
     shipBonusShieldTransferCapNeedMF
 
@@ -17531,7 +17535,7 @@ class Effect5105(EffectDef):
                                       'capacitorNeed', ship.getModifiedItemAttr('shipBonusMF'), skill='Minmatar Frigate')
 
 
-class Effect5106(EffectDef):
+class Effect5106(BaseEffect):
     """
     shipBonusShieldTransferBoostAmountMF2
 
@@ -17547,7 +17551,7 @@ class Effect5106(EffectDef):
                                       'shieldBonus', ship.getModifiedItemAttr('shipBonusMF2'), skill='Minmatar Frigate')
 
 
-class Effect5107(EffectDef):
+class Effect5107(BaseEffect):
     """
     shipBonusRemoteArmorRepairCapNeedGF
 
@@ -17563,7 +17567,7 @@ class Effect5107(EffectDef):
                                       src.getModifiedItemAttr('shipBonusGF'), skill='Gallente Frigate')
 
 
-class Effect5108(EffectDef):
+class Effect5108(BaseEffect):
     """
     shipBonusRemoteArmorRepairAmountGF2
 
@@ -17580,7 +17584,7 @@ class Effect5108(EffectDef):
                                       skill='Gallente Frigate')
 
 
-class Effect5109(EffectDef):
+class Effect5109(BaseEffect):
     """
     shipBonusRemoteArmorRepairCapNeedAF
 
@@ -17597,7 +17601,7 @@ class Effect5109(EffectDef):
                                       src.getModifiedItemAttr('shipBonusAF'), skill='Amarr Frigate')
 
 
-class Effect5110(EffectDef):
+class Effect5110(BaseEffect):
     """
     shipBonusRemoteArmorRepairAmount2AF
 
@@ -17614,7 +17618,7 @@ class Effect5110(EffectDef):
                                       'armorDamageAmount', src.getModifiedItemAttr('shipBonus2AF'), skill='Amarr Frigate')
 
 
-class Effect5111(EffectDef):
+class Effect5111(BaseEffect):
     """
     shipBonusDroneTrackingGF
 
@@ -17631,7 +17635,7 @@ class Effect5111(EffectDef):
                                      'trackingSpeed', ship.getModifiedItemAttr('shipBonusGF'), skill='Gallente Frigate')
 
 
-class Effect5119(EffectDef):
+class Effect5119(BaseEffect):
     """
     shipBonusScanProbeStrength2AF
 
@@ -17648,7 +17652,7 @@ class Effect5119(EffectDef):
                                         skill='Amarr Frigate')
 
 
-class Effect5121(EffectDef):
+class Effect5121(BaseEffect):
     """
     energyTransferArrayTransferAmountBonus
 
@@ -17665,7 +17669,7 @@ class Effect5121(EffectDef):
                                       'powerTransferAmount', ship.getModifiedItemAttr('energyTransferAmountBonus'))
 
 
-class Effect5122(EffectDef):
+class Effect5122(BaseEffect):
     """
     shipBonusShieldTransferCapneedMC1
 
@@ -17681,7 +17685,7 @@ class Effect5122(EffectDef):
                                       'capacitorNeed', ship.getModifiedItemAttr('shipBonusMC'), skill='Minmatar Cruiser')
 
 
-class Effect5123(EffectDef):
+class Effect5123(BaseEffect):
     """
     shipBonusRemoteArmorRepairCapNeedAC1
 
@@ -17697,7 +17701,7 @@ class Effect5123(EffectDef):
                                       src.getModifiedItemAttr('shipBonusAC'), skill='Amarr Cruiser')
 
 
-class Effect5124(EffectDef):
+class Effect5124(BaseEffect):
     """
     shipBonusRemoteArmorRepairAmountAC2
 
@@ -17713,7 +17717,7 @@ class Effect5124(EffectDef):
                                       'armorDamageAmount', src.getModifiedItemAttr('shipBonusAC2'), skill='Amarr Cruiser')
 
 
-class Effect5125(EffectDef):
+class Effect5125(BaseEffect):
     """
     shipBonusRemoteArmorRepairAmountGC2
 
@@ -17730,7 +17734,7 @@ class Effect5125(EffectDef):
                                       skill='Gallente Cruiser')
 
 
-class Effect5126(EffectDef):
+class Effect5126(BaseEffect):
     """
     shipBonusShieldTransferBoostAmountCC2
 
@@ -17746,7 +17750,7 @@ class Effect5126(EffectDef):
                                       'shieldBonus', ship.getModifiedItemAttr('shipBonusCC2'), skill='Caldari Cruiser')
 
 
-class Effect5127(EffectDef):
+class Effect5127(BaseEffect):
     """
     shipBonusShieldTransferBoostAmountMC2
 
@@ -17762,7 +17766,7 @@ class Effect5127(EffectDef):
                                       'shieldBonus', ship.getModifiedItemAttr('shipBonusMC2'), skill='Minmatar Cruiser')
 
 
-class Effect5128(EffectDef):
+class Effect5128(BaseEffect):
     """
     shipBonusEwRemoteSensorDampenerOptimalBonusGC1
 
@@ -17778,7 +17782,7 @@ class Effect5128(EffectDef):
                                       'maxRange', ship.getModifiedItemAttr('shipBonusGC'), skill='Gallente Cruiser')
 
 
-class Effect5129(EffectDef):
+class Effect5129(BaseEffect):
     """
     minmatarShipEwTargetPainterMC1
 
@@ -17796,7 +17800,7 @@ class Effect5129(EffectDef):
                                       skill='Minmatar Cruiser')
 
 
-class Effect5131(EffectDef):
+class Effect5131(BaseEffect):
     """
     shipMissileRofCC
 
@@ -17814,7 +17818,7 @@ class Effect5131(EffectDef):
                                       'speed', ship.getModifiedItemAttr('shipBonusCC'), skill='Caldari Cruiser')
 
 
-class Effect5132(EffectDef):
+class Effect5132(BaseEffect):
     """
     shipPTurretFalloffBonusMC2
 
@@ -17831,7 +17835,7 @@ class Effect5132(EffectDef):
                                       'falloff', ship.getModifiedItemAttr('shipBonusMC2'), skill='Minmatar Cruiser')
 
 
-class Effect5133(EffectDef):
+class Effect5133(BaseEffect):
     """
     shipHTDamageBonusCC
 
@@ -17847,7 +17851,7 @@ class Effect5133(EffectDef):
                                       'damageMultiplier', ship.getModifiedItemAttr('shipBonusCC'), skill='Caldari Cruiser')
 
 
-class Effect5136(EffectDef):
+class Effect5136(BaseEffect):
     """
     shipMETCDamageBonusAC
 
@@ -17866,7 +17870,7 @@ class Effect5136(EffectDef):
                                       'damageMultiplier', ship.getModifiedItemAttr('shipBonusAC'), skill='Amarr Cruiser')
 
 
-class Effect5139(EffectDef):
+class Effect5139(BaseEffect):
     """
     shipMiningBonusOREfrig1
 
@@ -17883,7 +17887,7 @@ class Effect5139(EffectDef):
                                       skill='Mining Frigate')
 
 
-class Effect5142(EffectDef):
+class Effect5142(BaseEffect):
     """
     GCHYieldMultiplyPassive
 
@@ -17900,7 +17904,7 @@ class Effect5142(EffectDef):
                                          'miningAmount', module.getModifiedItemAttr('miningAmountMultiplier'))
 
 
-class Effect5153(EffectDef):
+class Effect5153(BaseEffect):
     """
     shipMissileVelocityPirateFactionRocket
 
@@ -17917,7 +17921,7 @@ class Effect5153(EffectDef):
                                         'maxVelocity', ship.getModifiedItemAttr('shipBonusRole7'))
 
 
-class Effect5156(EffectDef):
+class Effect5156(BaseEffect):
     """
     shipGCHYieldBonusOREfrig2
 
@@ -17934,7 +17938,7 @@ class Effect5156(EffectDef):
                                       'duration', module.getModifiedItemAttr('shipBonusOREfrig2'), skill='Mining Frigate')
 
 
-class Effect5162(EffectDef):
+class Effect5162(BaseEffect):
     """
     skillReactiveArmorHardenerCapNeedBonus
 
@@ -17953,7 +17957,7 @@ class Effect5162(EffectDef):
                                       src.getModifiedItemAttr('capNeedBonus') * lvl)
 
 
-class Effect5165(EffectDef):
+class Effect5165(BaseEffect):
     """
     shipBonusDroneMWDboostrole
 
@@ -17970,7 +17974,7 @@ class Effect5165(EffectDef):
                                      'maxVelocity', ship.getModifiedItemAttr('shipBonusRole7'))
 
 
-class Effect5168(EffectDef):
+class Effect5168(BaseEffect):
     """
     droneSalvageBonus
 
@@ -17987,7 +17991,7 @@ class Effect5168(EffectDef):
                                         container.getModifiedItemAttr('accessDifficultyBonus') * container.level)
 
 
-class Effect5180(EffectDef):
+class Effect5180(BaseEffect):
     """
     sensorCompensationSensorStrengthBonusGravimetric
 
@@ -18003,7 +18007,7 @@ class Effect5180(EffectDef):
                                container.getModifiedItemAttr('sensorStrengthBonus') * container.level)
 
 
-class Effect5181(EffectDef):
+class Effect5181(BaseEffect):
     """
     sensorCompensationSensorStrengthBonusLadar
 
@@ -18018,7 +18022,7 @@ class Effect5181(EffectDef):
         fit.ship.boostItemAttr('scanLadarStrength', container.getModifiedItemAttr('sensorStrengthBonus') * container.level)
 
 
-class Effect5182(EffectDef):
+class Effect5182(BaseEffect):
     """
     sensorCompensationSensorStrengthBonusMagnetometric
 
@@ -18034,7 +18038,7 @@ class Effect5182(EffectDef):
                                container.getModifiedItemAttr('sensorStrengthBonus') * container.level)
 
 
-class Effect5183(EffectDef):
+class Effect5183(BaseEffect):
     """
     sensorCompensationSensorStrengthBonusRadar
 
@@ -18049,7 +18053,7 @@ class Effect5183(EffectDef):
         fit.ship.boostItemAttr('scanRadarStrength', container.getModifiedItemAttr('sensorStrengthBonus') * container.level)
 
 
-class Effect5185(EffectDef):
+class Effect5185(BaseEffect):
     """
     shipEnergyVampireAmountBonusFixedAF2
 
@@ -18066,7 +18070,7 @@ class Effect5185(EffectDef):
                                       skill='Amarr Frigate')
 
 
-class Effect5187(EffectDef):
+class Effect5187(BaseEffect):
     """
     shipBonusEwRemoteSensorDampenerFalloffBonusGC1
 
@@ -18083,7 +18087,7 @@ class Effect5187(EffectDef):
                                       skill='Gallente Cruiser')
 
 
-class Effect5188(EffectDef):
+class Effect5188(BaseEffect):
     """
     trackingSpeedBonusEffectHybrids
 
@@ -18100,7 +18104,7 @@ class Effect5188(EffectDef):
                                       stackingPenalties=True)
 
 
-class Effect5189(EffectDef):
+class Effect5189(BaseEffect):
     """
     trackingSpeedBonusEffectLasers
 
@@ -18117,7 +18121,7 @@ class Effect5189(EffectDef):
                                       stackingPenalties=True)
 
 
-class Effect5190(EffectDef):
+class Effect5190(BaseEffect):
     """
     trackingSpeedBonusEffectProjectiles
 
@@ -18134,7 +18138,7 @@ class Effect5190(EffectDef):
                                       stackingPenalties=True)
 
 
-class Effect5201(EffectDef):
+class Effect5201(BaseEffect):
     """
     armorUpgradesMassPenaltyReductionBonus
 
@@ -18151,7 +18155,7 @@ class Effect5201(EffectDef):
                                       'massAddition', container.getModifiedItemAttr('massPenaltyReduction') * level)
 
 
-class Effect5205(EffectDef):
+class Effect5205(BaseEffect):
     """
     shipSETTrackingBonusRookie
 
@@ -18167,7 +18171,7 @@ class Effect5205(EffectDef):
                                       'trackingSpeed', ship.getModifiedItemAttr('rookieSETTracking'))
 
 
-class Effect5206(EffectDef):
+class Effect5206(BaseEffect):
     """
     shipSETOptimalBonusRookie
 
@@ -18183,7 +18187,7 @@ class Effect5206(EffectDef):
                                       'maxRange', ship.getModifiedItemAttr('rookieSETOptimal'))
 
 
-class Effect5207(EffectDef):
+class Effect5207(BaseEffect):
     """
     shipNOSTransferAmountBonusRookie
 
@@ -18199,7 +18203,7 @@ class Effect5207(EffectDef):
                                       'powerTransferAmount', ship.getModifiedItemAttr('rookieNosDrain'))
 
 
-class Effect5208(EffectDef):
+class Effect5208(BaseEffect):
     """
     shipNeutDestabilizationAmountBonusRookie
 
@@ -18215,7 +18219,7 @@ class Effect5208(EffectDef):
                                       'energyNeutralizerAmount', ship.getModifiedItemAttr('rookieNeutDrain'))
 
 
-class Effect5209(EffectDef):
+class Effect5209(BaseEffect):
     """
     shipWebVelocityBonusRookie
 
@@ -18232,7 +18236,7 @@ class Effect5209(EffectDef):
                                       'speedFactor', ship.getModifiedItemAttr('rookieWebAmount'))
 
 
-class Effect5212(EffectDef):
+class Effect5212(BaseEffect):
     """
     shipDroneMWDSpeedBonusRookie
 
@@ -18248,7 +18252,7 @@ class Effect5212(EffectDef):
                                      'maxVelocity', ship.getModifiedItemAttr('rookieDroneMWDspeed'))
 
 
-class Effect5213(EffectDef):
+class Effect5213(BaseEffect):
     """
     shipRocketMaxVelocityBonusRookie
 
@@ -18264,7 +18268,7 @@ class Effect5213(EffectDef):
                                         'maxVelocity', ship.getModifiedItemAttr('rookieRocketVelocity'))
 
 
-class Effect5214(EffectDef):
+class Effect5214(BaseEffect):
     """
     shipLightMissileMaxVelocityBonusRookie
 
@@ -18280,7 +18284,7 @@ class Effect5214(EffectDef):
                                         'maxVelocity', ship.getModifiedItemAttr('rookieLightMissileVelocity'))
 
 
-class Effect5215(EffectDef):
+class Effect5215(BaseEffect):
     """
     shipSHTTrackingSpeedBonusRookie
 
@@ -18296,7 +18300,7 @@ class Effect5215(EffectDef):
                                       'trackingSpeed', ship.getModifiedItemAttr('rookieSHTTracking'))
 
 
-class Effect5216(EffectDef):
+class Effect5216(BaseEffect):
     """
     shipSHTFalloffBonusRookie
 
@@ -18312,7 +18316,7 @@ class Effect5216(EffectDef):
                                       'falloff', ship.getModifiedItemAttr('rookieSHTFalloff'))
 
 
-class Effect5217(EffectDef):
+class Effect5217(BaseEffect):
     """
     shipSPTTrackingSpeedBonusRookie
 
@@ -18328,7 +18332,7 @@ class Effect5217(EffectDef):
                                       'trackingSpeed', ship.getModifiedItemAttr('rookieSPTTracking'))
 
 
-class Effect5218(EffectDef):
+class Effect5218(BaseEffect):
     """
     shipSPTFalloffBonusRookie
 
@@ -18344,7 +18348,7 @@ class Effect5218(EffectDef):
                                       'falloff', ship.getModifiedItemAttr('rookieSPTFalloff'))
 
 
-class Effect5219(EffectDef):
+class Effect5219(BaseEffect):
     """
     shipSPTOptimalRangeBonusRookie
 
@@ -18360,7 +18364,7 @@ class Effect5219(EffectDef):
                                       'maxRange', ship.getModifiedItemAttr('rookieSPTOptimal'))
 
 
-class Effect5220(EffectDef):
+class Effect5220(BaseEffect):
     """
     shipProjectileDmgPirateCruiser
 
@@ -18376,7 +18380,7 @@ class Effect5220(EffectDef):
                                       'damageMultiplier', ship.getModifiedItemAttr('shipBonusRole7'))
 
 
-class Effect5221(EffectDef):
+class Effect5221(BaseEffect):
     """
     shipHeavyAssaultMissileEMDmgPirateCruiser
 
@@ -18392,7 +18396,7 @@ class Effect5221(EffectDef):
                                         'emDamage', ship.getModifiedItemAttr('shipBonusRole7'))
 
 
-class Effect5222(EffectDef):
+class Effect5222(BaseEffect):
     """
     shipHeavyAssaultMissileKinDmgPirateCruiser
 
@@ -18408,7 +18412,7 @@ class Effect5222(EffectDef):
                                         'kineticDamage', ship.getModifiedItemAttr('shipBonusRole7'))
 
 
-class Effect5223(EffectDef):
+class Effect5223(BaseEffect):
     """
     shipHeavyAssaultMissileThermDmgPirateCruiser
 
@@ -18424,7 +18428,7 @@ class Effect5223(EffectDef):
                                         'thermalDamage', ship.getModifiedItemAttr('shipBonusRole7'))
 
 
-class Effect5224(EffectDef):
+class Effect5224(BaseEffect):
     """
     shipHeavyAssaultMissileExpDmgPirateCruiser
 
@@ -18440,7 +18444,7 @@ class Effect5224(EffectDef):
                                         'explosiveDamage', ship.getModifiedItemAttr('shipBonusRole7'))
 
 
-class Effect5225(EffectDef):
+class Effect5225(BaseEffect):
     """
     shipHeavyMissileEMDmgPirateCruiser
 
@@ -18456,7 +18460,7 @@ class Effect5225(EffectDef):
                                         'emDamage', ship.getModifiedItemAttr('shipBonusRole7'))
 
 
-class Effect5226(EffectDef):
+class Effect5226(BaseEffect):
     """
     shipHeavyMissileExpDmgPirateCruiser
 
@@ -18472,7 +18476,7 @@ class Effect5226(EffectDef):
                                         'explosiveDamage', ship.getModifiedItemAttr('shipBonusRole7'))
 
 
-class Effect5227(EffectDef):
+class Effect5227(BaseEffect):
     """
     shipHeavyMissileKinDmgPirateCruiser
 
@@ -18488,7 +18492,7 @@ class Effect5227(EffectDef):
                                         'kineticDamage', ship.getModifiedItemAttr('shipBonusRole7'))
 
 
-class Effect5228(EffectDef):
+class Effect5228(BaseEffect):
     """
     shipHeavyMissileThermDmgPirateCruiser
 
@@ -18504,7 +18508,7 @@ class Effect5228(EffectDef):
                                         'thermalDamage', ship.getModifiedItemAttr('shipBonusRole7'))
 
 
-class Effect5229(EffectDef):
+class Effect5229(BaseEffect):
     """
     shipScanProbeStrengthBonusPirateCruiser
 
@@ -18524,7 +18528,7 @@ class Effect5229(EffectDef):
                                         'baseSensorStrength', container.getModifiedItemAttr('shipBonusRole8'))
 
 
-class Effect5230(EffectDef):
+class Effect5230(BaseEffect):
     """
     modifyActiveShieldResonancePostPercent
 
@@ -18543,7 +18547,7 @@ class Effect5230(EffectDef):
                                    stackingPenalties=True)
 
 
-class Effect5231(EffectDef):
+class Effect5231(BaseEffect):
     """
     modifyActiveArmorResonancePostPercent
 
@@ -18562,7 +18566,7 @@ class Effect5231(EffectDef):
                                    stackingPenalties=True)
 
 
-class Effect5234(EffectDef):
+class Effect5234(BaseEffect):
     """
     shipSmallMissileExpDmgCF2
 
@@ -18580,7 +18584,7 @@ class Effect5234(EffectDef):
             'explosiveDamage', ship.getModifiedItemAttr('shipBonusCF2'), skill='Caldari Frigate')
 
 
-class Effect5237(EffectDef):
+class Effect5237(BaseEffect):
     """
     shipSmallMissileKinDmgCF2
 
@@ -18597,7 +18601,7 @@ class Effect5237(EffectDef):
             'kineticDamage', ship.getModifiedItemAttr('shipBonusCF2'), skill='Caldari Frigate')
 
 
-class Effect5240(EffectDef):
+class Effect5240(BaseEffect):
     """
     shipSmallMissileThermDmgCF2
 
@@ -18615,7 +18619,7 @@ class Effect5240(EffectDef):
             'thermalDamage', ship.getModifiedItemAttr('shipBonusCF2'), skill='Caldari Frigate')
 
 
-class Effect5243(EffectDef):
+class Effect5243(BaseEffect):
     """
     shipSmallMissileEMDmgCF2
 
@@ -18633,7 +18637,7 @@ class Effect5243(EffectDef):
             'emDamage', ship.getModifiedItemAttr('shipBonusCF2'), skill='Caldari Frigate')
 
 
-class Effect5259(EffectDef):
+class Effect5259(BaseEffect):
     """
     reconShipCloakCpuBonus1
 
@@ -18650,7 +18654,7 @@ class Effect5259(EffectDef):
                                       'cpu', ship.getModifiedItemAttr('eliteBonusReconShip1'), skill='Recon Ships')
 
 
-class Effect5260(EffectDef):
+class Effect5260(BaseEffect):
     """
     covertOpsCloakCpuPercentBonus1
 
@@ -18667,7 +18671,7 @@ class Effect5260(EffectDef):
                                       'cpu', ship.getModifiedItemAttr('eliteBonusCovertOps1'), skill='Covert Ops')
 
 
-class Effect5261(EffectDef):
+class Effect5261(BaseEffect):
     """
     CovertCloakCPUAddition
 
@@ -18683,7 +18687,7 @@ class Effect5261(EffectDef):
         module.increaseItemAttr('cpu', module.getModifiedItemAttr('covertCloakCPUAdd') or 0)
 
 
-class Effect5262(EffectDef):
+class Effect5262(BaseEffect):
     """
     covertOpsCloakCpuPenalty
 
@@ -18699,7 +18703,7 @@ class Effect5262(EffectDef):
                                          'covertCloakCPUAdd', module.getModifiedItemAttr('covertCloakCPUPenalty'))
 
 
-class Effect5263(EffectDef):
+class Effect5263(BaseEffect):
     """
     covertCynoCpuPenalty
 
@@ -18715,7 +18719,7 @@ class Effect5263(EffectDef):
                                          'covertCloakCPUAdd', module.getModifiedItemAttr('covertCloakCPUPenalty'))
 
 
-class Effect5264(EffectDef):
+class Effect5264(BaseEffect):
     """
     warfareLinkCPUAddition
 
@@ -18731,7 +18735,7 @@ class Effect5264(EffectDef):
         module.increaseItemAttr('cpu', module.getModifiedItemAttr('warfareLinkCPUAdd') or 0)
 
 
-class Effect5265(EffectDef):
+class Effect5265(BaseEffect):
     """
     warfareLinkCpuPenalty
 
@@ -18747,7 +18751,7 @@ class Effect5265(EffectDef):
                                          'warfareLinkCPUAdd', module.getModifiedItemAttr('warfareLinkCPUPenalty'))
 
 
-class Effect5266(EffectDef):
+class Effect5266(BaseEffect):
     """
     blockadeRunnerCloakCpuPercentBonus
 
@@ -18765,7 +18769,7 @@ class Effect5266(EffectDef):
                                       skill='Transport Ships')
 
 
-class Effect5267(EffectDef):
+class Effect5267(BaseEffect):
     """
     drawbackRepairSystemsPGNeed
 
@@ -18782,7 +18786,7 @@ class Effect5267(EffectDef):
                                       'power', module.getModifiedItemAttr('drawback'))
 
 
-class Effect5268(EffectDef):
+class Effect5268(BaseEffect):
     """
     drawbackCapRepPGNeed
 
@@ -18799,7 +18803,7 @@ class Effect5268(EffectDef):
                                       'power', module.getModifiedItemAttr('drawback'))
 
 
-class Effect5275(EffectDef):
+class Effect5275(BaseEffect):
     """
     fueledArmorRepair
 
@@ -18825,7 +18829,7 @@ class Effect5275(EffectDef):
         fit.extraAttributes.increase('armorRepairFullSpool', rps)
 
 
-class Effect5293(EffectDef):
+class Effect5293(BaseEffect):
     """
     shipLaserCapNeed2AD1
 
@@ -18841,7 +18845,7 @@ class Effect5293(EffectDef):
                                       'capacitorNeed', ship.getModifiedItemAttr('shipBonusAD1'), skill='Amarr Destroyer')
 
 
-class Effect5294(EffectDef):
+class Effect5294(BaseEffect):
     """
     shipLaserTracking2AD2
 
@@ -18857,7 +18861,7 @@ class Effect5294(EffectDef):
                                       'trackingSpeed', ship.getModifiedItemAttr('shipBonusAD2'), skill='Amarr Destroyer')
 
 
-class Effect5295(EffectDef):
+class Effect5295(BaseEffect):
     """
     shipBonusDroneDamageMultiplierAD1
 
@@ -18873,7 +18877,7 @@ class Effect5295(EffectDef):
                                      src.getModifiedItemAttr('shipBonusAD1'), skill='Amarr Destroyer')
 
 
-class Effect5300(EffectDef):
+class Effect5300(BaseEffect):
     """
     shipBonusDroneHitpointsAD1
 
@@ -18893,7 +18897,7 @@ class Effect5300(EffectDef):
                                      src.getModifiedItemAttr('shipBonusAD1'), skill='Amarr Destroyer')
 
 
-class Effect5303(EffectDef):
+class Effect5303(BaseEffect):
     """
     shipHybridRange1CD1
 
@@ -18909,7 +18913,7 @@ class Effect5303(EffectDef):
                                       'maxRange', ship.getModifiedItemAttr('shipBonusCD1'), skill='Caldari Destroyer')
 
 
-class Effect5304(EffectDef):
+class Effect5304(BaseEffect):
     """
     shipHybridTrackingCD2
 
@@ -18925,7 +18929,7 @@ class Effect5304(EffectDef):
                                       'trackingSpeed', ship.getModifiedItemAttr('shipBonusCD2'), skill='Caldari Destroyer')
 
 
-class Effect5305(EffectDef):
+class Effect5305(BaseEffect):
     """
     shipBonusFrigateSizedMissileKineticDamageCD1
 
@@ -18942,7 +18946,7 @@ class Effect5305(EffectDef):
                                         skill='Caldari Destroyer')
 
 
-class Effect5306(EffectDef):
+class Effect5306(BaseEffect):
     """
     shipRocketKineticDmgCD1
 
@@ -18959,7 +18963,7 @@ class Effect5306(EffectDef):
                                         skill='Caldari Destroyer')
 
 
-class Effect5307(EffectDef):
+class Effect5307(BaseEffect):
     """
     shipBonusAoeVelocityRocketsCD2
 
@@ -18975,7 +18979,7 @@ class Effect5307(EffectDef):
                                         'aoeVelocity', ship.getModifiedItemAttr('shipBonusCD2'), skill='Caldari Destroyer')
 
 
-class Effect5308(EffectDef):
+class Effect5308(BaseEffect):
     """
     shipBonusAoeVelocityStandardMissilesCD2
 
@@ -18991,7 +18995,7 @@ class Effect5308(EffectDef):
                                         'aoeVelocity', ship.getModifiedItemAttr('shipBonusCD2'), skill='Caldari Destroyer')
 
 
-class Effect5309(EffectDef):
+class Effect5309(BaseEffect):
     """
     shipHybridFallOff1GD1
 
@@ -19007,7 +19011,7 @@ class Effect5309(EffectDef):
                                       'falloff', ship.getModifiedItemAttr('shipBonusGD1'), skill='Gallente Destroyer')
 
 
-class Effect5310(EffectDef):
+class Effect5310(BaseEffect):
     """
     shipHybridTracking1GD2
 
@@ -19024,7 +19028,7 @@ class Effect5310(EffectDef):
                                       'trackingSpeed', ship.getModifiedItemAttr('shipBonusGD2'), skill='Gallente Destroyer')
 
 
-class Effect5311(EffectDef):
+class Effect5311(BaseEffect):
     """
     shipBonusDroneDamageMultiplierGD1
 
@@ -19040,7 +19044,7 @@ class Effect5311(EffectDef):
                                      src.getModifiedItemAttr('shipBonusGD1'), skill='Gallente Destroyer')
 
 
-class Effect5316(EffectDef):
+class Effect5316(BaseEffect):
     """
     shipBonusDroneHitpointsGD1
 
@@ -19060,7 +19064,7 @@ class Effect5316(EffectDef):
                                      src.getModifiedItemAttr('shipBonusGD1'), skill='Gallente Destroyer')
 
 
-class Effect5317(EffectDef):
+class Effect5317(BaseEffect):
     """
     shipProjectileDamageMD1
 
@@ -19077,7 +19081,7 @@ class Effect5317(EffectDef):
                                       skill='Minmatar Destroyer')
 
 
-class Effect5318(EffectDef):
+class Effect5318(BaseEffect):
     """
     shipProjectileTracking1MD2
 
@@ -19093,7 +19097,7 @@ class Effect5318(EffectDef):
                                       'trackingSpeed', ship.getModifiedItemAttr('shipBonusMD2'), skill='Minmatar Destroyer')
 
 
-class Effect5319(EffectDef):
+class Effect5319(BaseEffect):
     """
     shipBonusFrigateSizedLightMissileExplosiveDamageMD1
 
@@ -19110,7 +19114,7 @@ class Effect5319(EffectDef):
                                         skill='Minmatar Destroyer')
 
 
-class Effect5320(EffectDef):
+class Effect5320(BaseEffect):
     """
     shipRocketExplosiveDmgMD1
 
@@ -19127,7 +19131,7 @@ class Effect5320(EffectDef):
                                         skill='Minmatar Destroyer')
 
 
-class Effect5321(EffectDef):
+class Effect5321(BaseEffect):
     """
     shipBonusMWDSignatureRadiusMD2
 
@@ -19144,7 +19148,7 @@ class Effect5321(EffectDef):
                                       skill='Minmatar Destroyer')
 
 
-class Effect5322(EffectDef):
+class Effect5322(BaseEffect):
     """
     shipArmorEMResistance1ABC1
 
@@ -19161,7 +19165,7 @@ class Effect5322(EffectDef):
                                skill='Amarr Battlecruiser')
 
 
-class Effect5323(EffectDef):
+class Effect5323(BaseEffect):
     """
     shipArmorExplosiveResistance1ABC1
 
@@ -19178,7 +19182,7 @@ class Effect5323(EffectDef):
                                skill='Amarr Battlecruiser')
 
 
-class Effect5324(EffectDef):
+class Effect5324(BaseEffect):
     """
     shipArmorKineticResistance1ABC1
 
@@ -19195,7 +19199,7 @@ class Effect5324(EffectDef):
                                skill='Amarr Battlecruiser')
 
 
-class Effect5325(EffectDef):
+class Effect5325(BaseEffect):
     """
     shipArmorThermResistance1ABC1
 
@@ -19212,7 +19216,7 @@ class Effect5325(EffectDef):
                                skill='Amarr Battlecruiser')
 
 
-class Effect5326(EffectDef):
+class Effect5326(BaseEffect):
     """
     shipBonusDroneDamageMultiplierABC2
 
@@ -19229,7 +19233,7 @@ class Effect5326(EffectDef):
                                      skill='Amarr Battlecruiser')
 
 
-class Effect5331(EffectDef):
+class Effect5331(BaseEffect):
     """
     shipBonusDroneHitpointsABC2
 
@@ -19246,7 +19250,7 @@ class Effect5331(EffectDef):
                                          layer, ship.getModifiedItemAttr('shipBonusABC2'), skill='Amarr Battlecruiser')
 
 
-class Effect5332(EffectDef):
+class Effect5332(BaseEffect):
     """
     shipLaserCapABC1
 
@@ -19263,7 +19267,7 @@ class Effect5332(EffectDef):
                                       skill='Amarr Battlecruiser')
 
 
-class Effect5333(EffectDef):
+class Effect5333(BaseEffect):
     """
     shipLaserDamageBonusABC2
 
@@ -19280,7 +19284,7 @@ class Effect5333(EffectDef):
                                       skill='Amarr Battlecruiser')
 
 
-class Effect5334(EffectDef):
+class Effect5334(BaseEffect):
     """
     shipHybridOptimal1CBC1
 
@@ -19296,7 +19300,7 @@ class Effect5334(EffectDef):
                                       'maxRange', ship.getModifiedItemAttr('shipBonusCBC1'), skill='Caldari Battlecruiser')
 
 
-class Effect5335(EffectDef):
+class Effect5335(BaseEffect):
     """
     shipShieldEmResistance1CBC2
 
@@ -19314,7 +19318,7 @@ class Effect5335(EffectDef):
                                skill='Caldari Battlecruiser')
 
 
-class Effect5336(EffectDef):
+class Effect5336(BaseEffect):
     """
     shipShieldExplosiveResistance1CBC2
 
@@ -19332,7 +19336,7 @@ class Effect5336(EffectDef):
                                skill='Caldari Battlecruiser')
 
 
-class Effect5337(EffectDef):
+class Effect5337(BaseEffect):
     """
     shipShieldKineticResistance1CBC2
 
@@ -19350,7 +19354,7 @@ class Effect5337(EffectDef):
                                skill='Caldari Battlecruiser')
 
 
-class Effect5338(EffectDef):
+class Effect5338(BaseEffect):
     """
     shipShieldThermalResistance1CBC2
 
@@ -19368,7 +19372,7 @@ class Effect5338(EffectDef):
                                skill='Caldari Battlecruiser')
 
 
-class Effect5339(EffectDef):
+class Effect5339(BaseEffect):
     """
     shipBonusHeavyAssaultMissileKineticDamageCBC1
 
@@ -19386,7 +19390,7 @@ class Effect5339(EffectDef):
                                         skill='Caldari Battlecruiser')
 
 
-class Effect5340(EffectDef):
+class Effect5340(BaseEffect):
     """
     shipBonusHeavyMissileKineticDamageCBC1
 
@@ -19404,7 +19408,7 @@ class Effect5340(EffectDef):
                                         skill='Caldari Battlecruiser')
 
 
-class Effect5341(EffectDef):
+class Effect5341(BaseEffect):
     """
     shipHybridDmg1GBC1
 
@@ -19421,7 +19425,7 @@ class Effect5341(EffectDef):
                                       skill='Gallente Battlecruiser')
 
 
-class Effect5342(EffectDef):
+class Effect5342(BaseEffect):
     """
     shipArmorRepairing1GBC2
 
@@ -19440,7 +19444,7 @@ class Effect5342(EffectDef):
                                       skill='Gallente Battlecruiser')
 
 
-class Effect5343(EffectDef):
+class Effect5343(BaseEffect):
     """
     shipBonusDroneDamageMultiplierGBC1
 
@@ -19457,7 +19461,7 @@ class Effect5343(EffectDef):
                                      skill='Gallente Battlecruiser')
 
 
-class Effect5348(EffectDef):
+class Effect5348(BaseEffect):
     """
     shipBonusDroneHitpointsGBC1
 
@@ -19474,7 +19478,7 @@ class Effect5348(EffectDef):
                                          layer, ship.getModifiedItemAttr('shipBonusGBC1'), skill='Gallente Battlecruiser')
 
 
-class Effect5349(EffectDef):
+class Effect5349(BaseEffect):
     """
     shipBonusHeavyMissileLauncherRofMBC2
 
@@ -19490,7 +19494,7 @@ class Effect5349(EffectDef):
                                       'speed', ship.getModifiedItemAttr('shipBonusMBC2'), skill='Minmatar Battlecruiser')
 
 
-class Effect5350(EffectDef):
+class Effect5350(BaseEffect):
     """
     shipBonusHeavyAssaultMissileLauncherRofMBC2
 
@@ -19506,7 +19510,7 @@ class Effect5350(EffectDef):
                                       'speed', ship.getModifiedItemAttr('shipBonusMBC2'), skill='Minmatar Battlecruiser')
 
 
-class Effect5351(EffectDef):
+class Effect5351(BaseEffect):
     """
     shipShieldBoost1MBC1
 
@@ -19524,7 +19528,7 @@ class Effect5351(EffectDef):
                                       skill='Minmatar Battlecruiser')
 
 
-class Effect5352(EffectDef):
+class Effect5352(BaseEffect):
     """
     shipBonusProjectileDamageMBC1
 
@@ -19541,7 +19545,7 @@ class Effect5352(EffectDef):
                                       skill='Minmatar Battlecruiser')
 
 
-class Effect5353(EffectDef):
+class Effect5353(BaseEffect):
     """
     shipProjectileRof1MBC2
 
@@ -19557,7 +19561,7 @@ class Effect5353(EffectDef):
                                       'speed', ship.getModifiedItemAttr('shipBonusMBC2'), skill='Minmatar Battlecruiser')
 
 
-class Effect5354(EffectDef):
+class Effect5354(BaseEffect):
     """
     shipLargeLaserCapABC1
 
@@ -19574,7 +19578,7 @@ class Effect5354(EffectDef):
                                       skill='Amarr Battlecruiser')
 
 
-class Effect5355(EffectDef):
+class Effect5355(BaseEffect):
     """
     shipLargeLaserDamageBonusABC2
 
@@ -19591,7 +19595,7 @@ class Effect5355(EffectDef):
                                       skill='Amarr Battlecruiser')
 
 
-class Effect5356(EffectDef):
+class Effect5356(BaseEffect):
     """
     shipHybridRangeBonusCBC1
 
@@ -19607,7 +19611,7 @@ class Effect5356(EffectDef):
                                       'maxRange', ship.getModifiedItemAttr('shipBonusCBC1'), skill='Caldari Battlecruiser')
 
 
-class Effect5357(EffectDef):
+class Effect5357(BaseEffect):
     """
     shipHybridDamageBonusCBC2
 
@@ -19624,7 +19628,7 @@ class Effect5357(EffectDef):
                                       skill='Caldari Battlecruiser')
 
 
-class Effect5358(EffectDef):
+class Effect5358(BaseEffect):
     """
     shipLargeHybridTrackingBonusGBC1
 
@@ -19641,7 +19645,7 @@ class Effect5358(EffectDef):
                                       skill='Gallente Battlecruiser')
 
 
-class Effect5359(EffectDef):
+class Effect5359(BaseEffect):
     """
     shipHybridDamageBonusGBC2
 
@@ -19658,7 +19662,7 @@ class Effect5359(EffectDef):
                                       skill='Gallente Battlecruiser')
 
 
-class Effect5360(EffectDef):
+class Effect5360(BaseEffect):
     """
     shipProjectileRofBonusMBC1
 
@@ -19674,7 +19678,7 @@ class Effect5360(EffectDef):
                                       'speed', ship.getModifiedItemAttr('shipBonusMBC1'), skill='Minmatar Battlecruiser')
 
 
-class Effect5361(EffectDef):
+class Effect5361(BaseEffect):
     """
     shipProjectileFalloffBonusMBC2
 
@@ -19690,7 +19694,7 @@ class Effect5361(EffectDef):
                                       'falloff', ship.getModifiedItemAttr('shipBonusMBC2'), skill='Minmatar Battlecruiser')
 
 
-class Effect5364(EffectDef):
+class Effect5364(BaseEffect):
     """
     armorAllRepairSystemsAmountBonusPassive
 
@@ -19709,7 +19713,7 @@ class Effect5364(EffectDef):
             'armorDamageAmount', booster.getModifiedItemAttr('armorDamageAmountBonus') or 0)
 
 
-class Effect5365(EffectDef):
+class Effect5365(BaseEffect):
     """
     eliteBonusViolatorsRepairSystemsArmorDamageAmount2
 
@@ -19727,7 +19731,7 @@ class Effect5365(EffectDef):
                                       skill='Marauders')
 
 
-class Effect5366(EffectDef):
+class Effect5366(BaseEffect):
     """
     shipBonusRepairSystemsBonusATC2
 
@@ -19743,7 +19747,7 @@ class Effect5366(EffectDef):
                                       'armorDamageAmount', ship.getModifiedItemAttr('shipBonusATC2'))
 
 
-class Effect5367(EffectDef):
+class Effect5367(BaseEffect):
     """
     shipBonusRepairSystemsArmorRepairAmountGB2
 
@@ -19760,7 +19764,7 @@ class Effect5367(EffectDef):
                                       skill='Gallente Battleship')
 
 
-class Effect5378(EffectDef):
+class Effect5378(BaseEffect):
     """
     shipHeavyMissileAOECloudSizeCBC1
 
@@ -19777,7 +19781,7 @@ class Effect5378(EffectDef):
                                         skill='Caldari Battlecruiser')
 
 
-class Effect5379(EffectDef):
+class Effect5379(BaseEffect):
     """
     shipHeavyAssaultMissileAOECloudSizeCBC1
 
@@ -19794,7 +19798,7 @@ class Effect5379(EffectDef):
                                         skill='Caldari Battlecruiser')
 
 
-class Effect5380(EffectDef):
+class Effect5380(BaseEffect):
     """
     shipHybridTrackingGBC2
 
@@ -19811,7 +19815,7 @@ class Effect5380(EffectDef):
                                       skill='Gallente Battlecruiser')
 
 
-class Effect5381(EffectDef):
+class Effect5381(BaseEffect):
     """
     shipEnergyTrackingABC1
 
@@ -19828,7 +19832,7 @@ class Effect5381(EffectDef):
                                       skill='Amarr Battlecruiser')
 
 
-class Effect5382(EffectDef):
+class Effect5382(BaseEffect):
     """
     shipBonusMETOptimalAC2
 
@@ -19845,7 +19849,7 @@ class Effect5382(EffectDef):
                                       'maxRange', ship.getModifiedItemAttr('shipBonusAC2'), skill='Amarr Cruiser')
 
 
-class Effect5383(EffectDef):
+class Effect5383(BaseEffect):
     """
     shipMissileEMDamageCC
 
@@ -19862,7 +19866,7 @@ class Effect5383(EffectDef):
                                         'emDamage', ship.getModifiedItemAttr('shipBonusCC'), skill='Caldari Cruiser')
 
 
-class Effect5384(EffectDef):
+class Effect5384(BaseEffect):
     """
     shipMissileThermDamageCC
 
@@ -19879,7 +19883,7 @@ class Effect5384(EffectDef):
                                         'thermalDamage', ship.getModifiedItemAttr('shipBonusCC'), skill='Caldari Cruiser')
 
 
-class Effect5385(EffectDef):
+class Effect5385(BaseEffect):
     """
     shipMissileExpDamageCC
 
@@ -19896,7 +19900,7 @@ class Effect5385(EffectDef):
                                         'explosiveDamage', ship.getModifiedItemAttr('shipBonusCC'), skill='Caldari Cruiser')
 
 
-class Effect5386(EffectDef):
+class Effect5386(BaseEffect):
     """
     shipMissileKinDamageCC2
 
@@ -19912,7 +19916,7 @@ class Effect5386(EffectDef):
                                         'kineticDamage', ship.getModifiedItemAttr('shipBonusCC2'), skill='Caldari Cruiser')
 
 
-class Effect5387(EffectDef):
+class Effect5387(BaseEffect):
     """
     shipHeavyAssaultMissileAOECloudSizeCC2
 
@@ -19928,7 +19932,7 @@ class Effect5387(EffectDef):
                                         'aoeCloudSize', ship.getModifiedItemAttr('shipBonusCC2'), skill='Caldari Cruiser')
 
 
-class Effect5388(EffectDef):
+class Effect5388(BaseEffect):
     """
     shipHeavyMissileAOECloudSizeCC2
 
@@ -19944,7 +19948,7 @@ class Effect5388(EffectDef):
                                         'aoeCloudSize', ship.getModifiedItemAttr('shipBonusCC2'), skill='Caldari Cruiser')
 
 
-class Effect5389(EffectDef):
+class Effect5389(BaseEffect):
     """
     shipBonusDroneTrackingGC
 
@@ -19960,7 +19964,7 @@ class Effect5389(EffectDef):
                                      'trackingSpeed', ship.getModifiedItemAttr('shipBonusGC'), skill='Gallente Cruiser')
 
 
-class Effect5390(EffectDef):
+class Effect5390(BaseEffect):
     """
     shipBonusDroneMWDboostGC
 
@@ -19976,7 +19980,7 @@ class Effect5390(EffectDef):
                                      'maxVelocity', ship.getModifiedItemAttr('shipBonusGC'), skill='Gallente Cruiser')
 
 
-class Effect5397(EffectDef):
+class Effect5397(BaseEffect):
     """
     baseMaxScanDeviationModifierModuleOnline2None
 
@@ -19994,7 +19998,7 @@ class Effect5397(EffectDef):
                                         stackingPenalties=True)
 
 
-class Effect5398(EffectDef):
+class Effect5398(BaseEffect):
     """
     systemScanDurationModuleModifier
 
@@ -20010,7 +20014,7 @@ class Effect5398(EffectDef):
                                       'duration', module.getModifiedItemAttr('scanDurationBonus'))
 
 
-class Effect5399(EffectDef):
+class Effect5399(BaseEffect):
     """
     baseSensorStrengthModifierModule
 
@@ -20027,7 +20031,7 @@ class Effect5399(EffectDef):
                                         stackingPenalties=True)
 
 
-class Effect5402(EffectDef):
+class Effect5402(BaseEffect):
     """
     shipMissileHeavyAssaultVelocityABC2
 
@@ -20044,7 +20048,7 @@ class Effect5402(EffectDef):
                                         skill='Amarr Battlecruiser')
 
 
-class Effect5403(EffectDef):
+class Effect5403(BaseEffect):
     """
     shipMissileHeavyVelocityABC2
 
@@ -20061,7 +20065,7 @@ class Effect5403(EffectDef):
                                         skill='Amarr Battlecruiser')
 
 
-class Effect5410(EffectDef):
+class Effect5410(BaseEffect):
     """
     shipLaserCap1ABC2
 
@@ -20078,7 +20082,7 @@ class Effect5410(EffectDef):
                                       skill='Amarr Battlecruiser')
 
 
-class Effect5411(EffectDef):
+class Effect5411(BaseEffect):
     """
     shipMissileVelocityCD1
 
@@ -20094,7 +20098,7 @@ class Effect5411(EffectDef):
                                         'maxVelocity', ship.getModifiedItemAttr('shipBonusCD1'), skill='Caldari Destroyer')
 
 
-class Effect5417(EffectDef):
+class Effect5417(BaseEffect):
     """
     shipBonusDroneDamageMultiplierAB
 
@@ -20110,7 +20114,7 @@ class Effect5417(EffectDef):
                                      'damageMultiplier', ship.getModifiedItemAttr('shipBonusAB'), skill='Amarr Battleship')
 
 
-class Effect5418(EffectDef):
+class Effect5418(BaseEffect):
     """
     shipBonusDroneArmorHitPointsAB
 
@@ -20126,7 +20130,7 @@ class Effect5418(EffectDef):
                                      'armorHP', ship.getModifiedItemAttr('shipBonusAB'), skill='Amarr Battleship')
 
 
-class Effect5419(EffectDef):
+class Effect5419(BaseEffect):
     """
     shipBonusDroneShieldHitPointsAB
 
@@ -20142,7 +20146,7 @@ class Effect5419(EffectDef):
                                      'shieldCapacity', ship.getModifiedItemAttr('shipBonusAB'), skill='Amarr Battleship')
 
 
-class Effect5420(EffectDef):
+class Effect5420(BaseEffect):
     """
     shipBonusDroneStructureHitPointsAB
 
@@ -20158,7 +20162,7 @@ class Effect5420(EffectDef):
                                      'hp', ship.getModifiedItemAttr('shipBonusAB'), skill='Amarr Battleship')
 
 
-class Effect5424(EffectDef):
+class Effect5424(BaseEffect):
     """
     shipLargeHybridTurretRofGB
 
@@ -20175,7 +20179,7 @@ class Effect5424(EffectDef):
                                       'speed', ship.getModifiedItemAttr('shipBonusGB'), skill='Gallente Battleship')
 
 
-class Effect5427(EffectDef):
+class Effect5427(BaseEffect):
     """
     shipBonusDroneTrackingGB
 
@@ -20191,7 +20195,7 @@ class Effect5427(EffectDef):
                                      'trackingSpeed', ship.getModifiedItemAttr('shipBonusGB'), skill='Gallente Battleship')
 
 
-class Effect5428(EffectDef):
+class Effect5428(BaseEffect):
     """
     shipBonusDroneOptimalRangeGB
 
@@ -20207,7 +20211,7 @@ class Effect5428(EffectDef):
                                      'maxRange', ship.getModifiedItemAttr('shipBonusGB'), skill='Gallente Battleship')
 
 
-class Effect5429(EffectDef):
+class Effect5429(BaseEffect):
     """
     shipBonusMissileAoeVelocityMB2
 
@@ -20224,7 +20228,7 @@ class Effect5429(EffectDef):
                                         skill='Minmatar Battleship')
 
 
-class Effect5430(EffectDef):
+class Effect5430(BaseEffect):
     """
     shipBonusAoeVelocityCruiseMissilesMB2
 
@@ -20241,7 +20245,7 @@ class Effect5430(EffectDef):
                                         skill='Minmatar Battleship')
 
 
-class Effect5431(EffectDef):
+class Effect5431(BaseEffect):
     """
     shipBonusLargeEnergyTurretTrackingAB
 
@@ -20258,7 +20262,7 @@ class Effect5431(EffectDef):
                                       'trackingSpeed', ship.getModifiedItemAttr('shipBonusAB'), skill='Amarr Battleship')
 
 
-class Effect5433(EffectDef):
+class Effect5433(BaseEffect):
     """
     hackingSkillVirusBonus
 
@@ -20279,7 +20283,7 @@ class Effect5433(EffectDef):
                                          'virusCoherence', container.getModifiedItemAttr('virusCoherenceBonus') * level)
 
 
-class Effect5437(EffectDef):
+class Effect5437(BaseEffect):
     """
     archaeologySkillVirusBonus
 
@@ -20299,7 +20303,7 @@ class Effect5437(EffectDef):
                                          'virusCoherence', container.getModifiedItemAttr('virusCoherenceBonus') * level)
 
 
-class Effect5440(EffectDef):
+class Effect5440(BaseEffect):
     """
     systemStandardMissileKineticDamage
 
@@ -20317,7 +20321,7 @@ class Effect5440(EffectDef):
                                            stackingPenalties=True, penaltyGroup='postMul')
 
 
-class Effect5444(EffectDef):
+class Effect5444(BaseEffect):
     """
     shipTorpedoAOECloudSize1CB
 
@@ -20333,7 +20337,7 @@ class Effect5444(EffectDef):
                                         'aoeCloudSize', ship.getModifiedItemAttr('shipBonusCB'), skill='Caldari Battleship')
 
 
-class Effect5445(EffectDef):
+class Effect5445(BaseEffect):
     """
     shipCruiseMissileAOECloudSize1CB
 
@@ -20349,7 +20353,7 @@ class Effect5445(EffectDef):
                                         'aoeCloudSize', ship.getModifiedItemAttr('shipBonusCB'), skill='Caldari Battleship')
 
 
-class Effect5456(EffectDef):
+class Effect5456(BaseEffect):
     """
     shipCruiseMissileROFCB
 
@@ -20365,7 +20369,7 @@ class Effect5456(EffectDef):
                                       'speed', ship.getModifiedItemAttr('shipBonusCB'), skill='Caldari Battleship')
 
 
-class Effect5457(EffectDef):
+class Effect5457(BaseEffect):
     """
     shipTorpedoROFCB
 
@@ -20381,7 +20385,7 @@ class Effect5457(EffectDef):
                                       'speed', ship.getModifiedItemAttr('shipBonusCB'), skill='Caldari Battleship')
 
 
-class Effect5459(EffectDef):
+class Effect5459(BaseEffect):
     """
     hackingVirusStrengthBonus
 
@@ -20396,7 +20400,7 @@ class Effect5459(EffectDef):
         fit.modules.filteredItemIncrease(lambda mod: mod.item.requiresSkill('Hacking'), 'virusStrength', src.getModifiedItemAttr('virusStrengthBonus'))
 
 
-class Effect5460(EffectDef):
+class Effect5460(BaseEffect):
     """
     minigameVirusStrengthBonus
 
@@ -20422,7 +20426,7 @@ class Effect5460(EffectDef):
             'virusStrength', container.getModifiedItemAttr('virusStrengthBonus') * level)
 
 
-class Effect5461(EffectDef):
+class Effect5461(BaseEffect):
     """
     shieldOperationRechargeratebonusPostPercentOnline
 
@@ -20437,7 +20441,7 @@ class Effect5461(EffectDef):
         fit.ship.boostItemAttr('shieldRechargeRate', module.getModifiedItemAttr('rechargeratebonus') or 0)
 
 
-class Effect5468(EffectDef):
+class Effect5468(BaseEffect):
     """
     shipBonusAgilityCI2
 
@@ -20452,7 +20456,7 @@ class Effect5468(EffectDef):
         fit.ship.boostItemAttr('agility', ship.getModifiedItemAttr('shipBonusCI2'), skill='Caldari Industrial')
 
 
-class Effect5469(EffectDef):
+class Effect5469(BaseEffect):
     """
     shipBonusAgilityMI2
 
@@ -20467,7 +20471,7 @@ class Effect5469(EffectDef):
         fit.ship.boostItemAttr('agility', ship.getModifiedItemAttr('shipBonusMI2'), skill='Minmatar Industrial')
 
 
-class Effect5470(EffectDef):
+class Effect5470(BaseEffect):
     """
     shipBonusAgilityGI2
 
@@ -20482,7 +20486,7 @@ class Effect5470(EffectDef):
         fit.ship.boostItemAttr('agility', ship.getModifiedItemAttr('shipBonusGI2'), skill='Gallente Industrial')
 
 
-class Effect5471(EffectDef):
+class Effect5471(BaseEffect):
     """
     shipBonusAgilityAI2
 
@@ -20497,7 +20501,7 @@ class Effect5471(EffectDef):
         fit.ship.boostItemAttr('agility', ship.getModifiedItemAttr('shipBonusAI2'), skill='Amarr Industrial')
 
 
-class Effect5476(EffectDef):
+class Effect5476(BaseEffect):
     """
     shipBonusOreCapacityGI2
 
@@ -20513,7 +20517,7 @@ class Effect5476(EffectDef):
                                skill='Gallente Industrial')
 
 
-class Effect5477(EffectDef):
+class Effect5477(BaseEffect):
     """
     shipBonusAmmoBayMI2
 
@@ -20529,7 +20533,7 @@ class Effect5477(EffectDef):
                                skill='Minmatar Industrial')
 
 
-class Effect5478(EffectDef):
+class Effect5478(BaseEffect):
     """
     shipBonusPICommoditiesHoldGI2
 
@@ -20545,7 +20549,7 @@ class Effect5478(EffectDef):
                                skill='Gallente Industrial')
 
 
-class Effect5479(EffectDef):
+class Effect5479(BaseEffect):
     """
     shipBonusMineralBayGI2
 
@@ -20561,7 +20565,7 @@ class Effect5479(EffectDef):
                                skill='Gallente Industrial')
 
 
-class Effect5480(EffectDef):
+class Effect5480(BaseEffect):
     """
     setBonusChristmasBonusVelocity
 
@@ -20578,7 +20582,7 @@ class Effect5480(EffectDef):
                                                  'implantBonusVelocity', implant.getModifiedItemAttr('implantSetChristmas'))
 
 
-class Effect5482(EffectDef):
+class Effect5482(BaseEffect):
     """
     setBonusChristmasAgilityBonus
 
@@ -20595,7 +20599,7 @@ class Effect5482(EffectDef):
                                                  'agilityBonus', implant.getModifiedItemAttr('implantSetChristmas'))
 
 
-class Effect5483(EffectDef):
+class Effect5483(BaseEffect):
     """
     setBonusChristmasShieldCapacityBonus
 
@@ -20612,7 +20616,7 @@ class Effect5483(EffectDef):
                                                  'shieldCapacityBonus', implant.getModifiedItemAttr('implantSetChristmas'))
 
 
-class Effect5484(EffectDef):
+class Effect5484(BaseEffect):
     """
     setBonusChristmasArmorHPBonus2
 
@@ -20629,7 +20633,7 @@ class Effect5484(EffectDef):
                                                  'armorHpBonus2', implant.getModifiedItemAttr('implantSetChristmas'))
 
 
-class Effect5485(EffectDef):
+class Effect5485(BaseEffect):
     """
     shipSPTOptimalBonusMF
 
@@ -20645,7 +20649,7 @@ class Effect5485(EffectDef):
                                       'maxRange', ship.getModifiedItemAttr('shipBonusMF'), skill='Minmatar Frigate')
 
 
-class Effect5486(EffectDef):
+class Effect5486(BaseEffect):
     """
     shipBonusProjectileDamageMBC2
 
@@ -20662,7 +20666,7 @@ class Effect5486(EffectDef):
                                       skill='Minmatar Battlecruiser')
 
 
-class Effect5496(EffectDef):
+class Effect5496(BaseEffect):
     """
     eliteBonusCommandShipHAMRoFCS1
 
@@ -20679,7 +20683,7 @@ class Effect5496(EffectDef):
                                       'speed', ship.getModifiedItemAttr('eliteBonusCommandShips1'), skill='Command Ships')
 
 
-class Effect5497(EffectDef):
+class Effect5497(BaseEffect):
     """
     eliteBonusCommandShipHMRoFCS1
 
@@ -20696,7 +20700,7 @@ class Effect5497(EffectDef):
                                       'speed', ship.getModifiedItemAttr('eliteBonusCommandShips1'), skill='Command Ships')
 
 
-class Effect5498(EffectDef):
+class Effect5498(BaseEffect):
     """
     eliteBonusCommandShipsHeavyAssaultMissileExplosionVelocityCS2
 
@@ -20713,7 +20717,7 @@ class Effect5498(EffectDef):
                                         skill='Command Ships')
 
 
-class Effect5499(EffectDef):
+class Effect5499(BaseEffect):
     """
     eliteBonusCommandShipsHeavyAssaultMissileExplosionRadiusCS2
 
@@ -20730,7 +20734,7 @@ class Effect5499(EffectDef):
                                         skill='Command Ships')
 
 
-class Effect5500(EffectDef):
+class Effect5500(BaseEffect):
     """
     eliteBonusCommandShipsHeavyMissileExplosionRadiusCS2
 
@@ -20747,7 +20751,7 @@ class Effect5500(EffectDef):
                                         skill='Command Ships')
 
 
-class Effect5501(EffectDef):
+class Effect5501(BaseEffect):
     """
     eliteBonusCommandShipMediumHybridDamageCS2
 
@@ -20764,7 +20768,7 @@ class Effect5501(EffectDef):
                                       skill='Command Ships')
 
 
-class Effect5502(EffectDef):
+class Effect5502(BaseEffect):
     """
     eliteBonusCommandShipMediumHybridTrackingCS1
 
@@ -20781,7 +20785,7 @@ class Effect5502(EffectDef):
                                       skill='Command Ships')
 
 
-class Effect5503(EffectDef):
+class Effect5503(BaseEffect):
     """
     eliteBonusCommandShipHeavyDroneTrackingCS2
 
@@ -20798,7 +20802,7 @@ class Effect5503(EffectDef):
                                      skill='Command Ships')
 
 
-class Effect5504(EffectDef):
+class Effect5504(BaseEffect):
     """
     eliteBonusCommandShipHeavyDroneVelocityCS2
 
@@ -20815,7 +20819,7 @@ class Effect5504(EffectDef):
                                      skill='Command Ships')
 
 
-class Effect5505(EffectDef):
+class Effect5505(BaseEffect):
     """
     eliteBonusCommandShipMediumHybridRoFCS1
 
@@ -20831,7 +20835,7 @@ class Effect5505(EffectDef):
                                       'speed', ship.getModifiedItemAttr('eliteBonusCommandShips1'), skill='Command Ships')
 
 
-class Effect5514(EffectDef):
+class Effect5514(BaseEffect):
     """
     eliteBonusCommandShipHeavyAssaultMissileDamageCS2
 
@@ -20850,7 +20854,7 @@ class Effect5514(EffectDef):
                                             ship.getModifiedItemAttr('eliteBonusCommandShips2'), skill='Command Ships')
 
 
-class Effect5521(EffectDef):
+class Effect5521(BaseEffect):
     """
     eliteBonusCommandShipHeavyMissileDamageCS2
 
@@ -20869,7 +20873,7 @@ class Effect5521(EffectDef):
                                             ship.getModifiedItemAttr('eliteBonusCommandShips2'), skill='Command Ships')
 
 
-class Effect5539(EffectDef):
+class Effect5539(BaseEffect):
     """
     shipBonusHMLKineticDamageAC
 
@@ -20885,7 +20889,7 @@ class Effect5539(EffectDef):
                                         'kineticDamage', ship.getModifiedItemAttr('shipBonusAC'), skill='Amarr Cruiser')
 
 
-class Effect5540(EffectDef):
+class Effect5540(BaseEffect):
     """
     shipBonusHMLEMDamageAC
 
@@ -20901,7 +20905,7 @@ class Effect5540(EffectDef):
                                         'emDamage', ship.getModifiedItemAttr('shipBonusAC'), skill='Amarr Cruiser')
 
 
-class Effect5541(EffectDef):
+class Effect5541(BaseEffect):
     """
     shipBonusHMLThermDamageAC
 
@@ -20917,7 +20921,7 @@ class Effect5541(EffectDef):
                                         'thermalDamage', ship.getModifiedItemAttr('shipBonusAC'), skill='Amarr Cruiser')
 
 
-class Effect5542(EffectDef):
+class Effect5542(BaseEffect):
     """
     shipBonusHMLExploDamageAC
 
@@ -20933,7 +20937,7 @@ class Effect5542(EffectDef):
                                         'explosiveDamage', ship.getModifiedItemAttr('shipBonusAC'), skill='Amarr Cruiser')
 
 
-class Effect5552(EffectDef):
+class Effect5552(BaseEffect):
     """
     shipBonusHMLVelocityEliteBonusHeavyGunship1
 
@@ -20950,7 +20954,7 @@ class Effect5552(EffectDef):
                                         skill='Heavy Assault Cruisers')
 
 
-class Effect5553(EffectDef):
+class Effect5553(BaseEffect):
     """
     shipBonusHAMVelocityEliteBonusHeavyGunship1
 
@@ -20967,7 +20971,7 @@ class Effect5553(EffectDef):
                                         skill='Heavy Assault Cruisers')
 
 
-class Effect5554(EffectDef):
+class Effect5554(BaseEffect):
     """
     shipBonusArmorRepAmountGC2
 
@@ -20984,7 +20988,7 @@ class Effect5554(EffectDef):
                                       skill='Gallente Cruiser')
 
 
-class Effect5555(EffectDef):
+class Effect5555(BaseEffect):
     """
     shipBonusHeavyDroneSpeedGC
 
@@ -21000,7 +21004,7 @@ class Effect5555(EffectDef):
                                      'maxVelocity', ship.getModifiedItemAttr('shipBonusGC'), skill='Gallente Cruiser')
 
 
-class Effect5556(EffectDef):
+class Effect5556(BaseEffect):
     """
     shipBonusHeavyDRoneTrackingGC
 
@@ -21016,7 +21020,7 @@ class Effect5556(EffectDef):
                                      'trackingSpeed', ship.getModifiedItemAttr('shipBonusGC'), skill='Gallente Cruiser')
 
 
-class Effect5557(EffectDef):
+class Effect5557(BaseEffect):
     """
     shipBonusSentryDroneOptimalRangeEliteBonusHeavyGunship2
 
@@ -21033,7 +21037,7 @@ class Effect5557(EffectDef):
                                      skill='Heavy Assault Cruisers')
 
 
-class Effect5558(EffectDef):
+class Effect5558(BaseEffect):
     """
     shipBonusSentryDroneTrackingEliteBonusHeavyGunship2
 
@@ -21050,7 +21054,7 @@ class Effect5558(EffectDef):
                                      skill='Heavy Assault Cruisers')
 
 
-class Effect5559(EffectDef):
+class Effect5559(BaseEffect):
     """
     shipBonusShieldBoostAmountMC2
 
@@ -21066,7 +21070,7 @@ class Effect5559(EffectDef):
                                       'shieldBonus', ship.getModifiedItemAttr('shipBonusMC2'), skill='Minmatar Cruiser')
 
 
-class Effect5560(EffectDef):
+class Effect5560(BaseEffect):
     """
     roleBonusMarauderMJDRReactivationDelayBonus
 
@@ -21082,7 +21086,7 @@ class Effect5560(EffectDef):
                                       'moduleReactivationDelay', ship.getModifiedItemAttr('roleBonusMarauder'))
 
 
-class Effect5564(EffectDef):
+class Effect5564(BaseEffect):
     """
     subSystemBonusCaldariOffensiveCommandBursts
 
@@ -21128,7 +21132,7 @@ class Effect5564(EffectDef):
                                       'warfareBuff2Value', src.getModifiedItemAttr('subsystemBonusCaldariOffensive'), skill='Caldari Offensive Systems')
 
 
-class Effect5568(EffectDef):
+class Effect5568(BaseEffect):
     """
     subSystemBonusGallenteOffensiveCommandBursts
 
@@ -21174,7 +21178,7 @@ class Effect5568(EffectDef):
                                       'warfareBuff4Value', src.getModifiedItemAttr('subsystemBonusGallenteOffensive'), skill='Gallente Offensive Systems')
 
 
-class Effect5570(EffectDef):
+class Effect5570(BaseEffect):
     """
     subSystemBonusMinmatarOffensiveCommandBursts
 
@@ -21221,7 +21225,7 @@ class Effect5570(EffectDef):
                                       'warfareBuff2Value', src.getModifiedItemAttr('subsystemBonusMinmatarOffensive'), skill='Minmatar Offensive Systems')
 
 
-class Effect5572(EffectDef):
+class Effect5572(BaseEffect):
     """
     eliteBonusCommandShipArmoredCS3
 
@@ -21245,7 +21249,7 @@ class Effect5572(EffectDef):
                                       src.getModifiedItemAttr('eliteBonusCommandShips3'), skill='Command Ships')
 
 
-class Effect5573(EffectDef):
+class Effect5573(BaseEffect):
     """
     eliteBonusCommandShipSiegeCS3
 
@@ -21269,7 +21273,7 @@ class Effect5573(EffectDef):
                                       src.getModifiedItemAttr('eliteBonusCommandShips3'), skill='Command Ships')
 
 
-class Effect5574(EffectDef):
+class Effect5574(BaseEffect):
     """
     eliteBonusCommandShipSkirmishCS3
 
@@ -21293,7 +21297,7 @@ class Effect5574(EffectDef):
                                       src.getModifiedItemAttr('eliteBonusCommandShips3'), skill='Command Ships')
 
 
-class Effect5575(EffectDef):
+class Effect5575(BaseEffect):
     """
     eliteBonusCommandShipInformationCS3
 
@@ -21317,7 +21321,7 @@ class Effect5575(EffectDef):
                                       src.getModifiedItemAttr('eliteBonusCommandShips3'), skill='Command Ships')
 
 
-class Effect5607(EffectDef):
+class Effect5607(BaseEffect):
     """
     capacitorEmissionSystemskill
 
@@ -21336,7 +21340,7 @@ class Effect5607(EffectDef):
                                       'capacitorNeed', container.getModifiedItemAttr('capNeedBonus') * level)
 
 
-class Effect5610(EffectDef):
+class Effect5610(BaseEffect):
     """
     shipBonusLargeEnergyTurretMaxRangeAB
 
@@ -21353,7 +21357,7 @@ class Effect5610(EffectDef):
                                       'maxRange', ship.getModifiedItemAttr('shipBonusAB'), skill='Amarr Battleship')
 
 
-class Effect5611(EffectDef):
+class Effect5611(BaseEffect):
     """
     shipBonusHTFalloffGB2
 
@@ -21369,7 +21373,7 @@ class Effect5611(EffectDef):
                                       'falloff', ship.getModifiedItemAttr('shipBonusGB2'), skill='Gallente Battleship')
 
 
-class Effect5618(EffectDef):
+class Effect5618(BaseEffect):
     """
     shipBonusRHMLROF2CB
 
@@ -21386,7 +21390,7 @@ class Effect5618(EffectDef):
                                       'speed', ship.getModifiedItemAttr('shipBonus2CB'), skill='Caldari Battleship')
 
 
-class Effect5619(EffectDef):
+class Effect5619(BaseEffect):
     """
     shipBonusRHMLROFCB
 
@@ -21402,7 +21406,7 @@ class Effect5619(EffectDef):
                                       'speed', ship.getModifiedItemAttr('shipBonusCB'), skill='Caldari Battleship')
 
 
-class Effect5620(EffectDef):
+class Effect5620(BaseEffect):
     """
     shipBonusRHMLROFMB
 
@@ -21418,7 +21422,7 @@ class Effect5620(EffectDef):
                                       'speed', ship.getModifiedItemAttr('shipBonusMB'), skill='Minmatar Battleship')
 
 
-class Effect5621(EffectDef):
+class Effect5621(BaseEffect):
     """
     shipBonusCruiseROFMB
 
@@ -21434,7 +21438,7 @@ class Effect5621(EffectDef):
                                       'speed', ship.getModifiedItemAttr('shipBonusMB'), skill='Minmatar Battleship')
 
 
-class Effect5622(EffectDef):
+class Effect5622(BaseEffect):
     """
     shipBonusTorpedoROFMB
 
@@ -21450,7 +21454,7 @@ class Effect5622(EffectDef):
                                       'speed', ship.getModifiedItemAttr('shipBonusMB'), skill='Minmatar Battleship')
 
 
-class Effect5628(EffectDef):
+class Effect5628(BaseEffect):
     """
     shipBonusCruiseMissileEMDmgMB
 
@@ -21466,7 +21470,7 @@ class Effect5628(EffectDef):
                                         'emDamage', ship.getModifiedItemAttr('shipBonusMB'), skill='Minmatar Battleship')
 
 
-class Effect5629(EffectDef):
+class Effect5629(BaseEffect):
     """
     shipBonusCruiseMissileThermDmgMB
 
@@ -21483,7 +21487,7 @@ class Effect5629(EffectDef):
                                         skill='Minmatar Battleship')
 
 
-class Effect5630(EffectDef):
+class Effect5630(BaseEffect):
     """
     shipBonusCruiseMissileKineticDmgMB
 
@@ -21500,7 +21504,7 @@ class Effect5630(EffectDef):
                                         skill='Minmatar Battleship')
 
 
-class Effect5631(EffectDef):
+class Effect5631(BaseEffect):
     """
     shipBonusCruiseMissileExploDmgMB
 
@@ -21517,7 +21521,7 @@ class Effect5631(EffectDef):
                                         skill='Minmatar Battleship')
 
 
-class Effect5632(EffectDef):
+class Effect5632(BaseEffect):
     """
     shipBonusTorpedoMissileExploDmgMB
 
@@ -21534,7 +21538,7 @@ class Effect5632(EffectDef):
                                         skill='Minmatar Battleship')
 
 
-class Effect5633(EffectDef):
+class Effect5633(BaseEffect):
     """
     shipBonusTorpedoMissileEMDmgMB
 
@@ -21550,7 +21554,7 @@ class Effect5633(EffectDef):
                                         'emDamage', ship.getModifiedItemAttr('shipBonusMB'), skill='Minmatar Battleship')
 
 
-class Effect5634(EffectDef):
+class Effect5634(BaseEffect):
     """
     shipBonusTorpedoMissileThermDmgMB
 
@@ -21567,7 +21571,7 @@ class Effect5634(EffectDef):
                                         skill='Minmatar Battleship')
 
 
-class Effect5635(EffectDef):
+class Effect5635(BaseEffect):
     """
     shipBonusTorpedoMissileKineticDmgMB
 
@@ -21584,7 +21588,7 @@ class Effect5635(EffectDef):
                                         skill='Minmatar Battleship')
 
 
-class Effect5636(EffectDef):
+class Effect5636(BaseEffect):
     """
     shipBonusHeavyMissileEMDmgMB
 
@@ -21600,7 +21604,7 @@ class Effect5636(EffectDef):
                                         'emDamage', ship.getModifiedItemAttr('shipBonusMB'), skill='Minmatar Battleship')
 
 
-class Effect5637(EffectDef):
+class Effect5637(BaseEffect):
     """
     shipBonusHeavyMissileThermDmgMB
 
@@ -21617,7 +21621,7 @@ class Effect5637(EffectDef):
                                         skill='Minmatar Battleship')
 
 
-class Effect5638(EffectDef):
+class Effect5638(BaseEffect):
     """
     shipBonusHeavyMissileKineticDmgMB
 
@@ -21634,7 +21638,7 @@ class Effect5638(EffectDef):
                                         skill='Minmatar Battleship')
 
 
-class Effect5639(EffectDef):
+class Effect5639(BaseEffect):
     """
     shipBonusHeavyMissileExploDmgMB
 
@@ -21651,7 +21655,7 @@ class Effect5639(EffectDef):
                                         skill='Minmatar Battleship')
 
 
-class Effect5644(EffectDef):
+class Effect5644(BaseEffect):
     """
     shipBonusMissileVelocityCC2
 
@@ -21667,7 +21671,7 @@ class Effect5644(EffectDef):
                                         'maxVelocity', ship.getModifiedItemAttr('shipBonusCC2'), skill='Caldari Cruiser')
 
 
-class Effect5647(EffectDef):
+class Effect5647(BaseEffect):
     """
     covertOpsCloakCPUPercentRoleBonus
 
@@ -21690,7 +21694,7 @@ class Effect5647(EffectDef):
                                       'cpu', ship.getModifiedItemAttr('shipBonusRole7'))
 
 
-class Effect5650(EffectDef):
+class Effect5650(BaseEffect):
     """
     shipArmorResistanceAF1
 
@@ -21708,7 +21712,7 @@ class Effect5650(EffectDef):
                                    skill='Amarr Frigate')
 
 
-class Effect5657(EffectDef):
+class Effect5657(BaseEffect):
     """
     Interceptor2ShieldResist
 
@@ -21726,7 +21730,7 @@ class Effect5657(EffectDef):
                                    ship.getModifiedItemAttr('eliteBonusInterceptor2'), skill='Interceptors')
 
 
-class Effect5673(EffectDef):
+class Effect5673(BaseEffect):
     """
     interceptor2ProjectileDamage
 
@@ -21743,7 +21747,7 @@ class Effect5673(EffectDef):
                                       skill='Interceptors')
 
 
-class Effect5676(EffectDef):
+class Effect5676(BaseEffect):
     """
     shipBonusSmallMissileExplosionRadiusCD2
 
@@ -21760,7 +21764,7 @@ class Effect5676(EffectDef):
             'aoeCloudSize', ship.getModifiedItemAttr('shipBonusCD2'), skill='Caldari Destroyer')
 
 
-class Effect5688(EffectDef):
+class Effect5688(BaseEffect):
     """
     shipBonusMissileVelocityAD2
 
@@ -21776,7 +21780,7 @@ class Effect5688(EffectDef):
                                         'maxVelocity', ship.getModifiedItemAttr('shipBonusAD2'), skill='Amarr Destroyer')
 
 
-class Effect5695(EffectDef):
+class Effect5695(BaseEffect):
     """
     eliteBonusInterdictorsArmorResist1
 
@@ -21793,7 +21797,7 @@ class Effect5695(EffectDef):
                                    ship.getModifiedItemAttr('eliteBonusInterdictors1'), skill='Interdictors')
 
 
-class Effect5717(EffectDef):
+class Effect5717(BaseEffect):
     """
     implantSetWarpSpeed
 
@@ -21810,7 +21814,7 @@ class Effect5717(EffectDef):
                                                  'WarpSBonus', implant.getModifiedItemAttr('implantSetWarpSpeed'))
 
 
-class Effect5721(EffectDef):
+class Effect5721(BaseEffect):
     """
     shipBonusMETOptimalRangePirateFaction
 
@@ -21826,7 +21830,7 @@ class Effect5721(EffectDef):
                                       'maxRange', ship.getModifiedItemAttr('shipBonusRole7'))
 
 
-class Effect5722(EffectDef):
+class Effect5722(BaseEffect):
     """
     shipHybridOptimalGD1
 
@@ -21842,7 +21846,7 @@ class Effect5722(EffectDef):
                                       'maxRange', ship.getModifiedItemAttr('shipBonusGD1'), skill='Gallente Destroyer')
 
 
-class Effect5723(EffectDef):
+class Effect5723(BaseEffect):
     """
     eliteBonusInterdictorsMWDSigRadius2
 
@@ -21859,7 +21863,7 @@ class Effect5723(EffectDef):
                                       skill='Interdictors')
 
 
-class Effect5724(EffectDef):
+class Effect5724(BaseEffect):
     """
     shipSHTOptimalBonusGF
 
@@ -21875,7 +21879,7 @@ class Effect5724(EffectDef):
                                       'maxRange', ship.getModifiedItemAttr('shipBonusGF'), skill='Gallente Frigate')
 
 
-class Effect5725(EffectDef):
+class Effect5725(BaseEffect):
     """
     shipBonusRemoteRepairAmountPirateFaction
 
@@ -21891,7 +21895,7 @@ class Effect5725(EffectDef):
                                       'armorDamageAmount', ship.getModifiedItemAttr('shipBonusRole7'))
 
 
-class Effect5726(EffectDef):
+class Effect5726(BaseEffect):
     """
     shipBonusLETOptimalRangePirateFaction
 
@@ -21907,7 +21911,7 @@ class Effect5726(EffectDef):
                                       'maxRange', ship.getModifiedItemAttr('shipBonusRole7'))
 
 
-class Effect5733(EffectDef):
+class Effect5733(BaseEffect):
     """
     eliteBonusMaraudersHeavyMissileDamageExpRole1
 
@@ -21923,7 +21927,7 @@ class Effect5733(EffectDef):
                                         'explosiveDamage', ship.getModifiedItemAttr('eliteBonusViolatorsRole1'))
 
 
-class Effect5734(EffectDef):
+class Effect5734(BaseEffect):
     """
     eliteBonusMaraudersHeavyMissileDamageKinRole1
 
@@ -21939,7 +21943,7 @@ class Effect5734(EffectDef):
                                         'kineticDamage', ship.getModifiedItemAttr('eliteBonusViolatorsRole1'))
 
 
-class Effect5735(EffectDef):
+class Effect5735(BaseEffect):
     """
     eliteBonusMaraudersHeavyMissileDamageEMRole1
 
@@ -21955,7 +21959,7 @@ class Effect5735(EffectDef):
                                         'emDamage', ship.getModifiedItemAttr('eliteBonusViolatorsRole1'))
 
 
-class Effect5736(EffectDef):
+class Effect5736(BaseEffect):
     """
     eliteBonusMaraudersHeavyMissileDamageThermRole1
 
@@ -21971,7 +21975,7 @@ class Effect5736(EffectDef):
                                         'thermalDamage', ship.getModifiedItemAttr('eliteBonusViolatorsRole1'))
 
 
-class Effect5737(EffectDef):
+class Effect5737(BaseEffect):
     """
     shipScanProbeStrengthBonusPirateFaction
 
@@ -21987,7 +21991,7 @@ class Effect5737(EffectDef):
                                         'baseSensorStrength', ship.getModifiedItemAttr('shipBonusRole7'))
 
 
-class Effect5738(EffectDef):
+class Effect5738(BaseEffect):
     """
     shipBonusRemoteRepairRangePirateFaction2
 
@@ -22005,7 +22009,7 @@ class Effect5738(EffectDef):
                                       'falloffEffectiveness', ship.getModifiedItemAttr('shipBonusRole8'))
 
 
-class Effect5754(EffectDef):
+class Effect5754(BaseEffect):
     """
     overloadSelfTrackingModuleBonus
 
@@ -22023,7 +22027,7 @@ class Effect5754(EffectDef):
         module.boostItemAttr('trackingSpeedBonus', module.getModifiedItemAttr('overloadTrackingModuleStrengthBonus'))
 
 
-class Effect5757(EffectDef):
+class Effect5757(BaseEffect):
     """
     overloadSelfSensorModuleBonus
 
@@ -22049,7 +22053,7 @@ class Effect5757(EffectDef):
             )
 
 
-class Effect5758(EffectDef):
+class Effect5758(BaseEffect):
     """
     overloadSelfPainterBonus
 
@@ -22064,7 +22068,7 @@ class Effect5758(EffectDef):
         module.boostItemAttr('signatureRadiusBonus', module.getModifiedItemAttr('overloadPainterStrengthBonus') or 0)
 
 
-class Effect5769(EffectDef):
+class Effect5769(BaseEffect):
     """
     repairDroneHullBonusBonus
 
@@ -22082,7 +22086,7 @@ class Effect5769(EffectDef):
                                      'structureDamageAmount', container.getModifiedItemAttr('damageHP') * level)
 
 
-class Effect5778(EffectDef):
+class Effect5778(BaseEffect):
     """
     shipMissileRoFMF2
 
@@ -22099,7 +22103,7 @@ class Effect5778(EffectDef):
                                       'speed', ship.getModifiedItemAttr('shipBonusMF2'), skill='Minmatar Frigate')
 
 
-class Effect5779(EffectDef):
+class Effect5779(BaseEffect):
     """
     shipBonusSPTFalloffMF2
 
@@ -22116,7 +22120,7 @@ class Effect5779(EffectDef):
                                       'falloff', ship.getModifiedItemAttr('shipBonusMF2'), skill='Minmatar Frigate')
 
 
-class Effect5793(EffectDef):
+class Effect5793(BaseEffect):
     """
     ewSkillTrackingDisruptionRangeDisruptionBonus
 
@@ -22135,7 +22139,7 @@ class Effect5793(EffectDef):
                                           attr, container.getModifiedItemAttr('scanSkillEwStrengthBonus') * level)
 
 
-class Effect5802(EffectDef):
+class Effect5802(BaseEffect):
     """
     shipBonusAfterburnerSpeedFactor2CB
 
@@ -22151,7 +22155,7 @@ class Effect5802(EffectDef):
                                       'speedFactor', module.getModifiedItemAttr('shipBonus2CB'), skill='Caldari Battleship')
 
 
-class Effect5803(EffectDef):
+class Effect5803(BaseEffect):
     """
     shipBonusSentryDroneDamageMultiplierPirateFaction
 
@@ -22167,7 +22171,7 @@ class Effect5803(EffectDef):
                                      'damageMultiplier', ship.getModifiedItemAttr('shipBonusRole7'))
 
 
-class Effect5804(EffectDef):
+class Effect5804(BaseEffect):
     """
     shipBonusHeavyDroneDamageMultiplierPirateFaction
 
@@ -22183,7 +22187,7 @@ class Effect5804(EffectDef):
                                      'damageMultiplier', ship.getModifiedItemAttr('shipBonusRole7'))
 
 
-class Effect5805(EffectDef):
+class Effect5805(BaseEffect):
     """
     shipBonusSentryDroneHPPirateFaction
 
@@ -22199,7 +22203,7 @@ class Effect5805(EffectDef):
                                      'hp', ship.getModifiedItemAttr('shipBonusRole7'))
 
 
-class Effect5806(EffectDef):
+class Effect5806(BaseEffect):
     """
     shipBonusSentryDroneArmorHpPirateFaction
 
@@ -22215,7 +22219,7 @@ class Effect5806(EffectDef):
                                      'armorHP', ship.getModifiedItemAttr('shipBonusRole7'))
 
 
-class Effect5807(EffectDef):
+class Effect5807(BaseEffect):
     """
     shipBonusSentryDroneShieldHpPirateFaction
 
@@ -22231,7 +22235,7 @@ class Effect5807(EffectDef):
                                      'shieldCapacity', ship.getModifiedItemAttr('shipBonusRole7'))
 
 
-class Effect5808(EffectDef):
+class Effect5808(BaseEffect):
     """
     shipBonusHeavyDroneShieldHpPirateFaction
 
@@ -22247,7 +22251,7 @@ class Effect5808(EffectDef):
                                      'shieldCapacity', ship.getModifiedItemAttr('shipBonusRole7'))
 
 
-class Effect5809(EffectDef):
+class Effect5809(BaseEffect):
     """
     shipBonusHeavyDroneArmorHpPirateFaction
 
@@ -22263,7 +22267,7 @@ class Effect5809(EffectDef):
                                      'armorHP', ship.getModifiedItemAttr('shipBonusRole7'))
 
 
-class Effect5810(EffectDef):
+class Effect5810(BaseEffect):
     """
     shipBonusHeavyDroneHPPirateFaction
 
@@ -22279,7 +22283,7 @@ class Effect5810(EffectDef):
                                      'hp', ship.getModifiedItemAttr('shipBonusRole7'))
 
 
-class Effect5811(EffectDef):
+class Effect5811(BaseEffect):
     """
     shipBonusKineticMissileDamageGB2
 
@@ -22296,7 +22300,7 @@ class Effect5811(EffectDef):
                                         skill='Gallente Battleship')
 
 
-class Effect5812(EffectDef):
+class Effect5812(BaseEffect):
     """
     shipBonusThermalMissileDamageGB2
 
@@ -22313,7 +22317,7 @@ class Effect5812(EffectDef):
                                         skill='Gallente Battleship')
 
 
-class Effect5813(EffectDef):
+class Effect5813(BaseEffect):
     """
     shipBonusAfterburnerSpeedFactorCF2
 
@@ -22330,7 +22334,7 @@ class Effect5813(EffectDef):
                                       'speedFactor', module.getModifiedItemAttr('shipBonusCF2'), skill='Caldari Frigate')
 
 
-class Effect5814(EffectDef):
+class Effect5814(BaseEffect):
     """
     shipBonusKineticMissileDamageGF
 
@@ -22347,7 +22351,7 @@ class Effect5814(EffectDef):
                                         'kineticDamage', ship.getModifiedItemAttr('shipBonusGF'), skill='Gallente Frigate')
 
 
-class Effect5815(EffectDef):
+class Effect5815(BaseEffect):
     """
     shipBonusThermalMissileDamageGF
 
@@ -22364,7 +22368,7 @@ class Effect5815(EffectDef):
                                         'thermalDamage', ship.getModifiedItemAttr('shipBonusGF'), skill='Gallente Frigate')
 
 
-class Effect5816(EffectDef):
+class Effect5816(BaseEffect):
     """
     shipBonusLightDroneDamageMultiplierPirateFaction
 
@@ -22381,7 +22385,7 @@ class Effect5816(EffectDef):
                                      'damageMultiplier', ship.getModifiedItemAttr('shipBonusRole7'))
 
 
-class Effect5817(EffectDef):
+class Effect5817(BaseEffect):
     """
     shipBonusLightDroneHPPirateFaction
 
@@ -22398,7 +22402,7 @@ class Effect5817(EffectDef):
                                      'hp', ship.getModifiedItemAttr('shipBonusRole7'))
 
 
-class Effect5818(EffectDef):
+class Effect5818(BaseEffect):
     """
     shipBonusLightDroneArmorHPPirateFaction
 
@@ -22415,7 +22419,7 @@ class Effect5818(EffectDef):
                                      'armorHP', ship.getModifiedItemAttr('shipBonusRole7'))
 
 
-class Effect5819(EffectDef):
+class Effect5819(BaseEffect):
     """
     shipBonusLightDroneShieldHPPirateFaction
 
@@ -22432,7 +22436,7 @@ class Effect5819(EffectDef):
                                      'shieldCapacity', ship.getModifiedItemAttr('shipBonusRole7'))
 
 
-class Effect5820(EffectDef):
+class Effect5820(BaseEffect):
     """
     shipBonusAfterburnerSpeedFactorCC2
 
@@ -22449,7 +22453,7 @@ class Effect5820(EffectDef):
                                       'speedFactor', module.getModifiedItemAttr('shipBonusCC2'), skill='Caldari Cruiser')
 
 
-class Effect5821(EffectDef):
+class Effect5821(BaseEffect):
     """
     shipBonusMediumDroneDamageMultiplierPirateFaction
 
@@ -22466,7 +22470,7 @@ class Effect5821(EffectDef):
                                      'damageMultiplier', ship.getModifiedItemAttr('shipBonusRole7'))
 
 
-class Effect5822(EffectDef):
+class Effect5822(BaseEffect):
     """
     shipBonusMediumDroneHPPirateFaction
 
@@ -22483,7 +22487,7 @@ class Effect5822(EffectDef):
                                      'hp', ship.getModifiedItemAttr('shipBonusRole7'))
 
 
-class Effect5823(EffectDef):
+class Effect5823(BaseEffect):
     """
     shipBonusMediumDroneArmorHPPirateFaction
 
@@ -22500,7 +22504,7 @@ class Effect5823(EffectDef):
                                      'armorHP', ship.getModifiedItemAttr('shipBonusRole7'))
 
 
-class Effect5824(EffectDef):
+class Effect5824(BaseEffect):
     """
     shipBonusMediumDroneShieldHPPirateFaction
 
@@ -22517,7 +22521,7 @@ class Effect5824(EffectDef):
                                      'shieldCapacity', ship.getModifiedItemAttr('shipBonusRole7'))
 
 
-class Effect5825(EffectDef):
+class Effect5825(BaseEffect):
     """
     shipBonusKineticMissileDamageGC2
 
@@ -22534,7 +22538,7 @@ class Effect5825(EffectDef):
                                         'kineticDamage', ship.getModifiedItemAttr('shipBonusGC2'), skill='Gallente Cruiser')
 
 
-class Effect5826(EffectDef):
+class Effect5826(BaseEffect):
     """
     shipBonusThermalMissileDamageGC2
 
@@ -22551,7 +22555,7 @@ class Effect5826(EffectDef):
                                         'thermalDamage', ship.getModifiedItemAttr('shipBonusGC2'), skill='Gallente Cruiser')
 
 
-class Effect5827(EffectDef):
+class Effect5827(BaseEffect):
     """
     shipBonusTDOptimalBonusAF1
 
@@ -22567,7 +22571,7 @@ class Effect5827(EffectDef):
                                       'maxRange', ship.getModifiedItemAttr('shipBonusAF'), skill='Amarr Frigate')
 
 
-class Effect5829(EffectDef):
+class Effect5829(BaseEffect):
     """
     shipBonusMiningDurationORE3
 
@@ -22584,7 +22588,7 @@ class Effect5829(EffectDef):
                                       'duration', ship.getModifiedItemAttr('shipBonusORE3'), skill='Mining Barge')
 
 
-class Effect5832(EffectDef):
+class Effect5832(BaseEffect):
     """
     shipBonusMiningIceHarvestingRangeORE2
 
@@ -22601,7 +22605,7 @@ class Effect5832(EffectDef):
             'maxRange', ship.getModifiedItemAttr('shipBonusORE2'), skill='Mining Barge')
 
 
-class Effect5839(EffectDef):
+class Effect5839(BaseEffect):
     """
     eliteBargeShieldResistance1
 
@@ -22618,7 +22622,7 @@ class Effect5839(EffectDef):
                                    ship.getModifiedItemAttr('eliteBonusBarge1'), skill='Exhumers')
 
 
-class Effect5840(EffectDef):
+class Effect5840(BaseEffect):
     """
     eliteBargeBonusMiningDurationBarge2
 
@@ -22634,7 +22638,7 @@ class Effect5840(EffectDef):
                                       'duration', ship.getModifiedItemAttr('eliteBonusBarge2'), skill='Exhumers')
 
 
-class Effect5852(EffectDef):
+class Effect5852(BaseEffect):
     """
     eliteBonusExpeditionMining1
 
@@ -22651,7 +22655,7 @@ class Effect5852(EffectDef):
                                       skill='Expedition Frigates')
 
 
-class Effect5853(EffectDef):
+class Effect5853(BaseEffect):
     """
     eliteBonusExpeditionSigRadius2
 
@@ -22667,7 +22671,7 @@ class Effect5853(EffectDef):
                                skill='Expedition Frigates')
 
 
-class Effect5862(EffectDef):
+class Effect5862(BaseEffect):
     """
     shipMissileEMDamageCB
 
@@ -22683,7 +22687,7 @@ class Effect5862(EffectDef):
                                         'emDamage', ship.getModifiedItemAttr('shipBonusCB'), skill='Caldari Battleship')
 
 
-class Effect5863(EffectDef):
+class Effect5863(BaseEffect):
     """
     shipMissileKinDamageCB
 
@@ -22700,7 +22704,7 @@ class Effect5863(EffectDef):
                                         skill='Caldari Battleship')
 
 
-class Effect5864(EffectDef):
+class Effect5864(BaseEffect):
     """
     shipMissileThermDamageCB
 
@@ -22717,7 +22721,7 @@ class Effect5864(EffectDef):
                                         skill='Caldari Battleship')
 
 
-class Effect5865(EffectDef):
+class Effect5865(BaseEffect):
     """
     shipMissileExploDamageCB
 
@@ -22734,7 +22738,7 @@ class Effect5865(EffectDef):
                                         skill='Caldari Battleship')
 
 
-class Effect5866(EffectDef):
+class Effect5866(BaseEffect):
     """
     shipBonusWarpScrambleMaxRangeGB
 
@@ -22750,7 +22754,7 @@ class Effect5866(EffectDef):
                                       'maxRange', ship.getModifiedItemAttr('shipBonusGB'), skill='Gallente Battleship')
 
 
-class Effect5867(EffectDef):
+class Effect5867(BaseEffect):
     """
     shipBonusMissileExplosionDelayPirateFaction2
 
@@ -22768,7 +22772,7 @@ class Effect5867(EffectDef):
                                         'explosionDelay', ship.getModifiedItemAttr('shipBonusRole8'))
 
 
-class Effect5868(EffectDef):
+class Effect5868(BaseEffect):
     """
     drawbackCargoCapacity
 
@@ -22783,7 +22787,7 @@ class Effect5868(EffectDef):
         fit.ship.boostItemAttr('capacity', module.getModifiedItemAttr('drawback'))
 
 
-class Effect5869(EffectDef):
+class Effect5869(BaseEffect):
     """
     eliteIndustrialWarpSpeedBonus1
 
@@ -22799,7 +22803,7 @@ class Effect5869(EffectDef):
                                skill='Transport Ships')
 
 
-class Effect5870(EffectDef):
+class Effect5870(BaseEffect):
     """
     shipBonusShieldBoostCI2
 
@@ -22815,7 +22819,7 @@ class Effect5870(EffectDef):
                                       'shieldBonus', ship.getModifiedItemAttr('shipBonusCI2'), skill='Caldari Industrial')
 
 
-class Effect5871(EffectDef):
+class Effect5871(BaseEffect):
     """
     shipBonusShieldBoostMI2
 
@@ -22831,7 +22835,7 @@ class Effect5871(EffectDef):
                                       'shieldBonus', ship.getModifiedItemAttr('shipBonusMI2'), skill='Minmatar Industrial')
 
 
-class Effect5872(EffectDef):
+class Effect5872(BaseEffect):
     """
     shipBonusArmorRepairAI2
 
@@ -22848,7 +22852,7 @@ class Effect5872(EffectDef):
                                       skill='Amarr Industrial')
 
 
-class Effect5873(EffectDef):
+class Effect5873(BaseEffect):
     """
     shipBonusArmorRepairGI2
 
@@ -22865,7 +22869,7 @@ class Effect5873(EffectDef):
                                       skill='Gallente Industrial')
 
 
-class Effect5874(EffectDef):
+class Effect5874(BaseEffect):
     """
     eliteIndustrialFleetCapacity1
 
@@ -22881,7 +22885,7 @@ class Effect5874(EffectDef):
                                skill='Transport Ships')
 
 
-class Effect5881(EffectDef):
+class Effect5881(BaseEffect):
     """
     eliteIndustrialShieldResists2
 
@@ -22899,7 +22903,7 @@ class Effect5881(EffectDef):
                                    ship.getModifiedItemAttr('eliteBonusIndustrial2'), skill='Transport Ships')
 
 
-class Effect5888(EffectDef):
+class Effect5888(BaseEffect):
     """
     eliteIndustrialArmorResists2
 
@@ -22917,7 +22921,7 @@ class Effect5888(EffectDef):
                                    ship.getModifiedItemAttr('eliteBonusIndustrial2'), skill='Transport Ships')
 
 
-class Effect5889(EffectDef):
+class Effect5889(BaseEffect):
     """
     eliteIndustrialABHeatBonus
 
@@ -22933,7 +22937,7 @@ class Effect5889(EffectDef):
                                       'overloadSpeedFactorBonus', ship.getModifiedItemAttr('roleBonusOverheatDST'))
 
 
-class Effect5890(EffectDef):
+class Effect5890(BaseEffect):
     """
     eliteIndustrialMWDHeatBonus
 
@@ -22949,7 +22953,7 @@ class Effect5890(EffectDef):
                                       'overloadSpeedFactorBonus', ship.getModifiedItemAttr('roleBonusOverheatDST'))
 
 
-class Effect5891(EffectDef):
+class Effect5891(BaseEffect):
     """
     eliteIndustrialArmorHardenerHeatBonus
 
@@ -22965,7 +22969,7 @@ class Effect5891(EffectDef):
                                       'overloadHardeningBonus', ship.getModifiedItemAttr('roleBonusOverheatDST'))
 
 
-class Effect5892(EffectDef):
+class Effect5892(BaseEffect):
     """
     eliteIndustrialReactiveArmorHardenerHeatBonus
 
@@ -22981,7 +22985,7 @@ class Effect5892(EffectDef):
                                       'overloadSelfDurationBonus', ship.getModifiedItemAttr('roleBonusOverheatDST'))
 
 
-class Effect5893(EffectDef):
+class Effect5893(BaseEffect):
     """
     eliteIndustrialShieldHardenerHeatBonus
 
@@ -22997,7 +23001,7 @@ class Effect5893(EffectDef):
                                       'overloadHardeningBonus', ship.getModifiedItemAttr('roleBonusOverheatDST'))
 
 
-class Effect5896(EffectDef):
+class Effect5896(BaseEffect):
     """
     eliteIndustrialShieldBoosterHeatBonus
 
@@ -23015,7 +23019,7 @@ class Effect5896(EffectDef):
                                       'overloadSelfDurationBonus', ship.getModifiedItemAttr('roleBonusOverheatDST'))
 
 
-class Effect5899(EffectDef):
+class Effect5899(BaseEffect):
     """
     eliteIndustrialArmorRepairHeatBonus
 
@@ -23033,7 +23037,7 @@ class Effect5899(EffectDef):
                                       'overloadSelfDurationBonus', ship.getModifiedItemAttr('roleBonusOverheatDST'))
 
 
-class Effect5900(EffectDef):
+class Effect5900(BaseEffect):
     """
     warpSpeedAddition
 
@@ -23048,7 +23052,7 @@ class Effect5900(EffectDef):
         fit.ship.increaseItemAttr('warpSpeedMultiplier', module.getModifiedItemAttr('warpSpeedAdd'))
 
 
-class Effect5901(EffectDef):
+class Effect5901(BaseEffect):
     """
     roleBonusBulkheadCPU
 
@@ -23065,7 +23069,7 @@ class Effect5901(EffectDef):
                                       'cpu', ship.getModifiedItemAttr('cpuNeedBonus'))
 
 
-class Effect5911(EffectDef):
+class Effect5911(BaseEffect):
     """
     onlineJumpDriveConsumptionAmountBonusPercentage
 
@@ -23082,7 +23086,7 @@ class Effect5911(EffectDef):
                                module.getModifiedItemAttr('consumptionQuantityBonusPercentage'), stackingPenalties=True)
 
 
-class Effect5912(EffectDef):
+class Effect5912(BaseEffect):
     """
     systemRemoteCapTransmitterAmount
 
@@ -23100,7 +23104,7 @@ class Effect5912(EffectDef):
                                          stackingPenalties=True, penaltyGroup='postMul')
 
 
-class Effect5913(EffectDef):
+class Effect5913(BaseEffect):
     """
     systemArmorHP
 
@@ -23116,7 +23120,7 @@ class Effect5913(EffectDef):
         fit.ship.multiplyItemAttr('armorHP', beacon.getModifiedItemAttr('armorHPMultiplier'))
 
 
-class Effect5914(EffectDef):
+class Effect5914(BaseEffect):
     """
     systemEnergyNeutMultiplier
 
@@ -23135,7 +23139,7 @@ class Effect5914(EffectDef):
                                          stackingPenalties=True, penaltyGroup='postMul')
 
 
-class Effect5915(EffectDef):
+class Effect5915(BaseEffect):
     """
     systemEnergyVampireMultiplier
 
@@ -23154,7 +23158,7 @@ class Effect5915(EffectDef):
                                          stackingPenalties=True, penaltyGroup='postMul')
 
 
-class Effect5916(EffectDef):
+class Effect5916(BaseEffect):
     """
     systemDamageExplosiveBombs
 
@@ -23172,7 +23176,7 @@ class Effect5916(EffectDef):
                                            stackingPenalties=True, penaltyGroup='postMul')
 
 
-class Effect5917(EffectDef):
+class Effect5917(BaseEffect):
     """
     systemDamageKineticBombs
 
@@ -23190,7 +23194,7 @@ class Effect5917(EffectDef):
                                            stackingPenalties=True, penaltyGroup='postMul')
 
 
-class Effect5918(EffectDef):
+class Effect5918(BaseEffect):
     """
     systemDamageThermalBombs
 
@@ -23208,7 +23212,7 @@ class Effect5918(EffectDef):
                                            stackingPenalties=True, penaltyGroup='postMul')
 
 
-class Effect5919(EffectDef):
+class Effect5919(BaseEffect):
     """
     systemDamageEMBombs
 
@@ -23226,7 +23230,7 @@ class Effect5919(EffectDef):
                                            stackingPenalties=True, penaltyGroup='postMul')
 
 
-class Effect5920(EffectDef):
+class Effect5920(BaseEffect):
     """
     systemAoeCloudSize
 
@@ -23243,7 +23247,7 @@ class Effect5920(EffectDef):
                                            'aoeCloudSize', beacon.getModifiedItemAttr('aoeCloudSizeMultiplier'))
 
 
-class Effect5921(EffectDef):
+class Effect5921(BaseEffect):
     """
     systemTargetPainterMultiplier
 
@@ -23262,7 +23266,7 @@ class Effect5921(EffectDef):
                                          stackingPenalties=True, penaltyGroup='postMul')
 
 
-class Effect5922(EffectDef):
+class Effect5922(BaseEffect):
     """
     systemWebifierStrengthMultiplier
 
@@ -23280,7 +23284,7 @@ class Effect5922(EffectDef):
                                          stackingPenalties=True, penaltyGroup='postMul')
 
 
-class Effect5923(EffectDef):
+class Effect5923(BaseEffect):
     """
     systemNeutBombs
 
@@ -23299,7 +23303,7 @@ class Effect5923(EffectDef):
                                            stackingPenalties=True, penaltyGroup='postMul')
 
 
-class Effect5924(EffectDef):
+class Effect5924(BaseEffect):
     """
     systemGravimetricECMBomb
 
@@ -23318,7 +23322,7 @@ class Effect5924(EffectDef):
                                            stackingPenalties=True, penaltyGroup='postMul')
 
 
-class Effect5925(EffectDef):
+class Effect5925(BaseEffect):
     """
     systemLadarECMBomb
 
@@ -23337,7 +23341,7 @@ class Effect5925(EffectDef):
                                            stackingPenalties=True, penaltyGroup='postMul')
 
 
-class Effect5926(EffectDef):
+class Effect5926(BaseEffect):
     """
     systemMagnetrometricECMBomb
 
@@ -23356,7 +23360,7 @@ class Effect5926(EffectDef):
                                            stackingPenalties=True, penaltyGroup='postMul')
 
 
-class Effect5927(EffectDef):
+class Effect5927(BaseEffect):
     """
     systemRadarECMBomb
 
@@ -23375,7 +23379,7 @@ class Effect5927(EffectDef):
                                            stackingPenalties=True, penaltyGroup='postMul')
 
 
-class Effect5929(EffectDef):
+class Effect5929(BaseEffect):
     """
     systemDroneTracking
 
@@ -23393,7 +23397,7 @@ class Effect5929(EffectDef):
                                         stackingPenalties=True, penaltyGroup='postMul')
 
 
-class Effect5934(EffectDef):
+class Effect5934(BaseEffect):
     """
     warpScrambleBlockMWDWithNPCEffect
 
@@ -23422,7 +23426,7 @@ class Effect5934(EffectDef):
                 mod.state = FittingModuleState.ONLINE
 
 
-class Effect5938(EffectDef):
+class Effect5938(BaseEffect):
     """
     shipBonusSmallMissileExplosionRadiusCF2
 
@@ -23439,7 +23443,7 @@ class Effect5938(EffectDef):
             'aoeCloudSize', ship.getModifiedItemAttr('shipBonusCF2'), skill='Caldari Frigate')
 
 
-class Effect5939(EffectDef):
+class Effect5939(BaseEffect):
     """
     shipRocketRoFBonusAF2
 
@@ -23455,7 +23459,7 @@ class Effect5939(EffectDef):
                                       'speed', ship.getModifiedItemAttr('shipBonus2AF'), skill='Amarr Frigate')
 
 
-class Effect5940(EffectDef):
+class Effect5940(BaseEffect):
     """
     eliteBonusInterdictorsSHTRoF1
 
@@ -23471,7 +23475,7 @@ class Effect5940(EffectDef):
                                       'speed', ship.getModifiedItemAttr('eliteBonusInterdictors1'), skill='Interdictors')
 
 
-class Effect5944(EffectDef):
+class Effect5944(BaseEffect):
     """
     shipMissileLauncherRoFAD1Fixed
 
@@ -23487,7 +23491,7 @@ class Effect5944(EffectDef):
                                       'speed', ship.getModifiedItemAttr('shipBonusAD1'), skill='Amarr Destroyer')
 
 
-class Effect5945(EffectDef):
+class Effect5945(BaseEffect):
     """
     cloakingPrototype
 
@@ -23508,7 +23512,7 @@ class Effect5945(EffectDef):
         fit.ship.multiplyItemAttr('maxVelocity', module.getModifiedItemAttr('maxVelocityModifier'))
 
 
-class Effect5951(EffectDef):
+class Effect5951(BaseEffect):
     """
     drawbackWarpSpeed
 
@@ -23523,7 +23527,7 @@ class Effect5951(EffectDef):
         fit.ship.boostItemAttr('warpSpeedMultiplier', module.getModifiedItemAttr('drawback'), stackingPenalties=True)
 
 
-class Effect5956(EffectDef):
+class Effect5956(BaseEffect):
     """
     shipMETDamageBonusAC2
 
@@ -23539,7 +23543,7 @@ class Effect5956(EffectDef):
                                       'damageMultiplier', ship.getModifiedItemAttr('shipBonusAC2'), skill='Amarr Cruiser')
 
 
-class Effect5957(EffectDef):
+class Effect5957(BaseEffect):
     """
     eliteBonusHeavyInterdictorsMETOptimal
 
@@ -23556,7 +23560,7 @@ class Effect5957(EffectDef):
                                       skill='Heavy Interdiction Cruisers')
 
 
-class Effect5958(EffectDef):
+class Effect5958(BaseEffect):
     """
     shipHybridTrackingGC
 
@@ -23573,7 +23577,7 @@ class Effect5958(EffectDef):
                                       'trackingSpeed', ship.getModifiedItemAttr('shipBonusGC'), skill='Gallente Cruiser')
 
 
-class Effect5959(EffectDef):
+class Effect5959(BaseEffect):
     """
     eliteBonusHeavyInterdictorsHybridOptimal1
 
@@ -23590,7 +23594,7 @@ class Effect5959(EffectDef):
                                       skill='Heavy Interdiction Cruisers')
 
 
-class Effect5994(EffectDef):
+class Effect5994(BaseEffect):
     """
     resistanceKillerHullAll
 
@@ -23607,7 +23611,7 @@ class Effect5994(EffectDef):
             fit.ship.forceItemAttr(tgtAttr, module.getModifiedItemAttr('resistanceKillerHull'))
 
 
-class Effect5995(EffectDef):
+class Effect5995(BaseEffect):
     """
     resistanceKillerShieldArmorAll
 
@@ -23625,7 +23629,7 @@ class Effect5995(EffectDef):
                 fit.ship.forceItemAttr(tgtAttr, module.getModifiedItemAttr('resistanceKiller'))
 
 
-class Effect5998(EffectDef):
+class Effect5998(BaseEffect):
     """
     freighterSMACapacityBonusO1
 
@@ -23642,7 +23646,7 @@ class Effect5998(EffectDef):
                                stackingPenalties=True)
 
 
-class Effect6001(EffectDef):
+class Effect6001(BaseEffect):
     """
     freighterAgilityBonus2O2
 
@@ -23658,7 +23662,7 @@ class Effect6001(EffectDef):
                                skill='ORE Freighter')
 
 
-class Effect6006(EffectDef):
+class Effect6006(BaseEffect):
     """
     shipSETDamageAmarrTacticalDestroyer1
 
@@ -23675,7 +23679,7 @@ class Effect6006(EffectDef):
                                       skill='Amarr Tactical Destroyer')
 
 
-class Effect6007(EffectDef):
+class Effect6007(BaseEffect):
     """
     shipSETCapNeedAmarrTacticalDestroyer2
 
@@ -23692,7 +23696,7 @@ class Effect6007(EffectDef):
                                       skill='Amarr Tactical Destroyer')
 
 
-class Effect6008(EffectDef):
+class Effect6008(BaseEffect):
     """
     shipHeatDamageAmarrTacticalDestroyer3
 
@@ -23709,7 +23713,7 @@ class Effect6008(EffectDef):
                                       skill='Amarr Tactical Destroyer')
 
 
-class Effect6009(EffectDef):
+class Effect6009(BaseEffect):
     """
     probeLauncherCPUPercentRoleBonusT3
 
@@ -23725,7 +23729,7 @@ class Effect6009(EffectDef):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Astrometrics'), 'cpu', src.getModifiedItemAttr('roleBonusT3ProbeCPU'))
 
 
-class Effect6010(EffectDef):
+class Effect6010(BaseEffect):
     """
     shipModeMaxTargetRangePostDiv
 
@@ -23745,7 +23749,7 @@ class Effect6010(EffectDef):
         )
 
 
-class Effect6011(EffectDef):
+class Effect6011(BaseEffect):
     """
     shipModeSETOptimalRangePostDiv
 
@@ -23766,7 +23770,7 @@ class Effect6011(EffectDef):
         )
 
 
-class Effect6012(EffectDef):
+class Effect6012(BaseEffect):
     """
     shipModeScanStrengthPostDiv
 
@@ -23787,7 +23791,7 @@ class Effect6012(EffectDef):
             )
 
 
-class Effect6014(EffectDef):
+class Effect6014(BaseEffect):
     """
     modeSigRadiusPostDiv
 
@@ -23804,7 +23808,7 @@ class Effect6014(EffectDef):
                                   stackingPenalties=True, penaltyGroup='postDiv')
 
 
-class Effect6015(EffectDef):
+class Effect6015(BaseEffect):
     """
     modeArmorResonancePostDiv
 
@@ -23830,7 +23834,7 @@ class Effect6015(EffectDef):
             )
 
 
-class Effect6016(EffectDef):
+class Effect6016(BaseEffect):
     """
     modeAgilityPostDiv
 
@@ -23850,7 +23854,7 @@ class Effect6016(EffectDef):
         )
 
 
-class Effect6017(EffectDef):
+class Effect6017(BaseEffect):
     """
     modeVelocityPostDiv
 
@@ -23870,7 +23874,7 @@ class Effect6017(EffectDef):
         )
 
 
-class Effect6020(EffectDef):
+class Effect6020(BaseEffect):
     """
     shipBonusEnergyNeutOptimalRS3
 
@@ -23886,7 +23890,7 @@ class Effect6020(EffectDef):
                                       src.getModifiedItemAttr('eliteBonusReconShip3'), skill='Recon Ships')
 
 
-class Effect6021(EffectDef):
+class Effect6021(BaseEffect):
     """
     shipBonusEnergyNosOptimalRS3
 
@@ -23902,7 +23906,7 @@ class Effect6021(EffectDef):
                                       src.getModifiedItemAttr('eliteBonusReconShip3'), skill='Recon Ships')
 
 
-class Effect6025(EffectDef):
+class Effect6025(BaseEffect):
     """
     eliteReconBonusMHTOptimalRange1
 
@@ -23918,7 +23922,7 @@ class Effect6025(EffectDef):
                                       'maxRange', ship.getModifiedItemAttr('eliteBonusReconShip1'), skill='Recon Ships')
 
 
-class Effect6027(EffectDef):
+class Effect6027(BaseEffect):
     """
     eliteReconBonusMPTdamage1
 
@@ -23935,7 +23939,7 @@ class Effect6027(EffectDef):
                                       skill='Recon Ships')
 
 
-class Effect6032(EffectDef):
+class Effect6032(BaseEffect):
     """
     remoteCapacitorTransmitterPowerNeedBonusEffect
 
@@ -23951,7 +23955,7 @@ class Effect6032(EffectDef):
                                       'power', ship.getModifiedItemAttr('powerTransferPowerNeedBonus'))
 
 
-class Effect6036(EffectDef):
+class Effect6036(BaseEffect):
     """
     shipHeatDamageMinmatarTacticalDestroyer3
 
@@ -23968,7 +23972,7 @@ class Effect6036(EffectDef):
                                       skill='Minmatar Tactical Destroyer')
 
 
-class Effect6037(EffectDef):
+class Effect6037(BaseEffect):
     """
     shipSPTDamageMinmatarTacticalDestroyer1
 
@@ -23985,7 +23989,7 @@ class Effect6037(EffectDef):
                                       skill='Minmatar Tactical Destroyer')
 
 
-class Effect6038(EffectDef):
+class Effect6038(BaseEffect):
     """
     shipSPTOptimalMinmatarTacticalDestroyer2
 
@@ -24002,7 +24006,7 @@ class Effect6038(EffectDef):
                                       skill='Minmatar Tactical Destroyer')
 
 
-class Effect6039(EffectDef):
+class Effect6039(BaseEffect):
     """
     shipModeSPTTrackingPostDiv
 
@@ -24023,7 +24027,7 @@ class Effect6039(EffectDef):
         )
 
 
-class Effect6040(EffectDef):
+class Effect6040(BaseEffect):
     """
     modeMWDSigRadiusPostDiv
 
@@ -24044,7 +24048,7 @@ class Effect6040(EffectDef):
         )
 
 
-class Effect6041(EffectDef):
+class Effect6041(BaseEffect):
     """
     modeShieldResonancePostDiv
 
@@ -24071,7 +24075,7 @@ class Effect6041(EffectDef):
             )
 
 
-class Effect6045(EffectDef):
+class Effect6045(BaseEffect):
     """
     shipBonusSentryDamageMultiplierGC3
 
@@ -24087,7 +24091,7 @@ class Effect6045(EffectDef):
                                      'damageMultiplier', ship.getModifiedItemAttr('shipBonusGC3'), skill='Gallente Cruiser')
 
 
-class Effect6046(EffectDef):
+class Effect6046(BaseEffect):
     """
     shipBonusSentryHPGC3
 
@@ -24103,7 +24107,7 @@ class Effect6046(EffectDef):
                                      'hp', ship.getModifiedItemAttr('shipBonusGC3'), skill='Gallente Cruiser')
 
 
-class Effect6047(EffectDef):
+class Effect6047(BaseEffect):
     """
     shipBonusSentryArmorHPGC3
 
@@ -24119,7 +24123,7 @@ class Effect6047(EffectDef):
                                      'armorHP', ship.getModifiedItemAttr('shipBonusGC3'), skill='Gallente Cruiser')
 
 
-class Effect6048(EffectDef):
+class Effect6048(BaseEffect):
     """
     shipBonusSentryShieldHPGC3
 
@@ -24135,7 +24139,7 @@ class Effect6048(EffectDef):
                                      'shieldCapacity', ship.getModifiedItemAttr('shipBonusGC3'), skill='Gallente Cruiser')
 
 
-class Effect6051(EffectDef):
+class Effect6051(BaseEffect):
     """
     shipBonusLightDroneDamageMultiplierGC2
 
@@ -24151,7 +24155,7 @@ class Effect6051(EffectDef):
                                      'damageMultiplier', ship.getModifiedItemAttr('shipBonusGC2'), skill='Gallente Cruiser')
 
 
-class Effect6052(EffectDef):
+class Effect6052(BaseEffect):
     """
     shipBonusMediumDroneDamageMultiplierGC2
 
@@ -24167,7 +24171,7 @@ class Effect6052(EffectDef):
                                      'damageMultiplier', ship.getModifiedItemAttr('shipBonusGC2'), skill='Gallente Cruiser')
 
 
-class Effect6053(EffectDef):
+class Effect6053(BaseEffect):
     """
     shipBonusHeavyDroneDamageMultiplierGC2
 
@@ -24183,7 +24187,7 @@ class Effect6053(EffectDef):
                                      'damageMultiplier', ship.getModifiedItemAttr('shipBonusGC2'), skill='Gallente Cruiser')
 
 
-class Effect6054(EffectDef):
+class Effect6054(BaseEffect):
     """
     shipBonusHeavyDroneHPGC2
 
@@ -24199,7 +24203,7 @@ class Effect6054(EffectDef):
                                      'hp', ship.getModifiedItemAttr('shipBonusGC2'), skill='Gallente Cruiser')
 
 
-class Effect6055(EffectDef):
+class Effect6055(BaseEffect):
     """
     shipBonusHeavyDroneArmorHPGC2
 
@@ -24215,7 +24219,7 @@ class Effect6055(EffectDef):
                                      'armorHP', ship.getModifiedItemAttr('shipBonusGC2'), skill='Gallente Cruiser')
 
 
-class Effect6056(EffectDef):
+class Effect6056(BaseEffect):
     """
     shipBonusHeavyDroneShieldHPGC2
 
@@ -24231,7 +24235,7 @@ class Effect6056(EffectDef):
                                      'shieldCapacity', ship.getModifiedItemAttr('shipBonusGC2'), skill='Gallente Cruiser')
 
 
-class Effect6057(EffectDef):
+class Effect6057(BaseEffect):
     """
     shipBonusMediumDroneShieldHPGC2
 
@@ -24247,7 +24251,7 @@ class Effect6057(EffectDef):
                                      'shieldCapacity', ship.getModifiedItemAttr('shipBonusGC2'), skill='Gallente Cruiser')
 
 
-class Effect6058(EffectDef):
+class Effect6058(BaseEffect):
     """
     shipBonusMediumDroneArmorHPGC2
 
@@ -24263,7 +24267,7 @@ class Effect6058(EffectDef):
                                      'armorHP', ship.getModifiedItemAttr('shipBonusGC2'), skill='Gallente Cruiser')
 
 
-class Effect6059(EffectDef):
+class Effect6059(BaseEffect):
     """
     shipBonusMediumDroneHPGC2
 
@@ -24279,7 +24283,7 @@ class Effect6059(EffectDef):
                                      'hp', ship.getModifiedItemAttr('shipBonusGC2'), skill='Gallente Cruiser')
 
 
-class Effect6060(EffectDef):
+class Effect6060(BaseEffect):
     """
     shipBonusLightDroneHPGC2
 
@@ -24295,7 +24299,7 @@ class Effect6060(EffectDef):
                                      'hp', ship.getModifiedItemAttr('shipBonusGC2'), skill='Gallente Cruiser')
 
 
-class Effect6061(EffectDef):
+class Effect6061(BaseEffect):
     """
     shipBonusLightDroneArmorHPGC2
 
@@ -24311,7 +24315,7 @@ class Effect6061(EffectDef):
                                      'armorHP', ship.getModifiedItemAttr('shipBonusGC2'), skill='Gallente Cruiser')
 
 
-class Effect6062(EffectDef):
+class Effect6062(BaseEffect):
     """
     shipBonusLightDroneShieldHPGC2
 
@@ -24327,7 +24331,7 @@ class Effect6062(EffectDef):
                                      'shieldCapacity', ship.getModifiedItemAttr('shipBonusGC2'), skill='Gallente Cruiser')
 
 
-class Effect6063(EffectDef):
+class Effect6063(BaseEffect):
     """
     entosisLink
 
@@ -24348,7 +24352,7 @@ class Effect6063(EffectDef):
             )
 
 
-class Effect6076(EffectDef):
+class Effect6076(BaseEffect):
     """
     shipModeMissileVelocityPostDiv
 
@@ -24369,7 +24373,7 @@ class Effect6076(EffectDef):
         )
 
 
-class Effect6077(EffectDef):
+class Effect6077(BaseEffect):
     """
     shipHeatDamageCaldariTacticalDestroyer3
 
@@ -24386,7 +24390,7 @@ class Effect6077(EffectDef):
                                       skill='Caldari Tactical Destroyer')
 
 
-class Effect6083(EffectDef):
+class Effect6083(BaseEffect):
     """
     shipSmallMissileDmgPirateFaction
 
@@ -24405,7 +24409,7 @@ class Effect6083(EffectDef):
                 '{0}Damage'.format(damageType), ship.getModifiedItemAttr('shipBonusRole7'))
 
 
-class Effect6085(EffectDef):
+class Effect6085(BaseEffect):
     """
     shipMissileRoFCaldariTacticalDestroyer1
 
@@ -24422,7 +24426,7 @@ class Effect6085(EffectDef):
                                       skill='Caldari Tactical Destroyer')
 
 
-class Effect6088(EffectDef):
+class Effect6088(BaseEffect):
     """
     shipBonusHeavyAssaultMissileAllDamageMC2
 
@@ -24441,7 +24445,7 @@ class Effect6088(EffectDef):
                                             skill='Minmatar Cruiser')
 
 
-class Effect6093(EffectDef):
+class Effect6093(BaseEffect):
     """
     shipBonusHeavyMissileAllDamageMC2
 
@@ -24460,7 +24464,7 @@ class Effect6093(EffectDef):
                                             skill='Minmatar Cruiser')
 
 
-class Effect6096(EffectDef):
+class Effect6096(BaseEffect):
     """
     shipBonusLightMissileAllDamageMC2
 
@@ -24479,7 +24483,7 @@ class Effect6096(EffectDef):
                                             skill='Minmatar Cruiser')
 
 
-class Effect6098(EffectDef):
+class Effect6098(BaseEffect):
     """
     shipMissileReloadTimeCaldariTacticalDestroyer2
 
@@ -24496,7 +24500,7 @@ class Effect6098(EffectDef):
                                       skill='Caldari Tactical Destroyer')
 
 
-class Effect6104(EffectDef):
+class Effect6104(BaseEffect):
     """
     entosisDurationMultiply
 
@@ -24512,7 +24516,7 @@ class Effect6104(EffectDef):
                                          'duration', ship.getModifiedItemAttr('entosisDurationMultiplier') or 1)
 
 
-class Effect6110(EffectDef):
+class Effect6110(BaseEffect):
     """
     missileVelocityBonusOnline
 
@@ -24529,7 +24533,7 @@ class Effect6110(EffectDef):
                                         stackingPenalties=True)
 
 
-class Effect6111(EffectDef):
+class Effect6111(BaseEffect):
     """
     missileExplosionDelayBonusOnline
 
@@ -24546,7 +24550,7 @@ class Effect6111(EffectDef):
                                         stackingPenalties=True)
 
 
-class Effect6112(EffectDef):
+class Effect6112(BaseEffect):
     """
     missileAOECloudSizeBonusOnline
 
@@ -24563,7 +24567,7 @@ class Effect6112(EffectDef):
                                         stackingPenalties=True)
 
 
-class Effect6113(EffectDef):
+class Effect6113(BaseEffect):
     """
     missileAOEVelocityBonusOnline
 
@@ -24581,7 +24585,7 @@ class Effect6113(EffectDef):
                                         stackingPenalties=True)
 
 
-class Effect6128(EffectDef):
+class Effect6128(BaseEffect):
     """
     scriptMissileGuidanceComputerAOECloudSizeBonusBonus
 
@@ -24597,7 +24601,7 @@ class Effect6128(EffectDef):
         module.boostItemAttr('aoeCloudSizeBonus', module.getModifiedChargeAttr('aoeCloudSizeBonusBonus'))
 
 
-class Effect6129(EffectDef):
+class Effect6129(BaseEffect):
     """
     scriptMissileGuidanceComputerAOEVelocityBonusBonus
 
@@ -24613,7 +24617,7 @@ class Effect6129(EffectDef):
         module.boostItemAttr('aoeVelocityBonus', module.getModifiedChargeAttr('aoeVelocityBonusBonus'))
 
 
-class Effect6130(EffectDef):
+class Effect6130(BaseEffect):
     """
     scriptMissileGuidanceComputerMissileVelocityBonusBonus
 
@@ -24628,7 +24632,7 @@ class Effect6130(EffectDef):
         module.boostItemAttr('missileVelocityBonus', module.getModifiedChargeAttr('missileVelocityBonusBonus'))
 
 
-class Effect6131(EffectDef):
+class Effect6131(BaseEffect):
     """
     scriptMissileGuidanceComputerExplosionDelayBonusBonus
 
@@ -24643,7 +24647,7 @@ class Effect6131(EffectDef):
         module.boostItemAttr('explosionDelayBonus', module.getModifiedChargeAttr('explosionDelayBonusBonus'))
 
 
-class Effect6135(EffectDef):
+class Effect6135(BaseEffect):
     """
     missileGuidanceComputerBonus4
 
@@ -24666,7 +24670,7 @@ class Effect6135(EffectDef):
                                             stackingPenalties=True)
 
 
-class Effect6144(EffectDef):
+class Effect6144(BaseEffect):
     """
     overloadSelfMissileGuidanceBonus5
 
@@ -24688,7 +24692,7 @@ class Effect6144(EffectDef):
             module.boostItemAttr(tgtAttr, module.getModifiedItemAttr('overloadTrackingModuleStrengthBonus'))
 
 
-class Effect6148(EffectDef):
+class Effect6148(BaseEffect):
     """
     shipHeatDamageGallenteTacticalDestroyer3
 
@@ -24705,7 +24709,7 @@ class Effect6148(EffectDef):
                                       skill='Gallente Tactical Destroyer')
 
 
-class Effect6149(EffectDef):
+class Effect6149(BaseEffect):
     """
     shipSHTRoFGallenteTacticalDestroyer1
 
@@ -24722,7 +24726,7 @@ class Effect6149(EffectDef):
                                       skill='Gallente Tactical Destroyer')
 
 
-class Effect6150(EffectDef):
+class Effect6150(BaseEffect):
     """
     shipSHTTrackingGallenteTacticalDestroyer2
 
@@ -24739,7 +24743,7 @@ class Effect6150(EffectDef):
                                       skill='Gallente Tactical Destroyer')
 
 
-class Effect6151(EffectDef):
+class Effect6151(BaseEffect):
     """
     modeHullResonancePostDiv
 
@@ -24763,7 +24767,7 @@ class Effect6151(EffectDef):
             )
 
 
-class Effect6152(EffectDef):
+class Effect6152(BaseEffect):
     """
     shipModeSHTOptimalRangePostDiv
 
@@ -24784,7 +24788,7 @@ class Effect6152(EffectDef):
         )
 
 
-class Effect6153(EffectDef):
+class Effect6153(BaseEffect):
     """
     modeMWDCapPostDiv
 
@@ -24803,7 +24807,7 @@ class Effect6153(EffectDef):
         )
 
 
-class Effect6154(EffectDef):
+class Effect6154(BaseEffect):
     """
     modeMWDBoostPostDiv
 
@@ -24824,7 +24828,7 @@ class Effect6154(EffectDef):
         )
 
 
-class Effect6155(EffectDef):
+class Effect6155(BaseEffect):
     """
     modeArmorRepDurationPostDiv
 
@@ -24843,7 +24847,7 @@ class Effect6155(EffectDef):
         )
 
 
-class Effect6163(EffectDef):
+class Effect6163(BaseEffect):
     """
     passiveSpeedLimit
 
@@ -24859,7 +24863,7 @@ class Effect6163(EffectDef):
         fit.extraAttributes['speedLimit'] = src.getModifiedItemAttr('speedLimit')
 
 
-class Effect6164(EffectDef):
+class Effect6164(BaseEffect):
     """
     systemMaxVelocityPercentage
 
@@ -24875,7 +24879,7 @@ class Effect6164(EffectDef):
         fit.ship.boostItemAttr('maxVelocity', beacon.getModifiedItemAttr('maxVelocityMultiplier'), stackingPenalties=True)
 
 
-class Effect6166(EffectDef):
+class Effect6166(BaseEffect):
     """
     shipBonusWDFGnullPenalties
 
@@ -24896,7 +24900,7 @@ class Effect6166(EffectDef):
                                       'massBonusPercentage', ship.getModifiedItemAttr('shipBonusAT'))
 
 
-class Effect6170(EffectDef):
+class Effect6170(BaseEffect):
     """
     entosisCPUPenalty
 
@@ -24912,7 +24916,7 @@ class Effect6170(EffectDef):
                                          'entosisCPUAdd', ship.getModifiedItemAttr('entosisCPUPenalty'))
 
 
-class Effect6171(EffectDef):
+class Effect6171(BaseEffect):
     """
     entosisCPUAddition
 
@@ -24927,7 +24931,7 @@ class Effect6171(EffectDef):
         module.increaseItemAttr('cpu', module.getModifiedItemAttr('entosisCPUAdd'))
 
 
-class Effect6172(EffectDef):
+class Effect6172(BaseEffect):
     """
     battlecruiserMETRange
 
@@ -24945,7 +24949,7 @@ class Effect6172(EffectDef):
                                       'falloff', ship.getModifiedItemAttr('roleBonusCBC'))
 
 
-class Effect6173(EffectDef):
+class Effect6173(BaseEffect):
     """
     battlecruiserMHTRange
 
@@ -24964,7 +24968,7 @@ class Effect6173(EffectDef):
                                       'falloff', ship.getModifiedItemAttr('roleBonusCBC'))
 
 
-class Effect6174(EffectDef):
+class Effect6174(BaseEffect):
     """
     battlecruiserMPTRange
 
@@ -24982,7 +24986,7 @@ class Effect6174(EffectDef):
                                       'falloff', ship.getModifiedItemAttr('roleBonusCBC'))
 
 
-class Effect6175(EffectDef):
+class Effect6175(BaseEffect):
     """
     battlecruiserMissileRange
 
@@ -24999,7 +25003,7 @@ class Effect6175(EffectDef):
                                         'maxVelocity', skill.getModifiedItemAttr('roleBonusCBC'))
 
 
-class Effect6176(EffectDef):
+class Effect6176(BaseEffect):
     """
     battlecruiserDroneSpeed
 
@@ -25016,7 +25020,7 @@ class Effect6176(EffectDef):
                                      'maxVelocity', ship.getModifiedItemAttr('roleBonusCBC'))
 
 
-class Effect6177(EffectDef):
+class Effect6177(BaseEffect):
     """
     shipHybridDmg1CBC2
 
@@ -25033,7 +25037,7 @@ class Effect6177(EffectDef):
                                       skill='Caldari Battlecruiser')
 
 
-class Effect6178(EffectDef):
+class Effect6178(BaseEffect):
     """
     shipBonusProjectileTrackingMBC2
 
@@ -25050,7 +25054,7 @@ class Effect6178(EffectDef):
                                       skill='Minmatar Battlecruiser')
 
 
-class Effect6184(EffectDef):
+class Effect6184(BaseEffect):
     """
     shipModuleRemoteCapacitorTransmitter
 
@@ -25074,7 +25078,7 @@ class Effect6184(EffectDef):
             fit.addDrain(src, duration, -amount, 0)
 
 
-class Effect6185(EffectDef):
+class Effect6185(BaseEffect):
     """
     shipModuleRemoteHullRepairer
 
@@ -25094,7 +25098,7 @@ class Effect6185(EffectDef):
         fit.extraAttributes.increase('hullRepair', bonus / duration)
 
 
-class Effect6186(EffectDef):
+class Effect6186(BaseEffect):
     """
     shipModuleRemoteShieldBooster
 
@@ -25112,7 +25116,7 @@ class Effect6186(EffectDef):
             fit.extraAttributes.increase('shieldRepair', bonus / duration, **kwargs)
 
 
-class Effect6187(EffectDef):
+class Effect6187(BaseEffect):
     """
     energyNeutralizerFalloff
 
@@ -25137,7 +25141,7 @@ class Effect6187(EffectDef):
             fit.addDrain(src, time, amount, 0)
 
 
-class Effect6188(EffectDef):
+class Effect6188(BaseEffect):
     """
     shipModuleRemoteArmorRepairer
 
@@ -25159,7 +25163,7 @@ class Effect6188(EffectDef):
             fit.extraAttributes.increase('armorRepairFullSpool', rps)
 
 
-class Effect6195(EffectDef):
+class Effect6195(BaseEffect):
     """
     expeditionFrigateShieldResistance1
 
@@ -25181,7 +25185,7 @@ class Effect6195(EffectDef):
                                skill='Expedition Frigates')
 
 
-class Effect6196(EffectDef):
+class Effect6196(BaseEffect):
     """
     expeditionFrigateBonusIceHarvestingCycleTime2
 
@@ -25197,7 +25201,7 @@ class Effect6196(EffectDef):
                                       src.getModifiedItemAttr('eliteBonusExpedition2'), skill='Expedition Frigates')
 
 
-class Effect6197(EffectDef):
+class Effect6197(BaseEffect):
     """
     energyNosferatuFalloff
 
@@ -25223,7 +25227,7 @@ class Effect6197(EffectDef):
             src.itemModifiedAttributes.force('capacitorNeed', -amount)
 
 
-class Effect6201(EffectDef):
+class Effect6201(BaseEffect):
     """
     doomsdaySlash
 
@@ -25234,7 +25238,7 @@ class Effect6201(EffectDef):
     type = 'active'
 
 
-class Effect6208(EffectDef):
+class Effect6208(BaseEffect):
     """
     microJumpPortalDrive
 
@@ -25250,7 +25254,7 @@ class Effect6208(EffectDef):
                                stackingPenalties=True)
 
 
-class Effect6214(EffectDef):
+class Effect6214(BaseEffect):
     """
     roleBonusCDLinksPGReduction
 
@@ -25267,7 +25271,7 @@ class Effect6214(EffectDef):
                                       src.getModifiedItemAttr('roleBonusCD'))
 
 
-class Effect6216(EffectDef):
+class Effect6216(BaseEffect):
     """
     structureEnergyNeutralizerFalloff
 
@@ -25293,7 +25297,7 @@ class Effect6216(EffectDef):
                 fit.addDrain(src, time, amount, 0)
 
 
-class Effect6222(EffectDef):
+class Effect6222(BaseEffect):
     """
     structureWarpScrambleBlockMWDWithNPCEffect
 
@@ -25316,7 +25320,7 @@ class Effect6222(EffectDef):
                         mod.state = FittingModuleState.ONLINE
 
 
-class Effect6230(EffectDef):
+class Effect6230(BaseEffect):
     """
     shipBonusEnergyNeutOptimalRS1
 
@@ -25332,7 +25336,7 @@ class Effect6230(EffectDef):
                                       src.getModifiedItemAttr('eliteBonusReconShip1'), skill='Recon Ships')
 
 
-class Effect6232(EffectDef):
+class Effect6232(BaseEffect):
     """
     shipBonusEnergyNeutFalloffRS2
 
@@ -25348,7 +25352,7 @@ class Effect6232(EffectDef):
                                       src.getModifiedItemAttr('eliteBonusReconShip2'), skill='Recon Ships')
 
 
-class Effect6233(EffectDef):
+class Effect6233(BaseEffect):
     """
     shipBonusEnergyNeutFalloffRS3
 
@@ -25364,7 +25368,7 @@ class Effect6233(EffectDef):
                                       src.getModifiedItemAttr('eliteBonusReconShip3'), skill='Recon Ships')
 
 
-class Effect6234(EffectDef):
+class Effect6234(BaseEffect):
     """
     shipBonusEnergyNosOptimalRS1
 
@@ -25380,7 +25384,7 @@ class Effect6234(EffectDef):
                                       src.getModifiedItemAttr('eliteBonusReconShip1'), skill='Recon Ships')
 
 
-class Effect6237(EffectDef):
+class Effect6237(BaseEffect):
     """
     shipBonusEnergyNosFalloffRS2
 
@@ -25396,7 +25400,7 @@ class Effect6237(EffectDef):
                                       src.getModifiedItemAttr('eliteBonusReconShip2'), skill='Recon Ships')
 
 
-class Effect6238(EffectDef):
+class Effect6238(BaseEffect):
     """
     shipBonusEnergyNosFalloffRS3
 
@@ -25412,7 +25416,7 @@ class Effect6238(EffectDef):
                                       src.getModifiedItemAttr('eliteBonusReconShip3'), skill='Recon Ships')
 
 
-class Effect6239(EffectDef):
+class Effect6239(BaseEffect):
     """
     miningFrigateBonusIceHarvestingCycleTime2
 
@@ -25428,7 +25432,7 @@ class Effect6239(EffectDef):
                                       src.getModifiedItemAttr('shipBonusOREfrig2'), skill='Mining Frigate')
 
 
-class Effect6241(EffectDef):
+class Effect6241(BaseEffect):
     """
     shipBonusEnergyNeutFalloffAD1
 
@@ -25444,7 +25448,7 @@ class Effect6241(EffectDef):
                                       src.getModifiedItemAttr('shipBonusAD1'), skill='Amarr Destroyer')
 
 
-class Effect6242(EffectDef):
+class Effect6242(BaseEffect):
     """
     shipBonusEnergyNeutOptimalAD2
 
@@ -25460,7 +25464,7 @@ class Effect6242(EffectDef):
                                       src.getModifiedItemAttr('shipBonusAD2'), skill='Amarr Destroyer')
 
 
-class Effect6245(EffectDef):
+class Effect6245(BaseEffect):
     """
     shipBonusEnergyNosOptimalAD2
 
@@ -25476,7 +25480,7 @@ class Effect6245(EffectDef):
                                       src.getModifiedItemAttr('shipBonusAD2'), skill='Amarr Destroyer')
 
 
-class Effect6246(EffectDef):
+class Effect6246(BaseEffect):
     """
     shipBonusEnergyNosFalloffAD1
 
@@ -25492,7 +25496,7 @@ class Effect6246(EffectDef):
                                       src.getModifiedItemAttr('shipBonusAD1'), skill='Amarr Destroyer')
 
 
-class Effect6253(EffectDef):
+class Effect6253(BaseEffect):
     """
     shipBonusEnergyNeutOptimalAB
 
@@ -25508,7 +25512,7 @@ class Effect6253(EffectDef):
                                       src.getModifiedItemAttr('shipBonusAB'), skill='Amarr Battleship')
 
 
-class Effect6256(EffectDef):
+class Effect6256(BaseEffect):
     """
     shipBonusEnergyNeutFalloffAB2
 
@@ -25524,7 +25528,7 @@ class Effect6256(EffectDef):
                                       src.getModifiedItemAttr('shipBonusAB2'), skill='Amarr Battleship')
 
 
-class Effect6257(EffectDef):
+class Effect6257(BaseEffect):
     """
     shipBonusEnergyNosOptimalAB
 
@@ -25540,7 +25544,7 @@ class Effect6257(EffectDef):
                                       src.getModifiedItemAttr('shipBonusAB'), skill='Amarr Battleship')
 
 
-class Effect6260(EffectDef):
+class Effect6260(BaseEffect):
     """
     shipBonusEnergyNosFalloffAB2
 
@@ -25556,7 +25560,7 @@ class Effect6260(EffectDef):
                                       src.getModifiedItemAttr('shipBonusAB2'), skill='Amarr Battleship')
 
 
-class Effect6267(EffectDef):
+class Effect6267(BaseEffect):
     """
     shipBonusEnergyNeutOptimalEAF1
 
@@ -25573,7 +25577,7 @@ class Effect6267(EffectDef):
                                       skill='Electronic Attack Ships')
 
 
-class Effect6272(EffectDef):
+class Effect6272(BaseEffect):
     """
     shipBonusEnergyNeutFalloffEAF3
 
@@ -25590,7 +25594,7 @@ class Effect6272(EffectDef):
                                       skill='Electronic Attack Ships')
 
 
-class Effect6273(EffectDef):
+class Effect6273(BaseEffect):
     """
     shipBonusEnergyNosOptimalEAF1
 
@@ -25607,7 +25611,7 @@ class Effect6273(EffectDef):
                                       skill='Electronic Attack Ships')
 
 
-class Effect6278(EffectDef):
+class Effect6278(BaseEffect):
     """
     shipBonusEnergyNosFalloffEAF3
 
@@ -25624,7 +25628,7 @@ class Effect6278(EffectDef):
                                       skill='Electronic Attack Ships')
 
 
-class Effect6281(EffectDef):
+class Effect6281(BaseEffect):
     """
     shipBonusEnergyNeutOptimalAF2
 
@@ -25640,7 +25644,7 @@ class Effect6281(EffectDef):
                                       src.getModifiedItemAttr('shipBonus2AF'), skill='Amarr Frigate')
 
 
-class Effect6285(EffectDef):
+class Effect6285(BaseEffect):
     """
     shipBonusEnergyNeutFalloffAF3
 
@@ -25656,7 +25660,7 @@ class Effect6285(EffectDef):
                                       src.getModifiedItemAttr('shipBonus3AF'), skill='Amarr Frigate')
 
 
-class Effect6287(EffectDef):
+class Effect6287(BaseEffect):
     """
     shipBonusEnergyNosOptimalAF2
 
@@ -25672,7 +25676,7 @@ class Effect6287(EffectDef):
                                       src.getModifiedItemAttr('shipBonus2AF'), skill='Amarr Frigate')
 
 
-class Effect6291(EffectDef):
+class Effect6291(BaseEffect):
     """
     shipBonusEnergyNosFalloffAF3
 
@@ -25688,7 +25692,7 @@ class Effect6291(EffectDef):
                                       src.getModifiedItemAttr('shipBonus3AF'), skill='Amarr Frigate')
 
 
-class Effect6294(EffectDef):
+class Effect6294(BaseEffect):
     """
     shipBonusEnergyNeutOptimalAC1
 
@@ -25704,7 +25708,7 @@ class Effect6294(EffectDef):
                                       src.getModifiedItemAttr('shipBonusAC'), skill='Amarr Cruiser')
 
 
-class Effect6299(EffectDef):
+class Effect6299(BaseEffect):
     """
     shipBonusEnergyNeutFalloffAC3
 
@@ -25720,7 +25724,7 @@ class Effect6299(EffectDef):
                                       src.getModifiedItemAttr('shipBonusAC3'), skill='Amarr Cruiser')
 
 
-class Effect6300(EffectDef):
+class Effect6300(BaseEffect):
     """
     shipBonusEnergyNosOptimalAC1
 
@@ -25736,7 +25740,7 @@ class Effect6300(EffectDef):
                                       src.getModifiedItemAttr('shipBonusAC'), skill='Amarr Cruiser')
 
 
-class Effect6301(EffectDef):
+class Effect6301(BaseEffect):
     """
     shipBonusNosOptimalFalloffAC2
 
@@ -25754,7 +25758,7 @@ class Effect6301(EffectDef):
                                       src.getModifiedItemAttr('shipBonusAC2'), skill='Amarr Cruiser')
 
 
-class Effect6305(EffectDef):
+class Effect6305(BaseEffect):
     """
     shipBonusEnergyNosFalloffAC3
 
@@ -25770,7 +25774,7 @@ class Effect6305(EffectDef):
                                       src.getModifiedItemAttr('shipBonusAC3'), skill='Amarr Cruiser')
 
 
-class Effect6307(EffectDef):
+class Effect6307(BaseEffect):
     """
     shipBonusThermMissileDmgMD1
 
@@ -25786,7 +25790,7 @@ class Effect6307(EffectDef):
                                         src.getModifiedItemAttr('shipBonusMD1'), skill='Minmatar Destroyer')
 
 
-class Effect6308(EffectDef):
+class Effect6308(BaseEffect):
     """
     shipBonusEMMissileDmgMD1
 
@@ -25802,7 +25806,7 @@ class Effect6308(EffectDef):
                                         src.getModifiedItemAttr('shipBonusMD1'), skill='Minmatar Destroyer')
 
 
-class Effect6309(EffectDef):
+class Effect6309(BaseEffect):
     """
     shipBonusKineticMissileDmgMD1
 
@@ -25818,7 +25822,7 @@ class Effect6309(EffectDef):
                                         src.getModifiedItemAttr('shipBonusMD1'), skill='Minmatar Destroyer')
 
 
-class Effect6310(EffectDef):
+class Effect6310(BaseEffect):
     """
     shipBonusExplosiveMissileDmgMD1
 
@@ -25835,7 +25839,7 @@ class Effect6310(EffectDef):
                                         skill='Minmatar Destroyer')
 
 
-class Effect6315(EffectDef):
+class Effect6315(BaseEffect):
     """
     eliteBonusCommandDestroyerSkirmish1
 
@@ -25860,7 +25864,7 @@ class Effect6315(EffectDef):
                                       src.getModifiedItemAttr('eliteBonusCommandDestroyer1'), skill='Command Destroyers')
 
 
-class Effect6316(EffectDef):
+class Effect6316(BaseEffect):
     """
     eliteBonusCommandDestroyerShield1
 
@@ -25885,7 +25889,7 @@ class Effect6316(EffectDef):
                                       src.getModifiedItemAttr('eliteBonusCommandDestroyer1'), skill='Command Destroyers')
 
 
-class Effect6317(EffectDef):
+class Effect6317(BaseEffect):
     """
     eliteBonusCommandDestroyerMJFGspool2
 
@@ -25901,7 +25905,7 @@ class Effect6317(EffectDef):
                                       src.getModifiedItemAttr('eliteBonusCommandDestroyer2'), skill='Command Destroyers')
 
 
-class Effect6318(EffectDef):
+class Effect6318(BaseEffect):
     """
     shipBonusEMShieldResistanceMD2
 
@@ -25917,7 +25921,7 @@ class Effect6318(EffectDef):
                                skill='Minmatar Destroyer')
 
 
-class Effect6319(EffectDef):
+class Effect6319(BaseEffect):
     """
     shipBonusKineticShieldResistanceMD2
 
@@ -25933,7 +25937,7 @@ class Effect6319(EffectDef):
                                skill='Minmatar Destroyer')
 
 
-class Effect6320(EffectDef):
+class Effect6320(BaseEffect):
     """
     shipBonusThermalShieldResistanceMD2
 
@@ -25949,7 +25953,7 @@ class Effect6320(EffectDef):
                                skill='Minmatar Destroyer')
 
 
-class Effect6321(EffectDef):
+class Effect6321(BaseEffect):
     """
     shipBonusExplosiveShieldResistanceMD2
 
@@ -25965,7 +25969,7 @@ class Effect6321(EffectDef):
                                skill='Minmatar Destroyer')
 
 
-class Effect6322(EffectDef):
+class Effect6322(BaseEffect):
     """
     scriptscanGravimetricStrengthBonusBonus
 
@@ -25981,7 +25985,7 @@ class Effect6322(EffectDef):
         src.boostItemAttr('scanGravimetricStrengthBonus', src.getModifiedChargeAttr('scanGravimetricStrengthBonusBonus'))
 
 
-class Effect6323(EffectDef):
+class Effect6323(BaseEffect):
     """
     scriptscanLadarStrengthBonusBonus
 
@@ -25997,7 +26001,7 @@ class Effect6323(EffectDef):
         src.boostItemAttr('scanLadarStrengthBonus', src.getModifiedChargeAttr('scanLadarStrengthBonusBonus'))
 
 
-class Effect6324(EffectDef):
+class Effect6324(BaseEffect):
     """
     scriptscanMagnetometricStrengthBonusBonus
 
@@ -26013,7 +26017,7 @@ class Effect6324(EffectDef):
         src.boostItemAttr('scanMagnetometricStrengthBonus', src.getModifiedChargeAttr('scanMagnetometricStrengthBonusBonus'))
 
 
-class Effect6325(EffectDef):
+class Effect6325(BaseEffect):
     """
     scriptscanRadarStrengthBonusBonus
 
@@ -26029,7 +26033,7 @@ class Effect6325(EffectDef):
         src.boostItemAttr('scanRadarStrengthBonus', src.getModifiedChargeAttr('scanRadarStrengthBonusBonus'))
 
 
-class Effect6326(EffectDef):
+class Effect6326(BaseEffect):
     """
     shipBonusThermalMissileDamageCD1
 
@@ -26045,7 +26049,7 @@ class Effect6326(EffectDef):
                                         src.getModifiedItemAttr('shipBonusCD1'), skill='Caldari Destroyer')
 
 
-class Effect6327(EffectDef):
+class Effect6327(BaseEffect):
     """
     shipBonusEMMissileDamageCD1
 
@@ -26061,7 +26065,7 @@ class Effect6327(EffectDef):
                                         src.getModifiedItemAttr('shipBonusCD1'), skill='Caldari Destroyer')
 
 
-class Effect6328(EffectDef):
+class Effect6328(BaseEffect):
     """
     shipBonusKineticMissileDamageCD1
 
@@ -26077,7 +26081,7 @@ class Effect6328(EffectDef):
                                         src.getModifiedItemAttr('shipBonusCD1'), skill='Caldari Destroyer')
 
 
-class Effect6329(EffectDef):
+class Effect6329(BaseEffect):
     """
     shipBonusExplosiveMissileDamageCD1
 
@@ -26094,7 +26098,7 @@ class Effect6329(EffectDef):
                                         skill='Caldari Destroyer')
 
 
-class Effect6330(EffectDef):
+class Effect6330(BaseEffect):
     """
     shipBonusShieldEMResistanceCD2
 
@@ -26110,7 +26114,7 @@ class Effect6330(EffectDef):
                                skill='Caldari Destroyer')
 
 
-class Effect6331(EffectDef):
+class Effect6331(BaseEffect):
     """
     shipBonusShieldThermalResistanceCD2
 
@@ -26126,7 +26130,7 @@ class Effect6331(EffectDef):
                                skill='Caldari Destroyer')
 
 
-class Effect6332(EffectDef):
+class Effect6332(BaseEffect):
     """
     shipBonusShieldKineticResistanceCD2
 
@@ -26142,7 +26146,7 @@ class Effect6332(EffectDef):
                                skill='Caldari Destroyer')
 
 
-class Effect6333(EffectDef):
+class Effect6333(BaseEffect):
     """
     shipBonusShieldExplosiveResistanceCD2
 
@@ -26158,7 +26162,7 @@ class Effect6333(EffectDef):
                                skill='Caldari Destroyer')
 
 
-class Effect6334(EffectDef):
+class Effect6334(BaseEffect):
     """
     eliteBonusCommandDestroyerInfo1
 
@@ -26183,7 +26187,7 @@ class Effect6334(EffectDef):
                                       src.getModifiedItemAttr('eliteBonusCommandDestroyer1'), skill='Command Destroyers')
 
 
-class Effect6335(EffectDef):
+class Effect6335(BaseEffect):
     """
     shipBonusKineticArmorResistanceAD2
 
@@ -26199,7 +26203,7 @@ class Effect6335(EffectDef):
                                skill='Amarr Destroyer')
 
 
-class Effect6336(EffectDef):
+class Effect6336(BaseEffect):
     """
     shipBonusThermalArmorResistanceAD2
 
@@ -26215,7 +26219,7 @@ class Effect6336(EffectDef):
                                skill='Amarr Destroyer')
 
 
-class Effect6337(EffectDef):
+class Effect6337(BaseEffect):
     """
     shipBonusEMArmorResistanceAD2
 
@@ -26230,7 +26234,7 @@ class Effect6337(EffectDef):
         fit.ship.boostItemAttr('armorEmDamageResonance', src.getModifiedItemAttr('shipBonusAD2'), skill='Amarr Destroyer')
 
 
-class Effect6338(EffectDef):
+class Effect6338(BaseEffect):
     """
     shipBonusExplosiveArmorResistanceAD2
 
@@ -26246,7 +26250,7 @@ class Effect6338(EffectDef):
                                skill='Amarr Destroyer')
 
 
-class Effect6339(EffectDef):
+class Effect6339(BaseEffect):
     """
     eliteBonusCommandDestroyerArmored1
 
@@ -26271,7 +26275,7 @@ class Effect6339(EffectDef):
                                       src.getModifiedItemAttr('eliteBonusCommandDestroyer1'), skill='Command Destroyers')
 
 
-class Effect6340(EffectDef):
+class Effect6340(BaseEffect):
     """
     shipBonusKineticArmorResistanceGD2
 
@@ -26287,7 +26291,7 @@ class Effect6340(EffectDef):
                                skill='Gallente Destroyer')
 
 
-class Effect6341(EffectDef):
+class Effect6341(BaseEffect):
     """
     shipBonusEMArmorResistanceGD2
 
@@ -26303,7 +26307,7 @@ class Effect6341(EffectDef):
                                skill='Gallente Destroyer')
 
 
-class Effect6342(EffectDef):
+class Effect6342(BaseEffect):
     """
     shipBonusThermalArmorResistanceGD2
 
@@ -26319,7 +26323,7 @@ class Effect6342(EffectDef):
                                skill='Gallente Destroyer')
 
 
-class Effect6343(EffectDef):
+class Effect6343(BaseEffect):
     """
     shipBonusExplosiveArmorResistanceGD2
 
@@ -26335,7 +26339,7 @@ class Effect6343(EffectDef):
                                skill='Gallente Destroyer')
 
 
-class Effect6350(EffectDef):
+class Effect6350(BaseEffect):
     """
     shipSmallMissileKinDmgCF3
 
@@ -26352,7 +26356,7 @@ class Effect6350(EffectDef):
             src.getModifiedItemAttr('shipBonus3CF'), skill='Caldari Frigate')
 
 
-class Effect6351(EffectDef):
+class Effect6351(BaseEffect):
     """
     shipMissileKinDamageCC3
 
@@ -26368,7 +26372,7 @@ class Effect6351(EffectDef):
                                         src.getModifiedItemAttr('shipBonusCC3'), skill='Caldari Cruiser')
 
 
-class Effect6352(EffectDef):
+class Effect6352(BaseEffect):
     """
     roleBonusWDRange
 
@@ -26386,7 +26390,7 @@ class Effect6352(EffectDef):
                                       src.getModifiedItemAttr('roleBonus'))
 
 
-class Effect6353(EffectDef):
+class Effect6353(BaseEffect):
     """
     roleBonusWDCapCPU
 
@@ -26404,7 +26408,7 @@ class Effect6353(EffectDef):
                                       src.getModifiedItemAttr('roleBonus'))
 
 
-class Effect6354(EffectDef):
+class Effect6354(BaseEffect):
     """
     shipBonusEwWeaponDisruptionStrengthAF2
 
@@ -26432,7 +26436,7 @@ class Effect6354(EffectDef):
                                       src.getModifiedItemAttr('shipBonus2AF'), skill='Amarr Frigate')
 
 
-class Effect6355(EffectDef):
+class Effect6355(BaseEffect):
     """
     roleBonusECMCapCPU
 
@@ -26449,7 +26453,7 @@ class Effect6355(EffectDef):
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'ECM', 'cpu', src.getModifiedItemAttr('roleBonus'))
 
 
-class Effect6356(EffectDef):
+class Effect6356(BaseEffect):
     """
     roleBonusECMRange
 
@@ -26467,7 +26471,7 @@ class Effect6356(EffectDef):
                                       src.getModifiedItemAttr('roleBonus'))
 
 
-class Effect6357(EffectDef):
+class Effect6357(BaseEffect):
     """
     shipBonusJustScramblerRangeGF2
 
@@ -26483,7 +26487,7 @@ class Effect6357(EffectDef):
                                       src.getModifiedItemAttr('shipBonusGF2'), skill='Gallente Frigate')
 
 
-class Effect6358(EffectDef):
+class Effect6358(BaseEffect):
     """
     roleBonusJustScramblerStrength
 
@@ -26499,7 +26503,7 @@ class Effect6358(EffectDef):
                                          'warpScrambleStrength', ship.getModifiedItemAttr('roleBonus'))
 
 
-class Effect6359(EffectDef):
+class Effect6359(BaseEffect):
     """
     shipBonusAoeVelocityRocketsMF
 
@@ -26515,7 +26519,7 @@ class Effect6359(EffectDef):
                                         src.getModifiedItemAttr('shipBonusMF'), skill='Minmatar Frigate')
 
 
-class Effect6360(EffectDef):
+class Effect6360(BaseEffect):
     """
     shipRocketEMThermKinDmgMF2
 
@@ -26535,7 +26539,7 @@ class Effect6360(EffectDef):
                                         src.getModifiedItemAttr('shipBonusMF2'), skill='Minmatar Frigate')
 
 
-class Effect6361(EffectDef):
+class Effect6361(BaseEffect):
     """
     shipRocketExpDmgMF3
 
@@ -26551,7 +26555,7 @@ class Effect6361(EffectDef):
                                         src.getModifiedItemAttr('shipBonus3MF'), skill='Minmatar Frigate')
 
 
-class Effect6362(EffectDef):
+class Effect6362(BaseEffect):
     """
     roleBonusStasisRange
 
@@ -26567,7 +26571,7 @@ class Effect6362(EffectDef):
                                       src.getModifiedItemAttr('roleBonus'))
 
 
-class Effect6368(EffectDef):
+class Effect6368(BaseEffect):
     """
     shieldTransporterFalloffBonus
 
@@ -26588,7 +26592,7 @@ class Effect6368(EffectDef):
                                       'falloffEffectiveness', src.getModifiedItemAttr('falloffBonus'))
 
 
-class Effect6369(EffectDef):
+class Effect6369(BaseEffect):
     """
     shipShieldTransferFalloffMC2
 
@@ -26604,7 +26608,7 @@ class Effect6369(EffectDef):
                                       src.getModifiedItemAttr('shipBonusMC2'), skill='Minmatar Cruiser')
 
 
-class Effect6370(EffectDef):
+class Effect6370(BaseEffect):
     """
     shipShieldTransferFalloffCC1
 
@@ -26621,7 +26625,7 @@ class Effect6370(EffectDef):
                                       src.getModifiedItemAttr('shipBonusCC'), skill='Caldari Cruiser')
 
 
-class Effect6371(EffectDef):
+class Effect6371(BaseEffect):
     """
     shipRemoteArmorFalloffGC1
 
@@ -26638,7 +26642,7 @@ class Effect6371(EffectDef):
                                       skill='Gallente Cruiser')
 
 
-class Effect6372(EffectDef):
+class Effect6372(BaseEffect):
     """
     shipRemoteArmorFalloffAC2
 
@@ -26655,7 +26659,7 @@ class Effect6372(EffectDef):
                                       skill='Amarr Cruiser')
 
 
-class Effect6373(EffectDef):
+class Effect6373(BaseEffect):
     """
     armorRepairProjectorFalloffBonus
 
@@ -26677,7 +26681,7 @@ class Effect6373(EffectDef):
                                       'falloffEffectiveness', src.getModifiedItemAttr('falloffBonus'))
 
 
-class Effect6374(EffectDef):
+class Effect6374(BaseEffect):
     """
     droneHullRepairBonusEffect
 
@@ -26695,7 +26699,7 @@ class Effect6374(EffectDef):
                                      src.getModifiedItemAttr('droneArmorDamageAmountBonus'))
 
 
-class Effect6377(EffectDef):
+class Effect6377(BaseEffect):
     """
     eliteBonusLogiFrigArmorRepSpeedCap1
 
@@ -26714,7 +26718,7 @@ class Effect6377(EffectDef):
                                       src.getModifiedItemAttr('eliteBonusLogiFrig1'), skill='Logistics Frigates')
 
 
-class Effect6378(EffectDef):
+class Effect6378(BaseEffect):
     """
     eliteBonusLogiFrigShieldRepSpeedCap1
 
@@ -26733,7 +26737,7 @@ class Effect6378(EffectDef):
                                       src.getModifiedItemAttr('eliteBonusLogiFrig1'), skill='Logistics Frigates')
 
 
-class Effect6379(EffectDef):
+class Effect6379(BaseEffect):
     """
     eliteBonusLogiFrigArmorHP2
 
@@ -26748,7 +26752,7 @@ class Effect6379(EffectDef):
         fit.ship.boostItemAttr('armorHP', src.getModifiedItemAttr('eliteBonusLogiFrig2'), skill='Logistics Frigates')
 
 
-class Effect6380(EffectDef):
+class Effect6380(BaseEffect):
     """
     eliteBonusLogiFrigShieldHP2
 
@@ -26763,7 +26767,7 @@ class Effect6380(EffectDef):
         fit.ship.boostItemAttr('shieldCapacity', src.getModifiedItemAttr('eliteBonusLogiFrig2'), skill='Logistics Frigates')
 
 
-class Effect6381(EffectDef):
+class Effect6381(BaseEffect):
     """
     eliteBonusLogiFrigSignature2
 
@@ -26780,7 +26784,7 @@ class Effect6381(EffectDef):
                                skill='Logistics Frigates')
 
 
-class Effect6384(EffectDef):
+class Effect6384(BaseEffect):
     """
     overloadSelfMissileGuidanceModuleBonus
 
@@ -26801,7 +26805,7 @@ class Effect6384(EffectDef):
             module.boostItemAttr(tgtAttr, module.getModifiedItemAttr('overloadTrackingModuleStrengthBonus'))
 
 
-class Effect6385(EffectDef):
+class Effect6385(BaseEffect):
     """
     ignoreCloakVelocityPenalty
 
@@ -26818,7 +26822,7 @@ class Effect6385(EffectDef):
                                       'maxVelocityModifier', src.getModifiedItemAttr('velocityPenaltyReduction'))
 
 
-class Effect6386(EffectDef):
+class Effect6386(BaseEffect):
     """
     ewSkillGuidanceDisruptionBonus
 
@@ -26842,7 +26846,7 @@ class Effect6386(EffectDef):
                                           attr, src.getModifiedItemAttr('scanSkillEwStrengthBonus') * level)
 
 
-class Effect6395(EffectDef):
+class Effect6395(BaseEffect):
     """
     shipBonusEwWeaponDisruptionStrengthAC1
 
@@ -26870,7 +26874,7 @@ class Effect6395(EffectDef):
                                       src.getModifiedItemAttr('shipBonusAC'), skill='Amarr Cruiser')
 
 
-class Effect6396(EffectDef):
+class Effect6396(BaseEffect):
     """
     skillStructureMissileDamageBonus
 
@@ -26889,7 +26893,7 @@ class Effect6396(EffectDef):
                                             skill='Structure Missile Systems')
 
 
-class Effect6400(EffectDef):
+class Effect6400(BaseEffect):
     """
     skillStructureElectronicSystemsCapNeedBonus
 
@@ -26907,7 +26911,7 @@ class Effect6400(EffectDef):
                                       skill='Structure Electronic Systems')
 
 
-class Effect6401(EffectDef):
+class Effect6401(BaseEffect):
     """
     skillStructureEngineeringSystemsCapNeedBonus
 
@@ -26925,7 +26929,7 @@ class Effect6401(EffectDef):
                                       skill='Structure Engineering Systems')
 
 
-class Effect6402(EffectDef):
+class Effect6402(BaseEffect):
     """
     structureRigAoeVelocityBonusSingleTargetMissiles
 
@@ -26944,7 +26948,7 @@ class Effect6402(EffectDef):
                                       stackingPenalties=True)
 
 
-class Effect6403(EffectDef):
+class Effect6403(BaseEffect):
     """
     structureRigVelocityBonusSingleTargetMissiles
 
@@ -26962,7 +26966,7 @@ class Effect6403(EffectDef):
                                       stackingPenalties=True)
 
 
-class Effect6404(EffectDef):
+class Effect6404(BaseEffect):
     """
     structureRigNeutralizerMaxRangeFalloffEffectiveness
 
@@ -26984,7 +26988,7 @@ class Effect6404(EffectDef):
                                       stackingPenalties=True)
 
 
-class Effect6405(EffectDef):
+class Effect6405(BaseEffect):
     """
     structureRigNeutralizerCapacitorNeed
 
@@ -27002,7 +27006,7 @@ class Effect6405(EffectDef):
                                       stackingPenalties=True)
 
 
-class Effect6406(EffectDef):
+class Effect6406(BaseEffect):
     """
     structureRigEWMaxRangeFalloff
 
@@ -27030,7 +27034,7 @@ class Effect6406(EffectDef):
                                       stackingPenalties=True)
 
 
-class Effect6407(EffectDef):
+class Effect6407(BaseEffect):
     """
     structureRigEWCapacitorNeed
 
@@ -27049,7 +27053,7 @@ class Effect6407(EffectDef):
                                       stackingPenalties=True)
 
 
-class Effect6408(EffectDef):
+class Effect6408(BaseEffect):
     """
     structureRigMaxTargets
 
@@ -27065,7 +27069,7 @@ class Effect6408(EffectDef):
         fit.extraAttributes.increase('maxTargetsLockedFromSkills', src.getModifiedItemAttr('structureRigMaxTargetBonus'))
 
 
-class Effect6409(EffectDef):
+class Effect6409(BaseEffect):
     """
     structureRigSensorResolution
 
@@ -27083,7 +27087,7 @@ class Effect6409(EffectDef):
                                stackingPenalties=True)
 
 
-class Effect6410(EffectDef):
+class Effect6410(BaseEffect):
     """
     structureRigExplosionRadiusBonusAoEMissiles
 
@@ -27101,7 +27105,7 @@ class Effect6410(EffectDef):
                                         stackingPenalties=True)
 
 
-class Effect6411(EffectDef):
+class Effect6411(BaseEffect):
     """
     structureRigVelocityBonusAoeMissiles
 
@@ -27119,7 +27123,7 @@ class Effect6411(EffectDef):
                                         stackingPenalties=True)
 
 
-class Effect6412(EffectDef):
+class Effect6412(BaseEffect):
     """
     structureRigPDBmaxRange
 
@@ -27137,7 +27141,7 @@ class Effect6412(EffectDef):
                                       stackingPenalties=True)
 
 
-class Effect6413(EffectDef):
+class Effect6413(BaseEffect):
     """
     structureRigPDBCapacitorNeed
 
@@ -27155,7 +27159,7 @@ class Effect6413(EffectDef):
                                       stackingPenalties=True)
 
 
-class Effect6417(EffectDef):
+class Effect6417(BaseEffect):
     """
     structureRigDoomsdayDamageLoss
 
@@ -27172,7 +27176,7 @@ class Effect6417(EffectDef):
                                          src.getModifiedItemAttr('structureRigDoomsdayDamageLossTargetBonus'))
 
 
-class Effect6422(EffectDef):
+class Effect6422(BaseEffect):
     """
     remoteSensorDampFalloff
 
@@ -27195,7 +27199,7 @@ class Effect6422(EffectDef):
                                stackingPenalties=True, *args, **kwargs)
 
 
-class Effect6423(EffectDef):
+class Effect6423(BaseEffect):
     """
     shipModuleGuidanceDisruptor
 
@@ -27219,7 +27223,7 @@ class Effect6423(EffectDef):
                                                 stackingPenalties=True, *args, **kwargs)
 
 
-class Effect6424(EffectDef):
+class Effect6424(BaseEffect):
     """
     shipModuleTrackingDisruptor
 
@@ -27243,7 +27247,7 @@ class Effect6424(EffectDef):
                                           stackingPenalties=True, *args, **kwargs)
 
 
-class Effect6425(EffectDef):
+class Effect6425(BaseEffect):
     """
     remoteTargetPaintFalloff
 
@@ -27260,7 +27264,7 @@ class Effect6425(EffectDef):
                                    stackingPenalties=True, *args, **kwargs)
 
 
-class Effect6426(EffectDef):
+class Effect6426(BaseEffect):
     """
     remoteWebifierFalloff
 
@@ -27280,7 +27284,7 @@ class Effect6426(EffectDef):
                                stackingPenalties=True, *args, **kwargs)
 
 
-class Effect6427(EffectDef):
+class Effect6427(BaseEffect):
     """
     remoteSensorBoostFalloff
 
@@ -27308,7 +27312,7 @@ class Effect6427(EffectDef):
             )
 
 
-class Effect6428(EffectDef):
+class Effect6428(BaseEffect):
     """
     shipModuleRemoteTrackingComputer
 
@@ -27332,7 +27336,7 @@ class Effect6428(EffectDef):
                                           stackingPenalties=True, **kwargs)
 
 
-class Effect6431(EffectDef):
+class Effect6431(BaseEffect):
     """
     fighterAbilityMissiles
 
@@ -27347,7 +27351,7 @@ class Effect6431(EffectDef):
     type = 'active'
 
 
-class Effect6434(EffectDef):
+class Effect6434(BaseEffect):
     """
     fighterAbilityEnergyNeutralizer
 
@@ -27373,7 +27377,7 @@ class Effect6434(EffectDef):
             fit.addDrain(src, time, amount, 0)
 
 
-class Effect6435(EffectDef):
+class Effect6435(BaseEffect):
     """
     fighterAbilityStasisWebifier
 
@@ -27394,7 +27398,7 @@ class Effect6435(EffectDef):
                                stackingPenalties=True)
 
 
-class Effect6436(EffectDef):
+class Effect6436(BaseEffect):
     """
     fighterAbilityWarpDisruption
 
@@ -27414,7 +27418,7 @@ class Effect6436(EffectDef):
         fit.ship.increaseItemAttr('warpScrambleStatus', src.getModifiedItemAttr('{}PointStrength'.format(cls.prefix)) * src.amountActive)
 
 
-class Effect6437(EffectDef):
+class Effect6437(BaseEffect):
     """
     fighterAbilityECM
 
@@ -27441,7 +27445,7 @@ class Effect6437(EffectDef):
         fit.ecmProjectedStr *= strModifier
 
 
-class Effect6439(EffectDef):
+class Effect6439(BaseEffect):
     """
     fighterAbilityEvasiveManeuvers
 
@@ -27478,7 +27482,7 @@ class Effect6439(EffectDef):
                                    stackingPenalties=True)
 
 
-class Effect6441(EffectDef):
+class Effect6441(BaseEffect):
     """
     fighterAbilityMicroWarpDrive
 
@@ -27500,7 +27504,7 @@ class Effect6441(EffectDef):
                              stackingPenalties=True)
 
 
-class Effect6443(EffectDef):
+class Effect6443(BaseEffect):
     """
     pointDefense
 
@@ -27511,7 +27515,7 @@ class Effect6443(EffectDef):
     type = 'active'
 
 
-class Effect6447(EffectDef):
+class Effect6447(BaseEffect):
     """
     lightningWeapon
 
@@ -27522,7 +27526,7 @@ class Effect6447(EffectDef):
     type = 'active'
 
 
-class Effect6448(EffectDef):
+class Effect6448(BaseEffect):
     """
     structureMissileGuidanceEnhancer
 
@@ -27546,7 +27550,7 @@ class Effect6448(EffectDef):
                                             stackingPenalties=True)
 
 
-class Effect6449(EffectDef):
+class Effect6449(BaseEffect):
     """
     structureBallisticControlSystem
 
@@ -27572,7 +27576,7 @@ class Effect6449(EffectDef):
                                          stackingPenalties=True)
 
 
-class Effect6465(EffectDef):
+class Effect6465(BaseEffect):
     """
     fighterAbilityAttackM
 
@@ -27586,7 +27590,7 @@ class Effect6465(EffectDef):
     type = 'active'
 
 
-class Effect6470(EffectDef):
+class Effect6470(BaseEffect):
     """
     remoteECMFalloff
 
@@ -27610,7 +27614,7 @@ class Effect6470(EffectDef):
             fit.ecmProjectedStr *= strModifier
 
 
-class Effect6472(EffectDef):
+class Effect6472(BaseEffect):
     """
     doomsdayBeamDOT
 
@@ -27621,7 +27625,7 @@ class Effect6472(EffectDef):
     type = 'active'
 
 
-class Effect6473(EffectDef):
+class Effect6473(BaseEffect):
     """
     doomsdayConeDOT
 
@@ -27632,7 +27636,7 @@ class Effect6473(EffectDef):
     type = 'active'
 
 
-class Effect6474(EffectDef):
+class Effect6474(BaseEffect):
     """
     doomsdayHOG
 
@@ -27643,7 +27647,7 @@ class Effect6474(EffectDef):
     type = 'active'
 
 
-class Effect6475(EffectDef):
+class Effect6475(BaseEffect):
     """
     structureRigDoomsdayTargetAmountBonus
 
@@ -27660,7 +27664,7 @@ class Effect6475(EffectDef):
                                          src.getModifiedItemAttr('structureRigDoomsdayTargetAmountBonus'))
 
 
-class Effect6476(EffectDef):
+class Effect6476(BaseEffect):
     """
     doomsdayAOEWeb
 
@@ -27679,7 +27683,7 @@ class Effect6476(EffectDef):
                                stackingPenalties=True, *args, **kwargs)
 
 
-class Effect6477(EffectDef):
+class Effect6477(BaseEffect):
     """
     doomsdayAOENeut
 
@@ -27705,7 +27709,7 @@ class Effect6477(EffectDef):
             fit.addDrain(src, time, amount, 0)
 
 
-class Effect6478(EffectDef):
+class Effect6478(BaseEffect):
     """
     doomsdayAOEPaint
 
@@ -27723,7 +27727,7 @@ class Effect6478(EffectDef):
                                    stackingPenalties=True, *args, **kwargs)
 
 
-class Effect6479(EffectDef):
+class Effect6479(BaseEffect):
     """
     doomsdayAOETrack
 
@@ -27758,7 +27762,7 @@ class Effect6479(EffectDef):
                                           stackingPenalties=True, *args, **kwargs)
 
 
-class Effect6481(EffectDef):
+class Effect6481(BaseEffect):
     """
     doomsdayAOEDamp
 
@@ -27781,7 +27785,7 @@ class Effect6481(EffectDef):
                                stackingPenalties=True, *args, **kwargs)
 
 
-class Effect6482(EffectDef):
+class Effect6482(BaseEffect):
     """
     doomsdayAOEBubble
 
@@ -27797,7 +27801,7 @@ class Effect6482(EffectDef):
         return
 
 
-class Effect6484(EffectDef):
+class Effect6484(BaseEffect):
     """
     emergencyHullEnergizer
 
@@ -27816,7 +27820,7 @@ class Effect6484(EffectDef):
                                       stackingPenalties=True, penaltyGroup='postMul')
 
 
-class Effect6485(EffectDef):
+class Effect6485(BaseEffect):
     """
     fighterAbilityLaunchBomb
 
@@ -27830,7 +27834,7 @@ class Effect6485(EffectDef):
     type = 'active'
 
 
-class Effect6487(EffectDef):
+class Effect6487(BaseEffect):
     """
     modifyEnergyWarfareResistance
 
@@ -27847,7 +27851,7 @@ class Effect6487(EffectDef):
                                stackingPenalties=True)
 
 
-class Effect6488(EffectDef):
+class Effect6488(BaseEffect):
     """
     scriptSensorBoosterSensorStrengthBonusBonus
 
@@ -27864,7 +27868,7 @@ class Effect6488(EffectDef):
                                  module.getModifiedChargeAttr('sensorStrengthBonusBonus'))
 
 
-class Effect6501(EffectDef):
+class Effect6501(BaseEffect):
     """
     shipBonusDreadnoughtA1DamageBonus
 
@@ -27880,7 +27884,7 @@ class Effect6501(EffectDef):
                                       src.getModifiedItemAttr('shipBonusDreadnoughtA1'), skill='Amarr Dreadnought')
 
 
-class Effect6502(EffectDef):
+class Effect6502(BaseEffect):
     """
     shipBonusDreadnoughtA2ArmorResists
 
@@ -27902,7 +27906,7 @@ class Effect6502(EffectDef):
                                skill='Amarr Dreadnought')
 
 
-class Effect6503(EffectDef):
+class Effect6503(BaseEffect):
     """
     shipBonusDreadnoughtA3CapNeed
 
@@ -27918,7 +27922,7 @@ class Effect6503(EffectDef):
                                       src.getModifiedItemAttr('shipBonusDreadnoughtA3'), skill='Amarr Dreadnought')
 
 
-class Effect6504(EffectDef):
+class Effect6504(BaseEffect):
     """
     shipBonusDreadnoughtC1DamageBonus
 
@@ -27956,7 +27960,7 @@ class Effect6504(EffectDef):
                                         src.getModifiedItemAttr('shipBonusDreadnoughtC1'), skill='Caldari Dreadnought')
 
 
-class Effect6505(EffectDef):
+class Effect6505(BaseEffect):
     """
     shipBonusDreadnoughtC2ShieldResists
 
@@ -27978,7 +27982,7 @@ class Effect6505(EffectDef):
                                skill='Caldari Dreadnought')
 
 
-class Effect6506(EffectDef):
+class Effect6506(BaseEffect):
     """
     shipBonusDreadnoughtG1DamageBonus
 
@@ -27994,7 +27998,7 @@ class Effect6506(EffectDef):
                                       src.getModifiedItemAttr('shipBonusDreadnoughtG1'), skill='Gallente Dreadnought')
 
 
-class Effect6507(EffectDef):
+class Effect6507(BaseEffect):
     """
     shipBonusDreadnoughtG2ROFBonus
 
@@ -28010,7 +28014,7 @@ class Effect6507(EffectDef):
                                       src.getModifiedItemAttr('shipBonusDreadnoughtG2'), skill='Gallente Dreadnought')
 
 
-class Effect6508(EffectDef):
+class Effect6508(BaseEffect):
     """
     shipBonusDreadnoughtG3RepairTime
 
@@ -28026,7 +28030,7 @@ class Effect6508(EffectDef):
                                       src.getModifiedItemAttr('shipBonusDreadnoughtG3'), skill='Gallente Dreadnought')
 
 
-class Effect6509(EffectDef):
+class Effect6509(BaseEffect):
     """
     shipBonusDreadnoughtM1DamageBonus
 
@@ -28042,7 +28046,7 @@ class Effect6509(EffectDef):
                                       src.getModifiedItemAttr('shipBonusDreadnoughtM1'), skill='Minmatar Dreadnought')
 
 
-class Effect6510(EffectDef):
+class Effect6510(BaseEffect):
     """
     shipBonusDreadnoughtM2ROFBonus
 
@@ -28058,7 +28062,7 @@ class Effect6510(EffectDef):
                                       src.getModifiedItemAttr('shipBonusDreadnoughtM2'), skill='Minmatar Dreadnought')
 
 
-class Effect6511(EffectDef):
+class Effect6511(BaseEffect):
     """
     shipBonusDreadnoughtM3RepairTime
 
@@ -28074,7 +28078,7 @@ class Effect6511(EffectDef):
                                       src.getModifiedItemAttr('shipBonusDreadnoughtM2'), skill='Minmatar Dreadnought')
 
 
-class Effect6513(EffectDef):
+class Effect6513(BaseEffect):
     """
     doomsdayAOEECM
 
@@ -28098,7 +28102,7 @@ class Effect6513(EffectDef):
             fit.ecmProjectedStr *= strModifier
 
 
-class Effect6526(EffectDef):
+class Effect6526(BaseEffect):
     """
     shipBonusForceAuxiliaryA1RemoteRepairAndCapAmount
 
@@ -28120,7 +28124,7 @@ class Effect6526(EffectDef):
                                       skill='Amarr Carrier')
 
 
-class Effect6527(EffectDef):
+class Effect6527(BaseEffect):
     """
     shipBonusForceAuxiliaryA2ArmorResists
 
@@ -28142,7 +28146,7 @@ class Effect6527(EffectDef):
                                skill='Amarr Carrier')
 
 
-class Effect6533(EffectDef):
+class Effect6533(BaseEffect):
     """
     shipBonusForceAuxiliaryA4WarfareLinksBonus
 
@@ -28171,7 +28175,7 @@ class Effect6533(EffectDef):
                                       'warfareBuff2Value', src.getModifiedItemAttr('shipBonusForceAuxiliaryA4'), skill='Amarr Carrier')
 
 
-class Effect6534(EffectDef):
+class Effect6534(BaseEffect):
     """
     shipBonusForceAuxiliaryM4WarfareLinksBonus
 
@@ -28200,7 +28204,7 @@ class Effect6534(EffectDef):
             'warfareBuff4Value', src.getModifiedItemAttr('shipBonusForceAuxiliaryM4'), skill='Minmatar Carrier')
 
 
-class Effect6535(EffectDef):
+class Effect6535(BaseEffect):
     """
     shipBonusForceAuxiliaryG4WarfareLinksBonus
 
@@ -28229,7 +28233,7 @@ class Effect6535(EffectDef):
             'warfareBuff1Value', src.getModifiedItemAttr('shipBonusForceAuxiliaryG4'), skill='Gallente Carrier')
 
 
-class Effect6536(EffectDef):
+class Effect6536(BaseEffect):
     """
     shipBonusForceAuxiliaryC4WarfareLinksBonus
 
@@ -28258,7 +28262,7 @@ class Effect6536(EffectDef):
             'warfareBuff1Value', src.getModifiedItemAttr('shipBonusForceAuxiliaryC4'), skill='Caldari Carrier')
 
 
-class Effect6537(EffectDef):
+class Effect6537(BaseEffect):
     """
     shipBonusRole1CommandBurstCPUBonus
 
@@ -28274,7 +28278,7 @@ class Effect6537(EffectDef):
                                       src.getModifiedItemAttr('shipBonusRole1'))
 
 
-class Effect6545(EffectDef):
+class Effect6545(BaseEffect):
     """
     shipBonusForceAuxiliaryC1RemoteBoostAndCapAmount
 
@@ -28299,7 +28303,7 @@ class Effect6545(EffectDef):
                                       skill='Caldari Carrier')
 
 
-class Effect6546(EffectDef):
+class Effect6546(BaseEffect):
     """
     shipBonusForceAuxiliaryC2ShieldResists
 
@@ -28321,7 +28325,7 @@ class Effect6546(EffectDef):
                                skill='Caldari Carrier')
 
 
-class Effect6548(EffectDef):
+class Effect6548(BaseEffect):
     """
     shipBonusForceAuxiliaryG1RemoteCycleTime
 
@@ -28343,7 +28347,7 @@ class Effect6548(EffectDef):
                                       skill='Gallente Carrier')
 
 
-class Effect6549(EffectDef):
+class Effect6549(BaseEffect):
     """
     shipBonusForceAuxiliaryG2LocalRepairAmount
 
@@ -28361,7 +28365,7 @@ class Effect6549(EffectDef):
                                       src.getModifiedItemAttr('shipBonusForceAuxiliaryG2'), skill='Gallente Carrier')
 
 
-class Effect6551(EffectDef):
+class Effect6551(BaseEffect):
     """
     shipBonusForceAuxiliaryM1RemoteDuration
 
@@ -28384,7 +28388,7 @@ class Effect6551(EffectDef):
                                       skill='Minmatar Carrier')
 
 
-class Effect6552(EffectDef):
+class Effect6552(BaseEffect):
     """
     shipBonusForceAuxiliaryM2LocalBoostAmount
 
@@ -28402,7 +28406,7 @@ class Effect6552(EffectDef):
                                       src.getModifiedItemAttr('shipBonusForceAuxiliaryM2'), skill='Minmatar Carrier')
 
 
-class Effect6555(EffectDef):
+class Effect6555(BaseEffect):
     """
     moduleBonusDroneNavigationComputer
 
@@ -28420,7 +28424,7 @@ class Effect6555(EffectDef):
                                      src.getModifiedItemAttr('speedFactor'), stackingPenalties=True)
 
 
-class Effect6556(EffectDef):
+class Effect6556(BaseEffect):
     """
     moduleBonusDroneDamageAmplifier
 
@@ -28447,7 +28451,7 @@ class Effect6556(EffectDef):
                                      src.getModifiedItemAttr('droneDamageBonus'), stackingPenalties=True)
 
 
-class Effect6557(EffectDef):
+class Effect6557(BaseEffect):
     """
     moduleBonusOmnidirectionalTrackingLink
 
@@ -28496,7 +28500,7 @@ class Effect6557(EffectDef):
                                        stackingPenalties=True)
 
 
-class Effect6558(EffectDef):
+class Effect6558(BaseEffect):
     """
     moduleBonusOmnidirectionalTrackingLinkOverload
 
@@ -28516,7 +28520,7 @@ class Effect6558(EffectDef):
         module.boostItemAttr('aoeVelocityBonus', overloadBonus)
 
 
-class Effect6559(EffectDef):
+class Effect6559(BaseEffect):
     """
     moduleBonusOmnidirectionalTrackingEnhancer
 
@@ -28565,7 +28569,7 @@ class Effect6559(EffectDef):
                                        src.getModifiedItemAttr('maxRangeBonus'), stackingPenalties=True)
 
 
-class Effect6560(EffectDef):
+class Effect6560(BaseEffect):
     """
     skillBonusFighters
 
@@ -28589,7 +28593,7 @@ class Effect6560(EffectDef):
                                        src.getModifiedItemAttr('damageMultiplierBonus') * lvl)
 
 
-class Effect6561(EffectDef):
+class Effect6561(BaseEffect):
     """
     skillBonusLightFighters
 
@@ -28606,7 +28610,7 @@ class Effect6561(EffectDef):
                                        src.getModifiedItemAttr('maxVelocityBonus') * lvl)
 
 
-class Effect6562(EffectDef):
+class Effect6562(BaseEffect):
     """
     skillBonusSupportFightersShield
 
@@ -28623,7 +28627,7 @@ class Effect6562(EffectDef):
                                        src.getModifiedItemAttr('shieldBonus') * lvl)
 
 
-class Effect6563(EffectDef):
+class Effect6563(BaseEffect):
     """
     skillBonusHeavyFighters
 
@@ -28647,7 +28651,7 @@ class Effect6563(EffectDef):
                                        src.getModifiedItemAttr('damageMultiplierBonus') * lvl)
 
 
-class Effect6565(EffectDef):
+class Effect6565(BaseEffect):
     """
     citadelRigBonus
 
@@ -28677,7 +28681,7 @@ class Effect6565(EffectDef):
                                       attr, src.getModifiedItemAttr('structureRoleBonus'))
 
 
-class Effect6566(EffectDef):
+class Effect6566(BaseEffect):
     """
     moduleBonusFighterSupportUnit
 
@@ -28704,7 +28708,7 @@ class Effect6566(EffectDef):
                                        src.getModifiedItemAttr('fighterBonusShieldRechargePercent'))
 
 
-class Effect6567(EffectDef):
+class Effect6567(BaseEffect):
     """
     moduleBonusNetworkedSensorArray
 
@@ -28739,7 +28743,7 @@ class Effect6567(EffectDef):
                                       'capacitorNeed', src.getModifiedItemAttr('ewCapacitorNeedBonus'))
 
 
-class Effect6570(EffectDef):
+class Effect6570(BaseEffect):
     """
     skillBonusFighterHangarManagement
 
@@ -28755,7 +28759,7 @@ class Effect6570(EffectDef):
         fit.ship.boostItemAttr('fighterCapacity', src.getModifiedItemAttr('skillBonusFighterHangarSize') * lvl)
 
 
-class Effect6571(EffectDef):
+class Effect6571(BaseEffect):
     """
     skillBonusCapitalAutocannonSpecialization
 
@@ -28772,7 +28776,7 @@ class Effect6571(EffectDef):
                                       'damageMultiplier', src.getModifiedItemAttr('damageMultiplierBonus') * lvl)
 
 
-class Effect6572(EffectDef):
+class Effect6572(BaseEffect):
     """
     skillBonusCapitalArtillerySpecialization
 
@@ -28789,7 +28793,7 @@ class Effect6572(EffectDef):
                                       'damageMultiplier', src.getModifiedItemAttr('damageMultiplierBonus') * lvl)
 
 
-class Effect6573(EffectDef):
+class Effect6573(BaseEffect):
     """
     skillBonusCapitalBlasterSpecialization
 
@@ -28806,7 +28810,7 @@ class Effect6573(EffectDef):
                                       'damageMultiplier', src.getModifiedItemAttr('damageMultiplierBonus') * lvl)
 
 
-class Effect6574(EffectDef):
+class Effect6574(BaseEffect):
     """
     skillBonusCapitalRailgunSpecialization
 
@@ -28823,7 +28827,7 @@ class Effect6574(EffectDef):
                                       'damageMultiplier', src.getModifiedItemAttr('damageMultiplierBonus') * lvl)
 
 
-class Effect6575(EffectDef):
+class Effect6575(BaseEffect):
     """
     skillBonusCapitalPulseLaserSpecialization
 
@@ -28840,7 +28844,7 @@ class Effect6575(EffectDef):
                                       'damageMultiplier', src.getModifiedItemAttr('damageMultiplierBonus') * lvl)
 
 
-class Effect6576(EffectDef):
+class Effect6576(BaseEffect):
     """
     skillBonusCapitalBeamLaserSpecialization
 
@@ -28857,7 +28861,7 @@ class Effect6576(EffectDef):
                                       'damageMultiplier', src.getModifiedItemAttr('damageMultiplierBonus') * lvl)
 
 
-class Effect6577(EffectDef):
+class Effect6577(BaseEffect):
     """
     skillBonusXLCruiseMissileSpecialization
 
@@ -28874,7 +28878,7 @@ class Effect6577(EffectDef):
                                       src.getModifiedItemAttr('rofBonus') * lvl)
 
 
-class Effect6578(EffectDef):
+class Effect6578(BaseEffect):
     """
     skillBonusXLTorpedoSpecialization
 
@@ -28891,7 +28895,7 @@ class Effect6578(EffectDef):
                                       src.getModifiedItemAttr('rofBonus') * lvl)
 
 
-class Effect6580(EffectDef):
+class Effect6580(BaseEffect):
     """
     shipBonusRole2LogisticDroneRepAmountBonus
 
@@ -28911,7 +28915,7 @@ class Effect6580(EffectDef):
                                      src.getModifiedItemAttr('shipBonusRole2'))
 
 
-class Effect6581(EffectDef):
+class Effect6581(BaseEffect):
     """
     moduleBonusTriageModule
 
@@ -28993,7 +28997,7 @@ class Effect6581(EffectDef):
         fit.ship.forceItemAttr('disallowDocking', src.getModifiedItemAttr('disallowDocking'))
 
 
-class Effect6582(EffectDef):
+class Effect6582(BaseEffect):
     """
     moduleBonusSiegeModule
 
@@ -29063,7 +29067,7 @@ class Effect6582(EffectDef):
         fit.ship.forceItemAttr('disallowTethering', src.getModifiedItemAttr('disallowTethering'))
 
 
-class Effect6591(EffectDef):
+class Effect6591(BaseEffect):
     """
     shipBonusSupercarrierA3WarpStrength
 
@@ -29080,7 +29084,7 @@ class Effect6591(EffectDef):
                                   skill='Amarr Carrier')
 
 
-class Effect6592(EffectDef):
+class Effect6592(BaseEffect):
     """
     shipBonusSupercarrierC3WarpStrength
 
@@ -29097,7 +29101,7 @@ class Effect6592(EffectDef):
                                   skill='Caldari Carrier')
 
 
-class Effect6593(EffectDef):
+class Effect6593(BaseEffect):
     """
     shipBonusSupercarrierG3WarpStrength
 
@@ -29113,7 +29117,7 @@ class Effect6593(EffectDef):
                                   skill='Gallente Carrier')
 
 
-class Effect6594(EffectDef):
+class Effect6594(BaseEffect):
     """
     shipBonusSupercarrierM3WarpStrength
 
@@ -29130,7 +29134,7 @@ class Effect6594(EffectDef):
                                   skill='Minmatar Carrier')
 
 
-class Effect6595(EffectDef):
+class Effect6595(BaseEffect):
     """
     shipBonusCarrierA4WarfareLinksBonus
 
@@ -29159,7 +29163,7 @@ class Effect6595(EffectDef):
             'warfareBuff2Value', src.getModifiedItemAttr('shipBonusCarrierA4'), skill='Amarr Carrier')
 
 
-class Effect6596(EffectDef):
+class Effect6596(BaseEffect):
     """
     shipBonusCarrierC4WarfareLinksBonus
 
@@ -29188,7 +29192,7 @@ class Effect6596(EffectDef):
             'warfareBuff1Value', src.getModifiedItemAttr('shipBonusCarrierC4'), skill='Caldari Carrier')
 
 
-class Effect6597(EffectDef):
+class Effect6597(BaseEffect):
     """
     shipBonusCarrierG4WarfareLinksBonus
 
@@ -29217,7 +29221,7 @@ class Effect6597(EffectDef):
             'warfareBuff1Value', src.getModifiedItemAttr('shipBonusCarrierG4'), skill='Gallente Carrier')
 
 
-class Effect6598(EffectDef):
+class Effect6598(BaseEffect):
     """
     shipBonusCarrierM4WarfareLinksBonus
 
@@ -29246,7 +29250,7 @@ class Effect6598(EffectDef):
             'buffDuration', src.getModifiedItemAttr('shipBonusCarrierM4'), skill='Minmatar Carrier')
 
 
-class Effect6599(EffectDef):
+class Effect6599(BaseEffect):
     """
     shipBonusCarrierA1ArmorResists
 
@@ -29268,7 +29272,7 @@ class Effect6599(EffectDef):
                                skill='Amarr Carrier')
 
 
-class Effect6600(EffectDef):
+class Effect6600(BaseEffect):
     """
     shipBonusCarrierC1ShieldResists
 
@@ -29290,7 +29294,7 @@ class Effect6600(EffectDef):
                                skill='Caldari Carrier')
 
 
-class Effect6601(EffectDef):
+class Effect6601(BaseEffect):
     """
     shipBonusCarrierG1FighterDamage
 
@@ -29313,7 +29317,7 @@ class Effect6601(EffectDef):
                                        src.getModifiedItemAttr('shipBonusCarrierG1'), skill='Gallente Carrier')
 
 
-class Effect6602(EffectDef):
+class Effect6602(BaseEffect):
     """
     shipBonusCarrierM1FighterDamage
 
@@ -29336,7 +29340,7 @@ class Effect6602(EffectDef):
                                        src.getModifiedItemAttr('shipBonusCarrierM1'), skill='Minmatar Carrier')
 
 
-class Effect6603(EffectDef):
+class Effect6603(BaseEffect):
     """
     shipBonusSupercarrierA1FighterDamage
 
@@ -29360,7 +29364,7 @@ class Effect6603(EffectDef):
                                        src.getModifiedItemAttr('shipBonusSupercarrierA1'), skill='Amarr Carrier')
 
 
-class Effect6604(EffectDef):
+class Effect6604(BaseEffect):
     """
     shipBonusSupercarrierC1FighterDamage
 
@@ -29384,7 +29388,7 @@ class Effect6604(EffectDef):
                                        src.getModifiedItemAttr('shipBonusSupercarrierC1'), skill='Caldari Carrier')
 
 
-class Effect6605(EffectDef):
+class Effect6605(BaseEffect):
     """
     shipBonusSupercarrierG1FighterDamage
 
@@ -29407,7 +29411,7 @@ class Effect6605(EffectDef):
                                        src.getModifiedItemAttr('shipBonusSupercarrierG1'), skill='Gallente Carrier')
 
 
-class Effect6606(EffectDef):
+class Effect6606(BaseEffect):
     """
     shipBonusSupercarrierM1FighterDamage
 
@@ -29430,7 +29434,7 @@ class Effect6606(EffectDef):
                                        src.getModifiedItemAttr('shipBonusSupercarrierM1'), skill='Minmatar Carrier')
 
 
-class Effect6607(EffectDef):
+class Effect6607(BaseEffect):
     """
     shipBonusSupercarrierA5WarfareLinksBonus
 
@@ -29459,7 +29463,7 @@ class Effect6607(EffectDef):
             'warfareBuff1Value', src.getModifiedItemAttr('shipBonusSupercarrierA5'), skill='Amarr Carrier')
 
 
-class Effect6608(EffectDef):
+class Effect6608(BaseEffect):
     """
     shipBonusSupercarrierC5WarfareLinksBonus
 
@@ -29488,7 +29492,7 @@ class Effect6608(EffectDef):
             'warfareBuff3Value', src.getModifiedItemAttr('shipBonusSupercarrierC5'), skill='Caldari Carrier')
 
 
-class Effect6609(EffectDef):
+class Effect6609(BaseEffect):
     """
     shipBonusSupercarrierG5WarfareLinksBonus
 
@@ -29517,7 +29521,7 @@ class Effect6609(EffectDef):
             'warfareBuff4Value', src.getModifiedItemAttr('shipBonusSupercarrierG5'), skill='Gallente Carrier')
 
 
-class Effect6610(EffectDef):
+class Effect6610(BaseEffect):
     """
     shipBonusSupercarrierM5WarfareLinksBonus
 
@@ -29546,7 +29550,7 @@ class Effect6610(EffectDef):
             'warfareBuff2Value', src.getModifiedItemAttr('shipBonusSupercarrierM5'), skill='Minmatar Carrier')
 
 
-class Effect6611(EffectDef):
+class Effect6611(BaseEffect):
     """
     shipBonusSupercarrierC2AfterburnerBonus
 
@@ -29562,7 +29566,7 @@ class Effect6611(EffectDef):
                                       src.getModifiedItemAttr('shipBonusSupercarrierC2'), skill='Caldari Carrier')
 
 
-class Effect6612(EffectDef):
+class Effect6612(BaseEffect):
     """
     shipBonusSupercarrierA2FighterApplicationBonus
 
@@ -29582,7 +29586,7 @@ class Effect6612(EffectDef):
                                        src.getModifiedItemAttr('shipBonusSupercarrierA2'), skill='Amarr Carrier')
 
 
-class Effect6613(EffectDef):
+class Effect6613(BaseEffect):
     """
     shipBonusSupercarrierRole1NumWarfareLinks
 
@@ -29598,7 +29602,7 @@ class Effect6613(EffectDef):
                                          src.getModifiedItemAttr('shipBonusRole1'))
 
 
-class Effect6614(EffectDef):
+class Effect6614(BaseEffect):
     """
     shipBonusSupercarrierRole2ArmorShieldModuleBonus
 
@@ -29616,7 +29620,7 @@ class Effect6614(EffectDef):
                                       src.getModifiedItemAttr('shipBonusRole2'))
 
 
-class Effect6615(EffectDef):
+class Effect6615(BaseEffect):
     """
     shipBonusSupercarrierA4BurstProjectorBonus
 
@@ -29633,7 +29637,7 @@ class Effect6615(EffectDef):
                                       src.getModifiedItemAttr('shipBonusSupercarrierA4'), skill='Amarr Carrier')
 
 
-class Effect6616(EffectDef):
+class Effect6616(BaseEffect):
     """
     shipBonusSupercarrierC4BurstProjectorBonus
 
@@ -29650,7 +29654,7 @@ class Effect6616(EffectDef):
                                       skill='Caldari Carrier')
 
 
-class Effect6617(EffectDef):
+class Effect6617(BaseEffect):
     """
     shipBonusSupercarrierG4BurstProjectorBonus
 
@@ -29667,7 +29671,7 @@ class Effect6617(EffectDef):
                                       src.getModifiedItemAttr('shipBonusSupercarrierG4'), skill='Gallente Carrier')
 
 
-class Effect6618(EffectDef):
+class Effect6618(BaseEffect):
     """
     shipBonusSupercarrierM4BurstProjectorBonus
 
@@ -29684,7 +29688,7 @@ class Effect6618(EffectDef):
                                       src.getModifiedItemAttr('shipBonusSupercarrierM4'), skill='Minmatar Carrier')
 
 
-class Effect6619(EffectDef):
+class Effect6619(BaseEffect):
     """
     shipBonusCarrierRole1NumWarfareLinks
 
@@ -29700,7 +29704,7 @@ class Effect6619(EffectDef):
                                          src.getModifiedItemAttr('shipBonusRole1'))
 
 
-class Effect6620(EffectDef):
+class Effect6620(BaseEffect):
     """
     shipBonusDreadnoughtC3ReloadBonus
 
@@ -29716,7 +29720,7 @@ class Effect6620(EffectDef):
                                       src.getModifiedItemAttr('shipBonusDreadnoughtC3'), skill='Caldari Dreadnought')
 
 
-class Effect6621(EffectDef):
+class Effect6621(BaseEffect):
     """
     shipBonusSupercarrierA2ArmorResists
 
@@ -29738,7 +29742,7 @@ class Effect6621(EffectDef):
                                skill='Amarr Carrier')
 
 
-class Effect6622(EffectDef):
+class Effect6622(BaseEffect):
     """
     shipBonusSupercarrierC2ShieldResists
 
@@ -29760,7 +29764,7 @@ class Effect6622(EffectDef):
                                skill='Caldari Carrier')
 
 
-class Effect6623(EffectDef):
+class Effect6623(BaseEffect):
     """
     shipBonusSupercarrierG2FighterHitpoints
 
@@ -29776,7 +29780,7 @@ class Effect6623(EffectDef):
                                        src.getModifiedItemAttr('shipBonusSupercarrierG2'), skill='Gallente Carrier')
 
 
-class Effect6624(EffectDef):
+class Effect6624(BaseEffect):
     """
     shipBonusSupercarrierM2FighterVelocity
 
@@ -29793,7 +29797,7 @@ class Effect6624(EffectDef):
                                        src.getModifiedItemAttr('shipBonusSupercarrierM2'), skill='Minmatar Carrier')
 
 
-class Effect6625(EffectDef):
+class Effect6625(BaseEffect):
     """
     shipBonusCarrierA2SupportFighterBonus
 
@@ -29812,7 +29816,7 @@ class Effect6625(EffectDef):
                                        src.getModifiedItemAttr('shipBonusCarrierA2'), skill='Amarr Carrier')
 
 
-class Effect6626(EffectDef):
+class Effect6626(BaseEffect):
     """
     shipBonusCarrierC2SupportFighterBonus
 
@@ -29831,7 +29835,7 @@ class Effect6626(EffectDef):
                                        skill='Caldari Carrier')
 
 
-class Effect6627(EffectDef):
+class Effect6627(BaseEffect):
     """
     shipBonusCarrierG2SupportFighterBonus
 
@@ -29850,7 +29854,7 @@ class Effect6627(EffectDef):
                                        skill='Gallente Carrier')
 
 
-class Effect6628(EffectDef):
+class Effect6628(BaseEffect):
     """
     shipBonusCarrierM2SupportFighterBonus
 
@@ -29869,7 +29873,7 @@ class Effect6628(EffectDef):
                                        src.getModifiedItemAttr('shipBonusCarrierM2'), skill='Minmatar Carrier')
 
 
-class Effect6629(EffectDef):
+class Effect6629(BaseEffect):
     """
     scriptResistanceBonusBonus
 
@@ -29888,7 +29892,7 @@ class Effect6629(EffectDef):
         src.boostItemAttr('thermalDamageResistanceBonus', src.getModifiedChargeAttr('thermalDamageResistanceBonusBonus'))
 
 
-class Effect6634(EffectDef):
+class Effect6634(BaseEffect):
     """
     shipBonusTitanA1DamageBonus
 
@@ -29904,7 +29908,7 @@ class Effect6634(EffectDef):
                                       src.getModifiedItemAttr('shipBonusTitanA1'), skill='Amarr Titan')
 
 
-class Effect6635(EffectDef):
+class Effect6635(BaseEffect):
     """
     shipBonusTitanC1KinDamageBonus
 
@@ -29924,7 +29928,7 @@ class Effect6635(EffectDef):
                                         src.getModifiedItemAttr('shipBonusTitanC1'), skill='Caldari Titan')
 
 
-class Effect6636(EffectDef):
+class Effect6636(BaseEffect):
     """
     shipBonusTitanG1DamageBonus
 
@@ -29940,7 +29944,7 @@ class Effect6636(EffectDef):
                                       src.getModifiedItemAttr('shipBonusTitanG1'), skill='Gallente Titan')
 
 
-class Effect6637(EffectDef):
+class Effect6637(BaseEffect):
     """
     shipBonusTitanM1DamageBonus
 
@@ -29956,7 +29960,7 @@ class Effect6637(EffectDef):
                                       src.getModifiedItemAttr('shipBonusTitanM1'), skill='Minmatar Titan')
 
 
-class Effect6638(EffectDef):
+class Effect6638(BaseEffect):
     """
     shipBonusTitanC2ROFBonus
 
@@ -29976,7 +29980,7 @@ class Effect6638(EffectDef):
                                       src.getModifiedItemAttr('shipBonusTitanC2'), skill='Caldari Titan')
 
 
-class Effect6639(EffectDef):
+class Effect6639(BaseEffect):
     """
     shipBonusSupercarrierA4FighterApplicationBonus
 
@@ -29996,7 +30000,7 @@ class Effect6639(EffectDef):
                                        src.getModifiedItemAttr('shipBonusSupercarrierA4'), skill='Amarr Carrier')
 
 
-class Effect6640(EffectDef):
+class Effect6640(BaseEffect):
     """
     shipBonusRole1NumWarfareLinks
 
@@ -30012,7 +30016,7 @@ class Effect6640(EffectDef):
                                          src.getModifiedItemAttr('shipBonusRole1'))
 
 
-class Effect6641(EffectDef):
+class Effect6641(BaseEffect):
     """
     shipBonusRole2ArmorPlates&ShieldExtendersBonus
 
@@ -30030,7 +30034,7 @@ class Effect6641(EffectDef):
                                       src.getModifiedItemAttr('shipBonusRole2'))
 
 
-class Effect6642(EffectDef):
+class Effect6642(BaseEffect):
     """
     skillBonusDoomsdayRapidFiring
 
@@ -30047,7 +30051,7 @@ class Effect6642(EffectDef):
                                       src.getModifiedItemAttr('rofBonus') * lvl)
 
 
-class Effect6647(EffectDef):
+class Effect6647(BaseEffect):
     """
     shipBonusTitanA3WarpStrength
 
@@ -30062,7 +30066,7 @@ class Effect6647(EffectDef):
         fit.ship.increaseItemAttr('warpScrambleStatus', src.getModifiedItemAttr('shipBonusTitanA3'), skill='Amarr Titan')
 
 
-class Effect6648(EffectDef):
+class Effect6648(BaseEffect):
     """
     shipBonusTitanC3WarpStrength
 
@@ -30077,7 +30081,7 @@ class Effect6648(EffectDef):
         fit.ship.increaseItemAttr('warpScrambleStatus', src.getModifiedItemAttr('shipBonusTitanC3'), skill='Caldari Titan')
 
 
-class Effect6649(EffectDef):
+class Effect6649(BaseEffect):
     """
     shipBonusTitanG3WarpStrength
 
@@ -30093,7 +30097,7 @@ class Effect6649(EffectDef):
         fit.ship.increaseItemAttr('warpScrambleStatus', src.getModifiedItemAttr('shipBonusTitanG3'), skill='Gallente Titan')
 
 
-class Effect6650(EffectDef):
+class Effect6650(BaseEffect):
     """
     shipBonusTitanM3WarpStrength
 
@@ -30108,7 +30112,7 @@ class Effect6650(EffectDef):
         fit.ship.increaseItemAttr('warpScrambleStatus', src.getModifiedItemAttr('shipBonusTitanM3'), skill='Minmatar Titan')
 
 
-class Effect6651(EffectDef):
+class Effect6651(BaseEffect):
     """
     shipModuleAncillaryRemoteArmorRepairer
 
@@ -30137,7 +30141,7 @@ class Effect6651(EffectDef):
         fit.extraAttributes.increase('armorRepairFullSpool', rps)
 
 
-class Effect6652(EffectDef):
+class Effect6652(BaseEffect):
     """
     shipModuleAncillaryRemoteShieldBooster
 
@@ -30157,7 +30161,7 @@ class Effect6652(EffectDef):
         fit.extraAttributes.increase('shieldRepair', amount / speed, **kwargs)
 
 
-class Effect6653(EffectDef):
+class Effect6653(BaseEffect):
     """
     shipBonusTitanA2CapNeed
 
@@ -30173,7 +30177,7 @@ class Effect6653(EffectDef):
                                       src.getModifiedItemAttr('shipBonusTitanA2'), skill='Amarr Titan')
 
 
-class Effect6654(EffectDef):
+class Effect6654(BaseEffect):
     """
     shipBonusTitanG2ROFBonus
 
@@ -30189,7 +30193,7 @@ class Effect6654(EffectDef):
                                       src.getModifiedItemAttr('shipBonusTitanG2'), skill='Gallente Titan')
 
 
-class Effect6655(EffectDef):
+class Effect6655(BaseEffect):
     """
     shipBonusTitanM2ROFBonus
 
@@ -30205,7 +30209,7 @@ class Effect6655(EffectDef):
                                       src.getModifiedItemAttr('shipBonusTitanM2'), skill='Minmatar Titan')
 
 
-class Effect6656(EffectDef):
+class Effect6656(BaseEffect):
     """
     shipBonusRole3XLTorpdeoVelocityBonus
 
@@ -30221,7 +30225,7 @@ class Effect6656(EffectDef):
                                         src.getModifiedItemAttr('shipBonusRole3'))
 
 
-class Effect6657(EffectDef):
+class Effect6657(BaseEffect):
     """
     shipBonusTitanC5AllDamageBonus
 
@@ -30253,7 +30257,7 @@ class Effect6657(EffectDef):
                                         src.getModifiedItemAttr('shipBonusTitanC5'), skill='Caldari Titan')
 
 
-class Effect6658(EffectDef):
+class Effect6658(BaseEffect):
     """
     moduleBonusBastionModule
 
@@ -30331,7 +30335,7 @@ class Effect6658(EffectDef):
         fit.ship.forceItemAttr('disallowTethering', src.getModifiedItemAttr('disallowTethering'))
 
 
-class Effect6661(EffectDef):
+class Effect6661(BaseEffect):
     """
     shipBonusCarrierM3FighterVelocity
 
@@ -30347,7 +30351,7 @@ class Effect6661(EffectDef):
                                        src.getModifiedItemAttr('shipBonusCarrierM3'), skill='Minmatar Carrier')
 
 
-class Effect6662(EffectDef):
+class Effect6662(BaseEffect):
     """
     shipBonusCarrierG3FighterHitpoints
 
@@ -30363,7 +30367,7 @@ class Effect6662(EffectDef):
                                        src.getModifiedItemAttr('shipBonusCarrierG3'), skill='Gallente Carrier')
 
 
-class Effect6663(EffectDef):
+class Effect6663(BaseEffect):
     """
     skillBonusDroneInterfacing
 
@@ -30391,7 +30395,7 @@ class Effect6663(EffectDef):
                                      src.getModifiedItemAttr('miningAmountBonus') * lvl)
 
 
-class Effect6664(EffectDef):
+class Effect6664(BaseEffect):
     """
     skillBonusDroneSharpshooting
 
@@ -30416,7 +30420,7 @@ class Effect6664(EffectDef):
                                        src.getModifiedItemAttr('rangeSkillBonus') * lvl)
 
 
-class Effect6665(EffectDef):
+class Effect6665(BaseEffect):
     """
     skillBonusDroneDurability
 
@@ -30439,7 +30443,7 @@ class Effect6665(EffectDef):
                                        src.getModifiedItemAttr('shieldCapacityBonus') * lvl)
 
 
-class Effect6667(EffectDef):
+class Effect6667(BaseEffect):
     """
     skillBonusDroneNavigation
 
@@ -30458,7 +30462,7 @@ class Effect6667(EffectDef):
                                        src.getModifiedItemAttr('maxVelocityBonus') * lvl)
 
 
-class Effect6669(EffectDef):
+class Effect6669(BaseEffect):
     """
     moduleBonusCapitalDroneDurabilityEnhancer
 
@@ -30481,7 +30485,7 @@ class Effect6669(EffectDef):
         fit.ship.boostItemAttr('cpuOutput', src.getModifiedItemAttr('drawback'))
 
 
-class Effect6670(EffectDef):
+class Effect6670(BaseEffect):
     """
     moduleBonusCapitalDroneScopeChip
 
@@ -30506,7 +30510,7 @@ class Effect6670(EffectDef):
         fit.ship.boostItemAttr('cpuOutput', src.getModifiedItemAttr('drawback'))
 
 
-class Effect6671(EffectDef):
+class Effect6671(BaseEffect):
     """
     moduleBonusCapitalDroneSpeedAugmentor
 
@@ -30525,7 +30529,7 @@ class Effect6671(EffectDef):
         fit.ship.boostItemAttr('cpuOutput', src.getModifiedItemAttr('drawback'))
 
 
-class Effect6672(EffectDef):
+class Effect6672(BaseEffect):
     """
     structureCombatRigSecurityModification
 
@@ -30552,7 +30556,7 @@ class Effect6672(EffectDef):
         module.multiplyItemAttr('structureRigMaxTargetRangeBonus', secModifier)
 
 
-class Effect6679(EffectDef):
+class Effect6679(BaseEffect):
     """
     skillStructureDoomsdayDurationBonus
 
@@ -30569,7 +30573,7 @@ class Effect6679(EffectDef):
                                       skill='Structure Doomsday Operation')
 
 
-class Effect6681(EffectDef):
+class Effect6681(BaseEffect):
     """
     shipBonusRole3NumWarfareLinks
 
@@ -30585,7 +30589,7 @@ class Effect6681(EffectDef):
                                          src.getModifiedItemAttr('shipBonusRole3'))
 
 
-class Effect6682(EffectDef):
+class Effect6682(BaseEffect):
     """
     structureModuleEffectStasisWebifier
 
@@ -30603,7 +30607,7 @@ class Effect6682(EffectDef):
                                stackingPenalties=True, *args, **kwargs)
 
 
-class Effect6683(EffectDef):
+class Effect6683(BaseEffect):
     """
     structureModuleEffectTargetPainter
 
@@ -30620,7 +30624,7 @@ class Effect6683(EffectDef):
                                    stackingPenalties=True, *args, **kwargs)
 
 
-class Effect6684(EffectDef):
+class Effect6684(BaseEffect):
     """
     structureModuleEffectRemoteSensorDampener
 
@@ -30642,7 +30646,7 @@ class Effect6684(EffectDef):
                                stackingPenalties=True, *args, **kwargs)
 
 
-class Effect6685(EffectDef):
+class Effect6685(BaseEffect):
     """
     structureModuleEffectECM
 
@@ -30661,7 +30665,7 @@ class Effect6685(EffectDef):
             fit.ecmProjectedStr *= strModifier
 
 
-class Effect6686(EffectDef):
+class Effect6686(BaseEffect):
     """
     structureModuleEffectWeaponDisruption
 
@@ -30695,7 +30699,7 @@ class Effect6686(EffectDef):
                                           stackingPenalties=True, *args, **kwargs)
 
 
-class Effect6687(EffectDef):
+class Effect6687(BaseEffect):
     """
     npcEntityRemoteArmorRepairer
 
@@ -30716,7 +30720,7 @@ class Effect6687(EffectDef):
             fit.extraAttributes.increase('armorRepairFullSpool', rps)
 
 
-class Effect6688(EffectDef):
+class Effect6688(BaseEffect):
     """
     npcEntityRemoteShieldBooster
 
@@ -30734,7 +30738,7 @@ class Effect6688(EffectDef):
             fit.extraAttributes.increase('shieldRepair', bonus / duration)
 
 
-class Effect6689(EffectDef):
+class Effect6689(BaseEffect):
     """
     npcEntityRemoteHullRepairer
 
@@ -30754,7 +30758,7 @@ class Effect6689(EffectDef):
         fit.extraAttributes.increase('hullRepair', bonus / duration)
 
 
-class Effect6690(EffectDef):
+class Effect6690(BaseEffect):
     """
     remoteWebifierEntity
 
@@ -30772,7 +30776,7 @@ class Effect6690(EffectDef):
                                stackingPenalties=True, *args, **kwargs)
 
 
-class Effect6691(EffectDef):
+class Effect6691(BaseEffect):
     """
     entityEnergyNeutralizerFalloff
 
@@ -30796,7 +30800,7 @@ class Effect6691(EffectDef):
             fit.addDrain(src, time, amount, 0)
 
 
-class Effect6692(EffectDef):
+class Effect6692(BaseEffect):
     """
     remoteTargetPaintEntity
 
@@ -30813,7 +30817,7 @@ class Effect6692(EffectDef):
                                    stackingPenalties=True, *args, **kwargs)
 
 
-class Effect6693(EffectDef):
+class Effect6693(BaseEffect):
     """
     remoteSensorDampEntity
 
@@ -30835,7 +30839,7 @@ class Effect6693(EffectDef):
                                stackingPenalties=True, *args, **kwargs)
 
 
-class Effect6694(EffectDef):
+class Effect6694(BaseEffect):
     """
     npcEntityWeaponDisruptor
 
@@ -30859,7 +30863,7 @@ class Effect6694(EffectDef):
                                           stackingPenalties=True, *args, **kwargs)
 
 
-class Effect6695(EffectDef):
+class Effect6695(BaseEffect):
     """
     entityECMFalloff
 
@@ -30882,7 +30886,7 @@ class Effect6695(EffectDef):
             fit.ecmProjectedStr *= strModifier
 
 
-class Effect6697(EffectDef):
+class Effect6697(BaseEffect):
     """
     rigDrawbackReductionArmor
 
@@ -30901,7 +30905,7 @@ class Effect6697(EffectDef):
                                       src.getModifiedItemAttr('rigDrawbackBonus') * lvl)
 
 
-class Effect6698(EffectDef):
+class Effect6698(BaseEffect):
     """
     rigDrawbackReductionAstronautics
 
@@ -30920,7 +30924,7 @@ class Effect6698(EffectDef):
                                       src.getModifiedItemAttr('rigDrawbackBonus') * lvl)
 
 
-class Effect6699(EffectDef):
+class Effect6699(BaseEffect):
     """
     rigDrawbackReductionDrones
 
@@ -30937,7 +30941,7 @@ class Effect6699(EffectDef):
                                       src.getModifiedItemAttr('rigDrawbackBonus') * lvl)
 
 
-class Effect6700(EffectDef):
+class Effect6700(BaseEffect):
     """
     rigDrawbackReductionElectronic
 
@@ -30958,7 +30962,7 @@ class Effect6700(EffectDef):
                                       src.getModifiedItemAttr('rigDrawbackBonus') * lvl)
 
 
-class Effect6701(EffectDef):
+class Effect6701(BaseEffect):
     """
     rigDrawbackReductionProjectile
 
@@ -30975,7 +30979,7 @@ class Effect6701(EffectDef):
                                       src.getModifiedItemAttr('rigDrawbackBonus') * lvl)
 
 
-class Effect6702(EffectDef):
+class Effect6702(BaseEffect):
     """
     rigDrawbackReductionEnergyWeapon
 
@@ -30992,7 +30996,7 @@ class Effect6702(EffectDef):
                                       src.getModifiedItemAttr('rigDrawbackBonus') * lvl)
 
 
-class Effect6703(EffectDef):
+class Effect6703(BaseEffect):
     """
     rigDrawbackReductionHybrid
 
@@ -31009,7 +31013,7 @@ class Effect6703(EffectDef):
                                       src.getModifiedItemAttr('rigDrawbackBonus') * lvl)
 
 
-class Effect6704(EffectDef):
+class Effect6704(BaseEffect):
     """
     rigDrawbackReductionLauncher
 
@@ -31026,7 +31030,7 @@ class Effect6704(EffectDef):
                                       src.getModifiedItemAttr('rigDrawbackBonus') * lvl)
 
 
-class Effect6705(EffectDef):
+class Effect6705(BaseEffect):
     """
     rigDrawbackReductionShield
 
@@ -31043,7 +31047,7 @@ class Effect6705(EffectDef):
                                       src.getModifiedItemAttr('rigDrawbackBonus') * lvl)
 
 
-class Effect6706(EffectDef):
+class Effect6706(BaseEffect):
     """
     setBonusAsklepian
 
@@ -31060,7 +31064,7 @@ class Effect6706(EffectDef):
                                                  'armorRepairBonus', src.getModifiedItemAttr('implantSetSerpentis2'))
 
 
-class Effect6708(EffectDef):
+class Effect6708(BaseEffect):
     """
     armorRepairAmountBonusSubcap
 
@@ -31076,7 +31080,7 @@ class Effect6708(EffectDef):
                                       'armorDamageAmount', src.getModifiedItemAttr('armorRepairBonus'))
 
 
-class Effect6709(EffectDef):
+class Effect6709(BaseEffect):
     """
     shipBonusRole1CapitalHybridDamageBonus
 
@@ -31092,7 +31096,7 @@ class Effect6709(EffectDef):
                                       'damageMultiplier', ship.getModifiedItemAttr('shipBonusRole1'))
 
 
-class Effect6710(EffectDef):
+class Effect6710(BaseEffect):
     """
     shipBonusDreadnoughtM1WebStrengthBonus
 
@@ -31108,7 +31112,7 @@ class Effect6710(EffectDef):
                                       src.getModifiedItemAttr('shipBonusDreadnoughtM1'), skill='Minmatar Dreadnought')
 
 
-class Effect6711(EffectDef):
+class Effect6711(BaseEffect):
     """
     shipBonusRole3CapitalHybridDamageBonus
 
@@ -31124,7 +31128,7 @@ class Effect6711(EffectDef):
                                       src.getModifiedItemAttr('shipBonusRole3'))
 
 
-class Effect6712(EffectDef):
+class Effect6712(BaseEffect):
     """
     shipBonusTitanM1WebStrengthBonus
 
@@ -31140,7 +31144,7 @@ class Effect6712(EffectDef):
                                       src.getModifiedItemAttr('shipBonusTitanM1'), skill='Minmatar Titan')
 
 
-class Effect6713(EffectDef):
+class Effect6713(BaseEffect):
     """
     shipBonusSupercarrierM1BurstProjectorWebBonus
 
@@ -31157,7 +31161,7 @@ class Effect6713(EffectDef):
                                       src.getModifiedItemAttr('shipBonusSupercarrierM1'), skill='Minmatar Carrier')
 
 
-class Effect6714(EffectDef):
+class Effect6714(BaseEffect):
     """
     ECMBurstJammer
 
@@ -31180,7 +31184,7 @@ class Effect6714(EffectDef):
             fit.ecmProjectedStr *= strModifier
 
 
-class Effect6717(EffectDef):
+class Effect6717(BaseEffect):
     """
     roleBonusIceOreMiningDurationCap
 
@@ -31202,7 +31206,7 @@ class Effect6717(EffectDef):
                                       src.getModifiedItemAttr('miningDurationRoleBonus'))
 
 
-class Effect6720(EffectDef):
+class Effect6720(BaseEffect):
     """
     shipBonusDroneRepairMC1
 
@@ -31222,7 +31226,7 @@ class Effect6720(EffectDef):
                                      src.getModifiedItemAttr('shipBonusMC'), skill='Minmatar Cruiser')
 
 
-class Effect6721(EffectDef):
+class Effect6721(BaseEffect):
     """
     eliteBonusLogisticRemoteArmorRepairOptimalFalloff1
 
@@ -31244,7 +31248,7 @@ class Effect6721(EffectDef):
                                       skill='Logistics Cruisers')
 
 
-class Effect6722(EffectDef):
+class Effect6722(BaseEffect):
     """
     roleBonusRemoteArmorRepairOptimalFalloff
 
@@ -31264,7 +31268,7 @@ class Effect6722(EffectDef):
                                       src.getModifiedItemAttr('roleBonusRepairRange'))
 
 
-class Effect6723(EffectDef):
+class Effect6723(BaseEffect):
     """
     shipBonusCloakCpuMC2
 
@@ -31280,7 +31284,7 @@ class Effect6723(EffectDef):
                                       src.getModifiedItemAttr('shipBonusMC2'), skill='Minmatar Cruiser')
 
 
-class Effect6724(EffectDef):
+class Effect6724(BaseEffect):
     """
     eliteBonusLogisticRemoteArmorRepairDuration3
 
@@ -31296,7 +31300,7 @@ class Effect6724(EffectDef):
                                       src.getModifiedItemAttr('eliteBonusLogistics3'), skill='Logistics Cruisers')
 
 
-class Effect6725(EffectDef):
+class Effect6725(BaseEffect):
     """
     shipBonusSETFalloffAF2
 
@@ -31312,7 +31316,7 @@ class Effect6725(EffectDef):
                                       src.getModifiedItemAttr('shipBonus2AF'), skill='Amarr Frigate')
 
 
-class Effect6726(EffectDef):
+class Effect6726(BaseEffect):
     """
     shipBonusCloakCpuMF1
 
@@ -31328,7 +31332,7 @@ class Effect6726(EffectDef):
                                       src.getModifiedItemAttr('shipBonusMF'), skill='Minmatar Frigate')
 
 
-class Effect6727(EffectDef):
+class Effect6727(BaseEffect):
     """
     eliteBonusCoverOpsNOSNeutFalloff1
 
@@ -31345,7 +31349,7 @@ class Effect6727(EffectDef):
                                       stackingPenalties=True, skill='Covert Ops')
 
 
-class Effect6730(EffectDef):
+class Effect6730(BaseEffect):
     """
     moduleBonusMicrowarpdrive
 
@@ -31367,7 +31371,7 @@ class Effect6730(EffectDef):
                                stackingPenalties=True)
 
 
-class Effect6731(EffectDef):
+class Effect6731(BaseEffect):
     """
     moduleBonusAfterburner
 
@@ -31387,7 +31391,7 @@ class Effect6731(EffectDef):
         fit.ship.boostItemAttr('maxVelocity', speedBoost * thrust / mass)
 
 
-class Effect6732(EffectDef):
+class Effect6732(BaseEffect):
     """
     moduleBonusWarfareLinkArmor
 
@@ -31408,7 +31412,7 @@ class Effect6732(EffectDef):
                     fit.addCommandBonus(id, value, module, kwargs['effect'])
 
 
-class Effect6733(EffectDef):
+class Effect6733(BaseEffect):
     """
     moduleBonusWarfareLinkShield
 
@@ -31429,7 +31433,7 @@ class Effect6733(EffectDef):
                     fit.addCommandBonus(id, value, module, kwargs['effect'])
 
 
-class Effect6734(EffectDef):
+class Effect6734(BaseEffect):
     """
     moduleBonusWarfareLinkSkirmish
 
@@ -31450,7 +31454,7 @@ class Effect6734(EffectDef):
                     fit.addCommandBonus(id, value, module, kwargs['effect'])
 
 
-class Effect6735(EffectDef):
+class Effect6735(BaseEffect):
     """
     moduleBonusWarfareLinkInfo
 
@@ -31471,7 +31475,7 @@ class Effect6735(EffectDef):
                     fit.addCommandBonus(id, value, module, kwargs['effect'])
 
 
-class Effect6736(EffectDef):
+class Effect6736(BaseEffect):
     """
     moduleBonusWarfareLinkMining
 
@@ -31492,7 +31496,7 @@ class Effect6736(EffectDef):
                     fit.addCommandBonus(id, value, module, kwargs['effect'])
 
 
-class Effect6737(EffectDef):
+class Effect6737(BaseEffect):
     """
     chargeBonusWarfareCharge
 
@@ -31509,7 +31513,7 @@ class Effect6737(EffectDef):
             module.multiplyItemAttr('warfareBuff{}Value'.format(x), value)
 
 
-class Effect6753(EffectDef):
+class Effect6753(BaseEffect):
     """
     moduleTitanEffectGenerator
 
@@ -31530,7 +31534,7 @@ class Effect6753(EffectDef):
                     fit.addCommandBonus(id, value, module, kwargs['effect'])
 
 
-class Effect6762(EffectDef):
+class Effect6762(BaseEffect):
     """
     miningDroneSpecBonus
 
@@ -31549,7 +31553,7 @@ class Effect6762(EffectDef):
                                      src.getModifiedItemAttr('maxVelocityBonus') * lvl)
 
 
-class Effect6763(EffectDef):
+class Effect6763(BaseEffect):
     """
     iceHarvestingDroneOperationDurationBonus
 
@@ -31566,7 +31570,7 @@ class Effect6763(EffectDef):
         fit.drones.filteredItemBoost(lambda mod: mod.item.requiresSkill('Ice Harvesting Drone Operation'), 'duration', src.getModifiedItemAttr('rofBonus') * lvl)
 
 
-class Effect6764(EffectDef):
+class Effect6764(BaseEffect):
     """
     iceHarvestingDroneSpecBonus
 
@@ -31585,7 +31589,7 @@ class Effect6764(EffectDef):
                                      'maxVelocity', src.getModifiedItemAttr('maxVelocityBonus') * lvl)
 
 
-class Effect6765(EffectDef):
+class Effect6765(BaseEffect):
     """
     spatialPhenomenaGenerationDurationBonus
 
@@ -31602,7 +31606,7 @@ class Effect6765(EffectDef):
                                       src.getModifiedItemAttr('durationBonus') * lvl)
 
 
-class Effect6766(EffectDef):
+class Effect6766(BaseEffect):
     """
     commandProcessorEffect
 
@@ -31620,7 +31624,7 @@ class Effect6766(EffectDef):
                                          src.getModifiedItemAttr('maxGangModules'))
 
 
-class Effect6769(EffectDef):
+class Effect6769(BaseEffect):
     """
     commandBurstAoEBonus
 
@@ -31638,7 +31642,7 @@ class Effect6769(EffectDef):
                                       src.getModifiedItemAttr('areaOfEffectBonus') * src.level)
 
 
-class Effect6770(EffectDef):
+class Effect6770(BaseEffect):
     """
     armoredCommandDurationBonus
 
@@ -31655,7 +31659,7 @@ class Effect6770(EffectDef):
                                       src.getModifiedItemAttr('durationBonus') * lvl)
 
 
-class Effect6771(EffectDef):
+class Effect6771(BaseEffect):
     """
     shieldCommandDurationBonus
 
@@ -31672,7 +31676,7 @@ class Effect6771(EffectDef):
                                       src.getModifiedItemAttr('durationBonus') * lvl)
 
 
-class Effect6772(EffectDef):
+class Effect6772(BaseEffect):
     """
     informationCommandDurationBonus
 
@@ -31689,7 +31693,7 @@ class Effect6772(EffectDef):
                                       src.getModifiedItemAttr('durationBonus') * lvl)
 
 
-class Effect6773(EffectDef):
+class Effect6773(BaseEffect):
     """
     skirmishCommandDurationBonus
 
@@ -31706,7 +31710,7 @@ class Effect6773(EffectDef):
                                       src.getModifiedItemAttr('durationBonus') * lvl)
 
 
-class Effect6774(EffectDef):
+class Effect6774(BaseEffect):
     """
     miningForemanDurationBonus
 
@@ -31723,7 +31727,7 @@ class Effect6774(EffectDef):
                                       src.getModifiedItemAttr('durationBonus') * lvl)
 
 
-class Effect6776(EffectDef):
+class Effect6776(BaseEffect):
     """
     armoredCommandStrengthBonus
 
@@ -31746,7 +31750,7 @@ class Effect6776(EffectDef):
                                         src.getModifiedItemAttr('commandStrengthBonus') * lvl)
 
 
-class Effect6777(EffectDef):
+class Effect6777(BaseEffect):
     """
     shieldCommandStrengthBonus
 
@@ -31769,7 +31773,7 @@ class Effect6777(EffectDef):
                                         src.getModifiedItemAttr('commandStrengthBonus') * lvl)
 
 
-class Effect6778(EffectDef):
+class Effect6778(BaseEffect):
     """
     informationCommandStrengthBonus
 
@@ -31792,7 +31796,7 @@ class Effect6778(EffectDef):
                                         src.getModifiedItemAttr('commandStrengthBonus') * lvl)
 
 
-class Effect6779(EffectDef):
+class Effect6779(BaseEffect):
     """
     skirmishCommandStrengthBonus
 
@@ -31815,7 +31819,7 @@ class Effect6779(EffectDef):
                                         src.getModifiedItemAttr('commandStrengthBonus') * lvl)
 
 
-class Effect6780(EffectDef):
+class Effect6780(BaseEffect):
     """
     miningForemanStrengthBonus
 
@@ -31834,7 +31838,7 @@ class Effect6780(EffectDef):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Mining Foreman'), 'warfareBuff1Value', src.getModifiedItemAttr('commandStrengthBonus') * lvl)
 
 
-class Effect6782(EffectDef):
+class Effect6782(BaseEffect):
     """
     commandBurstReloadTimeBonus
 
@@ -31852,7 +31856,7 @@ class Effect6782(EffectDef):
                                       src.getModifiedItemAttr('reloadTimeBonus') * lvl)
 
 
-class Effect6783(EffectDef):
+class Effect6783(BaseEffect):
     """
     commandBurstAoERoleBonus
 
@@ -31876,7 +31880,7 @@ class Effect6783(EffectDef):
                                       src.getModifiedItemAttr('roleBonusCommandBurstAoERange'))
 
 
-class Effect6786(EffectDef):
+class Effect6786(BaseEffect):
     """
     shieldCommandBurstBonusICS3
 
@@ -31900,7 +31904,7 @@ class Effect6786(EffectDef):
                                       src.getModifiedItemAttr('shipBonusICS3'), skill='Industrial Command Ships')
 
 
-class Effect6787(EffectDef):
+class Effect6787(BaseEffect):
     """
     shipBonusDroneHPDamageMiningICS4
 
@@ -31943,7 +31947,7 @@ class Effect6787(EffectDef):
                                      )
 
 
-class Effect6788(EffectDef):
+class Effect6788(BaseEffect):
     """
     shipBonusDroneIceHarvestingICS5
 
@@ -31962,7 +31966,7 @@ class Effect6788(EffectDef):
                                      )
 
 
-class Effect6789(EffectDef):
+class Effect6789(BaseEffect):
     """
     industrialBonusDroneDamage
 
@@ -31986,7 +31990,7 @@ class Effect6789(EffectDef):
                                      src.getModifiedItemAttr('industrialBonusDroneDamage'))
 
 
-class Effect6790(EffectDef):
+class Effect6790(BaseEffect):
     """
     shipBonusDroneIceHarvestingRole
 
@@ -32002,7 +32006,7 @@ class Effect6790(EffectDef):
                                      src.getModifiedItemAttr('roleBonusDroneIceHarvestingSpeed'))
 
 
-class Effect6792(EffectDef):
+class Effect6792(BaseEffect):
     """
     shipBonusDroneHPDamageMiningORECapital4
 
@@ -32045,7 +32049,7 @@ class Effect6792(EffectDef):
                                      )
 
 
-class Effect6793(EffectDef):
+class Effect6793(BaseEffect):
     """
     miningForemanBurstBonusORECapital2
 
@@ -32069,7 +32073,7 @@ class Effect6793(EffectDef):
                                       src.getModifiedItemAttr('shipBonusORECapital2'), skill='Capital Industrial Ships')
 
 
-class Effect6794(EffectDef):
+class Effect6794(BaseEffect):
     """
     shieldCommandBurstBonusORECapital3
 
@@ -32093,7 +32097,7 @@ class Effect6794(EffectDef):
                                       src.getModifiedItemAttr('shipBonusORECapital3'), skill='Capital Industrial Ships')
 
 
-class Effect6795(EffectDef):
+class Effect6795(BaseEffect):
     """
     shipBonusDroneIceHarvestingORECapital5
 
@@ -32112,7 +32116,7 @@ class Effect6795(EffectDef):
                                      )
 
 
-class Effect6796(EffectDef):
+class Effect6796(BaseEffect):
     """
     shipModeSHTDamagePostDiv
 
@@ -32133,7 +32137,7 @@ class Effect6796(EffectDef):
         )
 
 
-class Effect6797(EffectDef):
+class Effect6797(BaseEffect):
     """
     shipModeSPTDamagePostDiv
 
@@ -32154,7 +32158,7 @@ class Effect6797(EffectDef):
         )
 
 
-class Effect6798(EffectDef):
+class Effect6798(BaseEffect):
     """
     shipModeSETDamagePostDiv
 
@@ -32175,7 +32179,7 @@ class Effect6798(EffectDef):
         )
 
 
-class Effect6799(EffectDef):
+class Effect6799(BaseEffect):
     """
     shipModeSmallMissileDamagePostDiv
 
@@ -32196,7 +32200,7 @@ class Effect6799(EffectDef):
                                                penaltyGroup='postDiv')
 
 
-class Effect6800(EffectDef):
+class Effect6800(BaseEffect):
     """
     modeDampTDResistsPostDiv
 
@@ -32212,7 +32216,7 @@ class Effect6800(EffectDef):
         fit.ship.multiplyItemAttr('sensorDampenerResistance', 1 / module.getModifiedItemAttr('modeEwarResistancePostDiv'))
 
 
-class Effect6801(EffectDef):
+class Effect6801(BaseEffect):
     """
     modeMWDandABBoostPostDiv
 
@@ -32234,7 +32238,7 @@ class Effect6801(EffectDef):
         )
 
 
-class Effect6807(EffectDef):
+class Effect6807(BaseEffect):
     """
     invulnerabilityCoreDurationBonus
 
@@ -32253,7 +32257,7 @@ class Effect6807(EffectDef):
                                       src.getModifiedItemAttr('durationBonus') * lvl)
 
 
-class Effect6844(EffectDef):
+class Effect6844(BaseEffect):
     """
     skillMultiplierDefenderMissileVelocity
 
@@ -32269,7 +32273,7 @@ class Effect6844(EffectDef):
                                         'maxVelocity', skill.getModifiedItemAttr('missileVelocityBonus') * skill.level)
 
 
-class Effect6845(EffectDef):
+class Effect6845(BaseEffect):
     """
     shipBonusCommandDestroyerRole1DefenderBonus
 
@@ -32285,7 +32289,7 @@ class Effect6845(EffectDef):
                                       'moduleReactivationDelay', ship.getModifiedItemAttr('shipBonusRole1'))
 
 
-class Effect6851(EffectDef):
+class Effect6851(BaseEffect):
     """
     shipBonusRole3CapitalEnergyDamageBonus
 
@@ -32301,7 +32305,7 @@ class Effect6851(EffectDef):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Capital Energy Turret'), 'damageMultiplier', src.getModifiedItemAttr('shipBonusRole3'))
 
 
-class Effect6852(EffectDef):
+class Effect6852(BaseEffect):
     """
     shipBonusTitanM1WebRangeBonus
 
@@ -32317,7 +32321,7 @@ class Effect6852(EffectDef):
                                       'maxRange', src.getModifiedItemAttr('shipBonusTitanM1'), skill='Minmatar Titan')
 
 
-class Effect6853(EffectDef):
+class Effect6853(BaseEffect):
     """
     shipBonusTitanA1EnergyWarfareAmountBonus
 
@@ -32335,7 +32339,7 @@ class Effect6853(EffectDef):
                                       'energyNeutralizerAmount', src.getModifiedItemAttr('shipBonusTitanA1'), skill='Amarr Titan')
 
 
-class Effect6855(EffectDef):
+class Effect6855(BaseEffect):
     """
     shipBonusDreadnoughtA1EnergyWarfareAmountBonus
 
@@ -32353,7 +32357,7 @@ class Effect6855(EffectDef):
                                       'energyNeutralizerAmount', src.getModifiedItemAttr('shipBonusDreadnoughtA1'), skill='Amarr Dreadnought')
 
 
-class Effect6856(EffectDef):
+class Effect6856(BaseEffect):
     """
     shipBonusDreadnoughtM1WebRangeBonus
 
@@ -32369,7 +32373,7 @@ class Effect6856(EffectDef):
                                       'maxRange', src.getModifiedItemAttr('shipBonusDreadnoughtM1'), skill='Minmatar Dreadnought')
 
 
-class Effect6857(EffectDef):
+class Effect6857(BaseEffect):
     """
     shipBonusForceAuxiliaryA1NosferatuRangeBonus
 
@@ -32387,7 +32391,7 @@ class Effect6857(EffectDef):
                                       'falloffEffectiveness', src.getModifiedItemAttr('shipBonusForceAuxiliaryA1'), skill='Amarr Carrier')
 
 
-class Effect6858(EffectDef):
+class Effect6858(BaseEffect):
     """
     shipBonusForceAuxiliaryA1NosferatuDrainAmount
 
@@ -32403,7 +32407,7 @@ class Effect6858(EffectDef):
                                       'powerTransferAmount', src.getModifiedItemAttr('shipBonusForceAuxiliaryA1'), skill='Amarr Carrier')
 
 
-class Effect6859(EffectDef):
+class Effect6859(BaseEffect):
     """
     shipBonusRole4NosferatuCPUBonus
 
@@ -32419,7 +32423,7 @@ class Effect6859(EffectDef):
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Energy Nosferatu', 'cpu', src.getModifiedItemAttr('shipBonusRole4'))
 
 
-class Effect6860(EffectDef):
+class Effect6860(BaseEffect):
     """
     shipBonusRole5RemoteArmorRepairPowergridBonus
 
@@ -32435,7 +32439,7 @@ class Effect6860(EffectDef):
                                       src.getModifiedItemAttr('shipBonusRole5'))
 
 
-class Effect6861(EffectDef):
+class Effect6861(BaseEffect):
     """
     shipBonusRole5CapitalRemoteArmorRepairPowergridBonus
 
@@ -32450,7 +32454,7 @@ class Effect6861(EffectDef):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Capital Remote Armor Repair Systems'), 'power', src.getModifiedItemAttr('shipBonusRole5'))
 
 
-class Effect6862(EffectDef):
+class Effect6862(BaseEffect):
     """
     shipBonusForceAuxiliaryM1RemoteArmorRepairDuration
 
@@ -32466,7 +32470,7 @@ class Effect6862(EffectDef):
                                       'duration', src.getModifiedItemAttr('shipBonusForceAuxiliaryM1'), skill='Minmatar Carrier')
 
 
-class Effect6865(EffectDef):
+class Effect6865(BaseEffect):
     """
     eliteBonusCoverOpsWarpVelocity1
 
@@ -32481,7 +32485,7 @@ class Effect6865(EffectDef):
         fit.ship.boostItemAttr('warpSpeedMultiplier', src.getModifiedItemAttr('eliteBonusCovertOps1'), skill='Covert Ops')
 
 
-class Effect6866(EffectDef):
+class Effect6866(BaseEffect):
     """
     shipBonusSmallMissileFlightTimeCF1
 
@@ -32499,7 +32503,7 @@ class Effect6866(EffectDef):
                                         'explosionDelay', src.getModifiedItemAttr('shipBonusCF'), skill='Caldari Frigate')
 
 
-class Effect6867(EffectDef):
+class Effect6867(BaseEffect):
     """
     shipBonusSPTRoFMF
 
@@ -32515,7 +32519,7 @@ class Effect6867(EffectDef):
                                       'speed', src.getModifiedItemAttr('shipBonusMF'), skill='Minmatar Frigate')
 
 
-class Effect6871(EffectDef):
+class Effect6871(BaseEffect):
     """
     concordSecStatusTankBonus
 
@@ -32544,7 +32548,7 @@ class Effect6871(EffectDef):
                                       'shieldBonus', bonus, stackingPenalties=True)
 
 
-class Effect6872(EffectDef):
+class Effect6872(BaseEffect):
     """
     eliteReconStasisWebBonus1
 
@@ -32559,7 +32563,7 @@ class Effect6872(EffectDef):
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Stasis Web', 'maxRange', src.getModifiedItemAttr('eliteBonusReconShip1'), skill='Recon Ships')
 
 
-class Effect6873(EffectDef):
+class Effect6873(BaseEffect):
     """
     eliteBonusReconWarpVelocity3
 
@@ -32574,7 +32578,7 @@ class Effect6873(EffectDef):
         fit.ship.boostItemAttr('warpSpeedMultiplier', src.getModifiedItemAttr('eliteBonusReconShip3'), skill='Recon Ships')
 
 
-class Effect6874(EffectDef):
+class Effect6874(BaseEffect):
     """
     shipBonusMedMissileFlightTimeCC2
 
@@ -32592,7 +32596,7 @@ class Effect6874(EffectDef):
                                         'explosionDelay', src.getModifiedItemAttr('shipBonusCC2'), skill='Caldari Cruiser')
 
 
-class Effect6877(EffectDef):
+class Effect6877(BaseEffect):
     """
     eliteBonusBlackOpsWarpVelocity1
 
@@ -32607,7 +32611,7 @@ class Effect6877(EffectDef):
         fit.ship.boostItemAttr('warpSpeedMultiplier', src.getModifiedItemAttr('eliteBonusBlackOps1'), stackingPenalties=True, skill='Black Ops')
 
 
-class Effect6878(EffectDef):
+class Effect6878(BaseEffect):
     """
     eliteBonusBlackOpsScramblerRange4
 
@@ -32623,7 +32627,7 @@ class Effect6878(EffectDef):
                                       src.getModifiedItemAttr('eliteBonusBlackOps4'), stackingPenalties=True, skill='Black Ops')
 
 
-class Effect6879(EffectDef):
+class Effect6879(BaseEffect):
     """
     eliteBonusBlackOpsWebRange3
 
@@ -32639,7 +32643,7 @@ class Effect6879(EffectDef):
                                       src.getModifiedItemAttr('eliteBonusBlackOps3'), stackingPenalties=True, skill='Black Ops')
 
 
-class Effect6880(EffectDef):
+class Effect6880(BaseEffect):
     """
     shipBonusLauncherRoF2CB
 
@@ -32659,7 +32663,7 @@ class Effect6880(EffectDef):
                                       src.getModifiedItemAttr('shipBonus2CB'), skill='Caldari Battleship')
 
 
-class Effect6881(EffectDef):
+class Effect6881(BaseEffect):
     """
     shipBonusLargeMissileFlightTimeCB1
 
@@ -32677,7 +32681,7 @@ class Effect6881(EffectDef):
                                         src.getModifiedItemAttr('shipBonusCB'), skill='Caldari Battleship')
 
 
-class Effect6883(EffectDef):
+class Effect6883(BaseEffect):
     """
     shipBonusForceAuxiliaryM2LocalRepairAmount
 
@@ -32695,7 +32699,7 @@ class Effect6883(EffectDef):
                                       'armorDamageAmount', src.getModifiedItemAttr('shipBonusForceAuxiliaryM2'), skill='Minmatar Carrier')
 
 
-class Effect6894(EffectDef):
+class Effect6894(BaseEffect):
     """
     subsystemEnergyNeutFittingReduction
 
@@ -32713,7 +32717,7 @@ class Effect6894(EffectDef):
                                       'power', src.getModifiedItemAttr('subsystemEnergyNeutFittingReduction'))
 
 
-class Effect6895(EffectDef):
+class Effect6895(BaseEffect):
     """
     subsystemMETFittingReduction
 
@@ -32731,7 +32735,7 @@ class Effect6895(EffectDef):
                                       'power', src.getModifiedItemAttr('subsystemMETFittingReduction'))
 
 
-class Effect6896(EffectDef):
+class Effect6896(BaseEffect):
     """
     subsystemMHTFittingReduction
 
@@ -32751,7 +32755,7 @@ class Effect6896(EffectDef):
                                       'power', src.getModifiedItemAttr('subsystemMHTFittingReduction'))
 
 
-class Effect6897(EffectDef):
+class Effect6897(BaseEffect):
     """
     subsystemMPTFittingReduction
 
@@ -32769,7 +32773,7 @@ class Effect6897(EffectDef):
                                       'cpu', src.getModifiedItemAttr('subsystemMPTFittingReduction'))
 
 
-class Effect6898(EffectDef):
+class Effect6898(BaseEffect):
     """
     subsystemMRARFittingReduction
 
@@ -32789,7 +32793,7 @@ class Effect6898(EffectDef):
                                       'power', src.getModifiedItemAttr('subsystemMRARFittingReduction'))
 
 
-class Effect6899(EffectDef):
+class Effect6899(BaseEffect):
     """
     subsystemMRSBFittingReduction
 
@@ -32810,7 +32814,7 @@ class Effect6899(EffectDef):
                                       'power', src.getModifiedItemAttr('subsystemMRSBFittingReduction'))
 
 
-class Effect6900(EffectDef):
+class Effect6900(BaseEffect):
     """
     subsystemMMissileFittingReduction
 
@@ -32831,7 +32835,7 @@ class Effect6900(EffectDef):
                                       'power', src.getModifiedItemAttr('subsystemMMissileFittingReduction'))
 
 
-class Effect6908(EffectDef):
+class Effect6908(BaseEffect):
     """
     shipBonusStrategicCruiserCaldariNaniteRepairTime2
 
@@ -32848,7 +32852,7 @@ class Effect6908(EffectDef):
                                       skill='Caldari Strategic Cruiser')
 
 
-class Effect6909(EffectDef):
+class Effect6909(BaseEffect):
     """
     shipBonusStrategicCruiserAmarrNaniteRepairTime2
 
@@ -32865,7 +32869,7 @@ class Effect6909(EffectDef):
                                       skill='Amarr Strategic Cruiser')
 
 
-class Effect6910(EffectDef):
+class Effect6910(BaseEffect):
     """
     shipBonusStrategicCruiserGallenteNaniteRepairTime2
 
@@ -32882,7 +32886,7 @@ class Effect6910(EffectDef):
                                       skill='Gallente Strategic Cruiser')
 
 
-class Effect6911(EffectDef):
+class Effect6911(BaseEffect):
     """
     shipBonusStrategicCruiserMinmatarNaniteRepairTime2
 
@@ -32899,7 +32903,7 @@ class Effect6911(EffectDef):
                                       skill='Minmatar Strategic Cruiser')
 
 
-class Effect6920(EffectDef):
+class Effect6920(BaseEffect):
     """
     structureHPBonusAddPassive
 
@@ -32915,7 +32919,7 @@ class Effect6920(EffectDef):
         fit.ship.increaseItemAttr('hp', module.getModifiedItemAttr('structureHPBonusAdd') or 0)
 
 
-class Effect6921(EffectDef):
+class Effect6921(BaseEffect):
     """
     subSystemBonusAmarrDefensive2ScanProbeStrength
 
@@ -32932,7 +32936,7 @@ class Effect6921(EffectDef):
                                         skill='Amarr Defensive Systems')
 
 
-class Effect6923(EffectDef):
+class Effect6923(BaseEffect):
     """
     subsystemBonusMinmatarOffensive1HMLHAMVelo
 
@@ -32949,7 +32953,7 @@ class Effect6923(EffectDef):
                                       skill='Minmatar Offensive Systems')
 
 
-class Effect6924(EffectDef):
+class Effect6924(BaseEffect):
     """
     subsystemBonusMinmatarOffensive3MissileExpVelo
 
@@ -32966,7 +32970,7 @@ class Effect6924(EffectDef):
                                       skill='Minmatar Offensive Systems')
 
 
-class Effect6925(EffectDef):
+class Effect6925(BaseEffect):
     """
     subsystemBonusGallenteOffensive2DroneVeloTracking
 
@@ -32986,7 +32990,7 @@ class Effect6925(EffectDef):
                                      skill='Gallente Offensive Systems')
 
 
-class Effect6926(EffectDef):
+class Effect6926(BaseEffect):
     """
     subsystemBonusAmarrPropulsionWarpCapacitor
 
@@ -33001,7 +33005,7 @@ class Effect6926(EffectDef):
         fit.ship.boostItemAttr('warpCapacitorNeed', src.getModifiedItemAttr('subsystemBonusAmarrPropulsion'), skill='Amarr Propulsion Systems')
 
 
-class Effect6927(EffectDef):
+class Effect6927(BaseEffect):
     """
     subsystemBonusMinmatarPropulsionWarpCapacitor
 
@@ -33017,7 +33021,7 @@ class Effect6927(EffectDef):
                                skill='Minmatar Propulsion Systems')
 
 
-class Effect6928(EffectDef):
+class Effect6928(BaseEffect):
     """
     subsystemBonusCaldariPropulsion2PropModHeatBenefit
 
@@ -33034,7 +33038,7 @@ class Effect6928(EffectDef):
                                       skill='Caldari Propulsion Systems')
 
 
-class Effect6929(EffectDef):
+class Effect6929(BaseEffect):
     """
     subsystemBonusGallentePropulsion2PropModHeatBenefit
 
@@ -33051,7 +33055,7 @@ class Effect6929(EffectDef):
                                       skill='Gallente Propulsion Systems')
 
 
-class Effect6930(EffectDef):
+class Effect6930(BaseEffect):
     """
     subsystemBonusAmarrCore2EnergyResistance
 
@@ -33066,7 +33070,7 @@ class Effect6930(EffectDef):
         fit.ship.boostItemAttr('energyWarfareResistance', src.getModifiedItemAttr('subsystemBonusAmarrCore2'), skill='Amarr Core Systems')
 
 
-class Effect6931(EffectDef):
+class Effect6931(BaseEffect):
     """
     subsystemBonusMinmatarCore2EnergyResistance
 
@@ -33082,7 +33086,7 @@ class Effect6931(EffectDef):
                                skill='Minmatar Core Systems')
 
 
-class Effect6932(EffectDef):
+class Effect6932(BaseEffect):
     """
     subsystemBonusGallenteCore2EnergyResistance
 
@@ -33098,7 +33102,7 @@ class Effect6932(EffectDef):
                                skill='Gallente Core Systems')
 
 
-class Effect6933(EffectDef):
+class Effect6933(BaseEffect):
     """
     subsystemBonusCaldariCore2EnergyResistance
 
@@ -33114,7 +33118,7 @@ class Effect6933(EffectDef):
                                skill='Caldari Core Systems')
 
 
-class Effect6934(EffectDef):
+class Effect6934(BaseEffect):
     """
     shipMaxLockedTargetsBonusAddPassive
 
@@ -33131,7 +33135,7 @@ class Effect6934(EffectDef):
         fit.ship.increaseItemAttr('maxLockedTargets', src.getModifiedItemAttr('maxLockedTargetsBonus'))
 
 
-class Effect6935(EffectDef):
+class Effect6935(BaseEffect):
     """
     subsystemBonusAmarrCore3EnergyWarHeatBonus
 
@@ -33147,7 +33151,7 @@ class Effect6935(EffectDef):
                                       src.getModifiedItemAttr('subsystemBonusAmarrCore3'), skill='Amarr Core Systems')
 
 
-class Effect6936(EffectDef):
+class Effect6936(BaseEffect):
     """
     subsystemBonusMinmatarCore3StasisWebHeatBonus
 
@@ -33164,7 +33168,7 @@ class Effect6936(EffectDef):
                                       skill='Minmatar Core Systems')
 
 
-class Effect6937(EffectDef):
+class Effect6937(BaseEffect):
     """
     subsystemBonusGallenteCore3WarpScramHeatBonus
 
@@ -33180,7 +33184,7 @@ class Effect6937(EffectDef):
                                       src.getModifiedItemAttr('subsystemBonusGallenteCore3'), skill='Gallente Core Systems')
 
 
-class Effect6938(EffectDef):
+class Effect6938(BaseEffect):
     """
     subsystemBonusCaldariCore3ECMHeatBonus
 
@@ -33196,7 +33200,7 @@ class Effect6938(EffectDef):
                                       src.getModifiedItemAttr('subsystemBonusCaldariCore3'), skill='Caldari Core Systems')
 
 
-class Effect6939(EffectDef):
+class Effect6939(BaseEffect):
     """
     subsystemBonusAmarrDefensive2HardenerHeat
 
@@ -33214,7 +33218,7 @@ class Effect6939(EffectDef):
                                       src.getModifiedItemAttr('subsystemBonusAmarrDefensive2'), skill='Amarr Defensive Systems')
 
 
-class Effect6940(EffectDef):
+class Effect6940(BaseEffect):
     """
     subsystemBonusGallenteDefensive2HardenerHeat
 
@@ -33232,7 +33236,7 @@ class Effect6940(EffectDef):
                                       src.getModifiedItemAttr('subsystemBonusGallenteDefensive2'), skill='Gallente Defensive Systems')
 
 
-class Effect6941(EffectDef):
+class Effect6941(BaseEffect):
     """
     subsystemBonusCaldariDefensive2HardenerHeat
 
@@ -33249,7 +33253,7 @@ class Effect6941(EffectDef):
                                       skill='Caldari Defensive Systems')
 
 
-class Effect6942(EffectDef):
+class Effect6942(BaseEffect):
     """
     subsystemBonusMinmatarDefensive2HardenerHeat
 
@@ -33269,7 +33273,7 @@ class Effect6942(EffectDef):
                                       src.getModifiedItemAttr('subsystemBonusMinmatarDefensive2'), skill='Minmatar Defensive Systems')
 
 
-class Effect6943(EffectDef):
+class Effect6943(BaseEffect):
     """
     subsystemBonusAmarrDefensive3ArmorRepHeat
 
@@ -33290,7 +33294,7 @@ class Effect6943(EffectDef):
                                       skill='Amarr Defensive Systems')
 
 
-class Effect6944(EffectDef):
+class Effect6944(BaseEffect):
     """
     subsystemBonusGallenteDefensive3ArmorRepHeat
 
@@ -33311,7 +33315,7 @@ class Effect6944(EffectDef):
                                       skill='Gallente Defensive Systems')
 
 
-class Effect6945(EffectDef):
+class Effect6945(BaseEffect):
     """
     subsystemBonusCaldariDefensive3ShieldBoostHeat
 
@@ -33332,7 +33336,7 @@ class Effect6945(EffectDef):
                                       skill='Caldari Defensive Systems')
 
 
-class Effect6946(EffectDef):
+class Effect6946(BaseEffect):
     """
     subsystemBonusMinmatarDefensive3LocalRepHeat
 
@@ -33353,7 +33357,7 @@ class Effect6946(EffectDef):
                                       skill='Minmatar Defensive Systems')
 
 
-class Effect6947(EffectDef):
+class Effect6947(BaseEffect):
     """
     subSystemBonusCaldariDefensive2ScanProbeStrength
 
@@ -33370,7 +33374,7 @@ class Effect6947(EffectDef):
                                         skill='Caldari Defensive Systems')
 
 
-class Effect6949(EffectDef):
+class Effect6949(BaseEffect):
     """
     subSystemBonusGallenteDefensive2ScanProbeStrength
 
@@ -33386,7 +33390,7 @@ class Effect6949(EffectDef):
                                         src.getModifiedItemAttr('subsystemBonusGallenteDefensive2'), skill='Gallente Defensive Systems')
 
 
-class Effect6951(EffectDef):
+class Effect6951(BaseEffect):
     """
     subSystemBonusMinmatarDefensive2ScanProbeStrength
 
@@ -33402,7 +33406,7 @@ class Effect6951(EffectDef):
                                         src.getModifiedItemAttr('subsystemBonusMinmatarDefensive2'), skill='Minmatar Defensive Systems')
 
 
-class Effect6953(EffectDef):
+class Effect6953(BaseEffect):
     """
     mediumRemoteRepFittingAdjustment
 
@@ -33421,7 +33425,7 @@ class Effect6953(EffectDef):
         module.multiplyItemAttr('cpu', module.getModifiedItemAttr('mediumRemoteRepFittingMultiplier'))
 
 
-class Effect6954(EffectDef):
+class Effect6954(BaseEffect):
     """
     subsystemBonusCommandBurstFittingReduction
 
@@ -33439,7 +33443,7 @@ class Effect6954(EffectDef):
                                       src.getModifiedItemAttr('subsystemCommandBurstFittingReduction'))
 
 
-class Effect6955(EffectDef):
+class Effect6955(BaseEffect):
     """
     subsystemRemoteShieldBoostFalloffBonus
 
@@ -33456,7 +33460,7 @@ class Effect6955(EffectDef):
                                       'falloffEffectiveness', src.getModifiedItemAttr('remoteShieldBoosterFalloffBonus'))
 
 
-class Effect6956(EffectDef):
+class Effect6956(BaseEffect):
     """
     subsystemRemoteArmorRepairerOptimalBonus
 
@@ -33472,7 +33476,7 @@ class Effect6956(EffectDef):
                                       'maxRange', src.getModifiedItemAttr('remoteArmorRepairerOptimalBonus'))
 
 
-class Effect6957(EffectDef):
+class Effect6957(BaseEffect):
     """
     subsystemRemoteArmorRepairerFalloffBonus
 
@@ -33488,7 +33492,7 @@ class Effect6957(EffectDef):
                                       'falloffEffectiveness', src.getModifiedItemAttr('remoteArmorRepairerFalloffBonus'))
 
 
-class Effect6958(EffectDef):
+class Effect6958(BaseEffect):
     """
     subsystemBonusAmarrOffensive3RemoteArmorRepairHeat
 
@@ -33504,7 +33508,7 @@ class Effect6958(EffectDef):
                                       src.getModifiedItemAttr('subsystemBonusAmarrOffensive3'), skill='Amarr Offensive Systems')
 
 
-class Effect6959(EffectDef):
+class Effect6959(BaseEffect):
     """
     subsystemBonusGallenteOffensive3RemoteArmorRepairHeat
 
@@ -33520,7 +33524,7 @@ class Effect6959(EffectDef):
                                       src.getModifiedItemAttr('subsystemBonusGallenteOffensive3'), skill='Gallente Offensive Systems')
 
 
-class Effect6960(EffectDef):
+class Effect6960(BaseEffect):
     """
     subsystemBonusCaldariOffensive3RemoteShieldBoosterHeat
 
@@ -33537,7 +33541,7 @@ class Effect6960(EffectDef):
                                       skill='Caldari Offensive Systems')
 
 
-class Effect6961(EffectDef):
+class Effect6961(BaseEffect):
     """
     subsystemBonusMinmatarOffensive3RemoteRepHeat
 
@@ -33554,7 +33558,7 @@ class Effect6961(EffectDef):
                                       skill='Minmatar Offensive Systems')
 
 
-class Effect6962(EffectDef):
+class Effect6962(BaseEffect):
     """
     subsystemBonusAmarrPropulsion2WarpSpeed
 
@@ -33570,7 +33574,7 @@ class Effect6962(EffectDef):
                                skill='Amarr Propulsion Systems')
 
 
-class Effect6963(EffectDef):
+class Effect6963(BaseEffect):
     """
     subsystemBonusMinmatarPropulsion2WarpSpeed
 
@@ -33586,7 +33590,7 @@ class Effect6963(EffectDef):
                                skill='Minmatar Propulsion Systems')
 
 
-class Effect6964(EffectDef):
+class Effect6964(BaseEffect):
     """
     subsystemBonusGallentePropulsionWarpSpeed
 
@@ -33602,7 +33606,7 @@ class Effect6964(EffectDef):
                                skill='Gallente Propulsion Systems')
 
 
-class Effect6981(EffectDef):
+class Effect6981(BaseEffect):
     """
     shipBonusTitanG1KinThermDamageBonus
 
@@ -33628,7 +33632,7 @@ class Effect6981(EffectDef):
                                       src.getModifiedItemAttr('shipBonusTitanG1'), skill='Gallente Titan')
 
 
-class Effect6982(EffectDef):
+class Effect6982(BaseEffect):
     """
     shipBonusTitanG2EMExplosiveDamageBonus
 
@@ -33654,7 +33658,7 @@ class Effect6982(EffectDef):
                                       src.getModifiedItemAttr('shipBonusTitanG2'), skill='Gallente Titan')
 
 
-class Effect6983(EffectDef):
+class Effect6983(BaseEffect):
     """
     shipBonusTitanC1ShieldResists
 
@@ -33672,7 +33676,7 @@ class Effect6983(EffectDef):
         fit.ship.boostItemAttr('shieldThermalDamageResonance', src.getModifiedItemAttr('shipBonusTitanC1'), skill='Caldari Titan')
 
 
-class Effect6984(EffectDef):
+class Effect6984(BaseEffect):
     """
     shipBonusRole4FighterDamageAndHitpoints
 
@@ -33695,7 +33699,7 @@ class Effect6984(EffectDef):
                                        src.getModifiedItemAttr('shipBonusRole4'))
 
 
-class Effect6985(EffectDef):
+class Effect6985(BaseEffect):
     """
     shipBonusDreadnoughtG1KinThermDamageBonus
 
@@ -33721,7 +33725,7 @@ class Effect6985(EffectDef):
                                       src.getModifiedItemAttr('shipBonusDreadnoughtG1'), skill='Gallente Dreadnought')
 
 
-class Effect6986(EffectDef):
+class Effect6986(BaseEffect):
     """
     shipBonusForceAuxiliaryG1RemoteShieldBoostAmount
 
@@ -33737,7 +33741,7 @@ class Effect6986(EffectDef):
                                       src.getModifiedItemAttr('shipBonusForceAuxiliaryG1'), skill='Gallente Carrier')
 
 
-class Effect6987(EffectDef):
+class Effect6987(BaseEffect):
     """
     shipBonusRole2LogisticDroneRepAmountAndHitpointBonus
 
@@ -33763,7 +33767,7 @@ class Effect6987(EffectDef):
                                         'hp', src.getModifiedItemAttr('shipBonusRole2'))
 
 
-class Effect6992(EffectDef):
+class Effect6992(BaseEffect):
     """
     roleBonusMHTDamage1
 
@@ -33778,7 +33782,7 @@ class Effect6992(EffectDef):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Medium Hybrid Turret'), 'damageMultiplier', src.getModifiedItemAttr('shipBonusRole1'))
 
 
-class Effect6993(EffectDef):
+class Effect6993(BaseEffect):
     """
     roleBonus2BoosterPenaltyReduction
 
@@ -33805,7 +33809,7 @@ class Effect6993(EffectDef):
         fit.boosters.filteredItemBoost(lambda mod: mod.item.group.name == 'Booster', 'boosterMaxVelocityPenalty', src.getModifiedItemAttr('shipBonusRole2'))
 
 
-class Effect6994(EffectDef):
+class Effect6994(BaseEffect):
     """
     eliteReconBonusMHTDamage1
 
@@ -33821,7 +33825,7 @@ class Effect6994(EffectDef):
                                       src.getModifiedItemAttr('eliteBonusReconShip1'), skill='Recon Ships')
 
 
-class Effect6995(EffectDef):
+class Effect6995(BaseEffect):
     """
     targetABCAttack
 
@@ -33837,7 +33841,7 @@ class Effect6995(EffectDef):
         module.reloadTime = 1000
 
 
-class Effect6996(EffectDef):
+class Effect6996(BaseEffect):
     """
     eliteReconBonusArmorRepAmount3
 
@@ -33853,7 +33857,7 @@ class Effect6996(EffectDef):
                                       src.getModifiedItemAttr('eliteBonusReconShip3'), skill='Recon Ships')
 
 
-class Effect6997(EffectDef):
+class Effect6997(BaseEffect):
     """
     eliteCovertOpsBonusArmorRepAmount4
 
@@ -33869,7 +33873,7 @@ class Effect6997(EffectDef):
                                       src.getModifiedItemAttr('eliteBonusCovertOps4'), skill='Covert Ops')
 
 
-class Effect6999(EffectDef):
+class Effect6999(BaseEffect):
     """
     covertOpsStealthBomberSiegeMissileLauncherCPUNeedBonus
 
@@ -33885,7 +33889,7 @@ class Effect6999(EffectDef):
                                          'cpu', ship.getModifiedItemAttr('stealthBomberLauncherCPU'))
 
 
-class Effect7000(EffectDef):
+class Effect7000(BaseEffect):
     """
     shipBonusSHTFalloffGF1
 
@@ -33901,7 +33905,7 @@ class Effect7000(EffectDef):
                                       src.getModifiedItemAttr('shipBonusGF'), skill='Gallente Frigate')
 
 
-class Effect7001(EffectDef):
+class Effect7001(BaseEffect):
     """
     roleBonusTorpRoF1
 
@@ -33916,7 +33920,7 @@ class Effect7001(EffectDef):
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Missile Launcher Torpedo', 'speed', src.getModifiedItemAttr('shipBonusRole1'))
 
 
-class Effect7002(EffectDef):
+class Effect7002(BaseEffect):
     """
     roleBonusBombLauncherPWGCPU3
 
@@ -33932,7 +33936,7 @@ class Effect7002(EffectDef):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Bomb Deployment'), 'cpu', src.getModifiedItemAttr('shipBonusRole3'))
 
 
-class Effect7003(EffectDef):
+class Effect7003(BaseEffect):
     """
     eliteBonusCovertOpsSHTDamage3
 
@@ -33948,7 +33952,7 @@ class Effect7003(EffectDef):
                                       src.getModifiedItemAttr('eliteBonusCovertOps3'), skill='Covert Ops')
 
 
-class Effect7008(EffectDef):
+class Effect7008(BaseEffect):
     """
     structureFullPowerStateHitpointModifier
 
@@ -33964,7 +33968,7 @@ class Effect7008(EffectDef):
         fit.ship.multiplyItemAttr('armorHP', src.getModifiedItemAttr('structureFullPowerStateHitpointMultiplier') or 0)
 
 
-class Effect7009(EffectDef):
+class Effect7009(BaseEffect):
     """
     serviceModuleFullPowerHitpointPostAssign
 
@@ -33984,7 +33988,7 @@ class Effect7009(EffectDef):
         fit.ship.forceItemAttr('structureFullPowerStateHitpointMultiplier', src.getModifiedItemAttr('serviceModuleFullPowerStateHitpointMultiplier'))
 
 
-class Effect7012(EffectDef):
+class Effect7012(BaseEffect):
     """
     moduleBonusAssaultDamageControl
 
@@ -34006,7 +34010,7 @@ class Effect7012(EffectDef):
                 src.forceItemAttr(booster, src.getModifiedItemAttr('resistanceMultiplier'))
 
 
-class Effect7013(EffectDef):
+class Effect7013(BaseEffect):
     """
     eliteBonusGunshipKineticMissileDamage1
 
@@ -34022,7 +34026,7 @@ class Effect7013(EffectDef):
                                         src.getModifiedItemAttr('eliteBonusGunship1'), skill='Assault Frigates')
 
 
-class Effect7014(EffectDef):
+class Effect7014(BaseEffect):
     """
     eliteBonusGunshipThermalMissileDamage1
 
@@ -34038,7 +34042,7 @@ class Effect7014(EffectDef):
                                         src.getModifiedItemAttr('eliteBonusGunship1'), skill='Assault Frigates')
 
 
-class Effect7015(EffectDef):
+class Effect7015(BaseEffect):
     """
     eliteBonusGunshipEMMissileDamage1
 
@@ -34054,7 +34058,7 @@ class Effect7015(EffectDef):
                                         src.getModifiedItemAttr('eliteBonusGunship1'), skill='Assault Frigates')
 
 
-class Effect7016(EffectDef):
+class Effect7016(BaseEffect):
     """
     eliteBonusGunshipExplosiveMissileDamage1
 
@@ -34070,7 +34074,7 @@ class Effect7016(EffectDef):
                                         src.getModifiedItemAttr('eliteBonusGunship1'), skill='Assault Frigates')
 
 
-class Effect7017(EffectDef):
+class Effect7017(BaseEffect):
     """
     eliteBonusGunshipExplosionVelocity2
 
@@ -34086,7 +34090,7 @@ class Effect7017(EffectDef):
                                         src.getModifiedItemAttr('eliteBonusGunship2'), stackingPenalties=True, skill='Assault Frigates')
 
 
-class Effect7018(EffectDef):
+class Effect7018(BaseEffect):
     """
     shipSETROFAF
 
@@ -34102,7 +34106,7 @@ class Effect7018(EffectDef):
                                       src.getModifiedItemAttr('shipBonusAF'), stackingPenalties=False, skill='Amarr Frigate')
 
 
-class Effect7020(EffectDef):
+class Effect7020(BaseEffect):
     """
     remoteWebifierMaxRangeBonus
 
@@ -34119,7 +34123,7 @@ class Effect7020(EffectDef):
                                       src.getModifiedItemAttr('stasisWebRangeBonus'), stackingPenalties=False)
 
 
-class Effect7021(EffectDef):
+class Effect7021(BaseEffect):
     """
     structureRigMaxTargetRange
 
@@ -34136,7 +34140,7 @@ class Effect7021(EffectDef):
         fit.ship.boostItemAttr('maxTargetRange', module.getModifiedItemAttr('structureRigMaxTargetRangeBonus'))
 
 
-class Effect7024(EffectDef):
+class Effect7024(BaseEffect):
     """
     shipBonusDroneTrackingEliteGunship2
 
@@ -34152,7 +34156,7 @@ class Effect7024(EffectDef):
                                      src.getModifiedItemAttr('eliteBonusGunship2'), skill='Assault Frigates')
 
 
-class Effect7026(EffectDef):
+class Effect7026(BaseEffect):
     """
     scriptStandupWarpScram
 
@@ -34168,7 +34172,7 @@ class Effect7026(EffectDef):
         src.boostItemAttr('maxRange', src.getModifiedChargeAttr('warpScrambleRangeBonus'))
 
 
-class Effect7027(EffectDef):
+class Effect7027(BaseEffect):
     """
     structureCapacitorCapacityBonus
 
@@ -34183,7 +34187,7 @@ class Effect7027(EffectDef):
         fit.ship.increaseItemAttr('capacitorCapacity', ship.getModifiedItemAttr('capacitorBonus'))
 
 
-class Effect7028(EffectDef):
+class Effect7028(BaseEffect):
     """
     structureModifyPowerRechargeRate
 
@@ -34198,7 +34202,7 @@ class Effect7028(EffectDef):
         fit.ship.multiplyItemAttr('rechargeRate', module.getModifiedItemAttr('capacitorRechargeRateMultiplier'))
 
 
-class Effect7029(EffectDef):
+class Effect7029(BaseEffect):
     """
     structureArmorHPBonus
 
@@ -34214,7 +34218,7 @@ class Effect7029(EffectDef):
         fit.ship.boostItemAttr('hiddenArmorHPMultiplier', src.getModifiedItemAttr('armorHpBonus'), stackingPenalties=True)
 
 
-class Effect7030(EffectDef):
+class Effect7030(BaseEffect):
     """
     structureAoERoFRoleBonus
 
@@ -34235,7 +34239,7 @@ class Effect7030(EffectDef):
                                           attr, ship.getModifiedItemAttr('structureAoERoFRoleBonus'))
 
 
-class Effect7031(EffectDef):
+class Effect7031(BaseEffect):
     """
     shipBonusHeavyMissileKineticDamageCBC2
 
@@ -34251,7 +34255,7 @@ class Effect7031(EffectDef):
                                         src.getModifiedItemAttr('shipBonusCBC2'), skill='Caldari Battlecruiser')
 
 
-class Effect7032(EffectDef):
+class Effect7032(BaseEffect):
     """
     shipBonusHeavyMissileThermalDamageCBC2
 
@@ -34267,7 +34271,7 @@ class Effect7032(EffectDef):
                                         src.getModifiedItemAttr('shipBonusCBC2'), skill='Caldari Battlecruiser')
 
 
-class Effect7033(EffectDef):
+class Effect7033(BaseEffect):
     """
     shipBonusHeavyMissileEMDamageCBC2
 
@@ -34283,7 +34287,7 @@ class Effect7033(EffectDef):
                                         'emDamage', src.getModifiedItemAttr('shipBonusCBC2'), skill='Caldari Battlecruiser')
 
 
-class Effect7034(EffectDef):
+class Effect7034(BaseEffect):
     """
     shipBonusHeavyMissileExplosiveDamageCBC2
 
@@ -34299,7 +34303,7 @@ class Effect7034(EffectDef):
                                         src.getModifiedItemAttr('shipBonusCBC2'), skill='Caldari Battlecruiser')
 
 
-class Effect7035(EffectDef):
+class Effect7035(BaseEffect):
     """
     shipBonusHeavyAssaultMissileExplosiveDamageCBC2
 
@@ -34315,7 +34319,7 @@ class Effect7035(EffectDef):
                                         src.getModifiedItemAttr('shipBonusCBC2'), skill='Caldari Battlecruiser')
 
 
-class Effect7036(EffectDef):
+class Effect7036(BaseEffect):
     """
     shipBonusHeavyAssaultMissileEMDamageCBC2
 
@@ -34331,7 +34335,7 @@ class Effect7036(EffectDef):
                                         src.getModifiedItemAttr('shipBonusCBC2'), skill='Caldari Battlecruiser')
 
 
-class Effect7037(EffectDef):
+class Effect7037(BaseEffect):
     """
     shipBonusHeavyAssaultMissileThermalDamageCBC2
 
@@ -34347,7 +34351,7 @@ class Effect7037(EffectDef):
                                         'thermalDamage', src.getModifiedItemAttr('shipBonusCBC2'), skill='Caldari Battlecruiser')
 
 
-class Effect7038(EffectDef):
+class Effect7038(BaseEffect):
     """
     shipBonusHeavyAssaultMissileKineticDamageCBC2
 
@@ -34363,7 +34367,7 @@ class Effect7038(EffectDef):
                                         'kineticDamage', src.getModifiedItemAttr('shipBonusCBC2'), skill='Caldari Battlecruiser')
 
 
-class Effect7039(EffectDef):
+class Effect7039(BaseEffect):
     """
     structureHiddenMissileDamageMultiplier
 
@@ -34382,7 +34386,7 @@ class Effect7039(EffectDef):
                                                src.getModifiedItemAttr('hiddenMissileDamageMultiplier'))
 
 
-class Effect7040(EffectDef):
+class Effect7040(BaseEffect):
     """
     structureHiddenArmorHPMultiplier
 
@@ -34397,7 +34401,7 @@ class Effect7040(EffectDef):
         fit.ship.multiplyItemAttr('armorHP', src.getModifiedItemAttr('hiddenArmorHPMultiplier') or 0)
 
 
-class Effect7042(EffectDef):
+class Effect7042(BaseEffect):
     """
     shipArmorHitPointsAC1
 
@@ -34412,7 +34416,7 @@ class Effect7042(EffectDef):
         fit.ship.boostItemAttr('armorHP', src.getModifiedItemAttr('shipBonusAC'), skill='Amarr Cruiser')
 
 
-class Effect7043(EffectDef):
+class Effect7043(BaseEffect):
     """
     shipShieldHitpointsCC1
 
@@ -34427,7 +34431,7 @@ class Effect7043(EffectDef):
         fit.ship.boostItemAttr('shieldCapacity', src.getModifiedItemAttr('shipBonusCC'), skill='Caldari Cruiser')
 
 
-class Effect7044(EffectDef):
+class Effect7044(BaseEffect):
     """
     shipAgilityBonusGC1
 
@@ -34442,7 +34446,7 @@ class Effect7044(EffectDef):
         fit.ship.boostItemAttr('agility', src.getModifiedItemAttr('shipBonusGC'), skill='Gallente Cruiser')
 
 
-class Effect7045(EffectDef):
+class Effect7045(BaseEffect):
     """
     shipSignatureRadiusMC1
 
@@ -34457,7 +34461,7 @@ class Effect7045(EffectDef):
         fit.ship.boostItemAttr('signatureRadius', src.getModifiedItemAttr('shipBonusMC'), skill='Minmatar Cruiser')
 
 
-class Effect7046(EffectDef):
+class Effect7046(BaseEffect):
     """
     eliteBonusFlagCruiserAllResistances1
 
@@ -34483,7 +34487,7 @@ class Effect7046(EffectDef):
         fit.ship.boostItemAttr('emDamageResonance', src.getModifiedItemAttr('eliteBonusFlagCruisers1'), skill='Flag Cruisers')
 
 
-class Effect7047(EffectDef):
+class Effect7047(BaseEffect):
     """
     roleBonusFlagCruiserModuleFittingReduction
 
@@ -34506,7 +34510,7 @@ class Effect7047(EffectDef):
                                       'power', src.getModifiedItemAttr('flagCruiserFittingBonusPainterProbes'))
 
 
-class Effect7050(EffectDef):
+class Effect7050(BaseEffect):
     """
     aoe_beacon_bioluminescence_cloud
 
@@ -34528,7 +34532,7 @@ class Effect7050(EffectDef):
                     fit.addCommandBonus(id, value, beacon, kwargs['effect'], 'early')
 
 
-class Effect7051(EffectDef):
+class Effect7051(BaseEffect):
     """
     aoe_beacon_caustic_cloud
 
@@ -34550,7 +34554,7 @@ class Effect7051(EffectDef):
                     fit.addCommandBonus(id, value, beacon, kwargs['effect'], 'early')
 
 
-class Effect7052(EffectDef):
+class Effect7052(BaseEffect):
     """
     roleBonusFlagCruiserTargetPainterModifications
 
@@ -34568,7 +34572,7 @@ class Effect7052(EffectDef):
                                       src.getModifiedItemAttr('targetPainterRangeModifierFlagCruisers'))
 
 
-class Effect7055(EffectDef):
+class Effect7055(BaseEffect):
     """
     shipLargeWeaponsDamageBonus
 
@@ -34612,7 +34616,7 @@ class Effect7055(EffectDef):
                                         src.getModifiedItemAttr('shipBonusRole7'))
 
 
-class Effect7058(EffectDef):
+class Effect7058(BaseEffect):
     """
     aoe_beacon_filament_cloud
 
@@ -34634,7 +34638,7 @@ class Effect7058(EffectDef):
                     fit.addCommandBonus(id, value, beacon, kwargs['effect'], 'early')
 
 
-class Effect7059(EffectDef):
+class Effect7059(BaseEffect):
     """
     weather_caustic_toxin
 
@@ -34658,7 +34662,7 @@ class Effect7059(EffectDef):
                     fit.addCommandBonus(id, value, beacon, kwargs['effect'], 'early')
 
 
-class Effect7060(EffectDef):
+class Effect7060(BaseEffect):
     """
     weather_darkness
 
@@ -34682,7 +34686,7 @@ class Effect7060(EffectDef):
                     fit.addCommandBonus(id, value, beacon, kwargs['effect'], 'early')
 
 
-class Effect7061(EffectDef):
+class Effect7061(BaseEffect):
     """
     weather_electric_storm
 
@@ -34706,7 +34710,7 @@ class Effect7061(EffectDef):
                     fit.addCommandBonus(id, value, beacon, kwargs['effect'], 'early')
 
 
-class Effect7062(EffectDef):
+class Effect7062(BaseEffect):
     """
     weather_infernal
 
@@ -34730,7 +34734,7 @@ class Effect7062(EffectDef):
                     fit.addCommandBonus(id, value, beacon, kwargs['effect'], 'early')
 
 
-class Effect7063(EffectDef):
+class Effect7063(BaseEffect):
     """
     weather_xenon_gas
 
@@ -34754,7 +34758,7 @@ class Effect7063(EffectDef):
                     fit.addCommandBonus(id, value, beacon, kwargs['effect'], 'early')
 
 
-class Effect7064(EffectDef):
+class Effect7064(BaseEffect):
     """
     weather_basic
 
@@ -34766,7 +34770,7 @@ class Effect7064(EffectDef):
     type = ('projected', 'passive')
 
 
-class Effect7071(EffectDef):
+class Effect7071(BaseEffect):
     """
     smallPrecursorTurretDmgBonusRequiredSkill
 
@@ -34783,7 +34787,7 @@ class Effect7071(EffectDef):
                                       'damageMultiplier', container.getModifiedItemAttr('damageMultiplierBonus') * level)
 
 
-class Effect7072(EffectDef):
+class Effect7072(BaseEffect):
     """
     mediumPrecursorTurretDmgBonusRequiredSkill
 
@@ -34800,7 +34804,7 @@ class Effect7072(EffectDef):
                                       'damageMultiplier', container.getModifiedItemAttr('damageMultiplierBonus') * level)
 
 
-class Effect7073(EffectDef):
+class Effect7073(BaseEffect):
     """
     largePrecursorTurretDmgBonusRequiredSkill
 
@@ -34817,7 +34821,7 @@ class Effect7073(EffectDef):
                                       'damageMultiplier', container.getModifiedItemAttr('damageMultiplierBonus') * level)
 
 
-class Effect7074(EffectDef):
+class Effect7074(BaseEffect):
     """
     smallDisintegratorSkillDmgBonus
 
@@ -34834,7 +34838,7 @@ class Effect7074(EffectDef):
                                       'damageMultiplier', container.getModifiedItemAttr('damageMultiplierBonus') * level)
 
 
-class Effect7075(EffectDef):
+class Effect7075(BaseEffect):
     """
     mediumDisintegratorSkillDmgBonus
 
@@ -34851,7 +34855,7 @@ class Effect7075(EffectDef):
                                       'damageMultiplier', container.getModifiedItemAttr('damageMultiplierBonus') * level)
 
 
-class Effect7076(EffectDef):
+class Effect7076(BaseEffect):
     """
     largeDisintegratorSkillDmgBonus
 
@@ -34868,7 +34872,7 @@ class Effect7076(EffectDef):
                                       'damageMultiplier', container.getModifiedItemAttr('damageMultiplierBonus') * level)
 
 
-class Effect7077(EffectDef):
+class Effect7077(BaseEffect):
     """
     disintegratorWeaponDamageMultiply
 
@@ -34885,7 +34889,7 @@ class Effect7077(EffectDef):
                                          stackingPenalties=True)
 
 
-class Effect7078(EffectDef):
+class Effect7078(BaseEffect):
     """
     disintegratorWeaponSpeedMultiply
 
@@ -34902,7 +34906,7 @@ class Effect7078(EffectDef):
                                          stackingPenalties=True)
 
 
-class Effect7079(EffectDef):
+class Effect7079(BaseEffect):
     """
     shipPCBSSPeedBonusPCBS1
 
@@ -34918,7 +34922,7 @@ class Effect7079(EffectDef):
                                       'speed', ship.getModifiedItemAttr('shipBonusPBS1'), skill='Precursor Battleship')
 
 
-class Effect7080(EffectDef):
+class Effect7080(BaseEffect):
     """
     shipPCBSDmgBonusPCBS2
 
@@ -34934,7 +34938,7 @@ class Effect7080(EffectDef):
                                       'damageMultiplier', ship.getModifiedItemAttr('shipBonusPBS2'), skill='Precursor Battleship')
 
 
-class Effect7085(EffectDef):
+class Effect7085(BaseEffect):
     """
     shipbonusPCTDamagePC1
 
@@ -34951,7 +34955,7 @@ class Effect7085(EffectDef):
                                       'damageMultiplier', ship.getModifiedItemAttr('shipBonusPC1'), skill='Precursor Cruiser')
 
 
-class Effect7086(EffectDef):
+class Effect7086(BaseEffect):
     """
     shipbonusPCTTrackingPC2
 
@@ -34968,7 +34972,7 @@ class Effect7086(EffectDef):
                                       'trackingSpeed', ship.getModifiedItemAttr('shipBonusPC2'), skill='Precursor Cruiser')
 
 
-class Effect7087(EffectDef):
+class Effect7087(BaseEffect):
     """
     shipbonusPCTOptimalPF2
 
@@ -34985,7 +34989,7 @@ class Effect7087(EffectDef):
                                       'maxRange', ship.getModifiedItemAttr('shipBonusPF2'), skill='Precursor Frigate')
 
 
-class Effect7088(EffectDef):
+class Effect7088(BaseEffect):
     """
     shipbonusPCTDamagePF1
 
@@ -35002,7 +35006,7 @@ class Effect7088(EffectDef):
                                       'damageMultiplier', ship.getModifiedItemAttr('shipBonusPF1'), skill='Precursor Frigate')
 
 
-class Effect7091(EffectDef):
+class Effect7091(BaseEffect):
     """
     shipBonusNosNeutCapNeedRoleBonus2
 
@@ -35017,7 +35021,7 @@ class Effect7091(EffectDef):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Capacitor Emission Systems'), 'capacitorNeed', src.getModifiedItemAttr('shipBonusRole2'))
 
 
-class Effect7092(EffectDef):
+class Effect7092(BaseEffect):
     """
     shipBonusRemoteRepCapNeedRoleBonus2
 
@@ -35039,7 +35043,7 @@ class Effect7092(EffectDef):
                                       'capacitorNeed', ship.getModifiedItemAttr('shipBonusRole2'))
 
 
-class Effect7093(EffectDef):
+class Effect7093(BaseEffect):
     """
     shipBonusSmartbombCapNeedRoleBonus2
 
@@ -35062,7 +35066,7 @@ class Effect7093(EffectDef):
                                       'capacitorNeed', ship.getModifiedItemAttr('shipBonusRole2'))
 
 
-class Effect7094(EffectDef):
+class Effect7094(BaseEffect):
     """
     shipBonusRemoteRepMaxRangeRoleBonus1
 
@@ -35084,7 +35088,7 @@ class Effect7094(EffectDef):
                                       'maxRange', ship.getModifiedItemAttr('shipBonusRole1'))
 
 
-class Effect7097(EffectDef):
+class Effect7097(BaseEffect):
     """
     surgicalStrikeDamageMultiplierBonusPostPercentDamageMultiplierLocationShipGroupPrecursorTurret
 
@@ -35100,7 +35104,7 @@ class Effect7097(EffectDef):
                                       'damageMultiplier', skill.getModifiedItemAttr('damageMultiplierBonus') * skill.level)
 
 
-class Effect7111(EffectDef):
+class Effect7111(BaseEffect):
     """
     systemSmallPrecursorTurretDamage
 
@@ -35118,7 +35122,7 @@ class Effect7111(EffectDef):
                                          stackingPenalties=True)
 
 
-class Effect7112(EffectDef):
+class Effect7112(BaseEffect):
     """
     shipBonusNeutCapNeedRoleBonus2
 
@@ -35140,7 +35144,7 @@ class Effect7112(EffectDef):
                                       src.getModifiedItemAttr('shipBonusRole2'))
 
 
-class Effect7116(EffectDef):
+class Effect7116(BaseEffect):
     """
     eliteBonusReconScanProbeStrength2
 
@@ -35156,7 +35160,7 @@ class Effect7116(EffectDef):
                                         src.getModifiedItemAttr('eliteBonusReconShip2'), skill='Recon Ships')
 
 
-class Effect7117(EffectDef):
+class Effect7117(BaseEffect):
     """
     roleBonusWarpSpeed
 
@@ -35175,7 +35179,7 @@ class Effect7117(EffectDef):
         fit.ship.boostItemAttr('warpSpeedMultiplier', src.getModifiedItemAttr('shipRoleBonusWarpSpeed'))
 
 
-class Effect7118(EffectDef):
+class Effect7118(BaseEffect):
     """
     eliteBonusCovertOps3PCTdamagePerCycle
 
@@ -35191,7 +35195,7 @@ class Effect7118(EffectDef):
                                          src.getModifiedItemAttr('eliteBonusCovertOps3'), skill='Covert Ops')
 
 
-class Effect7119(EffectDef):
+class Effect7119(BaseEffect):
     """
     eliteBonusReconShip3PCTdamagePerCycle
 
@@ -35207,7 +35211,7 @@ class Effect7119(EffectDef):
                                          src.getModifiedItemAttr('eliteBonusReconShip3'), skill='Recon Ships')
 
 
-class Effect7142(EffectDef):
+class Effect7142(BaseEffect):
     """
     massEntanglerEffect5
 
@@ -35230,7 +35234,7 @@ class Effect7142(EffectDef):
         fit.ship.boostItemAttr('maxVelocity', src.getModifiedItemAttr('maxVelocityBonus'), stackingPenalties=True)
 
 
-class Effect7154(EffectDef):
+class Effect7154(BaseEffect):
     """
     shipBonusPD1DisintegratorDamage
 
@@ -35247,7 +35251,7 @@ class Effect7154(EffectDef):
                                       skill='Precursor Destroyer')
 
 
-class Effect7155(EffectDef):
+class Effect7155(BaseEffect):
     """
     shipBonusPBC1DisintegratorDamage
 
@@ -35264,7 +35268,7 @@ class Effect7155(EffectDef):
                                       skill='Precursor Battlecruiser')
 
 
-class Effect7156(EffectDef):
+class Effect7156(BaseEffect):
     """
     smallDisintegratorMaxRangeBonus
 
@@ -35280,7 +35284,7 @@ class Effect7156(EffectDef):
                                       'maxRange', ship.getModifiedItemAttr('maxRangeBonus'))
 
 
-class Effect7157(EffectDef):
+class Effect7157(BaseEffect):
     """
     shipBonusPD2DisintegratorMaxRange
 
@@ -35297,7 +35301,7 @@ class Effect7157(EffectDef):
                                       skill='Precursor Destroyer')
 
 
-class Effect7158(EffectDef):
+class Effect7158(BaseEffect):
     """
     shipArmorKineticResistancePBC2
 
@@ -35313,7 +35317,7 @@ class Effect7158(EffectDef):
                                skill='Precursor Battlecruiser')
 
 
-class Effect7159(EffectDef):
+class Effect7159(BaseEffect):
     """
     shipArmorThermalResistancePBC2
 
@@ -35329,7 +35333,7 @@ class Effect7159(EffectDef):
                                skill='Precursor Battlecruiser')
 
 
-class Effect7160(EffectDef):
+class Effect7160(BaseEffect):
     """
     shipArmorEMResistancePBC2
 
@@ -35345,7 +35349,7 @@ class Effect7160(EffectDef):
                                skill='Precursor Battlecruiser')
 
 
-class Effect7161(EffectDef):
+class Effect7161(BaseEffect):
     """
     shipArmorExplosiveResistancePBC2
 
@@ -35361,7 +35365,7 @@ class Effect7161(EffectDef):
                                skill='Precursor Battlecruiser')
 
 
-class Effect7162(EffectDef):
+class Effect7162(BaseEffect):
     """
     shipRoleDisintegratorMaxRangeCBC
 
@@ -35377,7 +35381,7 @@ class Effect7162(EffectDef):
                                       'maxRange', ship.getModifiedItemAttr('roleBonusCBC'))
 
 
-class Effect7166(EffectDef):
+class Effect7166(BaseEffect):
     """
     ShipModuleRemoteArmorMutadaptiveRepairer
 
@@ -35405,7 +35409,7 @@ class Effect7166(EffectDef):
             fit.extraAttributes.increase('armorRepairFullSpool', rpsFullSpool, **kwargs)
 
 
-class Effect7167(EffectDef):
+class Effect7167(BaseEffect):
     """
     shipBonusRemoteCapacitorTransferRangeRole1
 
@@ -35420,7 +35424,7 @@ class Effect7167(EffectDef):
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Remote Capacitor Transmitter', 'maxRange', src.getModifiedItemAttr('shipBonusRole1'))
 
 
-class Effect7168(EffectDef):
+class Effect7168(BaseEffect):
     """
     shipBonusMutadaptiveRemoteRepairRangeRole3
 
@@ -35435,7 +35439,7 @@ class Effect7168(EffectDef):
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Mutadaptive Remote Armor Repairer', 'maxRange', src.getModifiedItemAttr('shipBonusRole3'))
 
 
-class Effect7169(EffectDef):
+class Effect7169(BaseEffect):
     """
     shipBonusMutadaptiveRepAmountPC1
 
@@ -35450,7 +35454,7 @@ class Effect7169(EffectDef):
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Mutadaptive Remote Armor Repairer', 'armorDamageAmount', src.getModifiedItemAttr('shipBonusPC1'), skill='Precursor Cruiser')
 
 
-class Effect7170(EffectDef):
+class Effect7170(BaseEffect):
     """
     shipBonusMutadaptiveRepCapNeedPC2
 
@@ -35465,7 +35469,7 @@ class Effect7170(EffectDef):
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Mutadaptive Remote Armor Repairer', 'capacitorNeed', src.getModifiedItemAttr('shipBonusPC2'), skill='Precursor Cruiser')
 
 
-class Effect7171(EffectDef):
+class Effect7171(BaseEffect):
     """
     shipBonusMutadaptiveRemoteRepRangePC1
 
@@ -35480,7 +35484,7 @@ class Effect7171(EffectDef):
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Mutadaptive Remote Armor Repairer', 'maxRange', src.getModifiedItemAttr('shipBonusPC1'), skill='Precursor Cruiser')
 
 
-class Effect7172(EffectDef):
+class Effect7172(BaseEffect):
     """
     shipBonusMutadaptiveRemoteRepCapNeedeliteBonusLogisitics1
 
@@ -35495,7 +35499,7 @@ class Effect7172(EffectDef):
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Mutadaptive Remote Armor Repairer', 'capacitorNeed', src.getModifiedItemAttr('eliteBonusLogistics1'), skill='Logistics Cruisers')
 
 
-class Effect7173(EffectDef):
+class Effect7173(BaseEffect):
     """
     shipBonusMutadaptiveRemoteRepAmounteliteBonusLogisitics2
 
@@ -35510,7 +35514,7 @@ class Effect7173(EffectDef):
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Mutadaptive Remote Armor Repairer', 'armorDamageAmount', src.getModifiedItemAttr('eliteBonusLogistics2'), skill='Logistics Cruisers')
 
 
-class Effect7176(EffectDef):
+class Effect7176(BaseEffect):
     """
     skillBonusDroneInterfacingNotFighters
 
@@ -35527,7 +35531,7 @@ class Effect7176(EffectDef):
                                      src.getModifiedItemAttr('damageMultiplierBonus'))
 
 
-class Effect7177(EffectDef):
+class Effect7177(BaseEffect):
     """
     skillBonusDroneDurabilityNotFighters
 
@@ -35547,7 +35551,7 @@ class Effect7177(EffectDef):
                                      src.getModifiedItemAttr('shieldCapacityBonus'))
 
 
-class Effect7179(EffectDef):
+class Effect7179(BaseEffect):
     """
     stripMinerDurationMultiplier
 
@@ -35563,7 +35567,7 @@ class Effect7179(EffectDef):
                                       'duration', module.getModifiedItemAttr('miningDurationMultiplier'))
 
 
-class Effect7180(EffectDef):
+class Effect7180(BaseEffect):
     """
     miningDurationMultiplierOnline
 
@@ -35579,7 +35583,7 @@ class Effect7180(EffectDef):
                                       'duration', module.getModifiedItemAttr('miningDurationMultiplier'))
 
 
-class Effect7183(EffectDef):
+class Effect7183(BaseEffect):
     """
     implantWarpScrambleRangeBonus
 

@@ -21,8 +21,6 @@ class ItemEffects(wx.Panel):
         self.SetSizer(mainSizer)
 
         self.Bind(wx.EVT_LIST_ITEM_ACTIVATED, self.OnClick, self.effectList)
-        if config.debug:
-            self.Bind(wx.EVT_LIST_ITEM_RIGHT_CLICK, self.OnRightClick, self.effectList)
 
         self.PopulateList()
 
@@ -99,26 +97,6 @@ class ItemEffects(wx.Panel):
             pass
 
         self.RefreshValues(event)
-
-    def OnRightClick(self, event):
-        """
-        Debug use: open effect file with default application.
-        If effect file does not exist, create it
-        """
-
-        effect = self.effects[event.GetText()]
-
-        file_ = os.path.join(config.pyfaPath, "eos", "effects", "%s.py" % effect.handlerName)
-
-        if not os.path.isfile(file_):
-            open(file_, 'a').close()
-
-        if 'wxMSW' in wx.PlatformInfo:
-            os.startfile(file_)
-        elif 'wxMac' in wx.PlatformInfo:
-            os.system("open " + file_)
-        else:
-            subprocess.call(["xdg-open", file_])
 
     def RefreshValues(self, event):
         self.Freeze()
