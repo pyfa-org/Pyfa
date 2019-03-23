@@ -162,8 +162,7 @@ class DroneView(Display):
             wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fitID))
 
     DRONE_ORDER = ('Light Scout Drones', 'Medium Scout Drones',
-                   'Heavy Attack Drones', 'Sentry Drones', 'Fighters',
-                   'Fighter Bombers', 'Combat Utility Drones',
+                   'Heavy Attack Drones', 'Sentry Drones', 'Combat Utility Drones',
                    'Electronic Warfare Drones', 'Logistic Drones', 'Mining Drones', 'Salvage Drones')
 
     def droneKey(self, drone):

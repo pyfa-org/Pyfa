@@ -108,7 +108,7 @@ class BoosterView(d.Display):
             event.Skip()
             return
 
-        self.origional = fit.boosters if fit is not None else None
+        self.original = fit.boosters if fit is not None else None
         self.boosters = fit.boosters[:] if fit is not None else None
         if self.boosters is not None:
             self.boosters.sort(key=lambda booster: booster.slot or 0)
@@ -152,7 +152,7 @@ class BoosterView(d.Display):
 
     def removeBooster(self, booster):
         fitID = self.mainFrame.getActiveFit()
-        self.mainFrame.command.Submit(cmd.GuiRemoveBoosterCommand(fitID, self.origional.index(booster)))
+        self.mainFrame.command.Submit(cmd.GuiRemoveBoosterCommand(fitID, self.original.index(booster)))
 
     def click(self, event):
         event.Skip()
