@@ -20,7 +20,6 @@
 # noinspection PyPackageRequirements
 import wx
 from logbook import Logger
-from gui.bitmap_loader import BitmapLoader
 
 pyfalog = Logger(__name__)
 
@@ -81,12 +80,7 @@ class ContextMenu(object):
                     for it, text in enumerate(texts):
                         id = cls.nextID()
                         check = m.checked
-                        if check is not None:
-                            rootItem = wx.MenuItem(rootMenu, id, text, kind=wx.ITEM_CHECK)
-                            rootItem.SetBitmap(BitmapLoader.getBitmap("state_active_small", "gui"))
-                        else:
-                            rootItem = wx.MenuItem(rootMenu, id, text, kind=wx.ITEM_NORMAL)
-
+                        rootItem = wx.MenuItem(rootMenu, id, text, kind=wx.ITEM_NORMAL if m.checked is None else wx.ITEM_CHECK)
                         rootMenu.info[id] = (m, fullContext, it)
 
                         sub = m.getSubMenu(srcContext, selection, rootMenu, it, rootItem)
