@@ -108,10 +108,10 @@ class BoosterView(d.Display):
             event.Skip()
             return
 
-        self.origional = fit.boosters if fit is not None else None
-        self.boosters = stuff = fit.boosters[:] if fit is not None else None
-        if stuff is not None:
-            stuff.sort(key=lambda booster: booster.slot or 0)
+        self.original = fit.boosters if fit is not None else None
+        self.boosters = fit.boosters[:] if fit is not None else None
+        if self.boosters is not None:
+            self.boosters.sort(key=lambda booster: booster.slot or 0)
 
 
         if event.fitID != self.lastFitId:
@@ -124,8 +124,8 @@ class BoosterView(d.Display):
 
             self.deselectItems()
 
-        self.populate(stuff)
-        self.refresh(stuff)
+        self.populate(self.boosters)
+        self.refresh(self.boosters)
         event.Skip()
 
     def addItem(self, event):
@@ -152,7 +152,7 @@ class BoosterView(d.Display):
 
     def removeBooster(self, booster):
         fitID = self.mainFrame.getActiveFit()
-        self.mainFrame.command.Submit(cmd.GuiRemoveBoosterCommand(fitID, self.origional.index(booster)))
+        self.mainFrame.command.Submit(cmd.GuiRemoveBoosterCommand(fitID, self.original.index(booster)))
 
     def click(self, event):
         event.Skip()
@@ -172,8 +172,7 @@ class BoosterView(d.Display):
         sel = self.GetFirstSelected()
         if sel != -1:
             sFit = Fit.getInstance()
-            fit = sFit.getFit(self.mainFrame.getActiveFit())
-            item = fit.boosters[sel]
+            item = self.boosters[sel]
 
             srcContext = "boosterItem"
             itemContext = "Booster"

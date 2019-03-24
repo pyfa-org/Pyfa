@@ -73,16 +73,17 @@ from service.settings import HTMLExportSettings, SettingsProvider
 from service.update import Update
 import gui.fitCommands as cmd
 
+
+pyfalog = Logger(__name__)
+
 disableOverrideEditor = False
 
 try:
     from gui.propertyEditor import AttributeEditor
 except ImportError as e:
     AttributeEditor = None
-    print(("Error loading Attribute Editor: %s.\nAccess to Attribute Editor is disabled." % e.message))
+    pyfalog.warning("Error loading Attribute Editor: %s.\nAccess to Attribute Editor is disabled." % e.message)
     disableOverrideEditor = True
-
-pyfalog = Logger(__name__)
 
 pyfalog.debug("Done loading mainframe imports")
 
@@ -421,7 +422,7 @@ class MainFrame(wx.Frame):
                 if '.' not in os.path.basename(path):
                     path += ".xml"
             else:
-                print(("oops, invalid fit format %d" % format_))
+                pyfalog.warning("oops, invalid fit format %d" % format_)
                 try:
                     dlg.Destroy()
                 except RuntimeError:

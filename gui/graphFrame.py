@@ -93,8 +93,8 @@ class GraphFrame(wx.Frame):
 
         graphFrame_enabled = True
         if int(mpl.__version__[0]) < 1:
-            print(("pyfa: Found matplotlib version ", mpl.__version__, " - activating OVER9000 workarounds"))
-            print("pyfa: Recommended minimum matplotlib version is 1.0.0")
+            pyfalog.warning("pyfa: Found matplotlib version {} - activating OVER9000 workarounds".format(mpl.__version__))
+            pyfalog.warning("pyfa: Recommended minimum matplotlib version is 1.0.0")
             self.legendFix = True
 
         mplImported = True

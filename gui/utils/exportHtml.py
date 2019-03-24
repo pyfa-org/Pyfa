@@ -68,7 +68,7 @@ class exportHtmlThread(threading.Thread):
             FILE.write(HTML)
             FILE.close()
         except IOError as ex:
-            print(("Failed to write to " + settings.getPath()))
+            pyfalog.warning("Failed to write to " + settings.getPath())
             pass
         except Exception as ex:
             pass

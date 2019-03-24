@@ -56,7 +56,7 @@ class Fighter(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
 
         standardAttackActive = False
         for ability in self.abilities:
-            if ability.effect.isImplemented and ability.effect.handlerName == 'fighterabilityattackm':
+            if ability.effect.isImplemented and ability.effect.name == 'fighterAbilityAttackM':
                 # Activate "standard attack" if available
                 ability.active = True
                 standardAttackActive = True
@@ -64,8 +64,8 @@ class Fighter(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
                 # Activate all other abilities (Neut, Web, etc) except propmods if no standard attack is active
                 if ability.effect.isImplemented and \
                                 standardAttackActive is False and \
-                                ability.effect.handlerName != 'fighterabilitymicrowarpdrive' and \
-                                ability.effect.handlerName != 'fighterabilityevasivemaneuvers':
+                                ability.effect.name != 'fighterAbilityMicroWarpDrive' and \
+                                ability.effect.name != 'fighterAbilityEvasiveManeuvers':
                     ability.active = True
 
     @reconstructor

@@ -82,7 +82,7 @@ class FitSpawner(gui.multiSwitch.TabSpawner):
 
             if not isinstance(view, FittingView):
                 view = FittingView(self.multiSwitch)
-                print("###################### Created new view:" + repr(view))
+                pyfalog.debug("###################### Created new view:" + repr(view))
                 self.multiSwitch.ReplaceActivePage(view)
 
             view.fitSelected(event)
@@ -174,8 +174,8 @@ class FittingView(d.Display):
         self.Bind(wx.EVT_MOTION, self.OnMouseMove)
         self.Bind(wx.EVT_LEAVE_WINDOW, self.OnLeaveWindow)
         self.parent.Bind(EVT_NOTEBOOK_PAGE_CHANGED, self.pageChanged)
-        print("------------------ new fitting view -------------------")
-        print(self)
+        pyfalog.debug("------------------ new fitting view -------------------")
+        pyfalog.debug(self)
 
     def OnLeaveWindow(self, event):
         self.SetToolTip(None)
@@ -224,16 +224,7 @@ class FittingView(d.Display):
             wx.PostEvent(self.mainFrame, FitSelected(fitID=fitID))
 
     def Destroy(self):
-        # @todo: when wxPython 4.0.2 is release, https://github.com/pyfa-org/Pyfa/issues/1586#issuecomment-390074915
-        # Make sure to remove the shitty checks that I have to put in place for these handlers to ignore when self is None
-        print("+++++ Destroy " + repr(self))
-
-        # print(self.parent.Unbind(EVT_NOTEBOOK_PAGE_CHANGED))
-        # print(self.mainFrame.Unbind(GE.FIT_CHANGED, handler=self.fitChanged))
-        # print(self.mainFrame.Unbind(EVT_FIT_RENAMED, handler=self.fitRenamed ))
-        # print(self.mainFrame.Unbind(EVT_FIT_REMOVED, handler=self.fitRemoved))
-        # print(self.mainFrame.Unbind(ITEM_SELECTED, handler=self.appendItem))
-
+        pyfalog.debug("+++++ Destroy " + repr(self))
         d.Display.Destroy(self)
 
     def pageChanged(self, event):
@@ -296,7 +287,6 @@ class FittingView(d.Display):
         delete fit caused change in stats (projected)
         todo: move this to the notebook, not the page. We don't want the page being responsible for deleting itself
         """
-        print('_+_+_+_+_+_ Fit Removed: {} {} activeFitID: {}, eventFitID: {}'.format(repr(self), str(bool(self)), self.activeFitID, event.fitID))
         pyfalog.debug("FittingView::fitRemoved")
         if not self:
             event.Skip()
@@ -331,7 +321,7 @@ class FittingView(d.Display):
         event.Skip()
 
     def fitSelected(self, event):
-        print('====== Fit Selected: ' + repr(self) + str(bool(self)))
+        pyfalog.debug('====== Fit Selected: ' + repr(self) + str(bool(self)))
 
         if self.parent.IsActive(self):
             fitID = event.fitID

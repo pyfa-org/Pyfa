@@ -58,7 +58,6 @@ def rel_listener(target, value, initiator):
     if not target or (isinstance(value, Module) and value.isEmpty):
         return
 
-    print("{} has had a relationship change :D".format(target))
     target.modified = datetime.datetime.now()
 
 

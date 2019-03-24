@@ -119,7 +119,7 @@ artifacts:
   - path: pyfa*-win.exe
   #- path: pyfa_debug.zip
   #  name: Pyfa_debug
-  
+
 deploy:
   tag: $(pyfa_version)
   release: pyfa $(pyfa_version)
