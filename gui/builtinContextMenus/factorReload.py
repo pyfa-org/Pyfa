@@ -29,12 +29,9 @@ class FactorReload(ContextMenu):
         sFit.refreshFit(fitID)
         wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fitID))
 
-    def getBitmap(self, context, selection):
+    @property
+    def checked(self):
         sFit = Fit.getInstance()
-        if sFit.serviceFittingOptions["useGlobalForceReload"]:
-            return BitmapLoader.getBitmap("state_active_small", "gui")
-        else:
-            return None
-
+        return sFit.serviceFittingOptions["useGlobalForceReload"]
 
 FactorReload.register()
