@@ -677,10 +677,7 @@ class ImplantEditorView(BaseImplantEditorView):
         self.determineEnabled()
         charEditor.Bind(GE.CHAR_CHANGED, self.contextChanged)
 
-        if "__WXGTK__" in wx.PlatformInfo:
-            self.pluggedImplantsTree.Bind(wx.EVT_RIGHT_UP, self.scheduleMenu)
-        else:
-            self.pluggedImplantsTree.Bind(wx.EVT_RIGHT_DOWN, self.scheduleMenu)
+        self.pluggedImplantsTree.Bind(wx.EVT_CONTEXT_MENU, self.spawnMenu)
 
     def bindContext(self):
         self.Parent.Parent.entityEditor.Bind(wx.EVT_CHOICE, self.contextChanged)
@@ -707,11 +704,7 @@ class ImplantEditorView(BaseImplantEditorView):
 
         sChar.removeImplant(char.ID, implant)
 
-    def scheduleMenu(self, event):
-        event.Skip()
-        wx.CallAfter(self.spawnMenu)
-
-    def spawnMenu(self):
+    def spawnMenu(self, event):
         context = (("implantEditor",),)
         # fuck good coding practices, passing a pointer to the character editor here for [reasons] =D
         # (see implantSets context class for info)
