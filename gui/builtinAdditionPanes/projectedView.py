@@ -129,8 +129,10 @@ class ProjectedView(d.Display):
             sFit = Fit.getInstance()
             row = self.GetFirstSelected()
             if row != -1:
-                sFit.removeProjected(fitID, self.get(row))
-                wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fitID))
+                thing = self.get(row)
+                if thing:
+                    sFit.removeProjected(fitID, self.get(row))
+                    wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fitID))
 
     def handleDrag(self, type, fitID):
         # Those are drags coming from pyfa sources, NOT builtin wx drags
