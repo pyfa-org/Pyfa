@@ -79,7 +79,8 @@ class ContextMenu(object):
                     multiple = not isinstance(bitmap, wx.Bitmap)
                     for it, text in enumerate(texts):
                         id = cls.nextID()
-                        rootItem = wx.MenuItem(rootMenu, id, text)
+                        check = m.checked
+                        rootItem = wx.MenuItem(rootMenu, id, text, kind=wx.ITEM_NORMAL if m.checked is None else wx.ITEM_CHECK)
                         rootMenu.info[id] = (m, fullContext, it)
 
                         sub = m.getSubMenu(srcContext, selection, rootMenu, it, rootItem)
@@ -113,6 +114,9 @@ class ContextMenu(object):
                                 rootItem.SetBitmap(bitmap)
 
                         rootMenu.Append(rootItem)
+
+                        if check is not None:
+                            rootItem.Check(check)
 
                     empty = False
 
@@ -177,6 +181,10 @@ class ContextMenu(object):
     def getBitmap(self, context, selection):
         return None
 
+    @property
+    def checked(self):
+        '''If menu item is toggleable, this should return bool value'''
+        return None
 
 # noinspection PyUnresolvedReferences
 from gui.builtinContextMenus import (  # noqa: E402,F401

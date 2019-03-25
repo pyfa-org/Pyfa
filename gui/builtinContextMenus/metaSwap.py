@@ -117,11 +117,12 @@ class MetaSwap(ContextMenu):
 
             id = ContextMenu.nextID()
             mitem = wx.MenuItem(rootMenu, id, item.name)
-            mitem.Enable(fit.canFit(item))
             bindmenu.Bind(wx.EVT_MENU, self.handleModule, mitem)
 
             self.moduleLookup[id] = item, context
             m.Append(mitem)
+            mitem.Enable(fit.canFit(item))
+
         return m
 
     def handleModule(self, event):

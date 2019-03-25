@@ -50,7 +50,7 @@ class DeferRecalc:
 
     def __enter__(self):
         self._recalc = self.sFit.recalc
-        self.sFit.recalc = lambda x: print('Deferred Recalc')
+        self.sFit.recalc = lambda x: pyfalog.debug('Deferred Recalc')
 
     def __exit__(self, *args):
         self.sFit.recalc = self._recalc

@@ -101,3 +101,4 @@ class GuiAttrGroup(IntEnum):
     JUMP_SYSTEMS = auto()
     PROPULSIONS = auto()
     FIGHTERS = auto()
+    SHIP_GROUP = auto()

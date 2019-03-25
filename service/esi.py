@@ -155,7 +155,6 @@ class Esi(EsiAccess):
                 res.json()
             )
         cdata = res.json()
-        print(cdata)
 
         currentCharacter = self.getSsoCharacter(cdata['CharacterName'])
 

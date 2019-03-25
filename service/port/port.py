@@ -284,8 +284,8 @@ class Port(object):
         return importXml(text, iportuser)
 
     @staticmethod
-    def exportXml(iportuser=None, callback=None, *fits):
-        return exportXml(iportuser, callback=callback, *fits)
+    def exportXml(fits, iportuser=None, callback=None):
+        return exportXml(fits, iportuser, callback=callback)
 
     # Multibuy-related methods
     @staticmethod
