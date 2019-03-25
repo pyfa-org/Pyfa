@@ -418,7 +418,7 @@ class MainFrame(wx.Frame):
             format_ = dlg.GetFilterIndex()
             path = dlg.GetPath()
             if format_ == 0:
-                output = Port.exportXml(None, fit)
+                output = Port.exportXml([fit], None)
                 if '.' not in os.path.basename(path):
                     path += ".xml"
             else:

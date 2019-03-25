@@ -174,7 +174,7 @@ class CopySelectDialog(wx.Dialog):
 
     def exportXml(self, options, callback):
         fit = getFit(self.mainFrame.getActiveFit())
-        Port.exportXml(None, fit, callback)
+        Port.exportXml([fit], None, callback)
 
     def exportMultiBuy(self, options, callback):
         fit = getFit(self.mainFrame.getActiveFit())

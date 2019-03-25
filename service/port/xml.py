@@ -226,7 +226,7 @@ def importXml(text, iportuser):
     return fit_list
 
 
-def exportXml(iportuser, callback, *fits):
+def exportXml(fits, iportuser, callback):
     doc = xml.dom.minidom.Document()
     fittings = doc.createElement("fittings")
     # fit count
