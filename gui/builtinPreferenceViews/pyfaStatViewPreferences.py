@@ -3,7 +3,7 @@ import wx
 
 from gui.preferenceView import PreferenceView
 from gui.bitmap_loader import BitmapLoader
-from service.settings import StatViewSettings, PriceMenuSettings
+from service.settings import StatViewSettings
 
 
 class PFStatViewPref(PreferenceView):
@@ -12,7 +12,6 @@ class PFStatViewPref(PreferenceView):
     def __init__(self):
         self.dirtySettings = False
         self.settings = StatViewSettings.getInstance()
-        self.priceSettings = PriceMenuSettings.getInstance()
 
     def refreshPanel(self, fit):
         pass
@@ -101,41 +100,7 @@ class PFStatViewPref(PreferenceView):
         rbSizerRow3.Add(self.rbOutgoing, 1, wx.TOP | wx.RIGHT, 5)
         self.rbOutgoing.Bind(wx.EVT_RADIOBOX, self.OnOutgoingChange)
 
-        self.tbTotalPriceBox = wx.StaticBoxSizer(wx.VERTICAL, panel, "Total Price Includes")
-        self.tbTotalPriceDrones = wx.CheckBox(panel, -1, "Drones", wx.DefaultPosition, wx.DefaultSize, 1)
-        self.tbTotalPriceDrones.SetValue(self.priceSettings.get("drones"))
-        self.tbTotalPriceCargo = wx.CheckBox(panel, -1, "Cargo", wx.DefaultPosition, wx.DefaultSize, 1)
-        self.tbTotalPriceCargo.SetValue(self.priceSettings.get("cargo"))
-        self.tbTotalPriceImplant = wx.CheckBox(panel, -1, "Implants", wx.DefaultPosition, wx.DefaultSize, 1)
-        self.tbTotalPriceImplant.SetValue(self.priceSettings.get("character")) #TODO: Value sometimes loaded wrong
-        self.tbTotalPriceBox.AddSpacer(5)
-        self.tbTotalPriceBox.Add(self.tbTotalPriceDrones)
-        self.tbTotalPriceBox.AddSpacer(10)
-        self.tbTotalPriceBox.Add(self.tbTotalPriceCargo)
-        self.tbTotalPriceBox.AddSpacer(10)
-        self.tbTotalPriceBox.Add(self.tbTotalPriceImplant)
-        self.tbTotalPriceBox.RecalcSizes()
-        rbSizerRow3.Add(self.tbTotalPriceBox, 1, wx.TOP | wx.RIGHT, 5)
-        self.tbTotalPriceDrones.Bind(wx.EVT_CHECKBOX, self.OnTotalPriceDroneChange)
-        self.tbTotalPriceCargo.Bind(wx.EVT_CHECKBOX, self.OnTotalPriceCargoChange)
-        self.tbTotalPriceImplant.Bind(wx.EVT_CHECKBOX, self.OnTotalPriceImplantChange)
-
         mainSizer.Add(rbSizerRow3, 1, wx.ALL | wx.EXPAND, 0)
-
-        #  We don't have views for these.....yet
-        '''
-        self.rbMining = wx.RadioBox(panel, -1, "Mining", wx.DefaultPosition, wx.DefaultSize,
-                                    ['None', 'Minimal', 'Full'], 1, wx.RA_SPECIFY_COLS)
-        self.rbMining.SetSelection(self.settings.get('miningyield'))
-        rbSizerRow3.Add(self.rbMining, 1, wx.ALL, 5)
-        self.rbMining.Bind(wx.EVT_RADIOBOX, self.OnMiningYieldChange)
-
-        self.rbDrones = wx.RadioBox(panel, -1, "Drones", wx.DefaultPosition, wx.DefaultSize,
-                                    ['None', 'Minimal', 'Full'], 1, wx.RA_SPECIFY_COLS)
-        self.rbDrones.SetSelection(self.settings.get('drones'))
-        rbSizerRow3.Add(self.rbDrones, 1, wx.ALL, 5)
-        self.rbDrones.Bind(wx.EVT_RADIOBOX, self.OnDroneChange)
-        '''
 
         panel.SetSizer(mainSizer)
         panel.Layout()
@@ -169,16 +134,6 @@ class PFStatViewPref(PreferenceView):
 
     def OnDroneChange(self, event):
         self.settings.set('drones', event.GetInt())
-
-    def OnTotalPriceDroneChange(self, event):
-        self.priceSettings.set('drones', event.GetInt())
-
-    def OnTotalPriceCargoChange(self, event):
-        self.priceSettings.set('cargo', event.GetInt())
-
-    def OnTotalPriceImplantChange(self, event):
-        self.priceSettings.set('character', event.GetInt())
-
 
     def getImage(self):
         return BitmapLoader.getBitmap("settings_stats", "gui")

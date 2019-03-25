@@ -7,13 +7,17 @@ from gui.bitmap_loader import BitmapLoader
 
 import gui.mainFrame
 import gui.globalEvents as GE
-from service.settings import SettingsProvider
+from service.settings import PriceMenuSettings
 from service.fit import Fit
 from service.price import Price
 
 
 class PFMarketPref(PreferenceView):
     title = "Market & Prices"
+
+    def __init__(self):
+        self.dirtySettings = False
+        self.priceSettings = PriceMenuSettings.getInstance()
 
     def populatePanel(self, panel):
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
@@ -40,10 +44,9 @@ class PFMarketPref(PreferenceView):
         self.stDefaultSystem.Wrap(-1)
         priceSizer.Add(self.stDefaultSystem, 0, wx.ALL | wx.ALIGN_CENTER_VERTICAL, 5)
         self.stDefaultSystem.SetCursor(helpCursor)
-        self.stDefaultSystem.SetToolTip(
-            wx.ToolTip(
-                'The source you choose will be tried first, but subsequent sources will be used if the preferred source fails. '
-                'The system you choose will also be tried first, and if no data is available, global prices will be used.'))
+        self.stDefaultSystem.SetToolTip(wx.ToolTip(
+            'The source you choose will be tried first, but subsequent sources will be used if the preferred source fails. '
+            'The system you choose will also be tried first, and if no data is available, global price will be used.'))
 
         self.chPriceSource = wx.Choice(panel, choices=sorted(Price.sources.keys()))
         self.chPriceSystem = wx.Choice(panel, choices=list(Price.systemsList.keys()))
@@ -79,6 +82,25 @@ class PFMarketPref(PreferenceView):
         self.chPriceSystem.Bind(wx.EVT_CHOICE, self.onPriceSelection)
         self.intDelay.Bind(wx.lib.intctrl.EVT_INT, self.onMarketDelayChange)
 
+        self.tbTotalPriceBox = wx.StaticBoxSizer(wx.VERTICAL, panel, "Total Price Includes")
+        self.tbTotalPriceDrones = wx.CheckBox(panel, -1, "Drones", wx.DefaultPosition, wx.DefaultSize, 1)
+        self.tbTotalPriceDrones.SetValue(self.priceSettings.get("drones"))
+        self.tbTotalPriceCargo = wx.CheckBox(panel, -1, "Cargo", wx.DefaultPosition, wx.DefaultSize, 1)
+        self.tbTotalPriceCargo.SetValue(self.priceSettings.get("cargo"))
+        self.tbTotalPriceImplant = wx.CheckBox(panel, -1, "Implants", wx.DefaultPosition, wx.DefaultSize, 1)
+        self.tbTotalPriceImplant.SetValue(self.priceSettings.get("character")) #TODO: Value sometimes loaded wrong
+        self.tbTotalPriceBox.AddSpacer(5)
+        self.tbTotalPriceBox.Add(self.tbTotalPriceDrones)
+        self.tbTotalPriceBox.AddSpacer(10)
+        self.tbTotalPriceBox.Add(self.tbTotalPriceCargo)
+        self.tbTotalPriceBox.AddSpacer(10)
+        self.tbTotalPriceBox.Add(self.tbTotalPriceImplant)
+        self.tbTotalPriceBox.RecalcSizes()
+        mainSizer.Add(self.tbTotalPriceBox, 1, wx.TOP | wx.RIGHT, 5)
+        self.tbTotalPriceDrones.Bind(wx.EVT_CHECKBOX, self.OnTotalPriceDroneChange)
+        self.tbTotalPriceCargo.Bind(wx.EVT_CHECKBOX, self.OnTotalPriceCargoChange)
+        self.tbTotalPriceImplant.Bind(wx.EVT_CHECKBOX, self.OnTotalPriceImplantChange)
+
         panel.SetSizer(mainSizer)
         panel.Layout()
 
@@ -105,6 +127,15 @@ class PFMarketPref(PreferenceView):
     def onPricesSourceSelection(self, event):
         source = self.chPriceSource.GetString(self.chPriceSource.GetSelection())
         self.sFit.serviceFittingOptions["priceSource"] = source
+
+    def OnTotalPriceDroneChange(self, event):
+        self.priceSettings.set('drones', event.GetInt())
+
+    def OnTotalPriceCargoChange(self, event):
+        self.priceSettings.set('cargo', event.GetInt())
+
+    def OnTotalPriceImplantChange(self, event):
+        self.priceSettings.set('character', event.GetInt())
 
 
 PFMarketPref.register()

@@ -24,7 +24,6 @@ from gui.bitmap_loader import BitmapLoader
 from gui.utils.numberFormatter import formatAmount
 from service.price import Fit, Price
 from service.settings import PriceMenuSettings
-from eos.const import FittingSlot
 
 
 class PriceViewMinimal(StatsView):
@@ -85,13 +84,6 @@ class PriceViewMinimal(StatsView):
 
         ship_price = 0
         module_price = 0
-        module_slot_price = {
-            FittingSlot.HIGH: 0,
-            FittingSlot.MED: 0,
-            FittingSlot.LOW: 0,
-            FittingSlot.RIG: 0,
-            FittingSlot.SUBSYSTEM: 0
-        }
         drone_price = 0
         fighter_price = 0
         cargo_price = 0
@@ -105,8 +97,6 @@ class PriceViewMinimal(StatsView):
                 for module in fit.modules:
                     if not module.isEmpty:
                         module_price += module.item.price.price
-                        if module.slot in module_slot_price:
-                            module_slot_price[module.slot] += module.item.price.price
 
             if fit.drones:
                 for drone in fit.drones:
@@ -147,31 +137,11 @@ class PriceViewMinimal(StatsView):
         self.labelPriceShip.SetToolTip(wx.ToolTip('{:,.2f} ISK'.format(ship_price)))
 
         self.labelPriceFittings.SetLabel("%s ISK" % formatAmount(fitting_price, 3, 3, 9, currency=True))
-        self.labelPriceFittings.SetToolTip(wx.ToolTip('Highs:\t\t{:,.2f} ISK \n'.format(module_slot_price[FittingSlot.HIGH])+
-                                                      'Meds:\t\t{:,.2f} ISK \n'.format(module_slot_price[FittingSlot.MED]) +
-                                                      'Lows:\t\t{:,.2f} ISK \n'.format(module_slot_price[FittingSlot.LOW]) +
-                                                      'Rigs:\t\t{:,.2f} ISK \n'.format(module_slot_price[FittingSlot.RIG]) +
-                                                      'Subsystems:\t{:,.2f} ISK \n'.format(module_slot_price[FittingSlot.SUBSYSTEM])+
-                                                      'Total:\t\t{:,.2f} ISK \n'.format(fitting_price)))
+        self.labelPriceFittings.SetToolTip(wx.ToolTip('{:,.2f} ISK'.format(fitting_price)))
 
         self.labelPriceTotal.SetLabel("%s ISK" % formatAmount(total_price, 3, 3, 9, currency=True))
-        self.labelPriceTotal.SetToolTip(wx.ToolTip('Ship + Modules:\t{:,.2f} ISK \n'.format(ship_price +
-                                                                                            module_price) +
-                                                   '+ Drones:\t{:,.2f} ISK \n'.format(ship_price +
-                                                                                      module_price +
-                                                                                      drone_price +
-                                                                                      fighter_price) +
-                                                   '+ Cargo:\t\t{:,.2f} ISK \n'.format(ship_price +
-                                                                                       module_price +
-                                                                                       drone_price +
-                                                                                       fighter_price +
-                                                                                       cargo_price) +
-                                                   '+ Implants:\t{:,.2f} ISK \n'.format(ship_price +
-                                                                                        module_price +
-                                                                                        drone_price +
-                                                                                        fighter_price +
-                                                                                        cargo_price +
-                                                                                        implant_price)))
+        self.labelPriceTotal.SetToolTip(wx.ToolTip('{:,.2f} ISK'.format(total_price)))
+
     def processPrices(self, prices):
         self.refreshPanelPrices(self.fit)
 
