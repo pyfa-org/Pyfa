@@ -470,8 +470,8 @@ class PriceMenuSettings(object):
         PriceMenuDefaultSettings = {
             "ship" : 1,
             "modules" : 1,
-            "drones" : 0,
-            "cargo" : 0,
+            "drones" : 1,
+            "cargo" : 1,
             "character" : 0
         }
 
