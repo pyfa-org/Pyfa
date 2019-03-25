@@ -114,9 +114,7 @@ class StatsPane(wx.Panel):
             tp.SetLabel(view.getHeaderText(None))
             view.refreshPanel(None)
 
-            contentPanel.Bind(wx.EVT_RIGHT_DOWN, self.contextHandler(contentPanel))
-            for child in contentPanel.GetChildren():
-                child.Bind(wx.EVT_RIGHT_DOWN, self.contextHandler(contentPanel))
+            contentPanel.Bind(wx.EVT_CONTEXT_MENU, self.contextHandler(contentPanel))
 
             mainSizer.Add(tp, 0, wx.EXPAND | wx.LEFT, 3)
             if i < maxviews - 1:
@@ -143,9 +141,3 @@ class StatsPane(wx.Panel):
             event.Skip()
 
         return handler
-
-    @staticmethod
-    def applyBinding(self, contentPanel):
-        pyfalog.debug("Attempt applyBinding to children of {0}", contentPanel.viewName)
-        for child in contentPanel.GetChildren():
-            child.Bind(wx.EVT_RIGHT_DOWN, self.contextHandler(contentPanel))
