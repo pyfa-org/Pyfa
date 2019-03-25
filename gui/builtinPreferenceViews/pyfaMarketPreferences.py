@@ -83,23 +83,27 @@ class PFMarketPref(PreferenceView):
         self.intDelay.Bind(wx.lib.intctrl.EVT_INT, self.onMarketDelayChange)
 
         self.tbTotalPriceBox = wx.StaticBoxSizer(wx.VERTICAL, panel, "Total Price Includes")
+        self.tbTotalPriceShip = wx.CheckBox(panel, -1, "Ship", wx.DefaultPosition, wx.DefaultSize, 1)
+        self.tbTotalPriceShip.SetValue(self.priceSettings.get("ship"))
+        self.tbTotalPriceShip.Bind(wx.EVT_CHECKBOX, self.OnTotalPriceShipChange)
+        self.tbTotalPriceBox.Add(self.tbTotalPriceShip)
+        self.tbTotalPriceModules = wx.CheckBox(panel, -1, "Modules", wx.DefaultPosition, wx.DefaultSize, 1)
+        self.tbTotalPriceModules.SetValue(self.priceSettings.get("modules"))
+        self.tbTotalPriceModules.Bind(wx.EVT_CHECKBOX, self.OnTotalPriceModulesChange)
+        self.tbTotalPriceBox.Add(self.tbTotalPriceModules)
         self.tbTotalPriceDrones = wx.CheckBox(panel, -1, "Drones", wx.DefaultPosition, wx.DefaultSize, 1)
         self.tbTotalPriceDrones.SetValue(self.priceSettings.get("drones"))
+        self.tbTotalPriceDrones.Bind(wx.EVT_CHECKBOX, self.OnTotalPriceDroneChange)
+        self.tbTotalPriceBox.Add(self.tbTotalPriceDrones)
         self.tbTotalPriceCargo = wx.CheckBox(panel, -1, "Cargo", wx.DefaultPosition, wx.DefaultSize, 1)
         self.tbTotalPriceCargo.SetValue(self.priceSettings.get("cargo"))
-        self.tbTotalPriceImplant = wx.CheckBox(panel, -1, "Implants", wx.DefaultPosition, wx.DefaultSize, 1)
-        self.tbTotalPriceImplant.SetValue(self.priceSettings.get("character")) #TODO: Value sometimes loaded wrong
-        self.tbTotalPriceBox.AddSpacer(5)
-        self.tbTotalPriceBox.Add(self.tbTotalPriceDrones)
-        self.tbTotalPriceBox.AddSpacer(10)
-        self.tbTotalPriceBox.Add(self.tbTotalPriceCargo)
-        self.tbTotalPriceBox.AddSpacer(10)
-        self.tbTotalPriceBox.Add(self.tbTotalPriceImplant)
-        self.tbTotalPriceBox.RecalcSizes()
-        mainSizer.Add(self.tbTotalPriceBox, 1, wx.TOP | wx.RIGHT, 5)
-        self.tbTotalPriceDrones.Bind(wx.EVT_CHECKBOX, self.OnTotalPriceDroneChange)
         self.tbTotalPriceCargo.Bind(wx.EVT_CHECKBOX, self.OnTotalPriceCargoChange)
-        self.tbTotalPriceImplant.Bind(wx.EVT_CHECKBOX, self.OnTotalPriceImplantChange)
+        self.tbTotalPriceBox.Add(self.tbTotalPriceCargo)
+        self.tbTotalPriceCharacter = wx.CheckBox(panel, -1, "Implants && Boosters", wx.DefaultPosition, wx.DefaultSize, 1)
+        self.tbTotalPriceCharacter.SetValue(self.priceSettings.get("character"))
+        self.tbTotalPriceCharacter.Bind(wx.EVT_CHECKBOX, self.OnTotalPriceCharacterChange)
+        self.tbTotalPriceBox.Add(self.tbTotalPriceCharacter)
+        mainSizer.Add(self.tbTotalPriceBox, 1, wx.TOP | wx.RIGHT, 5)
 
         panel.SetSizer(mainSizer)
         panel.Layout()
@@ -128,14 +132,25 @@ class PFMarketPref(PreferenceView):
         source = self.chPriceSource.GetString(self.chPriceSource.GetSelection())
         self.sFit.serviceFittingOptions["priceSource"] = source
 
+    def OnTotalPriceShipChange(self, event):
+        self.priceSettings.set('ship', event.GetInt())
+        wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=self.mainFrame.getActiveFit()))
+
+    def OnTotalPriceModulesChange(self, event):
+        self.priceSettings.set('modules', event.GetInt())
+        wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=self.mainFrame.getActiveFit()))
+
     def OnTotalPriceDroneChange(self, event):
         self.priceSettings.set('drones', event.GetInt())
+        wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=self.mainFrame.getActiveFit()))
 
     def OnTotalPriceCargoChange(self, event):
         self.priceSettings.set('cargo', event.GetInt())
+        wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=self.mainFrame.getActiveFit()))
 
-    def OnTotalPriceImplantChange(self, event):
+    def OnTotalPriceCharacterChange(self, event):
         self.priceSettings.set('character', event.GetInt())
+        wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=self.mainFrame.getActiveFit()))
 
 
 PFMarketPref.register()
