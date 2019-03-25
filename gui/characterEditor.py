@@ -373,7 +373,7 @@ class SkillTreeView(wx.Panel):
 
         tree.Bind(wx.dataview.EVT_TREELIST_ITEM_ACTIVATED, self.expand)
         tree.Bind(wx.dataview.EVT_TREELIST_ITEM_EXPANDING, self.expandLookup)
-        tree.Bind(wx.dataview.EVT_TREELIST_ITEM_CONTEXT_MENU, self.scheduleMenu)
+        tree.Bind(wx.dataview.EVT_TREELIST_ITEM_CONTEXT_MENU, self.spawnMenu)
 
         bSizerButtons = wx.BoxSizer(wx.HORIZONTAL)
 
@@ -590,11 +590,8 @@ class SkillTreeView(wx.Panel):
 
                 tree.SetItemText(childId, 1, "Level %d" % int(level) if isinstance(level, float) else level)
 
-    def scheduleMenu(self, event):
-        event.Skip()
-        wx.CallAfter(self.spawnMenu, event.GetItem())
-
-    def spawnMenu(self, item):
+    def spawnMenu(self, event):
+        item = event.GetItem()
         self.skillTreeListCtrl.Select(item)
         thing = self.skillTreeListCtrl.GetFirstChild(item).IsOk()
         if thing:
