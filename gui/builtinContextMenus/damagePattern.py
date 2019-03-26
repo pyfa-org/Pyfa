@@ -20,7 +20,11 @@ class DamagePattern(ContextMenu):
         if not self.settings.get('damagePattern'):
             return False
 
-        return srcContext == "resistancesViewFull" and self.mainFrame.getActiveFit() is not None
+        return srcContext == "resistancesViewFull"
+
+    @property
+    def enabled(self):
+        return self.mainFrame.getActiveFit() is not None
 
     def getText(self, itmContext, selection):
         sDP = import_DamagePattern.getInstance()
