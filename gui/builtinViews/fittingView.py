@@ -165,6 +165,7 @@ class FittingView(d.Display):
 
         self.Bind(wx.EVT_KEY_UP, self.kbEvent)
         self.Bind(wx.EVT_LEFT_DOWN, self.click)
+        self.Bind(wx.EVT_RIGHT_DOWN, self.click)
         self.Bind(wx.EVT_MIDDLE_DOWN, self.click)
         self.Bind(wx.EVT_SHOW, self.OnShow)
         self.Bind(wx.EVT_MOTION, self.OnMouseMove)
@@ -532,7 +533,7 @@ class FittingView(d.Display):
             event.Skip()
 
     def spawnMenu(self, event):
-        if self.activeFitID is None:
+        if self.activeFitID is None or self.getColumn(self.ScreenToClient(event.Position)) == self.getColIndex(State):
             return
 
         sMkt = Market.getInstance()
@@ -588,6 +589,7 @@ class FittingView(d.Display):
         and we have clicked the State column, iterate through the selections and
         change State
         """
+
         row, _, col = self.HitTestSubItem(event.Position)
 
         # only do State column and ignore invalid rows
