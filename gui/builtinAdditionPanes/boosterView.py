@@ -69,10 +69,7 @@ class BoosterView(d.Display):
 
         self.SetDropTarget(BoosterViewDrop(self.handleListDrag))
 
-        if "__WXGTK__" in wx.PlatformInfo:
-            self.Bind(wx.EVT_RIGHT_UP, self.scheduleMenu)
-        else:
-            self.Bind(wx.EVT_RIGHT_DOWN, self.scheduleMenu)
+        self.Bind(wx.EVT_CONTEXT_MENU, self.spawnMenu)
 
     def handleListDrag(self, x, y, data):
         """
@@ -163,12 +160,7 @@ class BoosterView(d.Display):
                 fitID = self.mainFrame.getActiveFit()
                 self.mainFrame.command.Submit(cmd.GuiToggleBoosterCommand(fitID, row))
 
-    def scheduleMenu(self, event):
-        event.Skip()
-        if self.getColumn(event.Position) != self.getColIndex(State):
-            wx.CallAfter(self.spawnMenu)
-
-    def spawnMenu(self):
+    def spawnMenu(self, event):
         sel = self.GetFirstSelected()
         if sel != -1:
             sFit = Fit.getInstance()

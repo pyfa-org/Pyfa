@@ -64,10 +64,7 @@ class CargoView(d.Display):
         self.SetDropTarget(CargoViewDrop(self.handleListDrag))
         self.Bind(wx.EVT_LIST_BEGIN_DRAG, self.startDrag)
 
-        if "__WXGTK__" in wx.PlatformInfo:
-            self.Bind(wx.EVT_RIGHT_UP, self.scheduleMenu)
-        else:
-            self.Bind(wx.EVT_RIGHT_DOWN, self.scheduleMenu)
+        self.Bind(wx.EVT_CONTEXT_MENU, self.spawnMenu)
 
     def handleListDrag(self, x, y, data):
         """
@@ -180,12 +177,7 @@ class CargoView(d.Display):
                 sFit.removeCargo(fitID, self.original.index(cargo))
                 wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fitID))
 
-    def scheduleMenu(self, event):
-        event.Skip()
-        if self.getColumn(event.Position) != self.getColIndex(State):
-            wx.CallAfter(self.spawnMenu)
-
-    def spawnMenu(self):
+    def spawnMenu(self,event):
         sel = self.GetFirstSelected()
         if sel != -1:
             sFit = Fit.getInstance()

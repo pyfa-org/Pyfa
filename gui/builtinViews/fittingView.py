@@ -153,10 +153,7 @@ class FittingView(d.Display):
 
         self.Bind(wx.EVT_LEFT_DCLICK, self.removeItem)
         self.Bind(wx.EVT_LIST_BEGIN_DRAG, self.startDrag)
-        if "__WXGTK__" in wx.PlatformInfo:
-            self.Bind(wx.EVT_RIGHT_UP, self.scheduleMenu)
-        else:
-            self.Bind(wx.EVT_RIGHT_DOWN, self.scheduleMenu)
+        self.Bind(wx.EVT_CONTEXT_MENU, self.spawnMenu)
 
         self.SetDropTarget(FittingViewDrop(self.handleListDrag))
         self.activeFitID = None
@@ -168,7 +165,6 @@ class FittingView(d.Display):
 
         self.Bind(wx.EVT_KEY_UP, self.kbEvent)
         self.Bind(wx.EVT_LEFT_DOWN, self.click)
-        self.Bind(wx.EVT_RIGHT_DOWN, self.click)
         self.Bind(wx.EVT_MIDDLE_DOWN, self.click)
         self.Bind(wx.EVT_SHOW, self.OnShow)
         self.Bind(wx.EVT_MOTION, self.OnMouseMove)
@@ -535,12 +531,7 @@ class FittingView(d.Display):
         finally:
             event.Skip()
 
-    def scheduleMenu(self, event):
-        event.Skip()
-        if self.getColumn(event.Position) != self.getColIndex(State):
-            wx.CallAfter(self.spawnMenu)
-
-    def spawnMenu(self):
+    def spawnMenu(self, event):
         if self.activeFitID is None:
             return
 

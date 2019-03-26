@@ -72,16 +72,12 @@ class CommandView(d.Display):
         self.mainFrame.Bind(EVT_FIT_REMOVED, CommandFits.populateFits)
         self.mainFrame.Bind(GE.FIT_CHANGED, self.fitChanged)
         self.Bind(wx.EVT_LEFT_DOWN, self.click)
-        self.Bind(wx.EVT_RIGHT_DOWN, self.click)
         self.Bind(wx.EVT_LEFT_DCLICK, self.remove)
         self.Bind(wx.EVT_KEY_UP, self.kbEvent)
 
         self.droneView = gui.builtinAdditionPanes.droneView.DroneView
 
-        if "__WXGTK__" in wx.PlatformInfo:
-            self.Bind(wx.EVT_RIGHT_UP, self.scheduleMenu)
-        else:
-            self.Bind(wx.EVT_RIGHT_DOWN, self.scheduleMenu)
+        self.Bind(wx.EVT_RIGHT_UP, self.spawnMenu)
 
         self.Bind(wx.EVT_LIST_BEGIN_DRAG, self.startDrag)
         self.SetDropTarget(CommandViewDrop(self.handleListDrag))
@@ -188,12 +184,7 @@ class CommandView(d.Display):
                 fitID = self.mainFrame.getActiveFit()
                 self.mainFrame.command.Submit(cmd.GuiToggleCommandCommand(fitID, item.ID))
 
-    def scheduleMenu(self, event):
-        event.Skip()
-        if self.getColumn(event.Position) != self.getColIndex(State):
-            wx.CallAfter(self.spawnMenu)
-
-    def spawnMenu(self):
+    def spawnMenu(self, event):
         fitID = self.mainFrame.getActiveFit()
         if fitID is None:
             return

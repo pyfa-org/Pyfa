@@ -142,10 +142,7 @@ class FighterDisplay(d.Display):
         self.Bind(wx.EVT_MOTION, self.OnMouseMove)
         self.Bind(wx.EVT_LEAVE_WINDOW, self.OnLeaveWindow)
 
-        if "__WXGTK__" in wx.PlatformInfo:
-            self.Bind(wx.EVT_RIGHT_UP, self.scheduleMenu)
-        else:
-            self.Bind(wx.EVT_RIGHT_DOWN, self.scheduleMenu)
+        self.Bind(wx.EVT_CONTEXT_MENU, self.spawnMenu)
 
         self.Bind(wx.EVT_LIST_BEGIN_DRAG, self.startDrag)
         self.SetDropTarget(FighterViewDrop(self.handleDragDrop))
@@ -289,12 +286,7 @@ class FighterDisplay(d.Display):
                 fighter = self.fighters[row]
                 self.mainFrame.command.Submit(cmd.GuiToggleFighterCommand(fitID, self.original.index(fighter)))
 
-    def scheduleMenu(self, event):
-        event.Skip()
-        if self.getColumn(event.Position) != self.getColIndex(State):
-            wx.CallAfter(self.spawnMenu)
-
-    def spawnMenu(self):
+    def spawnMenu(self, event):
         sel = self.GetFirstSelected()
         if sel != -1:
             fighter = self.fighters[sel]
