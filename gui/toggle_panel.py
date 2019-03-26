@@ -49,7 +49,7 @@ class TogglePanel (wx.Panel):
 
         # Add a sizer for additional header items if we need it
         self.hcontent_sizer = wx.BoxSizer(wx.HORIZONTAL)
-        header_sizer.Add(self.hcontent_sizer, 0, wx.RIGHT, 5)
+        header_sizer.Add(self.hcontent_sizer, 1, wx.RIGHT, 5)
 
         # Create the content panel, set sizer, and add to main sizer
         self.content_panel = wx.Panel(self)

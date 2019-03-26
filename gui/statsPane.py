@@ -114,7 +114,7 @@ class StatsPane(wx.Panel):
             tp.SetLabel(view.getHeaderText(None))
             view.refreshPanel(None)
 
-            contentPanel.Bind(wx.EVT_CONTEXT_MENU, self.contextHandler(contentPanel))
+            contentPanel.Bind(wx.EVT_CONTEXT_MENU, self.contextHandler(contentPanel, tp))
 
             mainSizer.Add(tp, 0, wx.EXPAND | wx.LEFT, 3)
             if i < maxviews - 1:
@@ -130,14 +130,25 @@ class StatsPane(wx.Panel):
         self.mainFrame.Bind(GE.FIT_CHANGED, self.fitChanged)
 
     @staticmethod
-    def contextHandler(contentPanel):
+    def contextHandler(contentPanel, tp):
         viewName = contentPanel.viewName
 
         def handler(event):
             menu = ContextMenu.getMenu(None, (viewName,))
+
             if menu is not None:
                 contentPanel.PopupMenu(menu)
 
             event.Skip()
+
+        if ContextMenu.hasMenu(None, (viewName,)):
+            sizer = tp.GetHeaderContentSizer()
+            sizer.AddStretchSpacer()
+            # Add menu
+            header_menu = wx.StaticText(tp.GetHeaderPanel(), wx.ID_ANY, "\u2630", size=wx.Size((10, -1)))
+            sizer.Add(header_menu , 0, wx.EXPAND | wx.RIGHT | wx.ALIGN_RIGHT, 5)
+
+            header_menu.Bind(wx.EVT_CONTEXT_MENU, handler)
+            header_menu.Bind(wx.EVT_LEFT_UP, handler)
 
         return handler
