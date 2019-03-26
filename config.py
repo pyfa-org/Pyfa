@@ -113,7 +113,7 @@ def defPaths(customSavePath=None):
     # Version data
 
     with open(os.path.join(pyfaPath, "version.yml"), 'r') as file:
-        data = yaml.load(file, Loader=yaml.FullLoader)
+        data = yaml.load(file, Loader=yaml.SafeLoader)
         version = data['version']
 
     # Where we store the saved fits etc, default is the current users home directory

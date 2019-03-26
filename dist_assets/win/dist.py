@@ -8,7 +8,7 @@ import yaml
 
 
 with open("version.yml", 'r') as file:
-    data = yaml.load(file, Loader=yaml.FullLoader)
+    data = yaml.load(file, Loader=yaml.SafeLoader)
     version = data['version']
 
 os.environ["PYFA_DIST_DIR"] = os.path.join(os.getcwd(), 'dist')
