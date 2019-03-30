@@ -25,6 +25,9 @@ class FitImportMutatedCommand(wx.Command):
     def Do(self):
         sFit = Fit.getInstance()
         fitID = self.fitID
+        if fitID is None:
+            return False
+        
         fit = eos.db.getFit(fitID)
 
         if self.baseItem is None:
