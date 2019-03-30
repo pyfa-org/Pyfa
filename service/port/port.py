@@ -241,10 +241,11 @@ class Port(object):
             return "DNA", (cls.importDna(string),)
 
         # Assume that we import stand-alone abyssal module if all else fails
-        try:
-            return "MutatedItem", (parseMutant(lines),)
-        except:
-            pass
+        if activeFit is not None:
+            try:
+                return "MutatedItem", (parseMutant(lines),)
+            except:
+                pass
 
 
     # EFT-related methods
