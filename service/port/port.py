@@ -76,8 +76,7 @@ class Port(object):
             success = True
             try:
                 iportuser.on_port_process_start()
-                backedUpFits = Port.exportXml(iportuser,
-                                              *svcFit.getInstance().getAllFits())
+                backedUpFits = Port.exportXml(svcFit.getInstance().getAllFits(), iportuser)
                 backupFile = open(path, "w", encoding="utf-8")
                 backupFile.write(backedUpFits)
                 backupFile.close()
