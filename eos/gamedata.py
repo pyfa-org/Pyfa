@@ -140,12 +140,18 @@ class Effect(EqBase):
         Whether this effect is implemented in code or not,
         unimplemented effects simply do nothing at all when run
         """
+        if not self.__generated:
+            self.__generateHandler()
+        
         return self.__effectDef is not None
 
     def isType(self, type):
         """
         Check if this effect is of the passed type
         """
+        if not self.__generated:
+            self.__generateHandler()
+        
         return self.type is not None and type in self.type
 
     def __generateHandler(self):
