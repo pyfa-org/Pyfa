@@ -464,7 +464,10 @@ class PriceMenuSettings(object):
         PriceMenuDefaultSettings = {
             "drones" : 1,
             "cargo" : 1,
-            "character" : 0
+            "character" : 0,
+            "marketMGJumpMode": 0,
+            "marketMGEmptyMode": 1,
+            "marketMGSearchMode": 0
         }
 
         self.PriceMenuDefaultSettings = SettingsProvider.getInstance().getSettings("pyfaPriceMenuSettings",

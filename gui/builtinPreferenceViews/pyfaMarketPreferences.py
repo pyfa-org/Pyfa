@@ -16,17 +16,15 @@ class PFMarketPref(PreferenceView):
     title = "Market & Prices"
 
     def __init__(self):
-        self.dirtySettings = False
         self.priceSettings = PriceMenuSettings.getInstance()
 
     def populatePanel(self, panel):
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
-        self.dirtySettings = False
 
         helpCursor = wx.Cursor(wx.CURSOR_QUESTION_ARROW)
         mainSizer = wx.BoxSizer(wx.VERTICAL)
 
-        self.stTitle = wx.StaticText(panel, wx.ID_ANY, self.title, wx.DefaultPosition, wx.DefaultSize, 0)
+        self.stTitle = wx.StaticText(panel, wx.ID_ANY, "Market && Prices", wx.DefaultPosition, wx.DefaultSize, 0)
         self.stTitle.Wrap(-1)
         self.stTitle.SetFont(wx.Font(12, 70, 90, 90, False, wx.EmptyString))
 
@@ -97,6 +95,21 @@ class PFMarketPref(PreferenceView):
         self.tbTotalPriceBox.Add(self.tbTotalPriceCharacter)
         mainSizer.Add(self.tbTotalPriceBox, 1, wx.TOP | wx.RIGHT, 5)
 
+        self.rbMarketJump = wx.RadioBox(panel, -1, "Item Market Group Jump", wx.DefaultPosition, wx.DefaultSize, ["No changes to metagroups", "Enable item's metagroup", "Enable item's metagroup, disable others", "Enable all metagroups"], 1, wx.RA_SPECIFY_COLS)
+        self.rbMarketJump.SetSelection(self.priceSettings.get('marketMGJumpMode'))
+        mainSizer.Add(self.rbMarketJump, 1, wx.ALL, 5)
+        self.rbMarketJump.Bind(wx.EVT_RADIOBOX, self.OnMarketJumpChange)
+
+        self.rbMarketEmpty = wx.RadioBox(panel, -1, "Empty Market View", wx.DefaultPosition, wx.DefaultSize, ["No changes to metagroups", "Enable leftmost available metagroup", "Enable all available metagroups", "Enable all metagroups"], 1, wx.RA_SPECIFY_COLS)
+        self.rbMarketEmpty.SetSelection(self.priceSettings.get('marketMGEmptyMode'))
+        mainSizer.Add(self.rbMarketEmpty, 1, wx.ALL, 5)
+        self.rbMarketEmpty.Bind(wx.EVT_RADIOBOX, self.OnMarketEmptyChange)
+
+        self.rbMarketSearch = wx.RadioBox(panel, -1, "Market Search", wx.DefaultPosition, wx.DefaultSize, ["No changes to metagroups", "Temporarily enable all metagroups"], 1, wx.RA_SPECIFY_COLS)
+        self.rbMarketSearch.SetSelection(self.priceSettings.get('marketMGSearchMode'))
+        mainSizer.Add(self.rbMarketSearch, 1, wx.ALL, 5)
+        self.rbMarketSearch.Bind(wx.EVT_RADIOBOX, self.OnMarketSearchChange)
+
         panel.SetSizer(mainSizer)
         panel.Layout()
 
@@ -135,6 +148,15 @@ class PFMarketPref(PreferenceView):
     def OnTotalPriceCharacterChange(self, event):
         self.priceSettings.set('character', event.GetInt())
         wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=self.mainFrame.getActiveFit()))
+
+    def OnMarketJumpChange(self, event):
+        self.priceSettings.set('marketMGJumpMode', event.GetInt())
+
+    def OnMarketEmptyChange(self, event):
+        self.priceSettings.set('marketMGEmptyMode', event.GetInt())
+
+    def OnMarketSearchChange(self, event):
+        self.priceSettings.set('marketMGSearchMode', event.GetInt())
 
 
 PFMarketPref.register()
