@@ -438,12 +438,6 @@ class StatViewSettings(object):
             "outgoing"     : 2,
         }
 
-        # We don't have these....yet
-        '''
-        "miningyield": 2,
-        "drones": 2
-        '''
-
         self.serviceStatViewDefaultSettings = SettingsProvider.getInstance().getSettings("pyfaServiceStatViewSettings", serviceStatViewDefaultSettings)
 
     def get(self, type):
@@ -519,7 +513,6 @@ class ContextMenuSettings(object):
             "moduleAmmoPicker"      : 1,
             "moduleGlobalAmmoPicker": 1,
             "openFit"               : 1,
-            "priceClear"            : 1,
             "project"               : 1,
             "shipJump"              : 1,
             "tacticalMode"          : 1,

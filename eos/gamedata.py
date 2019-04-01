@@ -142,7 +142,6 @@ class Effect(EqBase):
         """
         if not self.__generated:
             self.__generateHandler()
-        
         return self.__effectDef is not None
 
     def isType(self, type):
@@ -151,7 +150,6 @@ class Effect(EqBase):
         """
         if not self.__generated:
             self.__generateHandler()
-        
         return self.type is not None and type in self.type
 
     def __generateHandler(self):
