@@ -153,10 +153,7 @@ class FittingView(d.Display):
 
         self.Bind(wx.EVT_LEFT_DCLICK, self.removeItem)
         self.Bind(wx.EVT_LIST_BEGIN_DRAG, self.startDrag)
-        if "__WXGTK__" in wx.PlatformInfo:
-            self.Bind(wx.EVT_RIGHT_UP, self.scheduleMenu)
-        else:
-            self.Bind(wx.EVT_RIGHT_DOWN, self.scheduleMenu)
+        self.Bind(wx.EVT_CONTEXT_MENU, self.spawnMenu)
 
         self.SetDropTarget(FittingViewDrop(self.handleListDrag))
         self.activeFitID = None
@@ -535,13 +532,8 @@ class FittingView(d.Display):
         finally:
             event.Skip()
 
-    def scheduleMenu(self, event):
-        event.Skip()
-        if self.getColumn(event.Position) != self.getColIndex(State):
-            wx.CallAfter(self.spawnMenu)
-
-    def spawnMenu(self):
-        if self.activeFitID is None:
+    def spawnMenu(self, event):
+        if self.activeFitID is None or self.getColumn(self.ScreenToClient(event.Position)) == self.getColIndex(State):
             return
 
         sMkt = Market.getInstance()
@@ -597,6 +589,7 @@ class FittingView(d.Display):
         and we have clicked the State column, iterate through the selections and
         change State
         """
+
         row, _, col = self.HitTestSubItem(event.Position)
 
         # only do State column and ignore invalid rows

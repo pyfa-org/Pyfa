@@ -118,11 +118,8 @@ class ImplantDisplay(d.Display):
         self.Bind(wx.EVT_KEY_UP, self.kbEvent)
         self.SetDropTarget(ImplantViewDrop(self.handleListDrag))
 
+        self.Bind(wx.EVT_CONTEXT_MENU, self.spawnMenu)
 
-        if "__WXGTK__" in wx.PlatformInfo:
-            self.Bind(wx.EVT_RIGHT_UP, self.scheduleMenu)
-        else:
-            self.Bind(wx.EVT_RIGHT_DOWN, self.scheduleMenu)
 
     def handleListDrag(self, x, y, data):
         """
@@ -223,12 +220,7 @@ class ImplantDisplay(d.Display):
                 fitID = self.mainFrame.getActiveFit()
                 self.mainFrame.command.Submit(cmd.GuiToggleImplantCommand(fitID, row))
 
-    def scheduleMenu(self, event):
-        event.Skip()
-        if self.getColumn(event.Position) != self.getColIndex(State):
-            wx.CallAfter(self.spawnMenu)
-
-    def spawnMenu(self):
+    def spawnMenu(self, event):
         sel = self.GetFirstSelected()
         menu = None
 

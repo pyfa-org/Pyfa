@@ -10,7 +10,7 @@ import os
 
 
 with open("version.yml", 'r+') as file:
-    data = yaml.load(file, Loader=yaml.FullLoader)
+    data = yaml.load(file, Loader=yaml.SafeLoader)
     file.seek(0)
     file.truncate()
     # todo: run Version() on the tag to ensure that it's of proper formatting - fail a test if not and prevent building

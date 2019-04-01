@@ -43,9 +43,9 @@ class JargonLoader(object):
                 self.jargon_mtime != self._get_jargon_file_mtime())
 
     def _load_jargon(self):
-        jargondata = yaml.load(DEFAULT_DATA, Loader=yaml.FullLoader)
+        jargondata = yaml.load(DEFAULT_DATA, Loader=yaml.SafeLoader)
         with open(JARGON_PATH) as f:
-            userdata = yaml.load(f, Loader=yaml.FullLoader)
+            userdata = yaml.load(f, Loader=yaml.SafeLoader)
         jargondata.update(userdata)
         self.jargon_mtime = self._get_jargon_file_mtime()
         self._jargon = Jargon(jargondata)
@@ -57,7 +57,7 @@ class JargonLoader(object):
 
     @staticmethod
     def init_user_jargon(jargon_path):
-        values = yaml.load(DEFAULT_DATA, Loader=yaml.FullLoader)
+        values = yaml.load(DEFAULT_DATA, Loader=yaml.SafeLoader)
 
         # Disabled for issue/1533; do not overwrite existing user config
         # if os.path.exists(jargon_path):

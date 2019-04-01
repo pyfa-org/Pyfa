@@ -76,8 +76,7 @@ class Port(object):
             success = True
             try:
                 iportuser.on_port_process_start()
-                backedUpFits = Port.exportXml(iportuser,
-                                              *svcFit.getInstance().getAllFits())
+                backedUpFits = Port.exportXml(svcFit.getInstance().getAllFits(), iportuser)
                 backupFile = open(path, "w", encoding="utf-8")
                 backupFile.write(backedUpFits)
                 backupFile.close()
@@ -241,10 +240,11 @@ class Port(object):
             return "DNA", (cls.importDna(string),)
 
         # Assume that we import stand-alone abyssal module if all else fails
-        try:
-            return "MutatedItem", (parseMutant(lines),)
-        except:
-            pass
+        if activeFit is not None:
+            try:
+                return "MutatedItem", (parseMutant(lines),)
+            except:
+                pass
 
 
     # EFT-related methods

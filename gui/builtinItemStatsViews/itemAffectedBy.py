@@ -65,13 +65,10 @@ class ItemAffectedBy(wx.Panel):
         self.SetSizer(mainSizer)
         self.PopulateTree()
         self.Layout()
-        self.affectedBy.Bind(wx.EVT_TREE_ITEM_RIGHT_CLICK, self.scheduleMenu)
+        self.affectedBy.Bind(wx.EVT_CONTEXT_MENU, self.spawnMenu)
 
-    def scheduleMenu(self, event):
-        event.Skip()
-        wx.CallAfter(self.spawnMenu, event.Item)
-
-    def spawnMenu(self, item):
+    def spawnMenu(self, event):
+        item, _ = self.affectedBy.HitTest(self.ScreenToClient(event.Position))
         self.affectedBy.SelectItem(item)
 
         stuff = self.affectedBy.GetItemData(item)
