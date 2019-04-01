@@ -20,6 +20,7 @@ class PFMarketPref(PreferenceView):
 
     def populatePanel(self, panel):
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
+        self.sFit = Fit.getInstance()
 
         helpCursor = wx.Cursor(wx.CURSOR_QUESTION_ARROW)
         mainSizer = wx.BoxSizer(wx.VERTICAL)
@@ -33,11 +34,7 @@ class PFMarketPref(PreferenceView):
         self.m_staticline1 = wx.StaticLine(panel, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.LI_HORIZONTAL)
         mainSizer.Add(self.m_staticline1, 0, wx.EXPAND | wx.TOP | wx.BOTTOM, 5)
 
-        self.cbMarketShortcuts = wx.CheckBox(panel, wx.ID_ANY, "Show market shortcuts", wx.DefaultPosition, wx.DefaultSize, 0)
-        mainSizer.Add(self.cbMarketShortcuts, 0, wx.ALL | wx.EXPAND, 5)
-
         priceSizer = wx.BoxSizer(wx.HORIZONTAL)
-
         self.stDefaultSystem = wx.StaticText(panel, wx.ID_ANY, "Default Market Prices:", wx.DefaultPosition, wx.DefaultSize, 0)
         self.stDefaultSystem.Wrap(-1)
         priceSizer.Add(self.stDefaultSystem, 0, wx.ALL | wx.ALIGN_CENTER_VERTICAL, 5)
@@ -45,40 +42,15 @@ class PFMarketPref(PreferenceView):
         self.stDefaultSystem.SetToolTip(wx.ToolTip(
             'The source you choose will be tried first, but subsequent sources will be used if the preferred source fails. '
             'The system you choose will also be tried first, and if no data is available, global price will be used.'))
-
         self.chPriceSource = wx.Choice(panel, choices=sorted(Price.sources.keys()))
         self.chPriceSystem = wx.Choice(panel, choices=list(Price.systemsList.keys()))
         priceSizer.Add(self.chPriceSource, 1, wx.ALL | wx.EXPAND, 5)
         priceSizer.Add(self.chPriceSystem, 1, wx.ALL | wx.EXPAND, 5)
-
         mainSizer.Add(priceSizer, 0, wx.ALL | wx.EXPAND, 0)
-
-        delayTimer = wx.BoxSizer(wx.HORIZONTAL)
-
-        self.stMarketDelay = wx.StaticText(panel, wx.ID_ANY, "Market Search Delay (ms):", wx.DefaultPosition, wx.DefaultSize, 0)
-        self.stMarketDelay.Wrap(-1)
-        self.stMarketDelay.SetCursor(helpCursor)
-        self.stMarketDelay.SetToolTip(
-            wx.ToolTip('The delay between a keystroke and the market search. Can help reduce lag when typing fast in the market search box.'))
-
-        delayTimer.Add(self.stMarketDelay, 0, wx.ALL | wx.ALIGN_CENTER_VERTICAL, 5)
-
-        self.intDelay = IntCtrl(panel, max=1000, limited=True)
-        delayTimer.Add(self.intDelay, 0, wx.ALL, 5)
-
-        mainSizer.Add(delayTimer, 0, wx.ALL | wx.EXPAND, 0)
-
-        self.sFit = Fit.getInstance()
-
-        self.cbMarketShortcuts.SetValue(self.sFit.serviceFittingOptions["showMarketShortcuts"] or False)
         self.chPriceSource.SetStringSelection(self.sFit.serviceFittingOptions["priceSource"])
-        self.chPriceSystem.SetStringSelection(self.sFit.serviceFittingOptions["priceSystem"])
-        self.intDelay.SetValue(self.sFit.serviceFittingOptions["marketSearchDelay"])
-
-        self.cbMarketShortcuts.Bind(wx.EVT_CHECKBOX, self.onCBShowShortcuts)
         self.chPriceSource.Bind(wx.EVT_CHOICE, self.onPricesSourceSelection)
+        self.chPriceSystem.SetStringSelection(self.sFit.serviceFittingOptions["priceSystem"])
         self.chPriceSystem.Bind(wx.EVT_CHOICE, self.onPriceSelection)
-        self.intDelay.Bind(wx.lib.intctrl.EVT_INT, self.onMarketDelayChange)
 
         self.tbTotalPriceBox = wx.StaticBoxSizer(wx.VERTICAL, panel, "Total Price Includes")
         self.tbTotalPriceDrones = wx.CheckBox(panel, -1, "Drones", wx.DefaultPosition, wx.DefaultSize, 1)
@@ -95,6 +67,23 @@ class PFMarketPref(PreferenceView):
         self.tbTotalPriceBox.Add(self.tbTotalPriceCharacter)
         mainSizer.Add(self.tbTotalPriceBox, 1, wx.TOP | wx.RIGHT, 5)
 
+        delayTimer = wx.BoxSizer(wx.HORIZONTAL)
+        self.stMarketDelay = wx.StaticText(panel, wx.ID_ANY, "Market Search Delay (ms):", wx.DefaultPosition, wx.DefaultSize, 0)
+        self.stMarketDelay.Wrap(-1)
+        self.stMarketDelay.SetCursor(helpCursor)
+        self.stMarketDelay.SetToolTip(wx.ToolTip('The delay between a keystroke and the market search. Can help reduce lag when typing fast in the market search box.'))
+        delayTimer.Add(self.stMarketDelay, 0, wx.ALL | wx.ALIGN_CENTER_VERTICAL, 5)
+        self.intDelay = IntCtrl(panel, max=1000, limited=True)
+        delayTimer.Add(self.intDelay, 0, wx.ALL, 5)
+        mainSizer.Add(delayTimer, 0, wx.ALL | wx.EXPAND, 0)
+        self.intDelay.SetValue(self.sFit.serviceFittingOptions["marketSearchDelay"])
+        self.intDelay.Bind(wx.lib.intctrl.EVT_INT, self.onMarketDelayChange)
+
+        self.rbMarketSearch = wx.RadioBox(panel, -1, "Market Search", wx.DefaultPosition, wx.DefaultSize, ["No changes to metagroups", "Temporarily enable all metagroups"], 1, wx.RA_SPECIFY_COLS)
+        self.rbMarketSearch.SetSelection(self.priceSettings.get('marketMGSearchMode'))
+        mainSizer.Add(self.rbMarketSearch, 1, wx.ALL, 5)
+        self.rbMarketSearch.Bind(wx.EVT_RADIOBOX, self.OnMarketSearchChange)
+
         self.rbMarketJump = wx.RadioBox(panel, -1, "Item Market Group Jump", wx.DefaultPosition, wx.DefaultSize, ["No changes to metagroups", "Enable item's metagroup", "Enable item's metagroup, disable others", "Enable all metagroups"], 1, wx.RA_SPECIFY_COLS)
         self.rbMarketJump.SetSelection(self.priceSettings.get('marketMGJumpMode'))
         mainSizer.Add(self.rbMarketJump, 1, wx.ALL, 5)
@@ -105,10 +94,10 @@ class PFMarketPref(PreferenceView):
         mainSizer.Add(self.rbMarketEmpty, 1, wx.ALL, 5)
         self.rbMarketEmpty.Bind(wx.EVT_RADIOBOX, self.OnMarketEmptyChange)
 
-        self.rbMarketSearch = wx.RadioBox(panel, -1, "Market Search", wx.DefaultPosition, wx.DefaultSize, ["No changes to metagroups", "Temporarily enable all metagroups"], 1, wx.RA_SPECIFY_COLS)
-        self.rbMarketSearch.SetSelection(self.priceSettings.get('marketMGSearchMode'))
-        mainSizer.Add(self.rbMarketSearch, 1, wx.ALL, 5)
-        self.rbMarketSearch.Bind(wx.EVT_RADIOBOX, self.OnMarketSearchChange)
+        self.cbMarketShortcuts = wx.CheckBox(panel, wx.ID_ANY, "Show market shortcuts", wx.DefaultPosition, wx.DefaultSize, 0)
+        mainSizer.Add(self.cbMarketShortcuts, 0, wx.ALL | wx.EXPAND, 5)
+        self.cbMarketShortcuts.SetValue(self.sFit.serviceFittingOptions["showMarketShortcuts"] or False)
+        self.cbMarketShortcuts.Bind(wx.EVT_CHECKBOX, self.onCBShowShortcuts)
 
         panel.SetSizer(mainSizer)
         panel.Layout()
