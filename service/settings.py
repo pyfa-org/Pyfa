@@ -462,8 +462,6 @@ class PriceMenuSettings(object):
         # 0 - Do not add to total
         # 1 - Add to total
         PriceMenuDefaultSettings = {
-            "ship" : 1,
-            "modules" : 1,
             "drones" : 1,
             "cargo" : 1,
             "character" : 0

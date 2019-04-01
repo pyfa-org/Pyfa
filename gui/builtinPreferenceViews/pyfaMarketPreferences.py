@@ -83,14 +83,6 @@ class PFMarketPref(PreferenceView):
         self.intDelay.Bind(wx.lib.intctrl.EVT_INT, self.onMarketDelayChange)
 
         self.tbTotalPriceBox = wx.StaticBoxSizer(wx.VERTICAL, panel, "Total Price Includes")
-        self.tbTotalPriceShip = wx.CheckBox(panel, -1, "Ship", wx.DefaultPosition, wx.DefaultSize, 1)
-        self.tbTotalPriceShip.SetValue(self.priceSettings.get("ship"))
-        self.tbTotalPriceShip.Bind(wx.EVT_CHECKBOX, self.OnTotalPriceShipChange)
-        self.tbTotalPriceBox.Add(self.tbTotalPriceShip)
-        self.tbTotalPriceModules = wx.CheckBox(panel, -1, "Modules", wx.DefaultPosition, wx.DefaultSize, 1)
-        self.tbTotalPriceModules.SetValue(self.priceSettings.get("modules"))
-        self.tbTotalPriceModules.Bind(wx.EVT_CHECKBOX, self.OnTotalPriceModulesChange)
-        self.tbTotalPriceBox.Add(self.tbTotalPriceModules)
         self.tbTotalPriceDrones = wx.CheckBox(panel, -1, "Drones", wx.DefaultPosition, wx.DefaultSize, 1)
         self.tbTotalPriceDrones.SetValue(self.priceSettings.get("drones"))
         self.tbTotalPriceDrones.Bind(wx.EVT_CHECKBOX, self.OnTotalPriceDroneChange)
@@ -131,14 +123,6 @@ class PFMarketPref(PreferenceView):
     def onPricesSourceSelection(self, event):
         source = self.chPriceSource.GetString(self.chPriceSource.GetSelection())
         self.sFit.serviceFittingOptions["priceSource"] = source
-
-    def OnTotalPriceShipChange(self, event):
-        self.priceSettings.set('ship', event.GetInt())
-        wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=self.mainFrame.getActiveFit()))
-
-    def OnTotalPriceModulesChange(self, event):
-        self.priceSettings.set('modules', event.GetInt())
-        wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=self.mainFrame.getActiveFit()))
 
     def OnTotalPriceDroneChange(self, event):
         self.priceSettings.set('drones', event.GetInt())

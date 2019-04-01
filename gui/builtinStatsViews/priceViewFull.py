@@ -125,11 +125,8 @@ class PriceViewFull(StatsView):
                     implant_price += implant.item.price.price
 
         total_price = 0
-
-        if self.settings.get("ship"):
-            total_price += ship_price
-        if self.settings.get("modules"):
-            total_price += module_price
+        total_price += ship_price
+        total_price += module_price
         if self.settings.get("drones"):
             total_price += drone_price + fighter_price
         if self.settings.get("cargo"):
