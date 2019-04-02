@@ -66,12 +66,10 @@ class PreferenceDialog(wx.Dialog):
 
             self.listbook.AddPage(page, prefView.title, imageId=imgID)
 
-        minHeight = 550
         bestFit = self.GetBestVirtualSize()
-        if minHeight > bestFit[1]:
-            self.SetSize(650, minHeight)
-        else:
-            self.SetSize(650, bestFit[1])
+        width = max(bestFit[0], 800 if "wxGTK" in wx.PlatformInfo else 650)
+        height = max(bestFit[1], 550)
+        self.SetSize(width, height)
 
         self.Layout()
 
