@@ -179,20 +179,14 @@ class MainMenuBar(wx.MenuBar):
         self.Enable(wx.ID_COPY, enable)
         self.Enable(self.exportSkillsNeededId, enable)
 
-        command_history = self.mainFrame.command.GetCommands()
-        current_command = self.mainFrame.command.GetCurrentCommand()
+        command = self.mainFrame.command
+        self.Enable(wx.ID_UNDO, False)
+        self.Enable(wx.ID_REDO, False)
 
-        self.Enable(wx.ID_UNDO, True)
-        self.Enable(wx.ID_REDO, True)
-
-        if len(command_history) == 0:
-            self.Enable(wx.ID_UNDO, False)
-            self.Enable(wx.ID_REDO, False)
-        else:
-            if current_command not in command_history:
-                self.Enable(wx.ID_UNDO, False)
-            if current_command == command_history[len(command_history) - 1]:
-                self.Enable(wx.ID_REDO, False)
+        if command.CanUndo():
+            self.Enable(wx.ID_UNDO, True)
+        if command.CanRedo():
+            self.Enable(wx.ID_REDO, True)
 
         sChar = Character.getInstance()
         charID = self.mainFrame.charSelection.getActiveCharacter()
