@@ -152,7 +152,7 @@ class ItemView(Display):
             # Enable all
             elif setting == 2:
                 for btn in self.marketBrowser.metaButtons:
-                    if not btn.GetValue():
+                    if btn.IsEnabled() and not btn.GetValue():
                         btn.setUserSelection(True)
                 filteredItems = self.filterItems()
         self.filteredStore = filteredItems
