@@ -100,6 +100,7 @@ class MarketBrowser(wx.Panel):
             self.itemView.filterItemStore()
 
     def jump(self, item):
+        self.searchMode = False
         self.marketView.jump(item)
         setting = self.settings.get('marketMGJumpMode')
         itemMetaCat = self.sMkt.META_MAP_REVERSE[self.sMkt.getMetaGroupIdByItem(item)]

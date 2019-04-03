@@ -72,7 +72,6 @@ class MarketTree(wx.TreeCtrl):
 
     def jump(self, item):
         """Open market group and meta tab of given item"""
-        self.marketBrowser.searchMode = False
         sMkt = self.sMkt
         mg = sMkt.getMarketGroupByItem(item)
 
