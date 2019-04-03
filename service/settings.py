@@ -447,13 +447,13 @@ class StatViewSettings(object):
         self.serviceStatViewDefaultSettings[type] = value
 
 
-class PriceMenuSettings(object):
+class MarketPriceSettings(object):
     _instance = None
 
     @classmethod
     def getInstance(cls):
         if cls._instance is None:
-            cls._instance = PriceMenuSettings()
+            cls._instance = MarketPriceSettings()
 
         return cls._instance
 

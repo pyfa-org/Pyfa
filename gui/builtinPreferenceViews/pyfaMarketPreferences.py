@@ -7,7 +7,7 @@ from gui.bitmap_loader import BitmapLoader
 
 import gui.mainFrame
 import gui.globalEvents as GE
-from service.settings import PriceMenuSettings
+from service.settings import MarketPriceSettings
 from service.fit import Fit
 from service.price import Price
 
@@ -16,7 +16,7 @@ class PFMarketPref(PreferenceView):
     title = "Market & Prices"
 
     def __init__(self):
-        self.priceSettings = PriceMenuSettings.getInstance()
+        self.priceSettings = MarketPriceSettings.getInstance()
 
     def populatePanel(self, panel):
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()

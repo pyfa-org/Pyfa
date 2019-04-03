@@ -23,7 +23,7 @@ from gui.statsView import StatsView
 from gui.bitmap_loader import BitmapLoader
 from gui.utils.numberFormatter import formatAmount
 from service.price import Fit, Price
-from service.settings import PriceMenuSettings
+from service.settings import MarketPriceSettings
 
 
 class PriceViewMinimal(StatsView):
@@ -32,7 +32,7 @@ class PriceViewMinimal(StatsView):
     def __init__(self, parent):
         StatsView.__init__(self)
         self.parent = parent
-        self.settings = PriceMenuSettings.getInstance()
+        self.settings = MarketPriceSettings.getInstance()
 
     def getHeaderText(self, fit):
         return "Price"
