@@ -52,8 +52,8 @@ class MarketBrowser(wx.Panel):
         # Grab service stuff and create child objects
         self.sMkt = Market.getInstance()
         self.settings = MarketPriceSettings.getInstance()
-        # Here we accept 3 modes: normal, search and recent
-        self.mode = 'normal'
+        self.__mode = 'normal'
+        self.__normalBtnMap = {}
         self.marketView = MarketTree(self.splitter, self)
         self.itemView = ItemView(self.splitter, self)
 
@@ -127,4 +127,33 @@ class MarketBrowser(wx.Panel):
                 if not btn.GetValue():
                     btn.setUserSelection(True)
         self.itemView.selectionMade()
+
+    @property
+    def mode(self):
+        return self.__mode
+
+    @mode.setter
+    def mode(self, newMode):
+        oldMode = self.__mode
+        if newMode == oldMode:
+            return
+        # Store meta button states when switching from normal
+        if oldMode == 'normal':
+            self.__normalBtnMap.clear()
+            for btn in self.metaButtons:
+                self.__normalBtnMap[btn] = btn.userSelected
+        setting = self.settings.get('marketMGSearchMode')
+        # We turn on all meta buttons for the duration of search/recents
+        if setting == 1:
+            if newMode in ('search', 'recent'):
+                for btn in self.metaButtons:
+                    btn.setUserSelection(True)
+            if newMode == 'normal':
+                for btn, state in self.__normalBtnMap.items():
+                    btn.setUserSelection(state)
+        # We turn on all meta buttons permanently
+        if setting == 2:
+            for btn in self.metaButtons:
+                btn.setUserSelection(True)
+        self.__mode = newMode
 

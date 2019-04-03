@@ -79,7 +79,7 @@ class PFMarketPref(PreferenceView):
         self.intDelay.SetValue(self.sFit.serviceFittingOptions["marketSearchDelay"])
         self.intDelay.Bind(wx.lib.intctrl.EVT_INT, self.onMarketDelayChange)
 
-        self.rbMarketSearch = wx.RadioBox(panel, -1, "Market Search", wx.DefaultPosition, wx.DefaultSize, ["No changes to meta buttons", "Temporarily enable all meta buttons"], 1, wx.RA_SPECIFY_COLS)
+        self.rbMarketSearch = wx.RadioBox(panel, -1, "Market Search & Recent Items", wx.DefaultPosition, wx.DefaultSize, ["No changes to meta buttons", "Enable all meta buttons for a duration of search / recents", "Enable all meta buttons"], 1, wx.RA_SPECIFY_COLS)
         self.rbMarketSearch.SetSelection(self.priceSettings.get('marketMGSearchMode'))
         mainSizer.Add(self.rbMarketSearch, 0, wx.RIGHT | wx.TOP | wx.EXPAND, 10)
         self.rbMarketSearch.Bind(wx.EVT_RADIOBOX, self.OnMarketSearchChange)

@@ -142,14 +142,14 @@ class ItemView(Display):
             # Enable leftmost available
             if setting == 1:
                 for btn in self.marketBrowser.metaButtons:
-                    if btn.IsEnabled() and not btn.GetValue():
+                    if btn.IsEnabled() and not btn.userSelected:
                         btn.setUserSelection(True)
                         break
                 filteredItems = self.filterItems()
             # Enable all
             elif setting == 2:
                 for btn in self.marketBrowser.metaButtons:
-                    if btn.IsEnabled() and not btn.GetValue():
+                    if btn.IsEnabled() and not btn.userSelected:
                         btn.setUserSelection(True)
                 filteredItems = self.filterItems()
         self.filteredStore = filteredItems
@@ -159,7 +159,7 @@ class ItemView(Display):
         sMkt = self.sMkt
         selectedMetas = set()
         for btn in self.marketBrowser.metaButtons:
-            if btn.GetValue():
+            if btn.userSelected:
                 selectedMetas.update(sMkt.META_MAP[btn.metaName])
         filteredItems = sMkt.filterItemsByMeta(self.unfilteredStore, selectedMetas)
         return filteredItems
