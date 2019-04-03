@@ -34,6 +34,7 @@ pyfalog = Logger(__name__)
 
 class MarketBrowser(wx.Panel):
 
+
     def __init__(self, parent):
         wx.Panel.__init__(self, parent)
 
@@ -51,7 +52,8 @@ class MarketBrowser(wx.Panel):
         # Grab service stuff and create child objects
         self.sMkt = Market.getInstance()
         self.settings = MarketPriceSettings.getInstance()
-        self.searchMode = False
+        # Here we accept 3 modes: normal, search and recent
+        self.mode = 'normal'
         self.marketView = MarketTree(self.splitter, self)
         self.itemView = ItemView(self.splitter, self)
 
@@ -100,7 +102,7 @@ class MarketBrowser(wx.Panel):
             self.itemView.filterItemStore()
 
     def jump(self, item):
-        self.searchMode = False
+        self.mode = 'normal'
         self.marketView.jump(item)
         setting = self.settings.get('marketMGJumpMode')
         itemMetaCat = self.sMkt.META_MAP_REVERSE[self.sMkt.getMetaGroupIdByItem(item)]

@@ -98,7 +98,7 @@ class ItemView(Display):
         self.sMkt.serviceMarketRecentlyUsedModules["pyfaMarketRecentlyUsedModules"].append(itemID)
 
     def selectionMade(self, event=None):
-        self.marketBrowser.searchMode = False
+        self.marketBrowser.mode = 'normal'
         # Grab the threeview selection and check if it's fine
         sel = self.marketView.GetSelection()
         if sel.IsOk():
@@ -126,13 +126,10 @@ class ItemView(Display):
             self.updateItemStore(items)
 
             # Set toggle buttons / use search mode flag if recently used modules category is selected (in order to have all modules listed and not filtered)
-            if seldata is not RECENTLY_USED_MODULES:
-                self.setToggles()
-            else:
-                self.marketBrowser.searchMode = True
-                self.setToggles()
+            if seldata is RECENTLY_USED_MODULES:
+                self.marketBrowser.mode = 'recent'
 
-            # Update filtered items
+            self.setToggles()
             self.filterItemStore()
 
     def updateItemStore(self, items):
@@ -191,7 +188,7 @@ class ItemView(Display):
             self.selectionMade()
             return
 
-        self.marketBrowser.searchMode = True
+        self.marketBrowser.mode = 'search'
         self.sMkt.searchItems(search, self.populateSearch)
 
     def clearSearch(self, event=None):
@@ -201,14 +198,14 @@ class ItemView(Display):
         if event:
             self.marketBrowser.search.Clear()
 
-        self.marketBrowser.searchMode = False
+        self.marketBrowser.mode = 'normal'
         self.updateItemStore(set())
         self.setToggles()
         self.filterItemStore()
 
     def populateSearch(self, items):
         # If we're no longer searching, dump the results
-        if self.marketBrowser.searchMode is False:
+        if self.marketBrowser.mode != 'search':
             return
         self.updateItemStore(items)
         self.setToggles()
@@ -239,7 +236,7 @@ class ItemView(Display):
         item = self.active[sel]
 
         sMkt = self.sMkt
-        sourceContext = "marketItemGroup" if self.marketBrowser.searchMode is False else "marketItemMisc"
+        sourceContext = "marketItemMisc" if self.marketBrowser.mode in ("search", "recent") else "marketItemGroup"
         itemContext = sMkt.getCategoryByItem(item).name
 
         menu = ContextMenu.getMenu((item,), (sourceContext, itemContext))
