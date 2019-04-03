@@ -16,7 +16,7 @@ class MetaButton(wx.ToggleButton):
     def setMetaAvailable(self, isAvailable):
         self.Enable(isAvailable)
         # need to also SetValue(False) for windows because Enabled=False AND SetValue(True) looks enabled.
-        if not isAvailable:
+        if not isAvailable and "wxMSW" in wx.PlatformInfo:
             self.SetValue(False)
 
     def reset(self):

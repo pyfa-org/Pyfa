@@ -29,7 +29,6 @@ class ItemView(Display):
         self.filteredStore = set()
         self.recentlyUsedModules = set()
         self.sMkt = marketBrowser.sMkt
-        self.searchMode = marketBrowser.searchMode
         self.sFit = Fit.getInstance()
 
         self.marketBrowser = marketBrowser
@@ -141,7 +140,7 @@ class ItemView(Display):
 
     def filterItemStore(self):
         filteredItems = self.filterItems()
-        if len(filteredItems) == 0:
+        if len(filteredItems) == 0 and len(self.unfilteredStore) > 0:
             setting = self.marketBrowser.settings.get('marketMGEmptyMode')
             # Enable leftmost available
             if setting == 1:

@@ -9,6 +9,7 @@ pyfalog = Logger(__name__)
 
 
 class MarketTree(wx.TreeCtrl):
+
     def __init__(self, parent, marketBrowser):
         wx.TreeCtrl.__init__(self, parent, style=wx.TR_DEFAULT_STYLE | wx.TR_HIDE_ROOT)
         pyfalog.debug("Initialize marketTree")
