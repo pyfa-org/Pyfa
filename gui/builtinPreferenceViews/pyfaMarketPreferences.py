@@ -79,17 +79,17 @@ class PFMarketPref(PreferenceView):
         self.intDelay.SetValue(self.sFit.serviceFittingOptions["marketSearchDelay"])
         self.intDelay.Bind(wx.lib.intctrl.EVT_INT, self.onMarketDelayChange)
 
-        self.rbMarketSearch = wx.RadioBox(panel, -1, "Market Search", wx.DefaultPosition, wx.DefaultSize, ["No changes to metagroups", "Temporarily enable all metagroups"], 1, wx.RA_SPECIFY_COLS)
+        self.rbMarketSearch = wx.RadioBox(panel, -1, "Market Search", wx.DefaultPosition, wx.DefaultSize, ["No changes to meta buttons", "Temporarily enable all meta buttons"], 1, wx.RA_SPECIFY_COLS)
         self.rbMarketSearch.SetSelection(self.priceSettings.get('marketMGSearchMode'))
         mainSizer.Add(self.rbMarketSearch, 0, wx.RIGHT | wx.TOP | wx.EXPAND, 10)
         self.rbMarketSearch.Bind(wx.EVT_RADIOBOX, self.OnMarketSearchChange)
 
-        self.rbMarketJump = wx.RadioBox(panel, -1, "Item Market Group Jump", wx.DefaultPosition, wx.DefaultSize, ["No changes to metagroups", "Enable item's metagroup", "Enable item's metagroup, disable others", "Enable all metagroups"], 1, wx.RA_SPECIFY_COLS)
+        self.rbMarketJump = wx.RadioBox(panel, -1, "Item Market Group Jump", wx.DefaultPosition, wx.DefaultSize, ["No changes to meta buttons", "Enable item's meta button", "Enable item's meta button, disable others", "Enable all meta buttons"], 1, wx.RA_SPECIFY_COLS)
         self.rbMarketJump.SetSelection(self.priceSettings.get('marketMGJumpMode'))
         mainSizer.Add(self.rbMarketJump, 0, wx.EXPAND | wx.TOP | wx.RIGHT, 10)
         self.rbMarketJump.Bind(wx.EVT_RADIOBOX, self.OnMarketJumpChange)
 
-        self.rbMarketEmpty = wx.RadioBox(panel, -1, "Empty Market View", wx.DefaultPosition, wx.DefaultSize, ["No changes to metagroups", "Enable leftmost available metagroup", "Enable all available metagroups", "Enable all metagroups"], 1, wx.RA_SPECIFY_COLS)
+        self.rbMarketEmpty = wx.RadioBox(panel, -1, "Empty Market View", wx.DefaultPosition, wx.DefaultSize, ["No changes to meta buttons", "Enable leftmost available meta button", "Enable all available meta buttons", "Enable all meta buttons"], 1, wx.RA_SPECIFY_COLS)
         self.rbMarketEmpty.SetSelection(self.priceSettings.get('marketMGEmptyMode'))
         mainSizer.Add(self.rbMarketEmpty, 0, wx.EXPAND | wx.TOP | wx.RIGHT, 10)
         self.rbMarketEmpty.Bind(wx.EVT_RADIOBOX, self.OnMarketEmptyChange)
