@@ -140,13 +140,33 @@ class ItemView(Display):
         self.unfilteredStore = items
 
     def filterItemStore(self):
+        filteredItems = self.filterItems()
+        if len(filteredItems) == 0:
+            setting = self.marketBrowser.settings.get('marketMGEmptyMode')
+            # Enable leftmost available
+            if setting == 1:
+                for btn in self.marketBrowser.metaButtons:
+                    if btn.IsEnabled() and not btn.GetValue():
+                        btn.setUserSelection(True)
+                        break
+                filteredItems = self.filterItems()
+            # Enable all
+            elif setting == 2:
+                for btn in self.marketBrowser.metaButtons:
+                    if not btn.GetValue():
+                        btn.setUserSelection(True)
+                filteredItems = self.filterItems()
+        self.filteredStore = filteredItems
+        self.update(list(self.filteredStore))
+
+    def filterItems(self):
         sMkt = self.sMkt
         selectedMetas = set()
         for btn in self.marketBrowser.metaButtons:
             if btn.GetValue():
                 selectedMetas.update(sMkt.META_MAP[btn.metaName])
-        self.filteredStore = sMkt.filterItemsByMeta(self.unfilteredStore, selectedMetas)
-        self.update(list(self.filteredStore))
+        filteredItems = sMkt.filterItemsByMeta(self.unfilteredStore, selectedMetas)
+        return filteredItems
 
     def setToggles(self):
         metaIDs = set()

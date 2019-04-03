@@ -89,7 +89,7 @@ class PFMarketPref(PreferenceView):
         mainSizer.Add(self.rbMarketJump, 0, wx.EXPAND | wx.TOP | wx.RIGHT, 10)
         self.rbMarketJump.Bind(wx.EVT_RADIOBOX, self.OnMarketJumpChange)
 
-        self.rbMarketEmpty = wx.RadioBox(panel, -1, "Empty Market View", wx.DefaultPosition, wx.DefaultSize, ["No changes to meta buttons", "Enable leftmost available meta button", "Enable all available meta buttons", "Enable all meta buttons"], 1, wx.RA_SPECIFY_COLS)
+        self.rbMarketEmpty = wx.RadioBox(panel, -1, "Empty Market View", wx.DefaultPosition, wx.DefaultSize, ["No changes to meta buttons", "Enable leftmost available meta button", "Enable all meta buttons"], 1, wx.RA_SPECIFY_COLS)
         self.rbMarketEmpty.SetSelection(self.priceSettings.get('marketMGEmptyMode'))
         mainSizer.Add(self.rbMarketEmpty, 0, wx.EXPAND | wx.TOP | wx.RIGHT, 10)
         self.rbMarketEmpty.Bind(wx.EVT_RADIOBOX, self.OnMarketEmptyChange)
