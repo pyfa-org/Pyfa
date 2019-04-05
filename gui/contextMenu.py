@@ -208,6 +208,7 @@ from gui.builtinContextMenus import (  # noqa: E402,F401
     changeAffectingSkills,
     tacticalMode,
     targetResists,
+    priceOptions,
     amount,
     cargoAmmo,
     # droneStack,
