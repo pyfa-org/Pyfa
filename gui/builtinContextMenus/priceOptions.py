@@ -3,14 +3,14 @@ import wx
 import gui.globalEvents as GE
 import gui.mainFrame
 from gui.contextMenu import ContextMenu
-from service.settings import PriceMenuSettings
+from service.settings import MarketPriceSettings
 
 
 class PriceOptions(ContextMenu):
     def __init__(self):
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
-        self.settings = PriceMenuSettings.getInstance()
-        self.optionList = ["Ship", "Modules", "Drones", "Cargo", "Character"]
+        self.settings = MarketPriceSettings.getInstance()
+        self.optionList = ["Drones", "Cargo", "Character"]
 
     def display(self, srcContext, selection):
         return srcContext in ("priceViewFull", "priceViewMinimal")
