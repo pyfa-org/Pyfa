@@ -48,37 +48,6 @@ class SettingsProvider(object):
             if not os.path.exists(self.BASE_PATH):
                 os.mkdir(self.BASE_PATH)
 
-    # def getSettings(self, area, defaults=None):
-    #     # type: (basestring, dict) -> service.Settings
-    #     # NOTE: needed to change for tests
-    #     settings_obj = self.settings.get(area)
-    #
-    #     if settings_obj is None and hasattr(self, 'BASE_PATH'):
-    #         canonical_path = os.path.join(self.BASE_PATH, area)
-    #
-    #         if not os.path.exists(canonical_path):
-    #             info = {}
-    #             if defaults:
-    #                 for item in defaults:
-    #                     info[item] = defaults[item]
-    #
-    #         else:
-    #             try:
-    #                 f = open(canonical_path, "rb")
-    #                 info = cPickle.load(f)
-    #                 for item in defaults:
-    #                     if item not in info:
-    #                         info[item] = defaults[item]
-    #
-    #             except:
-    #                 info = {}
-    #                 if defaults:
-    #                     for item in defaults:
-    #                         info[item] = defaults[item]
-    #
-    #         self.settings[area] = settings_obj = Settings(canonical_path, info)
-    #
-    #     return settings_obj
     def getSettings(self, area, defaults=None):
         # type: (basestring, dict) -> service.Settings
         # NOTE: needed to change for tests
@@ -437,12 +406,6 @@ class StatViewSettings(object):
             "drones"       : 2,
             "outgoing"     : 2,
         }
-
-        # We don't have these....yet
-        '''
-        "miningyield": 2,
-        "drones": 2
-        '''
 
         self.serviceStatViewDefaultSettings = SettingsProvider.getInstance().getSettings("pyfaServiceStatViewSettings", serviceStatViewDefaultSettings)
 
