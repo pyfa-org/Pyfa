@@ -436,7 +436,8 @@ class MarketPriceSettings(object):
             "character" : 0,
             "marketMGJumpMode": 0,
             "marketMGEmptyMode": 1,
-            "marketMGSearchMode": 0
+            "marketMGSearchMode": 0,
+            "marketMGMarketSelectMode": 0
         }
 
         self.PriceMenuDefaultSettings = SettingsProvider.getInstance().getSettings("pyfaPriceMenuSettings",
