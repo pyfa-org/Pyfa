@@ -126,7 +126,7 @@ class ItemView(Display):
             self.updateItemStore(items)
 
             # Set toggle buttons / use search mode flag if recently used modules category is selected (in order to have all modules listed and not filtered)
-            if seldata is RECENTLY_USED_MODULES:
+            if seldata == RECENTLY_USED_MODULES:
                 self.marketBrowser.mode = 'recent'
 
             self.setToggles()
