@@ -115,7 +115,7 @@ class PFMarketPref(PreferenceView):
         self.sFit.serviceFittingOptions["showMarketShortcuts"] = self.cbMarketShortcuts.GetValue()
 
     def getImage(self):
-        return BitmapLoader.getBitmap("prefs_settings", "gui")
+        return BitmapLoader.getBitmap("settings_market", "gui")
 
     def onPriceSelection(self, event):
         system = self.chPriceSystem.GetString(self.chPriceSystem.GetSelection())
