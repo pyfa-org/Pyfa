@@ -142,6 +142,8 @@ class MarketBrowser(wx.Panel):
             self.__normalBtnMap.clear()
             for btn in self.metaButtons:
                 self.__normalBtnMap[btn] = btn.userSelected
+        if newMode == 'search':
+            self.marketView.UnselectAll()
         setting = self.settings.get('marketMGSearchMode')
         # We turn on all meta buttons for the duration of search/recents
         if setting == 1:
