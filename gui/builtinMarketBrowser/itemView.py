@@ -205,10 +205,11 @@ class ItemView(Display):
         if event:
             self.marketBrowser.search.Clear()
 
-        self.marketBrowser.mode = 'normal'
-        self.updateItemStore(set())
-        self.setToggles()
-        self.filterItemStore()
+        if self.marketBrowser.mode == 'search':
+            self.marketBrowser.mode = 'normal'
+            self.updateItemStore(set())
+            self.setToggles()
+            self.filterItemStore()
 
     def populateSearch(self, items):
         # If we're no longer searching, dump the results
