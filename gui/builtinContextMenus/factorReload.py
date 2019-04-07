@@ -3,7 +3,6 @@ import gui.mainFrame
 import gui.globalEvents as GE
 # noinspection PyPackageRequirements
 import wx
-from gui.bitmap_loader import BitmapLoader
 from service.fit import Fit
 from service.settings import ContextMenuSettings
 
@@ -33,5 +32,6 @@ class FactorReload(ContextMenu):
     def checked(self):
         sFit = Fit.getInstance()
         return sFit.serviceFittingOptions["useGlobalForceReload"]
+
 
 FactorReload.register()

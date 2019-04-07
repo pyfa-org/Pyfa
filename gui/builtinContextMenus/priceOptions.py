@@ -1,3 +1,5 @@
+from abc import abstractmethod, ABCMeta
+
 import wx
 
 import gui.globalEvents as GE
@@ -6,45 +8,55 @@ from gui.contextMenu import ContextMenu
 from service.settings import MarketPriceSettings
 
 
-class PriceOptions(ContextMenu):
+class ItemGroupPrice(ContextMenu, metaclass=ABCMeta):
+
     def __init__(self):
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
         self.settings = MarketPriceSettings.getInstance()
-        self.optionList = ["Drones", "Cargo", "Character"]
+
+    @property
+    @abstractmethod
+    def label(self):
+        ...
+
+    @property
+    @abstractmethod
+    def optionName(self):
+        ...
 
     def display(self, srcContext, selection):
         return srcContext in ("priceViewFull", "priceViewMinimal")
 
     def getText(self, itmContext, selection):
-        return "Include in total"
+        return self.label
 
-    def addOption(self, menu, option):
-        label = option
-        id = ContextMenu.nextID()
-        self.optionIds[id] = option
-        menuItem = wx.MenuItem(menu, id, label, kind=wx.ITEM_CHECK)
-        menu.Bind(wx.EVT_MENU, self.handleMode, menuItem)
-        return menuItem
-
-    def getSubMenu(self, context, selection, rootMenu, i, pitem):
-        msw = True if "wxMSW" in wx.PlatformInfo else False
-        self.context = context
-        self.optionIds = {}
-
-        sub = wx.Menu()
-
-        for option in self.optionList:
-            menuItem = self.addOption(rootMenu if msw else sub, option)
-            sub.Append(menuItem)
-            menuItem.Check(self.settings.get(option.lower()))
-
-        return sub
-
-    def handleMode(self, event):
-        option = self.optionIds[event.Id]
-        self.settings.set(option.lower(), event.Int)
-
+    def activate(self, fullContext, selection, i):
+        self.settings.set(self.optionName, not self.settings.get(self.optionName))
         wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=self.mainFrame.getActiveFit()))
 
+    @property
+    def checked(self):
+        return self.settings.get(self.optionName)
 
-PriceOptions.register()
+
+class DronesPrice(ItemGroupPrice):
+
+    label = 'Drones'
+    optionName = 'drones'
+
+
+class CargoPrice(ItemGroupPrice):
+
+    label = 'Cargo'
+    optionName = 'cargo'
+
+
+class ImplantBoosterPrice(ItemGroupPrice):
+
+    label = 'Implants && Boosters'
+    optionName = 'character'
+
+
+DronesPrice.register()
+CargoPrice.register()
+ImplantBoosterPrice.register()
