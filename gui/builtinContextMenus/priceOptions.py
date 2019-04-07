@@ -17,12 +17,12 @@ class ItemGroupPrice(ContextMenu, metaclass=ABCMeta):
     @property
     @abstractmethod
     def label(self):
-        ...
+        raise NotImplementedError()
 
     @property
     @abstractmethod
     def optionName(self):
-        ...
+        raise NotImplementedError()
 
     def display(self, srcContext, selection):
         return srcContext in ("priceViewFull", "priceViewMinimal")
