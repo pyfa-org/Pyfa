@@ -23,7 +23,7 @@ class ItemView(Display):
     def __init__(self, parent, marketBrowser):
         Display.__init__(self, parent)
         pyfalog.debug("Initialize ItemView")
-        marketBrowser.Bind(wx.EVT_TREE_SEL_CHANGED, self.selectionMade)
+        marketBrowser.Bind(wx.EVT_TREE_SEL_CHANGED, self.treeSelectionChanged)
 
         self.unfilteredStore = set()
         self.filteredStore = set()
@@ -97,7 +97,10 @@ class ItemView(Display):
 
         self.sMkt.serviceMarketRecentlyUsedModules["pyfaMarketRecentlyUsedModules"].append(itemID)
 
-    def selectionMade(self, event=None):
+    def treeSelectionChanged(self, event=None):
+        self.selectionMade('tree')
+
+    def selectionMade(self, context):
         self.marketBrowser.mode = 'normal'
         # Grab the threeview selection and check if it's fine
         sel = self.marketView.GetSelection()
@@ -130,6 +133,10 @@ class ItemView(Display):
                 self.marketBrowser.mode = 'recent'
 
             self.setToggles()
+            if context == 'tree' and self.marketBrowser.settings.get('marketMGMarketSelectMode') == 1:
+                for btn in self.marketBrowser.metaButtons:
+                    if not btn.GetValue():
+                        btn.setUserSelection(True)
             self.filterItemStore()
 
     def updateItemStore(self, items):
@@ -185,7 +192,7 @@ class ItemView(Display):
         realsearch = search.replace("*", "")
         # Re-select market group if search query has zero length
         if len(realsearch) == 0:
-            self.selectionMade()
+            self.selectionMade('search')
             return
 
         self.marketBrowser.mode = 'search'

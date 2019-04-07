@@ -126,7 +126,7 @@ class MarketBrowser(wx.Panel):
             for btn in self.metaButtons:
                 if not btn.GetValue():
                     btn.setUserSelection(True)
-        self.itemView.selectionMade()
+        self.itemView.selectionMade('jump')
 
     @property
     def mode(self):
