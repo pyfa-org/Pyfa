@@ -9,6 +9,7 @@ pyfalog = Logger(__name__)
 
 
 class MarketTree(wx.TreeCtrl):
+
     def __init__(self, parent, marketBrowser):
         wx.TreeCtrl.__init__(self, parent, style=wx.TR_DEFAULT_STYLE | wx.TR_HIDE_ROOT)
         pyfalog.debug("Initialize marketTree")
@@ -72,7 +73,6 @@ class MarketTree(wx.TreeCtrl):
 
     def jump(self, item):
         """Open market group and meta tab of given item"""
-        self.marketBrowser.searchMode = False
         sMkt = self.sMkt
         mg = sMkt.getMarketGroupByItem(item)
 
@@ -96,4 +96,3 @@ class MarketTree(wx.TreeCtrl):
             self.Expand(item)
 
         self.SelectItem(item)
-        self.marketBrowser.itemView.selectionMade()

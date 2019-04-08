@@ -316,6 +316,7 @@ class Market(object):
                                      ("faction", frozenset((4, 3))),
                                      ("complex", frozenset((6,))),
                                      ("officer", frozenset((5,)))])
+        self.META_MAP_REVERSE = {sv: k for k, v in self.META_MAP.items() for sv in v}
         self.SEARCH_CATEGORIES = (
             "Drone",
             "Module",

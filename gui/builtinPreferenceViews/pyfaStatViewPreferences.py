@@ -99,20 +99,6 @@ class PFStatViewPref(PreferenceView):
         self.rbOutgoing.SetSelection(self.settings.get('outgoing'))
         rbSizerRow3.Add(self.rbOutgoing, 1, wx.TOP | wx.RIGHT, 5)
         self.rbOutgoing.Bind(wx.EVT_RADIOBOX, self.OnOutgoingChange)
-        #  We don't have views for these.....yet
-        '''
-        self.rbMining = wx.RadioBox(panel, -1, "Mining", wx.DefaultPosition, wx.DefaultSize,
-                                    ['None', 'Minimal', 'Full'], 1, wx.RA_SPECIFY_COLS)
-        self.rbMining.SetSelection(self.settings.get('miningyield'))
-        rbSizerRow3.Add(self.rbMining, 1, wx.ALL, 5)
-        self.rbMining.Bind(wx.EVT_RADIOBOX, self.OnMiningYieldChange)
-
-        self.rbDrones = wx.RadioBox(panel, -1, "Drones", wx.DefaultPosition, wx.DefaultSize,
-                                    ['None', 'Minimal', 'Full'], 1, wx.RA_SPECIFY_COLS)
-        self.rbDrones.SetSelection(self.settings.get('drones'))
-        rbSizerRow3.Add(self.rbDrones, 1, wx.ALL, 5)
-        self.rbDrones.Bind(wx.EVT_RADIOBOX, self.OnDroneChange)
-        '''
 
         mainSizer.Add(rbSizerRow3, 1, wx.ALL | wx.EXPAND, 0)
 

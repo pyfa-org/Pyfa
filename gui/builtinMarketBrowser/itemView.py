@@ -23,13 +23,12 @@ class ItemView(Display):
     def __init__(self, parent, marketBrowser):
         Display.__init__(self, parent)
         pyfalog.debug("Initialize ItemView")
-        marketBrowser.Bind(wx.EVT_TREE_SEL_CHANGED, self.selectionMade)
+        marketBrowser.Bind(wx.EVT_TREE_SEL_CHANGED, self.treeSelectionChanged)
 
         self.unfilteredStore = set()
         self.filteredStore = set()
         self.recentlyUsedModules = set()
         self.sMkt = marketBrowser.sMkt
-        self.searchMode = marketBrowser.searchMode
         self.sFit = Fit.getInstance()
 
         self.marketBrowser = marketBrowser
@@ -98,8 +97,11 @@ class ItemView(Display):
 
         self.sMkt.serviceMarketRecentlyUsedModules["pyfaMarketRecentlyUsedModules"].append(itemID)
 
-    def selectionMade(self, event=None):
-        self.marketBrowser.searchMode = False
+    def treeSelectionChanged(self, event=None):
+        self.selectionMade('tree')
+
+    def selectionMade(self, context):
+        self.marketBrowser.mode = 'normal'
         # Grab the threeview selection and check if it's fine
         sel = self.marketView.GetSelection()
         if sel.IsOk():
@@ -127,26 +129,47 @@ class ItemView(Display):
             self.updateItemStore(items)
 
             # Set toggle buttons / use search mode flag if recently used modules category is selected (in order to have all modules listed and not filtered)
-            if seldata is not RECENTLY_USED_MODULES:
-                self.setToggles()
-            else:
-                self.marketBrowser.searchMode = True
-                self.setToggles()
+            if seldata == RECENTLY_USED_MODULES:
+                self.marketBrowser.mode = 'recent'
 
-            # Update filtered items
+            self.setToggles()
+            if context == 'tree' and self.marketBrowser.settings.get('marketMGMarketSelectMode') == 1:
+                for btn in self.marketBrowser.metaButtons:
+                    if not btn.GetValue():
+                        btn.setUserSelection(True)
             self.filterItemStore()
 
     def updateItemStore(self, items):
         self.unfilteredStore = items
 
     def filterItemStore(self):
+        filteredItems = self.filterItems()
+        if len(filteredItems) == 0 and len(self.unfilteredStore) > 0:
+            setting = self.marketBrowser.settings.get('marketMGEmptyMode')
+            # Enable leftmost available
+            if setting == 1:
+                for btn in self.marketBrowser.metaButtons:
+                    if btn.IsEnabled() and not btn.userSelected:
+                        btn.setUserSelection(True)
+                        break
+                filteredItems = self.filterItems()
+            # Enable all
+            elif setting == 2:
+                for btn in self.marketBrowser.metaButtons:
+                    if btn.IsEnabled() and not btn.userSelected:
+                        btn.setUserSelection(True)
+                filteredItems = self.filterItems()
+        self.filteredStore = filteredItems
+        self.update(list(self.filteredStore))
+
+    def filterItems(self):
         sMkt = self.sMkt
         selectedMetas = set()
         for btn in self.marketBrowser.metaButtons:
-            if btn.GetValue():
+            if btn.userSelected:
                 selectedMetas.update(sMkt.META_MAP[btn.metaName])
-        self.filteredStore = sMkt.filterItemsByMeta(self.unfilteredStore, selectedMetas)
-        self.update(list(self.filteredStore))
+        filteredItems = sMkt.filterItemsByMeta(self.unfilteredStore, selectedMetas)
+        return filteredItems
 
     def setToggles(self):
         metaIDs = set()
@@ -169,10 +192,10 @@ class ItemView(Display):
         realsearch = search.replace("*", "")
         # Re-select market group if search query has zero length
         if len(realsearch) == 0:
-            self.selectionMade()
+            self.selectionMade('search')
             return
 
-        self.marketBrowser.searchMode = True
+        self.marketBrowser.mode = 'search'
         self.sMkt.searchItems(search, self.populateSearch)
 
     def clearSearch(self, event=None):
@@ -182,14 +205,15 @@ class ItemView(Display):
         if event:
             self.marketBrowser.search.Clear()
 
-        self.marketBrowser.searchMode = False
-        self.updateItemStore(set())
-        self.setToggles()
-        self.filterItemStore()
+        if self.marketBrowser.mode == 'search':
+            self.marketBrowser.mode = 'normal'
+            self.updateItemStore(set())
+            self.setToggles()
+            self.filterItemStore()
 
     def populateSearch(self, items):
         # If we're no longer searching, dump the results
-        if self.marketBrowser.searchMode is False:
+        if self.marketBrowser.mode != 'search':
             return
         self.updateItemStore(items)
         self.setToggles()
@@ -220,7 +244,7 @@ class ItemView(Display):
         item = self.active[sel]
 
         sMkt = self.sMkt
-        sourceContext = "marketItemGroup" if self.marketBrowser.searchMode is False else "marketItemMisc"
+        sourceContext = "marketItemMisc" if self.marketBrowser.mode in ("search", "recent") else "marketItemGroup"
         itemContext = sMkt.getCategoryByItem(item).name
 
         menu = ContextMenu.getMenu((item,), (sourceContext, itemContext))
