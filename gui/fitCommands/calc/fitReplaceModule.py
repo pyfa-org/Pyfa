@@ -3,8 +3,7 @@ from logbook import Logger
 
 import eos.db
 from eos.saveddata.module import Module
-from eos.const import FittingModuleState
-from gui.fitCommands.helpers import ModuleInfoCache
+from gui.fitCommands.helpers import ModuleInfoCache, stateLimit
 
 pyfalog = Logger(__name__)
 
@@ -79,8 +78,9 @@ class FitReplaceModuleCommand(wx.Command):
 
         self.module.owner = fit
         fit.modules.toModule(self.position, self.module)
-        if self.module.isValidState(FittingModuleState.ACTIVE):
-            self.module.state = FittingModuleState.ACTIVE
+        desiredState = stateLimit(self.module.item)
+        if self.module.isValidState(desiredState):
+            self.module.state = desiredState
 
         if self.old_module and self.old_module.charge and self.module.isValidCharge(self.old_module.charge):
             self.module.charge = self.old_module.charge

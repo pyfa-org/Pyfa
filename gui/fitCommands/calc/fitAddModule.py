@@ -1,9 +1,12 @@
 import wx
-from eos.saveddata.module import Module
-from eos.const import FittingModuleState
-import eos.db
 from logbook import Logger
+
+import eos.db
+from eos.saveddata.module import Module
+from gui.fitCommands.helpers import stateLimit
 from service.fit import Fit
+
+
 pyfalog = Logger(__name__)
 
 
@@ -53,8 +56,9 @@ class FitAddModuleCommand(wx.Command):
             self.module.owner = fit
             numSlots = len(fit.modules)
             fit.modules.append(self.module)
-            if self.module.isValidState(FittingModuleState.ACTIVE):
-                self.module.state = FittingModuleState.ACTIVE
+            desiredState = stateLimit(self.module.item)
+            if self.module.isValidState(desiredState):
+                self.module.state = desiredState
 
             # todo: fix these
             # As some items may affect state-limiting attributes of the ship, calculate new attributes first

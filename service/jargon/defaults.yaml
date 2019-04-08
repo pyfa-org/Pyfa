@@ -161,6 +161,8 @@ car: Capital Armor Repairer
 cpl: 25000mm Plates
 dc: Damage Control
 dcu: Damage Control
+adc: Assault Damage Control
+adcu: Assault Damage Control
 eanm: Energized Adaptive Nano Membrane
 enam: Energized Adaptive Nano Membrane
 laar: Large Ancillary Armor Repairer
