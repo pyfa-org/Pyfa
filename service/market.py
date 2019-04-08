@@ -339,6 +339,7 @@ class Market(object):
                                    2202,  # Structure Equipment
                                    2203  # Structure Modifications
                                    )
+        self.SHOWN_MARKET_GROUPS = eos.db.getMarketTreeNodeIds(self.ROOT_MARKET_GROUPS)
         # Tell other threads that Market is at their service
         mktRdy.set()
 
@@ -488,15 +489,21 @@ class Market(object):
         # Check if we force market group for given item
         if item.name in self.ITEMS_FORCEDMARKETGROUP:
             mgid = self.ITEMS_FORCEDMARKETGROUP[item.name]
-            return self.getMarketGroup(mgid)
+            if mgid in self.SHOWN_MARKET_GROUPS:
+                return self.getMarketGroup(mgid)
+            else:
+                return None
         # Check if item itself has market group
         elif item.marketGroupID:
-            return item.marketGroup
+            if item.marketGroupID in self.SHOWN_MARKET_GROUPS:
+                return item.marketGroup
+            else:
+                return None
         elif parentcheck:
             # If item doesn't have marketgroup, check if it has parent
             # item and use its market group
             parent = self.getParentItemByItem(item, selfparent=False)
-            if parent:
+            if parent and parent.marketGroupID in self.SHOWN_MARKET_GROUPS:
                 return parent.marketGroup
             else:
                 return None

@@ -272,6 +272,15 @@ def getMarketGroup(lookfor, eager=None):
     return marketGroup
 
 
+def getMarketTreeNodeIds(rootNodeIds):
+    allIds = set()
+    addedIds = set(rootNodeIds)
+    while addedIds:
+        allIds.update(addedIds)
+        addedIds = {mg.ID for mg in gamedata_session.query(MarketGroup).filter(MarketGroup.parentGroupID.in_(addedIds))}
+    return allIds
+
+
 @cachedQuery(2, "where", "filter")
 def getItemsByCategory(filter, where=None, eager=None):
     if isinstance(filter, int):
