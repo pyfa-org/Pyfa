@@ -96,7 +96,7 @@ class MainMenuBar(wx.MenuBar):
         fitMenu.Append(wx.ID_SAVEAS, "&Export Fitting\tCTRL+S", "Export fitting to another format")
 
         fitMenu.AppendSeparator()
-        fitMenu.Append(self.optimizeFitPrice, "&Optimize Fit Price")
+        fitMenu.Append(self.optimizeFitPrice, "&Optimize Fit Price\tCTRL+D")
         graphFrameItem = wx.MenuItem(fitMenu, self.graphFrameId, "&Graphs\tCTRL+G")
         graphFrameItem.SetBitmap(BitmapLoader.getBitmap("graphs_small", "gui"))
         fitMenu.Append(graphFrameItem)
@@ -105,8 +105,8 @@ class MainMenuBar(wx.MenuBar):
         self.ignoreRestrictionItem = fitMenu.Append(self.toggleIgnoreRestrictionID, "Disable Fitting Re&strictions")
 
         fitMenu.AppendSeparator()
-        fitMenu.Append(self.eveFittingsId, "&Browse ESI Fittings")
-        fitMenu.Append(self.exportToEveId, "E&xport to ESI")
+        fitMenu.Append(self.eveFittingsId, "&Browse ESI Fittings\tCTRL+B")
+        fitMenu.Append(self.exportToEveId, "E&xport to ESI\tCTRL+E")
         self.Enable(self.eveFittingsId, True)
         self.Enable(self.exportToEveId, True)
 
@@ -145,16 +145,16 @@ class MainMenuBar(wx.MenuBar):
         # Editors menu
         editorsMenu = wx.Menu()
         self.Append(editorsMenu, "&Editors")
-        charEditItem = wx.MenuItem(editorsMenu, self.characterEditorId, "&Character Editor\tCTRL+E")
+        charEditItem = wx.MenuItem(editorsMenu, self.characterEditorId, "&Character Editor\tCTRL+K")
         charEditItem.SetBitmap(BitmapLoader.getBitmap("character_small", "gui"))
         editorsMenu.Append(charEditItem)
         implantSetEditItem = wx.MenuItem(editorsMenu, self.implantSetEditorId, "&Implant Set Editor\tCTRL+I")
         implantSetEditItem.SetBitmap(BitmapLoader.getBitmap("hardwire_small", "gui"))
         editorsMenu.Append(implantSetEditItem)
-        damagePatternEditItem = wx.MenuItem(editorsMenu, self.damagePatternEditorId, "&Damage Pattern Editor\tCTRL+D")
+        damagePatternEditItem = wx.MenuItem(editorsMenu, self.damagePatternEditorId, "&Damage Pattern Editor")
         damagePatternEditItem.SetBitmap(BitmapLoader.getBitmap("damagePattern_small", "gui"))
         editorsMenu.Append(damagePatternEditItem)
-        targetResistsEditItem = wx.MenuItem(editorsMenu, self.targetResistsEditorId, "&Target Resists Editor\tCTRL+R")
+        targetResistsEditItem = wx.MenuItem(editorsMenu, self.targetResistsEditorId, "&Target Resists Editor")
         targetResistsEditItem.SetBitmap(BitmapLoader.getBitmap("explosive_small", "gui"))
         editorsMenu.Append(targetResistsEditItem)
 
