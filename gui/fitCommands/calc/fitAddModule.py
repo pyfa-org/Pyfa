@@ -48,7 +48,15 @@ class FitAddModuleCommand(wx.Command):
             for mod in fit.modules:
                 if mod.getModifiedItemAttr("subSystemSlot") == self.module.getModifiedItemAttr("subSystemSlot"):
                     from .fitReplaceModule import FitReplaceModuleCommand
-                    self.replace_cmd = FitReplaceModuleCommand(self.fitID, mod.modPosition, itemID)
+                    self.replace_cmd = FitReplaceModuleCommand(
+                        fitID=self.fitID,
+                        position=mod.modPosition,
+                        newItemID=itemID,
+                        newBaseItemID=None,
+                        newMutaplasmidID=None,
+                        newMutations=None,
+                        newState=None,
+                        newCharge=None)
                     return self.replace_cmd.Do()
 
         if self.module.fits(fit):

@@ -44,7 +44,15 @@ class GuiCargoToModuleCommand(wx.Command):
 
             pyfalog.debug("Moving cargo item to module for fit ID: {0}", self.fitID)
 
-            self.addCmd = FitReplaceModuleCommand(self.fitID, module.modPosition, cargo.itemID)
+            self.addCmd = FitReplaceModuleCommand(
+                fitID=self.fitID,
+                position=module.modPosition,
+                newItemID=cargo.itemID,
+                newBaseItemID=None,
+                newMutaplasmidID=None,
+                newMutations=None,
+                newState=None,
+                newCharge=None)
 
             result = self.internal_history.Submit(self.addCmd)
 

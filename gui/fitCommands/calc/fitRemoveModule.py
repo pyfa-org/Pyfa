@@ -43,24 +43,23 @@ class FitRemoveModuleCommand(wx.Command):
         if not len(self.modCache) > 0:
             return False
 
-        numSlots = len(fit.modules)
-        # todo: determine if we need to do this still
-        # self.recalc(fit)
-        # self.checkStates(fit, None)
-        # fit.fill()
         eos.db.commit()
-        self.slotsChanged = numSlots != len(fit.modules)
         return True
 
     def Undo(self):
         pyfalog.debug("Reapplying {} removed module(s) for {}", len(self.modCache), self.fitID)
 
         from gui.fitCommands.calc.fitReplaceModule import FitReplaceModuleCommand  # avoids circular import
-        for mod in self.modCache:
-            pyfalog.debug(" -- {}", mod)
-            # todo, send the state and charge?
-            cmd = FitReplaceModuleCommand(self.fitID, mod.modPosition, mod.itemID)
+        for modInfo in self.modCache:
+            pyfalog.debug(" -- {}", modInfo)
+            cmd = FitReplaceModuleCommand(
+                fitID=self.fitID,
+                position=modInfo.modPosition,
+                newItemID=modInfo.itemID,
+                newBaseItemID=modInfo.baseID,
+                newMutaplasmidID=modInfo.mutaplasmidID,
+                newMutations=modInfo.mutations,
+                newState=modInfo.state,
+                newCharge=modInfo.charge)
             cmd.Do()
-            cmd.module.state = mod.state
-            cmd.module.charge = mod.charge
         return True

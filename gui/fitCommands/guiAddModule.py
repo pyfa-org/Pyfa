@@ -42,7 +42,15 @@ class GuiModuleAddCommand(wx.Command):
         # if we have a position set, try to apply the module to that position
         elif self.position is not None:
             pyfalog.debug("Trying to add a module to a specific position")
-            success = self.internal_history.Submit(FitReplaceModuleCommand(self.fitID, self.position, self.itemID))
+            success = self.internal_history.Submit(FitReplaceModuleCommand(
+                fitID=self.fitID,
+                position=self.position,
+                newItemID=self.itemID,
+                newBaseItemID=None,
+                newMutaplasmidID=None,
+                newMutations=None,
+                newState=None,
+                newCharge=None))
             if not success:
                 pyfalog.debug("    Failed")
                 # something went wrong with trying to fit the module into specific location, attempt to append it

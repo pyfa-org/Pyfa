@@ -14,20 +14,23 @@ class FitReplaceModuleCommand(wx.Command):
 
     from sFit.changeModule
     """
-    def __init__(self, fitID, position, itemID):
+    def __init__(self, fitID, position, newItemID, newBaseItemID, newMutaplasmidID, newMutations, newState, newCharge):
         wx.Command.__init__(self, True, "Change Module")
         self.fitID = fitID
-        self.itemID = itemID
         self.position = position
-        self.module = None  # the module version of itemID
-        self.old_module = None
+        self.newItemID = newItemID
+        self.newBaseItemID = newBaseItemID
+        self.newMutaplasmidID = newMutaplasmidID
+        self.newMutations = newMutations
+        self.newState = newState
+        self.newCharge = newCharge
+        self.oldModuleInfo = None
 
     def Do(self):
         fit = eos.db.getFit(self.fitID)
-
         mod = fit.modules[self.position]
         if not mod.isEmpty:
-            self.old_module = ModuleInfoCache(
+            self.oldModuleInfo = ModuleInfoCache(
                 mod.modPosition,
                 mod.item.ID,
                 mod.state,
@@ -36,64 +39,66 @@ class FitReplaceModuleCommand(wx.Command):
                 mod.mutaplasmidID,
                 {m.attrID: m.value for m in mod.mutators.values()})
 
-        return self.change_module(self.fitID, self.position, self.itemID)
+        newState = self.newState if self.newState is not None else getattr(self.oldModuleInfo, 'state', None)
+        newCharge = self.newCharge if self.newCharge is not None else getattr(self.oldModuleInfo, 'charge', None)
+        return self.changeModule(self.newItemID, self.newBaseItemID, self.newMutaplasmidID, self.newMutations, newState, newCharge)
 
     def Undo(self):
-        if self.old_module is None:
+        if self.oldModuleInfo is None:
             fit = eos.db.getFit(self.fitID)
             fit.modules.toDummy(self.position)
             return True
-        self.change_module(self.fitID, self.position, self.old_module.itemID)
-        self.module.state = self.old_module.state
-        self.module.charge = self.old_module.charge
+        self.changeModule(
+            self.oldModuleInfo.itemID,
+            self.oldModuleInfo.baseID,
+            self.oldModuleInfo.mutaplasmidID,
+            self.oldModuleInfo.mutations,
+            self.oldModuleInfo.state,
+            self.oldModuleInfo.charge)
         return True
 
-    def change_module(self, fitID, position, itemID):
-        fit = eos.db.getFit(fitID)
+    def changeModule(self, itemID, baseItemID, mutaplasmidID, mutations, state, charge):
+        fit = eos.db.getFit(self.fitID)
+        oldMod = fit.modules[self.position]
 
-        # We're trying to add a charge to a slot, which won't work. Instead, try to add the charge to the module in that slot.
-        # todo: evaluate if this is still a thing
-        # actually, this seems like it should be handled higher up...
-        #
-        # if self.isAmmo(itemID):
-        #     module = fit.modules[self.position]
-        #     if not module.isEmpty:
-        #         self.setAmmo(fitID, itemID, [module])
-        #     return True
-
-        pyfalog.debug("Changing position of module from position ({0}) for fit ID: {1}", self.position, fitID)
+        pyfalog.debug("Changing module on position ({0}) for fit ID: {1}", self.position, self.fitID)
 
         item = eos.db.getItem(itemID, eager=("attributes", "group.category"))
-        mod = fit.modules[self.position]
+        if baseItemID and mutaplasmidID:
+            baseItem = eos.db.getItem(baseItemID, eager=("attributes", "group.category"))
+            mutaplasmid = eos.db.getDynamicItem(mutaplasmidID)
+        else:
+            baseItem = None
+            mutaplasmid = None
 
         try:
-            self.module = Module(item)
+            newMod = Module(item, baseItem, mutaplasmid)
         except ValueError:
             pyfalog.warning("Invalid item: {0}", itemID)
             return False
 
-        if self.module.slot != mod.slot:
+        if newMod.slot != oldMod.slot:
             return False
+
+        for attrID, mutator in newMod.mutators.items():
+            if attrID in mutations:
+                mutator.value = mutations[attrID]
 
         # Dummy it out in case the next bit fails
         fit.modules.toDummy(self.position)
 
-        if not self.module.fits(fit):
+        if not newMod.fits(fit):
             self.Undo()
             return False
 
-        self.module.owner = fit
-        fit.modules.toModule(self.position, self.module)
-        desiredState = stateLimit(self.module.item)
-        if self.module.isValidState(desiredState):
-            self.module.state = desiredState
+        newMod.owner = fit
+        fit.modules.toModule(self.position, newMod)
+        desiredState = stateLimit(newMod.item) if state is None else state
+        if newMod.isValidState(desiredState):
+            newMod.state = desiredState
 
-        if self.old_module and self.old_module.charge and self.module.isValidCharge(self.old_module.charge):
-            self.module.charge = self.old_module.charge
+        if charge is not None:
+            newMod.charge = charge
 
-        # Then, check states of all modules and change where needed. This will recalc if needed
-        # self.checkStates(fit, m)
-
-        # fit.fill()
         eos.db.commit()
         return True
