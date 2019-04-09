@@ -47,10 +47,10 @@ class FirepowerViewFull(StatsView):
         parent = self.panel = contentPanel
 
         self.headerPanel = headerPanel
-        hsizer = self.headerPanel.GetSizer()
+        hsizer = self.headerPanel.Parent.GetHeaderContentSizer()
         self.stEff = wx.StaticText(self.headerPanel, wx.ID_ANY, "( Effective )")
         hsizer.Add(self.stEff)
-        self.headerPanel.GetParent().AddToggleItem(self.stEff)
+        # self.headerPanel.GetParent().AddToggleItem(self.stEff)
 
         panel = "full"
 

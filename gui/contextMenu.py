@@ -34,6 +34,16 @@ class ContextMenu(object):
         ContextMenu.menus.append(cls)
 
     @classmethod
+    def hasMenu(cls, selection, *fullContexts):
+        for i, fullContext in enumerate(fullContexts):
+            srcContext = fullContext[0]
+            for menuHandler in cls.menus:
+                m = menuHandler()
+                if m.display(srcContext, selection):
+                    return True
+            return False
+
+    @classmethod
     def getMenu(cls, selection, *fullContexts):
         """
         getMenu returns a menu that is used with wx.PopupMenu.
@@ -117,6 +127,7 @@ class ContextMenu(object):
 
                         if check is not None:
                             rootItem.Check(check)
+                        rootItem.Enable(m.enabled)
 
                     empty = False
 
@@ -185,6 +196,11 @@ class ContextMenu(object):
     def checked(self):
         '''If menu item is toggleable, this should return bool value'''
         return None
+
+    @property
+    def enabled(self):
+        '''If menu item is enabled. Allows an item to display, but not be selected'''
+        return True
 
 # noinspection PyUnresolvedReferences
 from gui.builtinContextMenus import (  # noqa: E402,F401

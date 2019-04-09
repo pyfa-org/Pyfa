@@ -20,7 +20,11 @@ class DamagePattern(ContextMenu):
         if not self.settings.get('damagePattern'):
             return False
 
-        return srcContext == "resistancesViewFull" and self.mainFrame.getActiveFit() is not None
+        return srcContext == "resistancesViewFull"
+
+    @property
+    def enabled(self):
+        return self.mainFrame.getActiveFit() is not None
 
     def getText(self, itmContext, selection):
         sDP = import_DamagePattern.getInstance()
@@ -66,12 +70,12 @@ class DamagePattern(ContextMenu):
         # determine active pattern
         sFit = Fit.getInstance()
         fitID = self.mainFrame.getActiveFit()
-        f = sFit.getFit(fitID)
-        dp = f.damagePattern
-
-        if dp == pattern:
-            bitmap = BitmapLoader.getBitmap("state_active_small", "gui")
-            menuItem.SetBitmap(bitmap)
+        fit = sFit.getFit(fitID)
+        if fit:
+            dp = fit.damagePattern
+            if dp == pattern:
+                bitmap = BitmapLoader.getBitmap("state_active_small", "gui")
+                menuItem.SetBitmap(bitmap)
         return menuItem
 
     def getSubMenu(self, context, selection, rootMenu, i, pitem):
@@ -84,9 +88,9 @@ class DamagePattern(ContextMenu):
             id = pitem.GetId()
             self.patternIds[id] = self.singles[i]
             rootMenu.Bind(wx.EVT_MENU, self.handlePatternSwitch, pitem)
-            if self.patternIds[id] == self.fit.damagePattern:
-                bitmap = BitmapLoader.getBitmap("state_active_small", "gui")
-                pitem.SetBitmap(bitmap)
+            if self.fit and self.patternIds[id] == self.fit.damagePattern:
+                    bitmap = BitmapLoader.getBitmap("state_active_small", "gui")
+                    pitem.SetBitmap(bitmap)
             return False
 
         sub = wx.Menu()
