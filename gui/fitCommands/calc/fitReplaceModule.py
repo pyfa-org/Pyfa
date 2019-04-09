@@ -27,8 +27,14 @@ class FitReplaceModuleCommand(wx.Command):
 
         mod = fit.modules[self.position]
         if not mod.isEmpty:
-            self.old_module = ModuleInfoCache(mod.modPosition, mod.item.ID, mod.state, mod.charge, mod.baseItemID,
-                                              mod.mutaplasmidID)
+            self.old_module = ModuleInfoCache(
+                mod.modPosition,
+                mod.item.ID,
+                mod.state,
+                mod.charge,
+                mod.baseItemID,
+                mod.mutaplasmidID,
+                {m.attrID: m.value for m in mod.mutators.values()})
 
         return self.change_module(self.fitID, self.position, self.itemID)
 

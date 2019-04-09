@@ -29,7 +29,14 @@ class FitRemoveModuleCommand(wx.Command):
             mod = fit.modules[x]
             if not mod.isEmpty:
                 pyfalog.debug(" -- Removing {}", mod)
-                self.modCache.append(ModuleInfoCache(mod.modPosition, mod.item.ID, mod.state, mod.charge, mod.baseItemID, mod.mutaplasmidID))
+                self.modCache.append(ModuleInfoCache(
+                    mod.modPosition,
+                    mod.item.ID,
+                    mod.state,
+                    mod.charge,
+                    mod.baseItemID,
+                    mod.mutaplasmidID,
+                    {m.attrID: m.value for m in mod.mutators.values()}))
                 fit.modules.toDummy(x)
 
         # if no modules have changes, skip command
