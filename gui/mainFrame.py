@@ -627,7 +627,7 @@ class MainFrame(wx.Frame):
         wx.PostEvent(self, GE.FitChanged(fitID=self.getActiveFit()))
         menu = self.GetMenuBar()
         menu.SetLabel(menu.toggleOverridesId,
-                      "Turn Overrides Off" if ModifiedAttributeDict.overrides_enabled else "Turn Overrides On")
+                      "&Turn Overrides Off" if ModifiedAttributeDict.overrides_enabled else "&Turn Overrides On")
 
     def saveChar(self, event):
         sChr = Character.getInstance()

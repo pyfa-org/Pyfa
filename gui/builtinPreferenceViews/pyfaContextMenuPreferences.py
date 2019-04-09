@@ -7,7 +7,7 @@ from service.settings import ContextMenuSettings
 
 
 class PFContextMenuPref(PreferenceView):
-    title = "Context Menu Panel"
+    title = "Context Menus"
 
     def populatePanel(self, panel):
         self.settings = ContextMenuSettings.getInstance()
