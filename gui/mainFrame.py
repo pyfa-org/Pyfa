@@ -36,7 +36,6 @@ from wx.lib.inspection import InspectionTool
 import config
 import gui.globalEvents as GE
 from eos.config import gamedata_date, gamedata_version
-from eos.db.saveddata.loadDefaultDatabaseValues import DefaultDatabaseValues
 # import this to access override setting
 from eos.modifiedAttributeDict import ModifiedAttributeDict
 from gui import graphFrame
@@ -450,21 +449,10 @@ class MainFrame(wx.Frame):
     def goForums(event):
         webbrowser.open('https://forums.eveonline.com/t/27156')
 
-    @staticmethod
-    def loadDatabaseDefaults(event):
-        # Import values that must exist otherwise Pyfa breaks
-        DefaultDatabaseValues.importRequiredDefaults()
-        # Import default values for damage profiles
-        DefaultDatabaseValues.importDamageProfileDefaults()
-        # Import default values for target resist profiles
-        DefaultDatabaseValues.importResistProfileDefaults()
-
     def registerMenu(self):
         menuBar = self.GetMenuBar()
         # Quit
         self.Bind(wx.EVT_MENU, self.ExitApp, id=wx.ID_EXIT)
-        # Load Default Database values
-        self.Bind(wx.EVT_MENU, self.loadDatabaseDefaults, id=menuBar.importDatabaseDefaultsId)
         # Widgets Inspector
         if config.debug:
             self.Bind(wx.EVT_MENU, self.openWXInspectTool, id=self.widgetInspectMenuID)
@@ -639,7 +627,7 @@ class MainFrame(wx.Frame):
         wx.PostEvent(self, GE.FitChanged(fitID=self.getActiveFit()))
         menu = self.GetMenuBar()
         menu.SetLabel(menu.toggleOverridesId,
-                      "Turn Overrides Off" if ModifiedAttributeDict.overrides_enabled else "Turn Overrides On")
+                      "&Turn Overrides Off" if ModifiedAttributeDict.overrides_enabled else "&Turn Overrides On")
 
     def saveChar(self, event):
         sChr = Character.getInstance()
