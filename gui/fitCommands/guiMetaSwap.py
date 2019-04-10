@@ -33,7 +33,8 @@ class GuiMetaSwapCommand(wx.Command):
         elif context == 'implantItem':
             for x in selection:
                 idx = fit.implants.index(x)
-                self.data.append(((FitRemoveImplantCommand, fitID, idx), (FitAddImplantCommand, fitID, itemID)))
+                state = x.active
+                self.data.append(((FitRemoveImplantCommand, fitID, idx), (FitAddImplantCommand, fitID, itemID, state)))
         elif context == 'boosterItem':
             for x in selection:
                 idx = fit.boosters.index(x)

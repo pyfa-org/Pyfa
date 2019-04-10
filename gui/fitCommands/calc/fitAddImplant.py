@@ -9,40 +9,44 @@ class FitAddImplantCommand(wx.Command):
     """"
     from sFit.addImplant
     """
-    def __init__(self, fitID, itemID):
-        wx.Command.__init__(self, True, "Cargo add")
+    def __init__(self, fitID, itemID, state):
+        wx.Command.__init__(self, True, "Add Implant")
         self.fitID = fitID
-        self.itemID = itemID
-        self.old_item = None
+        self.newItemID = itemID
+        self.newState = state
+        self.newIndex = None
+        self.oldItemID = None
+        self.oldState = None
 
     def Do(self):
-        pyfalog.debug("Adding implant to fit ({0}) for item ID: {1}", self.fitID, self.itemID)
+        pyfalog.debug("Adding implant to fit ({0}) for item ID: {1}", self.fitID, self.newItemID)
 
         fit = eos.db.getFit(self.fitID)
-        item = eos.db.getItem(self.itemID, eager="attributes")
+        item = eos.db.getItem(self.newItemID, eager="attributes")
 
-        if next((x for x in fit.implants if x.itemID == self.itemID), None):
+        if next((x for x in fit.implants if x.itemID == self.newItemID), None):
             return False  # already have item in list of implants
 
         try:
             implant = Implant(item)
         except ValueError:
-            pyfalog.warning("Invalid item: {0}", self.itemID)
+            pyfalog.warning("Invalid item: {0}", self.newItemID)
             return False
-
-        self.old_item = fit.implants.makeRoom(implant)
+        implant.active = self.newState
+        
+        self.oldItemID, self.oldState = fit.implants.makeRoom(implant)
         fit.implants.append(implant)
-        self.new_index = fit.implants.index(implant)
+        self.newIndex = fit.implants.index(implant)
         return True
 
     def Undo(self):
-        if self.old_item:
+        if self.oldItemID:
             # If we had an item in the slot previously, add it back.
-            cmd = FitAddImplantCommand(self.fitID, self.old_item)
+            cmd = FitAddImplantCommand(self.fitID, self.oldItemID, self.oldState)
             cmd.Do()
             return True
 
         from .fitRemoveImplant import FitRemoveImplantCommand  # Avoid circular import
-        cmd = FitRemoveImplantCommand(self.fitID, self.new_index)
+        cmd = FitRemoveImplantCommand(self.fitID, self.newIndex)
         cmd.Do()
         return True

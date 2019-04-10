@@ -213,45 +213,46 @@ class HandledDroneCargoList(HandledList):
 
 class HandledImplantList(HandledList):
 
-    def append(self, thing):
-        if thing.isInvalid:
-            HandledList.append(self, thing)
-            self.remove(thing)
+    def append(self, implant):
+        if implant.isInvalid:
+            HandledList.append(self, implant)
+            self.remove(implant)
             return
 
-        self.makeRoom(thing)
-        HandledList.append(self, thing)
+        self.makeRoom(implant)
+        HandledList.append(self, implant)
 
-    def makeRoom(self, thing):
+    def makeRoom(self, implant):
         # if needed, remove booster that was occupying slot
-        oldObj = next((m for m in self if m.slot == thing.slot), None)
+        oldObj = next((m for m in self if m.slot == implant.slot), None)
         if oldObj:
-            pyfalog.info("Slot {0} occupied with {1}, replacing with {2}", thing.slot, oldObj.item.name,
-                         thing.item.name)
+            pyfalog.info("Slot {0} occupied with {1}, replacing with {2}", implant.slot, oldObj.item.name,
+                         implant.item.name)
             itemID = oldObj.itemID
+            state = oldObj.active
             oldObj.itemID = 0  # hack to remove from DB. See GH issue #324
             self.remove(oldObj)
-            return itemID
-        return None
+            return itemID, state
+        return None, None
 
 
 class HandledBoosterList(HandledList):
 
-    def append(self, thing):
-        if thing.isInvalid:
-            HandledList.append(self, thing)
-            self.remove(thing)
+    def append(self, booster):
+        if booster.isInvalid:
+            HandledList.append(self, booster)
+            self.remove(booster)
             return
 
-        self.makeRoom(thing)
-        HandledList.append(self, thing)
+        self.makeRoom(booster)
+        HandledList.append(self, booster)
 
-    def makeRoom(self, thing):
+    def makeRoom(self, booster):
         # if needed, remove booster that was occupying slot
-        oldObj = next((m for m in self if m.slot == thing.slot), None)
+        oldObj = next((m for m in self if m.slot == booster.slot), None)
         if oldObj:
-            pyfalog.info("Slot {0} occupied with {1}, replacing with {2}", thing.slot, oldObj.item.name,
-                         thing.item.name)
+            pyfalog.info("Slot {0} occupied with {1}, replacing with {2}", booster.slot, oldObj.item.name,
+                         booster.item.name)
             itemID = oldObj.itemID
             state = oldObj.active
             sideEffects = {se.effectID: se.active for se in oldObj.sideEffects}
