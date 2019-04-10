@@ -46,7 +46,9 @@ class GuiMetaSwapCommand(wx.Command):
                 self.data.append(((FitRemoveCargoCommand, fitID, x.itemID, 1, True), (FitAddCargoCommand, fitID, itemID, x.amount)))
         elif context == 'fighterItem':
             for x in selection:
-                self.data.append(((FitRemoveFighterCommand, fitID, fit.fighters.index(x)), (FitAddFighterCommand, fitID, itemID)))
+                state = x.active
+                abilities = {fa.effectID: fa.active for fa in x.abilities}
+                self.data.append(((FitRemoveFighterCommand, fitID, fit.fighters.index(x)), (FitAddFighterCommand, fitID, itemID, state, abilities)))
         elif context == 'droneItem':
             for x in selection:
                 self.data.append(((FitChangeDroneVariationCommand, fitID, fit.drones.index(x), itemID),),)

@@ -17,18 +17,24 @@ class FitRemoveFighterCommand(wx.Command):
         self.fitID = fitID
         self.position = position
         self.change = None
-        self.removed_item = None
+        self.savedItemID = None
+        self.savedAmount = None
+        self.savedStatus = None
+        self.savedAbilities = None
 
     def Do(self):
         fitID = self.fitID
         fit = eos.db.getFit(fitID)
-        f = fit.fighters[self.position]
-        fit.fighters.remove(f)
-        self.removed_item = f.itemID
+        fighter = fit.fighters[self.position]
+        self.savedItemID = fighter.itemID
+        self.savedAmount = fighter.amount
+        self.savedStatus = fighter.active
+        self.savedAbilities = {fa.effectID: fa.active for fa in fighter.abilities}
+        fit.fighters.remove(fighter)
         eos.db.commit()
         return True
 
     def Undo(self):
         from gui.fitCommands.calc.fitAddFighter import FitAddFighterCommand  # avoids circular import
-        cmd = FitAddFighterCommand(self.fitID, self.removed_item)
+        cmd = FitAddFighterCommand(self.fitID, self.savedItemID, self.savedStatus, self.savedAbilities)
         return cmd.Do()
