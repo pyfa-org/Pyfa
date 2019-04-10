@@ -33,7 +33,8 @@ class Project(ContextMenu):
 
     def activate(self, fullContext, selection, i):
         fitID = self.mainFrame.getActiveFit()
-        self.mainFrame.command.Submit(cmd.GuiAddProjectedCommand(fitID, selection[0].ID, 'item'))
+        if self.mainFrame.command.Submit(cmd.GuiAddProjectedCommand(fitID, selection[0].ID, 'item')):
+            self.mainFrame.additionsPane.select("Projected")
 
         # trigger = sFit.project(fitID, selection[0])
         # if trigger:
