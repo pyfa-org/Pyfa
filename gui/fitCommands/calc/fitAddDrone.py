@@ -9,12 +9,11 @@ class FitAddDroneCommand(wx.Command):
     """"
     from sFit.addDrone
     """
-    def __init__(self, fitID, itemID, amount=1, replace=False):
+    def __init__(self, fitID, itemID, amount=1):
         wx.Command.__init__(self, True, "Drone add")
         self.fitID = fitID
         self.itemID = itemID
         self.amount = amount  # add x amount. If this goes over amount, removes stack
-        self.replace = replace  # if this is false, we increment.
         self.index = None
 
     def Do(self):

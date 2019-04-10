@@ -195,6 +195,7 @@ class HandledModuleList(HandledList):
 
 
 class HandledDroneCargoList(HandledList):
+
     def find(self, item):
         for o in self:
             if o.item == item:
@@ -206,6 +207,12 @@ class HandledDroneCargoList(HandledList):
 
     def append(self, thing):
         HandledList.append(self, thing)
+
+        if thing.isInvalid:
+            self.remove(thing)
+
+    def insert(self, idx, thing):
+        HandledList.insert(self, idx, thing)
 
         if thing.isInvalid:
             self.remove(thing)

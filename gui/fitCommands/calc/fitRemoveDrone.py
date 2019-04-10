@@ -1,6 +1,12 @@
 import wx
-import eos.db
 from logbook import Logger
+
+import eos.db
+from eos.saveddata.drone import Drone
+from service.fit import Fit
+from service.market import Market
+
+
 pyfalog = Logger(__name__)
 
 
@@ -12,32 +18,49 @@ class FitRemoveDroneCommand(wx.Command):
         wx.Command.__init__(self, True, "Drone add")
         self.fitID = fitID
         self.position = position
-        self.amount = amount  # add x amount. If this goes over amount, removes stack
-        self.removed_item = None
+        self.amountToRemove = amount  # add x amount. If this goes over amount, removes stack
+        self.savedItemID = None
+        self.savedAmount = None
+        self.savedAmountActive = None
+        self.removedStack = None
 
     def Do(self):
-        pyfalog.debug("Removing {0} drones for fit ID: {1}", self.amount, self.fitID)
-        fit = eos.db.getFit(self.fitID)
-        d = fit.drones[self.position]
-        d.amount -= self.amount
-        if d.amountActive > 0:
-            d.amountActive -= self.amount
+        pyfalog.debug("Removing {0} drones for fit ID: {1}", self.amountToRemove, self.fitID)
+        fit = Fit.getInstance().getFit(self.fitID)
+        drone = fit.drones[self.position]
+        self.savedItemID = drone.itemID
+        self.savedAmount = drone.amount
+        self.savedAmountActive = drone.amountActive
 
-        if d.amount == 0:
-            self.removed_item = d.itemID
+        drone.amount -= self.amountToRemove
+        if drone.amountActive > 0:
+            drone.amountActive -= self.amountToRemove
+
+        if drone.amount == 0:
             del fit.drones[self.position]
-
+            self.removedStack = True
+        else:
+            self.removedStack = False
         eos.db.commit()
         return True
 
     def Undo(self):
-        if self.removed_item:
-            from .fitAddDrone import FitAddDroneCommand  # Avoid circular import
-            cmd = FitAddDroneCommand(self.fitID, self.removed_item, self.amount)
-            return cmd.Do()
+        fit = Fit.getInstance().getFit(self.fitID)
+        if self.removedStack:
+            droneItem = Market.getInstance().getItem(self.savedItemID, eager=("attributes", "group.category"))
+            try:
+                drone = Drone(droneItem)
+            except ValueError:
+                pyfalog.warning("Invalid drone: {}", droneItem)
+                return False
+            if not drone.fits(fit):
+                return False
+            drone.amount = self.savedAmount
+            drone.amountActive = self.savedAmountActive
+            fit.drones.insert(self.position, drone)
         else:
-            fit = eos.db.getFit(self.fitID)
-            d = fit.drones[self.position]
-            d.amount += self.amount
-            eos.db.commit()
-            return True
+            drone = fit.drones[self.position]
+            drone.amount = self.savedAmount
+            drone.amountActive = self.savedAmountActive
+        eos.db.commit()
+        return True
