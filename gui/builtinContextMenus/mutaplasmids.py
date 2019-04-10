@@ -3,7 +3,7 @@ import wx
 
 import gui.globalEvents as GE
 import gui.mainFrame
-from gui.fitCommands import GuiMutaConvertCommand
+from gui.fitCommands import GuiMutaConvertCommand, GuiMutaRevertCommand
 from gui.contextMenu import ContextMenu
 from service.fit import Fit
 from service.settings import ContextMenuSettings
@@ -64,12 +64,10 @@ class MutaplasmidCM(ContextMenu):
             mutaplasmid=mutaplasmid))
 
     def activate(self, fullContext, selection, i):
-        sFit = Fit.getInstance()
-        fitID = self.mainFrame.getActiveFit()
-
         mod = selection[0]
-        sFit.changeModule(fitID, mod.modPosition, mod.baseItemID)
-        wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fitID))
+        self.mainFrame.command.Submit(GuiMutaRevertCommand(
+            fitID=self.mainFrame.getActiveFit(),
+            position=mod.modPosition))
 
     def getBitmap(self, context, selection):
         return None

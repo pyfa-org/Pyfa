@@ -6,15 +6,14 @@ from service.fit import Fit
 from .calc.fitReplaceModule import FitReplaceModuleCommand
 
 
-class GuiMutaConvertCommand(wx.Command):
+class GuiMutaRevertCommand(wx.Command):
 
-    def __init__(self, fitID, position, mutaplasmid):
-        wx.Command.__init__(self, True, "Convert Item to Mutated")
+    def __init__(self, fitID, position):
+        wx.Command.__init__(self, True, "Convert Item to Normal")
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
         self.internal_history = wx.CommandProcessor()
         self.fitID = fitID
         self.position = position
-        self.mutaplasmid = mutaplasmid
 
     def Do(self):
         sFit = Fit.getInstance()
@@ -22,16 +21,16 @@ class GuiMutaConvertCommand(wx.Command):
         oldMod = fit.modules[self.position]
         if oldMod.isEmpty:
             return False
-        if oldMod.isMutated:
+        if not oldMod.isMutated:
             return False
 
         success = self.internal_history.Submit(FitReplaceModuleCommand(
             fitID=self.fitID,
             position=self.position,
-            newItemID=self.mutaplasmid.resultingItem.ID,
-            newBaseItemID=oldMod.item.ID,
-            newMutaplasmidID=self.mutaplasmid.ID,
-            newMutations={},
+            newItemID=oldMod.baseItemID,
+            newBaseItemID=None,
+            newMutaplasmidID=None,
+            newMutations=None,
             newState=oldMod.state,
             newCharge=oldMod.charge))
         if not success:

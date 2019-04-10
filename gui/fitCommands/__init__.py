@@ -38,3 +38,4 @@ from .guiImportMutatedModule import GuiImportMutatedModuleCommand
 from .guiSetSpoolup import GuiSetSpoolup
 from .guiRebaseItems import GuiRebaseItemsCommand
 from .guiMutaConvert import GuiMutaConvertCommand
+from .guiMutaRevert import GuiMutaRevertCommand
