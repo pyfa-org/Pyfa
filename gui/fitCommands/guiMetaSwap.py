@@ -37,7 +37,9 @@ class GuiMetaSwapCommand(wx.Command):
         elif context == 'boosterItem':
             for x in selection:
                 idx = fit.boosters.index(x)
-                self.data.append(((FitRemoveBoosterCommand, fitID, idx), (FitAddBoosterCommand, fitID, itemID)))
+                state = x.active
+                sideEffects = {se.effectID: se.active for se in x.sideEffects}
+                self.data.append(((FitRemoveBoosterCommand, fitID, idx), (FitAddBoosterCommand, fitID, itemID, state, sideEffects)))
         elif context == 'cargoItem':
             for x in selection:
                 self.data.append(((FitRemoveCargoCommand, fitID, x.itemID, 1, True), (FitAddCargoCommand, fitID, itemID, x.amount)))

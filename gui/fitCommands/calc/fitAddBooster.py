@@ -9,10 +9,12 @@ class FitAddBoosterCommand(wx.Command):
     """"
     from sFit.addBooster
     """
-    def __init__(self, fitID, itemID):
+    def __init__(self, fitID, itemID, state=None, sideEffects=None):
         wx.Command.__init__(self, True)
         self.fitID = fitID
         self.itemID = itemID
+        self.state = state
+        self.sideEffects = sideEffects
         self.new_index = None
         self.old_item = None
 
@@ -30,6 +32,12 @@ class FitAddBoosterCommand(wx.Command):
         except ValueError:
             pyfalog.warning("Invalid item: {0}", self.itemID)
             return False
+
+        if self.state is not None:
+            booster.active = self.state
+        if self.sideEffects is not None:
+            for sideEffect in booster.sideEffects:
+                sideEffect.active = self.sideEffects.get(sideEffect.effectID, False)
 
         self.old_item = fit.boosters.makeRoom(booster)
         fit.boosters.append(booster)

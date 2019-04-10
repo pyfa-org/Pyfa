@@ -16,7 +16,7 @@ class GuiAddBoosterCommand(wx.Command):
         self.itemID = itemID
 
     def Do(self):
-        if self.internal_history.Submit(FitAddBoosterCommand(self.fitID, self.itemID)):
+        if self.internal_history.Submit(FitAddBoosterCommand(self.fitID, self.itemID, True, {})):
             self.sFit.recalc(self.fitID)
             wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=self.fitID))
             return True

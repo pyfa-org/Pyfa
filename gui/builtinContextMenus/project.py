@@ -36,10 +36,5 @@ class Project(ContextMenu):
         if self.mainFrame.command.Submit(cmd.GuiAddProjectedCommand(fitID, selection[0].ID, 'item')):
             self.mainFrame.additionsPane.select("Projected")
 
-        # trigger = sFit.project(fitID, selection[0])
-        # if trigger:
-        #     wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fitID))
-        #     self.mainFrame.additionsPane.select("Projected")
-
 
 Project.register()
