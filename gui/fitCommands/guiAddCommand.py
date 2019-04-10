@@ -16,7 +16,7 @@ class GuiAddCommandCommand(wx.Command):
         self.commandFitID = commandFitID
 
     def Do(self):
-        if self.internal_history.Submit(FitAddCommandCommand(self.fitID, self.commandFitID)):
+        if self.internal_history.Submit(FitAddCommandCommand(self.fitID, self.commandFitID, None)):
             wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=self.fitID))
             self.sFit.recalc(self.fitID)
             return True
