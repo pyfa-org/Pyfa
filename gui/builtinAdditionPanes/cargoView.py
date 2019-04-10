@@ -172,12 +172,10 @@ class CargoView(d.Display):
             col = self.getColumn(event.Position)
             if col != self.getColIndex(State):
                 fitID = self.mainFrame.getActiveFit()
-                sFit = Fit.getInstance()
                 cargo = self.cargo[self.GetItemData(row)]
-                sFit.removeCargo(fitID, self.original.index(cargo))
-                wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fitID))
+                self.mainFrame.command.Submit(cmd.GuiRemoveCargoCommand(fitID, cargo.itemID))
 
-    def spawnMenu(self,event):
+    def spawnMenu(self, event):
         sel = self.GetFirstSelected()
         if sel != -1:
             sFit = Fit.getInstance()
