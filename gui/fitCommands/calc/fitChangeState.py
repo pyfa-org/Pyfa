@@ -11,7 +11,7 @@ pyfalog = Logger(__name__)
 
 class FitChangeStatesCommand(wx.Command):
     """
-    Fitting command that trys to change the state of modules in [positions]. We use the base module to determine the
+    Fitting command that tries to change the state of modules in [positions]. We use the base module to determine the
     state that we will try to apply for all modules.
 
 

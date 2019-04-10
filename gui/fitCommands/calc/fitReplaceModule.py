@@ -4,6 +4,8 @@ from logbook import Logger
 import eos.db
 from eos.saveddata.module import Module
 from gui.fitCommands.helpers import ModuleInfoCache, stateLimit
+from service.fit import Fit
+from service.market import Market
 
 pyfalog = Logger(__name__)
 
@@ -27,7 +29,7 @@ class FitReplaceModuleCommand(wx.Command):
         self.oldModuleInfo = None
 
     def Do(self):
-        fit = eos.db.getFit(self.fitID)
+        fit = Fit.getInstance().getFit(self.fitID)
         mod = fit.modules[self.position]
         if not mod.isEmpty:
             self.oldModuleInfo = ModuleInfoCache(
@@ -45,7 +47,7 @@ class FitReplaceModuleCommand(wx.Command):
 
     def Undo(self):
         if self.oldModuleInfo is None:
-            fit = eos.db.getFit(self.fitID)
+            fit = Fit.getInstance().getFit(self.fitID)
             fit.modules.toDummy(self.position)
             return True
         self.changeModule(
@@ -63,9 +65,10 @@ class FitReplaceModuleCommand(wx.Command):
 
         pyfalog.debug("Changing module on position ({0}) for fit ID: {1}", self.position, self.fitID)
 
-        item = eos.db.getItem(itemID, eager=("attributes", "group.category"))
+        sMarket = Market.getInstance()
+        item = sMarket.getItem(itemID, eager=("attributes", "group.category"))
         if baseItemID and mutaplasmidID:
-            baseItem = eos.db.getItem(baseItemID, eager=("attributes", "group.category"))
+            baseItem = sMarket.getItem(baseItemID, eager=("attributes", "group.category"))
             mutaplasmid = eos.db.getDynamicItem(mutaplasmidID)
         else:
             baseItem = None

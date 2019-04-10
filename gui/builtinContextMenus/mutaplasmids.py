@@ -1,8 +1,10 @@
-from gui.contextMenu import ContextMenu
-import gui.mainFrame
 # noinspection PyPackageRequirements
 import wx
+
 import gui.globalEvents as GE
+import gui.mainFrame
+from gui.fitCommands import GuiMutaConvertCommand
+from gui.contextMenu import ContextMenu
 from service.fit import Fit
 from service.settings import ContextMenuSettings
 
@@ -55,13 +57,11 @@ class MutaplasmidCM(ContextMenu):
 
     def handleMenu(self, event):
         mutaplasmid, mod = self.eventIDs[event.Id]
-        fit = self.mainFrame.getActiveFit()
-        sFit = Fit.getInstance()
 
-        # todo: dev out function to switch module to an abyssal module. Also, maybe open item stats here automatically
-        # with the attribute tab set?
-        sFit.convertMutaplasmid(fit, mod.modPosition, mutaplasmid)
-        wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fit))
+        self.mainFrame.command.Submit(GuiMutaConvertCommand(
+            fitID=self.mainFrame.getActiveFit(),
+            position=mod.modPosition,
+            mutaplasmid=mutaplasmid))
 
     def activate(self, fullContext, selection, i):
         sFit = Fit.getInstance()

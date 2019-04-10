@@ -369,37 +369,6 @@ class Fit(FitDeprecated):
         eos.db.commit()
         return mutator.value
 
-    def convertMutaplasmid(self, fitID, position, mutaplasmid):
-        # this is mostly the same thing as the self.changeModule method, however it initializes an abyssal module with
-        # the old module as it's base, and then replaces it
-        fit = eos.db.getFit(fitID)
-        base = fit.modules[position]
-        fit.modules.toDummy(position)
-
-        try:
-            m = es_Module(mutaplasmid.resultingItem, base.item, mutaplasmid)
-        except ValueError:
-            pyfalog.warning("Invalid item: {0} AHHHH")
-            return False
-
-        if m.fits(fit):
-            m.owner = fit
-            fit.modules.toModule(position, m)
-            if m.isValidState(FittingModuleState.ACTIVE):
-                m.state = FittingModuleState.ACTIVE
-
-            # As some items may affect state-limiting attributes of the ship, calculate new attributes first
-            self.recalc(fit)
-            # Then, check states of all modules and change where needed. This will recalc if needed
-            self.checkStates(fit, m)
-
-            fit.fill()
-            eos.db.commit()
-
-            return True
-        else:
-            return None
-
     @deprecated
     def addDrone(self, fitID, itemID, numDronesToAdd=1, recalc=True):
         pyfalog.debug("Adding {0} drones ({1}) to fit ID: {2}", numDronesToAdd, itemID, fitID)
