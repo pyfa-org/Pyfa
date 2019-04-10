@@ -40,3 +40,4 @@ from .guiRebaseItems import GuiRebaseItemsCommand
 from .guiMutaConvert import GuiMutaConvertCommand
 from .guiMutaRevert import GuiMutaRevertCommand
 from .guiToggleProjected import GuiToggleProjectedCommand
+from .guiToggleBoosterSideEffect import GuiToggleBoosterSideEffectCommand

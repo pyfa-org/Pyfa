@@ -1,8 +1,10 @@
 # noinspection PyPackageRequirements
 import wx
-from gui.contextMenu import ContextMenu
+
 import gui.mainFrame
 import gui.globalEvents as GE
+from gui import fitCommands as cmd
+from gui.contextMenu import ContextMenu
 from service.fit import Fit
 from service.settings import ContextMenuSettings
 
@@ -61,10 +63,10 @@ class BoosterSideEffect(ContextMenu):
             event.Skip()
             return
 
-        sFit = Fit.getInstance()
         fitID = self.mainFrame.getActiveFit()
-        sFit.toggleBoosterSideEffect(fitID, effect)
-        wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fitID))
+        fit = Fit.getInstance().getFit(fitID)
+        index = fit.boosters.index(self.booster)
+        self.mainFrame.command.Submit(cmd.GuiToggleBoosterSideEffectCommand(fitID, index, effect.effectID))
 
 
 BoosterSideEffect.register()

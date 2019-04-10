@@ -1,6 +1,8 @@
 import wx
 import eos.db
 from logbook import Logger
+
+
 pyfalog = Logger(__name__)
 
 
