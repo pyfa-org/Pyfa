@@ -34,6 +34,7 @@ class FitAddProjectedDroneCommand(wx.Command):
 
         self.index = fit.projectedDrones.index(drone)
         drone.amount += 1
+        drone.amountActive = drone.amount
 
         eos.db.commit()
         return True

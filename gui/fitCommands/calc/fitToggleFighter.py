@@ -9,7 +9,7 @@ class FitToggleFighterCommand(wx.Command):
     from sFit.toggleFighter
     """
     def __init__(self, fitID, position):
-        wx.Command.__init__(self, True, "Cargo add")
+        wx.Command.__init__(self, True, "Toggle Fighter")
         self.fitID = fitID
         self.position = position
 

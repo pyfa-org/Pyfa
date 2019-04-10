@@ -29,10 +29,8 @@ from eos.saveddata.character import Character as saveddata_Character
 from eos.saveddata.citadel import Citadel as es_Citadel
 from eos.saveddata.damagePattern import DamagePattern as es_DamagePattern
 from eos.saveddata.drone import Drone as es_Drone
-from eos.saveddata.fighter import Fighter as es_Fighter
 from eos.const import ImplantLocation, FittingModuleState
 from eos.saveddata.fit import Fit as FitType
-from eos.saveddata.module import Module as es_Module
 from eos.saveddata.ship import Ship as es_Ship
 from service.character import Character
 from service.damagePattern import DamagePattern
@@ -339,28 +337,6 @@ class Fit(FitDeprecated):
                 fit.modifiedCoalesce,
                 fit.notes))
         return fits
-
-    def toggleProjected(self, fitID, thing, click):
-        pyfalog.debug("Toggling projected on fit ({0}) for: {1}", fitID, thing)
-        fit = eos.db.getFit(fitID)
-        if isinstance(thing, es_Drone):
-            if thing.amountActive == 0 and thing.canBeApplied(fit):
-                thing.amountActive = thing.amount
-            else:
-                thing.amountActive = 0
-        elif isinstance(thing, es_Fighter):
-            thing.active = not thing.active
-        elif isinstance(thing, es_Module):
-            thing.state = es_Module.getProposedState(thing, click)
-            if not thing.canHaveState(thing.state, fit):
-                thing.state = FittingModuleState.OFFLINE
-        elif isinstance(thing, FitType):
-            projectionInfo = thing.getProjectionInfo(fitID)
-            if projectionInfo:
-                projectionInfo.active = not projectionInfo.active
-
-        eos.db.commit()
-        self.recalc(fit)
 
     def changeMutatedValue(self, mutator, value):
         pyfalog.debug("Changing mutated value for {} / {}: {} => {}".format(mutator.module, mutator.module.mutaplasmid, mutator.value, value))

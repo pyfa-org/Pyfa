@@ -63,18 +63,6 @@ class GuiRemoveProjectedCommand(wx.Command):
             cmd = cls(self.fitID, self.data)
             result = self.internal_history.Submit(cmd)
 
-        # if item.category.name == "Drone":
-        #     pyfalog.warn("DRONE REMOVE PROJECTION NOT IMPLEMENTED")
-        # elif item.category.name == "Fighter":
-        #     pyfalog.warn("FIGHTER REMOVE PROJECTION NOT IMPLEMENTED")
-        # elif item.group.name in Module.SYSTEM_GROUPS:
-        #     result = self.internal_history.Submit(FitRemoveProjectedEnvCommand(self.fitID, self.id))
-        # else:
-        #     # attempt a regular module projection
-        #
-        # elif self.type == 'fit':
-        #     pyfalog.warn("FIT REMOVE PROJECTION NOT IMPLEMENTED")
-
         if result:
             self.sFit.recalc(self.fitID)
             wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=self.fitID))

@@ -9,7 +9,7 @@ class FitToggleDroneCommand(wx.Command):
     from sFit.toggleDrone
     """
     def __init__(self, fitID, position):
-        wx.Command.__init__(self, True, "Cargo add")
+        wx.Command.__init__(self, True, "Toggle Drone")
         self.fitID = fitID
         self.position = position
 

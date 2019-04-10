@@ -1,6 +1,9 @@
 import wx
-import eos.db
 from logbook import Logger
+
+import eos.db
+
+
 pyfalog = Logger(__name__)
 
 
@@ -9,7 +12,7 @@ class FitToggleImplantCommand(wx.Command):
     from sFit.toggleImplant
     """
     def __init__(self, fitID, position):
-        wx.Command.__init__(self, True, "Cargo add")
+        wx.Command.__init__(self, True, "Toggle Implant")
         self.fitID = fitID
         self.position = position
 

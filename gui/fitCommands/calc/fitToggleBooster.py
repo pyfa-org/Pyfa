@@ -9,7 +9,7 @@ class FitToggleBoosterCommand(wx.Command):
     from sFit.toggleBooster
     """
     def __init__(self, fitID, position):
-        wx.Command.__init__(self, True, "Cargo add")
+        wx.Command.__init__(self, True, "Toggle Booster")
         self.fitID = fitID
         self.position = position
 

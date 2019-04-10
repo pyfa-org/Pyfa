@@ -110,13 +110,8 @@ class ProjectedView(d.Display):
             # Gather module information to get position
             module = fit.modules[int(data[1])]
             self.mainFrame.command.Submit(cmd.GuiAddProjectedCommand(fitID, module.itemID, 'item'))
-            # sFit.project(fit.ID, module)
-            # wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fit.ID))
         elif data[0] == "market":
-            # sFit = Fit.getInstance()
             self.mainFrame.command.Submit(cmd.GuiAddProjectedCommand(fitID, int(data[1]), 'item'))
-            # sFit.project(fit.ID, int(data[1]))
-            # wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fit.ID))
 
     def kbEvent(self, event):
         keycode = event.GetKeyCode()
@@ -262,10 +257,10 @@ class ProjectedView(d.Display):
             item = self.get(row)
             col = self.getColumn(event.Position)
             if col == self.getColIndex(State):
-                fitID = self.mainFrame.getActiveFit()
-                sFit = Fit.getInstance()
-                sFit.toggleProjected(fitID, item, "right" if event.Button == 3 else "left")
-                wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fitID))
+                self.mainFrame.command.Submit(cmd.GuiToggleProjectedCommand(
+                    fitID=self.mainFrame.getActiveFit(),
+                    thing=item,
+                    click="right" if event.Button == 3 else "left"))
 
     def spawnMenu(self, event):
         fitID = self.mainFrame.getActiveFit()
