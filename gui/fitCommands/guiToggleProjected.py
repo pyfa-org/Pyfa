@@ -20,30 +20,34 @@ class GuiToggleProjectedCommand(wx.Command):
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
         self.internal_history = wx.CommandProcessor()
         self.fitID = fitID
-        self.thing = thing
-        self.click = click
+        fit = Fit.getInstance().getFit(self.fitID)
+        if isinstance(thing, FitType):
+            self.commandType = FitToggleProjectedFitCommand
+            self.args = (self.fitID, thing.ID)
+        elif isinstance(thing, ModuleType):
+            position = fit.projectedModules.index(thing)
+            self.commandType = FitToggleProjectedModuleCommand
+            self.args = (self.fitID, position, click)
+        elif isinstance(thing, DroneType):
+            position = fit.projectedDrones.index(thing)
+            self.commandType = FitToggleProjectedDroneCommand
+            self.args = (self.fitID, position)
+        elif isinstance(thing, FighterType):
+            position = fit.projectedFighters.index(thing)
+            self.commandType = FitToggleProjectedFighterCommand
+            self.args = (self.fitID, position)
+        else:
+            self.commandType = None
+            self.args = ()
 
     def Do(self):
-        fit = Fit.getInstance().getFit(self.fitID)
-        if isinstance(self.thing, FitType):
-            success = self.internal_history.Submit(FitToggleProjectedFitCommand(self.fitID, self.thing.ID))
-        elif isinstance(self.thing, ModuleType):
-            position = fit.projectedModules.index(self.thing)
-            success = self.internal_history.Submit(FitToggleProjectedModuleCommand(self.fitID, position, self.click))
-        elif isinstance(self.thing, DroneType):
-            position = fit.projectedDrones.index(self.thing)
-            success = self.internal_history.Submit(FitToggleProjectedDroneCommand(self.fitID, position))
-        elif isinstance(self.thing, FighterType):
-            position = fit.projectedFighters.index(self.thing)
-            success = self.internal_history.Submit(FitToggleProjectedFighterCommand(self.fitID, position))
-        else:
-            success = False
-        if not success:
+        if self.commandType is None:
+            return False
+        if not self.internal_history.Submit(self.commandType(*self.args)):
             return False
         Fit.getInstance().recalc(self.fitID)
         wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=self.fitID))
         return True
-
 
     def Undo(self):
         for _ in self.internal_history.Commands:
