@@ -2,7 +2,6 @@
 import wx
 
 import gui.mainFrame
-import gui.globalEvents as GE
 from gui import fitCommands as cmd
 from gui.contextMenu import ContextMenu
 from service.fit import Fit

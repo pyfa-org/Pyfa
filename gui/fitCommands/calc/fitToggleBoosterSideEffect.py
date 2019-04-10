@@ -2,6 +2,7 @@ import wx
 from logbook import Logger
 
 import eos.db
+from service.fit import Fit
 
 
 pyfalog = Logger(__name__)
@@ -17,7 +18,7 @@ class FitToggleBoosterSideEffectCommand(wx.Command):
 
     def Do(self):
         pyfalog.debug("Toggling booster side-effect for fit ID: {0}", self.fitID)
-        fit = eos.db.getFit(self.fitID)
+        fit = Fit.getInstance().getFit(self.fitID)
         booster = fit.boosters[self.position]
         for se in booster.sideEffects:
             if se.effectID == self.effectID:

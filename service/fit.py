@@ -389,13 +389,6 @@ class Fit(FitDeprecated):
         self.recalc(fit)
         return True
 
-    def toggleFighterAbility(self, fitID, ability):
-        pyfalog.debug("Toggling fighter ability for fit ID: {0}", fitID)
-        fit = eos.db.getFit(fitID)
-        ability.active = not ability.active
-        eos.db.commit()
-        self.recalc(fit)
-
     def changeChar(self, fitID, charID):
         pyfalog.debug("Changing character ({0}) for fit ID: {1}", charID, fitID)
         if fitID is None or charID is None:

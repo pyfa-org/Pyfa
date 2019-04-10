@@ -1,8 +1,11 @@
 # noinspection PyPackageRequirements
 import wx
-from gui.contextMenu import ContextMenu
-import gui.mainFrame
+
+
 import gui.globalEvents as GE
+import gui.mainFrame
+from gui.contextMenu import ContextMenu
+from gui import fitCommands as cmd
 from service.fit import Fit
 from service.settings import ContextMenuSettings
 
@@ -55,10 +58,10 @@ class FighterAbility(ContextMenu):
             event.Skip()
             return
 
-        sFit = Fit.getInstance()
         fitID = self.mainFrame.getActiveFit()
-        sFit.toggleFighterAbility(fitID, ability)
-        wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fitID))
+        fit = Fit.getInstance().getFit(fitID)
+        index = fit.fighters.index(self.fighter)
+        self.mainFrame.command.Submit(cmd.GuiToggleFighterAbilityCommand(fitID, index, ability.effectID))
 
 
 FighterAbility.register()
