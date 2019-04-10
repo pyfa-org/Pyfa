@@ -31,7 +31,7 @@ from eos.db.saveddata.drone import drones_table
 from eos.db.saveddata.fighter import fighters_table
 from eos.db.saveddata.implant import fitImplants_table
 from eos.db.saveddata.module import modules_table
-from eos.effectHandlerHelpers import HandledDroneCargoList, HandledImplantBoosterList, HandledModuleList, HandledProjectedDroneList, HandledProjectedModList
+from eos.effectHandlerHelpers import HandledDroneCargoList, HandledImplantList, HandledBoosterList, HandledModuleList, HandledProjectedDroneList, HandledProjectedModList
 from eos.saveddata.booster import Booster
 from eos.saveddata.cargo import Cargo
 from eos.saveddata.character import Character
@@ -183,7 +183,7 @@ mapper(es_Fit, fits_table,
            "shipID": fits_table.c.shipID,
            "_Fit__boosters": relation(
                    Booster,
-                   collection_class=HandledImplantBoosterList,
+                   collection_class=HandledBoosterList,
                    cascade='all, delete, delete-orphan',
                    backref='owner',
                    single_parent=True),
@@ -219,7 +219,7 @@ mapper(es_Fit, fits_table,
                    primaryjoin=and_(fighters_table.c.fitID == fits_table.c.ID, fighters_table.c.projected == True)),  # noqa
            "_Fit__implants": relation(
                    Implant,
-                   collection_class=HandledImplantBoosterList,
+                   collection_class=HandledImplantList,
                    cascade='all, delete, delete-orphan',
                    backref='owner',
                    single_parent=True,

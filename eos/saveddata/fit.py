@@ -27,7 +27,7 @@ from sqlalchemy.orm import validates, reconstructor
 
 import eos.db
 from eos import capSim
-from eos.effectHandlerHelpers import HandledModuleList, HandledDroneCargoList, HandledImplantBoosterList, HandledProjectedDroneList, HandledProjectedModList
+from eos.effectHandlerHelpers import HandledModuleList, HandledDroneCargoList, HandledImplantList, HandledBoosterList, HandledProjectedDroneList, HandledProjectedModList
 from eos.const import ImplantLocation, CalcType, FittingSlot
 from eos.saveddata.ship import Ship
 from eos.saveddata.drone import Drone
@@ -57,8 +57,8 @@ class Fit(object):
         self.__drones = HandledDroneCargoList()
         self.__fighters = HandledDroneCargoList()
         self.__cargo = HandledDroneCargoList()
-        self.__implants = HandledImplantBoosterList()
-        self.__boosters = HandledImplantBoosterList()
+        self.__implants = HandledImplantList()
+        self.__boosters = HandledBoosterList()
         # self.__projectedFits = {}
         self.__projectedModules = HandledProjectedModList()
         self.__projectedDrones = HandledProjectedDroneList()

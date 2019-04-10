@@ -23,7 +23,7 @@ import datetime
 
 from eos.db import saveddata_meta
 from eos.db.saveddata.implant import implantsSetMap_table
-from eos.effectHandlerHelpers import HandledImplantBoosterList
+from eos.effectHandlerHelpers import HandledImplantList
 from eos.saveddata.implant import Implant
 from eos.saveddata.implantSet import ImplantSet
 
@@ -38,7 +38,7 @@ mapper(ImplantSet, implant_set_table,
        properties={
            "_ImplantSet__implants": relation(
                    Implant,
-                   collection_class=HandledImplantBoosterList,
+                   collection_class=HandledImplantList,
                    cascade='all, delete, delete-orphan',
                    backref='set',
                    single_parent=True,

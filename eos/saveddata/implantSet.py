@@ -19,13 +19,13 @@
 
 from copy import deepcopy
 
-from eos.effectHandlerHelpers import HandledImplantBoosterList
+from eos.effectHandlerHelpers import HandledImplantList
 
 
 class ImplantSet(object):
     def __init__(self, name=None):
         self.name = name
-        self.__implants = HandledImplantBoosterList()
+        self.__implants = HandledImplantList()
 
     @property
     def implants(self):

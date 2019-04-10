@@ -211,7 +211,8 @@ class HandledDroneCargoList(HandledList):
             self.remove(thing)
 
 
-class HandledImplantBoosterList(HandledList):
+class HandledImplantList(HandledList):
+
     def append(self, thing):
         if thing.isInvalid:
             HandledList.append(self, thing)
@@ -232,6 +233,32 @@ class HandledImplantBoosterList(HandledList):
             self.remove(oldObj)
             return itemID
         return None
+
+
+class HandledBoosterList(HandledList):
+
+    def append(self, thing):
+        if thing.isInvalid:
+            HandledList.append(self, thing)
+            self.remove(thing)
+            return
+
+        self.makeRoom(thing)
+        HandledList.append(self, thing)
+
+    def makeRoom(self, thing):
+        # if needed, remove booster that was occupying slot
+        oldObj = next((m for m in self if m.slot == thing.slot), None)
+        if oldObj:
+            pyfalog.info("Slot {0} occupied with {1}, replacing with {2}", thing.slot, oldObj.item.name,
+                         thing.item.name)
+            itemID = oldObj.itemID
+            state = oldObj.active
+            sideEffects = {se.effectID: se.active for se in oldObj.sideEffects}
+            oldObj.itemID = 0  # hack to remove from DB. See GH issue #324
+            self.remove(oldObj)
+            return itemID, state, sideEffects
+        return None, None, None
 
 
 class HandledSsoCharacterList(list):

@@ -23,7 +23,7 @@ import datetime
 
 from eos.db import saveddata_meta
 from eos.db.saveddata.implant import charImplants_table
-from eos.effectHandlerHelpers import HandledImplantBoosterList, HandledSsoCharacterList
+from eos.effectHandlerHelpers import HandledImplantList, HandledSsoCharacterList
 from eos.saveddata.implant import Implant
 from eos.saveddata.user import User
 from eos.saveddata.character import Character, Skill
@@ -75,7 +75,7 @@ mapper(Character, characters_table,
                    cascade="all,delete-orphan"),
            "_Character__implants"    : relation(
                    Implant,
-                   collection_class=HandledImplantBoosterList,
+                   collection_class=HandledImplantList,
                    cascade='all,delete-orphan',
                    backref='character',
                    single_parent=True,
