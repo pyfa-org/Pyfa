@@ -14,6 +14,7 @@ class FighterAbility(ContextMenu):
     def __init__(self):
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
         self.settings = ContextMenuSettings.getInstance()
+        self.isProjected = None
 
     def display(self, srcContext, selection):
         if not self.settings.get('fighterAbilities'):
@@ -23,6 +24,7 @@ class FighterAbility(ContextMenu):
             return False
 
         self.fighter = selection[0]
+        self.isProjected = True if srcContext == "projectedFighter" else False
         return True
 
     def getText(self, itmContext, selection):
@@ -60,8 +62,12 @@ class FighterAbility(ContextMenu):
 
         fitID = self.mainFrame.getActiveFit()
         fit = Fit.getInstance().getFit(fitID)
-        index = fit.fighters.index(self.fighter)
-        self.mainFrame.command.Submit(cmd.GuiToggleFighterAbilityCommand(fitID, index, ability.effectID))
+        print(self.isProjected)
+        if self.isProjected:
+            index = fit.projectedFighters.index(self.fighter)
+        else:
+            index = fit.fighters.index(self.fighter)
+        self.mainFrame.command.Submit(cmd.GuiToggleFighterAbilityCommand(fitID, index, ability.effectID, self.isProjected))
 
 
 FighterAbility.register()
