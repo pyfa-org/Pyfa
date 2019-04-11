@@ -19,7 +19,7 @@ class MarketJump(ContextMenu):
                          "projectedModule", "projectedDrone",
                          "projectedCharge", "cargoItem",
                          "implantItemChar", "fighterItem",
-                         "projectedDrone")
+                         "projectedFighter")
 
         if srcContext not in validContexts or selection is None or len(selection) < 1:
             return False

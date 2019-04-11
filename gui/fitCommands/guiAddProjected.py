@@ -33,7 +33,7 @@ class GuiAddProjectedCommand(wx.Command):
             if item.category.name == "Drone":
                 result = self.internal_history.Submit(FitAddProjectedDroneCommand(self.fitID, self.id))
             elif item.category.name == "Fighter":
-                result = self.internal_history.Submit(FitAddProjectedFighterCommand(self.fitID, self.id))
+                result = self.internal_history.Submit(FitAddProjectedFighterCommand(self.fitID, self.id, None, None))
             else:
                 result = self.internal_history.Submit(FitAddProjectedModuleCommand(self.fitID, self.id, None, None, None, None, None, None))
         elif self.type == 'fit':

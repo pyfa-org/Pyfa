@@ -14,21 +14,29 @@ class FitRemoveProjectedFighterCommand(wx.Command):
         wx.Command.__init__(self, True)
         self.fitID = fitID
         self.position = position
-        self.removed_item = None
+        self.savedItemID = None
+        self.savedAmount = None
+        self.savedStatus = None
+        self.savedAbilities = None
 
     def Do(self):
         pyfalog.debug("Removing ({0}) onto: {1}", self.fitID, self.position)
         fit = eos.db.getFit(self.fitID)
-
         fighter = fit.projectedFighters[self.position]
+        self.savedItemID = fighter.itemID
+        self.savedAmount = fighter.amount
+        self.savedStatus = fighter.active
+        self.savedAbilities = {fa.effectID: fa.active for fa in fighter.abilities}
         fit.projectedFighters.remove(fighter)
-        self.removed_item = fighter.itemID
-
         eos.db.commit()
         return True
 
     def Undo(self):
         from gui.fitCommands.calc.fitAddProjectedFighter import FitAddProjectedFighterCommand
-        cmd = FitAddProjectedFighterCommand(self.fitID, self.removed_item)
+        cmd = FitAddProjectedFighterCommand(
+            fitID=self.fitID,
+            itemID=self.savedItemID,
+            state=self.savedStatus,
+            abilities=self.savedAbilities)
         cmd.Do()
         return True

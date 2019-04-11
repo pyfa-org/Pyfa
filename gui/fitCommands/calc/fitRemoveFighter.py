@@ -2,6 +2,8 @@ import wx
 from logbook import Logger
 
 import eos.db
+from service.fit import Fit
+
 
 pyfalog = Logger(__name__)
 
@@ -24,7 +26,7 @@ class FitRemoveFighterCommand(wx.Command):
 
     def Do(self):
         fitID = self.fitID
-        fit = eos.db.getFit(fitID)
+        fit = Fit.getInstance().getFit(fitID)
         fighter = fit.fighters[self.position]
         self.savedItemID = fighter.itemID
         self.savedAmount = fighter.amount
