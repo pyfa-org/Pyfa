@@ -1,6 +1,10 @@
 import wx
-import eos.db
 from logbook import Logger
+
+import eos.db
+from service.fit import Fit
+
+
 pyfalog = Logger(__name__)
 
 
@@ -8,26 +12,32 @@ class FitAddProjectedFitCommand(wx.Command):
     """"
     from sFit.project
     """
-    def __init__(self, fitID, projectedFitID):
+    def __init__(self, fitID, projectedFitID, status):
         wx.Command.__init__(self, True)
         self.fitID = fitID
         self.projectedFitID = projectedFitID
-        self.new_index = None
-        self.old_item = None
+        self.status = status
 
     def Do(self):
         pyfalog.debug("Projecting fit ({0}) onto: {1}", self.fitID, self.projectedFitID)
-        fit = eos.db.getFit(self.fitID)
-        projectedFit = eos.db.getFit(self.projectedFitID)
+        sFit = Fit.getInstance()
+        projectee = sFit.getFit(self.fitID)
+        projector = sFit.getFit(self.projectedFitID)
 
-        if projectedFit is None or projectedFit in fit.projectedFits:
+        if projector is None or projector in projectee.projectedFits:
             return False
 
-        fit.projectedFitDict[projectedFit.ID] = projectedFit
+        projectee.projectedFitDict[projector.ID] = projector
 
         # this bit is required -- see GH issue # 83
         eos.db.saveddata_session.flush()
-        eos.db.saveddata_session.refresh(projectedFit)
+        eos.db.saveddata_session.refresh(projector)
+
+        if self.status is not None:
+            projectionInfo = projector.getProjectionInfo(self.fitID)
+            if not projectionInfo:
+                return False
+            projectionInfo.active = self.status
 
         eos.db.commit()
         return True

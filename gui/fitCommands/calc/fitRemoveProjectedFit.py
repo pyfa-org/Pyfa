@@ -1,7 +1,11 @@
 import wx
-import eos.db
 from logbook import Logger
+
+import eos.db
+from service.fit import Fit
 from .fitRemoveProjectedModule import FitRemoveProjectedModuleCommand
+
+
 pyfalog = Logger(__name__)
 
 
@@ -15,23 +19,29 @@ class FitRemoveProjectedFitCommand(FitRemoveProjectedModuleCommand):
         wx.Command.__init__(self, True)
         self.fitID = fitID
         self.projectedFitID = projectedFitID
+        self.savedState = None
 
     def Do(self):
-        pyfalog.debug("Removing ({0}) onto: {1}", self.fitID, self.projectedFitID)
-        fit = eos.db.getFit(self.fitID)
-        projectedFit = eos.db.getFit(self.projectedFitID)
+        pyfalog.debug("Removing ({0}) onto: {1}".format(self.fitID, self.projectedFitID))
+        sFit = Fit.getInstance()
+        projectee = sFit.getFit(self.fitID)
+        projector = sFit.getFit(self.projectedFitID)
 
-        if projectedFit is None:
+        if projector is None:
             return False
 
-        del fit.projectedFitDict[projectedFit.ID]
+        projectionInfo = projector.getProjectionInfo(self.fitID)
+        if not projectionInfo:
+            return False
+
+        self.savedState = projectionInfo.active
+
+        del projectee.projectedFitDict[projector.ID]
 
         eos.db.commit()
         return True
 
     def Undo(self):
-        # todo: figure out if I need to return false here if the fit doesn't return true (means it was deleted)
         from gui.fitCommands.calc.fitAddProjectedFit import FitAddProjectedFitCommand
-        cmd = FitAddProjectedFitCommand(self.fitID, self.projectedFitID)
-        cmd.Do()
-        return True
+        cmd = FitAddProjectedFitCommand(self.fitID, self.projectedFitID, self.savedState)
+        return cmd.Do()

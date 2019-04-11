@@ -37,7 +37,7 @@ class GuiAddProjectedCommand(wx.Command):
             else:
                 result = self.internal_history.Submit(FitAddProjectedModuleCommand(self.fitID, self.id, None, None, None, None, None, None))
         elif self.type == 'fit':
-            result = self.internal_history.Submit(FitAddProjectedFitCommand(self.fitID, self.id))
+            result = self.internal_history.Submit(FitAddProjectedFitCommand(self.fitID, self.id, None))
 
         if result:
             self.sFit.recalc(self.fitID)
