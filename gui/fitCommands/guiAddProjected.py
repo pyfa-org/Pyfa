@@ -5,7 +5,6 @@ import gui.mainFrame
 from gui import globalEvents as GE
 from eos.saveddata.module import Module
 from .calc.fitAddProjectedModule import FitAddProjectedModuleCommand
-from .calc.fitAddProjectedEnv import FitAddProjectedEnvCommand
 from .calc.fitAddProjectedFit import FitAddProjectedFitCommand
 from .calc.fitAddProjectedFighter import FitAddProjectedFighterCommand
 from .calc.fitAddProjectedDrone import FitAddProjectedDroneCommand
@@ -35,8 +34,6 @@ class GuiAddProjectedCommand(wx.Command):
                 result = self.internal_history.Submit(FitAddProjectedDroneCommand(self.fitID, self.id))
             elif item.category.name == "Fighter":
                 result = self.internal_history.Submit(FitAddProjectedFighterCommand(self.fitID, self.id))
-            elif item.group.name in Module.SYSTEM_GROUPS:
-                result = self.internal_history.Submit(FitAddProjectedEnvCommand(self.fitID, self.id))
             else:
                 result = self.internal_history.Submit(FitAddProjectedModuleCommand(self.fitID, self.id, None, None, None, None, None, None))
         elif self.type == 'fit':

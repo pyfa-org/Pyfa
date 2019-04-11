@@ -4,7 +4,6 @@ from service.fit import Fit
 import gui.mainFrame
 from gui import globalEvents as GE
 from .calc.fitRemoveProjectedModule import FitRemoveProjectedModuleCommand
-from .calc.fitRemoveProjectedEnv import FitRemoveProjectedEnvCommand
 from .calc.fitRemoveProjectedFit import FitRemoveProjectedFitCommand
 from .calc.fitRemoveProjectedFighter import FitRemoveProjectedFighterCommand
 from logbook import Logger
@@ -22,7 +21,6 @@ class GuiRemoveProjectedCommand(wx.Command):
         'fit': FitRemoveProjectedFitCommand,
         'module': FitRemoveProjectedModuleCommand,
         'fighter': FitRemoveProjectedFighterCommand,
-        'env': FitRemoveProjectedEnvCommand,
         'drone': FitRemoveProjectedDroneCommand
     }
 
@@ -38,13 +36,8 @@ class GuiRemoveProjectedCommand(wx.Command):
             self.data = fit.projectedDrones.index(thing)
             self.type = 'drone'
         elif isinstance(thing, Module):
-            # todo: projected stuff should be wrapped in a projected class wrapper for easier maintainence
-            if thing.item.group.name in Module.SYSTEM_GROUPS:
-                self.type = 'env'
-                self.data = thing.itemID
-            else:
-                self.type = 'module'
-                self.data = fit.projectedModules.index(thing)
+            self.type = 'module'
+            self.data = fit.projectedModules.index(thing)
         elif isinstance(thing, Fighter):
             self.data = fit.projectedFighters.index(thing)
             self.type = 'fighter'

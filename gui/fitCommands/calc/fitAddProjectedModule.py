@@ -52,6 +52,17 @@ class FitAddProjectedModuleCommand(wx.Command):
         return True
 
     def Undo(self):
+        if self.oldModuleInfo is not None:
+            cmd = FitAddProjectedModuleCommand(
+                fitID=self.fitID,
+                newItemID=self.oldModuleInfo.itemID,
+                newBaseItemID=self.oldModuleInfo.baseID,
+                newMutaplasmidID=self.oldModuleInfo.mutaplasmidID,
+                newMutations=self.oldModuleInfo.mutations,
+                newState=self.oldModuleInfo.state,
+                newChargeID=self.oldModuleInfo.chargeID,
+                newPosition=self.oldModuleInfo.modPosition)
+            return cmd.Do()
         from gui.fitCommands.calc.fitRemoveProjectedModule import FitRemoveProjectedModuleCommand  # avoids circular import
         cmd = FitRemoveProjectedModuleCommand(self.fitID, self.newPosition)
         cmd.Do()

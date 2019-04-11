@@ -43,8 +43,7 @@ class FitAddImplantCommand(wx.Command):
         if self.oldItemID:
             # If we had an item in the slot previously, add it back.
             cmd = FitAddImplantCommand(self.fitID, self.oldItemID, self.oldState)
-            cmd.Do()
-            return True
+            return cmd.Do()
 
         from .fitRemoveImplant import FitRemoveImplantCommand  # Avoid circular import
         cmd = FitRemoveImplantCommand(self.fitID, self.newIndex)
