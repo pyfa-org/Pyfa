@@ -354,23 +354,6 @@ class FitDeprecated(object):
         self.recalc(fit)
 
     @deprecated
-    def removeProjected(self, fitID, thing):
-        pyfalog.debug("Removing projection on fit ({0}) from: {1}", fitID, thing)
-        fit = eos.db.getFit(fitID)
-        if isinstance(thing, es_Drone):
-            fit.projectedDrones.remove(thing)
-        elif isinstance(thing, es_Module):
-            fit.projectedModules.remove(thing)
-        elif isinstance(thing, es_Fighter):
-            fit.projectedFighters.remove(thing)
-        else:
-            del fit.projectedFitDict[thing.ID]
-            # fit.projectedFits.remove(thing)
-
-        eos.db.commit()
-        self.recalc(fit)
-
-    @deprecated
     def removeCommand(self, fitID, thing):
         pyfalog.debug("Removing command projection from fit ({0}) for: {1}", fitID, thing)
         fit = eos.db.getFit(fitID)

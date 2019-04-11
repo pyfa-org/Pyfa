@@ -18,7 +18,7 @@ class FitRemoveDroneCommand(wx.Command):
         wx.Command.__init__(self, True, "Drone add")
         self.fitID = fitID
         self.position = position
-        self.amountToRemove = amount  # add x amount. If this goes over amount, removes stack
+        self.amountToRemove = amount
         self.savedItemID = None
         self.savedAmount = None
         self.savedAmountActive = None

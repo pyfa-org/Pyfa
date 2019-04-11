@@ -43,9 +43,11 @@ class FitAddProjectedModuleCommand(wx.Command):
             self.oldModuleInfo = ModuleInfoCache(oldPosition, oldItemID, oldState, oldChargeID, oldBaseItemID, oldMutaplasmidID, oldMutations)
 
         if self.newPosition is not None:
-            fit.projectedModules.insert(self.newPosition, mod)
+            if not fit.projectedModules.insert(self.newPosition, mod):
+                return False
         else:
-            fit.projectedModules.append(mod)
+            if not fit.projectedModules.append(mod):
+                return False
             self.newPosition = fit.projectedModules.index(mod)
 
         eos.db.commit()

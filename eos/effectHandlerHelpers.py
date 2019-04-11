@@ -336,6 +336,7 @@ class HandledProjectedModList(HandledList):
 
 
 class HandledProjectedDroneList(HandledDroneCargoList):
+
     def append(self, proj):
         proj.projected = True
         HandledList.append(self, proj)
@@ -343,6 +344,19 @@ class HandledProjectedDroneList(HandledDroneCargoList):
         # Remove invalid or non-projectable drones
         if proj.isInvalid or not proj.item.isType("projected"):
             self.remove(proj)
+            return False
+        return True
+
+    def insert(self, idx, proj):
+        proj.projected = True
+        HandledList.insert(self, idx, proj)
+
+        # Remove invalid or non-projectable drones
+        if proj.isInvalid or not proj.item.isType("projected"):
+            self.remove(proj)
+            return False
+        return True
+
 
 
 class HandledItem(object):

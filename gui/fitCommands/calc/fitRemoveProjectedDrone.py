@@ -1,42 +1,67 @@
 import wx
-import eos.db
 from logbook import Logger
+
+import eos.db
+from eos.saveddata.drone import Drone
+from service.fit import Fit
+from service.market import Market
+
+
 pyfalog = Logger(__name__)
 
 
-# this has the same exact definition that regular projected modules, besides the undo
 class FitRemoveProjectedDroneCommand(wx.Command):
     """"
     from sFit.project
     """
 
-    def __init__(self, fitID, position, stack=False):
+    def __init__(self, fitID, position, amount=1):
         wx.Command.__init__(self, True)
         self.fitID = fitID
         self.position = position
-        self.removed_item = None
-        self.stack = stack
+        self.amountToRemove = amount
+        self.savedItemID = None
+        self.savedAmount = None
+        self.savedAmountActive = None
+        self.removedStack = None
 
     def Do(self):
-        pyfalog.debug("Removing ({0}) onto: {1}", self.fitID, self.position)
-        fit = eos.db.getFit(self.fitID)
-
+        pyfalog.debug("Removing ({0}) onto: {1}".format(self.fitID, self.position))
+        fit = Fit.getInstance().getFit(self.fitID)
         drone = fit.projectedDrones[self.position]
-        if self.stack:
-            fit.projectedDrones.remove(drone)
+        self.savedItemID = drone.itemID
+        self.savedAmount = drone.amount
+        self.savedAmountActive = drone.amountActive
+
+        drone.amount -= self.amountToRemove
+        if drone.amountActive > 0:
+            drone.amountActive -= self.amountToRemove
+
+        if drone.amount == 0:
+            del fit.projectedDrones[self.position]
+            self.removedStack = True
         else:
-            if drone.amount > 1:
-                drone.amount -= 1
-            else:
-                fit.projectedDrones.remove(drone)
-
-        self.drone_item = drone.itemID
-
+            self.removedStack = False
         eos.db.commit()
         return True
 
     def Undo(self):
-        from gui.fitCommands.calc.fitAddProjectedDrone import FitAddProjectedDroneCommand
-        cmd = FitAddProjectedDroneCommand(self.fitID, self.drone_item)
-        cmd.Do()
+        fit = Fit.getInstance().getFit(self.fitID)
+        if self.removedStack:
+            droneItem = Market.getInstance().getItem(self.savedItemID, eager=("attributes", "group.category"))
+            try:
+                drone = Drone(droneItem)
+            except ValueError:
+                pyfalog.warning("Invalid drone: {}", droneItem)
+                return False
+            if not drone.fits(fit):
+                return False
+            drone.amount = self.savedAmount
+            drone.amountActive = self.savedAmountActive
+            fit.projectedDrones.insert(self.position, drone)
+        else:
+            drone = fit.projectedDrones[self.position]
+            drone.amount = self.savedAmount
+            drone.amountActive = self.savedAmountActive
+        eos.db.commit()
         return True
