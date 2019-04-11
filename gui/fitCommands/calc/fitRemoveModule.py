@@ -1,8 +1,10 @@
 import wx
-
-from gui.fitCommands.helpers import ModuleInfoCache
-import eos.db
 from logbook import Logger
+
+import eos.db
+from gui.fitCommands.helpers import ModuleInfoCache
+
+
 pyfalog = Logger(__name__)
 
 
@@ -33,7 +35,7 @@ class FitRemoveModuleCommand(wx.Command):
                     mod.modPosition,
                     mod.item.ID,
                     mod.state,
-                    mod.charge,
+                    mod.chargeID,
                     mod.baseItemID,
                     mod.mutaplasmidID,
                     {m.attrID: m.value for m in mod.mutators.values()}))
@@ -60,6 +62,6 @@ class FitRemoveModuleCommand(wx.Command):
                 newMutaplasmidID=modInfo.mutaplasmidID,
                 newMutations=modInfo.mutations,
                 newState=modInfo.state,
-                newCharge=modInfo.charge)
+                newChargeID=modInfo.chargeID)
             cmd.Do()
         return True

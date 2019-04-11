@@ -32,7 +32,7 @@ class GuiMutaRevertCommand(wx.Command):
             newMutaplasmidID=None,
             newMutations=None,
             newState=oldMod.state,
-            newCharge=oldMod.charge))
+            newChargeID=oldMod.chargeID))
         if not success:
             return False
 

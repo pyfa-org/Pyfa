@@ -29,7 +29,10 @@ class GuiMetaSwapCommand(wx.Command):
 
         if context == 'fittingModule':
             for x in selection:
-                self.data.append(((FitReplaceModuleCommand, fitID, fit.modules.index(x), itemID),),)
+                position = fit.modules.index(x)
+                state = x.state
+                chargeID = x.chargeID
+                self.data.append(((FitReplaceModuleCommand, fitID, position, itemID, None, None, None, state, chargeID),),)
         elif context == 'implantItem':
             for x in selection:
                 idx = fit.implants.index(x)

@@ -23,7 +23,7 @@ class GuiModuleRemoveCommand(wx.Command):
             mod.modPosition,
             mod.item.ID,
             mod.state,
-            mod.charge,
+            mod.chargeID,
             mod.baseItemID,
             mod.mutaplasmidID,
             {m.attrID: m.value for m in mod.mutators.values()}) for mod in modules if not mod.isEmpty]

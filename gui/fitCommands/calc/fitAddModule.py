@@ -56,7 +56,7 @@ class FitAddModuleCommand(wx.Command):
                         newMutaplasmidID=None,
                         newMutations=None,
                         newState=None,
-                        newCharge=None)
+                        newChargeID=None)
                     return self.replace_cmd.Do()
 
         if self.module.fits(fit):

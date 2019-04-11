@@ -50,7 +50,7 @@ class GuiModuleAddCommand(wx.Command):
                 newMutaplasmidID=None,
                 newMutations=None,
                 newState=None,
-                newCharge=None))
+                newChargeID=None))
             if not success:
                 pyfalog.debug("    Failed")
                 # something went wrong with trying to fit the module into specific location, attempt to append it

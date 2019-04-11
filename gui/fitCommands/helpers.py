@@ -3,7 +3,7 @@ from collections import namedtuple
 from eos.const import FittingModuleState
 
 
-ModuleInfoCache = namedtuple('ModuleInfoCache', ['modPosition', 'itemID', 'state', 'charge', 'baseID', 'mutaplasmidID', 'mutations'])
+ModuleInfoCache = namedtuple('ModuleInfoCache', ['modPosition', 'itemID', 'state', 'chargeID', 'baseID', 'mutaplasmidID', 'mutations'])
 
 
 def stateLimit(item):

@@ -16,7 +16,7 @@ class FitReplaceModuleCommand(wx.Command):
 
     from sFit.changeModule
     """
-    def __init__(self, fitID, position, newItemID, newBaseItemID, newMutaplasmidID, newMutations, newState, newCharge):
+    def __init__(self, fitID, position, newItemID, newBaseItemID, newMutaplasmidID, newMutations, newState, newChargeID):
         wx.Command.__init__(self, True, "Change Module")
         self.fitID = fitID
         self.position = position
@@ -25,7 +25,7 @@ class FitReplaceModuleCommand(wx.Command):
         self.newMutaplasmidID = newMutaplasmidID
         self.newMutations = newMutations
         self.newState = newState
-        self.newCharge = newCharge
+        self.newChargeID = newChargeID
         self.oldModuleInfo = None
 
     def Do(self):
@@ -36,39 +36,38 @@ class FitReplaceModuleCommand(wx.Command):
                 mod.modPosition,
                 mod.item.ID,
                 mod.state,
-                mod.charge,
+                mod.chargeID,
                 mod.baseItemID,
                 mod.mutaplasmidID,
                 {m.attrID: m.value for m in mod.mutators.values()})
 
         newState = self.newState if self.newState is not None else getattr(self.oldModuleInfo, 'state', None)
-        newCharge = self.newCharge if self.newCharge is not None else getattr(self.oldModuleInfo, 'charge', None)
-        return self.changeModule(self.newItemID, self.newBaseItemID, self.newMutaplasmidID, self.newMutations, newState, newCharge)
+        newChargeID = self.newChargeID if self.newChargeID is not None else getattr(self.oldModuleInfo, 'chargeID', None)
+        return self.changeModule(self.newItemID, self.newBaseItemID, self.newMutaplasmidID, self.newMutations, newState, newChargeID)
 
     def Undo(self):
         if self.oldModuleInfo is None:
             fit = Fit.getInstance().getFit(self.fitID)
             fit.modules.toDummy(self.position)
             return True
-        self.changeModule(
+        return self.changeModule(
             self.oldModuleInfo.itemID,
             self.oldModuleInfo.baseID,
             self.oldModuleInfo.mutaplasmidID,
             self.oldModuleInfo.mutations,
             self.oldModuleInfo.state,
-            self.oldModuleInfo.charge)
-        return True
+            self.oldModuleInfo.chargeID)
 
-    def changeModule(self, itemID, baseItemID, mutaplasmidID, mutations, state, charge):
-        fit = eos.db.getFit(self.fitID)
+    def changeModule(self, itemID, baseItemID, mutaplasmidID, mutations, state, chargeID):
+        fit = Fit.getInstance().getFit(self.fitID)
         oldMod = fit.modules[self.position]
 
         pyfalog.debug("Changing module on position ({0}) for fit ID: {1}", self.position, self.fitID)
 
-        sMarket = Market.getInstance()
-        item = sMarket.getItem(itemID, eager=("attributes", "group.category"))
+        mkt = Market.getInstance()
+        item = mkt.getItem(itemID, eager=("attributes", "group.category"))
         if baseItemID and mutaplasmidID:
-            baseItem = sMarket.getItem(baseItemID, eager=("attributes", "group.category"))
+            baseItem = mkt.getItem(baseItemID, eager=("attributes", "group.category"))
             mutaplasmid = eos.db.getDynamicItem(mutaplasmidID)
         else:
             baseItem = None
@@ -96,12 +95,20 @@ class FitReplaceModuleCommand(wx.Command):
 
         newMod.owner = fit
         fit.modules.toModule(self.position, newMod)
-        desiredState = stateLimit(newMod.item) if state is None else state
-        if newMod.isValidState(desiredState):
-            newMod.state = desiredState
 
-        if charge is not None:
-            newMod.charge = charge
+        if state is not None:
+            if not newMod.isValidState(state):
+                return False
+            newMod.state = state
+        else:
+            desiredState = stateLimit(newMod.item) if state is None else state
+            if newMod.isValidState(desiredState):
+                newMod.state = desiredState
+
+        if chargeID is not None:
+            charge = mkt.getItem(chargeID)
+            if charge is not None:
+                newMod.charge = charge
 
         eos.db.commit()
         return True

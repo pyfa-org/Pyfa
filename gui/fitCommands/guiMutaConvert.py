@@ -33,7 +33,7 @@ class GuiMutaConvertCommand(wx.Command):
             newMutaplasmidID=self.mutaplasmid.ID,
             newMutations={},
             newState=oldMod.state,
-            newCharge=oldMod.charge))
+            newChargeID=oldMod.chargeID))
         if not success:
             return False
 

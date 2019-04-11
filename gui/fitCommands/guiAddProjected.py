@@ -38,7 +38,7 @@ class GuiAddProjectedCommand(wx.Command):
             elif item.group.name in Module.SYSTEM_GROUPS:
                 result = self.internal_history.Submit(FitAddProjectedEnvCommand(self.fitID, self.id))
             else:
-                result = self.internal_history.Submit(FitAddProjectedModuleCommand(self.fitID, self.id))
+                result = self.internal_history.Submit(FitAddProjectedModuleCommand(self.fitID, self.id, None, None, None, None, None, None))
         elif self.type == 'fit':
             result = self.internal_history.Submit(FitAddProjectedFitCommand(self.fitID, self.id))
 

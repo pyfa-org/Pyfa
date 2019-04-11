@@ -52,7 +52,7 @@ class GuiCargoToModuleCommand(wx.Command):
                 newMutaplasmidID=None,
                 newMutations=None,
                 newState=None,
-                newCharge=None)
+                newChargeID=None)
 
             result = self.internal_history.Submit(self.addCmd)
 

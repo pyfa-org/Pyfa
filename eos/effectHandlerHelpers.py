@@ -280,38 +280,59 @@ class HandledSsoCharacterList(list):
 
 
 class HandledProjectedModList(HandledList):
+
     def append(self, proj):
         if proj.isInvalid:
             # we must include it before we remove it. doing it this way ensures
             # rows and relationships in database are removed as well
             HandledList.append(self, proj)
             self.remove(proj)
-            return
+            return False
 
         proj.projected = True
-
-        if proj.isExclusiveSystemEffect:
-            self.makeRoom(proj)
 
         HandledList.append(self, proj)
 
         # Remove non-projectable modules
         if not proj.item.isType("projected") and not proj.isExclusiveSystemEffect:
             self.remove(proj)
+            return False
+        return True
+
+    def insert(self, idx, proj):
+        if proj.isInvalid:
+            # we must include it before we remove it. doing it this way ensures
+            # rows and relationships in database are removed as well
+            HandledList.insert(self, idx, proj)
+            self.remove(proj)
+            return False
+
+        proj.projected = True
+
+        HandledList.insert(self, idx, proj)
+
+        # Remove non-projectable modules
+        if not proj.item.isType("projected") and not proj.isExclusiveSystemEffect:
+            self.remove(proj)
+            return False
+        return True
 
     @property
     def currentSystemEffect(self):
         return next((m for m in self if m.isExclusiveSystemEffect), None)
 
     def makeRoom(self, proj):
-        # remove other system effects - only 1 per fit plz
-        oldEffect = self.currentSystemEffect
+        if proj.isExclusiveSystemEffect:
+            # remove other system effects - only 1 per fit plz
+            mod = self.currentSystemEffect
 
-        if oldEffect:
-            pyfalog.info("System effect occupied with {0}, replacing with {1}", oldEffect.item.name, proj.item.name)
-            self.remove(oldEffect)
-            return oldEffect.itemID
-        return None
+            if mod:
+                pyfalog.info("System effect occupied with {0}, removing it to make space for {1}".format(mod.item.name, proj.item.name))
+                mutations = {m.attrID: m.value for m in mod.mutators.values()}
+                position = self.index(mod)
+                self.remove(mod)
+                return mod.itemID, mod.baseItemID, mod.mutaplasmidID, mutations, mod.state, mod.chargeID, position
+        return None, None, None, None, None, None, None
 
 
 class HandledProjectedDroneList(HandledDroneCargoList):
