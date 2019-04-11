@@ -43,7 +43,7 @@ class FitAddProjectedModuleCommand(wx.Command):
             self.oldModuleInfo = ModuleInfoCache(oldPosition, oldItemID, oldState, oldChargeID, oldBaseItemID, oldMutaplasmidID, oldMutations)
 
         if self.newPosition is not None:
-            fit.projectedModules.append(self.newPosition, mod)
+            fit.projectedModules.insert(self.newPosition, mod)
         else:
             fit.projectedModules.append(mod)
             self.newPosition = fit.projectedModules.index(mod)

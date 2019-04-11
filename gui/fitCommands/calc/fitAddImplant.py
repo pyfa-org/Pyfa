@@ -33,7 +33,7 @@ class FitAddImplantCommand(wx.Command):
             pyfalog.warning("Invalid item: {0}", self.newItemID)
             return False
         implant.active = self.newState
-        
+
         self.oldItemID, self.oldState = fit.implants.makeRoom(implant)
         fit.implants.append(implant)
         self.newIndex = fit.implants.index(implant)
