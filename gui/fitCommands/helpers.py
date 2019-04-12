@@ -3,6 +3,7 @@ from logbook import Logger
 import eos.db
 from eos.const import FittingModuleState
 from eos.saveddata.booster import Booster
+from eos.saveddata.cargo import Cargo
 from eos.saveddata.module import Module
 from service.market import Market
 from utils.repr import makeReprStr
@@ -118,8 +119,31 @@ class BoosterInfo:
                     sideEffect.active = self.sideEffects[sideEffect.effectID]
         return booster
 
+class CargoInfo:
+
+    def __init__(self, itemID, amount):
+        self.itemID = itemID
+        self.amount = amount
+
+    @classmethod
+    def fromCargo(cls, cargo):
+        if cargo is None:
+            return None
+        info = cls(
+            itemID=cargo.itemID,
+            amount=cargo.active)
+        return info
+
+    def toCargo(self):
+        item = Market.getInstance().getItem(self.itemID)
+        cargo = Cargo(item)
+        cargo.amount = self.amount
+        return cargo
+
     def __repr__(self):
-        return makeReprStr(self, ['itemID', 'state', 'sideEffects'])
+        return makeReprStr(self, ['itemID', 'amount'])
+
+
 
 
 def stateLimit(itemIdentity):

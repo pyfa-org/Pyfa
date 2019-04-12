@@ -3,9 +3,7 @@ from logbook import Logger
 
 import eos.db
 from eos.exception import HandledListActionError
-from eos.saveddata.cargo import Cargo
 from service.fit import Fit
-from service.market import Market
 
 
 pyfalog = Logger(__name__)
@@ -13,33 +11,31 @@ pyfalog = Logger(__name__)
 
 class FitAddCargoCommand(wx.Command):
 
-    def __init__(self, fitID, itemID, amount=1):
+    def __init__(self, fitID, cargoInfo):
         wx.Command.__init__(self, True, 'Add Cargo')
         self.fitID = fitID
-        self.itemID = itemID
-        self.amount = amount
+        self.cargoInfo = cargoInfo
 
     def Do(self):
-        pyfalog.debug('Doing addition of cargo {} x{} to fit {}'.format(self.itemID, self.amount, self.fitID))
-
+        pyfalog.debug('Doing addition of cargo {} to fit {}'.format(self.cargoInfo, self.fitID))
         fit = Fit.getInstance().getFit(self.fitID)
-        item = Market.getInstance().getItem(self.itemID)
-        cargo = next((x for x in fit.cargo if x.itemID == self.itemID), None)
+        cargo = next((x for x in fit.cargo if x.itemID == self.cargoInfo.itemID), None)
         if cargo is None:
-            cargo = Cargo(item)
+            cargo = self.cargoInfo.toCargo()
             try:
                 fit.cargo.append(cargo)
             except HandledListActionError:
                 pyfalog.warning('Failed to append to list')
                 eos.db.commit()
                 return False
-        cargo.amount += self.amount
+        else:
+            cargo.amount += self.cargoInfo.amount
         eos.db.commit()
         return True
 
     def Undo(self):
-        pyfalog.debug('Undoing addition of cargo {} x{} to fit {}'.format(self.itemID, self.amount, self.fitID))
+        pyfalog.debug('Undoing addition of cargo {} to fit {}'.format(self.cargoInfo, self.fitID))
         from .fitRemoveCargo import FitRemoveCargoCommand
-        cmd = FitRemoveCargoCommand(fitID=self.fitID, itemID=self.itemID, amount=self.amount)
+        cmd = FitRemoveCargoCommand(fitID=self.fitID, cargoInfo=self.cargoInfo)
         cmd.Do()
         return True

@@ -1,8 +1,11 @@
+import math
+
 import wx
 from service.fit import Fit
 
 import gui.mainFrame
 from gui import globalEvents as GE
+from gui.fitCommands.helpers import CargoInfo
 from .calc.fitRemoveCargo import FitRemoveCargoCommand
 
 
@@ -16,7 +19,7 @@ class GuiRemoveCargoCommand(wx.Command):
         self.itemID = itemID
 
     def Do(self):
-        if self.internal_history.Submit(FitRemoveCargoCommand(self.fitID, self.itemID, stack=True)):
+        if self.internal_history.Submit(FitRemoveCargoCommand(fitID=self.fitID, cargoInfo=CargoInfo(itemID=self.itemID, amount=math.inf))):
             wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=self.fitID))
             return True
         return False
