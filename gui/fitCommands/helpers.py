@@ -5,6 +5,7 @@ from eos.const import FittingModuleState
 from eos.saveddata.booster import Booster
 from eos.saveddata.cargo import Cargo
 from eos.saveddata.drone import Drone
+from eos.saveddata.implant import Implant
 from eos.saveddata.fighter import Fighter
 from eos.saveddata.module import Module
 from service.market import Market
@@ -90,53 +91,6 @@ class ModuleInfo:
             'chargeID', 'state', 'spoolType', 'spoolAmount'])
 
 
-class BoosterInfo:
-
-    def __init__(self, itemID, state=None, sideEffects=None):
-        self.itemID = itemID
-        self.state = state
-        self.sideEffects = sideEffects
-
-    @classmethod
-    def fromBooster(cls, booster):
-        if booster is None:
-            return None
-        info = cls(
-            itemID=booster.itemID,
-            state=booster.active,
-            sideEffects={se.effectID: se.active for se in booster.sideEffects})
-        return info
-
-    def toBooster(self):
-        item = Market.getInstance().getItem(self.itemID)
-        try:
-            booster = Booster(item)
-        except ValueError:
-            pyfalog.warning('Invalid item: {}'.format(self.itemID))
-            return None
-        if self.state is not None:
-            booster.active = self.state
-        if self.sideEffects is not None:
-            for sideEffect in booster.sideEffects:
-                sideEffect.active = self.sideEffects.get(sideEffect.effectID, sideEffect.active)
-        return booster
-
-class CargoInfo:
-
-    def __init__(self, itemID, amount):
-        self.itemID = itemID
-        self.amount = amount
-
-    def toCargo(self):
-        item = Market.getInstance().getItem(self.itemID)
-        cargo = Cargo(item)
-        cargo.amount = self.amount
-        return cargo
-
-    def __repr__(self):
-        return makeReprStr(self, ['itemID', 'amount'])
-
-
 class DroneInfo:
 
     def __init__(self, itemID, amount, amountActive):
@@ -206,6 +160,81 @@ class FighterInfo:
 
     def __repr__(self):
         return makeReprStr(self, ['itemID', 'amount', 'state', 'abilities'])
+
+
+class BoosterInfo:
+
+    def __init__(self, itemID, state=None, sideEffects=None):
+        self.itemID = itemID
+        self.state = state
+        self.sideEffects = sideEffects
+
+    @classmethod
+    def fromBooster(cls, booster):
+        if booster is None:
+            return None
+        info = cls(
+            itemID=booster.itemID,
+            state=booster.active,
+            sideEffects={se.effectID: se.active for se in booster.sideEffects})
+        return info
+
+    def toBooster(self):
+        item = Market.getInstance().getItem(self.itemID)
+        try:
+            booster = Booster(item)
+        except ValueError:
+            pyfalog.warning('Invalid item: {}'.format(self.itemID))
+            return None
+        if self.state is not None:
+            booster.active = self.state
+        if self.sideEffects is not None:
+            for sideEffect in booster.sideEffects:
+                sideEffect.active = self.sideEffects.get(sideEffect.effectID, sideEffect.active)
+        return booster
+
+
+class ImplantInfo:
+
+    def __init__(self, itemID, state=None):
+        self.itemID = itemID
+        self.state = state
+
+    @classmethod
+    def fromImplant(cls, implant):
+        if implant is None:
+            return None
+        info = cls(
+            itemID=implant.itemID,
+            state=implant.active)
+        return info
+
+    def toImplant(self):
+        item = Market.getInstance().getItem(self.itemID)
+        try:
+            implant = Implant(item)
+        except ValueError:
+            pyfalog.warning('Invalid item: {}'.format(self.itemID))
+            return None
+        if self.state is not None:
+            implant.active = self.state
+        return implant
+
+
+class CargoInfo:
+
+    def __init__(self, itemID, amount):
+        self.itemID = itemID
+        self.amount = amount
+
+    def toCargo(self):
+        item = Market.getInstance().getItem(self.itemID)
+        cargo = Cargo(item)
+        cargo.amount = self.amount
+        return cargo
+
+    def __repr__(self):
+        return makeReprStr(self, ['itemID', 'amount'])
 
 
 def stateLimit(itemIdentity):

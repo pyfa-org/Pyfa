@@ -1,34 +1,36 @@
 import wx
-import eos.db
 from logbook import Logger
+
+import eos.db
+from gui.fitCommands.helpers import ImplantInfo
+from service.fit import Fit
+
+
 pyfalog = Logger(__name__)
 
 
 class FitRemoveImplantCommand(wx.Command):
-    """"
-    Fitting command that sets the amount for an item within the cargo.
 
-    from sFit.removeImplant
-    """
     def __init__(self, fitID, position):
-        wx.Command.__init__(self, True, "Implant remove")
+        wx.Command.__init__(self, True, 'Remove Implant')
         self.fitID = fitID
         self.position = position
-        self.savedItemID = None
-        self.savedState = None
+        self.savedImplantInfo = None
 
     def Do(self):
-        pyfalog.debug("Removing implant from position ({0}) for fit ID: {1}", self.position, self.fitID)
-
-        fit = eos.db.getFit(self.fitID)
+        pyfalog.debug('Doing removal of implant from position {} on fit {}'.format(self.position, self.fitID))
+        fit = Fit.getInstance().getFit(self.fitID)
         implant = fit.implants[self.position]
-        self.savedItemID = implant.itemID
-        self.savedState = implant.active
+        self.savedImplantInfo = ImplantInfo.fromImplant(implant)
         fit.implants.remove(implant)
+        eos.db.commit()
         return True
 
     def Undo(self):
-        from gui.fitCommands.calc.fitAddImplant import FitAddImplantCommand  # Avoid circular import
-        cmd = FitAddImplantCommand(self.fitID, self.savedItemID, self.savedState)
-        cmd.Do()
-        return True
+        pyfalog.debug('Undoing removal of implant {} on fit {}'.format(self.savedImplantInfo, self.fitID))
+        from .fitAddImplant import FitAddImplantCommand
+        cmd = FitAddImplantCommand(
+            fitID=self.fitID,
+            boosterInfo=self.savedBoosterInfo,
+            position=self.position)
+        return cmd.Do()

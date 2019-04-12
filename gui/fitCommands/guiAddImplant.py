@@ -2,8 +2,9 @@ import wx
 from service.fit import Fit
 
 import gui.mainFrame
-from gui import globalEvents as GE
 from eos.const import ImplantLocation
+from gui import globalEvents as GE
+from gui.fitCommands.helpers import ImplantInfo
 from .calc.fitAddImplant import FitAddImplantCommand
 from .calc.fitChangeImplantLocation import FitChangeImplantLocation
 
@@ -18,7 +19,10 @@ class GuiAddImplantCommand(wx.Command):
         self.itemID = itemID
 
     def Do(self):
-        if self.internal_history.Submit(FitAddImplantCommand(self.fitID, self.itemID, True)) and self.internal_history.Submit(FitChangeImplantLocation(self.fitID, ImplantLocation.FIT)):
+        if (
+            self.internal_history.Submit(FitAddImplantCommand(fitID=self.fitID, implantInfo=ImplantInfo(itemID=self.itemID))) and
+            self.internal_history.Submit(FitChangeImplantLocation(self.fitID, ImplantLocation.FIT))
+        ):
             self.sFit.recalc(self.fitID)
             wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=self.fitID))
             return True

@@ -1,51 +1,73 @@
 import wx
-import eos.db
 from logbook import Logger
-from eos.saveddata.implant import Implant
+
+import eos.db
+from eos.exception import HandledListActionError
+from service.fit import Fit
+
+
 pyfalog = Logger(__name__)
 
 
 class FitAddImplantCommand(wx.Command):
-    """"
-    from sFit.addImplant
-    """
-    def __init__(self, fitID, itemID, state):
-        wx.Command.__init__(self, True, "Add Implant")
+
+    def __init__(self, fitID, implantInfo, position=None):
+        wx.Command.__init__(self, True, 'Add Implant')
         self.fitID = fitID
-        self.newItemID = itemID
-        self.newState = state
-        self.newIndex = None
-        self.oldItemID = None
-        self.oldState = None
+        self.newImplantInfo = implantInfo
+        self.newPosition = position
+        self.oldImplantInfo = None
+        self.oldPosition = None
 
     def Do(self):
-        pyfalog.debug("Adding implant to fit ({0}) for item ID: {1}", self.fitID, self.newItemID)
+        pyfalog.debug('Doing addition of implant {} to fit {}'.format(self.newImplantInfo, self.fitID))
+        fit = Fit.getInstance().getFit(self.fitID)
 
-        fit = eos.db.getFit(self.fitID)
-        item = eos.db.getItem(self.newItemID, eager="attributes")
-
-        if next((x for x in fit.implants if x.itemID == self.newItemID), None):
-            return False  # already have item in list of implants
-
-        try:
-            implant = Implant(item)
-        except ValueError:
-            pyfalog.warning("Invalid item: {0}", self.newItemID)
+        if any(self.newImplantInfo.itemID == i.itemID for i in fit.implants):
+            pyfalog.debug('Skipping as such implant is already on the fit')
             return False
-        implant.active = self.newState
 
-        self.oldItemID, self.oldState = fit.implants.makeRoom(implant)
-        fit.implants.append(implant)
-        self.newIndex = fit.implants.index(implant)
+        newImplant = self.newImplantInfo.toImplant()
+        if newImplant is None:
+            return False
+
+        self.oldPosition, self.oldImplantInfo = fit.implants.makeRoom(newImplant)
+
+        if self.newPosition is not None:
+            try:
+                fit.implants.insert(self.newPosition, newImplant)
+            except HandledListActionError:
+                pyfalog.warning('Failed to insert to list')
+                cmd = FitAddImplantCommand(
+                    fitID=self.fitID,
+                    implantInfo=self.oldImplantInfo,
+                    position=self.oldPosition)
+                cmd.Do()
+                return False
+        else:
+            try:
+                fit.implants.append(newImplant)
+            except HandledListActionError:
+                pyfalog.warning('Failed to append to list')
+                cmd = FitAddImplantCommand(
+                    fitID=self.fitID,
+                    implantInfo=self.oldImplantInfo,
+                    position=self.oldPosition)
+                cmd.Do()
+                return False
+            self.newPosition = fit.implants.index(newImplant)
+
+        eos.db.commit()
         return True
 
     def Undo(self):
-        if self.oldItemID:
-            # If we had an item in the slot previously, add it back.
-            cmd = FitAddImplantCommand(self.fitID, self.oldItemID, self.oldState)
+        pyfalog.debug('Undo addition of implant {} to fit {}'.format(self.newImplantInfo, self.fitID))
+        if self.oldImplantInfo and self.oldPosition:
+            cmd = FitAddImplantCommand(
+                fitID=self.fitID,
+                implantInfo=self.oldImplantInfo,
+                position=self.oldPosition)
             return cmd.Do()
-
-        from .fitRemoveImplant import FitRemoveImplantCommand  # Avoid circular import
-        cmd = FitRemoveImplantCommand(self.fitID, self.newIndex)
-        cmd.Do()
-        return True
+        from .fitRemoveImplant import FitRemoveImplantCommand
+        cmd = FitRemoveImplantCommand(self.fitID, self.newPosition)
+        return cmd.Do()

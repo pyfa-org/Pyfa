@@ -249,22 +249,38 @@ class HandledImplantList(HandledList):
             HandledList.append(self, implant)
             self.remove(implant)
             raise HandledListActionError(implant)
+        if self.__slotCheck(implant):
+            HandledList.append(self, implant)
+            self.remove(implant)
+            raise HandledListActionError(implant)
+        HandledList.append(self, implant)
 
-        self.makeRoom(implant)
+    def insert(self, idx, implant):
+        if implant.isInvalid:
+            HandledList.insert(self, idx, implant)
+            self.remove(implant)
+            raise HandledListActionError(implant)
+        if self.__slotCheck(implant):
+            HandledList.insert(self, idx, implant)
+            self.remove(implant)
+            raise HandledListActionError(implant)
         HandledList.append(self, implant)
 
     def makeRoom(self, implant):
         # if needed, remove booster that was occupying slot
-        oldObj = next((m for m in self if m.slot == implant.slot), None)
-        if oldObj:
-            pyfalog.info("Slot {0} occupied with {1}, replacing with {2}", implant.slot, oldObj.item.name,
-                         implant.item.name)
-            itemID = oldObj.itemID
-            state = oldObj.active
+        oldObj = next((i for i in self if i.slot == implant.slot), None)
+        if oldObj is not None:
+            pyfalog.info("Slot {0} occupied with {1}, replacing with {2}", implant.slot, oldObj.item.name, implant.item.name)
+            position = self.index(oldObj)
+            from gui.fitCommands.helpers import ImplantInfo
+            implantInfo = ImplantInfo.fromImplant(oldObj)
             oldObj.itemID = 0  # hack to remove from DB. See GH issue #324
             self.remove(oldObj)
-            return itemID, state
+            return position, implantInfo
         return None, None
+
+    def __slotCheck(self, implant):
+        return any(i.slot == implant.slot for i in self)
 
 
 class HandledBoosterList(HandledList):
@@ -274,12 +290,10 @@ class HandledBoosterList(HandledList):
             HandledList.append(self, booster)
             self.remove(booster)
             raise HandledListActionError(booster)
-
         if self.__slotCheck(booster):
             HandledList.append(self, booster)
             self.remove(booster)
             raise HandledListActionError(booster)
-
         HandledList.append(self, booster)
 
     def insert(self, idx, booster):
@@ -287,17 +301,15 @@ class HandledBoosterList(HandledList):
             HandledList.insert(self, idx, booster)
             self.remove(booster)
             raise HandledListActionError(booster)
-
         if self.__slotCheck(booster):
             HandledList.insert(self, idx, booster)
             self.remove(booster)
             raise HandledListActionError(booster)
-
         HandledList.append(self, booster)
 
     def makeRoom(self, booster):
         # if needed, remove booster that was occupying slot
-        oldObj = next((m for m in self if m.slot == booster.slot), None)
+        oldObj = next((b for b in self if b.slot == booster.slot), None)
         if oldObj is not None:
             pyfalog.info("Slot {0} occupied with {1}, replacing with {2}", booster.slot, oldObj.item.name, booster.item.name)
             position = self.index(oldObj)

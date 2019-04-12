@@ -19,7 +19,6 @@ class FitRemoveBoosterCommand(wx.Command):
 
     def Do(self):
         pyfalog.debug('Doing removal of booster from position {} on fit {}'.format(self.position, self.fitID))
-
         fit = Fit.getInstance().getFit(self.fitID)
         booster = fit.boosters[self.position]
         self.savedBoosterInfo = BoosterInfo.fromBooster(booster)
@@ -29,7 +28,7 @@ class FitRemoveBoosterCommand(wx.Command):
 
     def Undo(self):
         pyfalog.debug('Undoing removal of booster {} on fit {}'.format(self.savedBoosterInfo, self.fitID))
-        from .fitAddBooster import FitAddBoosterCommand  # Avoid circular import
+        from .fitAddBooster import FitAddBoosterCommand
         cmd = FitAddBoosterCommand(
             fitID=self.fitID,
             boosterInfo=self.savedBoosterInfo,
