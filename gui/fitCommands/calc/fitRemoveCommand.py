@@ -8,43 +8,40 @@ from service.fit import Fit
 pyfalog = Logger(__name__)
 
 
-class FitRemoveCommandCommand(wx.Command):  # well that's an unfortunate name
-    """"
-    from sFit.removeCommand
-    """
+class FitRemoveCommandCommand(wx.Command):
+
     def __init__(self, fitID, commandFitID):
         wx.Command.__init__(self, True)
         self.fitID = fitID
-        self.savedCommandFitID = commandFitID
+        self.commandFitID = commandFitID
         self.savedState = None
 
     def Do(self):
-        pyfalog.debug("Removing command projection from fit ({0}) for: {1}".format(self.fitID, self.savedCommandFitID))
+        pyfalog.debug('Doing removal of command fit {} for fit {}'.format(self.commandFitID, self.fitID))
         sFit = Fit.getInstance()
         fit = sFit.getFit(self.fitID)
-        commandFit = sFit.getFit(self.savedCommandFitID)
-        if not commandFit:
-            return False
+        commandFit = sFit.getFit(self.commandFitID)
 
+        # Can be removed by the time we're redoing it
+        if commandFit is None:
+            pyfalog.debug('Command fit is not available')
+            return False
         commandInfo = commandFit.getCommandInfo(self.fitID)
-        if not commandInfo:
+        if commandInfo is None:
+            pyfalog.warning('Fit command info is not available')
             return False
 
         self.savedState = commandInfo.active
-
         del fit.commandFitDict[commandFit.ID]
-
         eos.db.commit()
         return True
 
     def Undo(self):
-        command = eos.db.getFit(self.savedCommandFitID)
-
-        if not command:
-            # can't find the command fit, it must have been deleted. Just skip this undo
-            return True
-
+        pyfalog.debug('Undoing removal of command fit {} for fit {}'.format(self.commandFitID, self.fitID))
+        # Can't find the command fit, it must have been deleted. Fail as there's no way to restore it
+        commandFit = Fit.getInstance().getFit(self.commandFitID)
+        if commandFit is None:
+            return False
         from .fitAddCommand import FitAddCommandCommand
-        cmd = FitAddCommandCommand(self.fitID, self.savedCommandFitID, self.savedState)
-        cmd.Do()
-        return True
+        cmd = FitAddCommandCommand(fitID=self.fitID, commandFitID=self.commandFitID, state=self.savedState)
+        return cmd.Do()

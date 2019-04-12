@@ -144,8 +144,6 @@ class CargoInfo:
         return makeReprStr(self, ['itemID', 'amount'])
 
 
-
-
 def stateLimit(itemIdentity):
     item = Market.getInstance().getItem(itemIdentity)
     if {'moduleBonusAssaultDamageControl', 'moduleBonusIndustrialInvulnerability'}.intersection(item.effects):
