@@ -4,6 +4,7 @@ import eos.db
 from eos.const import FittingModuleState
 from eos.saveddata.booster import Booster
 from eos.saveddata.cargo import Cargo
+from eos.saveddata.drone import Drone
 from eos.saveddata.module import Module
 from service.market import Market
 from utils.repr import makeReprStr
@@ -142,6 +143,38 @@ class CargoInfo:
 
     def __repr__(self):
         return makeReprStr(self, ['itemID', 'amount'])
+
+
+class DroneInfo:
+
+    def __init__(self, itemID, amount, amountActive):
+        self.itemID = itemID
+        self.amount = amount
+        self.amountActive = amountActive
+
+    @classmethod
+    def fromDrone(cls, drone):
+        if drone is None:
+            return None
+        info = cls(
+            itemID=drone.itemID,
+            amount=drone.amount,
+            amountActive=drone.amountActive)
+        return info
+
+    def toDrone(self):
+        item = Market.getInstance().getItem(self.itemID)
+        try:
+            drone = Drone(item)
+        except ValueError:
+            pyfalog.warning('Invalid item: {}'.format(self.itemID))
+            return None
+        drone.amount = self.amount
+        drone.amountActive = self.amountActive
+        return drone
+
+    def __repr__(self):
+        return makeReprStr(self, ['itemID', 'amount', 'amountActive'])
 
 
 def stateLimit(itemIdentity):

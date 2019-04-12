@@ -239,7 +239,7 @@ class HandledDroneCargoList(HandledList):
         HandledList.insert(self, idx, thing)
         if thing.isInvalid:
             self.remove(thing)
-            raise(HandledListActionError)
+            raise HandledListActionError(thing)
 
 
 class HandledImplantList(HandledList):
