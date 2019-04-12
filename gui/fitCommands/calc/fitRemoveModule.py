@@ -15,7 +15,7 @@ class FitRemoveModuleCommand(wx.Command):
         wx.Command.__init__(self, True, 'Remove Module')
         self.fitID = fitID
         self.positions = positions
-        self.oldModInfos = {}
+        self.savedModInfos = {}
 
     def Do(self):
         pyfalog.debug('Doing removal of modules from positions {} on fit {}'.format(self.positions, self.fitID))
@@ -24,21 +24,21 @@ class FitRemoveModuleCommand(wx.Command):
         for position in self.positions:
             mod = fit.modules[position]
             if not mod.isEmpty:
-                self.oldModInfos[position] = ModuleInfo.fromModule(mod)
+                self.savedModInfos[position] = ModuleInfo.fromModule(mod)
                 fit.modules.free(position)
 
         # If no modules were removed, report that command was not completed
-        if not len(self.oldModInfos) > 0:
+        if not len(self.savedModInfos) > 0:
             eos.db.commit()
             return False
         eos.db.commit()
         return True
 
     def Undo(self):
-        pyfalog.debug('Undoing removal of modules {} on fit {}'.format(self.oldModInfos, self.fitID))
+        pyfalog.debug('Undoing removal of modules {} on fit {}'.format(self.savedModInfos, self.fitID))
         results = []
         from gui.fitCommands.calc.fitReplaceModule import FitReplaceModuleCommand
-        for position, modInfo in self.oldModInfos.items():
+        for position, modInfo in self.savedModInfos.items():
             cmd = FitReplaceModuleCommand(fitID=self.fitID, position=position, newModInfo=modInfo)
             results.append(cmd.Do())
         return any(results)

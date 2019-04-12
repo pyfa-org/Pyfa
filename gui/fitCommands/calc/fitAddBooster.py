@@ -1,60 +1,73 @@
 import wx
-import eos.db
 from logbook import Logger
-from eos.saveddata.booster import Booster
+
+import eos.db
+from eos.exception import HandledListActionError
+from service.fit import Fit
+
+
 pyfalog = Logger(__name__)
 
 
 class FitAddBoosterCommand(wx.Command):
-    """"
-    from sFit.addBooster
-    """
-    def __init__(self, fitID, itemID, state, sideEffects):
-        wx.Command.__init__(self, True)
+
+    def __init__(self, fitID, newBoosterInfo, newPosition=None):
+        wx.Command.__init__(self, True, 'Add Booster')
         self.fitID = fitID
-        self.newItemID = itemID
-        self.newState = state
-        self.newSideEffects = sideEffects
-        self.newIndex = None
-        self.oldItemID = None
-        self.oldState = None
-        self.oldSideEffects = None
+        self.newBoosterInfo = newBoosterInfo
+        self.newPosition = newPosition
+        self.oldBoosterInfo = None
+        self.oldPosition = None
 
     def Do(self):
-        pyfalog.debug("Adding booster ({0}) to fit ID: {1}", self.newItemID, self.fitID)
+        pyfalog.debug('Doing addition of booster {} to fit {}'.format(self.newBoosterInfo, self.fitID))
+        fit = Fit.getInstance().getFit(self.fitID)
 
-        fit = eos.db.getFit(self.fitID)
-        item = eos.db.getItem(self.newItemID, eager="attributes")
-
-        if next((x for x in fit.boosters if x.itemID == self.newItemID), None):
-            return False  # already have item in list of boosters
-
-        try:
-            booster = Booster(item)
-        except ValueError:
-            pyfalog.warning("Invalid item: {0}", self.newItemID)
+        if any(self.newBoosterInfo.itemID == b.itemID for b in fit.boosters):
+            pyfalog.debug('Skipping as such booster is already on the fit')
             return False
 
-        if self.newState is not None:
-            booster.active = self.newState
-        if self.newSideEffects is not None:
-            for sideEffect in booster.sideEffects:
-                sideEffect.active = self.newSideEffects.get(sideEffect.effectID, False)
+        newBooster = self.newBoosterInfo.toBooster()
+        if newBooster is None:
+            return False
 
+        self.oldPosition, self.oldBoosterInfo = fit.boosters.makeRoom(newBooster)
 
-        self.oldItemID, self.oldState, self.oldSideEffects = fit.boosters.makeRoom(booster)
-        fit.boosters.append(booster)
-        self.newIndex = fit.boosters.index(booster)
+        if self.newPosition is not None:
+            try:
+                fit.boosters.insert(self.newPosition, newBooster)
+            except HandledListActionError:
+                pyfalog.warning('Failed to insert to list')
+                cmd = FitAddBoosterCommand(
+                    fitID=self.fitID,
+                    newBoosterInfo=self.oldBoosterInfo,
+                    newPosition=self.oldPosition)
+                cmd.Do()
+                return False
+        else:
+            try:
+                fit.boosters.append(newBooster)
+            except HandledListActionError:
+                pyfalog.warning('Failed to append to list')
+                cmd = FitAddBoosterCommand(
+                    fitID=self.fitID,
+                    newBoosterInfo=self.oldBoosterInfo,
+                    newPosition=self.oldPosition)
+                cmd.Do()
+                return False
+            self.newPosition = fit.boosters.index(newBooster)
+
+        eos.db.commit()
         return True
 
     def Undo(self):
-        if self.oldItemID:
-            # If we had an item in the slot previously, add it back.
-            cmd = FitAddBoosterCommand(self.fitID, self.oldItemID, self.oldState, self.oldSideEffects)
-            cmd.Do()
-            return True
-
-        from .fitRemoveBooster import FitRemoveBoosterCommand  # Avoid circular import
-        cmd = FitRemoveBoosterCommand(self.fitID, self.newIndex)
-        cmd.Do()
-        return True
+        pyfalog.debug('Undo addition of booster {} to fit {}'.format(self.newBoosterInfo, self.fitID))
+        if self.oldBoosterInfo and self.oldPosition:
+            cmd = FitAddBoosterCommand(
+                fitID=self.fitID,
+                newBoosterInfo=self.oldBoosterInfo,
+                newPosition=self.oldPosition)
+            return cmd.Do()
+        from .fitRemoveBooster import FitRemoveBoosterCommand
+        cmd = FitRemoveBoosterCommand(self.fitID, self.newPosition)
+        return cmd.Do()

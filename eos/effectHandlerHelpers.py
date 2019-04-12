@@ -22,6 +22,7 @@ from logbook import Logger
 from eos.exception import HandledListActionError
 from utils.deprecated import deprecated
 
+
 pyfalog = Logger(__name__)
 
 
@@ -274,22 +275,41 @@ class HandledBoosterList(HandledList):
             self.remove(booster)
             raise HandledListActionError(booster)
 
-        self.makeRoom(booster)
+        if self.__slotCheck(booster):
+            HandledList.append(self, booster)
+            self.remove(booster)
+            raise HandledListActionError(booster)
+
+        HandledList.append(self, booster)
+
+    def insert(self, idx, booster):
+        if booster.isInvalid:
+            HandledList.insert(self, idx, booster)
+            self.remove(booster)
+            raise HandledListActionError(booster)
+
+        if self.__slotCheck(booster):
+            HandledList.insert(self, idx, booster)
+            self.remove(booster)
+            raise HandledListActionError(booster)
+
         HandledList.append(self, booster)
 
     def makeRoom(self, booster):
         # if needed, remove booster that was occupying slot
         oldObj = next((m for m in self if m.slot == booster.slot), None)
-        if oldObj:
-            pyfalog.info("Slot {0} occupied with {1}, replacing with {2}", booster.slot, oldObj.item.name,
-                         booster.item.name)
-            itemID = oldObj.itemID
-            state = oldObj.active
-            sideEffects = {se.effectID: se.active for se in oldObj.sideEffects}
+        if oldObj is not None:
+            pyfalog.info("Slot {0} occupied with {1}, replacing with {2}", booster.slot, oldObj.item.name, booster.item.name)
+            position = self.index(oldObj)
+            from gui.fitCommands.helpers import BoosterInfo
+            boosterInfo = BoosterInfo.fromBooster(oldObj)
             oldObj.itemID = 0  # hack to remove from DB. See GH issue #324
             self.remove(oldObj)
-            return itemID, state, sideEffects
-        return None, None, None
+            return position, boosterInfo
+        return None, None
+
+    def __slotCheck(self, booster):
+        return any(b.slot == booster.slot for b in self)
 
 
 class HandledSsoCharacterList(list):

@@ -3,10 +3,9 @@ from service.fit import Fit
 
 import gui.mainFrame
 from gui import globalEvents as GE
-from gui.fitCommands.helpers import ModuleInfo
+from gui.fitCommands.helpers import ModuleInfo, BoosterInfo
 from .calc.fitRemoveImplant import FitRemoveImplantCommand
 from .calc.fitAddImplant import FitAddImplantCommand
-from .calc.fitRemoveBooster import FitRemoveBoosterCommand
 from .calc.fitAddBooster import FitAddBoosterCommand
 from .calc.fitRemoveCargo import FitRemoveCargoCommand
 from .calc.fitAddCargo import FitAddCargoCommand
@@ -32,7 +31,7 @@ class GuiMetaSwapCommand(wx.Command):
             for x in selection:
                 position = fit.modules.index(x)
                 self.data.append(((FitReplaceModuleCommand, fitID, position, ModuleInfo(
-                    itemID=itemID, chargeID=x.chargeID, state=x.state, spoolType=x.spoolType, spoolAmount=x.spoolAmount)),),)
+                    itemID=itemID, chargeID=x.chargeID, state=x.state, spoolType=x.spoolType, spoolAmount=x.spoolAmount)),))
         elif context == 'implantItem':
             for x in selection:
                 idx = fit.implants.index(x)
@@ -40,10 +39,8 @@ class GuiMetaSwapCommand(wx.Command):
                 self.data.append(((FitRemoveImplantCommand, fitID, idx), (FitAddImplantCommand, fitID, itemID, state)))
         elif context == 'boosterItem':
             for x in selection:
-                idx = fit.boosters.index(x)
-                state = x.active
-                sideEffects = {se.effectID: se.active for se in x.sideEffects}
-                self.data.append(((FitRemoveBoosterCommand, fitID, idx), (FitAddBoosterCommand, fitID, itemID, state, sideEffects)))
+                self.data.append(((FitAddBoosterCommand, fitID, BoosterInfo(
+                    itemID=itemID, state=x.active, sideEffects={se.effectID: se.active for se in x.sideEffects})),))
         elif context == 'cargoItem':
             for x in selection:
                 self.data.append(((FitRemoveCargoCommand, fitID, x.itemID, 1, True), (FitAddCargoCommand, fitID, itemID, x.amount)))

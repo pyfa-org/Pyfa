@@ -2,6 +2,7 @@ from logbook import Logger
 
 import eos.db
 from eos.const import FittingModuleState
+from eos.saveddata.booster import Booster
 from eos.saveddata.module import Module
 from service.market import Market
 from utils.repr import makeReprStr
@@ -83,6 +84,42 @@ class ModuleInfo:
         return makeReprStr(self, [
             'itemID', 'baseItemID', 'mutaplasmidID', 'mutations',
             'chargeID', 'state', 'spoolType', 'spoolAmount'])
+
+
+class BoosterInfo:
+
+    def __init__(self, itemID, state=None, sideEffects=None):
+        self.itemID = itemID
+        self.state = state
+        self.sideEffects = sideEffects
+
+    @classmethod
+    def fromBooster(cls, booster):
+        if booster is None:
+            return None
+        info = cls(
+            itemID=booster.itemID,
+            state=booster.active,
+            sideEffects={se.effectID: se.active for se in booster.sideEffects})
+        return info
+
+    def toBooster(self):
+        item = Market.getInstance().getItem(self.itemID)
+        try:
+            booster = Booster(item)
+        except ValueError:
+            pyfalog.warning('Invalid item: {}'.format(self.itemID))
+            return None
+        if self.state is not None:
+            booster.active = self.state
+        if self.sideEffects is not None:
+            for sideEffect in booster.sideEffects:
+                if sideEffect.effectID in self.sideEffects:
+                    sideEffect.active = self.sideEffects[sideEffect.effectID]
+        return booster
+
+    def __repr__(self):
+        return makeReprStr(self, ['itemID', 'state', 'sideEffects'])
 
 
 def stateLimit(itemIdentity):
