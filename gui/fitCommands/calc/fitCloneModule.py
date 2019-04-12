@@ -1,44 +1,50 @@
-import wx
-import eos.db
-from logbook import Logger
 import copy
+
+import wx
+from logbook import Logger
+
+import eos.db
+from eos.exception import HandledListActionError
+from gui.fitCommands.helpers import ModuleInfo
+from service.fit import Fit
+
+
 pyfalog = Logger(__name__)
 
 
 class FitCloneModuleCommand(wx.Command):
-    """
-    Clone a module from src to dst
-    This will overwrite dst! Checking for empty module must be
-    done at a higher level
 
-    from sFit.cloneModule
-    """
-    def __init__(self, fitID, src, dst):
-        wx.Command.__init__(self, True, "Module Clone")
+    def __init__(self, fitID, srcPosition, dstPosition):
+        wx.Command.__init__(self, True, 'Clone Module')
         self.fitID = fitID
-        self.src = src
-        self.dst = dst
+        self.srcPosition = srcPosition
+        self.dstPosition = dstPosition
+        self.dstModInfo = None
 
     def Do(self):
-        fit = eos.db.getFit(self.fitID)
-        # Gather modules
-        srcMod = fit.modules[self.src]
-        dstMod = fit.modules[self.dst]  # should be a placeholder module
-
-        new = copy.deepcopy(srcMod)
-        new.owner = fit
-        if new.fits(fit):
-            pyfalog.debug("Cloning {} from source {} to destination {} for fit ID {}", srcMod, self.src, self.dst, self.fitID)
-            # insert copy if module meets hardpoint restrictions
-            fit.modules.remove(dstMod)
-            fit.modules.insert(self.dst, new)
-
+        pyfalog.debug('Doing cloning from position {} to position {} for fit ID {}'.format(self.srcPosition, self.dstPosition, self.fitID))
+        sFit = Fit.getInstance()
+        fit = sFit.getFit(self.fitID)
+        srcMod = fit.modules[self.srcPosition]
+        copyMod = copy.deepcopy(srcMod)
+        copyMod.owner = fit
+        if not copyMod.fits(fit):
+            return False
+        if not fit.modules[self.dstPosition].isEmpty:
+            return False
+        try:
+            fit.modules.replace(self.dstPosition, copyMod)
+        except HandledListActionError:
+            pyfalog.warning('Failed to replace module')
             eos.db.commit()
-            return True
-        return False
+            return False
+        sFit.checkStates(fit, copyMod)
+        eos.db.commit()
+        return True
 
     def Undo(self):
-        from .fitRemoveModule import FitRemoveModuleCommand  # Avoid circular import
-        cmd = FitRemoveModuleCommand(self.fitID, [self.dst])
+        pyfalog.debug('Undoing cloning from position {} to position {} for fit ID {}'.format(self.srcPosition, self.dstPosition, self.fitID))
+        from .fitRemoveModule import FitRemoveModuleCommand
+        cmd = FitRemoveModuleCommand(self.fitID, [self.dstPosition])
         cmd.Do()
         return True

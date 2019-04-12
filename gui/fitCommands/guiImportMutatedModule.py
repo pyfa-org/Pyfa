@@ -1,38 +1,42 @@
 import wx
-import eos.db
+from logbook import Logger
+
 import gui.mainFrame
 from gui import globalEvents as GE
-from .calc.fitImportMutatedModule import FitImportMutatedCommand
+from gui.fitCommands.helpers import ModuleInfo
 from service.fit import Fit
-from logbook import Logger
+from .calc.fitAddModule import FitAddModuleCommand
+
+
 pyfalog = Logger(__name__)
 
 
 class GuiImportMutatedModuleCommand(wx.Command):
 
-    def __init__(self, fitID, baseItem, mutaItem, attrMap):
-        wx.Command.__init__(self, True, "Mutated Module Import: {} {} {}".format(baseItem, mutaItem, attrMap))
-        self.mainFrame = gui.mainFrame.MainFrame.getInstance()
-        self.sFit = Fit.getInstance()
+    def __init__(self, fitID, baseItem, mutaplasmid, mutations):
+        wx.Command.__init__(self, True, "Mutated Module Import: {} {} {}".format(baseItem, mutaplasmid, mutations))
+        self.internalHistory = wx.CommandProcessor()
         self.fitID = fitID
-        self.baseItem = baseItem
-        self.mutaItem = mutaItem
-        self.attrMap = attrMap
-        self.internal_history = wx.CommandProcessor()
+        self.newModInfo = ModuleInfo(
+            itemID=mutaplasmid.resultingItem.ID,
+            baseItemID=baseItem.ID,
+            mutaplasmidID=mutaplasmid.ID,
+            mutations=mutations)
+        print(self.newModInfo)
 
     def Do(self):
         pyfalog.debug("{} Do()".format(self))
 
-        if self.internal_history.Submit(FitImportMutatedCommand(self.fitID, self.baseItem, self.mutaItem, self.attrMap)):
-            self.sFit.recalc(self.fitID)
-            wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=self.fitID, action="modadd"))
+        if self.internalHistory.Submit(FitAddModuleCommand(fitID=self.fitID, newModInfo=self.newModInfo)):
+            Fit.getInstance().recalc(self.fitID)
+            wx.PostEvent(gui.mainFrame.MainFrame.getInstance(), GE.FitChanged(fitID=self.fitID, action="modadd"))
             return True
         return False
 
     def Undo(self):
         pyfalog.debug("{} Undo()".format(self))
-        for _ in self.internal_history.Commands:
-            self.internal_history.Undo()
-        self.sFit.recalc(self.fitID)
-        wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=self.fitID, action="moddel"))
+        for _ in self.internalHistory.Commands:
+            self.internalHistory.Undo()
+        Fit.getInstance().recalc(self.fitID)
+        wx.PostEvent(gui.mainFrame.MainFrame.getInstance(), GE.FitChanged(fitID=self.fitID, action="moddel"))
         return True

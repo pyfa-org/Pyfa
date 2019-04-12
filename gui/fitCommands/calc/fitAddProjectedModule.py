@@ -3,6 +3,7 @@ from logbook import Logger
 
 import eos.db
 from eos.const import FittingModuleState
+from eos.exception import HandledListActionError
 from service.fit import Fit
 
 
@@ -20,26 +21,28 @@ class FitAddProjectedModuleCommand(wx.Command):
         self.oldPosition = None
 
     def Do(self):
-        pyfalog.debug('Doing projection of module {} onto: {}'.format(self.newModInfo, self.fitID))
+        pyfalog.debug('Doing addition of projected module {} onto: {}'.format(self.newModInfo, self.fitID))
         fit = Fit.getInstance().getFit(self.fitID)
         newMod = self.newModInfo.toModule(fallbackState=FittingModuleState.ACTIVE)
         if newMod is None:
             return False
 
-        if not newMod.canHaveState(newMod.state, fit):
+        if not newMod.canHaveState(newMod.state, projectedOnto=fit):
             newMod.state = FittingModuleState.OFFLINE
 
         self.oldPosition, self.oldModInfo = fit.projectedModules.makeRoom(newMod)
 
         if self.newPosition is not None:
-            fit.projectedModules.insert(self.newPosition, newMod)
-            if not fit.projectedModules.lastOpState:
-                self.Undo()
+            try:
+                fit.projectedModules.insert(self.newPosition, newMod)
+            except HandledListActionError:
+                eos.db.commit()
                 return False
         else:
-            fit.projectedModules.append(newMod)
-            if not fit.projectedModules.lastOpState:
-                self.Undo()
+            try:
+                fit.projectedModules.append(newMod)
+            except HandledListActionError:
+                eos.db.commit()
                 return False
             self.newPosition = fit.projectedModules.index(newMod)
 
@@ -47,12 +50,15 @@ class FitAddProjectedModuleCommand(wx.Command):
         return True
 
     def Undo(self):
+        pyfalog.debug('Undoing addition of projected module {} onto: {}'.format(self.newModInfo, self.fitID))
         if self.oldPosition is not None and self.oldModInfo is not None:
             cmd = FitAddProjectedModuleCommand(
                 fitID=self.fitID,
                 newModInfo=self.oldModInfo,
                 newPosition=self.oldPosition)
             return cmd.Do()
+        if self.newPosition is None:
+            return False
         from gui.fitCommands.calc.fitRemoveProjectedModule import FitRemoveProjectedModuleCommand
         cmd = FitRemoveProjectedModuleCommand(self.fitID, self.newPosition)
         cmd.Do()

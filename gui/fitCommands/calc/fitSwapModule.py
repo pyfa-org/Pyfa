@@ -1,38 +1,37 @@
 import wx
-import eos.db
 from logbook import Logger
+
+import eos.db
+from service.fit import Fit
+
+
 pyfalog = Logger(__name__)
 
 
 class FitSwapModuleCommand(wx.Command):
-    """"
-    from sFit.swapModules
-    """
-    def __init__(self, fitID, src, dst):
-        wx.Command.__init__(self, True, "Module Swap")
+
+    def __init__(self, fitID, position1, position2):
+        wx.Command.__init__(self, True, 'Swap Modules')
         self.fitID = fitID
-        self.src = src
-        self.dst = dst
+        self.position1 = position1
+        self.position2 = position2
 
     def Do(self):
-        self.__swap(self.fitID, self.src, self.dst)
+        pyfalog.debug('Doing swapping between {} and {} for fit {}'.format(self.position1, self.position2, self.fitID))
+        self.__swap(self.fitID, self.position1, self.position2)
         return True
 
     def Undo(self):
-        self.__swap(self.fitID, self.dst, self.src)
+        self.__swap(self.fitID, self.position2, self.position1)
+        pyfalog.debug('Undoing swapping between {} and {} for fit {}'.format(self.position1, self.position2, self.fitID))
         return True
 
     def __swap(self, fitID, src, dst):
-        pyfalog.debug("Swapping modules from source ({0}) to destination ({1}) for fit ID: {1}", src, dst, fitID)
-        fit = eos.db.getFit(fitID)
-        # Gather modules
+        fit = Fit.getInstance().getFit(fitID)
         srcMod = fit.modules[src]
         dstMod = fit.modules[dst]
-
-        # To swap, we simply remove mod and insert at destination.
         fit.modules.remove(srcMod)
         fit.modules.insert(dst, srcMod)
         fit.modules.remove(dstMod)
         fit.modules.insert(src, dstMod)
-
         eos.db.commit()

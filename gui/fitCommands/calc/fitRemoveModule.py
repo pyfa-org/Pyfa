@@ -29,14 +29,16 @@ class FitRemoveModuleCommand(wx.Command):
 
         # If no modules were removed, report that command was not completed
         if not len(self.oldModInfos) > 0:
+            eos.db.commit()
             return False
         eos.db.commit()
         return True
 
     def Undo(self):
         pyfalog.debug('Undoing removal of modules {} on fit {}'.format(self.oldModInfos, self.fitID))
+        results = []
         from gui.fitCommands.calc.fitReplaceModule import FitReplaceModuleCommand
         for position, modInfo in self.oldModInfos.items():
             cmd = FitReplaceModuleCommand(fitID=self.fitID, position=position, newModInfo=modInfo)
-            cmd.Do()
-        return True
+            results.append(cmd.Do())
+        return any(results)

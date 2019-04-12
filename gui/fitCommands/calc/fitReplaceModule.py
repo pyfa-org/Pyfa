@@ -2,6 +2,7 @@ import wx
 from logbook import Logger
 
 import eos.db
+from eos.exception import HandledListActionError
 from gui.fitCommands.helpers import ModuleInfo, stateLimit
 from service.fit import Fit
 
@@ -35,7 +36,12 @@ class FitReplaceModuleCommand(wx.Command):
             self.Undo()
             return False
         newMod.owner = fit
-        fit.modules.replace(self.position, newMod)
+        try:
+            fit.modules.replace(self.position, newMod)
+        except HandledListActionError:
+            pyfalog.warning('Failed to replace in list')
+            self.Undo()
+            return False
         sFit.checkStates(fit, newMod)
         eos.db.commit()
         return True
@@ -59,7 +65,12 @@ class FitReplaceModuleCommand(wx.Command):
             self.Do()
             return False
         oldMod.owner = fit
-        fit.modules.replace(self.position, oldMod)
+        try:
+            fit.modules.replace(self.position, oldMod)
+        except HandledListActionError:
+            pyfalog.warning('Failed to replace in list')
+            self.Do()
+            return False
         sFit.checkStates(fit, oldMod)
         eos.db.commit()
         return True
