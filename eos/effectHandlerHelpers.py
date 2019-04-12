@@ -227,15 +227,15 @@ class HandledDroneCargoList(HandledList):
 
     def append(self, thing):
         HandledList.append(self, thing)
-
         if thing.isInvalid:
             self.remove(thing)
+            raise HandledListActionError(thing)
 
     def insert(self, idx, thing):
         HandledList.insert(self, idx, thing)
-
         if thing.isInvalid:
             self.remove(thing)
+            raise(HandledListActionError)
 
 
 class HandledImplantList(HandledList):
@@ -244,7 +244,7 @@ class HandledImplantList(HandledList):
         if implant.isInvalid:
             HandledList.append(self, implant)
             self.remove(implant)
-            return
+            raise HandledListActionError(implant)
 
         self.makeRoom(implant)
         HandledList.append(self, implant)
@@ -269,7 +269,7 @@ class HandledBoosterList(HandledList):
         if booster.isInvalid:
             HandledList.append(self, booster)
             self.remove(booster)
-            return
+            raise HandledListActionError(booster)
 
         self.makeRoom(booster)
         HandledList.append(self, booster)
@@ -290,6 +290,7 @@ class HandledBoosterList(HandledList):
 
 
 class HandledSsoCharacterList(list):
+
     def append(self, character):
         old = next((x for x in self if x.client == character.client), None)
         if old is not None:
@@ -301,18 +302,13 @@ class HandledSsoCharacterList(list):
 
 class HandledProjectedModList(HandledList):
 
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.lastOpState = None
-
     def append(self, proj):
         if proj.isInvalid:
             # we must include it before we remove it. doing it this way ensures
             # rows and relationships in database are removed as well
             HandledList.append(self, proj)
             self.remove(proj)
-            self.lastOpState = False
-            return
+            raise HandledListActionError(proj)
 
         proj.projected = True
 
@@ -321,9 +317,7 @@ class HandledProjectedModList(HandledList):
         # Remove non-projectable modules
         if not proj.item.isType("projected") and not proj.isExclusiveSystemEffect:
             self.remove(proj)
-            self.lastOpState = False
-            return
-        self.lastOpState = True
+            raise HandledListActionError(proj)
 
     def insert(self, idx, proj):
         if proj.isInvalid:
@@ -331,8 +325,7 @@ class HandledProjectedModList(HandledList):
             # rows and relationships in database are removed as well
             HandledList.insert(self, idx, proj)
             self.remove(proj)
-            self.lastOpState = False
-            return
+            raise HandledListActionError(proj)
 
         proj.projected = True
 
@@ -341,9 +334,7 @@ class HandledProjectedModList(HandledList):
         # Remove non-projectable modules
         if not proj.item.isType("projected") and not proj.isExclusiveSystemEffect:
             self.remove(proj)
-            self.lastOpState = False
-            return
-        self.lastOpState = True
+            raise HandledListActionError(proj)
 
     @property
     def currentSystemEffect(self):
@@ -374,7 +365,7 @@ class HandledProjectedDroneList(HandledDroneCargoList):
         # Remove invalid or non-projectable drones
         if proj.isInvalid or not proj.item.isType("projected"):
             self.remove(proj)
-            return False
+            raise HandledListActionError(proj)
         return True
 
     def insert(self, idx, proj):
@@ -384,7 +375,7 @@ class HandledProjectedDroneList(HandledDroneCargoList):
         # Remove invalid or non-projectable drones
         if proj.isInvalid or not proj.item.isType("projected"):
             self.remove(proj)
-            return False
+            raise HandledListActionError(proj)
         return True
 
 
