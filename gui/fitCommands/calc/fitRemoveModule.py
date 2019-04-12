@@ -25,7 +25,7 @@ class FitRemoveModuleCommand(wx.Command):
             mod = fit.modules[position]
             if not mod.isEmpty:
                 self.oldModInfos[position] = ModuleInfo.fromModule(mod)
-                fit.modules.toDummy(position)
+                fit.modules.free(position)
 
         # If no modules were removed, report that command was not completed
         if not len(self.oldModInfos) > 0:

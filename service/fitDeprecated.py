@@ -408,7 +408,7 @@ class FitDeprecated(object):
         modulesChanged = False
         for x in positions:
             if not fit.modules[x].isEmpty:
-                fit.modules.toDummy(x)
+                fit.modules.free(x)
                 modulesChanged = True
 
         # if no modules have changes, report back None
@@ -438,7 +438,7 @@ class FitDeprecated(object):
         item = eos.db.getItem(newItemID, eager=("attributes", "group.category"))
 
         # Dummy it out in case the next bit fails
-        fit.modules.toDummy(position)
+        fit.modules.free(position)
 
         try:
             m = es_Module(item)
@@ -448,7 +448,7 @@ class FitDeprecated(object):
 
         if m.fits(fit):
             m.owner = fit
-            fit.modules.toModule(position, m)
+            fit.modules.replace(position, m)
             if m.isValidState(FittingModuleState.ACTIVE):
                 m.state = FittingModuleState.ACTIVE
 

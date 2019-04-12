@@ -18,6 +18,8 @@
 # ===============================================================================
 
 from logbook import Logger
+
+from eos.exception import HandledListActionError
 from utils.deprecated import deprecated
 
 pyfalog = Logger(__name__)
@@ -125,11 +127,11 @@ class HandledModuleList(HandledList):
                     emptyPosition = currPos
 
         if emptyPosition < len(self):
-            del self[emptyPosition]
             mod.position = emptyPosition
-            HandledList.insert(self, emptyPosition, mod)
+            self.__toModule(emptyPosition, mod)
             if mod.isInvalid:
-                self.remove(mod)
+                self.__toDummy(mod.position)
+                raise HandledListActionError(mod)
             return
 
         self.appendIgnoreEmpty(mod)
@@ -139,7 +141,17 @@ class HandledModuleList(HandledList):
         HandledList.append(self, mod)
         if mod.isInvalid:
             self.remove(mod)
-            return
+            raise HandledListActionError(mod)
+
+    def replace(self, idx, mod):
+        try:
+            oldMod = self[idx]
+        except IndexError:
+            raise HandledListActionError(mod)
+        self.__toModule(idx, mod)
+        if mod.isInvalid:
+            self.__toModule(idx, oldMod)
+            raise HandledListActionError(mod)
 
     def replaceRackPosition(self, rackPosition, mod):
         listPositions = []
@@ -152,19 +164,24 @@ class HandledModuleList(HandledList):
         except IndexError:
             self.appendIgnoreEmpty(mod)
         else:
-            self.toDummy(modListPosition)
+            self.__toDummy(modListPosition)
             if not mod.isEmpty:
-                self.toModule(modListPosition, mod)
+                self.__toModule(modListPosition, mod)
                 if mod.isInvalid:
-                    self.toDummy(modListPosition)
+                    self.__toDummy(modListPosition)
+                    raise HandledListActionError(mod)
 
-    def insert(self, index, mod):
-        mod.position = index
-        i = index
+    def insert(self, idx, mod):
+        mod.position = idx
+        i = idx
         while i < len(self):
             self[i].position += 1
             i += 1
-        HandledList.insert(self, index, mod)
+        HandledList.insert(self, idx, mod)
+        if mod.isInvalid:
+            self.remove(mod)
+            raise HandledListActionError(mod)
+
 
     def remove(self, mod):
         HandledList.remove(self, mod)
@@ -174,14 +191,17 @@ class HandledModuleList(HandledList):
         for i in range(oldPos, len(self)):
             self[i].position -= 1
 
-    def toDummy(self, index):
+    def free(self, idx):
+        self.__toDummy(idx)
+
+    def __toDummy(self, index):
         mod = self[index]
         if not mod.isEmpty:
             dummy = mod.buildEmpty(mod.slot)
             dummy.position = index
             self[index] = dummy
 
-    def toModule(self, index, mod):
+    def __toModule(self, index, mod):
         mod.position = index
         self[index] = mod
 
@@ -190,7 +210,7 @@ class HandledModuleList(HandledList):
         for i in range(len(self)):
             mod = self[i]
             if mod.getModifiedItemAttr("subSystemSlot") == slot:
-                self.toDummy(i)
+                self.__toDummy(i)
                 break
 
 

@@ -29,13 +29,13 @@ class FitReplaceModuleCommand(wx.Command):
         if newMod is None:
             return False
         # Dummy it out in case the next bit fails
-        fit.modules.toDummy(self.position)
+        fit.modules.free(self.position)
         if not newMod.fits(fit):
             pyfalog.warning('Module does not fit')
             self.Undo()
             return False
         newMod.owner = fit
-        fit.modules.toModule(self.position, newMod)
+        fit.modules.replace(self.position, newMod)
         sFit.checkStates(fit, newMod)
         eos.db.commit()
         return True
@@ -53,13 +53,13 @@ class FitReplaceModuleCommand(wx.Command):
         oldMod = self.oldModInfo.toModule()
         if oldMod is None:
             return False
-        fit.modules.toDummy(self.position)
+        fit.modules.free(self.position)
         if not oldMod.fits(fit):
             pyfalog.warning('Module does not fit')
             self.Do()
             return False
         oldMod.owner = fit
-        fit.modules.toModule(self.position, oldMod)
+        fit.modules.replace(self.position, oldMod)
         sFit.checkStates(fit, oldMod)
         eos.db.commit()
         return True
