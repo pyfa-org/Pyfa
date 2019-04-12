@@ -148,7 +148,7 @@ class CargoView(d.Display):
             return
 
         self.original = fit.cargo if fit is not None else None
-        self.cargo = stuff = fit.cargo if fit is not None else None
+        self.cargo = stuff = fit.cargo[:] if fit is not None else None
         if stuff is not None:
             stuff.sort(key=lambda c: (c.item.group.category.name, c.item.group.name, c.item.name))
 

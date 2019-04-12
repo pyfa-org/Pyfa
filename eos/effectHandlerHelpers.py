@@ -115,6 +115,9 @@ class HandledList(list):
             thing.itemID = 0
         list.remove(self, thing)
 
+    def sort(self, *args, **kwargs):
+        raise NotImplementedError
+
 
 class HandledModuleList(HandledList):
 

@@ -56,7 +56,6 @@ class FitAddImplantCommand(wx.Command):
                 cmd.Do()
                 return False
             self.newPosition = fit.implants.index(newImplant)
-
         eos.db.commit()
         return True
 

@@ -31,6 +31,6 @@ class FitRemoveImplantCommand(wx.Command):
         from .fitAddImplant import FitAddImplantCommand
         cmd = FitAddImplantCommand(
             fitID=self.fitID,
-            boosterInfo=self.savedBoosterInfo,
+            implantInfo=self.savedImplantInfo,
             position=self.position)
         return cmd.Do()

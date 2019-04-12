@@ -193,6 +193,9 @@ class BoosterInfo:
                 sideEffect.active = self.sideEffects.get(sideEffect.effectID, sideEffect.active)
         return booster
 
+    def __repr__(self):
+        return makeReprStr(self, ['itemID', 'state', 'sideEffects'])
+
 
 class ImplantInfo:
 
@@ -219,6 +222,9 @@ class ImplantInfo:
         if self.state is not None:
             implant.active = self.state
         return implant
+
+    def __repr__(self):
+        return makeReprStr(self, ['itemID', 'state'])
 
 
 class CargoInfo:
