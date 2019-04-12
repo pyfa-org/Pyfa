@@ -5,6 +5,7 @@ from eos.const import FittingModuleState
 from eos.saveddata.booster import Booster
 from eos.saveddata.cargo import Cargo
 from eos.saveddata.drone import Drone
+from eos.saveddata.fighter import Fighter
 from eos.saveddata.module import Module
 from service.market import Market
 from utils.repr import makeReprStr
@@ -51,14 +52,15 @@ class ModuleInfo:
             baseItem = None
             mutaplasmid = None
         try:
-            mod = Module(item, baseItem, mutaplasmid)
+            mod = Module(item, baseItem=baseItem, mutaplasmid=mutaplasmid)
         except ValueError:
             pyfalog.warning('Invalid item: {}'.format(self.itemID))
             return None
 
-        for attrID, mutator in mod.mutators.items():
-            if attrID in self.mutations:
-                mutator.value = self.mutations[attrID]
+        if self.mutations is not None:
+            for attrID, mutator in mod.mutators.items():
+                if attrID in self.mutations:
+                    mutator.value = self.mutations[attrID]
 
         if self.spoolType is not None and self.spoolAmount is not None:
             mod.spoolType = self.spoolType
@@ -116,8 +118,7 @@ class BoosterInfo:
             booster.active = self.state
         if self.sideEffects is not None:
             for sideEffect in booster.sideEffects:
-                if sideEffect.effectID in self.sideEffects:
-                    sideEffect.active = self.sideEffects[sideEffect.effectID]
+                sideEffect.active = self.sideEffects.get(sideEffect.effectID, sideEffect.active)
         return booster
 
 class CargoInfo:
@@ -125,15 +126,6 @@ class CargoInfo:
     def __init__(self, itemID, amount):
         self.itemID = itemID
         self.amount = amount
-
-    @classmethod
-    def fromCargo(cls, cargo):
-        if cargo is None:
-            return None
-        info = cls(
-            itemID=cargo.itemID,
-            amount=cargo.active)
-        return info
 
     def toCargo(self):
         item = Market.getInstance().getItem(self.itemID)
@@ -175,6 +167,45 @@ class DroneInfo:
 
     def __repr__(self):
         return makeReprStr(self, ['itemID', 'amount', 'amountActive'])
+
+
+class FighterInfo:
+
+    def __init__(self, itemID, amount=None, state=None, abilities=None):
+        self.itemID = itemID
+        self.amount = amount
+        self.state = state
+        self.abilities = abilities
+
+    @classmethod
+    def fromFighter(cls, fighter):
+        if fighter is None:
+            return None
+        info = cls(
+            itemID=fighter.itemID,
+            amount=fighter.amount,
+            state=fighter.active,
+            abilities={fa.effectID: fa.active for fa in fighter.abilities})
+        return info
+
+    def toFighter(self):
+        item = Market.getInstance().getItem(self.itemID)
+        try:
+            fighter = Fighter(item)
+        except ValueError:
+            pyfalog.warning('Invalid item: {}'.format(self.itemID))
+            return None
+        if self.amount is not None:
+            fighter.amount = self.amount
+        if self.state is not None:
+            fighter.active = self.state
+        if self.abilities is not None:
+            for ability in fighter.abilities:
+                ability.active = self.abilities.get(ability.effectID, ability.active)
+        return fighter
+
+    def __repr__(self):
+        return makeReprStr(self, ['itemID', 'amount', 'state', 'abilities'])
 
 
 def stateLimit(itemIdentity):

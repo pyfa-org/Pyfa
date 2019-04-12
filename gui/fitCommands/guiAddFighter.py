@@ -1,30 +1,29 @@
 import wx
-from service.fit import Fit
 
 import gui.mainFrame
 from gui import globalEvents as GE
+from gui.fitCommands.helpers import FighterInfo
+from service.fit import Fit
 from .calc.fitAddFighter import FitAddFighterCommand
 
 
 class GuiAddFighterCommand(wx.Command):
     def __init__(self, fitID, itemID):
         wx.Command.__init__(self, True, "Fighter Add")
-        self.mainFrame = gui.mainFrame.MainFrame.getInstance()
-        self.sFit = Fit.getInstance()
         self.internal_history = wx.CommandProcessor()
         self.fitID = fitID
         self.itemID = itemID
 
     def Do(self):
-        if self.internal_history.Submit(FitAddFighterCommand(self.fitID, self.itemID, None, None)):
-            self.sFit.recalc(self.fitID)
-            wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=self.fitID))
+        if self.internal_history.Submit(FitAddFighterCommand(fitID=self.fitID, fighterInfo=FighterInfo(itemID=self.itemID))):
+            Fit.getInstance().recalc(self.fitID)
+            wx.PostEvent(gui.mainFrame.MainFrame.getInstance(), GE.FitChanged(fitID=self.fitID))
             return True
         return False
 
     def Undo(self):
         for _ in self.internal_history.Commands:
             self.internal_history.Undo()
-        self.sFit.recalc(self.fitID)
-        wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=self.fitID))
+        Fit.getInstance().recalc(self.fitID)
+        wx.PostEvent(gui.mainFrame.MainFrame.getInstance(), GE.FitChanged(fitID=self.fitID))
         return True

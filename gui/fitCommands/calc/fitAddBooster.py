@@ -11,11 +11,11 @@ pyfalog = Logger(__name__)
 
 class FitAddBoosterCommand(wx.Command):
 
-    def __init__(self, fitID, newBoosterInfo, newPosition=None):
+    def __init__(self, fitID, boosterInfo, position=None):
         wx.Command.__init__(self, True, 'Add Booster')
         self.fitID = fitID
-        self.newBoosterInfo = newBoosterInfo
-        self.newPosition = newPosition
+        self.newBoosterInfo = boosterInfo
+        self.newPosition = position
         self.oldBoosterInfo = None
         self.oldPosition = None
 
@@ -40,8 +40,8 @@ class FitAddBoosterCommand(wx.Command):
                 pyfalog.warning('Failed to insert to list')
                 cmd = FitAddBoosterCommand(
                     fitID=self.fitID,
-                    newBoosterInfo=self.oldBoosterInfo,
-                    newPosition=self.oldPosition)
+                    boosterInfo=self.oldBoosterInfo,
+                    position=self.oldPosition)
                 cmd.Do()
                 return False
         else:
@@ -51,8 +51,8 @@ class FitAddBoosterCommand(wx.Command):
                 pyfalog.warning('Failed to append to list')
                 cmd = FitAddBoosterCommand(
                     fitID=self.fitID,
-                    newBoosterInfo=self.oldBoosterInfo,
-                    newPosition=self.oldPosition)
+                    boosterInfo=self.oldBoosterInfo,
+                    position=self.oldPosition)
                 cmd.Do()
                 return False
             self.newPosition = fit.boosters.index(newBooster)
@@ -65,8 +65,8 @@ class FitAddBoosterCommand(wx.Command):
         if self.oldBoosterInfo and self.oldPosition:
             cmd = FitAddBoosterCommand(
                 fitID=self.fitID,
-                newBoosterInfo=self.oldBoosterInfo,
-                newPosition=self.oldPosition)
+                boosterInfo=self.oldBoosterInfo,
+                position=self.oldPosition)
             return cmd.Do()
         from .fitRemoveBooster import FitRemoveBoosterCommand
         cmd = FitRemoveBoosterCommand(self.fitID, self.newPosition)

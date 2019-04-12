@@ -62,7 +62,6 @@ class FighterAbility(ContextMenu):
 
         fitID = self.mainFrame.getActiveFit()
         fit = Fit.getInstance().getFit(fitID)
-        print(self.isProjected)
         if self.isProjected:
             index = fit.projectedFighters.index(self.fighter)
         else:

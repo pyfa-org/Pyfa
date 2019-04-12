@@ -2,57 +2,63 @@ import wx
 from logbook import Logger
 
 import eos.db
-from eos.saveddata.fighter import Fighter
+from eos.exception import HandledListActionError
 from service.fit import Fit
-from service.market import Market
 
 
 pyfalog = Logger(__name__)
 
 
 class FitAddFighterCommand(wx.Command):
-    """"
-    from sFit.addFighter
-    """
-    def __init__(self, fitID, itemID, state, abilities):
-        wx.Command.__init__(self, True, "Add Fighter")
+
+    def __init__(self, fitID, fighterInfo, position=None):
+        wx.Command.__init__(self, True, 'Add Fighter')
         self.fitID = fitID
-        self.newItemID = itemID
-        self.newState = state
-        self.newAbilities = abilities
-        self.newIndex = None
+        self.fighterInfo = fighterInfo
+        self.position = position
 
     def Do(self):
+        pyfalog.debug('Doing addition of fighter {} to fit {}'.format(self.fighterInfo, self.fitID))
+        fighter = self.fighterInfo.toFighter()
+        if fighter is None:
+            return False
+
         fit = Fit.getInstance().getFit(self.fitID)
-        item = Market.getInstance().getItem(self.newItemID, eager=("attributes", "group.category"))
-        try:
-            fighter = Fighter(item)
-        except ValueError:
-            pyfalog.warning("Invalid fighter: {}", item)
-            return False
         if not fighter.fits(fit):
+            pyfalog.warning('Fighter does not fit')
             return False
 
-        used = fit.getSlotsUsed(fighter.slot)
-        total = fit.getNumSlots(fighter.slot)
-        if self.newState is not None:
-            fighter.active = self.newState
-        elif used >= total:
-            fighter.active = False
+        # If we were not asked to set specific state, figure it out based on available tubes
+        if self.fighterInfo.state is None:
+            typeUsed = fit.getSlotsUsed(fighter.slot)
+            typeTotal = fit.getNumSlots(fighter.slot)
+
+            if fit.fighterTubesUsed >= fit.fighterTubesTotal or typeUsed >= typeTotal:
+                fighter.active = False
+            else:
+                fighter.active = True
+
+        if self.position is None:
+            try:
+                fit.fighters.append(fighter)
+            except HandledListActionError:
+                pyfalog.warning('Failed to append to list')
+                eos.db.commit()
+                return False
+            self.position = fit.fighters.index(fighter)
         else:
-            fighter.active = True
-
-        if self.newAbilities is not None:
-            for ability in fighter.abilities:
-                ability.active = self.newAbilities.get(ability.effectID, ability.active)
-
-        fit.fighters.append(fighter)
-        self.newIndex = fit.fighters.index(fighter)
+            try:
+                fit.fighters.insert(self.position, fighter)
+            except HandledListActionError:
+                pyfalog.warning('Failed to insert to list')
+                eos.db.commit()
+                return False
         eos.db.commit()
         return True
 
     def Undo(self):
-        from .fitRemoveFighter import FitRemoveFighterCommand  # Avoid circular import
-        cmd = FitRemoveFighterCommand(self.fitID, self.newIndex)
+        pyfalog.debug('Undoing addition of fighter {} to fit {}'.format(self.fighterInfo, self.fitID))
+        from .fitRemoveFighter import FitRemoveFighterCommand
+        cmd = FitRemoveFighterCommand(fitID=self.fitID, position=self.position)
         cmd.Do()
         return True

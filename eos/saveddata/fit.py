@@ -1069,8 +1069,11 @@ class Fit(object):
         for f in self.fighters:
             if f.active:
                 amount += 1
-
         return amount
+
+    @property
+    def fighterTubesTotal(self):
+        return self.ship.getModifiedItemAttr("fighterTubes")
 
     @property
     def cargoBayUsed(self):

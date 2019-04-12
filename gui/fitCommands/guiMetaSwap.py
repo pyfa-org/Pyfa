@@ -3,7 +3,7 @@ from service.fit import Fit
 
 import gui.mainFrame
 from gui import globalEvents as GE
-from gui.fitCommands.helpers import ModuleInfo, BoosterInfo
+from gui.fitCommands.helpers import ModuleInfo, FighterInfo, BoosterInfo
 from .calc.fitRemoveImplant import FitRemoveImplantCommand
 from .calc.fitAddImplant import FitAddImplantCommand
 from .calc.fitAddBooster import FitAddBoosterCommand
@@ -46,9 +46,9 @@ class GuiMetaSwapCommand(wx.Command):
                 self.data.append(((FitRemoveCargoCommand, fitID, x.itemID, 1, True), (FitAddCargoCommand, fitID, itemID, x.amount)))
         elif context == 'fighterItem':
             for x in selection:
-                state = x.active
-                abilities = {fa.effectID: fa.active for fa in x.abilities}
-                self.data.append(((FitRemoveFighterCommand, fitID, fit.fighters.index(x)), (FitAddFighterCommand, fitID, itemID, state, abilities)))
+                fighterInfo = FighterInfo.fromFighter(x)
+                fighterInfo.itemID = itemID
+                self.data.append(((FitRemoveFighterCommand, fitID, fit.fighters.index(x)), (FitAddFighterCommand, fitID, fighterInfo)))
         elif context == 'droneItem':
             for x in selection:
                 self.data.append(((FitChangeDroneVariationCommand, fitID, fit.drones.index(x), itemID),),)

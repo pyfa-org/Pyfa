@@ -32,6 +32,6 @@ class FitRemoveBoosterCommand(wx.Command):
         from .fitAddBooster import FitAddBoosterCommand  # Avoid circular import
         cmd = FitAddBoosterCommand(
             fitID=self.fitID,
-            newBoosterInfo=self.savedBoosterInfo,
-            newPosition=self.position)
+            boosterInfo=self.savedBoosterInfo,
+            position=self.position)
         return cmd.Do()

@@ -22,7 +22,6 @@ class GuiImportMutatedModuleCommand(wx.Command):
             baseItemID=baseItem.ID,
             mutaplasmidID=mutaplasmid.ID,
             mutations=mutations)
-        print(self.newModInfo)
 
     def Do(self):
         pyfalog.debug("{} Do()".format(self))

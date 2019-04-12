@@ -203,7 +203,7 @@ class ResourcesViewFull(StatsView):
             ("label%sUsedDronesActive", lambda: fit.activeDrones, 0, 0, 0),
             ("label%sTotalDronesActive", lambda: fit.extraAttributes["maxActiveDrones"], 0, 0, 0),
             ("label%sUsedFighterTubes", lambda: fit.fighterTubesUsed, 3, 0, 9),
-            ("label%sTotalFighterTubes", lambda: fit.ship.getModifiedItemAttr("fighterTubes"), 3, 0, 9),
+            ("label%sTotalFighterTubes", lambda: fit.fighterTubesTotal, 3, 0, 9),
             ("label%sUsedCalibrationPoints", lambda: fit.calibrationUsed, 0, 0, 0),
             ("label%sTotalCalibrationPoints", lambda: fit.ship.getModifiedItemAttr('upgradeCapacity'), 0, 0, 0),
             ("label%sUsedPg", lambda: fit.pgUsed, 4, 0, 9),
