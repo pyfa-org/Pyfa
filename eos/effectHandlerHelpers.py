@@ -116,6 +116,8 @@ class HandledList(list):
         list.remove(self, thing)
 
     def sort(self, *args, **kwargs):
+        # We need it here to prevent external users from accidentally sorting the list as alot of
+        # external logic relies on keeping modules at their places
         raise NotImplementedError
 
 

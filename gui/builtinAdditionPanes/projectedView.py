@@ -159,7 +159,7 @@ class ProjectedView(d.Display):
 
     @staticmethod
     def moduleSort(module):
-        return module.item.name
+        return not module.isExclusiveSystemEffect, module.item.name
 
     @staticmethod
     def fighterSort(fighter):
