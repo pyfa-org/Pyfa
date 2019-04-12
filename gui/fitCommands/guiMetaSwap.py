@@ -3,6 +3,7 @@ from service.fit import Fit
 
 import gui.mainFrame
 from gui import globalEvents as GE
+from gui.fitCommands.helpers import ModuleInfo
 from .calc.fitRemoveImplant import FitRemoveImplantCommand
 from .calc.fitAddImplant import FitAddImplantCommand
 from .calc.fitRemoveBooster import FitRemoveBoosterCommand
@@ -30,9 +31,8 @@ class GuiMetaSwapCommand(wx.Command):
         if context == 'fittingModule':
             for x in selection:
                 position = fit.modules.index(x)
-                state = x.state
-                chargeID = x.chargeID
-                self.data.append(((FitReplaceModuleCommand, fitID, position, itemID, None, None, None, state, chargeID),),)
+                self.data.append(((FitReplaceModuleCommand, fitID, position, ModuleInfo(
+                    itemID=itemID, chargeID=x.chargeID, state=x.state, spoolType=x.spoolType, spoolAmount=x.spoolAmount)),),)
         elif context == 'implantItem':
             for x in selection:
                 idx = fit.implants.index(x)

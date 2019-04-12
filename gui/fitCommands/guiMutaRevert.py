@@ -2,6 +2,7 @@ import wx
 
 import gui.mainFrame
 from gui import globalEvents as GE
+from gui.fitCommands.helpers import ModuleInfo
 from service.fit import Fit
 from .calc.fitReplaceModule import FitReplaceModuleCommand
 
@@ -27,12 +28,12 @@ class GuiMutaRevertCommand(wx.Command):
         success = self.internal_history.Submit(FitReplaceModuleCommand(
             fitID=self.fitID,
             position=self.position,
-            newItemID=oldMod.baseItemID,
-            newBaseItemID=None,
-            newMutaplasmidID=None,
-            newMutations=None,
-            newState=oldMod.state,
-            newChargeID=oldMod.chargeID))
+            newModInfo=ModuleInfo(
+                itemID=oldMod.baseItemID,
+                chargeID=oldMod.chargeID,
+                state=oldMod.state,
+                spoolType=oldMod.spoolType,
+                spoolAmount=oldMod.spoolAmount)))
         if not success:
             return False
 

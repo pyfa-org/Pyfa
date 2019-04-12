@@ -6,6 +6,7 @@ from gui import globalEvents as GE
 from gui.fitCommands.calc.fitRemoveCargo import FitRemoveCargoCommand
 from gui.fitCommands.calc.fitRemoveModule import FitRemoveModuleCommand
 from gui.fitCommands.calc.fitReplaceModule import FitReplaceModuleCommand
+from gui.fitCommands.helpers import ModuleInfo
 from service.fit import Fit
 from .calc.fitAddCargo import FitAddCargoCommand
 
@@ -37,7 +38,10 @@ class GuiModuleToCargoCommand(wx.Command):
             else:  # otherwise, try to swap by replacing module with cargo item. If successful, remove old cargo and add new cargo
 
                 cargo = fit.cargo[self.cargoIdx]
-                self.modReplaceCmd = FitReplaceModuleCommand(self.fitID, module.modPosition, cargo.itemID)
+                self.modReplaceCmd = FitReplaceModuleCommand(
+                    fitID=self.fitID,
+                    position=module.modPosition,
+                    newModInfo=ModuleInfo(itemID=cargo.itemID))
 
                 result = self.internal_history.Submit(self.modReplaceCmd)
 

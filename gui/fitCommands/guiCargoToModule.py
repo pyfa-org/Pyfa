@@ -6,6 +6,7 @@ from gui import globalEvents as GE
 from gui.fitCommands.calc.fitSetCharge import FitSetChargeCommand
 from gui.fitCommands.calc.fitReplaceModule import FitReplaceModuleCommand
 from gui.fitCommands.calc.fitRemoveCargo import FitRemoveCargoCommand
+from gui.fitCommands.helpers import ModuleInfo
 from .calc.fitAddCargo import FitAddCargoCommand
 from logbook import Logger
 pyfalog = Logger(__name__)
@@ -47,12 +48,7 @@ class GuiCargoToModuleCommand(wx.Command):
             self.addCmd = FitReplaceModuleCommand(
                 fitID=self.fitID,
                 position=module.modPosition,
-                newItemID=cargo.itemID,
-                newBaseItemID=None,
-                newMutaplasmidID=None,
-                newMutations=None,
-                newState=None,
-                newChargeID=None)
+                newModInfo=ModuleInfo(itemID=cargo.itemID))
 
             result = self.internal_history.Submit(self.addCmd)
 

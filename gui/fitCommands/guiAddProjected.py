@@ -3,7 +3,7 @@ from service.fit import Fit
 
 import gui.mainFrame
 from gui import globalEvents as GE
-from eos.saveddata.module import Module
+from gui.fitCommands.helpers import ModuleInfo
 from .calc.fitAddProjectedModule import FitAddProjectedModuleCommand
 from .calc.fitAddProjectedFit import FitAddProjectedFitCommand
 from .calc.fitAddProjectedFighter import FitAddProjectedFighterCommand
@@ -35,7 +35,9 @@ class GuiAddProjectedCommand(wx.Command):
             elif item.category.name == "Fighter":
                 result = self.internal_history.Submit(FitAddProjectedFighterCommand(self.fitID, self.id, None, None))
             else:
-                result = self.internal_history.Submit(FitAddProjectedModuleCommand(self.fitID, self.id, None, None, None, None, None, None))
+                result = self.internal_history.Submit(FitAddProjectedModuleCommand(
+                    fitID=self.fitID,
+                    newModInfo=ModuleInfo(itemID=self.id)))
         elif self.type == 'fit':
             result = self.internal_history.Submit(FitAddProjectedFitCommand(self.fitID, self.id, None))
 

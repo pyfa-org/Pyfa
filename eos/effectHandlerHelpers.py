@@ -281,13 +281,18 @@ class HandledSsoCharacterList(list):
 
 class HandledProjectedModList(HandledList):
 
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.lastOpState = None
+
     def append(self, proj):
         if proj.isInvalid:
             # we must include it before we remove it. doing it this way ensures
             # rows and relationships in database are removed as well
             HandledList.append(self, proj)
             self.remove(proj)
-            return False
+            self.lastOpState = False
+            return
 
         proj.projected = True
 
@@ -296,8 +301,9 @@ class HandledProjectedModList(HandledList):
         # Remove non-projectable modules
         if not proj.item.isType("projected") and not proj.isExclusiveSystemEffect:
             self.remove(proj)
-            return False
-        return True
+            self.lastOpState = False
+            return
+        self.lastOpState = True
 
     def insert(self, idx, proj):
         if proj.isInvalid:
@@ -305,7 +311,8 @@ class HandledProjectedModList(HandledList):
             # rows and relationships in database are removed as well
             HandledList.insert(self, idx, proj)
             self.remove(proj)
-            return False
+            self.lastOpState = False
+            return
 
         proj.projected = True
 
@@ -314,8 +321,9 @@ class HandledProjectedModList(HandledList):
         # Remove non-projectable modules
         if not proj.item.isType("projected") and not proj.isExclusiveSystemEffect:
             self.remove(proj)
-            return False
-        return True
+            self.lastOpState = False
+            return
+        self.lastOpState = True
 
     @property
     def currentSystemEffect(self):
@@ -328,11 +336,13 @@ class HandledProjectedModList(HandledList):
 
             if mod:
                 pyfalog.info("System effect occupied with {0}, removing it to make space for {1}".format(mod.item.name, proj.item.name))
-                mutations = {m.attrID: m.value for m in mod.mutators.values()}
                 position = self.index(mod)
+                # We need to pack up this info, so whatever...
+                from gui.fitCommands.helpers import ModuleInfo
+                modInfo = ModuleInfo.fromModule(mod)
                 self.remove(mod)
-                return mod.itemID, mod.baseItemID, mod.mutaplasmidID, mutations, mod.state, mod.chargeID, position
-        return None, None, None, None, None, None, None
+                return position, modInfo
+        return None, None
 
 
 class HandledProjectedDroneList(HandledDroneCargoList):

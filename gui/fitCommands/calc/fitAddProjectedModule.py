@@ -3,105 +3,57 @@ from logbook import Logger
 
 import eos.db
 from eos.const import FittingModuleState
-from eos.saveddata.module import Module
-from gui.fitCommands.helpers import ModuleInfoCache
 from service.fit import Fit
-from service.market import Market
 
 
 pyfalog = Logger(__name__)
 
 
 class FitAddProjectedModuleCommand(wx.Command):
-    """"
-    from sFit.project
-    """
-    def __init__(self, fitID, newItemID, newBaseItemID, newMutaplasmidID, newMutations, newState, newChargeID, newPosition):
+
+    def __init__(self, fitID, newModInfo, newPosition=None):
         wx.Command.__init__(self, True)
         self.fitID = fitID
-        self.newItemID = newItemID
-        self.newBaseItemID = newBaseItemID
-        self.newMutaplasmidID = newMutaplasmidID
-        self.newMutations = newMutations
-        self.newState = newState
-        self.newChargeID = newChargeID
+        self.newModInfo = newModInfo
         self.newPosition = newPosition
-        self.oldModuleInfo = None
+        self.oldModInfo = None
+        self.oldPosition = None
 
     def Do(self):
-        pyfalog.debug("Projecting fit ({0}) onto: {1}", self.fitID, self.newItemID)
+        pyfalog.debug('Doing projection of module {} onto: {}'.format(self.newModInfo, self.fitID))
         fit = Fit.getInstance().getFit(self.fitID)
-        mod = self.makeModule(self.newItemID, self.newBaseItemID, self.newMutaplasmidID, self.newMutations, self.newState, self.newChargeID)
-        if mod is None:
+        newMod = self.newModInfo.toModule(fallbackState=FittingModuleState.ACTIVE)
+        if newMod is None:
             return False
 
-        if not mod.canHaveState(mod.state, fit):
-            mod.state = FittingModuleState.OFFLINE
+        if not newMod.canHaveState(newMod.state, fit):
+            newMod.state = FittingModuleState.OFFLINE
 
-        oldItemID, oldBaseItemID, oldMutaplasmidID, oldMutations, oldState, oldChargeID, oldPosition = fit.projectedModules.makeRoom(mod)
-        if oldItemID is not None:
-            self.oldModuleInfo = ModuleInfoCache(oldPosition, oldItemID, oldState, oldChargeID, oldBaseItemID, oldMutaplasmidID, oldMutations)
+        self.oldPosition, self.oldModInfo = fit.projectedModules.makeRoom(newMod)
 
         if self.newPosition is not None:
-            if not fit.projectedModules.insert(self.newPosition, mod):
+            fit.projectedModules.insert(self.newPosition, newMod)
+            if not fit.projectedModules.lastOpState:
+                self.Undo()
                 return False
         else:
-            if not fit.projectedModules.append(mod):
+            fit.projectedModules.append(newMod)
+            if not fit.projectedModules.lastOpState:
+                self.Undo()
                 return False
-            self.newPosition = fit.projectedModules.index(mod)
+            self.newPosition = fit.projectedModules.index(newMod)
 
         eos.db.commit()
         return True
 
     def Undo(self):
-        if self.oldModuleInfo is not None:
+        if self.oldPosition is not None and self.oldModInfo is not None:
             cmd = FitAddProjectedModuleCommand(
                 fitID=self.fitID,
-                newItemID=self.oldModuleInfo.itemID,
-                newBaseItemID=self.oldModuleInfo.baseID,
-                newMutaplasmidID=self.oldModuleInfo.mutaplasmidID,
-                newMutations=self.oldModuleInfo.mutations,
-                newState=self.oldModuleInfo.state,
-                newChargeID=self.oldModuleInfo.chargeID,
-                newPosition=self.oldModuleInfo.modPosition)
+                newModInfo=self.oldModInfo,
+                newPosition=self.oldPosition)
             return cmd.Do()
-        from gui.fitCommands.calc.fitRemoveProjectedModule import FitRemoveProjectedModuleCommand  # avoids circular import
+        from gui.fitCommands.calc.fitRemoveProjectedModule import FitRemoveProjectedModuleCommand
         cmd = FitRemoveProjectedModuleCommand(self.fitID, self.newPosition)
         cmd.Do()
         return True
-
-    def makeModule(self, itemID, baseItemID, mutaplasmidID, mutations, state, chargeID):
-        mkt = Market.getInstance()
-
-        item = mkt.getItem(itemID, eager=("attributes", "group.category"))
-        if baseItemID and mutaplasmidID:
-            baseItem = mkt.getItem(baseItemID, eager=("attributes", "group.category"))
-            mutaplasmid = eos.db.getDynamicItem(mutaplasmidID)
-        else:
-            baseItem = None
-            mutaplasmid = None
-        try:
-            mod = Module(item, baseItem, mutaplasmid)
-        except ValueError:
-            pyfalog.warning("Invalid item: {0}", itemID)
-            return None
-
-        for attrID, mutator in mod.mutators.items():
-            if attrID in mutations:
-                mutator.value = mutations[attrID]
-
-        if state is not None:
-            if not mod.isValidState(state):
-                return None
-            mod.state = state
-        else:
-            desiredState = FittingModuleState.ACTIVE
-            if mod.isValidState(desiredState):
-                mod.state = desiredState
-
-        if chargeID is not None:
-            charge = mkt.getItem(chargeID)
-            if charge is not None:
-                mod.charge = charge
-
-        return mod

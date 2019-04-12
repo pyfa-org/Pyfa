@@ -2,113 +2,64 @@ import wx
 from logbook import Logger
 
 import eos.db
-from eos.saveddata.module import Module
-from gui.fitCommands.helpers import ModuleInfoCache, stateLimit
+from gui.fitCommands.helpers import ModuleInfo, stateLimit
 from service.fit import Fit
-from service.market import Market
+
 
 pyfalog = Logger(__name__)
 
 
 class FitReplaceModuleCommand(wx.Command):
-    """"
-    Fitting command that changes an existing module into another.
 
-    from sFit.changeModule
-    """
-    def __init__(self, fitID, position, newItemID, newBaseItemID, newMutaplasmidID, newMutations, newState, newChargeID):
-        wx.Command.__init__(self, True, "Change Module")
+    def __init__(self, fitID, position, newModInfo):
+        wx.Command.__init__(self, True, 'Replace Module')
         self.fitID = fitID
         self.position = position
-        self.newItemID = newItemID
-        self.newBaseItemID = newBaseItemID
-        self.newMutaplasmidID = newMutaplasmidID
-        self.newMutations = newMutations
-        self.newState = newState
-        self.newChargeID = newChargeID
-        self.oldModuleInfo = None
+        self.newModInfo = newModInfo
+        self.oldModInfo = None
 
     def Do(self):
-        fit = Fit.getInstance().getFit(self.fitID)
-        mod = fit.modules[self.position]
-        if not mod.isEmpty:
-            self.oldModuleInfo = ModuleInfoCache(
-                mod.modPosition,
-                mod.item.ID,
-                mod.state,
-                mod.chargeID,
-                mod.baseItemID,
-                mod.mutaplasmidID,
-                {m.attrID: m.value for m in mod.mutators.values()})
-
-        newState = self.newState if self.newState is not None else getattr(self.oldModuleInfo, 'state', None)
-        newChargeID = self.newChargeID if self.newChargeID is not None else getattr(self.oldModuleInfo, 'chargeID', None)
-        return self.changeModule(self.newItemID, self.newBaseItemID, self.newMutaplasmidID, self.newMutations, newState, newChargeID)
-
-    def Undo(self):
-        if self.oldModuleInfo is None:
-            fit = Fit.getInstance().getFit(self.fitID)
-            fit.modules.toDummy(self.position)
-            return True
-        return self.changeModule(
-            self.oldModuleInfo.itemID,
-            self.oldModuleInfo.baseID,
-            self.oldModuleInfo.mutaplasmidID,
-            self.oldModuleInfo.mutations,
-            self.oldModuleInfo.state,
-            self.oldModuleInfo.chargeID)
-
-    def changeModule(self, itemID, baseItemID, mutaplasmidID, mutations, state, chargeID):
-        fit = Fit.getInstance().getFit(self.fitID)
+        pyfalog.debug('Doing replacement of module to {} on fit {}'.format(self.newModInfo, self.fitID))
+        sFit = Fit.getInstance()
+        fit = sFit.getFit(self.fitID)
         oldMod = fit.modules[self.position]
-
-        pyfalog.debug("Changing module on position ({0}) for fit ID: {1}", self.position, self.fitID)
-
-        mkt = Market.getInstance()
-        item = mkt.getItem(itemID, eager=("attributes", "group.category"))
-        if baseItemID and mutaplasmidID:
-            baseItem = mkt.getItem(baseItemID, eager=("attributes", "group.category"))
-            mutaplasmid = eos.db.getDynamicItem(mutaplasmidID)
-        else:
-            baseItem = None
-            mutaplasmid = None
-
-        try:
-            newMod = Module(item, baseItem, mutaplasmid)
-        except ValueError:
-            pyfalog.warning("Invalid item: {0}", itemID)
+        if not oldMod.isEmpty:
+            self.oldModInfo = ModuleInfo.fromModule(oldMod)
+        newMod = self.newModInfo.toModule(fallbackState=stateLimit(self.newModInfo.itemID))
+        if newMod is None:
             return False
-
-        if newMod.slot != oldMod.slot:
-            return False
-
-        for attrID, mutator in newMod.mutators.items():
-            if attrID in mutations:
-                mutator.value = mutations[attrID]
-
         # Dummy it out in case the next bit fails
         fit.modules.toDummy(self.position)
-
         if not newMod.fits(fit):
+            pyfalog.warning('Module does not fit')
             self.Undo()
             return False
-
         newMod.owner = fit
         fit.modules.toModule(self.position, newMod)
+        sFit.checkStates(fit, newMod)
+        eos.db.commit()
+        return True
 
-        if state is not None:
-            if not newMod.isValidState(state):
-                return False
-            newMod.state = state
-        else:
-            desiredState = stateLimit(newMod.item) if state is None else state
-            if newMod.isValidState(desiredState):
-                newMod.state = desiredState
-
-        if chargeID is not None:
-            charge = mkt.getItem(chargeID)
-            if charge is not None:
-                newMod.charge = charge
-
+    def Undo(self):
+        pyfalog.debug('Undoing replacement of module from {} to {} on fit {}'.format(self.oldModInfo, self.newModInfo, self.fitID))
+        # Remove if there was no module
+        if self.oldModInfo is None:
+            from gui.fitCommands.calc.fitRemoveModule import FitRemoveModuleCommand
+            cmd = FitRemoveModuleCommand(self.fitID, [self.position])
+            return cmd.Do()
+        # Replace if there was
+        sFit = Fit.getInstance()
+        fit = sFit.getFit(self.fitID)
+        oldMod = self.oldModInfo.toModule()
+        if oldMod is None:
+            return False
+        fit.modules.toDummy(self.position)
+        if not oldMod.fits(fit):
+            pyfalog.warning('Module does not fit')
+            self.Do()
+            return False
+        oldMod.owner = fit
+        fit.modules.toModule(self.position, oldMod)
+        sFit.checkStates(fit, oldMod)
         eos.db.commit()
         return True

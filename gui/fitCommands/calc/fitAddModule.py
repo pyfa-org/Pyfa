@@ -2,7 +2,6 @@ import wx
 from logbook import Logger
 
 import eos.db
-from eos.saveddata.module import Module
 from gui.fitCommands.helpers import stateLimit
 from service.fit import Fit
 
@@ -11,86 +10,55 @@ pyfalog = Logger(__name__)
 
 
 class FitAddModuleCommand(wx.Command):
-    """"
-    Fitting command that appends a module to a fit using the first available slot. In the case of a Subsystem, it checks
-    if there is already a subsystem with the same slot, and runs the replace command instead.
 
-    from sFit.appendModule
-    """
-    def __init__(self, fitID, itemID, mutaplasmidID=None, baseID=None):
-        wx.Command.__init__(self, True)
+    def __init__(self, fitID, newModInfo):
+        wx.Command.__init__(self, True, 'Add Module')
         self.fitID = fitID
-        self.itemID = itemID
-        self.mutaplasmidID = mutaplasmidID
-        self.baseID = baseID
-        self.new_position = None
-        self.change = None
-        self.replace_cmd = None
+        self.newModInfo = newModInfo
+        self.savedPosition = None
+        self.subsystemCmd = None
 
     def Do(self):
+        pyfalog.debug('Doing addition of module {} to fit {}'.format(self.newModInfo, self.fitID))
         sFit = Fit.getInstance()
-        fitID = self.fitID
-        itemID = self.itemID
-        fit = eos.db.getFit(fitID)
-        item = eos.db.getItem(itemID, eager=("attributes", "group.category"))
+        fit = sFit.getFit(self.fitID)
 
-        bItem = eos.db.getItem(self.baseID) if self.baseID else None
-        mItem = next((x for x in bItem.mutaplasmids if x.ID == self.mutaplasmidID)) if self.mutaplasmidID else None
-
-        try:
-            self.module = Module(item, bItem, mItem)
-        except ValueError:
-            pyfalog.warning("Invalid module: {}", item)
+        newMod = self.newModInfo.toModule(fallbackState=stateLimit(self.newModInfo.itemID))
+        if newMod is None:
             return False
 
         # If subsystem and we need to replace, run the replace command instead and bypass the rest of this command
-        if self.module.item.category.name == "Subsystem":
-            for mod in fit.modules:
-                if mod.getModifiedItemAttr("subSystemSlot") == self.module.getModifiedItemAttr("subSystemSlot"):
+        if newMod.item.category.name == 'Subsystem':
+            for oldMod in fit.modules:
+                if oldMod.getModifiedItemAttr('subSystemSlot') == newMod.getModifiedItemAttr('subSystemSlot') and newMod.slot == oldMod.slot:
                     from .fitReplaceModule import FitReplaceModuleCommand
-                    self.replace_cmd = FitReplaceModuleCommand(
+                    self.subsystemCmd = FitReplaceModuleCommand(
                         fitID=self.fitID,
-                        position=mod.modPosition,
-                        newItemID=itemID,
-                        newBaseItemID=None,
-                        newMutaplasmidID=None,
-                        newMutations=None,
-                        newState=None,
-                        newChargeID=None)
-                    return self.replace_cmd.Do()
+                        position=oldMod.modPosition,
+                        newModInfo=self.newModInfo)
+                    return self.subsystemCmd.Do()
 
-        if self.module.fits(fit):
-            pyfalog.debug("Adding {} as module for fit {}", self.module, fit)
-            self.module.owner = fit
-            numSlots = len(fit.modules)
-            fit.modules.append(self.module)
-            desiredState = stateLimit(self.module.item)
-            if self.module.isValidState(desiredState):
-                self.module.state = desiredState
-
-            # todo: fix these
-            # As some items may affect state-limiting attributes of the ship, calculate new attributes first
-            # self.recalc(fit)
-            # Then, check states of all modules and change where needed. This will recalc if needed
-            sFit.checkStates(fit, self.module)
-
-            # fit.fill()
-            eos.db.commit()
-
-            self.change = numSlots != len(fit.modules)
-            self.new_position = self.module.modPosition
-        else:
+        if not newMod.fits(fit):
+            pyfalog.warning('Module does not fit')
+            self.Undo()
             return False
 
+        newMod.owner = fit
+        fit.modules.append(newMod)
+
+        sFit.checkStates(fit, newMod)
+
+        eos.db.commit()
+        self.savedPosition = newMod.modPosition
         return True
 
     def Undo(self):
+        pyfalog.debug('Undoing addition of module {} to fit {}'.format(self.newModInfo, self.fitID))
         # We added a subsystem module, which actually ran the replace command. Run the undo for that guy instead
-        if self.replace_cmd:
-            return self.replace_cmd.Undo()
-
-        from .fitRemoveModule import FitRemoveModuleCommand  # Avoid circular import
-        if self.new_position:
-            cmd = FitRemoveModuleCommand(self.fitID, [self.new_position])
-            cmd.Do()
-        return True
+        if self.subsystemCmd is not None:
+            return self.subsystemCmd.Undo()
+        from .fitRemoveModule import FitRemoveModuleCommand
+        if self.savedPosition is None:
+            return False
+        cmd = FitRemoveModuleCommand(self.fitID, [self.savedPosition])
+        return cmd.Do()

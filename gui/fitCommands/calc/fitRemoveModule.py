@@ -2,66 +2,41 @@ import wx
 from logbook import Logger
 
 import eos.db
-from gui.fitCommands.helpers import ModuleInfoCache
+from gui.fitCommands.helpers import ModuleInfo
+from service.fit import Fit
 
 
 pyfalog = Logger(__name__)
 
 
 class FitRemoveModuleCommand(wx.Command):
-    """"
-    Fitting command that removes a module at a specified positions
 
-    from sFit.removeModule
-    """
-    def __init__(self, fitID: int, positions: list = None):
-        wx.Command.__init__(self, True)
+    def __init__(self, fitID, positions):
+        wx.Command.__init__(self, True, 'Remove Module')
         self.fitID = fitID
         self.positions = positions
-        self.modCache = []
-        self.change = None
+        self.oldModInfos = {}
 
     def Do(self):
-        fitID = self.fitID
-        fit = eos.db.getFit(fitID)
+        pyfalog.debug('Doing removal of modules from positions {} on fit {}'.format(self.positions, self.fitID))
+        fit = Fit.getInstance().getFit(self.fitID)
 
-        pyfalog.debug("Removing module from position ({0}) for fit ID: {1}", self.positions, fitID)
-
-        for x in self.positions:
-            mod = fit.modules[x]
+        for position in self.positions:
+            mod = fit.modules[position]
             if not mod.isEmpty:
-                pyfalog.debug(" -- Removing {}", mod)
-                self.modCache.append(ModuleInfoCache(
-                    mod.modPosition,
-                    mod.item.ID,
-                    mod.state,
-                    mod.chargeID,
-                    mod.baseItemID,
-                    mod.mutaplasmidID,
-                    {m.attrID: m.value for m in mod.mutators.values()}))
-                fit.modules.toDummy(x)
+                self.oldModInfos[position] = ModuleInfo.fromModule(mod)
+                fit.modules.toDummy(position)
 
-        # if no modules have changes, skip command
-        if not len(self.modCache) > 0:
+        # If no modules were removed, report that command was not completed
+        if not len(self.oldModInfos) > 0:
             return False
-
         eos.db.commit()
         return True
 
     def Undo(self):
-        pyfalog.debug("Reapplying {} removed module(s) for {}", len(self.modCache), self.fitID)
-
-        from gui.fitCommands.calc.fitReplaceModule import FitReplaceModuleCommand  # avoids circular import
-        for modInfo in self.modCache:
-            pyfalog.debug(" -- {}", modInfo)
-            cmd = FitReplaceModuleCommand(
-                fitID=self.fitID,
-                position=modInfo.modPosition,
-                newItemID=modInfo.itemID,
-                newBaseItemID=modInfo.baseID,
-                newMutaplasmidID=modInfo.mutaplasmidID,
-                newMutations=modInfo.mutations,
-                newState=modInfo.state,
-                newChargeID=modInfo.chargeID)
+        pyfalog.debug('Undoing removal of modules {} on fit {}'.format(self.oldModInfos, self.fitID))
+        from gui.fitCommands.calc.fitReplaceModule import FitReplaceModuleCommand
+        for position, modInfo in self.oldModInfos.items():
+            cmd = FitReplaceModuleCommand(fitID=self.fitID, position=position, newModInfo=modInfo)
             cmd.Do()
         return True

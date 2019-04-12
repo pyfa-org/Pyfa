@@ -3,7 +3,7 @@ from service.fit import Fit
 
 import gui.mainFrame
 from gui import globalEvents as GE
-from .helpers import ModuleInfoCache
+from .helpers import ModuleInfo
 from .calc.fitRemoveModule import FitRemoveModuleCommand
 
 
@@ -19,22 +19,15 @@ class GuiModuleRemoveCommand(wx.Command):
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
         self.sFit = Fit.getInstance()
         self.fitID = fitID
-        self.modCache = [ModuleInfoCache(
-            mod.modPosition,
-            mod.item.ID,
-            mod.state,
-            mod.chargeID,
-            mod.baseItemID,
-            mod.mutaplasmidID,
-            {m.attrID: m.value for m in mod.mutators.values()}) for mod in modules if not mod.isEmpty]
+        self.modCache = {mod.modPosition: ModuleInfo.fromModule(mod) for mod in modules if not mod.isEmpty}
         self.internal_history = wx.CommandProcessor()
 
     def Do(self):
-        success = self.internal_history.Submit(FitRemoveModuleCommand(self.fitID, [mod.modPosition for mod in self.modCache]))
+        success = self.internal_history.Submit(FitRemoveModuleCommand(self.fitID, [pos for pos in self.modCache]))
 
         if success:
             self.sFit.recalc(self.fitID)
-            wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=self.fitID, action="moddel", typeID=set([mod.itemID for mod in self.modCache])))
+            wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=self.fitID, action="moddel", typeID=set([mod.itemID for mod in self.modCache.values()])))
             return True
         return False
 
@@ -42,5 +35,5 @@ class GuiModuleRemoveCommand(wx.Command):
         for _ in self.internal_history.Commands:
             self.internal_history.Undo()
         self.sFit.recalc(self.fitID)
-        wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=self.fitID, action="modadd", typeID=set([mod.itemID for mod in self.modCache])))
+        wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=self.fitID, action="modadd", typeID=set([mod.itemID for mod in self.modCache.values()])))
         return True

@@ -1,8 +1,10 @@
 import json
-import eos.db
-
 from math import log
 from numbers import Number
+
+from logbook import Logger
+
+import eos.db
 from config import version as pyfaVersion
 from service.fit import Fit
 from service.market import Market
@@ -16,7 +18,9 @@ from eos.gamedata import Attribute, Effect, Group, Item, ItemEffect
 from eos.utils.spoolSupport import SpoolType, SpoolOptions
 from gui.fitCommands.calc.fitAddModule import FitAddModuleCommand
 from gui.fitCommands.calc.fitRemoveModule import FitRemoveModuleCommand
-from logbook import Logger
+from gui.fitCommands.helpers import ModuleInfo
+
+
 pyfalog = Logger(__name__)
 
 
@@ -62,7 +66,7 @@ class EfsPort:
 
         if propID is None:
             return None
-        FitAddModuleCommand(fitID, propID).Do()
+        FitAddModuleCommand(fitID, ModuleInfo(itemID=propID)).Do()
         sFit.recalc(fit)
         fit = eos.db.getFit(fitID)
         mwdPropSpeed = fit.maxSpeed
