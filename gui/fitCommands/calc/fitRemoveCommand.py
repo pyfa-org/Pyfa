@@ -11,7 +11,7 @@ pyfalog = Logger(__name__)
 class FitRemoveCommandCommand(wx.Command):
 
     def __init__(self, fitID, commandFitID):
-        wx.Command.__init__(self, True)
+        wx.Command.__init__(self, True, 'Remove Command Fit')
         self.fitID = fitID
         self.commandFitID = commandFitID
         self.savedState = None
@@ -38,10 +38,6 @@ class FitRemoveCommandCommand(wx.Command):
 
     def Undo(self):
         pyfalog.debug('Undoing removal of command fit {} for fit {}'.format(self.commandFitID, self.fitID))
-        # Can't find the command fit, it must have been deleted. Fail as there's no way to restore it
-        commandFit = Fit.getInstance().getFit(self.commandFitID)
-        if commandFit is None:
-            return False
         from .fitAddCommand import FitAddCommandCommand
         cmd = FitAddCommandCommand(fitID=self.fitID, commandFitID=self.commandFitID, state=self.savedState)
         return cmd.Do()

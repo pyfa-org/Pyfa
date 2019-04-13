@@ -3,45 +3,41 @@ from logbook import Logger
 
 import eos.db
 from service.fit import Fit
-from .fitRemoveProjectedModule import FitRemoveProjectedModuleCommand
 
 
 pyfalog = Logger(__name__)
 
 
-# this has the same exact definition that regular rpojected modules, besides the undo
-class FitRemoveProjectedFitCommand(FitRemoveProjectedModuleCommand):
-    """"
-    from sFit.project
-    """
+class FitRemoveProjectedFitCommand(wx.Command):
 
     def __init__(self, fitID, projectedFitID):
-        wx.Command.__init__(self, True)
+        wx.Command.__init__(self, True, 'Add Projected Fit')
         self.fitID = fitID
         self.projectedFitID = projectedFitID
         self.savedState = None
 
     def Do(self):
-        pyfalog.debug("Removing ({0}) onto: {1}".format(self.fitID, self.projectedFitID))
+        pyfalog.debug('Doing removal of projected fit {} for fit {}'.format(self.projectedFitID, self.fitID))
         sFit = Fit.getInstance()
-        projectee = sFit.getFit(self.fitID)
-        projector = sFit.getFit(self.projectedFitID)
+        fit = sFit.getFit(self.fitID)
+        projectedFit = sFit.getFit(self.projectedFitID)
 
-        if projector is None:
+        # Can be removed by the time we're redoing it
+        if projectedFit is None:
+            pyfalog.debug('Projected fit is not available')
             return False
-
-        projectionInfo = projector.getProjectionInfo(self.fitID)
+        projectionInfo = projectedFit.getProjectionInfo(self.fitID)
         if not projectionInfo:
+            pyfalog.warning('Fit projection info is not available')
             return False
 
         self.savedState = projectionInfo.active
-
-        del projectee.projectedFitDict[projector.ID]
-
+        del fit.projectedFitDict[projectedFit.ID]
         eos.db.commit()
         return True
 
     def Undo(self):
-        from gui.fitCommands.calc.fitAddProjectedFit import FitAddProjectedFitCommand
-        cmd = FitAddProjectedFitCommand(self.fitID, self.projectedFitID, self.savedState)
+        pyfalog.debug('Undoing removal of projected fit {} for fit {}'.format(self.projectedFitID, self.fitID))
+        from .fitAddProjectedFit import FitAddProjectedFitCommand
+        cmd = FitAddProjectedFitCommand(fitID=self.fitID, projectedFitID=self.projectedFitID, state=self.savedState)
         return cmd.Do()

@@ -9,41 +9,51 @@ pyfalog = Logger(__name__)
 
 
 class FitAddProjectedFitCommand(wx.Command):
-    """"
-    from sFit.project
-    """
-    def __init__(self, fitID, projectedFitID, status):
-        wx.Command.__init__(self, True)
+
+    def __init__(self, fitID, projectedFitID, state):
+        wx.Command.__init__(self, True, 'Add Projected Fit')
         self.fitID = fitID
         self.projectedFitID = projectedFitID
-        self.status = status
+        self.state = state
 
     def Do(self):
-        pyfalog.debug("Projecting fit ({0}) onto: {1}", self.fitID, self.projectedFitID)
+        pyfalog.debug('Doing addition of projected fit {} for fit {}'.format(self.projectedFitID, self.fitID))
         sFit = Fit.getInstance()
-        projectee = sFit.getFit(self.fitID)
-        projector = sFit.getFit(self.projectedFitID)
+        fit = sFit.getFit(self.fitID)
+        projectedFit = sFit.getFit(self.projectedFitID)
 
-        if projector is None or projector in projectee.projectedFits:
+        # Projected fit could have been deleted if we are redoing
+        if projectedFit is None:
+            pyfalog.debug('Projected fit is not available')
             return False
 
-        projectee.projectedFitDict[projector.ID] = projector
+        if projectedFit in fit.projectedFits:
+            pyfalog.debug('Projected fit had been applied already')
+            return False
 
-        # this bit is required -- see GH issue # 83
+        fit.projectedFitDict[projectedFit.ID] = projectedFit
+        # This bit is required, see issue #83
         eos.db.saveddata_session.flush()
-        eos.db.saveddata_session.refresh(projector)
+        eos.db.saveddata_session.refresh(projectedFit)
 
-        if self.status is not None:
-            projectionInfo = projector.getProjectionInfo(self.fitID)
+        if self.state is not None:
+            projectionInfo = projectedFit.getProjectionInfo(self.fitID)
             if not projectionInfo:
+                pyfalog.warning('Fit projection info is not available')
+                self.Undo()
                 return False
-            projectionInfo.active = self.status
+            projectionInfo.active = self.state
 
         eos.db.commit()
         return True
 
     def Undo(self):
-        from gui.fitCommands.calc.fitRemoveProjectedFit import FitRemoveProjectedFitCommand  # avoids circular import
-        cmd = FitRemoveProjectedFitCommand(self.fitID, self.projectedFitID)
-        cmd.Do()
-        return True
+        pyfalog.debug('Undoing addition of projected fit {} for fit {}'.format(self.projectedFitID, self.fitID))
+        # Can't find the projected fit, it must have been deleted. Just skip, as deleted fit
+        # means that someone else just did exactly what we wanted to do
+        projectedFit = Fit.getInstance().getFit(self.projectedFitID)
+        if projectedFit is None:
+            return True
+        from .fitRemoveProjectedFit import FitRemoveProjectedFitCommand
+        cmd = FitRemoveProjectedFitCommand(fitID=self.fitID, projectedFitID=self.projectedFitID)
+        return cmd.Do()

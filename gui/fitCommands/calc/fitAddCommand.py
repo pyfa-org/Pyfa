@@ -11,7 +11,7 @@ pyfalog = Logger(__name__)
 class FitAddCommandCommand(wx.Command):
 
     def __init__(self, fitID, commandFitID, state=None):
-        wx.Command.__init__(self, True)
+        wx.Command.__init__(self, True, 'Add Command Fit')
         self.fitID = fitID
         self.commandFitID = commandFitID
         self.state = state
@@ -22,7 +22,7 @@ class FitAddCommandCommand(wx.Command):
         fit = sFit.getFit(self.fitID)
         commandFit = sFit.getFit(self.commandFitID)
 
-        # Command fit could have been deleted if we were redoing
+        # Command fit could have been deleted if we are redoing
         if commandFit is None:
             pyfalog.debug('Command fit is not available')
             return False
@@ -32,7 +32,7 @@ class FitAddCommandCommand(wx.Command):
             return False
 
         fit.commandFitDict[commandFit.ID] = commandFit
-        # this bit is required -- see GH issue # 83
+        # This bit is required, see issue #83
         eos.db.saveddata_session.flush()
         eos.db.saveddata_session.refresh(commandFit)
 
