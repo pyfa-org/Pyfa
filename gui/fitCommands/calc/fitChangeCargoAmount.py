@@ -16,7 +16,6 @@ class FitChangeCargoAmount(wx.Command):
         self.fitID = fitID
         self.cargoInfo = cargoInfo
         self.savedCargoInfo = None
-        self.removeCommand = None
 
     def Do(self):
         pyfalog.debug('Doing change of cargo {} for fit {}'.format(self.cargoInfo, self.fitID))
@@ -28,18 +27,11 @@ class FitChangeCargoAmount(wx.Command):
         self.savedCargoInfo = CargoInfo.fromCargo(cargo)
         if self.cargoInfo.amount == self.savedCargoInfo.amount:
             return False
-        if self.cargoInfo.amount > 0:
-            cargo.amount = self.cargoInfo.amount
-            eos.db.commit()
-            return True
-        else:
-            from .fitRemoveCargo import FitRemoveCargoCommand
-            self.removeCommand = FitRemoveCargoCommand(fitID=self.fitID, cargoInfo=self.savedCargoInfo)
-            return self.removeCommand.Do()
+        cargo.amount = self.cargoInfo.amount
+        eos.db.commit()
+        return True
 
     def Undo(self):
         pyfalog.debug('Undoing change of cargo {} for fit {}'.format(self.cargoInfo, self.fitID))
-        if self.removeCommand is not None:
-            return self.removeCommand.Undo()
         cmd = FitChangeCargoAmount(self.fitID, self.savedCargoInfo)
         return cmd.Do()

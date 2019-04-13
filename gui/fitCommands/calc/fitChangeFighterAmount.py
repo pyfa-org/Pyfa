@@ -16,7 +16,6 @@ class FitChangeFighterAmount(wx.Command):
         self.position = position
         self.amount = amount
         self.savedAmount = None
-        self.removeCommand = None
 
     def Do(self):
         pyfalog.debug('Doing change of fighter amount to {} at position {} on fit {}'.format(self.amount, self.position, self.fitID))
@@ -29,18 +28,12 @@ class FitChangeFighterAmount(wx.Command):
             fighter.amount = self.amount
             eos.db.commit()
             return True
-        elif self.amount > 0:
+        else:
             fighter.amount = max(min(self.amount, fighter.fighterSquadronMaxSize), 0)
             eos.db.commit()
             return True
-        else:
-            from .fitRemoveFighter import FitRemoveFighterCommand
-            self.removeCommand = FitRemoveFighterCommand(fitID=self.fitID, position=self.position)
-            return self.removeCommand.Do()
 
     def Undo(self):
         pyfalog.debug('Undoing change of fighter amount to {} at position {} on fit {}'.format(self.amount, self.position, self.fitID))
-        if self.removeCommand is not None:
-            return self.removeCommand.Undo()
         cmd = FitChangeFighterAmount(self.fitID, self.position, self.savedAmount)
         return cmd.Do()

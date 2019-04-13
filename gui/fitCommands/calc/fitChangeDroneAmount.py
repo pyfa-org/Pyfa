@@ -19,7 +19,6 @@ class FitChangeDroneAmount(wx.Command):
         self.position = position
         self.amount = amount
         self.savedDroneInfo = None
-        self.removeCommand = None
 
     def Do(self):
         pyfalog.debug('Doing change of drone amount to {} at position {} on fit {}'.format(self.amount, self.position, self.fitID))
@@ -28,23 +27,16 @@ class FitChangeDroneAmount(wx.Command):
         self.savedDroneInfo = DroneInfo.fromDrone(drone)
         if self.amount == self.savedDroneInfo.amount:
             return False
-        if self.amount > 0:
+        drone.amount = self.amount
+        if drone.amountActive > 0:
+            difference = self.amount - self.savedDroneInfo.amount
             drone.amount = self.amount
-            if drone.amountActive > 0:
-                difference = self.amount - self.savedDroneInfo.amount
-                drone.amount = self.amount
-                drone.amountActive = max(min(drone.amountActive + difference, drone.amount), 0)
-            eos.db.commit()
-            return True
-        else:
-            from .fitRemoveDrone import FitRemoveDroneCommand
-            self.removeCommand = FitRemoveDroneCommand(fitID=self.fitID, position=self.position, amount=math.inf)
-            return self.removeCommand.Do()
+            drone.amountActive = max(min(drone.amountActive + difference, drone.amount), 0)
+        eos.db.commit()
+        return True
 
     def Undo(self):
         pyfalog.debug('Undoing change of drone quantity to {} at position {} on fit {}'.format(self.amount, self.position, self.fitID))
-        if self.removeCommand is not None:
-            return self.removeCommand.Undo()
         if self.savedDroneInfo is not None:
             fit = Fit.getInstance().getFit(self.fitID)
             drone = fit.drones[self.position]

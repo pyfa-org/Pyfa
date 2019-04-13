@@ -5,6 +5,7 @@ import eos.db
 from eos.saveddata.module import Module
 from service.fit import Fit
 
+
 pyfalog = Logger(__name__)
 
 
