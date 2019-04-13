@@ -22,9 +22,15 @@ class FitChangeFighterAmount(wx.Command):
         pyfalog.debug('Doing change of fighter amount to {} at position {} on fit {}'.format(self.amount, self.position, self.fitID))
         fit = Fit.getInstance().getFit(self.fitID)
         fighter = fit.fighters[self.position]
+        if self.amount == fighter.amount or self.amount == fighter.amountActive:
+            return False
         self.savedAmount = fighter.amount
-        if self.amount > 0 or self.amount == -1:
-            fighter.amount = min(self.amount, fighter.fighterSquadronMaxSize)
+        if self.amount == -1:
+            fighter.amount = self.amount
+            eos.db.commit()
+            return True
+        elif self.amount > 0:
+            fighter.amount = max(min(self.amount, fighter.fighterSquadronMaxSize), 0)
             eos.db.commit()
             return True
         else:

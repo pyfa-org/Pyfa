@@ -56,7 +56,7 @@ class ChangeAmount(ContextMenu):
                 if srcContext == "droneItem":
                     self.mainFrame.command.Submit(cmd.GuiChangeDroneQty(fitID, fit.drones.index(thing), int(float(cleanInput))))
                 else:
-                    self.mainFrame.command.Submit(cmd.GuiChangeProjectedDroneQty(fitID, fit.projectedDrones.index(thing), int(float(cleanInput))))
+                    self.mainFrame.command.Submit(cmd.GuiChangeProjectedDroneQty(fitID, thing.itemID, int(float(cleanInput))))
             elif isinstance(thing, es_Fit):
                 self.mainFrame.command.Submit(cmd.GuiChangeProjectedFitQty(fitID, thing.ID, int(float(cleanInput))))
                 return

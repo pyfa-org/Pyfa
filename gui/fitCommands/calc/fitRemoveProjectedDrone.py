@@ -25,13 +25,13 @@ class FitRemoveProjectedDroneCommand(wx.Command):
             pyfalog.warning('Unable to find projected drone for removal')
             return False
         self.savedDroneInfo = DroneInfo.fromDrone(drone)
-        drone.amount -= self.droneInfo.amount
+        drone.amount = max(drone.amount - self.droneInfo.amount, 0)
         # Remove stack if we have no items remaining
         if drone.amount == 0:
             fit.projectedDrones.remove(drone)
         else:
             if drone.amountActive > 0:
-                drone.amountActive -= self.droneInfo.amount
+                drone.amountActive = min(drone.amountActive, drone.amount)
         eos.db.commit()
         return True
 
