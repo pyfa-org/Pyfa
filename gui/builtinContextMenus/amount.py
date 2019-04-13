@@ -48,7 +48,7 @@ class ChangeAmount(ContextMenu):
             cleanInput = re.sub(r'[^0-9.]', '', dlg.input.GetLineText(0).strip())
 
             if isinstance(thing, es_Cargo):
-                self.mainFrame.command.Submit(cmd.GuiChangeCargoQty(fitID, fit.cargo.index(thing), int(float(cleanInput))))
+                self.mainFrame.command.Submit(cmd.GuiChangeCargoQty(fitID, thing.itemID, int(float(cleanInput))))
                 return  # no need for post event here
             elif isinstance(thing, Drone):
                 if srcContext == "droneItem":

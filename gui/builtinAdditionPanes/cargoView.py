@@ -148,9 +148,9 @@ class CargoView(d.Display):
             return
 
         self.original = fit.cargo if fit is not None else None
-        self.cargo = stuff = fit.cargo[:] if fit is not None else None
-        if stuff is not None:
-            stuff.sort(key=lambda c: (c.item.group.category.name, c.item.group.name, c.item.name))
+        self.cargo = fit.cargo[:] if fit is not None else None
+        if self.cargo is not None:
+            self.cargo.sort(key=lambda c: (c.item.group.category.name, c.item.group.name, c.item.name))
 
         if event.fitID != self.lastFitId:
             self.lastFitId = event.fitID
@@ -162,8 +162,8 @@ class CargoView(d.Display):
 
             self.deselectItems()
 
-        self.populate(stuff)
-        self.refresh(stuff)
+        self.populate(self.cargo)
+        self.refresh(self.cargo)
         event.Skip()
 
     def removeItem(self, event):
@@ -180,7 +180,7 @@ class CargoView(d.Display):
         if sel != -1:
             sFit = Fit.getInstance()
             fit = sFit.getFit(self.mainFrame.getActiveFit())
-            cargo = fit.cargo[sel]
+            cargo = self.cargo[sel]
 
             sMkt = Market.getInstance()
             sourceContext = "cargoItem"

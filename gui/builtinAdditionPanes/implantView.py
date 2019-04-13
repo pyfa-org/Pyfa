@@ -156,9 +156,9 @@ class ImplantDisplay(d.Display):
             return
 
         self.original = fit.implants if fit is not None else None
-        self.implants = stuff = fit.appliedImplants[:] if fit is not None else None
-        if stuff is not None:
-            stuff.sort(key=lambda implant: implant.slot)
+        self.implants = fit.appliedImplants[:] if fit is not None else None
+        if self.implants is not None:
+            self.implants.sort(key=lambda implant: implant.slot)
 
         if event.fitID != self.lastFitId:
             self.lastFitId = event.fitID
@@ -170,7 +170,7 @@ class ImplantDisplay(d.Display):
 
             self.deselectItems()
 
-        self.update(stuff)
+        self.update(self.implants)
         event.Skip()
 
     def addItem(self, event):

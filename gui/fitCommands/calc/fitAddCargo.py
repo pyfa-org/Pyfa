@@ -20,7 +20,9 @@ class FitAddCargoCommand(wx.Command):
         pyfalog.debug('Doing addition of cargo {} to fit {}'.format(self.cargoInfo, self.fitID))
         fit = Fit.getInstance().getFit(self.fitID)
         cargo = next((c for c in fit.cargo if c.itemID == self.cargoInfo.itemID), None)
-        if cargo is None:
+        if cargo is not None:
+            cargo.amount += self.cargoInfo.amount
+        else:
             cargo = self.cargoInfo.toCargo()
             try:
                 fit.cargo.append(cargo)
@@ -28,8 +30,6 @@ class FitAddCargoCommand(wx.Command):
                 pyfalog.warning('Failed to append to list')
                 eos.db.commit()
                 return False
-        else:
-            cargo.amount += self.cargoInfo.amount
         eos.db.commit()
         return True
 

@@ -233,6 +233,15 @@ class CargoInfo:
         self.itemID = itemID
         self.amount = amount
 
+    @classmethod
+    def fromCargo(cls, cargo):
+        if cargo is None:
+            return None
+        info = cls(
+            itemID=cargo.itemID,
+            amount=cargo.amount)
+        return info
+
     def toCargo(self):
         item = Market.getInstance().getItem(self.itemID)
         cargo = Cargo(item)

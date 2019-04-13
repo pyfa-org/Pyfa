@@ -26,9 +26,9 @@ class FitRemoveDroneCommand(wx.Command):
         drone = fit.drones[self.position]
         self.savedDroneInfo = DroneInfo.fromDrone(drone)
 
-        drone.amount -= self.amountToRemove
+        drone.amount = max(drone.amount - self.amountToRemove, 0)
         if drone.amountActive > 0:
-            drone.amountActive -= self.amountToRemove
+            drone.amountActive = min(drone.amountActive, drone.amount)
 
         if drone.amount == 0:
             fit.drones.remove(drone)

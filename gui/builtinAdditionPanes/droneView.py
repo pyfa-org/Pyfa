@@ -184,10 +184,10 @@ class DroneView(Display):
             return
 
         self.original = fit.drones if fit is not None else None
-        self.drones = stuff = fit.drones[:] if fit is not None else None
+        self.drones = fit.drones[:] if fit is not None else None
 
-        if stuff is not None:
-            stuff.sort(key=self.droneKey)
+        if self.drones is not None:
+            self.drones.sort(key=self.droneKey)
 
         if event.fitID != self.lastFitId:
             self.lastFitId = event.fitID
@@ -199,7 +199,7 @@ class DroneView(Display):
 
             self.deselectItems()
 
-        self.update(stuff)
+        self.update(self.drones)
         event.Skip()
 
     def addItem(self, event):

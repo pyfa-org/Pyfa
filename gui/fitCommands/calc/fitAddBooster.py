@@ -38,10 +38,7 @@ class FitAddBoosterCommand(wx.Command):
                 fit.boosters.insert(self.newPosition, newBooster)
             except HandledListActionError:
                 pyfalog.warning('Failed to insert to list')
-                cmd = FitAddBoosterCommand(
-                    fitID=self.fitID,
-                    boosterInfo=self.oldBoosterInfo,
-                    position=self.oldPosition)
+                cmd = FitAddBoosterCommand(fitID=self.fitID, boosterInfo=self.oldBoosterInfo, position=self.oldPosition)
                 cmd.Do()
                 return False
         else:
@@ -49,10 +46,7 @@ class FitAddBoosterCommand(wx.Command):
                 fit.boosters.append(newBooster)
             except HandledListActionError:
                 pyfalog.warning('Failed to append to list')
-                cmd = FitAddBoosterCommand(
-                    fitID=self.fitID,
-                    boosterInfo=self.oldBoosterInfo,
-                    position=self.oldPosition)
+                cmd = FitAddBoosterCommand(fitID=self.fitID, boosterInfo=self.oldBoosterInfo, position=self.oldPosition)
                 cmd.Do()
                 return False
             self.newPosition = fit.boosters.index(newBooster)
@@ -63,10 +57,7 @@ class FitAddBoosterCommand(wx.Command):
     def Undo(self):
         pyfalog.debug('Undo addition of booster {} to fit {}'.format(self.newBoosterInfo, self.fitID))
         if self.oldBoosterInfo and self.oldPosition:
-            cmd = FitAddBoosterCommand(
-                fitID=self.fitID,
-                boosterInfo=self.oldBoosterInfo,
-                position=self.oldPosition)
+            cmd = FitAddBoosterCommand(fitID=self.fitID, boosterInfo=self.oldBoosterInfo, position=self.oldPosition)
             return cmd.Do()
         from .fitRemoveBooster import FitRemoveBoosterCommand
         cmd = FitRemoveBoosterCommand(fitID=self.fitID, position=self.newPosition)
