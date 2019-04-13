@@ -33,6 +33,8 @@ class GuiRebaseItemsCommand(wx.Command):
             for obj in container:
                 if obj.itemID in self.rebaseMap:
                     self.internal_history.Submit(FitRebaseItemCommand(self.fitID, containerName, container.index(obj), self.rebaseMap[obj.itemID]))
+        # Need to process cargo separately as we want to merge items when needed,
+        # e.g. FN iron and CN iron into single stack of CN iron
         for cargo in fit.cargo:
             if cargo.itemID in self.rebaseMap:
                 amount = cargo.amount
