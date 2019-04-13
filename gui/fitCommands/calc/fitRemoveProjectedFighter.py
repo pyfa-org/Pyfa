@@ -1,42 +1,33 @@
 import wx
-import eos.db
 from logbook import Logger
+
+import eos.db
+from gui.fitCommands.helpers import FighterInfo
+from service.fit import Fit
+
+
 pyfalog = Logger(__name__)
 
 
-# this has the same exact definition that regular rpojected modules, besides the undo
 class FitRemoveProjectedFighterCommand(wx.Command):
-    """"
-    from sFit.project
-    """
 
     def __init__(self, fitID, position):
-        wx.Command.__init__(self, True)
+        wx.Command.__init__(self, True, 'Add Projected Fighter')
         self.fitID = fitID
         self.position = position
-        self.savedItemID = None
-        self.savedAmount = None
-        self.savedStatus = None
-        self.savedAbilities = None
+        self.savedFighterInfo = None
 
     def Do(self):
-        pyfalog.debug("Removing ({0}) onto: {1}", self.fitID, self.position)
-        fit = eos.db.getFit(self.fitID)
+        pyfalog.debug('Doing removal of projected fighter at position {} from fit {}'.format(self.position, self.fitID))
+        fit = Fit.getInstance().getFit(self.fitID)
         fighter = fit.projectedFighters[self.position]
-        self.savedItemID = fighter.itemID
-        self.savedAmount = fighter.amount
-        self.savedStatus = fighter.active
-        self.savedAbilities = {fa.effectID: fa.active for fa in fighter.abilities}
+        self.savedFighterInfo = FighterInfo.fromFighter(fighter)
         fit.projectedFighters.remove(fighter)
         eos.db.commit()
         return True
 
     def Undo(self):
-        from gui.fitCommands.calc.fitAddProjectedFighter import FitAddProjectedFighterCommand
-        cmd = FitAddProjectedFighterCommand(
-            fitID=self.fitID,
-            itemID=self.savedItemID,
-            state=self.savedStatus,
-            abilities=self.savedAbilities)
-        cmd.Do()
-        return True
+        pyfalog.debug('Undoing removal of projected fighter at position {} from fit {}'.format(self.position, self.fitID))
+        from .fitAddProjectedFighter import FitAddProjectedFighterCommand
+        cmd = FitAddProjectedFighterCommand(fitID=self.fitID, fighterInfo=self.savedFighterInfo)
+        return cmd.Do()

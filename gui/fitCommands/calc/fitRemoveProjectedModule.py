@@ -31,6 +31,6 @@ class FitRemoveProjectedModuleCommand(wx.Command):
         from gui.fitCommands.calc.fitAddProjectedModule import FitAddProjectedModuleCommand
         cmd = FitAddProjectedModuleCommand(
             fitID=self.fitID,
-            newModInfo=self.savedModInfo,
-            newPosition=self.position)
+            modInfo=self.savedModInfo,
+            position=self.position)
         return cmd.Do()

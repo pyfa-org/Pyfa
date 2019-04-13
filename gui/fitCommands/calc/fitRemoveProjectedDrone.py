@@ -46,5 +46,5 @@ class FitRemoveProjectedDroneCommand(wx.Command):
             return True
         # Make new stack
         from .fitAddProjectedDrone import FitAddProjectedDroneCommand
-        cmd = FitAddProjectedDroneCommand(self.fitID, self.savedDroneInfo)
+        cmd = FitAddProjectedDroneCommand(fitID=self.fitID, droneInfo=self.savedDroneInfo)
         return cmd.Do()

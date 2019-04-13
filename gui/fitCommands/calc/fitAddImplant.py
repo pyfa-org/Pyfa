@@ -68,5 +68,5 @@ class FitAddImplantCommand(wx.Command):
                 position=self.oldPosition)
             return cmd.Do()
         from .fitRemoveImplant import FitRemoveImplantCommand
-        cmd = FitRemoveImplantCommand(self.fitID, self.newPosition)
+        cmd = FitRemoveImplantCommand(fitID=self.fitID, position=self.newPosition)
         return cmd.Do()

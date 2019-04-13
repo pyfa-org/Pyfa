@@ -2,54 +2,45 @@ import wx
 from logbook import Logger
 
 import eos.db
-from eos.saveddata.fighter import Fighter
+from eos.exception import HandledListActionError
 from service.fit import Fit
-from service.market import Market
 
 
 pyfalog = Logger(__name__)
 
 
 class FitAddProjectedFighterCommand(wx.Command):
-    """"
-    from sFit.project
-    """
-    def __init__(self, fitID, itemID, state, abilities):
-        wx.Command.__init__(self, True)
+
+    def __init__(self, fitID, fighterInfo, position=None):
+        wx.Command.__init__(self, True, 'Add Projected Fighter')
         self.fitID = fitID
-        self.newItemID = itemID
-        self.newState = state
-        self.newAbilities = abilities
-        self.newIndex = None
+        self.fighterInfo = fighterInfo
+        self.position = position
 
     def Do(self):
-        pyfalog.debug("Projecting fit ({0}) onto: {1}", self.fitID, self.newItemID)
+        pyfalog.debug('Doing addition of projected fighter {} onto: {}'.format(self.fighterInfo, self.fitID))
+        fighter = self.fighterInfo.toFighter()
+        if fighter is None:
+            return False
         fit = Fit.getInstance().getFit(self.fitID)
-        item = Market.getInstance().getItem(self.newItemID, eager=("attributes", "group.category"))
-
-        try:
-            fighter = Fighter(item)
-        except ValueError:
-            return False
-
-        fit.projectedFighters.append(fighter)
-        # sometimes fighters aren't added because they aren't valid projectionable ones. todo: move that logic into here
-        if fighter not in fit.projectedFighters:
-            return False
-
-        if self.newState is not None:
-            fighter.active = self.newState
-
-        if self.newAbilities is not None:
-            for ability in fighter.abilities:
-                ability.active = self.newAbilities.get(ability.effectID, ability.active)
-
+        if self.position is not None:
+            try:
+                fit.projectedFighters.insert(self.position, fighter)
+            except HandledListActionError:
+                eos.db.commit()
+                return False
+        else:
+            try:
+                fit.projectedFighters.append(fighter)
+            except HandledListActionError:
+                eos.db.commit()
+                return False
+            self.position = fit.projectedFighters.index(fighter)
         eos.db.commit()
-        self.newIndex = fit.projectedFighters.index(fighter)
         return True
 
     def Undo(self):
-        from gui.fitCommands.calc.fitRemoveProjectedFighter import FitRemoveProjectedFighterCommand  # avoids circular import
-        cmd = FitRemoveProjectedFighterCommand(self.fitID, self.newIndex)
-        cmd.Do()
-        return True
+        pyfalog.debug('Undoing addition of projected fighter {} onto: {}'.format(self.fighterInfo, self.fitID))
+        from .fitRemoveProjectedFighter import FitRemoveProjectedFighterCommand
+        cmd = FitRemoveProjectedFighterCommand(fitID=self.fitID, position=self.position)
+        return cmd.Do()

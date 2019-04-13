@@ -77,7 +77,7 @@ class ModuleInfo:
                 mod.state = fallbackState
 
         if self.chargeID is not None:
-            charge = mkt.getItem(self.chargeID)
+            charge = mkt.getItem(self.chargeID, eager=('attributes',))
             if charge is None:
                 pyfalog.warning('Cannot set charge {}'.format(self.chargeID))
                 return None
@@ -109,7 +109,7 @@ class DroneInfo:
         return info
 
     def toDrone(self):
-        item = Market.getInstance().getItem(self.itemID)
+        item = Market.getInstance().getItem(self.itemID, eager=('attributes', 'group.category'))
         try:
             drone = Drone(item)
         except ValueError:
@@ -143,7 +143,7 @@ class FighterInfo:
         return info
 
     def toFighter(self):
-        item = Market.getInstance().getItem(self.itemID)
+        item = Market.getInstance().getItem(self.itemID, eager=('attributes', 'group.category'))
         try:
             fighter = Fighter(item)
         except ValueError:
@@ -160,6 +160,36 @@ class FighterInfo:
 
     def __repr__(self):
         return makeReprStr(self, ['itemID', 'amount', 'state', 'abilities'])
+
+
+class ImplantInfo:
+
+    def __init__(self, itemID, state=None):
+        self.itemID = itemID
+        self.state = state
+
+    @classmethod
+    def fromImplant(cls, implant):
+        if implant is None:
+            return None
+        info = cls(
+            itemID=implant.itemID,
+            state=implant.active)
+        return info
+
+    def toImplant(self):
+        item = Market.getInstance().getItem(self.itemID, eager=('attributes', 'group.category'))
+        try:
+            implant = Implant(item)
+        except ValueError:
+            pyfalog.warning('Invalid item: {}'.format(self.itemID))
+            return None
+        if self.state is not None:
+            implant.active = self.state
+        return implant
+
+    def __repr__(self):
+        return makeReprStr(self, ['itemID', 'state'])
 
 
 class BoosterInfo:
@@ -180,7 +210,7 @@ class BoosterInfo:
         return info
 
     def toBooster(self):
-        item = Market.getInstance().getItem(self.itemID)
+        item = Market.getInstance().getItem(self.itemID, eager=('attributes', 'group.category'))
         try:
             booster = Booster(item)
         except ValueError:
@@ -195,36 +225,6 @@ class BoosterInfo:
 
     def __repr__(self):
         return makeReprStr(self, ['itemID', 'state', 'sideEffects'])
-
-
-class ImplantInfo:
-
-    def __init__(self, itemID, state=None):
-        self.itemID = itemID
-        self.state = state
-
-    @classmethod
-    def fromImplant(cls, implant):
-        if implant is None:
-            return None
-        info = cls(
-            itemID=implant.itemID,
-            state=implant.active)
-        return info
-
-    def toImplant(self):
-        item = Market.getInstance().getItem(self.itemID)
-        try:
-            implant = Implant(item)
-        except ValueError:
-            pyfalog.warning('Invalid item: {}'.format(self.itemID))
-            return None
-        if self.state is not None:
-            implant.active = self.state
-        return implant
-
-    def __repr__(self):
-        return makeReprStr(self, ['itemID', 'state'])
 
 
 class CargoInfo:

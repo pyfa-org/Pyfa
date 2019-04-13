@@ -12,21 +12,21 @@ pyfalog = Logger(__name__)
 
 class FitAddProjectedModuleCommand(wx.Command):
 
-    def __init__(self, fitID, newModInfo, newPosition=None):
+    def __init__(self, fitID, modInfo, position=None):
         wx.Command.__init__(self, True)
         self.fitID = fitID
-        self.newModInfo = newModInfo
-        self.newPosition = newPosition
+        self.newModInfo = modInfo
+        self.newPosition = position
         self.oldModInfo = None
         self.oldPosition = None
 
     def Do(self):
         pyfalog.debug('Doing addition of projected module {} onto: {}'.format(self.newModInfo, self.fitID))
-        fit = Fit.getInstance().getFit(self.fitID)
         newMod = self.newModInfo.toModule(fallbackState=FittingModuleState.ACTIVE)
         if newMod is None:
             return False
 
+        fit = Fit.getInstance().getFit(self.fitID)
         if not newMod.canHaveState(newMod.state, projectedOnto=fit):
             newMod.state = FittingModuleState.OFFLINE
 
@@ -54,8 +54,8 @@ class FitAddProjectedModuleCommand(wx.Command):
         if self.oldPosition is not None and self.oldModInfo is not None:
             cmd = FitAddProjectedModuleCommand(
                 fitID=self.fitID,
-                newModInfo=self.oldModInfo,
-                newPosition=self.oldPosition)
+                modInfo=self.oldModInfo,
+                position=self.oldPosition)
             return cmd.Do()
         if self.newPosition is None:
             return False

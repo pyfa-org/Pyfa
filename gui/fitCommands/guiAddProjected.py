@@ -3,7 +3,7 @@ from service.fit import Fit
 
 import gui.mainFrame
 from gui import globalEvents as GE
-from gui.fitCommands.helpers import ModuleInfo, DroneInfo
+from gui.fitCommands.helpers import ModuleInfo, DroneInfo, FighterInfo
 from .calc.fitAddProjectedModule import FitAddProjectedModuleCommand
 from .calc.fitAddProjectedFit import FitAddProjectedFitCommand
 from .calc.fitAddProjectedFighter import FitAddProjectedFighterCommand
@@ -35,11 +35,11 @@ class GuiAddProjectedCommand(wx.Command):
                     fitID=self.fitID,
                     droneInfo=DroneInfo(itemID=self.id, amount=1, amountActive=1)))
             elif item.category.name == "Fighter":
-                result = self.internal_history.Submit(FitAddProjectedFighterCommand(self.fitID, self.id, None, None))
+                result = self.internal_history.Submit(FitAddProjectedFighterCommand(self.fitID, fighterInfo=FighterInfo(itemID=self.id)))
             else:
                 result = self.internal_history.Submit(FitAddProjectedModuleCommand(
                     fitID=self.fitID,
-                    newModInfo=ModuleInfo(itemID=self.id)))
+                    modInfo=ModuleInfo(itemID=self.id)))
         elif self.type == 'fit':
             result = self.internal_history.Submit(FitAddProjectedFitCommand(self.fitID, self.id, None))
 

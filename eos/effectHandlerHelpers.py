@@ -405,6 +405,7 @@ class HandledProjectedDroneList(HandledDroneCargoList):
         # Remove invalid or non-projectable drones
         if proj.isInvalid or not proj.item.isType("projected"):
             self.remove(proj)
+            proj.projected = False
             raise HandledListActionError(proj)
         return True
 
@@ -415,9 +416,9 @@ class HandledProjectedDroneList(HandledDroneCargoList):
         # Remove invalid or non-projectable drones
         if proj.isInvalid or not proj.item.isType("projected"):
             self.remove(proj)
+            proj.projected = False
             raise HandledListActionError(proj)
         return True
-
 
 
 class HandledItem(object):

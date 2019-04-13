@@ -69,5 +69,5 @@ class FitAddBoosterCommand(wx.Command):
                 position=self.oldPosition)
             return cmd.Do()
         from .fitRemoveBooster import FitRemoveBoosterCommand
-        cmd = FitRemoveBoosterCommand(self.fitID, self.newPosition)
+        cmd = FitRemoveBoosterCommand(fitID=self.fitID, position=self.newPosition)
         return cmd.Do()

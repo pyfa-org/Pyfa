@@ -63,5 +63,5 @@ class FitAddModuleCommand(wx.Command):
         from .fitRemoveModule import FitRemoveModuleCommand
         if self.savedPosition is None:
             return False
-        cmd = FitRemoveModuleCommand(self.fitID, [self.savedPosition])
+        cmd = FitRemoveModuleCommand(fitID=self.fitID, positions=[self.savedPosition])
         return cmd.Do()
