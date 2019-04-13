@@ -20,7 +20,7 @@ class FitReplaceModuleCommand(wx.Command):
         self.oldModInfo = None
 
     def Do(self):
-        pyfalog.debug('Doing replacement of module to {} on fit {}'.format(self.newModInfo, self.fitID))
+        pyfalog.debug('Doing replacement of module at position {} to {} on fit {}'.format(self.newModInfo, self.position, self.fitID))
         sFit = Fit.getInstance()
         fit = sFit.getFit(self.fitID)
         oldMod = fit.modules[self.position]
@@ -47,11 +47,11 @@ class FitReplaceModuleCommand(wx.Command):
         return True
 
     def Undo(self):
-        pyfalog.debug('Undoing replacement of module from {} to {} on fit {}'.format(self.oldModInfo, self.newModInfo, self.fitID))
+        pyfalog.debug('Undoing replacement of module at position {} to {} on fit {}'.format(self.newModInfo, self.position, self.fitID))
         # Remove if there was no module
         if self.oldModInfo is None:
             from gui.fitCommands.calc.fitRemoveModule import FitRemoveModuleCommand
-            cmd = FitRemoveModuleCommand(self.fitID, [self.position])
+            cmd = FitRemoveModuleCommand(fitID=self.fitID, positions=[self.position])
             return cmd.Do()
         # Replace if there was
         sFit = Fit.getInstance()

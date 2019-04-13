@@ -29,8 +29,5 @@ class FitRemoveProjectedModuleCommand(wx.Command):
     def Undo(self):
         pyfalog.debug('Undoing removal of projected module {} on fit {}'.format(self.savedModInfo, self.fitID))
         from gui.fitCommands.calc.fitAddProjectedModule import FitAddProjectedModuleCommand
-        cmd = FitAddProjectedModuleCommand(
-            fitID=self.fitID,
-            modInfo=self.savedModInfo,
-            position=self.position)
+        cmd = FitAddProjectedModuleCommand(fitID=self.fitID, modInfo=self.savedModInfo, position=self.position)
         return cmd.Do()

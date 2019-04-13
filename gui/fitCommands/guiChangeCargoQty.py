@@ -1,7 +1,7 @@
 import wx
 import gui.mainFrame
 from gui import globalEvents as GE
-from .calc.fitChangeCargoAmount import FitChangeCargoAmount
+from .calc.fitChangeCargoAmount import FitChangeCargoAmountCommand
 from service.fit import Fit
 from gui.fitCommands.helpers import CargoInfo
 from logbook import Logger
@@ -20,7 +20,7 @@ class GuiChangeCargoQty(wx.Command):
         self.internal_history = wx.CommandProcessor()
 
     def Do(self):
-        cmd = FitChangeCargoAmount(self.fitID, CargoInfo(itemID=self.itemID, amount=self.amount))
+        cmd = FitChangeCargoAmountCommand(self.fitID, CargoInfo(itemID=self.itemID, amount=self.amount))
         if self.internal_history.Submit(cmd):
             self.sFit.recalc(self.fitID)
             wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=self.fitID))

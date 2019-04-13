@@ -5,7 +5,6 @@ from logbook import Logger
 
 import eos.db
 from eos.exception import HandledListActionError
-from gui.fitCommands.helpers import ModuleInfo
 from service.fit import Fit
 
 
@@ -45,6 +44,5 @@ class FitCloneModuleCommand(wx.Command):
     def Undo(self):
         pyfalog.debug('Undoing cloning from position {} to position {} for fit ID {}'.format(self.srcPosition, self.dstPosition, self.fitID))
         from .fitRemoveModule import FitRemoveModuleCommand
-        cmd = FitRemoveModuleCommand(self.fitID, [self.dstPosition])
-        cmd.Do()
-        return True
+        cmd = FitRemoveModuleCommand(fitID=self.fitID, positions=[self.dstPosition])
+        return cmd.Do()

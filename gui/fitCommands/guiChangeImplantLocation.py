@@ -3,7 +3,7 @@ from service.fit import Fit
 
 import gui.mainFrame
 from gui import globalEvents as GE
-from .calc.fitChangeImplantLocation import FitChangeImplantLocation
+from .calc.fitChangeImplantLocation import FitChangeImplantLocationCommand
 
 
 class GuiChangeImplantLocation(wx.Command):
@@ -16,7 +16,7 @@ class GuiChangeImplantLocation(wx.Command):
         self.source = source
 
     def Do(self):
-        if self.internal_history.Submit(FitChangeImplantLocation(self.fitID, self.source)):
+        if self.internal_history.Submit(FitChangeImplantLocationCommand(self.fitID, self.source)):
             self.sFit.recalc(self.fitID)
             wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=self.fitID))
             return True

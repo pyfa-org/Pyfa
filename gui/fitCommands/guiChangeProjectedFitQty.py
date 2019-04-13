@@ -1,7 +1,7 @@
 import wx
 import gui.mainFrame
 from gui import globalEvents as GE
-from .calc.fitChangeProjectedFitAmount import FitChangeProjectedFitAmount
+from .calc.fitChangeProjectedFitAmount import FitChangeProjectedFitAmountCommand
 from service.fit import Fit
 from logbook import Logger
 pyfalog = Logger(__name__)
@@ -18,7 +18,7 @@ class GuiChangeProjectedFitQty(wx.Command):
         self.internal_history = wx.CommandProcessor()
 
     def Do(self):
-        cmd = FitChangeProjectedFitAmount(self.fitID, self.pfitID, self.amount)
+        cmd = FitChangeProjectedFitAmountCommand(self.fitID, self.pfitID, self.amount)
         if self.internal_history.Submit(cmd):
             self.sFit.recalc(self.fitID)
             wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=self.fitID))

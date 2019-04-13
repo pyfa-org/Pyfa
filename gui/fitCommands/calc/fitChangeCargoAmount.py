@@ -9,7 +9,7 @@ from service.fit import Fit
 pyfalog = Logger(__name__)
 
 
-class FitChangeCargoAmount(wx.Command):
+class FitChangeCargoAmountCommand(wx.Command):
 
     def __init__(self, fitID, cargoInfo):
         wx.Command.__init__(self, True, 'Change Cargo Amount')
@@ -33,5 +33,5 @@ class FitChangeCargoAmount(wx.Command):
 
     def Undo(self):
         pyfalog.debug('Undoing change of cargo {} for fit {}'.format(self.cargoInfo, self.fitID))
-        cmd = FitChangeCargoAmount(self.fitID, self.savedCargoInfo)
+        cmd = FitChangeCargoAmountCommand(fitID=self.fitID, cargoInfo=self.savedCargoInfo)
         return cmd.Do()

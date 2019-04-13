@@ -11,7 +11,7 @@ from service.fit import Fit
 pyfalog = Logger(__name__)
 
 
-class FitChangeProjectedDroneAmount(wx.Command):
+class FitChangeProjectedDroneAmountCommand(wx.Command):
 
     def __init__(self, fitID, itemID, amount):
         wx.Command.__init__(self, True, 'Change Projected Drone Amount')
