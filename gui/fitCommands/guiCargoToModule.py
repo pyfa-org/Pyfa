@@ -3,7 +3,7 @@ from service.fit import Fit
 
 import gui.mainFrame
 from gui import globalEvents as GE
-from gui.fitCommands.calc.fitSetCharge import FitSetChargeCommand
+from gui.fitCommands.calc.fitChangeModuleCharges import FitChangeModuleChargesCommand
 from gui.fitCommands.calc.fitReplaceModule import FitReplaceModuleCommand
 from gui.fitCommands.calc.fitRemoveCargo import FitRemoveCargoCommand
 from gui.fitCommands.helpers import ModuleInfo
@@ -39,8 +39,8 @@ class GuiCargoToModuleCommand(wx.Command):
         result = False
 
         # We're trying to move a charge from cargo to a slot. Use SetCharge command (don't respect move vs copy)
-        if sFit.isAmmo(cargo.item.ID):
-            result = self.internal_history.Submit(FitSetChargeCommand(self.fitID, [module.modPosition], cargo.item.ID))
+        if sFit.isAmmo(cargo.itemID):
+            result = self.internal_history.Submit(FitChangeModuleChargesCommand(self.fitID, {module.modPosition: cargo.itemID}))
         else:
 
             pyfalog.debug("Moving cargo item to module for fit ID: {0}", self.fitID)

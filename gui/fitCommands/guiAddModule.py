@@ -8,7 +8,7 @@ from gui import globalEvents as GE
 from gui.fitCommands.helpers import ModuleInfo
 from .calc.fitAddModule import FitAddModuleCommand
 from .calc.fitReplaceModule import FitReplaceModuleCommand
-from .calc.fitSetCharge import FitSetChargeCommand
+from .calc.fitChangeModuleCharges import FitChangeModuleChargesCommand
 
 
 pyfalog = Logger(__name__)
@@ -38,7 +38,7 @@ class GuiModuleAddCommand(wx.Command):
         # Charge
         if item.isCharge and self.position is not None:
             pyfalog.debug("Trying to add a charge")
-            success = self.internalHistory.Submit(FitSetChargeCommand(self.fitID, [self.position], self.itemID))
+            success = self.internalHistory.Submit(FitChangeModuleChargesCommand(self.fitID, {self.position: self.itemID}))
             if not success:
                 pyfalog.debug("    Failed")
                 return False  # if it's a charge item and this failed, nothing more we can try.

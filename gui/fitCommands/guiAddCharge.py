@@ -3,7 +3,7 @@ from service.fit import Fit
 
 import gui.mainFrame
 from gui import globalEvents as GE
-from .calc.fitSetCharge import FitSetChargeCommand
+from .calc.fitChangeModuleCharges import FitChangeModuleChargesCommand
 
 
 class GuiModuleAddChargeCommand(wx.Command):
@@ -18,7 +18,7 @@ class GuiModuleAddChargeCommand(wx.Command):
         self.projected = modules[0].isProjected
 
     def Do(self):
-        if self.internal_history.Submit(FitSetChargeCommand(self.fitID, self.positions, self.itemID, self.projected)):
+        if self.internal_history.Submit(FitChangeModuleChargesCommand(self.fitID, {p: self.itemID for p in self.positions}, self.projected)):
             self.sFit.recalc(self.fitID)
             wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=self.fitID))
             return True
