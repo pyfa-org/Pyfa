@@ -14,7 +14,7 @@ pyfalog = Logger(__name__)
 class FitChangeDroneAmount(wx.Command):
 
     def __init__(self, fitID, position, amount):
-        wx.Command.__init__(self, True, 'Change Drone Quantity')
+        wx.Command.__init__(self, True, 'Change Drone Amount')
         self.fitID = fitID
         self.position = position
         self.amount = amount
@@ -22,11 +22,13 @@ class FitChangeDroneAmount(wx.Command):
         self.removeCommand = None
 
     def Do(self):
-        pyfalog.debug('Doing change of drone quantity to {} at position {} on fit {}'.format(self.amount, self.position, self.fitID))
+        pyfalog.debug('Doing change of drone amount to {} at position {} on fit {}'.format(self.amount, self.position, self.fitID))
+        fit = Fit.getInstance().getFit(self.fitID)
+        drone = fit.drones[self.position]
+        self.savedDroneInfo = DroneInfo.fromDrone(drone)
+        if self.amount == self.savedDroneInfo.amount:
+            return False
         if self.amount > 0:
-            fit = Fit.getInstance().getFit(self.fitID)
-            drone = fit.drones[self.position]
-            self.savedDroneInfo = DroneInfo.fromDrone(drone)
             drone.amount = self.amount
             if drone.amountActive > 0:
                 difference = self.amount - self.savedDroneInfo.amount

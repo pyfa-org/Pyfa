@@ -34,6 +34,8 @@ class ChangeAmount(ContextMenu):
         srcContext = fullContext[0]
         if isinstance(thing, es_Fit):
             value = thing.getProjectionInfo(fitID).amount
+        elif isinstance(thing, es_Fighter):
+            value = thing.amountActive
         else:
             value = thing.amount
 

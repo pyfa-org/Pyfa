@@ -12,7 +12,7 @@ pyfalog = Logger(__name__)
 class FitChangeCargoAmount(wx.Command):
 
     def __init__(self, fitID, cargoInfo):
-        wx.Command.__init__(self, True, 'Change Cargo Quantity')
+        wx.Command.__init__(self, True, 'Change Cargo Amount')
         self.fitID = fitID
         self.cargoInfo = cargoInfo
         self.savedCargoInfo = None
@@ -26,6 +26,8 @@ class FitChangeCargoAmount(wx.Command):
             pyfalog.warning('Cannot find cargo item')
             return False
         self.savedCargoInfo = CargoInfo.fromCargo(cargo)
+        if self.cargoInfo.amount == self.savedCargoInfo.amount:
+            return False
         if self.cargoInfo.amount > 0:
             cargo.amount = self.cargoInfo.amount
             eos.db.commit()

@@ -12,7 +12,6 @@ from .calc.fitAddCargo import FitAddCargoCommand
 from .calc.fitReplaceModule import FitReplaceModuleCommand
 from .calc.fitAddFighter import FitAddFighterCommand
 from .calc.fitRemoveFighter import FitRemoveFighterCommand
-from .calc.fitChangeDroneVariation import FitChangeDroneVariationCommand
 from .calc.fitRebaseItem import FitRebaseItemCommand
 
 
