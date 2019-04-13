@@ -47,24 +47,22 @@ class ChangeAmount(ContextMenu):
 
             sFit = Fit.getInstance()
             fit = sFit.getFit(fitID)
-            cleanInput = re.sub(r'[^0-9.]', '', dlg.input.GetLineText(0).strip())
+            cleanInput = int(float(re.sub(r'[^0-9.]', '', dlg.input.GetLineText(0).strip())))
 
             if isinstance(thing, es_Cargo):
-                self.mainFrame.command.Submit(cmd.GuiChangeCargoQty(fitID, thing.itemID, int(float(cleanInput))))
-                return  # no need for post event here
+                self.mainFrame.command.Submit(cmd.GuiChangeCargoQty(fitID, thing.itemID, cleanInput))
             elif isinstance(thing, Drone):
-                if srcContext == "droneItem":
-                    self.mainFrame.command.Submit(cmd.GuiChangeDroneQty(fitID, fit.drones.index(thing), int(float(cleanInput))))
+                if srcContext == "projectedDrone":
+                    self.mainFrame.command.Submit(cmd.GuiChangeProjectedDroneQty(fitID, thing.itemID, cleanInput))
                 else:
-                    self.mainFrame.command.Submit(cmd.GuiChangeProjectedDroneQty(fitID, thing.itemID, int(float(cleanInput))))
+                    self.mainFrame.command.Submit(cmd.GuiChangeDroneQty(fitID, fit.drones.index(thing), cleanInput))
             elif isinstance(thing, es_Fit):
-                self.mainFrame.command.Submit(cmd.GuiChangeProjectedFitQty(fitID, thing.ID, int(float(cleanInput))))
-                return
+                self.mainFrame.command.Submit(cmd.GuiChangeProjectedFitQty(fitID, thing.ID, cleanInput))
             elif isinstance(thing, es_Fighter):
-                self.mainFrame.command.Submit(cmd.GuiChangeFighterQty(fitID, fit.fighters.index(thing), int(float(cleanInput))))
-                return
-
-            wx.PostEvent(mainFrame, GE.FitChanged(fitID=fitID))
+                if srcContext == "projectedFighter":
+                    self.mainFrame.command.Submit(cmd.GuiChangeProjectedFighterAmount(fitID, fit.projectedFighters.index(thing), cleanInput))
+                else:
+                    self.mainFrame.command.Submit(cmd.GuiChangeFighterQty(fitID, fit.fighters.index(thing), cleanInput))
 
 
 ChangeAmount.register()

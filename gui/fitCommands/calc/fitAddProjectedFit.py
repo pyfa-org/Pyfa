@@ -38,7 +38,7 @@ class FitAddProjectedFitCommand(wx.Command):
 
         if self.state is not None:
             projectionInfo = projectedFit.getProjectionInfo(self.fitID)
-            if not projectionInfo:
+            if projectionInfo is None:
                 pyfalog.warning('Fit projection info is not available')
                 self.Undo()
                 return False

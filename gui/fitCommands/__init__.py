@@ -42,3 +42,4 @@ from .guiMutaRevert import GuiMutaRevertCommand
 from .guiToggleProjected import GuiToggleProjectedCommand
 from .guiToggleBoosterSideEffect import GuiToggleBoosterSideEffectCommand
 from .guiToggleFighterAbility import GuiToggleFighterAbilityCommand
+from .guiChangeProjectedFighterAmount import GuiChangeProjectedFighterAmount
