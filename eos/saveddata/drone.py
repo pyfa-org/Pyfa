@@ -178,10 +178,6 @@ class Drone(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
             self.__baseRemoteReps = (rrType, rrAmount)
         return self.__baseRemoteReps
 
-    def changeType(self, typeID):
-        self.itemID = typeID
-        self.init()
-
     @property
     def miningStats(self):
         if self.__miningyield is None:
