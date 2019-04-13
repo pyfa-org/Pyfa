@@ -9,6 +9,7 @@ from .calc.fitRemoveProjectedFighter import FitRemoveProjectedFighterCommand
 from logbook import Logger
 from .calc.fitRemoveProjectedDrone import FitRemoveProjectedDroneCommand
 
+from gui.fitCommands.helpers import DroneInfo
 from eos.saveddata.drone import Drone
 from eos.saveddata.module import Module
 from eos.saveddata.fighter import Fighter
@@ -33,7 +34,7 @@ class GuiRemoveProjectedCommand(wx.Command):
         fit = self.sFit.getFit(fitID)
 
         if isinstance(thing, Drone):
-            self.data = fit.projectedDrones.index(thing)
+            self.data = DroneInfo(itemID=thing.itemID, amount=1, amountActive=1)
             self.type = 'drone'
         elif isinstance(thing, Module):
             self.type = 'module'

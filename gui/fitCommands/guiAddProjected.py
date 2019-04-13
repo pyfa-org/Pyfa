@@ -3,7 +3,7 @@ from service.fit import Fit
 
 import gui.mainFrame
 from gui import globalEvents as GE
-from gui.fitCommands.helpers import ModuleInfo
+from gui.fitCommands.helpers import ModuleInfo, DroneInfo
 from .calc.fitAddProjectedModule import FitAddProjectedModuleCommand
 from .calc.fitAddProjectedFit import FitAddProjectedFitCommand
 from .calc.fitAddProjectedFighter import FitAddProjectedFighterCommand
@@ -31,7 +31,9 @@ class GuiAddProjectedCommand(wx.Command):
             item = eos.db.getItem(self.id, eager=("attributes", "group.category"))
 
             if item.category.name == "Drone":
-                result = self.internal_history.Submit(FitAddProjectedDroneCommand(self.fitID, self.id))
+                result = self.internal_history.Submit(FitAddProjectedDroneCommand(
+                    fitID=self.fitID,
+                    droneInfo=DroneInfo(itemID=self.id, amount=1, amountActive=1)))
             elif item.category.name == "Fighter":
                 result = self.internal_history.Submit(FitAddProjectedFighterCommand(self.fitID, self.id, None, None))
             else:

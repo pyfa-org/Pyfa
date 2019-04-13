@@ -19,7 +19,7 @@ class FitAddCargoCommand(wx.Command):
     def Do(self):
         pyfalog.debug('Doing addition of cargo {} to fit {}'.format(self.cargoInfo, self.fitID))
         fit = Fit.getInstance().getFit(self.fitID)
-        cargo = next((x for x in fit.cargo if x.itemID == self.cargoInfo.itemID), None)
+        cargo = next((c for c in fit.cargo if c.itemID == self.cargoInfo.itemID), None)
         if cargo is None:
             cargo = self.cargoInfo.toCargo()
             try:

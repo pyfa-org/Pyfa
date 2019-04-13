@@ -3,6 +3,7 @@ from logbook import Logger
 
 import eos.db
 from eos.exception import HandledListActionError
+from gui.fitCommands.helpers import DroneInfo
 from service.fit import Fit
 from service.market import Market
 
@@ -16,7 +17,8 @@ class FitAddDroneCommand(wx.Command):
         wx.Command.__init__(self, True, 'Add Drone')
         self.fitID = fitID
         self.droneInfo = droneInfo
-        self.position = None
+        self.savedDroneInfo = None
+        self.savedPosition = None
 
     def Do(self):
         pyfalog.debug('Doing addition of drone {} to fit {}'.format(self.droneInfo, self.fitID))
@@ -25,15 +27,15 @@ class FitAddDroneCommand(wx.Command):
         # If we're not adding any active drones, check if there's an inactive stack
         # with enough space for new drones and use it
         if self.droneInfo.amountActive == 0:
-            for d in fit.drones.find(item):
+            for drone in fit.drones.find(item):
                 if (
-                    d is not None and d.amountActive == 0 and
-                    d.amount + self.droneInfo.amount) <= max(5, fit.extraAttributes["maxActiveDrones"]
+                    drone is not None and drone.amountActive == 0 and
+                    drone.amount + self.droneInfo.amount) <= max(5, fit.extraAttributes["maxActiveDrones"]
                 ):
-                    drone = d
+                    self.savedDroneInfo = DroneInfo.fromDrone(drone)
+                    self.savedPosition = fit.drones.index(drone)
                     drone.amount += self.droneInfo.amount
                     eos.db.commit()
-                    self.position = fit.drones.index(drone)
                     return True
         # Do new stack otherwise
         drone = self.droneInfo.toDrone()
@@ -49,11 +51,17 @@ class FitAddDroneCommand(wx.Command):
             eos.db.commit()
             return False
         eos.db.commit()
-        self.position = fit.drones.index(drone)
+        self.savedPosition = fit.drones.index(drone)
         return True
 
     def Undo(self):
         pyfalog.debug('Undoing addition of drone {} to fit {}'.format(self.droneInfo, self.fitID))
+        if self.savedDroneInfo is not None:
+            fit = Fit.getInstance().getFit(self.fitID)
+            drone = fit.drones[self.savedPosition]
+            drone.amount = self.savedDroneInfo.amount
+            drone.amountActive = self.savedDroneInfo.amountActive
+            return True
         from .fitRemoveDrone import FitRemoveDroneCommand
-        cmd = FitRemoveDroneCommand(fitID=self.fitID, position=self.position, amount=self.droneInfo.amount)
+        cmd = FitRemoveDroneCommand(fitID=self.fitID, position=self.savedPosition, amount=self.droneInfo.amount)
         return cmd.Do()

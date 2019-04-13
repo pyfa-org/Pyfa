@@ -2,66 +2,49 @@ import wx
 from logbook import Logger
 
 import eos.db
-from eos.saveddata.drone import Drone
+from gui.fitCommands.helpers import DroneInfo
 from service.fit import Fit
-from service.market import Market
 
 
 pyfalog = Logger(__name__)
 
 
 class FitRemoveProjectedDroneCommand(wx.Command):
-    """"
-    from sFit.project
-    """
 
-    def __init__(self, fitID, position, amount=1):
-        wx.Command.__init__(self, True)
+    def __init__(self, fitID, droneInfo):
+        wx.Command.__init__(self, True, 'Remove Projected Drone')
         self.fitID = fitID
-        self.position = position
-        self.amountToRemove = amount
-        self.savedItemID = None
-        self.savedAmount = None
-        self.savedAmountActive = None
-        self.removedStack = None
+        self.droneInfo = droneInfo
+        self.savedDroneInfo = None
 
     def Do(self):
-        pyfalog.debug("Removing ({0}) onto: {1}".format(self.fitID, self.position))
+        pyfalog.debug('Doing removal of projected drone {} from fit {}'.format(self.droneInfo, self.fitID))
         fit = Fit.getInstance().getFit(self.fitID)
-        drone = fit.projectedDrones[self.position]
-        self.savedItemID = drone.itemID
-        self.savedAmount = drone.amount
-        self.savedAmountActive = drone.amountActive
-
-        drone.amount -= self.amountToRemove
-        if drone.amountActive > 0:
-            drone.amountActive -= self.amountToRemove
-
+        drone = next((pd for pd in fit.projectedDrones if pd.itemID == self.droneInfo.itemID), None)
+        if drone is None:
+            pyfalog.warning('Unable to find projected drone for removal')
+            return False
+        self.savedDroneInfo = DroneInfo.fromDrone(drone)
+        drone.amount -= self.droneInfo.amount
+        # Remove stack if we have no items remaining
         if drone.amount == 0:
-            del fit.projectedDrones[self.position]
-            self.removedStack = True
+            fit.projectedDrones.remove(drone)
         else:
-            self.removedStack = False
+            if drone.amountActive > 0:
+                drone.amountActive -= self.droneInfo.amount
         eos.db.commit()
         return True
 
     def Undo(self):
+        pyfalog.debug('Undoing removal of projected drone {} from fit {}'.format(self.droneInfo, self.fitID))
         fit = Fit.getInstance().getFit(self.fitID)
-        if self.removedStack:
-            droneItem = Market.getInstance().getItem(self.savedItemID, eager=("attributes", "group.category"))
-            try:
-                drone = Drone(droneItem)
-            except ValueError:
-                pyfalog.warning("Invalid drone: {}", droneItem)
-                return False
-            if not drone.fits(fit):
-                return False
-            drone.amount = self.savedAmount
-            drone.amountActive = self.savedAmountActive
-            fit.projectedDrones.insert(self.position, drone)
-        else:
-            drone = fit.projectedDrones[self.position]
-            drone.amount = self.savedAmount
-            drone.amountActive = self.savedAmountActive
-        eos.db.commit()
-        return True
+        # Change stack if we still have it
+        drone = next((pd for pd in fit.projectedDrones if pd.itemID == self.savedDroneInfo.itemID), None)
+        if drone is not None:
+            drone.amount = self.savedDroneInfo.amount
+            drone.amountActive = self.savedDroneInfo.amountActive
+            return True
+        # Make new stack
+        from .fitAddProjectedDrone import FitAddProjectedDroneCommand
+        cmd = FitAddProjectedDroneCommand(self.fitID, self.savedDroneInfo)
+        return cmd.Do()
