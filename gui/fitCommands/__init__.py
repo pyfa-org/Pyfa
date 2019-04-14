@@ -5,8 +5,10 @@ from .booster.toggleState import GuiToggleBoosterStateCommand
 from .cargo.add import GuiAddCargoCommand
 from .cargo.changeAmount import GuiChangeCargoAmount
 from .cargo.remove import GuiRemoveCargoCommand
+from .commandFit.add import GuiAddCommandFitCommand
+from .commandFit.remove import GuiRemoveCommandFitCommand
+from .commandFit.toggleState import GuiToggleCommandFitStateCommand
 from .guiAddCharge import GuiModuleAddChargeCommand
-from .guiAddCommand import GuiAddCommandCommand
 from .guiAddDrone import GuiAddDroneCommand
 from .guiAddFighter import GuiAddFighterCommand
 from .guiAddModule import GuiModuleAddCommand
@@ -25,7 +27,6 @@ from .guiModuleToCargo import GuiModuleToCargoCommand
 from .guiMutaConvert import GuiMutaConvertCommand
 from .guiMutaRevert import GuiMutaRevertCommand
 from .guiRebaseItems import GuiRebaseItemsCommand
-from .guiRemoveCommand import GuiRemoveCommandCommand
 from .guiRemoveDrone import GuiRemoveDroneCommand
 from .guiRemoveFighter import GuiRemoveFighterCommand
 from .guiRemoveModule import GuiModuleRemoveCommand
@@ -33,7 +34,6 @@ from .guiRemoveProjected import GuiRemoveProjectedCommand
 from .guiSetMode import GuiSetModeCommand
 from .guiSetSpoolup import GuiSetSpoolup
 from .guiSwapCloneModule import GuiModuleSwapOrCloneCommand
-from .guiToggleCommand import GuiToggleCommandCommand
 from .guiToggleDrone import GuiToggleDroneCommand
 from .guiToggleFighter import GuiToggleFighterCommand
 from .guiToggleFighterAbility import GuiToggleFighterAbilityCommand

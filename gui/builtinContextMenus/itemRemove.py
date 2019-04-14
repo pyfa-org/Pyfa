@@ -61,7 +61,7 @@ class ItemRemove(ContextMenu):
             self.mainFrame.command.Submit(cmd.GuiRemoveProjectedCommand(fitID, selection[0]))
             return  # the command takes care of the PostEvent
         elif srcContext == "commandFit":
-            self.mainFrame.command.Submit(cmd.GuiRemoveCommandCommand(fitID, selection[0].ID))
+            self.mainFrame.command.Submit(cmd.GuiRemoveCommandFitCommand(fitID, selection[0].ID))
             return  # the command takes care of the PostEvent
         wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fitID))
 

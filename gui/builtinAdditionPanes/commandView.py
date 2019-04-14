@@ -99,14 +99,14 @@ class CommandView(d.Display):
             fitID = self.mainFrame.getActiveFit()
             row = self.GetFirstSelected()
             if row != -1:
-                self.mainFrame.command.Submit(cmd.GuiRemoveCommandCommand(fitID, self.get(row).ID))
+                self.mainFrame.command.Submit(cmd.GuiRemoveCommandFitCommand(fitID, self.get(row).ID))
 
     def handleDrag(self, type, fitID):
         # Those are drags coming from pyfa sources, NOT builtin wx drags
         if type == "fit":
             activeFit = self.mainFrame.getActiveFit()
             if activeFit:
-                self.mainFrame.command.Submit(cmd.GuiAddCommandCommand(activeFit, fitID))
+                self.mainFrame.command.Submit(cmd.GuiAddCommandFitCommand(activeFit, fitID))
 
     def startDrag(self, event):
         row = event.GetIndex()
@@ -182,7 +182,7 @@ class CommandView(d.Display):
             col = self.getColumn(event.Position)
             if col == self.getColIndex(State):
                 fitID = self.mainFrame.getActiveFit()
-                self.mainFrame.command.Submit(cmd.GuiToggleCommandCommand(fitID, item.ID))
+                self.mainFrame.command.Submit(cmd.GuiToggleCommandFitStateCommand(fitID, item.ID))
 
     def spawnMenu(self, event):
         fitID = self.mainFrame.getActiveFit()
@@ -211,4 +211,4 @@ class CommandView(d.Display):
                 fitID = self.mainFrame.getActiveFit()
                 thing = self.get(row)
                 if thing:  # thing doesn't exist if it's the dummy value
-                    self.mainFrame.command.Submit(cmd.GuiRemoveCommandCommand(fitID, thing.ID))
+                    self.mainFrame.command.Submit(cmd.GuiRemoveCommandFitCommand(fitID, thing.ID))

@@ -98,7 +98,7 @@ class CommandFits(ContextMenu):
             return
 
         fitID = self.mainFrame.getActiveFit()
-        self.mainFrame.command.Submit(cmd.GuiAddCommandCommand(fitID, fit.ID))
+        self.mainFrame.command.Submit(cmd.GuiAddCommandFitCommand(fitID, fit.ID))
 
 
 CommandFits.populateFits(None)

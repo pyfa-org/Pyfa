@@ -56,7 +56,7 @@ class TabbedFits(ContextMenu):
         fit = self.fitLookup[event.Id]
 
         if self.context == 'commandView':
-            self.mainFrame.command.Submit(cmd.GuiAddCommandCommand(fitID, fit.ID))
+            self.mainFrame.command.Submit(cmd.GuiAddCommandFitCommand(fitID, fit.ID))
         elif self.context == 'projected':
             self.mainFrame.command.Submit(cmd.GuiAddProjectedCommand(fitID, fit.ID, 'fit'))
 
