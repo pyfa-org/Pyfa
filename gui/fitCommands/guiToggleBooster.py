@@ -3,7 +3,7 @@ from service.fit import Fit
 
 import gui.mainFrame
 from gui import globalEvents as GE
-from .calc.fitToggleBooster import FitToggleBoosterStateCommand
+from .calc.booster.toggleState import FitToggleBoosterStateCommand
 
 
 class GuiToggleBoosterCommand(wx.Command):

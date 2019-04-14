@@ -4,9 +4,9 @@ from service.fit import Fit
 import gui.mainFrame
 from gui import globalEvents as GE
 from gui.fitCommands.helpers import ModuleInfo, FighterInfo, BoosterInfo
-from .calc.fitRemoveImplant import FitRemoveImplantCommand
-from .calc.fitAddImplant import FitAddImplantCommand
-from .calc.fitAddBooster import FitAddBoosterCommand
+from .calc.implant.remove import FitRemoveImplantCommand
+from .calc.implant.add import FitAddImplantCommand
+from .calc.booster.add import FitAddBoosterCommand
 from .calc.fitRemoveCargo import FitRemoveCargoCommand
 from .calc.fitAddCargo import FitAddCargoCommand
 from .calc.fitReplaceModule import FitReplaceModuleCommand

@@ -3,7 +3,7 @@ from service.fit import Fit
 
 import gui.mainFrame
 from gui import globalEvents as GE
-from .calc.fitToggleImplant import FitToggleImplantStateCommand
+from .calc.implant.toggleState import FitToggleImplantStateCommand
 
 
 class GuiToggleImplantCommand(wx.Command):

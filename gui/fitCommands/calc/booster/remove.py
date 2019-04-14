@@ -28,6 +28,6 @@ class FitRemoveBoosterCommand(wx.Command):
 
     def Undo(self):
         pyfalog.debug('Undoing removal of booster {} on fit {}'.format(self.savedBoosterInfo, self.fitID))
-        from .fitAddBooster import FitAddBoosterCommand
+        from .add import FitAddBoosterCommand
         cmd = FitAddBoosterCommand(fitID=self.fitID, boosterInfo=self.savedBoosterInfo, position=self.position)
         return cmd.Do()
