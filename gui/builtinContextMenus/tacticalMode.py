@@ -61,7 +61,7 @@ class TacticalMode(ContextMenu):
             return
 
         fitID = self.mainFrame.getActiveFit()
-        self.mainFrame.command.Submit(cmd.GuiSetModeCommand(fitID, self.modeIds[event.Id]))
+        self.mainFrame.command.Submit(cmd.GuiSetModeCommand(fitID, self.modeIds[event.Id].item.ID))
 
 
 TacticalMode.register()

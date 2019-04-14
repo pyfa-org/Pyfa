@@ -7,16 +7,16 @@ from .calc.fitSetMode import FitSetModeCommand
 
 
 class GuiSetModeCommand(wx.Command):
-    def __init__(self, fitID, mode):
+    def __init__(self, fitID, itemID):
         wx.Command.__init__(self, True, "Mode Set")
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
         self.sFit = Fit.getInstance()
         self.internal_history = wx.CommandProcessor()
         self.fitID = fitID
-        self.mode = mode
+        self.itemID = itemID
 
     def Do(self):
-        if self.internal_history.Submit(FitSetModeCommand(self.fitID, self.mode)):
+        if self.internal_history.Submit(FitSetModeCommand(self.fitID, self.itemID)):
             self.sFit.recalc(self.fitID)
             wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=self.fitID))
             return True

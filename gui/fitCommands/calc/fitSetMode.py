@@ -1,28 +1,33 @@
 import wx
-import eos.db
 from logbook import Logger
+
+import eos.db
+from eos.saveddata.mode import Mode
+from service.fit import Fit
+from service.market import Market
+
+
 pyfalog = Logger(__name__)
 
 
 class FitSetModeCommand(wx.Command):
-    """"
-    from sFit.setMode
-    """
-    def __init__(self, fitID, mode):
-        wx.Command.__init__(self, True, "Cargo add")
+
+    def __init__(self, fitID, itemID):
+        wx.Command.__init__(self, True, 'Set Mode')
         self.fitID = fitID
-        self.mode = mode
-        self.old_mode = None
+        self.itemID = itemID
+        self.savedItemID = None
 
     def Do(self):
-        pyfalog.debug("Set mode for fit ID: {0}", self.fitID)
-        fit = eos.db.getFit(self.fitID)
-        self.old_mode = fit.mode
-        fit.mode = self.mode
+        pyfalog.debug('Doing setting mode {} for fit {}'.format(self.itemID, self.fitID))
+        fit = Fit.getInstance().getFit(self.fitID)
+        self.savedItemID = fit.modeID
+        item = Market.getInstance().getItem(self.itemID)
+        mode = Mode(item)
+        fit.mode = mode
         eos.db.commit()
         return True
 
     def Undo(self):
-        cmd = FitSetModeCommand(self.fitID, self.old_mode)
-        cmd.Do()
-        return True
+        cmd = FitSetModeCommand(self.fitID, self.savedItemID)
+        return cmd.Do()

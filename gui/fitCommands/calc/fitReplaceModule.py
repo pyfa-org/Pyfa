@@ -26,6 +26,8 @@ class FitReplaceModuleCommand(wx.Command):
         oldMod = fit.modules[self.position]
         if not oldMod.isEmpty:
             self.oldModInfo = ModuleInfo.fromModule(oldMod)
+        if self.newModInfo == self.oldModInfo:
+            return False
         newMod = self.newModInfo.toModule(fallbackState=stateLimit(self.newModInfo.itemID))
         if newMod is None:
             return False

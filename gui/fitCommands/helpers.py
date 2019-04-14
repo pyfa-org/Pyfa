@@ -85,6 +85,19 @@ class ModuleInfo:
 
         return mod
 
+    def __eq__(self, other):
+        if not isinstance(other, ModuleInfo):
+            return False
+        return all((
+            self.itemID == other.itemID,
+            self.baseItemID == other.baseItemID,
+            self.mutaplasmidID == other.mutaplasmidID,
+            self.mutations == other.mutations,
+            self.chargeID == other.chargeID,
+            self.state == other.state,
+            self.spoolType == other.spoolType,
+            self.spoolAmount == other.spoolAmount))
+
     def __repr__(self):
         return makeReprStr(self, [
             'itemID', 'baseItemID', 'mutaplasmidID', 'mutations',

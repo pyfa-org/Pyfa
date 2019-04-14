@@ -18,7 +18,7 @@ class FitRenameCommand(wx.Command):
 
     def Do(self):
         pyfalog.debug('Doing renaming of fit {} to {}'.format(self.fitID, self.name))
-        fit = eos.db.getFit(self.fitID)
+        fit = Fit.getInstance().getFit(self.fitID)
         self.savedName = fit.name
         fit.name = self.name
         eos.db.commit()

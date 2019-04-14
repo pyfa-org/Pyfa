@@ -28,6 +28,8 @@ class FitChangeProjectedDroneAmountCommand(wx.Command):
             pyfalog.warning('Cannot find projected drone')
             return False
         self.savedDroneInfo = DroneInfo.fromDrone(drone)
+        if self.amount == self.savedDroneInfo.amount:
+            return False
         drone.amount = self.amount
         if drone.amountActive > 0:
             difference = self.amount - self.savedDroneInfo.amount

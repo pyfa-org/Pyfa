@@ -30,7 +30,10 @@ class FitChangeProjectedFitAmountCommand(wx.Command):
             return False
         self.savedAmount = projectionInfo.amount
         # Limit to [1, 20]
-        projectionInfo.amount = min(20, max(1, self.amount))
+        confinedAmount = min(20, max(1, self.amount))
+        if confinedAmount == self.savedAmount:
+            return False
+        projectionInfo.amount = confinedAmount
         eos.db.commit()
         return True
 

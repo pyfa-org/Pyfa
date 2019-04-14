@@ -14,6 +14,7 @@ import gui.utils.color as colorUtils
 import gui.utils.draw as drawUtils
 import gui.utils.fonts as fonts
 from gui.bitmap_loader import BitmapLoader
+from gui.builtinShipBrowser.events import EVT_FIT_RENAMED
 from gui.builtinShipBrowser.pfBitmapFrame import PFBitmapFrame
 from service.fit import Fit
 from .events import BoosterListUpdated, FitRemoved, FitSelected, ImportSelected, SearchSelected, Stage3Selected
@@ -121,6 +122,7 @@ class FitItem(SFItem.SFBrowserItem):
         self.tcFitName.Bind(wx.EVT_KILL_FOCUS, self.editLostFocus)
         self.tcFitName.Bind(wx.EVT_KEY_DOWN, self.editCheckEsc)
         self.Bind(wx.EVT_MOUSE_CAPTURE_LOST, self.OnMouseCaptureLost)
+        self.mainFrame.Bind(EVT_FIT_RENAMED, self.OnFitRename)
 
         self.animTimerId = wx.NewId()
         self.animTimer = wx.Timer(self, self.animTimerId)
@@ -325,10 +327,16 @@ class FitItem(SFItem.SFBrowserItem):
         self.editWasShown = 0
         fitName = self.tcFitName.GetValue()
         if fitName:
-            self.fitName = fitName
-            self.mainFrame.command.Submit(cmd.GuiFitRenameCommand(self.fitID, self.fitName))
+            self.mainFrame.command.Submit(cmd.GuiFitRenameCommand(self.fitID, fitName))
         else:
             self.tcFitName.SetValue(self.fitName)
+
+    def OnFitRename(self, event):
+        if event.fitID == self.fitID:
+            fit = Fit.getInstance().getFit(self.fitID)
+            self.fitName = fit.name
+            self.Refresh()
+        event.Skip()
 
     def deleteBtnCB(self):
         if self.tcFitName.IsShown():

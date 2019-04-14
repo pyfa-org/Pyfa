@@ -26,6 +26,7 @@ from service.fit import Fit
 import gui.graphFrame
 import gui.globalEvents as GE
 from gui.bitmap_loader import BitmapLoader
+from gui.builtinShipBrowser.events import EVT_FIT_RENAMED
 
 from logbook import Logger
 
@@ -171,6 +172,7 @@ class MainMenuBar(wx.MenuBar):
             helpMenu.Append(self.devToolsId, "Open &Dev Tools", "Dev Tools")
 
         self.mainFrame.Bind(GE.FIT_CHANGED, self.fitChanged)
+        self.mainFrame.Bind(EVT_FIT_RENAMED, self.fitRenamed)
 
     def fitChanged(self, event):
         enable = event.fitID is not None
@@ -178,14 +180,7 @@ class MainMenuBar(wx.MenuBar):
         self.Enable(wx.ID_COPY, enable)
         self.Enable(self.exportSkillsNeededId, enable)
 
-        command = self.mainFrame.command
-        self.Enable(wx.ID_UNDO, False)
-        self.Enable(wx.ID_REDO, False)
-
-        if command.CanUndo():
-            self.Enable(wx.ID_UNDO, True)
-        if command.CanRedo():
-            self.Enable(wx.ID_REDO, True)
+        self.refreshUndo()
 
         sChar = Character.getInstance()
         charID = self.mainFrame.charSelection.getActiveCharacter()
@@ -208,3 +203,16 @@ class MainMenuBar(wx.MenuBar):
                 self.ignoreRestrictionItem.SetItemLabel("Disable Fitting Re&strictions")
 
         event.Skip()
+
+    def fitRenamed(self, event):
+        self.refreshUndo()
+        event.Skip()
+
+    def refreshUndo(self):
+        command = self.mainFrame.command
+        self.Enable(wx.ID_UNDO, False)
+        self.Enable(wx.ID_REDO, False)
+        if command.CanUndo():
+            self.Enable(wx.ID_UNDO, True)
+        if command.CanRedo():
+            self.Enable(wx.ID_REDO, True)
