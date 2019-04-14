@@ -9,23 +9,21 @@ from .calcCommands.fighter.localRemove import CalcRemoveLocalFighterCommand
 class GuiRemoveFighterCommand(wx.Command):
     def __init__(self, fitID, position):
         wx.Command.__init__(self, True, "Fighter Remove")
-        self.mainFrame = gui.mainFrame.MainFrame.getInstance()
-        self.sFit = Fit.getInstance()
         self.fitID = fitID
         self.position = position
-        self.internal_history = wx.CommandProcessor()
+        self.internalHistory = wx.CommandProcessor()
 
     def Do(self):
-        success = self.internal_history.Submit(CalcRemoveLocalFighterCommand(self.fitID, self.position))
+        success = self.internalHistory.Submit(CalcRemoveLocalFighterCommand(self.fitID, self.position))
         if success:
-            self.sFit.recalc(self.fitID)
-            wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=self.fitID))
+            Fit.getInstance().recalc(self.fitID)
+            wx.PostEvent(gui.mainFrame.MainFrame.getInstance(), GE.FitChanged(fitID=self.fitID))
             return True
         return False
 
     def Undo(self):
-        for _ in self.internal_history.Commands:
-            self.internal_history.Undo()
-        self.sFit.recalc(self.fitID)
-        wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=self.fitID))
+        for _ in self.internalHistory.Commands:
+            self.internalHistory.Undo()
+        Fit.getInstance().recalc(self.fitID)
+        wx.PostEvent(gui.mainFrame.MainFrame.getInstance(), GE.FitChanged(fitID=self.fitID))
         return True

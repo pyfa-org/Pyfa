@@ -9,22 +9,20 @@ from .calcCommands.shipModeChange import CalcChangeShipModeCommand
 class GuiSetModeCommand(wx.Command):
     def __init__(self, fitID, itemID):
         wx.Command.__init__(self, True, "Mode Set")
-        self.mainFrame = gui.mainFrame.MainFrame.getInstance()
-        self.sFit = Fit.getInstance()
-        self.internal_history = wx.CommandProcessor()
+        self.internalHistory = wx.CommandProcessor()
         self.fitID = fitID
         self.itemID = itemID
 
     def Do(self):
-        if self.internal_history.Submit(CalcChangeShipModeCommand(self.fitID, self.itemID)):
-            self.sFit.recalc(self.fitID)
-            wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=self.fitID))
+        if self.internalHistory.Submit(CalcChangeShipModeCommand(self.fitID, self.itemID)):
+            Fit.getInstance().recalc(self.fitID)
+            wx.PostEvent(gui.mainFrame.MainFrame.getInstance(), GE.FitChanged(fitID=self.fitID))
             return True
         return False
 
     def Undo(self):
-        for _ in self.internal_history.Commands:
-            self.internal_history.Undo()
-        self.sFit.recalc(self.fitID)
-        wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=self.fitID))
+        for _ in self.internalHistory.Commands:
+            self.internalHistory.Undo()
+        Fit.getInstance().recalc(self.fitID)
+        wx.PostEvent(gui.mainFrame.MainFrame.getInstance(), GE.FitChanged(fitID=self.fitID))
         return True

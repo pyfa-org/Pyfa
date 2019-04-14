@@ -9,22 +9,20 @@ from .calcCommands.drone.localToggleState import CalcToggleLocalDroneStateComman
 class GuiToggleDroneCommand(wx.Command):
     def __init__(self, fitID, position):
         wx.Command.__init__(self, True, "")
-        self.mainFrame = gui.mainFrame.MainFrame.getInstance()
-        self.sFit = Fit.getInstance()
-        self.internal_history = wx.CommandProcessor()
+        self.internalHistory = wx.CommandProcessor()
         self.fitID = fitID
         self.position = position
 
     def Do(self):
-        if self.internal_history.Submit(CalcToggleLocalDroneStateCommand(self.fitID, self.position)):
-            self.sFit.recalc(self.fitID)
-            wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=self.fitID))
+        if self.internalHistory.Submit(CalcToggleLocalDroneStateCommand(self.fitID, self.position)):
+            Fit.getInstance().recalc(self.fitID)
+            wx.PostEvent(gui.mainFrame.MainFrame.getInstance(), GE.FitChanged(fitID=self.fitID))
             return True
         return False
 
     def Undo(self):
-        for _ in self.internal_history.Commands:
-            self.internal_history.Undo()
-        self.sFit.recalc(self.fitID)
-        wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=self.fitID))
+        for _ in self.internalHistory.Commands:
+            self.internalHistory.Undo()
+        Fit.getInstance().recalc(self.fitID)
+        wx.PostEvent(gui.mainFrame.MainFrame.getInstance(), GE.FitChanged(fitID=self.fitID))
         return True

@@ -23,13 +23,11 @@ class GuiCargoToModuleCommand(wx.Command):
 
     def __init__(self, fitID, moduleIdx, cargoIdx, copy=False):
         wx.Command.__init__(self, True, "Cargo to Module")
-        self.mainFrame = gui.mainFrame.MainFrame.getInstance()
-        self.sFit = Fit.getInstance()
         self.fitID = fitID
         self.moduleIdx = moduleIdx
         self.cargoIdx = cargoIdx
         self.copy = copy
-        self.internal_history = wx.CommandProcessor()
+        self.internalHistory = wx.CommandProcessor()
 
     def Do(self):
         sFit = Fit.getInstance()
@@ -40,7 +38,7 @@ class GuiCargoToModuleCommand(wx.Command):
 
         # We're trying to move a charge from cargo to a slot. Use SetCharge command (don't respect move vs copy)
         if sFit.isAmmo(cargo.itemID):
-            result = self.internal_history.Submit(CalcChangeModuleChargesCommand(self.fitID, {module.modPosition: cargo.itemID}))
+            result = self.internalHistory.Submit(CalcChangeModuleChargesCommand(self.fitID, {module.modPosition: cargo.itemID}))
         else:
 
             pyfalog.debug("Moving cargo item to module for fit ID: {0}", self.fitID)
@@ -50,7 +48,7 @@ class GuiCargoToModuleCommand(wx.Command):
                 position=module.modPosition,
                 newModInfo=ModuleInfo(itemID=cargo.itemID))
 
-            result = self.internal_history.Submit(self.addCmd)
+            result = self.internalHistory.Submit(self.addCmd)
 
             if not result:
                 # creating module failed for whatever reason
@@ -59,23 +57,23 @@ class GuiCargoToModuleCommand(wx.Command):
             if self.addCmd.old_module is not None:
                 # we're swapping with an existing module, so remove cargo and add module
                 self.removeCmd = CalcRemoveCargoCommand(self.fitID, cargo.itemID)
-                result = self.internal_history.Submit(self.removeCmd)
+                result = self.internalHistory.Submit(self.removeCmd)
 
                 self.addCargoCmd = CalcAddCargoCommand(self.fitID, self.addCmd.old_module.itemID)
-                result = self.internal_history.Submit(self.addCargoCmd)
+                result = self.internalHistory.Submit(self.addCargoCmd)
             elif not self.copy:
                 # move, not copying, so remove cargo
                 self.removeCmd = CalcRemoveCargoCommand(self.fitID, cargo.itemID)
-                result = self.internal_history.Submit(self.removeCmd)
+                result = self.internalHistory.Submit(self.removeCmd)
 
         if result:
             sFit.recalc(self.fitID)
-            wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=self.fitID))
+            wx.PostEvent(gui.mainFrame.MainFrame.getInstance(), GE.FitChanged(fitID=self.fitID))
         return result
 
     def Undo(self):
-        for _ in self.internal_history.Commands:
-            self.internal_history.Undo()
-        self.sFit.recalc(self.fitID)
-        wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=self.fitID))
+        for _ in self.internalHistory.Commands:
+            self.internalHistory.Undo()
+        Fit.getInstance().recalc(self.fitID)
+        wx.PostEvent(gui.mainFrame.MainFrame.getInstance(), GE.FitChanged(fitID=self.fitID))
         return True

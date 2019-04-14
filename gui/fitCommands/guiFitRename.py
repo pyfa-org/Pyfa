@@ -10,21 +10,19 @@ pyfalog = Logger(__name__)
 class GuiFitRenameCommand(wx.Command):
     def __init__(self, fitID, newName):
         wx.Command.__init__(self, True)
-        self.mainFrame = gui.mainFrame.MainFrame.getInstance()
-        self.sFit = Fit.getInstance()
         self.fitID = fitID
         self.newName = newName
-        self.internal_history = wx.CommandProcessor()
+        self.internalHistory = wx.CommandProcessor()
 
     def Do(self):
-        if self.internal_history.Submit(CalcFitRenameCommand(self.fitID, self.newName)):
-            wx.PostEvent(self.mainFrame, FitRenamed(fitID=self.fitID))
+        if self.internalHistory.Submit(CalcFitRenameCommand(self.fitID, self.newName)):
+            wx.PostEvent(gui.mainFrame.MainFrame.getInstance(), FitRenamed(fitID=self.fitID))
             return True
         return False
 
     def Undo(self):
         pyfalog.debug("{} Undo()".format(self))
-        for _ in self.internal_history.Commands:
-            self.internal_history.Undo()
-        wx.PostEvent(self.mainFrame, FitRenamed(fitID=self.fitID))
+        for _ in self.internalHistory.Commands:
+            self.internalHistory.Undo()
+        wx.PostEvent(gui.mainFrame.MainFrame.getInstance(), FitRenamed(fitID=self.fitID))
         return True

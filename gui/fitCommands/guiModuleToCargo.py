@@ -17,13 +17,11 @@ class GuiModuleToCargoCommand(wx.Command):
 
     def __init__(self, fitID, moduleIdx, cargoIdx, copy=False):
         wx.Command.__init__(self, True, "Module to Cargo")
-        self.mainFrame = gui.mainFrame.MainFrame.getInstance()
-        self.sFit = Fit.getInstance()
         self.fitID = fitID
         self.moduleIdx = moduleIdx
         self.cargoIdx = cargoIdx
         self.copy = copy
-        self.internal_history = wx.CommandProcessor()
+        self.internalHistory = wx.CommandProcessor()
 
     def Do(self):
         sFit = Fit.getInstance()
@@ -33,8 +31,8 @@ class GuiModuleToCargoCommand(wx.Command):
 
         if self.cargoIdx:  # we're swapping with cargo
             if self.copy:  # if copying, simply add item to cargo
-                result = self.internal_history.Submit(CalcAddCargoCommand(
-                    self.mainFrame.getActiveFit(), module.item.ID if not module.item.isAbyssal else module.baseItemID))
+                result = self.internalHistory.Submit(CalcAddCargoCommand(
+                    gui.mainFrame.MainFrame.getInstance().getActiveFit(), module.item.ID if not module.item.isAbyssal else module.baseItemID))
             else:  # otherwise, try to swap by replacing module with cargo item. If successful, remove old cargo and add new cargo
 
                 cargo = fit.cargo[self.cargoIdx]
@@ -43,7 +41,7 @@ class GuiModuleToCargoCommand(wx.Command):
                     position=module.modPosition,
                     newModInfo=ModuleInfo(itemID=cargo.itemID))
 
-                result = self.internal_history.Submit(self.modReplaceCmd)
+                result = self.internalHistory.Submit(self.modReplaceCmd)
 
                 if not result:
                     # creating module failed for whatever reason
@@ -52,27 +50,27 @@ class GuiModuleToCargoCommand(wx.Command):
                 if self.modReplaceCmd.old_module is not None:
                     # we're swapping with an existing module, so remove cargo and add module
                     self.removeCmd = CalcRemoveCargoCommand(self.fitID, cargo.itemID)
-                    result = self.internal_history.Submit(self.removeCmd)
+                    result = self.internalHistory.Submit(self.removeCmd)
 
                     self.addCargoCmd = CalcAddCargoCommand(self.fitID, self.modReplaceCmd.old_module.itemID)
-                    result = self.internal_history.Submit(self.addCargoCmd)
+                    result = self.internalHistory.Submit(self.addCargoCmd)
 
         else:  # dragging to blank spot, append
-            result = self.internal_history.Submit(CalcAddCargoCommand(self.mainFrame.getActiveFit(),
+            result = self.internalHistory.Submit(CalcAddCargoCommand(gui.mainFrame.MainFrame.getInstance().getActiveFit(),
                                                                       module.item.ID if not module.item.isAbyssal else module.baseItemID))
 
             if not self.copy:  # if not copying, remove module
-                self.internal_history.Submit(CalcRemoveLocalModuleCommand(self.mainFrame.getActiveFit(), [self.moduleIdx]))
+                self.internalHistory.Submit(CalcRemoveLocalModuleCommand(gui.mainFrame.MainFrame.getInstance().getActiveFit(), [self.moduleIdx]))
 
         if result:
             sFit.recalc(self.fitID)
-            wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=self.fitID, action="moddel", typeID=module.item.ID))
+            wx.PostEvent(gui.mainFrame.MainFrame.getInstance(), GE.FitChanged(fitID=self.fitID, action="moddel", typeID=module.item.ID))
 
         return result
 
     def Undo(self):
-        for _ in self.internal_history.Commands:
-            self.internal_history.Undo()
-        self.sFit.recalc(self.fitID)
-        wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=self.fitID))
+        for _ in self.internalHistory.Commands:
+            self.internalHistory.Undo()
+        Fit.getInstance().recalc(self.fitID)
+        wx.PostEvent(gui.mainFrame.MainFrame.getInstance(), GE.FitChanged(fitID=self.fitID))
         return True

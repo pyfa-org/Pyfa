@@ -11,25 +11,23 @@ class GuiChangeProjectedFighterAmount(wx.Command):
 
     def __init__(self, fitID, position, amount):
         wx.Command.__init__(self, True, "")
-        self.mainFrame = gui.mainFrame.MainFrame.getInstance()
-        self.sFit = Fit.getInstance()
         self.fitID = fitID
         self.position = position
         self.amount = amount
-        self.internal_history = wx.CommandProcessor()
+        self.internalHistory = wx.CommandProcessor()
 
     def Do(self):
         cmd = CalcChangeFighterAmountCommand(self.fitID, True, self.position, self.amount)
-        if self.internal_history.Submit(cmd):
-            self.sFit.recalc(self.fitID)
-            wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=self.fitID))
+        if self.internalHistory.Submit(cmd):
+            Fit.getInstance().recalc(self.fitID)
+            wx.PostEvent(gui.mainFrame.MainFrame.getInstance(), GE.FitChanged(fitID=self.fitID))
             return True
         return False
 
     def Undo(self):
         pyfalog.debug("{} Undo()".format(self))
-        for _ in self.internal_history.Commands:
-            self.internal_history.Undo()
-        self.sFit.recalc(self.fitID)
-        wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=self.fitID))
+        for _ in self.internalHistory.Commands:
+            self.internalHistory.Undo()
+        Fit.getInstance().recalc(self.fitID)
+        wx.PostEvent(gui.mainFrame.MainFrame.getInstance(), GE.FitChanged(fitID=self.fitID))
         return True

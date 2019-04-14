@@ -11,8 +11,7 @@ class GuiMutaConvertCommand(wx.Command):
 
     def __init__(self, fitID, position, mutaplasmid):
         wx.Command.__init__(self, True, "Convert Item to Mutated")
-        self.mainFrame = gui.mainFrame.MainFrame.getInstance()
-        self.internal_history = wx.CommandProcessor()
+        self.internalHistory = wx.CommandProcessor()
         self.fitID = fitID
         self.position = position
         self.mutaplasmid = mutaplasmid
@@ -26,7 +25,7 @@ class GuiMutaConvertCommand(wx.Command):
         if oldMod.isMutated:
             return False
 
-        success = self.internal_history.Submit(CalcReplaceLocalModuleCommand(
+        success = self.internalHistory.Submit(CalcReplaceLocalModuleCommand(
             fitID=self.fitID,
             position=self.position,
             newModInfo=ModuleInfo(
@@ -42,12 +41,12 @@ class GuiMutaConvertCommand(wx.Command):
             return False
 
         sFit.recalc(self.fitID)
-        wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=self.fitID))
+        wx.PostEvent(gui.mainFrame.MainFrame.getInstance(), GE.FitChanged(fitID=self.fitID))
         return True
 
     def Undo(self):
-        for _ in self.internal_history.Commands:
-            self.internal_history.Undo()
+        for _ in self.internalHistory.Commands:
+            self.internalHistory.Undo()
         Fit.getInstance().recalc(self.fitID)
-        wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=self.fitID))
+        wx.PostEvent(gui.mainFrame.MainFrame.getInstance(), GE.FitChanged(fitID=self.fitID))
         return True

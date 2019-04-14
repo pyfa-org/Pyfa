@@ -18,14 +18,12 @@ from .calcCommands.itemRebase import CalcRebaseItemCommand
 class GuiMetaSwapCommand(wx.Command):
     def __init__(self, fitID, context, itemID, selection: list):
         wx.Command.__init__(self, True, "Meta Swap")
-        self.mainFrame = gui.mainFrame.MainFrame.getInstance()
-        self.sFit = Fit.getInstance()
-        self.internal_history = wx.CommandProcessor()
+        self.internalHistory = wx.CommandProcessor()
         self.fitID = fitID
         self.itemID = itemID
         self.context = context
         self.data = []
-        fit = self.sFit.getFit(fitID)
+        fit = Fit.getInstance().getFit(fitID)
 
         if context == 'fittingModule':
             for x in selection:
@@ -56,15 +54,15 @@ class GuiMetaSwapCommand(wx.Command):
     def Do(self):
         for cmds in self.data:
             for cmd in cmds:
-                self.internal_history.Submit(cmd[0](*cmd[1:]))
+                self.internalHistory.Submit(cmd[0](*cmd[1:]))
 
-        self.sFit.recalc(self.fitID)
-        wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=self.fitID))
+        Fit.getInstance().recalc(self.fitID)
+        wx.PostEvent(gui.mainFrame.MainFrame.getInstance(), GE.FitChanged(fitID=self.fitID))
         return True
 
     def Undo(self):
-        for _ in self.internal_history.Commands:
-            self.internal_history.Undo()
-        self.sFit.recalc(self.fitID)
-        wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=self.fitID))
+        for _ in self.internalHistory.Commands:
+            self.internalHistory.Undo()
+        Fit.getInstance().recalc(self.fitID)
+        wx.PostEvent(gui.mainFrame.MainFrame.getInstance(), GE.FitChanged(fitID=self.fitID))
         return True

@@ -17,7 +17,6 @@ class GuiRebaseItemsCommand(wx.Command):
 
     def __init__(self, fitID, rebaseMap):
         wx.Command.__init__(self, True, "Mass Rebase Item")
-        self.mainFrame = gui.mainFrame.MainFrame.getInstance()
         self.fitID = fitID
         self.rebaseMap = rebaseMap
         self.internalHistory = InternalCommandHistory()
@@ -44,7 +43,7 @@ class GuiRebaseItemsCommand(wx.Command):
         if self.internalHistory:
             eos.db.commit()
             Fit.getInstance().recalc(self.fitID)
-            wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=self.fitID))
+            wx.PostEvent(gui.mainFrame.MainFrame.getInstance(), GE.FitChanged(fitID=self.fitID))
             return True
         else:
             return False
@@ -53,5 +52,5 @@ class GuiRebaseItemsCommand(wx.Command):
         self.internalHistory.undoAll()
         eos.db.commit()
         Fit.getInstance().recalc(self.fitID)
-        wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=self.fitID))
+        wx.PostEvent(gui.mainFrame.MainFrame.getInstance(), GE.FitChanged(fitID=self.fitID))
         return True

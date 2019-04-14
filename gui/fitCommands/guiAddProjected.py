@@ -16,9 +16,7 @@ pyfalog = Logger(__name__)
 class GuiAddProjectedCommand(wx.Command):
     def __init__(self, fitID, id, type='item'):
         wx.Command.__init__(self, True, "Projected Add")
-        self.mainFrame = gui.mainFrame.MainFrame.getInstance()
-        self.sFit = Fit.getInstance()
-        self.internal_history = wx.CommandProcessor()
+        self.internalHistory = wx.CommandProcessor()
         self.fitID = fitID
         self.id = id
         self.type = type
@@ -31,27 +29,27 @@ class GuiAddProjectedCommand(wx.Command):
             item = eos.db.getItem(self.id, eager=("attributes", "group.category"))
 
             if item.category.name == "Drone":
-                result = self.internal_history.Submit(CalcAddProjectedDroneCommand(
+                result = self.internalHistory.Submit(CalcAddProjectedDroneCommand(
                     fitID=self.fitID,
                     droneInfo=DroneInfo(itemID=self.id, amount=1, amountActive=1)))
             elif item.category.name == "Fighter":
-                result = self.internal_history.Submit(CalcAddProjectedFighterCommand(self.fitID, fighterInfo=FighterInfo(itemID=self.id)))
+                result = self.internalHistory.Submit(CalcAddProjectedFighterCommand(self.fitID, fighterInfo=FighterInfo(itemID=self.id)))
             else:
-                result = self.internal_history.Submit(CalcAddProjectedModuleCommand(
+                result = self.internalHistory.Submit(CalcAddProjectedModuleCommand(
                     fitID=self.fitID,
                     modInfo=ModuleInfo(itemID=self.id)))
         elif self.type == 'fit':
-            result = self.internal_history.Submit(CalcAddProjectedFitCommand(self.fitID, self.id, None))
+            result = self.internalHistory.Submit(CalcAddProjectedFitCommand(self.fitID, self.id, None))
 
         if result:
-            self.sFit.recalc(self.fitID)
-            wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=self.fitID))
+            Fit.getInstance().recalc(self.fitID)
+            wx.PostEvent(gui.mainFrame.MainFrame.getInstance(), GE.FitChanged(fitID=self.fitID))
             return True
         return False
 
     def Undo(self):
-        for _ in self.internal_history.Commands:
-            self.internal_history.Undo()
-        self.sFit.recalc(self.fitID)
-        wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=self.fitID))
+        for _ in self.internalHistory.Commands:
+            self.internalHistory.Undo()
+        Fit.getInstance().recalc(self.fitID)
+        wx.PostEvent(gui.mainFrame.MainFrame.getInstance(), GE.FitChanged(fitID=self.fitID))
         return True

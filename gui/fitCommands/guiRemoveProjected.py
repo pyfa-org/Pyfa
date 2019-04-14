@@ -27,11 +27,9 @@ class GuiRemoveProjectedCommand(wx.Command):
 
     def __init__(self, fitID, thing):
         wx.Command.__init__(self, True, "Projected Remove")
-        self.mainFrame = gui.mainFrame.MainFrame.getInstance()
-        self.sFit = Fit.getInstance()
-        self.internal_history = wx.CommandProcessor()
+        self.internalHistory = wx.CommandProcessor()
         self.fitID = fitID
-        fit = self.sFit.getFit(fitID)
+        fit = Fit.getInstance().getFit(fitID)
 
         if isinstance(thing, Drone):
             self.data = DroneInfo(itemID=thing.itemID, amount=1, amountActive=1)
@@ -55,17 +53,17 @@ class GuiRemoveProjectedCommand(wx.Command):
         cls = self.mapping.get(self.type, None)
         if cls:
             cmd = cls(self.fitID, self.data)
-            result = self.internal_history.Submit(cmd)
+            result = self.internalHistory.Submit(cmd)
 
         if result:
-            self.sFit.recalc(self.fitID)
-            wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=self.fitID))
+            Fit.getInstance().recalc(self.fitID)
+            wx.PostEvent(gui.mainFrame.MainFrame.getInstance(), GE.FitChanged(fitID=self.fitID))
             return True
         return False
 
     def Undo(self):
-        for _ in self.internal_history.Commands:
-            self.internal_history.Undo()
-        self.sFit.recalc(self.fitID)
-        wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=self.fitID))
+        for _ in self.internalHistory.Commands:
+            self.internalHistory.Undo()
+        Fit.getInstance().recalc(self.fitID)
+        wx.PostEvent(gui.mainFrame.MainFrame.getInstance(), GE.FitChanged(fitID=self.fitID))
         return True

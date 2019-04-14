@@ -10,23 +10,22 @@ class GuiToggleFighterAbilityCommand(wx.Command):
 
     def __init__(self, fitID, position, effectID, isProjected):
         wx.Command.__init__(self, True, "")
-        self.mainFrame = gui.mainFrame.MainFrame.getInstance()
-        self.internal_history = wx.CommandProcessor()
+        self.internalHistory = wx.CommandProcessor()
         self.fitID = fitID
         self.position = position
         self.effectID = effectID
         self.isProjected = isProjected
 
     def Do(self):
-        if self.internal_history.Submit(CalcToggleFighterAbilityStateCommand(self.fitID, self.isProjected, self.position, self.effectID)):
+        if self.internalHistory.Submit(CalcToggleFighterAbilityStateCommand(self.fitID, self.isProjected, self.position, self.effectID)):
             Fit.getInstance().recalc(self.fitID)
-            wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=self.fitID))
+            wx.PostEvent(gui.mainFrame.MainFrame.getInstance(), GE.FitChanged(fitID=self.fitID))
             return True
         return False
 
     def Undo(self):
-        for _ in self.internal_history.Commands:
-            self.internal_history.Undo()
+        for _ in self.internalHistory.Commands:
+            self.internalHistory.Undo()
         Fit.getInstance().recalc(self.fitID)
-        wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=self.fitID))
+        wx.PostEvent(gui.mainFrame.MainFrame.getInstance(), GE.FitChanged(fitID=self.fitID))
         return True

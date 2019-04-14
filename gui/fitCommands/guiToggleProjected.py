@@ -17,8 +17,7 @@ class GuiToggleProjectedCommand(wx.Command):
 
     def __init__(self, fitID, thing, click):
         wx.Command.__init__(self, True, "Toggle Projected Item")
-        self.mainFrame = gui.mainFrame.MainFrame.getInstance()
-        self.internal_history = wx.CommandProcessor()
+        self.internalHistory = wx.CommandProcessor()
         self.fitID = fitID
         fit = Fit.getInstance().getFit(self.fitID)
         if isinstance(thing, FitType):
@@ -42,15 +41,15 @@ class GuiToggleProjectedCommand(wx.Command):
     def Do(self):
         if self.commandType is None:
             return False
-        if not self.internal_history.Submit(self.commandType(*self.args)):
+        if not self.internalHistory.Submit(self.commandType(*self.args)):
             return False
         Fit.getInstance().recalc(self.fitID)
-        wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=self.fitID))
+        wx.PostEvent(gui.mainFrame.MainFrame.getInstance(), GE.FitChanged(fitID=self.fitID))
         return True
 
     def Undo(self):
-        for _ in self.internal_history.Commands:
-            self.internal_history.Undo()
+        for _ in self.internalHistory.Commands:
+            self.internalHistory.Undo()
         Fit.getInstance().recalc(self.fitID)
-        wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=self.fitID))
+        wx.PostEvent(gui.mainFrame.MainFrame.getInstance(), GE.FitChanged(fitID=self.fitID))
         return True

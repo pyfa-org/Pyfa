@@ -16,24 +16,22 @@ class GuiModuleRemoveCommand(wx.Command):
         :param modules: A list of Module objects that we are attempting to remove.
         """
         wx.Command.__init__(self, True, "Module Remove")
-        self.mainFrame = gui.mainFrame.MainFrame.getInstance()
-        self.sFit = Fit.getInstance()
         self.fitID = fitID
         self.modCache = {mod.modPosition: ModuleInfo.fromModule(mod) for mod in modules if not mod.isEmpty}
-        self.internal_history = wx.CommandProcessor()
+        self.internalHistory = wx.CommandProcessor()
 
     def Do(self):
-        success = self.internal_history.Submit(CalcRemoveLocalModuleCommand(self.fitID, [pos for pos in self.modCache]))
+        success = self.internalHistory.Submit(CalcRemoveLocalModuleCommand(self.fitID, [pos for pos in self.modCache]))
 
         if success:
-            self.sFit.recalc(self.fitID)
-            wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=self.fitID, action="moddel", typeID=set([mod.itemID for mod in self.modCache.values()])))
+            Fit.getInstance().recalc(self.fitID)
+            wx.PostEvent(gui.mainFrame.MainFrame.getInstance(), GE.FitChanged(fitID=self.fitID, action="moddel", typeID=set([mod.itemID for mod in self.modCache.values()])))
             return True
         return False
 
     def Undo(self):
-        for _ in self.internal_history.Commands:
-            self.internal_history.Undo()
-        self.sFit.recalc(self.fitID)
-        wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=self.fitID, action="modadd", typeID=set([mod.itemID for mod in self.modCache.values()])))
+        for _ in self.internalHistory.Commands:
+            self.internalHistory.Undo()
+        Fit.getInstance().recalc(self.fitID)
+        wx.PostEvent(gui.mainFrame.MainFrame.getInstance(), GE.FitChanged(fitID=self.fitID, action="modadd", typeID=set([mod.itemID for mod in self.modCache.values()])))
         return True
