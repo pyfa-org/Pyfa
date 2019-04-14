@@ -335,7 +335,8 @@ class FitItem(SFItem.SFBrowserItem):
         if event.fitID == self.fitID:
             fit = Fit.getInstance().getFit(self.fitID)
             self.fitName = fit.name
-            self.Refresh()
+            if self:
+                self.Refresh()
         event.Skip()
 
     def deleteBtnCB(self):
