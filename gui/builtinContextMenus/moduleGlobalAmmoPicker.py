@@ -38,7 +38,7 @@ class ModuleGlobalAmmoPicker(ModuleAmmoPicker):
             if mod.itemID == selectedModule.itemID:
                 allModules.append(mod)
 
-        self.mainFrame.command.Submit(cmd.GuiModuleAddChargeCommand(fitID, charge.ID if charge is not None else None, allModules))
+        self.mainFrame.command.Submit(cmd.GuiChangeModuleChargesCommand(fitID, charge.ID if charge is not None else None, allModules))
 
     def display(self, srcContext, selection):
         if not self.settings.get('moduleGlobalAmmoPicker'):

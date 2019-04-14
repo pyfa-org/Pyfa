@@ -27,7 +27,7 @@ class GuiRebaseItemsCommand(wx.Command):
             if mod.itemID in self.rebaseMap:
                 self.internalHistory.submit(CalcRebaseItemCommand(fitID=self.fitID, containerName="modules", position=mod.modPosition, itemID=self.rebaseMap[mod.itemID], commit=False))
             if mod.chargeID in self.rebaseMap:
-                self.internalHistory.submit(CalcChangeModuleChargesCommand(fitID=self.fitID, chargeMap={mod.modPosition: self.rebaseMap[mod.chargeID]}))
+                self.internalHistory.submit(CalcChangeModuleChargesCommand(fitID=self.fitID, projected=False, chargeMap={mod.modPosition: self.rebaseMap[mod.chargeID]}))
         for containerName in ("drones", "fighters", "implants", "boosters"):
             container = getattr(fit, containerName)
             for obj in container:

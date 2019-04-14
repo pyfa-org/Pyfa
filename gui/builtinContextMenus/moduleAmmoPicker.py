@@ -228,7 +228,7 @@ class ModuleAmmoPicker(ContextMenu):
             return
 
         fitID = self.mainFrame.getActiveFit()
-        self.mainFrame.command.Submit(cmd.GuiModuleAddChargeCommand(fitID, charge.ID if charge is not None else None, self.modules))
+        self.mainFrame.command.Submit(cmd.GuiChangeModuleChargesCommand(fitID, charge.ID if charge is not None else None, self.modules))
 
 
 ModuleAmmoPicker.register()

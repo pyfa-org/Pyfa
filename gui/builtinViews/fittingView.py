@@ -369,9 +369,9 @@ class FittingView(d.Display):
                         sel = self.GetNextSelected(sel)
 
                     if len(modules) > 0:
-                        self.mainFrame.command.Submit(cmd.GuiModuleAddChargeCommand(fitID, itemID, modules))
+                        self.mainFrame.command.Submit(cmd.GuiChangeModuleChargesCommand(fitID, itemID, modules))
                 else:
-                    self.mainFrame.command.Submit(cmd.GuiModuleAddCommand(fitID, itemID))
+                    self.mainFrame.command.Submit(cmd.GuiAddModuleCommand(fitID, itemID))
 
         event.Skip()
 
@@ -393,7 +393,7 @@ class FittingView(d.Display):
         if not isinstance(modules, list):
             modules = [modules]
 
-        self.mainFrame.command.Submit(cmd.GuiModuleRemoveCommand(self.activeFitID, modules))
+        self.mainFrame.command.Submit(cmd.GuiRemoveModuleCommand(self.activeFitID, modules))
 
     def addModule(self, x, y, itemID):
         """Add a module from the market browser (from dragging it)"""
@@ -405,7 +405,7 @@ class FittingView(d.Display):
             if not isinstance(mod, Module):  # make sure we're not adding something to a T3D Mode
                 return
 
-            self.mainFrame.command.Submit(cmd.GuiModuleAddCommand(fitID, itemID, self.mods[dstRow].modPosition))
+            self.mainFrame.command.Submit(cmd.GuiAddModuleCommand(fitID, itemID, self.mods[dstRow].modPosition))
 
     def swapCargo(self, x, y, srcIdx):
         """Swap a module from cargo to fitting window"""
@@ -610,8 +610,11 @@ class FittingView(d.Display):
             ctrl = event.cmdDown or event.middleIsDown
             click = "ctrl" if ctrl is True else "right" if event.GetButton() == 3 else "left"
 
-            self.mainFrame.command.Submit(cmd.GuiModuleStateChangeCommand(
-                fitID, self.mods[self.GetItemData(row)].modPosition, [mod.modPosition for mod in mods], click))
+            self.mainFrame.command.Submit(cmd.GuiChangeModuleStatesCommand(
+                fitID=fitID,
+                mainPosition=self.mods[self.GetItemData(row)].modPosition,
+                positions=[mod.modPosition for mod in mods],
+                click=click))
 
             # update state tooltip
             tooltip = self.activeColumns[col].getToolTip(self.mods[self.GetItemData(row)])

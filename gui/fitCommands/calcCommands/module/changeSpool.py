@@ -10,13 +10,13 @@ pyfalog = Logger(__name__)
 
 class CalcChangeModuleSpoolCommand(wx.Command):
 
-    def __init__(self, fitID, position, spoolType, spoolAmount, projected=False):
+    def __init__(self, fitID, projected, position, spoolType, spoolAmount):
         wx.Command.__init__(self, True, 'Change Module Spool')
         self.fitID = fitID
+        self.projected = projected
         self.position = position
         self.spoolType = spoolType
         self.spoolAmount = spoolAmount
-        self.projected = projected
         self.savedSpoolType = None
         self.savedSpoolAmount = None
 
@@ -41,8 +41,8 @@ class CalcChangeModuleSpoolCommand(wx.Command):
         pyfalog.debug('Undoing change of module spoolup at position {} to {} type {} amount on fit {}'.format(self.position, self.spoolType, self.spoolAmount, self.fitID))
         cmd = CalcChangeModuleSpoolCommand(
             fitID=self.fitID,
+            projected=self.projected,
             position=self.position,
             spoolType=self.savedSpoolType,
-            spoolAmount=self.savedSpoolAmount,
-            projected=self.projected)
+            spoolAmount=self.savedSpoolAmount)
         return cmd.Do()

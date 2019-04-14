@@ -38,7 +38,7 @@ class GuiCargoToModuleCommand(wx.Command):
 
         # We're trying to move a charge from cargo to a slot. Use SetCharge command (don't respect move vs copy)
         if sFit.isAmmo(cargo.itemID):
-            result = self.internalHistory.Submit(CalcChangeModuleChargesCommand(self.fitID, {module.modPosition: cargo.itemID}))
+            result = self.internalHistory.Submit(CalcChangeModuleChargesCommand(self.fitID, False, {module.modPosition: cargo.itemID}))
         else:
 
             pyfalog.debug("Moving cargo item to module for fit ID: {0}", self.fitID)

@@ -26,7 +26,7 @@ class FillWithModule(ContextMenu):
         fitID = self.mainFrame.getActiveFit()
 
         if srcContext == "fittingModule":
-            self.mainFrame.command.Submit(cmd.GuiFillWithModuleCommand(fitID, selection[0].itemID))
+            self.mainFrame.command.Submit(cmd.GuiFillWithModulesCommand(fitID, selection[0].itemID))
             return  # the command takes care of the PostEvent
         wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fitID))
 

@@ -11,11 +11,11 @@ pyfalog = Logger(__name__)
 
 class CalcChangeModuleChargesCommand(wx.Command):
 
-    def __init__(self, fitID, chargeMap, projected=False):
+    def __init__(self, fitID, projected, chargeMap):
         wx.Command.__init__(self, True, 'Change Module Charges')
         self.fitID = fitID
-        self.chargeMap = chargeMap
         self.projected = projected
+        self.chargeMap = chargeMap
         self.savedChargeMap = None
 
     def Do(self):
@@ -50,5 +50,5 @@ class CalcChangeModuleChargesCommand(wx.Command):
 
     def Undo(self):
         pyfalog.debug('Undoing change of module charges according to map {} on fit {}'.format(self.chargeMap, self.fitID))
-        cmd = CalcChangeModuleChargesCommand(fitID=self.fitID, chargeMap=self.savedChargeMap, projected=self.projected)
+        cmd = CalcChangeModuleChargesCommand(fitID=self.fitID, projected=self.projected, chargeMap=self.savedChargeMap)
         return cmd.Do()
