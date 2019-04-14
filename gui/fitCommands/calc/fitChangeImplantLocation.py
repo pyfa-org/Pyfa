@@ -19,8 +19,6 @@ class FitChangeImplantLocationCommand(wx.Command):
     def Do(self):
         pyfalog.debug('Doing changing of implant source to {} for fit {}'.format(self.fitID, self.source))
         fit = Fit.getInstance().getFit(self.fitID)
-        if self.source == fit.implantSource:
-            return False
         self.savedSource = fit.implantSource
         fit.implantSource = self.source
         eos.db.commit()

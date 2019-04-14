@@ -1,27 +1,32 @@
 import wx
-import eos.db
 from logbook import Logger
+
+import eos.db
+from service.fit import Fit
+
+
 pyfalog = Logger(__name__)
 
 
-class FitToggleFighterCommand(wx.Command):
-    """"
-    from sFit.toggleFighter
-    """
-    def __init__(self, fitID, position):
-        wx.Command.__init__(self, True, "Toggle Fighter")
+class FitToggleFighterStateCommand(wx.Command):
+
+    def __init__(self, fitID, position, forceState=None):
+        wx.Command.__init__(self, True, 'Toggle Fighter State')
         self.fitID = fitID
         self.position = position
+        self.forceState = forceState
+        self.savedState = None
 
     def Do(self):
-        pyfalog.debug("Toggling fighters for fit ID: {0}", self.fitID)
-        fit = eos.db.getFit(self.fitID)
-        f = fit.fighters[self.position]
-        f.active = not f.active
-
+        pyfalog.debug('Doing toggling of fighter state at position {} for fit {}'.format(self.position, self.fitID))
+        fit = Fit.getInstance().getFit(self.fitID)
+        fighter = fit.fighters[self.position]
+        self.savedState = fighter.active
+        fighter.active = not fighter.active if self.forceState is None else self.forceState
         eos.db.commit()
         return True
 
     def Undo(self):
-        cmd = FitToggleFighterCommand(self.fitID, self.position)
+        pyfalog.debug('Undoing toggling of fighter state at position {} for fit {}'.format(self.position, self.fitID))
+        cmd = FitToggleFighterStateCommand(fitID=self.fitID, position=self.position, forceState=self.savedState)
         return cmd.Do()

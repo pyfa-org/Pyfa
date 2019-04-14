@@ -22,7 +22,7 @@ class FitRemoveProjectedDroneCommand(wx.Command):
         fit = Fit.getInstance().getFit(self.fitID)
         drone = next((pd for pd in fit.projectedDrones if pd.itemID == self.droneInfo.itemID), None)
         if drone is None:
-            pyfalog.warning('Unable to find projected drone for removal')
+            pyfalog.warning('Unable to find projected drone')
             return False
         self.savedDroneInfo = DroneInfo.fromDrone(drone)
         drone.amount = max(drone.amount - self.droneInfo.amount, 0)

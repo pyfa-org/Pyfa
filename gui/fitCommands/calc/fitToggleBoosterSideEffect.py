@@ -8,29 +8,30 @@ from service.fit import Fit
 pyfalog = Logger(__name__)
 
 
-class FitToggleBoosterSideEffectCommand(wx.Command):
+class FitToggleBoosterSideEffectStateCommand(wx.Command):
 
-    def __init__(self, fitID, position, effectID):
-        wx.Command.__init__(self, True, "Toggle Booster Side Effect")
+    def __init__(self, fitID, position, effectID, forceState=None):
+        wx.Command.__init__(self, True, 'Toggle Booster Side Effect State')
         self.fitID = fitID
         self.position = position
         self.effectID = effectID
+        self.forceState = forceState
+        self.savedState = None
 
     def Do(self):
-        pyfalog.debug("Toggling booster side-effect for fit ID: {0}", self.fitID)
+        pyfalog.debug('Doing toggling of booster side effect {} state at position {} for fit {}'.format(self.effectID, self.position, self.fitID))
         fit = Fit.getInstance().getFit(self.fitID)
         booster = fit.boosters[self.position]
-        for se in booster.sideEffects:
-            if se.effectID == self.effectID:
-                sideEffect = se
-                break
-        else:
+        sideEffect = next((se for se in booster.sideEffects if se.effectID == self.effectID), None)
+        if sideEffect is None:
+            pyfalog.warning('Unable to find booster side effect')
             return False
-
-        sideEffect.active = not sideEffect.active
+        self.savedState = sideEffect.active
+        sideEffect.active = not sideEffect.active if self.forceState is None else self.forceState
         eos.db.commit()
         return True
 
     def Undo(self):
-        cmd = FitToggleBoosterSideEffectCommand(self.fitID, self.position, self.effectID)
+        pyfalog.debug('Undoing toggling of booster side effect {} state at position {} for fit {}'.format(self.effectID, self.position, self.fitID))
+        cmd = FitToggleBoosterSideEffectStateCommand(fitID=self.fitID, position=self.position, effectID=self.effectID, forceState=self.savedState)
         return cmd.Do()

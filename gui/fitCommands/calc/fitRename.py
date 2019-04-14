@@ -8,7 +8,7 @@ from service.fit import Fit
 pyfalog = Logger(__name__)
 
 
-class FitRenameCommand(wx.Command):
+class FitFitRenameCommand(wx.Command):
 
     def __init__(self, fitID, name):
         wx.Command.__init__(self, True, 'Rename Fit')
@@ -19,6 +19,8 @@ class FitRenameCommand(wx.Command):
     def Do(self):
         pyfalog.debug('Doing renaming of fit {} to {}'.format(self.fitID, self.name))
         fit = Fit.getInstance().getFit(self.fitID)
+        if fit.name == self.name:
+            return False
         self.savedName = fit.name
         fit.name = self.name
         eos.db.commit()
@@ -26,5 +28,5 @@ class FitRenameCommand(wx.Command):
 
     def Undo(self):
         pyfalog.debug('Undoing renaming of fit {} to {}'.format(self.fitID, self.name))
-        cmd = FitRenameCommand(fitID=self.fitID, name=self.savedName)
+        cmd = FitFitRenameCommand(fitID=self.fitID, name=self.savedName)
         return cmd.Do()

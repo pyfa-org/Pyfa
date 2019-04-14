@@ -8,35 +8,32 @@ from service.fit import Fit
 pyfalog = Logger(__name__)
 
 
-class FitToggleProjectedModuleCommand(wx.Command):
+class FitChangeProjectedModuleStateCommand(wx.Command):
 
     def __init__(self, fitID, position, click):
-        wx.Command.__init__(self, True, "Toggle Projected Module")
+        wx.Command.__init__(self, True, 'Change Projected Module State')
         self.fitID = fitID
         self.position = position
         self.click = click
-        self.oldState = None
+        self.savedState = None
 
     def Do(self):
-        pyfalog.debug("Toggling projected module for fit ID: {}".format(self.fitID))
+        pyfalog.debug('Doing change of projected module state at position {} to click {} on fit {}'.format(self.position, self.click, self.fitID))
         fit = Fit.getInstance().getFit(self.fitID)
         mod = fit.projectedModules[self.position]
-        self.oldState = mod.state
-
+        self.savedState = mod.state
         proposedState = mod.getProposedState(mod, self.click)
         if mod.state == proposedState:
             return False
         if not mod.canHaveState(proposedState, fit):
             return False
-
         mod.state = proposedState
         eos.db.commit()
-
         return True
 
     def Undo(self):
-        pyfalog.debug("Toggling projected module for fit ID: {}".format(self.fitID))
+        pyfalog.debug('Undoing change of projected module state at position {} to click {} on fit {}'.format(self.position, self.click, self.fitID))
         fit = Fit.getInstance().getFit(self.fitID)
         mod = fit.projectedModules[self.position]
-        mod.state = self.oldState
+        mod.state = self.savedState
         return True

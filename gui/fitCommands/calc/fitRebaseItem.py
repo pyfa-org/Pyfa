@@ -17,8 +17,8 @@ class FitRebaseItemCommand(wx.Command):
         self.containerName = containerName
         self.position = position
         self.itemID = itemID
-        self.savedItemID = None
         self.commit = commit
+        self.savedItemID = None
 
     def Do(self):
         pyfalog.debug('Doing rebase of item in {} at position {} to {}'.format(self.containerName, self.position, self.itemID))

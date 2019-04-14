@@ -3,7 +3,7 @@ from service.fit import Fit
 
 import gui.mainFrame
 from gui import globalEvents as GE
-from .calc.fitToggleBoosterSideEffect import FitToggleBoosterSideEffectCommand
+from .calc.fitToggleBoosterSideEffect import FitToggleBoosterSideEffectStateCommand
 
 
 class GuiToggleBoosterSideEffectCommand(wx.Command):
@@ -17,7 +17,7 @@ class GuiToggleBoosterSideEffectCommand(wx.Command):
         self.effectID = effectID
 
     def Do(self):
-        if self.internal_history.Submit(FitToggleBoosterSideEffectCommand(self.fitID, self.position, self.effectID)):
+        if self.internal_history.Submit(FitToggleBoosterSideEffectStateCommand(self.fitID, self.position, self.effectID)):
             Fit.getInstance().recalc(self.fitID)
             wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=self.fitID))
             return True

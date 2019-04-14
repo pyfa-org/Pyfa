@@ -1,29 +1,32 @@
 import wx
-import eos.db
 from logbook import Logger
+
+import eos.db
+from service.fit import Fit
 
 
 pyfalog = Logger(__name__)
 
 
-class FitToggleBoosterCommand(wx.Command):
-    """"
-    from sFit.toggleBooster
-    """
-    def __init__(self, fitID, position):
-        wx.Command.__init__(self, True, "Toggle Booster")
+class FitToggleBoosterStateCommand(wx.Command):
+
+    def __init__(self, fitID, position, forceState=None):
+        wx.Command.__init__(self, True, 'Toggle Booster State')
         self.fitID = fitID
         self.position = position
+        self.forceState = forceState
+        self.savedState = None
 
     def Do(self):
-        pyfalog.debug("Toggling booster for fit ID: {0}", self.fitID)
-        fit = eos.db.getFit(self.fitID)
+        pyfalog.debug('Doing toggling of booster state at position {} for fit {}'.format(self.position, self.fitID))
+        fit = Fit.getInstance().getFit(self.fitID)
         booster = fit.boosters[self.position]
-        booster.active = not booster.active
-
+        self.savedState = booster.active
+        booster.active = not booster.active if self.forceState is None else self.forceState
         eos.db.commit()
         return True
 
     def Undo(self):
-        cmd = FitToggleBoosterCommand(self.fitID, self.position)
+        pyfalog.debug('Undoing toggling of booster state at position {} for fit {}'.format(self.position, self.fitID))
+        cmd = FitToggleBoosterStateCommand(fitID=self.fitID, position=self.position, forceState=self.savedState)
         return cmd.Do()

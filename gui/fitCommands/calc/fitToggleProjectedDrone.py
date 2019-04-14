@@ -10,26 +10,37 @@ pyfalog = Logger(__name__)
 
 class FitToggleProjectedDroneCommand(wx.Command):
 
-    def __init__(self, fitID, position):
-        wx.Command.__init__(self, True, "Toggle Projected Drone")
+    def __init__(self, fitID, itemID, forceAmountActive=None):
+        wx.Command.__init__(self, True, 'Toggle Projected Drone State')
         self.fitID = fitID
-        self.position = position
+        self.itemID = itemID
+        self.forceAmountActive = forceAmountActive
+        self.savedAmountActive = None
 
     def Do(self):
-        pyfalog.debug("Toggling projected drone for fit ID: {}".format(self.fitID))
+        pyfalog.debug('Doing toggling of projected drone {} state for fit {}'.format(self.itemID, self.fitID))
         fit = Fit.getInstance().getFit(self.fitID)
-        drone = fit.projectedDrones[self.position]
-
-        if drone.amountActive == 0:
+        drone = next((pd for pd in fit.projectedDrones if pd.itemID == self.itemID), None)
+        if drone is None:
+            pyfalog.warning('Unable to find projected drone')
+            return False
+        self.savedAmountActive = drone.amountActive
+        if self.forceAmountActive is not None:
+            if self.forceAmountActive > 0 and not drone.canBeApplied(fit):
+                pyfalog.warning('Projected drone cannot be applied')
+                return False
+            drone.amountActive = self.forceAmountActive
+        elif drone.amountActive > 0:
+            drone.amountActive = 0
+        else:
             if not drone.canBeApplied(fit):
+                pyfalog.warning('Projected drone cannot be applied')
                 return False
             drone.amountActive = drone.amount
-        else:
-            drone.amountActive = 0
-
         eos.db.commit()
         return True
 
     def Undo(self):
-        cmd = FitToggleProjectedDroneCommand(self.fitID, self.position)
+        pyfalog.debug('Undoing toggling of projected drone {} state for fit {}'.format(self.itemID, self.fitID))
+        cmd = FitToggleProjectedDroneCommand(fitID=self.fitID, itemID=self.itemID, forceAmountActive=self.savedAmountActive)
         return cmd.Do()

@@ -2,29 +2,31 @@ import wx
 from logbook import Logger
 
 import eos.db
+from service.fit import Fit
 
 
 pyfalog = Logger(__name__)
 
 
-class FitToggleImplantCommand(wx.Command):
-    """"
-    from sFit.toggleImplant
-    """
-    def __init__(self, fitID, position):
-        wx.Command.__init__(self, True, "Toggle Implant")
+class FitToggleImplantStateCommand(wx.Command):
+
+    def __init__(self, fitID, position, forceState=None):
+        wx.Command.__init__(self, True, 'Toggle Implant State')
         self.fitID = fitID
         self.position = position
+        self.forceState = forceState
+        self.savedState = None
 
     def Do(self):
-        pyfalog.debug("Toggling implant for fit ID: {0}", self.fitID)
-        fit = eos.db.getFit(self.fitID)
+        pyfalog.debug('Doing toggling of implant state at position {} for fit {}'.format(self.position, self.fitID))
+        fit = Fit.getInstance().getFit(self.fitID)
         implant = fit.implants[self.position]
-        implant.active = not implant.active
-
+        self.savedState = implant.active
+        implant.active = not implant.active if self.forceState is None else self.forceState
         eos.db.commit()
         return True
 
     def Undo(self):
-        cmd = FitToggleImplantCommand(self.fitID, self.position)
+        pyfalog.debug('Undoing toggling of implant state at position {} for fit {}'.format(self.position, self.fitID))
+        cmd = FitToggleImplantStateCommand(fitID=self.fitID, position=self.position, forceState=self.savedState)
         return cmd.Do()

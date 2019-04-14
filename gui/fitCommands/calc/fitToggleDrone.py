@@ -1,30 +1,37 @@
 import wx
-import eos.db
 from logbook import Logger
+
+import eos.db
+from service.fit import Fit
+
+
 pyfalog = Logger(__name__)
 
 
-class FitToggleDroneCommand(wx.Command):
-    """"
-    from sFit.toggleDrone
-    """
-    def __init__(self, fitID, position):
-        wx.Command.__init__(self, True, "Toggle Drone")
+class FitToggleDroneStateCommand(wx.Command):
+
+    def __init__(self, fitID, position, forceAmountActive=None):
+        wx.Command.__init__(self, True, 'Toggle Drone State')
         self.fitID = fitID
         self.position = position
+        self.forceAmountActive = forceAmountActive
+        self.savedAmountActive = None
 
     def Do(self):
-        pyfalog.debug("Toggling drones for fit ID: {0}", self.fitID)
-        fit = eos.db.getFit(self.fitID)
-        d = fit.drones[self.position]
-        if d.amount == d.amountActive:
-            d.amountActive = 0
+        pyfalog.debug('Doing toggling of drone state at position {} for fit {}'.format(self.position, self.fitID))
+        fit = Fit.getInstance().getFit(self.fitID)
+        drone = fit.drones[self.position]
+        self.savedAmountActive = drone.amountActive
+        if self.forceAmountActive is not None:
+            drone.amountActive = self.forceAmountActive
+        elif drone.amountActive > 0:
+            drone.amountActive = 0
         else:
-            d.amountActive = d.amount
-
+            drone.amountActive = drone.amount
         eos.db.commit()
         return True
 
     def Undo(self):
-        cmd = FitToggleDroneCommand(self.fitID, self.position)
+        pyfalog.debug('Undoing toggling of drone state at position {} for fit {}'.format(self.position, self.fitID))
+        cmd = FitToggleDroneStateCommand(fitID=self.fitID, position=self.position, forceAmountActive=self.savedAmountActive)
         return cmd.Do()

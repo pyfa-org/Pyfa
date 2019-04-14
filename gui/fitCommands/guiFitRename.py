@@ -1,6 +1,6 @@
 import wx
 import gui.mainFrame
-from .calc.fitRename import FitRenameCommand
+from .calc.fitRename import FitFitRenameCommand
 from service.fit import Fit
 from logbook import Logger
 from gui.builtinShipBrowser.events import FitRenamed
@@ -17,7 +17,7 @@ class GuiFitRenameCommand(wx.Command):
         self.internal_history = wx.CommandProcessor()
 
     def Do(self):
-        if self.internal_history.Submit(FitRenameCommand(self.fitID, self.newName)):
+        if self.internal_history.Submit(FitFitRenameCommand(self.fitID, self.newName)):
             wx.PostEvent(self.mainFrame, FitRenamed(fitID=self.fitID))
             return True
         return False
