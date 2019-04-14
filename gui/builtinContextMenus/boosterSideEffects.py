@@ -65,7 +65,7 @@ class BoosterSideEffect(ContextMenu):
         fitID = self.mainFrame.getActiveFit()
         fit = Fit.getInstance().getFit(fitID)
         index = fit.boosters.index(self.booster)
-        self.mainFrame.command.Submit(cmd.GuiToggleBoosterSideEffectCommand(fitID, index, effect.effectID))
+        self.mainFrame.command.Submit(cmd.GuiToggleBoosterSideEffectStateCommand(fitID, index, effect.effectID))
 
 
 BoosterSideEffect.register()
