@@ -2,12 +2,11 @@
 import wx
 
 import eos.config
+import gui.fitCommands as cmd
 import gui.mainFrame
 from eos.utils.spoolSupport import SpoolType, SpoolOptions
-from gui import globalEvents as GE
 from gui.contextMenu import ContextMenu
 from service.settings import ContextMenuSettings
-from service.fit import Fit
 
 
 class SpoolUp(ContextMenu):
@@ -21,10 +20,11 @@ class SpoolUp(ContextMenu):
         if not self.settings.get('spoolup'):
             return False
 
-        if srcContext not in ("fittingModule") or self.mainFrame.getActiveFit() is None:
+        if srcContext not in ('fittingModule', 'projectedModule') or self.mainFrame.getActiveFit() is None:
             return False
 
         self.mod = selection[0]
+        self.context = srcContext
 
         return self.mod.item.group.name in ("Precursor Weapon", "Mutadaptive Remote Armor Repairer")
 
@@ -68,15 +68,19 @@ class SpoolUp(ContextMenu):
 
     def handleSpoolChange(self, event):
         if event.Id == self.resetId:
-            self.mod.spoolType = None
-            self.mod.spoolAmount = None
+            spoolType = None
+            spoolAmount = None
         elif event.Id in self.cycleMap:
-            cycles = self.cycleMap[event.Id]
-            self.mod.spoolType = SpoolType.CYCLES
-            self.mod.spoolAmount = cycles
-        fitID = self.mainFrame.getActiveFit()
-        Fit.getInstance().recalc(fitID)
-        wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fitID))
+            spoolType = SpoolType.CYCLES
+            spoolAmount = self.cycleMap[event.Id]
+        else:
+            return
+        self.mainFrame.command.Submit(cmd.GuiSetSpoolup(
+            fitID=self.mainFrame.getActiveFit(),
+            position=self.mod.modPosition,
+            spoolType=spoolType,
+            spoolAmount=spoolAmount,
+            context=self.context))
 
 
 SpoolUp.register()
