@@ -17,6 +17,9 @@
 # along with pyfa.  If not, see <http://www.gnu.org/licenses/>.
 # =============================================================================
 
+
+import math
+
 # noinspection PyPackageRequirements
 import wx
 
@@ -117,7 +120,7 @@ class DroneView(Display):
             row = self.GetFirstSelected()
             if row != -1:
                 drone = self.drones[self.GetItemData(row)]
-                self.removeDrone(drone)
+                self.removeDroneStack(drone)
 
         event.Skip()
 
@@ -227,7 +230,11 @@ class DroneView(Display):
 
     def removeDrone(self, drone):
         fitID = self.mainFrame.getActiveFit()
-        self.mainFrame.command.Submit(cmd.GuiRemoveDroneCommand(fitID, self.original.index(drone)))
+        self.mainFrame.command.Submit(cmd.GuiRemoveDroneCommand(fitID, self.original.index(drone), 1))
+
+    def removeDroneStack(self, drone):
+        fitID = self.mainFrame.getActiveFit()
+        self.mainFrame.command.Submit(cmd.GuiRemoveDroneCommand(fitID, self.original.index(drone), math.inf))
 
     def click(self, event):
         event.Skip()
@@ -237,7 +244,7 @@ class DroneView(Display):
             if col == self.getColIndex(State):
                 fitID = self.mainFrame.getActiveFit()
                 drone = self.drones[row]
-                self.mainFrame.command.Submit(cmd.GuiToggleDroneCommand(fitID, self.original.index(drone)))
+                self.mainFrame.command.Submit(cmd.GuiToggleDroneStateCommand(fitID, self.original.index(drone)))
 
     def spawnMenu(self, event):
         sel = self.GetFirstSelected()

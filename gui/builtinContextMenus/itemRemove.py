@@ -43,7 +43,7 @@ class ItemRemove(ContextMenu):
             self.mainFrame.command.Submit(cmd.GuiModuleAddChargeCommand(fitID, None, selection))
             return
         elif srcContext == "droneItem":
-            self.mainFrame.command.Submit(cmd.GuiRemoveDroneCommand(fitID, fit.drones.index(selection[0])))
+            self.mainFrame.command.Submit(cmd.GuiRemoveDroneCommand(fitID, fit.drones.index(selection[0]), 1))
             return
         elif srcContext == "fighterItem":
             self.mainFrame.command.Submit(cmd.GuiRemoveFighterCommand(fitID, fit.fighters.index(selection[0])))

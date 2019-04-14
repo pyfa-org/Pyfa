@@ -1,3 +1,5 @@
+import math
+
 import gui.fitCommands as cmd
 import gui.mainFrame
 from gui.contextMenu import ContextMenu
@@ -25,8 +27,8 @@ class ItemRemove(ContextMenu):
         fitID = self.mainFrame.getActiveFit()
         fit = sFit.getFit(fitID)
 
-        idx = fit.drones.index(selection[0])
-        self.mainFrame.command.Submit(cmd.GuiRemoveDroneCommand(fitID, idx, fit.drones[idx].amount))
+        position = fit.drones.index(selection[0])
+        self.mainFrame.command.Submit(cmd.GuiRemoveDroneCommand(fitID, position, math.inf))
 
 
 ItemRemove.register()
