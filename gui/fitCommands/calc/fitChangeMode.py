@@ -10,7 +10,7 @@ from service.market import Market
 pyfalog = Logger(__name__)
 
 
-class FitSetModeCommand(wx.Command):
+class FitChangeModeCommand(wx.Command):
 
     def __init__(self, fitID, itemID):
         wx.Command.__init__(self, True, 'Set Mode')
@@ -19,7 +19,7 @@ class FitSetModeCommand(wx.Command):
         self.savedItemID = None
 
     def Do(self):
-        pyfalog.debug('Doing setting mode {} for fit {}'.format(self.itemID, self.fitID))
+        pyfalog.debug('Doing changing mode to {} for fit {}'.format(self.itemID, self.fitID))
         fit = Fit.getInstance().getFit(self.fitID)
         self.savedItemID = fit.modeID
         item = Market.getInstance().getItem(self.itemID)
@@ -29,5 +29,6 @@ class FitSetModeCommand(wx.Command):
         return True
 
     def Undo(self):
-        cmd = FitSetModeCommand(self.fitID, self.savedItemID)
+        pyfalog.debug('Undoing changing mode to {} for fit {}'.format(self.itemID, self.fitID))
+        cmd = FitChangeModeCommand(self.fitID, self.savedItemID)
         return cmd.Do()

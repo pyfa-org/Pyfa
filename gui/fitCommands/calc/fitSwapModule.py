@@ -30,8 +30,8 @@ class FitSwapModuleCommand(wx.Command):
         fit = Fit.getInstance().getFit(fitID)
         srcMod = fit.modules[src]
         dstMod = fit.modules[dst]
-        fit.modules.remove(srcMod)
-        fit.modules.insert(dst, srcMod)
-        fit.modules.remove(dstMod)
-        fit.modules.insert(src, dstMod)
+        fit.modules.free(src)
+        fit.modules.free(dst)
+        fit.modules.replace(dst, srcMod)
+        fit.modules.replace(src, dstMod)
         eos.db.commit()
