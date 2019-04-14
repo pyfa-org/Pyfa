@@ -8,7 +8,7 @@ from service.fit import Fit
 pyfalog = Logger(__name__)
 
 
-class FitToggleDroneStateCommand(wx.Command):
+class CalcToggleLocalDroneStateCommand(wx.Command):
 
     def __init__(self, fitID, position, forceAmountActive=None):
         wx.Command.__init__(self, True, 'Toggle Drone State')
@@ -18,7 +18,7 @@ class FitToggleDroneStateCommand(wx.Command):
         self.savedAmountActive = None
 
     def Do(self):
-        pyfalog.debug('Doing toggling of drone state at position {} for fit {}'.format(self.position, self.fitID))
+        pyfalog.debug('Doing toggling of local drone state at position {} for fit {}'.format(self.position, self.fitID))
         fit = Fit.getInstance().getFit(self.fitID)
         drone = fit.drones[self.position]
         self.savedAmountActive = drone.amountActive
@@ -32,6 +32,6 @@ class FitToggleDroneStateCommand(wx.Command):
         return True
 
     def Undo(self):
-        pyfalog.debug('Undoing toggling of drone state at position {} for fit {}'.format(self.position, self.fitID))
-        cmd = FitToggleDroneStateCommand(fitID=self.fitID, position=self.position, forceAmountActive=self.savedAmountActive)
+        pyfalog.debug('Undoing toggling of local drone state at position {} for fit {}'.format(self.position, self.fitID))
+        cmd = CalcToggleLocalDroneStateCommand(fitID=self.fitID, position=self.position, forceAmountActive=self.savedAmountActive)
         return cmd.Do()

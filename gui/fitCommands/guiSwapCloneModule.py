@@ -3,8 +3,8 @@ from service.fit import Fit
 
 import gui.mainFrame
 from gui import globalEvents as GE
-from gui.fitCommands.calc.module.localSwap import FitSwapModuleCommand
-from .calc.module.localClone import FitCloneModuleCommand
+from gui.fitCommands.calc.module.localSwap import CalcSwapLocalModuleCommand
+from .calc.module.localClone import CalcCloneLocalModuleCommand
 from logbook import Logger
 pyfalog = Logger(__name__)
 
@@ -26,13 +26,13 @@ class GuiModuleSwapOrCloneCommand(wx.Command):
 
         if self.clone:
             pyfalog.debug("Trying to clone module")
-            if self.internal_history.Submit(FitCloneModuleCommand(self.fitID, self.srcPosition, self.dstPosition)):
+            if self.internal_history.Submit(CalcCloneLocalModuleCommand(self.fitID, self.srcPosition, self.dstPosition)):
                 self.sFit.recalc(self.fitID)  # clone needs a recalc
                 wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=self.fitID))
                 return True
         else:
             pyfalog.debug("Trying to Swap module")
-            if self.internal_history.Submit(FitSwapModuleCommand(self.fitID, self.srcPosition, self.dstPosition)):
+            if self.internal_history.Submit(CalcSwapLocalModuleCommand(self.fitID, self.srcPosition, self.dstPosition)):
                 wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=self.fitID))
                 return True
 

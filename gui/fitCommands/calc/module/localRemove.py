@@ -9,7 +9,7 @@ from service.fit import Fit
 pyfalog = Logger(__name__)
 
 
-class FitRemoveModuleCommand(wx.Command):
+class CalcRemoveLocalModuleCommand(wx.Command):
 
     def __init__(self, fitID, positions):
         wx.Command.__init__(self, True, 'Remove Module')
@@ -18,7 +18,7 @@ class FitRemoveModuleCommand(wx.Command):
         self.savedModInfos = {}
 
     def Do(self):
-        pyfalog.debug('Doing removal of modules from positions {} on fit {}'.format(self.positions, self.fitID))
+        pyfalog.debug('Doing removal of local modules from positions {} on fit {}'.format(self.positions, self.fitID))
         fit = Fit.getInstance().getFit(self.fitID)
 
         for position in self.positions:
@@ -35,10 +35,10 @@ class FitRemoveModuleCommand(wx.Command):
         return True
 
     def Undo(self):
-        pyfalog.debug('Undoing removal of modules {} on fit {}'.format(self.savedModInfos, self.fitID))
+        pyfalog.debug('Undoing removal of local modules {} on fit {}'.format(self.savedModInfos, self.fitID))
         results = []
-        from .localReplace import FitReplaceModuleCommand
+        from .localReplace import CalcReplaceLocalModuleCommand
         for position, modInfo in self.savedModInfos.items():
-            cmd = FitReplaceModuleCommand(fitID=self.fitID, position=position, newModInfo=modInfo)
+            cmd = CalcReplaceLocalModuleCommand(fitID=self.fitID, position=position, newModInfo=modInfo)
             results.append(cmd.Do())
         return any(results)

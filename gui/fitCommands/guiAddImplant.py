@@ -5,8 +5,8 @@ import gui.mainFrame
 from eos.const import ImplantLocation
 from gui import globalEvents as GE
 from gui.fitCommands.helpers import ImplantInfo
-from .calc.implant.add import FitAddImplantCommand
-from .calc.implant.changeLocation import FitChangeImplantLocationCommand
+from .calc.implant.add import CalcAddImplantCommand
+from .calc.implant.changeLocation import CalcChangeImplantLocationCommand
 
 
 class GuiAddImplantCommand(wx.Command):
@@ -20,8 +20,8 @@ class GuiAddImplantCommand(wx.Command):
 
     def Do(self):
         if (
-            self.internal_history.Submit(FitAddImplantCommand(fitID=self.fitID, implantInfo=ImplantInfo(itemID=self.itemID))) and
-            self.internal_history.Submit(FitChangeImplantLocationCommand(self.fitID, ImplantLocation.FIT))
+            self.internal_history.Submit(CalcAddImplantCommand(fitID=self.fitID, implantInfo=ImplantInfo(itemID=self.itemID))) and
+            self.internal_history.Submit(CalcChangeImplantLocationCommand(self.fitID, ImplantLocation.FIT))
         ):
             self.sFit.recalc(self.fitID)
             wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=self.fitID))

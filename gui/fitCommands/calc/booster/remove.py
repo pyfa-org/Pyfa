@@ -9,7 +9,7 @@ from service.fit import Fit
 pyfalog = Logger(__name__)
 
 
-class FitRemoveBoosterCommand(wx.Command):
+class CalcRemoveBoosterCommand(wx.Command):
 
     def __init__(self, fitID, position):
         wx.Command.__init__(self, True, 'Remove Booster')
@@ -28,6 +28,6 @@ class FitRemoveBoosterCommand(wx.Command):
 
     def Undo(self):
         pyfalog.debug('Undoing removal of booster {} on fit {}'.format(self.savedBoosterInfo, self.fitID))
-        from .add import FitAddBoosterCommand
-        cmd = FitAddBoosterCommand(fitID=self.fitID, boosterInfo=self.savedBoosterInfo, position=self.position)
+        from .add import CalcAddBoosterCommand
+        cmd = CalcAddBoosterCommand(fitID=self.fitID, boosterInfo=self.savedBoosterInfo, position=self.position)
         return cmd.Do()

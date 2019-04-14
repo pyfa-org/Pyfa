@@ -5,10 +5,10 @@ import gui.mainFrame
 from gui import globalEvents as GE
 from gui.fitCommands.helpers import CargoInfo
 from service.fit import Fit
-from .calc.itemRebase import FitRebaseItemCommand
-from .calc.module.changeCharges import FitChangeModuleChargesCommand
-from .calc.cargo.add import FitAddCargoCommand
-from .calc.cargo.remove import FitRemoveCargoCommand
+from .calc.itemRebase import CalcRebaseItemCommand
+from .calc.module.changeCharges import CalcChangeModuleChargesCommand
+from .calc.cargo.add import CalcAddCargoCommand
+from .calc.cargo.remove import CalcRemoveCargoCommand
 
 
 
@@ -25,21 +25,21 @@ class GuiRebaseItemsCommand(wx.Command):
         fit = eos.db.getFit(self.fitID)
         for mod in fit.modules:
             if mod.itemID in self.rebaseMap:
-                self.internal_history.Submit(FitRebaseItemCommand(fitID=self.fitID, containerName="modules", position=mod.modPosition, itemID=self.rebaseMap[mod.itemID], commit=False))
+                self.internal_history.Submit(CalcRebaseItemCommand(fitID=self.fitID, containerName="modules", position=mod.modPosition, itemID=self.rebaseMap[mod.itemID], commit=False))
             if mod.chargeID in self.rebaseMap:
-                self.internal_history.Submit(FitChangeModuleChargesCommand(fitID=self.fitID, chargeMap={mod.modPosition: self.rebaseMap[mod.chargeID]}))
+                self.internal_history.Submit(CalcChangeModuleChargesCommand(fitID=self.fitID, chargeMap={mod.modPosition: self.rebaseMap[mod.chargeID]}))
         for containerName in ("drones", "fighters", "implants", "boosters"):
             container = getattr(fit, containerName)
             for obj in container:
                 if obj.itemID in self.rebaseMap:
-                    self.internal_history.Submit(FitRebaseItemCommand(fitID=self.fitID, containerName=containerName, position=container.index(obj), itemID=self.rebaseMap[obj.itemID], commit=False))
+                    self.internal_history.Submit(CalcRebaseItemCommand(fitID=self.fitID, containerName=containerName, position=container.index(obj), itemID=self.rebaseMap[obj.itemID], commit=False))
         # Need to process cargo separately as we want to merge items when needed,
         # e.g. FN iron and CN iron into single stack of CN iron
         for cargo in fit.cargo:
             if cargo.itemID in self.rebaseMap:
                 amount = cargo.amount
-                self.internal_history.Submit(FitRemoveCargoCommand(fitID=self.fitID, cargoInfo=CargoInfo(itemID=cargo.itemID, amount=amount)))
-                self.internal_history.Submit(FitAddCargoCommand(fitID=self.fitID, cargoInfo=CargoInfo(itemID=self.rebaseMap[cargo.itemID], amount=amount)))
+                self.internal_history.Submit(CalcRemoveCargoCommand(fitID=self.fitID, cargoInfo=CargoInfo(itemID=cargo.itemID, amount=amount)))
+                self.internal_history.Submit(CalcAddCargoCommand(fitID=self.fitID, cargoInfo=CargoInfo(itemID=self.rebaseMap[cargo.itemID], amount=amount)))
         if self.internal_history.Commands:
             eos.db.commit()
             Fit.getInstance().recalc(self.fitID)

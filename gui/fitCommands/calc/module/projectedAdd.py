@@ -10,7 +10,7 @@ from service.fit import Fit
 pyfalog = Logger(__name__)
 
 
-class FitAddProjectedModuleCommand(wx.Command):
+class CalcAddProjectedModuleCommand(wx.Command):
 
     def __init__(self, fitID, modInfo, position=None):
         wx.Command.__init__(self, True)
@@ -52,8 +52,8 @@ class FitAddProjectedModuleCommand(wx.Command):
     def Undo(self):
         pyfalog.debug('Undoing addition of projected module {} onto: {}'.format(self.newModInfo, self.fitID))
         if self.oldPosition is not None and self.oldModInfo is not None:
-            cmd = FitAddProjectedModuleCommand(fitID=self.fitID, modInfo=self.oldModInfo, position=self.oldPosition)
+            cmd = CalcAddProjectedModuleCommand(fitID=self.fitID, modInfo=self.oldModInfo, position=self.oldPosition)
             return cmd.Do()
-        from .projectedRemove import FitRemoveProjectedModuleCommand
-        cmd = FitRemoveProjectedModuleCommand(self.fitID, self.newPosition)
+        from .projectedRemove import CalcRemoveProjectedModuleCommand
+        cmd = CalcRemoveProjectedModuleCommand(self.fitID, self.newPosition)
         return cmd.Do()

@@ -4,10 +4,10 @@ from service.fit import Fit
 import gui.mainFrame
 from gui import globalEvents as GE
 from gui.fitCommands.helpers import ModuleInfo, DroneInfo, FighterInfo
-from .calc.module.projectedAdd import FitAddProjectedModuleCommand
-from .calc.projectedFit.add import FitAddProjectedFitCommand
-from .calc.fighter.projectedAdd import FitAddProjectedFighterCommand
-from .calc.drone.projectedAdd import FitAddProjectedDroneCommand
+from .calc.module.projectedAdd import CalcAddProjectedModuleCommand
+from .calc.projectedFit.add import CalcAddProjectedFitCommand
+from .calc.fighter.projectedAdd import CalcAddProjectedFighterCommand
+from .calc.drone.projectedAdd import CalcAddProjectedDroneCommand
 from logbook import Logger
 import eos.db
 pyfalog = Logger(__name__)
@@ -31,17 +31,17 @@ class GuiAddProjectedCommand(wx.Command):
             item = eos.db.getItem(self.id, eager=("attributes", "group.category"))
 
             if item.category.name == "Drone":
-                result = self.internal_history.Submit(FitAddProjectedDroneCommand(
+                result = self.internal_history.Submit(CalcAddProjectedDroneCommand(
                     fitID=self.fitID,
                     droneInfo=DroneInfo(itemID=self.id, amount=1, amountActive=1)))
             elif item.category.name == "Fighter":
-                result = self.internal_history.Submit(FitAddProjectedFighterCommand(self.fitID, fighterInfo=FighterInfo(itemID=self.id)))
+                result = self.internal_history.Submit(CalcAddProjectedFighterCommand(self.fitID, fighterInfo=FighterInfo(itemID=self.id)))
             else:
-                result = self.internal_history.Submit(FitAddProjectedModuleCommand(
+                result = self.internal_history.Submit(CalcAddProjectedModuleCommand(
                     fitID=self.fitID,
                     modInfo=ModuleInfo(itemID=self.id)))
         elif self.type == 'fit':
-            result = self.internal_history.Submit(FitAddProjectedFitCommand(self.fitID, self.id, None))
+            result = self.internal_history.Submit(CalcAddProjectedFitCommand(self.fitID, self.id, None))
 
         if result:
             self.sFit.recalc(self.fitID)

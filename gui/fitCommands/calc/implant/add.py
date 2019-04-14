@@ -9,7 +9,7 @@ from service.fit import Fit
 pyfalog = Logger(__name__)
 
 
-class FitAddImplantCommand(wx.Command):
+class CalcAddImplantCommand(wx.Command):
 
     def __init__(self, fitID, implantInfo, position=None):
         wx.Command.__init__(self, True, 'Add Implant')
@@ -38,7 +38,7 @@ class FitAddImplantCommand(wx.Command):
                 fit.implants.insert(self.newPosition, newImplant)
             except HandledListActionError:
                 pyfalog.warning('Failed to insert to list')
-                cmd = FitAddImplantCommand(fitID=self.fitID, implantInfo=self.oldImplantInfo, position=self.oldPosition)
+                cmd = CalcAddImplantCommand(fitID=self.fitID, implantInfo=self.oldImplantInfo, position=self.oldPosition)
                 cmd.Do()
                 return False
         else:
@@ -46,7 +46,7 @@ class FitAddImplantCommand(wx.Command):
                 fit.implants.append(newImplant)
             except HandledListActionError:
                 pyfalog.warning('Failed to append to list')
-                cmd = FitAddImplantCommand(fitID=self.fitID, implantInfo=self.oldImplantInfo, position=self.oldPosition)
+                cmd = CalcAddImplantCommand(fitID=self.fitID, implantInfo=self.oldImplantInfo, position=self.oldPosition)
                 cmd.Do()
                 return False
             self.newPosition = fit.implants.index(newImplant)
@@ -56,8 +56,8 @@ class FitAddImplantCommand(wx.Command):
     def Undo(self):
         pyfalog.debug('Undo addition of implant {} to fit {}'.format(self.newImplantInfo, self.fitID))
         if self.oldImplantInfo and self.oldPosition:
-            cmd = FitAddImplantCommand(fitID=self.fitID, implantInfo=self.oldImplantInfo, position=self.oldPosition)
+            cmd = CalcAddImplantCommand(fitID=self.fitID, implantInfo=self.oldImplantInfo, position=self.oldPosition)
             return cmd.Do()
-        from .remove import FitRemoveImplantCommand
-        cmd = FitRemoveImplantCommand(fitID=self.fitID, position=self.newPosition)
+        from .remove import CalcRemoveImplantCommand
+        cmd = CalcRemoveImplantCommand(fitID=self.fitID, position=self.newPosition)
         return cmd.Do()

@@ -8,7 +8,7 @@ from service.fit import Fit
 pyfalog = Logger(__name__)
 
 
-class FitFitRenameCommand(wx.Command):
+class CalcFitRenameCommand(wx.Command):
 
     def __init__(self, fitID, name):
         wx.Command.__init__(self, True, 'Rename Fit')
@@ -28,5 +28,5 @@ class FitFitRenameCommand(wx.Command):
 
     def Undo(self):
         pyfalog.debug('Undoing renaming of fit {} to {}'.format(self.fitID, self.name))
-        cmd = FitFitRenameCommand(fitID=self.fitID, name=self.savedName)
+        cmd = CalcFitRenameCommand(fitID=self.fitID, name=self.savedName)
         return cmd.Do()

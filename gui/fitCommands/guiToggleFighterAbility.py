@@ -3,7 +3,7 @@ from service.fit import Fit
 
 import gui.mainFrame
 from gui import globalEvents as GE
-from .calc.fighter.abilityToggle import FitToggleFighterAbilityStateCommand
+from .calc.fighter.abilityToggleState import CalcToggleFighterAbilityStateCommand
 
 
 class GuiToggleFighterAbilityCommand(wx.Command):
@@ -18,7 +18,7 @@ class GuiToggleFighterAbilityCommand(wx.Command):
         self.isProjected = isProjected
 
     def Do(self):
-        if self.internal_history.Submit(FitToggleFighterAbilityStateCommand(self.fitID, self.position, self.effectID, self.isProjected)):
+        if self.internal_history.Submit(CalcToggleFighterAbilityStateCommand(self.fitID, self.isProjected, self.position, self.effectID)):
             Fit.getInstance().recalc(self.fitID)
             wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=self.fitID))
             return True

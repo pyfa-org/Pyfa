@@ -4,7 +4,7 @@ from service.fit import Fit
 import gui.mainFrame
 from gui import globalEvents as GE
 from .helpers import ModuleInfo
-from .calc.module.localRemove import FitRemoveModuleCommand
+from .calc.module.localRemove import CalcRemoveLocalModuleCommand
 
 
 class GuiModuleRemoveCommand(wx.Command):
@@ -23,7 +23,7 @@ class GuiModuleRemoveCommand(wx.Command):
         self.internal_history = wx.CommandProcessor()
 
     def Do(self):
-        success = self.internal_history.Submit(FitRemoveModuleCommand(self.fitID, [pos for pos in self.modCache]))
+        success = self.internal_history.Submit(CalcRemoveLocalModuleCommand(self.fitID, [pos for pos in self.modCache]))
 
         if success:
             self.sFit.recalc(self.fitID)

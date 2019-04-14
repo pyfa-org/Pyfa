@@ -10,7 +10,7 @@ from service.fit import Fit
 pyfalog = Logger(__name__)
 
 
-class FitRemoveDroneCommand(wx.Command):
+class CalcRemoveLocalDroneCommand(wx.Command):
 
     def __init__(self, fitID, position, amount):
         wx.Command.__init__(self, True, 'Remove Drone')
@@ -21,7 +21,7 @@ class FitRemoveDroneCommand(wx.Command):
         self.removedStack = None
 
     def Do(self):
-        pyfalog.debug('Doing removal of {} drones at position {} from fit {}'.format(self.amountToRemove, self.position, self.fitID))
+        pyfalog.debug('Doing removal of {} local drones at position {} from fit {}'.format(self.amountToRemove, self.position, self.fitID))
         fit = Fit.getInstance().getFit(self.fitID)
         drone = fit.drones[self.position]
         self.savedDroneInfo = DroneInfo.fromDrone(drone)
@@ -40,7 +40,7 @@ class FitRemoveDroneCommand(wx.Command):
         return True
 
     def Undo(self):
-        pyfalog.debug('Undoing removal of {} drones at position {} from fit {}'.format(self.amountToRemove, self.position, self.fitID))
+        pyfalog.debug('Undoing removal of {} local drones at position {} from fit {}'.format(self.amountToRemove, self.position, self.fitID))
         fit = Fit.getInstance().getFit(self.fitID)
         if self.removedStack:
             drone = self.savedDroneInfo.toDrone()

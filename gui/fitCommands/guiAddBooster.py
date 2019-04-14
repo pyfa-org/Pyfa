@@ -4,7 +4,7 @@ from service.fit import Fit
 import gui.mainFrame
 from gui import globalEvents as GE
 from gui.fitCommands.helpers import BoosterInfo
-from .calc.booster.add import FitAddBoosterCommand
+from .calc.booster.add import CalcAddBoosterCommand
 
 
 class GuiAddBoosterCommand(wx.Command):
@@ -18,7 +18,7 @@ class GuiAddBoosterCommand(wx.Command):
         self.itemID = itemID
 
     def Do(self):
-        if self.internal_history.Submit(FitAddBoosterCommand(fitID=self.fitID, boosterInfo=BoosterInfo(itemID=self.itemID))):
+        if self.internal_history.Submit(CalcAddBoosterCommand(fitID=self.fitID, boosterInfo=BoosterInfo(itemID=self.itemID))):
             self.sFit.recalc(self.fitID)
             wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=self.fitID))
             return True

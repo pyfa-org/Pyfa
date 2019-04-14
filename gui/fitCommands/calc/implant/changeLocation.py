@@ -8,7 +8,7 @@ from service.fit import Fit
 pyfalog = Logger(__name__)
 
 
-class FitChangeImplantLocationCommand(wx.Command):
+class CalcChangeImplantLocationCommand(wx.Command):
 
     def __init__(self, fitID, source):
         wx.Command.__init__(self, True, 'Change Implant Location')
@@ -25,5 +25,5 @@ class FitChangeImplantLocationCommand(wx.Command):
         return True
 
     def Undo(self):
-        cmd = FitChangeImplantLocationCommand(fitID=self.fitID, source=self.savedSource)
+        cmd = CalcChangeImplantLocationCommand(fitID=self.fitID, source=self.savedSource)
         return cmd.Do()

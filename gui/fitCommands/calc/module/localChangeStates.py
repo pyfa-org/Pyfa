@@ -9,7 +9,7 @@ from service.fit import Fit
 pyfalog = Logger(__name__)
 
 
-class FitChangeModuleStatesCommand(wx.Command):
+class CalcChangeLocalModuleStatesCommand(wx.Command):
 
     def __init__(self, fitID, mainPosition, positions, click):
         wx.Command.__init__(self, True, 'Change Module States')
@@ -20,7 +20,7 @@ class FitChangeModuleStatesCommand(wx.Command):
         self.savedStates = {}
 
     def Do(self):
-        pyfalog.debug('Doing change of module states at position {}/{} to click {} on fit {}'.format(self.mainPosition, self.positions, self.click, self.fitID))
+        pyfalog.debug('Doing change of local module states at position {}/{} to click {} on fit {}'.format(self.mainPosition, self.positions, self.click, self.fitID))
         sFit = Fit.getInstance()
         fit = sFit.getFit(self.fitID)
         mainMod = fit.modules[self.mainPosition]
@@ -49,7 +49,7 @@ class FitChangeModuleStatesCommand(wx.Command):
         return True
 
     def Undo(self):
-        pyfalog.debug('Undoing change of module states at position {}/{} to click {} on fit {}'.format(self.mainPosition, self.positions, self.click, self.fitID))
+        pyfalog.debug('Undoing change of local module states at position {}/{} to click {} on fit {}'.format(self.mainPosition, self.positions, self.click, self.fitID))
         fit = Fit.getInstance().getFit(self.fitID)
         for position, state in self.savedStates.items():
             mod = fit.modules[position]

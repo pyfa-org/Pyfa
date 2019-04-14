@@ -8,7 +8,7 @@ from service.fit import Fit
 pyfalog = Logger(__name__)
 
 
-class FitChangeProjectedModuleStateCommand(wx.Command):
+class CalcChangeProjectedModuleStateCommand(wx.Command):
 
     def __init__(self, fitID, position, click):
         wx.Command.__init__(self, True, 'Change Projected Module State')

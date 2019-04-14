@@ -9,7 +9,7 @@ from service.fit import Fit
 pyfalog = Logger(__name__)
 
 
-class FitRemoveImplantCommand(wx.Command):
+class CalcRemoveImplantCommand(wx.Command):
 
     def __init__(self, fitID, position):
         wx.Command.__init__(self, True, 'Remove Implant')
@@ -28,6 +28,6 @@ class FitRemoveImplantCommand(wx.Command):
 
     def Undo(self):
         pyfalog.debug('Undoing removal of implant {} on fit {}'.format(self.savedImplantInfo, self.fitID))
-        from .add import FitAddImplantCommand
-        cmd = FitAddImplantCommand(fitID=self.fitID, implantInfo=self.savedImplantInfo, position=self.position)
+        from .add import CalcAddImplantCommand
+        cmd = CalcAddImplantCommand(fitID=self.fitID, implantInfo=self.savedImplantInfo, position=self.position)
         return cmd.Do()

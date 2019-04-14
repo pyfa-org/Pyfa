@@ -16,8 +16,8 @@ from eos.effectHandlerHelpers import HandledList
 from eos.db import gamedata_session, getCategory, getAttributeInfo, getGroup
 from eos.gamedata import Attribute, Effect, Group, Item, ItemEffect
 from eos.utils.spoolSupport import SpoolType, SpoolOptions
-from gui.fitCommands.calc.module.localAdd import FitAddModuleCommand
-from gui.fitCommands.calc.module.localRemove import FitRemoveModuleCommand
+from gui.fitCommands.calc.module.localAdd import CalcAddLocalModuleCommand
+from gui.fitCommands.calc.module.localRemove import CalcRemoveLocalModuleCommand
 from gui.fitCommands.helpers import ModuleInfo
 
 
@@ -66,12 +66,12 @@ class EfsPort:
 
         if propID is None:
             return None
-        FitAddModuleCommand(fitID, ModuleInfo(itemID=propID)).Do()
+        CalcAddLocalModuleCommand(fitID, ModuleInfo(itemID=propID)).Do()
         sFit.recalc(fit)
         fit = eos.db.getFit(fitID)
         mwdPropSpeed = fit.maxSpeed
         mwdPosition = list(filter(lambda mod: mod.item and mod.item.ID == propID, fit.modules))[0].position
-        FitRemoveModuleCommand(fitID, [mwdPosition]).Do()
+        CalcRemoveLocalModuleCommand(fitID, [mwdPosition]).Do()
         sFit.recalc(fit)
         fit = eos.db.getFit(fitID)
         return mwdPropSpeed

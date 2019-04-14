@@ -9,7 +9,7 @@ from gui.fitCommands.helpers import ModuleInfo
 pyfalog = Logger(__name__)
 
 
-class FitRemoveProjectedModuleCommand(wx.Command):
+class CalcRemoveProjectedModuleCommand(wx.Command):
 
     def __init__(self, fitID, position):
         wx.Command.__init__(self, True)
@@ -28,6 +28,6 @@ class FitRemoveProjectedModuleCommand(wx.Command):
 
     def Undo(self):
         pyfalog.debug('Undoing removal of projected module {} on fit {}'.format(self.savedModInfo, self.fitID))
-        from .projectedAdd import FitAddProjectedModuleCommand
-        cmd = FitAddProjectedModuleCommand(fitID=self.fitID, modInfo=self.savedModInfo, position=self.position)
+        from .projectedAdd import CalcAddProjectedModuleCommand
+        cmd = CalcAddProjectedModuleCommand(fitID=self.fitID, modInfo=self.savedModInfo, position=self.position)
         return cmd.Do()

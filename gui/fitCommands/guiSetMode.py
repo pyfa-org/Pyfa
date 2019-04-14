@@ -3,7 +3,7 @@ from service.fit import Fit
 
 import gui.mainFrame
 from gui import globalEvents as GE
-from .calc.shipModeChange import FitChangeShipModeCommand
+from .calc.shipModeChange import CalcChangeShipModeCommand
 
 
 class GuiSetModeCommand(wx.Command):
@@ -16,7 +16,7 @@ class GuiSetModeCommand(wx.Command):
         self.itemID = itemID
 
     def Do(self):
-        if self.internal_history.Submit(FitChangeShipModeCommand(self.fitID, self.itemID)):
+        if self.internal_history.Submit(CalcChangeShipModeCommand(self.fitID, self.itemID)):
             self.sFit.recalc(self.fitID)
             wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=self.fitID))
             return True

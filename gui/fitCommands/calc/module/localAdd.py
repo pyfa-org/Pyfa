@@ -10,7 +10,7 @@ from service.fit import Fit
 pyfalog = Logger(__name__)
 
 
-class FitAddModuleCommand(wx.Command):
+class CalcAddLocalModuleCommand(wx.Command):
 
     def __init__(self, fitID, newModInfo):
         wx.Command.__init__(self, True, 'Add Module')
@@ -20,7 +20,7 @@ class FitAddModuleCommand(wx.Command):
         self.subsystemCmd = None
 
     def Do(self):
-        pyfalog.debug('Doing addition of module {} to fit {}'.format(self.newModInfo, self.fitID))
+        pyfalog.debug('Doing addition of local module {} to fit {}'.format(self.newModInfo, self.fitID))
         sFit = Fit.getInstance()
         fit = sFit.getFit(self.fitID)
 
@@ -32,8 +32,8 @@ class FitAddModuleCommand(wx.Command):
         if newMod.item.category.name == 'Subsystem':
             for oldMod in fit.modules:
                 if oldMod.getModifiedItemAttr('subSystemSlot') == newMod.getModifiedItemAttr('subSystemSlot') and newMod.slot == oldMod.slot:
-                    from .localReplace import FitReplaceModuleCommand
-                    self.subsystemCmd = FitReplaceModuleCommand(fitID=self.fitID, position=oldMod.modPosition, newModInfo=self.newModInfo)
+                    from .localReplace import CalcReplaceLocalModuleCommand
+                    self.subsystemCmd = CalcReplaceLocalModuleCommand(fitID=self.fitID, position=oldMod.modPosition, newModInfo=self.newModInfo)
                     return self.subsystemCmd.Do()
 
         if not newMod.fits(fit):
@@ -53,12 +53,12 @@ class FitAddModuleCommand(wx.Command):
         return True
 
     def Undo(self):
-        pyfalog.debug('Undoing addition of module {} to fit {}'.format(self.newModInfo, self.fitID))
+        pyfalog.debug('Undoing addition of local module {} to fit {}'.format(self.newModInfo, self.fitID))
         # We added a subsystem module, which actually ran the replace command. Run the undo for that guy instead
         if self.subsystemCmd is not None:
             return self.subsystemCmd.Undo()
-        from .localRemove import FitRemoveModuleCommand
+        from .localRemove import CalcRemoveLocalModuleCommand
         if self.savedPosition is None:
             return False
-        cmd = FitRemoveModuleCommand(fitID=self.fitID, positions=[self.savedPosition])
+        cmd = CalcRemoveLocalModuleCommand(fitID=self.fitID, positions=[self.savedPosition])
         return cmd.Do()

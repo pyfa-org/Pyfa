@@ -3,7 +3,7 @@ from service.fit import Fit
 
 import gui.mainFrame
 from gui import globalEvents as GE
-from .calc.fighter.localRemove import FitRemoveFighterCommand
+from .calc.fighter.localRemove import CalcRemoveLocalFighterCommand
 
 
 class GuiRemoveFighterCommand(wx.Command):
@@ -16,7 +16,7 @@ class GuiRemoveFighterCommand(wx.Command):
         self.internal_history = wx.CommandProcessor()
 
     def Do(self):
-        success = self.internal_history.Submit(FitRemoveFighterCommand(self.fitID, self.position))
+        success = self.internal_history.Submit(CalcRemoveLocalFighterCommand(self.fitID, self.position))
         if success:
             self.sFit.recalc(self.fitID)
             wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=self.fitID))

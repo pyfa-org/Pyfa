@@ -7,10 +7,10 @@ from eos.saveddata.fit import Fit as FitType
 from eos.saveddata.module import Module as ModuleType
 from gui import globalEvents as GE
 from service.fit import Fit
-from .calc.drone.projectedToggleState import FitToggleProjectedDroneStateCommand
-from .calc.fighter.projectedToggleState import FitToggleProjectedFighterStateCommand
-from .calc.projectedFit.toggleState import FitToggleProjectedFitCommand
-from .calc.module.projectedChangeState import FitChangeProjectedModuleStateCommand
+from .calc.drone.projectedToggleState import CalcToggleProjectedDroneStateCommand
+from .calc.fighter.toggleState import CalcToggleFighterStateCommand
+from .calc.projectedFit.toggleState import CalcToggleProjectedFitCommand
+from .calc.module.projectedChangeState import CalcChangeProjectedModuleStateCommand
 
 
 class GuiToggleProjectedCommand(wx.Command):
@@ -22,19 +22,19 @@ class GuiToggleProjectedCommand(wx.Command):
         self.fitID = fitID
         fit = Fit.getInstance().getFit(self.fitID)
         if isinstance(thing, FitType):
-            self.commandType = FitToggleProjectedFitCommand
+            self.commandType = CalcToggleProjectedFitCommand
             self.args = (self.fitID, thing.ID)
         elif isinstance(thing, ModuleType):
             position = fit.projectedModules.index(thing)
-            self.commandType = FitChangeProjectedModuleStateCommand
+            self.commandType = CalcChangeProjectedModuleStateCommand
             self.args = (self.fitID, position, click)
         elif isinstance(thing, DroneType):
-            self.commandType = FitToggleProjectedDroneStateCommand
+            self.commandType = CalcToggleProjectedDroneStateCommand
             self.args = (self.fitID, thing.itemID)
         elif isinstance(thing, FighterType):
             position = fit.projectedFighters.index(thing)
-            self.commandType = FitToggleProjectedFighterStateCommand
-            self.args = (self.fitID, position)
+            self.commandType = CalcToggleFighterStateCommand
+            self.args = (self.fitID, True, position)
         else:
             self.commandType = None
             self.args = ()

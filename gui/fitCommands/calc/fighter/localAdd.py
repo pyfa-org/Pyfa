@@ -9,7 +9,7 @@ from service.fit import Fit
 pyfalog = Logger(__name__)
 
 
-class FitAddFighterCommand(wx.Command):
+class CalcAddLocalFighterCommand(wx.Command):
 
     def __init__(self, fitID, fighterInfo, position=None):
         wx.Command.__init__(self, True, 'Add Fighter')
@@ -58,7 +58,7 @@ class FitAddFighterCommand(wx.Command):
 
     def Undo(self):
         pyfalog.debug('Undoing addition of fighter {} to fit {}'.format(self.fighterInfo, self.fitID))
-        from .localRemove import FitRemoveFighterCommand
-        cmd = FitRemoveFighterCommand(fitID=self.fitID, position=self.position)
+        from .localRemove import CalcRemoveLocalFighterCommand
+        cmd = CalcRemoveLocalFighterCommand(fitID=self.fitID, position=self.position)
         cmd.Do()
         return True

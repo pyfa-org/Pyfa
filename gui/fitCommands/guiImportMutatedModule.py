@@ -5,7 +5,7 @@ import gui.mainFrame
 from gui import globalEvents as GE
 from gui.fitCommands.helpers import ModuleInfo
 from service.fit import Fit
-from .calc.module.localAdd import FitAddModuleCommand
+from .calc.module.localAdd import CalcAddLocalModuleCommand
 
 
 pyfalog = Logger(__name__)
@@ -26,7 +26,7 @@ class GuiImportMutatedModuleCommand(wx.Command):
     def Do(self):
         pyfalog.debug("{} Do()".format(self))
 
-        if self.internalHistory.Submit(FitAddModuleCommand(fitID=self.fitID, newModInfo=self.newModInfo)):
+        if self.internalHistory.Submit(CalcAddLocalModuleCommand(fitID=self.fitID, newModInfo=self.newModInfo)):
             Fit.getInstance().recalc(self.fitID)
             wx.PostEvent(gui.mainFrame.MainFrame.getInstance(), GE.FitChanged(fitID=self.fitID, action="modadd"))
             return True

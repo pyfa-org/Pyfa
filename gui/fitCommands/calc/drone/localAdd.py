@@ -11,7 +11,7 @@ from service.market import Market
 pyfalog = Logger(__name__)
 
 
-class FitAddDroneCommand(wx.Command):
+class CalcAddLocalDroneCommand(wx.Command):
 
     def __init__(self, fitID, droneInfo):
         wx.Command.__init__(self, True, 'Add Drone')
@@ -21,7 +21,7 @@ class FitAddDroneCommand(wx.Command):
         self.savedPosition = None
 
     def Do(self):
-        pyfalog.debug('Doing addition of drone {} to fit {}'.format(self.droneInfo, self.fitID))
+        pyfalog.debug('Doing addition of local drone {} to fit {}'.format(self.droneInfo, self.fitID))
         fit = Fit.getInstance().getFit(self.fitID)
         item = Market.getInstance().getItem(self.droneInfo.itemID, eager=("attributes", "group.category"))
         # If we're not adding any active drones, check if there's an inactive stack
@@ -55,13 +55,13 @@ class FitAddDroneCommand(wx.Command):
         return True
 
     def Undo(self):
-        pyfalog.debug('Undoing addition of drone {} to fit {}'.format(self.droneInfo, self.fitID))
+        pyfalog.debug('Undoing addition of local drone {} to fit {}'.format(self.droneInfo, self.fitID))
         if self.savedDroneInfo is not None:
             fit = Fit.getInstance().getFit(self.fitID)
             drone = fit.drones[self.savedPosition]
             drone.amount = self.savedDroneInfo.amount
             drone.amountActive = self.savedDroneInfo.amountActive
             return True
-        from .localRemove import FitRemoveDroneCommand
-        cmd = FitRemoveDroneCommand(fitID=self.fitID, position=self.savedPosition, amount=self.droneInfo.amount)
+        from .localRemove import CalcRemoveLocalDroneCommand
+        cmd = CalcRemoveLocalDroneCommand(fitID=self.fitID, position=self.savedPosition, amount=self.droneInfo.amount)
         return cmd.Do()

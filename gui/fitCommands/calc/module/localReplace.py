@@ -10,7 +10,7 @@ from service.fit import Fit
 pyfalog = Logger(__name__)
 
 
-class FitReplaceModuleCommand(wx.Command):
+class CalcReplaceLocalModuleCommand(wx.Command):
 
     def __init__(self, fitID, position, newModInfo):
         wx.Command.__init__(self, True, 'Replace Module')
@@ -20,7 +20,7 @@ class FitReplaceModuleCommand(wx.Command):
         self.oldModInfo = None
 
     def Do(self):
-        pyfalog.debug('Doing replacement of module at position {} to {} on fit {}'.format(self.newModInfo, self.position, self.fitID))
+        pyfalog.debug('Doing replacement of local module at position {} to {} on fit {}'.format(self.newModInfo, self.position, self.fitID))
         sFit = Fit.getInstance()
         fit = sFit.getFit(self.fitID)
         oldMod = fit.modules[self.position]
@@ -49,11 +49,11 @@ class FitReplaceModuleCommand(wx.Command):
         return True
 
     def Undo(self):
-        pyfalog.debug('Undoing replacement of module at position {} to {} on fit {}'.format(self.newModInfo, self.position, self.fitID))
+        pyfalog.debug('Undoing replacement of local module at position {} to {} on fit {}'.format(self.newModInfo, self.position, self.fitID))
         # Remove if there was no module
         if self.oldModInfo is None:
-            from .localRemove import FitRemoveModuleCommand
-            cmd = FitRemoveModuleCommand(fitID=self.fitID, positions=[self.position])
+            from .localRemove import CalcRemoveLocalModuleCommand
+            cmd = CalcRemoveLocalModuleCommand(fitID=self.fitID, positions=[self.position])
             return cmd.Do()
         # Replace if there was
         sFit = Fit.getInstance()

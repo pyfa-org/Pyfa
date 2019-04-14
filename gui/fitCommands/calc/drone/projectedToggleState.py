@@ -8,7 +8,7 @@ from service.fit import Fit
 pyfalog = Logger(__name__)
 
 
-class FitToggleProjectedDroneStateCommand(wx.Command):
+class CalcToggleProjectedDroneStateCommand(wx.Command):
 
     def __init__(self, fitID, itemID, forceAmountActive=None):
         wx.Command.__init__(self, True, 'Toggle Projected Drone State')
@@ -42,5 +42,5 @@ class FitToggleProjectedDroneStateCommand(wx.Command):
 
     def Undo(self):
         pyfalog.debug('Undoing toggling of projected drone {} state for fit {}'.format(self.itemID, self.fitID))
-        cmd = FitToggleProjectedDroneStateCommand(fitID=self.fitID, itemID=self.itemID, forceAmountActive=self.savedAmountActive)
+        cmd = CalcToggleProjectedDroneStateCommand(fitID=self.fitID, itemID=self.itemID, forceAmountActive=self.savedAmountActive)
         return cmd.Do()

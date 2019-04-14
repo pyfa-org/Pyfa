@@ -9,7 +9,7 @@ from service.fit import Fit
 pyfalog = Logger(__name__)
 
 
-class FitAddProjectedFighterCommand(wx.Command):
+class CalcAddProjectedFighterCommand(wx.Command):
 
     def __init__(self, fitID, fighterInfo, position=None):
         wx.Command.__init__(self, True, 'Add Projected Fighter')
@@ -41,6 +41,6 @@ class FitAddProjectedFighterCommand(wx.Command):
 
     def Undo(self):
         pyfalog.debug('Undoing addition of projected fighter {} onto: {}'.format(self.fighterInfo, self.fitID))
-        from .projectedRemove import FitRemoveProjectedFighterCommand
-        cmd = FitRemoveProjectedFighterCommand(fitID=self.fitID, position=self.position)
+        from .projectedRemove import CalcRemoveProjectedFighterCommand
+        cmd = CalcRemoveProjectedFighterCommand(fitID=self.fitID, position=self.position)
         return cmd.Do()

@@ -9,7 +9,7 @@ from service.market import Market
 pyfalog = Logger(__name__)
 
 
-class FitRebaseItemCommand(wx.Command):
+class CalcRebaseItemCommand(wx.Command):
 
     def __init__(self, fitID, containerName, position, itemID, commit=True):
         wx.Command.__init__(self, True, 'Rebase Item')
@@ -39,5 +39,5 @@ class FitRebaseItemCommand(wx.Command):
 
     def Undo(self):
         pyfalog.debug('Undoing rebase of item in {} at position {} to {}'.format(self.containerName, self.position, self.itemID))
-        cmd = FitRebaseItemCommand(fitID=self.fitID, containerName=self.containerName, position=self.position, itemID=self.savedItemID)
+        cmd = CalcRebaseItemCommand(fitID=self.fitID, containerName=self.containerName, position=self.position, itemID=self.savedItemID)
         return cmd.Do()

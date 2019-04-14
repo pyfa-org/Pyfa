@@ -1,7 +1,7 @@
 import wx
 import gui.mainFrame
 from gui import globalEvents as GE
-from .calc.drone.projectedChangeAmount import FitChangeProjectedDroneAmountCommand
+from .calc.drone.projectedChangeAmount import CalcChangeProjectedDroneAmountCommand
 from service.fit import Fit
 from logbook import Logger
 pyfalog = Logger(__name__)
@@ -18,7 +18,7 @@ class GuiChangeProjectedDroneQty(wx.Command):
         self.internal_history = wx.CommandProcessor()
 
     def Do(self):
-        cmd = FitChangeProjectedDroneAmountCommand(self.fitID, self.itemID, self.amount)
+        cmd = CalcChangeProjectedDroneAmountCommand(self.fitID, self.itemID, self.amount)
         if self.internal_history.Submit(cmd):
             self.sFit.recalc(self.fitID)
             wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=self.fitID))

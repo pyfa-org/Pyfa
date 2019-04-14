@@ -9,7 +9,7 @@ from service.market import Market
 pyfalog = Logger(__name__)
 
 
-class FitChangeModuleChargesCommand(wx.Command):
+class CalcChangeModuleChargesCommand(wx.Command):
 
     def __init__(self, fitID, chargeMap, projected=False):
         wx.Command.__init__(self, True, 'Change Module Charges')
@@ -50,5 +50,5 @@ class FitChangeModuleChargesCommand(wx.Command):
 
     def Undo(self):
         pyfalog.debug('Undoing change of module charges according to map {} on fit {}'.format(self.chargeMap, self.fitID))
-        cmd = FitChangeModuleChargesCommand(fitID=self.fitID, chargeMap=self.savedChargeMap, projected=self.projected)
+        cmd = CalcChangeModuleChargesCommand(fitID=self.fitID, chargeMap=self.savedChargeMap, projected=self.projected)
         return cmd.Do()

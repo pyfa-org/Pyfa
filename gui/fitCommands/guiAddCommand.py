@@ -3,7 +3,7 @@ from service.fit import Fit
 
 import gui.mainFrame
 from gui import globalEvents as GE
-from .calc.commandFit.add import FitAddCommandCommand
+from .calc.commandFit.add import CalcAddCommandCommand
 
 
 class GuiAddCommandCommand(wx.Command):
@@ -16,7 +16,7 @@ class GuiAddCommandCommand(wx.Command):
         self.commandFitID = commandFitID
 
     def Do(self):
-        if self.internal_history.Submit(FitAddCommandCommand(self.fitID, self.commandFitID, None)):
+        if self.internal_history.Submit(CalcAddCommandCommand(self.fitID, self.commandFitID, None)):
             wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=self.fitID))
             self.sFit.recalc(self.fitID)
             return True

@@ -6,9 +6,9 @@ from service.market import Market
 from service.fit import Fit
 from gui import globalEvents as GE
 from gui.fitCommands.helpers import ModuleInfo
-from .calc.module.localAdd import FitAddModuleCommand
-from .calc.module.localReplace import FitReplaceModuleCommand
-from .calc.module.changeCharges import FitChangeModuleChargesCommand
+from .calc.module.localAdd import CalcAddLocalModuleCommand
+from .calc.module.localReplace import CalcReplaceLocalModuleCommand
+from .calc.module.changeCharges import CalcChangeModuleChargesCommand
 
 
 pyfalog = Logger(__name__)
@@ -38,14 +38,14 @@ class GuiModuleAddCommand(wx.Command):
         # Charge
         if item.isCharge and self.position is not None:
             pyfalog.debug("Trying to add a charge")
-            success = self.internalHistory.Submit(FitChangeModuleChargesCommand(self.fitID, {self.position: self.itemID}))
+            success = self.internalHistory.Submit(CalcChangeModuleChargesCommand(self.fitID, {self.position: self.itemID}))
             if not success:
                 pyfalog.debug("    Failed")
                 return False  # if it's a charge item and this failed, nothing more we can try.
         # Module to position
         elif self.position is not None:
             pyfalog.debug("Trying to add a module to a specific position")
-            success = self.internalHistory.Submit(FitReplaceModuleCommand(
+            success = self.internalHistory.Submit(CalcReplaceLocalModuleCommand(
                 fitID=self.fitID,
                 position=self.position,
                 newModInfo=ModuleInfo(itemID=self.itemID)))
@@ -56,7 +56,7 @@ class GuiModuleAddCommand(wx.Command):
         # Module without position
         if self.position is None:
             pyfalog.debug("Trying to append a module")
-            success = self.internalHistory.Submit(FitAddModuleCommand(
+            success = self.internalHistory.Submit(CalcAddLocalModuleCommand(
                 fitID=self.fitID,
                 newModInfo=ModuleInfo(itemID=self.itemID)))
 

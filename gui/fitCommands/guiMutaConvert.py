@@ -4,7 +4,7 @@ import gui.mainFrame
 from gui import globalEvents as GE
 from gui.fitCommands.helpers import ModuleInfo
 from service.fit import Fit
-from .calc.module.localReplace import FitReplaceModuleCommand
+from .calc.module.localReplace import CalcReplaceLocalModuleCommand
 
 
 class GuiMutaConvertCommand(wx.Command):
@@ -26,7 +26,7 @@ class GuiMutaConvertCommand(wx.Command):
         if oldMod.isMutated:
             return False
 
-        success = self.internal_history.Submit(FitReplaceModuleCommand(
+        success = self.internal_history.Submit(CalcReplaceLocalModuleCommand(
             fitID=self.fitID,
             position=self.position,
             newModInfo=ModuleInfo(

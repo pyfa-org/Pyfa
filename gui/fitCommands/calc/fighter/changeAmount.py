@@ -8,19 +8,21 @@ from service.fit import Fit
 pyfalog = Logger(__name__)
 
 
-class FitChangeProjectedFighterAmountCommand(wx.Command):
+class CalcChangeFighterAmountCommand(wx.Command):
 
-    def __init__(self, fitID, position, amount):
-        wx.Command.__init__(self, True, 'Change Projected Fighter Amount')
+    def __init__(self, fitID, projected, position, amount):
+        wx.Command.__init__(self, True, 'Change Fighter Amount')
         self.fitID = fitID
+        self.projected = projected
         self.position = position
         self.amount = amount
         self.savedAmount = None
 
     def Do(self):
-        pyfalog.debug('Doing change of projected fighter amount to {} at position {} on fit {}'.format(self.amount, self.position, self.fitID))
+        pyfalog.debug('Doing change of fighter amount to {} at position {} on fit {}'.format(self.amount, self.position, self.fitID))
         fit = Fit.getInstance().getFit(self.fitID)
-        fighter = fit.projectedFighters[self.position]
+        container = fit.projectedFighters if self.projected else fit.fighters
+        fighter = container[self.position]
         if self.amount == fighter.amount or self.amount == fighter.amountActive:
             return False
         self.savedAmount = fighter.amount
@@ -34,6 +36,6 @@ class FitChangeProjectedFighterAmountCommand(wx.Command):
             return True
 
     def Undo(self):
-        pyfalog.debug('Undoing change of projected fighter amount to {} at position {} on fit {}'.format(self.amount, self.position, self.fitID))
-        cmd = FitChangeProjectedFighterAmountCommand(fitID=self.fitID, position=self.position, amount=self.savedAmount)
+        pyfalog.debug('Undoing change of fighter amount to {} at position {} on fit {}'.format(self.amount, self.position, self.fitID))
+        cmd = CalcChangeFighterAmountCommand(fitID=self.fitID, projected=self.projected, position=self.position, amount=self.savedAmount)
         return cmd.Do()

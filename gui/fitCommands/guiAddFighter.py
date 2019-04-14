@@ -4,7 +4,7 @@ import gui.mainFrame
 from gui import globalEvents as GE
 from gui.fitCommands.helpers import FighterInfo
 from service.fit import Fit
-from .calc.fighter.localAdd import FitAddFighterCommand
+from .calc.fighter.localAdd import CalcAddLocalFighterCommand
 
 
 class GuiAddFighterCommand(wx.Command):
@@ -15,7 +15,7 @@ class GuiAddFighterCommand(wx.Command):
         self.itemID = itemID
 
     def Do(self):
-        if self.internal_history.Submit(FitAddFighterCommand(fitID=self.fitID, fighterInfo=FighterInfo(itemID=self.itemID))):
+        if self.internal_history.Submit(CalcAddLocalFighterCommand(fitID=self.fitID, fighterInfo=FighterInfo(itemID=self.itemID))):
             Fit.getInstance().recalc(self.fitID)
             wx.PostEvent(gui.mainFrame.MainFrame.getInstance(), GE.FitChanged(fitID=self.fitID))
             return True

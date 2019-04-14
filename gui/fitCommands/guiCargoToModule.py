@@ -3,11 +3,11 @@ from service.fit import Fit
 
 import gui.mainFrame
 from gui import globalEvents as GE
-from gui.fitCommands.calc.module.changeCharges import FitChangeModuleChargesCommand
-from gui.fitCommands.calc.module.localReplace import FitReplaceModuleCommand
-from gui.fitCommands.calc.cargo.remove import FitRemoveCargoCommand
+from gui.fitCommands.calc.module.changeCharges import CalcChangeModuleChargesCommand
+from gui.fitCommands.calc.module.localReplace import CalcReplaceLocalModuleCommand
+from gui.fitCommands.calc.cargo.remove import CalcRemoveCargoCommand
 from gui.fitCommands.helpers import ModuleInfo
-from .calc.cargo.add import FitAddCargoCommand
+from .calc.cargo.add import CalcAddCargoCommand
 from logbook import Logger
 pyfalog = Logger(__name__)
 
@@ -40,12 +40,12 @@ class GuiCargoToModuleCommand(wx.Command):
 
         # We're trying to move a charge from cargo to a slot. Use SetCharge command (don't respect move vs copy)
         if sFit.isAmmo(cargo.itemID):
-            result = self.internal_history.Submit(FitChangeModuleChargesCommand(self.fitID, {module.modPosition: cargo.itemID}))
+            result = self.internal_history.Submit(CalcChangeModuleChargesCommand(self.fitID, {module.modPosition: cargo.itemID}))
         else:
 
             pyfalog.debug("Moving cargo item to module for fit ID: {0}", self.fitID)
 
-            self.addCmd = FitReplaceModuleCommand(
+            self.addCmd = CalcReplaceLocalModuleCommand(
                 fitID=self.fitID,
                 position=module.modPosition,
                 newModInfo=ModuleInfo(itemID=cargo.itemID))
@@ -58,14 +58,14 @@ class GuiCargoToModuleCommand(wx.Command):
 
             if self.addCmd.old_module is not None:
                 # we're swapping with an existing module, so remove cargo and add module
-                self.removeCmd = FitRemoveCargoCommand(self.fitID, cargo.itemID)
+                self.removeCmd = CalcRemoveCargoCommand(self.fitID, cargo.itemID)
                 result = self.internal_history.Submit(self.removeCmd)
 
-                self.addCargoCmd = FitAddCargoCommand(self.fitID, self.addCmd.old_module.itemID)
+                self.addCargoCmd = CalcAddCargoCommand(self.fitID, self.addCmd.old_module.itemID)
                 result = self.internal_history.Submit(self.addCargoCmd)
             elif not self.copy:
                 # move, not copying, so remove cargo
-                self.removeCmd = FitRemoveCargoCommand(self.fitID, cargo.itemID)
+                self.removeCmd = CalcRemoveCargoCommand(self.fitID, cargo.itemID)
                 result = self.internal_history.Submit(self.removeCmd)
 
         if result:

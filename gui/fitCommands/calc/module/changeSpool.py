@@ -8,7 +8,7 @@ from service.fit import Fit
 pyfalog = Logger(__name__)
 
 
-class FitChangeModuleSpoolCommand(wx.Command):
+class CalcChangeModuleSpoolCommand(wx.Command):
 
     def __init__(self, fitID, position, spoolType, spoolAmount, projected=False):
         wx.Command.__init__(self, True, 'Change Module Spool')
@@ -39,7 +39,7 @@ class FitChangeModuleSpoolCommand(wx.Command):
 
     def Undo(self):
         pyfalog.debug('Undoing change of module spoolup at position {} to {} type {} amount on fit {}'.format(self.position, self.spoolType, self.spoolAmount, self.fitID))
-        cmd = FitChangeModuleSpoolCommand(
+        cmd = CalcChangeModuleSpoolCommand(
             fitID=self.fitID,
             position=self.position,
             spoolType=self.savedSpoolType,

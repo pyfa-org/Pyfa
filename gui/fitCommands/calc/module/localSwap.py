@@ -9,7 +9,7 @@ from service.fit import Fit
 pyfalog = Logger(__name__)
 
 
-class FitSwapModuleCommand(wx.Command):
+class CalcSwapLocalModuleCommand(wx.Command):
 
     def __init__(self, fitID, position1, position2):
         wx.Command.__init__(self, True, 'Swap Modules')

@@ -4,7 +4,7 @@ from service.fit import Fit
 import gui.mainFrame
 from gui import globalEvents as GE
 from gui.fitCommands.helpers import DroneInfo
-from .calc.drone.localAdd import FitAddDroneCommand
+from .calc.drone.localAdd import CalcAddLocalDroneCommand
 
 
 class GuiAddDroneCommand(wx.Command):
@@ -17,7 +17,7 @@ class GuiAddDroneCommand(wx.Command):
         self.itemID = itemID
 
     def Do(self):
-        cmd = FitAddDroneCommand(fitID=self.fitID, droneInfo=DroneInfo(itemID=self.itemID, amount=1, amountActive=0))
+        cmd = CalcAddLocalDroneCommand(fitID=self.fitID, droneInfo=DroneInfo(itemID=self.itemID, amount=1, amountActive=0))
         if self.internal_history.Submit(cmd):
             self.sFit.recalc(self.fitID)
             wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=self.fitID))

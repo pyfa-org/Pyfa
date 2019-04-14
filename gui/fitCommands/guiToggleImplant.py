@@ -3,7 +3,7 @@ from service.fit import Fit
 
 import gui.mainFrame
 from gui import globalEvents as GE
-from .calc.implant.toggleState import FitToggleImplantStateCommand
+from .calc.implant.toggleState import CalcToggleImplantStateCommand
 
 
 class GuiToggleImplantCommand(wx.Command):
@@ -16,7 +16,7 @@ class GuiToggleImplantCommand(wx.Command):
         self.position = position
 
     def Do(self):
-        if self.internal_history.Submit(FitToggleImplantStateCommand(self.fitID, self.position)):
+        if self.internal_history.Submit(CalcToggleImplantStateCommand(self.fitID, self.position)):
             self.sFit.recalc(self.fitID)
             wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=self.fitID))
             return True

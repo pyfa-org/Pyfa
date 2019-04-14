@@ -3,12 +3,12 @@ from logbook import Logger
 
 import gui.mainFrame
 from gui import globalEvents as GE
-from gui.fitCommands.calc.cargo.remove import FitRemoveCargoCommand
-from gui.fitCommands.calc.module.localRemove import FitRemoveModuleCommand
-from gui.fitCommands.calc.module.localReplace import FitReplaceModuleCommand
+from gui.fitCommands.calc.cargo.remove import CalcRemoveCargoCommand
+from gui.fitCommands.calc.module.localRemove import CalcRemoveLocalModuleCommand
+from gui.fitCommands.calc.module.localReplace import CalcReplaceLocalModuleCommand
 from gui.fitCommands.helpers import ModuleInfo
 from service.fit import Fit
-from .calc.cargo.add import FitAddCargoCommand
+from .calc.cargo.add import CalcAddCargoCommand
 
 pyfalog = Logger(__name__)
 
@@ -33,12 +33,12 @@ class GuiModuleToCargoCommand(wx.Command):
 
         if self.cargoIdx:  # we're swapping with cargo
             if self.copy:  # if copying, simply add item to cargo
-                result = self.internal_history.Submit(FitAddCargoCommand(
+                result = self.internal_history.Submit(CalcAddCargoCommand(
                     self.mainFrame.getActiveFit(), module.item.ID if not module.item.isAbyssal else module.baseItemID))
             else:  # otherwise, try to swap by replacing module with cargo item. If successful, remove old cargo and add new cargo
 
                 cargo = fit.cargo[self.cargoIdx]
-                self.modReplaceCmd = FitReplaceModuleCommand(
+                self.modReplaceCmd = CalcReplaceLocalModuleCommand(
                     fitID=self.fitID,
                     position=module.modPosition,
                     newModInfo=ModuleInfo(itemID=cargo.itemID))
@@ -51,18 +51,18 @@ class GuiModuleToCargoCommand(wx.Command):
 
                 if self.modReplaceCmd.old_module is not None:
                     # we're swapping with an existing module, so remove cargo and add module
-                    self.removeCmd = FitRemoveCargoCommand(self.fitID, cargo.itemID)
+                    self.removeCmd = CalcRemoveCargoCommand(self.fitID, cargo.itemID)
                     result = self.internal_history.Submit(self.removeCmd)
 
-                    self.addCargoCmd = FitAddCargoCommand(self.fitID, self.modReplaceCmd.old_module.itemID)
+                    self.addCargoCmd = CalcAddCargoCommand(self.fitID, self.modReplaceCmd.old_module.itemID)
                     result = self.internal_history.Submit(self.addCargoCmd)
 
         else:  # dragging to blank spot, append
-            result = self.internal_history.Submit(FitAddCargoCommand(self.mainFrame.getActiveFit(),
-                                                            module.item.ID if not module.item.isAbyssal else module.baseItemID))
+            result = self.internal_history.Submit(CalcAddCargoCommand(self.mainFrame.getActiveFit(),
+                                                                      module.item.ID if not module.item.isAbyssal else module.baseItemID))
 
             if not self.copy:  # if not copying, remove module
-                self.internal_history.Submit(FitRemoveModuleCommand(self.mainFrame.getActiveFit(), [self.moduleIdx]))
+                self.internal_history.Submit(CalcRemoveLocalModuleCommand(self.mainFrame.getActiveFit(), [self.moduleIdx]))
 
         if result:
             sFit.recalc(self.fitID)

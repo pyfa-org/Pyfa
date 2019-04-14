@@ -9,7 +9,7 @@ from service.fit import Fit
 pyfalog = Logger(__name__)
 
 
-class FitRemoveProjectedDroneCommand(wx.Command):
+class CalcRemoveProjectedDroneCommand(wx.Command):
 
     def __init__(self, fitID, droneInfo):
         wx.Command.__init__(self, True, 'Remove Projected Drone')
@@ -45,6 +45,6 @@ class FitRemoveProjectedDroneCommand(wx.Command):
             drone.amountActive = self.savedDroneInfo.amountActive
             return True
         # Make new stack
-        from .projectedAdd import FitAddProjectedDroneCommand
-        cmd = FitAddProjectedDroneCommand(fitID=self.fitID, droneInfo=self.savedDroneInfo)
+        from .projectedAdd import CalcAddProjectedDroneCommand
+        cmd = CalcAddProjectedDroneCommand(fitID=self.fitID, droneInfo=self.savedDroneInfo)
         return cmd.Do()

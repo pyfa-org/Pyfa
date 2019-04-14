@@ -5,7 +5,7 @@ import gui.mainFrame
 from gui import globalEvents as GE
 from gui.fitCommands.helpers import ModuleInfo
 from service.fit import Fit
-from .calc.module.localAdd import FitAddModuleCommand
+from .calc.module.localAdd import CalcAddLocalModuleCommand
 
 
 pyfalog = Logger(__name__)
@@ -34,7 +34,7 @@ class GuiFillWithModuleCommand(wx.Command):
         pyfalog.debug("{} Do()".format(self))
         pyfalog.debug("Trying to append a module")
         added_modules = 0
-        while self.internal_history.Submit(FitAddModuleCommand(fitID=self.fitID, newModInfo=ModuleInfo(itemID=self.itemID))):
+        while self.internal_history.Submit(CalcAddLocalModuleCommand(fitID=self.fitID, newModInfo=ModuleInfo(itemID=self.itemID))):
             added_modules += 1
 
         if added_modules > 0:

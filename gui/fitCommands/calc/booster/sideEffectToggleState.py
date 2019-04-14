@@ -8,7 +8,7 @@ from service.fit import Fit
 pyfalog = Logger(__name__)
 
 
-class FitToggleBoosterSideEffectStateCommand(wx.Command):
+class CalcToggleBoosterSideEffectStateCommand(wx.Command):
 
     def __init__(self, fitID, position, effectID, forceState=None):
         wx.Command.__init__(self, True, 'Toggle Booster Side Effect State')
@@ -33,5 +33,5 @@ class FitToggleBoosterSideEffectStateCommand(wx.Command):
 
     def Undo(self):
         pyfalog.debug('Undoing toggling of booster side effect {} state at position {} for fit {}'.format(self.effectID, self.position, self.fitID))
-        cmd = FitToggleBoosterSideEffectStateCommand(fitID=self.fitID, position=self.position, effectID=self.effectID, forceState=self.savedState)
+        cmd = CalcToggleBoosterSideEffectStateCommand(fitID=self.fitID, position=self.position, effectID=self.effectID, forceState=self.savedState)
         return cmd.Do()

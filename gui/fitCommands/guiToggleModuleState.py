@@ -3,7 +3,7 @@ from service.fit import Fit
 
 import gui.mainFrame
 from gui import globalEvents as GE
-from .calc.module.localChangeStates import FitChangeModuleStatesCommand
+from .calc.module.localChangeStates import CalcChangeLocalModuleStatesCommand
 
 
 class GuiModuleStateChangeCommand(wx.Command):
@@ -19,7 +19,7 @@ class GuiModuleStateChangeCommand(wx.Command):
         self.internal_history = wx.CommandProcessor()
 
     def Do(self):
-        if self.internal_history.Submit(FitChangeModuleStatesCommand(self.fitID, self.baseMod, self.modules, self.click)):
+        if self.internal_history.Submit(CalcChangeLocalModuleStatesCommand(self.fitID, self.baseMod, self.modules, self.click)):
             self.sFit.recalc(self.fitID)
             wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=self.fitID))
             return True

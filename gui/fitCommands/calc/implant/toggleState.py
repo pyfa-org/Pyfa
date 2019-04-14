@@ -8,7 +8,7 @@ from service.fit import Fit
 pyfalog = Logger(__name__)
 
 
-class FitToggleImplantStateCommand(wx.Command):
+class CalcToggleImplantStateCommand(wx.Command):
 
     def __init__(self, fitID, position, forceState=None):
         wx.Command.__init__(self, True, 'Toggle Implant State')
@@ -28,5 +28,5 @@ class FitToggleImplantStateCommand(wx.Command):
 
     def Undo(self):
         pyfalog.debug('Undoing toggling of implant state at position {} for fit {}'.format(self.position, self.fitID))
-        cmd = FitToggleImplantStateCommand(fitID=self.fitID, position=self.position, forceState=self.savedState)
+        cmd = CalcToggleImplantStateCommand(fitID=self.fitID, position=self.position, forceState=self.savedState)
         return cmd.Do()
