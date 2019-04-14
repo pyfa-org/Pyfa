@@ -7,14 +7,12 @@ from .guiAddCharge import GuiModuleAddChargeCommand
 from .guiAddCommand import GuiAddCommandCommand
 from .guiAddDrone import GuiAddDroneCommand
 from .guiAddFighter import GuiAddFighterCommand
-from .guiAddImplant import GuiAddImplantCommand
 from .guiAddModule import GuiModuleAddCommand
 from .guiAddProjected import GuiAddProjectedCommand
 from .guiCargoToModule import GuiCargoToModuleCommand
 from .guiChangeCargoQty import GuiChangeCargoQty
 from .guiChangeDroneQty import GuiChangeDroneQty
 from .guiChangeFighterQty import GuiChangeFighterQty
-from .guiChangeImplantLocation import GuiChangeImplantLocation
 from .guiChangeProjectedDroneQty import GuiChangeProjectedDroneQty
 from .guiChangeProjectedFighterAmount import GuiChangeProjectedFighterAmount
 from .guiChangeProjectedFitQty import GuiChangeProjectedFitQty
@@ -30,7 +28,6 @@ from .guiRemoveCargo import GuiRemoveCargoCommand
 from .guiRemoveCommand import GuiRemoveCommandCommand
 from .guiRemoveDrone import GuiRemoveDroneCommand
 from .guiRemoveFighter import GuiRemoveFighterCommand
-from .guiRemoveImplant import GuiRemoveImplantCommand
 from .guiRemoveModule import GuiModuleRemoveCommand
 from .guiRemoveProjected import GuiRemoveProjectedCommand
 from .guiSetMode import GuiSetModeCommand
@@ -40,6 +37,9 @@ from .guiToggleCommand import GuiToggleCommandCommand
 from .guiToggleDrone import GuiToggleDroneCommand
 from .guiToggleFighter import GuiToggleFighterCommand
 from .guiToggleFighterAbility import GuiToggleFighterAbilityCommand
-from .guiToggleImplant import GuiToggleImplantCommand
 from .guiToggleModuleState import GuiModuleStateChangeCommand
 from .guiToggleProjected import GuiToggleProjectedCommand
+from .implant.add import GuiAddImplantCommand
+from .implant.changeLocation import GuiChangeImplantLocation
+from .implant.remove import GuiRemoveImplantCommand
+from .implant.toggleState import GuiToggleImplantStateCommand
