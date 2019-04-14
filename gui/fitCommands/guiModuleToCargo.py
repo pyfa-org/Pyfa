@@ -3,12 +3,12 @@ from logbook import Logger
 
 import gui.mainFrame
 from gui import globalEvents as GE
-from gui.fitCommands.calc.fitRemoveCargo import FitRemoveCargoCommand
-from gui.fitCommands.calc.fitRemoveModule import FitRemoveModuleCommand
-from gui.fitCommands.calc.fitReplaceModule import FitReplaceModuleCommand
+from gui.fitCommands.calc.cargo.remove import FitRemoveCargoCommand
+from gui.fitCommands.calc.module.localRemove import FitRemoveModuleCommand
+from gui.fitCommands.calc.module.localReplace import FitReplaceModuleCommand
 from gui.fitCommands.helpers import ModuleInfo
 from service.fit import Fit
-from .calc.fitAddCargo import FitAddCargoCommand
+from .calc.cargo.add import FitAddCargoCommand
 
 pyfalog = Logger(__name__)
 

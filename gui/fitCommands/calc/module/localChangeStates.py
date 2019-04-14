@@ -42,8 +42,6 @@ class FitChangeModuleStatesCommand(wx.Command):
                 if proposedState != mod.state:
                     pyfalog.debug('Toggle {} state: {} for fit ID: {}'.format(mod, proposedState, self.fitID))
                 mod.state = proposedState
-
-        # if we haven't change the state (eg, overheat -> overheat), simply fail the command
         if not changed:
             return False
         eos.db.commit()

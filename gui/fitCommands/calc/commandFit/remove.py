@@ -38,6 +38,6 @@ class FitRemoveCommandCommand(wx.Command):
 
     def Undo(self):
         pyfalog.debug('Undoing removal of command fit {} for fit {}'.format(self.commandFitID, self.fitID))
-        from .fitAddCommand import FitAddCommandCommand
+        from .add import FitAddCommandCommand
         cmd = FitAddCommandCommand(fitID=self.fitID, commandFitID=self.commandFitID, state=self.savedState)
         return cmd.Do()

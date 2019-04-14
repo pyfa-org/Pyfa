@@ -37,7 +37,7 @@ class FitRemoveModuleCommand(wx.Command):
     def Undo(self):
         pyfalog.debug('Undoing removal of modules {} on fit {}'.format(self.savedModInfos, self.fitID))
         results = []
-        from gui.fitCommands.calc.fitReplaceModule import FitReplaceModuleCommand
+        from .localReplace import FitReplaceModuleCommand
         for position, modInfo in self.savedModInfos.items():
             cmd = FitReplaceModuleCommand(fitID=self.fitID, position=position, newModInfo=modInfo)
             results.append(cmd.Do())

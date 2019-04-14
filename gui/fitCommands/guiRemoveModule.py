@@ -4,7 +4,7 @@ from service.fit import Fit
 import gui.mainFrame
 from gui import globalEvents as GE
 from .helpers import ModuleInfo
-from .calc.fitRemoveModule import FitRemoveModuleCommand
+from .calc.module.localRemove import FitRemoveModuleCommand
 
 
 class GuiModuleRemoveCommand(wx.Command):

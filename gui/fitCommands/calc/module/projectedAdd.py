@@ -54,6 +54,6 @@ class FitAddProjectedModuleCommand(wx.Command):
         if self.oldPosition is not None and self.oldModInfo is not None:
             cmd = FitAddProjectedModuleCommand(fitID=self.fitID, modInfo=self.oldModInfo, position=self.oldPosition)
             return cmd.Do()
-        from gui.fitCommands.calc.fitRemoveProjectedModule import FitRemoveProjectedModuleCommand
+        from .projectedRemove import FitRemoveProjectedModuleCommand
         cmd = FitRemoveProjectedModuleCommand(self.fitID, self.newPosition)
         return cmd.Do()

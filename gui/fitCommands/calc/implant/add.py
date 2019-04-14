@@ -58,6 +58,6 @@ class FitAddImplantCommand(wx.Command):
         if self.oldImplantInfo and self.oldPosition:
             cmd = FitAddImplantCommand(fitID=self.fitID, implantInfo=self.oldImplantInfo, position=self.oldPosition)
             return cmd.Do()
-        from .fitRemoveImplant import FitRemoveImplantCommand
+        from .remove import FitRemoveImplantCommand
         cmd = FitRemoveImplantCommand(fitID=self.fitID, position=self.newPosition)
         return cmd.Do()

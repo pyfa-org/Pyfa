@@ -7,12 +7,12 @@ from gui.fitCommands.helpers import ModuleInfo, FighterInfo, BoosterInfo
 from .calc.implant.remove import FitRemoveImplantCommand
 from .calc.implant.add import FitAddImplantCommand
 from .calc.booster.add import FitAddBoosterCommand
-from .calc.fitRemoveCargo import FitRemoveCargoCommand
-from .calc.fitAddCargo import FitAddCargoCommand
-from .calc.fitReplaceModule import FitReplaceModuleCommand
-from .calc.fitAddFighter import FitAddFighterCommand
-from .calc.fitRemoveFighter import FitRemoveFighterCommand
-from .calc.fitRebaseItem import FitRebaseItemCommand
+from .calc.cargo.remove import FitRemoveCargoCommand
+from .calc.cargo.add import FitAddCargoCommand
+from .calc.module.localReplace import FitReplaceModuleCommand
+from .calc.fighter.localAdd import FitAddFighterCommand
+from .calc.fighter.localRemove import FitRemoveFighterCommand
+from .calc.itemRebase import FitRebaseItemCommand
 
 
 class GuiMetaSwapCommand(wx.Command):

@@ -3,11 +3,11 @@ from service.fit import Fit
 
 import gui.mainFrame
 from gui import globalEvents as GE
-from .calc.fitRemoveProjectedModule import FitRemoveProjectedModuleCommand
-from .calc.fitRemoveProjectedFit import FitRemoveProjectedFitCommand
-from .calc.fitRemoveProjectedFighter import FitRemoveProjectedFighterCommand
+from .calc.module.projectedRemove import FitRemoveProjectedModuleCommand
+from .calc.projectedFit.remove import FitRemoveProjectedFitCommand
+from .calc.fighter.projectedRemove import FitRemoveProjectedFighterCommand
 from logbook import Logger
-from .calc.fitRemoveProjectedDrone import FitRemoveProjectedDroneCommand
+from .calc.drone.projectedRemove import FitRemoveProjectedDroneCommand
 
 from gui.fitCommands.helpers import DroneInfo
 from eos.saveddata.drone import Drone

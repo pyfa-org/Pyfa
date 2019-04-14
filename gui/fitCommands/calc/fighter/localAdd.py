@@ -58,7 +58,7 @@ class FitAddFighterCommand(wx.Command):
 
     def Undo(self):
         pyfalog.debug('Undoing addition of fighter {} to fit {}'.format(self.fighterInfo, self.fitID))
-        from .fitRemoveFighter import FitRemoveFighterCommand
+        from .localRemove import FitRemoveFighterCommand
         cmd = FitRemoveFighterCommand(fitID=self.fitID, position=self.position)
         cmd.Do()
         return True

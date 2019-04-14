@@ -1,7 +1,7 @@
 import wx
 import gui.mainFrame
 from gui import globalEvents as GE
-from .calc.fitChangeCargoAmount import FitChangeCargoAmountCommand
+from .calc.cargo.changeAmount import FitChangeCargoAmountCommand
 from service.fit import Fit
 from gui.fitCommands.helpers import CargoInfo
 from logbook import Logger

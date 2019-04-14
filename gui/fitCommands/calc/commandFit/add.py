@@ -54,6 +54,6 @@ class FitAddCommandCommand(wx.Command):
         commandFit = Fit.getInstance().getFit(self.commandFitID)
         if commandFit is None:
             return True
-        from .fitRemoveCommand import FitRemoveCommandCommand
+        from .remove import FitRemoveCommandCommand
         cmd = FitRemoveCommandCommand(fitID=self.fitID, commandFitID=self.commandFitID)
         return cmd.Do()

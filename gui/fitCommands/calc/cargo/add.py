@@ -35,6 +35,6 @@ class FitAddCargoCommand(wx.Command):
 
     def Undo(self):
         pyfalog.debug('Undoing addition of cargo {} to fit {}'.format(self.cargoInfo, self.fitID))
-        from .fitRemoveCargo import FitRemoveCargoCommand
+        from .remove import FitRemoveCargoCommand
         cmd = FitRemoveCargoCommand(fitID=self.fitID, cargoInfo=self.cargoInfo)
         return cmd.Do()

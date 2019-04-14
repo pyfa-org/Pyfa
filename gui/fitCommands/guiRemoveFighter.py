@@ -3,7 +3,7 @@ from service.fit import Fit
 
 import gui.mainFrame
 from gui import globalEvents as GE
-from .calc.fitRemoveFighter import FitRemoveFighterCommand
+from .calc.fighter.localRemove import FitRemoveFighterCommand
 
 
 class GuiRemoveFighterCommand(wx.Command):

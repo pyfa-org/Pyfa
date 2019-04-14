@@ -7,10 +7,10 @@ from eos.saveddata.fit import Fit as FitType
 from eos.saveddata.module import Module as ModuleType
 from gui import globalEvents as GE
 from service.fit import Fit
-from .calc.fitToggleProjectedDrone import FitToggleProjectedDroneCommand
-from .calc.fitToggleProjectedFighter import FitToggleProjectedFighterStateCommand
-from .calc.fitToggleProjectedFit import FitToggleProjectedFitCommand
-from .calc.fitChangeProjectedModuleState import FitChangeProjectedModuleStateCommand
+from .calc.drone.projectedToggleState import FitToggleProjectedDroneStateCommand
+from .calc.fighter.projectedToggleState import FitToggleProjectedFighterStateCommand
+from .calc.projectedFit.toggleState import FitToggleProjectedFitCommand
+from .calc.module.projectedChangeState import FitChangeProjectedModuleStateCommand
 
 
 class GuiToggleProjectedCommand(wx.Command):
@@ -29,7 +29,7 @@ class GuiToggleProjectedCommand(wx.Command):
             self.commandType = FitChangeProjectedModuleStateCommand
             self.args = (self.fitID, position, click)
         elif isinstance(thing, DroneType):
-            self.commandType = FitToggleProjectedDroneCommand
+            self.commandType = FitToggleProjectedDroneStateCommand
             self.args = (self.fitID, thing.itemID)
         elif isinstance(thing, FighterType):
             position = fit.projectedFighters.index(thing)

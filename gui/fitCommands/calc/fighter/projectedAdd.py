@@ -41,6 +41,6 @@ class FitAddProjectedFighterCommand(wx.Command):
 
     def Undo(self):
         pyfalog.debug('Undoing addition of projected fighter {} onto: {}'.format(self.fighterInfo, self.fitID))
-        from .fitRemoveProjectedFighter import FitRemoveProjectedFighterCommand
+        from .projectedRemove import FitRemoveProjectedFighterCommand
         cmd = FitRemoveProjectedFighterCommand(fitID=self.fitID, position=self.position)
         return cmd.Do()

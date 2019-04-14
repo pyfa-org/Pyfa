@@ -43,6 +43,6 @@ class FitCloneModuleCommand(wx.Command):
 
     def Undo(self):
         pyfalog.debug('Undoing cloning from position {} to position {} for fit ID {}'.format(self.srcPosition, self.dstPosition, self.fitID))
-        from .fitRemoveModule import FitRemoveModuleCommand
+        from .localRemove import FitRemoveModuleCommand
         cmd = FitRemoveModuleCommand(fitID=self.fitID, positions=[self.dstPosition])
         return cmd.Do()

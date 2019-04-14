@@ -54,6 +54,6 @@ class FitAddProjectedFitCommand(wx.Command):
         projectedFit = Fit.getInstance().getFit(self.projectedFitID)
         if projectedFit is None:
             return True
-        from .fitRemoveProjectedFit import FitRemoveProjectedFitCommand
+        from .remove import FitRemoveProjectedFitCommand
         cmd = FitRemoveProjectedFitCommand(fitID=self.fitID, projectedFitID=self.projectedFitID)
         return cmd.Do()

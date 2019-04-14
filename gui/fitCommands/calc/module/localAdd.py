@@ -32,7 +32,7 @@ class FitAddModuleCommand(wx.Command):
         if newMod.item.category.name == 'Subsystem':
             for oldMod in fit.modules:
                 if oldMod.getModifiedItemAttr('subSystemSlot') == newMod.getModifiedItemAttr('subSystemSlot') and newMod.slot == oldMod.slot:
-                    from .fitReplaceModule import FitReplaceModuleCommand
+                    from .localReplace import FitReplaceModuleCommand
                     self.subsystemCmd = FitReplaceModuleCommand(fitID=self.fitID, position=oldMod.modPosition, newModInfo=self.newModInfo)
                     return self.subsystemCmd.Do()
 
@@ -57,7 +57,7 @@ class FitAddModuleCommand(wx.Command):
         # We added a subsystem module, which actually ran the replace command. Run the undo for that guy instead
         if self.subsystemCmd is not None:
             return self.subsystemCmd.Undo()
-        from .fitRemoveModule import FitRemoveModuleCommand
+        from .localRemove import FitRemoveModuleCommand
         if self.savedPosition is None:
             return False
         cmd = FitRemoveModuleCommand(fitID=self.fitID, positions=[self.savedPosition])

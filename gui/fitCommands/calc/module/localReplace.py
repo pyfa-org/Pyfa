@@ -52,7 +52,7 @@ class FitReplaceModuleCommand(wx.Command):
         pyfalog.debug('Undoing replacement of module at position {} to {} on fit {}'.format(self.newModInfo, self.position, self.fitID))
         # Remove if there was no module
         if self.oldModInfo is None:
-            from gui.fitCommands.calc.fitRemoveModule import FitRemoveModuleCommand
+            from .localRemove import FitRemoveModuleCommand
             cmd = FitRemoveModuleCommand(fitID=self.fitID, positions=[self.position])
             return cmd.Do()
         # Replace if there was

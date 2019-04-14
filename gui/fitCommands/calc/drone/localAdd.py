@@ -62,6 +62,6 @@ class FitAddDroneCommand(wx.Command):
             drone.amount = self.savedDroneInfo.amount
             drone.amountActive = self.savedDroneInfo.amountActive
             return True
-        from .fitRemoveDrone import FitRemoveDroneCommand
+        from .localRemove import FitRemoveDroneCommand
         cmd = FitRemoveDroneCommand(fitID=self.fitID, position=self.savedPosition, amount=self.droneInfo.amount)
         return cmd.Do()
