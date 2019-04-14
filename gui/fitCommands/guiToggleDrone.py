@@ -3,7 +3,7 @@ from service.fit import Fit
 
 import gui.mainFrame
 from gui import globalEvents as GE
-from .calc.drone.localToggleState import CalcToggleLocalDroneStateCommand
+from .calcCommands.drone.localToggleState import CalcToggleLocalDroneStateCommand
 
 
 class GuiToggleDroneCommand(wx.Command):

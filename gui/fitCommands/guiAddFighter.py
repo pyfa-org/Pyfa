@@ -4,7 +4,7 @@ import gui.mainFrame
 from gui import globalEvents as GE
 from gui.fitCommands.helpers import FighterInfo
 from service.fit import Fit
-from .calc.fighter.localAdd import CalcAddLocalFighterCommand
+from .calcCommands.fighter.localAdd import CalcAddLocalFighterCommand
 
 
 class GuiAddFighterCommand(wx.Command):

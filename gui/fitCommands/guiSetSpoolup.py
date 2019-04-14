@@ -3,7 +3,7 @@ from service.fit import Fit
 
 import gui.mainFrame
 from gui import globalEvents as GE
-from .calc.module.changeSpool import CalcChangeModuleSpoolCommand
+from .calcCommands.module.changeSpool import CalcChangeModuleSpoolCommand
 
 
 class GuiSetSpoolup(wx.Command):

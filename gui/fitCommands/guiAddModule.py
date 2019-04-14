@@ -6,9 +6,9 @@ from service.market import Market
 from service.fit import Fit
 from gui import globalEvents as GE
 from gui.fitCommands.helpers import ModuleInfo
-from .calc.module.localAdd import CalcAddLocalModuleCommand
-from .calc.module.localReplace import CalcReplaceLocalModuleCommand
-from .calc.module.changeCharges import CalcChangeModuleChargesCommand
+from .calcCommands.module.localAdd import CalcAddLocalModuleCommand
+from .calcCommands.module.localReplace import CalcReplaceLocalModuleCommand
+from .calcCommands.module.changeCharges import CalcChangeModuleChargesCommand
 
 
 pyfalog = Logger(__name__)

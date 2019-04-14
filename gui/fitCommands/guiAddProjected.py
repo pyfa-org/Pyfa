@@ -4,10 +4,10 @@ from service.fit import Fit
 import gui.mainFrame
 from gui import globalEvents as GE
 from gui.fitCommands.helpers import ModuleInfo, DroneInfo, FighterInfo
-from .calc.module.projectedAdd import CalcAddProjectedModuleCommand
-from .calc.projectedFit.add import CalcAddProjectedFitCommand
-from .calc.fighter.projectedAdd import CalcAddProjectedFighterCommand
-from .calc.drone.projectedAdd import CalcAddProjectedDroneCommand
+from .calcCommands.module.projectedAdd import CalcAddProjectedModuleCommand
+from .calcCommands.projectedFit.add import CalcAddProjectedFitCommand
+from .calcCommands.fighter.projectedAdd import CalcAddProjectedFighterCommand
+from .calcCommands.drone.projectedAdd import CalcAddProjectedDroneCommand
 from logbook import Logger
 import eos.db
 pyfalog = Logger(__name__)

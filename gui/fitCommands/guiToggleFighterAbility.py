@@ -3,7 +3,7 @@ from service.fit import Fit
 
 import gui.mainFrame
 from gui import globalEvents as GE
-from .calc.fighter.abilityToggleState import CalcToggleFighterAbilityStateCommand
+from .calcCommands.fighter.abilityToggleState import CalcToggleFighterAbilityStateCommand
 
 
 class GuiToggleFighterAbilityCommand(wx.Command):

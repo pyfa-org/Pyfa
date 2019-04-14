@@ -3,7 +3,7 @@ from service.fit import Fit
 
 import gui.mainFrame
 from gui import globalEvents as GE
-from .calc.module.changeCharges import CalcChangeModuleChargesCommand
+from .calcCommands.module.changeCharges import CalcChangeModuleChargesCommand
 
 
 class GuiModuleAddChargeCommand(wx.Command):

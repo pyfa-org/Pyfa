@@ -7,10 +7,10 @@ from eos.saveddata.fit import Fit as FitType
 from eos.saveddata.module import Module as ModuleType
 from gui import globalEvents as GE
 from service.fit import Fit
-from .calc.drone.projectedToggleState import CalcToggleProjectedDroneStateCommand
-from .calc.fighter.toggleState import CalcToggleFighterStateCommand
-from .calc.projectedFit.toggleState import CalcToggleProjectedFitCommand
-from .calc.module.projectedChangeState import CalcChangeProjectedModuleStateCommand
+from .calcCommands.drone.projectedToggleState import CalcToggleProjectedDroneStateCommand
+from .calcCommands.fighter.toggleState import CalcToggleFighterStateCommand
+from .calcCommands.projectedFit.toggleState import CalcToggleProjectedFitCommand
+from .calcCommands.module.projectedChangeState import CalcChangeProjectedModuleStateCommand
 
 
 class GuiToggleProjectedCommand(wx.Command):

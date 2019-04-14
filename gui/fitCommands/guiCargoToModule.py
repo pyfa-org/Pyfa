@@ -3,11 +3,11 @@ from service.fit import Fit
 
 import gui.mainFrame
 from gui import globalEvents as GE
-from gui.fitCommands.calc.module.changeCharges import CalcChangeModuleChargesCommand
-from gui.fitCommands.calc.module.localReplace import CalcReplaceLocalModuleCommand
-from gui.fitCommands.calc.cargo.remove import CalcRemoveCargoCommand
+from gui.fitCommands.calcCommands.module.changeCharges import CalcChangeModuleChargesCommand
+from gui.fitCommands.calcCommands.module.localReplace import CalcReplaceLocalModuleCommand
+from gui.fitCommands.calcCommands.cargo.remove import CalcRemoveCargoCommand
 from gui.fitCommands.helpers import ModuleInfo
-from .calc.cargo.add import CalcAddCargoCommand
+from .calcCommands.cargo.add import CalcAddCargoCommand
 from logbook import Logger
 pyfalog = Logger(__name__)
 

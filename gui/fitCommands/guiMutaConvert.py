@@ -4,7 +4,7 @@ import gui.mainFrame
 from gui import globalEvents as GE
 from gui.fitCommands.helpers import ModuleInfo
 from service.fit import Fit
-from .calc.module.localReplace import CalcReplaceLocalModuleCommand
+from .calcCommands.module.localReplace import CalcReplaceLocalModuleCommand
 
 
 class GuiMutaConvertCommand(wx.Command):

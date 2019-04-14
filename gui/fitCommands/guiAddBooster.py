@@ -4,7 +4,7 @@ import gui.mainFrame
 from gui import globalEvents as GE
 from gui.fitCommands.helpers import InternalCommandHistory, BoosterInfo
 from service.fit import Fit
-from .calc.booster.add import CalcAddBoosterCommand
+from .calcCommands.booster.add import CalcAddBoosterCommand
 
 
 class GuiAddBoosterCommand(wx.Command):

@@ -5,7 +5,7 @@ import gui.mainFrame
 from gui import globalEvents as GE
 from gui.fitCommands.helpers import ModuleInfo
 from service.fit import Fit
-from .calc.module.localAdd import CalcAddLocalModuleCommand
+from .calcCommands.module.localAdd import CalcAddLocalModuleCommand
 
 
 pyfalog = Logger(__name__)

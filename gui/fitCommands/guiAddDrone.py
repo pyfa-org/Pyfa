@@ -4,7 +4,7 @@ from service.fit import Fit
 import gui.mainFrame
 from gui import globalEvents as GE
 from gui.fitCommands.helpers import DroneInfo
-from .calc.drone.localAdd import CalcAddLocalDroneCommand
+from .calcCommands.drone.localAdd import CalcAddLocalDroneCommand
 
 
 class GuiAddDroneCommand(wx.Command):

@@ -5,8 +5,8 @@ import gui.mainFrame
 from eos.const import ImplantLocation
 from gui import globalEvents as GE
 from gui.fitCommands.helpers import ImplantInfo
-from .calc.implant.add import CalcAddImplantCommand
-from .calc.implant.changeLocation import CalcChangeImplantLocationCommand
+from .calcCommands.implant.add import CalcAddImplantCommand
+from .calcCommands.implant.changeLocation import CalcChangeImplantLocationCommand
 
 
 class GuiAddImplantCommand(wx.Command):

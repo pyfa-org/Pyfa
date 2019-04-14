@@ -3,7 +3,7 @@ from service.fit import Fit
 
 import gui.mainFrame
 from gui import globalEvents as GE
-from .calc.module.localChangeStates import CalcChangeLocalModuleStatesCommand
+from .calcCommands.module.localChangeStates import CalcChangeLocalModuleStatesCommand
 
 
 class GuiModuleStateChangeCommand(wx.Command):

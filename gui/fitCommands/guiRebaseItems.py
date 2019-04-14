@@ -5,10 +5,10 @@ import gui.mainFrame
 from gui import globalEvents as GE
 from gui.fitCommands.helpers import CargoInfo
 from service.fit import Fit
-from .calc.itemRebase import CalcRebaseItemCommand
-from .calc.module.changeCharges import CalcChangeModuleChargesCommand
-from .calc.cargo.add import CalcAddCargoCommand
-from .calc.cargo.remove import CalcRemoveCargoCommand
+from .calcCommands.itemRebase import CalcRebaseItemCommand
+from .calcCommands.module.changeCharges import CalcChangeModuleChargesCommand
+from .calcCommands.cargo.add import CalcAddCargoCommand
+from .calcCommands.cargo.remove import CalcRemoveCargoCommand
 from gui.fitCommands.helpers import InternalCommandHistory
 
 

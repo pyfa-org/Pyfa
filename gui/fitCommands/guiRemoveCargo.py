@@ -6,7 +6,7 @@ from service.fit import Fit
 import gui.mainFrame
 from gui import globalEvents as GE
 from gui.fitCommands.helpers import CargoInfo
-from .calc.cargo.remove import CalcRemoveCargoCommand
+from .calcCommands.cargo.remove import CalcRemoveCargoCommand
 
 
 class GuiRemoveCargoCommand(wx.Command):

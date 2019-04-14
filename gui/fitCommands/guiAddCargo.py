@@ -4,7 +4,7 @@ from service.fit import Fit
 import gui.mainFrame
 from gui import globalEvents as GE
 from gui.fitCommands.helpers import CargoInfo
-from .calc.cargo.add import CalcAddCargoCommand
+from .calcCommands.cargo.add import CalcAddCargoCommand
 
 
 class GuiAddCargoCommand(wx.Command):

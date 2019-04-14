@@ -3,7 +3,7 @@ from service.fit import Fit
 
 import gui.mainFrame
 from gui import globalEvents as GE
-from .calc.implant.changeLocation import CalcChangeImplantLocationCommand
+from .calcCommands.implant.changeLocation import CalcChangeImplantLocationCommand
 
 
 class GuiChangeImplantLocation(wx.Command):

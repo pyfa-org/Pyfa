@@ -3,7 +3,7 @@ from service.fit import Fit
 
 import gui.mainFrame
 from gui import globalEvents as GE
-from .calc.shipModeChange import CalcChangeShipModeCommand
+from .calcCommands.shipModeChange import CalcChangeShipModeCommand
 
 
 class GuiSetModeCommand(wx.Command):

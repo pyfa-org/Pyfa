@@ -3,8 +3,8 @@ from service.fit import Fit
 
 import gui.mainFrame
 from gui import globalEvents as GE
-from gui.fitCommands.calc.module.localSwap import CalcSwapLocalModuleCommand
-from .calc.module.localClone import CalcCloneLocalModuleCommand
+from gui.fitCommands.calcCommands.module.localSwap import CalcSwapLocalModuleCommand
+from .calcCommands.module.localClone import CalcCloneLocalModuleCommand
 from logbook import Logger
 pyfalog = Logger(__name__)
 

@@ -3,7 +3,7 @@ from service.fit import Fit
 
 import gui.mainFrame
 from gui import globalEvents as GE
-from .calc.booster.sideEffectToggleState import CalcToggleBoosterSideEffectStateCommand
+from .calcCommands.booster.sideEffectToggleState import CalcToggleBoosterSideEffectStateCommand
 
 
 class GuiToggleBoosterSideEffectCommand(wx.Command):

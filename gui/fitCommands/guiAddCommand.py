@@ -3,7 +3,7 @@ from service.fit import Fit
 
 import gui.mainFrame
 from gui import globalEvents as GE
-from .calc.commandFit.add import CalcAddCommandCommand
+from .calcCommands.commandFit.add import CalcAddCommandCommand
 
 
 class GuiAddCommandCommand(wx.Command):

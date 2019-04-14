@@ -4,15 +4,15 @@ from service.fit import Fit
 import gui.mainFrame
 from gui import globalEvents as GE
 from gui.fitCommands.helpers import ModuleInfo, FighterInfo, BoosterInfo
-from .calc.implant.remove import CalcRemoveImplantCommand
-from .calc.implant.add import CalcAddImplantCommand
-from .calc.booster.add import CalcAddBoosterCommand
-from .calc.cargo.remove import CalcRemoveCargoCommand
-from .calc.cargo.add import CalcAddCargoCommand
-from .calc.module.localReplace import CalcReplaceLocalModuleCommand
-from .calc.fighter.localAdd import CalcAddLocalFighterCommand
-from .calc.fighter.localRemove import CalcRemoveLocalFighterCommand
-from .calc.itemRebase import CalcRebaseItemCommand
+from .calcCommands.implant.remove import CalcRemoveImplantCommand
+from .calcCommands.implant.add import CalcAddImplantCommand
+from .calcCommands.booster.add import CalcAddBoosterCommand
+from .calcCommands.cargo.remove import CalcRemoveCargoCommand
+from .calcCommands.cargo.add import CalcAddCargoCommand
+from .calcCommands.module.localReplace import CalcReplaceLocalModuleCommand
+from .calcCommands.fighter.localAdd import CalcAddLocalFighterCommand
+from .calcCommands.fighter.localRemove import CalcRemoveLocalFighterCommand
+from .calcCommands.itemRebase import CalcRebaseItemCommand
 
 
 class GuiMetaSwapCommand(wx.Command):

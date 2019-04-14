@@ -1,6 +1,6 @@
 import wx
 import gui.mainFrame
-from .calc.fitRename import CalcFitRenameCommand
+from .calcCommands.fitRename import CalcFitRenameCommand
 from service.fit import Fit
 from logbook import Logger
 from gui.builtinShipBrowser.events import FitRenamed

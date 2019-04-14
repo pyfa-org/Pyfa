@@ -1,7 +1,7 @@
 import wx
 import gui.mainFrame
 from gui import globalEvents as GE
-from .calc.projectedFit.changeAmount import CalcChangeProjectedFitAmountCommand
+from .calcCommands.projectedFit.changeAmount import CalcChangeProjectedFitAmountCommand
 from service.fit import Fit
 from logbook import Logger
 pyfalog = Logger(__name__)
