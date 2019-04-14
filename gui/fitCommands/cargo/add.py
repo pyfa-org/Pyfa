@@ -16,7 +16,8 @@ class GuiAddCargoCommand(wx.Command):
         self.amount = amount
 
     def Do(self):
-        if self.internalHistory.submit(CalcAddCargoCommand(fitID=self.fitID, cargoInfo=CargoInfo(itemID=self.itemID, amount=self.amount))):
+        cmd = CalcAddCargoCommand(fitID=self.fitID, cargoInfo=CargoInfo(itemID=self.itemID, amount=self.amount))
+        if self.internalHistory.submit(cmd):
             wx.PostEvent(gui.mainFrame.MainFrame.getInstance(), GE.FitChanged(fitID=self.fitID))
             return True
         return False

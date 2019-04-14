@@ -66,7 +66,7 @@ class FighterAbility(ContextMenu):
             index = fit.projectedFighters.index(self.fighter)
         else:
             index = fit.fighters.index(self.fighter)
-        self.mainFrame.command.Submit(cmd.GuiToggleFighterAbilityCommand(fitID, index, ability.effectID, self.isProjected))
+        self.mainFrame.command.Submit(cmd.GuiToggleFighterAbilityCommand(fitID, index, ability.effectID))
 
 
 FighterAbility.register()

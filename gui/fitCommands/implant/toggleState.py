@@ -16,7 +16,8 @@ class GuiToggleImplantStateCommand(wx.Command):
         self.position = position
 
     def Do(self):
-        if self.internalHistory.submit(CalcToggleImplantStateCommand(fitID=self.fitID, position=self.position)):
+        cmd = CalcToggleImplantStateCommand(fitID=self.fitID, position=self.position)
+        if self.internalHistory.submit(cmd):
             Fit.getInstance().recalc(self.fitID)
             wx.PostEvent(gui.mainFrame.MainFrame.getInstance(), GE.FitChanged(fitID=self.fitID))
             return True

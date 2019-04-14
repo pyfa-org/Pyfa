@@ -6,7 +6,7 @@ from gui import globalEvents as GE
 from .calcCommands.module.changeSpool import CalcChangeModuleSpoolCommand
 
 
-class GuiSetSpoolup(wx.Command):
+class GuiSetSpoolupCommand(wx.Command):
 
     def __init__(self, fitID, position, spoolType, spoolAmount, context):
         wx.Command.__init__(self, True, "Booster Add")

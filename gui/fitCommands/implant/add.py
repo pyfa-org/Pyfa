@@ -18,10 +18,9 @@ class GuiAddImplantCommand(wx.Command):
         self.itemID = itemID
 
     def Do(self):
-        if (
-            self.internalHistory.submit(CalcAddImplantCommand(fitID=self.fitID, implantInfo=ImplantInfo(itemID=self.itemID))) and
-            self.internalHistory.submit(CalcChangeImplantLocationCommand(fitID=self.fitID, source=ImplantLocation.FIT))
-        ):
+        cmdImplant = CalcAddImplantCommand(fitID=self.fitID, implantInfo=ImplantInfo(itemID=self.itemID))
+        cmdLocation = CalcChangeImplantLocationCommand(fitID=self.fitID, source=ImplantLocation.FIT)
+        if self.internalHistory.submit(cmdImplant) and self.internalHistory.submit(cmdLocation):
             Fit.getInstance().recalc(self.fitID)
             wx.PostEvent(gui.mainFrame.MainFrame.getInstance(), GE.FitChanged(fitID=self.fitID))
             return True

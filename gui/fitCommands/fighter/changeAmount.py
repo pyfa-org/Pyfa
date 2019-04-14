@@ -1,19 +1,17 @@
-import math
-
 import wx
 
 import gui.mainFrame
 from gui import globalEvents as GE
-from gui.fitCommands.calcCommands.drone.localChangeAmount import CalcChangeLocalDroneAmountCommand
-from gui.fitCommands.calcCommands.drone.localRemove import CalcRemoveLocalDroneCommand
+from gui.fitCommands.calcCommands.fighter.changeAmount import CalcChangeFighterAmountCommand
+from gui.fitCommands.calcCommands.fighter.localRemove import CalcRemoveLocalFighterCommand
 from gui.fitCommands.helpers import InternalCommandHistory
 from service.fit import Fit
 
 
-class GuiChangeDroneAmountCommand(wx.Command):
+class GuiChangeFighterAmountCommand(wx.Command):
 
     def __init__(self, fitID, position, amount):
-        wx.Command.__init__(self, True, 'Change Drone Amount')
+        wx.Command.__init__(self, True, 'Change Fighter Amount')
         self.internalHistory = InternalCommandHistory()
         self.fitID = fitID
         self.position = position
@@ -21,13 +19,13 @@ class GuiChangeDroneAmountCommand(wx.Command):
 
     def Do(self):
         if self.amount > 0:
-            cmd = CalcChangeLocalDroneAmountCommand(fitID=self.fitID, position=self.position, amount=self.amount)
+            cmd = CalcChangeFighterAmountCommand(fitID=self.fitID, projected=False, position=self.position, amount=self.amount)
             if self.internalHistory.submit(cmd):
                 Fit.getInstance().recalc(self.fitID)
                 wx.PostEvent(gui.mainFrame.MainFrame.getInstance(), GE.FitChanged(fitID=self.fitID))
                 return True
         else:
-            cmd = CalcRemoveLocalDroneCommand(fitID=self.fitID, position=self.position, amount=math.inf)
+            cmd = CalcRemoveLocalFighterCommand(fitID=self.fitID, position=self.position)
             if self.internalHistory.submit(cmd):
                 Fit.getInstance().recalc(self.fitID)
                 wx.PostEvent(gui.mainFrame.MainFrame.getInstance(), GE.FitChanged(fitID=self.fitID))

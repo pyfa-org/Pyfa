@@ -7,7 +7,7 @@ from logbook import Logger
 pyfalog = Logger(__name__)
 
 
-class GuiChangeProjectedDroneQty(wx.Command):
+class GuiChangeProjectedDroneQtyCommand(wx.Command):
     def __init__(self, fitID, itemID, amount=1):
         wx.Command.__init__(self, True, "")
         self.fitID = fitID

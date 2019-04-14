@@ -75,7 +75,7 @@ class SpoolUp(ContextMenu):
             spoolAmount = self.cycleMap[event.Id]
         else:
             return
-        self.mainFrame.command.Submit(cmd.GuiSetSpoolup(
+        self.mainFrame.command.Submit(cmd.GuiSetSpoolupCommand(
             fitID=self.mainFrame.getActiveFit(),
             position=self.mod.modPosition,
             spoolType=spoolType,

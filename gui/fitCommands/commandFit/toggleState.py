@@ -16,7 +16,8 @@ class GuiToggleCommandFitStateCommand(wx.Command):
         self.commandFitID = commandFitID
 
     def Do(self):
-        if self.internalHistory.submit(CalcToggleCommandFitStateCommand(fitID=self.fitID, commandFitID=self.commandFitID)):
+        cmd = CalcToggleCommandFitStateCommand(fitID=self.fitID, commandFitID=self.commandFitID)
+        if self.internalHistory.submit(cmd):
             Fit.getInstance().recalc(self.fitID)
             wx.PostEvent(gui.mainFrame.MainFrame.getInstance(), GE.FitChanged(fitID=self.fitID))
             return True

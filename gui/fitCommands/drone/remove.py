@@ -17,7 +17,8 @@ class GuiRemoveDroneCommand(wx.Command):
         self.amount = amount
 
     def Do(self):
-        if self.internalHistory.submit(CalcRemoveLocalDroneCommand(fitID=self.fitID, position=self.position, amount=self.amount)):
+        cmd = CalcRemoveLocalDroneCommand(fitID=self.fitID, position=self.position, amount=self.amount)
+        if self.internalHistory.submit(cmd):
             Fit.getInstance().recalc(self.fitID)
             wx.PostEvent(gui.mainFrame.MainFrame.getInstance(), GE.FitChanged(fitID=self.fitID))
             return True

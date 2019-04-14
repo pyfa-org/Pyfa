@@ -2,21 +2,22 @@ import wx
 
 import gui.mainFrame
 from gui import globalEvents as GE
-from gui.fitCommands.calcCommands.implant.changeLocation import CalcChangeImplantLocationCommand
+from gui.fitCommands.calcCommands.fighter.abilityToggleState import CalcToggleFighterAbilityStateCommand
 from gui.fitCommands.helpers import InternalCommandHistory
 from service.fit import Fit
 
 
-class GuiChangeImplantLocationCommand(wx.Command):
+class GuiToggleFighterAbilityCommand(wx.Command):
 
-    def __init__(self, fitID, source):
-        wx.Command.__init__(self, True, 'Change Implant Location')
+    def __init__(self, fitID, position, effectID):
+        wx.Command.__init__(self, True, 'Toggle Fighter Ability State')
         self.internalHistory = InternalCommandHistory()
         self.fitID = fitID
-        self.source = source
+        self.position = position
+        self.effectID = effectID
 
     def Do(self):
-        cmd = CalcChangeImplantLocationCommand(fitID=self.fitID, source=self.source)
+        cmd = CalcToggleFighterAbilityStateCommand(fitID=self.fitID, projected=False, position=self.position, effectID=self.effectID)
         if self.internalHistory.submit(cmd):
             Fit.getInstance().recalc(self.fitID)
             wx.PostEvent(gui.mainFrame.MainFrame.getInstance(), GE.FitChanged(fitID=self.fitID))

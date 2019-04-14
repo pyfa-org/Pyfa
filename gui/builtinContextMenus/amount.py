@@ -50,19 +50,19 @@ class ChangeAmount(ContextMenu):
             cleanInput = int(float(re.sub(r'[^0-9.]', '', dlg.input.GetLineText(0).strip())))
 
             if isinstance(thing, es_Cargo):
-                self.mainFrame.command.Submit(cmd.GuiChangeCargoAmount(fitID, thing.itemID, cleanInput))
+                self.mainFrame.command.Submit(cmd.GuiChangeCargoAmountCommand(fitID, thing.itemID, cleanInput))
             elif isinstance(thing, Drone):
                 if srcContext == "projectedDrone":
-                    self.mainFrame.command.Submit(cmd.GuiChangeProjectedDroneQty(fitID, thing.itemID, cleanInput))
+                    self.mainFrame.command.Submit(cmd.GuiChangeProjectedDroneQtyCommand(fitID, thing.itemID, cleanInput))
                 else:
-                    self.mainFrame.command.Submit(cmd.GuiChangeDroneAmount(fitID, fit.drones.index(thing), cleanInput))
+                    self.mainFrame.command.Submit(cmd.GuiChangeDroneAmountCommand(fitID, fit.drones.index(thing), cleanInput))
             elif isinstance(thing, es_Fit):
-                self.mainFrame.command.Submit(cmd.GuiChangeProjectedFitQty(fitID, thing.ID, cleanInput))
+                self.mainFrame.command.Submit(cmd.GuiChangeProjectedFitQtyCommand(fitID, thing.ID, cleanInput))
             elif isinstance(thing, es_Fighter):
                 if srcContext == "projectedFighter":
-                    self.mainFrame.command.Submit(cmd.GuiChangeProjectedFighterAmount(fitID, fit.projectedFighters.index(thing), cleanInput))
+                    self.mainFrame.command.Submit(cmd.GuiChangeProjectedFighterAmountCommand(fitID, fit.projectedFighters.index(thing), cleanInput))
                 else:
-                    self.mainFrame.command.Submit(cmd.GuiChangeFighterQty(fitID, fit.fighters.index(thing), cleanInput))
+                    self.mainFrame.command.Submit(cmd.GuiChangeFighterAmountCommand(fitID, fit.fighters.index(thing), cleanInput))
 
 
 ChangeAmount.register()
