@@ -1,3 +1,4 @@
+import wx
 from logbook import Logger
 
 import eos.db
@@ -5,14 +6,42 @@ from eos.const import FittingModuleState
 from eos.saveddata.booster import Booster
 from eos.saveddata.cargo import Cargo
 from eos.saveddata.drone import Drone
-from eos.saveddata.implant import Implant
 from eos.saveddata.fighter import Fighter
+from eos.saveddata.implant import Implant
 from eos.saveddata.module import Module
 from service.market import Market
 from utils.repr import makeReprStr
 
 
 pyfalog = Logger(__name__)
+
+
+class InternalCommandHistory:
+
+    def __init__(self):
+        self.__buffer = wx.CommandProcessor()
+
+    def submit(self, *args, **kwargs):
+        return self.__buffer.Submit(*args, **kwargs)
+
+    def undoAll(self):
+        undoneCommands = []
+        # Undo commands one by one, starting from the last
+        for cmdToUndo in reversed(self.__buffer.Commands):
+            if cmdToUndo.Undo():
+                undoneCommands.append(cmdToUndo)
+            # If undoing fails, redo already undone commands, starting from the last undone
+            else:
+                for cmdToRedo in reversed(undoneCommands):
+                    if not cmdToRedo.Do():
+                        break
+                self.__buffer.ClearCommands()
+                return False
+        self.__buffer.ClearCommands()
+        return True
+
+    def __len__(self):
+        return len(self.__buffer.Commands)
 
 
 class ModuleInfo:

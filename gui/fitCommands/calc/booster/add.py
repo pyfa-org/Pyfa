@@ -56,7 +56,7 @@ class CalcAddBoosterCommand(wx.Command):
 
     def Undo(self):
         pyfalog.debug('Undo addition of booster {} to fit {}'.format(self.newBoosterInfo, self.fitID))
-        if self.oldBoosterInfo and self.oldPosition:
+        if self.oldBoosterInfo is not None and self.oldPosition is not None:
             cmd = CalcAddBoosterCommand(fitID=self.fitID, boosterInfo=self.oldBoosterInfo, position=self.oldPosition)
             return cmd.Do()
         from .remove import CalcRemoveBoosterCommand
