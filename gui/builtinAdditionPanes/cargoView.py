@@ -80,7 +80,7 @@ class CargoView(d.Display):
         elif data[0] == "market":
             fit = self.mainFrame.getActiveFit()
             if fit:
-                self.mainFrame.command.Submit(cmd.GuiAddCargoCommand(fit, int(data[1])))
+                self.mainFrame.command.Submit(cmd.GuiAddCargoCommand(fit, int(data[1]), 1))
 
     def startDrag(self, event):
         row = event.GetIndex()
@@ -97,13 +97,12 @@ class CargoView(d.Display):
 
     def kbEvent(self, event):
         keycode = event.GetKeyCode()
-        if keycode == wx.WXK_DELETE or keycode == wx.WXK_NUMPAD_DELETE:
-            fitID = self.mainFrame.getActiveFit()
-            sFit = Fit.getInstance()
+        if keycode in (wx.WXK_DELETE, wx.WXK_NUMPAD_DELETE):
             row = self.GetFirstSelected()
             if row != -1:
-                sFit.removeCargo(fitID, self.GetItemData(row))
-                wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fitID))
+                fitID = self.mainFrame.getActiveFit()
+                cargo = self.cargo[self.GetItemData(row)]
+                self.mainFrame.command.Submit(cmd.GuiRemoveCargoCommand(fitID=fitID, itemID=cargo.itemID))
         event.Skip()
 
     def swapModule(self, x, y, modIdx):

@@ -136,7 +136,7 @@ class ImplantDisplay(d.Display):
 
     def kbEvent(self, event):
         keycode = event.GetKeyCode()
-        if keycode == wx.WXK_DELETE or keycode == wx.WXK_NUMPAD_DELETE:
+        if keycode in (wx.WXK_DELETE, wx.WXK_NUMPAD_DELETE):
             row = self.GetFirstSelected()
             if row != -1:
                 self.removeImplant(self.implants[self.GetItemData(row)])

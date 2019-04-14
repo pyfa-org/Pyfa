@@ -35,7 +35,7 @@ class Cargo(ContextMenu):
 
         typeID = int(selection[0].ID)
 
-        self.mainFrame.command.Submit(cmd.GuiAddCargoCommand(fitID, typeID))
+        self.mainFrame.command.Submit(cmd.GuiAddCargoCommand(fitID, typeID, 1))
         self.mainFrame.additionsPane.select("Cargo")
 
 

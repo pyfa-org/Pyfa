@@ -608,18 +608,6 @@ class FitDeprecated(object):
         return True
 
     @deprecated
-    def removeCargo(self, fitID, position):
-        pyfalog.debug("Removing cargo from position ({0}) fit ID: {1}", position, fitID)
-        if fitID is None:
-            return False
-
-        fit = eos.db.getFit(fitID)
-        charge = fit.cargo[position]
-        fit.cargo.remove(charge)
-        self.recalc(fit)
-        return True
-
-    @deprecated
     def addFighter(self, fitID, itemID, recalc=True):
         pyfalog.debug("Adding fighters ({0}) to fit ID: {1}", itemID, fitID)
         if fitID is None:
