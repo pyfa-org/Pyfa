@@ -218,7 +218,8 @@ class ImplantDisplay(d.Display):
             col = self.getColumn(event.Position)
             if col == self.getColIndex(State):
                 fitID = self.mainFrame.getActiveFit()
-                self.mainFrame.command.Submit(cmd.GuiToggleImplantStateCommand(fitID, row))
+                implant = self.implants[self.GetItemData(row)]
+                self.mainFrame.command.Submit(cmd.GuiToggleImplantStateCommand(fitID=fitID, position=self.original.index(implant)))
 
     def spawnMenu(self, event):
         sel = self.GetFirstSelected()

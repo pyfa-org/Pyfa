@@ -55,6 +55,7 @@ class ImplantSets(object):
     def addImplant(setID, itemID):
         implant_set = eos.db.getImplantSet(setID)
         implant = es_Implant(eos.db.getItem(itemID))
+        implant_set.implants.makeRoom(implant)
         implant_set.implants.append(implant)
         eos.db.commit()
 

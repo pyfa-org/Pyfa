@@ -121,7 +121,7 @@ class BaseImplantEditorView(wx.Panel):
 
     def update(self):
         """Updates implant list based off the current context"""
-        self.implants = self.getImplantsFromContext()
+        self.implants = self.getImplantsFromContext()[:]
         self.implants.sort(key=lambda i: int(i.getModifiedItemAttr("implantness")))
         self.pluggedImplantsTree.update(self.implants)
 

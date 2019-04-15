@@ -135,7 +135,7 @@ class BoosterView(d.Display):
             event.Skip()
             return
 
-        if self.mainFrame.command.Submit(cmd.GuiAddBoosterCommand(fitID, event.itemID)):
+        if self.mainFrame.command.Submit(cmd.GuiAddBoosterCommand(fitID=fitID, itemID=event.itemID)):
             self.mainFrame.additionsPane.select("Boosters")
 
         event.Skip()
@@ -149,7 +149,7 @@ class BoosterView(d.Display):
 
     def removeBooster(self, booster):
         fitID = self.mainFrame.getActiveFit()
-        self.mainFrame.command.Submit(cmd.GuiRemoveBoosterCommand(fitID, self.original.index(booster)))
+        self.mainFrame.command.Submit(cmd.GuiRemoveBoosterCommand(fitID=fitID, position=self.original.index(booster)))
 
     def click(self, event):
         event.Skip()
@@ -158,7 +158,8 @@ class BoosterView(d.Display):
             col = self.getColumn(event.Position)
             if col == self.getColIndex(State):
                 fitID = self.mainFrame.getActiveFit()
-                self.mainFrame.command.Submit(cmd.GuiToggleBoosterStateCommand(fitID, row))
+                booster = self.boosters[self.GetItemData(row)]
+                self.mainFrame.command.Submit(cmd.GuiToggleBoosterStateCommand(fitID=fitID, position=self.original.index(booster)))
 
     def spawnMenu(self, event):
         sel = self.GetFirstSelected()

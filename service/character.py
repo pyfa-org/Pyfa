@@ -411,6 +411,7 @@ class Character(object):
             return
 
         implant = es_Implant(eos.db.getItem(itemID))
+        char.implants.makeRoom(implant)
         char.implants.append(implant)
         eos.db.commit()
 

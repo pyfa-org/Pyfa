@@ -130,23 +130,19 @@ class MetaSwap(ContextMenu):
             return
 
         fitID = self.mainFrame.getActiveFit()
+        fit = Fit.getInstance().getFit(fitID)
 
-        self.mainFrame.command.Submit(cmd.GuiMetaSwapCommand(fitID, context, item.ID, self.selection))
+        if context == 'implantItem':
+            position = fit.implants.index(self.selection[0])
+            self.mainFrame.command.Submit(cmd.GuiSwapImplantMetaCommand(
+                fitID=fitID, position=position, itemID=item.ID))
+        if context == 'boosterItem':
+            position = fit.boosters.index(self.selection[0])
+            self.mainFrame.command.Submit(cmd.GuiSwapBoosterMetaCommand(
+                fitID=fitID, position=position, itemID=item.ID))
+        else:
+            self.mainFrame.command.Submit(cmd.GuiMetaSwapCommand(fitID, context, item.ID, self.selection))
 
-        # for selected_item in self.selection:
-
-        #
-        #     elif isinstance(selected_item, Drone):
-        #         drone_count = None
-        #
-        #         for idx, drone_stack in enumerate(fit.drones):
-        #             if drone_stack is selected_item:
-        #                 drone_count = drone_stack.amount
-        #                 sFit.removeDrone(fitID, idx, drone_count, False)
-        #                 break
-        #
-        #         if drone_count:
-        #             sFit.addDrone(fitID, item.ID, drone_count, True)
 
 
 MetaSwap.register()

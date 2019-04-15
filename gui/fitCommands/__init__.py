@@ -1,4 +1,5 @@
 from .gui.booster.add import GuiAddBoosterCommand
+from .gui.booster.metaSwap import GuiSwapBoosterMetaCommand
 from .gui.booster.remove import GuiRemoveBoosterCommand
 from .gui.booster.sideEffectToggleState import GuiToggleBoosterSideEffectStateCommand
 from .gui.booster.toggleState import GuiToggleBoosterStateCommand
@@ -15,6 +16,7 @@ from .gui.guiModuleToCargo import GuiModuleToCargoCommand
 from .gui.guiSwapCloneModule import GuiModuleSwapOrCloneCommand
 from .gui.implant.add import GuiAddImplantCommand
 from .gui.implant.changeLocation import GuiChangeImplantLocationCommand
+from .gui.implant.metaSwap import GuiSwapImplantMetaCommand
 from .gui.implant.remove import GuiRemoveImplantCommand
 from .gui.implant.toggleState import GuiToggleImplantStateCommand
 from .gui.itemsRebase import GuiRebaseItemsCommand
