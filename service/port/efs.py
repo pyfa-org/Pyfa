@@ -16,8 +16,8 @@ from eos.effectHandlerHelpers import HandledList
 from eos.db import gamedata_session, getCategory, getAttributeInfo, getGroup
 from eos.gamedata import Attribute, Effect, Group, Item, ItemEffect
 from eos.utils.spoolSupport import SpoolType, SpoolOptions
-from gui.fitCommands.calcCommands.module.localAdd import CalcAddLocalModuleCommand
-from gui.fitCommands.calcCommands.module.localRemove import CalcRemoveLocalModuleCommand
+from gui.fitCommands.calc.module.localAdd import CalcAddLocalModuleCommand
+from gui.fitCommands.calc.module.localRemove import CalcRemoveLocalModuleCommand
 from gui.fitCommands.helpers import ModuleInfo
 
 
