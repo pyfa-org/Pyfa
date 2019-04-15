@@ -1,13 +1,13 @@
-# -*- coding: utf-8 -*-
-from gui.contextMenu import ContextMenu
-import gui.mainFrame
 # noinspection PyPackageRequirements
 import wx
-from gui.bitmap_loader import BitmapLoader
-from eos.saveddata.character import Skill
+
 import gui.globalEvents as GE
-from service.fit import Fit
+import gui.mainFrame
+from eos.saveddata.character import Skill
+from gui.bitmap_loader import BitmapLoader
+from gui.contextMenu import ContextMenu
 from service.character import Character
+from service.fit import Fit
 from service.settings import ContextMenuSettings
 
 

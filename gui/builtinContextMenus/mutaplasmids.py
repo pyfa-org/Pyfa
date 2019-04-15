@@ -1,11 +1,9 @@
 # noinspection PyPackageRequirements
 import wx
 
-import gui.globalEvents as GE
 import gui.mainFrame
-from gui.fitCommands import GuiConvertMutatedModuleCommand, GuiRevertMutatedModuleCommand
 from gui.contextMenu import ContextMenu
-from service.fit import Fit
+from gui.fitCommands import GuiConvertMutatedLocalModuleCommand, GuiRevertMutatedLocalModuleCommand
 from service.settings import ContextMenuSettings
 
 
@@ -58,14 +56,14 @@ class MutaplasmidCM(ContextMenu):
     def handleMenu(self, event):
         mutaplasmid, mod = self.eventIDs[event.Id]
 
-        self.mainFrame.command.Submit(GuiConvertMutatedModuleCommand(
+        self.mainFrame.command.Submit(GuiConvertMutatedLocalModuleCommand(
             fitID=self.mainFrame.getActiveFit(),
             position=mod.modPosition,
             mutaplasmid=mutaplasmid))
 
     def activate(self, fullContext, selection, i):
         mod = selection[0]
-        self.mainFrame.command.Submit(GuiRevertMutatedModuleCommand(
+        self.mainFrame.command.Submit(GuiRevertMutatedLocalModuleCommand(
             fitID=self.mainFrame.getActiveFit(),
             position=mod.modPosition))
 

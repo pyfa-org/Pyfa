@@ -1,11 +1,9 @@
 # noinspection PyPackageRequirements
 import wx
 
-
-import gui.globalEvents as GE
 import gui.mainFrame
-from gui.contextMenu import ContextMenu
 from gui import fitCommands as cmd
+from gui.contextMenu import ContextMenu
 from service.fit import Fit
 from service.settings import ContextMenuSettings
 
@@ -63,10 +61,12 @@ class FighterAbility(ContextMenu):
         fitID = self.mainFrame.getActiveFit()
         fit = Fit.getInstance().getFit(fitID)
         if self.isProjected:
-            index = fit.projectedFighters.index(self.fighter)
+            self.mainFrame.command.Submit(cmd.GuiToggleProjectedFighterAbilityStateCommand(
+                fitID=fitID, position=fit.projectedFighters.index(self.fighter), effectID=ability.effectID))
         else:
-            index = fit.fighters.index(self.fighter)
-        self.mainFrame.command.Submit(cmd.GuiToggleFighterAbilityCommand(fitID, index, ability.effectID))
+            self.mainFrame.command.Submit(cmd.GuiToggleLocalFighterAbilityStateCommand(
+                fitID=fitID, position=fit.fighters.index(self.fighter), effectID=ability.effectID))
+
 
 
 FighterAbility.register()

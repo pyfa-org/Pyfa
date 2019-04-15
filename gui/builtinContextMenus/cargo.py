@@ -1,7 +1,6 @@
 import gui.fitCommands as cmd
 import gui.mainFrame
 from gui.contextMenu import ContextMenu
-# noinspection PyPackageRequirements
 from service.fit import Fit
 from service.settings import ContextMenuSettings
 
@@ -28,7 +27,7 @@ class Cargo(ContextMenu):
         return True
 
     def getText(self, itmContext, selection):
-        return "Add {0} to Cargo".format(itmContext)
+        return "Add {} to Cargo".format(itmContext)
 
     def activate(self, fullContext, selection, i):
         fitID = self.mainFrame.getActiveFit()

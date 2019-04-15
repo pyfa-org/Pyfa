@@ -259,7 +259,7 @@ class FighterDisplay(d.Display):
     def addItem(self, event):
         fitID = self.mainFrame.getActiveFit()
 
-        if self.mainFrame.command.Submit(cmd.GuiAddFighterCommand(fitID, event.itemID)):
+        if self.mainFrame.command.Submit(cmd.GuiAddLocalFighterCommand(fitID, event.itemID)):
             self.mainFrame.additionsPane.select("Fighters")
 
         event.Skip()
@@ -274,7 +274,7 @@ class FighterDisplay(d.Display):
 
     def removeFighter(self, fighter):
         fitID = self.mainFrame.getActiveFit()
-        self.mainFrame.command.Submit(cmd.GuiRemoveFighterCommand(fitID, self.original.index(fighter)))
+        self.mainFrame.command.Submit(cmd.GuiRemoveLocalFighterCommand(fitID, self.original.index(fighter)))
 
     def click(self, event):
         event.Skip()
@@ -284,7 +284,7 @@ class FighterDisplay(d.Display):
             if col == self.getColIndex(State):
                 fitID = self.mainFrame.getActiveFit()
                 fighter = self.fighters[row]
-                self.mainFrame.command.Submit(cmd.GuiToggleFighterCommand(fitID, self.original.index(fighter)))
+                self.mainFrame.command.Submit(cmd.GuiToggleLocalFighterStateCommand(fitID, self.original.index(fighter)))
 
     def spawnMenu(self, event):
         sel = self.GetFirstSelected()

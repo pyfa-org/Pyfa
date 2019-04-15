@@ -1,5 +1,3 @@
-# coding: utf-8
-
 # noinspection PyPackageRequirements
 import wx
 
@@ -50,6 +48,7 @@ class ModuleAmmoPicker(ContextMenu):
 
         self.modules = modules
         self.charges = list([charge for charge in validCharges if Market.getInstance().getPublicityByItem(charge)])
+        self.context = srcContext
         return len(self.charges) > 0
 
     def getText(self, itmContext, selection):
@@ -228,7 +227,12 @@ class ModuleAmmoPicker(ContextMenu):
             return
 
         fitID = self.mainFrame.getActiveFit()
-        self.mainFrame.command.Submit(cmd.GuiChangeModuleChargesCommand(fitID, charge.ID if charge is not None else None, self.modules))
+        if self.context == 'fittingModule':
+            self.mainFrame.command.Submit(cmd.GuiChangeLocalModuleChargesCommand(
+                fitID=fitID, modules=self.modules, chargeItemID=charge.ID if charge is not None else None))
+        elif self.context == 'projectedModule':
+            self.mainFrame.command.Submit(cmd.GuiChangeProjectedModuleChargesCommand(
+                fitID=fitID, modules=self.modules, chargeItemID=charge.ID if charge is not None else None))
 
 
 ModuleAmmoPicker.register()

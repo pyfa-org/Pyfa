@@ -89,7 +89,7 @@ class WhProjector(ContextMenu):
             return
 
         fitID = self.mainFrame.getActiveFit()
-        self.mainFrame.command.Submit(cmd.GuiAddProjectedCommand(fitID, swObj.ID, 'item'))
+        self.mainFrame.command.Submit(cmd.GuiAddProjectedModuleCommand(fitID, swObj.ID))
 
     def buildMenu(self, grouped_data, flat_data, local_menu, rootMenu, msw):
 

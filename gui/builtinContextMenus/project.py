@@ -1,7 +1,6 @@
 import gui.fitCommands as cmd
 import gui.mainFrame
 from gui.contextMenu import ContextMenu
-# noinspection PyPackageRequirements
 from service.fit import Fit
 from service.settings import ContextMenuSettings
 
@@ -33,8 +32,17 @@ class Project(ContextMenu):
 
     def activate(self, fullContext, selection, i):
         fitID = self.mainFrame.getActiveFit()
-        if self.mainFrame.command.Submit(cmd.GuiAddProjectedCommand(fitID, selection[0].ID, 'item')):
-            self.mainFrame.additionsPane.select("Projected")
+        category = selection[0].category.name
+        if category == 'Module':
+            success = self.mainFrame.command.Submit(cmd.GuiAddProjectedModuleCommand(fitID=fitID, itemID=selection[0].ID))
+        elif category == 'Drone':
+            success = self.mainFrame.command.Submit(cmd.GuiAddProjectedDroneCommand(fitID=fitID, itemID=selection[0].ID))
+        elif category == 'Fighter':
+            success = self.mainFrame.command.Submit(cmd.GuiAddProjectedFighterCommand(fitID=fitID, itemID=selection[0].ID))
+        else:
+            success = False
+        if success:
+            self.mainFrame.additionsPane.select('Projected')
 
 
 Project.register()

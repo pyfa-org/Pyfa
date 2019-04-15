@@ -1,11 +1,12 @@
-from gui.contextMenu import ContextMenu
-import gui.mainFrame
-import gui.globalEvents as GE
 # noinspection PyPackageRequirements
 import wx
-from service.implantSet import ImplantSets as s_ImplantSets
+
+import gui.globalEvents as GE
+import gui.mainFrame
+from gui.contextMenu import ContextMenu
 from service.character import Character
 from service.fit import Fit
+from service.implantSet import ImplantSets as s_ImplantSets
 from service.settings import ContextMenuSettings
 
 

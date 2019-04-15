@@ -215,7 +215,7 @@ class DroneView(Display):
             event.Skip()
             return
 
-        if self.mainFrame.command.Submit(cmd.GuiAddDroneCommand(fitID, event.itemID)):
+        if self.mainFrame.command.Submit(cmd.GuiAddLocalDroneCommand(fitID=fitID, itemID=event.itemID, amount=1)):
             self.mainFrame.additionsPane.select("Drones")
 
         event.Skip()
@@ -230,11 +230,11 @@ class DroneView(Display):
 
     def removeDrone(self, drone):
         fitID = self.mainFrame.getActiveFit()
-        self.mainFrame.command.Submit(cmd.GuiRemoveDroneCommand(fitID, self.original.index(drone), 1))
+        self.mainFrame.command.Submit(cmd.GuiRemoveLocalDroneCommand(fitID, self.original.index(drone), 1))
 
     def removeDroneStack(self, drone):
         fitID = self.mainFrame.getActiveFit()
-        self.mainFrame.command.Submit(cmd.GuiRemoveDroneCommand(fitID, self.original.index(drone), math.inf))
+        self.mainFrame.command.Submit(cmd.GuiRemoveLocalDroneCommand(fitID, self.original.index(drone), math.inf))
 
     def click(self, event):
         event.Skip()
@@ -244,7 +244,7 @@ class DroneView(Display):
             if col == self.getColIndex(State):
                 fitID = self.mainFrame.getActiveFit()
                 drone = self.drones[row]
-                self.mainFrame.command.Submit(cmd.GuiToggleDroneStateCommand(fitID, self.original.index(drone)))
+                self.mainFrame.command.Submit(cmd.GuiToggleLocalDroneStateCommand(fitID, self.original.index(drone)))
 
     def spawnMenu(self, event):
         sel = self.GetFirstSelected()

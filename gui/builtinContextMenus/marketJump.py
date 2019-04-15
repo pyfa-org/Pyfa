@@ -1,5 +1,5 @@
-from gui.contextMenu import ContextMenu
 import gui.mainFrame
+from gui.contextMenu import ContextMenu
 from service.market import Market
 from service.settings import ContextMenuSettings
 

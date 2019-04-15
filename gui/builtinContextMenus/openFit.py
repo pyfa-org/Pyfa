@@ -1,8 +1,9 @@
-from gui.contextMenu import ContextMenu
-import gui.mainFrame
 # noinspection PyPackageRequirements
 import wx
+
+import gui.mainFrame
 from gui.builtinShipBrowser.events import FitSelected
+from gui.contextMenu import ContextMenu
 from service.settings import ContextMenuSettings
 
 

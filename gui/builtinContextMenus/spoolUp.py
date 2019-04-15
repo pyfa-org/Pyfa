@@ -24,7 +24,7 @@ class SpoolUp(ContextMenu):
             return False
 
         self.mod = selection[0]
-        # self.context = srcContext
+        self.context = srcContext
 
         return self.mod.item.group.name in ("Precursor Weapon", "Mutadaptive Remote Armor Repairer")
 
@@ -75,11 +75,18 @@ class SpoolUp(ContextMenu):
             spoolAmount = self.cycleMap[event.Id]
         else:
             return
-        self.mainFrame.command.Submit(cmd.GuiChangeModuleSpoolCommand(
-            fitID=self.mainFrame.getActiveFit(),
-            position=self.mod.modPosition,
-            spoolType=spoolType,
-            spoolAmount=spoolAmount))
+        if self.context == 'fittingModule':
+            self.mainFrame.command.Submit(cmd.GuiChangeLocalModuleSpoolCommand(
+                fitID=self.mainFrame.getActiveFit(),
+                position=self.mod.modPosition,
+                spoolType=spoolType,
+                spoolAmount=spoolAmount))
+        elif self.context == 'projectedModule':
+            self.mainFrame.command.Submit(cmd.GuiChangeProjectedModuleSpoolCommand(
+                fitID=self.mainFrame.getActiveFit(),
+                position=self.mod.modPosition,
+                spoolType=spoolType,
+                spoolAmount=spoolAmount))
 
 
 SpoolUp.register()

@@ -19,7 +19,7 @@ class CalcToggleProjectedFitCommand(wx.Command):
 
     def Do(self):
         pyfalog.debug('Doing toggling of projected fit {} state for fit {}'.format(self.projectedFitID, self.fitID))
-        projectedFit = Fit.getInstance().getFit(self.projectedFitID)
+        projectedFit = Fit.getInstance().getFit(self.projectedFitID, projected=True)
         # Projected fit could have been deleted if we are redoing
         if projectedFit is None:
             pyfalog.debug('Projected fit is not available')

@@ -8,6 +8,7 @@ from gui.utils.helpers_wxPython import HandleCtrlBackspace
 
 
 class NotesView(wx.Panel):
+
     def __init__(self, parent):
         wx.Panel.__init__(self, parent)
         self.lastFitId = None

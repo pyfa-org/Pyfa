@@ -1,14 +1,15 @@
-from gui.contextMenu import ContextMenu
-import gui.mainFrame
-import gui.globalEvents as GE
+from collections import OrderedDict
+
 # noinspection PyPackageRequirements
 import wx
-from gui.bitmap_loader import BitmapLoader
-from service.fit import Fit
-from service.damagePattern import DamagePattern as import_DamagePattern
-from service.settings import ContextMenuSettings
 
-from collections import OrderedDict
+import gui.globalEvents as GE
+import gui.mainFrame
+from gui.bitmap_loader import BitmapLoader
+from gui.contextMenu import ContextMenu
+from service.damagePattern import DamagePattern as import_DamagePattern
+from service.fit import Fit
+from service.settings import ContextMenuSettings
 
 
 class DamagePattern(ContextMenu):

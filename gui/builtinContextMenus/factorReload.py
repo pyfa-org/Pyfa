@@ -1,8 +1,9 @@
-from gui.contextMenu import ContextMenu
-import gui.mainFrame
-import gui.globalEvents as GE
 # noinspection PyPackageRequirements
 import wx
+
+import gui.globalEvents as GE
+import gui.mainFrame
+from gui.contextMenu import ContextMenu
 from service.fit import Fit
 from service.settings import ContextMenuSettings
 

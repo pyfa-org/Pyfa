@@ -1,13 +1,15 @@
-from gui.contextMenu import ContextMenu
-import gui.mainFrame
-import gui.globalEvents as GE
+from collections import OrderedDict
+
 # noinspection PyPackageRequirements
 import wx
+
+import gui.globalEvents as GE
+import gui.mainFrame
 from gui.bitmap_loader import BitmapLoader
-from service.targetResists import TargetResists as svc_TargetResists
+from gui.contextMenu import ContextMenu
 from service.fit import Fit
 from service.settings import ContextMenuSettings
-from collections import OrderedDict
+from service.targetResists import TargetResists as svc_TargetResists
 
 
 class TargetResists(ContextMenu):

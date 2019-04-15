@@ -1,13 +1,12 @@
-# -*- coding: utf-8 -*-
 import gui.fitCommands as cmd
 import gui.mainFrame
-from eos.db.saveddata.queries import getFit as db_getFit
-# noinspection PyPackageRequirements
 from gui.builtinContextMenus.moduleAmmoPicker import ModuleAmmoPicker
+from service.fit import Fit
 from service.settings import ContextMenuSettings
 
 
 class ModuleGlobalAmmoPicker(ModuleAmmoPicker):
+
     def __init__(self):
         super(ModuleGlobalAmmoPicker, self).__init__()
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
@@ -27,18 +26,19 @@ class ModuleGlobalAmmoPicker(ModuleAmmoPicker):
             return
 
         fitID = self.mainFrame.getActiveFit()
-        fit = db_getFit(fitID)
+        fit = Fit.getInstance().getFit(fitID)
 
         selectedModule = self.modules[0]
-        source = fit.modules if not selectedModule.isProjected else fit.projectedModules
-        allModules = []
-        for mod in source:
-            if mod.itemID is None:
-                continue
-            if mod.itemID == selectedModule.itemID:
-                allModules.append(mod)
-
-        self.mainFrame.command.Submit(cmd.GuiChangeModuleChargesCommand(fitID, charge.ID if charge is not None else None, allModules))
+        if self.context == 'fittingModule':
+            self.mainFrame.command.Submit(cmd.GuiChangeLocalModuleChargesCommand(
+                fitID=fitID,
+                modules=[m for m in fit.modules if m.itemID is not None and m.itemID == selectedModule.itemID],
+                chargeItemID=charge.ID if charge is not None else None))
+        elif self.context == 'projectedModule':
+            self.mainFrame.command.Submit(cmd.GuiChangeProjectedModuleChargesCommand(
+                fitID=fitID,
+                modules=[m for m in fit.projectedModules if m.itemID is not None and m.itemID == selectedModule.itemID],
+                chargeItemID=charge.ID if charge is not None else None))
 
     def display(self, srcContext, selection):
         if not self.settings.get('moduleGlobalAmmoPicker'):

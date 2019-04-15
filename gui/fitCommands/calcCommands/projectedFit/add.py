@@ -10,7 +10,7 @@ pyfalog = Logger(__name__)
 
 class CalcAddProjectedFitCommand(wx.Command):
 
-    def __init__(self, fitID, projectedFitID, state):
+    def __init__(self, fitID, projectedFitID, state=None):
         wx.Command.__init__(self, True, 'Add Projected Fit')
         self.fitID = fitID
         self.projectedFitID = projectedFitID
@@ -20,7 +20,7 @@ class CalcAddProjectedFitCommand(wx.Command):
         pyfalog.debug('Doing addition of projected fit {} for fit {}'.format(self.projectedFitID, self.fitID))
         sFit = Fit.getInstance()
         fit = sFit.getFit(self.fitID)
-        projectedFit = sFit.getFit(self.projectedFitID)
+        projectedFit = sFit.getFit(self.projectedFitID, projected=True)
 
         # Projected fit could have been deleted if we are redoing
         if projectedFit is None:
@@ -51,7 +51,7 @@ class CalcAddProjectedFitCommand(wx.Command):
         pyfalog.debug('Undoing addition of projected fit {} for fit {}'.format(self.projectedFitID, self.fitID))
         # Can't find the projected fit, it must have been deleted. Just skip, as deleted fit
         # means that someone else just did exactly what we wanted to do
-        projectedFit = Fit.getInstance().getFit(self.projectedFitID)
+        projectedFit = Fit.getInstance().getFit(self.projectedFitID, projected=True)
         if projectedFit is None:
             return True
         from .remove import CalcRemoveProjectedFitCommand

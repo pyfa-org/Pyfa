@@ -18,7 +18,7 @@ class CalcFitRenameCommand(wx.Command):
 
     def Do(self):
         pyfalog.debug('Doing renaming of fit {} to {}'.format(self.fitID, self.name))
-        fit = Fit.getInstance().getFit(self.fitID)
+        fit = Fit.getInstance().getFit(self.fitID, basic=True)
         if fit.name == self.name:
             return False
         self.savedName = fit.name

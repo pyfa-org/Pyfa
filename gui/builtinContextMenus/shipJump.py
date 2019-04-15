@@ -1,8 +1,9 @@
 # noinspection PyPackageRequirements
 import wx
-from gui.contextMenu import ContextMenu
+
 import gui.mainFrame
 from gui.builtinShipBrowser.events import Stage3Selected
+from gui.contextMenu import ContextMenu
 from service.fit import Fit
 from service.settings import ContextMenuSettings
 

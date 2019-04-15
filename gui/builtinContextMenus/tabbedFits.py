@@ -1,5 +1,3 @@
-# coding: utf-8
-
 # noinspection PyPackageRequirements
 import wx
 
@@ -56,9 +54,9 @@ class TabbedFits(ContextMenu):
         fit = self.fitLookup[event.Id]
 
         if self.context == 'commandView':
-            self.mainFrame.command.Submit(cmd.GuiAddCommandFitCommand(fitID, fit.ID))
+            self.mainFrame.command.Submit(cmd.GuiAddCommandFitCommand(fitID=fitID, commandFitID=fit.ID))
         elif self.context == 'projected':
-            self.mainFrame.command.Submit(cmd.GuiAddProjectedCommand(fitID, fit.ID, 'fit'))
+            self.mainFrame.command.Submit(cmd.GuiAddProjectedFitCommand(fitID=fitID, projectedFitID=fit.ID))
 
 
 TabbedFits.register()

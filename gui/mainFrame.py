@@ -704,7 +704,7 @@ class MainFrame(wx.Frame):
             # If it's mutated item - make sure there's at least base item specified
             if importType == "MutatedItem":
                 # we've imported an Abyssal module, need to fire off the command to add it to the fit
-                self.command.Submit(cmd.GuiImportMutatedModuleCommand(activeFit, *importData[0]))
+                self.command.Submit(cmd.GuiImportLocalMutatedModuleCommand(activeFit, *importData[0]))
                 return  # no need to do anything else
         except:
             pyfalog.error("Attempt to import failed:\n{0}", clipboard)

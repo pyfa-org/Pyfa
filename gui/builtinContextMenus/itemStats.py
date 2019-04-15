@@ -1,8 +1,9 @@
-from gui.contextMenu import ContextMenu
-from gui.itemStats import ItemStatsDialog
-import gui.mainFrame
 # noinspection PyPackageRequirements
 import wx
+
+import gui.mainFrame
+from gui.contextMenu import ContextMenu
+from gui.itemStats import ItemStatsDialog
 from service.fit import Fit
 from service.settings import ContextMenuSettings
 

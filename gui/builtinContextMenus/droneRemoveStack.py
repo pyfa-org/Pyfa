@@ -3,7 +3,6 @@ import math
 import gui.fitCommands as cmd
 import gui.mainFrame
 from gui.contextMenu import ContextMenu
-# noinspection PyPackageRequirements
 from service.fit import Fit
 from service.settings import ContextMenuSettings
 
@@ -16,19 +15,22 @@ class ItemRemove(ContextMenu):
     def display(self, srcContext, selection):
         if not self.settings.get('droneRemoveStack'):
             return False
-
-        return srcContext == "droneItem"
+        if srcContext not in ('droneItem', 'projectedDrone'):
+            return False
+        return True
 
     def getText(self, itmContext, selection):
-        return "Remove {0} Stack".format(itmContext)
+        return "Remove {} Stack".format(itmContext)
 
     def activate(self, fullContext, selection, i):
-        sFit = Fit.getInstance()
+        drone = selection[0]
         fitID = self.mainFrame.getActiveFit()
-        fit = sFit.getFit(fitID)
-
-        position = fit.drones.index(selection[0])
-        self.mainFrame.command.Submit(cmd.GuiRemoveDroneCommand(fitID, position, math.inf))
+        if 'droneItem' in fullContext:
+            self.mainFrame.command.Submit(cmd.GuiRemoveLocalDroneCommand(
+                fitID=fitID, position=Fit.getInstance().getFit(fitID).drones.index(drone), amount=math.inf))
+        if 'projectedDrone' in fullContext:
+            self.mainFrame.command.Submit(cmd.GuiRemoveProjectedDroneCommand(
+                fitID=fitID, itemID=drone.itemID, amount=math.inf))
 
 
 ItemRemove.register()

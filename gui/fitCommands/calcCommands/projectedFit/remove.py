@@ -20,7 +20,7 @@ class CalcRemoveProjectedFitCommand(wx.Command):
         pyfalog.debug('Doing removal of projected fit {} for fit {}'.format(self.projectedFitID, self.fitID))
         sFit = Fit.getInstance()
         fit = sFit.getFit(self.fitID)
-        projectedFit = sFit.getFit(self.projectedFitID)
+        projectedFit = sFit.getFit(self.projectedFitID, projected=True)
 
         # Can be removed by the time we're redoing it
         if projectedFit is None:

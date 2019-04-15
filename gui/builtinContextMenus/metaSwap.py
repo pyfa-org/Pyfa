@@ -1,14 +1,12 @@
-# coding: utf-8
-
 # noinspection PyPackageRequirements
 import wx
 
 import gui.fitCommands as cmd
 import gui.mainFrame
 from gui.contextMenu import ContextMenu
+from service.fit import Fit
 from service.market import Market
 from service.settings import ContextMenuSettings
-from service.fit import Fit
 
 
 class MetaSwap(ContextMenu):

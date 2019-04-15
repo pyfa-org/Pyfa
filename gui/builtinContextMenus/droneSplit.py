@@ -1,11 +1,13 @@
-from gui.contextMenu import ContextMenu
-import gui.mainFrame
-import gui.globalEvents as GE
-from service.fit import Fit
+import re
+
 # noinspection PyPackageRequirements
 import wx
+
+import gui.globalEvents as GE
+import gui.mainFrame
+from gui.contextMenu import ContextMenu
+from service.fit import Fit
 from service.settings import ContextMenuSettings
-import re
 
 
 class DroneSplit(ContextMenu):
@@ -17,7 +19,7 @@ class DroneSplit(ContextMenu):
         if not self.settings.get('droneSplit'):
             return False
 
-        return srcContext in ("droneItem", "projectedDrone") and selection[0].amount > 1
+        return srcContext == "droneItem" and selection[0].amount > 1
 
     def getText(self, itmContext, selection):
         return "Split {0} Stack".format(itmContext)

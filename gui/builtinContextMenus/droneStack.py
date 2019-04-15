@@ -1,12 +1,11 @@
-from gui.contextMenu import ContextMenu
+import gui.fitCommands as cmd
 import gui.mainFrame
-import gui.globalEvents as GE
-import wx
+from gui.contextMenu import ContextMenu
 from service.settings import ContextMenuSettings
-from service.fit import Fit
 
 
 class DroneStack(ContextMenu):
+
     def __init__(self):
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
         self.settings = ContextMenuSettings.getInstance()
@@ -15,7 +14,7 @@ class DroneStack(ContextMenu):
         if not self.settings.get('droneStack'):
             return False
 
-        if srcContext not in ("marketItemGroup", "marketItemMisc") or self.mainFrame.getActiveFit() is None:
+        if srcContext not in ('marketItemGroup', 'marketItemMisc') or self.mainFrame.getActiveFit() is None:
             return False
 
         for selected_item in selection:
@@ -30,13 +29,9 @@ class DroneStack(ContextMenu):
         return "Add {0} to Drone Bay (x5)".format(itmContext)
 
     def activate(self, fullContext, selection, i):
-        sFit = Fit.getInstance()
-        fitID = self.mainFrame.getActiveFit()
-
-        typeID = int(selection[0].ID)
-        sFit.addDrone(fitID, typeID, 5)
-        self.mainFrame.additionsPane.select("Drones")
-        wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fitID))
+        self.mainFrame.command.Submit(cmd.GuiAddLocalDroneCommand(
+            fitID=self.mainFrame.getActiveFit(), itemID=int(selection[0].ID), amount=5))
+        self.mainFrame.additionsPane.select('Drones')
 
 
 DroneStack.register()
