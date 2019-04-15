@@ -446,11 +446,14 @@ class FittingView(d.Display):
             if mod1.slot != mod2.slot:
                 return
 
-            clone = mstate.CmdDown() and mod2.isEmpty
-
             fitID = self.mainFrame.getActiveFit()
             if getattr(mod2, "modPosition") is not None:
-                self.mainFrame.command.Submit(cmd.GuiModuleSwapOrCloneCommand(fitID, srcIdx, mod2.modPosition, clone))
+                if mstate.CmdDown() and mod2.isEmpty:
+                    self.mainFrame.command.Submit(cmd.GuiCloneLocalModuleCommand(
+                        fitID=fitID, srcPosition=srcIdx, dstPosition=mod2.modPosition))
+                elif not mstate.CmdDown():
+                    self.mainFrame.command.Submit(cmd.GuiSwapLocalModulesCommand(
+                        fitID=fitID, position1=srcIdx, position2=mod2.modPosition))
             else:
                 pyfalog.error("Missing module position for: {0}", str(getattr(mod2, "ID", "Unknown")))
 

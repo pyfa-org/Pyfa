@@ -18,7 +18,6 @@ class CalcCloneLocalModuleCommand(wx.Command):
         self.fitID = fitID
         self.srcPosition = srcPosition
         self.dstPosition = dstPosition
-        self.dstModInfo = None
 
     def Do(self):
         pyfalog.debug('Doing cloning of local module from position {} to position {} for fit ID {}'.format(self.srcPosition, self.dstPosition, self.fitID))

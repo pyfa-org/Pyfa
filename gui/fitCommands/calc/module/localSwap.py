@@ -27,24 +27,26 @@ class CalcSwapLocalModuleCommand(wx.Command):
         pyfalog.debug('Undoing swapping between {} and {} for fit {}'.format(self.position1, self.position2, self.fitID))
         return True
 
-    def __swap(self, fitID, srcPosition, dstPosition):
+    def __swap(self, fitID, position1, position2):
         fit = Fit.getInstance().getFit(fitID)
-        srcMod = fit.modules[srcPosition]
-        dstMod = fit.modules[dstPosition]
-        fit.modules.free(srcPosition)
-        fit.modules.free(dstPosition)
+        mod1 = fit.modules[position1]
+        mod2 = fit.modules[position2]
+        fit.modules.free(position1)
+        fit.modules.free(position2)
         try:
-            fit.modules.replace(dstPosition, srcMod)
+            fit.modules.replace(position2, mod1)
         except HandledListActionError:
-            fit.modules.replace(srcPosition, srcMod)
-            fit.modules.replace(dstPosition, dstMod)
+            fit.modules.replace(position1, mod1)
+            fit.modules.replace(position2, mod2)
+            eos.db.commit()
             return False
         try:
-            fit.modules.replace(srcPosition, dstMod)
+            fit.modules.replace(position1, mod2)
         except HandledListActionError:
-            fit.modules.free(dstPosition)
-            fit.modules.replace(srcPosition, srcMod)
-            fit.modules.replace(dstPosition, dstMod)
+            fit.modules.free(position2)
+            fit.modules.replace(position1, mod1)
+            fit.modules.replace(position2, mod2)
+            eos.db.commit()
             return False
         eos.db.commit()
         return True

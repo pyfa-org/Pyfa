@@ -29,7 +29,7 @@ class GuiAddLocalModuleCommand(wx.Command):
             success = self.internalHistory.submit(cmd)
             if not success:
                 Fit.getInstance().recalc(self.fitID)
-                wx.PostEvent(gui.mainFrame.MainFrame.getInstance(), GE.FitChanged(fitID=self.fitID, action='modadd', typeID=self.itemID))
+                wx.PostEvent(gui.mainFrame.MainFrame.getInstance(), GE.FitChanged(fitID=self.fitID))
                 return False
         # Module to position
         elif position is not None:
@@ -43,11 +43,15 @@ class GuiAddLocalModuleCommand(wx.Command):
             cmd = CalcAddLocalModuleCommand(fitID=self.fitID, newModInfo=ModuleInfo(itemID=self.itemID))
             success = self.internalHistory.submit(cmd)
         Fit.getInstance().recalc(self.fitID)
-        wx.PostEvent(gui.mainFrame.MainFrame.getInstance(), GE.FitChanged(fitID=self.fitID, action='modadd', typeID=self.itemID))
+        wx.PostEvent(
+            gui.mainFrame.MainFrame.getInstance(),
+            GE.FitChanged(fitID=self.fitID, action='modadd', typeID=self.itemID) if success else GE.FitChanged(fitID=self.fitID))
         return success
 
     def Undo(self):
         success = self.internalHistory.undoAll()
         Fit.getInstance().recalc(self.fitID)
-        wx.PostEvent(gui.mainFrame.MainFrame.getInstance(), GE.FitChanged(fitID=self.fitID, action='moddel', typeID=self.itemID))
+        wx.PostEvent(
+            gui.mainFrame.MainFrame.getInstance(),
+            GE.FitChanged(fitID=self.fitID, action='moddel', typeID=self.itemID) if success else GE.FitChanged(fitID=self.fitID))
         return success

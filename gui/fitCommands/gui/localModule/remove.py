@@ -21,7 +21,7 @@ class GuiRemoveLocalModuleCommand(wx.Command):
         Fit.getInstance().recalc(self.fitID)
         wx.PostEvent(
             gui.mainFrame.MainFrame.getInstance(),
-            GE.FitChanged(fitID=self.fitID, action='moddel', typeID=set([mod.itemID for mod in self.modCache.values()])))
+            GE.FitChanged(fitID=self.fitID, action='moddel', typeID={mod.itemID for mod in self.modCache.values()}) if success else GE.FitChanged(fitID=self.fitID))
         return success
 
     def Undo(self):
@@ -29,5 +29,5 @@ class GuiRemoveLocalModuleCommand(wx.Command):
         Fit.getInstance().recalc(self.fitID)
         wx.PostEvent(
             gui.mainFrame.MainFrame.getInstance(),
-            GE.FitChanged(fitID=self.fitID, action='modadd', typeID=set([mod.itemID for mod in self.modCache.values()])))
+            GE.FitChanged(fitID=self.fitID, action='modadd', typeID={mod.itemID for mod in self.modCache.values()}) if success else GE.FitChanged(fitID=self.fitID))
         return success

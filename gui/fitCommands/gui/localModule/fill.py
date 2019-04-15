@@ -25,12 +25,17 @@ class GuiFillWithLocalModulesCommand(wx.Command):
             added_modules += 1
         eos.db.commit()
         Fit.getInstance().recalc(self.fitID)
-        wx.PostEvent(gui.mainFrame.MainFrame.getInstance(), GE.FitChanged(fitID=self.fitID, action='modadd', typeID=self.itemID))
-        return added_modules > 0
+        success = added_modules > 0
+        wx.PostEvent(
+            gui.mainFrame.MainFrame.getInstance(),
+            GE.FitChanged(fitID=self.fitID, action='modadd', typeID=self.itemID) if success else GE.FitChanged(fitID=self.fitID))
+        return success
 
     def Undo(self):
         success = self.internalHistory.undoAll()
         eos.db.commit()
         Fit.getInstance().recalc(self.fitID)
-        wx.PostEvent(gui.mainFrame.MainFrame.getInstance(), GE.FitChanged(fitID=self.fitID, action='moddel', typeID=self.itemID))
+        wx.PostEvent(
+            gui.mainFrame.MainFrame.getInstance(),
+            GE.FitChanged(fitID=self.fitID, action='moddel', typeID=self.itemID) if success else GE.FitChanged(fitID=self.fitID))
         return success
