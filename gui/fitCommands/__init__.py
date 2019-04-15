@@ -17,6 +17,7 @@ from .gui.implant.add import GuiAddImplantCommand
 from .gui.implant.changeLocation import GuiChangeImplantLocationCommand
 from .gui.implant.changeMeta import GuiChangeImplantMetaCommand
 from .gui.implant.remove import GuiRemoveImplantCommand
+from .gui.implant.setAdd import GuiAddImplantSetCommand
 from .gui.implant.toggleState import GuiToggleImplantStateCommand
 from .gui.itemsRebase import GuiRebaseItemsCommand
 from .gui.localDrone.add import GuiAddLocalDroneCommand

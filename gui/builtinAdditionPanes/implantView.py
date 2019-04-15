@@ -187,8 +187,9 @@ class ImplantDisplay(d.Display):
             event.Skip()
             return
 
-        if self.mainFrame.command.Submit(cmd.GuiAddImplantCommand(fitID, event.itemID)):
-            self.mainFrame.additionsPane.select("Implants")
+        self.mainFrame.command.Submit(cmd.GuiAddImplantCommand(fitID, event.itemID))
+        # Select in any case - as we might've added implant which has been there already and command failed
+        self.mainFrame.additionsPane.select('Implants')
 
         event.Skip()
 

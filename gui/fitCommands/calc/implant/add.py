@@ -11,11 +11,12 @@ pyfalog = Logger(__name__)
 
 class CalcAddImplantCommand(wx.Command):
 
-    def __init__(self, fitID, implantInfo, position=None):
+    def __init__(self, fitID, implantInfo, position=None, commit=True):
         wx.Command.__init__(self, True, 'Add Implant')
         self.fitID = fitID
         self.newImplantInfo = implantInfo
         self.newPosition = position
+        self.commit = commit
         self.oldImplantInfo = None
         self.oldPosition = None
 
@@ -50,7 +51,8 @@ class CalcAddImplantCommand(wx.Command):
                 cmd.Do()
                 return False
             self.newPosition = fit.implants.index(newImplant)
-        eos.db.commit()
+        if self.commit:
+            eos.db.commit()
         return True
 
     def Undo(self):

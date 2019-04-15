@@ -1,5 +1,6 @@
 import wx
 
+import eos.db
 import gui.mainFrame
 from eos.const import ImplantLocation
 from gui import globalEvents as GE
@@ -18,15 +19,25 @@ class GuiAddImplantCommand(wx.Command):
         self.itemID = itemID
 
     def Do(self):
-        cmdLocation = CalcChangeImplantLocationCommand(fitID=self.fitID, source=ImplantLocation.FIT)
-        cmdAdd = CalcAddImplantCommand(fitID=self.fitID, implantInfo=ImplantInfo(itemID=self.itemID))
-        success = self.internalHistory.submitBatch(cmdLocation, cmdAdd)
-        Fit.getInstance().recalc(self.fitID)
+        sFit = Fit.getInstance()
+        fit = sFit.getFit(self.fitID)
+        if fit.implantSource != ImplantLocation.FIT:
+            cmd = CalcChangeImplantLocationCommand(fitID=self.fitID, source=ImplantLocation.FIT, commit=False)
+            successSource = self.internalHistory.submit(cmd)
+        else:
+            successSource = False
+        cmd = CalcAddImplantCommand(fitID=self.fitID, implantInfo=ImplantInfo(itemID=self.itemID), commit=False)
+        successImplant = self.internalHistory.submit(cmd)
+        eos.db.commit()
+        sFit.recalc(self.fitID)
         wx.PostEvent(gui.mainFrame.MainFrame.getInstance(), GE.FitChanged(fitID=self.fitID))
-        return success
+        # Acceptable behavior when we already have passed implant and just switch source, or
+        # when we have source and add implant, but not if we do not change anything
+        return successSource or successImplant
 
     def Undo(self):
         success = self.internalHistory.undoAll()
+        eos.db.commit()
         Fit.getInstance().recalc(self.fitID)
         wx.PostEvent(gui.mainFrame.MainFrame.getInstance(), GE.FitChanged(fitID=self.fitID))
         return success

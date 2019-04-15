@@ -1,6 +1,7 @@
 # noinspection PyPackageRequirements
 import wx
 
+import gui.fitCommands as cmd
 import gui.globalEvents as GE
 import gui.mainFrame
 from gui.contextMenu import ContextMenu
@@ -83,12 +84,9 @@ class ImplantSets(ContextMenu):
 
             wx.PostEvent(self.selection, GE.CharChanged())
         else:
-            sFit = Fit.getInstance()
-            fitID = self.mainFrame.getActiveFit()
-            for implant in set.implants:
-                sFit.addImplant(fitID, implant.item.ID, recalc=implant == set.implants[-1])
-
-            wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fitID))
+            self.mainFrame.command.Submit(cmd.GuiAddImplantSetCommand(
+                fitID=self.mainFrame.getActiveFit(),
+                itemIDs=[i.itemID for i in set.implants]))
 
 
 ImplantSets.register()

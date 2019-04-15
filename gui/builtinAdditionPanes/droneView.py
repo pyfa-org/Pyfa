@@ -218,7 +218,7 @@ class DroneView(Display):
             return
 
         if self.mainFrame.command.Submit(cmd.GuiAddLocalDroneCommand(fitID=fitID, itemID=event.itemID, amount=1)):
-            self.mainFrame.additionsPane.select("Drones")
+            self.mainFrame.additionsPane.select('Drones')
 
         event.Skip()
 

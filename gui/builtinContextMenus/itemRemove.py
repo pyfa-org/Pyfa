@@ -66,9 +66,11 @@ class ItemRemove(ContextMenu):
             self.mainFrame.command.Submit(cmd.GuiRemoveProjectedFighterCommand(
                 fitID=fitID, position=fit.projectedFighters.index(selection[0])))
         elif srcContext == "projectedCharge":
-            self.mainFrame.command.Submit(cmd.GuiChangeProjectedModuleChargesCommand(fitID, [selection[0]], None))
+            self.mainFrame.command.Submit(cmd.GuiChangeProjectedModuleChargesCommand(
+                fitID=fitID, modules=[selection[0]], chargeItemID=None))
         elif srcContext == "commandFit":
-            self.mainFrame.command.Submit(cmd.GuiRemoveCommandFitCommand(fitID, selection[0].ID))
+            self.mainFrame.command.Submit(cmd.GuiRemoveCommandFitCommand(
+                fitID=fitID, commandFitID=selection[0].ID))
 
 
 ItemRemove.register()

@@ -264,7 +264,7 @@ class FighterDisplay(d.Display):
 
         fitID = self.mainFrame.getActiveFit()
         if self.mainFrame.command.Submit(cmd.GuiAddLocalFighterCommand(fitID, event.itemID)):
-            self.mainFrame.additionsPane.select("Fighters")
+            self.mainFrame.additionsPane.select('Fighters')
 
         event.Skip()
 

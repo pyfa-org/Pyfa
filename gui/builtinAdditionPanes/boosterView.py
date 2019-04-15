@@ -138,9 +138,9 @@ class BoosterView(d.Display):
             event.Skip()
             return
 
-        if self.mainFrame.command.Submit(cmd.GuiAddBoosterCommand(fitID=fitID, itemID=event.itemID)):
-            self.mainFrame.additionsPane.select("Boosters")
-
+        self.mainFrame.command.Submit(cmd.GuiAddBoosterCommand(fitID=fitID, itemID=event.itemID))
+        # Select in any case - as we might've added booster which has been there already and command failed
+        self.mainFrame.additionsPane.select('Boosters')
         event.Skip()
 
     def removeItem(self, event):

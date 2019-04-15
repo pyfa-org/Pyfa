@@ -201,25 +201,6 @@ class FitDeprecated(object):
             return False
 
     @deprecated
-    def addImplant(self, fitID, itemID, recalc=True):
-        pyfalog.debug("Adding implant to fit ({0}) for item ID: {1}", fitID, itemID)
-        if fitID is None:
-            return False
-
-        fit = eos.db.getFit(fitID)
-        item = eos.db.getItem(itemID, eager="attributes")
-        try:
-            implant = es_Implant(item)
-        except ValueError:
-            pyfalog.warning("Invalid item: {0}", itemID)
-            return False
-
-        fit.implants.append(implant)
-        if recalc:
-            self.recalc(fit)
-        return True
-
-    @deprecated
     def removeImplant(self, fitID, position, recalc=True):
         pyfalog.debug("Removing implant from position ({0}) for fit ID: {1}", position, fitID)
         if fitID is None:
