@@ -18,11 +18,11 @@ from .localFighter.changeAmount import GuiChangeLocalFighterAmountCommand
 from .localFighter.remove import GuiRemoveLocalFighterCommand
 from .localFighter.toggleState import GuiToggleLocalFighterStateCommand
 from .guiCargoToModule import GuiCargoToModuleCommand
-from .guiFitRename import GuiFitRenameCommand
+from .fitRename import GuiRenameFitCommand
 from .guiMetaSwap import GuiMetaSwapCommand
 from .guiModuleToCargo import GuiModuleToCargoCommand
-from .guiRebaseItems import GuiRebaseItemsCommand
-from .guiSetMode import GuiSetModeCommand
+from .itemsRebase import GuiRebaseItemsCommand
+from .shipModeChange import GuiChangeShipModeCommand
 from .guiSwapCloneModule import GuiModuleSwapOrCloneCommand
 from .implant.add import GuiAddImplantCommand
 from .implant.changeLocation import GuiChangeImplantLocationCommand

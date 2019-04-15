@@ -327,7 +327,7 @@ class FitItem(SFItem.SFBrowserItem):
         self.editWasShown = 0
         fitName = self.tcFitName.GetValue()
         if fitName:
-            self.mainFrame.command.Submit(cmd.GuiFitRenameCommand(self.fitID, fitName))
+            self.mainFrame.command.Submit(cmd.GuiRenameFitCommand(self.fitID, fitName))
         else:
             self.tcFitName.SetValue(self.fitName)
 

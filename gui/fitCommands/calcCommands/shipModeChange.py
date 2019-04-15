@@ -13,13 +13,13 @@ pyfalog = Logger(__name__)
 class CalcChangeShipModeCommand(wx.Command):
 
     def __init__(self, fitID, itemID):
-        wx.Command.__init__(self, True, 'Set Mode')
+        wx.Command.__init__(self, True, 'Change Ship Mode')
         self.fitID = fitID
         self.itemID = itemID
         self.savedItemID = None
 
     def Do(self):
-        pyfalog.debug('Doing changing mode to {} for fit {}'.format(self.itemID, self.fitID))
+        pyfalog.debug('Doing changing ship mode to {} for fit {}'.format(self.itemID, self.fitID))
         fit = Fit.getInstance().getFit(self.fitID)
         self.savedItemID = fit.modeID
         item = Market.getInstance().getItem(self.itemID)
@@ -29,6 +29,6 @@ class CalcChangeShipModeCommand(wx.Command):
         return True
 
     def Undo(self):
-        pyfalog.debug('Undoing changing mode to {} for fit {}'.format(self.itemID, self.fitID))
+        pyfalog.debug('Undoing changing ship mode to {} for fit {}'.format(self.itemID, self.fitID))
         cmd = CalcChangeShipModeCommand(self.fitID, self.savedItemID)
         return cmd.Do()

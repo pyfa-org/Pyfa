@@ -18,17 +18,16 @@
 # =============================================================================
 
 
-import math
 import queue
 import threading
 from itertools import chain
 
+import math
 import wx
 from logbook import Logger
 
 from eos import db
 from eos.saveddata.price import PriceStatus
-from gui.fitCommands.guiRebaseItems import GuiRebaseItemsCommand
 from service.fit import Fit
 from service.market import Market
 from service.network import TimeoutError
