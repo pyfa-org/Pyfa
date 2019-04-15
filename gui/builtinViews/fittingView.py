@@ -357,11 +357,11 @@ class FittingView(d.Display):
             itemID = event.itemID
             fitID = self.activeFitID
             if fitID is not None:
-                item = Market.getInstance().getItem(event.itemID, eager='group.category')
+                item = Market.getInstance().getItem(itemID, eager='group.category')
                 if item is None or not (item.isModule or item.isSubsystem):
                     event.Skip()
                     return
-                if Fit.getInstance().isAmmo(itemID):
+                if item.isCharge:
                     # If we've selected ammo, then apply to the selected module(s)
                     modules = []
                     sel = self.GetFirstSelected()
@@ -410,22 +410,22 @@ class FittingView(d.Display):
 
             self.mainFrame.command.Submit(cmd.GuiAddLocalModuleCommand(fitID, itemID, self.mods[dstRow].modPosition))
 
-    def swapCargo(self, x, y, srcIdx):
+    def swapCargo(self, x, y, cargoItemID):
         """Swap a module from cargo to fitting window"""
         mstate = wx.GetMouseState()
 
         dstRow, _ = self.HitTest((x, y))
         if dstRow != -1 and dstRow not in self.blanks:
-            module = self.mods[dstRow]
+            mod = self.mods[dstRow]
 
-            if not isinstance(module, Module):
+            if not isinstance(mod, Module):
                 return
 
-            self.mainFrame.command.Submit(cmd.GuiCargoToModuleCommand(
-                    self.mainFrame.getActiveFit(),
-                    module.modPosition,
-                    srcIdx,
-                    mstate.CmdDown() and module.isEmpty))
+            self.mainFrame.command.Submit(cmd.GuiCargoToLocalModuleCommand(
+                fitID=self.mainFrame.getActiveFit(),
+                cargoItemID=cargoItemID,
+                modPosition=mod.modPosition,
+                copy=mstate.CmdDown()))
 
     def swapItems(self, x, y, srcIdx):
         """Swap two modules in fitting window"""

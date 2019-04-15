@@ -87,7 +87,7 @@ class CargoView(d.Display):
 
         if row != -1:
             data = wx.TextDataObject()
-            dataStr = "cargo:" + str(row)
+            dataStr = "cargo:{}".format(self.cargo[row].itemID)
             data.SetText(dataStr)
 
             dropSource = wx.DropSource(self)
@@ -126,7 +126,7 @@ class CargoView(d.Display):
 
         cargoPos = dstRow if dstRow > -1 else None
 
-        self.mainFrame.command.Submit(cmd.GuiModuleToCargoCommand(
+        self.mainFrame.command.Submit(cmd.GuiLocalModuleToCargoCommand(
             self.mainFrame.getActiveFit(),
             module.modPosition,
             cargoPos,
@@ -177,10 +177,7 @@ class CargoView(d.Display):
     def spawnMenu(self, event):
         sel = self.GetFirstSelected()
         if sel != -1:
-            sFit = Fit.getInstance()
-            fit = sFit.getFit(self.mainFrame.getActiveFit())
             cargo = self.cargo[sel]
-
             sMkt = Market.getInstance()
             sourceContext = "cargoItem"
             itemContext = sMkt.getCategoryByItem(cargo.item).name

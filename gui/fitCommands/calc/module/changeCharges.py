@@ -11,11 +11,12 @@ pyfalog = Logger(__name__)
 
 class CalcChangeModuleChargesCommand(wx.Command):
 
-    def __init__(self, fitID, projected, chargeMap):
+    def __init__(self, fitID, projected, chargeMap, commit=True):
         wx.Command.__init__(self, True, 'Change Module Charges')
         self.fitID = fitID
         self.projected = projected
         self.chargeMap = chargeMap
+        self.commit = commit
         self.savedChargeMap = None
 
     def Do(self):
@@ -43,12 +44,17 @@ class CalcChangeModuleChargesCommand(wx.Command):
             self.savedChargeMap[position] = mod.chargeID
             changes = True
             mod.charge = chargeItem
-        if changes:
+        if not changes:
+            return False
+        if self.commit:
             eos.db.commit()
-            return True
-        return False
+        return True
 
     def Undo(self):
         pyfalog.debug('Undoing change of module charges according to map {} on fit {}'.format(self.chargeMap, self.fitID))
-        cmd = CalcChangeModuleChargesCommand(fitID=self.fitID, projected=self.projected, chargeMap=self.savedChargeMap)
+        cmd = CalcChangeModuleChargesCommand(
+            fitID=self.fitID,
+            projected=self.projected,
+            chargeMap=self.savedChargeMap,
+            commit=self.commit)
         return cmd.Do()

@@ -3,17 +3,18 @@ from logbook import Logger
 
 import gui.mainFrame
 from gui import globalEvents as GE
+from gui.fitCommands.calc.cargo.add import CalcAddCargoCommand
 from gui.fitCommands.calc.cargo.remove import CalcRemoveCargoCommand
 from gui.fitCommands.calc.module.localRemove import CalcRemoveLocalModuleCommand
 from gui.fitCommands.calc.module.localReplace import CalcReplaceLocalModuleCommand
 from gui.fitCommands.helpers import ModuleInfo
 from service.fit import Fit
-from gui.fitCommands.calc.cargo.add import CalcAddCargoCommand
+
 
 pyfalog = Logger(__name__)
 
 
-class GuiModuleToCargoCommand(wx.Command):
+class GuiLocalModuleToCargoCommand(wx.Command):
 
     def __init__(self, fitID, moduleIdx, cargoIdx, copy=False):
         wx.Command.__init__(self, True, "Module to Cargo")

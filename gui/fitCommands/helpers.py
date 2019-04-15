@@ -107,10 +107,10 @@ class ModuleInfo:
             mod.spoolAmount = self.spoolAmount
 
         if self.state is not None:
-            if not mod.isValidState(self.state):
-                pyfalog.warning('Cannot set state {}'.format(self.state))
-                return None
-            mod.state = self.state
+            if mod.isValidState(self.state):
+                mod.state = self.state
+            else:
+                mod.state = mod.getMaxState(self.state)
         elif fallbackState is not None:
             if mod.isValidState(fallbackState):
                 mod.state = fallbackState

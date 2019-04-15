@@ -11,8 +11,6 @@ from .gui.commandFit.add import GuiAddCommandFitCommand
 from .gui.commandFit.remove import GuiRemoveCommandFitCommand
 from .gui.commandFit.toggleState import GuiToggleCommandFitStateCommand
 from .gui.fitRename import GuiRenameFitCommand
-from .gui.guiCargoToModule import GuiCargoToModuleCommand
-from .gui.guiModuleToCargo import GuiModuleToCargoCommand
 from .gui.implant.add import GuiAddImplantCommand
 from .gui.implant.changeLocation import GuiChangeImplantLocationCommand
 from .gui.implant.changeMeta import GuiChangeImplantMetaCommand
@@ -43,6 +41,8 @@ from .gui.localModule.mutatedImport import GuiImportLocalMutatedModuleCommand
 from .gui.localModule.mutatedRevert import GuiRevertMutatedLocalModuleCommand
 from .gui.localModule.remove import GuiRemoveLocalModuleCommand
 from .gui.localModule.swap import GuiSwapLocalModulesCommand
+from .gui.localModuleCargo.cargoToLocalModule import GuiCargoToLocalModuleCommand
+from .gui.localModuleCargo.localModuleToCargo import GuiLocalModuleToCargoCommand
 from .gui.projectedDrone.add import GuiAddProjectedDroneCommand
 from .gui.projectedDrone.changeAmount import GuiChangeProjectedDroneAmountCommand
 from .gui.projectedDrone.changeMeta import GuiChangeProjectedDroneMetaCommand

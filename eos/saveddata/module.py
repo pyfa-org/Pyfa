@@ -593,6 +593,12 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
         else:
             return True
 
+    def getMaxState(self, proposedState=None):
+        states = sorted((s for s in FittingModuleState if proposedState is None or s <= proposedState), reverse=True)
+        for state in states:
+            if self.isValidState(state):
+                return state
+
     def canHaveState(self, state=None, projectedOnto=None):
         """
         Check with other modules if there are restrictions that might not allow this module to be activated
