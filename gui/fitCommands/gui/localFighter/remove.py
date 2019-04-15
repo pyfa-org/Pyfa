@@ -17,7 +17,7 @@ class GuiRemoveLocalFighterCommand(wx.Command):
 
     def Do(self):
         cmd = CalcRemoveLocalFighterCommand(fitID=self.fitID, position=self.position)
-        success = self.internalHistory.submit()
+        success = self.internalHistory.submit(cmd)
         Fit.getInstance().recalc(self.fitID)
         wx.PostEvent(gui.mainFrame.MainFrame.getInstance(), GE.FitChanged(fitID=self.fitID))
         return success

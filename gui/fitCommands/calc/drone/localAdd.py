@@ -13,12 +13,13 @@ pyfalog = Logger(__name__)
 
 class CalcAddLocalDroneCommand(wx.Command):
 
-    def __init__(self, fitID, droneInfo):
+    def __init__(self, fitID, droneInfo, forceNewStack=False):
         wx.Command.__init__(self, True, 'Add Drone')
         self.fitID = fitID
         self.droneInfo = droneInfo
         self.savedDroneInfo = None
         self.savedPosition = None
+        self.forceNewStack = forceNewStack
 
     def Do(self):
         pyfalog.debug('Doing addition of local drone {} to fit {}'.format(self.droneInfo, self.fitID))
@@ -26,7 +27,7 @@ class CalcAddLocalDroneCommand(wx.Command):
         item = Market.getInstance().getItem(self.droneInfo.itemID, eager=("attributes", "group.category"))
         # If we're not adding any active drones, check if there's an inactive stack
         # with enough space for new drones and use it
-        if self.droneInfo.amountActive == 0:
+        if not self.forceNewStack and self.droneInfo.amountActive == 0:
             for drone in fit.drones.find(item):
                 if (
                     drone is not None and drone.amountActive == 0 and
