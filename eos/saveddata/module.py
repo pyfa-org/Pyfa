@@ -203,10 +203,13 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
 
     @property
     def numCharges(self):
-        if self.charge is None:
+        return self.getNumCharges(self.charge)
+
+    def getNumCharges(self, charge):
+        if charge is None:
             charges = 0
         else:
-            chargeVolume = self.charge.volume
+            chargeVolume = charge.volume
             containerCapacity = self.item.capacity
             if chargeVolume is None or containerCapacity is None:
                 charges = 0

@@ -39,44 +39,62 @@ class GuiCargoToLocalModuleCommand(wx.Command):
         dstMod = fit.modules[self.dstModPosition]
         # Moving charge from cargo to fit - just attempt to load charge into destination module
         if srcCargo.item.isCharge and not dstMod.isEmpty:
-            cmd = CalcChangeModuleChargesCommand(
+            newCargoChargeItemID = dstMod.chargeID
+            newCargoChargeAmount = dstMod.numCharges
+            newModChargeItemID = self.srcCargoItemID
+            newModChargeAmount = dstMod.getNumCharges(srcCargo.item)
+            if newCargoChargeItemID == newModChargeItemID:
+                return False
+            commands = []
+            if not self.copy:
+                commands.append(CalcRemoveCargoCommand(
+                    fitID=self.fitID,
+                    cargoInfo=CargoInfo(itemID=newModChargeItemID, amount=newModChargeAmount),
+                    commit=False))
+            if newCargoChargeItemID is not None:
+                commands.append(CalcAddCargoCommand(
+                    fitID=self.fitID,
+                    cargoInfo=CargoInfo(itemID=newCargoChargeItemID, amount=newCargoChargeAmount),
+                    commit=False))
+            commands.append(CalcChangeModuleChargesCommand(
                 fitID=self.fitID,
                 projected=False,
                 chargeMap={dstMod.modPosition: self.srcCargoItemID},
-                commit=False)
-            success = self.internalHistory.submit(cmd)
-        # Copying item to empty slot
-        elif srcCargo.item.isModule and self.copy and dstMod.isEmpty:
-            cmd = CalcReplaceLocalModuleCommand(
-                fitID=self.fitID,
-                position=self.dstModPosition,
-                newModInfo=ModuleInfo(itemID=self.srcCargoItemID),
-                commit=False)
-            success = self.internalHistory.submit(cmd)
-            if success:
-                self.addedModItemID = self.srcCargoItemID
-        # Swapping with target module, or moving there if there's no module
-        elif srcCargo.item.isModule and not self.copy:
+                commit=False))
+            success = self.internalHistory.submitBatch(*commands)
+        elif srcCargo.item.isModule:
             dstModItemID = dstMod.itemID
             if self.srcCargoItemID == dstModItemID:
                 return False
             newModInfo = ModuleInfo.fromModule(dstMod)
             newModInfo.itemID = self.srcCargoItemID
             if dstMod.isEmpty:
-                newCargoItemID = None
+                newCargoModItemID = None
+                newCargoChargeItemID = None
+                newCargoChargeAmount = None
             elif dstMod.isMutated:
-                newCargoItemID = dstMod.baseItemID
+                newCargoModItemID = dstMod.baseItemID
+                newCargoChargeItemID = dstMod.chargeID
+                newCargoChargeAmount = dstMod.numCharges
             else:
-                newCargoItemID = dstMod.itemID
+                newCargoModItemID = dstMod.itemID
+                newCargoChargeItemID = dstMod.chargeID
+                newCargoChargeAmount = dstMod.numCharges
             commands = []
-            commands.append(CalcRemoveCargoCommand(
-                fitID=self.fitID,
-                cargoInfo=CargoInfo(itemID=self.srcCargoItemID, amount=1),
-                commit=False))
-            if newCargoItemID is not None:
+            if not self.copy:
+                commands.append(CalcRemoveCargoCommand(
+                    fitID=self.fitID,
+                    cargoInfo=CargoInfo(itemID=self.srcCargoItemID, amount=1),
+                    commit=False))
+            if newCargoModItemID is not None:
                 commands.append(CalcAddCargoCommand(
                     fitID=self.fitID,
-                    cargoInfo=CargoInfo(itemID=newCargoItemID, amount=1),
+                    cargoInfo=CargoInfo(itemID=newCargoModItemID, amount=1),
+                    commit=False))
+            if newCargoChargeItemID is not None:
+                commands.append(CalcAddCargoCommand(
+                    fitID=self.fitID,
+                    cargoInfo=CargoInfo(itemID=newCargoChargeItemID, amount=newCargoChargeAmount),
                     commit=False))
             commands.append(CalcReplaceLocalModuleCommand(
                 fitID=self.fitID,

@@ -110,7 +110,7 @@ class ModuleInfo:
             if mod.isValidState(self.state):
                 mod.state = self.state
             else:
-                mod.state = mod.getMaxState(self.state)
+                mod.state = mod.getMaxState(proposedState=self.state)
         elif fallbackState is not None:
             if mod.isValidState(fallbackState):
                 mod.state = fallbackState
