@@ -142,7 +142,7 @@ class Effect(EqBase):
         """
         if not self.__generated:
             self.__generateHandler()
-        
+
         return self.__effectDef is not None
 
     def isType(self, type):
@@ -151,7 +151,7 @@ class Effect(EqBase):
         """
         if not self.__generated:
             self.__generateHandler()
-        
+
         return self.type is not None and type in self.type
 
     def __generateHandler(self):
@@ -478,8 +478,32 @@ class Item(EqBase):
         cls.ABYSSAL_TYPES = eos.db.getAbyssalTypes()
 
     @property
+    def isModule(self):
+        return self.category.name == 'Module'
+
+    @property
+    def isSubsystem(self):
+        return self.category.name == 'Subsystem'
+
+    @property
     def isCharge(self):
-        return self.category.name == "Charge"
+        return self.category.name == 'Charge'
+
+    @property
+    def isDrone(self):
+        return self.category.name == 'Drone'
+
+    @property
+    def isFighter(self):
+        return self.category.name == 'Fighter'
+
+    @property
+    def isImplant(self):
+        return self.category.name == 'Implant' and self.group.name != 'Booster'
+
+    @property
+    def isBooster(self):
+        return self.group.name == 'Booster' and self.category.name == 'Implant'
 
     def __repr__(self):
         return "Item(ID={}, name={}) at {}".format(

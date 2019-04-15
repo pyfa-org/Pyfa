@@ -19,14 +19,16 @@
 
 # noinspection PyPackageRequirements
 import wx
+
 import gui.display as d
+import gui.fitCommands as cmd
 import gui.globalEvents as GE
-from gui.builtinMarketBrowser.events import ItemSelected, ITEM_SELECTED
+from gui.builtinMarketBrowser.events import ITEM_SELECTED, ItemSelected
 from gui.builtinViewColumns.state import State
 from gui.contextMenu import ContextMenu
 from gui.utils.staticHelpers import DragDropHelper
 from service.fit import Fit
-import gui.fitCommands as cmd
+from service.market import Market
 
 
 class BoosterViewDrop(wx.DropTarget):
@@ -124,10 +126,13 @@ class BoosterView(d.Display):
         event.Skip()
 
     def addItem(self, event):
-        sFit = Fit.getInstance()
-        fitID = self.mainFrame.getActiveFit()
+        item = Market.getInstance().getItem(event.itemID, eager='group')
+        if item is None or not item.isBooster:
+            event.Skip()
+            return
 
-        fit = sFit.getFit(fitID)
+        fitID = self.mainFrame.getActiveFit()
+        fit = Fit.getInstance().getFit(fitID)
 
         if not fit or fit.isStructure:
             event.Skip()

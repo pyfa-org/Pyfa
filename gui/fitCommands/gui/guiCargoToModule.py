@@ -37,6 +37,7 @@ class GuiCargoToModuleCommand(wx.Command):
         result = False
 
         # We're trying to move a charge from cargo to a slot. Use SetCharge command (don't respect move vs copy)
+        # todo: replace with item.ischarge, broken for now
         if sFit.isAmmo(cargo.itemID):
             result = self.internalHistory.Submit(CalcChangeModuleChargesCommand(self.fitID, False, {module.modPosition: cargo.itemID}))
         else:

@@ -357,8 +357,11 @@ class FittingView(d.Display):
             itemID = event.itemID
             fitID = self.activeFitID
             if fitID is not None:
-                sFit = Fit.getInstance()
-                if sFit.isAmmo(itemID):
+                item = Market.getInstance().getItem(event.itemID, eager='group.category')
+                if item is None or not (item.isModule or item.isSubsystem):
+                    event.Skip()
+                    return
+                if Fit.getInstance().isAmmo(itemID):
                     # If we've selected ammo, then apply to the selected module(s)
                     modules = []
                     sel = self.GetFirstSelected()

@@ -402,11 +402,6 @@ class Fit(FitDeprecated):
         self.recalc(fit)
 
     @staticmethod
-    def isAmmo(itemID):
-        # todo: get rid of this form the service, use directly from item
-        return eos.db.getItem(itemID).isCharge
-
-    @staticmethod
     def getTargetResists(fitID):
         pyfalog.debug("Get target resists for fit ID: {0}", fitID)
         if fitID is None:

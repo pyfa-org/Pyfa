@@ -257,8 +257,12 @@ class FighterDisplay(d.Display):
         event.Skip()
 
     def addItem(self, event):
-        fitID = self.mainFrame.getActiveFit()
+        item = Market.getInstance().getItem(event.itemID, eager='group.category')
+        if item is None or not item.isFighter:
+            event.Skip()
+            return
 
+        fitID = self.mainFrame.getActiveFit()
         if self.mainFrame.command.Submit(cmd.GuiAddLocalFighterCommand(fitID, event.itemID)):
             self.mainFrame.additionsPane.select("Fighters")
 

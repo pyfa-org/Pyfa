@@ -175,10 +175,13 @@ class ImplantDisplay(d.Display):
         event.Skip()
 
     def addItem(self, event):
-        sFit = Fit.getInstance()
-        fitID = self.mainFrame.getActiveFit()
+        item = Market.getInstance().getItem(event.itemID, eager='group.category')
+        if item is None or not item.isImplant:
+            event.Skip()
+            return
 
-        fit = sFit.getFit(fitID)
+        fitID = self.mainFrame.getActiveFit()
+        fit = Fit.getInstance().getFit(fitID)
 
         if not fit or fit.isStructure:
             event.Skip()

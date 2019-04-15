@@ -206,11 +206,13 @@ class DroneView(Display):
         event.Skip()
 
     def addItem(self, event):
-        sFit = Fit.getInstance()
+        item = Market.getInstance().getItem(event.itemID, eager='group.category')
+        if item is None or not item.isDrone:
+            event.Skip()
+            return
+
         fitID = self.mainFrame.getActiveFit()
-
-        fit = sFit.getFit(fitID)
-
+        fit = Fit.getInstance().getFit(fitID)
         if not fit or fit.isStructure:
             event.Skip()
             return
