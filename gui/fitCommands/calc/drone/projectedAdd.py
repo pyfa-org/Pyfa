@@ -1,3 +1,5 @@
+import math
+
 import wx
 from logbook import Logger
 
@@ -60,7 +62,7 @@ class CalcAddProjectedDroneCommand(wx.Command):
             drone.amount = self.savedDroneInfo.amount
             drone.amountActive = self.savedDroneInfo.amountActive
             return True
-        # Removing new stack
+        # Removing previously added stack
         from .projectedRemove import CalcRemoveProjectedDroneCommand
-        cmd = CalcRemoveProjectedDroneCommand(fitID=self.fitID, droneInfo=self.droneInfo)
+        cmd = CalcRemoveProjectedDroneCommand(fitID=self.fitID, itemID=self.droneInfo.itemID, amount=math.inf)
         return cmd.Do()

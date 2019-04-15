@@ -11,21 +11,22 @@ pyfalog = Logger(__name__)
 
 class CalcRemoveProjectedDroneCommand(wx.Command):
 
-    def __init__(self, fitID, droneInfo):
+    def __init__(self, fitID, itemID, amount):
         wx.Command.__init__(self, True, 'Remove Projected Drone')
         self.fitID = fitID
-        self.droneInfo = droneInfo
+        self.itemID = itemID
+        self.amountToRemove = amount
         self.savedDroneInfo = None
 
     def Do(self):
-        pyfalog.debug('Doing removal of projected drone {} from fit {}'.format(self.droneInfo, self.fitID))
+        pyfalog.debug('Doing removal of {} projected drones {} from fit {}'.format(self.amountToRemove, self.itemID, self.fitID))
         fit = Fit.getInstance().getFit(self.fitID)
-        drone = next((pd for pd in fit.projectedDrones if pd.itemID == self.droneInfo.itemID), None)
+        drone = next((pd for pd in fit.projectedDrones if pd.itemID == self.itemID), None)
         if drone is None:
             pyfalog.warning('Unable to find projected drone')
             return False
         self.savedDroneInfo = DroneInfo.fromDrone(drone)
-        drone.amount = max(drone.amount - self.droneInfo.amount, 0)
+        drone.amount = max(drone.amount - self.amountToRemove, 0)
         # Remove stack if we have no items remaining
         if drone.amount == 0:
             fit.projectedDrones.remove(drone)
@@ -36,7 +37,7 @@ class CalcRemoveProjectedDroneCommand(wx.Command):
         return True
 
     def Undo(self):
-        pyfalog.debug('Undoing removal of projected drone {} from fit {}'.format(self.droneInfo, self.fitID))
+        pyfalog.debug('Undoing removal of {} projected drones {} from fit {}'.format(self.amountToRemove, self.itemID, self.fitID))
         fit = Fit.getInstance().getFit(self.fitID)
         # Change stack if we still have it
         drone = next((pd for pd in fit.projectedDrones if pd.itemID == self.savedDroneInfo.itemID), None)

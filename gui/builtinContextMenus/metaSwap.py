@@ -19,12 +19,15 @@ class MetaSwap(ContextMenu):
             return False
 
         if self.mainFrame.getActiveFit() is None or srcContext not in (
-                "fittingModule",
-                "droneItem",
-                "fighterItem",
-                "boosterItem",
-                "implantItem",
-                "cargoItem",
+            'fittingModule',
+            'droneItem',
+            'fighterItem',
+            'boosterItem',
+            'implantItem',
+            'cargoItem',
+            'projectedModule',
+            'projectedDrone',
+            'projectedFighter'
         ):
             return False
 
@@ -48,7 +51,7 @@ class MetaSwap(ContextMenu):
         return True
 
     def getText(self, itmContext, selection):
-        return "Variations"
+        return 'Variations'
 
     def getSubMenu(self, context, selection, rootMenu, i, pitem):
         self.moduleLookup = {}
@@ -56,9 +59,9 @@ class MetaSwap(ContextMenu):
         fit = sFit.getFit(self.mainFrame.getActiveFit())
 
         def get_metalevel(x):
-            if "metaLevel" not in x.attributes:
+            if 'metaLevel' not in x.attributes:
                 return 0
-            return x.attributes["metaLevel"].value
+            return x.attributes['metaLevel'].value
 
         def get_metagroup(x):
             return x.metaGroup.ID if x.metaGroup is not None else 0
@@ -78,7 +81,7 @@ class MetaSwap(ContextMenu):
 
         # If on Windows we need to bind out events into the root menu, on other
         # platforms they need to go to our sub menu
-        if "wxMSW" in wx.PlatformInfo:
+        if 'wxMSW' in wx.PlatformInfo:
             bindmenu = rootMenu
         else:
             bindmenu = m
@@ -86,10 +89,10 @@ class MetaSwap(ContextMenu):
         # Sort items by metalevel, and group within that metalevel
         items = list(self.variations)
 
-        if "implantItem" in context:
+        if 'implantItem' in context:
             # sort implants based on name
             items.sort(key=lambda x: x.name)
-        elif "boosterItem" in context:
+        elif 'boosterItem' in context:
             # boosters don't have meta or anything concrete that we can rank by. Go by chance to inflict side effect
             items.sort(key=get_boosterrank)
         else:
@@ -100,14 +103,14 @@ class MetaSwap(ContextMenu):
         group = None
         for item in items:
             # Apparently no metaGroup for the Tech I variant:
-            if "subSystem" in item.effects:
+            if 'subSystem' in item.effects:
                 thisgroup = item.marketGroup.marketGroupName
             elif item.metaGroup is None:
-                thisgroup = "Tech I"
+                thisgroup = 'Tech I'
             else:
                 thisgroup = item.metaGroup.name
 
-            if thisgroup != group and context not in ("implantItem", "boosterItem"):
+            if thisgroup != group and context not in ('implantItem', 'boosterItem'):
                 group = thisgroup
                 id = ContextMenu.nextID()
                 m.Append(id, '─ %s ─' % group)
@@ -133,15 +136,15 @@ class MetaSwap(ContextMenu):
         fit = Fit.getInstance().getFit(fitID)
         if context == 'fittingModule':
             positions = [mod.modPosition for mod in self.selection]
-            self.mainFrame.command.Submit(cmd.GuiChangeModuleMetaCommand(
+            self.mainFrame.command.Submit(cmd.GuiChangeLocalModuleMetasCommand(
                 fitID=fitID, positions=positions, newItemID=item.ID))
         elif context == 'droneItem':
             position = fit.drones.index(self.selection[0])
-            self.mainFrame.command.Submit(cmd.GuiChangeDroneMetaCommand(
+            self.mainFrame.command.Submit(cmd.GuiChangeLocalDroneMetaCommand(
                 fitID=fitID, position=position, newItemID=item.ID))
         elif context == 'fighterItem':
             position = fit.fighters.index(self.selection[0])
-            self.mainFrame.command.Submit(cmd.GuiChangeFighterMetaCommand(
+            self.mainFrame.command.Submit(cmd.GuiChangeLocalFighterMetaCommand(
                 fitID=fitID, position=position, newItemID=item.ID))
         elif context == 'implantItem':
             position = fit.implants.index(self.selection[0])
@@ -154,6 +157,17 @@ class MetaSwap(ContextMenu):
         elif context == 'cargoItem':
             self.mainFrame.command.Submit(cmd.GuiChangeCargoMetaCommand(
                 fitID=fitID, itemID=self.selection[0].itemID, newItemID=item.ID))
+        elif context == 'projectedModule':
+            position = fit.projectedModules.index(self.selection[0])
+            self.mainFrame.command.Submit(cmd.GuiChangeProjectedModuleMetaCommand(
+                fitID=fitID, position=position, newItemID=item.ID))
+        elif context == 'projectedDrone':
+            self.mainFrame.command.Submit(cmd.GuiChangeProjectedDroneMetaCommand(
+                fitID=fitID, itemID=self.selection[0].itemID, newItemID=item.ID))
+        elif context == 'projectedFighter':
+            position = fit.projectedFighters.index(self.selection[0])
+            self.mainFrame.command.Submit(cmd.GuiChangeProjectedFighterMetaCommand(
+                fitID=fitID, position=position, newItemID=item.ID))
 
 
 MetaSwap.register()

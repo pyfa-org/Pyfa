@@ -4,30 +4,33 @@ import wx
 
 import gui.mainFrame
 from gui import globalEvents as GE
-from gui.fitCommands.calc.drone.localAdd import CalcAddLocalDroneCommand
-from gui.fitCommands.calc.drone.localRemove import CalcRemoveLocalDroneCommand
+from gui.fitCommands.calc.drone.projectedAdd import CalcAddProjectedDroneCommand
+from gui.fitCommands.calc.drone.projectedRemove import CalcRemoveProjectedDroneCommand
 from gui.fitCommands.helpers import DroneInfo, InternalCommandHistory
 from service.fit import Fit
 
 
-class GuiChangeLocalDroneMetaCommand(wx.Command):
+class GuiChangeProjectedDroneMetaCommand(wx.Command):
 
-    def __init__(self, fitID, position, newItemID):
-        wx.Command.__init__(self, True, 'Change Local Drone Meta')
+    def __init__(self, fitID, itemID, newItemID):
+        wx.Command.__init__(self, True, 'Change Projected Drone Meta')
         self.internalHistory = InternalCommandHistory()
         self.fitID = fitID
-        self.position = position
+        self.itemID = itemID
         self.newItemID = newItemID
 
     def Do(self):
         sFit = Fit.getInstance()
-        drone = sFit.getFit(self.fitID).drones[self.position]
+        fit = sFit.getFit(self.fitID)
+        drone = next((pd for pd in fit.projectedDrones if pd.itemID == self.itemID), None)
+        if drone is None:
+            return False
         if drone.itemID == self.newItemID:
             return False
         info = DroneInfo.fromDrone(drone)
         info.itemID = self.newItemID
-        cmdRemove = CalcRemoveLocalDroneCommand(fitID=self.fitID, position=self.position, amount=math.inf)
-        cmdAdd = CalcAddLocalDroneCommand(fitID=self.fitID, droneInfo=info, forceNewStack=True)
+        cmdRemove = CalcRemoveProjectedDroneCommand(fitID=self.fitID, itemID=self.itemID, amount=math.inf)
+        cmdAdd = CalcAddProjectedDroneCommand(fitID=self.fitID, droneInfo=info)
         success = self.internalHistory.submitBatch(cmdRemove, cmdAdd)
         sFit.recalc(self.fitID)
         wx.PostEvent(gui.mainFrame.MainFrame.getInstance(), GE.FitChanged(fitID=self.fitID))

@@ -8,10 +8,10 @@ from gui.fitCommands.helpers import InternalCommandHistory, ModuleInfo
 from service.fit import Fit
 
 
-class GuiChangeModuleMetaCommand(wx.Command):
+class GuiChangeLocalModuleMetasCommand(wx.Command):
 
     def __init__(self, fitID, positions, newItemID):
-        wx.Command.__init__(self, True, 'Change Module Meta')
+        wx.Command.__init__(self, True, 'Change Local Module Metas')
         self.internalHistory = InternalCommandHistory()
         self.fitID = fitID
         self.positions = positions
