@@ -18,13 +18,12 @@ class GuiAddImplantCommand(wx.Command):
         self.itemID = itemID
 
     def Do(self):
-        cmdImplant = CalcAddImplantCommand(fitID=self.fitID, implantInfo=ImplantInfo(itemID=self.itemID))
         cmdLocation = CalcChangeImplantLocationCommand(fitID=self.fitID, source=ImplantLocation.FIT)
-        if self.internalHistory.submit(cmdImplant) and self.internalHistory.submit(cmdLocation):
-            Fit.getInstance().recalc(self.fitID)
-            wx.PostEvent(gui.mainFrame.MainFrame.getInstance(), GE.FitChanged(fitID=self.fitID))
-            return True
-        return False
+        cmdAdd = CalcAddImplantCommand(fitID=self.fitID, implantInfo=ImplantInfo(itemID=self.itemID))
+        success = self.internalHistory.submitBatch(cmdLocation, cmdAdd)
+        Fit.getInstance().recalc(self.fitID)
+        wx.PostEvent(gui.mainFrame.MainFrame.getInstance(), GE.FitChanged(fitID=self.fitID))
+        return success
 
     def Undo(self):
         success = self.internalHistory.undoAll()

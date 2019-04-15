@@ -7,31 +7,27 @@ from gui.fitCommands.helpers import BoosterInfo, InternalCommandHistory
 from service.fit import Fit
 
 
-class GuiSwapBoosterMetaCommand(wx.Command):
+class GuiChangeBoosterMetaCommand(wx.Command):
 
-    def __init__(self, fitID, position, itemID):
-        wx.Command.__init__(self, True, 'Swap Booster Meta')
+    def __init__(self, fitID, position, newItemID):
+        wx.Command.__init__(self, True, 'Change Booster Meta')
         self.internalHistory = InternalCommandHistory()
         self.fitID = fitID
         self.position = position
-        self.itemID = itemID
+        self.newItemID = newItemID
 
     def Do(self):
         sFit = Fit.getInstance()
         booster = sFit.getFit(self.fitID).boosters[self.position]
-        if booster.itemID == self.itemID:
+        if booster.itemID == self.newItemID:
             return False
-        cmd = CalcAddBoosterCommand(
-            fitID=self.fitID,
-            boosterInfo=BoosterInfo(
-                itemID=self.itemID,
-                state=booster.active,
-                sideEffects={se.effectID: se.active for se in booster.sideEffects}))
-        if self.internalHistory.submit(cmd):
-            sFit.recalc(self.fitID)
-            wx.PostEvent(gui.mainFrame.MainFrame.getInstance(), GE.FitChanged(fitID=self.fitID))
-            return True
-        return False
+        info = BoosterInfo.fromBooster(booster)
+        info.itemID = self.newItemID
+        cmd = CalcAddBoosterCommand(fitID=self.fitID, boosterInfo=info)
+        success = self.internalHistory.submit(cmd)
+        sFit.recalc(self.fitID)
+        wx.PostEvent(gui.mainFrame.MainFrame.getInstance(), GE.FitChanged(fitID=self.fitID))
+        return success
 
     def Undo(self):
         success = self.internalHistory.undoAll()

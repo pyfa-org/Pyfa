@@ -24,11 +24,10 @@ class GuiChangeLocalModuleSpoolCommand(wx.Command):
             position=self.position,
             spoolType=self.spoolType,
             spoolAmount=self.spoolAmount)
-        if self.internalHistory.submit(cmd):
-            Fit.getInstance().recalc(self.fitID)
-            wx.PostEvent(gui.mainFrame.MainFrame.getInstance(), GE.FitChanged(fitID=self.fitID))
-            return True
-        return False
+        success = self.internalHistory.submit(cmd)
+        Fit.getInstance().recalc(self.fitID)
+        wx.PostEvent(gui.mainFrame.MainFrame.getInstance(), GE.FitChanged(fitID=self.fitID))
+        return success
 
     def Undo(self):
         success = self.internalHistory.undoAll()

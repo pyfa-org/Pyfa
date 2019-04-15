@@ -17,11 +17,10 @@ class GuiChangeImplantLocationCommand(wx.Command):
 
     def Do(self):
         cmd = CalcChangeImplantLocationCommand(fitID=self.fitID, source=self.source)
-        if self.internalHistory.submit(cmd):
-            Fit.getInstance().recalc(self.fitID)
-            wx.PostEvent(gui.mainFrame.MainFrame.getInstance(), GE.FitChanged(fitID=self.fitID))
-            return True
-        return False
+        success = self.internalHistory.submit(cmd)
+        Fit.getInstance().recalc(self.fitID)
+        wx.PostEvent(gui.mainFrame.MainFrame.getInstance(), GE.FitChanged(fitID=self.fitID))
+        return success
 
     def Undo(self):
         success = self.internalHistory.undoAll()

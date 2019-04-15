@@ -37,11 +37,10 @@ class GuiConvertMutatedLocalModuleCommand(wx.Command):
                 state=mod.state,
                 spoolType=mod.spoolType,
                 spoolAmount=mod.spoolAmount))
-        if self.internalHistory.submit(cmd):
-            sFit.recalc(self.fitID)
-            wx.PostEvent(gui.mainFrame.MainFrame.getInstance(), GE.FitChanged(fitID=self.fitID))
-            return True
-        return False
+        success = self.internalHistory.submit(cmd)
+        sFit.recalc(self.fitID)
+        wx.PostEvent(gui.mainFrame.MainFrame.getInstance(), GE.FitChanged(fitID=self.fitID))
+        return success
 
     def Undo(self):
         success = self.internalHistory.undoAll()

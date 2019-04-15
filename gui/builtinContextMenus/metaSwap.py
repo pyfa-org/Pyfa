@@ -131,17 +131,29 @@ class MetaSwap(ContextMenu):
 
         fitID = self.mainFrame.getActiveFit()
         fit = Fit.getInstance().getFit(fitID)
-        if context == 'implantItem':
+        if context == 'fittingModule':
+            positions = [mod.modPosition for mod in self.selection]
+            self.mainFrame.command.Submit(cmd.GuiChangeModuleMetaCommand(
+                fitID=fitID, positions=positions, newItemID=item.ID))
+        elif context == 'droneItem':
+            position = fit.drones.index(self.selection[0])
+            self.mainFrame.command.Submit(cmd.GuiChangeDroneMetaCommand(
+                fitID=fitID, position=position, newItemID=item.ID))
+        elif context == 'fighterItem':
+            position = fit.fighters.index(self.selection[0])
+            self.mainFrame.command.Submit(cmd.GuiChangeFighterMetaCommand(
+                fitID=fitID, position=position, newItemID=item.ID))
+        elif context == 'implantItem':
             position = fit.implants.index(self.selection[0])
-            self.mainFrame.command.Submit(cmd.GuiSwapImplantMetaCommand(
-                fitID=fitID, position=position, itemID=item.ID))
+            self.mainFrame.command.Submit(cmd.GuiChangeImplantMetaCommand(
+                fitID=fitID, position=position, newItemID=item.ID))
         elif context == 'boosterItem':
             position = fit.boosters.index(self.selection[0])
-            self.mainFrame.command.Submit(cmd.GuiSwapBoosterMetaCommand(
-                fitID=fitID, position=position, itemID=item.ID))
-        else:
-            self.mainFrame.command.Submit(cmd.GuiMetaSwapCommand(fitID, context, item.ID, self.selection))
-
+            self.mainFrame.command.Submit(cmd.GuiChangeBoosterMetaCommand(
+                fitID=fitID, position=position, newItemID=item.ID))
+        elif context == 'cargoItem':
+            self.mainFrame.command.Submit(cmd.GuiChangeCargoMetaCommand(
+                fitID=fitID, itemID=self.selection[0].itemID, newItemID=item.ID))
 
 
 MetaSwap.register()

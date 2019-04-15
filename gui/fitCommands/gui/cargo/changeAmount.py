@@ -21,15 +21,11 @@ class GuiChangeCargoAmountCommand(wx.Command):
     def Do(self):
         if self.amount > 0:
             cmd = CalcChangeCargoAmountCommand(fitID=self.fitID, cargoInfo=CargoInfo(itemID=self.itemID, amount=self.amount))
-            if self.internalHistory.submit(cmd):
-                wx.PostEvent(gui.mainFrame.MainFrame.getInstance(), GE.FitChanged(fitID=self.fitID))
-                return True
         else:
             cmd = CalcRemoveCargoCommand(fitID=self.fitID, cargoInfo=CargoInfo(itemID=self.itemID, amount=math.inf))
-            if self.internalHistory.submit(cmd):
-                wx.PostEvent(gui.mainFrame.MainFrame.getInstance(), GE.FitChanged(fitID=self.fitID))
-                return True
-        return False
+        success = self.internalHistory.submit(cmd)
+        wx.PostEvent(gui.mainFrame.MainFrame.getInstance(), GE.FitChanged(fitID=self.fitID))
+        return success
 
     def Undo(self):
         success = self.internalHistory.undoAll()

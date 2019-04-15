@@ -28,24 +28,23 @@ class GuiAddLocalModuleCommand(wx.Command):
             cmd = CalcChangeModuleChargesCommand(fitID=self.fitID, projected=False, chargeMap={position: self.itemID})
             success = self.internalHistory.submit(cmd)
             if not success:
+                Fit.getInstance().recalc(self.fitID)
+                wx.PostEvent(gui.mainFrame.MainFrame.getInstance(), GE.FitChanged(fitID=self.fitID, action='modadd', typeID=self.itemID))
                 return False
         # Module to position
         elif position is not None:
             cmd = CalcReplaceLocalModuleCommand(fitID=self.fitID, position=position, newModInfo=ModuleInfo(itemID=self.itemID))
             success = self.internalHistory.submit(cmd)
-            # Something went wrong with trying to fit the module into specific location,
-            # keep going to append it instead
+            # Something went wrong with trying to fit the module into specific location, keep going to append it instead
             if not success:
                 position = None
         # Module without position
         if position is None:
             cmd = CalcAddLocalModuleCommand(fitID=self.fitID, newModInfo=ModuleInfo(itemID=self.itemID))
             success = self.internalHistory.submit(cmd)
-        if not success:
-            return False
         Fit.getInstance().recalc(self.fitID)
         wx.PostEvent(gui.mainFrame.MainFrame.getInstance(), GE.FitChanged(fitID=self.fitID, action='modadd', typeID=self.itemID))
-        return True
+        return success
 
     def Undo(self):
         success = self.internalHistory.undoAll()

@@ -21,19 +21,29 @@ class InternalCommandHistory:
     def __init__(self):
         self.__buffer = wx.CommandProcessor()
 
-    def submit(self, *args, **kwargs):
-        return self.__buffer.Submit(*args, **kwargs)
+    def submit(self, command):
+        return self.__buffer.Submit(command)
+
+    def submitBatch(self, *commands):
+        for command in commands:
+            if not self.__buffer.Submit(command):
+                # Undo what we already submitted
+                for commandToUndo in reversed(self.__buffer.Commands):
+                    if commandToUndo in commands:
+                        self.__buffer.Undo()
+                return False
+        return True
 
     def undoAll(self):
         undoneCommands = []
         # Undo commands one by one, starting from the last
-        for cmdToUndo in reversed(self.__buffer.Commands):
-            if cmdToUndo.Undo():
-                undoneCommands.append(cmdToUndo)
+        for commandToUndo in reversed(self.__buffer.Commands):
+            if commandToUndo.Undo():
+                undoneCommands.append(commandToUndo)
             # If undoing fails, redo already undone commands, starting from the last undone
             else:
-                for cmdToRedo in reversed(undoneCommands):
-                    if not cmdToRedo.Do():
+                for commandToRedo in reversed(undoneCommands):
+                    if not commandToRedo.Do():
                         break
                 self.__buffer.ClearCommands()
                 return False

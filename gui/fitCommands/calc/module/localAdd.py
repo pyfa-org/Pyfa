@@ -12,12 +12,13 @@ pyfalog = Logger(__name__)
 
 class CalcAddLocalModuleCommand(wx.Command):
 
-    def __init__(self, fitID, newModInfo):
+    def __init__(self, fitID, newModInfo, commit=True):
         wx.Command.__init__(self, True, 'Add Module')
         self.fitID = fitID
         self.newModInfo = newModInfo
         self.savedPosition = None
         self.subsystemCmd = None
+        self.commit = commit
 
     def Do(self):
         pyfalog.debug('Doing addition of local module {} to fit {}'.format(self.newModInfo, self.fitID))
@@ -45,10 +46,12 @@ class CalcAddLocalModuleCommand(wx.Command):
             fit.modules.append(newMod)
         except HandledListActionError:
             pyfalog.warning('Failed to append to list')
-            eos.db.commit()
+            if self.commit:
+                eos.db.commit()
             return False
         sFit.checkStates(fit, newMod)
-        eos.db.commit()
+        if self.commit:
+            eos.db.commit()
         self.savedPosition = newMod.modPosition
         return True
 
@@ -60,5 +63,5 @@ class CalcAddLocalModuleCommand(wx.Command):
         from .localRemove import CalcRemoveLocalModuleCommand
         if self.savedPosition is None:
             return False
-        cmd = CalcRemoveLocalModuleCommand(fitID=self.fitID, positions=[self.savedPosition])
+        cmd = CalcRemoveLocalModuleCommand(fitID=self.fitID, positions=[self.savedPosition], commit=self.commit)
         return cmd.Do()

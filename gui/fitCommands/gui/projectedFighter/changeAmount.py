@@ -20,17 +20,12 @@ class GuiChangeProjectedFighterAmountCommand(wx.Command):
     def Do(self):
         if self.amount > 0:
             cmd = CalcChangeFighterAmountCommand(fitID=self.fitID, projected=True, position=self.position, amount=self.amount)
-            if self.internalHistory.submit(cmd):
-                Fit.getInstance().recalc(self.fitID)
-                wx.PostEvent(gui.mainFrame.MainFrame.getInstance(), GE.FitChanged(fitID=self.fitID))
-                return True
         else:
             cmd = CalcRemoveProjectedFighterCommand(fitID=self.fitID, position=self.position)
-            if self.internalHistory.submit(cmd):
-                Fit.getInstance().recalc(self.fitID)
-                wx.PostEvent(gui.mainFrame.MainFrame.getInstance(), GE.FitChanged(fitID=self.fitID))
-                return True
-        return False
+        success = self.internalHistory.submit(cmd)
+        Fit.getInstance().recalc(self.fitID)
+        wx.PostEvent(gui.mainFrame.MainFrame.getInstance(), GE.FitChanged(fitID=self.fitID))
+        return success
 
     def Undo(self):
         success = self.internalHistory.undoAll()

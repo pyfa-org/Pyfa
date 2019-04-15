@@ -16,10 +16,9 @@ class GuiRenameFitCommand(wx.Command):
 
     def Do(self):
         cmd = CalcFitRenameCommand(fitID=self.fitID, name=self.name)
-        if self.internalHistory.submit(cmd):
-            wx.PostEvent(gui.mainFrame.MainFrame.getInstance(), FitRenamed(fitID=self.fitID))
-            return True
-        return False
+        success = self.internalHistory.submit(cmd)
+        wx.PostEvent(gui.mainFrame.MainFrame.getInstance(), FitRenamed(fitID=self.fitID))
+        return success
 
     def Undo(self):
         success = self.internalHistory.undoAll()
