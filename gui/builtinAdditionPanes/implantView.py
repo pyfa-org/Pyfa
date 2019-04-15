@@ -94,7 +94,8 @@ class ImplantView(wx.Panel):
     def OnRadioSelect(self, event):
         fitID = self.mainFrame.getActiveFit()
         if fitID is not None:
-            self.mainFrame.command.Submit(cmd.GuiChangeImplantLocationCommand(fitID, ImplantLocation.FIT if self.rbFit.GetValue() else ImplantLocation.CHARACTER))
+            self.mainFrame.command.Submit(cmd.GuiChangeImplantLocationCommand(
+                fitID=fitID, source=ImplantLocation.FIT if self.rbFit.GetValue() else ImplantLocation.CHARACTER))
 
 
 class ImplantDisplay(d.Display):
@@ -158,7 +159,7 @@ class ImplantDisplay(d.Display):
         self.original = fit.implants if fit is not None else None
         self.implants = fit.appliedImplants[:] if fit is not None else None
         if self.implants is not None:
-            self.implants.sort(key=lambda implant: implant.slot)
+            self.implants.sort(key=lambda implant: implant.slot or 0)
 
         if event.fitID != self.lastFitId:
             self.lastFitId = event.fitID
@@ -232,8 +233,7 @@ class ImplantDisplay(d.Display):
             return
 
         if sel != -1:
-            implant = fit.appliedImplants[sel]
-
+            implant = self.implants[sel]
             sMkt = Market.getInstance()
             sourceContext = "implantItem" if fit.implantSource == ImplantLocation.FIT else "implantItemChar"
             itemContext = sMkt.getCategoryByItem(implant.item).name

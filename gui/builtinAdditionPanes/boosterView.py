@@ -110,7 +110,6 @@ class BoosterView(d.Display):
         if self.boosters is not None:
             self.boosters.sort(key=lambda booster: booster.slot or 0)
 
-
         if event.fitID != self.lastFitId:
             self.lastFitId = event.fitID
 
@@ -121,8 +120,7 @@ class BoosterView(d.Display):
 
             self.deselectItems()
 
-        self.populate(self.boosters)
-        self.refresh(self.boosters)
+        self.update(self.boosters)
         event.Skip()
 
     def addItem(self, event):
@@ -164,10 +162,8 @@ class BoosterView(d.Display):
     def spawnMenu(self, event):
         sel = self.GetFirstSelected()
         if sel != -1:
-            sFit = Fit.getInstance()
-            item = self.boosters[sel]
-
+            booster = self.boosters[sel]
             srcContext = "boosterItem"
             itemContext = "Booster"
-            menu = ContextMenu.getMenu((item,), (srcContext, itemContext))
+            menu = ContextMenu.getMenu((booster,), (srcContext, itemContext))
             self.PopupMenu(menu)

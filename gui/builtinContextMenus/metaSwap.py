@@ -131,12 +131,11 @@ class MetaSwap(ContextMenu):
 
         fitID = self.mainFrame.getActiveFit()
         fit = Fit.getInstance().getFit(fitID)
-
         if context == 'implantItem':
             position = fit.implants.index(self.selection[0])
             self.mainFrame.command.Submit(cmd.GuiSwapImplantMetaCommand(
                 fitID=fitID, position=position, itemID=item.ID))
-        if context == 'boosterItem':
+        elif context == 'boosterItem':
             position = fit.boosters.index(self.selection[0])
             self.mainFrame.command.Submit(cmd.GuiSwapBoosterMetaCommand(
                 fitID=fitID, position=position, itemID=item.ID))
