@@ -14,13 +14,13 @@ class TabbedFits(ContextMenu):
 
     def display(self, srcContext, selection):
 
-        if self.mainFrame.getActiveFit() is None or srcContext not in ("projected", "commandView"):
+        if self.mainFrame.getActiveFit() is None or srcContext not in ('projected', 'commandView'):
             return False
 
         return True
 
     def getText(self, itmContext, selection):
-        return "Currently Open Fits"
+        return 'Add Currently Open Fit'
 
     def getSubMenu(self, context, selection, rootMenu, i, pitem):
         self.fitLookup = {}
