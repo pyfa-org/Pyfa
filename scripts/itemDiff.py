@@ -52,28 +52,21 @@ def main(old, new, groups=True, effects=True, attributes=True, renames=True):
 
     # Initialization of few things used by both changed/renamed effects list
     script_dir = os.path.dirname(__file__)
-    effectspath = os.path.join(script_dir, "..", "eos", "effects")
+    effectspath = os.path.join(script_dir, "..", "eos", "effects.py")
     implemented = set()
 
-    for filename in os.listdir(effectspath):
-        if filename.startswith("_") or not filename.endswith(".py"):
-            continue
-
-        basename, _ = filename.rsplit('.', 1)
-        # Ignore non-py files and exclude implementation-specific 'effect'
-        implemented.add(basename)
+    with open(effectspath) as f:
+        for line in f:
+            for m in re.finditer('class Effect(?P<eid>\d+)\(BaseEffect\):', line):
+                effectid = int(m.group('eid'))
+                implemented.add(effectid)
 
     # Effects' names are used w/o any special symbols by eos
     stripspec = "[^A-Za-z0-9]"
 
     # Method to get data if effect is implemented in eos or not
-    def geteffst(effectname):
-        eosname = re.sub(stripspec, "", effectname).lower()
-        if eosname in implemented:
-            impstate = True
-        else:
-            impstate = False
-        return impstate
+    def geteffst(effectid):
+        return effectid in implemented
 
     def findrenames(ren_dict, query, strip=False):
 
@@ -96,15 +89,12 @@ def main(old, new, groups=True, effects=True, attributes=True, renames=True):
                 ren_dict[id] = (oldname, newname)
         return
 
-    def printrenames(ren_dict, title, implementedtag=False):
+    def printrenames(ren_dict, title):
         if len(ren_dict) > 0:
             print('\nRenamed ' + title + ':')
             for id in sorted(ren_dict):
                 couple = ren_dict[id]
-                if implementedtag:
-                    print(("\n[{0}] \"{1}\"\n[{2}] \"{3}\"".format(geteffst(couple[0]), couple[0], geteffst(couple[1]), couple[1])))
-                else:
-                    print(("    \"{0}\": \"{1}\",".format(couple[0].encode('utf-8'), couple[1].encode('utf-8'))))
+                print(("    \"{0}\": \"{1}\",".format(couple[0].encode('utf-8'), couple[1].encode('utf-8'))))
 
     groupcats = {}
     def getgroupcat(grp):
@@ -411,7 +401,7 @@ def main(old, new, groups=True, effects=True, attributes=True, renames=True):
 
     if renames:
         title = 'effects'
-        printrenames(ren_effects, title, implementedtag=True)
+        printrenames(ren_effects, title)
 
         title = 'attributes'
         printrenames(ren_attributes, title)
@@ -476,7 +466,7 @@ def main(old, new, groups=True, effects=True, attributes=True, renames=True):
                         for eff in efforder:
                             # Take tag from item if item was added or removed
                             tag = TG[effstate] if itmstate not in (S["removed"], S["added"]) else TG[itmstate]
-                            print(("  [{0}|{1}] {2}".format(tag, "y" if geteffst(geteffectname(eff)) else "n", geteffectname(eff))))
+                            print(("  [{0}|{1}] {2}".format(tag, "y" if geteffst(eff) else "n", geteffectname(eff))))
 
                     attrdata = items[item][2]
                     for attrstate in stateorder:
