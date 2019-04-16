@@ -114,8 +114,8 @@ class PriceViewMinimal(StatsView):
                 for booster in fit.boosters:
                     booster_price += booster.item.price.price
 
-            if fit.implants:
-                for implant in fit.implants:
+            if fit.appliedImplants:
+                for implant in fit.appliedImplants:
                     implant_price += implant.item.price.price
 
         fitting_price = module_price

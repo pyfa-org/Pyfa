@@ -41,7 +41,6 @@ class CalcAddLocalModuleCommand(wx.Command):
         if not newMod.fits(fit):
             pyfalog.warning('Module does not fit')
             return False
-
         newMod.owner = fit
         try:
             fit.modules.append(newMod)

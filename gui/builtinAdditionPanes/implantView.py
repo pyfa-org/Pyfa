@@ -156,7 +156,7 @@ class ImplantDisplay(d.Display):
             event.Skip()
             return
 
-        self.original = fit.implants if fit is not None else None
+        self.original = fit.appliedImplants if fit is not None else None
         self.implants = fit.appliedImplants[:] if fit is not None else None
         if self.implants is not None:
             self.implants.sort(key=lambda implant: implant.slot or 0)

@@ -485,20 +485,20 @@ class Fit(FitDeprecated):
         return changedMods, changedProjMods, changedProjDrones
 
     @classmethod
-    def fitObjectIter(cls, fit):
+    def fitObjectIter(cls, fit, forceFitImplants=False):
         yield fit.ship
 
         for mod in fit.modules:
             if not mod.isEmpty:
                 yield mod
-
-        for container in (fit.drones, fit.fighters, fit.implants, fit.boosters, fit.cargo):
+        implants = fit.implants if forceFitImplants else fit.appliedImplants
+        for container in (fit.drones, fit.fighters, implants, fit.boosters, fit.cargo):
             for obj in container:
                 yield obj
 
     @classmethod
-    def fitItemIter(cls, fit):
-        for fitobj in cls.fitObjectIter(fit):
+    def fitItemIter(cls, fit, forceFitImplants=False):
+        for fitobj in cls.fitObjectIter(fit, forceFitImplants):
             yield fitobj.item
             charge = getattr(fitobj, 'charge', None)
             if charge:

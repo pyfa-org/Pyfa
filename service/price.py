@@ -165,7 +165,6 @@ class Price:
             except Exception as e:
                 pyfalog.critical("Execution of callback from getPrices failed.")
                 pyfalog.critical(e)
-
             db.commit()
 
         if waitforthread:
