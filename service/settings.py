@@ -474,7 +474,6 @@ class ContextMenuSettings(object):
             "droneRemoveStack"      : 1,
             "droneSplit"            : 1,
             "droneStack"            : 1,
-            "factorReload"          : 1,
             "fighterAbilities"      : 1,
             "implantSets"           : 1,
             "itemStats"             : 1,
