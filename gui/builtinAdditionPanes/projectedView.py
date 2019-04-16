@@ -155,20 +155,6 @@ class ProjectedView(d.Display):
             DragDropHelper.data = dataStr
             dropSource.DoDragDrop()
 
-    def mergeDrones(self, x, y, itemID):
-        srcRow = self.FindItemData(-1, itemID)
-        dstRow, _ = self.HitTest((x, y))
-        if srcRow != -1 and dstRow != -1:
-            self._merge(srcRow, dstRow)
-
-    def _merge(self, src, dst):
-        dstDrone = self.get(dst)
-        if isinstance(dstDrone, es_Drone):
-            sFit = Fit.getInstance()
-            fitID = self.mainFrame.getActiveFit()
-            if sFit.mergeDrones(fitID, self.get(src), dstDrone, True):
-                wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fitID))
-
     @staticmethod
     def moduleSort(module):
         return not module.isExclusiveSystemEffect, module.item.name

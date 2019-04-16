@@ -72,33 +72,6 @@ class FitDeprecated(object):
         return True
 
     @deprecated
-    def mergeDrones(self, fitID, d1, d2, projected=False):
-        pyfalog.debug("Merging drones on fit ID: {0}", fitID)
-        if fitID is None:
-            return False
-
-        fit = eos.db.getFit(fitID)
-        if d1.item != d2.item:
-            return False
-
-        if projected:
-            fit.projectedDrones.remove(d1)
-        else:
-            fit.drones.remove(d1)
-
-        d2.amount += d1.amount
-        d2.amountActive += d1.amountActive
-
-        # If we have less than the total number of drones active, make them all active. Fixes #728
-        # This could be removed if we ever add an enhancement to make drone stacks partially active.
-        if d2.amount > d2.amountActive:
-            d2.amountActive = d2.amount
-
-        eos.db.commit()
-        self.recalc(fit)
-        return True
-
-    @deprecated
     def removeDrone(self, fitID, i, numDronesToRemove=1, recalc=True):
         pyfalog.debug("Removing {0} drones for fit ID: {1}", numDronesToRemove, fitID)
         fit = eos.db.getFit(fitID)

@@ -144,22 +144,21 @@ class DroneView(Display):
             data[0] is hard-coded str of originating source
             data[1] is typeID or index of data we want to manipulate
         """
-        if data[0] == "drone":  # we want to merge drones
-            pass
-            # remove merge functionality, if people complain in the next while, can add it back
-            # srcRow = int(data[1])
-            # dstRow, _ = self.HitTest((x, y))
-            # if srcRow != -1 and dstRow != -1:
-            #     self._merge(srcRow, dstRow)
+        if data[0] == "drone":
+            srcRow = int(data[1])
+            dstRow, _ = self.HitTest((x, y))
+            if srcRow != -1 and dstRow != -1:
+                self._merge(srcRow, dstRow)
         elif data[0] == "market":
             wx.PostEvent(self.mainFrame, ItemSelected(itemID=int(data[1])))
 
-    def _merge(self, src, dst):
-        sFit = Fit.getInstance()
+    def _merge(self, srcRow, dstRow):
         fitID = self.mainFrame.getActiveFit()
-
-        if sFit.mergeDrones(fitID, self.drones[src], self.drones[dst]):
-            wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fitID))
+        fit = Fit.getInstance().getFit(fitID)
+        self.mainFrame.command.Submit(cmd.GuiMergeLocalDroneStacksCommand(
+            fitID=fitID,
+            srcPosition=fit.drones.index(self.drones[srcRow]),
+            dstPosition=fit.drones.index(self.drones[dstRow])))
 
     DRONE_ORDER = ('Light Scout Drones', 'Medium Scout Drones',
                    'Heavy Attack Drones', 'Sentry Drones', 'Combat Utility Drones',
