@@ -1719,7 +1719,7 @@ class Effect596(BaseEffect):
     ammoInfluenceRange
 
     Used by:
-    Items from category: Charge (587 of 949)
+    Items from category: Charge (587 of 951)
     """
 
     type = 'passive'
@@ -1734,9 +1734,9 @@ class Effect598(BaseEffect):
     ammoSpeedMultiplier
 
     Used by:
-    Charges from group: Festival Charges (26 of 26)
+    Charges from group: Festival Charges (28 of 28)
     Charges from group: Interdiction Probe (2 of 2)
-    Items from market group: Special Edition Assets > Special Edition Festival Assets (30 of 33)
+    Items from market group: Special Edition Assets > Special Edition Festival Assets (32 of 35)
     """
 
     type = 'passive'
@@ -1771,7 +1771,7 @@ class Effect600(BaseEffect):
     ammoTrackingMultiplier
 
     Used by:
-    Items from category: Charge (182 of 949)
+    Items from category: Charge (182 of 951)
     Charges from group: Projectile Ammo (128 of 128)
     """
 
@@ -2298,7 +2298,7 @@ class Effect804(BaseEffect):
     ammoInfluenceCapNeed
 
     Used by:
-    Items from category: Charge (493 of 949)
+    Items from category: Charge (493 of 951)
     """
 
     type = 'passive'
@@ -7758,7 +7758,7 @@ class Effect2737(BaseEffect):
     boosterShieldCapacityPenalty
 
     Used by:
-    Implants from group: Booster (12 of 70)
+    Implants from group: Booster (12 of 67)
     """
 
     attr = 'boosterShieldCapacityPenalty'
@@ -19964,22 +19964,6 @@ class Effect5389(BaseEffect):
                                      'trackingSpeed', ship.getModifiedItemAttr('shipBonusGC'), skill='Gallente Cruiser')
 
 
-class Effect5390(BaseEffect):
-    """
-    shipBonusDroneMWDboostGC
-
-    Used by:
-    Ship: Vexor Navy Issue
-    """
-
-    type = 'passive'
-
-    @staticmethod
-    def handler(fit, ship, context):
-        fit.drones.filteredItemBoost(lambda drone: drone.item.requiresSkill('Drones'),
-                                     'maxVelocity', ship.getModifiedItemAttr('shipBonusGC'), skill='Gallente Cruiser')
-
-
 class Effect5397(BaseEffect):
     """
     baseMaxScanDeviationModifierModuleOnline2None
@@ -22476,7 +22460,6 @@ class Effect5822(BaseEffect):
 
     Used by:
     Ship: Chameleon
-    Ship: Gila
     """
 
     type = 'passive'
@@ -22493,7 +22476,6 @@ class Effect5823(BaseEffect):
 
     Used by:
     Ship: Chameleon
-    Ship: Gila
     """
 
     type = 'passive'
@@ -22510,7 +22492,6 @@ class Effect5824(BaseEffect):
 
     Used by:
     Ship: Chameleon
-    Ship: Gila
     """
 
     type = 'passive'
@@ -35597,3 +35578,51 @@ class Effect7183(BaseEffect):
     def handler(fit, src, context):
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Warp Scrambler', 'maxRange',
                                       src.getModifiedItemAttr('warpScrambleRangeBonus'), stackingPenalties=False)
+
+
+class Effect7184(BaseEffect):
+    """
+    shipBonusMediumDroneHProle8
+
+    Used by:
+    Ship: Gila
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context):
+        fit.drones.filteredItemBoost(lambda drone: drone.item.requiresSkill('Medium Drone Operation'),
+                                     'hp', ship.getModifiedItemAttr('shipBonusRole8'))
+
+
+class Effect7185(BaseEffect):
+    """
+    shipBonusMediumDroneShieldHProle8
+
+    Used by:
+    Ship: Gila
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context):
+        fit.drones.filteredItemBoost(lambda drone: drone.item.requiresSkill('Medium Drone Operation'),
+                                     'shieldCapacity', ship.getModifiedItemAttr('shipBonusRole8'))
+
+
+class Effect7186(BaseEffect):
+    """
+    shipBonusMediumDroneArmorHProle8
+
+    Used by:
+    Ship: Gila
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context):
+        fit.drones.filteredItemBoost(lambda drone: drone.item.requiresSkill('Medium Drone Operation'),
+                                     'armorHP', ship.getModifiedItemAttr('shipBonusRole8'))
