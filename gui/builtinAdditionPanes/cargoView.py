@@ -112,26 +112,11 @@ class CargoView(d.Display):
         dstRow, _ = self.HitTest((x, y))
         mstate = wx.GetMouseState()
 
-        # Gather module information to get position
-        module = fit.modules[modIdx]
-
-        if module.item.isAbyssal:
-            dlg = wx.MessageDialog(self,
-               "Moving this Abyssal module to the cargo will convert it to the base module. Do you wish to proceed?",
-               "Confirm", wx.YES_NO | wx.ICON_QUESTION)
-            result = dlg.ShowModal() == wx.ID_YES
-
-            if not result:
-                return
-
-        cargoPos = dstRow if dstRow > -1 else None
-
         self.mainFrame.command.Submit(cmd.GuiLocalModuleToCargoCommand(
-            self.mainFrame.getActiveFit(),
-            module.modPosition,
-            cargoPos,
-            mstate.cmdDown
-        ))
+            fitID=self.mainFrame.getActiveFit(),
+            modPosition=fit.modules[modIdx].modPosition,
+            cargoItemID=self.cargo[dstRow].itemID if dstRow > -1 else None,
+            copy=mstate.cmdDown))
 
     def fitChanged(self, event):
         sFit = Fit.getInstance()

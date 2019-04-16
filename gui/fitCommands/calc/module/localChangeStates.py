@@ -44,8 +44,9 @@ class CalcChangeLocalModuleStatesCommand(wx.Command):
                 mod.state = proposedState
         if not changed:
             return False
-        eos.db.commit()
+        sFit.recalc(self.fitID)
         sFit.checkStates(fit, mainMod)
+        eos.db.commit()
         return True
 
     def Undo(self):

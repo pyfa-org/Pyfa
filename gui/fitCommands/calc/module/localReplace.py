@@ -20,9 +20,11 @@ class CalcReplaceLocalModuleCommand(wx.Command):
         self.oldModInfo = None
         self.unloadInvalidCharges = unloadInvalidCharges
         self.commit = commit
+        self.unloadedCharge = None
 
     def Do(self):
         pyfalog.debug('Doing replacement of local module at position {} to {} on fit {}'.format(self.newModInfo, self.position, self.fitID))
+        self.unloadedCharge = False
         sFit = Fit.getInstance()
         fit = sFit.getFit(self.fitID)
         oldMod = fit.modules[self.position]
@@ -42,6 +44,7 @@ class CalcReplaceLocalModuleCommand(wx.Command):
         if not newMod.isValidCharge(newMod.charge):
             if self.unloadInvalidCharges:
                 newMod.charge = None
+                self.unloadedCharge = True
             else:
                 pyfalog.warning('Invalid charge')
                 self.Undo()
@@ -53,6 +56,7 @@ class CalcReplaceLocalModuleCommand(wx.Command):
             pyfalog.warning('Failed to replace in list')
             self.Undo()
             return False
+        sFit.recalc(self.fitID)
         sFit.checkStates(fit, newMod)
         if self.commit:
             eos.db.commit()
@@ -83,6 +87,7 @@ class CalcReplaceLocalModuleCommand(wx.Command):
             pyfalog.warning('Failed to replace in list')
             self.Do()
             return False
+        sFit.recalc(self.fitID)
         sFit.checkStates(fit, oldMod)
         if self.commit:
             eos.db.commit()

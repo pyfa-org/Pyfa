@@ -49,10 +49,11 @@ class CalcAddLocalModuleCommand(wx.Command):
             if self.commit:
                 eos.db.commit()
             return False
+        self.savedPosition = newMod.modPosition
+        sFit.recalc(self.fitID)
         sFit.checkStates(fit, newMod)
         if self.commit:
             eos.db.commit()
-        self.savedPosition = newMod.modPosition
         return True
 
     def Undo(self):

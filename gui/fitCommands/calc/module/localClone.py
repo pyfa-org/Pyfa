@@ -36,6 +36,7 @@ class CalcCloneLocalModuleCommand(wx.Command):
             pyfalog.warning('Failed to replace module')
             eos.db.commit()
             return False
+        sFit.recalc(self.fitID)
         sFit.checkStates(fit, copyMod)
         eos.db.commit()
         return True
