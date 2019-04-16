@@ -12,7 +12,7 @@ from service.fit import Fit
 from service.settings import ContextMenuSettings
 
 
-class DamagePattern(ContextMenu):
+class ChangeDamagePattern(ContextMenu):
     def __init__(self):
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
         self.settings = ContextMenuSettings.getInstance()
@@ -115,4 +115,4 @@ class DamagePattern(ContextMenu):
         wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fitID))
 
 
-DamagePattern.register()
+ChangeDamagePattern.register()

@@ -1,14 +1,14 @@
 import gui.fitCommands as cmd
 import gui.mainFrame
-from gui.builtinContextMenus.moduleAmmoPicker import ModuleAmmoPicker
+from gui.builtinContextMenus.moduleAmmoChange import ChangeModuleAmmo
 from service.fit import Fit
 from service.settings import ContextMenuSettings
 
 
-class ModuleGlobalAmmoPicker(ModuleAmmoPicker):
+class ChangeModuleAmmoAll(ChangeModuleAmmo):
 
     def __init__(self):
-        super(ModuleGlobalAmmoPicker, self).__init__()
+        super(ChangeModuleAmmoAll, self).__init__()
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
         self.settings = ContextMenuSettings.getInstance()
 
@@ -52,7 +52,7 @@ class ModuleGlobalAmmoPicker(ModuleAmmoPicker):
             if selectionLen != 1:
                 return False
 
-        return super(ModuleGlobalAmmoPicker, self).display(srcContext, selection)
+        return super(ChangeModuleAmmoAll, self).display(srcContext, selection)
 
 
-ModuleGlobalAmmoPicker.register()
+ChangeModuleAmmoAll.register()

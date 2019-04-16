@@ -10,7 +10,7 @@ from service.market import Market
 from service.settings import ContextMenuSettings
 
 
-class ModuleAmmoPicker(ContextMenu):
+class ChangeModuleAmmo(ContextMenu):
     DAMAGE_TYPES = ("em", "explosive", "kinetic", "thermal")
     MISSILE_ORDER = ("em", "thermal", "kinetic", "explosive", "mixed")
 
@@ -235,4 +235,4 @@ class ModuleAmmoPicker(ContextMenu):
                 fitID=fitID, modules=self.modules, chargeItemID=charge.ID if charge is not None else None))
 
 
-ModuleAmmoPicker.register()
+ChangeModuleAmmo.register()

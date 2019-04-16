@@ -7,7 +7,7 @@ from service.fit import Fit
 from service.settings import ContextMenuSettings
 
 
-class AmmoPattern(ContextMenu):
+class AmmoToDmgPattern(ContextMenu):
     def __init__(self):
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
         self.settings = ContextMenuSettings.getInstance()
@@ -40,4 +40,4 @@ class AmmoPattern(ContextMenu):
         return None
 
 
-AmmoPattern.register()
+AmmoToDmgPattern.register()

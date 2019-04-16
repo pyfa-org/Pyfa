@@ -9,7 +9,7 @@ from service.market import Market
 from service.settings import ContextMenuSettings
 
 
-class MetaSwap(ContextMenu):
+class ChangeItemToVariation(ContextMenu):
     def __init__(self):
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
         self.settings = ContextMenuSettings.getInstance()
@@ -170,4 +170,4 @@ class MetaSwap(ContextMenu):
                 fitID=fitID, position=position, newItemID=item.ID))
 
 
-MetaSwap.register()
+ChangeItemToVariation.register()

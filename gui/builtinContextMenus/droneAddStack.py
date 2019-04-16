@@ -4,32 +4,34 @@ from gui.contextMenu import ContextMenu
 from service.settings import ContextMenuSettings
 
 
-class CargoAmmo(ContextMenu):
+class DroneAddStack(ContextMenu):
+
     def __init__(self):
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
         self.settings = ContextMenuSettings.getInstance()
 
     def display(self, srcContext, selection):
-        if not self.settings.get('cargoAmmo'):
+        if not self.settings.get('droneStack'):
             return False
 
-        if srcContext not in ("marketItemGroup", "marketItemMisc") or self.mainFrame.getActiveFit() is None:
+        if srcContext not in ('marketItemGroup', 'marketItemMisc') or self.mainFrame.getActiveFit() is None:
             return False
 
         for selected_item in selection:
             if selected_item.category.ID in (
-                    8,  # Charge
+                    18,  # Drones
             ):
                 return True
 
+        return False
+
     def getText(self, itmContext, selection):
-        return "Add {0} to Cargo (x1000)".format(itmContext)
+        return "Add {0} to Drone Bay (x5)".format(itmContext)
 
     def activate(self, fullContext, selection, i):
-        fitID = self.mainFrame.getActiveFit()
-        typeID = int(selection[0].ID)
-        self.mainFrame.command.Submit(cmd.GuiAddCargoCommand(fitID, typeID, 1000))
-        self.mainFrame.additionsPane.select("Cargo")
+        self.mainFrame.command.Submit(cmd.GuiAddLocalDroneCommand(
+            fitID=self.mainFrame.getActiveFit(), itemID=int(selection[0].ID), amount=5))
+        self.mainFrame.additionsPane.select('Drones')
 
 
-CargoAmmo.register()
+DroneAddStack.register()

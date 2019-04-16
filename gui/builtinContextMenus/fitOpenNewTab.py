@@ -7,7 +7,7 @@ from gui.contextMenu import ContextMenu
 from service.settings import ContextMenuSettings
 
 
-class OpenFit(ContextMenu):
+class OpenFitInNewTab(ContextMenu):
     def __init__(self):
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
         self.settings = ContextMenuSettings.getInstance()
@@ -31,4 +31,4 @@ class OpenFit(ContextMenu):
         wx.PostEvent(self.mainFrame, FitSelected(fitID=fit.ID, startup=2))
 
 
-OpenFit.register()
+OpenFitInNewTab.register()

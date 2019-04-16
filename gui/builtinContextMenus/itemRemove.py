@@ -5,7 +5,7 @@ from service.fit import Fit
 from service.settings import ContextMenuSettings
 
 
-class ItemRemove(ContextMenu):
+class RemoveItem(ContextMenu):
     def __init__(self):
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
         self.settings = ContextMenuSettings.getInstance()
@@ -73,4 +73,4 @@ class ItemRemove(ContextMenu):
                 fitID=fitID, commandFitID=selection[0].ID))
 
 
-ItemRemove.register()
+RemoveItem.register()

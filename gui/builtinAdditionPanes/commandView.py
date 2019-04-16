@@ -25,7 +25,7 @@ import gui.display as d
 import gui.globalEvents as GE
 from gui.builtinShipBrowser.events import EVT_FIT_REMOVED
 from eos.saveddata.drone import Drone as es_Drone
-from gui.builtinContextMenus.commandFits import CommandFits
+from gui.builtinContextMenus.commandFitAdd import AddCommandFit
 from gui.builtinViewColumns.state import State
 from gui.contextMenu import ContextMenu
 from gui.utils.staticHelpers import DragDropHelper
@@ -68,8 +68,8 @@ class CommandView(d.Display):
 
         self.lastFitId = None
 
-        self.mainFrame.Bind(GE.FIT_CHANGED, CommandFits.fitChanged)
-        self.mainFrame.Bind(EVT_FIT_REMOVED, CommandFits.populateFits)
+        self.mainFrame.Bind(GE.FIT_CHANGED, AddCommandFit.fitChanged)
+        self.mainFrame.Bind(EVT_FIT_REMOVED, AddCommandFit.populateFits)
         self.mainFrame.Bind(GE.FIT_CHANGED, self.fitChanged)
         self.Bind(wx.EVT_LEFT_DOWN, self.click)
         self.Bind(wx.EVT_LEFT_DCLICK, self.remove)
@@ -128,7 +128,7 @@ class CommandView(d.Display):
         sFit = Fit.getInstance()
         fit = sFit.getFit(event.fitID)
 
-        CommandFits.populateFits(event)
+        AddCommandFit.populateFits(event)
 
         self.Parent.Parent.DisablePage(self, not fit or fit.isStructure)
 

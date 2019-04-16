@@ -8,7 +8,7 @@ from gui.contextMenu import ContextMenu
 from service.fit import Fit
 
 
-class TabbedFits(ContextMenu):
+class AddCurrentlyOpenFit(ContextMenu):
     def __init__(self):
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
 
@@ -59,4 +59,4 @@ class TabbedFits(ContextMenu):
             self.mainFrame.command.Submit(cmd.GuiAddProjectedFitCommand(fitID=fitID, projectedFitID=fit.ID))
 
 
-TabbedFits.register()
+AddCurrentlyOpenFit.register()

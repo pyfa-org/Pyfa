@@ -8,7 +8,7 @@ from service.fit import Fit
 from service.settings import ContextMenuSettings
 
 
-class ShipJump(ContextMenu):
+class JumpToShip(ContextMenu):
     def __init__(self):
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
         self.settings = ContextMenuSettings.getInstance()
@@ -32,4 +32,4 @@ class ShipJump(ContextMenu):
         wx.PostEvent(self.mainFrame.shipBrowser, Stage3Selected(shipID=stuff.item.ID, back=groupID))
 
 
-ShipJump.register()
+JumpToShip.register()
