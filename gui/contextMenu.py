@@ -202,37 +202,4 @@ class ContextMenu(object):
         '''If menu item is enabled. Allows an item to display, but not be selected'''
         return True
 
-# noinspection PyUnresolvedReferences
-from gui.builtinContextMenus import (  # noqa: E402,F401
-    fitOpenNewTab,
-    moduleAmmoChangeAll,
-    moduleAmmoChange,
-    moduleSpool,
-    itemStats,
-    damagePatternChange,
-    itemMarketJump,
-    droneSplitStack,
-    itemRemove,
-    itemVariationChange,
-    moduleFill,
-    droneRemoveStack,
-    ammoToDmgPattern,
-    factorReload,
-    droneAddStack,
-    cargoAdd,
-    cargoAddAmmo,
-    itemProject,
-    envEffectAdd,
-    shipJump,
-    skillAffectors,
-    shipModeChange,
-    targetResists,
-    priceOptions,
-    itemAmountChange,
-    implantSetAdd,
-    fighterAbilities,
-    boosterSideEffects,
-    commandFitAdd,
-    fitAddCurrentlyOpen,
-    moduleMutations,
-)
+import gui.builtinContextMenus
