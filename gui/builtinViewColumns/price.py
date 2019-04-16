@@ -23,11 +23,12 @@ import wx
 from eos.saveddata.cargo import Cargo
 from eos.saveddata.drone import Drone
 from eos.saveddata.fighter import Fighter
+from eos.saveddata.module import Module
 from eos.saveddata.price import PriceStatus
-from service.price import Price as ServicePrice
-from gui.viewColumn import ViewColumn
 from gui.bitmap_loader import BitmapLoader
 from gui.utils.numberFormatter import formatAmount
+from gui.viewColumn import ViewColumn
+from service.price import Price as ServicePrice
 
 
 def formatPrice(stuff, priceObj):
@@ -60,6 +61,9 @@ class Price(ViewColumn):
         if hasattr(stuff, "isEmpty"):
             if stuff.isEmpty:
                 return ""
+
+        if isinstance(stuff, Module) and stuff.isMutated:
+            return ""
 
         priceObj = stuff.item.price
 
