@@ -6,6 +6,7 @@ import gui.mainFrame
 from eos.const import FittingHardpoint
 from gui.bitmap_loader import BitmapLoader
 from gui.contextMenu import ContextMenu
+from service.fit import Fit
 from service.market import Market
 from service.settings import ContextMenuSettings
 
@@ -227,12 +228,32 @@ class ChangeModuleAmmo(ContextMenu):
             return
 
         fitID = self.mainFrame.getActiveFit()
-        if self.context == 'fittingModule':
-            self.mainFrame.command.Submit(cmd.GuiChangeLocalModuleChargesCommand(
-                fitID=fitID, modules=self.modules, chargeItemID=charge.ID if charge is not None else None))
-        elif self.context == 'projectedModule':
-            self.mainFrame.command.Submit(cmd.GuiChangeProjectedModuleChargesCommand(
-                fitID=fitID, modules=self.modules, chargeItemID=charge.ID if charge is not None else None))
+        # Set to all modules if ctrl is pressed
+        if wx.GetMouseState().CmdDown():
+            fit = Fit.getInstance().getFit(fitID)
+            selectedModule = self.modules[0]
+            if self.context == 'fittingModule':
+                self.mainFrame.command.Submit(cmd.GuiChangeLocalModuleChargesCommand(
+                    fitID=fitID,
+                    modules=[m for m in fit.modules if m.itemID is not None and m.itemID == selectedModule.itemID],
+                    chargeItemID=charge.ID if charge is not None else None))
+            elif self.context == 'projectedModule':
+                self.mainFrame.command.Submit(cmd.GuiChangeProjectedModuleChargesCommand(
+                    fitID=fitID,
+                    modules=[m for m in fit.projectedModules if
+                             m.itemID is not None and m.itemID == selectedModule.itemID],
+                    chargeItemID=charge.ID if charge is not None else None))
+        else:
+            if self.context == 'fittingModule':
+                self.mainFrame.command.Submit(cmd.GuiChangeLocalModuleChargesCommand(
+                    fitID=fitID,
+                    modules=self.modules,
+                    chargeItemID=charge.ID if charge is not None else None))
+            elif self.context == 'projectedModule':
+                self.mainFrame.command.Submit(cmd.GuiChangeProjectedModuleChargesCommand(
+                    fitID=fitID,
+                    modules=self.modules,
+                    chargeItemID=charge.ID if charge is not None else None))
 
 
 ChangeModuleAmmo.register()

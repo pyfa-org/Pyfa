@@ -9,7 +9,6 @@ from gui.builtinContextMenus import (  # noqa: E402,F401
     # Often-used item manipulations
     shipModeChange,
     moduleAmmoChange,
-    moduleAmmoChangeAll,
     moduleSpool,
     boosterSideEffects,
     fighterAbilities,

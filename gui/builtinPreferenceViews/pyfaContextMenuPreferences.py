@@ -59,20 +59,10 @@ class PFContextMenuPref(PreferenceView):
         rbSizerRow2.Add(self.rbBox4, 1, wx.ALL, 5)
         self.rbBox4.Bind(wx.EVT_RADIOBOX, self.OnSetting4Change)
 
-        # self.rbBox5 = wx.RadioBox(panel, -1, "Charge", wx.DefaultPosition, wx.DefaultSize, ['Disabled', 'Enabled'], 1, wx.RA_SPECIFY_COLS)
-        # self.rbBox5.SetSelection(self.settings.get('moduleAmmoPicker'))
-        # rbSizerRow2.Add(self.rbBox5, 0, wx.ALL, 5)
-        # self.rbBox5.Bind(wx.EVT_RADIOBOX, self.OnSetting5Change)
-
-        self.rbBox6 = wx.RadioBox(panel, -1, "Charge (All)", wx.DefaultPosition, wx.DefaultSize, ['Disabled', 'Enabled'], 1, wx.RA_SPECIFY_COLS)
-        self.rbBox6.SetSelection(self.settings.get('moduleGlobalAmmoPicker'))
-        rbSizerRow2.Add(self.rbBox6, 1, wx.ALL, 5)
-        self.rbBox6.Bind(wx.EVT_RADIOBOX, self.OnSetting6Change)
-
-        self.rbBox7 = wx.RadioBox(panel, -1, "Project onto Fit", wx.DefaultPosition, wx.DefaultSize, ['Disabled', 'Enabled'], 1, wx.RA_SPECIFY_COLS)
-        self.rbBox7.SetSelection(self.settings.get('project'))
-        rbSizerRow2.Add(self.rbBox7, 1, wx.ALL, 5)
-        self.rbBox7.Bind(wx.EVT_RADIOBOX, self.OnSetting7Change)
+        self.rbBox5 = wx.RadioBox(panel, -1, "Project onto Fit", wx.DefaultPosition, wx.DefaultSize, ['Disabled', 'Enabled'], 1, wx.RA_SPECIFY_COLS)
+        self.rbBox5.SetSelection(self.settings.get('project'))
+        rbSizerRow2.Add(self.rbBox5, 1, wx.ALL, 5)
+        self.rbBox5.Bind(wx.EVT_RADIOBOX, self.OnSetting5Change)
 
         mainSizer.Add(rbSizerRow2, 1, wx.ALL | wx.EXPAND, 0)
 
@@ -107,12 +97,6 @@ class PFContextMenuPref(PreferenceView):
         self.settings.set('metaSwap', event.GetInt())
 
     def OnSetting5Change(self, event):
-        self.settings.set('moduleAmmoPicker', event.GetInt())
-
-    def OnSetting6Change(self, event):
-        self.settings.set('moduleGlobalAmmoPicker', event.GetInt())
-
-    def OnSetting7Change(self, event):
         self.settings.set('project', event.GetInt())
 
     def OnSetting8Change(self, event):

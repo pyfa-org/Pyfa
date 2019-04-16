@@ -482,7 +482,6 @@ class ContextMenuSettings(object):
             "marketJump"            : 1,
             "metaSwap"              : 1,
             "moduleAmmoPicker"      : 1,
-            "moduleGlobalAmmoPicker": 1,
             "openFit"               : 1,
             "priceClear"            : 1,
             "project"               : 1,
