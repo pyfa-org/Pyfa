@@ -64,6 +64,7 @@
   - faction
   - officer
   - storyline
+  - structureTech1
   - structureTech2
   - tech2
   iconFile: res:/ui/texture/icons/2_64_7.png
@@ -85,6 +86,7 @@
   - faction
   - officer
   - storyline
+  - structureTech1
   - tech2
   iconFile: res:/ui/texture/icons/3_64_9.png
 75:
@@ -123,7 +125,7 @@
   - abyssal
   - faction
   - storyline
-  - structureFaction
+  - structureTech1
   - structureTech2
   - tech2
   iconFile: res:/ui/texture/icons/1_64_10.png
@@ -207,7 +209,7 @@
   - abyssal
   - faction
   - storyline
-  - structureFaction
+  - structureTech1
   - structureTech2
   - tech2
   iconFile: res:/ui/texture/icons/1_64_4.png
@@ -285,6 +287,7 @@
   foregrounds:
   - faction
   - storyline
+  - structureTech1
   - structureTech2
   - tech2
   iconFile: res:/ui/texture/icons/4_64_10.png
@@ -296,6 +299,7 @@
   foregrounds:
   - faction
   - storyline
+  - structureTech1
   - structureTech2
   - tech2
   iconFile: res:/ui/texture/icons/4_64_11.png
@@ -325,6 +329,7 @@
   - officer
   - storyline
   - structureFaction
+  - structureTech1
   - structureTech2
   - tech2
   iconFile: res:/ui/texture/icons/4_64_12.png
@@ -334,6 +339,7 @@
   - blueprintCopy
   description: Module - AntiJammer
   foregrounds:
+  - structureTech1
   - tech2
   iconFile: res:/ui/texture/icons/5_64_1.png
 111:
@@ -805,6 +811,7 @@
   - deadspace
   - faction
   - storyline
+  - structureTech1
   - tech2
   iconFile: res:/ui/texture/icons/1_64_2.png
 1036:
@@ -839,6 +846,7 @@
   - abyssal
   - faction
   - storyline
+  - structureTech1
   - tech2
   iconFile: res:/ui/texture/icons/2_64_5.png
 1046:
@@ -1146,6 +1154,7 @@
   - officer
   - storyline
   - structureFaction
+  - structureTech1
   - structureTech2
   - tech2
   iconFile: res:/ui/texture/icons/12_64_4.png
@@ -1158,6 +1167,7 @@
   - abyssal
   - faction
   - officer
+  - structureTech1
   - structureTech2
   - tech2
   iconFile: res:/ui/texture/icons/12_64_6.png
@@ -1880,6 +1890,7 @@
   - faction
   - officer
   - storyline
+  - structureTech1
   - structureTech2
   - tech2
   iconFile: res:/ui/texture/icons/12_64_7.png
@@ -2335,6 +2346,7 @@
   description: Tracking Disrupter - Unknown
   foregrounds:
   - storyline
+  - structureTech1
   - structureTech2
   - tech2
   iconFile: res:/ui/texture/icons/5_64_7.png
@@ -2347,6 +2359,7 @@
   - faction
   - officer
   - storyline
+  - structureTech1
   - tech2
   iconFile: res:/ui/texture/icons/5_64_14.png
 1641:
@@ -3163,6 +3176,7 @@
   - blueprintCopy
   description: Ballistic Control System (for missile launchers) - Unknown
   foregrounds:
+  - structureTech1
   - structureTech2
   iconFile: res:/ui/texture/icons/45_64_12.png
 2532:
@@ -4051,7 +4065,7 @@
   - blueprintCopy
   description: Ion
   foregrounds:
-  - structureFaction
+  - structureTech1
   iconFile: res:/ui/texture/icons/56_64_2.png
 2943:
   description: Snowball missile - Snowball
@@ -4073,6 +4087,7 @@
   foregrounds:
   - faction
   - storyline
+  - structureTech1
   - structureTech2
   - tech2
   iconFile: res:/ui/texture/icons/56_64_1.png
@@ -4108,6 +4123,7 @@
   foregrounds:
   - faction
   - officer
+  - structureTech1
   - tech2
   iconFile: res:/ui/texture/icons/56_64_6.png
 2989:
@@ -4118,6 +4134,7 @@
   foregrounds:
   - officer
   - storyline
+  - structureTech1
   - tech2
   iconFile: res:/ui/texture/icons/56_64_7.png
 2990:
@@ -4175,12 +4192,15 @@
   description: Manufacturing & Research (All activities) - Unknown
   foregrounds:
   - structureFaction
+  - structureTech1
   iconFile: res:/ui/texture/icons/57_64_9.png
 3007:
   backgrounds:
   - blueprint
   - blueprintCopy
   description: Manufacturing - Unknown
+  foregrounds:
+  - structureTech1
   iconFile: res:/ui/texture/icons/57_64_10.png
 3008:
   description: Material Research - Unknown
@@ -4202,6 +4222,8 @@
   - blueprint
   - blueprintCopy
   description: Technology Research - Unknown
+  foregrounds:
+  - structureTech1
   iconFile: res:/ui/texture/icons/57_64_16.png
 3019:
   backgrounds:
@@ -4405,6 +4427,7 @@
   - blueprintCopy
   description: Rig Capacitor - Unknown
   foregrounds:
+  - structureTech1
   - structureTech2
   - tech2
   iconFile: res:/ui/texture/icons/68_64_11.png
@@ -4422,6 +4445,7 @@
   - blueprintCopy
   description: Rig Launchers - Unknown
   foregrounds:
+  - structureTech1
   - structureTech2
   - tech2
   iconFile: res:/ui/texture/icons/68_64_13.png
@@ -4431,6 +4455,7 @@
   - blueprintCopy
   description: Rig EW - Unknown
   foregrounds:
+  - structureTech1
   - structureTech2
   - tech2
   iconFile: res:/ui/texture/icons/68_64_14.png
@@ -4448,6 +4473,7 @@
   - blueprintCopy
   description: Rig Drones - Unknown
   foregrounds:
+  - structureTech1
   - structureTech2
   - tech2
   iconFile: res:/ui/texture/icons/68_64_16.png
@@ -5024,6 +5050,7 @@
   - faction
   - officer
   - storyline
+  - structureTech1
   - tech2
   iconFile: res:/ui/texture/icons/74_64_8.png
 3347:
@@ -5060,6 +5087,7 @@
   - faction
   - officer
   - storyline
+  - structureTech1
   - tech2
   iconFile: res:/ui/texture/icons/76_64_1.png
 3435:
@@ -7078,6 +7106,8 @@
   - blueprint
   - blueprintCopy
   description: icon_mod_shield_remoteshieldrecharger
+  foregrounds:
+  - structureTech1
   iconFile: res:/UI/Texture/Icons/dust_icon_mod_shield_remoteshieldrecharger.png
 10914:
   description: icon_mod_shield_shieldbooster
@@ -7129,6 +7159,7 @@
   foregrounds:
   - faction
   - officer
+  - structureTech1
   - tech2
   iconFile: res:/ui/texture/icons/105_32_48.png
 10935:
@@ -7425,6 +7456,8 @@
   - blueprint
   - blueprintCopy
   description: Warfare Link Icon
+  foregrounds:
+  - structureTech1
   iconFile: res:/UI/Texture/Icons/53_64_16.png
 20971:
   backgrounds:
@@ -8510,7 +8543,7 @@
 21417:
   description: Sequence Icon
   foregrounds:
-  - structureFaction
+  - structureTech1
   iconFile: res:/ui/texture/icons/99_64_10.png
 21418:
   description: Index Icon
@@ -8544,6 +8577,7 @@
   - deadspace
   - faction
   - storyline
+  - structureTech1
   - tech2
   iconFile: res:/UI/Texture/Icons/remote_armor_repair.png
 21428:
@@ -8552,6 +8586,7 @@
   - blueprintCopy
   description: Module - Remote Hull Repair
   foregrounds:
+  - structureTech1
   - tech2
   iconFile: res:/UI/Texture/Icons/remote_hull_repairer.png
 21430:
@@ -8579,6 +8614,7 @@
   description: Missile Guidance Computer
   foregrounds:
   - storyline
+  - structureTech1
   - tech2
   iconFile: res:/UI/Texture/Icons/5_64_17.png
 21439:
@@ -8587,6 +8623,7 @@
   - blueprintCopy
   description: Missile Guidance Enhancer
   foregrounds:
+  - structureTech1
   - structureTech2
   - tech2
   iconFile: res:/UI/Texture/Icons/5_64_18.png
@@ -8889,6 +8926,8 @@
   - blueprint
   - blueprintCopy
   description: Structure Repulsor Field
+  foregrounds:
+  - structureTech1
   iconFile: res:/ui/texture/icons/123_64_5.png
 21561:
   backgrounds:
@@ -8896,6 +8935,7 @@
   - blueprintCopy
   description: Structure Point Defense Battery
   foregrounds:
+  - structureTech1
   - structureTech2
   iconFile: res:/ui/texture/icons/123_64_6.png
 21562:
@@ -8903,12 +8943,16 @@
   - blueprint
   - blueprintCopy
   description: Structure Resistance Switcher
+  foregrounds:
+  - structureTech1
   iconFile: res:/ui/texture/icons/123_64_7.png
 21563:
   backgrounds:
   - blueprint
   - blueprintCopy
   description: Structure Ship Tractor Beam
+  foregrounds:
+  - structureTech1
   iconFile: res:/ui/texture/icons/123_64_8.png
 21564:
   backgrounds:
@@ -8916,6 +8960,7 @@
   - blueprintCopy
   description: Structure Guided Bomb Launcher
   foregrounds:
+  - structureTech1
   - structureTech2
   iconFile: res:/ui/texture/icons/123_64_9.png
 21565:
@@ -8924,6 +8969,7 @@
   - blueprintCopy
   description: Structure Anticapital Launcher
   foregrounds:
+  - structureTech1
   - structureTech2
   iconFile: res:/ui/texture/icons/123_64_10.png
 21566:
@@ -8932,6 +8978,7 @@
   - blueprintCopy
   description: Structure Antisubcapital Launcher
   foregrounds:
+  - structureTech1
   - structureTech2
   iconFile: res:/ui/texture/icons/123_64_11.png
 21567:
@@ -9049,6 +9096,7 @@
   description: Structure Rig Point Defense Battery
   foregrounds:
   - structureFaction
+  - structureTech1
   - structureTech2
   - tech2
   iconFile: res:/ui/texture/icons/127_64_9.png
@@ -9057,24 +9105,32 @@
   - blueprint
   - blueprintCopy
   description: Structure Service Market Hub
+  foregrounds:
+  - structureTech1
   iconFile: res:/ui/texture/icons/127_64_2.png
 21596:
   backgrounds:
   - blueprint
   - blueprintCopy
   description: Structure Service Cloning Center
+  foregrounds:
+  - structureTech1
   iconFile: res:/ui/texture/icons/127_64_1.png
 21597:
   backgrounds:
   - blueprint
   - blueprintCopy
   description: Structure Service Reprocessing Plant
+  foregrounds:
+  - structureTech1
   iconFile: res:/ui/texture/icons/127_64_3.png
 21598:
   backgrounds:
   - blueprint
   - blueprintCopy
   description: Structure Service Compression
+  foregrounds:
+  - structureTech1
   iconFile: res:/ui/texture/icons/127_64_4.png
 21599:
   description: Structure Rig Cloning
@@ -9088,6 +9144,7 @@
   - blueprintCopy
   description: Structure Rig Doomsday
   foregrounds:
+  - structureTech1
   - structureTech2
   - tech2
   iconFile: res:/ui/texture/icons/127_64_10.png
@@ -9097,7 +9154,7 @@
   - blueprintCopy
   description: Structure Rig Reprocessing
   foregrounds:
-  - structureFaction
+  - structureTech1
   - structureTech2
   - tech2
   iconFile: res:/ui/texture/icons/127_64_7.png
@@ -9116,7 +9173,7 @@
   - blueprintCopy
   description: Burst Projector ECM
   foregrounds:
-  - structureFaction
+  - structureTech1
   iconFile: res:/UI/Texture/Icons/Modules/burstProjectorECM.png
 21605:
   backgrounds:
@@ -9124,7 +9181,7 @@
   - blueprintCopy
   description: Burst Projector Energy Neutralization
   foregrounds:
-  - structureFaction
+  - structureTech1
   iconFile: res:/UI/Texture/Icons/Modules/burstProjectorEnergyNeutralization.png
 21606:
   backgrounds:
@@ -9138,7 +9195,7 @@
   - blueprintCopy
   description: Burst Projector Sensor Dampening
   foregrounds:
-  - structureFaction
+  - structureTech1
   iconFile: res:/UI/Texture/Icons/Modules/burstProjectorSensorDampening.png
 21608:
   backgrounds:
@@ -9146,7 +9203,7 @@
   - blueprintCopy
   description: Burst Projector Stasis Webification
   foregrounds:
-  - structureFaction
+  - structureTech1
   iconFile: res:/UI/Texture/Icons/Modules/burstProjectorStasisWebification.png
 21609:
   backgrounds:
@@ -9154,7 +9211,7 @@
   - blueprintCopy
   description: Burst Projector Target illumination
   foregrounds:
-  - structureFaction
+  - structureTech1
   iconFile: res:/UI/Texture/Icons/Modules/burstProjectorTargetIllumination.png
 21610:
   backgrounds:
@@ -9162,7 +9219,7 @@
   - blueprintCopy
   description: Burst Projector Tracking Disruption
   foregrounds:
-  - structureFaction
+  - structureTech1
   iconFile: res:/UI/Texture/Icons/Modules/burstProjectorTrackingDisruption.png
 21611:
   backgrounds:
@@ -9170,7 +9227,7 @@
   - blueprintCopy
   description: Burst Projector Warp Disruption
   foregrounds:
-  - structureFaction
+  - structureTech1
   iconFile: res:/UI/Texture/Icons/Modules/burstProjectorWarpDisruption.png
 21613:
   description: Module - FighterTackle
@@ -9581,6 +9638,7 @@
   description: Structure Rig Engineering
   foregrounds:
   - structureFaction
+  - structureTech1
   - structureTech2
   - tech2
   iconFile: res:/ui/texture/icons/127_64_8.png
@@ -9626,6 +9684,7 @@
   - blueprintCopy
   description: Focused Warp Disruption Script
   foregrounds:
+  - structureTech1
   - structureTech2
   iconFile: res:/ui/texture/icons/118_64_15.png
 21744:
@@ -9712,6 +9771,8 @@
   - blueprint
   - blueprintCopy
   description: Structure Moon Drilling Service Module
+  foregrounds:
+  - structureTech1
   iconFile: res:/UI/Texture/Icons/128_64_1.png
 21775:
   description: 45736_female_Accessories_Glasses_Glasses_Exo_F01_Types_Glasses_Exo_F01_clear.png
@@ -9743,7 +9804,7 @@
   - blueprintCopy
   description: refinery rig drill
   foregrounds:
-  - structureFaction
+  - structureTech1
   - structureTech2
   iconFile: res:/UI/Texture/Icons/Modules/refinery_ChunkStabilization.png
 21788:
@@ -9752,7 +9813,7 @@
   - blueprintCopy
   description: refinery rig reactions
   foregrounds:
-  - structureFaction
+  - structureTech1
   - structureTech2
   iconFile: res:/UI/Texture/Icons/Modules/refinery_MiningYield.png
 21789:
@@ -9760,18 +9821,24 @@
   - blueprint
   - blueprintCopy
   description: refinery reaction module booster
+  foregrounds:
+  - structureTech1
   iconFile: res:/UI/Texture/Icons/Modules/refinery_BoosterReactions.png
 21790:
   backgrounds:
   - blueprint
   - blueprintCopy
   description: refinery module hybrid reactions
+  foregrounds:
+  - structureTech1
   iconFile: res:/UI/Texture/Icons/Modules/refinery_HybridReactions.png
 21791:
   backgrounds:
   - blueprint
   - blueprintCopy
   description: refinery module adv reactions
+  foregrounds:
+  - structureTech1
   iconFile: res:/UI/Texture/Icons/Modules/refinery_T2Reactions.png
 21792:
   description: moon asteroid ubi
@@ -10422,12 +10489,18 @@
   iconFile: res:/UI/Texture/Icons/Modules/mutaUnstableDroneDamage.png
 22073:
   description: Cyno Beacon Service Module
+  foregrounds:
+  - structureTech1
   iconFile: res:/UI/Texture/Icons/Modules/navigation_CynoBeacon.png
 22074:
   description: Cyno Jammer Service Module
+  foregrounds:
+  - structureTech1
   iconFile: res:/UI/Texture/Icons/Modules/navigation_CynoJammer.png
 22075:
   description: Jump Gate Service Module
+  foregrounds:
+  - structureTech1
   iconFile: res:/UI/Texture/Icons/Modules/navigation_JumpGate.png
 22076:
   description: Gift Box with Ribbon
@@ -10495,3 +10568,27 @@
 22096:
   description: Winter Login Campaign Banner
   iconFile: res:/UI/Texture/LoginCampaigns/Winter_2018.png
+22097:
+  description: 50043_Female_Makeup_Augmentations_Face_Paint_F01_Types_Face_Paint_F01_V30_ChOper.png
+  iconFile: res:/UI/Asset/mannequin/makeup_augmentations/50043_Female_Makeup_Augmentations_Face_Paint_F01_Types_Face_Paint_F01_V30_ChOper.png
+22098:
+  description: 50044_Male_Makeup_Augmentations_Face_Paint_M01_Types_Face_Paint_M01_V5_Purple.png
+  iconFile: res:/UI/Asset/mannequin/makeup_augmentations/50044_Male_Makeup_Augmentations_Face_Paint_M01_Types_Face_Paint_M01_V5_Purple.png
+22099:
+  description: 50049_Female_Makeup_Augmentations_Face_Paint_F01_Types_Face_Paint_F01_V5_Purple.png
+  iconFile: res:/UI/Asset/mannequin/makeup_augmentations/50049_Female_Makeup_Augmentations_Face_Paint_F01_Types_Face_Paint_F01_V5_Purple.png
+22100:
+  description: 50051_Male_Makeup_Augmentations_Face_Paint_M01_Types_Face_Paint_M01_V5_Purple.png
+  iconFile: res:/UI/Asset/mannequin/makeup_augmentations/50051_Male_Makeup_Augmentations_Face_Paint_M01_Types_Face_Paint_M01_V5_Purple.png
+22101:
+  description: 50052_Female_Makeup_Augmentations_Face_Paint_F01_Types_Face_Paint_F01_V5_Purple.png
+  iconFile: res:/UI/Asset/mannequin/makeup_augmentations/50052_Female_Makeup_Augmentations_Face_Paint_F01_Types_Face_Paint_F01_V5_Purple.png
+22102:
+  description: 50050_Male_Makeup_Augmentations_Face_Paint_M01_Types_Face_Paint_M01_V30_ChOper.png
+  iconFile: res:/UI/Asset/mannequin/makeup_augmentations/50050_Male_Makeup_Augmentations_Face_Paint_M01_Types_Face_Paint_M01_V30_ChOper.png
+22103:
+  description: Crate Splash for Facial Augments - GuardiansGala2019
+  iconFile: res:/UI/Texture/classes/ItemPacks/SplashImages/Holiday2018/splash_GuardiansGala_FaceAugmentation1.png
+22104:
+  description: Inventory Icon Guardians Gala Facial Augmentation Crate
+  iconFile: res:/UI/Texture/Icons/Inventory/FacialAugmentPurple.png
