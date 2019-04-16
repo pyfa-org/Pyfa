@@ -18,14 +18,15 @@ class GuiChangeBoosterMetaCommand(wx.Command):
 
     def Do(self):
         sFit = Fit.getInstance()
-        booster = sFit.getFit(self.fitID).boosters[self.position]
+        fit = sFit.getFit(self.fitID)
+        booster = fit.boosters[self.position]
         if booster.itemID == self.newItemID:
             return False
         info = BoosterInfo.fromBooster(booster)
         info.itemID = self.newItemID
         cmd = CalcAddBoosterCommand(fitID=self.fitID, boosterInfo=info)
         success = self.internalHistory.submit(cmd)
-        sFit.recalc(self.fitID)
+        sFit.recalc(fit)
         wx.PostEvent(gui.mainFrame.MainFrame.getInstance(), GE.FitChanged(fitID=self.fitID))
         return success
 

@@ -19,7 +19,8 @@ class GuiChangeProjectedFighterMetaCommand(wx.Command):
 
     def Do(self):
         sFit = Fit.getInstance()
-        fighter = sFit.getFit(self.fitID).projectedFighters[self.position]
+        fit = sFit.getFit(self.fitID)
+        fighter = fit.projectedFighters[self.position]
         if fighter.itemID == self.newItemID:
             return False
         info = FighterInfo.fromFighter(fighter)
@@ -27,7 +28,7 @@ class GuiChangeProjectedFighterMetaCommand(wx.Command):
         cmdRemove = CalcRemoveProjectedFighterCommand(fitID=self.fitID, position=self.position)
         cmdAdd = CalcAddProjectedFighterCommand(fitID=self.fitID, fighterInfo=info)
         success = self.internalHistory.submitBatch(cmdRemove, cmdAdd)
-        sFit.recalc(self.fitID)
+        sFit.recalc(fit)
         wx.PostEvent(gui.mainFrame.MainFrame.getInstance(), GE.FitChanged(fitID=self.fitID))
         return success
 

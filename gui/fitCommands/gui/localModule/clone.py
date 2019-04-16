@@ -23,8 +23,9 @@ class GuiCloneLocalModuleCommand(wx.Command):
         sFit = Fit.getInstance()
         cmd = CalcCloneLocalModuleCommand(fitID=self.fitID, srcPosition=self.srcPosition, dstPosition=self.dstPosition)
         success = self.internalHistory.submit(cmd)
-        sFit.recalc(self.fitID)
-        self.savedItemID = sFit.getFit(self.fitID).modules[self.srcPosition].itemID
+        fit = sFit.getFit(self.fitID)
+        sFit.recalc(fit)
+        self.savedItemID = fit.modules[self.srcPosition].itemID
         if success and self.savedItemID is not None:
             event = GE.FitChanged(fitID=self.fitID, action='modadd', typeID=self.savedItemID)
         else:

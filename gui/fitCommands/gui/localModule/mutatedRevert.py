@@ -33,7 +33,7 @@ class GuiRevertMutatedLocalModuleCommand(wx.Command):
                 spoolType=mod.spoolType,
                 spoolAmount=mod.spoolAmount))
         success = self.internalHistory.submit(cmd)
-        sFit.recalc(self.fitID)
+        sFit.recalc(fit)
         wx.PostEvent(gui.mainFrame.MainFrame.getInstance(), GE.FitChanged(fitID=self.fitID))
         return success
 

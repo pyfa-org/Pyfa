@@ -32,7 +32,7 @@ class GuiChangeProjectedDroneMetaCommand(wx.Command):
         cmdRemove = CalcRemoveProjectedDroneCommand(fitID=self.fitID, itemID=self.itemID, amount=math.inf)
         cmdAdd = CalcAddProjectedDroneCommand(fitID=self.fitID, droneInfo=info)
         success = self.internalHistory.submitBatch(cmdRemove, cmdAdd)
-        sFit.recalc(self.fitID)
+        sFit.recalc(fit)
         wx.PostEvent(gui.mainFrame.MainFrame.getInstance(), GE.FitChanged(fitID=self.fitID))
         return success
 

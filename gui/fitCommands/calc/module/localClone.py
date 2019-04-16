@@ -5,6 +5,7 @@ from logbook import Logger
 
 import eos.db
 from eos.exception import HandledListActionError
+from gui.fitCommands.helpers import restoreCheckedStates
 from service.fit import Fit
 
 
@@ -18,6 +19,7 @@ class CalcCloneLocalModuleCommand(wx.Command):
         self.fitID = fitID
         self.srcPosition = srcPosition
         self.dstPosition = dstPosition
+        self.savedStateCheckChanges = None
 
     def Do(self):
         pyfalog.debug('Doing cloning of local module from position {} to position {} for fit ID {}'.format(self.srcPosition, self.dstPosition, self.fitID))
@@ -36,8 +38,8 @@ class CalcCloneLocalModuleCommand(wx.Command):
             pyfalog.warning('Failed to replace module')
             eos.db.commit()
             return False
-        sFit.recalc(self.fitID)
-        sFit.checkStates(fit, copyMod)
+        sFit.recalc(fit)
+        self.savedStateCheckChanges = sFit.checkStates(fit, copyMod)
         eos.db.commit()
         return True
 
@@ -45,4 +47,7 @@ class CalcCloneLocalModuleCommand(wx.Command):
         pyfalog.debug('Undoing cloning of local module from position {} to position {} for fit ID {}'.format(self.srcPosition, self.dstPosition, self.fitID))
         from .localRemove import CalcRemoveLocalModuleCommand
         cmd = CalcRemoveLocalModuleCommand(fitID=self.fitID, positions=[self.dstPosition])
-        return cmd.Do()
+        if not cmd.Do():
+            return False
+        restoreCheckedStates(Fit.getInstance().getFit(self.fitID), self.savedStateCheckChanges)
+        return True

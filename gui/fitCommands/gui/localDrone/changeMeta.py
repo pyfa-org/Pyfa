@@ -21,7 +21,8 @@ class GuiChangeLocalDroneMetaCommand(wx.Command):
 
     def Do(self):
         sFit = Fit.getInstance()
-        drone = sFit.getFit(self.fitID).drones[self.position]
+        fit = sFit.getFit(self.fitID)
+        drone = fit.drones[self.position]
         if drone.itemID == self.newItemID:
             return False
         info = DroneInfo.fromDrone(drone)
@@ -29,7 +30,7 @@ class GuiChangeLocalDroneMetaCommand(wx.Command):
         cmdRemove = CalcRemoveLocalDroneCommand(fitID=self.fitID, position=self.position, amount=math.inf)
         cmdAdd = CalcAddLocalDroneCommand(fitID=self.fitID, droneInfo=info, forceNewStack=True)
         success = self.internalHistory.submitBatch(cmdRemove, cmdAdd)
-        sFit.recalc(self.fitID)
+        sFit.recalc(fit)
         wx.PostEvent(gui.mainFrame.MainFrame.getInstance(), GE.FitChanged(fitID=self.fitID))
         return success
 

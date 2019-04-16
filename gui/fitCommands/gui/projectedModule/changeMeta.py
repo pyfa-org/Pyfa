@@ -28,7 +28,7 @@ class GuiChangeProjectedModuleMetaCommand(wx.Command):
         cmdRemove = CalcRemoveProjectedModuleCommand(fitID=self.fitID, position=self.position)
         cmdAdd = CalcAddProjectedModuleCommand(fitID=self.fitID, modInfo=info)
         success = self.internalHistory.submitBatch(cmdRemove, cmdAdd)
-        sFit.recalc(self.fitID)
+        sFit.recalc(fit)
         wx.PostEvent(gui.mainFrame.MainFrame.getInstance(), GE.FitChanged(fitID=self.fitID))
         return success
 

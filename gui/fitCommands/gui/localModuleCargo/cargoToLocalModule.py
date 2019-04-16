@@ -138,7 +138,7 @@ class GuiCargoToLocalModuleCommand(wx.Command):
         else:
             return False
         eos.db.commit()
-        sFit.recalc(self.fitID)
+        sFit.recalc(fit)
         events = []
         if self.removedModItemID is not None:
             events.append(GE.FitChanged(fitID=self.fitID, action='moddel', typeID=self.removedModItemID))

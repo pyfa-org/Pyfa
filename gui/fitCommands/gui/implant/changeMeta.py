@@ -18,14 +18,15 @@ class GuiChangeImplantMetaCommand(wx.Command):
 
     def Do(self):
         sFit = Fit.getInstance()
-        implant = sFit.getFit(self.fitID).implants[self.position]
+        fit = sFit.getFit(self.fitID)
+        implant = fit.implants[self.position]
         if implant.itemID == self.newItemID:
             return False
         info = ImplantInfo.fromImplant(implant)
         info.itemID = self.newItemID
         cmd = CalcAddImplantCommand(fitID=self.fitID, implantInfo=info)
         success = self.internalHistory.submit(cmd)
-        sFit.recalc(self.fitID)
+        sFit.recalc(fit)
         wx.PostEvent(gui.mainFrame.MainFrame.getInstance(), GE.FitChanged(fitID=self.fitID))
         return success
 

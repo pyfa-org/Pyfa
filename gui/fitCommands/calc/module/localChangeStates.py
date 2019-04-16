@@ -3,6 +3,7 @@ from logbook import Logger
 
 import eos.db
 from eos.saveddata.module import Module
+from gui.fitCommands.helpers import restoreCheckedStates
 from service.fit import Fit
 
 
@@ -18,6 +19,7 @@ class CalcChangeLocalModuleStatesCommand(wx.Command):
         self.positions = positions
         self.click = click
         self.savedStates = {}
+        self.savedStateCheckChanges = None
 
     def Do(self):
         pyfalog.debug('Doing change of local module states at position {}/{} to click {} on fit {}'.format(self.mainPosition, self.positions, self.click, self.fitID))
@@ -44,8 +46,8 @@ class CalcChangeLocalModuleStatesCommand(wx.Command):
                 mod.state = proposedState
         if not changed:
             return False
-        sFit.recalc(self.fitID)
-        sFit.checkStates(fit, mainMod)
+        sFit.recalc(fit)
+        self.savedStateCheckChanges = sFit.checkStates(fit, mainMod)
         eos.db.commit()
         return True
 
@@ -56,4 +58,6 @@ class CalcChangeLocalModuleStatesCommand(wx.Command):
             mod = fit.modules[position]
             pyfalog.debug('Reverting {} to state {} for fit ID {}'.format(mod, state, self.fitID))
             mod.state = state
+        restoreCheckedStates(fit, self.savedStateCheckChanges)
+        eos.db.commit()
         return True

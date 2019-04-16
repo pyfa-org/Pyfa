@@ -3,7 +3,7 @@ from logbook import Logger
 
 import eos.db
 from eos.exception import HandledListActionError
-from gui.fitCommands.helpers import ModuleInfo, stateLimit
+from gui.fitCommands.helpers import ModuleInfo, restoreCheckedStates, stateLimit
 from service.fit import Fit
 
 
@@ -20,6 +20,7 @@ class CalcReplaceLocalModuleCommand(wx.Command):
         self.oldModInfo = None
         self.unloadInvalidCharges = unloadInvalidCharges
         self.commit = commit
+        self.savedStateCheckChanges = None
         self.unloadedCharge = None
 
     def Do(self):
@@ -56,22 +57,26 @@ class CalcReplaceLocalModuleCommand(wx.Command):
             pyfalog.warning('Failed to replace in list')
             self.Undo()
             return False
-        sFit.recalc(self.fitID)
-        sFit.checkStates(fit, newMod)
+        sFit.recalc(fit)
+        self.savedStateCheckChanges = sFit.checkStates(fit, newMod)
         if self.commit:
             eos.db.commit()
         return True
 
     def Undo(self):
         pyfalog.debug('Undoing replacement of local module at position {} to {} on fit {}'.format(self.newModInfo, self.position, self.fitID))
+        sFit = Fit.getInstance()
+        fit = sFit.getFit(self.fitID)
         # Remove if there was no module
         if self.oldModInfo is None:
             from .localRemove import CalcRemoveLocalModuleCommand
             cmd = CalcRemoveLocalModuleCommand(fitID=self.fitID, positions=[self.position], commit=self.commit)
-            return cmd.Do()
+            if not cmd.Do():
+                return False
+            sFit.recalc(fit)
+            restoreCheckedStates(fit, self.savedStateCheckChanges)
+            return True
         # Replace if there was
-        sFit = Fit.getInstance()
-        fit = sFit.getFit(self.fitID)
         oldMod = self.oldModInfo.toModule()
         if oldMod is None:
             return False
@@ -87,8 +92,8 @@ class CalcReplaceLocalModuleCommand(wx.Command):
             pyfalog.warning('Failed to replace in list')
             self.Do()
             return False
-        sFit.recalc(self.fitID)
-        sFit.checkStates(fit, oldMod)
+        sFit.recalc(fit)
+        restoreCheckedStates(fit, self.savedStateCheckChanges)
         if self.commit:
             eos.db.commit()
         return True

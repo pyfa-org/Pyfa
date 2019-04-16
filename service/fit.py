@@ -461,26 +461,28 @@ class Fit(FitDeprecated):
 
     def checkStates(self, fit, base):
         pyfalog.debug("Check states for fit ID: {0}", fit)
-        changed = False
-        for mod in fit.modules:
+        changedMods = {}
+        changedProjMods = {}
+        changedProjDrones = {}
+        for pos, mod in enumerate(fit.modules):
             if mod != base:
                 # fix for #529, where a module may be in incorrect state after CCP changes mechanics of module
                 if not mod.canHaveState(mod.state) or not mod.isValidState(mod.state):
+                    changedMods[pos] = mod.state
                     mod.state = FittingModuleState.ONLINE
-                    changed = True
 
-        for mod in fit.projectedModules:
+        for pos, mod in enumerate(fit.projectedModules):
             # fix for #529, where a module may be in incorrect state after CCP changes mechanics of module
             if not mod.canHaveState(mod.state, fit) or not mod.isValidState(mod.state):
+                changedProjMods[pos] = mod.state
                 mod.state = FittingModuleState.OFFLINE
-                changed = True
 
-        for drone in fit.projectedDrones:
+        for pos, drone in enumerate(fit.projectedDrones):
             if drone.amountActive > 0 and not drone.canBeApplied(fit):
+                changedProjDrones[pos] = drone.amountActive
                 drone.amountActive = 0
-                changed = True
 
-        return changed
+        return changedMods, changedProjMods, changedProjDrones
 
     @classmethod
     def fitObjectIter(cls, fit):

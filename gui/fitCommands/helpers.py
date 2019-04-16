@@ -320,3 +320,15 @@ def stateLimit(itemIdentity):
     if {'moduleBonusAssaultDamageControl', 'moduleBonusIndustrialInvulnerability'}.intersection(item.effects):
         return FittingModuleState.ONLINE
     return FittingModuleState.ACTIVE
+
+
+def restoreCheckedStates(fit, stateInfo):
+    if stateInfo is None:
+        return
+    changedMods, changedProjMods, changedProjDrones = stateInfo
+    for pos, state in changedMods.items():
+        fit.modules[pos].state = state
+    for pos, state in changedProjMods.items():
+        fit.projectedModules[pos].state = state
+    for pos, amountActive in changedProjDrones.items():
+        fit.projectedDrones[pos].amountActive = amountActive

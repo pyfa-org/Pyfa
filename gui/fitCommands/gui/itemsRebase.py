@@ -57,7 +57,7 @@ class GuiRebaseItemsCommand(wx.Command):
                 cmdAdd = CalcAddCargoCommand(fitID=self.fitID, cargoInfo=CargoInfo(itemID=self.rebaseMap[cargo.itemID], amount=amount))
                 self.internalHistory.submitBatch(cmdRemove, cmdAdd)
         eos.db.commit()
-        sFit.recalc(self.fitID)
+        sFit.recalc(fit)
         wx.PostEvent(gui.mainFrame.MainFrame.getInstance(), GE.FitChanged(fitID=self.fitID))
         return len(self.internalHistory) > 0
 

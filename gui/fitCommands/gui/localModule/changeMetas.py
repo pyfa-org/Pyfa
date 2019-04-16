@@ -33,7 +33,7 @@ class GuiChangeLocalModuleMetasCommand(wx.Command):
             return False
         success = self.internalHistory.submitBatch(*commands)
         eos.db.commit()
-        sFit.recalc(self.fitID)
+        sFit.recalc(fit)
         wx.PostEvent(gui.mainFrame.MainFrame.getInstance(), GE.FitChanged(fitID=self.fitID))
         return success
 

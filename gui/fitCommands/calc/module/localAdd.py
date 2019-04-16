@@ -3,7 +3,7 @@ from logbook import Logger
 
 import eos.db
 from eos.exception import HandledListActionError
-from gui.fitCommands.helpers import stateLimit
+from gui.fitCommands.helpers import restoreCheckedStates, stateLimit
 from service.fit import Fit
 
 
@@ -16,9 +16,10 @@ class CalcAddLocalModuleCommand(wx.Command):
         wx.Command.__init__(self, True, 'Add Module')
         self.fitID = fitID
         self.newModInfo = newModInfo
+        self.commit = commit
         self.savedPosition = None
         self.subsystemCmd = None
-        self.commit = commit
+        self.savedStateCheckChanges = None
 
     def Do(self):
         pyfalog.debug('Doing addition of local module {} to fit {}'.format(self.newModInfo, self.fitID))
@@ -50,8 +51,8 @@ class CalcAddLocalModuleCommand(wx.Command):
                 eos.db.commit()
             return False
         self.savedPosition = newMod.modPosition
-        sFit.recalc(self.fitID)
-        sFit.checkStates(fit, newMod)
+        sFit.recalc(fit)
+        self.savedStateCheckChanges = sFit.checkStates(fit, newMod)
         if self.commit:
             eos.db.commit()
         return True
@@ -65,4 +66,7 @@ class CalcAddLocalModuleCommand(wx.Command):
         if self.savedPosition is None:
             return False
         cmd = CalcRemoveLocalModuleCommand(fitID=self.fitID, positions=[self.savedPosition], commit=self.commit)
-        return cmd.Do()
+        if not cmd.Do():
+            return False
+        restoreCheckedStates(Fit.getInstance().getFit(self.fitID), self.savedStateCheckChanges)
+        return True

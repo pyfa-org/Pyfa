@@ -29,7 +29,7 @@ class GuiAddImplantCommand(wx.Command):
         cmd = CalcAddImplantCommand(fitID=self.fitID, implantInfo=ImplantInfo(itemID=self.itemID), commit=False)
         successImplant = self.internalHistory.submit(cmd)
         eos.db.commit()
-        sFit.recalc(self.fitID)
+        sFit.recalc(fit)
         wx.PostEvent(gui.mainFrame.MainFrame.getInstance(), GE.FitChanged(fitID=self.fitID))
         # Acceptable behavior when we already have passed implant and just switch source, or
         # when we have source and add implant, but not if we do not change anything
