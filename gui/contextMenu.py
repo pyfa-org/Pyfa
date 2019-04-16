@@ -211,7 +211,7 @@ from gui.builtinContextMenus import (  # noqa: E402,F401
     itemStats,
     damagePattern,
     marketJump,
-    # droneSplit,
+    droneSplit,
     itemRemove,
     fillWithModule,
     droneRemoveStack,

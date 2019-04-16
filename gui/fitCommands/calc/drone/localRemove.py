@@ -12,11 +12,12 @@ pyfalog = Logger(__name__)
 
 class CalcRemoveLocalDroneCommand(wx.Command):
 
-    def __init__(self, fitID, position, amount):
+    def __init__(self, fitID, position, amount, commit=True):
         wx.Command.__init__(self, True, 'Remove Drone')
         self.fitID = fitID
         self.position = position
         self.amountToRemove = amount
+        self.commit = commit
         self.savedDroneInfo = None
         self.removedStack = None
 
@@ -36,7 +37,8 @@ class CalcRemoveLocalDroneCommand(wx.Command):
         else:
             self.removedStack = False
 
-        eos.db.commit()
+        if self.commit:
+            eos.db.commit()
         return True
 
     def Undo(self):
@@ -52,11 +54,13 @@ class CalcRemoveLocalDroneCommand(wx.Command):
                 fit.drones.insert(self.position, drone)
             except HandledListActionError:
                 pyfalog.warning('Failed to insert to list')
-                eos.db.commit()
+                if self.commit:
+                    eos.db.commit()
                 return False
         else:
             drone = fit.drones[self.position]
             drone.amount = self.savedDroneInfo.amount
             drone.amountActive = self.savedDroneInfo.amountActive
-        eos.db.commit()
+        if self.commit:
+            eos.db.commit()
         return True

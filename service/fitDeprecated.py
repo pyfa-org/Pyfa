@@ -98,39 +98,6 @@ class FitDeprecated(object):
         self.recalc(fit)
         return True
 
-    @staticmethod
-    @deprecated
-    def splitDrones(fit, d, amount, l):
-        pyfalog.debug("Splitting drones for fit ID: {0}", fit)
-        total = d.amount
-        active = d.amountActive > 0
-        d.amount = amount
-        d.amountActive = amount if active else 0
-
-        newD = es_Drone(d.item)
-        newD.amount = total - amount
-        newD.amountActive = newD.amount if active else 0
-        l.append(newD)
-        eos.db.commit()
-
-    @deprecated
-    def splitProjectedDroneStack(self, fitID, d, amount):
-        pyfalog.debug("Splitting projected drone stack for fit ID: {0}", fitID)
-        if fitID is None:
-            return False
-
-        fit = eos.db.getFit(fitID)
-        self.splitDrones(fit, d, amount, fit.projectedDrones)
-
-    @deprecated
-    def splitDroneStack(self, fitID, d, amount):
-        pyfalog.debug("Splitting drone stack for fit ID: {0}", fitID)
-        if fitID is None:
-            return False
-
-        fit = eos.db.getFit(fitID)
-        self.splitDrones(fit, d, amount, fit.drones)
-
     @deprecated
     def removeDrone(self, fitID, i, numDronesToRemove=1, recalc=True):
         pyfalog.debug("Removing {0} drones for fit ID: {1}", numDronesToRemove, fitID)

@@ -22,6 +22,7 @@ from .gui.localDrone.add import GuiAddLocalDroneCommand
 from .gui.localDrone.changeAmount import GuiChangeLocalDroneAmountCommand
 from .gui.localDrone.changeMeta import GuiChangeLocalDroneMetaCommand
 from .gui.localDrone.remove import GuiRemoveLocalDroneCommand
+from .gui.localDrone.splitStack import GuiSplitLocalDroneStackCommand
 from .gui.localDrone.toggleState import GuiToggleLocalDroneStateCommand
 from .gui.localFighter.abilityToggleState import GuiToggleLocalFighterAbilityStateCommand
 from .gui.localFighter.add import GuiAddLocalFighterCommand

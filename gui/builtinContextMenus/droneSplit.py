@@ -3,7 +3,7 @@ import re
 # noinspection PyPackageRequirements
 import wx
 
-import gui.globalEvents as GE
+import gui.fitCommands as cmd
 import gui.mainFrame
 from gui.contextMenu import ContextMenu
 from service.fit import Fit
@@ -34,37 +34,21 @@ class DroneSplit(ContextMenu):
             if dlg.input.GetLineText(0).strip() == '':
                 return
 
-            sFit = Fit.getInstance()
-            cleanInput = re.sub(r'[^0-9.]', '', dlg.input.GetLineText(0).strip())
             fitID = self.mainFrame.getActiveFit()
+            fit = Fit.getInstance().getFit(fitID)
+            cleanInput = re.sub(r'[^0-9.]', '', dlg.input.GetLineText(0).strip())
 
-            if srcContext == "droneItem":
-                sFit.splitDroneStack(fitID, drone, int(float(cleanInput)))
-            else:
-                sFit.splitProjectedDroneStack(fitID, drone, int(float(cleanInput)))
-
-            wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fitID))
-
-            # if isinstance(thing, es_Cargo):
-            #     self.mainFrame.command.Submit(
-            #         cmd.GuiAddCargoCommand(fitID, thing.item.ID, int(float(cleanInput)), replace=True))
-            #     return  # no need for post event here
-            # elif isinstance(thing, es_Fit):
-            #     sFit.changeAmount(fitID, thing, int(float(cleanInput)))
-            # elif isinstance(thing, es_Fighter):
-            #     sFit.changeActiveFighters(fitID, thing, int(float(cleanInput)))
-            #
-            # wx.PostEvent(mainFrame, GE.FitChanged(fitID=fitID))
-        #
-        # dlg = DroneSpinner(self.mainFrame, selection[0], srcContext)
-        # dlg.ShowModal()
-        # dlg.Destroy()
+            self.mainFrame.command.Submit(cmd.GuiSplitLocalDroneStackCommand(
+                fitID=fitID,
+                position=fit.drones.index(drone),
+                amount=int(cleanInput)))
 
 
 DroneSplit.register()
 
 
 class DroneStackSplit(wx.Dialog):
+
     def __init__(self, parent, value):
         wx.Dialog.__init__(self, parent, title="Split Drone Stack")
         self.SetMinSize((346, 156))
@@ -111,37 +95,3 @@ class DroneStackSplit(wx.Dialog):
             return
         else:
             return False
-
-
-class DroneSpinner(wx.Dialog):
-    def __init__(self, parent, drone, context):
-        wx.Dialog.__init__(self, parent, title="Select Amount", size=wx.Size(220, 60))
-        self.drone = drone
-        self.context = context
-
-        bSizer1 = wx.BoxSizer(wx.HORIZONTAL)
-
-        self.spinner = wx.SpinCtrl(self)
-        self.spinner.SetRange(1, drone.amount - 1)
-        self.spinner.SetValue(1)
-
-        bSizer1.Add(self.spinner, 1, wx.ALL, 5)
-
-        self.button = wx.Button(self, wx.ID_OK, "Split")
-        bSizer1.Add(self.button, 0, wx.ALL, 5)
-
-        self.SetSizer(bSizer1)
-        self.Layout()
-        self.Centre(wx.BOTH)
-        self.button.Bind(wx.EVT_BUTTON, self.split)
-
-    def split(self, event):
-        sFit = Fit.getInstance()
-        mainFrame = gui.mainFrame.MainFrame.getInstance()
-        fitID = mainFrame.getActiveFit()
-        if self.context == "droneItem":
-            sFit.splitDroneStack(fitID, self.drone, self.spinner.GetValue())
-        else:
-            sFit.splitProjectedDroneStack(fitID, self.drone, self.spinner.GetValue())
-        wx.PostEvent(mainFrame, GE.FitChanged(fitID=fitID))
-        event.Skip()
