@@ -28997,6 +28997,10 @@ class Effect6582(BaseEffect):
                                                   mod.item.requiresSkill('Capital Projectile Turret'),
                                       'damageMultiplier', src.getModifiedItemAttr('siegeTurretDamageBonus'))
 
+        fit.modules.filteredItemMultiply(lambda mod: mod.item.requiresSkill('Motion Prediction'),
+                                         'damageMultiplier', src.getModifiedItemAttr('siegeHAWTurretDamageBonus'),
+                                         stackingPenalties=True)
+
         # Missiles
         for type in ('kinetic', 'thermal', 'explosive', 'em'):
             fit.modules.filteredChargeBoost(lambda mod: mod.charge.requiresSkill('XL Torpedoes') or
@@ -29004,7 +29008,18 @@ class Effect6582(BaseEffect):
                                                         mod.charge.requiresSkill('Torpedoes'),
                                             '%sDamage' % type, src.getModifiedItemAttr('siegeMissileDamageBonus'))
 
-        # Reppers
+        fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('XL Torpedoes') or
+                                                  mod.item.requiresSkill('XL Cruise Missiles'),
+                                      'speed', src.getModifiedItemAttr('siegeLauncherROFBonus'))
+
+        fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Target Navigation Prediction'),
+                                      'speed', src.getModifiedItemAttr('siegeHAWMissileROFBonus'))
+
+        fit.modules.filteredChargeBoost(lambda mod: mod.charge.requiresSkill('Torpedoes'),
+                                        'maxVelocity', src.getModifiedItemAttr('siegeTorpedoVelocityBonus'),
+                                        stackingPenalties=True)
+
+        # Tank
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Capital Shield Operation') or
                                                   mod.item.requiresSkill('Capital Repair Systems'),
                                       'duration', src.getModifiedItemAttr('siegeLocalLogisticsDurationBonus'))
@@ -29017,35 +29032,19 @@ class Effect6582(BaseEffect):
                                       'armorDamageAmount', src.getModifiedItemAttr('siegeLocalLogisticsAmountBonus'),
                                       stackingPenalties=True)
 
-        # Speed penalty
+        # Mobility & safety penalties
         fit.ship.boostItemAttr('maxVelocity', src.getModifiedItemAttr('speedFactor'))
-
-        # Mass
         fit.ship.multiplyItemAttr('mass', src.getModifiedItemAttr('siegeMassMultiplier'),
                                   stackingPenalties=True, penaltyGroup='postMul')
-
-        # @ todo: test for April 2016 release
-        # Block Hostile EWAR and friendly effects
-        fit.ship.forceItemAttr('disallowOffensiveModifiers', src.getModifiedItemAttr('disallowOffensiveModifiers'))
-        fit.ship.forceItemAttr('disallowAssistance', src.getModifiedItemAttr('disallowAssistance'))
-
-        # new in April 2016 release
-        # missile ROF bonus
-        for group in ('Missile Launcher XL Torpedo', 'Missile Launcher Rapid Torpedo', 'Missile Launcher XL Cruise'):
-            fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == group, 'speed',
-                                          src.getModifiedItemAttr('siegeLauncherROFBonus'))
-
-        fit.modules.filteredChargeBoost(lambda mod: mod.charge.requiresSkill('Torpedoes'), 'maxVelocity',
-                                        src.getModifiedItemAttr('siegeTorpedoVelocityBonus'), stackingPenalties=True)
-
         fit.ship.increaseItemAttr('warpScrambleStatus', src.getModifiedItemAttr('siegeModeWarpStatus'))
+        fit.ship.forceItemAttr('disallowDocking', src.getModifiedItemAttr('disallowDocking'))
+        fit.ship.forceItemAttr('disallowTethering', src.getModifiedItemAttr('disallowTethering'))
+
+        # Ewar and assistance resistances
         fit.ship.boostItemAttr('remoteRepairImpedance', src.getModifiedItemAttr('remoteRepairImpedanceBonus'))
         fit.ship.boostItemAttr('sensorDampenerResistance', src.getModifiedItemAttr('sensorDampenerResistanceBonus'))
         fit.ship.boostItemAttr('remoteAssistanceImpedance', src.getModifiedItemAttr('remoteAssistanceImpedanceBonus'))
         fit.ship.boostItemAttr('weaponDisruptionResistance', src.getModifiedItemAttr('weaponDisruptionResistanceBonus'))
-
-        fit.ship.forceItemAttr('disallowDocking', src.getModifiedItemAttr('disallowDocking'))
-        fit.ship.forceItemAttr('disallowTethering', src.getModifiedItemAttr('disallowTethering'))
 
 
 class Effect6591(BaseEffect):
