@@ -45,7 +45,7 @@ class ItemParams(wx.Panel):
         mainSizer.Add(self.m_staticline, 0, wx.EXPAND)
         bSizer = wx.BoxSizer(wx.HORIZONTAL)
 
-        self.toggleViewBtn = wx.ToggleButton(self, wx.ID_ANY, "Veiw Raw Data", wx.DefaultPosition, wx.DefaultSize,
+        self.toggleViewBtn = wx.ToggleButton(self, wx.ID_ANY, "View Raw Data", wx.DefaultPosition, wx.DefaultSize,
                                              0)
         bSizer.Add(self.toggleViewBtn, 0, wx.ALIGN_CENTER_VERTICAL)
 
