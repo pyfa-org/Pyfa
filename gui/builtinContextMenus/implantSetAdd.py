@@ -6,12 +6,11 @@ import gui.globalEvents as GE
 import gui.mainFrame
 from gui.contextMenu import ContextMenu
 from service.character import Character
-from service.fit import Fit
 from service.implantSet import ImplantSets as s_ImplantSets
 from service.settings import ContextMenuSettings
 
 
-class ImplantSets(ContextMenu):
+class addImplantSet(ContextMenu):
     def __init__(self):
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
         self.settings = ContextMenuSettings.getInstance()
@@ -89,4 +88,4 @@ class ImplantSets(ContextMenu):
                 itemIDs=[i.itemID for i in set.implants]))
 
 
-ImplantSets.register()
+addImplantSet.register()

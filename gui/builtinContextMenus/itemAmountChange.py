@@ -14,7 +14,7 @@ from service.fit import Fit
 from service.settings import ContextMenuSettings
 
 
-class ChangeAmount(ContextMenu):
+class ChangeItemAmount(ContextMenu):
     def __init__(self):
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
         self.settings = ContextMenuSettings.getInstance()
@@ -66,7 +66,7 @@ class ChangeAmount(ContextMenu):
                     self.mainFrame.command.Submit(cmd.GuiChangeLocalFighterAmountCommand(fitID, fit.fighters.index(thing), cleanInput))
 
 
-ChangeAmount.register()
+ChangeItemAmount.register()
 
 
 class AmountChanger(wx.Dialog):

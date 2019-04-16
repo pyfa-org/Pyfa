@@ -8,7 +8,7 @@ from service.fit import Fit
 from service.settings import ContextMenuSettings
 
 
-class FighterAbility(ContextMenu):
+class FighterAbilities(ContextMenu):
     def __init__(self):
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
         self.settings = ContextMenuSettings.getInstance()
@@ -69,4 +69,4 @@ class FighterAbility(ContextMenu):
 
 
 
-FighterAbility.register()
+FighterAbilities.register()

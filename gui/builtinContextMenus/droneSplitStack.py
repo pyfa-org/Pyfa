@@ -10,7 +10,7 @@ from service.fit import Fit
 from service.settings import ContextMenuSettings
 
 
-class DroneSplit(ContextMenu):
+class DroneSplitStack(ContextMenu):
     def __init__(self):
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
         self.settings = ContextMenuSettings.getInstance()
@@ -44,7 +44,7 @@ class DroneSplit(ContextMenu):
                 amount=int(cleanInput)))
 
 
-DroneSplit.register()
+DroneSplitStack.register()
 
 
 class DroneStackSplit(wx.Dialog):

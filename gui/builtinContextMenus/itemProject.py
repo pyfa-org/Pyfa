@@ -5,7 +5,7 @@ from service.fit import Fit
 from service.settings import ContextMenuSettings
 
 
-class Project(ContextMenu):
+class ProjectItem(ContextMenu):
     def __init__(self):
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
         self.settings = ContextMenuSettings.getInstance()
@@ -45,4 +45,4 @@ class Project(ContextMenu):
             self.mainFrame.additionsPane.select('Projected')
 
 
-Project.register()
+ProjectItem.register()

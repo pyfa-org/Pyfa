@@ -1,3 +1,5 @@
+import math
+
 import gui.fitCommands as cmd
 import gui.mainFrame
 from gui.contextMenu import ContextMenu
@@ -5,7 +7,7 @@ from service.fit import Fit
 from service.settings import ContextMenuSettings
 
 
-class ItemRemove(ContextMenu):
+class RemoveItem(ContextMenu):
     def __init__(self):
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
         self.settings = ContextMenuSettings.getInstance()
@@ -14,10 +16,9 @@ class ItemRemove(ContextMenu):
         if not self.settings.get('itemRemove'):
             return False
 
-        return srcContext in ("fittingModule", "fittingCharge",
-                              "droneItem", "implantItem",
-                              "boosterItem", "projectedModule",
-                              "projectedCharge", "cargoItem",
+        return srcContext in ("fittingModule", "droneItem",
+                              "implantItem", "boosterItem",
+                              "projectedModule", "cargoItem",
                               "projectedFit", "projectedDrone",
                               "fighterItem", "projectedFighter",
                               "commandFit")
@@ -40,7 +41,7 @@ class ItemRemove(ContextMenu):
                 fitID=fitID, modules=selection, chargeItemID=None))
         elif srcContext == "droneItem":
             self.mainFrame.command.Submit(cmd.GuiRemoveLocalDroneCommand(
-                fitID=fitID, position=fit.drones.index(selection[0]), amount=1))
+                fitID=fitID, position=fit.drones.index(selection[0]), amount=math.inf))
         elif srcContext == "fighterItem":
             self.mainFrame.command.Submit(cmd.GuiRemoveLocalFighterCommand(
                 fitID=fitID, position=fit.fighters.index(selection[0])))
@@ -61,16 +62,13 @@ class ItemRemove(ContextMenu):
                 fitID=fitID, position=fit.projectedModules.index(selection[0])))
         elif srcContext == "projectedDrone":
             self.mainFrame.command.Submit(cmd.GuiRemoveProjectedDroneCommand(
-                fitID=fitID, itemID=selection[0].itemID, amount=1))
+                fitID=fitID, itemID=selection[0].itemID, amount=math.inf))
         elif srcContext == "projectedFighter":
             self.mainFrame.command.Submit(cmd.GuiRemoveProjectedFighterCommand(
                 fitID=fitID, position=fit.projectedFighters.index(selection[0])))
-        elif srcContext == "projectedCharge":
-            self.mainFrame.command.Submit(cmd.GuiChangeProjectedModuleChargesCommand(
-                fitID=fitID, modules=[selection[0]], chargeItemID=None))
         elif srcContext == "commandFit":
             self.mainFrame.command.Submit(cmd.GuiRemoveCommandFitCommand(
                 fitID=fitID, commandFitID=selection[0].ID))
 
 
-ItemRemove.register()
+RemoveItem.register()

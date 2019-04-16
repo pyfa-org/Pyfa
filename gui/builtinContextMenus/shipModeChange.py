@@ -8,7 +8,7 @@ from service.fit import Fit
 from service.settings import ContextMenuSettings
 
 
-class TacticalMode(ContextMenu):
+class ChangeShipTacticalMode(ContextMenu):
     def __init__(self):
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
         self.settings = ContextMenuSettings.getInstance()
@@ -64,4 +64,4 @@ class TacticalMode(ContextMenu):
         self.mainFrame.command.Submit(cmd.GuiChangeShipModeCommand(fitID, self.modeIds[event.Id].item.ID))
 
 
-TacticalMode.register()
+ChangeShipTacticalMode.register()

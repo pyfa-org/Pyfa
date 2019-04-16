@@ -7,7 +7,7 @@ from gui.fitCommands import GuiConvertMutatedLocalModuleCommand, GuiRevertMutate
 from service.settings import ContextMenuSettings
 
 
-class MutaplasmidCM(ContextMenu):
+class ChangeModuleMutation(ContextMenu):
     def __init__(self):
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
         self.settings = ContextMenuSettings.getInstance()
@@ -71,4 +71,4 @@ class MutaplasmidCM(ContextMenu):
         return None
 
 
-MutaplasmidCM.register()
+ChangeModuleMutation.register()

@@ -44,8 +44,8 @@ class PFContextMenuPref(PreferenceView):
         rbSizerRow1.Add(self.rbBox2, 1, wx.ALL, 5)
         self.rbBox2.Bind(wx.EVT_RADIOBOX, self.OnSetting2Change)
 
-        self.rbBox3 = wx.RadioBox(panel, -1, "Factor in Reload Time", wx.DefaultPosition, wx.DefaultSize, ['Disabled', 'Enabled'], 1, wx.RA_SPECIFY_COLS)
-        self.rbBox3.SetSelection(self.settings.get('factorReload'))
+        self.rbBox3 = wx.RadioBox(panel, -1, "Variations", wx.DefaultPosition, wx.DefaultSize, ['Disabled', 'Enabled'], 1, wx.RA_SPECIFY_COLS)
+        self.rbBox3.SetSelection(self.settings.get('metaSwap'))
         rbSizerRow1.Add(self.rbBox3, 1, wx.ALL, 5)
         self.rbBox3.Bind(wx.EVT_RADIOBOX, self.OnSetting3Change)
 
@@ -54,42 +54,27 @@ class PFContextMenuPref(PreferenceView):
         # Row 2
         rbSizerRow2 = wx.BoxSizer(wx.HORIZONTAL)
 
-        self.rbBox4 = wx.RadioBox(panel, -1, "Variations", wx.DefaultPosition, wx.DefaultSize, ['Disabled', 'Enabled'], 1, wx.RA_SPECIFY_COLS)
-        self.rbBox4.SetSelection(self.settings.get('metaSwap'))
+        self.rbBox4 = wx.RadioBox(panel, -1, "Project onto Fit", wx.DefaultPosition, wx.DefaultSize, ['Disabled', 'Enabled'], 1, wx.RA_SPECIFY_COLS)
+        self.rbBox4.SetSelection(self.settings.get('project'))
         rbSizerRow2.Add(self.rbBox4, 1, wx.ALL, 5)
         self.rbBox4.Bind(wx.EVT_RADIOBOX, self.OnSetting4Change)
 
-        # self.rbBox5 = wx.RadioBox(panel, -1, "Charge", wx.DefaultPosition, wx.DefaultSize, ['Disabled', 'Enabled'], 1, wx.RA_SPECIFY_COLS)
-        # self.rbBox5.SetSelection(self.settings.get('moduleAmmoPicker'))
-        # rbSizerRow2.Add(self.rbBox5, 0, wx.ALL, 5)
-        # self.rbBox5.Bind(wx.EVT_RADIOBOX, self.OnSetting5Change)
+        self.rbBox5 = wx.RadioBox(panel, -1, "Fill with module", wx.DefaultPosition, wx.DefaultSize, ['Disabled', 'Enabled'], 1, wx.RA_SPECIFY_COLS)
+        self.rbBox5.SetSelection(self.settings.get('moduleFill'))
+        rbSizerRow2.Add(self.rbBox5, 1, wx.ALL, 5)
+        self.rbBox5.Bind(wx.EVT_RADIOBOX, self.OnSetting5Change)
 
-        self.rbBox6 = wx.RadioBox(panel, -1, "Charge (All)", wx.DefaultPosition, wx.DefaultSize, ['Disabled', 'Enabled'], 1, wx.RA_SPECIFY_COLS)
-        self.rbBox6.SetSelection(self.settings.get('moduleGlobalAmmoPicker'))
+        self.rbBox6 = wx.RadioBox(panel, -1, "Spoolup", wx.DefaultPosition, wx.DefaultSize, ['Disabled', 'Enabled'], 1, wx.RA_SPECIFY_COLS)
+        self.rbBox6.SetSelection(self.settings.get('spoolup'))
         rbSizerRow2.Add(self.rbBox6, 1, wx.ALL, 5)
         self.rbBox6.Bind(wx.EVT_RADIOBOX, self.OnSetting6Change)
-
-        self.rbBox7 = wx.RadioBox(panel, -1, "Project onto Fit", wx.DefaultPosition, wx.DefaultSize, ['Disabled', 'Enabled'], 1, wx.RA_SPECIFY_COLS)
-        self.rbBox7.SetSelection(self.settings.get('project'))
-        rbSizerRow2.Add(self.rbBox7, 1, wx.ALL, 5)
-        self.rbBox7.Bind(wx.EVT_RADIOBOX, self.OnSetting7Change)
 
         mainSizer.Add(rbSizerRow2, 1, wx.ALL | wx.EXPAND, 0)
 
         # Row 3
-        rbSizerRow3 = wx.BoxSizer(wx.HORIZONTAL)
-
-        self.rbBox8 = wx.RadioBox(panel, -1, "Fill with module", wx.DefaultPosition, wx.DefaultSize, ['Disabled', 'Enabled'], 1, wx.RA_SPECIFY_COLS)
-        self.rbBox8.SetSelection(self.settings.get('moduleFill'))
-        rbSizerRow3.Add(self.rbBox8, 1, wx.ALL, 5)
-        self.rbBox8.Bind(wx.EVT_RADIOBOX, self.OnSetting8Change)
-
-        self.rbBox9 = wx.RadioBox(panel, -1, "Spoolup", wx.DefaultPosition, wx.DefaultSize, ['Disabled', 'Enabled'], 1, wx.RA_SPECIFY_COLS)
-        self.rbBox9.SetSelection(self.settings.get('spoolup'))
-        rbSizerRow3.Add(self.rbBox9, 1, wx.ALL, 5)
-        self.rbBox9.Bind(wx.EVT_RADIOBOX, self.OnSetting9Change)
-
-        mainSizer.Add(rbSizerRow3, 1, wx.ALL | wx.EXPAND, 0)
+        # rbSizerRow3 = wx.BoxSizer(wx.HORIZONTAL)
+        #
+        # mainSizer.Add(rbSizerRow3, 1, wx.ALL | wx.EXPAND, 0)
 
         panel.SetSizer(mainSizer)
         panel.Layout()
@@ -101,24 +86,15 @@ class PFContextMenuPref(PreferenceView):
         self.settings.set('changeAffectingSkills', event.GetInt())
 
     def OnSetting3Change(self, event):
-        self.settings.set('factorReload', event.GetInt())
-
-    def OnSetting4Change(self, event):
         self.settings.set('metaSwap', event.GetInt())
 
-    def OnSetting5Change(self, event):
-        self.settings.set('moduleAmmoPicker', event.GetInt())
-
-    def OnSetting6Change(self, event):
-        self.settings.set('moduleGlobalAmmoPicker', event.GetInt())
-
-    def OnSetting7Change(self, event):
+    def OnSetting4Change(self, event):
         self.settings.set('project', event.GetInt())
 
-    def OnSetting8Change(self, event):
+    def OnSetting5Change(self, event):
         self.settings.set('moduleFill', event.GetInt())
 
-    def OnSetting9Change(self, event):
+    def OnSetting6Change(self, event):
         self.settings.set('spoolup', event.GetInt())
 
     def getImage(self):

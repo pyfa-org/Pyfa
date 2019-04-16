@@ -31,7 +31,7 @@ from eos.const import FittingSlot
 from service.fit import Fit as FitSvc
 from service.market import Market
 from gui.viewColumn import ViewColumn
-from gui.builtinContextMenus.whProjector import WhProjector
+from gui.builtinContextMenus.envEffectAdd import AddEnvironmentEffect
 import gui.mainFrame
 
 pyfalog = Logger(__name__)
@@ -83,7 +83,7 @@ class BaseName(ViewColumn):
             if self.projectedView:
                 # check for projected abyssal name
                 name_check = stuff.item.name[0:-2]
-                type = WhProjector.abyssal_mapping.get(name_check, None)
+                type = AddEnvironmentEffect.abyssal_mapping.get(name_check, None)
                 if type:
                     sMkt = Market.getInstance()
                     type = sMkt.getItem(type)

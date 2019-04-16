@@ -9,7 +9,7 @@ from gui.contextMenu import ContextMenu
 from service.settings import ContextMenuSettings
 
 
-class SpoolUp(ContextMenu):
+class ChangeModuleSpool(ContextMenu):
     def __init__(self):
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
         self.settings = ContextMenuSettings.getInstance()
@@ -89,4 +89,4 @@ class SpoolUp(ContextMenu):
                 spoolAmount=spoolAmount))
 
 
-SpoolUp.register()
+ChangeModuleSpool.register()

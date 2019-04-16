@@ -9,7 +9,7 @@ from service.market import Market
 from service.settings import ContextMenuSettings
 
 
-class CommandFits(ContextMenu):
+class AddCommandFit(ContextMenu):
     # Get list of items that define a command fit
     sMkt = Market.getInstance()
     grp = sMkt.getGroup(1770)  # Command burst group
@@ -101,5 +101,5 @@ class CommandFits(ContextMenu):
         self.mainFrame.command.Submit(cmd.GuiAddCommandFitCommand(fitID, fit.ID))
 
 
-CommandFits.populateFits(None)
-CommandFits.register()
+AddCommandFit.populateFits(None)
+AddCommandFit.register()

@@ -11,7 +11,7 @@ from service.market import Market
 from service.settings import ContextMenuSettings
 
 
-class WhProjector(ContextMenu):
+class AddEnvironmentEffect(ContextMenu):
 
     # CCP doesn't currently provide a mapping between the general Environment, and the specific environment effect
     # (which can be random when going into Abyssal space). This is how we currently define it:
@@ -223,4 +223,4 @@ class WhProjector(ContextMenu):
         return grouped, ()
 
 
-WhProjector.register()
+AddEnvironmentEffect.register()
