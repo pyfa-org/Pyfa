@@ -67,18 +67,29 @@ class ModuleInfo:
         self.spoolAmount = spoolAmount
 
     @classmethod
-    def fromModule(cls, mod):
+    def fromModule(cls, mod, unmutate=False):
         if mod is None:
             return None
-        info = cls(
-            itemID=mod.itemID,
-            baseItemID=mod.baseItemID,
-            mutaplasmidID=mod.mutaplasmidID,
-            mutations={m.attrID: m.value for m in mod.mutators.values()},
-            chargeID=mod.chargeID,
-            state=mod.state,
-            spoolType=mod.spoolType,
-            spoolAmount=mod.spoolAmount)
+        if unmutate and mod.isMutated:
+            info = cls(
+                itemID=mod.baseItemID,
+                baseItemID=None,
+                mutaplasmidID=None,
+                mutations={},
+                chargeID=mod.chargeID,
+                state=mod.state,
+                spoolType=mod.spoolType,
+                spoolAmount=mod.spoolAmount)
+        else:
+            info = cls(
+                itemID=mod.itemID,
+                baseItemID=mod.baseItemID,
+                mutaplasmidID=mod.mutaplasmidID,
+                mutations={m.attrID: m.value for m in mod.mutators.values()},
+                chargeID=mod.chargeID,
+                state=mod.state,
+                spoolType=mod.spoolType,
+                spoolAmount=mod.spoolAmount)
         return info
 
     def toModule(self, fallbackState=None):

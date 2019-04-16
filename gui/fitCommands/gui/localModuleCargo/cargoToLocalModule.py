@@ -72,13 +72,9 @@ class GuiCargoToLocalModuleCommand(wx.Command):
                 newCargoModItemID = None
                 dstModChargeItemID = None
                 dstModChargeAmount = None
-            # We cannot put mutated items to cargo, so use base item ID
-            elif dstMod.isMutated:
-                newCargoModItemID = dstMod.baseItemID
-                dstModChargeItemID = dstMod.chargeID
-                dstModChargeAmount = dstMod.numCharges
             else:
-                newCargoModItemID = dstMod.itemID
+                # We cannot put mutated items to cargo, so use unmutated item ID
+                newCargoModItemID = ModuleInfo.fromModule(dstMod, unmutate=True).itemID
                 dstModChargeItemID = dstMod.chargeID
                 dstModChargeAmount = dstMod.numCharges
             commands = []
@@ -108,15 +104,16 @@ class GuiCargoToLocalModuleCommand(wx.Command):
             if newMod.slot != dstModSlot:
                 success = False
             if success:
-                # Add charge to cargo only if we had to unload it
+                # If we had to unload charge, add it to cargo
                 if cmdReplace.unloadedCharge and dstModChargeItemID is not None:
                     cmdAddCargoCharge = CalcAddCargoCommand(
                         fitID=self.fitID,
                         cargoInfo=CargoInfo(itemID=dstModChargeItemID, amount=dstModChargeAmount),
                         commit=False)
                     success = self.internalHistory.submit(cmdAddCargoCharge)
-                # If we did not unload charge and it was there, process the difference
+                # If we did not unload charge and there still was a charge, see if amount differs and process it
                 elif not cmdReplace.unloadedCharge and dstModChargeItemID is not None:
+                    # How many extra charges do we need to take from cargo
                     extraChargeAmount = newMod.numCharges - dstModChargeAmount
                     if extraChargeAmount > 0:
                         cmdRemoveCargoExtraCharge = CalcRemoveCargoCommand(
