@@ -110,13 +110,12 @@ class CargoView(d.Display):
         sFit = Fit.getInstance()
         fit = sFit.getFit(self.mainFrame.getActiveFit())
         dstRow, _ = self.HitTest((x, y))
-        mstate = wx.GetMouseState()
 
         self.mainFrame.command.Submit(cmd.GuiLocalModuleToCargoCommand(
             fitID=self.mainFrame.getActiveFit(),
             modPosition=fit.modules[modIdx].modPosition,
             cargoItemID=self.cargo[dstRow].itemID if dstRow > -1 else None,
-            copy=mstate.cmdDown))
+            copy=wx.GetMouseState().CmdDown()))
 
     def fitChanged(self, event):
         sFit = Fit.getInstance()

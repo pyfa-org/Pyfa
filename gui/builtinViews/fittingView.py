@@ -412,7 +412,6 @@ class FittingView(d.Display):
 
     def swapCargo(self, x, y, cargoItemID):
         """Swap a module from cargo to fitting window"""
-        mstate = wx.GetMouseState()
 
         dstRow, _ = self.HitTest((x, y))
         if dstRow != -1 and dstRow not in self.blanks:
@@ -425,11 +424,10 @@ class FittingView(d.Display):
                 fitID=self.mainFrame.getActiveFit(),
                 cargoItemID=cargoItemID,
                 modPosition=mod.modPosition,
-                copy=mstate.CmdDown()))
+                copy=wx.GetMouseState().CmdDown()))
 
     def swapItems(self, x, y, srcIdx):
         """Swap two modules in fitting window"""
-        mstate = wx.GetMouseState()
         sFit = Fit.getInstance()
         fit = sFit.getFit(self.activeFitID)
 
@@ -448,6 +446,7 @@ class FittingView(d.Display):
 
             fitID = self.mainFrame.getActiveFit()
             if getattr(mod2, "modPosition") is not None:
+                mstate = wx.GetMouseState()
                 if mstate.CmdDown() and mod2.isEmpty:
                     self.mainFrame.command.Submit(cmd.GuiCloneLocalModuleCommand(
                         fitID=fitID, srcPosition=srcIdx, dstPosition=mod2.modPosition))
