@@ -15226,7 +15226,6 @@ class Effect4575(BaseEffect):
 
     @staticmethod
     def handler(fit, src, context):
-        fit.extraAttributes['siege'] = True
         fit.ship.boostItemAttr('maxVelocity', src.getModifiedItemAttr('speedFactor'), stackingPenalties=True)
         fit.ship.multiplyItemAttr('mass', src.getModifiedItemAttr('siegeMassMultiplier'))
         fit.ship.multiplyItemAttr('scanResolution',
