@@ -85,7 +85,6 @@ class CalcReplaceLocalModuleCommand(wx.Command):
             pyfalog.warning('Module does not fit')
             self.Do()
             return False
-        oldMod.owner = fit
         try:
             fit.modules.replace(self.position, oldMod)
         except HandledListActionError:

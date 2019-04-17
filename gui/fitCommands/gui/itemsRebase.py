@@ -27,7 +27,7 @@ class GuiRebaseItemsCommand(wx.Command):
                 cmd = CalcRebaseItemCommand(
                     fitID=self.fitID,
                     containerName='modules',
-                    position=mod.modPosition,
+                    position=fit.modules.index(mod),
                     itemID=self.rebaseMap[mod.itemID],
                     commit=False)
                 self.internalHistory.submit(cmd)
@@ -35,7 +35,8 @@ class GuiRebaseItemsCommand(wx.Command):
                 cmd = CalcChangeModuleChargesCommand(
                     fitID=self.fitID,
                     projected=False,
-                    chargeMap={mod.modPosition: self.rebaseMap[mod.chargeID]})
+                    chargeMap={fit.modules.index(mod): self.rebaseMap[mod.chargeID]},
+                    commit=False)
                 self.internalHistory.submit(cmd)
         for containerName in ('drones', 'fighters', 'implants', 'boosters'):
             container = getattr(fit, containerName)
@@ -53,8 +54,14 @@ class GuiRebaseItemsCommand(wx.Command):
         for cargo in fit.cargo:
             if cargo.itemID in self.rebaseMap:
                 amount = cargo.amount
-                cmdRemove = CalcRemoveCargoCommand(fitID=self.fitID, cargoInfo=CargoInfo(itemID=cargo.itemID, amount=amount))
-                cmdAdd = CalcAddCargoCommand(fitID=self.fitID, cargoInfo=CargoInfo(itemID=self.rebaseMap[cargo.itemID], amount=amount))
+                cmdRemove = CalcRemoveCargoCommand(
+                    fitID=self.fitID,
+                    cargoInfo=CargoInfo(itemID=cargo.itemID, amount=amount),
+                    commit=False)
+                cmdAdd = CalcAddCargoCommand(
+                    fitID=self.fitID,
+                    cargoInfo=CargoInfo(itemID=self.rebaseMap[cargo.itemID], amount=amount),
+                    commit=False)
                 self.internalHistory.submitBatch(cmdRemove, cmdAdd)
         eos.db.commit()
         sFit.recalc(fit)

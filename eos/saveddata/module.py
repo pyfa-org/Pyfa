@@ -239,8 +239,15 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
 
     @property
     def modPosition(self):
-        if self.owner:
-            return self.owner.modules.index(self) if not self.isProjected else self.owner.projectedModules.index(self)
+        return self.getModPosition()
+
+    def getModPosition(self, fit=None):
+        # Pass in fit for reliability. When it's not passed, we rely on owner and owner
+        # is set by sqlalchemy during flush
+        fit = fit if fit is not None else self.owner
+        if fit:
+            return fit.modules.index(self) if not self.isProjected else fit.projectedModules.index(self)
+
 
     @property
     def isProjected(self):
@@ -570,7 +577,7 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
             current = 0  # if self.owner != fit else -1  # Disabled, see #1278
             for mod in fit.modules:
                 if (mod.item and mod.item.groupID == self.item.groupID and
-                        self.modPosition != mod.modPosition):
+                        self.getModPosition(fit) != mod.getModPosition(fit)):
                     current += 1
 
             if current >= max:

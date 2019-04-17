@@ -31,7 +31,6 @@ class CalcCloneLocalModuleCommand(wx.Command):
             return False
         if not fit.modules[self.dstPosition].isEmpty:
             return False
-        copyMod.owner = fit
         try:
             fit.modules.replace(self.dstPosition, copyMod)
         except HandledListActionError:

@@ -34,14 +34,18 @@ class CalcAddLocalModuleCommand(wx.Command):
         if newMod.item.category.name == 'Subsystem':
             for oldMod in fit.modules:
                 if oldMod.getModifiedItemAttr('subSystemSlot') == newMod.getModifiedItemAttr('subSystemSlot') and newMod.slot == oldMod.slot:
+                    if oldMod.itemID == self.newModInfo.itemID:
+                        return False
                     from .localReplace import CalcReplaceLocalModuleCommand
-                    self.subsystemCmd = CalcReplaceLocalModuleCommand(fitID=self.fitID, position=oldMod.modPosition, newModInfo=self.newModInfo)
+                    self.subsystemCmd = CalcReplaceLocalModuleCommand(
+                        fitID=self.fitID,
+                        position=fit.modules.index(oldMod),
+                        newModInfo=self.newModInfo)
                     return self.subsystemCmd.Do()
 
         if not newMod.fits(fit):
             pyfalog.warning('Module does not fit')
             return False
-        newMod.owner = fit
         try:
             fit.modules.append(newMod)
         except HandledListActionError:
@@ -49,7 +53,7 @@ class CalcAddLocalModuleCommand(wx.Command):
             if self.commit:
                 eos.db.commit()
             return False
-        self.savedPosition = newMod.modPosition
+        self.savedPosition = fit.modules.index(newMod)
         sFit.recalc(fit)
         self.savedStateCheckChanges = sFit.checkStates(fit, newMod)
         if self.commit:
@@ -61,9 +65,9 @@ class CalcAddLocalModuleCommand(wx.Command):
         # We added a subsystem module, which actually ran the replace command. Run the undo for that guy instead
         if self.subsystemCmd is not None:
             return self.subsystemCmd.Undo()
-        from .localRemove import CalcRemoveLocalModuleCommand
         if self.savedPosition is None:
             return False
+        from .localRemove import CalcRemoveLocalModuleCommand
         cmd = CalcRemoveLocalModuleCommand(fitID=self.fitID, positions=[self.savedPosition], commit=self.commit)
         if not cmd.Do():
             return False
