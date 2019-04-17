@@ -144,6 +144,8 @@ class ChangeModuleAmmo(ContextMenu):
             sub = None
             self.charges.sort(key=self.turretSorter)
             for charge in self.charges:
+                if "civilian" in charge.name.lower():
+                    continue
                 currBase = charge.name.rsplit()[-2:]
                 currRange = charge.getAttribute("weaponRangeMultiplier")
                 if nameBase is None or range_ != currRange or nameBase != currBase:
