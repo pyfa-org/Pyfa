@@ -246,8 +246,12 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
         # is set by sqlalchemy during flush
         fit = fit if fit is not None else self.owner
         if fit:
-            return fit.modules.index(self) if not self.isProjected else fit.projectedModules.index(self)
-
+            container = fit.projectedModules if self.isProjected else fit.modules
+            try:
+                return container.index(self)
+            except ValueError:
+                return None
+        return None
 
     @property
     def isProjected(self):

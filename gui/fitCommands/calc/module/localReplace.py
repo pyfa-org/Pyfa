@@ -50,7 +50,6 @@ class CalcReplaceLocalModuleCommand(wx.Command):
                 pyfalog.warning('Invalid charge')
                 self.Undo()
                 return False
-        newMod.owner = fit
         try:
             fit.modules.replace(self.position, newMod)
         except HandledListActionError:
