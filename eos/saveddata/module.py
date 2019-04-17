@@ -926,6 +926,8 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
             copy = Module(self.item, self.baseItem, self.mutaplasmid)
         copy.charge = self.charge
         copy.state = self.state
+        copy.spoolType = self.spoolType
+        copy.spoolAmount = self.spoolAmount
 
         for x in self.mutators.values():
             Mutator(copy, x.attribute, x.value)
