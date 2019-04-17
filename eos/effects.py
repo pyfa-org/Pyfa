@@ -32516,7 +32516,7 @@ class Effect6871(BaseEffect):
         # Get pilot sec status bonus directly here, instead of going through the intermediary effects
         # via https://forums.eveonline.com/default.aspx?g=posts&t=515826
         try:
-            bonus = max(0, min(50.0, (src.parent.character.secStatus * 10)))
+            bonus = max(0, min(50.0, (src.owner.character.secStatus * 10)))
         except:
             bonus = None
 

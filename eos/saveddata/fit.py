@@ -51,7 +51,7 @@ class Fit(object):
         # use @mode.setter's to set __attr and IDs. This will set mode as well
         self.ship = ship
         if self.ship:
-            self.ship.parent = self
+            self.ship.owner = self
 
         self.__modules = HandledModuleList()
         self.__drones = HandledDroneCargoList()
@@ -103,9 +103,9 @@ class Fit(object):
         if self.modeID and self.__ship:
             item = eos.db.getItem(self.modeID)
             # Don't need to verify if it's a proper item, as validateModeItem assures this
-            self.__mode = self.ship.validateModeItem(item)
+            self.__mode = self.ship.validateModeItem(item, owner=self)
         else:
-            self.__mode = self.ship.validateModeItem(None)
+            self.__mode = self.ship.validateModeItem(None, owner=self)
 
         self.build()
 
@@ -166,8 +166,12 @@ class Fit(object):
 
     @mode.setter
     def mode(self, mode):
+        if self.__mode is not None:
+            self.__mode.owner = None
         self.__mode = mode
         self.modeID = mode.item.ID if mode is not None else None
+        if mode is not None:
+            mode.owner = self
 
     @property
     def modifiedCoalesce(self):
@@ -200,11 +204,14 @@ class Fit(object):
 
     @ship.setter
     def ship(self, ship):
+        if self.__ship is not None:
+            self.__ship.owner = None
         self.__ship = ship
         self.shipID = ship.item.ID if ship is not None else None
         if ship is not None:
+            ship.owner = self
             #  set mode of new ship
-            self.mode = self.ship.validateModeItem(None) if ship is not None else None
+            self.mode = self.ship.validateModeItem(None, owner=self) if ship is not None else None
             # set fit attributes the same as ship
             self.extraAttributes = self.ship.itemModifiedAttributes
 
@@ -500,7 +507,6 @@ class Fit(object):
                 continue
 
             # This should always be a gang effect, otherwise it wouldn't be added to commandBonuses
-            # @todo: Check this
             if effect.isType("gang"):
                 self.register(thing)
 

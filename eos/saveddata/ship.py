@@ -44,7 +44,7 @@ class Ship(ItemAttrShortcut, HandledItem):
         # as None unless the Entosis effect sets it.
     }
 
-    def __init__(self, item, parent=None):
+    def __init__(self, item, owner=None):
         self.validate(item)
 
         self.__item = item
@@ -57,9 +57,7 @@ class Ship(ItemAttrShortcut, HandledItem):
         if "maximumRangeCap" in self.__itemModifiedAttributes.original:
             cappingAttrKeyCache["maxTargetRange"] = "maximumRangeCap"
 
-        # there are occasions when we need to get to the parent fit of the ship, such as when we need the character
-        # skills for ship-role gang boosts (Titans)
-        self.parent = parent
+        self.owner = owner
         self.commandBonus = 0
 
     def validate(self, item):
@@ -102,7 +100,7 @@ class Ship(ItemAttrShortcut, HandledItem):
                 fit.register(self)
                 effect.handler(fit, self, ("ship",))
 
-    def validateModeItem(self, item):
+    def validateModeItem(self, item, owner=None):
         """ Checks if provided item is a valid mode """
         items = self.__modeItems
 
@@ -110,7 +108,7 @@ class Ship(ItemAttrShortcut, HandledItem):
             # if we have items, then we are in a tactical destroyer and must have a mode
             if item is None or item not in items:
                 # If provided item is invalid mode, force new one
-                return Mode(items[0])
+                return Mode(items[0], owner=owner)
             return Mode(item)
         return None
 

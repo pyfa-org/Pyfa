@@ -65,8 +65,8 @@ class ModifiedAttributeDict(collections.MutableMapping):
             pass
 
     def __init__(self, fit=None, parent=None):
+        self.__fit = fit
         self.parent = parent
-        self.fit = fit
         # Stores original values of the entity
         self.__original = None
         # Modified values during calculations
@@ -100,6 +100,22 @@ class ModifiedAttributeDict(collections.MutableMapping):
         self.__multipliers.clear()
         self.__penalizedMultipliers.clear()
         self.__postIncreases.clear()
+
+    @property
+    def fit(self):
+        # self.fit is usually set during fit calculations when the item is registered with the fit. However,
+        # under certain circumstances, an effect will not work as it will try to modify an item which has NOT
+        # yet been registered and thus has not had self.fit set. In this case, use the modules owner attribute
+        # to point to the correct fit. See GH Issue #434
+        if self.__fit is not None:
+            return self.__fit
+        if hasattr(self.parent, 'owner'):
+            return self.parent.owner
+        return None
+
+    @fit.setter
+    def fit(self, fit):
+        self.__fit = fit
 
     @property
     def original(self):
@@ -289,14 +305,7 @@ class ModifiedAttributeDict(collections.MutableMapping):
         with the fit and thus get the correct affector. Returns skill level to
         be used to modify modifier. See GH issue #101
         """
-        fit = self.fit
-        if not fit:
-            # self.fit is usually set during fit calculations when the item is registered with the fit. However,
-            # under certain circumstances, an effect will not work as it will try to modify an item which has NOT
-            # yet been registered and thus has not had self.fit set. In this case, use the modules owner attribute
-            # to point to the correct fit. See GH Issue #434
-            fit = self.parent.owner
-        skill = fit.character.getSkill(skillName)
+        skill = self.fit.character.getSkill(skillName)
         self.__tmpModifier = skill
         return skill.level
 
@@ -309,14 +318,15 @@ class ModifiedAttributeDict(collections.MutableMapping):
     def __afflict(self, attributeName, operation, bonus, used=True):
         """Add modifier to list of things affecting current item"""
         # Do nothing if no fit is assigned
-        if self.fit is None:
+        fit = self.fit
+        if fit is None:
             return
         # Create dictionary for given attribute and give it alias
         if attributeName not in self.__affectedBy:
             self.__affectedBy[attributeName] = {}
         affs = self.__affectedBy[attributeName]
-        origin = self.fit.getOrigin()
-        fit = origin if origin and origin != self.fit else self.fit
+        origin = fit.getOrigin()
+        fit = origin if origin and origin != fit else fit
         # If there's no set for current fit in dictionary, create it
         if fit not in affs:
             affs[fit] = []
@@ -328,7 +338,7 @@ class ModifiedAttributeDict(collections.MutableMapping):
             modifier = self.__tmpModifier
             self.__tmpModifier = None
         else:
-            modifier = self.fit.getModifier()
+            modifier = fit.getModifier()
 
         # Add current affliction to list
         affs.append((modifier, operation, bonus, used))
