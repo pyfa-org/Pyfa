@@ -14,9 +14,6 @@ class JumpToShip(ContextMenu):
         self.settings = ContextMenuSettings.getInstance()
 
     def display(self, srcContext, selection):
-        if not self.settings.get('shipJump'):
-            return False
-
         return srcContext == "fittingShip"
 
     def getText(self, itmContext, selection):

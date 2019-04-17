@@ -18,9 +18,6 @@ class ChangeDamagePattern(ContextMenu):
         self.settings = ContextMenuSettings.getInstance()
 
     def display(self, srcContext, selection):
-        if not self.settings.get('damagePattern'):
-            return False
-
         return srcContext == "resistancesViewFull"
 
     @property

@@ -13,9 +13,6 @@ class RemoveItem(ContextMenu):
         self.settings = ContextMenuSettings.getInstance()
 
     def display(self, srcContext, selection):
-        if not self.settings.get('itemRemove'):
-            return False
-
         return srcContext in ("fittingModule", "droneItem",
                               "implantItem", "boosterItem",
                               "projectedModule", "cargoItem",

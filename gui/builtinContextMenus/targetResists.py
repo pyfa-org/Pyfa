@@ -18,9 +18,6 @@ class TargetResists(ContextMenu):
         self.settings = ContextMenuSettings.getInstance()
 
     def display(self, srcContext, selection):
-        if not self.settings.get('targetResists'):
-            return False
-
         if self.mainFrame.getActiveFit() is None or srcContext != "firepowerViewFull":
             return False
 

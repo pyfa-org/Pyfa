@@ -14,9 +14,6 @@ class ItemStats(ContextMenu):
         self.settings = ContextMenuSettings.getInstance()
 
     def display(self, srcContext, selection):
-        if not self.settings.get('itemStats'):
-            return False
-
         return srcContext in ("marketItemGroup", "marketItemMisc",
                               "fittingModule", "fittingCharge",
                               "fittingShip", "baseShip",

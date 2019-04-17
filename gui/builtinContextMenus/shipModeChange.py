@@ -14,9 +14,6 @@ class ChangeShipTacticalMode(ContextMenu):
         self.settings = ContextMenuSettings.getInstance()
 
     def display(self, srcContext, selection):
-        if not self.settings.get('tacticalMode'):
-            return False
-
         if self.mainFrame.getActiveFit() is None or srcContext != "fittingShip":
             return False
 

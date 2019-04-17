@@ -16,9 +16,6 @@ class DroneSplitStack(ContextMenu):
         self.settings = ContextMenuSettings.getInstance()
 
     def display(self, srcContext, selection):
-        if not self.settings.get('droneSplit'):
-            return False
-
         return srcContext == "droneItem" and selection[0].amount > 1
 
     def getText(self, itmContext, selection):

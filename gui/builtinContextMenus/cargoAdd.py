@@ -11,9 +11,6 @@ class AddToCargo(ContextMenu):
         self.settings = ContextMenuSettings.getInstance()
 
     def display(self, srcContext, selection):
-        if not self.settings.get('cargo'):
-            return False
-
         if srcContext not in ("marketItemGroup", "marketItemMisc"):
             return False
 

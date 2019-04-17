@@ -13,8 +13,6 @@ class OpenFitInNewTab(ContextMenu):
         self.settings = ContextMenuSettings.getInstance()
 
     def display(self, srcContext, selection):
-        if not self.settings.get('openFit'):
-            return False
         if srcContext not in ("projectedFit", "commandFit"):
             return False
         currentFitID = self.mainFrame.getActiveFit()

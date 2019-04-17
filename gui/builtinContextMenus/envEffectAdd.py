@@ -29,9 +29,6 @@ class AddEnvironmentEffect(ContextMenu):
         self.settings = ContextMenuSettings.getInstance()
 
     def display(self, srcContext, selection):
-        if not self.settings.get('whProjector'):
-            return False
-
         return srcContext == "projected"
 
     def getText(self, itmContext, selection):

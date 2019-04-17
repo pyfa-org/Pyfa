@@ -16,7 +16,7 @@ class FillWithModule(ContextMenu):
     def display(self, srcContext, selection):
         if not self.settings.get('moduleFill'):
             return False
-        return srcContext in ("fittingModule")
+        return srcContext == "fittingModule"
 
     def getText(self, itmContext, selection):
         return u"Fill With {0}".format(itmContext if itmContext is not None else "Module")

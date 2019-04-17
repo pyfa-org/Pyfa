@@ -10,9 +10,6 @@ class JumpToMarketItem(ContextMenu):
         self.settings = ContextMenuSettings.getInstance()
 
     def display(self, srcContext, selection):
-        if not self.settings.get('marketJump'):
-            return False
-
         validContexts = ("marketItemMisc", "fittingModule",
                          "fittingCharge", "droneItem",
                          "implantItem", "boosterItem",

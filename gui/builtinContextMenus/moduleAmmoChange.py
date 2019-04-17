@@ -20,9 +20,6 @@ class ChangeModuleAmmo(ContextMenu):
         self.settings = ContextMenuSettings.getInstance()
 
     def display(self, srcContext, selection):
-        if not self.settings.get('moduleAmmoPicker'):
-            return False
-
         if self.mainFrame.getActiveFit() is None or srcContext not in ("fittingModule", "projectedModule"):
             return False
 

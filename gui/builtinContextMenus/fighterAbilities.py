@@ -15,9 +15,6 @@ class FighterAbilities(ContextMenu):
         self.isProjected = None
 
     def display(self, srcContext, selection):
-        if not self.settings.get('fighterAbilities'):
-            return False
-
         if self.mainFrame.getActiveFit() is None or srcContext not in ("fighterItem", "projectedFighter"):
             return False
 
