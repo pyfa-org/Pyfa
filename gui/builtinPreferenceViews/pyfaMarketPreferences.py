@@ -37,7 +37,8 @@ class PFMarketPref(PreferenceView):
         delayTimer = wx.BoxSizer(wx.HORIZONTAL)
         self.stMarketDelay = wx.StaticText(panel, wx.ID_ANY, "Market Search Delay (ms):", wx.DefaultPosition, wx.DefaultSize, 0)
         self.stMarketDelay.Wrap(-1)
-        self.stMarketDelay.SetCursor(helpCursor)
+        if "wxGTK" not in wx.PlatformInfo:
+            self.stMarketDelay.SetCursor(helpCursor)
         self.stMarketDelay.SetToolTip(wx.ToolTip('The delay between a keystroke and the market search. Can help reduce lag when typing fast in the market search box.'))
         delayTimer.Add(self.stMarketDelay, 0, wx.ALL | wx.ALIGN_CENTER_VERTICAL, 5)
         self.intDelay = IntCtrl(panel, max=1000, limited=True)
@@ -55,7 +56,8 @@ class PFMarketPref(PreferenceView):
         self.stDefaultSystem = wx.StaticText(panel, wx.ID_ANY, "Default Market Prices:", wx.DefaultPosition, wx.DefaultSize, 0)
         self.stDefaultSystem.Wrap(-1)
         priceSizer.Add(self.stDefaultSystem, 0, wx.ALL | wx.ALIGN_CENTER_VERTICAL, 5)
-        self.stDefaultSystem.SetCursor(helpCursor)
+        if "wxGTK" not in wx.PlatformInfo:
+            self.stDefaultSystem.SetCursor(helpCursor)
         self.stDefaultSystem.SetToolTip(wx.ToolTip(
             'The source you choose will be tried first, but subsequent sources will be used if the preferred source fails. '
             'The system you choose will also be tried first, and if no data is available, global price will be used.'))
