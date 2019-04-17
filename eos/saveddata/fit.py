@@ -1508,16 +1508,17 @@ class Fit(object):
         return True
 
     def __deepcopy__(self, memo=None):
-        copy_ship = Fit()
+        fitCopy = Fit()
         # Character and owner are not copied
-        copy_ship.character = self.__character
-        copy_ship.owner = self.owner
-        copy_ship.ship = deepcopy(self.ship)
-        copy_ship.name = "%s copy" % self.name
-        copy_ship.damagePattern = self.damagePattern
-        copy_ship.targetResists = self.targetResists
-        copy_ship.implantLocation = self.implantLocation
-        copy_ship.notes = self.notes
+        fitCopy.character = self.__character
+        fitCopy.owner = self.owner
+        fitCopy.ship = deepcopy(self.ship)
+        fitCopy.mode = deepcopy(self.mode)
+        fitCopy.name = "%s copy" % self.name
+        fitCopy.damagePattern = self.damagePattern
+        fitCopy.targetResists = self.targetResists
+        fitCopy.implantLocation = self.implantLocation
+        fitCopy.notes = self.notes
 
         toCopy = (
             "modules",
@@ -1531,7 +1532,7 @@ class Fit(object):
             "projectedFighters")
         for name in toCopy:
             orig = getattr(self, name)
-            c = getattr(copy_ship, name)
+            c = getattr(fitCopy, name)
             for i in orig:
                 c.append(deepcopy(i))
 
@@ -1541,22 +1542,22 @@ class Fit(object):
             eos.db.saveddata_session.refresh(fit)
 
         for fit in self.commandFits:
-            copy_ship.commandFitDict[fit.ID] = fit
+            fitCopy.commandFitDict[fit.ID] = fit
             forceUpdateSavedata(fit)
-            copyCommandInfo = fit.getCommandInfo(copy_ship.ID)
+            copyCommandInfo = fit.getCommandInfo(fitCopy.ID)
             originalCommandInfo = fit.getCommandInfo(self.ID)
             copyCommandInfo.active = originalCommandInfo.active
             forceUpdateSavedata(fit)
 
         for fit in self.projectedFits:
-            copy_ship.projectedFitDict[fit.ID] = fit
+            fitCopy.projectedFitDict[fit.ID] = fit
             forceUpdateSavedata(fit)
-            copyProjectionInfo = fit.getProjectionInfo(copy_ship.ID)
+            copyProjectionInfo = fit.getProjectionInfo(fitCopy.ID)
             originalProjectionInfo = fit.getProjectionInfo(self.ID)
             copyProjectionInfo.active = originalProjectionInfo.active
             forceUpdateSavedata(fit)
 
-        return copy_ship
+        return fitCopy
 
     def __repr__(self):
         return "Fit(ID={}, ship={}, name={}) at {}".format(
