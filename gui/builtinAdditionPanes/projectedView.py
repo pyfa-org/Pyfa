@@ -81,6 +81,7 @@ class ProjectedView(d.Display):
 
         self.mainFrame.Bind(GE.FIT_CHANGED, self.fitChanged)
         self.Bind(wx.EVT_LEFT_DOWN, self.click)
+        self.Bind(wx.EVT_RIGHT_DOWN, self.click)
         self.Bind(wx.EVT_LEFT_DCLICK, self.remove)
         self.Bind(wx.EVT_KEY_UP, self.kbEvent)
 
@@ -255,24 +256,28 @@ class ProjectedView(d.Display):
             if col == self.getColIndex(State):
                 fitID = self.mainFrame.getActiveFit()
                 thing = self.get(row)
-                if isinstance(thing, es_Fit):
+                button = event.GetButton()
+                if isinstance(thing, es_Fit) and button != 3:
                     self.mainFrame.command.Submit(cmd.GuiToggleProjectedFitStateCommand(
                         fitID=fitID, projectedFitID=thing.ID))
                 elif isinstance(thing, es_Module):
                     self.mainFrame.command.Submit(cmd.GuiChangeProjectedModuleStateCommand(
                         fitID=fitID,
                         position=Fit.getInstance().getFit(fitID).projectedModules.index(thing),
-                        click='right' if event.Button == 3 else 'left'))
-                elif isinstance(thing, es_Drone):
+                        click='right' if button == 3 else 'left'))
+                elif isinstance(thing, es_Drone) and button != 3:
                     self.mainFrame.command.Submit(cmd.GuiToggleProjectedDroneStateCommand(
                         fitID=fitID, itemID=thing.itemID))
-                elif isinstance(thing, es_Fighter):
+                elif isinstance(thing, es_Fighter) and button != 3:
                     self.mainFrame.command.Submit(cmd.GuiToggleProjectedFighterStateCommand(
                         fitID=fitID, position=Fit.getInstance().getFit(fitID).projectedFighters.index(thing)))
 
     def spawnMenu(self, event):
         fitID = self.mainFrame.getActiveFit()
         if fitID is None:
+            return
+
+        if self.getColumn(self.ScreenToClient(event.Position)) == self.getColIndex(State):
             return
 
         sel = self.GetFirstSelected()
