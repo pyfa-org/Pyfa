@@ -26,7 +26,7 @@ class JumpToShip(ContextMenu):
         groupID = stuff.item.group.ID
 
         self.mainFrame.notebookBrowsers.SetSelection(1)
-        wx.PostEvent(self.mainFrame.shipBrowser, Stage3Selected(shipID=stuff.item.ID, back=groupID))
+        wx.PostEvent(self.mainFrame.shipBrowser, Stage3Selected(shipID=stuff.item.ID, back=True))
 
 
 JumpToShip.register()

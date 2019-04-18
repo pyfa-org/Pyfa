@@ -225,29 +225,49 @@ class ChangeModuleAmmo(ContextMenu):
         # Switch in selection or all modules, depending on ctrl key state and settings
         if switchAll:
             fit = sFit.getFit(fitID)
-            selectedModule = self.modules[0]
             if self.context == 'fittingModule':
-                self.mainFrame.command.Submit(cmd.GuiChangeLocalModuleChargesCommand(
-                    fitID=fitID,
-                    modules=[m for m in fit.modules if m.itemID is not None and m.itemID == selectedModule.itemID],
-                    chargeItemID=charge.ID if charge is not None else None))
+                command = cmd.GuiChangeLocalModuleChargesCommand
+                modContainer = fit.modules
             elif self.context == 'projectedModule':
-                self.mainFrame.command.Submit(cmd.GuiChangeProjectedModuleChargesCommand(
-                    fitID=fitID,
-                    modules=[m for m in fit.projectedModules if
-                             m.itemID is not None and m.itemID == selectedModule.itemID],
-                    chargeItemID=charge.ID if charge is not None else None))
+                command = cmd.GuiChangeProjectedModuleChargesCommand
+                modContainer = fit.projectedModules
+            else:
+                return
+            sMkt = Market.getInstance()
+            selectedModule = self.modules[0]
+            mainMktGroupID = getattr(sMkt.getMarketGroupByItem(selectedModule.item), 'ID', None)
+            mods = []
+            for mod in modContainer:
+                # Always include selected module itself
+                if mod is selectedModule:
+                    mods.append(mod)
+                    continue
+                if mod.itemID is None:
+                    continue
+                # Modules which have the same item ID
+                if mod.itemID == selectedModule.itemID:
+                    mods.append(mod)
+                    continue
+                # And modules from the same market group too
+                modMktGroupID = getattr(sMkt.getMarketGroupByItem(mod.item), 'ID', None)
+                if modMktGroupID is not None and modMktGroupID == mainMktGroupID:
+                    mods.append(mod)
+                    continue
+            self.mainFrame.command.Submit(command(
+                fitID=fitID,
+                modules=mods,
+                chargeItemID=charge.ID if charge is not None else None))
         else:
             if self.context == 'fittingModule':
-                self.mainFrame.command.Submit(cmd.GuiChangeLocalModuleChargesCommand(
-                    fitID=fitID,
-                    modules=self.modules,
-                    chargeItemID=charge.ID if charge is not None else None))
+                command = cmd.GuiChangeLocalModuleChargesCommand
             elif self.context == 'projectedModule':
-                self.mainFrame.command.Submit(cmd.GuiChangeProjectedModuleChargesCommand(
-                    fitID=fitID,
-                    modules=self.modules,
-                    chargeItemID=charge.ID if charge is not None else None))
+                command = cmd.GuiChangeProjectedModuleChargesCommand
+            else:
+                return
+            self.mainFrame.command.Submit(command(
+                fitID=fitID,
+                modules=self.modules,
+                chargeItemID=charge.ID if charge is not None else None))
 
 
 ChangeModuleAmmo.register()
