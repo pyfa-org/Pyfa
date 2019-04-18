@@ -64,7 +64,9 @@ class ChangeItemToVariation(ContextMenu):
             return x.attributes['metaLevel'].value
 
         def get_metagroup(x):
-            return x.metaGroup.ID if x.metaGroup is not None else 0
+            # We want deadspace before officer mods
+            remap = {5: 6, 6: 5}
+            return remap.get(x.metaGroup.ID, x.metaGroup.ID) if x.metaGroup is not None else 0
 
         def get_boosterrank(x):
             # If we're returning a lot of items, sort my name
