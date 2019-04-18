@@ -87,7 +87,11 @@ class ResistsEditorDlg(wx.Dialog):
     DAMAGE_TYPES = ("em", "thermal", "kinetic", "explosive")
 
     def __init__(self, parent):
-        wx.Dialog.__init__(self, parent, id=wx.ID_ANY, title="Target Resists Editor", size=wx.Size(350, 240))
+        wx.Dialog.__init__(
+            self, parent, id=wx.ID_ANY,
+            # Dropdown list widget is scaled to its longest content line on GTK, adapt to that
+            title="Target Resists Editor",
+            size=wx.Size(500, 240) if "wxGTK" in wx.PlatformInfo else wx.Size(350, 240))
 
         self.block = False
         self.SetSizeHints(wx.DefaultSize, wx.DefaultSize)
@@ -150,11 +154,6 @@ class ResistsEditorDlg(wx.Dialog):
 
         mainSizer.Add(contentSizer, 1, wx.EXPAND, 0)
 
-        if "wxGTK" in wx.PlatformInfo:
-            self.closeBtn = wx.Button(self, wx.ID_ANY, "Close", wx.DefaultPosition, wx.DefaultSize, 0)
-            mainSizer.Add(self.closeBtn, 0, wx.ALL | wx.ALIGN_RIGHT, 5)
-            self.closeBtn.Bind(wx.EVT_BUTTON, self.closeEvent)
-
         self.SetSizer(mainSizer)
 
         importExport = (("Import", wx.ART_FILE_OPEN, "from"),
@@ -188,9 +187,6 @@ class ResistsEditorDlg(wx.Dialog):
         self.patternChanged()
 
         self.ShowModal()
-
-    def closeEvent(self, event):
-        self.Destroy()
 
     def ValuesUpdated(self, event=None):
         """
