@@ -95,10 +95,13 @@ class FitDpsGraph(Graph):
         for fighter in fit.fighters:
             if not fighter.active:
                 continue
+            fighterDpsMap = fighter.getDpsPerEffect(targetResists=fit.targetResists)
             for ability in fighter.abilities:
                 if ability.dealsDamage and ability.active:
+                    if ability.effectID not in fighterDpsMap:
+                        continue
                     multiplier = self.calculateFighterMissileMultiplier(ability, data)
-                    dps = ability.getDps(targetResists=fit.targetResists).total
+                    dps = fighterDpsMap[ability.effectID].total
                     total += dps * multiplier
 
         return total

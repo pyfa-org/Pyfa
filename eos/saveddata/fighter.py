@@ -196,64 +196,55 @@ class Fighter(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
         return volley
 
     def getDps(self, targetResists=None):
+        em = 0
+        thermal = 0
+        kinetic = 0
+        explosive = 0
+        for dps in self.getDpsPerEffect(targetResists=targetResists).values():
+            em += dps.em
+            thermal += dps.thermal
+            kinetic += dps.kinetic
+            explosive += dps.explosive
+        return DmgTypes(em=em, thermal=thermal, kinetic=kinetic, explosive=explosive)
+
+    def getUptime(self):
+        if not self.owner.factorReload:
+            return 1
+        activeTimes = []
+        reloadTimes = []
+        for ability in self.abilities:
+            if ability.numShots > 0:
+                activeTimes.append(ability.numShots * ability.cycleTime)
+                reloadTimes.append(ability.reloadTime)
+        if not activeTimes:
+            return 1
+        shortestActive = sorted(activeTimes)[0]
+        longestReload = sorted(reloadTimes, reverse=True)[0]
+        uptime = shortestActive / (shortestActive + longestReload)
+        return uptime
+
+    def getDpsPerEffect(self, targetResists=None):
         if not self.active or self.amountActive <= 0:
-            return DmgTypes(0, 0, 0, 0)
-        # Analyze cooldowns when reload is factored in
-        if self.owner.factorReload:
-            activeTimes = []
-            reloadTimes = []
-            peakEm = 0
-            peakTherm = 0
-            peakKin = 0
-            peakExp = 0
-            steadyEm = 0
-            steadyTherm = 0
-            steadyKin = 0
-            steadyExp = 0
-            for ability in self.abilities:
-                abilityDps = ability.getDps(targetResists=targetResists)
-                # Peak dps
-                peakEm += abilityDps.em
-                peakTherm += abilityDps.thermal
-                peakKin += abilityDps.kinetic
-                peakExp += abilityDps.explosive
-                # Infinite use - add to steady dps
-                if ability.numShots == 0:
-                    steadyEm += abilityDps.em
-                    steadyTherm += abilityDps.thermal
-                    steadyKin += abilityDps.kinetic
-                    steadyExp += abilityDps.explosive
-                else:
-                    activeTimes.append(ability.numShots * ability.cycleTime)
-                    reloadTimes.append(ability.reloadTime)
-            steadyDps = DmgTypes(steadyEm, steadyTherm, steadyKin, steadyExp)
-            if len(activeTimes) > 0:
-                shortestActive = sorted(activeTimes)[0]
-                longestReload = sorted(reloadTimes, reverse=True)[0]
-                peakDps = DmgTypes(peakEm, peakTherm, peakKin, peakExp)
-                peakAdjustFactor = shortestActive / (shortestActive + longestReload)
-                peakDpsAdjusted = DmgTypes(
-                    em=peakDps.em * peakAdjustFactor,
-                    thermal=peakDps.thermal * peakAdjustFactor,
-                    kinetic=peakDps.kinetic * peakAdjustFactor,
-                    explosive=peakDps.explosive * peakAdjustFactor)
-                dps = max(steadyDps, peakDpsAdjusted, key=lambda d: d.total)
-                return dps
-            else:
-                return steadyDps
-        # Just sum all abilities when not taking reload into consideration
-        else:
-            em = 0
-            therm = 0
-            kin = 0
-            exp = 0
-            for ability in self.abilities:
-                abilityDps = ability.getDps(targetResists=targetResists)
-                em += abilityDps.em
-                therm += abilityDps.thermal
-                kin += abilityDps.kinetic
-                exp += abilityDps.explosive
-            return DmgTypes(em, therm, kin, exp)
+            return {}
+        uptime = self.getUptime()
+        if uptime == 1:
+            return {a.effectID: a.getDps(targetResists=targetResists) for a in self.abilities}
+        # Decide if it's better to keep steady dps up and never reload or reload from time to time
+        dpsMapSteady = {}
+        dpsMapPeakAdjusted = {}
+        for ability in self.abilities:
+            abilityDps = ability.getDps(targetResists=targetResists)
+            dpsMapPeakAdjusted[ability.effectID] = DmgTypes(
+                em=abilityDps.em * uptime,
+                thermal=abilityDps.thermal * uptime,
+                kinetic=abilityDps.kinetic * uptime,
+                explosive=abilityDps.explosive * uptime)
+            # Infinite use - add to steady dps
+            if ability.numShots == 0:
+                dpsMapSteady[ability.effectID] = abilityDps
+        totalSteady = sum(i.total for i in dpsMapSteady.values())
+        totalPeakAdjusted = sum(i.total for i in dpsMapPeakAdjusted.values())
+        return dpsMapSteady if totalSteady >= totalPeakAdjusted else dpsMapPeakAdjusted
 
     @property
     def maxRange(self):
