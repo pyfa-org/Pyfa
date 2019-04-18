@@ -40,7 +40,7 @@ class FitDpsGraph(Graph):
 
     def __init__(self):
         Graph.__init__(self)
-        self.defaults["distance"] = "0-20"
+        self.defaults["distance"] = "0-100"
         self.name = "DPS"
         self.fitDps = None
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
