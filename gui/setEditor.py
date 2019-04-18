@@ -114,7 +114,10 @@ class ImplantSetEditor(BaseImplantEditorView):
 
 class ImplantSetEditorDlg(wx.Dialog):
     def __init__(self, parent):
-        wx.Dialog.__init__(self, parent, id=wx.ID_ANY, title="Implant Set Editor", size=wx.Size(640, 600))
+        wx.Dialog.__init__(
+            self, parent, id=wx.ID_ANY,
+            title="Implant Set Editor",
+            size=wx.Size(900, 500) if "wxGTK" in wx.PlatformInfo else wx.Size(850, 420))
 
         self.block = False
         self.SetSizeHints(wx.DefaultSize, wx.DefaultSize)
@@ -138,11 +141,6 @@ class ImplantSetEditorDlg(wx.Dialog):
         self.stNotice = wx.StaticText(self, wx.ID_ANY, "")
         self.stNotice.Wrap(-1)
         footerSizer.Add(self.stNotice, 1, wx.BOTTOM | wx.TOP | wx.LEFT, 5)
-
-        if "wxGTK" in wx.PlatformInfo:
-            self.closeBtn = wx.Button(self, wx.ID_ANY, "Close", wx.DefaultPosition, wx.DefaultSize, 0)
-            mainSizer.Add(self.closeBtn, 0, wx.ALL | wx.ALIGN_RIGHT, 5)
-            self.closeBtn.Bind(wx.EVT_BUTTON, self.closeEvent)
 
         importExport = (("Import", wx.ART_FILE_OPEN, "from"),
                         ("Export", wx.ART_FILE_SAVE_AS, "to"))
@@ -181,9 +179,6 @@ class ImplantSetEditorDlg(wx.Dialog):
         if not self.entityEditor.checkEntitiesExist():
             self.Destroy()
             return
-
-    def closeEvent(self, event):
-        self.Destroy()
 
     def __del__(self):
         pass

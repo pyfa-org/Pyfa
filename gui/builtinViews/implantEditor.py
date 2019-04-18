@@ -37,13 +37,6 @@ class BaseImplantEditorView(wx.Panel):
         availableSizer.Add(self.searchBox, 0, wx.EXPAND)
         availableSizer.Add(self.itemView, 1, wx.EXPAND)
 
-        '''
-        self.availableImplantsSearch = wx.SearchCtrl(self, wx.ID_ANY, style=wx.TE_PROCESS_ENTER)
-        self.availableImplantsSearch.ShowCancelButton(True)
-
-        availableSizer.Add(self.availableImplantsSearch, 0, wx.BOTTOM | wx.EXPAND, 2)
-        '''
-
         self.availableImplantsTree = wx.TreeCtrl(self, wx.ID_ANY, style=wx.TR_DEFAULT_STYLE | wx.TR_HIDE_ROOT)
         root = self.availableRoot = self.availableImplantsTree.AddRoot("Available")
         self.availableImplantsImageList = wx.ImageList(16, 16)
@@ -202,7 +195,6 @@ class BaseImplantEditorView(wx.Panel):
 
 class AvailableImplantsView(d.Display):
     DEFAULT_COLS = ["attr:implantness",
-                    "Base Icon",
                     "Base Name"]
 
     def __init__(self, parent):
@@ -212,9 +204,7 @@ class AvailableImplantsView(d.Display):
 
 class ItemView(d.Display):
     DEFAULT_COLS = ["Base Icon",
-                    "Base Name",
-                    "attr:power,,,True",
-                    "attr:cpu,,,True"]
+                    "Base Name"]
 
     def __init__(self, parent):
         d.Display.__init__(self, parent)
