@@ -212,7 +212,7 @@ class HandledModuleList(HandledList):
             dummy = mod.buildEmpty(mod.slot)
             dummy.position = index
             self[index] = dummy
-        mod.position = None
+            mod.position = None
 
     def __toModule(self, index, mod):
         oldMod = self[index]
