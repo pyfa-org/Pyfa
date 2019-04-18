@@ -220,9 +220,11 @@ class ChangeModuleAmmo(ContextMenu):
             return
 
         fitID = self.mainFrame.getActiveFit()
-        # Set to all modules if ctrl is pressed
-        if wx.GetMouseState().CmdDown():
-            fit = Fit.getInstance().getFit(fitID)
+        sFit = Fit.getInstance()
+        switchAll = sFit.serviceFittingOptions['ammoChangeAll'] is not wx.GetMouseState().CmdDown()
+        # Switch in selection or all modules, depending on ctrl key state and settings
+        if switchAll:
+            fit = sFit.getFit(fitID)
             selectedModule = self.modules[0]
             if self.context == 'fittingModule':
                 self.mainFrame.command.Submit(cmd.GuiChangeLocalModuleChargesCommand(

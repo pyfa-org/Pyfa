@@ -92,7 +92,8 @@ class Fit(FitDeprecated):
             "priceSystem": "Jita",
             "priceSource": "eve-marketdata.com",
             "showShipBrowserTooltip": True,
-            "marketSearchDelay": 250
+            "marketSearchDelay": 250,
+            "ammoChangeAll": False,
         }
 
         self.serviceFittingOptions = SettingsProvider.getInstance().getSettings(

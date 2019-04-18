@@ -27,6 +27,7 @@ class PFGeneralPref(PreferenceView):
         self.stTitle.Wrap(-1)
         self.stTitle.SetFont(wx.Font(12, 70, 90, 90, False, wx.EmptyString))
 
+        helpCursor = wx.Cursor(wx.CURSOR_QUESTION_ARROW)
         mainSizer.Add(self.stTitle, 0, wx.ALL, 5)
 
         self.m_staticline1 = wx.StaticLine(panel, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.LI_HORIZONTAL)
@@ -78,6 +79,15 @@ class PFGeneralPref(PreferenceView):
                                           wx.DefaultPosition, wx.DefaultSize, 0)
         mainSizer.Add(self.cbShowShipBrowserTooltip, 0, wx.ALL | wx.EXPAND, 5)
 
+
+        self.cbReloadAll = wx.CheckBox(panel, wx.ID_ANY, "Change charge in all modules of the same type",
+                                       wx.DefaultPosition, wx.DefaultSize, 0)
+        if "wxGTK" not in wx.PlatformInfo:
+            self.cbReloadAll.SetCursor(helpCursor)
+        self.cbReloadAll.SetToolTip(wx.ToolTip(
+            'When disabled, reloads charges just in selected modules. Action can be reversed by holding Ctrl key while changing charge.'))
+        mainSizer.Add(self.cbReloadAll, 0, wx.ALL | wx.EXPAND, 5)
+
         self.sFit = Fit.getInstance()
 
         self.cbGlobalChar.SetValue(self.sFit.serviceFittingOptions["useGlobalCharacter"])
@@ -92,6 +102,7 @@ class PFGeneralPref(PreferenceView):
         self.cbGaugeAnimation.SetValue(self.sFit.serviceFittingOptions["enableGaugeAnimation"])
         self.cbOpenFitInNew.SetValue(self.sFit.serviceFittingOptions["openFitInNew"])
         self.cbShowShipBrowserTooltip.SetValue(self.sFit.serviceFittingOptions["showShipBrowserTooltip"])
+        self.cbReloadAll.SetValue(self.sFit.serviceFittingOptions["ammoChangeAll"])
 
         self.cbGlobalChar.Bind(wx.EVT_CHECKBOX, self.OnCBGlobalCharStateChange)
         self.cbDefaultCharImplants.Bind(wx.EVT_CHECKBOX, self.OnCBDefaultCharImplantsStateChange)
@@ -105,6 +116,7 @@ class PFGeneralPref(PreferenceView):
         self.cbGaugeAnimation.Bind(wx.EVT_CHECKBOX, self.onCBGaugeAnimation)
         self.cbOpenFitInNew.Bind(wx.EVT_CHECKBOX, self.onCBOpenFitInNew)
         self.cbShowShipBrowserTooltip.Bind(wx.EVT_CHECKBOX, self.onCBShowShipBrowserTooltip)
+        self.cbReloadAll.Bind(wx.EVT_CHECKBOX, self.onCBReloadAll)
 
         self.cbRackLabels.Enable(self.sFit.serviceFittingOptions["rackSlots"] or False)
 
@@ -173,6 +185,9 @@ class PFGeneralPref(PreferenceView):
 
     def onCBShowShipBrowserTooltip(self, event):
         self.sFit.serviceFittingOptions["showShipBrowserTooltip"] = self.cbShowShipBrowserTooltip.GetValue()
+
+    def onCBReloadAll(self, event):
+        self.sFit.serviceFittingOptions["ammoChangeAll"] = self.cbReloadAll.GetValue()
 
     def getImage(self):
         return BitmapLoader.getBitmap("prefs_settings", "gui")
