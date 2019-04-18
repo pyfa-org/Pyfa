@@ -88,12 +88,13 @@ class ChangeItemToVariation(ContextMenu):
 
         # Sort items by metalevel, and group within that metalevel
         items = list(self.variations)
-
+        # Sort all items by name first
+        items.sort(key=lambda x: x.name)
+        # Do not do any extra sorting for implants
         if 'implantItem' in context:
-            # sort implants based on name
-            items.sort(key=lambda x: x.name)
+            pass
+        # Boosters don't have meta or anything concrete that we can rank by. Go by chance to inflict side effect
         elif 'boosterItem' in context:
-            # boosters don't have meta or anything concrete that we can rank by. Go by chance to inflict side effect
             items.sort(key=get_boosterrank)
         else:
             # sort by group and meta level
