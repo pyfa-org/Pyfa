@@ -284,39 +284,6 @@ class FitDeprecated(object):
         self.recalc(fit)
 
     @deprecated
-    def appendModule(self, fitID, itemID):
-        pyfalog.debug("Appending module for fit ({0}) using item: {1}", fitID, itemID)
-        fit = eos.db.getFit(fitID)
-        item = eos.db.getItem(itemID, eager=("attributes", "group.category"))
-        try:
-            m = es_Module(item)
-        except ValueError:
-            pyfalog.warning("Invalid item: {0}", itemID)
-            return False
-
-        if m.item.category.name == "Subsystem":
-            fit.modules.freeSlot(m.getModifiedItemAttr("subSystemSlot"))
-
-        if m.fits(fit):
-            m.owner = fit
-            numSlots = len(fit.modules)
-            fit.modules.append(m)
-            if m.isValidState(FittingModuleState.ACTIVE):
-                m.state = FittingModuleState.ACTIVE
-
-            # As some items may affect state-limiting attributes of the ship, calculate new attributes first
-            self.recalc(fit)
-            # Then, check states of all modules and change where needed. This will recalc if needed
-            self.checkStates(fit, m)
-
-            fit.fill()
-            eos.db.commit()
-
-            return numSlots != len(fit.modules), m.modPosition
-        else:
-            return None, None
-
-    @deprecated
     def removeModule(self, fitID, positions):
         """Removes modules based on a number of positions."""
         pyfalog.debug("Removing module from position ({0}) for fit ID: {1}", positions, fitID)

@@ -161,20 +161,27 @@ class HandledModuleList(HandledList):
 
     def replaceRackPosition(self, rackPosition, mod):
         listPositions = []
-        for currMod in self:
+        for currPos in range(len(self)):
+            currMod = self[currPos]
             if currMod.slot == mod.slot:
-                listPositions.append(currMod.position)
+                listPositions.append(currPos)
         listPositions.sort()
         try:
             modListPosition = listPositions[rackPosition]
         except IndexError:
             self.appendIgnoreEmpty(mod)
         else:
-            self.__toDummy(modListPosition)
-            if not mod.isEmpty:
+            oldMod = self[modListPosition]
+            if mod.isEmpty:
+                self.__toDummy(modListPosition)
+            else:
                 self.__toModule(modListPosition, mod)
+                # If new module cannot be appended, restore old state
                 if mod.isInvalid:
-                    self.__toDummy(modListPosition)
+                    if oldMod.isEmpty:
+                        self.__toDummy(modListPosition)
+                    else:
+                        self.__toModule(modListPosition, oldMod)
                     raise HandledListActionError(mod)
 
     def insert(self, idx, mod):
@@ -192,7 +199,6 @@ class HandledModuleList(HandledList):
     def remove(self, mod):
         HandledList.remove(self, mod)
         oldPos = mod.position
-
         mod.position = None
         for i in range(oldPos, len(self)):
             self[i].position -= 1
@@ -213,14 +219,6 @@ class HandledModuleList(HandledList):
         mod.position = index
         self[index] = mod
         oldMod.position = None
-
-    @deprecated
-    def freeSlot(self, slot):
-        for i in range(len(self)):
-            mod = self[i]
-            if mod.getModifiedItemAttr("subSystemSlot") == slot:
-                self.__toDummy(i)
-                break
 
 
 class HandledDroneCargoList(HandledList):
