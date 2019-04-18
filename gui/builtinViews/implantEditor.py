@@ -250,6 +250,7 @@ class ItemView(d.Display):
             self.Show()
             self.parent.Layout()
 
+        items = [i for i in items if i.group.name != 'Booster']
         self.items = sorted(list(items), key=lambda i: i.name)
 
         self.update(self.items)
