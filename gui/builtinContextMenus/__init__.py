@@ -18,10 +18,10 @@ from gui.builtinContextMenus import (  # noqa: E402,F401
     shipJump,
     # Generic item manipulations
     itemRemove,
-    moduleMutations,
     itemAmountChange,
     droneSplitStack,
     itemVariationChange,
+    moduleMutations,
     moduleFill,
     skillAffectors,
     # Market stuff
