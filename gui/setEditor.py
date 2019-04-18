@@ -117,7 +117,7 @@ class ImplantSetEditorDlg(wx.Dialog):
         wx.Dialog.__init__(
             self, parent, id=wx.ID_ANY,
             title="Implant Set Editor",
-            size=wx.Size(900, 500) if "wxGTK" in wx.PlatformInfo else wx.Size(850, 420))
+            size=wx.Size(950, 500) if "wxGTK" in wx.PlatformInfo else wx.Size(850, 420))
 
         self.block = False
         self.SetSizeHints(wx.DefaultSize, wx.DefaultSize)
