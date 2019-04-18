@@ -5,6 +5,7 @@ import gui.fitCommands as cmd
 import gui.globalEvents as GE
 import gui.mainFrame
 from gui.contextMenu import ContextMenu
+from service.fit import Fit
 from service.settings import ContextMenuSettings
 
 
@@ -27,7 +28,10 @@ class FillWithModule(ContextMenu):
         fitID = self.mainFrame.getActiveFit()
 
         if srcContext == "fittingModule":
-            self.mainFrame.command.Submit(cmd.GuiFillWithLocalModulesCommand(fitID, selection[0].itemID))
+            fit = Fit.getInstance().getFit(fitID)
+            self.mainFrame.command.Submit(cmd.GuiFillWithLocalModulesCommand(
+                fitID=fitID,
+                position=fit.modules.index(selection[0])))
             return  # the command takes care of the PostEvent
         wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fitID))
 
