@@ -132,7 +132,8 @@ class ImplantDisplay(d.Display):
         """
 
         if data[0] == "market":
-            if self.mainFrame.command.Submit(cmd.GuiAddImplantCommand(self.mainFrame.getActiveFit(), int(data[1]))):
+            if self.mainFrame.command.Submit(cmd.GuiAddImplantCommand(
+                    fitID=self.mainFrame.getActiveFit(), itemID=int(data[1]))):
                 self.mainFrame.additionsPane.select("Implants")
 
     def kbEvent(self, event):
@@ -187,7 +188,8 @@ class ImplantDisplay(d.Display):
             event.Skip()
             return
 
-        self.mainFrame.command.Submit(cmd.GuiAddImplantCommand(fitID, event.itemID))
+        self.mainFrame.command.Submit(cmd.GuiAddImplantCommand(
+            fitID=fitID, itemID=event.itemID))
         # Select in any case - as we might've added implant which has been there already and command failed
         self.mainFrame.additionsPane.select('Implants')
 
@@ -208,8 +210,9 @@ class ImplantDisplay(d.Display):
         fitID = self.mainFrame.getActiveFit()
         sFit = Fit.getInstance()
         fit = sFit.getFit(fitID)
-        if fit.implantLocation == ImplantLocation.FIT:
-            self.mainFrame.command.Submit(cmd.GuiRemoveImplantCommand(fitID, self.original.index(implant)))
+        if fit.implantLocation == ImplantLocation.FIT and implant in self.original:
+            position = self.original.index(implant)
+            self.mainFrame.command.Submit(cmd.GuiRemoveImplantCommand(fitID=fitID, position=position))
 
     def click(self, event):
         event.Skip()
@@ -224,7 +227,10 @@ class ImplantDisplay(d.Display):
             if col == self.getColIndex(State):
                 fitID = self.mainFrame.getActiveFit()
                 implant = self.implants[self.GetItemData(row)]
-                self.mainFrame.command.Submit(cmd.GuiToggleImplantStateCommand(fitID=fitID, position=self.original.index(implant)))
+                if implant in self.original:
+                    position = self.original.index(implant)
+                    self.mainFrame.command.Submit(cmd.GuiToggleImplantStateCommand(
+                        fitID=fitID, position=position))
 
     def spawnMenu(self, event):
         sel = self.GetFirstSelected()
