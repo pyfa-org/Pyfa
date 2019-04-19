@@ -74,8 +74,8 @@ class FitSpawner(gui.multiSwitch.TabSpawner):
             sFit = Fit.getInstance()
             openFitInNew = sFit.serviceFittingOptions["openFitInNew"]
             mstate = wx.GetMouseState()
-
-            if from_import or (not openFitInNew and mstate.CmdDown()) or startup or (openFitInNew and not mstate.CmdDown()):
+            modifierKey = mstate.cmdDown or mstate.altDown
+            if from_import or (not openFitInNew and modifierKey) or startup or (openFitInNew and not modifierKey):
                 self.multiSwitch.AddPage()
 
             view = self.multiSwitch.GetSelectedPage()
@@ -380,7 +380,7 @@ class FittingView(d.Display):
 
     def removeItem(self, event):
         """Double Left Click - remove module"""
-        if event.CmdDown():
+        if event.cmdDown:
             return
         row, _ = self.HitTest(event.Position)
         if row != -1 and row not in self.blanks and isinstance(self.mods[row], Module):
@@ -424,7 +424,7 @@ class FittingView(d.Display):
                 fitID=self.mainFrame.getActiveFit(),
                 cargoItemID=cargoItemID,
                 modPosition=mod.modPosition,
-                copy=wx.GetMouseState().CmdDown()))
+                copy=wx.GetMouseState().cmdDown))
 
     def swapItems(self, x, y, srcIdx):
         """Swap two modules in fitting window"""
@@ -447,10 +447,10 @@ class FittingView(d.Display):
             fitID = self.mainFrame.getActiveFit()
             if getattr(mod2, "modPosition") is not None:
                 mstate = wx.GetMouseState()
-                if mstate.CmdDown() and mod2.isEmpty:
+                if mstate.cmdDown and mod2.isEmpty:
                     self.mainFrame.command.Submit(cmd.GuiCloneLocalModuleCommand(
                         fitID=fitID, srcPosition=srcIdx, dstPosition=mod2.modPosition))
-                elif not mstate.CmdDown():
+                elif not mstate.cmdDown:
                     self.mainFrame.command.Submit(cmd.GuiSwapLocalModulesCommand(
                         fitID=fitID, position1=srcIdx, position2=mod2.modPosition))
             else:
@@ -612,7 +612,7 @@ class FittingView(d.Display):
                 mods = self.getSelectedMods()
 
             fitID = self.mainFrame.getActiveFit()
-            ctrl = event.cmdDown or event.middleIsDown
+            ctrl = event.cmdDown or event.altDown or event.middleIsDown
             click = "ctrl" if ctrl is True else "right" if event.GetButton() == 3 else "left"
 
             self.mainFrame.command.Submit(cmd.GuiChangeLocalModuleStatesCommand(

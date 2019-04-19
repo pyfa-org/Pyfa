@@ -217,7 +217,7 @@ class DroneView(Display):
             event.Skip()
             return
 
-        amount = droneStackLimit(fit, event.itemID) if wx.GetMouseState().CmdDown() else 1
+        amount = droneStackLimit(fit, event.itemID) if wx.GetMouseState().altDown else 1
         if self.mainFrame.command.Submit(cmd.GuiAddLocalDroneCommand(fitID=fitID, itemID=event.itemID, amount=amount)):
             self.mainFrame.additionsPane.select('Drones')
 

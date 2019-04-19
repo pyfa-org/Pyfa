@@ -221,7 +221,8 @@ class ChangeModuleAmmo(ContextMenu):
 
         fitID = self.mainFrame.getActiveFit()
         sFit = Fit.getInstance()
-        switchAll = sFit.serviceFittingOptions['ammoChangeAll'] is not wx.GetMouseState().CmdDown()
+        mstate = wx.GetMouseState()
+        switchAll = sFit.serviceFittingOptions['ammoChangeAll'] is not (mstate.cmdDown or mstate.altDown)
         # Switch in selection or all modules, depending on ctrl key state and settings
         if switchAll:
             fit = sFit.getFit(fitID)
