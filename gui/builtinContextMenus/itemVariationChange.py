@@ -142,35 +142,49 @@ class ChangeItemToVariation(ContextMenu):
             self.mainFrame.command.Submit(cmd.GuiChangeLocalModuleMetasCommand(
                 fitID=fitID, positions=positions, newItemID=item.ID))
         elif context == 'droneItem':
-            position = fit.drones.index(self.selection[0])
-            self.mainFrame.command.Submit(cmd.GuiChangeLocalDroneMetaCommand(
-                fitID=fitID, position=position, newItemID=item.ID))
+            drone = self.selection[0]
+            if drone in fit.drones:
+                position = fit.drones.index(drone)
+                self.mainFrame.command.Submit(cmd.GuiChangeLocalDroneMetaCommand(
+                    fitID=fitID, position=position, newItemID=item.ID))
         elif context == 'fighterItem':
-            position = fit.fighters.index(self.selection[0])
-            self.mainFrame.command.Submit(cmd.GuiChangeLocalFighterMetaCommand(
-                fitID=fitID, position=position, newItemID=item.ID))
+            fighter = self.selection[0]
+            if fighter in fit.fighters:
+                position = fit.fighters.index(fighter)
+                self.mainFrame.command.Submit(cmd.GuiChangeLocalFighterMetaCommand(
+                    fitID=fitID, position=position, newItemID=item.ID))
         elif context == 'implantItem':
-            position = fit.implants.index(self.selection[0])
-            self.mainFrame.command.Submit(cmd.GuiChangeImplantMetaCommand(
-                fitID=fitID, position=position, newItemID=item.ID))
+            implant = self.selection[0]
+            if implant in fit.implants:
+                position = fit.implants.index(implant)
+                self.mainFrame.command.Submit(cmd.GuiChangeImplantMetaCommand(
+                    fitID=fitID, position=position, newItemID=item.ID))
         elif context == 'boosterItem':
-            position = fit.boosters.index(self.selection[0])
-            self.mainFrame.command.Submit(cmd.GuiChangeBoosterMetaCommand(
-                fitID=fitID, position=position, newItemID=item.ID))
+            booster = self.selection[0]
+            if booster in fit.boosters:
+                position = fit.boosters.index(booster)
+                self.mainFrame.command.Submit(cmd.GuiChangeBoosterMetaCommand(
+                    fitID=fitID, position=position, newItemID=item.ID))
         elif context == 'cargoItem':
+            cargo = self.selection[0]
             self.mainFrame.command.Submit(cmd.GuiChangeCargoMetaCommand(
-                fitID=fitID, itemID=self.selection[0].itemID, newItemID=item.ID))
+                fitID=fitID, itemID=cargo.itemID, newItemID=item.ID))
         elif context == 'projectedModule':
-            position = fit.projectedModules.index(self.selection[0])
-            self.mainFrame.command.Submit(cmd.GuiChangeProjectedModuleMetaCommand(
-                fitID=fitID, position=position, newItemID=item.ID))
+            mod = self.selection[0]
+            if mod in fit.projectedModules:
+                position = fit.projectedModules.index(mod)
+                self.mainFrame.command.Submit(cmd.GuiChangeProjectedModuleMetaCommand(
+                    fitID=fitID, position=position, newItemID=item.ID))
         elif context == 'projectedDrone':
+            drone = self.selection[0]
             self.mainFrame.command.Submit(cmd.GuiChangeProjectedDroneMetaCommand(
-                fitID=fitID, itemID=self.selection[0].itemID, newItemID=item.ID))
+                fitID=fitID, itemID=drone.itemID, newItemID=item.ID))
         elif context == 'projectedFighter':
-            position = fit.projectedFighters.index(self.selection[0])
-            self.mainFrame.command.Submit(cmd.GuiChangeProjectedFighterMetaCommand(
-                fitID=fitID, position=position, newItemID=item.ID))
+            fighter = self.selection[0]
+            if fighter in fit.projectedFighters:
+                position = fit.projectedFighters.index(fighter)
+                self.mainFrame.command.Submit(cmd.GuiChangeProjectedFighterMetaCommand(
+                    fitID=fitID, position=position, newItemID=item.ID))
 
 
 ChangeItemToVariation.register()
