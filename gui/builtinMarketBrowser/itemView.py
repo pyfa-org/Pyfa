@@ -21,7 +21,7 @@ class ItemView(Display):
                     "attr:cpu,,,True"]
 
     def __init__(self, parent, marketBrowser):
-        Display.__init__(self, parent)
+        Display.__init__(self, parent, style=wx.LC_SINGLE_SEL)
         pyfalog.debug("Initialize ItemView")
         marketBrowser.Bind(wx.EVT_TREE_SEL_CHANGED, self.treeSelectionChanged)
 
