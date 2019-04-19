@@ -23,7 +23,7 @@ class ChangeItemAmount(ContextMenu):
         return srcContext in ("droneItem", "projectedDrone", "cargoItem", "projectedFit", "fighterItem", "projectedFighter")
 
     def getText(self, itmContext, selection):
-        return u"Change {0} Quantity".format(itmContext)
+        return "Change {0} Quantity".format(itmContext)
 
     def activate(self, fullContext, selection, i):
         thing = selection[0]

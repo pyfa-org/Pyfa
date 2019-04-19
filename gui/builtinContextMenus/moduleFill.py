@@ -20,7 +20,7 @@ class FillWithModule(ContextMenu):
         return srcContext == "fittingModule"
 
     def getText(self, itmContext, selection):
-        return u"Fill With {0}".format(itmContext if itmContext is not None else "Module")
+        return "Fill With {0}".format(itmContext if itmContext is not None else "Module")
 
     def activate(self, fullContext, selection, i):
 

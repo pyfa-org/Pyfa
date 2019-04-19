@@ -80,10 +80,10 @@ class PFFittingEnginePref(PreferenceView):
 
         # Future code once new cap sim is implemented
         '''
-        self.cbGlobalForceReactivationTimer = wx.CheckBox( panel, wx.ID_ANY, u"Factor in reactivation timer", wx.DefaultPosition, wx.DefaultSize, 0 )
+        self.cbGlobalForceReactivationTimer = wx.CheckBox( panel, wx.ID_ANY, "Factor in reactivation timer", wx.DefaultPosition, wx.DefaultSize, 0 )
         mainSizer.Add( self.cbGlobalForceReactivationTimer, 0, wx.ALL|wx.EXPAND, 5 )
 
-        text =  u"   Ignores reactivation timer when calculating capacitor usage,\n   damage, and tank."
+        text =  "   Ignores reactivation timer when calculating capacitor usage,\n   damage, and tank."
         self.cbGlobalForceReactivationTimerText = wx.StaticText( panel, wx.ID_ANY, text, wx.DefaultPosition, wx.DefaultSize, 0 )
         self.cbGlobalForceReactivationTimerText.Wrap( -1 )
         self.cbGlobalForceReactivationTimerText.SetFont( wx.Font( 10, 70, 90, 90, False, wx.EmptyString ) )
@@ -92,10 +92,10 @@ class PFFittingEnginePref(PreferenceView):
 
         # Future code for mining laser crystal
         '''
-        self.cbGlobalMiningSpecialtyCrystal = wx.CheckBox( panel, wx.ID_ANY, u"Factor in reactivation timer", wx.DefaultPosition, wx.DefaultSize, 0 )
+        self.cbGlobalMiningSpecialtyCrystal = wx.CheckBox( panel, wx.ID_ANY, "Factor in reactivation timer", wx.DefaultPosition, wx.DefaultSize, 0 )
         mainSizer.Add( self.cbGlobalMiningSpecialtyCrystal, 0, wx.ALL|wx.EXPAND, 5 )
 
-        text = u"   If enabled, displays the Specialty Crystal mining amount.\n   This is the amount mined when using crystals and mining the matching asteroid."
+        text = "   If enabled, displays the Specialty Crystal mining amount.\n   This is the amount mined when using crystals and mining the matching asteroid."
         self.cbGlobalMiningSpecialtyCrystalText = wx.StaticText( panel, wx.ID_ANY, text, wx.DefaultPosition, wx.DefaultSize, 0 )
         self.cbGlobalMiningSpecialtyCrystalText.Wrap( -1 )
         self.cbGlobalMiningSpecialtyCrystalText.SetFont( wx.Font( 10, 70, 90, 90, False, wx.EmptyString ) )

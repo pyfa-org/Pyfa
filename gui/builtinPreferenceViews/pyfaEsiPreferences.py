@@ -75,7 +75,7 @@ class PFEsiPref(PreferenceView):
         fgAddrSizer.SetFlexibleDirection(wx.BOTH)
         fgAddrSizer.SetNonFlexibleGrowMode(wx.FLEX_GROWMODE_SPECIFIED)
 
-        self.stSetID = wx.StaticText(panel, wx.ID_ANY, u"Client ID:", wx.DefaultPosition, wx.DefaultSize, 0)
+        self.stSetID = wx.StaticText(panel, wx.ID_ANY, "Client ID:", wx.DefaultPosition, wx.DefaultSize, 0)
         self.stSetID.Wrap(-1)
         fgAddrSizer.Add(self.stSetID, 0, wx.ALL | wx.ALIGN_CENTER_VERTICAL, 5)
 
@@ -84,7 +84,7 @@ class PFEsiPref(PreferenceView):
 
         fgAddrSizer.Add(self.inputClientID, 0, wx.ALL | wx.ALIGN_CENTER_VERTICAL | wx.EXPAND, 5)
 
-        self.stSetSecret = wx.StaticText(panel, wx.ID_ANY, u"Client Secret:", wx.DefaultPosition, wx.DefaultSize, 0)
+        self.stSetSecret = wx.StaticText(panel, wx.ID_ANY, "Client Secret:", wx.DefaultPosition, wx.DefaultSize, 0)
         self.stSetSecret.Wrap(-1)
 
         fgAddrSizer.Add(self.stSetSecret, 0, wx.ALL | wx.ALIGN_CENTER_VERTICAL, 5)
