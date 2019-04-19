@@ -78,9 +78,10 @@ class CargoView(d.Display):
         if data[0] == "fitting":
             self.swapModule(x, y, int(data[1]))
         elif data[0] == "market":
-            fit = self.mainFrame.getActiveFit()
-            if fit:
-                self.mainFrame.command.Submit(cmd.GuiAddCargoCommand(fit, int(data[1]), 1))
+            fitID = self.mainFrame.getActiveFit()
+            if fitID:
+                self.mainFrame.command.Submit(cmd.GuiAddCargoCommand(
+                    fitID=fitID, itemID=int(data[1]), amount=1))
 
     def startDrag(self, event):
         row = event.GetIndex()
@@ -156,7 +157,7 @@ class CargoView(d.Display):
             if col != self.getColIndex(State):
                 fitID = self.mainFrame.getActiveFit()
                 cargo = self.cargo[self.GetItemData(row)]
-                self.mainFrame.command.Submit(cmd.GuiRemoveCargoCommand(fitID, cargo.itemID))
+                self.mainFrame.command.Submit(cmd.GuiRemoveCargoCommand(fitID=fitID, itemID=cargo.itemID))
 
     def spawnMenu(self, event):
         sel = self.GetFirstSelected()
