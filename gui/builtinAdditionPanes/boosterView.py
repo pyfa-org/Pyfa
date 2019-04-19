@@ -152,7 +152,10 @@ class BoosterView(d.Display):
 
     def removeBooster(self, booster):
         fitID = self.mainFrame.getActiveFit()
-        self.mainFrame.command.Submit(cmd.GuiRemoveBoosterCommand(fitID=fitID, position=self.original.index(booster)))
+        if booster in self.original:
+            position = self.original.index(booster)
+            self.mainFrame.command.Submit(cmd.GuiRemoveBoosterCommand(
+                fitID=fitID, position=position))
 
     def click(self, event):
         event.Skip()
