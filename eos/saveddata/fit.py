@@ -1507,6 +1507,21 @@ class Fit(object):
 
         return True
 
+    def howManyDronesRelease(self, item):
+        if not item.isDrone:
+            return 0
+        bw = round(self.ship.getModifiedItemAttr("droneBandwidth"))
+        volume = round(item.attribsWithOverrides['volume'])
+        return int(bw / volume)
+
+    def howManyDronesStore(self, item):
+        if not item.isDrone:
+            return 0
+        bayTotal = round(self.ship.getModifiedItemAttr("droneCapacity"))
+        bayUsed = round(self.droneBayUsed)
+        volume = item.attribsWithOverrides['volume']
+        return int((bayTotal - bayUsed) / volume)
+
     def __deepcopy__(self, memo=None):
         fitCopy = Fit()
         # Character and owner are not copied

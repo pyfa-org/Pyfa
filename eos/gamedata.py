@@ -250,6 +250,17 @@ class Item(EqBase):
 
         return self.__attributes
 
+    @property
+    def attribsWithOverrides(self):
+        overrides = self.overrides
+        attribs = {}
+        for aname, attr in self.attributes.items():
+            if aname in overrides:
+                attribs[aname] = overrides[aname]
+            else:
+                attribs[aname] = attr
+        return attribs
+
     def getAttribute(self, key, default=None):
         if key in self.attributes:
             return self.attributes[key].value

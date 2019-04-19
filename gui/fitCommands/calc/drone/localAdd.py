@@ -31,9 +31,10 @@ class CalcAddLocalDroneCommand(wx.Command):
         # with enough space for new drones and use it
         if not self.forceNewStack and self.droneInfo.amountActive == 0:
             for drone in fit.drones.find(item):
+                maxStack = max(5, fit.extraAttributes["maxActiveDrones"])
                 if (
                     drone is not None and drone.amountActive == 0 and
-                    drone.amount + self.droneInfo.amount) <= max(5, fit.extraAttributes["maxActiveDrones"]
+                    drone.amount + self.droneInfo.amount <= maxStack
                 ):
                     self.savedDroneInfo = DroneInfo.fromDrone(drone)
                     self.savedPosition = fit.drones.index(drone)
