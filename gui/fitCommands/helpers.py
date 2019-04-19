@@ -324,7 +324,8 @@ def stateLimit(itemIdentity):
     return FittingModuleState.ACTIVE
 
 
-def droneStackLimit(fit, item):
+def droneStackLimit(fit, itemIdentity):
+    item = Market.getInstance().getItem(itemIdentity)
     hardLimit = max(5, fit.extraAttributes["maxActiveDrones"])
     releaseLimit = fit.getReleaseLimitForDrone(item)
     limit = min(hardLimit, releaseLimit if releaseLimit > 0 else math.inf)

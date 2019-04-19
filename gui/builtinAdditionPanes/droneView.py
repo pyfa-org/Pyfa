@@ -33,6 +33,7 @@ from gui.utils.staticHelpers import DragDropHelper
 from service.fit import Fit
 from service.market import Market
 import gui.fitCommands as cmd
+from gui.fitCommands.helpers import droneStackLimit
 
 
 class DroneViewDrop(wx.DropTarget):
@@ -216,7 +217,8 @@ class DroneView(Display):
             event.Skip()
             return
 
-        if self.mainFrame.command.Submit(cmd.GuiAddLocalDroneCommand(fitID=fitID, itemID=event.itemID, amount=1)):
+        amount = droneStackLimit(fit, event.itemID) if wx.GetMouseState().CmdDown() else 1
+        if self.mainFrame.command.Submit(cmd.GuiAddLocalDroneCommand(fitID=fitID, itemID=event.itemID, amount=amount)):
             self.mainFrame.additionsPane.select('Drones')
 
         event.Skip()
