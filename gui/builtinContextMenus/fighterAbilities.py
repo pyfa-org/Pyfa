@@ -58,11 +58,15 @@ class FighterAbilities(ContextMenu):
         fitID = self.mainFrame.getActiveFit()
         fit = Fit.getInstance().getFit(fitID)
         if self.isProjected:
-            self.mainFrame.command.Submit(cmd.GuiToggleProjectedFighterAbilityStateCommand(
-                fitID=fitID, position=fit.projectedFighters.index(self.fighter), effectID=ability.effectID))
+            if self.fighter in fit.projectedFighters:
+                position = fit.projectedFighters.index(self.fighter)
+                self.mainFrame.command.Submit(cmd.GuiToggleProjectedFighterAbilityStateCommand(
+                    fitID=fitID, position=position, effectID=ability.effectID))
         else:
-            self.mainFrame.command.Submit(cmd.GuiToggleLocalFighterAbilityStateCommand(
-                fitID=fitID, position=fit.fighters.index(self.fighter), effectID=ability.effectID))
+            if self.fighter in fit.fighters:
+                position = fit.fighters.index(self.fighter)
+                self.mainFrame.command.Submit(cmd.GuiToggleLocalFighterAbilityStateCommand(
+                    fitID=fitID, position=position, effectID=ability.effectID))
 
 
 

@@ -102,7 +102,10 @@ class DroneView(Display):
                 self.hoveredRow = row
                 self.hoveredColumn = col
                 if row != -1 and col != -1 and col < len(self.DEFAULT_COLS):
-                    mod = self.drones[self.GetItemData(row)]
+                    try:
+                        mod = self.drones[self.GetItemData(row)]
+                    except IndexError:
+                        return
                     if self.DEFAULT_COLS[col] == "Miscellanea":
                         tooltip = self.activeColumns[col].getToolTip(mod)
                         if tooltip is not None:
@@ -120,7 +123,10 @@ class DroneView(Display):
         if keycode == wx.WXK_DELETE or keycode == wx.WXK_NUMPAD_DELETE:
             row = self.GetFirstSelected()
             if row != -1:
-                drone = self.drones[self.GetItemData(row)]
+                try:
+                    drone = self.drones[self.GetItemData(row)]
+                except IndexError:
+                    return
                 self.removeDroneStack(drone)
 
         event.Skip()
@@ -234,7 +240,10 @@ class DroneView(Display):
             col = self.getColumn(event.Position)
             if col != self.getColIndex(State):
                 mstate = wx.GetMouseState()
-                drone = self.drones[self.GetItemData(row)]
+                try:
+                    drone = self.drones[self.GetItemData(row)]
+                except IndexError:
+                    return
                 if mstate.cmdDown or mstate.altDown:
                     self.removeDroneStack(drone)
                 else:
@@ -273,7 +282,10 @@ class DroneView(Display):
     def spawnMenu(self, event):
         sel = self.GetFirstSelected()
         if sel != -1:
-            drone = self.drones[sel]
+            try:
+                drone = self.drones[sel]
+            except IndexError:
+                return
             sMkt = Market.getInstance()
             sourceContext = "droneItem"
             itemContext = sMkt.getCategoryByItem(drone.item).name

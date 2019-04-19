@@ -169,13 +169,13 @@ class CommandView(d.Display):
     def get(self, row):
         if row == -1:
             return None
-
         numFits = len(self.fits)
-
         if numFits == 0:
             return None
-
-        return self.fits[row]
+        try:
+            return self.fits[row]
+        except IndexError:
+            return None
 
     def click(self, event):
         event.Skip()

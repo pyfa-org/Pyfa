@@ -90,7 +90,11 @@ class BoosterView(d.Display):
         if keycode in (wx.WXK_DELETE, wx.WXK_NUMPAD_DELETE):
             row = self.GetFirstSelected()
             if row != -1:
-                self.removeBooster(self.boosters[self.GetItemData(row)])
+                try:
+                    booster = self.boosters[self.GetItemData(row)]
+                except IndexError:
+                    return
+                self.removeBooster(booster)
 
         event.Skip()
 
@@ -148,7 +152,11 @@ class BoosterView(d.Display):
         if row != -1:
             col = self.getColumn(event.Position)
             if col != self.getColIndex(State):
-                self.removeBooster(self.boosters[self.GetItemData(row)])
+                try:
+                    booster = self.boosters[self.GetItemData(row)]
+                except IndexError:
+                    return
+                self.removeBooster(booster)
 
     def removeBooster(self, booster):
         fitID = self.mainFrame.getActiveFit()
@@ -164,7 +172,10 @@ class BoosterView(d.Display):
             col = self.getColumn(event.Position)
             if col == self.getColIndex(State):
                 fitID = self.mainFrame.getActiveFit()
-                booster = self.boosters[self.GetItemData(row)]
+                try:
+                    booster = self.boosters[self.GetItemData(row)]
+                except IndexError:
+                    return
                 if booster in self.original:
                     position = self.original.index(booster)
                     self.mainFrame.command.Submit(cmd.GuiToggleBoosterStateCommand(
@@ -174,7 +185,10 @@ class BoosterView(d.Display):
     def spawnMenu(self, event):
         sel = self.GetFirstSelected()
         if sel != -1:
-            booster = self.boosters[sel]
+            try:
+                booster = self.boosters[sel]
+            except IndexError:
+                return None
             srcContext = "boosterItem"
             itemContext = "Booster"
             menu = ContextMenu.getMenu((booster,), (srcContext, itemContext))

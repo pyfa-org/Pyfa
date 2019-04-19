@@ -162,7 +162,10 @@ class FighterDisplay(d.Display):
                 self.hoveredRow = row
                 self.hoveredColumn = col
                 if row != -1 and col != -1 and col < len(self.DEFAULT_COLS):
-                    mod = self.fighters[self.GetItemData(row)]
+                    try:
+                        mod = self.fighters[self.GetItemData(row)]
+                    except IndexError:
+                        return
                     if self.DEFAULT_COLS[col] == "Miscellanea":
                         tooltip = self.activeColumns[col].getToolTip(mod)
                         if tooltip is not None:
@@ -180,7 +183,10 @@ class FighterDisplay(d.Display):
         if keycode == wx.WXK_DELETE or keycode == wx.WXK_NUMPAD_DELETE:
             row = self.GetFirstSelected()
             if row != -1:
-                fighter = self.fighters[self.GetItemData(row)]
+                try:
+                    fighter = self.fighters[self.GetItemData(row)]
+                except IndexError:
+                    return
                 self.removeFighter(fighter)
 
         event.Skip()
@@ -273,12 +279,17 @@ class FighterDisplay(d.Display):
         if row != -1:
             col = self.getColumn(event.Position)
             if col != self.getColIndex(State):
-                fighter = self.fighters[self.GetItemData(row)]
+                try:
+                    fighter = self.fighters[self.GetItemData(row)]
+                except IndexError:
+                    return
                 self.removeFighter(fighter)
 
     def removeFighter(self, fighter):
         fitID = self.mainFrame.getActiveFit()
-        self.mainFrame.command.Submit(cmd.GuiRemoveLocalFighterCommand(fitID, self.original.index(fighter)))
+        if fighter in self.original:
+            position = self.original.index(fighter)
+            self.mainFrame.command.Submit(cmd.GuiRemoveLocalFighterCommand(fitID=fitID, position=position))
 
     def click(self, event):
         event.Skip()
@@ -287,14 +298,21 @@ class FighterDisplay(d.Display):
             col = self.getColumn(event.Position)
             if col == self.getColIndex(State):
                 fitID = self.mainFrame.getActiveFit()
-                fighter = self.fighters[row]
-                self.mainFrame.command.Submit(cmd.GuiToggleLocalFighterStateCommand(fitID, self.original.index(fighter)))
+                try:
+                    fighter = self.fighters[row]
+                except IndexError:
+                    return
+                if fighter in self.original:
+                    position = self.original.index(fighter)
+                    self.mainFrame.command.Submit(cmd.GuiToggleLocalFighterStateCommand(fitID=fitID, position=position))
 
     def spawnMenu(self, event):
         sel = self.GetFirstSelected()
         if sel != -1:
-            fighter = self.fighters[sel]
-
+            try:
+                fighter = self.fighters[sel]
+            except IndexError:
+                return
             sMkt = Market.getInstance()
             sourceContext = "fighterItem"
             itemContext = sMkt.getCategoryByItem(fighter.item).name

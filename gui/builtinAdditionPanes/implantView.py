@@ -137,12 +137,16 @@ class ImplantDisplay(d.Display):
                 self.mainFrame.additionsPane.select("Implants")
 
     def kbEvent(self, event):
+        event.Skip()
         keycode = event.GetKeyCode()
         if keycode in (wx.WXK_DELETE, wx.WXK_NUMPAD_DELETE):
             row = self.GetFirstSelected()
             if row != -1:
-                self.removeImplant(self.implants[self.GetItemData(row)])
-        event.Skip()
+                try:
+                    implant = self.implants[self.GetItemData(row)]
+                except IndexError:
+                    return
+                self.removeImplant(implant)
 
     def fitChanged(self, event):
         sFit = Fit.getInstance()
@@ -204,7 +208,11 @@ class ImplantDisplay(d.Display):
         if row != -1:
             col = self.getColumn(event.Position)
             if col != self.getColIndex(State):
-                self.removeImplant(self.implants[self.GetItemData(row)])
+                try:
+                    implant = self.implants[self.GetItemData(row)]
+                except IndexError:
+                    return
+                self.removeImplant(implant)
 
     def removeImplant(self, implant):
         fitID = self.mainFrame.getActiveFit()
@@ -226,7 +234,10 @@ class ImplantDisplay(d.Display):
             col = self.getColumn(event.Position)
             if col == self.getColIndex(State):
                 fitID = self.mainFrame.getActiveFit()
-                implant = self.implants[self.GetItemData(row)]
+                try:
+                    implant = self.implants[self.GetItemData(row)]
+                except IndexError:
+                    return
                 if implant in self.original:
                     position = self.original.index(implant)
                     self.mainFrame.command.Submit(cmd.GuiToggleImplantStateCommand(
@@ -243,7 +254,10 @@ class ImplantDisplay(d.Display):
             return
 
         if sel != -1:
-            implant = self.implants[sel]
+            try:
+                implant = self.implants[sel]
+            except IndexError:
+                return
             sMkt = Market.getInstance()
             sourceContext = "implantItem" if fit.implantSource == ImplantLocation.FIT else "implantItemChar"
             itemContext = sMkt.getCategoryByItem(implant.item).name
