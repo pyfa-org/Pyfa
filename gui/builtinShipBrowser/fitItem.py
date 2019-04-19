@@ -185,13 +185,13 @@ class FitItem(SFItem.SFBrowserItem):
         if activeFit:
             sFit = Fit.getInstance()
             projectedFit = sFit.getFit(self.fitID)
-            if self.mainFrame.command.Submit(cmd.GuiAddProjectedCommand(activeFit, projectedFit.ID, 'fit')):
+            if self.mainFrame.command.Submit(cmd.GuiAddProjectedFitCommand(fitID=activeFit, projectedFitID=projectedFit.ID)):
                 self.mainFrame.additionsPane.select("Projected")
 
     def OnAddCommandFit(self, event):
         activeFit = self.mainFrame.getActiveFit()
         if activeFit:
-            if self.mainFrame.command.Submit(cmd.GuiAddCommandFitCommand(activeFit, self.fitID)):
+            if self.mainFrame.command.Submit(cmd.GuiAddCommandFitCommand(fitID=activeFit, commandFitID=self.fitID)):
                 self.mainFrame.additionsPane.select("Command")
 
     def OnMouseCaptureLost(self, event):

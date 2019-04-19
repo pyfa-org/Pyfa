@@ -99,14 +99,17 @@ class CommandView(d.Display):
             fitID = self.mainFrame.getActiveFit()
             row = self.GetFirstSelected()
             if row != -1:
-                self.mainFrame.command.Submit(cmd.GuiRemoveCommandFitCommand(fitID, self.get(row).ID))
+                commandFit = self.get(row)
+                if commandFit is not None:
+                    self.mainFrame.command.Submit(cmd.GuiRemoveCommandFitCommand(
+                        fitID=fitID, commandFitID=commandFit.ID))
 
     def handleDrag(self, type, fitID):
         # Those are drags coming from pyfa sources, NOT builtin wx drags
         if type == "fit":
             activeFit = self.mainFrame.getActiveFit()
             if activeFit:
-                self.mainFrame.command.Submit(cmd.GuiAddCommandFitCommand(activeFit, fitID))
+                self.mainFrame.command.Submit(cmd.GuiAddCommandFitCommand(fitID=activeFit, commandFitID=fitID))
 
     def startDrag(self, event):
         row = event.GetIndex()
