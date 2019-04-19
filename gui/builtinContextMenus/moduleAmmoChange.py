@@ -221,11 +221,11 @@ class ChangeModuleAmmo(ContextMenu):
 
         fitID = self.mainFrame.getActiveFit()
         sFit = Fit.getInstance()
+        fit = sFit.getFit(fitID)
         mstate = wx.GetMouseState()
+        # Switch in selection or all modules, depending on modifier key state and settings
         switchAll = sFit.serviceFittingOptions['ammoChangeAll'] is not (mstate.cmdDown or mstate.altDown)
-        # Switch in selection or all modules, depending on ctrl key state and settings
         if switchAll:
-            fit = sFit.getFit(fitID)
             if self.context == 'fittingModule':
                 command = cmd.GuiChangeLocalModuleChargesCommand
                 modContainer = fit.modules
@@ -237,37 +237,43 @@ class ChangeModuleAmmo(ContextMenu):
             sMkt = Market.getInstance()
             selectedModule = self.modules[0]
             mainMktGroupID = getattr(sMkt.getMarketGroupByItem(selectedModule.item), 'ID', None)
-            mods = []
-            for mod in modContainer:
+            positions = []
+            for position, mod in enumerate(modContainer):
                 # Always include selected module itself
                 if mod is selectedModule:
-                    mods.append(mod)
+                    positions.append(position)
                     continue
                 if mod.itemID is None:
                     continue
                 # Modules which have the same item ID
                 if mod.itemID == selectedModule.itemID:
-                    mods.append(mod)
+                    positions.append(position)
                     continue
                 # And modules from the same market group too
                 modMktGroupID = getattr(sMkt.getMarketGroupByItem(mod.item), 'ID', None)
                 if modMktGroupID is not None and modMktGroupID == mainMktGroupID:
-                    mods.append(mod)
+                    positions.append(position)
                     continue
             self.mainFrame.command.Submit(command(
                 fitID=fitID,
-                modules=mods,
+                positions=positions,
                 chargeItemID=charge.ID if charge is not None else None))
         else:
             if self.context == 'fittingModule':
                 command = cmd.GuiChangeLocalModuleChargesCommand
+                modContainer = fit.modules
             elif self.context == 'projectedModule':
                 command = cmd.GuiChangeProjectedModuleChargesCommand
+                modContainer = fit.projectedModules
             else:
                 return
+            positions = []
+            for position, mod in enumerate(modContainer):
+                if mod in self.modules:
+                    positions.append(position)
             self.mainFrame.command.Submit(command(
                 fitID=fitID,
-                modules=self.modules,
+                positions=positions,
                 chargeItemID=charge.ID if charge is not None else None))
 
 

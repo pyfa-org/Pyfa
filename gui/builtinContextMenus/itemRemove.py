@@ -35,9 +35,6 @@ class RemoveItem(ContextMenu):
         if srcContext == "fittingModule":
             self.mainFrame.command.Submit(cmd.GuiRemoveLocalModuleCommand(
                 fitID=fitID, modules=[module for module in selection if module is not None]))
-        elif srcContext == "fittingCharge":
-            self.mainFrame.command.Submit(cmd.GuiChangeLocalModuleChargesCommand(
-                fitID=fitID, modules=selection, chargeItemID=None))
         elif srcContext == "droneItem":
             drone = selection[0]
             if drone in fit.drones:
