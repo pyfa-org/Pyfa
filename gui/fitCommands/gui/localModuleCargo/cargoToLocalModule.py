@@ -56,7 +56,7 @@ class GuiCargoToLocalModuleCommand(wx.Command):
             commands.append(CalcChangeModuleChargesCommand(
                 fitID=self.fitID,
                 projected=False,
-                chargeMap={fit.modules.index(dstMod): self.srcCargoItemID},
+                chargeMap={self.dstModPosition: self.srcCargoItemID},
                 commit=False))
             success = self.internalHistory.submitBatch(*commands)
         # Moving/copying/replacing module
