@@ -9,6 +9,7 @@ from service.settings import ContextMenuSettings
 
 
 class BoosterSideEffect(ContextMenu):
+
     def __init__(self):
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
         self.settings = ContextMenuSettings.getInstance()
@@ -58,14 +59,17 @@ class BoosterSideEffect(ContextMenu):
 
     def handleMode(self, event):
         effect = self.effectIds[event.Id]
-        if effect is False or effect not in self.booster.sideEffects:
+        booster = self.booster
+        if effect is False or effect not in booster.sideEffects:
             event.Skip()
             return
 
         fitID = self.mainFrame.getActiveFit()
         fit = Fit.getInstance().getFit(fitID)
-        index = fit.boosters.index(self.booster)
-        self.mainFrame.command.Submit(cmd.GuiToggleBoosterSideEffectStateCommand(fitID, index, effect.effectID))
+        if booster in fit.boosters:
+            index = fit.boosters.index(booster)
+            self.mainFrame.command.Submit(cmd.GuiToggleBoosterSideEffectStateCommand(
+                fitID=fitID, position=index, effectID=effect.effectID))
 
 
 BoosterSideEffect.register()

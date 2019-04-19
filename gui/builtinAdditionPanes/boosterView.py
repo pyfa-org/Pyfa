@@ -165,7 +165,11 @@ class BoosterView(d.Display):
             if col == self.getColIndex(State):
                 fitID = self.mainFrame.getActiveFit()
                 booster = self.boosters[self.GetItemData(row)]
-                self.mainFrame.command.Submit(cmd.GuiToggleBoosterStateCommand(fitID=fitID, position=self.original.index(booster)))
+                if booster in self.original:
+                    position = self.original.index(booster)
+                    self.mainFrame.command.Submit(cmd.GuiToggleBoosterStateCommand(
+                        fitID=fitID,
+                        position=position))
 
     def spawnMenu(self, event):
         sel = self.GetFirstSelected()

@@ -8,6 +8,7 @@ from service.fit import Fit
 
 
 class GuiToggleBoosterStateCommand(wx.Command):
+
     def __init__(self, fitID, position):
         wx.Command.__init__(self, True, 'Toggle Booster State')
         self.internalHistory = InternalCommandHistory()
