@@ -76,7 +76,7 @@ class DroneView(Display):
 
         self.mainFrame.Bind(GE.FIT_CHANGED, self.fitChanged)
         self.mainFrame.Bind(ITEM_SELECTED, self.addItem)
-        self.Bind(wx.EVT_LEFT_DCLICK, self.removeItem)
+        self.Bind(wx.EVT_LEFT_DCLICK, self.OnLeftDoubleClick)
         self.Bind(wx.EVT_LEFT_DOWN, self.click)
         self.Bind(wx.EVT_KEY_UP, self.kbEvent)
         self.Bind(wx.EVT_MOTION, self.OnMouseMove)
@@ -223,13 +223,17 @@ class DroneView(Display):
 
         event.Skip()
 
-    def removeItem(self, event):
+    def OnLeftDoubleClick(self, event):
         row, _ = self.HitTest(event.Position)
         if row != -1:
             col = self.getColumn(event.Position)
             if col != self.getColIndex(State):
+                mstate = wx.GetMouseState()
                 drone = self.drones[self.GetItemData(row)]
-                self.removeDrone(drone)
+                if mstate.cmdDown or mstate.altDown:
+                    self.removeDroneStack(drone)
+                else:
+                    self.removeDrone(drone)
 
     def removeDrone(self, drone):
         fitID = self.mainFrame.getActiveFit()
@@ -253,7 +257,6 @@ class DroneView(Display):
         sel = self.GetFirstSelected()
         if sel != -1:
             drone = self.drones[sel]
-
             sMkt = Market.getInstance()
             sourceContext = "droneItem"
             itemContext = sMkt.getCategoryByItem(drone.item).name

@@ -331,8 +331,11 @@ class ProjectedView(d.Display):
                     self.mainFrame.command.Submit(cmd.GuiRemoveProjectedModuleCommand(
                         fitID=fitID, position=Fit.getInstance().getFit(fitID).projectedModules.index(thing)))
                 elif isinstance(thing, es_Drone):
+                    mstate = wx.GetMouseState()
                     self.mainFrame.command.Submit(cmd.GuiRemoveProjectedDroneCommand(
-                        fitID=fitID, itemID=thing.itemID, amount=1))
+                        fitID=fitID,
+                        itemID=thing.itemID,
+                        amount=math.inf if mstate.cmdDown or mstate.altDown else 1))
                 elif isinstance(thing, es_Fighter):
                     self.mainFrame.command.Submit(cmd.GuiRemoveProjectedFighterCommand(
                         fitID=fitID, position=Fit.getInstance().getFit(fitID).projectedFighters.index(thing)))
