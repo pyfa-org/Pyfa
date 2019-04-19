@@ -4,7 +4,7 @@ from logbook import Logger
 
 import eos.db
 from eos.exception import HandledListActionError
-from gui.fitCommands.helpers import DroneInfo
+from gui.fitCommands.helpers import DroneInfo, droneStackLimit
 from service.fit import Fit
 from service.market import Market
 
@@ -30,8 +30,8 @@ class CalcAddLocalDroneCommand(wx.Command):
         # If we're not adding any active drones, check if there's an inactive stack
         # with enough space for new drones and use it
         if not self.forceNewStack and self.droneInfo.amountActive == 0:
+            maxStack = droneStackLimit(fit, item)
             for drone in fit.drones.find(item):
-                maxStack = max(5, fit.extraAttributes["maxActiveDrones"])
                 if (
                     drone is not None and drone.amountActive == 0 and
                     drone.amount + self.droneInfo.amount <= maxStack

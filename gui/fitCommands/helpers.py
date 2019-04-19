@@ -1,3 +1,5 @@
+import math
+
 import wx
 from logbook import Logger
 
@@ -320,6 +322,13 @@ def stateLimit(itemIdentity):
     if {'moduleBonusAssaultDamageControl', 'moduleBonusIndustrialInvulnerability'}.intersection(item.effects):
         return FittingModuleState.ONLINE
     return FittingModuleState.ACTIVE
+
+
+def droneStackLimit(fit, item):
+    hardLimit = max(5, fit.extraAttributes["maxActiveDrones"])
+    releaseLimit = fit.getReleaseLimitForDrone(item)
+    limit = min(hardLimit, releaseLimit if releaseLimit > 0 else math.inf)
+    return limit
 
 
 def restoreCheckedStates(fit, stateInfo):
