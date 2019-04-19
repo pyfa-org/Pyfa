@@ -31,7 +31,10 @@ class ChangeItemAmount(ContextMenu):
         fitID = mainFrame.getActiveFit()
         srcContext = fullContext[0]
         if isinstance(thing, es_Fit):
-            value = thing.getProjectionInfo(fitID).amount
+            try:
+                value = thing.getProjectionInfo(fitID).amount
+            except AttributeError:
+                return
         elif isinstance(thing, es_Fighter):
             value = thing.amountActive
         else:
