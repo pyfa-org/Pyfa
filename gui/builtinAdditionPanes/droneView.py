@@ -155,11 +155,16 @@ class DroneView(Display):
 
     def _merge(self, srcRow, dstRow):
         fitID = self.mainFrame.getActiveFit()
-        fit = Fit.getInstance().getFit(fitID)
-        self.mainFrame.command.Submit(cmd.GuiMergeLocalDroneStacksCommand(
-            fitID=fitID,
-            srcPosition=fit.drones.index(self.drones[srcRow]),
-            dstPosition=fit.drones.index(self.drones[dstRow])))
+        try:
+            srcDrone = self.drones[srcRow]
+            dstDrone = self.drones[dstRow]
+        except IndexError:
+            return
+        if srcDrone in self.original and dstDrone in self.original:
+            srcPosition = self.original.index(srcDrone)
+            dstPosition = self.original.index(dstDrone)
+            self.mainFrame.command.Submit(cmd.GuiMergeLocalDroneStacksCommand(
+                fitID=fitID, srcPosition=srcPosition, dstPosition=dstPosition))
 
     DRONE_ORDER = ('Light Scout Drones', 'Medium Scout Drones',
                    'Heavy Attack Drones', 'Sentry Drones', 'Combat Utility Drones',
@@ -237,11 +242,17 @@ class DroneView(Display):
 
     def removeDrone(self, drone):
         fitID = self.mainFrame.getActiveFit()
-        self.mainFrame.command.Submit(cmd.GuiRemoveLocalDroneCommand(fitID, self.original.index(drone), 1))
+        if drone in self.original:
+            position = self.original.index(drone)
+            self.mainFrame.command.Submit(cmd.GuiRemoveLocalDroneCommand(
+                fitID=fitID, position=position, amount=1))
 
     def removeDroneStack(self, drone):
         fitID = self.mainFrame.getActiveFit()
-        self.mainFrame.command.Submit(cmd.GuiRemoveLocalDroneCommand(fitID, self.original.index(drone), math.inf))
+        if drone in self.original:
+            position = self.original.index(drone)
+            self.mainFrame.command.Submit(cmd.GuiRemoveLocalDroneCommand(
+                fitID=fitID, position=position, amount=math.inf))
 
     def click(self, event):
         event.Skip()
@@ -250,8 +261,14 @@ class DroneView(Display):
             col = self.getColumn(event.Position)
             if col == self.getColIndex(State):
                 fitID = self.mainFrame.getActiveFit()
-                drone = self.drones[row]
-                self.mainFrame.command.Submit(cmd.GuiToggleLocalDroneStateCommand(fitID, self.original.index(drone)))
+                try:
+                    drone = self.drones[row]
+                except IndexError:
+                    return
+                if drone in self.original:
+                    position = self.original.index(drone)
+                    self.mainFrame.command.Submit(cmd.GuiToggleLocalDroneStateCommand(
+                        fitID=fitID, position=position))
 
     def spawnMenu(self, event):
         sel = self.GetFirstSelected()
