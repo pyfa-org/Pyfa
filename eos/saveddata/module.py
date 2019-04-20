@@ -913,13 +913,8 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
             state = FittingModuleState.OFFLINE
         else:
             state = transitionMap[currState]
-            if not mod.isValidState(state):
-                state = -1
 
-        if mod.isValidState(state):
-            return state
-        else:
-            return currState
+        return mod.getMaxState(proposedState=state)
 
     def __deepcopy__(self, memo):
         item = self.item

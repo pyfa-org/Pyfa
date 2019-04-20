@@ -603,28 +603,3 @@ class FitDeprecated(object):
         eos.db.commit()
 
         self.recalc(fit)
-
-    @deprecated
-    def toggleModulesState(self, fitID, base, modules, click):
-        pyfalog.debug("Toggle module state for fit ID: {0}", fitID)
-        changed = False
-        proposedState = es_Module.getProposedState(base, click)
-
-        if proposedState != base.state:
-            changed = True
-            base.state = proposedState
-            for mod in modules:
-                if mod != base:
-                    p = es_Module.getProposedState(mod, click, proposedState)
-                    mod.state = p
-                    if p != mod.state:
-                        changed = True
-
-        if changed:
-            eos.db.commit()
-            fit = eos.db.getFit(fitID)
-
-            # As some items may affect state-limiting attributes of the ship, calculate new attributes first
-            self.recalc(fit)
-            # Then, check states of all modules and change where needed. This will recalc if needed
-            self.checkStates(fit, base)
