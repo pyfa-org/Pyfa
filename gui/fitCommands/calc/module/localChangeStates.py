@@ -61,6 +61,6 @@ class CalcChangeLocalModuleStatesCommand(wx.Command):
             mod = fit.modules[position]
             pyfalog.debug('Reverting {} to state {} for fit ID {}'.format(mod, state, self.fitID))
             mod.state = state
-        restoreCheckedStates(fit, self.savedStateCheckChanges)
+        restoreCheckedStates(fit, self.savedStateCheckChanges, ignoreModPoss=self.savedStates)
         eos.db.commit()
         return True

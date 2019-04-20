@@ -332,11 +332,13 @@ def droneStackLimit(fit, itemIdentity):
     return limit
 
 
-def restoreCheckedStates(fit, stateInfo):
+def restoreCheckedStates(fit, stateInfo, ignoreModPoss=()):
     if stateInfo is None:
         return
     changedMods, changedProjMods, changedProjDrones = stateInfo
     for pos, state in changedMods.items():
+        if pos in ignoreModPoss:
+            continue
         fit.modules[pos].state = state
     for pos, state in changedProjMods.items():
         fit.projectedModules[pos].state = state
