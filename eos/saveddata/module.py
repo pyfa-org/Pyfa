@@ -894,7 +894,6 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
 
     @staticmethod
     def getProposedState(mod, click, proposedState=None):
-        # todo: instead of passing in module, make this a instanced function.
         pyfalog.debug("Get proposed state for module.")
         if mod.slot == FittingSlot.SUBSYSTEM or mod.isEmpty:
             return FittingModuleState.ONLINE

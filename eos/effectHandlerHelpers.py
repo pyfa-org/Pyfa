@@ -308,7 +308,7 @@ class HandledBoosterList(HandledList):
             HandledList.insert(self, idx, booster)
             self.remove(booster)
             raise HandledListActionError(booster)
-        HandledList.append(self, booster)
+        HandledList.insert(self, idx, booster)
 
     def makeRoom(self, booster):
         # if needed, remove booster that was occupying slot
