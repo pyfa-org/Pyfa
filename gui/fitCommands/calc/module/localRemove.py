@@ -9,7 +9,7 @@ from service.fit import Fit
 pyfalog = Logger(__name__)
 
 
-class CalcRemoveLocalModuleCommand(wx.Command):
+class CalcRemoveLocalModulesCommand(wx.Command):
 
     def __init__(self, fitID, positions, commit=True):
         wx.Command.__init__(self, True, 'Remove Module')
@@ -30,6 +30,9 @@ class CalcRemoveLocalModuleCommand(wx.Command):
                 self.savedModInfos[position] = ModuleInfo.fromModule(mod)
                 fit.modules.free(position)
 
+        # Need to flush because checkStates sometimes relies on module->fit
+        # relationship via .owner attribute, which is handled by SQLAlchemy
+        eos.db.flush()
         sFit.recalc(fit)
         self.savedStateCheckChanges = sFit.checkStates(fit, None)
         if self.commit:

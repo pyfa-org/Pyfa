@@ -374,7 +374,7 @@ class FittingView(d.Display):
                     if len(modules) > 0:
                         self.mainFrame.command.Submit(cmd.GuiChangeLocalModuleChargesCommand(fitID, modules, itemID))
                 else:
-                    self.mainFrame.command.Submit(cmd.GuiAddLocalModuleCommand(fitID, itemID))
+                    self.mainFrame.command.Submit(cmd.GuiAddLocalModuleCommand(fitID=fitID, itemID=itemID))
 
         event.Skip()
 
@@ -396,7 +396,14 @@ class FittingView(d.Display):
         if not isinstance(modules, list):
             modules = [modules]
 
-        self.mainFrame.command.Submit(cmd.GuiRemoveLocalModuleCommand(self.activeFitID, modules))
+        fit = Fit.getInstance().getFit(self.activeFitID)
+        positions = []
+        for position, mod in enumerate(fit.modules):
+            if mod in modules:
+                positions.append(position)
+
+        self.mainFrame.command.Submit(cmd.GuiRemoveLocalModuleCommand(
+            fitID=self.activeFitID, positions=positions))
 
     def addModule(self, x, y, itemID):
         """Add a module from the market browser (from dragging it)"""
@@ -408,7 +415,8 @@ class FittingView(d.Display):
             if not isinstance(mod, Module):  # make sure we're not adding something to a T3D Mode
                 return
 
-            self.mainFrame.command.Submit(cmd.GuiAddLocalModuleCommand(fitID, itemID, self.mods[dstRow].modPosition))
+            self.mainFrame.command.Submit(cmd.GuiAddLocalModuleCommand(
+                fitID=fitID, itemID=itemID, position=self.mods[dstRow].modPosition))
 
     def swapCargo(self, x, y, cargoItemID):
         """Swap a module from cargo to fitting window"""
@@ -420,11 +428,12 @@ class FittingView(d.Display):
             if not isinstance(mod, Module):
                 return
 
-            self.mainFrame.command.Submit(cmd.GuiCargoToLocalModuleCommand(
-                fitID=self.mainFrame.getActiveFit(),
-                cargoItemID=cargoItemID,
-                modPosition=mod.modPosition,
-                copy=wx.GetMouseState().cmdDown))
+            fitID = self.mainFrame.getActiveFit()
+            fit = Fit.getInstance().getFit(fitID)
+            if mod in fit.modules:
+                position = fit.modules.index(mod)
+                self.mainFrame.command.Submit(cmd.GuiCargoToLocalModuleCommand(
+                    fitID=fitID, cargoItemID=cargoItemID, modPosition=position, copy=wx.GetMouseState().cmdDown))
 
     def swapItems(self, x, y, srcIdx):
         """Swap two modules in fitting window"""
@@ -434,27 +443,27 @@ class FittingView(d.Display):
         dstRow, _ = self.HitTest((x, y))
 
         if dstRow != -1 and dstRow not in self.blanks:
-            mod1 = fit.modules[srcIdx]
-            mod2 = self.mods[dstRow]
-
+            try:
+                mod1 = fit.modules[srcIdx]
+                mod2 = self.mods[dstRow]
+            except IndexError:
+                return
             if not isinstance(mod2, Module):
                 return
-
             # can't swap modules to different racks
             if mod1.slot != mod2.slot:
                 return
-
-            fitID = self.mainFrame.getActiveFit()
-            if getattr(mod2, "modPosition") is not None:
-                mstate = wx.GetMouseState()
-                if mstate.cmdDown and mod2.isEmpty:
-                    self.mainFrame.command.Submit(cmd.GuiCloneLocalModuleCommand(
-                        fitID=fitID, srcPosition=srcIdx, dstPosition=mod2.modPosition))
-                elif not mstate.cmdDown:
-                    self.mainFrame.command.Submit(cmd.GuiSwapLocalModulesCommand(
-                        fitID=fitID, position1=srcIdx, position2=mod2.modPosition))
-            else:
+            if mod2 not in fit.modules:
                 pyfalog.error("Missing module position for: {0}", str(getattr(mod2, "ID", "Unknown")))
+                return
+            mod2Position = fit.modules.index(mod2)
+            mstate = wx.GetMouseState()
+            if mstate.cmdDown and mod2.isEmpty:
+                self.mainFrame.command.Submit(cmd.GuiCloneLocalModuleCommand(
+                    fitID=self.activeFitID, srcPosition=srcIdx, dstPosition=mod2Position))
+            elif not mstate.cmdDown:
+                self.mainFrame.command.Submit(cmd.GuiSwapLocalModulesCommand(
+                    fitID=self.activeFitID, position1=srcIdx, position2=mod2Position))
 
     def generateMods(self):
         """
@@ -546,35 +555,32 @@ class FittingView(d.Display):
         sel = self.GetFirstSelected()
         contexts = []
 
-        while sel != -1 and sel not in self.blanks:
-            mod = self.mods[self.GetItemData(sel)]
+        while sel != -1:
 
-            # Test if this is a mode, which is a special snowflake of a Module
-            if isinstance(mod, Mode):
-                srcContext = "fittingMode"
-
-                itemContext = "Tactical Mode"
-                fullContext = (srcContext, itemContext)
-                if srcContext not in tuple(fCtxt[0] for fCtxt in contexts):
-                    contexts.append(fullContext)
-
-                selection.append(mod)
-
-            elif not mod.isEmpty:
-                srcContext = "fittingModule"
-                itemContext = sMkt.getCategoryByItem(mod.item).name
-                fullContext = (srcContext, itemContext)
-                if srcContext not in tuple(fCtxt[0] for fCtxt in contexts):
-                    contexts.append(fullContext)
-
-                if mod.charge is not None:
-                    srcContext = "fittingCharge"
-                    itemContext = sMkt.getCategoryByItem(mod.charge).name
+            if sel not in self.blanks:
+                mod = self.mods[self.GetItemData(sel)]
+                # Test if this is a mode, which is a special snowflake of a Module
+                if isinstance(mod, Mode):
+                    srcContext = "fittingMode"
+                    itemContext = "Tactical Mode"
+                    fullContext = (srcContext, itemContext)
+                    if srcContext not in tuple(fCtxt[0] for fCtxt in contexts):
+                        contexts.append(fullContext)
+                    selection.append(mod)
+                elif not mod.isEmpty:
+                    srcContext = "fittingModule"
+                    itemContext = sMkt.getCategoryByItem(mod.item).name
                     fullContext = (srcContext, itemContext)
                     if srcContext not in tuple(fCtxt[0] for fCtxt in contexts):
                         contexts.append(fullContext)
 
-                selection.append(mod)
+                    if mod.charge is not None:
+                        srcContext = "fittingCharge"
+                        itemContext = sMkt.getCategoryByItem(mod.charge).name
+                        fullContext = (srcContext, itemContext)
+                        if srcContext not in tuple(fCtxt[0] for fCtxt in contexts):
+                            contexts.append(fullContext)
+                    selection.append(mod)
 
             sel = self.GetNextSelected(sel)
 
@@ -607,18 +613,35 @@ class FittingView(d.Display):
                 curr = self.GetNextSelected(curr)
 
             if row not in sel:
-                mods = [self.mods[self.GetItemData(row)]]
+                try:
+                    mods = [self.mods[self.GetItemData(row)]]
+                except IndexError:
+                    return
             else:
                 mods = self.getSelectedMods()
 
-            fitID = self.mainFrame.getActiveFit()
             ctrl = event.cmdDown or event.altDown or event.middleIsDown
             click = "ctrl" if ctrl is True else "right" if event.GetButton() == 3 else "left"
 
+            try:
+                mainMod = self.mods[self.GetItemData(row)]
+            except IndexError:
+                return
+
+            mainPosition = None
+            positions = []
+            fitID = self.mainFrame.getActiveFit()
+            for position, mod in enumerate(Fit.getInstance().getFit(fitID).modules):
+                if mod in mods:
+                    positions.append(position)
+                if mod is mainMod:
+                    mainPosition = position
+            if mainPosition is None:
+                return
             self.mainFrame.command.Submit(cmd.GuiChangeLocalModuleStatesCommand(
                 fitID=fitID,
-                mainPosition=self.mods[self.GetItemData(row)].modPosition,
-                positions=[mod.modPosition for mod in mods],
+                mainPosition=mainPosition,
+                positions=positions,
                 click=click))
 
             # update state tooltip

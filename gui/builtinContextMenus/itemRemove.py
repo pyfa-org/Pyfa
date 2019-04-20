@@ -33,41 +33,64 @@ class RemoveItem(ContextMenu):
         fit = sFit.getFit(fitID)
 
         if srcContext == "fittingModule":
+            positions = []
+            for position, mod in enumerate(fit.modules):
+                if mod in selection:
+                    positions.append(position)
             self.mainFrame.command.Submit(cmd.GuiRemoveLocalModuleCommand(
-                fitID=fitID, modules=[module for module in selection if module is not None]))
-        elif srcContext == "fittingCharge":
-            self.mainFrame.command.Submit(cmd.GuiChangeLocalModuleChargesCommand(
-                fitID=fitID, modules=selection, chargeItemID=None))
+                fitID=fitID, positions=positions))
         elif srcContext == "droneItem":
-            self.mainFrame.command.Submit(cmd.GuiRemoveLocalDroneCommand(
-                fitID=fitID, position=fit.drones.index(selection[0]), amount=math.inf))
+            drone = selection[0]
+            if drone in fit.drones:
+                position = fit.drones.index(drone)
+                self.mainFrame.command.Submit(cmd.GuiRemoveLocalDroneCommand(
+                    fitID=fitID, position=position, amount=math.inf))
         elif srcContext == "fighterItem":
-            self.mainFrame.command.Submit(cmd.GuiRemoveLocalFighterCommand(
-                fitID=fitID, position=fit.fighters.index(selection[0])))
+            fighter = selection[0]
+            if fighter in fit.fighters:
+                position = fit.fighters.index(fighter)
+                self.mainFrame.command.Submit(cmd.GuiRemoveLocalFighterCommand(
+                    fitID=fitID, position=position))
         elif srcContext == "implantItem":
-            self.mainFrame.command.Submit(cmd.GuiRemoveImplantCommand(
-                fitID=fitID, position=fit.implants.index(selection[0])))
+            implant = selection[0]
+            if implant in fit.implants:
+                position = fit.implants.index(implant)
+                self.mainFrame.command.Submit(cmd.GuiRemoveImplantCommand(
+                    fitID=fitID, position=position))
         elif srcContext == "boosterItem":
-            self.mainFrame.command.Submit(cmd.GuiRemoveBoosterCommand(
-                fitID=fitID, position=fit.boosters.index(selection[0])))
+            booster = selection[0]
+            if booster in fit.boosters:
+                position = fit.boosters.index(booster)
+                self.mainFrame.command.Submit(cmd.GuiRemoveBoosterCommand(
+                    fitID=fitID, position=position))
         elif srcContext == "cargoItem":
+            cargo = selection[0]
             self.mainFrame.command.Submit(cmd.GuiRemoveCargoCommand(
-                fitID=fitID, itemID=selection[0].itemID))
+                fitID=fitID, itemID=cargo.itemID))
         elif srcContext == "projectedFit":
+            projectedFit = selection[0]
             self.mainFrame.command.Submit(cmd.GuiRemoveProjectedFitCommand(
-                fitID=fitID, projectedFitID=selection[0].ID))
+                fitID=fitID, projectedFitID=projectedFit.ID))
         elif srcContext == "projectedModule":
-            self.mainFrame.command.Submit(cmd.GuiRemoveProjectedModuleCommand(
-                fitID=fitID, position=fit.projectedModules.index(selection[0])))
+            mod = selection[0]
+            if mod in fit.projectedModules:
+                position = fit.projectedModules.index(mod)
+                self.mainFrame.command.Submit(cmd.GuiRemoveProjectedModuleCommand(
+                    fitID=fitID, position=position))
         elif srcContext == "projectedDrone":
+            drone = selection[0]
             self.mainFrame.command.Submit(cmd.GuiRemoveProjectedDroneCommand(
-                fitID=fitID, itemID=selection[0].itemID, amount=math.inf))
+                fitID=fitID, itemID=drone.itemID, amount=math.inf))
         elif srcContext == "projectedFighter":
-            self.mainFrame.command.Submit(cmd.GuiRemoveProjectedFighterCommand(
-                fitID=fitID, position=fit.projectedFighters.index(selection[0])))
+            fighter = selection[0]
+            if fighter in fit.projectedFighters:
+                position = fit.projectedFighters.index(fighter)
+                self.mainFrame.command.Submit(cmd.GuiRemoveProjectedFighterCommand(
+                    fitID=fitID, position=position))
         elif srcContext == "commandFit":
+            commandFit = selection[0]
             self.mainFrame.command.Submit(cmd.GuiRemoveCommandFitCommand(
-                fitID=fitID, commandFitID=selection[0].ID))
+                fitID=fitID, commandFitID=commandFit.ID))
 
 
 RemoveItem.register()

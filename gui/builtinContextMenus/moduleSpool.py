@@ -7,6 +7,7 @@ import gui.mainFrame
 from eos.utils.spoolSupport import SpoolType, SpoolOptions
 from gui.contextMenu import ContextMenu
 from service.settings import ContextMenuSettings
+from service.fit import Fit
 
 
 class ChangeModuleSpool(ContextMenu):
@@ -75,18 +76,18 @@ class ChangeModuleSpool(ContextMenu):
             spoolAmount = self.cycleMap[event.Id]
         else:
             return
+        fitID = self.mainFrame.getActiveFit()
+        fit = Fit.getInstance().getFit(fitID)
         if self.context == 'fittingModule':
-            self.mainFrame.command.Submit(cmd.GuiChangeLocalModuleSpoolCommand(
-                fitID=self.mainFrame.getActiveFit(),
-                position=self.mod.modPosition,
-                spoolType=spoolType,
-                spoolAmount=spoolAmount))
+            if self.mod in fit.modules:
+                position = fit.modules.index(self.mod)
+                self.mainFrame.command.Submit(cmd.GuiChangeLocalModuleSpoolCommand(
+                    fitID=fitID, position=position, spoolType=spoolType, spoolAmount=spoolAmount))
         elif self.context == 'projectedModule':
-            self.mainFrame.command.Submit(cmd.GuiChangeProjectedModuleSpoolCommand(
-                fitID=self.mainFrame.getActiveFit(),
-                position=self.mod.modPosition,
-                spoolType=spoolType,
-                spoolAmount=spoolAmount))
+            if self.mod in fit.projectedModules:
+                position = fit.projectedModules.index(self.mod)
+                self.mainFrame.command.Submit(cmd.GuiChangeProjectedModuleSpoolCommand(
+                    fitID=fitID, position=position, spoolType=spoolType, spoolAmount=spoolAmount))
 
 
 ChangeModuleSpool.register()

@@ -22,7 +22,6 @@ class DroneSplitStack(ContextMenu):
         return "Split {0} Stack".format(itmContext)
 
     def activate(self, fullContext, selection, i):
-        srcContext = fullContext[0]
         drone = selection[0]
         dlg = DroneStackSplit(self.mainFrame, drone.amount)
 
@@ -35,10 +34,10 @@ class DroneSplitStack(ContextMenu):
             fit = Fit.getInstance().getFit(fitID)
             cleanInput = re.sub(r'[^0-9.]', '', dlg.input.GetLineText(0).strip())
 
-            self.mainFrame.command.Submit(cmd.GuiSplitLocalDroneStackCommand(
-                fitID=fitID,
-                position=fit.drones.index(drone),
-                amount=int(cleanInput)))
+            if drone in fit.drones:
+                position = fit.drones.index(drone)
+                self.mainFrame.command.Submit(cmd.GuiSplitLocalDroneStackCommand(
+                    fitID=fitID, position=position, amount=int(cleanInput)))
 
 
 DroneSplitStack.register()

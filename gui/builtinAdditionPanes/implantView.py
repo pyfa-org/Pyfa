@@ -132,16 +132,21 @@ class ImplantDisplay(d.Display):
         """
 
         if data[0] == "market":
-            if self.mainFrame.command.Submit(cmd.GuiAddImplantCommand(self.mainFrame.getActiveFit(), int(data[1]))):
+            if self.mainFrame.command.Submit(cmd.GuiAddImplantCommand(
+                    fitID=self.mainFrame.getActiveFit(), itemID=int(data[1]))):
                 self.mainFrame.additionsPane.select("Implants")
 
     def kbEvent(self, event):
+        event.Skip()
         keycode = event.GetKeyCode()
         if keycode in (wx.WXK_DELETE, wx.WXK_NUMPAD_DELETE):
             row = self.GetFirstSelected()
             if row != -1:
-                self.removeImplant(self.implants[self.GetItemData(row)])
-        event.Skip()
+                try:
+                    implant = self.implants[self.GetItemData(row)]
+                except IndexError:
+                    return
+                self.removeImplant(implant)
 
     def fitChanged(self, event):
         sFit = Fit.getInstance()
@@ -187,7 +192,8 @@ class ImplantDisplay(d.Display):
             event.Skip()
             return
 
-        self.mainFrame.command.Submit(cmd.GuiAddImplantCommand(fitID, event.itemID))
+        self.mainFrame.command.Submit(cmd.GuiAddImplantCommand(
+            fitID=fitID, itemID=event.itemID))
         # Select in any case - as we might've added implant which has been there already and command failed
         self.mainFrame.additionsPane.select('Implants')
 
@@ -202,14 +208,19 @@ class ImplantDisplay(d.Display):
         if row != -1:
             col = self.getColumn(event.Position)
             if col != self.getColIndex(State):
-                self.removeImplant(self.implants[self.GetItemData(row)])
+                try:
+                    implant = self.implants[self.GetItemData(row)]
+                except IndexError:
+                    return
+                self.removeImplant(implant)
 
     def removeImplant(self, implant):
         fitID = self.mainFrame.getActiveFit()
         sFit = Fit.getInstance()
         fit = sFit.getFit(fitID)
-        if fit.implantLocation == ImplantLocation.FIT:
-            self.mainFrame.command.Submit(cmd.GuiRemoveImplantCommand(fitID, self.original.index(implant)))
+        if fit.implantLocation == ImplantLocation.FIT and implant in self.original:
+            position = self.original.index(implant)
+            self.mainFrame.command.Submit(cmd.GuiRemoveImplantCommand(fitID=fitID, position=position))
 
     def click(self, event):
         event.Skip()
@@ -223,8 +234,14 @@ class ImplantDisplay(d.Display):
             col = self.getColumn(event.Position)
             if col == self.getColIndex(State):
                 fitID = self.mainFrame.getActiveFit()
-                implant = self.implants[self.GetItemData(row)]
-                self.mainFrame.command.Submit(cmd.GuiToggleImplantStateCommand(fitID=fitID, position=self.original.index(implant)))
+                try:
+                    implant = self.implants[self.GetItemData(row)]
+                except IndexError:
+                    return
+                if implant in self.original:
+                    position = self.original.index(implant)
+                    self.mainFrame.command.Submit(cmd.GuiToggleImplantStateCommand(
+                        fitID=fitID, position=position))
 
     def spawnMenu(self, event):
         sel = self.GetFirstSelected()
@@ -237,7 +254,10 @@ class ImplantDisplay(d.Display):
             return
 
         if sel != -1:
-            implant = self.implants[sel]
+            try:
+                implant = self.implants[sel]
+            except IndexError:
+                return
             sMkt = Market.getInstance()
             sourceContext = "implantItem" if fit.implantSource == ImplantLocation.FIT else "implantItemChar"
             itemContext = sMkt.getCategoryByItem(implant.item).name

@@ -30,8 +30,10 @@ class CalcRemoveCommandCommand(wx.Command):
         if commandInfo is None:
             pyfalog.warning('Fit command info is not available')
             return False
-
         self.savedState = commandInfo.active
+        if commandFit.ID not in fit.commandFitDict:
+            pyfalog.warning('Unable to find commanding fit in command dict')
+            return False
         del fit.commandFitDict[commandFit.ID]
         eos.db.commit()
         return True

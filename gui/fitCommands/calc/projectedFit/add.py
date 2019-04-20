@@ -10,10 +10,11 @@ pyfalog = Logger(__name__)
 
 class CalcAddProjectedFitCommand(wx.Command):
 
-    def __init__(self, fitID, projectedFitID, state=None):
+    def __init__(self, fitID, projectedFitID, amount=None, state=None):
         wx.Command.__init__(self, True, 'Add Projected Fit')
         self.fitID = fitID
         self.projectedFitID = projectedFitID
+        self.amount = amount
         self.state = state
 
     def Do(self):
@@ -31,18 +32,24 @@ class CalcAddProjectedFitCommand(wx.Command):
             pyfalog.debug('Projected fit had been applied already')
             return False
 
+        if projectedFit.ID in fit.projectedFitDict:
+            pyfalog.debug('Projected fit is in projected dict already')
+            return False
         fit.projectedFitDict[projectedFit.ID] = projectedFit
         # This bit is required, see issue #83
         eos.db.saveddata_session.flush()
         eos.db.saveddata_session.refresh(projectedFit)
 
-        if self.state is not None:
+        if self.amount is not None or self.state is not None:
             projectionInfo = projectedFit.getProjectionInfo(self.fitID)
             if projectionInfo is None:
                 pyfalog.warning('Fit projection info is not available')
                 self.Undo()
                 return False
-            projectionInfo.active = self.state
+            if self.amount is not None:
+                projectionInfo.amount = self.amount
+            if self.state is not None:
+                projectionInfo.active = self.state
 
         eos.db.commit()
         return True

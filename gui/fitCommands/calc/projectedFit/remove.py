@@ -15,6 +15,7 @@ class CalcRemoveProjectedFitCommand(wx.Command):
         self.fitID = fitID
         self.projectedFitID = projectedFitID
         self.savedState = None
+        self.savedAmount = None
 
     def Do(self):
         pyfalog.debug('Doing removal of projected fit {} for fit {}'.format(self.projectedFitID, self.fitID))
@@ -32,6 +33,10 @@ class CalcRemoveProjectedFitCommand(wx.Command):
             return False
 
         self.savedState = projectionInfo.active
+        self.savedAmount = projectionInfo.amount
+        if projectedFit.ID not in fit.projectedFitDict:
+            pyfalog.warning('Unable to find projected fit in projected dict')
+            return False
         del fit.projectedFitDict[projectedFit.ID]
         eos.db.commit()
         return True
@@ -39,5 +44,9 @@ class CalcRemoveProjectedFitCommand(wx.Command):
     def Undo(self):
         pyfalog.debug('Undoing removal of projected fit {} for fit {}'.format(self.projectedFitID, self.fitID))
         from .add import CalcAddProjectedFitCommand
-        cmd = CalcAddProjectedFitCommand(fitID=self.fitID, projectedFitID=self.projectedFitID, state=self.savedState)
+        cmd = CalcAddProjectedFitCommand(
+            fitID=self.fitID,
+            projectedFitID=self.projectedFitID,
+            amount=self.savedAmount,
+            state=self.savedState)
         return cmd.Do()

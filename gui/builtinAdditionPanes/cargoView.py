@@ -78,16 +78,20 @@ class CargoView(d.Display):
         if data[0] == "fitting":
             self.swapModule(x, y, int(data[1]))
         elif data[0] == "market":
-            fit = self.mainFrame.getActiveFit()
-            if fit:
-                self.mainFrame.command.Submit(cmd.GuiAddCargoCommand(fit, int(data[1]), 1))
+            fitID = self.mainFrame.getActiveFit()
+            if fitID:
+                self.mainFrame.command.Submit(cmd.GuiAddCargoCommand(
+                    fitID=fitID, itemID=int(data[1]), amount=1))
 
     def startDrag(self, event):
         row = event.GetIndex()
 
         if row != -1:
             data = wx.TextDataObject()
-            dataStr = "cargo:{}".format(self.cargo[row].itemID)
+            try:
+                dataStr = "cargo:{}".format(self.cargo[row].itemID)
+            except IndexError:
+                return
             data.SetText(dataStr)
 
             dropSource = wx.DropSource(self)
@@ -101,7 +105,10 @@ class CargoView(d.Display):
             row = self.GetFirstSelected()
             if row != -1:
                 fitID = self.mainFrame.getActiveFit()
-                cargo = self.cargo[self.GetItemData(row)]
+                try:
+                    cargo = self.cargo[self.GetItemData(row)]
+                except IndexError:
+                    return
                 self.mainFrame.command.Submit(cmd.GuiRemoveCargoCommand(fitID=fitID, itemID=cargo.itemID))
         event.Skip()
 
@@ -111,10 +118,18 @@ class CargoView(d.Display):
         fit = sFit.getFit(self.mainFrame.getActiveFit())
         dstRow, _ = self.HitTest((x, y))
 
+        if dstRow > -1:
+            try:
+                dstCargoItemID = getattr(self.cargo[dstRow], 'itemID', None)
+            except IndexError:
+                dstCargoItemID = None
+        else:
+            dstCargoItemID = None
+
         self.mainFrame.command.Submit(cmd.GuiLocalModuleToCargoCommand(
             fitID=self.mainFrame.getActiveFit(),
-            modPosition=fit.modules[modIdx].modPosition,
-            cargoItemID=self.cargo[dstRow].itemID if dstRow > -1 else None,
+            modPosition=modIdx,
+            cargoItemID=dstCargoItemID,
             copy=wx.GetMouseState().cmdDown))
 
     def fitChanged(self, event):
@@ -155,13 +170,19 @@ class CargoView(d.Display):
             col = self.getColumn(event.Position)
             if col != self.getColIndex(State):
                 fitID = self.mainFrame.getActiveFit()
-                cargo = self.cargo[self.GetItemData(row)]
-                self.mainFrame.command.Submit(cmd.GuiRemoveCargoCommand(fitID, cargo.itemID))
+                try:
+                    cargo = self.cargo[self.GetItemData(row)]
+                except IndexError:
+                    return
+                self.mainFrame.command.Submit(cmd.GuiRemoveCargoCommand(fitID=fitID, itemID=cargo.itemID))
 
     def spawnMenu(self, event):
         sel = self.GetFirstSelected()
         if sel != -1:
-            cargo = self.cargo[sel]
+            try:
+                cargo = self.cargo[sel]
+            except IndexError:
+                return
             sMkt = Market.getInstance()
             sourceContext = "cargoItem"
             itemContext = sMkt.getCategoryByItem(cargo.item).name

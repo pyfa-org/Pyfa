@@ -2,26 +2,32 @@ import wx
 
 import gui.mainFrame
 from gui import globalEvents as GE
-from gui.fitCommands.calc.module.localRemove import CalcRemoveLocalModuleCommand
+from gui.fitCommands.calc.module.localRemove import CalcRemoveLocalModulesCommand
 from gui.fitCommands.helpers import InternalCommandHistory, ModuleInfo
 from service.fit import Fit
 
 
 class GuiRemoveLocalModuleCommand(wx.Command):
 
-    def __init__(self, fitID, modules):
+    def __init__(self, fitID, positions):
         wx.Command.__init__(self, True, 'Remove Local Module')
         self.internalHistory = InternalCommandHistory()
         self.fitID = fitID
-        self.modCache = {mod.modPosition: ModuleInfo.fromModule(mod) for mod in modules if not mod.isEmpty}
+        self.positions = positions
+        self.savedTypeIDs = None
 
     def Do(self):
-        cmd = CalcRemoveLocalModuleCommand(fitID=self.fitID, positions=[pos for pos in self.modCache])
+        sFit = Fit.getInstance()
+        fit = sFit.getFit(self.fitID)
+        self.savedTypeIDs = {m.itemID for m in fit.modules if not m.isEmpty}
+        cmd = CalcRemoveLocalModulesCommand(fitID=self.fitID, positions=self.positions)
         success = self.internalHistory.submit(cmd)
-        Fit.getInstance().recalc(self.fitID)
+        sFit.recalc(self.fitID)
         wx.PostEvent(
             gui.mainFrame.MainFrame.getInstance(),
-            GE.FitChanged(fitID=self.fitID, action='moddel', typeID={mod.itemID for mod in self.modCache.values()}) if success else GE.FitChanged(fitID=self.fitID))
+            GE.FitChanged(fitID=self.fitID, action='moddel', typeID=self.savedTypeIDs)
+            if success and self.savedTypeIDs else
+            GE.FitChanged(fitID=self.fitID))
         return success
 
     def Undo(self):
@@ -29,5 +35,7 @@ class GuiRemoveLocalModuleCommand(wx.Command):
         Fit.getInstance().recalc(self.fitID)
         wx.PostEvent(
             gui.mainFrame.MainFrame.getInstance(),
-            GE.FitChanged(fitID=self.fitID, action='modadd', typeID={mod.itemID for mod in self.modCache.values()}) if success else GE.FitChanged(fitID=self.fitID))
+            GE.FitChanged(fitID=self.fitID, action='modadd', typeID=self.savedTypeIDs)
+            if success and self.savedTypeIDs else
+            GE.FitChanged(fitID=self.fitID))
         return success

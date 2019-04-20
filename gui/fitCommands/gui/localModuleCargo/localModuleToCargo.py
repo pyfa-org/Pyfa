@@ -5,7 +5,7 @@ import gui.mainFrame
 from gui import globalEvents as GE
 from gui.fitCommands.calc.cargo.add import CalcAddCargoCommand
 from gui.fitCommands.calc.cargo.remove import CalcRemoveCargoCommand
-from gui.fitCommands.calc.module.localRemove import CalcRemoveLocalModuleCommand
+from gui.fitCommands.calc.module.localRemove import CalcRemoveLocalModulesCommand
 from gui.fitCommands.calc.module.localReplace import CalcReplaceLocalModuleCommand
 from gui.fitCommands.helpers import CargoInfo, InternalCommandHistory, ModuleInfo
 from service.fit import Fit
@@ -110,7 +110,7 @@ class GuiLocalModuleToCargoCommand(wx.Command):
                     cargoInfo=CargoInfo(itemID=srcMod.chargeID, amount=srcMod.numCharges),
                     commit=False))
             if not self.copy:
-                commands.append(CalcRemoveLocalModuleCommand(
+                commands.append(CalcRemoveLocalModulesCommand(
                     fitID=self.fitID,
                     positions=[self.srcModPosition],
                     commit=False))

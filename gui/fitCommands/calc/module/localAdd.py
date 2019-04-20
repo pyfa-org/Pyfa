@@ -54,6 +54,9 @@ class CalcAddLocalModuleCommand(wx.Command):
                 eos.db.commit()
             return False
         self.savedPosition = fit.modules.index(newMod)
+        # Need to flush because checkStates sometimes relies on module->fit
+        # relationship via .owner attribute, which is handled by SQLAlchemy
+        eos.db.flush()
         sFit.recalc(fit)
         self.savedStateCheckChanges = sFit.checkStates(fit, newMod)
         if self.commit:
@@ -67,8 +70,8 @@ class CalcAddLocalModuleCommand(wx.Command):
             return self.subsystemCmd.Undo()
         if self.savedPosition is None:
             return False
-        from .localRemove import CalcRemoveLocalModuleCommand
-        cmd = CalcRemoveLocalModuleCommand(fitID=self.fitID, positions=[self.savedPosition], commit=self.commit)
+        from .localRemove import CalcRemoveLocalModulesCommand
+        cmd = CalcRemoveLocalModulesCommand(fitID=self.fitID, positions=[self.savedPosition], commit=self.commit)
         if not cmd.Do():
             return False
         restoreCheckedStates(Fit.getInstance().getFit(self.fitID), self.savedStateCheckChanges)

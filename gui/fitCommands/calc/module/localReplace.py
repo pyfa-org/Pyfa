@@ -24,7 +24,7 @@ class CalcReplaceLocalModuleCommand(wx.Command):
         self.unloadedCharge = None
 
     def Do(self):
-        pyfalog.debug('Doing replacement of local module at position {} to {} on fit {}'.format(self.newModInfo, self.position, self.fitID))
+        pyfalog.debug('Doing replacement of local module at position {} to {} on fit {}'.format(self.position, self.newModInfo, self.fitID))
         self.unloadedCharge = False
         sFit = Fit.getInstance()
         fit = sFit.getFit(self.fitID)
@@ -56,6 +56,9 @@ class CalcReplaceLocalModuleCommand(wx.Command):
             pyfalog.warning('Failed to replace in list')
             self.Undo()
             return False
+        # Need to flush because checkStates sometimes relies on module->fit
+        # relationship via .owner attribute, which is handled by SQLAlchemy
+        eos.db.flush()
         sFit.recalc(fit)
         self.savedStateCheckChanges = sFit.checkStates(fit, newMod)
         if self.commit:
@@ -63,13 +66,13 @@ class CalcReplaceLocalModuleCommand(wx.Command):
         return True
 
     def Undo(self):
-        pyfalog.debug('Undoing replacement of local module at position {} to {} on fit {}'.format(self.newModInfo, self.position, self.fitID))
+        pyfalog.debug('Undoing replacement of local module at position {} to {} on fit {}'.format(self.position, self.newModInfo, self.fitID))
         sFit = Fit.getInstance()
         fit = sFit.getFit(self.fitID)
         # Remove if there was no module
         if self.oldModInfo is None:
-            from .localRemove import CalcRemoveLocalModuleCommand
-            cmd = CalcRemoveLocalModuleCommand(fitID=self.fitID, positions=[self.position], commit=self.commit)
+            from .localRemove import CalcRemoveLocalModulesCommand
+            cmd = CalcRemoveLocalModulesCommand(fitID=self.fitID, positions=[self.position], commit=self.commit)
             if not cmd.Do():
                 return False
             sFit.recalc(fit)

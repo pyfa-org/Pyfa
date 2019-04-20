@@ -31,7 +31,10 @@ class ChangeItemAmount(ContextMenu):
         fitID = mainFrame.getActiveFit()
         srcContext = fullContext[0]
         if isinstance(thing, es_Fit):
-            value = thing.getProjectionInfo(fitID).amount
+            try:
+                value = thing.getProjectionInfo(fitID).amount
+            except AttributeError:
+                return
         elif isinstance(thing, es_Fighter):
             value = thing.amountActive
         else:
@@ -48,19 +51,31 @@ class ChangeItemAmount(ContextMenu):
             cleanInput = int(float(re.sub(r'[^0-9.]', '', dlg.input.GetLineText(0).strip())))
 
             if isinstance(thing, es_Cargo):
-                self.mainFrame.command.Submit(cmd.GuiChangeCargoAmountCommand(fitID, thing.itemID, cleanInput))
+                self.mainFrame.command.Submit(cmd.GuiChangeCargoAmountCommand(
+                    fitID=fitID, itemID=thing.itemID, amount=cleanInput))
             elif isinstance(thing, Drone):
                 if srcContext == "projectedDrone":
-                    self.mainFrame.command.Submit(cmd.GuiChangeProjectedDroneAmountCommand(fitID, thing.itemID, cleanInput))
+                    self.mainFrame.command.Submit(cmd.GuiChangeProjectedDroneAmountCommand(
+                        fitID=fitID, itemID=thing.itemID, amount=cleanInput))
                 else:
-                    self.mainFrame.command.Submit(cmd.GuiChangeLocalDroneAmountCommand(fitID, fit.drones.index(thing), cleanInput))
+                    if thing in fit.drones:
+                        position = fit.drones.index(thing)
+                        self.mainFrame.command.Submit(cmd.GuiChangeLocalDroneAmountCommand(
+                            fitID=fitID, position=position, amount=cleanInput))
             elif isinstance(thing, es_Fit):
-                self.mainFrame.command.Submit(cmd.GuiChangeProjectedFitAmountCommand(fitID, thing.ID, cleanInput))
+                self.mainFrame.command.Submit(cmd.GuiChangeProjectedFitAmountCommand(
+                    fitID=fitID, projectedFitID=thing.ID, amount=cleanInput))
             elif isinstance(thing, es_Fighter):
                 if srcContext == "projectedFighter":
-                    self.mainFrame.command.Submit(cmd.GuiChangeProjectedFighterAmountCommand(fitID, fit.projectedFighters.index(thing), cleanInput))
+                    if thing in fit.projectedFighters:
+                        position = fit.projectedFighters.index(thing)
+                        self.mainFrame.command.Submit(cmd.GuiChangeProjectedFighterAmountCommand(
+                            fitID=fitID, position=position, amount=cleanInput))
                 else:
-                    self.mainFrame.command.Submit(cmd.GuiChangeLocalFighterAmountCommand(fitID, fit.fighters.index(thing), cleanInput))
+                    if thing in fit.fighters:
+                        position = fit.fighters.index(thing)
+                        self.mainFrame.command.Submit(cmd.GuiChangeLocalFighterAmountCommand(
+                            fitID=fitID, position=position, amount=cleanInput))
 
 
 ChangeItemAmount.register()

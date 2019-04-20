@@ -9,11 +9,11 @@ from service.fit import Fit
 
 class GuiChangeProjectedModuleChargesCommand(wx.Command):
 
-    def __init__(self, fitID, modules, chargeItemID):
+    def __init__(self, fitID, positions, chargeItemID):
         wx.Command.__init__(self, True, 'Change Projected Module Charges')
         self.internalHistory = InternalCommandHistory()
         self.fitID = fitID
-        self.positions = [mod.modPosition for mod in modules]
+        self.positions = positions
         self.chargeItemID = chargeItemID
 
     def Do(self):

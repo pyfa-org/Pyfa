@@ -138,7 +138,10 @@ class ChangeItemToVariation(ContextMenu):
         fitID = self.mainFrame.getActiveFit()
         fit = Fit.getInstance().getFit(fitID)
         if context == 'fittingModule':
-            positions = [mod.modPosition for mod in self.selection]
+            positions = []
+            for position, mod in enumerate(fit.modules):
+                if mod in self.selection:
+                    positions.append(position)
             self.mainFrame.command.Submit(cmd.GuiChangeLocalModuleMetasCommand(
                 fitID=fitID, positions=positions, newItemID=item.ID))
         elif context == 'droneItem':

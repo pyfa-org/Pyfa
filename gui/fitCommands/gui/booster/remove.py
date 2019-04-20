@@ -8,6 +8,7 @@ from service.fit import Fit
 
 
 class GuiRemoveBoosterCommand(wx.Command):
+
     def __init__(self, fitID, position):
         wx.Command.__init__(self, True, 'Remove Booster')
         self.internalHistory = InternalCommandHistory()

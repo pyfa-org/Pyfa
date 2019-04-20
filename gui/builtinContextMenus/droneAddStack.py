@@ -20,7 +20,6 @@ class DroneAddStack(ContextMenu):
             return False
 
         item = selection[0]
-        print(item.category.name)
         if item.category.name != 'Drone':
             return False
 

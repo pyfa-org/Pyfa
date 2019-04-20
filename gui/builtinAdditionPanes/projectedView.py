@@ -128,14 +128,20 @@ class ProjectedView(d.Display):
                     self.mainFrame.command.Submit(cmd.GuiRemoveProjectedFitCommand(
                         fitID=fitID, projectedFitID=thing.ID))
                 elif isinstance(thing, es_Module):
-                    self.mainFrame.command.Submit(cmd.GuiRemoveProjectedModuleCommand(
-                        fitID=fitID, position=Fit.getInstance().getFit(fitID).projectedModules.index(thing)))
+                    fit = Fit.getInstance().getFit(fitID)
+                    if thing in fit.projectedModules:
+                        position = fit.projectedModules.index(thing)
+                        self.mainFrame.command.Submit(cmd.GuiRemoveProjectedModuleCommand(
+                            fitID=fitID, position=position))
                 elif isinstance(thing, es_Drone):
                     self.mainFrame.command.Submit(cmd.GuiRemoveProjectedDroneCommand(
                         fitID=fitID, itemID=thing.itemID, amount=math.inf))
                 elif isinstance(thing, es_Fighter):
-                    self.mainFrame.command.Submit(cmd.GuiRemoveProjectedFighterCommand(
-                        fitID=fitID, position=Fit.getInstance().getFit(fitID).projectedFighters.index(thing)))
+                    fit = Fit.getInstance().getFit(fitID)
+                    if thing in fit.projectedFighters:
+                        position = fit.projectedFighters.index(thing)
+                        self.mainFrame.command.Submit(cmd.GuiRemoveProjectedFighterCommand(
+                            fitID=fitID, position=position))
 
     def handleDrag(self, type, fitID):
         # Those are drags coming from pyfa sources, NOT builtin wx drags
@@ -261,16 +267,20 @@ class ProjectedView(d.Display):
                     self.mainFrame.command.Submit(cmd.GuiToggleProjectedFitStateCommand(
                         fitID=fitID, projectedFitID=thing.ID))
                 elif isinstance(thing, es_Module):
-                    self.mainFrame.command.Submit(cmd.GuiChangeProjectedModuleStateCommand(
-                        fitID=fitID,
-                        position=Fit.getInstance().getFit(fitID).projectedModules.index(thing),
-                        click='right' if button == 3 else 'left'))
+                    fit = Fit.getInstance().getFit(fitID)
+                    if thing in fit.projectedModules:
+                        position = fit.projectedModules.index(thing)
+                        self.mainFrame.command.Submit(cmd.GuiChangeProjectedModuleStateCommand(
+                            fitID=fitID, position=position, click='right' if button == 3 else 'left'))
                 elif isinstance(thing, es_Drone) and button != 3:
                     self.mainFrame.command.Submit(cmd.GuiToggleProjectedDroneStateCommand(
                         fitID=fitID, itemID=thing.itemID))
                 elif isinstance(thing, es_Fighter) and button != 3:
-                    self.mainFrame.command.Submit(cmd.GuiToggleProjectedFighterStateCommand(
-                        fitID=fitID, position=Fit.getInstance().getFit(fitID).projectedFighters.index(thing)))
+                    fit = Fit.getInstance().getFit(fitID)
+                    if thing in fit.projectedFighters:
+                        position = fit.projectedFighters.index(thing)
+                        self.mainFrame.command.Submit(cmd.GuiToggleProjectedFighterStateCommand(
+                            fitID=fitID, position=position))
 
     def spawnMenu(self, event):
         fitID = self.mainFrame.getActiveFit()
@@ -328,8 +338,11 @@ class ProjectedView(d.Display):
                     self.mainFrame.command.Submit(cmd.GuiRemoveProjectedFitCommand(
                         fitID=fitID, projectedFitID=thing.ID))
                 elif isinstance(thing, es_Module):
-                    self.mainFrame.command.Submit(cmd.GuiRemoveProjectedModuleCommand(
-                        fitID=fitID, position=Fit.getInstance().getFit(fitID).projectedModules.index(thing)))
+                    fit = Fit.getInstance().getFit(fitID)
+                    if thing in fit.projectedModules:
+                        position = fit.projectedModules.index(thing)
+                        self.mainFrame.command.Submit(cmd.GuiRemoveProjectedModuleCommand(
+                            fitID=fitID, position=position))
                 elif isinstance(thing, es_Drone):
                     mstate = wx.GetMouseState()
                     self.mainFrame.command.Submit(cmd.GuiRemoveProjectedDroneCommand(
@@ -337,5 +350,8 @@ class ProjectedView(d.Display):
                         itemID=thing.itemID,
                         amount=math.inf if mstate.cmdDown or mstate.altDown else 1))
                 elif isinstance(thing, es_Fighter):
-                    self.mainFrame.command.Submit(cmd.GuiRemoveProjectedFighterCommand(
-                        fitID=fitID, position=Fit.getInstance().getFit(fitID).projectedFighters.index(thing)))
+                    fit = Fit.getInstance().getFit(fitID)
+                    if thing in fit.projectedFighters:
+                        position = fit.projectedFighters.index(thing)
+                        self.mainFrame.command.Submit(cmd.GuiRemoveProjectedFighterCommand(
+                            fitID=fitID, position=position))

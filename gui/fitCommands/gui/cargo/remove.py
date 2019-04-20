@@ -17,7 +17,7 @@ class GuiRemoveCargoCommand(wx.Command):
         self.itemID = itemID
 
     def Do(self):
-        cmd =CalcRemoveCargoCommand(fitID=self.fitID, cargoInfo=CargoInfo(itemID=self.itemID, amount=math.inf))
+        cmd = CalcRemoveCargoCommand(fitID=self.fitID, cargoInfo=CargoInfo(itemID=self.itemID, amount=math.inf))
         success = self.internalHistory.submit(cmd)
         wx.PostEvent(gui.mainFrame.MainFrame.getInstance(), GE.FitChanged(fitID=self.fitID))
         return success

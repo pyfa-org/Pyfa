@@ -30,7 +30,9 @@ class CalcAddCommandCommand(wx.Command):
         if commandFit in fit.commandFits:
             pyfalog.debug('Command fit had been applied already')
             return False
-
+        if commandFit.ID in fit.commandFitDict:
+            pyfalog.debug('Commanding fit is in command dict already')
+            return False
         fit.commandFitDict[commandFit.ID] = commandFit
         # This bit is required, see issue #83
         eos.db.saveddata_session.flush()
