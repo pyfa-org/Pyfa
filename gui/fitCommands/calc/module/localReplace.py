@@ -68,8 +68,8 @@ class CalcReplaceLocalModuleCommand(wx.Command):
         fit = sFit.getFit(self.fitID)
         # Remove if there was no module
         if self.oldModInfo is None:
-            from .localRemove import CalcRemoveLocalModuleCommand
-            cmd = CalcRemoveLocalModuleCommand(fitID=self.fitID, positions=[self.position], commit=self.commit)
+            from .localRemove import CalcRemoveLocalModulesCommand
+            cmd = CalcRemoveLocalModulesCommand(fitID=self.fitID, positions=[self.position], commit=self.commit)
             if not cmd.Do():
                 return False
             sFit.recalc(fit)

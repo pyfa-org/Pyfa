@@ -5,6 +5,7 @@ import gui.mainFrame
 from gui.contextMenu import ContextMenu
 from gui.fitCommands import GuiConvertMutatedLocalModuleCommand, GuiRevertMutatedLocalModuleCommand
 from service.settings import ContextMenuSettings
+from service.fit import Fit
 
 
 class ChangeModuleMutation(ContextMenu):
@@ -55,17 +56,21 @@ class ChangeModuleMutation(ContextMenu):
 
     def handleMenu(self, event):
         mutaplasmid, mod = self.eventIDs[event.Id]
-
-        self.mainFrame.command.Submit(GuiConvertMutatedLocalModuleCommand(
-            fitID=self.mainFrame.getActiveFit(),
-            position=mod.modPosition,
-            mutaplasmid=mutaplasmid))
+        fitID = self.mainFrame.getActiveFit()
+        fit = Fit.getInstance().getFit(fitID)
+        if mod in fit.modules:
+            position = fit.modules.index(mod)
+            self.mainFrame.command.Submit(GuiConvertMutatedLocalModuleCommand(
+                fitID=fitID, position=position, mutaplasmid=mutaplasmid))
 
     def activate(self, fullContext, selection, i):
         mod = selection[0]
-        self.mainFrame.command.Submit(GuiRevertMutatedLocalModuleCommand(
-            fitID=self.mainFrame.getActiveFit(),
-            position=mod.modPosition))
+        fitID = self.mainFrame.getActiveFit()
+        fit = Fit.getInstance().getFit(fitID)
+        if mod in fit.modules:
+            position = fit.modules.index(mod)
+            self.mainFrame.command.Submit(GuiRevertMutatedLocalModuleCommand(
+                fitID=fitID, position=position))
 
     def getBitmap(self, context, selection):
         return None

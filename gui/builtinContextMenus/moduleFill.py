@@ -29,11 +29,11 @@ class FillWithModule(ContextMenu):
 
         if srcContext == "fittingModule":
             fit = Fit.getInstance().getFit(fitID)
-            self.mainFrame.command.Submit(cmd.GuiFillWithLocalModulesCommand(
-                fitID=fitID,
-                position=fit.modules.index(selection[0])))
-            return  # the command takes care of the PostEvent
-        wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fitID))
+            mod = selection[0]
+            if mod in fit.modules:
+                position = fit.modules.index(mod)
+                self.mainFrame.command.Submit(cmd.GuiFillWithLocalModulesCommand(
+                    fitID=fitID, position=position))
 
 
 FillWithModule.register()

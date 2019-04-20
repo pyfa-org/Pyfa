@@ -67,8 +67,8 @@ class CalcAddLocalModuleCommand(wx.Command):
             return self.subsystemCmd.Undo()
         if self.savedPosition is None:
             return False
-        from .localRemove import CalcRemoveLocalModuleCommand
-        cmd = CalcRemoveLocalModuleCommand(fitID=self.fitID, positions=[self.savedPosition], commit=self.commit)
+        from .localRemove import CalcRemoveLocalModulesCommand
+        cmd = CalcRemoveLocalModulesCommand(fitID=self.fitID, positions=[self.savedPosition], commit=self.commit)
         if not cmd.Do():
             return False
         restoreCheckedStates(Fit.getInstance().getFit(self.fitID), self.savedStateCheckChanges)

@@ -33,8 +33,12 @@ class RemoveItem(ContextMenu):
         fit = sFit.getFit(fitID)
 
         if srcContext == "fittingModule":
+            positions = []
+            for position, mod in enumerate(fit.modules):
+                if mod in selection:
+                    positions.append(position)
             self.mainFrame.command.Submit(cmd.GuiRemoveLocalModuleCommand(
-                fitID=fitID, modules=[module for module in selection if module is not None]))
+                fitID=fitID, positions=positions))
         elif srcContext == "droneItem":
             drone = selection[0]
             if drone in fit.drones:

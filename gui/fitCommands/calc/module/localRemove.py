@@ -9,7 +9,7 @@ from service.fit import Fit
 pyfalog = Logger(__name__)
 
 
-class CalcRemoveLocalModuleCommand(wx.Command):
+class CalcRemoveLocalModulesCommand(wx.Command):
 
     def __init__(self, fitID, positions, commit=True):
         wx.Command.__init__(self, True, 'Remove Module')
