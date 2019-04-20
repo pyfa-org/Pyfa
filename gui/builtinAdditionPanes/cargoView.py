@@ -128,7 +128,7 @@ class CargoView(d.Display):
 
         self.mainFrame.command.Submit(cmd.GuiLocalModuleToCargoCommand(
             fitID=self.mainFrame.getActiveFit(),
-            modPosition=fit.modules[modIdx].modPosition,
+            modPosition=modIdx,
             cargoItemID=dstCargoItemID,
             copy=wx.GetMouseState().cmdDown))
 

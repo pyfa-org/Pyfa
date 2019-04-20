@@ -428,11 +428,12 @@ class FittingView(d.Display):
             if not isinstance(mod, Module):
                 return
 
-            self.mainFrame.command.Submit(cmd.GuiCargoToLocalModuleCommand(
-                fitID=self.mainFrame.getActiveFit(),
-                cargoItemID=cargoItemID,
-                modPosition=mod.modPosition,
-                copy=wx.GetMouseState().cmdDown))
+            fitID = self.mainFrame.getActiveFit()
+            fit = Fit.getInstance().getFit(fitID)
+            if mod in fit.modules:
+                position = fit.modules.index(mod)
+                self.mainFrame.command.Submit(cmd.GuiCargoToLocalModuleCommand(
+                    fitID=fitID, cargoItemID=cargoItemID, modPosition=position, copy=wx.GetMouseState().cmdDown))
 
     def swapItems(self, x, y, srcIdx):
         """Swap two modules in fitting window"""
