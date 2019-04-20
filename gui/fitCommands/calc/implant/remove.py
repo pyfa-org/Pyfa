@@ -31,5 +31,9 @@ class CalcRemoveImplantCommand(wx.Command):
     def Undo(self):
         pyfalog.debug('Undoing removal of implant {} on fit {}'.format(self.savedImplantInfo, self.fitID))
         from .add import CalcAddImplantCommand
-        cmd = CalcAddImplantCommand(fitID=self.fitID, implantInfo=self.savedImplantInfo, position=self.position, commit=self.commit)
+        cmd = CalcAddImplantCommand(
+            fitID=self.fitID,
+            implantInfo=self.savedImplantInfo,
+            position=self.position,
+            commit=self.commit)
         return cmd.Do()

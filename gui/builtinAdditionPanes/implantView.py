@@ -261,7 +261,7 @@ class ImplantDisplay(d.Display):
             sMkt = Market.getInstance()
             sourceContext = "implantItem" if fit.implantSource == ImplantLocation.FIT else "implantItemChar"
             itemContext = sMkt.getCategoryByItem(implant.item).name
-            fullContext = ((sourceContext, itemContext), ("implantView",))
+            fullContext = ((sourceContext, itemContext), ("implantView", itemContext))
             menu = ContextMenu.getMenu((implant,), *fullContext)
         elif sel == -1 and fit.implantSource == ImplantLocation.FIT:
             fitID = self.mainFrame.getActiveFit()
