@@ -554,35 +554,32 @@ class FittingView(d.Display):
         sel = self.GetFirstSelected()
         contexts = []
 
-        while sel != -1 and sel not in self.blanks:
-            mod = self.mods[self.GetItemData(sel)]
-
-            # Test if this is a mode, which is a special snowflake of a Module
-            if isinstance(mod, Mode):
-                srcContext = "fittingMode"
-
-                itemContext = "Tactical Mode"
-                fullContext = (srcContext, itemContext)
-                if srcContext not in tuple(fCtxt[0] for fCtxt in contexts):
-                    contexts.append(fullContext)
-
-                selection.append(mod)
-
-            elif not mod.isEmpty:
-                srcContext = "fittingModule"
-                itemContext = sMkt.getCategoryByItem(mod.item).name
-                fullContext = (srcContext, itemContext)
-                if srcContext not in tuple(fCtxt[0] for fCtxt in contexts):
-                    contexts.append(fullContext)
-
-                if mod.charge is not None:
-                    srcContext = "fittingCharge"
-                    itemContext = sMkt.getCategoryByItem(mod.charge).name
+        while sel != -1:
+            
+            if sel not in self.blanks:
+                mod = self.mods[self.GetItemData(sel)]
+                # Test if this is a mode, which is a special snowflake of a Module
+                if isinstance(mod, Mode):
+                    srcContext = "fittingMode"
+                    itemContext = "Tactical Mode"
+                    fullContext = (srcContext, itemContext)
+                    if srcContext not in tuple(fCtxt[0] for fCtxt in contexts):
+                        contexts.append(fullContext)
+                    selection.append(mod)
+                elif not mod.isEmpty:
+                    srcContext = "fittingModule"
+                    itemContext = sMkt.getCategoryByItem(mod.item).name
                     fullContext = (srcContext, itemContext)
                     if srcContext not in tuple(fCtxt[0] for fCtxt in contexts):
                         contexts.append(fullContext)
 
-                selection.append(mod)
+                    if mod.charge is not None:
+                        srcContext = "fittingCharge"
+                        itemContext = sMkt.getCategoryByItem(mod.charge).name
+                        fullContext = (srcContext, itemContext)
+                        if srcContext not in tuple(fCtxt[0] for fCtxt in contexts):
+                            contexts.append(fullContext)
+                    selection.append(mod)
 
             sel = self.GetNextSelected(sel)
 
