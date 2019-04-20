@@ -206,6 +206,7 @@ class MainFrame(wx.Frame):
         # Add menu
         self.addPageId = wx.NewId()
         self.closePageId = wx.NewId()
+        self.closeAllPagesId = wx.NewId()
 
         self.widgetInspectMenuID = wx.NewId()
         self.SetMenuBar(MainMenuBar(self))
@@ -327,6 +328,11 @@ class MainFrame(wx.Frame):
         page = ms.GetSelection()
         if page is not None:
             ms.DeletePage(page)
+
+    def CloseAllPages(self, evt):
+        ms = self.fitMultiSwitch
+        for _ in range(ms.GetPageCount()):
+            ms.DeletePage(0)
 
     def OnClose(self, event):
         self.UpdateMainFrameAttribs()
@@ -528,6 +534,7 @@ class MainFrame(wx.Frame):
 
         # Close Page
         self.Bind(wx.EVT_MENU, self.CloseCurrentPage, id=self.closePageId)
+        self.Bind(wx.EVT_MENU, self.CloseAllPages, id=self.closeAllPagesId)
         self.Bind(wx.EVT_MENU, self.HAddPage, id=self.addPageId)
         self.Bind(wx.EVT_MENU, self.toggleSearchBox, id=toggleSearchBoxId)
         self.Bind(wx.EVT_MENU, self.toggleShipMarket, id=toggleShipMarketId)
@@ -543,6 +550,10 @@ class MainFrame(wx.Frame):
                 (wx.ACCEL_CTRL, ord("W"), self.closePageId),
                 (wx.ACCEL_CTRL, wx.WXK_F4, self.closePageId),
                 (wx.ACCEL_CMD, ord("W"), self.closePageId),
+
+                (wx.ACCEL_CTRL | wx.ACCEL_ALT, ord("W"), self.closeAllPagesId),
+                (wx.ACCEL_CTRL | wx.ACCEL_ALT, wx.WXK_F4, self.closeAllPagesId),
+                (wx.ACCEL_CMD | wx.ACCEL_ALT, ord("W"), self.closeAllPagesId),
 
                 (wx.ACCEL_CTRL, ord(" "), toggleShipMarketId),
                 (wx.ACCEL_CMD, ord(" "), toggleShipMarketId),

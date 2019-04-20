@@ -47,7 +47,6 @@ class MultiSwitch(ChromeNotebook):
         if self.GetPageCount() == 0:
             self.AddPage()
 
-
 class TabSpawner(object):
     tabTypes = []
 
