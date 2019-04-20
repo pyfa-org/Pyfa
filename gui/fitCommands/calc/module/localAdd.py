@@ -40,7 +40,8 @@ class CalcAddLocalModuleCommand(wx.Command):
                     self.subsystemCmd = CalcReplaceLocalModuleCommand(
                         fitID=self.fitID,
                         position=fit.modules.index(oldMod),
-                        newModInfo=self.newModInfo)
+                        newModInfo=self.newModInfo,
+                        commit=self.commit)
                     return self.subsystemCmd.Do()
 
         if not newMod.fits(fit):

@@ -68,6 +68,8 @@ class CalcAddLocalDroneCommand(wx.Command):
             drone = fit.drones[self.savedPosition]
             drone.amount = self.savedDroneInfo.amount
             drone.amountActive = self.savedDroneInfo.amountActive
+            if self.commit:
+                eos.db.commit()
             return True
         from .localRemove import CalcRemoveLocalDroneCommand
         cmd = CalcRemoveLocalDroneCommand(

@@ -39,5 +39,10 @@ class CalcRebaseItemCommand(wx.Command):
 
     def Undo(self):
         pyfalog.debug('Undoing rebase of item in {} at position {} to {}'.format(self.containerName, self.position, self.itemID))
-        cmd = CalcRebaseItemCommand(fitID=self.fitID, containerName=self.containerName, position=self.position, itemID=self.savedItemID)
+        cmd = CalcRebaseItemCommand(
+            fitID=self.fitID,
+            containerName=self.containerName,
+            position=self.position,
+            itemID=self.savedItemID,
+            commit=self.commit)
         return cmd.Do()

@@ -32,7 +32,8 @@ class GuiChangeLocalModuleMetasCommand(wx.Command):
             self.replacedItemIDs.add(module.itemID)
             info = ModuleInfo.fromModule(module)
             info.itemID = self.newItemID
-            cmd = CalcReplaceLocalModuleCommand(fitID=self.fitID, position=position, newModInfo=info, unloadInvalidCharges=True, commit=False)
+            cmd = CalcReplaceLocalModuleCommand(
+                fitID=self.fitID, position=position, newModInfo=info, unloadInvalidCharges=True, commit=False)
             commands.append(cmd)
         if not commands:
             return False
