@@ -45,7 +45,8 @@ class CalcRemoveLocalModulesCommand(wx.Command):
         results = []
         from .localReplace import CalcReplaceLocalModuleCommand
         for position, modInfo in self.savedModInfos.items():
-            cmd = CalcReplaceLocalModuleCommand(fitID=self.fitID, position=position, newModInfo=modInfo, commit=self.commit)
+            # Do not commit in any case to not worsen performance, we will commit later anyway
+            cmd = CalcReplaceLocalModuleCommand(fitID=self.fitID, position=position, newModInfo=modInfo, commit=False)
             results.append(cmd.Do())
         if not any(results):
             return False
