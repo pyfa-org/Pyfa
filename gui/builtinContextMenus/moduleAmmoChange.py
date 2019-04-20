@@ -236,6 +236,7 @@ class ChangeModuleAmmo(ContextMenu):
                 return
             sMkt = Market.getInstance()
             selectedModule = self.modules[0]
+            mainGroupID = getattr(sMkt.getGroupByItem(selectedModule.item), 'ID', None)
             mainMktGroupID = getattr(sMkt.getMarketGroupByItem(selectedModule.item), 'ID', None)
             positions = []
             for position, mod in enumerate(modContainer):
@@ -249,9 +250,13 @@ class ChangeModuleAmmo(ContextMenu):
                 if mod.itemID == selectedModule.itemID:
                     positions.append(position)
                     continue
-                # And modules from the same market group too
+                # And modules from the same group and market group too
+                modGroupID = getattr(sMkt.getGroupByItem(mod.item), 'ID', None)
                 modMktGroupID = getattr(sMkt.getMarketGroupByItem(mod.item), 'ID', None)
-                if modMktGroupID is not None and modMktGroupID == mainMktGroupID:
+                if (
+                    modGroupID is not None and modGroupID == mainGroupID and
+                    modMktGroupID is not None and modMktGroupID == mainMktGroupID
+                ):
                     positions.append(position)
                     continue
             self.mainFrame.command.Submit(command(
