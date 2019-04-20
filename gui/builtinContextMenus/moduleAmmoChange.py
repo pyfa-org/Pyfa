@@ -6,6 +6,7 @@ import gui.mainFrame
 from eos.const import FittingHardpoint
 from gui.bitmap_loader import BitmapLoader
 from gui.contextMenu import ContextMenu
+from gui.fitCommands.helpers import filterModsByGroups
 from service.fit import Fit
 from service.market import Market
 from service.settings import ContextMenuSettings
@@ -234,31 +235,8 @@ class ChangeModuleAmmo(ContextMenu):
                 modContainer = fit.projectedModules
             else:
                 return
-            sMkt = Market.getInstance()
             selectedModule = self.modules[0]
-            mainGroupID = getattr(sMkt.getGroupByItem(selectedModule.item), 'ID', None)
-            mainMktGroupID = getattr(sMkt.getMarketGroupByItem(selectedModule.item), 'ID', None)
-            positions = []
-            for position, mod in enumerate(modContainer):
-                # Always include selected module itself
-                if mod is selectedModule:
-                    positions.append(position)
-                    continue
-                if mod.itemID is None:
-                    continue
-                # Modules which have the same item ID
-                if mod.itemID == selectedModule.itemID:
-                    positions.append(position)
-                    continue
-                # And modules from the same group and market group too
-                modGroupID = getattr(sMkt.getGroupByItem(mod.item), 'ID', None)
-                modMktGroupID = getattr(sMkt.getMarketGroupByItem(mod.item), 'ID', None)
-                if (
-                    modGroupID is not None and modGroupID == mainGroupID and
-                    modMktGroupID is not None and modMktGroupID == mainMktGroupID
-                ):
-                    positions.append(position)
-                    continue
+            positions = filterModsByGroups(modContainer, selectedModule)
             self.mainFrame.command.Submit(command(
                 fitID=fitID,
                 positions=positions,
