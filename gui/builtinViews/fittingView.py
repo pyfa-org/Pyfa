@@ -74,7 +74,7 @@ class FitSpawner(gui.multiSwitch.TabSpawner):
             sFit = Fit.getInstance()
             openFitInNew = sFit.serviceFittingOptions["openFitInNew"]
             mstate = wx.GetMouseState()
-            modifierKey = mstate.cmdDown or mstate.altDown
+            modifierKey =  mstate.cmdDown
             if from_import or (not openFitInNew and modifierKey) or startup or (openFitInNew and not modifierKey):
                 self.multiSwitch.AddPage()
 
@@ -625,7 +625,7 @@ class FittingView(d.Display):
             else:
                 mods = self.getSelectedMods()
 
-            ctrl = event.cmdDown or event.altDown or event.middleIsDown
+            ctrl = event.cmdDown or event.middleIsDown
             click = "ctrl" if ctrl is True else "right" if event.GetButton() == 3 else "left"
 
             try:
