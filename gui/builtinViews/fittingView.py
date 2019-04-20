@@ -207,7 +207,6 @@ class FittingView(d.Display):
             data[0] is hard-coded str of originating source
             data[1] is typeID or index of data we want to manipulate
         """
-
         if data[0] == "fitting":
             self.swapItems(x, y, int(data[1]))
         elif data[0] == "cargo":
@@ -549,7 +548,6 @@ class FittingView(d.Display):
     def spawnMenu(self, event):
         if self.activeFitID is None or self.getColumn(self.ScreenToClient(event.Position)) == self.getColIndex(State):
             return
-
         sMkt = Market.getInstance()
         selection = []
         sel = self.GetFirstSelected()
@@ -558,7 +556,11 @@ class FittingView(d.Display):
         while sel != -1:
 
             if sel not in self.blanks:
-                mod = self.mods[self.GetItemData(sel)]
+                try:
+                    mod = self.mods[self.GetItemData(sel)]
+                except IndexError:
+                    sel = self.GetNextSelected(sel)
+                    continue
                 # Test if this is a mode, which is a special snowflake of a Module
                 if isinstance(mod, Mode):
                     srcContext = "fittingMode"
