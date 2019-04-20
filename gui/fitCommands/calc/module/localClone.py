@@ -37,6 +37,9 @@ class CalcCloneLocalModuleCommand(wx.Command):
             pyfalog.warning('Failed to replace module')
             eos.db.commit()
             return False
+        # Need to flush because checkStates sometimes relies on module->fit
+        # relationship via .owner attribute, which is handled by SQLAlchemy
+        eos.db.flush()
         sFit.recalc(fit)
         self.savedStateCheckChanges = sFit.checkStates(fit, copyMod)
         eos.db.commit()

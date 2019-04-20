@@ -54,6 +54,9 @@ class CalcAddLocalModuleCommand(wx.Command):
                 eos.db.commit()
             return False
         self.savedPosition = fit.modules.index(newMod)
+        # Need to flush because checkStates sometimes relies on module->fit
+        # relationship via .owner attribute, which is handled by SQLAlchemy
+        eos.db.flush()
         sFit.recalc(fit)
         self.savedStateCheckChanges = sFit.checkStates(fit, newMod)
         if self.commit:
