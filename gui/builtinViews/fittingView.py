@@ -456,11 +456,14 @@ class FittingView(d.Display):
                 pyfalog.error("Missing module position for: {0}", str(getattr(mod2, "ID", "Unknown")))
                 return
             mod2Position = fit.modules.index(mod2)
-            modifierKeyPressed = wx.GetMouseState().cmdDown
-            if modifierKeyPressed and mod2.isEmpty:
+            mstate = wx.GetMouseState()
+            if mstate.cmdDown and mstate.altDown:
+                self.mainFrame.command.Submit(cmd.GuiFillWithLocalModulesCommand(
+                    fitID=self.activeFitID, position=srcIdx))
+            elif mstate.cmdDown and mod2.isEmpty:
                 self.mainFrame.command.Submit(cmd.GuiCloneLocalModuleCommand(
                     fitID=self.activeFitID, srcPosition=srcIdx, dstPosition=mod2Position))
-            elif not modifierKeyPressed:
+            elif not mstate.cmdDown:
                 self.mainFrame.command.Submit(cmd.GuiSwapLocalModulesCommand(
                     fitID=self.activeFitID, position1=srcIdx, position2=mod2Position))
 
