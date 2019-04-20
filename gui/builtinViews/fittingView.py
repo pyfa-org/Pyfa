@@ -42,6 +42,7 @@ from gui.utils.staticHelpers import DragDropHelper
 from service.fit import Fit
 from service.market import Market
 from config import slotColourMap
+from gui.fitCommands.helpers import filterModsByGroups
 
 pyfalog = Logger(__name__)
 
@@ -619,30 +620,31 @@ class FittingView(d.Display):
 
             if row not in sel:
                 try:
-                    mods = [self.mods[self.GetItemData(row)]]
+                    selectedMods = [self.mods[self.GetItemData(row)]]
                 except IndexError:
                     return
             else:
-                mods = self.getSelectedMods()
+                selectedMods = self.getSelectedMods()
 
-            ctrl = event.cmdDown or event.middleIsDown
-            click = "ctrl" if ctrl is True else "right" if event.GetButton() == 3 else "left"
+            click = "ctrl" if event.cmdDown or event.middleIsDown else "right" if event.GetButton() == 3 else "left"
 
             try:
                 mainMod = self.mods[self.GetItemData(row)]
             except IndexError:
                 return
 
-            mainPosition = None
-            positions = []
             fitID = self.mainFrame.getActiveFit()
-            for position, mod in enumerate(Fit.getInstance().getFit(fitID).modules):
-                if mod in mods:
-                    positions.append(position)
-                if mod is mainMod:
-                    mainPosition = position
-            if mainPosition is None:
+            fit = Fit.getInstance().getFit(fitID)
+            if mainMod not in fit.modules:
                 return
+            mainPosition = fit.modules.index(mainMod)
+            if event.altDown:
+                positions = filterModsByGroups(fit.modules, mainMod)
+            else:
+                positions = []
+                for position, mod in enumerate(fit.modules):
+                    if mod in selectedMods:
+                        positions.append(position)
             self.mainFrame.command.Submit(cmd.GuiChangeLocalModuleStatesCommand(
                 fitID=fitID,
                 mainPosition=mainPosition,
