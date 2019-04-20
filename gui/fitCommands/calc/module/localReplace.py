@@ -24,7 +24,7 @@ class CalcReplaceLocalModuleCommand(wx.Command):
         self.unloadedCharge = None
 
     def Do(self):
-        pyfalog.debug('Doing replacement of local module at position {} to {} on fit {}'.format(self.newModInfo, self.position, self.fitID))
+        pyfalog.debug('Doing replacement of local module at position {} to {} on fit {}'.format(self.position, self.newModInfo, self.fitID))
         self.unloadedCharge = False
         sFit = Fit.getInstance()
         fit = sFit.getFit(self.fitID)
@@ -63,7 +63,7 @@ class CalcReplaceLocalModuleCommand(wx.Command):
         return True
 
     def Undo(self):
-        pyfalog.debug('Undoing replacement of local module at position {} to {} on fit {}'.format(self.newModInfo, self.position, self.fitID))
+        pyfalog.debug('Undoing replacement of local module at position {} to {} on fit {}'.format(self.position, self.newModInfo, self.fitID))
         sFit = Fit.getInstance()
         fit = sFit.getFit(self.fitID)
         # Remove if there was no module

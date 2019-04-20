@@ -555,7 +555,7 @@ class FittingView(d.Display):
         contexts = []
 
         while sel != -1:
-            
+
             if sel not in self.blanks:
                 mod = self.mods[self.GetItemData(sel)]
                 # Test if this is a mode, which is a special snowflake of a Module

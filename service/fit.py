@@ -437,7 +437,7 @@ class Fit(FitDeprecated):
         changedProjMods = {}
         changedProjDrones = {}
         for pos, mod in enumerate(fit.modules):
-            if mod != base:
+            if mod is not base:
                 # fix for #529, where a module may be in incorrect state after CCP changes mechanics of module
                 if not mod.canHaveState(mod.state) or not mod.isValidState(mod.state):
                     changedMods[pos] = mod.state
