@@ -85,7 +85,7 @@ class PFGeneralPref(PreferenceView):
         if "wxGTK" not in wx.PlatformInfo:
             self.cbReloadAll.SetCursor(helpCursor)
         self.cbReloadAll.SetToolTip(wx.ToolTip(
-            'When disabled, reloads charges just in selected modules. Action can be reversed by holding Ctrl key while changing charge.'))
+            'When disabled, reloads charges just in selected modules. Action can be reversed by holding Ctrl or Alt key while changing charge.'))
         mainSizer.Add(self.cbReloadAll, 0, wx.ALL | wx.EXPAND, 5)
 
         self.sFit = Fit.getInstance()
