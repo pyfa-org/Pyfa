@@ -38,12 +38,13 @@ class CalcChangeLocalModuleStatesCommand(wx.Command):
             pyfalog.debug('Toggle {} state: {} for fit ID: {}'.format(mainMod, mainProposedState, self.fitID))
             mainMod.state = mainProposedState
             changed = True
-            for position in [pos for pos in positions if pos != self.mainPosition]:
-                mod = fit.modules[position]
-                proposedState = Module.getProposedState(mod, self.click, mainProposedState)
-                if proposedState != mod.state:
-                    pyfalog.debug('Toggle {} state: {} for fit ID: {}'.format(mod, proposedState, self.fitID))
+        for position in [pos for pos in positions if pos != self.mainPosition]:
+            mod = fit.modules[position]
+            proposedState = Module.getProposedState(mod, self.click, mainProposedState)
+            if proposedState != mod.state:
+                pyfalog.debug('Toggle {} state: {} for fit ID: {}'.format(mod, proposedState, self.fitID))
                 mod.state = proposedState
+                changed = True
         if not changed:
             return False
         # Need to flush because checkStates sometimes relies on module->fit
