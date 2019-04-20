@@ -267,7 +267,7 @@ class HandledImplantList(HandledList):
             HandledList.insert(self, idx, implant)
             self.remove(implant)
             raise HandledListActionError(implant)
-        HandledList.append(self, implant)
+        HandledList.insert(self, idx, implant)
 
     def makeRoom(self, implant):
         # if needed, remove booster that was occupying slot
