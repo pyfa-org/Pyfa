@@ -353,6 +353,8 @@ def getSimilarModPositions(mods, mainMod):
     mainEffects = set(getattr(mainMod.item, 'effects', ()))
     positions = []
     for position, mod in enumerate(mods):
+        if mod.isEmpty:
+            continue
         # Always include selected module itself
         if mod is mainMod:
             positions.append(position)

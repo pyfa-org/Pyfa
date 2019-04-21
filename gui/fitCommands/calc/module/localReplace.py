@@ -36,6 +36,8 @@ class CalcReplaceLocalModuleCommand(wx.Command):
         newMod = self.newModInfo.toModule(fallbackState=stateLimit(self.newModInfo.itemID))
         if newMod is None:
             return False
+        if newMod.slot != oldMod.slot:
+            return False
         # Dummy it out in case the next bit fails
         fit.modules.free(self.position)
         if not newMod.fits(fit):

@@ -432,12 +432,13 @@ class FittingView(d.Display):
 
     def addModule(self, x, y, itemID):
         """Add a module from the market browser (from dragging it)"""
-
         fitID = self.mainFrame.getActiveFit()
         item = Market.getInstance().getItem(itemID)
         fit = Fit.getInstance().getFit(fitID)
         dstRow, _ = self.HitTest((x, y))
-        if dstRow != -1 and dstRow not in self.blanks:
+        if dstRow == -1 or dstRow in self.blanks:
+            dstMod = None
+        else:
             try:
                 dstMod = self.mods[dstRow]
             except IndexError:
@@ -446,23 +447,32 @@ class FittingView(d.Display):
                 dstMod = None
             if dstMod not in fit.modules:
                 dstMod = None
-            mstate = wx.GetMouseState()
-            if item.isModule and mstate.altDown:
-                self.mainFrame.command.Submit(cmd.GuiFillWithNewLocalModulesCommand(fitID=fitID, itemID=itemID))
-            elif item.isModule and dstMod is not None:
-                position = fit.modules.index(dstMod)
-                self.mainFrame.command.Submit(cmd.GuiAddLocalModuleCommand(
-                    fitID=fitID, itemID=itemID, position=position))
-            elif item.isSubsystem:
-                self.mainFrame.command.Submit(cmd.GuiAddLocalModuleCommand(fitID=fitID, itemID=itemID))
-            elif item.isCharge and dstMod is not None and not dstMod.isEmpty:
+        dstPos = fit.modules.index(dstMod) if dstMod is not None else None
+        mstate = wx.GetMouseState()
+        # If we dropping on a module, try to replace, or add if replacement fails
+        if item.isModule and dstMod is not None:
+            positions = getSimilarModPositions(fit.modules, dstMod) if mstate.altDown else [dstPos]
+            command = cmd.GuiReplaceLocalModuleCommand(fitID=fitID, itemID=itemID, positions=positions)
+            if not self.mainFrame.command.Submit(command):
                 if mstate.altDown:
-                    positions = getSimilarModPositions(fit.modules, dstMod)
+                    self.mainFrame.command.Submit(cmd.GuiFillWithNewLocalModulesCommand(fitID=fitID, itemID=itemID))
                 else:
-                    positions = [fit.modules.index(dstMod)]
-                if len(positions) > 0:
-                    self.mainFrame.command.Submit(cmd.GuiChangeLocalModuleChargesCommand(
-                        fitID=fitID, positions=positions, chargeItemID=itemID))
+                    self.mainFrame.command.Submit(cmd.GuiAddLocalModuleCommand(fitID=fitID, itemID=itemID))
+        elif item.isModule:
+            if mstate.altDown:
+                self.mainFrame.command.Submit(cmd.GuiFillWithNewLocalModulesCommand(fitID=fitID, itemID=itemID))
+            else:
+                self.mainFrame.command.Submit(cmd.GuiAddLocalModuleCommand(fitID=fitID, itemID=itemID))
+        elif item.isSubsystem:
+            self.mainFrame.command.Submit(cmd.GuiAddLocalModuleCommand(fitID=fitID, itemID=itemID))
+        elif item.isCharge and dstMod is not None and not dstMod.isEmpty:
+            if mstate.altDown:
+                positions = getSimilarModPositions(fit.modules, dstMod)
+            else:
+                positions = [fit.modules.index(dstMod)]
+            if len(positions) > 0:
+                self.mainFrame.command.Submit(cmd.GuiChangeLocalModuleChargesCommand(
+                    fitID=fitID, positions=positions, chargeItemID=itemID))
 
     def swapCargo(self, x, y, cargoItemID):
         """Swap a module from cargo to fitting window"""

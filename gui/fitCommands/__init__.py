@@ -43,6 +43,7 @@ from .gui.localModule.mutatedConvert import GuiConvertMutatedLocalModuleCommand
 from .gui.localModule.mutatedImport import GuiImportLocalMutatedModuleCommand
 from .gui.localModule.mutatedRevert import GuiRevertMutatedLocalModuleCommand
 from .gui.localModule.remove import GuiRemoveLocalModuleCommand
+from .gui.localModule.replace import GuiReplaceLocalModuleCommand
 from .gui.localModule.swap import GuiSwapLocalModulesCommand
 from .gui.localModuleCargo.cargoToLocalModule import GuiCargoToLocalModuleCommand
 from .gui.localModuleCargo.localModuleToCargo import GuiLocalModuleToCargoCommand
