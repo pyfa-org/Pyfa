@@ -486,8 +486,10 @@ class FittingView(d.Display):
                 self.mainFrame.command.Submit(cmd.GuiAddLocalModuleCommand(fitID=fitID, itemID=itemID))
         elif item.isSubsystem:
             self.mainFrame.command.Submit(cmd.GuiAddLocalModuleCommand(fitID=fitID, itemID=itemID))
-        elif item.isCharge and dstMod is not None and not dstMod.isEmpty:
-            if mstate.altDown:
+        elif item.isCharge:
+            if dstMod is None or dstMod.isEmpty:
+                positions = list(range(len(fit.modules)))
+            elif mstate.altDown:
                 positions = getSimilarModPositions(fit.modules, dstMod)
             else:
                 positions = [fit.modules.index(dstMod)]
