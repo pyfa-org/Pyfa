@@ -25,6 +25,7 @@ from gui.builtinContextMenus import (  # noqa: E402,F401
     moduleFill,
     skillAffectors,
     # Market stuff
+    itemFill,
     droneAddStack,
     cargoAdd,
     cargoAddAmmo,

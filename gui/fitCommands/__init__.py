@@ -37,7 +37,8 @@ from .gui.localModule.changeMetas import GuiChangeLocalModuleMetasCommand
 from .gui.localModule.changeSpool import GuiChangeLocalModuleSpoolCommand
 from .gui.localModule.changeStates import GuiChangeLocalModuleStatesCommand
 from .gui.localModule.clone import GuiCloneLocalModuleCommand
-from .gui.localModule.fill import GuiFillWithLocalModulesCommand
+from .gui.localModule.fillAdd import GuiFillWithNewLocalModulesCommand
+from .gui.localModule.fillClone import GuiFillWithClonedLocalModulesCommand
 from .gui.localModule.mutatedConvert import GuiConvertMutatedLocalModuleCommand
 from .gui.localModule.mutatedImport import GuiImportLocalMutatedModuleCommand
 from .gui.localModule.mutatedRevert import GuiRevertMutatedLocalModuleCommand

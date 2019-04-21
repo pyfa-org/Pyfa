@@ -358,23 +358,37 @@ class FittingView(d.Display):
             fitID = self.activeFitID
             if fitID is not None:
                 item = Market.getInstance().getItem(itemID, eager='group.category')
-                if item is None or not (item.isModule or item.isSubsystem):
+                if item is None:
                     event.Skip()
                     return
+                mstate = wx.GetMouseState()
+                # If we've selected ammo, then apply to the selected module(s)
                 if item.isCharge:
-                    # If we've selected ammo, then apply to the selected module(s)
-                    modules = []
-                    sel = self.GetFirstSelected()
-                    while sel != -1 and sel not in self.blanks:
-                        mod = self.mods[self.GetItemData(sel)]
-                        if isinstance(mod, Module) and not mod.isEmpty:
-                            modules.append(self.mods[self.GetItemData(sel)])
-                        sel = self.GetNextSelected(sel)
+                    positions = []
+                    fit = Fit.getInstance().getFit(fitID)
+                    if mstate.altDown:
+                        for position, mod in enumerate(fit.modules):
+                            if isinstance(mod, Module) and not mod.isEmpty:
+                                positions.append(position)
+                    else:
+                        sel = self.GetFirstSelected()
+                        while sel != -1 and sel not in self.blanks:
+                            try:
+                                mod = self.mods[self.GetItemData(sel)]
+                            except IndexError:
+                                sel = self.GetNextSelected(sel)
+                                continue
+                            if isinstance(mod, Module) and not mod.isEmpty and mod in fit.modules:
+                                positions.append(fit.modules.index(mod))
+                            sel = self.GetNextSelected(sel)
 
-                    if len(modules) > 0:
-                        self.mainFrame.command.Submit(cmd.GuiChangeLocalModuleChargesCommand(fitID, modules, itemID))
-                else:
+                    if len(positions) > 0:
+                        self.mainFrame.command.Submit(cmd.GuiChangeLocalModuleChargesCommand(
+                            fitID=fitID, positions=positions, chargeItemID=itemID))
+                elif (item.isModule and not mstate.altDown) or item.isSubsystem:
                     self.mainFrame.command.Submit(cmd.GuiAddLocalModuleCommand(fitID=fitID, itemID=itemID))
+                elif item.isModule and mstate.altDown:
+                    self.mainFrame.command.Submit(cmd.GuiFillWithNewLocalModulesCommand(fitID=fitID, itemID=itemID))
 
         event.Skip()
 
@@ -408,15 +422,46 @@ class FittingView(d.Display):
     def addModule(self, x, y, itemID):
         """Add a module from the market browser (from dragging it)"""
 
-        dstRow, _ = self.HitTest((x, y))
-        if dstRow != -1 and dstRow not in self.blanks:
-            fitID = self.mainFrame.getActiveFit()
-            mod = self.mods[dstRow]
-            if not isinstance(mod, Module):  # make sure we're not adding something to a T3D Mode
-                return
-
-            self.mainFrame.command.Submit(cmd.GuiAddLocalModuleCommand(
-                fitID=fitID, itemID=itemID, position=self.mods[dstRow].modPosition))
+        fitID = self.mainFrame.getActiveFit()
+        item = Market.getInstance().getItem(itemID)
+        fit = Fit.getInstance().getFit(fitID)
+        mstate = wx.GetMouseState()
+        if item.isModule and mstate.altDown:
+            self.mainFrame.command.Submit(cmd.GuiFillWithNewLocalModulesCommand(fitID=fitID, itemID=itemID))
+        elif item.isModule:
+            dstRow, _ = self.HitTest((x, y))
+            if dstRow != -1 and dstRow not in self.blanks:
+                try:
+                    mod = self.mods[dstRow]
+                except IndexError:
+                    return
+                if not isinstance(mod, Module):
+                    return
+                if mod in fit.modules:
+                    position = fit.modules.index(mod)
+                    self.mainFrame.command.Submit(cmd.GuiAddLocalModuleCommand(
+                        fitID=fitID, itemID=itemID, position=position))
+        elif item.isSubsystem:
+            self.mainFrame.command.Submit(cmd.GuiAddLocalModuleCommand(fitID=fitID, itemID=itemID))
+        elif item.isCharge:
+            dstRow, _ = self.HitTest((x, y))
+            if dstRow != -1 and dstRow not in self.blanks:
+                try:
+                    mod = self.mods[dstRow]
+                except IndexError:
+                    return
+                if not isinstance(mod, Module):
+                    return
+                if mod.isEmpty:
+                    return
+                if mod in fit.modules:
+                    if mstate.altDown:
+                        positions = filterModsByGroups(fit.modules, mod)
+                    else:
+                        positions = [fit.modules.index(mod)]
+                    if len(positions) > 0:
+                        self.mainFrame.command.Submit(cmd.GuiChangeLocalModuleChargesCommand(
+                            fitID=fitID, positions=positions, chargeItemID=itemID))
 
     def swapCargo(self, x, y, cargoItemID):
         """Swap a module from cargo to fitting window"""
@@ -459,7 +504,7 @@ class FittingView(d.Display):
             mod2Position = fit.modules.index(mod2)
             mstate = wx.GetMouseState()
             if mstate.cmdDown and mstate.altDown:
-                self.mainFrame.command.Submit(cmd.GuiFillWithLocalModulesCommand(
+                self.mainFrame.command.Submit(cmd.GuiFillWithClonedLocalModulesCommand(
                     fitID=self.activeFitID, position=srcIdx))
             elif mstate.cmdDown and mod2.isEmpty:
                 self.mainFrame.command.Submit(cmd.GuiCloneLocalModuleCommand(

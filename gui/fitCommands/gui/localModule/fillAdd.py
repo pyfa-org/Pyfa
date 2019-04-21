@@ -8,21 +8,16 @@ from gui.fitCommands.helpers import InternalCommandHistory, ModuleInfo
 from service.fit import Fit
 
 
-class GuiFillWithLocalModulesCommand(wx.Command):
+class GuiFillWithNewLocalModulesCommand(wx.Command):
 
-    def __init__(self, fitID, position):
-        wx.Command.__init__(self, True, 'Fill with Local Modules')
+    def __init__(self, fitID, itemID):
+        wx.Command.__init__(self, True, 'Fill with New Local Modules')
         self.internalHistory = InternalCommandHistory()
         self.fitID = fitID
-        self.position = position
-        self.savedItemID = None
+        self.itemID = itemID
 
     def Do(self):
-        sFit = Fit.getInstance()
-        fit = sFit.getFit(self.fitID)
-        mod = fit.modules[self.position]
-        self.savedItemID = mod.itemID
-        info = ModuleInfo.fromModule(mod)
+        info = ModuleInfo(itemID=self.itemID)
         added_modules = 0
         while True:
             cmd = CalcAddLocalModuleCommand(fitID=self.fitID, newModInfo=info, commit=False)
@@ -30,11 +25,13 @@ class GuiFillWithLocalModulesCommand(wx.Command):
                 break
             added_modules += 1
         eos.db.commit()
-        sFit.recalc(self.fitID)
+        Fit.getInstance().recalc(self.fitID)
         success = added_modules > 0
         wx.PostEvent(
             gui.mainFrame.MainFrame.getInstance(),
-            GE.FitChanged(fitID=self.fitID, action='modadd', typeID=self.savedItemID) if success else GE.FitChanged(fitID=self.fitID))
+            GE.FitChanged(fitID=self.fitID, action='modadd', typeID=self.itemID)
+            if success else
+            GE.FitChanged(fitID=self.fitID))
         return success
 
     def Undo(self):
@@ -43,5 +40,7 @@ class GuiFillWithLocalModulesCommand(wx.Command):
         Fit.getInstance().recalc(self.fitID)
         wx.PostEvent(
             gui.mainFrame.MainFrame.getInstance(),
-            GE.FitChanged(fitID=self.fitID, action='moddel', typeID=self.savedItemID) if success else GE.FitChanged(fitID=self.fitID))
+            GE.FitChanged(fitID=self.fitID, action='moddel', typeID=self.itemID)
+            if success else
+            GE.FitChanged(fitID=self.fitID))
         return success

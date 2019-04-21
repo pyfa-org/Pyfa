@@ -1,8 +1,4 @@
-# noinspection PyPackageRequirements
-import wx
-
 import gui.fitCommands as cmd
-import gui.globalEvents as GE
 import gui.mainFrame
 from gui.contextMenu import ContextMenu
 from service.fit import Fit
@@ -32,7 +28,7 @@ class FillWithModule(ContextMenu):
             mod = selection[0]
             if mod in fit.modules:
                 position = fit.modules.index(mod)
-                self.mainFrame.command.Submit(cmd.GuiFillWithLocalModulesCommand(
+                self.mainFrame.command.Submit(cmd.GuiFillWithClonedLocalModulesCommand(
                     fitID=fitID, position=position))
 
 
