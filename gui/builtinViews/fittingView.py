@@ -360,12 +360,12 @@ class FittingView(d.Display):
                 if item is None:
                     event.Skip()
                     return
-                mstate = wx.GetMouseState()
+                batchOp = wx.GetMouseState().altDown and getattr(event, 'allowBatch', None) is not False
                 # If we've selected ammo, then apply to the selected module(s)
                 if item.isCharge:
                     positions = []
                     fit = Fit.getInstance().getFit(fitID)
-                    if mstate.altDown:
+                    if batchOp:
                         for position, mod in enumerate(fit.modules):
                             if isinstance(mod, Module) and not mod.isEmpty:
                                 positions.append(position)
@@ -384,9 +384,9 @@ class FittingView(d.Display):
                     if len(positions) > 0:
                         self.mainFrame.command.Submit(cmd.GuiChangeLocalModuleChargesCommand(
                             fitID=fitID, positions=positions, chargeItemID=itemID))
-                elif (item.isModule and not mstate.altDown) or item.isSubsystem:
+                elif (item.isModule and not batchOp) or item.isSubsystem:
                     self.mainFrame.command.Submit(cmd.GuiAddLocalModuleCommand(fitID=fitID, itemID=itemID))
-                elif item.isModule and mstate.altDown:
+                elif item.isModule and batchOp:
                     self.mainFrame.command.Submit(cmd.GuiFillWithNewLocalModulesCommand(fitID=fitID, itemID=itemID))
 
         event.Skip()

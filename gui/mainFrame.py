@@ -685,7 +685,7 @@ class MainFrame(wx.Frame):
 
         activeListing = getattr(self.marketBrowser.itemView, 'active', None)
         if activeListing and selItem < len(activeListing):
-            wx.PostEvent(self, ItemSelected(itemID=self.marketBrowser.itemView.active[selItem].ID))
+            wx.PostEvent(self, ItemSelected(itemID=self.marketBrowser.itemView.active[selItem].ID, allowBatch=False))
 
     def CTabNext(self, event):
         self.fitMultiSwitch.NextPage()
