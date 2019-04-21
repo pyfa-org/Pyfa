@@ -319,7 +319,7 @@ class ProjectedView(d.Display):
                     context = (modFullContext,)
             else:
                 fitSrcContext = "projectedFit"
-                fitItemContext = item.name
+                fitItemContext = "Fit"
                 context = ((fitSrcContext, fitItemContext),)
 
         context += (("projected",),)
