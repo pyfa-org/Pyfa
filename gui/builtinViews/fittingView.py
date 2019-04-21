@@ -450,7 +450,7 @@ class FittingView(d.Display):
         dstPos = fit.modules.index(dstMod) if dstMod is not None else None
         mstate = wx.GetMouseState()
         # If we dropping on a module, try to replace, or add if replacement fails
-        if item.isModule and dstMod is not None:
+        if item.isModule and dstMod is not None and not dstMod.isEmpty:
             positions = getSimilarModPositions(fit.modules, dstMod) if mstate.altDown else [dstPos]
             command = cmd.GuiReplaceLocalModuleCommand(fitID=fitID, itemID=itemID, positions=positions)
             if not self.mainFrame.command.Submit(command):
