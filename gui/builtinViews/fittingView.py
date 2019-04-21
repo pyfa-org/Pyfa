@@ -271,7 +271,6 @@ class FittingView(d.Display):
                     mod = self.mods[row]
                     if isinstance(mod, Module) and not mod.isEmpty:
                         modules.append(self.mods[row])
-                self.Select(row, 0)
                 row = self.GetNextSelected(row)
             self.removeModule(modules)
 
