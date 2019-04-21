@@ -199,7 +199,7 @@ class AvailableImplantsView(d.Display):
 
     def __init__(self, parent):
         d.Display.__init__(self, parent, style=wx.LC_SINGLE_SEL)
-        self.Bind(wx.EVT_LEFT_DCLICK, parent.OnLeftDoubleClick)
+        self.Bind(wx.EVT_LEFT_DCLICK, parent.removeItem)
 
 
 class ItemView(d.Display):
