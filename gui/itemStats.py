@@ -142,7 +142,7 @@ class ItemStatsDialog(wx.Dialog):
         if self.dlgOrder == ItemStatsDialog.counter:
             ItemStatsDialog.counter -= 1
         self.parentWnd.UnregisterStatsWindow(self)
-
+        self.Destroy()
         event.Skip()
 
 
