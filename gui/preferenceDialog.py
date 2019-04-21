@@ -24,6 +24,7 @@ from gui.bitmap_loader import BitmapLoader
 
 
 class PreferenceDialog(wx.Dialog):
+
     def __init__(self, parent):
         wx.Dialog.__init__(self, parent, id=wx.ID_ANY, size=wx.DefaultSize, style=wx.DEFAULT_DIALOG_STYLE)
         self.SetTitle("pyfa - Preferences")
@@ -74,6 +75,17 @@ class PreferenceDialog(wx.Dialog):
         self.Layout()
 
         self.btnOK.Bind(wx.EVT_BUTTON, self.OnBtnOK)
+        self.Bind(wx.EVT_CHAR_HOOK, self.kbEvent)
 
     def OnBtnOK(self, event):
-        self.Close()
+        self.closeWindow()
+
+    def kbEvent(self, event):
+        keycode = event.GetKeyCode()
+        if keycode == wx.WXK_ESCAPE:
+            self.closeWindow()
+            return
+        event.Skip()
+
+    def closeWindow(self):
+        self.Destroy()

@@ -67,6 +67,7 @@ except Exception:
 
 
 class GraphFrame(wx.Frame):
+
     def __init__(self, parent, style=wx.DEFAULT_FRAME_STYLE | wx.NO_FULL_REPAINT_ON_RESIZE | wx.FRAME_FLOAT_ON_PARENT):
         global graphFrame_enabled
         global mplImported
@@ -160,7 +161,8 @@ class GraphFrame(wx.Frame):
 
         self.fitList.fitList.Bind(wx.EVT_LEFT_DCLICK, self.removeItem)
         self.mainFrame.Bind(GE.FIT_CHANGED, self.draw)
-        self.Bind(wx.EVT_CLOSE, self.close)
+        self.Bind(wx.EVT_CLOSE, self.closeEvent)
+        self.Bind(wx.EVT_CHAR_HOOK, self.kbEvent)
 
         self.Fit()
         self.SetMinSize(self.GetSize())
@@ -169,10 +171,21 @@ class GraphFrame(wx.Frame):
         if type == "fit":
             self.AppendFitToList(fitID)
 
-    def close(self, event):
+    def closeEvent(self, event):
+        self.closeWindow()
+        event.Skip()
+
+    def kbEvent(self, event):
+        keycode = event.GetKeyCode()
+        if keycode == wx.WXK_ESCAPE:
+            self.closeWindow()
+            return
+        event.Skip()
+
+    def closeWindow(self):
         self.fitList.fitList.Unbind(wx.EVT_LEFT_DCLICK, handler=self.removeItem)
         self.mainFrame.Unbind(GE.FIT_CHANGED, handler=self.draw)
-        event.Skip()
+        self.Destroy()
 
     def getView(self):
         return self.graphSelection.GetClientData(self.graphSelection.GetSelection())

@@ -149,7 +149,7 @@ class CharacterEntityEditor(EntityEditor):
 
 class CharacterEditor(wx.Frame):
     def __init__(self, parent):
-        wx.Frame.__init__(self, parent, id=wx.ID_ANY, title="pyfa: Character Editor", pos=wx.DefaultPosition,
+        wx.Frame.__init__(self, parent, id=wx.ID_ANY, title="Character Editor", pos=wx.DefaultPosition,
                           size=wx.Size(640, 600), style=wx.DEFAULT_FRAME_STYLE ^ wx.RESIZE_BORDER | wx.FRAME_FLOAT_ON_PARENT)
 
         i = wx.Icon(BitmapLoader.getBitmap("character_small", "gui"))
@@ -208,6 +208,7 @@ class CharacterEditor(wx.Frame):
         self.Centre(wx.BOTH)
 
         self.Bind(wx.EVT_CLOSE, self.closeEvent)
+        self.Bind(wx.EVT_CHAR_HOOK, self.kbEvent)
         self.Bind(GE.CHAR_LIST_UPDATED, self.refreshCharacterList)
         self.entityEditor.Bind(wx.EVT_CHOICE, self.charChanged)
 
@@ -253,8 +254,17 @@ class CharacterEditor(wx.Frame):
         sChr.revertCharacter(char.ID)
         wx.PostEvent(self, GE.CharListUpdated())
 
+    def kbEvent(self, event):
+        keycode = event.GetKeyCode()
+        if keycode == wx.WXK_ESCAPE:
+            self.closeWindow()
+            return
+        event.Skip()
+
     def closeEvent(self, event):
-        # del self.disableWin
+        self.closeWindow()
+
+    def closeWindow(self):
         wx.PostEvent(self.mainFrame, GE.CharListUpdated())
         self.Destroy()
 

@@ -131,20 +131,29 @@ class ItemStatsDialog(wx.Dialog):
 
         self.Show()
 
+        self.Bind(wx.EVT_CHAR_HOOK, self.kbEvent)
         self.Bind(wx.EVT_CLOSE, self.closeEvent)
         self.Bind(wx.EVT_ACTIVATE, self.OnActivate)
 
     def OnActivate(self, event):
         self.parentWnd.SetActiveStatsWindow(self)
 
-    def closeEvent(self, event):
+    def kbEvent(self, event):
+        keycode = event.GetKeyCode()
+        if keycode == wx.WXK_ESCAPE:
+            self.closeWindow()
+            return
+        event.Skip()
 
+    def closeEvent(self, event):
+        self.closeWindow()
+        event.Skip()
+
+    def closeWindow(self):
         if self.dlgOrder == ItemStatsDialog.counter:
             ItemStatsDialog.counter -= 1
         self.parentWnd.UnregisterStatsWindow(self)
         self.Destroy()
-        event.Skip()
-
 
 class ItemStatsContainer(wx.Panel):
     def __init__(self, parent, stuff, item, context=None):

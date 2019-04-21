@@ -113,6 +113,7 @@ class ImplantSetEditor(BaseImplantEditorView):
 
 
 class ImplantSetEditorDlg(wx.Dialog):
+
     def __init__(self, parent):
         wx.Dialog.__init__(
             self, parent, id=wx.ID_ANY,
@@ -168,6 +169,7 @@ class ImplantSetEditorDlg(wx.Dialog):
             return
 
         self.Bind(wx.EVT_CHOICE, self.entityChanged)
+        self.Bind(wx.EVT_CHAR_HOOK, self.kbEvent)
 
         self.Import.Bind(wx.EVT_BUTTON, self.importPatterns)
         self.Export.Bind(wx.EVT_BUTTON, self.exportPatterns)
@@ -179,6 +181,16 @@ class ImplantSetEditorDlg(wx.Dialog):
         if not self.entityEditor.checkEntitiesExist():
             self.Destroy()
             return
+
+    def kbEvent(self, event):
+        keycode = event.GetKeyCode()
+        if keycode == wx.WXK_ESCAPE:
+            self.closeWindow()
+            return
+        event.Skip()
+
+    def closeWindow(self):
+        self.Destroy()
 
     def __del__(self):
         pass

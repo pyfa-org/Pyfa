@@ -188,6 +188,7 @@ class DmgPatternEditorDlg(wx.Dialog):
         self.CenterOnParent()
 
         self.Bind(wx.EVT_CHOICE, self.patternChanged)
+        self.Bind(wx.EVT_CHAR_HOOK, self.kbEvent)
 
         self.patternChanged()
 
@@ -272,3 +273,13 @@ class DmgPatternEditorDlg(wx.Dialog):
         sDP = DamagePattern.getInstance()
         toClipboard(sDP.exportPatterns())
         self.stNotice.SetLabel("Patterns exported to clipboard")
+
+    def kbEvent(self, event):
+        keycode = event.GetKeyCode()
+        if keycode == wx.WXK_ESCAPE:
+            self.closeWindow()
+            return
+        event.Skip()
+
+    def closeWindow(self):
+        self.Destroy()

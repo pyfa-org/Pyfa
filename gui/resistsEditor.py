@@ -183,6 +183,7 @@ class ResistsEditorDlg(wx.Dialog):
         self.CenterOnParent()
 
         self.Bind(wx.EVT_CHOICE, self.patternChanged)
+        self.Bind(wx.EVT_CHAR_HOOK, self.kbEvent)
 
         self.patternChanged()
 
@@ -292,3 +293,13 @@ class ResistsEditorDlg(wx.Dialog):
         sTR = TargetResists.getInstance()
         toClipboard(sTR.exportPatterns())
         self.stNotice.SetLabel("Patterns exported to clipboard")
+
+    def kbEvent(self, event):
+        keycode = event.GetKeyCode()
+        if keycode == wx.WXK_ESCAPE:
+            self.closeWindow()
+            return
+        event.Skip()
+
+    def closeWindow(self):
+        self.Destroy()

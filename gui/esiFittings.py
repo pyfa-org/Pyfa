@@ -21,6 +21,7 @@ pyfalog = Logger(__name__)
 
 
 class EveFittings(wx.Frame):
+
     def __init__(self, parent):
         wx.Frame.__init__(self, parent, id=wx.ID_ANY, title="Browse EVE Fittings", pos=wx.DefaultPosition,
                           size=wx.Size(550, 450), style=wx.DEFAULT_FRAME_STYLE | wx.TAB_TRAVERSAL)
@@ -69,6 +70,7 @@ class EveFittings(wx.Frame):
         self.deleteBtn.Bind(wx.EVT_BUTTON, self.deleteFitting)
 
         self.Bind(wx.EVT_CLOSE, self.OnClose)
+        self.Bind(wx.EVT_CHAR_HOOK, self.kbEvent)
 
         self.statusbar = wx.StatusBar(self)
         self.statusbar.SetFieldsCount()
@@ -92,11 +94,22 @@ class EveFittings(wx.Frame):
 
         self.charChoice.SetSelection(0)
 
+    def kbEvent(self, event):
+        keycode = event.GetKeyCode()
+        if keycode == wx.WXK_ESCAPE:
+            self.closeWindow()
+            return
+        event.Skip()
+
     def OnClose(self, event):
-        self.mainFrame.Unbind(GE.EVT_SSO_LOGOUT)
-        self.mainFrame.Unbind(GE.EVT_SSO_LOGIN)
+        self.closeWindow()
         # self.cacheTimer.Stop()  # must be manually stopped, otherwise crash. See https://github.com/wxWidgets/Phoenix/issues/632
         event.Skip()
+
+    def closeWindow(self):
+        self.mainFrame.Unbind(GE.EVT_SSO_LOGOUT)
+        self.mainFrame.Unbind(GE.EVT_SSO_LOGIN)
+        self.Destroy()
 
     def getActiveCharacter(self):
         selection = self.charChoice.GetCurrentSelection()
@@ -186,6 +199,7 @@ class ESIExceptionHandler(object):
 
 
 class ExportToEve(wx.Frame):
+
     def __init__(self, parent):
         wx.Frame.__init__(self, parent, id=wx.ID_ANY, title="Export fit to EVE", pos=wx.DefaultPosition,
                           size=(wx.Size(350, 100)), style=wx.DEFAULT_FRAME_STYLE | wx.TAB_TRAVERSAL)
@@ -213,6 +227,7 @@ class ExportToEve(wx.Frame):
         self.statusbar.SetStatusWidths([100, -1])
 
         self.Bind(wx.EVT_CLOSE, self.OnClose)
+        self.Bind(wx.EVT_CHAR_HOOK, self.kbEvent)
 
         self.SetSizer(mainSizer)
         self.SetStatusBar(self.statusbar)
@@ -233,11 +248,21 @@ class ExportToEve(wx.Frame):
 
         self.charChoice.SetSelection(0)
 
+    def kbEvent(self, event):
+        keycode = event.GetKeyCode()
+        if keycode == wx.WXK_ESCAPE:
+            self.closeWindow()
+            return
+        event.Skip()
+
     def OnClose(self, event):
+        self.closeWindow()
+        event.Skip()
+
+    def closeWindow(self):
         self.mainFrame.Unbind(GE.EVT_SSO_LOGOUT)
         self.mainFrame.Unbind(GE.EVT_SSO_LOGIN)
-
-        event.Skip()
+        self.Destroy()
 
     def getActiveCharacter(self):
         selection = self.charChoice.GetCurrentSelection()
@@ -283,6 +308,7 @@ class ExportToEve(wx.Frame):
 
 
 class SsoCharacterMgmt(wx.Dialog):
+
     def __init__(self, parent):
         wx.Dialog.__init__(self, parent, id=wx.ID_ANY, title="SSO Character Management", pos=wx.DefaultPosition,
                            size=wx.Size(550, 250), style=wx.DEFAULT_DIALOG_STYLE)
@@ -312,6 +338,7 @@ class SsoCharacterMgmt(wx.Dialog):
         self.deleteBtn.Bind(wx.EVT_BUTTON, self.delChar)
 
         self.mainFrame.Bind(GE.EVT_SSO_LOGIN, self.ssoLogin)
+        self.Bind(wx.EVT_CHAR_HOOK, self.kbEvent)
 
         self.SetSizer(mainSizer)
         self.Layout()
@@ -323,6 +350,16 @@ class SsoCharacterMgmt(wx.Dialog):
             # todo: these events don't unbind properly when window is closed (?), hence the `if`. Figure out better way of doing this.
             self.popCharList()
             event.Skip()
+
+    def kbEvent(self, event):
+        keycode = event.GetKeyCode()
+        if keycode == wx.WXK_ESCAPE:
+            self.closeWindow()
+            return
+        event.Skip()
+
+    def closeWindow(self):
+        self.Destroy()
 
     def popCharList(self):
         sEsi = Esi.getInstance()

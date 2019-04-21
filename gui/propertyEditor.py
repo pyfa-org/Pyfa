@@ -25,6 +25,7 @@ pyfalog = Logger(__name__)
 
 
 class AttributeEditor(wx.Frame):
+
     def __init__(self, parent):
         wx.Frame.__init__(self, parent, wx.ID_ANY, title="Attribute Editor", pos=wx.DefaultPosition,
                           size=wx.Size(650, 600),
@@ -89,8 +90,19 @@ class AttributeEditor(wx.Frame):
         self.SetAutoLayout(True)
 
         self.Bind(wx.EVT_CLOSE, self.OnClose)
+        self.Bind(wx.EVT_CHAR_HOOK, self.kbEvent)
+
+    def kbEvent(self, event):
+        keycode = event.GetKeyCode()
+        if keycode == wx.WXK_ESCAPE:
+            self.closeWindow()
+            return
+        event.Skip()
 
     def OnClose(self, event):
+        self.closeWindow()
+
+    def closeWindow(self):
         fitID = self.mainFrame.getActiveFit()
         if fitID is not None:
             wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fitID))
