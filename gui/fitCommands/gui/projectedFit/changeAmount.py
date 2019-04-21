@@ -1,3 +1,5 @@
+import math
+
 import wx
 
 import gui.mainFrame
@@ -21,7 +23,7 @@ class GuiChangeProjectedFitAmountCommand(wx.Command):
         if self.amount > 0:
             cmd = CalcChangeProjectedFitAmountCommand(fitID=self.fitID, projectedFitID=self.projectedFitID, amount=self.amount)
         else:
-            cmd = CalcRemoveProjectedFitCommand(fitID=self.fitID, projectedFitID=self.projectedFitID)
+            cmd = CalcRemoveProjectedFitCommand(fitID=self.fitID, projectedFitID=self.projectedFitID, amount=math.inf)
         success = self.internalHistory.submit(cmd)
         Fit.getInstance().recalc(self.fitID)
         wx.PostEvent(gui.mainFrame.MainFrame.getInstance(), GE.FitChanged(fitID=self.fitID))
