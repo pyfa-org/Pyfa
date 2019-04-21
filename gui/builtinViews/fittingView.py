@@ -487,15 +487,21 @@ class FittingView(d.Display):
         elif item.isSubsystem:
             self.mainFrame.command.Submit(cmd.GuiAddLocalModuleCommand(fitID=fitID, itemID=itemID))
         elif item.isCharge:
+            failoverToAll = False
+            positionsAll = list(range(len(fit.modules)))
             if dstMod is None or dstMod.isEmpty:
-                positions = list(range(len(fit.modules)))
+                positions = positionsAll
             elif mstate.altDown:
                 positions = getSimilarModPositions(fit.modules, dstMod)
+                failoverToAll = True
             else:
                 positions = [fit.modules.index(dstMod)]
             if len(positions) > 0:
-                self.mainFrame.command.Submit(cmd.GuiChangeLocalModuleChargesCommand(
-                    fitID=fitID, positions=positions, chargeItemID=itemID))
+                command = cmd.GuiChangeLocalModuleChargesCommand(fitID=fitID, positions=positions, chargeItemID=itemID)
+                if not self.mainFrame.command.Submit(command) and failoverToAll:
+                    self.mainFrame.command.Submit(cmd.GuiChangeLocalModuleChargesCommand(
+                        fitID=fitID, positions=positionsAll, chargeItemID=itemID))
+
 
     def swapCargo(self, x, y, cargoItemID):
         """Swap a module from cargo to fitting window"""
