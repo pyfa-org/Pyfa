@@ -400,7 +400,19 @@ class FittingView(d.Display):
         if row != -1 and row not in self.blanks and isinstance(self.mods[row], Module):
             col = self.getColumn(event.Position)
             if col != self.getColIndex(State):
-                self.removeModule(self.mods[row])
+                try:
+                    mod = self.mods[row]
+                except IndexError:
+                    return
+                if not isinstance(mod, Module) or mod.isEmpty:
+                    return
+                if event.altDown:
+                    fit = Fit.getInstance().getFit(self.activeFitID)
+                    positions = getSimilarModPositions(fit.modules, mod)
+                    self.mainFrame.command.Submit(cmd.GuiRemoveLocalModuleCommand(
+                        fitID=self.activeFitID, positions=positions))
+                else:
+                    self.removeModule(mod)
             else:
                 if "wxMSW" in wx.PlatformInfo:
                     self.click(event)
