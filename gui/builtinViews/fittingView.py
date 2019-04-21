@@ -237,17 +237,38 @@ class FittingView(d.Display):
         return self.activeFitID
 
     def startDrag(self, event):
-        row = event.GetIndex()
+        srcRow = event.GetIndex()
 
-        if row != -1 and row not in self.blanks and isinstance(self.mods[row], Module) and not self.mods[row].isEmpty:
-            data = wx.TextDataObject()
-            dataStr = "fitting:" + str(self.mods[row].modPosition)
-            data.SetText(dataStr)
+        if srcRow == -1:
+            return
+        if srcRow in self.blanks:
+            return
+        try:
+            mod = self.mods[srcRow]
+        except IndexError:
+            return
+        if not isinstance(self.mods[srcRow], Module):
+            return
+        if mod.isEmpty:
+            return
+        fit = Fit.getInstance().getFit(self.activeFitID)
+        if mod not in fit.modules:
+            return
 
-            dropSource = wx.DropSource(self)
-            dropSource.SetData(data)
-            DragDropHelper.data = dataStr
-            dropSource.DoDragDrop()
+        row = self.GetFirstSelected()
+        while row != -1:
+            self.Select(row, False)
+            row = self.GetNextSelected(row)
+        self.Select(srcRow, True)
+
+        data = wx.TextDataObject()
+        dataStr = "fitting:" + str(fit.modules.index(mod))
+        data.SetText(dataStr)
+
+        dropSource = wx.DropSource(self)
+        dropSource.SetData(data)
+        DragDropHelper.data = dataStr
+        dropSource.DoDragDrop()
 
     def getSelectedMods(self):
         sel = []
