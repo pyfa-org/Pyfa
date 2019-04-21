@@ -425,43 +425,33 @@ class FittingView(d.Display):
         fitID = self.mainFrame.getActiveFit()
         item = Market.getInstance().getItem(itemID)
         fit = Fit.getInstance().getFit(fitID)
-        mstate = wx.GetMouseState()
-        if item.isModule and mstate.altDown:
-            self.mainFrame.command.Submit(cmd.GuiFillWithNewLocalModulesCommand(fitID=fitID, itemID=itemID))
-        elif item.isModule:
-            dstRow, _ = self.HitTest((x, y))
-            if dstRow != -1 and dstRow not in self.blanks:
-                try:
-                    mod = self.mods[dstRow]
-                except IndexError:
-                    return
-                if not isinstance(mod, Module):
-                    return
-                if mod in fit.modules:
-                    position = fit.modules.index(mod)
-                    self.mainFrame.command.Submit(cmd.GuiAddLocalModuleCommand(
-                        fitID=fitID, itemID=itemID, position=position))
-        elif item.isSubsystem:
-            self.mainFrame.command.Submit(cmd.GuiAddLocalModuleCommand(fitID=fitID, itemID=itemID))
-        elif item.isCharge:
-            dstRow, _ = self.HitTest((x, y))
-            if dstRow != -1 and dstRow not in self.blanks:
-                try:
-                    mod = self.mods[dstRow]
-                except IndexError:
-                    return
-                if not isinstance(mod, Module):
-                    return
-                if mod.isEmpty:
-                    return
-                if mod in fit.modules:
-                    if mstate.altDown:
-                        positions = filterModsByGroups(fit.modules, mod)
-                    else:
-                        positions = [fit.modules.index(mod)]
-                    if len(positions) > 0:
-                        self.mainFrame.command.Submit(cmd.GuiChangeLocalModuleChargesCommand(
-                            fitID=fitID, positions=positions, chargeItemID=itemID))
+        dstRow, _ = self.HitTest((x, y))
+        if dstRow != -1 and dstRow not in self.blanks:
+            try:
+                dstMod = self.mods[dstRow]
+            except IndexError:
+                dstMod = None
+            if not isinstance(dstMod, Module):
+                dstMod = None
+            if dstMod not in fit.modules:
+                dstMod = None
+            mstate = wx.GetMouseState()
+            if item.isModule and mstate.altDown:
+                self.mainFrame.command.Submit(cmd.GuiFillWithNewLocalModulesCommand(fitID=fitID, itemID=itemID))
+            elif item.isModule and dstMod is not None:
+                position = fit.modules.index(dstMod)
+                self.mainFrame.command.Submit(cmd.GuiAddLocalModuleCommand(
+                    fitID=fitID, itemID=itemID, position=position))
+            elif item.isSubsystem:
+                self.mainFrame.command.Submit(cmd.GuiAddLocalModuleCommand(fitID=fitID, itemID=itemID))
+            elif item.isCharge and dstMod is not None and not dstMod.isEmpty:
+                if mstate.altDown:
+                    positions = filterModsByGroups(fit.modules, dstMod)
+                else:
+                    positions = [fit.modules.index(dstMod)]
+                if len(positions) > 0:
+                    self.mainFrame.command.Submit(cmd.GuiChangeLocalModuleChargesCommand(
+                        fitID=fitID, positions=positions, chargeItemID=itemID))
 
     def swapCargo(self, x, y, cargoItemID):
         """Swap a module from cargo to fitting window"""
