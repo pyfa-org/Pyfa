@@ -70,7 +70,7 @@ class RemoveItem(ContextMenu):
         elif srcContext == "projectedFit":
             projectedFit = selection[0]
             self.mainFrame.command.Submit(cmd.GuiRemoveProjectedFitCommand(
-                fitID=fitID, projectedFitID=projectedFit.ID))
+                fitID=fitID, projectedFitID=projectedFit.ID, amount=math.inf))
         elif srcContext == "projectedModule":
             mod = selection[0]
             if mod in fit.projectedModules:

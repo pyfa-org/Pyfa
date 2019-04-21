@@ -126,7 +126,7 @@ class ProjectedView(d.Display):
                 thing = self.get(row)
                 if isinstance(thing, es_Fit):
                     self.mainFrame.command.Submit(cmd.GuiRemoveProjectedFitCommand(
-                        fitID=fitID, projectedFitID=thing.ID))
+                        fitID=fitID, projectedFitID=thing.ID, amount=math.inf))
                 elif isinstance(thing, es_Module):
                     fit = Fit.getInstance().getFit(fitID)
                     if thing in fit.projectedModules:
@@ -148,7 +148,8 @@ class ProjectedView(d.Display):
         if type == "fit":
             activeFit = self.mainFrame.getActiveFit()
             if activeFit:
-                self.mainFrame.command.Submit(cmd.GuiAddProjectedFitCommand(fitID=activeFit, projectedFitID=fitID))
+                self.mainFrame.command.Submit(cmd.GuiAddProjectedFitCommand(
+                    fitID=activeFit, projectedFitID=fitID, amount=1))
 
     def startDrag(self, event):
         row = event.GetIndex()
@@ -335,8 +336,9 @@ class ProjectedView(d.Display):
                 fitID = self.mainFrame.getActiveFit()
                 thing = self.get(row)
                 if isinstance(thing, es_Fit):
+                    amount = math.inf if wx.GetMouseState().altDown else 1
                     self.mainFrame.command.Submit(cmd.GuiRemoveProjectedFitCommand(
-                        fitID=fitID, projectedFitID=thing.ID))
+                        fitID=fitID, projectedFitID=thing.ID, amount=amount))
                 elif isinstance(thing, es_Module):
                     fit = Fit.getInstance().getFit(fitID)
                     if thing in fit.projectedModules:

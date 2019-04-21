@@ -56,7 +56,7 @@ class AddCurrentlyOpenFit(ContextMenu):
         if self.context == 'commandView':
             self.mainFrame.command.Submit(cmd.GuiAddCommandFitCommand(fitID=fitID, commandFitID=fit.ID))
         elif self.context == 'projected':
-            self.mainFrame.command.Submit(cmd.GuiAddProjectedFitCommand(fitID=fitID, projectedFitID=fit.ID))
+            self.mainFrame.command.Submit(cmd.GuiAddProjectedFitCommand(fitID=fitID, projectedFitID=fit.ID, amount=1))
 
 
 AddCurrentlyOpenFit.register()
