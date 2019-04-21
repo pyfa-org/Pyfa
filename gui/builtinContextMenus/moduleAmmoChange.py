@@ -6,7 +6,7 @@ import gui.mainFrame
 from eos.const import FittingHardpoint
 from gui.bitmap_loader import BitmapLoader
 from gui.contextMenu import ContextMenu
-from gui.fitCommands.helpers import filterModsByGroups
+from gui.fitCommands.helpers import getSimilarModPositions
 from service.fit import Fit
 from service.market import Market
 from service.settings import ContextMenuSettings
@@ -236,7 +236,7 @@ class ChangeModuleAmmo(ContextMenu):
             else:
                 return
             selectedModule = self.modules[0]
-            positions = filterModsByGroups(modContainer, selectedModule)
+            positions = getSimilarModPositions(modContainer, selectedModule)
             self.mainFrame.command.Submit(command(
                 fitID=fitID,
                 positions=positions,

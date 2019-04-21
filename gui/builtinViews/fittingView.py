@@ -42,7 +42,7 @@ from gui.utils.staticHelpers import DragDropHelper
 from service.fit import Fit
 from service.market import Market
 from config import slotColourMap
-from gui.fitCommands.helpers import filterModsByGroups
+from gui.fitCommands.helpers import getSimilarModPositions
 
 pyfalog = Logger(__name__)
 
@@ -446,7 +446,7 @@ class FittingView(d.Display):
                 self.mainFrame.command.Submit(cmd.GuiAddLocalModuleCommand(fitID=fitID, itemID=itemID))
             elif item.isCharge and dstMod is not None and not dstMod.isEmpty:
                 if mstate.altDown:
-                    positions = filterModsByGroups(fit.modules, dstMod)
+                    positions = getSimilarModPositions(fit.modules, dstMod)
                 else:
                     positions = [fit.modules.index(dstMod)]
                 if len(positions) > 0:
@@ -674,7 +674,7 @@ class FittingView(d.Display):
                 return
             mainPosition = fit.modules.index(mainMod)
             if event.altDown:
-                positions = filterModsByGroups(fit.modules, mainMod)
+                positions = getSimilarModPositions(fit.modules, mainMod)
             else:
                 positions = []
                 for position, mod in enumerate(fit.modules):

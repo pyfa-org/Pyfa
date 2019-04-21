@@ -346,10 +346,11 @@ def restoreCheckedStates(fit, stateInfo, ignoreModPoss=()):
         fit.projectedDrones[pos].amountActive = amountActive
 
 
-def filterModsByGroups(mods, mainMod):
+def getSimilarModPositions(mods, mainMod):
     sMkt = Market.getInstance()
     mainGroupID = getattr(sMkt.getGroupByItem(mainMod.item), 'ID', None)
     mainMktGroupID = getattr(sMkt.getMarketGroupByItem(mainMod.item), 'ID', None)
+    mainEffects = set(getattr(mainMod.item, 'effects', ()))
     positions = []
     for position, mod in enumerate(mods):
         # Always include selected module itself
@@ -365,9 +366,11 @@ def filterModsByGroups(mods, mainMod):
         # And modules from the same group and market group too
         modGroupID = getattr(sMkt.getGroupByItem(mod.item), 'ID', None)
         modMktGroupID = getattr(sMkt.getMarketGroupByItem(mod.item), 'ID', None)
+        modEffects = set(getattr(mod.item, 'effects', ()))
         if (
             modGroupID is not None and modGroupID == mainGroupID and
-            modMktGroupID is not None and modMktGroupID == mainMktGroupID
+            modMktGroupID is not None and modMktGroupID == mainMktGroupID and
+            modEffects == mainEffects
         ):
             positions.append(position)
             continue
