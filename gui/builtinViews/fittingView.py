@@ -623,10 +623,10 @@ class FittingView(d.Display):
     def spawnMenu(self, event):
         if self.activeFitID is None or self.getColumn(self.ScreenToClient(event.Position)) == self.getColIndex(State):
             return
+
         sMkt = Market.getInstance()
         selection = []
         contexts = []
-
         for mod in self.getSelectedMods():
             # Test if this is a mode, which is a special snowflake of a Module
             if isinstance(mod, Mode):
@@ -650,13 +650,24 @@ class FittingView(d.Display):
                     if srcContext not in tuple(fCtxt[0] for fCtxt in contexts):
                         contexts.append(fullContext)
                 selection.append(mod)
-
         sFit = Fit.getInstance()
         fit = sFit.getFit(self.activeFitID)
-
         contexts.append(("fittingShip", "Ship" if not fit.isStructure else "Citadel"))
 
-        menu = ContextMenu.getMenu(selection[0], selection, *contexts)
+        clickedPos = self.getRow(event.Position)
+        mainMod = None
+        if clickedPos != -1:
+            try:
+                mod = self.mods[clickedPos]
+            except IndexError:
+                pass
+            else:
+                if mod in fit.modules:
+                    mainMod = mod
+        if mainMod is None:
+            mainMod = selection[0]
+
+        menu = ContextMenu.getMenu(mainMod, selection, *contexts)
         self.PopupMenu(menu)
 
     def click(self, event):

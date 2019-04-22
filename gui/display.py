@@ -270,3 +270,18 @@ class Display(wx.ListCtrl):
 
     def columnBackground(self, colItem, item):
         return colItem.GetBackgroundColour()
+
+    def getRow(self, pointAbs, fallback=None):
+        pointBase = self.GetScreenPosition()
+        pointRel = pointAbs - pointBase
+        # HitTest is buggy as hell, do some workarounds here
+        # https://github.com/wxWidgets/Phoenix/issues/232
+        row = self.HitTest(pointRel)[0]
+        if row != -1:
+            return row - 1
+        if fallback is not None:
+            return fallback
+        return row
+
+
+
