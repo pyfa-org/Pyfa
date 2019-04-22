@@ -167,11 +167,15 @@ class Display(wx.ListCtrl):
 
         return lastFound
 
-    def deselectItems(self):
+    def unselectAll(self):
         sel = self.GetFirstSelected()
         while sel != -1:
             self.Select(sel, False)
             sel = self.GetNextSelected(sel)
+
+    def selectAll(self):
+        for row in range(self.GetItemCount()):
+            self.Select(row, True)
 
     def populate(self, stuff):
 

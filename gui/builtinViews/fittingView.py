@@ -164,7 +164,7 @@ class FittingView(d.Display):
         self.hoveredRow = None
         self.hoveredColumn = None
 
-        self.Bind(wx.EVT_KEY_UP, self.kbEvent)
+        self.Bind(wx.EVT_KEY_DOWN, self.kbEvent)
         self.Bind(wx.EVT_LEFT_DOWN, self.click)
         self.Bind(wx.EVT_RIGHT_DOWN, self.click)
         self.Bind(wx.EVT_MIDDLE_DOWN, self.click)
@@ -255,7 +255,7 @@ class FittingView(d.Display):
         if mod not in fit.modules:
             return
 
-        self.deselectItems()
+        self.unselectAll()
         self.Select(srcRow, True)
 
         data = wx.TextDataObject()
@@ -284,6 +284,8 @@ class FittingView(d.Display):
 
     def kbEvent(self, event):
         keycode = event.GetKeyCode()
+        if keycode == 65 and wx.GetMouseState().cmdDown:
+            self.selectAll()
         if keycode == wx.WXK_DELETE or keycode == wx.WXK_NUMPAD_DELETE:
             modules = [m for m in self.getSelectedMods() if not m.isEmpty]
             self.removeModule(modules)

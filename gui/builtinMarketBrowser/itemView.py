@@ -258,7 +258,7 @@ class ItemView(Display):
             sMkt = self.sMkt
             self.metalvls = sMkt.directAttrRequest(items, attrs)
             # Clear selection
-            self.deselectItems()
+            self.unselectAll()
             # Perform sorting, using item's meta levels besides other stuff
             items.sort(key=self.itemSort)
         # Mark current item list as active

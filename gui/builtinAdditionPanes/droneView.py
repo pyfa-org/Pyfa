@@ -211,7 +211,7 @@ class DroneView(Display):
             if item != -1:
                 self.EnsureVisible(item)
 
-            self.deselectItems()
+            self.unselectAll()
 
         self.update(self.drones)
         event.Skip()

@@ -156,7 +156,7 @@ class CommandView(d.Display):
             if item != -1:
                 self.EnsureVisible(item)
 
-            self.deselectItems()
+            self.unselectAll()
 
         # todo: verify
         if not stuff:

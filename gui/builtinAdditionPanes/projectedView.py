@@ -223,7 +223,7 @@ class ProjectedView(d.Display):
             if item != -1:
                 self.EnsureVisible(item)
 
-            self.deselectItems()
+            self.unselectAll()
 
         if not stuff:
             stuff = [DummyEntry("Drag an item or fit, or use right-click menu for wormhole effects")]

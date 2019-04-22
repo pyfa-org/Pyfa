@@ -158,7 +158,7 @@ class CargoView(d.Display):
             if item != -1:
                 self.EnsureVisible(item)
 
-            self.deselectItems()
+            self.unselectAll()
 
         self.populate(self.cargo)
         self.refresh(self.cargo)
