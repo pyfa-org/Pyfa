@@ -14,19 +14,29 @@ class JumpToShip(ContextMenu):
         self.settings = ContextMenuSettings.getInstance()
 
     def display(self, srcContext, selection):
-        return srcContext == "fittingShip"
+        if srcContext != "fittingShip":
+            return False
+        fitTabSelected = self.mainFrame.notebookBrowsers.GetSelection() == 1
+        if not fitTabSelected:
+            return True
+        browsingStage = self.mainFrame.shipBrowser.GetActiveStage()
+        if browsingStage != 3:
+            return True
+        fitID = self.mainFrame.getActiveFit()
+        ship = Fit.getInstance().getFit(fitID).ship
+        browsingShipID = self.mainFrame.shipBrowser.GetStageData(browsingStage)
+        if browsingShipID != ship.item.ID:
+            return True
+        return False
 
     def getText(self, itmContext, selection):
         return "Open in Fitting Browser"
 
     def activate(self, fullContext, selection, i):
         fitID = self.mainFrame.getActiveFit()
-        sFit = Fit.getInstance()
-        stuff = sFit.getFit(fitID).ship
-        groupID = stuff.item.group.ID
-
+        ship = Fit.getInstance().getFit(fitID).ship
         self.mainFrame.notebookBrowsers.SetSelection(1)
-        wx.PostEvent(self.mainFrame.shipBrowser, Stage3Selected(shipID=stuff.item.ID, back=True))
+        wx.PostEvent(self.mainFrame.shipBrowser, Stage3Selected(shipID=ship.item.ID, back=True))
 
 
 JumpToShip.register()
