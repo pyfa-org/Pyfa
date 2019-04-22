@@ -12,7 +12,7 @@ class RemoveItem(ContextMenu):
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
         self.settings = ContextMenuSettings.getInstance()
 
-    def display(self, srcContext, selection):
+    def display(self, srcContext, mainItem, selection):
         return srcContext in ("fittingModule", "droneItem",
                               "implantItem", "boosterItem",
                               "projectedModule", "cargoItem",
@@ -20,12 +20,12 @@ class RemoveItem(ContextMenu):
                               "fighterItem", "projectedFighter",
                               "commandFit")
 
-    def getText(self, itmContext, selection):
+    def getText(self, itmContext, mainItem, selection):
         return 'Remove {}{}'.format(
             itmContext if itmContext is not None else 'Item',
             ' Stack' if itmContext in ('Drone', 'Fit') else '')
 
-    def activate(self, fullContext, selection, i):
+    def activate(self, fullContext, mainItem, selection, i):
 
         srcContext = fullContext[0]
         sFit = Fit.getInstance()

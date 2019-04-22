@@ -10,7 +10,7 @@ class AddToCargo(ContextMenu):
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
         self.settings = ContextMenuSettings.getInstance()
 
-    def display(self, srcContext, selection):
+    def display(self, srcContext, mainItem, selection):
         if srcContext not in ("marketItemGroup", "marketItemMisc"):
             return False
 
@@ -23,10 +23,10 @@ class AddToCargo(ContextMenu):
 
         return True
 
-    def getText(self, itmContext, selection):
+    def getText(self, itmContext, mainItem, selection):
         return "Add {} to Cargo".format(itmContext)
 
-    def activate(self, fullContext, selection, i):
+    def activate(self, fullContext, mainItem, selection, i):
         fitID = self.mainFrame.getActiveFit()
 
         typeID = int(selection[0].ID)

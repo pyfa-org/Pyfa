@@ -12,17 +12,17 @@ class AddCurrentlyOpenFit(ContextMenu):
     def __init__(self):
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
 
-    def display(self, srcContext, selection):
+    def display(self, srcContext, mainItem, selection):
 
         if self.mainFrame.getActiveFit() is None or srcContext not in ('projected', 'commandView'):
             return False
 
         return True
 
-    def getText(self, itmContext, selection):
+    def getText(self, itmContext, mainItem, selection):
         return 'Add Currently Open Fit'
 
-    def getSubMenu(self, context, selection, rootMenu, i, pitem):
+    def getSubMenu(self, context, mainItem, selection, rootMenu, i, pitem):
         self.fitLookup = {}
         self.context = context
         sFit = Fit.getInstance()

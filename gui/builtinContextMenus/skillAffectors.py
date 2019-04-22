@@ -16,7 +16,7 @@ class ChangeAffectingSkills(ContextMenu):
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
         self.settings = ContextMenuSettings.getInstance()
 
-    def display(self, srcContext, selection):
+    def display(self, srcContext, mainItem, selection):
         if not self.settings.get('changeAffectingSkills'):
             return False
 
@@ -60,7 +60,7 @@ class ChangeAffectingSkills(ContextMenu):
         self.skills = sorted(skills, key=lambda x: x.item.name)
         return len(self.skills) > 0
 
-    def getText(self, itmContext, selection):
+    def getText(self, itmContext, mainItem, selection):
         return "Change %s Skills" % itmContext
 
     def addSkill(self, rootMenu, skill, i):
@@ -75,7 +75,7 @@ class ChangeAffectingSkills(ContextMenu):
         rootMenu.Bind(wx.EVT_MENU, self.handleSkillChange, menuItem)
         return menuItem
 
-    def getSubMenu(self, context, selection, rootMenu, i, pitem):
+    def getSubMenu(self, context, mainItem, selection, rootMenu, i, pitem):
         msw = True if "wxMSW" in wx.PlatformInfo else False
         self.skillIds = {}
         sub = wx.Menu()

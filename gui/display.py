@@ -282,6 +282,3 @@ class Display(wx.ListCtrl):
         if fallback is not None:
             return fallback
         return row
-
-
-

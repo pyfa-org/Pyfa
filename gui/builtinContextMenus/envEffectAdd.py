@@ -28,13 +28,13 @@ class AddEnvironmentEffect(ContextMenu):
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
         self.settings = ContextMenuSettings.getInstance()
 
-    def display(self, srcContext, selection):
+    def display(self, srcContext, mainItem, selection):
         return srcContext == "projected"
 
-    def getText(self, itmContext, selection):
+    def getText(self, itmContext, mainItem, selection):
         return "Add Environmental Effect"
 
-    def getSubMenu(self, context, selection, rootMenu, i, pitem):
+    def getSubMenu(self, context, mainItem, selection, rootMenu, i, pitem):
         msw = True if "wxMSW" in wx.PlatformInfo else False
 
         # Wormholes

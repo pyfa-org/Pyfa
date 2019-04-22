@@ -41,13 +41,13 @@ class AddCommandFit(ContextMenu):
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
         self.settings = ContextMenuSettings.getInstance()
 
-    def display(self, srcContext, selection):
+    def display(self, srcContext, mainItem, selection):
         if self.mainFrame.getActiveFit() is None or len(self.__class__.commandFits) == 0 or srcContext != "commandView":
             return False
 
         return True
 
-    def getText(self, itmContext, selection):
+    def getText(self, itmContext, mainItem, selection):
         return "Command Fits"
 
     def addFit(self, menu, fit, includeShip=False):
@@ -58,7 +58,7 @@ class AddCommandFit(ContextMenu):
         menu.Bind(wx.EVT_MENU, self.handleSelection, menuItem)
         return menuItem
 
-    def getSubMenu(self, context, selection, rootMenu, i, pitem):
+    def getSubMenu(self, context, mainItem, selection, rootMenu, i, pitem):
         msw = True if "wxMSW" in wx.PlatformInfo else False
         self.context = context
         self.fitMenuItemIds = {}

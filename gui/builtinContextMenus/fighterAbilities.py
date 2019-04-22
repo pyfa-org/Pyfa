@@ -14,7 +14,7 @@ class FighterAbilities(ContextMenu):
         self.settings = ContextMenuSettings.getInstance()
         self.isProjected = None
 
-    def display(self, srcContext, selection):
+    def display(self, srcContext, mainItem, selection):
         if self.mainFrame.getActiveFit() is None or srcContext not in ("fighterItem", "projectedFighter"):
             return False
 
@@ -22,7 +22,7 @@ class FighterAbilities(ContextMenu):
         self.isProjected = True if srcContext == "projectedFighter" else False
         return True
 
-    def getText(self, itmContext, selection):
+    def getText(self, itmContext, mainItem, selection):
         return "Abilities"
 
     def addAbility(self, menu, ability):
@@ -33,7 +33,7 @@ class FighterAbilities(ContextMenu):
         menu.Bind(wx.EVT_MENU, self.handleMode, menuItem)
         return menuItem
 
-    def getSubMenu(self, context, selection, rootMenu, i, pitem):
+    def getSubMenu(self, context, mainItem, selection, rootMenu, i, pitem):
         msw = True if "wxMSW" in wx.PlatformInfo else False
         self.context = context
         self.abilityIds = {}

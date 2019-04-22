@@ -9,7 +9,7 @@ class AddToCargoAmmo(ContextMenu):
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
         self.settings = ContextMenuSettings.getInstance()
 
-    def display(self, srcContext, selection):
+    def display(self, srcContext, mainItem, selection):
         if srcContext not in ("marketItemGroup", "marketItemMisc") or self.mainFrame.getActiveFit() is None:
             return False
 
@@ -19,10 +19,10 @@ class AddToCargoAmmo(ContextMenu):
             ):
                 return True
 
-    def getText(self, itmContext, selection):
+    def getText(self, itmContext, mainItem, selection):
         return "Add {0} to Cargo (x1000)".format(itmContext)
 
-    def activate(self, fullContext, selection, i):
+    def activate(self, fullContext, mainItem, selection, i):
         fitID = self.mainFrame.getActiveFit()
         typeID = int(selection[0].ID)
         self.mainFrame.command.Submit(cmd.GuiAddCargoCommand(

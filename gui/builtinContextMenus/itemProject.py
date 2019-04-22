@@ -10,7 +10,7 @@ class ProjectItem(ContextMenu):
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
         self.settings = ContextMenuSettings.getInstance()
 
-    def display(self, srcContext, selection):
+    def display(self, srcContext, mainItem, selection):
         if not self.settings.get('project'):
             return False
 
@@ -27,10 +27,10 @@ class ProjectItem(ContextMenu):
         item = selection[0]
         return item.isType("projected")
 
-    def getText(self, itmContext, selection):
+    def getText(self, itmContext, mainItem, selection):
         return "Project {0} onto Fit".format(itmContext)
 
-    def activate(self, fullContext, selection, i):
+    def activate(self, fullContext, mainItem, selection, i):
         fitID = self.mainFrame.getActiveFit()
         category = selection[0].category.name
         if category == 'Module':

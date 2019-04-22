@@ -14,7 +14,7 @@ class ChangeItemToVariation(ContextMenu):
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
         self.settings = ContextMenuSettings.getInstance()
 
-    def display(self, srcContext, selection):
+    def display(self, srcContext, mainItem, selection):
         if not self.settings.get('metaSwap'):
             return False
 
@@ -50,10 +50,10 @@ class ChangeItemToVariation(ContextMenu):
 
         return True
 
-    def getText(self, itmContext, selection):
+    def getText(self, itmContext, mainItem, selection):
         return 'Variations'
 
-    def getSubMenu(self, context, selection, rootMenu, i, pitem):
+    def getSubMenu(self, context, mainItem, selection, rootMenu, i, pitem):
         self.moduleLookup = {}
         sFit = Fit.getInstance()
         fit = sFit.getFit(self.mainFrame.getActiveFit())

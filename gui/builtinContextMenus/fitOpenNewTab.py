@@ -12,7 +12,7 @@ class OpenFitInNewTab(ContextMenu):
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
         self.settings = ContextMenuSettings.getInstance()
 
-    def display(self, srcContext, selection):
+    def display(self, srcContext, mainItem, selection):
         if srcContext not in ("projectedFit", "commandFit"):
             return False
         currentFitID = self.mainFrame.getActiveFit()
@@ -21,10 +21,10 @@ class OpenFitInNewTab(ContextMenu):
             return False
         return True
 
-    def getText(self, itmContext, selection):
+    def getText(self, itmContext, mainItem, selection):
         return "Open Fit in New Tab"
 
-    def activate(self, fullContext, selection, i):
+    def activate(self, fullContext, mainItem, selection, i):
         fit = selection[0]
         wx.PostEvent(self.mainFrame, FitSelected(fitID=fit.ID, startup=2))
 

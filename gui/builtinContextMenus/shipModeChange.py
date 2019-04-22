@@ -13,7 +13,7 @@ class ChangeShipTacticalMode(ContextMenu):
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
         self.settings = ContextMenuSettings.getInstance()
 
-    def display(self, srcContext, selection):
+    def display(self, srcContext, mainItem, selection):
         if self.mainFrame.getActiveFit() is None or srcContext != "fittingShip":
             return False
 
@@ -26,7 +26,7 @@ class ChangeShipTacticalMode(ContextMenu):
 
         return srcContext == "fittingShip" and self.modes is not None
 
-    def getText(self, itmContext, selection):
+    def getText(self, itmContext, mainItem, selection):
         return "Tactical Mode"
 
     def addMode(self, menu, mode):
@@ -37,7 +37,7 @@ class ChangeShipTacticalMode(ContextMenu):
         menu.Bind(wx.EVT_MENU, self.handleMode, menuItem)
         return menuItem
 
-    def getSubMenu(self, context, selection, rootMenu, i, pitem):
+    def getSubMenu(self, context, mainItem, selection, rootMenu, i, pitem):
         msw = True if "wxMSW" in wx.PlatformInfo else False
         self.context = context
         self.modeIds = {}

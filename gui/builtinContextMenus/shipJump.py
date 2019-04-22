@@ -13,7 +13,7 @@ class JumpToShip(ContextMenu):
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
         self.settings = ContextMenuSettings.getInstance()
 
-    def display(self, srcContext, selection):
+    def display(self, srcContext, mainItem, selection):
         if srcContext != "fittingShip":
             return False
         fitTabSelected = self.mainFrame.notebookBrowsers.GetSelection() == 1
@@ -29,10 +29,10 @@ class JumpToShip(ContextMenu):
             return True
         return False
 
-    def getText(self, itmContext, selection):
+    def getText(self, itmContext, mainItem, selection):
         return "Open in Fitting Browser"
 
-    def activate(self, fullContext, selection, i):
+    def activate(self, fullContext, mainItem, selection, i):
         fitID = self.mainFrame.getActiveFit()
         ship = Fit.getInstance().getFit(fitID).ship
         self.mainFrame.notebookBrowsers.SetSelection(1)

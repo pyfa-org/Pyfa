@@ -13,7 +13,7 @@ class ItemStats(ContextMenu):
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
         self.settings = ContextMenuSettings.getInstance()
 
-    def display(self, srcContext, selection):
+    def display(self, srcContext, mainItem, selection):
         return srcContext in ("marketItemGroup", "marketItemMisc",
                               "fittingModule", "fittingCharge",
                               "fittingShip", "baseShip",
@@ -25,10 +25,10 @@ class ItemStats(ContextMenu):
                               "implantItemChar", "projectedFighter",
                               "fittingMode")
 
-    def getText(self, itmContext, selection):
+    def getText(self, itmContext, mainItem, selection):
         return "{0} Stats".format(itmContext if itmContext is not None else "Item")
 
-    def activate(self, fullContext, selection, i):
+    def activate(self, fullContext, mainItem, selection, i):
         srcContext = fullContext[0]
         if srcContext == "fittingShip":
             fitID = self.mainFrame.getActiveFit()

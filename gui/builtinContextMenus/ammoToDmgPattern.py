@@ -12,7 +12,7 @@ class AmmoToDmgPattern(ContextMenu):
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
         self.settings = ContextMenuSettings.getInstance()
 
-    def display(self, srcContext, selection):
+    def display(self, srcContext, mainItem, selection):
         if not self.settings.get('ammoPattern'):
             return False
 
@@ -26,17 +26,17 @@ class AmmoToDmgPattern(ContextMenu):
 
         return False
 
-    def getText(self, itmContext, selection):
+    def getText(self, itmContext, mainItem, selection):
         return "Set {0} as Damage Pattern".format(itmContext if itmContext is not None else "Item")
 
-    def activate(self, fullContext, selection, i):
+    def activate(self, fullContext, mainItem, selection, i):
         item = selection[0]
         fit = self.mainFrame.getActiveFit()
         sFit = Fit.getInstance()
         sFit.setAsPattern(fit, item)
         wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fit))
 
-    def getBitmap(self, context, selection):
+    def getBitmap(self, context, mainItem, selection):
         return None
 
 

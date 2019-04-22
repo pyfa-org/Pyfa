@@ -34,20 +34,22 @@ class ContextMenu(object):
         ContextMenu.menus.append(cls)
 
     @classmethod
-    def hasMenu(cls, selection, *fullContexts):
+    def hasMenu(cls, mainItem, selection, *fullContexts):
         for i, fullContext in enumerate(fullContexts):
             srcContext = fullContext[0]
             for menuHandler in cls.menus:
                 m = menuHandler()
-                if m.display(srcContext, selection):
+                if m.display(srcContext, mainItem, selection):
                     return True
             return False
 
     @classmethod
-    def getMenu(cls, main, selection, *fullContexts):
+    def getMenu(cls, mainItem, selection, *fullContexts):
         """
         getMenu returns a menu that is used with wx.PopupMenu.
 
+        mainItem: usually, provides item which was clicked. Useful for single-
+            item actions when user has multiple items selected
         selection: provides a list of what was selected. If only 1 item was
             selected, it's is a 1-item list or tuple. Can also be None for
             contexts without selection, such as statsPane or projected view
@@ -67,6 +69,7 @@ class ContextMenu(object):
         rootMenu = wx.Menu()
         rootMenu.info = {}
         rootMenu.selection = (selection,) if not hasattr(selection, "__iter__") else selection
+        rootMenu.mainItem = mainItem
         empty = True
         for i, fullContext in enumerate(fullContexts):
             display_amount = 0
@@ -78,14 +81,14 @@ class ContextMenu(object):
             for menuHandler in cls.menus:
                 # loop through registered menus
                 m = menuHandler()
-                if m.display(srcContext, selection):
+                if m.display(srcContext, mainItem, selection):
                     display_amount += 1
-                    texts = m.getText(itemContext, selection)
+                    texts = m.getText(itemContext, mainItem, selection)
 
                     if isinstance(texts, str):
                         texts = (texts,)
 
-                    bitmap = m.getBitmap(srcContext, selection)
+                    bitmap = m.getBitmap(srcContext, mainItem, selection)
                     multiple = not isinstance(bitmap, wx.Bitmap)
                     for it, text in enumerate(texts):
                         id = cls.nextID()
@@ -93,7 +96,7 @@ class ContextMenu(object):
                         rootItem = wx.MenuItem(rootMenu, id, text, kind=wx.ITEM_NORMAL if m.checked is None else wx.ITEM_CHECK)
                         rootMenu.info[id] = (m, fullContext, it)
 
-                        sub = m.getSubMenu(srcContext, selection, rootMenu, it, rootItem)
+                        sub = m.getSubMenu(srcContext, mainItem, selection, rootMenu, it, rootItem)
 
                         if sub is None:
                             # if there is no sub menu, bind the handler to the rootItem
@@ -136,7 +139,7 @@ class ContextMenu(object):
 
         debug_end = len(cls._ids)
         if debug_end - debug_start:
-            pyfalog.debug("{0} new IDs created for this menu", (debug_end - debug_start))
+            pyfalog.debug("{} new IDs created for this menu".format(debug_end - debug_start))
 
         return rootMenu if empty is False else None
 
@@ -147,20 +150,21 @@ class ContextMenu(object):
         if stuff is not None:
             menuHandler, context, i = stuff
             selection = menu.selection
+            mainItem = menu.mainItem
             if not hasattr(selection, "__iter__"):
                 selection = (selection,)
 
-            menuHandler.activate(context, selection, i)
+            menuHandler.activate(context, mainItem, selection, i)
         else:
             event.Skip()
 
-    def display(self, context, selection):
+    def display(self, context, mainItem, selection):
         raise NotImplementedError()
 
-    def activate(self, fullContext, selection, i):
+    def activate(self, fullContext, mainItem, selection, i):
         return None
 
-    def getSubMenu(self, context, selection, rootMenu, i, pitem):
+    def getSubMenu(self, context, mainItem, selection, rootMenu, i, pitem):
         return None
 
     @classmethod
@@ -179,7 +183,7 @@ class ContextMenu(object):
 
         return cls._ids[cls._idxid]
 
-    def getText(self, context, selection):
+    def getText(self, context, mainItem, selection):
         """
         getText should be implemented in child classes, and should return either
         a string that will make up a menu item label or a list of strings which
@@ -189,7 +193,7 @@ class ContextMenu(object):
         """
         raise NotImplementedError()
 
-    def getBitmap(self, context, selection):
+    def getBitmap(self, context, mainItem, selection):
         return None
 
     @property

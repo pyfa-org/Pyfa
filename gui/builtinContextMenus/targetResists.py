@@ -17,7 +17,7 @@ class TargetResists(ContextMenu):
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
         self.settings = ContextMenuSettings.getInstance()
 
-    def display(self, srcContext, selection):
+    def display(self, srcContext, mainItem, selection):
         if self.mainFrame.getActiveFit() is None or srcContext != "firepowerViewFull":
             return False
 
@@ -27,7 +27,7 @@ class TargetResists(ContextMenu):
 
         return len(self.patterns) > 0
 
-    def getText(self, itmContext, selection):
+    def getText(self, itmContext, mainItem, selection):
         return "Target Resists"
 
     def handleResistSwitch(self, event):
@@ -63,7 +63,7 @@ class TargetResists(ContextMenu):
             item.SetBitmap(bitmap)
         return item
 
-    def getSubMenu(self, context, selection, rootMenu, i, pitem):
+    def getSubMenu(self, context, mainItem, selection, rootMenu, i, pitem):
         msw = True if "wxMSW" in wx.PlatformInfo else False
         self.patternIds = {}
         self.subMenus = OrderedDict()

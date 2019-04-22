@@ -141,7 +141,7 @@ class StatsPane(wx.Panel):
 
             event.Skip()
 
-        if ContextMenu.hasMenu(None, (viewName,)):
+        if ContextMenu.hasMenu(None, None, (viewName,)):
             sizer = tp.GetHeaderContentSizer()
             sizer.AddStretchSpacer()
             # Add menu

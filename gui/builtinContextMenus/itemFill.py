@@ -10,7 +10,7 @@ class FillWithItem(ContextMenu):
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
         self.settings = ContextMenuSettings.getInstance()
 
-    def display(self, srcContext, selection):
+    def display(self, srcContext, mainItem, selection):
         if not self.settings.get('moduleFill'):
             return False
         if srcContext not in ('marketItemGroup', 'marketItemMisc'):
@@ -22,10 +22,10 @@ class FillWithItem(ContextMenu):
             return False
         return True
 
-    def getText(self, itmContext, selection):
+    def getText(self, itmContext, mainItem, selection):
         return "Fill With Module"
 
-    def activate(self, fullContext, selection, i):
+    def activate(self, fullContext, mainItem, selection, i):
         self.mainFrame.command.Submit(cmd.GuiFillWithNewLocalModulesCommand(
             fitID=self.mainFrame.getActiveFit(),
             itemID=int(selection[0].ID)))

@@ -14,7 +14,7 @@ class ChangeModuleMutation(ContextMenu):
         self.settings = ContextMenuSettings.getInstance()
         self.eventIDs = {}
 
-    def display(self, srcContext, selection):
+    def display(self, srcContext, mainItem, selection):
 
         # if not self.settings.get('ammoPattern'):
         #     return False
@@ -28,11 +28,11 @@ class ChangeModuleMutation(ContextMenu):
 
         return True
 
-    def getText(self, itmContext, selection):
+    def getText(self, itmContext, mainItem, selection):
         mod = selection[0]
         return "Apply Mutaplasmid" if not mod.isMutated else "Revert to {}".format(mod.baseItem.name)
 
-    def getSubMenu(self, context, selection, rootMenu, i, pitem):
+    def getSubMenu(self, context, mainItem, selection, rootMenu, i, pitem):
         if selection[0].isMutated:
             return None
 
@@ -63,7 +63,7 @@ class ChangeModuleMutation(ContextMenu):
             self.mainFrame.command.Submit(GuiConvertMutatedLocalModuleCommand(
                 fitID=fitID, position=position, mutaplasmid=mutaplasmid))
 
-    def activate(self, fullContext, selection, i):
+    def activate(self, fullContext, mainItem, selection, i):
         mod = selection[0]
         fitID = self.mainFrame.getActiveFit()
         fit = Fit.getInstance().getFit(fitID)
@@ -72,7 +72,7 @@ class ChangeModuleMutation(ContextMenu):
             self.mainFrame.command.Submit(GuiRevertMutatedLocalModuleCommand(
                 fitID=fitID, position=position))
 
-    def getBitmap(self, context, selection):
+    def getBitmap(self, context, mainItem, selection):
         return None
 
 
