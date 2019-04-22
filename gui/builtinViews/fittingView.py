@@ -284,7 +284,10 @@ class FittingView(d.Display):
 
     def kbEvent(self, event):
         keycode = event.GetKeyCode()
-        if keycode == 65 and wx.GetMouseState().cmdDown:
+        mstate = wx.GetMouseState()
+        if keycode == wx.WXK_ESCAPE and not mstate.cmdDown and not mstate.altDown and not mstate.shiftDown:
+            self.unselectAll()
+        if keycode == 65 and mstate.cmdDown and not mstate.altDown and not mstate.shiftDown:
             self.selectAll()
         if keycode == wx.WXK_DELETE or keycode == wx.WXK_NUMPAD_DELETE:
             modules = [m for m in self.getSelectedMods() if not m.isEmpty]
