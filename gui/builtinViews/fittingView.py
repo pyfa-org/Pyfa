@@ -664,7 +664,7 @@ class FittingView(d.Display):
             else:
                 if mod in fit.modules:
                     mainMod = mod
-        if mainMod is None:
+        if mainMod is None and len(selection) > 0:
             mainMod = selection[0]
 
         menu = ContextMenu.getMenu(mainMod, selection, *contexts)
