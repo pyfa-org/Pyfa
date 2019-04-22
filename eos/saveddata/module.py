@@ -913,6 +913,10 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
             state = FittingModuleState.OFFLINE
         else:
             state = transitionMap[currState]
+            # If passive module tries to transition into online and fails,
+            # put it to passive instead
+            if not mod.isValidState(state) and currState == FittingModuleState.ONLINE:
+                state = FittingModuleState.OFFLINE
 
         return mod.getMaxState(proposedState=state)
 
