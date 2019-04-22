@@ -1,5 +1,3 @@
-import math
-
 import wx
 from logbook import Logger
 

@@ -255,10 +255,7 @@ class FittingView(d.Display):
         if mod not in fit.modules:
             return
 
-        row = self.GetFirstSelected()
-        while row != -1:
-            self.Select(row, False)
-            row = self.GetNextSelected(row)
+        self.deselectItems()
         self.Select(srcRow, True)
 
         data = wx.TextDataObject()
@@ -274,7 +271,11 @@ class FittingView(d.Display):
         sel = []
         row = self.GetFirstSelected()
         while row != -1:
-            mod = self.mods[self.GetItemData(row)]
+            try:
+                mod = self.mods[self.GetItemData(row)]
+            except IndexError:
+                row = self.GetNextSelected(row)
+                continue
             if mod and not isinstance(mod, Rack):
                 sel.append(mod)
             row = self.GetNextSelected(row)

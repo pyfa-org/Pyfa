@@ -170,7 +170,7 @@ class Display(wx.ListCtrl):
     def deselectItems(self):
         sel = self.GetFirstSelected()
         while sel != -1:
-            self.SetItemState(sel, 0, wx.LIST_STATE_SELECTED | wx.LIST_STATE_FOCUSED)
+            self.Select(sel, False)
             sel = self.GetNextSelected(sel)
 
     def populate(self, stuff):
