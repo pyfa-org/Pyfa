@@ -43,6 +43,7 @@ class ChangeItemToVariation(ContextMenu):
                 if variations != self.variations:
                     return False
 
+        self.mainItem = mainItem
         self.selection = selection
 
         if len(self.variations) == 1:
@@ -145,45 +146,45 @@ class ChangeItemToVariation(ContextMenu):
             self.mainFrame.command.Submit(cmd.GuiChangeLocalModuleMetasCommand(
                 fitID=fitID, positions=positions, newItemID=item.ID))
         elif context == 'droneItem':
-            drone = self.selection[0]
+            drone = self.mainItem
             if drone in fit.drones:
                 position = fit.drones.index(drone)
                 self.mainFrame.command.Submit(cmd.GuiChangeLocalDroneMetaCommand(
                     fitID=fitID, position=position, newItemID=item.ID))
         elif context == 'fighterItem':
-            fighter = self.selection[0]
+            fighter = self.mainItem
             if fighter in fit.fighters:
                 position = fit.fighters.index(fighter)
                 self.mainFrame.command.Submit(cmd.GuiChangeLocalFighterMetaCommand(
                     fitID=fitID, position=position, newItemID=item.ID))
         elif context == 'implantItem':
-            implant = self.selection[0]
+            implant = self.mainItem
             if implant in fit.implants:
                 position = fit.implants.index(implant)
                 self.mainFrame.command.Submit(cmd.GuiChangeImplantMetaCommand(
                     fitID=fitID, position=position, newItemID=item.ID))
         elif context == 'boosterItem':
-            booster = self.selection[0]
+            booster = self.mainItem
             if booster in fit.boosters:
                 position = fit.boosters.index(booster)
                 self.mainFrame.command.Submit(cmd.GuiChangeBoosterMetaCommand(
                     fitID=fitID, position=position, newItemID=item.ID))
         elif context == 'cargoItem':
-            cargo = self.selection[0]
+            cargo = self.mainItem
             self.mainFrame.command.Submit(cmd.GuiChangeCargoMetaCommand(
                 fitID=fitID, itemID=cargo.itemID, newItemID=item.ID))
         elif context == 'projectedModule':
-            mod = self.selection[0]
+            mod = self.mainItem
             if mod in fit.projectedModules:
                 position = fit.projectedModules.index(mod)
                 self.mainFrame.command.Submit(cmd.GuiChangeProjectedModuleMetaCommand(
                     fitID=fitID, position=position, newItemID=item.ID))
         elif context == 'projectedDrone':
-            drone = self.selection[0]
+            drone = self.mainItem
             self.mainFrame.command.Submit(cmd.GuiChangeProjectedDroneMetaCommand(
                 fitID=fitID, itemID=drone.itemID, newItemID=item.ID))
         elif context == 'projectedFighter':
-            fighter = self.selection[0]
+            fighter = self.mainItem
             if fighter in fit.projectedFighters:
                 position = fit.projectedFighters.index(fighter)
                 self.mainFrame.command.Submit(cmd.GuiChangeProjectedFighterMetaCommand(

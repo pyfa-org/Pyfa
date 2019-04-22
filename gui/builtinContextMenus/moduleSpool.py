@@ -24,7 +24,7 @@ class ChangeModuleSpool(ContextMenu):
         if srcContext not in ('fittingModule', 'projectedModule') or self.mainFrame.getActiveFit() is None:
             return False
 
-        self.mod = selection[0]
+        self.mod = mainItem
         self.context = srcContext
 
         return self.mod.item.group.name in ("Precursor Weapon", "Mutadaptive Remote Armor Repairer")

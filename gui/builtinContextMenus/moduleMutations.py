@@ -22,32 +22,28 @@ class ChangeModuleMutation(ContextMenu):
         if srcContext != "fittingModule" or self.mainFrame.getActiveFit() is None:
             return False
 
-        mod = selection[0]
-        if len(mod.item.mutaplasmids) == 0 and not mod.isMutated:
+        if len(mainItem.item.mutaplasmids) == 0 and not mainItem.isMutated:
             return False
 
         return True
 
     def getText(self, itmContext, mainItem, selection):
-        mod = selection[0]
-        return "Apply Mutaplasmid" if not mod.isMutated else "Revert to {}".format(mod.baseItem.name)
+        return "Apply Mutaplasmid" if not mainItem.isMutated else "Revert to {}".format(mainItem.baseItem.name)
 
     def getSubMenu(self, context, mainItem, selection, rootMenu, i, pitem):
-        if selection[0].isMutated:
+        if mainItem.isMutated:
             return None
 
         msw = True if "wxMSW" in wx.PlatformInfo else False
         self.skillIds = {}
         sub = wx.Menu()
 
-        mod = selection[0]
-
         menu = rootMenu if msw else sub
 
-        for item in mod.item.mutaplasmids:
+        for item in mainItem.item.mutaplasmids:
             label = item.item.name
             id = ContextMenu.nextID()
-            self.eventIDs[id] = (item, mod)
+            self.eventIDs[id] = (item, mainItem)
             skillItem = wx.MenuItem(menu, id, label)
             menu.Bind(wx.EVT_MENU, self.handleMenu, skillItem)
             sub.Append(skillItem)
@@ -64,11 +60,10 @@ class ChangeModuleMutation(ContextMenu):
                 fitID=fitID, position=position, mutaplasmid=mutaplasmid))
 
     def activate(self, fullContext, mainItem, selection, i):
-        mod = selection[0]
         fitID = self.mainFrame.getActiveFit()
         fit = Fit.getInstance().getFit(fitID)
-        if mod in fit.modules:
-            position = fit.modules.index(mod)
+        if mainItem in fit.modules:
+            position = fit.modules.index(mainItem)
             self.mainFrame.command.Submit(GuiRevertMutatedLocalModuleCommand(
                 fitID=fitID, position=position))
 

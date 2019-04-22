@@ -17,8 +17,7 @@ class FillWithItem(ContextMenu):
             return False
         if self.mainFrame.getActiveFit() is None:
             return False
-        item = selection[0]
-        if item.category.name != 'Module':
+        if mainItem.category.name != 'Module':
             return False
         return True
 
@@ -28,7 +27,7 @@ class FillWithItem(ContextMenu):
     def activate(self, fullContext, mainItem, selection, i):
         self.mainFrame.command.Submit(cmd.GuiFillWithNewLocalModulesCommand(
             fitID=self.mainFrame.getActiveFit(),
-            itemID=int(selection[0].ID)))
+            itemID=int(mainItem.ID)))
         self.mainFrame.additionsPane.select('Drones')
 
 

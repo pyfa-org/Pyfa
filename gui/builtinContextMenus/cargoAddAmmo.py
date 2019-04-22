@@ -24,7 +24,7 @@ class AddToCargoAmmo(ContextMenu):
 
     def activate(self, fullContext, mainItem, selection, i):
         fitID = self.mainFrame.getActiveFit()
-        typeID = int(selection[0].ID)
+        typeID = int(mainItem.ID)
         self.mainFrame.command.Submit(cmd.GuiAddCargoCommand(
             fitID=fitID, itemID=typeID, amount=1000))
         self.mainFrame.additionsPane.select("Cargo")

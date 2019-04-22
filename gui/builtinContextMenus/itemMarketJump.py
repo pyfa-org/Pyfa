@@ -18,21 +18,21 @@ class JumpToMarketItem(ContextMenu):
                          "implantItemChar", "fighterItem",
                          "projectedFighter")
 
-        if srcContext not in validContexts or selection is None or len(selection) < 1:
+        if srcContext not in validContexts or mainItem is None:
             return False
 
         sMkt = Market.getInstance()
-        item = getattr(selection[0], "item", selection[0])
-        isMutated = getattr(selection[0], "isMutated", False)
+        item = getattr(mainItem, "item", mainItem)
+        isMutated = getattr(mainItem, "isMutated", False)
         mktGrp = sMkt.getMarketGroupByItem(item)
         if mktGrp is None and isMutated:
-            mktGrp = sMkt.getMarketGroupByItem(selection[0].baseItem)
+            mktGrp = sMkt.getMarketGroupByItem(mainItem.baseItem)
 
         # 1663 is Special Edition Festival Assets, we don't have root group for it
         if mktGrp is None or mktGrp.ID == 1663:
             return False
 
-        doit = not selection[0].isEmpty if srcContext == "fittingModule" else True
+        doit = not mainItem.isEmpty if srcContext == "fittingModule" else True
         return doit
 
     def getText(self, itmContext, mainItem, selection):
@@ -41,14 +41,14 @@ class JumpToMarketItem(ContextMenu):
     def activate(self, fullContext, mainItem, selection, i):
         srcContext = fullContext[0]
         if srcContext in ("fittingCharge", "projectedCharge"):
-            item = selection[0].charge
-        elif hasattr(selection[0], "item"):
-            if getattr(selection[0], "isMutated", False):
-                item = selection[0].baseItem
+            item = mainItem.charge
+        elif hasattr(mainItem, "item"):
+            if getattr(mainItem, "isMutated", False):
+                item = mainItem.baseItem
             else:
-                item = selection[0].item
+                item = mainItem.item
         else:
-            item = selection[0]
+            item = mainItem
 
         self.mainFrame.notebookBrowsers.SetSelection(0)
         self.mainFrame.marketBrowser.jump(item)

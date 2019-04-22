@@ -25,9 +25,8 @@ class FillWithModule(ContextMenu):
 
         if srcContext == "fittingModule":
             fit = Fit.getInstance().getFit(fitID)
-            mod = selection[0]
-            if mod in fit.modules:
-                position = fit.modules.index(mod)
+            if mainItem in fit.modules:
+                position = fit.modules.index(mainItem)
                 self.mainFrame.command.Submit(cmd.GuiFillWithClonedLocalModulesCommand(
                     fitID=fitID, position=position))
 

@@ -39,9 +39,9 @@ class ChangeAffectingSkills(ContextMenu):
             self.stuff = sFit.getFit(fitID).ship
             cont = sFit.getFit(fitID).ship.itemModifiedAttributes
         elif srcContext == "fittingCharge":
-            cont = selection[0].chargeModifiedAttributes
+            cont = mainItem.chargeModifiedAttributes
         else:
-            cont = selection[0].itemModifiedAttributes
+            cont = mainItem.itemModifiedAttributes
 
         skills = set()
 

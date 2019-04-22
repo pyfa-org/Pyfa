@@ -21,7 +21,7 @@ class BoosterSideEffect(ContextMenu):
         if self.mainFrame.getActiveFit() is None or srcContext not in "boosterItem":
             return False
 
-        self.booster = selection[0]
+        self.booster = mainItem
 
         for effect in self.booster.sideEffects:
             if effect.effect.isImplemented:

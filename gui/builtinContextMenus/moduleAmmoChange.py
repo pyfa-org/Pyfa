@@ -25,7 +25,7 @@ class ChangeModuleAmmo(ContextMenu):
         if self.mainFrame.getActiveFit() is None or srcContext not in ("fittingModule", "projectedModule"):
             return False
 
-        modules = selection if srcContext == "fittingModule" else (selection[0],)
+        modules = selection if srcContext == "fittingModule" else (mainItem,)
 
         validCharges = None
         checkedTypes = set()

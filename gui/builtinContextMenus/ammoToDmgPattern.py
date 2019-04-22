@@ -19,9 +19,8 @@ class AmmoToDmgPattern(ContextMenu):
         if srcContext not in ("marketItemGroup", "marketItemMisc") or self.mainFrame.getActiveFit() is None:
             return False
 
-        item = selection[0]
         for attr in ("emDamage", "thermalDamage", "explosiveDamage", "kineticDamage"):
-            if item.getAttribute(attr) is not None:
+            if mainItem.getAttribute(attr) is not None:
                 return True
 
         return False
@@ -30,10 +29,9 @@ class AmmoToDmgPattern(ContextMenu):
         return "Set {0} as Damage Pattern".format(itmContext if itmContext is not None else "Item")
 
     def activate(self, fullContext, mainItem, selection, i):
-        item = selection[0]
         fit = self.mainFrame.getActiveFit()
         sFit = Fit.getInstance()
-        sFit.setAsPattern(fit, item)
+        sFit.setAsPattern(fit, mainItem)
         wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fit))
 
     def getBitmap(self, context, mainItem, selection):

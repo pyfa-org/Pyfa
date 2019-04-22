@@ -16,7 +16,7 @@ class OpenFitInNewTab(ContextMenu):
         if srcContext not in ("projectedFit", "commandFit"):
             return False
         currentFitID = self.mainFrame.getActiveFit()
-        selectedFitID = selection[0].ID
+        selectedFitID = mainItem.ID
         if currentFitID == selectedFitID:
             return False
         return True
@@ -25,8 +25,7 @@ class OpenFitInNewTab(ContextMenu):
         return "Open Fit in New Tab"
 
     def activate(self, fullContext, mainItem, selection, i):
-        fit = selection[0]
-        wx.PostEvent(self.mainFrame, FitSelected(fitID=fit.ID, startup=2))
+        wx.PostEvent(self.mainFrame, FitSelected(fitID=mainItem.ID, startup=2))
 
 
 OpenFitInNewTab.register()

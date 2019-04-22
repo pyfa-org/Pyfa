@@ -19,13 +19,12 @@ class DroneAddStack(ContextMenu):
         if self.mainFrame.getActiveFit() is None:
             return False
 
-        item = selection[0]
-        if item.category.name != 'Drone':
+        if mainItem.category.name != 'Drone':
             return False
 
         fitID = self.mainFrame.getActiveFit()
         fit = Fit.getInstance().getFit(fitID)
-        amount = droneStackLimit(fit, item)
+        amount = droneStackLimit(fit, mainItem)
         if amount < 1:
             return False
 
@@ -39,7 +38,7 @@ class DroneAddStack(ContextMenu):
     def activate(self, fullContext, mainItem, selection, i):
         self.mainFrame.command.Submit(cmd.GuiAddLocalDroneCommand(
             fitID=self.mainFrame.getActiveFit(),
-            itemID=int(selection[0].ID),
+            itemID=int(mainItem.ID),
             amount=self.amount))
         self.mainFrame.additionsPane.select('Drones')
 

@@ -50,7 +50,7 @@ class addImplantSet(ContextMenu):
 
         self.context = context
         if len(selection) == 1:
-            self.selection = selection[0]  # dirty hack here
+            self.selection = mainItem  # dirty hack here
 
         self.idmap = {}
 

@@ -35,9 +35,9 @@ class ItemStats(ContextMenu):
             sFit = Fit.getInstance()
             stuff = sFit.getFit(fitID).ship
         elif srcContext == "fittingMode":
-            stuff = selection[0].item
+            stuff = mainItem.item
         else:
-            stuff = selection[0]
+            stuff = mainItem
 
         if srcContext == "fittingModule" and stuff.isEmpty:
             return
