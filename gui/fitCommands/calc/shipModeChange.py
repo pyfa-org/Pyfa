@@ -21,7 +21,7 @@ class CalcChangeShipModeCommand(wx.Command):
     def Do(self):
         pyfalog.debug('Doing changing ship mode to {} for fit {}'.format(self.itemID, self.fitID))
         fit = Fit.getInstance().getFit(self.fitID)
-        self.savedItemID = fit.modeID
+        self.savedItemID = fit.mode.item.ID
         item = Market.getInstance().getItem(self.itemID)
         mode = Mode(item)
         fit.mode = mode
