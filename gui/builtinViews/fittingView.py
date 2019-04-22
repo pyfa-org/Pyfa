@@ -602,7 +602,6 @@ class FittingView(d.Display):
         self.populate(self.mods)
 
     def fitChanged(self, event):
-        # print('====== Fit Changed: {} {} activeFitID: {}, eventFitID: {}'.format(repr(self), str(bool(self)), self.activeFitID, event.fitID))
         if not self:
             event.Skip()
             return
@@ -626,7 +625,6 @@ class FittingView(d.Display):
             return
         sMkt = Market.getInstance()
         selection = []
-        sel = self.GetFirstSelected()
         contexts = []
 
         for mod in self.getSelectedMods():
@@ -658,7 +656,7 @@ class FittingView(d.Display):
 
         contexts.append(("fittingShip", "Ship" if not fit.isStructure else "Citadel"))
 
-        menu = ContextMenu.getMenu(selection, *contexts)
+        menu = ContextMenu.getMenu(selection[0], selection, *contexts)
         self.PopupMenu(menu)
 
     def click(self, event):

@@ -44,7 +44,7 @@ class ContextMenu(object):
             return False
 
     @classmethod
-    def getMenu(cls, selection, *fullContexts):
+    def getMenu(cls, main, selection, *fullContexts):
         """
         getMenu returns a menu that is used with wx.PopupMenu.
 

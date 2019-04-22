@@ -202,7 +202,7 @@ class CommandView(d.Display):
             context = ((fitSrcContext, fitItemContext),)
 
         context += (("commandView",),)
-        menu = ContextMenu.getMenu((item,) if item is not None else [], *context)
+        menu = ContextMenu.getMenu(item, (item,) if item is not None else [], *context)
         if menu is not None:
             self.PopupMenu(menu)
 

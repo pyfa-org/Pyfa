@@ -82,7 +82,8 @@ class ItemAffectedBy(wx.Panel):
         # instead, we send the item.
         type_ = stuff.__class__.__name__
         contexts.append(("itemStats", type_))
-        menu = ContextMenu.getMenu(stuff if type_ != "Skill" else stuff.item, *contexts)
+        stuff = stuff if type_ != "Skill" else stuff.item
+        menu = ContextMenu.getMenu(stuff, (stuff,), *contexts)
         self.PopupMenu(menu)
 
     def ExpandCollapseTree(self):

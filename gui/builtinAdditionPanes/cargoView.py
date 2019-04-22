@@ -187,5 +187,5 @@ class CargoView(d.Display):
             sourceContext = "cargoItem"
             itemContext = sMkt.getCategoryByItem(cargo.item).name
 
-            menu = ContextMenu.getMenu((cargo,), (sourceContext, itemContext))
+            menu = ContextMenu.getMenu(cargo, (cargo,), (sourceContext, itemContext))
             self.PopupMenu(menu)

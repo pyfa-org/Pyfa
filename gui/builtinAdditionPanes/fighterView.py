@@ -316,5 +316,5 @@ class FighterDisplay(d.Display):
             sMkt = Market.getInstance()
             sourceContext = "fighterItem"
             itemContext = sMkt.getCategoryByItem(fighter.item).name
-            menu = ContextMenu.getMenu((fighter,), (sourceContext, itemContext))
+            menu = ContextMenu.getMenu(fighter, (fighter,), (sourceContext, itemContext))
             self.PopupMenu(menu)

@@ -417,8 +417,8 @@ class SkillTreeView(wx.Panel):
         srcContext = "skillItem"
         itemContext = "Skill"
         context = (srcContext, itemContext)
-        self.statsMenu = ContextMenu.getMenu(None, context)
-        self.levelChangeMenu = ContextMenu.getMenu(None, context) or wx.Menu()
+        self.statsMenu = ContextMenu.getMenu(None, None, context)
+        self.levelChangeMenu = ContextMenu.getMenu(None, None, context) or wx.Menu()
         self.levelChangeMenu.AppendSeparator()
         self.levelIds = {}
 
@@ -715,7 +715,8 @@ class ImplantEditorView(BaseImplantEditorView):
         context = (("implantEditor",),)
         # fuck good coding practices, passing a pointer to the character editor here for [reasons] =D
         # (see implantSets context class for info)
-        menu = ContextMenu.getMenu((self.Parent.Parent,), *context)
+        item = self.Parent.Parent
+        menu = ContextMenu.getMenu(item, (item,), *context)
 
         if menu:
             self.PopupMenu(menu)
