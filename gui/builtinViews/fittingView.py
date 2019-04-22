@@ -285,17 +285,8 @@ class FittingView(d.Display):
     def kbEvent(self, event):
         keycode = event.GetKeyCode()
         if keycode == wx.WXK_DELETE or keycode == wx.WXK_NUMPAD_DELETE:
-            row = self.GetFirstSelected()
-            modules = []
-
-            while row != -1:
-                if row not in self.blanks:
-                    mod = self.mods[row]
-                    if isinstance(mod, Module) and not mod.isEmpty:
-                        modules.append(self.mods[row])
-                row = self.GetNextSelected(row)
+            modules = [m for m in self.getSelectedMods() if not m.isEmpty]
             self.removeModule(modules)
-
         event.Skip()
 
     def fitRemoved(self, event):
@@ -392,17 +383,10 @@ class FittingView(d.Display):
                             if isinstance(mod, Module) and not mod.isEmpty:
                                 positions.append(position)
                     else:
-                        sel = self.GetFirstSelected()
-                        while sel != -1 and sel not in self.blanks:
-                            try:
-                                mod = self.mods[self.GetItemData(sel)]
-                            except IndexError:
-                                sel = self.GetNextSelected(sel)
+                        for mod in self.getSelectedMods():
+                            if mod.isEmpty or mod not in fit.modules:
                                 continue
-                            if isinstance(mod, Module) and not mod.isEmpty and mod in fit.modules:
-                                positions.append(fit.modules.index(mod))
-                            sel = self.GetNextSelected(sel)
-
+                            positions.append(fit.modules.index(mod))
                     if len(positions) > 0:
                         self.mainFrame.command.Submit(cmd.GuiChangeLocalModuleChargesCommand(
                             fitID=fitID, positions=positions, chargeItemID=itemID))
@@ -643,38 +627,29 @@ class FittingView(d.Display):
         sel = self.GetFirstSelected()
         contexts = []
 
-        while sel != -1:
+        for mod in self.getSelectedMods():
+            # Test if this is a mode, which is a special snowflake of a Module
+            if isinstance(mod, Mode):
+                srcContext = "fittingMode"
+                itemContext = "Tactical Mode"
+                fullContext = (srcContext, itemContext)
+                if srcContext not in tuple(fCtxt[0] for fCtxt in contexts):
+                    contexts.append(fullContext)
+                selection.append(mod)
+            elif not mod.isEmpty:
+                srcContext = "fittingModule"
+                itemContext = sMkt.getCategoryByItem(mod.item).name
+                fullContext = (srcContext, itemContext)
+                if srcContext not in tuple(fCtxt[0] for fCtxt in contexts):
+                    contexts.append(fullContext)
 
-            if sel not in self.blanks:
-                try:
-                    mod = self.mods[self.GetItemData(sel)]
-                except IndexError:
-                    sel = self.GetNextSelected(sel)
-                    continue
-                # Test if this is a mode, which is a special snowflake of a Module
-                if isinstance(mod, Mode):
-                    srcContext = "fittingMode"
-                    itemContext = "Tactical Mode"
+                if mod.charge is not None:
+                    srcContext = "fittingCharge"
+                    itemContext = sMkt.getCategoryByItem(mod.charge).name
                     fullContext = (srcContext, itemContext)
                     if srcContext not in tuple(fCtxt[0] for fCtxt in contexts):
                         contexts.append(fullContext)
-                    selection.append(mod)
-                elif not mod.isEmpty:
-                    srcContext = "fittingModule"
-                    itemContext = sMkt.getCategoryByItem(mod.item).name
-                    fullContext = (srcContext, itemContext)
-                    if srcContext not in tuple(fCtxt[0] for fCtxt in contexts):
-                        contexts.append(fullContext)
-
-                    if mod.charge is not None:
-                        srcContext = "fittingCharge"
-                        itemContext = sMkt.getCategoryByItem(mod.charge).name
-                        fullContext = (srcContext, itemContext)
-                        if srcContext not in tuple(fCtxt[0] for fCtxt in contexts):
-                            contexts.append(fullContext)
-                    selection.append(mod)
-
-            sel = self.GetNextSelected(sel)
+                selection.append(mod)
 
         sFit = Fit.getInstance()
         fit = sFit.getFit(self.activeFitID)
