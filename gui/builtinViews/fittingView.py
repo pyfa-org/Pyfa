@@ -717,7 +717,8 @@ class FittingView(d.Display):
                 mainMod = self.mods[self.GetItemData(row)]
             except IndexError:
                 return
-
+            if mainMod.isEmpty:
+                return
             fitID = self.mainFrame.getActiveFit()
             fit = Fit.getInstance().getFit(fitID)
             if mainMod not in fit.modules:
