@@ -4,6 +4,7 @@ import wx
 import gui.fitCommands as cmd
 import gui.mainFrame
 from eos.const import FittingHardpoint
+from eos.saveddata.module import Module
 from gui.bitmap_loader import BitmapLoader
 from gui.contextMenu import ContextMenu
 from gui.fitCommands.helpers import getSimilarModPositions
@@ -34,13 +35,18 @@ class ChangeModuleAmmo(ContextMenu):
             if mod.item.ID in checkedTypes:
                 continue
             checkedTypes.add(mod.item.ID)
-            currCharges = mod.getValidCharges()
-            if len(currCharges) > 0:
-                if validCharges is not None and validCharges != currCharges:
-                    return False
+            # Do not try to grab it for modes which can also be passed as part of selection
+            if not isinstance(mod, Module):
+                continue
 
-                validCharges = currCharges
-                self.module = mod
+            currCharges = mod.getValidCharges()
+            if len(currCharges) == 0:
+                continue
+
+            if validCharges is not None and validCharges != currCharges:
+                return False
+            validCharges = currCharges
+            self.module = mod
 
         if validCharges is None:
             return False
