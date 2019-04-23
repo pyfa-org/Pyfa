@@ -21,47 +21,39 @@ class ChangeModuleAmmo(ContextMenuCombined):
     def __init__(self):
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
         self.settings = ContextMenuSettings.getInstance()
+        # Format: {type ID: set(loadable, charges)}
+        self.loadableCharges = {}
 
     def display(self, srcContext, mainItem, selection):
         if self.mainFrame.getActiveFit() is None or srcContext not in ("fittingModule", "projectedModule"):
             return False
 
-        if len(selection) == 0:
+        self.mainCharges = self.getChargesForMod(mainItem)
+        if not self.mainCharges:
             return False
 
-        validCharges = None
-        checkedTypes = set()
-
-        for mod in selection:
-            # loop through modules and gather list of valid charges
-            if mod.item.ID in checkedTypes:
-                continue
-            checkedTypes.add(mod.item.ID)
-            # Do not try to grab it for modes which can also be passed as part of selection
-            if not isinstance(mod, Module):
-                continue
-
-            currCharges = mod.getValidCharges()
-            if len(currCharges) == 0:
-                continue
-
-            if validCharges is not None and validCharges != currCharges:
-                return False
-
-            validCharges = currCharges
-            self.module = mod
-
-        if validCharges is None:
-            return False
-
-        self.mainItem = mainItem
+        self.module = mainItem
         self.selection = selection
-        self.charges = list([charge for charge in validCharges if Market.getInstance().getPublicityByItem(charge)])
-        self.context = srcContext
-        return len(self.charges) > 0
+        self.srcContext = srcContext
+        return True
 
     def getText(self, itmContext, mainItem, selection):
         return "Charge"
+
+    def getChargesForMod(self, mod):
+        sMkt = Market.getInstance()
+        if mod is None or mod.isEmpty:
+            return set()
+        typeID = mod.item.ID
+        if typeID in self.loadableCharges:
+            return self.loadableCharges[typeID]
+        chargeSet = self.loadableCharges.setdefault(typeID, set())
+        # Do not try to grab it for modes which can also be passed as part of selection
+        if isinstance(mod, Module):
+            for charge in mod.getValidCharges():
+                if sMkt.getPublicityByItem(charge):
+                    chargeSet.add(charge)
+        return chargeSet
 
     def turretSorter(self, charge):
         damage = 0
@@ -150,8 +142,8 @@ class ChangeModuleAmmo(ContextMenuCombined):
             range_ = None
             nameBase = None
             sub = None
-            self.charges.sort(key=self.turretSorter)
-            for charge in self.charges:
+            chargesSorted = sorted(self.mainCharges, key=self.turretSorter)
+            for charge in chargesSorted:
                 if "civilian" in charge.name.lower():
                     continue
                 currBase = charge.name.rsplit()[-2:]
@@ -184,11 +176,11 @@ class ChangeModuleAmmo(ContextMenuCombined):
 
             self.addSeperator(m, "Short Range")
         elif hardpoint == FittingHardpoint.MISSILE and moduleName != 'Festival Launcher':
-            self.charges.sort(key=self.missileSorter)
             type_ = None
             sub = None
             defender = None
-            for charge in self.charges:
+            chargesSorted = sorted(self.mainCharges, key=self.missileSorter)
+            for charge in chargesSorted:
                 currType = self.damageInfo(charge)[0]
 
                 if currType != type_ or type_ is None:
@@ -217,8 +209,8 @@ class ChangeModuleAmmo(ContextMenuCombined):
             if sub is not None:
                 self.addSeperator(sub, "More Damage")
         else:
-            self.charges.sort(key=self.nameSorter)
-            for charge in self.charges:
+            chargesSorted = sorted(self.mainCharges, key=self.nameSorter)
+            for charge in chargesSorted:
                 m.Append(self.addCharge(rootMenu if msw else m, charge))
 
         m.Append(self.addCharge(rootMenu if msw else m, None))
@@ -237,25 +229,24 @@ class ChangeModuleAmmo(ContextMenuCombined):
         # Switch in selection or all modules, depending on modifier key state and settings
         switchAll = sFit.serviceFittingOptions['ammoChangeAll'] is not (mstate.cmdDown or mstate.altDown)
         if switchAll:
-            if self.context == 'fittingModule':
+            if self.srcContext == 'fittingModule':
                 command = cmd.GuiChangeLocalModuleChargesCommand
                 modContainer = fit.modules
-            elif self.context == 'projectedModule':
+            elif self.srcContext == 'projectedModule':
                 command = cmd.GuiChangeProjectedModuleChargesCommand
                 modContainer = fit.projectedModules
             else:
                 return
-            selectedModule = self.selection[0] if self.mainItem is None else self.mainItem
-            positions = getSimilarModPositions(modContainer, selectedModule)
+            positions = getSimilarModPositions(modContainer, self.module)
             self.mainFrame.command.Submit(command(
                 fitID=fitID,
                 positions=positions,
                 chargeItemID=charge.ID if charge is not None else None))
         else:
-            if self.context == 'fittingModule':
+            if self.srcContext == 'fittingModule':
                 command = cmd.GuiChangeLocalModuleChargesCommand
                 modContainer = fit.modules
-            elif self.context == 'projectedModule':
+            elif self.srcContext == 'projectedModule':
                 command = cmd.GuiChangeProjectedModuleChargesCommand
                 modContainer = fit.projectedModules
             else:
@@ -263,7 +254,9 @@ class ChangeModuleAmmo(ContextMenuCombined):
             positions = []
             for position, mod in enumerate(modContainer):
                 if mod in self.selection:
-                    positions.append(position)
+                    modCharges = self.getChargesForMod(mod)
+                    if modCharges.issubset(self.mainCharges):
+                        positions.append(position)
             self.mainFrame.command.Submit(command(
                 fitID=fitID,
                 positions=positions,

@@ -272,6 +272,8 @@ class Display(wx.ListCtrl):
         return colItem.GetBackgroundColour()
 
     def getRow(self, pointAbs, fallback=None):
+        if pointAbs == wx.Point(-1, -1):
+            return -1
         pointBase = self.GetScreenPosition()
         pointRel = pointAbs - pointBase
         # HitTest is buggy as hell, do some workarounds here
