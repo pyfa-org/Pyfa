@@ -2,13 +2,13 @@
 import wx
 
 import gui.mainFrame
-from gui.contextMenu import ContextMenu
+from gui.contextMenu import ContextMenuCombined
 from gui.itemStats import ItemStatsDialog
 from service.fit import Fit
 from service.settings import ContextMenuSettings
 
 
-class ItemStats(ContextMenu):
+class ItemStats(ContextMenuCombined):
     def __init__(self):
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
         self.settings = ContextMenuSettings.getInstance()

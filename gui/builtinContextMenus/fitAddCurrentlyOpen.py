@@ -4,11 +4,11 @@ import wx
 import gui.fitCommands as cmd
 import gui.mainFrame
 from gui.builtinViews.emptyView import BlankPage
-from gui.contextMenu import ContextMenu
+from gui.contextMenu import ContextMenuCombined
 from service.fit import Fit
 
 
-class AddCurrentlyOpenFit(ContextMenu):
+class AddCurrentlyOpenFit(ContextMenuCombined):
 
     def __init__(self):
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
@@ -41,7 +41,7 @@ class AddCurrentlyOpenFit(ContextMenu):
             if isinstance(page, BlankPage):
                 continue
             fit = sFit.getFit(page.activeFitID, basic=True)
-            id = ContextMenu.nextID()
+            id = ContextMenuCombined.nextID()
             mitem = wx.MenuItem(rootMenu, id, "{}: {}".format(fit.ship.item.name, fit.name))
             bindmenu.Bind(wx.EVT_MENU, self.handleSelection, mitem)
             self.fitLookup[id] = fit

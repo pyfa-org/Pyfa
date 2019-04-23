@@ -5,13 +5,13 @@ import gui.globalEvents as GE
 import gui.mainFrame
 from eos.saveddata.character import Skill
 from gui.bitmap_loader import BitmapLoader
-from gui.contextMenu import ContextMenu
+from gui.contextMenu import ContextMenuCombined
 from service.character import Character
 from service.fit import Fit
 from service.settings import ContextMenuSettings
 
 
-class ChangeAffectingSkills(ContextMenu):
+class ChangeAffectingSkills(ContextMenuCombined):
     def __init__(self):
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
         self.settings = ContextMenuSettings.getInstance()
@@ -78,7 +78,7 @@ class ChangeAffectingSkills(ContextMenu):
         else:
             label = "Level %s" % i
 
-        id = ContextMenu.nextID()
+        id = ContextMenuCombined.nextID()
         self.skillIds[id] = (skill, i)
         menuItem = wx.MenuItem(rootMenu, id, label, kind=wx.ITEM_RADIO)
         rootMenu.Bind(wx.EVT_MENU, self.handleSkillChange, menuItem)
@@ -90,7 +90,7 @@ class ChangeAffectingSkills(ContextMenu):
         sub = wx.Menu()
 
         for skill in self.skills:
-            skillItem = wx.MenuItem(sub, ContextMenu.nextID(), skill.item.name)
+            skillItem = wx.MenuItem(sub, ContextMenuCombined.nextID(), skill.item.name)
             grandSub = wx.Menu()
             skillItem.SetSubMenu(grandSub)
             if skill.learned:

@@ -2,13 +2,13 @@
 import wx
 
 import gui.mainFrame
-from gui.contextMenu import ContextMenu
+from gui.contextMenu import ContextMenuCombined
 from gui.fitCommands import GuiConvertMutatedLocalModuleCommand, GuiRevertMutatedLocalModuleCommand
 from service.settings import ContextMenuSettings
 from service.fit import Fit
 
 
-class ChangeModuleMutation(ContextMenu):
+class ChangeModuleMutation(ContextMenuCombined):
 
     def __init__(self):
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
@@ -42,7 +42,7 @@ class ChangeModuleMutation(ContextMenu):
 
         for item in mainItem.item.mutaplasmids:
             label = item.item.name
-            id = ContextMenu.nextID()
+            id = ContextMenuCombined.nextID()
             self.eventIDs[id] = (item, mainItem)
             skillItem = wx.MenuItem(menu, id, label)
             menu.Bind(wx.EVT_MENU, self.handleMenu, skillItem)

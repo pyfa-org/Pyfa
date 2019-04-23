@@ -5,12 +5,12 @@ import eos.config
 import gui.fitCommands as cmd
 import gui.mainFrame
 from eos.utils.spoolSupport import SpoolType, SpoolOptions
-from gui.contextMenu import ContextMenu
+from gui.contextMenu import ContextMenuCombined
 from service.settings import ContextMenuSettings
 from service.fit import Fit
 
 
-class ChangeModuleSpool(ContextMenu):
+class ChangeModuleSpool(ContextMenuCombined):
 
     def __init__(self):
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
@@ -50,7 +50,7 @@ class ChangeModuleSpool(ContextMenu):
         cycleMax = self.mod.getSpoolData(spoolOptions=SpoolOptions(SpoolType.SCALE, 1, True))[0]
 
         for cycle in range(cycleMin, cycleMax + 1):
-            menuId = ContextMenu.nextID()
+            menuId = ContextMenuCombined.nextID()
 
             # Show default only for current value and when not overriden
             if not isNotDefault and cycle == cycleDefault:
@@ -64,7 +64,7 @@ class ChangeModuleSpool(ContextMenu):
             item.Check(isNotDefault and cycle == cycleCurrent)
             self.cycleMap[menuId] = cycle
 
-        self.resetId = ContextMenu.nextID()
+        self.resetId = ContextMenuCombined.nextID()
         item = wx.MenuItem(m, self.resetId, "Reset")
         bindmenu.Bind(wx.EVT_MENU, self.handleSpoolChange, item)
         m.Append(item)

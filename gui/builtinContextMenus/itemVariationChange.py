@@ -3,13 +3,13 @@ import wx
 
 import gui.fitCommands as cmd
 import gui.mainFrame
-from gui.contextMenu import ContextMenu
+from gui.contextMenu import ContextMenuCombined
 from service.fit import Fit
 from service.market import Market
 from service.settings import ContextMenuSettings
 
 
-class ChangeItemToVariation(ContextMenu):
+class ChangeItemToVariation(ContextMenuCombined):
     def __init__(self):
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
         self.settings = ContextMenuSettings.getInstance()
@@ -119,11 +119,11 @@ class ChangeItemToVariation(ContextMenu):
 
             if thisgroup != group and context not in ('implantItem', 'boosterItem'):
                 group = thisgroup
-                id = ContextMenu.nextID()
+                id = ContextMenuCombined.nextID()
                 m.Append(id, '─ %s ─' % group)
                 m.Enable(id, False)
 
-            id = ContextMenu.nextID()
+            id = ContextMenuCombined.nextID()
             mitem = wx.MenuItem(rootMenu, id, item.name)
             bindmenu.Bind(wx.EVT_MENU, self.handleModule, mitem)
 

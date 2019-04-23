@@ -4,11 +4,11 @@ import wx
 
 import gui.globalEvents as GE
 import gui.mainFrame
-from gui.contextMenu import ContextMenu
+from gui.contextMenu import ContextMenuCombined
 from service.settings import MarketPriceSettings
 
 
-class ItemGroupPrice(ContextMenu, metaclass=ABCMeta):
+class ItemGroupPrice(ContextMenuCombined, metaclass=ABCMeta):
 
     def __init__(self):
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()

@@ -3,12 +3,12 @@ import wx
 
 import gui.mainFrame
 from gui import fitCommands as cmd
-from gui.contextMenu import ContextMenu
+from gui.contextMenu import ContextMenuCombined
 from service.fit import Fit
 from service.settings import ContextMenuSettings
 
 
-class BoosterSideEffects(ContextMenu):
+class BoosterSideEffects(ContextMenuCombined):
 
     def __init__(self):
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
@@ -34,7 +34,7 @@ class BoosterSideEffects(ContextMenu):
 
     def addEffect(self, menu, ability):
         label = ability.name
-        id = ContextMenu.nextID()
+        id = ContextMenuCombined.nextID()
         self.effectIds[id] = ability
 
         menuItem = wx.MenuItem(menu, id, label, kind=wx.ITEM_CHECK)

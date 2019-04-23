@@ -1,10 +1,10 @@
 import gui.mainFrame
-from gui.contextMenu import ContextMenu
+from gui.contextMenu import ContextMenuCombined
 from service.market import Market
 from service.settings import ContextMenuSettings
 
 
-class JumpToMarketItem(ContextMenu):
+class JumpToMarketItem(ContextMenuCombined):
     def __init__(self):
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
         self.settings = ContextMenuSettings.getInstance()

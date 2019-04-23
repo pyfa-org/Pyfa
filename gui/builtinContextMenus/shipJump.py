@@ -3,12 +3,12 @@ import wx
 
 import gui.mainFrame
 from gui.builtinShipBrowser.events import Stage3Selected
-from gui.contextMenu import ContextMenu
+from gui.contextMenu import ContextMenuCombined
 from service.fit import Fit
 from service.settings import ContextMenuSettings
 
 
-class JumpToShip(ContextMenu):
+class JumpToShip(ContextMenuCombined):
 
     def __init__(self):
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()

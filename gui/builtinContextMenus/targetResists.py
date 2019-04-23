@@ -6,13 +6,13 @@ import wx
 import gui.globalEvents as GE
 import gui.mainFrame
 from gui.bitmap_loader import BitmapLoader
-from gui.contextMenu import ContextMenu
+from gui.contextMenu import ContextMenuCombined
 from service.fit import Fit
 from service.settings import ContextMenuSettings
 from service.targetResists import TargetResists as svc_TargetResists
 
 
-class TargetResists(ContextMenu):
+class TargetResists(ContextMenuCombined):
 
     def __init__(self):
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
@@ -43,7 +43,7 @@ class TargetResists(ContextMenu):
         wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fitID))
 
     def addPattern(self, rootMenu, pattern):
-        id = ContextMenu.nextID()
+        id = ContextMenuCombined.nextID()
         name = getattr(pattern, "_name", pattern.name) if pattern is not None else "No Profile"
 
         self.patternIds[id] = pattern
@@ -93,7 +93,7 @@ class TargetResists(ContextMenu):
         # Items that have a parent
         for menuName, patterns in list(self.subMenus.items()):
             # Create parent item for root menu that is simply name of parent
-            item = wx.MenuItem(rootMenu, ContextMenu.nextID(), menuName)
+            item = wx.MenuItem(rootMenu, ContextMenuCombined.nextID(), menuName)
 
             # Create menu for child items
             grandSub = wx.Menu()

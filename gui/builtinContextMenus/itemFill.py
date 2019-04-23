@@ -1,10 +1,10 @@
 import gui.fitCommands as cmd
 import gui.mainFrame
-from gui.contextMenu import ContextMenu
+from gui.contextMenu import ContextMenuCombined
 from service.settings import ContextMenuSettings
 
 
-class FillWithItem(ContextMenu):
+class FillWithItem(ContextMenuCombined):
 
     def __init__(self):
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()

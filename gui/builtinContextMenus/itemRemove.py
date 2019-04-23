@@ -2,12 +2,12 @@ import math
 
 import gui.fitCommands as cmd
 import gui.mainFrame
-from gui.contextMenu import ContextMenu
+from gui.contextMenu import ContextMenuCombined
 from service.fit import Fit
 from service.settings import ContextMenuSettings
 
 
-class RemoveItem(ContextMenu):
+class RemoveItem(ContextMenuCombined):
 
     def __init__(self):
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()

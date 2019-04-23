@@ -3,12 +3,12 @@ import wx
 
 import gui.mainFrame
 from gui import fitCommands as cmd
-from gui.contextMenu import ContextMenu
+from gui.contextMenu import ContextMenuCombined
 from service.fit import Fit
 from service.settings import ContextMenuSettings
 
 
-class FighterAbilities(ContextMenu):
+class FighterAbilities(ContextMenuCombined):
 
     def __init__(self):
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
@@ -31,7 +31,7 @@ class FighterAbilities(ContextMenu):
 
     def addAbility(self, menu, ability):
         label = ability.name
-        id = ContextMenu.nextID()
+        id = ContextMenuCombined.nextID()
         self.abilityIds[id] = ability
         menuItem = wx.MenuItem(menu, id, label, kind=wx.ITEM_CHECK)
         menu.Bind(wx.EVT_MENU, self.handleMode, menuItem)

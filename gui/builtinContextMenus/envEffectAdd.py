@@ -6,12 +6,12 @@ import wx
 
 import gui.fitCommands as cmd
 import gui.mainFrame
-from gui.contextMenu import ContextMenu
+from gui.contextMenu import ContextMenuCombined
 from service.market import Market
 from service.settings import ContextMenuSettings
 
 
-class AddEnvironmentEffect(ContextMenu):
+class AddEnvironmentEffect(ContextMenuCombined):
 
     # CCP doesn't currently provide a mapping between the general Environment, and the specific environment effect
     # (which can be random when going into Abyssal space). This is how we currently define it:
@@ -92,7 +92,7 @@ class AddEnvironmentEffect(ContextMenu):
 
         def processFlat(data, root, sub):
             for swData in sorted(data, key=lambda tpl: tpl[2]):
-                wxid = ContextMenu.nextID()
+                wxid = ContextMenuCombined.nextID()
                 swObj, swName, swClass = swData
                 self.idmap[wxid] = (swObj, swName)
                 subItem = wx.MenuItem(sub, wxid, swClass)

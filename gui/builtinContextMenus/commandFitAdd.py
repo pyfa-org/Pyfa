@@ -3,13 +3,13 @@ import wx
 
 import gui.fitCommands as cmd
 import gui.mainFrame
-from gui.contextMenu import ContextMenu
+from gui.contextMenu import ContextMenuCombined
 from service.fit import Fit
 from service.market import Market
 from service.settings import ContextMenuSettings
 
 
-class AddCommandFit(ContextMenu):
+class AddCommandFit(ContextMenuCombined):
 
     # Get list of items that define a command fit
     sMkt = Market.getInstance()
@@ -53,7 +53,7 @@ class AddCommandFit(ContextMenu):
 
     def addFit(self, menu, fit, includeShip=False):
         label = fit.name if not includeShip else "({}) {}".format(fit.ship.item.name, fit.name)
-        id = ContextMenu.nextID()
+        id = ContextMenuCombined.nextID()
         self.fitMenuItemIds[id] = fit
         menuItem = wx.MenuItem(menu, id, label)
         menu.Bind(wx.EVT_MENU, self.handleSelection, menuItem)
@@ -80,7 +80,7 @@ class AddCommandFit(ContextMenu):
                 typeDict[shipName].append(fit)
 
             for ship in sorted(typeDict.keys()):
-                shipItem = wx.MenuItem(sub, ContextMenu.nextID(), ship)
+                shipItem = wx.MenuItem(sub, ContextMenuCombined.nextID(), ship)
                 grandSub = wx.Menu()
                 shipItem.SetSubMenu(grandSub)
 

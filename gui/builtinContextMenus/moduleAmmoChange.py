@@ -6,14 +6,14 @@ import gui.mainFrame
 from eos.const import FittingHardpoint
 from eos.saveddata.module import Module
 from gui.bitmap_loader import BitmapLoader
-from gui.contextMenu import ContextMenu
+from gui.contextMenu import ContextMenuCombined
 from gui.fitCommands.helpers import getSimilarModPositions
 from service.fit import Fit
 from service.market import Market
 from service.settings import ContextMenuSettings
 
 
-class ChangeModuleAmmo(ContextMenu):
+class ChangeModuleAmmo(ContextMenuCombined):
 
     DAMAGE_TYPES = ("em", "explosive", "kinetic", "thermal")
     MISSILE_ORDER = ("em", "thermal", "kinetic", "explosive", "mixed")
@@ -118,7 +118,7 @@ class ChangeModuleAmmo(ContextMenu):
         return list(map(self.numericConverter, parts))
 
     def addCharge(self, menu, charge):
-        id_ = ContextMenu.nextID()
+        id_ = ContextMenuCombined.nextID()
         name = charge.name if charge is not None else "Empty"
         self.chargeIds[id_] = charge
         item = wx.MenuItem(menu, id_, name)
@@ -133,7 +133,7 @@ class ChangeModuleAmmo(ContextMenu):
 
     @staticmethod
     def addSeperator(m, text):
-        id_ = ContextMenu.nextID()
+        id_ = ContextMenuCombined.nextID()
         m.Append(id_, '─ %s ─' % text)
         m.Enable(id_, False)
 

@@ -3,12 +3,12 @@ import wx
 
 import gui.fitCommands as cmd
 import gui.mainFrame
-from gui.contextMenu import ContextMenu
+from gui.contextMenu import ContextMenuCombined
 from service.fit import Fit
 from service.settings import ContextMenuSettings
 
 
-class ChangeShipTacticalMode(ContextMenu):
+class ChangeShipTacticalMode(ContextMenuCombined):
 
     def __init__(self):
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
@@ -32,7 +32,7 @@ class ChangeShipTacticalMode(ContextMenu):
 
     def addMode(self, menu, mode):
         label = mode.item.name.rsplit()[-2]
-        id = ContextMenu.nextID()
+        id = ContextMenuCombined.nextID()
         self.modeIds[id] = mode
         menuItem = wx.MenuItem(menu, id, label, kind=wx.ITEM_RADIO)
         menu.Bind(wx.EVT_MENU, self.handleMode, menuItem)

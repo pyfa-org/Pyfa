@@ -4,13 +4,13 @@ import wx
 import gui.fitCommands as cmd
 import gui.globalEvents as GE
 import gui.mainFrame
-from gui.contextMenu import ContextMenu
+from gui.contextMenu import ContextMenuCombined
 from service.character import Character
 from service.implantSet import ImplantSets as s_ImplantSets
 from service.settings import ContextMenuSettings
 
 
-class AddImplantSet(ContextMenu):
+class AddImplantSet(ContextMenuCombined):
 
     def __init__(self):
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
@@ -56,7 +56,7 @@ class AddImplantSet(ContextMenu):
         self.idmap = {}
 
         for set in implantSets:
-            id = ContextMenu.nextID()
+            id = ContextMenuCombined.nextID()
             mitem = wx.MenuItem(rootMenu, id, set.name)
             bindmenu.Bind(wx.EVT_MENU, self.handleSelection, mitem)
             self.idmap[id] = set

@@ -1,12 +1,12 @@
 import gui.fitCommands as cmd
 import gui.mainFrame
-from gui.contextMenu import ContextMenu
+from gui.contextMenu import ContextMenuCombined
 from gui.fitCommands.helpers import droneStackLimit
 from service.fit import Fit
 from service.settings import ContextMenuSettings
 
 
-class DroneAddStack(ContextMenu):
+class DroneAddStack(ContextMenuCombined):
 
     def __init__(self):
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()

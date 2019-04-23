@@ -6,13 +6,13 @@ import wx
 import gui.globalEvents as GE
 import gui.mainFrame
 from gui.bitmap_loader import BitmapLoader
-from gui.contextMenu import ContextMenu
+from gui.contextMenu import ContextMenuCombined
 from service.damagePattern import DamagePattern as import_DamagePattern
 from service.fit import Fit
 from service.settings import ContextMenuSettings
 
 
-class ChangeDamagePattern(ContextMenu):
+class ChangeDamagePattern(ContextMenuCombined):
 
     def __init__(self):
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
@@ -56,7 +56,7 @@ class ChangeDamagePattern(ContextMenu):
         return self.m
 
     def addPattern(self, rootMenu, pattern):
-        id = ContextMenu.nextID()
+        id = ContextMenuCombined.nextID()
         name = getattr(pattern, "_name", pattern.name) if pattern is not None else "No Profile"
 
         self.patternIds[id] = pattern

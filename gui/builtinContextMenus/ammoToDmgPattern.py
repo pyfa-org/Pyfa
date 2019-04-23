@@ -3,12 +3,12 @@ import wx
 
 import gui.globalEvents as GE
 import gui.mainFrame
-from gui.contextMenu import ContextMenu
+from gui.contextMenu import ContextMenuCombined
 from service.fit import Fit
 from service.settings import ContextMenuSettings
 
 
-class AmmoToDmgPattern(ContextMenu):
+class AmmoToDmgPattern(ContextMenuCombined):
 
     def __init__(self):
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()

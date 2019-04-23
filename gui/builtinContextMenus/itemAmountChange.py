@@ -9,12 +9,12 @@ from eos.saveddata.cargo import Cargo as es_Cargo
 from eos.saveddata.drone import Drone
 from eos.saveddata.fighter import Fighter as es_Fighter
 from eos.saveddata.fit import Fit as es_Fit
-from gui.contextMenu import ContextMenu
+from gui.contextMenu import ContextMenuCombined
 from service.fit import Fit
 from service.settings import ContextMenuSettings
 
 
-class ChangeItemAmount(ContextMenu):
+class ChangeItemAmount(ContextMenuCombined):
 
     def __init__(self):
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()

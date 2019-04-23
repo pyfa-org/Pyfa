@@ -3,11 +3,11 @@ import wx
 
 import gui.mainFrame
 from gui.builtinShipBrowser.events import FitSelected
-from gui.contextMenu import ContextMenu
+from gui.contextMenu import ContextMenuCombined
 from service.settings import ContextMenuSettings
 
 
-class OpenFitInNewTab(ContextMenu):
+class OpenFitInNewTab(ContextMenuCombined):
 
     def __init__(self):
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
