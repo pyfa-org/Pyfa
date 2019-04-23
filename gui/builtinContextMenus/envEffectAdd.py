@@ -6,12 +6,12 @@ import wx
 
 import gui.fitCommands as cmd
 import gui.mainFrame
-from gui.contextMenu import ContextMenuCombined
+from gui.contextMenu import ContextMenuUnconditional
 from service.market import Market
 from service.settings import ContextMenuSettings
 
 
-class AddEnvironmentEffect(ContextMenuCombined):
+class AddEnvironmentEffect(ContextMenuUnconditional):
 
     # CCP doesn't currently provide a mapping between the general Environment, and the specific environment effect
     # (which can be random when going into Abyssal space). This is how we currently define it:
@@ -28,13 +28,13 @@ class AddEnvironmentEffect(ContextMenuCombined):
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
         self.settings = ContextMenuSettings.getInstance()
 
-    def display(self, srcContext, mainItem, selection):
+    def display(self, srcContext):
         return srcContext == "projected"
 
-    def getText(self, itmContext, mainItem, selection):
+    def getText(self, itmContext):
         return "Add Environmental Effect"
 
-    def getSubMenu(self, context, mainItem, selection, rootMenu, i, pitem):
+    def getSubMenu(self, context, rootMenu, i, pitem):
         msw = True if "wxMSW" in wx.PlatformInfo else False
 
         # Wormholes
@@ -92,7 +92,7 @@ class AddEnvironmentEffect(ContextMenuCombined):
 
         def processFlat(data, root, sub):
             for swData in sorted(data, key=lambda tpl: tpl[2]):
-                wxid = ContextMenuCombined.nextID()
+                wxid = ContextMenuUnconditional.nextID()
                 swObj, swName, swClass = swData
                 self.idmap[wxid] = (swObj, swName)
                 subItem = wx.MenuItem(sub, wxid, swClass)

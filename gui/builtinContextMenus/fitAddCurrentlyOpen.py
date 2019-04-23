@@ -4,26 +4,26 @@ import wx
 import gui.fitCommands as cmd
 import gui.mainFrame
 from gui.builtinViews.emptyView import BlankPage
-from gui.contextMenu import ContextMenuCombined
+from gui.contextMenu import ContextMenuUnconditional
 from service.fit import Fit
 
 
-class AddCurrentlyOpenFit(ContextMenuCombined):
+class AddCurrentlyOpenFit(ContextMenuUnconditional):
 
     def __init__(self):
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
 
-    def display(self, srcContext, mainItem, selection):
+    def display(self, srcContext):
 
         if self.mainFrame.getActiveFit() is None or srcContext not in ('projected', 'commandView'):
             return False
 
         return True
 
-    def getText(self, itmContext, mainItem, selection):
+    def getText(self, itmContext):
         return 'Add Currently Open Fit'
 
-    def getSubMenu(self, context, mainItem, selection, rootMenu, i, pitem):
+    def getSubMenu(self, context, rootMenu, i, pitem):
         self.fitLookup = {}
         self.context = context
         sFit = Fit.getInstance()
@@ -41,7 +41,7 @@ class AddCurrentlyOpenFit(ContextMenuCombined):
             if isinstance(page, BlankPage):
                 continue
             fit = sFit.getFit(page.activeFitID, basic=True)
-            id = ContextMenuCombined.nextID()
+            id = ContextMenuUnconditional.nextID()
             mitem = wx.MenuItem(rootMenu, id, "{}: {}".format(fit.ship.item.name, fit.name))
             bindmenu.Bind(wx.EVT_MENU, self.handleSelection, mitem)
             self.fitLookup[id] = fit

@@ -43,7 +43,7 @@ class ContextMenu(metaclass=ABCMeta):
             srcContext = fullContext[0]
             for menuHandler in cls.menus:
                 m = menuHandler()
-                if m.display(srcContext, mainItem, selection):
+                if m._baseDisplay(srcContext, mainItem, selection):
                     return True
             return False
 

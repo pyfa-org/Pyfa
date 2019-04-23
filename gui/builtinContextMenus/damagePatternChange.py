@@ -6,26 +6,26 @@ import wx
 import gui.globalEvents as GE
 import gui.mainFrame
 from gui.bitmap_loader import BitmapLoader
-from gui.contextMenu import ContextMenuCombined
+from gui.contextMenu import ContextMenuUnconditional
 from service.damagePattern import DamagePattern as import_DamagePattern
 from service.fit import Fit
 from service.settings import ContextMenuSettings
 
 
-class ChangeDamagePattern(ContextMenuCombined):
+class ChangeDamagePattern(ContextMenuUnconditional):
 
     def __init__(self):
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
         self.settings = ContextMenuSettings.getInstance()
 
-    def display(self, srcContext, mainItem, selection):
+    def display(self, srcContext):
         return srcContext == "resistancesViewFull"
 
     @property
     def enabled(self):
         return self.mainFrame.getActiveFit() is not None
 
-    def getText(self, itmContext, mainItem, selection):
+    def getText(self, itmContext):
         sDP = import_DamagePattern.getInstance()
         sFit = Fit.getInstance()
         fitID = self.mainFrame.getActiveFit()
@@ -56,7 +56,7 @@ class ChangeDamagePattern(ContextMenuCombined):
         return self.m
 
     def addPattern(self, rootMenu, pattern):
-        id = ContextMenuCombined.nextID()
+        id = ContextMenuUnconditional.nextID()
         name = getattr(pattern, "_name", pattern.name) if pattern is not None else "No Profile"
 
         self.patternIds[id] = pattern
@@ -77,7 +77,7 @@ class ChangeDamagePattern(ContextMenuCombined):
                 menuItem.SetBitmap(bitmap)
         return menuItem
 
-    def getSubMenu(self, context, mainItem, selection, rootMenu, i, pitem):
+    def getSubMenu(self, context, rootMenu, i, pitem):
         msw = True if "wxMSW" in wx.PlatformInfo else False
 
         if self.m[i] not in self.subMenus:

@@ -4,11 +4,11 @@ import wx
 
 import gui.globalEvents as GE
 import gui.mainFrame
-from gui.contextMenu import ContextMenuCombined
+from gui.contextMenu import ContextMenuUnconditional
 from service.settings import MarketPriceSettings
 
 
-class ItemGroupPrice(ContextMenuCombined, metaclass=ABCMeta):
+class ItemGroupPrice(ContextMenuUnconditional, metaclass=ABCMeta):
 
     def __init__(self):
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
@@ -24,13 +24,13 @@ class ItemGroupPrice(ContextMenuCombined, metaclass=ABCMeta):
     def optionName(self):
         raise NotImplementedError()
 
-    def display(self, srcContext, mainItem, selection):
+    def display(self, srcContext):
         return srcContext in ("priceViewFull", "priceViewMinimal")
 
-    def getText(self, itmContext, mainItem, selection):
+    def getText(self, itmContext):
         return self.label
 
-    def activate(self, fullContext, mainItem, selection, i):
+    def activate(self, fullContext, i):
         self.settings.set(self.optionName, not self.settings.get(self.optionName))
         wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=self.mainFrame.getActiveFit()))
 

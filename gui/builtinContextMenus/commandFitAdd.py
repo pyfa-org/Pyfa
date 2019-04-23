@@ -3,13 +3,13 @@ import wx
 
 import gui.fitCommands as cmd
 import gui.mainFrame
-from gui.contextMenu import ContextMenuCombined
+from gui.contextMenu import ContextMenuUnconditional
 from service.fit import Fit
 from service.market import Market
 from service.settings import ContextMenuSettings
 
 
-class AddCommandFit(ContextMenuCombined):
+class AddCommandFit(ContextMenuUnconditional):
 
     # Get list of items that define a command fit
     sMkt = Market.getInstance()
@@ -42,24 +42,24 @@ class AddCommandFit(ContextMenuCombined):
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
         self.settings = ContextMenuSettings.getInstance()
 
-    def display(self, srcContext, mainItem, selection):
+    def display(self, srcContext):
         if self.mainFrame.getActiveFit() is None or len(self.__class__.commandFits) == 0 or srcContext != "commandView":
             return False
 
         return True
 
-    def getText(self, itmContext, mainItem, selection):
+    def getText(self, itmContext):
         return "Command Fits"
 
     def addFit(self, menu, fit, includeShip=False):
         label = fit.name if not includeShip else "({}) {}".format(fit.ship.item.name, fit.name)
-        id = ContextMenuCombined.nextID()
+        id = ContextMenuUnconditional.nextID()
         self.fitMenuItemIds[id] = fit
         menuItem = wx.MenuItem(menu, id, label)
         menu.Bind(wx.EVT_MENU, self.handleSelection, menuItem)
         return menuItem
 
-    def getSubMenu(self, context, mainItem, selection, rootMenu, i, pitem):
+    def getSubMenu(self, context, rootMenu, i, pitem):
         msw = True if "wxMSW" in wx.PlatformInfo else False
         self.context = context
         self.fitMenuItemIds = {}
@@ -80,7 +80,7 @@ class AddCommandFit(ContextMenuCombined):
                 typeDict[shipName].append(fit)
 
             for ship in sorted(typeDict.keys()):
-                shipItem = wx.MenuItem(sub, ContextMenuCombined.nextID(), ship)
+                shipItem = wx.MenuItem(sub, ContextMenuUnconditional.nextID(), ship)
                 grandSub = wx.Menu()
                 shipItem.SetSubMenu(grandSub)
 

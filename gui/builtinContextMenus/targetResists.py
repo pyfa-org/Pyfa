@@ -6,19 +6,19 @@ import wx
 import gui.globalEvents as GE
 import gui.mainFrame
 from gui.bitmap_loader import BitmapLoader
-from gui.contextMenu import ContextMenuCombined
+from gui.contextMenu import ContextMenuUnconditional
 from service.fit import Fit
 from service.settings import ContextMenuSettings
 from service.targetResists import TargetResists as svc_TargetResists
 
 
-class TargetResists(ContextMenuCombined):
+class TargetResists(ContextMenuUnconditional):
 
     def __init__(self):
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
         self.settings = ContextMenuSettings.getInstance()
 
-    def display(self, srcContext, mainItem, selection):
+    def display(self, srcContext):
         if self.mainFrame.getActiveFit() is None or srcContext != "firepowerViewFull":
             return False
 
@@ -28,7 +28,7 @@ class TargetResists(ContextMenuCombined):
 
         return len(self.patterns) > 0
 
-    def getText(self, itmContext, mainItem, selection):
+    def getText(self, itmContext):
         return "Target Resists"
 
     def handleResistSwitch(self, event):
@@ -43,7 +43,7 @@ class TargetResists(ContextMenuCombined):
         wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fitID))
 
     def addPattern(self, rootMenu, pattern):
-        id = ContextMenuCombined.nextID()
+        id = ContextMenuUnconditional.nextID()
         name = getattr(pattern, "_name", pattern.name) if pattern is not None else "No Profile"
 
         self.patternIds[id] = pattern
@@ -64,7 +64,7 @@ class TargetResists(ContextMenuCombined):
             item.SetBitmap(bitmap)
         return item
 
-    def getSubMenu(self, context, mainItem, selection, rootMenu, i, pitem):
+    def getSubMenu(self, context, rootMenu, i, pitem):
         msw = True if "wxMSW" in wx.PlatformInfo else False
         self.patternIds = {}
         self.subMenus = OrderedDict()
@@ -93,7 +93,7 @@ class TargetResists(ContextMenuCombined):
         # Items that have a parent
         for menuName, patterns in list(self.subMenus.items()):
             # Create parent item for root menu that is simply name of parent
-            item = wx.MenuItem(rootMenu, ContextMenuCombined.nextID(), menuName)
+            item = wx.MenuItem(rootMenu, ContextMenuUnconditional.nextID(), menuName)
 
             # Create menu for child items
             grandSub = wx.Menu()

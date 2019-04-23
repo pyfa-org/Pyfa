@@ -3,18 +3,18 @@ import wx
 
 import gui.fitCommands as cmd
 import gui.mainFrame
-from gui.contextMenu import ContextMenuCombined
+from gui.contextMenu import ContextMenuUnconditional
 from service.fit import Fit
 from service.settings import ContextMenuSettings
 
 
-class ChangeShipTacticalMode(ContextMenuCombined):
+class ChangeShipTacticalMode(ContextMenuUnconditional):
 
     def __init__(self):
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
         self.settings = ContextMenuSettings.getInstance()
 
-    def display(self, srcContext, mainItem, selection):
+    def display(self, srcContext):
         if self.mainFrame.getActiveFit() is None or srcContext != "fittingShip":
             return False
 
@@ -27,18 +27,18 @@ class ChangeShipTacticalMode(ContextMenuCombined):
 
         return srcContext == "fittingShip" and self.modes is not None
 
-    def getText(self, itmContext, mainItem, selection):
+    def getText(self, itmContext):
         return "Tactical Mode"
 
     def addMode(self, menu, mode):
         label = mode.item.name.rsplit()[-2]
-        id = ContextMenuCombined.nextID()
+        id = ContextMenuUnconditional.nextID()
         self.modeIds[id] = mode
         menuItem = wx.MenuItem(menu, id, label, kind=wx.ITEM_RADIO)
         menu.Bind(wx.EVT_MENU, self.handleMode, menuItem)
         return menuItem
 
-    def getSubMenu(self, context, mainItem, selection, rootMenu, i, pitem):
+    def getSubMenu(self, context, rootMenu, i, pitem):
         msw = True if "wxMSW" in wx.PlatformInfo else False
         self.context = context
         self.modeIds = {}

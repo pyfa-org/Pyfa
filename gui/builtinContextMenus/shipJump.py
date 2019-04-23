@@ -3,18 +3,18 @@ import wx
 
 import gui.mainFrame
 from gui.builtinShipBrowser.events import Stage3Selected
-from gui.contextMenu import ContextMenuCombined
+from gui.contextMenu import ContextMenuUnconditional
 from service.fit import Fit
 from service.settings import ContextMenuSettings
 
 
-class JumpToShip(ContextMenuCombined):
+class JumpToShip(ContextMenuUnconditional):
 
     def __init__(self):
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
         self.settings = ContextMenuSettings.getInstance()
 
-    def display(self, srcContext, mainItem, selection):
+    def display(self, srcContext):
         if srcContext != "fittingShip":
             return False
         fitTabSelected = self.mainFrame.notebookBrowsers.GetSelection() == 1
@@ -30,10 +30,10 @@ class JumpToShip(ContextMenuCombined):
             return True
         return False
 
-    def getText(self, itmContext, mainItem, selection):
+    def getText(self, itmContext):
         return "Open in Fitting Browser"
 
-    def activate(self, fullContext, mainItem, selection, i):
+    def activate(self, fullContext, i):
         fitID = self.mainFrame.getActiveFit()
         ship = Fit.getInstance().getFit(fitID).ship
         self.mainFrame.notebookBrowsers.SetSelection(1)
