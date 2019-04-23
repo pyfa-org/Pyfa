@@ -20,7 +20,13 @@ class ChangeItemAmount(ContextMenu):
         self.settings = ContextMenuSettings.getInstance()
 
     def display(self, srcContext, mainItem, selection):
-        return srcContext in ("droneItem", "projectedDrone", "cargoItem", "projectedFit", "fighterItem", "projectedFighter")
+        if srcContext not in ("droneItem", "projectedDrone", "cargoItem", "projectedFit", "fighterItem", "projectedFighter"):
+            return False
+
+        if mainItem is None:
+            return False
+
+        return True
 
     def getText(self, itmContext, mainItem, selection):
         return "Change {0} Quantity".format(itmContext)

@@ -15,10 +15,10 @@ class BoosterSideEffect(ContextMenu):
         self.settings = ContextMenuSettings.getInstance()
 
     def display(self, srcContext, mainItem, selection):
-        # if not self.settings.get('fighterAbilities'):
-        #     return False
-
         if self.mainFrame.getActiveFit() is None or srcContext not in "boosterItem":
+            return False
+
+        if mainItem is None:
             return False
 
         self.booster = mainItem

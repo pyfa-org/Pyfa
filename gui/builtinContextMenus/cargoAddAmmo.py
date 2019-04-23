@@ -13,11 +13,13 @@ class AddToCargoAmmo(ContextMenu):
         if srcContext not in ("marketItemGroup", "marketItemMisc") or self.mainFrame.getActiveFit() is None:
             return False
 
-        for selected_item in selection:
-            if selected_item.category.ID in (
-                    8,  # Charge
-            ):
-                return True
+        if mainItem is None:
+            return False
+
+        if mainItem.category.ID != 8:
+            return False
+
+        return True
 
     def getText(self, itmContext, mainItem, selection):
         return "Add {0} to Cargo (x1000)".format(itmContext)

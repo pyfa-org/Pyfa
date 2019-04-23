@@ -16,10 +16,16 @@ class DroneSplitStack(ContextMenu):
         self.settings = ContextMenuSettings.getInstance()
 
     def display(self, srcContext, mainItem, selection):
-        return srcContext == "droneItem" and mainItem.amount > 1
+        if srcContext != "droneItem":
+            return False
+
+        if mainItem is None:
+            return False
+
+        return mainItem.amount > 1
 
     def getText(self, itmContext, mainItem, selection):
-        return "Split {0} Stack".format(itmContext)
+        return "Split {} Stack".format(itmContext)
 
     def activate(self, fullContext, mainItem, selection, i):
         dlg = DroneStackSplit(self.mainFrame, mainItem.amount)

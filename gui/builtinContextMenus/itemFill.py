@@ -13,12 +13,19 @@ class FillWithItem(ContextMenu):
     def display(self, srcContext, mainItem, selection):
         if not self.settings.get('moduleFill'):
             return False
+
         if srcContext not in ('marketItemGroup', 'marketItemMisc'):
             return False
+
         if self.mainFrame.getActiveFit() is None:
             return False
+
+        if mainItem is None:
+            return False
+
         if mainItem.category.name != 'Module':
             return False
+
         return True
 
     def getText(self, itmContext, mainItem, selection):

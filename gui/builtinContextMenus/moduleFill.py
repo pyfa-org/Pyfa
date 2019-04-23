@@ -13,6 +13,10 @@ class FillWithModule(ContextMenu):
     def display(self, srcContext, mainItem, selection):
         if not self.settings.get('moduleFill'):
             return False
+
+        if mainItem is None or mainItem.isEmpty:
+            return False
+
         return srcContext == "fittingModule"
 
     def getText(self, itmContext, mainItem, selection):

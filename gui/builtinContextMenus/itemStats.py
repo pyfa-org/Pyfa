@@ -14,19 +14,27 @@ class ItemStats(ContextMenu):
         self.settings = ContextMenuSettings.getInstance()
 
     def display(self, srcContext, mainItem, selection):
-        return srcContext in ("marketItemGroup", "marketItemMisc",
-                              "fittingModule", "fittingCharge",
-                              "fittingShip", "baseShip",
-                              "cargoItem", "droneItem",
-                              "implantItem", "boosterItem",
-                              "skillItem", "projectedModule",
-                              "projectedDrone", "projectedCharge",
-                              "itemStats", "fighterItem",
-                              "implantItemChar", "projectedFighter",
-                              "fittingMode")
+        if srcContext not in (
+            "marketItemGroup", "marketItemMisc",
+            "fittingModule", "fittingCharge",
+            "fittingShip", "baseShip",
+            "cargoItem", "droneItem",
+            "implantItem", "boosterItem",
+            "skillItem", "projectedModule",
+            "projectedDrone", "projectedCharge",
+            "itemStats", "fighterItem",
+            "implantItemChar", "projectedFighter",
+            "fittingMode"
+        ):
+            return False
+
+        if (mainItem is None or getattr(mainItem, "isEmpty", False)) and srcContext != "fittingShip":
+            return False
+
+        return True
 
     def getText(self, itmContext, mainItem, selection):
-        return "{0} Stats".format(itmContext if itmContext is not None else "Item")
+        return "{} Stats".format(itmContext if itmContext is not None else "Item")
 
     def activate(self, fullContext, mainItem, selection, i):
         srcContext = fullContext[0]

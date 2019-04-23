@@ -14,6 +14,9 @@ class AddToCargo(ContextMenu):
         if srcContext not in ("marketItemGroup", "marketItemMisc"):
             return False
 
+        if mainItem is None:
+            return False
+
         sFit = Fit.getInstance()
         fitID = self.mainFrame.getActiveFit()
         fit = sFit.getFit(fitID)

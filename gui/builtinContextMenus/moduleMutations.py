@@ -15,11 +15,10 @@ class ChangeModuleMutation(ContextMenu):
         self.eventIDs = {}
 
     def display(self, srcContext, mainItem, selection):
-
-        # if not self.settings.get('ammoPattern'):
-        #     return False
-
         if srcContext != "fittingModule" or self.mainFrame.getActiveFit() is None:
+            return False
+
+        if mainItem is None or mainItem.isEmpty:
             return False
 
         if len(mainItem.item.mutaplasmids) == 0 and not mainItem.isMutated:

@@ -25,12 +25,13 @@ class ChangeModuleAmmo(ContextMenu):
         if self.mainFrame.getActiveFit() is None or srcContext not in ("fittingModule", "projectedModule"):
             return False
 
-        modules = selection if srcContext == "fittingModule" else (mainItem,)
+        if len(selection) == 0:
+            return False
 
         validCharges = None
         checkedTypes = set()
 
-        for mod in modules:
+        for mod in selection:
             # loop through modules and gather list of valid charges
             if mod.item.ID in checkedTypes:
                 continue
@@ -45,13 +46,15 @@ class ChangeModuleAmmo(ContextMenu):
 
             if validCharges is not None and validCharges != currCharges:
                 return False
+
             validCharges = currCharges
             self.module = mod
 
         if validCharges is None:
             return False
 
-        self.modules = modules
+        self.mainItem = mainItem
+        self.selection = selection
         self.charges = list([charge for charge in validCharges if Market.getInstance().getPublicityByItem(charge)])
         self.context = srcContext
         return len(self.charges) > 0
@@ -241,7 +244,7 @@ class ChangeModuleAmmo(ContextMenu):
                 modContainer = fit.projectedModules
             else:
                 return
-            selectedModule = self.modules[0]
+            selectedModule = self.selection[0] if self.mainItem is None else self.mainItem
             positions = getSimilarModPositions(modContainer, selectedModule)
             self.mainFrame.command.Submit(command(
                 fitID=fitID,
@@ -258,7 +261,7 @@ class ChangeModuleAmmo(ContextMenu):
                 return
             positions = []
             for position, mod in enumerate(modContainer):
-                if mod in self.modules:
+                if mod in self.selection:
                     positions.append(position)
             self.mainFrame.command.Submit(command(
                 fitID=fitID,

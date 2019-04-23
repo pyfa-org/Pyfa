@@ -19,6 +19,9 @@ class DroneAddStack(ContextMenu):
         if self.mainFrame.getActiveFit() is None:
             return False
 
+        if mainItem is None:
+            return False
+
         if mainItem.category.name != 'Drone':
             return False
 

@@ -24,6 +24,9 @@ class ChangeModuleSpool(ContextMenu):
         if srcContext not in ('fittingModule', 'projectedModule') or self.mainFrame.getActiveFit() is None:
             return False
 
+        if mainItem is None or mainItem.isEmpty:
+            return False
+
         self.mod = mainItem
         self.context = srcContext
 

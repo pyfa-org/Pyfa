@@ -13,12 +13,20 @@ class RemoveItem(ContextMenu):
         self.settings = ContextMenuSettings.getInstance()
 
     def display(self, srcContext, mainItem, selection):
-        return srcContext in ("fittingModule", "droneItem",
-                              "implantItem", "boosterItem",
-                              "projectedModule", "cargoItem",
-                              "projectedFit", "projectedDrone",
-                              "fighterItem", "projectedFighter",
-                              "commandFit")
+        if srcContext not in (
+            "fittingModule", "droneItem",
+            "implantItem", "boosterItem",
+            "projectedModule", "cargoItem",
+            "projectedFit", "projectedDrone",
+            "fighterItem", "projectedFighter",
+            "commandFit"
+        ):
+            return False
+
+        if mainItem is None and len(selection) == 0:
+            return False
+
+        return True
 
     def getText(self, itmContext, mainItem, selection):
         return 'Remove {}{}'.format(
@@ -26,6 +34,8 @@ class RemoveItem(ContextMenu):
             ' Stack' if itmContext in ('Drone', 'Fit') else '')
 
     def activate(self, fullContext, mainItem, selection, i):
+
+        mainItem = selection[0] if mainItem is None else mainItem
 
         srcContext = fullContext[0]
         sFit = Fit.getInstance()

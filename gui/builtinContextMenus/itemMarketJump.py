@@ -21,6 +21,9 @@ class JumpToMarketItem(ContextMenu):
         if srcContext not in validContexts or mainItem is None:
             return False
 
+        if mainItem is None or getattr(mainItem, "isEmpty", False):
+            return False
+
         sMkt = Market.getInstance()
         item = getattr(mainItem, "item", mainItem)
         isMutated = getattr(mainItem, "isMutated", False)

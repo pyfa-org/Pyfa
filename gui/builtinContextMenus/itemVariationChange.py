@@ -31,6 +31,9 @@ class ChangeItemToVariation(ContextMenu):
         ):
             return False
 
+        if (mainItem is None or getattr(mainItem, 'isEmpty', False)) and len(selection) == 0:
+            return False
+
         # Check if list of variations is same for all of selection
         # If not - don't show the menu
         mkt = Market.getInstance()

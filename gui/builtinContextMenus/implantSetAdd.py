@@ -34,7 +34,7 @@ class addImplantSet(ContextMenu):
         way of doing this. However, we use this context menu within the Character Editor to apply implant sets to a
         character, so we need to access the character editor.
 
-        It is for these reasons that I hijack the selection parameter when calling the menu and pass a pointer to the
+        It is for these reasons that I hijack the mainItem parameter when calling the menu and pass a pointer to the
         Character Editor. This way we can use it to get current editing character ID and apply the implants.
 
         It would probably be better to have a function on the MainFrame to get the currently open Character Editor (as

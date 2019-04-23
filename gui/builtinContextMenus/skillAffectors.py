@@ -20,13 +20,23 @@ class ChangeAffectingSkills(ContextMenu):
         if not self.settings.get('changeAffectingSkills'):
             return False
 
-        if self.mainFrame.getActiveFit() is None or srcContext not in (
-                "fittingModule", "fittingCharge", "fittingShip", "droneItem", "fighterItem"):
+        if srcContext not in (
+            "fittingModule", "fittingCharge",
+            "fittingShip", "droneItem",
+            "fighterItem"
+        ):
             return False
+
+        fitID = self.mainFrame.getActiveFit()
+        if fitID is None:
+            return False
+
+        if mainItem is None or getattr(mainItem, "isEmpty", False):
+            return
 
         self.sChar = Character.getInstance()
         self.sFit = Fit.getInstance()
-        fit = self.sFit.getFit(self.mainFrame.getActiveFit())
+        fit = self.sFit.getFit(fitID)
 
         self.charID = fit.character.ID
 
@@ -34,7 +44,6 @@ class ChangeAffectingSkills(ContextMenu):
         #    return False
 
         if srcContext == "fittingShip":
-            fitID = self.mainFrame.getActiveFit()
             sFit = Fit.getInstance()
             self.stuff = sFit.getFit(fitID).ship
             cont = sFit.getFit(fitID).ship.itemModifiedAttributes
