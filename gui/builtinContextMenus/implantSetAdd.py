@@ -4,19 +4,19 @@ import wx
 import gui.fitCommands as cmd
 import gui.globalEvents as GE
 import gui.mainFrame
-from gui.contextMenu import ContextMenuCombined
+from gui.contextMenu import ContextMenuSingle
 from service.character import Character
 from service.implantSet import ImplantSets as s_ImplantSets
 from service.settings import ContextMenuSettings
 
 
-class AddImplantSet(ContextMenuCombined):
+class AddImplantSet(ContextMenuSingle):
 
     def __init__(self):
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
         self.settings = ContextMenuSettings.getInstance()
 
-    def display(self, srcContext, mainItem, selection):
+    def display(self, srcContext, mainItem):
 
         sIS = s_ImplantSets.getInstance()
         implantSets = sIS.getImplantSetList()
@@ -25,12 +25,12 @@ class AddImplantSet(ContextMenuCombined):
             return False
         return srcContext in ("implantView", "implantEditor")
 
-    def getText(self, itmContext, mainItem, selection):
+    def getText(self, itmContext, mainItem):
         return "Add Implant Set"
 
-    def getSubMenu(self, context, mainItem, selection, rootMenu, i, pitem):
+    def getSubMenu(self, context, mainItem, rootMenu, i, pitem):
         """
-        A note on the selection here: Most context menus act on a fit, so it's easy enough to get the active fit from
+        A note on the mainItem here: Most context menus act on a fit, so it's easy enough to get the active fit from
         the MainFrame instance. There's never been a reason to get info from another window, so there's not common
         way of doing this. However, we use this context menu within the Character Editor to apply implant sets to a
         character, so we need to access the character editor.
@@ -50,13 +50,12 @@ class AddImplantSet(ContextMenuCombined):
         implantSets = sIS.getImplantSetList()
 
         self.context = context
-        if len(selection) == 1:
-            self.selection = mainItem  # dirty hack here
+        self.mainItem = mainItem  # dirty hack here
 
         self.idmap = {}
 
         for set in implantSets:
-            id = ContextMenuCombined.nextID()
+            id = ContextMenuSingle.nextID()
             mitem = wx.MenuItem(rootMenu, id, set.name)
             bindmenu.Bind(wx.EVT_MENU, self.handleSelection, mitem)
             self.idmap[id] = set
@@ -74,12 +73,12 @@ class AddImplantSet(ContextMenuCombined):
         if self.context == "implantEditor":
             # we are calling from character editor, the implant source is different
             sChar = Character.getInstance()
-            char = self.selection.entityEditor.getActiveEntity()
+            char = self.mainItem.entityEditor.getActiveEntity()
 
             for implant in set.implants:
                 sChar.addImplant(char.ID, implant.item.ID)
 
-            wx.PostEvent(self.selection, GE.CharChanged())
+            wx.PostEvent(self.mainItem, GE.CharChanged())
         else:
             self.mainFrame.command.Submit(cmd.GuiAddImplantSetCommand(
                 fitID=self.mainFrame.getActiveFit(),
