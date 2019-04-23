@@ -296,8 +296,8 @@ class ContextMenuSingle(ContextMenu, metaclass=ABCMeta):
 
 class ContextMenuSelection(ContextMenu, metaclass=ABCMeta):
     """
-    Should be used for context menus which depend on
-    which items are selected, but not which clicked.
+    Should be used for context menus which depend on which items are
+    selected. Item clicked is used as fallback if no selection provided.
     """
 
     @abstractmethod
@@ -318,19 +318,29 @@ class ContextMenuSelection(ContextMenu, metaclass=ABCMeta):
         return
 
     def _baseDisplay(self, context, mainItem, selection):
+        selection = self.__getSelection(selection, mainItem)
         return self.display(context, selection)
 
     def _baseGetBitmap(self, context, mainItem, selection):
+        selection = self.__getSelection(selection, mainItem)
         return self.getBitmap(context, selection)
 
     def _baseGetText(self, context, mainItem, selection):
+        selection = self.__getSelection(selection, mainItem)
         return self.getText(context, selection)
 
     def _baseGetSubMenu(self, context, mainItem, selection, rootMenu, i, pitem):
+        selection = self.__getSelection(selection, mainItem)
         return self.getSubMenu(context, selection, rootMenu, i, pitem)
 
     def _baseActivate(self, fullContext, mainItem, selection, i):
+        selection = self.__getSelection(selection, mainItem)
         return self.activate(fullContext, selection, i)
+
+    def __getSelection(self, selection, mainItem):
+        if len(selection) > 0:
+            return selection
+        return (mainItem,)
 
 
 class ContextMenuCombined(ContextMenu, metaclass=ABCMeta):
