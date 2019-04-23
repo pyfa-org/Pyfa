@@ -10,6 +10,7 @@ from service.settings import ContextMenuSettings
 
 
 class AddCommandFit(ContextMenu):
+
     # Get list of items that define a command fit
     sMkt = Market.getInstance()
     grp = sMkt.getGroup(1770)  # Command burst group

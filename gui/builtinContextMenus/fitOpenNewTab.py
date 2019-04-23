@@ -8,6 +8,7 @@ from service.settings import ContextMenuSettings
 
 
 class OpenFitInNewTab(ContextMenu):
+
     def __init__(self):
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
         self.settings = ContextMenuSettings.getInstance()

@@ -11,6 +11,7 @@ from service.fit import Fit
 
 
 class ChangeModuleSpool(ContextMenu):
+
     def __init__(self):
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
         self.settings = ContextMenuSettings.getInstance()

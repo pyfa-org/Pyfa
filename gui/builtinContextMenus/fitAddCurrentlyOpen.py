@@ -9,6 +9,7 @@ from service.fit import Fit
 
 
 class AddCurrentlyOpenFit(ContextMenu):
+
     def __init__(self):
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
 

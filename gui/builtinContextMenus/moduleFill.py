@@ -6,15 +6,17 @@ from service.settings import ContextMenuSettings
 
 
 class FillWithModule(ContextMenu):
+
     def __init__(self):
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
         self.settings = ContextMenuSettings.getInstance()
 
     def display(self, srcContext, mainItem, selection):
+
         if not self.settings.get('moduleFill'):
             return False
 
-        if mainItem is None or mainItem.isEmpty:
+        if mainItem is None or getattr(mainItem, 'isEmpty', False):
             return False
 
         return srcContext == "fittingModule"

@@ -14,6 +14,7 @@ from service.settings import ContextMenuSettings
 
 
 class ChangeModuleAmmo(ContextMenu):
+
     DAMAGE_TYPES = ("em", "explosive", "kinetic", "thermal")
     MISSILE_ORDER = ("em", "thermal", "kinetic", "explosive", "mixed")
 

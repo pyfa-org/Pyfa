@@ -13,6 +13,7 @@ from service.targetResists import TargetResists as svc_TargetResists
 
 
 class TargetResists(ContextMenu):
+
     def __init__(self):
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
         self.settings = ContextMenuSettings.getInstance()

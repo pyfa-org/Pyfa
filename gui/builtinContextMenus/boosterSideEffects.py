@@ -8,7 +8,7 @@ from service.fit import Fit
 from service.settings import ContextMenuSettings
 
 
-class BoosterSideEffect(ContextMenu):
+class BoosterSideEffects(ContextMenu):
 
     def __init__(self):
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
@@ -72,4 +72,4 @@ class BoosterSideEffect(ContextMenu):
                 fitID=fitID, position=index, effectID=effect.effectID))
 
 
-BoosterSideEffect.register()
+BoosterSideEffects.register()

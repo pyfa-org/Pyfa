@@ -10,7 +10,8 @@ from service.implantSet import ImplantSets as s_ImplantSets
 from service.settings import ContextMenuSettings
 
 
-class addImplantSet(ContextMenu):
+class AddImplantSet(ContextMenu):
+
     def __init__(self):
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
         self.settings = ContextMenuSettings.getInstance()
@@ -85,4 +86,4 @@ class addImplantSet(ContextMenu):
                 itemIDs=[i.itemID for i in set.implants]))
 
 
-addImplantSet.register()
+AddImplantSet.register()

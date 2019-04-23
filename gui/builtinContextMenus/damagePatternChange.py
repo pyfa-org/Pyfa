@@ -13,6 +13,7 @@ from service.settings import ContextMenuSettings
 
 
 class ChangeDamagePattern(ContextMenu):
+
     def __init__(self):
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
         self.settings = ContextMenuSettings.getInstance()
