@@ -667,7 +667,8 @@ class FittingView(d.Display):
             else:
                 if mod in fit.modules:
                     mainMod = mod
-        if mainMod is None and len(selection) > 0:
+        # Fall back to first selected module only if position is -1
+        elif len(selection) > 0:
             mainMod = selection[0]
 
         menu = ContextMenu.getMenu(mainMod, selection, *contexts)
