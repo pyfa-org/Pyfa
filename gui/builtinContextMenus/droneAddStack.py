@@ -39,11 +39,12 @@ class DroneAddStack(ContextMenuSingle):
             itmContext, '' if self.amount == 1 else ' (x{})'.format(self.amount))
 
     def activate(self, fullContext, mainItem, i):
-        self.mainFrame.command.Submit(cmd.GuiAddLocalDroneCommand(
+        command = cmd.GuiAddLocalDroneCommand(
             fitID=self.mainFrame.getActiveFit(),
             itemID=int(mainItem.ID),
-            amount=self.amount))
-        self.mainFrame.additionsPane.select('Drones')
+            amount=self.amount)
+        if self.mainFrame.command.Submit(command):
+            self.mainFrame.additionsPane.select('Drones')
 
 
 DroneAddStack.register()
