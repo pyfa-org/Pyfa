@@ -275,10 +275,9 @@ class Display(wx.ListCtrl):
     def getRow(self, pointAbs, fallback=None):
         if pointAbs == wx.Point(-1, -1):
             return -1
-        pointBase = self.GetScreenPosition()
-        pointRel = pointAbs - pointBase
-        # HitTest is buggy as hell, do some workarounds here
-        # https://github.com/wxWidgets/Phoenix/issues/232
+        pointRel = self.ScreenToClient(pointAbs)
+        # HitTest seems to ignore header row, do some workarounds here
+        # https://github.com/wxWidgets/Phoenix/issues/1213
         row = self.HitTest(pointRel)[0]
         if row != -1:
             return row - 1
