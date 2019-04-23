@@ -4,6 +4,7 @@ import wx
 import gui.fitCommands as cmd
 import gui.mainFrame
 from gui.contextMenu import ContextMenuCombined
+from gui.fitCommands.helpers import getSimilarModPositions
 from service.fit import Fit
 from service.market import Market
 from service.settings import ContextMenuSettings
@@ -31,27 +32,16 @@ class ChangeItemToVariation(ContextMenuCombined):
         ):
             return False
 
-        if (mainItem is None or getattr(mainItem, 'isEmpty', False)) and len(selection) == 0:
+        if mainItem is None or getattr(mainItem, 'isEmpty', False):
             return False
 
-        # Check if list of variations is same for all of selection
-        # If not - don't show the menu
-        mkt = Market.getInstance()
-        self.variations = None
-        for i in selection:
-            variations = mkt.getVariationsByItems([i.item])
-            if self.variations is None:
-                self.variations = variations
-            else:
-                if variations != self.variations:
-                    return False
+        self.mainVariations = Market.getInstance().getVariationsByItems((mainItem.item,))
+        # No variations from current module
+        if len(self.mainVariations) < 2:
+            return False
 
         self.mainItem = mainItem
         self.selection = selection
-
-        if len(self.variations) == 1:
-            return False  # no variations from current module
-
         return True
 
     def getText(self, itmContext, mainItem, selection):
@@ -74,7 +64,7 @@ class ChangeItemToVariation(ContextMenuCombined):
 
         def get_boosterrank(x):
             # If we're returning a lot of items, sort my name
-            if len(self.variations) > 7:
+            if len(self.mainVariations) > 7:
                 return x.name
             # Sort by booster chance to get some sort of pseudorank.
             elif 'boosterEffectChance1' in x.attributes:
@@ -93,7 +83,7 @@ class ChangeItemToVariation(ContextMenuCombined):
             bindmenu = m
 
         # Sort items by metalevel, and group within that metalevel
-        items = list(self.variations)
+        items = list(self.mainVariations)
         # Sort all items by name first
         items.sort(key=lambda x: x.name)
         # Do not do any extra sorting for implants
@@ -138,14 +128,16 @@ class ChangeItemToVariation(ContextMenuCombined):
         if item is None:
             event.Skip()
             return
-
         fitID = self.mainFrame.getActiveFit()
         fit = Fit.getInstance().getFit(fitID)
         if context == 'fittingModule':
-            positions = []
-            for position, mod in enumerate(fit.modules):
-                if mod in self.selection:
-                    positions.append(position)
+            if wx.GetMouseState().altDown:
+                positions = getSimilarModPositions(fit.modules, self.mainItem)
+            else:
+                positions = []
+                for position, mod in enumerate(fit.modules):
+                    if mod in self.selection:
+                        positions.append(position)
             self.mainFrame.command.Submit(cmd.GuiChangeLocalModuleMetasCommand(
                 fitID=fitID, positions=positions, newItemID=item.ID))
         elif context == 'droneItem':

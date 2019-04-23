@@ -3,9 +3,9 @@ import math
 import wx
 
 import gui.fitCommands as cmd
-from gui.fitCommands.helpers import getSimilarModPositions
 import gui.mainFrame
 from gui.contextMenu import ContextMenuCombined
+from gui.fitCommands.helpers import getSimilarModPositions
 from service.fit import Fit
 from service.settings import ContextMenuSettings
 
