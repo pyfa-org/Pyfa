@@ -243,6 +243,7 @@ class ChromeNotebook(wx.Panel):
             self._active_page = self._pages[page]
             self.tabs_container.SetSelected(page)
             self.ShowActive()
+            wx.PostEvent(self, PageChanged(old_selection, page))
 
     def DeletePage(self, n):
         page = self._pages[n]
