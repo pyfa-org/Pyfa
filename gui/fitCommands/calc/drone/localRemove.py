@@ -13,7 +13,7 @@ pyfalog = Logger(__name__)
 class CalcRemoveLocalDroneCommand(wx.Command):
 
     def __init__(self, fitID, position, amount, commit=True):
-        wx.Command.__init__(self, True, 'Remove Drone')
+        wx.Command.__init__(self, True, 'Remove Local Drone')
         self.fitID = fitID
         self.position = position
         self.amountToRemove = amount

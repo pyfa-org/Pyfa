@@ -15,8 +15,8 @@ class CalcRemoveLocalModulesCommand(wx.Command):
         wx.Command.__init__(self, True, 'Remove Module')
         self.fitID = fitID
         self.positions = positions
-        self.savedModInfos = {}
         self.commit = commit
+        self.savedModInfos = None
         self.savedStateCheckChanges = None
 
     def Do(self):
@@ -24,6 +24,7 @@ class CalcRemoveLocalModulesCommand(wx.Command):
         sFit = Fit.getInstance()
         fit = sFit.getFit(self.fitID)
 
+        self.savedModInfos = {}
         for position in self.positions:
             mod = fit.modules[position]
             if not mod.isEmpty:

@@ -21,10 +21,10 @@ from .gui.itemsRebase import GuiRebaseItemsCommand
 from .gui.localDrone.add import GuiAddLocalDroneCommand
 from .gui.localDrone.changeAmount import GuiChangeLocalDroneAmountCommand
 from .gui.localDrone.changeMeta import GuiChangeLocalDroneMetaCommand
-from .gui.localDrone.remove import GuiRemoveLocalDroneCommand
+from .gui.localDrone.remove import GuiRemoveLocalDronesCommand
 from .gui.localDrone.stackSplit import GuiSplitLocalDroneStackCommand
 from .gui.localDrone.stacksMerge import GuiMergeLocalDroneStacksCommand
-from .gui.localDrone.toggleState import GuiToggleLocalDroneStateCommand
+from .gui.localDrone.toggleStates import GuiToggleLocalDroneStatesCommand
 from .gui.localFighter.abilityToggleState import GuiToggleLocalFighterAbilityStateCommand
 from .gui.localFighter.add import GuiAddLocalFighterCommand
 from .gui.localFighter.changeAmount import GuiChangeLocalFighterAmountCommand

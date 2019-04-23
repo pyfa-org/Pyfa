@@ -25,6 +25,7 @@ from gui.cachingImageList import CachingImageList
 
 
 class Display(wx.ListCtrl):
+
     DEFAULT_COLS = None
 
     def __init__(self, parent, size=wx.DefaultSize, style=0):
@@ -284,3 +285,11 @@ class Display(wx.ListCtrl):
         if fallback is not None:
             return fallback
         return row
+
+    def getSelectedRows(self):
+        rows = []
+        row = self.GetFirstSelected()
+        while row != -1:
+            rows.append(row)
+            row = self.GetNextSelected(row)
+        return rows

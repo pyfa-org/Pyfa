@@ -12,7 +12,7 @@ pyfalog = Logger(__name__)
 class CalcChangeLocalDroneAmountCommand(wx.Command):
 
     def __init__(self, fitID, position, amount, commit=True):
-        wx.Command.__init__(self, True, 'Change Drone Amount')
+        wx.Command.__init__(self, True, 'Change Local Drone Amount')
         self.fitID = fitID
         self.position = position
         self.amount = amount

@@ -29,6 +29,8 @@ class CalcChangeLocalModuleStatesCommand(wx.Command):
         if mainMod.isEmpty:
             return False
         positions = [pos for pos in self.positions if not fit.modules[pos].isEmpty]
+        if self.mainPosition not in positions:
+            positions.append(self.mainPosition)
         self.savedStates = {pos: fit.modules[pos].state for pos in positions}
 
         changed = False

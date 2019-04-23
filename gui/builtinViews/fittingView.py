@@ -268,19 +268,15 @@ class FittingView(d.Display):
         dropSource.DoDragDrop()
 
     def getSelectedMods(self):
-        sel = []
-        row = self.GetFirstSelected()
-        while row != -1:
+        mods = []
+        for row in self.getSelectedRows():
             try:
                 mod = self.mods[self.GetItemData(row)]
             except IndexError:
-                row = self.GetNextSelected(row)
                 continue
             if mod and not isinstance(mod, Rack):
-                sel.append(mod)
-            row = self.GetNextSelected(row)
-
-        return sel
+                mods.append(mod)
+        return mods
 
     def kbEvent(self, event):
         keycode = event.GetKeyCode()

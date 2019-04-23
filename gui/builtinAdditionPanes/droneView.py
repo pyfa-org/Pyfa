@@ -65,7 +65,7 @@ class DroneView(Display):
     ]
 
     def __init__(self, parent):
-        Display.__init__(self, parent, style=wx.LC_SINGLE_SEL | wx.BORDER_NONE)
+        Display.__init__(self, parent, style=wx.BORDER_NONE)
 
         self.lastFitId = None
 
@@ -120,20 +120,22 @@ class DroneView(Display):
 
     def kbEvent(self, event):
         keycode = event.GetKeyCode()
+        mstate = wx.GetMouseState()
+        if keycode == wx.WXK_ESCAPE and not mstate.cmdDown and not mstate.altDown and not mstate.shiftDown:
+            self.unselectAll()
+        if keycode == 65 and mstate.cmdDown and not mstate.altDown and not mstate.shiftDown:
+            self.selectAll()
         if keycode == wx.WXK_DELETE or keycode == wx.WXK_NUMPAD_DELETE:
-            row = self.GetFirstSelected()
-            if row != -1:
-                try:
-                    drone = self.drones[self.GetItemData(row)]
-                except IndexError:
-                    return
-                self.removeDroneStack(drone)
-
+            drones = self.getSelectedDrones()
+            self.removeDroneStacks(drones)
         event.Skip()
 
     def startDrag(self, event):
         row = event.GetIndex()
         if row != -1:
+            self.unselectAll()
+            self.Select(row, True)
+
             data = wx.TextDataObject()
             dataStr = "drone:" + str(row)
             data.SetText(dataStr)
@@ -245,7 +247,7 @@ class DroneView(Display):
                 except IndexError:
                     return
                 if mstate.cmdDown or mstate.altDown:
-                    self.removeDroneStack(drone)
+                    self.removeDroneStacks([drone])
                 else:
                     self.removeDrone(drone)
 
@@ -253,41 +255,72 @@ class DroneView(Display):
         fitID = self.mainFrame.getActiveFit()
         if drone in self.original:
             position = self.original.index(drone)
-            self.mainFrame.command.Submit(cmd.GuiRemoveLocalDroneCommand(
-                fitID=fitID, position=position, amount=1))
+            self.mainFrame.command.Submit(cmd.GuiRemoveLocalDronesCommand(
+                fitID=fitID, positions=[position], amount=1))
 
-    def removeDroneStack(self, drone):
+    def removeDroneStacks(self, drones):
         fitID = self.mainFrame.getActiveFit()
-        if drone in self.original:
-            position = self.original.index(drone)
-            self.mainFrame.command.Submit(cmd.GuiRemoveLocalDroneCommand(
-                fitID=fitID, position=position, amount=math.inf))
+        positions = []
+        for drone in drones:
+            if drone in self.original:
+                positions.append(self.original.index(drone))
+        self.mainFrame.command.Submit(cmd.GuiRemoveLocalDronesCommand(
+            fitID=fitID, positions=positions, amount=math.inf))
 
     def click(self, event):
-        event.Skip()
-        row, _ = self.HitTest(event.Position)
-        if row != -1:
+        mainRow, _ = self.HitTest(event.Position)
+        if mainRow != -1:
             col = self.getColumn(event.Position)
             if col == self.getColIndex(State):
                 fitID = self.mainFrame.getActiveFit()
                 try:
-                    drone = self.drones[row]
+                    mainDrone = self.drones[mainRow]
                 except IndexError:
                     return
-                if drone in self.original:
-                    position = self.original.index(drone)
-                    self.mainFrame.command.Submit(cmd.GuiToggleLocalDroneStateCommand(
-                        fitID=fitID, position=position))
+                if mainDrone in self.original:
+                    mainPosition = self.original.index(mainDrone)
+                    positions = []
+                    for row in self.getSelectedRows():
+                        try:
+                            drone = self.drones[row]
+                        except IndexError:
+                            continue
+                        if drone in self.original:
+                            positions.append(self.original.index(drone))
+                    self.mainFrame.command.Submit(cmd.GuiToggleLocalDroneStatesCommand(
+                        fitID=fitID,
+                        mainPosition=mainPosition,
+                        positions=positions))
+                    return
+        event.Skip()
 
     def spawnMenu(self, event):
-        sel = self.GetFirstSelected()
-        if sel != -1:
+        selection = self.getSelectedDrones()
+        clickedPos = self.getRow(event.Position)
+        mainDrone = None
+        if clickedPos != -1:
             try:
-                drone = self.drones[sel]
+                drone = self.drones[clickedPos]
             except IndexError:
-                return
-            sMkt = Market.getInstance()
-            sourceContext = "droneItem"
-            itemContext = sMkt.getCategoryByItem(drone.item).name
-            menu = ContextMenu.getMenu(drone, (drone,), (sourceContext, itemContext))
+                pass
+            else:
+                if drone in self.original:
+                    mainDrone = drone
+        # Fall back to first selected item only if position is -1
+        elif len(selection) > 0:
+            mainDrone = selection[0]
+        sourceContext = "droneItem"
+        itemContext = Market.getInstance().getCategoryByItem(mainDrone.item).name if mainDrone is not None else mainDrone
+        menu = ContextMenu.getMenu(mainDrone, selection, (sourceContext, itemContext))
+        if menu:
             self.PopupMenu(menu)
+
+    def getSelectedDrones(self):
+        drones = []
+        for row in self.getSelectedRows():
+            try:
+                drone = self.drones[self.GetItemData(row)]
+            except IndexError:
+                continue
+            drones.append(drone)
+        return drones

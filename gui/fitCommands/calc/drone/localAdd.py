@@ -15,7 +15,7 @@ pyfalog = Logger(__name__)
 class CalcAddLocalDroneCommand(wx.Command):
 
     def __init__(self, fitID, droneInfo, forceNewStack=False, commit=True):
-        wx.Command.__init__(self, True, 'Add Drone')
+        wx.Command.__init__(self, True, 'Add Local Drone')
         self.fitID = fitID
         self.droneInfo = droneInfo
         self.forceNewStack = forceNewStack

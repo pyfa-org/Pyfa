@@ -48,16 +48,18 @@ class RemoveItem(ContextMenuCombined):
                 positions = getSimilarModPositions(fit.modules, mainItem)
             else:
                 positions = []
-                for position, mod in enumerate(fit.modules):
-                    if mod in selection:
-                        positions.append(position)
+                for mod in selection:
+                    if mod in fit.modules:
+                        positions.append(fit.modules.index(mod))
             self.mainFrame.command.Submit(cmd.GuiRemoveLocalModuleCommand(
                 fitID=fitID, positions=positions))
         elif srcContext == "droneItem":
-            if mainItem in fit.drones:
-                position = fit.drones.index(mainItem)
-                self.mainFrame.command.Submit(cmd.GuiRemoveLocalDroneCommand(
-                    fitID=fitID, position=position, amount=math.inf))
+            positions = []
+            for drone in selection:
+                if drone in fit.drones:
+                    positions.append(fit.drones.index(drone))
+            self.mainFrame.command.Submit(cmd.GuiRemoveLocalDronesCommand(
+                fitID=fitID, positions=positions, amount=math.inf))
         elif srcContext == "fighterItem":
             if mainItem in fit.fighters:
                 position = fit.fighters.index(mainItem)
