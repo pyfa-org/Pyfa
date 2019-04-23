@@ -1,18 +1,18 @@
 import gui.fitCommands as cmd
 import gui.mainFrame
-from gui.contextMenu import ContextMenuCombined
+from gui.contextMenu import ContextMenuSingle
 from gui.fitCommands.helpers import droneStackLimit
 from service.fit import Fit
 from service.settings import ContextMenuSettings
 
 
-class DroneAddStack(ContextMenuCombined):
+class DroneAddStack(ContextMenuSingle):
 
     def __init__(self):
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
         self.settings = ContextMenuSettings.getInstance()
 
-    def display(self, srcContext, mainItem, selection):
+    def display(self, srcContext, mainItem):
         if srcContext not in ('marketItemGroup', 'marketItemMisc'):
             return False
 
@@ -34,11 +34,11 @@ class DroneAddStack(ContextMenuCombined):
         self.amount = amount
         return True
 
-    def getText(self, itmContext, mainItem, selection):
+    def getText(self, itmContext, mainItem):
         return 'Add {} to Drone Bay{}'.format(
             itmContext, '' if self.amount == 1 else ' (x{})'.format(self.amount))
 
-    def activate(self, fullContext, mainItem, selection, i):
+    def activate(self, fullContext, mainItem, i):
         self.mainFrame.command.Submit(cmd.GuiAddLocalDroneCommand(
             fitID=self.mainFrame.getActiveFit(),
             itemID=int(mainItem.ID),

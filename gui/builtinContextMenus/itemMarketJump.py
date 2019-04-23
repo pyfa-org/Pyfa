@@ -1,15 +1,15 @@
 import gui.mainFrame
-from gui.contextMenu import ContextMenuCombined
+from gui.contextMenu import ContextMenuSingle
 from service.market import Market
 from service.settings import ContextMenuSettings
 
 
-class JumpToMarketItem(ContextMenuCombined):
+class JumpToMarketItem(ContextMenuSingle):
     def __init__(self):
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
         self.settings = ContextMenuSettings.getInstance()
 
-    def display(self, srcContext, mainItem, selection):
+    def display(self, srcContext, mainItem):
         validContexts = ("marketItemMisc", "fittingModule",
                          "fittingCharge", "droneItem",
                          "implantItem", "boosterItem",
@@ -38,10 +38,10 @@ class JumpToMarketItem(ContextMenuCombined):
         doit = not mainItem.isEmpty if srcContext == "fittingModule" else True
         return doit
 
-    def getText(self, itmContext, mainItem, selection):
+    def getText(self, itmContext, mainItem):
         return "{0} Market Group".format(itmContext if itmContext is not None else "Item")
 
-    def activate(self, fullContext, mainItem, selection, i):
+    def activate(self, fullContext, mainItem, i):
         srcContext = fullContext[0]
         if srcContext in ("fittingCharge", "projectedCharge"):
             item = mainItem.charge

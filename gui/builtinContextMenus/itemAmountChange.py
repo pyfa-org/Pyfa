@@ -9,18 +9,18 @@ from eos.saveddata.cargo import Cargo as es_Cargo
 from eos.saveddata.drone import Drone
 from eos.saveddata.fighter import Fighter as es_Fighter
 from eos.saveddata.fit import Fit as es_Fit
-from gui.contextMenu import ContextMenuCombined
+from gui.contextMenu import ContextMenuSingle
 from service.fit import Fit
 from service.settings import ContextMenuSettings
 
 
-class ChangeItemAmount(ContextMenuCombined):
+class ChangeItemAmount(ContextMenuSingle):
 
     def __init__(self):
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
         self.settings = ContextMenuSettings.getInstance()
 
-    def display(self, srcContext, mainItem, selection):
+    def display(self, srcContext, mainItem):
         if srcContext not in ("droneItem", "projectedDrone", "cargoItem", "projectedFit", "fighterItem", "projectedFighter"):
             return False
 
@@ -29,10 +29,10 @@ class ChangeItemAmount(ContextMenuCombined):
 
         return True
 
-    def getText(self, itmContext, mainItem, selection):
+    def getText(self, itmContext, mainItem):
         return "Change {0} Quantity".format(itmContext)
 
-    def activate(self, fullContext, mainItem, selection, i):
+    def activate(self, fullContext, mainItem, i):
         mainFrame = gui.mainFrame.MainFrame.getInstance()
         fitID = mainFrame.getActiveFit()
         srcContext = fullContext[0]

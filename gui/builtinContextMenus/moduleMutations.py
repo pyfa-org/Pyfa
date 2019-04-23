@@ -2,20 +2,20 @@
 import wx
 
 import gui.mainFrame
-from gui.contextMenu import ContextMenuCombined
+from gui.contextMenu import ContextMenuSingle
 from gui.fitCommands import GuiConvertMutatedLocalModuleCommand, GuiRevertMutatedLocalModuleCommand
 from service.settings import ContextMenuSettings
 from service.fit import Fit
 
 
-class ChangeModuleMutation(ContextMenuCombined):
+class ChangeModuleMutation(ContextMenuSingle):
 
     def __init__(self):
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
         self.settings = ContextMenuSettings.getInstance()
         self.eventIDs = {}
 
-    def display(self, srcContext, mainItem, selection):
+    def display(self, srcContext, mainItem):
         if srcContext != "fittingModule" or self.mainFrame.getActiveFit() is None:
             return False
 
@@ -27,10 +27,10 @@ class ChangeModuleMutation(ContextMenuCombined):
 
         return True
 
-    def getText(self, itmContext, mainItem, selection):
+    def getText(self, itmContext, mainItem):
         return "Apply Mutaplasmid" if not mainItem.isMutated else "Revert to {}".format(mainItem.baseItem.name)
 
-    def getSubMenu(self, context, mainItem, selection, rootMenu, i, pitem):
+    def getSubMenu(self, context, mainItem, rootMenu, i, pitem):
         if mainItem.isMutated:
             return None
 
@@ -42,7 +42,7 @@ class ChangeModuleMutation(ContextMenuCombined):
 
         for item in mainItem.item.mutaplasmids:
             label = item.item.name
-            id = ContextMenuCombined.nextID()
+            id = ContextMenuSingle.nextID()
             self.eventIDs[id] = (item, mainItem)
             skillItem = wx.MenuItem(menu, id, label)
             menu.Bind(wx.EVT_MENU, self.handleMenu, skillItem)
@@ -59,7 +59,7 @@ class ChangeModuleMutation(ContextMenuCombined):
             self.mainFrame.command.Submit(GuiConvertMutatedLocalModuleCommand(
                 fitID=fitID, position=position, mutaplasmid=mutaplasmid))
 
-    def activate(self, fullContext, mainItem, selection, i):
+    def activate(self, fullContext, mainItem, i):
         fitID = self.mainFrame.getActiveFit()
         fit = Fit.getInstance().getFit(fitID)
         if mainItem in fit.modules:
@@ -67,7 +67,7 @@ class ChangeModuleMutation(ContextMenuCombined):
             self.mainFrame.command.Submit(GuiRevertMutatedLocalModuleCommand(
                 fitID=fitID, position=position))
 
-    def getBitmap(self, context, mainItem, selection):
+    def getBitmap(self, context, mainItem):
         return None
 
 

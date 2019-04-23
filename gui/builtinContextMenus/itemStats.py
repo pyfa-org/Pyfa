@@ -2,18 +2,18 @@
 import wx
 
 import gui.mainFrame
-from gui.contextMenu import ContextMenuCombined
+from gui.contextMenu import ContextMenuSingle
 from gui.itemStats import ItemStatsDialog
 from service.fit import Fit
 from service.settings import ContextMenuSettings
 
 
-class ItemStats(ContextMenuCombined):
+class ItemStats(ContextMenuSingle):
     def __init__(self):
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
         self.settings = ContextMenuSettings.getInstance()
 
-    def display(self, srcContext, mainItem, selection):
+    def display(self, srcContext, mainItem):
         if srcContext not in (
             "marketItemGroup", "marketItemMisc",
             "fittingModule", "fittingCharge",
@@ -33,10 +33,10 @@ class ItemStats(ContextMenuCombined):
 
         return True
 
-    def getText(self, itmContext, mainItem, selection):
+    def getText(self, itmContext, mainItem):
         return "{} Stats".format(itmContext if itmContext is not None else "Item")
 
-    def activate(self, fullContext, mainItem, selection, i):
+    def activate(self, fullContext, mainItem, i):
         srcContext = fullContext[0]
         if srcContext == "fittingShip":
             fitID = self.mainFrame.getActiveFit()

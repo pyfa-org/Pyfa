@@ -3,19 +3,19 @@ import wx
 
 import gui.mainFrame
 from gui import fitCommands as cmd
-from gui.contextMenu import ContextMenuCombined
+from gui.contextMenu import ContextMenuSingle
 from service.fit import Fit
 from service.settings import ContextMenuSettings
 
 
-class FighterAbilities(ContextMenuCombined):
+class FighterAbilities(ContextMenuSingle):
 
     def __init__(self):
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
         self.settings = ContextMenuSettings.getInstance()
         self.isProjected = None
 
-    def display(self, srcContext, mainItem, selection):
+    def display(self, srcContext, mainItem):
         if self.mainFrame.getActiveFit() is None or srcContext not in ("fighterItem", "projectedFighter"):
             return False
 
@@ -26,18 +26,18 @@ class FighterAbilities(ContextMenuCombined):
         self.isProjected = True if srcContext == "projectedFighter" else False
         return True
 
-    def getText(self, itmContext, mainItem, selection):
+    def getText(self, itmContext, mainItem):
         return "Abilities"
 
     def addAbility(self, menu, ability):
         label = ability.name
-        id = ContextMenuCombined.nextID()
+        id = ContextMenuSingle.nextID()
         self.abilityIds[id] = ability
         menuItem = wx.MenuItem(menu, id, label, kind=wx.ITEM_CHECK)
         menu.Bind(wx.EVT_MENU, self.handleMode, menuItem)
         return menuItem
 
-    def getSubMenu(self, context, mainItem, selection, rootMenu, i, pitem):
+    def getSubMenu(self, context, mainItem, rootMenu, i, pitem):
         msw = True if "wxMSW" in wx.PlatformInfo else False
         self.context = context
         self.abilityIds = {}

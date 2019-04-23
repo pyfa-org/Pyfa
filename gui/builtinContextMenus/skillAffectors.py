@@ -5,18 +5,19 @@ import gui.globalEvents as GE
 import gui.mainFrame
 from eos.saveddata.character import Skill
 from gui.bitmap_loader import BitmapLoader
-from gui.contextMenu import ContextMenuCombined
+from gui.contextMenu import ContextMenuSingle
 from service.character import Character
 from service.fit import Fit
 from service.settings import ContextMenuSettings
 
 
-class ChangeAffectingSkills(ContextMenuCombined):
+class ChangeAffectingSkills(ContextMenuSingle):
+
     def __init__(self):
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
         self.settings = ContextMenuSettings.getInstance()
 
-    def display(self, srcContext, mainItem, selection):
+    def display(self, srcContext, mainItem):
         if not self.settings.get('changeAffectingSkills'):
             return False
 
@@ -69,7 +70,7 @@ class ChangeAffectingSkills(ContextMenuCombined):
         self.skills = sorted(skills, key=lambda x: x.item.name)
         return len(self.skills) > 0
 
-    def getText(self, itmContext, mainItem, selection):
+    def getText(self, itmContext, mainItem):
         return "Change %s Skills" % itmContext
 
     def addSkill(self, rootMenu, skill, i):
@@ -78,19 +79,19 @@ class ChangeAffectingSkills(ContextMenuCombined):
         else:
             label = "Level %s" % i
 
-        id = ContextMenuCombined.nextID()
+        id = ContextMenuSingle.nextID()
         self.skillIds[id] = (skill, i)
         menuItem = wx.MenuItem(rootMenu, id, label, kind=wx.ITEM_RADIO)
         rootMenu.Bind(wx.EVT_MENU, self.handleSkillChange, menuItem)
         return menuItem
 
-    def getSubMenu(self, context, mainItem, selection, rootMenu, i, pitem):
+    def getSubMenu(self, context, mainItem, rootMenu, i, pitem):
         msw = True if "wxMSW" in wx.PlatformInfo else False
         self.skillIds = {}
         sub = wx.Menu()
 
         for skill in self.skills:
-            skillItem = wx.MenuItem(sub, ContextMenuCombined.nextID(), skill.item.name)
+            skillItem = wx.MenuItem(sub, ContextMenuSingle.nextID(), skill.item.name)
             grandSub = wx.Menu()
             skillItem.SetSubMenu(grandSub)
             if skill.learned:

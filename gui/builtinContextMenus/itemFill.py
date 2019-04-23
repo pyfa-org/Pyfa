@@ -1,16 +1,16 @@
 import gui.fitCommands as cmd
 import gui.mainFrame
-from gui.contextMenu import ContextMenuCombined
+from gui.contextMenu import ContextMenuSingle
 from service.settings import ContextMenuSettings
 
 
-class FillWithItem(ContextMenuCombined):
+class FillWithItem(ContextMenuSingle):
 
     def __init__(self):
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
         self.settings = ContextMenuSettings.getInstance()
 
-    def display(self, srcContext, mainItem, selection):
+    def display(self, srcContext, mainItem):
         if not self.settings.get('moduleFill'):
             return False
 
@@ -28,10 +28,10 @@ class FillWithItem(ContextMenuCombined):
 
         return True
 
-    def getText(self, itmContext, mainItem, selection):
+    def getText(self, itmContext, mainItem):
         return "Fill With Module"
 
-    def activate(self, fullContext, mainItem, selection, i):
+    def activate(self, fullContext, mainItem, i):
         self.mainFrame.command.Submit(cmd.GuiFillWithNewLocalModulesCommand(
             fitID=self.mainFrame.getActiveFit(),
             itemID=int(mainItem.ID)))

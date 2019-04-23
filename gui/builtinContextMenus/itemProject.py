@@ -1,17 +1,17 @@
 import gui.fitCommands as cmd
 import gui.mainFrame
-from gui.contextMenu import ContextMenuCombined
+from gui.contextMenu import ContextMenuSingle
 from service.fit import Fit
 from service.settings import ContextMenuSettings
 
 
-class ProjectItem(ContextMenuCombined):
+class ProjectItem(ContextMenuSingle):
 
     def __init__(self):
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
         self.settings = ContextMenuSettings.getInstance()
 
-    def display(self, srcContext, mainItem, selection):
+    def display(self, srcContext, mainItem):
         if not self.settings.get('project'):
             return False
 
@@ -30,10 +30,10 @@ class ProjectItem(ContextMenuCombined):
 
         return mainItem.isType("projected")
 
-    def getText(self, itmContext, mainItem, selection):
+    def getText(self, itmContext, mainItem):
         return "Project {0} onto Fit".format(itmContext)
 
-    def activate(self, fullContext, mainItem, selection, i):
+    def activate(self, fullContext, mainItem, i):
         fitID = self.mainFrame.getActiveFit()
         category = mainItem.category.name
         if category == 'Module':

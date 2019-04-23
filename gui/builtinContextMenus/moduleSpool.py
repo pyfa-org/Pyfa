@@ -5,12 +5,12 @@ import eos.config
 import gui.fitCommands as cmd
 import gui.mainFrame
 from eos.utils.spoolSupport import SpoolType, SpoolOptions
-from gui.contextMenu import ContextMenuCombined
+from gui.contextMenu import ContextMenuSingle
 from service.settings import ContextMenuSettings
 from service.fit import Fit
 
 
-class ChangeModuleSpool(ContextMenuCombined):
+class ChangeModuleSpool(ContextMenuSingle):
 
     def __init__(self):
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
@@ -18,7 +18,7 @@ class ChangeModuleSpool(ContextMenuCombined):
         self.cycleMap = {}
         self.resetId = None
 
-    def display(self, srcContext, mainItem, selection):
+    def display(self, srcContext, mainItem):
         if not self.settings.get('spoolup'):
             return False
 
@@ -33,10 +33,10 @@ class ChangeModuleSpool(ContextMenuCombined):
 
         return self.mod.item.group.name in ("Precursor Weapon", "Mutadaptive Remote Armor Repairer")
 
-    def getText(self, itmContext, mainItem, selection):
+    def getText(self, itmContext, mainItem):
         return "Spoolup Cycles"
 
-    def getSubMenu(self, context, mainItem, selection, rootMenu, i, pitem):
+    def getSubMenu(self, context, mainItem, rootMenu, i, pitem):
         m = wx.Menu()
         if "wxMSW" in wx.PlatformInfo:
             bindmenu = rootMenu
@@ -50,7 +50,7 @@ class ChangeModuleSpool(ContextMenuCombined):
         cycleMax = self.mod.getSpoolData(spoolOptions=SpoolOptions(SpoolType.SCALE, 1, True))[0]
 
         for cycle in range(cycleMin, cycleMax + 1):
-            menuId = ContextMenuCombined.nextID()
+            menuId = ContextMenuSingle.nextID()
 
             # Show default only for current value and when not overriden
             if not isNotDefault and cycle == cycleDefault:
@@ -64,7 +64,7 @@ class ChangeModuleSpool(ContextMenuCombined):
             item.Check(isNotDefault and cycle == cycleCurrent)
             self.cycleMap[menuId] = cycle
 
-        self.resetId = ContextMenuCombined.nextID()
+        self.resetId = ContextMenuSingle.nextID()
         item = wx.MenuItem(m, self.resetId, "Reset")
         bindmenu.Bind(wx.EVT_MENU, self.handleSpoolChange, item)
         m.Append(item)

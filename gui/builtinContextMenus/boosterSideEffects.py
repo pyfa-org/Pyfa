@@ -3,18 +3,18 @@ import wx
 
 import gui.mainFrame
 from gui import fitCommands as cmd
-from gui.contextMenu import ContextMenuCombined
+from gui.contextMenu import ContextMenuSingle
 from service.fit import Fit
 from service.settings import ContextMenuSettings
 
 
-class BoosterSideEffects(ContextMenuCombined):
+class BoosterSideEffects(ContextMenuSingle):
 
     def __init__(self):
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
         self.settings = ContextMenuSettings.getInstance()
 
-    def display(self, srcContext, mainItem, selection):
+    def display(self, srcContext, mainItem):
         if self.mainFrame.getActiveFit() is None or srcContext not in "boosterItem":
             return False
 
@@ -29,19 +29,19 @@ class BoosterSideEffects(ContextMenuCombined):
 
         return False
 
-    def getText(self, itmContext, mainItem, selection):
+    def getText(self, itmContext, mainItem):
         return "Side Effects"
 
     def addEffect(self, menu, ability):
         label = ability.name
-        id = ContextMenuCombined.nextID()
+        id = ContextMenuSingle.nextID()
         self.effectIds[id] = ability
 
         menuItem = wx.MenuItem(menu, id, label, kind=wx.ITEM_CHECK)
         menu.Bind(wx.EVT_MENU, self.handleMode, menuItem)
         return menuItem
 
-    def getSubMenu(self, context, mainItem, selection, rootMenu, i, pitem):
+    def getSubMenu(self, context, mainItem, rootMenu, i, pitem):
         msw = True if "wxMSW" in wx.PlatformInfo else False
         self.context = context
         self.effectIds = {}
