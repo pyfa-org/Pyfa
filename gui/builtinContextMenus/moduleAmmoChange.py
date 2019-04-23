@@ -25,7 +25,10 @@ class ChangeModuleAmmo(ContextMenuCombined):
         self.loadableCharges = {}
 
     def display(self, srcContext, mainItem, selection):
-        if self.mainFrame.getActiveFit() is None or srcContext not in ("fittingModule", "projectedModule"):
+        if srcContext not in ("fittingModule", "projectedModule"):
+            return False
+
+        if self.mainFrame.getActiveFit() is None:
             return False
 
         self.mainCharges = self.getChargesForMod(mainItem)

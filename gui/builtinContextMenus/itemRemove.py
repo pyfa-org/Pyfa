@@ -1,6 +1,9 @@
 import math
 
+import wx
+
 import gui.fitCommands as cmd
+from gui.fitCommands.helpers import getSimilarModPositions
 import gui.mainFrame
 from gui.contextMenu import ContextMenuCombined
 from service.fit import Fit
@@ -24,7 +27,7 @@ class RemoveItem(ContextMenuCombined):
         ):
             return False
 
-        if mainItem is None and len(selection) == 0:
+        if mainItem is None or getattr(mainItem, "isEmpty", False):
             return False
 
         return True
@@ -36,18 +39,18 @@ class RemoveItem(ContextMenuCombined):
 
     def activate(self, fullContext, mainItem, selection, i):
 
-        mainItem = selection[0] if mainItem is None else mainItem
-
         srcContext = fullContext[0]
-        sFit = Fit.getInstance()
         fitID = self.mainFrame.getActiveFit()
-        fit = sFit.getFit(fitID)
+        fit = Fit.getInstance().getFit(fitID)
 
         if srcContext == "fittingModule":
-            positions = []
-            for position, mod in enumerate(fit.modules):
-                if mod in selection:
-                    positions.append(position)
+            if wx.GetMouseState().altDown:
+                positions = getSimilarModPositions(fit.modules, mainItem)
+            else:
+                positions = []
+                for position, mod in enumerate(fit.modules):
+                    if mod in selection:
+                        positions.append(position)
             self.mainFrame.command.Submit(cmd.GuiRemoveLocalModuleCommand(
                 fitID=fitID, positions=positions))
         elif srcContext == "droneItem":
