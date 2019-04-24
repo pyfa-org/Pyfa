@@ -50,6 +50,7 @@ class FighterViewDrop(wx.DropTarget):
 
 
 class FighterView(wx.Panel):
+
     def __init__(self, parent):
         wx.Panel.__init__(self, parent, id=wx.ID_ANY, pos=wx.DefaultPosition, style=wx.TAB_TRAVERSAL)
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
@@ -115,6 +116,7 @@ class FighterView(wx.Panel):
 
 
 class FighterDisplay(d.Display):
+
     DEFAULT_COLS = ["State",
                     # "Base Icon",
                     "Base Name",
@@ -127,7 +129,7 @@ class FighterDisplay(d.Display):
                     ]
 
     def __init__(self, parent):
-        d.Display.__init__(self, parent, style=wx.LC_SINGLE_SEL | wx.BORDER_NONE)
+        d.Display.__init__(self, parent, style=wx.BORDER_NONE)
 
         self.lastFitId = None
 
@@ -180,6 +182,11 @@ class FighterDisplay(d.Display):
 
     def kbEvent(self, event):
         keycode = event.GetKeyCode()
+        mstate = wx.GetMouseState()
+        if keycode == wx.WXK_ESCAPE and not mstate.cmdDown and not mstate.altDown and not mstate.shiftDown:
+            self.unselectAll()
+        if keycode == 65 and mstate.cmdDown and not mstate.altDown and not mstate.shiftDown:
+            self.selectAll()
         if keycode == wx.WXK_DELETE or keycode == wx.WXK_NUMPAD_DELETE:
             row = self.GetFirstSelected()
             if row != -1:
@@ -194,6 +201,9 @@ class FighterDisplay(d.Display):
     def startDrag(self, event):
         row = event.GetIndex()
         if row != -1:
+            self.unselectAll()
+            self.Select(row, True)
+
             data = wx.TextDataObject()
             dataStr = "fighter:" + str(row)
             data.SetText(dataStr)
@@ -223,7 +233,7 @@ class FighterDisplay(d.Display):
     def _merge(src, dst):
         return
 
-    FIGHTER_ORDER = ('Heavy Fighter', 'Light Fighter', 'Support Fighter')
+    FIGHTER_ORDER = ('Light Fighter', 'Heavy Fighter', 'Support Fighter')
 
     def fighterKey(self, fighter):
         sMkt = Market.getInstance()
