@@ -338,9 +338,9 @@ class ContextMenuSelection(ContextMenu, metaclass=ABCMeta):
         return self.activate(fullContext, selection, i)
 
     def __getSelection(self, selection, mainItem):
-        if len(selection) > 0:
-            return selection
-        return (mainItem,)
+        if mainItem is not None and mainItem not in selection:
+            selection.append(mainItem)
+        return selection
 
 
 class ContextMenuCombined(ContextMenu, metaclass=ABCMeta):
@@ -367,19 +367,29 @@ class ContextMenuCombined(ContextMenu, metaclass=ABCMeta):
         return
 
     def _baseDisplay(self, context, mainItem, selection):
+        selection = self.__getSelection(selection, mainItem)
         return self.display(context, mainItem, selection)
 
     def _baseGetBitmap(self, context, mainItem, selection):
+        selection = self.__getSelection(selection, mainItem)
         return self.getBitmap(context, mainItem, selection)
 
     def _baseGetText(self, context, mainItem, selection):
+        selection = self.__getSelection(selection, mainItem)
         return self.getText(context, mainItem, selection)
 
     def _baseGetSubMenu(self, context, mainItem, selection, rootMenu, i, pitem):
+        selection = self.__getSelection(selection, mainItem)
         return self.getSubMenu(context, mainItem, selection, rootMenu, i, pitem)
 
     def _baseActivate(self, fullContext, mainItem, selection, i):
+        selection = self.__getSelection(selection, mainItem)
         return self.activate(fullContext, mainItem, selection, i)
+
+    def __getSelection(self, selection, mainItem):
+        if mainItem is not None and mainItem not in selection:
+            selection.append(mainItem)
+        return selection
 
 
 import gui.builtinContextMenus
