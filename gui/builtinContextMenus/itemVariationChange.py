@@ -11,6 +11,7 @@ from service.settings import ContextMenuSettings
 
 
 class ChangeItemToVariation(ContextMenuCombined):
+
     def __init__(self):
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
         self.settings = ContextMenuSettings.getInstance()
@@ -115,7 +116,7 @@ class ChangeItemToVariation(ContextMenuCombined):
 
             id = ContextMenuCombined.nextID()
             mitem = wx.MenuItem(rootMenu, id, item.name)
-            bindmenu.Bind(wx.EVT_MENU, self.handleModule, mitem)
+            bindmenu.Bind(wx.EVT_MENU, self.handleSwitch, mitem)
 
             self.moduleLookup[id] = item, context
             m.Append(mitem)
@@ -123,71 +124,108 @@ class ChangeItemToVariation(ContextMenuCombined):
 
         return m
 
-    def handleModule(self, event):
+    def handleSwitch(self, event):
         item, context = self.moduleLookup.get(event.Id, None)
         if item is None:
             event.Skip()
             return
+        handlerMap = {
+            'fittingModule': self.__handleModule,
+            'droneItem': self.__handleDrone,
+            'fighterItem': self.__handleFighter,
+            'implantItem': self.__handleImplant,
+            'boosterItem': self.__handleBooster,
+            'cargoItem': self.__handleCargo,
+            'projectedModule': self.__handleProjectedModule,
+            'projectedDrone': self.__handleProjectedDrone,
+            'projectedFighter': self.__handleProjectedFighter}
+        handler = handlerMap.get(context)
+        if handler is None:
+            return
+        handler(item)
+
+    def __handleModule(self, varItem):
         fitID = self.mainFrame.getActiveFit()
         fit = Fit.getInstance().getFit(fitID)
-        if context == 'fittingModule':
-            if wx.GetMouseState().altDown:
-                positions = getSimilarModPositions(fit.modules, self.mainItem)
-            else:
-                positions = []
-                for position, mod in enumerate(fit.modules):
-                    if mod in self.selection:
-                        if mod.isEmpty:
-                            continue
-                        modVariations = Market.getInstance().getVariationsByItems((mod.item,))
-                        if modVariations == self.mainVariations:
-                            positions.append(position)
-            self.mainFrame.command.Submit(cmd.GuiChangeLocalModuleMetasCommand(
-                fitID=fitID, positions=positions, newItemID=item.ID))
-        elif context == 'droneItem':
-            drone = self.mainItem
-            if drone in fit.drones:
-                position = fit.drones.index(drone)
-                self.mainFrame.command.Submit(cmd.GuiChangeLocalDroneMetaCommand(
-                    fitID=fitID, position=position, newItemID=item.ID))
-        elif context == 'fighterItem':
-            fighter = self.mainItem
-            if fighter in fit.fighters:
-                position = fit.fighters.index(fighter)
-                self.mainFrame.command.Submit(cmd.GuiChangeLocalFighterMetaCommand(
-                    fitID=fitID, position=position, newItemID=item.ID))
-        elif context == 'implantItem':
-            implant = self.mainItem
-            if implant in fit.implants:
-                position = fit.implants.index(implant)
-                self.mainFrame.command.Submit(cmd.GuiChangeImplantMetaCommand(
-                    fitID=fitID, position=position, newItemID=item.ID))
-        elif context == 'boosterItem':
-            booster = self.mainItem
-            if booster in fit.boosters:
-                position = fit.boosters.index(booster)
-                self.mainFrame.command.Submit(cmd.GuiChangeBoosterMetaCommand(
-                    fitID=fitID, position=position, newItemID=item.ID))
-        elif context == 'cargoItem':
-            cargo = self.mainItem
-            self.mainFrame.command.Submit(cmd.GuiChangeCargoMetaCommand(
-                fitID=fitID, itemID=cargo.itemID, newItemID=item.ID))
-        elif context == 'projectedModule':
-            mod = self.mainItem
-            if mod in fit.projectedModules:
-                position = fit.projectedModules.index(mod)
-                self.mainFrame.command.Submit(cmd.GuiChangeProjectedModuleMetaCommand(
-                    fitID=fitID, position=position, newItemID=item.ID))
-        elif context == 'projectedDrone':
-            drone = self.mainItem
-            self.mainFrame.command.Submit(cmd.GuiChangeProjectedDroneMetaCommand(
-                fitID=fitID, itemID=drone.itemID, newItemID=item.ID))
-        elif context == 'projectedFighter':
-            fighter = self.mainItem
-            if fighter in fit.projectedFighters:
-                position = fit.projectedFighters.index(fighter)
-                self.mainFrame.command.Submit(cmd.GuiChangeProjectedFighterMetaCommand(
-                    fitID=fitID, position=position, newItemID=item.ID))
+        if wx.GetMouseState().altDown:
+            positions = getSimilarModPositions(fit.modules, self.mainItem)
+        else:
+            positions = []
+            for position, mod in enumerate(fit.modules):
+                if mod in self.selection:
+                    if mod.isEmpty:
+                        continue
+                    modVariations = Market.getInstance().getVariationsByItems((mod.item,))
+                    if modVariations == self.mainVariations:
+                        positions.append(position)
+        self.mainFrame.command.Submit(cmd.GuiChangeLocalModuleMetasCommand(
+            fitID=fitID, positions=positions, newItemID=varItem.ID))
+
+    def __handleDrone(self, varItem):
+        fitID = self.mainFrame.getActiveFit()
+        fit = Fit.getInstance().getFit(fitID)
+        drone = self.mainItem
+        if drone in fit.drones:
+            position = fit.drones.index(drone)
+            self.mainFrame.command.Submit(cmd.GuiChangeLocalDroneMetaCommand(
+                fitID=fitID, position=position, newItemID=varItem.ID))
+
+    def __handleFighter(self, varItem):
+        fitID = self.mainFrame.getActiveFit()
+        fit = Fit.getInstance().getFit(fitID)
+        fighter = self.mainItem
+        if fighter in fit.fighters:
+            position = fit.fighters.index(fighter)
+            self.mainFrame.command.Submit(cmd.GuiChangeLocalFighterMetaCommand(
+                fitID=fitID, position=position, newItemID=varItem.ID))
+
+    def __handleImplant(self, varItem):
+        fitID = self.mainFrame.getActiveFit()
+        fit = Fit.getInstance().getFit(fitID)
+        implant = self.mainItem
+        if implant in fit.implants:
+            position = fit.implants.index(implant)
+            self.mainFrame.command.Submit(cmd.GuiChangeImplantMetaCommand(
+                fitID=fitID, position=position, newItemID=varItem.ID))
+
+    def __handleBooster(self, varItem):
+        fitID = self.mainFrame.getActiveFit()
+        fit = Fit.getInstance().getFit(fitID)
+        booster = self.mainItem
+        if booster in fit.boosters:
+            position = fit.boosters.index(booster)
+            self.mainFrame.command.Submit(cmd.GuiChangeBoosterMetaCommand(
+                fitID=fitID, position=position, newItemID=varItem.ID))
+
+    def __handleCargo(self, varItem):
+        fitID = self.mainFrame.getActiveFit()
+        cargo = self.mainItem
+        self.mainFrame.command.Submit(cmd.GuiChangeCargoMetaCommand(
+            fitID=fitID, itemID=cargo.itemID, newItemID=varItem.ID))
+
+    def __handleProjectedModule(self, varItem):
+        fitID = self.mainFrame.getActiveFit()
+        fit = Fit.getInstance().getFit(fitID)
+        mod = self.mainItem
+        if mod in fit.projectedModules:
+            position = fit.projectedModules.index(mod)
+            self.mainFrame.command.Submit(cmd.GuiChangeProjectedModuleMetaCommand(
+                fitID=fitID, position=position, newItemID=varItem.ID))
+
+    def __handleProjectedDrone(self, varItem):
+        fitID = self.mainFrame.getActiveFit()
+        drone = self.mainItem
+        self.mainFrame.command.Submit(cmd.GuiChangeProjectedDroneMetaCommand(
+            fitID=fitID, itemID=drone.itemID, newItemID=varItem.ID))
+
+    def __handleProjectedFighter(self, varItem):
+        fitID = self.mainFrame.getActiveFit()
+        fit = Fit.getInstance().getFit(fitID)
+        fighter = self.mainItem
+        if fighter in fit.projectedFighters:
+            position = fit.projectedFighters.index(fighter)
+            self.mainFrame.command.Submit(cmd.GuiChangeProjectedFighterMetaCommand(
+                fitID=fitID, position=position, newItemID=varItem.ID))
 
 
 ChangeItemToVariation.register()
