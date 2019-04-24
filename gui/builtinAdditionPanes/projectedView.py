@@ -280,8 +280,8 @@ class ProjectedView(d.Display):
                     fit = Fit.getInstance().getFit(fitID)
                     if thing in fit.projectedFighters:
                         position = fit.projectedFighters.index(thing)
-                        self.mainFrame.command.Submit(cmd.GuiToggleProjectedFighterStateCommand(
-                            fitID=fitID, position=position))
+                        self.mainFrame.command.Submit(cmd.GuiToggleProjectedFighterStatesCommand(
+                            fitID=fitID, mainPosition=position, positions=[position]))
 
     def spawnMenu(self, event):
         fitID = self.mainFrame.getActiveFit()

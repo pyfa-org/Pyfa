@@ -30,7 +30,7 @@ from .gui.localFighter.add import GuiAddLocalFighterCommand
 from .gui.localFighter.changeAmount import GuiChangeLocalFighterAmountCommand
 from .gui.localFighter.changeMetas import GuiChangeLocalFighterMetasCommand
 from .gui.localFighter.remove import GuiRemoveLocalFightersCommand
-from .gui.localFighter.toggleState import GuiToggleLocalFighterStateCommand
+from .gui.localFighter.toggleStates import GuiToggleLocalFighterStatesCommand
 from .gui.localModule.add import GuiAddLocalModuleCommand
 from .gui.localModule.changeCharges import GuiChangeLocalModuleChargesCommand
 from .gui.localModule.changeMetas import GuiChangeLocalModuleMetasCommand
@@ -57,7 +57,7 @@ from .gui.projectedFighter.add import GuiAddProjectedFighterCommand
 from .gui.projectedFighter.changeAmount import GuiChangeProjectedFighterAmountCommand
 from .gui.projectedFighter.changeMeta import GuiChangeProjectedFighterMetaCommand
 from .gui.projectedFighter.remove import GuiRemoveProjectedFighterCommand
-from .gui.projectedFighter.toggleState import GuiToggleProjectedFighterStateCommand
+from .gui.projectedFighter.toggleStates import GuiToggleProjectedFighterStatesCommand
 from .gui.projectedFit.add import GuiAddProjectedFitCommand
 from .gui.projectedFit.changeAmount import GuiChangeProjectedFitAmountCommand
 from .gui.projectedFit.remove import GuiRemoveProjectedFitCommand

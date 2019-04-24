@@ -310,19 +310,31 @@ class FighterDisplay(d.Display):
         self.mainFrame.command.Submit(cmd.GuiRemoveLocalFightersCommand(fitID=fitID, positions=positions))
 
     def click(self, event):
-        event.Skip()
-        row, _ = self.HitTest(event.Position)
-        if row != -1:
+        mainRow, _ = self.HitTest(event.Position)
+        if mainRow != -1:
             col = self.getColumn(event.Position)
             if col == self.getColIndex(State):
                 fitID = self.mainFrame.getActiveFit()
                 try:
-                    fighter = self.fighters[row]
+                    mainFighter = self.fighters[mainRow]
                 except IndexError:
                     return
-                if fighter in self.original:
-                    position = self.original.index(fighter)
-                    self.mainFrame.command.Submit(cmd.GuiToggleLocalFighterStateCommand(fitID=fitID, position=position))
+                if mainFighter in self.original:
+                    mainPosition = self.original.index(mainFighter)
+                    positions = []
+                    for row in self.getSelectedRows():
+                        try:
+                            fighter = self.fighters[row]
+                        except IndexError:
+                            continue
+                        if fighter in self.original:
+                            positions.append(self.original.index(fighter))
+                    self.mainFrame.command.Submit(cmd.GuiToggleLocalFighterStatesCommand(
+                        fitID=fitID,
+                        mainPosition=mainPosition,
+                        positions=positions))
+                    return
+        event.Skip()
 
     def spawnMenu(self, event):
         selection = self.getSelectedFighters()
