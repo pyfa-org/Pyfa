@@ -296,7 +296,7 @@ class DroneView(Display):
 
     def spawnMenu(self, event):
         selection = self.getSelectedDrones()
-        clickedPos = self.getRow(event.Position)
+        clickedPos = self.getRowByAbs(event.Position)
         mainDrone = None
         if clickedPos != -1:
             try:

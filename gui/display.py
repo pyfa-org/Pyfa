@@ -272,18 +272,27 @@ class Display(wx.ListCtrl):
     def columnBackground(self, colItem, item):
         return colItem.GetBackgroundColour()
 
-    def getRow(self, pointAbs, fallback=None):
+    def getRowByAbs(self, pointAbs):
         if pointAbs == wx.Point(-1, -1):
             return -1
         pointRel = self.ScreenToClient(pointAbs)
-        # HitTest seems to ignore header row, do some workarounds here
-        # https://github.com/wxWidgets/Phoenix/issues/1213
-        row = self.HitTest(pointRel)[0]
-        if row != -1:
-            return row - 1
-        if fallback is not None:
-            return fallback
+        row, flags = self.HitTest(pointRel)
         return row
+
+    def ScreenToClient(self, ptScreen):
+        """
+        Wx' ScreenToClient implementation seems to not consider header row height when
+        converting to screen position: https://github.com/wxWidgets/Phoenix/issues/1213
+        Do it ourselves here.
+        """
+        if ptScreen == wx.Point(-1, -1):
+            return wx.Point(-1, -1)
+        for window in self.GetChildren():
+            if window.GetName() == 'panel':
+                ptCorrection = window.GetPosition()
+                ptScreen = ptScreen - ptCorrection
+        ptClient = wx.ListCtrl.ScreenToClient(self, ptScreen)
+        return ptClient
 
     def getSelectedRows(self):
         rows = []

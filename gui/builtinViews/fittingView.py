@@ -653,7 +653,7 @@ class FittingView(d.Display):
         fit = sFit.getFit(self.activeFitID)
         contexts.append(("fittingShip", "Ship" if not fit.isStructure else "Citadel"))
 
-        clickedPos = self.getRow(event.Position)
+        clickedPos = self.getRowByAbs(event.Position)
         mainMod = None
         if clickedPos != -1:
             try:
