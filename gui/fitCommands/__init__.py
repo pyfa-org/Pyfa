@@ -28,7 +28,7 @@ from .gui.localDrone.toggleStates import GuiToggleLocalDroneStatesCommand
 from .gui.localFighter.abilityToggleState import GuiToggleLocalFighterAbilityStateCommand
 from .gui.localFighter.add import GuiAddLocalFighterCommand
 from .gui.localFighter.changeAmount import GuiChangeLocalFighterAmountCommand
-from .gui.localFighter.changeMeta import GuiChangeLocalFighterMetaCommand
+from .gui.localFighter.changeMetas import GuiChangeLocalFighterMetasCommand
 from .gui.localFighter.remove import GuiRemoveLocalFightersCommand
 from .gui.localFighter.toggleState import GuiToggleLocalFighterStateCommand
 from .gui.localModule.add import GuiAddLocalModuleCommand

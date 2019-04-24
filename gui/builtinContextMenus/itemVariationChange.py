@@ -4,7 +4,7 @@ import wx
 import gui.fitCommands as cmd
 import gui.mainFrame
 from gui.contextMenu import ContextMenuCombined
-from gui.fitCommands.helpers import getSimilarModPositions
+from gui.fitCommands.helpers import getSimilarModPositions, getSimilarFighters
 from service.fit import Fit
 from service.market import Market
 from service.settings import ContextMenuSettings
@@ -186,11 +186,23 @@ class ChangeItemToVariation(ContextMenuCombined):
     def __handleFighter(self, varItem):
         fitID = self.mainFrame.getActiveFit()
         fit = Fit.getInstance().getFit(fitID)
-        fighter = self.mainItem
-        if fighter in fit.fighters:
-            position = fit.fighters.index(fighter)
-            self.mainFrame.command.Submit(cmd.GuiChangeLocalFighterMetaCommand(
-                fitID=fitID, position=position, newItemID=varItem.ID))
+        if wx.GetMouseState().altDown:
+            fighters = getSimilarFighters(fit.fighters, self.mainItem)
+        else:
+            fighters = self.selection
+        sMkt = Market.getInstance()
+        positions = []
+        for fighter in fighters:
+            if fighter not in fit.fighters:
+                continue
+            if fighter is self.mainItem:
+                positions.append(fit.fighters.index(fighter))
+                continue
+            fighterVariations = sMkt.getVariationsByItems((fighter.item,))
+            if fighterVariations == self.mainVariations:
+                positions.append(fit.fighters.index(fighter))
+        self.mainFrame.command.Submit(cmd.GuiChangeLocalFighterMetasCommand(
+            fitID=fitID, positions=positions, newItemID=varItem.ID))
 
     def __handleImplant(self, varItem):
         fitID = self.mainFrame.getActiveFit()
