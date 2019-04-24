@@ -4,8 +4,8 @@ import wx
 import gui.mainFrame
 from gui.contextMenu import ContextMenuSingle
 from gui.fitCommands import GuiConvertMutatedLocalModuleCommand, GuiRevertMutatedLocalModuleCommand
-from service.settings import ContextMenuSettings
 from service.fit import Fit
+from service.settings import ContextMenuSettings
 
 
 class ChangeModuleMutation(ContextMenuSingle):
@@ -16,6 +16,7 @@ class ChangeModuleMutation(ContextMenuSingle):
         self.eventIDs = {}
 
     def display(self, srcContext, mainItem):
+
         if srcContext != "fittingModule" or self.mainFrame.getActiveFit() is None:
             return False
 

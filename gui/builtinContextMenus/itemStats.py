@@ -5,6 +5,7 @@ import gui.mainFrame
 from gui.contextMenu import ContextMenuSingle
 from gui.itemStats import ItemStatsDialog
 from service.fit import Fit
+from eos.saveddata.mode import Mode
 from service.settings import ContextMenuSettings
 
 

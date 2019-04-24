@@ -623,36 +623,15 @@ class FittingView(d.Display):
         if self.activeFitID is None or self.getColumn(self.screenToClientFixed(event.Position)) == self.getColIndex(State):
             return
 
-        sMkt = Market.getInstance()
         selection = []
-        contexts = []
         for mod in self.getSelectedMods():
             # Test if this is a mode, which is a special snowflake of a Module
             if isinstance(mod, Mode):
-                srcContext = "fittingMode"
-                itemContext = "Tactical Mode"
-                fullContext = (srcContext, itemContext)
-                if srcContext not in tuple(fCtxt[0] for fCtxt in contexts):
-                    contexts.append(fullContext)
                 selection.append(mod)
             elif not mod.isEmpty:
-                srcContext = "fittingModule"
-                itemContext = sMkt.getCategoryByItem(mod.item).name
-                fullContext = (srcContext, itemContext)
-                if srcContext not in tuple(fCtxt[0] for fCtxt in contexts):
-                    contexts.append(fullContext)
-
-                if mod.charge is not None:
-                    srcContext = "fittingCharge"
-                    itemContext = sMkt.getCategoryByItem(mod.charge).name
-                    fullContext = (srcContext, itemContext)
-                    if srcContext not in tuple(fCtxt[0] for fCtxt in contexts):
-                        contexts.append(fullContext)
                 selection.append(mod)
-        sFit = Fit.getInstance()
-        fit = sFit.getFit(self.activeFitID)
-        contexts.append(("fittingShip", "Ship" if not fit.isStructure else "Citadel"))
 
+        fit = Fit.getInstance().getFit(self.activeFitID)
         clickedPos = self.getRowByAbs(event.Position)
         mainMod = None
         if clickedPos != -1:
@@ -661,8 +640,31 @@ class FittingView(d.Display):
             except IndexError:
                 pass
             else:
-                if mod in fit.modules:
+                if mod is not None and (mod in fit.modules or mod is fit.mode):
                     mainMod = mod
+
+        sMkt = Market.getInstance()
+        contexts = []
+        if isinstance(mainMod, Module) and not mainMod.isEmpty:
+            srcContext = "fittingModule"
+            itemContext = sMkt.getCategoryByItem(mainMod.item).name
+            fullContext = (srcContext, itemContext)
+            if srcContext not in tuple(fCtx[0] for fCtx in contexts):
+                contexts.append(fullContext)
+            if mainMod.charge is not None:
+                srcContext = "fittingCharge"
+                itemContext = sMkt.getCategoryByItem(mainMod.charge).name
+                fullContext = (srcContext, itemContext)
+                if srcContext not in tuple(fCtxt[0] for fCtxt in contexts):
+                    contexts.append(fullContext)
+        elif isinstance(mainMod, Mode):
+            srcContext = "fittingMode"
+            itemContext = "Tactical Mode"
+            fullContext = (srcContext, itemContext)
+            if srcContext not in tuple(fCtx[0] for fCtx in contexts):
+                contexts.append(fullContext)
+        contexts.append(("fittingShip", "Ship" if not fit.isStructure else "Citadel"))
+
         menu = ContextMenu.getMenu(mainMod, selection, *contexts)
         self.PopupMenu(menu)
 

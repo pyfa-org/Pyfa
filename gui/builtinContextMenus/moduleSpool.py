@@ -6,8 +6,8 @@ import gui.fitCommands as cmd
 import gui.mainFrame
 from eos.utils.spoolSupport import SpoolType, SpoolOptions
 from gui.contextMenu import ContextMenuSingle
-from service.settings import ContextMenuSettings
 from service.fit import Fit
+from service.settings import ContextMenuSettings
 
 
 class ChangeModuleSpool(ContextMenuSingle):
