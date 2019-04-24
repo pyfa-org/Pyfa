@@ -211,12 +211,12 @@ class Display(wx.ListCtrl):
                 colItem = self.GetItem(item, i)
                 oldText = colItem.GetText()
                 oldImageId = colItem.GetImage()
-                oldColour = colItem.GetBackgroundColour();
+                oldColour = colItem.GetBackgroundColour()
                 newText = col.getText(st)
                 if newText is False:
                     col.delayedText(st, self, colItem)
                     newText = "\u21bb"
-                newColour = self.columnBackground(colItem, st);
+                newColour = self.columnBackground(colItem, st)
 
                 newImageId = col.getImageId(st)
 

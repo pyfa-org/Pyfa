@@ -236,9 +236,15 @@ class FighterDisplay(d.Display):
     FIGHTER_ORDER = ('Light Fighter', 'Heavy Fighter', 'Support Fighter')
 
     def fighterKey(self, fighter):
-        sMkt = Market.getInstance()
-        groupName = sMkt.getGroupByItem(fighter.item).name
-        return (self.FIGHTER_ORDER.index(groupName), fighter.item.name)
+        groupName = Market.getInstance().getGroupByItem(fighter.item).name
+        orderPos = self.FIGHTER_ORDER.index(groupName)
+        # Sort support fighters by name, ignore their abilities
+        if groupName == 'Support Fighter':
+            abilityEffectIDs = ()
+        # Group up fighters from various roles
+        else:
+            abilityEffectIDs = sorted(a.effectID for a in fighter.abilities)
+        return orderPos, abilityEffectIDs, fighter.item.name
 
     def fitChanged(self, event):
         sFit = Fit.getInstance()
