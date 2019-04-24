@@ -82,8 +82,8 @@ class RemoveItem(ContextMenuCombined):
                 self.mainFrame.command.Submit(cmd.GuiRemoveBoosterCommand(
                     fitID=fitID, position=position))
         elif srcContext == "cargoItem":
-            self.mainFrame.command.Submit(cmd.GuiRemoveCargoCommand(
-                fitID=fitID, itemID=mainItem.itemID))
+            self.mainFrame.command.Submit(cmd.GuiRemoveCargosCommand(
+                fitID=fitID, itemIDs=[mainItem.itemID]))
         elif srcContext == "projectedFit":
             self.mainFrame.command.Submit(cmd.GuiRemoveProjectedFitCommand(
                 fitID=fitID, projectedFitID=mainItem.ID, amount=math.inf))

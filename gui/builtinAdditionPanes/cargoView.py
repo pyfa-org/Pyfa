@@ -109,7 +109,7 @@ class CargoView(d.Display):
                     cargo = self.cargo[self.GetItemData(row)]
                 except IndexError:
                     return
-                self.mainFrame.command.Submit(cmd.GuiRemoveCargoCommand(fitID=fitID, itemID=cargo.itemID))
+                self.mainFrame.command.Submit(cmd.GuiRemoveCargosCommand(fitID=fitID, itemIDs=[cargo.itemID]))
         event.Skip()
 
     def swapModule(self, x, y, modIdx):
@@ -174,7 +174,7 @@ class CargoView(d.Display):
                     cargo = self.cargo[self.GetItemData(row)]
                 except IndexError:
                     return
-                self.mainFrame.command.Submit(cmd.GuiRemoveCargoCommand(fitID=fitID, itemID=cargo.itemID))
+                self.mainFrame.command.Submit(cmd.GuiRemoveCargosCommand(fitID=fitID, itemIDs=[cargo.itemID]))
 
     def spawnMenu(self, event):
         sel = self.GetFirstSelected()

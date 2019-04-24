@@ -6,7 +6,7 @@ from .gui.booster.toggleState import GuiToggleBoosterStateCommand
 from .gui.cargo.add import GuiAddCargoCommand
 from .gui.cargo.changeAmount import GuiChangeCargoAmountCommand
 from .gui.cargo.changeMeta import GuiChangeCargoMetaCommand
-from .gui.cargo.remove import GuiRemoveCargoCommand
+from .gui.cargo.remove import GuiRemoveCargosCommand
 from .gui.commandFit.add import GuiAddCommandFitCommand
 from .gui.commandFit.remove import GuiRemoveCommandFitCommand
 from .gui.commandFit.toggleState import GuiToggleCommandFitStateCommand

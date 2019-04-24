@@ -2,27 +2,36 @@ import math
 
 import wx
 
+import eos.db
 import gui.mainFrame
 from gui import globalEvents as GE
 from gui.fitCommands.calc.cargo.remove import CalcRemoveCargoCommand
 from gui.fitCommands.helpers import CargoInfo, InternalCommandHistory
 
 
-class GuiRemoveCargoCommand(wx.Command):
+class GuiRemoveCargosCommand(wx.Command):
 
-    def __init__(self, fitID, itemID):
-        wx.Command.__init__(self, True, 'Remove Cargo')
+    def __init__(self, fitID, itemIDs):
+        wx.Command.__init__(self, True, 'Remove Cargos')
         self.internalHistory = InternalCommandHistory()
         self.fitID = fitID
-        self.itemID = itemID
+        self.itemIDs = itemIDs
 
     def Do(self):
-        cmd = CalcRemoveCargoCommand(fitID=self.fitID, cargoInfo=CargoInfo(itemID=self.itemID, amount=math.inf))
-        success = self.internalHistory.submit(cmd)
+        result = []
+        for itemID in self.itemIDs:
+            cmd = CalcRemoveCargoCommand(
+                fitID=self.fitID,
+                cargoInfo=CargoInfo(itemID=itemID, amount=math.inf),
+                commit=False)
+            result.append(self.internalHistory.submit(cmd))
+        success = any(result)
+        eos.db.commit()
         wx.PostEvent(gui.mainFrame.MainFrame.getInstance(), GE.FitChanged(fitID=self.fitID))
         return success
 
     def Undo(self):
         success = self.internalHistory.undoAll()
+        eos.db.commit()
         wx.PostEvent(gui.mainFrame.MainFrame.getInstance(), GE.FitChanged(fitID=self.fitID))
         return success
