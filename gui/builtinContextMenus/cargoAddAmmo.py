@@ -30,7 +30,7 @@ class AddToCargoAmmo(ContextMenuSingle):
         typeID = int(mainItem.ID)
         command = cmd.GuiAddCargoCommand(fitID=fitID, itemID=typeID, amount=1000)
         if self.mainFrame.command.Submit(command):
-            self.mainFrame.additionsPane.select("Cargo")
+            self.mainFrame.additionsPane.select("Cargo", focus=False)
 
 
 AddToCargoAmmo.register()

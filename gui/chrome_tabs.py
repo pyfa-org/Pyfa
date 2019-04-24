@@ -64,8 +64,9 @@ class PageChanging(_PageChanging, NotebookTabChangeEvent, VetoAble):
 
 
 class PageChanged(_PageChanged, NotebookTabChangeEvent):
-    def __init__(self, old, new):
-        _PageChanged.__init__(self)
+
+    def __init__(self, old, new, *args, **kwargs):
+        _PageChanged.__init__(self, *args, **kwargs)
         NotebookTabChangeEvent.__init__(self, old, new)
 
 
@@ -236,13 +237,15 @@ class ChromeNotebook(wx.Panel):
 
         self.tabs_container.DisableTab(idx, toggle)
 
-    def SetSelection(self, page):
+    def SetSelection(self, page, focus=True):
         old_selection = self.GetSelection()
         if old_selection != page:
             self._active_page.Hide()
             self._active_page = self._pages[page]
             self.tabs_container.SetSelected(page)
             self.ShowActive()
+            if focus:
+                self._active_page.SetFocus()
             wx.PostEvent(self, PageChanged(old_selection, page))
 
     def DeletePage(self, n):

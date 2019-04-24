@@ -45,7 +45,7 @@ class ProjectItem(ContextMenuSingle):
         else:
             success = False
         if success:
-            self.mainFrame.additionsPane.select('Projected')
+            self.mainFrame.additionsPane.select('Projected', focus=False)
 
 
 ProjectItem.register()

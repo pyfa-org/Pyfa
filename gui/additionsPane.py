@@ -34,6 +34,7 @@ from gui.toggle_panel import TogglePanel
 
 
 class AdditionsPane(TogglePanel):
+
     def __init__(self, parent):
 
         TogglePanel.__init__(self, parent, force_layout=1)
@@ -86,8 +87,8 @@ class AdditionsPane(TogglePanel):
 
     PANES = ["Drones", "Fighters", "Cargo", "Implants", "Boosters", "Projected", "Command", "Notes"]
 
-    def select(self, name):
-        self.notebook.SetSelection(self.PANES.index(name))
+    def select(self, name, focus=True):
+        self.notebook.SetSelection(self.PANES.index(name), focus=focus)
 
     def getName(self, idx):
         return self.PANES[idx]

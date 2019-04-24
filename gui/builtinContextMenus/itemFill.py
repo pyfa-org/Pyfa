@@ -35,7 +35,6 @@ class FillWithItem(ContextMenuSingle):
         self.mainFrame.command.Submit(cmd.GuiFillWithNewLocalModulesCommand(
             fitID=self.mainFrame.getActiveFit(),
             itemID=int(mainItem.ID)))
-        self.mainFrame.additionsPane.select('Drones')
 
 
 FillWithItem.register()

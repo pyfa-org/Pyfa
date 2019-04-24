@@ -49,6 +49,7 @@ class ResourcesViewFull(StatsView):
             self.toggleContext("fighter")
         else:
             self.toggleContext("drone")
+        event.Skip()
 
     def toggleContext(self, context):
         # Apparently you cannot .Hide(True) on a Window, otherwise I would just .Hide(context !== x).

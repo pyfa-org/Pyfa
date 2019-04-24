@@ -44,7 +44,7 @@ class DroneAddStack(ContextMenuSingle):
             itemID=int(mainItem.ID),
             amount=self.amount)
         if self.mainFrame.command.Submit(command):
-            self.mainFrame.additionsPane.select('Drones')
+            self.mainFrame.additionsPane.select('Drones', focus=False)
 
 
 DroneAddStack.register()
