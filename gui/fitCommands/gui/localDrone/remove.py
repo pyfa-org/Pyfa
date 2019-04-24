@@ -19,7 +19,7 @@ class GuiRemoveLocalDronesCommand(wx.Command):
 
     def Do(self):
         results = []
-        for position in self.positions:
+        for position in sorted(self.positions, reverse=True):
             cmd = CalcRemoveLocalDroneCommand(
                 fitID=self.fitID,
                 position=position,

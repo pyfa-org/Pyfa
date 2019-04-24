@@ -29,7 +29,7 @@ from .gui.localFighter.abilityToggleState import GuiToggleLocalFighterAbilitySta
 from .gui.localFighter.add import GuiAddLocalFighterCommand
 from .gui.localFighter.changeAmount import GuiChangeLocalFighterAmountCommand
 from .gui.localFighter.changeMeta import GuiChangeLocalFighterMetaCommand
-from .gui.localFighter.remove import GuiRemoveLocalFighterCommand
+from .gui.localFighter.remove import GuiRemoveLocalFightersCommand
 from .gui.localFighter.toggleState import GuiToggleLocalFighterStateCommand
 from .gui.localModule.add import GuiAddLocalModuleCommand
 from .gui.localModule.changeCharges import GuiChangeLocalModuleChargesCommand

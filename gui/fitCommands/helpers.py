@@ -377,3 +377,31 @@ def getSimilarModPositions(mods, mainMod):
             positions.append(position)
             continue
     return positions
+
+
+def getSimilarFighters(fighters, mainFighter):
+    sMkt = Market.getInstance()
+    mainGroupID = getattr(sMkt.getGroupByItem(mainFighter.item), 'ID', None)
+    mainAbilityIDs = set(a.effectID for a in mainFighter.abilities)
+    similarFighters = []
+    for fighter in fighters:
+        # Always include selected fighter itself
+        if fighter is mainFighter:
+            similarFighters.append(fighter)
+            continue
+        if fighter.itemID is None:
+            continue
+        # Fighters which have the same item ID
+        if fighter.itemID == mainFighter.itemID:
+            similarFighters.append(fighter)
+            continue
+        # And fighters from the same group and with the same abilities too
+        fighterGroupID = getattr(sMkt.getGroupByItem(fighter.item), 'ID', None)
+        fighterAbilityIDs = set(a.effectID for a in fighter.abilities)
+        if (
+            fighterGroupID is not None and fighterGroupID == mainGroupID and
+            len(fighterAbilityIDs) > 0 and fighterAbilityIDs == mainAbilityIDs
+        ):
+            similarFighters.append(fighter)
+            continue
+    return similarFighters

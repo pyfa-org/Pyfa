@@ -5,7 +5,7 @@ import wx
 import gui.fitCommands as cmd
 import gui.mainFrame
 from gui.contextMenu import ContextMenuCombined
-from gui.fitCommands.helpers import getSimilarModPositions
+from gui.fitCommands.helpers import getSimilarModPositions, getSimilarFighters
 from service.fit import Fit
 from service.settings import ContextMenuSettings
 
@@ -61,10 +61,16 @@ class RemoveItem(ContextMenuCombined):
             self.mainFrame.command.Submit(cmd.GuiRemoveLocalDronesCommand(
                 fitID=fitID, positions=positions, amount=math.inf))
         elif srcContext == "fighterItem":
-            if mainItem in fit.fighters:
-                position = fit.fighters.index(mainItem)
-                self.mainFrame.command.Submit(cmd.GuiRemoveLocalFighterCommand(
-                    fitID=fitID, position=position))
+            if wx.GetMouseState().altDown:
+                fighters = getSimilarFighters(fit.fighters, mainItem)
+            else:
+                fighters = selection
+            positions = []
+            for fighter in fighters:
+                if fighter in fit.fighters:
+                    positions.append(fit.fighters.index(fighter))
+            self.mainFrame.command.Submit(cmd.GuiRemoveLocalFightersCommand(
+                fitID=fitID, positions=positions))
         elif srcContext == "implantItem":
             if mainItem in fit.implants:
                 position = fit.implants.index(mainItem)

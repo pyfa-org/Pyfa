@@ -20,17 +20,18 @@
 # noinspection PyPackageRequirements
 import wx
 
-import gui.globalEvents as GE
-from gui.builtinMarketBrowser.events import ItemSelected, ITEM_SELECTED
-import gui.mainFrame
 import gui.display as d
-from gui.builtinViewColumns.state import State
+import gui.fitCommands as cmd
+import gui.globalEvents as GE
+import gui.mainFrame
 from eos.const import FittingSlot
+from gui.builtinMarketBrowser.events import ItemSelected, ITEM_SELECTED
+from gui.builtinViewColumns.state import State
 from gui.contextMenu import ContextMenu
+from gui.fitCommands.helpers import getSimilarFighters
 from gui.utils.staticHelpers import DragDropHelper
 from service.fit import Fit
 from service.market import Market
-import gui.fitCommands as cmd
 
 
 class FighterViewDrop(wx.DropTarget):
@@ -138,7 +139,7 @@ class FighterDisplay(d.Display):
 
         self.mainFrame.Bind(GE.FIT_CHANGED, self.fitChanged)
         self.mainFrame.Bind(ITEM_SELECTED, self.addItem)
-        self.Bind(wx.EVT_LEFT_DCLICK, self.removeItem)
+        self.Bind(wx.EVT_LEFT_DCLICK, self.onLeftDoubleClick)
         self.Bind(wx.EVT_LEFT_DOWN, self.click)
         self.Bind(wx.EVT_KEY_UP, self.kbEvent)
         self.Bind(wx.EVT_MOTION, self.OnMouseMove)
@@ -188,14 +189,8 @@ class FighterDisplay(d.Display):
         if keycode == 65 and mstate.cmdDown and not mstate.altDown and not mstate.shiftDown:
             self.selectAll()
         if keycode == wx.WXK_DELETE or keycode == wx.WXK_NUMPAD_DELETE:
-            row = self.GetFirstSelected()
-            if row != -1:
-                try:
-                    fighter = self.fighters[self.GetItemData(row)]
-                except IndexError:
-                    return
-                self.removeFighter(fighter)
-
+            fighters = self.getSelectedFighters()
+            self.removeFighters(fighters)
         event.Skip()
 
     def startDrag(self, event):
@@ -290,22 +285,29 @@ class FighterDisplay(d.Display):
 
         event.Skip()
 
-    def removeItem(self, event):
+    def onLeftDoubleClick(self, event):
         row, _ = self.HitTest(event.Position)
         if row != -1:
             col = self.getColumn(event.Position)
             if col != self.getColIndex(State):
+                mstate = wx.GetMouseState()
                 try:
                     fighter = self.fighters[self.GetItemData(row)]
                 except IndexError:
                     return
-                self.removeFighter(fighter)
+                if mstate.altDown:
+                    fighters = getSimilarFighters(self.original, fighter)
+                else:
+                    fighters = [fighter]
+                self.removeFighters(fighters)
 
-    def removeFighter(self, fighter):
+    def removeFighters(self, fighters):
         fitID = self.mainFrame.getActiveFit()
-        if fighter in self.original:
-            position = self.original.index(fighter)
-            self.mainFrame.command.Submit(cmd.GuiRemoveLocalFighterCommand(fitID=fitID, position=position))
+        positions = []
+        for fighter in fighters:
+            if fighter in self.original:
+                positions.append(self.original.index(fighter))
+        self.mainFrame.command.Submit(cmd.GuiRemoveLocalFightersCommand(fitID=fitID, positions=positions))
 
     def click(self, event):
         event.Skip()
@@ -323,14 +325,29 @@ class FighterDisplay(d.Display):
                     self.mainFrame.command.Submit(cmd.GuiToggleLocalFighterStateCommand(fitID=fitID, position=position))
 
     def spawnMenu(self, event):
-        sel = self.GetFirstSelected()
-        if sel != -1:
+        selection = self.getSelectedFighters()
+        clickedPos = self.getRowByAbs(event.Position)
+        mainFighter = None
+        if clickedPos != -1:
             try:
-                fighter = self.fighters[sel]
+                fighter = self.fighters[clickedPos]
             except IndexError:
-                return
-            sMkt = Market.getInstance()
-            sourceContext = "fighterItem"
-            itemContext = sMkt.getCategoryByItem(fighter.item).name
-            menu = ContextMenu.getMenu(fighter, (fighter,), (sourceContext, itemContext))
+                pass
+            else:
+                if fighter in self.original:
+                    mainFighter = fighter
+        sourceContext = "fighterItem"
+        itemContext = None if mainFighter is None else Market.getInstance().getCategoryByItem(mainFighter.item).name
+        menu = ContextMenu.getMenu(mainFighter, selection, (sourceContext, itemContext))
+        if menu:
             self.PopupMenu(menu)
+
+    def getSelectedFighters(self):
+        fighters = []
+        for row in self.getSelectedRows():
+            try:
+                fighter = self.fighters[self.GetItemData(row)]
+            except IndexError:
+                continue
+            fighters.append(fighter)
+        return fighters

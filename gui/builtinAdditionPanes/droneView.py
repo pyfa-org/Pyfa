@@ -76,7 +76,7 @@ class DroneView(Display):
 
         self.mainFrame.Bind(GE.FIT_CHANGED, self.fitChanged)
         self.mainFrame.Bind(ITEM_SELECTED, self.addItem)
-        self.Bind(wx.EVT_LEFT_DCLICK, self.OnLeftDoubleClick)
+        self.Bind(wx.EVT_LEFT_DCLICK, self.onLeftDoubleClick)
         self.Bind(wx.EVT_LEFT_DOWN, self.click)
         self.Bind(wx.EVT_KEY_UP, self.kbEvent)
         self.Bind(wx.EVT_MOTION, self.OnMouseMove)
@@ -236,7 +236,7 @@ class DroneView(Display):
 
         event.Skip()
 
-    def OnLeftDoubleClick(self, event):
+    def onLeftDoubleClick(self, event):
         row, _ = self.HitTest(event.Position)
         if row != -1:
             col = self.getColumn(event.Position)
@@ -246,7 +246,7 @@ class DroneView(Display):
                     drone = self.drones[self.GetItemData(row)]
                 except IndexError:
                     return
-                if mstate.cmdDown or mstate.altDown:
+                if mstate.altDown:
                     self.removeDroneStacks([drone])
                 else:
                     self.removeDrone(drone)
