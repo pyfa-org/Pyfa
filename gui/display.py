@@ -287,12 +287,7 @@ class Display(wx.ListCtrl):
         """
         if ptScreen == wx.Point(-1, -1):
             return wx.Point(-1, -1)
-        for window in self.GetChildren():
-            if window.GetName() == 'panel':
-                ptCorrection = window.GetPosition()
-                ptScreen = ptScreen - ptCorrection
-                break
-        ptClient = wx.ListCtrl.ScreenToClient(self, ptScreen)
+        ptClient = self.GetMainWindow().ScreenToClient(ptScreen)
         return ptClient
 
     def getSelectedRows(self):
