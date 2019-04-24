@@ -226,7 +226,7 @@ class ChangeItemToVariation(ContextMenuCombined):
         fitID = self.mainFrame.getActiveFit()
         cargo = self.mainItem
         self.mainFrame.command.Submit(cmd.GuiChangeCargoMetaCommand(
-            fitID=fitID, itemID=cargo.itemID, newItemID=varItem.ID))
+            fitID=fitID, itemIDs=[cargo.itemID], newItemID=varItem.ID))
 
     def __handleProjectedModule(self, varItem):
         fitID = self.mainFrame.getActiveFit()

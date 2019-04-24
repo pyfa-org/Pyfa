@@ -1,7 +1,7 @@
 import math
-
 import wx
 
+import eos.db
 import gui.mainFrame
 from gui import globalEvents as GE
 from gui.fitCommands.calc.cargo.add import CalcAddCargoCommand
@@ -12,30 +12,40 @@ from service.fit import Fit
 
 class GuiChangeCargoMetaCommand(wx.Command):
 
-    def __init__(self, fitID, itemID, newItemID):
+    def __init__(self, fitID, itemIDs, newItemID):
         wx.Command.__init__(self, True, 'Change Cargo Meta')
         self.internalHistory = InternalCommandHistory()
         self.fitID = fitID
-        self.itemID = itemID
+        self.itemIDs = itemIDs
         self.newItemID = newItemID
 
     def Do(self):
         sFit = Fit.getInstance()
         fit = sFit.getFit(self.fitID)
-        cargo = next((c for c in fit.cargo if c.itemID == self.itemID), None)
-        if cargo is None:
-            return False
-        if cargo.itemID == self.newItemID:
-            return False
-        amount = cargo.amount
-        cmdRemove = CalcRemoveCargoCommand(fitID=self.fitID, cargoInfo=CargoInfo(itemID=self.itemID, amount=math.inf))
-        cmdAdd = CalcAddCargoCommand(fitID=self.fitID, cargoInfo=CargoInfo(itemID=self.newItemID, amount=amount))
-        success = self.internalHistory.submitBatch(cmdRemove, cmdAdd)
+        results = []
+        for itemID in self.itemIDs:
+            if itemID == self.newItemID:
+                continue
+            cargo = next((c for c in fit.cargo if c.itemID == itemID), None)
+            if cargo is None:
+                continue
+            amount = cargo.amount
+            cmdRemove = CalcRemoveCargoCommand(
+                fitID=self.fitID,
+                cargoInfo=CargoInfo(itemID=itemID, amount=math.inf),
+                commit=False)
+            cmdAdd = CalcAddCargoCommand(
+                fitID=self.fitID,
+                cargoInfo=CargoInfo(itemID=self.newItemID, amount=amount),
+                commit=False)
+            results.append(self.internalHistory.submitBatch(cmdRemove, cmdAdd))
+        success = any(results)
+        eos.db.commit()
         wx.PostEvent(gui.mainFrame.MainFrame.getInstance(), GE.FitChanged(fitID=self.fitID))
         return success
 
     def Undo(self):
         success = self.internalHistory.undoAll()
-        Fit.getInstance().recalc(self.fitID)
+        eos.db.commit()
         wx.PostEvent(gui.mainFrame.MainFrame.getInstance(), GE.FitChanged(fitID=self.fitID))
         return success
