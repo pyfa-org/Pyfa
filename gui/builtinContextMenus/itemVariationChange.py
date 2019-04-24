@@ -150,25 +150,38 @@ class ChangeItemToVariation(ContextMenuCombined):
         if wx.GetMouseState().altDown:
             positions = getSimilarModPositions(fit.modules, self.mainItem)
         else:
+            sMkt = Market.getInstance()
             positions = []
-            for position, mod in enumerate(fit.modules):
-                if mod in self.selection:
-                    if mod.isEmpty:
-                        continue
-                    modVariations = Market.getInstance().getVariationsByItems((mod.item,))
-                    if modVariations == self.mainVariations:
-                        positions.append(position)
+            for mod in self.selection:
+                if mod.isEmpty:
+                    continue
+                if mod is self.mainItem:
+                    positions.append(fit.modules.index(mod))
+                    continue
+                if mod not in fit.modules:
+                    continue
+                modVariations = sMkt.getVariationsByItems((mod.item,))
+                if modVariations == self.mainVariations:
+                    positions.append(fit.modules.index(mod))
         self.mainFrame.command.Submit(cmd.GuiChangeLocalModuleMetasCommand(
             fitID=fitID, positions=positions, newItemID=varItem.ID))
 
     def __handleDrone(self, varItem):
         fitID = self.mainFrame.getActiveFit()
         fit = Fit.getInstance().getFit(fitID)
-        drone = self.mainItem
-        if drone in fit.drones:
-            position = fit.drones.index(drone)
-            self.mainFrame.command.Submit(cmd.GuiChangeLocalDroneMetaCommand(
-                fitID=fitID, position=position, newItemID=varItem.ID))
+        sMkt = Market.getInstance()
+        positions = []
+        for drone in self.selection:
+            if drone not in fit.drones:
+                continue
+            if drone is self.mainItem:
+                positions.append(fit.drones.index(drone))
+                continue
+            droneVariations = sMkt.getVariationsByItems((drone.item,))
+            if droneVariations == self.mainVariations:
+                positions.append(fit.drones.index(drone))
+        self.mainFrame.command.Submit(cmd.GuiChangeLocalDroneMetasCommand(
+            fitID=fitID, positions=positions, newItemID=varItem.ID))
 
     def __handleFighter(self, varItem):
         fitID = self.mainFrame.getActiveFit()

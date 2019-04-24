@@ -20,7 +20,7 @@ from .gui.implant.toggleState import GuiToggleImplantStateCommand
 from .gui.itemsRebase import GuiRebaseItemsCommand
 from .gui.localDrone.add import GuiAddLocalDroneCommand
 from .gui.localDrone.changeAmount import GuiChangeLocalDroneAmountCommand
-from .gui.localDrone.changeMeta import GuiChangeLocalDroneMetaCommand
+from .gui.localDrone.changeMetas import GuiChangeLocalDroneMetasCommand
 from .gui.localDrone.remove import GuiRemoveLocalDronesCommand
 from .gui.localDrone.stackSplit import GuiSplitLocalDroneStackCommand
 from .gui.localDrone.stacksMerge import GuiMergeLocalDroneStacksCommand
