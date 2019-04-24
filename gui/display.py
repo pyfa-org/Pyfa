@@ -275,11 +275,11 @@ class Display(wx.ListCtrl):
     def getRowByAbs(self, pointAbs):
         if pointAbs == wx.Point(-1, -1):
             return -1
-        pointRel = self.ScreenToClient(pointAbs)
+        pointRel = self.screenToClientFixed(pointAbs)
         row, flags = self.HitTest(pointRel)
         return row
 
-    def ScreenToClient(self, ptScreen):
+    def screenToClientFixed(self, ptScreen):
         """
         Wx' ScreenToClient implementation seems to not consider header row height when
         converting to screen position: https://github.com/wxWidgets/Phoenix/issues/1213

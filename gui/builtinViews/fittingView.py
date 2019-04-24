@@ -620,7 +620,7 @@ class FittingView(d.Display):
             event.Skip()
 
     def spawnMenu(self, event):
-        if self.activeFitID is None or self.getColumn(self.ScreenToClient(event.Position)) == self.getColIndex(State):
+        if self.activeFitID is None or self.getColumn(self.screenToClientFixed(event.Position)) == self.getColIndex(State):
             return
 
         sMkt = Market.getInstance()

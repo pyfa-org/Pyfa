@@ -288,7 +288,7 @@ class ProjectedView(d.Display):
         if fitID is None:
             return
 
-        if self.getColumn(self.ScreenToClient(event.Position)) == self.getColIndex(State):
+        if self.getColumn(self.screenToClientFixed(event.Position)) == self.getColIndex(State):
             return
 
         sel = self.GetFirstSelected()
