@@ -291,6 +291,7 @@ class Display(wx.ListCtrl):
             if window.GetName() == 'panel':
                 ptCorrection = window.GetPosition()
                 ptScreen = ptScreen - ptCorrection
+                break
         ptClient = wx.ListCtrl.ScreenToClient(self, ptScreen)
         return ptClient
 

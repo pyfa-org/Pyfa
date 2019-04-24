@@ -306,9 +306,6 @@ class DroneView(Display):
             else:
                 if drone in self.original:
                     mainDrone = drone
-        # Fall back to first selected item only if position is -1
-        elif len(selection) > 0:
-            mainDrone = selection[0]
         sourceContext = "droneItem"
         itemContext = Market.getInstance().getCategoryByItem(mainDrone.item).name if mainDrone is not None else mainDrone
         menu = ContextMenu.getMenu(mainDrone, selection, (sourceContext, itemContext))

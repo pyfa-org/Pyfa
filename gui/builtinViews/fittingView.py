@@ -663,10 +663,6 @@ class FittingView(d.Display):
             else:
                 if mod in fit.modules:
                     mainMod = mod
-        # Fall back to first selected module only if position is -1
-        elif len(selection) > 0:
-            mainMod = selection[0]
-
         menu = ContextMenu.getMenu(mainMod, selection, *contexts)
         self.PopupMenu(menu)
 
