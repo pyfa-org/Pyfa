@@ -3,19 +3,20 @@ import wx
 
 import gui.mainFrame
 from gui import fitCommands as cmd
-from gui.contextMenu import ContextMenuSingle
+from gui.fitCommands.helpers import getSimilarFighters
+from gui.contextMenu import ContextMenuCombined
 from service.fit import Fit
 from service.settings import ContextMenuSettings
 
 
-class FighterAbilities(ContextMenuSingle):
+class FighterAbilities(ContextMenuCombined):
 
     def __init__(self):
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
         self.settings = ContextMenuSettings.getInstance()
         self.isProjected = None
 
-    def display(self, srcContext, mainItem):
+    def display(self, srcContext, mainItem, selection):
         if self.mainFrame.getActiveFit() is None or srcContext not in ("fighterItem", "projectedFighter"):
             return False
 
@@ -23,21 +24,22 @@ class FighterAbilities(ContextMenuSingle):
             return False
 
         self.fighter = mainItem
+        self.selection = selection
         self.isProjected = True if srcContext == "projectedFighter" else False
         return True
 
-    def getText(self, itmContext, mainItem):
+    def getText(self, itmContext, mainItem, selection):
         return "Abilities"
 
     def addAbility(self, menu, ability):
         label = ability.name
-        id = ContextMenuSingle.nextID()
+        id = ContextMenuCombined.nextID()
         self.abilityIds[id] = ability
         menuItem = wx.MenuItem(menu, id, label, kind=wx.ITEM_CHECK)
         menu.Bind(wx.EVT_MENU, self.handleMode, menuItem)
         return menuItem
 
-    def getSubMenu(self, context, mainItem, rootMenu, i, pitem):
+    def getSubMenu(self, context, mainItem, selection, rootMenu, i, pitem):
         msw = True if "wxMSW" in wx.PlatformInfo else False
         self.context = context
         self.abilityIds = {}
@@ -65,13 +67,23 @@ class FighterAbilities(ContextMenuSingle):
             if self.fighter in fit.projectedFighters:
                 position = fit.projectedFighters.index(self.fighter)
                 self.mainFrame.command.Submit(cmd.GuiToggleProjectedFighterAbilityStateCommand(
-                    fitID=fitID, position=position, effectID=ability.effectID))
+                    fitID=fitID, mainPosition=position, positions=[position], effectID=ability.effectID))
         else:
             if self.fighter in fit.fighters:
-                position = fit.fighters.index(self.fighter)
+                mainPosition = fit.fighters.index(self.fighter)
+                if wx.GetMouseState().altDown:
+                    fighters = getSimilarFighters(fit.fighters, self.fighter)
+                else:
+                    fighters = self.selection
+                positions = []
+                for fighter in fighters:
+                    if fighter in fit.fighters:
+                        positions.append(fit.fighters.index(fighter))
                 self.mainFrame.command.Submit(cmd.GuiToggleLocalFighterAbilityStateCommand(
-                    fitID=fitID, position=position, effectID=ability.effectID))
-
+                    fitID=fitID,
+                    mainPosition=mainPosition,
+                    positions=positions,
+                    effectID=ability.effectID))
 
 
 FighterAbilities.register()

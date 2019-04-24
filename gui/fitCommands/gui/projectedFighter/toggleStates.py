@@ -2,7 +2,7 @@ import wx
 
 import gui.mainFrame
 from gui import globalEvents as GE
-from gui.fitCommands.calc.fighter.toggleState import CalcToggleFighterStatesCommand
+from gui.fitCommands.calc.fighter.toggleStates import CalcToggleFighterStatesCommand
 from gui.fitCommands.helpers import InternalCommandHistory
 from service.fit import Fit
 

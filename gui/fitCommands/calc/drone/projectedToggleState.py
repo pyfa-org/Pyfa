@@ -42,5 +42,8 @@ class CalcToggleProjectedDroneStateCommand(wx.Command):
 
     def Undo(self):
         pyfalog.debug('Undoing toggling of projected drone {} state for fit {}'.format(self.itemID, self.fitID))
-        cmd = CalcToggleProjectedDroneStateCommand(fitID=self.fitID, itemID=self.itemID, forceAmountActive=self.savedAmountActive)
+        cmd = CalcToggleProjectedDroneStateCommand(
+            fitID=self.fitID,
+            itemID=self.itemID,
+            forceAmountActive=self.savedAmountActive)
         return cmd.Do()
