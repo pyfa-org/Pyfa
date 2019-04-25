@@ -53,12 +53,12 @@ class CargoView(d.Display):
                     "Price"]
 
     def __init__(self, parent):
-        d.Display.__init__(self, parent, style=wx.LC_SINGLE_SEL | wx.BORDER_NONE)
+        d.Display.__init__(self, parent, style=wx.BORDER_NONE)
 
         self.lastFitId = None
 
         self.mainFrame.Bind(GE.FIT_CHANGED, self.fitChanged)
-        self.Bind(wx.EVT_LEFT_DCLICK, self.removeItem)
+        self.Bind(wx.EVT_LEFT_DCLICK, self.onLeftDoubleClick)
         self.Bind(wx.EVT_KEY_UP, self.kbEvent)
 
         self.SetDropTarget(CargoViewDrop(self.handleListDrag))
@@ -94,6 +94,9 @@ class CargoView(d.Display):
                 return
             data.SetText(dataStr)
 
+            self.unselectAll()
+            self.Select(row, True)
+
             dropSource = wx.DropSource(self)
             dropSource.SetData(data)
             DragDropHelper.data = dataStr
@@ -101,15 +104,14 @@ class CargoView(d.Display):
 
     def kbEvent(self, event):
         keycode = event.GetKeyCode()
-        if keycode in (wx.WXK_DELETE, wx.WXK_NUMPAD_DELETE):
-            row = self.GetFirstSelected()
-            if row != -1:
-                fitID = self.mainFrame.getActiveFit()
-                try:
-                    cargo = self.cargo[self.GetItemData(row)]
-                except IndexError:
-                    return
-                self.mainFrame.command.Submit(cmd.GuiRemoveCargosCommand(fitID=fitID, itemIDs=[cargo.itemID]))
+        mstate = wx.GetMouseState()
+        if keycode == wx.WXK_ESCAPE and not mstate.cmdDown and not mstate.altDown and not mstate.shiftDown:
+            self.unselectAll()
+        if keycode == 65 and mstate.cmdDown and not mstate.altDown and not mstate.shiftDown:
+            self.selectAll()
+        if keycode == wx.WXK_DELETE or keycode == wx.WXK_NUMPAD_DELETE:
+            cargos = self.getSelectedCargos()
+            self.removeCargos(cargos)
         event.Skip()
 
     def swapModule(self, x, y, modIdx):
@@ -164,17 +166,22 @@ class CargoView(d.Display):
         self.refresh(self.cargo)
         event.Skip()
 
-    def removeItem(self, event):
+    def onLeftDoubleClick(self, event):
         row, _ = self.HitTest(event.Position)
         if row != -1:
-            col = self.getColumn(event.Position)
-            if col != self.getColIndex(State):
-                fitID = self.mainFrame.getActiveFit()
-                try:
-                    cargo = self.cargo[self.GetItemData(row)]
-                except IndexError:
-                    return
-                self.mainFrame.command.Submit(cmd.GuiRemoveCargosCommand(fitID=fitID, itemIDs=[cargo.itemID]))
+            try:
+                cargo = self.cargo[self.GetItemData(row)]
+            except IndexError:
+                return
+            self.removeCargos([cargo])
+
+    def removeCargos(self, cargos):
+        fitID = self.mainFrame.getActiveFit()
+        itemIDs = []
+        for cargo in cargos:
+            if cargo in self.original:
+                itemIDs.append(cargo.itemID)
+        self.mainFrame.command.Submit(cmd.GuiRemoveCargosCommand(fitID=fitID, itemIDs=itemIDs))
 
     def spawnMenu(self, event):
         sel = self.GetFirstSelected()
@@ -189,3 +196,13 @@ class CargoView(d.Display):
 
             menu = ContextMenu.getMenu(cargo, (cargo,), (sourceContext, itemContext))
             self.PopupMenu(menu)
+
+    def getSelectedCargos(self):
+        cargos = []
+        for row in self.getSelectedRows():
+            try:
+                cargo = self.cargo[self.GetItemData(row)]
+            except IndexError:
+                continue
+            cargos.append(cargo)
+        return cargos

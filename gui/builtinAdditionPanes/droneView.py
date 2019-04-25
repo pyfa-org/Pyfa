@@ -241,12 +241,11 @@ class DroneView(Display):
         if row != -1:
             col = self.getColumn(event.Position)
             if col != self.getColIndex(State):
-                mstate = wx.GetMouseState()
                 try:
                     drone = self.drones[self.GetItemData(row)]
                 except IndexError:
                     return
-                if mstate.altDown:
+                if wx.GetMouseState().altDown:
                     self.removeDroneStacks([drone])
                 else:
                     self.removeDrone(drone)
