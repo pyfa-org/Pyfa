@@ -32,8 +32,8 @@ class ChangeAffectingSkills(ContextMenuSingle):
         if fitID is None:
             return False
 
-        if mainItem is None or getattr(mainItem, "isEmpty", False):
-            return
+        if (mainItem is None or getattr(mainItem, "isEmpty", False)) and srcContext != "fittingShip":
+            return False
 
         self.sChar = Character.getInstance()
         self.sFit = Fit.getInstance()
