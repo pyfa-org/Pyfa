@@ -8,10 +8,10 @@ from service.fit import Fit
 pyfalog = Logger(__name__)
 
 
-class CalcToggleImplantStatesCommand(wx.Command):
+class CalcToggleBoosterStatesCommand(wx.Command):
 
     def __init__(self, fitID, mainPosition, positions, forceStates=None):
-        wx.Command.__init__(self, True, 'Toggle Implant States')
+        wx.Command.__init__(self, True, 'Toggle Booster States')
         self.fitID = fitID
         self.mainPosition = mainPosition
         self.positions = positions
@@ -19,34 +19,34 @@ class CalcToggleImplantStatesCommand(wx.Command):
         self.savedStates = None
 
     def Do(self):
-        pyfalog.debug('Doing toggling of implant state at position {}/{} for fit {}'.format(self.mainPosition, self.positions, self.fitID))
+        pyfalog.debug('Doing toggling of booster state at position {}/{} for fit {}'.format(self.mainPosition, self.positions, self.fitID))
         fit = Fit.getInstance().getFit(self.fitID)
 
         positions = self.positions[:]
         if self.mainPosition not in positions:
             positions.append(self.mainPosition)
-        self.savedStates = {p: fit.implants[p].active for p in positions}
+        self.savedStates = {p: fit.boosters[p].active for p in positions}
 
         if self.forceStates is not None:
             for position, active in self.forceStates.items():
-                implant = fit.implants[position]
-                implant.active = active
-        elif fit.implants[self.mainPosition].active:
+                booster = fit.boosters[position]
+                booster.active = active
+        elif fit.boosters[self.mainPosition].active:
             for position in positions:
-                implant = fit.implants[position]
-                if implant.active:
-                    implant.active = False
+                booster = fit.boosters[position]
+                if booster.active:
+                    booster.active = False
         else:
             for position in positions:
-                implant = fit.implants[position]
-                if not implant.active:
-                    implant.active = True
+                booster = fit.boosters[position]
+                if not booster.active:
+                    booster.active = True
         eos.db.commit()
         return True
 
     def Undo(self):
-        pyfalog.debug('Undoing toggling of implant state at position {}/{} for fit {}'.format(self.mainPosition, self.positions, self.fitID))
-        cmd = CalcToggleImplantStatesCommand(
+        pyfalog.debug('Undoing toggling of booster state at position {}/{} for fit {}'.format(self.mainPosition, self.positions, self.fitID))
+        cmd = CalcToggleBoosterStatesCommand(
             fitID=self.fitID,
             mainPosition=self.mainPosition,
             positions=self.positions,

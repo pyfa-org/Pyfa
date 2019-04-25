@@ -2,7 +2,7 @@ from .gui.booster.add import GuiAddBoosterCommand
 from .gui.booster.changeMeta import GuiChangeBoosterMetaCommand
 from .gui.booster.remove import GuiRemoveBoostersCommand
 from .gui.booster.sideEffectToggleState import GuiToggleBoosterSideEffectStateCommand
-from .gui.booster.toggleState import GuiToggleBoosterStateCommand
+from .gui.booster.toggleStates import GuiToggleBoosterStatesCommand
 from .gui.cargo.add import GuiAddCargoCommand
 from .gui.cargo.changeAmount import GuiChangeCargoAmountCommand
 from .gui.cargo.changeMeta import GuiChangeCargoMetaCommand

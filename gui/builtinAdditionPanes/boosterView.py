@@ -179,9 +179,10 @@ class BoosterView(d.Display):
                     return
                 if booster in self.original:
                     position = self.original.index(booster)
-                    self.mainFrame.command.Submit(cmd.GuiToggleBoosterStateCommand(
+                    self.mainFrame.command.Submit(cmd.GuiToggleBoosterStatesCommand(
                         fitID=fitID,
-                        position=position))
+                        mainPosition=position,
+                        positions=[position]))
 
     def spawnMenu(self, event):
         sel = self.GetFirstSelected()
