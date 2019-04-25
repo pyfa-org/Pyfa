@@ -30,9 +30,9 @@ class CalcToggleFighterStatesCommand(wx.Command):
         self.savedStates = {p: container[p].active for p in positions}
 
         if self.forceStates is not None:
-            for position, active in self.forceStates.items():
+            for position, state in self.forceStates.items():
                 fighter = container[position]
-                fighter.active = active
+                fighter.active = state
         elif container[self.mainPosition].active:
             for position in positions:
                 fighter = container[position]

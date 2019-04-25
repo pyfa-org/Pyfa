@@ -9,7 +9,7 @@ from .gui.cargo.changeMeta import GuiChangeCargoMetaCommand
 from .gui.cargo.remove import GuiRemoveCargosCommand
 from .gui.commandFit.add import GuiAddCommandFitCommand
 from .gui.commandFit.remove import GuiRemoveCommandFitsCommand
-from .gui.commandFit.toggleState import GuiToggleCommandFitStateCommand
+from .gui.commandFit.toggleStates import GuiToggleCommandFitStatesCommand
 from .gui.fitRename import GuiRenameFitCommand
 from .gui.implant.add import GuiAddImplantCommand
 from .gui.implant.changeLocation import GuiChangeImplantLocationCommand

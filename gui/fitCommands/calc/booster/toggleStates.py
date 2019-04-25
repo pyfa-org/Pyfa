@@ -28,9 +28,9 @@ class CalcToggleBoosterStatesCommand(wx.Command):
         self.savedStates = {p: fit.boosters[p].active for p in positions}
 
         if self.forceStates is not None:
-            for position, active in self.forceStates.items():
+            for position, state in self.forceStates.items():
                 booster = fit.boosters[position]
-                booster.active = active
+                booster.active = state
         elif fit.boosters[self.mainPosition].active:
             for position in positions:
                 booster = fit.boosters[position]

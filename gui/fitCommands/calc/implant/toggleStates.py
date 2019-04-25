@@ -28,9 +28,9 @@ class CalcToggleImplantStatesCommand(wx.Command):
         self.savedStates = {p: fit.implants[p].active for p in positions}
 
         if self.forceStates is not None:
-            for position, active in self.forceStates.items():
+            for position, state in self.forceStates.items():
                 implant = fit.implants[position]
-                implant.active = active
+                implant.active = state
         elif fit.implants[self.mainPosition].active:
             for position in positions:
                 implant = fit.implants[position]

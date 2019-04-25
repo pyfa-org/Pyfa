@@ -185,7 +185,8 @@ class CommandView(d.Display):
             col = self.getColumn(event.Position)
             if col == self.getColIndex(State):
                 fitID = self.mainFrame.getActiveFit()
-                self.mainFrame.command.Submit(cmd.GuiToggleCommandFitStateCommand(fitID, item.ID))
+                self.mainFrame.command.Submit(cmd.GuiToggleCommandFitStatesCommand(
+                    fitID=fitID, mainCommandFitID=item.ID, commandFitIDs=[item.ID]))
 
     def spawnMenu(self, event):
         fitID = self.mainFrame.getActiveFit()

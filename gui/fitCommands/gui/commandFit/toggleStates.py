@@ -2,21 +2,25 @@ import wx
 
 import gui.mainFrame
 from gui import globalEvents as GE
-from gui.fitCommands.calc.commandFit.toggleState import CalcToggleCommandFitStateCommand
+from gui.fitCommands.calc.commandFit.toggleStates import CalcToggleCommandFitStatesCommand
 from gui.fitCommands.helpers import InternalCommandHistory
 from service.fit import Fit
 
 
-class GuiToggleCommandFitStateCommand(wx.Command):
+class GuiToggleCommandFitStatesCommand(wx.Command):
 
-    def __init__(self, fitID, commandFitID):
-        wx.Command.__init__(self, True, 'Toggle Command Fit State')
+    def __init__(self, fitID, mainCommandFitID, commandFitIDs):
+        wx.Command.__init__(self, True, 'Toggle Command Fit States')
         self.internalHistory = InternalCommandHistory()
         self.fitID = fitID
-        self.commandFitID = commandFitID
+        self.mainCommandFitID = mainCommandFitID
+        self.commandFitIDs = commandFitIDs
 
     def Do(self):
-        cmd = CalcToggleCommandFitStateCommand(fitID=self.fitID, commandFitID=self.commandFitID)
+        cmd = CalcToggleCommandFitStatesCommand(
+            fitID=self.fitID,
+            mainCommandFitID=self.mainCommandFitID,
+            commandFitIDs=self.commandFitIDs)
         success = self.internalHistory.submit(cmd)
         Fit.getInstance().recalc(self.fitID)
         wx.PostEvent(gui.mainFrame.MainFrame.getInstance(), GE.FitChanged(fitID=self.fitID))
