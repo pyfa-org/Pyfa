@@ -59,14 +59,14 @@ class BoosterView(d.Display):
     ]
 
     def __init__(self, parent):
-        d.Display.__init__(self, parent, style=wx.LC_SINGLE_SEL | wx.BORDER_NONE)
+        d.Display.__init__(self, parent, style=wx.BORDER_NONE)
 
         self.lastFitId = None
 
         self.mainFrame.Bind(GE.FIT_CHANGED, self.fitChanged)
         self.mainFrame.Bind(ITEM_SELECTED, self.addItem)
 
-        self.Bind(wx.EVT_LEFT_DCLICK, self.removeItem)
+        self.Bind(wx.EVT_LEFT_DCLICK, self.onLeftDoubleClick)
         self.Bind(wx.EVT_LEFT_DOWN, self.click)
         self.Bind(wx.EVT_KEY_UP, self.kbEvent)
 
@@ -88,15 +88,14 @@ class BoosterView(d.Display):
 
     def kbEvent(self, event):
         keycode = event.GetKeyCode()
-        if keycode in (wx.WXK_DELETE, wx.WXK_NUMPAD_DELETE):
-            row = self.GetFirstSelected()
-            if row != -1:
-                try:
-                    booster = self.boosters[self.GetItemData(row)]
-                except IndexError:
-                    return
-                self.removeBooster(booster)
-
+        mstate = wx.GetMouseState()
+        if keycode == wx.WXK_ESCAPE and not mstate.cmdDown and not mstate.altDown and not mstate.shiftDown:
+            self.unselectAll()
+        if keycode == 65 and mstate.cmdDown and not mstate.altDown and not mstate.shiftDown:
+            self.selectAll()
+        if keycode == wx.WXK_DELETE or keycode == wx.WXK_NUMPAD_DELETE:
+            boosters = self.getSelectedBoosters()
+            self.removeBoosters(boosters)
         event.Skip()
 
     def fitChanged(self, event):
@@ -148,7 +147,7 @@ class BoosterView(d.Display):
         self.mainFrame.additionsPane.select('Boosters')
         event.Skip()
 
-    def removeItem(self, event):
+    def onLeftDoubleClick(self, event):
         row, _ = self.HitTest(event.Position)
         if row != -1:
             col = self.getColumn(event.Position)
@@ -157,41 +156,69 @@ class BoosterView(d.Display):
                     booster = self.boosters[self.GetItemData(row)]
                 except IndexError:
                     return
-                self.removeBooster(booster)
+                self.removeBoosters([booster])
 
-    def removeBooster(self, booster):
+    def removeBoosters(self, boosters):
         fitID = self.mainFrame.getActiveFit()
-        if booster in self.original:
-            position = self.original.index(booster)
-            self.mainFrame.command.Submit(cmd.GuiRemoveBoostersCommand(
-                fitID=fitID, positions=[position]))
+        positions = []
+        for booster in boosters:
+            if booster in self.original:
+                positions.append(self.original.index(booster))
+        self.mainFrame.command.Submit(cmd.GuiRemoveBoostersCommand(fitID=fitID, positions=positions))
 
     def click(self, event):
-        event.Skip()
-        row, _ = self.HitTest(event.Position)
-        if row != -1:
+        mainRow, _ = self.HitTest(event.Position)
+        if mainRow != -1:
             col = self.getColumn(event.Position)
             if col == self.getColIndex(State):
                 fitID = self.mainFrame.getActiveFit()
                 try:
-                    booster = self.boosters[self.GetItemData(row)]
+                    mainBooster = self.boosters[mainRow]
                 except IndexError:
                     return
-                if booster in self.original:
-                    position = self.original.index(booster)
+                if mainBooster in self.original:
+                    mainPosition = self.original.index(mainBooster)
+                    positions = []
+                    for row in self.getSelectedRows():
+                        try:
+                            booster = self.boosters[row]
+                        except IndexError:
+                            continue
+                        if booster in self.original:
+                            positions.append(self.original.index(booster))
+                    if mainPosition not in positions:
+                        positions = [mainPosition]
                     self.mainFrame.command.Submit(cmd.GuiToggleBoosterStatesCommand(
                         fitID=fitID,
-                        mainPosition=position,
-                        positions=[position]))
+                        mainPosition=mainPosition,
+                        positions=positions))
+                    return
+        event.Skip()
 
     def spawnMenu(self, event):
-        sel = self.GetFirstSelected()
-        if sel != -1:
+        selection = self.getSelectedBoosters()
+        clickedPos = self.getRowByAbs(event.Position)
+        mainBooster = None
+        if clickedPos != -1:
             try:
-                booster = self.boosters[sel]
+                booster = self.boosters[clickedPos]
             except IndexError:
-                return None
-            srcContext = "boosterItem"
-            itemContext = "Booster"
-            menu = ContextMenu.getMenu(booster, (booster,), (srcContext, itemContext))
+                pass
+            else:
+                if booster in self.original:
+                    mainBooster = booster
+        sourceContext = "boosterItem"
+        itemContext = None if mainBooster is None else "Booster"
+        menu = ContextMenu.getMenu(mainBooster, selection, (sourceContext, itemContext))
+        if menu:
             self.PopupMenu(menu)
+
+    def getSelectedBoosters(self):
+        boosters = []
+        for row in self.getSelectedRows():
+            try:
+                booster = self.boosters[self.GetItemData(row)]
+            except IndexError:
+                continue
+            boosters.append(booster)
+        return boosters

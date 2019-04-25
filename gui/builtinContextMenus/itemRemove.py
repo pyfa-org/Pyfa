@@ -106,10 +106,12 @@ class RemoveItem(ContextMenuCombined):
     def __handleBooster(self, mainItem, selection):
         fitID = self.mainFrame.getActiveFit()
         fit = Fit.getInstance().getFit(fitID)
-        if mainItem in fit.boosters:
-            position = fit.boosters.index(mainItem)
-            self.mainFrame.command.Submit(cmd.GuiRemoveBoostersCommand(
-                fitID=fitID, position=position))
+        positions = []
+        for booster in selection:
+            if booster in fit.boosters:
+                positions.append(fit.boosters.index(booster))
+        self.mainFrame.command.Submit(cmd.GuiRemoveBoostersCommand(
+            fitID=fitID, positions=positions))
 
     def __handleCargo(self, mainItem, selection):
         fitID = self.mainFrame.getActiveFit()
