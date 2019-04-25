@@ -220,7 +220,7 @@ class ImplantDisplay(d.Display):
         fit = sFit.getFit(fitID)
         if fit.implantLocation == ImplantLocation.FIT and implant in self.original:
             position = self.original.index(implant)
-            self.mainFrame.command.Submit(cmd.GuiRemoveImplantCommand(fitID=fitID, position=position))
+            self.mainFrame.command.Submit(cmd.GuiRemoveImplantsCommand(fitID=fitID, positions=[position]))
 
     def click(self, event):
         event.Skip()

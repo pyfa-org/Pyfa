@@ -98,8 +98,8 @@ class RemoveItem(ContextMenuCombined):
         fit = Fit.getInstance().getFit(fitID)
         if mainItem in fit.implants:
             position = fit.implants.index(mainItem)
-            self.mainFrame.command.Submit(cmd.GuiRemoveImplantCommand(
-                fitID=fitID, position=position))
+            self.mainFrame.command.Submit(cmd.GuiRemoveImplantsCommand(
+                fitID=fitID, positions=[position]))
 
     def __handleBooster(self, mainItem, selection):
         fitID = self.mainFrame.getActiveFit()
