@@ -49,6 +49,7 @@ class ImplantViewDrop(wx.DropTarget):
 
 
 class ImplantView(wx.Panel):
+
     def __init__(self, parent):
         wx.Panel.__init__(self, parent, id=wx.ID_ANY, pos=wx.DefaultPosition, style=wx.TAB_TRAVERSAL)
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
@@ -99,6 +100,7 @@ class ImplantView(wx.Panel):
 
 
 class ImplantDisplay(d.Display):
+
     DEFAULT_COLS = [
         "State",
         "attr:implantness",
@@ -108,13 +110,13 @@ class ImplantDisplay(d.Display):
     ]
 
     def __init__(self, parent):
-        d.Display.__init__(self, parent, style=wx.LC_SINGLE_SEL | wx.BORDER_NONE)
+        d.Display.__init__(self, parent, style=wx.BORDER_NONE)
 
         self.lastFitId = None
 
         self.mainFrame.Bind(GE.FIT_CHANGED, self.fitChanged)
         self.mainFrame.Bind(ITEM_SELECTED, self.addItem)
-        self.Bind(wx.EVT_LEFT_DCLICK, self.removeItem)
+        self.Bind(wx.EVT_LEFT_DCLICK, self.onLeftDoubleClick)
         self.Bind(wx.EVT_LEFT_DOWN, self.click)
         self.Bind(wx.EVT_KEY_UP, self.kbEvent)
         self.SetDropTarget(ImplantViewDrop(self.handleListDrag))
@@ -137,16 +139,16 @@ class ImplantDisplay(d.Display):
                 self.mainFrame.additionsPane.select("Implants")
 
     def kbEvent(self, event):
-        event.Skip()
         keycode = event.GetKeyCode()
-        if keycode in (wx.WXK_DELETE, wx.WXK_NUMPAD_DELETE):
-            row = self.GetFirstSelected()
-            if row != -1:
-                try:
-                    implant = self.implants[self.GetItemData(row)]
-                except IndexError:
-                    return
-                self.removeImplant(implant)
+        mstate = wx.GetMouseState()
+        if keycode == wx.WXK_ESCAPE and not mstate.cmdDown and not mstate.altDown and not mstate.shiftDown:
+            self.unselectAll()
+        if keycode == 65 and mstate.cmdDown and not mstate.altDown and not mstate.shiftDown:
+            self.selectAll()
+        if keycode == wx.WXK_DELETE or keycode == wx.WXK_NUMPAD_DELETE:
+            implants = self.getSelectedImplants()
+            self.removeImplants(implants)
+        event.Skip()
 
     def fitChanged(self, event):
         sFit = Fit.getInstance()
@@ -199,11 +201,7 @@ class ImplantDisplay(d.Display):
 
         event.Skip()
 
-    def removeItem(self, event):
-        # Character implants can't be changed here...
-        if self.Parent.source == ImplantLocation.CHARACTER:
-            return
-
+    def onLeftDoubleClick(self, event):
         row, _ = self.HitTest(event.Position)
         if row != -1:
             col = self.getColumn(event.Position)
@@ -212,36 +210,50 @@ class ImplantDisplay(d.Display):
                     implant = self.implants[self.GetItemData(row)]
                 except IndexError:
                     return
-                self.removeImplant(implant)
+                self.removeImplants([implant])
 
-    def removeImplant(self, implant):
+    def removeImplants(self, implants):
         fitID = self.mainFrame.getActiveFit()
-        sFit = Fit.getInstance()
-        fit = sFit.getFit(fitID)
-        if fit.implantLocation == ImplantLocation.FIT and implant in self.original:
-            position = self.original.index(implant)
-            self.mainFrame.command.Submit(cmd.GuiRemoveImplantsCommand(fitID=fitID, positions=[position]))
+        fit = Fit.getInstance().getFit(fitID)
+        if fit.implantLocation != ImplantLocation.FIT:
+            return
+        positions = []
+        for implant in implants:
+            if implant in self.original:
+                positions.append(self.original.index(implant))
+        self.mainFrame.command.Submit(cmd.GuiRemoveImplantsCommand(fitID=fitID, positions=positions))
 
     def click(self, event):
-        event.Skip()
-
-        # Character implants can't be changed here...
-        if self.Parent.source == ImplantLocation.CHARACTER:
+        fitID = self.mainFrame.getActiveFit()
+        fit = Fit.getInstance().getFit(fitID)
+        if fit.implantLocation != ImplantLocation.FIT:
+            event.Skip()
             return
-
-        row, _ = self.HitTest(event.Position)
-        if row != -1:
+        mainRow, _ = self.HitTest(event.Position)
+        if mainRow != -1:
             col = self.getColumn(event.Position)
             if col == self.getColIndex(State):
                 fitID = self.mainFrame.getActiveFit()
                 try:
-                    implant = self.implants[self.GetItemData(row)]
+                    mainImplant = self.implants[mainRow]
                 except IndexError:
                     return
-                if implant in self.original:
-                    position = self.original.index(implant)
-                    self.mainFrame.command.Submit(cmd.GuiToggleImplantStateCommand(
-                        fitID=fitID, mainPosition=position, positions=[position]))
+                if mainImplant in self.original:
+                    mainPosition = self.original.index(mainImplant)
+                    positions = []
+                    for row in self.getSelectedRows():
+                        try:
+                            implant = self.implants[row]
+                        except IndexError:
+                            continue
+                        if implant in self.original:
+                            positions.append(self.original.index(implant))
+                    self.mainFrame.command.Submit(cmd.GuiToggleImplantStatesCommand(
+                        fitID=fitID,
+                        mainPosition=mainPosition,
+                        positions=positions))
+                    return
+        event.Skip()
 
     def spawnMenu(self, event):
         sel = self.GetFirstSelected()
@@ -271,3 +283,13 @@ class ImplantDisplay(d.Display):
             menu = ContextMenu.getMenu(None, [], context)
         if menu is not None:
             self.PopupMenu(menu)
+
+    def getSelectedImplants(self):
+        implants = []
+        for row in self.getSelectedRows():
+            try:
+                implant = self.implants[self.GetItemData(row)]
+            except IndexError:
+                continue
+            implants.append(implant)
+        return implants

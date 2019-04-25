@@ -7,10 +7,10 @@ from gui.fitCommands.helpers import InternalCommandHistory
 from service.fit import Fit
 
 
-class GuiToggleImplantStateCommand(wx.Command):
+class GuiToggleImplantStatesCommand(wx.Command):
 
     def __init__(self, fitID, mainPosition, positions):
-        wx.Command.__init__(self, True, 'Toggle Implant State')
+        wx.Command.__init__(self, True, 'Toggle Implant States')
         self.internalHistory = InternalCommandHistory()
         self.fitID = fitID
         self.mainPosition = mainPosition

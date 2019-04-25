@@ -11,6 +11,7 @@ from service.market import Market
 
 
 class BaseImplantEditorView(wx.Panel):
+
     def addMarketViewImage(self, iconFile):
         if iconFile is None:
             return -1
