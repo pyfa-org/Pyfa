@@ -241,7 +241,7 @@ class ImplantDisplay(d.Display):
                 if implant in self.original:
                     position = self.original.index(implant)
                     self.mainFrame.command.Submit(cmd.GuiToggleImplantStateCommand(
-                        fitID=fitID, position=position))
+                        fitID=fitID, mainPosition=position, positions=[position]))
 
     def spawnMenu(self, event):
         sel = self.GetFirstSelected()
