@@ -286,6 +286,8 @@ class DroneView(Display):
                             continue
                         if drone in self.original:
                             positions.append(self.original.index(drone))
+                    if mainPosition not in positions:
+                        positions = [mainPosition]
                     self.mainFrame.command.Submit(cmd.GuiToggleLocalDroneStatesCommand(
                         fitID=fitID,
                         mainPosition=mainPosition,

@@ -248,6 +248,8 @@ class ImplantDisplay(d.Display):
                             continue
                         if implant in self.original:
                             positions.append(self.original.index(implant))
+                    if mainPosition not in positions:
+                        positions = [mainPosition]
                     self.mainFrame.command.Submit(cmd.GuiToggleImplantStatesCommand(
                         fitID=fitID,
                         mainPosition=mainPosition,

@@ -329,6 +329,8 @@ class FighterDisplay(d.Display):
                             continue
                         if fighter in self.original:
                             positions.append(self.original.index(fighter))
+                    if mainPosition not in positions:
+                        positions = [mainPosition]
                     self.mainFrame.command.Submit(cmd.GuiToggleLocalFighterStatesCommand(
                         fitID=fitID,
                         mainPosition=mainPosition,
