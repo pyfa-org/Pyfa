@@ -133,9 +133,9 @@ class ChangeItemToVariation(ContextMenuCombined):
             'fittingModule': self.__handleModule,
             'droneItem': self.__handleDrone,
             'fighterItem': self.__handleFighter,
+            'cargoItem': self.__handleCargo,
             'implantItem': self.__handleImplant,
             'boosterItem': self.__handleBooster,
-            'cargoItem': self.__handleCargo,
             'projectedModule': self.__handleProjectedModule,
             'projectedDrone': self.__handleProjectedDrone,
             'projectedFighter': self.__handleProjectedFighter}
@@ -204,6 +204,20 @@ class ChangeItemToVariation(ContextMenuCombined):
         self.mainFrame.command.Submit(cmd.GuiChangeLocalFighterMetasCommand(
             fitID=fitID, positions=positions, newItemID=varItem.ID))
 
+    def __handleCargo(self, varItem):
+        fitID = self.mainFrame.getActiveFit()
+        sMkt = Market.getInstance()
+        itemIDs = []
+        for cargo in self.selection:
+            if cargo is self.mainItem:
+                itemIDs.append(cargo.itemID)
+                continue
+            cargoVariations = sMkt.getVariationsByItems((cargo.item,))
+            if cargoVariations == self.mainVariations:
+                itemIDs.append(cargo.itemID)
+        self.mainFrame.command.Submit(cmd.GuiChangeCargoMetaCommand(
+            fitID=fitID, itemIDs=itemIDs, newItemID=varItem.ID))
+
     def __handleImplant(self, varItem):
         fitID = self.mainFrame.getActiveFit()
         fit = Fit.getInstance().getFit(fitID)
@@ -221,12 +235,6 @@ class ChangeItemToVariation(ContextMenuCombined):
             position = fit.boosters.index(booster)
             self.mainFrame.command.Submit(cmd.GuiChangeBoosterMetaCommand(
                 fitID=fitID, position=position, newItemID=varItem.ID))
-
-    def __handleCargo(self, varItem):
-        fitID = self.mainFrame.getActiveFit()
-        cargo = self.mainItem
-        self.mainFrame.command.Submit(cmd.GuiChangeCargoMetaCommand(
-            fitID=fitID, itemIDs=[cargo.itemID], newItemID=varItem.ID))
 
     def __handleProjectedModule(self, varItem):
         fitID = self.mainFrame.getActiveFit()
