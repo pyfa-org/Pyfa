@@ -256,32 +256,24 @@ class ImplantDisplay(d.Display):
         event.Skip()
 
     def spawnMenu(self, event):
-        sel = self.GetFirstSelected()
-        menu = None
-
-        sFit = Fit.getInstance()
-        fit = sFit.getFit(self.mainFrame.getActiveFit())
-
-        if not fit:
-            return
-
-        if sel != -1:
+        selection = self.getSelectedImplants()
+        clickedPos = self.getRowByAbs(event.Position)
+        mainImplant = None
+        if clickedPos != -1:
             try:
-                implant = self.implants[sel]
+                implant = self.implants[clickedPos]
             except IndexError:
-                return
-            sMkt = Market.getInstance()
-            sourceContext = "implantItem" if fit.implantSource == ImplantLocation.FIT else "implantItemChar"
-            itemContext = sMkt.getCategoryByItem(implant.item).name
-            fullContext = ((sourceContext, itemContext), ("implantView", itemContext))
-            menu = ContextMenu.getMenu(implant, (implant,), *fullContext)
-        elif sel == -1 and fit.implantSource == ImplantLocation.FIT:
-            fitID = self.mainFrame.getActiveFit()
-            if fitID is None:
-                return
-            context = ("implantView",)
-            menu = ContextMenu.getMenu(None, [], context)
-        if menu is not None:
+                pass
+            else:
+                if implant in self.original:
+                    mainImplant = implant
+        fitID = self.mainFrame.getActiveFit()
+        fit = Fit.getInstance().getFit(fitID)
+        sourceContext1 = "implantItem" if fit.implantSource == ImplantLocation.FIT else "implantItemChar"
+        sourceContext2 = "implantView" if fit.implantSource == ImplantLocation.FIT else "implantViewChar"
+        itemContext = None if mainImplant is None else Market.getInstance().getCategoryByItem(mainImplant.item).name
+        menu = ContextMenu.getMenu(mainImplant, selection, (sourceContext1, itemContext), (sourceContext2, itemContext))
+        if menu:
             self.PopupMenu(menu)
 
     def getSelectedImplants(self):
