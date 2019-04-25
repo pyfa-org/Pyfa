@@ -111,8 +111,9 @@ class RemoveItem(ContextMenuCombined):
 
     def __handleCargo(self, mainItem, selection):
         fitID = self.mainFrame.getActiveFit()
+        itemIDs = [c.itemID for c in selection]
         self.mainFrame.command.Submit(cmd.GuiRemoveCargosCommand(
-            fitID=fitID, itemIDs=[mainItem.itemID]))
+            fitID=fitID, itemIDs=itemIDs))
 
     def __handleProjectedFit(self, mainItem, selection):
         fitID = self.mainFrame.getActiveFit()

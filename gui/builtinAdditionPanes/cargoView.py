@@ -184,17 +184,21 @@ class CargoView(d.Display):
         self.mainFrame.command.Submit(cmd.GuiRemoveCargosCommand(fitID=fitID, itemIDs=itemIDs))
 
     def spawnMenu(self, event):
-        sel = self.GetFirstSelected()
-        if sel != -1:
+        selection = self.getSelectedCargos()
+        clickedPos = self.getRowByAbs(event.Position)
+        mainCargo = None
+        if clickedPos != -1:
             try:
-                cargo = self.cargo[sel]
+                cargo = self.cargo[clickedPos]
             except IndexError:
-                return
-            sMkt = Market.getInstance()
-            sourceContext = "cargoItem"
-            itemContext = sMkt.getCategoryByItem(cargo.item).name
-
-            menu = ContextMenu.getMenu(cargo, (cargo,), (sourceContext, itemContext))
+                pass
+            else:
+                if cargo in self.original:
+                    mainCargo = cargo
+        sourceContext = "cargoItem"
+        itemContext = None if mainCargo is None else Market.getInstance().getCategoryByItem(mainCargo.item).name
+        menu = ContextMenu.getMenu(mainCargo, selection, (sourceContext, itemContext))
+        if menu:
             self.PopupMenu(menu)
 
     def getSelectedCargos(self):
