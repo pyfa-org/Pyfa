@@ -48,6 +48,7 @@ class BoosterViewDrop(wx.DropTarget):
 
 
 class BoosterView(d.Display):
+
     DEFAULT_COLS = [
         "State",
         "attr:boosterness",
@@ -162,8 +163,8 @@ class BoosterView(d.Display):
         fitID = self.mainFrame.getActiveFit()
         if booster in self.original:
             position = self.original.index(booster)
-            self.mainFrame.command.Submit(cmd.GuiRemoveBoosterCommand(
-                fitID=fitID, position=position))
+            self.mainFrame.command.Submit(cmd.GuiRemoveBoostersCommand(
+                fitID=fitID, positions=[position]))
 
     def click(self, event):
         event.Skip()

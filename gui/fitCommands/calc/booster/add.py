@@ -11,11 +11,12 @@ pyfalog = Logger(__name__)
 
 class CalcAddBoosterCommand(wx.Command):
 
-    def __init__(self, fitID, boosterInfo, position=None):
+    def __init__(self, fitID, boosterInfo, position=None, commit=True):
         wx.Command.__init__(self, True, 'Add Booster')
         self.fitID = fitID
         self.newBoosterInfo = boosterInfo
         self.newPosition = position
+        self.commit = commit
         self.oldBoosterInfo = None
         self.oldPosition = None
 
@@ -38,7 +39,11 @@ class CalcAddBoosterCommand(wx.Command):
                 fit.boosters.insert(self.newPosition, newBooster)
             except HandledListActionError:
                 pyfalog.warning('Failed to insert to list')
-                cmd = CalcAddBoosterCommand(fitID=self.fitID, boosterInfo=self.oldBoosterInfo, position=self.oldPosition)
+                cmd = CalcAddBoosterCommand(
+                    fitID=self.fitID,
+                    boosterInfo=self.oldBoosterInfo,
+                    position=self.oldPosition,
+                    commit=self.commit)
                 cmd.Do()
                 return False
         else:
@@ -46,19 +51,24 @@ class CalcAddBoosterCommand(wx.Command):
                 fit.boosters.append(newBooster)
             except HandledListActionError:
                 pyfalog.warning('Failed to append to list')
-                cmd = CalcAddBoosterCommand(fitID=self.fitID, boosterInfo=self.oldBoosterInfo, position=self.oldPosition)
+                cmd = CalcAddBoosterCommand(
+                    fitID=self.fitID,
+                    boosterInfo=self.oldBoosterInfo,
+                    position=self.oldPosition,
+                    commit=self.commit)
                 cmd.Do()
                 return False
             self.newPosition = fit.boosters.index(newBooster)
 
-        eos.db.commit()
+        if self.commit:
+            eos.db.commit()
         return True
 
     def Undo(self):
         pyfalog.debug('Undo addition of booster {} to fit {}'.format(self.newBoosterInfo, self.fitID))
         if self.oldBoosterInfo is not None and self.oldPosition is not None:
-            cmd = CalcAddBoosterCommand(fitID=self.fitID, boosterInfo=self.oldBoosterInfo, position=self.oldPosition)
+            cmd = CalcAddBoosterCommand(fitID=self.fitID, boosterInfo=self.oldBoosterInfo, position=self.oldPosition, commit=self.commit)
             return cmd.Do()
         from .remove import CalcRemoveBoosterCommand
-        cmd = CalcRemoveBoosterCommand(fitID=self.fitID, position=self.newPosition)
+        cmd = CalcRemoveBoosterCommand(fitID=self.fitID, position=self.newPosition, commit=self.commit)
         return cmd.Do()

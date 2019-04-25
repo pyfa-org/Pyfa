@@ -226,35 +226,33 @@ class ImplantDisplay(d.Display):
     def click(self, event):
         fitID = self.mainFrame.getActiveFit()
         fit = Fit.getInstance().getFit(fitID)
-        if fit.implantLocation != ImplantLocation.FIT:
-            event.Skip()
-            return
-        mainRow, _ = self.HitTest(event.Position)
-        if mainRow != -1:
-            col = self.getColumn(event.Position)
-            if col == self.getColIndex(State):
-                fitID = self.mainFrame.getActiveFit()
-                try:
-                    mainImplant = self.implants[mainRow]
-                except IndexError:
-                    return
-                if mainImplant in self.original:
-                    mainPosition = self.original.index(mainImplant)
-                    positions = []
-                    for row in self.getSelectedRows():
-                        try:
-                            implant = self.implants[row]
-                        except IndexError:
-                            continue
-                        if implant in self.original:
-                            positions.append(self.original.index(implant))
-                    if mainPosition not in positions:
-                        positions = [mainPosition]
-                    self.mainFrame.command.Submit(cmd.GuiToggleImplantStatesCommand(
-                        fitID=fitID,
-                        mainPosition=mainPosition,
-                        positions=positions))
-                    return
+        if fit.implantLocation == ImplantLocation.FIT:
+            mainRow, _ = self.HitTest(event.Position)
+            if mainRow != -1:
+                col = self.getColumn(event.Position)
+                if col == self.getColIndex(State):
+                    fitID = self.mainFrame.getActiveFit()
+                    try:
+                        mainImplant = self.implants[mainRow]
+                    except IndexError:
+                        return
+                    if mainImplant in self.original:
+                        mainPosition = self.original.index(mainImplant)
+                        positions = []
+                        for row in self.getSelectedRows():
+                            try:
+                                implant = self.implants[row]
+                            except IndexError:
+                                continue
+                            if implant in self.original:
+                                positions.append(self.original.index(implant))
+                        if mainPosition not in positions:
+                            positions = [mainPosition]
+                        self.mainFrame.command.Submit(cmd.GuiToggleImplantStatesCommand(
+                            fitID=fitID,
+                            mainPosition=mainPosition,
+                            positions=positions))
+                        return
         event.Skip()
 
     def spawnMenu(self, event):

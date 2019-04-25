@@ -1,6 +1,6 @@
 from .gui.booster.add import GuiAddBoosterCommand
 from .gui.booster.changeMeta import GuiChangeBoosterMetaCommand
-from .gui.booster.remove import GuiRemoveBoosterCommand
+from .gui.booster.remove import GuiRemoveBoostersCommand
 from .gui.booster.sideEffectToggleState import GuiToggleBoosterSideEffectStateCommand
 from .gui.booster.toggleState import GuiToggleBoosterStateCommand
 from .gui.cargo.add import GuiAddCargoCommand
