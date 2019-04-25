@@ -22,24 +22,25 @@ import wx
 
 import gui.builtinAdditionPanes.droneView
 import gui.display as d
+import gui.fitCommands as cmd
 import gui.globalEvents as GE
-from gui.builtinShipBrowser.events import EVT_FIT_REMOVED
-from eos.saveddata.drone import Drone as es_Drone
 from gui.builtinContextMenus.commandFitAdd import AddCommandFit
+from gui.builtinShipBrowser.events import EVT_FIT_REMOVED
 from gui.builtinViewColumns.state import State
 from gui.contextMenu import ContextMenu
 from gui.utils.staticHelpers import DragDropHelper
 from service.fit import Fit
-import gui.fitCommands as cmd
 
 
-class DummyItem(object):
+class DummyItem:
+
     def __init__(self, txt):
         self.name = txt
         self.iconID = None
 
 
-class DummyEntry(object):
+class DummyEntry:
+
     def __init__(self, txt):
         self.item = DummyItem(txt)
 
@@ -61,10 +62,11 @@ class CommandViewDrop(wx.DropTarget):
 
 
 class CommandView(d.Display):
+
     DEFAULT_COLS = ["State", "Base Name"]
 
     def __init__(self, parent):
-        d.Display.__init__(self, parent, style=wx.LC_SINGLE_SEL | wx.BORDER_NONE)
+        d.Display.__init__(self, parent, style=wx.BORDER_NONE)
 
         self.lastFitId = None
 
@@ -72,14 +74,13 @@ class CommandView(d.Display):
         self.mainFrame.Bind(EVT_FIT_REMOVED, AddCommandFit.populateFits)
         self.mainFrame.Bind(GE.FIT_CHANGED, self.fitChanged)
         self.Bind(wx.EVT_LEFT_DOWN, self.click)
-        self.Bind(wx.EVT_LEFT_DCLICK, self.remove)
+        self.Bind(wx.EVT_LEFT_DCLICK, self.onLeftDoubleClick)
         self.Bind(wx.EVT_KEY_UP, self.kbEvent)
 
         self.droneView = gui.builtinAdditionPanes.droneView.DroneView
 
-        self.Bind(wx.EVT_RIGHT_UP, self.spawnMenu)
+        self.Bind(wx.EVT_CONTEXT_MENU, self.spawnMenu)
 
-        self.Bind(wx.EVT_LIST_BEGIN_DRAG, self.startDrag)
         self.SetDropTarget(CommandViewDrop(self.handleListDrag))
 
     @staticmethod
@@ -95,14 +96,15 @@ class CommandView(d.Display):
 
     def kbEvent(self, event):
         keycode = event.GetKeyCode()
+        mstate = wx.GetMouseState()
+        if keycode == wx.WXK_ESCAPE and not mstate.cmdDown and not mstate.altDown and not mstate.shiftDown:
+            self.unselectAll()
+        if keycode == 65 and mstate.cmdDown and not mstate.altDown and not mstate.shiftDown:
+            self.selectAll()
         if keycode == wx.WXK_DELETE or keycode == wx.WXK_NUMPAD_DELETE:
-            fitID = self.mainFrame.getActiveFit()
-            row = self.GetFirstSelected()
-            if row != -1:
-                commandFit = self.get(row)
-                if commandFit is not None:
-                    self.mainFrame.command.Submit(cmd.GuiRemoveCommandFitsCommand(
-                        fitID=fitID, commandFitIDs=[commandFit.ID]))
+            commandFits = self.getSelectedCommandFits()
+            self.removeCommandFits(commandFits)
+        event.Skip()
 
     def handleDrag(self, type, fitID):
         # Those are drags coming from pyfa sources, NOT builtin wx drags
@@ -110,18 +112,6 @@ class CommandView(d.Display):
             activeFit = self.mainFrame.getActiveFit()
             if activeFit:
                 self.mainFrame.command.Submit(cmd.GuiAddCommandFitCommand(fitID=activeFit, commandFitID=fitID))
-
-    def startDrag(self, event):
-        row = event.GetIndex()
-        if row != -1 and isinstance(self.get(row), es_Drone):
-            data = wx.TextDataObject()
-            dataStr = "command:" + str(self.GetItemData(row))
-            data.SetText(dataStr)
-
-            dropSource = wx.DropSource(self)
-            dropSource.SetData(data)
-            DragDropHelper.data = dataStr
-            dropSource.DoDragDrop()
 
     @staticmethod
     def fitSort(fit):
@@ -158,7 +148,6 @@ class CommandView(d.Display):
 
             self.unselectAll()
 
-        # todo: verify
         if not stuff:
             stuff = [DummyEntry("Drag a fit to this area")]
 
@@ -166,53 +155,68 @@ class CommandView(d.Display):
 
         event.Skip()
 
-    def get(self, row):
-        if row == -1:
-            return None
-        numFits = len(self.fits)
-        if numFits == 0:
-            return None
-        try:
-            return self.fits[row]
-        except IndexError:
-            return None
-
     def click(self, event):
-        event.Skip()
-        row, _ = self.HitTest(event.Position)
-        if row != -1:
-            item = self.get(row)
+        mainRow, _ = self.HitTest(event.Position)
+        if mainRow != -1:
             col = self.getColumn(event.Position)
             if col == self.getColIndex(State):
                 fitID = self.mainFrame.getActiveFit()
+                try:
+                    mainCommandFitID = self.fits[mainRow].ID
+                except IndexError:
+                    return
+                commandFitIDs = []
+                for commandFit in self.getSelectedCommandFits():
+                    commandFitIDs.append(commandFit.ID)
+                if mainCommandFitID not in commandFitIDs:
+                    commandFitIDs = [mainCommandFitID]
                 self.mainFrame.command.Submit(cmd.GuiToggleCommandFitStatesCommand(
-                    fitID=fitID, mainCommandFitID=item.ID, commandFitIDs=[item.ID]))
+                    fitID=fitID,
+                    mainCommandFitID=mainCommandFitID,
+                    commandFitIDs=commandFitIDs))
+                return
+        event.Skip()
 
     def spawnMenu(self, event):
-        fitID = self.mainFrame.getActiveFit()
-        if fitID is None:
-            return
-
-        sel = self.GetFirstSelected()
-        context = ()
-        item = self.get(sel)
-
-        if item is not None:
-            fitSrcContext = "commandFit"
-            fitItemContext = item.name
-            context = ((fitSrcContext, fitItemContext),)
-
-        context += (("commandView",),)
-        menu = ContextMenu.getMenu(item, (item,) if item is not None else [], *context)
-        if menu is not None:
+        selection = self.getSelectedCommandFits()
+        clickedPos = self.getRowByAbs(event.Position)
+        mainCommandFit = None
+        if clickedPos != -1:
+            try:
+                mainCommandFit = self.fits[clickedPos]
+            except IndexError:
+                pass
+        contexts = []
+        if mainCommandFit is not None:
+            contexts.append(('commandFit', 'Command Fit'))
+        contexts.append(('commandView',))
+        menu = ContextMenu.getMenu(mainCommandFit, selection, *contexts)
+        if menu:
             self.PopupMenu(menu)
 
-    def remove(self, event):
+    def onLeftDoubleClick(self, event):
         row, _ = self.HitTest(event.Position)
         if row != -1:
-            col = self.getColumn(event.Position)
-            if col != self.getColIndex(State):
-                fitID = self.mainFrame.getActiveFit()
-                thing = self.get(row)
-                if thing:  # thing doesn't exist if it's the dummy value
-                    self.mainFrame.command.Submit(cmd.GuiRemoveCommandFitsCommand(fitID=fitID, commandFitIDs=[thing.ID]))
+            try:
+                commandFit = self.fits[self.GetItemData(row)]
+            except IndexError:
+                return
+            self.removeCommandFits([commandFit])
+
+    def removeCommandFits(self, commandFits):
+        fitID = self.mainFrame.getActiveFit()
+        commandFitIDs = []
+        for commandFit in commandFits:
+            if commandFit in self.fits:
+                commandFitIDs.append(commandFit.ID)
+        self.mainFrame.command.Submit(cmd.GuiRemoveCommandFitsCommand(fitID=fitID, commandFitIDs=commandFitIDs))
+
+    def getSelectedCommandFits(self):
+        commandFits = []
+        for row in self.getSelectedRows():
+            try:
+                commandFit = self.fits[self.GetItemData(row)]
+            except IndexError:
+                continue
+            commandFits.append(commandFit)
+        return commandFits

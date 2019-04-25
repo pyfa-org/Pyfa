@@ -19,14 +19,14 @@
 
 # noinspection PyPackageRequirements
 import wx
+
 import gui.display as d
-from gui.builtinViewColumns.state import State
-from gui.contextMenu import ContextMenu
+import gui.fitCommands as cmd
 import gui.globalEvents as GE
+from gui.contextMenu import ContextMenu
 from gui.utils.staticHelpers import DragDropHelper
 from service.fit import Fit
 from service.market import Market
-import gui.fitCommands as cmd
 
 
 class CargoViewDrop(wx.DropTarget):
