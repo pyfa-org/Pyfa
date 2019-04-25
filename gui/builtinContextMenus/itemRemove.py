@@ -147,8 +147,8 @@ class RemoveItem(ContextMenuCombined):
 
     def __handleCommandFit(self, mainItem, selection):
         fitID = self.mainFrame.getActiveFit()
-        self.mainFrame.command.Submit(cmd.GuiRemoveCommandFitCommand(
-            fitID=fitID, commandFitID=mainItem.ID))
+        self.mainFrame.command.Submit(cmd.GuiRemoveCommandFitsCommand(
+            fitID=fitID, commandFitIDs=[mainItem.ID]))
 
 
 RemoveItem.register()

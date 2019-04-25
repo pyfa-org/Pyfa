@@ -101,8 +101,8 @@ class CommandView(d.Display):
             if row != -1:
                 commandFit = self.get(row)
                 if commandFit is not None:
-                    self.mainFrame.command.Submit(cmd.GuiRemoveCommandFitCommand(
-                        fitID=fitID, commandFitID=commandFit.ID))
+                    self.mainFrame.command.Submit(cmd.GuiRemoveCommandFitsCommand(
+                        fitID=fitID, commandFitIDs=[commandFit.ID]))
 
     def handleDrag(self, type, fitID):
         # Those are drags coming from pyfa sources, NOT builtin wx drags
@@ -214,4 +214,4 @@ class CommandView(d.Display):
                 fitID = self.mainFrame.getActiveFit()
                 thing = self.get(row)
                 if thing:  # thing doesn't exist if it's the dummy value
-                    self.mainFrame.command.Submit(cmd.GuiRemoveCommandFitCommand(fitID, thing.ID))
+                    self.mainFrame.command.Submit(cmd.GuiRemoveCommandFitsCommand(fitID=fitID, commandFitIDs=[thing.ID]))

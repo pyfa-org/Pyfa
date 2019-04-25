@@ -8,7 +8,7 @@ from .gui.cargo.changeAmount import GuiChangeCargoAmountCommand
 from .gui.cargo.changeMeta import GuiChangeCargoMetaCommand
 from .gui.cargo.remove import GuiRemoveCargosCommand
 from .gui.commandFit.add import GuiAddCommandFitCommand
-from .gui.commandFit.remove import GuiRemoveCommandFitCommand
+from .gui.commandFit.remove import GuiRemoveCommandFitsCommand
 from .gui.commandFit.toggleState import GuiToggleCommandFitStateCommand
 from .gui.fitRename import GuiRenameFitCommand
 from .gui.implant.add import GuiAddImplantCommand
