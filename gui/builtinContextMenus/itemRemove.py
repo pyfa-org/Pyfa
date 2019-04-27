@@ -45,10 +45,10 @@ class RemoveItem(ContextMenuCombined):
             'implantItem': self.__handleImplant,
             'boosterItem': self.__handleBooster,
             'cargoItem': self.__handleCargo,
-            'projectedFit': self.__handleProjectedFit,
-            'projectedModule': self.__handleProjectedModule,
-            'projectedDrone': self.__handleProjectedDrone,
-            'projectedFighter': self.__handleProjectedFighter,
+            'projectedFit': self.__handleProjectedItem,
+            'projectedModule': self.__handleProjectedItem,
+            'projectedDrone': self.__handleProjectedItem,
+            'projectedFighter': self.__handleProjectedItem,
             'commandFit': self.__handleCommandFit}
         srcContext = fullContext[0]
         handler = handlerMap.get(srcContext)
@@ -119,31 +119,11 @@ class RemoveItem(ContextMenuCombined):
         self.mainFrame.command.Submit(cmd.GuiRemoveCargosCommand(
             fitID=fitID, itemIDs=itemIDs))
 
-    def __handleProjectedFit(self, mainItem, selection):
-        fitID = self.mainFrame.getActiveFit()
-        self.mainFrame.command.Submit(cmd.GuiRemoveProjectedFitCommand(
-            fitID=fitID, projectedFitID=mainItem.ID, amount=math.inf))
-
-    def __handleProjectedModule(self, mainItem, selection):
+    def __handleProjectedItem(self, mainItem, selection):
         fitID = self.mainFrame.getActiveFit()
         fit = Fit.getInstance().getFit(fitID)
-        if mainItem in fit.projectedModules:
-            position = fit.projectedModules.index(mainItem)
-            self.mainFrame.command.Submit(cmd.GuiRemoveProjectedModuleCommand(
-                fitID=fitID, position=position))
-
-    def __handleProjectedDrone(self, mainItem, selection):
-        fitID = self.mainFrame.getActiveFit()
-        self.mainFrame.command.Submit(cmd.GuiRemoveProjectedDroneCommand(
-            fitID=fitID, itemID=mainItem.itemID, amount=math.inf))
-
-    def __handleProjectedFighter(self, mainItem, selection):
-        fitID = self.mainFrame.getActiveFit()
-        fit = Fit.getInstance().getFit(fitID)
-        if mainItem in fit.projectedFighters:
-            position = fit.projectedFighters.index(mainItem)
-            self.mainFrame.command.Submit(cmd.GuiRemoveProjectedFighterCommand(
-                fitID=fitID, position=position))
+        self.mainFrame.command.Submit(cmd.GuiRemoveProjectedItemsCommand(
+            fitID=fitID, items=[mainItem], amount=math.inf))
 
     def __handleCommandFit(self, mainItem, selection):
         fitID = self.mainFrame.getActiveFit()

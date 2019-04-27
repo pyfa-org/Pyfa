@@ -82,7 +82,7 @@ class ProjectedView(d.Display):
         self.mainFrame.Bind(GE.FIT_CHANGED, self.fitChanged)
         self.Bind(wx.EVT_LEFT_DOWN, self.click)
         self.Bind(wx.EVT_RIGHT_DOWN, self.click)
-        self.Bind(wx.EVT_LEFT_DCLICK, self.remove)
+        self.Bind(wx.EVT_LEFT_DCLICK, self.onLeftDoubleClick)
         self.Bind(wx.EVT_KEY_UP, self.kbEvent)
 
         self.droneView = gui.builtinAdditionPanes.droneView.DroneView
@@ -124,24 +124,8 @@ class ProjectedView(d.Display):
             if row != -1:
                 fitID = self.mainFrame.getActiveFit()
                 thing = self.get(row)
-                if isinstance(thing, es_Fit):
-                    self.mainFrame.command.Submit(cmd.GuiRemoveProjectedFitCommand(
-                        fitID=fitID, projectedFitID=thing.ID, amount=math.inf))
-                elif isinstance(thing, es_Module):
-                    fit = Fit.getInstance().getFit(fitID)
-                    if thing in fit.projectedModules:
-                        position = fit.projectedModules.index(thing)
-                        self.mainFrame.command.Submit(cmd.GuiRemoveProjectedModuleCommand(
-                            fitID=fitID, position=position))
-                elif isinstance(thing, es_Drone):
-                    self.mainFrame.command.Submit(cmd.GuiRemoveProjectedDroneCommand(
-                        fitID=fitID, itemID=thing.itemID, amount=math.inf))
-                elif isinstance(thing, es_Fighter):
-                    fit = Fit.getInstance().getFit(fitID)
-                    if thing in fit.projectedFighters:
-                        position = fit.projectedFighters.index(thing)
-                        self.mainFrame.command.Submit(cmd.GuiRemoveProjectedFighterCommand(
-                            fitID=fitID, position=position))
+                self.mainFrame.command.Submit(cmd.GuiRemoveProjectedItemsCommand(
+                    fitID=fitID, items=[thing], amount=math.inf))
 
     def handleDrag(self, type, fitID):
         # Those are drags coming from pyfa sources, NOT builtin wx drags
@@ -328,32 +312,12 @@ class ProjectedView(d.Display):
         if menu is not None:
             self.PopupMenu(menu)
 
-    def remove(self, event):
+    def onLeftDoubleClick(self, event):
         row, _ = self.HitTest(event.Position)
         if row != -1:
             col = self.getColumn(event.Position)
             if col != self.getColIndex(State):
-                fitID = self.mainFrame.getActiveFit()
-                thing = self.get(row)
-                if isinstance(thing, es_Fit):
-                    amount = math.inf if wx.GetMouseState().GetModifiers() == wx.MOD_ALT else 1
-                    self.mainFrame.command.Submit(cmd.GuiRemoveProjectedFitCommand(
-                        fitID=fitID, projectedFitID=thing.ID, amount=amount))
-                elif isinstance(thing, es_Module):
-                    fit = Fit.getInstance().getFit(fitID)
-                    if thing in fit.projectedModules:
-                        position = fit.projectedModules.index(thing)
-                        self.mainFrame.command.Submit(cmd.GuiRemoveProjectedModuleCommand(
-                            fitID=fitID, position=position))
-                elif isinstance(thing, es_Drone):
-                    mstate = wx.GetMouseState()
-                    self.mainFrame.command.Submit(cmd.GuiRemoveProjectedDroneCommand(
-                        fitID=fitID,
-                        itemID=thing.itemID,
-                        amount=math.inf if mstate.GetModifiers() == wx.MOD_ALT else 1))
-                elif isinstance(thing, es_Fighter):
-                    fit = Fit.getInstance().getFit(fitID)
-                    if thing in fit.projectedFighters:
-                        position = fit.projectedFighters.index(thing)
-                        self.mainFrame.command.Submit(cmd.GuiRemoveProjectedFighterCommand(
-                            fitID=fitID, position=position))
+                self.mainFrame.command.Submit(cmd.GuiRemoveProjectedItemsCommand(
+                    fitID=self.mainFrame.getActiveFit(),
+                    items=[self.get(row)],
+                    amount=math.inf if wx.GetMouseState().GetModifiers() == wx.MOD_ALT else 1))

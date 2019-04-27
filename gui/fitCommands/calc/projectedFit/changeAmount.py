@@ -10,12 +10,13 @@ pyfalog = Logger(__name__)
 
 class CalcChangeProjectedFitAmountCommand(wx.Command):
 
-    def __init__(self, fitID, projectedFitID, amount, relative=False):
+    def __init__(self, fitID, projectedFitID, amount, relative=False, commit=True):
         wx.Command.__init__(self, True, 'Change Projected Fit Amount')
         self.fitID = fitID
         self.projectedFitID = projectedFitID
         self.amount = amount
         self.relative = relative
+        self.commit = commit
         self.savedAmount = None
 
     def Do(self):
@@ -39,10 +40,15 @@ class CalcChangeProjectedFitAmountCommand(wx.Command):
         if confinedAmount == self.savedAmount:
             return False
         projectionInfo.amount = confinedAmount
-        eos.db.commit()
+        if self.commit:
+            eos.db.commit()
         return True
 
     def Undo(self):
         pyfalog.debug('Undoing change of projected fit {} amount to {} for fit {}'.format(self.projectedFitID, self.amount, self.fitID))
-        cmd = CalcChangeProjectedFitAmountCommand(fitID=self.fitID, projectedFitID=self.projectedFitID, amount=self.savedAmount)
+        cmd = CalcChangeProjectedFitAmountCommand(
+            fitID=self.fitID,
+            projectedFitID=self.projectedFitID,
+            amount=self.savedAmount,
+            commit=self.commit)
         return cmd.Do()

@@ -11,11 +11,12 @@ pyfalog = Logger(__name__)
 
 class CalcRemoveProjectedDroneCommand(wx.Command):
 
-    def __init__(self, fitID, itemID, amount):
+    def __init__(self, fitID, itemID, amount, commit=True):
         wx.Command.__init__(self, True, 'Remove Projected Drone')
         self.fitID = fitID
         self.itemID = itemID
         self.amountToRemove = amount
+        self.commit = commit
         self.savedDroneInfo = None
 
     def Do(self):
@@ -33,7 +34,8 @@ class CalcRemoveProjectedDroneCommand(wx.Command):
         else:
             if drone.amountActive > 0:
                 drone.amountActive = min(drone.amountActive, drone.amount)
-        eos.db.commit()
+        if self.commit:
+            eos.db.commit()
         return True
 
     def Undo(self):
@@ -44,8 +46,10 @@ class CalcRemoveProjectedDroneCommand(wx.Command):
         if drone is not None:
             drone.amount = self.savedDroneInfo.amount
             drone.amountActive = self.savedDroneInfo.amountActive
+            if self.commit:
+                eos.db.commit()
             return True
         # Make new stack
         from .projectedAdd import CalcAddProjectedDroneCommand
-        cmd = CalcAddProjectedDroneCommand(fitID=self.fitID, droneInfo=self.savedDroneInfo)
+        cmd = CalcAddProjectedDroneCommand(fitID=self.fitID, droneInfo=self.savedDroneInfo, commit=self.commit)
         return cmd.Do()

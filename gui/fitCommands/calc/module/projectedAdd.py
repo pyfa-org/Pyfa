@@ -12,11 +12,12 @@ pyfalog = Logger(__name__)
 
 class CalcAddProjectedModuleCommand(wx.Command):
 
-    def __init__(self, fitID, modInfo, position=None):
+    def __init__(self, fitID, modInfo, position=None, commit=True):
         wx.Command.__init__(self, True)
         self.fitID = fitID
         self.newModInfo = modInfo
         self.newPosition = position
+        self.commit = commit
         self.oldModInfo = None
         self.oldPosition = None
 
@@ -36,24 +37,34 @@ class CalcAddProjectedModuleCommand(wx.Command):
             try:
                 fit.projectedModules.insert(self.newPosition, newMod)
             except HandledListActionError:
-                eos.db.commit()
+                if self.commit:
+                    eos.db.commit()
                 return False
         else:
             try:
                 fit.projectedModules.append(newMod)
             except HandledListActionError:
-                eos.db.commit()
+                if self.commit:
+                    eos.db.commit()
                 return False
             self.newPosition = fit.projectedModules.index(newMod)
 
-        eos.db.commit()
+        if self.commit:
+            eos.db.commit()
         return True
 
     def Undo(self):
         pyfalog.debug('Undoing addition of projected module {} onto: {}'.format(self.newModInfo, self.fitID))
         if self.oldPosition is not None and self.oldModInfo is not None:
-            cmd = CalcAddProjectedModuleCommand(fitID=self.fitID, modInfo=self.oldModInfo, position=self.oldPosition)
+            cmd = CalcAddProjectedModuleCommand(
+                fitID=self.fitID,
+                modInfo=self.oldModInfo,
+                position=self.oldPosition,
+                commit=self.commit)
             return cmd.Do()
         from .projectedRemove import CalcRemoveProjectedModuleCommand
-        cmd = CalcRemoveProjectedModuleCommand(self.fitID, self.newPosition)
+        cmd = CalcRemoveProjectedModuleCommand(
+            fitID=self.fitID,
+            position=self.newPosition,
+            commit=self.commit)
         return cmd.Do()

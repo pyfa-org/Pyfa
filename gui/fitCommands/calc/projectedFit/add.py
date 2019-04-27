@@ -10,12 +10,13 @@ pyfalog = Logger(__name__)
 
 class CalcAddProjectedFitCommand(wx.Command):
 
-    def __init__(self, fitID, projectedFitID, amount, state=None):
+    def __init__(self, fitID, projectedFitID, amount, state=None, commit=True):
         wx.Command.__init__(self, True, 'Add Projected Fit')
         self.fitID = fitID
         self.projectedFitID = projectedFitID
         self.amount = amount
         self.state = state
+        self.commit = commit
         self.changeAmountCommand = None
 
     def Do(self):
@@ -34,7 +35,11 @@ class CalcAddProjectedFitCommand(wx.Command):
         if projectedFit in fit.projectedFits and projectedFit.ID in fit.projectedFitDict:
             from .changeAmount import CalcChangeProjectedFitAmountCommand
             self.changeAmountCommand = CalcChangeProjectedFitAmountCommand(
-                fitID=self.fitID, projectedFitID=self.projectedFitID, amount=self.amount, relative=True)
+                fitID=self.fitID,
+                projectedFitID=self.projectedFitID,
+                amount=self.amount,
+                relative=True,
+                commit=self.commit)
             return self.changeAmountCommand.Do()
         else:
             self.changeAmountCommand = None
@@ -55,7 +60,8 @@ class CalcAddProjectedFitCommand(wx.Command):
             if self.state is not None:
                 projectionInfo.active = self.state
 
-        eos.db.commit()
+        if self.commit:
+            eos.db.commit()
         return True
 
     def Undo(self):
@@ -68,5 +74,9 @@ class CalcAddProjectedFitCommand(wx.Command):
         if projectedFit is None:
             return True
         from .remove import CalcRemoveProjectedFitCommand
-        cmd = CalcRemoveProjectedFitCommand(fitID=self.fitID, projectedFitID=self.projectedFitID, amount=self.amount)
+        cmd = CalcRemoveProjectedFitCommand(
+            fitID=self.fitID,
+            projectedFitID=self.projectedFitID,
+            amount=self.amount,
+            commit=self.commit)
         return cmd.Do()

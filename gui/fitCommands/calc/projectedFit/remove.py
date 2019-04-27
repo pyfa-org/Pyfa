@@ -10,11 +10,12 @@ pyfalog = Logger(__name__)
 
 class CalcRemoveProjectedFitCommand(wx.Command):
 
-    def __init__(self, fitID, projectedFitID, amount):
+    def __init__(self, fitID, projectedFitID, amount, commit=True):
         wx.Command.__init__(self, True, 'Add Projected Fit')
         self.fitID = fitID
         self.projectedFitID = projectedFitID
         self.amount = amount
+        self.commit = commit
         self.savedState = None
         self.savedAmount = None
         self.changeAmountCommand = None
@@ -43,7 +44,10 @@ class CalcRemoveProjectedFitCommand(wx.Command):
         if remainingAmount > 0:
             from .changeAmount import CalcChangeProjectedFitAmountCommand
             self.changeAmountCommand = CalcChangeProjectedFitAmountCommand(
-                fitID=self.fitID, projectedFitID=self.projectedFitID, amount=remainingAmount)
+                fitID=self.fitID,
+                projectedFitID=self.projectedFitID,
+                amount=remainingAmount,
+                commit=self.commit)
             return self.changeAmountCommand.Do()
         else:
             self.changeAmountCommand = None
@@ -51,7 +55,8 @@ class CalcRemoveProjectedFitCommand(wx.Command):
                 pyfalog.warning('Unable to find projected fit in projected dict')
                 return False
             del fit.projectedFitDict[projectedFit.ID]
-            eos.db.commit()
+            if self.commit:
+                eos.db.commit()
             return True
 
     def Undo(self):
@@ -63,5 +68,6 @@ class CalcRemoveProjectedFitCommand(wx.Command):
             fitID=self.fitID,
             projectedFitID=self.projectedFitID,
             amount=self.savedAmount,
-            state=self.savedState)
+            state=self.savedState,
+            commit=self.commit)
         return cmd.Do()

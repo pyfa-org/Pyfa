@@ -14,10 +14,11 @@ pyfalog = Logger(__name__)
 
 class CalcAddProjectedDroneCommand(wx.Command):
 
-    def __init__(self, fitID, droneInfo):
+    def __init__(self, fitID, droneInfo, commit=True):
         wx.Command.__init__(self, True, 'Add Projected Drone')
         self.fitID = fitID
         self.droneInfo = droneInfo
+        self.commit = commit
         self.savedDroneInfo = None
 
     def Do(self):
@@ -32,7 +33,8 @@ class CalcAddProjectedDroneCommand(wx.Command):
             drone.amount += self.droneInfo.amount
             if drone.amountActive > 0:
                 drone.amountActive += self.droneInfo.amount
-            eos.db.commit()
+            if self.commit:
+                eos.db.commit()
             return True
         # Making new stack
         drone = self.droneInfo.toDrone()
@@ -45,9 +47,11 @@ class CalcAddProjectedDroneCommand(wx.Command):
             fit.projectedDrones.append(drone)
         except HandledListActionError:
             pyfalog.warning('Failed to append to list')
-            eos.db.commit()
+            if self.commit:
+                eos.db.commit()
             return False
-        eos.db.commit()
+        if self.commit:
+            eos.db.commit()
         return True
 
     def Undo(self):
@@ -61,8 +65,14 @@ class CalcAddProjectedDroneCommand(wx.Command):
                 return False
             drone.amount = self.savedDroneInfo.amount
             drone.amountActive = self.savedDroneInfo.amountActive
+            if self.commit:
+                eos.db.commit()
             return True
         # Removing previously added stack
         from .projectedRemove import CalcRemoveProjectedDroneCommand
-        cmd = CalcRemoveProjectedDroneCommand(fitID=self.fitID, itemID=self.droneInfo.itemID, amount=math.inf)
+        cmd = CalcRemoveProjectedDroneCommand(
+            fitID=self.fitID,
+            itemID=self.droneInfo.itemID,
+            amount=math.inf,
+            commit=self.commit)
         return cmd.Do()
