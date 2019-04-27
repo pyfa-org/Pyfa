@@ -339,6 +339,10 @@ class EfsPort:
                 explosionRadius = stats.getModifiedChargeAttr("aoeCloudSize")
                 explosionVelocity = stats.getModifiedChargeAttr("aoeVelocity")
                 typeing = "Missile"
+            # AoE DDs can be treated like missiles with a damageReductionFactor of 0
+            elif stats.item.group.name == 'Super Weapon' and stats.maxRange:
+                explosionRadius = stats.getModifiedItemAttr("signatureRadius")
+                typeing = "Missile"
             elif stats.hardpoint == FittingHardpoint.NONE:
                 aoeFieldRange = stats.getModifiedItemAttr("empFieldRange")
                 # This also covers non-bomb weapons with dps values and no hardpoints, most notably targeted doomsdays.
