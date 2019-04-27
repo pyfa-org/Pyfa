@@ -230,7 +230,7 @@ class ChangeModuleAmmo(ContextMenuCombined):
         fit = sFit.getFit(fitID)
         mstate = wx.GetMouseState()
         # Switch in selection or all modules, depending on modifier key state and settings
-        switchAll = sFit.serviceFittingOptions['ammoChangeAll'] is not (mstate.cmdDown or mstate.altDown)
+        switchAll = sFit.serviceFittingOptions['ammoChangeAll'] is not mstate.GetModifiers() in (wx.MOD_ALT, wx.MOD_CONTROL)
         if switchAll:
             if self.srcContext == 'fittingModule':
                 command = cmd.GuiChangeLocalModuleChargesCommand

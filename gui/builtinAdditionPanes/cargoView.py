@@ -105,11 +105,11 @@ class CargoView(d.Display):
     def kbEvent(self, event):
         keycode = event.GetKeyCode()
         mstate = wx.GetMouseState()
-        if keycode == wx.WXK_ESCAPE and not mstate.cmdDown and not mstate.altDown and not mstate.shiftDown:
+        if keycode == wx.WXK_ESCAPE and mstate.GetModifiers() == wx.MOD_NONE:
             self.unselectAll()
-        if keycode == 65 and mstate.cmdDown and not mstate.altDown and not mstate.shiftDown:
+        elif keycode == 65 and mstate.GetModifiers() == wx.MOD_CONTROL:
             self.selectAll()
-        if keycode == wx.WXK_DELETE or keycode == wx.WXK_NUMPAD_DELETE:
+        elif keycode == wx.WXK_DELETE or keycode == wx.WXK_NUMPAD_DELETE:
             cargos = self.getSelectedCargos()
             self.removeCargos(cargos)
         event.Skip()
@@ -132,7 +132,7 @@ class CargoView(d.Display):
             fitID=self.mainFrame.getActiveFit(),
             modPosition=modIdx,
             cargoItemID=dstCargoItemID,
-            copy=wx.GetMouseState().cmdDown))
+            copy=wx.GetMouseState().GetModifiers() == wx.MOD_CONTROL))
 
     def fitChanged(self, event):
         sFit = Fit.getInstance()

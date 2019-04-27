@@ -121,11 +121,11 @@ class DroneView(Display):
     def kbEvent(self, event):
         keycode = event.GetKeyCode()
         mstate = wx.GetMouseState()
-        if keycode == wx.WXK_ESCAPE and not mstate.cmdDown and not mstate.altDown and not mstate.shiftDown:
+        if keycode == wx.WXK_ESCAPE and mstate.GetModifiers() == wx.MOD_NONE:
             self.unselectAll()
-        if keycode == 65 and mstate.cmdDown and not mstate.altDown and not mstate.shiftDown:
+        elif keycode == 65 and mstate.GetModifiers() == wx.MOD_CONTROL:
             self.selectAll()
-        if keycode == wx.WXK_DELETE or keycode == wx.WXK_NUMPAD_DELETE:
+        elif keycode == wx.WXK_DELETE or keycode == wx.WXK_NUMPAD_DELETE:
             drones = self.getSelectedDrones()
             self.removeDroneStacks(drones)
         event.Skip()
@@ -230,7 +230,7 @@ class DroneView(Display):
             event.Skip()
             return
 
-        amount = droneStackLimit(fit, event.itemID) if wx.GetMouseState().altDown else 1
+        amount = droneStackLimit(fit, event.itemID) if wx.GetMouseState().GetModifiers() == wx.MOD_ALT else 1
         if self.mainFrame.command.Submit(cmd.GuiAddLocalDroneCommand(fitID=fitID, itemID=event.itemID, amount=amount)):
             self.mainFrame.additionsPane.select('Drones')
 
@@ -245,7 +245,7 @@ class DroneView(Display):
                     drone = self.drones[self.GetItemData(row)]
                 except IndexError:
                     return
-                if wx.GetMouseState().altDown:
+                if wx.GetMouseState().GetModifiers() == wx.MOD_ALT:
                     self.removeDroneStacks([drone])
                 else:
                     self.removeDrone(drone)

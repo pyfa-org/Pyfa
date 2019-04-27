@@ -147,7 +147,7 @@ class ChangeItemToVariation(ContextMenuCombined):
     def __handleModule(self, varItem):
         fitID = self.mainFrame.getActiveFit()
         fit = Fit.getInstance().getFit(fitID)
-        if wx.GetMouseState().altDown:
+        if wx.GetMouseState().GetModifiers() == wx.MOD_ALT:
             positions = getSimilarModPositions(fit.modules, self.mainItem)
         else:
             sMkt = Market.getInstance()
@@ -186,7 +186,7 @@ class ChangeItemToVariation(ContextMenuCombined):
     def __handleFighter(self, varItem):
         fitID = self.mainFrame.getActiveFit()
         fit = Fit.getInstance().getFit(fitID)
-        if wx.GetMouseState().altDown:
+        if wx.GetMouseState().GetModifiers() == wx.MOD_ALT:
             fighters = getSimilarFighters(fit.fighters, self.mainItem)
         else:
             fighters = self.selection

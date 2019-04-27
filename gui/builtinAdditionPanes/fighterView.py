@@ -184,11 +184,11 @@ class FighterDisplay(d.Display):
     def kbEvent(self, event):
         keycode = event.GetKeyCode()
         mstate = wx.GetMouseState()
-        if keycode == wx.WXK_ESCAPE and not mstate.cmdDown and not mstate.altDown and not mstate.shiftDown:
+        if keycode == wx.WXK_ESCAPE and mstate.GetModifiers() == wx.MOD_NONE:
             self.unselectAll()
-        if keycode == 65 and mstate.cmdDown and not mstate.altDown and not mstate.shiftDown:
+        elif keycode == 65 and mstate.GetModifiers() == wx.MOD_CONTROL:
             self.selectAll()
-        if keycode == wx.WXK_DELETE or keycode == wx.WXK_NUMPAD_DELETE:
+        elif keycode == wx.WXK_DELETE or keycode == wx.WXK_NUMPAD_DELETE:
             fighters = self.getSelectedFighters()
             self.removeFighters(fighters)
         event.Skip()
@@ -295,7 +295,7 @@ class FighterDisplay(d.Display):
                     fighter = self.fighters[self.GetItemData(row)]
                 except IndexError:
                     return
-                if mstate.altDown:
+                if mstate.GetModifiers() == wx.MOD_ALT:
                     fighters = getSimilarFighters(self.original, fighter)
                 else:
                     fighters = [fighter]

@@ -54,7 +54,7 @@ class ItemStats(ContextMenuSingle):
         mstate = wx.GetMouseState()
         reuse = False
 
-        if mstate.shiftDown:
+        if mstate.GetModifiers() == wx.MOD_SHIFT:
             reuse = True
 
         if self.mainFrame.GetActiveStatsWindow() is None and reuse:

@@ -71,7 +71,7 @@ class FighterAbilities(ContextMenuCombined):
         else:
             if self.fighter in fit.fighters:
                 mainPosition = fit.fighters.index(self.fighter)
-                if wx.GetMouseState().altDown:
+                if wx.GetMouseState().GetModifiers() == wx.MOD_ALT:
                     fighters = getSimilarFighters(fit.fighters, self.fighter)
                 else:
                     fighters = self.selection

@@ -75,7 +75,7 @@ class FitSpawner(gui.multiSwitch.TabSpawner):
             sFit = Fit.getInstance()
             openFitInNew = sFit.serviceFittingOptions["openFitInNew"]
             mstate = wx.GetMouseState()
-            modifierKey =  mstate.cmdDown
+            modifierKey = mstate.GetModifiers() == wx.MOD_CONTROL
             if from_import or (not openFitInNew and modifierKey) or startup or (openFitInNew and not modifierKey):
                 self.multiSwitch.AddPage()
 
@@ -281,11 +281,11 @@ class FittingView(d.Display):
     def kbEvent(self, event):
         keycode = event.GetKeyCode()
         mstate = wx.GetMouseState()
-        if keycode == wx.WXK_ESCAPE and not mstate.cmdDown and not mstate.altDown and not mstate.shiftDown:
+        if keycode == wx.WXK_ESCAPE and mstate.GetModifiers() == wx.MOD_NONE:
             self.unselectAll()
-        if keycode == 65 and mstate.cmdDown and not mstate.altDown and not mstate.shiftDown:
+        elif keycode == 65 and mstate.GetModifiers() == wx.MOD_CONTROL:
             self.selectAll()
-        if keycode == wx.WXK_DELETE or keycode == wx.WXK_NUMPAD_DELETE:
+        elif keycode == wx.WXK_DELETE or keycode == wx.WXK_NUMPAD_DELETE:
             modules = [m for m in self.getSelectedMods() if not m.isEmpty]
             self.removeModule(modules)
         event.Skip()
@@ -374,7 +374,7 @@ class FittingView(d.Display):
                 if item is None:
                     event.Skip()
                     return
-                batchOp = wx.GetMouseState().altDown and getattr(event, 'allowBatch', None) is not False
+                batchOp = wx.GetMouseState().GetModifiers() == wx.MOD_ALT and getattr(event, 'allowBatch', None) is not False
                 # If we've selected ammo, then apply to the selected module(s)
                 if item.isCharge:
                     positions = []
@@ -400,7 +400,7 @@ class FittingView(d.Display):
 
     def removeItem(self, event):
         """Double Left Click - remove module"""
-        if event.cmdDown:
+        if event.GetModifiers() == wx.MOD_CONTROL:
             return
         row, _ = self.HitTest(event.Position)
         if row != -1 and row not in self.blanks and isinstance(self.mods[row], Module):
@@ -412,7 +412,7 @@ class FittingView(d.Display):
                     return
                 if not isinstance(mod, Module) or mod.isEmpty:
                     return
-                if event.altDown:
+                if event.GetModifiers() == wx.MOD_ALT:
                     fit = Fit.getInstance().getFit(self.activeFitID)
                     positions = getSimilarModPositions(fit.modules, mod)
                     self.mainFrame.command.Submit(cmd.GuiRemoveLocalModuleCommand(
@@ -458,15 +458,15 @@ class FittingView(d.Display):
         mstate = wx.GetMouseState()
         # If we dropping on a module, try to replace, or add if replacement fails
         if item.isModule and dstMod is not None and not dstMod.isEmpty:
-            positions = getSimilarModPositions(fit.modules, dstMod) if mstate.altDown else [dstPos]
+            positions = getSimilarModPositions(fit.modules, dstMod) if mstate.GetModifiers() == wx.MOD_ALT else [dstPos]
             command = cmd.GuiReplaceLocalModuleCommand(fitID=fitID, itemID=itemID, positions=positions)
             if not self.mainFrame.command.Submit(command):
-                if mstate.altDown:
+                if mstate.GetModifiers() == wx.MOD_ALT:
                     self.mainFrame.command.Submit(cmd.GuiFillWithNewLocalModulesCommand(fitID=fitID, itemID=itemID))
                 else:
                     self.mainFrame.command.Submit(cmd.GuiAddLocalModuleCommand(fitID=fitID, itemID=itemID))
         elif item.isModule:
-            if mstate.altDown:
+            if mstate.GetModifiers() == wx.MOD_ALT:
                 self.mainFrame.command.Submit(cmd.GuiFillWithNewLocalModulesCommand(fitID=fitID, itemID=itemID))
             else:
                 self.mainFrame.command.Submit(cmd.GuiAddLocalModuleCommand(fitID=fitID, itemID=itemID))
@@ -477,7 +477,7 @@ class FittingView(d.Display):
             positionsAll = list(range(len(fit.modules)))
             if dstMod is None or dstMod.isEmpty:
                 positions = positionsAll
-            elif mstate.altDown:
+            elif mstate.GetModifiers() == wx.MOD_ALT:
                 positions = getSimilarModPositions(fit.modules, dstMod)
                 failoverToAll = True
             else:
@@ -504,7 +504,10 @@ class FittingView(d.Display):
             if mod in fit.modules:
                 position = fit.modules.index(mod)
                 self.mainFrame.command.Submit(cmd.GuiCargoToLocalModuleCommand(
-                    fitID=fitID, cargoItemID=cargoItemID, modPosition=position, copy=wx.GetMouseState().cmdDown))
+                    fitID=fitID,
+                    cargoItemID=cargoItemID,
+                    modPosition=position,
+                    copy=wx.GetMouseState().GetModifiers() == wx.MOD_CONTROL))
 
     def swapItems(self, x, y, srcIdx):
         """Swap two modules in fitting window"""
@@ -529,13 +532,13 @@ class FittingView(d.Display):
                 return
             mod2Position = fit.modules.index(mod2)
             mstate = wx.GetMouseState()
-            if mstate.cmdDown and mstate.altDown:
+            if mstate.GetModifiers() == wx.MOD_CONTROL | wx.MOD_ALT:
                 self.mainFrame.command.Submit(cmd.GuiFillWithClonedLocalModulesCommand(
                     fitID=self.activeFitID, position=srcIdx))
-            elif mstate.cmdDown and mod2.isEmpty:
+            elif mstate.GetModifiers() == wx.MOD_CONTROL and mod2.isEmpty:
                 self.mainFrame.command.Submit(cmd.GuiCloneLocalModuleCommand(
                     fitID=self.activeFitID, srcPosition=srcIdx, dstPosition=mod2Position))
-            elif not mstate.cmdDown:
+            elif mstate.GetModifiers() == wx.MOD_NONE:
                 self.mainFrame.command.Submit(cmd.GuiSwapLocalModulesCommand(
                     fitID=self.activeFitID, position1=srcIdx, position2=mod2Position))
 
@@ -696,7 +699,7 @@ class FittingView(d.Display):
             else:
                 selectedMods = self.getSelectedMods()
 
-            click = "ctrl" if event.cmdDown or event.middleIsDown else "right" if event.GetButton() == 3 else "left"
+            click = "ctrl" if event.GetModifiers() == wx.MOD_CONTROL or event.middleIsDown else "right" if event.GetButton() == 3 else "left"
 
             try:
                 mainMod = self.mods[self.GetItemData(row)]
@@ -709,7 +712,7 @@ class FittingView(d.Display):
             if mainMod not in fit.modules:
                 return
             mainPosition = fit.modules.index(mainMod)
-            if event.altDown:
+            if event.GetModifiers() == wx.MOD_ALT:
                 positions = getSimilarModPositions(fit.modules, mainMod)
             else:
                 positions = []

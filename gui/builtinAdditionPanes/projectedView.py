@@ -336,7 +336,7 @@ class ProjectedView(d.Display):
                 fitID = self.mainFrame.getActiveFit()
                 thing = self.get(row)
                 if isinstance(thing, es_Fit):
-                    amount = math.inf if wx.GetMouseState().altDown else 1
+                    amount = math.inf if wx.GetMouseState().GetModifiers() == wx.MOD_ALT else 1
                     self.mainFrame.command.Submit(cmd.GuiRemoveProjectedFitCommand(
                         fitID=fitID, projectedFitID=thing.ID, amount=amount))
                 elif isinstance(thing, es_Module):
@@ -350,7 +350,7 @@ class ProjectedView(d.Display):
                     self.mainFrame.command.Submit(cmd.GuiRemoveProjectedDroneCommand(
                         fitID=fitID,
                         itemID=thing.itemID,
-                        amount=math.inf if mstate.cmdDown or mstate.altDown else 1))
+                        amount=math.inf if mstate.GetModifiers() == wx.MOD_ALT else 1))
                 elif isinstance(thing, es_Fighter):
                     fit = Fit.getInstance().getFit(fitID)
                     if thing in fit.projectedFighters:

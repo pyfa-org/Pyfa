@@ -59,7 +59,7 @@ class RemoveItem(ContextMenuCombined):
     def __handleModule(self, mainItem, selection):
         fitID = self.mainFrame.getActiveFit()
         fit = Fit.getInstance().getFit(fitID)
-        if wx.GetMouseState().altDown:
+        if wx.GetMouseState().GetModifiers() == wx.MOD_ALT:
             positions = getSimilarModPositions(fit.modules, mainItem)
         else:
             positions = []
@@ -82,7 +82,7 @@ class RemoveItem(ContextMenuCombined):
     def __handleFighter(self, mainItem, selection):
         fitID = self.mainFrame.getActiveFit()
         fit = Fit.getInstance().getFit(fitID)
-        if wx.GetMouseState().altDown:
+        if wx.GetMouseState().GetModifiers() == wx.MOD_ALT:
             fighters = getSimilarFighters(fit.fighters, mainItem)
         else:
             fighters = selection

@@ -346,7 +346,8 @@ class FitItem(SFItem.SFBrowserItem):
             return
 
         # to prevent accidental deletion, give dialog confirmation unless shift is depressed
-        if wx.GetMouseState().ShiftDown() or wx.GetMouseState().MiddleIsDown():
+        mstate = wx.GetMouseState()
+        if mstate.GetModifiers() == wx.MOD_SHIFT or mstate.MiddleIsDown():
             self.deleteFit()
         else:
             dlg = wx.MessageDialog(
