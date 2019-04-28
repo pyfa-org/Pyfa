@@ -64,26 +64,26 @@ class FighterAbilities(ContextMenuCombined):
         fitID = self.mainFrame.getActiveFit()
         fit = Fit.getInstance().getFit(fitID)
         if self.isProjected:
-            if self.fighter in fit.projectedFighters:
-                position = fit.projectedFighters.index(self.fighter)
-                self.mainFrame.command.Submit(cmd.GuiToggleProjectedFighterAbilityStateCommand(
-                    fitID=fitID, mainPosition=position, positions=[position], effectID=ability.effectID))
+            container = fit.projectedFighters
+            command = cmd.GuiToggleProjectedFighterAbilityStateCommand
         else:
-            if self.fighter in fit.fighters:
-                mainPosition = fit.fighters.index(self.fighter)
-                if wx.GetMouseState().GetModifiers() == wx.MOD_ALT:
-                    fighters = getSimilarFighters(fit.fighters, self.fighter)
-                else:
-                    fighters = self.selection
-                positions = []
-                for fighter in fighters:
-                    if fighter in fit.fighters:
-                        positions.append(fit.fighters.index(fighter))
-                self.mainFrame.command.Submit(cmd.GuiToggleLocalFighterAbilityStateCommand(
-                    fitID=fitID,
-                    mainPosition=mainPosition,
-                    positions=positions,
-                    effectID=ability.effectID))
+            container = fit.fighters
+            command = cmd.GuiToggleLocalFighterAbilityStateCommand
+        if self.fighter in container:
+            mainPosition = container.index(self.fighter)
+            if wx.GetMouseState().GetModifiers() == wx.MOD_ALT:
+                fighters = getSimilarFighters(container, self.fighter)
+            else:
+                fighters = self.selection
+            positions = []
+            for fighter in fighters:
+                if fighter in container:
+                    positions.append(container.index(fighter))
+            self.mainFrame.command.Submit(command(
+                fitID=fitID,
+                mainPosition=mainPosition,
+                positions=positions,
+                effectID=ability.effectID))
 
 
 FighterAbilities.register()
