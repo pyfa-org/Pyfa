@@ -490,7 +490,7 @@ class Item(EqBase):
 
     @property
     def isModule(self):
-        return self.category.name == 'Module'
+        return self.category.name in ('Module', 'Structure Module')
 
     @property
     def isSubsystem(self):
