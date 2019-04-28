@@ -322,13 +322,17 @@ class FighterDisplay(d.Display):
                 if mainFighter in self.original:
                     mainPosition = self.original.index(mainFighter)
                     positions = []
-                    for row in self.getSelectedRows():
-                        try:
-                            fighter = self.fighters[row]
-                        except IndexError:
-                            continue
-                        if fighter in self.original:
+                    if event.GetModifiers() == wx.MOD_ALT:
+                        for fighter in getSimilarFighters(self.original, mainFighter):
                             positions.append(self.original.index(fighter))
+                    else:
+                        for row in self.getSelectedRows():
+                            try:
+                                fighter = self.fighters[row]
+                            except IndexError:
+                                continue
+                            if fighter in self.original:
+                                positions.append(self.original.index(fighter))
                     if mainPosition not in positions:
                         positions = [mainPosition]
                     self.mainFrame.command.Submit(cmd.GuiToggleLocalFighterStatesCommand(
