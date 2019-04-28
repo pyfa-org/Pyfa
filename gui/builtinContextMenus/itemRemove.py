@@ -4,8 +4,12 @@ import wx
 
 import gui.fitCommands as cmd
 import gui.mainFrame
+from eos.saveddata.drone import Drone as EosDrone
+from eos.saveddata.fighter import Fighter as EosFighter
+from eos.saveddata.fit import Fit as EosFit
+from eos.saveddata.module import Module as EosModule
 from gui.contextMenu import ContextMenuCombined
-from gui.fitCommands.helpers import getSimilarModPositions, getSimilarFighters
+from gui.fitCommands.helpers import getSimilarFighters, getSimilarModPositions
 from service.fit import Fit
 from service.settings import ContextMenuSettings
 
@@ -122,8 +126,32 @@ class RemoveItem(ContextMenuCombined):
 
     def __handleProjectedItem(self, mainItem, selection):
         fitID = self.mainFrame.getActiveFit()
-        self.mainFrame.command.Submit(cmd.GuiRemoveProjectedItemsCommand(
-            fitID=fitID, items=selection, amount=math.inf))
+        if isinstance(mainItem, EosFit):
+            self.mainFrame.command.Submit(cmd.GuiRemoveProjectedItemsCommand(
+                fitID=fitID, items=selection, amount=math.inf))
+        elif isinstance(mainItem, EosModule):
+            if wx.GetMouseState().GetModifiers() == wx.MOD_ALT:
+                fit = Fit.getInstance().getFit(fitID)
+                positions = getSimilarModPositions(fit.projectedModules, mainItem)
+                items = [fit.projectedModules[p] for p in positions]
+            else:
+                items = selection
+            self.mainFrame.command.Submit(cmd.GuiRemoveProjectedItemsCommand(
+                fitID=fitID, items=items, amount=math.inf))
+        elif isinstance(mainItem, EosDrone):
+            self.mainFrame.command.Submit(cmd.GuiRemoveProjectedItemsCommand(
+                fitID=fitID, items=selection, amount=math.inf))
+        elif isinstance(mainItem, EosFighter):
+            if wx.GetMouseState().GetModifiers() == wx.MOD_ALT:
+                fit = Fit.getInstance().getFit(fitID)
+                items = getSimilarFighters(fit.projectedFighters, mainItem)
+            else:
+                items = selection
+            self.mainFrame.command.Submit(cmd.GuiRemoveProjectedItemsCommand(
+                fitID=fitID, items=items, amount=math.inf))
+        else:
+            self.mainFrame.command.Submit(cmd.GuiRemoveProjectedItemsCommand(
+                fitID=fitID, items=selection, amount=math.inf))
 
     def __handleCommandFit(self, mainItem, selection):
         fitID = self.mainFrame.getActiveFit()

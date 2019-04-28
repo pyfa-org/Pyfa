@@ -25,17 +25,17 @@ from logbook import Logger
 
 import gui.builtinAdditionPanes.droneView
 import gui.display as d
+import gui.fitCommands as cmd
 import gui.globalEvents as GE
 from eos.saveddata.drone import Drone as EosDrone
 from eos.saveddata.fighter import Fighter as EosFighter
-from eos.saveddata.fit import Fit as EosFit
 from eos.saveddata.module import Module as EosModule
 from gui.builtinViewColumns.state import State
 from gui.contextMenu import ContextMenu
 from gui.utils.staticHelpers import DragDropHelper
 from service.fit import Fit
 from service.market import Market
-import gui.fitCommands as cmd
+
 
 pyfalog = Logger(__name__)
 
