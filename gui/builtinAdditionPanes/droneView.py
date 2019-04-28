@@ -271,7 +271,6 @@ class DroneView(Display):
         if mainRow != -1:
             col = self.getColumn(event.Position)
             if col == self.getColIndex(State):
-                fitID = self.mainFrame.getActiveFit()
                 try:
                     mainDrone = self.drones[mainRow]
                 except IndexError:
@@ -289,14 +288,13 @@ class DroneView(Display):
                     if mainPosition not in positions:
                         positions = [mainPosition]
                     self.mainFrame.command.Submit(cmd.GuiToggleLocalDroneStatesCommand(
-                        fitID=fitID,
+                        fitID=self.mainFrame.getActiveFit(),
                         mainPosition=mainPosition,
                         positions=positions))
                     return
         event.Skip()
 
     def spawnMenu(self, event):
-        selection = self.getSelectedDrones()
         clickedPos = self.getRowByAbs(event.Position)
         mainDrone = None
         if clickedPos != -1:
@@ -307,6 +305,7 @@ class DroneView(Display):
             else:
                 if drone in self.original:
                     mainDrone = drone
+        selection = self.getSelectedDrones()
         sourceContext = "droneItem"
         itemContext = None if mainDrone is None else Market.getInstance().getCategoryByItem(mainDrone.item).name
         menu = ContextMenu.getMenu(mainDrone, selection, (sourceContext, itemContext))
