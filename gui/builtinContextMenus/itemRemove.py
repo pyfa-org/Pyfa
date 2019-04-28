@@ -30,12 +30,13 @@ class RemoveItem(ContextMenuCombined):
         if mainItem is None or getattr(mainItem, "isEmpty", False):
             return False
 
+        self.srcContext = srcContext
         return True
 
     def getText(self, itmContext, mainItem, selection):
         return 'Remove {}{}'.format(
             itmContext if itmContext is not None else 'Item',
-            ' Stack' if itmContext in ('Drone', 'Fit') else '')
+            ' Stack' if self.srcContext in ('droneItem', 'projectedDrone', 'cargoItem', 'projectedFit') else '')
 
     def activate(self, fullContext, mainItem, selection, i):
         handlerMap = {
