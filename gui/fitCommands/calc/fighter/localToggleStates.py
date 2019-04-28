@@ -8,49 +8,48 @@ from service.fit import Fit
 pyfalog = Logger(__name__)
 
 
-class CalcToggleFighterStatesCommand(wx.Command):
+class CalcToggleLocalFighterStatesCommand(wx.Command):
 
-    def __init__(self, fitID, projected, mainPosition, positions, forceStates=None):
-        wx.Command.__init__(self, True, 'Toggle Fighter States')
+    def __init__(self, fitID, mainPosition, positions, forceStates=None):
+        wx.Command.__init__(self, True, 'Toggle Local Fighter States')
         self.fitID = fitID
-        self.projected = projected
         self.mainPosition = mainPosition
         self.positions = positions
         self.forceStates = forceStates
         self.savedStates = None
 
     def Do(self):
-        pyfalog.debug('Doing toggling of fighter state at position {}/{} for fit {}'.format(self.mainPosition, self.positions, self.fitID))
+        pyfalog.debug('Doing toggling of local fighter state at position {}/{} for fit {}'.format(
+            self.mainPosition, self.positions, self.fitID))
         fit = Fit.getInstance().getFit(self.fitID)
-        container = fit.projectedFighters if self.projected else fit.fighters
 
         positions = self.positions[:]
         if self.mainPosition not in positions:
             positions.append(self.mainPosition)
-        self.savedStates = {p: container[p].active for p in positions}
+        self.savedStates = {p: fit.fighters[p].active for p in positions}
 
         if self.forceStates is not None:
             for position, state in self.forceStates.items():
-                fighter = container[position]
+                fighter = fit.fighters[position]
                 fighter.active = state
-        elif container[self.mainPosition].active:
+        elif fit.fighters[self.mainPosition].active:
             for position in positions:
-                fighter = container[position]
+                fighter = fit.fighters[position]
                 if fighter.active:
                     fighter.active = False
         else:
             for position in positions:
-                fighter = container[position]
+                fighter = fit.fighters[position]
                 if not fighter.active:
                     fighter.active = True
         eos.db.commit()
         return True
 
     def Undo(self):
-        pyfalog.debug('Undoing toggling of fighter state at position {}/{} for fit {}'.format(self.mainPosition, self.positions, self.fitID))
-        cmd = CalcToggleFighterStatesCommand(
+        pyfalog.debug('Undoing toggling of local fighter state at position {}/{} for fit {}'.format(
+            self.mainPosition, self.positions, self.fitID))
+        cmd = CalcToggleLocalFighterStatesCommand(
             fitID=self.fitID,
-            projected=self.projected,
             mainPosition=self.mainPosition,
             positions=self.positions,
             forceStates=self.savedStates)

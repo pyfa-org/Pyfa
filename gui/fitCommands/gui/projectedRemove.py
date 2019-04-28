@@ -49,7 +49,7 @@ class GuiRemoveProjectedItemsCommand(wx.Command):
         for pDroneItemID in self.pDroneItemIDs:
             cmd = CalcRemoveProjectedDroneCommand(fitID=self.fitID, itemID=pDroneItemID, amount=self.amount, commit=False)
             results.append(self.internalHistory.submit(cmd))
-        for pFighterPosition in self.pFighterPositions:
+        for pFighterPosition in sorted(self.pFighterPositions, reverse=True):
             cmd = CalcRemoveProjectedFighterCommand(fitID=self.fitID, position=pFighterPosition, commit=False)
             results.append(self.internalHistory.submit(cmd))
         for pFitID in self.pFitIDs:

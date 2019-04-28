@@ -247,25 +247,11 @@ class ProjectedView(d.Display):
             if col == self.getColIndex(State):
                 fitID = self.mainFrame.getActiveFit()
                 thing = self.get(row)
-                button = event.GetButton()
-                if isinstance(thing, es_Fit) and button != 3:
-                    self.mainFrame.command.Submit(cmd.GuiToggleProjectedFitStateCommand(
-                        fitID=fitID, projectedFitID=thing.ID))
-                elif isinstance(thing, es_Module):
-                    fit = Fit.getInstance().getFit(fitID)
-                    if thing in fit.projectedModules:
-                        position = fit.projectedModules.index(thing)
-                        self.mainFrame.command.Submit(cmd.GuiChangeProjectedModuleStateCommand(
-                            fitID=fitID, position=position, click='right' if button == 3 else 'left'))
-                elif isinstance(thing, es_Drone) and button != 3:
-                    self.mainFrame.command.Submit(cmd.GuiToggleProjectedDroneStateCommand(
-                        fitID=fitID, itemID=thing.itemID))
-                elif isinstance(thing, es_Fighter) and button != 3:
-                    fit = Fit.getInstance().getFit(fitID)
-                    if thing in fit.projectedFighters:
-                        position = fit.projectedFighters.index(thing)
-                        self.mainFrame.command.Submit(cmd.GuiToggleProjectedFighterStatesCommand(
-                            fitID=fitID, mainPosition=position, positions=[position]))
+                self.mainFrame.command.Submit(cmd.GuiChangeProjectedItemStatesCommand(
+                    fitID=fitID,
+                    mainItem=thing,
+                    items=[thing],
+                    click='right' if event.GetButton() == 3 else 'left'))
 
     def spawnMenu(self, event):
         fitID = self.mainFrame.getActiveFit()

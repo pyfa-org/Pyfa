@@ -2,7 +2,7 @@ import wx
 
 import gui.mainFrame
 from gui import globalEvents as GE
-from gui.fitCommands.calc.fighter.toggleStates import CalcToggleFighterStatesCommand
+from gui.fitCommands.calc.fighter.localToggleStates import CalcToggleLocalFighterStatesCommand
 from gui.fitCommands.helpers import InternalCommandHistory
 from service.fit import Fit
 
@@ -17,9 +17,8 @@ class GuiToggleLocalFighterStatesCommand(wx.Command):
         self.positions = positions
 
     def Do(self):
-        cmd = CalcToggleFighterStatesCommand(
+        cmd = CalcToggleLocalFighterStatesCommand(
             fitID=self.fitID,
-            projected=False,
             mainPosition=self.mainPosition,
             positions=self.positions)
         success = self.internalHistory.submit(cmd)
