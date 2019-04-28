@@ -93,7 +93,7 @@ class BoosterView(d.Display):
             self.unselectAll()
         elif keycode == 65 and mstate.GetModifiers() == wx.MOD_CONTROL:
             self.selectAll()
-        elif keycode == wx.WXK_DELETE or keycode == wx.WXK_NUMPAD_DELETE:
+        elif keycode in (wx.WXK_DELETE, wx.WXK_NUMPAD_DELETE) and mstate.GetModifiers() == wx.MOD_NONE:
             boosters = self.getSelectedBoosters()
             self.removeBoosters(boosters)
         event.Skip()

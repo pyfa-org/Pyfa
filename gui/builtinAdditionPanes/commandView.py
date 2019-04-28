@@ -101,7 +101,7 @@ class CommandView(d.Display):
             self.unselectAll()
         elif keycode == 65 and mstate.GetModifiers() == wx.MOD_CONTROL:
             self.selectAll()
-        elif keycode == wx.WXK_DELETE or keycode == wx.WXK_NUMPAD_DELETE:
+        elif keycode in (wx.WXK_DELETE, wx.WXK_NUMPAD_DELETE) and mstate.GetModifiers() == wx.MOD_NONE:
             commandFits = self.getSelectedCommandFits()
             self.removeCommandFits(commandFits)
         event.Skip()
