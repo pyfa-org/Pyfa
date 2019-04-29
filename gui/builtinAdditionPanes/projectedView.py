@@ -253,8 +253,17 @@ class ProjectedView(d.Display):
                 selection = self.getSelectedProjectors()
                 if mainItem not in selection:
                     selection = [mainItem]
+                modPressed = wx.GetMouseState().GetModifiers() == wx.MOD_ALT
+                fitID = self.mainFrame.getActiveFit()
+                if isinstance(mainItem, EosModule) and modPressed:
+                    fit = Fit.getInstance().getFit(fitID)
+                    positions = getSimilarModPositions(fit.projectedModules, mainItem)
+                    selection = [fit.projectedModules[p] for p in positions]
+                elif isinstance(mainItem, EosFighter) and modPressed:
+                    fit = Fit.getInstance().getFit(fitID)
+                    selection = getSimilarFighters(fit.projectedFighters, mainItem)
                 self.mainFrame.command.Submit(cmd.GuiChangeProjectedItemStatesCommand(
-                    fitID=self.mainFrame.getActiveFit(),
+                    fitID=fitID,
                     mainItem=mainItem,
                     items=selection,
                     click='right' if event.GetButton() == 3 else 'left'))
@@ -317,13 +326,12 @@ class ProjectedView(d.Display):
                 if mainItem is None:
                     return
                 fitID = self.mainFrame.getActiveFit()
+                modPressed = wx.GetMouseState().GetModifiers() == wx.MOD_ALT
                 if isinstance(mainItem, EosFit):
                     self.mainFrame.command.Submit(cmd.GuiRemoveProjectedItemsCommand(
-                        fitID=fitID,
-                        items=[mainItem],
-                        amount=math.inf if wx.GetMouseState().GetModifiers() == wx.MOD_ALT else 1))
+                        fitID=fitID, items=[mainItem], amount=math.inf if modPressed else 1))
                 elif isinstance(mainItem, EosModule):
-                    if wx.GetMouseState().GetModifiers() == wx.MOD_ALT:
+                    if modPressed:
                         fit = Fit.getInstance().getFit(fitID)
                         positions = getSimilarModPositions(fit.projectedModules, mainItem)
                         items = [fit.projectedModules[p] for p in positions]
@@ -333,11 +341,9 @@ class ProjectedView(d.Display):
                         fitID=fitID, items=items, amount=1))
                 elif isinstance(mainItem, EosDrone):
                     self.mainFrame.command.Submit(cmd.GuiRemoveProjectedItemsCommand(
-                        fitID=fitID,
-                        items=[mainItem],
-                        amount=math.inf if wx.GetMouseState().GetModifiers() == wx.MOD_ALT else 1))
+                        fitID=fitID, items=[mainItem], amount=math.inf if modPressed else 1))
                 elif isinstance(mainItem, EosFighter):
-                    if wx.GetMouseState().GetModifiers() == wx.MOD_ALT:
+                    if modPressed:
                         fit = Fit.getInstance().getFit(fitID)
                         items = getSimilarFighters(fit.projectedFighters, mainItem)
                     else:
@@ -346,9 +352,7 @@ class ProjectedView(d.Display):
                         fitID=fitID, items=items, amount=1))
                 else:
                     self.mainFrame.command.Submit(cmd.GuiRemoveProjectedItemsCommand(
-                        fitID=fitID,
-                        items=[mainItem],
-                        amount=math.inf if wx.GetMouseState().GetModifiers() == wx.MOD_ALT else 1))
+                        fitID=fitID, items=[mainItem], amount=math.inf if modPressed else 1))
 
     def getSelectedProjectors(self):
         projectors = []
