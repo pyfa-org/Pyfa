@@ -604,8 +604,7 @@ class MainFrame(wx.Frame):
         result = dlg.ShowModal() == wx.ID_YES
         dlg.Destroy()
         if result:
-            sFit.toggleRestrictionIgnore(fitID)
-            wx.PostEvent(self, GE.FitChanged(fitID=fitID))
+            self.command.Submit(cmd.GuiToggleFittingRestrictionsCommand(fitID=fitID))
 
     def eveFittings(self, event):
         dlg = EveFittings(self)

@@ -346,21 +346,6 @@ class Fit(FitDeprecated):
         eos.db.commit()
         return mutator.value
 
-    def toggleRestrictionIgnore(self, fitID):
-        pyfalog.debug("Toggling restriction ignore for fit ID: {0}", fitID)
-        fit = eos.db.getFit(fitID)
-        fit.ignoreRestrictions = not fit.ignoreRestrictions
-
-        # remove invalid modules when switching back to enabled fitting restrictions
-        if not fit.ignoreRestrictions:
-            for m in fit.modules:
-                if not m.isEmpty and not m.fits(fit, False):
-                    self.removeModule(fit.ID, m.modPosition)
-
-        eos.db.commit()
-        self.recalc(fit)
-        return True
-
     def changeChar(self, fitID, charID):
         pyfalog.debug("Changing character ({0}) for fit ID: {1}", charID, fitID)
         if fitID is None or charID is None:

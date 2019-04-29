@@ -550,6 +550,8 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
         if not fits and fit.ignoreRestrictions:
             self.restrictionOverridden = True
             fits = True
+        elif fits and fit.ignoreRestrictions:
+            self.restrictionOverridden = False
 
         return fits
 
