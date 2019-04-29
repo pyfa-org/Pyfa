@@ -239,11 +239,22 @@ class ChangeItemToVariation(ContextMenuCombined):
     def __handleProjectedModule(self, varItem):
         fitID = self.mainFrame.getActiveFit()
         fit = Fit.getInstance().getFit(fitID)
-        mod = self.mainItem
-        if mod in fit.projectedModules:
-            position = fit.projectedModules.index(mod)
-            self.mainFrame.command.Submit(cmd.GuiChangeProjectedModuleMetaCommand(
-                fitID=fitID, position=position, newItemID=varItem.ID))
+        if wx.GetMouseState().GetModifiers() == wx.MOD_ALT:
+            positions = getSimilarModPositions(fit.projectedModules, self.mainItem)
+        else:
+            sMkt = Market.getInstance()
+            positions = []
+            for mod in self.selection:
+                if mod is self.mainItem:
+                    positions.append(fit.projectedModules.index(mod))
+                    continue
+                if mod not in fit.projectedModules:
+                    continue
+                modVariations = sMkt.getVariationsByItems((mod.item,))
+                if modVariations == self.mainVariations:
+                    positions.append(fit.projectedModules.index(mod))
+        self.mainFrame.command.Submit(cmd.GuiChangeProjectedModuleMetasCommand(
+            fitID=fitID, positions=positions, newItemID=varItem.ID))
 
     def __handleProjectedDrone(self, varItem):
         fitID = self.mainFrame.getActiveFit()

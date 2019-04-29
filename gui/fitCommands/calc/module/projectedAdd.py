@@ -30,7 +30,8 @@ class CalcAddProjectedModuleCommand(wx.Command):
         fit = Fit.getInstance().getFit(self.fitID)
         if not newMod.canHaveState(newMod.state, projectedOnto=fit):
             newMod.state = FittingModuleState.OFFLINE
-
+        if not newMod.isValidCharge(newMod.charge):
+            newMod.charge = None
         self.oldPosition, self.oldModInfo = fit.projectedModules.makeRoom(newMod)
 
         if self.newPosition is not None:

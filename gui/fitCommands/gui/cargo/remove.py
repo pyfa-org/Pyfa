@@ -18,14 +18,14 @@ class GuiRemoveCargosCommand(wx.Command):
         self.itemIDs = itemIDs
 
     def Do(self):
-        result = []
+        results = []
         for itemID in self.itemIDs:
             cmd = CalcRemoveCargoCommand(
                 fitID=self.fitID,
                 cargoInfo=CargoInfo(itemID=itemID, amount=math.inf),
                 commit=False)
-            result.append(self.internalHistory.submit(cmd))
-        success = any(result)
+            results.append(self.internalHistory.submit(cmd))
+        success = any(results)
         eos.db.commit()
         wx.PostEvent(gui.mainFrame.MainFrame.getInstance(), GE.FitChanged(fitID=self.fitID))
         return success

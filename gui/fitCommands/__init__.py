@@ -59,7 +59,7 @@ from .gui.projectedFit.add import GuiAddProjectedFitCommand
 from .gui.projectedFit.changeAmount import GuiChangeProjectedFitAmountCommand
 from .gui.projectedModule.add import GuiAddProjectedModuleCommand
 from .gui.projectedModule.changeCharges import GuiChangeProjectedModuleChargesCommand
-from .gui.projectedModule.changeMeta import GuiChangeProjectedModuleMetaCommand
+from .gui.projectedModule.changeMetas import GuiChangeProjectedModuleMetasCommand
 from .gui.projectedModule.changeSpool import GuiChangeProjectedModuleSpoolCommand
 from .gui.projectedRemove import GuiRemoveProjectedItemsCommand
 from .gui.shipModeChange import GuiChangeShipModeCommand

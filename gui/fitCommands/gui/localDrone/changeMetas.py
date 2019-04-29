@@ -23,7 +23,7 @@ class GuiChangeLocalDroneMetasCommand(wx.Command):
     def Do(self):
         sFit = Fit.getInstance()
         fit = sFit.getFit(self.fitID)
-        result = []
+        results = []
         for position in sorted(self.positions, reverse=True):
             drone = fit.drones[position]
             if drone.itemID == self.newItemID:
@@ -40,8 +40,8 @@ class GuiChangeLocalDroneMetasCommand(wx.Command):
                 droneInfo=info,
                 forceNewStack=True,
                 commit=False)
-            result.append(self.internalHistory.submitBatch(cmdRemove, cmdAdd))
-        success = any(result)
+            results.append(self.internalHistory.submitBatch(cmdRemove, cmdAdd))
+        success = any(results)
         eos.db.commit()
         sFit.recalc(fit)
         wx.PostEvent(gui.mainFrame.MainFrame.getInstance(), GE.FitChanged(fitID=self.fitID))
