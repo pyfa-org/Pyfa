@@ -54,7 +54,7 @@ from .gui.projectedDrone.changeMetas import GuiChangeProjectedDroneMetasCommand
 from .gui.projectedFighter.abilityToggleState import GuiToggleProjectedFighterAbilityStateCommand
 from .gui.projectedFighter.add import GuiAddProjectedFighterCommand
 from .gui.projectedFighter.changeAmount import GuiChangeProjectedFighterAmountCommand
-from .gui.projectedFighter.changeMeta import GuiChangeProjectedFighterMetaCommand
+from .gui.projectedFighter.changeMetas import GuiChangeProjectedFighterMetasCommand
 from .gui.projectedFit.add import GuiAddProjectedFitCommand
 from .gui.projectedFit.changeAmount import GuiChangeProjectedFitAmountCommand
 from .gui.projectedModule.add import GuiAddProjectedModuleCommand

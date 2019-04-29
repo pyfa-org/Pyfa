@@ -276,11 +276,23 @@ class ChangeItemToVariation(ContextMenuCombined):
     def __handleProjectedFighter(self, varItem):
         fitID = self.mainFrame.getActiveFit()
         fit = Fit.getInstance().getFit(fitID)
-        fighter = self.mainItem
-        if fighter in fit.projectedFighters:
-            position = fit.projectedFighters.index(fighter)
-            self.mainFrame.command.Submit(cmd.GuiChangeProjectedFighterMetaCommand(
-                fitID=fitID, position=position, newItemID=varItem.ID))
+        if wx.GetMouseState().GetModifiers() == wx.MOD_ALT:
+            fighters = getSimilarFighters(fit.projectedFighters, self.mainItem)
+        else:
+            fighters = self.selection
+        sMkt = Market.getInstance()
+        positions = []
+        for fighter in fighters:
+            if fighter not in fit.projectedFighters:
+                continue
+            if fighter is self.mainItem:
+                positions.append(fit.projectedFighters.index(fighter))
+                continue
+            fighterVariations = sMkt.getVariationsByItems((fighter.item,))
+            if fighterVariations == self.mainVariations:
+                positions.append(fit.projectedFighters.index(fighter))
+        self.mainFrame.command.Submit(cmd.GuiChangeProjectedFighterMetasCommand(
+            fitID=fitID, positions=positions, newItemID=varItem.ID))
 
 
 ChangeItemToVariation.register()
