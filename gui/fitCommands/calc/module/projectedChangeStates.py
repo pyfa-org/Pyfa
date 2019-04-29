@@ -2,9 +2,9 @@ import wx
 from logbook import Logger
 
 import eos.db
+from eos.const import FittingModuleState
 from eos.saveddata.module import Module
 from gui.fitCommands.helpers import restoreCheckedStates
-from eos.const import FittingModuleState
 from service.fit import Fit
 
 
@@ -45,9 +45,6 @@ class CalcChangeProjectedModuleStatesCommand(wx.Command):
                 changed = True
         if not changed:
             return False
-        # Need to flush because checkStates sometimes relies on module->fit
-        # relationship via .owner attribute, which is handled by SQLAlchemy
-        eos.db.flush()
         sFit.recalc(fit)
         self.savedStateCheckChanges = sFit.checkStates(fit, None)
         if self.commit:

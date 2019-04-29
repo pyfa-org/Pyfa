@@ -2,6 +2,7 @@ import wx
 from logbook import Logger
 
 import eos.db
+from gui.fitCommands.helpers import restoreCheckedStates
 from service.fit import Fit
 
 
@@ -18,6 +19,7 @@ class CalcAddProjectedFitCommand(wx.Command):
         self.state = state
         self.commit = commit
         self.changeAmountCommand = None
+        self.savedStateCheckChanges = None
 
     def Do(self):
         pyfalog.debug('Doing addition of projected fit {} for fit {}'.format(self.projectedFitID, self.fitID))
@@ -39,8 +41,14 @@ class CalcAddProjectedFitCommand(wx.Command):
                 projectedFitID=self.projectedFitID,
                 amount=self.amount,
                 relative=True,
-                commit=self.commit)
-            return self.changeAmountCommand.Do()
+                commit=False)
+            if not self.changeAmountCommand.Do():
+                return False
+            sFit.recalc(fit)
+            self.savedStateCheckChanges = sFit.checkStates(fit, None)
+            if self.commit:
+                eos.db.commit()
+            return True
         else:
             self.changeAmountCommand = None
 
@@ -60,6 +68,8 @@ class CalcAddProjectedFitCommand(wx.Command):
             if self.state is not None:
                 projectionInfo.active = self.state
 
+        sFit.recalc(fit)
+        self.savedStateCheckChanges = sFit.checkStates(fit, None)
         if self.commit:
             eos.db.commit()
         return True
@@ -67,16 +77,25 @@ class CalcAddProjectedFitCommand(wx.Command):
     def Undo(self):
         pyfalog.debug('Undoing addition of projected fit {} for fit {}'.format(self.projectedFitID, self.fitID))
         if self.changeAmountCommand is not None:
-            return self.changeAmountCommand.Undo()
+            if not self.changeAmountCommand.Undo():
+                return False
+            restoreCheckedStates(Fit.getInstance().getFit(self.fitID), self.savedStateCheckChanges)
+            if self.commit:
+                eos.db.commit()
+            return True
         # Can't find the projected fit, it must have been deleted. Just skip, as deleted fit
         # means that someone else just did exactly what we wanted to do
         projectedFit = Fit.getInstance().getFit(self.projectedFitID, projected=True)
-        if projectedFit is None:
-            return True
-        from .remove import CalcRemoveProjectedFitCommand
-        cmd = CalcRemoveProjectedFitCommand(
-            fitID=self.fitID,
-            projectedFitID=self.projectedFitID,
-            amount=self.amount,
-            commit=self.commit)
-        return cmd.Do()
+        if projectedFit is not None:
+            from .remove import CalcRemoveProjectedFitCommand
+            cmd = CalcRemoveProjectedFitCommand(
+                fitID=self.fitID,
+                projectedFitID=self.projectedFitID,
+                amount=self.amount,
+                commit=False)
+            if not cmd.Do():
+                return False
+        restoreCheckedStates(Fit.getInstance().getFit(self.fitID), self.savedStateCheckChanges)
+        if self.commit:
+            eos.db.commit()
+        return True

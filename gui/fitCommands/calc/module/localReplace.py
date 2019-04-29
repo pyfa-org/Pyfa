@@ -74,11 +74,12 @@ class CalcReplaceLocalModuleCommand(wx.Command):
         # Remove if there was no module
         if self.oldModInfo is None:
             from .localRemove import CalcRemoveLocalModulesCommand
-            cmd = CalcRemoveLocalModulesCommand(fitID=self.fitID, positions=[self.position], commit=self.commit)
+            cmd = CalcRemoveLocalModulesCommand(fitID=self.fitID, positions=[self.position], commit=False)
             if not cmd.Do():
                 return False
-            sFit.recalc(fit)
             restoreCheckedStates(fit, self.savedStateCheckChanges)
+            if self.commit:
+                eos.db.commit()
             return True
         # Replace if there was
         oldMod = self.oldModInfo.toModule()
@@ -95,7 +96,6 @@ class CalcReplaceLocalModuleCommand(wx.Command):
             pyfalog.warning('Failed to replace in list')
             self.Do()
             return False
-        sFit.recalc(fit)
         restoreCheckedStates(fit, self.savedStateCheckChanges)
         if self.commit:
             eos.db.commit()

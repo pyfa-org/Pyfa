@@ -10027,16 +10027,16 @@ class Effect3380(BaseEffect):
 
     @staticmethod
     def handler(fit, module, context):
-
         if 'projected' in context:
-            fit.ship.increaseItemAttr('warpScrambleStatus', module.getModifiedItemAttr('warpScrambleStrength'))
-            if module.charge is not None and module.charge.ID == 45010:
-                for mod in fit.modules:
-                    if not mod.isEmpty and mod.item.requiresSkill('High Speed Maneuvering') and mod.state > FittingModuleState.ONLINE:
-                        mod.state = FittingModuleState.ONLINE
-                    if not mod.isEmpty and mod.item.requiresSkill('Micro Jump Drive Operation') and mod.state > FittingModuleState.ONLINE:
-                        mod.state = FittingModuleState.ONLINE
+            if module.charge is not None:
+                if module.charge.ID in (29003, 45010):
+                    fit.ship.increaseItemAttr('warpScrambleStatus', module.getModifiedItemAttr('warpScrambleStrength'))
+                if module.charge.ID == 45010:
+                    fit.modules.filteredItemIncrease(
+                        lambda mod: mod.item.requiresSkill('High Speed Maneuvering') or mod.item.requiresSkill('Micro Jump Drive Operation'),
+                        'activationBlocked', 1)
         else:
+            fit.ship.forceItemAttr('disallowAssistance', 1)
             if module.charge is None:
                 fit.ship.boostItemAttr('mass', module.getModifiedItemAttr('massBonusPercentage'))
                 fit.ship.boostItemAttr('signatureRadius', module.getModifiedItemAttr('signatureRadiusBonus'))
@@ -10044,8 +10044,6 @@ class Effect3380(BaseEffect):
                                               'speedBoostFactor', module.getModifiedItemAttr('speedBoostFactorBonus'))
                 fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Propulsion Module',
                                           'speedFactor', module.getModifiedItemAttr('speedFactorBonus'))
-
-            fit.ship.forceItemAttr('disallowAssistance', 1)
 
 
 class Effect3392(BaseEffect):
@@ -23394,16 +23392,9 @@ class Effect5934(BaseEffect):
             return
 
         fit.ship.increaseItemAttr('warpScrambleStatus', module.getModifiedItemAttr('warpScrambleStrength'))
-
-        # this is such a dirty hack
-        for mod in fit.modules:
-            if not mod.isEmpty and mod.state > FittingModuleState.ONLINE and (
-                    mod.item.requiresSkill('Micro Jump Drive Operation') or
-                    mod.item.requiresSkill('High Speed Maneuvering')
-            ):
-                mod.state = FittingModuleState.ONLINE
-            if not mod.isEmpty and mod.item.requiresSkill('Micro Jump Drive Operation') and mod.state > FittingModuleState.ONLINE:
-                mod.state = FittingModuleState.ONLINE
+        fit.modules.filteredItemIncrease(
+            lambda mod: mod.item.requiresSkill('High Speed Maneuvering') or mod.item.requiresSkill('Micro Jump Drive Operation'),
+            'activationBlocked', module.getModifiedItemAttr('activationBlockedStrenght'))
 
 
 class Effect5938(BaseEffect):
@@ -25292,12 +25283,9 @@ class Effect6222(BaseEffect):
     def handler(fit, module, context):
         if 'projected' in context:
             fit.ship.increaseItemAttr('warpScrambleStatus', module.getModifiedItemAttr('warpScrambleStrength'))
-            if module.charge is not None and module.charge.ID == 47336:
-                for mod in fit.modules:
-                    if not mod.isEmpty and mod.item.requiresSkill('High Speed Maneuvering') and mod.state > FittingModuleState.ONLINE:
-                        mod.state = FittingModuleState.ONLINE
-                    if not mod.isEmpty and mod.item.requiresSkill('Micro Jump Drive Operation') and mod.state > FittingModuleState.ONLINE:
-                        mod.state = FittingModuleState.ONLINE
+            fit.modules.filteredItemIncrease(
+                lambda mod: mod.item.requiresSkill('High Speed Maneuvering') or mod.item.requiresSkill('Micro Jump Drive Operation'),
+                'activationBlocked', module.getModifiedItemAttr('activationBlockedStrenght'))
 
 
 class Effect6230(BaseEffect):
@@ -34149,6 +34137,7 @@ class Effect7026(BaseEffect):
     @staticmethod
     def handler(fit, src, context, *args, **kwargs):
         src.boostItemAttr('maxRange', src.getModifiedChargeAttr('warpScrambleRangeBonus'))
+        src.forceItemAttr('activationBlockedStrenght', src.getModifiedChargeAttr('activationBlockedStrenght'))
 
 
 class Effect7027(BaseEffect):

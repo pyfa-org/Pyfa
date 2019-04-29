@@ -41,9 +41,17 @@ class CalcAddLocalModuleCommand(wx.Command):
                         fitID=self.fitID,
                         position=fit.modules.index(oldMod),
                         newModInfo=self.newModInfo,
-                        commit=self.commit)
-                    return self.subsystemCmd.Do()
-
+                        commit=False)
+                    if not self.subsystemCmd.Do():
+                        return False
+                    # Need to flush because checkStates sometimes relies on module->fit
+                    # relationship via .owner attribute, which is handled by SQLAlchemy
+                    eos.db.flush()
+                    sFit.recalc(fit)
+                    self.savedStateCheckChanges = sFit.checkStates(fit, newMod)
+                    if self.commit:
+                        eos.db.commit()
+                    return True
         if not newMod.fits(fit):
             pyfalog.warning('Module does not fit')
             return False
@@ -68,12 +76,19 @@ class CalcAddLocalModuleCommand(wx.Command):
         pyfalog.debug('Undoing addition of local module {} to fit {}'.format(self.newModInfo, self.fitID))
         # We added a subsystem module, which actually ran the replace command. Run the undo for that guy instead
         if self.subsystemCmd is not None:
-            return self.subsystemCmd.Undo()
+            if not self.subsystemCmd.Undo():
+                return False
+            restoreCheckedStates(Fit.getInstance().getFit(self.fitID), self.savedStateCheckChanges)
+            if self.commit:
+                eos.db.commit()
+            return True
         if self.savedPosition is None:
             return False
         from .localRemove import CalcRemoveLocalModulesCommand
-        cmd = CalcRemoveLocalModulesCommand(fitID=self.fitID, positions=[self.savedPosition], commit=self.commit)
+        cmd = CalcRemoveLocalModulesCommand(fitID=self.fitID, positions=[self.savedPosition], commit=False)
         if not cmd.Do():
             return False
         restoreCheckedStates(Fit.getInstance().getFit(self.fitID), self.savedStateCheckChanges)
+        if self.commit:
+            eos.db.commit()
         return True

@@ -2,6 +2,7 @@ import wx
 from logbook import Logger
 
 import eos.db
+from gui.fitCommands.helpers import restoreCheckedStates
 from service.fit import Fit
 from service.market import Market
 
@@ -18,10 +19,12 @@ class CalcChangeModuleChargesCommand(wx.Command):
         self.chargeMap = chargeMap
         self.commit = commit
         self.savedChargeMap = None
+        self.savedStateCheckChanges = None
 
     def Do(self):
         pyfalog.debug('Doing change of module charges according to map {} on fit {}'.format(self.chargeMap, self.fitID))
-        fit = Fit.getInstance().getFit(self.fitID)
+        sFit = Fit.getInstance()
+        fit = sFit.getFit(self.fitID)
         container = fit.modules if not self.projected else fit.projectedModules
         changes = False
         self.savedChargeMap = {}
@@ -46,6 +49,8 @@ class CalcChangeModuleChargesCommand(wx.Command):
             mod.charge = chargeItem
         if not changes:
             return False
+        sFit.recalc(fit)
+        self.savedStateCheckChanges = sFit.checkStates(fit, None)
         if self.commit:
             eos.db.commit()
         return True
@@ -57,4 +62,7 @@ class CalcChangeModuleChargesCommand(wx.Command):
             projected=self.projected,
             chargeMap=self.savedChargeMap,
             commit=self.commit)
-        return cmd.Do()
+        if not cmd.Do():
+            return False
+        restoreCheckedStates(Fit.getInstance().getFit(self.fitID), self.savedStateCheckChanges)
+        return True

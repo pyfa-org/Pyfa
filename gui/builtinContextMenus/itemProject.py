@@ -35,12 +35,11 @@ class ProjectItem(ContextMenuSingle):
 
     def activate(self, fullContext, mainItem, i):
         fitID = self.mainFrame.getActiveFit()
-        category = mainItem.category.name
-        if category == 'Module':
+        if mainItem.isModule:
             success = self.mainFrame.command.Submit(cmd.GuiAddProjectedModuleCommand(fitID=fitID, itemID=mainItem.ID))
-        elif category == 'Drone':
+        elif mainItem.isDrone:
             success = self.mainFrame.command.Submit(cmd.GuiAddProjectedDroneCommand(fitID=fitID, itemID=mainItem.ID))
-        elif category == 'Fighter':
+        elif mainItem.isFighter:
             success = self.mainFrame.command.Submit(cmd.GuiAddProjectedFighterCommand(fitID=fitID, itemID=mainItem.ID))
         else:
             success = False

@@ -680,20 +680,20 @@ class FittingView(d.Display):
         change State
         """
 
-        row, _, col = self.HitTestSubItem(event.Position)
+        clickedRow, _, col = self.HitTestSubItem(event.Position)
 
         # only do State column and ignore invalid rows
-        if row != -1 and row not in self.blanks and col == self.getColIndex(State):
-            sel = []
-            curr = self.GetFirstSelected()
+        if clickedRow != -1 and clickedRow not in self.blanks and col == self.getColIndex(State):
+            selectedRows = []
+            currentRow = self.GetFirstSelected()
 
-            while curr != -1 and row not in self.blanks:
-                sel.append(curr)
-                curr = self.GetNextSelected(curr)
+            while currentRow != -1 and clickedRow not in self.blanks:
+                selectedRows.append(currentRow)
+                currentRow = self.GetNextSelected(currentRow)
 
-            if row not in sel:
+            if clickedRow not in selectedRows:
                 try:
-                    selectedMods = [self.mods[row]]
+                    selectedMods = [self.mods[clickedRow]]
                 except IndexError:
                     return
             else:
@@ -702,7 +702,7 @@ class FittingView(d.Display):
             click = "ctrl" if event.GetModifiers() == wx.MOD_CONTROL or event.middleIsDown else "right" if event.GetButton() == 3 else "left"
 
             try:
-                mainMod = self.mods[row]
+                mainMod = self.mods[clickedRow]
             except IndexError:
                 return
             if mainMod.isEmpty:
@@ -726,7 +726,7 @@ class FittingView(d.Display):
                 click=click))
 
             # update state tooltip
-            tooltip = self.activeColumns[col].getToolTip(self.mods[row])
+            tooltip = self.activeColumns[col].getToolTip(self.mods[clickedRow])
             if tooltip:
                 self.SetToolTip(tooltip)
 

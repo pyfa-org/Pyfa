@@ -2,6 +2,7 @@ import wx
 from logbook import Logger
 
 import eos.db
+from gui.fitCommands.helpers import restoreCheckedStates
 from service.fit import Fit
 
 
@@ -17,11 +18,13 @@ class CalcChangeProjectedFitStateCommand(wx.Command):
         self.state = state
         self.commit = commit
         self.savedState = None
+        self.savedStateCheckChanges = None
 
     def Do(self):
         pyfalog.debug('Doing changing of projected fit {} state to {} for fit {}'.format(
             self.projectedFitID, self.state, self.fitID))
-        projectedFit = Fit.getInstance().getFit(self.projectedFitID, projected=True)
+        sFit = Fit.getInstance()
+        projectedFit = sFit.getFit(self.projectedFitID, projected=True)
         # Projected fit could have been deleted if we are redoing
         if projectedFit is None:
             pyfalog.debug('Projected fit is not available')
@@ -37,6 +40,9 @@ class CalcChangeProjectedFitStateCommand(wx.Command):
 
         projectionInfo.active = self.state
 
+        fit = sFit.getFit(self.fitID)
+        sFit.recalc(fit)
+        self.savedStateCheckChanges = sFit.checkStates(fit, None)
         if self.commit:
             eos.db.commit()
         return True
@@ -48,5 +54,10 @@ class CalcChangeProjectedFitStateCommand(wx.Command):
             fitID=self.fitID,
             projectedFitID=self.projectedFitID,
             state=self.savedState,
-            commit=self.commit)
-        return cmd.Do()
+            commit=False)
+        if not cmd.Do():
+            return False
+        restoreCheckedStates(Fit.getInstance().getFit(self.fitID), self.savedStateCheckChanges)
+        if self.commit:
+            eos.db.commit()
+        return True

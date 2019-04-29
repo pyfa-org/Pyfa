@@ -2,8 +2,8 @@ import wx
 from logbook import Logger
 
 import eos.db
+from gui.fitCommands.helpers import ModuleInfo, restoreCheckedStates
 from service.fit import Fit
-from gui.fitCommands.helpers import ModuleInfo
 
 
 pyfalog = Logger(__name__)
@@ -17,13 +17,21 @@ class CalcRemoveProjectedModuleCommand(wx.Command):
         self.position = position
         self.commit = commit
         self.savedModInfo = None
+        self.savedStateCheckChanges = None
 
     def Do(self):
         pyfalog.debug('Doing removal of projected module from position {} on fit {}'.format(self.position, self.fitID))
-        fit = Fit.getInstance().getFit(self.fitID)
+        sFit = Fit.getInstance()
+        fit = sFit.getFit(self.fitID)
         mod = fit.projectedModules[self.position]
         self.savedModInfo = ModuleInfo.fromModule(mod)
         del fit.projectedModules[self.position]
+
+        # Need to flush because checkStates sometimes relies on module->fit
+        # relationship via .owner attribute, which is handled by SQLAlchemy
+        eos.db.flush()
+        sFit.recalc(fit)
+        self.savedStateCheckChanges = sFit.checkStates(fit, None)
         if self.commit:
             eos.db.commit()
         return True
@@ -35,5 +43,10 @@ class CalcRemoveProjectedModuleCommand(wx.Command):
             fitID=self.fitID,
             modInfo=self.savedModInfo,
             position=self.position,
-            commit=self.commit)
-        return cmd.Do()
+            commit=False)
+        if not cmd.Do():
+            return False
+        restoreCheckedStates(Fit.getInstance().getFit(self.fitID), self.savedStateCheckChanges)
+        if self.commit:
+            eos.db.commit()
+        return True

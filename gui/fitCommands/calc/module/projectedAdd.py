@@ -4,6 +4,7 @@ from logbook import Logger
 import eos.db
 from eos.const import FittingModuleState
 from eos.exception import HandledListActionError
+from gui.fitCommands.helpers import restoreCheckedStates
 from service.fit import Fit
 
 
@@ -20,6 +21,7 @@ class CalcAddProjectedModuleCommand(wx.Command):
         self.commit = commit
         self.oldModInfo = None
         self.oldPosition = None
+        self.savedStateCheckChanges = None
 
     def Do(self):
         pyfalog.debug('Doing addition of projected module {} onto: {}'.format(self.newModInfo, self.fitID))
@@ -27,7 +29,8 @@ class CalcAddProjectedModuleCommand(wx.Command):
         if newMod is None:
             return False
 
-        fit = Fit.getInstance().getFit(self.fitID)
+        sFit = Fit.getInstance()
+        fit = sFit.getFit(self.fitID)
         if not newMod.canHaveState(newMod.state, projectedOnto=fit):
             newMod.state = FittingModuleState.OFFLINE
         if not newMod.isValidCharge(newMod.charge):
@@ -50,6 +53,11 @@ class CalcAddProjectedModuleCommand(wx.Command):
                 return False
             self.newPosition = fit.projectedModules.index(newMod)
 
+        # Need to flush because checkStates sometimes relies on module->fit
+        # relationship via .owner attribute, which is handled by SQLAlchemy
+        eos.db.flush()
+        sFit.recalc(fit)
+        self.savedStateCheckChanges = sFit.checkStates(fit, newMod)
         if self.commit:
             eos.db.commit()
         return True
@@ -61,11 +69,21 @@ class CalcAddProjectedModuleCommand(wx.Command):
                 fitID=self.fitID,
                 modInfo=self.oldModInfo,
                 position=self.oldPosition,
-                commit=self.commit)
-            return cmd.Do()
+                commit=False)
+            if not cmd.Do():
+                return False
+            restoreCheckedStates(Fit.getInstance().getFit(self.fitID), self.savedStateCheckChanges)
+            if self.commit:
+                eos.db.commit()
+            return True
         from .projectedRemove import CalcRemoveProjectedModuleCommand
         cmd = CalcRemoveProjectedModuleCommand(
             fitID=self.fitID,
             position=self.newPosition,
-            commit=self.commit)
-        return cmd.Do()
+            commit=False)
+        if not cmd.Do():
+            return False
+        restoreCheckedStates(Fit.getInstance().getFit(self.fitID), self.savedStateCheckChanges)
+        if self.commit:
+            eos.db.commit()
+        return True

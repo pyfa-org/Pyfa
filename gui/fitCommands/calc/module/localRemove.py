@@ -31,6 +31,9 @@ class CalcRemoveLocalModulesCommand(wx.Command):
                 self.savedModInfos[position] = ModuleInfo.fromModule(mod)
                 fit.modules.free(position)
 
+        if len(self.savedModInfos) == 0:
+            return False
+
         # Need to flush because checkStates sometimes relies on module->fit
         # relationship via .owner attribute, which is handled by SQLAlchemy
         eos.db.flush()
@@ -39,7 +42,7 @@ class CalcRemoveLocalModulesCommand(wx.Command):
         if self.commit:
             eos.db.commit()
         # If no modules were removed, report that command was not completed
-        return len(self.savedModInfos) > 0
+        return True
 
     def Undo(self):
         pyfalog.debug('Undoing removal of local modules {} on fit {}'.format(self.savedModInfos, self.fitID))
@@ -47,7 +50,8 @@ class CalcRemoveLocalModulesCommand(wx.Command):
         from .localReplace import CalcReplaceLocalModuleCommand
         for position, modInfo in self.savedModInfos.items():
             # Do not commit in any case to not worsen performance, we will commit later anyway
-            cmd = CalcReplaceLocalModuleCommand(fitID=self.fitID, position=position, newModInfo=modInfo, commit=False)
+            cmd = CalcReplaceLocalModuleCommand(
+                fitID=self.fitID, position=position, newModInfo=modInfo, commit=False)
             results.append(cmd.Do())
         if not any(results):
             return False

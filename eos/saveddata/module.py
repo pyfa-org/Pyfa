@@ -601,7 +601,7 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
         # Check if we're within bounds
         if state < -1 or state > 2:
             return False
-        elif state >= FittingModuleState.ACTIVE and not self.item.isType("active"):
+        elif state >= FittingModuleState.ACTIVE and (not self.item.isType("active") or self.getModifiedItemAttr('activationBlocked') > 0):
             return False
         elif state == FittingModuleState.OVERHEATED and not self.item.isType("overheat"):
             return False
@@ -771,28 +771,26 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
             context = ("module",)
             projected = False
 
-        # if gang:
-        #     context += ("commandRun",)
-
         if self.charge is not None:
             # fix for #82 and it's regression #106
             if not projected or (self.projected and not forceProjected) or gang:
                 for effect in self.charge.effects.values():
-                    if effect.runTime == runTime and \
-                            effect.activeByDefault and \
-                            (effect.isType("offline") or
-                             (effect.isType("passive") and self.state >= FittingModuleState.ONLINE) or
-                             (effect.isType("active") and self.state >= FittingModuleState.ACTIVE)) and \
-                            (not gang or (gang and effect.isType("gang"))):
-
-                        chargeContext = ("moduleCharge",)
-                        # For gang effects, we pass in the effect itself as an argument. However, to avoid going through
-                        # all the effect files and defining this argument, do a simple try/catch here and be done with it.
+                    if (
+                        effect.runTime == runTime and
+                        effect.activeByDefault and (
+                            effect.isType("offline") or
+                            (effect.isType("passive") and self.state >= FittingModuleState.ONLINE) or
+                            (effect.isType("active") and self.state >= FittingModuleState.ACTIVE)) and
+                        (not gang or (gang and effect.isType("gang")))
+                    ):
+                        contexts = ("moduleCharge",)
+                        # For gang effects, we pass in the effect itself as an argument. However, to avoid going through all
+                        # the effect definitions and defining this argument, do a simple try/catch here and be done with it.
                         # @todo: possibly fix this
                         try:
-                            effect.handler(fit, self, chargeContext, effect=effect)
+                            effect.handler(fit, self, contexts, effect=effect)
                         except:
-                            effect.handler(fit, self, chargeContext)
+                            effect.handler(fit, self, contexts)
 
         if self.item:
             if self.state >= FittingModuleState.OVERHEATED:
