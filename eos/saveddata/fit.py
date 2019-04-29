@@ -924,8 +924,10 @@ class Fit(object):
         recalc. Figure out a way to keep track of any changes to slot layout and call this automatically
         """
         if self.ship is None:
-            return
+            return {}
 
+        # Look for any dummies of that type to remove
+        posToRemove = {}
         for slotType in (FittingSlot.LOW.value, FittingSlot.MED.value, FittingSlot.HIGH.value, FittingSlot.RIG.value, FittingSlot.SUBSYSTEM.value, FittingSlot.SERVICE.value):
             amount = self.getSlotsFree(slotType, True)
             if amount > 0:
@@ -933,16 +935,17 @@ class Fit(object):
                     self.modules.append(Module.buildEmpty(slotType))
 
             if amount < 0:
-                # Look for any dummies of that type to remove
-                toRemove = []
                 for mod in self.modules:
                     if mod.isEmpty and mod.slot == slotType:
-                        toRemove.append(mod)
+                        pos = self.modules.index(mod)
+                        posToRemove[pos] = slotType
                         amount += 1
                         if amount == 0:
                             break
-                for mod in toRemove:
-                    self.modules.remove(mod)
+        for pos in sorted(posToRemove, reverse=True):
+            mod = self.modules[pos]
+            self.modules.remove(mod)
+        return posToRemove
 
     def unfill(self):
         for i in range(len(self.modules) - 1, -1, -1):

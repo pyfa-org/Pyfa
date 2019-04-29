@@ -480,5 +480,6 @@ class Fit(FitDeprecated):
         fit.clear()
 
         fit.calculateModifiedAttributes()
-        fit.fill()
+        removedDummies = fit.fill()
         pyfalog.info("=" * 10 + "recalc time: " + str(time() - start_time) + "=" * 10)
+        return removedDummies

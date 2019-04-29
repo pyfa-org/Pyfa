@@ -2,6 +2,7 @@ import wx
 from logbook import Logger
 
 import eos.db
+from eos.const import FittingSlot
 from gui.fitCommands.helpers import ModuleInfo, restoreCheckedStates
 from service.fit import Fit
 
@@ -16,6 +17,7 @@ class CalcRemoveLocalModulesCommand(wx.Command):
         self.fitID = fitID
         self.positions = positions
         self.commit = commit
+        self.savedSubInfos = None
         self.savedModInfos = None
         self.savedStateCheckChanges = None
 
@@ -24,14 +26,18 @@ class CalcRemoveLocalModulesCommand(wx.Command):
         sFit = Fit.getInstance()
         fit = sFit.getFit(self.fitID)
 
+        self.savedSubInfos = {}
         self.savedModInfos = {}
         for position in self.positions:
             mod = fit.modules[position]
             if not mod.isEmpty:
-                self.savedModInfos[position] = ModuleInfo.fromModule(mod)
+                if mod.slot == FittingSlot.SUBSYSTEM:
+                    self.savedSubInfos[position] = ModuleInfo.fromModule(mod)
+                else:
+                    self.savedModInfos[position] = ModuleInfo.fromModule(mod)
                 fit.modules.free(position)
 
-        if len(self.savedModInfos) == 0:
+        if len(self.savedSubInfos) == 0 and len(self.savedModInfos) == 0:
             return False
 
         # Need to flush because checkStates sometimes relies on module->fit
@@ -48,14 +54,22 @@ class CalcRemoveLocalModulesCommand(wx.Command):
         pyfalog.debug('Undoing removal of local modules {} on fit {}'.format(self.savedModInfos, self.fitID))
         results = []
         from .localReplace import CalcReplaceLocalModuleCommand
+        # Restore subsystems 1st
+        if len(self.savedSubInfos) > 0:
+            for position, modInfo in self.savedSubInfos.items():
+                cmd = CalcReplaceLocalModuleCommand(
+                    fitID=self.fitID, position=position, newModInfo=modInfo, commit=False)
+                results.append(cmd.Do())
+            sFit = Fit.getInstance()
+            fit = sFit.getFit(self.fitID)
+            sFit.recalc(fit)
         for position, modInfo in self.savedModInfos.items():
-            # Do not commit in any case to not worsen performance, we will commit later anyway
             cmd = CalcReplaceLocalModuleCommand(
                 fitID=self.fitID, position=position, newModInfo=modInfo, commit=False)
             results.append(cmd.Do())
         if not any(results):
             return False
-        restoreCheckedStates(Fit.getInstance().getFit(self.fitID), self.savedStateCheckChanges)
+        restoreCheckedStates(fit, self.savedStateCheckChanges)
         if self.commit:
             eos.db.commit()
         return True
