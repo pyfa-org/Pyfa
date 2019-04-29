@@ -569,6 +569,8 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
         if self.slot == FittingSlot.SUBSYSTEM:
             subSlot = self.getModifiedItemAttr("subSystemSlot")
             for mod in fit.modules:
+                if mod is self:
+                    continue
                 if mod.getModifiedItemAttr("subSystemSlot") == subSlot:
                     return False
 
