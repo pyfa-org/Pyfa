@@ -470,7 +470,7 @@ class Fit(FitDeprecated):
         eos.db.commit()
         self.recalc(fit)
 
-    def recalc(self, fit):
+    def recalc(self, fit, fill=True):
         if isinstance(fit, int):
             fit = self.getFit(fit)
         start_time = time()
@@ -480,6 +480,9 @@ class Fit(FitDeprecated):
         fit.clear()
 
         fit.calculateModifiedAttributes()
-        removedDummies = fit.fill()
+        if fill:
+            removedDummies = fit.fill()
+        else:
+            removedDummies = {}
         pyfalog.info("=" * 10 + "recalc time: " + str(time() - start_time) + "=" * 10)
         return removedDummies

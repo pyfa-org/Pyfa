@@ -3,7 +3,7 @@ from logbook import Logger
 
 import eos.db
 from eos.const import FittingSlot
-from gui.fitCommands.helpers import ModuleInfo, restoreCheckedStates
+from gui.fitCommands.helpers import ModuleInfo, restoreCheckedStates, restoreRemovedDummies
 from service.fit import Fit
 
 
@@ -19,6 +19,7 @@ class CalcRemoveLocalModulesCommand(wx.Command):
         self.commit = commit
         self.savedSubInfos = None
         self.savedModInfos = None
+        self.savedRemovedDummies = None
         self.savedStateCheckChanges = None
 
     def Do(self):
@@ -43,7 +44,7 @@ class CalcRemoveLocalModulesCommand(wx.Command):
         # Need to flush because checkStates sometimes relies on module->fit
         # relationship via .owner attribute, which is handled by SQLAlchemy
         eos.db.flush()
-        sFit.recalc(fit)
+        self.savedRemovedDummies = sFit.recalc(fit)
         self.savedStateCheckChanges = sFit.checkStates(fit, None)
         if self.commit:
             eos.db.commit()
@@ -60,15 +61,16 @@ class CalcRemoveLocalModulesCommand(wx.Command):
         if len(self.savedSubInfos) > 0:
             for position, modInfo in self.savedSubInfos.items():
                 cmd = CalcReplaceLocalModuleCommand(
-                    fitID=self.fitID, position=position, newModInfo=modInfo, commit=False)
+                    fitID=self.fitID, position=position, newModInfo=modInfo, commit=False, fill=False)
                 results.append(cmd.Do())
-            sFit.recalc(fit)
+            sFit.recalc(fit, fill=False)
         for position, modInfo in self.savedModInfos.items():
             cmd = CalcReplaceLocalModuleCommand(
-                fitID=self.fitID, position=position, newModInfo=modInfo, commit=False)
+                fitID=self.fitID, position=position, newModInfo=modInfo, commit=False, fill=False)
             results.append(cmd.Do())
         if not any(results):
             return False
+        restoreRemovedDummies(fit, self.savedRemovedDummies)
         restoreCheckedStates(fit, self.savedStateCheckChanges)
         if self.commit:
             eos.db.commit()

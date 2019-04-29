@@ -346,6 +346,13 @@ def restoreCheckedStates(fit, stateInfo, ignoreModPoss=()):
         fit.projectedDrones[pos].amountActive = amountActive
 
 
+def restoreRemovedDummies(fit, dummyInfo):
+    # Need this to properly undo the case when removal of subsystems removes dummy slots
+    for position in sorted(dummyInfo):
+        slot = dummyInfo[position]
+        fit.modules.insert(position, Module.buildEmpty(slot))
+
+
 def getSimilarModPositions(mods, mainMod):
     sMkt = Market.getInstance()
     mainGroupID = getattr(sMkt.getGroupByItem(mainMod.item), 'ID', None)
