@@ -222,7 +222,7 @@ class Fit(FitDeprecated):
     @classmethod
     def getCommandProcessor(cls, fitID):
         if fitID not in cls.processors:
-            cls.processors[fitID] = wx.CommandProcessor()
+            cls.processors[fitID] = wx.CommandProcessor(maxCommands=100)
         return cls.processors[fitID]
 
     @staticmethod
