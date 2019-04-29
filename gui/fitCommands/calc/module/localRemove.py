@@ -52,6 +52,8 @@ class CalcRemoveLocalModulesCommand(wx.Command):
 
     def Undo(self):
         pyfalog.debug('Undoing removal of local modules {} on fit {}'.format(self.savedModInfos, self.fitID))
+        sFit = Fit.getInstance()
+        fit = sFit.getFit(self.fitID)
         results = []
         from .localReplace import CalcReplaceLocalModuleCommand
         # Restore subsystems 1st
@@ -60,8 +62,6 @@ class CalcRemoveLocalModulesCommand(wx.Command):
                 cmd = CalcReplaceLocalModuleCommand(
                     fitID=self.fitID, position=position, newModInfo=modInfo, commit=False)
                 results.append(cmd.Do())
-            sFit = Fit.getInstance()
-            fit = sFit.getFit(self.fitID)
             sFit.recalc(fit)
         for position, modInfo in self.savedModInfos.items():
             cmd = CalcReplaceLocalModuleCommand(
