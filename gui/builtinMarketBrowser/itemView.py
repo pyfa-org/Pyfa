@@ -51,6 +51,7 @@ class ItemView(Display):
 
         # Make reverse map, used by sorter
         self.metaMap = self.makeReverseMetaMap()
+        self.active = []
 
         # Fill up recently used modules set
         pyfalog.debug("Fill up recently used modules set")
