@@ -5,7 +5,7 @@ from .gui.booster.sideEffectToggleState import GuiToggleBoosterSideEffectStateCo
 from .gui.booster.toggleStates import GuiToggleBoosterStatesCommand
 from .gui.cargo.add import GuiAddCargoCommand
 from .gui.cargo.changeAmount import GuiChangeCargoAmountCommand
-from .gui.cargo.changeMeta import GuiChangeCargoMetaCommand
+from .gui.cargo.changeMetas import GuiChangeCargoMetasCommand
 from .gui.cargo.remove import GuiRemoveCargosCommand
 from .gui.commandFit.add import GuiAddCommandFitCommand
 from .gui.commandFit.remove import GuiRemoveCommandFitsCommand
@@ -50,7 +50,7 @@ from .gui.localModuleCargo.localModuleToCargo import GuiLocalModuleToCargoComman
 from .gui.projectedChangeStates import GuiChangeProjectedItemStatesCommand
 from .gui.projectedDrone.add import GuiAddProjectedDroneCommand
 from .gui.projectedDrone.changeAmount import GuiChangeProjectedDroneAmountCommand
-from .gui.projectedDrone.changeMeta import GuiChangeProjectedDroneMetaCommand
+from .gui.projectedDrone.changeMetas import GuiChangeProjectedDroneMetasCommand
 from .gui.projectedFighter.abilityToggleState import GuiToggleProjectedFighterAbilityStateCommand
 from .gui.projectedFighter.add import GuiAddProjectedFighterCommand
 from .gui.projectedFighter.changeAmount import GuiChangeProjectedFighterAmountCommand

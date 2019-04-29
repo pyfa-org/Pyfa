@@ -10,10 +10,10 @@ from gui.fitCommands.helpers import CargoInfo, InternalCommandHistory
 from service.fit import Fit
 
 
-class GuiChangeCargoMetaCommand(wx.Command):
+class GuiChangeCargoMetasCommand(wx.Command):
 
     def __init__(self, fitID, itemIDs, newItemID):
-        wx.Command.__init__(self, True, 'Change Cargo Meta')
+        wx.Command.__init__(self, True, 'Change Cargo Metas')
         self.internalHistory = InternalCommandHistory()
         self.fitID = fitID
         self.itemIDs = itemIDs

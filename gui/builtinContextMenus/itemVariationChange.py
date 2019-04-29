@@ -215,7 +215,7 @@ class ChangeItemToVariation(ContextMenuCombined):
             cargoVariations = sMkt.getVariationsByItems((cargo.item,))
             if cargoVariations == self.mainVariations:
                 itemIDs.append(cargo.itemID)
-        self.mainFrame.command.Submit(cmd.GuiChangeCargoMetaCommand(
+        self.mainFrame.command.Submit(cmd.GuiChangeCargoMetasCommand(
             fitID=fitID, itemIDs=itemIDs, newItemID=varItem.ID))
 
     def __handleImplant(self, varItem):
@@ -258,9 +258,20 @@ class ChangeItemToVariation(ContextMenuCombined):
 
     def __handleProjectedDrone(self, varItem):
         fitID = self.mainFrame.getActiveFit()
-        drone = self.mainItem
-        self.mainFrame.command.Submit(cmd.GuiChangeProjectedDroneMetaCommand(
-            fitID=fitID, itemID=drone.itemID, newItemID=varItem.ID))
+        fit = Fit.getInstance().getFit(fitID)
+        sMkt = Market.getInstance()
+        itemIDs = []
+        for drone in self.selection:
+            if drone not in fit.projectedDrones:
+                continue
+            if drone is self.mainItem:
+                itemIDs.append(drone.itemID)
+                continue
+            droneVariations = sMkt.getVariationsByItems((drone.item,))
+            if droneVariations == self.mainVariations:
+                itemIDs.append(drone.itemID)
+        self.mainFrame.command.Submit(cmd.GuiChangeProjectedDroneMetasCommand(
+            fitID=fitID, itemIDs=itemIDs, newItemID=varItem.ID))
 
     def __handleProjectedFighter(self, varItem):
         fitID = self.mainFrame.getActiveFit()
