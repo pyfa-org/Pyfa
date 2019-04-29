@@ -29,9 +29,11 @@ import gui.fitCommands as cmd
 import gui.globalEvents as GE
 from eos.saveddata.drone import Drone as EosDrone
 from eos.saveddata.fighter import Fighter as EosFighter
+from eos.saveddata.fit import Fit as EosFit
 from eos.saveddata.module import Module as EosModule
 from gui.builtinViewColumns.state import State
 from gui.contextMenu import ContextMenu
+from gui.fitCommands.helpers import getSimilarFighters, getSimilarModPositions
 from gui.utils.staticHelpers import DragDropHelper
 from service.fit import Fit
 from service.market import Market
@@ -311,11 +313,41 @@ class ProjectedView(d.Display):
         if row != -1:
             col = self.getColumn(event.Position)
             if col != self.getColIndex(State):
-                item = self.get(row)
-                if item is not None:
+                mainItem = self.get(row)
+                if mainItem is None:
+                    return
+                fitID = self.mainFrame.getActiveFit()
+                if isinstance(mainItem, EosFit):
                     self.mainFrame.command.Submit(cmd.GuiRemoveProjectedItemsCommand(
-                        fitID=self.mainFrame.getActiveFit(),
-                        items=[item],
+                        fitID=fitID,
+                        items=[mainItem],
+                        amount=math.inf if wx.GetMouseState().GetModifiers() == wx.MOD_ALT else 1))
+                elif isinstance(mainItem, EosModule):
+                    if wx.GetMouseState().GetModifiers() == wx.MOD_ALT:
+                        fit = Fit.getInstance().getFit(fitID)
+                        positions = getSimilarModPositions(fit.projectedModules, mainItem)
+                        items = [fit.projectedModules[p] for p in positions]
+                    else:
+                        items = [mainItem]
+                    self.mainFrame.command.Submit(cmd.GuiRemoveProjectedItemsCommand(
+                        fitID=fitID, items=items, amount=1))
+                elif isinstance(mainItem, EosDrone):
+                    self.mainFrame.command.Submit(cmd.GuiRemoveProjectedItemsCommand(
+                        fitID=fitID,
+                        items=[mainItem],
+                        amount=math.inf if wx.GetMouseState().GetModifiers() == wx.MOD_ALT else 1))
+                elif isinstance(mainItem, EosFighter):
+                    if wx.GetMouseState().GetModifiers() == wx.MOD_ALT:
+                        fit = Fit.getInstance().getFit(fitID)
+                        items = getSimilarFighters(fit.projectedFighters, mainItem)
+                    else:
+                        items = [mainItem]
+                    self.mainFrame.command.Submit(cmd.GuiRemoveProjectedItemsCommand(
+                        fitID=fitID, items=items, amount=1))
+                else:
+                    self.mainFrame.command.Submit(cmd.GuiRemoveProjectedItemsCommand(
+                        fitID=fitID,
+                        items=[mainItem],
                         amount=math.inf if wx.GetMouseState().GetModifiers() == wx.MOD_ALT else 1))
 
     def getSelectedProjectors(self):
