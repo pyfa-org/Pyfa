@@ -190,7 +190,7 @@ class FittingView(d.Display):
                 self.hoveredRow = row
                 self.hoveredColumn = col
                 if row != -1 and row not in self.blanks and col != -1 and col < len(self.DEFAULT_COLS):
-                    mod = self.mods[self.GetItemData(row)]
+                    mod = self.mods[row]
                     tooltip = self.activeColumns[col].getToolTip(mod)
                     if tooltip is not None:
                         self.SetToolTip(tooltip)
@@ -271,7 +271,7 @@ class FittingView(d.Display):
         mods = []
         for row in self.getSelectedRows():
             try:
-                mod = self.mods[self.GetItemData(row)]
+                mod = self.mods[row]
             except IndexError:
                 continue
             if mod and not isinstance(mod, Rack):
@@ -693,7 +693,7 @@ class FittingView(d.Display):
 
             if row not in sel:
                 try:
-                    selectedMods = [self.mods[self.GetItemData(row)]]
+                    selectedMods = [self.mods[row]]
                 except IndexError:
                     return
             else:
@@ -702,7 +702,7 @@ class FittingView(d.Display):
             click = "ctrl" if event.GetModifiers() == wx.MOD_CONTROL or event.middleIsDown else "right" if event.GetButton() == 3 else "left"
 
             try:
-                mainMod = self.mods[self.GetItemData(row)]
+                mainMod = self.mods[row]
             except IndexError:
                 return
             if mainMod.isEmpty:
@@ -726,7 +726,7 @@ class FittingView(d.Display):
                 click=click))
 
             # update state tooltip
-            tooltip = self.activeColumns[col].getToolTip(self.mods[self.GetItemData(row)])
+            tooltip = self.activeColumns[col].getToolTip(self.mods[row])
             if tooltip:
                 self.SetToolTip(tooltip)
 

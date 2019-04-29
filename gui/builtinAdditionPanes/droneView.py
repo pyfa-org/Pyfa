@@ -103,7 +103,7 @@ class DroneView(Display):
                 self.hoveredColumn = col
                 if row != -1 and col != -1 and col < len(self.DEFAULT_COLS):
                     try:
-                        mod = self.drones[self.GetItemData(row)]
+                        mod = self.drones[row]
                     except IndexError:
                         return
                     if self.DEFAULT_COLS[col] == "Miscellanea":
@@ -242,7 +242,7 @@ class DroneView(Display):
             col = self.getColumn(event.Position)
             if col != self.getColIndex(State):
                 try:
-                    drone = self.drones[self.GetItemData(row)]
+                    drone = self.drones[row]
                 except IndexError:
                     return
                 if wx.GetMouseState().GetModifiers() == wx.MOD_ALT:
@@ -316,7 +316,7 @@ class DroneView(Display):
         drones = []
         for row in self.getSelectedRows():
             try:
-                drone = self.drones[self.GetItemData(row)]
+                drone = self.drones[row]
             except IndexError:
                 continue
             drones.append(drone)

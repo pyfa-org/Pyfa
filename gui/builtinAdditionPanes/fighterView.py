@@ -166,7 +166,7 @@ class FighterDisplay(d.Display):
                 self.hoveredColumn = col
                 if row != -1 and col != -1 and col < len(self.DEFAULT_COLS):
                     try:
-                        mod = self.fighters[self.GetItemData(row)]
+                        mod = self.fighters[row]
                     except IndexError:
                         return
                     if self.DEFAULT_COLS[col] == "Miscellanea":
@@ -292,7 +292,7 @@ class FighterDisplay(d.Display):
             if col != self.getColIndex(State):
                 mstate = wx.GetMouseState()
                 try:
-                    fighter = self.fighters[self.GetItemData(row)]
+                    fighter = self.fighters[row]
                 except IndexError:
                     return
                 if mstate.GetModifiers() == wx.MOD_ALT:
@@ -364,7 +364,7 @@ class FighterDisplay(d.Display):
         fighters = []
         for row in self.getSelectedRows():
             try:
-                fighter = self.fighters[self.GetItemData(row)]
+                fighter = self.fighters[row]
             except IndexError:
                 continue
             fighters.append(fighter)

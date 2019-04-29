@@ -19,17 +19,18 @@
 
 # noinspection PyPackageRequirements
 import wx
+
 import gui.display as d
-from gui.builtinMarketBrowser.events import ITEM_SELECTED
-import gui.mainFrame
-from gui.builtinViewColumns.state import State
-from gui.utils.staticHelpers import DragDropHelper
-from gui.contextMenu import ContextMenu
+import gui.fitCommands as cmd
 import gui.globalEvents as GE
+import gui.mainFrame
 from eos.const import ImplantLocation
+from gui.builtinMarketBrowser.events import ITEM_SELECTED
+from gui.builtinViewColumns.state import State
+from gui.contextMenu import ContextMenu
+from gui.utils.staticHelpers import DragDropHelper
 from service.fit import Fit
 from service.market import Market
-import gui.fitCommands as cmd
 
 
 class ImplantViewDrop(wx.DropTarget):
@@ -207,7 +208,7 @@ class ImplantDisplay(d.Display):
             col = self.getColumn(event.Position)
             if col != self.getColIndex(State):
                 try:
-                    implant = self.implants[self.GetItemData(row)]
+                    implant = self.implants[row]
                 except IndexError:
                     return
                 self.removeImplants([implant])
@@ -280,7 +281,7 @@ class ImplantDisplay(d.Display):
         implants = []
         for row in self.getSelectedRows():
             try:
-                implant = self.implants[self.GetItemData(row)]
+                implant = self.implants[row]
             except IndexError:
                 continue
             implants.append(implant)

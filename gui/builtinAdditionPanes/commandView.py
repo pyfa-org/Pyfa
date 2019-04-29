@@ -198,7 +198,7 @@ class CommandView(d.Display):
         row, _ = self.HitTest(event.Position)
         if row != -1:
             try:
-                commandFit = self.fits[self.GetItemData(row)]
+                commandFit = self.fits[row]
             except IndexError:
                 return
             self.removeCommandFits([commandFit])
@@ -215,7 +215,7 @@ class CommandView(d.Display):
         commandFits = []
         for row in self.getSelectedRows():
             try:
-                commandFit = self.fits[self.GetItemData(row)]
+                commandFit = self.fits[row]
             except IndexError:
                 continue
             commandFits.append(commandFit)

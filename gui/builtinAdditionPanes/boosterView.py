@@ -153,7 +153,7 @@ class BoosterView(d.Display):
             col = self.getColumn(event.Position)
             if col != self.getColIndex(State):
                 try:
-                    booster = self.boosters[self.GetItemData(row)]
+                    booster = self.boosters[row]
                 except IndexError:
                     return
                 self.removeBoosters([booster])
@@ -217,7 +217,7 @@ class BoosterView(d.Display):
         boosters = []
         for row in self.getSelectedRows():
             try:
-                booster = self.boosters[self.GetItemData(row)]
+                booster = self.boosters[row]
             except IndexError:
                 continue
             boosters.append(booster)

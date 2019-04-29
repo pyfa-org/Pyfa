@@ -170,7 +170,7 @@ class CargoView(d.Display):
         row, _ = self.HitTest(event.Position)
         if row != -1:
             try:
-                cargo = self.cargo[self.GetItemData(row)]
+                cargo = self.cargo[row]
             except IndexError:
                 return
             self.removeCargos([cargo])
@@ -205,7 +205,7 @@ class CargoView(d.Display):
         cargos = []
         for row in self.getSelectedRows():
             try:
-                cargo = self.cargo[self.GetItemData(row)]
+                cargo = self.cargo[row]
             except IndexError:
                 continue
             cargos.append(cargo)
