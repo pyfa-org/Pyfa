@@ -238,7 +238,7 @@ class ModifiedAttributeDict(collections.MutableMapping):
         if force is not None:
             if cappingValue is not None:
                 force = min(force, cappingValue)
-            if key in (50, 30, 48, 11):
+            if key in ("cpu", "power", "cpuOutput", "powerOutput"):
                 force = round(force, 2)
             return force
         # Grab our values if they're there, otherwise we'll take default values
@@ -293,7 +293,7 @@ class ModifiedAttributeDict(collections.MutableMapping):
         # Cap value if we have cap defined
         if cappingValue is not None:
             val = min(val, cappingValue)
-        if key in (50, 30, 48, 11):
+        if key in ("cpu", "power", "cpuOutput", "powerOutput"):
             val = round(val, 2)
         return val
 
