@@ -218,13 +218,13 @@ class ModifiedAttributeDict(collections.MutableMapping):
             if attrInfo is None:
                 cappingId = cappingAttrKeyCache[key] = None
             else:
-                # see GH issue #620
-                cappingId = cappingAttrKeyCache[key] = attrInfo.maxAttributeID
+                cappingId = attrInfo.maxAttributeID
             if cappingId is None:
                 cappingKey = None
             else:
                 cappingAttrInfo = getAttributeInfo(cappingId)
                 cappingKey = None if cappingAttrInfo is None else cappingAttrInfo.name
+                cappingAttrKeyCache[key] = cappingKey
 
         if cappingKey:
             cappingValue = self.original.get(cappingKey, self.__calculateValue(cappingKey))
