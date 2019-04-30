@@ -33,7 +33,7 @@ class PFListPane(wx.ScrolledWindow):
         self.SetBackgroundColour(wx.SystemSettings.GetColour(wx.SYS_COLOUR_WINDOW))
 
         self.SetVirtualSize((1, 1))
-        self.SetScrollRate(0, 1)
+        self.SetScrollRate(15, 15)
 
         self.Bind(wx.EVT_SCROLLWIN_LINEUP, self.MScrollUp)
         self.Bind(wx.EVT_SCROLLWIN_LINEDOWN, self.MScrollDown)
