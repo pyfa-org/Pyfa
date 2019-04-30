@@ -4,7 +4,7 @@ import eos.db
 import gui.mainFrame
 from gui import globalEvents as GE
 from gui.fitCommands.calc.module.localAdd import CalcAddLocalModuleCommand
-from gui.fitCommands.helpers import InternalCommandHistory, ModuleInfo
+from gui.fitCommands.helpers import InternalCommandHistory, ModuleInfo, restoreRemovedDummies
 from service.fit import Fit
 
 
@@ -15,6 +15,7 @@ class GuiFillWithNewLocalModulesCommand(wx.Command):
         self.internalHistory = InternalCommandHistory()
         self.fitID = fitID
         self.itemID = itemID
+        self.savedRemovedDummies = None
 
     def Do(self):
         info = ModuleInfo(itemID=self.itemID)
@@ -27,7 +28,7 @@ class GuiFillWithNewLocalModulesCommand(wx.Command):
         eos.db.commit()
         sFit = Fit.getInstance()
         sFit.recalc(self.fitID)
-        sFit.fill(self.fitID)
+        self.savedRemovedDummies = sFit.fill(self.fitID)
         success = added_modules > 0
         wx.PostEvent(
             gui.mainFrame.MainFrame.getInstance(),
@@ -37,9 +38,11 @@ class GuiFillWithNewLocalModulesCommand(wx.Command):
         return success
 
     def Undo(self):
+        sFit = Fit.getInstance()
+        fit = sFit.getFit(self.fitID)
+        restoreRemovedDummies(fit, self.savedRemovedDummies)
         success = self.internalHistory.undoAll()
         eos.db.commit()
-        sFit = Fit.getInstance()
         sFit.recalc(self.fitID)
         sFit.fill(self.fitID)
         wx.PostEvent(

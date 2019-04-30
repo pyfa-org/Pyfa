@@ -7,7 +7,7 @@ from gui.fitCommands.calc.cargo.add import CalcAddCargoCommand
 from gui.fitCommands.calc.cargo.remove import CalcRemoveCargoCommand
 from gui.fitCommands.calc.module.localRemove import CalcRemoveLocalModulesCommand
 from gui.fitCommands.calc.module.localReplace import CalcReplaceLocalModuleCommand
-from gui.fitCommands.helpers import CargoInfo, InternalCommandHistory, ModuleInfo
+from gui.fitCommands.helpers import CargoInfo, InternalCommandHistory, ModuleInfo, restoreRemovedDummies
 from service.fit import Fit
 
 
@@ -22,6 +22,7 @@ class GuiLocalModuleToCargoCommand(wx.Command):
         self.copy = copy
         self.removedModItemID = None
         self.addedModItemID = None
+        self.savedRemovedDummies = None
 
     def Do(self):
         fit = Fit.getInstance().getFit(self.fitID)
@@ -118,7 +119,7 @@ class GuiLocalModuleToCargoCommand(wx.Command):
         eos.db.commit()
         sFit = Fit.getInstance()
         sFit.recalc(self.fitID)
-        sFit.fill(self.fitID)
+        self.savedRemovedDummies = sFit.fill(self.fitID)
         events = []
         if self.removedModItemID is not None:
             events.append(GE.FitChanged(fitID=self.fitID, action='moddel', typeID=self.removedModItemID))
@@ -131,9 +132,11 @@ class GuiLocalModuleToCargoCommand(wx.Command):
         return success
 
     def Undo(self):
+        sFit = Fit.getInstance()
+        fit = sFit.getFit(self.fitID)
+        restoreRemovedDummies(fit, self.savedRemovedDummies)
         success = self.internalHistory.undoAll()
         eos.db.commit()
-        sFit = Fit.getInstance()
         sFit.recalc(self.fitID)
         sFit.fill(self.fitID)
         events = []

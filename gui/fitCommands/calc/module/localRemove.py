@@ -3,7 +3,7 @@ from logbook import Logger
 
 import eos.db
 from eos.const import FittingSlot
-from gui.fitCommands.helpers import ModuleInfo, restoreCheckedStates, restoreRemovedDummies
+from gui.fitCommands.helpers import ModuleInfo, restoreCheckedStates
 from service.fit import Fit
 
 
@@ -19,7 +19,6 @@ class CalcRemoveLocalModulesCommand(wx.Command):
         self.commit = commit
         self.savedSubInfos = None
         self.savedModInfos = None
-        self.savedRemovedDummies = None
         self.savedStateCheckChanges = None
 
     def Do(self):
@@ -44,7 +43,7 @@ class CalcRemoveLocalModulesCommand(wx.Command):
         # Need to flush because checkStates sometimes relies on module->fit
         # relationship via .owner attribute, which is handled by SQLAlchemy
         eos.db.flush()
-        self.savedRemovedDummies = sFit.recalc(fit)
+        sFit.recalc(fit)
         self.savedStateCheckChanges = sFit.checkStates(fit, None)
         if self.commit:
             eos.db.commit()
@@ -70,7 +69,6 @@ class CalcRemoveLocalModulesCommand(wx.Command):
             results.append(cmd.Do())
         if not any(results):
             return False
-        restoreRemovedDummies(fit, self.savedRemovedDummies)
         restoreCheckedStates(fit, self.savedStateCheckChanges)
         if self.commit:
             eos.db.commit()

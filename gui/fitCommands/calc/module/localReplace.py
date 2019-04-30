@@ -3,7 +3,7 @@ from logbook import Logger
 
 import eos.db
 from eos.exception import HandledListActionError
-from gui.fitCommands.helpers import ModuleInfo, restoreCheckedStates, restoreRemovedDummies, stateLimit
+from gui.fitCommands.helpers import ModuleInfo, restoreCheckedStates, stateLimit
 from service.fit import Fit
 
 
@@ -21,7 +21,6 @@ class CalcReplaceLocalModuleCommand(wx.Command):
         self.unloadInvalidCharges = unloadInvalidCharges
         self.commit = commit
         self.savedStateCheckChanges = None
-        self.savedRemovedDummies = None
         self.unloadedCharge = None
 
     def Do(self):
@@ -62,7 +61,7 @@ class CalcReplaceLocalModuleCommand(wx.Command):
         # Need to flush because checkStates sometimes relies on module->fit
         # relationship via .owner attribute, which is handled by SQLAlchemy
         eos.db.flush()
-        self.savedRemovedDummies = sFit.recalc(fit)
+        sFit.recalc(fit)
         self.savedStateCheckChanges = sFit.checkStates(fit, newMod)
         if self.commit:
             eos.db.commit()
@@ -97,7 +96,6 @@ class CalcReplaceLocalModuleCommand(wx.Command):
             pyfalog.warning('Failed to replace in list')
             self.Do()
             return False
-        restoreRemovedDummies(fit, self.savedRemovedDummies)
         restoreCheckedStates(fit, self.savedStateCheckChanges)
         if self.commit:
             eos.db.commit()

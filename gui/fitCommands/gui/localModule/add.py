@@ -3,7 +3,7 @@ import wx
 import gui.mainFrame
 from gui import globalEvents as GE
 from gui.fitCommands.calc.module.localAdd import CalcAddLocalModuleCommand
-from gui.fitCommands.helpers import InternalCommandHistory, ModuleInfo
+from gui.fitCommands.helpers import InternalCommandHistory, ModuleInfo, restoreRemovedDummies
 from service.fit import Fit
 
 
@@ -14,13 +14,14 @@ class GuiAddLocalModuleCommand(wx.Command):
         self.internalHistory = InternalCommandHistory()
         self.fitID = fitID
         self.itemID = itemID
+        self.savedRemovedDummies = None
 
     def Do(self):
         cmd = CalcAddLocalModuleCommand(fitID=self.fitID, newModInfo=ModuleInfo(itemID=self.itemID))
         success = self.internalHistory.submit(cmd)
         sFit = Fit.getInstance()
         sFit.recalc(self.fitID)
-        sFit.fill(self.fitID)
+        self.savedRemovedDummies = sFit.fill(self.fitID)
         wx.PostEvent(
             gui.mainFrame.MainFrame.getInstance(),
             GE.FitChanged(fitID=self.fitID, action='modadd', typeID=self.itemID)
@@ -29,8 +30,10 @@ class GuiAddLocalModuleCommand(wx.Command):
         return success
 
     def Undo(self):
-        success = self.internalHistory.undoAll()
         sFit = Fit.getInstance()
+        fit = sFit.getFit(self.fitID)
+        restoreRemovedDummies(fit, self.savedRemovedDummies)
+        success = self.internalHistory.undoAll()
         sFit.recalc(self.fitID)
         sFit.fill(self.fitID)
         wx.PostEvent(

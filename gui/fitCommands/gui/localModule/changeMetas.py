@@ -4,7 +4,7 @@ import eos.db
 import gui.mainFrame
 from gui import globalEvents as GE
 from gui.fitCommands.calc.module.localReplace import CalcReplaceLocalModuleCommand
-from gui.fitCommands.helpers import InternalCommandHistory, ModuleInfo
+from gui.fitCommands.helpers import InternalCommandHistory, ModuleInfo, restoreRemovedDummies
 from service.fit import Fit
 
 
@@ -17,6 +17,7 @@ class GuiChangeLocalModuleMetasCommand(wx.Command):
         self.positions = positions
         self.newItemID = newItemID
         self.relacedItemIDs = None
+        self.savedRemovedDummies = None
 
     def Do(self):
         sFit = Fit.getInstance()
@@ -44,7 +45,7 @@ class GuiChangeLocalModuleMetasCommand(wx.Command):
         success = self.internalHistory.submitBatch(*commands)
         eos.db.commit()
         sFit.recalc(self.fitID)
-        sFit.fill(self.fitID)
+        self.savedRemovedDummies = sFit.fill(self.fitID)
         events = []
         if success and self.replacedItemIDs:
             events.append(GE.FitChanged(fitID=self.fitID, action='moddel', typeID=self.replacedItemIDs))
@@ -57,9 +58,11 @@ class GuiChangeLocalModuleMetasCommand(wx.Command):
         return success
 
     def Undo(self):
+        sFit = Fit.getInstance()
+        fit = sFit.getFit(self.fitID)
+        restoreRemovedDummies(fit, self.savedRemovedDummies)
         success = self.internalHistory.undoAll()
         eos.db.commit()
-        sFit = Fit.getInstance()
         sFit.recalc(self.fitID)
         sFit.fill(self.fitID)
         events = []
