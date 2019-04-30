@@ -236,8 +236,14 @@ class Port(object):
             return "EFT", (cls.importEft(lines),)
 
         # Check if string is in DNA format
-        if re.match("\d+(:\d+(;\d+))*::", firstLine):
+        dnaPattern = "\d+(:\d+(;\d+))*::"
+        if re.match(dnaPattern, firstLine):
             return "DNA", (cls.importDna(string),)
+        dnaChatPattern = "<url=fitting:(?P<dna>{})>(?P<fitName>[^<>]+)</url>".format(dnaPattern)
+        m = re.match(dnaChatPattern, firstLine)
+        if m:
+            return "DNA", (cls.importDna(m.group("dna"), fitName=m.group("fitName")),)
+
 
         # Assume that we import stand-alone abyssal module if all else fails
         if activeFit is not None:
@@ -262,8 +268,8 @@ class Port(object):
 
     # DNA-related methods
     @staticmethod
-    def importDna(string):
-        return importDna(string)
+    def importDna(string, fitName=None):
+        return importDna(string, fitName=fitName)
 
     @staticmethod
     def exportDna(fit, callback=None):

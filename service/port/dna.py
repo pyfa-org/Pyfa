@@ -38,7 +38,7 @@ from service.market import Market
 pyfalog = Logger(__name__)
 
 
-def importDna(string):
+def importDna(string, fitName=None):
     sMkt = Market.getInstance()
 
     ids = list(map(int, re.findall(r'\d+', string)))
@@ -65,7 +65,10 @@ def importDna(string):
             f.ship = Ship(sMkt.getItem(int(info[0])))
         except ValueError:
             f.ship = Citadel(sMkt.getItem(int(info[0])))
-        f.name = "{0} - DNA Imported".format(f.ship.item.name)
+        if fitName is None:
+            f.name = "{0} - DNA Imported".format(f.ship.item.name)
+        else:
+            f.name = fitName
     except UnicodeEncodeError:
         def logtransform(s_):
             if len(s_) > 10:
