@@ -258,6 +258,35 @@ class Miscellanea(ViewColumn):
 
             tooltip = "{0} disruption".format(formatList(ttEntries)).capitalize()
             return text, tooltip
+        elif itemGroup in ("Gyrostabilizer", "Magnetic Field Stabilizer", "Heat Sink", "Ballistic Control system", "Entropic Radiation Sink"):
+            attrMap = {
+                "Gyrostabilizer": ("damageMultiplier", "speedMultiplier", "Projectile weapon"),
+                "Magnetic Field Stabilizer": ("damageMultiplier", "speedMultiplier", "Hybrid weapon"),
+                "Heat Sink": ("damageMultiplier", "speedMultiplier", "Energy weapon"),
+                "Ballistic Control system": ("missileDamageMultiplierBonus", "speedMultiplier", "Missile"),
+                "Entropic Radiation Sink": ("damageMultiplier", "speedMultiplier", "Precursor weapon")}
+            dmgAttr, rofAttr, weaponName = attrMap[itemGroup]
+            dmg = stuff.getModifiedItemAttr(dmgAttr)
+            rof = stuff.getModifiedItemAttr(rofAttr)
+            if not dmg or not rof:
+                return "", None
+            texts = []
+            tooltips = []
+            cumulative = (dmg / rof - 1) * 100
+            texts.append("{}%".format(formatAmount(cumulative, 3, 0, 3, forceSign=True)))
+            tooltips.append("{} DPS boost".format(weaponName))
+            droneDmg = stuff.getModifiedItemAttr("droneDamageBonus")
+            if droneDmg:
+                texts.append("{}%".format(formatAmount(droneDmg, 3, 0, 3, forceSign=True)))
+                tooltips.append("drone DPS boost".format(weaponName))
+            return ' | '.join(texts), ' and '.join(tooltips)
+        elif itemGroup == "Drone Damage Modules":
+            dmg = stuff.getModifiedItemAttr("droneDamageBonus")
+            if not dmg:
+                return
+            text = "{}%".format(formatAmount(dmg, 3, 0, 3, forceSign=True))
+            tooltip = "Drone DPS boost"
+            return text, tooltip
         elif itemGroup in ("ECM", "Burst Jammer", "Burst Projectors"):
             grav = stuff.getModifiedItemAttr("scanGravimetricStrengthBonus")
             ladar = stuff.getModifiedItemAttr("scanLadarStrengthBonus")
