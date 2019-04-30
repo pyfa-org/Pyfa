@@ -155,9 +155,21 @@ class DroneView(Display):
         """
         if data[0] == "drone":
             srcRow = int(data[1])
-            dstRow, _ = self.HitTest((x, y))
-            if srcRow != -1 and dstRow != -1:
-                self._merge(srcRow, dstRow)
+            if srcRow != -1:
+                if wx.GetMouseState().GetModifiers() == wx.MOD_CONTROL:
+                    try:
+                        srcDrone = self.drones[srcRow]
+                    except IndexError:
+                        return
+                    if srcDrone not in self.original:
+                        return
+                    self.mainFrame.command.Submit(cmd.GuiCloneLocalDroneCommand(
+                        fitID=self.mainFrame.getActiveFit(),
+                        position=self.original.index(srcDrone)))
+                else:
+                    dstRow, _ = self.HitTest((x, y))
+                    if dstRow != -1:
+                        self._merge(srcRow, dstRow)
         elif data[0] == "market":
             wx.PostEvent(self.mainFrame, ItemSelected(itemID=int(data[1])))
 

@@ -22,6 +22,7 @@ from .gui.itemsRebase import GuiRebaseItemsCommand
 from .gui.localDrone.add import GuiAddLocalDroneCommand
 from .gui.localDrone.changeAmount import GuiChangeLocalDroneAmountCommand
 from .gui.localDrone.changeMetas import GuiChangeLocalDroneMetasCommand
+from .gui.localDrone.clone import GuiCloneLocalDroneCommand
 from .gui.localDrone.remove import GuiRemoveLocalDronesCommand
 from .gui.localDrone.stackSplit import GuiSplitLocalDroneStackCommand
 from .gui.localDrone.stacksMerge import GuiMergeLocalDroneStacksCommand
