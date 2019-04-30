@@ -414,31 +414,18 @@ class SkillTreeView(wx.Panel):
         self.charEditor.entityEditor.Bind(wx.EVT_CHOICE, self.charChanged)
         self.charEditor.Bind(GE.CHAR_LIST_UPDATED, self.populateSkillTree)
 
-        srcContext = "skillItem"
-        itemContext = "Skill"
-        context = (srcContext, itemContext)
-        self.statsMenu = ContextMenu.getMenu(None, None, context)
-        self.levelChangeMenu = ContextMenu.getMenu(None, None, context) or wx.Menu()
-        self.levelChangeMenu.AppendSeparator()
+        # Context menu stuff
+        self.idUnlearned = wx.NewId()
         self.levelIds = {}
-
-        idUnlearned = wx.NewId()
-        self.levelIds[idUnlearned] = "Not learned"
-        self.levelChangeMenu.Append(idUnlearned, "Unlearn")
-
+        self.idLevels = {}
+        self.levelIds[self.idUnlearned] = "Not learned"
         for level in range(6):
             id = wx.NewId()
             self.levelIds[id] = level
-            self.levelChangeMenu.Append(id, "Level %d" % level)
-
-        self.levelChangeMenu.AppendSeparator()
+            self.idLevels[level] = id
         self.revertID = wx.NewId()
-        self.levelChangeMenu.Append(self.revertID, "Revert")
-
         self.saveID = wx.NewId()
-        self.levelChangeMenu.Append(self.saveID, "Save")
 
-        self.levelChangeMenu.Bind(wx.EVT_MENU, self.changeLevel)
         self.SetSizer(pmainSizer)
 
         # This cuases issues with GTK, see #1866
@@ -607,15 +594,27 @@ class SkillTreeView(wx.Panel):
         if thing:
             return
 
-        char = self.charEditor.entityEditor.getActiveEntity()
-        sMkt = Market.getInstance()
         id = self.skillTreeListCtrl.GetItemData(item)[1]
+        eveItem = Market.getInstance().getItem(id)
+
+        srcContext = "skillItem"
+        itemContext = "Skill"
+        context = (srcContext, itemContext)
+        menu = ContextMenu.getMenu(eveItem, [eveItem], context)
+        char = self.charEditor.entityEditor.getActiveEntity()
         if char.name not in ("All 0", "All 5"):
-            self.levelChangeMenu.selection = sMkt.getItem(id)
-            self.PopupMenu(self.levelChangeMenu)
-        else:
-            self.statsMenu.selection = sMkt.getItem(id)
-            self.PopupMenu(self.statsMenu)
+            menu.AppendSeparator()
+            menu.Append(self.idUnlearned, "Unlearn")
+            for level in range(6):
+                menu.Append(self.idLevels[level], "Level %d" % level)
+            # Doesn't make sense to have these menu items here, as they do not revert skill changes
+            # done in an editor - because these changes are persisted anyway
+            # menu.AppendSeparator()
+            # menu.Append(self.revertID, "Revert")
+            # menu.Append(self.saveID, "Save")
+            menu.Bind(wx.EVT_MENU, self.changeLevel)
+
+        self.PopupMenu(menu)
 
     def changeLevel(self, event):
         level = self.levelIds.get(event.Id)
