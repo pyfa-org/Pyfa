@@ -37,6 +37,7 @@ class MarketTree(wx.TreeCtrl):
 
         # Bind our lookup method to when the tree gets expanded
         self.Bind(wx.EVT_TREE_ITEM_EXPANDING, self.expandLookup)
+        self.Bind(wx.EVT_TREE_ITEM_COLLAPSED, self.OnCollapsed)
 
     def addImage(self, iconFile, location="icons"):
         if iconFile is None:
@@ -70,6 +71,10 @@ class MarketTree(wx.TreeCtrl):
                     self.AppendItem(childId, "dummy")
 
             self.SortChildren(root)
+
+    def OnCollapsed(self, event):
+        self.CollapseAllChildren(event.Item)
+        event.Skip()
 
     def jump(self, item):
         """Open market group and meta tab of given item"""
