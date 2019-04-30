@@ -240,7 +240,7 @@ class Port(object):
         if re.match(dnaPattern, firstLine):
             return "DNA", (cls.importDna(string),)
         dnaChatPattern = "<url=fitting:(?P<dna>{})>(?P<fitName>[^<>]+)</url>".format(dnaPattern)
-        m = re.match(dnaChatPattern, firstLine)
+        m = re.search(dnaChatPattern, firstLine)
         if m:
             return "DNA", (cls.importDna(m.group("dna"), fitName=m.group("fitName")),)
 
