@@ -12,7 +12,7 @@ pyfalog = Logger(__name__)
 
 class CalcReplaceLocalModuleCommand(wx.Command):
 
-    def __init__(self, fitID, position, newModInfo, unloadInvalidCharges=False, commit=True, fill=True):
+    def __init__(self, fitID, position, newModInfo, unloadInvalidCharges=False, commit=True):
         wx.Command.__init__(self, True, 'Replace Module')
         self.fitID = fitID
         self.position = position
@@ -20,7 +20,6 @@ class CalcReplaceLocalModuleCommand(wx.Command):
         self.oldModInfo = None
         self.unloadInvalidCharges = unloadInvalidCharges
         self.commit = commit
-        self.fill = fill
         self.savedStateCheckChanges = None
         self.savedRemovedDummies = None
         self.unloadedCharge = None
@@ -63,7 +62,7 @@ class CalcReplaceLocalModuleCommand(wx.Command):
         # Need to flush because checkStates sometimes relies on module->fit
         # relationship via .owner attribute, which is handled by SQLAlchemy
         eos.db.flush()
-        self.savedRemovedDummies = sFit.recalc(fit, fill=self.fill)
+        self.savedRemovedDummies = sFit.recalc(fit)
         self.savedStateCheckChanges = sFit.checkStates(fit, newMod)
         if self.commit:
             eos.db.commit()

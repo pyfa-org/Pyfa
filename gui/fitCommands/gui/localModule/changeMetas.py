@@ -43,7 +43,8 @@ class GuiChangeLocalModuleMetasCommand(wx.Command):
             return False
         success = self.internalHistory.submitBatch(*commands)
         eos.db.commit()
-        sFit.recalc(fit)
+        sFit.recalc(self.fitID)
+        sFit.fill(self.fitID)
         events = []
         if success and self.replacedItemIDs:
             events.append(GE.FitChanged(fitID=self.fitID, action='moddel', typeID=self.replacedItemIDs))
@@ -58,7 +59,9 @@ class GuiChangeLocalModuleMetasCommand(wx.Command):
     def Undo(self):
         success = self.internalHistory.undoAll()
         eos.db.commit()
-        Fit.getInstance().recalc(self.fitID)
+        sFit = Fit.getInstance()
+        sFit.recalc(self.fitID)
+        sFit.fill(self.fitID)
         events = []
         if success:
             events.append(GE.FitChanged(fitID=self.fitID, action='moddel', typeID=self.newItemID))

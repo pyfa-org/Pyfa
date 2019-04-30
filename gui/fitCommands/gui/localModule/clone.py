@@ -24,7 +24,8 @@ class GuiCloneLocalModuleCommand(wx.Command):
         cmd = CalcCloneLocalModuleCommand(fitID=self.fitID, srcPosition=self.srcPosition, dstPosition=self.dstPosition)
         success = self.internalHistory.submit(cmd)
         fit = sFit.getFit(self.fitID)
-        sFit.recalc(fit)
+        sFit.recalc(self.fitID)
+        sFit.fill(self.fitID)
         self.savedItemID = fit.modules[self.srcPosition].itemID
         if success and self.savedItemID is not None:
             event = GE.FitChanged(fitID=self.fitID, action='modadd', typeID=self.savedItemID)
@@ -35,7 +36,9 @@ class GuiCloneLocalModuleCommand(wx.Command):
 
     def Undo(self):
         success = self.internalHistory.undoAll()
-        Fit.getInstance().recalc(self.fitID)
+        sFit = Fit.getInstance()
+        sFit.recalc(self.fitID)
+        sFit.fill(self.fitID)
         if success and self.savedItemID is not None:
             event = GE.FitChanged(fitID=self.fitID, action='moddel', typeID=self.savedItemID)
         else:

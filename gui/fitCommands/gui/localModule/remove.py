@@ -23,6 +23,7 @@ class GuiRemoveLocalModuleCommand(wx.Command):
         cmd = CalcRemoveLocalModulesCommand(fitID=self.fitID, positions=self.positions)
         success = self.internalHistory.submit(cmd)
         sFit.recalc(self.fitID)
+        sFit.fill(self.fitID)
         wx.PostEvent(
             gui.mainFrame.MainFrame.getInstance(),
             GE.FitChanged(fitID=self.fitID, action='moddel', typeID=self.savedTypeIDs)
@@ -32,7 +33,9 @@ class GuiRemoveLocalModuleCommand(wx.Command):
 
     def Undo(self):
         success = self.internalHistory.undoAll()
-        Fit.getInstance().recalc(self.fitID)
+        sFit = Fit.getInstance()
+        sFit.recalc(self.fitID)
+        sFit.fill(self.fitID)
         wx.PostEvent(
             gui.mainFrame.MainFrame.getInstance(),
             GE.FitChanged(fitID=self.fitID, action='modadd', typeID=self.savedTypeIDs)

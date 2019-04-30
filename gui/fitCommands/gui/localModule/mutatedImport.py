@@ -22,7 +22,9 @@ class GuiImportLocalMutatedModuleCommand(wx.Command):
     def Do(self):
         cmd = CalcAddLocalModuleCommand(fitID=self.fitID, newModInfo=self.newModInfo)
         success = self.internalHistory.submit(cmd)
-        Fit.getInstance().recalc(self.fitID)
+        sFit = Fit.getInstance()
+        sFit.recalc(self.fitID)
+        sFit.fill(self.fitID)
         wx.PostEvent(
             gui.mainFrame.MainFrame.getInstance(),
             GE.FitChanged(fitID=self.fitID, action='modadd', typeID=self.newModInfo.itemID))
@@ -30,7 +32,9 @@ class GuiImportLocalMutatedModuleCommand(wx.Command):
 
     def Undo(self):
         success = self.internalHistory.undoAll()
-        Fit.getInstance().recalc(self.fitID)
+        sFit = Fit.getInstance()
+        sFit.recalc(self.fitID)
+        sFit.fill(self.fitID)
         wx.PostEvent(
             gui.mainFrame.MainFrame.getInstance(),
             GE.FitChanged(fitID=self.fitID, action='moddel', typeID=self.newModInfo.itemID))

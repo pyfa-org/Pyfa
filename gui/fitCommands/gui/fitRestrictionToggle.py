@@ -16,7 +16,8 @@ class GuiToggleFittingRestrictionsCommand(wx.Command):
         self.fitID = fitID
 
     def Do(self):
-        fit = Fit.getInstance().getFit(self.fitID)
+        sFit = Fit.getInstance()
+        fit = sFit.getFit(self.fitID)
         fit.ignoreRestrictions = not fit.ignoreRestrictions
 
         success = True
@@ -30,7 +31,8 @@ class GuiToggleFittingRestrictionsCommand(wx.Command):
                 success = any(results)
 
         eos.db.commit()
-        Fit.getInstance().recalc(self.fitID)
+        sFit.recalc(self.fitID)
+        sFit.fill(self.fitID)
         wx.PostEvent(gui.mainFrame.MainFrame.getInstance(), GE.FitChanged(fitID=self.fitID))
         return success
 
@@ -41,5 +43,6 @@ class GuiToggleFittingRestrictionsCommand(wx.Command):
         success = self.internalHistory.undoAll()
         eos.db.commit()
         sFit.recalc(self.fitID)
+        sFit.fill(self.fitID)
         wx.PostEvent(gui.mainFrame.MainFrame.getInstance(), GE.FitChanged(fitID=self.fitID))
         return success

@@ -19,12 +19,16 @@ class GuiChangeLocalModuleChargesCommand(wx.Command):
     def Do(self):
         cmd = CalcChangeModuleChargesCommand(fitID=self.fitID, projected=False, chargeMap={p: self.chargeItemID for p in self.positions})
         success = self.internalHistory.submit(cmd)
-        Fit.getInstance().recalc(self.fitID)
+        sFit = Fit.getInstance()
+        sFit.recalc(self.fitID)
+        sFit.fill(self.fitID)
         wx.PostEvent(gui.mainFrame.MainFrame.getInstance(), GE.FitChanged(fitID=self.fitID))
         return success
 
     def Undo(self):
         success = self.internalHistory.undoAll()
-        Fit.getInstance().recalc(self.fitID)
+        sFit = Fit.getInstance()
+        sFit.recalc(self.fitID)
+        sFit.fill(self.fitID)
         wx.PostEvent(gui.mainFrame.MainFrame.getInstance(), GE.FitChanged(fitID=self.fitID))
         return success

@@ -22,7 +22,9 @@ class GuiAddImplantSetCommand(wx.Command):
             cmd = CalcAddImplantCommand(fitID=self.fitID, implantInfo=ImplantInfo(itemID=itemID), commit=False)
             results.append(self.internalHistory.submit(cmd))
         eos.db.commit()
-        Fit.getInstance().recalc(self.fitID)
+        sFit = Fit.getInstance()
+        sFit.recalc(self.fitID)
+        sFit.fill(self.fitID)
         wx.PostEvent(gui.mainFrame.MainFrame.getInstance(), GE.FitChanged(fitID=self.fitID))
         # Some might fail, as we already might have these implants
         return any(results)
@@ -30,6 +32,8 @@ class GuiAddImplantSetCommand(wx.Command):
     def Undo(self):
         success = self.internalHistory.undoAll()
         eos.db.commit()
-        Fit.getInstance().recalc(self.fitID)
+        sFit = Fit.getInstance()
+        sFit.recalc(self.fitID)
+        sFit.fill(self.fitID)
         wx.PostEvent(gui.mainFrame.MainFrame.getInstance(), GE.FitChanged(fitID=self.fitID))
         return success

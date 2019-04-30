@@ -112,7 +112,9 @@ def importDna(string):
                         moduleList.append(m)
 
     # Recalc to get slot numbers correct for T3 cruisers
-    svcFit.getInstance().recalc(f)
+    sFit = svcFit.getInstance()
+    sFit.recalc(f)
+    sFit.fill(f)
 
     for module in moduleList:
         if module.fits(f):

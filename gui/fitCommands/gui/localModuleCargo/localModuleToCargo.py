@@ -116,7 +116,9 @@ class GuiLocalModuleToCargoCommand(wx.Command):
                     commit=False))
             success = self.internalHistory.submitBatch(*commands)
         eos.db.commit()
-        Fit.getInstance().recalc(self.fitID)
+        sFit = Fit.getInstance()
+        sFit.recalc(self.fitID)
+        sFit.fill(self.fitID)
         events = []
         if self.removedModItemID is not None:
             events.append(GE.FitChanged(fitID=self.fitID, action='moddel', typeID=self.removedModItemID))
@@ -131,7 +133,9 @@ class GuiLocalModuleToCargoCommand(wx.Command):
     def Undo(self):
         success = self.internalHistory.undoAll()
         eos.db.commit()
-        Fit.getInstance().recalc(self.fitID)
+        sFit = Fit.getInstance()
+        sFit.recalc(self.fitID)
+        sFit.fill(self.fitID)
         events = []
         if self.addedModItemID is not None:
             events.append(GE.FitChanged(fitID=self.fitID, action='moddel', typeID=self.addedModItemID))

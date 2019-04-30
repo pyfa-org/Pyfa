@@ -205,7 +205,9 @@ def importESI(string):
             continue
 
     # Recalc to get slot numbers correct for T3 cruisers
-    svcFit.getInstance().recalc(fitobj)
+    sFit = svcFit.getInstance()
+    sFit.recalc(fitobj)
+    sFit.fill(fitobj)
 
     for module in moduleList:
         if module.fits(fitobj):

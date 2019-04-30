@@ -65,12 +65,15 @@ class GuiRebaseItemsCommand(wx.Command):
                 self.internalHistory.submitBatch(cmdRemove, cmdAdd)
         eos.db.commit()
         sFit.recalc(fit)
+        sFit.fill(self.fitID)
         wx.PostEvent(gui.mainFrame.MainFrame.getInstance(), GE.FitChanged(fitID=self.fitID))
         return len(self.internalHistory) > 0
 
     def Undo(self):
+        sFit = Fit.getInstance()
         success = self.internalHistory.undoAll()
         eos.db.commit()
-        Fit.getInstance().recalc(self.fitID)
+        sFit.recalc(self.fitID)
+        sFit.fill(self.fitID)
         wx.PostEvent(gui.mainFrame.MainFrame.getInstance(), GE.FitChanged(fitID=self.fitID))
         return success

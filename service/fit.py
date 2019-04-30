@@ -34,7 +34,6 @@ from eos.saveddata.fit import Fit as FitType
 from eos.saveddata.ship import Ship as es_Ship
 from service.character import Character
 from service.damagePattern import DamagePattern
-from service.fitDeprecated import FitDeprecated
 from service.settings import SettingsProvider
 from utils.deprecated import deprecated
 
@@ -56,7 +55,7 @@ class DeferRecalc:
 
 
 # inherits from FitDeprecated so that I can move all the dead shit, but not affect functionality
-class Fit(FitDeprecated):
+class Fit:
     instance = None
     processors = {}
 
@@ -178,6 +177,7 @@ class Fit(FitDeprecated):
         fit.implantLocation = ImplantLocation.CHARACTER if useCharImplants else ImplantLocation.FIT
         eos.db.save(fit)
         self.recalc(fit)
+        self.fill(fit)
         return fit.ID
 
     @staticmethod
@@ -281,6 +281,7 @@ class Fit(FitDeprecated):
 
         if not fit.calculated:
             self.recalc(fit)
+            self.fill(fit)
 
     def getFit(self, fitID, projected=False, basic=False):
         """
@@ -307,7 +308,7 @@ class Fit(FitDeprecated):
                 for fitP in fit.projectedFits:
                     self.getFit(fitP.ID, projected=True)
                 self.recalc(fit)
-                fit.fill()
+                self.fill(fit)
 
                 # this will loop through modules and set their restriction flag (set in m.fit())
                 if fit.ignoreRestrictions:
@@ -357,6 +358,7 @@ class Fit(FitDeprecated):
         fit = eos.db.getFit(fitID)
         fit.character = self.character = eos.db.getCharacter(charID)
         self.recalc(fit)
+        self.fill(fit)
 
     @staticmethod
     def getTargetResists(fitID):
@@ -469,8 +471,9 @@ class Fit(FitDeprecated):
         fit = eos.db.getFit(fitID)
         eos.db.commit()
         self.recalc(fit)
+        self.fill(fit)
 
-    def recalc(self, fit, fill=True):
+    def recalc(self, fit):
         if isinstance(fit, int):
             fit = self.getFit(fit)
         start_time = time()
@@ -480,9 +483,9 @@ class Fit(FitDeprecated):
         fit.clear()
 
         fit.calculateModifiedAttributes()
-        if fill:
-            removedDummies = fit.fill()
-        else:
-            removedDummies = {}
         pyfalog.info("=" * 10 + "recalc time: " + str(time() - start_time) + "=" * 10)
-        return removedDummies
+
+    def fill(self, fit):
+        if isinstance(fit, int):
+            fit = self.getFit(fit)
+        return fit.fill()
