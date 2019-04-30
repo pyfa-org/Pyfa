@@ -28896,7 +28896,7 @@ class Effect6581(BaseEffect):
 
     @staticmethod
     def handler(fit, src, context):
-        # Remote effect bonuses (duration / amount / range / fallout)
+        # Remote effect bonuses (duration / amount / range / falloff)
         for skill, amtAttr, stack in (
                 ('Capital Remote Armor Repair Systems', 'armorDamageAmount', True),
                 ('Capital Shield Emission Systems', 'shieldBonus', True),
@@ -28912,14 +28912,15 @@ class Effect6581(BaseEffect):
             fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill(skill), 'falloffEffectiveness',
                                           src.getModifiedItemAttr('siegeRemoteLogisticsRangeBonus'), stackingPenalties=True)
 
-        # Local armor/shield rep effects (duration / amoutn)
+        # Local armor/shield rep effects (duration / amount)
         for skill, amtAttr in (
                 ('Capital Shield Operation', 'shieldBonus'),
                 ('Capital Repair Systems', 'armorDamageAmount')):
             fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill(skill), 'duration',
                                           src.getModifiedItemAttr('siegeLocalLogisticsDurationBonus'))
             fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill(skill), amtAttr,
-                                          src.getModifiedItemAttr('siegeLocalLogisticsAmountBonus'))
+                                          src.getModifiedItemAttr('siegeLocalLogisticsAmountBonus'),
+                                          stackingPenalties=True)
 
         # Speed bonus
         fit.ship.boostItemAttr('maxVelocity', src.getModifiedItemAttr('speedFactor'), stackingPenalties=True)
