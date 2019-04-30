@@ -35,6 +35,7 @@ class GuiChangeLocalFighterMetasCommand(wx.Command):
             cmdAdd = CalcAddLocalFighterCommand(
                 fitID=self.fitID,
                 fighterInfo=info,
+                ignoreRestrictions=True,
                 commit=False)
             results.append(self.internalHistory.submitBatch(cmdRemove, cmdAdd))
         success = any(results)

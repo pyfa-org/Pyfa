@@ -39,6 +39,7 @@ class GuiChangeLocalDroneMetasCommand(wx.Command):
                 fitID=self.fitID,
                 droneInfo=info,
                 forceNewStack=True,
+                ignoreRestrictions=True,
                 commit=False)
             results.append(self.internalHistory.submitBatch(cmdRemove, cmdAdd))
         success = any(results)

@@ -11,11 +11,12 @@ pyfalog = Logger(__name__)
 
 class CalcAddLocalFighterCommand(wx.Command):
 
-    def __init__(self, fitID, fighterInfo, position=None, commit=True):
+    def __init__(self, fitID, fighterInfo, position=None, ignoreRestrictions=False, commit=True):
         wx.Command.__init__(self, True, 'Add Fighter')
         self.fitID = fitID
         self.fighterInfo = fighterInfo
         self.position = position
+        self.ignoreRestrictions = ignoreRestrictions
         self.commit = commit
 
     def Do(self):
@@ -25,7 +26,7 @@ class CalcAddLocalFighterCommand(wx.Command):
             return False
 
         fit = Fit.getInstance().getFit(self.fitID)
-        if not fighter.fits(fit):
+        if not self.ignoreRestrictions and not fighter.fits(fit):
             pyfalog.warning('Fighter does not fit')
             return False
 

@@ -12,13 +12,14 @@ pyfalog = Logger(__name__)
 
 class CalcReplaceLocalModuleCommand(wx.Command):
 
-    def __init__(self, fitID, position, newModInfo, unloadInvalidCharges=False, commit=True):
+    def __init__(self, fitID, position, newModInfo, unloadInvalidCharges=False, ignoreRestrictions=False, commit=True):
         wx.Command.__init__(self, True, 'Replace Module')
         self.fitID = fitID
         self.position = position
         self.newModInfo = newModInfo
         self.oldModInfo = None
         self.unloadInvalidCharges = unloadInvalidCharges
+        self.ignoreRestrictions = ignoreRestrictions
         self.commit = commit
         self.savedStateCheckChanges = None
         self.unloadedCharge = None
@@ -40,11 +41,11 @@ class CalcReplaceLocalModuleCommand(wx.Command):
             return False
         # Dummy it out in case the next bit fails
         fit.modules.free(self.position)
-        if not newMod.fits(fit):
+        if not self.ignoreRestrictions and not newMod.fits(fit):
             pyfalog.warning('Module does not fit')
             self.Undo()
             return False
-        if not newMod.isValidCharge(newMod.charge):
+        if not not self.ignoreRestrictions and not newMod.isValidCharge(newMod.charge):
             if self.unloadInvalidCharges:
                 newMod.charge = None
                 self.unloadedCharge = True
@@ -86,10 +87,6 @@ class CalcReplaceLocalModuleCommand(wx.Command):
         if oldMod is None:
             return False
         fit.modules.free(self.position)
-        if not oldMod.fits(fit):
-            pyfalog.warning('Module does not fit')
-            self.Do()
-            return False
         try:
             fit.modules.replace(self.position, oldMod)
         except HandledListActionError:

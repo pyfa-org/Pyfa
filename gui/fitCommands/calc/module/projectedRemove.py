@@ -43,6 +43,7 @@ class CalcRemoveProjectedModuleCommand(wx.Command):
             fitID=self.fitID,
             modInfo=self.savedModInfo,
             position=self.position,
+            ignoreRestrictions=True,
             commit=False)
         if not cmd.Do():
             return False

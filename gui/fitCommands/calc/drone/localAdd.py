@@ -14,11 +14,12 @@ pyfalog = Logger(__name__)
 
 class CalcAddLocalDroneCommand(wx.Command):
 
-    def __init__(self, fitID, droneInfo, forceNewStack=False, commit=True):
+    def __init__(self, fitID, droneInfo, forceNewStack=False, ignoreRestrictions=False, commit=True):
         wx.Command.__init__(self, True, 'Add Local Drone')
         self.fitID = fitID
         self.droneInfo = droneInfo
         self.forceNewStack = forceNewStack
+        self.ignoreRestrictions = ignoreRestrictions
         self.commit = commit
         self.savedDroneInfo = None
         self.savedPosition = None
@@ -46,7 +47,7 @@ class CalcAddLocalDroneCommand(wx.Command):
         drone = self.droneInfo.toDrone()
         if drone is None:
             return False
-        if not drone.fits(fit):
+        if not self.ignoreRestrictions and not drone.fits(fit):
             pyfalog.warning('Drone does not fit')
             return False
         try:

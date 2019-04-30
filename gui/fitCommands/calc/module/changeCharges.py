@@ -12,11 +12,12 @@ pyfalog = Logger(__name__)
 
 class CalcChangeModuleChargesCommand(wx.Command):
 
-    def __init__(self, fitID, projected, chargeMap, commit=True):
+    def __init__(self, fitID, projected, chargeMap, ignoreRestriction=False, commit=True):
         wx.Command.__init__(self, True, 'Change Module Charges')
         self.fitID = fitID
         self.projected = projected
         self.chargeMap = chargeMap
+        self.ignoreRestriction = ignoreRestriction
         self.commit = commit
         self.savedChargeMap = None
         self.savedStateCheckChanges = None
@@ -40,7 +41,7 @@ class CalcChangeModuleChargesCommand(wx.Command):
             chargeItem = sMkt.getItem(chargeItemID) if chargeItemID is not None else None
             if chargeItem is not None and not chargeItem.isCharge:
                 continue
-            if not mod.isValidCharge(chargeItem):
+            if not self.ignoreRestriction and not mod.isValidCharge(chargeItem):
                 pyfalog.warning('Invalid charge {} for {}'.format(chargeItem, mod))
                 continue
             pyfalog.debug('Setting charge {} for {} on fit {}'.format(chargeItem, mod, self.fitID))
@@ -61,6 +62,7 @@ class CalcChangeModuleChargesCommand(wx.Command):
             fitID=self.fitID,
             projected=self.projected,
             chargeMap=self.savedChargeMap,
+            ignoreRestriction=True,
             commit=self.commit)
         if not cmd.Do():
             return False

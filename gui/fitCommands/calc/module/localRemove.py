@@ -60,12 +60,20 @@ class CalcRemoveLocalModulesCommand(wx.Command):
         if len(self.savedSubInfos) > 0:
             for position, modInfo in self.savedSubInfos.items():
                 cmd = CalcReplaceLocalModuleCommand(
-                    fitID=self.fitID, position=position, newModInfo=modInfo, commit=False)
+                    fitID=self.fitID,
+                    position=position,
+                    newModInfo=modInfo,
+                    ignoreRestrictions=True,
+                    commit=False)
                 results.append(cmd.Do())
             sFit.recalc(fit)
         for position, modInfo in self.savedModInfos.items():
             cmd = CalcReplaceLocalModuleCommand(
-                fitID=self.fitID, position=position, newModInfo=modInfo, commit=False)
+                fitID=self.fitID,
+                position=position,
+                newModInfo=modInfo,
+                ignoreRestrictions=True,
+                commit=False)
             results.append(cmd.Do())
         if not any(results):
             return False

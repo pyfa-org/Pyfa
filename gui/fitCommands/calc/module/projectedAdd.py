@@ -13,11 +13,12 @@ pyfalog = Logger(__name__)
 
 class CalcAddProjectedModuleCommand(wx.Command):
 
-    def __init__(self, fitID, modInfo, position=None, commit=True):
+    def __init__(self, fitID, modInfo, position=None, ignoreRestrictions=False, commit=True):
         wx.Command.__init__(self, True)
         self.fitID = fitID
         self.newModInfo = modInfo
         self.newPosition = position
+        self.ignoreRestrictions = ignoreRestrictions
         self.commit = commit
         self.oldModInfo = None
         self.oldPosition = None
@@ -33,7 +34,7 @@ class CalcAddProjectedModuleCommand(wx.Command):
         fit = sFit.getFit(self.fitID)
         if not newMod.canHaveState(newMod.state, projectedOnto=fit):
             newMod.state = FittingModuleState.OFFLINE
-        if not newMod.isValidCharge(newMod.charge):
+        if not self.ignoreRestrictions and not newMod.isValidCharge(newMod.charge):
             newMod.charge = None
         self.oldPosition, self.oldModInfo = fit.projectedModules.makeRoom(newMod)
 
@@ -69,6 +70,7 @@ class CalcAddProjectedModuleCommand(wx.Command):
                 fitID=self.fitID,
                 modInfo=self.oldModInfo,
                 position=self.oldPosition,
+                ignoreRestrictions=True,
                 commit=False)
             if not cmd.Do():
                 return False

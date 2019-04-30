@@ -21,7 +21,11 @@ class GuiReplaceLocalModuleCommand(wx.Command):
     def Do(self):
         results = []
         for position in self.positions:
-            cmd = CalcReplaceLocalModuleCommand(fitID=self.fitID, position=position, newModInfo=ModuleInfo(itemID=self.itemID), commit=False)
+            cmd = CalcReplaceLocalModuleCommand(
+                fitID=self.fitID,
+                position=position,
+                newModInfo=ModuleInfo(itemID=self.itemID),
+                commit=False)
             results.append(self.internalHistory.submit(cmd))
         success = any(results)
         eos.db.commit()

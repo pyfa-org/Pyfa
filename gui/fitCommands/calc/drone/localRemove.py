@@ -48,8 +48,6 @@ class CalcRemoveLocalDroneCommand(wx.Command):
             drone = self.savedDroneInfo.toDrone()
             if drone is None:
                 return False
-            if not drone.fits(fit):
-                return False
             try:
                 fit.drones.insert(self.position, drone)
             except HandledListActionError:

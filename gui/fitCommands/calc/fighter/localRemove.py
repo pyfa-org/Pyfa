@@ -35,5 +35,6 @@ class CalcRemoveLocalFighterCommand(wx.Command):
             fitID=self.fitID,
             fighterInfo=self.savedFighterInfo,
             position=self.position,
+            ignoreRestrictions=True,
             commit=self.commit)
         return cmd.Do()

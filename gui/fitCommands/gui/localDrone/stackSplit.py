@@ -37,6 +37,7 @@ class GuiSplitLocalDroneStackCommand(wx.Command):
             fitID=self.fitID,
             droneInfo=info,
             forceNewStack=True,
+            ignoreRestrictions=True,
             commit=False))
         success = self.internalHistory.submitBatch(*commands)
         eos.db.commit()
