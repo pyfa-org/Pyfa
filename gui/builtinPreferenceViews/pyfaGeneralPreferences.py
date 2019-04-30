@@ -1,18 +1,16 @@
 # noinspection PyPackageRequirements
 import wx
-from wx.lib.intctrl import IntCtrl
 
-from gui.preferenceView import PreferenceView
-from gui.bitmap_loader import BitmapLoader
-
-import gui.mainFrame
 import gui.globalEvents as GE
-from service.settings import SettingsProvider
+import gui.mainFrame
+from gui.bitmap_loader import BitmapLoader
+from gui.preferenceView import PreferenceView
 from service.fit import Fit
-from service.price import Price
+from service.settings import SettingsProvider
 
 
 class PFGeneralPref(PreferenceView):
+
     title = "General"
 
     def populatePanel(self, panel):

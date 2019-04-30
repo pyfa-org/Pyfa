@@ -57,7 +57,7 @@ class PreferenceDialog(wx.Dialog):
 
         for prefView in PreferenceView.views:
             page = wx.ScrolledWindow(self.listbook)
-            page.SetScrollbars(1, 1, 20, 20)
+            page.SetScrollRate(15, 15)
             bmp = prefView.getImage()
             if bmp:
                 imgID = self.imageList.Add(bmp)

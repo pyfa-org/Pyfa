@@ -21,7 +21,7 @@
 import wx
 
 
-class PreferenceView(object):
+class PreferenceView:
     views = []
 
     @classmethod

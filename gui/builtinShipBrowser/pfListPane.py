@@ -22,6 +22,7 @@ import wx
 
 
 class PFListPane(wx.ScrolledWindow):
+
     def __init__(self, parent):
         wx.ScrolledWindow.__init__(self, parent, pos=wx.DefaultPosition, style=wx.TAB_TRAVERSAL)
 
