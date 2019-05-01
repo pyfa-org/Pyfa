@@ -44,6 +44,7 @@ from eos.saveddata.module import Module
 from eos.saveddata.targetResists import TargetResists
 from eos.saveddata.user import User
 
+
 fits_table = Table("fits", saveddata_meta,
                    Column("ID", Integer, primary_key=True),
                    Column("ownerID", ForeignKey("users.ID"), nullable=True, index=True),
@@ -59,7 +60,8 @@ fits_table = Table("fits", saveddata_meta,
                    Column("notes", String, nullable=True),
                    Column("ignoreRestrictions", Boolean, default=0),
                    Column("created", DateTime, nullable=True, default=datetime.datetime.now),
-                   Column("modified", DateTime, nullable=True, default=datetime.datetime.now, onupdate=datetime.datetime.now)
+                   Column("modified", DateTime, nullable=True, default=datetime.datetime.now, onupdate=datetime.datetime.now),
+                   Column("systemSecurity", Integer, nullable=True)
                    )
 
 projectedFits_table = Table("projectedFits", saveddata_meta,

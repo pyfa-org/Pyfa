@@ -93,3 +93,11 @@ class SpoolType(IntEnum):
     SCALE = 0  # [0..1]
     TIME = 1  # Expressed via time in seconds since spool up started
     CYCLES = 2  # Expressed in amount of cycles since spool up started
+
+
+@unique
+class FitSystemSecurity(IntEnum):
+    HISEC = 0
+    LOWSEC = 1
+    NULLSEC = 2
+    WSPACE = 3
