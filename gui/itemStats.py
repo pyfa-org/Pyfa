@@ -34,7 +34,7 @@ from gui.builtinItemStatsViews.itemDependants import ItemDependents
 from gui.builtinItemStatsViews.itemEffects import ItemEffects
 from gui.builtinItemStatsViews.itemAffectedBy import ItemAffectedBy
 from gui.builtinItemStatsViews.itemProperties import ItemProperties
-from gui.builtinItemStatsViews.itemMutator import ItemMutator
+from gui.builtinItemStatsViews.itemMutator import ItemMutatorPanel
 
 from eos.saveddata.module import Module
 
@@ -170,7 +170,7 @@ class ItemStatsContainer(wx.Panel):
             self.nbContainer.AddPage(self.traits, "Traits")
 
         if isinstance(stuff, Module) and stuff.isMutated:
-            self.mutator = ItemMutator(self.nbContainer, stuff, item)
+            self.mutator = ItemMutatorPanel(self.nbContainer, stuff)
             self.nbContainer.AddPage(self.mutator, "Mutations")
 
         if item.description:

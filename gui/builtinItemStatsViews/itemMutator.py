@@ -14,41 +14,72 @@ from .itemAttributes import ItemParams
 pyfalog = Logger(__name__)
 
 
-class ItemMutator(wx.Panel):
+class ItemMutatorPanel(wx.Panel):
 
-    def __init__(self, parent, stuff, item):
+    def __init__(self, parent, mod):
         wx.Panel.__init__(self, parent)
-        self.stuff = stuff
-        self.item = item
-        self.timer = None
-        self.activeFit = gui.mainFrame.MainFrame.getInstance().getActiveFit()
-
-        font = parent.GetFont()
-        font.SetWeight(wx.BOLD)
+        self.stuff = mod
 
         mainSizer = wx.BoxSizer(wx.VERTICAL)
 
-        sourceItemsSizer = wx.BoxSizer(wx.HORIZONTAL)
-        sourceItemsSizer.Add(BitmapLoader.getStaticBitmap(stuff.item.iconID, self, "icons"), 0, wx.LEFT, 5)
-        sourceItemsSizer.Add(BitmapLoader.getStaticBitmap(stuff.mutaplasmid.item.iconID, self, "icons"), 0, wx.LEFT, 0)
-        sourceItemShort = "{} {}".format(stuff.mutaplasmid.item.name.split(" ")[0], stuff.baseItem.name)
+        headerSizer = wx.BoxSizer(wx.HORIZONTAL)
+        headerSizer.AddStretchSpacer()
+        headerSizer.Add(BitmapLoader.getStaticBitmap(mod.item.iconID, self, "icons"), 0, 0, 0)
+        headerSizer.Add(BitmapLoader.getStaticBitmap(mod.mutaplasmid.item.iconID, self, "icons"), 0, wx.LEFT, 0)
+        sourceItemShort = "{} {}".format(mod.mutaplasmid.item.name.split(" ")[0], mod.baseItem.name)
         sourceItemText = wx.StaticText(self, wx.ID_ANY, sourceItemShort)
+        font = parent.GetFont()
+        font.SetWeight(wx.BOLD)
         sourceItemText.SetFont(font)
-        sourceItemsSizer.Add(sourceItemText, 0, wx.LEFT, 10)
-        mainSizer.Add(sourceItemsSizer, 0, wx.TOP | wx.EXPAND, 10)
+        headerSizer.Add(sourceItemText, 0, wx.LEFT, 10)
+        headerSizer.AddStretchSpacer()
+        mainSizer.Add(headerSizer, 0, wx.ALL | wx.EXPAND, 5)
+        mainSizer.Add(wx.StaticLine(self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.LI_HORIZONTAL), 0, wx.EXPAND, 0)
 
-        mainSizer.Add(wx.StaticLine(self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.LI_HORIZONTAL), 0, wx.ALL | wx.EXPAND, 5)
+        self.mutaList = ItemMutatorList(self, mod)
+        mainSizer.Add(self.mutaList, 1, wx.EXPAND | wx.ALL, 0)
 
-        self.goodColor = wx.Colour(96, 191, 0)
-        self.badColor = wx.Colour(255, 64, 0)
+        mainSizer.Add(wx.StaticLine(self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.LI_HORIZONTAL), 0, wx.EXPAND, 0)
+        footerSizer = wx.BoxSizer(wx.HORIZONTAL)
+        self.refreshBtn = wx.Button(self, wx.ID_ANY, "Reset defaults", wx.DefaultPosition, wx.DefaultSize, 0)
+        footerSizer.Add(self.refreshBtn, 0, wx.ALIGN_CENTER_VERTICAL | wx.LEFT, 5)
+        self.refreshBtn.Bind(wx.EVT_BUTTON, self.mutaList.resetMutatedValues)
+        self.randomBtn = wx.Button(self, wx.ID_ANY, "Random stats", wx.DefaultPosition, wx.DefaultSize, 0)
+        footerSizer.Add(self.randomBtn, 0, wx.ALIGN_CENTER_VERTICAL | wx.LEFT, 5)
+        self.randomBtn.Bind(wx.EVT_BUTTON, self.mutaList.randomMutatedValues)
+        mainSizer.Add(footerSizer, 0, wx.ALL | wx.EXPAND, 5)
+
+        self.SetSizer(mainSizer)
+        self.Layout()
+
+
+class ItemMutatorList(wx.ScrolledWindow):
+
+    def __init__(self, parent, mod):
+        wx.ScrolledWindow.__init__(self, parent)
+        self.SetScrollRate(0, 15)
+        self.activeFit = gui.mainFrame.MainFrame.getInstance().getActiveFit()
+        self.timer = None
+
+        goodColor = wx.Colour(96, 191, 0)
+        badColor = wx.Colour(255, 64, 0)
+        font = parent.GetFont()
+        font.SetWeight(wx.BOLD)
+
+        sizer = wx.BoxSizer(wx.VERTICAL)
 
         self.event_mapping = {}
         higOverrides = {
             ('Stasis Web', 'speedFactor'): False,
         }
 
-        for m in sorted(stuff.mutators.values(), key=lambda x: x.attribute.displayName):
-            highIsGood = higOverrides.get((stuff.item.group.name, m.attribute.name), m.highIsGood)
+        first = True
+        for m in sorted(mod.mutators.values(), key=lambda x: x.attribute.displayName):
+            if not first:
+                sizer.Add(wx.StaticLine(self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.LI_HORIZONTAL), 0, wx.ALL | wx.EXPAND, 5)
+            first = False
+
+            highIsGood = higOverrides.get((mod.item.group.name, m.attribute.name), m.highIsGood)
             # Format: [raw value, modifier applied to base raw value, display value]
             range1 = (m.minValue, m.attribute.unit.SimplifyValue(m.minValue))
             range2 = (m.maxValue, m.attribute.unit.SimplifyValue(m.maxValue))
@@ -96,17 +127,17 @@ class ItemMutator(wx.Panel):
 
             worseVal = ItemParams.FormatValue(*m.attribute.unit.PreformatValue(worseRange[0]), rounding='dec')
             worseText = wx.StaticText(self, wx.ID_ANY, worseVal)
-            worseText.SetForegroundColour(self.badColor)
+            worseText.SetForegroundColour(badColor)
 
             betterVal = ItemParams.FormatValue(*m.attribute.unit.PreformatValue(betterRange[0]), rounding='dec')
             betterText = wx.StaticText(self, wx.ID_ANY, betterVal)
-            betterText.SetForegroundColour(self.goodColor)
+            betterText.SetForegroundColour(goodColor)
 
             headingSizer.Add(worseText, 0, wx.ALL | wx.EXPAND, 0)
             headingSizer.Add(wx.StaticText(self, wx.ID_ANY, " ─ "), 0, wx.RIGHT | wx.LEFT | wx.EXPAND, 5)
             headingSizer.Add(betterText, 0, wx.RIGHT | wx.EXPAND, 10)
 
-            mainSizer.Add(headingSizer, 0, wx.ALL | wx.EXPAND, 5)
+            sizer.Add(headingSizer, 0, wx.ALL | wx.EXPAND, 5)
 
             slider = AttributeSlider(parent=self,
                                      baseValue=m.attribute.unit.SimplifyValue(sliderBaseValue),
@@ -116,29 +147,9 @@ class ItemMutator(wx.Panel):
             slider.SetValue(m.attribute.unit.SimplifyValue(m.value), False)
             slider.Bind(EVT_VALUE_CHANGED, self.changeMutatedValue)
             self.event_mapping[slider] = m
-            mainSizer.Add(slider, 0, wx.RIGHT | wx.LEFT | wx.EXPAND, 10)
+            sizer.Add(slider, 0, wx.RIGHT | wx.LEFT | wx.EXPAND, 10)
 
-            mainSizer.Add(wx.StaticLine(self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.LI_HORIZONTAL), 0, wx.ALL | wx.EXPAND, 5)
-
-        mainSizer.AddStretchSpacer()
-
-        self.m_staticline = wx.StaticLine(self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.LI_HORIZONTAL)
-        mainSizer.Add(self.m_staticline, 0, wx.EXPAND)
-
-        bSizer = wx.BoxSizer(wx.HORIZONTAL)
-
-        self.refreshBtn = wx.Button(self, wx.ID_ANY, "Reset defaults", wx.DefaultPosition, wx.DefaultSize, 0)
-        bSizer.Add(self.refreshBtn, 0, wx.ALIGN_CENTER_VERTICAL)
-        self.refreshBtn.Bind(wx.EVT_BUTTON, self.resetMutatedValues)
-
-        self.randomBtn = wx.Button(self, wx.ID_ANY, "Random stats", wx.DefaultPosition, wx.DefaultSize, 0)
-        bSizer.Add(self.randomBtn, 0, wx.ALIGN_CENTER_VERTICAL)
-        self.randomBtn.Bind(wx.EVT_BUTTON, self.randomMutatedValues)
-
-        mainSizer.Add(bSizer, 0, wx.RIGHT | wx.LEFT | wx.EXPAND, 0)
-
-        self.SetSizer(mainSizer)
-        self.Layout()
+        self.SetSizer(sizer)
 
     def changeMutatedValue(self, evt):
         m = self.event_mapping[evt.Object]
@@ -151,7 +162,7 @@ class ItemMutator(wx.Panel):
             self.timer.Stop()
             self.timer = None
 
-        for x in self.Parent.Children:
+        for x in self.Parent.Parent.Children:
             if isinstance(x, ItemParams):
                 x.RefreshValues(None)
                 break
