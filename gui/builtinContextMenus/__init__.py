@@ -39,4 +39,6 @@ from gui.builtinContextMenus import (  # noqa: E402,F401
     # Firepower panel
     factorReload,
     targetResists,
+    # Targeting & misc panel
+    fitSystemSecurity,
 )

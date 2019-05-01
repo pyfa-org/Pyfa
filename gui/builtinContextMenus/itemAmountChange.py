@@ -33,8 +33,7 @@ class ChangeItemAmount(ContextMenuSingle):
         return "Change {0} Quantity".format(itmContext)
 
     def activate(self, fullContext, mainItem, i):
-        mainFrame = gui.mainFrame.MainFrame.getInstance()
-        fitID = mainFrame.getActiveFit()
+        fitID = self.mainFrame.getActiveFit()
         srcContext = fullContext[0]
         if isinstance(mainItem, es_Fit):
             try:

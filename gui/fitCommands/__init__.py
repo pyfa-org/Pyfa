@@ -12,6 +12,7 @@ from .gui.commandFit.remove import GuiRemoveCommandFitsCommand
 from .gui.commandFit.toggleStates import GuiToggleCommandFitStatesCommand
 from .gui.fitRename import GuiRenameFitCommand
 from .gui.fitRestrictionToggle import GuiToggleFittingRestrictionsCommand
+from .gui.fitSystemSecurity import GuiChangeFitSystemSecurityCommand
 from .gui.implant.add import GuiAddImplantCommand
 from .gui.implant.changeLocation import GuiChangeImplantLocationCommand
 from .gui.implant.changeMeta import GuiChangeImplantMetaCommand
