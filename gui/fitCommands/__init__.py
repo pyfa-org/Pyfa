@@ -37,6 +37,7 @@ from .gui.localFighter.toggleStates import GuiToggleLocalFighterStatesCommand
 from .gui.localModule.add import GuiAddLocalModuleCommand
 from .gui.localModule.changeCharges import GuiChangeLocalModuleChargesCommand
 from .gui.localModule.changeMetas import GuiChangeLocalModuleMetasCommand
+from .gui.localModule.changeMutation import GuiChangeLocalModuleMutationCommand
 from .gui.localModule.changeSpool import GuiChangeLocalModuleSpoolCommand
 from .gui.localModule.changeStates import GuiChangeLocalModuleStatesCommand
 from .gui.localModule.clone import GuiCloneLocalModuleCommand

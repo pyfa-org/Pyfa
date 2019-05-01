@@ -15,7 +15,7 @@ pyfalog = Logger(__name__)
 class CalcCloneLocalModuleCommand(wx.Command):
 
     def __init__(self, fitID, srcPosition, dstPosition):
-        wx.Command.__init__(self, True, 'Clone Module')
+        wx.Command.__init__(self, True, 'Clone Local Module')
         self.fitID = fitID
         self.srcPosition = srcPosition
         self.dstPosition = dstPosition

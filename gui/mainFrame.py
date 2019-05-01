@@ -234,6 +234,9 @@ class MainFrame(wx.Frame):
     def command(self) -> wx.CommandProcessor:
         return Fit.getCommandProcessor(self.getActiveFit())
 
+    def getCommandForFit(self, fitID) -> wx.CommandProcessor:
+        return Fit.getCommandProcessor(fitID)
+
     def ShowUpdateBox(self, release, version):
         dlg = UpdateDialog(self, release, version)
         dlg.ShowModal()

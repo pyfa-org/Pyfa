@@ -147,6 +147,7 @@ class ItemStatsDialog(wx.Dialog):
 
     def closeEvent(self, event):
         self.closeWindow()
+        self.container.onParentClose()
         event.Skip()
 
     def closeWindow(self):
@@ -156,6 +157,7 @@ class ItemStatsDialog(wx.Dialog):
         self.Destroy()
 
 class ItemStatsContainer(wx.Panel):
+
     def __init__(self, parent, stuff, item, context=None):
         wx.Panel.__init__(self, parent)
         sMkt = Market.getInstance()
@@ -214,3 +216,8 @@ class ItemStatsContainer(wx.Panel):
         tab, _ = self.nbContainer.HitTest(event.Position)
         if tab != -1:
             self.nbContainer.SetSelection(tab)
+
+    def onParentClose(self):
+        mutaPanel = getattr(self, 'mutator', None)
+        if mutaPanel is not None:
+            mutaPanel.submitMutationChanges()

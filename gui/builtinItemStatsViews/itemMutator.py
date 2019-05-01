@@ -4,12 +4,14 @@ import random
 import wx
 from logbook import Logger
 
+import gui.fitCommands as cmd
 import gui.globalEvents as GE
 import gui.mainFrame
 from gui.bitmap_loader import BitmapLoader
 from service.fit import Fit
 from .attributeSlider import AttributeSlider, EVT_VALUE_CHANGED
 from .itemAttributes import ItemParams
+
 
 pyfalog = Logger(__name__)
 
@@ -47,10 +49,16 @@ class ItemMutatorPanel(wx.Panel):
         self.randomBtn = wx.Button(self, wx.ID_ANY, "Random stats", wx.DefaultPosition, wx.DefaultSize, 0)
         footerSizer.Add(self.randomBtn, 0, wx.ALIGN_CENTER_VERTICAL | wx.LEFT, 5)
         self.randomBtn.Bind(wx.EVT_BUTTON, self.mutaList.randomMutatedValues)
+        self.revertBtn = wx.Button(self, wx.ID_ANY, "Revert changes", wx.DefaultPosition, wx.DefaultSize, 0)
+        footerSizer.Add(self.revertBtn, 0, wx.ALIGN_CENTER_VERTICAL | wx.LEFT, 5)
+        self.revertBtn.Bind(wx.EVT_BUTTON, self.mutaList.revertChanges)
         mainSizer.Add(footerSizer, 0, wx.ALL | wx.EXPAND, 5)
 
         self.SetSizer(mainSizer)
         self.Layout()
+
+    def submitMutationChanges(self):
+        self.mutaList.submitMutationChanges()
 
 
 class ItemMutatorList(wx.ScrolledWindow):
@@ -58,7 +66,9 @@ class ItemMutatorList(wx.ScrolledWindow):
     def __init__(self, parent, mod):
         wx.ScrolledWindow.__init__(self, parent)
         self.SetScrollRate(0, 15)
-        self.activeFit = gui.mainFrame.MainFrame.getInstance().getActiveFit()
+        self.carryingFitID = gui.mainFrame.MainFrame.getInstance().getActiveFit()
+        self.initialMutations = {}
+        self.mod = mod
         self.timer = None
 
         goodColor = wx.Colour(96, 191, 0)
@@ -78,6 +88,8 @@ class ItemMutatorList(wx.ScrolledWindow):
             if not first:
                 sizer.Add(wx.StaticLine(self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.LI_HORIZONTAL), 0, wx.ALL | wx.EXPAND, 5)
             first = False
+
+            self.initialMutations[m.attrID] = m.value
 
             highIsGood = higOverrides.get((mod.item.group.name, m.attribute.name), m.highIsGood)
             # Format: [raw value, modifier applied to base raw value, display value]
@@ -157,7 +169,7 @@ class ItemMutatorList(wx.ScrolledWindow):
         value = m.attribute.unit.ComplicateValue(value)
         sFit = Fit.getInstance()
 
-        sFit.changeMutatedValue(m, value)
+        sFit.changeMutatedValuePrelim(m, value)
         if self.timer:
             self.timer.Stop()
             self.timer = None
@@ -170,36 +182,54 @@ class ItemMutatorList(wx.ScrolledWindow):
 
     def resetMutatedValues(self, evt):
         sFit = Fit.getInstance()
-
         for slider, m in self.event_mapping.items():
-            value = sFit.changeMutatedValue(m, m.baseValue)
+            value = sFit.changeMutatedValuePrelim(m, m.baseValue)
             value = m.attribute.unit.SimplifyValue(value)
             slider.SetValue(value)
-
         evt.Skip()
 
     def randomMutatedValues(self, evt):
         sFit = Fit.getInstance()
-
         for slider, m in self.event_mapping.items():
             value = random.uniform(m.minValue, m.maxValue)
-            value = sFit.changeMutatedValue(m, value)
+            value = sFit.changeMutatedValuePrelim(m, value)
             value = m.attribute.unit.SimplifyValue(value)
             slider.SetValue(value)
-
         evt.Skip()
+
+    def revertChanges(self, evt):
+        sFit = Fit.getInstance()
+        for slider, m in self.event_mapping.items():
+            if m.attrID in self.initialMutations:
+                value = sFit.changeMutatedValuePrelim(m, self.initialMutations[m.attrID])
+                value = m.attribute.unit.SimplifyValue(value)
+                slider.SetValue(value)
+        evt.Skip()
+
+    def submitMutationChanges(self):
+        fit = Fit.getInstance().getFit(self.carryingFitID)
+        if self.mod in fit.modules:
+            currentMutation = {}
+            for m in self.event_mapping.values():
+                currentMutation[m.attrID] = m.value
+            mainFrame = gui.mainFrame.MainFrame.getInstance()
+            mainFrame.getCommandForFit(self.carryingFitID).Submit(cmd.GuiChangeLocalModuleMutationCommand(
+                fitID=self.carryingFitID,
+                position=fit.modules.index(self.mod),
+                mutation=currentMutation,
+                oldMutation=self.initialMutations))
 
     def callLater(self):
         self.timer = None
         sFit = Fit.getInstance()
 
         # recalc the fit that this module affects. This is not necessarily the currently active fit
-        sFit.refreshFit(self.activeFit)
+        sFit.refreshFit(self.carryingFitID)
 
         mainFrame = gui.mainFrame.MainFrame.getInstance()
         activeFit = mainFrame.getActiveFit()
 
-        if activeFit != self.activeFit:
+        if activeFit != self.carryingFitID:
             # if we're no longer on the fit this module is affecting, simulate a "switch fit" so that the active fit
             # can be recalculated (if needed)
             sFit.switchFit(activeFit)
