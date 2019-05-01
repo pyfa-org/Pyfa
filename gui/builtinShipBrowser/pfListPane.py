@@ -33,7 +33,7 @@ class PFListPane(wx.ScrolledWindow):
         self.SetBackgroundColour(wx.SystemSettings.GetColour(wx.SYS_COLOUR_WINDOW))
 
         self.SetVirtualSize((1, 1))
-        self.SetScrollRate(15, 15)
+        self.SetScrollRate(0, 1)
 
         self.Bind(wx.EVT_SCROLLWIN_LINEUP, self.MScrollUp)
         self.Bind(wx.EVT_SCROLLWIN_LINEDOWN, self.MScrollDown)
@@ -150,6 +150,11 @@ class PFListPane(wx.ScrolledWindow):
             if doRefresh is True:
                 self._wList[i].Refresh()
             self.itemsHeight = max(self.itemsHeight, iheight - 1)
+
+        # This is needed as under GTK wx does not emit scroll up/scroll down
+        # events, see issue #1909 for more info
+        if 'wxGTK' in wx.PlatformInfo:
+            self.SetScrollRate(0, self.itemsHeight)
 
     def RemoveWidget(self, child):
         child.Destroy()
