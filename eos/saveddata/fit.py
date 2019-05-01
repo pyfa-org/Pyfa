@@ -17,26 +17,27 @@
 # along with eos.  If not, see <http://www.gnu.org/licenses/>.
 # ===============================================================================
 
+import datetime
 import time
 from copy import deepcopy
 from itertools import chain
-from math import sqrt, log, asinh
-import datetime
 
-from sqlalchemy.orm import validates, reconstructor
+from logbook import Logger
+from math import asinh, log, sqrt
+from sqlalchemy.orm import reconstructor, validates
 
 import eos.db
 from eos import capSim
-from eos.effectHandlerHelpers import HandledModuleList, HandledDroneCargoList, HandledImplantList, HandledBoosterList, HandledProjectedDroneList, HandledProjectedModList
-from eos.const import ImplantLocation, CalcType, FittingSlot
-from eos.saveddata.ship import Ship
-from eos.saveddata.drone import Drone
+from eos.const import CalcType, FitSystemSecurity, FittingHardpoint, FittingModuleState, FittingSlot, ImplantLocation
+from eos.effectHandlerHelpers import (
+    HandledBoosterList, HandledDroneCargoList, HandledImplantList,
+    HandledModuleList, HandledProjectedDroneList, HandledProjectedModList)
 from eos.saveddata.character import Character
 from eos.saveddata.citadel import Citadel
-from eos.const import FittingModuleState, FittingHardpoint
 from eos.saveddata.module import Module
+from eos.saveddata.ship import Ship
 from eos.utils.stats import DmgTypes
-from logbook import Logger
+
 
 pyfalog = Logger(__name__)
 
@@ -1525,6 +1526,13 @@ class Fit(object):
         volume = item.attribsWithOverrides['volume'].value
         return int((bayTotal - bayUsed) / volume)
 
+    def getSystemSecurity(self):
+        secstatus = self.systemSecurity
+        # Default to nullsec
+        if secstatus is None:
+            secstatus = FitSystemSecurity.NULLSEC
+        return secstatus
+
     def __deepcopy__(self, memo=None):
         fitCopy = Fit()
         # Character and owner are not copied
@@ -1536,6 +1544,7 @@ class Fit(object):
         fitCopy.damagePattern = self.damagePattern
         fitCopy.targetResists = self.targetResists
         fitCopy.implantLocation = self.implantLocation
+        fitCopy.systemSecurity = self.systemSecurity
         fitCopy.notes = self.notes
 
         toCopy = (

@@ -19,7 +19,7 @@
 
 
 import eos.config
-from eos.const import FittingModuleState
+from eos.const import FittingModuleState, FitSystemSecurity
 from eos.utils.spoolSupport import SpoolType, SpoolOptions, calculateSpoolup, resolveSpoolOptions
 
 
@@ -30510,7 +30510,14 @@ class Effect6672(BaseEffect):
 
     @staticmethod
     def handler(fit, module, context):
-        secModifier = module.getModifiedItemAttr('securityModifier')
+        secMap = {
+            FitSystemSecurity.HISEC: 'hiSecModifier',
+            FitSystemSecurity.LOWSEC: 'lowSecModifier',
+            FitSystemSecurity.NULLSEC: 'nullSecModifier',
+            FitSystemSecurity.WSPACE: 'nullSecModifier'}
+        fitSec = fit.getSystemSecurity()
+        attrName = secMap[fitSec]
+        secModifier = module.getModifiedItemAttr(attrName)
         module.multiplyItemAttr('structureRigDoomsdayDamageLossTargetBonus', secModifier)
         module.multiplyItemAttr('structureRigScanResBonus', secModifier)
         module.multiplyItemAttr('structureRigPDRangeBonus', secModifier)

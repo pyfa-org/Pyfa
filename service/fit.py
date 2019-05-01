@@ -25,17 +25,16 @@ import wx
 from logbook import Logger
 
 import eos.db
+from eos.const import FittingModuleState, ImplantLocation
 from eos.saveddata.character import Character as saveddata_Character
 from eos.saveddata.citadel import Citadel as es_Citadel
 from eos.saveddata.damagePattern import DamagePattern as es_DamagePattern
-from eos.saveddata.drone import Drone as es_Drone
-from eos.const import ImplantLocation, FittingModuleState
 from eos.saveddata.fit import Fit as FitType
 from eos.saveddata.ship import Ship as es_Ship
 from service.character import Character
 from service.damagePattern import DamagePattern
 from service.settings import SettingsProvider
-from utils.deprecated import deprecated
+
 
 pyfalog = Logger(__name__)
 
