@@ -45,7 +45,7 @@ class CalcReplaceLocalModuleCommand(wx.Command):
             pyfalog.warning('Module does not fit')
             self.Undo()
             return False
-        if not not self.ignoreRestrictions and not newMod.isValidCharge(newMod.charge):
+        if not self.ignoreRestrictions and not newMod.isValidCharge(newMod.charge):
             if self.unloadInvalidCharges:
                 newMod.charge = None
                 self.unloadedCharge = True
