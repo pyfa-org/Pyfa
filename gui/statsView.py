@@ -18,7 +18,7 @@
 # =============================================================================
 
 
-class StatsView(object):
+class StatsView:
     views = {}
 
     def __init__(self):

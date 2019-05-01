@@ -15,6 +15,7 @@ from gui.builtinContextMenus import (  # noqa: E402,F401
     # Item info
     itemStats,
     itemMarketJump,
+    fitSystemSecurity,  # Not really an item info but want to keep it here
     shipJump,
     # Generic item manipulations
     itemRemove,
@@ -39,6 +40,4 @@ from gui.builtinContextMenus import (  # noqa: E402,F401
     # Firepower panel
     factorReload,
     targetResists,
-    # Targeting & misc panel
-    fitSystemSecurity,
 )

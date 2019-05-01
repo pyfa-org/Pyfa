@@ -22,10 +22,19 @@ class FitSystemSecurityMenu(ContextMenuUnconditional):
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
 
     def display(self, srcContext):
-        return srcContext == 'targetingMiscViewMinimal'
+        if srcContext != "fittingShip":
+            return False
+
+        fitID = self.mainFrame.getActiveFit()
+        fit = Fit.getInstance().getFit(fitID)
+
+        if not fit.isStructure:
+            return
+
+        return True
 
     def getText(self, itmContext):
-        return "System Security Status"
+        return "Citadel System Security"
 
     def addOption(self, menu, optionLabel):
         id = ContextMenuUnconditional.nextID()
