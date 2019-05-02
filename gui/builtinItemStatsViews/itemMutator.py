@@ -26,8 +26,12 @@ class ItemMutatorPanel(wx.Panel):
 
         headerSizer = wx.BoxSizer(wx.HORIZONTAL)
         headerSizer.AddStretchSpacer()
-        headerSizer.Add(BitmapLoader.getStaticBitmap(mod.item.iconID, self, "icons"), 0, 0, 0)
-        headerSizer.Add(BitmapLoader.getStaticBitmap(mod.mutaplasmid.item.iconID, self, "icons"), 0, wx.LEFT, 0)
+        itemIcon = BitmapLoader.getStaticBitmap(mod.item.iconID, self, "icons")
+        if itemIcon is not None:
+            headerSizer.Add(itemIcon, 0, 0, 0)
+        mutaIcon = BitmapLoader.getStaticBitmap(mod.mutaplasmid.item.iconID, self, "icons")
+        if mutaIcon is not None:
+            headerSizer.Add(mutaIcon, 0, wx.LEFT, 0)
         sourceItemShort = "{} {}".format(mod.mutaplasmid.item.name.split(" ")[0], mod.baseItem.name)
         sourceItemText = wx.StaticText(self, wx.ID_ANY, sourceItemShort)
         font = parent.GetFont()
@@ -81,6 +85,7 @@ class ItemMutatorList(wx.ScrolledWindow):
         self.event_mapping = {}
         higOverrides = {
             ('Stasis Web', 'speedFactor'): False,
+            ('Damage Control', 'duration'): True,
         }
 
         first = True

@@ -50,8 +50,11 @@ class BitmapLoader(object):
 
     @classmethod
     def getStaticBitmap(cls, name, parent, location):
+        bitmap = cls.getBitmap(name or 0, location)
+        if bitmap is None:
+            return None
         static = wx.StaticBitmap(parent)
-        static.SetBitmap(cls.getBitmap(name or 0, location))
+        static.SetBitmap(bitmap)
         return static
 
     @classmethod
