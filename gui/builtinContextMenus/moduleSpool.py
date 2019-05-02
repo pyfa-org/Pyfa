@@ -1,3 +1,5 @@
+import math
+
 # noinspection PyPackageRequirements
 import wx
 
@@ -48,15 +50,42 @@ class ChangeModuleSpool(ContextMenuSingle):
         cycleCurrent = self.mod.getSpoolData(spoolOptions=SpoolOptions(SpoolType.SCALE, eos.config.settings['globalDefaultSpoolupPercentage'], False))[0]
         cycleMin = self.mod.getSpoolData(spoolOptions=SpoolOptions(SpoolType.SCALE, 0, True))[0]
         cycleMax = self.mod.getSpoolData(spoolOptions=SpoolOptions(SpoolType.SCALE, 1, True))[0]
+        cycleTotalMin = min(cycleDefault, cycleCurrent, cycleMin)
+        cycleTotalMax = max(cycleDefault, cycleCurrent, cycleMax)
 
-        for cycle in range(cycleMin, cycleMax + 1):
+        def findCycles(val1, val2):
+            # Try to compose list of 21 steps max (0-20)
+            maxSteps = 20
+            valDiff = val2 - val1
+            valScale = valDiff / maxSteps
+            minStep = math.ceil(round(valScale, 9))
+            maxStep = math.floor(round(valDiff / 4, 9))
+            # Check steps from smallest to highest and see if we can go from min value
+            # to max value using those
+            for currentStep in range(minStep, maxStep + 1):
+                if valDiff % currentStep == 0:
+                    return set(range(val1, val2 + currentStep, currentStep))
+            # Otherwise just split range in halves and go both ends using min values
+            else:
+                cycles = set()
+                while val2 >= val1:
+                    cycles.add(val1)
+                    cycles.add(val2)
+                    val1 += minStep
+                    val2 -= minStep
+                return cycles
+
+        cyclesToShow = findCycles(cycleMin, cycleMax)
+        for cycle in range(cycleTotalMin, cycleTotalMax + 1):
             menuId = ContextMenuSingle.nextID()
 
             # Show default only for current value and when not overriden
             if not isNotDefault and cycle == cycleDefault:
                 text = "{} (default)".format(cycle)
-            else:
+            elif cycle == cycleCurrent or cycle in cyclesToShow:
                 text = "{}".format(cycle)
+            else:
+                continue
 
             item = wx.MenuItem(m, menuId, text, kind=wx.ITEM_CHECK)
             bindmenu.Bind(wx.EVT_MENU, self.handleSpoolChange, item)
