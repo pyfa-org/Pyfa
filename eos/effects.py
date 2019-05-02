@@ -6739,7 +6739,7 @@ class Effect2302(BaseEffect):
     damageControl
 
     Used by:
-    Modules from group: Damage Control (22 of 27)
+    Modules from group: Damage Control (24 of 29)
     """
 
     type = 'passive'
@@ -9050,7 +9050,7 @@ class Effect3001(BaseEffect):
 
     Used by:
     Modules from group: Missile Launcher Torpedo (22 of 22)
-    Items from market group: Ship Equipment > Turrets & Bays (429 of 883)
+    Items from market group: Ship Equipment > Turrets & Bays (429 of 888)
     Module: Interdiction Sphere Launcher I
     """
 
@@ -9113,7 +9113,7 @@ class Effect3025(BaseEffect):
     Used by:
     Modules from group: Energy Weapon (101 of 214)
     Modules from group: Hybrid Weapon (105 of 221)
-    Modules from group: Precursor Weapon (15 of 15)
+    Modules from group: Precursor Weapon (18 of 18)
     Modules from group: Projectile Weapon (99 of 165)
     """
 
@@ -16285,9 +16285,9 @@ class Effect4902(BaseEffect):
     MWDSignatureRadiusRoleBonus
 
     Used by:
-    Ships from group: Assault Frigate (8 of 12)
-    Ships from group: Command Destroyer (4 of 4)
-    Ships from group: Heavy Assault Cruiser (8 of 11)
+    Ships from group: Assault Frigate (9 of 13)
+    Ships from group: Command Destroyer (4 of 5)
+    Ships from group: Heavy Assault Cruiser (9 of 12)
     """
 
     type = 'passive'
@@ -25230,7 +25230,7 @@ class Effect6214(BaseEffect):
     roleBonusCDLinksPGReduction
 
     Used by:
-    Ships from group: Command Destroyer (4 of 4)
+    Ships from group: Command Destroyer (5 of 5)
     Ship: Porpoise
     """
 
@@ -25812,8 +25812,7 @@ class Effect6315(BaseEffect):
     eliteBonusCommandDestroyerSkirmish1
 
     Used by:
-    Ship: Bifrost
-    Ship: Magus
+    Ships from group: Command Destroyer (3 of 5)
     """
 
     type = 'passive'
@@ -25862,7 +25861,7 @@ class Effect6317(BaseEffect):
     eliteBonusCommandDestroyerMJFGspool2
 
     Used by:
-    Ships from group: Command Destroyer (4 of 4)
+    Ships from group: Command Destroyer (5 of 5)
     """
 
     type = 'passive'
@@ -26135,8 +26134,7 @@ class Effect6334(BaseEffect):
     eliteBonusCommandDestroyerInfo1
 
     Used by:
-    Ship: Pontifex
-    Ship: Stork
+    Ships from group: Command Destroyer (3 of 5)
     """
 
     type = 'passive'
@@ -32253,7 +32251,7 @@ class Effect6845(BaseEffect):
     shipBonusCommandDestroyerRole1DefenderBonus
 
     Used by:
-    Ships from group: Command Destroyer (4 of 4)
+    Ships from group: Command Destroyer (4 of 5)
     """
 
     type = 'passive'
@@ -33802,10 +33800,10 @@ class Effect6994(BaseEffect):
 
 class Effect6995(BaseEffect):
     """
-    targetABCAttack
+    targetDisintegratorAttack
 
     Used by:
-    Modules from group: Precursor Weapon (15 of 15)
+    Modules from group: Precursor Weapon (18 of 18)
     """
 
     type = 'active'
@@ -33969,6 +33967,7 @@ class Effect7012(BaseEffect):
 
     Used by:
     Variations of module: Assault Damage Control I (5 of 5)
+    Module: Abyssal Assault Damage Control
     """
 
     runTime = 'early'
@@ -34853,7 +34852,7 @@ class Effect7077(BaseEffect):
     disintegratorWeaponDamageMultiply
 
     Used by:
-    Modules from group: Entropic Radiation Sink (4 of 4)
+    Modules from group: Entropic Radiation Sink (6 of 6)
     """
 
     type = 'passive'
@@ -34870,7 +34869,7 @@ class Effect7078(BaseEffect):
     disintegratorWeaponSpeedMultiply
 
     Used by:
-    Modules from group: Entropic Radiation Sink (4 of 4)
+    Modules from group: Entropic Radiation Sink (6 of 6)
     """
 
     type = 'passive'
@@ -34919,8 +34918,8 @@ class Effect7085(BaseEffect):
     shipbonusPCTDamagePC1
 
     Used by:
+    Variations of ship: Vedmak (2 of 2)
     Ship: Tiamat
-    Ship: Vedmak
     """
 
     type = 'passive'
@@ -34936,8 +34935,8 @@ class Effect7086(BaseEffect):
     shipbonusPCTTrackingPC2
 
     Used by:
+    Variations of ship: Vedmak (2 of 2)
     Ship: Tiamat
-    Ship: Vedmak
     """
 
     type = 'passive'
@@ -34953,7 +34952,6 @@ class Effect7087(BaseEffect):
     shipbonusPCTOptimalPF2
 
     Used by:
-    Ship: Damavik
     Ship: Hydra
     """
 
@@ -34970,7 +34968,7 @@ class Effect7088(BaseEffect):
     shipbonusPCTDamagePF1
 
     Used by:
-    Ship: Damavik
+    Variations of ship: Damavik (2 of 2)
     Ship: Hydra
     """
 
@@ -35002,13 +35000,13 @@ class Effect7092(BaseEffect):
     shipBonusRemoteRepCapNeedRoleBonus2
 
     Used by:
-    Ship: Damavik
+    Variations of ship: Damavik (2 of 2)
+    Variations of ship: Kikimora (2 of 2)
+    Variations of ship: Vedmak (2 of 2)
     Ship: Drekavac
     Ship: Hydra
-    Ship: Kikimora
     Ship: Leshak
     Ship: Tiamat
-    Ship: Vedmak
     """
 
     type = 'passive'
@@ -35024,14 +35022,14 @@ class Effect7093(BaseEffect):
     shipBonusSmartbombCapNeedRoleBonus2
 
     Used by:
+    Variations of ship: Damavik (2 of 2)
+    Variations of ship: Kikimora (2 of 2)
     Variations of ship: Rodiva (2 of 2)
-    Ship: Damavik
+    Variations of ship: Vedmak (2 of 2)
     Ship: Drekavac
     Ship: Hydra
-    Ship: Kikimora
     Ship: Leshak
     Ship: Tiamat
-    Ship: Vedmak
     """
 
     type = 'passive'
@@ -35047,13 +35045,13 @@ class Effect7094(BaseEffect):
     shipBonusRemoteRepMaxRangeRoleBonus1
 
     Used by:
-    Ship: Damavik
+    Variations of ship: Damavik (2 of 2)
+    Variations of ship: Kikimora (2 of 2)
+    Variations of ship: Vedmak (2 of 2)
     Ship: Drekavac
     Ship: Hydra
-    Ship: Kikimora
     Ship: Leshak
     Ship: Tiamat
-    Ship: Vedmak
     """
 
     type = 'passive'
@@ -35085,7 +35083,7 @@ class Effect7111(BaseEffect):
     systemSmallPrecursorTurretDamage
 
     Used by:
-    Celestials named like: Wolf Rayet Effect Beacon Class (5 of 6)
+    Celestials named like: Wolf Rayet Effect Beacon Class (6 of 6)
     """
 
     runTime = 'early'
@@ -35103,13 +35101,13 @@ class Effect7112(BaseEffect):
     shipBonusNeutCapNeedRoleBonus2
 
     Used by:
-    Ship: Damavik
+    Variations of ship: Damavik (2 of 2)
+    Variations of ship: Kikimora (2 of 2)
+    Variations of ship: Vedmak (2 of 2)
     Ship: Drekavac
     Ship: Hydra
-    Ship: Kikimora
     Ship: Leshak
     Ship: Tiamat
-    Ship: Vedmak
     """
 
     type = 'passive'
@@ -35215,7 +35213,7 @@ class Effect7154(BaseEffect):
     shipBonusPD1DisintegratorDamage
 
     Used by:
-    Ship: Kikimora
+    Variations of ship: Kikimora (2 of 2)
     """
 
     type = 'passive'
@@ -35249,7 +35247,7 @@ class Effect7156(BaseEffect):
     smallDisintegratorMaxRangeBonus
 
     Used by:
-    Ship: Kikimora
+    Variations of ship: Kikimora (2 of 2)
     """
 
     type = 'passive'
@@ -35265,7 +35263,7 @@ class Effect7157(BaseEffect):
     shipBonusPD2DisintegratorMaxRange
 
     Used by:
-    Ship: Kikimora
+    Variations of ship: Kikimora (2 of 2)
     """
 
     type = 'passive'
