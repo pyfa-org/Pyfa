@@ -35681,6 +35681,22 @@ class Effect7207(BaseEffect):
         fit.ship.boostItemAttr('armorExplosiveDamageResonance', ship.getModifiedItemAttr('shipBonusPF2'), skill='Precursor Frigate')
 
 
+class Effect7210(BaseEffect):
+    """
+    shipBonusCommandDestroyerRole2DefenderBonus
+
+    Used by:
+    Ship: Draugur
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context):
+        fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Defender Missiles'),
+                                      'moduleReactivationDelay', ship.getModifiedItemAttr('shipBonusRole2'))
+
+
 class Effect7211(BaseEffect):
     """
     shipDmgMultiMaxEliteHeavyGunship1
