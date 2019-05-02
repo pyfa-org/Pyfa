@@ -528,9 +528,9 @@ class Miscellanea(ViewColumn):
             text = "{0}/s".format(formatAmount(capPerSec, 3, 0, 3))
             tooltip = "Energy neutralization per second"
             return text, tooltip
-        elif itemGroup == "Micro Jump Drive":
+        elif itemGroup in ("Micro Jump Drive", "Micro Jump Field Generators"):
             cycleTime = stuff.getModifiedItemAttr("duration") / 1000
-            text = "{0}s".format(cycleTime)
+            text = "{0}s".format(formatAmount(cycleTime, 3, 0, 3))
             tooltip = "Spoolup time"
             return text, tooltip
         elif itemGroup in ("Siege Module", "Cynosural Field Generator"):
