@@ -35681,6 +35681,23 @@ class Effect7207(BaseEffect):
         fit.ship.boostItemAttr('armorExplosiveDamageResonance', ship.getModifiedItemAttr('shipBonusPF2'), skill='Precursor Frigate')
 
 
+class Effect7211(BaseEffect):
+    """
+    shipDmgMultiMaxEliteHeavyGunship1
+
+    Used by:
+    Ship: Ikitursa
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context):
+        fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Medium Precursor Weapon'),
+                                      'damageMultiplierBonusMax', ship.getModifiedItemAttr('eliteBonusHeavyGunship1'),
+                                      skill='Heavy Assault Cruisers')
+
+
 class Effect7216(BaseEffect):
     """
     shipDmgMultiMaxEliteGunship1
@@ -35731,3 +35748,20 @@ class Effect7219(BaseEffect):
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Smart Bomb',
                                       'power', ship.getModifiedItemAttr('eliteBonusGunship2'),
                                       skill='Assault Frigates')
+
+
+class Effect7222(BaseEffect):
+    """
+    shipNeutPowerReductionEliteHeavyGunship2
+
+    Used by:
+    Ship: Ikitursa
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context):
+        fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Energy Neutralizer',
+                                      'power', ship.getModifiedItemAttr('eliteBonusHeavyGunship2'),
+                                      skill='Heavy Assault Cruisers')

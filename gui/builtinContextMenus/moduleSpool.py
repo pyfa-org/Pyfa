@@ -82,8 +82,10 @@ class ChangeModuleSpool(ContextMenuSingle):
             # Show default only for current value and when not overriden
             if not isNotDefault and cycle == cycleDefault:
                 text = "{} (default)".format(cycle)
+            # Always show current selection and stuff which we decided to show via the cycles function
             elif cycle == cycleCurrent or cycle in cyclesToShow:
                 text = "{}".format(cycle)
+            # Ignore the rest to not have very long menu
             else:
                 continue
 
