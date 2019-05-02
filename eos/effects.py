@@ -35632,8 +35632,8 @@ class Effect7204(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context):
-        fit.ship.boostItemAttr('armorEmDamageResonance', src.getModifiedItemAttr('shipBonusPF2'), skill='Precursor Frigate')
+    def handler(fit, ship, context):
+        fit.ship.boostItemAttr('armorEmDamageResonance', ship.getModifiedItemAttr('shipBonusPF2'), skill='Precursor Frigate')
 
 
 class Effect7205(BaseEffect):
@@ -35647,8 +35647,8 @@ class Effect7205(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context):
-        fit.ship.boostItemAttr('armorKineticDamageResonance', src.getModifiedItemAttr('shipBonusPF2'), skill='Precursor Frigate')
+    def handler(fit, ship, context):
+        fit.ship.boostItemAttr('armorKineticDamageResonance', ship.getModifiedItemAttr('shipBonusPF2'), skill='Precursor Frigate')
 
 
 class Effect7206(BaseEffect):
@@ -35662,8 +35662,8 @@ class Effect7206(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context):
-        fit.ship.boostItemAttr('armorThermalDamageResonance', src.getModifiedItemAttr('shipBonusPF2'), skill='Precursor Frigate')
+    def handler(fit, ship, context):
+        fit.ship.boostItemAttr('armorThermalDamageResonance', ship.getModifiedItemAttr('shipBonusPF2'), skill='Precursor Frigate')
 
 
 class Effect7207(BaseEffect):
@@ -35677,5 +35677,57 @@ class Effect7207(BaseEffect):
     type = 'passive'
 
     @staticmethod
-    def handler(fit, src, context):
-        fit.ship.boostItemAttr('armorExplosiveDamageResonance', src.getModifiedItemAttr('shipBonusPF2'), skill='Precursor Frigate')
+    def handler(fit, ship, context):
+        fit.ship.boostItemAttr('armorExplosiveDamageResonance', ship.getModifiedItemAttr('shipBonusPF2'), skill='Precursor Frigate')
+
+
+class Effect7216(BaseEffect):
+    """
+    shipDmgMultiMaxEliteGunship1
+
+    Used by:
+    Ship: Nergal
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context):
+        fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Small Precursor Weapon'),
+                                      'damageMultiplierBonusMax', ship.getModifiedItemAttr('eliteBonusGunship1'),
+                                      skill='Assault Frigates')
+
+
+class Effect7217(BaseEffect):
+    """
+    shipNosNeutSmartPowerReductionEliteGunship2
+
+    Used by:
+    Ship: Nergal
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context):
+        fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Energy Neutralizer',
+                                      'power', ship.getModifiedItemAttr('eliteBonusGunship2'),
+                                      skill='Assault Frigates')
+
+
+class Effect7219(BaseEffect):
+    """
+    shipSmartBombPowerReductionEliteGunship2
+
+    Used by:
+    Ship: Ikitursa
+    Ship: Nergal
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context):
+        fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Smart Bomb',
+                                      'power', ship.getModifiedItemAttr('eliteBonusGunship2'),
+                                      skill='Assault Frigates')
