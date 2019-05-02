@@ -35619,3 +35619,63 @@ class Effect7186(BaseEffect):
     def handler(fit, ship, context):
         fit.drones.filteredItemBoost(lambda drone: drone.item.requiresSkill('Medium Drone Operation'),
                                      'armorHP', ship.getModifiedItemAttr('shipBonusRole8'))
+
+
+class Effect7204(BaseEffect):
+    """
+    shipArmorEMResistancePF2
+
+    Used by:
+    Variations of ship: Damavik (2 of 2)
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, src, context):
+        fit.ship.boostItemAttr('armorEmDamageResonance', src.getModifiedItemAttr('shipBonusPF2'), skill='Precursor Frigate')
+
+
+class Effect7205(BaseEffect):
+    """
+    shipArmorKinResistancePF2
+
+    Used by:
+    Variations of ship: Damavik (2 of 2)
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, src, context):
+        fit.ship.boostItemAttr('armorKineticDamageResonance', src.getModifiedItemAttr('shipBonusPF2'), skill='Precursor Frigate')
+
+
+class Effect7206(BaseEffect):
+    """
+    shipArmorThermResistancePF2
+
+    Used by:
+    Variations of ship: Damavik (2 of 2)
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, src, context):
+        fit.ship.boostItemAttr('armorThermalDamageResonance', src.getModifiedItemAttr('shipBonusPF2'), skill='Precursor Frigate')
+
+
+class Effect7207(BaseEffect):
+    """
+    shipArmorExpResistancePF2
+
+    Used by:
+    Variations of ship: Damavik (2 of 2)
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, src, context):
+        fit.ship.boostItemAttr('armorExplosiveDamageResonance', src.getModifiedItemAttr('shipBonusPF2'), skill='Precursor Frigate')
