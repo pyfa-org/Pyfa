@@ -255,7 +255,7 @@ def importEft(lines):
             fit.modules.replaceRackPosition(i, m)
     sFit = svcFit.getInstance()
     sFit.recalc(fit)
-    sFit.fill()
+    sFit.fill(fit)
 
     # Other stuff
     for modRack in (
@@ -459,7 +459,7 @@ def importEftCfg(shipname, lines, iportuser):
             # Recalc to get slot numbers correct for T3 cruisers
             sFit = svcFit.getInstance()
             sFit.recalc(fitobj)
-            sFit.fill()
+            sFit.fill(fitobj)
 
             for module in moduleList:
                 if module.fits(fitobj):

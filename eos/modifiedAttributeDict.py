@@ -259,11 +259,7 @@ class ModifiedAttributeDict(collections.MutableMapping):
                 dv = attrInfo.defaultValue
                 default = defaultValuesCache[key] = dv if dv is not None else 0.0
 
-        val = self.__intermediary.get(key,
-                                      self.__preAssigns.get(key,
-                                                            self.getOriginal(key, default)
-                                                            )
-                                      )
+        val = self.__intermediary.get(key, self.__preAssigns.get(key, self.getOriginal(key, default)))
 
         # We'll do stuff in the following order:
         # preIncrease > multiplier > stacking penalized multipliers > postIncrease
