@@ -26,7 +26,7 @@ class CalcAddCargoCommand(wx.Command):
         else:
             cargo = self.cargoInfo.toCargo()
             try:
-                fit.cargo.append(cargo)
+                fit.cargo.append(cargo, raiseFailure=True)
             except HandledListActionError:
                 pyfalog.warning('Failed to append to list')
                 if self.commit:

@@ -56,7 +56,7 @@ class CalcAddLocalModuleCommand(wx.Command):
             pyfalog.warning('Module does not fit')
             return False
         try:
-            fit.modules.append(newMod)
+            fit.modules.append(newMod, raiseFailure=True)
         except HandledListActionError:
             pyfalog.warning('Failed to append to list')
             if self.commit:

@@ -20,7 +20,6 @@
 from logbook import Logger
 
 from eos.exception import HandledListActionError
-from utils.deprecated import deprecated
 
 
 pyfalog = Logger(__name__)
@@ -123,7 +122,7 @@ class HandledList(list):
 
 class HandledModuleList(HandledList):
 
-    def append(self, mod):
+    def append(self, mod, raiseFailure=False):
         emptyPosition = float("Inf")
         for i in range(len(self)):
             currMod = self[i]
@@ -137,29 +136,41 @@ class HandledModuleList(HandledList):
             self.__toModule(emptyPosition, mod)
             if mod.isInvalid:
                 self.__toDummy(mod.position)
-                raise HandledListActionError(mod)
+                if raiseFailure:
+                    raise HandledListActionError(mod)
+                else:
+                    return
             return
 
-        self.appendIgnoreEmpty(mod)
+        self.appendIgnoreEmpty(mod, raiseFailure=raiseFailure)
 
-    def appendIgnoreEmpty(self, mod):
+    def appendIgnoreEmpty(self, mod, raiseFailure=False):
         mod.position = len(self)
         HandledList.append(self, mod)
         if mod.isInvalid:
             self.remove(mod)
-            raise HandledListActionError(mod)
+            if raiseFailure:
+                raise HandledListActionError(mod)
+            else:
+                return
 
-    def replace(self, idx, mod):
+    def replace(self, idx, mod, raiseFailure=False):
         try:
             oldMod = self[idx]
         except IndexError:
-            raise HandledListActionError(mod)
+            if raiseFailure:
+                raise HandledListActionError(mod)
+            else:
+                return
         self.__toModule(idx, mod)
         if mod.isInvalid:
             self.__toModule(idx, oldMod)
-            raise HandledListActionError(mod)
+            if raiseFailure:
+                raise HandledListActionError(mod)
+            else:
+                return
 
-    def replaceRackPosition(self, rackPosition, mod):
+    def replaceRackPosition(self, rackPosition, mod, raiseFailure=False):
         listPositions = []
         for currPos in range(len(self)):
             currMod = self[currPos]
@@ -169,7 +180,7 @@ class HandledModuleList(HandledList):
         try:
             modListPosition = listPositions[rackPosition]
         except IndexError:
-            self.appendIgnoreEmpty(mod)
+            self.appendIgnoreEmpty(mod, raiseFailure=raiseFailure)
         else:
             oldMod = self[modListPosition]
             if mod.isEmpty:
@@ -182,9 +193,12 @@ class HandledModuleList(HandledList):
                         self.__toDummy(modListPosition)
                     else:
                         self.__toModule(modListPosition, oldMod)
-                    raise HandledListActionError(mod)
+                    if raiseFailure:
+                        raise HandledListActionError(mod)
+                    else:
+                        return
 
-    def insert(self, idx, mod):
+    def insert(self, idx, mod, raiseFailure=False):
         mod.position = idx
         i = idx
         while i < len(self):
@@ -193,8 +207,10 @@ class HandledModuleList(HandledList):
         HandledList.insert(self, idx, mod)
         if mod.isInvalid:
             self.remove(mod)
-            raise HandledListActionError(mod)
-
+            if raiseFailure:
+                raise HandledListActionError(mod)
+            else:
+                return
 
     def remove(self, mod):
         HandledList.remove(self, mod)
@@ -232,41 +248,59 @@ class HandledDroneCargoList(HandledList):
         for o in self.find(item):
             return o
 
-    def append(self, thing):
+    def append(self, thing, raiseFailure=False):
         HandledList.append(self, thing)
         if thing.isInvalid:
             self.remove(thing)
-            raise HandledListActionError(thing)
+            if raiseFailure:
+                raise HandledListActionError(thing)
+            else:
+                return
 
-    def insert(self, idx, thing):
+    def insert(self, idx, thing, raiseFailure=False):
         HandledList.insert(self, idx, thing)
         if thing.isInvalid:
             self.remove(thing)
-            raise HandledListActionError(thing)
+            if raiseFailure:
+                raise HandledListActionError(thing)
+            else:
+                return
 
 
 class HandledImplantList(HandledList):
 
-    def append(self, implant):
+    def append(self, implant, raiseFailure=False):
         if implant.isInvalid:
             HandledList.append(self, implant)
             self.remove(implant)
-            raise HandledListActionError(implant)
+            if raiseFailure:
+                raise HandledListActionError(implant)
+            else:
+                return
         if self.__slotCheck(implant):
             HandledList.append(self, implant)
             self.remove(implant)
-            raise HandledListActionError(implant)
+            if raiseFailure:
+                raise HandledListActionError(implant)
+            else:
+                return
         HandledList.append(self, implant)
 
-    def insert(self, idx, implant):
+    def insert(self, idx, implant, raiseFailure=False):
         if implant.isInvalid:
             HandledList.insert(self, idx, implant)
             self.remove(implant)
-            raise HandledListActionError(implant)
+            if raiseFailure:
+                raise HandledListActionError(implant)
+            else:
+                return
         if self.__slotCheck(implant):
             HandledList.insert(self, idx, implant)
             self.remove(implant)
-            raise HandledListActionError(implant)
+            if raiseFailure:
+                raise HandledListActionError(implant)
+            else:
+                return
         HandledList.insert(self, idx, implant)
 
     def makeRoom(self, implant):
@@ -288,26 +322,38 @@ class HandledImplantList(HandledList):
 
 class HandledBoosterList(HandledList):
 
-    def append(self, booster):
+    def append(self, booster, raiseFailure=False):
         if booster.isInvalid:
             HandledList.append(self, booster)
             self.remove(booster)
-            raise HandledListActionError(booster)
+            if raiseFailure:
+                raise HandledListActionError(booster)
+            else:
+                return
         if self.__slotCheck(booster):
             HandledList.append(self, booster)
             self.remove(booster)
-            raise HandledListActionError(booster)
+            if raiseFailure:
+                raise HandledListActionError(booster)
+            else:
+                return
         HandledList.append(self, booster)
 
-    def insert(self, idx, booster):
+    def insert(self, idx, booster, raiseFailure=False):
         if booster.isInvalid:
             HandledList.insert(self, idx, booster)
             self.remove(booster)
-            raise HandledListActionError(booster)
+            if raiseFailure:
+                raise HandledListActionError(booster)
+            else:
+                return
         if self.__slotCheck(booster):
             HandledList.insert(self, idx, booster)
             self.remove(booster)
-            raise HandledListActionError(booster)
+            if raiseFailure:
+                raise HandledListActionError(booster)
+            else:
+                return
         HandledList.insert(self, idx, booster)
 
     def makeRoom(self, booster):
@@ -340,13 +386,16 @@ class HandledSsoCharacterList(list):
 
 class HandledProjectedModList(HandledList):
 
-    def append(self, proj):
+    def append(self, proj, raiseFailure=False):
         if proj.isInvalid:
             # we must include it before we remove it. doing it this way ensures
             # rows and relationships in database are removed as well
             HandledList.append(self, proj)
             self.remove(proj)
-            raise HandledListActionError(proj)
+            if raiseFailure:
+                raise HandledListActionError(proj)
+            else:
+                return
 
         proj.projected = True
 
@@ -355,15 +404,21 @@ class HandledProjectedModList(HandledList):
         # Remove non-projectable modules
         if not proj.item.isType("projected") and not proj.isExclusiveSystemEffect:
             self.remove(proj)
-            raise HandledListActionError(proj)
+            if raiseFailure:
+                raise HandledListActionError(proj)
+            else:
+                return
 
-    def insert(self, idx, proj):
+    def insert(self, idx, proj, raiseFailure=False):
         if proj.isInvalid:
             # we must include it before we remove it. doing it this way ensures
             # rows and relationships in database are removed as well
             HandledList.insert(self, idx, proj)
             self.remove(proj)
-            raise HandledListActionError(proj)
+            if raiseFailure:
+                raise HandledListActionError(proj)
+            else:
+                return
 
         proj.projected = True
 
@@ -372,7 +427,10 @@ class HandledProjectedModList(HandledList):
         # Remove non-projectable modules
         if not proj.item.isType("projected") and not proj.isExclusiveSystemEffect:
             self.remove(proj)
-            raise HandledListActionError(proj)
+            if raiseFailure:
+                raise HandledListActionError(proj)
+            else:
+                return
 
     @property
     def currentSystemEffect(self):
@@ -396,7 +454,7 @@ class HandledProjectedModList(HandledList):
 
 class HandledProjectedDroneList(HandledDroneCargoList):
 
-    def append(self, proj):
+    def append(self, proj, raiseFailure=False):
         proj.projected = True
         HandledList.append(self, proj)
 
@@ -404,10 +462,12 @@ class HandledProjectedDroneList(HandledDroneCargoList):
         if proj.isInvalid or not proj.item.isType("projected"):
             self.remove(proj)
             proj.projected = False
-            raise HandledListActionError(proj)
-        return True
+            if raiseFailure:
+                raise HandledListActionError(proj)
+            else:
+                return
 
-    def insert(self, idx, proj):
+    def insert(self, idx, proj, raiseFailure=False):
         proj.projected = True
         HandledList.insert(self, idx, proj)
 
@@ -415,8 +475,10 @@ class HandledProjectedDroneList(HandledDroneCargoList):
         if proj.isInvalid or not proj.item.isType("projected"):
             self.remove(proj)
             proj.projected = False
-            raise HandledListActionError(proj)
-        return True
+            if raiseFailure:
+                raise HandledListActionError(proj)
+            else:
+                return
 
 
 class HandledItem(object):

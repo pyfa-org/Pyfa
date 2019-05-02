@@ -49,7 +49,7 @@ class CalcRemoveLocalDroneCommand(wx.Command):
             if drone is None:
                 return False
             try:
-                fit.drones.insert(self.position, drone)
+                fit.drones.insert(self.position, drone, raiseFailure=True)
             except HandledListActionError:
                 pyfalog.warning('Failed to insert to list')
                 if self.commit:

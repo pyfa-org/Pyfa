@@ -51,7 +51,7 @@ class CalcAddLocalDroneCommand(wx.Command):
             pyfalog.warning('Drone does not fit')
             return False
         try:
-            fit.drones.append(drone)
+            fit.drones.append(drone, raiseFailure=True)
         except HandledListActionError:
             pyfalog.warning('Failed to append to list')
             if self.commit:

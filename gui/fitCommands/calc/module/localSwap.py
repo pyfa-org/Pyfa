@@ -34,14 +34,14 @@ class CalcSwapLocalModuleCommand(wx.Command):
         fit.modules.free(position1)
         fit.modules.free(position2)
         try:
-            fit.modules.replace(position2, mod1)
+            fit.modules.replace(position2, mod1, raiseFailure=True)
         except HandledListActionError:
             fit.modules.replace(position1, mod1)
             fit.modules.replace(position2, mod2)
             eos.db.commit()
             return False
         try:
-            fit.modules.replace(position1, mod2)
+            fit.modules.replace(position1, mod2, raiseFailure=True)
         except HandledListActionError:
             fit.modules.free(position2)
             fit.modules.replace(position1, mod1)

@@ -40,14 +40,14 @@ class CalcAddProjectedModuleCommand(wx.Command):
 
         if self.newPosition is not None:
             try:
-                fit.projectedModules.insert(self.newPosition, newMod)
+                fit.projectedModules.insert(self.newPosition, newMod, raiseFailure=True)
             except HandledListActionError:
                 if self.commit:
                     eos.db.commit()
                 return False
         else:
             try:
-                fit.projectedModules.append(newMod)
+                fit.projectedModules.append(newMod, raiseFailure=True)
             except HandledListActionError:
                 if self.commit:
                     eos.db.commit()

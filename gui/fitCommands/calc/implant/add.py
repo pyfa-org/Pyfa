@@ -36,7 +36,7 @@ class CalcAddImplantCommand(wx.Command):
 
         if self.newPosition is not None:
             try:
-                fit.implants.insert(self.newPosition, newImplant)
+                fit.implants.insert(self.newPosition, newImplant, raiseFailure=True)
             except HandledListActionError:
                 pyfalog.warning('Failed to insert to list')
                 cmd = CalcAddImplantCommand(
@@ -48,7 +48,7 @@ class CalcAddImplantCommand(wx.Command):
                 return False
         else:
             try:
-                fit.implants.append(newImplant)
+                fit.implants.append(newImplant, raiseFailure=True)
             except HandledListActionError:
                 pyfalog.warning('Failed to append to list')
                 cmd = CalcAddImplantCommand(

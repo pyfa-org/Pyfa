@@ -42,7 +42,7 @@ class CalcAddLocalFighterCommand(wx.Command):
 
         if self.position is None:
             try:
-                fit.fighters.append(fighter)
+                fit.fighters.append(fighter, raiseFailure=True)
             except HandledListActionError:
                 pyfalog.warning('Failed to append to list')
                 if self.commit:
@@ -51,7 +51,7 @@ class CalcAddLocalFighterCommand(wx.Command):
             self.position = fit.fighters.index(fighter)
         else:
             try:
-                fit.fighters.insert(self.position, fighter)
+                fit.fighters.insert(self.position, fighter, raiseFailure=True)
             except HandledListActionError:
                 pyfalog.warning('Failed to insert to list')
                 if self.commit:
