@@ -123,7 +123,8 @@ class AddEnvironmentEffect(ContextMenuUnconditional):
 
         # Expressions for matching when detecting effects we're looking for
         if incursions:
-            validgroups = ("Incursion ship attributes effects",)
+            validgroups = ("Incursion ship attributes effects",
+                           "Invasion Effects")
         else:
             validgroups = ("Black Hole Effect Beacon",
                            "Cataclysmic Variable Effect Beacon",
@@ -133,7 +134,7 @@ class AddEnvironmentEffect(ContextMenuUnconditional):
                            "Wolf Rayet Effect Beacon")
 
         # Stuff we don't want to see in names
-        garbages = ("Effect", "Beacon", "ship attributes effects")
+        garbages = ("Effects?", "Beacon", "ship attributes effects")
 
         # Get group with all the system-wide beacons
         grp = sMkt.getGroup("Effect Beacon")

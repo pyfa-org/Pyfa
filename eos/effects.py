@@ -35621,6 +35621,96 @@ class Effect7186(BaseEffect):
                                      'armorHP', ship.getModifiedItemAttr('shipBonusRole8'))
 
 
+class Effect7193(BaseEffect):
+    """
+    systemMiningCycleTimeBonus
+
+    Used by:
+    Celestials named like: Invasion Effects (3 of 3)
+    """
+
+    runTime = 'early'
+    type = ('projected', 'passive')
+
+    @staticmethod
+    def handler(fit, beacon, context):
+        fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Mining'),
+                                      'duration', beacon.getModifiedItemAttr('miningDurationMultiplier'),
+                                      stackingPenalties=True)
+
+        fit.drones.filteredItemBoost(lambda drone: drone.item.requiresSkill('Mining'),
+                                     'duration', beacon.getModifiedItemAttr('miningDurationMultiplier'),
+                                     stackingPenalties=True)
+
+
+class Effect7194(BaseEffect):
+    """
+    systemHullHPBonusPercent
+
+    Used by:
+    Celestials named like: Invasion Effects (3 of 3)
+    """
+
+    runTime = 'early'
+    type = ('projected', 'passive')
+
+    @staticmethod
+    def handler(fit, beacon, context):
+        fit.ship.boostItemAttr('hp', beacon.getModifiedItemAttr('hullHpBonus'), stackingPenalties=True)
+
+
+class Effect7195(BaseEffect):
+    """
+    systemAgilityBonusPercent
+
+    Used by:
+    Celestials named like: Invasion Effects (3 of 3)
+    """
+
+    runTime = 'early'
+    type = ('projected', 'passive')
+
+    @staticmethod
+    def handler(fit, beacon, context):
+        fit.ship.boostItemAttr('agility', beacon.getModifiedItemAttr('agilityBonus'), stackingPenalties=True)
+
+
+class Effect7202(BaseEffect):
+    """
+    systemDroneSpeedBonusPercent
+
+    Used by:
+    Celestials named like: Invasion Effects (3 of 3)
+    """
+
+    runTime = 'early'
+    type = ('projected', 'passive')
+
+    @staticmethod
+    def handler(fit, beacon, context):
+        fit.drones.filteredItemBoost(lambda drone: drone.item.requiresSkill('Drones'),
+                                     'maxVelocity', beacon.getModifiedItemAttr('droneMaxVelocityBonus'),
+                                     stackingPenalties=True)
+
+
+class Effect7203(BaseEffect):
+    """
+    systemDroneDamageBonusPercent
+
+    Used by:
+    Celestials named like: Invasion Effects (3 of 3)
+    """
+
+    runTime = 'early'
+    type = ('projected', 'passive')
+
+    @staticmethod
+    def handler(fit, beacon, context):
+        fit.drones.filteredItemBoost(lambda drone: drone.item.requiresSkill('Drones'),
+                                     'damageMultiplier', beacon.getModifiedItemAttr('droneDamageBonus'),
+                                     stackingPenalties=True)
+
+
 class Effect7204(BaseEffect):
     """
     shipArmorEMResistancePF2
