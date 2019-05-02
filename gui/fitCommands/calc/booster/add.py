@@ -36,7 +36,7 @@ class CalcAddBoosterCommand(wx.Command):
 
         if self.newPosition is not None:
             try:
-                fit.boosters.insert(self.newPosition, newBooster)
+                fit.boosters.insert(self.newPosition, newBooster, raiseFailure=True)
             except HandledListActionError:
                 pyfalog.warning('Failed to insert to list')
                 cmd = CalcAddBoosterCommand(
@@ -48,7 +48,7 @@ class CalcAddBoosterCommand(wx.Command):
                 return False
         else:
             try:
-                fit.boosters.append(newBooster)
+                fit.boosters.append(newBooster, raiseFailure=True)
             except HandledListActionError:
                 pyfalog.warning('Failed to append to list')
                 cmd = CalcAddBoosterCommand(

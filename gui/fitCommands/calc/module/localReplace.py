@@ -54,7 +54,7 @@ class CalcReplaceLocalModuleCommand(wx.Command):
                 self.Undo()
                 return False
         try:
-            fit.modules.replace(self.position, newMod)
+            fit.modules.replace(self.position, newMod, raiseFailure=True)
         except HandledListActionError:
             pyfalog.warning('Failed to replace in list')
             self.Undo()
@@ -88,7 +88,7 @@ class CalcReplaceLocalModuleCommand(wx.Command):
             return False
         fit.modules.free(self.position)
         try:
-            fit.modules.replace(self.position, oldMod)
+            fit.modules.replace(self.position, oldMod, raiseFailure=True)
         except HandledListActionError:
             pyfalog.warning('Failed to replace in list')
             self.Do()

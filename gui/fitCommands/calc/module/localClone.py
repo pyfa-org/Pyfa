@@ -32,7 +32,7 @@ class CalcCloneLocalModuleCommand(wx.Command):
         if not fit.modules[self.dstPosition].isEmpty:
             return False
         try:
-            fit.modules.replace(self.dstPosition, copyMod)
+            fit.modules.replace(self.dstPosition, copyMod, raiseFailure=True)
         except HandledListActionError:
             pyfalog.warning('Failed to replace module')
             eos.db.commit()

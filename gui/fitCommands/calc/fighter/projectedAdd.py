@@ -26,14 +26,14 @@ class CalcAddProjectedFighterCommand(wx.Command):
         fit = Fit.getInstance().getFit(self.fitID)
         if self.position is not None:
             try:
-                fit.projectedFighters.insert(self.position, fighter)
+                fit.projectedFighters.insert(self.position, fighter, raiseFailure=True)
             except HandledListActionError:
                 if self.commit:
                     eos.db.commit()
                 return False
         else:
             try:
-                fit.projectedFighters.append(fighter)
+                fit.projectedFighters.append(fighter, raiseFailure=True)
             except HandledListActionError:
                 if self.commit:
                     eos.db.commit()

@@ -44,7 +44,7 @@ class CalcAddProjectedDroneCommand(wx.Command):
             pyfalog.debug('Drone is not projectable')
             return False
         try:
-            fit.projectedDrones.append(drone)
+            fit.projectedDrones.append(drone, raiseFailure=True)
         except HandledListActionError:
             pyfalog.warning('Failed to append to list')
             if self.commit:
