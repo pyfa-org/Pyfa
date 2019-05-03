@@ -134,7 +134,7 @@ class MarketBrowser(wx.Panel):
     @mode.setter
     def mode(self, newMode):
         oldMode = self.__mode
-        if newMode == oldMode:
+        if newMode == oldMode != 'search':
             return
         # Store meta button states when switching from normal
         if oldMode == 'normal':
