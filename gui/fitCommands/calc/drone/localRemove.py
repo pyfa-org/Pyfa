@@ -2,7 +2,6 @@ import wx
 from logbook import Logger
 
 import eos.db
-from eos.exception import HandledListActionError
 from gui.fitCommands.helpers import DroneInfo
 from service.fit import Fit
 
@@ -48,9 +47,8 @@ class CalcRemoveLocalDroneCommand(wx.Command):
             drone = self.savedDroneInfo.toDrone()
             if drone is None:
                 return False
-            try:
-                fit.drones.insert(self.position, drone, raiseFailure=True)
-            except HandledListActionError:
+            fit.drones.insert(self.position, drone)
+            if drone not in fit.drones:
                 pyfalog.warning('Failed to insert to list')
                 if self.commit:
                     eos.db.commit()

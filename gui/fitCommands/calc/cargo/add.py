@@ -2,7 +2,6 @@ import wx
 from logbook import Logger
 
 import eos.db
-from eos.exception import HandledListActionError
 from service.fit import Fit
 
 
@@ -25,9 +24,8 @@ class CalcAddCargoCommand(wx.Command):
             cargo.amount += self.cargoInfo.amount
         else:
             cargo = self.cargoInfo.toCargo()
-            try:
-                fit.cargo.append(cargo, raiseFailure=True)
-            except HandledListActionError:
+            fit.cargo.append(cargo)
+            if cargo not in fit.cargo:
                 pyfalog.warning('Failed to append to list')
                 if self.commit:
                     eos.db.commit()

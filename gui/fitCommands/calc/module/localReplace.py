@@ -2,7 +2,6 @@ import wx
 from logbook import Logger
 
 import eos.db
-from eos.exception import HandledListActionError
 from gui.fitCommands.helpers import ModuleInfo, restoreCheckedStates, stateLimit
 from service.fit import Fit
 
@@ -53,9 +52,8 @@ class CalcReplaceLocalModuleCommand(wx.Command):
                 pyfalog.warning('Invalid charge')
                 self.Undo()
                 return False
-        try:
-            fit.modules.replace(self.position, newMod, raiseFailure=True)
-        except HandledListActionError:
+        fit.modules.replace(self.position, newMod)
+        if newMod not in fit.modules:
             pyfalog.warning('Failed to replace in list')
             self.Undo()
             return False
@@ -87,9 +85,8 @@ class CalcReplaceLocalModuleCommand(wx.Command):
         if oldMod is None:
             return False
         fit.modules.free(self.position)
-        try:
-            fit.modules.replace(self.position, oldMod, raiseFailure=True)
-        except HandledListActionError:
+        fit.modules.replace(self.position, oldMod)
+        if oldMod not in fit.modules:
             pyfalog.warning('Failed to replace in list')
             self.Do()
             return False

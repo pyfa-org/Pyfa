@@ -2,7 +2,6 @@ import wx
 from logbook import Logger
 
 import eos.db
-from eos.exception import HandledListActionError
 from service.fit import Fit
 
 
@@ -25,16 +24,14 @@ class CalcAddProjectedFighterCommand(wx.Command):
             return False
         fit = Fit.getInstance().getFit(self.fitID)
         if self.position is not None:
-            try:
-                fit.projectedFighters.insert(self.position, fighter, raiseFailure=True)
-            except HandledListActionError:
+            fit.projectedFighters.insert(self.position, fighter)
+            if fighter not in fit.projectedFighters:
                 if self.commit:
                     eos.db.commit()
                 return False
         else:
-            try:
-                fit.projectedFighters.append(fighter, raiseFailure=True)
-            except HandledListActionError:
+            fit.projectedFighters.append(fighter)
+            if fighter not in fit.projectedFighters:
                 if self.commit:
                     eos.db.commit()
                 return False

@@ -2,7 +2,6 @@ import wx
 from logbook import Logger
 
 import eos.db
-from eos.exception import HandledListActionError
 from service.fit import Fit
 
 
@@ -33,16 +32,14 @@ class CalcSwapLocalModuleCommand(wx.Command):
         mod2 = fit.modules[position2]
         fit.modules.free(position1)
         fit.modules.free(position2)
-        try:
-            fit.modules.replace(position2, mod1, raiseFailure=True)
-        except HandledListActionError:
+        fit.modules.replace(position2, mod1)
+        if len(fit.modules) <= position2 or fit.modules[position2] is not mod1:
             fit.modules.replace(position1, mod1)
             fit.modules.replace(position2, mod2)
             eos.db.commit()
             return False
-        try:
-            fit.modules.replace(position1, mod2, raiseFailure=True)
-        except HandledListActionError:
+        fit.modules.replace(position1, mod2)
+        if len(fit.modules) <= position1 or fit.modules[position1] is not mod2:
             fit.modules.free(position2)
             fit.modules.replace(position1, mod1)
             fit.modules.replace(position2, mod2)
