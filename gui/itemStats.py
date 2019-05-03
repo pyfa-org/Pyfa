@@ -146,8 +146,8 @@ class ItemStatsDialog(wx.Dialog):
         event.Skip()
 
     def closeEvent(self, event):
-        self.closeWindow()
         self.container.onParentClose()
+        self.closeWindow()
         event.Skip()
 
     def closeWindow(self):
