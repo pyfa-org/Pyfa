@@ -272,8 +272,8 @@ class Port(object):
         return importDna(string, fitName=fitName)
 
     @staticmethod
-    def exportDna(fit, callback=None):
-        return exportDna(fit, callback=callback)
+    def exportDna(fit, options, callback=None):
+        return exportDna(fit, options, callback=callback)
 
     # ESI-related methods
     @staticmethod

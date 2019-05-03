@@ -32,11 +32,16 @@ from eos.saveddata.fit import Fit
 from eos.saveddata.module import Module
 from eos.saveddata.ship import Ship
 from gui.fitCommands.helpers import activeStateLimit
+from service.const import PortDnaOptions
 from service.fit import Fit as svcFit
 from service.market import Market
 
 
 pyfalog = Logger(__name__)
+
+DNA_OPTIONS = (
+    (PortDnaOptions.FORMATTING, 'Formatting Tags', 'Include formatting tags to paste fit directly into corp bulletins, MOTD, etc.', True),
+)
 
 
 def importDna(string, fitName=None):
@@ -130,7 +135,7 @@ def importDna(string, fitName=None):
     return f
 
 
-def exportDna(fit, callback):
+def exportDna(fit, options, callback):
     dna = str(fit.shipID)
     subsystems = []  # EVE cares which order you put these in
     mods = OrderedDict()
@@ -177,6 +182,9 @@ def exportDna(fit, callback):
         dna += ":{0};{1}".format(charge, charges[charge])
 
     text = dna + "::"
+
+    if options[PortDnaOptions.FORMATTING]:
+        text = '<url=fitting:{}>{}</url>'.format(text, fit.name)
 
     if callback:
         callback(text)

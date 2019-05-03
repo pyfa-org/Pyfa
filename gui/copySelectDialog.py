@@ -23,13 +23,14 @@ from collections import OrderedDict
 # noinspection PyPackageRequirements
 import wx
 
+from eos.db import getFit
+from gui.utils.clipboard import toClipboard
+from service.const import PortMultiBuyOptions
+from service.port import EfsPort, Port
+from service.port.dna import DNA_OPTIONS
 from service.port.eft import EFT_OPTIONS
 from service.port.multibuy import MULTIBUY_OPTIONS
 from service.settings import SettingsProvider
-from service.port import EfsPort, Port
-from service.const import PortMultiBuyOptions
-from eos.db import getFit
-from gui.utils.clipboard import toClipboard
 
 
 class CopySelectDialog(wx.Dialog):
@@ -60,7 +61,7 @@ class CopySelectDialog(wx.Dialog):
             ("EFT", (CopySelectDialog.copyFormatEft, EFT_OPTIONS)),
             ("MultiBuy", (CopySelectDialog.copyFormatMultiBuy, MULTIBUY_OPTIONS)),
             ("ESI", (CopySelectDialog.copyFormatEsi, None)),
-            ("DNA", (CopySelectDialog.copyFormatDna, None)),
+            ("DNA", (CopySelectDialog.copyFormatDna, DNA_OPTIONS)),
             ("EFS", (CopySelectDialog.copyFormatEfs, None)),
             # ("XML", (CopySelectDialog.copyFormatXml, None)),
         ))
@@ -166,7 +167,7 @@ class CopySelectDialog(wx.Dialog):
 
     def exportDna(self, options, callback):
         fit = getFit(self.mainFrame.getActiveFit())
-        Port.exportDna(fit, callback)
+        Port.exportDna(fit, options, callback)
 
     def exportEsi(self, options, callback):
         fit = getFit(self.mainFrame.getActiveFit())
