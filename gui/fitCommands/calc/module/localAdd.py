@@ -2,7 +2,7 @@ import wx
 from logbook import Logger
 
 import eos.db
-from gui.fitCommands.helpers import restoreCheckedStates, stateLimit
+from gui.fitCommands.helpers import restoreCheckedStates, activeStateLimit
 from service.fit import Fit
 
 
@@ -25,7 +25,7 @@ class CalcAddLocalModuleCommand(wx.Command):
         sFit = Fit.getInstance()
         fit = sFit.getFit(self.fitID)
 
-        newMod = self.newModInfo.toModule(fallbackState=stateLimit(self.newModInfo.itemID))
+        newMod = self.newModInfo.toModule(fallbackState=activeStateLimit(self.newModInfo.itemID))
         if newMod is None:
             return False
 

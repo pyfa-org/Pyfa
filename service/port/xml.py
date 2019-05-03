@@ -23,6 +23,7 @@ import xml.parsers.expat
 
 from logbook import Logger
 
+from eos.const import FittingModuleState, FittingSlot
 from eos.saveddata.cargo import Cargo
 from eos.saveddata.citadel import Citadel
 from eos.saveddata.drone import Drone
@@ -30,12 +31,11 @@ from eos.saveddata.fighter import Fighter
 from eos.saveddata.fit import Fit
 from eos.saveddata.module import Module
 from eos.saveddata.ship import Ship
-from eos.const import FittingSlot, FittingModuleState
+from gui.fitCommands.helpers import activeStateLimit
 from service.fit import Fit as svcFit
 from service.market import Market
-from utils.strfunctions import sequential_rep, replace_ltgt
-
 from service.port.shared import IPortUser, processing_notify
+from utils.strfunctions import replace_ltgt, sequential_rep
 
 
 pyfalog = Logger(__name__)
@@ -200,7 +200,7 @@ def importXml(text, iportuser):
                             fitobj.modules.append(m)
                     else:
                         if m.isValidState(FittingModuleState.ACTIVE):
-                            m.state = FittingModuleState.ACTIVE
+                            m.state = activeStateLimit(m.item)
 
                         moduleList.append(m)
 
