@@ -32,11 +32,16 @@ from eos.saveddata.fit import Fit
 from eos.saveddata.module import Module
 from eos.saveddata.ship import Ship
 from gui.fitCommands.helpers import activeStateLimit
+from service.const import PortDnaOptions
 from service.fit import Fit as svcFit
 from service.market import Market
 
 
 pyfalog = Logger(__name__)
+
+DNA_OPTIONS = (
+    (PortDnaOptions.FORMATTING, 'Formatting Tags', 'Include formatting tags to paste fit directly into corp bulletins, MOTD, etc.', True),
+)
 
 
 def importDna(string, fitName=None):
@@ -130,12 +135,11 @@ def importDna(string, fitName=None):
     return f
 
 
-def exportDna(fit, callback):
+def exportDna(fit, options, callback):
     dna = str(fit.shipID)
     subsystems = []  # EVE cares which order you put these in
     mods = OrderedDict()
     charges = OrderedDict()
-    sFit = svcFit.getInstance()
     for mod in fit.modules:
         if not mod.isEmpty:
             if mod.slot == FittingSlot.SUBSYSTEM:
@@ -163,9 +167,6 @@ def exportDna(fit, callback):
     for fighter in fit.fighters:
         dna += ":{0};{1}".format(fighter.itemID, fighter.amountActive)
 
-    for fighter in fit.fighters:
-        dna += ":{0};{1}".format(fighter.itemID, fighter.amountActive)
-
     for cargo in fit.cargo:
         # DNA format is a simple/dumb format. As CCP uses the slot information of the item itself
         # without designating slots in the DNA standard, we need to make sure we only include
@@ -181,6 +182,9 @@ def exportDna(fit, callback):
         dna += ":{0};{1}".format(charge, charges[charge])
 
     text = dna + "::"
+
+    if options[PortDnaOptions.FORMATTING]:
+        text = '<url=fitting:{}>{}</url>'.format(text, fit.name)
 
     if callback:
         callback(text)

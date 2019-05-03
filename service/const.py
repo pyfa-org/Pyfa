@@ -82,6 +82,14 @@ class PortEftRigSize(IntEnum):
 
 
 @unique
+class PortDnaOptions(IntEnum):
+    """
+    Contains different types of items for DNA export
+    """
+    FORMATTING = 1
+
+
+@unique
 class GuiAttrGroup(IntEnum):
     """
     Define the various groups of attributes.
