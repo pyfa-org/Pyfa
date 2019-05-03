@@ -135,7 +135,6 @@ def exportDna(fit, callback):
     subsystems = []  # EVE cares which order you put these in
     mods = OrderedDict()
     charges = OrderedDict()
-    sFit = svcFit.getInstance()
     for mod in fit.modules:
         if not mod.isEmpty:
             if mod.slot == FittingSlot.SUBSYSTEM:
@@ -159,9 +158,6 @@ def exportDna(fit, callback):
 
     for drone in fit.drones:
         dna += ":{0};{1}".format(drone.itemID, drone.amount)
-
-    for fighter in fit.fighters:
-        dna += ":{0};{1}".format(fighter.itemID, fighter.amountActive)
 
     for fighter in fit.fighters:
         dna += ":{0};{1}".format(fighter.itemID, fighter.amountActive)

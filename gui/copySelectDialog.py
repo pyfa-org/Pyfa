@@ -60,9 +60,9 @@ class CopySelectDialog(wx.Dialog):
             ("EFT", (CopySelectDialog.copyFormatEft, EFT_OPTIONS)),
             ("MultiBuy", (CopySelectDialog.copyFormatMultiBuy, MULTIBUY_OPTIONS)),
             ("ESI", (CopySelectDialog.copyFormatEsi, None)),
+            ("DNA", (CopySelectDialog.copyFormatDna, None)),
             ("EFS", (CopySelectDialog.copyFormatEfs, None)),
             # ("XML", (CopySelectDialog.copyFormatXml, None)),
-            # ("DNA", (CopySelectDialog.copyFormatDna, None)),
         ))
 
         defaultFormatOptions = {}
