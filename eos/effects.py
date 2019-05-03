@@ -15232,96 +15232,57 @@ class Effect4575(BaseEffect):
 
         #  Remote Shield Repper Bonuses
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Capital Shield Emission Systems'),
-                                      'duration',
-                                      src.getModifiedItemAttr('industrialCoreRemoteLogisticsDurationBonus'),
-                                      )
+                                      'duration', src.getModifiedItemAttr('industrialCoreRemoteLogisticsDurationBonus'))
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Capital Shield Emission Systems'),
-                                      'maxRange',
-                                      src.getModifiedItemAttr('industrialCoreRemoteLogisticsRangeBonus'),
-                                      stackingPenalties=True
-                                      )
+                                      'maxRange', src.getModifiedItemAttr('industrialCoreRemoteLogisticsRangeBonus'),
+                                      stackingPenalties=True)
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Capital Shield Emission Systems'),
-                                      'capacitorNeed',
-                                      src.getModifiedItemAttr('industrialCoreRemoteLogisticsDurationBonus')
-                                      )
+                                      'capacitorNeed', src.getModifiedItemAttr('industrialCoreRemoteLogisticsDurationBonus'))
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Capital Shield Emission Systems'),
-                                      'falloffEffectiveness',
-                                      src.getModifiedItemAttr('industrialCoreRemoteLogisticsRangeBonus'),
-                                      stackingPenalties=True
-                                      )
+                                      'falloffEffectiveness', src.getModifiedItemAttr('industrialCoreRemoteLogisticsRangeBonus'),
+                                      stackingPenalties=True)
 
         #  Local Shield Repper Bonuses
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Capital Shield Operation'),
-                                      'duration',
-                                      src.getModifiedItemAttr('industrialCoreLocalLogisticsDurationBonus'),
-                                      )
+                                      'duration', src.getModifiedItemAttr('industrialCoreLocalLogisticsDurationBonus'))
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Capital Shield Operation'),
-                                      'shieldBonus',
-                                      src.getModifiedItemAttr('industrialCoreLocalLogisticsAmountBonus'),
-                                      stackingPenalties=True
-                                      )
+                                      'shieldBonus', src.getModifiedItemAttr('industrialCoreLocalLogisticsAmountBonus'),
+                                      stackingPenalties=True)
 
         # Mining Burst Bonuses
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Mining Foreman'),
-                                      'warfareBuff1Value',
-                                      src.getModifiedItemAttr('industrialCoreBonusMiningBurstStrength'),
-                                      )
-
+                                      'warfareBuff1Value', src.getModifiedItemAttr('industrialCoreBonusMiningBurstStrength'))
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Mining Foreman'),
-                                      'warfareBuff2Value',
-                                      src.getModifiedItemAttr('industrialCoreBonusMiningBurstStrength'),
-                                      )
-
+                                      'warfareBuff2Value', src.getModifiedItemAttr('industrialCoreBonusMiningBurstStrength'))
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Mining Foreman'),
-                                      'warfareBuff3Value',
-                                      src.getModifiedItemAttr('industrialCoreBonusMiningBurstStrength'),
-                                      )
-
+                                      'warfareBuff3Value', src.getModifiedItemAttr('industrialCoreBonusMiningBurstStrength'))
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Mining Foreman'),
-                                      'warfareBuff4Value',
-                                      src.getModifiedItemAttr('industrialCoreBonusMiningBurstStrength'),
-                                      )
+                                      'warfareBuff4Value', src.getModifiedItemAttr('industrialCoreBonusMiningBurstStrength'))
 
         #  Command Burst Range Bonus
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Leadership'),
-                                      'maxRange',
-                                      src.getModifiedItemAttr('industrialCoreBonusCommandBurstRange'),
-                                      stackingPenalties=True
-                                      )
+                                      'maxRange', src.getModifiedItemAttr('industrialCoreBonusCommandBurstRange'),
+                                      stackingPenalties=True)
 
         # Drone Bonuses
         fit.drones.filteredItemBoost(lambda drone: drone.item.requiresSkill('Ice Harvesting Drone Operation'),
-                                     'duration',
-                                     src.getModifiedItemAttr('industrialCoreBonusDroneIceHarvesting'),
-                                     )
+                                     'duration', src.getModifiedItemAttr('industrialCoreBonusDroneIceHarvesting'))
         fit.drones.filteredItemBoost(lambda drone: drone.item.requiresSkill('Mining Drone Operation'),
-                                     'miningAmount',
-                                     src.getModifiedItemAttr('industrialCoreBonusDroneMining'),
-                                     )
+                                     'miningAmount', src.getModifiedItemAttr('industrialCoreBonusDroneMining'))
         fit.drones.filteredItemBoost(lambda drone: drone.item.requiresSkill('Drones'),
-                                     'maxVelocity',
-                                     src.getModifiedItemAttr('industrialCoreBonusDroneVelocity'),
-                                     )
+                                     'maxVelocity', src.getModifiedItemAttr('industrialCoreBonusDroneVelocity'),
+                                     stackingPenalties=True)
+        fit.drones.filteredItemBoost(lambda drone: drone.item.requiresSkill('Drones'),
+                                     'damageMultiplier', src.getModifiedItemAttr('industrialCoreBonusDroneDamageHP'),
+                                     stackingPenalties=True)
+        fit.drones.filteredItemBoost(lambda drone: drone.item.requiresSkill('Drones'),
+                                     'shieldCapacity', src.getModifiedItemAttr('industrialCoreBonusDroneDamageHP'))
+        fit.drones.filteredItemBoost(lambda drone: drone.item.requiresSkill('Drones'),
+                                     'armorHP', src.getModifiedItemAttr('industrialCoreBonusDroneDamageHP'))
+        fit.drones.filteredItemBoost(lambda drone: drone.item.requiresSkill('Drones'),
+                                     'hp', src.getModifiedItemAttr('industrialCoreBonusDroneDamageHP'))
 
-        fit.drones.filteredItemBoost(lambda drone: drone.item.requiresSkill('Drones'),
-                                     'damageMultiplier',
-                                     src.getModifiedItemAttr('industrialCoreBonusDroneDamageHP'),
-                                     stackingPenalties=True
-                                     )
-        fit.drones.filteredItemBoost(lambda drone: drone.item.requiresSkill('Drones'),
-                                     'shieldCapacity',
-                                     src.getModifiedItemAttr('industrialCoreBonusDroneDamageHP'),
-                                     )
-        fit.drones.filteredItemBoost(lambda drone: drone.item.requiresSkill('Drones'),
-                                     'armorHP',
-                                     src.getModifiedItemAttr('industrialCoreBonusDroneDamageHP'),
-                                     )
-        fit.drones.filteredItemBoost(lambda drone: drone.item.requiresSkill('Drones'),
-                                     'hp',
-                                     src.getModifiedItemAttr('industrialCoreBonusDroneDamageHP'),
-                                     )
-
-        #  Todo: remote impedance (no reps, etc)
+        # Remote impedance (no reps, etc)
         fit.ship.increaseItemAttr('warpScrambleStatus', src.getModifiedItemAttr('siegeModeWarpStatus'))
         fit.ship.boostItemAttr('remoteRepairImpedance', src.getModifiedItemAttr('remoteRepairImpedanceBonus'))
         fit.ship.increaseItemAttr('disallowTethering', src.getModifiedItemAttr('disallowTethering'))
@@ -35571,8 +35532,9 @@ class Effect7183(BaseEffect):
 
     @staticmethod
     def handler(fit, src, context):
-        fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Warp Scrambler', 'maxRange',
-                                      src.getModifiedItemAttr('warpScrambleRangeBonus'), stackingPenalties=False)
+        fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Warp Scrambler',
+                                      'maxRange', src.getModifiedItemAttr('warpScrambleRangeBonus'),
+                                      stackingPenalties=False)
 
 
 class Effect7184(BaseEffect):
