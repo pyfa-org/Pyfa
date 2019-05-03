@@ -35597,12 +35597,9 @@ class Effect7193(BaseEffect):
     @staticmethod
     def handler(fit, beacon, context):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Mining'),
-                                      'duration', beacon.getModifiedItemAttr('miningDurationMultiplier'),
-                                      stackingPenalties=True)
-
+                                      'duration', beacon.getModifiedItemAttr('miningDurationMultiplier'))
         fit.drones.filteredItemBoost(lambda drone: drone.item.requiresSkill('Mining'),
-                                     'duration', beacon.getModifiedItemAttr('miningDurationMultiplier'),
-                                     stackingPenalties=True)
+                                     'duration', beacon.getModifiedItemAttr('miningDurationMultiplier'))
 
 
 class Effect7194(BaseEffect):
