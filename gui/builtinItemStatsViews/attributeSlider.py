@@ -96,8 +96,10 @@ class AttributeSlider(wx.Panel):
         self.ctrl = wx.SpinCtrlDouble(self, min=minValue, max=maxValue, inc=getStep(maxValue - minValue))
         self.ctrl.SetDigits(getDigitPlaces(minValue, maxValue))
 
-
         self.ctrl.Bind(wx.EVT_SPINCTRLDOUBLE, self.UpdateValue)
+        # GTK scrolls spinboxes with mousewheel, others do not
+        if "wxGTK" not in wx.PlatformInfo:
+            self.ctrl.Bind(wx.EVT_MOUSEWHEEL, self.OnMouseWheel)
 
         self.slider = AttributeGauge(self, size=(-1, 8))
 
@@ -123,6 +125,16 @@ class AttributeSlider(wx.Panel):
         self.slider.SetValue(slider_percentage)
         if post_event:
             wx.PostEvent(self, ValueChanged(self, None, value, None, slider_percentage))
+
+    def OnMouseWheel(self, evt):
+        if evt.GetWheelRotation() > 0 and evt.GetWheelAxis() == wx.MOUSE_WHEEL_VERTICAL:
+            self.ctrl.Value = self.ctrl.Value + self.ctrl.Increment
+            self.SetValue(self.ctrl.GetValue())
+        elif evt.GetWheelRotation() < 0 and evt.GetWheelAxis() == wx.MOUSE_WHEEL_VERTICAL:
+            self.ctrl.Value = self.ctrl.Value - self.ctrl.Increment
+            self.SetValue(self.ctrl.GetValue())
+        else:
+            evt.Skip()
 
 
 class TestAttributeSlider(wx.Frame):

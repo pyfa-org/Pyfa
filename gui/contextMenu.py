@@ -67,8 +67,8 @@ class ContextMenu(metaclass=ABCMeta):
                 (('marketItemGroup', 'Implant'),)
                 (('fittingShip', 'Ship'),)
         """
-        cls._idxid = -1
-        debug_start = len(cls._ids)
+        ContextMenu._idxid = -1
+        debug_start = len(ContextMenu._ids)
 
         rootMenu = wx.Menu()
         rootMenu.info = {}
@@ -95,7 +95,7 @@ class ContextMenu(metaclass=ABCMeta):
                     bitmap = m._baseGetBitmap(srcContext, mainItem, selection)
                     multiple = not isinstance(bitmap, wx.Bitmap)
                     for it, text in enumerate(texts):
-                        id = cls.nextID()
+                        id = ContextMenu.nextID()
                         check = m.checked
                         rootItem = wx.MenuItem(rootMenu, id, text, kind=wx.ITEM_NORMAL if m.checked is None else wx.ITEM_CHECK)
                         rootMenu.info[id] = (m, fullContext, it)
@@ -104,7 +104,7 @@ class ContextMenu(metaclass=ABCMeta):
 
                         if sub is None:
                             # if there is no sub menu, bind the handler to the rootItem
-                            rootMenu.Bind(wx.EVT_MENU, cls.handler, rootItem)
+                            rootMenu.Bind(wx.EVT_MENU, ContextMenu.handler, rootItem)
                         elif sub:
                             # If sub exists and is not False, set submenu.
                             # Sub might return False when we have a mix of
@@ -141,14 +141,14 @@ class ContextMenu(metaclass=ABCMeta):
             if display_amount > 0 and i != len(fullContexts) - 1:
                 rootMenu.AppendSeparator()
 
-        debug_end = len(cls._ids)
+        debug_end = len(ContextMenu._ids)
         if debug_end - debug_start:
             pyfalog.debug("{} new IDs created for this menu".format(debug_end - debug_start))
 
         return rootMenu if empty is False else None
 
-    @classmethod
-    def handler(cls, event):
+    @staticmethod
+    def handler(event):
         menu = event.EventObject
         stuff = menu.info.get(event.Id)
         if stuff is not None:
@@ -162,21 +162,22 @@ class ContextMenu(metaclass=ABCMeta):
         else:
             event.Skip()
 
-    @classmethod
-    def nextID(cls):
+    @staticmethod
+    def nextID():
         """
         Fetches an ID from the pool of IDs allocated to Context Menu.
         If we don't have enough ID's to fulfill request, create new
         ID and add it to the pool.
 
-        See GH Issue #589
+        See GH Issue #589.
+        Has to be static method to properly handle modifications of primitives from subclasses (_idxid).
         """
-        cls._idxid += 1
+        ContextMenu._idxid += 1
 
-        if cls._idxid >= len(cls._ids):  # We don't ahve an ID for this index, create one
-            cls._ids.append(wx.NewId())
+        if ContextMenu._idxid >= len(ContextMenu._ids):  # We don't ahve an ID for this index, create one
+            ContextMenu._ids.append(wx.NewId())
 
-        return cls._ids[cls._idxid]
+        return ContextMenu._ids[ContextMenu._idxid]
 
     @property
     def checked(self):
