@@ -100,6 +100,7 @@ class CopySelectDialog(wx.Dialog):
 
                 for optId, optName, optDesc, _ in formatOptions:
                     checkbox = wx.CheckBox(self, -1, optName)
+                    checkbox.SetToolTip(wx.ToolTip(optDesc))
                     self.options[formatId][optId] = checkbox
                     if self.settings['options'].get(formatId, {}).get(optId, defaultFormatOptions.get(formatId, {}).get(optId)):
                         checkbox.SetValue(True)
