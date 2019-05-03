@@ -22,18 +22,19 @@ import re
 
 from logbook import Logger
 
+from eos.const import FittingModuleState, FittingSlot
 from eos.db.gamedata.queries import getDynamicItem
+from eos.saveddata.booster import Booster
 from eos.saveddata.cargo import Cargo
 from eos.saveddata.citadel import Citadel
-from eos.saveddata.booster import Booster
 from eos.saveddata.drone import Drone
 from eos.saveddata.fighter import Fighter
+from eos.saveddata.fit import Fit
 from eos.saveddata.implant import Implant
 from eos.saveddata.module import Module
 from eos.saveddata.ship import Ship
-from eos.saveddata.fit import Fit
-from eos.const import FittingSlot, FittingModuleState
-from service.const import PortEftOptions, PortEftRigSize
+from gui.fitCommands.helpers import activeStateLimit
+from service.const import PortEftOptions
 from service.fit import Fit as svcFit
 from service.market import Market
 from service.port.muta import parseMutant, renderMutant
@@ -443,7 +444,7 @@ def importEftCfg(shipname, lines, iportuser):
                         m.owner = fitobj
                         # Activate mod if it is activable
                         if m.isValidState(FittingModuleState.ACTIVE):
-                            m.state = FittingModuleState.ACTIVE
+                            m.state = activeStateLimit(m.item)
                         # Add charge to mod if applicable, on any errors just don't add anything
                         if chargeName:
                             try:
@@ -804,7 +805,7 @@ class AbstractFit:
         if itemSpec.offline and m.isValidState(FittingModuleState.OFFLINE):
             m.state = FittingModuleState.OFFLINE
         elif m.isValidState(FittingModuleState.ACTIVE):
-            m.state = FittingModuleState.ACTIVE
+            m.state = activeStateLimit(m.item)
         return m
 
     def addImplant(self, itemSpec):

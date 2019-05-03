@@ -2,7 +2,7 @@ import wx
 from logbook import Logger
 
 import eos.db
-from gui.fitCommands.helpers import ModuleInfo, restoreCheckedStates, stateLimit
+from gui.fitCommands.helpers import ModuleInfo, restoreCheckedStates, activeStateLimit
 from service.fit import Fit
 
 
@@ -33,7 +33,7 @@ class CalcReplaceLocalModuleCommand(wx.Command):
             self.oldModInfo = ModuleInfo.fromModule(oldMod)
         if self.newModInfo == self.oldModInfo:
             return False
-        newMod = self.newModInfo.toModule(fallbackState=stateLimit(self.newModInfo.itemID))
+        newMod = self.newModInfo.toModule(fallbackState=activeStateLimit(self.newModInfo.itemID))
         if newMod is None:
             return False
         if newMod.slot != oldMod.slot:

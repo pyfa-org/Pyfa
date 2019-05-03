@@ -23,6 +23,7 @@ from collections import OrderedDict
 
 from logbook import Logger
 
+from eos.const import FittingModuleState, FittingSlot
 from eos.saveddata.cargo import Cargo
 from eos.saveddata.citadel import Citadel
 from eos.saveddata.drone import Drone
@@ -30,7 +31,7 @@ from eos.saveddata.fighter import Fighter
 from eos.saveddata.fit import Fit
 from eos.saveddata.module import Module
 from eos.saveddata.ship import Ship
-from eos.const import FittingSlot, FittingModuleState
+from gui.fitCommands.helpers import activeStateLimit
 from service.fit import Fit as svcFit
 from service.market import Market
 
@@ -111,7 +112,7 @@ def importDna(string, fitName=None):
                     else:
                         m.owner = f
                         if m.isValidState(FittingModuleState.ACTIVE):
-                            m.state = FittingModuleState.ACTIVE
+                            m.state = activeStateLimit(m.item)
                         moduleList.append(m)
 
     # Recalc to get slot numbers correct for T3 cruisers
@@ -123,7 +124,7 @@ def importDna(string, fitName=None):
         if module.fits(f):
             module.owner = f
             if module.isValidState(FittingModuleState.ACTIVE):
-                module.state = FittingModuleState.ACTIVE
+                module.state = activeStateLimit(module.item)
             f.modules.append(module)
 
     return f

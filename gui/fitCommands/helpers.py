@@ -317,7 +317,7 @@ class CargoInfo:
         return makeReprStr(self, ['itemID', 'amount'])
 
 
-def stateLimit(itemIdentity):
+def activeStateLimit(itemIdentity):
     item = Market.getInstance().getItem(itemIdentity)
     if {'moduleBonusAssaultDamageControl', 'moduleBonusIndustrialInvulnerability'}.intersection(item.effects):
         return FittingModuleState.ONLINE
