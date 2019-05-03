@@ -2,7 +2,6 @@ import wx
 from logbook import Logger
 
 import eos.db
-from eos.exception import HandledListActionError
 from service.fit import Fit
 
 
@@ -35,9 +34,8 @@ class CalcAddBoosterCommand(wx.Command):
         self.oldPosition, self.oldBoosterInfo = fit.boosters.makeRoom(newBooster)
 
         if self.newPosition is not None:
-            try:
-                fit.boosters.insert(self.newPosition, newBooster, raiseFailure=True)
-            except HandledListActionError:
+            fit.boosters.insert(self.newPosition, newBooster)
+            if newBooster not in fit.boosters:
                 pyfalog.warning('Failed to insert to list')
                 cmd = CalcAddBoosterCommand(
                     fitID=self.fitID,
@@ -47,9 +45,8 @@ class CalcAddBoosterCommand(wx.Command):
                 cmd.Do()
                 return False
         else:
-            try:
-                fit.boosters.append(newBooster, raiseFailure=True)
-            except HandledListActionError:
+            fit.boosters.append(newBooster)
+            if newBooster not in fit.boosters:
                 pyfalog.warning('Failed to append to list')
                 cmd = CalcAddBoosterCommand(
                     fitID=self.fitID,

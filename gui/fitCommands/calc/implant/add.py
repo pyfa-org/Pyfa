@@ -2,7 +2,6 @@ import wx
 from logbook import Logger
 
 import eos.db
-from eos.exception import HandledListActionError
 from service.fit import Fit
 
 
@@ -35,9 +34,8 @@ class CalcAddImplantCommand(wx.Command):
         self.oldPosition, self.oldImplantInfo = fit.implants.makeRoom(newImplant)
 
         if self.newPosition is not None:
-            try:
-                fit.implants.insert(self.newPosition, newImplant, raiseFailure=True)
-            except HandledListActionError:
+            fit.implants.insert(self.newPosition, newImplant)
+            if newImplant not in fit.implants:
                 pyfalog.warning('Failed to insert to list')
                 cmd = CalcAddImplantCommand(
                     fitID=self.fitID,
@@ -47,9 +45,8 @@ class CalcAddImplantCommand(wx.Command):
                 cmd.Do()
                 return False
         else:
-            try:
-                fit.implants.append(newImplant, raiseFailure=True)
-            except HandledListActionError:
+            fit.implants.append(newImplant)
+            if newImplant not in fit.implants:
                 pyfalog.warning('Failed to append to list')
                 cmd = CalcAddImplantCommand(
                     fitID=self.fitID,

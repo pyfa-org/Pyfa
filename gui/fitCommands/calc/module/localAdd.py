@@ -2,7 +2,6 @@ import wx
 from logbook import Logger
 
 import eos.db
-from eos.exception import HandledListActionError
 from gui.fitCommands.helpers import restoreCheckedStates, stateLimit
 from service.fit import Fit
 
@@ -55,9 +54,8 @@ class CalcAddLocalModuleCommand(wx.Command):
         if not newMod.fits(fit):
             pyfalog.warning('Module does not fit')
             return False
-        try:
-            fit.modules.append(newMod, raiseFailure=True)
-        except HandledListActionError:
+        fit.modules.append(newMod)
+        if newMod not in fit.modules:
             pyfalog.warning('Failed to append to list')
             if self.commit:
                 eos.db.commit()

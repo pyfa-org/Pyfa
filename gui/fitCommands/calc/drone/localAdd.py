@@ -3,7 +3,6 @@ import wx
 from logbook import Logger
 
 import eos.db
-from eos.exception import HandledListActionError
 from gui.fitCommands.helpers import DroneInfo, droneStackLimit
 from service.fit import Fit
 from service.market import Market
@@ -50,9 +49,8 @@ class CalcAddLocalDroneCommand(wx.Command):
         if not self.ignoreRestrictions and not drone.fits(fit):
             pyfalog.warning('Drone does not fit')
             return False
-        try:
-            fit.drones.append(drone, raiseFailure=True)
-        except HandledListActionError:
+        fit.drones.append(drone)
+        if drone not in fit.drones:
             pyfalog.warning('Failed to append to list')
             if self.commit:
                 eos.db.commit()

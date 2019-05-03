@@ -3,7 +3,6 @@ from logbook import Logger
 
 import eos.db
 from eos.const import FittingModuleState
-from eos.exception import HandledListActionError
 from gui.fitCommands.helpers import restoreCheckedStates
 from service.fit import Fit
 
@@ -39,16 +38,14 @@ class CalcAddProjectedModuleCommand(wx.Command):
         self.oldPosition, self.oldModInfo = fit.projectedModules.makeRoom(newMod)
 
         if self.newPosition is not None:
-            try:
-                fit.projectedModules.insert(self.newPosition, newMod, raiseFailure=True)
-            except HandledListActionError:
+            fit.projectedModules.insert(self.newPosition, newMod)
+            if newMod not in fit.projectedModules:
                 if self.commit:
                     eos.db.commit()
                 return False
         else:
-            try:
-                fit.projectedModules.append(newMod, raiseFailure=True)
-            except HandledListActionError:
+            fit.projectedModules.append(newMod)
+            if newMod not in fit.projectedModules:
                 if self.commit:
                     eos.db.commit()
                 return False

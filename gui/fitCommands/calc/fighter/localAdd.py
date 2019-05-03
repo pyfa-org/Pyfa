@@ -2,7 +2,6 @@ import wx
 from logbook import Logger
 
 import eos.db
-from eos.exception import HandledListActionError
 from service.fit import Fit
 
 
@@ -41,18 +40,16 @@ class CalcAddLocalFighterCommand(wx.Command):
                 fighter.active = True
 
         if self.position is None:
-            try:
-                fit.fighters.append(fighter, raiseFailure=True)
-            except HandledListActionError:
+            fit.fighters.append(fighter)
+            if fighter not in fit.fighters:
                 pyfalog.warning('Failed to append to list')
                 if self.commit:
                     eos.db.commit()
                 return False
             self.position = fit.fighters.index(fighter)
         else:
-            try:
-                fit.fighters.insert(self.position, fighter, raiseFailure=True)
-            except HandledListActionError:
+            fit.fighters.insert(self.position, fighter)
+            if fighter not in fit.fighters:
                 pyfalog.warning('Failed to insert to list')
                 if self.commit:
                     eos.db.commit()

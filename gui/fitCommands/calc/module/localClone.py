@@ -4,7 +4,6 @@ import wx
 from logbook import Logger
 
 import eos.db
-from eos.exception import HandledListActionError
 from gui.fitCommands.helpers import restoreCheckedStates
 from service.fit import Fit
 
@@ -31,9 +30,8 @@ class CalcCloneLocalModuleCommand(wx.Command):
             return False
         if not fit.modules[self.dstPosition].isEmpty:
             return False
-        try:
-            fit.modules.replace(self.dstPosition, copyMod, raiseFailure=True)
-        except HandledListActionError:
+        fit.modules.replace(self.dstPosition, copyMod)
+        if copyMod not in fit.modules:
             pyfalog.warning('Failed to replace module')
             eos.db.commit()
             return False

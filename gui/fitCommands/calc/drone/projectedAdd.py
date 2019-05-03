@@ -4,7 +4,6 @@ import wx
 from logbook import Logger
 
 import eos.db
-from eos.exception import HandledListActionError
 from gui.fitCommands.helpers import DroneInfo
 from service.fit import Fit
 
@@ -43,9 +42,8 @@ class CalcAddProjectedDroneCommand(wx.Command):
         if not drone.item.isType('projected'):
             pyfalog.debug('Drone is not projectable')
             return False
-        try:
-            fit.projectedDrones.append(drone, raiseFailure=True)
-        except HandledListActionError:
+        fit.projectedDrones.append(drone)
+        if drone not in fit.projectedDrones:
             pyfalog.warning('Failed to append to list')
             if self.commit:
                 eos.db.commit()
