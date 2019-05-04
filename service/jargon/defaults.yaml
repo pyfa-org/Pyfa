@@ -84,7 +84,7 @@ capac: 2500mm Repeating Cannon
 3500rt: 3500mm Artillery
 caprt: 3500mm Artillery
 dlp: Dual Light Pulse
-gpl: Gatling Pulse Laser
+# gpl: Gatling Pulse Laser - conflicts with giga pulse
 sfp: Small Focused Pulse
 fmp: Focused Medium Pulse
 hpl: Heavy Pulse Laser #also catches dual heavy
@@ -110,7 +110,7 @@ hml: Heavy Missile Launcher #gets HAM + RHML launcher too?
 rhml: Rapid Heavy Missile Launcher
 cml: Cruise Missile Launcher
 tpl: Torpedo Launcher
-tl: Torpedo Launcher
+# tl: Torpedo Launcher - conflicts with tracking link entry
 rtl: Rapid Torpedo Launcher
 hawml: Rapid Torpedo Launcher
 hawtl: Rapid Torpedo Launcher
