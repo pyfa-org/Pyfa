@@ -319,7 +319,10 @@ class CargoInfo:
 
 def activeStateLimit(itemIdentity):
     item = Market.getInstance().getItem(itemIdentity)
-    if {'moduleBonusAssaultDamageControl', 'moduleBonusIndustrialInvulnerability'}.intersection(item.effects):
+    if {
+        'moduleBonusAssaultDamageControl', 'moduleBonusIndustrialInvulnerability',
+        'microJumpDrive', 'microJumpPortalDrive'
+    }.intersection(item.effects):
         return FittingModuleState.ONLINE
     return FittingModuleState.ACTIVE
 
