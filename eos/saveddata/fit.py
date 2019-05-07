@@ -1547,8 +1547,9 @@ class Fit(object):
         fitCopy.systemSecurity = self.systemSecurity
         fitCopy.notes = self.notes
 
+        for i in self.modules:
+            fitCopy.modules.appendIgnoreEmpty(deepcopy(i))
         toCopy = (
-            "modules",
             "drones",
             "fighters",
             "cargo",
