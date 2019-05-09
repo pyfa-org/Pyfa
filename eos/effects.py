@@ -16247,7 +16247,7 @@ class Effect4902(BaseEffect):
 
     Used by:
     Ships from group: Assault Frigate (9 of 13)
-    Ships from group: Command Destroyer (4 of 5)
+    Ships from group: Command Destroyer (5 of 5)
     Ships from group: Heavy Assault Cruiser (9 of 12)
     """
 
@@ -35208,7 +35208,7 @@ class Effect7156(BaseEffect):
     smallDisintegratorMaxRangeBonus
 
     Used by:
-    Variations of ship: Kikimora (2 of 2)
+    Ship: Kikimora
     """
 
     type = 'passive'
@@ -35600,38 +35600,6 @@ class Effect7193(BaseEffect):
                                       'duration', beacon.getModifiedItemAttr('miningDurationMultiplier'))
 
 
-class Effect7194(BaseEffect):
-    """
-    systemHullHPBonusPercent
-
-    Used by:
-    Celestials named like: Invasion Effects (3 of 3)
-    """
-
-    runTime = 'early'
-    type = ('projected', 'passive')
-
-    @staticmethod
-    def handler(fit, beacon, context):
-        fit.ship.boostItemAttr('hp', beacon.getModifiedItemAttr('hullHpBonus'), stackingPenalties=True)
-
-
-class Effect7195(BaseEffect):
-    """
-    systemAgilityBonusPercent
-
-    Used by:
-    Celestials named like: Invasion Effects (3 of 3)
-    """
-
-    runTime = 'early'
-    type = ('projected', 'passive')
-
-    @staticmethod
-    def handler(fit, beacon, context):
-        fit.ship.boostItemAttr('agility', beacon.getModifiedItemAttr('agilityBonus'), stackingPenalties=True)
-
-
 class Effect7202(BaseEffect):
     """
     systemDroneSpeedBonusPercent
@@ -35728,6 +35696,23 @@ class Effect7207(BaseEffect):
         fit.ship.boostItemAttr('armorExplosiveDamageResonance', ship.getModifiedItemAttr('shipBonusPF2'), skill='Precursor Frigate')
 
 
+class Effect7209(BaseEffect):
+    """
+    shipPCTOptimalBonusEliteGunship2
+
+    Used by:
+    Ship: Nergal
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context):
+        fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Small Precursor Weapon'),
+                                      'maxRange', ship.getModifiedItemAttr('eliteBonusGunship2'),
+                                      skill='Assault Frigates')
+
+
 class Effect7210(BaseEffect):
     """
     shipBonusCommandDestroyerRole2DefenderBonus
@@ -35778,44 +35763,41 @@ class Effect7216(BaseEffect):
                                       skill='Assault Frigates')
 
 
-class Effect7217(BaseEffect):
+class Effect7223(BaseEffect):
     """
-    shipNosNeutSmartPowerReductionEliteGunship2
+    systemAgilityBonusPercentItem
 
     Used by:
-    Ship: Nergal
+    Celestials named like: Invasion Effects (3 of 3)
     """
 
-    type = 'passive'
+    runTime = 'early'
+    type = ('projected', 'passive')
 
     @staticmethod
-    def handler(fit, ship, context):
-        fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Energy Neutralizer',
-                                      'power', ship.getModifiedItemAttr('eliteBonusGunship2'),
-                                      skill='Assault Frigates')
+    def handler(fit, beacon, context):
+        fit.ship.boostItemAttr('agility', beacon.getModifiedItemAttr('agilityBonus'), stackingPenalties=True)
 
 
-class Effect7219(BaseEffect):
+class Effect7227(BaseEffect):
     """
-    shipSmartBombPowerReductionEliteGunship2
+    systemHullHPBonusPercentItem
 
     Used by:
-    Ship: Ikitursa
-    Ship: Nergal
+    Celestials named like: Invasion Effects (3 of 3)
     """
 
-    type = 'passive'
+    runTime = 'early'
+    type = ('projected', 'passive')
 
     @staticmethod
-    def handler(fit, ship, context):
-        fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Smart Bomb',
-                                      'power', ship.getModifiedItemAttr('eliteBonusGunship2'),
-                                      skill='Assault Frigates')
+    def handler(fit, beacon, context):
+        fit.ship.boostItemAttr('hp', beacon.getModifiedItemAttr('hullHpBonus'))
 
 
-class Effect7222(BaseEffect):
+class Effect7228(BaseEffect):
     """
-    shipNeutPowerReductionEliteHeavyGunship2
+    shipMediumPrecursorWeaponOptimalEliteHeavyGunship2
 
     Used by:
     Ship: Ikitursa
@@ -35825,6 +35807,6 @@ class Effect7222(BaseEffect):
 
     @staticmethod
     def handler(fit, ship, context):
-        fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Energy Neutralizer',
-                                      'power', ship.getModifiedItemAttr('eliteBonusHeavyGunship2'),
+        fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Medium Precursor Weapon'),
+                                      'maxRange', ship.getModifiedItemAttr('eliteBonusHeavyGunship2'),
                                       skill='Heavy Assault Cruisers')
