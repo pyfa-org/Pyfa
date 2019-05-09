@@ -17,16 +17,19 @@
 # along with eos.  If not, see <http://www.gnu.org/licenses/>.
 # ===============================================================================
 
-from math import log, sin, radians, exp
+from math import exp, log, radians, sin
 
-from eos.graph import Graph
-from eos.const import FittingModuleState, FittingHardpoint
 from logbook import Logger
+
+from eos.const import FittingHardpoint, FittingModuleState
+from eos.graph import Graph
+
 
 pyfalog = Logger(__name__)
 
 
-class FitDpsGraph(Graph):
+class FitDpsRangeGraph(Graph):
+
     defaults = {
         "angle"          : 0,
         "distance"       : 0,

@@ -17,15 +17,16 @@
 # along with pyfa.  If not, see <http://www.gnu.org/licenses/>.
 # =============================================================================
 
-from gui.graph import Graph
-from gui.bitmap_loader import BitmapLoader
-from eos.graph.fitDps import FitDpsGraph as FitDps
-from eos.graph import Data
 import gui.mainFrame
+from eos.graph import Data
+from eos.graph.fitDpsRange import FitDpsRangeGraph as EosFitDpsRangeGraph
+from gui.bitmap_loader import BitmapLoader
+from gui.graph import Graph
 from service.attribute import Attribute
 
 
-class FitDpsGraph(Graph):
+class FitDpsRangeGraph(Graph):
+
     propertyAttributeMap = {"angle": "maxVelocity",
                             "distance": "maxRange",
                             "signatureRadius": "signatureRadius",
@@ -36,13 +37,13 @@ class FitDpsGraph(Graph):
                         "signatureRadius": "Target Signature Radius (m)",
                         "velocity": "Target Velocity (m/s)"}
 
-    defaults = FitDps.defaults.copy()
+    defaults = EosFitDpsRangeGraph.defaults.copy()
 
     def __init__(self):
         Graph.__init__(self)
         self.defaults["distance"] = "0-100"
-        self.name = "DPS"
-        self.fitDps = None
+        self.name = "DPS over range"
+        self.fitDpsRange = None
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
 
     def getFields(self):
@@ -63,11 +64,11 @@ class FitDpsGraph(Graph):
         return icons
 
     def getPoints(self, fit, fields):
-        fitDps = getattr(self, "fitDps", None)
-        if fitDps is None or fitDps.fit != fit:
-            fitDps = self.fitDps = FitDps(fit)
+        fitDpsRange = getattr(self, "fitDpsRange", None)
+        if fitDpsRange is None or fitDpsRange.fit != fit:
+            fitDpsRange = self.fitDpsRange = EosFitDpsRangeGraph(fit)
 
-        fitDps.clearData()
+        fitDpsRange.clearData()
         variable = None
         for fieldName, value in fields.items():
             d = Data(fieldName, value)
@@ -78,18 +79,18 @@ class FitDpsGraph(Graph):
                     # We can't handle more then one variable atm, OOPS FUCK OUT
                     return False, "Can only handle 1 variable"
 
-            fitDps.setData(d)
+            fitDpsRange.setData(d)
 
         if variable is None:
             return False, "No variable"
 
         x = []
         y = []
-        for point, val in fitDps.getIterator():
+        for point, val in fitDpsRange.getIterator():
             x.append(point[variable])
             y.append(val)
 
         return x, y
 
 
-FitDpsGraph.register()
+FitDpsRangeGraph.register()

@@ -21,6 +21,7 @@ import itertools
 
 
 class Graph(object):
+
     def __init__(self, fit, function, data=None):
         self.fit = fit
         self.data = {}
