@@ -19,23 +19,23 @@
 
 import gui.mainFrame
 from eos.graph import Data
-from eos.graph.fitDpsTime import FitDpsTimeGraph as EosFitDpsTimeGraph
+from eos.graph.fitDmgTime import FitDmgTimeGraph as EosFitDmgTimeGraph
 from gui.bitmap_loader import BitmapLoader
 from gui.graph import Graph
 from service.attribute import Attribute
 
 
-class FitDpsTimeGraph(Graph):
+class FitDmgTimeGraph(Graph):
 
     propertyLabelMap = {"time": "Time (seconds)"}
 
-    defaults = EosFitDpsTimeGraph.defaults.copy()
+    defaults = EosFitDmgTimeGraph.defaults.copy()
 
     def __init__(self):
         Graph.__init__(self)
         self.defaults["time"] = "0-300"
-        self.name = "DPS over time"
-        self.fitDpsTime = None
+        self.name = "Damage over time"
+        self.fitDmgTime = None
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
 
     def getFields(self):
@@ -50,11 +50,11 @@ class FitDpsTimeGraph(Graph):
         return {"time": bitmap}
 
     def getPoints(self, fit, fields):
-        fitDpsTime = getattr(self, "fitDpsTime", None)
-        if fitDpsTime is None or fitDpsTime.fit != fit:
-            fitDpsTime = self.fitDpsTime = EosFitDpsTimeGraph(fit)
+        fitDmgTime = getattr(self, "fitDmgTime", None)
+        if fitDmgTime is None or fitDmgTime.fit != fit:
+            fitDmgTime = self.fitDmgTime = EosFitDmgTimeGraph(fit)
 
-        fitDpsTime.clearData()
+        fitDmgTime.clearData()
         variable = None
         for fieldName, value in fields.items():
             d = Data(fieldName, value)
@@ -65,18 +65,18 @@ class FitDpsTimeGraph(Graph):
                     # We can't handle more then one variable atm, OOPS FUCK OUT
                     return False, "Can only handle 1 variable"
 
-            fitDpsTime.setData(d)
+            fitDmgTime.setData(d)
 
         if variable is None:
             return False, "No variable"
 
         x = []
         y = []
-        for point, val in fitDpsTime.getIterator():
+        for point, val in fitDmgTime.getIterator():
             x.append(point[variable])
             y.append(val)
 
         return x, y
 
 
-FitDpsTimeGraph.register()
+FitDmgTimeGraph.register()

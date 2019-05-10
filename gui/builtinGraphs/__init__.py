@@ -1,4 +1,5 @@
 __all__ = [
     "fitDpsRange",
-    "fitDpsTime"
+    "fitDpsTime",
+    "fitDmgTime"
 ]

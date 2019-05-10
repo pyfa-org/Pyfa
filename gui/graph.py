@@ -39,4 +39,5 @@ class Graph(object):
 from gui.builtinGraphs import (
     fitDpsRange,  # noqa: E402, F401
     fitDpsTime,  # noqa: E402, F401
+    fitDmgTime,  # noqa: E402, F401
 )
