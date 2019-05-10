@@ -163,6 +163,7 @@ class GraphFrame(wx.Frame):
         self.mainFrame.Bind(GE.FIT_CHANGED, self.draw)
         self.Bind(wx.EVT_CLOSE, self.closeEvent)
         self.Bind(wx.EVT_CHAR_HOOK, self.kbEvent)
+        self.Bind(wx.EVT_CHOICE, self.graphChanged)
 
         self.Fit()
         self.SetMinSize(self.GetSize())
@@ -180,6 +181,10 @@ class GraphFrame(wx.Frame):
         if keycode == wx.WXK_ESCAPE:
             self.closeWindow()
             return
+        event.Skip()
+
+    def graphChanged(self, event):
+        self.select(self.graphSelection.GetSelection())
         event.Skip()
 
     def closeWindow(self):
@@ -202,6 +207,7 @@ class GraphFrame(wx.Frame):
         icons = view.getIcons()
         labels = view.getLabels()
         sizer = self.gridSizer
+        sizer.Clear()
         self.gridPanel.DestroyChildren()
         self.fields.clear()
 
@@ -237,6 +243,7 @@ class GraphFrame(wx.Frame):
             imgLabelSizer.Add(wx.StaticText(self.gridPanel, wx.ID_ANY, label), 0,
                               wx.LEFT | wx.RIGHT | wx.ALIGN_CENTER_VERTICAL, 3)
             sizer.Add(imgLabelSizer, 0, wx.ALIGN_CENTER_VERTICAL)
+        sizer.Layout()
         self.draw()
 
     def draw(self, event=None):
