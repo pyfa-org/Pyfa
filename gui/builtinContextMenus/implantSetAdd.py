@@ -54,7 +54,7 @@ class AddImplantSet(ContextMenuSingle):
 
         self.idmap = {}
 
-        for set in implantSets:
+        for set in sorted(implantSets, key=lambda i: i.name):
             id = ContextMenuSingle.nextID()
             mitem = wx.MenuItem(rootMenu, id, set.name)
             bindmenu.Bind(wx.EVT_MENU, self.handleSelection, mitem)
