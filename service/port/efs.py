@@ -356,7 +356,7 @@ class EfsPort:
                 "dps": stats.getDps(spoolOptions=spoolOptions).total * n, "capUse": stats.capUse * n, "falloff": stats.falloff,
                 "type": typeing, "name": name, "optimal": maxRange,
                 "numCharges": stats.numCharges, "numShots": stats.numShots, "reloadTime": stats.reloadTime,
-                "cycleTime": stats.cycleParameters.averageTime, "volley": stats.getVolley(spoolOptions=spoolOptions).total * n, "tracking": tracking,
+                "cycleTime": stats.getCycleParameters().averageTime, "volley": stats.getVolley(spoolOptions=spoolOptions).total * n, "tracking": tracking,
                 "maxVelocity": maxVelocity, "explosionDelay": explosionDelay, "damageReductionFactor": damageReductionFactor,
                 "explosionRadius": explosionRadius, "explosionVelocity": explosionVelocity, "aoeFieldRange": aoeFieldRange,
                 "damageMultiplierBonusMax": stats.getModifiedItemAttr("damageMultiplierBonusMax"),
@@ -369,7 +369,7 @@ class EfsPort:
                 # Drones are using the old tracking formula for trackingSpeed. This updates it to match turrets.
                 newTracking = droneAttr("trackingSpeed") / (droneAttr("optimalSigRadius") / 40000)
                 statDict = {
-                    "dps": drone.getDps().total, "cycleTime": drone.cycleParameters.averageTime, "type": "Drone",
+                    "dps": drone.getDps().total, "cycleTime": drone.getCycleParameters().averageTime, "type": "Drone",
                     "optimal": drone.maxRange, "name": drone.item.name, "falloff": drone.falloff,
                     "maxSpeed": droneAttr("maxVelocity"), "tracking": newTracking,
                     "volley": drone.getVolley().total
@@ -498,11 +498,11 @@ class EfsPort:
             fitMultipliers["drones"] = list(map(getDroneMulti, tf.drones))
 
             getFitTurrets = lambda f: filter(lambda mod: mod.hardpoint == FittingHardpoint.TURRET, f.modules)
-            getTurretMulti = lambda mod: mod.getModifiedItemAttr("damageMultiplier") / mod.cycleParameters.averageTime
+            getTurretMulti = lambda mod: mod.getModifiedItemAttr("damageMultiplier") / mod.getCycleParameters().averageTime
             fitMultipliers["turrets"] = list(map(getTurretMulti, getFitTurrets(tf)))
 
             getFitLaunchers = lambda f: filter(lambda mod: mod.hardpoint == FittingHardpoint.MISSILE, f.modules)
-            getLauncherMulti = lambda mod: sumDamage(mod.getModifiedChargeAttr) / mod.cycleParameters.averageTime
+            getLauncherMulti = lambda mod: sumDamage(mod.getModifiedChargeAttr) / mod.getCycleParameters().averageTime
             fitMultipliers["launchers"] = list(map(getLauncherMulti, getFitLaunchers(tf)))
             return fitMultipliers
 

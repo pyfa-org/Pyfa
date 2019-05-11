@@ -17,16 +17,19 @@
 # along with eos.  If not, see <http://www.gnu.org/licenses/>.
 # ===============================================================================
 
+import math
 from logbook import Logger
-
-from sqlalchemy.orm import validates, reconstructor
+from sqlalchemy.orm import reconstructor, validates
 
 import eos.db
-from eos.effectHandlerHelpers import HandledItem, HandledCharge
-from eos.modifiedAttributeDict import ModifiedAttributeDict, ItemAttrShortcut, ChargeAttrShortcut
-from eos.saveddata.fighterAbility import FighterAbility
-from eos.utils.stats import DmgTypes
 from eos.const import FittingSlot
+from eos.effectHandlerHelpers import HandledCharge, HandledItem
+from eos.modifiedAttributeDict import ChargeAttrShortcut, ItemAttrShortcut, ModifiedAttributeDict
+from eos.saveddata.fighterAbility import FighterAbility
+from eos.utils.cycles import CycleInfo, CycleSequence
+from eos.utils.stats import DmgTypes
+from eos.utils.float import floatUnerr
+
 
 pyfalog = Logger(__name__)
 
@@ -207,44 +210,71 @@ class Fighter(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
             explosive += dps.explosive
         return DmgTypes(em=em, thermal=thermal, kinetic=kinetic, explosive=explosive)
 
-    def getUptime(self):
-        if not self.owner.factorReload:
-            return 1
-        activeTimes = []
-        reloadTimes = []
-        for ability in self.abilities:
-            if ability.numShots > 0:
-                activeTimes.append(ability.numShots * ability.cycleTime)
-                reloadTimes.append(ability.reloadTime)
-        if not activeTimes:
-            return 1
-        shortestActive = sorted(activeTimes)[0]
-        longestReload = sorted(reloadTimes, reverse=True)[0]
-        uptime = shortestActive / (shortestActive + longestReload)
-        return uptime
-
     def getDpsPerEffect(self, targetResists=None):
         if not self.active or self.amountActive <= 0:
             return {}
-        uptime = self.getUptime()
-        if uptime == 1:
-            return {a.effectID: a.getDps(targetResists=targetResists) for a in self.abilities}
+        cycleParamsInfinite = self.getCycleParametersPerEffectInfinite()
+        cycleParamsReload = self.getCycleParametersPerEffect()
+        dpsMapOnlyInfinite = {}
+        dpsMapAllWithReloads = {}
         # Decide if it's better to keep steady dps up and never reload or reload from time to time
-        dpsMapSteady = {}
-        dpsMapPeakAdjusted = {}
         for ability in self.abilities:
-            abilityDps = ability.getDps(targetResists=targetResists)
-            dpsMapPeakAdjusted[ability.effectID] = DmgTypes(
-                em=abilityDps.em * uptime,
-                thermal=abilityDps.thermal * uptime,
-                kinetic=abilityDps.kinetic * uptime,
-                explosive=abilityDps.explosive * uptime)
-            # Infinite use - add to steady dps
-            if ability.numShots == 0:
-                dpsMapSteady[ability.effectID] = abilityDps
-        totalSteady = sum(i.total for i in dpsMapSteady.values())
-        totalPeakAdjusted = sum(i.total for i in dpsMapPeakAdjusted.values())
-        return dpsMapSteady if totalSteady >= totalPeakAdjusted else dpsMapPeakAdjusted
+            if ability.effectID in cycleParamsInfinite:
+                cycleTime = cycleParamsInfinite[ability.effectID].averageTime
+                dpsMapOnlyInfinite[ability.effectID] = ability.getDps(targetResists=targetResists, cycleTimeOverride=cycleTime)
+            if ability.effectID in cycleParamsReload:
+                cycleTime = cycleParamsReload[ability.effectID].averageTime
+                dpsMapAllWithReloads[ability.effectID] = ability.getDps(targetResists=targetResists, cycleTimeOverride=cycleTime)
+        totalOnlyInfinite = sum(i.total for i in dpsMapOnlyInfinite.values())
+        totalAllWithReloads = sum(i.total for i in dpsMapAllWithReloads.values())
+        return dpsMapOnlyInfinite if totalOnlyInfinite >= totalAllWithReloads else dpsMapAllWithReloads
+
+    def getCycleParametersPerEffectInfinite(self):
+        return {a.effectID: CycleInfo(a.cycleTime, 0, math.inf) for a in self.abilities if a.numShots == 0}
+
+    def getCycleParametersPerEffect(self):
+        # Assume it can cycle infinitely
+        if not self.owner.factorReload:
+            return {a.effectID: CycleInfo(a.cycleTime, 0, math.inf) for a in self.abilities}
+        limitedAbilities = [a for a in self.abilities if a.numShots > 0]
+        if len(limitedAbilities) == 0:
+            return {a.effectID: CycleInfo(a.cycleTime, 0, math.inf) for a in self.abilities}
+        validAbilities = [a for a in self.abilities if a.cycleTime > 0]
+        if len(validAbilities) == 0:
+            return {}
+        mostLimitedAbility = min(limitedAbilities, key=lambda a: a.cycleTime * a.numShots)
+        durationToRefuel = mostLimitedAbility.cycleTime * mostLimitedAbility.numShots
+        # find out how many shots various abilities will do until reload, and how much time
+        # "extra" cycle will last (None for no extra cycle)
+        cyclesUntilRefuel = {mostLimitedAbility.effectID: (mostLimitedAbility.numShots, None)}
+        for ability in (a for a in validAbilities if a is not mostLimitedAbility):
+            fullCycles = int(floatUnerr(durationToRefuel / ability.cycleTime))
+            extraShotTime = floatUnerr(durationToRefuel - (fullCycles * ability.cycleTime))
+            if extraShotTime == 0:
+                extraShotTime = None
+            cyclesUntilRefuel[ability.effectID] = (fullCycles, extraShotTime)
+        refuelTimes = {}
+        for ability in validAbilities:
+            spentShots, extraShotTime = cyclesUntilRefuel[ability.effectID]
+            if extraShotTime is not None:
+                spentShots += 1
+            refuelTimes[ability.effectID] = ability.getReloadTime(spentShots)
+        refuelTime = max(refuelTimes.values())
+        cycleParams = {}
+        for ability in validAbilities:
+            regularShots, extraShotTime = cyclesUntilRefuel[ability.effectID]
+            sequence = []
+            if extraShotTime is not None:
+                if regularShots > 0:
+                    sequence.append(CycleInfo(ability.cycleTime, 0, regularShots))
+                sequence.append(CycleInfo(extraShotTime, refuelTime, 1))
+            else:
+                regularShotsNonReload = regularShots - 1
+                if regularShotsNonReload > 0:
+                    sequence.append(CycleInfo(ability.cycleTime, 0, regularShotsNonReload))
+                sequence.append(CycleInfo(ability.cycleTime, refuelTime, 1))
+            cycleParams[ability.effectID] = CycleSequence(sequence, math.inf)
+        return cycleParams
 
     @property
     def maxRange(self):

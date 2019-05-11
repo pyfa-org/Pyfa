@@ -401,7 +401,7 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
                     volley = self.getModifiedItemAttr("specialtyMiningAmount") or self.getModifiedItemAttr(
                             "miningAmount") or 0
                     if volley:
-                        cycleTime = self.cycleParameters.averageTime
+                        cycleTime = self.getCycleParameters().averageTime
                         self.__miningyield = volley / (cycleTime / 1000.0)
                     else:
                         self.__miningyield = 0
@@ -440,7 +440,7 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
             return DmgTypes(0, 0, 0, 0)
         # Some weapons repeat multiple times in one cycle (bosonic doomsdays). Get the number of times it fires off
         volleysPerCycle = max(self.getModifiedItemAttr("doomsdayDamageDuration", 1) / self.getModifiedItemAttr("doomsdayDamageCycleTime", 1), 1)
-        dpsFactor = volleysPerCycle / (self.cycleParameters.averageTime / 1000)
+        dpsFactor = volleysPerCycle / (self.getCycleParameters().averageTime / 1000)
         dps = DmgTypes(
             em=volley.em * dpsFactor,
             thermal=volley.thermal * dpsFactor,
@@ -475,7 +475,7 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
             else:
                 return None, 0
             if rrAmount:
-                rrAmount *= 1 / (self.cycleParameters.averageTime / 1000)
+                rrAmount *= 1 / (self.getCycleParameters().averageTime / 1000)
                 if module.item.group.name == "Ancillary Remote Armor Repairer" and module.charge:
                     rrAmount *= module.getModifiedItemAttr("chargedArmorDamageMultiplier", 1)
 
@@ -820,8 +820,7 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
                     except:
                         effect.handler(fit, self, context)
 
-    @property
-    def cycleParameters(self):
+    def getCycleParameters(self):
         """Copied from new eos as well"""
         # Determine if we'll take into account reload time or not
         factorReload = self.owner.factorReload if self.forceReload is None else self.forceReload
@@ -896,7 +895,7 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
     def capUse(self):
         capNeed = self.getModifiedItemAttr("capacitorNeed")
         if capNeed and self.state >= FittingModuleState.ACTIVE:
-            cycleTime = self.cycleParameters.averageTime
+            cycleTime = self.getCycleParameters().averageTime
             if cycleTime > 0:
                 capUsed = capNeed / (cycleTime / 1000.0)
                 return capUsed

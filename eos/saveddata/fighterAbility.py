@@ -95,8 +95,15 @@ class FighterAbility(object):
 
     @property
     def reloadTime(self):
+        return self.getReloadTime()
+
+    def getReloadTime(self, spentShots=None):
+        if spentShots is not None:
+            spentShots = max(self.numShots, spentShots)
+        else:
+            spentShots = self.numShots
         rearm_time = (self.REARM_TIME_MAPPING[self.fighter.getModifiedItemAttr("fighterSquadronRole")] or 0 if self.hasCharges else 0)
-        return self.fighter.getModifiedItemAttr("fighterRefuelingTime") + rearm_time * self.numShots
+        return self.fighter.getModifiedItemAttr("fighterRefuelingTime") + rearm_time * spentShots
 
     @property
     def numShots(self):
@@ -128,11 +135,12 @@ class FighterAbility(object):
             explosive=exp * dmgMult * (1 - getattr(targetResists, "explosiveAmount", 0)))
         return volley
 
-    def getDps(self, targetResists=None):
+    def getDps(self, targetResists=None, cycleTimeOverride=None):
         volley = self.getVolley(targetResists=targetResists)
         if not volley:
             return DmgTypes(0, 0, 0, 0)
-        dpsFactor = 1 / (self.cycleTime / 1000)
+        cycleTime = cycleTimeOverride if cycleTimeOverride is not None else self.cycleTime
+        dpsFactor = 1 / (cycleTime / 1000)
         dps = DmgTypes(
             em=volley.em * dpsFactor,
             thermal=volley.thermal * dpsFactor,
