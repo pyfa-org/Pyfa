@@ -175,28 +175,37 @@ class Fighter(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
     def hasAmmo(self):
         return self.charge is not None
 
-    def getVolley(self, targetResists=None):
+    def getVolleyParametersPerEffect(self, targetResists=None):
         if not self.active or self.amountActive <= 0:
-            return DmgTypes(0, 0, 0, 0)
+            return {}
         if self.__baseVolley is None:
-            em = 0
-            therm = 0
-            kin = 0
-            exp = 0
+            self.__baseVolley = {}
             for ability in self.abilities:
                 # Not passing resists here as we want to calculate and store base volley
-                abilityVolley = ability.getVolley()
-                em += abilityVolley.em
-                therm += abilityVolley.thermal
-                kin += abilityVolley.kinetic
-                exp += abilityVolley.explosive
-            self.__baseVolley = DmgTypes(em, therm, kin, exp)
-        volley = DmgTypes(
-            em=self.__baseVolley.em * (1 - getattr(targetResists, "emAmount", 0)),
-            thermal=self.__baseVolley.thermal * (1 - getattr(targetResists, "thermalAmount", 0)),
-            kinetic=self.__baseVolley.kinetic * (1 - getattr(targetResists, "kineticAmount", 0)),
-            explosive=self.__baseVolley.explosive * (1 - getattr(targetResists, "explosiveAmount", 0)))
-        return volley
+                self.__baseVolley[ability.effectID] = {0: ability.getVolley()}
+        adjustedVolley = {}
+        for effectID, effectData in self.__baseVolley.items():
+            adjustedVolley[effectID] = {}
+            for volleyTime, volleyValue in effectData.items():
+                adjustedVolley[effectID][volleyTime] = DmgTypes(
+                    em=volleyValue.em * (1 - getattr(targetResists, "emAmount", 0)),
+                    thermal=volleyValue.thermal * (1 - getattr(targetResists, "thermalAmount", 0)),
+                    kinetic=volleyValue.kinetic * (1 - getattr(targetResists, "kineticAmount", 0)),
+                    explosive=volleyValue.explosive * (1 - getattr(targetResists, "explosiveAmount", 0)))
+        return adjustedVolley
+
+    def getVolley(self, targetResists=None):
+        volleyParams = self.getVolleyParametersPerEffect(targetResists=targetResists)
+        em = 0
+        therm = 0
+        kin = 0
+        exp = 0
+        for volleyData in volleyParams.values():
+            em += volleyData[0].em
+            therm += volleyData[0].thermal
+            kin += volleyData[0].kinetic
+            exp += volleyData[0].explosive
+        return DmgTypes(em, therm, kin, exp)
 
     def getDps(self, targetResists=None):
         em = 0

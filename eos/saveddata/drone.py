@@ -131,9 +131,9 @@ class Drone(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
     def hasAmmo(self):
         return self.charge is not None
 
-    def getVolley(self, targetResists=None):
+    def getVolleyParameters(self, targetResists=None):
         if not self.dealsDamage or self.amountActive <= 0:
-            return DmgTypes(0, 0, 0, 0)
+            return {0: DmgTypes(0, 0, 0, 0)}
         if self.__baseVolley is None:
             dmgGetter = self.getModifiedChargeAttr if self.hasAmmo else self.getModifiedItemAttr
             dmgMult = self.amountActive * (self.getModifiedItemAttr("damageMultiplier", 1))
@@ -147,7 +147,10 @@ class Drone(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
             thermal=self.__baseVolley.thermal * (1 - getattr(targetResists, "thermalAmount", 0)),
             kinetic=self.__baseVolley.kinetic * (1 - getattr(targetResists, "kineticAmount", 0)),
             explosive=self.__baseVolley.explosive * (1 - getattr(targetResists, "explosiveAmount", 0)))
-        return volley
+        return {0: volley}
+
+    def getVolley(self, targetResists=None):
+        return self.getVolleyParameters(targetResists=targetResists)[0]
 
     def getDps(self, targetResists=None):
         volley = self.getVolley(targetResists=targetResists)
