@@ -17,13 +17,14 @@
 # along with eos.  If not, see <http://www.gnu.org/licenses/>.
 # ===============================================================================
 
+import math
 from logbook import Logger
-
-from sqlalchemy.orm import validates, reconstructor
+from sqlalchemy.orm import reconstructor, validates
 
 import eos.db
-from eos.effectHandlerHelpers import HandledItem, HandledCharge
-from eos.modifiedAttributeDict import ModifiedAttributeDict, ItemAttrShortcut, ChargeAttrShortcut
+from eos.effectHandlerHelpers import HandledCharge, HandledItem
+from eos.modifiedAttributeDict import ChargeAttrShortcut, ItemAttrShortcut, ModifiedAttributeDict
+from eos.utils.cycles import CycleInfo
 from eos.utils.stats import DmgTypes
 
 
@@ -104,7 +105,16 @@ class Drone(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
 
     @property
     def cycleTime(self):
-        return max(self.getModifiedItemAttr("duration", 0), 0)
+        if self.hasAmmo:
+            cycleTime = self.getModifiedItemAttr("missileLaunchDuration", 0)
+        else:
+            for attr in ("speed", "duration"):
+                cycleTime = self.getModifiedItemAttr(attr, None)
+                if cycleTime is not None:
+                    break
+        if cycleTime is None:
+            return 0
+        return max(cycleTime, 0)
 
     @property
     def dealsDamage(self):
@@ -143,15 +153,17 @@ class Drone(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
         volley = self.getVolley(targetResists=targetResists)
         if not volley:
             return DmgTypes(0, 0, 0, 0)
-        cycleAttr = "missileLaunchDuration" if self.hasAmmo else "speed"
-        cycleTime = self.getModifiedItemAttr(cycleAttr)
-        dpsFactor = 1 / (cycleTime / 1000)
+        dpsFactor = 1 / (self.cycleParameters.averageTime / 1000)
         dps = DmgTypes(
             em=volley.em * dpsFactor,
             thermal=volley.thermal * dpsFactor,
             kinetic=volley.kinetic * dpsFactor,
             explosive=volley.explosive * dpsFactor)
         return dps
+
+    @property
+    def cycleParameters(self):
+        return CycleInfo(self.cycleTime, 0, math.inf)
 
     def getRemoteReps(self, ignoreState=False):
         if self.amountActive <= 0 and not ignoreState:
@@ -182,10 +194,8 @@ class Drone(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
     def miningStats(self):
         if self.__miningyield is None:
             if self.mines is True and self.amountActive > 0:
-                attr = "duration"
                 getter = self.getModifiedItemAttr
-
-                cycleTime = self.getModifiedItemAttr(attr)
+                cycleTime = self.cycleParameters.averageTime
                 volley = sum([getter(d) for d in self.MINING_ATTRIBUTES]) * self.amountActive
                 self.__miningyield = volley / (cycleTime / 1000.0)
             else:
