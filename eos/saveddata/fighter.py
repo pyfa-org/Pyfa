@@ -241,9 +241,10 @@ class Fighter(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
     def getCycleParametersPerEffectInfinite(self):
         return {a.effectID: CycleInfo(a.cycleTime, 0, math.inf) for a in self.abilities if a.numShots == 0}
 
-    def getCycleParametersPerEffect(self):
+    def getCycleParametersPerEffect(self, reloadOverride=None):
+        factorReload = reloadOverride if reloadOverride is not None else self.owner.factorReload
         # Assume it can cycle infinitely
-        if not self.owner.factorReload:
+        if not factorReload:
             return {a.effectID: CycleInfo(a.cycleTime, 0, math.inf) for a in self.abilities}
         limitedAbilities = [a for a in self.abilities if a.numShots > 0]
         if len(limitedAbilities) == 0:

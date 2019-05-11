@@ -164,7 +164,7 @@ class Drone(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
             explosive=volley.explosive * dpsFactor)
         return dps
 
-    def getCycleParameters(self):
+    def getCycleParameters(self, reloadOverride=None):
         return CycleInfo(self.cycleTime, 0, math.inf)
 
     def getRemoteReps(self, ignoreState=False):

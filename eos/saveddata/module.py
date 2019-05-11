@@ -829,10 +829,13 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
                     except:
                         effect.handler(fit, self, context)
 
-    def getCycleParameters(self):
+    def getCycleParameters(self, reloadOverride=None):
         """Copied from new eos as well"""
         # Determine if we'll take into account reload time or not
-        factorReload = self.owner.factorReload if self.forceReload is None else self.forceReload
+        if reloadOverride is not None:
+            factorReload = reloadOverride
+        else:
+            factorReload = self.owner.factorReload if self.forceReload is None else self.forceReload
 
         cycles_until_reload = self.numShots
         if cycles_until_reload == 0:
