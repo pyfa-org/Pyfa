@@ -51,7 +51,6 @@ class Graph(object):
             point = {}
             for i in range(len(pointValues)):
                 point[pointNames[i]] = pointValues[i]
-
             yield point, self.function(point)
 
 
@@ -100,6 +99,7 @@ class Constant(object):
 
 
 class Range(object):
+
     def __init__(self, string, step):
         start, end = string.split("-")
         self.start = float(start)
@@ -110,7 +110,7 @@ class Range(object):
         current = start = self.start
         end = self.end
         step = self.step or (end - start) / 50.0
-        i = 1
+        i = 0
         while current < end:
             current = start + i * step
             i += 1

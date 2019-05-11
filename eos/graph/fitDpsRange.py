@@ -17,7 +17,7 @@
 # along with eos.  If not, see <http://www.gnu.org/licenses/>.
 # ===============================================================================
 
-from math import exp, log, radians, sin
+from math import exp, log, radians, sin, inf
 
 from logbook import Logger
 
@@ -172,8 +172,7 @@ class FitDpsRangeGraph(Graph):
 
         return min(sigRadiusFactor, velocityFactor, 1)
 
-    @staticmethod
-    def calculateTurretChanceToHit(mod, data):
+    def calculateTurretChanceToHit(self, mod, data):
         distance = data["distance"] * 1000
         tracking = mod.getModifiedItemAttr("trackingSpeed")
         turretOptimal = mod.maxRange
@@ -182,7 +181,17 @@ class FitDpsRangeGraph(Graph):
         targetSigRad = data["signatureRadius"]
         targetSigRad = turretSigRes if targetSigRad is None else targetSigRad
         transversal = sin(radians(data["angle"])) * data["velocity"]
-        trackingEq = (((transversal / (distance * tracking)) *
+
+        # Angular velocity is calculated using range from ship center to target center.
+        # We do not know target radius but we know attacker radius
+        angDistance = distance + self.fit.ship.getModifiedItemAttr('radius', 0)
+        if angDistance == 0 and transversal == 0:
+            angularVelocity = 0
+        elif angDistance == 0 and transversal != 0:
+            angularVelocity = inf
+        else:
+            angularVelocity = transversal / angDistance
+        trackingEq = (((angularVelocity / tracking) *
                        (turretSigRes / targetSigRad)) ** 2)
         rangeEq = ((max(0, distance - turretOptimal)) / turretFalloff) ** 2
 
