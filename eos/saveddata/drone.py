@@ -186,7 +186,7 @@ class Drone(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
                 rrAmount = 0
             if rrAmount:
                 droneAmount = self.amount if ignoreState else self.amountActive
-                rrAmount *= droneAmount / (self.cycleTime / 1000)
+                rrAmount *= droneAmount / (self.cycleParameters.averageTime / 1000)
             self.__baseRemoteReps = (rrType, rrAmount)
         return self.__baseRemoteReps
 

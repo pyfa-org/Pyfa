@@ -17,20 +17,21 @@
 # along with eos.  If not, see <http://www.gnu.org/licenses/>.
 # ===============================================================================
 
-from math import floor
-
 from logbook import Logger
+import math
 from sqlalchemy.orm import reconstructor, validates
 
 import eos.db
-from eos.const import FittingModuleState, FittingHardpoint, FittingSlot
+from eos.const import FittingHardpoint, FittingModuleState, FittingSlot
 from eos.effectHandlerHelpers import HandledCharge, HandledItem
 from eos.modifiedAttributeDict import ChargeAttrShortcut, ItemAttrShortcut, ModifiedAttributeDict
 from eos.saveddata.citadel import Citadel
 from eos.saveddata.mutator import Mutator
+from eos.utils.cycles import CycleInfo, CycleSequence
 from eos.utils.float import floatUnerr
 from eos.utils.spoolSupport import calculateSpoolup, resolveSpoolOptions
 from eos.utils.stats import DmgTypes
+
 
 pyfalog = Logger(__name__)
 
@@ -287,7 +288,7 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
             # numcycles = math.floor(module_capacity / (module_volume * module_chargerate))
             chargeRate = self.getModifiedItemAttr("chargeRate")
             numCharges = self.numCharges
-            numShots = floor(numCharges / chargeRate)
+            numShots = math.floor(numCharges / chargeRate)
         else:
             numShots = None
         return numShots
@@ -300,7 +301,7 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
                 chance = self.getModifiedChargeAttr("crystalVolatilityChance")
                 damage = self.getModifiedChargeAttr("crystalVolatilityDamage")
                 crystals = self.numCharges
-                numShots = floor((crystals * hp) / (damage * chance))
+                numShots = math.floor((crystals * hp) / (damage * chance))
             else:
                 # Set 0 (infinite) for permanent crystals like t1 laser crystals
                 numShots = 0
@@ -400,7 +401,7 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
                     volley = self.getModifiedItemAttr("specialtyMiningAmount") or self.getModifiedItemAttr(
                             "miningAmount") or 0
                     if volley:
-                        cycleTime = self.cycleTime
+                        cycleTime = self.cycleParameters.averageTime
                         self.__miningyield = volley / (cycleTime / 1000.0)
                     else:
                         self.__miningyield = 0
@@ -439,7 +440,7 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
             return DmgTypes(0, 0, 0, 0)
         # Some weapons repeat multiple times in one cycle (bosonic doomsdays). Get the number of times it fires off
         volleysPerCycle = max(self.getModifiedItemAttr("doomsdayDamageDuration", 1) / self.getModifiedItemAttr("doomsdayDamageCycleTime", 1), 1)
-        dpsFactor = volleysPerCycle / (self.cycleTime / 1000)
+        dpsFactor = volleysPerCycle / (self.cycleParameters.averageTime / 1000)
         dps = DmgTypes(
             em=volley.em * dpsFactor,
             thermal=volley.thermal * dpsFactor,
@@ -474,7 +475,7 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
             else:
                 return None, 0
             if rrAmount:
-                rrAmount *= 1 / (self.cycleTime / 1000)
+                rrAmount *= 1 / (self.cycleParameters.averageTime / 1000)
                 if module.item.group.name == "Ancillary Remote Armor Repairer" and module.charge:
                     rrAmount *= module.getModifiedItemAttr("chargedArmorDamageMultiplier", 1)
 
@@ -820,48 +821,56 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
                         effect.handler(fit, self, context)
 
     @property
-    def cycleTime(self):
+    def cycleParameters(self):
+        """Copied from new eos as well"""
         # Determine if we'll take into account reload time or not
         factorReload = self.owner.factorReload if self.forceReload is None else self.forceReload
 
-        numShots = self.numShots
-        speed = self.rawCycleTime
+        cycles_until_reload = self.numShots
+        if cycles_until_reload == 0:
+            cycles_until_reload = math.inf
 
-        if factorReload and self.charge:
-            raw_reload_time = self.reloadTime
+        active_time = self.rawCycleTime
+        forced_inactive_time = self.reactivationDelay
+        reload_time = self.reloadTime
+        # Effects which cannot be reloaded have the same processing whether
+        # caller wants to take reload time into account or not
+        if reload_time is None and cycles_until_reload < math.inf:
+            final_cycles = 1
+            early_cycles = cycles_until_reload - final_cycles
+            # Single cycle until effect cannot run anymore
+            if early_cycles == 0:
+                return CycleInfo(active_time, 0, 1)
+            # Multiple cycles with the same parameters
+            if forced_inactive_time == 0:
+                return CycleInfo(active_time, 0, cycles_until_reload)
+            # Multiple cycles with different parameters
+            return CycleSequence((
+                CycleInfo(active_time, forced_inactive_time, early_cycles),
+                CycleInfo(active_time, 0, final_cycles)
+            ), 1)
+        # Module cycles the same way all the time in 3 cases:
+        # 1) caller doesn't want to take into account reload time
+        # 2) effect does not have to reload anything to keep running
+        # 3) effect has enough time to reload during inactivity periods
+        if (
+            not factorReload or
+            cycles_until_reload == math.inf or
+            forced_inactive_time >= reload_time
+        ):
+            return CycleInfo(active_time, forced_inactive_time, math.inf)
+        # We've got to take reload into consideration
         else:
-            raw_reload_time = 0.0
-
-        # Module can only fire one shot at a time, think bomb launchers or defender launchers
-        if self.disallowRepeatingAction:
-            if numShots > 0:
-                """
-                The actual mechanics behind this is complex.  Behavior will be (for 3 ammo):
-                    fire, reactivation delay, fire, reactivation delay, fire, max(reactivation delay, reload)
-                so your effective reload time depends on where you are at in the cycle.
-
-                We can't do that, so instead we'll average it out.
-
-                Currently would apply to bomb launchers and defender missiles
-                """
-                effective_reload_time = ((self.reactivationDelay * (numShots - 1)) + max(raw_reload_time, self.reactivationDelay, 0))
-            else:
-                """
-                Applies to MJD/MJFG
-                """
-                effective_reload_time = max(raw_reload_time, self.reactivationDelay, 0)
-                speed = speed + effective_reload_time
-        else:
-            """
-            Currently no other modules would have a reactivation delay, so for sanities sake don't try and account for it.
-            Okay, technically cloaks do, but they also have 0 cycle time and cap usage so why do you care?
-            """
-            effective_reload_time = raw_reload_time
-
-        if numShots > 0 and self.charge:
-            speed = (speed * numShots + effective_reload_time) / numShots
-
-        return speed
+            final_cycles = 1
+            early_cycles = cycles_until_reload - final_cycles
+            # If effect has to reload after each its cycle, then its parameters
+            # are the same all the time
+            if early_cycles == 0:
+                return CycleInfo(active_time, reload_time, math.inf)
+            return CycleSequence((
+                CycleInfo(active_time, forced_inactive_time, early_cycles),
+                CycleInfo(active_time, reload_time, final_cycles)
+            ), math.inf)
 
     @property
     def rawCycleTime(self):
@@ -887,7 +896,7 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
     def capUse(self):
         capNeed = self.getModifiedItemAttr("capacitorNeed")
         if capNeed and self.state >= FittingModuleState.ACTIVE:
-            cycleTime = self.cycleTime
+            cycleTime = self.cycleParameters.averageTime
             if cycleTime > 0:
                 capUsed = capNeed / (cycleTime / 1000.0)
                 return capUsed
