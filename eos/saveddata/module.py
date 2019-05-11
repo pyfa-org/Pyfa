@@ -410,13 +410,14 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
 
         return self.__miningyield
 
-    def getVolley(self, spoolOptions=None, targetResists=None, ignoreState=False):
+    def getVolleyParameters(self, spoolOptions=None, targetResists=None, ignoreState=False):
         if self.isEmpty or (self.state < FittingModuleState.ACTIVE and not ignoreState):
-            return DmgTypes(0, 0, 0, 0)
+            return {0: DmgTypes(0, 0, 0, 0)}
         if self.__baseVolley is None:
+            self.__baseVolley = {}
             dmgGetter = self.getModifiedChargeAttr if self.charge else self.getModifiedItemAttr
             dmgMult = self.getModifiedItemAttr("damageMultiplier", 1)
-            self.__baseVolley = DmgTypes(
+            self.__baseVolley[0] = DmgTypes(
                 em=(dmgGetter("emDamage", 0)) * dmgMult,
                 thermal=(dmgGetter("thermalDamage", 0)) * dmgMult,
                 kinetic=(dmgGetter("kineticDamage", 0)) * dmgMult,
@@ -427,12 +428,20 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
             self.getModifiedItemAttr("damageMultiplierBonusPerCycle", 0),
             self.rawCycleTime / 1000, spoolType, spoolAmount)[0]
         spoolMultiplier = 1 + spoolBoost
-        volley = DmgTypes(
-            em=self.__baseVolley.em * spoolMultiplier * (1 - getattr(targetResists, "emAmount", 0)),
-            thermal=self.__baseVolley.thermal * spoolMultiplier * (1 - getattr(targetResists, "thermalAmount", 0)),
-            kinetic=self.__baseVolley.kinetic * spoolMultiplier * (1 - getattr(targetResists, "kineticAmount", 0)),
-            explosive=self.__baseVolley.explosive * spoolMultiplier * (1 - getattr(targetResists, "explosiveAmount", 0)))
-        return volley
+        adjustedVolley = {}
+        for volleyTime, volleyValue in self.__baseVolley.items():
+            adjustedVolley[volleyTime] = DmgTypes(
+                em=volleyValue.em * spoolMultiplier * (1 - getattr(targetResists, "emAmount", 0)),
+                thermal=volleyValue.thermal * spoolMultiplier * (1 - getattr(targetResists, "thermalAmount", 0)),
+                kinetic=volleyValue.kinetic * spoolMultiplier * (1 - getattr(targetResists, "kineticAmount", 0)),
+                explosive=volleyValue.explosive * spoolMultiplier * (1 - getattr(targetResists, "explosiveAmount", 0)))
+        return adjustedVolley
+
+    def getVolley(self, spoolOptions=None, targetResists=None, ignoreState=False):
+        volleyParams = self.getVolleyParameters(spoolOptions=spoolOptions, targetResists=targetResists, ignoreState=ignoreState)
+        if len(volleyParams) == 0:
+            return DmgTypes(0, 0, 0, 0)
+        return volleyParams[min(volleyParams)]
 
     def getDps(self, spoolOptions=None, targetResists=None, ignoreState=False):
         volley = self.getVolley(spoolOptions=spoolOptions, targetResists=targetResists, ignoreState=ignoreState)
