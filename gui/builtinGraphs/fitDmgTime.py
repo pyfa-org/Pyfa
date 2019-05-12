@@ -72,6 +72,7 @@ class FitDmgTimeGraph(Graph):
 
         x = []
         y = []
+        fitDmgTime.recalc()
         for point, val in fitDmgTime.getIterator():
             x.append(point[variable])
             y.append(val)

@@ -33,12 +33,33 @@ class FitDmgTimeGraph(Graph):
     def __init__(self, fit, data=None):
         Graph.__init__(self, fit, self.calcDmg, data if data is not None else self.defaults)
         self.fit = fit
+        self.__cache = {}
 
     def calcDmg(self, data):
+        time = data["time"] * 1000
+        closestTime = max((t for t in self.__cache if t <= time), default=None)
+        if closestTime is None:
+            return 0
+        return self.__cache[closestTime]
+
+    def recalc(self):
+
+        def addDmg(addedTime, addedDmg):
+            if addDmg == 0:
+                return
+            if addedTime not in self.__cache:
+                prevTime = max((t for t in self.__cache if t < addedTime), default=None)
+                if prevTime is None:
+                    self.__cache[addedTime] = 0
+                else:
+                    self.__cache[addedTime] = self.__cache[prevTime]
+            for time in (t for t in self.__cache if t >= addedTime):
+                self.__cache[time] += addedDmg
+
+        self.__cache.clear()
         fit = self.fit
         # We'll handle calculations in milliseconds
-        maxTime = data["time"] * 1000
-        currentDmg = 0
+        maxTime = self.data["time"].data[0].end * 1000
         for mod in fit.modules:
             cycleParams = mod.getCycleParameters(reloadOverride=True)
             if cycleParams is None:
@@ -49,7 +70,7 @@ class FitDmgTimeGraph(Graph):
                 volleyParams = mod.getVolleyParameters(spoolOptions=SpoolOptions(SpoolType.CYCLES, nonstopCycles, True))
                 for volleyTime, volley in volleyParams.items():
                     if currentTime + volleyTime <= maxTime:
-                        currentDmg += volley.total
+                        addDmg(currentTime + volleyTime, volley.total)
                 currentTime += cycleTime
                 currentTime += inactiveTime
                 if inactiveTime == 0:
@@ -67,7 +88,7 @@ class FitDmgTimeGraph(Graph):
             for cycleTime, inactiveTime in cycleParams.iterCycles():
                 for volleyTime, volley in volleyParams.items():
                     if currentTime + volleyTime <= maxTime:
-                        currentDmg += volley.total
+                        addDmg(currentTime + volleyTime, volley.total)
                 currentTime += cycleTime
                 currentTime += inactiveTime
                 if currentTime > maxTime:
@@ -85,9 +106,8 @@ class FitDmgTimeGraph(Graph):
                 for cycleTime, inactiveTime in abilityCycleParams.iterCycles():
                     for volleyTime, volley in abilityVolleyParams.items():
                         if currentTime + volleyTime <= maxTime:
-                            currentDmg += volley.total
+                            addDmg(currentTime + volleyTime, volley.total)
                     currentTime += cycleTime
                     currentTime += inactiveTime
                     if currentTime > maxTime:
                         break
-        return currentDmg

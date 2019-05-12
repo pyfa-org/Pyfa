@@ -55,6 +55,7 @@ class Graph:
 
 
 class Data:
+
     def __init__(self, name, dataString, step=None):
         self.name = name
         self.step = step
@@ -84,6 +85,7 @@ class Data:
 
 
 class Constant:
+
     def __init__(self, const):
         if isinstance(const, str):
             self.value = None if const == "" else float(const)
@@ -109,7 +111,7 @@ class Range:
     def __iter__(self):
         current = start = self.start
         end = self.end
-        step = self.step or (end - start) / 50.0
+        step = self.step or (end - start) / 200
         i = 0
         while current < end:
             current = start + i * step
