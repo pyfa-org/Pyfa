@@ -3,6 +3,7 @@ __all__ = [
     'fitDpsTime',
     'fitDmgTime',
     'fitSpeedTime',
+    'fitDistanceTime',
     'fitShieldRegenAmount',
     'fitShieldAmountTime',
     'fitCapRegenAmount',
