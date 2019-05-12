@@ -401,8 +401,12 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
                     volley = self.getModifiedItemAttr("specialtyMiningAmount") or self.getModifiedItemAttr(
                             "miningAmount") or 0
                     if volley:
-                        cycleTime = self.getCycleParameters().averageTime
-                        self.__miningyield = volley / (cycleTime / 1000.0)
+                        cycleParams = self.getCycleParameters()
+                        if cycleParams is None:
+                            self.__miningyield = 0
+                        else:
+                            cycleTime = cycleParams.averageTime
+                            self.__miningyield = volley / (cycleTime / 1000.0)
                     else:
                         self.__miningyield = 0
                 else:
@@ -452,9 +456,12 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
         return volleyParams[min(volleyParams)]
 
     def getDps(self, spoolOptions=None, targetResists=None, ignoreState=False):
-        volleyParams = self.getVolleyParameters(spoolOptions=spoolOptions, targetResists=targetResists, ignoreState=ignoreState)
-        avgCycleTime = self.getCycleParameters().averageTime
         dmgDuringCycle = DmgTypes(0, 0, 0, 0)
+        cycleParams = self.getCycleParameters()
+        if cycleParams is None:
+            return dmgDuringCycle
+        volleyParams = self.getVolleyParameters(spoolOptions=spoolOptions, targetResists=targetResists, ignoreState=ignoreState)
+        avgCycleTime = cycleParams.averageTime
         if len(volleyParams) == 0 or avgCycleTime == 0:
             return dmgDuringCycle
         for volleyValue in volleyParams.values():
@@ -494,7 +501,10 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
             else:
                 return None, 0
             if rrAmount:
-                rrAmount *= 1 / (self.getCycleParameters().averageTime / 1000)
+                cycleParams = self.getCycleParameters()
+                if cycleParams is None:
+                    return None, 0
+                rrAmount *= 1 / (cycleParams.averageTime / 1000)
                 if module.item.group.name == "Ancillary Remote Armor Repairer" and module.charge:
                     rrAmount *= module.getModifiedItemAttr("chargedArmorDamageMultiplier", 1)
 
@@ -852,6 +862,8 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
             cycles_until_reload = math.inf
 
         active_time = self.rawCycleTime
+        if active_time == 0:
+            return None
         forced_inactive_time = self.reactivationDelay
         reload_time = self.reloadTime
         # Effects which cannot be reloaded have the same processing whether
@@ -917,7 +929,10 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
     def capUse(self):
         capNeed = self.getModifiedItemAttr("capacitorNeed")
         if capNeed and self.state >= FittingModuleState.ACTIVE:
-            cycleTime = self.getCycleParameters().averageTime
+            cycleParams = self.getCycleParameters()
+            if cycleParams is None:
+                return 0
+            cycleTime = cycleParams.averageTime
             if cycleTime > 0:
                 capUsed = capNeed / (cycleTime / 1000.0)
                 return capUsed

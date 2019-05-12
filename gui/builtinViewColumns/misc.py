@@ -140,7 +140,10 @@ class Miscellanea(ViewColumn):
             return "+ " + ", ".join(info), "Slot Modifiers"
         elif itemGroup == "Energy Neutralizer":
             neutAmount = stuff.getModifiedItemAttr("energyNeutralizerAmount")
-            cycleTime = stuff.getCycleParameters().averageTime
+            cycleParams = stuff.getCycleParameters()
+            if cycleParams is None:
+                return "", None
+            cycleTime = cycleParams.averageTime
             if not neutAmount or not cycleTime:
                 return "", None
             capPerSec = float(-neutAmount) * 1000 / cycleTime
@@ -149,7 +152,10 @@ class Miscellanea(ViewColumn):
             return text, tooltip
         elif itemGroup == "Energy Nosferatu":
             neutAmount = stuff.getModifiedItemAttr("powerTransferAmount")
-            cycleTime = stuff.getCycleParameters().averageTime
+            cycleParams = stuff.getCycleParameters()
+            if cycleParams is None:
+                return "", None
+            cycleTime = cycleParams.averageTime
             if not neutAmount or not cycleTime:
                 return "", None
             capPerSec = float(-neutAmount) * 1000 / cycleTime

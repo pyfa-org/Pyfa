@@ -222,8 +222,17 @@ class Fighter(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
     def getDpsPerEffect(self, targetResists=None):
         if not self.active or self.amountActive <= 0:
             return {}
+        cycleParams = self.getCycleParametersPerEffectOptimizedDps(targetResists=targetResists)
+        dpsMap = {}
+        for ability in self.abilities:
+            if ability.effectID in cycleParams:
+                cycleTime = cycleParams[ability.effectID].averageTime
+                dpsMap[ability.effectID] = ability.getDps(targetResists=targetResists, cycleTimeOverride=cycleTime)
+        return dpsMap
+
+    def getCycleParametersPerEffectOptimizedDps(self, targetResists=None, reloadOverride=None):
         cycleParamsInfinite = self.getCycleParametersPerEffectInfinite()
-        cycleParamsReload = self.getCycleParametersPerEffect()
+        cycleParamsReload = self.getCycleParametersPerEffect(reloadOverride=reloadOverride)
         dpsMapOnlyInfinite = {}
         dpsMapAllWithReloads = {}
         # Decide if it's better to keep steady dps up and never reload or reload from time to time
@@ -236,19 +245,19 @@ class Fighter(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
                 dpsMapAllWithReloads[ability.effectID] = ability.getDps(targetResists=targetResists, cycleTimeOverride=cycleTime)
         totalOnlyInfinite = sum(i.total for i in dpsMapOnlyInfinite.values())
         totalAllWithReloads = sum(i.total for i in dpsMapAllWithReloads.values())
-        return dpsMapOnlyInfinite if totalOnlyInfinite >= totalAllWithReloads else dpsMapAllWithReloads
+        return cycleParamsInfinite if totalOnlyInfinite >= totalAllWithReloads else cycleParamsReload
 
     def getCycleParametersPerEffectInfinite(self):
-        return {a.effectID: CycleInfo(a.cycleTime, 0, math.inf) for a in self.abilities if a.numShots == 0}
+        return {a.effectID: CycleInfo(a.cycleTime, 0, math.inf) for a in self.abilities if a.numShots == 0 and a.cycleTime > 0}
 
     def getCycleParametersPerEffect(self, reloadOverride=None):
         factorReload = reloadOverride if reloadOverride is not None else self.owner.factorReload
         # Assume it can cycle infinitely
         if not factorReload:
-            return {a.effectID: CycleInfo(a.cycleTime, 0, math.inf) for a in self.abilities}
-        limitedAbilities = [a for a in self.abilities if a.numShots > 0]
+            return {a.effectID: CycleInfo(a.cycleTime, 0, math.inf) for a in self.abilities if a.cycleTime > 0}
+        limitedAbilities = [a for a in self.abilities if a.numShots > 0 and a.cycleTime > 0]
         if len(limitedAbilities) == 0:
-            return {a.effectID: CycleInfo(a.cycleTime, 0, math.inf) for a in self.abilities}
+            return {a.effectID: CycleInfo(a.cycleTime, 0, math.inf) for a in self.abilities if a.cycleTime > 0}
         validAbilities = [a for a in self.abilities if a.cycleTime > 0]
         if len(validAbilities) == 0:
             return {}

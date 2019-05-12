@@ -275,6 +275,7 @@ class GraphFrame(wx.Frame):
                 x, y = success, status
 
                 self.subplot.plot(x, y)
+                self.subplot.set_ylim(bottom=0)
                 legend.append(fit.name)
             except Exception as ex:
                 pyfalog.warning("Invalid values in '{0}'", fit.name)

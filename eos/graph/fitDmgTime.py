@@ -31,13 +31,63 @@ class FitDmgTimeGraph(Graph):
     defaults = {"time": 0}
 
     def __init__(self, fit, data=None):
-        Graph.__init__(self, fit, self.calcDps, data if data is not None else self.defaults)
+        Graph.__init__(self, fit, self.calcDmg, data if data is not None else self.defaults)
         self.fit = fit
 
-    def calcDps(self, data):
+    def calcDmg(self, data):
         fit = self.fit
-        time = data["time"]
-        dmg = 0
-        for i in range(round(time) + 1):
-            dmg += fit.getTotalDps(spoolOptions=SpoolOptions(SpoolType.TIME, i, True)).total
-        return dmg
+        # We'll handle calculations in milliseconds
+        maxTime = data["time"] * 1000
+        currentDmg = 0
+        for mod in fit.modules:
+            cycleParams = mod.getCycleParameters(reloadOverride=True)
+            if cycleParams is None:
+                continue
+            currentTime = 0
+            nonstopCycles = 0
+            for cycleTime, inactiveTime in cycleParams.iterCycles():
+                volleyParams = mod.getVolleyParameters(spoolOptions=SpoolOptions(SpoolType.CYCLES, nonstopCycles, True))
+                for volleyTime, volley in volleyParams.items():
+                    if currentTime + volleyTime <= maxTime:
+                        currentDmg += volley.total
+                currentTime += cycleTime
+                currentTime += inactiveTime
+                if inactiveTime == 0:
+                    nonstopCycles += 1
+                else:
+                    nonstopCycles = 0
+                if currentTime > maxTime:
+                    break
+        for drone in fit.drones:
+            cycleParams = drone.getCycleParameters(reloadOverride=True)
+            if cycleParams is None:
+                continue
+            currentTime = 0
+            volleyParams = drone.getVolleyParameters()
+            for cycleTime, inactiveTime in cycleParams.iterCycles():
+                for volleyTime, volley in volleyParams.items():
+                    if currentTime + volleyTime <= maxTime:
+                        currentDmg += volley.total
+                currentTime += cycleTime
+                currentTime += inactiveTime
+                if currentTime > maxTime:
+                    break
+        for fighter in fit.fighters:
+            cycleParams = fighter.getCycleParametersPerEffectOptimizedDps(reloadOverride=True)
+            if cycleParams is None:
+                continue
+            volleyParams = fighter.getVolleyParametersPerEffect()
+            for effectID, abilityCycleParams in cycleParams.items():
+                if effectID not in volleyParams:
+                    continue
+                currentTime = 0
+                abilityVolleyParams = volleyParams[effectID]
+                for cycleTime, inactiveTime in abilityCycleParams.iterCycles():
+                    for volleyTime, volley in abilityVolleyParams.items():
+                        if currentTime + volleyTime <= maxTime:
+                            currentDmg += volley.total
+                    currentTime += cycleTime
+                    currentTime += inactiveTime
+                    if currentTime > maxTime:
+                        break
+        return currentDmg

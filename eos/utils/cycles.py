@@ -15,6 +15,12 @@ class CycleInfo:
     def averageTime(self):
         return self.activeTime + self.inactiveTime
 
+    def iterCycles(self):
+        i = 0
+        while i < self.quantity:
+            yield self.activeTime, self.inactiveTime
+            i += 1
+
     def _getCycleQuantity(self):
         return self.quantity
 
@@ -36,6 +42,14 @@ class CycleSequence:
     def averageTime(self):
         """Get average time between cycles."""
         return self._getTime() / self._getCycleQuantity()
+
+    def iterCycles(self):
+        i = 0
+        while i < self.quantity:
+            for cycleInfo in self.sequence:
+                for cycleTime, inactiveTime in cycleInfo.iterCycles():
+                    yield cycleTime, inactiveTime
+            i += 1
 
     def _getCycleQuantity(self):
         quantity = 0

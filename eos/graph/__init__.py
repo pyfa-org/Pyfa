@@ -20,7 +20,7 @@
 import itertools
 
 
-class Graph(object):
+class Graph:
 
     def __init__(self, fit, function, data=None):
         self.fit = fit
@@ -54,7 +54,7 @@ class Graph(object):
             yield point, self.function(point)
 
 
-class Data(object):
+class Data:
     def __init__(self, name, dataString, step=None):
         self.name = name
         self.step = step
@@ -83,7 +83,7 @@ class Data(object):
         return len(self.data) == 1 and self.data[0].isConstant()
 
 
-class Constant(object):
+class Constant:
     def __init__(self, const):
         if isinstance(const, str):
             self.value = None if const == "" else float(const)
@@ -98,7 +98,7 @@ class Constant(object):
         return True
 
 
-class Range(object):
+class Range:
 
     def __init__(self, string, step):
         start, end = string.split("-")
