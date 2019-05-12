@@ -161,7 +161,7 @@ class GraphFrame(wx.Frame):
         self.mainSizer.Add(self.sl1, 0, wx.EXPAND)
         self.mainSizer.Add(self.fitList, 0, wx.EXPAND)
 
-        self.fitList.fitList.Bind(wx.EVT_LEFT_DCLICK, self.removeItem)
+        self.fitList.fitList.Bind(wx.EVT_LEFT_DCLICK, self.OnLeftDClick)
         self.mainFrame.Bind(GE.FIT_CHANGED, self.draw)
         self.Bind(wx.EVT_CLOSE, self.closeEvent)
         self.Bind(wx.EVT_CHAR_HOOK, self.kbEvent)
@@ -186,6 +186,10 @@ class GraphFrame(wx.Frame):
         if keycode == wx.WXK_ESCAPE and mstate.GetModifiers() == wx.MOD_NONE:
             self.closeWindow()
             return
+        elif keycode == 65 and mstate.GetModifiers() == wx.MOD_CONTROL:
+            self.fitList.fitList.selectAll()
+        elif keycode in (wx.WXK_DELETE, wx.WXK_NUMPAD_DELETE) and mstate.GetModifiers() == wx.MOD_NONE:
+            self.removeFits(self.getSelectedFits())
         event.Skip()
 
     def ehpToggled(self, event):
@@ -200,7 +204,7 @@ class GraphFrame(wx.Frame):
 
     def closeWindow(self):
         from gui.builtinStatsViews.resistancesViewFull import EFFECTIVE_HP_TOGGLED  # Grr crclar gons
-        self.fitList.fitList.Unbind(wx.EVT_LEFT_DCLICK, handler=self.removeItem)
+        self.fitList.fitList.Unbind(wx.EVT_LEFT_DCLICK, handler=self.OnLeftDClick)
         self.mainFrame.Unbind(GE.FIT_CHANGED, handler=self.draw)
         self.mainFrame.Unbind(EFFECTIVE_HP_TOGGLED, handler=self.ehpToggled)
         self.Destroy()
@@ -302,7 +306,9 @@ class GraphFrame(wx.Frame):
         y_range = max_y - min_y
         min_y -= y_range * 0.05
         max_y += y_range * 0.05
-
+        if min_y == max_y:
+            min_y -= 5
+            max_y += 5
         self.subplot.set_ylim(bottom=min_y, top=max_y)
 
         if mpl_version < 2:
@@ -364,12 +370,34 @@ class GraphFrame(wx.Frame):
         self.fitList.fitList.update(self.fits)
         self.draw()
 
-    def removeItem(self, event):
+    def OnLeftDClick(self, event):
         row, _ = self.fitList.fitList.HitTest(event.Position)
         if row != -1:
-            del self.fits[row]
-            self.fitList.fitList.update(self.fits)
-            self.draw()
+            try:
+                fit = self.fits[row]
+            except IndexError:
+                pass
+            else:
+                self.removeFits([fit])
+
+    def removeFits(self, fits):
+        toRemove = [f for f in fits if f in self.fits]
+        if not toRemove:
+            return
+        for fit in toRemove:
+            self.fits.remove(fit)
+        self.fitList.fitList.update(self.fits)
+        self.draw()
+
+    def getSelectedFits(self):
+        fits = []
+        for row in self.fitList.fitList.getSelectedRows():
+            try:
+                fit = self.fits[row]
+            except IndexError:
+                continue
+            fits.append(fit)
+        return fits
 
 
 class FitList(wx.Panel):
@@ -390,3 +418,4 @@ class FitDisplay(gui.display.Display):
 
     def __init__(self, parent):
         gui.display.Display.__init__(self, parent)
+
