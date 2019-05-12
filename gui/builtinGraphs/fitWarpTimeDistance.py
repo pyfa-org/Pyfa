@@ -34,7 +34,7 @@ class FitWarpTimeDistanceGraph(Graph):
     def __init__(self):
         Graph.__init__(self)
         self.defaults["distance"] = "0-50"
-        self.name = "Warp Time vs. Distance"
+        self.name = "Warp Time vs Distance"
         self.eosGraph = None
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
 

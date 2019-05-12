@@ -34,7 +34,7 @@ class FitSpeedTimeGraph(Graph):
     def __init__(self):
         Graph.__init__(self)
         self.defaults["time"] = "0-80"
-        self.name = "Speed vs. Time"
+        self.name = "Speed vs Time"
         self.eosGraph = None
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
 

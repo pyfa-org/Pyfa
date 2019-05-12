@@ -34,7 +34,7 @@ class FitShieldAmountTimeGraph(Graph):
     def __init__(self):
         Graph.__init__(self)
         self.defaults["time"] = "0-300"
-        self.name = "Shield Amount vs. Time"
+        self.name = "Shield Amount vs Time"
         self.eosGraph = None
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
 

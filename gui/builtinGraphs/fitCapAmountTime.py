@@ -34,7 +34,7 @@ class FitCapAmountTimeGraph(Graph):
     def __init__(self):
         Graph.__init__(self)
         self.defaults["time"] = "0-300"
-        self.name = "Cap Amount vs. Time"
+        self.name = "Cap Amount vs Time"
         self.eosGraph = None
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
 

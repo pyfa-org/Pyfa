@@ -34,7 +34,7 @@ class FitShieldRegenAmountGraph(Graph):
     def __init__(self):
         Graph.__init__(self)
         self.defaults["percentage"] = "0-100"
-        self.name = "Shield Regen vs. Shield Amount"
+        self.name = "Shield Regen vs Shield Amount"
         self.eosGraph = None
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
 

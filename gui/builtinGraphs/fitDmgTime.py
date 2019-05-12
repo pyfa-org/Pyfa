@@ -34,7 +34,7 @@ class FitDmgTimeGraph(Graph):
     def __init__(self):
         Graph.__init__(self)
         self.defaults["time"] = "0-80"
-        self.name = "Damage Inflicted vs. Time"
+        self.name = "Damage Inflicted vs Time"
         self.eosGraph = None
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
 
