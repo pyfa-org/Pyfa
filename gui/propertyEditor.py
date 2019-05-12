@@ -94,7 +94,8 @@ class AttributeEditor(wx.Frame):
 
     def kbEvent(self, event):
         keycode = event.GetKeyCode()
-        if keycode == wx.WXK_ESCAPE:
+        mstate = wx.GetMouseState()
+        if keycode == wx.WXK_ESCAPE and mstate.GetModifiers() == wx.MOD_NONE:
             self.closeWindow()
             return
         event.Skip()
