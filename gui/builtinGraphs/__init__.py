@@ -3,5 +3,6 @@ __all__ = [
     'fitDpsTime',
     'fitDmgTime',
     'fitShieldRegenRelative',
-    'fitCapRegenRelative'
+    'fitCapRegenRelative',
+    'fitCapTime'
 ]
