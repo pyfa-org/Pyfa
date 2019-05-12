@@ -18,18 +18,19 @@
 # =============================================================================
 
 import os
-from logbook import Logger
+import traceback
 
 # noinspection PyPackageRequirements
 import wx
+from logbook import Logger
 
-from service.fit import Fit
 import gui.display
-import gui.mainFrame
 import gui.globalEvents as GE
-from gui.graph import Graph
+import gui.mainFrame
 from gui.bitmap_loader import BitmapLoader
-import traceback
+from gui.graph import Graph
+from service.fit import Fit
+
 
 pyfalog = Logger(__name__)
 
@@ -69,6 +70,7 @@ except Exception:
 class GraphFrame(wx.Frame):
 
     def __init__(self, parent, style=wx.DEFAULT_FRAME_STYLE | wx.NO_FULL_REPAINT_ON_RESIZE | wx.FRAME_FLOAT_ON_PARENT):
+
         global graphFrame_enabled
         global mplImported
         global mpl_version
@@ -164,6 +166,8 @@ class GraphFrame(wx.Frame):
         self.Bind(wx.EVT_CLOSE, self.closeEvent)
         self.Bind(wx.EVT_CHAR_HOOK, self.kbEvent)
         self.Bind(wx.EVT_CHOICE, self.graphChanged)
+        from gui.builtinStatsViews.resistancesViewFull import EFFECTIVE_HP_TOGGLED  # Grr crclar gons
+        self.mainFrame.Bind(EFFECTIVE_HP_TOGGLED, self.ehpToggled)
 
         self.Fit()
         self.SetMinSize(self.GetSize())
@@ -183,13 +187,21 @@ class GraphFrame(wx.Frame):
             return
         event.Skip()
 
+    def ehpToggled(self, event):
+        event.Skip()
+        view = self.getView()
+        if view.redrawOnEffectiveChange:
+            self.draw()
+
     def graphChanged(self, event):
         self.select(self.graphSelection.GetSelection())
         event.Skip()
 
     def closeWindow(self):
+        from gui.builtinStatsViews.resistancesViewFull import EFFECTIVE_HP_TOGGLED  # Grr crclar gons
         self.fitList.fitList.Unbind(wx.EVT_LEFT_DCLICK, handler=self.removeItem)
         self.mainFrame.Unbind(GE.FIT_CHANGED, handler=self.draw)
+        self.mainFrame.Unbind(EFFECTIVE_HP_TOGGLED, handler=self.ehpToggled)
         self.Destroy()
 
     def getView(self):

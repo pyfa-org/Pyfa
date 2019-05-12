@@ -1,5 +1,6 @@
 __all__ = [
-    "fitDpsRange",
-    "fitDpsTime",
-    "fitDmgTime"
+    'fitDpsRange',
+    'fitDpsTime',
+    'fitDmgTime',
+    'fitShieldRegenRelative'
 ]

@@ -34,10 +34,10 @@ class Graph(object):
     def getIcons(self):
         return None
 
+    @property
+    def redrawOnEffectiveChange(self):
+        return False
+
 
 # noinspection PyUnresolvedReferences
-from gui.builtinGraphs import (
-    fitDpsRange,  # noqa: E402, F401
-    fitDpsTime,  # noqa: E402, F401
-    fitDmgTime,  # noqa: E402, F401
-)
+from gui.builtinGraphs import *
