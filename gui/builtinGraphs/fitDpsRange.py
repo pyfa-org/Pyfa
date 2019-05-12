@@ -42,7 +42,7 @@ class FitDpsRangeGraph(Graph):
     def __init__(self):
         Graph.__init__(self)
         self.defaults["distance"] = "0-100"
-        self.name = "DPS over range"
+        self.name = "DPS vs. Range"
         self.fitDpsRange = None
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
 

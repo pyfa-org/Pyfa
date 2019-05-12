@@ -34,7 +34,7 @@ class FitDpsTimeGraph(Graph):
     def __init__(self):
         Graph.__init__(self)
         self.defaults["time"] = "0-80"
-        self.name = "DPS over time"
+        self.name = "DPS vs. Time"
         self.fitDpsTime = None
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
 
