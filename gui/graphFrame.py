@@ -264,6 +264,8 @@ class GraphFrame(wx.Frame):
         self.subplot.grid(True)
         legend = []
 
+        min_y = 0
+        max_y = 0
         for fit in self.fits:
             try:
                 success, status = view.getPoints(fit, values)
@@ -273,15 +275,22 @@ class GraphFrame(wx.Frame):
                     return
 
                 x, y = success, status
+                min_y = min(min_y, min(y, default=0))
+                max_y = max(max_y, max(y, default=0))
 
                 self.subplot.plot(x, y)
-                self.subplot.set_ylim(bottom=0)
                 legend.append(fit.name)
             except Exception as ex:
                 pyfalog.warning("Invalid values in '{0}'", fit.name)
                 self.SetStatusText("Invalid values in '%s'" % fit.name)
                 self.canvas.draw()
                 return
+
+        y_range = max_y - min_y
+        min_y -= y_range * 0.05
+        max_y += y_range * 0.05
+
+        self.subplot.set_ylim(bottom=min_y, top=max_y)
 
         if mpl_version < 2:
             if self.legendFix and len(legend) > 0:

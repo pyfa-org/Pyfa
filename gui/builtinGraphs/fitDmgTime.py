@@ -33,7 +33,7 @@ class FitDmgTimeGraph(Graph):
 
     def __init__(self):
         Graph.__init__(self)
-        self.defaults["time"] = "0-300"
+        self.defaults["time"] = "0-80"
         self.name = "Damage over time"
         self.fitDmgTime = None
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
@@ -76,7 +76,6 @@ class FitDmgTimeGraph(Graph):
         for point, val in fitDmgTime.getIterator():
             x.append(point[variable])
             y.append(val)
-
         return x, y
 
 
