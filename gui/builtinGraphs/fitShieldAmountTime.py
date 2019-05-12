@@ -19,22 +19,22 @@
 
 import gui.mainFrame
 from eos.graph import Data
-from eos.graph.fitDmgTime import FitDmgTimeGraph as EosFitDmgTimeGraph
+from eos.graph.fitShieldAmountTime import FitShieldAmountTimeGraph as EosFitShieldAmountTimeGraph
 from gui.bitmap_loader import BitmapLoader
 from gui.graph import Graph
 from service.attribute import Attribute
 
 
-class FitDmgTimeGraph(Graph):
+class FitShieldAmountTimeGraph(Graph):
 
     propertyLabelMap = {"time": "Time (seconds)"}
 
-    defaults = EosFitDmgTimeGraph.defaults.copy()
+    defaults = EosFitShieldAmountTimeGraph.defaults.copy()
 
     def __init__(self):
         Graph.__init__(self)
-        self.defaults["time"] = "0-80"
-        self.name = "Damage Inflicted vs. Time"
+        self.defaults["time"] = "0-300"
+        self.name = "Shield Amount vs. Time"
         self.eosGraph = None
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
 
@@ -52,7 +52,7 @@ class FitDmgTimeGraph(Graph):
     def getPoints(self, fit, fields):
         eosGraph = getattr(self, "eosGraph", None)
         if eosGraph is None or eosGraph.fit != fit:
-            eosGraph = self.eosGraph = EosFitDmgTimeGraph(fit)
+            eosGraph = self.eosGraph = EosFitShieldAmountTimeGraph(fit)
 
         eosGraph.clearData()
         variable = None
@@ -72,11 +72,14 @@ class FitDmgTimeGraph(Graph):
 
         x = []
         y = []
-        eosGraph.recalc()
         for point, val in eosGraph.getIterator():
             x.append(point[variable])
             y.append(val)
         return x, y
 
+    @property
+    def redrawOnEffectiveChange(self):
+        return True
 
-FitDmgTimeGraph.register()
+
+FitShieldAmountTimeGraph.register()

@@ -19,23 +19,23 @@
 
 import gui.mainFrame
 from eos.graph import Data
-from eos.graph.fitCapTime import FitCapTimeGraph as EosFitCapTimeGraph
+from eos.graph.fitCapAmountTime import FitCapAmountTimeGraph as EosFitCapAmountTimeGraph
 from gui.bitmap_loader import BitmapLoader
 from gui.graph import Graph
 from service.attribute import Attribute
 
 
-class FitCapTimeGraph(Graph):
+class FitCapAmountTimeGraph(Graph):
 
     propertyLabelMap = {"time": "Time (seconds)"}
 
-    defaults = EosFitCapTimeGraph.defaults.copy()
+    defaults = EosFitCapAmountTimeGraph.defaults.copy()
 
     def __init__(self):
         Graph.__init__(self)
         self.defaults["time"] = "0-300"
         self.name = "Cap Amount vs. Time"
-        self.fitCapTime = None
+        self.eosGraph = None
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
 
     def getFields(self):
@@ -50,11 +50,11 @@ class FitCapTimeGraph(Graph):
         return {"time": bitmap}
 
     def getPoints(self, fit, fields):
-        fitCapTime = getattr(self, "fitCapTime", None)
-        if fitCapTime is None or fitCapTime.fit != fit:
-            fitCapTime = self.fitCapTime = EosFitCapTimeGraph(fit)
+        eosGraph = getattr(self, "eosGraph", None)
+        if eosGraph is None or eosGraph.fit != fit:
+            eosGraph = self.eosGraph = EosFitCapAmountTimeGraph(fit)
 
-        fitCapTime.clearData()
+        eosGraph.clearData()
         variable = None
         for fieldName, value in fields.items():
             d = Data(fieldName, value)
@@ -65,17 +65,17 @@ class FitCapTimeGraph(Graph):
                     # We can't handle more then one variable atm, OOPS FUCK OUT
                     return False, "Can only handle 1 variable"
 
-            fitCapTime.setData(d)
+            eosGraph.setData(d)
 
         if variable is None:
             return False, "No variable"
 
         x = []
         y = []
-        for point, val in fitCapTime.getIterator():
+        for point, val in eosGraph.getIterator():
             x.append(point[variable])
             y.append(val)
         return x, y
 
 
-FitCapTimeGraph.register()
+FitCapAmountTimeGraph.register()

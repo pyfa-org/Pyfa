@@ -20,20 +20,20 @@
 import math
 from logbook import Logger
 
-import gui.mainFrame
 from eos.graph import Graph
 
 
 pyfalog = Logger(__name__)
 
 
-class FitShieldRegenRelativeGraph(Graph):
+class FitShieldRegenAmountGraph(Graph):
 
     defaults = {"percentage": '0-100'}
 
     def __init__(self, fit, data=None):
         Graph.__init__(self, fit, self.calcRegen, data if data is not None else self.defaults)
         self.fit = fit
+        import gui.mainFrame
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
 
     def calcRegen(self, data):

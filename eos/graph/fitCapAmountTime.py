@@ -7,7 +7,7 @@ from eos.graph import Graph
 pyfalog = Logger(__name__)
 
 
-class FitCapTimeGraph(Graph):
+class FitCapAmountTimeGraph(Graph):
 
     defaults = {"time": 0}
 

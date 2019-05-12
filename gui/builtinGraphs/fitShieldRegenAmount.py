@@ -19,23 +19,23 @@
 
 import gui.mainFrame
 from eos.graph import Data
-from eos.graph.fitCapRegenRelative import FitCapRegenRelativeGraph as EosFitCapRegenRelativeGraph
+from eos.graph.fitShieldRegenAmount import FitShieldRegenAmountGraph as EosFitShieldRegenAmountGraph
 from gui.bitmap_loader import BitmapLoader
 from gui.graph import Graph
 from service.attribute import Attribute
 
 
-class FitCapRegenRelativeGraph(Graph):
+class FitShieldRegenAmountGraph(Graph):
 
-    propertyLabelMap = {"percentage": "Cap amount (percent)"}
+    propertyLabelMap = {"percentage": "Shield Capacity (percent)"}
 
-    defaults = EosFitCapRegenRelativeGraph.defaults.copy()
+    defaults = EosFitShieldRegenAmountGraph.defaults.copy()
 
     def __init__(self):
         Graph.__init__(self)
         self.defaults["percentage"] = "0-100"
-        self.name = "Cap Regen vs. Cap Amount"
-        self.capRegenRelative = None
+        self.name = "Shield Regen vs. Shield Amount"
+        self.eosGraph = None
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
 
     def getFields(self):
@@ -45,16 +45,16 @@ class FitCapRegenRelativeGraph(Graph):
         return self.propertyLabelMap
 
     def getIcons(self):
-        iconFile = Attribute.getInstance().getAttributeInfo('capacitorCapacity').iconID
+        iconFile = Attribute.getInstance().getAttributeInfo('shieldCapacity').iconID
         bitmap = BitmapLoader.getBitmap(iconFile, "icons")
         return {"percentage": bitmap}
 
     def getPoints(self, fit, fields):
-        capRegenRelative = getattr(self, "capRegenRelative", None)
-        if capRegenRelative is None or capRegenRelative.fit != fit:
-            capRegenRelative = self.capRegenRelative = EosFitCapRegenRelativeGraph(fit)
+        eosGraph = getattr(self, "eosGraph", None)
+        if eosGraph is None or eosGraph.fit != fit:
+            eosGraph = self.eosGraph = EosFitShieldRegenAmountGraph(fit)
 
-        capRegenRelative.clearData()
+        eosGraph.clearData()
         variable = None
         for fieldName, value in fields.items():
             d = Data(fieldName, value)
@@ -65,18 +65,22 @@ class FitCapRegenRelativeGraph(Graph):
                     # We can't handle more then one variable atm, OOPS FUCK OUT
                     return False, "Can only handle 1 variable"
 
-            capRegenRelative.setData(d)
+            eosGraph.setData(d)
 
         if variable is None:
             return False, "No variable"
 
         x = []
         y = []
-        for point, val in capRegenRelative.getIterator():
+        for point, val in eosGraph.getIterator():
             x.append(point[variable])
             y.append(val)
 
         return x, y
 
+    @property
+    def redrawOnEffectiveChange(self):
+        return True
 
-FitCapRegenRelativeGraph.register()
+
+FitShieldRegenAmountGraph.register()

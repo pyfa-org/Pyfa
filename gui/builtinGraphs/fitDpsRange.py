@@ -43,7 +43,7 @@ class FitDpsRangeGraph(Graph):
         Graph.__init__(self)
         self.defaults["distance"] = "0-100"
         self.name = "DPS vs. Range"
-        self.fitDpsRange = None
+        self.eosGraph = None
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
 
     def getFields(self):
@@ -64,11 +64,11 @@ class FitDpsRangeGraph(Graph):
         return icons
 
     def getPoints(self, fit, fields):
-        fitDpsRange = getattr(self, "fitDpsRange", None)
-        if fitDpsRange is None or fitDpsRange.fit != fit:
-            fitDpsRange = self.fitDpsRange = EosFitDpsRangeGraph(fit)
+        eosGraph = getattr(self, "eosGraph", None)
+        if eosGraph is None or eosGraph.fit != fit:
+            eosGraph = self.eosGraph = EosFitDpsRangeGraph(fit)
 
-        fitDpsRange.clearData()
+        eosGraph.clearData()
         variable = None
         for fieldName, value in fields.items():
             d = Data(fieldName, value)
@@ -79,14 +79,14 @@ class FitDpsRangeGraph(Graph):
                     # We can't handle more then one variable atm, OOPS FUCK OUT
                     return False, "Can only handle 1 variable"
 
-            fitDpsRange.setData(d)
+            eosGraph.setData(d)
 
         if variable is None:
             return False, "No variable"
 
         x = []
         y = []
-        for point, val in fitDpsRange.getIterator():
+        for point, val in eosGraph.getIterator():
             x.append(point[variable])
             y.append(val)
 

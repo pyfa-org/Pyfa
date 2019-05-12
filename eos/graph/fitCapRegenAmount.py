@@ -7,7 +7,7 @@ from eos.graph import Graph
 pyfalog = Logger(__name__)
 
 
-class FitCapRegenRelativeGraph(Graph):
+class FitCapRegenAmountGraph(Graph):
 
     defaults = {"percentage": '0-100'}
 
@@ -16,7 +16,7 @@ class FitCapRegenRelativeGraph(Graph):
         self.fit = fit
 
     def calcRegen(self, data):
-        perc = data["percentage"]
+        perc = data['percentage']
         maxCap = self.fit.ship.getModifiedItemAttr('capacitorCapacity')
         regenTime = self.fit.ship.getModifiedItemAttr('rechargeRate') / 1000
         currentCap = maxCap * perc / 100

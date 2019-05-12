@@ -35,7 +35,7 @@ class FitDpsTimeGraph(Graph):
         Graph.__init__(self)
         self.defaults["time"] = "0-80"
         self.name = "DPS vs. Time"
-        self.fitDpsTime = None
+        self.eosGraph = None
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
 
     def getFields(self):
@@ -50,11 +50,11 @@ class FitDpsTimeGraph(Graph):
         return {"time": bitmap}
 
     def getPoints(self, fit, fields):
-        fitDpsTime = getattr(self, "fitDpsTime", None)
-        if fitDpsTime is None or fitDpsTime.fit != fit:
-            fitDpsTime = self.fitDpsTime = EosFitDpsTimeGraph(fit)
+        eosGraph = getattr(self, "eosGraph", None)
+        if eosGraph is None or eosGraph.fit != fit:
+            eosGraph = self.eosGraph = EosFitDpsTimeGraph(fit)
 
-        fitDpsTime.clearData()
+        eosGraph.clearData()
         variable = None
         for fieldName, value in fields.items():
             d = Data(fieldName, value)
@@ -65,15 +65,15 @@ class FitDpsTimeGraph(Graph):
                     # We can't handle more then one variable atm, OOPS FUCK OUT
                     return False, "Can only handle 1 variable"
 
-            fitDpsTime.setData(d)
+            eosGraph.setData(d)
 
         if variable is None:
             return False, "No variable"
 
         x = []
         y = []
-        fitDpsTime.recalc()
-        for point, val in fitDpsTime.getIterator():
+        eosGraph.recalc()
+        for point, val in eosGraph.getIterator():
             x.append(point[variable])
             y.append(val)
 
