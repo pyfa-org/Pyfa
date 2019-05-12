@@ -156,7 +156,10 @@ class Drone(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
         volley = self.getVolley(targetResists=targetResists)
         if not volley:
             return DmgTypes(0, 0, 0, 0)
-        dpsFactor = 1 / (self.getCycleParameters().averageTime / 1000)
+        cycleParams = self.getCycleParameters()
+        if cycleParams is None:
+            return DmgTypes(0, 0, 0, 0)
+        dpsFactor = 1 / (cycleParams.averageTime / 1000)
         dps = DmgTypes(
             em=volley.em * dpsFactor,
             thermal=volley.thermal * dpsFactor,
@@ -165,6 +168,9 @@ class Drone(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
         return dps
 
     def getCycleParameters(self, reloadOverride=None):
+        cycleTime = self.cycleTime
+        if cycleTime == 0:
+            return None
         return CycleInfo(self.cycleTime, 0, math.inf)
 
     def getRemoteReps(self, ignoreState=False):
@@ -188,7 +194,12 @@ class Drone(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
                 rrAmount = 0
             if rrAmount:
                 droneAmount = self.amount if ignoreState else self.amountActive
-                rrAmount *= droneAmount / (self.getCycleParameters().averageTime / 1000)
+                cycleParams = self.getCycleParameters()
+                if cycleParams is None:
+                    rrType = None
+                    rrAmount = 0
+                else:
+                    rrAmount *= droneAmount / (cycleParams.averageTime / 1000)
             self.__baseRemoteReps = (rrType, rrAmount)
         return self.__baseRemoteReps
 
@@ -197,9 +208,13 @@ class Drone(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
         if self.__miningyield is None:
             if self.mines is True and self.amountActive > 0:
                 getter = self.getModifiedItemAttr
-                cycleTime = self.getCycleParameters().averageTime
-                volley = sum([getter(d) for d in self.MINING_ATTRIBUTES]) * self.amountActive
-                self.__miningyield = volley / (cycleTime / 1000.0)
+                cycleParams = self.getCycleParameters()
+                if cycleParams is None:
+                    self.__miningyield = 0
+                else:
+                    cycleTime = cycleParams.averageTime
+                    volley = sum([getter(d) for d in self.MINING_ATTRIBUTES]) * self.amountActive
+                    self.__miningyield = volley / (cycleTime / 1000.0)
             else:
                 self.__miningyield = 0
 
