@@ -41,6 +41,7 @@ class FitShieldRegenAmountGraph(Graph):
         maxShield = self.fit.ship.getModifiedItemAttr('shieldCapacity')
         regenTime = self.fit.ship.getModifiedItemAttr('shieldRechargeRate') / 1000
         currentShield = maxShield * perc / 100
+        # https://wiki.eveuniversity.org/Capacitor#Capacitor_recharge_rate (shield is similar to cap)
         regen = 10 * maxShield / regenTime * (math.sqrt(currentShield / maxShield) - currentShield / maxShield)
         useEhp = self.mainFrame.statsPane.nameViewMap["resistancesViewFull"].showEffective
         if self.fit.damagePattern is not None and useEhp:

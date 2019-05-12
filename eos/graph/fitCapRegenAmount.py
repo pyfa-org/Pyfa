@@ -20,5 +20,6 @@ class FitCapRegenAmountGraph(Graph):
         maxCap = self.fit.ship.getModifiedItemAttr('capacitorCapacity')
         regenTime = self.fit.ship.getModifiedItemAttr('rechargeRate') / 1000
         currentCap = maxCap * perc / 100
+        # https://wiki.eveuniversity.org/Capacitor#Capacitor_recharge_rate
         regen = 10 * maxCap / regenTime * (math.sqrt(currentCap / maxCap) - currentCap / maxCap)
         return regen
