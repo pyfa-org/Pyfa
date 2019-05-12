@@ -72,6 +72,7 @@ class FitDpsTimeGraph(Graph):
 
         x = []
         y = []
+        fitDpsTime.recalc()
         for point, val in fitDpsTime.getIterator():
             x.append(point[variable])
             y.append(val)

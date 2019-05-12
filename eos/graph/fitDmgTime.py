@@ -45,7 +45,7 @@ class FitDmgTimeGraph(Graph):
     def recalc(self):
 
         def addDmg(addedTime, addedDmg):
-            if addDmg == 0:
+            if addedDmg == 0:
                 return
             if addedTime not in self.__cache:
                 prevTime = max((t for t in self.__cache if t < addedTime), default=None)
@@ -69,7 +69,7 @@ class FitDmgTimeGraph(Graph):
             for cycleTime, inactiveTime in cycleParams.iterCycles():
                 volleyParams = mod.getVolleyParameters(spoolOptions=SpoolOptions(SpoolType.CYCLES, nonstopCycles, True))
                 for volleyTime, volley in volleyParams.items():
-                    if currentTime + volleyTime <= maxTime:
+                    if currentTime + volleyTime <= maxTime and volleyTime <= cycleTime:
                         addDmg(currentTime + volleyTime, volley.total)
                 currentTime += cycleTime
                 currentTime += inactiveTime
@@ -87,7 +87,7 @@ class FitDmgTimeGraph(Graph):
             volleyParams = drone.getVolleyParameters()
             for cycleTime, inactiveTime in cycleParams.iterCycles():
                 for volleyTime, volley in volleyParams.items():
-                    if currentTime + volleyTime <= maxTime:
+                    if currentTime + volleyTime <= maxTime and volleyTime <= cycleTime:
                         addDmg(currentTime + volleyTime, volley.total)
                 currentTime += cycleTime
                 currentTime += inactiveTime
@@ -105,7 +105,7 @@ class FitDmgTimeGraph(Graph):
                 abilityVolleyParams = volleyParams[effectID]
                 for cycleTime, inactiveTime in abilityCycleParams.iterCycles():
                     for volleyTime, volley in abilityVolleyParams.items():
-                        if currentTime + volleyTime <= maxTime:
+                        if currentTime + volleyTime <= maxTime and volleyTime <= cycleTime:
                             addDmg(currentTime + volleyTime, volley.total)
                     currentTime += cycleTime
                     currentTime += inactiveTime
