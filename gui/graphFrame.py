@@ -162,12 +162,18 @@ class GraphFrame(wx.Frame):
         self.mainSizer.Add(self.fitList, 0, wx.EXPAND)
 
         self.fitList.fitList.Bind(wx.EVT_LEFT_DCLICK, self.OnLeftDClick)
+        self.fitList.fitList.Bind(wx.EVT_CONTEXT_MENU, self.OnContextMenu)
         self.mainFrame.Bind(GE.FIT_CHANGED, self.draw)
         self.Bind(wx.EVT_CLOSE, self.closeEvent)
         self.Bind(wx.EVT_CHAR_HOOK, self.kbEvent)
         self.Bind(wx.EVT_CHOICE, self.graphChanged)
         from gui.builtinStatsViews.resistancesViewFull import EFFECTIVE_HP_TOGGLED  # Grr crclar gons
         self.mainFrame.Bind(EFFECTIVE_HP_TOGGLED, self.ehpToggled)
+
+        self.contextMenu = wx.Menu()
+        removeItem = wx.MenuItem(self.contextMenu, 1, 'Remove Fit')
+        self.contextMenu.Append(removeItem)
+        self.contextMenu.Bind(wx.EVT_MENU, self.ContextMenuHandler, removeItem)
 
         self.Fit()
         self.SetMinSize(self.GetSize())
@@ -191,6 +197,16 @@ class GraphFrame(wx.Frame):
         elif keycode in (wx.WXK_DELETE, wx.WXK_NUMPAD_DELETE) and mstate.GetModifiers() == wx.MOD_NONE:
             self.removeFits(self.getSelectedFits())
         event.Skip()
+
+    def OnContextMenu(self, event):
+        if self.getSelectedFits():
+            self.PopupMenu(self.contextMenu)
+
+    def ContextMenuHandler(self, event):
+        selectedMenuItem = event.GetId()
+        if selectedMenuItem == 1:  # Copy was chosen
+            fits = self.getSelectedFits()
+            self.removeFits(fits)
 
     def ehpToggled(self, event):
         event.Skip()
@@ -401,6 +417,7 @@ class GraphFrame(wx.Frame):
 
 
 class FitList(wx.Panel):
+
     def __init__(self, parent):
         wx.Panel.__init__(self, parent)
         self.mainSizer = wx.BoxSizer(wx.VERTICAL)
@@ -418,4 +435,3 @@ class FitDisplay(gui.display.Display):
 
     def __init__(self, parent):
         gui.display.Display.__init__(self, parent)
-
