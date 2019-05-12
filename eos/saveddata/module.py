@@ -417,11 +417,19 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
             self.__baseVolley = {}
             dmgGetter = self.getModifiedChargeAttr if self.charge else self.getModifiedItemAttr
             dmgMult = self.getModifiedItemAttr("damageMultiplier", 1)
-            self.__baseVolley[0] = DmgTypes(
-                em=(dmgGetter("emDamage", 0)) * dmgMult,
-                thermal=(dmgGetter("thermalDamage", 0)) * dmgMult,
-                kinetic=(dmgGetter("kineticDamage", 0)) * dmgMult,
-                explosive=(dmgGetter("explosiveDamage", 0)) * dmgMult)
+            dmgDelay = self.getModifiedItemAttr("damageDelayDuration", 0) or self.getModifiedItemAttr("doomsdayWarningDuration", 0)
+            dmgDuration = self.getModifiedItemAttr("doomsdayDamageDuration", 0)
+            dmgSubcycle = self.getModifiedItemAttr("doomsdayDamageCycleTime", 0)
+            if dmgDuration != 0 and dmgSubcycle != 0:
+                subcycles = math.floor(floatUnerr(dmgDuration / dmgSubcycle))
+            else:
+                subcycles = 1
+            for i in range(subcycles):
+                self.__baseVolley[dmgDelay + dmgSubcycle * i] = DmgTypes(
+                    em=(dmgGetter("emDamage", 0)) * dmgMult,
+                    thermal=(dmgGetter("thermalDamage", 0)) * dmgMult,
+                    kinetic=(dmgGetter("kineticDamage", 0)) * dmgMult,
+                    explosive=(dmgGetter("explosiveDamage", 0)) * dmgMult)
         spoolType, spoolAmount = resolveSpoolOptions(spoolOptions, self)
         spoolBoost = calculateSpoolup(
             self.getModifiedItemAttr("damageMultiplierBonusMax", 0),
@@ -444,17 +452,19 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
         return volleyParams[min(volleyParams)]
 
     def getDps(self, spoolOptions=None, targetResists=None, ignoreState=False):
-        volley = self.getVolley(spoolOptions=spoolOptions, targetResists=targetResists, ignoreState=ignoreState)
-        if not volley:
-            return DmgTypes(0, 0, 0, 0)
-        # Some weapons repeat multiple times in one cycle (bosonic doomsdays). Get the number of times it fires off
-        volleysPerCycle = max(self.getModifiedItemAttr("doomsdayDamageDuration", 1) / self.getModifiedItemAttr("doomsdayDamageCycleTime", 1), 1)
-        dpsFactor = volleysPerCycle / (self.getCycleParameters().averageTime / 1000)
+        volleyParams = self.getVolleyParameters(spoolOptions=spoolOptions, targetResists=targetResists, ignoreState=ignoreState)
+        avgCycleTime = self.getCycleParameters().averageTime
+        dmgDuringCycle = DmgTypes(0, 0, 0, 0)
+        if len(volleyParams) == 0 or avgCycleTime == 0:
+            return dmgDuringCycle
+        for volleyValue in volleyParams.values():
+            dmgDuringCycle += volleyValue
+        dpsFactor = 1 / (avgCycleTime / 1000)
         dps = DmgTypes(
-            em=volley.em * dpsFactor,
-            thermal=volley.thermal * dpsFactor,
-            kinetic=volley.kinetic * dpsFactor,
-            explosive=volley.explosive * dpsFactor)
+            em=dmgDuringCycle.em * dpsFactor,
+            thermal=dmgDuringCycle.thermal * dpsFactor,
+            kinetic=dmgDuringCycle.kinetic * dpsFactor,
+            explosive=dmgDuringCycle.explosive * dpsFactor)
         return dps
 
     def getRemoteReps(self, spoolOptions=None, ignoreState=False):
