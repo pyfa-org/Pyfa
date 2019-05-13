@@ -243,6 +243,20 @@ class Item(EqBase):
         self.__overrides = None
         self.__priceObj = None
 
+    def getShortName(self, charLimit=12):
+        if len(self.name) <= charLimit:
+            return self.name
+        splitName = self.name.strip().split(' ')
+        if len(splitName) == 1:
+            return self.name
+        shortName = ''
+        for word in splitName:
+            try:
+                shortName += word[0].capitalize()
+            except IndexError:
+                pass
+        return shortName
+
     @property
     def attributes(self):
         if not self.__moved:

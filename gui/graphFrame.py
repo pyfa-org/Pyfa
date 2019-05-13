@@ -312,7 +312,7 @@ class GraphFrame(wx.Frame):
                 max_y = max(max_y, max(y, default=0))
 
                 self.subplot.plot(x, y)
-                legend.append(fit.name)
+                legend.append('{} ({})'.format(fit.name, fit.ship.item.getShortName()))
             except Exception as ex:
                 pyfalog.warning("Invalid values in '{0}'", fit.name)
                 self.SetStatusText("Invalid values in '%s'" % fit.name)
