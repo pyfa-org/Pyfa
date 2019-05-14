@@ -21,13 +21,10 @@ Apart from the official release, there is also a [Homebrew](http://brew.sh) opti
 $ brew install Caskroom/cask/pyfa
 ```
 
-### Linux and BSD Distro-specific Packages
+### Linux Distro-specific Packages
 The following is a list of pyfa packages available for certain distributions. Please note that these packages are maintained by third-parties and are not evaluated by the pyfa developers.
 
-* Debian/Ubuntu/derivatives: https://github.com/AdamMajer/Pyfa/releases
 * Arch: https://aur.archlinux.org/packages/pyfa/
-* openSUSE: https://build.opensuse.org/package/show/home:rmk2/pyfa
-* FreeBSD: http://www.freshports.org/games/pyfa/ (see [#484](https://github.com/pyfa-org/Pyfa/issues/484) for instructions)
 * Gentoo: https://github.com/ZeroPointEnergy/gentoo-pyfa-overlay
 
 ### Dependencies
