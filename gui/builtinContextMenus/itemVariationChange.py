@@ -83,8 +83,9 @@ class ChangeItemToVariation(ContextMenuCombined):
         else:
             bindmenu = m
 
+        # Do not show abyssal items
+        items = list(i for i in self.mainVariations if i.metaGroup is None or i.metaGroup.ID != 15)
         # Sort items by metalevel, and group within that metalevel
-        items = list(self.mainVariations)
         # Sort all items by name first
         items.sort(key=lambda x: x.name)
         # Do not do any extra sorting for implants
