@@ -149,7 +149,7 @@ class PFListPane(wx.ScrolledWindow):
             self._wList[i].SetSize((cwidth, iheight))
             if doRefresh is True:
                 self._wList[i].Refresh()
-            self.itemsHeight = max(self.itemsHeight, iheight - 1)
+            self.itemsHeight = iheight
 
         # This is needed as under GTK wx does not emit scroll up/scroll down
         # events, see issue #1909 for more info
