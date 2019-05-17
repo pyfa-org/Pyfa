@@ -286,6 +286,8 @@ class GraphFrame(wx.Frame):
 
         values = self.getValues()
         view = self.getView()
+        # todo: we just drop cache so far, need to drop it only for removed/changed fits
+        view.clearCache()
         self.subplot.clear()
         self.subplot.grid(True)
         legend = []

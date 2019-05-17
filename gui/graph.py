@@ -64,12 +64,16 @@ class Graph(metaclass=ABCMeta):
         m = re.match('\s*(?P<first>\d+(\.\d+)?)\s*(-\s*(?P<second>\d+(\.\d+)?))?', string)
         if m is None:
             return (0, 0)
-        first = m.group('first')
+        first = float(m.group('first'))
         second = m.group('second')
-        if not second:
-            return (0, float(first))
-        else:
-            return (float(first), float(second))
+        second = float(second) if second is not None else 0
+        low = min(first, second)
+        high = max(first, second)
+        return (low, high)
+
+    def clearCache(self, *args, **kwargs):
+        for yDef in self.yDefs.values():
+            getattr(self, yDef.eosGraph).clearCache(*args, **kwargs)
 
 
 XDef = namedtuple('XDef', ('inputDefault', 'inputLabel', 'inputIconID', 'axisLabel'))

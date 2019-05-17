@@ -2,7 +2,7 @@
 from gui.builtinGraphs import (  # noqa: E402,F401
     # fitDpsRange,
     # fitDpsTime,
-    # fitDmgTime,
+    fitDmgVsTime,
     # fitShieldRegenAmount,
     # fitShieldAmountTime,
     fitCapRegenVsCapPerc,

@@ -47,11 +47,11 @@ class Graph(metaclass=ABCMeta):
                 yield current
                 current += step
 
-    def clearCache(self, fitID=None):
-        if fitID is None:
+    def clearCache(self, key=None):
+        if key is None:
             self.cache.clear()
-        elif fitID in self.cache:
-            del self.cache[fitID]
+        elif key in self.cache:
+            del self.cache[key]
 
 
 class SmoothGraph(Graph, metaclass=ABCMeta):

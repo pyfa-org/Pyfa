@@ -17,49 +17,62 @@
 # along with eos.  If not, see <http://www.gnu.org/licenses/>.
 # ===============================================================================
 
-from logbook import Logger
 
 from eos.graph import Graph
 from eos.utils.spoolSupport import SpoolType, SpoolOptions
 
 
-pyfalog = Logger(__name__)
+class FitDmgVsTimeGraph(Graph):
 
+    def getPlotPoints(self, fit, extraData, xRange, xAmount):
+        # We deliberately ignore xAmount here to build graph which will reflect
+        # all steps of building up the damage
+        maxTime = xRange[1]
+        if fit.ID not in self.cache:
+            self.__generateCache(fit, maxTime)
+        currentY = 0
+        xs = [0]
+        ys = [0]
+        cache = self.cache[fit.ID]
+        for time in sorted(cache):
+            prevY = currentY
+            currentX = time / 1000
+            currentY = cache[time]
+            if currentY != prevY:
+                xs.append(currentX)
+                ys.append(prevY)
+                xs.append(currentX)
+                ys.append(currentY)
+        if maxTime > max(xs):
+            xs.append(maxTime)
+            ys.append(ys[-1])
+        return xs, ys
 
-class FitDmgTimeGraph(Graph):
-
-    defaults = {"time": 0}
-
-    def __init__(self, fit, data=None):
-        Graph.__init__(self, fit, self.calcDmg, data if data is not None else self.defaults)
-        self.fit = fit
-        self.__cache = {}
-
-    def calcDmg(self, data):
-        time = data["time"] * 1000
-        closestTime = max((t for t in self.__cache if t <= time), default=None)
+    def getYForX(self, fit, extraData, x):
+        time = x * 1000
+        cache = self.cache[fit.ID]
+        closestTime = max((t for t in cache if t <= time), default=None)
         if closestTime is None:
             return 0
-        return self.__cache[closestTime]
+        return cache[closestTime]
 
-    def recalc(self):
+    def __generateCache(self, fit, maxTime):
+        cache = self.cache[fit.ID] = {}
 
         def addDmg(addedTime, addedDmg):
             if addedDmg == 0:
                 return
-            if addedTime not in self.__cache:
-                prevTime = max((t for t in self.__cache if t < addedTime), default=None)
+            if addedTime not in cache:
+                prevTime = max((t for t in cache if t < addedTime), default=None)
                 if prevTime is None:
-                    self.__cache[addedTime] = 0
+                    cache[addedTime] = 0
                 else:
-                    self.__cache[addedTime] = self.__cache[prevTime]
-            for time in (t for t in self.__cache if t >= addedTime):
-                self.__cache[time] += addedDmg
+                    cache[addedTime] = cache[prevTime]
+            for time in (t for t in cache if t >= addedTime):
+                cache[time] += addedDmg
 
-        self.__cache.clear()
-        fit = self.fit
         # We'll handle calculations in milliseconds
-        maxTime = self.data["time"].data[0].end * 1000
+        maxTime = maxTime * 1000
         for mod in fit.modules:
             cycleParams = mod.getCycleParameters(reloadOverride=True)
             if cycleParams is None:
