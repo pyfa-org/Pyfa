@@ -47,5 +47,19 @@ class Graph(metaclass=ABCMeta):
                 yield current
                 current += step
 
-    def clearCache(self, fitID):
-        self.cache.clear()
+    def clearCache(self, fitID=None):
+        if fitID is None:
+            self.cache.clear()
+        elif fitID in self.cache:
+            del self.cache[fitID]
+
+
+class SmoothGraph(Graph, metaclass=ABCMeta):
+
+    def getPlotPoints(self, fit, extraData, xRange, xAmount):
+        xs = []
+        ys = []
+        for x in self._xIter(xRange, xAmount):
+            xs.append(x)
+            ys.append(self.getYForX(fit, extraData, x))
+        return xs, ys

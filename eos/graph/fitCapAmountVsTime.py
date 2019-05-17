@@ -1,23 +1,11 @@
 import math
 
-from eos.graph import Graph
+from eos.graph import SmoothGraph
 
 
-class FitCapAmountVsTimeGraph(Graph):
+class FitCapAmountVsTimeGraph(SmoothGraph):
 
-    def getPlotPoints(self, fit, extraData, xRange, xAmount):
-        xs = []
-        ys = []
-        for x in self._xIter(xRange, xAmount):
-            xs.append(x)
-            ys.append(self.calc(fit, x))
-        return xs, {'capAmount': ys}
-
-    def getYForX(self, fit, extraData, x):
-        return {'capAmount': self.calc(fit, x)}
-
-    @staticmethod
-    def calc(fit, time):
+    def getYForX(self, fit, extraData, time):
         if time < 0:
             return 0
         maxCap = fit.ship.getModifiedItemAttr('capacitorCapacity')

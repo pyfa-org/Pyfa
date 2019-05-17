@@ -244,9 +244,9 @@ class GraphFrame(wx.Frame):
         self.fields.clear()
 
         # Setup textboxes
-        for fieldDef in (view.xDef, *view.extraInputs):
+        for fieldHandle, fieldDef in (('x', view.xDef), *view.extraInputs.items()):
             textBox = wx.TextCtrl(self.gridPanel, wx.ID_ANY, style=0)
-            self.fields[fieldDef.handle] = textBox
+            self.fields[fieldHandle] = textBox
             textBox.Bind(wx.EVT_TEXT, self.onFieldChanged)
             sizer.Add(textBox, 1, wx.EXPAND | wx.ALIGN_CENTER_VERTICAL | wx.ALL, 3)
             if fieldDef.inputDefault is not None:
@@ -293,14 +293,16 @@ class GraphFrame(wx.Frame):
         min_y = 0
         max_y = 0
 
-        xRange = values[view.xDef.handle]
-        extraInputs = {i.handle: values[i.handle] for i in view.extraInputs}
-        chosenY = view.yDefs[0].handle
+        xRange = values['x']
+        extraInputs = {ih: values[ih] for ih in view.extraInputs}
+        chosenY = None
+        for handle in view.yDefs:
+            chosenY = handle
+            break
 
         for fit in self.fits:
             try:
-                xs, ys = view.getPlotPoints(fit, extraInputs, xRange, 100)
-                ys = ys[chosenY]
+                xs, ys = view.getPlotPoints(fit, extraInputs, xRange, 100, chosenY)
 
                 min_y = min(min_y, min(ys, default=0))
                 max_y = max(max_y, max(ys, default=0))

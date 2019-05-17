@@ -17,7 +17,11 @@
 # along with pyfa.  If not, see <http://www.gnu.org/licenses/>.
 # =============================================================================
 
-from eos.graph.fitMobilityVsTime import FitMobilityVsTimeGraph as EosGraph
+
+from collections import OrderedDict
+
+from eos.graph.fitDistanceVsTime import FitDistanceVsTimeGraph as EosGraphDistance
+from eos.graph.fitSpeedVsTime import FitSpeedVsTimeGraph as EosGraphSpeed
 from gui.graph import Graph, XDef, YDef
 
 
@@ -26,19 +30,18 @@ class FitMobilityVsTimeGraph(Graph):
     name = 'Mobility vs Time'
 
     def __init__(self):
-        self.eosGraph = EosGraph()
+        self.eosGraphSpeed = EosGraphSpeed()
+        self.eosGraphDistance = EosGraphDistance()
 
     @property
     def xDef(self):
-        return XDef(handle='time', inputDefault='0-80', inputLabel='Time (seconds)', inputIconID=1392, axisLabel='Time, s')
+        return XDef(inputDefault='0-80', inputLabel='Time (seconds)', inputIconID=1392, axisLabel='Time, s')
 
     @property
     def yDefs(self):
-        return [YDef(handle='speed', switchLabel='Speed', axisLabel='Speed, m/s'), YDef(handle='distance', switchLabel='Distance', axisLabel='Distance, m')]
-
-    def getPlotPoints(self, fit, extraData, xRange, xAmount):
-        xRange = self.parseRange(xRange)
-        return self.eosGraph.getPlotPoints(fit, extraData, xRange, xAmount)
+        return OrderedDict([
+            ('speed', YDef(switchLabel='Speed', axisLabel='Speed, m/s', eosGraph='eosGraphSpeed')),
+            ('distance', YDef(switchLabel='Distance', axisLabel='Distance, m', eosGraph='eosGraphDistance'))])
 
 
 FitMobilityVsTimeGraph.register()

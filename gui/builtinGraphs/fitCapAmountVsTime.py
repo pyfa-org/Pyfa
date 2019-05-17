@@ -18,6 +18,8 @@
 # =============================================================================
 
 
+from collections import OrderedDict
+
 from eos.graph.fitCapAmountVsTime import FitCapAmountVsTimeGraph as EosGraph
 from gui.graph import Graph, XDef, YDef
 
@@ -31,15 +33,11 @@ class FitCapAmountVsTimeGraph(Graph):
 
     @property
     def xDef(self):
-        return XDef(handle='time', inputDefault='0-300', inputLabel='Time (seconds)', inputIconID=1392, axisLabel='Time, s')
+        return XDef(inputDefault='0-300', inputLabel='Time (seconds)', inputIconID=1392, axisLabel='Time, s')
 
     @property
     def yDefs(self):
-        return [YDef(handle='capAmount', switchLabel='Cap amount', axisLabel='Cap amount, GJ')]
-
-    def getPlotPoints(self, fit, extraData, xRange, xAmount):
-        xRange = self.parseRange(xRange)
-        return self.eosGraph.getPlotPoints(fit, extraData, xRange, xAmount)
+        return OrderedDict([('capAmount', YDef(switchLabel='Cap amount', axisLabel='Cap amount, GJ', eosGraph='eosGraph'))])
 
 
 FitCapAmountVsTimeGraph.register()

@@ -1,23 +1,11 @@
 import math
 
-from eos.graph import Graph
+from eos.graph import SmoothGraph
 
 
-class FitCapRegenVsCapPercGraph(Graph):
+class FitCapRegenVsCapPercGraph(SmoothGraph):
 
-    def getPlotPoints(self, fit, extraData, xRange, xAmount):
-        xs = []
-        ys = []
-        for x in self._xIter(xRange, xAmount):
-            xs.append(x)
-            ys.append(self.calc(fit, x))
-        return xs, {'capRegen': ys}
-
-    def getYForX(self, fit, extraData, x):
-        return {'capRegen': self.calc(fit, x)}
-
-    @staticmethod
-    def calc(fit, perc):
+    def getYForX(self, fit, extraData, perc):
         maxCap = fit.ship.getModifiedItemAttr('capacitorCapacity')
         regenTime = fit.ship.getModifiedItemAttr('rechargeRate') / 1000
         currentCap = maxCap * perc / 100

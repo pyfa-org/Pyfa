@@ -44,7 +44,7 @@ class Graph(metaclass=ABCMeta):
 
     @property
     def extraInputs(self):
-        return ()
+        return {}
 
     @property
     @abstractmethod
@@ -54,6 +54,11 @@ class Graph(metaclass=ABCMeta):
     @property
     def redrawOnEffectiveChange(self):
         return False
+
+    def getPlotPoints(self, fit, extraData, xRange, xAmount, yType):
+        xRange = self.parseRange(xRange)
+        graph = getattr(self, self.yDefs[yType].eosGraph, None)
+        return graph.getPlotPoints(fit, extraData, xRange, xAmount)
 
     def parseRange(self, string):
         m = re.match('\s*(?P<first>\d+(\.\d+)?)\s*(-\s*(?P<second>\d+(\.\d+)?))?', string)
@@ -67,8 +72,8 @@ class Graph(metaclass=ABCMeta):
             return (float(first), float(second))
 
 
-XDef = namedtuple('XDef', ('handle', 'inputDefault', 'inputLabel', 'inputIconID', 'axisLabel'))
-YDef = namedtuple('YDef', ('handle', 'switchLabel', 'axisLabel'))
+XDef = namedtuple('XDef', ('inputDefault', 'inputLabel', 'inputIconID', 'axisLabel'))
+YDef = namedtuple('YDef', ('switchLabel', 'axisLabel', 'eosGraph'))
 ExtraInput = namedtuple('ExtraInput', ('handle', 'inputDefault', 'inputLabel', 'inputIconID'))
 
 

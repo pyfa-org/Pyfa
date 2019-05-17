@@ -18,6 +18,8 @@
 # =============================================================================
 
 
+from collections import OrderedDict
+
 from eos.graph.fitCapRegenVsCapPerc import FitCapRegenVsCapPercGraph as EosGraph
 from gui.graph import Graph, XDef, YDef
 
@@ -31,15 +33,11 @@ class FitCapRegenVsCapPercGraph(Graph):
 
     @property
     def xDef(self):
-        return XDef(handle='percentage', inputDefault='0-100', inputLabel='Cap Amount (percent)', inputIconID=1668, axisLabel='Cap amount, %')
+        return XDef(inputDefault='0-100', inputLabel='Cap Amount (percent)', inputIconID=1668, axisLabel='Cap amount, %')
 
     @property
     def yDefs(self):
-        return [YDef(handle='capRegen', switchLabel='Cap regen', axisLabel='Cap regen, GJ/s')]
-
-    def getPlotPoints(self, fit, extraData, xRange, xAmount):
-        xRange = self.parseRange(xRange)
-        return self.eosGraph.getPlotPoints(fit, extraData, xRange, xAmount)
+        return OrderedDict([('capRegen', YDef(switchLabel='Cap regen', axisLabel='Cap regen, GJ/s', eosGraph='eosGraph'))])
 
 
 FitCapRegenVsCapPercGraph.register()
