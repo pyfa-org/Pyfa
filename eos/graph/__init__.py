@@ -17,107 +17,35 @@
 # along with eos.  If not, see <http://www.gnu.org/licenses/>.
 # ===============================================================================
 
-import itertools
+
+from abc import ABCMeta, abstractmethod
 
 
-class Graph:
+class Graph(metaclass=ABCMeta):
 
-    def __init__(self, fit, function, data=None):
-        self.fit = fit
-        self.data = {}
-        if data is not None:
-            for name, d in data.items():
-                self.setData(Data(name, d))
+    def __init__(self):
+        self.cache = {}
 
-        self.function = function
+    @abstractmethod
+    def getPlotPoints(self, fit, extraData, xRange, xAmount):
+        raise NotImplementedError
 
-    def clearData(self):
-        self.data.clear()
+    def getYForX(self, fit, extraData, x):
+        raise NotImplementedError
 
-    def setData(self, data):
-        self.data[data.name] = data
-
-    def getIterator(self):
-        pointNames = []
-        pointIterators = []
-        for data in self.data.values():
-            pointNames.append(data.name)
-            pointIterators.append(data)
-
-        return self._iterator(pointNames, pointIterators)
-
-    def _iterator(self, pointNames, pointIterators):
-        for pointValues in itertools.product(*pointIterators):
-            point = {}
-            for i in range(len(pointValues)):
-                point[pointNames[i]] = pointValues[i]
-            yield point, self.function(point)
-
-
-class Data:
-
-    def __init__(self, name, dataString, step=None):
-        self.name = name
-        self.step = step
-        self.data = self.parseString(dataString)
-
-    def parseString(self, dataString):
-        if not isinstance(dataString, str):
-            return Constant(dataString),
-
-        dataList = []
-        for data in dataString.split(";"):
-            if isinstance(data, str) and "-" in data:
-                # Dealing with a range
-                dataList.append(Range(data, self.step))
-            else:
-                dataList.append(Constant(data))
-
-        return dataList
-
-    def __iter__(self):
-        for data in self.data:
-            for value in data:
-                yield value
-
-    def isConstant(self):
-        return len(self.data) == 1 and self.data[0].isConstant()
-
-
-class Constant:
-
-    def __init__(self, const):
-        if isinstance(const, str):
-            self.value = None if const == "" else float(const)
+    def _xIter(self, xRange, xAmount):
+        rangeStart, rangeEnd = sorted(xRange)
+        # Amount is amount of ranges between points here, not amount of points
+        step = (rangeEnd - rangeStart) / xAmount
+        if step == 0:
+            yield xRange[0]
         else:
-            self.value = const
+            current = rangeStart
+            # Take extra half step to make sure end of range is always included
+            # despite any possible float errors
+            while current <= (rangeEnd + step / 2):
+                yield current
+                current += step
 
-    def __iter__(self):
-        yield self.value
-
-    @staticmethod
-    def isConstant():
-        return True
-
-
-class Range:
-
-    def __init__(self, string, step):
-        start, end = string.split("-")
-        self.start = float(start)
-        self.end = float(end)
-        self.step = step
-
-    def __iter__(self):
-        current = start = self.start
-        end = self.end
-        step = self.step or (end - start) / 200
-        i = 0
-        while current < end:
-            current = start + i * step
-            i += 1
-            yield current
-
-    @staticmethod
-    def isConstant():
-        return False
+    def clearCache(self, fitID):
+        self.cache.clear()

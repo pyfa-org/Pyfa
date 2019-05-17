@@ -17,65 +17,31 @@
 # along with pyfa.  If not, see <http://www.gnu.org/licenses/>.
 # =============================================================================
 
+
 import gui.mainFrame
-from eos.graph import Data
-from eos.graph.fitCapAmountTime import FitCapAmountTimeGraph as EosFitCapAmountTimeGraph
-from gui.bitmap_loader import BitmapLoader
-from gui.graph import Graph
-from service.attribute import Attribute
+from eos.graph.fitCapAmountTime import FitCapAmountTimeGraph as EosGraph
+from gui.graph import Graph, XDef, YDef
 
 
 class FitCapAmountTimeGraph(Graph):
 
-    propertyLabelMap = {"time": "Time (seconds)"}
-
-    defaults = EosFitCapAmountTimeGraph.defaults.copy()
+    name = 'Cap Amount vs Time'
 
     def __init__(self):
-        Graph.__init__(self)
-        self.defaults["time"] = "0-300"
-        self.name = "Cap Amount vs Time"
-        self.eosGraph = None
+        self.eosGraph = EosGraph()
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
 
-    def getFields(self):
-        return self.defaults
+    @property
+    def xDef(self):
+        return XDef(handle='time', inputDefault='0-300', inputLabel='Time (seconds)', inputIconID=1392, axisLabel='Time, s')
 
-    def getLabels(self):
-        return self.propertyLabelMap
+    @property
+    def yDefs(self):
+        return [YDef(handle='capAmount', switchLabel='Cap amount', axisLabel='Cap amount, GJ')]
 
-    def getIcons(self):
-        iconFile = Attribute.getInstance().getAttributeInfo('duration').iconID
-        bitmap = BitmapLoader.getBitmap(iconFile, "icons")
-        return {"time": bitmap}
-
-    def getPoints(self, fit, fields):
-        eosGraph = getattr(self, "eosGraph", None)
-        if eosGraph is None or eosGraph.fit != fit:
-            eosGraph = self.eosGraph = EosFitCapAmountTimeGraph(fit)
-
-        eosGraph.clearData()
-        variable = None
-        for fieldName, value in fields.items():
-            d = Data(fieldName, value)
-            if not d.isConstant():
-                if variable is None:
-                    variable = fieldName
-                else:
-                    # We can't handle more then one variable atm, OOPS FUCK OUT
-                    return False, "Can only handle 1 variable"
-
-            eosGraph.setData(d)
-
-        if variable is None:
-            return False, "No variable"
-
-        x = []
-        y = []
-        for point, val in eosGraph.getIterator():
-            x.append(point[variable])
-            y.append(val)
-        return x, y
+    def getPlotPoints(self, fit, extraData, xRange, xAmount):
+        xRange = self.parseRange(xRange)
+        return self.eosGraph.getPlotPoints(fit, extraData, xRange, xAmount)
 
 
 FitCapAmountTimeGraph.register()

@@ -19,6 +19,7 @@
 
 import os
 import traceback
+from itertools import chain
 
 # noinspection PyPackageRequirements
 import wx
@@ -230,50 +231,42 @@ class GraphFrame(wx.Frame):
 
     def getValues(self):
         values = {}
-        for fieldName, field in self.fields.items():
-            values[fieldName] = field.GetValue()
+        for fieldHandle, field in self.fields.items():
+            values[fieldHandle] = field.GetValue()
 
         return values
 
     def select(self, index):
         view = self.getView()
-        icons = view.getIcons()
-        labels = view.getLabels()
         sizer = self.gridSizer
         sizer.Clear()
         self.gridPanel.DestroyChildren()
         self.fields.clear()
 
         # Setup textboxes
-        for field, defaultVal in view.getFields().items():
-
+        for fieldDef in (view.xDef, *view.extraInputs):
             textBox = wx.TextCtrl(self.gridPanel, wx.ID_ANY, style=0)
-            self.fields[field] = textBox
+            self.fields[fieldDef.handle] = textBox
             textBox.Bind(wx.EVT_TEXT, self.onFieldChanged)
             sizer.Add(textBox, 1, wx.EXPAND | wx.ALIGN_CENTER_VERTICAL | wx.ALL, 3)
-            if defaultVal is not None:
-                if not isinstance(defaultVal, str):
-                    defaultVal = ("%f" % defaultVal).rstrip("0")
-                    if defaultVal[-1:] == ".":
-                        defaultVal += "0"
+            if fieldDef.inputDefault is not None:
+                inputDefault = fieldDef.inputDefault
+                if not isinstance(inputDefault, str):
+                    inputDefault = ("%f" % inputDefault).rstrip("0")
+                    if inputDefault[-1:] == ".":
+                        inputDefault += "0"
 
-                textBox.ChangeValue(defaultVal)
+                textBox.ChangeValue(inputDefault)
 
             imgLabelSizer = wx.BoxSizer(wx.HORIZONTAL)
-            if icons:
-                icon = icons.get(field)
+            if fieldDef.inputIconID:
+                icon = BitmapLoader.getBitmap(fieldDef.inputIconID, "icons")
                 if icon is not None:
                     static = wx.StaticBitmap(self.gridPanel)
                     static.SetBitmap(icon)
                     imgLabelSizer.Add(static, 0, wx.ALL | wx.ALIGN_CENTER_VERTICAL, 1)
 
-            if labels:
-                label = labels.get(field)
-                label = label if label is not None else field
-            else:
-                label = field
-
-            imgLabelSizer.Add(wx.StaticText(self.gridPanel, wx.ID_ANY, label), 0,
+            imgLabelSizer.Add(wx.StaticText(self.gridPanel, wx.ID_ANY, fieldDef.inputLabel), 0,
                               wx.LEFT | wx.RIGHT | wx.ALIGN_CENTER_VERTICAL, 3)
             sizer.Add(imgLabelSizer, 0, wx.ALIGN_CENTER_VERTICAL)
         sizer.Layout()
@@ -299,19 +292,20 @@ class GraphFrame(wx.Frame):
 
         min_y = 0
         max_y = 0
+
+        xRange = values[view.xDef.handle]
+        extraInputs = {i.handle: values[i.handle] for i in view.extraInputs}
+        chosenY = view.yDefs[0].handle
+
         for fit in self.fits:
             try:
-                success, status = view.getPoints(fit, values)
-                if not success:
-                    # TODO: Add a pwetty statys bar to report errors with
-                    self.SetStatusText(status)
-                    return
+                xs, ys = view.getPlotPoints(fit, extraInputs, xRange, 100)
+                ys = ys[chosenY]
 
-                x, y = success, status
-                min_y = min(min_y, min(y, default=0))
-                max_y = max(max_y, max(y, default=0))
+                min_y = min(min_y, min(ys, default=0))
+                max_y = max(max_y, max(ys, default=0))
 
-                self.subplot.plot(x, y)
+                self.subplot.plot(xs, ys)
                 legend.append('{} ({})'.format(fit.name, fit.ship.item.getShortName()))
             except Exception as ex:
                 pyfalog.warning("Invalid values in '{0}'", fit.name)

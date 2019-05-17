@@ -18,25 +18,58 @@
 # =============================================================================
 
 
-class Graph(object):
+import re
+from abc import ABCMeta, abstractmethod
+from collections import namedtuple
+
+
+class Graph(metaclass=ABCMeta):
+
     views = []
+    yTypes = None
 
     @classmethod
     def register(cls):
         Graph.views.append(cls)
 
-    def __init__(self):
-        self.name = ""
+    @property
+    @abstractmethod
+    def name(self):
+        raise NotImplementedError
 
-    def getFields(self, fit, fields):
-        raise NotImplementedError()
+    @property
+    @abstractmethod
+    def xDef(self):
+        raise NotImplementedError
 
-    def getIcons(self):
-        return None
+    @property
+    def extraInputs(self):
+        return ()
+
+    @property
+    @abstractmethod
+    def yDefs(self):
+        raise NotImplementedError
 
     @property
     def redrawOnEffectiveChange(self):
         return False
+
+    def parseRange(self, string):
+        m = re.match('\s*(?P<first>\d+(\.\d+)?)\s*(-\s*(?P<second>\d+(\.\d+)?))?', string)
+        if m is None:
+            return (0, 0)
+        first = m.group('first')
+        second = m.group('second')
+        if not second:
+            return (0, float(first))
+        else:
+            return (float(first), float(second))
+
+
+XDef = namedtuple('XDef', ('handle', 'inputDefault', 'inputLabel', 'inputIconID', 'axisLabel'))
+YDef = namedtuple('YDef', ('handle', 'switchLabel', 'axisLabel'))
+ExtraInput = namedtuple('ExtraInput', ('handle', 'inputDefault', 'inputLabel', 'inputIconID'))
 
 
 # noinspection PyUnresolvedReferences

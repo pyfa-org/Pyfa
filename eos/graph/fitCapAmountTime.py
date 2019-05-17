@@ -1,24 +1,27 @@
 import math
-from logbook import Logger
 
 from eos.graph import Graph
 
 
-pyfalog = Logger(__name__)
-
-
 class FitCapAmountTimeGraph(Graph):
 
-    defaults = {"time": 0}
+    def getPlotPoints(self, fit, extraData, xRange, xAmount):
+        xs = []
+        ys = []
+        for x in self._xIter(xRange, xAmount):
+            xs.append(x)
+            ys.append(self.calcCap(fit, x))
+        return xs, {'capAmount': ys}
 
-    def __init__(self, fit, data=None):
-        Graph.__init__(self, fit, self.calcAmount, data if data is not None else self.defaults)
-        self.fit = fit
+    def getYForX(self, fit, extraData, x):
+        return {'capAmount': self.calcCap(fit, x)}
 
-    def calcAmount(self, data):
-        time = data["time"]
-        maxCap = self.fit.ship.getModifiedItemAttr('capacitorCapacity')
-        regenTime = self.fit.ship.getModifiedItemAttr('rechargeRate') / 1000
+    @staticmethod
+    def calcCap(fit, time):
+        if time < 0:
+            return 0
+        maxCap = fit.ship.getModifiedItemAttr('capacitorCapacity')
+        regenTime = fit.ship.getModifiedItemAttr('rechargeRate') / 1000
         # https://wiki.eveuniversity.org/Capacitor#Capacitor_recharge_rate
         cap = maxCap * (1 + math.exp(5 * -time / regenTime) * -1) ** 2
         return cap
