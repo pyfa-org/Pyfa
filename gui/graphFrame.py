@@ -367,6 +367,7 @@ class GraphFrame(wx.Frame):
 
         self.canvas.draw()
         self.SetStatusText("")
+        self.Refresh()
 
     def onFieldChanged(self, event):
         self.draw()
