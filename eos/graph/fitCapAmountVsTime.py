@@ -3,21 +3,21 @@ import math
 from eos.graph import Graph
 
 
-class FitCapAmountTimeGraph(Graph):
+class FitCapAmountVsTimeGraph(Graph):
 
     def getPlotPoints(self, fit, extraData, xRange, xAmount):
         xs = []
         ys = []
         for x in self._xIter(xRange, xAmount):
             xs.append(x)
-            ys.append(self.calcCap(fit, x))
+            ys.append(self.calc(fit, x))
         return xs, {'capAmount': ys}
 
     def getYForX(self, fit, extraData, x):
-        return {'capAmount': self.calcCap(fit, x)}
+        return {'capAmount': self.calc(fit, x)}
 
     @staticmethod
-    def calcCap(fit, time):
+    def calc(fit, time):
         if time < 0:
             return 0
         maxCap = fit.ship.getModifiedItemAttr('capacitorCapacity')

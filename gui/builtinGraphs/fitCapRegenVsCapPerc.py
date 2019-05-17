@@ -18,30 +18,28 @@
 # =============================================================================
 
 
-import gui.mainFrame
-from eos.graph.fitCapAmountTime import FitCapAmountTimeGraph as EosGraph
+from eos.graph.fitCapRegenVsCapPerc import FitCapRegenVsCapPercGraph as EosGraph
 from gui.graph import Graph, XDef, YDef
 
 
-class FitCapAmountTimeGraph(Graph):
+class FitCapRegenVsCapPercGraph(Graph):
 
-    name = 'Cap Amount vs Time'
+    name = 'Cap Regen vs Cap Amount'
 
     def __init__(self):
         self.eosGraph = EosGraph()
-        self.mainFrame = gui.mainFrame.MainFrame.getInstance()
 
     @property
     def xDef(self):
-        return XDef(handle='time', inputDefault='0-300', inputLabel='Time (seconds)', inputIconID=1392, axisLabel='Time, s')
+        return XDef(handle='percentage', inputDefault='0-100', inputLabel='Cap Amount (percent)', inputIconID=1668, axisLabel='Cap amount, %')
 
     @property
     def yDefs(self):
-        return [YDef(handle='capAmount', switchLabel='Cap amount', axisLabel='Cap amount, GJ')]
+        return [YDef(handle='capRegen', switchLabel='Cap regen', axisLabel='Cap regen, GJ/s')]
 
     def getPlotPoints(self, fit, extraData, xRange, xAmount):
         xRange = self.parseRange(xRange)
         return self.eosGraph.getPlotPoints(fit, extraData, xRange, xAmount)
 
 
-FitCapAmountTimeGraph.register()
+FitCapRegenVsCapPercGraph.register()
