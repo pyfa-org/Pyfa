@@ -21,6 +21,7 @@
 from collections import OrderedDict
 
 from eos.graph.fitDmgVsTime import FitDmgVsTimeGraph as EosGraphDmg
+from eos.graph.fitDpsVsTime import FitDpsTimeGraph as EosGraphDps
 from gui.graph import Graph, XDef, YDef
 
 
@@ -30,6 +31,7 @@ class FitDmgVsTimeGraph(Graph):
 
     def __init__(self):
         self.eosGraphDmg = EosGraphDmg()
+        self.eosGraphDps = EosGraphDps()
 
     @property
     def xDef(self):
@@ -37,7 +39,9 @@ class FitDmgVsTimeGraph(Graph):
 
     @property
     def yDefs(self):
-        return OrderedDict([('damage', YDef(switchLabel='Damage inflicted', axisLabel='Damage', eosGraph='eosGraphDmg'))])
+        return OrderedDict([
+            ('dps', YDef(switchLabel='DPS', axisLabel='DPS', eosGraph='eosGraphDps')),
+            ('damage', YDef(switchLabel='Damage inflicted', axisLabel='Damage', eosGraph='eosGraphDmg'))])
 
 
 FitDmgVsTimeGraph.register()

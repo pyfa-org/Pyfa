@@ -31,6 +31,8 @@ class FitDmgVsTimeGraph(Graph):
         if fit.ID not in self.cache:
             self.__generateCache(fit, maxTime)
         currentY = 0
+        # Add zeros even if there's some damage dealt at time = 0, to explicitly show that
+        # volley is done at this time
         xs = [0]
         ys = [0]
         cache = self.cache[fit.ID]

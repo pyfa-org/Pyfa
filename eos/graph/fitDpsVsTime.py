@@ -17,42 +17,81 @@
 # along with eos.  If not, see <http://www.gnu.org/licenses/>.
 # ===============================================================================
 
-from logbook import Logger
+
+from itertools import chain
 
 from eos.graph import Graph
 from eos.utils.spoolSupport import SpoolType, SpoolOptions
 
 
-pyfalog = Logger(__name__)
-
-
 class FitDpsTimeGraph(Graph):
 
-    defaults = {"time": 0}
+    def getPlotPoints(self, fit, extraData, xRange, xAmount):
+        # We deliberately ignore xAmount here to build graph which will reflect
+        # all steps of building up the damage
+        minX, maxX = xRange
+        if fit.ID not in self.cache:
+            self.__generateCache(fit, maxX)
+        currentY = None
+        xs = []
+        ys = []
+        cache = self.cache[fit.ID]
+        for time in sorted(cache):
+            prevY = currentY
+            currentX = time / 1000
+            currentY = cache[time]
+            if currentX < minX:
+                continue
+            # First set of data points
+            if not xs:
+                # Start at exactly requested time, at last known value
+                initialY = prevY or 0
+                xs.append(minX)
+                ys.append(initialY)
+                # If current time is bigger then starting, extend plot to that time with old value
+                if currentX > minX:
+                    xs.append(currentX)
+                    ys.append(initialY)
+                # If new value is different, extend it with new point to the new value
+                if currentY != prevY:
+                    xs.append(currentX)
+                    ys.append(currentY)
+                continue
+            # Last data point
+            if currentX > maxX:
+                xs.append(maxX)
+                ys.append(prevY)
+                break
+            # Anything in-between
+            if currentY != prevY:
+                if prevY is not None:
+                    xs.append(currentX)
+                    ys.append(prevY)
+                xs.append(currentX)
+                ys.append(currentY)
+            if currentX >= maxX:
+                break
+        return xs, ys
 
-    def __init__(self, fit, data=None):
-        Graph.__init__(self, fit, self.calcDps, data if data is not None else self.defaults)
-        self.fit = fit
-        self.__cache = []
+    def getYForX(self, fit, extraData, x):
+        time = x * 1000
+        cache = self.cache[fit.ID]
+        closestTime = max((t for t in cache if t <= time), default=None)
+        if closestTime is None:
+            return 0
+        return cache[closestTime]
 
-    def calcDps(self, data):
-        time = data["time"] * 1000
-        entries = (e for e in self.__cache if e[0] <= time < e[1])
-        dps = sum(e[2] for e in entries)
-        return dps
-
-    def recalc(self):
+    def __generateCache(self, fit, maxTime):
+        cache = []
 
         def addDmg(addedTimeStart, addedTimeFinish, addedDmg):
             if addedDmg == 0:
                 return
             addedDps = 1000 * addedDmg / (addedTimeFinish - addedTimeStart)
-            self.__cache.append((addedTimeStart, addedTimeFinish, addedDps))
+            cache.append((addedTimeStart, addedTimeFinish, addedDps))
 
-        self.__cache = []
-        fit = self.fit
         # We'll handle calculations in milliseconds
-        maxTime = self.data["time"].data[0].end * 1000
+        maxTime = maxTime * 1000
         for mod in fit.modules:
             cycleParams = mod.getCycleParameters(reloadOverride=True)
             if cycleParams is None:
@@ -63,8 +102,7 @@ class FitDpsTimeGraph(Graph):
                 cycleDamage = 0
                 volleyParams = mod.getVolleyParameters(spoolOptions=SpoolOptions(SpoolType.CYCLES, nonstopCycles, True))
                 for volleyTime, volley in volleyParams.items():
-                    if currentTime + volleyTime <= maxTime and volleyTime <= cycleTime:
-                        cycleDamage += volley.total
+                    cycleDamage += volley.total
                 addDmg(currentTime, currentTime + cycleTime, cycleDamage)
                 currentTime += cycleTime
                 currentTime += inactiveTime
@@ -83,8 +121,7 @@ class FitDpsTimeGraph(Graph):
                 cycleDamage = 0
                 volleyParams = drone.getVolleyParameters()
                 for volleyTime, volley in volleyParams.items():
-                    if currentTime + volleyTime <= maxTime and volleyTime <= cycleTime:
-                        cycleDamage += volley.total
+                    cycleDamage += volley.total
                 addDmg(currentTime, currentTime + cycleTime, cycleDamage)
                 currentTime += cycleTime
                 currentTime += inactiveTime
@@ -103,10 +140,17 @@ class FitDpsTimeGraph(Graph):
                 for cycleTime, inactiveTime in abilityCycleParams.iterCycles():
                     cycleDamage = 0
                     for volleyTime, volley in abilityVolleyParams.items():
-                        if currentTime + volleyTime <= maxTime and volleyTime <= cycleTime:
-                            cycleDamage += volley.total
+                        cycleDamage += volley.total
                     addDmg(currentTime, currentTime + cycleTime, cycleDamage)
                     currentTime += cycleTime
                     currentTime += inactiveTime
                     if currentTime > maxTime:
                         break
+
+        # Post-process cache
+        finalCache = {}
+        for time in sorted(set(chain((i[0] for i in cache), (i[1] for i in cache)))):
+            entries = (e for e in cache if e[0] <= time < e[1])
+            dps = sum(e[2] for e in entries)
+            finalCache[time] = dps
+        self.cache[fit.ID] = finalCache
