@@ -22,6 +22,7 @@ from itertools import chain
 
 from eos.graph import Graph
 from eos.utils.spoolSupport import SpoolType, SpoolOptions
+from gui.utils.numberFormatter import roundToPrec
 
 
 class FitDpsTimeGraph(Graph):
@@ -39,7 +40,7 @@ class FitDpsTimeGraph(Graph):
         for time in sorted(cache):
             prevY = currentY
             currentX = time / 1000
-            currentY = cache[time]
+            currentY = roundToPrec(cache[time], 6)
             if currentX < minX:
                 continue
             # First set of data points

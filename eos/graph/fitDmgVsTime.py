@@ -20,6 +20,7 @@
 
 from eos.graph import Graph
 from eos.utils.spoolSupport import SpoolType, SpoolOptions
+from gui.utils.numberFormatter import roundToPrec
 
 
 class FitDmgVsTimeGraph(Graph):
@@ -27,27 +28,48 @@ class FitDmgVsTimeGraph(Graph):
     def getPlotPoints(self, fit, extraData, xRange, xAmount):
         # We deliberately ignore xAmount here to build graph which will reflect
         # all steps of building up the damage
-        maxTime = xRange[1]
+        minX, maxX = xRange
         if fit.ID not in self.cache:
-            self.__generateCache(fit, maxTime)
-        currentY = 0
-        # Add zeros even if there's some damage dealt at time = 0, to explicitly show that
-        # volley is done at this time
-        xs = [0]
-        ys = [0]
+            self.__generateCache(fit, maxX)
+        currentY = None
+        xs = []
+        ys = []
         cache = self.cache[fit.ID]
         for time in sorted(cache):
             prevY = currentY
             currentX = time / 1000
-            currentY = cache[time]
-            if currentY != prevY:
-                xs.append(currentX)
+            currentY = roundToPrec(cache[time], 6)
+            if currentX < minX:
+                continue
+            # First set of data points
+            if not xs:
+                # Start at exactly requested time, at last known value
+                initialY = prevY or 0
+                xs.append(minX)
+                ys.append(initialY)
+                # If current time is bigger then starting, extend plot to that time with old value
+                if currentX > minX:
+                    xs.append(currentX)
+                    ys.append(initialY)
+                # If new value is different, extend it with new point to the new value
+                if currentY != prevY:
+                    xs.append(currentX)
+                    ys.append(currentY)
+                continue
+            # Last data point
+            if currentX > maxX:
+                xs.append(maxX)
                 ys.append(prevY)
+                break
+            # Anything in-between
+            if currentY != prevY:
+                if prevY is not None:
+                    xs.append(currentX)
+                    ys.append(prevY)
                 xs.append(currentX)
                 ys.append(currentY)
-        if maxTime > max(xs):
-            xs.append(maxTime)
-            ys.append(ys[-1])
+            if currentX >= maxX:
+                break
         return xs, ys
 
     def getYForX(self, fit, extraData, x):

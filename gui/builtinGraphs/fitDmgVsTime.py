@@ -40,8 +40,8 @@ class FitDmgVsTimeGraph(Graph):
     @property
     def yDefs(self):
         return OrderedDict([
-            ('dps', YDef(switchLabel='DPS', axisLabel='DPS', eosGraph='eosGraphDps')),
-            ('damage', YDef(switchLabel='Damage inflicted', axisLabel='Damage', eosGraph='eosGraphDmg'))])
+            ('damage', YDef(switchLabel='Damage inflicted', axisLabel='Damage', eosGraph='eosGraphDmg')),
+            ('dps', YDef(switchLabel='DPS', axisLabel='DPS', eosGraph='eosGraphDps'))])
 
 
 FitDmgVsTimeGraph.register()
