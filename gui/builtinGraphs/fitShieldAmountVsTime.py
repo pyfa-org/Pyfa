@@ -20,24 +20,30 @@
 
 from collections import OrderedDict
 
-from eos.graph.fitCapRegenVsCapPerc import FitCapRegenVsCapPercGraph as EosGraph
+import gui.mainFrame
+from eos.graph.fitShieldAmountVsTime import FitShieldAmountVsTimeGraph as EosGraph
 from gui.graph import Graph, XDef, YDef
 
 
-class FitCapRegenVsCapPercGraph(Graph):
+class FitShieldAmountVsTimeGraph(Graph):
 
-    name = 'Cap Regen vs Cap Amount'
+    name = 'Shield Amount vs Time'
 
     def __init__(self):
         self.eosGraph = EosGraph()
+        self.mainFrame = gui.mainFrame.MainFrame.getInstance()
 
     @property
     def xDef(self):
-        return XDef(inputDefault='0-100', inputLabel='Cap amount (percent)', inputIconID=1668, axisLabel='Cap amount, %')
+        return XDef(inputDefault='0-300', inputLabel='Time (seconds)', inputIconID=1392, axisLabel='Time, s')
 
     @property
     def yDefs(self):
-        return OrderedDict([('capRegen', YDef(switchLabel='Cap regen', axisLabel='Cap regen, GJ/s', eosGraph='eosGraph'))])
+        axisLabel = 'Shield amount, {}'.format('EHP' if self.mainFrame.statsPane.nameViewMap["resistancesViewFull"].showEffective else 'HP')
+        return OrderedDict([('shieldAmount', YDef(switchLabel='Shield amount', axisLabel=axisLabel, eosGraph='eosGraph'))])
+
+    def redrawOnEffectiveChange(self):
+        return True
 
 
-FitCapRegenVsCapPercGraph.register()
+FitShieldAmountVsTimeGraph.register()
