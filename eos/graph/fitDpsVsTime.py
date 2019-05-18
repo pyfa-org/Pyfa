@@ -80,7 +80,7 @@ class FitDpsTimeGraph(Graph):
         closestTime = max((t for t in cache if t <= time), default=None)
         if closestTime is None:
             return 0
-        return cache[closestTime]
+        return roundToPrec(cache[closestTime], 6)
 
     def __generateCache(self, fit, maxTime):
         cache = []
