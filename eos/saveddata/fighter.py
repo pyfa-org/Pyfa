@@ -175,6 +175,14 @@ class Fighter(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
     def hasAmmo(self):
         return self.charge is not None
 
+    def isDealingDamage(self):
+        volleyParams = self.getVolleyParametersPerEffect()
+        for effectData in volleyParams.values():
+            for volley in effectData.values():
+                if volley.total > 0:
+                    return True
+        return False
+
     def getVolleyParametersPerEffect(self, targetResists=None):
         if not self.active or self.amountActive <= 0:
             return {}

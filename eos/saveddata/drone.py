@@ -131,6 +131,13 @@ class Drone(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
     def hasAmmo(self):
         return self.charge is not None
 
+    def isDealingDamage(self):
+        volleyParams = self.getVolleyParameters()
+        for volley in volleyParams.values():
+            if volley.total > 0:
+                return True
+        return False
+
     def getVolleyParameters(self, targetResists=None):
         if not self.dealsDamage or self.amountActive <= 0:
             return {0: DmgTypes(0, 0, 0, 0)}

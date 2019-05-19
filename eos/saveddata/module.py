@@ -414,6 +414,13 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
 
         return self.__miningyield
 
+    def isDealingDamage(self, ignoreState=False):
+        volleyParams = self.getVolleyParameters(ignoreState=ignoreState)
+        for volley in volleyParams.values():
+            if volley.total > 0:
+                return True
+        return False
+
     def getVolleyParameters(self, spoolOptions=None, targetResists=None, ignoreState=False):
         if self.isEmpty or (self.state < FittingModuleState.ACTIVE and not ignoreState):
             return {0: DmgTypes(0, 0, 0, 0)}

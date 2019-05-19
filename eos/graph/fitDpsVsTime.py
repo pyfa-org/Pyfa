@@ -94,6 +94,8 @@ class FitDpsTimeGraph(Graph):
         # We'll handle calculations in milliseconds
         maxTime = maxTime * 1000
         for mod in fit.modules:
+            if not mod.isDealingDamage():
+                continue
             cycleParams = mod.getCycleParameters(reloadOverride=True)
             if cycleParams is None:
                 continue
@@ -114,6 +116,8 @@ class FitDpsTimeGraph(Graph):
                 if currentTime > maxTime:
                     break
         for drone in fit.drones:
+            if not drone.isDealingDamage():
+                continue
             cycleParams = drone.getCycleParameters(reloadOverride=True)
             if cycleParams is None:
                 continue
@@ -129,6 +133,8 @@ class FitDpsTimeGraph(Graph):
                 if currentTime > maxTime:
                     break
         for fighter in fit.fighters:
+            if not fighter.isDealingDamage():
+                continue
             cycleParams = fighter.getCycleParametersPerEffectOptimizedDps(reloadOverride=True)
             if cycleParams is None:
                 continue
