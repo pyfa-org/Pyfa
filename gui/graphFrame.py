@@ -164,12 +164,12 @@ class GraphFrame(wx.Frame):
 
         self.fitList.fitList.Bind(wx.EVT_LEFT_DCLICK, self.OnLeftDClick)
         self.fitList.fitList.Bind(wx.EVT_CONTEXT_MENU, self.OnContextMenu)
-        self.mainFrame.Bind(GE.FIT_CHANGED, self.draw)
+        self.mainFrame.Bind(GE.FIT_CHANGED, self.OnFitChanged)
         self.Bind(wx.EVT_CLOSE, self.closeEvent)
         self.Bind(wx.EVT_CHAR_HOOK, self.kbEvent)
         self.Bind(wx.EVT_CHOICE, self.graphChanged)
         from gui.builtinStatsViews.resistancesViewFull import EFFECTIVE_HP_TOGGLED  # Grr crclar gons
-        self.mainFrame.Bind(EFFECTIVE_HP_TOGGLED, self.ehpToggled)
+        self.mainFrame.Bind(EFFECTIVE_HP_TOGGLED, self.OnEhpToggled)
 
         self.contextMenu = wx.Menu()
         removeItem = wx.MenuItem(self.contextMenu, 1, 'Remove Fit')
@@ -209,21 +209,28 @@ class GraphFrame(wx.Frame):
             fits = self.getSelectedFits()
             self.removeFits(fits)
 
-    def ehpToggled(self, event):
+    def OnEhpToggled(self, event):
         event.Skip()
         view = self.getView()
         if view.redrawOnEffectiveChange:
+            view.clearCache()
             self.draw()
+
+    def OnFitChanged(self, event):
+        event.Skip()
+        view = self.getView()
+        view.clearCache(key=event.fitID)
+        self.draw()
 
     def graphChanged(self, event):
         self.select(self.graphSelection.GetSelection())
         event.Skip()
 
     def closeWindow(self):
-        from gui.builtinStatsViews.resistancesViewFull import EFFECTIVE_HP_TOGGLED  # Grr crclar gons
+        from gui.builtinStatsViews.resistancesViewFull import EFFECTIVE_HP_TOGGLED  # Grr gons
         self.fitList.fitList.Unbind(wx.EVT_LEFT_DCLICK, handler=self.OnLeftDClick)
-        self.mainFrame.Unbind(GE.FIT_CHANGED, handler=self.draw)
-        self.mainFrame.Unbind(EFFECTIVE_HP_TOGGLED, handler=self.ehpToggled)
+        self.mainFrame.Unbind(GE.FIT_CHANGED, handler=self.OnFitChanged)
+        self.mainFrame.Unbind(EFFECTIVE_HP_TOGGLED, handler=self.OnEhpToggled)
         self.Destroy()
 
     def getView(self):
@@ -238,6 +245,7 @@ class GraphFrame(wx.Frame):
 
     def select(self, index):
         view = self.getView()
+        view.clearCache()
         sizer = self.gridSizer
         sizer.Clear()
         self.gridPanel.DestroyChildren()
@@ -286,8 +294,6 @@ class GraphFrame(wx.Frame):
 
         values = self.getValues()
         view = self.getView()
-        # todo: we just drop cache so far, need to drop it only for removed/changed fits
-        view.clearCache()
         self.subplot.clear()
         self.subplot.grid(True)
         legend = []
@@ -374,6 +380,8 @@ class GraphFrame(wx.Frame):
         self.Refresh()
 
     def onFieldChanged(self, event):
+        view = self.getView()
+        view.clearCache()
         self.draw()
 
     def AppendFitToList(self, fitID):
@@ -402,6 +410,9 @@ class GraphFrame(wx.Frame):
         for fit in toRemove:
             self.fits.remove(fit)
         self.fitList.fitList.update(self.fits)
+        view = self.getView()
+        for fit in fits:
+            view.clearCache(key=fit.ID)
         self.draw()
 
     def getSelectedFits(self):
