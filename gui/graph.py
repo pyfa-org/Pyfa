@@ -57,6 +57,7 @@ class Graph(metaclass=ABCMeta):
 
     def getPlotPoints(self, fit, extraData, xRange, xAmount, yType):
         xRange = self.parseRange(xRange)
+        extraData = {k: float(v) if v else None for k, v in extraData.items()}
         graph = getattr(self, self.yDefs[yType].eosGraph, None)
         return graph.getPlotPoints(fit, extraData, xRange, xAmount)
 
@@ -78,7 +79,7 @@ class Graph(metaclass=ABCMeta):
 
 XDef = namedtuple('XDef', ('inputDefault', 'inputLabel', 'inputIconID', 'axisLabel'))
 YDef = namedtuple('YDef', ('switchLabel', 'axisLabel', 'eosGraph'))
-ExtraInput = namedtuple('ExtraInput', ('handle', 'inputDefault', 'inputLabel', 'inputIconID'))
+ExtraInput = namedtuple('ExtraInput', ('inputDefault', 'inputLabel', 'inputIconID'))
 
 
 # noinspection PyUnresolvedReferences
