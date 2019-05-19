@@ -1,5 +1,6 @@
 import math
 
+from eos.const import FittingModuleState
 from eos.graph import SmoothGraph
 
 
@@ -8,16 +9,63 @@ AU_METERS = 149597870700
 
 class FitWarpTimeVsDistanceGraph(SmoothGraph):
 
+    def __init__(self):
+        super().__init__()
+        self.subwarpSpeed = None
+
     def getYForX(self, fit, extraData, distance):
         if distance == 0:
             return 0
-        maxSubwarpSpeed = fit.ship.getModifiedItemAttr('maxVelocity')
+        if fit.ID not in self.cache:
+            self.__generateCache(fit)
         maxWarpSpeed = fit.warpSpeed
-        time = calculate_time_in_warp(maxWarpSpeed, maxSubwarpSpeed, distance * AU_METERS)
+        subwarpSpeed = self.cache[fit.ID]['cleanSubwarpSpeed']
+        time = calculate_time_in_warp(maxWarpSpeed, subwarpSpeed, distance * AU_METERS)
         return time
 
     def _getXLimits(self, fit, extraData):
         return 0, fit.maxWarpDistance
+
+    def __generateCache(self, fit):
+        modStates = {}
+        for mod in fit.modules:
+            if mod.item is not None and mod.item.group.name in ('Propulsion Module', 'Mass Entanglers', 'Cloaking Device') and mod.state >= FittingModuleState.ACTIVE:
+                modStates[mod] = mod.state
+                mod.state = FittingModuleState.ONLINE
+        projFitStates = {}
+        for projFit in fit.projectedFits:
+            projectionInfo = projFit.getProjectionInfo(fit.ID)
+            if projectionInfo is not None and projectionInfo.active:
+                projFitStates[projectionInfo] = projectionInfo.active
+                projectionInfo.active = False
+        projModStates = {}
+        for mod in fit.projectedModules:
+            if not mod.isExclusiveSystemEffect and mod.state >= FittingModuleState.ACTIVE:
+                projModStates[mod] = mod.state
+                mod.state = FittingModuleState.ONLINE
+        projDroneStates = {}
+        for drone in fit.projectedDrones:
+            if drone.amountActive > 0:
+                projDroneStates[drone] = drone.amountActive
+                drone.amountActive = 0
+        projFighterStates = {}
+        for fighter in fit.projectedFighters:
+            if fighter.active:
+                projFighterStates[fighter] = fighter.active
+                fighter.active = False
+        fit.calculateModifiedAttributes()
+        self.cache[fit.ID] = {'cleanSubwarpSpeed': fit.ship.getModifiedItemAttr('maxVelocity')}
+        for projInfo, state in projFitStates.items():
+            projInfo.active = state
+        for mod, state in modStates.items():
+            mod.state = state
+        for mod, state in projModStates.items():
+            mod.state = state
+        for drone, amountActive in projDroneStates.items():
+            drone.amountActive = amountActive
+        for fighter, state in projFighterStates.items():
+            fighter.active = state
+        fit.calculateModifiedAttributes()
 
 
 # Taken from https://wiki.eveuniversity.org/Warp_time_calculation#Implementation
