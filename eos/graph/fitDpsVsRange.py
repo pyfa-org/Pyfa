@@ -17,6 +17,7 @@
 # along with eos.  If not, see <http://www.gnu.org/licenses/>.
 # ===============================================================================
 
+
 from math import exp, log, radians, sin, inf
 
 from logbook import Logger

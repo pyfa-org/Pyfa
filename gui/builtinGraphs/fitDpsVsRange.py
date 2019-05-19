@@ -43,8 +43,8 @@ class FitDpsVsRangeGraph(Graph):
     def extraInputs(self):
         return OrderedDict([
             ('speed', ExtraInput(inputDefault=0, inputLabel='Target speed (m/s)', inputIconID=1389)),
-            ('angle', ExtraInput(inputDefault=0, inputLabel='Target angle (degrees)', inputIconID=1389)),
-            ('signatureRadius', ExtraInput(inputDefault=None, inputLabel='Target signature radius (m)', inputIconID=1390))])
+            ('signatureRadius', ExtraInput(inputDefault=None, inputLabel='Target signature radius (m)', inputIconID=1390)),
+            ('angle', ExtraInput(inputDefault=0, inputLabel='Target angle (degrees)', inputIconID=1389))])
 
 
 FitDpsVsRangeGraph.register()
