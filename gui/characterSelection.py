@@ -46,7 +46,7 @@ class CharacterSelection(wx.Panel):
         self.charCache = None
 
         self.charChoice = wx.Choice(self)
-        mainSizer.Add(self.charChoice, 1, wx.ALIGN_CENTER_VERTICAL | wx.RIGHT | wx.LEFT, 3)
+        mainSizer.Add(self.charChoice, 0, wx.ALIGN_CENTER_VERTICAL | wx.RIGHT | wx.LEFT, 3)
 
         self.refreshCharacterList()
 
