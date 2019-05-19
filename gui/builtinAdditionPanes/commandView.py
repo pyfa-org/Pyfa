@@ -70,7 +70,7 @@ class CommandView(d.Display):
         self.lastFitId = None
 
         self.mainFrame.Bind(GE.FIT_CHANGED, AddCommandFit.fitChanged)
-        self.mainFrame.Bind(GE.FIT_REMOVED, AddCommandFit.populateFits)
+        self.mainFrame.Bind(GE.FIT_REMOVED, self.OnFitRemoved)
         self.mainFrame.Bind(GE.FIT_CHANGED, self.fitChanged)
         self.Bind(wx.EVT_LEFT_DOWN, self.click)
         self.Bind(wx.EVT_LEFT_DCLICK, self.onLeftDoubleClick)
@@ -81,6 +81,13 @@ class CommandView(d.Display):
         self.Bind(wx.EVT_CONTEXT_MENU, self.spawnMenu)
 
         self.SetDropTarget(CommandViewDrop(self.handleListDrag))
+
+    def OnFitRemoved(self, event):
+        event.Skip()
+        AddCommandFit.populateFits(event)
+        fitID = self.mainFrame.getActiveFit()
+        fit = Fit.getInstance().getFit(fitID)
+        self.refreshContents(fit)
 
     @staticmethod
     def handleListDrag(x, y, data):
@@ -131,12 +138,6 @@ class CommandView(d.Display):
             event.Skip()
             return
 
-        stuff = []
-        if fit is not None:
-            self.fits = fit.commandFits[:]
-            self.fits.sort(key=self.fitSort)
-            stuff.extend(self.fits)
-
         if event.fitID != self.lastFitId:
             self.lastFitId = event.fitID
 
@@ -147,12 +148,19 @@ class CommandView(d.Display):
 
             self.unselectAll()
 
-        if not stuff:
-            stuff = [DummyEntry("Drag a fit to this area")]
-
-        self.update(stuff)
+        self.refreshContents(fit)
 
         event.Skip()
+
+    def refreshContents(self, fit):
+        stuff = []
+        if fit is not None:
+            self.fits = fit.commandFits[:]
+            self.fits.sort(key=self.fitSort)
+            stuff.extend(self.fits)
+        if not stuff:
+            stuff = [DummyEntry("Drag a fit to this area")]
+        self.update(stuff)
 
     def click(self, event):
         mainRow, _ = self.HitTest(event.Position)

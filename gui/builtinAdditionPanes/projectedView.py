@@ -82,6 +82,7 @@ class ProjectedView(d.Display):
         self.lastFitId = None
 
         self.mainFrame.Bind(GE.FIT_CHANGED, self.fitChanged)
+        self.mainFrame.Bind(GE.FIT_REMOVED, self.OnFitRemoved)
         self.Bind(wx.EVT_LEFT_DOWN, self.click)
         self.Bind(wx.EVT_RIGHT_DOWN, self.click)
         self.Bind(wx.EVT_LEFT_DCLICK, self.onLeftDoubleClick)
@@ -92,6 +93,12 @@ class ProjectedView(d.Display):
         self.Bind(wx.EVT_CONTEXT_MENU, self.spawnMenu)
 
         self.SetDropTarget(ProjectedViewDrop(self.handleListDrag))
+
+    def OnFitRemoved(self, event):
+        event.Skip()
+        fitID = self.mainFrame.getActiveFit()
+        fit = Fit.getInstance().getFit(fitID)
+        self.refreshContents(fit)
 
     def handleListDrag(self, x, y, data):
         """
@@ -174,6 +181,23 @@ class ProjectedView(d.Display):
             event.Skip()
             return
 
+
+
+        if event.fitID != self.lastFitId:
+            self.lastFitId = event.fitID
+
+            item = self.GetNextItem(-1, wx.LIST_NEXT_ALL, wx.LIST_STATE_DONTCARE)
+
+            if item != -1:
+                self.EnsureVisible(item)
+
+            self.unselectAll()
+
+        self.refreshContents(fit)
+
+        event.Skip()
+
+    def refreshContents(self, fit):
         stuff = []
         if fit is not None:
             self.originalFits = fit.projectedFits
@@ -194,23 +218,9 @@ class ProjectedView(d.Display):
             stuff.extend(self.modules)
             stuff.extend(self.drones)
             stuff.extend(self.fighters)
-
-        if event.fitID != self.lastFitId:
-            self.lastFitId = event.fitID
-
-            item = self.GetNextItem(-1, wx.LIST_NEXT_ALL, wx.LIST_STATE_DONTCARE)
-
-            if item != -1:
-                self.EnsureVisible(item)
-
-            self.unselectAll()
-
         if not stuff:
             stuff = [DummyEntry('Drag an item or fit, or use right-click menu for wormhole effects')]
-
         self.update(stuff)
-
-        event.Skip()
 
     def get(self, row):
         if row == -1:
