@@ -165,6 +165,7 @@ class GraphFrame(wx.Frame):
         self.fitList.fitList.Bind(wx.EVT_LEFT_DCLICK, self.OnLeftDClick)
         self.fitList.fitList.Bind(wx.EVT_CONTEXT_MENU, self.OnContextMenu)
         self.mainFrame.Bind(GE.FIT_CHANGED, self.OnFitChanged)
+        self.mainFrame.Bind(GE.FIT_REMOVED, self.OnFitRemoved)
         self.Bind(wx.EVT_CLOSE, self.closeEvent)
         self.Bind(wx.EVT_CHAR_HOOK, self.kbEvent)
         self.Bind(wx.EVT_CHOICE, self.graphChanged)
@@ -222,6 +223,12 @@ class GraphFrame(wx.Frame):
         view.clearCache(key=event.fitID)
         self.draw()
 
+    def OnFitRemoved(self, event):
+        event.Skip()
+        fit = next((f for f in self.fits if f.ID == event.fitID), None)
+        if fit is not None:
+            self.removeFits([fit])
+
     def graphChanged(self, event):
         self.select(self.graphSelection.GetSelection())
         event.Skip()
@@ -230,6 +237,7 @@ class GraphFrame(wx.Frame):
         from gui.builtinStatsViews.resistancesViewFull import EFFECTIVE_HP_TOGGLED  # Grr gons
         self.fitList.fitList.Unbind(wx.EVT_LEFT_DCLICK, handler=self.OnLeftDClick)
         self.mainFrame.Unbind(GE.FIT_CHANGED, handler=self.OnFitChanged)
+        self.mainFrame.Unbind(GE.FIT_REMOVED, handler=self.OnFitRemoved)
         self.mainFrame.Unbind(EFFECTIVE_HP_TOGGLED, handler=self.OnEhpToggled)
         self.Destroy()
 

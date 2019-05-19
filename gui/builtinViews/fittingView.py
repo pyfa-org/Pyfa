@@ -34,7 +34,7 @@ from eos.saveddata.module import Module, Rack
 from eos.const import FittingSlot
 from gui.bitmap_loader import BitmapLoader
 from gui.builtinMarketBrowser.events import ITEM_SELECTED
-from gui.builtinShipBrowser.events import EVT_FIT_REMOVED, EVT_FIT_RENAMED, EVT_FIT_SELECTED, FitSelected
+from gui.builtinShipBrowser.events import EVT_FIT_RENAMED, EVT_FIT_SELECTED, FitSelected
 from gui.builtinViewColumns.state import State
 from gui.chrome_tabs import EVT_NOTEBOOK_PAGE_CHANGED
 from gui.contextMenu import ContextMenu
@@ -148,7 +148,7 @@ class FittingView(d.Display):
         self.parent = parent
         self.mainFrame.Bind(GE.FIT_CHANGED, self.fitChanged)
         self.mainFrame.Bind(EVT_FIT_RENAMED, self.fitRenamed)
-        self.mainFrame.Bind(EVT_FIT_REMOVED, self.fitRemoved)
+        self.mainFrame.Bind(GE.FIT_REMOVED, self.fitRemoved)
         self.mainFrame.Bind(ITEM_SELECTED, self.appendItem)
         self.font = wx.SystemSettings.GetFont(wx.SYS_DEFAULT_GUI_FONT)
 

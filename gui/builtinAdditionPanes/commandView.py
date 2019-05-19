@@ -25,7 +25,6 @@ import gui.display as d
 import gui.fitCommands as cmd
 import gui.globalEvents as GE
 from gui.builtinContextMenus.commandFitAdd import AddCommandFit
-from gui.builtinShipBrowser.events import EVT_FIT_REMOVED
 from gui.builtinViewColumns.state import State
 from gui.contextMenu import ContextMenu
 from gui.utils.staticHelpers import DragDropHelper
@@ -71,7 +70,7 @@ class CommandView(d.Display):
         self.lastFitId = None
 
         self.mainFrame.Bind(GE.FIT_CHANGED, AddCommandFit.fitChanged)
-        self.mainFrame.Bind(EVT_FIT_REMOVED, AddCommandFit.populateFits)
+        self.mainFrame.Bind(GE.FIT_REMOVED, AddCommandFit.populateFits)
         self.mainFrame.Bind(GE.FIT_CHANGED, self.fitChanged)
         self.Bind(wx.EVT_LEFT_DOWN, self.click)
         self.Bind(wx.EVT_LEFT_DCLICK, self.onLeftDoubleClick)

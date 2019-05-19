@@ -10,6 +10,7 @@ import config
 import gui.builtinShipBrowser.sfBrowserItem as SFItem
 import gui.fitCommands as cmd
 import gui.mainFrame
+import gui.globalEvents as GE
 import gui.utils.color as colorUtils
 import gui.utils.draw as drawUtils
 import gui.utils.fonts as fonts
@@ -17,7 +18,7 @@ from gui.bitmap_loader import BitmapLoader
 from gui.builtinShipBrowser.events import EVT_FIT_RENAMED
 from gui.builtinShipBrowser.pfBitmapFrame import PFBitmapFrame
 from service.fit import Fit
-from .events import BoosterListUpdated, FitRemoved, FitSelected, ImportSelected, SearchSelected, Stage3Selected
+from .events import BoosterListUpdated, FitSelected, ImportSelected, SearchSelected, Stage3Selected
 
 pyfalog = Logger(__name__)
 
@@ -379,9 +380,8 @@ class FitItem(SFItem.SFBrowserItem):
                     break
 
         sFit.deleteFit(self.fitID)
-
         # Notify other areas that a fit has been deleted
-        wx.PostEvent(self.mainFrame, FitRemoved(fitID=self.fitID))
+        wx.PostEvent(self.mainFrame, GE.FitRemoved(fitID=self.fitID))
 
         # todo: would a simple RefreshList() work here instead of posting that a stage has been selected?
         if self.shipBrowser.GetActiveStage() == 5:
