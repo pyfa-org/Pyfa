@@ -1,34 +1,23 @@
 import math
-from logbook import Logger
 
-from eos.graph import Graph
-
-
-pyfalog = Logger(__name__)
+from eos.graph import SmoothGraph
 
 
 AU_METERS = 149597870700
 
 
-class FitWarpTimeDistanceGraph(Graph):
+class FitWarpTimeVsDistanceGraph(SmoothGraph):
 
-    defaults = {"distance": 0}
-
-    def __init__(self, fit, data=None):
-        Graph.__init__(self, fit, self.calcTime, data if data is not None else self.defaults)
-        self.fit = fit
-
-    def calcTime(self, data):
-        distance = data["distance"]
+    def getYForX(self, fit, extraData, distance):
         if distance == 0:
             return 0
-        maxWarpDistance = self.fit.maxWarpDistance
-        if distance > maxWarpDistance:
-            return None
-        maxSubwarpSpeed = self.fit.ship.getModifiedItemAttr('maxVelocity')
-        maxWarpSpeed = self.fit.warpSpeed
+        maxSubwarpSpeed = fit.ship.getModifiedItemAttr('maxVelocity')
+        maxWarpSpeed = fit.warpSpeed
         time = calculate_time_in_warp(maxWarpSpeed, maxSubwarpSpeed, distance * AU_METERS)
         return time
+
+    def _getXLimits(self, fit, extraData):
+        return 0, fit.maxWarpDistance
 
 
 # Taken from https://wiki.eveuniversity.org/Warp_time_calculation#Implementation

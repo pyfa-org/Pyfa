@@ -18,6 +18,7 @@
 # ===============================================================================
 
 
+import math
 from abc import ABCMeta, abstractmethod
 
 
@@ -33,19 +34,25 @@ class Graph(metaclass=ABCMeta):
     def getYForX(self, fit, extraData, x):
         raise NotImplementedError
 
-    def _xIter(self, xRange, xAmount):
-        rangeStart, rangeEnd = sorted(xRange)
+    def _xIter(self, fit, extraData, xRange, xAmount):
+        rangeLow, rangeHigh = sorted(xRange)
+        limitLow, limitHigh = self._getXLimits(fit, extraData)
+        rangeLow = max(limitLow, rangeLow)
+        rangeHigh = min(limitHigh, rangeHigh)
         # Amount is amount of ranges between points here, not amount of points
-        step = (rangeEnd - rangeStart) / xAmount
+        step = (rangeHigh - rangeLow) / xAmount
         if step == 0:
             yield xRange[0]
         else:
-            current = rangeStart
+            current = rangeLow
             # Take extra half step to make sure end of range is always included
             # despite any possible float errors
-            while current <= (rangeEnd + step / 2):
+            while current <= (rangeHigh + step / 2):
                 yield current
                 current += step
+
+    def _getXLimits(self, fit, extraData):
+        return -math.inf, math.inf
 
     def clearCache(self, key=None):
         if key is None:
@@ -59,7 +66,7 @@ class SmoothGraph(Graph, metaclass=ABCMeta):
     def getPlotPoints(self, fit, extraData, xRange, xAmount):
         xs = []
         ys = []
-        for x in self._xIter(xRange, xAmount):
+        for x in self._xIter(fit, extraData, xRange, xAmount):
             xs.append(x)
             ys.append(self.getYForX(fit, extraData, x))
         return xs, ys
