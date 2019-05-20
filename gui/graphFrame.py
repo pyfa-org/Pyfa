@@ -316,6 +316,8 @@ class GraphFrame(wx.Frame):
             chosenY = handle
             break
 
+        self.subplot.set(xlabel=view.xDef.axisLabel, ylabel=view.yDefs[chosenY].axisLabel)
+
         for fit in self.fits:
             try:
                 xs, ys = view.getPlotPoints(fit, extraInputs, xRange, 100, chosenY)
