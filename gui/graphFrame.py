@@ -124,7 +124,7 @@ class GraphFrame(wx.Frame):
         self.graphSelection = wx.Choice(self, wx.ID_ANY, style=0)
         self.mainSizer.Add(self.graphSelection, 0, wx.EXPAND)
 
-        self.figure = Figure(figsize=(4, 3))
+        self.figure = Figure(figsize=(5, 4), tight_layout={'pad': 1.08})
 
         rgbtuple = wx.SystemSettings.GetColour(wx.SYS_COLOUR_BTNFACE).Get()
         clr = [c / 255. for c in rgbtuple]
