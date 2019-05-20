@@ -108,16 +108,14 @@ class FitDmgVsTimeGraph(Graph):
             for cycleTime, inactiveTime in cycleParams.iterCycles():
                 volleyParams = mod.getVolleyParameters(spoolOptions=SpoolOptions(SpoolType.CYCLES, nonstopCycles, True))
                 for volleyTime, volley in volleyParams.items():
-                    if currentTime + volleyTime <= maxTime and volleyTime <= cycleTime:
-                        addDmg(currentTime + volleyTime, volley.total)
-                currentTime += cycleTime
-                currentTime += inactiveTime
+                    addDmg(currentTime + volleyTime, volley.total)
                 if inactiveTime == 0:
                     nonstopCycles += 1
                 else:
                     nonstopCycles = 0
                 if currentTime > maxTime:
                     break
+                currentTime += cycleTime + inactiveTime
         for drone in fit.drones:
             if not drone.isDealingDamage():
                 continue
@@ -128,12 +126,10 @@ class FitDmgVsTimeGraph(Graph):
             volleyParams = drone.getVolleyParameters()
             for cycleTime, inactiveTime in cycleParams.iterCycles():
                 for volleyTime, volley in volleyParams.items():
-                    if currentTime + volleyTime <= maxTime and volleyTime <= cycleTime:
-                        addDmg(currentTime + volleyTime, volley.total)
-                currentTime += cycleTime
-                currentTime += inactiveTime
+                    addDmg(currentTime + volleyTime, volley.total)
                 if currentTime > maxTime:
                     break
+                currentTime += cycleTime + inactiveTime
         for fighter in fit.fighters:
             if not fighter.isDealingDamage():
                 continue
@@ -148,9 +144,7 @@ class FitDmgVsTimeGraph(Graph):
                 abilityVolleyParams = volleyParams[effectID]
                 for cycleTime, inactiveTime in abilityCycleParams.iterCycles():
                     for volleyTime, volley in abilityVolleyParams.items():
-                        if currentTime + volleyTime <= maxTime and volleyTime <= cycleTime:
-                            addDmg(currentTime + volleyTime, volley.total)
-                    currentTime += cycleTime
-                    currentTime += inactiveTime
+                        addDmg(currentTime + volleyTime, volley.total)
                     if currentTime > maxTime:
                         break
+                    currentTime += cycleTime + inactiveTime

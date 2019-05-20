@@ -107,8 +107,7 @@ class FitDpsTimeGraph(Graph):
                 for volleyTime, volley in volleyParams.items():
                     cycleDamage += volley.total
                 addDmg(currentTime, currentTime + cycleTime, cycleDamage)
-                currentTime += cycleTime
-                currentTime += inactiveTime
+                currentTime += cycleTime + inactiveTime
                 if inactiveTime > 0:
                     nonstopCycles = 0
                 else:
@@ -128,8 +127,7 @@ class FitDpsTimeGraph(Graph):
                 for volleyTime, volley in volleyParams.items():
                     cycleDamage += volley.total
                 addDmg(currentTime, currentTime + cycleTime, cycleDamage)
-                currentTime += cycleTime
-                currentTime += inactiveTime
+                currentTime += cycleTime + inactiveTime
                 if currentTime > maxTime:
                     break
         for fighter in fit.fighters:
@@ -149,8 +147,7 @@ class FitDpsTimeGraph(Graph):
                     for volleyTime, volley in abilityVolleyParams.items():
                         cycleDamage += volley.total
                     addDmg(currentTime, currentTime + cycleTime, cycleDamage)
-                    currentTime += cycleTime
-                    currentTime += inactiveTime
+                    currentTime += cycleTime + inactiveTime
                     if currentTime > maxTime:
                         break
 
