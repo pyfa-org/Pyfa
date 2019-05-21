@@ -155,6 +155,7 @@ class GraphFrame(wx.Frame):
         self.graphCtrlPanel.SetSizer(ctrlPanelSizer)
 
         self.showY0 = True
+        self.selectedY = None
 
         for view in Graph.views:
             view = view()
@@ -257,7 +258,13 @@ class GraphFrame(wx.Frame):
         return values
 
     def OnShowY0Update(self, event):
+        event.Skip()
         self.showY0 = self.showY0Cb.GetValue()
+        self.draw()
+
+    def OnYTypeUpdate(self, event):
+        event.Skip()
+        self.selectedY = event.GetInt()
         self.draw()
 
     def updateGraphWidgets(self):
@@ -274,8 +281,15 @@ class GraphFrame(wx.Frame):
         self.showY0Cb = wx.CheckBox(self.graphCtrlPanel, wx.ID_ANY, "Always show Y = 0", wx.DefaultPosition, wx.DefaultSize, 0)
         self.showY0Cb.SetValue(self.showY0)
         self.showY0Cb.Bind(wx.EVT_CHECKBOX, self.OnShowY0Update)
-        viewSizer.Add(self.showY0Cb, 0, wx.ALL | wx.EXPAND, 5)
-
+        viewSizer.Add(self.showY0Cb, 0, wx.ALL | wx.EXPAND, 0)
+        if len(view.yDefs) > 1:
+            self.selectedYRb = wx.RadioBox(
+                self.graphCtrlPanel, 0, 'Graph type', wx.DefaultPosition, wx.DefaultSize,
+                [yDef.switchLabel for yDef in view.yDefs.values()], 1, wx.RA_SPECIFY_COLS)
+            self.selectedYRb.SetSelection(self.selectedY or 0)
+            self.selectedYRb.Bind(wx.EVT_RADIOBOX, self.OnYTypeUpdate)
+            viewSizer.Add(self.selectedYRb, 0, wx.ALL | wx.EXPAND, 0)
+        viewSizer.Layout()
 
         # Setup inputs
         for fieldHandle, fieldDef in (('x', view.xDef), *view.extraInputs.items()):
@@ -329,10 +343,10 @@ class GraphFrame(wx.Frame):
 
         xRange = values['x']
         extraInputs = {ih: values[ih] for ih in view.extraInputs}
-        chosenY = None
-        for handle in view.yDefs:
-            chosenY = handle
-            break
+        try:
+            chosenY = [i for i in view.yDefs.keys()][self.selectedY or 0]
+        except IndexError:
+            chosenY = [i for i in view.yDefs.keys()][0]
 
         self.subplot.set(xlabel=view.xDef.axisLabel, ylabel=view.yDefs[chosenY].axisLabel)
 

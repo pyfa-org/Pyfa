@@ -57,7 +57,7 @@ class FitDmgVsTimeGraph(Graph):
                     ys.append(currentY)
                 continue
             # Last data point
-            if currentX > maxX:
+            if currentX >= maxX:
                 xs.append(maxX)
                 ys.append(prevY)
                 break
@@ -68,8 +68,6 @@ class FitDmgVsTimeGraph(Graph):
                     ys.append(prevY)
                 xs.append(currentX)
                 ys.append(currentY)
-            if currentX >= maxX:
-                break
         return xs, ys
 
     def getYForX(self, fit, extraData, x):

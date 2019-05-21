@@ -25,7 +25,7 @@ from eos.utils.spoolSupport import SpoolType, SpoolOptions
 from gui.utils.numberFormatter import roundToPrec
 
 
-class FitDpsTimeGraph(Graph):
+class FitDpsVsTimeGraph(Graph):
 
     def getPlotPoints(self, fit, extraData, xRange, xAmount):
         # We deliberately ignore xAmount here to build graph which will reflect
@@ -59,7 +59,7 @@ class FitDpsTimeGraph(Graph):
                     ys.append(currentY)
                 continue
             # Last data point
-            if currentX > maxX:
+            if currentX >= maxX:
                 xs.append(maxX)
                 ys.append(prevY)
                 break
@@ -70,8 +70,6 @@ class FitDpsTimeGraph(Graph):
                     ys.append(prevY)
                 xs.append(currentX)
                 ys.append(currentY)
-            if currentX >= maxX:
-                break
         return xs, ys
 
     def getYForX(self, fit, extraData, x):
