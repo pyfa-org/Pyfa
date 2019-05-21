@@ -30,7 +30,7 @@ class FitDpsTimeGraph(Graph):
     def getPlotPoints(self, fit, extraData, xRange, xAmount):
         # We deliberately ignore xAmount here to build graph which will reflect
         # all steps of building up the damage
-        minX, maxX = xRange
+        minX, maxX = self._limitXRange(xRange, fit, extraData)
         if fit.ID not in self.cache:
             self.__generateCache(fit, maxX)
         currentY = None
@@ -81,6 +81,9 @@ class FitDpsTimeGraph(Graph):
         if closestTime is None:
             return 0
         return roundToPrec(cache[closestTime], 6)
+
+    def _getXLimits(self, fit, extraData):
+        return 0, 1000
 
     def __generateCache(self, fit, maxTime):
         cache = []

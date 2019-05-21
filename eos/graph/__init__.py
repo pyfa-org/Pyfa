@@ -35,10 +35,7 @@ class Graph(metaclass=ABCMeta):
         raise NotImplementedError
 
     def _xIter(self, fit, extraData, xRange, xAmount):
-        rangeLow, rangeHigh = sorted(xRange)
-        limitLow, limitHigh = self._getXLimits(fit, extraData)
-        rangeLow = max(limitLow, rangeLow)
-        rangeHigh = min(limitHigh, rangeHigh)
+        rangeLow, rangeHigh = self._limitXRange(xRange, fit, extraData)
         # Amount is amount of ranges between points here, not amount of points
         step = (rangeHigh - rangeLow) / xAmount
         if step == 0:
@@ -50,6 +47,13 @@ class Graph(metaclass=ABCMeta):
             while current <= (rangeHigh + step / 2):
                 yield current
                 current += step
+
+    def _limitXRange(self, xRange, fit, extraData):
+        rangeLow, rangeHigh = sorted(xRange)
+        limitLow, limitHigh = self._getXLimits(fit, extraData)
+        rangeLow = max(limitLow, rangeLow)
+        rangeHigh = min(limitHigh, rangeHigh)
+        return rangeLow, rangeHigh
 
     def _getXLimits(self, fit, extraData):
         return -math.inf, math.inf
