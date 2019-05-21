@@ -81,7 +81,7 @@ class FitDpsVsTimeGraph(Graph):
         return roundToPrec(cache[closestTime], 6)
 
     def _getXLimits(self, fit, extraData):
-        return 0, 1000
+        return 0, 2500
 
     def __generateCache(self, fit, maxTime):
         cache = []
