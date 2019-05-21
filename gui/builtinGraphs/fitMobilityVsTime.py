@@ -30,6 +30,7 @@ class FitMobilityVsTimeGraph(Graph):
     name = 'Mobility vs Time'
 
     def __init__(self):
+        super().__init__()
         self.eosGraphSpeed = EosGraphSpeed()
         self.eosGraphDistance = EosGraphDistance()
 

@@ -29,6 +29,7 @@ class FitCapAmountVsTimeGraph(Graph):
     name = 'Cap Amount vs Time'
 
     def __init__(self):
+        super().__init__()
         self.eosGraph = EosGraph()
 
     @property

@@ -29,6 +29,7 @@ class FitWarpTimeVsDistanceGraph(Graph):
     name = 'Warp Time vs Distance'
 
     def __init__(self):
+        super().__init__()
         self.eosGraph = EosGraph()
 
     @property

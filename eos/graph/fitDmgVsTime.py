@@ -29,12 +29,12 @@ class FitDmgVsTimeGraph(Graph):
         # We deliberately ignore xAmount here to build graph which will reflect
         # all steps of building up the damage
         minX, maxX = self._limitXRange(xRange, fit, extraData)
-        if fit.ID not in self.cache:
+        if fit.ID not in self._cache:
             self.__generateCache(fit, maxX)
         currentY = None
         xs = []
         ys = []
-        cache = self.cache[fit.ID]
+        cache = self._cache[fit.ID]
         for time in sorted(cache):
             prevY = currentY
             currentX = time / 1000
@@ -74,7 +74,7 @@ class FitDmgVsTimeGraph(Graph):
 
     def getYForX(self, fit, extraData, x):
         time = x * 1000
-        cache = self.cache[fit.ID]
+        cache = self._cache[fit.ID]
         closestTime = max((t for t in cache if t <= time), default=None)
         if closestTime is None:
             return 0
@@ -84,7 +84,7 @@ class FitDmgVsTimeGraph(Graph):
         return 0, 1000
 
     def __generateCache(self, fit, maxTime):
-        cache = self.cache[fit.ID] = {}
+        cache = self._cache[fit.ID] = {}
 
         def addDmg(addedTime, addedDmg):
             if addedDmg == 0:

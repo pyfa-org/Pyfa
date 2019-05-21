@@ -25,7 +25,7 @@ from abc import ABCMeta, abstractmethod
 class Graph(metaclass=ABCMeta):
 
     def __init__(self):
-        self.cache = {}
+        self._cache = {}
 
     @abstractmethod
     def getPlotPoints(self, fit, extraData, xRange, xAmount):
@@ -60,9 +60,9 @@ class Graph(metaclass=ABCMeta):
 
     def clearCache(self, key=None):
         if key is None:
-            self.cache.clear()
-        elif key in self.cache:
-            del self.cache[key]
+            self._cache.clear()
+        elif key in self._cache:
+            del self._cache[key]
 
 
 class SmoothGraph(Graph, metaclass=ABCMeta):

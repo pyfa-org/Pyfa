@@ -32,6 +32,9 @@ class Graph(metaclass=ABCMeta):
     def register(cls):
         Graph.views.append(cls)
 
+    def __init__(self):
+        self._cache = {}
+
     @property
     @abstractmethod
     def name(self):
@@ -56,10 +59,16 @@ class Graph(metaclass=ABCMeta):
         return False
 
     def getPlotPoints(self, fit, extraData, xRange, xAmount, yType):
-        xRange = self.parseRange(xRange)
-        extraData = {k: float(v) if v else None for k, v in extraData.items()}
-        graph = getattr(self, self.yDefs[yType].eosGraph, None)
-        return graph.getPlotPoints(fit, extraData, xRange, xAmount)
+        try:
+            plotData = self._cache[fit.ID][yType]
+        except KeyError:
+            xRange = self.parseRange(xRange)
+            extraData = {k: float(v) if v else None for k, v in extraData.items()}
+            graph = getattr(self, self.yDefs[yType].eosGraph, None)
+            plotData = graph.getPlotPoints(fit, extraData, xRange, xAmount)
+            fitCache = self._cache.setdefault(fit.ID, {})
+            fitCache[yType] = plotData
+        return plotData
 
     def parseRange(self, string):
         m = re.match('\s*(?P<first>\d+(\.\d+)?)\s*(-\s*(?P<second>\d+(\.\d+)?))?', string)
@@ -72,9 +81,13 @@ class Graph(metaclass=ABCMeta):
         high = max(first, second)
         return (low, high)
 
-    def clearCache(self, *args, **kwargs):
+    def clearCache(self, key=None):
+        if key is None:
+            self._cache.clear()
+        elif key in self._cache:
+            del self._cache[key]
         for yDef in self.yDefs.values():
-            getattr(self, yDef.eosGraph).clearCache(*args, **kwargs)
+            getattr(self, yDef.eosGraph).clearCache(key=key)
 
 
 XDef = namedtuple('XDef', ('inputDefault', 'inputLabel', 'inputIconID', 'axisLabel'))

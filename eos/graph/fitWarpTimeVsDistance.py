@@ -16,10 +16,10 @@ class FitWarpTimeVsDistanceGraph(SmoothGraph):
     def getYForX(self, fit, extraData, distance):
         if distance == 0:
             return 0
-        if fit.ID not in self.cache:
+        if fit.ID not in self._cache:
             self.__generateCache(fit)
         maxWarpSpeed = fit.warpSpeed
-        subwarpSpeed = self.cache[fit.ID]['cleanSubwarpSpeed']
+        subwarpSpeed = self._cache[fit.ID]['cleanSubwarpSpeed']
         time = calculate_time_in_warp(maxWarpSpeed, subwarpSpeed, distance * AU_METERS)
         return time
 
@@ -54,7 +54,7 @@ class FitWarpTimeVsDistanceGraph(SmoothGraph):
                 projFighterStates[fighter] = fighter.active
                 fighter.active = False
         fit.calculateModifiedAttributes()
-        self.cache[fit.ID] = {'cleanSubwarpSpeed': fit.ship.getModifiedItemAttr('maxVelocity')}
+        self._cache[fit.ID] = {'cleanSubwarpSpeed': fit.ship.getModifiedItemAttr('maxVelocity')}
         for projInfo, state in projFitStates.items():
             projInfo.active = state
         for mod, state in modStates.items():

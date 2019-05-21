@@ -30,6 +30,7 @@ class FitDmgVsTimeGraph(Graph):
     name = 'Damage vs Time'
 
     def __init__(self):
+        super().__init__()
         self.eosGraphDmg = EosGraphDmg()
         self.eosGraphDps = EosGraphDps()
 

@@ -29,6 +29,7 @@ class FitCapRegenVsCapPercGraph(Graph):
     name = 'Cap Regen vs Cap Amount'
 
     def __init__(self):
+        super().__init__()
         self.eosGraph = EosGraph()
 
     @property

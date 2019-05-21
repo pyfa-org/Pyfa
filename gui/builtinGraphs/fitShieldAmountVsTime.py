@@ -30,6 +30,7 @@ class FitShieldAmountVsTimeGraph(Graph):
     name = 'Shield Amount vs Time'
 
     def __init__(self):
+        super().__init__()
         self.eosGraph = EosGraph()
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
 

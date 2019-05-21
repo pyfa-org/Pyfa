@@ -31,12 +31,12 @@ class FitDpsTimeGraph(Graph):
         # We deliberately ignore xAmount here to build graph which will reflect
         # all steps of building up the damage
         minX, maxX = self._limitXRange(xRange, fit, extraData)
-        if fit.ID not in self.cache:
+        if fit.ID not in self._cache:
             self.__generateCache(fit, maxX)
         currentY = None
         xs = []
         ys = []
-        cache = self.cache[fit.ID]
+        cache = self._cache[fit.ID]
         for time in sorted(cache):
             prevY = currentY
             currentX = time / 1000
@@ -76,7 +76,7 @@ class FitDpsTimeGraph(Graph):
 
     def getYForX(self, fit, extraData, x):
         time = x * 1000
-        cache = self.cache[fit.ID]
+        cache = self._cache[fit.ID]
         closestTime = max((t for t in cache if t <= time), default=None)
         if closestTime is None:
             return 0
@@ -160,4 +160,4 @@ class FitDpsTimeGraph(Graph):
             entries = (e for e in cache if e[0] <= time < e[1])
             dps = sum(e[2] for e in entries)
             finalCache[time] = dps
-        self.cache[fit.ID] = finalCache
+        self._cache[fit.ID] = finalCache

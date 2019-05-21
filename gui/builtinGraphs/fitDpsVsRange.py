@@ -29,6 +29,7 @@ class FitDpsVsRangeGraph(Graph):
     name = 'DPS vs Range'
 
     def __init__(self):
+        super().__init__()
         self.eosGraph = EosGraph()
 
     @property
