@@ -141,15 +141,20 @@ class GraphFrame(wx.Frame):
         self.mainSizer.Add(wx.StaticLine(self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.LI_HORIZONTAL), 0,
                            wx.EXPAND)
 
-        self.gridPanel = wx.Panel(self)
-        self.mainSizer.Add(self.gridPanel, 0, wx.EXPAND)
+        self.graphCtrlPanel = wx.Panel(self)
+        self.mainSizer.Add(self.graphCtrlPanel, 0, wx.EXPAND | wx.ALL, 5)
 
-        dummyBox = wx.BoxSizer(wx.VERTICAL)
-        self.gridPanel.SetSizer(dummyBox)
+        ctrlPanelSizer = wx.BoxSizer(wx.HORIZONTAL)
+        self.viewOptSizer = wx.BoxSizer(wx.VERTICAL)
+        ctrlPanelSizer.Add(self.viewOptSizer, 0, wx.EXPAND | wx.ALL, 0)
+        inputsVertSizer = wx.BoxSizer(wx.VERTICAL)
+        self.inputsSizer = wx.FlexGridSizer(0, 4, 0, 0)
+        self.inputsSizer.AddGrowableCol(1)
+        inputsVertSizer.Add(self.inputsSizer, 0, wx.EXPAND | wx.ALL, 0)
+        ctrlPanelSizer.Add(inputsVertSizer, 1, wx.EXPAND | wx.ALL, 0)
+        self.graphCtrlPanel.SetSizer(ctrlPanelSizer)
 
-        self.gridSizer = wx.FlexGridSizer(0, 4, 0, 0)
-        self.gridSizer.AddGrowableCol(1)
-        dummyBox.Add(self.gridSizer, 0, wx.EXPAND | wx.ALL, 5)
+        self.showY0 = True
 
         for view in Graph.views:
             view = view()
@@ -157,7 +162,7 @@ class GraphFrame(wx.Frame):
 
         self.graphSelection.SetSelection(0)
         self.fields = {}
-        self.select(0)
+        self.updateGraphWidgets()
         self.sl1 = wx.StaticLine(self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.LI_HORIZONTAL)
         self.mainSizer.Add(self.sl1, 0, wx.EXPAND)
         self.mainSizer.Add(self.fitList, 0, wx.EXPAND)
@@ -230,7 +235,7 @@ class GraphFrame(wx.Frame):
             self.removeFits([fit])
 
     def graphChanged(self, event):
-        self.select(self.graphSelection.GetSelection())
+        self.updateGraphWidgets()
         event.Skip()
 
     def closeWindow(self):
@@ -251,20 +256,33 @@ class GraphFrame(wx.Frame):
 
         return values
 
-    def select(self, index):
+    def OnShowY0Update(self, event):
+        self.showY0 = self.showY0Cb.GetValue()
+        self.draw()
+
+    def updateGraphWidgets(self):
         view = self.getView()
         view.clearCache()
-        sizer = self.gridSizer
-        sizer.Clear()
-        self.gridPanel.DestroyChildren()
+        viewSizer = self.viewOptSizer
+        viewSizer.Clear()
+        inputSizer = self.inputsSizer
+        inputSizer.Clear()
+        self.graphCtrlPanel.DestroyChildren()
         self.fields.clear()
 
-        # Setup textboxes
+        # Setup view options
+        self.showY0Cb = wx.CheckBox(self.graphCtrlPanel, wx.ID_ANY, "Always show Y = 0", wx.DefaultPosition, wx.DefaultSize, 0)
+        self.showY0Cb.SetValue(self.showY0)
+        self.showY0Cb.Bind(wx.EVT_CHECKBOX, self.OnShowY0Update)
+        viewSizer.Add(self.showY0Cb, 0, wx.ALL | wx.EXPAND, 5)
+
+
+        # Setup inputs
         for fieldHandle, fieldDef in (('x', view.xDef), *view.extraInputs.items()):
-            textBox = wx.TextCtrl(self.gridPanel, wx.ID_ANY, style=0)
+            textBox = wx.TextCtrl(self.graphCtrlPanel, wx.ID_ANY, style=0)
             self.fields[fieldHandle] = textBox
             textBox.Bind(wx.EVT_TEXT, self.onFieldChanged)
-            sizer.Add(textBox, 1, wx.EXPAND | wx.ALIGN_CENTER_VERTICAL | wx.ALL, 3)
+            inputSizer.Add(textBox, 1, wx.EXPAND | wx.ALIGN_CENTER_VERTICAL | wx.ALL, 3)
             if fieldDef.inputDefault is not None:
                 inputDefault = fieldDef.inputDefault
                 if not isinstance(inputDefault, str):
@@ -278,14 +296,14 @@ class GraphFrame(wx.Frame):
             if fieldDef.inputIconID:
                 icon = BitmapLoader.getBitmap(fieldDef.inputIconID, "icons")
                 if icon is not None:
-                    static = wx.StaticBitmap(self.gridPanel)
+                    static = wx.StaticBitmap(self.graphCtrlPanel)
                     static.SetBitmap(icon)
                     imgLabelSizer.Add(static, 0, wx.ALL | wx.ALIGN_CENTER_VERTICAL, 1)
 
-            imgLabelSizer.Add(wx.StaticText(self.gridPanel, wx.ID_ANY, fieldDef.inputLabel), 0,
+            imgLabelSizer.Add(wx.StaticText(self.graphCtrlPanel, wx.ID_ANY, fieldDef.inputLabel), 0,
                               wx.LEFT | wx.RIGHT | wx.ALIGN_CENTER_VERTICAL, 3)
-            sizer.Add(imgLabelSizer, 0, wx.ALIGN_CENTER_VERTICAL)
-        sizer.Layout()
+            inputSizer.Add(imgLabelSizer, 0, wx.ALIGN_CENTER_VERTICAL)
+        inputSizer.Layout()
         self.draw()
 
     def draw(self, event=None):
@@ -306,8 +324,8 @@ class GraphFrame(wx.Frame):
         self.subplot.grid(True)
         legend = []
 
-        min_y = 0
-        max_y = 0
+        min_y = 0 if self.showY0 else None
+        max_y = 0 if self.showY0 else None
 
         xRange = values['x']
         extraInputs = {ih: values[ih] for ih in view.extraInputs}
@@ -322,8 +340,17 @@ class GraphFrame(wx.Frame):
             try:
                 xs, ys = view.getPlotPoints(fit, extraInputs, xRange, 100, chosenY)
 
-                min_y = min(min_y, min(ys, default=0))
-                max_y = max(max_y, max(ys, default=0))
+                # Figure out min and max Y
+                min_y_this = min(ys, default=None)
+                if min_y is None:
+                    min_y = min_y_this
+                elif min_y_this is not None:
+                    min_y = min(min_y, min_y_this)
+                max_y_this = max(ys, default=None)
+                if max_y is None:
+                    max_y = max_y_this
+                elif max_y_this is not None:
+                    max_y = max(max_y, max_y_this)
 
                 self.subplot.plot(xs, ys)
                 legend.append('{} ({})'.format(fit.name, fit.ship.item.getShortName()))
