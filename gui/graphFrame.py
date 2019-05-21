@@ -144,8 +144,18 @@ class GraphFrame(wx.Frame):
         self.graphCtrlPanel = wx.Panel(self)
         self.mainSizer.Add(self.graphCtrlPanel, 0, wx.EXPAND | wx.ALL, 5)
 
+        self.showY0 = True
+        self.selectedY = None
+        self.selectedYRbMap = {}
+
         ctrlPanelSizer = wx.BoxSizer(wx.HORIZONTAL)
         self.viewOptSizer = wx.BoxSizer(wx.VERTICAL)
+        self.showY0Cb = wx.CheckBox(self.graphCtrlPanel, wx.ID_ANY, "Always show Y = 0", wx.DefaultPosition, wx.DefaultSize, 0)
+        self.showY0Cb.SetValue(self.showY0)
+        self.showY0Cb.Bind(wx.EVT_CHECKBOX, self.OnShowY0Update)
+        self.viewOptSizer.Add(self.showY0Cb, 0, wx.LEFT | wx.TOP | wx.RIGHT | wx.EXPAND, 5)
+        self.graphSubselSizer = wx.BoxSizer(wx.VERTICAL)
+        self.viewOptSizer.Add(self.graphSubselSizer, 0, wx.ALL | wx.EXPAND, 5)
         ctrlPanelSizer.Add(self.viewOptSizer, 0, wx.EXPAND | wx.ALL, 0)
         inputsVertSizer = wx.BoxSizer(wx.VERTICAL)
         self.inputsSizer = wx.FlexGridSizer(0, 4, 0, 0)
@@ -153,10 +163,6 @@ class GraphFrame(wx.Frame):
         inputsVertSizer.Add(self.inputsSizer, 0, wx.EXPAND | wx.ALL, 0)
         ctrlPanelSizer.Add(inputsVertSizer, 1, wx.EXPAND | wx.ALL, 0)
         self.graphCtrlPanel.SetSizer(ctrlPanelSizer)
-
-        self.showY0 = True
-        self.selectedY = None
-        self.selectedYRbMap = {}
 
         for view in Graph.views:
             view = view()
@@ -274,18 +280,16 @@ class GraphFrame(wx.Frame):
     def updateGraphWidgets(self):
         view = self.getView()
         view.clearCache()
-        viewSizer = self.viewOptSizer
-        viewSizer.Clear()
+        graphSubselSizer = self.graphSubselSizer
+        graphSubselSizer.Clear()
         inputSizer = self.inputsSizer
         inputSizer.Clear()
-        self.graphCtrlPanel.DestroyChildren()
+        for child in self.graphCtrlPanel.Children:
+            if child is not self.showY0Cb:
+                child.Destroy()
         self.fields.clear()
 
         # Setup view options
-        self.showY0Cb = wx.CheckBox(self.graphCtrlPanel, wx.ID_ANY, "Always show Y = 0", wx.DefaultPosition, wx.DefaultSize, 0)
-        self.showY0Cb.SetValue(self.showY0)
-        self.showY0Cb.Bind(wx.EVT_CHECKBOX, self.OnShowY0Update)
-        viewSizer.Add(self.showY0Cb, 0, wx.ALL | wx.EXPAND, 0)
         self.selectedYRbMap.clear()
         if len(view.yDefs) > 1:
             i = 0
@@ -297,10 +301,10 @@ class GraphFrame(wx.Frame):
                 rdo.Bind(wx.EVT_RADIOBUTTON, self.OnYTypeUpdate)
                 if i == (self.selectedY or 0):
                     rdo.SetValue(True)
-                viewSizer.Add(rdo, 0, wx.ALL | wx.EXPAND, 0)
+                graphSubselSizer.Add(rdo, 0, wx.ALL | wx.EXPAND, 0)
                 self.selectedYRbMap[yDef.switchLabel] = i
                 i += 1
-        viewSizer.Layout()
+        self.viewOptSizer.Layout()
 
         # Setup inputs
         for fieldHandle, fieldDef in (('x', view.xDef), *view.extraInputs.items()):
@@ -388,6 +392,9 @@ class GraphFrame(wx.Frame):
         y_range = max_y - min_y
         min_y -= y_range * 0.05
         max_y += y_range * 0.05
+        if min_y == max_y:
+            min_y -= min_y * 0.05
+            max_y += min_y * 0.05
         if min_y == max_y:
             min_y -= 5
             max_y += 5
