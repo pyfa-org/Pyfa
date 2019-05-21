@@ -156,6 +156,7 @@ class GraphFrame(wx.Frame):
 
         self.showY0 = True
         self.selectedY = None
+        self.selectedYRbMap = {}
 
         for view in Graph.views:
             view = view()
@@ -236,6 +237,7 @@ class GraphFrame(wx.Frame):
             self.removeFits([fit])
 
     def graphChanged(self, event):
+        self.selectedY = None
         self.updateGraphWidgets()
         event.Skip()
 
@@ -264,7 +266,9 @@ class GraphFrame(wx.Frame):
 
     def OnYTypeUpdate(self, event):
         event.Skip()
-        self.selectedY = event.GetInt()
+        obj = event.GetEventObject()
+        formatName = obj.GetLabel()
+        self.selectedY = self.selectedYRbMap[formatName]
         self.draw()
 
     def updateGraphWidgets(self):
@@ -282,13 +286,20 @@ class GraphFrame(wx.Frame):
         self.showY0Cb.SetValue(self.showY0)
         self.showY0Cb.Bind(wx.EVT_CHECKBOX, self.OnShowY0Update)
         viewSizer.Add(self.showY0Cb, 0, wx.ALL | wx.EXPAND, 0)
+        self.selectedYRbMap.clear()
         if len(view.yDefs) > 1:
-            self.selectedYRb = wx.RadioBox(
-                self.graphCtrlPanel, 0, 'Graph type', wx.DefaultPosition, wx.DefaultSize,
-                [yDef.switchLabel for yDef in view.yDefs.values()], 1, wx.RA_SPECIFY_COLS)
-            self.selectedYRb.SetSelection(self.selectedY or 0)
-            self.selectedYRb.Bind(wx.EVT_RADIOBOX, self.OnYTypeUpdate)
-            viewSizer.Add(self.selectedYRb, 0, wx.ALL | wx.EXPAND, 0)
+            i = 0
+            for yAlias, yDef in view.yDefs.items():
+                if i == 0:
+                    rdo = wx.RadioButton(self.graphCtrlPanel, wx.ID_ANY, yDef.switchLabel, style=wx.RB_GROUP)
+                else:
+                    rdo = wx.RadioButton(self.graphCtrlPanel, wx.ID_ANY, yDef.switchLabel)
+                rdo.Bind(wx.EVT_RADIOBUTTON, self.OnYTypeUpdate)
+                if i == (self.selectedY or 0):
+                    rdo.SetValue(True)
+                viewSizer.Add(rdo, 0, wx.ALL | wx.EXPAND, 0)
+                self.selectedYRbMap[yDef.switchLabel] = i
+                i += 1
         viewSizer.Layout()
 
         # Setup inputs
