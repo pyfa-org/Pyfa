@@ -429,7 +429,7 @@ class Character(object):
     def checkRequirements(self, fit):
         # toCheck = []
         reqs = {}
-        for thing in itertools.chain(fit.modules, fit.drones, fit.fighters, (fit.ship,)):
+        for thing in itertools.chain(fit.modules, fit.drones, fit.fighters, (fit.ship,), fit.appliedImplants, fit.boosters):
             if isinstance(thing, es_Module) and thing.slot == es_Slot.RIG:
                 continue
             for attr in ("item", "charge"):
