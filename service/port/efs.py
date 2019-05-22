@@ -632,6 +632,10 @@ class EfsPort:
         defaultSpoolValue = 1
         spoolOptions = SpoolOptions(SpoolType.SCALE, defaultSpoolValue, True)
 
+        cargoIDs = []
+        for cargo in fit.cargo:
+            cargoIDs.append(cargo.itemID)
+
         def roundNumbers(data, digits):
             if isinstance(data, str):
                 return
@@ -670,7 +674,7 @@ class EfsPort:
                 "droneControlRange": fitModAttr("droneControlRange"), "mass": fitModAttr("mass"),
                 "unpropedSpeed": propData["unpropedSpeed"], "unpropedSig": propData["unpropedSig"],
                 "usingMWD": propData["usingMWD"], "mwdPropSpeed": mwdPropSpeed, "projections": projections,
-                "modTypeIDs": modTypeIDs, "moduleNames": moduleNames,
+                "modTypeIDs": modTypeIDs, "moduleNames": moduleNames, "cargoItemIDs": cargoIDs,
                 "pyfaVersion": pyfaVersion, "efsExportVersion": EfsPort.version
             }
             # Recursively round any numbers in dicts to 6 decimal places.
