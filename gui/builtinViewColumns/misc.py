@@ -106,9 +106,11 @@ class Miscellanea(ViewColumn):
             pass
         elif itemGroup in ("Energy Weapon", "Hybrid Weapon", "Projectile Weapon", "Combat Drone", "Fighter Drone"):
             trackingSpeed = stuff.getModifiedItemAttr("trackingSpeed")
-            if not trackingSpeed:
+            optimalSig = stuff.getModifiedItemAttr("optimalSigRadius")
+            if not trackingSpeed or not optimalSig:
                 return "", None
-            text = "{0}".format(formatAmount(trackingSpeed, 3, 0, 3))
+            normalizedTracking = trackingSpeed * 40000 / optimalSig
+            text = "{0}".format(formatAmount(normalizedTracking, 3, 0, 3))
             tooltip = "Tracking speed"
             return text, tooltip
         elif itemGroup == "Precursor Weapon":
