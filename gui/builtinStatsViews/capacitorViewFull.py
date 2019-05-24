@@ -136,11 +136,10 @@ class CapacitorViewFull(StatsView):
                 label.SetToolTip(wx.ToolTip("%.1f" % value))
 
             if labelName in ("label%sCapacitorRecharge", "label%sCapacitorDischarge"):
-                if neut_resist:
-                    neut_resist = 100 - (neut_resist * 100)
+                neut_resist_preformat = 100 - (neut_resist * 100) if neut_resist else neut_resist
                 label_tooltip = "Capacitor delta: {}\nNeut resistance: {}%".format(
                     formatAmount(cap_recharge - cap_use, 3, 0, 3, forceSign=True),
-                    formatAmount(neut_resist, 3, 0, 3))
+                    formatAmount(neut_resist_preformat, 3, 0, 3))
                 label.SetToolTip(wx.ToolTip(label_tooltip))
 
         capState = fit.capState if fit is not None else 0
