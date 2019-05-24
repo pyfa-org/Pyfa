@@ -149,19 +149,17 @@ class GraphFrame(wx.Frame):
         self.selectedYRbMap = {}
 
         ctrlPanelSizer = wx.BoxSizer(wx.HORIZONTAL)
-        self.viewOptSizer = wx.BoxSizer(wx.VERTICAL)
+        viewOptSizer = wx.BoxSizer(wx.VERTICAL)
         self.showY0Cb = wx.CheckBox(self.graphCtrlPanel, wx.ID_ANY, "Always show Y = 0", wx.DefaultPosition, wx.DefaultSize, 0)
         self.showY0Cb.SetValue(self.showY0)
         self.showY0Cb.Bind(wx.EVT_CHECKBOX, self.OnShowY0Update)
-        self.viewOptSizer.Add(self.showY0Cb, 0, wx.LEFT | wx.TOP | wx.RIGHT | wx.EXPAND, 5)
+        viewOptSizer.Add(self.showY0Cb, 0, wx.LEFT | wx.TOP | wx.RIGHT | wx.EXPAND, 5)
         self.graphSubselSizer = wx.BoxSizer(wx.VERTICAL)
-        self.viewOptSizer.Add(self.graphSubselSizer, 0, wx.ALL | wx.EXPAND, 5)
-        ctrlPanelSizer.Add(self.viewOptSizer, 0, wx.EXPAND | wx.ALL, 0)
-        inputsVertSizer = wx.BoxSizer(wx.VERTICAL)
+        viewOptSizer.Add(self.graphSubselSizer, 0, wx.ALL | wx.EXPAND, 5)
+        ctrlPanelSizer.Add(viewOptSizer, 0, wx.EXPAND | wx.ALL, 0)
         self.inputsSizer = wx.FlexGridSizer(0, 4, 0, 0)
         self.inputsSizer.AddGrowableCol(1)
-        inputsVertSizer.Add(self.inputsSizer, 0, wx.EXPAND | wx.ALL, 0)
-        ctrlPanelSizer.Add(inputsVertSizer, 1, wx.EXPAND | wx.ALL, 0)
+        ctrlPanelSizer.Add(self.inputsSizer, 1, wx.EXPAND | wx.ALL, 0)
         self.graphCtrlPanel.SetSizer(ctrlPanelSizer)
 
         for view in Graph.views:
@@ -280,10 +278,8 @@ class GraphFrame(wx.Frame):
     def updateGraphWidgets(self):
         view = self.getView()
         view.clearCache()
-        graphSubselSizer = self.graphSubselSizer
-        graphSubselSizer.Clear()
-        inputSizer = self.inputsSizer
-        inputSizer.Clear()
+        self.graphSubselSizer.Clear()
+        self.inputsSizer.Clear()
         for child in self.graphCtrlPanel.Children:
             if child is not self.showY0Cb:
                 child.Destroy()
@@ -301,17 +297,16 @@ class GraphFrame(wx.Frame):
                 rdo.Bind(wx.EVT_RADIOBUTTON, self.OnYTypeUpdate)
                 if i == (self.selectedY or 0):
                     rdo.SetValue(True)
-                graphSubselSizer.Add(rdo, 0, wx.ALL | wx.EXPAND, 0)
+                self.graphSubselSizer.Add(rdo, 0, wx.ALL | wx.EXPAND, 0)
                 self.selectedYRbMap[yDef.switchLabel] = i
                 i += 1
-        self.viewOptSizer.Layout()
 
         # Setup inputs
         for fieldHandle, fieldDef in (('x', view.xDef), *view.extraInputs.items()):
             textBox = wx.TextCtrl(self.graphCtrlPanel, wx.ID_ANY, style=0)
             self.fields[fieldHandle] = textBox
             textBox.Bind(wx.EVT_TEXT, self.onFieldChanged)
-            inputSizer.Add(textBox, 1, wx.EXPAND | wx.ALIGN_CENTER_VERTICAL | wx.ALL, 3)
+            self.inputsSizer.Add(textBox, 1, wx.EXPAND | wx.ALIGN_CENTER_VERTICAL | wx.ALL, 3)
             if fieldDef.inputDefault is not None:
                 inputDefault = fieldDef.inputDefault
                 if not isinstance(inputDefault, str):
@@ -331,8 +326,8 @@ class GraphFrame(wx.Frame):
 
             imgLabelSizer.Add(wx.StaticText(self.graphCtrlPanel, wx.ID_ANY, fieldDef.inputLabel), 0,
                               wx.LEFT | wx.RIGHT | wx.ALIGN_CENTER_VERTICAL, 3)
-            inputSizer.Add(imgLabelSizer, 0, wx.ALIGN_CENTER_VERTICAL)
-        inputSizer.Layout()
+            self.inputsSizer.Add(imgLabelSizer, 0, wx.ALIGN_CENTER_VERTICAL)
+        self.Layout()
         self.draw()
 
     def draw(self, event=None):
