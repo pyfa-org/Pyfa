@@ -47,8 +47,14 @@ L_MARK = "&lt;localized hint=&quot;"
 LOCALIZED_PATTERN = re.compile(r'<localized hint="([^"]+)">([^\*]+)\*</localized>')
 
 
+class ExtractingError(Exception):
+    pass
+
+
 def _extract_match(t):
     m = LOCALIZED_PATTERN.match(t)
+    if m is None:
+        raise ExtractingError
     # hint attribute, text content
     return m.group(1), m.group(2)
 
@@ -63,8 +69,11 @@ def _resolve_ship(fitting, sMkt, b_localized):
     shipType = fitting.getElementsByTagName("shipType").item(0).getAttribute("value")
     anything = None
     if b_localized:
-        # expect an official name, emergency cache
-        shipType, anything = _extract_match(shipType)
+        try:
+            # expect an official name, emergency cache
+            shipType, anything = _extract_match(shipType)
+        except ExtractingError:
+            pass
 
     limit = 2
     ship = None
@@ -107,8 +116,11 @@ def _resolve_module(hardware, sMkt, b_localized):
     moduleName = hardware.getAttribute("type")
     emergency = None
     if b_localized:
-        # expect an official name, emergency cache
-        moduleName, emergency = _extract_match(moduleName)
+        try:
+            # expect an official name, emergency cache
+            moduleName, emergency = _extract_match(moduleName)
+        except ExtractingError:
+            pass
 
     item = None
     limit = 2
