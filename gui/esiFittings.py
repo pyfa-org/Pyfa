@@ -24,7 +24,7 @@ class EveFittings(wx.Frame):
 
     def __init__(self, parent):
         wx.Frame.__init__(self, parent, id=wx.ID_ANY, title="Browse EVE Fittings", pos=wx.DefaultPosition,
-                          size=wx.Size(550, 450), style=wx.DEFAULT_FRAME_STYLE | wx.TAB_TRAVERSAL)
+                          size=wx.Size(750, 450), style=wx.DEFAULT_FRAME_STYLE | wx.TAB_TRAVERSAL)
 
         self.SetBackgroundColour(wx.SystemSettings.GetColour(wx.SYS_COLOUR_BTNFACE))
 
@@ -49,6 +49,7 @@ class EveFittings(wx.Frame):
 
         self.fitTree = FittingsTreeView(self)
         browserSizer.Add(self.fitTree, 1, wx.ALL | wx.EXPAND, 5)
+        browserSizer.SetItemMinSize(0, 200, 0)
         contentSizer.Add(browserSizer, 1, wx.EXPAND, 0)
         fitSizer = wx.BoxSizer(wx.VERTICAL)
 
