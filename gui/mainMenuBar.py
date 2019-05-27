@@ -131,7 +131,7 @@ class MainMenuBar(wx.MenuBar):
         globalMenu = wx.Menu()
 
         if not self.mainFrame.disableOverrideEditor:
-            attrItem = wx.MenuItem(globalMenu, self.attrEditorId, "Attribute &Overrides\tCTRL+B")
+            attrItem = wx.MenuItem(globalMenu, self.attrEditorId, "Attribute &Overrides")
             attrItem.SetBitmap(BitmapLoader.getBitmap("fit_rename_small", "gui"))
             globalMenu.Append(attrItem)
             globalMenu.Append(self.toggleOverridesId, "&Turn Overrides On")
