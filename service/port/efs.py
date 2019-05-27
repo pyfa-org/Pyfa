@@ -18,6 +18,7 @@ from eos.gamedata import Attribute, Effect, Group, Item, ItemEffect
 from eos.utils.spoolSupport import SpoolType, SpoolOptions
 from gui.fitCommands.calc.module.localAdd import CalcAddLocalModuleCommand
 from gui.fitCommands.calc.module.localRemove import CalcRemoveLocalModulesCommand
+from gui.fitCommands.calc.module.changeCharges import CalcChangeModuleChargesCommand
 from gui.fitCommands.helpers import ModuleInfo
 
 
@@ -26,7 +27,7 @@ pyfalog = Logger(__name__)
 
 class EfsPort:
     wepTestSet = {}
-    version = 0.03
+    version = 0.04
 
     @staticmethod
     def attrDirectMap(values, target, source):
@@ -97,6 +98,63 @@ class EfsPort:
         }
 
     @staticmethod
+    def getModsInGroups(fit, modGroupNames):
+        matchingMods = list(filter(lambda mod: mod.item and mod.item.group.name in modGroupNames, fit.modules))
+        # Sort mods to prevent the order needlessly changing as pyfa updates.
+        matchingMods.sort(key=lambda mod: mod.item.ID)
+        matchingMods.sort(key=lambda mod: mod.item.group.ID)
+        return matchingMods
+
+    # Note this also includes data for any cap boosters as they "repair" cap.
+    @staticmethod
+    def getRepairData(fit, sFit):
+        modGroupNames = [
+            "Shield Booster", "Armor Repair Unit",
+            "Ancillary Shield Booster", "Ancillary Armor Repairer",
+            "Hull Repair Unit", "Capacitor Booster",
+        ]
+        repairMods = EfsPort.getModsInGroups(fit, modGroupNames)
+        repairs = [];
+        for mod in repairMods:
+            stats = {}
+            EfsPort.attrDirectMap(["duration", "capacitorNeed"], stats, mod)
+            if mod.item.group.name in ["Armor Repair Unit", "Ancillary Armor Repairer"]:
+                stats["type"] = "Armor Repairer"
+                EfsPort.attrDirectMap(["armorDamageAmount"], stats, mod)
+                if mod.item.group.name == "Ancillary Armor Repairer":
+                    stats["numShots"] = mod.numShots
+                    EfsPort.attrDirectMap(["reloadTime", "chargedArmorDamageMultiplier"], stats, mod)
+            elif mod.item.group.name in ["Shield Booster", "Ancillary Shield Booster"]:
+                stats["type"] = "Shield Booster"
+                EfsPort.attrDirectMap(["shieldBonus"], stats, mod)
+                if mod.item.group.name == "Ancillary Shield Booster":
+                    stats["numShots"] = mod.numShots
+                    EfsPort.attrDirectMap(["reloadTime"], stats, mod)
+                    c = mod.charge
+                    if c:
+                        sFit.recalc(fit)
+                        CalcChangeModuleChargesCommand(
+                            fit.ID,
+                            projected=False,
+                            chargeMap={mod.position: None},
+                            commit=False).Do()
+                        sFit.recalc(fit)
+                        stats["unloadedCapacitorNeed"] = mod.getModifiedItemAttr("capacitorNeed")
+                        CalcChangeModuleChargesCommand(
+                            fit.ID,
+                            projected=False,
+                            chargeMap={mod.position: c.typeID},
+                            commit=False).Do()
+                        sFit.recalc(fit)
+            elif mod.item.group.name == "Capacitor Booster":
+                # The capacitorNeed is negative, which provides the boost.
+                stats["type"] = "Capacitor Booster"
+                stats["numShots"] = mod.numShots
+                EfsPort.attrDirectMap(["reloadTime"], stats, mod)
+            repairs.append(stats)
+        return repairs
+
+    @staticmethod
     def getOutgoingProjectionData(fit):
         # This is a subset of module groups capable of projection and a superset of those currently used by efs
         modGroupNames = [
@@ -108,10 +166,7 @@ class EfsPort:
             "Ancillary Remote Shield Booster", "Ancillary Remote Armor Repairer",
             "Titan Phenomena Generator", "Non-Repeating Hardeners", "Mutadaptive Remote Armor Repairer"
         ]
-        projectedMods = list(filter(lambda mod: mod.item and mod.item.group.name in modGroupNames, fit.modules))
-        # Sort projections to prevent the order needlessly changing as pyfa updates.
-        projectedMods.sort(key=lambda mod: mod.item.ID)
-        projectedMods.sort(key=lambda mod: mod.item.group.ID)
+        projectedMods = EfsPort.getModsInGroups(fit, modGroupNames)
         projections = []
         for mod in projectedMods:
             maxRangeDefault = 0
@@ -632,6 +687,12 @@ class EfsPort:
         defaultSpoolValue = 1
         spoolOptions = SpoolOptions(SpoolType.SCALE, defaultSpoolValue, True)
 
+        cargoIDs = []
+        for cargo in fit.cargo:
+            cargoIDs.append(cargo.itemID)
+
+        repairs = EfsPort.getRepairData(fit, sFit)
+
         def roundNumbers(data, digits):
             if isinstance(data, str):
                 return
@@ -660,6 +721,7 @@ class EfsPort:
                 "scanStrength": fit.scanStrength, "weaponDPS": fit.getWeaponDps(spoolOptions=spoolOptions).total,
                 "alignTime": fit.alignTime, "signatureRadius": fitModAttr("signatureRadius"), "weapons": weaponSystems,
                 "scanRes": fitModAttr("scanResolution"), "capUsed": fit.capUsed, "capRecharge": fit.capRecharge,
+                "capacitorCapacity": fitModAttr("capacitorCapacity"), "rechargeRate": fitModAttr("rechargeRate"),
                 "rigSlots": fitModAttr("rigSlots"), "lowSlots": fitModAttr("lowSlots"),
                 "midSlots": fitModAttr("medSlots"), "highSlots": fitModAttr("hiSlots"),
                 "turretSlots": fitModAttr("turretSlotsLeft"), "launcherSlots": fitModAttr("launcherSlotsLeft"),
@@ -670,7 +732,7 @@ class EfsPort:
                 "droneControlRange": fitModAttr("droneControlRange"), "mass": fitModAttr("mass"),
                 "unpropedSpeed": propData["unpropedSpeed"], "unpropedSig": propData["unpropedSig"],
                 "usingMWD": propData["usingMWD"], "mwdPropSpeed": mwdPropSpeed, "projections": projections,
-                "modTypeIDs": modTypeIDs, "moduleNames": moduleNames,
+                "repairs": repairs, "modTypeIDs": modTypeIDs, "moduleNames": moduleNames, "cargoItemIDs": cargoIDs,
                 "pyfaVersion": pyfaVersion, "efsExportVersion": EfsPort.version
             }
             # Recursively round any numbers in dicts to 6 decimal places.
