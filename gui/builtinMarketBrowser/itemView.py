@@ -61,7 +61,7 @@ class ItemView(Display):
     def delaySearch(self, evt):
         sFit = Fit.getInstance()
         self.searchTimer.Stop()
-        self.searchTimer.Start(sFit.serviceFittingOptions["marketSearchDelay"], True)  # 150ms
+        self.searchTimer.Start(sFit.serviceFittingOptions["marketSearchDelay"], True)
 
     def startDrag(self, event):
         row = self.GetFirstSelected()

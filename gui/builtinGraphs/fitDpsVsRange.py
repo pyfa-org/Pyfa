@@ -47,5 +47,13 @@ class FitDpsVsRangeGraph(Graph):
             ('signatureRadius', ExtraInput(inputDefault=None, inputLabel='Target signature radius (m)', inputIconID=1390)),
             ('angle', ExtraInput(inputDefault=0, inputLabel='Target angle (degrees)', inputIconID=1389))])
 
+    @property
+    def hasTargets(self):
+        return True
+
+    @property
+    def hasVectors(self):
+        return True
+
 
 FitDpsVsRangeGraph.register()

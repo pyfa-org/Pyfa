@@ -162,6 +162,9 @@ class GraphFrame(wx.Frame):
         ctrlPanelSizer.Add(self.inputsSizer, 1, wx.EXPAND | wx.ALL, 0)
         self.graphCtrlPanel.SetSizer(ctrlPanelSizer)
 
+        self.drawTimer = wx.Timer(self)
+        self.Bind(wx.EVT_TIMER, self.draw, self.drawTimer)
+
         for view in Graph.views:
             view = view()
             self.graphSelection.Append(view.name, view)
@@ -330,11 +333,17 @@ class GraphFrame(wx.Frame):
         self.Layout()
         self.draw()
 
+    def delayedDraw(self, event=None):
+        self.drawTimer.Stop()
+        self.drawTimer.Start(Fit.getInstance().serviceFittingOptions["marketSearchDelay"], True)
+
     def draw(self, event=None):
         global mpl_version
 
         if event is not None:
             event.Skip()
+
+        self.drawTimer.Stop()
 
         # todo: FIX THIS, see #1430. draw() is not being unbound properly when the window closes, this is an easy fix,
         # but not a proper solution
@@ -446,7 +455,7 @@ class GraphFrame(wx.Frame):
     def onFieldChanged(self, event):
         view = self.getView()
         view.clearCache()
-        self.draw()
+        self.delayedDraw()
 
     def AppendFitToList(self, fitID):
         sFit = Fit.getInstance()

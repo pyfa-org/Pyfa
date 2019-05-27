@@ -55,6 +55,14 @@ class Graph(metaclass=ABCMeta):
         raise NotImplementedError
 
     @property
+    def hasTargets(self):
+        return False
+
+    @property
+    def hasVectors(self):
+        return False
+
+    @property
     def redrawOnEffectiveChange(self):
         return False
 
