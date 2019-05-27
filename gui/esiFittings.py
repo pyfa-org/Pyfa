@@ -50,7 +50,7 @@ class EveFittings(wx.Frame):
         self.fitTree = FittingsTreeView(self)
         browserSizer.Add(self.fitTree, 1, wx.ALL | wx.EXPAND, 5)
         browserSizer.SetItemMinSize(0, 200, 0)
-        contentSizer.Add(browserSizer, 1, wx.EXPAND, 0)
+        contentSizer.Add(browserSizer, 0, wx.EXPAND, 0)
         fitSizer = wx.BoxSizer(wx.VERTICAL)
 
         self.fitView = FitView(self)
