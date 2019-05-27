@@ -1,7 +1,6 @@
 import wx
 from logbook import Logger
 
-import eos.db
 from service.fit import Fit
 
 
@@ -10,13 +9,12 @@ pyfalog = Logger(__name__)
 
 class CalcChangeLocalModuleMutationCommand(wx.Command):
 
-    def __init__(self, fitID, position, mutation, oldMutation=None, commit=True):
+    def __init__(self, fitID, position, mutation, oldMutation=None):
         wx.Command.__init__(self, True, 'Change Local Module Mutation')
         self.fitID = fitID
         self.position = position
         self.mutation = mutation
         self.savedMutation = oldMutation
-        self.commit = commit
 
     def Do(self):
         pyfalog.debug('Doing changing of local module mutation at position {} to {} for fit ID {}'.format(
@@ -41,8 +39,6 @@ class CalcChangeLocalModuleMutationCommand(wx.Command):
             if mutator.value != self.mutation[mutator.attrID]:
                 mutator.value = self.mutation[mutator.attrID]
 
-        if self.commit:
-            eos.db.commit()
         return True
 
     def Undo(self):
@@ -51,6 +47,5 @@ class CalcChangeLocalModuleMutationCommand(wx.Command):
         cmd = CalcChangeLocalModuleMutationCommand(
             fitID=self.fitID,
             position=self.position,
-            mutation=self.savedMutation,
-            commit=self.commit)
+            mutation=self.savedMutation)
         return cmd.Do()

@@ -19,21 +19,23 @@ class GuiRemoveCommandFitsCommand(wx.Command):
     def Do(self):
         results = []
         for commandFitID in self.commandFitIDs:
-            cmd = CalcRemoveCommandFitCommand(fitID=self.fitID, commandFitID=commandFitID, commit=False)
+            cmd = CalcRemoveCommandFitCommand(fitID=self.fitID, commandFitID=commandFitID)
             results.append(self.internalHistory.submit(cmd))
         success = any(results)
-        eos.db.commit()
+        eos.db.flush()
         sFit = Fit.getInstance()
         sFit.recalc(self.fitID)
         sFit.fill(self.fitID)
+        eos.db.commit()
         wx.PostEvent(gui.mainFrame.MainFrame.getInstance(), GE.FitChanged(fitID=self.fitID))
         return success
 
     def Undo(self):
         success = self.internalHistory.undoAll()
-        eos.db.commit()
+        eos.db.flush()
         sFit = Fit.getInstance()
         sFit.recalc(self.fitID)
         sFit.fill(self.fitID)
+        eos.db.commit()
         wx.PostEvent(gui.mainFrame.MainFrame.getInstance(), GE.FitChanged(fitID=self.fitID))
         return success

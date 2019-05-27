@@ -23,22 +23,23 @@ class GuiRemoveLocalDronesCommand(wx.Command):
             cmd = CalcRemoveLocalDroneCommand(
                 fitID=self.fitID,
                 position=position,
-                amount=self.amount,
-                commit=False)
+                amount=self.amount)
             results.append(self.internalHistory.submit(cmd))
         success = any(results)
-        eos.db.commit()
+        eos.db.flush()
         sFit = Fit.getInstance()
         sFit.recalc(self.fitID)
         sFit.fill(self.fitID)
+        eos.db.commit()
         wx.PostEvent(gui.mainFrame.MainFrame.getInstance(), GE.FitChanged(fitID=self.fitID))
         return success
 
     def Undo(self):
         success = self.internalHistory.undoAll()
-        eos.db.commit()
+        eos.db.flush()
         sFit = Fit.getInstance()
         sFit.recalc(self.fitID)
         sFit.fill(self.fitID)
+        eos.db.commit()
         wx.PostEvent(gui.mainFrame.MainFrame.getInstance(), GE.FitChanged(fitID=self.fitID))
         return success

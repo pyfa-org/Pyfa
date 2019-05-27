@@ -30,26 +30,26 @@ class GuiChangeLocalFighterMetasCommand(wx.Command):
             info.itemID = self.newItemID
             cmdRemove = CalcRemoveLocalFighterCommand(
                 fitID=self.fitID,
-                position=position,
-                commit=False)
+                position=position)
             cmdAdd = CalcAddLocalFighterCommand(
                 fitID=self.fitID,
                 fighterInfo=info,
-                ignoreRestrictions=True,
-                commit=False)
+                ignoreRestrictions=True)
             results.append(self.internalHistory.submitBatch(cmdRemove, cmdAdd))
         success = any(results)
-        eos.db.commit()
+        eos.db.flush()
         sFit.recalc(self.fitID)
         sFit.fill(self.fitID)
+        eos.db.commit()
         wx.PostEvent(gui.mainFrame.MainFrame.getInstance(), GE.FitChanged(fitID=self.fitID))
         return success
 
     def Undo(self):
         success = self.internalHistory.undoAll()
-        eos.db.commit()
+        eos.db.flush()
         sFit = Fit.getInstance()
         sFit.recalc(self.fitID)
         sFit.fill(self.fitID)
+        eos.db.commit()
         wx.PostEvent(gui.mainFrame.MainFrame.getInstance(), GE.FitChanged(fitID=self.fitID))
         return success

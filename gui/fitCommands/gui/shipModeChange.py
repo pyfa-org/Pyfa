@@ -1,10 +1,11 @@
 import wx
-from service.fit import Fit
 
+import eos.db
 import gui.mainFrame
 from gui import globalEvents as GE
-from gui.fitCommands.helpers import InternalCommandHistory
 from gui.fitCommands.calc.shipModeChange import CalcChangeShipModeCommand
+from gui.fitCommands.helpers import InternalCommandHistory
+from service.fit import Fit
 
 
 class GuiChangeShipModeCommand(wx.Command):
@@ -18,16 +19,20 @@ class GuiChangeShipModeCommand(wx.Command):
     def Do(self):
         cmd = CalcChangeShipModeCommand(fitID=self.fitID, itemID=self.itemID)
         success = self.internalHistory.submit(cmd)
+        eos.db.flush()
         sFit = Fit.getInstance()
         sFit.recalc(self.fitID)
         sFit.fill(self.fitID)
+        eos.db.commit()
         wx.PostEvent(gui.mainFrame.MainFrame.getInstance(), GE.FitChanged(fitID=self.fitID))
         return success
 
     def Undo(self):
         success = self.internalHistory.undoAll()
+        eos.db.flush()
         sFit = Fit.getInstance()
         sFit.recalc(self.fitID)
         sFit.fill(self.fitID)
+        eos.db.commit()
         wx.PostEvent(gui.mainFrame.MainFrame.getInstance(), GE.FitChanged(fitID=self.fitID))
         return success

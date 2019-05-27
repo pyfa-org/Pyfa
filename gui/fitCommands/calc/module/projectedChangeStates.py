@@ -1,7 +1,6 @@
 import wx
 from logbook import Logger
 
-import eos.db
 from eos.const import FittingModuleState
 from eos.saveddata.module import Module
 from gui.fitCommands.helpers import restoreCheckedStates
@@ -19,12 +18,11 @@ STATE_MAP = {
 
 class CalcChangeProjectedModuleStatesCommand(wx.Command):
 
-    def __init__(self, fitID, positions, proposedState, commit=True):
+    def __init__(self, fitID, positions, proposedState):
         wx.Command.__init__(self, True, 'Change Projected Module States')
         self.fitID = fitID
         self.positions = positions
         self.proposedState = STATE_MAP[proposedState]
-        self.commit = commit
         self.savedStates = {}
         self.savedStateCheckChanges = None
 
@@ -47,8 +45,6 @@ class CalcChangeProjectedModuleStatesCommand(wx.Command):
             return False
         sFit.recalc(fit)
         self.savedStateCheckChanges = sFit.checkStates(fit, None)
-        if self.commit:
-            eos.db.commit()
         return True
 
     def Undo(self):
@@ -60,6 +56,4 @@ class CalcChangeProjectedModuleStatesCommand(wx.Command):
             pyfalog.debug('Reverting projected {} to state {} for fit ID {}'.format(mod, state, self.fitID))
             mod.state = state
         restoreCheckedStates(fit, self.savedStateCheckChanges)
-        if self.commit:
-            eos.db.commit()
         return True

@@ -1,7 +1,6 @@
 import wx
 from logbook import Logger
 
-import eos.db
 from gui.fitCommands.helpers import restoreCheckedStates
 from service.fit import Fit
 
@@ -11,12 +10,11 @@ pyfalog = Logger(__name__)
 
 class CalcRemoveProjectedFitCommand(wx.Command):
 
-    def __init__(self, fitID, projectedFitID, amount, commit=True):
+    def __init__(self, fitID, projectedFitID, amount):
         wx.Command.__init__(self, True, 'Add Projected Fit')
         self.fitID = fitID
         self.projectedFitID = projectedFitID
         self.amount = amount
-        self.commit = commit
         self.savedState = None
         self.savedAmount = None
         self.changeAmountCommand = None
@@ -48,14 +46,11 @@ class CalcRemoveProjectedFitCommand(wx.Command):
             self.changeAmountCommand = CalcChangeProjectedFitAmountCommand(
                 fitID=self.fitID,
                 projectedFitID=self.projectedFitID,
-                amount=remainingAmount,
-                commit=False)
+                amount=remainingAmount)
             if not self.changeAmountCommand.Do():
                 return False
             sFit.recalc(fit)
             self.savedStateCheckChanges = sFit.checkStates(fit, None)
-            if self.commit:
-                eos.db.commit()
             return True
         else:
             self.changeAmountCommand = None
@@ -65,8 +60,6 @@ class CalcRemoveProjectedFitCommand(wx.Command):
             del fit.projectedFitDict[projectedFit.ID]
             sFit.recalc(fit)
             self.savedStateCheckChanges = sFit.checkStates(fit, None)
-            if self.commit:
-                eos.db.commit()
             return True
 
     def Undo(self):
@@ -75,19 +68,14 @@ class CalcRemoveProjectedFitCommand(wx.Command):
             if not self.changeAmountCommand.Undo():
                 return False
             restoreCheckedStates(Fit.getInstance().getFit(self.fitID), self.savedStateCheckChanges)
-            if self.commit:
-                eos.db.commit()
             return True
         from .add import CalcAddProjectedFitCommand
         cmd = CalcAddProjectedFitCommand(
             fitID=self.fitID,
             projectedFitID=self.projectedFitID,
             amount=self.savedAmount,
-            state=self.savedState,
-            commit=False)
+            state=self.savedState)
         if not cmd.Do():
             return False
         restoreCheckedStates(Fit.getInstance().getFit(self.fitID), self.savedStateCheckChanges)
-        if self.commit:
-            eos.db.commit()
         return True

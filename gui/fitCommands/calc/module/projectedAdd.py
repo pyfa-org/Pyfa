@@ -12,13 +12,12 @@ pyfalog = Logger(__name__)
 
 class CalcAddProjectedModuleCommand(wx.Command):
 
-    def __init__(self, fitID, modInfo, position=None, ignoreRestrictions=False, commit=True):
+    def __init__(self, fitID, modInfo, position=None, ignoreRestrictions=False):
         wx.Command.__init__(self, True)
         self.fitID = fitID
         self.newModInfo = modInfo
         self.newPosition = position
         self.ignoreRestrictions = ignoreRestrictions
-        self.commit = commit
         self.oldModInfo = None
         self.oldPosition = None
         self.savedStateCheckChanges = None
@@ -40,14 +39,10 @@ class CalcAddProjectedModuleCommand(wx.Command):
         if self.newPosition is not None:
             fit.projectedModules.insert(self.newPosition, newMod)
             if newMod not in fit.projectedModules:
-                if self.commit:
-                    eos.db.commit()
                 return False
         else:
             fit.projectedModules.append(newMod)
             if newMod not in fit.projectedModules:
-                if self.commit:
-                    eos.db.commit()
                 return False
             self.newPosition = fit.projectedModules.index(newMod)
 
@@ -56,8 +51,6 @@ class CalcAddProjectedModuleCommand(wx.Command):
         eos.db.flush()
         sFit.recalc(fit)
         self.savedStateCheckChanges = sFit.checkStates(fit, newMod)
-        if self.commit:
-            eos.db.commit()
         return True
 
     def Undo(self):
@@ -67,22 +60,16 @@ class CalcAddProjectedModuleCommand(wx.Command):
                 fitID=self.fitID,
                 modInfo=self.oldModInfo,
                 position=self.oldPosition,
-                ignoreRestrictions=True,
-                commit=False)
+                ignoreRestrictions=True)
             if not cmd.Do():
                 return False
             restoreCheckedStates(Fit.getInstance().getFit(self.fitID), self.savedStateCheckChanges)
-            if self.commit:
-                eos.db.commit()
             return True
         from .projectedRemove import CalcRemoveProjectedModuleCommand
         cmd = CalcRemoveProjectedModuleCommand(
             fitID=self.fitID,
-            position=self.newPosition,
-            commit=False)
+            position=self.newPosition)
         if not cmd.Do():
             return False
         restoreCheckedStates(Fit.getInstance().getFit(self.fitID), self.savedStateCheckChanges)
-        if self.commit:
-            eos.db.commit()
         return True

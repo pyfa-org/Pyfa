@@ -11,11 +11,10 @@ pyfalog = Logger(__name__)
 
 class CalcRemoveProjectedModuleCommand(wx.Command):
 
-    def __init__(self, fitID, position, commit=True):
+    def __init__(self, fitID, position):
         wx.Command.__init__(self, True)
         self.fitID = fitID
         self.position = position
-        self.commit = commit
         self.savedModInfo = None
         self.savedStateCheckChanges = None
 
@@ -32,8 +31,6 @@ class CalcRemoveProjectedModuleCommand(wx.Command):
         eos.db.flush()
         sFit.recalc(fit)
         self.savedStateCheckChanges = sFit.checkStates(fit, None)
-        if self.commit:
-            eos.db.commit()
         return True
 
     def Undo(self):
@@ -43,11 +40,8 @@ class CalcRemoveProjectedModuleCommand(wx.Command):
             fitID=self.fitID,
             modInfo=self.savedModInfo,
             position=self.position,
-            ignoreRestrictions=True,
-            commit=False)
+            ignoreRestrictions=True)
         if not cmd.Do():
             return False
         restoreCheckedStates(Fit.getInstance().getFit(self.fitID), self.savedStateCheckChanges)
-        if self.commit:
-            eos.db.commit()
         return True

@@ -33,27 +33,27 @@ class GuiChangeLocalDroneMetasCommand(wx.Command):
             cmdRemove = CalcRemoveLocalDroneCommand(
                 fitID=self.fitID,
                 position=position,
-                amount=math.inf,
-                commit=False)
+                amount=math.inf)
             cmdAdd = CalcAddLocalDroneCommand(
                 fitID=self.fitID,
                 droneInfo=info,
                 forceNewStack=True,
-                ignoreRestrictions=True,
-                commit=False)
+                ignoreRestrictions=True)
             results.append(self.internalHistory.submitBatch(cmdRemove, cmdAdd))
         success = any(results)
-        eos.db.commit()
+        eos.db.flush()
         sFit.recalc(self.fitID)
         sFit.fill(self.fitID)
+        eos.db.commit()
         wx.PostEvent(gui.mainFrame.MainFrame.getInstance(), GE.FitChanged(fitID=self.fitID))
         return success
 
     def Undo(self):
         success = self.internalHistory.undoAll()
-        eos.db.commit()
+        eos.db.flush()
         sFit = Fit.getInstance()
         sFit.recalc(self.fitID)
         sFit.fill(self.fitID)
+        eos.db.commit()
         wx.PostEvent(gui.mainFrame.MainFrame.getInstance(), GE.FitChanged(fitID=self.fitID))
         return success

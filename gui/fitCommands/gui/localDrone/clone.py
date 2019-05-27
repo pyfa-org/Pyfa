@@ -1,5 +1,6 @@
 import wx
 
+import eos.db
 import gui.mainFrame
 from gui import globalEvents as GE
 from gui.fitCommands.calc.drone.localAdd import CalcAddLocalDroneCommand
@@ -25,15 +26,19 @@ class GuiCloneLocalDroneCommand(wx.Command):
         info = DroneInfo.fromDrone(drone)
         cmd = CalcAddLocalDroneCommand(fitID=self.fitID, droneInfo=info, forceNewStack=True)
         success = self.internalHistory.submit(cmd)
+        eos.db.flush()
         sFit.recalc(self.fitID)
         sFit.fill(self.fitID)
+        eos.db.commit()
         wx.PostEvent(gui.mainFrame.MainFrame.getInstance(), GE.FitChanged(fitID=self.fitID))
         return success
 
     def Undo(self):
         success = self.internalHistory.undoAll()
+        eos.db.flush()
         sFit = Fit.getInstance()
         sFit.recalc(self.fitID)
         sFit.fill(self.fitID)
+        eos.db.commit()
         wx.PostEvent(gui.mainFrame.MainFrame.getInstance(), GE.FitChanged(fitID=self.fitID))
         return success

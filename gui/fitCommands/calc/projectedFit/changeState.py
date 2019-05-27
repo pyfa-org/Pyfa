@@ -1,7 +1,6 @@
 import wx
 from logbook import Logger
 
-import eos.db
 from gui.fitCommands.helpers import restoreCheckedStates
 from service.fit import Fit
 
@@ -11,12 +10,11 @@ pyfalog = Logger(__name__)
 
 class CalcChangeProjectedFitStateCommand(wx.Command):
 
-    def __init__(self, fitID, projectedFitID, state, commit=True):
+    def __init__(self, fitID, projectedFitID, state):
         wx.Command.__init__(self, True, 'Change Projected Fit State')
         self.fitID = fitID
         self.projectedFitID = projectedFitID
         self.state = state
-        self.commit = commit
         self.savedState = None
         self.savedStateCheckChanges = None
 
@@ -43,8 +41,6 @@ class CalcChangeProjectedFitStateCommand(wx.Command):
         fit = sFit.getFit(self.fitID)
         sFit.recalc(fit)
         self.savedStateCheckChanges = sFit.checkStates(fit, None)
-        if self.commit:
-            eos.db.commit()
         return True
 
     def Undo(self):
@@ -53,11 +49,8 @@ class CalcChangeProjectedFitStateCommand(wx.Command):
         cmd = CalcChangeProjectedFitStateCommand(
             fitID=self.fitID,
             projectedFitID=self.projectedFitID,
-            state=self.savedState,
-            commit=False)
+            state=self.savedState)
         if not cmd.Do():
             return False
         restoreCheckedStates(Fit.getInstance().getFit(self.fitID), self.savedStateCheckChanges)
-        if self.commit:
-            eos.db.commit()
         return True

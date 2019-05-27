@@ -1,5 +1,6 @@
 import wx
 
+import eos.db
 import gui.mainFrame
 from gui import globalEvents as GE
 from gui.fitCommands.calc.module.changeCharges import CalcChangeModuleChargesCommand
@@ -19,16 +20,20 @@ class GuiChangeLocalModuleChargesCommand(wx.Command):
     def Do(self):
         cmd = CalcChangeModuleChargesCommand(fitID=self.fitID, projected=False, chargeMap={p: self.chargeItemID for p in self.positions})
         success = self.internalHistory.submit(cmd)
+        eos.db.flush()
         sFit = Fit.getInstance()
         sFit.recalc(self.fitID)
         sFit.fill(self.fitID)
+        eos.db.commit()
         wx.PostEvent(gui.mainFrame.MainFrame.getInstance(), GE.FitChanged(fitID=self.fitID))
         return success
 
     def Undo(self):
         success = self.internalHistory.undoAll()
+        eos.db.flush()
         sFit = Fit.getInstance()
         sFit.recalc(self.fitID)
         sFit.fill(self.fitID)
+        eos.db.commit()
         wx.PostEvent(gui.mainFrame.MainFrame.getInstance(), GE.FitChanged(fitID=self.fitID))
         return success

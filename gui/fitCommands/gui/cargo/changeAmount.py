@@ -2,6 +2,7 @@ import math
 
 import wx
 
+import eos.db
 import gui.mainFrame
 from gui import globalEvents as GE
 from gui.fitCommands.calc.cargo.changeAmount import CalcChangeCargoAmountCommand
@@ -24,10 +25,12 @@ class GuiChangeCargoAmountCommand(wx.Command):
         else:
             cmd = CalcRemoveCargoCommand(fitID=self.fitID, cargoInfo=CargoInfo(itemID=self.itemID, amount=math.inf))
         success = self.internalHistory.submit(cmd)
+        eos.db.commit()
         wx.PostEvent(gui.mainFrame.MainFrame.getInstance(), GE.FitChanged(fitID=self.fitID))
         return success
 
     def Undo(self):
         success = self.internalHistory.undoAll()
+        eos.db.commit()
         wx.PostEvent(gui.mainFrame.MainFrame.getInstance(), GE.FitChanged(fitID=self.fitID))
         return success

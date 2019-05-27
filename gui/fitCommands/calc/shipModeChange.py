@@ -1,7 +1,6 @@
 import wx
 from logbook import Logger
 
-import eos.db
 from eos.saveddata.mode import Mode
 from service.fit import Fit
 from service.market import Market
@@ -25,7 +24,6 @@ class CalcChangeShipModeCommand(wx.Command):
         item = Market.getInstance().getItem(self.itemID)
         mode = Mode(item)
         fit.mode = mode
-        eos.db.commit()
         return True
 
     def Undo(self):

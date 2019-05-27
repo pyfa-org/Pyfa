@@ -12,11 +12,10 @@ pyfalog = Logger(__name__)
 
 class CalcRemoveLocalModulesCommand(wx.Command):
 
-    def __init__(self, fitID, positions, commit=True):
+    def __init__(self, fitID, positions):
         wx.Command.__init__(self, True, 'Remove Module')
         self.fitID = fitID
         self.positions = positions
-        self.commit = commit
         self.savedSubInfos = None
         self.savedModInfos = None
         self.savedStateCheckChanges = None
@@ -45,8 +44,6 @@ class CalcRemoveLocalModulesCommand(wx.Command):
         eos.db.flush()
         sFit.recalc(fit)
         self.savedStateCheckChanges = sFit.checkStates(fit, None)
-        if self.commit:
-            eos.db.commit()
         # If no modules were removed, report that command was not completed
         return True
 
@@ -63,8 +60,7 @@ class CalcRemoveLocalModulesCommand(wx.Command):
                     fitID=self.fitID,
                     position=position,
                     newModInfo=modInfo,
-                    ignoreRestrictions=True,
-                    commit=False)
+                    ignoreRestrictions=True)
                 results.append(cmd.Do())
             sFit.recalc(fit)
         for position, modInfo in self.savedModInfos.items():
@@ -72,12 +68,9 @@ class CalcRemoveLocalModulesCommand(wx.Command):
                 fitID=self.fitID,
                 position=position,
                 newModInfo=modInfo,
-                ignoreRestrictions=True,
-                commit=False)
+                ignoreRestrictions=True)
             results.append(cmd.Do())
         if not any(results):
             return False
         restoreCheckedStates(fit, self.savedStateCheckChanges)
-        if self.commit:
-            eos.db.commit()
         return True

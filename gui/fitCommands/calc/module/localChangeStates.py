@@ -1,7 +1,6 @@
 import wx
 from logbook import Logger
 
-import eos.db
 from eos.saveddata.module import Module
 from gui.fitCommands.helpers import restoreCheckedStates
 from service.fit import Fit
@@ -51,7 +50,6 @@ class CalcChangeLocalModuleStatesCommand(wx.Command):
             return False
         sFit.recalc(fit)
         self.savedStateCheckChanges = sFit.checkStates(fit, mainMod)
-        eos.db.commit()
         return True
 
     def Undo(self):
@@ -62,5 +60,4 @@ class CalcChangeLocalModuleStatesCommand(wx.Command):
             pyfalog.debug('Reverting {} to state {} for fit ID {}'.format(mod, state, self.fitID))
             mod.state = state
         restoreCheckedStates(fit, self.savedStateCheckChanges, ignoreModPoss=self.savedStates)
-        eos.db.commit()
         return True

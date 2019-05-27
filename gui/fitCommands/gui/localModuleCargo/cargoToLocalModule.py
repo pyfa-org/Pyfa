@@ -47,18 +47,15 @@ class GuiCargoToLocalModuleCommand(wx.Command):
             if not self.copy:
                 commands.append(CalcRemoveCargoCommand(
                     fitID=self.fitID,
-                    cargoInfo=CargoInfo(itemID=newModChargeItemID, amount=newModChargeAmount),
-                    commit=False))
+                    cargoInfo=CargoInfo(itemID=newModChargeItemID, amount=newModChargeAmount)))
             if newCargoChargeItemID is not None:
                 commands.append(CalcAddCargoCommand(
                     fitID=self.fitID,
-                    cargoInfo=CargoInfo(itemID=newCargoChargeItemID, amount=newCargoChargeAmount),
-                    commit=False))
+                    cargoInfo=CargoInfo(itemID=newCargoChargeItemID, amount=newCargoChargeAmount)))
             commands.append(CalcChangeModuleChargesCommand(
                 fitID=self.fitID,
                 projected=False,
-                chargeMap={self.dstModPosition: self.srcCargoItemID},
-                commit=False))
+                chargeMap={self.dstModPosition: self.srcCargoItemID}))
             success = self.internalHistory.submitBatch(*commands)
         # Moving/copying/replacing module
         elif srcCargo.item.isModule:
@@ -83,20 +80,17 @@ class GuiCargoToLocalModuleCommand(wx.Command):
             if not self.copy:
                 commands.append(CalcRemoveCargoCommand(
                     fitID=self.fitID,
-                    cargoInfo=CargoInfo(itemID=self.srcCargoItemID, amount=1),
-                    commit=False))
+                    cargoInfo=CargoInfo(itemID=self.srcCargoItemID, amount=1)))
             # Add item to cargo only if we copied/moved to non-empty slot
             if newCargoModItemID is not None:
                 commands.append(CalcAddCargoCommand(
                     fitID=self.fitID,
-                    cargoInfo=CargoInfo(itemID=newCargoModItemID, amount=1),
-                    commit=False))
+                    cargoInfo=CargoInfo(itemID=newCargoModItemID, amount=1)))
             cmdReplace = CalcReplaceLocalModuleCommand(
                 fitID=self.fitID,
                 position=self.dstModPosition,
                 newModInfo=newModInfo,
-                unloadInvalidCharges=True,
-                commit=False)
+                unloadInvalidCharges=True)
             commands.append(cmdReplace)
             # Submit batch now because we need to have updated info on fit to keep going
             success = self.internalHistory.submitBatch(*commands)
@@ -109,8 +103,7 @@ class GuiCargoToLocalModuleCommand(wx.Command):
                 if cmdReplace.unloadedCharge and dstModChargeItemID is not None:
                     cmdAddCargoCharge = CalcAddCargoCommand(
                         fitID=self.fitID,
-                        cargoInfo=CargoInfo(itemID=dstModChargeItemID, amount=dstModChargeAmount),
-                        commit=False)
+                        cargoInfo=CargoInfo(itemID=dstModChargeItemID, amount=dstModChargeAmount))
                     success = self.internalHistory.submit(cmdAddCargoCharge)
                 # If we did not unload charge and there still was a charge, see if amount differs and process it
                 elif not cmdReplace.unloadedCharge and dstModChargeItemID is not None:
@@ -119,16 +112,14 @@ class GuiCargoToLocalModuleCommand(wx.Command):
                     if extraChargeAmount > 0:
                         cmdRemoveCargoExtraCharge = CalcRemoveCargoCommand(
                             fitID=self.fitID,
-                            cargoInfo=CargoInfo(itemID=dstModChargeItemID, amount=extraChargeAmount),
-                            commit=False)
+                            cargoInfo=CargoInfo(itemID=dstModChargeItemID, amount=extraChargeAmount))
                         # Do not check if operation was successful or not, we're okay if we have no such
                         # charges in cargo
                         self.internalHistory.submit(cmdRemoveCargoExtraCharge)
                     elif extraChargeAmount < 0:
                         cmdAddCargoExtraCharge = CalcAddCargoCommand(
                             fitID=self.fitID,
-                            cargoInfo=CargoInfo(itemID=dstModChargeItemID, amount=abs(extraChargeAmount)),
-                            commit=False)
+                            cargoInfo=CargoInfo(itemID=dstModChargeItemID, amount=abs(extraChargeAmount)))
                         success = self.internalHistory.submit(cmdAddCargoExtraCharge)
             if success:
                 # Store info to properly send events later
@@ -138,9 +129,10 @@ class GuiCargoToLocalModuleCommand(wx.Command):
                 self.internalHistory.undoAll()
         else:
             return False
-        eos.db.commit()
+        eos.db.flush()
         sFit.recalc(self.fitID)
         self.savedRemovedDummies = sFit.fill(self.fitID)
+        eos.db.commit()
         events = []
         if self.removedModItemID is not None:
             events.append(GE.FitChanged(fitID=self.fitID, action='moddel', typeID=self.removedModItemID))
@@ -157,9 +149,10 @@ class GuiCargoToLocalModuleCommand(wx.Command):
         fit = sFit.getFit(self.fitID)
         restoreRemovedDummies(fit, self.savedRemovedDummies)
         success = self.internalHistory.undoAll()
-        eos.db.commit()
+        eos.db.flush()
         sFit.recalc(self.fitID)
         sFit.fill(self.fitID)
+        eos.db.commit()
         events = []
         if self.addedModItemID is not None:
             events.append(GE.FitChanged(fitID=self.fitID, action='moddel', typeID=self.addedModItemID))

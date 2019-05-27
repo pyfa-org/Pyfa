@@ -31,26 +31,26 @@ class GuiSplitLocalDroneStackCommand(wx.Command):
         commands.append(CalcRemoveLocalDroneCommand(
             fitID=self.fitID,
             position=self.position,
-            amount=self.amount,
-            commit=False))
+            amount=self.amount))
         commands.append(CalcAddLocalDroneCommand(
             fitID=self.fitID,
             droneInfo=info,
             forceNewStack=True,
-            ignoreRestrictions=True,
-            commit=False))
+            ignoreRestrictions=True))
         success = self.internalHistory.submitBatch(*commands)
-        eos.db.commit()
+        eos.db.flush()
         sFit.recalc(self.fitID)
         sFit.fill(self.fitID)
+        eos.db.commit()
         wx.PostEvent(gui.mainFrame.MainFrame.getInstance(), GE.FitChanged(fitID=self.fitID))
         return success
 
     def Undo(self):
         success = self.internalHistory.undoAll()
-        eos.db.commit()
+        eos.db.flush()
         sFit = Fit.getInstance()
         sFit.recalc(self.fitID)
         sFit.fill(self.fitID)
+        eos.db.commit()
         wx.PostEvent(gui.mainFrame.MainFrame.getInstance(), GE.FitChanged(fitID=self.fitID))
         return success

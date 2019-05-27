@@ -1,7 +1,6 @@
 import wx
 from logbook import Logger
 
-import eos.db
 from service.fit import Fit
 
 
@@ -25,7 +24,6 @@ class CalcChangeFitSystemSecurityCommand(wx.Command):
             return False
         self.savedSecStatus = fit.systemSecurity
         fit.systemSecurity = self.secStatus
-        eos.db.commit()
         return True
 
     def Undo(self):

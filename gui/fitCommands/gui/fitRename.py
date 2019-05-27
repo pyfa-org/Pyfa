@@ -1,5 +1,6 @@
 import wx
 
+import eos.db
 import gui.mainFrame
 from gui.builtinShipBrowser.events import FitRenamed
 from gui.fitCommands.calc.fitRename import CalcFitRenameCommand
@@ -17,10 +18,12 @@ class GuiRenameFitCommand(wx.Command):
     def Do(self):
         cmd = CalcFitRenameCommand(fitID=self.fitID, name=self.name)
         success = self.internalHistory.submit(cmd)
+        eos.db.commit()
         wx.PostEvent(gui.mainFrame.MainFrame.getInstance(), FitRenamed(fitID=self.fitID))
         return success
 
     def Undo(self):
         success = self.internalHistory.undoAll()
+        eos.db.commit()
         wx.PostEvent(gui.mainFrame.MainFrame.getInstance(), FitRenamed(fitID=self.fitID))
         return success

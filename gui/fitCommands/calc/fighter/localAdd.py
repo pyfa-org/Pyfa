@@ -1,7 +1,6 @@
 import wx
 from logbook import Logger
 
-import eos.db
 from service.fit import Fit
 
 
@@ -10,13 +9,12 @@ pyfalog = Logger(__name__)
 
 class CalcAddLocalFighterCommand(wx.Command):
 
-    def __init__(self, fitID, fighterInfo, position=None, ignoreRestrictions=False, commit=True):
+    def __init__(self, fitID, fighterInfo, position=None, ignoreRestrictions=False):
         wx.Command.__init__(self, True, 'Add Fighter')
         self.fitID = fitID
         self.fighterInfo = fighterInfo
         self.position = position
         self.ignoreRestrictions = ignoreRestrictions
-        self.commit = commit
 
     def Do(self):
         pyfalog.debug('Doing addition of fighter {} to fit {}'.format(self.fighterInfo, self.fitID))
@@ -43,24 +41,18 @@ class CalcAddLocalFighterCommand(wx.Command):
             fit.fighters.append(fighter)
             if fighter not in fit.fighters:
                 pyfalog.warning('Failed to append to list')
-                if self.commit:
-                    eos.db.commit()
                 return False
             self.position = fit.fighters.index(fighter)
         else:
             fit.fighters.insert(self.position, fighter)
             if fighter not in fit.fighters:
                 pyfalog.warning('Failed to insert to list')
-                if self.commit:
-                    eos.db.commit()
                 return False
-        if self.commit:
-            eos.db.commit()
         return True
 
     def Undo(self):
         pyfalog.debug('Undoing addition of fighter {} to fit {}'.format(self.fighterInfo, self.fitID))
         from .localRemove import CalcRemoveLocalFighterCommand
-        cmd = CalcRemoveLocalFighterCommand(fitID=self.fitID, position=self.position, commit=self.commit)
+        cmd = CalcRemoveLocalFighterCommand(fitID=self.fitID, position=self.position)
         cmd.Do()
         return True

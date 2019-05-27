@@ -1,7 +1,6 @@
 import wx
 from logbook import Logger
 
-import eos.db
 from service.fit import Fit
 
 
@@ -41,7 +40,6 @@ class CalcToggleImplantStatesCommand(wx.Command):
                 implant = fit.implants[position]
                 if not implant.active:
                     implant.active = True
-        eos.db.commit()
         return True
 
     def Undo(self):

@@ -1,7 +1,6 @@
 import wx
 from logbook import Logger
 
-import eos.db
 from gui.fitCommands.helpers import CargoInfo
 from service.fit import Fit
 
@@ -28,7 +27,6 @@ class CalcChangeCargoAmountCommand(wx.Command):
         if self.cargoInfo.amount == self.savedCargoInfo.amount:
             return False
         cargo.amount = self.cargoInfo.amount
-        eos.db.commit()
         return True
 
     def Undo(self):

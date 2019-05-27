@@ -42,7 +42,6 @@ class CalcToggleLocalDroneStatesCommand(wx.Command):
                 if drone.amountActive == 0:
                     drone.amountActive = drone.amount
 
-        eos.db.commit()
         return True
 
     def Undo(self):

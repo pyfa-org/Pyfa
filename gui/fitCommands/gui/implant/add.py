@@ -22,27 +22,29 @@ class GuiAddImplantCommand(wx.Command):
         sFit = Fit.getInstance()
         fit = sFit.getFit(self.fitID)
         if fit.implantSource != ImplantLocation.FIT:
-            cmd = CalcChangeImplantLocationCommand(fitID=self.fitID, source=ImplantLocation.FIT, commit=False)
+            cmd = CalcChangeImplantLocationCommand(fitID=self.fitID, source=ImplantLocation.FIT)
             successSource = self.internalHistory.submit(cmd)
         else:
             successSource = False
-        cmd = CalcAddImplantCommand(fitID=self.fitID, implantInfo=ImplantInfo(itemID=self.itemID), commit=False)
+        cmd = CalcAddImplantCommand(fitID=self.fitID, implantInfo=ImplantInfo(itemID=self.itemID))
         successImplant = self.internalHistory.submit(cmd)
         # Acceptable behavior when we already have passed implant and just switch source, or
         # when we have source and add implant, but not if we do not change anything
         success = successSource or successImplant
-        eos.db.commit()
+        eos.db.flush()
         sFit = Fit.getInstance()
         sFit.recalc(self.fitID)
         sFit.fill(self.fitID)
+        eos.db.commit()
         wx.PostEvent(gui.mainFrame.MainFrame.getInstance(), GE.FitChanged(fitID=self.fitID))
         return success
 
     def Undo(self):
         success = self.internalHistory.undoAll()
-        eos.db.commit()
+        eos.db.flush()
         sFit = Fit.getInstance()
         sFit.recalc(self.fitID)
         sFit.fill(self.fitID)
+        eos.db.commit()
         wx.PostEvent(gui.mainFrame.MainFrame.getInstance(), GE.FitChanged(fitID=self.fitID))
         return success

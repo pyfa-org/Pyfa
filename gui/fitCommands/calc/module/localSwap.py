@@ -1,7 +1,6 @@
 import wx
 from logbook import Logger
 
-import eos.db
 from service.fit import Fit
 
 
@@ -36,14 +35,11 @@ class CalcSwapLocalModuleCommand(wx.Command):
         if len(fit.modules) <= position2 or fit.modules[position2] is not mod1:
             fit.modules.replace(position1, mod1)
             fit.modules.replace(position2, mod2)
-            eos.db.commit()
             return False
         fit.modules.replace(position1, mod2)
         if len(fit.modules) <= position1 or fit.modules[position1] is not mod2:
             fit.modules.free(position2)
             fit.modules.replace(position1, mod1)
             fit.modules.replace(position2, mod2)
-            eos.db.commit()
             return False
-        eos.db.commit()
         return True

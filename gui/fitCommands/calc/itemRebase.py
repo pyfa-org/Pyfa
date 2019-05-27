@@ -1,7 +1,6 @@
 import wx
 from logbook import Logger
 
-import eos.db
 from service.fit import Fit
 from service.market import Market
 
@@ -11,13 +10,12 @@ pyfalog = Logger(__name__)
 
 class CalcRebaseItemCommand(wx.Command):
 
-    def __init__(self, fitID, containerName, position, itemID, commit=True):
+    def __init__(self, fitID, containerName, position, itemID):
         wx.Command.__init__(self, True, 'Rebase Item')
         self.fitID = fitID
         self.containerName = containerName
         self.position = position
         self.itemID = itemID
-        self.commit = commit
         self.savedItemID = None
 
     def Do(self):
@@ -33,8 +31,6 @@ class CalcRebaseItemCommand(wx.Command):
             pyfalog.warning('Unable to fetch new item')
             return False
         obj.rebase(newItem)
-        if self.commit:
-            eos.db.commit()
         return True
 
     def Undo(self):
@@ -43,6 +39,5 @@ class CalcRebaseItemCommand(wx.Command):
             fitID=self.fitID,
             containerName=self.containerName,
             position=self.position,
-            itemID=self.savedItemID,
-            commit=self.commit)
+            itemID=self.savedItemID)
         return cmd.Do()

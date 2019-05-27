@@ -1,7 +1,6 @@
 import wx
 from logbook import Logger
 
-import eos.db
 from service.fit import Fit
 
 
@@ -28,7 +27,6 @@ class CalcToggleBoosterSideEffectStateCommand(wx.Command):
             return False
         self.savedState = sideEffect.active
         sideEffect.active = not sideEffect.active if self.forceState is None else self.forceState
-        eos.db.commit()
         return True
 
     def Undo(self):

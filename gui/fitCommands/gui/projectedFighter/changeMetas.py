@@ -28,21 +28,23 @@ class GuiChangeProjectedFighterMetasCommand(wx.Command):
                 continue
             info = FighterInfo.fromFighter(fighter)
             info.itemID = self.newItemID
-            cmdRemove = CalcRemoveProjectedFighterCommand(fitID=self.fitID, position=position, commit=False)
-            cmdAdd = CalcAddProjectedFighterCommand(fitID=self.fitID, fighterInfo=info, commit=False)
+            cmdRemove = CalcRemoveProjectedFighterCommand(fitID=self.fitID, position=position)
+            cmdAdd = CalcAddProjectedFighterCommand(fitID=self.fitID, fighterInfo=info)
             results.append(self.internalHistory.submitBatch(cmdRemove, cmdAdd))
         success = any(results)
-        eos.db.commit()
+        eos.db.flush()
         sFit.recalc(self.fitID)
         sFit.fill(self.fitID)
+        eos.db.commit()
         wx.PostEvent(gui.mainFrame.MainFrame.getInstance(), GE.FitChanged(fitID=self.fitID))
         return success
 
     def Undo(self):
         success = self.internalHistory.undoAll()
-        eos.db.commit()
+        eos.db.flush()
         sFit = Fit.getInstance()
         sFit.recalc(self.fitID)
         sFit.fill(self.fitID)
+        eos.db.commit()
         wx.PostEvent(gui.mainFrame.MainFrame.getInstance(), GE.FitChanged(fitID=self.fitID))
         return success

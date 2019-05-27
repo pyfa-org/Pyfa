@@ -1,7 +1,6 @@
 import wx
 from logbook import Logger
 
-import eos.db
 from service.fit import Fit
 
 
@@ -60,7 +59,6 @@ class CalcToggleCommandFitStatesCommand(wx.Command):
         # Bail if we cannot calculate which state to take
         else:
             return False
-        eos.db.commit()
         return True
 
     def Undo(self):

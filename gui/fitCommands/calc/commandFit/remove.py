@@ -1,7 +1,6 @@
 import wx
 from logbook import Logger
 
-import eos.db
 from service.fit import Fit
 
 
@@ -10,11 +9,10 @@ pyfalog = Logger(__name__)
 
 class CalcRemoveCommandFitCommand(wx.Command):
 
-    def __init__(self, fitID, commandFitID, commit=True):
+    def __init__(self, fitID, commandFitID):
         wx.Command.__init__(self, True, 'Remove Command Fit')
         self.fitID = fitID
         self.commandFitID = commandFitID
-        self.commit = commit
         self.savedState = None
 
     def Do(self):
@@ -36,8 +34,6 @@ class CalcRemoveCommandFitCommand(wx.Command):
             pyfalog.warning('Unable to find commanding fit in command dict')
             return False
         del fit.commandFitDict[commandFit.ID]
-        if self.commit:
-            eos.db.commit()
         return True
 
     def Undo(self):
@@ -46,6 +42,5 @@ class CalcRemoveCommandFitCommand(wx.Command):
         cmd = CalcAddCommandCommand(
             fitID=self.fitID,
             commandFitID=self.commandFitID,
-            state=self.savedState,
-            commit=self.commit)
+            state=self.savedState)
         return cmd.Do()

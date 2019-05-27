@@ -10,12 +10,11 @@ pyfalog = Logger(__name__)
 
 class CalcAddCommandCommand(wx.Command):
 
-    def __init__(self, fitID, commandFitID, state=None, commit=True):
+    def __init__(self, fitID, commandFitID, state=None):
         wx.Command.__init__(self, True, 'Add Command Fit')
         self.fitID = fitID
         self.commandFitID = commandFitID
         self.state = state
-        self.commit = commit
 
     def Do(self):
         pyfalog.debug('Doing addition of command fit {} for fit {}'.format(self.commandFitID, self.fitID))
@@ -47,8 +46,6 @@ class CalcAddCommandCommand(wx.Command):
                 return False
             fitCommandInfo.active = self.state
 
-        if self.commit:
-            eos.db.commit()
         return True
 
     def Undo(self):
@@ -59,5 +56,5 @@ class CalcAddCommandCommand(wx.Command):
         if commandFit is None:
             return True
         from .remove import CalcRemoveCommandFitCommand
-        cmd = CalcRemoveCommandFitCommand(fitID=self.fitID, commandFitID=self.commandFitID, commit=self.commit)
+        cmd = CalcRemoveCommandFitCommand(fitID=self.fitID, commandFitID=self.commandFitID)
         return cmd.Do()

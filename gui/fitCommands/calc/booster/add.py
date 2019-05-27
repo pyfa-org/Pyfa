@@ -1,7 +1,6 @@
 import wx
 from logbook import Logger
 
-import eos.db
 from service.fit import Fit
 
 
@@ -10,12 +9,11 @@ pyfalog = Logger(__name__)
 
 class CalcAddBoosterCommand(wx.Command):
 
-    def __init__(self, fitID, boosterInfo, position=None, commit=True):
+    def __init__(self, fitID, boosterInfo, position=None):
         wx.Command.__init__(self, True, 'Add Booster')
         self.fitID = fitID
         self.newBoosterInfo = boosterInfo
         self.newPosition = position
-        self.commit = commit
         self.oldBoosterInfo = None
         self.oldPosition = None
 
@@ -40,8 +38,7 @@ class CalcAddBoosterCommand(wx.Command):
                 cmd = CalcAddBoosterCommand(
                     fitID=self.fitID,
                     boosterInfo=self.oldBoosterInfo,
-                    position=self.oldPosition,
-                    commit=self.commit)
+                    position=self.oldPosition)
                 cmd.Do()
                 return False
         else:
@@ -51,21 +48,18 @@ class CalcAddBoosterCommand(wx.Command):
                 cmd = CalcAddBoosterCommand(
                     fitID=self.fitID,
                     boosterInfo=self.oldBoosterInfo,
-                    position=self.oldPosition,
-                    commit=self.commit)
+                    position=self.oldPosition)
                 cmd.Do()
                 return False
             self.newPosition = fit.boosters.index(newBooster)
 
-        if self.commit:
-            eos.db.commit()
         return True
 
     def Undo(self):
         pyfalog.debug('Undo addition of booster {} to fit {}'.format(self.newBoosterInfo, self.fitID))
         if self.oldBoosterInfo is not None and self.oldPosition is not None:
-            cmd = CalcAddBoosterCommand(fitID=self.fitID, boosterInfo=self.oldBoosterInfo, position=self.oldPosition, commit=self.commit)
+            cmd = CalcAddBoosterCommand(fitID=self.fitID, boosterInfo=self.oldBoosterInfo, position=self.oldPosition)
             return cmd.Do()
         from .remove import CalcRemoveBoosterCommand
-        cmd = CalcRemoveBoosterCommand(fitID=self.fitID, position=self.newPosition, commit=self.commit)
+        cmd = CalcRemoveBoosterCommand(fitID=self.fitID, position=self.newPosition)
         return cmd.Do()

@@ -32,12 +32,10 @@ class GuiChangeCargoMetasCommand(wx.Command):
             amount = cargo.amount
             cmdRemove = CalcRemoveCargoCommand(
                 fitID=self.fitID,
-                cargoInfo=CargoInfo(itemID=itemID, amount=math.inf),
-                commit=False)
+                cargoInfo=CargoInfo(itemID=itemID, amount=math.inf))
             cmdAdd = CalcAddCargoCommand(
                 fitID=self.fitID,
-                cargoInfo=CargoInfo(itemID=self.newItemID, amount=amount),
-                commit=False)
+                cargoInfo=CargoInfo(itemID=self.newItemID, amount=amount))
             results.append(self.internalHistory.submitBatch(cmdRemove, cmdAdd))
         success = any(results)
         eos.db.commit()

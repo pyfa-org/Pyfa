@@ -1,7 +1,6 @@
 import wx
 from logbook import Logger
 
-import eos.db
 from service.fit import Fit
 
 
@@ -23,7 +22,6 @@ class CalcFitRenameCommand(wx.Command):
             return False
         self.savedName = fit.name
         fit.name = self.name
-        eos.db.commit()
         return True
 
     def Undo(self):

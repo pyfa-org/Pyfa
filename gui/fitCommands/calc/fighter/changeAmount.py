@@ -1,7 +1,6 @@
 import wx
 from logbook import Logger
 
-import eos.db
 from service.fit import Fit
 
 
@@ -28,11 +27,9 @@ class CalcChangeFighterAmountCommand(wx.Command):
         self.savedAmount = fighter.amount
         if self.amount == -1:
             fighter.amount = self.amount
-            eos.db.commit()
             return True
         else:
             fighter.amount = max(min(self.amount, fighter.fighterSquadronMaxSize), 0)
-            eos.db.commit()
             return True
 
     def Undo(self):

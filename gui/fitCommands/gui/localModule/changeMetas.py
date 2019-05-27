@@ -37,15 +37,15 @@ class GuiChangeLocalModuleMetasCommand(wx.Command):
                 fitID=self.fitID,
                 position=position,
                 newModInfo=info,
-                unloadInvalidCharges=True,
-                commit=False)
+                unloadInvalidCharges=True)
             commands.append(cmd)
         if not commands:
             return False
         success = self.internalHistory.submitBatch(*commands)
-        eos.db.commit()
+        eos.db.flush()
         sFit.recalc(self.fitID)
         self.savedRemovedDummies = sFit.fill(self.fitID)
+        eos.db.commit()
         events = []
         if success and self.replacedItemIDs:
             events.append(GE.FitChanged(fitID=self.fitID, action='moddel', typeID=self.replacedItemIDs))
@@ -62,9 +62,10 @@ class GuiChangeLocalModuleMetasCommand(wx.Command):
         fit = sFit.getFit(self.fitID)
         restoreRemovedDummies(fit, self.savedRemovedDummies)
         success = self.internalHistory.undoAll()
-        eos.db.commit()
+        eos.db.flush()
         sFit.recalc(self.fitID)
         sFit.fill(self.fitID)
+        eos.db.commit()
         events = []
         if success:
             events.append(GE.FitChanged(fitID=self.fitID, action='moddel', typeID=self.newItemID))

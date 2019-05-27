@@ -11,7 +11,7 @@ pyfalog = Logger(__name__)
 
 class CalcReplaceLocalModuleCommand(wx.Command):
 
-    def __init__(self, fitID, position, newModInfo, unloadInvalidCharges=False, ignoreRestrictions=False, commit=True):
+    def __init__(self, fitID, position, newModInfo, unloadInvalidCharges=False, ignoreRestrictions=False):
         wx.Command.__init__(self, True, 'Replace Module')
         self.fitID = fitID
         self.position = position
@@ -19,7 +19,6 @@ class CalcReplaceLocalModuleCommand(wx.Command):
         self.oldModInfo = None
         self.unloadInvalidCharges = unloadInvalidCharges
         self.ignoreRestrictions = ignoreRestrictions
-        self.commit = commit
         self.savedStateCheckChanges = None
         self.unloadedCharge = None
 
@@ -62,8 +61,6 @@ class CalcReplaceLocalModuleCommand(wx.Command):
         eos.db.flush()
         sFit.recalc(fit)
         self.savedStateCheckChanges = sFit.checkStates(fit, newMod)
-        if self.commit:
-            eos.db.commit()
         return True
 
     def Undo(self):
@@ -73,12 +70,10 @@ class CalcReplaceLocalModuleCommand(wx.Command):
         # Remove if there was no module
         if self.oldModInfo is None:
             from .localRemove import CalcRemoveLocalModulesCommand
-            cmd = CalcRemoveLocalModulesCommand(fitID=self.fitID, positions=[self.position], commit=False)
+            cmd = CalcRemoveLocalModulesCommand(fitID=self.fitID, positions=[self.position])
             if not cmd.Do():
                 return False
             restoreCheckedStates(fit, self.savedStateCheckChanges)
-            if self.commit:
-                eos.db.commit()
             return True
         # Replace if there was
         oldMod = self.oldModInfo.toModule()
@@ -91,6 +86,4 @@ class CalcReplaceLocalModuleCommand(wx.Command):
             self.Do()
             return False
         restoreCheckedStates(fit, self.savedStateCheckChanges)
-        if self.commit:
-            eos.db.commit()
         return True

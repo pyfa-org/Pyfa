@@ -1,8 +1,6 @@
 import wx
-
 from logbook import Logger
 
-import eos.db
 from gui.fitCommands.helpers import CargoInfo
 from service.fit import Fit
 
@@ -12,11 +10,10 @@ pyfalog = Logger(__name__)
 
 class CalcRemoveCargoCommand(wx.Command):
 
-    def __init__(self, fitID, cargoInfo, commit=True):
+    def __init__(self, fitID, cargoInfo):
         wx.Command.__init__(self, True, 'Remove Cargo')
         self.fitID = fitID
         self.cargoInfo = cargoInfo
-        self.commit = commit
         self.savedRemovedAmount = None
 
     def Do(self):
@@ -29,8 +26,6 @@ class CalcRemoveCargoCommand(wx.Command):
         cargo.amount -= self.savedRemovedAmount
         if cargo.amount <= 0:
             fit.cargo.remove(cargo)
-        if self.commit:
-            eos.db.commit()
         return True
 
     def Undo(self):
@@ -38,6 +33,5 @@ class CalcRemoveCargoCommand(wx.Command):
         from .add import CalcAddCargoCommand
         cmd = CalcAddCargoCommand(
             fitID=self.fitID,
-            cargoInfo=CargoInfo(itemID=self.cargoInfo.itemID, amount=self.savedRemovedAmount),
-            commit=self.commit)
+            cargoInfo=CargoInfo(itemID=self.cargoInfo.itemID, amount=self.savedRemovedAmount))
         return cmd.Do()

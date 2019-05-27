@@ -21,14 +21,15 @@ class GuiFillWithNewLocalModulesCommand(wx.Command):
         info = ModuleInfo(itemID=self.itemID)
         added_modules = 0
         while True:
-            cmd = CalcAddLocalModuleCommand(fitID=self.fitID, newModInfo=info, commit=False)
+            cmd = CalcAddLocalModuleCommand(fitID=self.fitID, newModInfo=info)
             if not self.internalHistory.submit(cmd):
                 break
             added_modules += 1
-        eos.db.commit()
+        eos.db.flush()
         sFit = Fit.getInstance()
         sFit.recalc(self.fitID)
         self.savedRemovedDummies = sFit.fill(self.fitID)
+        eos.db.commit()
         success = added_modules > 0
         wx.PostEvent(
             gui.mainFrame.MainFrame.getInstance(),
@@ -42,9 +43,10 @@ class GuiFillWithNewLocalModulesCommand(wx.Command):
         fit = sFit.getFit(self.fitID)
         restoreRemovedDummies(fit, self.savedRemovedDummies)
         success = self.internalHistory.undoAll()
-        eos.db.commit()
+        eos.db.flush()
         sFit.recalc(self.fitID)
         sFit.fill(self.fitID)
+        eos.db.commit()
         wx.PostEvent(
             gui.mainFrame.MainFrame.getInstance(),
             GE.FitChanged(fitID=self.fitID, action='moddel', typeID=self.itemID)

@@ -1,5 +1,3 @@
-import math
-
 import wx
 
 import eos.db
@@ -44,30 +42,32 @@ class GuiRemoveProjectedItemsCommand(wx.Command):
     def Do(self):
         results = []
         for pModPosition in sorted(self.pModPositions, reverse=True):
-            cmd = CalcRemoveProjectedModuleCommand(fitID=self.fitID, position=pModPosition, commit=False)
+            cmd = CalcRemoveProjectedModuleCommand(fitID=self.fitID, position=pModPosition)
             results.append(self.internalHistory.submit(cmd))
         for pDroneItemID in self.pDroneItemIDs:
-            cmd = CalcRemoveProjectedDroneCommand(fitID=self.fitID, itemID=pDroneItemID, amount=self.amount, commit=False)
+            cmd = CalcRemoveProjectedDroneCommand(fitID=self.fitID, itemID=pDroneItemID, amount=self.amount)
             results.append(self.internalHistory.submit(cmd))
         for pFighterPosition in sorted(self.pFighterPositions, reverse=True):
-            cmd = CalcRemoveProjectedFighterCommand(fitID=self.fitID, position=pFighterPosition, commit=False)
+            cmd = CalcRemoveProjectedFighterCommand(fitID=self.fitID, position=pFighterPosition)
             results.append(self.internalHistory.submit(cmd))
         for pFitID in self.pFitIDs:
-            cmd = CalcRemoveProjectedFitCommand(fitID=self.fitID, projectedFitID=pFitID, amount=self.amount, commit=False)
+            cmd = CalcRemoveProjectedFitCommand(fitID=self.fitID, projectedFitID=pFitID, amount=self.amount)
             results.append(self.internalHistory.submit(cmd))
         success = any(results)
-        eos.db.commit()
+        eos.db.flush()
         sFit = Fit.getInstance()
         sFit.recalc(self.fitID)
         sFit.fill(self.fitID)
+        eos.db.commit()
         wx.PostEvent(gui.mainFrame.MainFrame.getInstance(), GE.FitChanged(fitID=self.fitID))
         return success
 
     def Undo(self):
         success = self.internalHistory.undoAll()
-        eos.db.commit()
+        eos.db.flush()
         sFit = Fit.getInstance()
         sFit.recalc(self.fitID)
         sFit.fill(self.fitID)
+        eos.db.commit()
         wx.PostEvent(gui.mainFrame.MainFrame.getInstance(), GE.FitChanged(fitID=self.fitID))
         return success

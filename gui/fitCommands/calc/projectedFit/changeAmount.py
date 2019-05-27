@@ -1,7 +1,6 @@
 import wx
 from logbook import Logger
 
-import eos.db
 from service.fit import Fit
 
 
@@ -10,13 +9,12 @@ pyfalog = Logger(__name__)
 
 class CalcChangeProjectedFitAmountCommand(wx.Command):
 
-    def __init__(self, fitID, projectedFitID, amount, relative=False, commit=True):
+    def __init__(self, fitID, projectedFitID, amount, relative=False):
         wx.Command.__init__(self, True, 'Change Projected Fit Amount')
         self.fitID = fitID
         self.projectedFitID = projectedFitID
         self.amount = amount
         self.relative = relative
-        self.commit = commit
         self.savedAmount = None
 
     def Do(self):
@@ -40,8 +38,6 @@ class CalcChangeProjectedFitAmountCommand(wx.Command):
         if confinedAmount == self.savedAmount:
             return False
         projectionInfo.amount = confinedAmount
-        if self.commit:
-            eos.db.commit()
         return True
 
     def Undo(self):
@@ -49,6 +45,5 @@ class CalcChangeProjectedFitAmountCommand(wx.Command):
         cmd = CalcChangeProjectedFitAmountCommand(
             fitID=self.fitID,
             projectedFitID=self.projectedFitID,
-            amount=self.savedAmount,
-            commit=self.commit)
+            amount=self.savedAmount)
         return cmd.Do()

@@ -33,22 +33,19 @@ class CalcCloneLocalModuleCommand(wx.Command):
         fit.modules.replace(self.dstPosition, copyMod)
         if copyMod not in fit.modules:
             pyfalog.warning('Failed to replace module')
-            eos.db.commit()
             return False
         # Need to flush because checkStates sometimes relies on module->fit
         # relationship via .owner attribute, which is handled by SQLAlchemy
         eos.db.flush()
         sFit.recalc(fit)
         self.savedStateCheckChanges = sFit.checkStates(fit, copyMod)
-        eos.db.commit()
         return True
 
     def Undo(self):
         pyfalog.debug('Undoing cloning of local module from position {} to position {} for fit ID {}'.format(self.srcPosition, self.dstPosition, self.fitID))
         from .localRemove import CalcRemoveLocalModulesCommand
-        cmd = CalcRemoveLocalModulesCommand(fitID=self.fitID, positions=[self.dstPosition], commit=False)
+        cmd = CalcRemoveLocalModulesCommand(fitID=self.fitID, positions=[self.dstPosition])
         if not cmd.Do():
             return False
         restoreCheckedStates(Fit.getInstance().getFit(self.fitID), self.savedStateCheckChanges)
-        eos.db.commit()
         return True

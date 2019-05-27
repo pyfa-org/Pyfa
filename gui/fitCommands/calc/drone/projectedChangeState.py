@@ -10,12 +10,11 @@ pyfalog = Logger(__name__)
 
 class CalcChangeProjectedDroneStateCommand(wx.Command):
 
-    def __init__(self, fitID, itemID, state, commit=True):
+    def __init__(self, fitID, itemID, state):
         wx.Command.__init__(self, True, 'Change Projected Drone State')
         self.fitID = fitID
         self.itemID = itemID
         self.state = state
-        self.commit = commit
         self.savedState = None
 
     def Do(self):
@@ -39,8 +38,6 @@ class CalcChangeProjectedDroneStateCommand(wx.Command):
         else:
             drone.amountActive = 0
 
-        if self.commit:
-            eos.db.commit()
         return True
 
     def Undo(self):
@@ -48,6 +45,5 @@ class CalcChangeProjectedDroneStateCommand(wx.Command):
         cmd = CalcChangeProjectedDroneStateCommand(
             fitID=self.fitID,
             itemID=self.itemID,
-            state=self.savedState,
-            commit=self.commit)
+            state=self.savedState)
         return cmd.Do()

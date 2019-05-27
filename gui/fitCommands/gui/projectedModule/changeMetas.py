@@ -28,21 +28,23 @@ class GuiChangeProjectedModuleMetasCommand(wx.Command):
                 continue
             info = ModuleInfo.fromModule(module)
             info.itemID = self.newItemID
-            cmdRemove = CalcRemoveProjectedModuleCommand(fitID=self.fitID, position=position, commit=False)
-            cmdAdd = CalcAddProjectedModuleCommand(fitID=self.fitID, modInfo=info, commit=False)
+            cmdRemove = CalcRemoveProjectedModuleCommand(fitID=self.fitID, position=position)
+            cmdAdd = CalcAddProjectedModuleCommand(fitID=self.fitID, modInfo=info)
             results.append(self.internalHistory.submitBatch(cmdRemove, cmdAdd))
         success = any(results)
-        eos.db.commit()
+        eos.db.flush()
         sFit.recalc(self.fitID)
         sFit.fill(self.fitID)
+        eos.db.commit()
         wx.PostEvent(gui.mainFrame.MainFrame.getInstance(), GE.FitChanged(fitID=self.fitID))
         return success
 
     def Undo(self):
         success = self.internalHistory.undoAll()
-        eos.db.commit()
+        eos.db.flush()
         sFit = Fit.getInstance()
         sFit.recalc(self.fitID)
         sFit.fill(self.fitID)
+        eos.db.commit()
         wx.PostEvent(gui.mainFrame.MainFrame.getInstance(), GE.FitChanged(fitID=self.fitID))
         return success

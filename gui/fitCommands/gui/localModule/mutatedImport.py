@@ -1,5 +1,6 @@
 import wx
 
+import eos.db
 import gui.mainFrame
 from gui import globalEvents as GE
 from gui.fitCommands.calc.module.localAdd import CalcAddLocalModuleCommand
@@ -23,9 +24,11 @@ class GuiImportLocalMutatedModuleCommand(wx.Command):
     def Do(self):
         cmd = CalcAddLocalModuleCommand(fitID=self.fitID, newModInfo=self.newModInfo)
         success = self.internalHistory.submit(cmd)
+        eos.db.flush()
         sFit = Fit.getInstance()
         sFit.recalc(self.fitID)
         self.savedRemovedDummies = sFit.fill(self.fitID)
+        eos.db.commit()
         wx.PostEvent(
             gui.mainFrame.MainFrame.getInstance(),
             GE.FitChanged(fitID=self.fitID, action='modadd', typeID=self.newModInfo.itemID))
@@ -36,8 +39,10 @@ class GuiImportLocalMutatedModuleCommand(wx.Command):
         fit = sFit.getFit(self.fitID)
         restoreRemovedDummies(fit, self.savedRemovedDummies)
         success = self.internalHistory.undoAll()
+        eos.db.flush()
         sFit.recalc(self.fitID)
         sFit.fill(self.fitID)
+        eos.db.commit()
         wx.PostEvent(
             gui.mainFrame.MainFrame.getInstance(),
             GE.FitChanged(fitID=self.fitID, action='moddel', typeID=self.newModInfo.itemID))

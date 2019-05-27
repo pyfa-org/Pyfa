@@ -32,25 +32,25 @@ class GuiMergeLocalDroneStacksCommand(wx.Command):
         commands.append(CalcChangeLocalDroneAmountCommand(
             fitID=self.fitID,
             position=self.dstPosition,
-            amount=dstDrone.amount + srcAmount,
-            commit=False))
+            amount=dstDrone.amount + srcAmount))
         commands.append(CalcRemoveLocalDroneCommand(
             fitID=self.fitID,
             position=self.srcPosition,
-            amount=srcAmount,
-            commit=False))
+            amount=srcAmount))
         success = self.internalHistory.submitBatch(*commands)
-        eos.db.commit()
+        eos.db.flush()
         sFit.recalc(self.fitID)
         sFit.fill(self.fitID)
+        eos.db.commit()
         wx.PostEvent(gui.mainFrame.MainFrame.getInstance(), GE.FitChanged(fitID=self.fitID))
         return success
 
     def Undo(self):
         success = self.internalHistory.undoAll()
-        eos.db.commit()
+        eos.db.flush()
         sFit = Fit.getInstance()
         sFit.recalc(self.fitID)
         sFit.fill(self.fitID)
+        eos.db.commit()
         wx.PostEvent(gui.mainFrame.MainFrame.getInstance(), GE.FitChanged(fitID=self.fitID))
         return success

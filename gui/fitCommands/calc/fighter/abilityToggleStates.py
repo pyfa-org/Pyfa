@@ -1,7 +1,6 @@
 import wx
 from logbook import Logger
 
-import eos.db
 from service.fit import Fit
 
 
@@ -72,7 +71,6 @@ class CalcToggleFighterAbilityStatesCommand(wx.Command):
                 if not ability.active:
                     changes = True
                     ability.active = True
-        eos.db.commit()
         return changes
 
     def Undo(self):

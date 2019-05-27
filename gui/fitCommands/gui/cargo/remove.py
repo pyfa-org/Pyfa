@@ -22,8 +22,7 @@ class GuiRemoveCargosCommand(wx.Command):
         for itemID in self.itemIDs:
             cmd = CalcRemoveCargoCommand(
                 fitID=self.fitID,
-                cargoInfo=CargoInfo(itemID=itemID, amount=math.inf),
-                commit=False)
+                cargoInfo=CargoInfo(itemID=itemID, amount=math.inf))
             results.append(self.internalHistory.submit(cmd))
         success = any(results)
         eos.db.commit()

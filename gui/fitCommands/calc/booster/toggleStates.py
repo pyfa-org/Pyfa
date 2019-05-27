@@ -1,7 +1,6 @@
 import wx
 from logbook import Logger
 
-import eos.db
 from service.fit import Fit
 
 
@@ -41,7 +40,6 @@ class CalcToggleBoosterStatesCommand(wx.Command):
                 booster = fit.boosters[position]
                 if not booster.active:
                     booster.active = True
-        eos.db.commit()
         return True
 
     def Undo(self):

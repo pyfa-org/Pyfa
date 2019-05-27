@@ -11,11 +11,10 @@ pyfalog = Logger(__name__)
 
 class CalcAddLocalModuleCommand(wx.Command):
 
-    def __init__(self, fitID, newModInfo, commit=True):
+    def __init__(self, fitID, newModInfo):
         wx.Command.__init__(self, True, 'Add Module')
         self.fitID = fitID
         self.newModInfo = newModInfo
-        self.commit = commit
         self.savedPosition = None
         self.subsystemCmd = None
         self.savedStateCheckChanges = None
@@ -39,8 +38,7 @@ class CalcAddLocalModuleCommand(wx.Command):
                     self.subsystemCmd = CalcReplaceLocalModuleCommand(
                         fitID=self.fitID,
                         position=fit.modules.index(oldMod),
-                        newModInfo=self.newModInfo,
-                        commit=False)
+                        newModInfo=self.newModInfo)
                     if not self.subsystemCmd.Do():
                         return False
                     # Need to flush because checkStates sometimes relies on module->fit
@@ -48,8 +46,6 @@ class CalcAddLocalModuleCommand(wx.Command):
                     eos.db.flush()
                     sFit.recalc(fit)
                     self.savedStateCheckChanges = sFit.checkStates(fit, newMod)
-                    if self.commit:
-                        eos.db.commit()
                     return True
         if not newMod.fits(fit):
             pyfalog.warning('Module does not fit')
@@ -57,8 +53,6 @@ class CalcAddLocalModuleCommand(wx.Command):
         fit.modules.append(newMod)
         if newMod not in fit.modules:
             pyfalog.warning('Failed to append to list')
-            if self.commit:
-                eos.db.commit()
             return False
         self.savedPosition = fit.modules.index(newMod)
         # Need to flush because checkStates sometimes relies on module->fit
@@ -66,8 +60,6 @@ class CalcAddLocalModuleCommand(wx.Command):
         eos.db.flush()
         sFit.recalc(fit)
         self.savedStateCheckChanges = sFit.checkStates(fit, newMod)
-        if self.commit:
-            eos.db.commit()
         return True
 
     def Undo(self):
@@ -77,16 +69,12 @@ class CalcAddLocalModuleCommand(wx.Command):
             if not self.subsystemCmd.Undo():
                 return False
             restoreCheckedStates(Fit.getInstance().getFit(self.fitID), self.savedStateCheckChanges)
-            if self.commit:
-                eos.db.commit()
             return True
         if self.savedPosition is None:
             return False
         from .localRemove import CalcRemoveLocalModulesCommand
-        cmd = CalcRemoveLocalModulesCommand(fitID=self.fitID, positions=[self.savedPosition], commit=False)
+        cmd = CalcRemoveLocalModulesCommand(fitID=self.fitID, positions=[self.savedPosition])
         if not cmd.Do():
             return False
         restoreCheckedStates(Fit.getInstance().getFit(self.fitID), self.savedStateCheckChanges)
-        if self.commit:
-            eos.db.commit()
         return True

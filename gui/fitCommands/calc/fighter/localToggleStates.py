@@ -42,7 +42,6 @@ class CalcToggleLocalFighterStatesCommand(wx.Command):
                 fighter = fit.fighters[position]
                 if not fighter.active:
                     fighter.active = True
-        eos.db.commit()
         return True
 
     def Undo(self):

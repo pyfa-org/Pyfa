@@ -1,7 +1,6 @@
 import wx
 from logbook import Logger
 
-import eos.db
 from gui.fitCommands.helpers import FighterInfo
 from service.fit import Fit
 
@@ -11,11 +10,10 @@ pyfalog = Logger(__name__)
 
 class CalcRemoveLocalFighterCommand(wx.Command):
 
-    def __init__(self, fitID, position, commit=True):
+    def __init__(self, fitID, position):
         wx.Command.__init__(self, True, 'Remove Fighter')
         self.fitID = fitID
         self.position = position
-        self.commit = commit
         self.savedFighterInfo = None
 
     def Do(self):
@@ -24,8 +22,6 @@ class CalcRemoveLocalFighterCommand(wx.Command):
         fighter = fit.fighters[self.position]
         self.savedFighterInfo = FighterInfo.fromFighter(fighter)
         fit.fighters.remove(fighter)
-        if self.commit:
-            eos.db.commit()
         return True
 
     def Undo(self):
@@ -35,6 +31,5 @@ class CalcRemoveLocalFighterCommand(wx.Command):
             fitID=self.fitID,
             fighterInfo=self.savedFighterInfo,
             position=self.position,
-            ignoreRestrictions=True,
-            commit=self.commit)
+            ignoreRestrictions=True)
         return cmd.Do()

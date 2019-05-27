@@ -1,8 +1,6 @@
 import wx
-
 from logbook import Logger
 
-import eos.db
 from gui.fitCommands.helpers import DroneInfo, droneStackLimit
 from service.fit import Fit
 from service.market import Market
@@ -13,13 +11,12 @@ pyfalog = Logger(__name__)
 
 class CalcAddLocalDroneCommand(wx.Command):
 
-    def __init__(self, fitID, droneInfo, forceNewStack=False, ignoreRestrictions=False, commit=True):
+    def __init__(self, fitID, droneInfo, forceNewStack=False, ignoreRestrictions=False):
         wx.Command.__init__(self, True, 'Add Local Drone')
         self.fitID = fitID
         self.droneInfo = droneInfo
         self.forceNewStack = forceNewStack
         self.ignoreRestrictions = ignoreRestrictions
-        self.commit = commit
         self.savedDroneInfo = None
         self.savedPosition = None
 
@@ -39,8 +36,6 @@ class CalcAddLocalDroneCommand(wx.Command):
                     self.savedDroneInfo = DroneInfo.fromDrone(drone)
                     self.savedPosition = fit.drones.index(drone)
                     drone.amount += self.droneInfo.amount
-                    if self.commit:
-                        eos.db.commit()
                     return True
         # Do new stack otherwise
         drone = self.droneInfo.toDrone()
@@ -52,11 +47,7 @@ class CalcAddLocalDroneCommand(wx.Command):
         fit.drones.append(drone)
         if drone not in fit.drones:
             pyfalog.warning('Failed to append to list')
-            if self.commit:
-                eos.db.commit()
             return False
-        if self.commit:
-            eos.db.commit()
         self.savedPosition = fit.drones.index(drone)
         return True
 
@@ -67,13 +58,10 @@ class CalcAddLocalDroneCommand(wx.Command):
             drone = fit.drones[self.savedPosition]
             drone.amount = self.savedDroneInfo.amount
             drone.amountActive = self.savedDroneInfo.amountActive
-            if self.commit:
-                eos.db.commit()
             return True
         from .localRemove import CalcRemoveLocalDroneCommand
         cmd = CalcRemoveLocalDroneCommand(
             fitID=self.fitID,
             position=self.savedPosition,
-            amount=self.droneInfo.amount,
-            commit=self.commit)
+            amount=self.droneInfo.amount)
         return cmd.Do()

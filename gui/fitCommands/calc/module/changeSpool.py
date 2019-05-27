@@ -1,7 +1,6 @@
 import wx
 from logbook import Logger
 
-import eos.db
 from service.fit import Fit
 
 
@@ -34,7 +33,6 @@ class CalcChangeModuleSpoolCommand(wx.Command):
             return False
         mod.spoolType = self.spoolType
         mod.spoolAmount = self.spoolAmount
-        eos.db.commit()
         return True
 
     def Undo(self):

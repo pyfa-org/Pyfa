@@ -1,7 +1,6 @@
 import wx
 from logbook import Logger
 
-import eos.db
 from service.fit import Fit
 
 
@@ -10,12 +9,11 @@ pyfalog = Logger(__name__)
 
 class CalcAddImplantCommand(wx.Command):
 
-    def __init__(self, fitID, implantInfo, position=None, commit=True):
+    def __init__(self, fitID, implantInfo, position=None):
         wx.Command.__init__(self, True, 'Add Implant')
         self.fitID = fitID
         self.newImplantInfo = implantInfo
         self.newPosition = position
-        self.commit = commit
         self.oldImplantInfo = None
         self.oldPosition = None
 
@@ -40,8 +38,7 @@ class CalcAddImplantCommand(wx.Command):
                 cmd = CalcAddImplantCommand(
                     fitID=self.fitID,
                     implantInfo=self.oldImplantInfo,
-                    position=self.oldPosition,
-                    commit=self.commit)
+                    position=self.oldPosition)
                 cmd.Do()
                 return False
         else:
@@ -51,13 +48,10 @@ class CalcAddImplantCommand(wx.Command):
                 cmd = CalcAddImplantCommand(
                     fitID=self.fitID,
                     implantInfo=self.oldImplantInfo,
-                    position=self.oldPosition,
-                    commit=self.commit)
+                    position=self.oldPosition)
                 cmd.Do()
                 return False
             self.newPosition = fit.implants.index(newImplant)
-        if self.commit:
-            eos.db.commit()
         return True
 
     def Undo(self):
@@ -66,9 +60,8 @@ class CalcAddImplantCommand(wx.Command):
             cmd = CalcAddImplantCommand(
                 fitID=self.fitID,
                 implantInfo=self.oldImplantInfo,
-                position=self.oldPosition,
-                commit=self.commit)
+                position=self.oldPosition)
             return cmd.Do()
         from .remove import CalcRemoveImplantCommand
-        cmd = CalcRemoveImplantCommand(fitID=self.fitID, position=self.newPosition, commit=self.commit)
+        cmd = CalcRemoveImplantCommand(fitID=self.fitID, position=self.newPosition)
         return cmd.Do()

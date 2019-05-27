@@ -1,5 +1,6 @@
 import wx
 
+import eos.db
 import gui.mainFrame
 from gui import globalEvents as GE
 from gui.fitCommands.calc.module.localClone import CalcCloneLocalModuleCommand
@@ -24,9 +25,11 @@ class GuiCloneLocalModuleCommand(wx.Command):
         sFit = Fit.getInstance()
         cmd = CalcCloneLocalModuleCommand(fitID=self.fitID, srcPosition=self.srcPosition, dstPosition=self.dstPosition)
         success = self.internalHistory.submit(cmd)
+        eos.db.flush()
         fit = sFit.getFit(self.fitID)
         sFit.recalc(self.fitID)
         self.savedRemovedDummies = sFit.fill(self.fitID)
+        eos.db.commit()
         self.savedItemID = fit.modules[self.srcPosition].itemID
         if success and self.savedItemID is not None:
             event = GE.FitChanged(fitID=self.fitID, action='modadd', typeID=self.savedItemID)
@@ -40,8 +43,10 @@ class GuiCloneLocalModuleCommand(wx.Command):
         fit = sFit.getFit(self.fitID)
         restoreRemovedDummies(fit, self.savedRemovedDummies)
         success = self.internalHistory.undoAll()
+        eos.db.flush()
         sFit.recalc(self.fitID)
         sFit.fill(self.fitID)
+        eos.db.commit()
         if success and self.savedItemID is not None:
             event = GE.FitChanged(fitID=self.fitID, action='moddel', typeID=self.savedItemID)
         else:

@@ -1,7 +1,6 @@
 import wx
 from logbook import Logger
 
-import eos.db
 from gui.fitCommands.helpers import DroneInfo
 from service.fit import Fit
 
@@ -11,12 +10,11 @@ pyfalog = Logger(__name__)
 
 class CalcRemoveLocalDroneCommand(wx.Command):
 
-    def __init__(self, fitID, position, amount, commit=True):
+    def __init__(self, fitID, position, amount):
         wx.Command.__init__(self, True, 'Remove Local Drone')
         self.fitID = fitID
         self.position = position
         self.amountToRemove = amount
-        self.commit = commit
         self.savedDroneInfo = None
         self.removedStack = None
 
@@ -36,8 +34,6 @@ class CalcRemoveLocalDroneCommand(wx.Command):
         else:
             self.removedStack = False
 
-        if self.commit:
-            eos.db.commit()
         return True
 
     def Undo(self):
@@ -50,13 +46,9 @@ class CalcRemoveLocalDroneCommand(wx.Command):
             fit.drones.insert(self.position, drone)
             if drone not in fit.drones:
                 pyfalog.warning('Failed to insert to list')
-                if self.commit:
-                    eos.db.commit()
                 return False
         else:
             drone = fit.drones[self.position]
             drone.amount = self.savedDroneInfo.amount
             drone.amountActive = self.savedDroneInfo.amountActive
-        if self.commit:
-            eos.db.commit()
         return True

@@ -24,14 +24,14 @@ class GuiReplaceLocalModuleCommand(wx.Command):
             cmd = CalcReplaceLocalModuleCommand(
                 fitID=self.fitID,
                 position=position,
-                newModInfo=ModuleInfo(itemID=self.itemID),
-                commit=False)
+                newModInfo=ModuleInfo(itemID=self.itemID))
             results.append(self.internalHistory.submit(cmd))
         success = any(results)
-        eos.db.commit()
+        eos.db.flush()
         sFit = Fit.getInstance()
         sFit.recalc(self.fitID)
         self.savedRemovedDummies = sFit.fill(self.fitID)
+        eos.db.commit()
         wx.PostEvent(
             gui.mainFrame.MainFrame.getInstance(),
             GE.FitChanged(fitID=self.fitID, action='modadd', typeID=self.itemID)
@@ -44,9 +44,10 @@ class GuiReplaceLocalModuleCommand(wx.Command):
         fit = sFit.getFit(self.fitID)
         restoreRemovedDummies(fit, self.savedRemovedDummies)
         success = self.internalHistory.undoAll()
-        eos.db.commit()
+        eos.db.flush()
         sFit.recalc(self.fitID)
         sFit.fill(self.fitID)
+        eos.db.commit()
         wx.PostEvent(
             gui.mainFrame.MainFrame.getInstance(),
             GE.FitChanged(fitID=self.fitID, action='moddel', typeID=self.itemID)

@@ -1,7 +1,6 @@
 import wx
 from logbook import Logger
 
-import eos.db
 from service.fit import Fit
 
 
@@ -10,12 +9,11 @@ pyfalog = Logger(__name__)
 
 class CalcChangeProjectedFighterStateCommand(wx.Command):
 
-    def __init__(self, fitID, position, state, commit=True):
+    def __init__(self, fitID, position, state):
         wx.Command.__init__(self, True, 'Change Projected Fighter State')
         self.fitID = fitID
         self.position = position
         self.state = state
-        self.commit = commit
         self.savedState = None
 
     def Do(self):
@@ -31,8 +29,6 @@ class CalcChangeProjectedFighterStateCommand(wx.Command):
 
         fighter.active = self.state
 
-        if self.commit:
-            eos.db.commit()
         return True
 
     def Undo(self):
@@ -41,6 +37,5 @@ class CalcChangeProjectedFighterStateCommand(wx.Command):
         cmd = CalcChangeProjectedFighterStateCommand(
             fitID=self.fitID,
             position=self.position,
-            state=self.savedState,
-            commit=self.commit)
+            state=self.savedState)
         return cmd.Do()

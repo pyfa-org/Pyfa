@@ -1,5 +1,6 @@
 import wx
 
+import eos.db
 import gui.mainFrame
 from gui import globalEvents as GE
 from gui.fitCommands.calc.booster.sideEffectToggleState import CalcToggleBoosterSideEffectStateCommand
@@ -19,16 +20,20 @@ class GuiToggleBoosterSideEffectStateCommand(wx.Command):
     def Do(self):
         cmd = CalcToggleBoosterSideEffectStateCommand(fitID=self.fitID, position=self.position, effectID=self.effectID)
         success = self.internalHistory.submit(cmd)
+        eos.db.flush()
         sFit = Fit.getInstance()
         sFit.recalc(self.fitID)
         sFit.fill(self.fitID)
+        eos.db.commit()
         wx.PostEvent(gui.mainFrame.MainFrame.getInstance(), GE.FitChanged(fitID=self.fitID))
         return success
 
     def Undo(self):
         success = self.internalHistory.undoAll()
+        eos.db.flush()
         sFit = Fit.getInstance()
         sFit.recalc(self.fitID)
         sFit.fill(self.fitID)
+        eos.db.commit()
         wx.PostEvent(gui.mainFrame.MainFrame.getInstance(), GE.FitChanged(fitID=self.fitID))
         return success

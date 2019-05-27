@@ -1,9 +1,6 @@
-import math
-
 import wx
 from logbook import Logger
 
-import eos.db
 from gui.fitCommands.helpers import DroneInfo
 from service.fit import Fit
 
@@ -35,7 +32,6 @@ class CalcChangeProjectedDroneAmountCommand(wx.Command):
             difference = self.amount - self.savedDroneInfo.amount
             drone.amount = self.amount
             drone.amountActive = max(min(drone.amountActive + difference, drone.amount), 0)
-        eos.db.commit()
         return True
 
     def Undo(self):
@@ -48,6 +44,5 @@ class CalcChangeProjectedDroneAmountCommand(wx.Command):
                 return False
             drone.amount = self.savedDroneInfo.amount
             drone.amountActive = self.savedDroneInfo.amountActive
-            eos.db.commit()
             return True
         return False
