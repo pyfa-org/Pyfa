@@ -34,6 +34,7 @@ class FitDpsVsTimeGraph(Graph):
         if fit.ID not in self._cache:
             self.__generateCache(fit, maxX)
         currentY = None
+        prevY = None
         xs = []
         ys = []
         cache = self._cache[fit.ID]
@@ -70,6 +71,9 @@ class FitDpsVsTimeGraph(Graph):
                     ys.append(prevY)
                 xs.append(currentX)
                 ys.append(currentY)
+        if max(xs) < maxX:
+            xs.append(maxX)
+            ys.append(currentY or 0)
         return xs, ys
 
     def getYForX(self, fit, extraData, x):
