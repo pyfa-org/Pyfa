@@ -145,7 +145,7 @@ class GraphFrame(wx.Frame):
                            wx.EXPAND)
 
         self.graphCtrlPanel = wx.Panel(self)
-        self.mainSizer.Add(self.graphCtrlPanel, 0, wx.EXPAND | wx.ALL, 5)
+        self.mainSizer.Add(self.graphCtrlPanel, 0, wx.EXPAND | wx.ALL, 0)
 
         self.showY0 = True
         self.selectedY = None
@@ -159,10 +159,10 @@ class GraphFrame(wx.Frame):
         viewOptSizer.Add(self.showY0Cb, 0, wx.LEFT | wx.TOP | wx.RIGHT | wx.EXPAND, 5)
         self.graphSubselSizer = wx.BoxSizer(wx.VERTICAL)
         viewOptSizer.Add(self.graphSubselSizer, 0, wx.ALL | wx.EXPAND, 5)
-        ctrlPanelSizer.Add(viewOptSizer, 0, wx.EXPAND | wx.ALL, 0)
+        ctrlPanelSizer.Add(viewOptSizer, 0, wx.EXPAND | wx.LEFT | wx.TOP | wx.BOTTOM, 5)
         self.inputsSizer = wx.FlexGridSizer(0, 4, 0, 0)
         self.inputsSizer.AddGrowableCol(1)
-        ctrlPanelSizer.Add(self.inputsSizer, 1, wx.EXPAND | wx.ALL, 0)
+        ctrlPanelSizer.Add(self.inputsSizer, 1, wx.EXPAND | wx.RIGHT | wx.TOP | wx.BOTTOM, 5)
         self.graphCtrlPanel.SetSizer(ctrlPanelSizer)
 
         self.drawTimer = wx.Timer(self)
