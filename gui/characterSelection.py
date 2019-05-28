@@ -17,17 +17,21 @@
 # along with pyfa.  If not, see <http://www.gnu.org/licenses/>.
 # =============================================================================
 
+
+import traceback
+
 # noinspection PyPackageRequirements
 import wx
-from gui.bitmap_loader import BitmapLoader
-
 from logbook import Logger
 
+import config
 import gui.globalEvents as GE
 import gui.mainFrame
+from gui.bitmap_loader import BitmapLoader
+from gui.utils.clipboard import toClipboard
 from service.character import Character
 from service.fit import Fit
-from gui.utils.clipboard import toClipboard
+
 
 pyfalog = Logger(__name__)
 
@@ -159,9 +163,11 @@ class CharacterSelection(wx.Panel):
         if e is None:
             self.refreshCharacterList()
         else:
-            exc_type, exc_obj, exc_trace = e
-            pyfalog.warn("Error fetching skill information for character")
-            pyfalog.warn(exc_obj)
+            pyfalog.warn("Error fetching skill information for character for refreshAPICallback")
+            exc_type, exc_value, exc_trace = e
+            if config.debug:
+                exc_value = ''.join(traceback.format_exception(exc_type, exc_value, exc_trace))
+            pyfalog.warn(exc_value)
 
             wx.MessageBox(
                 "Error fetching skill information",

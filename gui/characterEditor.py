@@ -18,6 +18,7 @@
 # =============================================================================
 
 import re
+import traceback
 
 import roman
 # noinspection PyPackageRequirements
@@ -31,6 +32,7 @@ from logbook import Logger
 from wx.dataview import TreeListCtrl
 from wx.lib.agw.floatspin import FloatSpin
 
+import config
 import gui.globalEvents as GE
 from gui.bitmap_loader import BitmapLoader
 from gui.builtinViews.entityEditor import BaseValidator, EntityEditor, TextEntryValidatedDialog
@@ -876,9 +878,11 @@ class APIView(wx.Panel):
 
     def __fetchCallback(self, e=None):
         if e:
-            exc_type, exc_obj, exc_trace = e
-            pyfalog.warn("Error fetching skill information for character")
-            pyfalog.warn(exc_obj)
+            pyfalog.warn("Error fetching skill information for character for __fetchCallback")
+            exc_type, exc_value, exc_trace = e
+            if config.debug:
+                exc_value = ''.join(traceback.format_exception(exc_type, exc_value, exc_trace))
+            pyfalog.warn(exc_value)
 
             wx.MessageBox(
                 "Error fetching skill information",
