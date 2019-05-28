@@ -118,8 +118,11 @@ class GraphFrame(wx.Frame):
         self.fits = [fit] if fit is not None else []
         self.fitList = FitList(self)
         self.fitList.SetMinSize((270, -1))
-
         self.fitList.fitList.update(self.fits)
+        self.targets = []
+        self.targetList = TargetList(self)
+        self.targetList.SetMinSize((270, -1))
+        self.targetList.targetList.update(self.targets)
 
         self.graphSelection = wx.Choice(self, wx.ID_ANY, style=0)
         self.mainSizer.Add(self.graphSelection, 0, wx.EXPAND)
@@ -174,7 +177,12 @@ class GraphFrame(wx.Frame):
         self.updateGraphWidgets()
         self.sl1 = wx.StaticLine(self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.LI_HORIZONTAL)
         self.mainSizer.Add(self.sl1, 0, wx.EXPAND)
-        self.mainSizer.Add(self.fitList, 0, wx.EXPAND)
+
+        fitSizer = wx.BoxSizer(wx.HORIZONTAL)
+        fitSizer.Add(self.fitList, 1, wx.EXPAND)
+        #fitSizer.Add(self.targetList, 1, wx.EXPAND)
+
+        self.mainSizer.Add(fitSizer, 0, wx.EXPAND)
 
         self.fitList.fitList.Bind(wx.EVT_LEFT_DCLICK, self.OnLeftDClick)
         self.fitList.fitList.Bind(wx.EVT_CONTEXT_MENU, self.OnContextMenu)
@@ -513,6 +521,27 @@ class FitList(wx.Panel):
 
 
 class FitDisplay(gui.display.Display):
+    DEFAULT_COLS = ["Base Icon",
+                    "Base Name"]
+
+    def __init__(self, parent):
+        gui.display.Display.__init__(self, parent)
+
+
+class TargetList(wx.Panel):
+
+    def __init__(self, parent):
+        wx.Panel.__init__(self, parent)
+        self.mainSizer = wx.BoxSizer(wx.VERTICAL)
+        self.SetSizer(self.mainSizer)
+
+        self.targetList = TargetDisplay(self)
+        self.mainSizer.Add(self.targetList, 1, wx.EXPAND)
+        fitToolTip = wx.ToolTip("Drag a fit into this list to graph it")
+        self.targetList.SetToolTip(fitToolTip)
+
+
+class TargetDisplay(gui.display.Display):
     DEFAULT_COLS = ["Base Icon",
                     "Base Name"]
 
