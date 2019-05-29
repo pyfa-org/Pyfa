@@ -120,9 +120,9 @@ class GraphFrame(wx.Frame):
         self.fitList.SetMinSize((270, -1))
         self.fitList.fitList.update(self.fits)
         self.targets = []
-        # self.targetList = TargetList(self)
-        # self.targetList.SetMinSize((270, -1))
-        # self.targetList.targetList.update(self.targets)
+        self.targetList = TargetList(self)
+        self.targetList.SetMinSize((270, -1))
+        self.targetList.targetList.update(self.targets)
 
         self.graphSelection = wx.Choice(self, wx.ID_ANY, style=0)
         self.mainSizer.Add(self.graphSelection, 0, wx.EXPAND)
@@ -180,7 +180,7 @@ class GraphFrame(wx.Frame):
 
         fitSizer = wx.BoxSizer(wx.HORIZONTAL)
         fitSizer.Add(self.fitList, 1, wx.EXPAND)
-        #fitSizer.Add(self.targetList, 1, wx.EXPAND)
+        fitSizer.Add(self.targetList, 1, wx.EXPAND)
 
         self.mainSizer.Add(fitSizer, 0, wx.EXPAND)
 
