@@ -136,15 +136,13 @@ class EfsPort:
                         CalcChangeModuleChargesCommand(
                             fit.ID,
                             projected=False,
-                            chargeMap={mod.position: None},
-                            commit=False).Do()
+                            chargeMap={mod.position: None}).Do()
                         sFit.recalc(fit)
                         stats["unloadedCapacitorNeed"] = mod.getModifiedItemAttr("capacitorNeed")
                         CalcChangeModuleChargesCommand(
                             fit.ID,
                             projected=False,
-                            chargeMap={mod.position: c.typeID},
-                            commit=False).Do()
+                            chargeMap={mod.position: c.typeID}).Do()
                         sFit.recalc(fit)
             elif mod.item.group.name == "Capacitor Booster":
                 # The capacitorNeed is negative, which provides the boost.
