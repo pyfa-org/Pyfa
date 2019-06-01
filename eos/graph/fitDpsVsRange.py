@@ -55,6 +55,19 @@ class FitDpsVsRangeGraph(SmoothGraph):
                             1 + (mod.getModifiedItemAttr("speedFactor") / 100) *
                             self.calculateModuleMultiplier(mod, distance))
 
+        # add target speed and sig modifiers from fitted drones
+        if distance <= fit.extraAttributes['droneControlRange']:
+            for drone in fit.drones:
+                # SW-* series stasis webifier drones
+                if "remoteWebifierEntity" in drone.item.effects:
+                    # Need to add the effect per individual drone to allow for stacking penalties
+                    for i in range(drone.amountActive):
+                        tgtSpeedMods.append(1 + (drone.getModifiedItemAttr("speedFactor") / 100))
+                # TP-* series target painter drones
+                if "remoteTargetPaintEntity" in drone.item.effects:
+                    for i in range(drone.amountActive):
+                        tgtSigRadMods.append(1 + (drone.getModifiedItemAttr("signatureRadiusBonus") / 100))
+
         tgtSpeed = self.penalizeModChain(tgtSpeed, tgtSpeedMods)
         tgtSigRad = self.penalizeModChain(tgtSigRad, tgtSigRadMods)
         attRad = fit.ship.getModifiedItemAttr('radius', 0)
