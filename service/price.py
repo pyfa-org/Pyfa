@@ -117,7 +117,8 @@ class Price:
         # Record timeouts as it will affect our final decision
         timedOutSources = {}
 
-        for source, timeoutWeight in sources.items():
+        for source in sorted(sources, key=sources.get, reverse=True):
+            timeoutWeight = sources[source]
             pyfalog.info('Trying {}'.format(source))
             timedOutSources[source] = False
             sourceFetchTimeout = timeoutWeight * timeoutWeightMult

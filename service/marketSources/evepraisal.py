@@ -40,6 +40,7 @@ class EvePraisal:
     name = 'evepraisal'
 
     def __init__(self, priceMap, system, fetchTimeout):
+        print(priceMap)
         # Try selected system first
         self.fetchPrices(priceMap, max(2 * fetchTimeout / 3, 2), system)
         # If price was not available - try globally
@@ -50,7 +51,7 @@ class EvePraisal:
     def fetchPrices(priceMap, fetchTimeout, system=None):
         jsonData = {
             'market_name': systemAliases[system],
-            'items': [{'type_id': typeID for typeID in priceMap}]}
+            'items': [{'type_id': typeID} for typeID in priceMap]}
         baseurl = 'https://evepraisal.com/appraisal/structured.json'
         network = Network.getInstance()
         resp = network.post(baseurl, network.PRICES, jsonData=jsonData, timeout=fetchTimeout)
@@ -63,13 +64,13 @@ class EvePraisal:
         for itemData in itemsData:
             try:
                 typeID = int(itemData['typeID'])
-                percprice = itemData['prices']['sell']['percentile']
+                price = itemData['prices']['sell']['min']
             except (KeyError, TypeError):
                 continue
             # evepraisal returns 0 if price data doesn't even exist for the item
-            if percprice == 0:
+            if price == 0:
                 continue
-            priceMap[typeID].update(PriceStatus.fetchSuccess, percprice)
+            priceMap[typeID].update(PriceStatus.fetchSuccess, price)
             del priceMap[typeID]
 
 
