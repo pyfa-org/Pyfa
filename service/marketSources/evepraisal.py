@@ -40,7 +40,6 @@ class EvePraisal:
     name = 'evepraisal'
 
     def __init__(self, priceMap, system, fetchTimeout):
-        print(priceMap)
         # Try selected system first
         self.fetchPrices(priceMap, max(2 * fetchTimeout / 3, 2), system)
         # If price was not available - try globally
