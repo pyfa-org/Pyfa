@@ -48,6 +48,8 @@ class EvePraisal:
 
     @staticmethod
     def fetchPrices(priceMap, fetchTimeout, system=None):
+        if system not in systemAliases:
+            return
         jsonData = {
             'market_name': systemAliases[system],
             'items': [{'type_id': typeID} for typeID in priceMap]}
@@ -58,7 +60,7 @@ class EvePraisal:
         try:
             itemsData = data['appraisal']['items']
         except (KeyError, TypeError):
-            return False
+            return
         # Cycle through all types we've got from request
         for itemData in itemsData:
             try:
