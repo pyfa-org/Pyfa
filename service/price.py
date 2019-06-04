@@ -123,7 +123,7 @@ class Price:
             timeBefore = timeit.default_timer()
             pyfalog.info('Trying {}'.format(source))
             timedOutSources[source] = False
-            # Total timeout is equal to remaining time
+            # Time we allocate for a source depends on source weight and remaining time
             sourceFetchTimeout = remainingTime * sources[source] / sum(sources.values())
             try:
                 sourceCls = cls.sources.get(source)
