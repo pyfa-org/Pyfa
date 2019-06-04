@@ -20,6 +20,7 @@
 
 import queue
 import threading
+import timeit
 from itertools import chain
 
 import math
@@ -112,16 +113,18 @@ class Price:
             if source == sourcePrimary:
                 continue
             sources[source] = min(sources.values()) - 1
-        timeoutWeightMult = fetchTimeout / sum(sources.values())
 
         # Record timeouts as it will affect our final decision
         timedOutSources = {}
 
+        remainingTime = fetchTimeout
+
         for source in sorted(sources, key=sources.get, reverse=True):
-            timeoutWeight = sources[source]
+            timeBefore = timeit.default_timer()
             pyfalog.info('Trying {}'.format(source))
             timedOutSources[source] = False
-            sourceFetchTimeout = timeoutWeight * timeoutWeightMult
+            # Total timeout is equal to remaining time
+            sourceFetchTimeout = remainingTime * sources[source] / sum(sources.values())
             try:
                 sourceCls = cls.sources.get(source)
                 sourceCls(priceMap, cls.systemsList[sFit.serviceFittingOptions["priceSystem"]], sourceFetchTimeout)
@@ -133,6 +136,16 @@ class Price:
             # Sources remove price map items as they fetch info, if none remain then we're done
             if not priceMap:
                 break
+            timeAfter = timeit.default_timer()
+            # Remove source so it doesn't affect time weights of sources we're going to use next
+            del sources[source]
+            remainingTime -= timeAfter - timeBefore
+            # No time remaining (should not happen) - mark remaining sources as timeout
+            if remainingTime <= 0:
+                for source in sources:
+                    timedOutSources[source] = True
+                break
+
 
         # If we get to this point, then we've failed to get price with all our sources
         # If all sources failed due to timeouts, set one status

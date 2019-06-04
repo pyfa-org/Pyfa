@@ -67,7 +67,6 @@ class EveMarketer:
             # such items to check globally, and do not skip if requested globally
             if percprice == 0 and system is not None:
                 continue
-
             priceMap[typeID].update(PriceStatus.fetchSuccess, percprice)
             del priceMap[typeID]
 
