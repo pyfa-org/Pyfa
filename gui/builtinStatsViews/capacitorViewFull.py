@@ -111,11 +111,15 @@ class CapacitorViewFull(StatsView):
             ("label%sCapacitorResist", lambda: (1 - fit.ship.getModifiedItemAttr("energyWarfareResistance", 1)) * 100, 3, 0, 0, False, '%'),
         )
         if fit is not None:
+            cap_amount = fit.ship.getModifiedItemAttr("capacitorCapacity")
             cap_recharge = fit.capRecharge
             cap_use = fit.capUsed
+            neut_res = fit.ship.getModifiedItemAttr("energyWarfareResistance", 1)
         else:
+            cap_amount = 0
             cap_recharge = 0
             cap_use = 0
+            neut_res = 1
 
         panel = "Full"
         for labelName, value, prec, lowest, highest, forceSign, unit in stats:
@@ -135,7 +139,10 @@ class CapacitorViewFull(StatsView):
                     formatAmount(cap_use, 3, 0, 3))
                 label.SetToolTip(wx.ToolTip(label_tooltip))
             if labelName == 'label%sCapacitorResist':
-                label.SetToolTip(wx.ToolTip('Neutralizer resistance'))
+                texts = ['Neutralizer resistance']
+                if cap_amount > 0 and neut_res < 1:
+                    texts.append('Effective capacity: {} GJ'.format(formatAmount(cap_amount / neut_res, 3, 0, 9)))
+                label.SetToolTip(wx.ToolTip('\n'.join(texts)))
 
         capState = fit.capState if fit is not None else 0
         capStable = fit.capStable if fit is not None else False
