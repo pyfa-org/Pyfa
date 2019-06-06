@@ -17,7 +17,11 @@ def isCharCjk(char):
 
 
 def isStringCjk(string):
+    checked = set()
     for char in string:
+        if char in checked:
+            continue
+        checked.add(char)
         if isCharCjk(char):
             return True
     return False
