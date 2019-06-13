@@ -21,7 +21,7 @@
 from collections import OrderedDict
 
 from eos.graph.fitDpsVsRange import FitDpsVsRangeGraph as EosGraph
-from gui.graph import Graph, XDef, YDef, ExtraInput
+from .base import Graph, XDef, YDef, ExtraInput
 
 
 class FitDpsVsRangeGraph(Graph):

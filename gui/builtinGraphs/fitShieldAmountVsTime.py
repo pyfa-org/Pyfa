@@ -22,7 +22,7 @@ from collections import OrderedDict
 
 import gui.mainFrame
 from eos.graph.fitShieldAmountVsTime import FitShieldAmountVsTimeGraph as EosGraph
-from gui.graph import Graph, XDef, YDef
+from .base import Graph, XDef, YDef
 
 
 class FitShieldAmountVsTimeGraph(Graph):

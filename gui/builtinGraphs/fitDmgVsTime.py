@@ -22,7 +22,7 @@ from collections import OrderedDict
 
 from eos.graph.fitDmgVsTime import FitDmgVsTimeGraph as EosGraphDmg
 from eos.graph.fitDpsVsTime import FitDpsVsTimeGraph as EosGraphDps
-from gui.graph import Graph, XDef, YDef
+from .base import Graph, XDef, YDef
 
 
 class FitDmgVsTimeGraph(Graph):

@@ -21,7 +21,7 @@
 from collections import OrderedDict
 
 from eos.graph.fitCapRegenVsCapPerc import FitCapRegenVsCapPercGraph as EosGraph
-from gui.graph import Graph, XDef, YDef
+from .base import Graph, XDef, YDef
 
 
 class FitCapRegenVsCapPercGraph(Graph):

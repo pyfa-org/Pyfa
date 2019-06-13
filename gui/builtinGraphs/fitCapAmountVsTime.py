@@ -21,7 +21,7 @@
 from collections import OrderedDict
 
 from eos.graph.fitCapAmountVsTime import FitCapAmountVsTimeGraph as EosGraph
-from gui.graph import Graph, XDef, YDef
+from .base import Graph, XDef, YDef
 
 
 class FitCapAmountVsTimeGraph(Graph):

@@ -21,7 +21,7 @@
 from collections import OrderedDict
 
 from eos.graph.fitWarpTimeVsDistance import FitWarpTimeVsDistanceGraph as EosGraph
-from gui.graph import Graph, XDef, YDef
+from .base import Graph, XDef, YDef
 
 
 class FitWarpTimeVsDistanceGraph(Graph):

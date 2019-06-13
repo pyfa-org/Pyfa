@@ -29,7 +29,7 @@ import gui.display
 import gui.globalEvents as GE
 import gui.mainFrame
 from gui.bitmap_loader import BitmapLoader
-from gui.graph import Graph
+from gui.builtinGraphs.base import Graph
 from service.fit import Fit
 
 

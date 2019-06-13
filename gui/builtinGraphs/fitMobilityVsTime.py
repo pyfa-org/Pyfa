@@ -22,7 +22,7 @@ from collections import OrderedDict
 
 from eos.graph.fitDistanceVsTime import FitDistanceVsTimeGraph as EosGraphDistance
 from eos.graph.fitSpeedVsTime import FitSpeedVsTimeGraph as EosGraphSpeed
-from gui.graph import Graph, XDef, YDef
+from .base import Graph, XDef, YDef
 
 
 class FitMobilityVsTimeGraph(Graph):
