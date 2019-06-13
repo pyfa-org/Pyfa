@@ -17,9 +17,9 @@
 # along with pyfa.  If not, see <http://www.gnu.org/licenses/>.
 # =============================================================================
 
+import math
 import os
 import traceback
-from itertools import chain
 
 # noinspection PyPackageRequirements
 import wx
@@ -52,7 +52,7 @@ try:
     graphFrame_enabled = True
     mplImported = True
 except ImportError as e:
-    pyfalog.warning("Matplotlib failed to import.  Likely missing or incompatible version.")
+    pyfalog.warning('Matplotlib failed to import.  Likely missing or incompatible version.')
     mpl_version = -1
     Patch = mpl = Canvas = Figure = None
     graphFrame_enabled = False
@@ -60,7 +60,7 @@ except ImportError as e:
 except Exception:
     # We can get exceptions deep within matplotlib. Catch those.  See GH #1046
     tb = traceback.format_exc()
-    pyfalog.critical("Exception when importing Matplotlib. Continuing without importing.")
+    pyfalog.critical('Exception when importing Matplotlib. Continuing without importing.')
     pyfalog.critical(tb)
     mpl_version = -1
     Patch = mpl = Canvas = Figure = None
@@ -79,13 +79,13 @@ class GraphFrame(wx.Frame):
         self.legendFix = False
 
         if not graphFrame_enabled:
-            pyfalog.warning("Matplotlib is not enabled. Skipping initialization.")
+            pyfalog.warning('Matplotlib is not enabled. Skipping initialization.')
             return
 
         try:
             cache_dir = mpl._get_cachedir()
         except:
-            cache_dir = os.path.expanduser(os.path.join("~", ".matplotlib"))
+            cache_dir = os.path.expanduser(os.path.join('~', '.matplotlib'))
 
         cache_file = os.path.join(cache_dir, 'fontList.cache')
 
@@ -97,15 +97,15 @@ class GraphFrame(wx.Frame):
 
         graphFrame_enabled = True
         if int(mpl.__version__[0]) < 1:
-            pyfalog.warning("pyfa: Found matplotlib version {} - activating OVER9000 workarounds".format(mpl.__version__))
-            pyfalog.warning("pyfa: Recommended minimum matplotlib version is 1.0.0")
+            pyfalog.warning('pyfa: Found matplotlib version {} - activating OVER9000 workarounds'.format(mpl.__version__))
+            pyfalog.warning('pyfa: Recommended minimum matplotlib version is 1.0.0')
             self.legendFix = True
 
         mplImported = True
 
-        wx.Frame.__init__(self, parent, title="pyfa: Graph Generator", style=style, size=(520, 390))
+        wx.Frame.__init__(self, parent, title='pyfa: Graph Generator', style=style, size=(520, 390))
 
-        i = wx.Icon(BitmapLoader.getBitmap("graphs_small", "gui"))
+        i = wx.Icon(BitmapLoader.getBitmap('graphs_small', 'gui'))
         self.SetIcon(i)
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
         self.CreateStatusBar()
@@ -153,7 +153,7 @@ class GraphFrame(wx.Frame):
 
         ctrlPanelSizer = wx.BoxSizer(wx.HORIZONTAL)
         viewOptSizer = wx.BoxSizer(wx.VERTICAL)
-        self.showY0Cb = wx.CheckBox(self.graphCtrlPanel, wx.ID_ANY, "Always show Y = 0", wx.DefaultPosition, wx.DefaultSize, 0)
+        self.showY0Cb = wx.CheckBox(self.graphCtrlPanel, wx.ID_ANY, 'Always show Y = 0', wx.DefaultPosition, wx.DefaultSize, 0)
         self.showY0Cb.SetValue(self.showY0)
         self.showY0Cb.Bind(wx.EVT_CHECKBOX, self.OnShowY0Update)
         viewOptSizer.Add(self.showY0Cb, 0, wx.LEFT | wx.TOP | wx.RIGHT | wx.EXPAND, 5)
@@ -203,7 +203,7 @@ class GraphFrame(wx.Frame):
         self.SetMinSize(self.GetSize())
 
     def handleDrag(self, type, fitID):
-        if type == "fit":
+        if type == 'fit':
             self.AppendFitToList(fitID)
 
     def closeEvent(self, event):
@@ -321,15 +321,15 @@ class GraphFrame(wx.Frame):
             if fieldDef.inputDefault is not None:
                 inputDefault = fieldDef.inputDefault
                 if not isinstance(inputDefault, str):
-                    inputDefault = ("%f" % inputDefault).rstrip("0")
-                    if inputDefault[-1:] == ".":
-                        inputDefault += "0"
+                    inputDefault = ('%f' % inputDefault).rstrip('0')
+                    if inputDefault[-1:] == '.':
+                        inputDefault += '0'
 
                 textBox.ChangeValue(inputDefault)
 
             imgLabelSizer = wx.BoxSizer(wx.HORIZONTAL)
             if fieldDef.inputIconID:
-                icon = BitmapLoader.getBitmap(fieldDef.inputIconID, "icons")
+                icon = BitmapLoader.getBitmap(fieldDef.inputIconID, 'icons')
                 if icon is not None:
                     static = wx.StaticBitmap(self.graphCtrlPanel)
                     static.SetBitmap(icon)
@@ -343,7 +343,7 @@ class GraphFrame(wx.Frame):
 
     def delayedDraw(self, event=None):
         self.drawTimer.Stop()
-        self.drawTimer.Start(Fit.getInstance().serviceFittingOptions["marketSearchDelay"], True)
+        self.drawTimer.Start(Fit.getInstance().serviceFittingOptions['marketSearchDelay'], True)
 
     def draw(self, event=None):
         global mpl_version
@@ -356,7 +356,7 @@ class GraphFrame(wx.Frame):
         # todo: FIX THIS, see #1430. draw() is not being unbound properly when the window closes, this is an easy fix,
         # but not a proper solution
         if not self:
-            pyfalog.warning("GraphFrame handled event, however GraphFrame no longer exists. Ignoring event")
+            pyfalog.warning('GraphFrame handled event, however GraphFrame no longer exists. Ignoring event')
             return
 
         values = self.getValues()
@@ -396,8 +396,8 @@ class GraphFrame(wx.Frame):
                 self.subplot.plot(xs, ys)
                 legend.append('{} ({})'.format(fit.name, fit.ship.item.getShortName()))
             except Exception as ex:
-                pyfalog.warning("Invalid values in '{0}'", fit.name)
-                self.SetStatusText("Invalid values in '%s'" % fit.name)
+                pyfalog.warning('Invalid values in "{0}"', fit.name)
+                self.SetStatusText('Invalid values in "%s"' % fit.name)
                 self.canvas.draw()
                 return
 
@@ -414,7 +414,7 @@ class GraphFrame(wx.Frame):
 
         if mpl_version < 2:
             if self.legendFix and len(legend) > 0:
-                leg = self.subplot.legend(tuple(legend), "upper right", shadow=False)
+                leg = self.subplot.legend(tuple(legend), 'upper right', shadow=False)
                 for t in leg.get_texts():
                     t.set_fontsize('small')
 
@@ -422,7 +422,7 @@ class GraphFrame(wx.Frame):
                     l.set_linewidth(1)
 
             elif not self.legendFix and len(legend) > 0:
-                leg = self.subplot.legend(tuple(legend), "upper right", shadow=False, frameon=False)
+                leg = self.subplot.legend(tuple(legend), 'upper right', shadow=False, frameon=False)
                 for t in leg.get_texts():
                     t.set_fontsize('small')
 
@@ -431,14 +431,14 @@ class GraphFrame(wx.Frame):
         elif mpl_version >= 2:
             legend2 = []
             legend_colors = {
-                0: "blue",
-                1: "orange",
-                2: "green",
-                3: "red",
-                4: "purple",
-                5: "brown",
-                6: "pink",
-                7: "grey",
+                0: 'blue',
+                1: 'orange',
+                2: 'green',
+                3: 'red',
+                4: 'purple',
+                5: 'brown',
+                6: 'pink',
+                7: 'grey',
             }
 
             for i, i_name in enumerate(legend):
@@ -457,7 +457,7 @@ class GraphFrame(wx.Frame):
                     l.set_linewidth(1)
 
         self.canvas.draw()
-        self.SetStatusText("")
+        self.SetStatusText('')
         self.Refresh()
 
     def onFieldChanged(self, event):
@@ -516,13 +516,13 @@ class FitList(wx.Panel):
 
         self.fitList = FitDisplay(self)
         self.mainSizer.Add(self.fitList, 1, wx.EXPAND)
-        fitToolTip = wx.ToolTip("Drag a fit into this list to graph it")
+        fitToolTip = wx.ToolTip('Drag a fit into this list to graph it')
         self.fitList.SetToolTip(fitToolTip)
 
 
 class FitDisplay(gui.display.Display):
-    DEFAULT_COLS = ["Base Icon",
-                    "Base Name"]
+    DEFAULT_COLS = ['Base Icon',
+                    'Base Name']
 
     def __init__(self, parent):
         gui.display.Display.__init__(self, parent)
@@ -537,13 +537,216 @@ class TargetList(wx.Panel):
 
         self.targetList = TargetDisplay(self)
         self.mainSizer.Add(self.targetList, 1, wx.EXPAND)
-        fitToolTip = wx.ToolTip("Drag a fit into this list to graph it")
+        fitToolTip = wx.ToolTip('Drag a fit into this list to graph it')
         self.targetList.SetToolTip(fitToolTip)
 
 
 class TargetDisplay(gui.display.Display):
-    DEFAULT_COLS = ["Base Icon",
-                    "Base Name"]
+    DEFAULT_COLS = ['Base Icon',
+                    'Base Name']
 
     def __init__(self, parent):
         gui.display.Display.__init__(self, parent)
+
+
+# class VectorEvent(wx.PyCommandEvent):
+#     def __init__(self, evtType, id):
+#         wx.PyCommandEvent.__init__(self, evtType, id)
+#         self._angle = 0
+#         self._length = 0
+#
+#     def GetValue(self):
+#         return self._angle, self._length
+#
+#     def GetAngle(self):
+#         return self._angle
+#
+#     def GetLength(self):
+#         return self._length
+
+
+class VectorPicker(wx.Control):
+
+    myEVT_VECTOR_CHANGED = wx.NewEventType()
+    EVT_VECTOR_CHANGED = wx.PyEventBinder(myEVT_VECTOR_CHANGED, 1)
+
+    def __init__(self, *args, **kwargs):
+        self._label = str(kwargs.pop('label', ''))
+        self._labelpos = int(kwargs.pop('labelpos', 0))
+        self._offset = float(kwargs.pop('offset', 0))
+        self._size = max(0, float(kwargs.pop('size', 50)))
+        self._fontsize = max(1, float(kwargs.pop('fontsize', 8)))
+        wx.Control.__init__(self, *args, **kwargs)
+        self._font = wx.Font(self._fontsize, wx.FONTFAMILY_DEFAULT, wx.FONTSTYLE_NORMAL, wx.FONTWEIGHT_NORMAL, False)
+        self._angle = 0
+        self._length = 1
+        self._left = False
+        self._right = False
+        self._tooltip = 'Click to set angle and velocity, right-click for increments; mouse wheel for velocity only'
+        self.SetToolTip(wx.ToolTip(self._tooltip))
+        self.Bind(wx.EVT_PAINT, self.OnPaint)
+        self.Bind(wx.EVT_ERASE_BACKGROUND, self.OnEraseBackground)
+        self.Bind(wx.EVT_LEFT_DOWN, self.OnLeftDown)
+        self.Bind(wx.EVT_RIGHT_DOWN, self.OnRightDown)
+        self.Bind(wx.EVT_MOUSEWHEEL, self.OnWheel)
+
+    def DoGetBestSize(self):
+        return wx.Size(self._size, self._size)
+
+    def AcceptsFocusFromKeyboard(self):
+        return False
+
+    def GetValue(self):
+        return self._angle, self._length
+
+    def GetAngle(self):
+        return self._angle
+
+    def GetLength(self):
+        return self._length
+
+    def SetValue(self, angle=None, length=None):
+        if angle is not None:
+            self._angle = min(max(angle, -180), 180)
+        if length is not None:
+            self._length = min(max(length, 0), 1)
+        self.Refresh()
+
+    def SetAngle(self, angle):
+        self.SetValue(angle, None)
+
+    def SetLength(self, length):
+        self.SetValue(None, length)
+
+    def OnPaint(self, event):
+        dc = wx.BufferedPaintDC(self)
+        self.Draw(dc)
+
+    def Draw(self, dc):
+        width, height = self.GetClientSize()
+        if not width or not height:
+            return
+
+        dc.SetBackground(wx.Brush(self.GetBackgroundColour(), wx.BRUSHSTYLE_SOLID))
+        dc.Clear()
+        dc.SetTextForeground(wx.Colour(0))
+        dc.SetFont(self._font)
+
+        radius = min(width, height) / 2 - 2
+        dc.SetBrush(wx.WHITE_BRUSH)
+        dc.DrawCircle(radius + 2, radius + 2, radius)
+        a = math.radians(self._angle + self._offset)
+        x = math.sin(a) * radius
+        y = math.cos(a) * radius
+        dc.DrawLine(radius + 2, radius + 2, radius + 2 + x * self._length, radius + 2 - y * self._length)
+        dc.SetBrush(wx.BLACK_BRUSH)
+        dc.DrawCircle(radius + 2 + x * self._length, radius + 2 - y * self._length, 2)
+
+        if self._label:
+            labelText = self._label
+            labelTextW, labelTextH = dc.GetTextExtent(labelText)
+            labelTextX = (radius * 2 + 4 - labelTextW) if (self._labelpos & 1) else 0
+            labelTextY = (radius * 2 + 4 - labelTextH) if (self._labelpos & 2) else 0
+            dc.DrawText(labelText, labelTextX, labelTextY)
+
+        lengthText = '%d%%' % (100 * self._length,)
+        lengthTextW, lengthTextH = dc.GetTextExtent(lengthText)
+        lengthTextX = radius + 2 + x / 2 - y / 3 - lengthTextW / 2
+        lengthTextY = radius + 2 - y / 2 - x / 3 - lengthTextH / 2
+        dc.DrawText(lengthText, lengthTextX, lengthTextY)
+
+        angleText = '%d\u00B0' % (self._angle,)
+        angleTextW, angleTextH = dc.GetTextExtent(angleText)
+        angleTextX = radius + 2 - x / 2 - angleTextW / 2
+        angleTextY = radius + 2 + y / 2 - angleTextH / 2
+        dc.DrawText(angleText, angleTextX, angleTextY)
+
+    def OnEraseBackground(self, event):
+        pass
+
+    def OnLeftDown(self, event):
+        self._left = True
+        self.SetToolTip(None)
+        self.Bind(wx.EVT_LEFT_UP, self.OnLeftUp)
+        self.Bind(wx.EVT_MOUSE_CAPTURE_LOST, self.OnLeftUp)
+        if not self._right:
+            self.Bind(wx.EVT_MOTION, self.OnMotion)
+        if not self.HasCapture():
+            self.CaptureMouse()
+        self.HandleMouseEvent(event)
+
+    def OnRightDown(self, event):
+        self._right = True
+        self.SetToolTip(None)
+        self.Bind(wx.EVT_RIGHT_UP, self.OnRightUp)
+        self.Bind(wx.EVT_MOUSE_CAPTURE_LOST, self.OnRightUp)
+        if not self._left:
+            self.Bind(wx.EVT_MOTION, self.OnMotion)
+        if not self.HasCapture():
+            self.CaptureMouse()
+        self.HandleMouseEvent(event)
+
+    def OnLeftUp(self, event):
+        self.HandleMouseEvent(event)
+        self.Unbind(wx.EVT_LEFT_UP, handler=self.OnLeftUp)
+        self.Unbind(wx.EVT_MOUSE_CAPTURE_LOST, handler=self.OnLeftUp)
+        self._left = False
+        if not self._right:
+            self.Unbind(wx.EVT_MOTION, handler=self.OnMotion)
+            self.SendChangeEvent()
+            self.SetToolTip(wx.ToolTip(self._tooltip))
+            if self.HasCapture():
+                self.ReleaseMouse()
+
+    def OnRightUp(self, event):
+        self.HandleMouseEvent(event)
+        self.Unbind(wx.EVT_RIGHT_UP, handler=self.OnRightUp)
+        self.Unbind(wx.EVT_MOUSE_CAPTURE_LOST, handler=self.OnRightUp)
+        self._right = False
+        if not self._left:
+            self.Unbind(wx.EVT_MOTION, handler=self.OnMotion)
+            self.SendChangeEvent()
+            self.SetToolTip(wx.ToolTip(self._tooltip))
+            if self.HasCapture():
+                self.ReleaseMouse()
+
+    def OnMotion(self, event):
+        self.HandleMouseEvent(event)
+        event.Skip()
+
+    def OnWheel(self, event):
+        amount = 0.1 * event.GetWheelRotation() / event.GetWheelDelta()
+        self._length = min(max(self._length + amount, 0.0), 1.0)
+        self.Refresh()
+        self.SendChangeEvent()
+
+    def HandleMouseEvent(self, event):
+        width, height = self.GetClientSize()
+        if width and height:
+            center = min(width, height) / 2
+            x, y = event.GetPositionTuple()
+            x = x - center
+            y = center - y
+            angle = self._angle
+            length = min((x * x + y * y) ** 0.5 / (center - 2), 1.0)
+            if length < 0.01:
+                length = 0
+            else:
+                angle = ((math.degrees(math.atan2(x, y)) - self._offset + 180) % 360) - 180
+            if (self._right and not self._left) or event.ShiftDown():
+                angle = round(angle / 15.0) * 15.0
+                # floor() for length to make it easier to hit 0%, can still hit 100% outside the circle
+                length = math.floor(length / 0.05) * 0.05
+            if (angle != self._angle) or (length != self._length):
+                self._angle = angle
+                self._length = length
+                self.Refresh()
+                if self._right and not self._left:
+                    self.SendChangeEvent()
+
+    def SendChangeEvent(self):
+        changeEvent = wx.CommandEvent(self.myEVT_VECTOR_CHANGED, self.GetId())
+        changeEvent._object = self
+        changeEvent._angle = self._angle
+        changeEvent._length = self._length
+        self.GetEventHandler().ProcessEvent(changeEvent)
