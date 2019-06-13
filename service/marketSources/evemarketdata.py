@@ -31,7 +31,7 @@ pyfalog = Logger(__name__)
 
 class EveMarketData:
 
-    name = "eve-marketdata.com"
+    name = 'eve-marketdata.com'
 
     def __init__(self, priceMap, system, fetchTimeout):
         # Try selected system first
@@ -42,24 +42,24 @@ class EveMarketData:
 
     @staticmethod
     def fetchPrices(priceMap, fetchTimeout, system=None):
-        params = {"type_ids": ','.join(str(typeID) for typeID in priceMap)}
+        params = {'type_ids': ','.join(str(typeID) for typeID in priceMap)}
         if system is not None:
-            params["system_id"] = system
-        baseurl = "https://eve-marketdata.com/api/item_prices.xml"
+            params['system_id'] = system
+        baseurl = 'https://eve-marketdata.com/api/item_prices.xml'
         network = Network.getInstance()
-        data = network.request(baseurl, network.PRICES, params=params, timeout=fetchTimeout)
+        data = network.get(url=baseurl, type=network.PRICES, params=params, timeout=fetchTimeout)
         xml = minidom.parseString(data.text)
-        types = xml.getElementsByTagName("eve").item(0).getElementsByTagName("price")
+        types = xml.getElementsByTagName('eve').item(0).getElementsByTagName('price')
 
         # Cycle through all types we've got from request
         for type_ in types:
             # Get data out of each typeID details tree
-            typeID = int(type_.getAttribute("id"))
+            typeID = int(type_.getAttribute('id'))
 
             try:
                 price = float(type_.firstChild.data)
             except (TypeError, ValueError):
-                pyfalog.warning("Failed to get price for: {0}", type_)
+                pyfalog.warning('Failed to get price for: {0}', type_)
                 continue
 
             # eve-marketdata returns 0 if price data doesn't even exist for the item

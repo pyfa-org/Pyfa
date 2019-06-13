@@ -8,10 +8,12 @@ import gui.mainFrame
 import gui.utils.color as colorUtils
 import gui.utils.draw as drawUtils
 import gui.utils.fonts as fonts
-from .events import FitSelected, SearchSelected, ImportSelected, Stage1Selected, Stage2Selected, Stage3Selected
 from gui.bitmap_loader import BitmapLoader
-from service.fit import Fit
 from gui.utils.helpers_wxPython import HandleCtrlBackspace
+from service.fit import Fit
+from utils.cjk import isStringCjk
+from .events import FitSelected, SearchSelected, ImportSelected, Stage1Selected, Stage2Selected, Stage3Selected
+
 
 pyfalog = Logger(__name__)
 
@@ -86,7 +88,8 @@ class NavigationPanel(SFItem.SFBrowserItem):
         search = self.BrowserSearchBox.GetValue()
         # Make sure we do not count wildcard as search symbol
         realsearch = search.replace("*", "")
-        if len(realsearch) >= 3:
+        minChars = 1 if isStringCjk(realsearch) else 3
+        if len(realsearch) >= minChars:
             self.lastSearch = search
             wx.PostEvent(self.shipBrowser, SearchSelected(text=search, back=False))
 

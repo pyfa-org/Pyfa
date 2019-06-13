@@ -70,36 +70,18 @@ class Network:
 
         return cls._instance
 
-    def request(self, url, type, *args, **kwargs):
+    def get(self, url, type, **kwargs):
+        self.__networkAccessCheck(type)
 
-        # URL is required to be https as of right now
-        # print "Starting request: %s\n\tType: %s\n\tPost Data: %s"%(url,type,data)
-
-        # Make sure request is enabled
-        access = NetworkSettings.getInstance().getAccess()
-
-        if not self.ENABLED & access or not type & access:
-            pyfalog.warning("Access not enabled - please enable in Preferences > Network")
-            raise Error("Access not enabled - please enable in Preferences > Network")
-
-        # Set up some things for the request
-        versionString = "{0}".format(config.version)
-        headers = {"User-Agent": "pyfa {0} (python-requests {1})".format(versionString, requests.__version__)}
-        # user-agent: pyfa 2.0.0b4 git -YC120.2 1.2 (python-requests 2.18.4)
-
-        # python-requests supports setting proxy for request as parameter to get() / post()
-        # in a form like: proxies = { 'http': 'http://10.10.1.10:3128', 'https': 'http://10.10.1.10:1080' }
-        # or with HTTP Basic auth support: proxies = {'http': 'http://user:pass@10.10.1.10:3128/'}
-        # then you do: requests.get('http://example.org', proxies=proxies)
-
-        proxies = NetworkSettings.getInstance().getProxySettingsInRequestsFormat()
+        headers = self.__getHeaders()
+        proxies = self.__getProxies()
 
         try:
             resp = requests.get(url, headers=headers, proxies=proxies, **kwargs)
             resp.raise_for_status()
             return resp
         except requests.exceptions.HTTPError as error:
-            pyfalog.warning("HTTPError:")
+            pyfalog.warning('HTTPError:')
             pyfalog.warning(error)
             if error.response.status_code == 404:
                 raise RequestError()
@@ -112,3 +94,46 @@ class Network:
             raise TimeoutError()
         except Exception as error:
             raise Error(error)
+
+    def post(self, url, type, jsonData, **kwargs):
+        self.__networkAccessCheck(type)
+
+        headers = self.__getHeaders()
+        proxies = self.__getProxies()
+
+        try:
+            resp = requests.post(url, json=jsonData, headers=headers, proxies=proxies, **kwargs)
+            resp.raise_for_status()
+            return resp
+        except requests.exceptions.HTTPError as error:
+            pyfalog.warning('HTTPError:')
+            pyfalog.warning(error)
+            if error.response.status_code == 404:
+                raise RequestError()
+            elif error.response.status_code == 403:
+                raise AuthenticationError()
+            elif error.response.status_code >= 500:
+                raise ServerError()
+            raise Error(error)
+        except requests.exceptions.Timeout:
+            raise TimeoutError()
+        except Exception as error:
+            raise Error(error)
+
+    def __networkAccessCheck(self, type):
+        # Make sure request is enabled
+        access = NetworkSettings.getInstance().getAccess()
+        if not self.ENABLED & access or not type & access:
+            pyfalog.warning('Access not enabled - please enable in Preferences > Network')
+            raise Error('Access not enabled - please enable in Preferences > Network')
+
+    def __getHeaders(self):
+        versionString = '{0}'.format(config.version)
+        return {'User-Agent': 'pyfa {0} (python-requests {1})'.format(versionString, requests.__version__)}
+
+    def __getProxies(self):
+        # python-requests supports setting proxy for request as parameter to get() / post()
+        # in a form like: proxies = { 'http': 'http://10.10.1.10:3128', 'https': 'http://10.10.1.10:1080' }
+        # or with HTTP Basic auth support: proxies = {'http': 'http://user:pass@10.10.1.10:3128/'}
+        # then you do: requests.get('http://example.org', proxies=proxies)
+        return NetworkSettings.getInstance().getProxySettingsInRequestsFormat()

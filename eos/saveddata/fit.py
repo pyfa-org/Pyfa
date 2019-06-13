@@ -1167,6 +1167,10 @@ class Fit(object):
 
         return self.__capRecharge
 
+    @property
+    def capDelta(self):
+        return (self.__capRecharge or 0) - (self.__capUsed or 0)
+
     def calculateCapRecharge(self, percent=PEAK_RECHARGE):
         capacity = self.ship.getModifiedItemAttr("capacitorCapacity")
         rechargeRate = self.ship.getModifiedItemAttr("rechargeRate") / 1000.0

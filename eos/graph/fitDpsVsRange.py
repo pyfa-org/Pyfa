@@ -22,8 +22,10 @@ from math import exp, log, radians, sin, inf
 
 from logbook import Logger
 
+import eos.config
 from eos.const import FittingHardpoint, FittingModuleState
 from eos.graph import SmoothGraph
+from eos.utils.spoolSupport import SpoolType, SpoolOptions
 
 
 pyfalog = Logger(__name__)
@@ -58,9 +60,10 @@ class FitDpsVsRangeGraph(SmoothGraph):
         tgtSpeed = self.penalizeModChain(tgtSpeed, tgtSpeedMods)
         tgtSigRad = self.penalizeModChain(tgtSigRad, tgtSigRadMods)
         attRad = fit.ship.getModifiedItemAttr('radius', 0)
+        defaultSpoolValue = eos.config.settings['globalDefaultSpoolupPercentage']
 
         for mod in fit.modules:
-            dps = mod.getDps(targetResists=fit.targetResists).total
+            dps = mod.getDps(targetResists=fit.targetResists, spoolOptions=SpoolOptions(SpoolType.SCALE, defaultSpoolValue, False)).total
             if mod.hardpoint == FittingHardpoint.TURRET:
                 if mod.state >= FittingModuleState.ACTIVE:
                     total += dps * self.calculateTurretMultiplier(fit, mod, distance, angle, tgtSpeed, tgtSigRad)

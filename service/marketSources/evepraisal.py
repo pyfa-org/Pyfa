@@ -18,8 +18,6 @@
 # =============================================================================
 
 
-from xml.dom import minidom
-
 from logbook import Logger
 
 from eos.saveddata.price import PriceStatus
@@ -28,10 +26,18 @@ from service.price import Price
 
 pyfalog = Logger(__name__)
 
+systemAliases = {
+    None: 'universe',
+    30000142: 'jita',
+    30002187: 'amarr',
+    30002659: 'dodixie',
+    30002510: 'rens',
+    30002053: 'hek'}
 
-class EveMarketer:
 
-    name = 'evemarketer'
+class EvePraisal:
+
+    name = 'evepraisal'
 
     def __init__(self, priceMap, system, fetchTimeout):
         # Try selected system first
@@ -42,33 +48,31 @@ class EveMarketer:
 
     @staticmethod
     def fetchPrices(priceMap, fetchTimeout, system=None):
-        params = {'typeid': {typeID for typeID in priceMap}}
-        if system is not None:
-            params['usesystem'] = system
-        baseurl = 'https://api.evemarketer.com/ec/marketstat'
+        if system not in systemAliases:
+            return
+        jsonData = {
+            'market_name': systemAliases[system],
+            'items': [{'type_id': typeID} for typeID in priceMap]}
+        baseurl = 'https://evepraisal.com/appraisal/structured.json'
         network = Network.getInstance()
-        data = network.get(url=baseurl, type=network.PRICES, params=params, timeout=fetchTimeout)
-        xml = minidom.parseString(data.text)
-        types = xml.getElementsByTagName('marketstat').item(0).getElementsByTagName('type')
+        resp = network.post(baseurl, network.PRICES, jsonData=jsonData, timeout=fetchTimeout)
+        data = resp.json()
+        try:
+            itemsData = data['appraisal']['items']
+        except (KeyError, TypeError):
+            return
         # Cycle through all types we've got from request
-        for type_ in types:
-            # Get data out of each typeID details tree
-            typeID = int(type_.getAttribute('id'))
-            sell = type_.getElementsByTagName('sell').item(0)
-            # If price data wasn't there, skip the item
+        for itemData in itemsData:
             try:
-                percprice = float(sell.getElementsByTagName('percentile').item(0).firstChild.data)
-            except (TypeError, ValueError):
-                pyfalog.warning('Failed to get price for: {0}', type_)
+                typeID = int(itemData['typeID'])
+                price = itemData['prices']['sell']['min']
+            except (KeyError, TypeError):
                 continue
-
-            # Price is 0 if evemarketer has info on this item, but it is not available
-            # for current scope limit. If we provided scope limit - make sure to skip
-            # such items to check globally, and do not skip if requested globally
-            if percprice == 0 and system is not None:
+            # evepraisal returns 0 if price data doesn't even exist for the item
+            if price == 0:
                 continue
-            priceMap[typeID].update(PriceStatus.fetchSuccess, percprice)
+            priceMap[typeID].update(PriceStatus.fetchSuccess, price)
             del priceMap[typeID]
 
 
-Price.register(EveMarketer)
+Price.register(EvePraisal)

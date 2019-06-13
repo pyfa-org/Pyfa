@@ -85,46 +85,44 @@ class CapacitorViewFull(StatsView):
 
         sizerCapacitor.Add(baseBox, 0, wx.ALIGN_CENTER_HORIZONTAL)
 
-        tooltip = wx.ToolTip("Capacitor throughput")
+        tooltip = wx.ToolTip("Extra stats")
         bitmap = BitmapLoader.getStaticBitmap("capacitorRecharge_big", parent, "gui")
         bitmap.SetToolTip(tooltip)
         baseBox.Add(bitmap, 0, wx.ALIGN_CENTER)
 
-        # Recharge
-        chargeSizer = wx.FlexGridSizer(2, 3, 0, 0)
+        # Delta
+        chargeSizer = wx.BoxSizer(wx.VERTICAL)
         baseBox.Add(chargeSizer, 0, wx.ALIGN_CENTER)
 
-        chargeSizer.Add(wx.StaticText(parent, wx.ID_ANY, "+ "), 0, wx.ALIGN_CENTER)
-        lbl = wx.StaticText(parent, wx.ID_ANY, "0.0")
-        setattr(self, "label%sCapacitorRecharge" % panel.capitalize(), lbl)
+        lbl = wx.StaticText(parent, wx.ID_ANY, "0 GJ/s")
+        setattr(self, "label%sCapacitorDelta" % panel.capitalize(), lbl)
         chargeSizer.Add(lbl, 0, wx.ALIGN_CENTER)
-        chargeSizer.Add(wx.StaticText(parent, wx.ID_ANY, " GJ/s"), 0, wx.ALIGN_CENTER)
 
-        # Discharge
-        chargeSizer.Add(wx.StaticText(parent, wx.ID_ANY, "- "), 0, wx.ALIGN_CENTER)
-        lbl = wx.StaticText(parent, wx.ID_ANY, "0.0")
-        setattr(self, "label%sCapacitorDischarge" % panel.capitalize(), lbl)
+        # Resists
+        lbl = wx.StaticText(parent, wx.ID_ANY, "0%")
+        setattr(self, "label%sCapacitorResist" % panel.capitalize(), lbl)
         chargeSizer.Add(lbl, 0, wx.ALIGN_CENTER)
-        chargeSizer.Add(wx.StaticText(parent, wx.ID_ANY, " GJ/s"), 0, wx.ALIGN_CENTER)
 
     def refreshPanel(self, fit):
         # If we did anything intresting, we'd update our labels to reflect the new fit's stats here
         stats = (
-            ("label%sCapacitorCapacity", lambda: fit.ship.getModifiedItemAttr("capacitorCapacity"), 3, 0, 9),
-            ("label%sCapacitorRecharge", lambda: fit.capRecharge, 3, 0, 0),
-            ("label%sCapacitorDischarge", lambda: fit.capUsed, 3, 0, 0),
+            ("label%sCapacitorCapacity", lambda: fit.ship.getModifiedItemAttr("capacitorCapacity"), 3, 0, 9, False, ''),
+            ("label%sCapacitorDelta", lambda: fit.capDelta, 3, 0, 0, True, ' GJ/s'),
+            ("label%sCapacitorResist", lambda: (1 - fit.ship.getModifiedItemAttr("energyWarfareResistance", 1)) * 100, 3, 0, 0, False, '%'),
         )
         if fit is not None:
-            neut_resist = fit.ship.getModifiedItemAttr("energyWarfareResistance", 0)
+            cap_amount = fit.ship.getModifiedItemAttr("capacitorCapacity")
             cap_recharge = fit.capRecharge
             cap_use = fit.capUsed
+            neut_res = fit.ship.getModifiedItemAttr("energyWarfareResistance", 1)
         else:
-            neut_resist = 0
+            cap_amount = 0
             cap_recharge = 0
             cap_use = 0
+            neut_res = 1
 
         panel = "Full"
-        for labelName, value, prec, lowest, highest in stats:
+        for labelName, value, prec, lowest, highest, forceSign, unit in stats:
             label = getattr(self, labelName % panel)
             value = value() if fit is not None else 0
             value = value if value is not None else 0
@@ -132,15 +130,19 @@ class CapacitorViewFull(StatsView):
                 label.SetLabel(value)
                 label.SetToolTip(wx.ToolTip(value))
             else:
-                label.SetLabel(formatAmount(value, prec, lowest, highest))
+                label.SetLabel('{}{}'.format(formatAmount(value, prec, lowest, highest, forceSign=forceSign), unit))
                 label.SetToolTip(wx.ToolTip("%.1f" % value))
 
-            if labelName in ("label%sCapacitorRecharge", "label%sCapacitorDischarge"):
-                neut_resist_preformat = 100 - (neut_resist * 100) if neut_resist else neut_resist
-                label_tooltip = "Capacitor delta: {}\nNeut resistance: {}%".format(
-                    formatAmount(cap_recharge - cap_use, 3, 0, 3, forceSign=True),
-                    formatAmount(neut_resist_preformat, 3, 0, 3))
+            if labelName == 'label%sCapacitorDelta':
+                label_tooltip = 'Capacitor delta:\n+{} GJ/s\n-{} GJ/s'.format(
+                    formatAmount(cap_recharge, 3, 0, 3),
+                    formatAmount(cap_use, 3, 0, 3))
                 label.SetToolTip(wx.ToolTip(label_tooltip))
+            if labelName == 'label%sCapacitorResist':
+                texts = ['Neutralizer resistance']
+                if cap_amount > 0 and neut_res < 1:
+                    texts.append('Effective capacity: {} GJ'.format(formatAmount(cap_amount / neut_res, 3, 0, 9)))
+                label.SetToolTip(wx.ToolTip('\n'.join(texts)))
 
         capState = fit.capState if fit is not None else 0
         capStable = fit.capStable if fit is not None else False
