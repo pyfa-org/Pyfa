@@ -17,9 +17,10 @@
 # along with pyfa.  If not, see <http://www.gnu.org/licenses/>.
 # =============================================================================
 
-import math
+
 import os
 import traceback
+from itertools import chain
 
 # noinspection PyPackageRequirements
 import wx
@@ -31,6 +32,7 @@ import gui.mainFrame
 from gui.bitmap_loader import BitmapLoader
 from gui.builtinGraphs.base import Graph
 from service.fit import Fit
+from .panel import GraphControlPanel
 
 
 pyfalog = Logger(__name__)
@@ -113,19 +115,9 @@ class GraphFrame(wx.Frame):
         self.mainSizer = wx.BoxSizer(wx.VERTICAL)
         self.SetSizer(self.mainSizer)
 
-        sFit = Fit.getInstance()
-        fit = sFit.getFit(self.mainFrame.getActiveFit())
-        self.fits = [fit] if fit is not None else []
-        self.fitList = FitList(self)
-        self.fitList.SetMinSize((270, -1))
-        self.fitList.fitList.update(self.fits)
-        self.targets = []
-        self.targetList = TargetList(self)
-        self.targetList.SetMinSize((270, -1))
-        self.targetList.targetList.update(self.targets)
-
         self.graphSelection = wx.Choice(self, wx.ID_ANY, style=0)
         self.mainSizer.Add(self.graphSelection, 0, wx.EXPAND)
+        self.selectedYRbMap = {}
 
         self.figure = Figure(figsize=(5, 3), tight_layout={'pad': 1.08})
 
@@ -144,26 +136,9 @@ class GraphFrame(wx.Frame):
         self.mainSizer.Add(wx.StaticLine(self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.LI_HORIZONTAL), 0,
                            wx.EXPAND)
 
-        self.graphCtrlPanel = wx.Panel(self)
-        self.mainSizer.Add(self.graphCtrlPanel, 0, wx.EXPAND | wx.ALL, 0)
 
-        self.showY0 = True
-        self.selectedY = None
-        self.selectedYRbMap = {}
-
-        ctrlPanelSizer = wx.BoxSizer(wx.HORIZONTAL)
-        viewOptSizer = wx.BoxSizer(wx.VERTICAL)
-        self.showY0Cb = wx.CheckBox(self.graphCtrlPanel, wx.ID_ANY, 'Always show Y = 0', wx.DefaultPosition, wx.DefaultSize, 0)
-        self.showY0Cb.SetValue(self.showY0)
-        self.showY0Cb.Bind(wx.EVT_CHECKBOX, self.OnShowY0Update)
-        viewOptSizer.Add(self.showY0Cb, 0, wx.LEFT | wx.TOP | wx.RIGHT | wx.EXPAND, 5)
-        self.graphSubselSizer = wx.BoxSizer(wx.VERTICAL)
-        viewOptSizer.Add(self.graphSubselSizer, 0, wx.ALL | wx.EXPAND, 5)
-        ctrlPanelSizer.Add(viewOptSizer, 0, wx.EXPAND | wx.LEFT | wx.TOP | wx.BOTTOM, 5)
-        self.inputsSizer = wx.FlexGridSizer(0, 4, 0, 0)
-        self.inputsSizer.AddGrowableCol(1)
-        ctrlPanelSizer.Add(self.inputsSizer, 1, wx.EXPAND | wx.RIGHT | wx.TOP | wx.BOTTOM, 5)
-        self.graphCtrlPanel.SetSizer(ctrlPanelSizer)
+        self.ctrlPanel = GraphControlPanel(self, self)
+        self.mainSizer.Add(self.ctrlPanel, 0, wx.EXPAND | wx.ALL, 0)
 
         self.drawTimer = wx.Timer(self)
         self.Bind(wx.EVT_TIMER, self.draw, self.drawTimer)
@@ -178,14 +153,10 @@ class GraphFrame(wx.Frame):
         self.sl1 = wx.StaticLine(self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.LI_HORIZONTAL)
         self.mainSizer.Add(self.sl1, 0, wx.EXPAND)
 
-        fitSizer = wx.BoxSizer(wx.HORIZONTAL)
-        fitSizer.Add(self.fitList, 1, wx.EXPAND)
-        fitSizer.Add(self.targetList, 1, wx.EXPAND)
 
-        self.mainSizer.Add(fitSizer, 0, wx.EXPAND)
-
-        self.fitList.fitList.Bind(wx.EVT_LEFT_DCLICK, self.OnLeftDClick)
-        self.fitList.fitList.Bind(wx.EVT_CONTEXT_MENU, self.OnContextMenu)
+        self.ctrlPanel.fitList.fitList.Bind(wx.EVT_LEFT_DCLICK, self.OnLeftDClick)
+        self.ctrlPanel.fitList.fitList.Bind(wx.EVT_CONTEXT_MENU, self.OnContextMenu)
+        self.ctrlPanel.showY0Cb.Bind(wx.EVT_CHECKBOX, self.OnNonDestructiveControlsUpdate)
         self.mainFrame.Bind(GE.FIT_CHANGED, self.OnFitChanged)
         self.mainFrame.Bind(GE.FIT_REMOVED, self.OnFitRemoved)
         self.Bind(wx.EVT_CLOSE, self.closeEvent)
@@ -217,7 +188,7 @@ class GraphFrame(wx.Frame):
             self.closeWindow()
             return
         elif keycode == 65 and mstate.GetModifiers() == wx.MOD_CONTROL:
-            self.fitList.fitList.selectAll()
+            self.ctrlPanel.fitList.fitList.selectAll()
         elif keycode in (wx.WXK_DELETE, wx.WXK_NUMPAD_DELETE) and mstate.GetModifiers() == wx.MOD_NONE:
             self.removeFits(self.getSelectedFits())
         event.Skip()
@@ -247,18 +218,18 @@ class GraphFrame(wx.Frame):
 
     def OnFitRemoved(self, event):
         event.Skip()
-        fit = next((f for f in self.fits if f.ID == event.fitID), None)
+        fit = next((f for f in self.ctrlPanel.fits if f.ID == event.fitID), None)
         if fit is not None:
             self.removeFits([fit])
 
     def graphChanged(self, event):
-        self.selectedY = None
+        self.ctrlPanel.selectedY = None
         self.updateGraphWidgets()
         event.Skip()
 
     def closeWindow(self):
         from gui.builtinStatsViews.resistancesViewFull import EFFECTIVE_HP_TOGGLED  # Grr gons
-        self.fitList.fitList.Unbind(wx.EVT_LEFT_DCLICK, handler=self.OnLeftDClick)
+        self.ctrlPanel.fitList.fitList.Unbind(wx.EVT_LEFT_DCLICK, handler=self.OnLeftDClick)
         self.mainFrame.Unbind(GE.FIT_CHANGED, handler=self.OnFitChanged)
         self.mainFrame.Unbind(GE.FIT_REMOVED, handler=self.OnFitRemoved)
         self.mainFrame.Unbind(EFFECTIVE_HP_TOGGLED, handler=self.OnEhpToggled)
@@ -274,25 +245,24 @@ class GraphFrame(wx.Frame):
 
         return values
 
-    def OnShowY0Update(self, event):
+    def OnNonDestructiveControlsUpdate(self, event):
         event.Skip()
-        self.showY0 = self.showY0Cb.GetValue()
         self.draw()
 
     def OnYTypeUpdate(self, event):
         event.Skip()
         obj = event.GetEventObject()
         formatName = obj.GetLabel()
-        self.selectedY = self.selectedYRbMap[formatName]
+        self.ctrlPanel.selectedY = self.selectedYRbMap[formatName]
         self.draw()
 
     def updateGraphWidgets(self):
         view = self.getView()
         view.clearCache()
-        self.graphSubselSizer.Clear()
-        self.inputsSizer.Clear()
-        for child in self.graphCtrlPanel.Children:
-            if child is not self.showY0Cb:
+        self.ctrlPanel.graphSubselSizer.Clear()
+        self.ctrlPanel.inputsSizer.Clear()
+        for child in self.ctrlPanel.Children:
+            if child not in (self.ctrlPanel.showY0Cb, self.ctrlPanel.fitList, self.ctrlPanel.targetList):
                 child.Destroy()
         self.fields.clear()
 
@@ -302,22 +272,22 @@ class GraphFrame(wx.Frame):
             i = 0
             for yAlias, yDef in view.yDefs.items():
                 if i == 0:
-                    rdo = wx.RadioButton(self.graphCtrlPanel, wx.ID_ANY, yDef.switchLabel, style=wx.RB_GROUP)
+                    rdo = wx.RadioButton(self.ctrlPanel, wx.ID_ANY, yDef.switchLabel, style=wx.RB_GROUP)
                 else:
-                    rdo = wx.RadioButton(self.graphCtrlPanel, wx.ID_ANY, yDef.switchLabel)
+                    rdo = wx.RadioButton(self.ctrlPanel, wx.ID_ANY, yDef.switchLabel)
                 rdo.Bind(wx.EVT_RADIOBUTTON, self.OnYTypeUpdate)
-                if i == (self.selectedY or 0):
+                if i == (self.ctrlPanel.selectedY or 0):
                     rdo.SetValue(True)
-                self.graphSubselSizer.Add(rdo, 0, wx.ALL | wx.EXPAND, 0)
+                self.ctrlPanel.graphSubselSizer.Add(rdo, 0, wx.ALL | wx.EXPAND, 0)
                 self.selectedYRbMap[yDef.switchLabel] = i
                 i += 1
 
         # Setup inputs
         for fieldHandle, fieldDef in (('x', view.xDef), *view.extraInputs.items()):
-            textBox = wx.TextCtrl(self.graphCtrlPanel, wx.ID_ANY, style=0)
+            textBox = wx.TextCtrl(self.ctrlPanel, wx.ID_ANY, style=0)
             self.fields[fieldHandle] = textBox
             textBox.Bind(wx.EVT_TEXT, self.onFieldChanged)
-            self.inputsSizer.Add(textBox, 1, wx.EXPAND | wx.ALIGN_CENTER_VERTICAL | wx.ALL, 3)
+            self.ctrlPanel.inputsSizer.Add(textBox, 1, wx.EXPAND | wx.ALIGN_CENTER_VERTICAL | wx.ALL, 3)
             if fieldDef.inputDefault is not None:
                 inputDefault = fieldDef.inputDefault
                 if not isinstance(inputDefault, str):
@@ -331,13 +301,13 @@ class GraphFrame(wx.Frame):
             if fieldDef.inputIconID:
                 icon = BitmapLoader.getBitmap(fieldDef.inputIconID, 'icons')
                 if icon is not None:
-                    static = wx.StaticBitmap(self.graphCtrlPanel)
+                    static = wx.StaticBitmap(self.ctrlPanel)
                     static.SetBitmap(icon)
                     imgLabelSizer.Add(static, 0, wx.ALL | wx.ALIGN_CENTER_VERTICAL, 1)
 
-            imgLabelSizer.Add(wx.StaticText(self.graphCtrlPanel, wx.ID_ANY, fieldDef.inputLabel), 0,
+            imgLabelSizer.Add(wx.StaticText(self.ctrlPanel, wx.ID_ANY, fieldDef.inputLabel), 0,
                               wx.LEFT | wx.RIGHT | wx.ALIGN_CENTER_VERTICAL, 3)
-            self.inputsSizer.Add(imgLabelSizer, 0, wx.ALIGN_CENTER_VERTICAL)
+            self.ctrlPanel.inputsSizer.Add(imgLabelSizer, 0, wx.ALIGN_CENTER_VERTICAL)
         self.Layout()
         self.draw()
 
@@ -365,19 +335,19 @@ class GraphFrame(wx.Frame):
         self.subplot.grid(True)
         legend = []
 
-        min_y = 0 if self.showY0 else None
-        max_y = 0 if self.showY0 else None
+        min_y = 0 if self.ctrlPanel.showY0 else None
+        max_y = 0 if self.ctrlPanel.showY0 else None
 
         xRange = values['x']
         extraInputs = {ih: values[ih] for ih in view.extraInputs}
         try:
-            chosenY = [i for i in view.yDefs.keys()][self.selectedY or 0]
+            chosenY = [i for i in view.yDefs.keys()][self.ctrlPanel.selectedY or 0]
         except IndexError:
             chosenY = [i for i in view.yDefs.keys()][0]
 
         self.subplot.set(xlabel=view.xDef.axisLabel, ylabel=view.yDefs[chosenY].axisLabel)
 
-        for fit in self.fits:
+        for fit in self.ctrlPanel.fits:
             try:
                 xs, ys = view.getPlotPoints(fit, extraInputs, xRange, 100, chosenY)
 
@@ -468,29 +438,29 @@ class GraphFrame(wx.Frame):
     def AppendFitToList(self, fitID):
         sFit = Fit.getInstance()
         fit = sFit.getFit(fitID)
-        if fit not in self.fits:
-            self.fits.append(fit)
+        if fit not in self.ctrlPanel.fits:
+            self.ctrlPanel.fits.append(fit)
 
-        self.fitList.fitList.update(self.fits)
+        self.ctrlPanel.fitList.fitList.update(self.ctrlPanel.fits)
         self.draw()
 
     def OnLeftDClick(self, event):
-        row, _ = self.fitList.fitList.HitTest(event.Position)
+        row, _ = self.ctrlPanel.fitList.fitList.HitTest(event.Position)
         if row != -1:
             try:
-                fit = self.fits[row]
+                fit = self.ctrlPanel.fits[row]
             except IndexError:
                 pass
             else:
                 self.removeFits([fit])
 
     def removeFits(self, fits):
-        toRemove = [f for f in fits if f in self.fits]
+        toRemove = [f for f in fits if f in self.ctrlPanel.fits]
         if not toRemove:
             return
         for fit in toRemove:
-            self.fits.remove(fit)
-        self.fitList.fitList.update(self.fits)
+            self.ctrlPanel.fits.remove(fit)
+        self.ctrlPanel.fitList.fitList.update(self.ctrlPanel.fits)
         view = self.getView()
         for fit in fits:
             view.clearCache(key=fit.ID)
@@ -498,255 +468,10 @@ class GraphFrame(wx.Frame):
 
     def getSelectedFits(self):
         fits = []
-        for row in self.fitList.fitList.getSelectedRows():
+        for row in self.ctrlPanel.fitList.fitList.getSelectedRows():
             try:
-                fit = self.fits[row]
+                fit = self.ctrlPanel.fits[row]
             except IndexError:
                 continue
             fits.append(fit)
         return fits
-
-
-class FitList(wx.Panel):
-
-    def __init__(self, parent):
-        wx.Panel.__init__(self, parent)
-        self.mainSizer = wx.BoxSizer(wx.VERTICAL)
-        self.SetSizer(self.mainSizer)
-
-        self.fitList = FitDisplay(self)
-        self.mainSizer.Add(self.fitList, 1, wx.EXPAND)
-        fitToolTip = wx.ToolTip('Drag a fit into this list to graph it')
-        self.fitList.SetToolTip(fitToolTip)
-
-
-class FitDisplay(gui.display.Display):
-    DEFAULT_COLS = ['Base Icon',
-                    'Base Name']
-
-    def __init__(self, parent):
-        gui.display.Display.__init__(self, parent)
-
-
-class TargetList(wx.Panel):
-
-    def __init__(self, parent):
-        wx.Panel.__init__(self, parent)
-        self.mainSizer = wx.BoxSizer(wx.VERTICAL)
-        self.SetSizer(self.mainSizer)
-
-        self.targetList = TargetDisplay(self)
-        self.mainSizer.Add(self.targetList, 1, wx.EXPAND)
-        fitToolTip = wx.ToolTip('Drag a fit into this list to graph it')
-        self.targetList.SetToolTip(fitToolTip)
-
-
-class TargetDisplay(gui.display.Display):
-    DEFAULT_COLS = ['Base Icon',
-                    'Base Name']
-
-    def __init__(self, parent):
-        gui.display.Display.__init__(self, parent)
-
-
-# class VectorEvent(wx.PyCommandEvent):
-#     def __init__(self, evtType, id):
-#         wx.PyCommandEvent.__init__(self, evtType, id)
-#         self._angle = 0
-#         self._length = 0
-#
-#     def GetValue(self):
-#         return self._angle, self._length
-#
-#     def GetAngle(self):
-#         return self._angle
-#
-#     def GetLength(self):
-#         return self._length
-
-
-class VectorPicker(wx.Control):
-
-    myEVT_VECTOR_CHANGED = wx.NewEventType()
-    EVT_VECTOR_CHANGED = wx.PyEventBinder(myEVT_VECTOR_CHANGED, 1)
-
-    def __init__(self, *args, **kwargs):
-        self._label = str(kwargs.pop('label', ''))
-        self._labelpos = int(kwargs.pop('labelpos', 0))
-        self._offset = float(kwargs.pop('offset', 0))
-        self._size = max(0, float(kwargs.pop('size', 50)))
-        self._fontsize = max(1, float(kwargs.pop('fontsize', 8)))
-        wx.Control.__init__(self, *args, **kwargs)
-        self._font = wx.Font(self._fontsize, wx.FONTFAMILY_DEFAULT, wx.FONTSTYLE_NORMAL, wx.FONTWEIGHT_NORMAL, False)
-        self._angle = 0
-        self._length = 1
-        self._left = False
-        self._right = False
-        self._tooltip = 'Click to set angle and velocity, right-click for increments; mouse wheel for velocity only'
-        self.SetToolTip(wx.ToolTip(self._tooltip))
-        self.Bind(wx.EVT_PAINT, self.OnPaint)
-        self.Bind(wx.EVT_ERASE_BACKGROUND, self.OnEraseBackground)
-        self.Bind(wx.EVT_LEFT_DOWN, self.OnLeftDown)
-        self.Bind(wx.EVT_RIGHT_DOWN, self.OnRightDown)
-        self.Bind(wx.EVT_MOUSEWHEEL, self.OnWheel)
-
-    def DoGetBestSize(self):
-        return wx.Size(self._size, self._size)
-
-    def AcceptsFocusFromKeyboard(self):
-        return False
-
-    def GetValue(self):
-        return self._angle, self._length
-
-    def GetAngle(self):
-        return self._angle
-
-    def GetLength(self):
-        return self._length
-
-    def SetValue(self, angle=None, length=None):
-        if angle is not None:
-            self._angle = min(max(angle, -180), 180)
-        if length is not None:
-            self._length = min(max(length, 0), 1)
-        self.Refresh()
-
-    def SetAngle(self, angle):
-        self.SetValue(angle, None)
-
-    def SetLength(self, length):
-        self.SetValue(None, length)
-
-    def OnPaint(self, event):
-        dc = wx.BufferedPaintDC(self)
-        self.Draw(dc)
-
-    def Draw(self, dc):
-        width, height = self.GetClientSize()
-        if not width or not height:
-            return
-
-        dc.SetBackground(wx.Brush(self.GetBackgroundColour(), wx.BRUSHSTYLE_SOLID))
-        dc.Clear()
-        dc.SetTextForeground(wx.Colour(0))
-        dc.SetFont(self._font)
-
-        radius = min(width, height) / 2 - 2
-        dc.SetBrush(wx.WHITE_BRUSH)
-        dc.DrawCircle(radius + 2, radius + 2, radius)
-        a = math.radians(self._angle + self._offset)
-        x = math.sin(a) * radius
-        y = math.cos(a) * radius
-        dc.DrawLine(radius + 2, radius + 2, radius + 2 + x * self._length, radius + 2 - y * self._length)
-        dc.SetBrush(wx.BLACK_BRUSH)
-        dc.DrawCircle(radius + 2 + x * self._length, radius + 2 - y * self._length, 2)
-
-        if self._label:
-            labelText = self._label
-            labelTextW, labelTextH = dc.GetTextExtent(labelText)
-            labelTextX = (radius * 2 + 4 - labelTextW) if (self._labelpos & 1) else 0
-            labelTextY = (radius * 2 + 4 - labelTextH) if (self._labelpos & 2) else 0
-            dc.DrawText(labelText, labelTextX, labelTextY)
-
-        lengthText = '%d%%' % (100 * self._length,)
-        lengthTextW, lengthTextH = dc.GetTextExtent(lengthText)
-        lengthTextX = radius + 2 + x / 2 - y / 3 - lengthTextW / 2
-        lengthTextY = radius + 2 - y / 2 - x / 3 - lengthTextH / 2
-        dc.DrawText(lengthText, lengthTextX, lengthTextY)
-
-        angleText = '%d\u00B0' % (self._angle,)
-        angleTextW, angleTextH = dc.GetTextExtent(angleText)
-        angleTextX = radius + 2 - x / 2 - angleTextW / 2
-        angleTextY = radius + 2 + y / 2 - angleTextH / 2
-        dc.DrawText(angleText, angleTextX, angleTextY)
-
-    def OnEraseBackground(self, event):
-        pass
-
-    def OnLeftDown(self, event):
-        self._left = True
-        self.SetToolTip(None)
-        self.Bind(wx.EVT_LEFT_UP, self.OnLeftUp)
-        self.Bind(wx.EVT_MOUSE_CAPTURE_LOST, self.OnLeftUp)
-        if not self._right:
-            self.Bind(wx.EVT_MOTION, self.OnMotion)
-        if not self.HasCapture():
-            self.CaptureMouse()
-        self.HandleMouseEvent(event)
-
-    def OnRightDown(self, event):
-        self._right = True
-        self.SetToolTip(None)
-        self.Bind(wx.EVT_RIGHT_UP, self.OnRightUp)
-        self.Bind(wx.EVT_MOUSE_CAPTURE_LOST, self.OnRightUp)
-        if not self._left:
-            self.Bind(wx.EVT_MOTION, self.OnMotion)
-        if not self.HasCapture():
-            self.CaptureMouse()
-        self.HandleMouseEvent(event)
-
-    def OnLeftUp(self, event):
-        self.HandleMouseEvent(event)
-        self.Unbind(wx.EVT_LEFT_UP, handler=self.OnLeftUp)
-        self.Unbind(wx.EVT_MOUSE_CAPTURE_LOST, handler=self.OnLeftUp)
-        self._left = False
-        if not self._right:
-            self.Unbind(wx.EVT_MOTION, handler=self.OnMotion)
-            self.SendChangeEvent()
-            self.SetToolTip(wx.ToolTip(self._tooltip))
-            if self.HasCapture():
-                self.ReleaseMouse()
-
-    def OnRightUp(self, event):
-        self.HandleMouseEvent(event)
-        self.Unbind(wx.EVT_RIGHT_UP, handler=self.OnRightUp)
-        self.Unbind(wx.EVT_MOUSE_CAPTURE_LOST, handler=self.OnRightUp)
-        self._right = False
-        if not self._left:
-            self.Unbind(wx.EVT_MOTION, handler=self.OnMotion)
-            self.SendChangeEvent()
-            self.SetToolTip(wx.ToolTip(self._tooltip))
-            if self.HasCapture():
-                self.ReleaseMouse()
-
-    def OnMotion(self, event):
-        self.HandleMouseEvent(event)
-        event.Skip()
-
-    def OnWheel(self, event):
-        amount = 0.1 * event.GetWheelRotation() / event.GetWheelDelta()
-        self._length = min(max(self._length + amount, 0.0), 1.0)
-        self.Refresh()
-        self.SendChangeEvent()
-
-    def HandleMouseEvent(self, event):
-        width, height = self.GetClientSize()
-        if width and height:
-            center = min(width, height) / 2
-            x, y = event.GetPositionTuple()
-            x = x - center
-            y = center - y
-            angle = self._angle
-            length = min((x * x + y * y) ** 0.5 / (center - 2), 1.0)
-            if length < 0.01:
-                length = 0
-            else:
-                angle = ((math.degrees(math.atan2(x, y)) - self._offset + 180) % 360) - 180
-            if (self._right and not self._left) or event.ShiftDown():
-                angle = round(angle / 15.0) * 15.0
-                # floor() for length to make it easier to hit 0%, can still hit 100% outside the circle
-                length = math.floor(length / 0.05) * 0.05
-            if (angle != self._angle) or (length != self._length):
-                self._angle = angle
-                self._length = length
-                self.Refresh()
-                if self._right and not self._left:
-                    self.SendChangeEvent()
-
-    def SendChangeEvent(self):
-        changeEvent = wx.CommandEvent(self.myEVT_VECTOR_CHANGED, self.GetId())
-        changeEvent._object = self
-        changeEvent._angle = self._angle
-        changeEvent._length = self._length
-        self.GetEventHandler().ProcessEvent(changeEvent)
