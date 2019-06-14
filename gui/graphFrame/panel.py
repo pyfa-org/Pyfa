@@ -21,7 +21,9 @@
 # noinspection PyPackageRequirements
 import wx
 
+from gui.bitmap_loader import BitmapLoader
 from service.fit import Fit
+from .events import RefreshGraph
 from .lists import FitList, TargetList
 
 
@@ -31,8 +33,11 @@ class GraphControlPanel(wx.Panel):
         super().__init__(parent)
         self.graphFrame = graphFrame
 
+        self.fields = {}
         self.selectedY = None
         self.selectedYRbMap = {}
+        self.drawTimer = wx.Timer(self)
+        self.Bind(wx.EVT_TIMER, self.redrawRequest, self.drawTimer)
 
         mainSizer = wx.BoxSizer(wx.VERTICAL)
 
@@ -69,3 +74,75 @@ class GraphControlPanel(wx.Panel):
     def showY0(self):
         return self.showY0Cb.GetValue()
 
+    def updateControlsForView(self, view):
+        view.clearCache()
+        self.graphSubselSizer.Clear()
+        self.inputsSizer.Clear()
+        for child in self.Children:
+            if child not in (self.showY0Cb, self.fitList, self.targetList):
+                child.Destroy()
+        self.fields.clear()
+
+        # Setup view options
+        self.selectedYRbMap.clear()
+        if len(view.yDefs) > 1:
+            i = 0
+            for yAlias, yDef in view.yDefs.items():
+                if i == 0:
+                    rdo = wx.RadioButton(self, wx.ID_ANY, yDef.switchLabel, style=wx.RB_GROUP)
+                else:
+                    rdo = wx.RadioButton(self, wx.ID_ANY, yDef.switchLabel)
+                rdo.Bind(wx.EVT_RADIOBUTTON, self.OnYTypeUpdate)
+                if i == (self.selectedY or 0):
+                    rdo.SetValue(True)
+                self.graphSubselSizer.Add(rdo, 0, wx.ALL | wx.EXPAND, 0)
+                self.selectedYRbMap[yDef.switchLabel] = i
+                i += 1
+
+        # Setup inputs
+        for fieldHandle, fieldDef in (('x', view.xDef), *view.extraInputs.items()):
+            textBox = wx.TextCtrl(self, wx.ID_ANY, style=0)
+            self.fields[fieldHandle] = textBox
+            textBox.Bind(wx.EVT_TEXT, self.onFieldChanged)
+            self.inputsSizer.Add(textBox, 1, wx.EXPAND | wx.ALIGN_CENTER_VERTICAL | wx.ALL, 3)
+            if fieldDef.inputDefault is not None:
+                inputDefault = fieldDef.inputDefault
+                if not isinstance(inputDefault, str):
+                    inputDefault = ('%f' % inputDefault).rstrip('0')
+                    if inputDefault[-1:] == '.':
+                        inputDefault += '0'
+
+                textBox.ChangeValue(inputDefault)
+
+            imgLabelSizer = wx.BoxSizer(wx.HORIZONTAL)
+            if fieldDef.inputIconID:
+                icon = BitmapLoader.getBitmap(fieldDef.inputIconID, 'icons')
+                if icon is not None:
+                    static = wx.StaticBitmap(self)
+                    static.SetBitmap(icon)
+                    imgLabelSizer.Add(static, 0, wx.ALL | wx.ALIGN_CENTER_VERTICAL, 1)
+
+            imgLabelSizer.Add(wx.StaticText(self, wx.ID_ANY, fieldDef.inputLabel), 0,
+                              wx.LEFT | wx.RIGHT | wx.ALIGN_CENTER_VERTICAL, 3)
+            self.inputsSizer.Add(imgLabelSizer, 0, wx.ALIGN_CENTER_VERTICAL)
+        self.Layout()
+
+    def OnYTypeUpdate(self, event):
+        event.Skip()
+        obj = event.GetEventObject()
+        formatName = obj.GetLabel()
+        self.selectedY = self.selectedYRbMap[formatName]
+        self.redrawRequest()
+
+    def redrawRequest(self, event=None):
+        self.drawTimer.Stop()
+        wx.PostEvent(self.graphFrame, RefreshGraph())
+
+    def delayedDraw(self, event=None):
+        self.drawTimer.Stop()
+        self.drawTimer.Start(Fit.getInstance().serviceFittingOptions['marketSearchDelay'], True)
+
+    def onFieldChanged(self, event):
+        view = self.graphFrame.getView()
+        view.clearCache()
+        self.delayedDraw()

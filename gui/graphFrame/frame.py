@@ -31,6 +31,7 @@ import gui.mainFrame
 from gui.bitmap_loader import BitmapLoader
 from gui.builtinGraphs.base import Graph
 from service.fit import Fit
+from .events import REFRESH_GRAPH
 from .panel import GraphControlPanel
 
 
@@ -108,17 +109,11 @@ class GraphFrame(wx.Frame):
         self.ctrlPanel = GraphControlPanel(self, self)
         mainSizer.Add(self.ctrlPanel, 0, wx.EXPAND | wx.ALL, 0)
 
-
-
-        self.drawTimer = wx.Timer(self)
-        self.Bind(wx.EVT_TIMER, self.draw, self.drawTimer)
-
         for view in Graph.views:
             view = view()
             self.graphSelection.Append(view.name, view)
 
         self.graphSelection.SetSelection(0)
-        self.fields = {}
         self.updateGraphWidgets()
         self.sl1 = wx.StaticLine(self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.LI_HORIZONTAL)
         mainSizer.Add(self.sl1, 0, wx.EXPAND)
@@ -126,6 +121,7 @@ class GraphFrame(wx.Frame):
 
         self.ctrlPanel.fitList.fitList.Bind(wx.EVT_LEFT_DCLICK, self.OnLeftDClick)
         self.ctrlPanel.fitList.fitList.Bind(wx.EVT_CONTEXT_MENU, self.OnContextMenu)
+        self.Bind(REFRESH_GRAPH, self.OnRefreshGraph)
         self.ctrlPanel.showY0Cb.Bind(wx.EVT_CHECKBOX, self.OnNonDestructiveControlsUpdate)
         self.mainFrame.Bind(GE.FIT_CHANGED, self.OnFitChanged)
         self.mainFrame.Bind(GE.FIT_REMOVED, self.OnFitRemoved)
@@ -211,7 +207,7 @@ class GraphFrame(wx.Frame):
 
     def getValues(self):
         values = {}
-        for fieldHandle, field in self.fields.items():
+        for fieldHandle, field in self.ctrlPanel.fields.items():
             values[fieldHandle] = field.GetValue()
 
         return values
@@ -220,79 +216,20 @@ class GraphFrame(wx.Frame):
         event.Skip()
         self.draw()
 
-    def OnYTypeUpdate(self, event):
-        event.Skip()
-        obj = event.GetEventObject()
-        formatName = obj.GetLabel()
-        self.ctrlPanel.selectedY = self.ctrlPanel.selectedYRbMap[formatName]
+    def OnRefreshGraph(self, event):
         self.draw()
 
     def updateGraphWidgets(self):
         view = self.getView()
-        view.clearCache()
-        self.ctrlPanel.graphSubselSizer.Clear()
-        self.ctrlPanel.inputsSizer.Clear()
-        for child in self.ctrlPanel.Children:
-            if child not in (self.ctrlPanel.showY0Cb, self.ctrlPanel.fitList, self.ctrlPanel.targetList):
-                child.Destroy()
-        self.fields.clear()
-
-        # Setup view options
-        self.ctrlPanel.selectedYRbMap.clear()
-        if len(view.yDefs) > 1:
-            i = 0
-            for yAlias, yDef in view.yDefs.items():
-                if i == 0:
-                    rdo = wx.RadioButton(self.ctrlPanel, wx.ID_ANY, yDef.switchLabel, style=wx.RB_GROUP)
-                else:
-                    rdo = wx.RadioButton(self.ctrlPanel, wx.ID_ANY, yDef.switchLabel)
-                rdo.Bind(wx.EVT_RADIOBUTTON, self.OnYTypeUpdate)
-                if i == (self.ctrlPanel.selectedY or 0):
-                    rdo.SetValue(True)
-                self.ctrlPanel.graphSubselSizer.Add(rdo, 0, wx.ALL | wx.EXPAND, 0)
-                self.ctrlPanel.selectedYRbMap[yDef.switchLabel] = i
-                i += 1
-
-        # Setup inputs
-        for fieldHandle, fieldDef in (('x', view.xDef), *view.extraInputs.items()):
-            textBox = wx.TextCtrl(self.ctrlPanel, wx.ID_ANY, style=0)
-            self.fields[fieldHandle] = textBox
-            textBox.Bind(wx.EVT_TEXT, self.onFieldChanged)
-            self.ctrlPanel.inputsSizer.Add(textBox, 1, wx.EXPAND | wx.ALIGN_CENTER_VERTICAL | wx.ALL, 3)
-            if fieldDef.inputDefault is not None:
-                inputDefault = fieldDef.inputDefault
-                if not isinstance(inputDefault, str):
-                    inputDefault = ('%f' % inputDefault).rstrip('0')
-                    if inputDefault[-1:] == '.':
-                        inputDefault += '0'
-
-                textBox.ChangeValue(inputDefault)
-
-            imgLabelSizer = wx.BoxSizer(wx.HORIZONTAL)
-            if fieldDef.inputIconID:
-                icon = BitmapLoader.getBitmap(fieldDef.inputIconID, 'icons')
-                if icon is not None:
-                    static = wx.StaticBitmap(self.ctrlPanel)
-                    static.SetBitmap(icon)
-                    imgLabelSizer.Add(static, 0, wx.ALL | wx.ALIGN_CENTER_VERTICAL, 1)
-
-            imgLabelSizer.Add(wx.StaticText(self.ctrlPanel, wx.ID_ANY, fieldDef.inputLabel), 0,
-                              wx.LEFT | wx.RIGHT | wx.ALIGN_CENTER_VERTICAL, 3)
-            self.ctrlPanel.inputsSizer.Add(imgLabelSizer, 0, wx.ALIGN_CENTER_VERTICAL)
-        self.Layout()
+        self.ctrlPanel.updateControlsForView(view)
         self.draw()
 
-    def delayedDraw(self, event=None):
-        self.drawTimer.Stop()
-        self.drawTimer.Start(Fit.getInstance().serviceFittingOptions['marketSearchDelay'], True)
 
     def draw(self, event=None):
         global mpl_version
 
         if event is not None:
             event.Skip()
-
-        self.drawTimer.Stop()
 
         # todo: FIX THIS, see #1430. draw() is not being unbound properly when the window closes, this is an easy fix,
         # but not a proper solution
@@ -381,11 +318,6 @@ class GraphFrame(wx.Frame):
 
         self.canvas.draw()
         self.Refresh()
-
-    def onFieldChanged(self, event):
-        view = self.getView()
-        view.clearCache()
-        self.delayedDraw()
 
     def AppendFitToList(self, fitID):
         sFit = Fit.getInstance()
