@@ -20,7 +20,6 @@
 
 import os
 import traceback
-from itertools import chain
 
 # noinspection PyPackageRequirements
 import wx
@@ -43,31 +42,22 @@ try:
     mpl_version = int(mpl.__version__[0]) or -1
     if mpl_version >= 2:
         mpl.use('wxagg')
-        mplImported = True
+        graphFrame_enabled = True
     else:
-        mplImported = False
-    from matplotlib.patches import Patch
+        graphFrame_enabled = False
 
+    from matplotlib.patches import Patch
     from matplotlib.backends.backend_wxagg import FigureCanvasWxAgg as Canvas
     from matplotlib.figure import Figure
-
-    graphFrame_enabled = True
-    mplImported = True
 except ImportError as e:
     pyfalog.warning('Matplotlib failed to import.  Likely missing or incompatible version.')
-    mpl_version = -1
-    Patch = mpl = Canvas = Figure = None
     graphFrame_enabled = False
-    mplImported = False
 except Exception:
     # We can get exceptions deep within matplotlib. Catch those.  See GH #1046
     tb = traceback.format_exc()
     pyfalog.critical('Exception when importing Matplotlib. Continuing without importing.')
     pyfalog.critical(tb)
-    mpl_version = -1
-    Patch = mpl = Canvas = Figure = None
     graphFrame_enabled = False
-    mplImported = False
 
 
 class GraphFrame(wx.Frame):
@@ -75,11 +65,6 @@ class GraphFrame(wx.Frame):
     def __init__(self, parent, style=wx.DEFAULT_FRAME_STYLE | wx.NO_FULL_REPAINT_ON_RESIZE | wx.FRAME_FLOAT_ON_PARENT):
 
         global graphFrame_enabled
-        global mplImported
-        global mpl_version
-
-        self.legendFix = False
-
         if not graphFrame_enabled:
             pyfalog.warning('Matplotlib is not enabled. Skipping initialization.')
             return
@@ -94,16 +79,6 @@ class GraphFrame(wx.Frame):
         if os.access(cache_dir, os.W_OK | os.X_OK) and os.path.isfile(cache_file):
             # remove matplotlib font cache, see #234
             os.remove(cache_file)
-        if not mplImported:
-            mpl.use('wxagg')
-
-        graphFrame_enabled = True
-        if int(mpl.__version__[0]) < 1:
-            pyfalog.warning('pyfa: Found matplotlib version {} - activating OVER9000 workarounds'.format(mpl.__version__))
-            pyfalog.warning('pyfa: Recommended minimum matplotlib version is 1.0.0')
-            self.legendFix = True
-
-        mplImported = True
 
         wx.Frame.__init__(self, parent, title='pyfa: Graph Generator', style=style, size=(520, 390))
 
@@ -382,49 +357,32 @@ class GraphFrame(wx.Frame):
             max_y += 5
         self.subplot.set_ylim(bottom=min_y, top=max_y)
 
-        if mpl_version < 2:
-            if self.legendFix and len(legend) > 0:
-                leg = self.subplot.legend(tuple(legend), 'upper right', shadow=False)
-                for t in leg.get_texts():
-                    t.set_fontsize('small')
+        legend2 = []
+        legend_colors = {
+            0: 'blue',
+            1: 'orange',
+            2: 'green',
+            3: 'red',
+            4: 'purple',
+            5: 'brown',
+            6: 'pink',
+            7: 'grey',
+        }
 
-                for l in leg.get_lines():
-                    l.set_linewidth(1)
+        for i, i_name in enumerate(legend):
+            try:
+                selected_color = legend_colors[i]
+            except:
+                selected_color = None
+            legend2.append(Patch(color=selected_color, label=i_name), )
 
-            elif not self.legendFix and len(legend) > 0:
-                leg = self.subplot.legend(tuple(legend), 'upper right', shadow=False, frameon=False)
-                for t in leg.get_texts():
-                    t.set_fontsize('small')
+        if len(legend2) > 0:
+            leg = self.subplot.legend(handles=legend2)
+            for t in leg.get_texts():
+                t.set_fontsize('small')
 
-                for l in leg.get_lines():
-                    l.set_linewidth(1)
-        elif mpl_version >= 2:
-            legend2 = []
-            legend_colors = {
-                0: 'blue',
-                1: 'orange',
-                2: 'green',
-                3: 'red',
-                4: 'purple',
-                5: 'brown',
-                6: 'pink',
-                7: 'grey',
-            }
-
-            for i, i_name in enumerate(legend):
-                try:
-                    selected_color = legend_colors[i]
-                except:
-                    selected_color = None
-                legend2.append(Patch(color=selected_color, label=i_name), )
-
-            if len(legend2) > 0:
-                leg = self.subplot.legend(handles=legend2)
-                for t in leg.get_texts():
-                    t.set_fontsize('small')
-
-                for l in leg.get_lines():
-                    l.set_linewidth(1)
+            for l in leg.get_lines():
+                l.set_linewidth(1)
 
         self.canvas.draw()
         self.SetStatusText('')
