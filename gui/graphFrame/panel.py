@@ -32,6 +32,7 @@ class GraphControlPanel(wx.Panel):
         self.graphFrame = graphFrame
 
         self.selectedY = None
+        self.selectedYRbMap = {}
 
         mainSizer = wx.BoxSizer(wx.VERTICAL)
 

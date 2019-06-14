@@ -69,15 +69,13 @@ class GraphFrame(wx.Frame):
             pyfalog.warning('Matplotlib is not enabled. Skipping initialization.')
             return
 
+        # Remove matplotlib font cache, see #234
         try:
             cache_dir = mpl._get_cachedir()
         except:
             cache_dir = os.path.expanduser(os.path.join('~', '.matplotlib'))
-
         cache_file = os.path.join(cache_dir, 'fontList.cache')
-
         if os.access(cache_dir, os.W_OK | os.X_OK) and os.path.isfile(cache_file):
-            # remove matplotlib font cache, see #234
             os.remove(cache_file)
 
         wx.Frame.__init__(self, parent, title='pyfa: Graph Generator', style=style, size=(520, 390))
@@ -85,35 +83,32 @@ class GraphFrame(wx.Frame):
         i = wx.Icon(BitmapLoader.getBitmap('graphs_small', 'gui'))
         self.SetIcon(i)
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
-        self.CreateStatusBar()
 
-        self.mainSizer = wx.BoxSizer(wx.VERTICAL)
-        self.SetSizer(self.mainSizer)
+        mainSizer = wx.BoxSizer(wx.VERTICAL)
 
+        # Graph selector
         self.graphSelection = wx.Choice(self, wx.ID_ANY, style=0)
-        self.mainSizer.Add(self.graphSelection, 0, wx.EXPAND)
-        self.selectedYRbMap = {}
+        mainSizer.Add(self.graphSelection, 0, wx.EXPAND)
 
+        # Plot area
         self.figure = Figure(figsize=(5, 3), tight_layout={'pad': 1.08})
-
         rgbtuple = wx.SystemSettings.GetColour(wx.SYS_COLOUR_BTNFACE).Get()
         clr = [c / 255. for c in rgbtuple]
         self.figure.set_facecolor(clr)
         self.figure.set_edgecolor(clr)
-
         self.canvas = Canvas(self, -1, self.figure)
         self.canvas.SetBackgroundColour(wx.Colour(*rgbtuple))
-
         self.subplot = self.figure.add_subplot(111)
         self.subplot.grid(True)
+        mainSizer.Add(self.canvas, 1, wx.EXPAND)
 
-        self.mainSizer.Add(self.canvas, 1, wx.EXPAND)
-        self.mainSizer.Add(wx.StaticLine(self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.LI_HORIZONTAL), 0,
-                           wx.EXPAND)
+        mainSizer.Add(wx.StaticLine(self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.LI_HORIZONTAL), 0, wx.EXPAND)
 
-
+        # Graph control panel
         self.ctrlPanel = GraphControlPanel(self, self)
-        self.mainSizer.Add(self.ctrlPanel, 0, wx.EXPAND | wx.ALL, 0)
+        mainSizer.Add(self.ctrlPanel, 0, wx.EXPAND | wx.ALL, 0)
+
+
 
         self.drawTimer = wx.Timer(self)
         self.Bind(wx.EVT_TIMER, self.draw, self.drawTimer)
@@ -126,7 +121,7 @@ class GraphFrame(wx.Frame):
         self.fields = {}
         self.updateGraphWidgets()
         self.sl1 = wx.StaticLine(self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.LI_HORIZONTAL)
-        self.mainSizer.Add(self.sl1, 0, wx.EXPAND)
+        mainSizer.Add(self.sl1, 0, wx.EXPAND)
 
 
         self.ctrlPanel.fitList.fitList.Bind(wx.EVT_LEFT_DCLICK, self.OnLeftDClick)
@@ -145,6 +140,7 @@ class GraphFrame(wx.Frame):
         self.contextMenu.Append(removeItem)
         self.contextMenu.Bind(wx.EVT_MENU, self.ContextMenuHandler, removeItem)
 
+        self.SetSizer(mainSizer)
         self.Fit()
         self.SetMinSize(self.GetSize())
 
@@ -228,7 +224,7 @@ class GraphFrame(wx.Frame):
         event.Skip()
         obj = event.GetEventObject()
         formatName = obj.GetLabel()
-        self.ctrlPanel.selectedY = self.selectedYRbMap[formatName]
+        self.ctrlPanel.selectedY = self.ctrlPanel.selectedYRbMap[formatName]
         self.draw()
 
     def updateGraphWidgets(self):
@@ -242,7 +238,7 @@ class GraphFrame(wx.Frame):
         self.fields.clear()
 
         # Setup view options
-        self.selectedYRbMap.clear()
+        self.ctrlPanel.selectedYRbMap.clear()
         if len(view.yDefs) > 1:
             i = 0
             for yAlias, yDef in view.yDefs.items():
@@ -254,7 +250,7 @@ class GraphFrame(wx.Frame):
                 if i == (self.ctrlPanel.selectedY or 0):
                     rdo.SetValue(True)
                 self.ctrlPanel.graphSubselSizer.Add(rdo, 0, wx.ALL | wx.EXPAND, 0)
-                self.selectedYRbMap[yDef.switchLabel] = i
+                self.ctrlPanel.selectedYRbMap[yDef.switchLabel] = i
                 i += 1
 
         # Setup inputs
@@ -342,7 +338,6 @@ class GraphFrame(wx.Frame):
                 legend.append('{} ({})'.format(fit.name, fit.ship.item.getShortName()))
             except Exception as ex:
                 pyfalog.warning('Invalid values in "{0}"', fit.name)
-                self.SetStatusText('Invalid values in "%s"' % fit.name)
                 self.canvas.draw()
                 return
 
@@ -385,7 +380,6 @@ class GraphFrame(wx.Frame):
                 l.set_linewidth(1)
 
         self.canvas.draw()
-        self.SetStatusText('')
         self.Refresh()
 
     def onFieldChanged(self, event):
