@@ -32980,6 +32980,7 @@ class Effect6929(BaseEffect):
     Subsystem: Proteus Propulsion - Localized Injectors
     """
 
+    runTime = 'early'
     type = 'passive'
 
     @staticmethod
