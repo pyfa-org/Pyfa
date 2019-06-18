@@ -22,47 +22,118 @@
 import wx
 
 import gui.display
+import gui.globalEvents as GE
+from service.fit import Fit
 
 
-class FitList(wx.Panel):
+class FitList(gui.display.Display):
 
-    def __init__(self, parent):
-        wx.Panel.__init__(self, parent)
-        self.mainSizer = wx.BoxSizer(wx.VERTICAL)
-        self.SetSizer(self.mainSizer)
+    DEFAULT_COLS = (
+        'Base Icon',
+        'Base Name')
 
-        self.fitList = FitDisplay(self)
-        self.mainSizer.Add(self.fitList, 1, wx.EXPAND)
+    def __init__(self, graphFrame, parent):
+        super().__init__(parent)
+        self.graphFrame = graphFrame
+        self.fits = []
+
         fitToolTip = wx.ToolTip('Drag a fit into this list to graph it')
-        self.fitList.SetToolTip(fitToolTip)
+        self.SetToolTip(fitToolTip)
+
+        fit = Fit.getInstance().getFit(self.graphFrame.mainFrame.getActiveFit())
+        if fit is not None:
+            self.fits.append(fit)
+            self.update(self.fits)
+
+        self.contextMenu = wx.Menu()
+        removeItem = wx.MenuItem(self.contextMenu, 1, 'Remove Fit')
+        self.contextMenu.Append(removeItem)
+        self.contextMenu.Bind(wx.EVT_MENU, self.ContextMenuHandler, removeItem)
+
+        self.graphFrame.mainFrame.Bind(GE.FIT_REMOVED, self.OnFitRemoved)
+        self.Bind(wx.EVT_LEFT_DCLICK, self.OnLeftDClick)
+        self.Bind(wx.EVT_CHAR_HOOK, self.kbEvent)
+        self.Bind(wx.EVT_CONTEXT_MENU, self.OnContextMenu)
 
 
-class FitDisplay(gui.display.Display):
+    def kbEvent(self, event):
+        keycode = event.GetKeyCode()
+        mstate = wx.GetMouseState()
+        if keycode == 65 and mstate.GetModifiers() == wx.MOD_CONTROL:
+            self.selectAll()
+        elif keycode in (wx.WXK_DELETE, wx.WXK_NUMPAD_DELETE) and mstate.GetModifiers() == wx.MOD_NONE:
+            self.removeFits(self.getSelectedFits())
+        event.Skip()
 
-    DEFAULT_COLS = ['Base Icon',
-                    'Base Name']
+    def OnLeftDClick(self, event):
+        row, _ = self.HitTest(event.Position)
+        if row != -1:
+            try:
+                fit = self.fits[row]
+            except IndexError:
+                pass
+            else:
+                self.removeFits([fit])
 
-    def __init__(self, parent):
-        gui.display.Display.__init__(self, parent)
+    def OnContextMenu(self, event):
+        if self.getSelectedFits():
+            self.PopupMenu(self.contextMenu)
+
+    def ContextMenuHandler(self, event):
+        selectedMenuItem = event.GetId()
+        if selectedMenuItem == 1:
+            fits = self.getSelectedFits()
+            self.removeFits(fits)
+
+    def OnFitRemoved(self, event):
+        event.Skip()
+        fit = next((f for f in self.fits if f.ID == event.fitID), None)
+        if fit is not None:
+            self.removeFits([fit])
+
+    def getSelectedFits(self):
+        fits = []
+        for row in self.getSelectedRows():
+            try:
+                fit = self.fits[row]
+            except IndexError:
+                continue
+            fits.append(fit)
+        return fits
+
+    def removeFits(self, fits):
+        toRemove = [f for f in fits if f in self.fits]
+        if not toRemove:
+            return
+        for fit in toRemove:
+            self.fits.remove(fit)
+        self.update(self.fits)
+        for fit in fits:
+            self.graphFrame.clearCache(key=fit.ID)
+        self.graphFrame.draw()
+
+    def unbindExternalEvents(self):
+        self.graphFrame.mainFrame.Unbind(GE.FIT_REMOVED, handler=self.OnFitRemoved)
+
+    def handleDrag(self, type, fitID):
+        if type == 'fit':
+            sFit = Fit.getInstance()
+            fit = sFit.getFit(fitID)
+            if fit not in self.fits:
+                self.fits.append(fit)
+                self.update(self.fits)
+                self.graphFrame.draw()
 
 
-class TargetList(wx.Panel):
+class TargetList(gui.display.Display):
 
-    def __init__(self, parent):
-        wx.Panel.__init__(self, parent)
-        self.mainSizer = wx.BoxSizer(wx.VERTICAL)
-        self.SetSizer(self.mainSizer)
+    DEFAULT_COLS = (
+        'Base Icon',
+        'Base Name')
 
-        self.targetList = TargetDisplay(self)
-        self.mainSizer.Add(self.targetList, 1, wx.EXPAND)
+    def __init__(self, graphFrame, parent):
+        super().__init__(parent)
+        self.graphFrame = graphFrame
+        self.targetFits = []
         fitToolTip = wx.ToolTip('Drag a fit into this list to graph it')
-        self.targetList.SetToolTip(fitToolTip)
-
-
-class TargetDisplay(gui.display.Display):
-
-    DEFAULT_COLS = ['Base Icon',
-                    'Base Name']
-
-    def __init__(self, parent):
-        gui.display.Display.__init__(self, parent)
+        self.SetToolTip(fitToolTip)

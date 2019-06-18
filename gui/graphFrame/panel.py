@@ -23,7 +23,6 @@ import wx
 
 from gui.bitmap_loader import BitmapLoader
 from service.fit import Fit
-from .events import RefreshGraph
 from .lists import FitList, TargetList
 
 
@@ -36,8 +35,6 @@ class GraphControlPanel(wx.Panel):
         self.fields = {}
         self.selectedY = None
         self.selectedYRbMap = {}
-        self.drawTimer = wx.Timer(self)
-        self.Bind(wx.EVT_TIMER, self.redrawRequest, self.drawTimer)
 
         mainSizer = wx.BoxSizer(wx.VERTICAL)
 
@@ -45,6 +42,7 @@ class GraphControlPanel(wx.Panel):
         viewOptSizer = wx.BoxSizer(wx.VERTICAL)
         self.showY0Cb = wx.CheckBox(self, wx.ID_ANY, 'Always show Y = 0', wx.DefaultPosition, wx.DefaultSize, 0)
         self.showY0Cb.SetValue(True)
+        self.showY0Cb.Bind(wx.EVT_CHECKBOX, self.OnShowY0Change)
         viewOptSizer.Add(self.showY0Cb, 0, wx.LEFT | wx.TOP | wx.RIGHT | wx.EXPAND, 5)
         self.graphSubselSizer = wx.BoxSizer(wx.VERTICAL)
         viewOptSizer.Add(self.graphSubselSizer, 0, wx.ALL | wx.EXPAND, 5)
@@ -55,27 +53,33 @@ class GraphControlPanel(wx.Panel):
         mainSizer.Add(paramSizer, 0, wx.EXPAND | wx.ALL, 0)
 
         srcTgtSizer = wx.BoxSizer(wx.HORIZONTAL)
-        fit = Fit.getInstance().getFit(self.graphFrame.mainFrame.getActiveFit())
-        self.fits = [fit] if fit is not None else []
-        self.fitList = FitList(self)
+        self.fitList = FitList(graphFrame, self)
         self.fitList.SetMinSize((270, -1))
-        self.fitList.fitList.update(self.fits)
         srcTgtSizer.Add(self.fitList, 1, wx.EXPAND)
         self.targets = []
-        self.targetList = TargetList(self)
+        self.targetList = TargetList(graphFrame, self)
         self.targetList.SetMinSize((270, -1))
-        self.targetList.targetList.update(self.targets)
+        self.targetList.update(self.targets)
         srcTgtSizer.Add(self.targetList, 1, wx.EXPAND)
         mainSizer.Add(srcTgtSizer, 1, wx.EXPAND | wx.ALL, 0)
 
         self.SetSizer(mainSizer)
+
+        self.drawTimer = wx.Timer(self)
+        self.Bind(wx.EVT_TIMER, self.OnDrawTimer, self.drawTimer)
+
+    def getValues(self):
+        values = {}
+        for fieldHandle, field in self.fields.items():
+            values[fieldHandle] = field.GetValue()
+        return values
 
     @property
     def showY0(self):
         return self.showY0Cb.GetValue()
 
     def updateControlsForView(self, view):
-        view.clearCache()
+        self.selectedY = None
         self.graphSubselSizer.Clear()
         self.inputsSizer.Clear()
         for child in self.Children:
@@ -103,7 +107,7 @@ class GraphControlPanel(wx.Panel):
         for fieldHandle, fieldDef in (('x', view.xDef), *view.extraInputs.items()):
             textBox = wx.TextCtrl(self, wx.ID_ANY, style=0)
             self.fields[fieldHandle] = textBox
-            textBox.Bind(wx.EVT_TEXT, self.onFieldChanged)
+            textBox.Bind(wx.EVT_TEXT, self.OnFieldChanged)
             self.inputsSizer.Add(textBox, 1, wx.EXPAND | wx.ALIGN_CENTER_VERTICAL | wx.ALL, 3)
             if fieldDef.inputDefault is not None:
                 inputDefault = fieldDef.inputDefault
@@ -127,22 +131,27 @@ class GraphControlPanel(wx.Panel):
             self.inputsSizer.Add(imgLabelSizer, 0, wx.ALIGN_CENTER_VERTICAL)
         self.Layout()
 
+    def OnShowY0Change(self, event):
+        event.Skip()
+        self.graphFrame.draw()
+
     def OnYTypeUpdate(self, event):
         event.Skip()
         obj = event.GetEventObject()
         formatName = obj.GetLabel()
         self.selectedY = self.selectedYRbMap[formatName]
-        self.redrawRequest()
+        self.graphFrame.draw()
 
-    def redrawRequest(self, event=None):
-        self.drawTimer.Stop()
-        wx.PostEvent(self.graphFrame, RefreshGraph())
-
-    def delayedDraw(self, event=None):
+    def OnFieldChanged(self, event):
+        event.Skip()
         self.drawTimer.Stop()
         self.drawTimer.Start(Fit.getInstance().serviceFittingOptions['marketSearchDelay'], True)
 
-    def onFieldChanged(self, event):
-        view = self.graphFrame.getView()
-        view.clearCache()
-        self.delayedDraw()
+    def OnDrawTimer(self, event):
+        event.Skip()
+        self.graphFrame.clearCache()
+        self.graphFrame.draw()
+
+    def unbindExternalEvents(self):
+        self.fitList.unbindExternalEvents()
+

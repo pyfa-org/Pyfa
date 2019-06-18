@@ -30,8 +30,6 @@ import gui.globalEvents as GE
 import gui.mainFrame
 from gui.bitmap_loader import BitmapLoader
 from gui.builtinGraphs.base import Graph
-from service.fit import Fit
-from .events import REFRESH_GRAPH
 from .panel import GraphControlPanel
 
 
@@ -70,6 +68,11 @@ class GraphFrame(wx.Frame):
             pyfalog.warning('Matplotlib is not enabled. Skipping initialization.')
             return
 
+        wx.Frame.__init__(self, parent, title='pyfa: Graph Generator', style=style, size=(520, 390))
+        self.mainFrame = gui.mainFrame.MainFrame.getInstance()
+
+        self.SetIcon(wx.Icon(BitmapLoader.getBitmap('graphs_small', 'gui')))
+
         # Remove matplotlib font cache, see #234
         try:
             cache_dir = mpl._get_cachedir()
@@ -79,19 +82,14 @@ class GraphFrame(wx.Frame):
         if os.access(cache_dir, os.W_OK | os.X_OK) and os.path.isfile(cache_file):
             os.remove(cache_file)
 
-        wx.Frame.__init__(self, parent, title='pyfa: Graph Generator', style=style, size=(520, 390))
-
-        i = wx.Icon(BitmapLoader.getBitmap('graphs_small', 'gui'))
-        self.SetIcon(i)
-        self.mainFrame = gui.mainFrame.MainFrame.getInstance()
-
         mainSizer = wx.BoxSizer(wx.VERTICAL)
 
-        # Graph selector
+        # Layout - graph selector
         self.graphSelection = wx.Choice(self, wx.ID_ANY, style=0)
+        self.graphSelection.Bind(wx.EVT_CHOICE, self.OnGraphSwitched)
         mainSizer.Add(self.graphSelection, 0, wx.EXPAND)
 
-        # Plot area
+        # Layout - plot area
         self.figure = Figure(figsize=(5, 3), tight_layout={'pad': 1.08})
         rgbtuple = wx.SystemSettings.GetColour(wx.SYS_COLOUR_BTNFACE).Get()
         clr = [c / 255. for c in rgbtuple]
@@ -105,44 +103,28 @@ class GraphFrame(wx.Frame):
 
         mainSizer.Add(wx.StaticLine(self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.LI_HORIZONTAL), 0, wx.EXPAND)
 
-        # Graph control panel
+        # Layout - graph control panel
         self.ctrlPanel = GraphControlPanel(self, self)
         mainSizer.Add(self.ctrlPanel, 0, wx.EXPAND | wx.ALL, 0)
 
+        # Setup - graph selector
         for view in Graph.views:
-            view = view()
-            self.graphSelection.Append(view.name, view)
-
+            self.graphSelection.Append(view.name, view())
         self.graphSelection.SetSelection(0)
-        self.updateGraphWidgets()
-        self.sl1 = wx.StaticLine(self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.LI_HORIZONTAL)
-        mainSizer.Add(self.sl1, 0, wx.EXPAND)
+        self.ctrlPanel.updateControlsForView(self.getView())
 
-
-        self.ctrlPanel.fitList.fitList.Bind(wx.EVT_LEFT_DCLICK, self.OnLeftDClick)
-        self.ctrlPanel.fitList.fitList.Bind(wx.EVT_CONTEXT_MENU, self.OnContextMenu)
-        self.Bind(REFRESH_GRAPH, self.OnRefreshGraph)
-        self.ctrlPanel.showY0Cb.Bind(wx.EVT_CHECKBOX, self.OnNonDestructiveControlsUpdate)
-        self.mainFrame.Bind(GE.FIT_CHANGED, self.OnFitChanged)
-        self.mainFrame.Bind(GE.FIT_REMOVED, self.OnFitRemoved)
+        # Event bindings
         self.Bind(wx.EVT_CLOSE, self.closeEvent)
         self.Bind(wx.EVT_CHAR_HOOK, self.kbEvent)
-        self.Bind(wx.EVT_CHOICE, self.graphChanged)
+        self.mainFrame.Bind(GE.FIT_CHANGED, self.OnFitChanged)
         from gui.builtinStatsViews.resistancesViewFull import EFFECTIVE_HP_TOGGLED  # Grr crclar gons
         self.mainFrame.Bind(EFFECTIVE_HP_TOGGLED, self.OnEhpToggled)
 
-        self.contextMenu = wx.Menu()
-        removeItem = wx.MenuItem(self.contextMenu, 1, 'Remove Fit')
-        self.contextMenu.Append(removeItem)
-        self.contextMenu.Bind(wx.EVT_MENU, self.ContextMenuHandler, removeItem)
-
         self.SetSizer(mainSizer)
+
+        self.draw()
         self.Fit()
         self.SetMinSize(self.GetSize())
-
-    def handleDrag(self, type, fitID):
-        if type == 'fit':
-            self.AppendFitToList(fitID)
 
     def closeEvent(self, event):
         self.closeWindow()
@@ -154,21 +136,7 @@ class GraphFrame(wx.Frame):
         if keycode == wx.WXK_ESCAPE and mstate.GetModifiers() == wx.MOD_NONE:
             self.closeWindow()
             return
-        elif keycode == 65 and mstate.GetModifiers() == wx.MOD_CONTROL:
-            self.ctrlPanel.fitList.fitList.selectAll()
-        elif keycode in (wx.WXK_DELETE, wx.WXK_NUMPAD_DELETE) and mstate.GetModifiers() == wx.MOD_NONE:
-            self.removeFits(self.getSelectedFits())
         event.Skip()
-
-    def OnContextMenu(self, event):
-        if self.getSelectedFits():
-            self.PopupMenu(self.contextMenu)
-
-    def ContextMenuHandler(self, event):
-        selectedMenuItem = event.GetId()
-        if selectedMenuItem == 1:  # Copy was chosen
-            fits = self.getSelectedFits()
-            self.removeFits(fits)
 
     def OnEhpToggled(self, event):
         event.Skip()
@@ -179,57 +147,30 @@ class GraphFrame(wx.Frame):
 
     def OnFitChanged(self, event):
         event.Skip()
-        view = self.getView()
-        view.clearCache(key=event.fitID)
+        self.getView().clearCache(key=event.fitID)
         self.draw()
 
-    def OnFitRemoved(self, event):
-        event.Skip()
-        fit = next((f for f in self.ctrlPanel.fits if f.ID == event.fitID), None)
-        if fit is not None:
-            self.removeFits([fit])
-
-    def graphChanged(self, event):
-        self.ctrlPanel.selectedY = None
-        self.updateGraphWidgets()
+    def OnGraphSwitched(self, event):
+        self.clearCache()
+        self.ctrlPanel.updateControlsForView(self.getView())
+        self.draw()
         event.Skip()
 
     def closeWindow(self):
         from gui.builtinStatsViews.resistancesViewFull import EFFECTIVE_HP_TOGGLED  # Grr gons
-        self.ctrlPanel.fitList.fitList.Unbind(wx.EVT_LEFT_DCLICK, handler=self.OnLeftDClick)
         self.mainFrame.Unbind(GE.FIT_CHANGED, handler=self.OnFitChanged)
-        self.mainFrame.Unbind(GE.FIT_REMOVED, handler=self.OnFitRemoved)
         self.mainFrame.Unbind(EFFECTIVE_HP_TOGGLED, handler=self.OnEhpToggled)
+        self.ctrlPanel.unbindExternalEvents()
         self.Destroy()
 
     def getView(self):
         return self.graphSelection.GetClientData(self.graphSelection.GetSelection())
 
-    def getValues(self):
-        values = {}
-        for fieldHandle, field in self.ctrlPanel.fields.items():
-            values[fieldHandle] = field.GetValue()
+    def clearCache(self, key=None):
+        self.getView().clearCache(key=key)
 
-        return values
-
-    def OnNonDestructiveControlsUpdate(self, event):
-        event.Skip()
-        self.draw()
-
-    def OnRefreshGraph(self, event):
-        self.draw()
-
-    def updateGraphWidgets(self):
-        view = self.getView()
-        self.ctrlPanel.updateControlsForView(view)
-        self.draw()
-
-
-    def draw(self, event=None):
+    def draw(self):
         global mpl_version
-
-        if event is not None:
-            event.Skip()
 
         # todo: FIX THIS, see #1430. draw() is not being unbound properly when the window closes, this is an easy fix,
         # but not a proper solution
@@ -237,7 +178,7 @@ class GraphFrame(wx.Frame):
             pyfalog.warning('GraphFrame handled event, however GraphFrame no longer exists. Ignoring event')
             return
 
-        values = self.getValues()
+        values = self.ctrlPanel.getValues()
         view = self.getView()
         self.subplot.clear()
         self.subplot.grid(True)
@@ -255,7 +196,7 @@ class GraphFrame(wx.Frame):
 
         self.subplot.set(xlabel=view.xDef.axisLabel, ylabel=view.yDefs[chosenY].axisLabel)
 
-        for fit in self.ctrlPanel.fits:
+        for fit in self.ctrlPanel.fitList.fits:
             try:
                 xs, ys = view.getPlotPoints(fit, extraInputs, xRange, 100, chosenY)
 
@@ -318,44 +259,3 @@ class GraphFrame(wx.Frame):
 
         self.canvas.draw()
         self.Refresh()
-
-    def AppendFitToList(self, fitID):
-        sFit = Fit.getInstance()
-        fit = sFit.getFit(fitID)
-        if fit not in self.ctrlPanel.fits:
-            self.ctrlPanel.fits.append(fit)
-
-        self.ctrlPanel.fitList.fitList.update(self.ctrlPanel.fits)
-        self.draw()
-
-    def OnLeftDClick(self, event):
-        row, _ = self.ctrlPanel.fitList.fitList.HitTest(event.Position)
-        if row != -1:
-            try:
-                fit = self.ctrlPanel.fits[row]
-            except IndexError:
-                pass
-            else:
-                self.removeFits([fit])
-
-    def removeFits(self, fits):
-        toRemove = [f for f in fits if f in self.ctrlPanel.fits]
-        if not toRemove:
-            return
-        for fit in toRemove:
-            self.ctrlPanel.fits.remove(fit)
-        self.ctrlPanel.fitList.fitList.update(self.ctrlPanel.fits)
-        view = self.getView()
-        for fit in fits:
-            view.clearCache(key=fit.ID)
-        self.draw()
-
-    def getSelectedFits(self):
-        fits = []
-        for row in self.ctrlPanel.fitList.fitList.getSelectedRows():
-            try:
-                fit = self.ctrlPanel.fits[row]
-            except IndexError:
-                continue
-            fits.append(fit)
-        return fits
