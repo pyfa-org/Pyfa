@@ -107,20 +107,21 @@ class GraphFrame(wx.Frame):
         self.ctrlPanel = GraphControlPanel(self, self)
         mainSizer.Add(self.ctrlPanel, 0, wx.EXPAND | wx.ALL, 0)
 
+        self.SetSizer(mainSizer)
+
         # Setup - graph selector
         for view in Graph.views:
             self.graphSelection.Append(view.name, view())
         self.graphSelection.SetSelection(0)
         self.ctrlPanel.updateControlsForView(self.getView())
 
-        # Event bindings
+        # Event bindings - local events
         self.Bind(wx.EVT_CLOSE, self.closeEvent)
         self.Bind(wx.EVT_CHAR_HOOK, self.kbEvent)
+        # Event bindings - external events
         self.mainFrame.Bind(GE.FIT_CHANGED, self.OnFitChanged)
         from gui.builtinStatsViews.resistancesViewFull import EFFECTIVE_HP_TOGGLED  # Grr crclar gons
         self.mainFrame.Bind(EFFECTIVE_HP_TOGGLED, self.OnEhpToggled)
-
-        self.SetSizer(mainSizer)
 
         self.draw()
         self.Fit()
@@ -172,8 +173,8 @@ class GraphFrame(wx.Frame):
     def draw(self):
         global mpl_version
 
-        # todo: FIX THIS, see #1430. draw() is not being unbound properly when the window closes, this is an easy fix,
-        # but not a proper solution
+        # Eee #1430. draw() is not being unbound properly when the window closes.
+        # This is an easy fix, but not a proper solution
         if not self:
             pyfalog.warning('GraphFrame handled event, however GraphFrame no longer exists. Ignoring event')
             return
@@ -219,6 +220,12 @@ class GraphFrame(wx.Frame):
                 self.canvas.draw()
                 return
 
+        # Special case for when we do not show Y = 0 and have no fits
+        if min_y is None:
+            min_y = 0
+        if max_y is None:
+            max_y = 0
+        # Extend range a little for some visual space
         y_range = max_y - min_y
         min_y -= y_range * 0.05
         max_y += y_range * 0.05
