@@ -24,7 +24,7 @@ import math
 import wx
 
 
-class VectorPicker(wx.Control):
+class VectorPicker(wx.Window):
 
     myEVT_VECTOR_CHANGED = wx.NewEventType()
     EVT_VECTOR_CHANGED = wx.PyEventBinder(myEVT_VECTOR_CHANGED, 1)
@@ -35,7 +35,7 @@ class VectorPicker(wx.Control):
         self._offset = float(kwargs.pop('offset', 0))
         self._size = max(0, float(kwargs.pop('size', 50)))
         self._fontsize = max(1, float(kwargs.pop('fontsize', 8)))
-        wx.Control.__init__(self, *args, **kwargs)
+        wx.Window.__init__(self, *args, **kwargs)
         self._font = wx.Font(self._fontsize, wx.FONTFAMILY_DEFAULT, wx.FONTSTYLE_NORMAL, wx.FONTWEIGHT_NORMAL, False)
         self._angle = 0
         self._length = 1
@@ -183,7 +183,7 @@ class VectorPicker(wx.Control):
         width, height = self.GetClientSize()
         if width and height:
             center = min(width, height) / 2
-            x, y = event.GetPositionTuple()
+            x, y = event.GetPosition()
             x = x - center
             y = center - y
             angle = self._angle

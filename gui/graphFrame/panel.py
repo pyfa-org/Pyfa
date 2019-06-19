@@ -24,6 +24,7 @@ import wx
 from gui.bitmap_loader import BitmapLoader
 from service.fit import Fit
 from .lists import FitList, TargetList
+from .vector import VectorPicker
 
 
 class GraphControlPanel(wx.Panel):
@@ -56,6 +57,10 @@ class GraphControlPanel(wx.Panel):
         self.fitList = FitList(graphFrame, self)
         self.fitList.SetMinSize((270, -1))
         srcTgtSizer.Add(self.fitList, 1, wx.EXPAND)
+        self.srcVector = VectorPicker(self, style=wx.NO_BORDER, size=60, offset=90, label='Src', labelpos=2)
+        srcTgtSizer.Add(self.srcVector, flag=wx.SHAPED | wx.ALIGN_RIGHT | wx.ALIGN_CENTER_VERTICAL)
+        self.tgtVector = VectorPicker(self, style=wx.NO_BORDER, size=60, offset=-90, label='Tgt', labelpos=3)
+        srcTgtSizer.Add(self.tgtVector, flag=wx.SHAPED | wx.ALIGN_LEFT | wx.ALIGN_CENTER_VERTICAL)
         self.targets = []
         self.targetList = TargetList(graphFrame, self)
         self.targetList.SetMinSize((270, -1))
@@ -83,7 +88,7 @@ class GraphControlPanel(wx.Panel):
         self.graphSubselSizer.Clear()
         self.inputsSizer.Clear()
         for child in self.Children:
-            if child not in (self.showY0Cb, self.fitList, self.targetList):
+            if child not in (self.showY0Cb, self.fitList, self.targetList, self.srcVector, self.tgtVector):
                 child.Destroy()
         self.fields.clear()
 
