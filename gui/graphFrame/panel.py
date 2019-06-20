@@ -24,7 +24,7 @@ import wx
 from gui.bitmap_loader import BitmapLoader
 from service.fit import Fit
 from .lists import FitList, TargetList
-from .vector import VectorPicker
+from .vector import VectorPicker, DirectionPicker
 
 
 class GraphControlPanel(wx.Panel):
@@ -59,7 +59,7 @@ class GraphControlPanel(wx.Panel):
         srcTgtSizer.Add(self.fitList, 1, wx.EXPAND)
         self.srcVector = VectorPicker(self, style=wx.NO_BORDER, size=60, offset=90, label='Src', labelpos=2)
         srcTgtSizer.Add(self.srcVector, flag=wx.SHAPED | wx.ALIGN_RIGHT | wx.ALIGN_CENTER_VERTICAL)
-        self.tgtVector = VectorPicker(self, style=wx.NO_BORDER, size=60, offset=-90, label='Tgt', labelpos=3)
+        self.tgtVector = DirectionPicker(self, style=wx.NO_BORDER, size=60, offset=-90, label='Tgt', labelpos=3)
         srcTgtSizer.Add(self.tgtVector, flag=wx.SHAPED | wx.ALIGN_LEFT | wx.ALIGN_CENTER_VERTICAL)
         self.targets = []
         self.targetList = TargetList(graphFrame, self)
