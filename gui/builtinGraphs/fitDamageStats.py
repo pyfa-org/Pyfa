@@ -34,20 +34,27 @@ class FitDamageStatsGraph(Graph):
 
     @property
     def xDefs(self):
-        return XDef(inputDefault='0-100', inputLabel='Distance to target (km)', inputIconID=1391, axisLabel='Distance to target, km')
+        return OrderedDict([
+            ('distance', XDef(handle='distance', label='Distance', unit='km', mainInputHandle='distance')),
+            ('time', XDef(handle='time', label='Time', unit='s', mainInputHandle='time')),
+            ('tgtSpeedAbs', XDef(handle='tgtSpeedAbs', label='Target speed', unit='m/s', mainInputHandle='tgtSpeed')),
+            ('tgtSpeedRel', XDef(handle='tgtSpeedRel', label='Target speed', unit='%', mainInputHandle='tgtSpeed')),
+            ('tgtSigRadAbs', XDef(handle='tgtSigRadAbs', label='Target signature radius', unit='m', mainInputHandle='tgtSigRad')),
+            ('tgtSigRadRel', XDef(handle='tgtSigRadRel', label='Target signature radius', unit='%', mainInputHandle='tgtSigRad'))])
 
     @property
     def yDefs(self):
-        return OrderedDict([('dps', YDef(switchLabel='DPS', axisLabel='DPS', eosGraph='eosGraph'))])
+        return OrderedDict([
+            ('dps', YDef(handle='dps', label='DPS', unit=None, eosGraph='eosGraph')),
+            ('volley', YDef(handle='volley', label='Volley', unit=None, eosGraph='eosGraph')),
+            ('damage', YDef(handle='damage', label='Damage inflicted', unit=None, eosGraph='eosGraph'))])
 
     @property
     def inputs(self):
         return OrderedDict([
             ('time', Input(handle='time', label='Time', unit='s', iconID=1392, defaultValue=None, defaultRange=(0, 80))),
-            ('atkSpeed', Input(handle='atkSpeed', label=None, unit=None, iconID=None, defaultValue=None, defaultRange=None)),
-            ('atkAngle', Input(handle='atkAngle', label=None, unit=None, iconID=None, defaultValue=None, defaultRange=None)),
+            ('distance', Input(handle='distance', label='Distance', unit='km', iconID=1391, defaultValue=50, defaultRange=(0, 100))),
             ('tgtSpeed', Input(handle='tgtSpeed', label='Target speed', unit='%', iconID=1389, defaultValue=100, defaultRange=(0, 100))),
-            ('tgtAngle', Input(handle='tgtAngle', label=None, unit=None, iconID=None, defaultValue=None, defaultRange=None)),
             ('tgtSigRad', Input(handle='tgtSigRad', label='Target signature radius', unit='%', iconID=1390, defaultValue=100, defaultRange=(100, 200)))])
 
     @property
@@ -55,8 +62,28 @@ class FitDamageStatsGraph(Graph):
         return True
 
     @property
-    def hasVectors(self):
+    def hasSrcVector(self):
         return True
+
+    @property
+    def srcVectorLengthHandle(self):
+        return 'atkSpeed'
+
+    @property
+    def srcVectorAngleHandle(self):
+        return 'atkAngle'
+
+    @property
+    def hasTgtVector(self):
+        return True
+
+    @property
+    def tgtVectorLengthHandle(self):
+        return 'tgtSpeed'
+
+    @property
+    def tgtVectorAngleHandle(self):
+        return 'tgtAngle'
 
 
 FitDamageStatsGraph.register()

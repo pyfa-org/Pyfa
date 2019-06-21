@@ -55,16 +55,32 @@ class Graph(metaclass=ABCMeta):
         raise NotImplementedError
 
     @property
-    def srcVectorHandles(self):
-        return None, None
-
-    @property
-    def tgtVectorHandles(self):
-        return None, None
-
-    @property
     def hasTargets(self):
         return False
+
+    @property
+    def hasSrcVector(self):
+        return False
+
+    @property
+    def srcVectorLengthHandle(self):
+        return None
+
+    @property
+    def srcVectorAngleHandle(self):
+        return None
+
+    @property
+    def hasTgtVector(self):
+        return False
+
+    @property
+    def tgtVectorLengthHandle(self):
+        return None
+
+    @property
+    def tgtVectorAngleHandle(self):
+        return None
 
     @property
     def redrawOnEffectiveChange(self):
