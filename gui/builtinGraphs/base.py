@@ -42,24 +42,28 @@ class Graph(metaclass=ABCMeta):
 
     @property
     @abstractmethod
-    def xDef(self):
-        raise NotImplementedError
-
-    @property
-    def extraInputs(self):
-        return {}
-
-    @property
-    @abstractmethod
     def yDefs(self):
         raise NotImplementedError
 
     @property
-    def hasTargets(self):
-        return False
+    @abstractmethod
+    def xDefs(self):
+        raise NotImplementedError
 
     @property
-    def hasVectors(self):
+    def inputs(self):
+        raise NotImplementedError
+
+    @property
+    def srcVectorHandles(self):
+        return None, None
+
+    @property
+    def tgtVectorHandles(self):
+        return None, None
+
+    @property
+    def hasTargets(self):
         return False
 
     @property
@@ -98,9 +102,9 @@ class Graph(metaclass=ABCMeta):
             getattr(self, yDef.eosGraph).clearCache(key=key)
 
 
-XDef = namedtuple('XDef', ('inputDefault', 'inputLabel', 'inputIconID', 'axisLabel'))
-YDef = namedtuple('YDef', ('switchLabel', 'axisLabel', 'eosGraph'))
-ExtraInput = namedtuple('ExtraInput', ('inputDefault', 'inputLabel', 'inputIconID'))
+XDef = namedtuple('XDef', ('handle', 'label', 'unit', 'mainInputHandle'))
+YDef = namedtuple('YDef', ('handle', 'label', 'unit', 'eosGraph'))
+Input = namedtuple('Input', ('handle', 'label', 'unit', 'iconID', 'defaultValue', 'defaultRange'))
 
 
 # noinspection PyUnresolvedReferences

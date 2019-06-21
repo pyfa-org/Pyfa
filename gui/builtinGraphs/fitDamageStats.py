@@ -21,19 +21,19 @@
 from collections import OrderedDict
 
 from eos.graph.fitDpsVsRange import FitDpsVsRangeGraph as EosGraph
-from .base import Graph, XDef, YDef, ExtraInput
+from .base import Graph, XDef, YDef, Input
 
 
-class FitDpsVsRangeGraph(Graph):
+class FitDamageStatsGraph(Graph):
 
-    name = 'DPS vs Range'
+    name = 'Damage Stats'
 
     def __init__(self):
         super().__init__()
         self.eosGraph = EosGraph()
 
     @property
-    def xDef(self):
+    def xDefs(self):
         return XDef(inputDefault='0-100', inputLabel='Distance to target (km)', inputIconID=1391, axisLabel='Distance to target, km')
 
     @property
@@ -41,11 +41,14 @@ class FitDpsVsRangeGraph(Graph):
         return OrderedDict([('dps', YDef(switchLabel='DPS', axisLabel='DPS', eosGraph='eosGraph'))])
 
     @property
-    def extraInputs(self):
+    def inputs(self):
         return OrderedDict([
-            ('speed', ExtraInput(inputDefault=0, inputLabel='Target speed (m/s)', inputIconID=1389)),
-            ('signatureRadius', ExtraInput(inputDefault=None, inputLabel='Target signature radius (m)', inputIconID=1390)),
-            ('angle', ExtraInput(inputDefault=0, inputLabel='Target angle (degrees)', inputIconID=1389))])
+            ('time', Input(handle='time', label='Time', unit='s', iconID=1392, defaultValue=None, defaultRange=(0, 80))),
+            ('atkSpeed', Input(handle='atkSpeed', label=None, unit=None, iconID=None, defaultValue=None, defaultRange=None)),
+            ('atkAngle', Input(handle='atkAngle', label=None, unit=None, iconID=None, defaultValue=None, defaultRange=None)),
+            ('tgtSpeed', Input(handle='tgtSpeed', label='Target speed', unit='%', iconID=1389, defaultValue=100, defaultRange=(0, 100))),
+            ('tgtAngle', Input(handle='tgtAngle', label=None, unit=None, iconID=None, defaultValue=None, defaultRange=None)),
+            ('tgtSigRad', Input(handle='tgtSigRad', label='Target signature radius', unit='%', iconID=1390, defaultValue=100, defaultRange=(100, 200)))])
 
     @property
     def hasTargets(self):
@@ -56,4 +59,4 @@ class FitDpsVsRangeGraph(Graph):
         return True
 
 
-FitDpsVsRangeGraph.register()
+FitDamageStatsGraph.register()
