@@ -33,16 +33,33 @@ class GraphControlPanel(wx.Panel):
         super().__init__(parent)
         self.graphFrame = graphFrame
 
-        self.fields = {}
-
         mainSizer = wx.BoxSizer(wx.VERTICAL)
 
-        paramSizer = wx.BoxSizer(wx.HORIZONTAL)
-        viewOptSizer = wx.BoxSizer(wx.VERTICAL)
+        commonOptsSizer = wx.BoxSizer(wx.HORIZONTAL)
+        ySubSelectionSizer = wx.BoxSizer(wx.HORIZONTAL)
+        yText = wx.StaticText(self, wx.ID_ANY, 'Axis Y:')
+        ySubSelectionSizer.Add(yText, 0, wx.ALIGN_CENTER_VERTICAL | wx.RIGHT, 5)
+        self.ySubSelection = wx.Choice(self, wx.ID_ANY)
+        ySubSelectionSizer.Add(self.ySubSelection, 1, wx.EXPAND | wx.ALL, 0)
+        commonOptsSizer.Add(ySubSelectionSizer, 1, wx.EXPAND | wx.RIGHT, 3)
+
+        xSubSelectionSizer = wx.BoxSizer(wx.HORIZONTAL)
+        xText = wx.StaticText(self, wx.ID_ANY, 'Axis X:')
+        xSubSelectionSizer.Add(xText, 0, wx.ALIGN_CENTER_VERTICAL | wx.RIGHT, 5)
+        self.xSubSelection = wx.Choice(self, wx.ID_ANY)
+        xSubSelectionSizer.Add(self.xSubSelection, 1, wx.EXPAND | wx.ALL, 0)
+        commonOptsSizer.Add(xSubSelectionSizer, 1, wx.EXPAND | wx.LEFT | wx.RIGHT, 3)
+
+        commonOptsMiscSizer = wx.BoxSizer(wx.VERTICAL)
         self.showY0Cb = wx.CheckBox(self, wx.ID_ANY, 'Always show Y = 0', wx.DefaultPosition, wx.DefaultSize, 0)
         self.showY0Cb.SetValue(True)
         self.showY0Cb.Bind(wx.EVT_CHECKBOX, self.OnShowY0Change)
-        viewOptSizer.Add(self.showY0Cb, 0, wx.LEFT | wx.TOP | wx.RIGHT | wx.EXPAND, 5)
+        commonOptsMiscSizer.Add(self.showY0Cb, 1, wx.EXPAND | wx.ALL, 0)
+        commonOptsSizer.Add(commonOptsMiscSizer, 0, wx.EXPAND | wx.LEFT, 3)
+        mainSizer.Add(commonOptsSizer, 0, wx.EXPAND | wx.ALL, 5)
+
+        paramSizer = wx.BoxSizer(wx.HORIZONTAL)
+        viewOptSizer = wx.BoxSizer(wx.VERTICAL)
         self.graphSubselSizer = wx.BoxSizer(wx.VERTICAL)
         viewOptSizer.Add(self.graphSubselSizer, 0, wx.ALL | wx.EXPAND, 5)
         paramSizer.Add(viewOptSizer, 0, wx.EXPAND | wx.LEFT | wx.TOP | wx.BOTTOM, 5)
@@ -66,6 +83,10 @@ class GraphControlPanel(wx.Panel):
         srcTgtSizer.Add(self.targetList, 1, wx.EXPAND)
         mainSizer.Add(srcTgtSizer, 1, wx.EXPAND | wx.ALL, 0)
 
+        self.indestructible = {
+            self.showY0Cb, yText, self.ySubSelection, self.xSubSelection, xText,
+            self.fitList, self.targetList, self.srcVector, self.tgtVector}
+
         self.SetSizer(mainSizer)
 
         self.drawTimer = wx.Timer(self)
@@ -73,8 +94,6 @@ class GraphControlPanel(wx.Panel):
 
     def getValues(self):
         values = {}
-        for fieldHandle, field in self.fields.items():
-            values[fieldHandle] = field.GetValue()
         return values
 
     @property
@@ -85,9 +104,10 @@ class GraphControlPanel(wx.Panel):
         self.graphSubselSizer.Clear()
         self.inputsSizer.Clear()
         for child in self.Children:
-            if child not in (self.showY0Cb, self.fitList, self.targetList, self.srcVector, self.tgtVector):
+            if child not in self.indestructible:
                 child.Destroy()
-        self.fields.clear()
+        self.ySubSelection.Clear()
+        self.xSubSelection.Clear()
 
 
         def formatAxisLabel(axisDef):
@@ -95,10 +115,12 @@ class GraphControlPanel(wx.Panel):
                 return axisDef.label
             return '{}, {}'.format(axisDef.label, axisDef.unit)
 
-        selectedXRb = wx.RadioBox(self, -1, 'Axis X', wx.DefaultPosition, wx.DefaultSize, [formatAxisLabel(x) for x in view.xDefs], 1, wx.RA_SPECIFY_COLS)
-        self.graphSubselSizer.Add(selectedXRb, 0, wx.ALL | wx.EXPAND, 0)
-        selectedYRb = wx.RadioBox(self, -1, 'Axis Y', wx.DefaultPosition, wx.DefaultSize, [formatAxisLabel(y) for y in view.yDefs], 1, wx.RA_SPECIFY_COLS)
-        self.graphSubselSizer.Add(selectedYRb, 0, wx.ALL | wx.EXPAND, 0)
+        for yDef in view.yDefs:
+            self.ySubSelection.Append(formatAxisLabel(yDef), yDef.handle)
+        self.ySubSelection.SetSelection(0)
+        for xDef in view.xDefs:
+            self.xSubSelection.Append(formatAxisLabel(xDef), xDef.handle)
+        self.xSubSelection.SetSelection(0)
 
         # Setup inputs
         shownHandles = set()
