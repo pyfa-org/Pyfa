@@ -20,7 +20,7 @@
 
 import re
 from abc import ABCMeta, abstractmethod
-from collections import namedtuple
+from collections import OrderedDict, namedtuple
 
 
 class Graph(metaclass=ABCMeta):
@@ -46,13 +46,25 @@ class Graph(metaclass=ABCMeta):
         raise NotImplementedError
 
     @property
+    def yDefMap(self):
+        return OrderedDict((y.handle, y) for y in self.yDefs)
+
+    @property
     @abstractmethod
     def xDefs(self):
         raise NotImplementedError
 
     @property
+    def xDefMap(self):
+        return OrderedDict((x.handle, x) for x in self.xDefs)
+
+    @property
     def inputs(self):
         raise NotImplementedError
+
+    @property
+    def inputMap(self):
+        return OrderedDict((i.handle, i) for i in self.inputs)
 
     @property
     def hasTargets(self):

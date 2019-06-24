@@ -179,90 +179,90 @@ class GraphFrame(wx.Frame):
             pyfalog.warning('GraphFrame handled event, however GraphFrame no longer exists. Ignoring event')
             return
 
-        values = self.ctrlPanel.getValues()
-        view = self.getView()
-        self.subplot.clear()
-        self.subplot.grid(True)
-        legend = []
-
-        min_y = 0 if self.ctrlPanel.showY0 else None
-        max_y = 0 if self.ctrlPanel.showY0 else None
-
-        xRange = values['x']
-        extraInputs = {ih: values[ih] for ih in view.extraInputs}
-        try:
-            chosenY = [i for i in view.yDefs.keys()][self.ctrlPanel.selectedY or 0]
-        except IndexError:
-            chosenY = [i for i in view.yDefs.keys()][0]
-
-        self.subplot.set(xlabel=view.xDef.axisLabel, ylabel=view.yDefs[chosenY].axisLabel)
-
-        for fit in self.ctrlPanel.fitList.fits:
-            try:
-                xs, ys = view.getPlotPoints(fit, extraInputs, xRange, 100, chosenY)
-
-                # Figure out min and max Y
-                min_y_this = min(ys, default=None)
-                if min_y is None:
-                    min_y = min_y_this
-                elif min_y_this is not None:
-                    min_y = min(min_y, min_y_this)
-                max_y_this = max(ys, default=None)
-                if max_y is None:
-                    max_y = max_y_this
-                elif max_y_this is not None:
-                    max_y = max(max_y, max_y_this)
-
-                self.subplot.plot(xs, ys)
-                legend.append('{} ({})'.format(fit.name, fit.ship.item.getShortName()))
-            except Exception as ex:
-                pyfalog.warning('Invalid values in "{0}"', fit.name)
-                self.canvas.draw()
-                return
-
-        # Special case for when we do not show Y = 0 and have no fits
-        if min_y is None:
-            min_y = 0
-        if max_y is None:
-            max_y = 0
-        # Extend range a little for some visual space
-        y_range = max_y - min_y
-        min_y -= y_range * 0.05
-        max_y += y_range * 0.05
-        if min_y == max_y:
-            min_y -= min_y * 0.05
-            max_y += min_y * 0.05
-        if min_y == max_y:
-            min_y -= 5
-            max_y += 5
-        self.subplot.set_ylim(bottom=min_y, top=max_y)
-
-        legend2 = []
-        legend_colors = {
-            0: 'blue',
-            1: 'orange',
-            2: 'green',
-            3: 'red',
-            4: 'purple',
-            5: 'brown',
-            6: 'pink',
-            7: 'grey',
-        }
-
-        for i, i_name in enumerate(legend):
-            try:
-                selected_color = legend_colors[i]
-            except:
-                selected_color = None
-            legend2.append(Patch(color=selected_color, label=i_name), )
-
-        if len(legend2) > 0:
-            leg = self.subplot.legend(handles=legend2)
-            for t in leg.get_texts():
-                t.set_fontsize('small')
-
-            for l in leg.get_lines():
-                l.set_linewidth(1)
+        # values = self.ctrlPanel.getValues()
+        # view = self.getView()
+        # self.subplot.clear()
+        # self.subplot.grid(True)
+        # legend = []
+        #
+        # min_y = 0 if self.ctrlPanel.showY0 else None
+        # max_y = 0 if self.ctrlPanel.showY0 else None
+        #
+        # xRange = values['x']
+        # extraInputs = {ih: values[ih] for ih in view.extraInputs}
+        # try:
+        #     chosenY = [i for i in view.yDefs.keys()][self.ctrlPanel.selectedY or 0]
+        # except IndexError:
+        #     chosenY = [i for i in view.yDefs.keys()][0]
+        #
+        # self.subplot.set(xlabel=view.xDef.axisLabel, ylabel=view.yDefs[chosenY].axisLabel)
+        #
+        # for fit in self.ctrlPanel.fitList.fits:
+        #     try:
+        #         xs, ys = view.getPlotPoints(fit, extraInputs, xRange, 100, chosenY)
+        #
+        #         # Figure out min and max Y
+        #         min_y_this = min(ys, default=None)
+        #         if min_y is None:
+        #             min_y = min_y_this
+        #         elif min_y_this is not None:
+        #             min_y = min(min_y, min_y_this)
+        #         max_y_this = max(ys, default=None)
+        #         if max_y is None:
+        #             max_y = max_y_this
+        #         elif max_y_this is not None:
+        #             max_y = max(max_y, max_y_this)
+        #
+        #         self.subplot.plot(xs, ys)
+        #         legend.append('{} ({})'.format(fit.name, fit.ship.item.getShortName()))
+        #     except Exception as ex:
+        #         pyfalog.warning('Invalid values in "{0}"', fit.name)
+        #         self.canvas.draw()
+        #         return
+        #
+        # # Special case for when we do not show Y = 0 and have no fits
+        # if min_y is None:
+        #     min_y = 0
+        # if max_y is None:
+        #     max_y = 0
+        # # Extend range a little for some visual space
+        # y_range = max_y - min_y
+        # min_y -= y_range * 0.05
+        # max_y += y_range * 0.05
+        # if min_y == max_y:
+        #     min_y -= min_y * 0.05
+        #     max_y += min_y * 0.05
+        # if min_y == max_y:
+        #     min_y -= 5
+        #     max_y += 5
+        # self.subplot.set_ylim(bottom=min_y, top=max_y)
+        #
+        # legend2 = []
+        # legend_colors = {
+        #     0: 'blue',
+        #     1: 'orange',
+        #     2: 'green',
+        #     3: 'red',
+        #     4: 'purple',
+        #     5: 'brown',
+        #     6: 'pink',
+        #     7: 'grey',
+        # }
+        #
+        # for i, i_name in enumerate(legend):
+        #     try:
+        #         selected_color = legend_colors[i]
+        #     except:
+        #         selected_color = None
+        #     legend2.append(Patch(color=selected_color, label=i_name), )
+        #
+        # if len(legend2) > 0:
+        #     leg = self.subplot.legend(handles=legend2)
+        #     for t in leg.get_texts():
+        #         t.set_fontsize('small')
+        #
+        #     for l in leg.get_lines():
+        #         l.set_linewidth(1)
 
         self.canvas.draw()
         self.Refresh()

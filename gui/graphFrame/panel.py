@@ -89,43 +89,49 @@ class GraphControlPanel(wx.Panel):
                 child.Destroy()
         self.fields.clear()
 
-        selectedXRb = wx.RadioBox(self, -1, 'Axis X', wx.DefaultPosition, wx.DefaultSize, [x.label for x in view.xDefs], 1, wx.RA_SPECIFY_COLS)
+
+        def formatAxisLabel(axisDef):
+            if axisDef.unit is None:
+                return axisDef.label
+            return '{}, {}'.format(axisDef.label, axisDef.unit)
+
+        selectedXRb = wx.RadioBox(self, -1, 'Axis X', wx.DefaultPosition, wx.DefaultSize, [formatAxisLabel(x) for x in view.xDefs], 1, wx.RA_SPECIFY_COLS)
         self.graphSubselSizer.Add(selectedXRb, 0, wx.ALL | wx.EXPAND, 0)
-        selectedYRb = wx.RadioBox(self, -1, 'Axis Y', wx.DefaultPosition, wx.DefaultSize, [y.label for y in view.yDefs], 1, wx.RA_SPECIFY_COLS)
+        selectedYRb = wx.RadioBox(self, -1, 'Axis Y', wx.DefaultPosition, wx.DefaultSize, [formatAxisLabel(y) for y in view.yDefs], 1, wx.RA_SPECIFY_COLS)
         self.graphSubselSizer.Add(selectedYRb, 0, wx.ALL | wx.EXPAND, 0)
 
-        vectorHandles = set()
-        if view.hasSrcVector:
-            vectorHandles.add(view.srcVectorLengthHandle)
-            vectorHandles.add(view.srcVectorAngleHandle)
-        if view.hasTgtVector:
-            vectorHandles.add(view.tgtVectorLengthHandle)
-            vectorHandles.add(view.tgtVectorAngleHandle)
-
         # Setup inputs
-        for fieldHandle, fieldDef in ((view.xDefs[0].handle, view.xDefs[0]), *view.extraInputs.items()):
+        shownHandles = set()
+        if view.hasSrcVector:
+            shownHandles.add(view.srcVectorLengthHandle)
+            shownHandles.add(view.srcVectorAngleHandle)
+        if view.hasTgtVector:
+            shownHandles.add(view.tgtVectorLengthHandle)
+            shownHandles.add(view.tgtVectorAngleHandle)
+        for inputHandle in (view.xDefs[0].mainInputHandle, *(i.handle for i in view.inputs)):
+            if inputHandle in shownHandles:
+                continue
+            shownHandles.add(inputHandle)
+            inputDef = view.inputMap[inputHandle]
             textBox = wx.TextCtrl(self, wx.ID_ANY, style=0)
-            self.fields[fieldHandle] = textBox
             textBox.Bind(wx.EVT_TEXT, self.OnFieldChanged)
             self.inputsSizer.Add(textBox, 1, wx.EXPAND | wx.ALIGN_CENTER_VERTICAL | wx.ALL, 3)
-            if fieldDef.inputDefault is not None:
-                inputDefault = fieldDef.inputDefault
+            if inputDef.defaultValue is not None:
+                inputDefault = inputDef.defaultValue
                 if not isinstance(inputDefault, str):
                     inputDefault = ('%f' % inputDefault).rstrip('0')
                     if inputDefault[-1:] == '.':
                         inputDefault += '0'
-
                 textBox.ChangeValue(inputDefault)
-
             imgLabelSizer = wx.BoxSizer(wx.HORIZONTAL)
-            if fieldDef.inputIconID:
-                icon = BitmapLoader.getBitmap(fieldDef.inputIconID, 'icons')
+            if inputDef.iconID is not None:
+                icon = BitmapLoader.getBitmap(inputDef.iconID, 'icons')
                 if icon is not None:
                     static = wx.StaticBitmap(self)
                     static.SetBitmap(icon)
                     imgLabelSizer.Add(static, 0, wx.ALL | wx.ALIGN_CENTER_VERTICAL, 1)
 
-            imgLabelSizer.Add(wx.StaticText(self, wx.ID_ANY, fieldDef.inputLabel), 0,
+            imgLabelSizer.Add(wx.StaticText(self, wx.ID_ANY, inputDef.label), 0,
                               wx.LEFT | wx.RIGHT | wx.ALIGN_CENTER_VERTICAL, 3)
             self.inputsSizer.Add(imgLabelSizer, 0, wx.ALIGN_CENTER_VERTICAL)
         self.Layout()

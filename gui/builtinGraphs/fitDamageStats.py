@@ -18,8 +18,6 @@
 # =============================================================================
 
 
-from collections import OrderedDict
-
 from eos.graph.fitDpsVsRange import FitDpsVsRangeGraph as EosGraph
 from .base import Graph, XDef, YDef, Input
 
@@ -34,28 +32,28 @@ class FitDamageStatsGraph(Graph):
 
     @property
     def xDefs(self):
-        return OrderedDict([
-            ('distance', XDef(handle='distance', label='Distance', unit='km', mainInputHandle='distance')),
-            ('time', XDef(handle='time', label='Time', unit='s', mainInputHandle='time')),
-            ('tgtSpeedAbs', XDef(handle='tgtSpeedAbs', label='Target speed', unit='m/s', mainInputHandle='tgtSpeed')),
-            ('tgtSpeedRel', XDef(handle='tgtSpeedRel', label='Target speed', unit='%', mainInputHandle='tgtSpeed')),
-            ('tgtSigRadAbs', XDef(handle='tgtSigRadAbs', label='Target signature radius', unit='m', mainInputHandle='tgtSigRad')),
-            ('tgtSigRadRel', XDef(handle='tgtSigRadRel', label='Target signature radius', unit='%', mainInputHandle='tgtSigRad'))])
+        return [
+            XDef(handle='distance', label='Distance', unit='km', mainInputHandle='distance'),
+            XDef(handle='time', label='Time', unit='s', mainInputHandle='time'),
+            XDef(handle='tgtSpeedAbs', label='Target speed', unit='m/s', mainInputHandle='tgtSpeed'),
+            XDef(handle='tgtSpeedRel', label='Target speed', unit='%', mainInputHandle='tgtSpeed'),
+            XDef(handle='tgtSigRadAbs', label='Target signature radius', unit='m', mainInputHandle='tgtSigRad'),
+            XDef(handle='tgtSigRadRel', label='Target signature radius', unit='%', mainInputHandle='tgtSigRad')]
 
     @property
     def yDefs(self):
-        return OrderedDict([
-            ('dps', YDef(handle='dps', label='DPS', unit=None, eosGraph='eosGraph')),
-            ('volley', YDef(handle='volley', label='Volley', unit=None, eosGraph='eosGraph')),
-            ('damage', YDef(handle='damage', label='Damage inflicted', unit=None, eosGraph='eosGraph'))])
+        return [
+            YDef(handle='dps', label='DPS', unit=None, eosGraph='eosGraph'),
+            YDef(handle='volley', label='Volley', unit=None, eosGraph='eosGraph'),
+            YDef(handle='damage', label='Damage inflicted', unit=None, eosGraph='eosGraph')]
 
     @property
     def inputs(self):
-        return OrderedDict([
-            ('time', Input(handle='time', label='Time', unit='s', iconID=1392, defaultValue=None, defaultRange=(0, 80))),
-            ('distance', Input(handle='distance', label='Distance', unit='km', iconID=1391, defaultValue=50, defaultRange=(0, 100))),
-            ('tgtSpeed', Input(handle='tgtSpeed', label='Target speed', unit='%', iconID=1389, defaultValue=100, defaultRange=(0, 100))),
-            ('tgtSigRad', Input(handle='tgtSigRad', label='Target signature radius', unit='%', iconID=1390, defaultValue=100, defaultRange=(100, 200)))])
+        return [
+            Input(handle='time', label='Time', unit='s', iconID=1392, defaultValue=None, defaultRange=(0, 80)),
+            Input(handle='distance', label='Distance', unit='km', iconID=1391, defaultValue=50, defaultRange=(0, 100)),
+            Input(handle='tgtSpeed', label='Target speed', unit='%', iconID=1389, defaultValue=100, defaultRange=(0, 100)),
+            Input(handle='tgtSigRad', label='Target signature radius', unit='%', iconID=1390, defaultValue=100, defaultRange=(100, 200))]
 
     @property
     def hasTargets(self):
