@@ -34,8 +34,6 @@ class GraphControlPanel(wx.Panel):
         self.graphFrame = graphFrame
 
         self.fields = {}
-        self.selectedY = None
-        self.selectedYRbMap = {}
 
         mainSizer = wx.BoxSizer(wx.VERTICAL)
 
@@ -84,7 +82,6 @@ class GraphControlPanel(wx.Panel):
         return self.showY0Cb.GetValue()
 
     def updateControlsForView(self, view):
-        self.selectedY = None
         self.graphSubselSizer.Clear()
         self.inputsSizer.Clear()
         for child in self.Children:
@@ -92,24 +89,21 @@ class GraphControlPanel(wx.Panel):
                 child.Destroy()
         self.fields.clear()
 
-        # Setup view options
-        self.selectedYRbMap.clear()
-        if len(view.yDefs) > 1:
-            i = 0
-            for yAlias, yDef in view.yDefs.items():
-                if i == 0:
-                    rdo = wx.RadioButton(self, wx.ID_ANY, yDef.switchLabel, style=wx.RB_GROUP)
-                else:
-                    rdo = wx.RadioButton(self, wx.ID_ANY, yDef.switchLabel)
-                rdo.Bind(wx.EVT_RADIOBUTTON, self.OnYTypeUpdate)
-                if i == (self.selectedY or 0):
-                    rdo.SetValue(True)
-                self.graphSubselSizer.Add(rdo, 0, wx.ALL | wx.EXPAND, 0)
-                self.selectedYRbMap[yDef.switchLabel] = i
-                i += 1
+        selectedXRb = wx.RadioBox(self, -1, 'Axis X', wx.DefaultPosition, wx.DefaultSize, [x.label for x in view.xDefs], 1, wx.RA_SPECIFY_COLS)
+        self.graphSubselSizer.Add(selectedXRb, 0, wx.ALL | wx.EXPAND, 0)
+        selectedYRb = wx.RadioBox(self, -1, 'Axis Y', wx.DefaultPosition, wx.DefaultSize, [y.label for y in view.yDefs], 1, wx.RA_SPECIFY_COLS)
+        self.graphSubselSizer.Add(selectedYRb, 0, wx.ALL | wx.EXPAND, 0)
+
+        vectorHandles = set()
+        if view.hasSrcVector:
+            vectorHandles.add(view.srcVectorLengthHandle)
+            vectorHandles.add(view.srcVectorAngleHandle)
+        if view.hasTgtVector:
+            vectorHandles.add(view.tgtVectorLengthHandle)
+            vectorHandles.add(view.tgtVectorAngleHandle)
 
         # Setup inputs
-        for fieldHandle, fieldDef in (('x', view.xDef), *view.extraInputs.items()):
+        for fieldHandle, fieldDef in ((view.xDefs[0].handle, view.xDefs[0]), *view.extraInputs.items()):
             textBox = wx.TextCtrl(self, wx.ID_ANY, style=0)
             self.fields[fieldHandle] = textBox
             textBox.Bind(wx.EVT_TEXT, self.OnFieldChanged)
@@ -144,7 +138,6 @@ class GraphControlPanel(wx.Panel):
         event.Skip()
         obj = event.GetEventObject()
         formatName = obj.GetLabel()
-        self.selectedY = self.selectedYRbMap[formatName]
         self.graphFrame.draw()
 
     def OnFieldChanged(self, event):
