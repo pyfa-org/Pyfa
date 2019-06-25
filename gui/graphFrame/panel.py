@@ -61,19 +61,19 @@ class GraphControlPanel(wx.Panel):
         self.inputsSizer = wx.BoxSizer(wx.VERTICAL)
         graphOptsSizer.Add(self.inputsSizer, 0, wx.EXPAND | wx.ALL, 0)
 
-        srcVectorSizer = wx.BoxSizer(wx.VERTICAL)
-        self.srcVectorLabel = wx.StaticText(self, wx.ID_ANY, 'Attacker')
-        srcVectorSizer.Add(self.srcVectorLabel, 0, wx.ALIGN_CENTER_HORIZONTAL| wx.BOTTOM, 5)
+        self.srcVectorSizer = wx.BoxSizer(wx.VERTICAL)
+        self.srcVectorLabel = wx.StaticText(self, wx.ID_ANY, '')
+        self.srcVectorSizer.Add(self.srcVectorLabel, 0, wx.ALIGN_CENTER_HORIZONTAL| wx.BOTTOM, 5)
         self.srcVector = VectorPicker(self, style=wx.NO_BORDER, size=75, offset=90)
-        srcVectorSizer.Add(self.srcVector, 0, wx.SHAPED | wx.ALIGN_CENTER_HORIZONTAL | wx.ALIGN_CENTER_VERTICAL | wx.ALL, 0)
-        graphOptsSizer.Add(srcVectorSizer, 0, wx.EXPAND | wx.LEFT, 30)
+        self.srcVectorSizer.Add(self.srcVector, 0, wx.SHAPED | wx.ALIGN_CENTER_HORIZONTAL | wx.ALIGN_CENTER_VERTICAL | wx.ALL, 0)
+        graphOptsSizer.Add(self.srcVectorSizer, 0, wx.EXPAND | wx.LEFT, 30)
 
-        tgtVectorSizer = wx.BoxSizer(wx.VERTICAL)
-        self.tgtVectorLabel = wx.StaticText(self, wx.ID_ANY, 'Target')
-        tgtVectorSizer.Add(self.tgtVectorLabel, 0, wx.ALIGN_CENTER_HORIZONTAL | wx.BOTTOM, 5)
+        self.tgtVectorSizer = wx.BoxSizer(wx.VERTICAL)
+        self.tgtVectorLabel = wx.StaticText(self, wx.ID_ANY, '')
+        self.tgtVectorSizer.Add(self.tgtVectorLabel, 0, wx.ALIGN_CENTER_HORIZONTAL | wx.BOTTOM, 5)
         self.tgtVector = DirectionPicker(self, style=wx.NO_BORDER, size=75, offset=-90)
-        tgtVectorSizer.Add(self.tgtVector, 0, wx.SHAPED | wx.ALIGN_CENTER_HORIZONTAL | wx.ALIGN_CENTER_VERTICAL | wx.ALL, 0)
-        graphOptsSizer.Add(tgtVectorSizer, 0, wx.EXPAND | wx.LEFT, 10)
+        self.tgtVectorSizer.Add(self.tgtVector, 0, wx.SHAPED | wx.ALIGN_CENTER_HORIZONTAL | wx.ALIGN_CENTER_VERTICAL | wx.ALL, 0)
+        graphOptsSizer.Add(self.tgtVectorSizer, 0, wx.EXPAND | wx.LEFT, 10)
 
         optsSizer.Add(graphOptsSizer, 0, wx.EXPAND | wx.ALL, 0)
         mainSizer.Add(optsSizer, 0, wx.EXPAND | wx.ALL, 10)
@@ -107,14 +107,13 @@ class GraphControlPanel(wx.Panel):
     def showY0(self):
         return self.showY0Cb.GetValue()
 
-    def updateControlsForView(self, view):
+    def updateControls(self, view):
         self.inputsSizer.Clear()
         for child in self.Children:
             if child not in self.indestructible:
                 child.Destroy()
         self.ySubSelection.Clear()
         self.xSubSelection.Clear()
-
 
         def formatLabel(axisDef):
             if axisDef.unit is None:
@@ -128,7 +127,7 @@ class GraphControlPanel(wx.Panel):
             self.xSubSelection.Append(formatLabel(xDef), xDef.handle)
         self.xSubSelection.SetSelection(0)
 
-        # Setup inputs
+        # Inputs
         shownHandles = set()
         srcVectorDef = view.srcVectorDef
         if srcVectorDef is not None:
@@ -165,7 +164,30 @@ class GraphControlPanel(wx.Panel):
             fieldLabel = wx.StaticText(self, wx.ID_ANY, formatLabel(inputDef))
             fieldSizer.Add(fieldLabel, 0, wx.ALIGN_CENTER_VERTICAL | wx.ALL, 0)
             self.inputsSizer.Add(fieldSizer, 0, wx.EXPAND | wx.BOTTOM, 5)
+
+        # Vectors
+        if view.srcVectorDef is not None:
+            self.srcVectorLabel.SetLabel(view.srcVectorDef.label)
+            self.srcVector.Show(True)
+            self.srcVectorLabel.Show(True)
+        else:
+            self.srcVector.Show(False)
+            self.srcVectorLabel.Show(False)
+        if view.tgtVectorDef is not None:
+            self.tgtVectorLabel.SetLabel(view.tgtVectorDef.label)
+            self.tgtVector.Show(True)
+            self.tgtVectorLabel.Show(True)
+        else:
+            self.tgtVector.Show(False)
+            self.tgtVectorLabel.Show(False)
+
+        # Target list
+        self.targetList.Show(view.hasTargets)
+
         self.Layout()
+
+    def updateInputs(self, view):
+        pass
 
     def OnShowY0Change(self, event):
         event.Skip()
