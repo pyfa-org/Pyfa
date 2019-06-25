@@ -158,7 +158,7 @@ class GraphFrame(wx.Frame):
         event.Skip()
 
     def closeWindow(self):
-        from gui.builtinStatsViews.resistancesViewFull import EFFECTIVE_HP_TOGGLED  # Grr gons
+        from gui.builtinStatsViews.resistancesViewFull import EFFECTIVE_HP_TOGGLED
         self.mainFrame.Unbind(GE.FIT_CHANGED, handler=self.OnFitChanged)
         self.mainFrame.Unbind(EFFECTIVE_HP_TOGGLED, handler=self.OnEhpToggled)
         self.ctrlPanel.unbindExternalEvents()

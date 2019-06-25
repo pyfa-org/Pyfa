@@ -32,6 +32,7 @@ class GraphControlPanel(wx.Panel):
     def __init__(self, graphFrame, parent):
         super().__init__(parent)
         self.graphFrame = graphFrame
+        self.inputs = {}
 
         mainSizer = wx.BoxSizer(wx.VERTICAL)
         optsSizer = wx.BoxSizer(wx.HORIZONTAL)
@@ -41,6 +42,7 @@ class GraphControlPanel(wx.Panel):
         yText = wx.StaticText(self, wx.ID_ANY, 'Axis Y:')
         ySubSelectionSizer.Add(yText, 0, wx.ALIGN_CENTER_VERTICAL | wx.RIGHT, 5)
         self.ySubSelection = wx.Choice(self, wx.ID_ANY)
+        self.ySubSelection.Bind(wx.EVT_CHOICE, self.OnYTypeUpdate)
         ySubSelectionSizer.Add(self.ySubSelection, 1, wx.EXPAND | wx.ALL, 0)
         commonOptsSizer.Add(ySubSelectionSizer, 0, wx.EXPAND | wx.ALL, 0)
 
@@ -48,6 +50,7 @@ class GraphControlPanel(wx.Panel):
         xText = wx.StaticText(self, wx.ID_ANY, 'Axis X:')
         xSubSelectionSizer.Add(xText, 0, wx.ALIGN_CENTER_VERTICAL | wx.RIGHT, 5)
         self.xSubSelection = wx.Choice(self, wx.ID_ANY)
+        self.xSubSelection.Bind(wx.EVT_CHOICE, self.OnXTypeUpdate)
         xSubSelectionSizer.Add(self.xSubSelection, 1, wx.EXPAND | wx.ALL, 0)
         commonOptsSizer.Add(xSubSelectionSizer, 0, wx.EXPAND | wx.TOP, 5)
 
@@ -89,41 +92,21 @@ class GraphControlPanel(wx.Panel):
         srcTgtSizer.Add(self.targetList, 1, wx.EXPAND | wx.LEFT, 10)
         mainSizer.Add(srcTgtSizer, 1, wx.EXPAND | wx.LEFT | wx.BOTTOM | wx.RIGHT, 10)
 
-        self.indestructible = {
-            self.showY0Cb, yText, self.ySubSelection, self.xSubSelection, xText,
-            self.srcVectorLabel, self.srcVector, self.tgtVectorLabel, self.tgtVector,
-            self.fitList, self.targetList}
-
         self.SetSizer(mainSizer)
 
         self.drawTimer = wx.Timer(self)
         self.Bind(wx.EVT_TIMER, self.OnDrawTimer, self.drawTimer)
 
-    def getValues(self):
-        values = {}
-        return values
-
-    @property
-    def showY0(self):
-        return self.showY0Cb.GetValue()
-
     def updateControls(self):
         view = self.graphFrame.getView()
-        self.inputsSizer.Clear()
-        for child in self.Children:
-            if child not in self.indestructible:
-                child.Destroy()
         self.ySubSelection.Clear()
         self.xSubSelection.Clear()
-
         for yDef in view.yDefs:
-            self.ySubSelection.Append(self._formatLabel(yDef), yDef.handle)
+            self.ySubSelection.Append(self._formatLabel(yDef), (yDef.handle, yDef.unit))
         self.ySubSelection.SetSelection(0)
         for xDef in view.xDefs:
-            self.xSubSelection.Append(self._formatLabel(xDef), xDef.handle)
+            self.xSubSelection.Append(self._formatLabel(xDef), (xDef.handle, xDef.unit))
         self.xSubSelection.SetSelection(0)
-
-        self.updateInputs()
 
         # Vectors
         if view.srcVectorDef is not None:
@@ -144,9 +127,19 @@ class GraphControlPanel(wx.Panel):
         # Target list
         self.targetList.Show(view.hasTargets)
 
+        self.updateInputs()
         self.Layout()
 
     def updateInputs(self):
+        # Clean up old inputs
+        for children in self.inputs.values():
+            for child in children:
+                if child is not None:
+                    child.Destroy()
+        self.inputsSizer.Clear()
+        self.inputs.clear()
+
+        # Set up inputs from scratch
         view = self.graphFrame.getView()
         shownHandles = set()
         srcVectorDef = view.srcVectorDef
@@ -157,8 +150,9 @@ class GraphControlPanel(wx.Panel):
         if tgtVectorDef is not None:
             shownHandles.add(tgtVectorDef.lengthHandle)
             shownHandles.add(tgtVectorDef.angleHandle)
-        for inputDef in (view.inputMap[view.xDefs[0].mainInput], *(i for i in view.inputs)):
-            if (inputDef.handle, inputDef.unit) != view.xDefs[0].mainInput and inputDef.mainOnly:
+        selectedX = view.xDefMap[self.xType]
+        for inputDef in (view.inputMap[selectedX.mainInput], *(i for i in view.inputs)):
+            if (inputDef.handle, inputDef.unit) != selectedX.mainInput and inputDef.mainOnly:
                 continue
             if inputDef.handle in shownHandles:
                 continue
@@ -175,6 +169,7 @@ class GraphControlPanel(wx.Panel):
                         inputDefault += '0'
                 fieldTextBox.ChangeValue(inputDefault)
             fieldSizer.Add(fieldTextBox, 0, wx.EXPAND | wx.ALIGN_CENTER_VERTICAL | wx.RIGHT, 5)
+            fieldIcon = None
             if inputDef.iconID is not None:
                 icon = BitmapLoader.getBitmap(inputDef.iconID, 'icons')
                 if icon is not None:
@@ -183,6 +178,7 @@ class GraphControlPanel(wx.Panel):
                     fieldSizer.Add(fieldIcon, 0, wx.ALIGN_CENTER_VERTICAL | wx.RIGHT, 3)
             fieldLabel = wx.StaticText(self, wx.ID_ANY, self._formatLabel(inputDef))
             fieldSizer.Add(fieldLabel, 0, wx.ALIGN_CENTER_VERTICAL | wx.ALL, 0)
+            self.inputs[(inputDef.handle, inputDef.unit)] = (fieldTextBox, fieldIcon, fieldLabel)
             self.inputsSizer.Add(fieldSizer, 0, wx.EXPAND | wx.BOTTOM, 5)
 
     def OnShowY0Change(self, event):
@@ -191,8 +187,12 @@ class GraphControlPanel(wx.Panel):
 
     def OnYTypeUpdate(self, event):
         event.Skip()
-        obj = event.GetEventObject()
-        formatName = obj.GetLabel()
+        self.graphFrame.draw()
+
+    def OnXTypeUpdate(self, event):
+        event.Skip()
+        self.updateInputs()
+        self.Layout()
         self.graphFrame.draw()
 
     def OnFieldChanged(self, event):
@@ -204,6 +204,22 @@ class GraphControlPanel(wx.Panel):
         event.Skip()
         self.graphFrame.clearCache()
         self.graphFrame.draw()
+
+    def getValues(self):
+        values = {}
+        return values
+
+    @property
+    def showY0(self):
+        return self.showY0Cb.GetValue()
+
+    @property
+    def yType(self):
+        return self.ySubSelection.GetClientData(self.ySubSelection.GetSelection())
+
+    @property
+    def xType(self):
+        return self.xSubSelection.GetClientData(self.xSubSelection.GetSelection())
 
     def unbindExternalEvents(self):
         self.fitList.unbindExternalEvents()

@@ -53,7 +53,7 @@ class FitDamageStatsGraph(Graph):
             Input(handle='time', unit='s', label='Time', iconID=1392, defaultValue=None, defaultRange=(0, 80), mainOnly=False),
             Input(handle='distance', unit='km', label='Distance', iconID=1391, defaultValue=50, defaultRange=(0, 100), mainOnly=False),
             Input(handle='tgtSpeed', unit='%', label='Target speed', iconID=1389, defaultValue=100, defaultRange=(0, 100), mainOnly=False),
-            Input(handle='tgtSigRad', unit='%', label='Target signature radius', iconID=1390, defaultValue=100, defaultRange=(100, 200), mainOnly=True)]
+            Input(handle='tgtSigRad', unit='%', label='Target signature', iconID=1390, defaultValue=100, defaultRange=(100, 200), mainOnly=True)]
 
     @property
     def srcVectorDef(self):
