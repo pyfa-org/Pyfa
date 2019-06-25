@@ -50,10 +50,10 @@ class FitDamageStatsGraph(Graph):
     @property
     def inputs(self):
         return [
-            Input(handle='time', label='Time', unit='s', iconID=1392, defaultValue=None, defaultRange=(0, 80)),
-            Input(handle='distance', label='Distance', unit='km', iconID=1391, defaultValue=50, defaultRange=(0, 100)),
-            Input(handle='tgtSpeed', label='Target speed', unit='%', iconID=1389, defaultValue=100, defaultRange=(0, 100)),
-            Input(handle='tgtSigRad', label='Target signature radius', unit='%', iconID=1390, defaultValue=100, defaultRange=(100, 200))]
+            Input(handle='time', label='Time', unit='s', iconID=1392, defaultValue=None, defaultRange=(0, 80), mainOnly=False),
+            Input(handle='distance', label='Distance', unit='km', iconID=1391, defaultValue=50, defaultRange=(0, 100), mainOnly=False),
+            Input(handle='tgtSpeed', label='Target speed', unit='%', iconID=1389, defaultValue=100, defaultRange=(0, 100), mainOnly=False),
+            Input(handle='tgtSigRad', label='Target signature radius', unit='%', iconID=1390, defaultValue=100, defaultRange=(100, 200), mainOnly=True)]
 
     @property
     def hasTargets(self):

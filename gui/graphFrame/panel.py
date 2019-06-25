@@ -130,11 +130,12 @@ class GraphControlPanel(wx.Panel):
         if view.hasTgtVector:
             shownHandles.add(view.tgtVectorLengthHandle)
             shownHandles.add(view.tgtVectorAngleHandle)
-        for inputHandle in (view.xDefs[0].mainInputHandle, *(i.handle for i in view.inputs)):
-            if inputHandle in shownHandles:
+        for inputDef in (view.inputMap[view.xDefs[0].mainInputHandle], *(i for i in view.inputs)):
+            if inputDef.handle != view.xDefs[0].mainInputHandle and inputDef.mainOnly:
                 continue
-            shownHandles.add(inputHandle)
-            inputDef = view.inputMap[inputHandle]
+            if inputDef.handle in shownHandles:
+                continue
+            shownHandles.add(inputDef.handle)
             textBox = wx.TextCtrl(self, wx.ID_ANY, style=0)
             textBox.Bind(wx.EVT_TEXT, self.OnFieldChanged)
             self.inputsSizer.Add(textBox, 1, wx.EXPAND | wx.ALIGN_CENTER_VERTICAL | wx.ALL, 3)
