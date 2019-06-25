@@ -47,7 +47,7 @@ class Graph(metaclass=ABCMeta):
 
     @property
     def yDefMap(self):
-        return OrderedDict((y.handle, y) for y in self.yDefs)
+        return OrderedDict(((y.handle, y.unit), y) for y in self.yDefs)
 
     @property
     @abstractmethod
@@ -56,7 +56,7 @@ class Graph(metaclass=ABCMeta):
 
     @property
     def xDefMap(self):
-        return OrderedDict((x.handle, x) for x in self.xDefs)
+        return OrderedDict(((x.handle, x.unit), x) for x in self.xDefs)
 
     @property
     def inputs(self):
@@ -64,35 +64,19 @@ class Graph(metaclass=ABCMeta):
 
     @property
     def inputMap(self):
-        return OrderedDict((i.handle, i) for i in self.inputs)
+        return OrderedDict(((i.handle, i.unit), i) for i in self.inputs)
+
+    @property
+    def srcVectorDef(self):
+        return None
+
+    @property
+    def tgtVectorDef(self):
+        return None
 
     @property
     def hasTargets(self):
         return False
-
-    @property
-    def hasSrcVector(self):
-        return False
-
-    @property
-    def srcVectorLengthHandle(self):
-        return None
-
-    @property
-    def srcVectorAngleHandle(self):
-        return None
-
-    @property
-    def hasTgtVector(self):
-        return False
-
-    @property
-    def tgtVectorLengthHandle(self):
-        return None
-
-    @property
-    def tgtVectorAngleHandle(self):
-        return None
 
     @property
     def redrawOnEffectiveChange(self):
@@ -130,9 +114,10 @@ class Graph(metaclass=ABCMeta):
             getattr(self, yDef.eosGraph).clearCache(key=key)
 
 
-XDef = namedtuple('XDef', ('handle', 'label', 'unit', 'mainInputHandle'))
-YDef = namedtuple('YDef', ('handle', 'label', 'unit', 'eosGraph'))
-Input = namedtuple('Input', ('handle', 'label', 'unit', 'iconID', 'defaultValue', 'defaultRange', 'mainOnly'))
+XDef = namedtuple('XDef', ('handle', 'unit', 'label', 'mainInput'))
+YDef = namedtuple('YDef', ('handle', 'unit', 'label', 'eosGraph'))
+Input = namedtuple('Input', ('handle', 'unit', 'label', 'iconID', 'defaultValue', 'defaultRange', 'mainOnly'))
+VectorDef = namedtuple('VectorDef', ('lengthHandle', 'lengthUnit', 'angleHandle', 'angleUnit'))
 
 
 # noinspection PyUnresolvedReferences

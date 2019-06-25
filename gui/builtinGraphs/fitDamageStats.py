@@ -19,7 +19,7 @@
 
 
 from eos.graph.fitDpsVsRange import FitDpsVsRangeGraph as EosGraph
-from .base import Graph, XDef, YDef, Input
+from .base import Graph, XDef, YDef, Input, VectorDef
 
 
 class FitDamageStatsGraph(Graph):
@@ -33,55 +33,39 @@ class FitDamageStatsGraph(Graph):
     @property
     def xDefs(self):
         return [
-            XDef(handle='distance', label='Distance', unit='km', mainInputHandle='distance'),
-            XDef(handle='time', label='Time', unit='s', mainInputHandle='time'),
-            XDef(handle='tgtSpeedAbs', label='Target speed', unit='m/s', mainInputHandle='tgtSpeed'),
-            XDef(handle='tgtSpeedRel', label='Target speed', unit='%', mainInputHandle='tgtSpeed'),
-            XDef(handle='tgtSigRadAbs', label='Target signature radius', unit='m', mainInputHandle='tgtSigRad'),
-            XDef(handle='tgtSigRadRel', label='Target signature radius', unit='%', mainInputHandle='tgtSigRad')]
+            XDef(handle='distance', unit='km', label='Distance', mainInput=('distance', 'km')),
+            XDef(handle='time', unit='s', label='Time', mainInput=('time', 's')),
+            XDef(handle='tgtSpeed', unit='m/s', label='Target speed', mainInput=('tgtSpeed', '%')),
+            XDef(handle='tgtSpeed', unit='%', label='Target speed', mainInput=('tgtSpeed', '%')),
+            XDef(handle='tgtSigRad', unit='m', label='Target signature radius', mainInput=('tgtSigRad', '%')),
+            XDef(handle='tgtSigRad', unit='%', label='Target signature radius', mainInput=('tgtSigRad', '%'))]
 
     @property
     def yDefs(self):
         return [
-            YDef(handle='dps', label='DPS', unit=None, eosGraph='eosGraph'),
-            YDef(handle='volley', label='Volley', unit=None, eosGraph='eosGraph'),
-            YDef(handle='damage', label='Damage inflicted', unit=None, eosGraph='eosGraph')]
+            YDef(handle='dps', unit=None, label='DPS', eosGraph='eosGraph'),
+            YDef(handle='volley', unit=None, label='Volley', eosGraph='eosGraph'),
+            YDef(handle='damage', unit=None, label='Damage inflicted', eosGraph='eosGraph')]
 
     @property
     def inputs(self):
         return [
-            Input(handle='time', label='Time', unit='s', iconID=1392, defaultValue=None, defaultRange=(0, 80), mainOnly=False),
-            Input(handle='distance', label='Distance', unit='km', iconID=1391, defaultValue=50, defaultRange=(0, 100), mainOnly=False),
-            Input(handle='tgtSpeed', label='Target speed', unit='%', iconID=1389, defaultValue=100, defaultRange=(0, 100), mainOnly=False),
-            Input(handle='tgtSigRad', label='Target signature radius', unit='%', iconID=1390, defaultValue=100, defaultRange=(100, 200), mainOnly=True)]
+            Input(handle='time', unit='s', label='Time', iconID=1392, defaultValue=None, defaultRange=(0, 80), mainOnly=False),
+            Input(handle='distance', unit='km', label='Distance', iconID=1391, defaultValue=50, defaultRange=(0, 100), mainOnly=False),
+            Input(handle='tgtSpeed', unit='%', label='Target speed', iconID=1389, defaultValue=100, defaultRange=(0, 100), mainOnly=False),
+            Input(handle='tgtSigRad', unit='%', label='Target signature radius', iconID=1390, defaultValue=100, defaultRange=(100, 200), mainOnly=True)]
+
+    @property
+    def srcVectorDef(self):
+        return VectorDef(lengthHandle='atkSpeed', lengthUnit='%', angleHandle='atkAngle', angleUnit='degrees')
+
+    @property
+    def tgtVectorDef(self):
+        return VectorDef(lengthHandle='tgtSpeed', lengthUnit='%', angleHandle='tgtAngle', angleUnit='degrees')
 
     @property
     def hasTargets(self):
         return True
-
-    @property
-    def hasSrcVector(self):
-        return True
-
-    @property
-    def srcVectorLengthHandle(self):
-        return 'atkSpeed'
-
-    @property
-    def srcVectorAngleHandle(self):
-        return 'atkAngle'
-
-    @property
-    def hasTgtVector(self):
-        return True
-
-    @property
-    def tgtVectorLengthHandle(self):
-        return 'tgtSpeed'
-
-    @property
-    def tgtVectorAngleHandle(self):
-        return 'tgtAngle'
 
 
 FitDamageStatsGraph.register()

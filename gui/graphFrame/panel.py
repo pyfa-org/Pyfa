@@ -123,19 +123,21 @@ class GraphControlPanel(wx.Panel):
         self.xSubSelection.SetSelection(0)
 
         # Setup inputs
-        shownHandles = set()
-        if view.hasSrcVector:
-            shownHandles.add(view.srcVectorLengthHandle)
-            shownHandles.add(view.srcVectorAngleHandle)
-        if view.hasTgtVector:
-            shownHandles.add(view.tgtVectorLengthHandle)
-            shownHandles.add(view.tgtVectorAngleHandle)
-        for inputDef in (view.inputMap[view.xDefs[0].mainInputHandle], *(i for i in view.inputs)):
-            if inputDef.handle != view.xDefs[0].mainInputHandle and inputDef.mainOnly:
+        shownFields = set()
+        srcVectorDef = view.srcVectorDef
+        if srcVectorDef is not None:
+            shownFields.add((srcVectorDef.lengthHandle, srcVectorDef.lengthUnit))
+            shownFields.add((srcVectorDef.angleHandle, srcVectorDef.angleUnit))
+        tgtVectorDef = view.tgtVectorDef
+        if tgtVectorDef is not None:
+            shownFields.add((tgtVectorDef.lengthHandle, tgtVectorDef.lengthUnit))
+            shownFields.add((tgtVectorDef.angleHandle, tgtVectorDef.angleUnit))
+        for inputDef in (view.inputMap[view.xDefs[0].mainInput], *(i for i in view.inputs)):
+            if (inputDef.handle, inputDef.unit) != view.xDefs[0].mainInput and inputDef.mainOnly:
                 continue
-            if inputDef.handle in shownHandles:
+            if (inputDef.handle, inputDef.unit) in shownFields:
                 continue
-            shownHandles.add(inputDef.handle)
+            shownFields.add((inputDef.handle, inputDef.unit))
             textBox = wx.TextCtrl(self, wx.ID_ANY, style=0)
             textBox.Bind(wx.EVT_TEXT, self.OnFieldChanged)
             self.inputsSizer.Add(textBox, 1, wx.EXPAND | wx.ALIGN_CENTER_VERTICAL | wx.ALL, 3)
