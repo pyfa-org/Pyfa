@@ -34,48 +34,44 @@ class GraphControlPanel(wx.Panel):
         self.graphFrame = graphFrame
 
         mainSizer = wx.BoxSizer(wx.VERTICAL)
+        optsSizer = wx.BoxSizer(wx.HORIZONTAL)
 
-        commonOptsSizer = wx.BoxSizer(wx.HORIZONTAL)
+        commonOptsSizer = wx.BoxSizer(wx.VERTICAL)
         ySubSelectionSizer = wx.BoxSizer(wx.HORIZONTAL)
         yText = wx.StaticText(self, wx.ID_ANY, 'Axis Y:')
         ySubSelectionSizer.Add(yText, 0, wx.ALIGN_CENTER_VERTICAL | wx.RIGHT, 5)
         self.ySubSelection = wx.Choice(self, wx.ID_ANY)
         ySubSelectionSizer.Add(self.ySubSelection, 1, wx.EXPAND | wx.ALL, 0)
-        commonOptsSizer.Add(ySubSelectionSizer, 1, wx.EXPAND | wx.RIGHT, 3)
+        commonOptsSizer.Add(ySubSelectionSizer, 0, wx.EXPAND | wx.ALL, 0)
 
         xSubSelectionSizer = wx.BoxSizer(wx.HORIZONTAL)
         xText = wx.StaticText(self, wx.ID_ANY, 'Axis X:')
         xSubSelectionSizer.Add(xText, 0, wx.ALIGN_CENTER_VERTICAL | wx.RIGHT, 5)
         self.xSubSelection = wx.Choice(self, wx.ID_ANY)
         xSubSelectionSizer.Add(self.xSubSelection, 1, wx.EXPAND | wx.ALL, 0)
-        commonOptsSizer.Add(xSubSelectionSizer, 1, wx.EXPAND | wx.LEFT | wx.RIGHT, 3)
+        commonOptsSizer.Add(xSubSelectionSizer, 0, wx.EXPAND | wx.TOP, 5)
 
-        commonOptsMiscSizer = wx.BoxSizer(wx.VERTICAL)
         self.showY0Cb = wx.CheckBox(self, wx.ID_ANY, 'Always show Y = 0', wx.DefaultPosition, wx.DefaultSize, 0)
         self.showY0Cb.SetValue(True)
         self.showY0Cb.Bind(wx.EVT_CHECKBOX, self.OnShowY0Change)
-        commonOptsMiscSizer.Add(self.showY0Cb, 1, wx.EXPAND | wx.ALL, 0)
-        commonOptsSizer.Add(commonOptsMiscSizer, 0, wx.EXPAND | wx.LEFT, 3)
-        mainSizer.Add(commonOptsSizer, 0, wx.EXPAND | wx.ALL, 5)
+        commonOptsSizer.Add(self.showY0Cb, 0, wx.EXPAND | wx.TOP, 5)
+        optsSizer.Add(commonOptsSizer, 0, wx.EXPAND | wx.RIGHT, 10)
 
-        paramSizer = wx.BoxSizer(wx.HORIZONTAL)
-        viewOptSizer = wx.BoxSizer(wx.VERTICAL)
-        self.graphSubselSizer = wx.BoxSizer(wx.VERTICAL)
-        viewOptSizer.Add(self.graphSubselSizer, 0, wx.ALL | wx.EXPAND, 5)
-        paramSizer.Add(viewOptSizer, 0, wx.EXPAND | wx.LEFT | wx.TOP | wx.BOTTOM, 5)
-        self.inputsSizer = wx.FlexGridSizer(0, 4, 0, 0)
-        self.inputsSizer.AddGrowableCol(1)
-        paramSizer.Add(self.inputsSizer, 1, wx.EXPAND | wx.RIGHT | wx.TOP | wx.BOTTOM, 5)
-        mainSizer.Add(paramSizer, 0, wx.EXPAND | wx.ALL, 0)
+        graphOptsSizer = wx.BoxSizer(wx.HORIZONTAL)
+        self.inputsSizer = wx.BoxSizer(wx.VERTICAL)
+        graphOptsSizer.Add(self.inputsSizer, 0, wx.EXPAND | wx.ALL, 0)
+        self.srcVector = VectorPicker(self, style=wx.NO_BORDER, size=75, offset=90)
+        graphOptsSizer.Add(self.srcVector, 0, wx.SHAPED | wx.ALIGN_CENTER_HORIZONTAL | wx.ALIGN_CENTER_VERTICAL | wx.LEFT, 10)
+        self.tgtVector = DirectionPicker(self, style=wx.NO_BORDER, size=75, offset=-90)
+        graphOptsSizer.Add(self.tgtVector, 0, wx.SHAPED | wx.ALIGN_CENTER_HORIZONTAL | wx.ALIGN_CENTER_VERTICAL | wx.LEFT, 10)
+
+        optsSizer.Add(graphOptsSizer, 0, wx.EXPAND | wx.ALL, 0)
+        mainSizer.Add(optsSizer, 0, wx.EXPAND | wx.ALL, 10)
 
         srcTgtSizer = wx.BoxSizer(wx.HORIZONTAL)
         self.fitList = FitList(graphFrame, self)
         self.fitList.SetMinSize((270, -1))
         srcTgtSizer.Add(self.fitList, 1, wx.EXPAND)
-        self.srcVector = VectorPicker(self, style=wx.NO_BORDER, size=60, offset=90, label='Src', labelpos=2)
-        srcTgtSizer.Add(self.srcVector, flag=wx.SHAPED | wx.ALIGN_RIGHT | wx.ALIGN_CENTER_VERTICAL)
-        self.tgtVector = DirectionPicker(self, style=wx.NO_BORDER, size=60, offset=-90, label='Tgt', labelpos=3)
-        srcTgtSizer.Add(self.tgtVector, flag=wx.SHAPED | wx.ALIGN_LEFT | wx.ALIGN_CENTER_VERTICAL)
         self.targets = []
         self.targetList = TargetList(graphFrame, self)
         self.targetList.SetMinSize((270, -1))
@@ -101,7 +97,6 @@ class GraphControlPanel(wx.Panel):
         return self.showY0Cb.GetValue()
 
     def updateControlsForView(self, view):
-        self.graphSubselSizer.Clear()
         self.inputsSizer.Clear()
         for child in self.Children:
             if child not in self.indestructible:
@@ -110,55 +105,55 @@ class GraphControlPanel(wx.Panel):
         self.xSubSelection.Clear()
 
 
-        def formatAxisLabel(axisDef):
+        def formatLabel(axisDef):
             if axisDef.unit is None:
                 return axisDef.label
             return '{}, {}'.format(axisDef.label, axisDef.unit)
 
         for yDef in view.yDefs:
-            self.ySubSelection.Append(formatAxisLabel(yDef), yDef.handle)
+            self.ySubSelection.Append(formatLabel(yDef), yDef.handle)
         self.ySubSelection.SetSelection(0)
         for xDef in view.xDefs:
-            self.xSubSelection.Append(formatAxisLabel(xDef), xDef.handle)
+            self.xSubSelection.Append(formatLabel(xDef), xDef.handle)
         self.xSubSelection.SetSelection(0)
 
         # Setup inputs
-        shownFields = set()
+        shownHandles = set()
         srcVectorDef = view.srcVectorDef
         if srcVectorDef is not None:
-            shownFields.add((srcVectorDef.lengthHandle, srcVectorDef.lengthUnit))
-            shownFields.add((srcVectorDef.angleHandle, srcVectorDef.angleUnit))
+            shownHandles.add(srcVectorDef.lengthHandle)
+            shownHandles.add(srcVectorDef.angleHandle)
         tgtVectorDef = view.tgtVectorDef
         if tgtVectorDef is not None:
-            shownFields.add((tgtVectorDef.lengthHandle, tgtVectorDef.lengthUnit))
-            shownFields.add((tgtVectorDef.angleHandle, tgtVectorDef.angleUnit))
+            shownHandles.add(tgtVectorDef.lengthHandle)
+            shownHandles.add(tgtVectorDef.angleHandle)
         for inputDef in (view.inputMap[view.xDefs[0].mainInput], *(i for i in view.inputs)):
             if (inputDef.handle, inputDef.unit) != view.xDefs[0].mainInput and inputDef.mainOnly:
                 continue
-            if (inputDef.handle, inputDef.unit) in shownFields:
+            if inputDef.handle in shownHandles:
                 continue
-            shownFields.add((inputDef.handle, inputDef.unit))
-            textBox = wx.TextCtrl(self, wx.ID_ANY, style=0)
-            textBox.Bind(wx.EVT_TEXT, self.OnFieldChanged)
-            self.inputsSizer.Add(textBox, 1, wx.EXPAND | wx.ALIGN_CENTER_VERTICAL | wx.ALL, 3)
+            shownHandles.add(inputDef.handle)
+            # Handle UI input fields
+            fieldSizer = wx.BoxSizer(wx.HORIZONTAL)
+            fieldTextBox = wx.TextCtrl(self, wx.ID_ANY, style=0)
+            fieldTextBox.Bind(wx.EVT_TEXT, self.OnFieldChanged)
             if inputDef.defaultValue is not None:
                 inputDefault = inputDef.defaultValue
                 if not isinstance(inputDefault, str):
                     inputDefault = ('%f' % inputDefault).rstrip('0')
                     if inputDefault[-1:] == '.':
                         inputDefault += '0'
-                textBox.ChangeValue(inputDefault)
-            imgLabelSizer = wx.BoxSizer(wx.HORIZONTAL)
+                fieldTextBox.ChangeValue(inputDefault)
+            fieldSizer.Add(fieldTextBox, 0, wx.EXPAND | wx.ALIGN_CENTER_VERTICAL | wx.RIGHT, 5)
             if inputDef.iconID is not None:
                 icon = BitmapLoader.getBitmap(inputDef.iconID, 'icons')
                 if icon is not None:
-                    static = wx.StaticBitmap(self)
-                    static.SetBitmap(icon)
-                    imgLabelSizer.Add(static, 0, wx.ALL | wx.ALIGN_CENTER_VERTICAL, 1)
-
-            imgLabelSizer.Add(wx.StaticText(self, wx.ID_ANY, inputDef.label), 0,
-                              wx.LEFT | wx.RIGHT | wx.ALIGN_CENTER_VERTICAL, 3)
-            self.inputsSizer.Add(imgLabelSizer, 0, wx.ALIGN_CENTER_VERTICAL)
+                    fieldIcon = wx.StaticBitmap(self)
+                    fieldIcon.SetBitmap(icon)
+                    fieldSizer.Add(fieldIcon, 0, wx.ALIGN_CENTER_VERTICAL | wx.RIGHT, 3)
+            fieldLabel = wx.StaticText(self, wx.ID_ANY, formatLabel(inputDef))
+            fieldSizer.Add(fieldLabel, 0, wx.ALIGN_CENTER_VERTICAL | wx.ALL, 0)
+            self.inputsSizer.Add(fieldSizer, 0, wx.EXPAND | wx.BOTTOM, 5)
         self.Layout()
 
     def OnShowY0Change(self, event):
