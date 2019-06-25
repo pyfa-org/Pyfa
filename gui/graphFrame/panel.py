@@ -60,10 +60,20 @@ class GraphControlPanel(wx.Panel):
         graphOptsSizer = wx.BoxSizer(wx.HORIZONTAL)
         self.inputsSizer = wx.BoxSizer(wx.VERTICAL)
         graphOptsSizer.Add(self.inputsSizer, 0, wx.EXPAND | wx.ALL, 0)
+
+        srcVectorSizer = wx.BoxSizer(wx.VERTICAL)
+        self.srcVectorLabel = wx.StaticText(self, wx.ID_ANY, 'Attacker')
+        srcVectorSizer.Add(self.srcVectorLabel, 0, wx.ALIGN_CENTER_HORIZONTAL| wx.BOTTOM, 5)
         self.srcVector = VectorPicker(self, style=wx.NO_BORDER, size=75, offset=90)
-        graphOptsSizer.Add(self.srcVector, 0, wx.SHAPED | wx.ALIGN_CENTER_HORIZONTAL | wx.ALIGN_CENTER_VERTICAL | wx.LEFT, 10)
+        srcVectorSizer.Add(self.srcVector, 0, wx.SHAPED | wx.ALIGN_CENTER_HORIZONTAL | wx.ALIGN_CENTER_VERTICAL | wx.ALL, 0)
+        graphOptsSizer.Add(srcVectorSizer, 0, wx.EXPAND | wx.LEFT, 30)
+
+        tgtVectorSizer = wx.BoxSizer(wx.VERTICAL)
+        self.tgtVectorLabel = wx.StaticText(self, wx.ID_ANY, 'Target')
+        tgtVectorSizer.Add(self.tgtVectorLabel, 0, wx.ALIGN_CENTER_HORIZONTAL | wx.BOTTOM, 5)
         self.tgtVector = DirectionPicker(self, style=wx.NO_BORDER, size=75, offset=-90)
-        graphOptsSizer.Add(self.tgtVector, 0, wx.SHAPED | wx.ALIGN_CENTER_HORIZONTAL | wx.ALIGN_CENTER_VERTICAL | wx.LEFT, 10)
+        tgtVectorSizer.Add(self.tgtVector, 0, wx.SHAPED | wx.ALIGN_CENTER_HORIZONTAL | wx.ALIGN_CENTER_VERTICAL | wx.ALL, 0)
+        graphOptsSizer.Add(tgtVectorSizer, 0, wx.EXPAND | wx.LEFT, 10)
 
         optsSizer.Add(graphOptsSizer, 0, wx.EXPAND | wx.ALL, 0)
         mainSizer.Add(optsSizer, 0, wx.EXPAND | wx.ALL, 10)
@@ -71,17 +81,18 @@ class GraphControlPanel(wx.Panel):
         srcTgtSizer = wx.BoxSizer(wx.HORIZONTAL)
         self.fitList = FitList(graphFrame, self)
         self.fitList.SetMinSize((270, -1))
-        srcTgtSizer.Add(self.fitList, 1, wx.EXPAND)
+        srcTgtSizer.Add(self.fitList, 1, wx.EXPAND | wx.ALL, 0)
         self.targets = []
         self.targetList = TargetList(graphFrame, self)
         self.targetList.SetMinSize((270, -1))
         self.targetList.update(self.targets)
-        srcTgtSizer.Add(self.targetList, 1, wx.EXPAND)
+        srcTgtSizer.Add(self.targetList, 1, wx.EXPAND | wx.ALL, 0)
         mainSizer.Add(srcTgtSizer, 1, wx.EXPAND | wx.ALL, 0)
 
         self.indestructible = {
             self.showY0Cb, yText, self.ySubSelection, self.xSubSelection, xText,
-            self.fitList, self.targetList, self.srcVector, self.tgtVector}
+            self.srcVectorLabel, self.srcVector, self.tgtVectorLabel, self.tgtVector,
+            self.fitList, self.targetList}
 
         self.SetSizer(mainSizer)
 

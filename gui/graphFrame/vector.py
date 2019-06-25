@@ -86,7 +86,6 @@ class VectorPicker(wx.Window):
         width, height = self.GetClientSize()
         if not width or not height:
             return
-
         dc.SetBackground(wx.Brush(self.GetBackgroundColour(), wx.BRUSHSTYLE_SOLID))
         dc.Clear()
         dc.SetTextForeground(wx.Colour(0))
