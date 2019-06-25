@@ -28,8 +28,6 @@ class VectorPicker(wx.Window):
 
     myEVT_VECTOR_CHANGED = wx.NewEventType()
     EVT_VECTOR_CHANGED = wx.PyEventBinder(myEVT_VECTOR_CHANGED, 1)
-    _tooltip = 'Click to set angle and velocity\nRight-click to snap to 15% angle/5% speed increments\nMouse wheel to change velocity only'
-    _lengthLabel = True
 
     def __init__(self, *args, **kwargs):
         self._label = str(kwargs.pop('label', ''))
@@ -37,10 +35,11 @@ class VectorPicker(wx.Window):
         self._offset = float(kwargs.pop('offset', 0))
         self._size = max(0, float(kwargs.pop('size', 50)))
         self._fontsize = max(1, float(kwargs.pop('fontsize', 8)))
+        self._directionOnly = kwargs.pop('directionOnly', False)
         super().__init__(*args, **kwargs)
         self._font = wx.Font(self._fontsize, wx.FONTFAMILY_DEFAULT, wx.FONTSTYLE_NORMAL, wx.FONTWEIGHT_NORMAL, False)
         self._angle = 0
-        self._length = 1
+        self.__length = 1
         self._left = False
         self._right = False
         self.SetToolTip(wx.ToolTip(self._tooltip))
@@ -49,6 +48,24 @@ class VectorPicker(wx.Window):
         self.Bind(wx.EVT_LEFT_DOWN, self.OnLeftDown)
         self.Bind(wx.EVT_RIGHT_DOWN, self.OnRightDown)
         self.Bind(wx.EVT_MOUSEWHEEL, self.OnWheel)
+
+    @property
+    def _tooltip(self):
+        if self._directionOnly:
+            return 'Click to set angle\nRight-click to snap to 15% angle'
+        else:
+            return 'Click to set angle and velocity\nRight-click to snap to 15% angle/5% speed increments\nMouse wheel to change velocity only'
+
+    @property
+    def _length(self):
+        if self._directionOnly:
+            return 1
+        else:
+            return self.__length
+
+    @_length.setter
+    def _length(self, newLength):
+        self.__length = newLength
 
     def DoGetBestSize(self):
         return wx.Size(self._size, self._size)
@@ -108,7 +125,7 @@ class VectorPicker(wx.Window):
             labelTextY = (radius * 2 + 4 - labelTextH) if (self._labelpos & 2) else 0
             dc.DrawText(labelText, labelTextX, labelTextY)
 
-        if self._lengthLabel:
+        if not self._directionOnly:
             lengthText = '%d%%' % (100 * self._length,)
             lengthTextW, lengthTextH = dc.GetTextExtent(lengthText)
             lengthTextX = radius + 2 + x / 2 - y / 3 - lengthTextW / 2
@@ -211,16 +228,13 @@ class VectorPicker(wx.Window):
         changeEvent._length = self._length
         self.GetEventHandler().ProcessEvent(changeEvent)
 
-
-class DirectionPicker(VectorPicker):
-
-    _tooltip = 'Click to set angle\nRight-click to snap to 15% angle'
-    _lengthLabel = False
+    def SetDirectionOnly(self, val):
+        if self._directionOnly is val:
+            return
+        self._directionOnly = val
+        self.GetToolTip().SetTip(self._tooltip)
 
     @property
-    def _length(self):
-        return 1
+    def IsDirectionOnly(self):
+        return self._directionOnly
 
-    @_length.setter
-    def _length(self, length):
-        pass
