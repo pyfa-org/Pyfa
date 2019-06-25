@@ -62,12 +62,12 @@ class GraphControlPanel(wx.Panel):
 
         graphOptsSizer = wx.BoxSizer(wx.HORIZONTAL)
         self.inputsSizer = wx.BoxSizer(wx.VERTICAL)
-        graphOptsSizer.Add(self.inputsSizer, 0, wx.EXPAND | wx.ALL, 0)
+        graphOptsSizer.Add(self.inputsSizer, 1, wx.EXPAND | wx.ALL, 0)
 
         self.srcVectorSizer = wx.BoxSizer(wx.VERTICAL)
         self.srcVectorLabel = wx.StaticText(self, wx.ID_ANY, '')
         self.srcVectorSizer.Add(self.srcVectorLabel, 0, wx.ALIGN_CENTER_HORIZONTAL| wx.BOTTOM, 5)
-        self.srcVector = VectorPicker(self, style=wx.NO_BORDER, size=75, offset=90, directionOnly=True)
+        self.srcVector = VectorPicker(self, style=wx.NO_BORDER, size=75, offset=90)
         self.srcVectorSizer.Add(self.srcVector, 0, wx.SHAPED | wx.ALIGN_CENTER_HORIZONTAL | wx.ALIGN_CENTER_VERTICAL | wx.ALL, 0)
         graphOptsSizer.Add(self.srcVectorSizer, 0, wx.EXPAND | wx.LEFT, 30)
 
@@ -78,7 +78,7 @@ class GraphControlPanel(wx.Panel):
         self.tgtVectorSizer.Add(self.tgtVector, 0, wx.SHAPED | wx.ALIGN_CENTER_HORIZONTAL | wx.ALIGN_CENTER_VERTICAL | wx.ALL, 0)
         graphOptsSizer.Add(self.tgtVectorSizer, 0, wx.EXPAND | wx.LEFT, 10)
 
-        optsSizer.Add(graphOptsSizer, 0, wx.EXPAND | wx.ALL, 0)
+        optsSizer.Add(graphOptsSizer, 1, wx.EXPAND | wx.ALL, 0)
         mainSizer.Add(optsSizer, 0, wx.EXPAND | wx.ALL, 10)
 
         srcTgtSizer = wx.BoxSizer(wx.HORIZONTAL)
@@ -139,25 +139,8 @@ class GraphControlPanel(wx.Panel):
         self.inputsSizer.Clear()
         self.inputs.clear()
 
-        # Set up inputs from scratch
-        view = self.graphFrame.getView()
-        shownHandles = set()
-        srcVectorDef = view.srcVectorDef
-        if srcVectorDef is not None:
-            shownHandles.add(srcVectorDef.lengthHandle)
-            shownHandles.add(srcVectorDef.angleHandle)
-        tgtVectorDef = view.tgtVectorDef
-        if tgtVectorDef is not None:
-            shownHandles.add(tgtVectorDef.lengthHandle)
-            shownHandles.add(tgtVectorDef.angleHandle)
-        selectedX = view.xDefMap[self.xType]
-        for inputDef in (view.inputMap[selectedX.mainInput], *(i for i in view.inputs)):
-            if (inputDef.handle, inputDef.unit) != selectedX.mainInput and inputDef.mainOnly:
-                continue
-            if inputDef.handle in shownHandles:
-                continue
-            shownHandles.add(inputDef.handle)
-            # Handle UI input fields
+        def addInputField(inputDef, handledHandles):
+            handledHandles.add(inputDef.handle)
             fieldSizer = wx.BoxSizer(wx.HORIZONTAL)
             fieldTextBox = wx.TextCtrl(self, wx.ID_ANY, style=0)
             fieldTextBox.Bind(wx.EVT_TEXT, self.OnFieldChanged)
@@ -180,6 +163,34 @@ class GraphControlPanel(wx.Panel):
             fieldSizer.Add(fieldLabel, 0, wx.ALIGN_CENTER_VERTICAL | wx.ALL, 0)
             self.inputs[(inputDef.handle, inputDef.unit)] = (fieldTextBox, fieldIcon, fieldLabel)
             self.inputsSizer.Add(fieldSizer, 0, wx.EXPAND | wx.BOTTOM, 5)
+
+
+        # Set up inputs
+        view = self.graphFrame.getView()
+        handledHandles = set()
+        srcVectorDef = view.srcVectorDef
+        if srcVectorDef is not None:
+            handledHandles.add(srcVectorDef.lengthHandle)
+            handledHandles.add(srcVectorDef.angleHandle)
+        tgtVectorDef = view.tgtVectorDef
+        if tgtVectorDef is not None:
+            handledHandles.add(tgtVectorDef.lengthHandle)
+            handledHandles.add(tgtVectorDef.angleHandle)
+        selectedX = view.xDefMap[self.xType]
+        # Always add main input
+        addInputField(view.inputMap[selectedX.mainInput], handledHandles)
+        for inputDef in view.inputs:
+            if inputDef.mainOnly:
+                continue
+            if inputDef.handle in handledHandles:
+                continue
+            addInputField(inputDef, handledHandles)
+
+        # Modify vectors
+        mainInputHandle = selectedX.mainInput[0]
+        self.srcVector.SetDirectionOnly(view.srcVectorDef.lengthHandle == mainInputHandle)
+        self.tgtVector.SetDirectionOnly(view.tgtVectorDef.lengthHandle == mainInputHandle)
+
 
     def OnShowY0Change(self, event):
         event.Skip()
