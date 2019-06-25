@@ -113,7 +113,7 @@ class GraphFrame(wx.Frame):
         for view in Graph.views:
             self.graphSelection.Append(view.name, view())
         self.graphSelection.SetSelection(0)
-        self.ctrlPanel.updateControls(self.getView())
+        self.ctrlPanel.updateControls()
 
         # Event bindings - local events
         self.Bind(wx.EVT_CLOSE, self.closeEvent)
@@ -153,7 +153,7 @@ class GraphFrame(wx.Frame):
 
     def OnGraphSwitched(self, event):
         self.clearCache()
-        self.ctrlPanel.updateControls(self.getView())
+        self.ctrlPanel.updateControls()
         self.draw()
         event.Skip()
 

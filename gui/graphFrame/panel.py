@@ -86,8 +86,8 @@ class GraphControlPanel(wx.Panel):
         self.targetList = TargetList(graphFrame, self)
         self.targetList.SetMinSize((270, -1))
         self.targetList.update(self.targets)
-        srcTgtSizer.Add(self.targetList, 1, wx.EXPAND | wx.ALL, 0)
-        mainSizer.Add(srcTgtSizer, 1, wx.EXPAND | wx.ALL, 0)
+        srcTgtSizer.Add(self.targetList, 1, wx.EXPAND | wx.LEFT, 10)
+        mainSizer.Add(srcTgtSizer, 1, wx.EXPAND | wx.LEFT | wx.BOTTOM | wx.RIGHT, 10)
 
         self.indestructible = {
             self.showY0Cb, yText, self.ySubSelection, self.xSubSelection, xText,
@@ -107,7 +107,8 @@ class GraphControlPanel(wx.Panel):
     def showY0(self):
         return self.showY0Cb.GetValue()
 
-    def updateControls(self, view):
+    def updateControls(self):
+        view = self.graphFrame.getView()
         self.inputsSizer.Clear()
         for child in self.Children:
             if child not in self.indestructible:
@@ -115,19 +116,38 @@ class GraphControlPanel(wx.Panel):
         self.ySubSelection.Clear()
         self.xSubSelection.Clear()
 
-        def formatLabel(axisDef):
-            if axisDef.unit is None:
-                return axisDef.label
-            return '{}, {}'.format(axisDef.label, axisDef.unit)
-
         for yDef in view.yDefs:
-            self.ySubSelection.Append(formatLabel(yDef), yDef.handle)
+            self.ySubSelection.Append(self._formatLabel(yDef), yDef.handle)
         self.ySubSelection.SetSelection(0)
         for xDef in view.xDefs:
-            self.xSubSelection.Append(formatLabel(xDef), xDef.handle)
+            self.xSubSelection.Append(self._formatLabel(xDef), xDef.handle)
         self.xSubSelection.SetSelection(0)
 
-        # Inputs
+        self.updateInputs()
+
+        # Vectors
+        if view.srcVectorDef is not None:
+            self.srcVectorLabel.SetLabel(view.srcVectorDef.label)
+            self.srcVector.Show(True)
+            self.srcVectorLabel.Show(True)
+        else:
+            self.srcVector.Show(False)
+            self.srcVectorLabel.Show(False)
+        if view.tgtVectorDef is not None:
+            self.tgtVectorLabel.SetLabel(view.tgtVectorDef.label)
+            self.tgtVector.Show(True)
+            self.tgtVectorLabel.Show(True)
+        else:
+            self.tgtVector.Show(False)
+            self.tgtVectorLabel.Show(False)
+
+        # Target list
+        self.targetList.Show(view.hasTargets)
+
+        self.Layout()
+
+    def updateInputs(self):
+        view = self.graphFrame.getView()
         shownHandles = set()
         srcVectorDef = view.srcVectorDef
         if srcVectorDef is not None:
@@ -161,33 +181,9 @@ class GraphControlPanel(wx.Panel):
                     fieldIcon = wx.StaticBitmap(self)
                     fieldIcon.SetBitmap(icon)
                     fieldSizer.Add(fieldIcon, 0, wx.ALIGN_CENTER_VERTICAL | wx.RIGHT, 3)
-            fieldLabel = wx.StaticText(self, wx.ID_ANY, formatLabel(inputDef))
+            fieldLabel = wx.StaticText(self, wx.ID_ANY, self._formatLabel(inputDef))
             fieldSizer.Add(fieldLabel, 0, wx.ALIGN_CENTER_VERTICAL | wx.ALL, 0)
             self.inputsSizer.Add(fieldSizer, 0, wx.EXPAND | wx.BOTTOM, 5)
-
-        # Vectors
-        if view.srcVectorDef is not None:
-            self.srcVectorLabel.SetLabel(view.srcVectorDef.label)
-            self.srcVector.Show(True)
-            self.srcVectorLabel.Show(True)
-        else:
-            self.srcVector.Show(False)
-            self.srcVectorLabel.Show(False)
-        if view.tgtVectorDef is not None:
-            self.tgtVectorLabel.SetLabel(view.tgtVectorDef.label)
-            self.tgtVector.Show(True)
-            self.tgtVectorLabel.Show(True)
-        else:
-            self.tgtVector.Show(False)
-            self.tgtVectorLabel.Show(False)
-
-        # Target list
-        self.targetList.Show(view.hasTargets)
-
-        self.Layout()
-
-    def updateInputs(self, view):
-        pass
 
     def OnShowY0Change(self, event):
         event.Skip()
@@ -212,3 +208,7 @@ class GraphControlPanel(wx.Panel):
     def unbindExternalEvents(self):
         self.fitList.unbindExternalEvents()
 
+    def _formatLabel(self, axisDef):
+        if axisDef.unit is None:
+            return axisDef.label
+        return '{}, {}'.format(axisDef.label, axisDef.unit)
