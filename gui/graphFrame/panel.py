@@ -152,6 +152,33 @@ class GraphControlPanel(wx.Panel):
         self.inputsSizer.Clear()
         self.inputs.clear()
 
+        # Update vectors
+        def handleVector(vectorDef, vector, handledHandles, mainInputHandle):
+            handledHandles.add(vectorDef.lengthHandle)
+            handledHandles.add(vectorDef.angleHandle)
+            try:
+                storedLength = self._storedConsts[(vectorDef.lengthHandle, vectorDef.lengthUnit)]
+            except KeyError:
+                pass
+            else:
+                vector.SetLength(storedLength / 100)
+            try:
+                storedAngle = self._storedConsts[(vectorDef.angleHandle, vectorDef.angleUnit)]
+            except KeyError:
+                pass
+            else:
+                vector.SetAngle(storedAngle)
+            vector.SetDirectionOnly(vectorDef.lengthHandle == mainInputHandle)
+
+        view = self.graphFrame.getView()
+        selectedX = view.xDefMap[self.xType]
+        handledHandles = set()
+        if view.srcVectorDef is not None:
+            handleVector(view.srcVectorDef, self.srcVector, handledHandles, selectedX.mainInput[0])
+        if view.tgtVectorDef is not None:
+            handleVector(view.tgtVectorDef, self.tgtVector, handledHandles, selectedX.mainInput[0])
+
+        # Update inputs
         def addInputField(inputDef, handledHandles, mainInput=False):
             handledHandles.add(inputDef.handle)
             fieldSizer = wx.BoxSizer(wx.HORIZONTAL)
@@ -173,30 +200,6 @@ class GraphControlPanel(wx.Panel):
             self.inputs[(inputDef.handle, inputDef.unit)] = (fieldTextBox, fieldIcon, fieldLabel)
             self.inputsSizer.Add(fieldSizer, 0, wx.EXPAND | wx.BOTTOM, 5)
 
-        def handleVector(vectorDef, vector, handledHandles):
-            handledHandles.add(vectorDef.lengthHandle)
-            handledHandles.add(vectorDef.angleHandle)
-            try:
-                storedLength = self._storedConsts[(vectorDef.lengthHandle, vectorDef.lengthUnit)]
-            except KeyError:
-                pass
-            else:
-                vector.SetLength(storedLength / 100)
-            try:
-                storedAngle = self._storedConsts[(vectorDef.angleHandle, vectorDef.angleUnit)]
-            except KeyError:
-                pass
-            else:
-                vector.SetAngle(storedAngle)
-
-        view = self.graphFrame.getView()
-        handledHandles = set()
-        if view.srcVectorDef is not None:
-            handleVector(view.srcVectorDef, self.srcVector, handledHandles)
-        if view.tgtVectorDef is not None:
-            handleVector(view.tgtVectorDef, self.tgtVector, handledHandles)
-        selectedX = view.xDefMap[self.xType]
-        # Always add main input
         addInputField(view.inputMap[selectedX.mainInput], handledHandles, mainInput=True)
         for inputDef in view.inputs:
             if inputDef.mainOnly:
@@ -204,11 +207,6 @@ class GraphControlPanel(wx.Panel):
             if inputDef.handle in handledHandles:
                 continue
             addInputField(inputDef, handledHandles)
-
-        # Modify vectors
-        mainInputHandle = selectedX.mainInput[0]
-        self.srcVector.SetDirectionOnly(view.srcVectorDef.lengthHandle == mainInputHandle)
-        self.tgtVector.SetDirectionOnly(view.tgtVectorDef.lengthHandle == mainInputHandle)
 
     def OnShowY0Change(self, event):
         event.Skip()
