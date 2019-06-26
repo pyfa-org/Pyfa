@@ -117,7 +117,7 @@ class Graph(metaclass=ABCMeta):
 YDef = namedtuple('YDef', ('handle', 'unit', 'label', 'eosGraph'))
 XDef = namedtuple('XDef', ('handle', 'unit', 'label', 'mainInput'))
 Input = namedtuple('Input', ('handle', 'unit', 'label', 'iconID', 'defaultValue', 'defaultRange', 'mainOnly'))
-VectorDef = namedtuple('VectorDef', ('lengthHandle', 'lengthUnit', 'angleHandle', 'angleUnit', 'label'))
+VectorDef = namedtuple('VectorDef', ('lengthHandle', 'angleHandle', 'label'))
 
 
 # noinspection PyUnresolvedReferences
