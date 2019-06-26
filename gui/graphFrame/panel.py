@@ -69,7 +69,7 @@ class GraphControlPanel(wx.Panel):
         self.srcVectorSizer.Add(self.srcVectorLabel, 0, wx.ALIGN_CENTER_HORIZONTAL| wx.BOTTOM, 5)
         self.srcVector = VectorPicker(self, style=wx.NO_BORDER, size=75, offset=90)
         self.srcVectorSizer.Add(self.srcVector, 0, wx.SHAPED | wx.ALIGN_CENTER_HORIZONTAL | wx.ALIGN_CENTER_VERTICAL | wx.ALL, 0)
-        graphOptsSizer.Add(self.srcVectorSizer, 0, wx.EXPAND | wx.LEFT, 30)
+        graphOptsSizer.Add(self.srcVectorSizer, 0, wx.EXPAND | wx.LEFT, 15)
 
         self.tgtVectorSizer = wx.BoxSizer(wx.VERTICAL)
         self.tgtVectorLabel = wx.StaticText(self, wx.ID_ANY, '')
@@ -128,7 +128,8 @@ class GraphControlPanel(wx.Panel):
         self.targetList.Show(view.hasTargets)
 
         self.updateInputs()
-        self.Layout()
+        self.graphFrame.Layout()
+        self.graphFrame.UpdateWindowSize()
 
     def updateInputs(self):
         # Clean up old inputs
@@ -191,7 +192,6 @@ class GraphControlPanel(wx.Panel):
         self.srcVector.SetDirectionOnly(view.srcVectorDef.lengthHandle == mainInputHandle)
         self.tgtVector.SetDirectionOnly(view.tgtVectorDef.lengthHandle == mainInputHandle)
 
-
     def OnShowY0Change(self, event):
         event.Skip()
         self.graphFrame.draw()
@@ -203,7 +203,8 @@ class GraphControlPanel(wx.Panel):
     def OnXTypeUpdate(self, event):
         event.Skip()
         self.updateInputs()
-        self.Layout()
+        self.graphFrame.Layout()
+        self.graphFrame.UpdateWindowSize()
         self.graphFrame.draw()
 
     def OnFieldChanged(self, event):

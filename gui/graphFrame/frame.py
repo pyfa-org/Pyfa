@@ -124,8 +124,17 @@ class GraphFrame(wx.Frame):
         self.mainFrame.Bind(EFFECTIVE_HP_TOGGLED, self.OnEhpToggled)
 
         self.draw()
-        self.Fit()
-        self.SetMinSize(self.GetSize())
+        self.UpdateWindowSize()
+
+    def UpdateWindowSize(self):
+        curW, curH = self.GetSize()
+        bestW, bestH = self.GetBestSize()
+        newW = max(curW, bestW)
+        newH = max(curH, bestH)
+        if newW > curW or newH > curH:
+            newSize = wx.Size(newW, newH)
+            self.SetSize(newSize)
+            self.SetMinSize(newSize)
 
     def closeEvent(self, event):
         self.closeWindow()
