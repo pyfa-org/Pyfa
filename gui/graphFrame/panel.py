@@ -173,16 +173,28 @@ class GraphControlPanel(wx.Panel):
             self.inputs[(inputDef.handle, inputDef.unit)] = (fieldTextBox, fieldIcon, fieldLabel)
             self.inputsSizer.Add(fieldSizer, 0, wx.EXPAND | wx.BOTTOM, 5)
 
+        def handleVector(vectorDef, vector, handledHandles):
+            handledHandles.add(vectorDef.lengthHandle)
+            handledHandles.add(vectorDef.angleHandle)
+            try:
+                storedLength = self._storedConsts[(vectorDef.lengthHandle, vectorDef.lengthUnit)]
+            except KeyError:
+                pass
+            else:
+                vector.SetLength(storedLength / 100)
+            try:
+                storedAngle = self._storedConsts[(vectorDef.angleHandle, vectorDef.angleUnit)]
+            except KeyError:
+                pass
+            else:
+                vector.SetAngle(storedAngle)
+
         view = self.graphFrame.getView()
         handledHandles = set()
-        srcVectorDef = view.srcVectorDef
-        if srcVectorDef is not None:
-            handledHandles.add(srcVectorDef.lengthHandle)
-            handledHandles.add(srcVectorDef.angleHandle)
-        tgtVectorDef = view.tgtVectorDef
-        if tgtVectorDef is not None:
-            handledHandles.add(tgtVectorDef.lengthHandle)
-            handledHandles.add(tgtVectorDef.angleHandle)
+        if view.srcVectorDef is not None:
+            handleVector(view.srcVectorDef, self.srcVector, handledHandles)
+        if view.tgtVectorDef is not None:
+            handleVector(view.tgtVectorDef, self.tgtVector, handledHandles)
         selectedX = view.xDefMap[self.xType]
         # Always add main input
         addInputField(view.inputMap[selectedX.mainInput], handledHandles, mainInput=True)
