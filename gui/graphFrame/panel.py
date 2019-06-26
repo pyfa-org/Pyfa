@@ -97,7 +97,7 @@ class GraphControlPanel(wx.Panel):
         self.drawTimer = wx.Timer(self)
         self.Bind(wx.EVT_TIMER, self.OnDrawTimer, self.drawTimer)
 
-    def updateControls(self):
+    def updateControls(self, layout=True):
         view = self.graphFrame.getView()
         self.ySubSelection.Clear()
         self.xSubSelection.Clear()
@@ -127,9 +127,12 @@ class GraphControlPanel(wx.Panel):
         # Target list
         self.targetList.Show(view.hasTargets)
 
+        # Inputs
         self.updateInputs()
-        self.graphFrame.Layout()
-        self.graphFrame.UpdateWindowSize()
+
+        if layout:
+            self.graphFrame.Layout()
+            self.graphFrame.UpdateWindowSize()
 
     def updateInputs(self):
         # Clean up old inputs

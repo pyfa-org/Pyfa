@@ -113,7 +113,7 @@ class GraphFrame(wx.Frame):
         for view in Graph.views:
             self.graphSelection.Append(view.name, view())
         self.graphSelection.SetSelection(0)
-        self.ctrlPanel.updateControls()
+        self.ctrlPanel.updateControls(layout=False)
 
         # Event bindings - local events
         self.Bind(wx.EVT_CLOSE, self.closeEvent)
@@ -123,8 +123,9 @@ class GraphFrame(wx.Frame):
         from gui.builtinStatsViews.resistancesViewFull import EFFECTIVE_HP_TOGGLED  # Grr crclar gons
         self.mainFrame.Bind(EFFECTIVE_HP_TOGGLED, self.OnEhpToggled)
 
-        self.draw()
+        self.Layout()
         self.UpdateWindowSize()
+        self.draw()
 
     def UpdateWindowSize(self):
         curW, curH = self.GetSize()
