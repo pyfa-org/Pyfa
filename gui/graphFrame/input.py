@@ -68,11 +68,11 @@ class ConstantBox(wx.TextCtrl):
 
 class RangeBox(wx.TextCtrl):
 
-    def __init__(self, parent, initialLow, initialHigh):
+    def __init__(self, parent, initRange):
         super().__init__(parent, wx.ID_ANY, style=0)
         self.Bind(wx.EVT_TEXT, self.OnText)
         self._storedValue = ''
-        self.ChangeValue('{}-{}'.format(valToStr(initialLow), valToStr(initialHigh)))
+        self.ChangeValue('{}-{}'.format(valToStr(min(initRange)), valToStr(max(initRange))))
 
     def ChangeValue(self, value):
         self._storedValue = value
@@ -92,7 +92,7 @@ class RangeBox(wx.TextCtrl):
     def GetValueRange(self):
         parts = self.GetValue().split('-')
         if len(parts) == 1:
-            val = strToFloat(parts)
+            val = strToFloat(parts[0])
             return (val, val)
         else:
             return (strToFloat(parts[0]), strToFloat(parts[1]))

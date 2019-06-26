@@ -33,6 +33,8 @@ def range2Const(defConst, defRange, limits, oldRange):
         return defConst
     if oldRange[0] == oldRange[1]:
         return oldRange[0]
+    if defConst is None:
+        defConst = 0
     defPos = (defConst - min(defRange)) / (max(defRange) - min(defRange))
     newConst = min(oldRange) + (max(oldRange) - min(oldRange)) * defPos
     newConst = max(newConst, min(limits))
@@ -44,6 +46,8 @@ def range2Const(defConst, defRange, limits, oldRange):
 def const2Range(defConst, defRange, limits, oldConst):
     if oldConst is None:
         return defRange
+    if defConst is None:
+        defConst = 0
     newMin = oldConst - defConst + min(defRange)
     newMax = oldConst - defConst + max(defRange)
     # Fits into limits
@@ -72,6 +76,7 @@ class GraphControlPanel(wx.Panel):
         super().__init__(parent)
         self.graphFrame = graphFrame
         self.inputs = {}
+        self.storedValues = {}
 
         mainSizer = wx.BoxSizer(wx.VERTICAL)
         optsSizer = wx.BoxSizer(wx.HORIZONTAL)
@@ -139,6 +144,12 @@ class GraphControlPanel(wx.Panel):
         self.Bind(wx.EVT_TIMER, self.OnDrawTimer, self.drawTimer)
         self.setVectorDefaults()
 
+    def storeCurrentValues(self):
+        for k, v in self.getValues().items():
+            handle = k
+            value, unit = v
+            self.storedValues[(handle, unit)] = value
+
     def setVectorDefaults(self):
         self.srcVector.SetValue(length=0, angle=0)
         self.tgtVector.SetValue(length=1, angle=90)
@@ -182,6 +193,7 @@ class GraphControlPanel(wx.Panel):
             self.graphFrame.UpdateWindowSize()
 
     def updateInputs(self):
+        self.storeCurrentValues()
         # Clean up old inputs
         for children in self.inputs.values():
             for child in children:
@@ -194,9 +206,23 @@ class GraphControlPanel(wx.Panel):
             handledHandles.add(inputDef.handle)
             fieldSizer = wx.BoxSizer(wx.HORIZONTAL)
             if mainInput:
-                fieldTextBox = RangeBox(self, *inputDef.defaultRange)
+                initRange = self.storedValues.get((inputDef.handle, inputDef.unit), inputDef.defaultRange)
+                if not isinstance(initRange, (tuple, list)):
+                    initRange = const2Range(
+                        defConst=inputDef.defaultValue,
+                        defRange=inputDef.defaultRange,
+                        limits=inputDef.limits,
+                        oldConst=initRange)
+                fieldTextBox = RangeBox(self, initRange)
             else:
-                fieldTextBox = ConstantBox(self, inputDef.defaultValue)
+                initConst = self.storedValues.get((inputDef.handle, inputDef.unit), inputDef.defaultValue)
+                if isinstance(initConst, (tuple, list)):
+                    initConst = range2Const(
+                        defConst=inputDef.defaultValue,
+                        defRange=inputDef.defaultRange,
+                        limits=inputDef.limits,
+                        oldRange=initConst)
+                fieldTextBox = ConstantBox(self, initConst)
             fieldTextBox.Bind(wx.EVT_TEXT, self.OnFieldChanged)
             fieldSizer.Add(fieldTextBox, 0, wx.EXPAND | wx.ALIGN_CENTER_VERTICAL | wx.RIGHT, 5)
             fieldIcon = None
@@ -211,7 +237,6 @@ class GraphControlPanel(wx.Panel):
             self.inputs[(inputDef.handle, inputDef.unit)] = (fieldTextBox, fieldIcon, fieldLabel)
             self.inputsSizer.Add(fieldSizer, 0, wx.EXPAND | wx.BOTTOM, 5)
 
-        # Set up inputs
         view = self.graphFrame.getView()
         handledHandles = set()
         srcVectorDef = view.srcVectorDef

@@ -114,9 +114,9 @@ class Graph(metaclass=ABCMeta):
             getattr(self, yDef.eosGraph).clearCache(key=key)
 
 
-XDef = namedtuple('XDef', ('handle', 'unit', 'label', 'mainInput'))
 YDef = namedtuple('YDef', ('handle', 'unit', 'label', 'eosGraph'))
-Input = namedtuple('Input', ('handle', 'unit', 'label', 'iconID', 'defaultValue', 'defaultRange', 'mainOnly'))
+XDef = namedtuple('XDef', ('handle', 'unit', 'label', 'mainInput'))
+Input = namedtuple('Input', ('handle', 'unit', 'label', 'iconID', 'defaultValue', 'defaultRange', 'limits', 'mainOnly'))
 VectorDef = namedtuple('VectorDef', ('lengthHandle', 'lengthUnit', 'angleHandle', 'angleUnit', 'label'))
 
 
