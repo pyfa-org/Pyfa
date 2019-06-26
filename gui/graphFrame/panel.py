@@ -28,11 +28,42 @@ from .lists import FitList, TargetList
 from .vector import VectorPicker
 
 
-def range2Const(defRange, defConst,):
-    pass
+def range2Const(defConst, defRange, limits, oldRange):
+    if oldRange[0] is None or oldRange[1] is None:
+        return defConst
+    if oldRange[0] == oldRange[1]:
+        return oldRange[0]
+    defPos = (defConst - min(defRange)) / (max(defRange) - min(defRange))
+    newConst = min(oldRange) + (max(oldRange) - min(oldRange)) * defPos
+    newConst = max(newConst, min(limits))
+    newConst = min(newConst, max(limits))
+    newConst = round(newConst, 3)
+    return newConst
 
-def const2Range():
-    pass
+
+def const2Range(defConst, defRange, limits, oldConst):
+    if oldConst is None:
+        return defRange
+    newMin = oldConst - defConst + min(defRange)
+    newMax = oldConst - defConst + max(defRange)
+    # Fits into limits
+    if newMin >= min(limits) and newMax <= max(limits):
+        pass
+    # Both do not fit
+    elif newMin < min(limits) and newMax > max(limits):
+        newMin = min(limits)
+        newMax = max(limits)
+    # Min doesn't fit
+    elif newMin < min(limits):
+        shift = min(limits) - newMin
+        newMin += shift
+        newMax += shift
+    # Max doesn't fit
+    elif newMax > max(limits):
+        shift = newMax - max(limits)
+        newMin -= shift
+        newMax -= shift
+    return round(newMin, 3), round(newMax, 3)
 
 
 class GraphControlPanel(wx.Panel):
