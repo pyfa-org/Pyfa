@@ -28,6 +28,13 @@ from .lists import FitList, TargetList
 from .vector import VectorPicker
 
 
+def range2Const(defRange, defConst,):
+    pass
+
+def const2Range():
+    pass
+
+
 class GraphControlPanel(wx.Panel):
 
     def __init__(self, graphFrame, parent):
@@ -99,6 +106,11 @@ class GraphControlPanel(wx.Panel):
 
         self.drawTimer = wx.Timer(self)
         self.Bind(wx.EVT_TIMER, self.OnDrawTimer, self.drawTimer)
+        self.setVectorDefaults()
+
+    def setVectorDefaults(self):
+        self.srcVector.SetValue(length=0, angle=0)
+        self.tgtVector.SetValue(length=1, angle=90)
 
     def updateControls(self, layout=True):
         view = self.graphFrame.getView()
@@ -112,6 +124,7 @@ class GraphControlPanel(wx.Panel):
         self.xSubSelection.SetSelection(0)
 
         # Vectors
+        self.setVectorDefaults()
         if view.srcVectorDef is not None:
             self.srcVectorLabel.SetLabel(view.srcVectorDef.label)
             self.srcVector.Show(True)
@@ -166,7 +179,6 @@ class GraphControlPanel(wx.Panel):
             fieldSizer.Add(fieldLabel, 0, wx.ALIGN_CENTER_VERTICAL | wx.ALL, 0)
             self.inputs[(inputDef.handle, inputDef.unit)] = (fieldTextBox, fieldIcon, fieldLabel)
             self.inputsSizer.Add(fieldSizer, 0, wx.EXPAND | wx.BOTTOM, 5)
-
 
         # Set up inputs
         view = self.graphFrame.getView()
@@ -233,7 +245,7 @@ class GraphControlPanel(wx.Panel):
             if not self.tgtVector.IsDirectionOnly:
                 values[tgtVectorDef.lengthHandle] = (self.tgtVector.GetLength() * 100, tgtVectorDef.lengthUnit)
             values[tgtVectorDef.angleHandle] = (self.tgtVector.GetAngle(), srcVectorDef.angleUnit)
-        # Input boxes which were set up overwrite values if needed
+        # Input boxes
         for k, v in self.inputs.items():
             inputHandle, inputUnit = k
             inputBox = v[0]
