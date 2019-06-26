@@ -214,11 +214,31 @@ class GraphControlPanel(wx.Panel):
 
     def OnDrawTimer(self, event):
         event.Skip()
-        # self.graphFrame.clearCache()
-        # self.graphFrame.draw()
+        self.graphFrame.clearCache()
+        self.graphFrame.draw()
 
     def getValues(self):
+        view = self.graphFrame.getView()
         values = {}
+        # Vectors
+        srcVectorDef = view.srcVectorDef
+        if srcVectorDef is not None:
+            if not self.srcVector.IsDirectionOnly:
+                values[srcVectorDef.lengthHandle] = (self.srcVector.GetLength() * 100, srcVectorDef.lengthUnit)
+            values[srcVectorDef.angleHandle] = (self.srcVector.GetAngle(), srcVectorDef.angleUnit)
+        tgtVectorDef = view.tgtVectorDef
+        if tgtVectorDef is not None:
+            if not self.tgtVector.IsDirectionOnly:
+                values[tgtVectorDef.lengthHandle] = (self.tgtVector.GetLength() * 100, tgtVectorDef.lengthUnit)
+            values[tgtVectorDef.angleHandle] = (self.tgtVector.GetAngle(), srcVectorDef.angleUnit)
+        # Input boxes which were set up overwrite values if needed
+        for k, v in self.inputs.items():
+            inputHandle, inputUnit = k
+            inputBox = v[0]
+            if isinstance(inputBox, RangeBox):
+                values[inputHandle] = (inputBox.GetValueRange(), inputUnit)
+            elif isinstance(inputBox, ConstantBox):
+                values[inputHandle] = (inputBox.GetValueFloat(), inputUnit)
         return values
 
     @property

@@ -178,7 +178,8 @@ class GraphFrame(wx.Frame):
         return self.graphSelection.GetClientData(self.graphSelection.GetSelection())
 
     def clearCache(self, key=None):
-        self.getView().clearCache(key=key)
+        pass
+        #self.getView().clearCache(key=key)
 
     def draw(self):
         global mpl_version
@@ -188,7 +189,7 @@ class GraphFrame(wx.Frame):
         if not self:
             pyfalog.warning('GraphFrame handled event, however GraphFrame no longer exists. Ignoring event')
             return
-
+        self.ctrlPanel.getValues()
         # values = self.ctrlPanel.getValues()
         # view = self.getView()
         # self.subplot.clear()

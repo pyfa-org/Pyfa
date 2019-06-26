@@ -18,9 +18,9 @@
 # =============================================================================
 
 
-import wx
-
 import re
+
+import wx
 
 
 def valToStr(val):
@@ -83,7 +83,7 @@ class RangeBox(wx.TextCtrl):
         if currentValue == self._storedValue:
             event.Skip()
             return
-        if currentValue == '' or re.match('^\d*\.?\d*\-?\d*\.?\d*$', currentValue):
+        if currentValue == '' or re.match('^\d*\.?\d*-?\d*\.?\d*$', currentValue):
             self._storedValue = currentValue
             event.Skip()
         else:
