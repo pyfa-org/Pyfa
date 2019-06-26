@@ -155,6 +155,7 @@ class GraphControlPanel(wx.Panel):
         self.tgtVector.SetValue(length=1, angle=90)
 
     def updateControls(self, layout=True):
+        self.storedValues.clear()
         view = self.graphFrame.getView()
         self.ySubSelection.Clear()
         self.xSubSelection.Clear()
