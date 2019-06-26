@@ -28,55 +28,14 @@ from .lists import FitList, TargetList
 from .vector import VectorPicker
 
 
-def range2Const(defConst, defRange, limits, oldRange):
-    if oldRange[0] is None or oldRange[1] is None:
-        return defConst
-    if oldRange[0] == oldRange[1]:
-        return oldRange[0]
-    if defConst is None:
-        defConst = 0
-    defPos = (defConst - min(defRange)) / (max(defRange) - min(defRange))
-    newConst = min(oldRange) + (max(oldRange) - min(oldRange)) * defPos
-    newConst = max(newConst, min(limits))
-    newConst = min(newConst, max(limits))
-    newConst = round(newConst, 3)
-    return newConst
-
-
-def const2Range(defConst, defRange, limits, oldConst):
-    if oldConst is None:
-        return defRange
-    if defConst is None:
-        defConst = 0
-    newMin = oldConst - defConst + min(defRange)
-    newMax = oldConst - defConst + max(defRange)
-    # Fits into limits
-    if newMin >= min(limits) and newMax <= max(limits):
-        pass
-    # Both do not fit
-    elif newMin < min(limits) and newMax > max(limits):
-        newMin = min(limits)
-        newMax = max(limits)
-    # Min doesn't fit
-    elif newMin < min(limits):
-        shift = min(limits) - newMin
-        newMin += shift
-        newMax += shift
-    # Max doesn't fit
-    elif newMax > max(limits):
-        shift = newMax - max(limits)
-        newMin -= shift
-        newMax -= shift
-    return round(newMin, 3), round(newMax, 3)
-
-
 class GraphControlPanel(wx.Panel):
 
     def __init__(self, graphFrame, parent):
         super().__init__(parent)
         self.graphFrame = graphFrame
         self.inputs = {}
-        self.storedValues = {}
+        self._storedRanges = {}
+        self._storedConsts = {}
 
         mainSizer = wx.BoxSizer(wx.VERTICAL)
         optsSizer = wx.BoxSizer(wx.HORIZONTAL)
@@ -142,20 +101,10 @@ class GraphControlPanel(wx.Panel):
 
         self.drawTimer = wx.Timer(self)
         self.Bind(wx.EVT_TIMER, self.OnDrawTimer, self.drawTimer)
-        self.setVectorDefaults()
-
-    def storeCurrentValues(self):
-        for k, v in self.getValues().items():
-            handle = k
-            value, unit = v
-            self.storedValues[(handle, unit)] = value
-
-    def setVectorDefaults(self):
-        self.srcVector.SetValue(length=0, angle=0)
-        self.tgtVector.SetValue(length=1, angle=90)
+        self._setVectorDefaults()
 
     def updateControls(self, layout=True):
-        self.storedValues.clear()
+        self._clearStoredValues()
         view = self.graphFrame.getView()
         self.ySubSelection.Clear()
         self.xSubSelection.Clear()
@@ -167,7 +116,7 @@ class GraphControlPanel(wx.Panel):
         self.xSubSelection.SetSelection(0)
 
         # Vectors
-        self.setVectorDefaults()
+        self._setVectorDefaults()
         if view.srcVectorDef is not None:
             self.srcVectorLabel.SetLabel(view.srcVectorDef.label)
             self.srcVector.Show(True)
@@ -187,14 +136,14 @@ class GraphControlPanel(wx.Panel):
         self.targetList.Show(view.hasTargets)
 
         # Inputs
-        self.updateInputs()
+        self._updateInputs()
 
         if layout:
             self.graphFrame.Layout()
             self.graphFrame.UpdateWindowSize()
 
-    def updateInputs(self):
-        self.storeCurrentValues()
+    def _updateInputs(self):
+        self._storeCurrentValues()
         # Clean up old inputs
         for children in self.inputs.values():
             for child in children:
@@ -207,23 +156,9 @@ class GraphControlPanel(wx.Panel):
             handledHandles.add(inputDef.handle)
             fieldSizer = wx.BoxSizer(wx.HORIZONTAL)
             if mainInput:
-                initRange = self.storedValues.get((inputDef.handle, inputDef.unit), inputDef.defaultRange)
-                if not isinstance(initRange, (tuple, list)):
-                    initRange = const2Range(
-                        defConst=inputDef.defaultValue,
-                        defRange=inputDef.defaultRange,
-                        limits=inputDef.limits,
-                        oldConst=initRange)
-                fieldTextBox = RangeBox(self, initRange)
+                fieldTextBox = RangeBox(self, self._storedRanges.get((inputDef.handle, inputDef.unit), inputDef.defaultRange))
             else:
-                initConst = self.storedValues.get((inputDef.handle, inputDef.unit), inputDef.defaultValue)
-                if isinstance(initConst, (tuple, list)):
-                    initConst = range2Const(
-                        defConst=inputDef.defaultValue,
-                        defRange=inputDef.defaultRange,
-                        limits=inputDef.limits,
-                        oldRange=initConst)
-                fieldTextBox = ConstantBox(self, initConst)
+                fieldTextBox = ConstantBox(self, self._storedConsts.get((inputDef.handle, inputDef.unit), inputDef.defaultValue))
             fieldTextBox.Bind(wx.EVT_TEXT, self.OnFieldChanged)
             fieldSizer.Add(fieldTextBox, 0, wx.EXPAND | wx.ALIGN_CENTER_VERTICAL | wx.RIGHT, 5)
             fieldIcon = None
@@ -273,7 +208,7 @@ class GraphControlPanel(wx.Panel):
 
     def OnXTypeUpdate(self, event):
         event.Skip()
-        self.updateInputs()
+        self._updateInputs()
         self.graphFrame.Layout()
         self.graphFrame.UpdateWindowSize()
         self.graphFrame.draw()
@@ -331,3 +266,20 @@ class GraphControlPanel(wx.Panel):
         if axisDef.unit is None:
             return axisDef.label
         return '{}, {}'.format(axisDef.label, axisDef.unit)
+
+    def _storeCurrentValues(self):
+        for k, v in self.getValues().items():
+            handle = k
+            value, unit = v
+            if isinstance(value, (tuple, list)):
+                self._storedRanges[(handle, unit)] = value
+            else:
+                self._storedConsts[(handle, unit)] = value
+
+    def _clearStoredValues(self):
+        self._storedRanges.clear()
+        self._storedRanges.clear()
+
+    def _setVectorDefaults(self):
+        self.srcVector.SetValue(length=0, angle=0)
+        self.tgtVector.SetValue(length=1, angle=90)
