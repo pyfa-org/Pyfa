@@ -23,6 +23,7 @@ import wx
 
 from gui.bitmap_loader import BitmapLoader
 from service.fit import Fit
+from .input import ConstantBox, RangeBox
 from .lists import FitList, TargetList
 from .vector import VectorPicker
 
@@ -143,18 +144,14 @@ class GraphControlPanel(wx.Panel):
         self.inputsSizer.Clear()
         self.inputs.clear()
 
-        def addInputField(inputDef, handledHandles):
+        def addInputField(inputDef, handledHandles, mainInput=False):
             handledHandles.add(inputDef.handle)
             fieldSizer = wx.BoxSizer(wx.HORIZONTAL)
-            fieldTextBox = wx.TextCtrl(self, wx.ID_ANY, style=0)
+            if mainInput:
+                fieldTextBox = RangeBox(self, *inputDef.defaultRange)
+            else:
+                fieldTextBox = ConstantBox(self, inputDef.defaultValue)
             fieldTextBox.Bind(wx.EVT_TEXT, self.OnFieldChanged)
-            if inputDef.defaultValue is not None:
-                inputDefault = inputDef.defaultValue
-                if not isinstance(inputDefault, str):
-                    inputDefault = ('%f' % inputDefault).rstrip('0')
-                    if inputDefault[-1:] == '.':
-                        inputDefault += '0'
-                fieldTextBox.ChangeValue(inputDefault)
             fieldSizer.Add(fieldTextBox, 0, wx.EXPAND | wx.ALIGN_CENTER_VERTICAL | wx.RIGHT, 5)
             fieldIcon = None
             if inputDef.iconID is not None:
@@ -182,7 +179,7 @@ class GraphControlPanel(wx.Panel):
             handledHandles.add(tgtVectorDef.angleHandle)
         selectedX = view.xDefMap[self.xType]
         # Always add main input
-        addInputField(view.inputMap[selectedX.mainInput], handledHandles)
+        addInputField(view.inputMap[selectedX.mainInput], handledHandles, mainInput=True)
         for inputDef in view.inputs:
             if inputDef.mainOnly:
                 continue
@@ -217,8 +214,8 @@ class GraphControlPanel(wx.Panel):
 
     def OnDrawTimer(self, event):
         event.Skip()
-        self.graphFrame.clearCache()
-        self.graphFrame.draw()
+        # self.graphFrame.clearCache()
+        # self.graphFrame.draw()
 
     def getValues(self):
         values = {}
