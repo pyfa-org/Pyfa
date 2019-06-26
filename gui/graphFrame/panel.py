@@ -69,6 +69,7 @@ class GraphControlPanel(wx.Panel):
         self.srcVectorLabel = wx.StaticText(self, wx.ID_ANY, '')
         self.srcVectorSizer.Add(self.srcVectorLabel, 0, wx.ALIGN_CENTER_HORIZONTAL| wx.BOTTOM, 5)
         self.srcVector = VectorPicker(self, style=wx.NO_BORDER, size=75, offset=90)
+        self.srcVector.Bind(VectorPicker.EVT_VECTOR_CHANGED, self.OnFieldChanged)
         self.srcVectorSizer.Add(self.srcVector, 0, wx.SHAPED | wx.ALIGN_CENTER_HORIZONTAL | wx.ALIGN_CENTER_VERTICAL | wx.ALL, 0)
         graphOptsSizer.Add(self.srcVectorSizer, 0, wx.EXPAND | wx.LEFT, 15)
 
@@ -76,6 +77,7 @@ class GraphControlPanel(wx.Panel):
         self.tgtVectorLabel = wx.StaticText(self, wx.ID_ANY, '')
         self.tgtVectorSizer.Add(self.tgtVectorLabel, 0, wx.ALIGN_CENTER_HORIZONTAL | wx.BOTTOM, 5)
         self.tgtVector = VectorPicker(self, style=wx.NO_BORDER, size=75, offset=-90)
+        self.tgtVector.Bind(VectorPicker.EVT_VECTOR_CHANGED, self.OnFieldChanged)
         self.tgtVectorSizer.Add(self.tgtVector, 0, wx.SHAPED | wx.ALIGN_CENTER_HORIZONTAL | wx.ALIGN_CENTER_VERTICAL | wx.ALL, 0)
         graphOptsSizer.Add(self.tgtVectorSizer, 0, wx.EXPAND | wx.LEFT, 10)
 
