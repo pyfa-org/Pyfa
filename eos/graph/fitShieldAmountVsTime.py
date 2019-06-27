@@ -1,7 +1,7 @@
 import math
 from logbook import Logger
 
-from eos.graph import SmoothGraph
+from .base import SmoothGraph
 
 
 pyfalog = Logger(__name__)

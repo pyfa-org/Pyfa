@@ -20,9 +20,9 @@
 
 from itertools import chain
 
-from eos.graph import Graph
 from eos.utils.spoolSupport import SpoolType, SpoolOptions
 from gui.utils.numberFormatter import roundToPrec
+from .base import Graph
 
 
 class FitDpsVsTimeGraph(Graph):

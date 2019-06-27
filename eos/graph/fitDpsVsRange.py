@@ -24,8 +24,8 @@ from logbook import Logger
 
 import eos.config
 from eos.const import FittingHardpoint, FittingModuleState
-from eos.graph import SmoothGraph
 from eos.utils.spoolSupport import SpoolType, SpoolOptions
+from .base import SmoothGraph
 
 
 pyfalog = Logger(__name__)

@@ -18,7 +18,6 @@
 # =============================================================================
 
 
-import re
 from abc import ABCMeta, abstractmethod
 from collections import OrderedDict, namedtuple
 
@@ -32,7 +31,8 @@ class Graph(metaclass=ABCMeta):
     def register(cls):
         Graph.views.append(cls)
 
-    def __init__(self):
+    def __init__(self, eosGraph):
+        self._eosGraph = eosGraph
         self._cache = {}
 
     @property
@@ -84,13 +84,11 @@ class Graph(metaclass=ABCMeta):
 
     def getPlotPoints(self, mainInput, miscInputs, xSpec, ySpec, fit, tgt=None):
         try:
-            plotData = self._cache[fit.ID][ySpec]
+            plotData = self._cache[fit.ID][(ySpec, xSpec)]
         except KeyError:
-            extraData = {k: float(v) if v else None for k, v in extraData.items()}
-            graph = getattr(self, self.yDefs[yType].eosGraph, None)
-            plotData = graph.getPlotPoints(fit, extraData, xRange, xAmount)
+            plotData = self._eosGraph.getPlotPoints(mainInput, miscInputs, xSpec, ySpec, fit, tgt)
             fitCache = self._cache.setdefault(fit.ID, {})
-            fitCache[yType] = plotData
+            fitCache[(ySpec, xSpec)] = plotData
         return plotData
 
     def clearCache(self, key=None):
@@ -102,7 +100,7 @@ class Graph(metaclass=ABCMeta):
             getattr(self, yDef.eosGraph).clearCache(key=key)
 
 
-YDef = namedtuple('YDef', ('handle', 'unit', 'label', 'eosGraph'))
+YDef = namedtuple('YDef', ('handle', 'unit', 'label'))
 XDef = namedtuple('XDef', ('handle', 'unit', 'label', 'mainInput'))
 Input = namedtuple('Input', ('handle', 'unit', 'label', 'iconID', 'defaultValue', 'defaultRange', 'mainOnly'))
 VectorDef = namedtuple('VectorDef', ('lengthHandle', 'lengthUnit', 'angleHandle', 'angleUnit', 'label'))

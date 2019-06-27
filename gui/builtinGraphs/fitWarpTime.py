@@ -18,17 +18,16 @@
 # =============================================================================
 
 
-from eos.graph.fitWarpTimeVsDistance import FitWarpTimeVsDistanceGraph as EosGraph
+from eos.graph.fitWarpTime import FitWarpTimeGraph as EosGraph
 from .base import Graph, XDef, YDef, Input
 
 
-class FitWarpTimeVsDistanceGraph(Graph):
+class FitWarpTimeGraph(Graph):
 
     name = 'Warp Time'
 
     def __init__(self):
-        super().__init__()
-        self.eosGraph = EosGraph()
+        super().__init__(EosGraph())
 
     @property
     def xDefs(self):
@@ -38,7 +37,7 @@ class FitWarpTimeVsDistanceGraph(Graph):
 
     @property
     def yDefs(self):
-        return [YDef(handle='time', unit='s', label='Warp time', eosGraph='eosGraph')]
+        return [YDef(handle='time', unit='s', label='Warp time')]
 
     @property
     def inputs(self):
@@ -47,4 +46,4 @@ class FitWarpTimeVsDistanceGraph(Graph):
             Input(handle='distance', unit='km', label='Distance', iconID=1391, defaultValue=10000, defaultRange=(150, 5000), mainOnly=False)]
 
 
-FitWarpTimeVsDistanceGraph.register()
+FitWarpTimeGraph.register()

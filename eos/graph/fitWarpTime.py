@@ -1,13 +1,13 @@
 import math
 
 from eos.const import FittingModuleState
-from eos.graph import SmoothGraph
+from .base import SmoothGraph
 
 
 AU_METERS = 149597870700
 
 
-class FitWarpTimeVsDistanceGraph(SmoothGraph):
+class FitWarpTimeGraph(SmoothGraph):
 
     def __init__(self):
         super().__init__()

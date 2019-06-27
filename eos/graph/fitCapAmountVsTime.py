@@ -1,6 +1,6 @@
 import math
 
-from eos.graph import SmoothGraph
+from .base import SmoothGraph
 
 
 class FitCapAmountVsTimeGraph(SmoothGraph):

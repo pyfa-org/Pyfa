@@ -29,8 +29,7 @@ class FitDamageStatsGraph(Graph):
     name = 'Damage Stats'
 
     def __init__(self):
-        super().__init__()
-        self.eosGraph = EosGraph()
+        super().__init__(EosGraph())
 
     @property
     def xDefs(self):
@@ -45,9 +44,9 @@ class FitDamageStatsGraph(Graph):
     @property
     def yDefs(self):
         return [
-            YDef(handle='dps', unit=None, label='DPS', eosGraph='eosGraph'),
-            YDef(handle='volley', unit=None, label='Volley', eosGraph='eosGraph'),
-            YDef(handle='damage', unit=None, label='Damage inflicted', eosGraph='eosGraph')]
+            YDef(handle='dps', unit=None, label='DPS'),
+            YDef(handle='volley', unit=None, label='Volley'),
+            YDef(handle='damage', unit=None, label='Damage inflicted')]
 
     @property
     def inputs(self):
