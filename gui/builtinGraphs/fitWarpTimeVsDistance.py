@@ -18,27 +18,33 @@
 # =============================================================================
 
 
-from collections import OrderedDict
-
 from eos.graph.fitWarpTimeVsDistance import FitWarpTimeVsDistanceGraph as EosGraph
-from .base import Graph, XDef, YDef
+from .base import Graph, XDef, YDef, Input
 
 
 class FitWarpTimeVsDistanceGraph(Graph):
 
-    name = 'Warp Time vs Distance'
+    name = 'Warp Time'
 
     def __init__(self):
         super().__init__()
         self.eosGraph = EosGraph()
 
     @property
-    def xDef(self):
-        return XDef(inputDefault='0-50', inputLabel='Distance (AU)', inputIconID=1391, axisLabel='Warp distance, AU')
+    def xDefs(self):
+        return [
+            XDef(handle='distance', unit='AU', label='Distance', mainInput=('distance', 'AU')),
+            XDef(handle='distance', unit='km', label='Distance', mainInput=('distance', 'km'))]
 
     @property
     def yDefs(self):
-        return OrderedDict([('time', YDef(switchLabel='Warp time', axisLabel='Warp time, s', eosGraph='eosGraph'))])
+        return [YDef(handle='time', unit='s', label='Warp time', eosGraph='eosGraph')]
+
+    @property
+    def inputs(self):
+        return [
+            Input(handle='distance', unit='AU', label='Distance', iconID=1391, defaultValue=50, defaultRange=(0, 50), mainOnly=False),
+            Input(handle='distance', unit='km', label='Distance', iconID=1391, defaultValue=10000, defaultRange=(150, 5000), mainOnly=False)]
 
 
 FitWarpTimeVsDistanceGraph.register()

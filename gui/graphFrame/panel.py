@@ -111,9 +111,11 @@ class GraphControlPanel(wx.Panel):
         for yDef in view.yDefs:
             self.ySubSelection.Append(self._formatLabel(yDef), (yDef.handle, yDef.unit))
         self.ySubSelection.SetSelection(0)
+        self.ySubSelection.Enable(len(view.yDefs) > 1)
         for xDef in view.xDefs:
             self.xSubSelection.Append(self._formatLabel(xDef), (xDef.handle, xDef.unit))
         self.xSubSelection.SetSelection(0)
+        self.xSubSelection.Enable(len(view.xDefs) > 1)
 
         # Vectors
         self._setVectorDefaults()
@@ -136,14 +138,15 @@ class GraphControlPanel(wx.Panel):
         self.targetList.Show(view.hasTargets)
 
         # Inputs
-        self._updateInputs()
+        self._updateInputs(storeInputs=False)
 
         if layout:
             self.graphFrame.Layout()
             self.graphFrame.UpdateWindowSize()
 
-    def _updateInputs(self):
-        self._storeCurrentValues()
+    def _updateInputs(self, storeInputs=True):
+        if storeInputs:
+            self._storeCurrentValues()
         # Clean up old inputs
         for children in self._inputs.values():
             for child in children:
@@ -287,7 +290,7 @@ class GraphControlPanel(wx.Panel):
                 self._storedConsts[(handle, unit)] = value
 
     def _clearStoredValues(self):
-        self._storedRanges.clear()
+        self._storedConsts.clear()
         self._storedRanges.clear()
 
     def _setVectorDefaults(self):
