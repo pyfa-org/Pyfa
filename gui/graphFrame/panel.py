@@ -157,13 +157,13 @@ class GraphControlPanel(wx.Panel):
             handledHandles.add(vectorDef.lengthHandle)
             handledHandles.add(vectorDef.angleHandle)
             try:
-                storedLength = self._storedConsts[vectorDef.lengthHandle]
+                storedLength = self._storedConsts[(vectorDef.lengthHandle, vectorDef.lengthUnit)]
             except KeyError:
                 pass
             else:
                 vector.SetLength(storedLength / 100)
             try:
-                storedAngle = self._storedConsts[vectorDef.angleHandle]
+                storedAngle = self._storedConsts[(vectorDef.angleHandle, vectorDef.angleUnit)]
             except KeyError:
                 pass
             else:
@@ -183,9 +183,9 @@ class GraphControlPanel(wx.Panel):
             handledHandles.add(inputDef.handle)
             fieldSizer = wx.BoxSizer(wx.HORIZONTAL)
             if mainInput:
-                fieldTextBox = RangeBox(self, self._storedRanges.get(inputDef.handle, inputDef.defaultRange))
+                fieldTextBox = RangeBox(self, self._storedRanges.get((inputDef.handle, inputDef.unit), inputDef.defaultRange))
             else:
-                fieldTextBox = ConstantBox(self, self._storedConsts.get(inputDef.handle, inputDef.defaultValue))
+                fieldTextBox = ConstantBox(self, self._storedConsts.get((inputDef.handle, inputDef.unit), inputDef.defaultValue))
             fieldTextBox.Bind(wx.EVT_TEXT, self.OnFieldChanged)
             fieldSizer.Add(fieldTextBox, 0, wx.EXPAND | wx.ALIGN_CENTER_VERTICAL | wx.RIGHT, 5)
             fieldIcon = None
@@ -197,7 +197,7 @@ class GraphControlPanel(wx.Panel):
                     fieldSizer.Add(fieldIcon, 0, wx.ALIGN_CENTER_VERTICAL | wx.RIGHT, 3)
             fieldLabel = wx.StaticText(self, wx.ID_ANY, self._formatLabel(inputDef))
             fieldSizer.Add(fieldLabel, 0, wx.ALIGN_CENTER_VERTICAL | wx.ALL, 0)
-            self._inputs[inputDef.handle] = (fieldTextBox, fieldIcon, fieldLabel)
+            self._inputs[(inputDef.handle, inputDef.unit)] = (fieldTextBox, fieldIcon, fieldLabel)
             self.inputsSizer.Add(fieldSizer, 0, wx.EXPAND | wx.BOTTOM, 5)
 
         addInputField(view.inputMap[selectedX.mainInput], handledHandles, mainInput=True)
@@ -240,20 +240,21 @@ class GraphControlPanel(wx.Panel):
         srcVectorDef = view.srcVectorDef
         if srcVectorDef is not None:
             if not self.srcVector.IsDirectionOnly:
-                values[srcVectorDef.lengthHandle] = self.srcVector.GetLength() * 100
-            values[srcVectorDef.angleHandle] = self.srcVector.GetAngle()
+                values[srcVectorDef.lengthHandle] = (self.srcVector.GetLength() * 100, srcVectorDef.lengthUnit)
+            values[srcVectorDef.angleHandle] = (self.srcVector.GetAngle(), srcVectorDef.angleUnit)
         tgtVectorDef = view.tgtVectorDef
         if tgtVectorDef is not None:
             if not self.tgtVector.IsDirectionOnly:
-                values[tgtVectorDef.lengthHandle] = self.tgtVector.GetLength() * 100
-            values[tgtVectorDef.angleHandle] = self.tgtVector.GetAngle()
+                values[tgtVectorDef.lengthHandle] = (self.tgtVector.GetLength() * 100, tgtVectorDef.lengthUnit)
+            values[tgtVectorDef.angleHandle] = (self.tgtVector.GetAngle(), tgtVectorDef.angleUnit)
         # Input boxes
-        for inputHandle, inputData in self._inputs.items():
-            inputBox = inputData[0]
+        for k, v in self._inputs.items():
+            inputHandle, inputUnit = k
+            inputBox = v[0]
             if isinstance(inputBox, RangeBox):
-                values[inputHandle] = inputBox.GetValueRange()
+                values[inputHandle] = (inputBox.GetValueRange(), inputUnit)
             elif isinstance(inputBox, ConstantBox):
-                values[inputHandle] = inputBox.GetValueFloat()
+                values[inputHandle] = (inputBox.GetValueFloat(), inputUnit)
         return values
 
     @property
@@ -277,11 +278,13 @@ class GraphControlPanel(wx.Panel):
         return '{}, {}'.format(axisDef.label, axisDef.unit)
 
     def _storeCurrentValues(self):
-        for handle, value in self.getValues().items():
+        for k, v in self.getValues().items():
+            handle = k
+            value, unit = v
             if isinstance(value, (tuple, list)):
-                self._storedRanges[handle] = value
+                self._storedRanges[(handle, unit)] = value
             else:
-                self._storedConsts[handle] = value
+                self._storedConsts[(handle, unit)] = value
 
     def _clearStoredValues(self):
         self._storedRanges.clear()

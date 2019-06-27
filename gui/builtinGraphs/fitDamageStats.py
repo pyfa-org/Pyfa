@@ -59,11 +59,11 @@ class FitDamageStatsGraph(Graph):
 
     @property
     def srcVectorDef(self):
-        return VectorDef(lengthHandle='atkSpeed', angleHandle='atkAngle', label='Attacker')
+        return VectorDef(lengthHandle='atkSpeed', lengthUnit='%', angleHandle='atkAngle', angleUnit='degrees', label='Attacker')
 
     @property
     def tgtVectorDef(self):
-        return VectorDef(lengthHandle='tgtSpeed', angleHandle='tgtAngle', label='Target')
+        return VectorDef(lengthHandle='tgtSpeed', lengthUnit='%', angleHandle='tgtAngle', angleUnit='degrees', label='Target')
 
     @property
     def hasTargets(self):
