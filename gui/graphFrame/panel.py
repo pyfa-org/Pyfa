@@ -18,6 +18,8 @@
 # =============================================================================
 
 
+from collections import namedtuple
+
 # noinspection PyPackageRequirements
 import wx
 
@@ -28,12 +30,17 @@ from .lists import FitList, TargetList
 from .vector import VectorPicker
 
 
+InputData = namedtuple('InputData', ('handle', 'unit', 'value'))
+InputBox = namedtuple('InputBox', ('handle', 'unit', 'textBox', 'icon', 'label'))
+
+
 class GraphControlPanel(wx.Panel):
 
     def __init__(self, graphFrame, parent):
         super().__init__(parent)
         self.graphFrame = graphFrame
-        self._inputs = {}
+        self._mainInputBox = None
+        self._miscInputBoxes = []
         self._storedRanges = {}
         self._storedConsts = {}
 
@@ -148,12 +155,15 @@ class GraphControlPanel(wx.Panel):
         if storeInputs:
             self._storeCurrentValues()
         # Clean up old inputs
-        for children in self._inputs.values():
-            for child in children:
+        for inputBox in (self._mainInputBox, *self._miscInputBoxes):
+            if inputBox is None:
+                continue
+            for child in (inputBox.textBox, inputBox.icon, inputBox.label):
                 if child is not None:
                     child.Destroy()
         self.inputsSizer.Clear()
-        self._inputs.clear()
+        self._mainInputBox = None
+        self._miscInputBoxes.clear()
 
         # Update vectors
         def handleVector(vectorDef, vector, handledHandles, mainInputHandle):
@@ -200,8 +210,14 @@ class GraphControlPanel(wx.Panel):
                     fieldSizer.Add(fieldIcon, 0, wx.ALIGN_CENTER_VERTICAL | wx.RIGHT, 3)
             fieldLabel = wx.StaticText(self, wx.ID_ANY, self._formatLabel(inputDef))
             fieldSizer.Add(fieldLabel, 0, wx.ALIGN_CENTER_VERTICAL | wx.ALL, 0)
-            self._inputs[(inputDef.handle, inputDef.unit)] = (fieldTextBox, fieldIcon, fieldLabel)
             self.inputsSizer.Add(fieldSizer, 0, wx.EXPAND | wx.BOTTOM, 5)
+            # Store info about added input box
+            inputBox = InputBox(handle=inputDef.handle, unit=inputDef.unit, textBox=fieldTextBox, icon=fieldIcon, label=fieldLabel)
+            if mainInput:
+                self._mainInputBox = inputBox
+            else:
+                self._miscInputBoxes.append(inputBox)
+
 
         addInputField(view.inputMap[selectedX.mainInput], handledHandles, mainInput=True)
         for inputDef in view.inputs:
@@ -238,27 +254,35 @@ class GraphControlPanel(wx.Panel):
 
     def getValues(self):
         view = self.graphFrame.getView()
-        values = {}
+        main = None
+        misc = []
+        processedHandles = set()
+
+        def addMiscData(handle, unit, value):
+            if handle in processedHandles:
+                return
+            inputData = InputData(handle=handle, unit=unit, value=value)
+            misc.append(inputData)
+
+        # Main input box
+        main = InputData(handle=self._mainInputBox.handle, unit=self._mainInputBox.unit, value=self._mainInputBox.textBox.GetValueRange())
+        processedHandles.add(self._mainInputBox.handle)
         # Vectors
         srcVectorDef = view.srcVectorDef
         if srcVectorDef is not None:
             if not self.srcVector.IsDirectionOnly:
-                values[srcVectorDef.lengthHandle] = (self.srcVector.GetLength() * 100, srcVectorDef.lengthUnit)
-            values[srcVectorDef.angleHandle] = (self.srcVector.GetAngle(), srcVectorDef.angleUnit)
+                addMiscData(handle=srcVectorDef.lengthHandle, unit=srcVectorDef.lengthUnit, value=self.srcVector.GetLength() * 100)
+            addMiscData(handle=srcVectorDef.angleHandle, unit=srcVectorDef.angleUnit, value=self.srcVector.GetAngle())
         tgtVectorDef = view.tgtVectorDef
         if tgtVectorDef is not None:
             if not self.tgtVector.IsDirectionOnly:
-                values[tgtVectorDef.lengthHandle] = (self.tgtVector.GetLength() * 100, tgtVectorDef.lengthUnit)
-            values[tgtVectorDef.angleHandle] = (self.tgtVector.GetAngle(), tgtVectorDef.angleUnit)
-        # Input boxes
-        for k, v in self._inputs.items():
-            inputHandle, inputUnit = k
-            inputBox = v[0]
-            if isinstance(inputBox, RangeBox):
-                values[inputHandle] = (inputBox.GetValueRange(), inputUnit)
-            elif isinstance(inputBox, ConstantBox):
-                values[inputHandle] = (inputBox.GetValueFloat(), inputUnit)
-        return values
+                addMiscData(handle=tgtVectorDef.lengthHandle, unit=tgtVectorDef.lengthUnit, value=self.tgtVector.GetLength() * 100)
+            addMiscData(handle=tgtVectorDef.angleHandle, unit=tgtVectorDef.angleUnit, value=self.tgtVector.GetAngle())
+        # Other input boxes
+        for inputBox in self._miscInputBoxes:
+            addMiscData(handle=inputBox.handle, unit=inputBox.unit, value=inputBox.textBox.GetValueFloat())
+
+        return main, misc
 
     @property
     def showY0(self):
@@ -281,13 +305,11 @@ class GraphControlPanel(wx.Panel):
         return '{}, {}'.format(axisDef.label, axisDef.unit)
 
     def _storeCurrentValues(self):
-        for k, v in self.getValues().items():
-            handle = k
-            value, unit = v
-            if isinstance(value, (tuple, list)):
-                self._storedRanges[(handle, unit)] = value
-            else:
-                self._storedConsts[(handle, unit)] = value
+        main, misc = self.getValues()
+        if main is not None:
+            self._storedRanges[(main.handle, main.unit)] = main.value
+        for input in misc:
+            self._storedConsts[(input.handle, input.unit)] = input.value
 
     def _clearStoredValues(self):
         self._storedConsts.clear()
