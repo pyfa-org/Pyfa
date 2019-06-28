@@ -23,9 +23,9 @@ import math
 from .base import FitGraph, XDef, YDef, Input
 
 
-class FitCapAmountVsTimeGraph(FitGraph):
+class FitCapRegenGraph(FitGraph):
 
-    name = 'Capacitor'
+    name = 'Capacitor Regeneration'
 
     # UI stuff
     @property
@@ -117,4 +117,4 @@ def calculateCapRegen(maxCapAmount, capRegenTime, currentCapAmount):
     return 10 * maxCapAmount / capRegenTime * (math.sqrt(currentCapAmount / maxCapAmount) - currentCapAmount / maxCapAmount)
 
 
-FitCapAmountVsTimeGraph.register()
+FitCapRegenGraph.register()

@@ -4,8 +4,7 @@ from gui.builtinGraphs import (  # noqa: E402,F401
     # fitDmgVsTime,
     # fitShieldRegenVsShieldPerc,
     # fitShieldAmountVsTime,
-    fitCap,
-    # fitCapAmountVsTime,
+    fitCapRegen,
     fitMobility,
     fitWarpTime
 )
