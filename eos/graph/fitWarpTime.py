@@ -1,17 +1,30 @@
 import math
 
 from eos.const import FittingModuleState
-from .base import SmoothGraph
+from .base import Graph
 
 
 AU_METERS = 149597870700
 
 
-class FitWarpTimeGraph(SmoothGraph):
+class FitWarpTimeGraph(Graph):
 
     def __init__(self):
         super().__init__()
         self.subwarpSpeed = None
+
+    def getPlotPoints(self, mainInput, miscInputs, xSpec, ySpec, fit, tgt):
+        mainInput, miscInputs = self._normalizeParams(mainInput, miscInputs, fit, tgt)
+
+        # limit all parameters to be within limits (time)
+        # pick getter according to x handle and y handle and run it
+        # un-render returned parameters if passed x is relative
+        return [], []
+
+    _normalizers = {
+        'AU': lambda x: x * AU_METERS,
+        'km': lambda x: x * 1000}
+
 
     def getYForX(self, fit, extraData, distance):
         if distance == 0:
