@@ -27,26 +27,7 @@ class Graph(metaclass=ABCMeta):
     def __init__(self):
         self._cache = {}
 
-    @abstractmethod
-    def getPlotPoints(self, mainInput, miscInputs, xSpec, ySpec, fit, tgt):
-        raise NotImplementedError
 
-    _normalizers = {}
-
-    def _normalizeParams(self, mainInput, miscInputs, fit, tgt):
-        if mainInput.unit in self._normalizers:
-            normalizer = self._normalizers[mainInput.unit]
-            newMainInput = [mainInput.handle, tuple(normalizer(v) for v in mainInput.value)]
-        else:
-            newMainInput = [mainInput.handle, mainInput.value]
-        newMiscInputs = []
-        for miscInput in miscInputs:
-            if miscInput.unit in self._normalizers:
-                newMiscInput = [miscInput.handle, self._normalizers[miscInput.unit](miscInput.value)]
-            else:
-                newMiscInput = [miscInput.handle, miscInput.value]
-            newMiscInputs.append(newMiscInput)
-        return newMainInput, newMiscInputs
 
     ### Old stuff
 
