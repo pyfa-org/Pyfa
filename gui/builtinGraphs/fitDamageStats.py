@@ -18,8 +18,6 @@
 # =============================================================================
 
 
-import math
-
 from .base import FitGraph, XDef, YDef, Input, VectorDef
 
 
@@ -27,6 +25,7 @@ class FitDamageStatsGraph(FitGraph):
 
     name = 'Damage Stats'
 
+    # UI stuff
     @property
     def xDefs(self):
         return [
@@ -63,6 +62,19 @@ class FitDamageStatsGraph(FitGraph):
     @property
     def hasTargets(self):
         return True
+
+    # Calculation stuff
+    _normalizers = {
+        ('atkSpeed', '%'): lambda v, fit, tgt: v * fit.ship.getModifiedItemAttr('maxVelocity', 0),
+        ('tgtSpeed', '%'): lambda v, fit, tgt: v * tgt.ship.getModifiedItemAttr('maxVelocity', 0),
+        ('tgtSigRad', '%'): lambda v, fit, tgt: v * fit.ship.getModifiedItemAttr('signatureRadius', 0)}
+
+    _limiters = {
+        'time': lambda fit, tgt: (0, 2500)}
+
+    _denormalizers = {
+        ('tgtSpeed', '%'): lambda v, fit, tgt: v / tgt.ship.getModifiedItemAttr('maxVelocity', 0),
+        ('tgtSigRad', '%'): lambda v, fit, tgt: v / fit.ship.getModifiedItemAttr('signatureRadius', 0)}
 
 
 FitDamageStatsGraph.register()
