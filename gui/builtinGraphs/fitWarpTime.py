@@ -66,7 +66,7 @@ class FitWarpTimeGraph(FitGraph):
         subwarpSpeed = self.__getSubwarpSpeed(fit)
         warpSpeed = fit.warpSpeed
         for distance in self._iterLinear(mainInput[1]):
-            time = calculate_time_in_warp(subwarpSpeed, warpSpeed, distance)
+            time = calculate_time_in_warp(max_subwarp_speed=subwarpSpeed, max_warp_speed=warpSpeed, warp_dist=distance)
             xs.append(distance)
             ys.append(time)
         return xs, ys
