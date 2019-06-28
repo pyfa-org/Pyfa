@@ -96,8 +96,7 @@ class Graph(metaclass=ABCMeta):
             self._cache.clear()
         elif key in self._cache:
             del self._cache[key]
-        for yDef in self.yDefs:
-            getattr(self, yDef.eosGraph).clearCache(key=key)
+        self._eosGraph.clearCache(key=key)
 
 
 YDef = namedtuple('YDef', ('handle', 'unit', 'label'))

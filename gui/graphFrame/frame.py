@@ -206,7 +206,7 @@ class GraphFrame(wx.Frame):
         fits = self.ctrlPanel.fits
         if view.hasTargets:
             targets = self.ctrlPanel.targets
-            iterList = tuple(itertools.combinations(fits, targets))
+            iterList = tuple(itertools.product(fits, targets))
         else:
             iterList = tuple((f, None) for f in fits)
         for fit, target in iterList:
