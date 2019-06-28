@@ -97,10 +97,8 @@ class GraphControlPanel(wx.Panel):
         self.fitList = FitList(graphFrame, self)
         self.fitList.SetMinSize((270, -1))
         srcTgtSizer.Add(self.fitList, 1, wx.EXPAND | wx.ALL, 0)
-        self.targets = []
         self.targetList = TargetList(graphFrame, self)
         self.targetList.SetMinSize((270, -1))
-        self.targetList.update(self.targets)
         srcTgtSizer.Add(self.targetList, 1, wx.EXPAND | wx.LEFT, 10)
         mainSizer.Add(srcTgtSizer, 1, wx.EXPAND | wx.LEFT | wx.BOTTOM | wx.RIGHT, 10)
 
@@ -116,11 +114,11 @@ class GraphControlPanel(wx.Panel):
         self.ySubSelection.Clear()
         self.xSubSelection.Clear()
         for yDef in view.yDefs:
-            self.ySubSelection.Append(self._formatLabel(yDef), (yDef.handle, yDef.unit))
+            self.ySubSelection.Append(self.formatLabel(yDef), yDef)
         self.ySubSelection.SetSelection(0)
         self.ySubSelection.Enable(len(view.yDefs) > 1)
         for xDef in view.xDefs:
-            self.xSubSelection.Append(self._formatLabel(xDef), (xDef.handle, xDef.unit))
+            self.xSubSelection.Append(self.formatLabel(xDef), xDef)
         self.xSubSelection.SetSelection(0)
         self.xSubSelection.Enable(len(view.xDefs) > 1)
 
@@ -184,12 +182,11 @@ class GraphControlPanel(wx.Panel):
             vector.SetDirectionOnly(vectorDef.lengthHandle == mainInputHandle)
 
         view = self.graphFrame.getView()
-        selectedX = view.xDefMap[self.xType]
         handledHandles = set()
         if view.srcVectorDef is not None:
-            handleVector(view.srcVectorDef, self.srcVector, handledHandles, selectedX.mainInput[0])
+            handleVector(view.srcVectorDef, self.srcVector, handledHandles, self.xType.mainInput[0])
         if view.tgtVectorDef is not None:
-            handleVector(view.tgtVectorDef, self.tgtVector, handledHandles, selectedX.mainInput[0])
+            handleVector(view.tgtVectorDef, self.tgtVector, handledHandles, self.xType.mainInput[0])
 
         # Update inputs
         def addInputField(inputDef, handledHandles, mainInput=False):
@@ -208,7 +205,7 @@ class GraphControlPanel(wx.Panel):
                     fieldIcon = wx.StaticBitmap(self)
                     fieldIcon.SetBitmap(icon)
                     fieldSizer.Add(fieldIcon, 0, wx.ALIGN_CENTER_VERTICAL | wx.RIGHT, 3)
-            fieldLabel = wx.StaticText(self, wx.ID_ANY, self._formatLabel(inputDef))
+            fieldLabel = wx.StaticText(self, wx.ID_ANY, self.formatLabel(inputDef))
             fieldSizer.Add(fieldLabel, 0, wx.ALIGN_CENTER_VERTICAL | wx.ALL, 0)
             self.inputsSizer.Add(fieldSizer, 0, wx.EXPAND | wx.BOTTOM, 5)
             # Store info about added input box
@@ -219,7 +216,7 @@ class GraphControlPanel(wx.Panel):
                 self._miscInputBoxes.append(inputBox)
 
 
-        addInputField(view.inputMap[selectedX.mainInput], handledHandles, mainInput=True)
+        addInputField(view.inputMap[self.xType.mainInput], handledHandles, mainInput=True)
         for inputDef in view.inputs:
             if inputDef.mainOnly:
                 continue
@@ -254,7 +251,6 @@ class GraphControlPanel(wx.Panel):
 
     def getValues(self):
         view = self.graphFrame.getView()
-        main = None
         misc = []
         processedHandles = set()
 
@@ -296,10 +292,18 @@ class GraphControlPanel(wx.Panel):
     def xType(self):
         return self.xSubSelection.GetClientData(self.xSubSelection.GetSelection())
 
+    @property
+    def fits(self):
+        return self.fitList.fits
+
+    @property
+    def targets(self):
+        return self.targetList.targetFits
+
     def unbindExternalEvents(self):
         self.fitList.unbindExternalEvents()
 
-    def _formatLabel(self, axisDef):
+    def formatLabel(self, axisDef):
         if axisDef.unit is None:
             return axisDef.label
         return '{}, {}'.format(axisDef.label, axisDef.unit)
