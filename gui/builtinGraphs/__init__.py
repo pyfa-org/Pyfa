@@ -6,6 +6,6 @@ from gui.builtinGraphs import (  # noqa: E402,F401
     # fitShieldAmountVsTime,
     # fitCapRegenVsCapPerc,
     # fitCapAmountVsTime,
-    # fitMobilityVsTime,
+    fitMobility,
     fitWarpTime
 )

@@ -22,10 +22,10 @@ from collections import OrderedDict
 
 from eos.graph.fitDmgVsTime import FitDmgVsTimeGraph as EosGraphDmg
 from eos.graph.fitDpsVsTime import FitDpsVsTimeGraph as EosGraphDps
-from .base import Graph, XDef, YDef
+from .base import FitGraph, XDef, YDef
 
 
-class FitDmgVsTimeGraph(Graph):
+class FitDmgVsTimeGraph(FitGraph):
 
     name = 'Damage vs Time'
 

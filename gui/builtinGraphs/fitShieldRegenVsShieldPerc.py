@@ -22,10 +22,10 @@ from collections import OrderedDict
 
 import gui.mainFrame
 from eos.graph.fitShieldRegenVsShieldPerc import FitShieldRegenVsShieldPercGraph as EosGraph
-from .base import Graph, XDef, YDef
+from .base import FitGraph, XDef, YDef
 
 
-class FitShieldRegenVsShieldPercGraph(Graph):
+class FitShieldRegenVsShieldPercGraph(FitGraph):
 
     name = 'Shield Regen vs Shield Amount'
 

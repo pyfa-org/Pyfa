@@ -21,18 +21,15 @@
 import math
 
 from eos.const import FittingModuleState
-from .base import Graph, XDef, YDef, Input
+from .base import FitGraph, XDef, YDef, Input
 
 
 AU_METERS = 149597870700
 
 
-class FitWarpTimeGraph(Graph):
+class FitWarpTimeGraph(FitGraph):
 
     name = 'Warp Time'
-
-    def __init__(self):
-        super().__init__()
 
     # UI stuff
     @property

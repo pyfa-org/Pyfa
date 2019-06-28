@@ -28,14 +28,14 @@ Input = namedtuple('Input', ('handle', 'unit', 'label', 'iconID', 'defaultValue'
 VectorDef = namedtuple('VectorDef', ('lengthHandle', 'lengthUnit', 'angleHandle', 'angleUnit', 'label'))
 
 
-class Graph(metaclass=ABCMeta):
+class FitGraph(metaclass=ABCMeta):
 
     # UI stuff
     views = []
 
     @classmethod
     def register(cls):
-        Graph.views.append(cls)
+        FitGraph.views.append(cls)
 
     def __init__(self):
         self._plotCache = {}

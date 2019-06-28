@@ -30,7 +30,7 @@ import gui.display
 import gui.globalEvents as GE
 import gui.mainFrame
 from gui.bitmap_loader import BitmapLoader
-from gui.builtinGraphs.base import Graph
+from gui.builtinGraphs.base import FitGraph
 from .panel import GraphControlPanel
 
 
@@ -111,7 +111,7 @@ class GraphFrame(wx.Frame):
         self.SetSizer(mainSizer)
 
         # Setup - graph selector
-        for view in Graph.views:
+        for view in FitGraph.views:
             self.graphSelection.Append(view.name, view())
         self.graphSelection.SetSelection(0)
         self.ctrlPanel.updateControls(layout=False)

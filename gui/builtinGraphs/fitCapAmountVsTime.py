@@ -21,10 +21,10 @@
 from collections import OrderedDict
 
 from eos.graph.fitCapAmountVsTime import FitCapAmountVsTimeGraph as EosGraph
-from .base import Graph, XDef, YDef
+from .base import FitGraph, XDef, YDef
 
 
-class FitCapAmountVsTimeGraph(Graph):
+class FitCapAmountVsTimeGraph(FitGraph):
 
     name = 'Cap Amount vs Time'
 

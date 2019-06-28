@@ -20,16 +20,12 @@
 
 import math
 
-from eos.graph.fitDpsVsRange import FitDpsVsRangeGraph as EosGraph
-from .base import Graph, XDef, YDef, Input, VectorDef
+from .base import FitGraph, XDef, YDef, Input, VectorDef
 
 
-class FitDamageStatsGraph(Graph):
+class FitDamageStatsGraph(FitGraph):
 
     name = 'Damage Stats'
-
-    def __init__(self):
-        super().__init__(EosGraph())
 
     @property
     def xDefs(self):
