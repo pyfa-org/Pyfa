@@ -72,21 +72,9 @@ class FitGraph(metaclass=ABCMeta):
     def inputMap(self):
         return OrderedDict(((i.handle, i.unit), i) for i in self.inputs)
 
-    @property
-    def srcVectorDef(self):
-        return None
-
-    @property
-    def tgtVectorDef(self):
-        return None
-
-    @property
-    def hasTargets(self):
-        return False
-
-    @property
-    def redrawOnEffectiveChange(self):
-        return False
+    srcVectorDef = None
+    tgtVectorDef = None
+    hasTargets = False
 
     def getPlotPoints(self, mainInput, miscInputs, xSpec, ySpec, fit, tgt=None):
         try:
@@ -182,7 +170,7 @@ class FitGraph(metaclass=ABCMeta):
             values = [denormalizer(v, fit, tgt) for v in values]
         return values
 
-    def _iterLinear(self, valRange, resolution=100):
+    def _iterLinear(self, valRange, resolution=200):
         rangeLow = min(valRange)
         rangeHigh = max(valRange)
         # Amount is amount of ranges between points here, not amount of points

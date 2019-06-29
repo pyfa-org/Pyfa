@@ -25,29 +25,15 @@ from .base import FitGraph, XDef, YDef, Input
 
 class FitMobilityVsTimeGraph(FitGraph):
 
-    name = 'Mobility'
-
-    def __init__(self):
-        super().__init__()
-
     # UI stuff
-    @property
-    def xDefs(self):
-        return [XDef(handle='time', unit='s', label='Time', mainInput=('time', 's'))]
-
-    @property
-    def yDefs(self):
-        return [
-            YDef(handle='speed', unit='m/s', label='Speed'),
-            YDef(handle='distance', unit='km', label='Distance')]
-
-    @property
-    def inputs(self):
-        return [Input(handle='time', unit='s', label='Time', iconID=1392, defaultValue=10, defaultRange=(0, 30), mainOnly=False)]
-
-    @property
-    def xDef(self):
-        return XDef(inputDefault='0-80', inputLabel='Time (seconds)', inputIconID=1392, axisLabel='Time, s')
+    name = 'Mobility'
+    xDefs = [
+        XDef(handle='time', unit='s', label='Time', mainInput=('time', 's'))]
+    yDefs = [
+        YDef(handle='speed', unit='m/s', label='Speed'),
+        YDef(handle='distance', unit='km', label='Distance')]
+    inputs = [
+        Input(handle='time', unit='s', label='Time', iconID=1392, defaultValue=10, defaultRange=(0, 30), mainOnly=False)]
 
     # Calculation stuff
     _denormalizers = {

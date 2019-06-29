@@ -29,33 +29,23 @@ AU_METERS = 149597870700
 
 class FitWarpTimeGraph(FitGraph):
 
-    name = 'Warp Time'
-
     # UI stuff
-    @property
-    def xDefs(self):
-        return [
-            XDef(handle='distance', unit='AU', label='Distance', mainInput=('distance', 'AU')),
-            XDef(handle='distance', unit='km', label='Distance', mainInput=('distance', 'km'))]
-
-    @property
-    def yDefs(self):
-        return [YDef(handle='time', unit='s', label='Warp time')]
-
-    @property
-    def inputs(self):
-        return [
-            Input(handle='distance', unit='AU', label='Distance', iconID=1391, defaultValue=50, defaultRange=(0, 50), mainOnly=False),
-            Input(handle='distance', unit='km', label='Distance', iconID=1391, defaultValue=10000, defaultRange=(150, 5000), mainOnly=False)]
+    name = 'Warp Time'
+    xDefs = [
+        XDef(handle='distance', unit='AU', label='Distance', mainInput=('distance', 'AU')),
+        XDef(handle='distance', unit='km', label='Distance', mainInput=('distance', 'km'))]
+    yDefs =  [
+        YDef(handle='time', unit='s', label='Warp time')]
+    inputs = [
+        Input(handle='distance', unit='AU', label='Distance', iconID=1391, defaultValue=20, defaultRange=(0, 50), mainOnly=False),
+        Input(handle='distance', unit='km', label='Distance', iconID=1391, defaultValue=1000, defaultRange=(150, 5000), mainOnly=False)]
 
     # Calculation stuff
     _normalizers = {
         ('distance', 'AU'): lambda v, fit, tgt: v * AU_METERS,
         ('distance', 'km'): lambda v, fit, tgt: v * 1000}
-
     _limiters = {
         'distance': lambda fit, tgt: (0, fit.maxWarpDistance * AU_METERS)}
-
     _denormalizers = {
         ('distance', 'AU'): lambda v, fit, tgt: v / AU_METERS,
         ('distance', 'km'): lambda v, fit, tgt: v / 1000}

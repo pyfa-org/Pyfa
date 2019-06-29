@@ -23,45 +23,27 @@ from .base import FitGraph, XDef, YDef, Input, VectorDef
 
 class FitDamageStatsGraph(FitGraph):
 
-    name = 'Damage Stats'
-
     # UI stuff
-    @property
-    def xDefs(self):
-        return [
-            XDef(handle='distance', unit='km', label='Distance', mainInput=('distance', 'km')),
-            XDef(handle='time', unit='s', label='Time', mainInput=('time', 's')),
-            XDef(handle='tgtSpeed', unit='m/s', label='Target speed', mainInput=('tgtSpeed', '%')),
-            XDef(handle='tgtSpeed', unit='%', label='Target speed', mainInput=('tgtSpeed', '%')),
-            XDef(handle='tgtSigRad', unit='m', label='Target signature radius', mainInput=('tgtSigRad', '%')),
-            XDef(handle='tgtSigRad', unit='%', label='Target signature radius', mainInput=('tgtSigRad', '%'))]
-
-    @property
-    def yDefs(self):
-        return [
-            YDef(handle='dps', unit=None, label='DPS'),
-            YDef(handle='volley', unit=None, label='Volley'),
-            YDef(handle='damage', unit=None, label='Damage inflicted')]
-
-    @property
-    def inputs(self):
-        return [
-            Input(handle='time', unit='s', label='Time', iconID=1392, defaultValue=None, defaultRange=(0, 80), mainOnly=False),
-            Input(handle='distance', unit='km', label='Distance', iconID=1391, defaultValue=50, defaultRange=(0, 100), mainOnly=False),
-            Input(handle='tgtSpeed', unit='%', label='Target speed', iconID=1389, defaultValue=100, defaultRange=(0, 100), mainOnly=False),
-            Input(handle='tgtSigRad', unit='%', label='Target signature', iconID=1390, defaultValue=100, defaultRange=(100, 200), mainOnly=True)]
-
-    @property
-    def srcVectorDef(self):
-        return VectorDef(lengthHandle='atkSpeed', lengthUnit='%', angleHandle='atkAngle', angleUnit='degrees', label='Attacker')
-
-    @property
-    def tgtVectorDef(self):
-        return VectorDef(lengthHandle='tgtSpeed', lengthUnit='%', angleHandle='tgtAngle', angleUnit='degrees', label='Target')
-
-    @property
-    def hasTargets(self):
-        return True
+    name = 'Damage Stats'
+    xDefs = [
+        XDef(handle='distance', unit='km', label='Distance', mainInput=('distance', 'km')),
+        XDef(handle='time', unit='s', label='Time', mainInput=('time', 's')),
+        XDef(handle='tgtSpeed', unit='m/s', label='Target speed', mainInput=('tgtSpeed', '%')),
+        XDef(handle='tgtSpeed', unit='%', label='Target speed', mainInput=('tgtSpeed', '%')),
+        XDef(handle='tgtSigRad', unit='m', label='Target signature radius', mainInput=('tgtSigRad', '%')),
+        XDef(handle='tgtSigRad', unit='%', label='Target signature radius', mainInput=('tgtSigRad', '%'))]
+    yDefs = [
+        YDef(handle='dps', unit=None, label='DPS'),
+        YDef(handle='volley', unit=None, label='Volley'),
+        YDef(handle='damage', unit=None, label='Damage inflicted')]
+    inputs = [
+        Input(handle='time', unit='s', label='Time', iconID=1392, defaultValue=None, defaultRange=(0, 80), mainOnly=False),
+        Input(handle='distance', unit='km', label='Distance', iconID=1391, defaultValue=50, defaultRange=(0, 100), mainOnly=False),
+        Input(handle='tgtSpeed', unit='%', label='Target speed', iconID=1389, defaultValue=100, defaultRange=(0, 100), mainOnly=False),
+        Input(handle='tgtSigRad', unit='%', label='Target signature', iconID=1390, defaultValue=100, defaultRange=(100, 200), mainOnly=True)]
+    srcVectorDef =  VectorDef(lengthHandle='atkSpeed', lengthUnit='%', angleHandle='atkAngle', angleUnit='degrees', label='Attacker')
+    tgtVectorDef =  VectorDef(lengthHandle='tgtSpeed', lengthUnit='%', angleHandle='tgtAngle', angleUnit='degrees', label='Target')
+    hasTargets = True
 
     # Calculation stuff
     _normalizers = {
@@ -69,10 +51,8 @@ class FitDamageStatsGraph(FitGraph):
         ('atkSpeed', '%'): lambda v, fit, tgt: v / 100 * fit.ship.getModifiedItemAttr('maxVelocity'),
         ('tgtSpeed', '%'): lambda v, fit, tgt: v / 100 * tgt.ship.getModifiedItemAttr('maxVelocity'),
         ('tgtSigRad', '%'): lambda v, fit, tgt: v / 100 * fit.ship.getModifiedItemAttr('signatureRadius')}
-
     _limiters = {
         'time': lambda fit, tgt: (0, 2500)}
-
     _denormalizers = {
         ('distance', 'km'): lambda v, fit, tgt: v / 1000,
         ('tgtSpeed', '%'): lambda v, fit, tgt: v * 100 / tgt.ship.getModifiedItemAttr('maxVelocity'),

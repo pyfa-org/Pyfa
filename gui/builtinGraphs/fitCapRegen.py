@@ -25,35 +25,24 @@ from .base import FitGraph, XDef, YDef, Input
 
 class FitCapRegenGraph(FitGraph):
 
-    name = 'Capacitor Regeneration'
-
     # UI stuff
-    @property
-    def xDefs(self):
-        return [
-            XDef(handle='time', unit='s', label='Time', mainInput=('time', 's')),
-            XDef(handle='capAmount', unit='GJ', label='Cap amount', mainInput=('capAmount', '%')),
-            XDef(handle='capAmount', unit='%', label='Cap amount', mainInput=('capAmount', '%'))]
-
-    @property
-    def yDefs(self):
-        return [
-            YDef(handle='capAmount', unit='GJ', label='Cap amount'),
-            YDef(handle='capRegen', unit='GJ/s', label='Cap regen')]
-
-    @property
-    def inputs(self):
-        return [
-            Input(handle='time', unit='s', label='Time', iconID=1392, defaultValue=120, defaultRange=(0, 300), mainOnly=True),
-            Input(handle='capAmount', unit='%', label='Cap amount', iconID=1668, defaultValue=25, defaultRange=(0, 100), mainOnly=True)]
+    name = 'Capacitor Regeneration'
+    xDefs = [
+        XDef(handle='time', unit='s', label='Time', mainInput=('time', 's')),
+        XDef(handle='capAmount', unit='GJ', label='Cap amount', mainInput=('capAmount', '%')),
+        XDef(handle='capAmount', unit='%', label='Cap amount', mainInput=('capAmount', '%'))]
+    yDefs = [
+        YDef(handle='capAmount', unit='GJ', label='Cap amount'),
+        YDef(handle='capRegen', unit='GJ/s', label='Cap regen')]
+    inputs = [
+        Input(handle='time', unit='s', label='Time', iconID=1392, defaultValue=120, defaultRange=(0, 300), mainOnly=True),
+        Input(handle='capAmount', unit='%', label='Cap amount', iconID=1668, defaultValue=25, defaultRange=(0, 100), mainOnly=True)]
 
     # Calculation stuff
     _normalizers = {
         ('capAmount', '%'): lambda v, fit, tgt: v / 100 * fit.ship.getModifiedItemAttr('capacitorCapacity')}
-
     _limiters = {
         'capAmount': lambda fit, tgt: (0, fit.ship.getModifiedItemAttr('capacitorCapacity'))}
-
     _denormalizers = {
         ('capAmount', '%'): lambda v, fit, tgt: v * 100 / fit.ship.getModifiedItemAttr('capacitorCapacity')}
 
@@ -75,9 +64,9 @@ class FitCapRegenGraph(FitGraph):
         capRegenTime = fit.ship.getModifiedItemAttr('rechargeRate') / 1000
         for time in self._iterLinear(mainInput[1]):
             currentCapAmount = calculateCapAmount(maxCapAmount=maxCapAmount, capRegenTime=capRegenTime, time=time)
-            currentRegen = calculateCapRegen(maxCapAmount=maxCapAmount, capRegenTime=capRegenTime, currentCapAmount=currentCapAmount)
+            currentCapRegen = calculateCapRegen(maxCapAmount=maxCapAmount, capRegenTime=capRegenTime, currentCapAmount=currentCapAmount)
             xs.append(time)
-            ys.append(currentRegen)
+            ys.append(currentCapRegen)
         return xs, ys
 
     def _capAmount2capAmount(self, mainInput, miscInputs, fit, tgt):
@@ -95,9 +84,9 @@ class FitCapRegenGraph(FitGraph):
         maxCapAmount = fit.ship.getModifiedItemAttr('capacitorCapacity')
         capRegenTime = fit.ship.getModifiedItemAttr('rechargeRate') / 1000
         for currentCapAmount in self._iterLinear(mainInput[1]):
-            currentRegen = calculateCapRegen(maxCapAmount=maxCapAmount, capRegenTime=capRegenTime, currentCapAmount=currentCapAmount)
+            currentCapRegen = calculateCapRegen(maxCapAmount=maxCapAmount, capRegenTime=capRegenTime, currentCapAmount=currentCapAmount)
             xs.append(currentCapAmount)
-            ys.append(currentRegen)
+            ys.append(currentCapRegen)
         return xs, ys
 
     _getters = {

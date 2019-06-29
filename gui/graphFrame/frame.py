@@ -121,8 +121,6 @@ class GraphFrame(wx.Frame):
         self.Bind(wx.EVT_CHAR_HOOK, self.kbEvent)
         # Event bindings - external events
         self.mainFrame.Bind(GE.FIT_CHANGED, self.OnFitChanged)
-        from gui.builtinStatsViews.resistancesViewFull import EFFECTIVE_HP_TOGGLED  # Grr crclar gons
-        self.mainFrame.Bind(EFFECTIVE_HP_TOGGLED, self.OnEhpToggled)
 
         self.Layout()
         self.UpdateWindowSize()
@@ -150,13 +148,6 @@ class GraphFrame(wx.Frame):
             return
         event.Skip()
 
-    def OnEhpToggled(self, event):
-        event.Skip()
-        view = self.getView()
-        if view.redrawOnEffectiveChange:
-            view.clearCache()
-            self.draw()
-
     def OnFitChanged(self, event):
         event.Skip()
         self.getView().clearCache(key=event.fitID)
@@ -171,7 +162,6 @@ class GraphFrame(wx.Frame):
     def closeWindow(self):
         from gui.builtinStatsViews.resistancesViewFull import EFFECTIVE_HP_TOGGLED
         self.mainFrame.Unbind(GE.FIT_CHANGED, handler=self.OnFitChanged)
-        self.mainFrame.Unbind(EFFECTIVE_HP_TOGGLED, handler=self.OnEhpToggled)
         self.ctrlPanel.unbindExternalEvents()
         self.Destroy()
 
