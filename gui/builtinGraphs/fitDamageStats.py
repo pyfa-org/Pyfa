@@ -18,6 +18,8 @@
 # =============================================================================
 
 
+from itertools import chain
+
 from eos.utils.spoolSupport import SpoolType, SpoolOptions
 from gui.utils.numberFormatter import roundToPrec
 from .base import FitGraph, XDef, YDef, Input, VectorDef
@@ -72,7 +74,48 @@ class FitDamageStatsGraph(FitGraph):
         return [], []
 
     def _time2dps(self, mainInput, miscInputs, fit, tgt):
-        return [], []
+        xs = []
+        ys = []
+        minTime, maxTime = mainInput[1]
+        self._generateTimeCacheDps(fit, maxTime)
+        cache = self._calcCache[fit.ID]['timeDps']
+        currentDps = None
+        for currentTime in sorted(cache):
+            prevDps = currentDps
+            currentDps = roundToPrec(cache[currentTime], 6)
+            if currentTime < minTime:
+                continue
+            # First set of data points
+            if not xs:
+                # Start at exactly requested time, at last known value
+                initialDps = prevDps or 0
+                xs.append(minTime)
+                ys.append(initialDps)
+                # If current time is bigger then starting, extend plot to that time with old value
+                if currentTime > minTime:
+                    xs.append(currentTime)
+                    ys.append(initialDps)
+                # If new value is different, extend it with new point to the new value
+                if currentDps != prevDps:
+                    xs.append(currentTime)
+                    ys.append(currentDps)
+                continue
+            # Last data point
+            if currentTime >= maxTime:
+                xs.append(maxTime)
+                ys.append(prevDps)
+                break
+            # Anything in-between
+            if currentDps != prevDps:
+                if prevDps is not None:
+                    xs.append(currentTime)
+                    ys.append(prevDps)
+                xs.append(currentTime)
+                ys.append(currentDps)
+        if max(xs) < maxTime:
+            xs.append(maxTime)
+            ys.append(currentDps or 0)
+        return xs, ys
 
     def _time2volley(self, mainInput, miscInputs, fit, tgt):
         return [], []
@@ -221,6 +264,83 @@ class FitDamageStatsGraph(FitGraph):
                         break
                     currentTime += cycleTimeMs / 1000 + inactiveTimeMs / 1000
 
+    def _generateTimeCacheDps(self, fit, maxTime):
+        if fit.ID in self._calcCache and 'timeDps' in self._calcCache[fit.ID]:
+            return
+        intermediateCache = []
+
+        def addDmg(addedTimeStart, addedTimeFinish, addedDmg):
+            if addedDmg == 0:
+                return
+            addedDps = addedDmg / (addedTimeFinish - addedTimeStart)
+            intermediateCache.append((addedTimeStart, addedTimeFinish, addedDps))
+
+        for mod in fit.modules:
+            if not mod.isDealingDamage():
+                continue
+            cycleParams = mod.getCycleParameters(reloadOverride=True)
+            if cycleParams is None:
+                continue
+            currentTime = 0
+            nonstopCycles = 0
+            for cycleTimeMs, inactiveTimeMs in cycleParams.iterCycles():
+                cycleDamage = 0
+                volleyParams = mod.getVolleyParameters(spoolOptions=SpoolOptions(SpoolType.CYCLES, nonstopCycles, True))
+                for volleyTimeMs, volley in volleyParams.items():
+                    cycleDamage += volley.total
+                addDmg(currentTime, currentTime + cycleTimeMs / 1000, cycleDamage)
+                currentTime += cycleTimeMs / 1000 + inactiveTimeMs / 1000
+                if inactiveTimeMs > 0:
+                    nonstopCycles = 0
+                else:
+                    nonstopCycles += 1
+                if currentTime > maxTime:
+                    break
+        for drone in fit.drones:
+            if not drone.isDealingDamage():
+                continue
+            cycleParams = drone.getCycleParameters(reloadOverride=True)
+            if cycleParams is None:
+                continue
+            currentTime = 0
+            for cycleTimeMs, inactiveTimeMs in cycleParams.iterCycles():
+                cycleDamage = 0
+                volleyParams = drone.getVolleyParameters()
+                for volleyTimeMs, volley in volleyParams.items():
+                    cycleDamage += volley.total
+                addDmg(currentTime, currentTime + cycleTimeMs / 1000, cycleDamage)
+                currentTime += cycleTimeMs / 1000 + inactiveTimeMs / 1000
+                if currentTime > maxTime:
+                    break
+        for fighter in fit.fighters:
+            if not fighter.isDealingDamage():
+                continue
+            cycleParams = fighter.getCycleParametersPerEffectOptimizedDps(reloadOverride=True)
+            if cycleParams is None:
+                continue
+            volleyParams = fighter.getVolleyParametersPerEffect()
+            for effectID, abilityCycleParams in cycleParams.items():
+                if effectID not in volleyParams:
+                    continue
+                abilityVolleyParams = volleyParams[effectID]
+                currentTime = 0
+                for cycleTimeMs, inactiveTimeMs in abilityCycleParams.iterCycles():
+                    cycleDamage = 0
+                    for volleyTimeMs, volley in abilityVolleyParams.items():
+                        cycleDamage += volley.total
+                    addDmg(currentTime, currentTime + cycleTimeMs / 1000, cycleDamage)
+                    currentTime += cycleTimeMs / 1000 + inactiveTimeMs / 1000
+                    if currentTime > maxTime:
+                        break
+
+        # Post-process cache
+        finalCache = {}
+        for time in sorted(set(chain((i[0] for i in intermediateCache), (i[1] for i in intermediateCache)))):
+            entries = (e for e in intermediateCache if e[0] <= time < e[1])
+            dps = sum(e[2] for e in entries)
+            finalCache[time] = dps
+        fitCache = self._calcCache.setdefault(fit.ID, {})
+        fitCache['timeDps'] = finalCache
 
 
 FitDamageStatsGraph.register()
