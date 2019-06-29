@@ -80,43 +80,42 @@ class FitDamageStatsGraph(FitGraph):
     def _time2damage(self, mainInput, miscInputs, fit, tgt):
         xs = []
         ys = []
-        minX, maxX = mainInput[1]
-        self._generateTimeCacheDmg(fit, maxX)
+        minTime, maxTime = mainInput[1]
+        self._generateTimeCacheDmg(fit, maxTime)
         cache = self._calcCache[fit.ID]['timeDmg']
-        currentY = None
-        for time in sorted(cache):
-            prevY = currentY
-            currentX = time / 1000
-            currentY = roundToPrec(cache[time], 6)
-            if currentX < minX:
+        currentDmg = None
+        for currentTime in sorted(cache):
+            prevDmg = currentDmg
+            currentDmg = roundToPrec(cache[currentTime], 6)
+            if currentTime < minTime:
                 continue
             # First set of data points
             if not xs:
                 # Start at exactly requested time, at last known value
-                initialY = prevY or 0
-                xs.append(minX)
-                ys.append(initialY)
+                initialDmg = prevDmg or 0
+                xs.append(minTime)
+                ys.append(initialDmg)
                 # If current time is bigger then starting, extend plot to that time with old value
-                if currentX > minX:
-                    xs.append(currentX)
-                    ys.append(initialY)
+                if currentTime > minTime:
+                    xs.append(currentTime)
+                    ys.append(initialDmg)
                 # If new value is different, extend it with new point to the new value
-                if currentY != prevY:
-                    xs.append(currentX)
-                    ys.append(currentY)
+                if currentDmg != prevDmg:
+                    xs.append(currentTime)
+                    ys.append(currentDmg)
                 continue
             # Last data point
-            if currentX >= maxX:
-                xs.append(maxX)
-                ys.append(prevY)
+            if currentTime >= maxTime:
+                xs.append(maxTime)
+                ys.append(prevDmg)
                 break
             # Anything in-between
-            if currentY != prevY:
-                if prevY is not None:
-                    xs.append(currentX)
-                    ys.append(prevY)
-                xs.append(currentX)
-                ys.append(currentY)
+            if currentDmg != prevDmg:
+                if prevDmg is not None:
+                    xs.append(currentTime)
+                    ys.append(prevDmg)
+                xs.append(currentTime)
+                ys.append(currentDmg)
         return xs, ys
 
     def _tgtSpeed2dps(self, mainInput, miscInputs, fit, tgt):
@@ -155,7 +154,6 @@ class FitDamageStatsGraph(FitGraph):
     def _generateTimeCacheDmg(self, fit, maxTime):
         if fit.ID in self._calcCache and 'timeDmg' in self._calcCache[fit.ID]:
             return
-
         fitCache = self._calcCache.setdefault(fit.ID, {})
         cache = fitCache['timeDmg'] = {}
 
@@ -171,8 +169,6 @@ class FitDamageStatsGraph(FitGraph):
             for time in (t for t in cache if t >= addedTime):
                 cache[time] += addedDmg
 
-        # We'll handle calculations in milliseconds
-        maxTime = maxTime * 1000
         for mod in fit.modules:
             if not mod.isDealingDamage():
                 continue
@@ -181,17 +177,17 @@ class FitDamageStatsGraph(FitGraph):
                 continue
             currentTime = 0
             nonstopCycles = 0
-            for cycleTime, inactiveTime in cycleParams.iterCycles():
+            for cycleTimeMs, inactiveTimeMs in cycleParams.iterCycles():
                 volleyParams = mod.getVolleyParameters(spoolOptions=SpoolOptions(SpoolType.CYCLES, nonstopCycles, True))
-                for volleyTime, volley in volleyParams.items():
-                    addDmg(currentTime + volleyTime, volley.total)
-                if inactiveTime == 0:
+                for volleyTimeMs, volley in volleyParams.items():
+                    addDmg(currentTime + volleyTimeMs / 1000, volley.total)
+                if inactiveTimeMs == 0:
                     nonstopCycles += 1
                 else:
                     nonstopCycles = 0
                 if currentTime > maxTime:
                     break
-                currentTime += cycleTime + inactiveTime
+                currentTime += cycleTimeMs / 1000 + inactiveTimeMs / 1000
         for drone in fit.drones:
             if not drone.isDealingDamage():
                 continue
@@ -200,12 +196,12 @@ class FitDamageStatsGraph(FitGraph):
                 continue
             currentTime = 0
             volleyParams = drone.getVolleyParameters()
-            for cycleTime, inactiveTime in cycleParams.iterCycles():
-                for volleyTime, volley in volleyParams.items():
-                    addDmg(currentTime + volleyTime, volley.total)
+            for cycleTimeMs, inactiveTimeMs in cycleParams.iterCycles():
+                for volleyTimeMs, volley in volleyParams.items():
+                    addDmg(currentTime + volleyTimeMs / 1000, volley.total)
                 if currentTime > maxTime:
                     break
-                currentTime += cycleTime + inactiveTime
+                currentTime += cycleTimeMs / 1000 + inactiveTimeMs / 1000
         for fighter in fit.fighters:
             if not fighter.isDealingDamage():
                 continue
@@ -218,12 +214,12 @@ class FitDamageStatsGraph(FitGraph):
                     continue
                 currentTime = 0
                 abilityVolleyParams = volleyParams[effectID]
-                for cycleTime, inactiveTime in abilityCycleParams.iterCycles():
-                    for volleyTime, volley in abilityVolleyParams.items():
-                        addDmg(currentTime + volleyTime, volley.total)
+                for cycleTimeMs, inactiveTimeMs in abilityCycleParams.iterCycles():
+                    for volleyTimeMs, volley in abilityVolleyParams.items():
+                        addDmg(currentTime + volleyTimeMs / 1000, volley.total)
                     if currentTime > maxTime:
                         break
-                    currentTime += cycleTime + inactiveTime
+                    currentTime += cycleTimeMs / 1000 + inactiveTimeMs / 1000
 
 
 
