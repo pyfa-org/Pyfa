@@ -26,7 +26,7 @@ import gui.globalEvents as GE
 from service.fit import Fit
 
 
-class FitList(gui.display.Display):
+class BaseList(gui.display.Display):
 
     DEFAULT_COLS = (
         'Base Icon',
@@ -40,11 +40,6 @@ class FitList(gui.display.Display):
         fitToolTip = wx.ToolTip('Drag a fit into this list to graph it')
         self.SetToolTip(fitToolTip)
 
-        fit = Fit.getInstance().getFit(self.graphFrame.mainFrame.getActiveFit())
-        if fit is not None:
-            self.fits.append(fit)
-            self.update(self.fits)
-
         self.contextMenu = wx.Menu()
         removeItem = wx.MenuItem(self.contextMenu, 1, 'Remove Fit')
         self.contextMenu.Append(removeItem)
@@ -54,7 +49,6 @@ class FitList(gui.display.Display):
         self.Bind(wx.EVT_LEFT_DCLICK, self.OnLeftDClick)
         self.Bind(wx.EVT_CHAR_HOOK, self.kbEvent)
         self.Bind(wx.EVT_CONTEXT_MENU, self.OnContextMenu)
-
 
     def kbEvent(self, event):
         keycode = event.GetKeyCode()
@@ -125,15 +119,18 @@ class FitList(gui.display.Display):
                 self.graphFrame.draw()
 
 
-class TargetList(gui.display.Display):
-
-    DEFAULT_COLS = (
-        'Base Icon',
-        'Base Name')
+class FitList(BaseList):
 
     def __init__(self, graphFrame, parent):
-        super().__init__(parent)
-        self.graphFrame = graphFrame
-        self.targetFits = []
-        fitToolTip = wx.ToolTip('Drag a fit into this list to graph it')
-        self.SetToolTip(fitToolTip)
+        super().__init__(graphFrame, parent)
+        fit = Fit.getInstance().getFit(self.graphFrame.mainFrame.getActiveFit())
+        if fit is not None:
+            self.fits.append(fit)
+            self.update(self.fits)
+
+
+class TargetList(BaseList):
+
+    def __init__(self, graphFrame, parent):
+        super().__init__(graphFrame, parent)
+        self.update(self.fits)

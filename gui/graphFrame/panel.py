@@ -298,10 +298,11 @@ class GraphControlPanel(wx.Panel):
 
     @property
     def targets(self):
-        return self.targetList.targetFits
+        return self.targetList.fits
 
     def unbindExternalEvents(self):
         self.fitList.unbindExternalEvents()
+        self.targetList.unbindExternalEvents()
 
     def formatLabel(self, axisDef):
         if axisDef.unit is None:
