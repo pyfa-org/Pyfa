@@ -38,7 +38,9 @@ class FitGraph(metaclass=ABCMeta):
         FitGraph.views.append(cls)
 
     def __init__(self):
+        # Format: {(fit ID, target type, target ID): data}
         self._plotCache = {}
+        # Format: {fit ID: data}
         self._calcCache = {}
 
     @property
@@ -77,20 +79,31 @@ class FitGraph(metaclass=ABCMeta):
     hasTargets = False
 
     def getPlotPoints(self, mainInput, miscInputs, xSpec, ySpec, fit, tgt=None):
+        cacheKey = (fit.ID, None, tgt)
         try:
-            plotData = self._plotCache[fit.ID][(ySpec, xSpec)]
+            plotData = self._plotCache[fit.ID][cacheKey]
         except KeyError:
             plotData = self._calcPlotPoints(mainInput, miscInputs, xSpec, ySpec, fit, tgt)
-            fitCache = self._plotCache.setdefault(fit.ID, {})
-            fitCache[(ySpec, xSpec)] = plotData
+            self._plotCache.setdefault(cacheKey, {})[(ySpec, xSpec)] = plotData
         return plotData
 
     def clearCache(self, fitID=None):
+        # Clear everything
         if fitID is None:
             self._plotCache.clear()
             self._calcCache.clear()
-        if fitID in self._plotCache:
-            del self._plotCache[fitID]
+            return
+        # Clear plot cache
+        plotKeysToClear = set()
+        for cacheKey in self._plotCache:
+            cacheFitID, cacheTgtType, cacheTgtID = cacheKey
+            if fitID == cacheFitID:
+                plotKeysToClear.add(cacheKey)
+            elif fitID == cacheTgtID:
+                plotKeysToClear.add(cacheKey)
+        for cacheKey in plotKeysToClear:
+            del self._plotCache[cacheKey]
+        # Clear calc cache
         if fitID in self._calcCache:
             del self._calcCache[fitID]
 
