@@ -18,6 +18,8 @@
 # =============================================================================
 
 
+from eos.utils.spoolSupport import SpoolType, SpoolOptions
+from gui.utils.numberFormatter import roundToPrec
 from .base import FitGraph, XDef, YDef, Input, VectorDef
 
 
@@ -49,14 +51,16 @@ class FitDamageStatsGraph(FitGraph):
     _normalizers = {
         ('distance', 'km'): lambda v, fit, tgt: v * 1000,
         ('atkSpeed', '%'): lambda v, fit, tgt: v / 100 * fit.ship.getModifiedItemAttr('maxVelocity'),
-        ('tgtSpeed', '%'): lambda v, fit, tgt: v / 100 * tgt.ship.getModifiedItemAttr('maxVelocity'),
-        ('tgtSigRad', '%'): lambda v, fit, tgt: v / 100 * fit.ship.getModifiedItemAttr('signatureRadius')}
+        #('tgtSpeed', '%'): lambda v, fit, tgt: v / 100 * tgt.ship.getModifiedItemAttr('maxVelocity'),
+        #('tgtSigRad', '%'): lambda v, fit, tgt: v / 100 * fit.ship.getModifiedItemAttr('signatureRadius')
+    }
     _limiters = {
         'time': lambda fit, tgt: (0, 2500)}
     _denormalizers = {
         ('distance', 'km'): lambda v, fit, tgt: v / 1000,
-        ('tgtSpeed', '%'): lambda v, fit, tgt: v * 100 / tgt.ship.getModifiedItemAttr('maxVelocity'),
-        ('tgtSigRad', '%'): lambda v, fit, tgt: v * 100 / fit.ship.getModifiedItemAttr('signatureRadius')}
+        #('tgtSpeed', '%'): lambda v, fit, tgt: v * 100 / tgt.ship.getModifiedItemAttr('maxVelocity'),
+        #('tgtSigRad', '%'): lambda v, fit, tgt: v * 100 / fit.ship.getModifiedItemAttr('signatureRadius')
+    }
 
     def _distance2dps(self, mainInput, miscInputs, fit, tgt):
         return [], []
@@ -74,7 +78,46 @@ class FitDamageStatsGraph(FitGraph):
         return [], []
 
     def _time2damage(self, mainInput, miscInputs, fit, tgt):
-        return [], []
+        xs = []
+        ys = []
+        minX, maxX = mainInput[1]
+        self._generateTimeCacheDmg(fit, maxX)
+        cache = self._calcCache[fit.ID]['timeDmg']
+        currentY = None
+        for time in sorted(cache):
+            prevY = currentY
+            currentX = time / 1000
+            currentY = roundToPrec(cache[time], 6)
+            if currentX < minX:
+                continue
+            # First set of data points
+            if not xs:
+                # Start at exactly requested time, at last known value
+                initialY = prevY or 0
+                xs.append(minX)
+                ys.append(initialY)
+                # If current time is bigger then starting, extend plot to that time with old value
+                if currentX > minX:
+                    xs.append(currentX)
+                    ys.append(initialY)
+                # If new value is different, extend it with new point to the new value
+                if currentY != prevY:
+                    xs.append(currentX)
+                    ys.append(currentY)
+                continue
+            # Last data point
+            if currentX >= maxX:
+                xs.append(maxX)
+                ys.append(prevY)
+                break
+            # Anything in-between
+            if currentY != prevY:
+                if prevY is not None:
+                    xs.append(currentX)
+                    ys.append(prevY)
+                xs.append(currentX)
+                ys.append(currentY)
+        return xs, ys
 
     def _tgtSpeed2dps(self, mainInput, miscInputs, fit, tgt):
         return [], []
@@ -107,6 +150,81 @@ class FitDamageStatsGraph(FitGraph):
         ('tgtSigRad', 'dps'): _tgtSigRad2dps,
         ('tgtSigRad', 'volley'): _tgtSigRad2volley,
         ('tgtSigRad', 'damage'): _tgtSigRad2damage}
+
+    # Cache generation
+    def _generateTimeCacheDmg(self, fit, maxTime):
+        if fit.ID in self._calcCache and 'timeDmg' in self._calcCache[fit.ID]:
+            return
+
+        fitCache = self._calcCache.setdefault(fit.ID, {})
+        cache = fitCache['timeDmg'] = {}
+
+        def addDmg(addedTime, addedDmg):
+            if addedDmg == 0:
+                return
+            if addedTime not in cache:
+                prevTime = max((t for t in cache if t < addedTime), default=None)
+                if prevTime is None:
+                    cache[addedTime] = 0
+                else:
+                    cache[addedTime] = cache[prevTime]
+            for time in (t for t in cache if t >= addedTime):
+                cache[time] += addedDmg
+
+        # We'll handle calculations in milliseconds
+        maxTime = maxTime * 1000
+        for mod in fit.modules:
+            if not mod.isDealingDamage():
+                continue
+            cycleParams = mod.getCycleParameters(reloadOverride=True)
+            if cycleParams is None:
+                continue
+            currentTime = 0
+            nonstopCycles = 0
+            for cycleTime, inactiveTime in cycleParams.iterCycles():
+                volleyParams = mod.getVolleyParameters(spoolOptions=SpoolOptions(SpoolType.CYCLES, nonstopCycles, True))
+                for volleyTime, volley in volleyParams.items():
+                    addDmg(currentTime + volleyTime, volley.total)
+                if inactiveTime == 0:
+                    nonstopCycles += 1
+                else:
+                    nonstopCycles = 0
+                if currentTime > maxTime:
+                    break
+                currentTime += cycleTime + inactiveTime
+        for drone in fit.drones:
+            if not drone.isDealingDamage():
+                continue
+            cycleParams = drone.getCycleParameters(reloadOverride=True)
+            if cycleParams is None:
+                continue
+            currentTime = 0
+            volleyParams = drone.getVolleyParameters()
+            for cycleTime, inactiveTime in cycleParams.iterCycles():
+                for volleyTime, volley in volleyParams.items():
+                    addDmg(currentTime + volleyTime, volley.total)
+                if currentTime > maxTime:
+                    break
+                currentTime += cycleTime + inactiveTime
+        for fighter in fit.fighters:
+            if not fighter.isDealingDamage():
+                continue
+            cycleParams = fighter.getCycleParametersPerEffectOptimizedDps(reloadOverride=True)
+            if cycleParams is None:
+                continue
+            volleyParams = fighter.getVolleyParametersPerEffect()
+            for effectID, abilityCycleParams in cycleParams.items():
+                if effectID not in volleyParams:
+                    continue
+                currentTime = 0
+                abilityVolleyParams = volleyParams[effectID]
+                for cycleTime, inactiveTime in abilityCycleParams.iterCycles():
+                    for volleyTime, volley in abilityVolleyParams.items():
+                        addDmg(currentTime + volleyTime, volley.total)
+                    if currentTime > maxTime:
+                        break
+                    currentTime += cycleTime + inactiveTime
+
 
 
 FitDamageStatsGraph.register()

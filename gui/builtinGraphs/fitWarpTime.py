@@ -64,6 +64,7 @@ class FitWarpTimeGraph(FitGraph):
     _getters = {
         ('distance', 'time'): _distance2time}
 
+    # Cache generation
     def __getSubwarpSpeed(self, fit):
         try:
             subwarpSpeed = self._calcCache[fit.ID]

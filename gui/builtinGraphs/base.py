@@ -130,7 +130,7 @@ class FitGraph(metaclass=ABCMeta):
             key = (miscInput.handle, miscInput.unit)
             if key in self._normalizers:
                 normalizer = self._normalizers[key]
-                newMiscInput = (miscInput.handle, normalizer(miscInput.value))
+                newMiscInput = (miscInput.handle, normalizer(miscInput.value, fit, tgt))
             else:
                 newMiscInput = (miscInput.handle, miscInput.value)
             newMiscInputs.append(newMiscInput)
