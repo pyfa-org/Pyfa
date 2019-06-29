@@ -85,14 +85,14 @@ class FitGraph(metaclass=ABCMeta):
             fitCache[(ySpec, xSpec)] = plotData
         return plotData
 
-    def clearCache(self, key=None):
-        if key is None:
+    def clearCache(self, fitID=None):
+        if fitID is None:
             self._plotCache.clear()
             self._calcCache.clear()
-        if key in self._plotCache:
-            del self._plotCache[key]
-        if key in self._calcCache:
-            del self._calcCache[key]
+        if fitID in self._plotCache:
+            del self._plotCache[fitID]
+        if fitID in self._calcCache:
+            del self._calcCache[fitID]
 
     # Calculation stuff
     def _calcPlotPoints(self, mainInput, miscInputs, xSpec, ySpec, fit, tgt):

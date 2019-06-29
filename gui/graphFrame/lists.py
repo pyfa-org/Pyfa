@@ -109,7 +109,7 @@ class FitList(gui.display.Display):
             self.fits.remove(fit)
         self.update(self.fits)
         for fit in fits:
-            self.graphFrame.clearCache(key=fit.ID)
+            self.graphFrame.clearCache(fitID=fit.ID)
         self.graphFrame.draw()
 
     def unbindExternalEvents(self):

@@ -66,7 +66,7 @@ class FitWarpTimeGraph(FitGraph):
 
     def __getSubwarpSpeed(self, fit):
         try:
-            subwarpSpeed = self._calcCache[fit.ID]['cleanSubwarpSpeed']
+            subwarpSpeed = self._calcCache[fit.ID]
         except KeyError:
             modStates = {}
             for mod in fit.modules:
@@ -96,7 +96,7 @@ class FitWarpTimeGraph(FitGraph):
                     fighter.active = False
             fit.calculateModifiedAttributes()
             subwarpSpeed = fit.ship.getModifiedItemAttr('maxVelocity')
-            self._calcCache[fit.ID] = {'cleanSubwarpSpeed': subwarpSpeed}
+            self._calcCache[fit.ID] = subwarpSpeed
             for projInfo, state in projFitStates.items():
                 projInfo.active = state
             for mod, state in modStates.items():

@@ -150,7 +150,7 @@ class GraphFrame(wx.Frame):
 
     def OnFitChanged(self, event):
         event.Skip()
-        self.getView().clearCache(key=event.fitID)
+        self.getView().clearCache(fitID=event.fitID)
         self.draw()
 
     def OnGraphSwitched(self, event):
@@ -168,8 +168,8 @@ class GraphFrame(wx.Frame):
     def getView(self):
         return self.graphSelection.GetClientData(self.graphSelection.GetSelection())
 
-    def clearCache(self, key=None):
-        self.getView().clearCache(key=key)
+    def clearCache(self, fitID=None):
+        self.getView().clearCache(fitID=fitID)
 
     def draw(self):
         global mpl_version
