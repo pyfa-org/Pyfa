@@ -20,7 +20,6 @@
 
 import math
 
-import gui.mainFrame
 from .base import FitGraph, XDef, YDef, Input
 
 
