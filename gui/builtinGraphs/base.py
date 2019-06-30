@@ -81,7 +81,7 @@ class FitGraph(metaclass=ABCMeta):
     def getPlotPoints(self, mainInput, miscInputs, xSpec, ySpec, fit, tgt=None):
         cacheKey = (fit.ID, None, tgt)
         try:
-            plotData = self._plotCache[fit.ID][cacheKey]
+            plotData = self._plotCache[cacheKey][(ySpec, xSpec)]
         except KeyError:
             plotData = self._calcPlotPoints(mainInput, miscInputs, xSpec, ySpec, fit, tgt)
             self._plotCache.setdefault(cacheKey, {})[(ySpec, xSpec)] = plotData
@@ -109,10 +109,22 @@ class FitGraph(metaclass=ABCMeta):
 
     # Calculation stuff
     def _calcPlotPoints(self, mainInput, miscInputs, xSpec, ySpec, fit, tgt):
-        mainInput, miscInputs = self._normalizeParams(mainInput, miscInputs, fit, tgt)
-        mainInput, miscInputs = self._limitParams(mainInput, miscInputs, fit, tgt)
-        xs, ys = self._getPoints(mainInput, miscInputs, xSpec, ySpec, fit, tgt)
-        xs = self._denormalizeValues(xs, xSpec, fit, tgt)
+        mainParam, miscParams = self._normalizeParams(mainInput, miscInputs, fit, tgt)
+        mainParam, miscParams = self._limitParams(mainParam, miscParams, fit, tgt)
+        xs, ys = self._getPoints(mainParam, miscParams, xSpec, ySpec, fit, tgt)
+        # Sometimes denormalizer may fail (e.g. during conversion of 0 ship speed to %).
+        # If both inputs and outputs are in %, do some extra processing to at least have
+        # proper graph which shows that ship has the same value over whole specified
+        # relative parameter range
+        try:
+            xs = self._denormalizeValues(xs, xSpec, fit, tgt)
+        except KeyboardInterrupt:
+            raise
+        except:
+            if mainInput.unit == xSpec.unit == '%' and len(xs) >= 2:
+                xs = list(self._iterLinear(mainInput.value, segments=len(xs) - 1))
+            else:
+                raise
         ys = self._denormalizeValues(ys, ySpec, fit, tgt)
         return xs, ys
 
@@ -183,11 +195,11 @@ class FitGraph(metaclass=ABCMeta):
             values = [denormalizer(v, fit, tgt) for v in values]
         return values
 
-    def _iterLinear(self, valRange, resolution=200):
+    def _iterLinear(self, valRange, segments=200):
         rangeLow = min(valRange)
         rangeHigh = max(valRange)
         # Amount is amount of ranges between points here, not amount of points
-        step = (rangeHigh - rangeLow) / resolution
+        step = (rangeHigh - rangeLow) / segments
         if step == 0:
             yield rangeLow
         else:
