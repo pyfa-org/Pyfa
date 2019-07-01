@@ -21,6 +21,7 @@
 from itertools import chain
 
 from eos.utils.spoolSupport import SpoolType, SpoolOptions
+from eos.utils.stats import DmgTypes
 from gui.utils.numberFormatter import roundToPrec
 from .base import FitGraph, XDef, YDef, Input, VectorDef
 
@@ -194,6 +195,52 @@ class FitDamageStatsGraph(FitGraph):
         ('tgtSigRad', 'damage'): _tgtSigRad2damage}
 
     # Cache generation
+    def _generateTimeCache(self, fit, maxTime):
+        # Time is none means that time parameter has to be ignored, we do not
+        # need cache for that
+        if maxTime is None:
+            return
+        # If old cache covers passed time value, do not generate anything
+        try:
+            cacheTime = self._calcCache[fit.ID]['timeCache']['maxTime']
+        except KeyError:
+            pass
+        else:
+            if maxTime <= cacheTime:
+                return
+        timeCache = self._calcCache.setdefault(fit.ID, {})['timeCache'] = {'maxTime': maxTime}
+        intCacheDps = {}
+        intCacheVolley = {}
+        intCacheDmg = {}
+
+        # Modules
+        for mod in fit.modules:
+            if not mod.isDealingDamage():
+                continue
+            cycleParams = mod.getCycleParameters(reloadOverride=True)
+            if cycleParams is None:
+                continue
+            currentTime = 0
+            nonstopCycles = 0
+            # Damage
+            modCacheDmg = intCacheDmg[mod] = {}
+            currentDmg = DmgTypes(0, 0, 0, 0)
+            for cycleTimeMs, inactiveTimeMs in cycleParams.iterCycles():
+                volleyParams = mod.getVolleyParameters(spoolOptions=SpoolOptions(SpoolType.CYCLES, nonstopCycles, True))
+                for volleyTimeMs, volley in volleyParams.items():
+                    # Damage
+                    if volley.total > 0:
+                        currentDmg += volley
+                        modCacheDmg[currentTime + volleyTimeMs / 1000] = currentDmg
+                if inactiveTimeMs == 0:
+                    nonstopCycles += 1
+                else:
+                    nonstopCycles = 0
+                if currentTime > maxTime:
+                    break
+                currentTime += cycleTimeMs / 1000 + inactiveTimeMs / 1000
+
+
     def _generateTimeCacheDmg(self, fit, maxTime):
         if fit.ID in self._calcCache and 'timeDmg' in self._calcCache[fit.ID]:
             return
