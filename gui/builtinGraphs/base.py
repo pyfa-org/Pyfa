@@ -114,13 +114,11 @@ class FitGraph(metaclass=ABCMeta):
         xs, ys = self._getPoints(mainParam, miscParams, xSpec, ySpec, fit, tgt)
         # Sometimes denormalizer may fail (e.g. during conversion of 0 ship speed to %).
         # If both inputs and outputs are in %, do some extra processing to at least have
-        # proper graph which shows that ship has the same value over whole specified
+        # proper graph which shows that fit has the same value over whole specified
         # relative parameter range
         try:
             xs = self._denormalizeValues(xs, xSpec, fit, tgt)
-        except KeyboardInterrupt:
-            raise
-        except:
+        except ZeroDivisionError:
             if mainInput.unit == xSpec.unit == '%' and len(xs) >= 2:
                 xs = list(self._iterLinear(mainInput.value, segments=len(xs) - 1))
             else:
