@@ -213,6 +213,30 @@ class FitDamageStatsGraph(FitGraph):
         intCacheVolley = {}
         intCacheDmg = {}
 
+        def addDpsVolley(ddKey, addedTimeStart, addedTimeFinish, addedVolleys):
+            if not addedVolleys:
+                return
+            addedDps = sum(addedVolleys) / (addedTimeFinish - addedTimeStart)
+            if addedDps.total > 0:
+                ddCacheDps = intCacheDps.setdefault(ddKey, [])
+                ddCacheDps.append((addedTimeStart, addedTimeFinish, addedDps))
+            bestVolley = max(addedVolleys, key=lambda v: v.total)
+            if bestVolley.total > 0:
+                ddCacheVolley = intCacheVolley.setdefault(ddKey, [])
+                ddCacheVolley.append((addedTimeStart, addedTimeFinish, bestVolley))
+
+        def addDmg(ddKey, addedTime, addedDmg):
+            if addedDmg.total == 0:
+                return
+            ddCache = intCacheDmg.setdefault(ddKey, {})
+            try:
+                maxTime = max(ddCache)
+            except ValueError:
+                ddCache[addedTime] = addedDmg
+                return
+            prevDmg = ddCache[maxTime]
+            ddCache[addedTime] = prevDmg + addedTime
+
         # Modules
         for mod in fit.modules:
             if not mod.isDealingDamage():
@@ -222,24 +246,60 @@ class FitDamageStatsGraph(FitGraph):
                 continue
             currentTime = 0
             nonstopCycles = 0
-            # Damage
-            modCacheDmg = intCacheDmg[mod] = {}
-            currentDmg = DmgTypes(0, 0, 0, 0)
             for cycleTimeMs, inactiveTimeMs in cycleParams.iterCycles():
+                cycleVolleys = []
                 volleyParams = mod.getVolleyParameters(spoolOptions=SpoolOptions(SpoolType.CYCLES, nonstopCycles, True))
                 for volleyTimeMs, volley in volleyParams.items():
-                    # Damage
-                    if volley.total > 0:
-                        currentDmg += volley
-                        modCacheDmg[currentTime + volleyTimeMs / 1000] = currentDmg
-                if inactiveTimeMs == 0:
-                    nonstopCycles += 1
-                else:
+                    cycleVolleys.append(volley)
+                    addDmg(mod, currentTime + volleyTimeMs / 1000, volley)
+                addDpsVolley(mod, currentTime, currentTime + cycleTimeMs / 1000, cycleVolleys)
+                if inactiveTimeMs > 0:
                     nonstopCycles = 0
+                else:
+                    nonstopCycles += 1
                 if currentTime > maxTime:
                     break
                 currentTime += cycleTimeMs / 1000 + inactiveTimeMs / 1000
-
+        # Drones
+        for drone in fit.drones:
+            if not drone.isDealingDamage():
+                continue
+            cycleParams = drone.getCycleParameters(reloadOverride=True)
+            if cycleParams is None:
+                continue
+            currentTime = 0
+            volleyParams = drone.getVolleyParameters()
+            for cycleTimeMs, inactiveTimeMs in cycleParams.iterCycles():
+                cycleVolleys = []
+                for volleyTimeMs, volley in volleyParams.items():
+                    cycleVolleys.append(volley)
+                    addDmg(drone, currentTime + volleyTimeMs / 1000, volley)
+                addDpsVolley(drone, currentTime, currentTime + cycleTimeMs / 1000, cycleVolleys)
+                if currentTime > maxTime:
+                    break
+                currentTime += cycleTimeMs / 1000 + inactiveTimeMs / 1000
+        # Fighters
+        for fighter in fit.fighters:
+            if not fighter.isDealingDamage():
+                continue
+            cycleParams = fighter.getCycleParametersPerEffectOptimizedDps(reloadOverride=True)
+            if cycleParams is None:
+                continue
+            volleyParams = fighter.getVolleyParametersPerEffect()
+            for effectID, abilityCycleParams in cycleParams.items():
+                if effectID not in volleyParams:
+                    continue
+                currentTime = 0
+                abilityVolleyParams = volleyParams[effectID]
+                for cycleTimeMs, inactiveTimeMs in abilityCycleParams.iterCycles():
+                    cycleVolleys = []
+                    for volleyTimeMs, volley in abilityVolleyParams.items():
+                        cycleVolleys.append(volley)
+                        addDmg((fighter, effectID), currentTime + volleyTimeMs / 1000, volley)
+                    addDpsVolley((fighter, effectID), currentTime, currentTime + cycleTimeMs / 1000, cycleVolleys)
+                    if currentTime > maxTime:
+                        break
+                    currentTime += cycleTimeMs / 1000 + inactiveTimeMs / 1000
 
     def _generateTimeCacheDmg(self, fit, maxTime):
         if fit.ID in self._calcCache and 'timeDmg' in self._calcCache[fit.ID]:

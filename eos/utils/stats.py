@@ -68,3 +68,18 @@ class DmgTypes:
         self.explosive += other.explosive
         self._calcTotal()
         return self
+
+    def __truediv__(self, div):
+        return type(self)(
+            em=self.em + div,
+            thermal=self.thermal + div,
+            kinetic=self.kinetic + div,
+            explosive=self.explosive + div)
+
+    def __itruediv__(self, div):
+        self.em /= div
+        self.thermal /= div
+        self.kinetic /= div
+        self.explosive /= div
+        self._calcTotal()
+        return self
