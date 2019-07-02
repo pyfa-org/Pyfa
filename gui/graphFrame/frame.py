@@ -220,6 +220,7 @@ class GraphFrame(wx.Frame):
             except Exception as ex:
                 pyfalog.warning('Invalid values in "{0}"', fit.name)
                 self.canvas.draw()
+                self.Refresh()
                 return
 
         # Special case for when we do not show Y = 0 and have no fits
