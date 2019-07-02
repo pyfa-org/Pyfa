@@ -229,7 +229,11 @@ class FitDamageStatsGraph(FitGraph):
         for time in sorted(changesMap):
             timeDmgData = copy(timeDmgData)
             for key in changesMap[time]:
-                timeDmgData[key] = intCache[key][time]
+                keyDmg = intCache[key][time]
+                if key in timeDmgData:
+                    timeDmgData[key] = timeDmgData[key] + keyDmg
+                else:
+                    timeDmgData[key] = keyDmg
             finalCache[time] = timeDmgData
         # We do not need intermediate cache once we have final
         del timeCache['intermediateDmg']
@@ -257,14 +261,7 @@ class FitDamageStatsGraph(FitGraph):
         def addDmg(ddKey, addedTime, addedDmg):
             if addedDmg.total == 0:
                 return
-            ddCache = intCacheDmg.setdefault(ddKey, {})
-            try:
-                maxTime = max(ddCache)
-            except ValueError:
-                ddCache[addedTime] = addedDmg
-                return
-            prevDmg = ddCache[maxTime]
-            ddCache[addedTime] = prevDmg + addedDmg
+            intCacheDmg.setdefault(ddKey, {})[addedTime] = addedDmg
 
         # Modules
         for mod in fit.modules:
