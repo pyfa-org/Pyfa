@@ -125,13 +125,17 @@ class FitDamageStatsGraph(FitGraph):
     def _time2damage(self, mainInput, miscInputs, fit, tgt):
         xs = []
         ys = []
+
+        def calcDamageTmp(timeDmg):
+            return roundToPrec(sum(dt.total for dt in timeDmg.values()), 6)
+
         minTime, maxTime = mainInput[1]
         self._generateTimeCacheDmg(fit, maxTime)
-        cache = self._calcCache[fit.ID]['timeDmg']
+        cache = self._calcCache[fit.ID]['timeCache']['finalDmg']
         currentDmg = None
         for currentTime in sorted(cache):
             prevDmg = currentDmg
-            currentDmg = roundToPrec(cache[currentTime], 6)
+            currentDmg = calcDamageTmp(cache[currentTime])
             if currentTime < minTime:
                 continue
             # First set of data points
