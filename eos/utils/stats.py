@@ -18,6 +18,9 @@
 # ===============================================================================
 
 
+from utils.repr import makeReprStr
+
+
 class DmgTypes:
     """Container for damage data stats."""
 
@@ -71,10 +74,10 @@ class DmgTypes:
 
     def __truediv__(self, div):
         return type(self)(
-            em=self.em + div,
-            thermal=self.thermal + div,
-            kinetic=self.kinetic + div,
-            explosive=self.explosive + div)
+            em=self.em / div,
+            thermal=self.thermal / div,
+            kinetic=self.kinetic / div,
+            explosive=self.explosive / div)
 
     def __itruediv__(self, div):
         self.em /= div
@@ -83,3 +86,7 @@ class DmgTypes:
         self.explosive /= div
         self._calcTotal()
         return self
+
+    def __repr__(self):
+        spec = ['em', 'thermal', 'kinetic', 'explosive', 'total']
+        return makeReprStr(self, spec)

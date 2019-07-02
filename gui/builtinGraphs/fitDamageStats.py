@@ -18,6 +18,7 @@
 # =============================================================================
 
 
+from copy import copy
 from itertools import chain
 
 from eos.utils.spoolSupport import SpoolType, SpoolOptions
@@ -195,35 +196,63 @@ class FitDamageStatsGraph(FitGraph):
         ('tgtSigRad', 'damage'): _tgtSigRad2damage}
 
     # Cache generation
-    def _generateTimeCache(self, fit, maxTime):
-        # Time is none means that time parameter has to be ignored, we do not
-        # need cache for that
+    def _generateTimeCacheDpsVolley(self, fit, maxTime):
+        # Time is none means that time parameter has to be ignored,
+        # we do not need cache for that
+        if maxTime is None:
+            return True
+        self._generateTimeCacheIntermediate(fit, maxTime)
+
+    def _generateTimeCacheDmg(self, fit, maxTime):
+        # Time is none means that time parameter has to be ignored,
+        # we do not need cache for that
         if maxTime is None:
             return
-        # If old cache covers passed time value, do not generate anything
-        try:
-            cacheTime = self._calcCache[fit.ID]['timeCache']['maxTime']
-        except KeyError:
-            pass
-        else:
-            if maxTime <= cacheTime:
-                return
+        self._generateTimeCacheIntermediate(fit, maxTime)
+        timeCache = self._calcCache[fit.ID]['timeCache']
+        # Final cache has been generated already, don't do anything
+        if 'finalDmg' in timeCache:
+            return
+        # Here we convert cache in form of:
+        # {time: {key: damage done by key by this time}}
+        intCache = timeCache['intermediateDmg']
+        finalCache = timeCache['finalDmg'] = {}
+        changesMap = {}
+        for key, dmgMap in intCache.items():
+            for time in dmgMap:
+                changesMap.setdefault(time, []).append(key)
+        timeDmgData = {}
+        for time in sorted(changesMap):
+            timeDmgData = copy(timeDmgData)
+            for key in changesMap[time]:
+                keyDmg = intCache[key][time]
+                if key in timeDmgData:
+                    timeDmgData[key] = timeDmgData[key] + keyDmg
+                else:
+                    timeDmgData[key] = keyDmg
+            finalCache[time] = timeDmgData
+        # We do not need intermediate cache once we have final
+        del timeCache['intermediateDmg']
+
+    def _generateTimeCacheIntermediate(self, fit, maxTime):
+        if self._isTimeCacheValid(fit, maxTime):
+            return
         timeCache = self._calcCache.setdefault(fit.ID, {})['timeCache'] = {'maxTime': maxTime}
-        intCacheDps = {}
-        intCacheVolley = {}
-        intCacheDmg = {}
+        intCacheDpsVolley = timeCache['intermediateDpsVolley'] = {}
+        intCacheDmg = timeCache['intermediateDmg'] = {}
 
         def addDpsVolley(ddKey, addedTimeStart, addedTimeFinish, addedVolleys):
             if not addedVolleys:
                 return
-            addedDps = sum(addedVolleys) / (addedTimeFinish - addedTimeStart)
-            if addedDps.total > 0:
-                ddCacheDps = intCacheDps.setdefault(ddKey, [])
-                ddCacheDps.append((addedTimeStart, addedTimeFinish, addedDps))
-            bestVolley = max(addedVolleys, key=lambda v: v.total)
-            if bestVolley.total > 0:
-                ddCacheVolley = intCacheVolley.setdefault(ddKey, [])
-                ddCacheVolley.append((addedTimeStart, addedTimeFinish, bestVolley))
+            volleySum = sum(addedVolleys, DmgTypes(0, 0, 0, 0))
+            if volleySum.total > 0:
+                addedDps = volleySum / (addedTimeFinish - addedTimeStart)
+                # We can take "just best" volley, no matter target resistances, because all
+                # known items have the same damage type ratio throughout their cycle - and
+                # applying resistances doesn't change final outcome
+                bestVolley = max(addedVolleys, key=lambda v: v.total)
+                ddCacheDps = intCacheDpsVolley.setdefault(ddKey, [])
+                ddCacheDps.append((addedTimeStart, addedTimeFinish, addedDps, bestVolley))
 
         def addDmg(ddKey, addedTime, addedDmg):
             if addedDmg.total == 0:
@@ -235,7 +264,7 @@ class FitDamageStatsGraph(FitGraph):
                 ddCache[addedTime] = addedDmg
                 return
             prevDmg = ddCache[maxTime]
-            ddCache[addedTime] = prevDmg + addedTime
+            ddCache[addedTime] = prevDmg + addedDmg
 
         # Modules
         for mod in fit.modules:
@@ -301,75 +330,12 @@ class FitDamageStatsGraph(FitGraph):
                         break
                     currentTime += cycleTimeMs / 1000 + inactiveTimeMs / 1000
 
-    def _generateTimeCacheDmg(self, fit, maxTime):
-        if fit.ID in self._calcCache and 'timeDmg' in self._calcCache[fit.ID]:
-            return
-        fitCache = self._calcCache.setdefault(fit.ID, {})
-        cache = fitCache['timeDmg'] = {}
-
-        def addDmg(addedTime, addedDmg):
-            if addedDmg == 0:
-                return
-            if addedTime not in cache:
-                prevTime = max((t for t in cache if t < addedTime), default=None)
-                if prevTime is None:
-                    cache[addedTime] = 0
-                else:
-                    cache[addedTime] = cache[prevTime]
-            for time in (t for t in cache if t >= addedTime):
-                cache[time] += addedDmg
-
-        for mod in fit.modules:
-            if not mod.isDealingDamage():
-                continue
-            cycleParams = mod.getCycleParameters(reloadOverride=True)
-            if cycleParams is None:
-                continue
-            currentTime = 0
-            nonstopCycles = 0
-            for cycleTimeMs, inactiveTimeMs in cycleParams.iterCycles():
-                volleyParams = mod.getVolleyParameters(spoolOptions=SpoolOptions(SpoolType.CYCLES, nonstopCycles, True))
-                for volleyTimeMs, volley in volleyParams.items():
-                    addDmg(currentTime + volleyTimeMs / 1000, volley.total)
-                if inactiveTimeMs == 0:
-                    nonstopCycles += 1
-                else:
-                    nonstopCycles = 0
-                if currentTime > maxTime:
-                    break
-                currentTime += cycleTimeMs / 1000 + inactiveTimeMs / 1000
-        for drone in fit.drones:
-            if not drone.isDealingDamage():
-                continue
-            cycleParams = drone.getCycleParameters(reloadOverride=True)
-            if cycleParams is None:
-                continue
-            currentTime = 0
-            volleyParams = drone.getVolleyParameters()
-            for cycleTimeMs, inactiveTimeMs in cycleParams.iterCycles():
-                for volleyTimeMs, volley in volleyParams.items():
-                    addDmg(currentTime + volleyTimeMs / 1000, volley.total)
-                if currentTime > maxTime:
-                    break
-                currentTime += cycleTimeMs / 1000 + inactiveTimeMs / 1000
-        for fighter in fit.fighters:
-            if not fighter.isDealingDamage():
-                continue
-            cycleParams = fighter.getCycleParametersPerEffectOptimizedDps(reloadOverride=True)
-            if cycleParams is None:
-                continue
-            volleyParams = fighter.getVolleyParametersPerEffect()
-            for effectID, abilityCycleParams in cycleParams.items():
-                if effectID not in volleyParams:
-                    continue
-                currentTime = 0
-                abilityVolleyParams = volleyParams[effectID]
-                for cycleTimeMs, inactiveTimeMs in abilityCycleParams.iterCycles():
-                    for volleyTimeMs, volley in abilityVolleyParams.items():
-                        addDmg(currentTime + volleyTimeMs / 1000, volley.total)
-                    if currentTime > maxTime:
-                        break
-                    currentTime += cycleTimeMs / 1000 + inactiveTimeMs / 1000
+    def _isTimeCacheValid(self, fit, maxTime):
+        try:
+            cacheMaxTime = self._calcCache[fit.ID]['timeCache']['maxTime']
+        except KeyError:
+            return False
+        return maxTime <= cacheMaxTime
 
     def _generateTimeCacheDps(self, fit, maxTime):
         if fit.ID in self._calcCache and 'timeDps' in self._calcCache[fit.ID]:
