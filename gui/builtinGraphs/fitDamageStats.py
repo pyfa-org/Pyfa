@@ -21,9 +21,9 @@
 from copy import copy
 from itertools import chain
 
+from eos.utils.float import floatUnerr
 from eos.utils.spoolSupport import SpoolType, SpoolOptions
 from eos.utils.stats import DmgTypes
-from gui.utils.numberFormatter import roundToPrec
 from .base import FitGraph, XDef, YDef, Input, VectorDef
 
 
@@ -56,15 +56,13 @@ class FitDamageStatsGraph(FitGraph):
         ('distance', 'km'): lambda v, fit, tgt: v * 1000,
         ('atkSpeed', '%'): lambda v, fit, tgt: v / 100 * fit.ship.getModifiedItemAttr('maxVelocity'),
         ('tgtSpeed', '%'): lambda v, fit, tgt: v / 100 * tgt.ship.getModifiedItemAttr('maxVelocity'),
-        ('tgtSigRad', '%'): lambda v, fit, tgt: v / 100 * fit.ship.getModifiedItemAttr('signatureRadius')
-    }
+        ('tgtSigRad', '%'): lambda v, fit, tgt: v / 100 * fit.ship.getModifiedItemAttr('signatureRadius')}
     _limiters = {
         'time': lambda fit, tgt: (0, 2500)}
     _denormalizers = {
         ('distance', 'km'): lambda v, fit, tgt: v / 1000,
         ('tgtSpeed', '%'): lambda v, fit, tgt: v * 100 / tgt.ship.getModifiedItemAttr('maxVelocity'),
-        ('tgtSigRad', '%'): lambda v, fit, tgt: v * 100 / fit.ship.getModifiedItemAttr('signatureRadius')
-    }
+        ('tgtSigRad', '%'): lambda v, fit, tgt: v * 100 / fit.ship.getModifiedItemAttr('signatureRadius')}
 
     def _distance2dps(self, mainInput, miscInputs, fit, tgt):
         return [], []
@@ -76,96 +74,22 @@ class FitDamageStatsGraph(FitGraph):
         return [], []
 
     def _time2dps(self, mainInput, miscInputs, fit, tgt):
-        xs = []
-        ys = []
-        minTime, maxTime = mainInput[1]
-        self._generateTimeCacheDps(fit, maxTime)
-        cache = self._calcCache[fit.ID]['timeDps']
-        currentDps = None
-        for currentTime in sorted(cache):
-            prevDps = currentDps
-            currentDps = roundToPrec(cache[currentTime], 6)
-            if currentTime < minTime:
-                continue
-            # First set of data points
-            if not xs:
-                # Start at exactly requested time, at last known value
-                initialDps = prevDps or 0
-                xs.append(minTime)
-                ys.append(initialDps)
-                # If current time is bigger then starting, extend plot to that time with old value
-                if currentTime > minTime:
-                    xs.append(currentTime)
-                    ys.append(initialDps)
-                # If new value is different, extend it with new point to the new value
-                if currentDps != prevDps:
-                    xs.append(currentTime)
-                    ys.append(currentDps)
-                continue
-            # Last data point
-            if currentTime >= maxTime:
-                xs.append(maxTime)
-                ys.append(prevDps)
-                break
-            # Anything in-between
-            if currentDps != prevDps:
-                if prevDps is not None:
-                    xs.append(currentTime)
-                    ys.append(prevDps)
-                xs.append(currentTime)
-                ys.append(currentDps)
-        if max(xs) < maxTime:
-            xs.append(maxTime)
-            ys.append(currentDps or 0)
-        return xs, ys
+        def calcDpsTmp(timeDmg):
+            return floatUnerr(sum(dts[0].total for dts in timeDmg.values()))
+        self._generateTimeCacheDpsVolley(fit, mainInput[1][1])
+        return self._composeTimeGraph(mainInput, fit, 'finalDpsVolley', calcDpsTmp)
 
     def _time2volley(self, mainInput, miscInputs, fit, tgt):
-        return [], []
+        def calcVolleyTmp(timeDmg):
+            return floatUnerr(sum(dts[1].total for dts in timeDmg.values()))
+        self._generateTimeCacheDpsVolley(fit, mainInput[1][1])
+        return self._composeTimeGraph(mainInput, fit, 'finalDpsVolley', calcVolleyTmp)
 
     def _time2damage(self, mainInput, miscInputs, fit, tgt):
-        xs = []
-        ys = []
-
         def calcDamageTmp(timeDmg):
-            return roundToPrec(sum(dt.total for dt in timeDmg.values()), 6)
-
-        minTime, maxTime = mainInput[1]
-        self._generateTimeCacheDmg(fit, maxTime)
-        cache = self._calcCache[fit.ID]['timeCache']['finalDmg']
-        currentDmg = None
-        for currentTime in sorted(cache):
-            prevDmg = currentDmg
-            currentDmg = calcDamageTmp(cache[currentTime])
-            if currentTime < minTime:
-                continue
-            # First set of data points
-            if not xs:
-                # Start at exactly requested time, at last known value
-                initialDmg = prevDmg or 0
-                xs.append(minTime)
-                ys.append(initialDmg)
-                # If current time is bigger then starting, extend plot to that time with old value
-                if currentTime > minTime:
-                    xs.append(currentTime)
-                    ys.append(initialDmg)
-                # If new value is different, extend it with new point to the new value
-                if currentDmg != prevDmg:
-                    xs.append(currentTime)
-                    ys.append(currentDmg)
-                continue
-            # Last data point
-            if currentTime >= maxTime:
-                xs.append(maxTime)
-                ys.append(prevDmg)
-                break
-            # Anything in-between
-            if currentDmg != prevDmg:
-                if prevDmg is not None:
-                    xs.append(currentTime)
-                    ys.append(prevDmg)
-                xs.append(currentTime)
-                ys.append(currentDmg)
-        return xs, ys
+            return floatUnerr(sum(dt.total for dt in timeDmg.values()))
+        self._generateTimeCacheDmg(fit, mainInput[1][1])
+        return self._composeTimeGraph(mainInput, fit, 'finalDmg', calcDamageTmp)
 
     def _tgtSpeed2dps(self, mainInput, miscInputs, fit, tgt):
         return [], []
@@ -206,6 +130,47 @@ class FitDamageStatsGraph(FitGraph):
         if maxTime is None:
             return True
         self._generateTimeCacheIntermediate(fit, maxTime)
+        timeCache = self._calcCache[fit.ID]['timeCache']
+        # Final cache has been generated already, don't do anything
+        if 'finalDpsVolley' in timeCache:
+            return
+        # Convert cache from segments with assigned values into points
+        # which are located at times when dps/volley values change
+        pointCache = {}
+        for key, dmgList in timeCache['intermediateDpsVolley'].items():
+            pointData = pointCache[key] = {}
+            prevDps = None
+            prevVolley = None
+            prevTimeEnd = None
+            for timeStart, timeEnd, dps, volley in dmgList:
+                # First item
+                if not pointData:
+                    pointData[timeStart] = (dps, volley)
+                # Gap between items
+                elif floatUnerr(prevTimeEnd) < floatUnerr(timeStart):
+                    pointData[prevTimeEnd] = (DmgTypes(0, 0, 0, 0), DmgTypes(0, 0, 0, 0))
+                    pointData[timeStart] = (dps, volley)
+                # Changed value
+                elif dps != prevDps or volley != prevVolley:
+                    pointData[timeStart] = (dps, volley)
+                prevDps = dps
+                prevVolley = volley
+                prevTimeEnd = timeEnd
+        # We have another intermediate form, do not need old one any longer
+        del timeCache['intermediateDpsVolley']
+        changesByTime = {}
+        for key, dmgMap in pointCache.items():
+            for time in dmgMap:
+                changesByTime.setdefault(time, []).append(key)
+        # Here we convert cache to following format:
+        # {time: {key: (dps, volley}}
+        finalCache = timeCache['finalDpsVolley'] = {}
+        timeDmgData = {}
+        for time in sorted(changesByTime):
+            timeDmgData = copy(timeDmgData)
+            for key in changesByTime[time]:
+                timeDmgData[key] = pointCache[key][time]
+            finalCache[time] = timeDmgData
 
     def _generateTimeCacheDmg(self, fit, maxTime):
         # Time is none means that time parameter has to be ignored,
@@ -217,18 +182,18 @@ class FitDamageStatsGraph(FitGraph):
         # Final cache has been generated already, don't do anything
         if 'finalDmg' in timeCache:
             return
-        # Here we convert cache in form of:
-        # {time: {key: damage done by key by this time}}
         intCache = timeCache['intermediateDmg']
-        finalCache = timeCache['finalDmg'] = {}
-        changesMap = {}
+        changesByTime = {}
         for key, dmgMap in intCache.items():
             for time in dmgMap:
-                changesMap.setdefault(time, []).append(key)
+                changesByTime.setdefault(time, []).append(key)
+        # Here we convert cache to following format:
+        # {time: {key: damage done by key at this time}}
+        finalCache = timeCache['finalDmg'] = {}
         timeDmgData = {}
-        for time in sorted(changesMap):
+        for time in sorted(changesByTime):
             timeDmgData = copy(timeDmgData)
-            for key in changesMap[time]:
+            for key in changesByTime[time]:
                 keyDmg = intCache[key][time]
                 if key in timeDmgData:
                     timeDmgData[key] = timeDmgData[key] + keyDmg
@@ -411,6 +376,51 @@ class FitDamageStatsGraph(FitGraph):
             finalCache[time] = dps
         fitCache = self._calcCache.setdefault(fit.ID, {})
         fitCache['timeDps'] = finalCache
+
+    def _composeTimeGraph(self, mainInput, fit, cacheName, calcFunc):
+        xs = []
+        ys = []
+
+        minTime, maxTime = mainInput[1]
+        cache = self._calcCache[fit.ID]['timeCache'][cacheName]
+        currentDps = None
+        currentTime = None
+        for currentTime in sorted(cache):
+            prevDps = currentDps
+            currentDps = calcFunc(cache[currentTime])
+            if currentTime < minTime:
+                continue
+            # First set of data points
+            if not xs:
+                # Start at exactly requested time, at last known value
+                initialDps = prevDps or 0
+                xs.append(minTime)
+                ys.append(initialDps)
+                # If current time is bigger then starting, extend plot to that time with old value
+                if currentTime > minTime:
+                    xs.append(currentTime)
+                    ys.append(initialDps)
+                # If new value is different, extend it with new point to the new value
+                if currentDps != prevDps:
+                    xs.append(currentTime)
+                    ys.append(currentDps)
+                continue
+            # Last data point
+            if currentTime >= maxTime:
+                xs.append(maxTime)
+                ys.append(prevDps)
+                break
+            # Anything in-between
+            if currentDps != prevDps:
+                if prevDps is not None:
+                    xs.append(currentTime)
+                    ys.append(prevDps)
+                xs.append(currentTime)
+                ys.append(currentDps)
+        if maxTime > (currentTime or 0):
+            xs.append(maxTime)
+            ys.append(currentDps or 0)
+        return xs, ys
 
 
 FitDamageStatsGraph.register()
