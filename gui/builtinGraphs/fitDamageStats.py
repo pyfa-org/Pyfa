@@ -229,11 +229,7 @@ class FitDamageStatsGraph(FitGraph):
         for time in sorted(changesMap):
             timeDmgData = copy(timeDmgData)
             for key in changesMap[time]:
-                keyDmg = intCache[key][time]
-                if key in timeDmgData:
-                    timeDmgData[key] = timeDmgData[key] + keyDmg
-                else:
-                    timeDmgData[key] = keyDmg
+                timeDmgData[key] = intCache[key][time]
             finalCache[time] = timeDmgData
         # We do not need intermediate cache once we have final
         del timeCache['intermediateDmg']
