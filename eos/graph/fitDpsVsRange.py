@@ -108,21 +108,6 @@ class FitDpsVsRangeGraph(SmoothGraph):
 
         return min(sigRadiusFactor, velocityFactor, 1)
 
-    @classmethod
-    def calculateTurretMultiplier(cls, fit, mod, distance, angle, tgtSpeed, tgtSigRad):
-        # Source for most of turret calculation info: http://wiki.eveonline.com/en/wiki/Falloff
-        chanceToHit = cls.calculateTurretChanceToHit(fit, mod, distance, angle, tgtSpeed, tgtSigRad)
-        if chanceToHit > 0.01:
-            # AvgDPS = Base Damage * [ ( ChanceToHit^2 + ChanceToHit + 0.0499 ) / 2 ]
-            multiplier = (chanceToHit ** 2 + chanceToHit + 0.0499) / 2
-        else:
-            # All hits are wreckings
-            multiplier = chanceToHit * 3
-        dmgScaling = mod.getModifiedItemAttr('turretDamageScalingRadius')
-        if dmgScaling:
-            multiplier = min(1, (float(tgtSigRad) / dmgScaling) ** 2)
-        return multiplier
-
     @staticmethod
     def calculateFighterMissileMultiplier(tgtSpeed, tgtSigRad, ability):
         prefix = ability.attrPrefix
@@ -149,39 +134,6 @@ class FitDpsVsRangeGraph(SmoothGraph):
             velocityFactor = 1
 
         return min(sigRadiusFactor, velocityFactor, 1)
-
-    @staticmethod
-    def calculateTurretChanceToHit(fit, mod, distance, angle, tgtSpeed, tgtSigRad):
-        tracking = mod.getModifiedItemAttr('trackingSpeed')
-        turretOptimal = mod.maxRange
-        turretFalloff = mod.falloff
-        turretSigRes = mod.getModifiedItemAttr('optimalSigRadius')
-        transversal = sin(radians(angle)) * tgtSpeed
-
-        # Angular velocity is calculated using range from ship center to target center.
-        # We do not know target radius but we know attacker radius
-        angDistance = distance + fit.ship.getModifiedItemAttr('radius', 0)
-        if angDistance == 0 and transversal == 0:
-            angularVelocity = 0
-        elif angDistance == 0 and transversal != 0:
-            angularVelocity = inf
-        else:
-            angularVelocity = transversal / angDistance
-        trackingEq = (((angularVelocity / tracking) *
-                       (turretSigRes / tgtSigRad)) ** 2)
-        rangeEq = ((max(0, distance - turretOptimal)) / turretFalloff) ** 2
-
-        return 0.5 ** (trackingEq + rangeEq)
-
-    @staticmethod
-    def calculateModuleMultiplier(mod, distance):
-        # Simplified formula, we make some assumptions about the module
-        # This is basically the calculateTurretChanceToHit without tracking values
-        turretOptimal = mod.maxRange
-        turretFalloff = mod.falloff
-        rangeEq = ((max(0, distance - turretOptimal)) / turretFalloff) ** 2
-
-        return 0.5 ** rangeEq
 
     @staticmethod
     def penalizeModChain(value, mods):

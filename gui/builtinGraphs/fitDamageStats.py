@@ -424,10 +424,25 @@ class FitDamageStatsGraph(FitGraph):
         return xs, ys
 
 
-def calcTurretCth(
+def calcTurretMult(chanceToHit):
+    # https://wiki.eveuniversity.org/Turret_mechanics#Damage
+    wreckingChance = min(chanceToHit, 0.01)
+    wreckingPart = wreckingChance * 3
+    normalChance = chanceToHit - wreckingChance
+    if normalChance > 0:
+        avgDamageMult = (0.01 + chanceToHit) / 2 + 0.49
+        normalPart = normalChance * avgDamageMult
+    else:
+        normalPart = 0
+    totalMult = normalPart + wreckingPart
+    return totalMult
+
+
+def calcTurretChanceToHit(
     atkSpeed, atkAngle, atkRadius, atkOptimalRange, atkFalloffRange, atkTracking, atkOptimalSigRadius,
     distance, tgtSpeed, tgtAngle, tgtRadius, tgtSigRadius
 ):
+    # https://wiki.eveuniversity.org/Turret_mechanics#Hit_Math
     angularSpeed = calcAngularSpeed(atkSpeed, atkAngle, atkRadius, distance, tgtSpeed, tgtAngle, tgtRadius)
     rangeFactor = calcRangeFactor(atkOptimalRange, atkFalloffRange, distance)
     trackingFactor = calcTrackingFactor(atkTracking, atkOptimalSigRadius, angularSpeed, tgtSigRadius)
