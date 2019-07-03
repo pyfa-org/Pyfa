@@ -321,5 +321,5 @@ class GraphControlPanel(wx.Panel):
         self._storedRanges.clear()
 
     def _setVectorDefaults(self):
-        self.srcVector.SetValue(length=0, angle=0)
+        self.srcVector.SetValue(length=0, angle=90)
         self.tgtVector.SetValue(length=1, angle=90)
