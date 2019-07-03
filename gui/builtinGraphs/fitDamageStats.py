@@ -428,11 +428,13 @@ def calculateAngularVelocity(atkSpeed, atkAngle, atkRadius, distance, tgtSpeed, 
     atkAngle = atkAngle * math.pi / 180
     tgtAngle = tgtAngle * math.pi / 180
     ctcDistance = atkRadius + distance + tgtRadius
-    atkSpeedX = atkSpeed * math.cos(atkAngle)
-    atkSpeedY = atkSpeed * math.sin(atkAngle)
-    tgtSpeedX = tgtSpeed * math.cos(tgtAngle)
-    tgtSpeedY = tgtSpeed * math.sin(tgtAngle)
-    relSpeed = math.sqrt((atkSpeedX + tgtSpeedX) ** 2 + (atkSpeedY + tgtSpeedY) ** 2)
+    # Target is to the right of the attacker, so transversal is projection onto Y axis
+    transSpeed = abs(atkSpeed * math.sin(atkAngle) - tgtSpeed * math.sin(tgtAngle))
+    if ctcDistance == 0:
+        angularSpeed = 0 if transSpeed == 0 else math.inf
+    else:
+        angularSpeed = transSpeed / ctcDistance
+    return angularSpeed
 
 
 def calculateRangeFactor(atkOptimalRange, atkFalloffRange, distance):
