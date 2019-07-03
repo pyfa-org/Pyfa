@@ -22,6 +22,8 @@ import math
 from copy import copy
 from itertools import chain
 
+import eos.config
+from eos.const import FittingHardpoint, FittingModuleState
 from eos.utils.float import floatUnerr
 from eos.utils.spoolSupport import SpoolType, SpoolOptions
 from eos.utils.stats import DmgTypes
@@ -66,7 +68,40 @@ class FitDamageStatsGraph(FitGraph):
         ('tgtSigRad', '%'): lambda v, fit, tgt: v * 100 / fit.ship.getModifiedItemAttr('signatureRadius')}
 
     def _distance2dps(self, mainInput, miscInputs, fit, tgt):
-        return [], []
+        xs = []
+        ys = []
+        defaultSpoolValue = eos.config.settings['globalDefaultSpoolupPercentage']
+        miscInputMap = dict(miscInputs)
+        tgtSigRad = miscInputMap.get('tgtSigRad', tgt.ship.getModifiedItemAttr('signatureRadius'))
+        for distance in self._iterLinear(mainInput[1]):
+            totalDps = 0
+            for mod in fit.modules:
+                if not mod.isDealingDamage():
+                    continue
+                modDps = mod.getDps(spoolOptions=SpoolOptions(SpoolType.SCALE, defaultSpoolValue, False)).total
+                if mod.hardpoint == FittingHardpoint.TURRET:
+                    if mod.state >= FittingModuleState.ACTIVE:
+                        totalDps += modDps * getTurretMult(
+                            mod=mod,
+                            fit=fit,
+                            tgt=tgt,
+                            atkSpeed=miscInputMap['atkSpeed'],
+                            atkAngle=miscInputMap['atkAngle'],
+                            distance=distance,
+                            tgtSpeed=miscInputMap['tgtSpeed'],
+                            tgtAngle=miscInputMap['tgtAngle'],
+                            tgtSigRadius=tgtSigRad)
+                elif mod.hardpoint == FittingHardpoint.MISSILE:
+                    if mod.state >= FittingModuleState.ACTIVE:
+                        totalDps += modDps * getLauncherMult(
+                            mod=mod,
+                            fit=fit,
+                            distance=miscInputMap['distance'],
+                            tgtSpeed=miscInputMap['tgtSpeed'],
+                            tgtSigRadius=tgtSigRad)
+            xs.append(distance)
+            ys.append(totalDps)
+        return xs, ys
 
     def _distance2volley(self, mainInput, miscInputs, fit, tgt):
         return [], []
@@ -443,9 +478,12 @@ def getTurretMult(mod, fit, tgt, atkSpeed, atkAngle, distance, tgtSpeed, tgtAngl
 
 
 def getLauncherMult(mod, fit, distance, tgtSpeed, tgtSigRadius):
+    modRange = mod.maxRange
+    if modRange is None:
+        return 0
     mult = _calcMissileMult(
         atkRadius=fit.ship.getModifiedItemAttr('radius'),
-        atkRange=mod.maxRange,
+        atkRange=modRange,
         atkEr=mod.getModifiedChargeAttr('aoeCloudSize'),
         atkEv=mod.getModifiedChargeAttr('aoeVelocity'),
         atkDrf=mod.getModifiedChargeAttr('aoeDamageReductionFactor'),
