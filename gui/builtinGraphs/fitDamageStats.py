@@ -424,7 +424,18 @@ class FitDamageStatsGraph(FitGraph):
         return xs, ys
 
 
-def calculateAngularVelocity(atkSpeed, atkAngle, atkRadius, distance, tgtSpeed, tgtAngle, tgtRadius):
+def calcTurretCth(
+    atkSpeed, atkAngle, atkRadius, atkOptimalRange, atkFalloffRange, atkTracking, atkOptimalSigRadius,
+    distance, tgtSpeed, tgtAngle, tgtRadius, tgtSigRadius
+):
+    angularSpeed = calcAngularSpeed(atkSpeed, atkAngle, atkRadius, distance, tgtSpeed, tgtAngle, tgtRadius)
+    rangeFactor = calcRangeFactor(atkOptimalRange, atkFalloffRange, distance)
+    trackingFactor = calcTrackingFactor(atkTracking, atkOptimalSigRadius, angularSpeed, tgtSigRadius)
+    cth = rangeFactor * trackingFactor
+    return cth
+
+
+def calcAngularSpeed(atkSpeed, atkAngle, atkRadius, distance, tgtSpeed, tgtAngle, tgtRadius):
     atkAngle = atkAngle * math.pi / 180
     tgtAngle = tgtAngle * math.pi / 180
     ctcDistance = atkRadius + distance + tgtRadius
@@ -437,11 +448,11 @@ def calculateAngularVelocity(atkSpeed, atkAngle, atkRadius, distance, tgtSpeed, 
     return angularSpeed
 
 
-def calculateRangeFactor(atkOptimalRange, atkFalloffRange, distance):
+def calcRangeFactor(atkOptimalRange, atkFalloffRange, distance):
     return 0.5 ** ((max(0, distance - atkOptimalRange) / atkFalloffRange) ** 2)
 
 
-def calculateTrackingFactor(atkTracking, atkOptimalSigRadius, angularSpeed, tgtSigRadius):
+def calcTrackingFactor(atkTracking, atkOptimalSigRadius, angularSpeed, tgtSigRadius):
     return 0.5 ** (((angularSpeed * atkOptimalSigRadius) / (atkTracking * tgtSigRadius)) ** 2)
 
 
