@@ -23,6 +23,8 @@ import math
 # noinspection PyPackageRequirements
 import wx
 
+from eos.utils.float import floatUnerr
+
 
 class VectorPicker(wx.Window):
 
@@ -193,7 +195,7 @@ class VectorPicker(wx.Window):
 
     def OnWheel(self, event):
         amount = 0.1 * event.GetWheelRotation() / event.GetWheelDelta()
-        self._length = min(max(self._length + amount, 0.0), 1.0)
+        self._length = floatUnerr(min(max(self._length + amount, 0.0), 1.0))
         self.Refresh()
         self.SendChangeEvent()
 
