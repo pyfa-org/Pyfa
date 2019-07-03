@@ -424,7 +424,99 @@ class FitDamageStatsGraph(FitGraph):
         return xs, ys
 
 
-def calcTurretMult(chanceToHit):
+def getTurretMult(mod, fit, tgt, atkSpeed, atkAngle, distance, tgtSpeed, tgtAngle, tgtSigRadius):
+    cth = _calcTurretChanceToHit(
+        atkSpeed=atkSpeed,
+        atkAngle=atkAngle,
+        atkRadius=fit.ship.getModifiedItemAttr('radius'),
+        atkOptimalRange=mod.maxRange,
+        atkFalloffRange=mod.falloff,
+        atkTracking=mod.getModifiedItemAttr('trackingSpeed'),
+        atkOptimalSigRadius=mod.getModifiedItemAttr('optimalSigRadius'),
+        distance=distance,
+        tgtSpeed=tgtSpeed,
+        tgtAngle=tgtAngle,
+        tgtRadius=tgt.ship.getModifiedItemAttr('radius'),
+        tgtSigRadius=tgtSigRadius)
+    mult = _calcTurretMult(cth)
+    return mult
+
+
+def getLauncherMult(mod, fit, distance, tgtSpeed, tgtSigRadius):
+    mult = _calcMissileMult(
+        atkRadius=fit.ship.getModifiedItemAttr('radius'),
+        atkRange=mod.maxRange,
+        atkEr=mod.getModifiedChargeAttr('aoeCloudSize'),
+        atkEv=mod.getModifiedChargeAttr('aoeVelocity'),
+        atkDrf=mod.getModifiedChargeAttr('aoeDamageReductionFactor'),
+        distance=distance,
+        tgtSpeed=tgtSpeed,
+        tgtSigRadius=tgtSigRadius)
+    return mult
+
+
+def getDroneMult(drone, fit, tgt, atkSpeed, atkAngle, distance, tgtSpeed, tgtAngle, tgtSigRadius):
+    if distance > fit.extraAttributes['droneControlRange']:
+        return 0
+    droneSpeed = drone.getModifiedItemAttr('maxVelocity')
+    # Hard to simulate drone behavior, so assume chance to hit is 1
+    # when drone is not sentry and is faster than its target
+    if droneSpeed > 1 and droneSpeed >= tgtSpeed:
+        cth = 1
+    # Otherwise put the drone into center of the ship, move it at its max speed or ship's speed
+    # (whichever is lower) towards direction of attacking ship and see how well it projects
+    else:
+        droneRadius = drone.getModifiedItemAttr('radius')
+        cth = _calcTurretChanceToHit(
+            atkSpeed=min(atkSpeed, droneSpeed),
+            atkAngle=atkAngle,
+            atkRadius=droneRadius,
+            atkOptimalRange=drone.maxRange,
+            atkFalloffRange=drone.falloff,
+            atkTracking=drone.getModifiedItemAttr('trackingSpeed'),
+            atkOptimalSigRadius=drone.getModifiedItemAttr('optimalSigRadius'),
+            # As distance is ship surface to ship surface, we adjust it according
+            # to attacker fit's radiuses to have drone surface to ship surface distance
+            distance=distance + fit.ship.getModifiedItemAttr('radius') - droneRadius,
+            tgtSpeed=tgtSpeed,
+            tgtAngle=tgtAngle,
+            tgtRadius=tgt.ship.getModifiedItemAttr('radius'),
+            tgtSigRadius=tgtSigRadius)
+    mult = _calcTurretMult(cth)
+    return mult
+
+
+def getFighterAbilityMult(fighter, ability, fit, distance, tgtSpeed, tgtSigRadius):
+    fighterSpeed = fighter.getModifiedItemAttr('maxVelocity')
+    attrPrefix = ability.attrPrefix
+    if fighterSpeed >= tgtSpeed:
+        rangeFactor = 1
+    # Same as with drones, if fighters are slower - put them to center of
+    # the ship and see how they apply
+    else:
+        rangeFactor = _calcRangeFactor(
+            atkOptimalRange=fighter.getModifiedItemAttr('{}RangeOptimal'.format(attrPrefix)),
+            atkFalloffRange=fighter.getModifiedItemAttr('{}RangeFalloff'.format(attrPrefix)),
+            distance=distance + fit.ship.getModifiedItemAttr('radius') - fighter.getModifiedItemAttr('radius'))
+    drf = fighter.getModifiedItemAttr('{}ReductionFactor'.format(attrPrefix), None)
+    if drf is None:
+        drf = fighter.getModifiedItemAttr('{}DamageReductionFactor'.format(attrPrefix))
+    drs = fighter.getModifiedItemAttr('{}ReductionSensitivity'.format(attrPrefix), None)
+    if drs is None:
+        drs = fighter.getModifiedItemAttr('{}DamageReductionSensitivity'.format(attrPrefix))
+    missileFactor = _calcMissileFactor(
+        atkEr=fighter.getModifiedItemAttr('{}ExplosionRadius'.format(attrPrefix)),
+        atkEv=fighter.getModifiedItemAttr('{}ExplosionVelocity'.format(attrPrefix)),
+        atkDrf=_calcAggregatedDrf(reductionFactor=drf, reductionSensitivity=drs),
+        tgtSpeed=tgtSpeed,
+        tgtSigRadius=tgtSigRadius)
+    mult = rangeFactor * missileFactor
+    return mult
+
+
+# Turret-specific
+def _calcTurretMult(chanceToHit):
+    """Calculate damage multiplier for turret-based weapons."""
     # https://wiki.eveuniversity.org/Turret_mechanics#Damage
     wreckingChance = min(chanceToHit, 0.01)
     wreckingPart = wreckingChance * 3
@@ -438,19 +530,21 @@ def calcTurretMult(chanceToHit):
     return totalMult
 
 
-def calcTurretChanceToHit(
+def _calcTurretChanceToHit(
     atkSpeed, atkAngle, atkRadius, atkOptimalRange, atkFalloffRange, atkTracking, atkOptimalSigRadius,
     distance, tgtSpeed, tgtAngle, tgtRadius, tgtSigRadius
 ):
+    """Calculate chance to hit for turret-based weapons."""
     # https://wiki.eveuniversity.org/Turret_mechanics#Hit_Math
-    angularSpeed = calcAngularSpeed(atkSpeed, atkAngle, atkRadius, distance, tgtSpeed, tgtAngle, tgtRadius)
-    rangeFactor = calcRangeFactor(atkOptimalRange, atkFalloffRange, distance)
-    trackingFactor = calcTrackingFactor(atkTracking, atkOptimalSigRadius, angularSpeed, tgtSigRadius)
+    angularSpeed = _calcAngularSpeed(atkSpeed, atkAngle, atkRadius, distance, tgtSpeed, tgtAngle, tgtRadius)
+    rangeFactor = _calcRangeFactor(atkOptimalRange, atkFalloffRange, distance)
+    trackingFactor = _calcTrackingFactor(atkTracking, atkOptimalSigRadius, angularSpeed, tgtSigRadius)
     cth = rangeFactor * trackingFactor
     return cth
 
 
-def calcAngularSpeed(atkSpeed, atkAngle, atkRadius, distance, tgtSpeed, tgtAngle, tgtRadius):
+def _calcAngularSpeed(atkSpeed, atkAngle, atkRadius, distance, tgtSpeed, tgtAngle, tgtRadius):
+    """Calculate angular speed based on mobility parameters of two ships."""
     atkAngle = atkAngle * math.pi / 180
     tgtAngle = tgtAngle * math.pi / 180
     ctcDistance = atkRadius + distance + tgtRadius
@@ -463,12 +557,50 @@ def calcAngularSpeed(atkSpeed, atkAngle, atkRadius, distance, tgtSpeed, tgtAngle
     return angularSpeed
 
 
-def calcRangeFactor(atkOptimalRange, atkFalloffRange, distance):
-    return 0.5 ** ((max(0, distance - atkOptimalRange) / atkFalloffRange) ** 2)
-
-
-def calcTrackingFactor(atkTracking, atkOptimalSigRadius, angularSpeed, tgtSigRadius):
+def _calcTrackingFactor(atkTracking, atkOptimalSigRadius, angularSpeed, tgtSigRadius):
+    """Calculate tracking chance to hit component."""
     return 0.5 ** (((angularSpeed * atkOptimalSigRadius) / (atkTracking * tgtSigRadius)) ** 2)
+
+
+# Missile-specific
+def _calcMissileMult(atkRadius, atkRange, atkEr, atkEv, atkDrf, distance, tgtSpeed, tgtSigRadius):
+    """Calculate damage multiplier for missile launcher."""
+    # Missiles spawn in the center of the attacking ship
+    if distance + atkRadius > atkRange:
+        mult = 0
+    else:
+        mult = _calcMissileFactor(atkEr, atkEv, atkDrf, tgtSpeed, tgtSigRadius)
+    return mult
+
+
+def _calcFighterMult(atkOptimalRange, atkFalloffRange, atkEr, atkEv, atkDrf, distance, tgtSpeed, tgtSigRadius):
+    """Calculate damage multiplier for separate fighter ability,"""
+    rangeFactor = _calcRangeFactor(atkOptimalRange, atkFalloffRange, distance)
+    missileFactor = _calcMissileFactor(atkEr, atkEv, atkDrf, tgtSpeed, tgtSigRadius)
+    mult = rangeFactor * missileFactor
+    return mult
+
+
+def _calcMissileFactor(atkEr, atkEv, atkDrf, tgtSpeed, tgtSigRadius):
+    """Missile application."""
+    slowPart = tgtSigRadius / atkEr
+    fastPart = ((atkEv * tgtSigRadius) / (atkEr * tgtSpeed)) ** atkDrf
+    totalMult = min(1, slowPart, fastPart)
+    return totalMult
+
+
+def _calcAggregatedDrf(reductionFactor, reductionSensitivity):
+    """
+    Sometimes DRF is specified as 2 separate numbers,
+    here we combine them into generic form.
+    """
+    return math.log(reductionFactor) / math.log(reductionSensitivity)
+
+
+# Generic
+def _calcRangeFactor(atkOptimalRange, atkFalloffRange, distance):
+    """Range strength/chance factor, applicable to guns, ewar, RRs, etc."""
+    return 0.5 ** ((max(0, distance - atkOptimalRange) / atkFalloffRange) ** 2)
 
 
 FitDamageStatsGraph.register()
