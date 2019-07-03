@@ -18,6 +18,7 @@
 # =============================================================================
 
 
+import math
 from copy import copy
 from itertools import chain
 
@@ -423,8 +424,15 @@ class FitDamageStatsGraph(FitGraph):
         return xs, ys
 
 
-def calculateAngularVelocity(atkSpeed, atkAngle, atkRadius, distance, tgtSpeed, tgtAndle, tgtRadius):
+def calculateAngularVelocity(atkSpeed, atkAngle, atkRadius, distance, tgtSpeed, tgtAngle, tgtRadius):
+    atkAngle = atkAngle * math.pi / 180
+    tgtAngle = tgtAngle * math.pi / 180
     ctcDistance = atkRadius + distance + tgtRadius
+    atkSpeedX = atkSpeed * math.cos(atkAngle)
+    atkSpeedY = atkSpeed * math.sin(atkAngle)
+    tgtSpeedX = tgtSpeed * math.cos(tgtAngle)
+    tgtSpeedY = tgtSpeed * math.sin(tgtAngle)
+    relSpeed = math.sqrt((atkSpeedX + tgtSpeedX) ** 2 + (atkSpeedY + tgtSpeedY) ** 2)
 
 
 def calculateRangeFactor(atkOptimalRange, atkFalloffRange, distance):
