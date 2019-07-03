@@ -423,4 +423,16 @@ class FitDamageStatsGraph(FitGraph):
         return xs, ys
 
 
+def calculateAngularVelocity(atkSpeed, atkAngle, atkRadius, distance, tgtSpeed, tgtAndle, tgtRadius):
+    ctcDistance = atkRadius + distance + tgtRadius
+
+
+def calculateRangeFactor(atkOptimalRange, atkFalloffRange, distance):
+    return 0.5 ** ((max(0, distance - atkOptimalRange) / atkFalloffRange) ** 2)
+
+
+def calculateTrackingFactor(atkTracking, atkOptimalSigRadius, angularSpeed, tgtSigRadius):
+    return 0.5 ** (((angularSpeed * atkOptimalSigRadius) / (atkTracking * tgtSigRadius)) ** 2)
+
+
 FitDamageStatsGraph.register()
