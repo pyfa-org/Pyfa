@@ -52,9 +52,9 @@ class VectorPicker(wx.Window):
     @property
     def _tooltip(self):
         if self._directionOnly:
-            return 'Click to set angle\nRight-click to snap to 15% angle'
+            return 'Click to set angle\nShift-click or right-click to snap to 15% angle'
         else:
-            return 'Click to set angle and velocity\nRight-click to snap to 15% angle/5% speed increments\nMouse wheel to change velocity only'
+            return 'Click to set angle and velocity\nShift-click or right-click to snap to 15% angle/5% speed increments\nMouse wheel to change velocity only'
 
     @property
     def _length(self):
@@ -112,8 +112,8 @@ class VectorPicker(wx.Window):
         dc.SetBrush(wx.WHITE_BRUSH)
         dc.DrawCircle(radius + 2, radius + 2, radius)
         a = math.radians(self._angle + self._offset)
-        x = math.sin(a) * radius
-        y = math.cos(a) * radius
+        x = math.cos(a) * radius
+        y = math.sin(a) * radius
         dc.DrawLine(radius + 2, radius + 2, radius + 2 + x * self._length, radius + 2 - y * self._length)
         dc.SetBrush(wx.BLACK_BRUSH)
         dc.DrawCircle(radius + 2 + x * self._length, radius + 2 - y * self._length, 2)
@@ -205,11 +205,11 @@ class VectorPicker(wx.Window):
             x = x - center
             y = center - y
             angle = self._angle
-            length = min((x * x + y * y) ** 0.5 / (center - 2), 1.0)
+            length = min((x ** 2 + y ** 2) ** 0.5 / (center - 2), 1.0)
             if length < 0.01:
                 length = 0
             else:
-                angle = ((math.degrees(math.atan2(x, y)) - self._offset + 180) % 360) - 180
+                angle = ((math.degrees(math.atan2(y, x)) - self._offset + 180) % 360) - 180
             if (self._right and not self._left) or event.ShiftDown():
                 angle = round(angle / 15.0) * 15.0
                 # floor() for length to make it easier to hit 0%, can still hit 100% outside the circle
@@ -218,7 +218,7 @@ class VectorPicker(wx.Window):
                 self._angle = angle
                 self._length = length
                 self.Refresh()
-                if self._right and not self._left:
+                if (self._right and not self._left) or event.ShiftDown():
                     self.SendChangeEvent()
 
     def SendChangeEvent(self):
