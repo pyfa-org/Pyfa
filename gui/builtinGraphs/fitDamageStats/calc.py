@@ -78,11 +78,9 @@ def getBombMult(mod, fit, tgt, distance, tgtSigRadius):
         return 0
     if distance > max(0, modRange - atkRadius + tgtRadius + blastRadius):
         return 0
-    eR = mod.getModifiedChargeAttr('aoeCloudSize')
-    if eR == 0:
-        return 1
-    else:
-        return min(1, tgtSigRadius / eR)
+    return _calcBombFactor(
+        atkEr=mod.getModifiedChargeAttr('aoeCloudSize'),
+        tgtSigRadius=tgtSigRadius)
 
 
 def getGuidedBombMult(mod, fit, distance, tgtSigRadius):
@@ -132,6 +130,13 @@ def getDroneMult(drone, fit, tgt, atkSpeed, atkAngle, distance, tgtSpeed, tgtAng
 def getFighterAbilityMult(fighter, ability, fit, distance, tgtSpeed, tgtSigRadius):
     fighterSpeed = fighter.getModifiedItemAttr('maxVelocity')
     attrPrefix = ability.attrPrefix
+    # It's bomb attack
+    if attrPrefix == 'fighterAbilityLaunchBomb':
+        # Just assume we can land bomb anywhere
+        return _calcBombFactor(
+            atkEr=fighter.getModifiedChargeAttr('aoeCloudSize'),
+            tgtSigRadius=tgtSigRadius)
+    # It's regular missile-based attack
     if fighterSpeed >= tgtSpeed:
         rangeFactor = 1
     # Same as with drones, if fighters are slower - put them to center of
@@ -213,7 +218,8 @@ def _calcMissileFactor(atkEr, atkEv, atkDrf, tgtSpeed, tgtSigRadius):
     """Missile application."""
     factors = [1]
     # "Slow" part
-    factors.append(tgtSigRadius / atkEr)
+    if atkEr > 0:
+        factors.append(tgtSigRadius / atkEr)
     # "Fast" part
     if tgtSpeed > 0:
         factors.append(((atkEv * tgtSigRadius) / (atkEr * tgtSpeed)) ** atkDrf)
@@ -233,3 +239,10 @@ def _calcAggregatedDrf(reductionFactor, reductionSensitivity):
 def _calcRangeFactor(atkOptimalRange, atkFalloffRange, distance):
     """Range strength/chance factor, applicable to guns, ewar, RRs, etc."""
     return 0.5 ** ((max(0, distance - atkOptimalRange) / atkFalloffRange) ** 2)
+
+
+def _calcBombFactor(atkEr, tgtSigRadius):
+    if atkEr == 0:
+        return 1
+    else:
+        return min(1, tgtSigRadius / atkEr)
