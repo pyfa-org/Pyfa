@@ -18,19 +18,23 @@
 # =============================================================================
 
 
-from copy import copy
-from itertools import chain
-
 import eos.config
 from eos.const import FittingHardpoint, FittingModuleState
 from eos.utils.float import floatUnerr
 from eos.utils.spoolSupport import SpoolType, SpoolOptions
-from eos.utils.stats import DmgTypes
 from gui.builtinGraphs.base import FitGraph, XDef, YDef, Input, VectorDef
 from .calc import getTurretMult, getLauncherMult, getDroneMult, getFighterAbilityMult
+from .timeCache import TimeCache
 
 
 class FitDamageStatsGraph(FitGraph):
+
+    def __init__(self):
+        super().__init__()
+        self._timeCache = TimeCache()
+
+    def _clearInternalCache(self, fitID):
+        self._timeCache.clear(fitID)
 
     # UI stuff
     name = 'Damage Stats'
@@ -112,19 +116,19 @@ class FitDamageStatsGraph(FitGraph):
     def _time2dps(self, mainInput, miscInputs, fit, tgt):
         def calcDpsTmp(timeDmg):
             return floatUnerr(sum(dts[0].total for dts in timeDmg.values()))
-        self._generateTimeCacheDpsVolley(fit, mainInput[1][1])
+        self._timeCache.generateFinalFormDpsVolley(fit, mainInput[1][1])
         return self._composeTimeGraph(mainInput, fit, 'finalDpsVolley', calcDpsTmp)
 
     def _time2volley(self, mainInput, miscInputs, fit, tgt):
         def calcVolleyTmp(timeDmg):
             return floatUnerr(sum(dts[1].total for dts in timeDmg.values()))
-        self._generateTimeCacheDpsVolley(fit, mainInput[1][1])
+        self._timeCache.generateFinalFormDpsVolley(fit, mainInput[1][1])
         return self._composeTimeGraph(mainInput, fit, 'finalDpsVolley', calcVolleyTmp)
 
     def _time2damage(self, mainInput, miscInputs, fit, tgt):
         def calcDamageTmp(timeDmg):
             return floatUnerr(sum(dt.total for dt in timeDmg.values()))
-        self._generateTimeCacheDmg(fit, mainInput[1][1])
+        self._timeCache.generateFinalFormDmg(fit, mainInput[1][1])
         return self._composeTimeGraph(mainInput, fit, 'finalDmg', calcDamageTmp)
 
     def _tgtSpeed2dps(self, mainInput, miscInputs, fit, tgt):
@@ -159,266 +163,12 @@ class FitDamageStatsGraph(FitGraph):
         ('tgtSigRad', 'volley'): _tgtSigRad2volley,
         ('tgtSigRad', 'damage'): _tgtSigRad2damage}
 
-    # Cache generation
-    def _generateTimeCacheDpsVolley(self, fit, maxTime):
-        # Time is none means that time parameter has to be ignored,
-        # we do not need cache for that
-        if maxTime is None:
-            return True
-        self._generateTimeCacheIntermediate(fit, maxTime)
-        timeCache = self._calcCache[fit.ID]['timeCache']
-        # Final cache has been generated already, don't do anything
-        if 'finalDpsVolley' in timeCache:
-            return
-        # Convert cache from segments with assigned values into points
-        # which are located at times when dps/volley values change
-        pointCache = {}
-        for key, dmgList in timeCache['intermediateDpsVolley'].items():
-            pointData = pointCache[key] = {}
-            prevDps = None
-            prevVolley = None
-            prevTimeEnd = None
-            for timeStart, timeEnd, dps, volley in dmgList:
-                # First item
-                if not pointData:
-                    pointData[timeStart] = (dps, volley)
-                # Gap between items
-                elif floatUnerr(prevTimeEnd) < floatUnerr(timeStart):
-                    pointData[prevTimeEnd] = (DmgTypes(0, 0, 0, 0), DmgTypes(0, 0, 0, 0))
-                    pointData[timeStart] = (dps, volley)
-                # Changed value
-                elif dps != prevDps or volley != prevVolley:
-                    pointData[timeStart] = (dps, volley)
-                prevDps = dps
-                prevVolley = volley
-                prevTimeEnd = timeEnd
-        # We have another intermediate form, do not need old one any longer
-        del timeCache['intermediateDpsVolley']
-        changesByTime = {}
-        for key, dmgMap in pointCache.items():
-            for time in dmgMap:
-                changesByTime.setdefault(time, []).append(key)
-        # Here we convert cache to following format:
-        # {time: {key: (dps, volley}}
-        finalCache = timeCache['finalDpsVolley'] = {}
-        timeDmgData = {}
-        for time in sorted(changesByTime):
-            timeDmgData = copy(timeDmgData)
-            for key in changesByTime[time]:
-                timeDmgData[key] = pointCache[key][time]
-            finalCache[time] = timeDmgData
-
-    def _generateTimeCacheDmg(self, fit, maxTime):
-        # Time is none means that time parameter has to be ignored,
-        # we do not need cache for that
-        if maxTime is None:
-            return
-        self._generateTimeCacheIntermediate(fit, maxTime)
-        timeCache = self._calcCache[fit.ID]['timeCache']
-        # Final cache has been generated already, don't do anything
-        if 'finalDmg' in timeCache:
-            return
-        intCache = timeCache['intermediateDmg']
-        changesByTime = {}
-        for key, dmgMap in intCache.items():
-            for time in dmgMap:
-                changesByTime.setdefault(time, []).append(key)
-        # Here we convert cache to following format:
-        # {time: {key: damage done by key at this time}}
-        finalCache = timeCache['finalDmg'] = {}
-        timeDmgData = {}
-        for time in sorted(changesByTime):
-            timeDmgData = copy(timeDmgData)
-            for key in changesByTime[time]:
-                keyDmg = intCache[key][time]
-                if key in timeDmgData:
-                    timeDmgData[key] = timeDmgData[key] + keyDmg
-                else:
-                    timeDmgData[key] = keyDmg
-            finalCache[time] = timeDmgData
-        # We do not need intermediate cache once we have final
-        del timeCache['intermediateDmg']
-
-    def _generateTimeCacheIntermediate(self, fit, maxTime):
-        if self._isTimeCacheValid(fit, maxTime):
-            return
-        timeCache = self._calcCache.setdefault(fit.ID, {})['timeCache'] = {'maxTime': maxTime}
-        intCacheDpsVolley = timeCache['intermediateDpsVolley'] = {}
-        intCacheDmg = timeCache['intermediateDmg'] = {}
-
-        def addDpsVolley(ddKey, addedTimeStart, addedTimeFinish, addedVolleys):
-            if not addedVolleys:
-                return
-            volleySum = sum(addedVolleys, DmgTypes(0, 0, 0, 0))
-            if volleySum.total > 0:
-                addedDps = volleySum / (addedTimeFinish - addedTimeStart)
-                # We can take "just best" volley, no matter target resistances, because all
-                # known items have the same damage type ratio throughout their cycle - and
-                # applying resistances doesn't change final outcome
-                bestVolley = max(addedVolleys, key=lambda v: v.total)
-                ddCacheDps = intCacheDpsVolley.setdefault(ddKey, [])
-                ddCacheDps.append((addedTimeStart, addedTimeFinish, addedDps, bestVolley))
-
-        def addDmg(ddKey, addedTime, addedDmg):
-            if addedDmg.total == 0:
-                return
-            intCacheDmg.setdefault(ddKey, {})[addedTime] = addedDmg
-
-        # Modules
-        for mod in fit.modules:
-            if not mod.isDealingDamage():
-                continue
-            cycleParams = mod.getCycleParameters(reloadOverride=True)
-            if cycleParams is None:
-                continue
-            currentTime = 0
-            nonstopCycles = 0
-            for cycleTimeMs, inactiveTimeMs in cycleParams.iterCycles():
-                cycleVolleys = []
-                volleyParams = mod.getVolleyParameters(spoolOptions=SpoolOptions(SpoolType.CYCLES, nonstopCycles, True))
-                for volleyTimeMs, volley in volleyParams.items():
-                    cycleVolleys.append(volley)
-                    addDmg(mod, currentTime + volleyTimeMs / 1000, volley)
-                addDpsVolley(mod, currentTime, currentTime + cycleTimeMs / 1000, cycleVolleys)
-                if inactiveTimeMs > 0:
-                    nonstopCycles = 0
-                else:
-                    nonstopCycles += 1
-                if currentTime > maxTime:
-                    break
-                currentTime += cycleTimeMs / 1000 + inactiveTimeMs / 1000
-        # Drones
-        for drone in fit.drones:
-            if not drone.isDealingDamage():
-                continue
-            cycleParams = drone.getCycleParameters(reloadOverride=True)
-            if cycleParams is None:
-                continue
-            currentTime = 0
-            volleyParams = drone.getVolleyParameters()
-            for cycleTimeMs, inactiveTimeMs in cycleParams.iterCycles():
-                cycleVolleys = []
-                for volleyTimeMs, volley in volleyParams.items():
-                    cycleVolleys.append(volley)
-                    addDmg(drone, currentTime + volleyTimeMs / 1000, volley)
-                addDpsVolley(drone, currentTime, currentTime + cycleTimeMs / 1000, cycleVolleys)
-                if currentTime > maxTime:
-                    break
-                currentTime += cycleTimeMs / 1000 + inactiveTimeMs / 1000
-        # Fighters
-        for fighter in fit.fighters:
-            if not fighter.isDealingDamage():
-                continue
-            cycleParams = fighter.getCycleParametersPerEffectOptimizedDps(reloadOverride=True)
-            if cycleParams is None:
-                continue
-            volleyParams = fighter.getVolleyParametersPerEffect()
-            for effectID, abilityCycleParams in cycleParams.items():
-                if effectID not in volleyParams:
-                    continue
-                currentTime = 0
-                abilityVolleyParams = volleyParams[effectID]
-                for cycleTimeMs, inactiveTimeMs in abilityCycleParams.iterCycles():
-                    cycleVolleys = []
-                    for volleyTimeMs, volley in abilityVolleyParams.items():
-                        cycleVolleys.append(volley)
-                        addDmg((fighter, effectID), currentTime + volleyTimeMs / 1000, volley)
-                    addDpsVolley((fighter, effectID), currentTime, currentTime + cycleTimeMs / 1000, cycleVolleys)
-                    if currentTime > maxTime:
-                        break
-                    currentTime += cycleTimeMs / 1000 + inactiveTimeMs / 1000
-
-    def _isTimeCacheValid(self, fit, maxTime):
-        try:
-            cacheMaxTime = self._calcCache[fit.ID]['timeCache']['maxTime']
-        except KeyError:
-            return False
-        return maxTime <= cacheMaxTime
-
-    def _generateTimeCacheDps(self, fit, maxTime):
-        if fit.ID in self._calcCache and 'timeDps' in self._calcCache[fit.ID]:
-            return
-        intermediateCache = []
-
-        def addDmg(addedTimeStart, addedTimeFinish, addedDmg):
-            if addedDmg == 0:
-                return
-            addedDps = addedDmg / (addedTimeFinish - addedTimeStart)
-            intermediateCache.append((addedTimeStart, addedTimeFinish, addedDps))
-
-        for mod in fit.modules:
-            if not mod.isDealingDamage():
-                continue
-            cycleParams = mod.getCycleParameters(reloadOverride=True)
-            if cycleParams is None:
-                continue
-            currentTime = 0
-            nonstopCycles = 0
-            for cycleTimeMs, inactiveTimeMs in cycleParams.iterCycles():
-                cycleDamage = 0
-                volleyParams = mod.getVolleyParameters(spoolOptions=SpoolOptions(SpoolType.CYCLES, nonstopCycles, True))
-                for volleyTimeMs, volley in volleyParams.items():
-                    cycleDamage += volley.total
-                addDmg(currentTime, currentTime + cycleTimeMs / 1000, cycleDamage)
-                currentTime += cycleTimeMs / 1000 + inactiveTimeMs / 1000
-                if inactiveTimeMs > 0:
-                    nonstopCycles = 0
-                else:
-                    nonstopCycles += 1
-                if currentTime > maxTime:
-                    break
-        for drone in fit.drones:
-            if not drone.isDealingDamage():
-                continue
-            cycleParams = drone.getCycleParameters(reloadOverride=True)
-            if cycleParams is None:
-                continue
-            currentTime = 0
-            for cycleTimeMs, inactiveTimeMs in cycleParams.iterCycles():
-                cycleDamage = 0
-                volleyParams = drone.getVolleyParameters()
-                for volleyTimeMs, volley in volleyParams.items():
-                    cycleDamage += volley.total
-                addDmg(currentTime, currentTime + cycleTimeMs / 1000, cycleDamage)
-                currentTime += cycleTimeMs / 1000 + inactiveTimeMs / 1000
-                if currentTime > maxTime:
-                    break
-        for fighter in fit.fighters:
-            if not fighter.isDealingDamage():
-                continue
-            cycleParams = fighter.getCycleParametersPerEffectOptimizedDps(reloadOverride=True)
-            if cycleParams is None:
-                continue
-            volleyParams = fighter.getVolleyParametersPerEffect()
-            for effectID, abilityCycleParams in cycleParams.items():
-                if effectID not in volleyParams:
-                    continue
-                abilityVolleyParams = volleyParams[effectID]
-                currentTime = 0
-                for cycleTimeMs, inactiveTimeMs in abilityCycleParams.iterCycles():
-                    cycleDamage = 0
-                    for volleyTimeMs, volley in abilityVolleyParams.items():
-                        cycleDamage += volley.total
-                    addDmg(currentTime, currentTime + cycleTimeMs / 1000, cycleDamage)
-                    currentTime += cycleTimeMs / 1000 + inactiveTimeMs / 1000
-                    if currentTime > maxTime:
-                        break
-
-        # Post-process cache
-        finalCache = {}
-        for time in sorted(set(chain((i[0] for i in intermediateCache), (i[1] for i in intermediateCache)))):
-            entries = (e for e in intermediateCache if e[0] <= time < e[1])
-            dps = sum(e[2] for e in entries)
-            finalCache[time] = dps
-        fitCache = self._calcCache.setdefault(fit.ID, {})
-        fitCache['timeDps'] = finalCache
-
     def _composeTimeGraph(self, mainInput, fit, cacheName, calcFunc):
         xs = []
         ys = []
 
         minTime, maxTime = mainInput[1]
-        cache = self._calcCache[fit.ID]['timeCache'][cacheName]
+        cache = self._timeCache.getData(fit.ID, cacheName)
         currentDps = None
         currentTime = None
         for currentTime in sorted(cache):

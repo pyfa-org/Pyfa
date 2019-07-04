@@ -40,8 +40,6 @@ class FitGraph(metaclass=ABCMeta):
     def __init__(self):
         # Format: {(fit ID, target type, target ID): data}
         self._plotCache = {}
-        # Format: {fit ID: data}
-        self._calcCache = {}
 
     @property
     @abstractmethod
@@ -91,7 +89,6 @@ class FitGraph(metaclass=ABCMeta):
         # Clear everything
         if fitID is None:
             self._plotCache.clear()
-            self._calcCache.clear()
             return
         # Clear plot cache
         plotKeysToClear = set()
@@ -103,9 +100,10 @@ class FitGraph(metaclass=ABCMeta):
                 plotKeysToClear.add(cacheKey)
         for cacheKey in plotKeysToClear:
             del self._plotCache[cacheKey]
-        # Clear calc cache
-        if fitID in self._calcCache:
-            del self._calcCache[fitID]
+        self._clearInternalCache(fitID=fitID)
+
+    def _clearInternalCache(self, fitID):
+        return
 
     # Calculation stuff
     def _calcPlotPoints(self, mainInput, miscInputs, xSpec, ySpec, fit, tgt):
