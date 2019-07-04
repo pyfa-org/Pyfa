@@ -72,6 +72,23 @@ class DmgTypes:
         self._calcTotal()
         return self
 
+    def __mul__(self, mul):
+        return type(self)(
+            em=self.em * mul,
+            thermal=self.thermal * mul,
+            kinetic=self.kinetic * mul,
+            explosive=self.explosive * mul)
+
+    def __imul__(self, mul):
+        if mul == 1:
+            return
+        self.em *= mul
+        self.thermal *= mul
+        self.kinetic *= mul
+        self.explosive *= mul
+        self._calcTotal()
+        return self
+
     def __truediv__(self, div):
         return type(self)(
             em=self.em / div,
@@ -80,6 +97,8 @@ class DmgTypes:
             explosive=self.explosive / div)
 
     def __itruediv__(self, div):
+        if div == 1:
+            return
         self.em /= div
         self.thermal /= div
         self.kinetic /= div

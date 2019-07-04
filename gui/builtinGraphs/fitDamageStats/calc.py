@@ -44,13 +44,12 @@ def getLauncherMult(mod, fit, distance, tgtSpeed, tgtSigRadius):
     modRange = mod.maxRange
     if modRange is None:
         return 0
-    mult = _calcMissileMult(
-        atkRadius=fit.ship.getModifiedItemAttr('radius'),
-        atkRange=modRange,
+    if distance + fit.ship.getModifiedItemAttr('radius') > modRange:
+        return 0
+    mult = _calcMissileFactor(
         atkEr=mod.getModifiedChargeAttr('aoeCloudSize'),
         atkEv=mod.getModifiedChargeAttr('aoeVelocity'),
         atkDrf=mod.getModifiedChargeAttr('aoeDamageReductionFactor'),
-        distance=distance,
         tgtSpeed=tgtSpeed,
         tgtSigRadius=tgtSigRadius)
     return mult
@@ -167,25 +166,6 @@ def _calcTrackingFactor(atkTracking, atkOptimalSigRadius, angularSpeed, tgtSigRa
 
 # Missile-specific
 @lru_cache(maxsize=200)
-def _calcMissileMult(atkRadius, atkRange, atkEr, atkEv, atkDrf, distance, tgtSpeed, tgtSigRadius):
-    """Calculate damage multiplier for missile launcher."""
-    # Missiles spawn in the center of the attacking ship
-    if distance + atkRadius > atkRange:
-        mult = 0
-    else:
-        mult = _calcMissileFactor(atkEr, atkEv, atkDrf, tgtSpeed, tgtSigRadius)
-    return mult
-
-
-@lru_cache(maxsize=200)
-def _calcFighterMult(atkOptimalRange, atkFalloffRange, atkEr, atkEv, atkDrf, distance, tgtSpeed, tgtSigRadius):
-    """Calculate damage multiplier for separate fighter ability,"""
-    rangeFactor = _calcRangeFactor(atkOptimalRange, atkFalloffRange, distance)
-    missileFactor = _calcMissileFactor(atkEr, atkEv, atkDrf, tgtSpeed, tgtSigRadius)
-    mult = rangeFactor * missileFactor
-    return mult
-
-
 def _calcMissileFactor(atkEr, atkEv, atkDrf, tgtSpeed, tgtSigRadius):
     """Missile application."""
     factors = [1]

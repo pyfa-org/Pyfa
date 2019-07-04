@@ -28,15 +28,33 @@ from gui.builtinGraphs.base import FitDataCache
 
 class TimeCache(FitDataCache):
 
+    # Whole data getters
     def getDpsData(self, fit):
+        """Return DPS data in {time: {key: dps}} format."""
         return self._data[fit.ID]['finalDps']
 
     def getVolleyData(self, fit):
+        """Return volley data in {time: {key: volley}} format."""
         return self._data[fit.ID]['finalVolley']
 
     def getDmgData(self, fit):
+        """Return inflicted damage data in {time: {key: damage}} format."""
         return self._data[fit.ID]['finalDmg']
 
+    # Specific data point getters
+    def getDpsDataPoint(self, fit, time):
+        """Get DPS data by specified time in {key: dps} format."""
+        return self._getDataPoint(fit, time, self.getDpsData)
+
+    def getVolleyDataPoint(self, fit, time):
+        """Get volley data by specified time in {key: volley} format."""
+        return self._getDataPoint(fit, time, self.getVolleyData)
+
+    def getDmgDataPoint(self, fit, time):
+        """Get inflicted damage data by specified time in {key: dmg} format."""
+        return self._getDataPoint(fit, time, self.getDmgData)
+
+    # Preparation functions
     def prepareDpsData(self, fit, maxTime):
         self._prepareDpsVolleyData(fit, maxTime)
 
@@ -74,6 +92,7 @@ class TimeCache(FitDataCache):
         # We do not need internal cache once we have final
         del fitCache['internalDmg']
 
+    # Private stuff
     def _prepareDpsVolleyData(self, fit, maxTime):
         # Time is none means that time parameter has to be ignored,
         # we do not need cache for that
@@ -223,3 +242,13 @@ class TimeCache(FitDataCache):
         except KeyError:
             return False
         return maxTime <= cacheMaxTime
+
+    def _getDataPoint(self, fit, time, dataFunc):
+        data = dataFunc(fit)
+        timesBefore = [t for t in data if floatUnerr(t) <= floatUnerr(time)]
+        try:
+            time = max(timesBefore)
+        except ValueError:
+            return {}
+        else:
+            return data[time]

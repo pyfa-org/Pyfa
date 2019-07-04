@@ -152,10 +152,6 @@ class Fighter(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
         return self.__abilities or []
 
     @property
-    def abilityMap(self):
-        return {a.effectID: a for a in self.abilities}
-
-    @property
     def charge(self):
         return self.__charge
 
@@ -205,6 +201,13 @@ class Fighter(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
                     kinetic=volleyValue.kinetic * (1 - getattr(targetResists, "kineticAmount", 0)),
                     explosive=volleyValue.explosive * (1 - getattr(targetResists, "explosiveAmount", 0)))
         return adjustedVolley
+
+    def getVolleyPerEffect(self, targetResists=None):
+        volleyParams = self.getVolleyParametersPerEffect(targetResists=targetResists)
+        volleyMap = {}
+        for effectID, volleyData in volleyParams.items():
+            volleyMap[effectID] = volleyData[0]
+        return volleyMap
 
     def getVolley(self, targetResists=None):
         volleyParams = self.getVolleyParametersPerEffect(targetResists=targetResists)

@@ -19,9 +19,10 @@
 
 
 import eos.config
-from eos.const import FittingHardpoint, FittingModuleState
+from eos.const import FittingHardpoint
 from eos.utils.float import floatUnerr
 from eos.utils.spoolSupport import SpoolType, SpoolOptions
+from eos.utils.stats import DmgTypes
 from gui.builtinGraphs.base import FitGraph, XDef, YDef, Input, VectorDef
 from .calc import getTurretMult, getLauncherMult, getDroneMult, getFighterAbilityMult
 from .timeCache import TimeCache
@@ -63,82 +64,28 @@ class FitDamageStatsGraph(FitGraph):
         ('distance', 'km'): lambda v, fit, tgt: v * 1000,
         ('atkSpeed', '%'): lambda v, fit, tgt: v / 100 * fit.ship.getModifiedItemAttr('maxVelocity'),
         ('tgtSpeed', '%'): lambda v, fit, tgt: v / 100 * tgt.ship.getModifiedItemAttr('maxVelocity'),
-        ('tgtSigRad', '%'): lambda v, fit, tgt: v / 100 * fit.ship.getModifiedItemAttr('signatureRadius')}
+        ('tgtSigRad', '%'): lambda v, fit, tgt: v / 100 * tgt.ship.getModifiedItemAttr('signatureRadius')}
     _limiters = {
         'time': lambda fit, tgt: (0, 2500)}
     _denormalizers = {
         ('distance', 'km'): lambda v, fit, tgt: v / 1000,
         ('tgtSpeed', '%'): lambda v, fit, tgt: v * 100 / tgt.ship.getModifiedItemAttr('maxVelocity'),
-        ('tgtSigRad', '%'): lambda v, fit, tgt: v * 100 / fit.ship.getModifiedItemAttr('signatureRadius')}
+        ('tgtSigRad', '%'): lambda v, fit, tgt: v * 100 / tgt.ship.getModifiedItemAttr('signatureRadius')}
 
     def _distance2dps(self, mainInput, miscInputs, fit, tgt):
-        xs = []
-        ys = []
-        defaultSpoolValue = eos.config.settings['globalDefaultSpoolupPercentage']
-        miscInputMap = dict(miscInputs)
-        tgtSigRad = miscInputMap.get('tgtSigRad', tgt.ship.getModifiedItemAttr('signatureRadius'))
-        for distance in self._iterLinear(mainInput[1]):
-            totalDps = 0
-            for mod in fit.modules:
-                if not mod.isDealingDamage():
-                    continue
-                modDps = mod.getDps(spoolOptions=SpoolOptions(SpoolType.SCALE, defaultSpoolValue, False)).total
-                if mod.hardpoint == FittingHardpoint.TURRET:
-                    if mod.state >= FittingModuleState.ACTIVE:
-                        totalDps += modDps * getTurretMult(
-                            mod=mod,
-                            fit=fit,
-                            tgt=tgt,
-                            atkSpeed=miscInputMap['atkSpeed'],
-                            atkAngle=miscInputMap['atkAngle'],
-                            distance=distance,
-                            tgtSpeed=miscInputMap['tgtSpeed'],
-                            tgtAngle=miscInputMap['tgtAngle'],
-                            tgtSigRadius=tgtSigRad)
-                elif mod.hardpoint == FittingHardpoint.MISSILE:
-                    if mod.state >= FittingModuleState.ACTIVE:
-                        totalDps += modDps * getLauncherMult(
-                            mod=mod,
-                            fit=fit,
-                            distance=distance,
-                            tgtSpeed=miscInputMap['tgtSpeed'],
-                            tgtSigRadius=tgtSigRad)
-            for drone in fit.drones:
-                if not drone.isDealingDamage():
-                    continue
-                droneDps = drone.getDps().total
-                totalDps += droneDps * getDroneMult(
-                    drone=drone,
-                    fit=fit,
-                    tgt=tgt,
-                    atkSpeed=miscInputMap['atkSpeed'],
-                    atkAngle=miscInputMap['atkAngle'],
-                    distance=distance,
-                    tgtSpeed=miscInputMap['tgtSpeed'],
-                    tgtAngle=miscInputMap['tgtAngle'],
-                    tgtSigRadius=tgtSigRad)
-            for fighter in fit.fighters:
-                if not fighter.isDealingDamage():
-                    continue
-                abilityMap = fighter.abilityMap
-                for effectID, abilityDps in fighter.getDpsPerEffect().items():
-                    ability = abilityMap[effectID]
-                    totalDps += abilityDps.total * getFighterAbilityMult(
-                        fighter=fighter,
-                        ability=ability,
-                        fit=fit,
-                        distance=distance,
-                        tgtSpeed=miscInputMap['tgtSpeed'],
-                        tgtSigRadius=tgtSigRad)
-            xs.append(distance)
-            ys.append(totalDps)
-        return xs, ys
+        return self._xDistanceGetter(
+            mainInput=mainInput, miscInputs=miscInputs, fit=fit, tgt=tgt,
+            dmgFunc=self._getDpsPerKey, timeCacheFunc=self._timeCache.prepareDpsData)
 
     def _distance2volley(self, mainInput, miscInputs, fit, tgt):
-        return [], []
+        return self._xDistanceGetter(
+            mainInput=mainInput, miscInputs=miscInputs, fit=fit, tgt=tgt,
+            dmgFunc=self._getVolleyPerKey, timeCacheFunc=self._timeCache.prepareVolleyData)
 
     def _distance2damage(self, mainInput, miscInputs, fit, tgt):
-        return [], []
+        return self._xDistanceGetter(
+            mainInput=mainInput, miscInputs=miscInputs, fit=fit, tgt=tgt,
+            dmgFunc=self._getDmgPerKey, timeCacheFunc=self._timeCache.prepareDmgData)
 
     def _time2dps(self, mainInput, miscInputs, fit, tgt):
         def calcDpsTmp(timeDmg):
@@ -159,22 +106,34 @@ class FitDamageStatsGraph(FitGraph):
         return self._composeTimeGraph(mainInput, fit, self._timeCache.getDmgData, calcDamageTmp)
 
     def _tgtSpeed2dps(self, mainInput, miscInputs, fit, tgt):
-        return [], []
+        return self._xTgtSpeedGetter(
+            mainInput=mainInput, miscInputs=miscInputs, fit=fit, tgt=tgt,
+            dmgFunc=self._getDpsPerKey, timeCacheFunc=self._timeCache.prepareDpsData)
 
     def _tgtSpeed2volley(self, mainInput, miscInputs, fit, tgt):
-        return [], []
+        return self._xTgtSpeedGetter(
+            mainInput=mainInput, miscInputs=miscInputs, fit=fit, tgt=tgt,
+            dmgFunc=self._getVolleyPerKey, timeCacheFunc=self._timeCache.prepareVolleyData)
 
     def _tgtSpeed2damage(self, mainInput, miscInputs, fit, tgt):
-        return [], []
+        return self._xTgtSpeedGetter(
+            mainInput=mainInput, miscInputs=miscInputs, fit=fit, tgt=tgt,
+            dmgFunc=self._getDmgPerKey, timeCacheFunc=self._timeCache.prepareDmgData)
 
     def _tgtSigRad2dps(self, mainInput, miscInputs, fit, tgt):
-        return [], []
+        return self._xTgtSigRadiusGetter(
+            mainInput=mainInput, miscInputs=miscInputs, fit=fit, tgt=tgt,
+            dmgFunc=self._getDpsPerKey, timeCacheFunc=self._timeCache.prepareDpsData)
 
     def _tgtSigRad2volley(self, mainInput, miscInputs, fit, tgt):
-        return [], []
+        return self._xTgtSigRadiusGetter(
+            mainInput=mainInput, miscInputs=miscInputs, fit=fit, tgt=tgt,
+            dmgFunc=self._getVolleyPerKey, timeCacheFunc=self._timeCache.prepareVolleyData)
 
     def _tgtSigRad2damage(self, mainInput, miscInputs, fit, tgt):
-        return [], []
+        return self._xTgtSigRadiusGetter(
+            mainInput=mainInput, miscInputs=miscInputs, fit=fit, tgt=tgt,
+            dmgFunc=self._getDmgPerKey, timeCacheFunc=self._timeCache.prepareDmgData)
 
     _getters = {
         ('distance', 'dps'): _distance2dps,
@@ -190,6 +149,188 @@ class FitDamageStatsGraph(FitGraph):
         ('tgtSigRad', 'volley'): _tgtSigRad2volley,
         ('tgtSigRad', 'damage'): _tgtSigRad2damage}
 
+    # Point getter helpers
+    def _xDistanceGetter(self, mainInput, miscInputs, fit, tgt, dmgFunc, timeCacheFunc):
+        xs = []
+        ys = []
+        tgtSigRadius = tgt.ship.getModifiedItemAttr('signatureRadius')
+        # Process inputs into more convenient form
+        miscInputMap = dict(miscInputs)
+        # Get all data we need for all distances into maps/caches
+        timeCacheFunc(fit, miscInputMap['time'])
+        dmgMap = dmgFunc(fit=fit, time=miscInputMap['time'])
+        # Go through distances and calculate distance-dependent data
+        for distance in self._iterLinear(mainInput[1]):
+            applicationMap = self._getApplicationPerKey(
+                fit=fit,
+                tgt=tgt,
+                atkSpeed=miscInputMap['atkSpeed'],
+                atkAngle=miscInputMap['atkAngle'],
+                distance=distance,
+                tgtSpeed=miscInputMap['tgtSpeed'],
+                tgtAngle=miscInputMap['tgtAngle'],
+                tgtSigRadius=tgtSigRadius)
+            dmg = self._aggregate(dmgMap=dmgMap, applicationMap=applicationMap).total
+            xs.append(distance)
+            ys.append(dmg)
+        return xs, ys
+
+    def _xTgtSpeedGetter(self, mainInput, miscInputs, fit, tgt, dmgFunc, timeCacheFunc):
+        xs = []
+        ys = []
+        tgtSigRadius = tgt.ship.getModifiedItemAttr('signatureRadius')
+        # Process inputs into more convenient form
+        miscInputMap = dict(miscInputs)
+        # Get all data we need for all target speeds into maps/caches
+        timeCacheFunc(fit, miscInputMap['time'])
+        dmgMap = dmgFunc(fit=fit, time=miscInputMap['time'])
+        # Go through target speeds and calculate distance-dependent data
+        for tgtSpeed in self._iterLinear(mainInput[1]):
+            applicationMap = self._getApplicationPerKey(
+                fit=fit,
+                tgt=tgt,
+                atkSpeed=miscInputMap['atkSpeed'],
+                atkAngle=miscInputMap['atkAngle'],
+                distance=miscInputMap['distance'],
+                tgtSpeed=tgtSpeed,
+                tgtAngle=miscInputMap['tgtAngle'],
+                tgtSigRadius=tgtSigRadius)
+            dmg = self._aggregate(dmgMap=dmgMap, applicationMap=applicationMap).total
+            xs.append(tgtSpeed)
+            ys.append(dmg)
+        return xs, ys
+
+    def _xTgtSigRadiusGetter(self, mainInput, miscInputs, fit, tgt, dmgFunc, timeCacheFunc):
+        xs = []
+        ys = []
+        # Process inputs into more convenient form
+        miscInputMap = dict(miscInputs)
+        # Get all data we need for all target speeds into maps/caches
+        timeCacheFunc(fit, miscInputMap['time'])
+        dmgMap = dmgFunc(fit=fit, time=miscInputMap['time'])
+        # Go through target speeds and calculate distance-dependent data
+        for tgtSigRadius in self._iterLinear(mainInput[1]):
+            applicationMap = self._getApplicationPerKey(
+                fit=fit,
+                tgt=tgt,
+                atkSpeed=miscInputMap['atkSpeed'],
+                atkAngle=miscInputMap['atkAngle'],
+                distance=miscInputMap['distance'],
+                tgtSpeed=miscInputMap['tgtSpeed'],
+                tgtAngle=miscInputMap['tgtAngle'],
+                tgtSigRadius=tgtSigRadius)
+            dmg = self._aggregate(dmgMap=dmgMap, applicationMap=applicationMap).total
+            xs.append(tgtSigRadius)
+            ys.append(dmg)
+        return xs, ys
+
+    # Damage data per key getters
+    def _getDpsPerKey(self, fit, time):
+        if time is not None:
+            return self._timeCache.getDpsDataPoint(fit, time)
+        dpsMap = {}
+        defaultSpoolValue = eos.config.settings['globalDefaultSpoolupPercentage']
+        for mod in fit.modules:
+            if not mod.isDealingDamage():
+                continue
+            dpsMap[mod] = mod.getDps(spoolOptions=SpoolOptions(SpoolType.SCALE, defaultSpoolValue, False))
+        for drone in fit.drones:
+            if not drone.isDealingDamage():
+                continue
+            dpsMap[drone] = drone.getDps()
+        for fighter in fit.fighters:
+            if not fighter.isDealingDamage():
+                continue
+            for effectID, effectDps in fighter.getDpsPerEffect().items():
+                dpsMap[(fighter, effectID)] = effectDps
+        return dpsMap
+
+    def _getVolleyPerKey(self, fit, time):
+        if time is not None:
+            return self._timeCache.getVolleyDataPoint(fit, time)
+        volleyMap = {}
+        defaultSpoolValue = eos.config.settings['globalDefaultSpoolupPercentage']
+        for mod in fit.modules:
+            if not mod.isDealingDamage():
+                continue
+            volleyMap[mod] = mod.getVolley(spoolOptions=SpoolOptions(SpoolType.SCALE, defaultSpoolValue, False))
+        for drone in fit.drones:
+            if not drone.isDealingDamage():
+                continue
+            volleyMap[drone] = drone.getVolley()
+        for fighter in fit.fighters:
+            if not fighter.isDealingDamage():
+                continue
+            for effectID, effectVolley in fighter.getVolleyPerEffect().items():
+                volleyMap[(fighter, effectID)] = effectVolley
+        return volleyMap
+
+    def _getDmgPerKey(self, fit, time):
+        # Damage inflicted makes no sense without time specified
+        if time is None:
+            raise ValueError
+        return self._timeCache.getDmgDataPoint(fit, time)
+
+    # Application getter
+    def _getApplicationPerKey(self, fit, tgt, atkSpeed, atkAngle, distance, tgtSpeed, tgtAngle, tgtSigRadius):
+        applicationMap = {}
+        for mod in fit.modules:
+            if not mod.isDealingDamage():
+                continue
+            if mod.hardpoint == FittingHardpoint.TURRET:
+                applicationMap[mod] = getTurretMult(
+                    mod=mod,
+                    fit=fit,
+                    tgt=tgt,
+                    atkSpeed=atkSpeed,
+                    atkAngle=atkAngle,
+                    distance=distance,
+                    tgtSpeed=tgtSpeed,
+                    tgtAngle=tgtAngle,
+                    tgtSigRadius=tgtSigRadius)
+            elif mod.hardpoint == FittingHardpoint.MISSILE:
+                applicationMap[mod] = getLauncherMult(
+                    mod=mod,
+                    fit=fit,
+                    distance=distance,
+                    tgtSpeed=tgtSpeed,
+                    tgtSigRadius=tgtSigRadius)
+        for drone in fit.drones:
+            if not drone.isDealingDamage():
+                continue
+            applicationMap[drone] = getDroneMult(
+                drone=drone,
+                fit=fit,
+                tgt=tgt,
+                atkSpeed=atkSpeed,
+                atkAngle=atkAngle,
+                distance=distance,
+                tgtSpeed=tgtSpeed,
+                tgtAngle=tgtAngle,
+                tgtSigRadius=tgtSigRadius)
+        for fighter in fit.fighters:
+            if not fighter.isDealingDamage():
+                continue
+            for ability in fighter.abilities:
+                if not ability.dealsDamage or not ability.active:
+                    continue
+                applicationMap[(fighter, ability.effectID)] = getFighterAbilityMult(
+                    fighter=fighter,
+                    ability=ability,
+                    fit=fit,
+                    distance=distance,
+                    tgtSpeed=tgtSpeed,
+                    tgtSigRadius=tgtSigRadius)
+        return applicationMap
+
+    # Calculate damage from maps
+    def _aggregate(self, dmgMap, applicationMap):
+        total = DmgTypes(0, 0, 0, 0)
+        for key, dmg in dmgMap.items():
+            total += dmg * applicationMap.get(key, 1)
+        return total
+
+    ############# TO REFACTOR: time graph stuff
     def _composeTimeGraph(self, mainInput, fit, cacheFunc, calcFunc):
         xs = []
         ys = []
