@@ -114,6 +114,15 @@ def getFighterAbilityMult(fighter, ability, fit, distance, tgtSpeed, tgtSigRadiu
     return mult
 
 
+def getSmartbombMult(mod, distance):
+    modRange = mod.maxRange
+    if modRange is None:
+        return 0
+    if distance > modRange:
+        return 0
+    return 1
+
+
 # Turret-specific
 @lru_cache(maxsize=50)
 def _calcTurretMult(chanceToHit):

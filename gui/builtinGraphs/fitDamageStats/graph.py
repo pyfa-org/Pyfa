@@ -20,11 +20,10 @@
 
 import eos.config
 from eos.const import FittingHardpoint
-from eos.utils.float import floatUnerr
 from eos.utils.spoolSupport import SpoolType, SpoolOptions
 from eos.utils.stats import DmgTypes
 from gui.builtinGraphs.base import FitGraph, XDef, YDef, Input, VectorDef
-from .calc import getTurretMult, getLauncherMult, getDroneMult, getFighterAbilityMult
+from .calc import getTurretMult, getLauncherMult, getDroneMult, getFighterAbilityMult, getSmartbombMult
 from .timeCache import TimeCache
 
 
@@ -352,6 +351,10 @@ class FitDamageStatsGraph(FitGraph):
                     distance=distance,
                     tgtSpeed=tgtSpeed,
                     tgtSigRadius=tgtSigRadius)
+            elif mod.item.group.name == 'Smart Bomb':
+                applicationMap[mod] = getSmartbombMult(
+                    mod=mod,
+                    distance=distance)
         for drone in fit.drones:
             if not drone.isDealingDamage():
                 continue
