@@ -28,10 +28,53 @@ from gui.builtinGraphs.base import FitDataCache
 
 class TimeCache(FitDataCache):
 
-    def getData(self, fitID, cacheType):
-        return self._data[fitID][cacheType]
+    def getDpsData(self, fit):
+        return self._data[fit.ID]['finalDps']
 
-    def generateFinalFormDpsVolley(self, fit, maxTime):
+    def getVolleyData(self, fit):
+        return self._data[fit.ID]['finalVolley']
+
+    def getDmgData(self, fit):
+        return self._data[fit.ID]['finalDmg']
+
+    def prepareDpsData(self, fit, maxTime):
+        self._prepareDpsVolleyData(fit, maxTime)
+
+    def prepareVolleyData(self, fit, maxTime):
+        self._prepareDpsVolleyData(fit, maxTime)
+
+    def prepareDmgData(self, fit, maxTime):
+        # Time is none means that time parameter has to be ignored,
+        # we do not need cache for that
+        if maxTime is None:
+            return
+        self._generateInternalForm(fit, maxTime)
+        fitCache = self._data[fit.ID]
+        # Final cache has been generated already, don't do anything
+        if 'finalDmg' in fitCache:
+            return
+        intCache = fitCache['internalDmg']
+        changesByTime = {}
+        for key, dmgMap in intCache.items():
+            for time in dmgMap:
+                changesByTime.setdefault(time, []).append(key)
+        # Here we convert cache to following format:
+        # {time: {key: damage done by key at this time}}
+        finalCache = fitCache['finalDmg'] = {}
+        timeDmgData = {}
+        for time in sorted(changesByTime):
+            timeDmgData = copy(timeDmgData)
+            for key in changesByTime[time]:
+                keyDmg = intCache[key][time]
+                if key in timeDmgData:
+                    timeDmgData[key] = timeDmgData[key] + keyDmg
+                else:
+                    timeDmgData[key] = keyDmg
+            finalCache[time] = timeDmgData
+        # We do not need internal cache once we have final
+        del fitCache['internalDmg']
+
+    def _prepareDpsVolleyData(self, fit, maxTime):
         # Time is none means that time parameter has to be ignored,
         # we do not need cache for that
         if maxTime is None:
@@ -39,7 +82,7 @@ class TimeCache(FitDataCache):
         self._generateInternalForm(fit, maxTime)
         fitCache = self._data[fit.ID]
         # Final cache has been generated already, don't do anything
-        if 'finalDpsVolley' in fitCache:
+        if 'finalDps' in fitCache and 'finalVolley' in fitCache:
             return
         # Convert cache from segments with assigned values into points
         # which are located at times when dps/volley values change
@@ -71,44 +114,19 @@ class TimeCache(FitDataCache):
                 changesByTime.setdefault(time, []).append(key)
         # Here we convert cache to following format:
         # {time: {key: (dps, volley}}
-        finalCache = fitCache['finalDpsVolley'] = {}
-        timeDmgData = {}
+        finalDpsCache = fitCache['finalDps'] = {}
+        finalVolleyCache = fitCache['finalVolley'] = {}
+        timeDpsData = {}
+        timeVolleyData = {}
         for time in sorted(changesByTime):
-            timeDmgData = copy(timeDmgData)
+            timeDpsData = copy(timeDpsData)
+            timeVolleyData = copy(timeVolleyData)
             for key in changesByTime[time]:
-                timeDmgData[key] = pointCache[key][time]
-            finalCache[time] = timeDmgData
-
-    def generateFinalFormDmg(self, fit, maxTime):
-        # Time is none means that time parameter has to be ignored,
-        # we do not need cache for that
-        if maxTime is None:
-            return
-        self._generateInternalForm(fit, maxTime)
-        fitCache = self._data[fit.ID]
-        # Final cache has been generated already, don't do anything
-        if 'finalDmg' in fitCache:
-            return
-        intCache = fitCache['internalDmg']
-        changesByTime = {}
-        for key, dmgMap in intCache.items():
-            for time in dmgMap:
-                changesByTime.setdefault(time, []).append(key)
-        # Here we convert cache to following format:
-        # {time: {key: damage done by key at this time}}
-        finalCache = fitCache['finalDmg'] = {}
-        timeDmgData = {}
-        for time in sorted(changesByTime):
-            timeDmgData = copy(timeDmgData)
-            for key in changesByTime[time]:
-                keyDmg = intCache[key][time]
-                if key in timeDmgData:
-                    timeDmgData[key] = timeDmgData[key] + keyDmg
-                else:
-                    timeDmgData[key] = keyDmg
-            finalCache[time] = timeDmgData
-        # We do not need internal cache once we have final
-        del fitCache['internalDmg']
+                dps, volley = pointCache[key][time]
+                timeDpsData[key] = dps
+                timeVolleyData[key] = volley
+            finalDpsCache[time] = timeDpsData
+            finalVolleyCache[time] = timeVolleyData
 
     def _generateInternalForm(self, fit, maxTime):
         if self._isTimeCacheValid(fit, maxTime):

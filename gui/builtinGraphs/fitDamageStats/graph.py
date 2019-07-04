@@ -115,21 +115,21 @@ class FitDamageStatsGraph(FitGraph):
 
     def _time2dps(self, mainInput, miscInputs, fit, tgt):
         def calcDpsTmp(timeDmg):
-            return floatUnerr(sum(dts[0].total for dts in timeDmg.values()))
-        self._timeCache.generateFinalFormDpsVolley(fit, mainInput[1][1])
-        return self._composeTimeGraph(mainInput, fit, 'finalDpsVolley', calcDpsTmp)
+            return floatUnerr(sum(dts.total for dts in timeDmg.values()))
+        self._timeCache.prepareDpsData(fit, mainInput[1][1])
+        return self._composeTimeGraph(mainInput, fit, self._timeCache.getDpsData, calcDpsTmp)
 
     def _time2volley(self, mainInput, miscInputs, fit, tgt):
         def calcVolleyTmp(timeDmg):
-            return floatUnerr(sum(dts[1].total for dts in timeDmg.values()))
-        self._timeCache.generateFinalFormDpsVolley(fit, mainInput[1][1])
-        return self._composeTimeGraph(mainInput, fit, 'finalDpsVolley', calcVolleyTmp)
+            return floatUnerr(sum(dts.total for dts in timeDmg.values()))
+        self._timeCache.prepareVolleyData(fit, mainInput[1][1])
+        return self._composeTimeGraph(mainInput, fit, self._timeCache.getVolleyData, calcVolleyTmp)
 
     def _time2damage(self, mainInput, miscInputs, fit, tgt):
         def calcDamageTmp(timeDmg):
             return floatUnerr(sum(dt.total for dt in timeDmg.values()))
-        self._timeCache.generateFinalFormDmg(fit, mainInput[1][1])
-        return self._composeTimeGraph(mainInput, fit, 'finalDmg', calcDamageTmp)
+        self._timeCache.prepareDmgData(fit, mainInput[1][1])
+        return self._composeTimeGraph(mainInput, fit, self._timeCache.getDmgData, calcDamageTmp)
 
     def _tgtSpeed2dps(self, mainInput, miscInputs, fit, tgt):
         return [], []
@@ -163,12 +163,12 @@ class FitDamageStatsGraph(FitGraph):
         ('tgtSigRad', 'volley'): _tgtSigRad2volley,
         ('tgtSigRad', 'damage'): _tgtSigRad2damage}
 
-    def _composeTimeGraph(self, mainInput, fit, cacheName, calcFunc):
+    def _composeTimeGraph(self, mainInput, fit, cacheFunc, calcFunc):
         xs = []
         ys = []
 
         minTime, maxTime = mainInput[1]
-        cache = self._timeCache.getData(fit.ID, cacheName)
+        cache = cacheFunc(fit)
         currentDps = None
         currentTime = None
         for currentTime in sorted(cache):
