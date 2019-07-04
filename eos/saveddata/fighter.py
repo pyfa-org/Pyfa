@@ -152,6 +152,10 @@ class Fighter(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
         return self.__abilities or []
 
     @property
+    def abilityMap(self):
+        return {a.effectID: a for a in self.abilities}
+
+    @property
     def charge(self):
         return self.__charge
 

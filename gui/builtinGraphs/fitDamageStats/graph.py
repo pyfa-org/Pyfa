@@ -117,7 +117,19 @@ class FitDamageStatsGraph(FitGraph):
                     tgtSpeed=miscInputMap['tgtSpeed'],
                     tgtAngle=miscInputMap['tgtAngle'],
                     tgtSigRadius=tgtSigRad)
-
+            for fighter in fit.fighters:
+                if not fighter.isDealingDamage():
+                    continue
+                abilityMap = fighter.abilityMap
+                for effectID, abilityDps in fighter.getDpsPerEffect().items():
+                    ability = abilityMap[effectID]
+                    totalDps += abilityDps.total * getFighterAbilityMult(
+                        fighter=fighter,
+                        ability=ability,
+                        fit=fit,
+                        distance=distance,
+                        tgtSpeed=miscInputMap['tgtSpeed'],
+                        tgtSigRadius=tgtSigRad)
             xs.append(distance)
             ys.append(totalDps)
         return xs, ys
