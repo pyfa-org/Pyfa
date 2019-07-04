@@ -249,15 +249,11 @@ class Fit:
             fit.notes = notes
             eos.db.commit()
 
-    def toggleFactorReload(self, fitID):
-        pyfalog.debug("Toggling factor reload for fit ID: {0}", fitID)
-        if fitID is None:
-            return None
-
-        fit = eos.db.getFit(fitID)
-        fit.factorReload = not fit.factorReload
-        eos.db.commit()
-        self.recalc(fit)
+    def toggleFactorReload(self, value=None, fitsIdToRefresh=()):
+        self.serviceFittingOptions['useGlobalForceReload'] = value if value is not None else not self.serviceFittingOptions['useGlobalForceReload']
+        for fitID in fitsIdToRefresh:
+            fit = self.getFit(fitID)
+            self.recalc(fit)
 
     def switchFit(self, fitID):
         pyfalog.debug("Switching fit to fit ID: {0}", fitID)

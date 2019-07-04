@@ -123,10 +123,13 @@ class PFFittingEnginePref(PreferenceView):
         self.engine_settings.set("globalDefaultSpoolupPercentage", self.spoolup_value.GetValue() / 100)
 
     def OnCBGlobalForceReloadStateChange(self, event):
-        self.sFit.serviceFittingOptions["useGlobalForceReload"] = self.cbGlobalForceReload.GetValue()
+        refreshFitIDs = set()
         fitID = self.mainFrame.getActiveFit()
-        self.sFit.refreshFit(fitID)
-        wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fitID))
+        if fitID is not None:
+            refreshFitIDs.add(fitID)
+        self.sFit.toggleFactorReload(value=bool(self.cbGlobalForceReload.GetValue()), fitsIdToRefresh=refreshFitIDs)
+        for fitID in refreshFitIDs:
+            wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fitID))
 
     def OnCBStrictSkillLevelsChange(self, event):
         self.engine_settings.set("strictSkillLevels", self.cbStrictSkillLevels.GetValue())
