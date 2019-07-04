@@ -20,6 +20,7 @@
 import copy
 import datetime
 from time import time
+from weakref import WeakSet
 
 import wx
 from logbook import Logger
@@ -71,7 +72,7 @@ class Fit:
         self.targetResists = None
         self.character = saveddata_Character.getAll5()
         self.booster = False
-        self.dirtyFitIDs = set()
+        self._loadedFits = WeakSet()
 
         serviceFittingDefaultOptions = {
             "useGlobalCharacter": False,
@@ -180,13 +181,6 @@ class Fit:
         return fit.ID
 
     @staticmethod
-    def toggleBoostFit(fitID):
-        pyfalog.debug("Toggling as booster for fit ID: {0}", fitID)
-        fit = eos.db.getFit(fitID)
-        fit.booster = not fit.booster
-        eos.db.commit()
-
-    @staticmethod
     def deleteFit(fitID):
         fit = eos.db.getFit(fitID)
         pyfalog.debug("Fit::deleteFit - Deleting fit: {}", fit)
@@ -249,11 +243,16 @@ class Fit:
             fit.notes = notes
             eos.db.commit()
 
-    def toggleFactorReload(self, value=None, fitsIdToRefresh=()):
+    def toggleFactorReload(self, value=None):
         self.serviceFittingOptions['useGlobalForceReload'] = value if value is not None else not self.serviceFittingOptions['useGlobalForceReload']
-        for fitID in fitsIdToRefresh:
-            fit = self.getFit(fitID)
-            self.recalc(fit)
+        fitIDs = set()
+        for fit in set(self._loadedFits):
+            if fit is None:
+                continue
+            if fit.hasDpsData:
+                self.recalc(fit)
+                fitIDs.add(fit.ID)
+        return fitIDs
 
     def switchFit(self, fitID):
         pyfalog.debug("Switching fit to fit ID: {0}", fitID)
@@ -292,6 +291,8 @@ class Fit:
 
         if fit is None:
             return None
+
+        self._loadedFits.add(fit)
 
         if basic:
             return fit

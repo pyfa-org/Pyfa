@@ -172,14 +172,6 @@ class FitItem(SFItem.SFBrowserItem):
     def OpenNewTab(self, evt):
         self.selectFit(newTab=True)
 
-    def OnToggleBooster(self, event):
-        sFit = Fit.getInstance()
-        sFit.toggleBoostFit(self.fitID)
-        self.fitBooster = not self.fitBooster
-        self.boosterBtn.Show(self.fitBooster)
-        self.Refresh()
-        wx.PostEvent(self.mainFrame, BoosterListUpdated())
-        event.Skip()
 
     def OnProjectToFit(self, event):
         activeFit = self.mainFrame.getActiveFit()

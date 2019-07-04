@@ -25,12 +25,8 @@ class FactorReload(ContextMenuUnconditional):
         return "Factor in Reload Time"
 
     def activate(self, fullContext, i):
-        refreshFitIDs = set()
-        fitID = self.mainFrame.getActiveFit()
-        if fitID is not None:
-            refreshFitIDs.add(fitID)
-        Fit.getInstance().toggleFactorReload(fitsIdToRefresh=refreshFitIDs)
-        for fitID in refreshFitIDs:
+        fitIDs = Fit.getInstance().toggleFactorReload()
+        for fitID in fitIDs:
             wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fitID))
 
     @property

@@ -138,6 +138,10 @@ class Fit(object):
         self.commandBonuses = {}
 
     @property
+    def hasDpsData(self):
+        return len(self.__weaponDpsMap) > 0
+
+    @property
     def targetResists(self):
         return self.__targetResists
 
