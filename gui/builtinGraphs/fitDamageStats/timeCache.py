@@ -23,18 +23,10 @@ from copy import copy
 from eos.utils.float import floatUnerr
 from eos.utils.spoolSupport import SpoolType, SpoolOptions
 from eos.utils.stats import DmgTypes
+from gui.builtinGraphs.base import FitDataCache
 
 
-class TimeCache:
-
-    def __init__(self):
-        self._data = {}
-
-    def clear(self, fitID):
-        if fitID is None:
-            self._data.clear()
-        elif fitID in self._data:
-            del self._data[fitID]
+class TimeCache(FitDataCache):
 
     def getData(self, fitID, cacheType):
         return self._data[fitID][cacheType]

@@ -21,13 +21,20 @@
 import math
 
 from eos.const import FittingModuleState
-from .base import FitGraph, XDef, YDef, Input
+from .base import FitGraph, XDef, YDef, Input, FitDataCache
 
 
 AU_METERS = 149597870700
 
 
 class FitWarpTimeGraph(FitGraph):
+
+    def __init__(self):
+        super().__init__()
+        self._subspeedCache = SubwarpSpeedCache()
+
+    def _clearInternalCache(self, fitID):
+        self._subspeedCache.clear(fitID)
 
     # UI stuff
     name = 'Warp Time'
@@ -53,7 +60,7 @@ class FitWarpTimeGraph(FitGraph):
     def _distance2time(self, mainInput, miscInputs, fit, tgt):
         xs = []
         ys = []
-        subwarpSpeed = self.__getSubwarpSpeed(fit)
+        subwarpSpeed = self._subspeedCache.getSubwarpSpeed(fit)
         warpSpeed = fit.warpSpeed
         for distance in self._iterLinear(mainInput[1]):
             time = calculate_time_in_warp(max_subwarp_speed=subwarpSpeed, max_warp_speed=warpSpeed, warp_dist=distance)
@@ -64,10 +71,12 @@ class FitWarpTimeGraph(FitGraph):
     _getters = {
         ('distance', 'time'): _distance2time}
 
-    # Cache generation
-    def __getSubwarpSpeed(self, fit):
+
+class SubwarpSpeedCache(FitDataCache):
+
+    def getSubwarpSpeed(self, fit):
         try:
-            subwarpSpeed = self._calcCache[fit.ID]
+            subwarpSpeed = self._data[fit.ID]
         except KeyError:
             modStates = {}
             for mod in fit.modules:
@@ -97,7 +106,7 @@ class FitWarpTimeGraph(FitGraph):
                     fighter.active = False
             fit.calculateModifiedAttributes()
             subwarpSpeed = fit.ship.getModifiedItemAttr('maxVelocity')
-            self._calcCache[fit.ID] = subwarpSpeed
+            self._data[fit.ID] = subwarpSpeed
             for projInfo, state in projFitStates.items():
                 projInfo.active = state
             for mod, state in modStates.items():

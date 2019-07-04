@@ -207,5 +207,17 @@ class FitGraph(metaclass=ABCMeta):
                 current += step
 
 
+class FitDataCache:
+
+    def __init__(self):
+        self._data = {}
+
+    def clear(self, fitID):
+        if fitID is None:
+            self._data.clear()
+        elif fitID in self._data:
+            del self._data[fitID]
+
+
 # noinspection PyUnresolvedReferences
 from gui.builtinGraphs import *
