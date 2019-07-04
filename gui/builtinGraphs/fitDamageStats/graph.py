@@ -23,7 +23,7 @@ from eos.const import FittingHardpoint
 from eos.utils.spoolSupport import SpoolType, SpoolOptions
 from eos.utils.stats import DmgTypes
 from gui.builtinGraphs.base import FitGraph, XDef, YDef, Input, VectorDef
-from .calc import getTurretMult, getLauncherMult, getDroneMult, getFighterAbilityMult, getSmartbombMult
+from .calc import getTurretMult, getLauncherMult, getDroneMult, getFighterAbilityMult, getSmartbombMult, getBombMult, getGuidedBombMult
 from .timeCache import TimeCache
 
 
@@ -351,10 +351,23 @@ class FitDamageStatsGraph(FitGraph):
                     distance=distance,
                     tgtSpeed=tgtSpeed,
                     tgtSigRadius=tgtSigRadius)
-            elif mod.item.group.name == 'Smart Bomb':
+            elif mod.item.group.name in ('Smart Bomb', 'Structure Area Denial Module'):
                 applicationMap[mod] = getSmartbombMult(
                     mod=mod,
                     distance=distance)
+            elif mod.item.group.name == 'Missile Launcher Bomb':
+                applicationMap[mod] = getBombMult(
+                    mod=mod,
+                    fit=fit,
+                    tgt=tgt,
+                    distance=distance,
+                    tgtSigRadius=tgtSigRadius)
+            elif mod.item.group.name == 'Structure Guided Bomb Launcher':
+                applicationMap[mod] = getGuidedBombMult(
+                    mod=mod,
+                    fit=fit,
+                    distance=distance,
+                    tgtSigRadius=tgtSigRadius)
         for drone in fit.drones:
             if not drone.isDealingDamage():
                 continue
@@ -387,7 +400,7 @@ class FitDamageStatsGraph(FitGraph):
     def _aggregate(self, dmgMap, applicationMap):
         total = DmgTypes(0, 0, 0, 0)
         for key, dmg in dmgMap.items():
-            total += dmg * applicationMap.get(key, 1)
+            total += dmg * applicationMap.get(key, 0)
         return total
 
 

@@ -55,6 +55,49 @@ def getLauncherMult(mod, fit, distance, tgtSpeed, tgtSigRadius):
     return mult
 
 
+def getSmartbombMult(mod, distance):
+    modRange = mod.maxRange
+    if modRange is None:
+        return 0
+    if distance > modRange:
+        return 0
+    return 1
+
+
+def getBombMult(mod, fit, tgt, distance, tgtSigRadius):
+    modRange = mod.maxRange
+    if modRange is None:
+        return 0
+    blastRadius = mod.getModifiedChargeAttr('explosionRange')
+    atkRadius = fit.ship.getModifiedItemAttr('radius')
+    tgtRadius = tgt.ship.getModifiedItemAttr('radius')
+    # Bomb starts in the center of the ship
+    # Also here we assume that it affects target as long as blast
+    # touches its surface, not center - I did not check this
+    if distance < max(0, modRange - atkRadius - tgtRadius - blastRadius):
+        return 0
+    if distance > max(0, modRange - atkRadius + tgtRadius + blastRadius):
+        return 0
+    eR = mod.getModifiedChargeAttr('aoeCloudSize')
+    if eR == 0:
+        return 1
+    else:
+        return min(1, tgtSigRadius / eR)
+
+
+def getGuidedBombMult(mod, fit, distance, tgtSigRadius):
+    modRange = mod.maxRange
+    if modRange is None:
+        return 0
+    if distance > modRange - fit.ship.getModifiedItemAttr('radius'):
+        return 0
+    eR = mod.getModifiedChargeAttr('aoeCloudSize')
+    if eR == 0:
+        return 1
+    else:
+        return min(1, tgtSigRadius / eR)
+
+
 def getDroneMult(drone, fit, tgt, atkSpeed, atkAngle, distance, tgtSpeed, tgtAngle, tgtSigRadius):
     if distance > fit.extraAttributes['droneControlRange']:
         return 0
@@ -112,15 +155,6 @@ def getFighterAbilityMult(fighter, ability, fit, distance, tgtSpeed, tgtSigRadiu
         tgtSigRadius=tgtSigRadius)
     mult = rangeFactor * missileFactor
     return mult
-
-
-def getSmartbombMult(mod, distance):
-    modRange = mod.maxRange
-    if modRange is None:
-        return 0
-    if distance > modRange:
-        return 0
-    return 1
 
 
 # Turret-specific
