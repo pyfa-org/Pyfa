@@ -75,65 +75,62 @@ class FitDamageStatsGraph(FitGraph):
     def _distance2dps(self, mainInput, miscInputs, fit, tgt):
         return self._xDistanceGetter(
             mainInput=mainInput, miscInputs=miscInputs, fit=fit, tgt=tgt,
-            dmgFunc=self._getDpsPerKey, timeCacheFunc=self._timeCache.prepareDpsData)
+            dmgFunc=self._getDpsPerKey, timeCachePrepFunc=self._timeCache.prepareDpsData)
 
     def _distance2volley(self, mainInput, miscInputs, fit, tgt):
         return self._xDistanceGetter(
             mainInput=mainInput, miscInputs=miscInputs, fit=fit, tgt=tgt,
-            dmgFunc=self._getVolleyPerKey, timeCacheFunc=self._timeCache.prepareVolleyData)
+            dmgFunc=self._getVolleyPerKey, timeCachePrepFunc=self._timeCache.prepareVolleyData)
 
     def _distance2damage(self, mainInput, miscInputs, fit, tgt):
         return self._xDistanceGetter(
             mainInput=mainInput, miscInputs=miscInputs, fit=fit, tgt=tgt,
-            dmgFunc=self._getDmgPerKey, timeCacheFunc=self._timeCache.prepareDmgData)
+            dmgFunc=self._getDmgPerKey, timeCachePrepFunc=self._timeCache.prepareDmgData)
 
     def _time2dps(self, mainInput, miscInputs, fit, tgt):
-        def calcDpsTmp(timeDmg):
-            return floatUnerr(sum(dts.total for dts in timeDmg.values()))
-        self._timeCache.prepareDpsData(fit, mainInput[1][1])
-        return self._composeTimeGraph(mainInput, fit, self._timeCache.getDpsData, calcDpsTmp)
+        return self._xTimeGetter(
+            mainInput=mainInput, miscInputs=miscInputs, fit=fit, tgt=tgt,
+            timeCachePrepFunc=self._timeCache.prepareDpsData, timeCacheGetFunc=self._timeCache.getDpsData)
 
     def _time2volley(self, mainInput, miscInputs, fit, tgt):
-        def calcVolleyTmp(timeDmg):
-            return floatUnerr(sum(dts.total for dts in timeDmg.values()))
-        self._timeCache.prepareVolleyData(fit, mainInput[1][1])
-        return self._composeTimeGraph(mainInput, fit, self._timeCache.getVolleyData, calcVolleyTmp)
+        return self._xTimeGetter(
+            mainInput=mainInput, miscInputs=miscInputs, fit=fit, tgt=tgt,
+            timeCachePrepFunc=self._timeCache.prepareVolleyData, timeCacheGetFunc=self._timeCache.getVolleyData)
 
     def _time2damage(self, mainInput, miscInputs, fit, tgt):
-        def calcDamageTmp(timeDmg):
-            return floatUnerr(sum(dt.total for dt in timeDmg.values()))
-        self._timeCache.prepareDmgData(fit, mainInput[1][1])
-        return self._composeTimeGraph(mainInput, fit, self._timeCache.getDmgData, calcDamageTmp)
+        return self._xTimeGetter(
+            mainInput=mainInput, miscInputs=miscInputs, fit=fit, tgt=tgt,
+            timeCachePrepFunc=self._timeCache.prepareDmgData, timeCacheGetFunc=self._timeCache.getDmgData)
 
     def _tgtSpeed2dps(self, mainInput, miscInputs, fit, tgt):
         return self._xTgtSpeedGetter(
             mainInput=mainInput, miscInputs=miscInputs, fit=fit, tgt=tgt,
-            dmgFunc=self._getDpsPerKey, timeCacheFunc=self._timeCache.prepareDpsData)
+            dmgFunc=self._getDpsPerKey, timeCachePrepFunc=self._timeCache.prepareDpsData)
 
     def _tgtSpeed2volley(self, mainInput, miscInputs, fit, tgt):
         return self._xTgtSpeedGetter(
             mainInput=mainInput, miscInputs=miscInputs, fit=fit, tgt=tgt,
-            dmgFunc=self._getVolleyPerKey, timeCacheFunc=self._timeCache.prepareVolleyData)
+            dmgFunc=self._getVolleyPerKey, timeCachePrepFunc=self._timeCache.prepareVolleyData)
 
     def _tgtSpeed2damage(self, mainInput, miscInputs, fit, tgt):
         return self._xTgtSpeedGetter(
             mainInput=mainInput, miscInputs=miscInputs, fit=fit, tgt=tgt,
-            dmgFunc=self._getDmgPerKey, timeCacheFunc=self._timeCache.prepareDmgData)
+            dmgFunc=self._getDmgPerKey, timeCachePrepFunc=self._timeCache.prepareDmgData)
 
     def _tgtSigRad2dps(self, mainInput, miscInputs, fit, tgt):
         return self._xTgtSigRadiusGetter(
             mainInput=mainInput, miscInputs=miscInputs, fit=fit, tgt=tgt,
-            dmgFunc=self._getDpsPerKey, timeCacheFunc=self._timeCache.prepareDpsData)
+            dmgFunc=self._getDpsPerKey, timeCachePrepFunc=self._timeCache.prepareDpsData)
 
     def _tgtSigRad2volley(self, mainInput, miscInputs, fit, tgt):
         return self._xTgtSigRadiusGetter(
             mainInput=mainInput, miscInputs=miscInputs, fit=fit, tgt=tgt,
-            dmgFunc=self._getVolleyPerKey, timeCacheFunc=self._timeCache.prepareVolleyData)
+            dmgFunc=self._getVolleyPerKey, timeCachePrepFunc=self._timeCache.prepareVolleyData)
 
     def _tgtSigRad2damage(self, mainInput, miscInputs, fit, tgt):
         return self._xTgtSigRadiusGetter(
             mainInput=mainInput, miscInputs=miscInputs, fit=fit, tgt=tgt,
-            dmgFunc=self._getDmgPerKey, timeCacheFunc=self._timeCache.prepareDmgData)
+            dmgFunc=self._getDmgPerKey, timeCachePrepFunc=self._timeCache.prepareDmgData)
 
     _getters = {
         ('distance', 'dps'): _distance2dps,
@@ -150,14 +147,14 @@ class FitDamageStatsGraph(FitGraph):
         ('tgtSigRad', 'damage'): _tgtSigRad2damage}
 
     # Point getter helpers
-    def _xDistanceGetter(self, mainInput, miscInputs, fit, tgt, dmgFunc, timeCacheFunc):
+    def _xDistanceGetter(self, mainInput, miscInputs, fit, tgt, dmgFunc, timeCachePrepFunc):
         xs = []
         ys = []
         tgtSigRadius = tgt.ship.getModifiedItemAttr('signatureRadius')
         # Process inputs into more convenient form
         miscInputMap = dict(miscInputs)
         # Get all data we need for all distances into maps/caches
-        timeCacheFunc(fit, miscInputMap['time'])
+        timeCachePrepFunc(fit, miscInputMap['time'])
         dmgMap = dmgFunc(fit=fit, time=miscInputMap['time'])
         # Go through distances and calculate distance-dependent data
         for distance in self._iterLinear(mainInput[1]):
@@ -175,14 +172,74 @@ class FitDamageStatsGraph(FitGraph):
             ys.append(dmg)
         return xs, ys
 
-    def _xTgtSpeedGetter(self, mainInput, miscInputs, fit, tgt, dmgFunc, timeCacheFunc):
+    def _xTimeGetter(self, mainInput, miscInputs, fit, tgt, timeCachePrepFunc, timeCacheGetFunc):
+        xs = []
+        ys = []
+        minTime, maxTime = mainInput[1]
+        tgtSigRadius = tgt.ship.getModifiedItemAttr('signatureRadius')
+        # Process inputs into more convenient form
+        miscInputMap = dict(miscInputs)
+        # Get all data we need for all times into maps/caches
+        applicationMap = self._getApplicationPerKey(
+            fit=fit,
+            tgt=tgt,
+            atkSpeed=miscInputMap['atkSpeed'],
+            atkAngle=miscInputMap['atkAngle'],
+            distance=miscInputMap['distance'],
+            tgtSpeed=miscInputMap['tgtSpeed'],
+            tgtAngle=miscInputMap['tgtAngle'],
+            tgtSigRadius=tgtSigRadius)
+        timeCachePrepFunc(fit, maxTime)
+        timeCache = timeCacheGetFunc(fit)
+        # Custom iteration for time graph to show all data points
+        currentDmg = None
+        currentTime = None
+        for currentTime in sorted(timeCache):
+            prevDmg = currentDmg
+            currentDmgData = timeCache[currentTime]
+            currentDmg = self._aggregate(dmgMap=currentDmgData, applicationMap=applicationMap).total
+            if currentTime < minTime:
+                continue
+            # First set of data points
+            if not xs:
+                # Start at exactly requested time, at last known value
+                initialDmg = prevDmg or 0
+                xs.append(minTime)
+                ys.append(initialDmg)
+                # If current time is bigger then starting, extend plot to that time with old value
+                if currentTime > minTime:
+                    xs.append(currentTime)
+                    ys.append(initialDmg)
+                # If new value is different, extend it with new point to the new value
+                if currentDmg != prevDmg:
+                    xs.append(currentTime)
+                    ys.append(currentDmg)
+                continue
+            # Last data point
+            if currentTime >= maxTime:
+                xs.append(maxTime)
+                ys.append(prevDmg)
+                break
+            # Anything in-between
+            if currentDmg != prevDmg:
+                if prevDmg is not None:
+                    xs.append(currentTime)
+                    ys.append(prevDmg)
+                xs.append(currentTime)
+                ys.append(currentDmg)
+        if maxTime > (currentTime or 0):
+            xs.append(maxTime)
+            ys.append(currentDmg or 0)
+        return xs, ys
+
+    def _xTgtSpeedGetter(self, mainInput, miscInputs, fit, tgt, dmgFunc, timeCachePrepFunc):
         xs = []
         ys = []
         tgtSigRadius = tgt.ship.getModifiedItemAttr('signatureRadius')
         # Process inputs into more convenient form
         miscInputMap = dict(miscInputs)
         # Get all data we need for all target speeds into maps/caches
-        timeCacheFunc(fit, miscInputMap['time'])
+        timeCachePrepFunc(fit, miscInputMap['time'])
         dmgMap = dmgFunc(fit=fit, time=miscInputMap['time'])
         # Go through target speeds and calculate distance-dependent data
         for tgtSpeed in self._iterLinear(mainInput[1]):
@@ -200,13 +257,13 @@ class FitDamageStatsGraph(FitGraph):
             ys.append(dmg)
         return xs, ys
 
-    def _xTgtSigRadiusGetter(self, mainInput, miscInputs, fit, tgt, dmgFunc, timeCacheFunc):
+    def _xTgtSigRadiusGetter(self, mainInput, miscInputs, fit, tgt, dmgFunc, timeCachePrepFunc):
         xs = []
         ys = []
         # Process inputs into more convenient form
         miscInputMap = dict(miscInputs)
         # Get all data we need for all target speeds into maps/caches
-        timeCacheFunc(fit, miscInputMap['time'])
+        timeCachePrepFunc(fit, miscInputMap['time'])
         dmgMap = dmgFunc(fit=fit, time=miscInputMap['time'])
         # Go through target speeds and calculate distance-dependent data
         for tgtSigRadius in self._iterLinear(mainInput[1]):
@@ -329,52 +386,6 @@ class FitDamageStatsGraph(FitGraph):
         for key, dmg in dmgMap.items():
             total += dmg * applicationMap.get(key, 1)
         return total
-
-    ############# TO REFACTOR: time graph stuff
-    def _composeTimeGraph(self, mainInput, fit, cacheFunc, calcFunc):
-        xs = []
-        ys = []
-
-        minTime, maxTime = mainInput[1]
-        cache = cacheFunc(fit)
-        currentDps = None
-        currentTime = None
-        for currentTime in sorted(cache):
-            prevDps = currentDps
-            currentDps = calcFunc(cache[currentTime])
-            if currentTime < minTime:
-                continue
-            # First set of data points
-            if not xs:
-                # Start at exactly requested time, at last known value
-                initialDps = prevDps or 0
-                xs.append(minTime)
-                ys.append(initialDps)
-                # If current time is bigger then starting, extend plot to that time with old value
-                if currentTime > minTime:
-                    xs.append(currentTime)
-                    ys.append(initialDps)
-                # If new value is different, extend it with new point to the new value
-                if currentDps != prevDps:
-                    xs.append(currentTime)
-                    ys.append(currentDps)
-                continue
-            # Last data point
-            if currentTime >= maxTime:
-                xs.append(maxTime)
-                ys.append(prevDps)
-                break
-            # Anything in-between
-            if currentDps != prevDps:
-                if prevDps is not None:
-                    xs.append(currentTime)
-                    ys.append(prevDps)
-                xs.append(currentTime)
-                ys.append(currentDps)
-        if maxTime > (currentTime or 0):
-            xs.append(maxTime)
-            ys.append(currentDps or 0)
-        return xs, ys
 
 
 FitDamageStatsGraph.register()
