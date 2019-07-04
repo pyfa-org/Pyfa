@@ -19,6 +19,7 @@
 
 
 import math
+from functools import lru_cache
 
 
 def getTurretMult(mod, fit, tgt, atkSpeed, atkAngle, distance, tgtSpeed, tgtAngle, tgtSigRadius):
@@ -115,6 +116,7 @@ def getFighterAbilityMult(fighter, ability, fit, distance, tgtSpeed, tgtSigRadiu
 
 
 # Turret-specific
+@lru_cache(maxsize=50)
 def _calcTurretMult(chanceToHit):
     """Calculate damage multiplier for turret-based weapons."""
     # https://wiki.eveuniversity.org/Turret_mechanics#Damage
@@ -130,6 +132,7 @@ def _calcTurretMult(chanceToHit):
     return totalMult
 
 
+@lru_cache(maxsize=1000)
 def _calcTurretChanceToHit(
     atkSpeed, atkAngle, atkRadius, atkOptimalRange, atkFalloffRange, atkTracking, atkOptimalSigRadius,
     distance, tgtSpeed, tgtAngle, tgtRadius, tgtSigRadius
@@ -163,6 +166,7 @@ def _calcTrackingFactor(atkTracking, atkOptimalSigRadius, angularSpeed, tgtSigRa
 
 
 # Missile-specific
+@lru_cache(maxsize=200)
 def _calcMissileMult(atkRadius, atkRange, atkEr, atkEv, atkDrf, distance, tgtSpeed, tgtSigRadius):
     """Calculate damage multiplier for missile launcher."""
     # Missiles spawn in the center of the attacking ship
@@ -173,6 +177,7 @@ def _calcMissileMult(atkRadius, atkRange, atkEr, atkEv, atkDrf, distance, tgtSpe
     return mult
 
 
+@lru_cache(maxsize=200)
 def _calcFighterMult(atkOptimalRange, atkFalloffRange, atkEr, atkEv, atkDrf, distance, tgtSpeed, tgtSigRadius):
     """Calculate damage multiplier for separate fighter ability,"""
     rangeFactor = _calcRangeFactor(atkOptimalRange, atkFalloffRange, distance)

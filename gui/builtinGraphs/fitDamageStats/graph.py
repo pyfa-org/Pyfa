@@ -103,6 +103,21 @@ class FitDamageStatsGraph(FitGraph):
                             distance=distance,
                             tgtSpeed=miscInputMap['tgtSpeed'],
                             tgtSigRadius=tgtSigRad)
+            for drone in fit.drones:
+                if not drone.isDealingDamage():
+                    continue
+                droneDps = drone.getDps().total
+                totalDps += droneDps * getDroneMult(
+                    drone=drone,
+                    fit=fit,
+                    tgt=tgt,
+                    atkSpeed=miscInputMap['atkSpeed'],
+                    atkAngle=miscInputMap['atkAngle'],
+                    distance=distance,
+                    tgtSpeed=miscInputMap['tgtSpeed'],
+                    tgtAngle=miscInputMap['tgtAngle'],
+                    tgtSigRadius=tgtSigRad)
+
             xs.append(distance)
             ys.append(totalDps)
         return xs, ys
