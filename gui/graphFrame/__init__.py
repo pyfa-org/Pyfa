@@ -18,27 +18,4 @@
 # =============================================================================
 
 
-from collections import OrderedDict
-
-from eos.graph.fitWarpTimeVsDistance import FitWarpTimeVsDistanceGraph as EosGraph
-from gui.graph import Graph, XDef, YDef
-
-
-class FitWarpTimeVsDistanceGraph(Graph):
-
-    name = 'Warp Time vs Distance'
-
-    def __init__(self):
-        super().__init__()
-        self.eosGraph = EosGraph()
-
-    @property
-    def xDef(self):
-        return XDef(inputDefault='0-50', inputLabel='Distance (AU)', inputIconID=1391, axisLabel='Warp distance, AU')
-
-    @property
-    def yDefs(self):
-        return OrderedDict([('time', YDef(switchLabel='Warp time', axisLabel='Warp time, s', eosGraph='eosGraph'))])
-
-
-FitWarpTimeVsDistanceGraph.register()
+from .frame import GraphFrame

@@ -102,7 +102,7 @@ class MainMenuBar(wx.MenuBar):
         graphFrameItem = wx.MenuItem(fitMenu, self.graphFrameId, "&Graphs\tCTRL+G")
         graphFrameItem.SetBitmap(BitmapLoader.getBitmap("graphs_small", "gui"))
         fitMenu.Append(graphFrameItem)
-        if not gui.graphFrame.graphFrame_enabled:
+        if not gui.graphFrame.frame.graphFrame_enabled:
             self.Enable(self.graphFrameId, False)
         self.ignoreRestrictionItem = fitMenu.Append(self.toggleIgnoreRestrictionID, "Disable Fitting Re&strictions")
 

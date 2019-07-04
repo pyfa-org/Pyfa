@@ -202,6 +202,13 @@ class Fighter(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
                     explosive=volleyValue.explosive * (1 - getattr(targetResists, "explosiveAmount", 0)))
         return adjustedVolley
 
+    def getVolleyPerEffect(self, targetResists=None):
+        volleyParams = self.getVolleyParametersPerEffect(targetResists=targetResists)
+        volleyMap = {}
+        for effectID, volleyData in volleyParams.items():
+            volleyMap[effectID] = volleyData[0]
+        return volleyMap
+
     def getVolley(self, targetResists=None):
         volleyParams = self.getVolleyParametersPerEffect(targetResists=targetResists)
         em = 0

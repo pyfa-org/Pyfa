@@ -27,6 +27,7 @@ import gui.mainFrame
 import gui.globalEvents as GE
 from gui.utils import fonts
 
+
 EffectiveHpToggled, EFFECTIVE_HP_TOGGLED = wx.lib.newevent.NewEvent()
 
 
