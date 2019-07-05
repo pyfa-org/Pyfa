@@ -24,8 +24,8 @@ from collections import namedtuple
 import wx
 
 from gui.bitmap_loader import BitmapLoader
+from gui.contextMenu import ContextMenu
 from service.fit import Fit
-from service.settings import GraphSettings
 from .input import ConstantBox, RangeBox
 from .lists import FitList, TargetList
 from .vector import VectorPicker
@@ -92,6 +92,19 @@ class GraphControlPanel(wx.Panel):
         graphOptsSizer.Add(self.tgtVectorSizer, 0, wx.EXPAND | wx.LEFT, 10)
 
         optsSizer.Add(graphOptsSizer, 1, wx.EXPAND | wx.ALL, 0)
+
+        contextSizer = wx.BoxSizer(wx.VERTICAL)
+        savedFont = self.GetFont()
+        contextIconFont = wx.SystemSettings.GetFont(wx.SYS_DEFAULT_GUI_FONT)
+        contextIconFont.SetPointSize(8)
+        self.SetFont(contextIconFont)
+        self.contextIcon = wx.StaticText(self, wx.ID_ANY, '\u2630', size=wx.Size((10, -1)))
+        self.contextIcon.Bind(wx.EVT_CONTEXT_MENU, self.contextMenuHandler)
+        self.contextIcon.Bind(wx.EVT_LEFT_UP, self.contextMenuHandler)
+        self.SetFont(savedFont)
+        contextSizer.Add(self.contextIcon, 0, wx.EXPAND | wx.ALL, 0)
+        optsSizer.Add(contextSizer, 0, wx.EXPAND | wx.ALL, 0)
+
         mainSizer.Add(optsSizer, 0, wx.EXPAND | wx.ALL, 10)
 
         srcTgtSizer = wx.BoxSizer(wx.HORIZONTAL)
@@ -145,6 +158,9 @@ class GraphControlPanel(wx.Panel):
 
         # Inputs
         self._updateInputs(storeInputs=False)
+
+        # Context icon
+        self.contextIcon.Show(ContextMenu.hasMenu(None, None, (view.internalName,)))
 
         if layout:
             self.graphFrame.Layout()
@@ -324,3 +340,10 @@ class GraphControlPanel(wx.Panel):
     def _setVectorDefaults(self):
         self.srcVector.SetValue(length=0, angle=90)
         self.tgtVector.SetValue(length=1, angle=90)
+
+    def contextMenuHandler(self, event):
+        viewName = self.graphFrame.getView().internalName
+        menu = ContextMenu.getMenu(None, None, (viewName,))
+        if menu is not None:
+            self.PopupMenu(menu)
+        event.Skip()

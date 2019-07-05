@@ -15,7 +15,7 @@
 import wx
 
 
-class TogglePanel (wx.Panel):
+class TogglePanel(wx.Panel):
     def __init__(self, parent, force_layout=False, *args, **kargs):
         super().__init__(parent, *args, **kargs)
 
