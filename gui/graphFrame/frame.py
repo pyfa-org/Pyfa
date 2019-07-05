@@ -31,6 +31,7 @@ import gui.globalEvents as GE
 import gui.mainFrame
 from gui.bitmap_loader import BitmapLoader
 from gui.builtinGraphs.base import FitGraph
+from service.settings import GraphSettings
 from .panel import GraphControlPanel
 
 
@@ -113,7 +114,9 @@ class GraphFrame(wx.Frame):
         # Setup - graph selector
         for view in FitGraph.views:
             self.graphSelection.Append(view.name, view())
-        self.graphSelection.SetSelection(0)
+        viewToSelect = GraphSettings.getInstance().get('selectedGraph')
+        viewToSelect = FitGraph.viewIndexMap.get(viewToSelect, 0)
+        self.graphSelection.SetSelection(viewToSelect)
         self.ctrlPanel.updateControls(layout=False)
 
         # Event bindings - local events
@@ -154,13 +157,14 @@ class GraphFrame(wx.Frame):
         self.draw()
 
     def OnGraphSwitched(self, event):
+        view = self.getView()
+        GraphSettings.getInstance().set('selectedGraph', view.internalName)
         self.clearCache()
         self.ctrlPanel.updateControls()
         self.draw()
         event.Skip()
 
     def closeWindow(self):
-        from gui.builtinStatsViews.resistancesViewFull import EFFECTIVE_HP_TOGGLED
         self.mainFrame.Unbind(GE.FIT_CHANGED, handler=self.OnFitChanged)
         self.ctrlPanel.unbindExternalEvents()
         self.Destroy()

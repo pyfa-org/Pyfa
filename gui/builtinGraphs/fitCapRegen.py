@@ -26,6 +26,7 @@ from .base import FitGraph, XDef, YDef, Input
 class FitCapRegenGraph(FitGraph):
 
     # UI stuff
+    internalName = 'capRegenGraph'
     name = 'Capacitor Regeneration'
     xDefs = [
         XDef(handle='time', unit='s', label='Time', mainInput=('time', 's')),

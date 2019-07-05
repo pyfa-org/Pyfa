@@ -30,7 +30,7 @@ from logbook import Logger
 pyfalog = Logger(__name__)
 
 
-class SettingsProvider(object):
+class SettingsProvider:
     if config.savePath:
         BASE_PATH = os.path.join(config.savePath, 'settings')
     settings = {}
@@ -78,7 +78,7 @@ class SettingsProvider(object):
             settings.save()
 
 
-class Settings(object):
+class Settings:
     def __init__(self, location, info):
         # type: (basestring, dict) -> None
         # path string or empty string.
@@ -129,7 +129,7 @@ class Settings(object):
         return list(self.info.items())
 
 
-class NetworkSettings(object):
+class NetworkSettings:
     _instance = None
 
     # constants for serviceNetworkDefaultSettings["mode"] parameter
@@ -276,7 +276,7 @@ class NetworkSettings(object):
         return proxies
 
 
-class HTMLExportSettings(object):
+class HTMLExportSettings:
     """
     Settings used by the HTML export feature.
     """
@@ -312,7 +312,7 @@ class HTMLExportSettings(object):
         self.serviceHTMLExportSettings["path"] = path
 
 
-class UpdateSettings(object):
+class UpdateSettings:
     """
     Settings used by update notification
     """
@@ -343,7 +343,7 @@ class UpdateSettings(object):
         self.serviceUpdateSettings[type] = value
 
 
-class EsiSettings(object):
+class EsiSettings:
     _instance = None
 
     @classmethod
@@ -379,7 +379,7 @@ class EsiSettings(object):
         self.settings[type] = value
 
 
-class StatViewSettings(object):
+class StatViewSettings:
     _instance = None
 
     @classmethod
@@ -416,7 +416,7 @@ class StatViewSettings(object):
         self.serviceStatViewDefaultSettings[type] = value
 
 
-class MarketPriceSettings(object):
+class MarketPriceSettings:
     _instance = None
 
     @classmethod
@@ -450,7 +450,7 @@ class MarketPriceSettings(object):
         self.PriceMenuDefaultSettings[type] = value
 
 
-class ContextMenuSettings(object):
+class ContextMenuSettings:
     _instance = None
 
     @classmethod
@@ -482,7 +482,7 @@ class ContextMenuSettings(object):
         self.ContextMenuDefaultSettings[type] = value
 
 
-class EOSSettings(object):
+class EOSSettings:
         _instance = None
 
         @classmethod
@@ -501,4 +501,26 @@ class EOSSettings(object):
         def set(self, type, value):
             self.EOSSettings[type] = value
 
-# @todo: migrate fit settings (from fit service) here?
+
+class GraphSettings:
+
+    _instance = None
+
+    @classmethod
+    def getInstance(cls):
+        if cls._instance is None:
+            cls._instance = GraphSettings()
+        return cls._instance
+
+    def __init__(self):
+        defaults = {
+            'selectedGraph': None,
+            'mobileDroneMode': 0,
+            'ignoreResists': True}
+        self.settings = SettingsProvider.getInstance().getSettings('graphSettings', defaults)
+
+    def get(self, type):
+        return self.settings[type]
+
+    def set(self, type, value):
+        self.settings[type] = value

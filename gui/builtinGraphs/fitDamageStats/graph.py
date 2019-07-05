@@ -37,6 +37,7 @@ class FitDamageStatsGraph(FitGraph):
         self._timeCache.clear(fitID)
 
     # UI stuff
+    internalName = 'dmgStatsGraph'
     name = 'Damage Stats'
     xDefs = [
         XDef(handle='distance', unit='km', label='Distance', mainInput=('distance', 'km')),

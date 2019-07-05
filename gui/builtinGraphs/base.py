@@ -32,10 +32,14 @@ class FitGraph(metaclass=ABCMeta):
 
     # UI stuff
     views = []
+    viewMap = {}
+    viewIndexMap = {}
 
     @classmethod
     def register(cls):
         FitGraph.views.append(cls)
+        FitGraph.viewMap[cls.internalName] = cls
+        FitGraph.viewIndexMap[cls.internalName] = FitGraph.views.index(cls)
 
     def __init__(self):
         # Format: {(fit ID, target type, target ID): data}
@@ -44,6 +48,11 @@ class FitGraph(metaclass=ABCMeta):
     @property
     @abstractmethod
     def name(self):
+        raise NotImplementedError
+
+    @property
+    @abstractmethod
+    def internalName(self):
         raise NotImplementedError
 
     @property

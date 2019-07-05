@@ -26,6 +26,7 @@ from .base import FitGraph, XDef, YDef, Input
 class FitMobilityVsTimeGraph(FitGraph):
 
     # UI stuff
+    internalName = 'mobilityGraph'
     name = 'Mobility'
     xDefs = [
         XDef(handle='time', unit='s', label='Time', mainInput=('time', 's'))]

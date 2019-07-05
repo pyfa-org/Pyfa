@@ -37,6 +37,7 @@ class FitWarpTimeGraph(FitGraph):
         self._subspeedCache.clear(fitID)
 
     # UI stuff
+    internalName = 'warpTimeGraph'
     name = 'Warp Time'
     xDefs = [
         XDef(handle='distance', unit='AU', label='Distance', mainInput=('distance', 'AU')),

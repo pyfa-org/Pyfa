@@ -26,6 +26,7 @@ from .base import FitGraph, XDef, YDef, Input
 class FitShieldRegenGraph(FitGraph):
 
     # UI stuff
+    internalName = 'shieldRegenGraph'
     name = 'Shield Regeneration'
     xDefs = [
         XDef(handle='time', unit='s', label='Time', mainInput=('time', 's')),
