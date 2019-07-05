@@ -4,14 +4,12 @@ import wx
 import gui.mainFrame
 from gui.builtinShipBrowser.events import FitSelected
 from gui.contextMenu import ContextMenuSingle
-from service.settings import ContextMenuSettings
 
 
 class OpenFitInNewTab(ContextMenuSingle):
 
     def __init__(self):
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
-        self.settings = ContextMenuSettings.getInstance()
 
     def display(self, srcContext, mainItem):
         if srcContext not in ("projectedFit", "commandFit"):

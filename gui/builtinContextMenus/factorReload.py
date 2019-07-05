@@ -5,14 +5,12 @@ import gui.globalEvents as GE
 import gui.mainFrame
 from gui.contextMenu import ContextMenuUnconditional
 from service.fit import Fit
-from service.settings import ContextMenuSettings
 
 
 class FactorReload(ContextMenuUnconditional):
 
     def __init__(self):
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
-        self.settings = ContextMenuSettings.getInstance()
 
     def display(self, srcContext):
         return srcContext == "firepowerViewFull"

@@ -5,14 +5,12 @@ import gui.mainFrame
 from gui.builtinShipBrowser.events import Stage3Selected
 from gui.contextMenu import ContextMenuUnconditional
 from service.fit import Fit
-from service.settings import ContextMenuSettings
 
 
 class JumpToShip(ContextMenuUnconditional):
 
     def __init__(self):
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
-        self.settings = ContextMenuSettings.getInstance()
 
     def display(self, srcContext):
         if srcContext != "fittingShip":

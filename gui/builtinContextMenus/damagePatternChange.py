@@ -9,14 +9,12 @@ from gui.bitmap_loader import BitmapLoader
 from gui.contextMenu import ContextMenuUnconditional
 from service.damagePattern import DamagePattern as import_DamagePattern
 from service.fit import Fit
-from service.settings import ContextMenuSettings
 
 
 class ChangeDamagePattern(ContextMenuUnconditional):
 
     def __init__(self):
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
-        self.settings = ContextMenuSettings.getInstance()
 
     def display(self, srcContext):
         return srcContext == "resistancesViewFull"

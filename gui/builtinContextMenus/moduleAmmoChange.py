@@ -10,7 +10,6 @@ from gui.contextMenu import ContextMenuCombined
 from gui.fitCommands.helpers import getSimilarModPositions
 from service.fit import Fit
 from service.market import Market
-from service.settings import ContextMenuSettings
 
 
 class ChangeModuleAmmo(ContextMenuCombined):
@@ -20,7 +19,6 @@ class ChangeModuleAmmo(ContextMenuCombined):
 
     def __init__(self):
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
-        self.settings = ContextMenuSettings.getInstance()
         # Format: {type ID: set(loadable, charges)}
         self.loadableCharges = {}
 

@@ -40,4 +40,6 @@ from gui.builtinContextMenus import (  # noqa: E402,F401
     # Firepower panel
     factorReload,
     targetResists,
+    # Graph extra options
+    graphDmgIgnoreResists
 )

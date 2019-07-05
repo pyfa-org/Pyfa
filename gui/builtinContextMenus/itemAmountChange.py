@@ -11,14 +11,12 @@ from eos.saveddata.fighter import Fighter as es_Fighter
 from eos.saveddata.fit import Fit as es_Fit
 from gui.contextMenu import ContextMenuSingle
 from service.fit import Fit
-from service.settings import ContextMenuSettings
 
 
 class ChangeItemAmount(ContextMenuSingle):
 
     def __init__(self):
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
-        self.settings = ContextMenuSettings.getInstance()
 
     def display(self, srcContext, mainItem):
         if srcContext not in ("droneItem", "projectedDrone", "cargoItem", "projectedFit", "fighterItem", "projectedFighter"):

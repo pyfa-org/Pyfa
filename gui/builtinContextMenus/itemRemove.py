@@ -11,14 +11,12 @@ from eos.saveddata.module import Module as EosModule
 from gui.contextMenu import ContextMenuCombined
 from gui.fitCommands.helpers import getSimilarFighters, getSimilarModPositions
 from service.fit import Fit
-from service.settings import ContextMenuSettings
 
 
 class RemoveItem(ContextMenuCombined):
 
     def __init__(self):
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
-        self.settings = ContextMenuSettings.getInstance()
 
     def display(self, srcContext, mainItem, selection):
         if srcContext not in (

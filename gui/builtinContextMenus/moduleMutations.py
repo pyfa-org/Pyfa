@@ -5,14 +5,12 @@ import gui.mainFrame
 from gui.contextMenu import ContextMenuSingle
 from gui.fitCommands import GuiConvertMutatedLocalModuleCommand, GuiRevertMutatedLocalModuleCommand
 from service.fit import Fit
-from service.settings import ContextMenuSettings
 
 
 class ChangeModuleMutation(ContextMenuSingle):
 
     def __init__(self):
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
-        self.settings = ContextMenuSettings.getInstance()
         self.eventIDs = {}
 
     def display(self, srcContext, mainItem):

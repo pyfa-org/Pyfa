@@ -5,14 +5,12 @@ import gui.mainFrame
 from gui import fitCommands as cmd
 from gui.contextMenu import ContextMenuSingle
 from service.fit import Fit
-from service.settings import ContextMenuSettings
 
 
 class BoosterSideEffects(ContextMenuSingle):
 
     def __init__(self):
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
-        self.settings = ContextMenuSettings.getInstance()
 
     def display(self, srcContext, mainItem):
         if self.mainFrame.getActiveFit() is None or srcContext not in "boosterItem":

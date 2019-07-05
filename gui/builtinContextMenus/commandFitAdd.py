@@ -6,7 +6,6 @@ import gui.mainFrame
 from gui.contextMenu import ContextMenuUnconditional
 from service.fit import Fit
 from service.market import Market
-from service.settings import ContextMenuSettings
 
 
 class AddCommandFit(ContextMenuUnconditional):
@@ -40,7 +39,6 @@ class AddCommandFit(ContextMenuUnconditional):
 
     def __init__(self):
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
-        self.settings = ContextMenuSettings.getInstance()
 
     def display(self, srcContext):
         if self.mainFrame.getActiveFit() is None or len(self.__class__.commandFits) == 0 or srcContext != "commandView":

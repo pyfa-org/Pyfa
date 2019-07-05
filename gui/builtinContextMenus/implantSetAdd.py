@@ -7,14 +7,12 @@ import gui.mainFrame
 from gui.contextMenu import ContextMenuSingle
 from service.character import Character
 from service.implantSet import ImplantSets as s_ImplantSets
-from service.settings import ContextMenuSettings
 
 
 class AddImplantSet(ContextMenuSingle):
 
     def __init__(self):
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
-        self.settings = ContextMenuSettings.getInstance()
 
     def display(self, srcContext, mainItem):
 

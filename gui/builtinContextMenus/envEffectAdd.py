@@ -8,7 +8,6 @@ import gui.fitCommands as cmd
 import gui.mainFrame
 from gui.contextMenu import ContextMenuUnconditional
 from service.market import Market
-from service.settings import ContextMenuSettings
 
 
 class AddEnvironmentEffect(ContextMenuUnconditional):
@@ -26,7 +25,6 @@ class AddEnvironmentEffect(ContextMenuUnconditional):
 
     def __init__(self):
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
-        self.settings = ContextMenuSettings.getInstance()
 
     def display(self, srcContext):
         return srcContext == "projected"

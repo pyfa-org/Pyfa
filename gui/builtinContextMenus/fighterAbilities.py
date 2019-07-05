@@ -6,14 +6,12 @@ from gui import fitCommands as cmd
 from gui.fitCommands.helpers import getSimilarFighters
 from gui.contextMenu import ContextMenuCombined
 from service.fit import Fit
-from service.settings import ContextMenuSettings
 
 
 class FighterAbilities(ContextMenuCombined):
 
     def __init__(self):
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
-        self.settings = ContextMenuSettings.getInstance()
         self.isProjected = None
 
     def display(self, srcContext, mainItem, selection):

@@ -1,13 +1,11 @@
 import gui.mainFrame
 from gui.contextMenu import ContextMenuSingle
 from service.market import Market
-from service.settings import ContextMenuSettings
 
 
 class JumpToMarketItem(ContextMenuSingle):
     def __init__(self):
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
-        self.settings = ContextMenuSettings.getInstance()
 
     def display(self, srcContext, mainItem):
         validContexts = ("marketItemMisc", "fittingModule",
