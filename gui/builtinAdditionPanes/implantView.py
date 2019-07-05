@@ -78,8 +78,12 @@ class ImplantView(wx.Panel):
         self.mainFrame.Bind(GE.FIT_CHANGED, self.fitChanged)
 
     def fitChanged(self, event):
-        sFit = Fit.getInstance()
+        event.Skip()
         activeFitID = self.mainFrame.getActiveFit()
+        if activeFitID is not None and event.fitID is not None and event.fitID != activeFitID:
+            return
+
+        sFit = Fit.getInstance()
         fit = sFit.getFit(activeFitID)
         if fit:
             self.source = fit.implantSource
@@ -90,8 +94,6 @@ class ImplantView(wx.Panel):
 
         self.rbFit.Enable(fit is not None)
         self.rbChar.Enable(fit is not None)
-
-        event.Skip()
 
     def OnRadioSelect(self, event):
         fitID = self.mainFrame.getActiveFit()
@@ -152,6 +154,11 @@ class ImplantDisplay(d.Display):
         event.Skip()
 
     def fitChanged(self, event):
+        event.Skip()
+        activeFitID = self.mainFrame.getActiveFit()
+        if activeFitID is not None and event.fitID is not None and event.fitID != activeFitID:
+            return
+
         sFit = Fit.getInstance()
         fit = sFit.getFit(event.fitID)
 
@@ -161,7 +168,6 @@ class ImplantDisplay(d.Display):
         if event.fitID is None and self.lastFitId is not None:
             self.DeleteAllItems()
             self.lastFitId = None
-            event.Skip()
             return
 
         self.original = fit.appliedImplants if fit is not None else None
@@ -180,7 +186,6 @@ class ImplantDisplay(d.Display):
             self.unselectAll()
 
         self.update(self.implants)
-        event.Skip()
 
     def addItem(self, event):
         item = Market.getInstance().getItem(event.itemID, eager='group.category')

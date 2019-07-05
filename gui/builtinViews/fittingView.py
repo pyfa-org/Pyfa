@@ -604,8 +604,11 @@ class FittingView(d.Display):
         self.populate(self.mods)
 
     def fitChanged(self, event):
+        event.Skip()
         if not self:
-            event.Skip()
+            return
+        activeFitID = self.mainFrame.getActiveFit()
+        if activeFitID is not None and event.fitID is not None and event.fitID != activeFitID:
             return
         try:
             if self.activeFitID is not None and self.activeFitID == event.fitID:
@@ -619,8 +622,6 @@ class FittingView(d.Display):
             self.Show(self.activeFitID is not None and self.activeFitID == event.fitID)
         except RuntimeError:
             pyfalog.error("Caught dead object")
-        finally:
-            event.Skip()
 
     def spawnMenu(self, event):
         if self.activeFitID is None or self.getColumn(self.screenToClientFixed(event.Position)) == self.getColIndex(State):

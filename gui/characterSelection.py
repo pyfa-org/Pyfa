@@ -214,6 +214,10 @@ class CharacterSelection(wx.Panel):
         """
         When fit is changed, or new fit is selected
         """
+        event.Skip()
+        activeFitID = self.mainFrame.getActiveFit()
+        if activeFitID is not None and event.fitID is not None and event.fitID != activeFitID:
+            return
         self.charChoice.Enable(event.fitID is not None)
         choice = self.charChoice
         sFit = Fit.getInstance()
@@ -256,8 +260,6 @@ class CharacterSelection(wx.Panel):
                 self.charChanged(None)
 
         self.toggleRefreshButton()
-
-        event.Skip()
 
     def exportSkills(self, evt):
         skillsMap = self._buildSkillsTooltipCondensed(self.reqs, skillsMap={})

@@ -176,6 +176,10 @@ class MainMenuBar(wx.MenuBar):
         self.mainFrame.Bind(EVT_FIT_RENAMED, self.fitRenamed)
 
     def fitChanged(self, event):
+        event.Skip()
+        activeFitID = self.mainFrame.getActiveFit()
+        if activeFitID is not None and event.fitID is not None and event.fitID != activeFitID:
+            return
         enable = event.fitID is not None
         self.Enable(wx.ID_SAVEAS, enable)
         self.Enable(wx.ID_COPY, enable)
@@ -202,8 +206,6 @@ class MainMenuBar(wx.MenuBar):
                 self.ignoreRestrictionItem.SetItemLabel("Enable Fitting Re&strictions")
             else:
                 self.ignoreRestrictionItem.SetItemLabel("Disable Fitting Re&strictions")
-
-        event.Skip()
 
     def fitRenamed(self, event):
         self.refreshUndo()

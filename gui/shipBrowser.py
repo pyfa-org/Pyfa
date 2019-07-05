@@ -97,11 +97,14 @@ class ShipBrowser(wx.Panel):
         self.navpanel.gotoStage(stage, stageData)
 
     def RefreshList(self, event):
-        stage = self.GetActiveStage()
+        event.Skip()
+        activeFitID = self.mainFrame.getActiveFit()
+        if activeFitID is not None and event.fitID is not None and event.fitID != activeFitID:
+            return
 
+        stage = self.GetActiveStage()
         if stage in (3, 4, 5):
             self.lpane.RefreshList(True)
-        event.Skip()
 
     def SizeRefreshList(self, event):
         self.Layout()

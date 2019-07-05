@@ -507,13 +507,6 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
                 rrAmount = module.getModifiedItemAttr("powerTransferAmount", 0)
             else:
                 return None, 0
-            if rrAmount:
-                cycleParams = self.getCycleParameters()
-                if cycleParams is None:
-                    return None, 0
-                rrAmount *= 1 / (cycleParams.averageTime / 1000)
-                if module.item.group.name == "Ancillary Remote Armor Repairer" and module.charge:
-                    rrAmount *= module.getModifiedItemAttr("chargedArmorDamageMultiplier", 1)
 
             return rrType, rrAmount
 
@@ -521,6 +514,14 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
             self.__baseRemoteReps = getBaseRemoteReps(self)
 
         rrType, rrAmount = self.__baseRemoteReps
+
+        if rrAmount:
+            cycleParams = self.getCycleParameters()
+            if cycleParams is None:
+                return None, 0
+            rrAmount *= 1 / (cycleParams.averageTime / 1000)
+            if self.item.group.name == "Ancillary Remote Armor Repairer" and self.charge:
+                rrAmount *= self.getModifiedItemAttr("chargedArmorDamageMultiplier", 1)
 
         if rrType and rrAmount and self.item.group.name == "Mutadaptive Remote Armor Repairer":
             spoolType, spoolAmount = resolveSpoolOptions(spoolOptions, self)

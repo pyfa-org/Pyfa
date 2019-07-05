@@ -137,9 +137,15 @@ class Fit(object):
         self.ecmProjectedStr = 1
         self.commandBonuses = {}
 
-    @property
-    def hasDpsData(self):
-        return len(self.__weaponDpsMap) > 0
+    def clearFactorReloadDependentData(self):
+        # Here we clear all data known to rely on cycle parameters
+        # (which, in turn, relies on factor reload flag)
+        self.__weaponDpsMap.clear()
+        self.__remoteRepMap.clear()
+        self.__capStable = None
+        self.__capState = None
+        self.__capUsed = None
+        self.__capRecharge = None
 
     @property
     def targetResists(self):

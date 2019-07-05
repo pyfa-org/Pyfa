@@ -199,6 +199,11 @@ class DroneView(Display):
                 drone.item.name)
 
     def fitChanged(self, event):
+        event.Skip()
+        activeFitID = self.mainFrame.getActiveFit()
+        if activeFitID is not None and event.fitID is not None and event.fitID != activeFitID:
+            return
+
         sFit = Fit.getInstance()
         fit = sFit.getFit(event.fitID)
 
@@ -208,7 +213,6 @@ class DroneView(Display):
         if event.fitID is None and self.lastFitId is not None:
             self.DeleteAllItems()
             self.lastFitId = None
-            event.Skip()
             return
 
         self.original = fit.drones if fit is not None else None
@@ -228,7 +232,6 @@ class DroneView(Display):
             self.unselectAll()
 
         self.update(self.drones)
-        event.Skip()
 
     def addItem(self, event):
         item = Market.getInstance().getItem(event.itemID, eager='group.category')

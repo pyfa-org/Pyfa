@@ -249,8 +249,9 @@ class Fit:
         for fit in set(self._loadedFits):
             if fit is None:
                 continue
-            if fit.hasDpsData:
-                self.recalc(fit)
+            if fit.calculated:
+                fit.factorReload = self.serviceFittingOptions['useGlobalForceReload']
+                fit.clearFactorReloadDependentData()
                 fitIDs.add(fit.ID)
         return fitIDs
 
@@ -477,7 +478,6 @@ class Fit:
 
         fit.factorReload = self.serviceFittingOptions["useGlobalForceReload"]
         fit.clear()
-
         fit.calculateModifiedAttributes()
         pyfalog.info("=" * 10 + "recalc time: " + str(time() - start_time) + "=" * 10)
 

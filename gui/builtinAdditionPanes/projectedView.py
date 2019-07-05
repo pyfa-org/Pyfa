@@ -168,6 +168,11 @@ class ProjectedView(d.Display):
         return fit.name
 
     def fitChanged(self, event):
+        event.Skip()
+        activeFitID = self.mainFrame.getActiveFit()
+        if activeFitID is not None and event.fitID is not None and event.fitID != activeFitID:
+            return
+
         sFit = Fit.getInstance()
         fit = sFit.getFit(event.fitID)
         # pyfalog.debug('ProjectedView::fitChanged: {}', repr(fit))
@@ -178,7 +183,6 @@ class ProjectedView(d.Display):
         if event.fitID is None and self.lastFitId is not None:
             self.DeleteAllItems()
             self.lastFitId = None
-            event.Skip()
             return
 
 
@@ -194,8 +198,6 @@ class ProjectedView(d.Display):
             self.unselectAll()
 
         self.refreshContents(fit)
-
-        event.Skip()
 
     def refreshContents(self, fit):
         stuff = []

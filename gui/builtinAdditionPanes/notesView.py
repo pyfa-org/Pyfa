@@ -30,6 +30,11 @@ class NotesView(wx.Panel):
             event.Skip()
 
     def fitChanged(self, event):
+        event.Skip()
+        activeFitID = self.mainFrame.getActiveFit()
+        if activeFitID is not None and event.fitID is not None and event.fitID != activeFitID:
+            return
+
         sFit = Fit.getInstance()
         fit = sFit.getFit(event.fitID)
 
@@ -43,13 +48,10 @@ class NotesView(wx.Panel):
 
         if event.fitID is None and self.lastFitId is not None:
             self.lastFitId = None
-            event.Skip()
             return
         elif event.fitID != self.lastFitId:
             self.lastFitId = event.fitID
             self.editNotes.SetValue(fit.notes or "")
-
-        event.Skip()
 
     def onText(self, event):
         # delay the save so we're not writing to sqlite on every keystroke

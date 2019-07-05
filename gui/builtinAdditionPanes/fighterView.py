@@ -88,8 +88,12 @@ class FighterView(wx.Panel):
         self.mainFrame.Bind(GE.FIT_CHANGED, self.fitChanged)
 
     def fitChanged(self, event):
-        sFit = Fit.getInstance()
+        event.Skip()
         activeFitID = self.mainFrame.getActiveFit()
+        if activeFitID is not None and event.fitID is not None and event.fitID != activeFitID:
+            return
+
+        sFit = Fit.getInstance()
         fit = sFit.getFit(activeFitID)
 
         if fit:
@@ -112,8 +116,6 @@ class FighterView(wx.Panel):
                 lbl.SetForegroundColour(color)
 
             self.Refresh()
-
-        event.Skip()
 
 
 class FighterDisplay(d.Display):
@@ -242,6 +244,11 @@ class FighterDisplay(d.Display):
         return orderPos, abilityEffectIDs, fighter.item.name
 
     def fitChanged(self, event):
+        event.Skip()
+        activeFitID = self.mainFrame.getActiveFit()
+        if activeFitID is not None and event.fitID is not None and event.fitID != activeFitID:
+            return
+
         sFit = Fit.getInstance()
         fit = sFit.getFit(event.fitID)
 
@@ -251,7 +258,6 @@ class FighterDisplay(d.Display):
         if event.fitID is None and self.lastFitId is not None:
             self.DeleteAllItems()
             self.lastFitId = None
-            event.Skip()
             return
 
         self.original = fit.fighters if fit is not None else None
@@ -271,7 +277,6 @@ class FighterDisplay(d.Display):
             self.unselectAll()
 
         self.update(self.fighters)
-        event.Skip()
 
     def addItem(self, event):
         item = Market.getInstance().getItem(event.itemID, eager='group.category')
