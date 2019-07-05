@@ -114,9 +114,7 @@ class GraphFrame(wx.Frame):
         # Setup - graph selector
         for view in FitGraph.views:
             self.graphSelection.Append(view.name, view())
-        viewToSelect = GraphSettings.getInstance().get('selectedGraph')
-        viewToSelect = FitGraph.viewIndexMap.get(viewToSelect, 0)
-        self.graphSelection.SetSelection(viewToSelect)
+        self.graphSelection.SetSelection(0)
         self.ctrlPanel.updateControls(layout=False)
 
         # Event bindings - local events

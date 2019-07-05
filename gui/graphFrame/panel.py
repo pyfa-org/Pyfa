@@ -25,6 +25,7 @@ import wx
 
 from gui.bitmap_loader import BitmapLoader
 from service.fit import Fit
+from service.settings import GraphSettings
 from .input import ConstantBox, RangeBox
 from .lists import FitList, TargetList
 from .vector import VectorPicker

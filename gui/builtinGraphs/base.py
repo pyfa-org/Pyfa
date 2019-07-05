@@ -33,13 +33,11 @@ class FitGraph(metaclass=ABCMeta):
     # UI stuff
     views = []
     viewMap = {}
-    viewIndexMap = {}
 
     @classmethod
     def register(cls):
         FitGraph.views.append(cls)
         FitGraph.viewMap[cls.internalName] = cls
-        FitGraph.viewIndexMap[cls.internalName] = FitGraph.views.index(cls)
 
     def __init__(self):
         # Format: {(fit ID, target type, target ID): data}
