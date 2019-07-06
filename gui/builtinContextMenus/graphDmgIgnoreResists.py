@@ -1,3 +1,7 @@
+# noinspection PyPackageRequirements
+import wx
+
+import gui.globalEvents as GE
 import gui.mainFrame
 from gui.contextMenu import ContextMenuUnconditional
 from service.settings import GraphSettings
@@ -17,6 +21,7 @@ class GraphDmgIgnoreResists(ContextMenuUnconditional):
 
     def activate(self, fullContext, i):
         self.settings.set('ignoreResists', not self.settings.get('ignoreResists'))
+        wx.PostEvent(self.mainFrame, GE.GraphOptionChanged())
 
     @property
     def checked(self):

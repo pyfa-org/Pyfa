@@ -3,6 +3,7 @@ from collections import OrderedDict
 # noinspection PyPackageRequirements
 import wx
 
+import gui.globalEvents as GE
 import gui.mainFrame
 from gui.contextMenu import ContextMenuUnconditional
 from service.settings import GraphSettings
@@ -22,7 +23,10 @@ class TargetResists(ContextMenuUnconditional):
 
     def handleModeSwitch(self, event):
         optionName = self.idOptionMap[event.Id]
+        if optionName == self.settings.get('mobileDroneMode'):
+            return
         self.settings.set('mobileDroneMode', optionName)
+        wx.PostEvent(self.mainFrame, GE.GraphOptionChanged())
 
     def getSubMenu(self, context, rootMenu, i, pitem):
         m = wx.Menu()

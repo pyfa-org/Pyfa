@@ -122,6 +122,7 @@ class GraphFrame(wx.Frame):
         self.Bind(wx.EVT_CHAR_HOOK, self.kbEvent)
         # Event bindings - external events
         self.mainFrame.Bind(GE.FIT_CHANGED, self.OnFitChanged)
+        self.mainFrame.Bind(GE.GRAPH_OPTION_CHANGED, self.OnGraphOptionChanged)
 
         self.Layout()
         self.UpdateWindowSize()
@@ -154,6 +155,11 @@ class GraphFrame(wx.Frame):
         self.getView().clearCache(fitID=event.fitID)
         self.draw()
 
+    def OnGraphOptionChanged(self, event):
+        event.Skip()
+        self.getView().clearCache()
+        self.draw()
+
     def OnGraphSwitched(self, event):
         view = self.getView()
         GraphSettings.getInstance().set('selectedGraph', view.internalName)
@@ -164,6 +170,7 @@ class GraphFrame(wx.Frame):
 
     def closeWindow(self):
         self.mainFrame.Unbind(GE.FIT_CHANGED, handler=self.OnFitChanged)
+        self.mainFrame.Unbind(GE.GRAPH_OPTION_CHANGED, handler=self.OnGraphOptionChanged)
         self.ctrlPanel.unbindExternalEvents()
         self.Destroy()
 
