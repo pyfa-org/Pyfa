@@ -23,9 +23,12 @@ import urllib.request
 import urllib.error
 import urllib.parse
 
+from logbook import Logger
+
 import config
 import eos.config
-from logbook import Logger
+from service.const import GraphDpsDroneMode
+
 
 pyfalog = Logger(__name__)
 
@@ -514,7 +517,7 @@ class GraphSettings:
 
     def __init__(self):
         defaults = {
-            'mobileDroneMode': 'auto',
+            'mobileDroneMode': GraphDpsDroneMode.auto,
             'ignoreResists': True}
         self.settings = SettingsProvider.getInstance().getSettings('graphSettings', defaults)
 

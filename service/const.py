@@ -110,3 +110,10 @@ class GuiAttrGroup(IntEnum):
     PROPULSIONS = auto()
     FIGHTERS = auto()
     SHIP_GROUP = auto()
+
+
+@unique
+class GraphDpsDroneMode(IntEnum):
+    auto = 1
+    followAttacker = 2
+    followTarget = 3

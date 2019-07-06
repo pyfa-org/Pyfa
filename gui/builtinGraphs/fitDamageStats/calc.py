@@ -21,6 +21,7 @@
 import math
 from functools import lru_cache
 
+from service.const import GraphDpsDroneMode
 from service.settings import GraphSettings
 
 
@@ -105,7 +106,11 @@ def getDroneMult(drone, fit, tgt, atkSpeed, atkAngle, distance, tgtSpeed, tgtAng
     # Hard to simulate drone behavior, so assume chance to hit is 1 for mobile drones
     # which catch up with target
     droneOpt = GraphSettings.getInstance().get('mobileDroneMode')
-    if droneSpeed > 1 and ((droneOpt == 'auto' and droneSpeed >= tgtSpeed) or droneOpt == 'followTgt'):
+    if (
+        droneSpeed > 1 and (
+            (droneOpt == GraphDpsDroneMode.auto and droneSpeed >= tgtSpeed) or
+            droneOpt == GraphDpsDroneMode.followTarget)
+    ):
         cth = 1
     # Otherwise put the drone into center of the ship, move it at its max speed or ship's speed
     # (whichever is lower) towards direction of attacking ship and see how well it projects
@@ -141,7 +146,7 @@ def getFighterAbilityMult(fighter, ability, fit, distance, tgtSpeed, tgtSigRadiu
             tgtSigRadius=tgtSigRadius)
     droneOpt = GraphSettings.getInstance().get('mobileDroneMode')
     # It's regular missile-based attack
-    if (droneOpt == 'auto' and fighterSpeed >= tgtSpeed) or droneOpt == 'followTgt':
+    if (droneOpt == GraphDpsDroneMode.auto and fighterSpeed >= tgtSpeed) or droneOpt == GraphDpsDroneMode.followTarget:
         rangeFactor = 1
     # Same as with drones, if fighters are slower - put them to center of
     # the ship and see how they apply

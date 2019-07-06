@@ -6,6 +6,7 @@ import wx
 import gui.globalEvents as GE
 import gui.mainFrame
 from gui.contextMenu import ContextMenuUnconditional
+from service.const import GraphDpsDroneMode
 from service.settings import GraphSettings
 
 
@@ -22,10 +23,10 @@ class TargetResists(ContextMenuUnconditional):
         return 'Drone Mode'
 
     def handleModeSwitch(self, event):
-        optionName = self.idOptionMap[event.Id]
-        if optionName == self.settings.get('mobileDroneMode'):
+        option = self.idOptionMap[event.Id]
+        if option == self.settings.get('mobileDroneMode'):
             return
-        self.settings.set('mobileDroneMode', optionName)
+        self.settings.set('mobileDroneMode', option)
         wx.PostEvent(self.mainFrame, GE.GraphOptionChanged())
 
     def getSubMenu(self, context, rootMenu, i, pitem):
@@ -35,14 +36,17 @@ class TargetResists(ContextMenuUnconditional):
         else:
             bindmenu = m
         self.idOptionMap = {}
-        optionMap = OrderedDict([('auto', 'Auto'), ('followSelf', 'Stick to attacker'), ('followTgt', 'Stick to target')])
-        for optionName, label in optionMap.items():
+        optionMap = OrderedDict([
+            (GraphDpsDroneMode.auto, 'Auto'),
+            (GraphDpsDroneMode.followAttacker, 'Stick to attacker'),
+            (GraphDpsDroneMode.followTarget, 'Stick to target')])
+        for option, label in optionMap.items():
             menuId = ContextMenuUnconditional.nextID()
             item = wx.MenuItem(m, menuId, label, kind=wx.ITEM_CHECK)
             bindmenu.Bind(wx.EVT_MENU, self.handleModeSwitch, item)
             m.Append(item)
-            item.Check(optionName == self.settings.get('mobileDroneMode'))
-            self.idOptionMap[menuId] = optionName
+            item.Check(option == self.settings.get('mobileDroneMode'))
+            self.idOptionMap[menuId] = option
         return m
 
 
