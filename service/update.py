@@ -91,7 +91,7 @@ class CheckUpdateThread(threading.Thread):
         return tuple(map(int, (v.split("."))))
 
 
-class Update(object):
+class Update:
     instance = None
 
     @staticmethod

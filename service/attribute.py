@@ -20,7 +20,7 @@
 import eos.db
 
 
-class Attribute(object):
+class Attribute:
     instance = None
 
     @classmethod

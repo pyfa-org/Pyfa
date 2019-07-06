@@ -394,7 +394,7 @@ class HandledProjectedDroneList(HandledDroneCargoList):
             proj.projected = False
 
 
-class HandledItem(object):
+class HandledItem:
     def preAssignItemAttr(self, *args, **kwargs):
         self.itemModifiedAttributes.preAssign(*args, **kwargs)
 
@@ -411,7 +411,7 @@ class HandledItem(object):
         self.itemModifiedAttributes.force(*args, **kwargs)
 
 
-class HandledCharge(object):
+class HandledCharge:
     def preAssignChargeAttr(self, *args, **kwargs):
         self.chargeModifiedAttributes.preAssign(*args, **kwargs)
 

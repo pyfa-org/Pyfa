@@ -13,7 +13,7 @@ from eos.db import getFit
 pyfalog = Logger(__name__)
 
 
-class exportHtml(object):
+class exportHtml:
     _instance = None
 
     @classmethod

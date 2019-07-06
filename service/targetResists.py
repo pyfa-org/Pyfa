@@ -27,7 +27,7 @@ class ImportError(Exception):
     pass
 
 
-class TargetResists(object):
+class TargetResists:
     instance = None
 
     @classmethod

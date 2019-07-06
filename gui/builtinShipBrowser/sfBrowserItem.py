@@ -14,7 +14,7 @@ BTN_HOVER = 4
 BTN_DISABLED = 8
 
 
-class PFBaseButton(object):
+class PFBaseButton:
     def __init__(self, normalBitmap=wx.NullBitmap, label="", callback=None, hoverBitmap=None, disabledBitmap=None,
                  show=True):
 
@@ -85,7 +85,7 @@ class PFBaseButton(object):
         return self.dropShadowBmp
 
 
-class PFToolbar(object):
+class PFToolbar:
     def __init__(self, parent):
         self.Parent = parent
         self.buttons = []

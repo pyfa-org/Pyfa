@@ -140,7 +140,7 @@ class SearchWorkerThread(threading.Thread):
         self.cv.release()
 
 
-class Market(object):
+class Market:
     instance = None
 
     def __init__(self):

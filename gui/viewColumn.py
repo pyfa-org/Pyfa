@@ -21,7 +21,7 @@
 import wx
 
 
-class ViewColumn(object):
+class ViewColumn:
     """
     Abstract class that columns can inherit from.
     Once the missing methods are correctly implemented,

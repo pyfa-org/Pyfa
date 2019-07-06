@@ -24,7 +24,7 @@ import eos.db
 pyfalog = Logger(__name__)
 
 
-class TargetResists(object):
+class TargetResists:
     # also determined import/export order - VERY IMPORTANT
     DAMAGE_TYPES = ("em", "thermal", "kinetic", "explosive")
 

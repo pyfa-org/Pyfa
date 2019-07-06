@@ -31,7 +31,7 @@ import datetime
 pyfalog = Logger(__name__)
 
 
-class ErrorHandler(object):
+class ErrorHandler:
     __parent = None
     __frame = None
 

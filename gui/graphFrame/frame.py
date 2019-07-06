@@ -31,6 +31,7 @@ import gui.globalEvents as GE
 import gui.mainFrame
 from gui.bitmap_loader import BitmapLoader
 from gui.builtinGraphs.base import FitGraph
+from gui.builtinShipBrowser.events import EVT_FIT_RENAMED
 from service.const import GraphCacheCleanupReason
 from service.settings import GraphSettings
 from .panel import GraphControlPanel
@@ -123,6 +124,7 @@ class GraphFrame(wx.Frame):
         self.Bind(wx.EVT_CHAR_HOOK, self.kbEvent)
         # Event bindings - external events
         self.mainFrame.Bind(GE.FIT_CHANGED, self.OnFitChanged)
+        self.mainFrame.Bind(EVT_FIT_RENAMED, self.OnFitRenamed)
         self.mainFrame.Bind(GE.GRAPH_OPTION_CHANGED, self.OnGraphOptionChanged)
 
         self.Layout()
@@ -156,6 +158,10 @@ class GraphFrame(wx.Frame):
         self.clearCache(reason=GraphCacheCleanupReason.fitChanged, extraData=event.fitID)
         self.draw()
 
+    def OnFitRenamed(self, event):
+        event.Skip()
+        self.draw()
+
     def OnGraphOptionChanged(self, event):
         event.Skip()
         self.clearCache(reason=GraphCacheCleanupReason.optionChanged)
@@ -171,6 +177,7 @@ class GraphFrame(wx.Frame):
 
     def closeWindow(self):
         self.mainFrame.Unbind(GE.FIT_CHANGED, handler=self.OnFitChanged)
+        self.mainFrame.Unbind(EVT_FIT_RENAMED, handler=self.OnFitRenamed)
         self.mainFrame.Unbind(GE.GRAPH_OPTION_CHANGED, handler=self.OnGraphOptionChanged)
         self.ctrlPanel.unbindExternalEvents()
         self.Destroy()

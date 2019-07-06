@@ -1,7 +1,7 @@
 import time
 
 
-class Timer(object):
+class Timer:
     def __init__(self, name='', logger=None):
         self.name = name
         self.start = time.time()

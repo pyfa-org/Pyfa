@@ -61,7 +61,7 @@ class APIException(Exception):
         return 'HTTP Error %s' % self.status_code
 
 
-class EsiAccess(object):
+class EsiAccess:
     def __init__(self):
         self.settings = EsiSettings.getInstance()
 

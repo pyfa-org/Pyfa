@@ -82,7 +82,7 @@ commandFits_table = Table("commandFits", saveddata_meta,
                           )
 
 
-class ProjectedFit(object):
+class ProjectedFit:
     def __init__(self, sourceID, source_fit, amount=1, active=True):
         self.sourceID = sourceID
         self.source_fit = source_fit
@@ -113,7 +113,7 @@ class ProjectedFit(object):
         )
 
 
-class CommandFit(object):
+class CommandFit:
     def __init__(self, boosterID, booster_fit, active=True):
         self.boosterID = boosterID
         self.booster_fit = booster_fit

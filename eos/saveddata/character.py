@@ -32,7 +32,7 @@ from eos.effectHandlerHelpers import HandledItem, HandledImplantList
 pyfalog = Logger(__name__)
 
 
-class Character(object):
+class Character:
     __itemList = None
     __itemIDMap = None
     __itemNameMap = None

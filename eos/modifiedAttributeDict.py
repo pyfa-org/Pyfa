@@ -27,7 +27,7 @@ defaultValuesCache = {}
 cappingAttrKeyCache = {}
 
 
-class ItemAttrShortcut(object):
+class ItemAttrShortcut:
     def getModifiedItemAttr(self, key, default=0):
         return_value = self.itemModifiedAttributes.get(key)
 
@@ -50,7 +50,7 @@ class ItemAttrShortcut(object):
         return return_value or default
 
 
-class ChargeAttrShortcut(object):
+class ChargeAttrShortcut:
     def getModifiedChargeAttr(self, key, default=0):
         return_value = self.chargeModifiedAttributes.get(key)
 
@@ -60,7 +60,7 @@ class ChargeAttrShortcut(object):
 class ModifiedAttributeDict(collections.MutableMapping):
     overrides_enabled = False
 
-    class CalculationPlaceholder(object):
+    class CalculationPlaceholder:
         def __init__(self):
             pass
 
@@ -441,7 +441,7 @@ class ModifiedAttributeDict(collections.MutableMapping):
         return resist or 1.0
 
 
-class Affliction(object):
+class Affliction:
     def __init__(self, affliction_type, amount):
         self.type = affliction_type
         self.amount = amount

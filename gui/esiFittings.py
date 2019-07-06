@@ -172,7 +172,7 @@ class EveFittings(wx.Frame):
                 self.statusbar.SetStatusText(msg)
 
 
-class ESIServerExceptionHandler(object):
+class ESIServerExceptionHandler:
     def __init__(self, parentWindow, ex):
         dlg = wx.MessageDialog(parentWindow,
                                "There was an issue starting up the localized server, try setting "
@@ -185,7 +185,7 @@ class ESIServerExceptionHandler(object):
         pyfalog.error(ex)
 
 
-class ESIExceptionHandler(object):
+class ESIExceptionHandler:
     # todo: make this a generate excetpion handler for all calls
     def __init__(self, parentWindow, ex):
         if ex.response['error'].startswith('Token is not valid') or ex.response['error'] == 'invalid_token':  # todo: this seems messy, figure out a better response

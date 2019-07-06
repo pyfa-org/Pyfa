@@ -23,6 +23,7 @@ import wx
 
 import gui.display
 import gui.globalEvents as GE
+from gui.builtinShipBrowser.events import EVT_FIT_RENAMED
 from service.fit import Fit
 
 
@@ -46,6 +47,7 @@ class BaseList(gui.display.Display):
         self.contextMenu.Bind(wx.EVT_MENU, self.ContextMenuHandler, removeItem)
 
         self.graphFrame.mainFrame.Bind(GE.FIT_REMOVED, self.OnFitRemoved)
+        self.graphFrame.mainFrame.Bind(EVT_FIT_RENAMED, self.OnFitRenamed)
         self.Bind(wx.EVT_LEFT_DCLICK, self.OnLeftDClick)
         self.Bind(wx.EVT_CHAR_HOOK, self.kbEvent)
         self.Bind(wx.EVT_CONTEXT_MENU, self.OnContextMenu)
@@ -85,6 +87,10 @@ class BaseList(gui.display.Display):
         if fit is not None:
             self.removeFits([fit])
 
+    def OnFitRenamed(self, event):
+        event.Skip()
+        self.update(self.fits)
+
     def getSelectedFits(self):
         fits = []
         for row in self.getSelectedRows():
@@ -108,6 +114,7 @@ class BaseList(gui.display.Display):
 
     def unbindExternalEvents(self):
         self.graphFrame.mainFrame.Unbind(GE.FIT_REMOVED, handler=self.OnFitRemoved)
+        self.graphFrame.mainFrame.Unbind(EVT_FIT_RENAMED, handler=self.OnFitRenamed)
 
     def handleDrag(self, type, fitID):
         if type == 'fit':

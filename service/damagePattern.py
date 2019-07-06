@@ -27,7 +27,7 @@ class ImportError(Exception):
     pass
 
 
-class DamagePattern(object):
+class DamagePattern:
     instance = None
 
     @classmethod

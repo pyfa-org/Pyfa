@@ -23,7 +23,7 @@ from logbook import Logger
 pyfalog = Logger(__name__)
 
 
-class DatabaseCleanup(object):
+class DatabaseCleanup:
     def __init__(self):
         pass
 

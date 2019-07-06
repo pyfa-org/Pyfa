@@ -233,7 +233,7 @@ def defLogging():
         ])
 
 
-class LoggerWriter(object):
+class LoggerWriter:
     def __init__(self, level):
         # self.level is really like using log.debug(message)
         # at least in my case

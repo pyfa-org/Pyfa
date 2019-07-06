@@ -26,7 +26,7 @@ from eos.utils.stats import DmgTypes
 pyfalog = Logger(__name__)
 
 
-class FighterAbility(object):
+class FighterAbility:
 
     # We aren't able to get data on the charges that can be stored with fighters. So we hardcode that data here, keyed
     # with the fighter squadron role

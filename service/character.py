@@ -122,7 +122,7 @@ class SkillBackupThread(threading.Thread):
         wx.CallAfter(self.callback)
 
 
-class Character(object):
+class Character:
     instance = None
     skillReqsDict = {}
 

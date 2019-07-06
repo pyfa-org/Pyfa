@@ -4,7 +4,7 @@ import time
 import os
 
 
-class Stopwatch(object):
+class Stopwatch:
     """
  --- on python console ---
 import re

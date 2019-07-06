@@ -27,7 +27,7 @@ from .resources import DEFAULT_DATA, DEFAULT_HEADER
 JARGON_PATH = os.path.join(config.savePath, 'jargon.yaml')
 
 
-class JargonLoader(object):
+class JargonLoader:
     def __init__(self, jargon_path: str):
         self.jargon_path = jargon_path
         self._jargon_mtime = 0  # type: int

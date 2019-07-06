@@ -18,7 +18,7 @@
 # ===============================================================================
 
 
-class EqBase(object):
+class EqBase:
     ID = None
 
     def __eq__(self, other):

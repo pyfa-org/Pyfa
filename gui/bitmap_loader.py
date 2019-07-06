@@ -31,7 +31,7 @@ import config
 pyfalog = Logger(__name__)
 
 
-class BitmapLoader(object):
+class BitmapLoader:
     # try:
     #     archive = zipfile.ZipFile(os.path.join(config.pyfaPath, 'imgs.zip'), 'r')
     #     logging.info("Using zipped image files.")

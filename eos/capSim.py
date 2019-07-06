@@ -13,7 +13,7 @@ def lcm(a, b):
     return n / a
 
 
-class CapSimulator(object):
+class CapSimulator:
     """Entity's EVE Capacitor Simulator"""
 
     def __init__(self):

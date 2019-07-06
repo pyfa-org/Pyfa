@@ -24,7 +24,7 @@ from sqlalchemy.orm import reconstructor
 pyfalog = Logger(__name__)
 
 
-class BoosterSideEffect(object):
+class BoosterSideEffect:
 
     def __init__(self, effect):
         """Initialize from the program"""

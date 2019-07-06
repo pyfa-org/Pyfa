@@ -42,7 +42,7 @@ from eos.utils.stats import DmgTypes
 pyfalog = Logger(__name__)
 
 
-class Fit(object):
+class Fit:
     """Represents a fitting, with modules, ship, implants, etc."""
 
     PEAK_RECHARGE = 0.25

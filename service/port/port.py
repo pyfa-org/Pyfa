@@ -46,7 +46,7 @@ pyfalog = Logger(__name__)
 RE_XML_START = r'<\?xml\s+version="1.0"\s*\?>'
 
 
-class Port(object):
+class Port:
     """Service which houses all import/export format functions"""
     instance = None
     __tag_replace_flag = True

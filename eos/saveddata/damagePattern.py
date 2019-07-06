@@ -21,7 +21,7 @@ import re
 import eos.db
 
 
-class DamagePattern(object):
+class DamagePattern:
     DAMAGE_TYPES = ("em", "thermal", "kinetic", "explosive")
 
     def __init__(self, *args, **kwargs):

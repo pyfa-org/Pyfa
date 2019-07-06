@@ -29,7 +29,7 @@ class ImportError(Exception):
     pass
 
 
-class ImplantSets(object):
+class ImplantSets:
     instance = None
 
     @classmethod

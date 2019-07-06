@@ -22,7 +22,7 @@ from copy import deepcopy
 from eos.effectHandlerHelpers import HandledImplantList
 
 
-class ImplantSet(object):
+class ImplantSet:
     def __init__(self, name=None):
         self.name = name
         self.__implants = HandledImplantList()

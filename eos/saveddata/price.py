@@ -42,7 +42,7 @@ class PriceStatus(IntEnum):
     fetchTimeout = 4
 
 
-class Price(object):
+class Price:
     def __init__(self, typeID):
         self.typeID = typeID
         self.time = 0

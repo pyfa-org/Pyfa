@@ -24,7 +24,7 @@ import time
 # from tomorrow import threads
 
 
-class SsoCharacter(object):
+class SsoCharacter:
     def __init__(self, charID, name, client, accessToken=None, refreshToken=None):
         self.characterID = charID
         self.characterName = name

@@ -42,13 +42,13 @@ from service.market import Market
 pyfalog = Logger(__name__)
 
 
-class DummyItem(object):
+class DummyItem:
     def __init__(self, txt):
         self.name = txt
         self.iconID = None
 
 
-class DummyEntry(object):
+class DummyEntry:
     def __init__(self, txt):
         self.item = DummyItem(txt)
 
