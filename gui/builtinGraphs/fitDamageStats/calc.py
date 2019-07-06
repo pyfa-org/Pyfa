@@ -21,6 +21,8 @@
 import math
 from functools import lru_cache
 
+from service.settings import GraphSettings
+
 
 def getTurretMult(mod, fit, tgt, atkSpeed, atkAngle, distance, tgtSpeed, tgtAngle, tgtSigRadius):
     cth = _calcTurretChanceToHit(
@@ -100,9 +102,10 @@ def getDroneMult(drone, fit, tgt, atkSpeed, atkAngle, distance, tgtSpeed, tgtAng
     if distance > fit.extraAttributes['droneControlRange']:
         return 0
     droneSpeed = drone.getModifiedItemAttr('maxVelocity')
-    # Hard to simulate drone behavior, so assume chance to hit is 1
-    # when drone is not sentry and is faster than its target
-    if droneSpeed > 1 and droneSpeed >= tgtSpeed:
+    # Hard to simulate drone behavior, so assume chance to hit is 1 for mobile drones
+    # which catch up with target
+    droneOpt = GraphSettings.getInstance().get('mobileDroneMode')
+    if droneSpeed > 1 and ((droneOpt == 'auto' and droneSpeed >= tgtSpeed) or droneOpt == 'followTgt'):
         cth = 1
     # Otherwise put the drone into center of the ship, move it at its max speed or ship's speed
     # (whichever is lower) towards direction of attacking ship and see how well it projects
@@ -136,8 +139,9 @@ def getFighterAbilityMult(fighter, ability, fit, distance, tgtSpeed, tgtSigRadiu
         return _calcBombFactor(
             atkEr=fighter.getModifiedChargeAttr('aoeCloudSize'),
             tgtSigRadius=tgtSigRadius)
+    droneOpt = GraphSettings.getInstance().get('mobileDroneMode')
     # It's regular missile-based attack
-    if fighterSpeed >= tgtSpeed:
+    if (droneOpt == 'auto' and fighterSpeed >= tgtSpeed) or droneOpt == 'followTgt':
         rangeFactor = 1
     # Same as with drones, if fighters are slower - put them to center of
     # the ship and see how they apply
