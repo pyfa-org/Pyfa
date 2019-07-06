@@ -25,6 +25,7 @@ import wx
 
 from gui.bitmap_loader import BitmapLoader
 from gui.contextMenu import ContextMenu
+from service.const import GraphCacheCleanupReason
 from service.fit import Fit
 from .input import ConstantBox, RangeBox
 from .lists import FitList, TargetList
@@ -118,8 +119,8 @@ class GraphControlPanel(wx.Panel):
 
         self.SetSizer(mainSizer)
 
-        self.drawTimer = wx.Timer(self)
-        self.Bind(wx.EVT_TIMER, self.OnDrawTimer, self.drawTimer)
+        self.inputTimer = wx.Timer(self)
+        self.Bind(wx.EVT_TIMER, self.OnInputTimer, self.inputTimer)
         self._setVectorDefaults()
 
     def updateControls(self, layout=True):
@@ -258,12 +259,12 @@ class GraphControlPanel(wx.Panel):
 
     def OnFieldChanged(self, event):
         event.Skip()
-        self.drawTimer.Stop()
-        self.drawTimer.Start(Fit.getInstance().serviceFittingOptions['marketSearchDelay'], True)
+        self.inputTimer.Stop()
+        self.inputTimer.Start(Fit.getInstance().serviceFittingOptions['marketSearchDelay'], True)
 
-    def OnDrawTimer(self, event):
+    def OnInputTimer(self, event):
         event.Skip()
-        self.graphFrame.clearCache()
+        self.graphFrame.clearCache(reason=GraphCacheCleanupReason.inputChanged)
         self.graphFrame.draw()
 
     def getValues(self):

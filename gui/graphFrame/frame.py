@@ -31,6 +31,7 @@ import gui.globalEvents as GE
 import gui.mainFrame
 from gui.bitmap_loader import BitmapLoader
 from gui.builtinGraphs.base import FitGraph
+from service.const import GraphCacheCleanupReason
 from service.settings import GraphSettings
 from .panel import GraphControlPanel
 
@@ -152,18 +153,18 @@ class GraphFrame(wx.Frame):
 
     def OnFitChanged(self, event):
         event.Skip()
-        self.getView().clearCache(fitID=event.fitID)
+        self.clearCache(reason=GraphCacheCleanupReason.fitChanged, extraData=event.fitID)
         self.draw()
 
     def OnGraphOptionChanged(self, event):
         event.Skip()
-        self.getView().clearCache()
+        self.clearCache(reason=GraphCacheCleanupReason.optionChanged)
         self.draw()
 
     def OnGraphSwitched(self, event):
         view = self.getView()
         GraphSettings.getInstance().set('selectedGraph', view.internalName)
-        self.clearCache()
+        self.clearCache(reason=GraphCacheCleanupReason.graphSwitched)
         self.ctrlPanel.updateControls()
         self.draw()
         event.Skip()
@@ -177,8 +178,8 @@ class GraphFrame(wx.Frame):
     def getView(self):
         return self.graphSelection.GetClientData(self.graphSelection.GetSelection())
 
-    def clearCache(self, fitID=None):
-        self.getView().clearCache(fitID=fitID)
+    def clearCache(self, reason, extraData=None):
+        self.getView().clearCache(reason, extraData)
 
     def draw(self):
         global mpl_version

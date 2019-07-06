@@ -21,6 +21,7 @@
 import math
 
 from eos.const import FittingModuleState
+from service.const import GraphCacheCleanupReason
 from .base import FitGraph, XDef, YDef, Input, FitDataCache
 
 
@@ -33,8 +34,11 @@ class FitWarpTimeGraph(FitGraph):
         super().__init__()
         self._subspeedCache = SubwarpSpeedCache()
 
-    def _clearInternalCache(self, fitID):
-        self._subspeedCache.clear(fitID)
+    def _clearInternalCache(self, reason, extraData):
+        if reason == GraphCacheCleanupReason.fitChanged:
+            self._subspeedCache.clearForFit(extraData)
+        elif reason == GraphCacheCleanupReason.graphSwitched:
+            self._subspeedCache.clearAll()
 
     # UI stuff
     internalName = 'warpTimeGraph'

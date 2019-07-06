@@ -21,6 +21,8 @@
 from abc import ABCMeta, abstractmethod
 from collections import OrderedDict, namedtuple
 
+from service.const import GraphCacheCleanupReason
+
 
 YDef = namedtuple('YDef', ('handle', 'unit', 'label'))
 XDef = namedtuple('XDef', ('handle', 'unit', 'label', 'mainInput'))
@@ -92,24 +94,26 @@ class FitGraph(metaclass=ABCMeta):
             self._plotCache.setdefault(cacheKey, {})[(ySpec, xSpec)] = plotData
         return plotData
 
-    def clearCache(self, fitID=None):
-        # Clear everything
-        if fitID is None:
+    def clearCache(self, reason, extraData=None):
+        # If only one fit changed - clear plots which concern this fit
+        if reason == GraphCacheCleanupReason.fitChanged:
+            # Clear plot cache
+            plotKeysToClear = set()
+            for cacheKey in self._plotCache:
+                cacheFitID, cacheTgtType, cacheTgtID = cacheKey
+                if extraData == cacheFitID:
+                    plotKeysToClear.add(cacheKey)
+                elif extraData == cacheTgtID:
+                    plotKeysToClear.add(cacheKey)
+            for cacheKey in plotKeysToClear:
+                del self._plotCache[cacheKey]
+        # Wipe out whole plot cache otherwise
+        else:
             self._plotCache.clear()
-            return
-        # Clear plot cache
-        plotKeysToClear = set()
-        for cacheKey in self._plotCache:
-            cacheFitID, cacheTgtType, cacheTgtID = cacheKey
-            if fitID == cacheFitID:
-                plotKeysToClear.add(cacheKey)
-            elif fitID == cacheTgtID:
-                plotKeysToClear.add(cacheKey)
-        for cacheKey in plotKeysToClear:
-            del self._plotCache[cacheKey]
-        self._clearInternalCache(fitID=fitID)
+        # And process any internal caches graphs might have
+        self._clearInternalCache(reason, extraData)
 
-    def _clearInternalCache(self, fitID):
+    def _clearInternalCache(self, reason, extraData):
         return
 
     # Calculation stuff
@@ -219,11 +223,12 @@ class FitDataCache:
     def __init__(self):
         self._data = {}
 
-    def clear(self, fitID):
-        if fitID is None:
-            self._data.clear()
-        elif fitID in self._data:
+    def clearForFit(self, fitID):
+        if fitID in self._data:
             del self._data[fitID]
+
+    def clearAll(self):
+        self._data.clear()
 
 
 # noinspection PyUnresolvedReferences

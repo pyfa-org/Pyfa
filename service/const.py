@@ -117,3 +117,11 @@ class GraphDpsDroneMode(IntEnum):
     auto = 1
     followAttacker = 2
     followTarget = 3
+
+
+@unique
+class GraphCacheCleanupReason(IntEnum):
+    fitChanged = auto()
+    graphSwitched = auto()
+    inputChanged = auto()
+    optionChanged = auto()

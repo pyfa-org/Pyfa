@@ -23,6 +23,7 @@ from eos.const import FittingHardpoint
 from eos.utils.spoolSupport import SpoolType, SpoolOptions
 from eos.utils.stats import DmgTypes
 from gui.builtinGraphs.base import FitGraph, XDef, YDef, Input, VectorDef
+from service.const import GraphCacheCleanupReason
 from .calc import getTurretMult, getLauncherMult, getDroneMult, getFighterAbilityMult, getSmartbombMult, getBombMult, getGuidedBombMult
 from .timeCache import TimeCache
 
@@ -33,8 +34,16 @@ class FitDamageStatsGraph(FitGraph):
         super().__init__()
         self._timeCache = TimeCache()
 
-    def _clearInternalCache(self, fitID):
-        self._timeCache.clear(fitID)
+    def _clearInternalCache(self, reason, extraData):
+        # Here, we care only about fit changes and graph changes.
+        # - Input changes are irrelevant as time cache cares only about
+        # time input, and it regenerates once time goes beyond cached value
+        # - Option changes are irrelevant as cache contains "raw" damage
+        # values which do not rely on any graph options
+        if reason == GraphCacheCleanupReason.fitChanged:
+            self._timeCache.clearForFit(extraData)
+        elif reason == GraphCacheCleanupReason.graphSwitched:
+            self._timeCache.clearAll()
 
     # UI stuff
     internalName = 'dmgStatsGraph'
@@ -283,8 +292,10 @@ class FitDamageStatsGraph(FitGraph):
 
     # Damage data per key getters
     def _getDpsPerKey(self, fit, time):
+        # Use data from time cache if time was not specified
         if time is not None:
             return self._timeCache.getDpsDataPoint(fit, time)
+        # Compose map ourselves using current fit settings if time is not specified
         dpsMap = {}
         defaultSpoolValue = eos.config.settings['globalDefaultSpoolupPercentage']
         for mod in fit.modules:
@@ -303,8 +314,10 @@ class FitDamageStatsGraph(FitGraph):
         return dpsMap
 
     def _getVolleyPerKey(self, fit, time):
+        # Use data from time cache if time was not specified
         if time is not None:
             return self._timeCache.getVolleyDataPoint(fit, time)
+        # Compose map ourselves using current fit settings if time is not specified
         volleyMap = {}
         defaultSpoolValue = eos.config.settings['globalDefaultSpoolupPercentage']
         for mod in fit.modules:
