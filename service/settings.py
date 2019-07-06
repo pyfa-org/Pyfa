@@ -514,7 +514,7 @@ class GraphSettings:
 
     def __init__(self):
         defaults = {
-            'mobileDroneMode': 0,
+            'mobileDroneMode': 'auto',
             'ignoreResists': True}
         self.settings = SettingsProvider.getInstance().getSettings('graphSettings', defaults)
 

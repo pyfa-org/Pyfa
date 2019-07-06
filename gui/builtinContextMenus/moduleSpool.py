@@ -17,7 +17,6 @@ class ChangeModuleSpool(ContextMenuSingle):
     def __init__(self):
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
         self.settings = ContextMenuSettings.getInstance()
-        self.cycleMap = {}
         self.resetId = None
 
     def display(self, srcContext, mainItem):
@@ -75,6 +74,7 @@ class ChangeModuleSpool(ContextMenuSingle):
                     val2 -= minStep
                 return cycles
 
+        self.cycleMap = {}
         cyclesToShow = findCycles(cycleMin, cycleMax)
         for cycle in range(cycleTotalMin, cycleTotalMax + 1):
             menuId = ContextMenuSingle.nextID()

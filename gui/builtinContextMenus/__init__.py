@@ -41,5 +41,6 @@ from gui.builtinContextMenus import (  # noqa: E402,F401
     factorReload,
     targetResists,
     # Graph extra options
-    graphDmgIgnoreResists
+    graphDmgIgnoreResists,
+    graphDmgDroneMode
 )
