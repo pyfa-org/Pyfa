@@ -10,7 +10,7 @@ from service.const import GraphDpsDroneMode
 from service.settings import GraphSettings
 
 
-class TargetResists(ContextMenuUnconditional):
+class GraphDmgDroneModeMenu(ContextMenuUnconditional):
 
     def __init__(self):
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
@@ -38,8 +38,8 @@ class TargetResists(ContextMenuUnconditional):
         self.idOptionMap = {}
         optionMap = OrderedDict([
             (GraphDpsDroneMode.auto, 'Auto'),
-            (GraphDpsDroneMode.followAttacker, 'Stick to attacker'),
-            (GraphDpsDroneMode.followTarget, 'Stick to target')])
+            (GraphDpsDroneMode.followAttacker, 'Stick to Attacker'),
+            (GraphDpsDroneMode.followTarget, 'Stick to Target')])
         for option, label in optionMap.items():
             menuId = ContextMenuUnconditional.nextID()
             item = wx.MenuItem(m, menuId, label, kind=wx.ITEM_CHECK)
@@ -50,4 +50,4 @@ class TargetResists(ContextMenuUnconditional):
         return m
 
 
-TargetResists.register()
+GraphDmgDroneModeMenu.register()

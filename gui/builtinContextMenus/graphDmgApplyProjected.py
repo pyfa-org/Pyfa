@@ -7,7 +7,7 @@ from gui.contextMenu import ContextMenuUnconditional
 from service.settings import GraphSettings
 
 
-class GraphDmgIgnoreResistsMenu(ContextMenuUnconditional):
+class GraphDmgApplyProjectedMenu(ContextMenuUnconditional):
 
     def __init__(self):
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
@@ -17,15 +17,15 @@ class GraphDmgIgnoreResistsMenu(ContextMenuUnconditional):
         return srcContext == 'dmgStatsGraph'
 
     def getText(self, itmContext):
-        return 'Ignore Target Resists'
+        return 'Apply Attacker Webs and TPs'
 
     def activate(self, fullContext, i):
-        self.settings.set('ignoreResists', not self.settings.get('ignoreResists'))
+        self.settings.set('applyProjected', not self.settings.get('applyProjected'))
         wx.PostEvent(self.mainFrame, GE.GraphOptionChanged())
 
     @property
     def checked(self):
-        return self.settings.get('ignoreResists')
+        return self.settings.get('applyProjected')
 
 
-GraphDmgIgnoreResistsMenu.register()
+GraphDmgApplyProjectedMenu.register()

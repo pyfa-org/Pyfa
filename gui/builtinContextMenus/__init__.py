@@ -42,5 +42,6 @@ from gui.builtinContextMenus import (  # noqa: E402,F401
     targetResists,
     # Graph extra options
     graphDmgIgnoreResists,
-    graphDmgDroneMode
+    graphDmgApplyProjected,
+    graphDmgDroneMode,
 )
