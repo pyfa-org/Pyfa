@@ -19,13 +19,15 @@
 
 # noinspection PyPackageRequirements
 import wx
-import gui.mainFrame
-from gui.statsView import StatsView
-from gui.bitmap_loader import BitmapLoader
-from gui.utils.numberFormatter import formatAmount, roundToPrec
-from eos.utils.spoolSupport import SpoolType, SpoolOptions
-from service.fit import Fit
+
 import eos.config
+import gui.mainFrame
+from eos.utils.spoolSupport import SpoolOptions, SpoolType
+from gui.bitmap_loader import BitmapLoader
+from gui.statsView import StatsView
+from gui.utils.numberFormatter import formatAmount, roundToPrec
+from service.fit import Fit
+
 
 class FirepowerViewFull(StatsView):
     name = "firepowerViewFull"

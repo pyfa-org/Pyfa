@@ -1,2 +1,15 @@
-__all__ = ["ammo", "ammoIcon", "attributeDisplay", "baseIcon", "baseName",
-           "capacitorUse", "maxRange", "price", "propertyDisplay", "state", "misc", "abilities", "sideEffects"]
+__all__ = [
+    "ammo",
+    "ammoIcon",
+    "attributeDisplay",
+    "baseIcon",
+    "baseName",
+    "capacitorUse",
+    "dps",
+    "maxRange",
+    "price",
+    "propertyDisplay",
+    "state",
+    "misc",
+    "abilities",
+    "sideEffects"]

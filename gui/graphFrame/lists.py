@@ -46,6 +46,7 @@ class BaseList(gui.display.Display):
         self.contextMenu.Append(removeItem)
         self.contextMenu.Bind(wx.EVT_MENU, self.ContextMenuHandler, removeItem)
 
+        self.graphFrame.mainFrame.Bind(GE.FIT_CHANGED, self.OnFitChanged)
         self.graphFrame.mainFrame.Bind(GE.FIT_REMOVED, self.OnFitRemoved)
         self.graphFrame.mainFrame.Bind(EVT_FIT_RENAMED, self.OnFitRenamed)
         self.Bind(wx.EVT_LEFT_DCLICK, self.OnLeftDClick)
@@ -91,6 +92,10 @@ class BaseList(gui.display.Display):
         event.Skip()
         self.update(self.fits)
 
+    def OnFitChanged(self, event):
+        event.Skip()
+        self.update(self.fits)
+
     def getSelectedFits(self):
         fits = []
         for row in self.getSelectedRows():
@@ -114,6 +119,7 @@ class BaseList(gui.display.Display):
 
     def unbindExternalEvents(self):
         self.graphFrame.mainFrame.Unbind(GE.FIT_REMOVED, handler=self.OnFitRemoved)
+        self.graphFrame.mainFrame.Unbind(GE.FIT_CHANGED, handler=self.OnFitChanged)
         self.graphFrame.mainFrame.Unbind(EVT_FIT_RENAMED, handler=self.OnFitRenamed)
 
     def handleDrag(self, type, fitID):
@@ -127,6 +133,12 @@ class BaseList(gui.display.Display):
 
 
 class FitList(BaseList):
+
+    DEFAULT_COLS = (
+        'Base Icon',
+        'Base Name',
+        'Dps',
+        'Volley')
 
     def __init__(self, graphFrame, parent):
         super().__init__(graphFrame, parent)
