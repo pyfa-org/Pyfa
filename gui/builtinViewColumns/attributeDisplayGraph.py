@@ -110,10 +110,27 @@ class SpeedColumn(GraphColumn):
         return fit.ship.getModifiedItemAttr('maxVelocity'), 'm/s'
 
     def _getFitTooltip(self):
-        return 'Ship maximum speed'
+        return 'Maximum speed'
 
 
 SpeedColumn.register()
+
+
+class AgilityColumn(GraphColumn):
+
+    name = 'Agility'
+
+    def __init__(self, fittingView, params):
+        super().__init__(fittingView, 1401, (3, 0, 0))
+
+    def _getValue(self, fit):
+        return fit.alignTime, None
+
+    def _getFitTooltip(self):
+        return 'Agility factor'
+
+
+AgilityColumn.register()
 
 
 class RadiusColumn(GraphColumn):
@@ -127,7 +144,7 @@ class RadiusColumn(GraphColumn):
         return fit.ship.getModifiedItemAttr('radius'), 'm'
 
     def _getFitTooltip(self):
-        return 'Ship radius'
+        return 'Radius'
 
 
 RadiusColumn.register()
@@ -144,7 +161,125 @@ class SignatureRadiusColumn(GraphColumn):
         return fit.ship.getModifiedItemAttr('signatureRadius'), 'm'
 
     def _getFitTooltip(self):
-        return 'Ship signature radius'
+        return 'Signature radius'
 
 
 SignatureRadiusColumn.register()
+
+
+class ShieldAmountColumn(GraphColumn):
+
+    name = 'ShieldAmount'
+
+    def __init__(self, fittingView, params):
+        super().__init__(fittingView, 1384)
+
+    def _getValue(self, fit):
+        return fit.ship.getModifiedItemAttr('shieldCapacity'), 'HP'
+
+    def getText(self, stuff):
+        if isinstance(stuff, Fit):
+            val, unit = self._getValue(stuff)
+            if val is None:
+                return ''
+            return '{} {}'.format(formatAmount(val, *self.formatSpec), unit)
+        return ''
+
+    def _getFitTooltip(self):
+        return 'Maximum shield amount'
+
+
+ShieldAmountColumn.register()
+
+
+class ShieldTimeColumn(GraphColumn):
+
+    name = 'ShieldTime'
+
+    def __init__(self, fittingView, params):
+        super().__init__(fittingView, 1392, (3, 0, 0))
+
+    def _getValue(self, fit):
+        return fit.ship.getModifiedItemAttr('shieldRechargeRate') / 1000, 's'
+
+    def _getFitTooltip(self):
+        return 'Time to regenerate shield from 0% to 98.7%'
+
+
+ShieldTimeColumn.register()
+
+
+class CapAmountColumn(GraphColumn):
+
+    name = 'CapAmount'
+
+    def __init__(self, fittingView, params):
+        super().__init__(fittingView, 1668)
+
+    def _getValue(self, fit):
+        return fit.ship.getModifiedItemAttr('capacitorCapacity'), 'GJ'
+
+    def getText(self, stuff):
+        if isinstance(stuff, Fit):
+            val, unit = self._getValue(stuff)
+            if val is None:
+                return ''
+            return '{} {}'.format(formatAmount(val, *self.formatSpec), unit)
+        return ''
+
+    def _getFitTooltip(self):
+        return 'Maximum capacitor amount'
+
+
+CapAmountColumn.register()
+
+
+class CapTimeColumn(GraphColumn):
+
+    name = 'CapTime'
+
+    def __init__(self, fittingView, params):
+        super().__init__(fittingView, 1392, (3, 0, 0))
+
+    def _getValue(self, fit):
+        return fit.ship.getModifiedItemAttr('rechargeRate') / 1000, 's'
+
+    def _getFitTooltip(self):
+        return 'Time to regenerate capacitor from 0% to 98.7%'
+
+
+CapTimeColumn.register()
+
+
+class WarpSpeedColumn(GraphColumn):
+
+    name = 'WarpSpeed'
+
+    def __init__(self, fittingView, params):
+        super().__init__(fittingView, 1389, (3, 0, 0))
+
+    def _getValue(self, fit):
+        return fit.warpSpeed, 'AU/s'
+
+    def _getFitTooltip(self):
+        return 'Warp speed'
+
+
+WarpSpeedColumn.register()
+
+
+class WarpDistanceColumn(GraphColumn):
+
+    name = 'WarpDistance'
+
+    def __init__(self, fittingView, params):
+        super().__init__(fittingView, 1391, (3, 0, 0))
+
+    def _getValue(self, fit):
+        return fit.maxWarpDistance, 'AU'
+
+    def _getFitTooltip(self):
+        return 'Maximum warp distance'
+
+
+WarpDistanceColumn.register()

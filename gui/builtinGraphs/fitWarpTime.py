@@ -51,6 +51,7 @@ class FitWarpTimeGraph(FitGraph):
     inputs = [
         Input(handle='distance', unit='AU', label='Distance', iconID=1391, defaultValue=20, defaultRange=(0, 50), mainOnly=False),
         Input(handle='distance', unit='km', label='Distance', iconID=1391, defaultValue=1000, defaultRange=(150, 5000), mainOnly=False)]
+    srcExtraCols = ('WarpSpeed', 'WarpDistance')
 
     # Calculation stuff
     _normalizers = {

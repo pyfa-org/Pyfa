@@ -35,6 +35,7 @@ class FitMobilityVsTimeGraph(FitGraph):
         YDef(handle='distance', unit='km', label='Distance')]
     inputs = [
         Input(handle='time', unit='s', label='Time', iconID=1392, defaultValue=10, defaultRange=(0, 30), mainOnly=False)]
+    srcExtraCols = ('Speed', 'Agility')
 
     # Calculation stuff
     _denormalizers = {

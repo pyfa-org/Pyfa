@@ -41,6 +41,7 @@ class FitShieldRegenGraph(FitGraph):
     inputs = [
         Input(handle='time', unit='s', label='Time', iconID=1392, defaultValue=120, defaultRange=(0, 300), mainOnly=True),
         Input(handle='shieldAmount', unit='%', label='Shield amount', iconID=1384, defaultValue=25, defaultRange=(0, 100), mainOnly=True)]
+    srcExtraCols = ('ShieldAmount', 'ShieldTime')
 
     # Calculation stuff
     _normalizers = {
