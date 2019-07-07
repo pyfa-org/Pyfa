@@ -38,8 +38,10 @@ class BaseList(gui.display.Display):
         self.graphFrame = graphFrame
         self.fits = []
 
-        fitToolTip = wx.ToolTip('Drag a fit into this list to graph it')
-        self.SetToolTip(fitToolTip)
+        self.hoveredRow = None
+        self.hoveredColumn = None
+
+        self.defaultTT = 'Drag a fit into this list to graph it'
 
         self.contextMenu = wx.Menu()
         removeItem = wx.MenuItem(self.contextMenu, 1, 'Remove Fit')
@@ -52,6 +54,8 @@ class BaseList(gui.display.Display):
         self.Bind(wx.EVT_LEFT_DCLICK, self.OnLeftDClick)
         self.Bind(wx.EVT_CHAR_HOOK, self.kbEvent)
         self.Bind(wx.EVT_CONTEXT_MENU, self.OnContextMenu)
+        self.Bind(wx.EVT_MOTION, self.OnMouseMove)
+        self.Bind(wx.EVT_LEAVE_WINDOW, self.OnLeaveWindow)
 
     def kbEvent(self, event):
         keycode = event.GetKeyCode()
@@ -147,6 +151,34 @@ class BaseList(gui.display.Display):
                 self.fits.append(fit)
                 self.update(self.fits)
                 self.graphFrame.draw()
+
+    def OnLeaveWindow(self, event):
+        self.SetToolTip(None)
+        self.hoveredRow = None
+        self.hoveredColumn = None
+        event.Skip()
+
+    def OnMouseMove(self, event):
+        row, _, col = self.HitTestSubItem(event.Position)
+        if row != self.hoveredRow or col != self.hoveredColumn:
+            if self.ToolTip is not None:
+                self.SetToolTip(None)
+            else:
+                self.hoveredRow = row
+                self.hoveredColumn = col
+                if row != -1 and col != -1 and col < self.ColumnCount:
+                    try:
+                        fit = self.fits[row]
+                    except IndexError:
+                        return
+                    tooltip = self.activeColumns[col].getToolTip(fit)
+                    if tooltip:
+                        self.SetToolTip(tooltip)
+                    else:
+                        self.SetToolTip(self.defaultTT)
+                else:
+                    self.SetToolTip(self.defaultTT)
+        event.Skip()
 
 
 class FitList(BaseList):

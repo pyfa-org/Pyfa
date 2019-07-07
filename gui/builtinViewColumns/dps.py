@@ -25,6 +25,7 @@ import eos.config
 import gui.mainFrame
 from eos.saveddata.fit import Fit
 from eos.utils.spoolSupport import SpoolOptions, SpoolType
+from gui.bitmap_loader import BitmapLoader
 from gui.viewColumn import ViewColumn
 from gui.utils.numberFormatter import formatAmount
 
@@ -36,7 +37,8 @@ class DpsColumn(ViewColumn):
     def __init__(self, fittingView, params):
         ViewColumn.__init__(self, fittingView)
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
-        self.columnText = 'DPS'
+        self.imageId = fittingView.imageList.GetImageIndex(1432, 'icons')
+        self.bitmap = BitmapLoader.getBitmap(1432, 'icons')
         self.mask = wx.LIST_MASK_TEXT
 
     def getText(self, stuff):
@@ -47,6 +49,9 @@ class DpsColumn(ViewColumn):
                 return ''
             return formatAmount(dps, 3, 0, 0)
         return ''
+
+    def getToolTip(self, stuff):
+        return 'Declared DPS'
 
 
 DpsColumn.register()
