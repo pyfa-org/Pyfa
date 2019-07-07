@@ -132,7 +132,7 @@ class PFGeneralPref(PreferenceView):
         if iView.active:
             iView.update(iView.active)
 
-        wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fitID))
+        wx.PostEvent(self.mainFrame, GE.FitChanged(fitIDs=(fitID,)))
         event.Skip()
 
     def onCBGlobalRackSlots(self, event):
@@ -140,14 +140,14 @@ class PFGeneralPref(PreferenceView):
         self.cbRackLabels.Enable(self.cbRackSlots.GetValue())
         fitID = self.mainFrame.getActiveFit()
         self.sFit.refreshFit(fitID)
-        wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fitID))
+        wx.PostEvent(self.mainFrame, GE.FitChanged(fitIDs=(fitID,)))
         event.Skip()
 
     def onCBGlobalRackLabels(self, event):
         self.sFit.serviceFittingOptions["rackLabels"] = self.cbRackLabels.GetValue()
         fitID = self.mainFrame.getActiveFit()
         self.sFit.refreshFit(fitID)
-        wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fitID))
+        wx.PostEvent(self.mainFrame, GE.FitChanged(fitIDs=(fitID,)))
         event.Skip()
 
     def OnCBGlobalCharStateChange(self, event):
@@ -166,7 +166,7 @@ class PFGeneralPref(PreferenceView):
         self.sFit.serviceFittingOptions["compactSkills"] = self.cbCompactSkills.GetValue()
         fitID = self.mainFrame.getActiveFit()
         self.sFit.refreshFit(fitID)
-        wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fitID))
+        wx.PostEvent(self.mainFrame, GE.FitChanged(fitIDs=(fitID,)))
         event.Skip()
 
     def onCBReopenFits(self, event):

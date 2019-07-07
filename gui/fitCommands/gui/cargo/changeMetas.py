@@ -39,11 +39,11 @@ class GuiChangeCargoMetasCommand(wx.Command):
             results.append(self.internalHistory.submitBatch(cmdRemove, cmdAdd))
         success = any(results)
         eos.db.commit()
-        wx.PostEvent(gui.mainFrame.MainFrame.getInstance(), GE.FitChanged(fitID=self.fitID))
+        wx.PostEvent(gui.mainFrame.MainFrame.getInstance(), GE.FitChanged(fitIDs=(self.fitID,)))
         return success
 
     def Undo(self):
         success = self.internalHistory.undoAll()
         eos.db.commit()
-        wx.PostEvent(gui.mainFrame.MainFrame.getInstance(), GE.FitChanged(fitID=self.fitID))
+        wx.PostEvent(gui.mainFrame.MainFrame.getInstance(), GE.FitChanged(fitIDs=(self.fitID,)))
         return success

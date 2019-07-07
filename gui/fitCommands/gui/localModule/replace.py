@@ -34,9 +34,9 @@ class GuiReplaceLocalModuleCommand(wx.Command):
         eos.db.commit()
         wx.PostEvent(
             gui.mainFrame.MainFrame.getInstance(),
-            GE.FitChanged(fitID=self.fitID, action='modadd', typeID=self.itemID)
+            GE.FitChanged(fitIDs=(self.fitID,), action='modadd', typeID=self.itemID)
             if success else
-            GE.FitChanged(fitID=self.fitID))
+            GE.FitChanged(fitIDs=(self.fitID,)))
         return success
 
     def Undo(self):
@@ -50,7 +50,7 @@ class GuiReplaceLocalModuleCommand(wx.Command):
         eos.db.commit()
         wx.PostEvent(
             gui.mainFrame.MainFrame.getInstance(),
-            GE.FitChanged(fitID=self.fitID, action='moddel', typeID=self.itemID)
+            GE.FitChanged(fitIDs=(self.fitID,), action='moddel', typeID=self.itemID)
             if success else
-            GE.FitChanged(fitID=self.fitID))
+            GE.FitChanged(fitIDs=(self.fitID,)))
         return success

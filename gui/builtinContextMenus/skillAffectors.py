@@ -116,7 +116,7 @@ class ChangeAffectingSkills(ContextMenuSingle):
         self.sFit.changeChar(fitID, self.charID)
 
         wx.PostEvent(self.mainFrame, GE.CharListUpdated())
-        wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fitID))
+        wx.PostEvent(self.mainFrame, GE.FitChanged(fitIDs=(fitID,)))
 
 
 ChangeAffectingSkills.register()

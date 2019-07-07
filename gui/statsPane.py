@@ -71,10 +71,10 @@ class StatsPane(wx.Panel):
     def fitChanged(self, event):
         event.Skip()
         activeFitID = self.mainFrame.getActiveFit()
-        if activeFitID is not None and event.fitID is not None and event.fitID != activeFitID:
+        if activeFitID is not None and activeFitID not in event.fitIDs:
             return
         sFit = Fit.getInstance()
-        fit = sFit.getFit(event.fitID)
+        fit = sFit.getFit(activeFitID)
         for view in self.views:
             view.refreshPanel(fit)
 

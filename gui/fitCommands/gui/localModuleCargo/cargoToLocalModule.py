@@ -135,11 +135,11 @@ class GuiCargoToLocalModuleCommand(wx.Command):
         eos.db.commit()
         events = []
         if self.removedModItemID is not None:
-            events.append(GE.FitChanged(fitID=self.fitID, action='moddel', typeID=self.removedModItemID))
+            events.append(GE.FitChanged(fitIDs=(self.fitID,), action='moddel', typeID=self.removedModItemID))
         if self.addedModItemID is not None:
-            events.append(GE.FitChanged(fitID=self.fitID, action='modadd', typeID=self.addedModItemID))
+            events.append(GE.FitChanged(fitIDs=(self.fitID,), action='modadd', typeID=self.addedModItemID))
         if not events:
-            events.append(GE.FitChanged(fitID=self.fitID))
+            events.append(GE.FitChanged(fitIDs=(self.fitID,)))
         for event in events:
             wx.PostEvent(gui.mainFrame.MainFrame.getInstance(), event)
         return success
@@ -155,11 +155,11 @@ class GuiCargoToLocalModuleCommand(wx.Command):
         eos.db.commit()
         events = []
         if self.addedModItemID is not None:
-            events.append(GE.FitChanged(fitID=self.fitID, action='moddel', typeID=self.addedModItemID))
+            events.append(GE.FitChanged(fitIDs=(self.fitID,), action='moddel', typeID=self.addedModItemID))
         if self.removedModItemID is not None:
-            events.append(GE.FitChanged(fitID=self.fitID, action='modadd', typeID=self.removedModItemID))
+            events.append(GE.FitChanged(fitIDs=(self.fitID,), action='modadd', typeID=self.removedModItemID))
         if not events:
-            events.append(GE.FitChanged(fitID=self.fitID))
+            events.append(GE.FitChanged(fitIDs=(self.fitID,)))
         for event in events:
             wx.PostEvent(gui.mainFrame.MainFrame.getInstance(), event)
         return success

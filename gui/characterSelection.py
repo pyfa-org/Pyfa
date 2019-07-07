@@ -188,7 +188,7 @@ class CharacterSelection(wx.Panel):
         sFit = Fit.getInstance()
         sFit.changeChar(fitID, charID)
         self.charCache = self.charChoice.GetCurrentSelection()
-        wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fitID))
+        wx.PostEvent(self.mainFrame, GE.FitChanged(fitIDs=(fitID,)))
 
     def toggleRefreshButton(self):
         charID = self.getActiveCharacter()
@@ -216,16 +216,16 @@ class CharacterSelection(wx.Panel):
         """
         event.Skip()
         activeFitID = self.mainFrame.getActiveFit()
-        if activeFitID is not None and event.fitID is not None and event.fitID != activeFitID:
+        if activeFitID is not None and activeFitID not in event.fitIDs:
             return
-        self.charChoice.Enable(event.fitID is not None)
+        self.charChoice.Enable(activeFitID is not None)
         choice = self.charChoice
         sFit = Fit.getInstance()
         currCharID = choice.GetClientData(choice.GetCurrentSelection())
-        fit = sFit.getFit(event.fitID)
+        fit = sFit.getFit(activeFitID)
         newCharID = fit.character.ID if fit is not None else None
 
-        if event.fitID is None:
+        if activeFitID is None:
             self.skillReqsStaticBitmap.SetBitmap(self.cleanSkills)
             self.skillReqsStaticBitmap.SetToolTip("No active fit")
         else:

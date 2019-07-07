@@ -165,7 +165,8 @@ class ResistancesViewFull(StatsView):
 
     def ehpSwitch(self, event):
         self.showEffective = event.effective
-        wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=self.mainFrame.getActiveFit()))
+        fitID = self.mainFrame.getActiveFit()
+        wx.PostEvent(self.mainFrame, GE.FitChanged(fitIDs=(fitID,)))
 
     def refreshPanel(self, fit):
         # If we did anything intresting, we'd update our labels to reflect the new fit's stats here

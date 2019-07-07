@@ -106,7 +106,7 @@ class AttributeEditor(wx.Frame):
     def closeWindow(self):
         fitID = self.mainFrame.getActiveFit()
         if fitID is not None:
-            wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fitID))
+            wx.PostEvent(self.mainFrame, GE.FitChanged(fitIDs=(fitID,)))
         self.Destroy()
 
     def OnImport(self, event):

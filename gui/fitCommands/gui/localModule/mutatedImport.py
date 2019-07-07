@@ -31,7 +31,7 @@ class GuiImportLocalMutatedModuleCommand(wx.Command):
         eos.db.commit()
         wx.PostEvent(
             gui.mainFrame.MainFrame.getInstance(),
-            GE.FitChanged(fitID=self.fitID, action='modadd', typeID=self.newModInfo.itemID))
+            GE.FitChanged(fitIDs=(self.fitID,), action='modadd', typeID=self.newModInfo.itemID))
         return success
 
     def Undo(self):
@@ -45,5 +45,5 @@ class GuiImportLocalMutatedModuleCommand(wx.Command):
         eos.db.commit()
         wx.PostEvent(
             gui.mainFrame.MainFrame.getInstance(),
-            GE.FitChanged(fitID=self.fitID, action='moddel', typeID=self.newModInfo.itemID))
+            GE.FitChanged(fitIDs=(self.fitID,), action='moddel', typeID=self.newModInfo.itemID))
         return success

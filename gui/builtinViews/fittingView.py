@@ -64,7 +64,7 @@ class FitSpawner(gui.multiSwitch.TabSpawner):
                     if page.activeFitID == event.fitID:
                         count += 1
                         self.multiSwitch.SetSelection(index)
-                        wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=event.fitID))
+                        wx.PostEvent(self.mainFrame, GE.FitChanged(fitIDs=(event.fitID,)))
                         break
                 except Exception as e:
                     pyfalog.critical("Caught exception in fitSelected")
@@ -94,7 +94,7 @@ class FitSpawner(gui.multiSwitch.TabSpawner):
                 if isinstance(page, FittingView) and page.activeFitID == fitID:
                     index = self.multiSwitch.GetPageIndex(page)
                     self.multiSwitch.SetSelection(index)
-                    wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fitID))
+                    wx.PostEvent(self.mainFrame, GE.FitChanged(fitIDs=(fitID,)))
                     return
                 elif isinstance(page, gui.builtinViews.emptyView.BlankPage):
                     view = FittingView(self.multiSwitch)
@@ -229,7 +229,7 @@ class FittingView(d.Display):
             fitID = self.getActiveFit()
             sFit = Fit.getInstance()
             sFit.switchFit(fitID)
-            wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fitID))
+            wx.PostEvent(self.mainFrame, GE.FitChanged(fitIDs=(fitID,)))
 
         event.Skip()
 
@@ -313,7 +313,7 @@ class FittingView(d.Display):
                 fit = sFit.getFit(self.getActiveFit())
                 if fit:
                     sFit.refreshFit(self.getActiveFit())
-                    wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=self.activeFitID))
+                    wx.PostEvent(self.mainFrame, GE.FitChanged(fitIDs=(self.activeFitID,)))
             except RuntimeError:
                 pyfalog.warning("Caught dead object")
                 pass
@@ -344,7 +344,7 @@ class FittingView(d.Display):
                 self.slotsChanged()
                 sFit.switchFit(fitID)
                 # @todo pheonix: had to disable this as it was causing a crash at the wxWidgets level. Dunno why, investigate
-                wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fitID))
+                wx.PostEvent(self.mainFrame, GE.FitChanged(fitIDs=(fitID,)))
 
         event.Skip()
 
@@ -608,10 +608,10 @@ class FittingView(d.Display):
         if not self:
             return
         activeFitID = self.mainFrame.getActiveFit()
-        if activeFitID is not None and event.fitID is not None and event.fitID != activeFitID:
+        if activeFitID is not None and activeFitID not in event.fitIDs:
             return
         try:
-            if self.activeFitID is not None and self.activeFitID == event.fitID:
+            if self.activeFitID is not None and self.activeFitID == activeFitID:
                 self.generateMods()
                 if self.GetItemCount() != len(self.mods):
                     # This only happens when turning on/off slot divisions
@@ -619,7 +619,7 @@ class FittingView(d.Display):
                 self.refresh(self.mods)
                 self.Refresh()
 
-            self.Show(self.activeFitID is not None and self.activeFitID == event.fitID)
+            self.Show(self.activeFitID is not None and self.activeFitID == activeFitID)
         except RuntimeError:
             pyfalog.error("Caught dead object")
 

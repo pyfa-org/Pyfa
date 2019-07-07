@@ -108,7 +108,7 @@ class ChangeDamagePattern(ContextMenuUnconditional):
         fitID = self.mainFrame.getActiveFit()
         sFit.setDamagePattern(fitID, pattern)
         setattr(self.mainFrame, "_activeDmgPattern", pattern)
-        wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fitID))
+        wx.PostEvent(self.mainFrame, GE.FitChanged(fitIDs=(fitID,)))
 
 
 ChangeDamagePattern.register()

@@ -26,7 +26,7 @@ class GuiAddImplantSetCommand(wx.Command):
         sFit.recalc(self.fitID)
         sFit.fill(self.fitID)
         eos.db.commit()
-        wx.PostEvent(gui.mainFrame.MainFrame.getInstance(), GE.FitChanged(fitID=self.fitID))
+        wx.PostEvent(gui.mainFrame.MainFrame.getInstance(), GE.FitChanged(fitIDs=(self.fitID,)))
         # Some might fail, as we already might have these implants
         return any(results)
 
@@ -37,5 +37,5 @@ class GuiAddImplantSetCommand(wx.Command):
         sFit.recalc(self.fitID)
         sFit.fill(self.fitID)
         eos.db.commit()
-        wx.PostEvent(gui.mainFrame.MainFrame.getInstance(), GE.FitChanged(fitID=self.fitID))
+        wx.PostEvent(gui.mainFrame.MainFrame.getInstance(), GE.FitChanged(fitIDs=(self.fitID,)))
         return success

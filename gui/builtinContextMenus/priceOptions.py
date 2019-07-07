@@ -32,7 +32,8 @@ class ItemGroupPrice(ContextMenuUnconditional, metaclass=ABCMeta):
 
     def activate(self, fullContext, i):
         self.settings.set(self.optionName, not self.settings.get(self.optionName))
-        wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=self.mainFrame.getActiveFit()))
+        fitID = self.mainFrame.getActiveFit()
+        wx.PostEvent(self.mainFrame, GE.FitChanged(fitIDs=(fitID,)))
 
     @property
     def checked(self):

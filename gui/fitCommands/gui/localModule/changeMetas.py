@@ -48,11 +48,11 @@ class GuiChangeLocalModuleMetasCommand(wx.Command):
         eos.db.commit()
         events = []
         if success and self.replacedItemIDs:
-            events.append(GE.FitChanged(fitID=self.fitID, action='moddel', typeID=self.replacedItemIDs))
+            events.append(GE.FitChanged(fitIDs=(self.fitID,), action='moddel', typeID=self.replacedItemIDs))
         if success:
-            events.append(GE.FitChanged(fitID=self.fitID, action='modadd', typeID=self.newItemID))
+            events.append(GE.FitChanged(fitIDs=(self.fitID,), action='modadd', typeID=self.newItemID))
         if not events:
-            events.append(GE.FitChanged(fitID=self.fitID))
+            events.append(GE.FitChanged(fitIDs=(self.fitID,)))
         for event in events:
             wx.PostEvent(gui.mainFrame.MainFrame.getInstance(), event)
         return success
@@ -68,11 +68,11 @@ class GuiChangeLocalModuleMetasCommand(wx.Command):
         eos.db.commit()
         events = []
         if success:
-            events.append(GE.FitChanged(fitID=self.fitID, action='moddel', typeID=self.newItemID))
+            events.append(GE.FitChanged(fitIDs=(self.fitID,), action='moddel', typeID=self.newItemID))
         if success and self.replacedItemIDs:
-            events.append(GE.FitChanged(fitID=self.fitID, action='modadd', typeID=self.replacedItemIDs))
+            events.append(GE.FitChanged(fitIDs=(self.fitID,), action='modadd', typeID=self.replacedItemIDs))
         if not events:
-            events.append(GE.FitChanged(fitID=self.fitID))
+            events.append(GE.FitChanged(fitIDs=(self.fitID,)))
         for event in events:
             wx.PostEvent(gui.mainFrame.MainFrame.getInstance(), event)
         return success

@@ -99,7 +99,7 @@ class ShipBrowser(wx.Panel):
     def RefreshList(self, event):
         event.Skip()
         activeFitID = self.mainFrame.getActiveFit()
-        if activeFitID is not None and event.fitID is not None and event.fitID != activeFitID:
+        if activeFitID is not None and activeFitID not in event.fitIDs:
             return
 
         stage = self.GetActiveStage()

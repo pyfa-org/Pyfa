@@ -23,7 +23,7 @@ class GuiChangeFitSystemSecurityCommand(wx.Command):
         sFit = Fit.getInstance()
         sFit.recalc(self.fitID)
         eos.db.commit()
-        wx.PostEvent(gui.mainFrame.MainFrame.getInstance(), GE.FitChanged(fitID=self.fitID))
+        wx.PostEvent(gui.mainFrame.MainFrame.getInstance(), GE.FitChanged(fitIDs=(self.fitID,)))
         return success
 
     def Undo(self):
@@ -32,5 +32,5 @@ class GuiChangeFitSystemSecurityCommand(wx.Command):
         sFit = Fit.getInstance()
         sFit.recalc(self.fitID)
         eos.db.commit()
-        wx.PostEvent(gui.mainFrame.MainFrame.getInstance(), GE.FitChanged(fitID=self.fitID))
+        wx.PostEvent(gui.mainFrame.MainFrame.getInstance(), GE.FitChanged(fitIDs=(self.fitID,)))
         return success

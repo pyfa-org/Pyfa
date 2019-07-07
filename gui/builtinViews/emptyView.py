@@ -15,7 +15,7 @@ class BlankPage(wx.Panel):
         self.parent.Bind(EVT_NOTEBOOK_PAGE_CHANGED, self.pageChanged)
         self.SetBackgroundColour(wx.SystemSettings.GetColour(wx.SYS_COLOUR_WINDOW))
 
-        wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=None))
+        wx.PostEvent(self.mainFrame, GE.FitChanged(fitIDs=()))
 
     def Destroy(self):
         # todo: This unbind caused fits to not recalc when switching to their tabs; find out why
@@ -27,6 +27,6 @@ class BlankPage(wx.Panel):
             fitID = None
             # sFit = Fit.getInstance()
             # sFit.switchFit(fitID)
-            wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fitID))
+            wx.PostEvent(self.mainFrame, GE.FitChanged(fitIDs=(fitID,)))
 
         event.Skip()

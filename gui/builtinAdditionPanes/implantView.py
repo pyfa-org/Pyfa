@@ -80,7 +80,7 @@ class ImplantView(wx.Panel):
     def fitChanged(self, event):
         event.Skip()
         activeFitID = self.mainFrame.getActiveFit()
-        if activeFitID is not None and event.fitID is not None and event.fitID != activeFitID:
+        if activeFitID is not None and activeFitID not in event.fitIDs:
             return
 
         sFit = Fit.getInstance()
@@ -156,16 +156,16 @@ class ImplantDisplay(d.Display):
     def fitChanged(self, event):
         event.Skip()
         activeFitID = self.mainFrame.getActiveFit()
-        if activeFitID is not None and event.fitID is not None and event.fitID != activeFitID:
+        if activeFitID is not None and activeFitID not in event.fitIDs:
             return
 
         sFit = Fit.getInstance()
-        fit = sFit.getFit(event.fitID)
+        fit = sFit.getFit(activeFitID)
 
         self.Parent.Parent.Parent.DisablePage(self.Parent, not fit or fit.isStructure)
 
         # Clear list and get out if current fitId is None
-        if event.fitID is None and self.lastFitId is not None:
+        if activeFitID is None and self.lastFitId is not None:
             self.DeleteAllItems()
             self.lastFitId = None
             return
@@ -175,8 +175,8 @@ class ImplantDisplay(d.Display):
         if self.implants is not None:
             self.implants.sort(key=lambda implant: implant.slot or 0)
 
-        if event.fitID != self.lastFitId:
-            self.lastFitId = event.fitID
+        if activeFitID != self.lastFitId:
+            self.lastFitId = activeFitID
 
             item = self.GetNextItem(-1, wx.LIST_NEXT_ALL, wx.LIST_STATE_DONTCARE)
 

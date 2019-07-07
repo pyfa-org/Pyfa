@@ -37,9 +37,9 @@ class GuiFillWithClonedLocalModulesCommand(wx.Command):
         success = added_modules > 0
         wx.PostEvent(
             gui.mainFrame.MainFrame.getInstance(),
-            GE.FitChanged(fitID=self.fitID, action='modadd', typeID=self.savedItemID)
+            GE.FitChanged(fitIDs=(self.fitID,), action='modadd', typeID=self.savedItemID)
             if success else
-            GE.FitChanged(fitID=self.fitID))
+            GE.FitChanged(fitIDs=(self.fitID,)))
         return success
 
     def Undo(self):
@@ -53,7 +53,7 @@ class GuiFillWithClonedLocalModulesCommand(wx.Command):
         eos.db.commit()
         wx.PostEvent(
             gui.mainFrame.MainFrame.getInstance(),
-            GE.FitChanged(fitID=self.fitID, action='moddel', typeID=self.savedItemID)
+            GE.FitChanged(fitIDs=(self.fitID,), action='moddel', typeID=self.savedItemID)
             if success else
-            GE.FitChanged(fitID=self.fitID))
+            GE.FitChanged(fitIDs=(self.fitID,)))
         return success

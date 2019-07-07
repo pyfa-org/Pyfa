@@ -126,7 +126,7 @@ class PFMarketPref(PreferenceView):
         fitID = self.mainFrame.getActiveFit()
 
         self.sFit.refreshFit(fitID)
-        wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fitID))
+        wx.PostEvent(self.mainFrame, GE.FitChanged(fitIDs=(fitID,)))
         event.Skip()
 
     def onPricesSourceSelection(self, event):
@@ -135,15 +135,18 @@ class PFMarketPref(PreferenceView):
 
     def OnTotalPriceDroneChange(self, event):
         self.priceSettings.set('drones', event.GetInt())
-        wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=self.mainFrame.getActiveFit()))
+        fitID = self.mainFrame.getActiveFit()
+        wx.PostEvent(self.mainFrame, GE.FitChanged(fitIDs=(fitID,)))
 
     def OnTotalPriceCargoChange(self, event):
         self.priceSettings.set('cargo', event.GetInt())
-        wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=self.mainFrame.getActiveFit()))
+        fitID = self.mainFrame.getActiveFit()
+        wx.PostEvent(self.mainFrame, GE.FitChanged(fitIDs=(fitID,)))
 
     def OnTotalPriceCharacterChange(self, event):
         self.priceSettings.set('character', event.GetInt())
-        wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=self.mainFrame.getActiveFit()))
+        fitID = self.mainFrame.getActiveFit()
+        wx.PostEvent(self.mainFrame, GE.FitChanged(fitIDs=(fitID,)))
 
     def OnMarketJumpChange(self, event):
         self.priceSettings.set('marketMGJumpMode', event.GetInt())

@@ -240,4 +240,4 @@ class ItemMutatorList(wx.ScrolledWindow):
             sFit.switchFit(activeFit)
 
         # Send signal to GUI to update stats with current active fit
-        wx.PostEvent(mainFrame, GE.FitChanged(fitID=activeFit))
+        wx.PostEvent(mainFrame, GE.FitChanged(fitIDs=(activeFit,)))

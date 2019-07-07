@@ -94,7 +94,8 @@ class BaseList(gui.display.Display):
 
     def OnFitChanged(self, event):
         event.Skip()
-        self.update(self.fits)
+        if set(event.fitIDs).union(f.ID for f in self.fits):
+            self.update(self.fits)
 
     def getSelectedFits(self):
         fits = []

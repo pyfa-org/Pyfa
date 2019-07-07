@@ -155,7 +155,8 @@ class GraphFrame(wx.Frame):
 
     def OnFitChanged(self, event):
         event.Skip()
-        self.clearCache(reason=GraphCacheCleanupReason.fitChanged, extraData=event.fitID)
+        for fitID in event.fitIDs:
+            self.clearCache(reason=GraphCacheCleanupReason.fitChanged, extraData=fitID)
         self.draw()
 
     def OnFitRenamed(self, event):

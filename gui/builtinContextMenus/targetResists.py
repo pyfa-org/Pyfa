@@ -38,7 +38,7 @@ class TargetResists(ContextMenuUnconditional):
         sFit = Fit.getInstance()
         fitID = self.mainFrame.getActiveFit()
         sFit.setTargetResists(fitID, pattern)
-        wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fitID))
+        wx.PostEvent(self.mainFrame, GE.FitChanged(fitIDs=(fitID,)))
 
     def addPattern(self, rootMenu, pattern):
         id = ContextMenuUnconditional.nextID()

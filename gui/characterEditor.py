@@ -296,7 +296,7 @@ class CharacterEditor(wx.Frame):
         fitID = self.mainFrame.getActiveFit()
         if fitID is not None:
             sFit.clearFit(fitID)
-            wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fitID))
+            wx.PostEvent(self.mainFrame, GE.FitChanged(fitIDs=(fitID,)))
 
         wx.Frame.Destroy(self)
 

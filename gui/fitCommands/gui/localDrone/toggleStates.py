@@ -28,7 +28,7 @@ class GuiToggleLocalDroneStatesCommand(wx.Command):
         sFit.recalc(self.fitID)
         sFit.fill(self.fitID)
         eos.db.commit()
-        wx.PostEvent(gui.mainFrame.MainFrame.getInstance(), GE.FitChanged(fitID=self.fitID))
+        wx.PostEvent(gui.mainFrame.MainFrame.getInstance(), GE.FitChanged(fitIDs=(self.fitID,)))
         return success
 
     def Undo(self):
@@ -38,5 +38,5 @@ class GuiToggleLocalDroneStatesCommand(wx.Command):
         sFit.recalc(self.fitID)
         sFit.fill(self.fitID)
         eos.db.commit()
-        wx.PostEvent(gui.mainFrame.MainFrame.getInstance(), GE.FitChanged(fitID=self.fitID))
+        wx.PostEvent(gui.mainFrame.MainFrame.getInstance(), GE.FitChanged(fitIDs=(self.fitID,)))
         return success

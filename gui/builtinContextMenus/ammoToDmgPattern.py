@@ -36,7 +36,7 @@ class AmmoToDmgPattern(ContextMenuSingle):
     def activate(self, fullContext, mainItem, i):
         fitID = self.mainFrame.getActiveFit()
         Fit.getInstance().setAsPattern(fitID, mainItem)
-        wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fitID))
+        wx.PostEvent(self.mainFrame, GE.FitChanged(fitIDs=(fitID,)))
 
     def getBitmap(self, context, mainItem):
         return None

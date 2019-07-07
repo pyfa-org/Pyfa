@@ -637,7 +637,8 @@ class MainFrame(wx.Frame):
 
     def toggleOverrides(self, event):
         ModifiedAttributeDict.overrides_enabled = not ModifiedAttributeDict.overrides_enabled
-        wx.PostEvent(self, GE.FitChanged(fitID=self.getActiveFit()))
+
+        wx.PostEvent(self, GE.FitChanged(fitIDs=(self.getActiveFit(),)))
         menu = self.GetMenuBar()
         menu.SetLabel(menu.toggleOverridesId,
                       "&Turn Overrides Off" if ModifiedAttributeDict.overrides_enabled else "&Turn Overrides On")

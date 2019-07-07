@@ -178,9 +178,9 @@ class MainMenuBar(wx.MenuBar):
     def fitChanged(self, event):
         event.Skip()
         activeFitID = self.mainFrame.getActiveFit()
-        if activeFitID is not None and event.fitID is not None and event.fitID != activeFitID:
+        if activeFitID is not None and activeFitID not in event.fitIDs:
             return
-        enable = event.fitID is not None
+        enable = activeFitID is not None
         self.Enable(wx.ID_SAVEAS, enable)
         self.Enable(wx.ID_COPY, enable)
         self.Enable(self.exportSkillsNeededId, enable)
@@ -198,9 +198,9 @@ class MainMenuBar(wx.MenuBar):
 
         self.Enable(self.toggleIgnoreRestrictionID, enable)
 
-        if event.fitID:
+        if activeFitID:
             sFit = Fit.getInstance()
-            fit = sFit.getFit(event.fitID)
+            fit = sFit.getFit(activeFitID)
 
             if fit.ignoreRestrictions:
                 self.ignoreRestrictionItem.SetItemLabel("Enable Fitting Re&strictions")

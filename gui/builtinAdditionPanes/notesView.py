@@ -32,11 +32,11 @@ class NotesView(wx.Panel):
     def fitChanged(self, event):
         event.Skip()
         activeFitID = self.mainFrame.getActiveFit()
-        if activeFitID is not None and event.fitID is not None and event.fitID != activeFitID:
+        if activeFitID is not None and activeFitID not in event.fitIDs:
             return
 
         sFit = Fit.getInstance()
-        fit = sFit.getFit(event.fitID)
+        fit = sFit.getFit(activeFitID)
 
         self.saveTimer.Stop()  # cancel any pending timers
 
@@ -46,11 +46,11 @@ class NotesView(wx.Panel):
         if self.lastFitId is not None:
             sFit.editNotes(self.lastFitId, self.editNotes.GetValue())
 
-        if event.fitID is None and self.lastFitId is not None:
+        if activeFitID is None and self.lastFitId is not None:
             self.lastFitId = None
             return
-        elif event.fitID != self.lastFitId:
-            self.lastFitId = event.fitID
+        elif activeFitID != self.lastFitId:
+            self.lastFitId = activeFitID
             self.editNotes.SetValue(fit.notes or "")
 
     def onText(self, event):

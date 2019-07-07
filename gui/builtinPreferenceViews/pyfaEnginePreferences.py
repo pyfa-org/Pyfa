@@ -124,8 +124,7 @@ class PFFittingEnginePref(PreferenceView):
 
     def OnCBGlobalForceReloadStateChange(self, event):
         fitIDs = self.sFit.toggleFactorReload(value=bool(self.cbGlobalForceReload.GetValue()))
-        for fitID in fitIDs:
-            wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fitID))
+        wx.PostEvent(self.mainFrame, GE.FitChanged(fitIDs=tuple(fitIDs)))
 
     def OnCBStrictSkillLevelsChange(self, event):
         self.engine_settings.set("strictSkillLevels", self.cbStrictSkillLevels.GetValue())

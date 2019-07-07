@@ -32,9 +32,9 @@ class GuiCloneLocalModuleCommand(wx.Command):
         eos.db.commit()
         self.savedItemID = fit.modules[self.srcPosition].itemID
         if success and self.savedItemID is not None:
-            event = GE.FitChanged(fitID=self.fitID, action='modadd', typeID=self.savedItemID)
+            event = GE.FitChanged(fitIDs=(self.fitID,), action='modadd', typeID=self.savedItemID)
         else:
-            event = GE.FitChanged(fitID=self.fitID)
+            event = GE.FitChanged(fitIDs=(self.fitID,))
         wx.PostEvent(gui.mainFrame.MainFrame.getInstance(), event)
         return success
 
@@ -48,8 +48,8 @@ class GuiCloneLocalModuleCommand(wx.Command):
         sFit.fill(self.fitID)
         eos.db.commit()
         if success and self.savedItemID is not None:
-            event = GE.FitChanged(fitID=self.fitID, action='moddel', typeID=self.savedItemID)
+            event = GE.FitChanged(fitIDs=(self.fitID,), action='moddel', typeID=self.savedItemID)
         else:
-            event = GE.FitChanged(fitID=self.fitID)
+            event = GE.FitChanged(fitIDs=(self.fitID,))
         wx.PostEvent(gui.mainFrame.MainFrame.getInstance(), event)
         return success

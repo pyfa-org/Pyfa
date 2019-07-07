@@ -24,8 +24,7 @@ class FactorReload(ContextMenuUnconditional):
 
     def activate(self, fullContext, i):
         fitIDs = Fit.getInstance().toggleFactorReload()
-        for fitID in fitIDs:
-            wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fitID))
+        wx.PostEvent(self.mainFrame, GE.FitChanged(fitIDs=tuple(fitIDs)))
 
     @property
     def checked(self):
