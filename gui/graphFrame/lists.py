@@ -175,7 +175,7 @@ class BaseList(gui.display.Display):
                     if tooltip:
                         self.SetToolTip(tooltip)
                     else:
-                        self.SetToolTip(self.defaultTT)
+                        self.SetToolTip(None)
                 else:
                     self.SetToolTip(self.defaultTT)
         event.Skip()

@@ -72,15 +72,14 @@ from gui.builtinViewColumns import (  # noqa: E402, F401
     ammo,
     ammoIcon,
     attributeDisplay,
+    attributeDisplayGraph,
     baseIcon,
     baseName,
     capacitorUse,
-    dps,
     maxRange,
     misc,
     price,
     propertyDisplay,
     state,
-    sideEffects,
-    volley
+    sideEffects
 )
