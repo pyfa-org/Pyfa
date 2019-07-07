@@ -28,32 +28,34 @@ cappingAttrKeyCache = {}
 
 
 class ItemAttrShortcut:
+
     def getModifiedItemAttr(self, key, default=0):
         return_value = self.itemModifiedAttributes.get(key)
+        return return_value or default
 
+    def getModifiedItemAttrWithExtraMods(self, key, multipliers=(), boosts=(), default=0):
+        """Returns attribute value with passed modifiers applied to it."""
+        return_value = self.itemModifiedAttributes.get(key)
         return return_value or default
 
     def getItemBaseAttrValue(self, key, default=0):
-        """
-        Gets base value in this order:
-        Mutated value > override value > attribute value
-        """
         return_value = self.itemModifiedAttributes.getOriginal(key)
-        return return_value or default
-
-    def getChargeBaseAttrValue(self, key, default=0):
-        """
-        Gets base value in this order:
-        Mutated value > override value > attribute value
-        """
-        return_value = self.chargeModifiedAttributes.getOriginal(key)
         return return_value or default
 
 
 class ChargeAttrShortcut:
+
     def getModifiedChargeAttr(self, key, default=0):
         return_value = self.chargeModifiedAttributes.get(key)
+        return return_value or default
 
+    def getModifiedChargeAttrWithExtraMods(self, key, multipliers=(), boosts=(), default=0):
+        """Returns attribute value with passed modifiers applied to it."""
+        return_value = self.itemModifiedAttributes.get(key)
+        return return_value or default
+
+    def getChargeBaseAttrValue(self, key, default=0):
+        return_value = self.chargeModifiedAttributes.getOriginal(key)
         return return_value or default
 
 
