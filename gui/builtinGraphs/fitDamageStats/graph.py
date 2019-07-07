@@ -67,6 +67,7 @@ class FitDamageStatsGraph(FitGraph):
     srcVectorDef = VectorDef(lengthHandle='atkSpeed', lengthUnit='%', angleHandle='atkAngle', angleUnit='degrees', label='Attacker')
     tgtVectorDef = VectorDef(lengthHandle='tgtSpeed', lengthUnit='%', angleHandle='tgtAngle', angleUnit='degrees', label='Target')
     hasTargets = True
+    srcExtraCols = ('Dps', 'Volley')
 
     # Calculation stuff
     _normalizers = {

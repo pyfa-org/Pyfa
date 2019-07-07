@@ -134,12 +134,6 @@ class BaseList(gui.display.Display):
 
 class FitList(BaseList):
 
-    DEFAULT_COLS = (
-        'Base Icon',
-        'Base Name',
-        'Dps',
-        'Volley')
-
     def __init__(self, graphFrame, parent):
         super().__init__(graphFrame, parent)
         fit = Fit.getInstance().getFit(self.graphFrame.mainFrame.getActiveFit())

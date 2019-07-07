@@ -81,6 +81,14 @@ class FitGraph(metaclass=ABCMeta):
     def inputMap(self):
         return OrderedDict(((i.handle, i.unit), i) for i in self.inputs)
 
+    @property
+    def srcExtraCols(self):
+        return ()
+
+    @property
+    def tgtExtraCols(self):
+        return ()
+
     srcVectorDef = None
     tgtVectorDef = None
     hasTargets = False
