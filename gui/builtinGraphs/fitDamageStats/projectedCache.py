@@ -33,7 +33,7 @@ class ProjectedDataCache(FitDataCache):
             projectedData = self._data.setdefault(fit.ID, {})['modules'] = (webMods, tpMods)
             for mod in fit.modules:
                 if 'remoteWebifierFalloff' in mod.item.effects or 'structureModuleEffectStasisWebifier' in mod.item.effects:
-                    webMods.append((mod.getModifiedItemAttr('speedFactor'), mod.maxRange, mod.falloff))
+                    webMods.append((mod.getModifiedItemAttr('speedFactor'), mod.maxRange or 0, mod.falloff or 0))
                 if 'remoteTargetPaintFalloff' in mod.item.effects or 'structureModuleEffectTargetPainter' in mod.item.effects:
-                    tpMods.append((mod.getModifiedItemAttr('signatureRadiusBonus'), mod.maxRange, mod.falloff))
+                    tpMods.append((mod.getModifiedItemAttr('signatureRadiusBonus'), mod.maxRange or 0, mod.falloff or 0))
         return projectedData

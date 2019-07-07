@@ -171,6 +171,35 @@ def getFighterAbilityMult(fighter, ability, fit, distance, tgtSpeed, tgtSigRadiu
     return mult
 
 
+def applyWebs(tgt, currentUnwebbedSpeed, webMods, distance):
+    unwebbedSpeed = tgt.ship.getModifiedItemAttr('maxVelocity')
+    try:
+        speedRatio = currentUnwebbedSpeed / unwebbedSpeed
+    except ZeroDivisionError:
+        currentWebbedSpeed = 0
+    else:
+        appliedBoosts = []
+        for boost, optimal, falloff in webMods:
+            appliedBoost = boost * _calcRangeFactor(atkOptimalRange=optimal, atkFalloffRange=falloff, distance=distance)
+            if appliedBoost:
+                appliedBoosts.append(appliedBoost)
+        webbedSpeed = tgt.ship.getModifiedItemAttrWithExtraMods('maxVelocity', boosts=appliedBoosts)
+        currentWebbedSpeed = webbedSpeed * speedRatio
+    return currentWebbedSpeed
+
+
+def applyTps(tgt, tpMods, distance):
+    untpedSig = tgt.ship.getModifiedItemAttr('signatureRadius')
+    appliedBoosts = []
+    for boost, optimal, falloff in tpMods:
+        appliedBoost = boost * _calcRangeFactor(atkOptimalRange=optimal, atkFalloffRange=falloff, distance=distance)
+        if appliedBoost:
+            appliedBoosts.append(appliedBoost)
+    tpedSig = tgt.ship.getModifiedItemAttrWithExtraMods('signatureRadius', boosts=appliedBoosts)
+    mult = tpedSig / untpedSig
+    return mult
+
+
 # Turret-specific
 @lru_cache(maxsize=50)
 def _calcTurretMult(chanceToHit):
@@ -247,7 +276,13 @@ def _calcAggregatedDrf(reductionFactor, reductionSensitivity):
 # Generic
 def _calcRangeFactor(atkOptimalRange, atkFalloffRange, distance):
     """Range strength/chance factor, applicable to guns, ewar, RRs, etc."""
-    return 0.5 ** ((max(0, distance - atkOptimalRange) / atkFalloffRange) ** 2)
+    if atkFalloffRange > 0:
+        factor = 0.5 ** ((max(0, distance - atkOptimalRange) / atkFalloffRange) ** 2)
+    elif distance <= atkOptimalRange:
+        factor = 1
+    else:
+        factor = 0
+    return factor
 
 
 def _calcBombFactor(atkEr, tgtSigRadius):

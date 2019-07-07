@@ -24,7 +24,11 @@ from eos.utils.spoolSupport import SpoolType, SpoolOptions
 from eos.utils.stats import DmgTypes
 from gui.builtinGraphs.base import FitGraph, XDef, YDef, Input, VectorDef
 from service.const import GraphCacheCleanupReason
-from .calc import getTurretMult, getLauncherMult, getDroneMult, getFighterAbilityMult, getSmartbombMult, getBombMult, getGuidedBombMult
+from service.settings import GraphSettings
+from .calc import (
+    getTurretMult, getLauncherMult, getDroneMult, getFighterAbilityMult,
+    getSmartbombMult, getBombMult, getGuidedBombMult,
+    applyWebs, applyTps)
 from .projectedCache import ProjectedDataCache
 from .timeCache import TimeCache
 
@@ -165,7 +169,7 @@ class FitDamageStatsGraph(FitGraph):
     def _xDistanceGetter(self, mainInput, miscInputs, fit, tgt, dmgFunc, timeCachePrepFunc):
         xs = []
         ys = []
-        tgtSigRadius = tgt.ship.getModifiedItemAttr('signatureRadius')
+        applyProjected = GraphSettings.getInstance().get('applyProjected')
         # Process inputs into more convenient form
         miscInputMap = dict(miscInputs)
         # Get all data we need for all distances into maps/caches
@@ -173,13 +177,28 @@ class FitDamageStatsGraph(FitGraph):
         dmgMap = dmgFunc(fit=fit, time=miscInputMap['time'])
         # Go through distances and calculate distance-dependent data
         for distance in self._iterLinear(mainInput[1]):
+            if applyProjected:
+                webMods, tpMods = self._projectedCache.getProjModData(fit)
+                tgtSpeed = applyWebs(
+                    tgt=tgt,
+                    currentUnwebbedSpeed=miscInputMap['tgtSpeed'],
+                    webMods=webMods,
+                    distance=distance)
+                tgtSigRadius = tgt.ship.getModifiedItemAttr('signatureRadius') * applyTps(
+                    tgt=tgt,
+                    tpMods=tpMods,
+                    distance=distance)
+                print(tgtSpeed, tgtSigRadius)
+            else:
+                tgtSpeed = miscInputMap['tgtSpeed']
+                tgtSigRadius = tgt.ship.getModifiedItemAttr('signatureRadius')
             applicationMap = self._getApplicationPerKey(
                 fit=fit,
                 tgt=tgt,
                 atkSpeed=miscInputMap['atkSpeed'],
                 atkAngle=miscInputMap['atkAngle'],
                 distance=distance,
-                tgtSpeed=miscInputMap['tgtSpeed'],
+                tgtSpeed=tgtSpeed,
                 tgtAngle=miscInputMap['tgtAngle'],
                 tgtSigRadius=tgtSigRadius)
             dmg = self._aggregate(dmgMap=dmgMap, applicationMap=applicationMap).total
