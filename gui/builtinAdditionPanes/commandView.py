@@ -132,8 +132,6 @@ class CommandView(d.Display):
         sFit = Fit.getInstance()
         fit = sFit.getFit(activeFitID)
 
-        AddCommandFit.populateFits(event)
-
         self.Parent.Parent.DisablePage(self, not fit or fit.isStructure)
 
         # Clear list and get out if current fitId is None
