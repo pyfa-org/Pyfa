@@ -40,36 +40,38 @@ class Display(wx.ListCtrl):
 
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
 
-        i = 0
-        for colName in self.DEFAULT_COLS:
-            if ":" in colName:
-                colName, params = colName.split(":", 1)
-                params = params.split(",")
-                colClass = ViewColumn.getColumn(colName)
-                paramList = colClass.getParameters()
-                paramDict = {}
-                for x, param in enumerate(paramList):
-                    name, type, defaultValue = param
-                    value = params[x] if len(params) > x else defaultValue
-                    value = value if value != "" else defaultValue
-                    if type == bool and isinstance(value, str):
-                        value = bool(value) if value.lower() != "false" and value != "0" else False
-                    paramDict[name] = value
-                col = colClass(self, paramDict)
-            else:
-                col = ViewColumn.getColumn(colName)(self, None)
-
-            self.addColumn(i, col)
-            self.columnsMinWidth.append(self.GetColumnWidth(i))
-            i += 1
+        for i, colName in enumerate(self.DEFAULT_COLS):
+            self.addColumnByName(i, colName)
 
         info = wx.ListItem()
         # noinspection PyPropertyAccess
         info.m_mask = wx.LIST_MASK_WIDTH
-        self.InsertColumn(i, info)
-        self.SetColumnWidth(i, 0)
+        self.InsertColumn(len(self.DEFAULT_COLS), info)
+        self.SetColumnWidth(len(self.DEFAULT_COLS), 0)
 
         self.imageListBase = self.imageList.ImageCount
+
+    def addColumnByName(self, i, colName):
+        if ":" in colName:
+            colName, params = colName.split(":", 1)
+            params = params.split(",")
+            colClass = ViewColumn.getColumn(colName)
+            paramList = colClass.getParameters()
+            paramDict = {}
+            for x, param in enumerate(paramList):
+                name, type, defaultValue = param
+                value = params[x] if len(params) > x else defaultValue
+                value = value if value != "" else defaultValue
+                if type == bool and isinstance(value, str):
+                    value = bool(value) if value.lower() != "false" and value != "0" else False
+                paramDict[name] = value
+            col = colClass(self, paramDict)
+        else:
+            col = ViewColumn.getColumn(colName)(self, None)
+
+        self.addColumn(i, col)
+        self.columnsMinWidth.append(self.GetColumnWidth(i))
+
 
     # Override native HitTestSubItem (doesn't work as it should on GTK)
     # Source: ObjectListView
