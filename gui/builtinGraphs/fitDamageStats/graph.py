@@ -25,6 +25,7 @@ from eos.utils.stats import DmgTypes
 from gui.builtinGraphs.base import FitGraph, XDef, YDef, Input, VectorDef
 from service.const import GraphCacheCleanupReason
 from .calc import getTurretMult, getLauncherMult, getDroneMult, getFighterAbilityMult, getSmartbombMult, getBombMult, getGuidedBombMult
+from .projectedCache import ProjectedDataCache
 from .timeCache import TimeCache
 
 
@@ -33,6 +34,7 @@ class FitDamageStatsGraph(FitGraph):
     def __init__(self):
         super().__init__()
         self._timeCache = TimeCache()
+        self._projectedCache = ProjectedDataCache()
 
     def _clearInternalCache(self, reason, extraData):
         # Here, we care only about fit changes and graph changes.
@@ -42,8 +44,10 @@ class FitDamageStatsGraph(FitGraph):
         # values which do not rely on any graph options
         if reason == GraphCacheCleanupReason.fitChanged:
             self._timeCache.clearForFit(extraData)
+            self._projectedCache.clearForFit(extraData)
         elif reason == GraphCacheCleanupReason.graphSwitched:
             self._timeCache.clearAll()
+            self._projectedCache.clearAll()
 
     # UI stuff
     internalName = 'dmgStatsGraph'
