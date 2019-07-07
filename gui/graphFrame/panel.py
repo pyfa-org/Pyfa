@@ -154,7 +154,9 @@ class GraphControlPanel(wx.Panel):
             self.tgtVector.Show(False)
             self.tgtVectorLabel.Show(False)
 
-        # Target list
+        # Source and target list
+        self.fitList.refreshExtraColumns(view.srcExtraCols)
+        self.targetList.refreshExtraColumns(view.tgtExtraCols)
         self.targetList.Show(view.hasTargets)
 
         # Inputs

@@ -88,6 +88,22 @@ class BaseList(gui.display.Display):
         if fit is not None:
             self.removeFits([fit])
 
+    def refreshExtraColumns(self, extraColSpecs):
+        baseColNames = set()
+        for baseColName in self.DEFAULT_COLS:
+            if ":" in baseColName:
+                baseColName = baseColName.split(":", 1)[0]
+            baseColNames.add(baseColName)
+        columnsToRemove = set()
+        for col in self.activeColumns:
+            if col.name not in baseColNames:
+                columnsToRemove.add(col)
+        for col in columnsToRemove:
+            self.removeColumn(col)
+        for colSpec in extraColSpecs:
+            self.appendColumnBySpec(colSpec)
+        self.refresh(self.fits)
+
     def OnFitRenamed(self, event):
         event.Skip()
         self.update(self.fits)

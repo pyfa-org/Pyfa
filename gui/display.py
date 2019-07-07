@@ -41,36 +41,9 @@ class Display(wx.ListCtrl):
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
 
         for i, colName in enumerate(self.DEFAULT_COLS):
-            self.addColumnByName(i, colName)
-
-        info = wx.ListItem()
-        # noinspection PyPropertyAccess
-        info.m_mask = wx.LIST_MASK_WIDTH
-        self.InsertColumn(len(self.DEFAULT_COLS), info)
-        self.SetColumnWidth(len(self.DEFAULT_COLS), 0)
+            self.insertColumnBySpec(i, colName)
 
         self.imageListBase = self.imageList.ImageCount
-
-    def addColumnByName(self, i, colName):
-        if ":" in colName:
-            colName, params = colName.split(":", 1)
-            params = params.split(",")
-            colClass = ViewColumn.getColumn(colName)
-            paramList = colClass.getParameters()
-            paramDict = {}
-            for x, param in enumerate(paramList):
-                name, type, defaultValue = param
-                value = params[x] if len(params) > x else defaultValue
-                value = value if value != "" else defaultValue
-                if type == bool and isinstance(value, str):
-                    value = bool(value) if value.lower() != "false" and value != "0" else False
-                paramDict[name] = value
-            col = colClass(self, paramDict)
-        else:
-            col = ViewColumn.getColumn(colName)(self, None)
-
-        self.addColumn(i, col)
-        self.columnsMinWidth.append(self.GetColumnWidth(i))
 
 
     # Override native HitTestSubItem (doesn't work as it should on GTK)
@@ -126,6 +99,36 @@ class Display(wx.ListCtrl):
         if i == 0 and col.size != wx.LIST_AUTOSIZE_USEHEADER:
             col.size += 4
         self.SetColumnWidth(i, col.size)
+
+    def appendColumnBySpec(self, colSpec):
+        self.insertColumnBySpec(len(self.activeColumns), colSpec)
+
+    def insertColumnBySpec(self, i, colSpec):
+        if ":" in colSpec:
+            colSpec, params = colSpec.split(":", 1)
+            params = params.split(",")
+            colClass = ViewColumn.getColumn(colSpec)
+            paramList = colClass.getParameters()
+            paramDict = {}
+            for x, param in enumerate(paramList):
+                name, type, defaultValue = param
+                value = params[x] if len(params) > x else defaultValue
+                value = value if value != "" else defaultValue
+                if type == bool and isinstance(value, str):
+                    value = bool(value) if value.lower() != "false" and value != "0" else False
+                paramDict[name] = value
+            col = colClass(self, paramDict)
+        else:
+            col = ViewColumn.getColumn(colSpec)(self, None)
+
+        self.addColumn(i, col)
+        self.columnsMinWidth.append(self.GetColumnWidth(i))
+
+    def removeColumn(self, col):
+        i = self.getColIndex(type(col))
+        del self.activeColumns[i]
+        del self.columnsMinWidth[i]
+        self.DeleteColumn(i)
 
     def getColIndex(self, colClass):
         for i, col in enumerate(self.activeColumns):
@@ -244,7 +247,6 @@ class Display(wx.ListCtrl):
 
                 self.SetItemData(item, id_)
 
-        # self.Freeze()
         if 'wxMSW' in wx.PlatformInfo:
             for i, col in enumerate(self.activeColumns):
                 if not col.resized:
@@ -261,7 +263,6 @@ class Display(wx.ListCtrl):
                             self.SetColumnWidth(i, headerWidth)
                     else:
                         self.SetColumnWidth(i, col.size)
-                        # self.Thaw()
 
     def update(self, stuff):
         self.populate(stuff)
