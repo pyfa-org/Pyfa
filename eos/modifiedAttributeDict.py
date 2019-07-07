@@ -18,6 +18,7 @@
 # ===============================================================================
 
 import collections
+from copy import copy
 from math import exp
 # TODO: This needs to be moved out, we shouldn't have *ANY* dependencies back to other modules/methods inside eos.
 # This also breaks writing any tests. :(
@@ -33,9 +34,9 @@ class ItemAttrShortcut:
         return_value = self.itemModifiedAttributes.get(key)
         return return_value or default
 
-    def getModifiedItemAttrWithExtraMods(self, key, multipliers=(), boosts=(), default=0):
+    def getModifiedItemAttrWithExtraMods(self, key, extraMultipliers=None, default=0):
         """Returns attribute value with passed modifiers applied to it."""
-        return_value = self.itemModifiedAttributes.getWithExtraMods(key, multipliers=multipliers, boosts=boosts)
+        return_value = self.itemModifiedAttributes.getWithExtraMods(key, extraMultipliers=extraMultipliers)
         return return_value or default
 
     def getItemBaseAttrValue(self, key, default=0):
@@ -49,9 +50,9 @@ class ChargeAttrShortcut:
         return_value = self.chargeModifiedAttributes.get(key)
         return return_value or default
 
-    def getModifiedChargeAttrWithExtraMods(self, key, multipliers=(), boosts=(), default=0):
+    def getModifiedChargeAttrWithExtraMods(self, key, extraMultipliers=None, default=0):
         """Returns attribute value with passed modifiers applied to it."""
-        return_value = self.itemModifiedAttributes.getWithExtraMods(key, multipliers=multipliers, boosts=boosts)
+        return_value = self.itemModifiedAttributes.getWithExtraMods(key, extraMultipliers=extraMultipliers)
         return return_value or default
 
     def getChargeBaseAttrValue(self, key, default=0):
@@ -163,12 +164,12 @@ class ModifiedAttributeDict(collections.MutableMapping):
         # Original value is the least priority
         return self.getOriginal(key)
 
-    def getWithExtraMods(self, key, multipliers=(), boosts=(), default=0):
+    def getWithExtraMods(self, key, extraMultipliers=None, default=0):
         """Copy of __getitem__ with some modifications."""
-        if not multipliers and not boosts:
+        if not extraMultipliers:
             return self.get(key, default=default)
 
-        val = self.__calculateValue(key, extraMultipliers=multipliers, extraBoosts=boosts)
+        val = self.__calculateValue(key, extraMultipliers=extraMultipliers)
         if val is not None:
             return val
 
@@ -233,7 +234,7 @@ class ModifiedAttributeDict(collections.MutableMapping):
         keys.update(iter(self.__intermediary.keys()))
         return len(keys)
 
-    def __calculateValue(self, key, extraMultipliers=(), extraBoosts=()):
+    def __calculateValue(self, key, extraMultipliers=None):
         # It's possible that various attributes are capped by other attributes,
         # it's defined by reference maxAttributeID
         try:
@@ -270,6 +271,11 @@ class ModifiedAttributeDict(collections.MutableMapping):
         preIncrease = self.__preIncreases.get(key, 0)
         multiplier = self.__multipliers.get(key, 1)
         penalizedMultiplierGroups = self.__penalizedMultipliers.get(key, {})
+        # Add extra multipliers to the group, not modifying initial data source
+        if extraMultipliers is not None:
+            penalizedMultiplierGroups = copy(penalizedMultiplierGroups)
+            for k, v in extraMultipliers.items():
+                penalizedMultiplierGroups[k] = penalizedMultiplierGroups.get(k, []) + v
         postIncrease = self.__postIncreases.get(key, 0)
 
         # Grab initial value, priorities are:

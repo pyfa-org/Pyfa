@@ -178,24 +178,24 @@ def applyWebs(tgt, currentUnwebbedSpeed, webMods, distance):
     except ZeroDivisionError:
         currentWebbedSpeed = 0
     else:
-        appliedBoosts = []
-        for boost, optimal, falloff in webMods:
+        appliedMultipliers = {}
+        for boost, optimal, falloff, stackingChain in webMods:
             appliedBoost = boost * _calcRangeFactor(atkOptimalRange=optimal, atkFalloffRange=falloff, distance=distance)
             if appliedBoost:
-                appliedBoosts.append(appliedBoost)
-        webbedSpeed = tgt.ship.getModifiedItemAttrWithExtraMods('maxVelocity', boosts=appliedBoosts)
+                appliedMultipliers.setdefault(stackingChain, []).append(1 + appliedBoost / 100)
+        webbedSpeed = tgt.ship.getModifiedItemAttrWithExtraMods('maxVelocity', extraMultipliers=appliedMultipliers)
         currentWebbedSpeed = webbedSpeed * speedRatio
     return currentWebbedSpeed
 
 
 def applyTps(tgt, tpMods, distance):
     untpedSig = tgt.ship.getModifiedItemAttr('signatureRadius')
-    appliedBoosts = []
-    for boost, optimal, falloff in tpMods:
+    appliedMultipliers = {}
+    for boost, optimal, falloff, stackingChain in tpMods:
         appliedBoost = boost * _calcRangeFactor(atkOptimalRange=optimal, atkFalloffRange=falloff, distance=distance)
         if appliedBoost:
-            appliedBoosts.append(appliedBoost)
-    tpedSig = tgt.ship.getModifiedItemAttrWithExtraMods('signatureRadius', boosts=appliedBoosts)
+            appliedMultipliers.setdefault(stackingChain, []).append(1 + appliedBoost / 100)
+    tpedSig = tgt.ship.getModifiedItemAttrWithExtraMods('signatureRadius', extraMultipliers=appliedMultipliers)
     mult = tpedSig / untpedSig
     return mult
 

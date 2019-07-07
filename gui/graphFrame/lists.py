@@ -24,6 +24,7 @@ import wx
 import gui.display
 import gui.globalEvents as GE
 from gui.builtinShipBrowser.events import EVT_FIT_RENAMED
+from service.const import GraphCacheCleanupReason
 from service.fit import Fit
 
 
@@ -135,7 +136,7 @@ class BaseList(gui.display.Display):
             self.fits.remove(fit)
         self.update(self.fits)
         for fit in fits:
-            self.graphFrame.clearCache(fitID=fit.ID)
+            self.graphFrame.clearCache(reason=GraphCacheCleanupReason.fitChanged, extraData=fit.ID)
         self.graphFrame.draw()
 
     def unbindExternalEvents(self):

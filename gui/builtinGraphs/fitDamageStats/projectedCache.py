@@ -27,13 +27,13 @@ class ProjectedDataCache(FitDataCache):
         try:
             projectedData = self._data[fit.ID]['modules']
         except KeyError:
-            # Format of items for both: (boost strength, optimal, falloff)
+            # Format of items for both: (boost strength, optimal, falloff, stacking group)
             webMods = []
             tpMods = []
             projectedData = self._data.setdefault(fit.ID, {})['modules'] = (webMods, tpMods)
             for mod in fit.modules:
                 if 'remoteWebifierFalloff' in mod.item.effects or 'structureModuleEffectStasisWebifier' in mod.item.effects:
-                    webMods.append((mod.getModifiedItemAttr('speedFactor'), mod.maxRange or 0, mod.falloff or 0))
+                    webMods.append((mod.getModifiedItemAttr('speedFactor'), mod.maxRange or 0, mod.falloff or 0, 'default'))
                 if 'remoteTargetPaintFalloff' in mod.item.effects or 'structureModuleEffectTargetPainter' in mod.item.effects:
-                    tpMods.append((mod.getModifiedItemAttr('signatureRadiusBonus'), mod.maxRange or 0, mod.falloff or 0))
+                    tpMods.append((mod.getModifiedItemAttr('signatureRadiusBonus'), mod.maxRange or 0, mod.falloff or 0, 'default'))
         return projectedData
