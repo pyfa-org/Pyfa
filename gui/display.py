@@ -89,8 +89,9 @@ class Display(wx.ListCtrl):
     def addColumn(self, i, col):
         self.activeColumns.append(col)
         info = wx.ListItem()
-        info.SetMask(col.mask | wx.LIST_MASK_FORMAT | wx.LIST_MASK_WIDTH)
-        info.SetImage(col.imageId)
+        info.SetMask(col.mask | wx.LIST_MASK_FORMAT)
+        if col.imageId not in (None, -1):
+            info.SetImage(col.imageId)
         info.SetText(col.columnText)
         info.SetWidth(-1)
         info.SetAlign(wx.LIST_FORMAT_LEFT)
@@ -247,22 +248,17 @@ class Display(wx.ListCtrl):
 
                 self.SetItemData(item, id_)
 
-        if 'wxMSW' in wx.PlatformInfo:
-            for i, col in enumerate(self.activeColumns):
-                if not col.resized:
+        for i, col in enumerate(self.activeColumns):
+            if not col.resized:
+                if col.size == wx.LIST_AUTOSIZE_USEHEADER:
+                    self.SetColumnWidth(i, wx.LIST_AUTOSIZE_USEHEADER)
+                    headerWidth = self.GetColumnWidth(i)
+                    self.SetColumnWidth(i, wx.LIST_AUTOSIZE)
+                    baseWidth = self.GetColumnWidth(i)
+                    if baseWidth < headerWidth:
+                        self.SetColumnWidth(i, headerWidth)
+                else:
                     self.SetColumnWidth(i, col.size)
-        else:
-            for i, col in enumerate(self.activeColumns):
-                if not col.resized:
-                    if col.size == wx.LIST_AUTOSIZE_USEHEADER:
-                        self.SetColumnWidth(i, wx.LIST_AUTOSIZE_USEHEADER)
-                        headerWidth = self.GetColumnWidth(i)
-                        self.SetColumnWidth(i, wx.LIST_AUTOSIZE)
-                        baseWidth = self.GetColumnWidth(i)
-                        if baseWidth < headerWidth:
-                            self.SetColumnWidth(i, headerWidth)
-                    else:
-                        self.SetColumnWidth(i, col.size)
 
     def update(self, stuff):
         self.populate(stuff)
