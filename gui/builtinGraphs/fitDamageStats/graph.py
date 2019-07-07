@@ -188,7 +188,6 @@ class FitDamageStatsGraph(FitGraph):
                     tgt=tgt,
                     tpMods=tpMods,
                     distance=distance)
-                print(tgtSpeed, tgtSigRadius)
             else:
                 tgtSpeed = miscInputMap['tgtSpeed']
                 tgtSigRadius = tgt.ship.getModifiedItemAttr('signatureRadius')

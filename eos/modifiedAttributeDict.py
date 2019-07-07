@@ -35,7 +35,7 @@ class ItemAttrShortcut:
 
     def getModifiedItemAttrWithExtraMods(self, key, multipliers=(), boosts=(), default=0):
         """Returns attribute value with passed modifiers applied to it."""
-        return_value = self.itemModifiedAttributes.get(key)
+        return_value = self.itemModifiedAttributes.getWithExtraMods(key, multipliers=multipliers, boosts=boosts)
         return return_value or default
 
     def getItemBaseAttrValue(self, key, default=0):
@@ -51,7 +51,7 @@ class ChargeAttrShortcut:
 
     def getModifiedChargeAttrWithExtraMods(self, key, multipliers=(), boosts=(), default=0):
         """Returns attribute value with passed modifiers applied to it."""
-        return_value = self.itemModifiedAttributes.get(key)
+        return_value = self.itemModifiedAttributes.getWithExtraMods(key, multipliers=multipliers, boosts=boosts)
         return return_value or default
 
     def getChargeBaseAttrValue(self, key, default=0):
@@ -146,24 +146,47 @@ class ModifiedAttributeDict(collections.MutableMapping):
 
     def __getitem__(self, key):
         # Check if we have final calculated value
-        key_value = self.__modified.get(key)
-        if key_value is self.CalculationPlaceholder:
-            key_value = self.__modified[key] = self.__calculateValue(key)
-
-        if key_value is not None:
-            return key_value
+        val = self.__modified.get(key)
+        if val is self.CalculationPlaceholder:
+            val = self.__modified[key] = self.__calculateValue(key)
+        if val is not None:
+            return val
 
         # Then in values which are not yet calculated
         if self.__intermediary:
             val = self.__intermediary.get(key)
         else:
             val = None
-
         if val is not None:
             return val
+
+        # Original value is the least priority
+        return self.getOriginal(key)
+
+    def getWithExtraMods(self, key, multipliers=(), boosts=(), default=0):
+        """Copy of __getitem__ with some modifications."""
+        if not multipliers and not boosts:
+            return self.get(key, default=default)
+
+        val = self.__calculateValue(key, extraMultipliers=multipliers, extraBoosts=boosts)
+        if val is not None:
+            return val
+
+        # Then in values which are not yet calculated
+        if self.__intermediary:
+            val = self.__intermediary.get(key)
         else:
-            # Original value is the least priority
-            return self.getOriginal(key)
+            val = None
+        if val is not None:
+            return val
+
+        # Original value
+        val = self.getOriginal(key)
+        if val is not None:
+            return val
+
+        # Passed in default value
+        return default
 
     def __delitem__(self, key):
         if key in self.__modified:
@@ -210,7 +233,7 @@ class ModifiedAttributeDict(collections.MutableMapping):
         keys.update(iter(self.__intermediary.keys()))
         return len(keys)
 
-    def __calculateValue(self, key):
+    def __calculateValue(self, key, extraMultipliers=(), extraBoosts=()):
         # It's possible that various attributes are capped by other attributes,
         # it's defined by reference maxAttributeID
         try:
