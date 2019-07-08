@@ -28,6 +28,17 @@ defaultValuesCache = {}
 cappingAttrKeyCache = {}
 
 
+def getResistanceAttrID(modifyingItem, effect):
+    remoteResistID = effect.resistanceID
+    # If it doesn't exist on the effect, check the modifying modules attributes. If it's there, set it on the
+    # effect for this session so that we don't have to look here again (won't always work when it's None, but
+    # will catch most)
+    if not remoteResistID:
+        effect.resistanceID = int(modifyingItem.getModifiedItemAttr("remoteResistanceID")) or None
+        remoteResistID = effect.resistanceID
+    return remoteResistID
+
+
 class ItemAttrShortcut:
 
     def getModifiedItemAttr(self, key, default=0):
@@ -412,7 +423,7 @@ class ModifiedAttributeDict(collections.MutableMapping):
             resistFactor = ModifiedAttributeDict.getResistance(self.fit, kwargs['effect']) or 1
             if resistFactor != 1:
                 resisted = True
-                multiplier *= (multiplier - 1) * resistFactor + 1
+                multiplier = (multiplier - 1) * resistFactor + 1
 
         # If we're asked to do stacking penalized multiplication, append values
         # to per penalty group lists
@@ -455,21 +466,10 @@ class ModifiedAttributeDict(collections.MutableMapping):
 
     @staticmethod
     def getResistance(fit, effect):
-        remoteResistID = effect.resistanceID
-
-        # If it doesn't exist on the effect, check the modifying modules attributes. If it's there, set it on the
-        # effect for this session so that we don't have to look here again (won't always work when it's None, but
-        # will catch most)
-        if not remoteResistID:
-            mod = fit.getModifier()
-            effect.resistanceID = int(mod.getModifiedItemAttr("remoteResistanceID")) or None
-            remoteResistID = effect.resistanceID
-
+        remoteResistID = getResistanceAttrID(modifyingItem=fit.getModifier(), effect=effect)
         attrInfo = getAttributeInfo(remoteResistID)
-
         # Get the attribute of the resist
         resist = fit.ship.itemModifiedAttributes[attrInfo.attributeName] or None
-
         return resist or 1.0
 
 
