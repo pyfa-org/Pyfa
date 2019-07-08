@@ -285,8 +285,23 @@ class ModifiedAttributeDict(collections.MutableMapping):
         # Add extra multipliers to the group, not modifying initial data source
         if extraMultipliers is not None:
             penalizedMultiplierGroups = copy(penalizedMultiplierGroups)
-            for k, v in extraMultipliers.items():
-                penalizedMultiplierGroups[k] = penalizedMultiplierGroups.get(k, []) + v
+            for stackGroup, operationsData in extraMultipliers.items():
+                multipliers = []
+                for mult, resAttrID in operationsData:
+                    if not resAttrID:
+                        multipliers.append(mult)
+                        continue
+                    resAttrInfo = getAttributeInfo(resAttrID)
+                    if not resAttrInfo:
+                        multipliers.append(mult)
+                        continue
+                    resMult = self.fit.ship.itemModifiedAttributes[resAttrInfo.attributeName]
+                    if resMult is None or resMult == 1:
+                        multipliers.append(mult)
+                        continue
+                    mult = (mult - 1) * resMult + 1
+                    multipliers.append(mult)
+                penalizedMultiplierGroups[stackGroup] = penalizedMultiplierGroups.get(stackGroup, []) + multipliers
         postIncrease = self.__postIncreases.get(key, 0)
 
         # Grab initial value, priorities are:

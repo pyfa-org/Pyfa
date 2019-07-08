@@ -172,6 +172,8 @@ def getFighterAbilityMult(fighter, ability, fit, distance, tgtSpeed, tgtSigRadiu
 
 
 def applyWebs(tgt, currentUnwebbedSpeed, webMods, distance):
+    if tgt.ship.getModifiedItemAttr('disallowOffensiveModifiers'):
+        return currentUnwebbedSpeed
     unwebbedSpeed = tgt.ship.getModifiedItemAttr('maxVelocity')
     try:
         speedRatio = currentUnwebbedSpeed / unwebbedSpeed
@@ -179,22 +181,24 @@ def applyWebs(tgt, currentUnwebbedSpeed, webMods, distance):
         currentWebbedSpeed = 0
     else:
         appliedMultipliers = {}
-        for boost, optimal, falloff, stackingChain in webMods:
+        for boost, optimal, falloff, stackingChain, resistanceAttrID in webMods:
             appliedBoost = boost * _calcRangeFactor(atkOptimalRange=optimal, atkFalloffRange=falloff, distance=distance)
             if appliedBoost:
-                appliedMultipliers.setdefault(stackingChain, []).append(1 + appliedBoost / 100)
+                appliedMultipliers.setdefault(stackingChain, []).append((1 + appliedBoost / 100, resistanceAttrID))
         webbedSpeed = tgt.ship.getModifiedItemAttrWithExtraMods('maxVelocity', extraMultipliers=appliedMultipliers)
         currentWebbedSpeed = webbedSpeed * speedRatio
     return currentWebbedSpeed
 
 
 def applyTps(tgt, tpMods, distance):
+    if tgt.ship.getModifiedItemAttr('disallowOffensiveModifiers'):
+        return 1
     untpedSig = tgt.ship.getModifiedItemAttr('signatureRadius')
     appliedMultipliers = {}
-    for boost, optimal, falloff, stackingChain in tpMods:
+    for boost, optimal, falloff, stackingChain, resistanceAttrID in tpMods:
         appliedBoost = boost * _calcRangeFactor(atkOptimalRange=optimal, atkFalloffRange=falloff, distance=distance)
         if appliedBoost:
-            appliedMultipliers.setdefault(stackingChain, []).append(1 + appliedBoost / 100)
+            appliedMultipliers.setdefault(stackingChain, []).append((1 + appliedBoost / 100, resistanceAttrID))
     tpedSig = tgt.ship.getModifiedItemAttrWithExtraMods('signatureRadius', extraMultipliers=appliedMultipliers)
     mult = tpedSig / untpedSig
     return mult

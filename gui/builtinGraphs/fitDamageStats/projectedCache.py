@@ -20,6 +20,7 @@
 
 from gui.builtinGraphs.base import FitDataCache
 from eos.const import FittingModuleState
+from eos.modifiedAttributeDict import getResistanceAttrID
 
 
 class ProjectedDataCache(FitDataCache):
@@ -28,23 +29,43 @@ class ProjectedDataCache(FitDataCache):
         try:
             projectedData = self._data[fit.ID]['modules']
         except KeyError:
-            # Format of items for both: (boost strength, optimal, falloff, stacking group)
+            # Format of items for both: (boost strength, optimal, falloff, stacking group, resistance attr ID)
             webMods = []
             tpMods = []
             projectedData = self._data.setdefault(fit.ID, {})['modules'] = (webMods, tpMods)
             for mod in fit.modules:
                 if mod.state <= FittingModuleState.ONLINE:
                     continue
-                if 'remoteWebifierFalloff' in mod.item.effects or 'structureModuleEffectStasisWebifier' in mod.item.effects:
-                    webMods.append((mod.getModifiedItemAttr('speedFactor'), mod.maxRange or 0, mod.falloff or 0, 'default'))
+                for webEffectName in ('remoteWebifierFalloff', 'structureModuleEffectStasisWebifier'):
+                    if webEffectName in mod.item.effects:
+                        webMods.append((
+                            mod.getModifiedItemAttr('speedFactor'),
+                            mod.maxRange or 0,
+                            mod.falloff or 0,
+                            'default',
+                            getResistanceAttrID(modifyingItem=mod, effect=mod.item.effects[webEffectName])))
                 if 'doomsdayAOEWeb' in mod.item.effects:
-                    maxRange = max(0, (mod.maxRange or 0) + mod.getModifiedItemAttr('doomsdayAOERange') - fit.ship.getModifiedItemAttr('radius'))
-                    webMods.append((mod.getModifiedItemAttr('speedFactor'), maxRange, mod.falloff or 0, 'default'))
-                if 'remoteTargetPaintFalloff' in mod.item.effects or 'structureModuleEffectTargetPainter' in mod.item.effects:
-                    tpMods.append((mod.getModifiedItemAttr('signatureRadiusBonus'), mod.maxRange or 0, mod.falloff or 0, 'default'))
+                    webMods.append((
+                        mod.getModifiedItemAttr('speedFactor'),
+                        max(0, (mod.maxRange or 0) + mod.getModifiedItemAttr('doomsdayAOERange') - fit.ship.getModifiedItemAttr('radius')),
+                        mod.falloff or 0,
+                        'default',
+                        getResistanceAttrID(modifyingItem=mod, effect=mod.item.effects['doomsdayAOEWeb'])))
+                for tpEffectName in ('remoteTargetPaintFalloff', 'structureModuleEffectTargetPainter'):
+                    if tpEffectName in mod.item.effects:
+                        tpMods.append((
+                            mod.getModifiedItemAttr('signatureRadiusBonus'),
+                            mod.maxRange or 0,
+                            mod.falloff or 0,
+                            'default',
+                            getResistanceAttrID(modifyingItem=mod, effect=mod.item.effects[tpEffectName])))
                 if 'doomsdayAOEPaint' in mod.item.effects:
-                    maxRange = max(0, (mod.maxRange or 0) + mod.getModifiedItemAttr('doomsdayAOERange') - fit.ship.getModifiedItemAttr('radius'))
-                    tpMods.append((mod.getModifiedItemAttr('signatureRadiusBonus'), maxRange, mod.falloff or 0, 'default'))
+                    tpMods.append((
+                        mod.getModifiedItemAttr('signatureRadiusBonus'),
+                        max(0, (mod.maxRange or 0) + mod.getModifiedItemAttr('doomsdayAOERange') - fit.ship.getModifiedItemAttr('radius')),
+                        mod.falloff or 0,
+                        'default',
+                        getResistanceAttrID(modifyingItem=mod, effect=mod.item.effects['doomsdayAOEPaint'])))
         return projectedData
 
     def getProjDroneData(self, fit):
@@ -67,7 +88,36 @@ class ProjectedDataCache(FitDataCache):
                         drone.getModifiedItemAttr('maxVelocity'),
                         drone.getModifiedItemAttr('radius')),))
                 if 'remoteTargetPaintEntity' in drone.item.effects:
+                    tpMods.extend(drone.amountActive * ((
+                        drone.getModifiedItemAttr('signatureRadiusBonus'),
+                        drone.maxRange or 0,
+                        drone.falloff or 0,
+                        'default',
+                        drone.getModifiedItemAttr('maxVelocity'),
+                        drone.getModifiedItemAttr('radius')),))
+        return projectedData
+
+    def getProjFighterData(self, fit):
+        try:
+            projectedData = self._data[fit.ID]['fighters']
+        except KeyError:
+            # Format of items for both: (boost strength, optimal, falloff, stacking group, speed, radius)
+            webMods = []
+            tpMods = []
+            projectedData = self._data.setdefault(fit.ID, {})['fighters'] = (webMods, tpMods)
+            for drone in fit.drones:
+                if drone.amountActive <= 0:
+                    continue
+                if 'remoteWebifierEntity' in drone.item.effects:
                     webMods.extend(drone.amountActive * ((
+                        drone.getModifiedItemAttr('speedFactor'),
+                        drone.maxRange or 0,
+                        drone.falloff or 0,
+                        'default',
+                        drone.getModifiedItemAttr('maxVelocity'),
+                        drone.getModifiedItemAttr('radius')),))
+                if 'remoteTargetPaintEntity' in drone.item.effects:
+                    tpMods.extend(drone.amountActive * ((
                         drone.getModifiedItemAttr('signatureRadiusBonus'),
                         drone.maxRange or 0,
                         drone.falloff or 0,
