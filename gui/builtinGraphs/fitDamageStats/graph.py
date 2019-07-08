@@ -28,7 +28,7 @@ from service.settings import GraphSettings
 from .calc import (
     getTurretMult, getLauncherMult, getDroneMult, getFighterAbilityMult,
     getSmartbombMult, getBombMult, getGuidedBombMult,
-    applyWebs, applyTps)
+    getWebbedSpeed, getTpMult)
 from .projectedCache import ProjectedDataCache
 from .timeCache import TimeCache
 
@@ -181,7 +181,7 @@ class FitDamageStatsGraph(FitGraph):
                 webMods, tpMods = self._projectedCache.getProjModData(fit)
                 webDrones, tpDrones = self._projectedCache.getProjDroneData(fit)
                 webFighters, tpFighters = self._projectedCache.getProjFighterData(fit)
-                tgtSpeed = applyWebs(
+                tgtSpeed = getWebbedSpeed(
                     fit=fit,
                     tgt=tgt,
                     currentUnwebbedSpeed=miscInputMap['tgtSpeed'],
@@ -189,9 +189,13 @@ class FitDamageStatsGraph(FitGraph):
                     webDrones=webDrones,
                     webFighters=webFighters,
                     distance=distance)
-                tgtSigRadius = tgt.ship.getModifiedItemAttr('signatureRadius') * applyTps(
+                tgtSigRadius = tgt.ship.getModifiedItemAttr('signatureRadius') * getTpMult(
+                    fit=fit,
                     tgt=tgt,
+                    tgtSpeed=tgtSpeed,
                     tpMods=tpMods,
+                    tpDrones=tpDrones,
+                    tpFighters=tpFighters,
                     distance=distance)
             else:
                 tgtSpeed = miscInputMap['tgtSpeed']

@@ -171,7 +171,7 @@ def getFighterAbilityMult(fighter, ability, fit, distance, tgtSpeed, tgtSigRadiu
     return mult
 
 
-def applyWebs(fit, tgt, currentUnwebbedSpeed, webMods, webDrones, webFighters, distance):
+def getWebbedSpeed(fit, tgt, currentUnwebbedSpeed, webMods, webDrones, webFighters, distance):
     if tgt.ship.getModifiedItemAttr('disallowOffensiveModifiers'):
         return currentUnwebbedSpeed
     unwebbedSpeed = tgt.ship.getModifiedItemAttr('maxVelocity')
@@ -182,10 +182,13 @@ def applyWebs(fit, tgt, currentUnwebbedSpeed, webMods, webDrones, webFighters, d
     else:
         appliedMultipliers = {}
         # Modules first, they are applied always the same way
-        for boost, optimal, falloff, stackingChain, resistanceAttrID in webMods:
-            appliedBoost = boost * _calcRangeFactor(atkOptimalRange=optimal, atkFalloffRange=falloff, distance=distance)
+        for wData in webMods:
+            appliedBoost = wData.boost * _calcRangeFactor(
+                atkOptimalRange=wData.optimal,
+                atkFalloffRange=wData.falloff,
+                distance=distance)
             if appliedBoost:
-                appliedMultipliers.setdefault(stackingChain, []).append((1 + appliedBoost / 100, resistanceAttrID))
+                appliedMultipliers.setdefault(wData.stackingGroup, []).append((1 + appliedBoost / 100, wData.resAttrID))
         webbedSpeed = tgt.ship.getModifiedItemAttrWithExtraMods('maxVelocity', extraMultipliers=appliedMultipliers)
         # Drones and fighters
         mobileWebs = []
@@ -217,7 +220,7 @@ def applyWebs(fit, tgt, currentUnwebbedSpeed, webMods, webDrones, webFighters, d
                     appliedMwBoost = mwData.boost * _calcRangeFactor(
                         atkOptimalRange=mwData.optimal,
                         atkFalloffRange=mwData.falloff,
-                        distance=distance + fit.ship.getModifiedItemAttr('radius') - mwData.radius)
+                        distance=distance + atkRadius - mwData.radius)
                 appliedMultipliers.setdefault(mwData.stackingGroup, []).append((1 + appliedMwBoost / 100, mwData.resAttrID))
                 mobileWebs.remove(mwData)
             webbedSpeed = tgt.ship.getModifiedItemAttrWithExtraMods('maxVelocity', extraMultipliers=appliedMultipliers)
@@ -225,15 +228,38 @@ def applyWebs(fit, tgt, currentUnwebbedSpeed, webMods, webDrones, webFighters, d
     return currentWebbedSpeed
 
 
-def applyTps(tgt, tpMods, distance):
+def getTpMult(fit, tgt, tgtSpeed, tpMods, tpDrones, tpFighters, distance):
     if tgt.ship.getModifiedItemAttr('disallowOffensiveModifiers'):
         return 1
     untpedSig = tgt.ship.getModifiedItemAttr('signatureRadius')
+    # Modules
     appliedMultipliers = {}
-    for boost, optimal, falloff, stackingChain, resistanceAttrID in tpMods:
-        appliedBoost = boost * _calcRangeFactor(atkOptimalRange=optimal, atkFalloffRange=falloff, distance=distance)
+    for tpData in tpMods:
+        appliedBoost = tpData.boost * _calcRangeFactor(
+            atkOptimalRange=tpData.optimal,
+            atkFalloffRange=tpData.falloff,
+            distance=distance)
         if appliedBoost:
-            appliedMultipliers.setdefault(stackingChain, []).append((1 + appliedBoost / 100, resistanceAttrID))
+            appliedMultipliers.setdefault(tpData.stackingGroup, []).append((1 + appliedBoost / 100, tpData.resAttrID))
+    # Drones and fighters
+    mobileTps = []
+    mobileTps.extend(tpFighters)
+    # Drones have range limit
+    if distance <= fit.extraAttributes['droneControlRange']:
+        mobileTps.extend(tpDrones)
+    droneOpt = GraphSettings.getInstance().get('mobileDroneMode')
+    atkRadius = fit.ship.getModifiedItemAttr('radius')
+    for mtpData in mobileTps:
+        # Faster than target or set to follow it - apply full TP
+        if (droneOpt == GraphDpsDroneMode.auto and mtpData.speed >= tgtSpeed) or droneOpt == GraphDpsDroneMode.followTarget:
+            appliedMtpBoost = mtpData.boost
+        # Otherwise project from the center of the ship
+        else:
+            appliedMtpBoost = mtpData.boost * _calcRangeFactor(
+                atkOptimalRange=mtpData.optimal,
+                atkFalloffRange=mtpData.falloff,
+                distance=distance + atkRadius - mtpData.radius)
+        appliedMultipliers.setdefault(mtpData.stackingGroup, []).append((1 + appliedMtpBoost / 100, mtpData.resAttrID))
     tpedSig = tgt.ship.getModifiedItemAttrWithExtraMods('signatureRadius', extraMultipliers=appliedMultipliers)
     mult = tpedSig / untpedSig
     return mult
