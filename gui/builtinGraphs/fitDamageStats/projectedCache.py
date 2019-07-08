@@ -19,6 +19,7 @@
 
 
 from gui.builtinGraphs.base import FitDataCache
+from eos.const import FittingModuleState
 
 
 class ProjectedDataCache(FitDataCache):
@@ -32,6 +33,8 @@ class ProjectedDataCache(FitDataCache):
             tpMods = []
             projectedData = self._data.setdefault(fit.ID, {})['modules'] = (webMods, tpMods)
             for mod in fit.modules:
+                if mod.state <= FittingModuleState.ONLINE:
+                    continue
                 if 'remoteWebifierFalloff' in mod.item.effects or 'structureModuleEffectStasisWebifier' in mod.item.effects:
                     webMods.append((mod.getModifiedItemAttr('speedFactor'), mod.maxRange or 0, mod.falloff or 0, 'default'))
                 if 'remoteTargetPaintFalloff' in mod.item.effects or 'structureModuleEffectTargetPainter' in mod.item.effects:

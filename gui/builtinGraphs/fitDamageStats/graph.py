@@ -46,7 +46,7 @@ class FitDamageStatsGraph(FitGraph):
         # time input, and it regenerates once time goes beyond cached value
         # - Option changes are irrelevant as cache contains "raw" damage
         # values which do not rely on any graph options
-        if reason == GraphCacheCleanupReason.fitChanged:
+        if reason in (GraphCacheCleanupReason.fitChanged, GraphCacheCleanupReason.fitRemoved):
             self._timeCache.clearForFit(extraData)
             self._projectedCache.clearForFit(extraData)
         elif reason == GraphCacheCleanupReason.graphSwitched:

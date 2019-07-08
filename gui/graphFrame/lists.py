@@ -136,7 +136,7 @@ class BaseList(gui.display.Display):
             self.fits.remove(fit)
         self.update(self.fits)
         for fit in fits:
-            self.graphFrame.clearCache(reason=GraphCacheCleanupReason.fitChanged, extraData=fit.ID)
+            self.graphFrame.clearCache(reason=GraphCacheCleanupReason.fitRemoved, extraData=fit.ID)
         self.graphFrame.draw()
 
     def unbindExternalEvents(self):

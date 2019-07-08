@@ -35,7 +35,7 @@ class FitWarpTimeGraph(FitGraph):
         self._subspeedCache = SubwarpSpeedCache()
 
     def _clearInternalCache(self, reason, extraData):
-        if reason == GraphCacheCleanupReason.fitChanged:
+        if reason in (GraphCacheCleanupReason.fitChanged, GraphCacheCleanupReason.fitRemoved):
             self._subspeedCache.clearForFit(extraData)
         elif reason == GraphCacheCleanupReason.graphSwitched:
             self._subspeedCache.clearAll()

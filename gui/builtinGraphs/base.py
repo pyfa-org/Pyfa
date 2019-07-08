@@ -104,7 +104,7 @@ class FitGraph(metaclass=ABCMeta):
 
     def clearCache(self, reason, extraData=None):
         # If only one fit changed - clear plots which concern this fit
-        if reason == GraphCacheCleanupReason.fitChanged:
+        if reason in (GraphCacheCleanupReason.fitChanged, GraphCacheCleanupReason.fitRemoved):
             # Clear plot cache
             plotKeysToClear = set()
             for cacheKey in self._plotCache:
