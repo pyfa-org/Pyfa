@@ -297,7 +297,7 @@ class FitDamageStatsGraph(FitGraph):
     def _xTgtSpeedGetter(self, mainInput, miscInputs, fit, tgt, dmgFunc, timeCachePrepFunc):
         xs = []
         ys = []
-        tgtSigRadius = tgt.ship.getModifiedItemAttr('signatureRadius')
+        applyProjected = GraphSettings.getInstance().get('applyProjected')
         # Process inputs into more convenient form
         miscInputMap = dict(miscInputs)
         # Get all data we need for all target speeds into maps/caches
@@ -305,13 +305,37 @@ class FitDamageStatsGraph(FitGraph):
         dmgMap = dmgFunc(fit=fit, time=miscInputMap['time'])
         # Go through target speeds and calculate distance-dependent data
         for tgtSpeed in self._iterLinear(mainInput[1]):
+            # Get separate internal speed to calculate proper application, for graph
+            # itself we still want to show pre-modification speed on X axis
+            tgtSpeedInternal = tgtSpeed
+            tgtSigRadius = tgt.ship.getModifiedItemAttr('signatureRadius')
+            if applyProjected:
+                webMods, tpMods = self._projectedCache.getProjModData(fit)
+                webDrones, tpDrones = self._projectedCache.getProjDroneData(fit)
+                webFighters, tpFighters = self._projectedCache.getProjFighterData(fit)
+                tgtSpeedInternal = getWebbedSpeed(
+                    fit=fit,
+                    tgt=tgt,
+                    currentUnwebbedSpeed=tgtSpeedInternal,
+                    webMods=webMods,
+                    webDrones=webDrones,
+                    webFighters=webFighters,
+                    distance=miscInputMap['distance'])
+                tgtSigRadius = tgtSigRadius * getTpMult(
+                    fit=fit,
+                    tgt=tgt,
+                    tgtSpeed=tgtSpeedInternal,
+                    tpMods=tpMods,
+                    tpDrones=tpDrones,
+                    tpFighters=tpFighters,
+                    distance=miscInputMap['distance'])
             applicationMap = self._getApplicationPerKey(
                 fit=fit,
                 tgt=tgt,
                 atkSpeed=miscInputMap['atkSpeed'],
                 atkAngle=miscInputMap['atkAngle'],
                 distance=miscInputMap['distance'],
-                tgtSpeed=tgtSpeed,
+                tgtSpeed=tgtSpeedInternal,
                 tgtAngle=miscInputMap['tgtAngle'],
                 tgtSigRadius=tgtSigRadius)
             dmg = self._aggregate(dmgMap=dmgMap, applicationMap=applicationMap).total
@@ -324,20 +348,45 @@ class FitDamageStatsGraph(FitGraph):
         ys = []
         # Process inputs into more convenient form
         miscInputMap = dict(miscInputs)
+        tgtSpeed = miscInputMap['tgtSpeed']
+        tgtSigMult = 1
+        if GraphSettings.getInstance().get('applyProjected'):
+            webMods, tpMods = self._projectedCache.getProjModData(fit)
+            webDrones, tpDrones = self._projectedCache.getProjDroneData(fit)
+            webFighters, tpFighters = self._projectedCache.getProjFighterData(fit)
+            tgtSpeed = getWebbedSpeed(
+                fit=fit,
+                tgt=tgt,
+                currentUnwebbedSpeed=tgtSpeed,
+                webMods=webMods,
+                webDrones=webDrones,
+                webFighters=webFighters,
+                distance=miscInputMap['distance'])
+            tgtSigMult = getTpMult(
+                fit=fit,
+                tgt=tgt,
+                tgtSpeed=tgtSpeed,
+                tpMods=tpMods,
+                tpDrones=tpDrones,
+                tpFighters=tpFighters,
+                distance=miscInputMap['distance'])
         # Get all data we need for all target speeds into maps/caches
         timeCachePrepFunc(fit, miscInputMap['time'])
         dmgMap = dmgFunc(fit=fit, time=miscInputMap['time'])
         # Go through target speeds and calculate distance-dependent data
         for tgtSigRadius in self._iterLinear(mainInput[1]):
+            # Separate variable to show base signature on X axis and use modified
+            # signature in calculations
+            tgtSigRadiusInternal = tgtSigRadius * tgtSigMult
             applicationMap = self._getApplicationPerKey(
                 fit=fit,
                 tgt=tgt,
                 atkSpeed=miscInputMap['atkSpeed'],
                 atkAngle=miscInputMap['atkAngle'],
                 distance=miscInputMap['distance'],
-                tgtSpeed=miscInputMap['tgtSpeed'],
+                tgtSpeed=tgtSpeed,
                 tgtAngle=miscInputMap['tgtAngle'],
-                tgtSigRadius=tgtSigRadius)
+                tgtSigRadius=tgtSigRadiusInternal)
             dmg = self._aggregate(dmgMap=dmgMap, applicationMap=applicationMap).total
             xs.append(tgtSigRadius)
             ys.append(dmg)

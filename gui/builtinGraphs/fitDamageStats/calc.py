@@ -174,9 +174,9 @@ def getFighterAbilityMult(fighter, ability, fit, distance, tgtSpeed, tgtSigRadiu
 def getWebbedSpeed(fit, tgt, currentUnwebbedSpeed, webMods, webDrones, webFighters, distance):
     if tgt.ship.getModifiedItemAttr('disallowOffensiveModifiers'):
         return currentUnwebbedSpeed
-    unwebbedSpeed = tgt.ship.getModifiedItemAttr('maxVelocity')
+    maxUnwebbedSpeed = tgt.ship.getModifiedItemAttr('maxVelocity')
     try:
-        speedRatio = currentUnwebbedSpeed / unwebbedSpeed
+        speedRatio = currentUnwebbedSpeed / maxUnwebbedSpeed
     except ZeroDivisionError:
         currentWebbedSpeed = 0
     else:
@@ -189,7 +189,8 @@ def getWebbedSpeed(fit, tgt, currentUnwebbedSpeed, webMods, webDrones, webFighte
                 distance=distance)
             if appliedBoost:
                 appliedMultipliers.setdefault(wData.stackingGroup, []).append((1 + appliedBoost / 100, wData.resAttrID))
-        webbedSpeed = tgt.ship.getModifiedItemAttrWithExtraMods('maxVelocity', extraMultipliers=appliedMultipliers)
+        maxWebbedSpeed = tgt.ship.getModifiedItemAttrWithExtraMods('maxVelocity', extraMultipliers=appliedMultipliers)
+        currentWebbedSpeed = maxWebbedSpeed * speedRatio
         # Drones and fighters
         mobileWebs = []
         mobileWebs.extend(webFighters)
@@ -204,7 +205,8 @@ def getWebbedSpeed(fit, tgt, currentUnwebbedSpeed, webMods, webDrones, webFighte
             for mwData in longEnoughMws:
                 appliedMultipliers.setdefault(mwData.stackingGroup, []).append((1 + mwData.boost / 100, mwData.resAttrID))
                 mobileWebs.remove(mwData)
-            webbedSpeed = tgt.ship.getModifiedItemAttrWithExtraMods('maxVelocity', extraMultipliers=appliedMultipliers)
+            maxWebbedSpeed = tgt.ship.getModifiedItemAttrWithExtraMods('maxVelocity', extraMultipliers=appliedMultipliers)
+            currentWebbedSpeed = maxWebbedSpeed * speedRatio
         # Apply remaining webs, from fastest to slowest
         droneOpt = GraphSettings.getInstance().get('mobileDroneMode')
         while mobileWebs:
@@ -213,7 +215,7 @@ def getWebbedSpeed(fit, tgt, currentUnwebbedSpeed, webMods, webDrones, webFighte
             fastestMws = [mw for mw in mobileWebs if mw.speed == fastestMwSpeed]
             for mwData in fastestMws:
                 # Faster than target or set to follow it - apply full slowdown
-                if (droneOpt == GraphDpsDroneMode.auto and mwData.speed >= webbedSpeed) or droneOpt == GraphDpsDroneMode.followTarget:
+                if (droneOpt == GraphDpsDroneMode.auto and mwData.speed >= currentWebbedSpeed) or droneOpt == GraphDpsDroneMode.followTarget:
                     appliedMwBoost = mwData.boost
                 # Otherwise project from the center of the ship
                 else:
@@ -223,8 +225,8 @@ def getWebbedSpeed(fit, tgt, currentUnwebbedSpeed, webMods, webDrones, webFighte
                         distance=distance + atkRadius - mwData.radius)
                 appliedMultipliers.setdefault(mwData.stackingGroup, []).append((1 + appliedMwBoost / 100, mwData.resAttrID))
                 mobileWebs.remove(mwData)
-            webbedSpeed = tgt.ship.getModifiedItemAttrWithExtraMods('maxVelocity', extraMultipliers=appliedMultipliers)
-        currentWebbedSpeed = webbedSpeed * speedRatio
+            maxWebbedSpeed = tgt.ship.getModifiedItemAttrWithExtraMods('maxVelocity', extraMultipliers=appliedMultipliers)
+            currentWebbedSpeed = maxWebbedSpeed * speedRatio
     return currentWebbedSpeed
 
 
