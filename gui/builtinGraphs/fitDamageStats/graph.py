@@ -177,6 +177,8 @@ class FitDamageStatsGraph(FitGraph):
         dmgMap = dmgFunc(fit=fit, time=miscInputMap['time'])
         # Go through distances and calculate distance-dependent data
         for distance in self._iterLinear(mainInput[1]):
+            tgtSpeed = miscInputMap['tgtSpeed']
+            tgtSigRadius = tgt.ship.getModifiedItemAttr('signatureRadius')
             if applyProjected:
                 webMods, tpMods = self._projectedCache.getProjModData(fit)
                 webDrones, tpDrones = self._projectedCache.getProjDroneData(fit)
@@ -184,12 +186,12 @@ class FitDamageStatsGraph(FitGraph):
                 tgtSpeed = getWebbedSpeed(
                     fit=fit,
                     tgt=tgt,
-                    currentUnwebbedSpeed=miscInputMap['tgtSpeed'],
+                    currentUnwebbedSpeed=tgtSpeed,
                     webMods=webMods,
                     webDrones=webDrones,
                     webFighters=webFighters,
                     distance=distance)
-                tgtSigRadius = tgt.ship.getModifiedItemAttr('signatureRadius') * getTpMult(
+                tgtSigRadius = tgtSigRadius * getTpMult(
                     fit=fit,
                     tgt=tgt,
                     tgtSpeed=tgtSpeed,
@@ -197,9 +199,6 @@ class FitDamageStatsGraph(FitGraph):
                     tpDrones=tpDrones,
                     tpFighters=tpFighters,
                     distance=distance)
-            else:
-                tgtSpeed = miscInputMap['tgtSpeed']
-                tgtSigRadius = tgt.ship.getModifiedItemAttr('signatureRadius')
             applicationMap = self._getApplicationPerKey(
                 fit=fit,
                 tgt=tgt,
@@ -218,9 +217,30 @@ class FitDamageStatsGraph(FitGraph):
         xs = []
         ys = []
         minTime, maxTime = mainInput[1]
-        tgtSigRadius = tgt.ship.getModifiedItemAttr('signatureRadius')
         # Process inputs into more convenient form
         miscInputMap = dict(miscInputs)
+        tgtSpeed = miscInputMap['tgtSpeed']
+        tgtSigRadius = tgt.ship.getModifiedItemAttr('signatureRadius')
+        if GraphSettings.getInstance().get('applyProjected'):
+            webMods, tpMods = self._projectedCache.getProjModData(fit)
+            webDrones, tpDrones = self._projectedCache.getProjDroneData(fit)
+            webFighters, tpFighters = self._projectedCache.getProjFighterData(fit)
+            tgtSpeed = getWebbedSpeed(
+                fit=fit,
+                tgt=tgt,
+                currentUnwebbedSpeed=tgtSpeed,
+                webMods=webMods,
+                webDrones=webDrones,
+                webFighters=webFighters,
+                distance=miscInputMap['distance'])
+            tgtSigRadius = tgtSigRadius * getTpMult(
+                fit=fit,
+                tgt=tgt,
+                tgtSpeed=tgtSpeed,
+                tpMods=tpMods,
+                tpDrones=tpDrones,
+                tpFighters=tpFighters,
+                distance=miscInputMap['distance'])
         # Get all data we need for all times into maps/caches
         applicationMap = self._getApplicationPerKey(
             fit=fit,
@@ -228,7 +248,7 @@ class FitDamageStatsGraph(FitGraph):
             atkSpeed=miscInputMap['atkSpeed'],
             atkAngle=miscInputMap['atkAngle'],
             distance=miscInputMap['distance'],
-            tgtSpeed=miscInputMap['tgtSpeed'],
+            tgtSpeed=tgtSpeed,
             tgtAngle=miscInputMap['tgtAngle'],
             tgtSigRadius=tgtSigRadius)
         timeCachePrepFunc(fit, maxTime)
