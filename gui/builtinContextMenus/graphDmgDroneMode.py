@@ -38,8 +38,8 @@ class GraphDmgDroneModeMenu(ContextMenuUnconditional):
         self.idOptionMap = {}
         optionMap = OrderedDict([
             (GraphDpsDroneMode.auto, 'Auto'),
-            (GraphDpsDroneMode.followAttacker, 'Stick to Attacker'),
-            (GraphDpsDroneMode.followTarget, 'Stick to Target')])
+            (GraphDpsDroneMode.followTarget, 'Stick to Target'),
+            (GraphDpsDroneMode.followAttacker, 'Stick to Attacker')])
         for option, label in optionMap.items():
             menuId = ContextMenuUnconditional.nextID()
             item = wx.MenuItem(m, menuId, label, kind=wx.ITEM_CHECK)

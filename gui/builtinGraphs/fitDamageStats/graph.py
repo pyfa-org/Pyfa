@@ -182,9 +182,12 @@ class FitDamageStatsGraph(FitGraph):
                 webDrones, tpDrones = self._projectedCache.getProjDroneData(fit)
                 webFighters, tpFighters = self._projectedCache.getProjFighterData(fit)
                 tgtSpeed = applyWebs(
+                    fit=fit,
                     tgt=tgt,
                     currentUnwebbedSpeed=miscInputMap['tgtSpeed'],
                     webMods=webMods,
+                    webDrones=webDrones,
+                    webFighters=webFighters,
                     distance=distance)
                 tgtSigRadius = tgt.ship.getModifiedItemAttr('signatureRadius') * applyTps(
                     tgt=tgt,

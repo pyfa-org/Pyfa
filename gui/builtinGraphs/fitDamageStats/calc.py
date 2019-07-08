@@ -171,7 +171,7 @@ def getFighterAbilityMult(fighter, ability, fit, distance, tgtSpeed, tgtSigRadiu
     return mult
 
 
-def applyWebs(tgt, currentUnwebbedSpeed, webMods, distance):
+def applyWebs(fit, tgt, currentUnwebbedSpeed, webMods, webDrones, webFighters, distance):
     if tgt.ship.getModifiedItemAttr('disallowOffensiveModifiers'):
         return currentUnwebbedSpeed
     unwebbedSpeed = tgt.ship.getModifiedItemAttr('maxVelocity')
@@ -181,11 +181,46 @@ def applyWebs(tgt, currentUnwebbedSpeed, webMods, distance):
         currentWebbedSpeed = 0
     else:
         appliedMultipliers = {}
+        # Modules first, they are applied always the same way
         for boost, optimal, falloff, stackingChain, resistanceAttrID in webMods:
             appliedBoost = boost * _calcRangeFactor(atkOptimalRange=optimal, atkFalloffRange=falloff, distance=distance)
             if appliedBoost:
                 appliedMultipliers.setdefault(stackingChain, []).append((1 + appliedBoost / 100, resistanceAttrID))
         webbedSpeed = tgt.ship.getModifiedItemAttrWithExtraMods('maxVelocity', extraMultipliers=appliedMultipliers)
+        # Drones and fighters
+        mobileWebs = []
+        mobileWebs.extend(webFighters)
+        # Drones have range limit
+        if distance <= fit.extraAttributes['droneControlRange']:
+            mobileWebs.extend(webDrones)
+        atkRadius = fit.ship.getModifiedItemAttr('radius')
+        # As mobile webs either follow the target or stick to the attacking ship,
+        # if target is within mobile web optimal - it can be applied unconditionally
+        longEnoughMws = [mw for mw in mobileWebs if distance <= mw.optimal - atkRadius + mw.radius]
+        if longEnoughMws:
+            for mwData in longEnoughMws:
+                appliedMultipliers.setdefault(mwData.stackingGroup, []).append((1 + mwData.boost / 100, mwData.resAttrID))
+                mobileWebs.remove(mwData)
+            webbedSpeed = tgt.ship.getModifiedItemAttrWithExtraMods('maxVelocity', extraMultipliers=appliedMultipliers)
+        # Apply remaining webs, from fastest to slowest
+        droneOpt = GraphSettings.getInstance().get('mobileDroneMode')
+        while mobileWebs:
+            # Process in batches unified by speed to save up resources
+            fastestMwSpeed = max(mobileWebs, key=lambda mw: mw.speed).speed
+            fastestMws = [mw for mw in mobileWebs if mw.speed == fastestMwSpeed]
+            for mwData in fastestMws:
+                # Faster than target or set to follow it - apply full slowdown
+                if (droneOpt == GraphDpsDroneMode.auto and mwData.speed >= webbedSpeed) or droneOpt == GraphDpsDroneMode.followTarget:
+                    appliedMwBoost = mwData.boost
+                # Otherwise project from the center of the ship
+                else:
+                    appliedMwBoost = mwData.boost * _calcRangeFactor(
+                        atkOptimalRange=mwData.optimal,
+                        atkFalloffRange=mwData.falloff,
+                        distance=distance + fit.ship.getModifiedItemAttr('radius') - mwData.radius)
+                appliedMultipliers.setdefault(mwData.stackingGroup, []).append((1 + appliedMwBoost / 100, mwData.resAttrID))
+                mobileWebs.remove(mwData)
+            webbedSpeed = tgt.ship.getModifiedItemAttrWithExtraMods('maxVelocity', extraMultipliers=appliedMultipliers)
         currentWebbedSpeed = webbedSpeed * speedRatio
     return currentWebbedSpeed
 

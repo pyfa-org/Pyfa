@@ -18,9 +18,15 @@
 # =============================================================================
 
 
+from collections import namedtuple
+
 from gui.builtinGraphs.base import FitDataCache
 from eos.const import FittingModuleState
 from eos.modifiedAttributeDict import getResistanceAttrID
+
+
+ModProjData = namedtuple('ModProjData', ('boost', 'optimal', 'falloff', 'stackingGroup', 'resAttrID'))
+MobileProjData = namedtuple('MobileProjData', ('boost', 'optimal', 'falloff', 'stackingGroup', 'resAttrID', 'speed', 'radius'))
 
 
 class ProjectedDataCache(FitDataCache):
@@ -38,14 +44,14 @@ class ProjectedDataCache(FitDataCache):
                     continue
                 for webEffectName in ('remoteWebifierFalloff', 'structureModuleEffectStasisWebifier'):
                     if webEffectName in mod.item.effects:
-                        webMods.append((
+                        webMods.append(ModProjData(
                             mod.getModifiedItemAttr('speedFactor'),
                             mod.maxRange or 0,
                             mod.falloff or 0,
                             'default',
                             getResistanceAttrID(modifyingItem=mod, effect=mod.item.effects[webEffectName])))
                 if 'doomsdayAOEWeb' in mod.item.effects:
-                    webMods.append((
+                    webMods.append(ModProjData(
                         mod.getModifiedItemAttr('speedFactor'),
                         max(0, (mod.maxRange or 0) + mod.getModifiedItemAttr('doomsdayAOERange') - fit.ship.getModifiedItemAttr('radius')),
                         mod.falloff or 0,
@@ -53,14 +59,14 @@ class ProjectedDataCache(FitDataCache):
                         getResistanceAttrID(modifyingItem=mod, effect=mod.item.effects['doomsdayAOEWeb'])))
                 for tpEffectName in ('remoteTargetPaintFalloff', 'structureModuleEffectTargetPainter'):
                     if tpEffectName in mod.item.effects:
-                        tpMods.append((
+                        tpMods.append(ModProjData(
                             mod.getModifiedItemAttr('signatureRadiusBonus'),
                             mod.maxRange or 0,
                             mod.falloff or 0,
                             'default',
                             getResistanceAttrID(modifyingItem=mod, effect=mod.item.effects[tpEffectName])))
                 if 'doomsdayAOEPaint' in mod.item.effects:
-                    tpMods.append((
+                    tpMods.append(ModProjData(
                         mod.getModifiedItemAttr('signatureRadiusBonus'),
                         max(0, (mod.maxRange or 0) + mod.getModifiedItemAttr('doomsdayAOERange') - fit.ship.getModifiedItemAttr('radius')),
                         mod.falloff or 0,
@@ -80,7 +86,7 @@ class ProjectedDataCache(FitDataCache):
                 if drone.amountActive <= 0:
                     continue
                 if 'remoteWebifierEntity' in drone.item.effects:
-                    webDrones.extend(drone.amountActive * ((
+                    webDrones.extend(drone.amountActive * (MobileProjData(
                         drone.getModifiedItemAttr('speedFactor'),
                         drone.maxRange or 0,
                         drone.falloff or 0,
@@ -89,7 +95,7 @@ class ProjectedDataCache(FitDataCache):
                         drone.getModifiedItemAttr('maxVelocity'),
                         drone.getModifiedItemAttr('radius')),))
                 if 'remoteTargetPaintEntity' in drone.item.effects:
-                    tpDrones.extend(drone.amountActive * ((
+                    tpDrones.extend(drone.amountActive * (MobileProjData(
                         drone.getModifiedItemAttr('signatureRadiusBonus'),
                         drone.maxRange or 0,
                         drone.falloff or 0,
@@ -103,7 +109,7 @@ class ProjectedDataCache(FitDataCache):
         try:
             projectedData = self._data[fit.ID]['fighters']
         except KeyError:
-            # Format of items for both: (boost strength, optimal, falloff, stacking group, resistance attr ID, drone speed, drone radius)
+            # Format of items for both: (boost strength, optimal, falloff, stacking group, resistance attr ID, fighter speed, fighter radius)
             webFighters = []
             tpFighters = []
             projectedData = self._data.setdefault(fit.ID, {})['fighters'] = (webFighters, tpFighters)
@@ -114,7 +120,7 @@ class ProjectedDataCache(FitDataCache):
                     if not ability.active:
                         continue
                     if ability.effect.name == 'fighterAbilityStasisWebifier':
-                        webFighters.extend((
+                        webFighters.append(MobileProjData(
                             fighter.getModifiedItemAttr('fighterAbilityStasisWebifierSpeedPenalty') * fighter.amountActive,
                             fighter.getModifiedItemAttr('fighterAbilityStasisWebifierOptimalRange'),
                             fighter.getModifiedItemAttr('fighterAbilityStasisWebifierFalloffRange'),
