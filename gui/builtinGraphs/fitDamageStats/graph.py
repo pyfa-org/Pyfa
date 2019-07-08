@@ -180,6 +180,7 @@ class FitDamageStatsGraph(FitGraph):
             if applyProjected:
                 webMods, tpMods = self._projectedCache.getProjModData(fit)
                 webDrones, tpDrones = self._projectedCache.getProjDroneData(fit)
+                webFighters, tpFighters = self._projectedCache.getProjFighterData(fit)
                 tgtSpeed = applyWebs(
                     tgt=tgt,
                     currentUnwebbedSpeed=miscInputMap['tgtSpeed'],

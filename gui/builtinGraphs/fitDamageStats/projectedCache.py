@@ -115,11 +115,11 @@ class ProjectedDataCache(FitDataCache):
                         continue
                     if ability.effect.name == 'fighterAbilityStasisWebifier':
                         webFighters.extend((
-                            drone.getModifiedItemAttr('speedFactor'),
-                            drone.maxRange or 0,
-                            drone.falloff or 0,
+                            fighter.getModifiedItemAttr('fighterAbilityStasisWebifierSpeedPenalty') * fighter.amountActive,
+                            fighter.getModifiedItemAttr('fighterAbilityStasisWebifierOptimalRange'),
+                            fighter.getModifiedItemAttr('fighterAbilityStasisWebifierFalloffRange'),
                             'default',
-                            getResistanceAttrID(modifyingItem=drone, effect=drone.item.effects['remoteWebifierEntity']),
-                            drone.getModifiedItemAttr('maxVelocity'),
-                            drone.getModifiedItemAttr('radius')))
+                            getResistanceAttrID(modifyingItem=fighter, effect=fighter.item.effects['fighterAbilityStasisWebifier']),
+                            fighter.getModifiedItemAttr('maxVelocity'),
+                            fighter.getModifiedItemAttr('radius')))
         return projectedData
