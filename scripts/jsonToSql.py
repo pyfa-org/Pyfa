@@ -320,16 +320,23 @@ def main(db, json_path):
     # can do it here - just add them to initial set
     eveTypes = set()
     for row in data['evetypes']:
-        if (row['published']
-            or row['groupID'] == 1306  # group Ship Modifiers, for items like tactical t3 ship modes
-            or row['typeName'].startswith('Civilian') # Civilian weapons
-            or row['typeID'] in (41549, 41548, 41551, 41550)  # Micro Bombs (Fighters)
-            or row['groupID'] in (
-                        1882,
-                        1975,
-                        1971,
-                        1983  # the "container" for the abyssal environments
-                )  # Abyssal weather (environment)
+        if (
+            row['published'] or
+            # group Ship Modifiers, for items like tactical t3 ship modes
+            row['groupID'] == 1306 or
+            # Civilian weapons
+            row['typeName'].startswith('Civilian') or
+            # Micro Bombs (Fighters)
+            row['typeID'] in (41549, 41548, 41551, 41550) or
+            # Abyssal weather (environment)
+            row['groupID'] in (
+                1882,
+                1975,
+                1971,
+                # the "container" for the abyssal environments
+                1983) or
+            # Dark Blood Tracking Disruptor (rarely but drops)
+            row['typeID'] == 32416
         ):
             eveTypes.add(row['typeID'])
 
@@ -349,7 +356,12 @@ def main(db, json_path):
         for row in table:
             # We don't care about some kind of rows, filter it out if so
             if not isIgnored(jsonName, row):
-                if jsonName == 'evetypes' and row['typeName'].startswith('Civilian'):  # Apparently people really want Civilian modules available
+                if (
+                    jsonName == 'evetypes' and (
+                        # Apparently people really want Civilian modules available
+                        row['typeName'].startswith('Civilian') or
+                        row['typeName'] == 'Dark Blood Tracking Disruptor')
+                ):
                     row['published'] = True
 
                 instance = tables[jsonName]()
