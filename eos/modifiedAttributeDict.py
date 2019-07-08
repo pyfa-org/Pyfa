@@ -398,13 +398,21 @@ class ModifiedAttributeDict(collections.MutableMapping):
         self.__placehold(attributeName)
         self.__afflict(attributeName, "+", increase, increase != 0)
 
-    def multiply(self, attributeName, multiplier, stackingPenalties=False, penaltyGroup="default", skill=None, resist=True, *args, **kwargs):
+    def multiply(self, attributeName, multiplier, stackingPenalties=False, penaltyGroup="default", skill=None, *args, **kwargs):
         """Multiply value of given attribute by given factor"""
         if multiplier is None:  # See GH issue 397
             return
 
         if skill:
             multiplier *= self.__handleSkill(skill)
+
+        resisted = False
+        # Goddammit CCP, make up your mind where you want this information >.< See #1139
+        if 'effect' in kwargs:
+            resistFactor = ModifiedAttributeDict.getResistance(self.fit, kwargs['effect']) or 1
+            if resistFactor != 1:
+                resisted = True
+                multiplier *= (multiplier - 1) * resistFactor + 1
 
         # If we're asked to do stacking penalized multiplication, append values
         # to per penalty group lists
@@ -426,7 +434,7 @@ class ModifiedAttributeDict(collections.MutableMapping):
         afflictPenal = ""
         if stackingPenalties:
             afflictPenal += "s"
-        if resist:
+        if resisted:
             afflictPenal += "r"
 
         self.__afflict(attributeName, "%s*" % afflictPenal, multiplier, multiplier != 1)
@@ -436,15 +444,8 @@ class ModifiedAttributeDict(collections.MutableMapping):
         if skill:
             boostFactor *= self.__handleSkill(skill)
 
-        resist = None
-
-        # Goddammit CCP, make up your mind where you want this information >.< See #1139
-        if 'effect' in kwargs:
-            resist = ModifiedAttributeDict.getResistance(self.fit, kwargs['effect']) or 1
-            boostFactor *= resist
-
         # We just transform percentage boost into multiplication factor
-        self.multiply(attributeName, 1 + boostFactor / 100.0, resist=(True if resist else False), *args, **kwargs)
+        self.multiply(attributeName, 1 + boostFactor / 100.0, *args, **kwargs)
 
     def force(self, attributeName, value):
         """Force value to attribute and prohibit any changes to it"""
