@@ -94,7 +94,7 @@ class FitGraph(metaclass=ABCMeta):
     hasTargets = False
 
     def getPlotPoints(self, mainInput, miscInputs, xSpec, ySpec, fit, tgt=None):
-        cacheKey = (fit.ID, None, tgt)
+        cacheKey = (fit.ID, None, tgt.ID)
         try:
             plotData = self._plotCache[cacheKey][(ySpec, xSpec)]
         except KeyError:
