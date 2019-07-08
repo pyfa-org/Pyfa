@@ -308,11 +308,17 @@ class Drone(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
                                  projected is False and effect.isType("passive")):
                 # See GH issue #765
                 if effect.getattr('grouped'):
-                    effect.handler(fit, self, context)
+                    try:
+                        effect.handler(fit, self, context, effect=effect)
+                    except:
+                        effect.handler(fit, self, context)
                 else:
                     i = 0
                     while i != self.amountActive:
-                        effect.handler(fit, self, context)
+                        try:
+                            effect.handler(fit, self, context, effect=effect)
+                        except:
+                            effect.handler(fit, self, context)
                         i += 1
 
         if self.charge:

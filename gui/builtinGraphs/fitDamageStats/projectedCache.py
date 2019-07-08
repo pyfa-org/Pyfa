@@ -72,27 +72,29 @@ class ProjectedDataCache(FitDataCache):
         try:
             projectedData = self._data[fit.ID]['drones']
         except KeyError:
-            # Format of items for both: (boost strength, optimal, falloff, stacking group, speed, radius)
-            webMods = []
-            tpMods = []
-            projectedData = self._data.setdefault(fit.ID, {})['drones'] = (webMods, tpMods)
+            # Format of items for both: (boost strength, optimal, falloff, stacking group, resistance attr ID, drone speed, drone radius)
+            webDrones = []
+            tpDrones = []
+            projectedData = self._data.setdefault(fit.ID, {})['drones'] = (webDrones, tpDrones)
             for drone in fit.drones:
                 if drone.amountActive <= 0:
                     continue
                 if 'remoteWebifierEntity' in drone.item.effects:
-                    webMods.extend(drone.amountActive * ((
+                    webDrones.extend(drone.amountActive * ((
                         drone.getModifiedItemAttr('speedFactor'),
                         drone.maxRange or 0,
                         drone.falloff or 0,
                         'default',
+                        getResistanceAttrID(modifyingItem=drone, effect=drone.item.effects['remoteWebifierEntity']),
                         drone.getModifiedItemAttr('maxVelocity'),
                         drone.getModifiedItemAttr('radius')),))
                 if 'remoteTargetPaintEntity' in drone.item.effects:
-                    tpMods.extend(drone.amountActive * ((
+                    tpDrones.extend(drone.amountActive * ((
                         drone.getModifiedItemAttr('signatureRadiusBonus'),
                         drone.maxRange or 0,
                         drone.falloff or 0,
                         'default',
+                        getResistanceAttrID(modifyingItem=drone, effect=drone.item.effects['remoteTargetPaintEntity']),
                         drone.getModifiedItemAttr('maxVelocity'),
                         drone.getModifiedItemAttr('radius')),))
         return projectedData
@@ -101,27 +103,23 @@ class ProjectedDataCache(FitDataCache):
         try:
             projectedData = self._data[fit.ID]['fighters']
         except KeyError:
-            # Format of items for both: (boost strength, optimal, falloff, stacking group, speed, radius)
-            webMods = []
-            tpMods = []
-            projectedData = self._data.setdefault(fit.ID, {})['fighters'] = (webMods, tpMods)
-            for drone in fit.drones:
-                if drone.amountActive <= 0:
+            # Format of items for both: (boost strength, optimal, falloff, stacking group, resistance attr ID, drone speed, drone radius)
+            webFighters = []
+            tpFighters = []
+            projectedData = self._data.setdefault(fit.ID, {})['fighters'] = (webFighters, tpFighters)
+            for fighter in fit.fighters:
+                if not fighter.active:
                     continue
-                if 'remoteWebifierEntity' in drone.item.effects:
-                    webMods.extend(drone.amountActive * ((
-                        drone.getModifiedItemAttr('speedFactor'),
-                        drone.maxRange or 0,
-                        drone.falloff or 0,
-                        'default',
-                        drone.getModifiedItemAttr('maxVelocity'),
-                        drone.getModifiedItemAttr('radius')),))
-                if 'remoteTargetPaintEntity' in drone.item.effects:
-                    tpMods.extend(drone.amountActive * ((
-                        drone.getModifiedItemAttr('signatureRadiusBonus'),
-                        drone.maxRange or 0,
-                        drone.falloff or 0,
-                        'default',
-                        drone.getModifiedItemAttr('maxVelocity'),
-                        drone.getModifiedItemAttr('radius')),))
+                for ability in fighter.abilities:
+                    if not ability.active:
+                        continue
+                    if ability.effect.name == 'fighterAbilityStasisWebifier':
+                        webFighters.extend((
+                            drone.getModifiedItemAttr('speedFactor'),
+                            drone.maxRange or 0,
+                            drone.falloff or 0,
+                            'default',
+                            getResistanceAttrID(modifyingItem=drone, effect=drone.item.effects['remoteWebifierEntity']),
+                            drone.getModifiedItemAttr('maxVelocity'),
+                            drone.getModifiedItemAttr('radius')))
         return projectedData

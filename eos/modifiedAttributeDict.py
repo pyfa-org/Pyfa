@@ -29,14 +29,19 @@ cappingAttrKeyCache = {}
 
 
 def getResistanceAttrID(modifyingItem, effect):
-    remoteResistID = effect.resistanceID
     # If it doesn't exist on the effect, check the modifying modules attributes. If it's there, set it on the
     # effect for this session so that we don't have to look here again (won't always work when it's None, but
     # will catch most)
-    if not remoteResistID:
-        effect.resistanceID = int(modifyingItem.getModifiedItemAttr("remoteResistanceID")) or None
-        remoteResistID = effect.resistanceID
-    return remoteResistID
+    if not effect.getattr('resistanceCalculated'):
+        attrPrefix = effect.getattr('prefix')
+        if attrPrefix:
+            effect.resistanceID = int(modifyingItem.getModifiedItemAttr('{}ResistanceID'.format(attrPrefix))) or None
+            if not effect.resistanceID:
+                effect.resistanceID = int(modifyingItem.getModifiedItemAttr('{}RemoteResistanceID'.format(attrPrefix))) or None
+        else:
+            effect.resistanceID = int(modifyingItem.getModifiedItemAttr("remoteResistanceID")) or None
+        effect.resistanceCalculated = True
+    return effect.resistanceID
 
 
 class ItemAttrShortcut:
@@ -396,7 +401,7 @@ class ModifiedAttributeDict(collections.MutableMapping):
         # Add current affliction to list
         affs.append((modifier, operation, bonus, used))
 
-    def preAssign(self, attributeName, value):
+    def preAssign(self, attributeName, value, **kwargs):
         """Overwrites original value of the entity with given one, allowing further modification"""
         self.__preAssigns[attributeName] = value
         self.__placehold(attributeName)
@@ -424,7 +429,7 @@ class ModifiedAttributeDict(collections.MutableMapping):
         self.__placehold(attributeName)
         self.__afflict(attributeName, "+", increase, increase != 0)
 
-    def multiply(self, attributeName, multiplier, stackingPenalties=False, penaltyGroup="default", skill=None, *args, **kwargs):
+    def multiply(self, attributeName, multiplier, stackingPenalties=False, penaltyGroup="default", skill=None, **kwargs):
         """Multiply value of given attribute by given factor"""
         if multiplier is None:  # See GH issue 397
             return
@@ -465,15 +470,15 @@ class ModifiedAttributeDict(collections.MutableMapping):
 
         self.__afflict(attributeName, "%s*" % afflictPenal, multiplier, multiplier != 1)
 
-    def boost(self, attributeName, boostFactor, skill=None, *args, **kwargs):
+    def boost(self, attributeName, boostFactor, skill=None, **kwargs):
         """Boost value by some percentage"""
         if skill:
             boostFactor *= self.__handleSkill(skill)
 
         # We just transform percentage boost into multiplication factor
-        self.multiply(attributeName, 1 + boostFactor / 100.0, *args, **kwargs)
+        self.multiply(attributeName, 1 + boostFactor / 100.0, **kwargs)
 
-    def force(self, attributeName, value):
+    def force(self, attributeName, value, **kwargs):
         """Force value to attribute and prohibit any changes to it"""
         self.__forced[attributeName] = value
         self.__placehold(attributeName)
@@ -481,6 +486,13 @@ class ModifiedAttributeDict(collections.MutableMapping):
 
     @staticmethod
     def getResistance(fit, effect):
+        # Resistances are applicable only to projected effects
+        if isinstance(effect.type, (tuple, list)):
+            effectType = effect.type
+        else:
+            effectType = (effect.type,)
+        if 'projected' not in effectType:
+            return 1
         remoteResistID = getResistanceAttrID(modifyingItem=fit.getModifier(), effect=effect)
         attrInfo = getAttributeInfo(remoteResistID)
         # Get the attribute of the resist
