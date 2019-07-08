@@ -46,3 +46,32 @@ class ProjectedDataCache(FitDataCache):
                     maxRange = max(0, (mod.maxRange or 0) + mod.getModifiedItemAttr('doomsdayAOERange') - fit.ship.getModifiedItemAttr('radius'))
                     tpMods.append((mod.getModifiedItemAttr('signatureRadiusBonus'), maxRange, mod.falloff or 0, 'default'))
         return projectedData
+
+    def getProjDroneData(self, fit):
+        try:
+            projectedData = self._data[fit.ID]['drones']
+        except KeyError:
+            # Format of items for both: (boost strength, optimal, falloff, stacking group, speed, radius)
+            webMods = []
+            tpMods = []
+            projectedData = self._data.setdefault(fit.ID, {})['drones'] = (webMods, tpMods)
+            for drone in fit.drones:
+                if drone.amountActive <= 0:
+                    continue
+                if 'remoteWebifierEntity' in drone.item.effects:
+                    webMods.extend(drone.amountActive * ((
+                        drone.getModifiedItemAttr('speedFactor'),
+                        drone.maxRange or 0,
+                        drone.falloff or 0,
+                        'default',
+                        drone.getModifiedItemAttr('maxVelocity'),
+                        drone.getModifiedItemAttr('radius')),))
+                if 'remoteTargetPaintEntity' in drone.item.effects:
+                    webMods.extend(drone.amountActive * ((
+                        drone.getModifiedItemAttr('signatureRadiusBonus'),
+                        drone.maxRange or 0,
+                        drone.falloff or 0,
+                        'default',
+                        drone.getModifiedItemAttr('maxVelocity'),
+                        drone.getModifiedItemAttr('radius')),))
+        return projectedData
