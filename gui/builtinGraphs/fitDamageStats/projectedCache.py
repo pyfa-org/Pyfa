@@ -37,6 +37,12 @@ class ProjectedDataCache(FitDataCache):
                     continue
                 if 'remoteWebifierFalloff' in mod.item.effects or 'structureModuleEffectStasisWebifier' in mod.item.effects:
                     webMods.append((mod.getModifiedItemAttr('speedFactor'), mod.maxRange or 0, mod.falloff or 0, 'default'))
+                if 'doomsdayAOEWeb' in mod.item.effects:
+                    maxRange = max(0, (mod.maxRange or 0) + mod.getModifiedItemAttr('doomsdayAOERange') - fit.ship.getModifiedItemAttr('radius'))
+                    webMods.append((mod.getModifiedItemAttr('speedFactor'), maxRange, mod.falloff or 0, 'default'))
                 if 'remoteTargetPaintFalloff' in mod.item.effects or 'structureModuleEffectTargetPainter' in mod.item.effects:
                     tpMods.append((mod.getModifiedItemAttr('signatureRadiusBonus'), mod.maxRange or 0, mod.falloff or 0, 'default'))
+                if 'doomsdayAOEPaint' in mod.item.effects:
+                    maxRange = max(0, (mod.maxRange or 0) + mod.getModifiedItemAttr('doomsdayAOERange') - fit.ship.getModifiedItemAttr('radius'))
+                    tpMods.append((mod.getModifiedItemAttr('signatureRadiusBonus'), maxRange, mod.falloff or 0, 'default'))
         return projectedData
