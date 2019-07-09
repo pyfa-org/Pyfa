@@ -131,7 +131,7 @@ class Miscellanea(ViewColumn):
                 if n > 0:
                     info.append("{0}{1}".format(n, slot[0].upper()))
             return "+ " + ", ".join(info), "Slot Modifiers"
-        elif itemGroup == "Energy Neutralizer":
+        elif itemGroup in ("Energy Neutralizer", "Structure Energy Neutralizer"):
             neutAmount = stuff.getModifiedItemAttr("energyNeutralizerAmount")
             cycleParams = stuff.getCycleParameters()
             if cycleParams is None:
@@ -170,28 +170,28 @@ class Miscellanea(ViewColumn):
             text = "{0} | {1}".format(formatAmount(strength, 3, 0, 3), formatAmount(coherence, 3, 0, 3))
             tooltip = "Virus strength and coherence"
             return text, tooltip
-        elif itemGroup in ("Warp Scrambler", "Warp Core Stabilizer"):
+        elif itemGroup in ("Warp Scrambler", "Warp Core Stabilizer", "Structure Warp Scrambler"):
             scramStr = stuff.getModifiedItemAttr("warpScrambleStrength")
             if not scramStr:
                 return "", None
             text = "{0}".format(formatAmount(-scramStr, 3, 0, 3, forceSign=True))
             tooltip = "Warp core strength modification"
             return text, tooltip
-        elif itemGroup in ("Stasis Web", "Stasis Webifying Drone"):
+        elif itemGroup in ("Stasis Web", "Stasis Webifying Drone", "Structure Stasis Webifier"):
             speedFactor = stuff.getModifiedItemAttr("speedFactor")
             if not speedFactor:
                 return "", None
             text = "{0}%".format(formatAmount(speedFactor, 3, 0, 3))
             tooltip = "Speed reduction"
             return text, tooltip
-        elif itemGroup == "Target Painter":
+        elif itemGroup == "Target Painter" or (itemGroup == "Structure Disruption Battery" and "structureModuleEffectTargetPainter" in item.effects):
             sigRadBonus = stuff.getModifiedItemAttr("signatureRadiusBonus")
             if not sigRadBonus:
                 return "", None
             text = "{0}%".format(formatAmount(sigRadBonus, 3, 0, 3, forceSign=True))
             tooltip = "Signature radius increase"
             return text, tooltip
-        elif itemGroup == "Sensor Dampener":
+        elif itemGroup == "Sensor Dampener" or (itemGroup == "Structure Disruption Battery" and "structureModuleEffectRemoteSensorDampener" in item.effects):
             lockRangeBonus = stuff.getModifiedItemAttr("maxTargetRangeBonus")
             scanResBonus = stuff.getModifiedItemAttr("scanResolutionBonus")
             if lockRangeBonus is None or scanResBonus is None:
@@ -286,7 +286,7 @@ class Miscellanea(ViewColumn):
             text = "{}%".format(formatAmount(dmg, 3, 0, 3, forceSign=True))
             tooltip = "Drone DPS boost"
             return text, tooltip
-        elif itemGroup in ("ECM", "Burst Jammer", "Burst Projectors"):
+        elif itemGroup in ("ECM", "Burst Jammer", "Burst Projectors", "Structure ECM Battery"):
             grav = stuff.getModifiedItemAttr("scanGravimetricStrengthBonus")
             ladar = stuff.getModifiedItemAttr("scanLadarStrengthBonus")
             radar = stuff.getModifiedItemAttr("scanRadarStrengthBonus")
