@@ -78,28 +78,19 @@ class Miscellanea(ViewColumn):
             text = "{0} min".format(formatAmount(stuff.getModifiedItemAttr("boosterDuration") / 1000 / 60, 3, 0, 3))
             return text, "Booster Duration"
         elif itemGroup in ("Super Weapon", "Structure Doomsday Weapon"):
-            doomsday_duration = stuff.getModifiedItemAttr("doomsdayDamageDuration", 1)
-            doomsday_dottime = stuff.getModifiedItemAttr("doomsdayDamageCycleTime", 1)
-            func = stuff.getModifiedItemAttr
-
-            volley = sum(
-                map(
-                    lambda attr: (func("%sDamage" % attr) or 0),
-                    ("em", "thermal", "kinetic", "explosive")
-                )
-            )
-            volley *= stuff.getModifiedItemAttr("damageMultiplier") or 1
-
-            if volley <= 0:
+            volleyParams = stuff.getVolleyParameters(ignoreState=True)
+            dmg = sum(dt.total for dt in volleyParams.values())
+            duration = (max(volleyParams) - min(volleyParams)) / 1000
+            if dmg <= 0:
                 text = ""
                 tooltip = ""
-            elif max(doomsday_duration / doomsday_dottime, 1) > 1:
+            elif duration > 0:
                 text = "{} over {}s".format(
-                    formatAmount(volley * (doomsday_duration / doomsday_dottime), 3, 0, 6),
-                    formatAmount((doomsday_duration / 1000), 0, 0, 0))
+                    formatAmount(dmg, 3, 0, 6),
+                    formatAmount((duration), 0, 0, 0))
                 tooltip = "Raw damage done over time"
             else:
-                text = "{} dmg".format(formatAmount(volley * (doomsday_duration / doomsday_dottime), 3, 0, 3))
+                text = "{} dmg".format(formatAmount(dmg, 3, 0, 6))
                 tooltip = "Raw damage done"
             return text, tooltip
 
