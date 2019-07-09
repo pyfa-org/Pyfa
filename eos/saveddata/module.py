@@ -431,7 +431,8 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
             dmgDelay = self.getModifiedItemAttr("damageDelayDuration", 0) or self.getModifiedItemAttr("doomsdayWarningDuration", 0)
             dmgDuration = self.getModifiedItemAttr("doomsdayDamageDuration", 0)
             dmgSubcycle = self.getModifiedItemAttr("doomsdayDamageCycleTime", 0)
-            if dmgDuration != 0 and dmgSubcycle != 0:
+            # Reaper DD can damage each target only once
+            if dmgDuration != 0 and dmgSubcycle != 0 and 'doomsdaySlash' not in self.item.effects:
                 subcycles = math.floor(floatUnerr(dmgDuration / dmgSubcycle))
             else:
                 subcycles = 1

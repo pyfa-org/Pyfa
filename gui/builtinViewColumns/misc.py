@@ -99,7 +99,7 @@ class Miscellanea(ViewColumn):
                     formatAmount((doomsday_duration / 1000), 0, 0, 0))
                 tooltip = "Raw damage done over time"
             else:
-                text = "{0} dmg".format(formatAmount(volley * (doomsday_duration / doomsday_dottime), 3, 0, 3))
+                text = "{} dmg".format(formatAmount(volley * (doomsday_duration / doomsday_dottime), 3, 0, 3))
                 tooltip = "Raw damage done"
             return text, tooltip
 
