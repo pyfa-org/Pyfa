@@ -27,7 +27,7 @@ from service.const import GraphCacheCleanupReason
 from service.settings import GraphSettings
 from .calc import (
     getTurretMult, getLauncherMult, getDroneMult, getFighterAbilityMult,
-    getSmartbombMult, getBombMult, getGuidedBombMult,
+    getSmartbombMult, getDoomsdayMult, getBombMult, getGuidedBombMult,
     getWebbedSpeed, getTpMult)
 from .projectedCache import ProjectedDataCache
 from .timeCache import TimeCache
@@ -482,6 +482,12 @@ class FitDamageStatsGraph(FitGraph):
                 applicationMap[mod] = getGuidedBombMult(
                     mod=mod,
                     fit=fit,
+                    distance=distance,
+                    tgtSigRadius=tgtSigRadius)
+            elif mod.item.group.name in ('Super Weapon', 'Structure Doomsday Weapon'):
+                applicationMap[mod] = getDoomsdayMult(
+                    mod=mod,
+                    tgt=tgt,
                     distance=distance,
                     tgtSigRadius=tgtSigRadius)
         for drone in fit.drones:

@@ -67,6 +67,21 @@ def getSmartbombMult(mod, distance):
     return 1
 
 
+def getDoomsdayMult(mod, tgt, distance, tgtSigRadius):
+    modRange = mod.maxRange
+    # Single-target DDs have no range limit
+    if modRange and distance > modRange:
+        return 0
+    # Single-target titan DDs are vs capitals only
+    if {'superWeaponAmarr', 'superWeaponCaldari', 'superWeaponGallente', 'superWeaponMinmatar'}.intersection(mod.item.effects):
+        if not tgt.ship.item.requiresSkill('Capital Ships'):
+            return 0
+    damageSig = mod.getModifiedItemAttr('doomsdayDamageRadius') or mod.getModifiedItemAttr('signatureRadius')
+    if not damageSig:
+        return 1
+    return min(1, tgtSigRadius / damageSig)
+
+
 def getBombMult(mod, fit, tgt, distance, tgtSigRadius):
     modRange = mod.maxRange
     if modRange is None:
