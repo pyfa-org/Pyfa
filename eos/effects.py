@@ -15039,6 +15039,11 @@ class Effect4489(BaseEffect):
 
     type = 'active'
 
+    @staticmethod
+    def handler(fit, mod, context, **kwargs):
+        fit.ship.boostItemAttr('maxVelocity', mod.getModifiedItemAttr('speedFactor'), stackingPenalties=True, **kwargs)
+        fit.ship.increaseItemAttr('warpScrambleStatus', mod.getModifiedItemAttr('siegeModeWarpStatus'), **kwargs)
+
 
 class Effect4490(BaseEffect):
     """
@@ -15049,6 +15054,11 @@ class Effect4490(BaseEffect):
     """
 
     type = 'active'
+
+    @staticmethod
+    def handler(fit, mod, context, **kwargs):
+        fit.ship.boostItemAttr('maxVelocity', mod.getModifiedItemAttr('speedFactor'), stackingPenalties=True, **kwargs)
+        fit.ship.increaseItemAttr('warpScrambleStatus', mod.getModifiedItemAttr('siegeModeWarpStatus'), **kwargs)
 
 
 class Effect4491(BaseEffect):
@@ -15061,6 +15071,11 @@ class Effect4491(BaseEffect):
 
     type = 'active'
 
+    @staticmethod
+    def handler(fit, mod, context, **kwargs):
+        fit.ship.boostItemAttr('maxVelocity', mod.getModifiedItemAttr('speedFactor'), stackingPenalties=True, **kwargs)
+        fit.ship.increaseItemAttr('warpScrambleStatus', mod.getModifiedItemAttr('siegeModeWarpStatus'), **kwargs)
+
 
 class Effect4492(BaseEffect):
     """
@@ -15071,6 +15086,11 @@ class Effect4492(BaseEffect):
     """
 
     type = 'active'
+
+    @staticmethod
+    def handler(fit, mod, context, **kwargs):
+        fit.ship.boostItemAttr('maxVelocity', mod.getModifiedItemAttr('speedFactor'), stackingPenalties=True, **kwargs)
+        fit.ship.increaseItemAttr('warpScrambleStatus', mod.getModifiedItemAttr('siegeModeWarpStatus'), **kwargs)
 
 
 class Effect4510(BaseEffect):
@@ -25103,6 +25123,11 @@ class Effect6201(BaseEffect):
 
     type = 'active'
 
+    @staticmethod
+    def handler(fit, mod, context, **kwargs):
+        fit.ship.boostItemAttr('maxVelocity', mod.getModifiedItemAttr('speedFactor'), stackingPenalties=True, **kwargs)
+        fit.ship.increaseItemAttr('warpScrambleStatus', mod.getModifiedItemAttr('siegeModeWarpStatus'), **kwargs)
+
 
 class Effect6208(BaseEffect):
     """
@@ -27445,6 +27470,11 @@ class Effect6472(BaseEffect):
 
     type = 'active'
 
+    @staticmethod
+    def handler(fit, mod, context, **kwargs):
+        fit.ship.boostItemAttr('maxVelocity', mod.getModifiedItemAttr('speedFactor'), stackingPenalties=True, **kwargs)
+        fit.ship.increaseItemAttr('warpScrambleStatus', mod.getModifiedItemAttr('siegeModeWarpStatus'), **kwargs)
+
 
 class Effect6473(BaseEffect):
     """
@@ -27456,6 +27486,11 @@ class Effect6473(BaseEffect):
 
     type = 'active'
 
+    @staticmethod
+    def handler(fit, mod, context, **kwargs):
+        fit.ship.boostItemAttr('maxVelocity', mod.getModifiedItemAttr('speedFactor'), stackingPenalties=True, **kwargs)
+        fit.ship.increaseItemAttr('warpScrambleStatus', mod.getModifiedItemAttr('siegeModeWarpStatus'), **kwargs)
+
 
 class Effect6474(BaseEffect):
     """
@@ -27466,6 +27501,11 @@ class Effect6474(BaseEffect):
     """
 
     type = 'active'
+
+    @staticmethod
+    def handler(fit, mod, context, **kwargs):
+        fit.ship.boostItemAttr('maxVelocity', mod.getModifiedItemAttr('speedFactor'), stackingPenalties=True, **kwargs)
+        fit.ship.increaseItemAttr('warpScrambleStatus', mod.getModifiedItemAttr('siegeModeWarpStatus'), **kwargs)
 
 
 class Effect6475(BaseEffect):
