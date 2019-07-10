@@ -131,7 +131,10 @@ class Miscellanea(ViewColumn):
                 if n > 0:
                     info.append("{0}{1}".format(n, slot[0].upper()))
             return "+ " + ", ".join(info), "Slot Modifiers"
-        elif itemGroup in ("Energy Neutralizer", "Structure Energy Neutralizer"):
+        elif (
+            itemGroup in ("Energy Neutralizer", "Structure Energy Neutralizer") or
+            (itemGroup == "Structure Burst Projector" and "doomsdayAOENeut" in item.effects)
+        ):
             neutAmount = stuff.getModifiedItemAttr("energyNeutralizerAmount")
             cycleParams = stuff.getCycleParameters()
             if cycleParams is None:
@@ -177,21 +180,32 @@ class Miscellanea(ViewColumn):
             text = "{0}".format(formatAmount(-scramStr, 3, 0, 3, forceSign=True))
             tooltip = "Warp core strength modification"
             return text, tooltip
-        elif itemGroup in ("Stasis Web", "Stasis Webifying Drone", "Structure Stasis Webifier"):
+        elif (
+            itemGroup in ("Stasis Web", "Stasis Webifying Drone", "Structure Stasis Webifier") or
+            (itemGroup == "Structure Burst Projector" and "doomsdayAOEWeb" in item.effects)
+        ):
             speedFactor = stuff.getModifiedItemAttr("speedFactor")
             if not speedFactor:
                 return "", None
             text = "{0}%".format(formatAmount(speedFactor, 3, 0, 3))
             tooltip = "Speed reduction"
             return text, tooltip
-        elif itemGroup == "Target Painter" or (itemGroup == "Structure Disruption Battery" and "structureModuleEffectTargetPainter" in item.effects):
+        elif (
+            itemGroup == "Target Painter" or
+            (itemGroup == "Structure Disruption Battery" and "structureModuleEffectTargetPainter" in item.effects) or
+            (itemGroup == "Structure Burst Projector" and "doomsdayAOEPaint" in item.effects)
+        ):
             sigRadBonus = stuff.getModifiedItemAttr("signatureRadiusBonus")
             if not sigRadBonus:
                 return "", None
             text = "{0}%".format(formatAmount(sigRadBonus, 3, 0, 3, forceSign=True))
             tooltip = "Signature radius increase"
             return text, tooltip
-        elif itemGroup == "Sensor Dampener" or (itemGroup == "Structure Disruption Battery" and "structureModuleEffectRemoteSensorDampener" in item.effects):
+        elif (
+            itemGroup == "Sensor Dampener" or
+            (itemGroup == "Structure Disruption Battery" and "structureModuleEffectRemoteSensorDampener" in item.effects) or
+            (itemGroup == "Structure Burst Projector" and "doomsdayAOEDamp" in item.effects)
+        ):
             lockRangeBonus = stuff.getModifiedItemAttr("maxTargetRangeBonus")
             scanResBonus = stuff.getModifiedItemAttr("scanResolutionBonus")
             if lockRangeBonus is None or scanResBonus is None:
@@ -210,7 +224,10 @@ class Miscellanea(ViewColumn):
                 ttEntries.append("scan resolution")
             tooltip = "{0} dampening".format(formatList(ttEntries)).capitalize()
             return text, tooltip
-        elif itemGroup == "Weapon Disruptor":
+        elif (
+            itemGroup in ("Weapon Disruptor", "Structure Disruption Battery") or
+            (itemGroup == "Structure Burst Projector" and "doomsdayAOETrack" in item.effects)
+        ):
             # Weapon disruption now covers both tracking and guidance (missile) disruptors
             # First get the attributes for tracking disruptors
             optimalRangeBonus = stuff.getModifiedItemAttr("maxRangeBonus")
@@ -239,30 +256,37 @@ class Miscellanea(ViewColumn):
 
             isGuidanceDisruptor = any([x is not None and x != 0 for x in list(guidanceDisruptorAttributes.values())])
 
-            if isTrackingDisruptor:
-                attributes = trackingDisruptorAttributes
-            elif isGuidanceDisruptor:
-                attributes = guidanceDisruptorAttributes
-            else:
+            if not isTrackingDisruptor and not isGuidanceDisruptor:
                 return "", None
 
-            display = max(list(attributes.values()), key=lambda x: abs(x))
+            texts = []
+            ttSegments = []
 
-            text = "{0}%".format(formatAmount(display, 3, 0, 3, forceSign=True))
-
-            ttEntries = []
-            for attributeName, attributeValue in list(attributes.items()):
-                if attributeValue == display:
-                    ttEntries.append(attributeName)
-
-            tooltip = "{0} disruption".format(formatList(ttEntries)).capitalize()
-            return text, tooltip
-        elif itemGroup in ("Gyrostabilizer", "Magnetic Field Stabilizer", "Heat Sink", "Ballistic Control system", "Entropic Radiation Sink"):
+            for status, attributes in ((isTrackingDisruptor, trackingDisruptorAttributes), (isGuidanceDisruptor, guidanceDisruptorAttributes)):
+                if not status:
+                    continue
+                display = max(list(attributes.values()), key=lambda x: abs(x))
+                texts.append("{0}%".format(formatAmount(display, 3, 0, 3, forceSign=True)))
+                ttEntries = []
+                for attributeName, attributeValue in list(attributes.items()):
+                    if abs(attributeValue) == abs(display):
+                        ttEntries.append(attributeName)
+                ttSegments.append("{0} disruption".format(formatList(ttEntries)).capitalize())
+            return ' | '.join(texts), '\n'.join(ttSegments)
+        elif itemGroup in (
+            "Gyrostabilizer",
+            "Magnetic Field Stabilizer",
+            "Heat Sink",
+            "Ballistic Control system",
+            "Structure Weapon Upgrade",
+            "Entropic Radiation Sink"
+        ):
             attrMap = {
                 "Gyrostabilizer": ("damageMultiplier", "speedMultiplier", "Projectile weapon"),
                 "Magnetic Field Stabilizer": ("damageMultiplier", "speedMultiplier", "Hybrid weapon"),
                 "Heat Sink": ("damageMultiplier", "speedMultiplier", "Energy weapon"),
                 "Ballistic Control system": ("missileDamageMultiplierBonus", "speedMultiplier", "Missile"),
+                "Structure Weapon Upgrade": ("missileDamageMultiplierBonus", "speedMultiplier", "Missile"),
                 "Entropic Radiation Sink": ("damageMultiplier", "speedMultiplier", "Precursor weapon")}
             dmgAttr, rofAttr, weaponName = attrMap[itemGroup]
             dmg = stuff.getModifiedItemAttr(dmgAttr)
@@ -286,7 +310,10 @@ class Miscellanea(ViewColumn):
             text = "{}%".format(formatAmount(dmg, 3, 0, 3, forceSign=True))
             tooltip = "Drone DPS boost"
             return text, tooltip
-        elif itemGroup in ("ECM", "Burst Jammer", "Burst Projectors", "Structure ECM Battery"):
+        elif (
+            itemGroup in ("ECM", "Burst Jammer", "Burst Projectors", "Structure ECM Battery") or
+            (itemGroup == "Structure Burst Projector" and "doomsdayAOEECM" in item.effects)
+        ):
             grav = stuff.getModifiedItemAttr("scanGravimetricStrengthBonus")
             ladar = stuff.getModifiedItemAttr("scanLadarStrengthBonus")
             radar = stuff.getModifiedItemAttr("scanRadarStrengthBonus")
@@ -636,7 +663,7 @@ class Miscellanea(ViewColumn):
                                                 formatAmount(aoeVelocity, 3, 0, 3), "m/s")
                 tooltip = "Explosion radius and explosion velocity"
                 return text, tooltip
-            elif chargeGroup == "Bomb":
+            elif chargeGroup in ("Bomb", "Structure Guided Bomb"):
                 cloudSize = stuff.getModifiedChargeAttr("aoeCloudSize")
                 if not cloudSize:
                     return "", None
