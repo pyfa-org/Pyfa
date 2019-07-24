@@ -149,5 +149,4 @@ class FighterAbility:
         return dps
 
     def clear(self):
-        self.__dps = None
-        self.__volley = None
+        pass

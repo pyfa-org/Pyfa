@@ -141,6 +141,7 @@ class Fit:
         # Here we clear all data known to rely on cycle parameters
         # (which, in turn, relies on factor reload flag)
         self.__weaponDpsMap.clear()
+        self.__droneDps = None
         self.__remoteRepMap.clear()
         self.__capStable = None
         self.__capState = None
