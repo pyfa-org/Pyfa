@@ -23,6 +23,7 @@ from collections import OrderedDict, namedtuple
 
 from eos.saveddata.fit import Fit
 from eos.saveddata.targetProfile import TargetProfile
+from eos.utils.float import floatUnerr
 from service.const import GraphCacheCleanupReason
 
 
@@ -137,18 +138,19 @@ class FitGraph(metaclass=ABCMeta):
         mainParam, miscParams = self._normalizeParams(mainInput, miscInputs, fit, tgt)
         mainParam, miscParams = self._limitParams(mainParam, miscParams, fit, tgt)
         xs, ys = self._getPoints(mainParam, miscParams, xSpec, ySpec, fit, tgt)
-        # Sometimes denormalizer may fail (e.g. during conversion of 0 ship speed to %).
+        ys = self._denormalizeValues(ys, ySpec, fit, tgt)
+        # Sometimes x denormalizer may fail (e.g. during conversion of 0 ship speed to %).
         # If both inputs and outputs are in %, do some extra processing to at least have
         # proper graph which shows that fit has the same value over whole specified
         # relative parameter range
         try:
             xs = self._denormalizeValues(xs, xSpec, fit, tgt)
         except ZeroDivisionError:
-            if mainInput.unit == xSpec.unit == '%' and len(xs) >= 2:
-                xs = list(self._iterLinear(mainInput.value, segments=len(xs) - 1))
+            if mainInput.unit == xSpec.unit == '%' and len(set(floatUnerr(y) for y in ys)) == 1:
+                xs = [min(mainInput.value), max(mainInput.value)]
+                ys = [ys[0], ys[0]]
             else:
                 raise
-        ys = self._denormalizeValues(ys, ySpec, fit, tgt)
         return xs, ys
 
     _normalizers = {}

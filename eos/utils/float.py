@@ -18,7 +18,7 @@ keepDigits = int(sys.float_info.dig / 2)
 
 def floatUnerr(value):
     """Round possible float number error, killing some precision in process."""
-    if value == 0:
+    if value in (0, math.inf):
         return value
     # Find round factor, taking into consideration that we want to keep at least
     # predefined amount of significant digits
