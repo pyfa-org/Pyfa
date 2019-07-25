@@ -21,6 +21,8 @@
 from abc import ABCMeta, abstractmethod
 from collections import OrderedDict, namedtuple
 
+from eos.saveddata.fit import Fit
+from eos.saveddata.targetProfile import TargetProfile
 from service.const import GraphCacheCleanupReason
 
 
@@ -94,7 +96,13 @@ class FitGraph(metaclass=ABCMeta):
     hasTargets = False
 
     def getPlotPoints(self, mainInput, miscInputs, xSpec, ySpec, fit, tgt=None):
-        cacheKey = (fit.ID, None, tgt.ID)
+        if isinstance(tgt, Fit):
+            tgtType = 'fit'
+        elif isinstance(tgt, TargetProfile):
+            tgtType = 'profile'
+        else:
+            tgtType = None
+        cacheKey = (fit.ID, tgtType, getattr(tgt, 'ID', None))
         try:
             plotData = self._plotCache[cacheKey][(ySpec, xSpec)]
         except KeyError:
@@ -111,7 +119,7 @@ class FitGraph(metaclass=ABCMeta):
                 cacheFitID, cacheTgtType, cacheTgtID = cacheKey
                 if extraData == cacheFitID:
                     plotKeysToClear.add(cacheKey)
-                elif extraData == cacheTgtID:
+                elif cacheTgtType == 'fit' and extraData == cacheTgtID:
                     plotKeysToClear.add(cacheKey)
             for cacheKey in plotKeysToClear:
                 del self._plotCache[cacheKey]

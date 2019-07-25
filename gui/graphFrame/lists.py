@@ -205,9 +205,11 @@ class TargetList(BaseList):
         super().__init__(graphFrame, parent)
         self.profiles = []
         self.profiles.append(TargetProfile.getIdeal())
-        stuff = self.fits + self.profiles
-        self.update(stuff)
+        self.update(self.targets)
 
     def refreshView(self):
-        stuff = self.fits + self.profiles
-        self.refresh(stuff)
+        self.refresh(self.targets)
+
+    @property
+    def targets(self):
+        return self.fits + self.profiles

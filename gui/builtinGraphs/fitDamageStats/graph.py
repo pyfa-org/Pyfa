@@ -29,6 +29,7 @@ from .calc import (
     getTurretMult, getLauncherMult, getDroneMult, getFighterAbilityMult,
     getSmartbombMult, getDoomsdayMult, getBombMult, getGuidedBombMult,
     getWebbedSpeed, getTpMult)
+from .helper import getTgtMaxVelocity, getTgtSigRadius
 from .projectedCache import ProjectedDataCache
 from .timeCache import TimeCache
 
@@ -82,14 +83,14 @@ class FitDamageStatsGraph(FitGraph):
     _normalizers = {
         ('distance', 'km'): lambda v, fit, tgt: v * 1000,
         ('atkSpeed', '%'): lambda v, fit, tgt: v / 100 * fit.ship.getModifiedItemAttr('maxVelocity'),
-        ('tgtSpeed', '%'): lambda v, fit, tgt: v / 100 * tgt.ship.getModifiedItemAttr('maxVelocity'),
-        ('tgtSigRad', '%'): lambda v, fit, tgt: v / 100 * tgt.ship.getModifiedItemAttr('signatureRadius')}
+        ('tgtSpeed', '%'): lambda v, fit, tgt: v / 100 * getTgtMaxVelocity(tgt),
+        ('tgtSigRad', '%'): lambda v, fit, tgt: v / 100 * getTgtSigRadius(tgt)}
     _limiters = {
         'time': lambda fit, tgt: (0, 2500)}
     _denormalizers = {
         ('distance', 'km'): lambda v, fit, tgt: v / 1000,
-        ('tgtSpeed', '%'): lambda v, fit, tgt: v * 100 / tgt.ship.getModifiedItemAttr('maxVelocity'),
-        ('tgtSigRad', '%'): lambda v, fit, tgt: v * 100 / tgt.ship.getModifiedItemAttr('signatureRadius')}
+        ('tgtSpeed', '%'): lambda v, fit, tgt: v * 100 / getTgtMaxVelocity(tgt),
+        ('tgtSigRad', '%'): lambda v, fit, tgt: v * 100 / getTgtSigRadius(tgt)}
 
     def _distance2dps(self, mainInput, miscInputs, fit, tgt):
         return self._xDistanceGetter(
@@ -178,7 +179,7 @@ class FitDamageStatsGraph(FitGraph):
         # Go through distances and calculate distance-dependent data
         for distance in self._iterLinear(mainInput[1]):
             tgtSpeed = miscInputMap['tgtSpeed']
-            tgtSigRadius = tgt.ship.getModifiedItemAttr('signatureRadius')
+            tgtSigRadius = getTgtSigRadius(tgt)
             if applyProjected:
                 webMods, tpMods = self._projectedCache.getProjModData(fit)
                 webDrones, tpDrones = self._projectedCache.getProjDroneData(fit)
@@ -220,7 +221,7 @@ class FitDamageStatsGraph(FitGraph):
         # Process inputs into more convenient form
         miscInputMap = dict(miscInputs)
         tgtSpeed = miscInputMap['tgtSpeed']
-        tgtSigRadius = tgt.ship.getModifiedItemAttr('signatureRadius')
+        tgtSigRadius = getTgtSigRadius(tgt)
         if GraphSettings.getInstance().get('applyProjected'):
             webMods, tpMods = self._projectedCache.getProjModData(fit)
             webDrones, tpDrones = self._projectedCache.getProjDroneData(fit)
@@ -308,7 +309,7 @@ class FitDamageStatsGraph(FitGraph):
             # Get separate internal speed to calculate proper application, for graph
             # itself we still want to show pre-modification speed on X axis
             tgtSpeedInternal = tgtSpeed
-            tgtSigRadius = tgt.ship.getModifiedItemAttr('signatureRadius')
+            tgtSigRadius = getTgtSigRadius(tgt)
             if applyProjected:
                 webMods, tpMods = self._projectedCache.getProjModData(fit)
                 webDrones, tpDrones = self._projectedCache.getProjDroneData(fit)

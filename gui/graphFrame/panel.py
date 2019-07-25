@@ -318,7 +318,7 @@ class GraphControlPanel(wx.Panel):
 
     @property
     def targets(self):
-        return self.targetList.fits
+        return self.targetList.targets
 
     def unbindExternalEvents(self):
         self.fitList.unbindExternalEvents()

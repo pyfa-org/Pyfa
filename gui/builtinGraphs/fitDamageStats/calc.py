@@ -21,8 +21,10 @@
 import math
 from functools import lru_cache
 
+from eos.saveddata.fit import Fit
 from service.const import GraphDpsDroneMode
 from service.settings import GraphSettings
+from .helper import getTgtMaxVelocity, getTgtSigRadius, getTgtRadius
 
 
 def getTurretMult(mod, fit, tgt, atkSpeed, atkAngle, distance, tgtSpeed, tgtAngle, tgtSigRadius):
@@ -37,7 +39,7 @@ def getTurretMult(mod, fit, tgt, atkSpeed, atkAngle, distance, tgtSpeed, tgtAngl
         distance=distance,
         tgtSpeed=tgtSpeed,
         tgtAngle=tgtAngle,
-        tgtRadius=tgt.ship.getModifiedItemAttr('radius'),
+        tgtRadius=getTgtRadius(tgt),
         tgtSigRadius=tgtSigRadius)
     mult = _calcTurretMult(cth)
     return mult
@@ -74,7 +76,8 @@ def getDoomsdayMult(mod, tgt, distance, tgtSigRadius):
         return 0
     # Single-target titan DDs are vs capitals only
     if {'superWeaponAmarr', 'superWeaponCaldari', 'superWeaponGallente', 'superWeaponMinmatar'}.intersection(mod.item.effects):
-        if not tgt.ship.item.requiresSkill('Capital Ships'):
+        # Disallow only against subcap fits, allow against cap fits and tgt profiles
+        if isinstance(tgt, Fit) and not tgt.ship.item.requiresSkill('Capital Ships'):
             return 0
     damageSig = mod.getModifiedItemAttr('doomsdayDamageRadius') or mod.getModifiedItemAttr('signatureRadius')
     if not damageSig:
@@ -88,7 +91,7 @@ def getBombMult(mod, fit, tgt, distance, tgtSigRadius):
         return 0
     blastRadius = mod.getModifiedChargeAttr('explosionRange')
     atkRadius = fit.ship.getModifiedItemAttr('radius')
-    tgtRadius = tgt.ship.getModifiedItemAttr('radius')
+    tgtRadius = getTgtRadius(tgt)
     # Bomb starts in the center of the ship
     # Also here we assume that it affects target as long as blast
     # touches its surface, not center - I did not check this
@@ -144,7 +147,7 @@ def getDroneMult(drone, fit, tgt, atkSpeed, atkAngle, distance, tgtSpeed, tgtAng
             distance=distance + fit.ship.getModifiedItemAttr('radius') - droneRadius,
             tgtSpeed=tgtSpeed,
             tgtAngle=tgtAngle,
-            tgtRadius=tgt.ship.getModifiedItemAttr('radius'),
+            tgtRadius=getTgtRadius(tgt),
             tgtSigRadius=tgtSigRadius)
     mult = _calcTurretMult(cth)
     return mult
@@ -187,9 +190,10 @@ def getFighterAbilityMult(fighter, ability, fit, distance, tgtSpeed, tgtSigRadiu
 
 
 def getWebbedSpeed(fit, tgt, currentUnwebbedSpeed, webMods, webDrones, webFighters, distance):
-    if tgt.ship.getModifiedItemAttr('disallowOffensiveModifiers'):
+    # Can slow down non-immune fits and target profiles
+    if isinstance(tgt, Fit) and tgt.ship.getModifiedItemAttr('disallowOffensiveModifiers'):
         return currentUnwebbedSpeed
-    maxUnwebbedSpeed = tgt.ship.getModifiedItemAttr('maxVelocity')
+    maxUnwebbedSpeed = getTgtMaxVelocity(tgt)
     try:
         speedRatio = currentUnwebbedSpeed / maxUnwebbedSpeed
     except ZeroDivisionError:
@@ -204,7 +208,7 @@ def getWebbedSpeed(fit, tgt, currentUnwebbedSpeed, webMods, webDrones, webFighte
                 distance=distance)
             if appliedBoost:
                 appliedMultipliers.setdefault(wData.stackingGroup, []).append((1 + appliedBoost / 100, wData.resAttrID))
-        maxWebbedSpeed = tgt.ship.getModifiedItemAttrWithExtraMods('maxVelocity', extraMultipliers=appliedMultipliers)
+        maxWebbedSpeed = getTgtMaxVelocity(tgt, extraMultipliers=appliedMultipliers)
         currentWebbedSpeed = maxWebbedSpeed * speedRatio
         # Drones and fighters
         mobileWebs = []
@@ -220,7 +224,7 @@ def getWebbedSpeed(fit, tgt, currentUnwebbedSpeed, webMods, webDrones, webFighte
             for mwData in longEnoughMws:
                 appliedMultipliers.setdefault(mwData.stackingGroup, []).append((1 + mwData.boost / 100, mwData.resAttrID))
                 mobileWebs.remove(mwData)
-            maxWebbedSpeed = tgt.ship.getModifiedItemAttrWithExtraMods('maxVelocity', extraMultipliers=appliedMultipliers)
+            maxWebbedSpeed = getTgtMaxVelocity(tgt, extraMultipliers=appliedMultipliers)
             currentWebbedSpeed = maxWebbedSpeed * speedRatio
         # Apply remaining webs, from fastest to slowest
         droneOpt = GraphSettings.getInstance().get('mobileDroneMode')
@@ -240,15 +244,16 @@ def getWebbedSpeed(fit, tgt, currentUnwebbedSpeed, webMods, webDrones, webFighte
                         distance=distance + atkRadius - mwData.radius)
                 appliedMultipliers.setdefault(mwData.stackingGroup, []).append((1 + appliedMwBoost / 100, mwData.resAttrID))
                 mobileWebs.remove(mwData)
-            maxWebbedSpeed = tgt.ship.getModifiedItemAttrWithExtraMods('maxVelocity', extraMultipliers=appliedMultipliers)
+            maxWebbedSpeed = getTgtMaxVelocity(tgt, extraMultipliers=appliedMultipliers)
             currentWebbedSpeed = maxWebbedSpeed * speedRatio
     return currentWebbedSpeed
 
 
 def getTpMult(fit, tgt, tgtSpeed, tpMods, tpDrones, tpFighters, distance):
-    if tgt.ship.getModifiedItemAttr('disallowOffensiveModifiers'):
+    # Can blow non-immune fits and target profiles
+    if isinstance(tgt, Fit) and tgt.ship.getModifiedItemAttr('disallowOffensiveModifiers'):
         return 1
-    untpedSig = tgt.ship.getModifiedItemAttr('signatureRadius')
+    untpedSig = getTgtSigRadius(tgt)
     # Modules
     appliedMultipliers = {}
     for tpData in tpMods:
@@ -277,7 +282,7 @@ def getTpMult(fit, tgt, tgtSpeed, tpMods, tpDrones, tpFighters, distance):
                 atkFalloffRange=mtpData.falloff,
                 distance=distance + atkRadius - mtpData.radius)
         appliedMultipliers.setdefault(mtpData.stackingGroup, []).append((1 + appliedMtpBoost / 100, mtpData.resAttrID))
-    tpedSig = tgt.ship.getModifiedItemAttrWithExtraMods('signatureRadius', extraMultipliers=appliedMultipliers)
+    tpedSig = getTgtSigRadius(tgt, extraMultipliers=appliedMultipliers)
     mult = tpedSig / untpedSig
     return mult
 
