@@ -29,6 +29,8 @@ from logbook import Logger
 import gui.display
 import gui.globalEvents as GE
 import gui.mainFrame
+from eos.saveddata.fit import Fit
+from eos.saveddata.targetProfile import TargetProfile
 from gui.bitmap_loader import BitmapLoader
 from gui.builtinGraphs.base import FitGraph
 from gui.builtinShipBrowser.events import EVT_FIT_RENAMED
@@ -235,9 +237,9 @@ class GraphFrame(wx.Frame):
 
                 self.subplot.plot(xs, ys)
                 if target is None:
-                    legend.append('{} ({})'.format(fit.name, fit.ship.item.getShortName()))
+                    legend.append(self.getObjName(fit))
                 else:
-                    legend.append('{} ({}) vs {} ({})'.format(fit.name, fit.ship.item.getShortName(), target.name, target.ship.item.getShortName()))
+                    legend.append('{} vs {}'.format(self.getObjName(fit), self.getObjName(target)))
             except Exception as ex:
                 pyfalog.warning('Invalid values in "{0}"', fit.name)
                 self.canvas.draw()
@@ -290,3 +292,12 @@ class GraphFrame(wx.Frame):
 
         self.canvas.draw()
         self.Refresh()
+
+    @staticmethod
+    def getObjName(thing):
+        if isinstance(thing, Fit):
+            return '{} ({})'.format(thing.name, thing.ship.item.getShortName())
+        elif isinstance(thing, TargetProfile):
+            return thing.name
+        return ''
+
