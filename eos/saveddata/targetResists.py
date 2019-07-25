@@ -31,11 +31,14 @@ class TargetResists:
     def __init__(self, *args, **kwargs):
         self.update(*args, **kwargs)
 
-    def update(self, emAmount=0, thermalAmount=0, kineticAmount=0, explosiveAmount=0):
+    def update(self, emAmount=0, thermalAmount=0, kineticAmount=0, explosiveAmount=0, maxVelocity=None, signatureRadius=None, radius=None):
         self.emAmount = emAmount
         self.thermalAmount = thermalAmount
         self.kineticAmount = kineticAmount
         self.explosiveAmount = explosiveAmount
+        self.maxVelocity = maxVelocity
+        self.signatureRadius = signatureRadius
+        self.radius = radius
 
     @classmethod
     def importPatterns(cls, text):
@@ -111,6 +114,8 @@ class TargetResists:
         return out.strip()
 
     def __deepcopy__(self, memo):
-        p = TargetResists(self.emAmount, self.thermalAmount, self.kineticAmount, self.explosiveAmount)
+        p = TargetResists(
+            self.emAmount, self.thermalAmount, self.kineticAmount, self.explosiveAmount,
+            self.maxVelocity, self.signatureRadius, self.radius)
         p.name = "%s copy" % self.name
         return p
