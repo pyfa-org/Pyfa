@@ -18,6 +18,8 @@
 # =============================================================================
 
 
+import math
+
 from eos.saveddata.fit import Fit
 from eos.saveddata.targetProfile import TargetProfile
 
@@ -25,28 +27,63 @@ from eos.saveddata.targetProfile import TargetProfile
 def getTgtMaxVelocity(tgt, extraMultipliers=None):
     if isinstance(tgt, Fit):
         if extraMultipliers:
-            return tgt.ship.getModifiedItemAttrWithExtraMods('maxVelocity', extraMultipliers=extraMultipliers)
+            maxVelocity = tgt.ship.getModifiedItemAttrWithExtraMods('maxVelocity', extraMultipliers=extraMultipliers)
         else:
-            return tgt.ship.getModifiedItemAttr('maxVelocity')
+            maxVelocity = tgt.ship.getModifiedItemAttr('maxVelocity')
     elif isinstance(tgt, TargetProfile):
-        return tgt.maxVelocity
-    return None
+        maxVelocity = tgt.maxVelocity
+        if extraMultipliers:
+            maxVelocity *= _calculateMultiplier(extraMultipliers)
+    else:
+        maxVelocity = None
+    return maxVelocity
 
 
 def getTgtSigRadius(tgt, extraMultipliers=None):
     if isinstance(tgt, Fit):
         if extraMultipliers:
-            return tgt.ship.getModifiedItemAttrWithExtraMods('signatureRadius', extraMultipliers=extraMultipliers)
+            sigRadius = tgt.ship.getModifiedItemAttrWithExtraMods('signatureRadius', extraMultipliers=extraMultipliers)
         else:
-            return tgt.ship.getModifiedItemAttr('signatureRadius')
+            sigRadius = tgt.ship.getModifiedItemAttr('signatureRadius')
     elif isinstance(tgt, TargetProfile):
-        return tgt.signatureRadius
-    return None
+        sigRadius = tgt.signatureRadius
+        if extraMultipliers:
+            sigRadius *= _calculateMultiplier(extraMultipliers)
+    else:
+        sigRadius = None
+    return sigRadius
 
 
 def getTgtRadius(tgt):
     if isinstance(tgt, Fit):
-        return tgt.ship.getModifiedItemAttr('radius')
+        radius = tgt.ship.getModifiedItemAttr('radius')
     elif isinstance(tgt, TargetProfile):
-        return tgt.radius
-    return None
+        radius = tgt.radius
+    else:
+        radius = None
+    return radius
+
+
+# Just copypaste penalization chain calculation code in here to not make actual
+# attribute calculations slower than it already is due to extra function calls
+# Actually, with some modifications as multipliers arrive in different form
+def _calculateMultiplier(multipliers):
+    val = 1
+    for penalizedMultipliers in multipliers.values():
+        # A quick explanation of how this works:
+        # 1: Bonuses and penalties are calculated seperately, so we'll have to filter each of them
+        l1 = [v[0] for v in penalizedMultipliers if v[0] > 1]
+        l2 = [v[0] for v in penalizedMultipliers if v[0] < 1]
+        # 2: The most significant bonuses take the smallest penalty,
+        # This means we'll have to sort
+        abssort = lambda _val: -abs(_val - 1)
+        l1.sort(key=abssort)
+        l2.sort(key=abssort)
+        # 3: The first module doesn't get penalized at all
+        # Any module after the first takes penalties according to:
+        # 1 + (multiplier - 1) * math.exp(- math.pow(i, 2) / 7.1289)
+        for l in (l1, l2):
+            for i in range(len(l)):
+                bonus = l[i]
+                val *= 1 + (bonus - 1) * math.exp(- i ** 2 / 7.1289)
+    return val
