@@ -146,7 +146,7 @@ class FirepowerViewFull(StatsView):
 
     def refreshPanel(self, fit):
         # If we did anything intresting, we'd update our labels to reflect the new fit's stats here
-        if fit is not None and fit.targetResists is not None:
+        if fit is not None and fit.targetProfile is not None:
             self.stEff.Show()
         else:
             self.stEff.Hide()

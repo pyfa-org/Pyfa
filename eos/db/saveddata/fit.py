@@ -41,7 +41,7 @@ from eos.saveddata.fighter import Fighter
 from eos.saveddata.fit import Fit as es_Fit
 from eos.saveddata.implant import Implant
 from eos.saveddata.module import Module
-from eos.saveddata.targetResists import TargetResists
+from eos.saveddata.targetProfile import TargetProfile
 from eos.saveddata.user import User
 
 
@@ -232,7 +232,7 @@ mapper(es_Fit, fits_table,
                    Character,
                    backref="fits"),
            "_Fit__damagePattern": relation(DamagePattern),
-           "_Fit__targetResists": relation(TargetResists),
+           "_Fit__targetProfile": relation(TargetProfile),
            "projectedOnto": projectedFitSourceRel,
            "victimOf": relationship(
                    ProjectedFit,

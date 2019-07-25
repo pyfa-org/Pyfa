@@ -2,7 +2,7 @@ import wx
 
 import config
 from eos.db.saveddata.loadDefaultDatabaseValues import DefaultDatabaseValues
-from eos.db.saveddata.queries import clearPrices, clearDamagePatterns, clearTargetResists
+from eos.db.saveddata.queries import clearPrices, clearDamagePatterns, clearTargetProfiles
 from gui.bitmap_loader import BitmapLoader
 from gui.preferenceView import PreferenceView
 from gui.utils import helpers_wxPython as wxHelpers
@@ -83,9 +83,9 @@ class PFGeneralPref(PreferenceView):
         btnSizer.Add(self.btnDeleteDamagePatterns, 0, wx.ALL, 5)
         self.btnDeleteDamagePatterns.Bind(wx.EVT_BUTTON, self.DeleteDamagePatterns)
 
-        self.btnDeleteTargetResists = wx.Button(panel, wx.ID_ANY, "Delete All Target Resist Profiles", wx.DefaultPosition, wx.DefaultSize, 0)
-        btnSizer.Add(self.btnDeleteTargetResists, 0, wx.ALL, 5)
-        self.btnDeleteTargetResists.Bind(wx.EVT_BUTTON, self.DeleteTargetResists)
+        self.btnDeleteTargetProfiles = wx.Button(panel, wx.ID_ANY, "Delete All Target Resist Profiles", wx.DefaultPosition, wx.DefaultSize, 0)
+        btnSizer.Add(self.btnDeleteTargetProfiles, 0, wx.ALL, 5)
+        self.btnDeleteTargetProfiles.Bind(wx.EVT_BUTTON, self.DeleteTargetProfiles)
 
         self.btnPrices = wx.Button(panel, wx.ID_ANY, "Delete All Prices", wx.DefaultPosition, wx.DefaultSize, 0)
         btnSizer.Add(self.btnPrices, 0, wx.ALL, 5)
@@ -110,10 +110,10 @@ class PFGeneralPref(PreferenceView):
         if wxHelpers.YesNoDialog(question, "Confirm"):
             clearDamagePatterns()
 
-    def DeleteTargetResists(self, event):
+    def DeleteTargetProfiles(self, event):
         question = "This is a destructive action that will delete all target resist profiles.\nAre you sure you want to do this?"
         if wxHelpers.YesNoDialog(question, "Confirm"):
-            clearTargetResists()
+            clearTargetProfiles()
 
     def DeletePrices(self, event):
         question = "This is a destructive action that will delete all cached prices out of the database.\nAre you sure you want to do this?"

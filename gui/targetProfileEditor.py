@@ -19,7 +19,7 @@
 
 # noinspection PyPackageRequirements
 import wx
-from service.targetResists import TargetResists
+from service.targetProfile import TargetProfile
 from gui.bitmap_loader import BitmapLoader
 from gui.utils.clipboard import toClipboard, fromClipboard
 from gui.builtinViews.entityEditor import EntityEditor, BaseValidator
@@ -28,12 +28,12 @@ from logbook import Logger
 pyfalog = Logger(__name__)
 
 
-class TargetResistsTextValidor(BaseValidator):
+class TargetProfileTextValidor(BaseValidator):
     def __init__(self):
         BaseValidator.__init__(self)
 
     def Clone(self):
-        return TargetResistsTextValidor()
+        return TargetProfileTextValidor()
 
     def Validate(self, win):
         entityEditor = win.parent
@@ -42,9 +42,9 @@ class TargetResistsTextValidor(BaseValidator):
 
         try:
             if len(text) == 0:
-                raise ValueError("You must supply a name for your Target Resist Profile!")
+                raise ValueError("You must supply a name for your Target Profile!")
             elif text in [x.name for x in entityEditor.choices]:
-                raise ValueError("Target Resist Profile name already in use, please choose another.")
+                raise ValueError("Target Profile name already in use, please choose another.")
 
             return True
         except ValueError as e:
@@ -54,32 +54,32 @@ class TargetResistsTextValidor(BaseValidator):
             return False
 
 
-class TargetResistsEntityEditor(EntityEditor):
+class TargetProfileEntityEditor(EntityEditor):
     def __init__(self, parent):
-        EntityEditor.__init__(self, parent, "Target Resist Profile")
-        self.SetEditorValidator(TargetResistsTextValidor)
+        EntityEditor.__init__(self, parent, "Target Profile")
+        self.SetEditorValidator(TargetProfileTextValidor)
 
     def getEntitiesFromContext(self):
-        sTR = TargetResists.getInstance()
-        choices = sorted(sTR.getTargetResistsList(), key=lambda p: p.name)
+        sTR = TargetProfile.getInstance()
+        choices = sorted(sTR.getTargetProfileList(), key=lambda p: p.name)
         return choices
 
     def DoNew(self, name):
-        sTR = TargetResists.getInstance()
+        sTR = TargetProfile.getInstance()
         return sTR.newPattern(name)
 
     def DoRename(self, entity, name):
-        sTR = TargetResists.getInstance()
+        sTR = TargetProfile.getInstance()
         sTR.renamePattern(entity, name)
 
     def DoCopy(self, entity, name):
-        sTR = TargetResists.getInstance()
+        sTR = TargetProfile.getInstance()
         copy = sTR.copyPattern(entity)
         sTR.renamePattern(copy, name)
         return copy
 
     def DoDelete(self, entity):
-        sTR = TargetResists.getInstance()
+        sTR = TargetProfile.getInstance()
         sTR.deletePattern(entity)
 
 
@@ -90,7 +90,7 @@ class ResistsEditorDlg(wx.Dialog):
         wx.Dialog.__init__(
             self, parent, id=wx.ID_ANY,
             # Dropdown list widget is scaled to its longest content line on GTK, adapt to that
-            title="Target Resists Editor",
+            title="Target Profile Editor",
             size=wx.Size(500, 240) if "wxGTK" in wx.PlatformInfo else wx.Size(350, 240))
 
         self.block = False
@@ -98,7 +98,7 @@ class ResistsEditorDlg(wx.Dialog):
 
         mainSizer = wx.BoxSizer(wx.VERTICAL)
 
-        self.entityEditor = TargetResistsEntityEditor(self)
+        self.entityEditor = TargetProfileEntityEditor(self)
         mainSizer.Add(self.entityEditor, 0, wx.ALL | wx.EXPAND, 2)
 
         self.sl = wx.StaticLine(self)
@@ -227,7 +227,7 @@ class ResistsEditorDlg(wx.Dialog):
             if event is not None:
                 event.Skip()
 
-            TargetResists.getInstance().saveChanges(p)
+            TargetProfile.getInstance().saveChanges(p)
 
         except ValueError:
             editObj.SetForegroundColour(wx.RED)
@@ -271,7 +271,7 @@ class ResistsEditorDlg(wx.Dialog):
 
         text = fromClipboard()
         if text:
-            sTR = TargetResists.getInstance()
+            sTR = TargetProfile.getInstance()
             try:
                 sTR.importPatterns(text)
                 self.stNotice.SetLabel("Patterns successfully imported from clipboard")
@@ -290,7 +290,7 @@ class ResistsEditorDlg(wx.Dialog):
 
     def exportPatterns(self, event):
         """Event fired when export to clipboard button is clicked"""
-        sTR = TargetResists.getInstance()
+        sTR = TargetProfile.getInstance()
         toClipboard(sTR.exportPatterns())
         self.stNotice.SetLabel("Patterns exported to clipboard")
 

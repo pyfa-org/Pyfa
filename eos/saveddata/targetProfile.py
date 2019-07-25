@@ -24,7 +24,7 @@ import eos.db
 pyfalog = Logger(__name__)
 
 
-class TargetResists:
+class TargetProfile:
     # also determined import/export order - VERY IMPORTANT
     DAMAGE_TYPES = ("em", "thermal", "kinetic", "explosive")
 
@@ -49,7 +49,7 @@ class TargetResists:
         # When we import damage profiles, we create new ones and update old ones. To do this, get a list of current
         # patterns to allow lookup
         lookup = {}
-        current = eos.db.getTargetResistsList()
+        current = eos.db.getTargetProfileList()
         for pattern in current:
             lookup[pattern.name] = pattern
 
@@ -64,7 +64,7 @@ class TargetResists:
                 pyfalog.warning("Data isn't in correct format, continue to next line.")
                 continue
 
-            if type != "TargetResists":
+            if type not in ("TargetProfile", "TargetResists"):
                 continue
 
             numPatterns += 1
@@ -86,7 +86,7 @@ class TargetResists:
                     pattern.update(**fields)
                     eos.db.save(pattern)
                 else:
-                    pattern = TargetResists(**fields)
+                    pattern = TargetProfile(**fields)
                     pattern.name = name.strip()
                     eos.db.save(pattern)
                 patterns.append(pattern)
@@ -95,13 +95,13 @@ class TargetResists:
 
         return patterns, numPatterns
 
-    EXPORT_FORMAT = "TargetResists = %s,%.1f,%.1f,%.1f,%.1f\n"
+    EXPORT_FORMAT = "TargetProfile = %s,%.1f,%.1f,%.1f,%.1f\n"
 
     @classmethod
     def exportPatterns(cls, *patterns):
         out = "# Exported from pyfa\n#\n"
         out += "# Values are in following format:\n"
-        out += "# TargetResists = [name],[EM %],[Thermal %],[Kinetic %],[Explosive %]\n\n"
+        out += "# TargetProfile = [name],[EM %],[Thermal %],[Kinetic %],[Explosive %]\n\n"
         for dp in patterns:
             out += cls.EXPORT_FORMAT % (
                 dp.name,
@@ -114,7 +114,7 @@ class TargetResists:
         return out.strip()
 
     def __deepcopy__(self, memo):
-        p = TargetResists(
+        p = TargetProfile(
             self.emAmount, self.thermalAmount, self.kineticAmount, self.explosiveAmount,
             self.maxVelocity, self.signatureRadius, self.radius)
         p.name = "%s copy" % self.name

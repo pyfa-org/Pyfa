@@ -38,7 +38,7 @@ class MainMenuBar(wx.MenuBar):
         pyfalog.debug("Initialize MainMenuBar")
         self.characterEditorId = wx.NewId()
         self.damagePatternEditorId = wx.NewId()
-        self.targetResistsEditorId = wx.NewId()
+        self.targetProfileEditorId = wx.NewId()
         self.implantSetEditorId = wx.NewId()
         self.graphFrameId = wx.NewId()
         self.backupFitsId = wx.NewId()
@@ -156,9 +156,9 @@ class MainMenuBar(wx.MenuBar):
         damagePatternEditItem = wx.MenuItem(editorsMenu, self.damagePatternEditorId, "&Damage Pattern Editor")
         damagePatternEditItem.SetBitmap(BitmapLoader.getBitmap("damagePattern_small", "gui"))
         editorsMenu.Append(damagePatternEditItem)
-        targetResistsEditItem = wx.MenuItem(editorsMenu, self.targetResistsEditorId, "&Target Resists Editor")
-        targetResistsEditItem.SetBitmap(BitmapLoader.getBitmap("explosive_small", "gui"))
-        editorsMenu.Append(targetResistsEditItem)
+        targetProfileEditItem = wx.MenuItem(editorsMenu, self.targetProfileEditorId, "&Target Profile Editor")
+        targetProfileEditItem.SetBitmap(BitmapLoader.getBitmap("explosive_small", "gui"))
+        editorsMenu.Append(targetProfileEditItem)
 
         # Help menu
         helpMenu = wx.Menu()

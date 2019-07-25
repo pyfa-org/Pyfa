@@ -8,10 +8,10 @@ import gui.mainFrame
 from gui.bitmap_loader import BitmapLoader
 from gui.contextMenu import ContextMenuUnconditional
 from service.fit import Fit
-from service.targetResists import TargetResists as svc_TargetResists
+from service.targetProfile import TargetProfile as svc_TargetProfile
 
 
-class TargetResists(ContextMenuUnconditional):
+class TargetProfile(ContextMenuUnconditional):
 
     def __init__(self):
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
@@ -20,13 +20,14 @@ class TargetResists(ContextMenuUnconditional):
         if self.mainFrame.getActiveFit() is None or srcContext != "firepowerViewFull":
             return False
 
-        sTR = svc_TargetResists.getInstance()
-        self.patterns = sTR.getTargetResistsList()
+        sTR = svc_TargetProfile.getInstance()
+        self.patterns = sTR.getTargetProfileList()
         self.patterns.sort(key=lambda p: (p.name in ["None"], p.name))
 
         return len(self.patterns) > 0
 
     def getText(self, itmContext):
+        # We take into consideration just target resists, so call menu item accordingly
         return "Target Resists"
 
     def handleResistSwitch(self, event):
@@ -37,7 +38,7 @@ class TargetResists(ContextMenuUnconditional):
 
         sFit = Fit.getInstance()
         fitID = self.mainFrame.getActiveFit()
-        sFit.setTargetResists(fitID, pattern)
+        sFit.setTargetProfile(fitID, pattern)
         wx.PostEvent(self.mainFrame, GE.FitChanged(fitIDs=(fitID,)))
 
     def addPattern(self, rootMenu, pattern):
@@ -55,7 +56,7 @@ class TargetResists(ContextMenuUnconditional):
         sFit = Fit.getInstance()
         fitID = self.mainFrame.getActiveFit()
         f = sFit.getFit(fitID)
-        tr = f.targetResists
+        tr = f.targetProfile
 
         if tr == pattern:
             bitmap = BitmapLoader.getBitmap("state_active_small", "gui")
@@ -108,4 +109,4 @@ class TargetResists(ContextMenuUnconditional):
         return sub
 
 
-TargetResists.register()
+TargetProfile.register()

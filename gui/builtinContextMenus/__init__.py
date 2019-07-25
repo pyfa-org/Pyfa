@@ -39,7 +39,7 @@ from gui.builtinContextMenus import (  # noqa: E402,F401
     damagePatternChange,
     # Firepower panel
     factorReload,
-    targetResists,
+    targetProfile,
     # Graph extra options
     graphDmgIgnoreResists,
     graphDmgApplyProjected,

@@ -183,7 +183,7 @@ class Fighter(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
                     return True
         return False
 
-    def getVolleyParametersPerEffect(self, targetResists=None):
+    def getVolleyParametersPerEffect(self, targetProfile=None):
         if not self.active or self.amountActive <= 0:
             return {}
         if self.__baseVolley is None:
@@ -196,21 +196,21 @@ class Fighter(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
             adjustedVolley[effectID] = {}
             for volleyTime, volleyValue in effectData.items():
                 adjustedVolley[effectID][volleyTime] = DmgTypes(
-                    em=volleyValue.em * (1 - getattr(targetResists, "emAmount", 0)),
-                    thermal=volleyValue.thermal * (1 - getattr(targetResists, "thermalAmount", 0)),
-                    kinetic=volleyValue.kinetic * (1 - getattr(targetResists, "kineticAmount", 0)),
-                    explosive=volleyValue.explosive * (1 - getattr(targetResists, "explosiveAmount", 0)))
+                    em=volleyValue.em * (1 - getattr(targetProfile, "emAmount", 0)),
+                    thermal=volleyValue.thermal * (1 - getattr(targetProfile, "thermalAmount", 0)),
+                    kinetic=volleyValue.kinetic * (1 - getattr(targetProfile, "kineticAmount", 0)),
+                    explosive=volleyValue.explosive * (1 - getattr(targetProfile, "explosiveAmount", 0)))
         return adjustedVolley
 
-    def getVolleyPerEffect(self, targetResists=None):
-        volleyParams = self.getVolleyParametersPerEffect(targetResists=targetResists)
+    def getVolleyPerEffect(self, targetProfile=None):
+        volleyParams = self.getVolleyParametersPerEffect(targetProfile=targetProfile)
         volleyMap = {}
         for effectID, volleyData in volleyParams.items():
             volleyMap[effectID] = volleyData[0]
         return volleyMap
 
-    def getVolley(self, targetResists=None):
-        volleyParams = self.getVolleyParametersPerEffect(targetResists=targetResists)
+    def getVolley(self, targetProfile=None):
+        volleyParams = self.getVolleyParametersPerEffect(targetProfile=targetProfile)
         em = 0
         therm = 0
         kin = 0
@@ -222,30 +222,30 @@ class Fighter(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
             exp += volleyData[0].explosive
         return DmgTypes(em, therm, kin, exp)
 
-    def getDps(self, targetResists=None):
+    def getDps(self, targetProfile=None):
         em = 0
         thermal = 0
         kinetic = 0
         explosive = 0
-        for dps in self.getDpsPerEffect(targetResists=targetResists).values():
+        for dps in self.getDpsPerEffect(targetProfile=targetProfile).values():
             em += dps.em
             thermal += dps.thermal
             kinetic += dps.kinetic
             explosive += dps.explosive
         return DmgTypes(em=em, thermal=thermal, kinetic=kinetic, explosive=explosive)
 
-    def getDpsPerEffect(self, targetResists=None):
+    def getDpsPerEffect(self, targetProfile=None):
         if not self.active or self.amountActive <= 0:
             return {}
-        cycleParams = self.getCycleParametersPerEffectOptimizedDps(targetResists=targetResists)
+        cycleParams = self.getCycleParametersPerEffectOptimizedDps(targetProfile=targetProfile)
         dpsMap = {}
         for ability in self.abilities:
             if ability.effectID in cycleParams:
                 cycleTime = cycleParams[ability.effectID].averageTime
-                dpsMap[ability.effectID] = ability.getDps(targetResists=targetResists, cycleTimeOverride=cycleTime)
+                dpsMap[ability.effectID] = ability.getDps(targetProfile=targetProfile, cycleTimeOverride=cycleTime)
         return dpsMap
 
-    def getCycleParametersPerEffectOptimizedDps(self, targetResists=None, reloadOverride=None):
+    def getCycleParametersPerEffectOptimizedDps(self, targetProfile=None, reloadOverride=None):
         cycleParamsInfinite = self.getCycleParametersPerEffectInfinite()
         cycleParamsReload = self.getCycleParametersPerEffect(reloadOverride=reloadOverride)
         dpsMapOnlyInfinite = {}
@@ -254,10 +254,10 @@ class Fighter(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
         for ability in self.abilities:
             if ability.effectID in cycleParamsInfinite:
                 cycleTime = cycleParamsInfinite[ability.effectID].averageTime
-                dpsMapOnlyInfinite[ability.effectID] = ability.getDps(targetResists=targetResists, cycleTimeOverride=cycleTime)
+                dpsMapOnlyInfinite[ability.effectID] = ability.getDps(targetProfile=targetProfile, cycleTimeOverride=cycleTime)
             if ability.effectID in cycleParamsReload:
                 cycleTime = cycleParamsReload[ability.effectID].averageTime
-                dpsMapAllWithReloads[ability.effectID] = ability.getDps(targetResists=targetResists, cycleTimeOverride=cycleTime)
+                dpsMapAllWithReloads[ability.effectID] = ability.getDps(targetProfile=targetProfile, cycleTimeOverride=cycleTime)
         totalOnlyInfinite = sum(i.total for i in dpsMapOnlyInfinite.values())
         totalAllWithReloads = sum(i.total for i in dpsMapAllWithReloads.values())
         return cycleParamsInfinite if totalOnlyInfinite >= totalAllWithReloads else cycleParamsReload

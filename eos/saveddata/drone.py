@@ -138,7 +138,7 @@ class Drone(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
                 return True
         return False
 
-    def getVolleyParameters(self, targetResists=None):
+    def getVolleyParameters(self, targetProfile=None):
         if not self.dealsDamage or self.amountActive <= 0:
             return {0: DmgTypes(0, 0, 0, 0)}
         if self.__baseVolley is None:
@@ -150,17 +150,17 @@ class Drone(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
                 kinetic=(dmgGetter("kineticDamage", 0)) * dmgMult,
                 explosive=(dmgGetter("explosiveDamage", 0)) * dmgMult)
         volley = DmgTypes(
-            em=self.__baseVolley.em * (1 - getattr(targetResists, "emAmount", 0)),
-            thermal=self.__baseVolley.thermal * (1 - getattr(targetResists, "thermalAmount", 0)),
-            kinetic=self.__baseVolley.kinetic * (1 - getattr(targetResists, "kineticAmount", 0)),
-            explosive=self.__baseVolley.explosive * (1 - getattr(targetResists, "explosiveAmount", 0)))
+            em=self.__baseVolley.em * (1 - getattr(targetProfile, "emAmount", 0)),
+            thermal=self.__baseVolley.thermal * (1 - getattr(targetProfile, "thermalAmount", 0)),
+            kinetic=self.__baseVolley.kinetic * (1 - getattr(targetProfile, "kineticAmount", 0)),
+            explosive=self.__baseVolley.explosive * (1 - getattr(targetProfile, "explosiveAmount", 0)))
         return {0: volley}
 
-    def getVolley(self, targetResists=None):
-        return self.getVolleyParameters(targetResists=targetResists)[0]
+    def getVolley(self, targetProfile=None):
+        return self.getVolleyParameters(targetProfile=targetProfile)[0]
 
-    def getDps(self, targetResists=None):
-        volley = self.getVolley(targetResists=targetResists)
+    def getDps(self, targetProfile=None):
+        volley = self.getVolley(targetProfile=targetProfile)
         if not volley:
             return DmgTypes(0, 0, 0, 0)
         cycleParams = self.getCycleParameters()

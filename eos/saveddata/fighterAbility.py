@@ -114,7 +114,7 @@ class FighterAbility:
         speed = self.fighter.getModifiedItemAttr("{}Duration".format(self.attrPrefix))
         return speed
 
-    def getVolley(self, targetResists=None):
+    def getVolley(self, targetProfile=None):
         if not self.dealsDamage or not self.active:
             return DmgTypes(0, 0, 0, 0)
         if self.attrPrefix == "fighterAbilityLaunchBomb":
@@ -129,14 +129,14 @@ class FighterAbility:
             exp = self.fighter.getModifiedItemAttr("{}DamageExp".format(self.attrPrefix), 0)
         dmgMult = self.fighter.amountActive * self.fighter.getModifiedItemAttr("{}DamageMultiplier".format(self.attrPrefix), 1)
         volley = DmgTypes(
-            em=em * dmgMult * (1 - getattr(targetResists, "emAmount", 0)),
-            thermal=therm * dmgMult * (1 - getattr(targetResists, "thermalAmount", 0)),
-            kinetic=kin * dmgMult * (1 - getattr(targetResists, "kineticAmount", 0)),
-            explosive=exp * dmgMult * (1 - getattr(targetResists, "explosiveAmount", 0)))
+            em=em * dmgMult * (1 - getattr(targetProfile, "emAmount", 0)),
+            thermal=therm * dmgMult * (1 - getattr(targetProfile, "thermalAmount", 0)),
+            kinetic=kin * dmgMult * (1 - getattr(targetProfile, "kineticAmount", 0)),
+            explosive=exp * dmgMult * (1 - getattr(targetProfile, "explosiveAmount", 0)))
         return volley
 
-    def getDps(self, targetResists=None, cycleTimeOverride=None):
-        volley = self.getVolley(targetResists=targetResists)
+    def getDps(self, targetProfile=None, cycleTimeOverride=None):
+        volley = self.getVolley(targetProfile=targetProfile)
         if not volley:
             return DmgTypes(0, 0, 0, 0)
         cycleTime = cycleTimeOverride if cycleTimeOverride is not None else self.cycleTime

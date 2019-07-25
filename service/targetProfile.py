@@ -20,34 +20,34 @@
 import copy
 
 from eos import db
-from eos.saveddata.targetResists import TargetResists as es_TargetResists
+from eos.saveddata.targetProfile import TargetProfile as es_TargetProfile
 
 
 class ImportError(Exception):
     pass
 
 
-class TargetResists:
+class TargetProfile:
     instance = None
 
     @classmethod
     def getInstance(cls):
         if cls.instance is None:
-            cls.instance = TargetResists()
+            cls.instance = TargetProfile()
 
         return cls.instance
 
     @staticmethod
-    def getTargetResistsList():
-        return db.getTargetResistsList()
+    def getTargetProfileList():
+        return db.getTargetProfileList()
 
     @staticmethod
-    def getTargetResists(name):
-        return db.getTargetResists(name)
+    def getTargetProfile(name):
+        return db.getTargetProfile(name)
 
     @staticmethod
     def newPattern(name):
-        p = es_TargetResists(0.0, 0.0, 0.0, 0.0)
+        p = es_TargetProfile(0.0, 0.0, 0.0, 0.0)
         p.name = name
         db.save(p)
         return p
@@ -72,7 +72,7 @@ class TargetResists:
         db.save(p)
 
     def importPatterns(self, text):
-        imports, num = es_TargetResists.importPatterns(text)
+        imports, num = es_TargetProfile.importPatterns(text)
         lenImports = len(imports)
 
         if lenImports == 0:
@@ -81,6 +81,6 @@ class TargetResists:
             raise ImportError("%d patterns imported from clipboard; %d had errors" % (num, num - lenImports))
 
     def exportPatterns(self):
-        patterns = self.getTargetResistsList()
+        patterns = self.getTargetProfileList()
         patterns.sort(key=lambda p: p.name)
-        return es_TargetResists.exportPatterns(*patterns)
+        return es_TargetProfile.exportPatterns(*patterns)

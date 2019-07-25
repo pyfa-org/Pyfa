@@ -421,7 +421,7 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
                 return True
         return False
 
-    def getVolleyParameters(self, spoolOptions=None, targetResists=None, ignoreState=False):
+    def getVolleyParameters(self, spoolOptions=None, targetProfile=None, ignoreState=False):
         if self.isEmpty or (self.state < FittingModuleState.ACTIVE and not ignoreState):
             return {0: DmgTypes(0, 0, 0, 0)}
         if self.__baseVolley is None:
@@ -451,24 +451,24 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
         adjustedVolley = {}
         for volleyTime, volleyValue in self.__baseVolley.items():
             adjustedVolley[volleyTime] = DmgTypes(
-                em=volleyValue.em * spoolMultiplier * (1 - getattr(targetResists, "emAmount", 0)),
-                thermal=volleyValue.thermal * spoolMultiplier * (1 - getattr(targetResists, "thermalAmount", 0)),
-                kinetic=volleyValue.kinetic * spoolMultiplier * (1 - getattr(targetResists, "kineticAmount", 0)),
-                explosive=volleyValue.explosive * spoolMultiplier * (1 - getattr(targetResists, "explosiveAmount", 0)))
+                em=volleyValue.em * spoolMultiplier * (1 - getattr(targetProfile, "emAmount", 0)),
+                thermal=volleyValue.thermal * spoolMultiplier * (1 - getattr(targetProfile, "thermalAmount", 0)),
+                kinetic=volleyValue.kinetic * spoolMultiplier * (1 - getattr(targetProfile, "kineticAmount", 0)),
+                explosive=volleyValue.explosive * spoolMultiplier * (1 - getattr(targetProfile, "explosiveAmount", 0)))
         return adjustedVolley
 
-    def getVolley(self, spoolOptions=None, targetResists=None, ignoreState=False):
-        volleyParams = self.getVolleyParameters(spoolOptions=spoolOptions, targetResists=targetResists, ignoreState=ignoreState)
+    def getVolley(self, spoolOptions=None, targetProfile=None, ignoreState=False):
+        volleyParams = self.getVolleyParameters(spoolOptions=spoolOptions, targetProfile=targetProfile, ignoreState=ignoreState)
         if len(volleyParams) == 0:
             return DmgTypes(0, 0, 0, 0)
         return volleyParams[min(volleyParams)]
 
-    def getDps(self, spoolOptions=None, targetResists=None, ignoreState=False):
+    def getDps(self, spoolOptions=None, targetProfile=None, ignoreState=False):
         dmgDuringCycle = DmgTypes(0, 0, 0, 0)
         cycleParams = self.getCycleParameters()
         if cycleParams is None:
             return dmgDuringCycle
-        volleyParams = self.getVolleyParameters(spoolOptions=spoolOptions, targetResists=targetResists, ignoreState=ignoreState)
+        volleyParams = self.getVolleyParameters(spoolOptions=spoolOptions, targetProfile=targetProfile, ignoreState=ignoreState)
         avgCycleTime = cycleParams.averageTime
         if len(volleyParams) == 0 or avgCycleTime == 0:
             return dmgDuringCycle

@@ -63,6 +63,7 @@ class GraphColumn(ViewColumn, metaclass=ABCMeta):
             return self._getFitTooltip()
         return ''
 
+
 class DpsColumn(GraphColumn):
 
     name = 'Dps'

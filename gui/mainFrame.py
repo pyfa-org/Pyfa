@@ -57,7 +57,7 @@ from gui.marketBrowser import MarketBrowser
 from gui.multiSwitch import MultiSwitch
 from gui.patternEditor import DmgPatternEditorDlg
 from gui.preferenceDialog import PreferenceDialog
-from gui.resistsEditor import ResistsEditorDlg
+from gui.targetProfileEditor import ResistsEditorDlg
 from gui.setEditor import ImplantSetEditorDlg
 from gui.shipBrowser import ShipBrowser
 from gui.statsPane import StatsPane
@@ -397,7 +397,7 @@ class MainFrame(wx.Frame):
         dlg = AttributeEditor(self)
         dlg.Show()
 
-    def showTargetResistsEditor(self, event):
+    def showTargetProfileEditor(self, event):
         ResistsEditorDlg(self)
 
     def showDamagePatternEditor(self, event):
@@ -472,8 +472,8 @@ class MainFrame(wx.Frame):
         self.Bind(wx.EVT_MENU, self.showCharacterEditor, id=menuBar.characterEditorId)
         # Damage pattern editor
         self.Bind(wx.EVT_MENU, self.showDamagePatternEditor, id=menuBar.damagePatternEditorId)
-        # Target Resists editor
-        self.Bind(wx.EVT_MENU, self.showTargetResistsEditor, id=menuBar.targetResistsEditorId)
+        # Target Profile editor
+        self.Bind(wx.EVT_MENU, self.showTargetProfileEditor, id=menuBar.targetProfileEditorId)
         # Implant Set editor
         self.Bind(wx.EVT_MENU, self.showImplantSetEditor, id=menuBar.implantSetEditorId)
         # Import dialog

@@ -156,7 +156,7 @@ class Port:
                 # Set some more fit attributes and save
                 fit.character = sFit.character
                 fit.damagePattern = sFit.pattern
-                fit.targetResists = sFit.targetResists
+                fit.targetProfile = sFit.targetProfile
                 if len(fit.implants) > 0:
                     fit.implantLocation = ImplantLocation.FIT
                 else:
@@ -194,7 +194,7 @@ class Port:
             for fit in importData:
                 fit.character = sFit.character
                 fit.damagePattern = sFit.pattern
-                fit.targetResists = sFit.targetResists
+                fit.targetProfile = sFit.targetProfile
                 if len(fit.implants) > 0:
                     fit.implantLocation = ImplantLocation.FIT
                 else:

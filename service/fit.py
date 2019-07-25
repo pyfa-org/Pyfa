@@ -69,7 +69,7 @@ class Fit:
     def __init__(self):
         pyfalog.debug("Initialize Fit class")
         self.pattern = DamagePattern.getInstance().getDamagePattern("Uniform")
-        self.targetResists = None
+        self.targetProfile = None
         self.character = saveddata_Character.getAll5()
         self.booster = False
         self._loadedFits = WeakSet()
@@ -170,7 +170,7 @@ class Fit:
         fit = FitType(ship)
         fit.name = name if name is not None else "New %s" % fit.ship.item.name
         fit.damagePattern = self.pattern
-        fit.targetResists = self.targetResists
+        fit.targetProfile = self.targetProfile
         fit.character = self.character
         fit.booster = self.booster
         useCharImplants = self.serviceFittingOptions["useCharacterImplantsByDefault"]
@@ -358,21 +358,21 @@ class Fit:
         self.fill(fit)
 
     @staticmethod
-    def getTargetResists(fitID):
-        pyfalog.debug("Get target resists for fit ID: {0}", fitID)
+    def getTargetProfile(fitID):
+        pyfalog.debug("Get target profile for fit ID: {0}", fitID)
         if fitID is None:
             return
 
         fit = eos.db.getFit(fitID)
-        return fit.targetResists
+        return fit.targetProfile
 
-    def setTargetResists(self, fitID, pattern):
+    def setTargetProfile(self, fitID, pattern):
         pyfalog.debug("Set target resist for fit ID: {0}", fitID)
         if fitID is None:
             return
 
         fit = eos.db.getFit(fitID)
-        fit.targetResists = pattern
+        fit.targetProfile = pattern
         eos.db.commit()
 
         self.recalc(fit)

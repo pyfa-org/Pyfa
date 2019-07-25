@@ -149,12 +149,12 @@ class Fit:
         self.__capRecharge = None
 
     @property
-    def targetResists(self):
-        return self.__targetResists
+    def targetProfile(self):
+        return self.__targetProfile
 
-    @targetResists.setter
-    def targetResists(self, targetResists):
-        self.__targetResists = targetResists
+    @targetProfile.setter
+    def targetProfile(self, targetProfile):
+        self.__targetProfile = targetProfile
         self.__weaponDpsMap = {}
         self.__weaponVolleyMap = {}
         self.__droneDps = None
@@ -1497,8 +1497,8 @@ class Fit:
         weaponDps = DmgTypes(0, 0, 0, 0)
 
         for mod in self.modules:
-            weaponVolley += mod.getVolley(spoolOptions=spoolOptions, targetResists=self.targetResists)
-            weaponDps += mod.getDps(spoolOptions=spoolOptions, targetResists=self.targetResists)
+            weaponVolley += mod.getVolley(spoolOptions=spoolOptions, targetProfile=self.targetProfile)
+            weaponDps += mod.getDps(spoolOptions=spoolOptions, targetProfile=self.targetProfile)
 
         self.__weaponVolleyMap[spoolOptions] = weaponVolley
         self.__weaponDpsMap[spoolOptions] = weaponDps
@@ -1508,12 +1508,12 @@ class Fit:
         droneDps = DmgTypes(0, 0, 0, 0)
 
         for drone in self.drones:
-            droneVolley += drone.getVolley(targetResists=self.targetResists)
-            droneDps += drone.getDps(targetResists=self.targetResists)
+            droneVolley += drone.getVolley(targetProfile=self.targetProfile)
+            droneDps += drone.getDps(targetProfile=self.targetProfile)
 
         for fighter in self.fighters:
-            droneVolley += fighter.getVolley(targetResists=self.targetResists)
-            droneDps += fighter.getDps(targetResists=self.targetResists)
+            droneVolley += fighter.getVolley(targetProfile=self.targetProfile)
+            droneDps += fighter.getDps(targetProfile=self.targetProfile)
 
         self.__droneDps = droneDps
         self.__droneVolley = droneVolley
@@ -1557,7 +1557,7 @@ class Fit:
         fitCopy.mode = deepcopy(self.mode)
         fitCopy.name = "%s copy" % self.name
         fitCopy.damagePattern = self.damagePattern
-        fitCopy.targetResists = self.targetResists
+        fitCopy.targetProfile = self.targetProfile
         fitCopy.implantLocation = self.implantLocation
         fitCopy.systemSecurity = self.systemSecurity
         fitCopy.notes = self.notes
