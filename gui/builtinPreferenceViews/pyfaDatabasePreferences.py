@@ -103,7 +103,7 @@ class PFGeneralPref(PreferenceView):
         # Import default values for damage profiles
         DefaultDatabaseValues.importDamageProfileDefaults()
         # Import default values for target resist profiles
-        DefaultDatabaseValues.importResistProfileDefaults()
+        DefaultDatabaseValues.importTargetProfileDefaults()
 
     def DeleteDamagePatterns(self, event):
         question = "This is a destructive action that will delete all damage pattern profiles.\nAre you sure you want to do this?"

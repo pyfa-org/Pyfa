@@ -133,66 +133,82 @@ class DefaultDatabaseValues:
                 eos.db.save(damageProfile)
 
     @classmethod
-    def importResistProfileDefaults(cls):
-        targetResistProfileList = [["Uniform (25%)", "0.25", "0.25", "0.25", "0.25"],
-                                   ["Uniform (50%)", "0.50", "0.50", "0.50", "0.50"],
-                                   ["Uniform (75%)", "0.75", "0.75", "0.75", "0.75"],
-                                   ["Uniform (90%)", "0.90", "0.90", "0.90", "0.90"],
-                                   ["[T1 Resist]Shield", "0.0", "0.20", "0.40", "0.50"],
-                                   ["[T1 Resist]Armor", "0.50", "0.45", "0.25", "0.10"],
-                                   ["[T1 Resist]Hull", "0.33", "0.33", "0.33", "0.33"],
-                                   ["[T1 Resist]Shield (+T2 DCU)", "0.125", "0.30", "0.475", "0.562"],
-                                   ["[T1 Resist]Armor (+T2 DCU)", "0.575", "0.532", "0.363", "0.235"],
-                                   ["[T1 Resist]Hull (+T2 DCU)", "0.598", "0.598", "0.598", "0.598"],
-                                   ["[T2 Resist]Amarr (Shield)", "0.0", "0.20", "0.70", "0.875"],
-                                   ["[T2 Resist]Amarr (Armor)", "0.50", "0.35", "0.625", "0.80"],
-                                   ["[T2 Resist]Caldari (Shield)", "0.20", "0.84", "0.76", "0.60"],
-                                   ["[T2 Resist]Caldari (Armor)", "0.50", "0.8625", "0.625", "0.10"],
-                                   ["[T2 Resist]Gallente (Shield)", "0.0", "0.60", "0.85", "0.50"],
-                                   ["[T2 Resist]Gallente (Armor)", "0.50", "0.675", "0.8375", "0.10"],
-                                   ["[T2 Resist]Minmatar (Shield)", "0.75", "0.60", "0.40", "0.50"],
-                                   ["[T2 Resist]Minmatar (Armor)", "0.90", "0.675", "0.25", "0.10"],
-                                   ["[NPC][Asteroid] Angel Cartel", "0.54", "0.42", "0.37", "0.32"],
-                                   ["[NPC][Asteroid] Blood Raiders", "0.34", "0.39", "0.45", "0.52"],
-                                   ["[NPC][Asteroid] Guristas", "0.55", "0.35", "0.3", "0.48"],
-                                   ["[NPC][Asteroid] Rogue Drones", "0.35", "0.38", "0.44", "0.49"],
-                                   ["[NPC][Asteroid] Sanshas Nation", "0.35", "0.4", "0.47", "0.53"],
-                                   ["[NPC][Asteroid] Serpentis", "0.49", "0.38", "0.29", "0.51"],
-                                   ["[NPC][Deadspace] Angel Cartel", "0.59", "0.48", "0.4", "0.32"],
-                                   ["[NPC][Deadspace] Blood Raiders", "0.31", "0.39", "0.47", "0.56"],
-                                   ["[NPC][Deadspace] Guristas", "0.57", "0.39", "0.31", "0.5"],
-                                   ["[NPC][Deadspace] Rogue Drones", "0.42", "0.42", "0.47", "0.49"],
-                                   ["[NPC][Deadspace] Sanshas Nation", "0.31", "0.39", "0.47", "0.56"],
-                                   ["[NPC][Deadspace] Serpentis", "0.49", "0.38", "0.29", "0.56"],
-                                   ["[NPC][Mission] Amarr Empire", "0.34", "0.38", "0.42", "0.46"],
-                                   ["[NPC][Mission] Caldari State", "0.51", "0.38", "0.3", "0.51"],
-                                   ["[NPC][Mission] CONCORD", "0.47", "0.46", "0.47", "0.47"],
-                                   ["[NPC][Mission] Gallente Federation", "0.51", "0.38", "0.31", "0.52"],
-                                   ["[NPC][Mission] Khanid", "0.51", "0.42", "0.36", "0.4"],
-                                   ["[NPC][Mission] Minmatar Republic", "0.51", "0.46", "0.41", "0.35"],
-                                   ["[NPC][Mission] Mordus Legion", "0.32", "0.48", "0.4", "0.62"],
-                                   ["[NPC][Other] Sleeper", "0.61", "0.61", "0.61", "0.61"],
-                                   ["[NPC][Other] Sansha Incursion", "0.65", "0.63", "0.64", "0.65"],
-                                   ["[NPC][Burner] Cruor (Blood Raiders)", "0.8", "0.73", "0.69", "0.67"],
-                                   ["[NPC][Burner] Dramiel (Angel)", "0.35", "0.48", "0.61", "0.68"],
-                                   ["[NPC][Burner] Daredevil (Serpentis)", "0.69", "0.59", "0.59", "0.43"],
-                                   ["[NPC][Burner] Succubus (Sanshas Nation)", "0.35", "0.48", "0.61", "0.68"],
-                                   ["[NPC][Burner] Worm (Guristas)", "0.48", "0.58", "0.69", "0.74"],
-                                   ["[NPC][Burner] Enyo", "0.58", "0.72", "0.86", "0.24"],
-                                   ["[NPC][Burner] Hawk", "0.3", "0.86", "0.79", "0.65"],
-                                   ["[NPC][Burner] Jaguar", "0.78", "0.65", "0.48", "0.56"],
-                                   ["[NPC][Burner] Vengeance", "0.66", "0.56", "0.75", "0.86"],
-                                   ["[NPC][Burner] Ashimmu (Blood Raiders)", "0.8", "0.76", "0.68", "0.7"],
-                                   ["[NPC][Burner] Talos", "0.68", "0.59", "0.59", "0.43"],
-                                   ["[NPC][Burner] Sentinel", "0.58", "0.45", "0.52", "0.66"]]
+    def importTargetProfileDefaults(cls):
+        targetProfileList = [["Uniform (25%)", "0.25", "0.25", "0.25", "0.25"],
+                             ["Uniform (50%)", "0.50", "0.50", "0.50", "0.50"],
+                             ["Uniform (75%)", "0.75", "0.75", "0.75", "0.75"],
+                             ["Uniform (90%)", "0.90", "0.90", "0.90", "0.90"],
+                             ["[T1 Resist]Shield", "0.0", "0.20", "0.40", "0.50"],
+                             ["[T1 Resist]Armor", "0.50", "0.45", "0.25", "0.10"],
+                             ["[T1 Resist]Hull", "0.33", "0.33", "0.33", "0.33"],
+                             ["[T1 Resist]Shield (+T2 DCU)", "0.125", "0.30", "0.475", "0.562"],
+                             ["[T1 Resist]Armor (+T2 DCU)", "0.575", "0.532", "0.363", "0.235"],
+                             ["[T1 Resist]Hull (+T2 DCU)", "0.598", "0.598", "0.598", "0.598"],
+                             ["[T2 Resist]Amarr (Shield)", "0.0", "0.20", "0.70", "0.875"],
+                             ["[T2 Resist]Amarr (Armor)", "0.50", "0.35", "0.625", "0.80"],
+                             ["[T2 Resist]Caldari (Shield)", "0.20", "0.84", "0.76", "0.60"],
+                             ["[T2 Resist]Caldari (Armor)", "0.50", "0.8625", "0.625", "0.10"],
+                             ["[T2 Resist]Gallente (Shield)", "0.0", "0.60", "0.85", "0.50"],
+                             ["[T2 Resist]Gallente (Armor)", "0.50", "0.675", "0.8375", "0.10"],
+                             ["[T2 Resist]Minmatar (Shield)", "0.75", "0.60", "0.40", "0.50"],
+                             ["[T2 Resist]Minmatar (Armor)", "0.90", "0.675", "0.25", "0.10"],
+                             ["[NPC][Asteroid] Angel Cartel", "0.54", "0.42", "0.37", "0.32"],
+                             ["[NPC][Asteroid] Blood Raiders", "0.34", "0.39", "0.45", "0.52"],
+                             ["[NPC][Asteroid] Guristas", "0.55", "0.35", "0.3", "0.48"],
+                             ["[NPC][Asteroid] Rogue Drones", "0.35", "0.38", "0.44", "0.49"],
+                             ["[NPC][Asteroid] Sanshas Nation", "0.35", "0.4", "0.47", "0.53"],
+                             ["[NPC][Asteroid] Serpentis", "0.49", "0.38", "0.29", "0.51"],
+                             ["[NPC][Deadspace] Angel Cartel", "0.59", "0.48", "0.4", "0.32"],
+                             ["[NPC][Deadspace] Blood Raiders", "0.31", "0.39", "0.47", "0.56"],
+                             ["[NPC][Deadspace] Guristas", "0.57", "0.39", "0.31", "0.5"],
+                             ["[NPC][Deadspace] Rogue Drones", "0.42", "0.42", "0.47", "0.49"],
+                             ["[NPC][Deadspace] Sanshas Nation", "0.31", "0.39", "0.47", "0.56"],
+                             ["[NPC][Deadspace] Serpentis", "0.49", "0.38", "0.29", "0.56"],
+                             ["[NPC][Mission] Amarr Empire", "0.34", "0.38", "0.42", "0.46"],
+                             ["[NPC][Mission] Caldari State", "0.51", "0.38", "0.3", "0.51"],
+                             ["[NPC][Mission] CONCORD", "0.47", "0.46", "0.47", "0.47"],
+                             ["[NPC][Mission] Gallente Federation", "0.51", "0.38", "0.31", "0.52"],
+                             ["[NPC][Mission] Khanid", "0.51", "0.42", "0.36", "0.4"],
+                             ["[NPC][Mission] Minmatar Republic", "0.51", "0.46", "0.41", "0.35"],
+                             ["[NPC][Mission] Mordus Legion", "0.32", "0.48", "0.4", "0.62"],
+                             ["[NPC][Other] Sleeper", "0.61", "0.61", "0.61", "0.61"],
+                             ["[NPC][Other] Sansha Incursion", "0.65", "0.63", "0.64", "0.65"],
+                             ["[NPC][Burner] Cruor (Blood Raiders)", "0.8", "0.73", "0.69", "0.67"],
+                             ["[NPC][Burner] Dramiel (Angel)", "0.35", "0.48", "0.61", "0.68"],
+                             ["[NPC][Burner] Daredevil (Serpentis)", "0.69", "0.59", "0.59", "0.43"],
+                             ["[NPC][Burner] Succubus (Sanshas Nation)", "0.35", "0.48", "0.61", "0.68"],
+                             ["[NPC][Burner] Worm (Guristas)", "0.48", "0.58", "0.69", "0.74"],
+                             ["[NPC][Burner] Enyo", "0.58", "0.72", "0.86", "0.24"],
+                             ["[NPC][Burner] Hawk", "0.3", "0.86", "0.79", "0.65"],
+                             ["[NPC][Burner] Jaguar", "0.78", "0.65", "0.48", "0.56"],
+                             ["[NPC][Burner] Vengeance", "0.66", "0.56", "0.75", "0.86"],
+                             ["[NPC][Burner] Ashimmu (Blood Raiders)", "0.8", "0.76", "0.68", "0.7"],
+                             ["[NPC][Burner] Talos", "0.68", "0.59", "0.59", "0.43"],
+                             ["[NPC][Burner] Sentinel", "0.58", "0.45", "0.52", "0.66"]]
 
-        for targetResistProfileRow in targetResistProfileList:
-            name, em, therm, kin, exp = targetResistProfileRow
-            resistsProfile = eos.db.eos.db.getTargetProfile(name)
-            if resistsProfile is None:
-                resistsProfile = es_TargetProfile(em, therm, kin, exp)
-                resistsProfile.name = name
-                eos.db.save(resistsProfile)
+        for targetProfileRow in targetProfileList:
+            name = targetProfileRow[0]
+            em = targetProfileRow[1]
+            therm = targetProfileRow[2]
+            kin = targetProfileRow[3]
+            exp = targetProfileRow[4]
+            try:
+                maxVel = targetProfileRow[5]
+            except IndexError:
+                maxVel = None
+            try:
+                sigRad = targetProfileRow[6]
+            except IndexError:
+                sigRad = None
+            try:
+                radius = targetProfileRow[7]
+            except:
+                radius = None
+            targetProfile = eos.db.eos.db.getTargetProfile(name)
+            if targetProfile is None:
+                targetProfile = es_TargetProfile(em, therm, kin, exp, maxVel, sigRad, radius)
+                targetProfile.name = name
+                eos.db.save(targetProfile)
 
     @classmethod
     def importRequiredDefaults(cls):
