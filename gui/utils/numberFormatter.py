@@ -16,6 +16,8 @@ def formatAmount(val, prec=3, lowest=0, highest=0, currency=False, forceSign=Fal
     """
     if val is None:
         return ""
+    if val == math.inf:
+        return "\u221e" if unitName is None else "\u221e {}".format(unitName)
     # Define suffix maps
     posSuffixMap = {3: "k", 6: "M", 9: "B" if currency is True else "G"}
     negSuffixMap = {-6: '\u03bc', -3: "m"}

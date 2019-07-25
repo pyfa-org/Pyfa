@@ -17,7 +17,6 @@
 # along with pyfa.  If not, see <http://www.gnu.org/licenses/>.
 # =============================================================================
 
-
 from abc import ABCMeta, abstractmethod
 
 # noinspection PyPackageRequirements
@@ -26,6 +25,7 @@ import wx
 import eos.config
 import gui.mainFrame
 from eos.saveddata.fit import Fit
+from eos.saveddata.targetProfile import TargetProfile
 from eos.utils.spoolSupport import SpoolOptions, SpoolType
 from gui.bitmap_loader import BitmapLoader
 from gui.viewColumn import ViewColumn
@@ -47,7 +47,7 @@ class GraphColumn(ViewColumn, metaclass=ABCMeta):
         raise NotImplementedError
 
     def getText(self, stuff):
-        if isinstance(stuff, Fit):
+        if isinstance(stuff, (Fit, TargetProfile)):
             val, unit = self._getValue(stuff)
             if val is None:
                 return ''
@@ -107,8 +107,14 @@ class SpeedColumn(GraphColumn):
     def __init__(self, fittingView, params):
         super().__init__(fittingView, 1389)
 
-    def _getValue(self, fit):
-        return fit.ship.getModifiedItemAttr('maxVelocity'), 'm/s'
+    def _getValue(self, stuff):
+        if isinstance(stuff, Fit):
+            speed = stuff.ship.getModifiedItemAttr('maxVelocity')
+        elif isinstance(stuff, TargetProfile):
+            speed = stuff.maxVelocity
+        else:
+            speed = 0
+        return speed, 'm/s'
 
     def _getFitTooltip(self):
         return 'Maximum speed'
@@ -141,8 +147,14 @@ class RadiusColumn(GraphColumn):
     def __init__(self, fittingView, params):
         super().__init__(fittingView, 3266)
 
-    def _getValue(self, fit):
-        return fit.ship.getModifiedItemAttr('radius'), 'm'
+    def _getValue(self, stuff):
+        if isinstance(stuff, Fit):
+            radius = stuff.ship.getModifiedItemAttr('radius')
+        elif isinstance(stuff, TargetProfile):
+            radius = stuff.radius
+        else:
+            radius = 0
+        return radius, 'm'
 
     def _getFitTooltip(self):
         return 'Radius'
@@ -158,8 +170,14 @@ class SignatureRadiusColumn(GraphColumn):
     def __init__(self, fittingView, params):
         super().__init__(fittingView, 1390)
 
-    def _getValue(self, fit):
-        return fit.ship.getModifiedItemAttr('signatureRadius'), 'm'
+    def _getValue(self, stuff):
+        if isinstance(stuff, Fit):
+            sigRadius = stuff.ship.getModifiedItemAttr('signatureRadius')
+        elif isinstance(stuff, TargetProfile):
+            sigRadius = stuff.signatureRadius
+        else:
+            sigRadius = 0
+        return sigRadius, 'm'
 
     def _getFitTooltip(self):
         return 'Signature radius'

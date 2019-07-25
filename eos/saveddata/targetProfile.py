@@ -17,9 +17,13 @@
 # along with eos.  If not, see <http://www.gnu.org/licenses/>.
 # ===============================================================================
 
+import math
 import re
+
 from logbook import Logger
+
 import eos.db
+
 
 pyfalog = Logger(__name__)
 
@@ -36,9 +40,51 @@ class TargetProfile:
         self.thermalAmount = thermalAmount
         self.kineticAmount = kineticAmount
         self.explosiveAmount = explosiveAmount
-        self.maxVelocity = maxVelocity
-        self.signatureRadius = signatureRadius
-        self.radius = radius
+        self._maxVelocity = maxVelocity
+        self._signatureRadius = signatureRadius
+        self._radius = radius
+
+    _idealTarget = None
+
+    @classmethod
+    def getIdeal(cls):
+        if cls._idealTarget is None:
+            cls._idealTarget = cls(
+                emAmount=0,
+                thermalAmount=0,
+                kineticAmount=0,
+                explosiveAmount=0,
+                maxVelocity=0,
+                signatureRadius=None,
+                radius=0)
+            cls._idealTarget.name = 'Ideal Target'
+        return cls._idealTarget
+
+    @property
+    def maxVelocity(self):
+        return self._maxVelocity or 0
+
+    @maxVelocity.setter
+    def maxVelocity(self, val):
+        self._maxVelocity = val
+
+    @property
+    def signatureRadius(self):
+        if self._signatureRadius is None or self._signatureRadius == -1:
+            return math.inf
+        return self._signatureRadius
+
+    @signatureRadius.setter
+    def signatureRadius(self, val):
+        self._signatureRadius = val
+
+    @property
+    def radius(self):
+        return self._radius or 0
+
+    @radius.setter
+    def radius(self, val):
+        self._radius = val
 
     @classmethod
     def importPatterns(cls, text):
@@ -116,6 +162,6 @@ class TargetProfile:
     def __deepcopy__(self, memo):
         p = TargetProfile(
             self.emAmount, self.thermalAmount, self.kineticAmount, self.explosiveAmount,
-            self.maxVelocity, self.signatureRadius, self.radius)
+            self._maxVelocity, self._signatureRadius, self._radius)
         p.name = "%s copy" % self.name
         return p

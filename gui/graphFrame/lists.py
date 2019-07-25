@@ -23,6 +23,7 @@ import wx
 
 import gui.display
 import gui.globalEvents as GE
+from eos.saveddata.targetProfile import TargetProfile
 from gui.builtinShipBrowser.events import EVT_FIT_RENAMED
 from service.const import GraphCacheCleanupReason
 from service.fit import Fit
@@ -107,7 +108,10 @@ class BaseList(gui.display.Display):
             self.removeColumn(col)
         for colSpec in extraColSpecs:
             self.appendColumnBySpec(colSpec)
-        self.refresh(self.fits)
+        self.refreshView()
+
+    def refreshView(self):
+        raise NotImplementedError
 
     def OnFitRenamed(self, event):
         event.Skip()
@@ -191,9 +195,19 @@ class FitList(BaseList):
             self.fits.append(fit)
             self.update(self.fits)
 
+    def refreshView(self):
+        self.refresh(self.fits)
+
 
 class TargetList(BaseList):
 
     def __init__(self, graphFrame, parent):
         super().__init__(graphFrame, parent)
-        self.update(self.fits)
+        self.profiles = []
+        self.profiles.append(TargetProfile.getIdeal())
+        stuff = self.fits + self.profiles
+        self.update(stuff)
+
+    def refreshView(self):
+        stuff = self.fits + self.profiles
+        self.refresh(stuff)

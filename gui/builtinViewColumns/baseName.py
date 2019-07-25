@@ -27,6 +27,7 @@ from eos.saveddata.drone import Drone
 from eos.saveddata.fighter import Fighter
 from eos.saveddata.module import Module, Rack
 from eos.saveddata.fit import Fit
+from eos.saveddata.targetProfile import TargetProfile
 from eos.const import FittingSlot
 from service.fit import Fit as FitSvc
 from service.market import Market
@@ -94,6 +95,8 @@ class BaseName(ViewColumn):
                 return stuff.item.name
         elif isinstance(stuff, Implant):
             return stuff.item.name
+        elif isinstance(stuff, TargetProfile):
+            return stuff.name
         else:
             item = getattr(stuff, "item", stuff)
 

@@ -4,6 +4,7 @@ from eos.saveddata.implant import Implant
 from eos.saveddata.drone import Drone
 from eos.saveddata.module import Module, Rack
 from eos.saveddata.fit import Fit
+from eos.saveddata.targetProfile import TargetProfile
 from eos.const import FittingSlot
 from gui.viewColumn import ViewColumn
 
@@ -37,6 +38,8 @@ class BaseIcon(ViewColumn):
                                                                 "gui")
             else:
                 return self.loadIconFile(stuff.item.iconID or "")
+        elif isinstance(stuff, TargetProfile):
+            return self.fittingView.imageList.GetImageIndex("target_small", "gui")
 
         item = getattr(stuff, "item", stuff)
         return self.loadIconFile(item.iconID)

@@ -39,4 +39,8 @@ targetProfiles_table = Table("targetResists", saveddata_meta,
                              Column("modified", DateTime, nullable=True, onupdate=datetime.datetime.now)
                              )
 
-mapper(TargetProfile, targetProfiles_table)
+mapper(TargetProfile, targetProfiles_table,
+       properties={
+           "_maxVelocity": targetProfiles_table.c.maxVelocity,
+           "_signatureRadius": targetProfiles_table.c.signatureRadius,
+           "_radius": targetProfiles_table.c.radius})
