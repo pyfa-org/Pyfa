@@ -110,17 +110,14 @@ class BaseList(gui.display.Display):
             self.appendColumnBySpec(colSpec)
         self.refreshView()
 
-    def refreshView(self):
-        raise NotImplementedError
-
     def OnFitRenamed(self, event):
         event.Skip()
-        self.update(self.fits)
+        self.updateView()
 
     def OnFitChanged(self, event):
         event.Skip()
         if set(event.fitIDs).union(f.ID for f in self.fits):
-            self.update(self.fits)
+            self.updateView()
 
     def getSelectedFits(self):
         fits = []
@@ -138,7 +135,7 @@ class BaseList(gui.display.Display):
             return
         for fit in toRemove:
             self.fits.remove(fit)
-        self.update(self.fits)
+        self.updateView()
         for fit in fits:
             self.graphFrame.clearCache(reason=GraphCacheCleanupReason.fitRemoved, extraData=fit.ID)
         self.graphFrame.draw()
@@ -154,7 +151,7 @@ class BaseList(gui.display.Display):
             fit = sFit.getFit(fitID)
             if fit not in self.fits:
                 self.fits.append(fit)
-                self.update(self.fits)
+                self.updateView()
                 self.graphFrame.draw()
 
     def OnLeaveWindow(self, event):
@@ -185,6 +182,12 @@ class BaseList(gui.display.Display):
                     self.SetToolTip(self.defaultTT)
         event.Skip()
 
+    def refreshView(self):
+        raise NotImplementedError
+
+    def updateView(self):
+        raise NotImplementedError
+
 
 class FitList(BaseList):
 
@@ -193,10 +196,13 @@ class FitList(BaseList):
         fit = Fit.getInstance().getFit(self.graphFrame.mainFrame.getActiveFit())
         if fit is not None:
             self.fits.append(fit)
-            self.update(self.fits)
+            self.updateView()
 
     def refreshView(self):
         self.refresh(self.fits)
+
+    def updateView(self):
+        self.update(self.fits)
 
 
 class TargetList(BaseList):
@@ -205,10 +211,13 @@ class TargetList(BaseList):
         super().__init__(graphFrame, parent)
         self.profiles = []
         self.profiles.append(TargetProfile.getIdeal())
-        self.update(self.targets)
+        self.updateView()
 
     def refreshView(self):
         self.refresh(self.targets)
+
+    def updateView(self):
+        self.update(self.targets)
 
     @property
     def targets(self):
