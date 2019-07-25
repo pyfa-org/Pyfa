@@ -283,6 +283,8 @@ def getTpMult(fit, tgt, tgtSpeed, tpMods, tpDrones, tpFighters, distance):
                 distance=distance + atkRadius - mtpData.radius)
         appliedMultipliers.setdefault(mtpData.stackingGroup, []).append((1 + appliedMtpBoost / 100, mtpData.resAttrID))
     tpedSig = getTgtSigRadius(tgt, extraMultipliers=appliedMultipliers)
+    if tpedSig == math.inf and untpedSig == math.inf:
+        return 1
     mult = tpedSig / untpedSig
     return mult
 
