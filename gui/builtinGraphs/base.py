@@ -152,11 +152,12 @@ class FitGraph(metaclass=ABCMeta):
                 ys = [ys[0], ys[0]]
             else:
                 raise
-        # Same for NaN which means we tried to denormalize infinity values, which might be the
-        # case for the ideal target profile with infinite signature radius
-        if mainInput.unit == xSpec.unit == '%' and all(math.isnan(x) for x in xs):
-            xs = [min(mainInput.value), max(mainInput.value)]
-            ys = [ys[0], ys[0]]
+        else:
+            # Same for NaN which means we tried to denormalize infinity values, which might be the
+            # case for the ideal target profile with infinite signature radius
+            if mainInput.unit == xSpec.unit == '%' and all(math.isnan(x) for x in xs):
+                xs = [min(mainInput.value), max(mainInput.value)]
+                ys = [ys[0], ys[0]]
         return xs, ys
 
     _normalizers = {}
