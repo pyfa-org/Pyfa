@@ -18,6 +18,7 @@
 # =============================================================================
 
 
+import math
 from collections import OrderedDict
 
 # noinspection PyPackageRequirements
@@ -101,7 +102,7 @@ class ResistsEditorDlg(wx.Dialog):
         ("explosive", "Explosive resistance")])
     ATTRIBUTES = OrderedDict([
         ('maxVelocity', ('Maximum speed', 'm/s')),
-        ('signatureRadius', ('Signature radius', 'm')),
+        ('signatureRadius', ('Signature radius\nLeave blank for infinitely big value', 'm')),
         ('radius', ('Radius', 'm'))])
 
     def __init__(self, parent):
@@ -150,11 +151,11 @@ class ResistsEditorDlg(wx.Dialog):
             setattr(self, "%sEdit" % type_, wx.TextCtrl(self, wx.ID_ANY, "", wx.DefaultPosition, defSize))
             editObj = getattr(self, "%sEdit" % type_)
             editObj.SetToolTip(tooltip)
+            editObj.Bind(wx.EVT_TEXT, self.ValuesUpdated)
             resistEditSizer.Add(editObj, 0, wx.BOTTOM | wx.TOP | wx.ALIGN_CENTER_VERTICAL, 5)
             unit = wx.StaticText(self, wx.ID_ANY, "%", wx.DefaultPosition, wx.DefaultSize, 0)
             unit.SetToolTip(tooltip)
             resistEditSizer.Add(unit, 0, wx.BOTTOM | wx.TOP | wx.ALIGN_CENTER_VERTICAL, 5)
-            editObj.Bind(wx.EVT_TEXT, self.ValuesUpdated)
 
         contentSizer.Add(resistEditSizer, 1, wx.EXPAND | wx.ALL, 5)
 
@@ -176,11 +177,11 @@ class ResistsEditorDlg(wx.Dialog):
             setattr(self, "%sEdit" % attr, wx.TextCtrl(self, wx.ID_ANY, "", wx.DefaultPosition, defSize))
             editObj = getattr(self, "%sEdit" % attr)
             editObj.SetToolTip(tooltip)
+            editObj.Bind(wx.EVT_TEXT, self.ValuesUpdated)
             miscAttrSizer.Add(editObj, 0, wx.BOTTOM | wx.TOP | wx.ALIGN_CENTER_VERTICAL, 5)
             unit = wx.StaticText(self, wx.ID_ANY, unitText, wx.DefaultPosition, wx.DefaultSize, 0)
             unit.SetToolTip(tooltip)
             miscAttrSizer.Add(unit, 0, wx.BOTTOM | wx.TOP | wx.ALIGN_CENTER_VERTICAL, 5)
-            editObj.Bind(wx.EVT_TEXT, self.ValuesUpdated)
 
         contentSizer.Add(miscAttrSizer, 1, wx.EXPAND | wx.ALL, 5)
 
@@ -273,6 +274,23 @@ class ResistsEditorDlg(wx.Dialog):
                 setattr(p, "%sAmount" % type_, value / 100)
                 editObj.SetForegroundColour(self.colorReset)
 
+            for attr in self.ATTRIBUTES:
+                editObj = getattr(self, "%sEdit" % attr)
+
+                if editObj.GetValue() == "" and attr != "signatureRadius":
+                    # if we are blank, overwrite with 0 except for signatureRadius
+                    editObj.ChangeValue("0.0")
+                    editObj.SetInsertionPointEnd()
+
+                # if everything checks out, set attribute
+                value = editObj.GetValue()
+                if value == '':
+                    value = None
+                else:
+                    value = float(value)
+                setattr(p, attr, value)
+                editObj.SetForegroundColour(self.colorReset)
+
             self.stNotice.SetLabel("")
             self.totSizer.Layout()
 
@@ -280,7 +298,6 @@ class ResistsEditorDlg(wx.Dialog):
                 event.Skip()
 
             TargetProfile.getInstance().saveChanges(p)
-            print(p.ID)
             wx.PostEvent(self.mainFrame, GE.TargetProfileChanged(profileID=p.ID))
 
         except ValueError:
@@ -313,6 +330,14 @@ class ResistsEditorDlg(wx.Dialog):
             edit = getattr(self, "%sEdit" % field)
             amount = getattr(p, "%sAmount" % field) * 100
             edit.ChangeValue(str(amount))
+
+        for attr in self.ATTRIBUTES:
+            edit = getattr(self, "%sEdit" % attr)
+            amount = getattr(p, attr)
+            if amount == math.inf:
+                edit.ChangeValue('')
+            else:
+                edit.ChangeValue(str(amount))
 
         self.block = False
         self.ValuesUpdated()
