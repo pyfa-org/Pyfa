@@ -235,7 +235,11 @@ class GraphFrame(wx.Frame):
                 elif max_y_this is not None:
                     max_y = max(max_y, max_y_this)
 
-                self.subplot.plot(xs, ys)
+                if len(xs) == 1 and len(ys) == 1:
+                    self.subplot.plot(xs, ys, '.')
+                else:
+                    self.subplot.plot(xs, ys)
+
                 if target is None:
                     legend.append(self.getObjName(fit))
                 else:
