@@ -47,7 +47,7 @@ class TargetProfile:
 
     @staticmethod
     def newPattern(name):
-        p = es_TargetProfile(0.0, 0.0, 0.0, 0.0)
+        p = es_TargetProfile()
         p.name = name
         db.save(p)
         return p

@@ -19,21 +19,23 @@
 
 # noinspection PyPackageRequirements
 import wx
-from service.targetProfile import TargetProfile
-from gui.bitmap_loader import BitmapLoader
-from gui.utils.clipboard import toClipboard, fromClipboard
-from gui.builtinViews.entityEditor import EntityEditor, BaseValidator
 from logbook import Logger
+
+from gui.bitmap_loader import BitmapLoader
+from gui.builtinViews.entityEditor import EntityEditor, BaseValidator
+from gui.utils.clipboard import toClipboard, fromClipboard
+from service.targetProfile import TargetProfile
+
 
 pyfalog = Logger(__name__)
 
 
-class TargetProfileTextValidor(BaseValidator):
+class TargetProfileTextValidator(BaseValidator):
     def __init__(self):
         BaseValidator.__init__(self)
 
     def Clone(self):
-        return TargetProfileTextValidor()
+        return TargetProfileTextValidator()
 
     def Validate(self, win):
         entityEditor = win.parent
@@ -55,9 +57,10 @@ class TargetProfileTextValidor(BaseValidator):
 
 
 class TargetProfileEntityEditor(EntityEditor):
+
     def __init__(self, parent):
         EntityEditor.__init__(self, parent, "Target Profile")
-        self.SetEditorValidator(TargetProfileTextValidor)
+        self.SetEditorValidator(TargetProfileTextValidator)
 
     def getEntitiesFromContext(self):
         sTR = TargetProfile.getInstance()
@@ -85,6 +88,7 @@ class TargetProfileEntityEditor(EntityEditor):
 
 class ResistsEditorDlg(wx.Dialog):
     DAMAGE_TYPES = ("em", "thermal", "kinetic", "explosive")
+    ATTRIBUTES = ('maxVelocity', 'signatureRadius', 'radius')
 
     def __init__(self, parent):
         wx.Dialog.__init__(
@@ -169,7 +173,7 @@ class ResistsEditorDlg(wx.Dialog):
             btn.Layout()
             setattr(self, name, btn)
             btn.Enable(True)
-            btn.SetToolTip("%s patterns %s clipboard" % (name, direction))
+            btn.SetToolTip("%s profiles %s clipboard" % (name, direction))
             footerSizer.Add(btn, 0, wx.ALIGN_CENTER_HORIZONTAL | wx.ALIGN_RIGHT)
             btn.Bind(wx.EVT_BUTTON, getattr(self, "{}Patterns".format(name.lower())))
 
@@ -274,7 +278,7 @@ class ResistsEditorDlg(wx.Dialog):
             sTR = TargetProfile.getInstance()
             try:
                 sTR.importPatterns(text)
-                self.stNotice.SetLabel("Patterns successfully imported from clipboard")
+                self.stNotice.SetLabel("Profiles successfully imported from clipboard")
             except ImportError as e:
                 pyfalog.error(e)
                 self.stNotice.SetLabel(str(e))
@@ -292,7 +296,7 @@ class ResistsEditorDlg(wx.Dialog):
         """Event fired when export to clipboard button is clicked"""
         sTR = TargetProfile.getInstance()
         toClipboard(sTR.exportPatterns())
-        self.stNotice.SetLabel("Patterns exported to clipboard")
+        self.stNotice.SetLabel("Profiles exported to clipboard")
 
     def kbEvent(self, event):
         keycode = event.GetKeyCode()
