@@ -17,13 +17,19 @@
 # along with pyfa.    If not, see <http://www.gnu.org/licenses/>.
 # =============================================================================
 
+
+from collections import OrderedDict
+
 # noinspection PyPackageRequirements
 import wx
 from logbook import Logger
 
+import gui.mainFrame
+import gui.globalEvents as GE
 from gui.bitmap_loader import BitmapLoader
 from gui.builtinViews.entityEditor import EntityEditor, BaseValidator
 from gui.utils.clipboard import toClipboard, fromClipboard
+from service.fit import Fit
 from service.targetProfile import TargetProfile
 
 
@@ -31,6 +37,7 @@ pyfalog = Logger(__name__)
 
 
 class TargetProfileTextValidator(BaseValidator):
+
     def __init__(self):
         BaseValidator.__init__(self)
 
@@ -87,16 +94,26 @@ class TargetProfileEntityEditor(EntityEditor):
 
 
 class ResistsEditorDlg(wx.Dialog):
-    DAMAGE_TYPES = ("em", "thermal", "kinetic", "explosive")
-    ATTRIBUTES = ('maxVelocity', 'signatureRadius', 'radius')
+    DAMAGE_TYPES = OrderedDict([
+        ("em", "EM resistance"),
+        ("thermal", "Thermal resistance"),
+        ("kinetic", "Kinetic resistance"),
+        ("explosive", "Explosive resistance")])
+    ATTRIBUTES = OrderedDict([
+        ('maxVelocity', ('Maximum speed', 'm/s')),
+        ('signatureRadius', ('Signature radius', 'm')),
+        ('radius', ('Radius', 'm'))])
 
     def __init__(self, parent):
         wx.Dialog.__init__(
             self, parent, id=wx.ID_ANY,
-            # Dropdown list widget is scaled to its longest content line on GTK, adapt to that
             title="Target Profile Editor",
-            size=wx.Size(500, 240) if "wxGTK" in wx.PlatformInfo else wx.Size(350, 240))
+            # Dropdown list widget is scaled to its longest content line on GTK, adapt to that.
+            # Also due to whatever reason, any vertical size we specify here is added as padding
+            # as blank panel space, so vertical size is 0 for gtk
+            size=wx.Size(500, 0) if "wxGTK" in wx.PlatformInfo else wx.Size(350, 240))
 
+        self.mainFrame = gui.mainFrame.MainFrame.getInstance()
         self.block = False
         self.SetSizeHints(wx.DefaultSize, wx.DefaultSize)
 
@@ -125,21 +142,51 @@ class ResistsEditorDlg(wx.Dialog):
             else:
                 style = wx.ALIGN_CENTER_VERTICAL | wx.ALIGN_RIGHT
                 border = 5
-
+            tooltip = wx.ToolTip(self.DAMAGE_TYPES[type_])
             bmp = wx.StaticBitmap(self, wx.ID_ANY, BitmapLoader.getBitmap("%s_big" % type_, "gui"))
+            bmp.SetToolTip(tooltip)
             resistEditSizer.Add(bmp, 0, style, border)
             # set text edit
             setattr(self, "%sEdit" % type_, wx.TextCtrl(self, wx.ID_ANY, "", wx.DefaultPosition, defSize))
             editObj = getattr(self, "%sEdit" % type_)
+            editObj.SetToolTip(tooltip)
             resistEditSizer.Add(editObj, 0, wx.BOTTOM | wx.TOP | wx.ALIGN_CENTER_VERTICAL, 5)
-            resistEditSizer.Add(wx.StaticText(self, wx.ID_ANY, "%", wx.DefaultPosition, wx.DefaultSize, 0), 0,
-                                wx.BOTTOM | wx.TOP | wx.ALIGN_CENTER_VERTICAL, 5)
+            unit = wx.StaticText(self, wx.ID_ANY, "%", wx.DefaultPosition, wx.DefaultSize, 0)
+            unit.SetToolTip(tooltip)
+            resistEditSizer.Add(unit, 0, wx.BOTTOM | wx.TOP | wx.ALIGN_CENTER_VERTICAL, 5)
             editObj.Bind(wx.EVT_TEXT, self.ValuesUpdated)
+
+        contentSizer.Add(resistEditSizer, 1, wx.EXPAND | wx.ALL, 5)
+
+        miscAttrSizer = wx.FlexGridSizer(1, 9, 0, 2)
+        miscAttrSizer.AddGrowableCol(0)
+        miscAttrSizer.AddGrowableCol(3)
+        miscAttrSizer.AddGrowableCol(6)
+        miscAttrSizer.AddGrowableCol(8)
+        miscAttrSizer.SetFlexibleDirection(wx.BOTH)
+        miscAttrSizer.SetNonFlexibleGrowMode(wx.FLEX_GROWMODE_SPECIFIED)
+
+        for attr in self.ATTRIBUTES:
+            ttText, unitText = self.ATTRIBUTES[attr]
+            tooltip = wx.ToolTip(ttText)
+            bmp = wx.StaticBitmap(self, wx.ID_ANY, BitmapLoader.getBitmap("%s_big" % attr, "gui"))
+            bmp.SetToolTip(tooltip)
+            miscAttrSizer.Add(bmp, 0, wx.ALIGN_CENTER_VERTICAL | wx.ALIGN_RIGHT, 5)
+            # set text edit
+            setattr(self, "%sEdit" % attr, wx.TextCtrl(self, wx.ID_ANY, "", wx.DefaultPosition, defSize))
+            editObj = getattr(self, "%sEdit" % attr)
+            editObj.SetToolTip(tooltip)
+            miscAttrSizer.Add(editObj, 0, wx.BOTTOM | wx.TOP | wx.ALIGN_CENTER_VERTICAL, 5)
+            unit = wx.StaticText(self, wx.ID_ANY, unitText, wx.DefaultPosition, wx.DefaultSize, 0)
+            unit.SetToolTip(tooltip)
+            miscAttrSizer.Add(unit, 0, wx.BOTTOM | wx.TOP | wx.ALIGN_CENTER_VERTICAL, 5)
+            editObj.Bind(wx.EVT_TEXT, self.ValuesUpdated)
+
+        contentSizer.Add(miscAttrSizer, 1, wx.EXPAND | wx.ALL, 5)
 
         # Color we use to reset invalid value color
         self.colorReset = wx.SystemSettings.GetColour(wx.SYS_COLOUR_WINDOWTEXT)
 
-        contentSizer.Add(resistEditSizer, 1, wx.EXPAND | wx.ALL, 5)
         self.slfooter = wx.StaticLine(self)
         contentSizer.Add(self.slfooter, 0, wx.EXPAND | wx.TOP, 5)
 
@@ -187,6 +234,7 @@ class ResistsEditorDlg(wx.Dialog):
         self.CenterOnParent()
 
         self.Bind(wx.EVT_CHOICE, self.patternChanged)
+        self.Bind(wx.EVT_CLOSE, self.onClose)
         self.Bind(wx.EVT_CHAR_HOOK, self.kbEvent)
 
         self.patternChanged()
@@ -232,6 +280,8 @@ class ResistsEditorDlg(wx.Dialog):
                 event.Skip()
 
             TargetProfile.getInstance().saveChanges(p)
+            print(p.ID)
+            wx.PostEvent(self.mainFrame, GE.TargetProfileChanged(profileID=p.ID))
 
         except ValueError:
             editObj.SetForegroundColour(wx.RED)
@@ -306,5 +356,15 @@ class ResistsEditorDlg(wx.Dialog):
             return
         event.Skip()
 
+    def onClose(self, event):
+        self.processChanges()
+        event.Skip()
+
     def closeWindow(self):
-        self.Destroy()
+        self.processChanges()
+        self.Close()
+
+    def processChanges(self):
+        changedFitIDs = Fit.getInstance().processTargetProfileChange()
+        if changedFitIDs:
+            wx.PostEvent(self.mainFrame, GE.FitChanged(fitIDs=changedFitIDs))

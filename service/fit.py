@@ -255,6 +255,18 @@ class Fit:
                 fitIDs.add(fit.ID)
         return fitIDs
 
+    def processTargetProfileChange(self):
+        fitIDs = set()
+        for fit in set(self._loadedFits):
+            if fit is None:
+                continue
+            if not fit.targetProfile:
+                continue
+            if fit.calculated:
+                self.recalc(fit)
+                fitIDs.add(fit.ID)
+        return fitIDs
+
     def switchFit(self, fitID):
         pyfalog.debug("Switching fit to fit ID: {0}", fitID)
         if fitID is None:
