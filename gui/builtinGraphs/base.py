@@ -18,6 +18,7 @@
 # =============================================================================
 
 
+import math
 from abc import ABCMeta, abstractmethod
 from collections import OrderedDict, namedtuple
 
@@ -151,6 +152,11 @@ class FitGraph(metaclass=ABCMeta):
                 ys = [ys[0], ys[0]]
             else:
                 raise
+        # Same for NaN which means we tried to denormalize infinity values, which might be the
+        # case for the ideal target profile with infinite signature radius
+        if mainInput.unit == xSpec.unit == '%' and all(math.isnan(x) for x in xs):
+            xs = [min(mainInput.value), max(mainInput.value)]
+            ys = [ys[0], ys[0]]
         return xs, ys
 
     _normalizers = {}
@@ -225,7 +231,7 @@ class FitGraph(metaclass=ABCMeta):
         rangeHigh = max(valRange)
         # Amount is amount of ranges between points here, not amount of points
         step = (rangeHigh - rangeLow) / segments
-        if step == 0:
+        if step == 0 or math.isnan(step):
             yield rangeLow
         else:
             current = rangeLow
