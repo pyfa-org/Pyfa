@@ -109,10 +109,8 @@ class ResistsEditorDlg(wx.Dialog):
         wx.Dialog.__init__(
             self, parent, id=wx.ID_ANY,
             title="Target Profile Editor",
-            # Dropdown list widget is scaled to its longest content line on GTK, adapt to that.
-            # Also due to whatever reason, any vertical size we specify here is added as padding
-            # as blank panel space, so vertical size is 0 for gtk
-            size=wx.Size(500, 0) if "wxGTK" in wx.PlatformInfo else wx.Size(350, 240))
+            # Dropdown list widget is scaled to its longest content line on GTK, adapt to that
+            size=wx.Size(500, 240) if "wxGTK" in wx.PlatformInfo else wx.Size(350, 240))
 
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
         self.block = False
@@ -143,18 +141,18 @@ class ResistsEditorDlg(wx.Dialog):
             else:
                 style = wx.ALIGN_CENTER_VERTICAL | wx.ALIGN_RIGHT
                 border = 5
-            tooltip = wx.ToolTip(self.DAMAGE_TYPES[type_])
+            ttText = self.DAMAGE_TYPES[type_]
             bmp = wx.StaticBitmap(self, wx.ID_ANY, BitmapLoader.getBitmap("%s_big" % type_, "gui"))
-            bmp.SetToolTip(tooltip)
+            bmp.SetToolTip(wx.ToolTip(ttText))
             resistEditSizer.Add(bmp, 0, style, border)
             # set text edit
             setattr(self, "%sEdit" % type_, wx.TextCtrl(self, wx.ID_ANY, "", wx.DefaultPosition, defSize))
             editObj = getattr(self, "%sEdit" % type_)
-            editObj.SetToolTip(tooltip)
+            editObj.SetToolTip(wx.ToolTip(ttText))
             editObj.Bind(wx.EVT_TEXT, self.ValuesUpdated)
             resistEditSizer.Add(editObj, 0, wx.BOTTOM | wx.TOP | wx.ALIGN_CENTER_VERTICAL, 5)
             unit = wx.StaticText(self, wx.ID_ANY, "%", wx.DefaultPosition, wx.DefaultSize, 0)
-            unit.SetToolTip(tooltip)
+            unit.SetToolTip(wx.ToolTip(ttText))
             resistEditSizer.Add(unit, 0, wx.BOTTOM | wx.TOP | wx.ALIGN_CENTER_VERTICAL, 5)
 
         contentSizer.Add(resistEditSizer, 1, wx.EXPAND | wx.ALL, 5)
@@ -169,18 +167,17 @@ class ResistsEditorDlg(wx.Dialog):
 
         for attr in self.ATTRIBUTES:
             ttText, unitText = self.ATTRIBUTES[attr]
-            tooltip = wx.ToolTip(ttText)
             bmp = wx.StaticBitmap(self, wx.ID_ANY, BitmapLoader.getBitmap("%s_big" % attr, "gui"))
-            bmp.SetToolTip(tooltip)
+            bmp.SetToolTip(wx.ToolTip(ttText))
             miscAttrSizer.Add(bmp, 0, wx.ALIGN_CENTER_VERTICAL | wx.ALIGN_RIGHT, 5)
             # set text edit
             setattr(self, "%sEdit" % attr, wx.TextCtrl(self, wx.ID_ANY, "", wx.DefaultPosition, defSize))
             editObj = getattr(self, "%sEdit" % attr)
-            editObj.SetToolTip(tooltip)
+            editObj.SetToolTip(wx.ToolTip(ttText))
             editObj.Bind(wx.EVT_TEXT, self.ValuesUpdated)
             miscAttrSizer.Add(editObj, 0, wx.BOTTOM | wx.TOP | wx.ALIGN_CENTER_VERTICAL, 5)
             unit = wx.StaticText(self, wx.ID_ANY, unitText, wx.DefaultPosition, wx.DefaultSize, 0)
-            unit.SetToolTip(tooltip)
+            unit.SetToolTip(wx.ToolTip(ttText))
             miscAttrSizer.Add(unit, 0, wx.BOTTOM | wx.TOP | wx.ALIGN_CENTER_VERTICAL, 5)
 
         contentSizer.Add(miscAttrSizer, 1, wx.EXPAND | wx.ALL, 5)
@@ -387,7 +384,7 @@ class ResistsEditorDlg(wx.Dialog):
 
     def closeWindow(self):
         self.processChanges()
-        self.Close()
+        self.Destroy()
 
     def processChanges(self):
         changedFitIDs = Fit.getInstance().processTargetProfileChange()
