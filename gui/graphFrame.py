@@ -36,7 +36,6 @@ from service.fit import Fit
 pyfalog = Logger(__name__)
 
 try:
-    pyfalog.warning('before mpl import')
     import matplotlib as mpl
 
     mpl_version = int(mpl.__version__[0]) or -1
@@ -45,14 +44,10 @@ try:
         mplImported = True
     else:
         mplImported = False
-    pyfalog.warning('before patch import')
     from matplotlib.patches import Patch
 
-    pyfalog.warning('before canvas import')
     from matplotlib.backends.backend_wxagg import FigureCanvasWxAgg as Canvas
-    pyfalog.warning('before figure import')
     from matplotlib.figure import Figure
-    pyfalog.warning('done')
 
     graphFrame_enabled = True
     mplImported = True
@@ -62,7 +57,6 @@ except ImportError as e:
     Patch = mpl = Canvas = Figure = None
     graphFrame_enabled = False
     mplImported = False
-    raise
 except Exception:
     # We can get exceptions deep within matplotlib. Catch those.  See GH #1046
     tb = traceback.format_exc()
