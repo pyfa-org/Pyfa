@@ -30,7 +30,7 @@ added_files = [
 
 import_these = [
     'numpy.core._dtype_ctypes',  # https://github.com/pyinstaller/pyinstaller/issues/3982
-    'numpy.random.common',  # https://github.com/pyfa-org/Pyfa/issues/1998
+    'numpy.random.mtrand',  # https://github.com/pyfa-org/Pyfa/issues/1998
     'sqlalchemy.ext.baked'  # windows build doesn't launch without if when using sqlalchemy 1.3.x
 ]
 
