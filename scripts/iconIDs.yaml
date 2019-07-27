@@ -1,4 +1,7 @@
 0:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Unknown
   iconFile: res:/ui/texture/icons/7_64_15.png
 15:
@@ -11,6 +14,9 @@
   description: CargoContainer
   iconFile: res:/ui/texture/icons/26_64_11.png
 21:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Money - Money
   iconFile: res:/ui/texture/icons/6_64_3.png
 22:
@@ -108,6 +114,7 @@
   - blueprintCopy
   description: Module - DamageControl
   foregrounds:
+  - abyssal
   - faction
   - officer
   - storyline
@@ -2345,6 +2352,7 @@
   - blueprintCopy
   description: Tracking Disrupter - Unknown
   foregrounds:
+  - faction
   - storyline
   - structureTech1
   - structureTech2
@@ -3476,9 +3484,13 @@
   description: Com
   iconFile: res:/ui/texture/icons/50_64_4.png
 2665:
+  backgrounds:
+  - reaction
   description: Srea
   iconFile: res:/ui/texture/icons/50_64_5.png
 2666:
+  backgrounds:
+  - reaction
   description: Crea
   iconFile: res:/ui/texture/icons/50_64_6.png
 2667:
@@ -5251,18 +5263,28 @@
   description: AncientIntactPropulsionSalvage
   iconFile: res:/ui/texture/icons/82_64_6.png
 3734:
+  backgrounds:
+  - relic
   description: defensive ancient relic - AncientRelicDefensive
   iconFile: res:/ui/texture/icons/84_64_6.png
 3735:
+  backgrounds:
+  - relic
   description: electronic ancient relic - AncientRelicElectronic
   iconFile: res:/ui/texture/icons/84_64_4.png
 3736:
+  backgrounds:
+  - relic
   description: engineering ancient relic - AncientRelicEngineering
   iconFile: res:/ui/texture/icons/84_64_2.png
 3737:
+  backgrounds:
+  - relic
   description: offensive ancient relic - AncientRelicOffensive
   iconFile: res:/ui/texture/icons/84_64_3.png
 3738:
+  backgrounds:
+  - relic
   description: propulsion ancient relic - AncientRelicPropulsion
   iconFile: res:/ui/texture/icons/84_64_7.png
 3739:
@@ -5382,6 +5404,8 @@
   - tech3
   iconFile: res:/ui/texture/icons/89_128_4.png
 3766:
+  backgrounds:
+  - relic
   description: ancient hull relic - AncientRelicHull
   iconFile: res:/ui/texture/icons/84_64_16.png
 3801:
@@ -9133,6 +9157,9 @@
   - structureTech1
   iconFile: res:/ui/texture/icons/127_64_4.png
 21599:
+  backgrounds:
+  - blueprint
+  - blueprintCopy
   description: Structure Rig Cloning
   iconFile: res:/ui/texture/icons/127_64_5.png
 21600:
@@ -10018,6 +10045,7 @@
   - blueprintCopy
   description: Assault Damage Control
   foregrounds:
+  - abyssal
   - faction
   - tech2
   iconFile: res:/UI/Texture/Icons/Modules/AssaultDamageControl.png
@@ -10164,6 +10192,7 @@
   description: Disintegrator Large
   foregrounds:
   - faction
+  - officer
   - tech2
   iconFile: res:/ui/texture/icons/Modules/disintegratorCannonL.png
 21922:
@@ -10173,6 +10202,7 @@
   description: Disintegrator Medium
   foregrounds:
   - faction
+  - officer
   - tech2
   iconFile: res:/ui/texture/icons/Modules/disintegratorCannonM.png
 21923:
@@ -10182,6 +10212,7 @@
   description: Disintegrator Small
   foregrounds:
   - faction
+  - officer
   - tech2
   iconFile: res:/ui/texture/icons/Modules/disintegratorCannonS.png
 21924:
@@ -10592,3 +10623,161 @@
 22104:
   description: Inventory Icon Guardians Gala Facial Augmentation Crate
   iconFile: res:/UI/Texture/Icons/Inventory/FacialAugmentPurple.png
+22105:
+  description: 50130_Female_TopMiddle_TshirtF01_Types_TshirtF01_PWT.png
+  iconFile: res:/UI/Asset/mannequin/topmiddle/50130_Female_TopMiddle_TshirtF01_Types_TshirtF01_PWT.png
+22106:
+  description: 50131_Male_topMiddle_TshirtM01_Types_TshirtM01_PWT.png
+  iconFile: res:/UI/Asset/mannequin/topmiddle/50131_Male_topMiddle_TshirtM01_Types_TshirtM01_PWT.png
+22107:
+  description: 50132_Female_hair_HeadWear_Cap_F01_Types_HeadWear_Cap_F01_PWT.png
+  iconFile: res:/UI/Asset/mannequin/hair/50132_Female_hair_HeadWear_Cap_F01_Types_HeadWear_Cap_F01_PWT.png
+22108:
+  description: 50133_Male_hair_HeadWear_Cap_M01_Types_HeadWear_Cap_M01_PWT.png
+  iconFile: res:/UI/Asset/mannequin/hair/50133_Male_hair_HeadWear_Cap_M01_Types_HeadWear_Cap_M01_PWT.png
+22111:
+  description: Triglavian Comms Device - Perun
+  iconFile: res:/ui/texture/icons/inventory/triglavianCommunicator_Perun.png
+22112:
+  description: Triglavian Comms Device - Svarog
+  iconFile: res:/ui/texture/icons/inventory/triglavianCommunicator_Svarog.png
+22114:
+  description: Triglavian Comms Device - Veles
+  iconFile: res:/ui/texture/icons/inventory/triglavianCommunicator_Veles.png
+22115:
+  description: 52188_Female_Makeup_Augmentations_Face_Paint_F01_Types_Face_Paint_F01_V31_XVI_FF.png
+  iconFile: res:/UI/Asset/mannequin/makeup_augmentations/52188_Female_Makeup_Augmentations_Face_Paint_F01_Types_Face_Paint_F01_V31_XVI_FF.png
+22116:
+  description: 52189_Male_Makeup_Augmentations_Face_Paint_M01_Types_Face_Paint_M01_V32_XVI_FF.png
+  iconFile: res:/UI/Asset/mannequin/makeup_augmentations/52189_Male_Makeup_Augmentations_Face_Paint_M01_Types_Face_Paint_M01_V32_XVI_FF.png
+22117:
+  description: 52198_Female_TopMiddle_TshirtF01_Types_TshirtF01_XVI.png
+  iconFile: res:/UI/Asset/mannequin/topmiddle/52198_Female_TopMiddle_TshirtF01_Types_TshirtF01_XVI.png
+22119:
+  description: 52200_Male_topMiddle_TshirtM01_Types_TshirtM01_XVI.png
+  iconFile: res:/UI/Asset/mannequin/topmiddle/52200_Male_topMiddle_TshirtM01_Types_TshirtM01_XVI.png
+22120:
+  description: 52201_Female_hair_HeadWear_Cap_F01_Types_HeadWear_Cap_F01_XVI.png
+  iconFile: res:/UI/Asset/mannequin/hair/52201_Female_hair_HeadWear_Cap_F01_Types_HeadWear_Cap_F01_XVI.png
+22121:
+  description: 52202_Male_hair_HeadWear_Cap_M01_Types_HeadWear_Cap_M01_XVI.png
+  iconFile: res:/UI/Asset/mannequin/hair/52202_Male_hair_HeadWear_Cap_M01_Types_HeadWear_Cap_M01_XVI.png
+24116:
+  iconFile: res:/UI/Texture/Icons/Inventory/cratePermabandCap.png
+24117:
+  iconFile: res:/UI/Texture/Icons/Inventory/cratePermabandShirt.png
+24118:
+  iconFile: res:/UI/Texture/Icons/Inventory/crateSilverMonocle.png
+24119:
+  iconFile: res:/UI/Texture/Icons/Inventory/crateXVICap.png
+24120:
+  iconFile: res:/UI/Texture/Icons/Inventory/crateXVIShirt.png
+24121:
+  iconFile: res:/UI/Texture/Icons/Inventory/FacialAugmentXVI.png
+24122:
+  iconFile: res:/UI/Texture/Icons/Inventory/crateApotheosis+SKIN.png
+24123:
+  iconFile: res:/UI/Texture/Icons/Inventory/crateGnosis+SKIN.png
+24124:
+  iconFile: res:/UI/Texture/Icons/Inventory/cratePraxis+SKIN.png
+24125:
+  iconFile: res:/UI/Texture/Icons/Inventory/crateSunesis+SKIN.png
+24128:
+  description: Decayed Assault Damage Control Mutaplasmid
+  iconFile: res:/UI/Texture/Icons/Modules/mutaDecayedAssaultDamageControl.png
+24129:
+  description: Decayed Damage Control Mutaplasmid
+  iconFile: res:/UI/Texture/Icons/Modules/mutaDecayedDamageControl.png
+24130:
+  description: Gravid Assault Damage Control Mutaplasmid
+  iconFile: res:/UI/Texture/Icons/Modules/mutaGravidAssaultDamageControl.png
+24131:
+  description: Gravid Damage Control Mutaplasmid
+  iconFile: res:/UI/Texture/Icons/Modules/mutaGravidDamageControl.png
+24132:
+  description: Unstable Assault Damage Control Mutaplasmid
+  iconFile: res:/UI/Texture/Icons/Modules/mutaUnstableAssaultDamageControl.png
+24133:
+  description: Unstable Damage Control Mutaplasmid
+  iconFile: res:/UI/Texture/Icons/Modules/mutaUnstableDamageControl.png
+24135:
+  description: Triglavian Faction Logo
+  iconFile: res:/ui/texture/icons/triglavianCollective.png
+24136:
+  description: Talassonite
+  iconFile: res:/UI/Texture/Icons/Inventory/Asteroid_Talassonite.png
+24137:
+  description: Triglavian Invention Datacore
+  iconFile: res:/UI/Texture/Icons/Inventory/IndustryDatacore.png
+24138:
+  description: Radiation Absorption Thruster
+  iconFile: res:/UI/Texture/Icons/Inventory/Radiation_absorption_thruster.png
+24139:
+  description: Lattice Locked Dekaisogen
+  iconFile: res:/UI/Texture/Icons/Inventory/Lattice_locked_dekaisogen.png
+24140:
+  description: Singularity Radiation Converter
+  iconFile: res:/UI/Texture/Icons/Inventory/Singularity_radiation_convertor.png
+24141:
+  description: Trinary State Processor
+  iconFile: res:/UI/Texture/Icons/Inventory/Trinary_state_processor.png
+24142:
+  description: Zero Point Field Manipulator
+  iconFile: res:/UI/Texture/Icons/Inventory/Zero_point_field_manipulator.png
+24143:
+  description: Bezdnacine
+  iconFile: res:/UI/Texture/Icons/Inventory/Asteroid_Bezdnacine.png
+24144:
+  description: Rakovene
+  iconFile: res:/UI/Texture/Icons/Inventory/Asteroid_Rakovene.png
+24146:
+  description: Meta Group - Faction
+  iconFile: res:/UI/Texture/Icons/73_16_246.png
+24147:
+  description: Meta Group - Storyline
+  iconFile: res:/UI/Texture/Icons/73_16_245.png
+24148:
+  description: Meta Group - Deadspace
+  iconFile: res:/UI/Texture/Icons/73_16_247.png
+24149:
+  description: Meta Group - Officer
+  iconFile: res:/UI/Texture/Icons/73_16_248.png
+24150:
+  description: Meta Group - Tech2
+  iconFile: res:/UI/Texture/Icons/73_16_242.png
+24151:
+  description: Meta Group - Tech3
+  iconFile: res:/UI/Texture/Icons/73_16_243.png
+24152:
+  description: Meta Group - Abyssal
+  iconFile: res:/UI/Texture/Icons/ItemOverlay/abyssal.png
+24153:
+  description: Meta Group - Premium
+  iconFile: res:/UI/Texture/Icons/ItemOverlay/nes.png
+24154:
+  description: Meta Group - Limited Time
+  iconFile: res:/UI/Texture/Icons/ItemOverlay/timeLimited.png
+24155:
+  description: Meta Group - Faction (Structure)
+  iconFile: res:/UI/Texture/Shared/structureOverlayFaction.png
+24156:
+  description: Meta Group - Tech2 (Structure)
+  iconFile: res:/UI/Texture/Shared/structureOverlayT2.png
+24158:
+  description: 25k Skill Point Item
+  iconFile: res:/UI/Texture/Icons/SkillPoints/25k.png
+24159:
+  description: 50k Skill Point Item
+  iconFile: res:/UI/Texture/Icons/SkillPoints/50k.png
+24160:
+  description: 100k Skill Point Item
+  iconFile: res:/UI/Texture/Icons/SkillPoints/100k.png
+24161:
+  description: 150k Skill Point Item
+  iconFile: res:/UI/Texture/Icons/SkillPoints/150k.png
+24162:
+  description: 250k Skill Point Item
+  iconFile: res:/UI/Texture/Icons/SkillPoints/250k.png
+24163:
+  description: 500k Skill Point Item
+  iconFile: res:/UI/Texture/Icons/SkillPoints/500k.png

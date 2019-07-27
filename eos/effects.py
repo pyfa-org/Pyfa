@@ -35811,3 +35811,25 @@ class Effect7228(BaseEffect):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Medium Precursor Weapon'),
                                       'maxRange', ship.getModifiedItemAttr('eliteBonusHeavyGunship2'),
                                       skill='Heavy Assault Cruisers')
+
+
+class Effect7230(BaseEffect):
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context):
+        fit.drones.filteredItemBoost(lambda mod: mod.item.requiresSkill('Drones'),
+                                     'trackingSpeed', ship.getModifiedItemAttr('shipBonusGC2'),
+                                     skill='Gallente Cruiser')
+
+
+class Effect7231(BaseEffect):
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context):
+        fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Repair Systems'),
+                                      'armorDamageAmount', ship.getModifiedItemAttr('shipBonusGC3'),
+                                      skill='Gallente Cruiser')
