@@ -1588,14 +1588,13 @@ class Effect562(BaseEffect):
     shipHTDmgBonusfixedGC
 
     Used by:
+    Variations of ship: Vexor (3 of 4)
     Ship: Adrestia
     Ship: Arazu
     Ship: Deimos
     Ship: Enforcer
     Ship: Exequror Navy Issue
-    Ship: Guardian-Vexor
     Ship: Thorax
-    Ship: Vexor
     """
 
     type = 'passive'
@@ -6680,7 +6679,6 @@ class Effect2250(BaseEffect):
 
     Used by:
     Ship: Vexor
-    Ship: Vexor Navy Issue
     """
 
     type = 'passive'
@@ -7819,7 +7817,7 @@ class Effect2737(BaseEffect):
     boosterShieldCapacityPenalty
 
     Used by:
-    Implants from group: Booster (12 of 67)
+    Implants from group: Booster (12 of 69)
     """
 
     attr = 'boosterShieldCapacityPenalty'
@@ -19970,22 +19968,6 @@ class Effect5388(BaseEffect):
                                         'aoeCloudSize', ship.getModifiedItemAttr('shipBonusCC2'), skill='Caldari Cruiser', **kwargs)
 
 
-class Effect5389(BaseEffect):
-    """
-    shipBonusDroneTrackingGC
-
-    Used by:
-    Ship: Vexor Navy Issue
-    """
-
-    type = 'passive'
-
-    @staticmethod
-    def handler(fit, ship, context, **kwargs):
-        fit.drones.filteredItemBoost(lambda drone: drone.item.requiresSkill('Drones'),
-                                     'trackingSpeed', ship.getModifiedItemAttr('shipBonusGC'), skill='Gallente Cruiser', **kwargs)
-
-
 class Effect5397(BaseEffect):
     """
     baseMaxScanDeviationModifierModuleOnline2None
@@ -23459,6 +23441,7 @@ class Effect5958(BaseEffect):
     Used by:
     Ship: Lachesis
     Ship: Phobos
+    Ship: Vexor Navy Issue
     """
 
     type = 'passive'
@@ -35714,6 +35697,12 @@ class Effect7228(BaseEffect):
 
 
 class Effect7230(BaseEffect):
+    """
+    shipBonusDroneTrackingGC2
+
+    Used by:
+    Ship: Vexor Navy Issue
+    """
 
     type = 'passive'
 
@@ -35725,6 +35714,12 @@ class Effect7230(BaseEffect):
 
 
 class Effect7231(BaseEffect):
+    """
+    shipBonusArmorRepAmountGC3
+
+    Used by:
+    Ship: Vexor Navy Issue
+    """
 
     type = 'passive'
 
