@@ -62,6 +62,7 @@ except ImportError as e:
     Patch = mpl = Canvas = Figure = None
     graphFrame_enabled = False
     mplImported = False
+    raise
 except Exception:
     # We can get exceptions deep within matplotlib. Catch those.  See GH #1046
     tb = traceback.format_exc()
