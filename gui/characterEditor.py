@@ -603,18 +603,13 @@ class SkillTreeView(wx.Panel):
         srcContext = "skillItem"
         itemContext = "Skill"
         context = (srcContext, itemContext)
-        menu = ContextMenu.getMenu(eveItem, [eveItem], context)
+        menu = ContextMenu.getMenu(self, eveItem, [eveItem], context)
         char = self.charEditor.entityEditor.getActiveEntity()
         if char.name not in ("All 0", "All 5"):
             menu.AppendSeparator()
             menu.Append(self.idUnlearned, "Unlearn")
             for level in range(6):
                 menu.Append(self.idLevels[level], "Level %d" % level)
-            # Doesn't make sense to have these menu items here, as they do not revert skill changes
-            # done in an editor - because these changes are persisted anyway
-            # menu.AppendSeparator()
-            # menu.Append(self.revertID, "Revert")
-            # menu.Append(self.saveID, "Save")
             menu.Bind(wx.EVT_MENU, self.changeLevel)
 
         self.PopupMenu(menu)
@@ -718,7 +713,7 @@ class ImplantEditorView(BaseImplantEditorView):
         # fuck good coding practices, passing a pointer to the character editor here for [reasons] =D
         # (see implantSets context class for info)
         item = self.Parent.Parent
-        menu = ContextMenu.getMenu(item, (item,), *context)
+        menu = ContextMenu.getMenu(self, item, (item,), *context)
 
         if menu:
             self.PopupMenu(menu)

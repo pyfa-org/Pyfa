@@ -22,7 +22,7 @@ class ChangeModuleAmmo(ContextMenuCombined):
         # Format: {type ID: set(loadable, charges)}
         self.loadableCharges = {}
 
-    def display(self, srcContext, mainItem, selection):
+    def display(self, callingWindow, srcContext, mainItem, selection):
         if srcContext not in ("fittingModule", "projectedModule"):
             return False
 
@@ -38,7 +38,7 @@ class ChangeModuleAmmo(ContextMenuCombined):
         self.srcContext = srcContext
         return True
 
-    def getText(self, itmContext, mainItem, selection):
+    def getText(self, callingWindow, itmContext, mainItem, selection):
         return "Charge"
 
     def getChargesForMod(self, mod):
@@ -130,7 +130,7 @@ class ChangeModuleAmmo(ContextMenuCombined):
         m.Append(id_, '─ %s ─' % text)
         m.Enable(id_, False)
 
-    def getSubMenu(self, context, mainItem, selection, rootMenu, i, pitem):
+    def getSubMenu(self, callingWindow, context, mainItem, selection, rootMenu, i, pitem):
         msw = True if "wxMSW" in wx.PlatformInfo else False
         m = wx.Menu()
         self.chargeIds = {}

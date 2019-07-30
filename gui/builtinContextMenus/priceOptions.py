@@ -24,13 +24,13 @@ class ItemGroupPrice(ContextMenuUnconditional, metaclass=ABCMeta):
     def optionName(self):
         raise NotImplementedError()
 
-    def display(self, srcContext):
+    def display(self, callingWindow, srcContext):
         return srcContext in ("priceViewFull", "priceViewMinimal")
 
-    def getText(self, itmContext):
+    def getText(self, callingWindow, itmContext):
         return self.label
 
-    def activate(self, fullContext, i):
+    def activate(self, callingWindow, fullContext, i):
         self.settings.set(self.optionName, not self.settings.get(self.optionName))
         fitID = self.mainFrame.getActiveFit()
         wx.PostEvent(self.mainFrame, GE.FitChanged(fitIDs=(fitID,)))

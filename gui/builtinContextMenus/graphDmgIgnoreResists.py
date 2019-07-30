@@ -13,13 +13,13 @@ class GraphDmgIgnoreResistsMenu(ContextMenuUnconditional):
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
         self.settings = GraphSettings.getInstance()
 
-    def display(self, srcContext):
+    def display(self, callingWindow, srcContext):
         return srcContext == 'dmgStatsGraph'
 
-    def getText(self, itmContext):
+    def getText(self, callingWindow, itmContext):
         return 'Ignore Target Resists'
 
-    def activate(self, fullContext, i):
+    def activate(self, callingWindow, fullContext, i):
         self.settings.set('ignoreResists', not self.settings.get('ignoreResists'))
         wx.PostEvent(self.mainFrame, GE.GraphOptionChanged())
 

@@ -212,7 +212,7 @@ class BoosterView(d.Display):
                     mainBooster = booster
         sourceContext = "boosterItem"
         itemContext = None if mainBooster is None else "Booster"
-        menu = ContextMenu.getMenu(mainBooster, selection, (sourceContext, itemContext))
+        menu = ContextMenu.getMenu(self, mainBooster, selection, (sourceContext, itemContext))
         if menu:
             self.PopupMenu(menu)
 

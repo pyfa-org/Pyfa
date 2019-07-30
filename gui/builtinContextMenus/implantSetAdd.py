@@ -14,7 +14,7 @@ class AddImplantSet(ContextMenuSingle):
     def __init__(self):
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
 
-    def display(self, srcContext, mainItem):
+    def display(self, callingWindow, srcContext, mainItem):
 
         sIS = s_ImplantSets.getInstance()
         implantSets = sIS.getImplantSetList()
@@ -23,10 +23,10 @@ class AddImplantSet(ContextMenuSingle):
             return False
         return srcContext in ("implantView", "implantEditor")
 
-    def getText(self, itmContext, mainItem):
+    def getText(self, callingWindow, itmContext, mainItem):
         return "Add Implant Set"
 
-    def getSubMenu(self, context, mainItem, rootMenu, i, pitem):
+    def getSubMenu(self, callingWindow, context, mainItem, rootMenu, i, pitem):
         """
         A note on the mainItem here: Most context menus act on a fit, so it's easy enough to get the active fit from
         the MainFrame instance. There's never been a reason to get info from another window, so there's not common

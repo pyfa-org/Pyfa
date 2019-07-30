@@ -14,7 +14,7 @@ class DroneSplitStack(ContextMenuSingle):
     def __init__(self):
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
 
-    def display(self, srcContext, mainItem):
+    def display(self, callingWindow, srcContext, mainItem):
         if srcContext != "droneItem":
             return False
 
@@ -23,10 +23,10 @@ class DroneSplitStack(ContextMenuSingle):
 
         return mainItem.amount > 1
 
-    def getText(self, itmContext, mainItem):
+    def getText(self, callingWindow, itmContext, mainItem):
         return "Split {} Stack".format(itmContext)
 
-    def activate(self, fullContext, mainItem, i):
+    def activate(self, callingWindow, fullContext, mainItem, i):
         dlg = DroneStackSplit(self.mainFrame, mainItem.amount)
 
         if dlg.ShowModal() == wx.ID_OK:

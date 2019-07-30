@@ -669,7 +669,7 @@ class FittingView(d.Display):
                 contexts.append(fullContext)
         contexts.append(("fittingShip", "Ship" if not fit.isStructure else "Citadel"))
 
-        menu = ContextMenu.getMenu(mainMod, selection, *contexts)
+        menu = ContextMenu.getMenu(self, mainMod, selection, *contexts)
         self.PopupMenu(menu)
 
     def click(self, event):

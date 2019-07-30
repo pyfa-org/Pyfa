@@ -16,10 +16,10 @@ class GraphDmgDroneModeMenu(ContextMenuUnconditional):
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
         self.settings = GraphSettings.getInstance()
 
-    def display(self, srcContext):
+    def display(self, callingWindow, srcContext):
         return srcContext == 'dmgStatsGraph'
 
-    def getText(self, itmContext):
+    def getText(self, callingWindow, itmContext):
         return 'Drone Mode'
 
     def handleModeSwitch(self, event):
@@ -29,7 +29,7 @@ class GraphDmgDroneModeMenu(ContextMenuUnconditional):
         self.settings.set('mobileDroneMode', option)
         wx.PostEvent(self.mainFrame, GE.GraphOptionChanged())
 
-    def getSubMenu(self, context, rootMenu, i, pitem):
+    def getSubMenu(self, callingWindow, context, rootMenu, i, pitem):
         m = wx.Menu()
         if "wxMSW" in wx.PlatformInfo:
             bindmenu = rootMenu

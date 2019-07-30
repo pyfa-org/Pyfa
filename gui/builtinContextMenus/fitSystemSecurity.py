@@ -21,7 +21,7 @@ class FitSystemSecurityMenu(ContextMenuUnconditional):
     def __init__(self):
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
 
-    def display(self, srcContext):
+    def display(self, callingWindow, srcContext):
         if srcContext != "fittingShip":
             return False
 
@@ -33,7 +33,7 @@ class FitSystemSecurityMenu(ContextMenuUnconditional):
 
         return True
 
-    def getText(self, itmContext):
+    def getText(self, callingWindow, itmContext):
         return "Citadel System Security"
 
     def addOption(self, menu, optionLabel):
@@ -43,7 +43,7 @@ class FitSystemSecurityMenu(ContextMenuUnconditional):
         menu.Bind(wx.EVT_MENU, self.handleMode, menuItem)
         return menuItem
 
-    def getSubMenu(self, context, rootMenu, i, pitem):
+    def getSubMenu(self, callingWindow, context, rootMenu, i, pitem):
         fitID = self.mainFrame.getActiveFit()
         fit = Fit.getInstance().getFit(fitID)
         msw = True if "wxMSW" in wx.PlatformInfo else False

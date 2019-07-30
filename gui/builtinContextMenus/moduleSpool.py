@@ -19,7 +19,7 @@ class ChangeModuleSpool(ContextMenuSingle):
         self.settings = ContextMenuSettings.getInstance()
         self.resetId = None
 
-    def display(self, srcContext, mainItem):
+    def display(self, callingWindow, srcContext, mainItem):
         if not self.settings.get('spoolup'):
             return False
 
@@ -34,10 +34,10 @@ class ChangeModuleSpool(ContextMenuSingle):
 
         return self.mod.item.group.name in ("Precursor Weapon", "Mutadaptive Remote Armor Repairer")
 
-    def getText(self, itmContext, mainItem):
+    def getText(self, callingWindow, itmContext, mainItem):
         return "Spoolup Cycles"
 
-    def getSubMenu(self, context, mainItem, rootMenu, i, pitem):
+    def getSubMenu(self, callingWindow, context, mainItem, rootMenu, i, pitem):
         m = wx.Menu()
         if "wxMSW" in wx.PlatformInfo:
             bindmenu = rootMenu

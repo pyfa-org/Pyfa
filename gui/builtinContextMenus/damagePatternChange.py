@@ -16,14 +16,14 @@ class ChangeDamagePattern(ContextMenuUnconditional):
     def __init__(self):
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
 
-    def display(self, srcContext):
+    def display(self, callingWindow, srcContext):
         return srcContext == "resistancesViewFull"
 
     @property
     def enabled(self):
         return self.mainFrame.getActiveFit() is not None
 
-    def getText(self, itmContext):
+    def getText(self, callingWindow, itmContext):
         sDP = import_DamagePattern.getInstance()
         sFit = Fit.getInstance()
         fitID = self.mainFrame.getActiveFit()
@@ -75,7 +75,7 @@ class ChangeDamagePattern(ContextMenuUnconditional):
                 menuItem.SetBitmap(bitmap)
         return menuItem
 
-    def getSubMenu(self, context, rootMenu, i, pitem):
+    def getSubMenu(self, callingWindow, context, rootMenu, i, pitem):
         msw = True if "wxMSW" in wx.PlatformInfo else False
 
         if self.m[i] not in self.subMenus:

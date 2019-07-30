@@ -13,7 +13,7 @@ class ChangeModuleMutation(ContextMenuSingle):
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
         self.eventIDs = {}
 
-    def display(self, srcContext, mainItem):
+    def display(self, callingWindow, srcContext, mainItem):
 
         if srcContext != "fittingModule" or self.mainFrame.getActiveFit() is None:
             return False
@@ -26,10 +26,10 @@ class ChangeModuleMutation(ContextMenuSingle):
 
         return True
 
-    def getText(self, itmContext, mainItem):
+    def getText(self, callingWindow, itmContext, mainItem):
         return "Apply Mutaplasmid" if not mainItem.isMutated else "Revert to {}".format(mainItem.baseItem.name)
 
-    def getSubMenu(self, context, mainItem, rootMenu, i, pitem):
+    def getSubMenu(self, callingWindow, context, mainItem, rootMenu, i, pitem):
         if mainItem.isMutated:
             return None
 
@@ -58,7 +58,7 @@ class ChangeModuleMutation(ContextMenuSingle):
             self.mainFrame.command.Submit(GuiConvertMutatedLocalModuleCommand(
                 fitID=fitID, position=position, mutaplasmid=mutaplasmid))
 
-    def activate(self, fullContext, mainItem, i):
+    def activate(self, callingWindow, fullContext, mainItem, i):
         fitID = self.mainFrame.getActiveFit()
         fit = Fit.getInstance().getFit(fitID)
         if mainItem in fit.modules:
@@ -66,7 +66,7 @@ class ChangeModuleMutation(ContextMenuSingle):
             self.mainFrame.command.Submit(GuiRevertMutatedLocalModuleCommand(
                 fitID=fitID, position=position))
 
-    def getBitmap(self, context, mainItem):
+    def getBitmap(self, callingWindow, context, mainItem):
         return None
 
 

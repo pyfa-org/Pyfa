@@ -163,7 +163,7 @@ class GraphControlPanel(wx.Panel):
         self._updateInputs(storeInputs=False)
 
         # Context icon
-        self.contextIcon.Show(ContextMenu.hasMenu(None, None, (view.internalName,)))
+        self.contextIcon.Show(ContextMenu.hasMenu(self, None, None, (view.internalName,)))
 
         if layout:
             self.graphFrame.Layout()
@@ -346,7 +346,7 @@ class GraphControlPanel(wx.Panel):
 
     def contextMenuHandler(self, event):
         viewName = self.graphFrame.getView().internalName
-        menu = ContextMenu.getMenu(None, None, (viewName,))
+        menu = ContextMenu.getMenu(self, None, None, (viewName,))
         if menu is not None:
             self.PopupMenu(menu)
         event.Skip()

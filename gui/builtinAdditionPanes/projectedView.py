@@ -325,7 +325,7 @@ class ProjectedView(d.Display):
         contexts.append(('projected',))
 
         selection = self.getSelectedProjectors()
-        menu = ContextMenu.getMenu(mainItem, selection, *contexts)
+        menu = ContextMenu.getMenu(self, mainItem, selection, *contexts)
         if menu is not None:
             self.PopupMenu(menu)
 

@@ -18,7 +18,7 @@ class RemoveItem(ContextMenuCombined):
     def __init__(self):
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
 
-    def display(self, srcContext, mainItem, selection):
+    def display(self, callingWindow, srcContext, mainItem, selection):
         if srcContext not in (
             "fittingModule", "droneItem",
             "implantItem", "boosterItem",
@@ -35,12 +35,12 @@ class RemoveItem(ContextMenuCombined):
         self.srcContext = srcContext
         return True
 
-    def getText(self, itmContext, mainItem, selection):
+    def getText(self, callingWindow, itmContext, mainItem, selection):
         return 'Remove {}{}'.format(
             itmContext if itmContext is not None else 'Item',
             ' Stack' if self.srcContext in ('droneItem', 'projectedDrone', 'cargoItem', 'projectedFit') else '')
 
-    def activate(self, fullContext, mainItem, selection, i):
+    def activate(self, callingWindow, fullContext, mainItem, selection, i):
         handlerMap = {
             'fittingModule': self.__handleModule,
             'droneItem': self.__handleDrone,

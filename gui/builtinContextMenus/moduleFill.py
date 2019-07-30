@@ -11,7 +11,7 @@ class FillWithModule(ContextMenuSingle):
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
         self.settings = ContextMenuSettings.getInstance()
 
-    def display(self, srcContext, mainItem):
+    def display(self, callingWindow, srcContext, mainItem):
 
         if not self.settings.get('moduleFill'):
             return False
@@ -21,10 +21,10 @@ class FillWithModule(ContextMenuSingle):
 
         return srcContext == "fittingModule"
 
-    def getText(self, itmContext, mainItem):
+    def getText(self, callingWindow, itmContext, mainItem):
         return "Fill With {0}".format(itmContext if itmContext is not None else "Module")
 
-    def activate(self, fullContext, mainItem, i):
+    def activate(self, callingWindow, fullContext, mainItem, i):
 
         srcContext = fullContext[0]
         fitID = self.mainFrame.getActiveFit()

@@ -11,7 +11,7 @@ class ItemStats(ContextMenuSingle):
     def __init__(self):
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
 
-    def display(self, srcContext, mainItem):
+    def display(self, callingWindow, srcContext, mainItem):
         if srcContext not in (
             "marketItemGroup", "marketItemMisc",
             "fittingModule", "fittingCharge",
@@ -31,10 +31,10 @@ class ItemStats(ContextMenuSingle):
 
         return True
 
-    def getText(self, itmContext, mainItem):
+    def getText(self, callingWindow, itmContext, mainItem):
         return "{} Stats".format(itmContext if itmContext is not None else "Item")
 
-    def activate(self, fullContext, mainItem, i):
+    def activate(self, callingWindow, fullContext, mainItem, i):
         srcContext = fullContext[0]
         if srcContext == "fittingShip":
             fitID = self.mainFrame.getActiveFit()

@@ -9,7 +9,7 @@ class AddToCargo(ContextMenuSingle):
     def __init__(self):
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
 
-    def display(self, srcContext, mainItem):
+    def display(self, callingWindow, srcContext, mainItem):
         if srcContext not in ("marketItemGroup", "marketItemMisc"):
             return False
 
@@ -25,10 +25,10 @@ class AddToCargo(ContextMenuSingle):
 
         return True
 
-    def getText(self, itmContext, mainItem):
+    def getText(self, callingWindow, itmContext, mainItem):
         return "Add {} to Cargo".format(itmContext)
 
-    def activate(self, fullContext, mainItem, i):
+    def activate(self, callingWindow, fullContext, mainItem, i):
         fitID = self.mainFrame.getActiveFit()
         typeID = int(mainItem.ID)
         command = cmd.GuiAddCargoCommand(fitID=fitID, itemID=typeID, amount=1)

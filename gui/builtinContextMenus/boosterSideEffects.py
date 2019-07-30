@@ -12,7 +12,7 @@ class BoosterSideEffects(ContextMenuSingle):
     def __init__(self):
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
 
-    def display(self, srcContext, mainItem):
+    def display(self, callingWindow, srcContext, mainItem):
         if self.mainFrame.getActiveFit() is None or srcContext not in "boosterItem":
             return False
 
@@ -27,7 +27,7 @@ class BoosterSideEffects(ContextMenuSingle):
 
         return False
 
-    def getText(self, itmContext, mainItem):
+    def getText(self, callingWindow, itmContext, mainItem):
         return "Side Effects"
 
     def addEffect(self, menu, ability):
@@ -39,7 +39,7 @@ class BoosterSideEffects(ContextMenuSingle):
         menu.Bind(wx.EVT_MENU, self.handleMode, menuItem)
         return menuItem
 
-    def getSubMenu(self, context, mainItem, rootMenu, i, pitem):
+    def getSubMenu(self, callingWindow, context, mainItem, rootMenu, i, pitem):
         msw = True if "wxMSW" in wx.PlatformInfo else False
         self.context = context
         self.effectIds = {}

@@ -38,20 +38,21 @@ class ContextMenu(metaclass=ABCMeta):
         ContextMenu.menus.append(cls)
 
     @classmethod
-    def hasMenu(cls, mainItem, selection, *fullContexts):
+    def hasMenu(cls, callingWindow, mainItem, selection, *fullContexts):
         for i, fullContext in enumerate(fullContexts):
             srcContext = fullContext[0]
             for menuHandler in cls.menus:
                 m = menuHandler()
-                if m._baseDisplay(srcContext, mainItem, selection):
+                if m._baseDisplay(callingWindow, srcContext, mainItem, selection):
                     return True
             return False
 
     @classmethod
-    def getMenu(cls, mainItem, selection, *fullContexts):
+    def getMenu(cls, callingWindow, mainItem, selection, *fullContexts):
         """
         getMenu returns a menu that is used with wx.PopupMenu.
 
+        callingWindow: window (in wx' sense) which requested menu
         mainItem: usually, provides item which was clicked. Useful for single-
             item actions when user has multiple items selected
         selection: provides a list of what was selected. If only 1 item was
@@ -85,22 +86,22 @@ class ContextMenu(metaclass=ABCMeta):
             for menuHandler in cls.menus:
                 # loop through registered menus
                 m = menuHandler()
-                if m._baseDisplay(srcContext, mainItem, selection):
+                if m._baseDisplay(callingWindow, srcContext, mainItem, selection):
                     display_amount += 1
-                    texts = m._baseGetText(itemContext, mainItem, selection)
+                    texts = m._baseGetText(callingWindow, itemContext, mainItem, selection)
 
                     if isinstance(texts, str):
                         texts = (texts,)
 
-                    bitmap = m._baseGetBitmap(srcContext, mainItem, selection)
+                    bitmap = m._baseGetBitmap(callingWindow, srcContext, mainItem, selection)
                     multiple = not isinstance(bitmap, wx.Bitmap)
                     for it, text in enumerate(texts):
                         id = ContextMenu.nextID()
                         check = m.checked
                         rootItem = wx.MenuItem(rootMenu, id, text, kind=wx.ITEM_NORMAL if m.checked is None else wx.ITEM_CHECK)
-                        rootMenu.info[id] = (m, fullContext, it)
+                        rootMenu.info[id] = (m, callingWindow, fullContext, it)
 
-                        sub = m._baseGetSubMenu(srcContext, mainItem, selection, rootMenu, it, rootItem)
+                        sub = m._baseGetSubMenu(callingWindow, srcContext, mainItem, selection, rootMenu, it, rootItem)
 
                         if sub is None:
                             # if there is no sub menu, bind the handler to the rootItem
@@ -152,13 +153,13 @@ class ContextMenu(metaclass=ABCMeta):
         menu = event.EventObject
         stuff = menu.info.get(event.Id)
         if stuff is not None:
-            menuHandler, context, i = stuff
+            menuHandler, callingWindow, context, i = stuff
             selection = menu.selection
             mainItem = menu.mainItem
             if not hasattr(selection, "__iter__"):
                 selection = (selection,)
 
-            menuHandler._baseActivate(context, mainItem, selection, i)
+            menuHandler._baseActivate(callingWindow, context, mainItem, selection, i)
         else:
             event.Skip()
 
@@ -190,15 +191,15 @@ class ContextMenu(metaclass=ABCMeta):
         return True
 
     @abstractmethod
-    def _baseDisplay(self, context, mainItem, selection):
+    def _baseDisplay(self, callingWindow, context, mainItem, selection):
         raise NotImplementedError
 
     @abstractmethod
-    def _baseGetBitmap(self, context, mainItem, selection):
+    def _baseGetBitmap(self, callingWindow, context, mainItem, selection):
         raise NotImplementedError
 
     @abstractmethod
-    def _baseGetText(self, context, mainItem, selection):
+    def _baseGetText(self, callingWindow, context, mainItem, selection):
         """
         getText should be implemented in child classes, and should return either
         a string that will make up a menu item label or a list of strings which
@@ -209,11 +210,11 @@ class ContextMenu(metaclass=ABCMeta):
         raise NotImplementedError
 
     @abstractmethod
-    def _baseGetSubMenu(self, context, mainItem, selection, rootMenu, i, pitem):
+    def _baseGetSubMenu(self, callingWindow, context, mainItem, selection, rootMenu, i, pitem):
         raise NotImplementedError
 
     @abstractmethod
-    def _baseActivate(self, fullContext, mainItem, selection, i):
+    def _baseActivate(self, callingWindow, fullContext, mainItem, selection, i):
         raise NotImplementedError
 
 
@@ -224,36 +225,36 @@ class ContextMenuUnconditional(ContextMenu, metaclass=ABCMeta):
     """
 
     @abstractmethod
-    def display(self, context):
+    def display(self, callingWindow, context):
         raise NotImplementedError
 
-    def getBitmap(self, context):
+    def getBitmap(self, callingWindow, context):
         return
 
     @abstractmethod
-    def getText(self, context):
+    def getText(self, callingWindow, context):
         raise NotImplementedError
 
-    def getSubMenu(self, context, rootMenu, i, pitem):
+    def getSubMenu(self, callingWindow, context, rootMenu, i, pitem):
         return
 
-    def activate(self, fullContext, i):
+    def activate(self, callingWindow, fullContext, i):
         return
 
-    def _baseDisplay(self, context, mainItem, selection):
-        return self.display(context)
+    def _baseDisplay(self, callingWindow, context, mainItem, selection):
+        return self.display(callingWindow, context)
 
-    def _baseGetBitmap(self, context, mainItem, selection):
-        return self.getBitmap(context)
+    def _baseGetBitmap(self, callingWindow, context, mainItem, selection):
+        return self.getBitmap(callingWindow, context)
 
-    def _baseGetText(self, context, mainItem, selection):
-        return self.getText(context)
+    def _baseGetText(self, callingWindow, context, mainItem, selection):
+        return self.getText(callingWindow, context)
 
-    def _baseGetSubMenu(self, context, mainItem, selection, rootMenu, i, pitem):
-        return self.getSubMenu(context, rootMenu, i, pitem)
+    def _baseGetSubMenu(self, callingWindow, context, mainItem, selection, rootMenu, i, pitem):
+        return self.getSubMenu(callingWindow, context, rootMenu, i, pitem)
 
-    def _baseActivate(self, fullContext, mainItem, selection, i):
-        return self.activate(fullContext, i)
+    def _baseActivate(self, callingWindow, fullContext, mainItem, selection, i):
+        return self.activate(callingWindow, fullContext, i)
 
 
 class ContextMenuSingle(ContextMenu, metaclass=ABCMeta):
@@ -263,36 +264,36 @@ class ContextMenuSingle(ContextMenu, metaclass=ABCMeta):
     """
 
     @abstractmethod
-    def display(self, context, mainItem):
+    def display(self, callingWindow, context, mainItem):
         raise NotImplementedError
 
-    def getBitmap(self, context, mainItem):
+    def getBitmap(self, callingWindow, context, mainItem):
         return
 
     @abstractmethod
-    def getText(self, context, mainItem):
+    def getText(self, callingWindow, context, mainItem):
         raise NotImplementedError
 
-    def getSubMenu(self, context, mainItem, rootMenu, i, pitem):
+    def getSubMenu(self, callingWindow, context, mainItem, rootMenu, i, pitem):
         return
 
-    def activate(self, fullContext, mainItem, i):
+    def activate(self, callingWindow, fullContext, mainItem, i):
         return
 
-    def _baseDisplay(self, context, mainItem, selection):
-        return self.display(context, mainItem)
+    def _baseDisplay(self, callingWindow, context, mainItem, selection):
+        return self.display(callingWindow, context, mainItem)
 
-    def _baseGetBitmap(self, context, mainItem, selection):
-        return self.getBitmap(context, mainItem)
+    def _baseGetBitmap(self, callingWindow, context, mainItem, selection):
+        return self.getBitmap(callingWindow, context, mainItem)
 
-    def _baseGetText(self, context, mainItem, selection):
-        return self.getText(context, mainItem)
+    def _baseGetText(self, callingWindow, context, mainItem, selection):
+        return self.getText(callingWindow, context, mainItem)
 
-    def _baseGetSubMenu(self, context, mainItem, selection, rootMenu, i, pitem):
-        return self.getSubMenu(context, mainItem, rootMenu, i, pitem)
+    def _baseGetSubMenu(self, callingWindow, context, mainItem, selection, rootMenu, i, pitem):
+        return self.getSubMenu(callingWindow, context, mainItem, rootMenu, i, pitem)
 
-    def _baseActivate(self, fullContext, mainItem, selection, i):
-        return self.activate(fullContext, mainItem, i)
+    def _baseActivate(self, callingWindow, fullContext, mainItem, selection, i):
+        return self.activate(callingWindow, fullContext, mainItem, i)
 
 
 class ContextMenuSelection(ContextMenu, metaclass=ABCMeta):
@@ -302,41 +303,41 @@ class ContextMenuSelection(ContextMenu, metaclass=ABCMeta):
     """
 
     @abstractmethod
-    def display(self, context, selection):
+    def display(self, callingWindow, context, selection):
         raise NotImplementedError
 
-    def getBitmap(self, context, selection):
+    def getBitmap(self, callingWindow, context, selection):
         return
 
     @abstractmethod
-    def getText(self, context, selection):
+    def getText(self, callingWindow, context, selection):
         raise NotImplementedError
 
-    def getSubMenu(self, context, selection, rootMenu, i, pitem):
+    def getSubMenu(self, callingWindow, context, selection, rootMenu, i, pitem):
         return
 
-    def activate(self, fullContext, selection, i):
+    def activate(self, callingWindow, fullContext, selection, i):
         return
 
-    def _baseDisplay(self, context, mainItem, selection):
+    def _baseDisplay(self, callingWindow, context, mainItem, selection):
         selection = self.__getSelection(selection, mainItem)
-        return self.display(context, selection)
+        return self.display(callingWindow, context, selection)
 
-    def _baseGetBitmap(self, context, mainItem, selection):
+    def _baseGetBitmap(self, callingWindow, context, mainItem, selection):
         selection = self.__getSelection(selection, mainItem)
-        return self.getBitmap(context, selection)
+        return self.getBitmap(callingWindow, context, selection)
 
-    def _baseGetText(self, context, mainItem, selection):
+    def _baseGetText(self, callingWindow, context, mainItem, selection):
         selection = self.__getSelection(selection, mainItem)
-        return self.getText(context, selection)
+        return self.getText(callingWindow, context, selection)
 
-    def _baseGetSubMenu(self, context, mainItem, selection, rootMenu, i, pitem):
+    def _baseGetSubMenu(self, callingWindow, context, mainItem, selection, rootMenu, i, pitem):
         selection = self.__getSelection(selection, mainItem)
-        return self.getSubMenu(context, selection, rootMenu, i, pitem)
+        return self.getSubMenu(callingWindow, context, selection, rootMenu, i, pitem)
 
-    def _baseActivate(self, fullContext, mainItem, selection, i):
+    def _baseActivate(self, callingWindow, fullContext, mainItem, selection, i):
         selection = self.__getSelection(selection, mainItem)
-        return self.activate(fullContext, selection, i)
+        return self.activate(callingWindow, fullContext, selection, i)
 
     def __getSelection(self, selection, mainItem):
         if mainItem is not None and mainItem not in selection:
@@ -351,41 +352,41 @@ class ContextMenuCombined(ContextMenu, metaclass=ABCMeta):
     """
 
     @abstractmethod
-    def display(self, context, mainItem, selection):
+    def display(self, callingWindow, context, mainItem, selection):
         raise NotImplementedError
 
-    def getBitmap(self, context, mainItem, selection):
+    def getBitmap(self, callingWindow, context, mainItem, selection):
         return
 
     @abstractmethod
-    def getText(self, context, mainItem, selection):
+    def getText(self, callingWindow, context, mainItem, selection):
         raise NotImplementedError
 
-    def getSubMenu(self, context, mainItem, selection, rootMenu, i, pitem):
+    def getSubMenu(self, callingWindow, context, mainItem, selection, rootMenu, i, pitem):
         return
 
-    def activate(self, fullContext, mainItem, selection, i):
+    def activate(self, callingWindow, fullContext, mainItem, selection, i):
         return
 
-    def _baseDisplay(self, context, mainItem, selection):
+    def _baseDisplay(self, callingWindow, context, mainItem, selection):
         selection = self.__getSelection(selection, mainItem)
-        return self.display(context, mainItem, selection)
+        return self.display(callingWindow, context, mainItem, selection)
 
-    def _baseGetBitmap(self, context, mainItem, selection):
+    def _baseGetBitmap(self, callingWindow, context, mainItem, selection):
         selection = self.__getSelection(selection, mainItem)
-        return self.getBitmap(context, mainItem, selection)
+        return self.getBitmap(callingWindow, context, mainItem, selection)
 
-    def _baseGetText(self, context, mainItem, selection):
+    def _baseGetText(self, callingWindow, context, mainItem, selection):
         selection = self.__getSelection(selection, mainItem)
-        return self.getText(context, mainItem, selection)
+        return self.getText(callingWindow, context, mainItem, selection)
 
-    def _baseGetSubMenu(self, context, mainItem, selection, rootMenu, i, pitem):
+    def _baseGetSubMenu(self, callingWindow, context, mainItem, selection, rootMenu, i, pitem):
         selection = self.__getSelection(selection, mainItem)
-        return self.getSubMenu(context, mainItem, selection, rootMenu, i, pitem)
+        return self.getSubMenu(callingWindow, context, mainItem, selection, rootMenu, i, pitem)
 
-    def _baseActivate(self, fullContext, mainItem, selection, i):
+    def _baseActivate(self, callingWindow, fullContext, mainItem, selection, i):
         selection = self.__getSelection(selection, mainItem)
-        return self.activate(fullContext, mainItem, selection, i)
+        return self.activate(callingWindow, fullContext, mainItem, selection, i)
 
     def __getSelection(self, selection, mainItem):
         if mainItem is not None and mainItem not in selection:

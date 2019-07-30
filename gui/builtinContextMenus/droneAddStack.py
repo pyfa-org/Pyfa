@@ -10,7 +10,7 @@ class DroneAddStack(ContextMenuSingle):
     def __init__(self):
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
 
-    def display(self, srcContext, mainItem):
+    def display(self, callingWindow, srcContext, mainItem):
         if srcContext not in ('marketItemGroup', 'marketItemMisc'):
             return False
 
@@ -32,11 +32,11 @@ class DroneAddStack(ContextMenuSingle):
         self.amount = amount
         return True
 
-    def getText(self, itmContext, mainItem):
+    def getText(self, callingWindow, itmContext, mainItem):
         return 'Add {} to Drone Bay{}'.format(
             itmContext, '' if self.amount == 1 else ' (x{})'.format(self.amount))
 
-    def activate(self, fullContext, mainItem, i):
+    def activate(self, callingWindow, fullContext, mainItem, i):
         command = cmd.GuiAddLocalDroneCommand(
             fitID=self.mainFrame.getActiveFit(),
             itemID=int(mainItem.ID),

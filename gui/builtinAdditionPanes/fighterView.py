@@ -361,7 +361,7 @@ class FighterDisplay(d.Display):
                     mainFighter = fighter
         sourceContext = "fighterItem"
         itemContext = None if mainFighter is None else Market.getInstance().getCategoryByItem(mainFighter.item).name
-        menu = ContextMenu.getMenu(mainFighter, selection, (sourceContext, itemContext))
+        menu = ContextMenu.getMenu(self, mainFighter, selection, (sourceContext, itemContext))
         if menu:
             self.PopupMenu(menu)
 

@@ -197,7 +197,7 @@ class CommandView(d.Display):
         if mainCommandFit is not None:
             contexts.append(('commandFit', 'Command Fit'))
         contexts.append(('commandView',))
-        menu = ContextMenu.getMenu(mainCommandFit, selection, *contexts)
+        menu = ContextMenu.getMenu(self, mainCommandFit, selection, *contexts)
         if menu:
             self.PopupMenu(menu)
 

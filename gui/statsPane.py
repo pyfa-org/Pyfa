@@ -132,19 +132,18 @@ class StatsPane(wx.Panel):
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
         self.mainFrame.Bind(GE.FIT_CHANGED, self.fitChanged)
 
-    @staticmethod
-    def contextHandler(contentPanel, tp):
+    def contextHandler(self, contentPanel, tp):
         viewName = contentPanel.viewName
 
         def handler(event):
-            menu = ContextMenu.getMenu(None, None, (viewName,))
+            menu = ContextMenu.getMenu(self, None, None, (viewName,))
 
             if menu is not None:
                 contentPanel.PopupMenu(menu)
 
             event.Skip()
 
-        if ContextMenu.hasMenu(None, None, (viewName,)):
+        if ContextMenu.hasMenu(self, None, None, (viewName,)):
             sizer = tp.GetHeaderContentSizer()
             sizer.AddStretchSpacer()
             # Add menu

@@ -7,7 +7,7 @@ class JumpToMarketItem(ContextMenuSingle):
     def __init__(self):
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
 
-    def display(self, srcContext, mainItem):
+    def display(self, callingWindow, srcContext, mainItem):
         validContexts = ("marketItemMisc", "fittingModule",
                          "fittingCharge", "droneItem",
                          "implantItem", "boosterItem",
@@ -36,10 +36,10 @@ class JumpToMarketItem(ContextMenuSingle):
         doit = not mainItem.isEmpty if srcContext == "fittingModule" else True
         return doit
 
-    def getText(self, itmContext, mainItem):
+    def getText(self, callingWindow, itmContext, mainItem):
         return "{0} Market Group".format(itmContext if itmContext is not None else "Item")
 
-    def activate(self, fullContext, mainItem, i):
+    def activate(self, callingWindow, fullContext, mainItem, i):
         srcContext = fullContext[0]
         if srcContext in ("fittingCharge", "projectedCharge"):
             item = mainItem.charge

@@ -10,7 +10,7 @@ class FillWithItem(ContextMenuSingle):
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
         self.settings = ContextMenuSettings.getInstance()
 
-    def display(self, srcContext, mainItem):
+    def display(self, callingWindow, srcContext, mainItem):
         if not self.settings.get('moduleFill'):
             return False
 
@@ -28,10 +28,10 @@ class FillWithItem(ContextMenuSingle):
 
         return True
 
-    def getText(self, itmContext, mainItem):
+    def getText(self, callingWindow, itmContext, mainItem):
         return "Fill With Module"
 
-    def activate(self, fullContext, mainItem, i):
+    def activate(self, callingWindow, fullContext, mainItem, i):
         self.mainFrame.command.Submit(cmd.GuiFillWithNewLocalModulesCommand(
             fitID=self.mainFrame.getActiveFit(),
             itemID=int(mainItem.ID)))

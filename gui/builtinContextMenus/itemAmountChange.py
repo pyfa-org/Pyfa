@@ -18,7 +18,7 @@ class ChangeItemAmount(ContextMenuSingle):
     def __init__(self):
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
 
-    def display(self, srcContext, mainItem):
+    def display(self, callingWindow, srcContext, mainItem):
         if srcContext not in ("droneItem", "projectedDrone", "cargoItem", "projectedFit", "fighterItem", "projectedFighter"):
             return False
 
@@ -27,10 +27,10 @@ class ChangeItemAmount(ContextMenuSingle):
 
         return True
 
-    def getText(self, itmContext, mainItem):
+    def getText(self, callingWindow, itmContext, mainItem):
         return "Change {0} Quantity".format(itmContext)
 
-    def activate(self, fullContext, mainItem, i):
+    def activate(self, callingWindow, fullContext, mainItem, i):
         fitID = self.mainFrame.getActiveFit()
         srcContext = fullContext[0]
         if isinstance(mainItem, es_Fit):

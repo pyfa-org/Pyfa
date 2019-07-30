@@ -11,7 +11,7 @@ class ProjectItem(ContextMenuSingle):
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
         self.settings = ContextMenuSettings.getInstance()
 
-    def display(self, srcContext, mainItem):
+    def display(self, callingWindow, srcContext, mainItem):
         if not self.settings.get('project'):
             return False
 
@@ -30,10 +30,10 @@ class ProjectItem(ContextMenuSingle):
 
         return mainItem.isType("projected")
 
-    def getText(self, itmContext, mainItem):
+    def getText(self, callingWindow, itmContext, mainItem):
         return "Project {0} onto Fit".format(itmContext)
 
-    def activate(self, fullContext, mainItem, i):
+    def activate(self, callingWindow, fullContext, mainItem, i):
         fitID = self.mainFrame.getActiveFit()
         if mainItem.isModule:
             success = self.mainFrame.command.Submit(cmd.GuiAddProjectedModuleCommand(fitID=fitID, itemID=mainItem.ID))

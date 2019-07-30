@@ -12,17 +12,17 @@ class FactorReload(ContextMenuUnconditional):
     def __init__(self):
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
 
-    def display(self, srcContext):
+    def display(self, callingWindow, srcContext):
         return srcContext == "firepowerViewFull"
 
     @property
     def enabled(self):
         return self.mainFrame.getActiveFit() is not None
 
-    def getText(self, itmContext):
+    def getText(self, callingWindow, itmContext):
         return "Factor in Reload Time"
 
-    def activate(self, fullContext, i):
+    def activate(self, callingWindow, fullContext, i):
         fitIDs = Fit.getInstance().toggleFactorReload()
         wx.PostEvent(self.mainFrame, GE.FitChanged(fitIDs=tuple(fitIDs)))
 

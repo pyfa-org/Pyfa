@@ -12,7 +12,7 @@ class JumpToShip(ContextMenuUnconditional):
     def __init__(self):
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
 
-    def display(self, srcContext):
+    def display(self, callingWindow, srcContext):
         if srcContext != "fittingShip":
             return False
         fitTabSelected = self.mainFrame.notebookBrowsers.GetSelection() == 1
@@ -28,10 +28,10 @@ class JumpToShip(ContextMenuUnconditional):
             return True
         return False
 
-    def getText(self, itmContext):
+    def getText(self, callingWindow, itmContext):
         return "Open in Fitting Browser"
 
-    def activate(self, fullContext, i):
+    def activate(self, callingWindow, fullContext, i):
         fitID = self.mainFrame.getActiveFit()
         ship = Fit.getInstance().getFit(fitID).ship
         self.mainFrame.notebookBrowsers.SetSelection(1)
