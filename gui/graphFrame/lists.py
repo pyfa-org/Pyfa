@@ -62,6 +62,18 @@ class BaseList(gui.display.Display):
     def updateView(self):
         raise NotImplementedError
 
+    def getItem(self, row):
+        raise NotImplementedError
+
+    def getSelectedItems(self):
+        items = []
+        for row in self.getSelectedRows():
+            item = self.getItem(row)
+            if item is None:
+                continue
+            items.append(item)
+        return items
+
     def unbindExternalEvents(self):
         raise NotImplementedError
 
@@ -98,17 +110,13 @@ class FitList(BaseList):
         self.update(self.fits)
 
     def spawnMenu(self, event):
-        selection = self.getSelectedFits()
+        selection = self.getSelectedItems()
         clickedPos = self.getRowByAbs(event.Position)
-        mainFit = None
-        if clickedPos != -1:
-            try:
-                mainFit = self.fits[clickedPos]
-            except IndexError:
-                pass
+        mainItem = self.getItem(clickedPos)
+
         sourceContext = 'graphFitList'
-        itemContext = None if mainFit is None else 'Fit'
-        menu = ContextMenu.getMenu(self, mainFit, selection, (sourceContext, itemContext))
+        itemContext = None if mainItem is None else 'Fit'
+        menu = ContextMenu.getMenu(self, mainItem, selection, (sourceContext, itemContext))
         if menu:
             self.PopupMenu(menu)
 
@@ -118,7 +126,7 @@ class FitList(BaseList):
         if keycode == 65 and mstate.GetModifiers() == wx.MOD_CONTROL:
             self.selectAll()
         elif keycode in (wx.WXK_DELETE, wx.WXK_NUMPAD_DELETE) and mstate.GetModifiers() == wx.MOD_NONE:
-            self.removeFits(self.getSelectedFits())
+            self.removeFits(self.getSelectedItems())
         event.Skip()
 
     def OnLeftDClick(self, event):
@@ -146,15 +154,13 @@ class FitList(BaseList):
         if fit is not None:
             self.removeFits([fit])
 
-    def getSelectedFits(self):
-        fits = []
-        for row in self.getSelectedRows():
-            try:
-                fit = self.fits[row]
-            except IndexError:
-                continue
-            fits.append(fit)
-        return fits
+    def getItem(self, row):
+        if row == -1:
+            return None
+        try:
+            return self.fits[row]
+        except IndexError:
+            return None
 
     def removeFits(self, fits):
         toRemove = [f for f in fits if f in self.fits]
@@ -224,6 +230,21 @@ class TargetList(BaseList):
 
     def updateView(self):
         self.update(self.targets)
+
+    def getItem(self, row):
+        if row == -1:
+            return None
+
+        numFits = len(self.fits)
+        numProfiles = len(self.profiles)
+
+        if (numFits + numProfiles) == 0:
+            return None
+
+        if row < numFits:
+            return self.fits[row]
+        else:
+            return self.profiles[row - numFits]
 
     @property
     def targets(self):
