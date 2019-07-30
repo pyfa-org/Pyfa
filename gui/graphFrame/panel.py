@@ -27,7 +27,7 @@ from gui.bitmap_loader import BitmapLoader
 from gui.contextMenu import ContextMenu
 from service.const import GraphCacheCleanupReason
 from service.fit import Fit
-from .input import ConstantBox, RangeBox
+from gui.utils.inputs import FloatBox, FloatRangeBox
 from .lists import FitList, TargetList
 from .vector import VectorPicker
 
@@ -213,9 +213,9 @@ class GraphControlPanel(wx.Panel):
             handledHandles.add(inputDef.handle)
             fieldSizer = wx.BoxSizer(wx.HORIZONTAL)
             if mainInput:
-                fieldTextBox = RangeBox(self, self._storedRanges.get((inputDef.handle, inputDef.unit), inputDef.defaultRange))
+                fieldTextBox = FloatRangeBox(self, self._storedRanges.get((inputDef.handle, inputDef.unit), inputDef.defaultRange))
             else:
-                fieldTextBox = ConstantBox(self, self._storedConsts.get((inputDef.handle, inputDef.unit), inputDef.defaultValue))
+                fieldTextBox = FloatBox(self, self._storedConsts.get((inputDef.handle, inputDef.unit), inputDef.defaultValue))
             fieldTextBox.Bind(wx.EVT_TEXT, self.OnFieldChanged)
             fieldSizer.Add(fieldTextBox, 0, wx.EXPAND | wx.ALIGN_CENTER_VERTICAL | wx.RIGHT, 5)
             fieldIcon = None

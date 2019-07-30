@@ -57,7 +57,7 @@ from gui.marketBrowser import MarketBrowser
 from gui.multiSwitch import MultiSwitch
 from gui.patternEditor import DmgPatternEditorDlg
 from gui.preferenceDialog import PreferenceDialog
-from gui.targetProfileEditor import ResistsEditorDlg
+from gui.targetProfileEditor import TargetProfileEditorDlg
 from gui.setEditor import ImplantSetEditorDlg
 from gui.shipBrowser import ShipBrowser
 from gui.statsPane import StatsPane
@@ -398,7 +398,7 @@ class MainFrame(wx.Frame):
         dlg.Show()
 
     def showTargetProfileEditor(self, event):
-        ResistsEditorDlg(self)
+        TargetProfileEditorDlg(self)
 
     def showDamagePatternEditor(self, event):
         dlg = DmgPatternEditorDlg(self)

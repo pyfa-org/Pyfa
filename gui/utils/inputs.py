@@ -19,6 +19,7 @@
 
 
 import re
+from abc import ABCMeta, abstractmethod
 
 import wx
 
@@ -38,18 +39,51 @@ def strToFloat(val):
         return None
 
 
-class ConstantBox(wx.TextCtrl):
+class InputValidator(metaclass=ABCMeta):
 
-    def __init__(self, parent, initial):
-        super().__init__(parent, wx.ID_ANY, style=0)
+    def validate(self, value):
+        return self._validateWithReason(value)[0]
+
+    def getReason(self, value):
+        return self._validateWithReason(value)[1]
+
+    @abstractmethod
+    def _validateWithReason(self, value):
+        raise NotImplementedError
+
+
+class FloatBox(wx.TextCtrl):
+
+    def __init__(self, parent, value, id=wx.ID_ANY, style=0, validator=None, **kwargs):
+        super().__init__(parent=parent, id=id, style=style, **kwargs)
         self.Bind(wx.EVT_TEXT, self.OnText)
         self._storedValue = ''
-        self.ChangeValue(valToStr(initial))
-
+        self._validator = validator
+        self.ChangeValue(valToStr(value))
 
     def ChangeValue(self, value):
         self._storedValue = value
         super().ChangeValue(value)
+        self.updateColor()
+
+    def ChangeValueFloat(self, value):
+        self.ChangeValue(valToStr(value))
+
+    def updateColor(self):
+        if self.isValid():
+            self.SetForegroundColour(wx.SystemSettings.GetColour(wx.SYS_COLOUR_WINDOWTEXT))
+        else:
+            self.SetForegroundColour(wx.RED)
+
+    def isValid(self):
+        if self._validator is None:
+            return True
+        return self._validator.validate(self.GetValue())
+
+    def getInvalidationReason(self):
+        if self._validator is None:
+            return None
+        return self._validator.getReason(self.GetValue())
 
     def OnText(self, event):
         currentValue = self.GetValue()
@@ -58,6 +92,7 @@ class ConstantBox(wx.TextCtrl):
             return
         if currentValue == '' or re.match('^\d*\.?\d*$', currentValue):
             self._storedValue = currentValue
+            self.updateColor()
             event.Skip()
         else:
             self.ChangeValue(self._storedValue)
@@ -66,13 +101,13 @@ class ConstantBox(wx.TextCtrl):
         return strToFloat(self.GetValue())
 
 
-class RangeBox(wx.TextCtrl):
+class FloatRangeBox(wx.TextCtrl):
 
-    def __init__(self, parent, initRange):
-        super().__init__(parent, wx.ID_ANY, style=0)
+    def __init__(self, parent, value, id=wx.ID_ANY, style=0, **kwargs):
+        super().__init__(parent=parent, id=id, style=style, **kwargs)
         self.Bind(wx.EVT_TEXT, self.OnText)
         self._storedValue = ''
-        self.ChangeValue('{}-{}'.format(valToStr(min(initRange)), valToStr(max(initRange))))
+        self.ChangeValue('{}-{}'.format(valToStr(min(value)), valToStr(max(value))))
 
     def ChangeValue(self, value):
         self._storedValue = value

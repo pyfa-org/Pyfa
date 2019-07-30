@@ -30,6 +30,7 @@ import gui.globalEvents as GE
 from gui.bitmap_loader import BitmapLoader
 from gui.builtinViews.entityEditor import EntityEditor, BaseValidator
 from gui.utils.clipboard import toClipboard, fromClipboard
+from gui.utils.inputs import FloatBox, InputValidator, strToFloat
 from service.fit import Fit
 from service.targetProfile import TargetProfile
 
@@ -37,13 +38,26 @@ from service.targetProfile import TargetProfile
 pyfalog = Logger(__name__)
 
 
-class TargetProfileTextValidator(BaseValidator):
+class ResistValidator(InputValidator):
+
+    def _validateWithReason(self, value):
+        if not value:
+            return True, ''
+        value = strToFloat(value)
+        if value is None:
+            return False, 'Incorrect formatting (decimals only)'
+        if value < 0 or value > 100:
+            return False, 'Incorrect range (must be 0-100)'
+        return True, ''
+
+
+class TargetProfileNameValidator(BaseValidator):
 
     def __init__(self):
         BaseValidator.__init__(self)
 
     def Clone(self):
-        return TargetProfileTextValidator()
+        return TargetProfileNameValidator()
 
     def Validate(self, win):
         entityEditor = win.parent
@@ -68,7 +82,7 @@ class TargetProfileEntityEditor(EntityEditor):
 
     def __init__(self, parent):
         EntityEditor.__init__(self, parent, "Target Profile")
-        self.SetEditorValidator(TargetProfileTextValidator)
+        self.SetEditorValidator(TargetProfileNameValidator)
 
     def getEntitiesFromContext(self):
         sTR = TargetProfile.getInstance()
@@ -94,7 +108,7 @@ class TargetProfileEntityEditor(EntityEditor):
         sTR.deletePattern(entity)
 
 
-class ResistsEditorDlg(wx.Dialog):
+class TargetProfileEditorDlg(wx.Dialog):
     DAMAGE_TYPES = OrderedDict([
         ("em", "EM resistance"),
         ("thermal", "Thermal resistance"),
@@ -146,11 +160,11 @@ class ResistsEditorDlg(wx.Dialog):
             bmp.SetToolTip(wx.ToolTip(ttText))
             resistEditSizer.Add(bmp, 0, style, border)
             # set text edit
-            setattr(self, "%sEdit" % type_, wx.TextCtrl(self, wx.ID_ANY, "", wx.DefaultPosition, defSize))
-            editObj = getattr(self, "%sEdit" % type_)
-            editObj.SetToolTip(wx.ToolTip(ttText))
-            editObj.Bind(wx.EVT_TEXT, self.ValuesUpdated)
-            resistEditSizer.Add(editObj, 0, wx.BOTTOM | wx.TOP | wx.ALIGN_CENTER_VERTICAL, 5)
+            setattr(self, "%sEdit" % type_, FloatBox(parent=self, id=wx.ID_ANY, value=None, pos=wx.DefaultPosition, size=defSize, validator=ResistValidator()))
+            editBox = getattr(self, "%sEdit" % type_)
+            editBox.SetToolTip(wx.ToolTip(ttText))
+            self.Bind(event=wx.EVT_TEXT, handler=self.OnFieldChanged, source=editBox)
+            resistEditSizer.Add(editBox, 0, wx.BOTTOM | wx.TOP | wx.ALIGN_CENTER_VERTICAL, 5)
             unit = wx.StaticText(self, wx.ID_ANY, "%", wx.DefaultPosition, wx.DefaultSize, 0)
             unit.SetToolTip(wx.ToolTip(ttText))
             resistEditSizer.Add(unit, 0, wx.BOTTOM | wx.TOP | wx.ALIGN_CENTER_VERTICAL, 5)
@@ -171,19 +185,16 @@ class ResistsEditorDlg(wx.Dialog):
             bmp.SetToolTip(wx.ToolTip(ttText))
             miscAttrSizer.Add(bmp, 0, wx.ALIGN_CENTER_VERTICAL | wx.ALIGN_RIGHT, 5)
             # set text edit
-            setattr(self, "%sEdit" % attr, wx.TextCtrl(self, wx.ID_ANY, "", wx.DefaultPosition, defSize))
-            editObj = getattr(self, "%sEdit" % attr)
-            editObj.SetToolTip(wx.ToolTip(ttText))
-            editObj.Bind(wx.EVT_TEXT, self.ValuesUpdated)
-            miscAttrSizer.Add(editObj, 0, wx.BOTTOM | wx.TOP | wx.ALIGN_CENTER_VERTICAL, 5)
+            setattr(self, "%sEdit" % attr, FloatBox(parent=self, id=wx.ID_ANY, value=None, pos=wx.DefaultPosition, size=defSize))
+            editBox = getattr(self, "%sEdit" % attr)
+            editBox.SetToolTip(wx.ToolTip(ttText))
+            self.Bind(event=wx.EVT_TEXT, handler=self.OnFieldChanged, source=editBox)
+            miscAttrSizer.Add(editBox, 0, wx.BOTTOM | wx.TOP | wx.ALIGN_CENTER_VERTICAL, 5)
             unit = wx.StaticText(self, wx.ID_ANY, unitText, wx.DefaultPosition, wx.DefaultSize, 0)
             unit.SetToolTip(wx.ToolTip(ttText))
             miscAttrSizer.Add(unit, 0, wx.BOTTOM | wx.TOP | wx.ALIGN_CENTER_VERTICAL, 5)
 
         contentSizer.Add(miscAttrSizer, 1, wx.EXPAND | wx.ALL, 5)
-
-        # Color we use to reset invalid value color
-        self.colorReset = wx.SystemSettings.GetColour(wx.SYS_COLOUR_WINDOWTEXT)
 
         self.slfooter = wx.StaticLine(self)
         contentSizer.Add(self.slfooter, 0, wx.EXPAND | wx.TOP, 5)
@@ -235,58 +246,47 @@ class ResistsEditorDlg(wx.Dialog):
         self.Bind(wx.EVT_CLOSE, self.onClose)
         self.Bind(wx.EVT_CHAR_HOOK, self.kbEvent)
 
+        self.inputTimer = wx.Timer(self)
+        self.Bind(wx.EVT_TIMER, self.OnInputTimer, self.inputTimer)
+
         self.patternChanged()
 
         self.ShowModal()
 
-    def ValuesUpdated(self, event=None):
-        """
-        Event that is fired when resists values change. Iterates through all
-        resist edit fields. If blank, sets it to 0.0. If it is not a proper
-        decimal value, sets text color to red and refuses to save changes until
-        issue is resolved
-        """
+    def OnFieldChanged(self, event=None):
+        if event is not None:
+            event.Skip()
+        self.inputTimer.Stop()
+        self.inputTimer.Start(Fit.getInstance().serviceFittingOptions['marketSearchDelay'], True)
+
+    def OnInputTimer(self, event):
+        event.Skip()
+
         if self.block:
             return
-
-        editObj = None
 
         try:
             p = self.entityEditor.getActiveEntity()
 
             for type_ in self.DAMAGE_TYPES:
-                editObj = getattr(self, "%sEdit" % type_)
+                editBox = getattr(self, "%sEdit" % type_)
+                # Raise exception if value is not valid
+                if not editBox.isValid():
+                    reason = editBox.getInvalidationReason()
+                    raise ValueError(reason)
 
-                if editObj.GetValue() == "":
-                    # if we are blank, overwrite with 0
-                    editObj.ChangeValue("0.0")
-                    editObj.SetInsertionPointEnd()
-
-                value = float(editObj.GetValue())
-
-                # assertion, because they're easy
-                assert 0 <= value <= 100
-
-                # if everything checks out, set resist attribute
+                value = editBox.GetValueFloat() or 0
                 setattr(p, "%sAmount" % type_, value / 100)
-                editObj.SetForegroundColour(self.colorReset)
 
             for attr in self.ATTRIBUTES:
-                editObj = getattr(self, "%sEdit" % attr)
+                editBox = getattr(self, "%sEdit" % attr)
+                # Raise exception if value is not valid
+                if not editBox.isValid():
+                    reason = editBox.getInvalidationReason()
+                    raise ValueError(reason)
 
-                if editObj.GetValue() == "" and attr != "signatureRadius":
-                    # if we are blank, overwrite with 0 except for signatureRadius
-                    editObj.ChangeValue("0.0")
-                    editObj.SetInsertionPointEnd()
-
-                # if everything checks out, set attribute
-                value = editObj.GetValue()
-                if value == '':
-                    value = None
-                else:
-                    value = float(value)
+                value = editBox.GetValueFloat()
                 setattr(p, attr, value)
-                editObj.SetForegroundColour(self.colorReset)
 
             self.stNotice.SetLabel("")
             self.totSizer.Layout()
@@ -297,16 +297,8 @@ class ResistsEditorDlg(wx.Dialog):
             TargetProfile.getInstance().saveChanges(p)
             wx.PostEvent(self.mainFrame, GE.TargetProfileChanged(profileID=p.ID))
 
-        except ValueError:
-            editObj.SetForegroundColour(wx.RED)
-            msg = "Incorrect Formatting (decimals only)"
-            pyfalog.warning(msg)
-            self.stNotice.SetLabel(msg)
-        except AssertionError:
-            editObj.SetForegroundColour(wx.RED)
-            msg = "Incorrect Range (must be 0-100)"
-            pyfalog.warning(msg)
-            self.stNotice.SetLabel(msg)
+        except ValueError as e:
+            self.stNotice.SetLabel(e.args[0])
         finally:  # Refresh for color changes to take effect immediately
             self.Refresh()
 
@@ -326,18 +318,18 @@ class ResistsEditorDlg(wx.Dialog):
         for field in self.DAMAGE_TYPES:
             edit = getattr(self, "%sEdit" % field)
             amount = getattr(p, "%sAmount" % field) * 100
-            edit.ChangeValue(str(amount))
+            edit.ChangeValueFloat(amount)
 
         for attr in self.ATTRIBUTES:
             edit = getattr(self, "%sEdit" % attr)
             amount = getattr(p, attr)
             if amount == math.inf:
-                edit.ChangeValue('')
+                edit.ChangeValueFloat(None)
             else:
-                edit.ChangeValue(str(amount))
+                edit.ChangeValueFloat(amount)
 
         self.block = False
-        self.ValuesUpdated()
+        self.OnFieldChanged()
 
     def __del__(self):
         pass
