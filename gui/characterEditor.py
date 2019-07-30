@@ -708,6 +708,16 @@ class ImplantEditorView(BaseImplantEditorView):
 
         sChar.removeImplant(char.ID, implant)
 
+    def addImplantSet(self, impSet):
+        charEditor = self.Parent.Parent
+        char = charEditor.entityEditor.getActiveEntity()
+
+        sChar = Character.getInstance()
+        for implant in impSet.implants:
+            sChar.addImplant(char.ID, implant.item.ID)
+
+        wx.PostEvent(charEditor, GE.CharChanged())
+
     def spawnMenu(self, event):
         context = (("implantEditor",),)
         menu = ContextMenu.getMenu(self, None, None, *context)

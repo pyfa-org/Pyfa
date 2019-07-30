@@ -11,9 +11,6 @@ from service.implantSet import ImplantSets as s_ImplantSets
 
 class AddImplantSet(ContextMenuUnconditional):
 
-    def __init__(self):
-        self.mainFrame = gui.mainFrame.MainFrame.getInstance()
-
     def display(self, callingWindow, srcContext):
 
         sIS = s_ImplantSets.getInstance()
@@ -48,26 +45,12 @@ class AddImplantSet(ContextMenuUnconditional):
         return m
 
     def handleSelection(self, event):
-        set = self.idmap.get(event.Id, None)
-
-        if set is None:
+        impSet = self.idmap.get(event.Id, None)
+        if impSet is None:
             event.Skip()
             return
 
-        if self.context == "implantEditor":
-            charEditor = self.callingWindow.Parent.Parent
-            # we are calling from character editor, the implant source is different
-            sChar = Character.getInstance()
-            char = charEditor.entityEditor.getActiveEntity()
-
-            for implant in set.implants:
-                sChar.addImplant(char.ID, implant.item.ID)
-
-            wx.PostEvent(charEditor, GE.CharChanged())
-        else:
-            self.mainFrame.command.Submit(cmd.GuiAddImplantSetCommand(
-                fitID=self.mainFrame.getActiveFit(),
-                itemIDs=[i.itemID for i in set.implants]))
+        self.callingWindow.addImplantSet(impSet)
 
 
 AddImplantSet.register()

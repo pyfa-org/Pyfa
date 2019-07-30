@@ -291,3 +291,8 @@ class ImplantDisplay(d.Display):
                 continue
             implants.append(implant)
         return implants
+
+    def addImplantSet(self, impSet):
+        self.mainFrame.command.Submit(cmd.GuiAddImplantSetCommand(
+            fitID=self.mainFrame.getActiveFit(),
+            itemIDs=[i.itemID for i in impSet.implants]))
