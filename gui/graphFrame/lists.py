@@ -25,6 +25,7 @@ import gui.display
 import gui.globalEvents as GE
 from eos.saveddata.targetProfile import TargetProfile
 from gui.builtinShipBrowser.events import EVT_FIT_RENAMED
+from gui.contextMenu import ContextMenu
 from service.const import GraphCacheCleanupReason
 from service.fit import Fit
 
@@ -45,17 +46,11 @@ class BaseList(gui.display.Display):
 
         self.defaultTT = 'Drag a fit into this list to graph it'
 
-        self.contextMenu = wx.Menu()
-        removeItem = wx.MenuItem(self.contextMenu, 1, 'Remove Fit')
-        self.contextMenu.Append(removeItem)
-        self.contextMenu.Bind(wx.EVT_MENU, self.ContextMenuHandler, removeItem)
-
         self.graphFrame.mainFrame.Bind(GE.FIT_CHANGED, self.OnFitChanged)
         self.graphFrame.mainFrame.Bind(GE.FIT_REMOVED, self.OnFitRemoved)
         self.graphFrame.mainFrame.Bind(EVT_FIT_RENAMED, self.OnFitRenamed)
         self.Bind(wx.EVT_LEFT_DCLICK, self.OnLeftDClick)
         self.Bind(wx.EVT_CHAR_HOOK, self.kbEvent)
-        self.Bind(wx.EVT_CONTEXT_MENU, self.OnContextMenu)
         self.Bind(wx.EVT_MOTION, self.OnMouseMove)
         self.Bind(wx.EVT_LEAVE_WINDOW, self.OnLeaveWindow)
 
@@ -77,16 +72,6 @@ class BaseList(gui.display.Display):
                 pass
             else:
                 self.removeFits([fit])
-
-    def OnContextMenu(self, event):
-        if self.getSelectedFits():
-            self.PopupMenu(self.contextMenu)
-
-    def ContextMenuHandler(self, event):
-        selectedMenuItem = event.GetId()
-        if selectedMenuItem == 1:
-            fits = self.getSelectedFits()
-            self.removeFits(fits)
 
     def OnFitRemoved(self, event):
         event.Skip()
@@ -194,6 +179,7 @@ class FitList(BaseList):
     def __init__(self, graphFrame, parent):
         super().__init__(graphFrame, parent)
         fit = Fit.getInstance().getFit(self.graphFrame.mainFrame.getActiveFit())
+        self.Bind(wx.EVT_CONTEXT_MENU, self.spawnMenu)
         if fit is not None:
             self.fits.append(fit)
             self.updateView()
@@ -203,6 +189,21 @@ class FitList(BaseList):
 
     def updateView(self):
         self.update(self.fits)
+
+    def spawnMenu(self, event):
+        selection = self.getSelectedFits()
+        clickedPos = self.getRowByAbs(event.Position)
+        mainFit = None
+        if clickedPos != -1:
+            try:
+                mainFit = self.fits[clickedPos]
+            except IndexError:
+                pass
+        sourceContext = "graphFitList"
+        itemContext = None if mainFit is None else "Fit"
+        menu = ContextMenu.getMenu(self, mainFit, selection, (sourceContext, itemContext))
+        if menu:
+            self.PopupMenu(menu)
 
 
 class TargetList(BaseList):

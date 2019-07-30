@@ -25,7 +25,7 @@ class RemoveItem(ContextMenuCombined):
             "projectedModule", "cargoItem",
             "projectedFit", "projectedDrone",
             "fighterItem", "projectedFighter",
-            "commandFit"
+            "commandFit", "graphFitList"
         ):
             return False
 
@@ -52,14 +52,15 @@ class RemoveItem(ContextMenuCombined):
             'projectedModule': self.__handleProjectedItem,
             'projectedDrone': self.__handleProjectedItem,
             'projectedFighter': self.__handleProjectedItem,
-            'commandFit': self.__handleCommandFit}
+            'commandFit': self.__handleCommandFit,
+            'graphFitList': self.__handleGraphFit}
         srcContext = fullContext[0]
         handler = handlerMap.get(srcContext)
         if handler is None:
             return
-        handler(mainItem, selection)
+        handler(callingWindow, mainItem, selection)
 
-    def __handleModule(self, mainItem, selection):
+    def __handleModule(self, callingWindow, mainItem, selection):
         fitID = self.mainFrame.getActiveFit()
         fit = Fit.getInstance().getFit(fitID)
         if wx.GetMouseState().GetModifiers() == wx.MOD_ALT:
@@ -72,7 +73,7 @@ class RemoveItem(ContextMenuCombined):
         self.mainFrame.command.Submit(cmd.GuiRemoveLocalModuleCommand(
             fitID=fitID, positions=positions))
 
-    def __handleDrone(self, mainItem, selection):
+    def __handleDrone(self, callingWindow, mainItem, selection):
         fitID = self.mainFrame.getActiveFit()
         fit = Fit.getInstance().getFit(fitID)
         positions = []
@@ -82,7 +83,7 @@ class RemoveItem(ContextMenuCombined):
         self.mainFrame.command.Submit(cmd.GuiRemoveLocalDronesCommand(
             fitID=fitID, positions=positions, amount=math.inf))
 
-    def __handleFighter(self, mainItem, selection):
+    def __handleFighter(self, callingWindow, mainItem, selection):
         fitID = self.mainFrame.getActiveFit()
         fit = Fit.getInstance().getFit(fitID)
         if wx.GetMouseState().GetModifiers() == wx.MOD_ALT:
@@ -96,7 +97,7 @@ class RemoveItem(ContextMenuCombined):
         self.mainFrame.command.Submit(cmd.GuiRemoveLocalFightersCommand(
             fitID=fitID, positions=positions))
 
-    def __handleImplant(self, mainItem, selection):
+    def __handleImplant(self, callingWindow, mainItem, selection):
         fitID = self.mainFrame.getActiveFit()
         fit = Fit.getInstance().getFit(fitID)
         positions = []
@@ -106,7 +107,7 @@ class RemoveItem(ContextMenuCombined):
         self.mainFrame.command.Submit(cmd.GuiRemoveImplantsCommand(
             fitID=fitID, positions=positions))
 
-    def __handleBooster(self, mainItem, selection):
+    def __handleBooster(self, callingWindow, mainItem, selection):
         fitID = self.mainFrame.getActiveFit()
         fit = Fit.getInstance().getFit(fitID)
         positions = []
@@ -116,13 +117,13 @@ class RemoveItem(ContextMenuCombined):
         self.mainFrame.command.Submit(cmd.GuiRemoveBoostersCommand(
             fitID=fitID, positions=positions))
 
-    def __handleCargo(self, mainItem, selection):
+    def __handleCargo(self, callingWindow, mainItem, selection):
         fitID = self.mainFrame.getActiveFit()
         itemIDs = [c.itemID for c in selection]
         self.mainFrame.command.Submit(cmd.GuiRemoveCargosCommand(
             fitID=fitID, itemIDs=itemIDs))
 
-    def __handleProjectedItem(self, mainItem, selection):
+    def __handleProjectedItem(self, callingWindow, mainItem, selection):
         fitID = self.mainFrame.getActiveFit()
         if isinstance(mainItem, EosFit):
             self.mainFrame.command.Submit(cmd.GuiRemoveProjectedItemsCommand(
@@ -151,11 +152,14 @@ class RemoveItem(ContextMenuCombined):
             self.mainFrame.command.Submit(cmd.GuiRemoveProjectedItemsCommand(
                 fitID=fitID, items=selection, amount=math.inf))
 
-    def __handleCommandFit(self, mainItem, selection):
+    def __handleCommandFit(self, callingWindow, mainItem, selection):
         fitID = self.mainFrame.getActiveFit()
         commandFitIDs = [cf.ID for cf in selection]
         self.mainFrame.command.Submit(cmd.GuiRemoveCommandFitsCommand(
             fitID=fitID, commandFitIDs=commandFitIDs))
+
+    def __handleGraphFit(self, callingWindow, mainItem, selection):
+        callingWindow.removeFits(selection)
 
 
 RemoveItem.register()
