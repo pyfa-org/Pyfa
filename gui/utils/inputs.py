@@ -23,10 +23,13 @@ from abc import ABCMeta, abstractmethod
 
 import wx
 
+from eos.utils.float import floatUnerr
+
 
 def valToStr(val):
     if val is None:
         return ''
+    val = floatUnerr(val)
     if int(val) == val:
         val = int(val)
     return str(val)
