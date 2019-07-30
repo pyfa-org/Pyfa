@@ -39,20 +39,78 @@ class BaseList(gui.display.Display):
     def __init__(self, graphFrame, parent):
         super().__init__(parent)
         self.graphFrame = graphFrame
-        self.fits = []
+
+    def refreshExtraColumns(self, extraColSpecs):
+        baseColNames = set()
+        for baseColName in self.DEFAULT_COLS:
+            if ":" in baseColName:
+                baseColName = baseColName.split(":", 1)[0]
+            baseColNames.add(baseColName)
+        columnsToRemove = set()
+        for col in self.activeColumns:
+            if col.name not in baseColNames:
+                columnsToRemove.add(col)
+        for col in columnsToRemove:
+            self.removeColumn(col)
+        for colSpec in extraColSpecs:
+            self.appendColumnBySpec(colSpec)
+        self.refreshView()
+
+    def refreshView(self):
+        raise NotImplementedError
+
+    def updateView(self):
+        raise NotImplementedError
+
+    def unbindExternalEvents(self):
+        raise NotImplementedError
+
+
+class FitList(BaseList):
+
+    def __init__(self, graphFrame, parent):
+        super().__init__(graphFrame, parent)
+
+        self.graphFrame.mainFrame.Bind(GE.FIT_CHANGED, self.OnFitChanged)
+        self.graphFrame.mainFrame.Bind(EVT_FIT_RENAMED, self.OnFitRenamed)
+        self.graphFrame.mainFrame.Bind(GE.FIT_REMOVED, self.OnFitRemoved)
+
+        self.Bind(wx.EVT_CHAR_HOOK, self.kbEvent)
+        self.Bind(wx.EVT_LEFT_DCLICK, self.OnLeftDClick)
+        self.Bind(wx.EVT_CONTEXT_MENU, self.spawnMenu)
+        self.Bind(wx.EVT_MOTION, self.OnMouseMove)
+        self.Bind(wx.EVT_LEAVE_WINDOW, self.OnLeaveWindow)
 
         self.hoveredRow = None
         self.hoveredColumn = None
-
         self.defaultTT = 'Drag a fit into this list to graph it'
 
-        self.graphFrame.mainFrame.Bind(GE.FIT_CHANGED, self.OnFitChanged)
-        self.graphFrame.mainFrame.Bind(GE.FIT_REMOVED, self.OnFitRemoved)
-        self.graphFrame.mainFrame.Bind(EVT_FIT_RENAMED, self.OnFitRenamed)
-        self.Bind(wx.EVT_LEFT_DCLICK, self.OnLeftDClick)
-        self.Bind(wx.EVT_CHAR_HOOK, self.kbEvent)
-        self.Bind(wx.EVT_MOTION, self.OnMouseMove)
-        self.Bind(wx.EVT_LEAVE_WINDOW, self.OnLeaveWindow)
+        self.fits = []
+        fit = Fit.getInstance().getFit(self.graphFrame.mainFrame.getActiveFit())
+        if fit is not None:
+            self.fits.append(fit)
+            self.updateView()
+
+    def refreshView(self):
+        self.refresh(self.fits)
+
+    def updateView(self):
+        self.update(self.fits)
+
+    def spawnMenu(self, event):
+        selection = self.getSelectedFits()
+        clickedPos = self.getRowByAbs(event.Position)
+        mainFit = None
+        if clickedPos != -1:
+            try:
+                mainFit = self.fits[clickedPos]
+            except IndexError:
+                pass
+        sourceContext = 'graphFitList'
+        itemContext = None if mainFit is None else 'Fit'
+        menu = ContextMenu.getMenu(self, mainFit, selection, (sourceContext, itemContext))
+        if menu:
+            self.PopupMenu(menu)
 
     def kbEvent(self, event):
         keycode = event.GetKeyCode()
@@ -73,28 +131,6 @@ class BaseList(gui.display.Display):
             else:
                 self.removeFits([fit])
 
-    def OnFitRemoved(self, event):
-        event.Skip()
-        fit = next((f for f in self.fits if f.ID == event.fitID), None)
-        if fit is not None:
-            self.removeFits([fit])
-
-    def refreshExtraColumns(self, extraColSpecs):
-        baseColNames = set()
-        for baseColName in self.DEFAULT_COLS:
-            if ":" in baseColName:
-                baseColName = baseColName.split(":", 1)[0]
-            baseColNames.add(baseColName)
-        columnsToRemove = set()
-        for col in self.activeColumns:
-            if col.name not in baseColNames:
-                columnsToRemove.add(col)
-        for col in columnsToRemove:
-            self.removeColumn(col)
-        for colSpec in extraColSpecs:
-            self.appendColumnBySpec(colSpec)
-        self.refreshView()
-
     def OnFitRenamed(self, event):
         event.Skip()
         self.updateView()
@@ -103,6 +139,12 @@ class BaseList(gui.display.Display):
         event.Skip()
         if set(event.fitIDs).union(f.ID for f in self.fits):
             self.updateView()
+
+    def OnFitRemoved(self, event):
+        event.Skip()
+        fit = next((f for f in self.fits if f.ID == event.fitID), None)
+        if fit is not None:
+            self.removeFits([fit])
 
     def getSelectedFits(self):
         fits = []
@@ -125,11 +167,6 @@ class BaseList(gui.display.Display):
             self.graphFrame.clearCache(reason=GraphCacheCleanupReason.fitRemoved, extraData=fit.ID)
         self.graphFrame.draw()
 
-    def unbindExternalEvents(self):
-        self.graphFrame.mainFrame.Unbind(GE.FIT_REMOVED, handler=self.OnFitRemoved)
-        self.graphFrame.mainFrame.Unbind(GE.FIT_CHANGED, handler=self.OnFitChanged)
-        self.graphFrame.mainFrame.Unbind(EVT_FIT_RENAMED, handler=self.OnFitRenamed)
-
     def handleDrag(self, type, fitID):
         if type == 'fit':
             sFit = Fit.getInstance()
@@ -138,12 +175,6 @@ class BaseList(gui.display.Display):
                 self.fits.append(fit)
                 self.updateView()
                 self.graphFrame.draw()
-
-    def OnLeaveWindow(self, event):
-        self.SetToolTip(None)
-        self.hoveredRow = None
-        self.hoveredColumn = None
-        event.Skip()
 
     def OnMouseMove(self, event):
         row, _, col = self.HitTestSubItem(event.Position)
@@ -167,49 +198,23 @@ class BaseList(gui.display.Display):
                     self.SetToolTip(self.defaultTT)
         event.Skip()
 
-    def refreshView(self):
-        raise NotImplementedError
+    def OnLeaveWindow(self, event):
+        self.SetToolTip(None)
+        self.hoveredRow = None
+        self.hoveredColumn = None
+        event.Skip()
 
-    def updateView(self):
-        raise NotImplementedError
-
-
-class FitList(BaseList):
-
-    def __init__(self, graphFrame, parent):
-        super().__init__(graphFrame, parent)
-        fit = Fit.getInstance().getFit(self.graphFrame.mainFrame.getActiveFit())
-        self.Bind(wx.EVT_CONTEXT_MENU, self.spawnMenu)
-        if fit is not None:
-            self.fits.append(fit)
-            self.updateView()
-
-    def refreshView(self):
-        self.refresh(self.fits)
-
-    def updateView(self):
-        self.update(self.fits)
-
-    def spawnMenu(self, event):
-        selection = self.getSelectedFits()
-        clickedPos = self.getRowByAbs(event.Position)
-        mainFit = None
-        if clickedPos != -1:
-            try:
-                mainFit = self.fits[clickedPos]
-            except IndexError:
-                pass
-        sourceContext = "graphFitList"
-        itemContext = None if mainFit is None else "Fit"
-        menu = ContextMenu.getMenu(self, mainFit, selection, (sourceContext, itemContext))
-        if menu:
-            self.PopupMenu(menu)
+    def unbindExternalEvents(self):
+        self.graphFrame.mainFrame.Unbind(GE.FIT_CHANGED, handler=self.OnFitChanged)
+        self.graphFrame.mainFrame.Unbind(EVT_FIT_RENAMED, handler=self.OnFitRenamed)
+        self.graphFrame.mainFrame.Unbind(GE.FIT_REMOVED, handler=self.OnFitRemoved)
 
 
 class TargetList(BaseList):
 
     def __init__(self, graphFrame, parent):
         super().__init__(graphFrame, parent)
+        self.fits = []
         self.profiles = []
         self.profiles.append(TargetProfile.getIdeal())
         self.updateView()
@@ -223,3 +228,6 @@ class TargetList(BaseList):
     @property
     def targets(self):
         return self.fits + self.profiles
+
+    def unbindExternalEvents(self):
+        pass
