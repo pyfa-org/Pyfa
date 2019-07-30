@@ -710,10 +710,7 @@ class ImplantEditorView(BaseImplantEditorView):
 
     def spawnMenu(self, event):
         context = (("implantEditor",),)
-        # fuck good coding practices, passing a pointer to the character editor here for [reasons] =D
-        # (see implantSets context class for info)
-        item = self.Parent.Parent
-        menu = ContextMenu.getMenu(self, item, (item,), *context)
+        menu = ContextMenu.getMenu(self, None, None, *context)
 
         if menu:
             self.PopupMenu(menu)
