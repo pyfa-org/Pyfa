@@ -58,6 +58,7 @@ class TargetProfile:
                 signatureRadius=None,
                 radius=0)
             cls._idealTarget.name = 'Ideal Target'
+            cls._idealTarget.ID = -1
         return cls._idealTarget
 
     @property

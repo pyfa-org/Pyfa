@@ -123,6 +123,8 @@ class GraphDpsDroneMode(IntEnum):
 class GraphCacheCleanupReason(IntEnum):
     fitChanged = auto()
     fitRemoved = auto()
+    profileChanged = auto()
+    profileRemoved = auto()
     graphSwitched = auto()
     inputChanged = auto()
     optionChanged = auto()

@@ -40,6 +40,9 @@ class BaseList(gui.display.Display):
         super().__init__(parent)
         self.graphFrame = graphFrame
 
+        self.Bind(wx.EVT_CHAR_HOOK, self.kbEvent)
+        self.Bind(wx.EVT_LEFT_DCLICK, self.OnLeftDClick)
+
     def refreshExtraColumns(self, extraColSpecs):
         baseColNames = set()
         for baseColName in self.DEFAULT_COLS:
@@ -56,19 +59,38 @@ class BaseList(gui.display.Display):
             self.appendColumnBySpec(colSpec)
         self.refreshView()
 
+    def kbEvent(self, event):
+        keycode = event.GetKeyCode()
+        mstate = wx.GetMouseState()
+        if keycode == 65 and mstate.GetModifiers() == wx.MOD_CONTROL:
+            self.selectAll()
+        elif keycode in (wx.WXK_DELETE, wx.WXK_NUMPAD_DELETE) and mstate.GetModifiers() == wx.MOD_NONE:
+            self.removeListItems(self.getSelectedListItems())
+        event.Skip()
+
+    def OnLeftDClick(self, event):
+        row, _ = self.HitTest(event.Position)
+        item = self.getListItem(row)
+        if item is None:
+            return
+        self.removeListItems([item])
+
     def refreshView(self):
         raise NotImplementedError
 
     def updateView(self):
         raise NotImplementedError
 
-    def getItem(self, row):
+    def getListItem(self, row):
         raise NotImplementedError
 
-    def getSelectedItems(self):
+    def removeListItems(self, items):
+        raise NotImplementedError
+
+    def getSelectedListItems(self):
         items = []
         for row in self.getSelectedRows():
-            item = self.getItem(row)
+            item = self.getListItem(row)
             if item is None:
                 continue
             items.append(item)
@@ -87,8 +109,6 @@ class FitList(BaseList):
         self.graphFrame.mainFrame.Bind(EVT_FIT_RENAMED, self.OnFitRenamed)
         self.graphFrame.mainFrame.Bind(GE.FIT_REMOVED, self.OnFitRemoved)
 
-        self.Bind(wx.EVT_CHAR_HOOK, self.kbEvent)
-        self.Bind(wx.EVT_LEFT_DCLICK, self.OnLeftDClick)
         self.Bind(wx.EVT_CONTEXT_MENU, self.spawnMenu)
         self.Bind(wx.EVT_MOTION, self.OnMouseMove)
         self.Bind(wx.EVT_LEAVE_WINDOW, self.OnLeaveWindow)
@@ -110,34 +130,15 @@ class FitList(BaseList):
         self.update(self.fits)
 
     def spawnMenu(self, event):
-        selection = self.getSelectedItems()
+        selection = self.getSelectedListItems()
         clickedPos = self.getRowByAbs(event.Position)
-        mainItem = self.getItem(clickedPos)
+        mainItem = self.getListItem(clickedPos)
 
         sourceContext = 'graphFitList'
         itemContext = None if mainItem is None else 'Fit'
         menu = ContextMenu.getMenu(self, mainItem, selection, (sourceContext, itemContext))
         if menu:
             self.PopupMenu(menu)
-
-    def kbEvent(self, event):
-        keycode = event.GetKeyCode()
-        mstate = wx.GetMouseState()
-        if keycode == 65 and mstate.GetModifiers() == wx.MOD_CONTROL:
-            self.selectAll()
-        elif keycode in (wx.WXK_DELETE, wx.WXK_NUMPAD_DELETE) and mstate.GetModifiers() == wx.MOD_NONE:
-            self.removeFits(self.getSelectedItems())
-        event.Skip()
-
-    def OnLeftDClick(self, event):
-        row, _ = self.HitTest(event.Position)
-        if row != -1:
-            try:
-                fit = self.fits[row]
-            except IndexError:
-                pass
-            else:
-                self.removeFits([fit])
 
     def OnFitRenamed(self, event):
         event.Skip()
@@ -152,9 +153,9 @@ class FitList(BaseList):
         event.Skip()
         fit = next((f for f in self.fits if f.ID == event.fitID), None)
         if fit is not None:
-            self.removeFits([fit])
+            self.removeListItems([fit])
 
-    def getItem(self, row):
+    def getListItem(self, row):
         if row == -1:
             return None
         try:
@@ -162,14 +163,14 @@ class FitList(BaseList):
         except IndexError:
             return None
 
-    def removeFits(self, fits):
-        toRemove = [f for f in fits if f in self.fits]
+    def removeListItems(self, items):
+        toRemove = [i for i in items if i in self.fits]
         if not toRemove:
             return
         for fit in toRemove:
             self.fits.remove(fit)
         self.updateView()
-        for fit in fits:
+        for fit in toRemove:
             self.graphFrame.clearCache(reason=GraphCacheCleanupReason.fitRemoved, extraData=fit.ID)
         self.graphFrame.draw()
 
@@ -231,7 +232,7 @@ class TargetList(BaseList):
     def updateView(self):
         self.update(self.targets)
 
-    def getItem(self, row):
+    def getListItem(self, row):
         if row == -1:
             return None
 
@@ -245,6 +246,22 @@ class TargetList(BaseList):
             return self.fits[row]
         else:
             return self.profiles[row - numFits]
+
+    def removeListItems(self, items):
+        fitsToRemove = [i for i in items if i in self.fits]
+        profilesToRemove = [i for i in items if i in self.profiles]
+        if not fitsToRemove and not profilesToRemove:
+            return
+        for fit in fitsToRemove:
+            self.fits.remove(fit)
+        for profile in profilesToRemove:
+            self.profiles.remove(profile)
+        self.updateView()
+        for fit in fitsToRemove:
+            self.graphFrame.clearCache(reason=GraphCacheCleanupReason.fitRemoved, extraData=fit.ID)
+        for profile in profilesToRemove:
+            self.graphFrame.clearCache(reason=GraphCacheCleanupReason.profileRemoved, extraData=profile.ID)
+        self.graphFrame.draw()
 
     @property
     def targets(self):
