@@ -226,7 +226,7 @@ class FitList(BaseList):
 
     @property
     def defaultTTText(self):
-        return  'Drag a fit into this list to graph it'
+        return 'Drag a fit into this list to graph it'
 
 
 class TargetList(BaseList):
@@ -294,4 +294,14 @@ class TargetList(BaseList):
 
     @property
     def defaultTTText(self):
-        return  'Drag a fit into this list to have your fits graphed against it'
+        return 'Drag a fit into this list to have your fits graphed against it'
+
+    # Context menu handlers
+    def addProfile(self, profile):
+        if profile is None:
+            return
+        if profile in self.profiles:
+            return
+        self.profiles.append(profile)
+        self.updateView()
+        self.graphFrame.draw()

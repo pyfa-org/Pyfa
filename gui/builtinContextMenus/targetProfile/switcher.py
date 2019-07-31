@@ -20,92 +20,88 @@ class TargetProfileSwitcher(ContextMenuUnconditional):
             return False
 
         sTR = svc_TargetProfile.getInstance()
-        self.patterns = sTR.getTargetProfileList()
-        self.patterns.sort(key=lambda p: (p.name in ['None'], p.name))
+        self.profiles = sTR.getTargetProfileList()
+        self.profiles.sort(key=lambda p: (p.name in ['None'], p.name))
 
-        return len(self.patterns) > 0
+        return len(self.profiles) > 0
 
     def getText(self, callingWindow, itmContext):
         # We take into consideration just target resists, so call menu item accordingly
         return 'Target Resists'
 
     def handleResistSwitch(self, event):
-        pattern = self.patternIds.get(event.Id, False)
-        if pattern is False:
+        profile = self.profileIds.get(event.Id, False)
+        if profile is False:
             event.Skip()
             return
 
         sFit = Fit.getInstance()
         fitID = self.mainFrame.getActiveFit()
-        sFit.setTargetProfile(fitID, pattern)
+        sFit.setTargetProfile(fitID, profile)
         wx.PostEvent(self.mainFrame, GE.FitChanged(fitIDs=(fitID,)))
 
-    def addPattern(self, rootMenu, pattern):
+    def addProfile(self, rootMenu, profile):
         id = ContextMenuUnconditional.nextID()
-        name = getattr(pattern, '_name', pattern.name) if pattern is not None else 'No Profile'
+        name = getattr(profile, '_name', profile.name) if profile is not None else 'No Profile'
 
-        self.patternIds[id] = pattern
+        self.profileIds[id] = profile
         item = wx.MenuItem(rootMenu, id, name, kind=wx.ITEM_CHECK)
         rootMenu.Bind(wx.EVT_MENU, self.handleResistSwitch, item)
 
-        # set pattern attr to menu item
-        item.pattern = pattern
-
-        # determine active pattern
+        # determine active profile
         sFit = Fit.getInstance()
         fitID = self.mainFrame.getActiveFit()
         f = sFit.getFit(fitID)
         tr = f.targetProfile
 
-        checked = tr == pattern
+        checked = tr == profile
 
         return item, checked
 
     def getSubMenu(self, callingWindow, context, rootMenu, i, pitem):
-        msw = True if 'wxMSW' in wx.PlatformInfo else False
-        self.patternIds = {}
+        self.profileIds = {}
         self.subMenus = OrderedDict()
         self.singles = []
 
         sub = wx.Menu()
-        for pattern in self.patterns:
-            start, end = pattern.name.find('['), pattern.name.find(']')
+        for profile in self.profiles:
+            start, end = profile.name.find('['), profile.name.find(']')
             if start is not -1 and end is not -1:
-                currBase = pattern.name[start + 1:end]
+                currBase = profile.name[start + 1:end]
                 # set helper attr
-                setattr(pattern, '_name', pattern.name[end + 1:].strip())
+                setattr(profile, '_name', profile.name[end + 1:].strip())
                 if currBase not in self.subMenus:
                     self.subMenus[currBase] = []
-                self.subMenus[currBase].append(pattern)
+                self.subMenus[currBase].append(profile)
             else:
-                self.singles.append(pattern)
+                self.singles.append(profile)
         # Add reset
-        mitem, checked = self.addPattern(rootMenu if msw else sub, None)
+        msw = 'wxMSW' in wx.PlatformInfo
+        mitem, checked = self.addProfile(rootMenu if msw else sub, None)
         sub.Append(mitem)
         mitem.Check(checked)
         sub.AppendSeparator()
 
         # Single items, no parent
-        for pattern in self.singles:
-            mitem, checked = self.addPattern(rootMenu if msw else sub, pattern)
+        for profile in self.singles:
+            mitem, checked = self.addProfile(rootMenu if msw else sub, profile)
             sub.Append(mitem)
             mitem.Check(checked)
 
         # Items that have a parent
-        for menuName, patterns in list(self.subMenus.items()):
+        for menuName, profiles in list(self.subMenus.items()):
             # Create parent item for root menu that is simply name of parent
             item = wx.MenuItem(rootMenu, ContextMenuUnconditional.nextID(), menuName)
 
             # Create menu for child items
             grandSub = wx.Menu()
-            # sub.Bind(wx.EVT_MENU, self.handleResistSwitch)
 
             # Apply child menu to parent item
             item.SetSubMenu(grandSub)
 
             # Append child items to child menu
-            for pattern in patterns:
-                mitem, checked = self.addPattern(rootMenu if msw else grandSub, pattern)
+            for profile in profiles:
+                mitem, checked = self.addProfile(rootMenu if msw else grandSub, profile)
                 grandSub.Append(mitem)
                 mitem.Check(checked)
             sub.Append(item)  # finally, append parent item to root menu
