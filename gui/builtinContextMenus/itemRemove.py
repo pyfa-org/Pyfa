@@ -25,7 +25,8 @@ class RemoveItem(ContextMenuCombined):
             "projectedModule", "cargoItem",
             "projectedFit", "projectedDrone",
             "fighterItem", "projectedFighter",
-            "commandFit", "graphFitList"
+            "commandFit", "graphFitList",
+            "graphTgtList"
         ):
             return False
 
@@ -53,7 +54,8 @@ class RemoveItem(ContextMenuCombined):
             'projectedDrone': self.__handleProjectedItem,
             'projectedFighter': self.__handleProjectedItem,
             'commandFit': self.__handleCommandFit,
-            'graphFitList': self.__handleGraphFit}
+            'graphFitList': self.__handleGraphItem,
+            'graphTgtList': self.__handleGraphItem}
         srcContext = fullContext[0]
         handler = handlerMap.get(srcContext)
         if handler is None:
@@ -158,7 +160,7 @@ class RemoveItem(ContextMenuCombined):
         self.mainFrame.command.Submit(cmd.GuiRemoveCommandFitsCommand(
             fitID=fitID, commandFitIDs=commandFitIDs))
 
-    def __handleGraphFit(self, callingWindow, mainItem, selection):
+    def __handleGraphItem(self, callingWindow, mainItem, selection):
         callingWindow.removeListItems(selection)
 
 

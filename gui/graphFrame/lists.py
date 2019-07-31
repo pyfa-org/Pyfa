@@ -224,6 +224,9 @@ class TargetList(BaseList):
 
     def __init__(self, graphFrame, parent):
         super().__init__(graphFrame, parent)
+        
+        self.Bind(wx.EVT_CONTEXT_MENU, self.spawnMenu)
+
         self.profiles = []
         self.profiles.append(TargetProfile.getIdeal())
         self.updateView()
@@ -233,6 +236,17 @@ class TargetList(BaseList):
 
     def updateView(self):
         self.update(self.targets)
+
+    def spawnMenu(self, event):
+        selection = self.getSelectedListItems()
+        clickedPos = self.getRowByAbs(event.Position)
+        mainItem = self.getListItem(clickedPos)
+
+        sourceContext = 'graphTgtList'
+        itemContext = None if mainItem is None else 'Target'
+        menu = ContextMenu.getMenu(self, mainItem, selection, (sourceContext, itemContext))
+        if menu:
+            self.PopupMenu(menu)
 
     def getListItem(self, row):
         if row == -1:
