@@ -113,22 +113,29 @@ class FitGraph(metaclass=ABCMeta):
         return plotData
 
     def clearCache(self, reason, extraData=None):
-        # If only one fit changed - clear plots which concern this fit
+        plotKeysToClear = set()
+        # If fit changed - clear plots which concern this fit
         if reason in (GraphCacheCleanupReason.fitChanged, GraphCacheCleanupReason.fitRemoved):
-            # Clear plot cache
-            plotKeysToClear = set()
             for cacheKey in self._plotCache:
                 cacheFitID, cacheTgtType, cacheTgtID = cacheKey
                 if extraData == cacheFitID:
                     plotKeysToClear.add(cacheKey)
                 elif cacheTgtType == 'fit' and extraData == cacheTgtID:
                     plotKeysToClear.add(cacheKey)
-            for cacheKey in plotKeysToClear:
-                del self._plotCache[cacheKey]
+        # Same for profile
+        elif reason in (GraphCacheCleanupReason.profileChanged, GraphCacheCleanupReason.profileRemoved):
+            for cacheKey in self._plotCache:
+                cacheFitID, cacheTgtType, cacheTgtID = cacheKey
+                if cacheTgtType == 'profile' and extraData == cacheTgtID:
+                    plotKeysToClear.add(cacheKey)
         # Wipe out whole plot cache otherwise
         else:
-            self._plotCache.clear()
-        # And process any internal caches graphs might have
+            for cacheKey in self._plotCache:
+                plotKeysToClear.add(cacheKey)
+        # Do actual cleanup
+        for cacheKey in plotKeysToClear:
+            del self._plotCache[cacheKey]
+        # Process any internal caches graphs might have
         self._clearInternalCache(reason, extraData)
 
     def _clearInternalCache(self, reason, extraData):
