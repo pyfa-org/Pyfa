@@ -11,24 +11,24 @@ from service.fit import Fit
 from service.targetProfile import TargetProfile as svc_TargetProfile
 
 
-class TargetProfile(ContextMenuUnconditional):
+class TargetProfileSwitcher(ContextMenuUnconditional):
 
     def __init__(self):
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
 
     def display(self, callingWindow, srcContext):
-        if self.mainFrame.getActiveFit() is None or srcContext != "firepowerViewFull":
+        if self.mainFrame.getActiveFit() is None or srcContext != 'firepowerViewFull':
             return False
 
         sTR = svc_TargetProfile.getInstance()
         self.patterns = sTR.getTargetProfileList()
-        self.patterns.sort(key=lambda p: (p.name in ["None"], p.name))
+        self.patterns.sort(key=lambda p: (p.name in ['None'], p.name))
 
         return len(self.patterns) > 0
 
     def getText(self, callingWindow, itmContext):
         # We take into consideration just target resists, so call menu item accordingly
-        return "Target Resists"
+        return 'Target Resists'
 
     def handleResistSwitch(self, event):
         pattern = self.patternIds.get(event.Id, False)
@@ -43,7 +43,7 @@ class TargetProfile(ContextMenuUnconditional):
 
     def addPattern(self, rootMenu, pattern):
         id = ContextMenuUnconditional.nextID()
-        name = getattr(pattern, "_name", pattern.name) if pattern is not None else "No Profile"
+        name = getattr(pattern, '_name', pattern.name) if pattern is not None else 'No Profile'
 
         self.patternIds[id] = pattern
         item = wx.MenuItem(rootMenu, id, name)
@@ -59,12 +59,12 @@ class TargetProfile(ContextMenuUnconditional):
         tr = f.targetProfile
 
         if tr == pattern:
-            bitmap = BitmapLoader.getBitmap("state_active_small", "gui")
+            bitmap = BitmapLoader.getBitmap('state_active_small', 'gui')
             item.SetBitmap(bitmap)
         return item
 
     def getSubMenu(self, callingWindow, context, rootMenu, i, pitem):
-        msw = True if "wxMSW" in wx.PlatformInfo else False
+        msw = True if 'wxMSW' in wx.PlatformInfo else False
         self.patternIds = {}
         self.subMenus = OrderedDict()
         self.singles = []
@@ -75,7 +75,7 @@ class TargetProfile(ContextMenuUnconditional):
             if start is not -1 and end is not -1:
                 currBase = pattern.name[start + 1:end]
                 # set helper attr
-                setattr(pattern, "_name", pattern.name[end + 1:].strip())
+                setattr(pattern, '_name', pattern.name[end + 1:].strip())
                 if currBase not in self.subMenus:
                     self.subMenus[currBase] = []
                 self.subMenus[currBase].append(pattern)
@@ -109,4 +109,4 @@ class TargetProfile(ContextMenuUnconditional):
         return sub
 
 
-TargetProfile.register()
+TargetProfileSwitcher.register()

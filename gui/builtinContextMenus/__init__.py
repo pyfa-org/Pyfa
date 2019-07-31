@@ -1,47 +1,44 @@
-# noinspection PyUnresolvedReferences
-from gui.builtinContextMenus import (  # noqa: E402,F401
-    # Various command and projected-related items which we want to have first,
-    # before generic commands
-    fitOpenNewTab,
-    envEffectAdd,
-    fitAddCurrentlyOpen,
-    commandFitAdd,
-    # Often-used item manipulations
-    shipModeChange,
-    moduleAmmoChange,
-    moduleSpool,
-    boosterSideEffects,
-    fighterAbilities,
-    # Item info
-    itemStats,
-    itemMarketJump,
-    fitSystemSecurity,  # Not really an item info but want to keep it here
-    shipJump,
-    # Generic item manipulations
-    itemRemove,
-    itemAmountChange,
-    droneSplitStack,
-    itemVariationChange,
-    moduleMutations,
-    moduleFill,
-    skillAffectors,
-    # Market stuff
-    itemFill,
-    droneAddStack,
-    cargoAdd,
-    cargoAddAmmo,
-    itemProject,
-    ammoToDmgPattern,
-    implantSetAdd,
-    # Price
-    priceOptions,
-    # Resistance panel
-    damagePatternChange,
-    # Firepower panel
-    factorReload,
-    targetProfile,
-    # Graph extra options
-    graphDmgIgnoreResists,
-    graphDmgApplyProjected,
-    graphDmgDroneMode,
-)
+# Various command and projected-related items which we want to have first,
+# before generic commands
+from gui.builtinContextMenus import fitOpenNewTab
+from gui.builtinContextMenus import envEffectAdd
+from gui.builtinContextMenus import fitAddCurrentlyOpen
+from gui.builtinContextMenus import commandFitAdd
+# Often-used item manipulations
+from gui.builtinContextMenus import shipModeChange
+from gui.builtinContextMenus import moduleAmmoChange
+from gui.builtinContextMenus import moduleSpool
+from gui.builtinContextMenus import boosterSideEffects
+from gui.builtinContextMenus import fighterAbilities
+# Item info
+from gui.builtinContextMenus import itemStats
+from gui.builtinContextMenus import itemMarketJump
+from gui.builtinContextMenus import fitSystemSecurity  # Not really an item info but want to keep it here
+from gui.builtinContextMenus import shipJump
+# Generic item manipulations
+from gui.builtinContextMenus import itemRemove
+from gui.builtinContextMenus import itemAmountChange
+from gui.builtinContextMenus import droneSplitStack
+from gui.builtinContextMenus import itemVariationChange
+from gui.builtinContextMenus import moduleMutations
+from gui.builtinContextMenus import moduleFill
+from gui.builtinContextMenus import skillAffectors
+# Market stuff
+from gui.builtinContextMenus import itemFill
+from gui.builtinContextMenus import droneAddStack
+from gui.builtinContextMenus import cargoAdd
+from gui.builtinContextMenus import cargoAddAmmo
+from gui.builtinContextMenus import itemProject
+from gui.builtinContextMenus import ammoToDmgPattern
+from gui.builtinContextMenus import implantSetAdd
+# Price
+from gui.builtinContextMenus import priceOptions
+# Resistance panel
+from gui.builtinContextMenus import damagePatternChange
+# Firepower panel
+from gui.builtinContextMenus import factorReload
+from gui.builtinContextMenus.targetProfile import switcher
+# Graph extra options
+from gui.builtinContextMenus import graphDmgIgnoreResists
+from gui.builtinContextMenus import graphDmgApplyProjected
+from gui.builtinContextMenus import graphDmgDroneMode
