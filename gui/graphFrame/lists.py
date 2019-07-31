@@ -166,6 +166,15 @@ class BaseList(gui.display.Display):
         self.graphFrame.mainFrame.Unbind(EVT_FIT_RENAMED, handler=self.OnFitRenamed)
         self.graphFrame.mainFrame.Unbind(GE.FIT_REMOVED, handler=self.OnFitRemoved)
 
+    # Context menu handlers
+    def addFit(self, fit):
+        if fit is None:
+            return
+        if fit in self.fits:
+            return
+        self.fits.append(fit)
+        self.updateView()
+        self.graphFrame.draw()
 
 class FitList(BaseList):
 
@@ -224,7 +233,7 @@ class TargetList(BaseList):
 
     def __init__(self, graphFrame, parent):
         super().__init__(graphFrame, parent)
-        
+
         self.Bind(wx.EVT_CONTEXT_MENU, self.spawnMenu)
 
         self.profiles = []

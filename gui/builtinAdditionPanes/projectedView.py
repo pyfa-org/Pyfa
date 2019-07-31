@@ -374,3 +374,9 @@ class ProjectedView(d.Display):
                 continue
             projectors.append(projector)
         return projectors
+
+    def addFit(self, fit):
+        if fit is None:
+            return
+        fitID = self.mainFrame.getActiveFit()
+        self.mainFrame.command.Submit(cmd.GuiAddProjectedFitCommand(fitID=fitID, projectedFitID=fit.ID, amount=1))

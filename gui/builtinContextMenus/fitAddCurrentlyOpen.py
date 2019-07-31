@@ -15,7 +15,10 @@ class AddCurrentlyOpenFit(ContextMenuUnconditional):
 
     def display(self, callingWindow, srcContext):
 
-        if self.mainFrame.getActiveFit() is None or srcContext not in ('projected', 'commandView'):
+        if srcContext not in ('projected', 'commandView', 'graphFitList', 'graphTgtList'):
+            return False
+
+        if srcContext in ('projected', 'commandView') and self.mainFrame.getActiveFit() is None:
             return False
 
         return True
@@ -26,6 +29,7 @@ class AddCurrentlyOpenFit(ContextMenuUnconditional):
     def getSubMenu(self, callingWindow, context, rootMenu, i, pitem):
         self.fitLookup = {}
         self.context = context
+        self.callingWindow = callingWindow
         sFit = Fit.getInstance()
 
         m = wx.Menu()
@@ -50,14 +54,8 @@ class AddCurrentlyOpenFit(ContextMenuUnconditional):
         return m
 
     def handleSelection(self, event):
-        fitID = self.mainFrame.getActiveFit()
-
         fit = self.fitLookup[event.Id]
-
-        if self.context == 'commandView':
-            self.mainFrame.command.Submit(cmd.GuiAddCommandFitCommand(fitID=fitID, commandFitID=fit.ID))
-        elif self.context == 'projected':
-            self.mainFrame.command.Submit(cmd.GuiAddProjectedFitCommand(fitID=fitID, projectedFitID=fit.ID, amount=1))
+        self.callingWindow.addFit(fit)
 
 
 AddCurrentlyOpenFit.register()

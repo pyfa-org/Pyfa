@@ -227,3 +227,9 @@ class CommandView(d.Display):
                 continue
             commandFits.append(commandFit)
         return commandFits
+
+    def addFit(self, fit):
+        if fit is None:
+            return
+        fitID = self.mainFrame.getActiveFit()
+        self.mainFrame.command.Submit(cmd.GuiAddCommandFitCommand(fitID=fitID, commandFitID=fit.ID))
