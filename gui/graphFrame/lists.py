@@ -39,9 +39,19 @@ class BaseList(gui.display.Display):
     def __init__(self, graphFrame, parent):
         super().__init__(parent)
         self.graphFrame = graphFrame
+        self.fits = []
+
+        self.hoveredRow = None
+        self.hoveredColumn = None
 
         self.Bind(wx.EVT_CHAR_HOOK, self.kbEvent)
         self.Bind(wx.EVT_LEFT_DCLICK, self.OnLeftDClick)
+        self.Bind(wx.EVT_MOTION, self.OnMouseMove)
+        self.Bind(wx.EVT_LEAVE_WINDOW, self.OnLeaveWindow)
+
+        self.graphFrame.mainFrame.Bind(GE.FIT_CHANGED, self.OnFitChanged)
+        self.graphFrame.mainFrame.Bind(EVT_FIT_RENAMED, self.OnFitRenamed)
+        self.graphFrame.mainFrame.Bind(GE.FIT_REMOVED, self.OnFitRemoved)
 
     def refreshExtraColumns(self, extraColSpecs):
         baseColNames = set()
@@ -59,6 +69,15 @@ class BaseList(gui.display.Display):
             self.appendColumnBySpec(colSpec)
         self.refreshView()
 
+    def handleDrag(self, type, fitID):
+        if type == 'fit':
+            sFit = Fit.getInstance()
+            fit = sFit.getFit(fitID)
+            if fit not in self.fits:
+                self.fits.append(fit)
+                self.updateView()
+                self.graphFrame.draw()
+
     def kbEvent(self, event):
         keycode = event.GetKeyCode()
         mstate = wx.GetMouseState()
@@ -74,6 +93,52 @@ class BaseList(gui.display.Display):
         if item is None:
             return
         self.removeListItems([item])
+
+    def OnFitRenamed(self, event):
+        event.Skip()
+        self.updateView()
+
+    def OnFitChanged(self, event):
+        event.Skip()
+        if set(event.fitIDs).union(f.ID for f in self.fits):
+            self.updateView()
+
+    def OnFitRemoved(self, event):
+        event.Skip()
+        fit = next((f for f in self.fits if f.ID == event.fitID), None)
+        if fit is not None:
+            self.removeListItems([fit])
+
+    def OnMouseMove(self, event):
+        row, _, col = self.HitTestSubItem(event.Position)
+        if row != self.hoveredRow or col != self.hoveredColumn:
+            if self.ToolTip is not None:
+                self.SetToolTip(None)
+            else:
+                self.hoveredRow = row
+                self.hoveredColumn = col
+                if row != -1 and col != -1 and col < self.ColumnCount:
+                    item = self.getListItem(row)
+                    if item is None:
+                        return
+                    tooltip = self.activeColumns[col].getToolTip(item)
+                    if tooltip:
+                        self.SetToolTip(tooltip)
+                    else:
+                        self.SetToolTip(None)
+                else:
+                    self.SetToolTip(self.defaultTTText)
+        event.Skip()
+
+    def OnLeaveWindow(self, event):
+        self.SetToolTip(None)
+        self.hoveredRow = None
+        self.hoveredColumn = None
+        event.Skip()
+
+    @property
+    def defaultTTText(self):
+        raise NotImplementedError
 
     def refreshView(self):
         raise NotImplementedError
@@ -97,7 +162,9 @@ class BaseList(gui.display.Display):
         return items
 
     def unbindExternalEvents(self):
-        raise NotImplementedError
+        self.graphFrame.mainFrame.Unbind(GE.FIT_CHANGED, handler=self.OnFitChanged)
+        self.graphFrame.mainFrame.Unbind(EVT_FIT_RENAMED, handler=self.OnFitRenamed)
+        self.graphFrame.mainFrame.Unbind(GE.FIT_REMOVED, handler=self.OnFitRemoved)
 
 
 class FitList(BaseList):
@@ -105,19 +172,8 @@ class FitList(BaseList):
     def __init__(self, graphFrame, parent):
         super().__init__(graphFrame, parent)
 
-        self.graphFrame.mainFrame.Bind(GE.FIT_CHANGED, self.OnFitChanged)
-        self.graphFrame.mainFrame.Bind(EVT_FIT_RENAMED, self.OnFitRenamed)
-        self.graphFrame.mainFrame.Bind(GE.FIT_REMOVED, self.OnFitRemoved)
-
         self.Bind(wx.EVT_CONTEXT_MENU, self.spawnMenu)
-        self.Bind(wx.EVT_MOTION, self.OnMouseMove)
-        self.Bind(wx.EVT_LEAVE_WINDOW, self.OnLeaveWindow)
 
-        self.hoveredRow = None
-        self.hoveredColumn = None
-        self.defaultTT = 'Drag a fit into this list to graph it'
-
-        self.fits = []
         fit = Fit.getInstance().getFit(self.graphFrame.mainFrame.getActiveFit())
         if fit is not None:
             self.fits.append(fit)
@@ -140,21 +196,6 @@ class FitList(BaseList):
         if menu:
             self.PopupMenu(menu)
 
-    def OnFitRenamed(self, event):
-        event.Skip()
-        self.updateView()
-
-    def OnFitChanged(self, event):
-        event.Skip()
-        if set(event.fitIDs).union(f.ID for f in self.fits):
-            self.updateView()
-
-    def OnFitRemoved(self, event):
-        event.Skip()
-        fit = next((f for f in self.fits if f.ID == event.fitID), None)
-        if fit is not None:
-            self.removeListItems([fit])
-
     def getListItem(self, row):
         if row == -1:
             return None
@@ -174,54 +215,15 @@ class FitList(BaseList):
             self.graphFrame.clearCache(reason=GraphCacheCleanupReason.fitRemoved, extraData=fit.ID)
         self.graphFrame.draw()
 
-    def handleDrag(self, type, fitID):
-        if type == 'fit':
-            sFit = Fit.getInstance()
-            fit = sFit.getFit(fitID)
-            if fit not in self.fits:
-                self.fits.append(fit)
-                self.updateView()
-                self.graphFrame.draw()
-
-    def OnMouseMove(self, event):
-        row, _, col = self.HitTestSubItem(event.Position)
-        if row != self.hoveredRow or col != self.hoveredColumn:
-            if self.ToolTip is not None:
-                self.SetToolTip(None)
-            else:
-                self.hoveredRow = row
-                self.hoveredColumn = col
-                if row != -1 and col != -1 and col < self.ColumnCount:
-                    try:
-                        fit = self.fits[row]
-                    except IndexError:
-                        return
-                    tooltip = self.activeColumns[col].getToolTip(fit)
-                    if tooltip:
-                        self.SetToolTip(tooltip)
-                    else:
-                        self.SetToolTip(None)
-                else:
-                    self.SetToolTip(self.defaultTT)
-        event.Skip()
-
-    def OnLeaveWindow(self, event):
-        self.SetToolTip(None)
-        self.hoveredRow = None
-        self.hoveredColumn = None
-        event.Skip()
-
-    def unbindExternalEvents(self):
-        self.graphFrame.mainFrame.Unbind(GE.FIT_CHANGED, handler=self.OnFitChanged)
-        self.graphFrame.mainFrame.Unbind(EVT_FIT_RENAMED, handler=self.OnFitRenamed)
-        self.graphFrame.mainFrame.Unbind(GE.FIT_REMOVED, handler=self.OnFitRemoved)
+    @property
+    def defaultTTText(self):
+        return  'Drag a fit into this list to graph it'
 
 
 class TargetList(BaseList):
 
     def __init__(self, graphFrame, parent):
         super().__init__(graphFrame, parent)
-        self.fits = []
         self.profiles = []
         self.profiles.append(TargetProfile.getIdeal())
         self.updateView()
@@ -267,5 +269,6 @@ class TargetList(BaseList):
     def targets(self):
         return self.fits + self.profiles
 
-    def unbindExternalEvents(self):
-        pass
+    @property
+    def defaultTTText(self):
+        return  'Drag a fit into this list to have your fits graphed against it'

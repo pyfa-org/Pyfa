@@ -59,7 +59,7 @@ class GraphColumn(ViewColumn, metaclass=ABCMeta):
         raise NotImplementedError
 
     def getToolTip(self, stuff):
-        if isinstance(stuff, Fit):
+        if isinstance(stuff, (Fit, TargetProfile)):
             return self._getFitTooltip()
         return ''
 
