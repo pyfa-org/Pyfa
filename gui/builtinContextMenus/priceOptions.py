@@ -35,8 +35,7 @@ class ItemGroupPrice(ContextMenuUnconditional, metaclass=ABCMeta):
         fitID = self.mainFrame.getActiveFit()
         wx.PostEvent(self.mainFrame, GE.FitChanged(fitIDs=(fitID,)))
 
-    @property
-    def checked(self):
+    def isChecked(self, i):
         return self.settings.get(self.optionName)
 
 

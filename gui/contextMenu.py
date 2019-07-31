@@ -97,8 +97,8 @@ class ContextMenu(metaclass=ABCMeta):
                     multiple = not isinstance(bitmap, wx.Bitmap)
                     for it, text in enumerate(texts):
                         id = ContextMenu.nextID()
-                        check = m.checked
-                        rootItem = wx.MenuItem(rootMenu, id, text, kind=wx.ITEM_NORMAL if m.checked is None else wx.ITEM_CHECK)
+                        check = m.isChecked(it)
+                        rootItem = wx.MenuItem(rootMenu, id, text, kind=wx.ITEM_NORMAL if check is None else wx.ITEM_CHECK)
                         rootMenu.info[id] = (m, callingWindow, fullContext, it)
 
                         sub = m._baseGetSubMenu(callingWindow, srcContext, mainItem, selection, rootMenu, it, rootItem)
@@ -180,8 +180,7 @@ class ContextMenu(metaclass=ABCMeta):
 
         return ContextMenu._ids[ContextMenu._idxid]
 
-    @property
-    def checked(self):
+    def isChecked(self, i):
         '''If menu item is toggleable, this should return bool value'''
         return None
 

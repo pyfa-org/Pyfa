@@ -26,8 +26,7 @@ class FactorReload(ContextMenuUnconditional):
         fitIDs = Fit.getInstance().toggleFactorReload()
         wx.PostEvent(self.mainFrame, GE.FitChanged(fitIDs=tuple(fitIDs)))
 
-    @property
-    def checked(self):
+    def isChecked(self, i):
         sFit = Fit.getInstance()
         return sFit.serviceFittingOptions["useGlobalForceReload"]
 

@@ -23,8 +23,7 @@ class GraphDmgApplyProjectedMenu(ContextMenuUnconditional):
         self.settings.set('applyProjected', not self.settings.get('applyProjected'))
         wx.PostEvent(self.mainFrame, GE.GraphOptionChanged())
 
-    @property
-    def checked(self):
+    def isChecked(self, i):
         return self.settings.get('applyProjected')
 
 

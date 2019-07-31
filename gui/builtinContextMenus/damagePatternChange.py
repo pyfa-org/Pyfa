@@ -5,7 +5,6 @@ import wx
 
 import gui.globalEvents as GE
 import gui.mainFrame
-from gui.bitmap_loader import BitmapLoader
 from gui.contextMenu import ContextMenuUnconditional
 from service.damagePattern import DamagePattern as import_DamagePattern
 from service.fit import Fit
@@ -58,7 +57,7 @@ class ChangeDamagePattern(ContextMenuUnconditional):
         name = getattr(pattern, "_name", pattern.name) if pattern is not None else "No Profile"
 
         self.patternIds[id] = pattern
-        menuItem = wx.MenuItem(rootMenu, id, name)
+        menuItem = wx.MenuItem(rootMenu, id, name, kind=wx.ITEM_CHECK)
         rootMenu.Bind(wx.EVT_MENU, self.handlePatternSwitch, menuItem)
 
         # set pattern attr to menu item
@@ -70,13 +69,24 @@ class ChangeDamagePattern(ContextMenuUnconditional):
         fit = sFit.getFit(fitID)
         if fit:
             dp = fit.damagePattern
-            if dp == pattern:
-                bitmap = BitmapLoader.getBitmap("state_active_small", "gui")
-                menuItem.SetBitmap(bitmap)
-        return menuItem
+            checked = dp is pattern
+        else:
+            checked = False
+        return menuItem, checked
+
+    def isChecked(self, i):
+        try:
+            single = self.singles[i]
+        except IndexError:
+            return super().isChecked(i)
+        if self.fit and single is self.fit.damagePattern:
+            return True
+        return False
 
     def getSubMenu(self, callingWindow, context, rootMenu, i, pitem):
-        msw = True if "wxMSW" in wx.PlatformInfo else False
+        # Attempt to remove attribute which carries info if non-sub-items should
+        # be checked or not
+        self.checked = None
 
         if self.m[i] not in self.subMenus:
             # if we're trying to get submenu to something that shouldn't have one,
@@ -85,16 +95,16 @@ class ChangeDamagePattern(ContextMenuUnconditional):
             id = pitem.GetId()
             self.patternIds[id] = self.singles[i]
             rootMenu.Bind(wx.EVT_MENU, self.handlePatternSwitch, pitem)
-            if self.fit and self.patternIds[id] == self.fit.damagePattern:
-                    bitmap = BitmapLoader.getBitmap("state_active_small", "gui")
-                    pitem.SetBitmap(bitmap)
             return False
 
         sub = wx.Menu()
 
         # Items that have a parent
+        msw = "wxMSW" in wx.PlatformInfo
         for pattern in self.subMenus[self.m[i]]:
-            sub.Append(self.addPattern(rootMenu if msw else sub, pattern))
+            mitem, checked = self.addPattern(rootMenu if msw else sub, pattern)
+            sub.Append(mitem)
+            mitem.Check(checked)
 
         return sub
 

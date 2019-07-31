@@ -5,7 +5,6 @@ import wx
 
 import gui.globalEvents as GE
 import gui.mainFrame
-from gui.bitmap_loader import BitmapLoader
 from gui.contextMenu import ContextMenuUnconditional
 from service.fit import Fit
 from service.targetProfile import TargetProfile as svc_TargetProfile
@@ -46,7 +45,7 @@ class TargetProfileSwitcher(ContextMenuUnconditional):
         name = getattr(pattern, '_name', pattern.name) if pattern is not None else 'No Profile'
 
         self.patternIds[id] = pattern
-        item = wx.MenuItem(rootMenu, id, name)
+        item = wx.MenuItem(rootMenu, id, name, kind=wx.ITEM_CHECK)
         rootMenu.Bind(wx.EVT_MENU, self.handleResistSwitch, item)
 
         # set pattern attr to menu item
@@ -58,10 +57,9 @@ class TargetProfileSwitcher(ContextMenuUnconditional):
         f = sFit.getFit(fitID)
         tr = f.targetProfile
 
-        if tr == pattern:
-            bitmap = BitmapLoader.getBitmap('state_active_small', 'gui')
-            item.SetBitmap(bitmap)
-        return item
+        checked = tr == pattern
+
+        return item, checked
 
     def getSubMenu(self, callingWindow, context, rootMenu, i, pitem):
         msw = True if 'wxMSW' in wx.PlatformInfo else False
@@ -81,13 +79,17 @@ class TargetProfileSwitcher(ContextMenuUnconditional):
                 self.subMenus[currBase].append(pattern)
             else:
                 self.singles.append(pattern)
-
-        sub.Append(self.addPattern(rootMenu if msw else sub, None))  # Add reset
+        # Add reset
+        mitem, checked = self.addPattern(rootMenu if msw else sub, None)
+        sub.Append(mitem)
+        mitem.Check(checked)
         sub.AppendSeparator()
 
         # Single items, no parent
         for pattern in self.singles:
-            sub.Append(self.addPattern(rootMenu if msw else sub, pattern))
+            mitem, checked = self.addPattern(rootMenu if msw else sub, pattern)
+            sub.Append(mitem)
+            mitem.Check(checked)
 
         # Items that have a parent
         for menuName, patterns in list(self.subMenus.items()):
@@ -103,7 +105,9 @@ class TargetProfileSwitcher(ContextMenuUnconditional):
 
             # Append child items to child menu
             for pattern in patterns:
-                grandSub.Append(self.addPattern(rootMenu if msw else grandSub, pattern))
+                mitem, checked = self.addPattern(rootMenu if msw else grandSub, pattern)
+                grandSub.Append(mitem)
+                mitem.Check(checked)
             sub.Append(item)  # finally, append parent item to root menu
 
         return sub
