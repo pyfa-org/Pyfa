@@ -1,8 +1,9 @@
 # Various command and projected-related items which we want to have first,
 # before generic commands
 from gui.builtinContextMenus import fitOpenNewTab
-from gui.builtinContextMenus import envEffectAdd
+from gui.builtinContextMenus import fitAddBrowse
 from gui.builtinContextMenus import fitAddCurrentlyOpen
+from gui.builtinContextMenus import envEffectAdd
 from gui.builtinContextMenus import commandFitAdd
 from gui.builtinContextMenus.targetProfile import adder
 # Often-used item manipulations
