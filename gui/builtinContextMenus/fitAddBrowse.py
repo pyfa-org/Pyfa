@@ -32,7 +32,7 @@ class FitBrowserLiteDialog(wx.Dialog):
     def __init__(self, parent):
         from gui.builtinViews.fitListLite import FitListView
         wx.Dialog.__init__(self, parent, title='Add Fits', style=wx.DEFAULT_DIALOG_STYLE)
-        self.SetMinSize((500, 200))
+        self.SetMinSize((400, 400))
 
         mainSizer = wx.BoxSizer(wx.VERTICAL)
 
@@ -46,9 +46,12 @@ class FitBrowserLiteDialog(wx.Dialog):
         listSizer.Add(fromList, 1, wx.EXPAND | wx.ALL, 5)
 
         listButtonSizer = wx.BoxSizer(wx.VERTICAL)
+        listButtonSizer.AddStretchSpacer()
         self.addButton = wx.Button(self, wx.ID_ANY, '>>', wx.DefaultPosition, wx.DefaultSize, 0)
+        listButtonSizer.Add(self.addButton, 0, wx.EXPAND | wx.ALL, 5)
         self.removeButton = wx.Button(self, wx.ID_ANY, '<<', wx.DefaultPosition, wx.DefaultSize, 0)
-
+        listButtonSizer.Add(self.removeButton, 0, wx.EXPAND | wx.ALL, 5)
+        listButtonSizer.AddStretchSpacer()
         listSizer.Add(listButtonSizer, 0, wx.EXPAND | wx.ALL, 5)
 
         toList = FitListView(self)
