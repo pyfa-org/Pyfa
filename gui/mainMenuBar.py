@@ -26,7 +26,6 @@ from service.fit import Fit
 import gui.graphFrame
 import gui.globalEvents as GE
 from gui.bitmap_loader import BitmapLoader
-from gui.builtinShipBrowser.events import EVT_FIT_RENAMED
 
 from logbook import Logger
 
@@ -173,7 +172,7 @@ class MainMenuBar(wx.MenuBar):
             helpMenu.Append(self.devToolsId, "Open &Dev Tools", "Dev Tools")
 
         self.mainFrame.Bind(GE.FIT_CHANGED, self.fitChanged)
-        self.mainFrame.Bind(EVT_FIT_RENAMED, self.fitRenamed)
+        self.mainFrame.Bind(GE.FIT_RENAMED, self.fitRenamed)
 
     def fitChanged(self, event):
         event.Skip()

@@ -320,9 +320,28 @@ class GraphControlPanel(wx.Panel):
     def targets(self):
         return self.targetList.targets
 
-    def unbindExternalEvents(self):
-        self.fitList.unbindExternalEvents()
-        self.targetList.unbindExternalEvents()
+    # Fit events
+    def OnFitRenamed(self, event):
+        self.fitList.OnFitRenamed(event)
+        self.targetList.OnFitRenamed(event)
+
+    def OnFitChanged(self, event):
+        self.fitList.OnFitChanged(event)
+        self.targetList.OnFitChanged(event)
+
+    def OnFitRemoved(self, event):
+        self.fitList.OnFitRemoved(event)
+        self.targetList.OnFitRemoved(event)
+
+    # Target profile events
+    def OnProfileRenamed(self, event):
+        self.targetList.OnProfileRenamed(event)
+
+    def OnProfileChanged(self, event):
+        self.targetList.OnProfileChanged(event)
+
+    def OnProfileRemoved(self, event):
+        self.targetList.OnProfileRemoved(event)
 
     def formatLabel(self, axisDef):
         if axisDef.unit is None:

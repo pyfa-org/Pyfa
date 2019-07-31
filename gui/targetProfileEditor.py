@@ -83,6 +83,7 @@ class TargetProfileEntityEditor(EntityEditor):
     def __init__(self, parent):
         EntityEditor.__init__(self, parent, "Target Profile")
         self.SetEditorValidator(TargetProfileNameValidator)
+        self.mainFrame = gui.mainFrame.MainFrame.getInstance()
 
     def getEntitiesFromContext(self):
         sTR = TargetProfile.getInstance()
@@ -96,6 +97,7 @@ class TargetProfileEntityEditor(EntityEditor):
     def DoRename(self, entity, name):
         sTR = TargetProfile.getInstance()
         sTR.renamePattern(entity, name)
+        wx.PostEvent(self.mainFrame, GE.TargetProfileChanged(profileID=entity.ID))
 
     def DoCopy(self, entity, name):
         sTR = TargetProfile.getInstance()
@@ -106,6 +108,7 @@ class TargetProfileEntityEditor(EntityEditor):
     def DoDelete(self, entity):
         sTR = TargetProfile.getInstance()
         sTR.deletePattern(entity)
+        wx.PostEvent(self.mainFrame, GE.TargetProfileRemoved(profileID=entity.ID))
 
 
 class TargetProfileEditorDlg(wx.Dialog):

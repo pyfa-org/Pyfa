@@ -1,8 +1,7 @@
 # noinspection PyPackageRequirements
 import wx.lib.newevent
 
-FitRenamed, EVT_FIT_RENAMED = wx.lib.newevent.NewEvent()
-FitSelected, EVT_FIT_SELECTED = wx.lib.newevent.NewEvent()\
+FitSelected, EVT_FIT_SELECTED = wx.lib.newevent.NewEvent()
 
 BoosterListUpdated, BOOSTER_LIST_UPDATED = wx.lib.newevent.NewEvent()
 

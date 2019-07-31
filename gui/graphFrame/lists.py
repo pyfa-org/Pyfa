@@ -24,7 +24,6 @@ import wx
 import gui.display
 import gui.globalEvents as GE
 from eos.saveddata.targetProfile import TargetProfile
-from gui.builtinShipBrowser.events import EVT_FIT_RENAMED
 from gui.contextMenu import ContextMenu
 from service.const import GraphCacheCleanupReason
 from service.fit import Fit
@@ -48,10 +47,6 @@ class BaseList(gui.display.Display):
         self.Bind(wx.EVT_LEFT_DCLICK, self.OnLeftDClick)
         self.Bind(wx.EVT_MOTION, self.OnMouseMove)
         self.Bind(wx.EVT_LEAVE_WINDOW, self.OnLeaveWindow)
-
-        self.graphFrame.mainFrame.Bind(GE.FIT_CHANGED, self.OnFitChanged)
-        self.graphFrame.mainFrame.Bind(EVT_FIT_RENAMED, self.OnFitRenamed)
-        self.graphFrame.mainFrame.Bind(GE.FIT_REMOVED, self.OnFitRemoved)
 
     def refreshExtraColumns(self, extraColSpecs):
         baseColNames = set()
@@ -94,21 +89,6 @@ class BaseList(gui.display.Display):
             return
         self.removeListItems([item])
 
-    def OnFitRenamed(self, event):
-        event.Skip()
-        self.updateView()
-
-    def OnFitChanged(self, event):
-        event.Skip()
-        if set(event.fitIDs).union(f.ID for f in self.fits):
-            self.updateView()
-
-    def OnFitRemoved(self, event):
-        event.Skip()
-        fit = next((f for f in self.fits if f.ID == event.fitID), None)
-        if fit is not None:
-            self.removeListItems([fit])
-
     def OnMouseMove(self, event):
         row, _, col = self.HitTestSubItem(event.Position)
         if row != self.hoveredRow or col != self.hoveredColumn:
@@ -136,6 +116,21 @@ class BaseList(gui.display.Display):
         self.hoveredColumn = None
         event.Skip()
 
+    # Fit events
+    def OnFitRenamed(self, event):
+        if event.fitID in [f.ID for f in self.fits]:
+            self.updateView()
+
+    def OnFitChanged(self, event):
+        if set(event.fitIDs).union(f.ID for f in self.fits):
+            self.updateView()
+
+    def OnFitRemoved(self, event):
+        fit = next((f for f in self.fits if f.ID == event.fitID), None)
+        if fit is not None:
+            self.fits.remove(fit)
+            self.updateView()
+
     @property
     def defaultTTText(self):
         raise NotImplementedError
@@ -160,11 +155,6 @@ class BaseList(gui.display.Display):
                 continue
             items.append(item)
         return items
-
-    def unbindExternalEvents(self):
-        self.graphFrame.mainFrame.Unbind(GE.FIT_CHANGED, handler=self.OnFitChanged)
-        self.graphFrame.mainFrame.Unbind(EVT_FIT_RENAMED, handler=self.OnFitRenamed)
-        self.graphFrame.mainFrame.Unbind(GE.FIT_REMOVED, handler=self.OnFitRemoved)
 
     # Context menu handlers
     def addFit(self, fit):
@@ -287,6 +277,21 @@ class TargetList(BaseList):
         for profile in profilesToRemove:
             self.graphFrame.clearCache(reason=GraphCacheCleanupReason.profileRemoved, extraData=profile.ID)
         self.graphFrame.draw()
+
+    # Target profile events
+    def OnProfileRenamed(self, event):
+        if event.profileID in [tp.ID for tp in self.profiles]:
+            self.updateView()
+
+    def OnProfileChanged(self, event):
+        if event.profileID in [tp.ID for tp in self.profiles]:
+            self.updateView()
+
+    def OnProfileRemoved(self, event):
+        profile = next((tp for tp in self.profiles if tp.ID == event.profileID), None)
+        if profile is not None:
+            self.profiles.remove(profile)
+            self.updateView()
 
     @property
     def targets(self):

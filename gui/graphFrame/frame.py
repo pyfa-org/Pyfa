@@ -33,7 +33,6 @@ from eos.saveddata.fit import Fit
 from eos.saveddata.targetProfile import TargetProfile
 from gui.bitmap_loader import BitmapLoader
 from gui.builtinGraphs.base import FitGraph
-from gui.builtinShipBrowser.events import EVT_FIT_RENAMED
 from service.const import GraphCacheCleanupReason
 from service.settings import GraphSettings
 from .panel import GraphControlPanel
@@ -124,9 +123,14 @@ class GraphFrame(wx.Frame):
         # Event bindings - local events
         self.Bind(wx.EVT_CLOSE, self.closeEvent)
         self.Bind(wx.EVT_CHAR_HOOK, self.kbEvent)
+
         # Event bindings - external events
+        self.mainFrame.Bind(GE.FIT_RENAMED, self.OnFitRenamed)
         self.mainFrame.Bind(GE.FIT_CHANGED, self.OnFitChanged)
-        self.mainFrame.Bind(EVT_FIT_RENAMED, self.OnFitRenamed)
+        self.mainFrame.Bind(GE.FIT_REMOVED, self.OnFitRemoved)
+        self.mainFrame.Bind(GE.TARGET_PROFILE_RENAMED, self.OnProfileRenamed)
+        self.mainFrame.Bind(GE.TARGET_PROFILE_CHANGED, self.OnProfileChanged)
+        self.mainFrame.Bind(GE.TARGET_PROFILE_REMOVED, self.OnProfileRemoved)
         self.mainFrame.Bind(GE.GRAPH_OPTION_CHANGED, self.OnGraphOptionChanged)
 
         self.Layout()
@@ -155,14 +159,41 @@ class GraphFrame(wx.Frame):
             return
         event.Skip()
 
+    # Fit events
+    def OnFitRenamed(self, event):
+        event.Skip()
+        self.ctrlPanel.OnFitRenamed(event)
+        self.draw()
+
     def OnFitChanged(self, event):
         event.Skip()
         for fitID in event.fitIDs:
             self.clearCache(reason=GraphCacheCleanupReason.fitChanged, extraData=fitID)
+        self.ctrlPanel.OnFitChanged(event)
         self.draw()
 
-    def OnFitRenamed(self, event):
+    def OnFitRemoved(self, event):
         event.Skip()
+        self.clearCache(reason=GraphCacheCleanupReason.fitRemoved, extraData=event.fitID)
+        self.ctrlPanel.OnFitRemoved(event)
+        self.draw()
+
+    # Target profile events
+    def OnProfileRenamed(self, event):
+        event.Skip()
+        self.ctrlPanel.OnProfileRenamed(event)
+        self.draw()
+
+    def OnProfileChanged(self, event):
+        event.Skip()
+        self.clearCache(reason=GraphCacheCleanupReason.profileChanged, extraData=event.profileID)
+        self.ctrlPanel.OnProfileChanged(event)
+        self.draw()
+
+    def OnProfileRemoved(self, event):
+        event.Skip()
+        self.clearCache(reason=GraphCacheCleanupReason.profileRemoved, extraData=event.profileID)
+        self.ctrlPanel.OnProfileRemoved(event)
         self.draw()
 
     def OnGraphOptionChanged(self, event):
@@ -179,10 +210,13 @@ class GraphFrame(wx.Frame):
         event.Skip()
 
     def closeWindow(self):
+        self.mainFrame.Unbind(GE.FIT_RENAMED, handler=self.OnFitRenamed)
         self.mainFrame.Unbind(GE.FIT_CHANGED, handler=self.OnFitChanged)
-        self.mainFrame.Unbind(EVT_FIT_RENAMED, handler=self.OnFitRenamed)
+        self.mainFrame.Unbind(GE.FIT_REMOVED, handler=self.OnFitRemoved)
+        self.mainFrame.Unbind(GE.TARGET_PROFILE_RENAMED, handler=self.OnProfileRenamed)
+        self.mainFrame.Unbind(GE.TARGET_PROFILE_CHANGED, handler=self.OnProfileChanged)
+        self.mainFrame.Unbind(GE.TARGET_PROFILE_REMOVED, handler=self.OnProfileRemoved)
         self.mainFrame.Unbind(GE.GRAPH_OPTION_CHANGED, handler=self.OnGraphOptionChanged)
-        self.ctrlPanel.unbindExternalEvents()
         self.Destroy()
 
     def getView(self):
