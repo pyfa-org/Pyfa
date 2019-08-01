@@ -63,13 +63,11 @@ class FitWarpTimeGraph(FitGraph):
         ('distance', 'AU'): lambda v, fit, tgt: v / AU_METERS,
         ('distance', 'km'): lambda v, fit, tgt: v / 1000}
 
-    def _distance2timeFull(self, mainParam, miscParams, fit, tgt):
+    def _distance2timeFull(self, singleGetter, mainParam, miscParams, fit, tgt):
         xs = []
         ys = []
-        subwarpSpeed = self._subspeedCache.getSubwarpSpeed(fit)
-        warpSpeed = fit.warpSpeed
         for distance in self._iterLinear(mainParam[1]):
-            time = calculate_time_in_warp(max_subwarp_speed=subwarpSpeed, max_warp_speed=warpSpeed, warp_dist=distance)
+            time = singleGetter(self, mainParam=distance, miscParams=miscParams, fit=fit, tgt=tgt)
             xs.append(distance)
             ys.append(time)
         return xs, ys
@@ -81,7 +79,7 @@ class FitWarpTimeGraph(FitGraph):
         return time
 
     _getters = {
-        ('distance', 'time'): _distance2timeFull}
+        ('distance', 'time'): (_distance2timeFull, _distance2timeSingle)}
 
 
 class SubwarpSpeedCache(FitDataCache):
