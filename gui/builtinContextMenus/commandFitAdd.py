@@ -97,7 +97,7 @@ class AddCommandFit(ContextMenuUnconditional):
             return
 
         fitID = self.mainFrame.getActiveFit()
-        self.mainFrame.command.Submit(cmd.GuiAddCommandFitCommand(fitID=fitID, commandFitID=fit.ID))
+        self.mainFrame.command.Submit(cmd.GuiAddCommandFitsCommand(fitID=fitID, commandFitIDs=[fit.ID]))
 
 
 AddCommandFit.populateFits(None)

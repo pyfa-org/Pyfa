@@ -117,7 +117,7 @@ class CommandView(d.Display):
         if type == "fit":
             activeFit = self.mainFrame.getActiveFit()
             if activeFit:
-                self.mainFrame.command.Submit(cmd.GuiAddCommandFitCommand(fitID=activeFit, commandFitID=fitID))
+                self.mainFrame.command.Submit(cmd.GuiAddCommandFitsCommand(fitID=activeFit, commandFitIDs=[fitID]))
 
     @staticmethod
     def fitSort(fit):
@@ -228,8 +228,20 @@ class CommandView(d.Display):
             commandFits.append(commandFit)
         return commandFits
 
+    # Context menu handlers
     def addFit(self, fit):
         if fit is None:
             return
-        fitID = self.mainFrame.getActiveFit()
-        self.mainFrame.command.Submit(cmd.GuiAddCommandFitCommand(fitID=fitID, commandFitID=fit.ID))
+        self.mainFrame.command.Submit(cmd.GuiAddCommandFitsCommand(
+            fitID=self.mainFrame.getActiveFit(),
+            commandFitIDs=[fit.ID]))
+
+    def getExistingFitIDs(self):
+        return [f.ID for f in self.fits]
+
+    def addFitsByIDs(self, fitIDs):
+        if not fitIDs:
+            return
+        self.mainFrame.command.Submit(cmd.GuiAddCommandFitsCommand(
+            fitID=self.mainFrame.getActiveFit(),
+            commandFitIDs=fitIDs))

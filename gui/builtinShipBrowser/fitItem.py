@@ -184,7 +184,7 @@ class FitItem(SFItem.SFBrowserItem):
     def OnAddCommandFit(self, event):
         activeFit = self.mainFrame.getActiveFit()
         if activeFit:
-            if self.mainFrame.command.Submit(cmd.GuiAddCommandFitCommand(fitID=activeFit, commandFitID=self.fitID)):
+            if self.mainFrame.command.Submit(cmd.GuiAddCommandFitsCommand(fitID=activeFit, commandFitIDs=[self.fitID])):
                 self.mainFrame.additionsPane.select("Command")
 
     def OnMouseCaptureLost(self, event):

@@ -176,7 +176,7 @@ class BaseList(gui.display.Display):
                 self.fits.append(fit)
         self.updateView()
         self.graphFrame.draw()
-        
+
 
 class FitList(BaseList):
 
