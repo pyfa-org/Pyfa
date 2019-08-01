@@ -72,7 +72,11 @@ class FitBrowserLiteDialog(wx.Dialog):
 
             def isMatch(fit, searchTokens):
                 for token in searchTokens:
-                    if token not in fit.name.lower() and token not in fit.shipName.lower():
+                    if (
+                        token not in fit.name.lower() and
+                        token not in fit.shipName.lower() and
+                        token not in fit.shipNameShort.lower()
+                    ):
                         return False
                 return True
 

@@ -19,7 +19,7 @@ class AddBrowsedFits(ContextMenuUnconditional):
         return 'Add Fit...'
 
     def activate(self, callingWindow, fullContext, i):
-        from gui.builtinViews.fitBrowserLite import FitBrowserLiteDialog
+        from gui.fitBrowserLite import FitBrowserLiteDialog
         titles = {
             'projected': 'Add Projected Fits',
             'commandView': 'Add Command Fits',
