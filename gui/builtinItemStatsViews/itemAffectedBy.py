@@ -283,6 +283,10 @@ class ItemAffectedBy(wx.Panel):
                             penalized += "(resisted)"
                         attrModifier = "*"
 
+                    if attrModifier == "+" and attrAmount < 0:
+                        attrModifier = "-"
+                        attrAmount = -attrAmount
+
                     # this is the Module node, the attribute will be attached to this
                     display = "%s %s %.2f %s" % (displayStr, attrModifier, attrAmount, penalized)
                     treeItem = self.affectedBy.AppendItem(child, display, itemIcon)
@@ -414,6 +418,10 @@ class ItemAffectedBy(wx.Panel):
                             if 'r' in attrModifier:
                                 penalized += "(resisted)"
                             attrModifier = "*"
+
+                        if attrModifier == "+" and attrAmount < 0:
+                            attrModifier = "-"
+                            attrAmount = -attrAmount
 
                         attributes.append((attrName, (displayName if displayName != "" else attrName), attrModifier,
                                            attrAmount, penalized, attrIcon))
