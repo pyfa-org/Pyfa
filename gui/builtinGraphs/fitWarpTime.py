@@ -89,8 +89,19 @@ class SubwarpSpeedCache(FitDataCache):
             subwarpSpeed = self._data[fit.ID]
         except KeyError:
             modStates = {}
+            disallowedGroups = (
+                # Active modules which affect ship speed and cannot be used in warp
+                'Propulsion Module',
+                'Mass Entanglers',
+                'Cloaking Device',
+                # Those reduce ship speed to 0
+                'Siege Module',
+                'Super Weapon',
+                'Cynosural Field Generator',
+                'Clone Vat Bay',
+                'Jump Portal Generator')
             for mod in fit.modules:
-                if mod.item is not None and mod.item.group.name in ('Propulsion Module', 'Mass Entanglers', 'Cloaking Device') and mod.state >= FittingModuleState.ACTIVE:
+                if mod.item is not None and mod.item.group.name in disallowedGroups and mod.state >= FittingModuleState.ACTIVE:
                     modStates[mod] = mod.state
                     mod.state = FittingModuleState.ONLINE
             projFitStates = {}

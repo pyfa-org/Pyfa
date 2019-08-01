@@ -156,9 +156,9 @@ class FitGraph(metaclass=ABCMeta):
 
     # Calculation stuff
     def _calcPlotPoints(self, mainInput, miscInputs, xSpec, ySpec, fit, tgt):
-        mainParam, miscParams = self._normalizeParams(mainInput, miscInputs, fit, tgt)
-        mainParam, miscParams = self._limitParams(mainParam, miscParams, fit, tgt)
-        xs, ys = self._getPoints(mainParam, miscParams, xSpec, ySpec, fit, tgt)
+        mainParam, miscParams = self._normalizeInputs(mainInput=mainInput, miscInputs=miscInputs, fit=fit, tgt=tgt)
+        mainParam, miscParams = self._limitParams(mainParam=mainParam, miscParams=miscParams, fit=fit, tgt=tgt)
+        xs, ys = self._getPoints(mainParam=mainParam, miscParams=miscParams, xSpec=xSpec, ySpec=ySpec, fit=fit, tgt=tgt)
         ys = self._denormalizeValues(ys, ySpec, fit, tgt)
         # Sometimes x denormalizer may fail (e.g. during conversion of 0 ship speed to %).
         # If both inputs and outputs are in %, do some extra processing to at least have
@@ -182,7 +182,7 @@ class FitGraph(metaclass=ABCMeta):
 
     _normalizers = {}
 
-    def _normalizeParams(self, mainInput, miscInputs, fit, tgt):
+    def _normalizeInputs(self, mainInput, miscInputs, fit, tgt):
         key = (mainInput.handle, mainInput.unit)
         if key in self._normalizers:
             normalizer = self._normalizers[key]
