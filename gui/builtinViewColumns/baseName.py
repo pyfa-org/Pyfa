@@ -64,15 +64,15 @@ class BaseName(ViewColumn):
                 info = stuff.getProjectionInfo(fitID)
 
                 if info:
-                    return "%dx %s (%s)" % (stuff.getProjectionInfo(fitID).amount, stuff.name, stuff.ship.item.getShortName())
+                    return "%dx %s (%s)" % (stuff.getProjectionInfo(fitID).amount, stuff.name, stuff.ship.item.name)
 
                 pyfalog.warning("Projected View trying to display things that aren't there. stuff: {}, info: {}", repr(stuff),
                                 info)
                 return "<unknown>"
             else:
-                return "%s (%s)" % (stuff.name, stuff.ship.item.getShortName())
+                return "%s (%s)" % (stuff.name, stuff.ship.item.name)
         elif isinstance(stuff, FitLite):
-            return "{} ({})".format(stuff.name, stuff.shipNameShort)
+            return "{} ({})".format(stuff.name, stuff.shipName)
         elif isinstance(stuff, Rack):
             if FitSvc.getInstance().serviceFittingOptions["rackLabels"]:
                 if stuff.slot == FittingSlot.MODE:
