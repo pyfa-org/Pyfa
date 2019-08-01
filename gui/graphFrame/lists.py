@@ -22,7 +22,6 @@
 import wx
 
 import gui.display
-import gui.globalEvents as GE
 from eos.saveddata.targetProfile import TargetProfile
 from gui.contextMenu import ContextMenu
 from service.const import GraphCacheCleanupReason
@@ -168,6 +167,16 @@ class BaseList(gui.display.Display):
 
     def getExistingFitIDs(self):
         return [f.ID for f in self.fits]
+
+    def addFitsByIDs(self, fitIDs):
+        sFit = Fit.getInstance()
+        for fitID in fitIDs:
+            fit = sFit.getFit(fitID)
+            if fit is not None:
+                self.fits.append(fit)
+        self.updateView()
+        self.graphFrame.draw()
+        
 
 class FitList(BaseList):
 

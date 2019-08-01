@@ -28,7 +28,8 @@ class AddBrowsedFits(ContextMenuUnconditional):
         excludedFitIDs = callingWindow.getExistingFitIDs()
         dlg = FitBrowserLiteDialog(self.mainFrame, title=titles[fullContext[0]], excludedFitIDs=excludedFitIDs)
         if dlg.ShowModal() == wx.ID_OK:
-            pass
+            fitIDs = dlg.getFitIDsToAdd()
+            callingWindow.addFitsByIDs(fitIDs)
 
 
 AddBrowsedFits.register()
