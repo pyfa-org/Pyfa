@@ -64,9 +64,9 @@ class FitBrowserLiteDialog(wx.Dialog):
             mainSizer.Add(buttonSizer, 0, wx.EXPAND | wx.ALL, 5)
 
         fits = Fit.getInstance().getAllFitsLite()
-        fits.sort(key=lambda f: (f.shipName, f.name))
-        fromList.update(fits)
+        fromList.updateData(fits)
 
         self.SetSizer(mainSizer)
         self.CenterOnParent()
         self.Fit()
+        searchBox.SetFocus()
