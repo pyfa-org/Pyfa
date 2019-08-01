@@ -320,7 +320,7 @@ class GraphFrame(wx.Frame):
                 selected_color = None
             legend2.append(Patch(color=selected_color, label=i_name), )
 
-        if len(legend2) > 0:
+        if len(legend2) > 0 and self.ctrlPanel.showLegend:
             leg = self.subplot.legend(handles=legend2)
             for t in leg.get_texts():
                 t.set_fontsize('small')

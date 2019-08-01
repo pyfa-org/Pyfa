@@ -66,6 +66,10 @@ class GraphControlPanel(wx.Panel):
         xSubSelectionSizer.Add(self.xSubSelection, 1, wx.EXPAND | wx.ALL, 0)
         commonOptsSizer.Add(xSubSelectionSizer, 0, wx.EXPAND | wx.TOP, 5)
 
+        self.showLegendCb = wx.CheckBox(self, wx.ID_ANY, 'Show legend', wx.DefaultPosition, wx.DefaultSize, 0)
+        self.showLegendCb.SetValue(True)
+        self.showLegendCb.Bind(wx.EVT_CHECKBOX, self.OnShowLegendChange)
+        commonOptsSizer.Add(self.showLegendCb, 0, wx.EXPAND | wx.TOP, 5)
         self.showY0Cb = wx.CheckBox(self, wx.ID_ANY, 'Always show Y = 0', wx.DefaultPosition, wx.DefaultSize, 0)
         self.showY0Cb.SetValue(True)
         self.showY0Cb.Bind(wx.EVT_CHECKBOX, self.OnShowY0Change)
@@ -79,7 +83,7 @@ class GraphControlPanel(wx.Panel):
         self.srcVectorSizer = wx.BoxSizer(wx.VERTICAL)
         self.srcVectorLabel = wx.StaticText(self, wx.ID_ANY, '')
         self.srcVectorSizer.Add(self.srcVectorLabel, 0, wx.ALIGN_CENTER_HORIZONTAL| wx.BOTTOM, 5)
-        self.srcVector = VectorPicker(self, style=wx.NO_BORDER, size=75, offset=0)
+        self.srcVector = VectorPicker(self, style=wx.NO_BORDER, size=90, offset=0)
         self.srcVector.Bind(VectorPicker.EVT_VECTOR_CHANGED, self.OnFieldChanged)
         self.srcVectorSizer.Add(self.srcVector, 0, wx.SHAPED | wx.ALIGN_CENTER_HORIZONTAL | wx.ALIGN_CENTER_VERTICAL | wx.ALL, 0)
         graphOptsSizer.Add(self.srcVectorSizer, 0, wx.EXPAND | wx.LEFT, 15)
@@ -87,7 +91,7 @@ class GraphControlPanel(wx.Panel):
         self.tgtVectorSizer = wx.BoxSizer(wx.VERTICAL)
         self.tgtVectorLabel = wx.StaticText(self, wx.ID_ANY, '')
         self.tgtVectorSizer.Add(self.tgtVectorLabel, 0, wx.ALIGN_CENTER_HORIZONTAL | wx.BOTTOM, 5)
-        self.tgtVector = VectorPicker(self, style=wx.NO_BORDER, size=75, offset=0)
+        self.tgtVector = VectorPicker(self, style=wx.NO_BORDER, size=90, offset=0)
         self.tgtVector.Bind(VectorPicker.EVT_VECTOR_CHANGED, self.OnFieldChanged)
         self.tgtVectorSizer.Add(self.tgtVector, 0, wx.SHAPED | wx.ALIGN_CENTER_HORIZONTAL | wx.ALIGN_CENTER_VERTICAL | wx.ALL, 0)
         graphOptsSizer.Add(self.tgtVectorSizer, 0, wx.EXPAND | wx.LEFT, 10)
@@ -244,6 +248,10 @@ class GraphControlPanel(wx.Panel):
                 continue
             addInputField(inputDef, handledHandles)
 
+    def OnShowLegendChange(self, event):
+        event.Skip()
+        self.graphFrame.draw()
+
     def OnShowY0Change(self, event):
         event.Skip()
         self.graphFrame.draw()
@@ -299,6 +307,10 @@ class GraphControlPanel(wx.Panel):
             addMiscData(handle=inputBox.handle, unit=inputBox.unit, value=inputBox.textBox.GetValueFloat())
 
         return main, misc
+
+    @property
+    def showLegend(self):
+        return self.showLegendCb.GetValue()
 
     @property
     def showY0(self):
