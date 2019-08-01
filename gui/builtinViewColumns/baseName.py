@@ -26,7 +26,7 @@ from eos.saveddata.implant import Implant
 from eos.saveddata.drone import Drone
 from eos.saveddata.fighter import Fighter
 from eos.saveddata.module import Module, Rack
-from eos.saveddata.fit import Fit
+from eos.saveddata.fit import Fit, FitLite
 from eos.saveddata.targetProfile import TargetProfile
 from eos.const import FittingSlot
 from service.fit import Fit as FitSvc
@@ -71,6 +71,8 @@ class BaseName(ViewColumn):
                 return "<unknown>"
             else:
                 return "%s (%s)" % (stuff.name, stuff.ship.item.name)
+        elif isinstance(stuff, FitLite):
+            return "{} ({})".format(stuff.name, stuff.shipName)
         elif isinstance(stuff, Rack):
             if FitSvc.getInstance().serviceFittingOptions["rackLabels"]:
                 if stuff.slot == FittingSlot.MODE:

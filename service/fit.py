@@ -54,7 +54,6 @@ class DeferRecalc:
         self.sFit.recalc(self.fitID)
 
 
-# inherits from FitDeprecated so that I can move all the dead shit, but not affect functionality
 class Fit:
     instance = None
     processors = {}
@@ -102,6 +101,21 @@ class Fit:
     def getAllFits():
         pyfalog.debug("Fetching all fits")
         fits = eos.db.getFitList()
+        return fits
+
+    @staticmethod
+    def getAllFitsLite():
+        fits = eos.db.getFitListLite()
+        shipMap = {f.shipID: None for f in fits}
+        for shipID in shipMap:
+            ship = eos.db.getItem(shipID)
+            if ship is not None:
+                shipMap[shipID] = ship.name
+        for fit in fits:
+            try:
+                fit.shipName = shipMap[fit.shipID]
+            except KeyError:
+                pass
         return fits
 
     @staticmethod

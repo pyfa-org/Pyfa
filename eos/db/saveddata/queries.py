@@ -24,7 +24,7 @@ from sqlalchemy import desc, select
 from sqlalchemy import func
 
 from eos.db import saveddata_session, sd_lock
-from eos.db.saveddata.fit import projectedFits_table
+from eos.db.saveddata.fit import fits_table, projectedFits_table
 from eos.db.util import processEager, processWhere
 from eos.saveddata.price import Price
 from eos.saveddata.user import User
@@ -33,7 +33,7 @@ from eos.saveddata.damagePattern import DamagePattern
 from eos.saveddata.targetProfile import TargetProfile
 from eos.saveddata.character import Character
 from eos.saveddata.implantSet import ImplantSet
-from eos.saveddata.fit import Fit
+from eos.saveddata.fit import Fit, FitLite
 from eos.saveddata.module import Module
 from eos.saveddata.miscData import MiscData
 from eos.saveddata.override import Override
@@ -323,6 +323,17 @@ def getFitList(eager=None):
     with sd_lock:
         fits = removeInvalid(saveddata_session.query(Fit).options(*eager).all())
 
+    return fits
+
+
+def getFitListLite():
+    with sd_lock:
+        stmt = select([fits_table.c.ID, fits_table.c.name, fits_table.c.shipID])
+        data = eos.db.saveddata_session.execute(stmt).fetchall()
+    fits = []
+    for fitID, fitName, shipID in data:
+        fit = FitLite(id=fitID, name=fitName, shipID=shipID)
+        fits.append(fit)
     return fits
 
 

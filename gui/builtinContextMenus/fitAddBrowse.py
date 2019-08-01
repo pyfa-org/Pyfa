@@ -3,6 +3,7 @@ import wx
 
 import gui.mainFrame
 from gui.contextMenu import ContextMenuUnconditional
+from service.fit import Fit
 
 
 class AddBrowsedFits(ContextMenuUnconditional):
@@ -47,10 +48,10 @@ class FitBrowserLiteDialog(wx.Dialog):
 
         listButtonSizer = wx.BoxSizer(wx.VERTICAL)
         listButtonSizer.AddStretchSpacer()
-        self.addButton = wx.Button(self, wx.ID_ANY, '>>', wx.DefaultPosition, wx.DefaultSize, 0)
-        listButtonSizer.Add(self.addButton, 0, wx.EXPAND | wx.ALL, 5)
-        self.removeButton = wx.Button(self, wx.ID_ANY, '<<', wx.DefaultPosition, wx.DefaultSize, 0)
-        listButtonSizer.Add(self.removeButton, 0, wx.EXPAND | wx.ALL, 5)
+        addButton = wx.Button(self, wx.ID_ANY, '>>', wx.DefaultPosition, wx.DefaultSize, 0)
+        listButtonSizer.Add(addButton, 0, wx.EXPAND | wx.ALL, 5)
+        removeButton = wx.Button(self, wx.ID_ANY, '<<', wx.DefaultPosition, wx.DefaultSize, 0)
+        listButtonSizer.Add(removeButton, 0, wx.EXPAND | wx.ALL, 5)
         listButtonSizer.AddStretchSpacer()
         listSizer.Add(listButtonSizer, 0, wx.EXPAND | wx.ALL, 5)
 
@@ -61,6 +62,10 @@ class FitBrowserLiteDialog(wx.Dialog):
         buttonSizer = self.CreateButtonSizer(wx.OK | wx.CANCEL)
         if buttonSizer:
             mainSizer.Add(buttonSizer, 0, wx.EXPAND | wx.ALL, 5)
+
+        fits = Fit.getInstance().getAllFitsLite()
+        fits.sort(key=lambda f: (f.shipName, f.name))
+        fromList.update(fits)
 
         self.SetSizer(mainSizer)
         self.CenterOnParent()

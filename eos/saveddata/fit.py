@@ -42,6 +42,18 @@ from eos.utils.stats import DmgTypes
 pyfalog = Logger(__name__)
 
 
+class FitLite:
+
+    def __init__(self, id=None, name=None, shipID=None, shipName=None):
+        self.ID = id
+        self.name = name
+        self.shipID = shipID
+        self.shipName = shipName
+
+    def __repr__(self):
+        return 'FitLite(ID={})'.format(self.ID)
+
+
 class Fit:
     """Represents a fitting, with modules, ship, implants, etc."""
 
