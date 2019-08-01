@@ -1,3 +1,5 @@
+import re
+
 # noinspection PyPackageRequirements
 import wx
 
@@ -36,20 +38,24 @@ AddBrowsedFits.register()
 class FitBrowserLiteDialog(wx.Dialog):
 
     def __init__(self, parent, title='Add Fits'):
-        from gui.builtinViews.fitListLite import FitListView
         wx.Dialog.__init__(self, parent, title=title, style=wx.DEFAULT_DIALOG_STYLE)
+
+        from gui.builtinViews.fitListLite import FitListView
+
+        self.sFit = Fit.getInstance()
+        self.allFits = sorted(self.sFit.getAllFitsLite(), key=lambda f: (f.shipName, f.name))
         self.SetMinSize((400, 400))
 
         mainSizer = wx.BoxSizer(wx.VERTICAL)
 
         searchSizer = wx.BoxSizer(wx.HORIZONTAL)
-        searchBox = wx.TextCtrl(self, wx.ID_ANY, style=wx.TE_PROCESS_ENTER)
-        searchSizer.Add(searchBox, 1, wx.EXPAND | wx.ALL, 5)
+        self.searchBox = wx.TextCtrl(self, wx.ID_ANY, style=wx.TE_PROCESS_ENTER)
+        searchSizer.Add(self.searchBox, 1, wx.EXPAND | wx.ALL, 5)
         mainSizer.Add(searchSizer, 0, wx.EXPAND | wx.ALL, 0)
 
         listSizer = wx.BoxSizer(wx.HORIZONTAL)
-        fromList = FitListView(self)
-        listSizer.Add(fromList, 1, wx.EXPAND | wx.ALL, 5)
+        self.fromList = FitListView(self)
+        listSizer.Add(self.fromList, 1, wx.EXPAND | wx.ALL, 5)
 
         listButtonSizer = wx.BoxSizer(wx.VERTICAL)
         listButtonSizer.AddStretchSpacer()
@@ -68,11 +74,42 @@ class FitBrowserLiteDialog(wx.Dialog):
         if buttonSizer:
             mainSizer.Add(buttonSizer, 0, wx.EXPAND | wx.ALL, 5)
 
-        fits = Fit.getInstance().getAllFitsLite()
-        fromList.updateData(fits)
+        self.resetContents()
+
+        self.inputTimer = wx.Timer(self)
+        self.Bind(wx.EVT_TIMER, self.OnInputTimer, self.inputTimer)
+        self.searchBox.Bind(event=wx.EVT_TEXT, handler=self.OnSearchChanged)
 
         self.SetSizer(mainSizer)
         self.Layout()
         self.SetSize(self.GetBestSize())
         self.CenterOnParent()
-        searchBox.SetFocus()
+        self.searchBox.SetFocus()
+
+    def OnSearchChanged(self, event):
+        event.Skip()
+        self.inputTimer.Stop()
+        self.inputTimer.Start(self.sFit.serviceFittingOptions['marketSearchDelay'], True)
+
+    def OnInputTimer(self, event):
+        event.Skip()
+        searchPattern = self.searchBox.GetValue().strip()
+        if not searchPattern:
+            self.resetContents()
+        else:
+
+            def isMatch(fit, searchTokens):
+                for token in searchTokens:
+                    if token not in fit.name.lower() and token not in fit.shipName.lower():
+                        return False
+                return True
+
+            matches = []
+            searchTokens = [t.lower() for t in re.split('\s+', searchPattern)]
+            for fit in self.allFits:
+                if isMatch(fit, searchTokens):
+                    matches.append(fit)
+            self.fromList.updateData(matches)
+
+    def resetContents(self):
+        self.fromList.updateData(self.allFits)

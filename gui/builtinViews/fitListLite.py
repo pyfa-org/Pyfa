@@ -19,6 +19,5 @@ class FitListView(d.Display):
         self.refresh(self.fits)
 
     def updateData(self, fits):
-        fits.sort(key=lambda f: (f.shipName, f.name))
         self.fits = fits
         self.updateView()
