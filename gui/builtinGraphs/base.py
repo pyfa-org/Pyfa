@@ -232,13 +232,13 @@ class FitGraph(metaclass=ABCMeta):
 
     def _getPoints(self, mainParam, miscParams, xSpec, ySpec, fit, tgt):
         try:
-            fullGetter, singleGetter = self._getters[(xSpec.handle, ySpec.handle)]
+            fullGetter, singleGetter, cacheGetter = self._getters[(xSpec.handle, ySpec.handle)]
         except KeyError:
             return [], []
         else:
             return fullGetter(
-                self, singleGetter=singleGetter, mainParam=mainParam,
-                miscParams=miscParams, fit=fit, tgt=tgt)
+                self, cacheGetter=cacheGetter, singleGetter=singleGetter,
+                mainParam=mainParam, miscParams=miscParams, fit=fit, tgt=tgt)
 
     _denormalizers = {}
 
