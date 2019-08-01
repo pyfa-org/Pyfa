@@ -63,19 +63,28 @@ class FitWarpTimeGraph(FitGraph):
         ('distance', 'AU'): lambda v, fit, tgt: v / AU_METERS,
         ('distance', 'km'): lambda v, fit, tgt: v / 1000}
 
+    def _distance2timeCache(self, miscParams, fit, tgt):
+        return {
+            'subwarpSpeed': self._subspeedCache.getSubwarpSpeed(fit),
+            'warpSpeed': fit.warpSpeed}
+
     def _distance2timeFull(self, singleGetter, mainParam, miscParams, fit, tgt):
         xs = []
         ys = []
+        cache = self._distance2timeCache(miscParams=miscParams, fit=fit, tgt=tgt)
         for distance in self._iterLinear(mainParam[1]):
-            time = singleGetter(self, mainParam=distance, miscParams=miscParams, fit=fit, tgt=tgt)
+            time = singleGetter(self, mainParam=distance, miscParams=miscParams, fit=fit, tgt=tgt, cache=cache)
             xs.append(distance)
             ys.append(time)
         return xs, ys
 
-    def _distance2timeSingle(self, mainParam, miscParams, fit, tgt):
-        subwarpSpeed = self._subspeedCache.getSubwarpSpeed(fit)
-        warpSpeed = fit.warpSpeed
-        time = calculate_time_in_warp(max_subwarp_speed=subwarpSpeed, max_warp_speed=warpSpeed, warp_dist=mainParam)
+    def _distance2timeSingle(self, mainParam, miscParams, fit, tgt, cache=None):
+        if cache is None:
+            cache = self._distance2timeCache(miscParams=miscParams, fit=fit, tgt=tgt)
+        time = calculate_time_in_warp(
+            max_subwarp_speed=cache['subwarpSpeed'],
+            max_warp_speed=cache['warpSpeed'],
+            warp_dist=mainParam)
         return time
 
     _getters = {
