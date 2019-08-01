@@ -7,6 +7,10 @@ import gui.display as d
 from service.fit import Fit
 
 
+def fitSorter(fit):
+    return fit.shipName, fit.name
+
+
 class FitBrowserLiteDialog(wx.Dialog):
 
     def __init__(self, parent, title='Add Fits', excludedFitIDs=()):
@@ -15,7 +19,7 @@ class FitBrowserLiteDialog(wx.Dialog):
         self.sFit = Fit.getInstance()
         self.allFits = sorted(
             (f for f in self.sFit.getAllFitsLite() if f.ID not in excludedFitIDs),
-            key=lambda f: (f.shipName, f.name))
+            key=fitSorter)
         self.SetMinSize((400, 400))
 
         mainSizer = wx.BoxSizer(wx.VERTICAL)
@@ -32,14 +36,16 @@ class FitBrowserLiteDialog(wx.Dialog):
         listButtonSizer = wx.BoxSizer(wx.VERTICAL)
         listButtonSizer.AddStretchSpacer()
         addButton = wx.Button(self, wx.ID_ANY, '>>', wx.DefaultPosition, wx.DefaultSize, 0)
+        addButton.Bind(wx.EVT_BUTTON, self.OnButtonAdd)
         listButtonSizer.Add(addButton, 0, wx.EXPAND | wx.ALL, 5)
         removeButton = wx.Button(self, wx.ID_ANY, '<<', wx.DefaultPosition, wx.DefaultSize, 0)
+        removeButton.Bind(wx.EVT_BUTTON, self.OnButtonRemove)
         listButtonSizer.Add(removeButton, 0, wx.EXPAND | wx.ALL, 5)
         listButtonSizer.AddStretchSpacer()
         listSizer.Add(listButtonSizer, 0, wx.EXPAND | wx.ALL, 5)
 
-        toList = FitListView(self)
-        listSizer.Add(toList, 1, wx.EXPAND | wx.ALL, 5)
+        self.toList = FitListView(self)
+        listSizer.Add(self.toList, 1, wx.EXPAND | wx.ALL, 5)
         mainSizer.Add(listSizer, 1, wx.EXPAND | wx.ALL, 0)
 
         buttonSizer = self.CreateButtonSizer(wx.OK | wx.CANCEL)
@@ -57,6 +63,26 @@ class FitBrowserLiteDialog(wx.Dialog):
         self.SetSize(self.GetBestSize())
         self.CenterOnParent()
         self.searchBox.SetFocus()
+
+    def OnButtonAdd(self, event):
+        event.Skip()
+        fits = self.fromList.GetSelectedFits()
+        if not fits:
+            return
+        self.fromList.removeFits(fits)
+        self.toList.addFits(fits)
+        self.fromList.unselectAll()
+        self.toList.unselectAll()
+
+    def OnButtonRemove(self, event):
+        event.Skip()
+        fits = self.toList.GetSelectedFits()
+        if not fits:
+            return
+        self.toList.removeFits(fits)
+        self.fromList.addFits(fits)
+        self.fromList.unselectAll()
+        self.toList.unselectAll()
 
     def OnSearchChanged(self, event):
         event.Skip()
@@ -88,7 +114,11 @@ class FitBrowserLiteDialog(wx.Dialog):
             self.fromList.updateData(matches)
 
     def resetContents(self):
-        self.fromList.updateData(self.allFits)
+        fits = [f for f in self.allFits if f not in self.toList.fits]
+        self.fromList.updateData(fits)
+
+    def getFitIDsToAdd(self):
+        return [f.ID for f in self.toList.fits]
 
 
 class FitListView(d.Display):
@@ -108,3 +138,28 @@ class FitListView(d.Display):
     def updateData(self, fits):
         self.fits = fits
         self.updateView()
+
+    def addFits(self, fits):
+        for fit in fits:
+            if fit in self.fits:
+                continue
+            self.fits.append(fit)
+        self.fits.sort(key=fitSorter)
+        self.updateView()
+
+    def removeFits(self, fits):
+        for fit in fits:
+            if fit not in self.fits:
+                continue
+            self.fits.remove(fit)
+        self.updateView()
+
+    def GetSelectedFits(self):
+        fits = []
+        for row in self.getSelectedRows():
+            try:
+                fit = self.fits[row]
+            except IndexError:
+                continue
+            fits.append(fit)
+        return fits
