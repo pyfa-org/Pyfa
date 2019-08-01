@@ -30,8 +30,21 @@ from service.const import GraphCacheCleanupReason
 
 YDef = namedtuple('YDef', ('handle', 'unit', 'label'))
 XDef = namedtuple('XDef', ('handle', 'unit', 'label', 'mainInput'))
-Input = namedtuple('Input', ('handle', 'unit', 'label', 'iconID', 'defaultValue', 'defaultRange', 'mainOnly'))
 VectorDef = namedtuple('VectorDef', ('lengthHandle', 'lengthUnit', 'angleHandle', 'angleUnit', 'label'))
+
+
+class Input:
+
+    def __init__(self, handle, unit, label, iconID, defaultValue, defaultRange, mainOnly=False, valueTt=None, rangeTt=None):
+        self.handle = handle
+        self.unit = unit
+        self.label = label
+        self.iconID = iconID
+        self.defaultValue = defaultValue
+        self.defaultRange = defaultRange
+        self.mainOnly = mainOnly
+        self.valueTt = valueTt
+        self.rangeTt = rangeTt
 
 
 class FitGraph(metaclass=ABCMeta):

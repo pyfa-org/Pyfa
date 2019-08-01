@@ -34,7 +34,7 @@ class FitMobilityVsTimeGraph(FitGraph):
         YDef(handle='speed', unit='m/s', label='Speed'),
         YDef(handle='distance', unit='km', label='Distance')]
     inputs = [
-        Input(handle='time', unit='s', label='Time', iconID=1392, defaultValue=10, defaultRange=(0, 30), mainOnly=False)]
+        Input(handle='time', unit='s', label='Time', iconID=1392, defaultValue=10, defaultRange=(0, 30))]
     srcExtraCols = ('Speed', 'Agility')
 
     # Calculation stuff
