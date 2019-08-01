@@ -186,23 +186,23 @@ class FitGraph(metaclass=ABCMeta):
         key = (mainInput.handle, mainInput.unit)
         if key in self._normalizers:
             normalizer = self._normalizers[key]
-            newMainInput = (mainInput.handle, tuple(normalizer(v, fit, tgt) for v in mainInput.value))
+            mainParam = (mainInput.handle, tuple(normalizer(v, fit, tgt) for v in mainInput.value))
         else:
-            newMainInput = (mainInput.handle, mainInput.value)
-        newMiscInputs = []
+            mainParam = (mainInput.handle, mainInput.value)
+        miscParams = []
         for miscInput in miscInputs:
             key = (miscInput.handle, miscInput.unit)
             if key in self._normalizers:
                 normalizer = self._normalizers[key]
-                newMiscInput = (miscInput.handle, normalizer(miscInput.value, fit, tgt))
+                miscParam = (miscInput.handle, normalizer(miscInput.value, fit, tgt))
             else:
-                newMiscInput = (miscInput.handle, miscInput.value)
-            newMiscInputs.append(newMiscInput)
-        return newMainInput, newMiscInputs
+                miscParam = (miscInput.handle, miscInput.value)
+            miscParams.append(miscParam)
+        return mainParam, miscParams
 
     _limiters = {}
 
-    def _limitParams(self, mainInput, miscInputs, fit, tgt):
+    def _limitParams(self, mainParam, miscParams, fit, tgt):
 
         def limitToRange(val, limitRange):
             if val is None:
@@ -211,22 +211,22 @@ class FitGraph(metaclass=ABCMeta):
             val = min(val, max(limitRange))
             return val
 
-        mainHandle, mainValue = mainInput
+        mainHandle, mainValue = mainParam
         if mainHandle in self._limiters:
             limiter = self._limiters[mainHandle]
-            newMainInput = (mainHandle, tuple(limitToRange(v, limiter(fit, tgt)) for v in mainValue))
+            newMainParam = (mainHandle, tuple(limitToRange(v, limiter(fit, tgt)) for v in mainValue))
         else:
-            newMainInput = mainInput
-        newMiscInputs = []
-        for miscInput in miscInputs:
-            miscHandle, miscValue = miscInput
+            newMainParam = mainParam
+        newMiscParams = []
+        for miscParam in miscParams:
+            miscHandle, miscValue = miscParam
             if miscHandle in self._limiters:
                 limiter = self._limiters[miscHandle]
-                newMiscInput = (miscHandle, limitToRange(miscValue, limiter(fit, tgt)))
-                newMiscInputs.append(newMiscInput)
+                newMiscParam = (miscHandle, limitToRange(miscValue, limiter(fit, tgt)))
+                newMiscParams.append(newMiscParam)
             else:
-                newMiscInputs.append(miscInput)
-        return newMainInput, newMiscInputs
+                newMiscParams.append(miscParam)
+        return newMainParam, newMiscParams
 
     _getters = {}
 
