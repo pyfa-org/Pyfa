@@ -163,40 +163,37 @@ class TargetProfileEditorDlg(wx.Dialog):
             bmp.SetToolTip(wx.ToolTip(ttText))
             resistEditSizer.Add(bmp, 0, style, border)
             # set text edit
-            setattr(self, "%sEdit" % type_, FloatBox(parent=self, id=wx.ID_ANY, value=None, pos=wx.DefaultPosition, size=defSize, validator=ResistValidator()))
-            editBox = getattr(self, "%sEdit" % type_)
+            editBox = FloatBox(parent=self, id=wx.ID_ANY, value=None, pos=wx.DefaultPosition, size=defSize, validator=ResistValidator())
             editBox.SetToolTip(wx.ToolTip(ttText))
             self.Bind(event=wx.EVT_TEXT, handler=self.OnFieldChanged, source=editBox)
+            setattr(self, '{}Edit'.format(type_), editBox)
             resistEditSizer.Add(editBox, 0, wx.BOTTOM | wx.TOP | wx.ALIGN_CENTER_VERTICAL, 5)
             unit = wx.StaticText(self, wx.ID_ANY, "%", wx.DefaultPosition, wx.DefaultSize, 0)
             unit.SetToolTip(wx.ToolTip(ttText))
             resistEditSizer.Add(unit, 0, wx.BOTTOM | wx.TOP | wx.ALIGN_CENTER_VERTICAL, 5)
 
-        contentSizer.Add(resistEditSizer, 1, wx.EXPAND | wx.ALL, 5)
+        contentSizer.Add(resistEditSizer, 0, wx.EXPAND | wx.ALL, 5)
 
-        miscAttrSizer = wx.FlexGridSizer(1, 9, 0, 2)
-        miscAttrSizer.AddGrowableCol(0)
-        miscAttrSizer.AddGrowableCol(3)
-        miscAttrSizer.AddGrowableCol(6)
-        miscAttrSizer.AddGrowableCol(8)
-        miscAttrSizer.SetFlexibleDirection(wx.BOTH)
-        miscAttrSizer.SetNonFlexibleGrowMode(wx.FLEX_GROWMODE_SPECIFIED)
+        miscAttrSizer = wx.BoxSizer(wx.HORIZONTAL)
+        miscAttrSizer.AddStretchSpacer()
 
         for attr in self.ATTRIBUTES:
+            leftPad = 25 if attr != list(self.ATTRIBUTES)[0] else 0
             ttText, unitText = self.ATTRIBUTES[attr]
             bmp = wx.StaticBitmap(self, wx.ID_ANY, BitmapLoader.getBitmap("%s_big" % attr, "gui"))
             bmp.SetToolTip(wx.ToolTip(ttText))
-            miscAttrSizer.Add(bmp, 0, wx.ALIGN_CENTER_VERTICAL | wx.ALIGN_RIGHT, 5)
+            miscAttrSizer.Add(bmp, 0, wx.ALIGN_CENTER_VERTICAL | wx.ALIGN_RIGHT | wx.LEFT, leftPad)
             # set text edit
-            setattr(self, "%sEdit" % attr, FloatBox(parent=self, id=wx.ID_ANY, value=None, pos=wx.DefaultPosition, size=defSize))
-            editBox = getattr(self, "%sEdit" % attr)
+            editBox = FloatBox(parent=self, id=wx.ID_ANY, value=None, pos=wx.DefaultPosition, size=defSize)
             editBox.SetToolTip(wx.ToolTip(ttText))
             self.Bind(event=wx.EVT_TEXT, handler=self.OnFieldChanged, source=editBox)
-            miscAttrSizer.Add(editBox, 0, wx.BOTTOM | wx.TOP | wx.ALIGN_CENTER_VERTICAL, 5)
+            setattr(self, '{}Edit'.format(attr), editBox)
+            miscAttrSizer.Add(editBox, 0, wx.ALL | wx.ALIGN_CENTER_VERTICAL, 5)
             unit = wx.StaticText(self, wx.ID_ANY, unitText, wx.DefaultPosition, wx.DefaultSize, 0)
             unit.SetToolTip(wx.ToolTip(ttText))
             miscAttrSizer.Add(unit, 0, wx.BOTTOM | wx.TOP | wx.ALIGN_CENTER_VERTICAL, 5)
 
+        miscAttrSizer.AddStretchSpacer()
         contentSizer.Add(miscAttrSizer, 1, wx.EXPAND | wx.ALL, 5)
 
         self.slfooter = wx.StaticLine(self)
