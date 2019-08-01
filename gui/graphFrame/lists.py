@@ -166,6 +166,9 @@ class BaseList(gui.display.Display):
         self.updateView()
         self.graphFrame.draw()
 
+    def getExistingFitIDs(self):
+        return [f.ID for f in self.fits]
+
 class FitList(BaseList):
 
     def __init__(self, graphFrame, parent):
