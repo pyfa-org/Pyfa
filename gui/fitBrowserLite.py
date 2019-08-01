@@ -16,6 +16,8 @@ class FitBrowserLiteDialog(wx.Dialog):
     def __init__(self, parent, title='Add Fits', excludedFitIDs=()):
         wx.Dialog.__init__(self, parent, title=title, style=wx.DEFAULT_DIALOG_STYLE)
 
+        listWidth = 250 if 'wxGTK' in wx.PlatformInfo else 150
+
         self.sFit = Fit.getInstance()
         self.allFits = sorted(
             (f for f in self.sFit.getAllFitsLite() if f.ID not in excludedFitIDs),
@@ -30,7 +32,7 @@ class FitBrowserLiteDialog(wx.Dialog):
         mainSizer.Add(searchSizer, 0, wx.EXPAND | wx.ALL, 0)
 
         listSizer = wx.BoxSizer(wx.HORIZONTAL)
-        self.fromList = FitListView(self)
+        self.fromList = FitListView(self, size=(listWidth, -1))
         listSizer.Add(self.fromList, 1, wx.EXPAND | wx.ALL, 5)
 
         listButtonSizer = wx.BoxSizer(wx.VERTICAL)
@@ -44,7 +46,7 @@ class FitBrowserLiteDialog(wx.Dialog):
         listButtonSizer.AddStretchSpacer()
         listSizer.Add(listButtonSizer, 0, wx.EXPAND | wx.ALL, 5)
 
-        self.toList = FitListView(self)
+        self.toList = FitListView(self, size=(listWidth, -1))
         listSizer.Add(self.toList, 1, wx.EXPAND | wx.ALL, 5)
         mainSizer.Add(listSizer, 1, wx.EXPAND | wx.ALL, 0)
 
@@ -125,8 +127,8 @@ class FitListView(d.Display):
 
     DEFAULT_COLS = ['Base Name']
 
-    def __init__(self, parent):
-        super().__init__(parent, style=wx.BORDER_NONE)
+    def __init__(self, parent, **kwargs):
+        super().__init__(parent, style=wx.BORDER_NONE, **kwargs)
         self.fits = []
 
     def updateView(self):

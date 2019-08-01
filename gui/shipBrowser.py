@@ -1,7 +1,6 @@
 # noinspection PyPackageRequirements
 import wx
 from logbook import Logger
-# noinspection PyPackageRequirements
 
 import gui.globalEvents as GE
 import gui.mainFrame
