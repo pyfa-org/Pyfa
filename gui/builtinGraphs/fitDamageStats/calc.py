@@ -49,7 +49,7 @@ def getLauncherMult(mod, fit, distance, tgtSpeed, tgtSigRadius):
     modRange = mod.maxRange
     if modRange is None:
         return 0
-    if distance + fit.ship.getModifiedItemAttr('radius') > modRange:
+    if distance is not None and distance + fit.ship.getModifiedItemAttr('radius') > modRange:
         return 0
     mult = _calcMissileFactor(
         atkEr=mod.getModifiedChargeAttr('aoeCloudSize'),
@@ -64,7 +64,7 @@ def getSmartbombMult(mod, distance):
     modRange = mod.maxRange
     if modRange is None:
         return 0
-    if distance > modRange:
+    if distance is not None and distance > modRange:
         return 0
     return 1
 
@@ -72,7 +72,7 @@ def getSmartbombMult(mod, distance):
 def getDoomsdayMult(mod, tgt, distance, tgtSigRadius):
     modRange = mod.maxRange
     # Single-target DDs have no range limit
-    if modRange and distance > modRange:
+    if distance is not None and modRange and distance > modRange:
         return 0
     # Single-target titan DDs are vs capitals only
     if {'superWeaponAmarr', 'superWeaponCaldari', 'superWeaponGallente', 'superWeaponMinmatar'}.intersection(mod.item.effects):
@@ -95,9 +95,9 @@ def getBombMult(mod, fit, tgt, distance, tgtSigRadius):
     # Bomb starts in the center of the ship
     # Also here we assume that it affects target as long as blast
     # touches its surface, not center - I did not check this
-    if distance < max(0, modRange - atkRadius - tgtRadius - blastRadius):
+    if distance is not None and distance < max(0, modRange - atkRadius - tgtRadius - blastRadius):
         return 0
-    if distance > max(0, modRange - atkRadius + tgtRadius + blastRadius):
+    if distance is not None and distance > max(0, modRange - atkRadius + tgtRadius + blastRadius):
         return 0
     return _calcBombFactor(
         atkEr=mod.getModifiedChargeAttr('aoeCloudSize'),
@@ -108,7 +108,7 @@ def getGuidedBombMult(mod, fit, distance, tgtSigRadius):
     modRange = mod.maxRange
     if modRange is None:
         return 0
-    if distance > modRange - fit.ship.getModifiedItemAttr('radius'):
+    if distance is not None and distance > modRange - fit.ship.getModifiedItemAttr('radius'):
         return 0
     eR = mod.getModifiedChargeAttr('aoeCloudSize')
     if eR == 0:
@@ -118,7 +118,7 @@ def getGuidedBombMult(mod, fit, distance, tgtSigRadius):
 
 
 def getDroneMult(drone, fit, tgt, atkSpeed, atkAngle, distance, tgtSpeed, tgtAngle, tgtSigRadius):
-    if distance > fit.extraAttributes['droneControlRange']:
+    if distance is not None and distance > fit.extraAttributes['droneControlRange']:
         return 0
     droneSpeed = drone.getModifiedItemAttr('maxVelocity')
     # Hard to simulate drone behavior, so assume chance to hit is 1 for mobile drones
@@ -134,6 +134,12 @@ def getDroneMult(drone, fit, tgt, atkSpeed, atkAngle, distance, tgtSpeed, tgtAng
     # (whichever is lower) towards direction of attacking ship and see how well it projects
     else:
         droneRadius = drone.getModifiedItemAttr('radius')
+        if distance is None:
+            cthDistance = None
+        else:
+            # As distance is ship surface to ship surface, we adjust it according
+            # to attacker fit's radiuses to have drone surface to ship surface distance
+            cthDistance = distance + fit.ship.getModifiedItemAttr('radius') - droneRadius
         cth = _calcTurretChanceToHit(
             atkSpeed=min(atkSpeed, droneSpeed),
             atkAngle=atkAngle,
@@ -142,9 +148,7 @@ def getDroneMult(drone, fit, tgt, atkSpeed, atkAngle, distance, tgtSpeed, tgtAng
             atkFalloffRange=drone.falloff,
             atkTracking=drone.getModifiedItemAttr('trackingSpeed'),
             atkOptimalSigRadius=drone.getModifiedItemAttr('optimalSigRadius'),
-            # As distance is ship surface to ship surface, we adjust it according
-            # to attacker fit's radiuses to have drone surface to ship surface distance
-            distance=distance + fit.ship.getModifiedItemAttr('radius') - droneRadius,
+            distance=cthDistance,
             tgtSpeed=tgtSpeed,
             tgtAngle=tgtAngle,
             tgtRadius=getTgtRadius(tgt),
@@ -169,10 +173,14 @@ def getFighterAbilityMult(fighter, ability, fit, distance, tgtSpeed, tgtSigRadiu
     # Same as with drones, if fighters are slower - put them to center of
     # the ship and see how they apply
     else:
+        if distance is None:
+            rangeFactorDistance = None
+        else:
+            rangeFactorDistance = distance + fit.ship.getModifiedItemAttr('radius') - fighter.getModifiedItemAttr('radius')
         rangeFactor = _calcRangeFactor(
-            atkOptimalRange=fighter.getModifiedItemAttr('{}RangeOptimal'.format(attrPrefix)),
+            atkOptimalRange=fighter.getModifiedItemAttr('{}RangeOptimal'.format(attrPrefix)) or fighter.getModifiedItemAttr('{}Range'.format(attrPrefix)),
             atkFalloffRange=fighter.getModifiedItemAttr('{}RangeFalloff'.format(attrPrefix)),
-            distance=distance + fit.ship.getModifiedItemAttr('radius') - fighter.getModifiedItemAttr('radius'))
+            distance=rangeFactorDistance)
     drf = fighter.getModifiedItemAttr('{}ReductionFactor'.format(attrPrefix), None)
     if drf is None:
         drf = fighter.getModifiedItemAttr('{}DamageReductionFactor'.format(attrPrefix))
@@ -214,12 +222,12 @@ def getWebbedSpeed(fit, tgt, currentUnwebbedSpeed, webMods, webDrones, webFighte
         mobileWebs = []
         mobileWebs.extend(webFighters)
         # Drones have range limit
-        if distance <= fit.extraAttributes['droneControlRange']:
+        if distance is None or distance <= fit.extraAttributes['droneControlRange']:
             mobileWebs.extend(webDrones)
         atkRadius = fit.ship.getModifiedItemAttr('radius')
         # As mobile webs either follow the target or stick to the attacking ship,
         # if target is within mobile web optimal - it can be applied unconditionally
-        longEnoughMws = [mw for mw in mobileWebs if distance <= mw.optimal - atkRadius + mw.radius]
+        longEnoughMws = [mw for mw in mobileWebs if distance is None or distance <= mw.optimal - atkRadius + mw.radius]
         if longEnoughMws:
             for mwData in longEnoughMws:
                 appliedMultipliers.setdefault(mwData.stackingGroup, []).append((1 + mwData.boost / 100, mwData.resAttrID))
@@ -238,10 +246,14 @@ def getWebbedSpeed(fit, tgt, currentUnwebbedSpeed, webMods, webDrones, webFighte
                     appliedMwBoost = mwData.boost
                 # Otherwise project from the center of the ship
                 else:
+                    if distance is None:
+                        rangeFactorDistance = None
+                    else:
+                        rangeFactorDistance = distance + atkRadius - mwData.radius
                     appliedMwBoost = mwData.boost * _calcRangeFactor(
                         atkOptimalRange=mwData.optimal,
                         atkFalloffRange=mwData.falloff,
-                        distance=distance + atkRadius - mwData.radius)
+                        distance=rangeFactorDistance)
                 appliedMultipliers.setdefault(mwData.stackingGroup, []).append((1 + appliedMwBoost / 100, mwData.resAttrID))
                 mobileWebs.remove(mwData)
             maxWebbedSpeed = getTgtMaxVelocity(tgt, extraMultipliers=appliedMultipliers)
@@ -267,7 +279,7 @@ def getTpMult(fit, tgt, tgtSpeed, tpMods, tpDrones, tpFighters, distance):
     mobileTps = []
     mobileTps.extend(tpFighters)
     # Drones have range limit
-    if distance <= fit.extraAttributes['droneControlRange']:
+    if distance is None or distance <= fit.extraAttributes['droneControlRange']:
         mobileTps.extend(tpDrones)
     droneOpt = GraphSettings.getInstance().get('mobileDroneMode')
     atkRadius = fit.ship.getModifiedItemAttr('radius')
@@ -277,10 +289,14 @@ def getTpMult(fit, tgt, tgtSpeed, tpMods, tpDrones, tpFighters, distance):
             appliedMtpBoost = mtpData.boost
         # Otherwise project from the center of the ship
         else:
+            if distance is None:
+                rangeFactorDistance = None
+            else:
+                rangeFactorDistance = distance + atkRadius - mtpData.radius
             appliedMtpBoost = mtpData.boost * _calcRangeFactor(
                 atkOptimalRange=mtpData.optimal,
                 atkFalloffRange=mtpData.falloff,
-                distance=distance + atkRadius - mtpData.radius)
+                distance=rangeFactorDistance)
         appliedMultipliers.setdefault(mtpData.stackingGroup, []).append((1 + appliedMtpBoost / 100, mtpData.resAttrID))
     tpedSig = getTgtSigRadius(tgt, extraMultipliers=appliedMultipliers)
     if tpedSig == math.inf and untpedSig == math.inf:
@@ -322,16 +338,17 @@ def _calcTurretChanceToHit(
 
 def _calcAngularSpeed(atkSpeed, atkAngle, atkRadius, distance, tgtSpeed, tgtAngle, tgtRadius):
     """Calculate angular speed based on mobility parameters of two ships."""
+    if distance is None:
+        return 0
     atkAngle = atkAngle * math.pi / 180
     tgtAngle = tgtAngle * math.pi / 180
     ctcDistance = atkRadius + distance + tgtRadius
     # Target is to the right of the attacker, so transversal is projection onto Y axis
     transSpeed = abs(atkSpeed * math.sin(atkAngle) - tgtSpeed * math.sin(tgtAngle))
     if ctcDistance == 0:
-        angularSpeed = 0 if transSpeed == 0 else math.inf
+        return 0 if transSpeed == 0 else math.inf
     else:
-        angularSpeed = transSpeed / ctcDistance
-    return angularSpeed
+        return transSpeed / ctcDistance
 
 
 def _calcTrackingFactor(atkTracking, atkOptimalSigRadius, angularSpeed, tgtSigRadius):
@@ -365,13 +382,14 @@ def _calcAggregatedDrf(reductionFactor, reductionSensitivity):
 # Generic
 def _calcRangeFactor(atkOptimalRange, atkFalloffRange, distance):
     """Range strength/chance factor, applicable to guns, ewar, RRs, etc."""
+    if distance is None:
+        return 1
     if atkFalloffRange > 0:
-        factor = 0.5 ** ((max(0, distance - atkOptimalRange) / atkFalloffRange) ** 2)
+        return 0.5 ** ((max(0, distance - atkOptimalRange) / atkFalloffRange) ** 2)
     elif distance <= atkOptimalRange:
-        factor = 1
+        return 1
     else:
-        factor = 0
-    return factor
+        return 0
 
 
 def _calcBombFactor(atkEr, tgtSigRadius):

@@ -69,8 +69,8 @@ class FitDamageStatsGraph(FitGraph):
         YDef(handle='volley', unit=None, label='Volley'),
         YDef(handle='damage', unit=None, label='Damage inflicted')]
     inputs = [
-        Input(handle='time', unit='s', label='Time', iconID=1392, defaultValue=None, defaultRange=(0, 80), secondaryTooltip='When set, uses exact damage stats at a given time\nWhen not set, uses damage stats as shown in stats panel of main window'),
-        Input(handle='distance', unit='km', label='Distance', iconID=1391, defaultValue=50, defaultRange=(0, 100)),
+        Input(handle='time', unit='s', label='Time', iconID=1392, defaultValue=None, defaultRange=(0, 80), secondaryTooltip='When set, uses exact attacker\'s damage stats of at a given time\nWhen not set, uses attacker\'s damage stats as shown in stats panel of main window'),
+        Input(handle='distance', unit='km', label='Distance', iconID=1391, defaultValue=None, defaultRange=(0, 100), mainTooltip='Distance between the attacker and the target, as seen in overview (surface-to-surface)', secondaryTooltip='Distance between the attacker and the target, as seen in overview (surface-to-surface)\nWhen set, places the target that far away from the attacker\nWhen not set, attacker\'s weapons always hit the target'),
         Input(handle='tgtSpeed', unit='%', label='Target speed', iconID=1389, defaultValue=100, defaultRange=(0, 100)),
         Input(handle='tgtSigRad', unit='%', label='Target signature', iconID=1390, defaultValue=100, defaultRange=(100, 200), mainOnly=True)]
     srcVectorDef = VectorDef(lengthHandle='atkSpeed', lengthUnit='%', angleHandle='atkAngle', angleUnit='degrees', label='Attacker')
@@ -81,14 +81,14 @@ class FitDamageStatsGraph(FitGraph):
 
     # Calculation stuff
     _normalizers = {
-        ('distance', 'km'): lambda v, fit, tgt: v * 1000,
+        ('distance', 'km'): lambda v, fit, tgt: None if v is None else v * 1000,
         ('atkSpeed', '%'): lambda v, fit, tgt: v / 100 * fit.ship.getModifiedItemAttr('maxVelocity'),
         ('tgtSpeed', '%'): lambda v, fit, tgt: v / 100 * getTgtMaxVelocity(tgt),
         ('tgtSigRad', '%'): lambda v, fit, tgt: v / 100 * getTgtSigRadius(tgt)}
     _limiters = {
         'time': lambda fit, tgt: (0, 2500)}
     _denormalizers = {
-        ('distance', 'km'): lambda v, fit, tgt: v / 1000,
+        ('distance', 'km'): lambda v, fit, tgt: None if v is None else v / 1000,
         ('tgtSpeed', '%'): lambda v, fit, tgt: v * 100 / getTgtMaxVelocity(tgt),
         ('tgtSigRad', '%'): lambda v, fit, tgt: v * 100 / getTgtSigRadius(tgt)}
 
@@ -290,6 +290,11 @@ class FitDamageStatsGraph(FitGraph):
                     ys.append(prevDmg)
                 xs.append(currentTime)
                 ys.append(currentDmg)
+        # Special case - there are no damage dealers
+        if currentDmg is None and currentTime is None:
+            xs.append(minTime)
+            ys.append(0)
+        # Make sure that last data point is always at max time
         if maxTime > (currentTime or 0):
             xs.append(maxTime)
             ys.append(currentDmg or 0)
