@@ -175,7 +175,6 @@ class ItemAffectedBy(wx.Panel):
               ]
         }
         """
-
         attributes = self.stuff.itemModifiedAttributes if self.item == self.stuff.item else self.stuff.chargeModifiedAttributes
         container = {}
         for attrName in attributes.iterAfflictions():
@@ -414,7 +413,7 @@ class ItemAffectedBy(wx.Panel):
                                 penalized += "(penalized)"
                             if 'r' in attrModifier:
                                 penalized += "(resisted)"
-                        attrModifier = "*"
+                            attrModifier = "*"
 
                         attributes.append((attrName, (displayName if displayName != "" else attrName), attrModifier,
                                            attrAmount, penalized, attrIcon))
