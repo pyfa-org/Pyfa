@@ -44,11 +44,12 @@ pyfalog = Logger(__name__)
 
 class FitLite:
 
-    def __init__(self, id=None, name=None, shipID=None, shipName=None):
+    def __init__(self, id=None, name=None, shipID=None, shipName=None, shipNameShort=None):
         self.ID = id
         self.name = name
         self.shipID = shipID
         self.shipName = shipName
+        self.shipNameShort = shipNameShort
 
     def __repr__(self):
         return 'FitLite(ID={})'.format(self.ID)

@@ -110,10 +110,10 @@ class Fit:
         for shipID in shipMap:
             ship = eos.db.getItem(shipID)
             if ship is not None:
-                shipMap[shipID] = ship.name
+                shipMap[shipID] = (ship.name, ship.getShortName())
         for fit in fits:
             try:
-                fit.shipName = shipMap[fit.shipID]
+                fit.shipName, fit.shipNameShort = shipMap[fit.shipID]
             except KeyError:
                 pass
         return fits
