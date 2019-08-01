@@ -6372,6 +6372,22 @@ class Effect2143(BaseEffect):
                                       skill='Minmatar Cruiser', **kwargs)
 
 
+class Effect2152(BaseEffect):
+    """
+    jumpPortalGeneration
+
+    Used by:
+    Module: Jump Portal Generator I
+    """
+
+    type = 'active'
+
+    @staticmethod
+    def handler(fit, mod, context, **kwargs):
+        fit.ship.boostItemAttr('maxVelocity', mod.getModifiedItemAttr('speedFactor'), stackingPenalties=True, **kwargs)
+        fit.ship.increaseItemAttr('warpScrambleStatus', mod.getModifiedItemAttr('siegeModeWarpStatus'), **kwargs)
+
+
 class Effect2155(BaseEffect):
     """
     eliteBonusCommandShipProjectileDamageCS1
@@ -8516,6 +8532,23 @@ class Effect2857(BaseEffect):
     @staticmethod
     def handler(fit, module, context, **kwargs):
         fit.ship.boostItemAttr('maxVelocity', module.getModifiedItemAttr('speedFactor'), **kwargs)
+
+
+class Effect2858(BaseEffect):
+    """
+    cloneJumpAccepting
+
+    Used by:
+    Module: Clone Vat Bay I
+    """
+
+    type = 'active'
+
+    @staticmethod
+    def handler(fit, mod, context, **kwargs):
+        fit.ship.boostItemAttr('maxVelocity', mod.getModifiedItemAttr('speedFactor'), stackingPenalties=True, **kwargs)
+        fit.ship.increaseItemAttr('warpScrambleStatus', mod.getModifiedItemAttr('siegeModeWarpStatus'), **kwargs)
+        fit.ship.forceItemAttr('canCloak', mod.getModifiedChargeAttr('canCloak'), **kwargs)
 
 
 class Effect2865(BaseEffect):
@@ -11330,6 +11363,22 @@ class Effect3672(BaseEffect):
     def handler(fit, implant, context, **kwargs):
         fit.appliedImplants.filteredItemMultiply(lambda mod: mod.item.group.name == 'Cyberimplant',
                                                  'maxRangeBonus', implant.getModifiedItemAttr('implantSetORE'), **kwargs)
+
+
+class Effect3674(BaseEffect):
+    """
+    jumpPortalGenerationBO
+
+    Used by:
+    Module: Covert Jump Portal Generator I
+    """
+
+    type = 'active'
+
+    @staticmethod
+    def handler(fit, mod, context, **kwargs):
+        fit.ship.boostItemAttr('maxVelocity', mod.getModifiedItemAttr('speedFactor'), stackingPenalties=True, **kwargs)
+        fit.ship.increaseItemAttr('warpScrambleStatus', mod.getModifiedItemAttr('siegeModeWarpStatus'), **kwargs)
 
 
 class Effect3677(BaseEffect):
