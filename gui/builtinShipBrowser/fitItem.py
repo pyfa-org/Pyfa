@@ -177,7 +177,7 @@ class FitItem(SFItem.SFBrowserItem):
         if activeFit:
             sFit = Fit.getInstance()
             projectedFit = sFit.getFit(self.fitID)
-            command = cmd.GuiAddProjectedFitCommand(fitID=activeFit, projectedFitID=projectedFit.ID, amount=1)
+            command = cmd.GuiAddProjectedFitsCommand(fitID=activeFit, projectedFitIDs=[projectedFit.ID], amount=1)
             if self.mainFrame.command.Submit(command):
                 self.mainFrame.additionsPane.select("Projected")
 

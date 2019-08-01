@@ -144,8 +144,8 @@ class ProjectedView(d.Display):
         if type == 'fit':
             activeFit = self.mainFrame.getActiveFit()
             if activeFit:
-                self.mainFrame.command.Submit(cmd.GuiAddProjectedFitCommand(
-                    fitID=activeFit, projectedFitID=fitID, amount=1))
+                self.mainFrame.command.Submit(cmd.GuiAddProjectedFitsCommand(
+                    fitID=activeFit, projectedFitIDs=[fitID], amount=1))
 
     @staticmethod
     def moduleSort(module):
@@ -375,8 +375,22 @@ class ProjectedView(d.Display):
             projectors.append(projector)
         return projectors
 
+    # Context menu handlers
     def addFit(self, fit):
         if fit is None:
             return
-        fitID = self.mainFrame.getActiveFit()
-        self.mainFrame.command.Submit(cmd.GuiAddProjectedFitCommand(fitID=fitID, projectedFitID=fit.ID, amount=1))
+        self.mainFrame.command.Submit(cmd.GuiAddProjectedFitsCommand(
+            fitID=self.mainFrame.getActiveFit(),
+            projectedFitIDs=[fit.ID],
+            amount=1))
+
+    def getExistingFitIDs(self):
+        return [f.ID for f in self.fits]
+
+    def addFitsByIDs(self, fitIDs):
+        if not fitIDs:
+            return
+        self.mainFrame.command.Submit(cmd.GuiAddProjectedFitsCommand(
+            fitID=self.mainFrame.getActiveFit(),
+            projectedFitIDs=fitIDs,
+            amount=1))

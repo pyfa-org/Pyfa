@@ -59,7 +59,7 @@ from .gui.projectedFighter.abilityToggleState import GuiToggleProjectedFighterAb
 from .gui.projectedFighter.add import GuiAddProjectedFighterCommand
 from .gui.projectedFighter.changeAmount import GuiChangeProjectedFighterAmountCommand
 from .gui.projectedFighter.changeMetas import GuiChangeProjectedFighterMetasCommand
-from .gui.projectedFit.add import GuiAddProjectedFitCommand
+from .gui.projectedFit.add import GuiAddProjectedFitsCommand
 from .gui.projectedFit.changeAmount import GuiChangeProjectedFitAmountCommand
 from .gui.projectedModule.add import GuiAddProjectedModuleCommand
 from .gui.projectedModule.changeCharges import GuiChangeProjectedModuleChargesCommand

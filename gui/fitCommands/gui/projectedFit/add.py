@@ -8,18 +8,23 @@ from gui.fitCommands.helpers import InternalCommandHistory
 from service.fit import Fit
 
 
-class GuiAddProjectedFitCommand(wx.Command):
+class GuiAddProjectedFitsCommand(wx.Command):
 
-    def __init__(self, fitID, projectedFitID, amount):
-        wx.Command.__init__(self, True, 'Add Projected Fit')
+    def __init__(self, fitID, projectedFitIDs, amount):
+        wx.Command.__init__(self, True, 'Add Projected Fits')
         self.internalHistory = InternalCommandHistory()
         self.fitID = fitID
-        self.projectedFitID = projectedFitID
+        self.projectedFitIDs = projectedFitIDs
         self.amount = amount
 
     def Do(self):
-        cmd = CalcAddProjectedFitCommand(fitID=self.fitID, projectedFitID=self.projectedFitID, amount=self.amount)
-        success = self.internalHistory.submit(cmd)
+        commands = []
+        for projectedFitID in self.projectedFitIDs:
+            cmd = CalcAddProjectedFitCommand(fitID=self.fitID, projectedFitID=projectedFitID, amount=self.amount)
+            commands.append(cmd)
+        if not commands:
+            return False
+        success = self.internalHistory.submitBatch(*commands)
         sFit = Fit.getInstance()
         eos.db.flush()
         sFit.recalc(self.fitID)
