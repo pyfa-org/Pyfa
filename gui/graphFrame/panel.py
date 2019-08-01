@@ -217,11 +217,13 @@ class GraphControlPanel(wx.Panel):
         def addInputField(inputDef, handledHandles, mainInput=False):
             handledHandles.add(inputDef.handle)
             fieldSizer = wx.BoxSizer(wx.HORIZONTAL)
+            tooltipText = (inputDef.mainTooltip if mainInput else inputDef.secondaryTooltip) or ''
             if mainInput:
                 fieldTextBox = FloatRangeBox(self, self._storedRanges.get((inputDef.handle, inputDef.unit), inputDef.defaultRange))
             else:
                 fieldTextBox = FloatBox(self, self._storedConsts.get((inputDef.handle, inputDef.unit), inputDef.defaultValue))
             fieldTextBox.Bind(wx.EVT_TEXT, self.OnFieldChanged)
+            fieldTextBox.SetToolTip(wx.ToolTip(tooltipText))
             fieldSizer.Add(fieldTextBox, 0, wx.EXPAND | wx.ALIGN_CENTER_VERTICAL | wx.RIGHT, 5)
             fieldIcon = None
             if inputDef.iconID is not None:
@@ -229,8 +231,10 @@ class GraphControlPanel(wx.Panel):
                 if icon is not None:
                     fieldIcon = wx.StaticBitmap(self)
                     fieldIcon.SetBitmap(icon)
+                    fieldIcon.SetToolTip(wx.ToolTip(tooltipText))
                     fieldSizer.Add(fieldIcon, 0, wx.ALIGN_CENTER_VERTICAL | wx.RIGHT, 3)
             fieldLabel = wx.StaticText(self, wx.ID_ANY, self.formatLabel(inputDef))
+            fieldLabel.SetToolTip(wx.ToolTip(tooltipText))
             fieldSizer.Add(fieldLabel, 0, wx.ALIGN_CENTER_VERTICAL | wx.ALL, 0)
             self.inputsSizer.Add(fieldSizer, 0, wx.EXPAND | wx.BOTTOM, 5)
             # Store info about added input box

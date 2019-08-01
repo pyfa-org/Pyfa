@@ -35,7 +35,7 @@ VectorDef = namedtuple('VectorDef', ('lengthHandle', 'lengthUnit', 'angleHandle'
 
 class Input:
 
-    def __init__(self, handle, unit, label, iconID, defaultValue, defaultRange, mainOnly=False, valueTt=None, rangeTt=None):
+    def __init__(self, handle, unit, label, iconID, defaultValue, defaultRange, mainOnly=False, mainTooltip=None, secondaryTooltip=None):
         self.handle = handle
         self.unit = unit
         self.label = label
@@ -43,8 +43,8 @@ class Input:
         self.defaultValue = defaultValue
         self.defaultRange = defaultRange
         self.mainOnly = mainOnly
-        self.valueTt = valueTt
-        self.rangeTt = rangeTt
+        self.mainTooltip = mainTooltip
+        self.secondaryTooltip = secondaryTooltip
 
 
 class FitGraph(metaclass=ABCMeta):

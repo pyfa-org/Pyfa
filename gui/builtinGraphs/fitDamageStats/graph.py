@@ -69,7 +69,7 @@ class FitDamageStatsGraph(FitGraph):
         YDef(handle='volley', unit=None, label='Volley'),
         YDef(handle='damage', unit=None, label='Damage inflicted')]
     inputs = [
-        Input(handle='time', unit='s', label='Time', iconID=1392, defaultValue=None, defaultRange=(0, 80)),
+        Input(handle='time', unit='s', label='Time', iconID=1392, defaultValue=None, defaultRange=(0, 80), secondaryTooltip='When set, uses exact damage stats at a given time\nWhen not set, uses damage stats as shown in stats panel of main window'),
         Input(handle='distance', unit='km', label='Distance', iconID=1391, defaultValue=50, defaultRange=(0, 100)),
         Input(handle='tgtSpeed', unit='%', label='Target speed', iconID=1389, defaultValue=100, defaultRange=(0, 100)),
         Input(handle='tgtSigRad', unit='%', label='Target signature', iconID=1390, defaultValue=100, defaultRange=(100, 200), mainOnly=True)]
