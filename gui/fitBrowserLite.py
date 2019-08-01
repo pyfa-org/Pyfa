@@ -33,6 +33,7 @@ class FitBrowserLiteDialog(wx.Dialog):
 
         listSizer = wx.BoxSizer(wx.HORIZONTAL)
         self.fromList = FitListView(self, size=(listWidth, -1))
+        self.fromList.Bind(wx.EVT_LEFT_DCLICK, self.OnFromListDclick)
         listSizer.Add(self.fromList, 1, wx.EXPAND | wx.ALL, 5)
 
         listButtonSizer = wx.BoxSizer(wx.VERTICAL)
@@ -47,6 +48,7 @@ class FitBrowserLiteDialog(wx.Dialog):
         listSizer.Add(listButtonSizer, 0, wx.EXPAND | wx.ALL, 5)
 
         self.toList = FitListView(self, size=(listWidth, -1))
+        self.toList.Bind(wx.EVT_LEFT_DCLICK, self.OnToListDclick)
         listSizer.Add(self.toList, 1, wx.EXPAND | wx.ALL, 5)
         mainSizer.Add(listSizer, 1, wx.EXPAND | wx.ALL, 0)
 
@@ -59,6 +61,7 @@ class FitBrowserLiteDialog(wx.Dialog):
         self.inputTimer = wx.Timer(self)
         self.Bind(wx.EVT_TIMER, self.OnInputTimer, self.inputTimer)
         self.searchBox.Bind(event=wx.EVT_TEXT, handler=self.OnSearchChanged)
+
 
         self.SetSizer(mainSizer)
         self.Layout()
@@ -114,6 +117,34 @@ class FitBrowserLiteDialog(wx.Dialog):
                 if isMatch(fit, searchTokens):
                     matches.append(fit)
             self.fromList.updateData(matches)
+
+    def OnFromListDclick(self, event):
+        event.Skip()
+        row, _ = self.fromList.HitTest(event.Position)
+        if row == -1:
+            return
+        try:
+            fit = self.fromList.fits[row]
+        except IndexError:
+            return
+        self.fromList.removeFits([fit])
+        self.toList.addFits([fit])
+        self.fromList.unselectAll()
+        self.toList.unselectAll()
+
+    def OnToListDclick(self, event):
+        event.Skip()
+        row, _ = self.toList.HitTest(event.Position)
+        if row == -1:
+            return
+        try:
+            fit = self.toList.fits[row]
+        except IndexError:
+            return
+        self.toList.removeFits([fit])
+        self.fromList.addFits([fit])
+        self.fromList.unselectAll()
+        self.toList.unselectAll()
 
     def resetContents(self):
         fits = [f for f in self.allFits if f not in self.toList.fits]
