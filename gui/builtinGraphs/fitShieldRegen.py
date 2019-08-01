@@ -53,54 +53,54 @@ class FitShieldRegenGraph(FitGraph):
         ('shieldAmount', 'EHP'): lambda v, fit, tgt: fit.damagePattern.effectivify(fit, v, 'shield'),
         ('shieldRegen', 'EHP/s'): lambda v, fit, tgt: fit.damagePattern.effectivify(fit, v, 'shield')}
 
-    def _time2shieldAmount(self, mainInput, miscInputs, fit, tgt):
+    def _time2shieldAmountFull(self, mainParam, miscParams, fit, tgt):
         xs = []
         ys = []
         maxShieldAmount = fit.ship.getModifiedItemAttr('shieldCapacity')
         shieldRegenTime = fit.ship.getModifiedItemAttr('shieldRechargeRate') / 1000
-        for time in self._iterLinear(mainInput[1]):
+        for time in self._iterLinear(mainParam[1]):
             currentShieldAmount = calculateShieldAmount(maxShieldAmount=maxShieldAmount, shieldRegenTime=shieldRegenTime, time=time)
             xs.append(time)
             ys.append(currentShieldAmount)
         return xs, ys
 
-    def _time2shieldRegen(self, mainInput, miscInputs, fit, tgt):
+    def _time2shieldRegenFull(self, mainParam, miscParams, fit, tgt):
         xs = []
         ys = []
         maxShieldAmount = fit.ship.getModifiedItemAttr('shieldCapacity')
         shieldRegenTime = fit.ship.getModifiedItemAttr('shieldRechargeRate') / 1000
-        for time in self._iterLinear(mainInput[1]):
+        for time in self._iterLinear(mainParam[1]):
             currentShieldAmount = calculateShieldAmount(maxShieldAmount=maxShieldAmount, shieldRegenTime=shieldRegenTime, time=time)
             currentShieldRegen = calculateShieldRegen(maxShieldAmount=maxShieldAmount, shieldRegenTime=shieldRegenTime, currentShieldAmount=currentShieldAmount)
             xs.append(time)
             ys.append(currentShieldRegen)
         return xs, ys
 
-    def _shieldAmount2shieldAmount(self, mainInput, miscInputs, fit, tgt):
+    def _shieldAmount2shieldAmountFull(self, mainParam, miscParams, fit, tgt):
         # Useless, but valid combination of x and y
         xs = []
         ys = []
-        for currentShieldAmount in self._iterLinear(mainInput[1]):
+        for currentShieldAmount in self._iterLinear(mainParam[1]):
             xs.append(currentShieldAmount)
             ys.append(currentShieldAmount)
         return xs, ys
 
-    def _shieldAmount2shieldRegen(self, mainInput, miscInputs, fit, tgt):
+    def _shieldAmount2shieldRegenFull(self, mainParam, miscParams, fit, tgt):
         xs = []
         ys = []
         maxShieldAmount = fit.ship.getModifiedItemAttr('shieldCapacity')
         shieldRegenTime = fit.ship.getModifiedItemAttr('shieldRechargeRate') / 1000
-        for currentShieldAmount in self._iterLinear(mainInput[1]):
+        for currentShieldAmount in self._iterLinear(mainParam[1]):
             currentShieldRegen = calculateShieldRegen(maxShieldAmount=maxShieldAmount, shieldRegenTime=shieldRegenTime, currentShieldAmount=currentShieldAmount)
             xs.append(currentShieldAmount)
             ys.append(currentShieldRegen)
         return xs, ys
 
     _getters = {
-        ('time', 'shieldAmount'): _time2shieldAmount,
-        ('time', 'shieldRegen'): _time2shieldRegen,
-        ('shieldAmount', 'shieldAmount'): _shieldAmount2shieldAmount,
-        ('shieldAmount', 'shieldRegen'): _shieldAmount2shieldRegen}
+        ('time', 'shieldAmount'): _time2shieldAmountFull,
+        ('time', 'shieldRegen'): _time2shieldRegenFull,
+        ('shieldAmount', 'shieldAmount'): _shieldAmount2shieldAmountFull,
+        ('shieldAmount', 'shieldRegen'): _shieldAmount2shieldRegenFull}
 
 
 def calculateShieldAmount(maxShieldAmount, shieldRegenTime, time):

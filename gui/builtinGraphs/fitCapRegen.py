@@ -48,54 +48,54 @@ class FitCapRegenGraph(FitGraph):
     _denormalizers = {
         ('capAmount', '%'): lambda v, fit, tgt: v * 100 / fit.ship.getModifiedItemAttr('capacitorCapacity')}
 
-    def _time2capAmount(self, mainInput, miscInputs, fit, tgt):
+    def _time2capAmountFull(self, mainParam, miscParams, fit, tgt):
         xs = []
         ys = []
         maxCapAmount = fit.ship.getModifiedItemAttr('capacitorCapacity')
         capRegenTime = fit.ship.getModifiedItemAttr('rechargeRate') / 1000
-        for time in self._iterLinear(mainInput[1]):
+        for time in self._iterLinear(mainParam[1]):
             currentCapAmount = calculateCapAmount(maxCapAmount=maxCapAmount, capRegenTime=capRegenTime, time=time)
             xs.append(time)
             ys.append(currentCapAmount)
         return xs, ys
 
-    def _time2capRegen(self, mainInput, miscInputs, fit, tgt):
+    def _time2capRegenFull(self, mainParam, miscParams, fit, tgt):
         xs = []
         ys = []
         maxCapAmount = fit.ship.getModifiedItemAttr('capacitorCapacity')
         capRegenTime = fit.ship.getModifiedItemAttr('rechargeRate') / 1000
-        for time in self._iterLinear(mainInput[1]):
+        for time in self._iterLinear(mainParam[1]):
             currentCapAmount = calculateCapAmount(maxCapAmount=maxCapAmount, capRegenTime=capRegenTime, time=time)
             currentCapRegen = calculateCapRegen(maxCapAmount=maxCapAmount, capRegenTime=capRegenTime, currentCapAmount=currentCapAmount)
             xs.append(time)
             ys.append(currentCapRegen)
         return xs, ys
 
-    def _capAmount2capAmount(self, mainInput, miscInputs, fit, tgt):
+    def _capAmount2capAmountFull(self, mainParam, miscParams, fit, tgt):
         # Useless, but valid combination of x and y
         xs = []
         ys = []
-        for currentCapAmount in self._iterLinear(mainInput[1]):
+        for currentCapAmount in self._iterLinear(mainParam[1]):
             xs.append(currentCapAmount)
             ys.append(currentCapAmount)
         return xs, ys
 
-    def _capAmount2capRegen(self, mainInput, miscInputs, fit, tgt):
+    def _capAmount2capRegenFull(self, mainParam, miscParams, fit, tgt):
         xs = []
         ys = []
         maxCapAmount = fit.ship.getModifiedItemAttr('capacitorCapacity')
         capRegenTime = fit.ship.getModifiedItemAttr('rechargeRate') / 1000
-        for currentCapAmount in self._iterLinear(mainInput[1]):
+        for currentCapAmount in self._iterLinear(mainParam[1]):
             currentCapRegen = calculateCapRegen(maxCapAmount=maxCapAmount, capRegenTime=capRegenTime, currentCapAmount=currentCapAmount)
             xs.append(currentCapAmount)
             ys.append(currentCapRegen)
         return xs, ys
 
     _getters = {
-        ('time', 'capAmount'): _time2capAmount,
-        ('time', 'capRegen'): _time2capRegen,
-        ('capAmount', 'capAmount'): _capAmount2capAmount,
-        ('capAmount', 'capRegen'): _capAmount2capRegen}
+        ('time', 'capAmount'): _time2capAmountFull,
+        ('time', 'capRegen'): _time2capRegenFull,
+        ('capAmount', 'capAmount'): _capAmount2capAmountFull,
+        ('capAmount', 'capRegen'): _capAmount2capRegenFull}
 
 
 def calculateCapAmount(maxCapAmount, capRegenTime, time):

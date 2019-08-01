@@ -92,93 +92,93 @@ class FitDamageStatsGraph(FitGraph):
         ('tgtSpeed', '%'): lambda v, fit, tgt: v * 100 / getTgtMaxVelocity(tgt),
         ('tgtSigRad', '%'): lambda v, fit, tgt: v * 100 / getTgtSigRadius(tgt)}
 
-    def _distance2dps(self, mainInput, miscInputs, fit, tgt):
+    def _distance2dpsFull(self, mainParam, miscParams, fit, tgt):
         return self._xDistanceGetter(
-            mainInput=mainInput, miscInputs=miscInputs, fit=fit, tgt=tgt,
+            mainParam=mainParam, miscParams=miscParams, fit=fit, tgt=tgt,
             dmgFunc=self._getDpsPerKey, timeCachePrepFunc=self._timeCache.prepareDpsData)
 
-    def _distance2volley(self, mainInput, miscInputs, fit, tgt):
+    def _distance2volleyFull(self, mainParam, miscParams, fit, tgt):
         return self._xDistanceGetter(
-            mainInput=mainInput, miscInputs=miscInputs, fit=fit, tgt=tgt,
+            mainParam=mainParam, miscParams=miscParams, fit=fit, tgt=tgt,
             dmgFunc=self._getVolleyPerKey, timeCachePrepFunc=self._timeCache.prepareVolleyData)
 
-    def _distance2damage(self, mainInput, miscInputs, fit, tgt):
+    def _distance2damageFull(self, mainParam, miscParams, fit, tgt):
         return self._xDistanceGetter(
-            mainInput=mainInput, miscInputs=miscInputs, fit=fit, tgt=tgt,
+            mainParam=mainParam, miscParams=miscParams, fit=fit, tgt=tgt,
             dmgFunc=self._getDmgPerKey, timeCachePrepFunc=self._timeCache.prepareDmgData)
 
-    def _time2dps(self, mainInput, miscInputs, fit, tgt):
+    def _time2dpsFull(self, mainParam, miscParams, fit, tgt):
         return self._xTimeGetter(
-            mainInput=mainInput, miscInputs=miscInputs, fit=fit, tgt=tgt,
+            mainParam=mainParam, miscParams=miscParams, fit=fit, tgt=tgt,
             timeCachePrepFunc=self._timeCache.prepareDpsData, timeCacheGetFunc=self._timeCache.getDpsData)
 
-    def _time2volley(self, mainInput, miscInputs, fit, tgt):
+    def _time2volleyFull(self, mainParam, miscParams, fit, tgt):
         return self._xTimeGetter(
-            mainInput=mainInput, miscInputs=miscInputs, fit=fit, tgt=tgt,
+            mainParam=mainParam, miscParams=miscParams, fit=fit, tgt=tgt,
             timeCachePrepFunc=self._timeCache.prepareVolleyData, timeCacheGetFunc=self._timeCache.getVolleyData)
 
-    def _time2damage(self, mainInput, miscInputs, fit, tgt):
+    def _time2damageFull(self, mainParam, miscParams, fit, tgt):
         return self._xTimeGetter(
-            mainInput=mainInput, miscInputs=miscInputs, fit=fit, tgt=tgt,
+            mainParam=mainParam, miscParams=miscParams, fit=fit, tgt=tgt,
             timeCachePrepFunc=self._timeCache.prepareDmgData, timeCacheGetFunc=self._timeCache.getDmgData)
 
-    def _tgtSpeed2dps(self, mainInput, miscInputs, fit, tgt):
+    def _tgtSpeed2dpsFull(self, mainParam, miscParams, fit, tgt):
         return self._xTgtSpeedGetter(
-            mainInput=mainInput, miscInputs=miscInputs, fit=fit, tgt=tgt,
+            mainParam=mainParam, miscParams=miscParams, fit=fit, tgt=tgt,
             dmgFunc=self._getDpsPerKey, timeCachePrepFunc=self._timeCache.prepareDpsData)
 
-    def _tgtSpeed2volley(self, mainInput, miscInputs, fit, tgt):
+    def _tgtSpeed2volleyFull(self, mainParam, miscParams, fit, tgt):
         return self._xTgtSpeedGetter(
-            mainInput=mainInput, miscInputs=miscInputs, fit=fit, tgt=tgt,
+            mainParam=mainParam, miscParams=miscParams, fit=fit, tgt=tgt,
             dmgFunc=self._getVolleyPerKey, timeCachePrepFunc=self._timeCache.prepareVolleyData)
 
-    def _tgtSpeed2damage(self, mainInput, miscInputs, fit, tgt):
+    def _tgtSpeed2damageFull(self, mainParam, miscParams, fit, tgt):
         return self._xTgtSpeedGetter(
-            mainInput=mainInput, miscInputs=miscInputs, fit=fit, tgt=tgt,
+            mainParam=mainParam, miscParams=miscParams, fit=fit, tgt=tgt,
             dmgFunc=self._getDmgPerKey, timeCachePrepFunc=self._timeCache.prepareDmgData)
 
-    def _tgtSigRad2dps(self, mainInput, miscInputs, fit, tgt):
+    def _tgtSigRad2dpsFull(self, mainParam, miscParams, fit, tgt):
         return self._xTgtSigRadiusGetter(
-            mainInput=mainInput, miscInputs=miscInputs, fit=fit, tgt=tgt,
+            mainParam=mainParam, miscParams=miscParams, fit=fit, tgt=tgt,
             dmgFunc=self._getDpsPerKey, timeCachePrepFunc=self._timeCache.prepareDpsData)
 
-    def _tgtSigRad2volley(self, mainInput, miscInputs, fit, tgt):
+    def _tgtSigRad2volleyFull(self, mainParam, miscParams, fit, tgt):
         return self._xTgtSigRadiusGetter(
-            mainInput=mainInput, miscInputs=miscInputs, fit=fit, tgt=tgt,
+            mainParam=mainParam, miscParams=miscParams, fit=fit, tgt=tgt,
             dmgFunc=self._getVolleyPerKey, timeCachePrepFunc=self._timeCache.prepareVolleyData)
 
-    def _tgtSigRad2damage(self, mainInput, miscInputs, fit, tgt):
+    def _tgtSigRad2damageFull(self, mainParam, miscParams, fit, tgt):
         return self._xTgtSigRadiusGetter(
-            mainInput=mainInput, miscInputs=miscInputs, fit=fit, tgt=tgt,
+            mainParam=mainParam, miscParams=miscParams, fit=fit, tgt=tgt,
             dmgFunc=self._getDmgPerKey, timeCachePrepFunc=self._timeCache.prepareDmgData)
 
     _getters = {
-        ('distance', 'dps'): _distance2dps,
-        ('distance', 'volley'): _distance2volley,
-        ('distance', 'damage'): _distance2damage,
-        ('time', 'dps'): _time2dps,
-        ('time', 'volley'): _time2volley,
-        ('time', 'damage'): _time2damage,
-        ('tgtSpeed', 'dps'): _tgtSpeed2dps,
-        ('tgtSpeed', 'volley'): _tgtSpeed2volley,
-        ('tgtSpeed', 'damage'): _tgtSpeed2damage,
-        ('tgtSigRad', 'dps'): _tgtSigRad2dps,
-        ('tgtSigRad', 'volley'): _tgtSigRad2volley,
-        ('tgtSigRad', 'damage'): _tgtSigRad2damage}
+        ('distance', 'dps'): _distance2dpsFull,
+        ('distance', 'volley'): _distance2volleyFull,
+        ('distance', 'damage'): _distance2damageFull,
+        ('time', 'dps'): _time2dpsFull,
+        ('time', 'volley'): _time2volleyFull,
+        ('time', 'damage'): _time2damageFull,
+        ('tgtSpeed', 'dps'): _tgtSpeed2dpsFull,
+        ('tgtSpeed', 'volley'): _tgtSpeed2volleyFull,
+        ('tgtSpeed', 'damage'): _tgtSpeed2damageFull,
+        ('tgtSigRad', 'dps'): _tgtSigRad2dpsFull,
+        ('tgtSigRad', 'volley'): _tgtSigRad2volleyFull,
+        ('tgtSigRad', 'damage'): _tgtSigRad2damageFull}
 
     # Point getter helpers
-    def _xDistanceGetter(self, mainInput, miscInputs, fit, tgt, dmgFunc, timeCachePrepFunc):
+    def _xDistanceGetter(self, mainParam, miscParams, fit, tgt, dmgFunc, timeCachePrepFunc):
         xs = []
         ys = []
         applyProjected = GraphSettings.getInstance().get('applyProjected')
-        # Process inputs into more convenient form
-        miscInputMap = dict(miscInputs)
+        # Process params into more convenient form
+        miscParamMap = dict(miscParams)
         # Get all data we need for all distances into maps/caches
-        timeCachePrepFunc(fit, miscInputMap['time'])
-        dmgMap = dmgFunc(fit=fit, time=miscInputMap['time'])
+        timeCachePrepFunc(fit, miscParamMap['time'])
+        dmgMap = dmgFunc(fit=fit, time=miscParamMap['time'])
         # Go through distances and calculate distance-dependent data
-        for distance in self._iterLinear(mainInput[1]):
-            tgtSpeed = miscInputMap['tgtSpeed']
+        for distance in self._iterLinear(mainParam[1]):
+            tgtSpeed = miscParamMap['tgtSpeed']
             tgtSigRadius = getTgtSigRadius(tgt)
             if applyProjected:
                 webMods, tpMods = self._projectedCache.getProjModData(fit)
@@ -203,24 +203,24 @@ class FitDamageStatsGraph(FitGraph):
             applicationMap = self._getApplicationPerKey(
                 fit=fit,
                 tgt=tgt,
-                atkSpeed=miscInputMap['atkSpeed'],
-                atkAngle=miscInputMap['atkAngle'],
+                atkSpeed=miscParamMap['atkSpeed'],
+                atkAngle=miscParamMap['atkAngle'],
                 distance=distance,
                 tgtSpeed=tgtSpeed,
-                tgtAngle=miscInputMap['tgtAngle'],
+                tgtAngle=miscParamMap['tgtAngle'],
                 tgtSigRadius=tgtSigRadius)
             dmg = self._aggregate(dmgMap=dmgMap, applicationMap=applicationMap).total
             xs.append(distance)
             ys.append(dmg)
         return xs, ys
 
-    def _xTimeGetter(self, mainInput, miscInputs, fit, tgt, timeCachePrepFunc, timeCacheGetFunc):
+    def _xTimeGetter(self, mainParam, miscParams, fit, tgt, timeCachePrepFunc, timeCacheGetFunc):
         xs = []
         ys = []
-        minTime, maxTime = mainInput[1]
-        # Process inputs into more convenient form
-        miscInputMap = dict(miscInputs)
-        tgtSpeed = miscInputMap['tgtSpeed']
+        minTime, maxTime = mainParam[1]
+        # Process params into more convenient form
+        miscParamMap = dict(miscParams)
+        tgtSpeed = miscParamMap['tgtSpeed']
         tgtSigRadius = getTgtSigRadius(tgt)
         if GraphSettings.getInstance().get('applyProjected'):
             webMods, tpMods = self._projectedCache.getProjModData(fit)
@@ -233,7 +233,7 @@ class FitDamageStatsGraph(FitGraph):
                 webMods=webMods,
                 webDrones=webDrones,
                 webFighters=webFighters,
-                distance=miscInputMap['distance'])
+                distance=miscParamMap['distance'])
             tgtSigRadius = tgtSigRadius * getTpMult(
                 fit=fit,
                 tgt=tgt,
@@ -241,16 +241,16 @@ class FitDamageStatsGraph(FitGraph):
                 tpMods=tpMods,
                 tpDrones=tpDrones,
                 tpFighters=tpFighters,
-                distance=miscInputMap['distance'])
+                distance=miscParamMap['distance'])
         # Get all data we need for all times into maps/caches
         applicationMap = self._getApplicationPerKey(
             fit=fit,
             tgt=tgt,
-            atkSpeed=miscInputMap['atkSpeed'],
-            atkAngle=miscInputMap['atkAngle'],
-            distance=miscInputMap['distance'],
+            atkSpeed=miscParamMap['atkSpeed'],
+            atkAngle=miscParamMap['atkAngle'],
+            distance=miscParamMap['distance'],
             tgtSpeed=tgtSpeed,
-            tgtAngle=miscInputMap['tgtAngle'],
+            tgtAngle=miscParamMap['tgtAngle'],
             tgtSigRadius=tgtSigRadius)
         timeCachePrepFunc(fit, maxTime)
         timeCache = timeCacheGetFunc(fit)
@@ -300,17 +300,17 @@ class FitDamageStatsGraph(FitGraph):
             ys.append(currentDmg or 0)
         return xs, ys
 
-    def _xTgtSpeedGetter(self, mainInput, miscInputs, fit, tgt, dmgFunc, timeCachePrepFunc):
+    def _xTgtSpeedGetter(self, mainParam, miscParams, fit, tgt, dmgFunc, timeCachePrepFunc):
         xs = []
         ys = []
         applyProjected = GraphSettings.getInstance().get('applyProjected')
-        # Process inputs into more convenient form
-        miscInputMap = dict(miscInputs)
+        # Process params into more convenient form
+        miscParamMap = dict(miscParams)
         # Get all data we need for all target speeds into maps/caches
-        timeCachePrepFunc(fit, miscInputMap['time'])
-        dmgMap = dmgFunc(fit=fit, time=miscInputMap['time'])
+        timeCachePrepFunc(fit, miscParamMap['time'])
+        dmgMap = dmgFunc(fit=fit, time=miscParamMap['time'])
         # Go through target speeds and calculate distance-dependent data
-        for tgtSpeed in self._iterLinear(mainInput[1]):
+        for tgtSpeed in self._iterLinear(mainParam[1]):
             # Get separate internal speed to calculate proper application, for graph
             # itself we still want to show pre-modification speed on X axis
             tgtSpeedInternal = tgtSpeed
@@ -326,7 +326,7 @@ class FitDamageStatsGraph(FitGraph):
                     webMods=webMods,
                     webDrones=webDrones,
                     webFighters=webFighters,
-                    distance=miscInputMap['distance'])
+                    distance=miscParamMap['distance'])
                 tgtSigRadius = tgtSigRadius * getTpMult(
                     fit=fit,
                     tgt=tgt,
@@ -334,27 +334,27 @@ class FitDamageStatsGraph(FitGraph):
                     tpMods=tpMods,
                     tpDrones=tpDrones,
                     tpFighters=tpFighters,
-                    distance=miscInputMap['distance'])
+                    distance=miscParamMap['distance'])
             applicationMap = self._getApplicationPerKey(
                 fit=fit,
                 tgt=tgt,
-                atkSpeed=miscInputMap['atkSpeed'],
-                atkAngle=miscInputMap['atkAngle'],
-                distance=miscInputMap['distance'],
+                atkSpeed=miscParamMap['atkSpeed'],
+                atkAngle=miscParamMap['atkAngle'],
+                distance=miscParamMap['distance'],
                 tgtSpeed=tgtSpeedInternal,
-                tgtAngle=miscInputMap['tgtAngle'],
+                tgtAngle=miscParamMap['tgtAngle'],
                 tgtSigRadius=tgtSigRadius)
             dmg = self._aggregate(dmgMap=dmgMap, applicationMap=applicationMap).total
             xs.append(tgtSpeed)
             ys.append(dmg)
         return xs, ys
 
-    def _xTgtSigRadiusGetter(self, mainInput, miscInputs, fit, tgt, dmgFunc, timeCachePrepFunc):
+    def _xTgtSigRadiusGetter(self, mainParam, miscParams, fit, tgt, dmgFunc, timeCachePrepFunc):
         xs = []
         ys = []
-        # Process inputs into more convenient form
-        miscInputMap = dict(miscInputs)
-        tgtSpeed = miscInputMap['tgtSpeed']
+        # Process params into more convenient form
+        miscParamMap = dict(miscParams)
+        tgtSpeed = miscParamMap['tgtSpeed']
         tgtSigMult = 1
         if GraphSettings.getInstance().get('applyProjected'):
             webMods, tpMods = self._projectedCache.getProjModData(fit)
@@ -367,7 +367,7 @@ class FitDamageStatsGraph(FitGraph):
                 webMods=webMods,
                 webDrones=webDrones,
                 webFighters=webFighters,
-                distance=miscInputMap['distance'])
+                distance=miscParamMap['distance'])
             tgtSigMult = getTpMult(
                 fit=fit,
                 tgt=tgt,
@@ -375,23 +375,23 @@ class FitDamageStatsGraph(FitGraph):
                 tpMods=tpMods,
                 tpDrones=tpDrones,
                 tpFighters=tpFighters,
-                distance=miscInputMap['distance'])
+                distance=miscParamMap['distance'])
         # Get all data we need for all target speeds into maps/caches
-        timeCachePrepFunc(fit, miscInputMap['time'])
-        dmgMap = dmgFunc(fit=fit, time=miscInputMap['time'])
+        timeCachePrepFunc(fit, miscParamMap['time'])
+        dmgMap = dmgFunc(fit=fit, time=miscParamMap['time'])
         # Go through target speeds and calculate distance-dependent data
-        for tgtSigRadius in self._iterLinear(mainInput[1]):
+        for tgtSigRadius in self._iterLinear(mainParam[1]):
             # Separate variable to show base signature on X axis and use modified
             # signature in calculations
             tgtSigRadiusInternal = tgtSigRadius * tgtSigMult
             applicationMap = self._getApplicationPerKey(
                 fit=fit,
                 tgt=tgt,
-                atkSpeed=miscInputMap['atkSpeed'],
-                atkAngle=miscInputMap['atkAngle'],
-                distance=miscInputMap['distance'],
+                atkSpeed=miscParamMap['atkSpeed'],
+                atkAngle=miscParamMap['atkAngle'],
+                distance=miscParamMap['distance'],
                 tgtSpeed=tgtSpeed,
-                tgtAngle=miscInputMap['tgtAngle'],
+                tgtAngle=miscParamMap['tgtAngle'],
                 tgtSigRadius=tgtSigRadiusInternal)
             dmg = self._aggregate(dmgMap=dmgMap, applicationMap=applicationMap).total
             xs.append(tgtSigRadius)

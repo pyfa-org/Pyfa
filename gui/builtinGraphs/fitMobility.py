@@ -41,26 +41,26 @@ class FitMobilityVsTimeGraph(FitGraph):
     _denormalizers = {
         ('distance', 'km'): lambda v, fit, tgt: v / 1000}
 
-    def _time2speed(self, mainInput, miscInputs, fit, tgt):
+    def _time2speedFull(self, mainParam, miscParams, fit, tgt):
         xs = []
         ys = []
         maxSpeed = fit.ship.getModifiedItemAttr('maxVelocity')
         mass = fit.ship.getModifiedItemAttr('mass')
         agility = fit.ship.getModifiedItemAttr('agility')
-        for time in self._iterLinear(mainInput[1]):
+        for time in self._iterLinear(mainParam[1]):
             # https://wiki.eveuniversity.org/Acceleration#Mathematics_and_formulae
             speed = maxSpeed * (1 - math.exp((-time * 1000000) / (agility * mass)))
             xs.append(time)
             ys.append(speed)
         return xs, ys
 
-    def _time2distance(self, mainInput, miscInputs, fit, tgt):
+    def _time2distanceFull(self, mainParam, miscParams, fit, tgt):
         xs = []
         ys = []
         maxSpeed = fit.ship.getModifiedItemAttr('maxVelocity')
         mass = fit.ship.getModifiedItemAttr('mass')
         agility = fit.ship.getModifiedItemAttr('agility')
-        for time in self._iterLinear(mainInput[1]):
+        for time in self._iterLinear(mainParam[1]):
             # Definite integral of:
             # https://wiki.eveuniversity.org/Acceleration#Mathematics_and_formulae
             distance_t = maxSpeed * time + (maxSpeed * agility * mass * math.exp((-time * 1000000) / (agility * mass)) / 1000000)
@@ -71,8 +71,8 @@ class FitMobilityVsTimeGraph(FitGraph):
         return xs, ys
 
     _getters = {
-        ('time', 'speed'): _time2speed,
-        ('time', 'distance'): _time2distance}
+        ('time', 'speed'): _time2speedFull,
+        ('time', 'distance'): _time2distanceFull}
 
 
 FitMobilityVsTimeGraph.register()
