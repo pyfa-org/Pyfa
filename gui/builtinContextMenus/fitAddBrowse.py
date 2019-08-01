@@ -20,7 +20,12 @@ class AddBrowsedFits(ContextMenuUnconditional):
         return 'Add Fit...'
 
     def activate(self, callingWindow, fullContext, i):
-        dlg = FitBrowserLiteDialog(self.mainFrame)
+        titles = {
+            'projected': 'Add Projected Fits',
+            'commandView': 'Add Command Fits',
+            'graphFitList': 'Add Fits to Graph',
+            'graphTgtList': 'Add Targets to Graph'}
+        dlg = FitBrowserLiteDialog(self.mainFrame, title=titles[fullContext[0]])
         if dlg.ShowModal() == wx.ID_OK:
             pass
 
@@ -30,9 +35,9 @@ AddBrowsedFits.register()
 
 class FitBrowserLiteDialog(wx.Dialog):
 
-    def __init__(self, parent):
+    def __init__(self, parent, title='Add Fits'):
         from gui.builtinViews.fitListLite import FitListView
-        wx.Dialog.__init__(self, parent, title='Add Fits', style=wx.DEFAULT_DIALOG_STYLE)
+        wx.Dialog.__init__(self, parent, title=title, style=wx.DEFAULT_DIALOG_STYLE)
         self.SetMinSize((400, 400))
 
         mainSizer = wx.BoxSizer(wx.VERTICAL)
@@ -67,6 +72,7 @@ class FitBrowserLiteDialog(wx.Dialog):
         fromList.updateData(fits)
 
         self.SetSizer(mainSizer)
+        self.Layout()
+        self.SetSize(self.GetBestSize())
         self.CenterOnParent()
-        self.Fit()
         searchBox.SetFocus()
