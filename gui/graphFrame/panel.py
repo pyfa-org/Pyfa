@@ -129,6 +129,8 @@ class GraphControlPanel(wx.Panel):
         self._setVectorDefaults()
 
     def updateControls(self, layout=True):
+        if layout:
+            self.Freeze()
         self._clearStoredValues()
         view = self.graphFrame.getView()
         self.ySubSelection.Clear()
@@ -173,6 +175,7 @@ class GraphControlPanel(wx.Panel):
         if layout:
             self.graphFrame.Layout()
             self.graphFrame.UpdateWindowSize()
+            self.Thaw()
 
     def _updateInputs(self, storeInputs=True):
         if storeInputs:
