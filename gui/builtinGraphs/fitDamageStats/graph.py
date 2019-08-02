@@ -82,10 +82,6 @@ class FitDamageStatsGraph(FitGraph):
         ('tgtSigRad', '%'): lambda v, fit, tgt: v / 100 * getTgtSigRadius(tgt)}
     _limiters = {
         'time': lambda fit, tgt: (0, 2500)}
-    _denormalizers = {
-        ('distance', 'km'): lambda v, fit, tgt: None if v is None else v / 1000,
-        ('tgtSpeed', '%'): lambda v, fit, tgt: v * 100 / getTgtMaxVelocity(tgt),
-        ('tgtSigRad', '%'): lambda v, fit, tgt: v * 100 / getTgtSigRadius(tgt)}
     _getters = {
         ('distance', 'dps'): Distance2DpsGetter,
         ('distance', 'volley'): Distance2VolleyGetter,
@@ -99,6 +95,10 @@ class FitDamageStatsGraph(FitGraph):
         ('tgtSigRad', 'dps'): TgtSigRadius2DpsGetter,
         ('tgtSigRad', 'volley'): TgtSigRadius2VolleyGetter,
         ('tgtSigRad', 'damage'): TgtSigRadius2InflictedDamageGetter}
+    _denormalizers = {
+        ('distance', 'km'): lambda v, fit, tgt: None if v is None else v / 1000,
+        ('tgtSpeed', '%'): lambda v, fit, tgt: v * 100 / getTgtMaxVelocity(tgt),
+        ('tgtSigRad', '%'): lambda v, fit, tgt: v * 100 / getTgtSigRadius(tgt)}
 
 
 FitDamageStatsGraph.register()

@@ -49,15 +49,15 @@ class FitShieldRegenGraph(FitGraph):
         ('shieldAmount', '%'): lambda v, fit, tgt: v / 100 * fit.ship.getModifiedItemAttr('shieldCapacity')}
     _limiters = {
         'shieldAmount': lambda fit, tgt: (0, fit.ship.getModifiedItemAttr('shieldCapacity'))}
-    _denormalizers = {
-        ('shieldAmount', '%'): lambda v, fit, tgt: v * 100 / fit.ship.getModifiedItemAttr('shieldCapacity'),
-        ('shieldAmount', 'EHP'): lambda v, fit, tgt: fit.damagePattern.effectivify(fit, v, 'shield'),
-        ('shieldRegen', 'EHP/s'): lambda v, fit, tgt: fit.damagePattern.effectivify(fit, v, 'shield')}
     _getters = {
         ('time', 'shieldAmount'): Time2ShieldAmountGetter,
         ('time', 'shieldRegen'): Time2ShieldRegenGetter,
         ('shieldAmount', 'shieldAmount'): ShieldAmount2ShieldAmountGetter,
         ('shieldAmount', 'shieldRegen'): ShieldAmount2ShieldRegenGetter}
+    _denormalizers = {
+        ('shieldAmount', '%'): lambda v, fit, tgt: v * 100 / fit.ship.getModifiedItemAttr('shieldCapacity'),
+        ('shieldAmount', 'EHP'): lambda v, fit, tgt: fit.damagePattern.effectivify(fit, v, 'shield'),
+        ('shieldRegen', 'EHP/s'): lambda v, fit, tgt: fit.damagePattern.effectivify(fit, v, 'shield')}
 
 
 FitShieldRegenGraph.register()
