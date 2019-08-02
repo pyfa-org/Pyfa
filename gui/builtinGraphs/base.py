@@ -232,13 +232,12 @@ class FitGraph(metaclass=ABCMeta):
 
     def _getPoints(self, mainParam, miscParams, xSpec, ySpec, fit, tgt):
         try:
-            fullGetter, singleGetter, cacheGetter = self._getters[(xSpec.handle, ySpec.handle)]
+            getterClass = self._getters[(xSpec.handle, ySpec.handle)]
         except KeyError:
             return [], []
         else:
-            return fullGetter(
-                self, cacheGetter=cacheGetter, singleGetter=singleGetter,
-                mainParam=mainParam, miscParams=miscParams, fit=fit, tgt=tgt)
+            getter = getterClass(graph=self)
+            return getter.getRange(mainParam=mainParam, miscParams=miscParams, fit=fit, tgt=tgt)
 
     _denormalizers = {}
 
@@ -249,11 +248,52 @@ class FitGraph(metaclass=ABCMeta):
             values = [denormalizer(v, fit, tgt) for v in values]
         return values
 
-    def _iterLinear(self, valRange, segments=200):
+
+class PointGetter(metaclass=ABCMeta):
+
+    def __init__(self, graph):
+        self.graph = graph
+
+    @abstractmethod
+    def getRange(self, mainParam, miscParams, fit, tgt):
+        raise NotImplementedError
+
+    @abstractmethod
+    def getPoint(self, mainParam, miscParams, fit, tgt, cache=None):
+        raise NotImplementedError
+
+
+class SmoothPointGetter(PointGetter, metaclass=ABCMeta):
+
+    def __init__(self, graph, baseResolution=200):
+        super().__init__(graph)
+        self._baseResolution = baseResolution
+
+    def getRange(self, mainParam, miscParams, fit, tgt):
+        xs = []
+        ys = []
+        commonData = self._getCommonData(miscParams=miscParams, fit=fit, tgt=tgt)
+        for x in self._iterLinear(mainParam[1]):
+            y = self._calculatePoint(
+                mainParam=x, miscParams=miscParams,
+                fit=fit, tgt=tgt, commonData=commonData)
+            xs.append(x)
+            ys.append(y)
+        return xs, ys
+
+    def getPoint(self, mainParam, miscParams, fit, tgt):
+        commonData = self._getCommonData(miscParams=miscParams, fit=fit, tgt=tgt)
+        y = self._calculatePoint(
+            mainParam=mainParam, miscParams=miscParams,
+            fit=fit, tgt=tgt, commonData=commonData)
+        return mainParam, y
+
+    def _iterLinear(self, valRange):
         rangeLow = min(valRange)
         rangeHigh = max(valRange)
-        # Amount is amount of ranges between points here, not amount of points
-        step = (rangeHigh - rangeLow) / segments
+        # Resolution defines amount of ranges between points here,
+        # not amount of points
+        step = (rangeHigh - rangeLow) / self._baseResolution
         if step == 0 or math.isnan(step):
             yield rangeLow
         else:
@@ -263,6 +303,13 @@ class FitGraph(metaclass=ABCMeta):
             while current <= (rangeHigh + step / 2):
                 yield current
                 current += step
+
+    def _getCommonData(self, miscParams, fit, tgt):
+        return {}
+
+    @abstractmethod
+    def _calculatePoint(self, mainParam, miscParams, fit, tgt, commonData):
+        raise NotImplementedError
 
 
 class FitDataCache:
