@@ -41,7 +41,7 @@ class YDpsMixin:
     def _getDamagePerKey(self, fit, time):
         # Use data from time cache if time was not specified
         if time is not None:
-            return self.graph._timeCache.getDpsDataPoint(fit, time)
+            return self._getTimeCacheDataPoint(fit=fit, time=time)
         # Compose map ourselves using current fit settings if time is not specified
         dpsMap = {}
         defaultSpoolValue = eos.config.settings['globalDefaultSpoolupPercentage']
@@ -64,7 +64,10 @@ class YDpsMixin:
         self.graph._timeCache.prepareDpsData(fit=fit, maxTime=maxTime)
 
     def _getTimeCacheData(self, fit):
-        return self.graph._timeCache.getDpsData(fit)
+        return self.graph._timeCache.getDpsData(fit=fit)
+
+    def _getTimeCacheDataPoint(self, fit, time):
+        return self.graph._timeCache.getDpsDataPoint(fit=fit, time=time)
 
 
 class YVolleyMixin:
@@ -72,7 +75,7 @@ class YVolleyMixin:
     def _getDamagePerKey(self, fit, time):
         # Use data from time cache if time was not specified
         if time is not None:
-            return self.graph._timeCache.getVolleyDataPoint(fit, time)
+            return self._getTimeCacheDataPoint(fit=fit, time=time)
         # Compose map ourselves using current fit settings if time is not specified
         volleyMap = {}
         defaultSpoolValue = eos.config.settings['globalDefaultSpoolupPercentage']
@@ -95,7 +98,10 @@ class YVolleyMixin:
         self.graph._timeCache.prepareVolleyData(fit=fit, maxTime=maxTime)
 
     def _getTimeCacheData(self, fit):
-        return self.graph._timeCache.getVolleyData(fit)
+        return self.graph._timeCache.getVolleyData(fit=fit)
+
+    def _getTimeCacheDataPoint(self, fit, time):
+        return self.graph._timeCache.getVolleyDataPoint(fit=fit, time=time)
 
 
 class YInflictedDamageMixin:
@@ -104,13 +110,16 @@ class YInflictedDamageMixin:
         # Damage inflicted makes no sense without time specified
         if time is None:
             raise ValueError
-        return self.graph._timeCache.getDmgDataPoint(fit, time)
+        return self._getTimeCacheDataPoint(fit=fit, time=time)
 
     def _prepareTimeCache(self, fit, maxTime):
         self.graph._timeCache.prepareDmgData(fit=fit, maxTime=maxTime)
 
     def _getTimeCacheData(self, fit):
-        return self.graph._timeCache.getDmgData(fit)
+        return self.graph._timeCache.getDmgData(fit=fit)
+
+    def _getTimeCacheDataPoint(self, fit, time):
+        return self.graph._timeCache.getDmgDataPoint(fit=fit, time=time)
 
 
 # X mixins
@@ -166,7 +175,7 @@ class XDistanceMixin(SmoothPointGetter):
 
 class XTimeMixin(PointGetter):
 
-    def _prepareData(self, time, miscParams, fit, tgt):
+    def _prepareApplicationMap(self, miscParams, fit, tgt):
         # Process params into more convenient form
         miscParamMap = dict(miscParams)
         tgtSpeed = miscParamMap['tgtSpeed']
@@ -201,16 +210,16 @@ class XTimeMixin(PointGetter):
             tgtSpeed=tgtSpeed,
             tgtAngle=miscParamMap['tgtAngle'],
             tgtSigRadius=tgtSigRadius)
-        self._prepareTimeCache(fit=fit, maxTime=time)
-        timeCache = self._getTimeCacheData(fit)
-        return tgtSpeed, tgtSigRadius, applicationMap, timeCache
+        return applicationMap
 
     def getRange(self, mainParamRange, miscParams, fit, tgt):
         xs = []
         ys = []
         minTime, maxTime = mainParamRange[1]
-        tgtSpeed, tgtSigRadius, applicationMap, timeCache = self._prepareData(
-            time=maxTime, miscParams=miscParams, fit=fit, tgt=tgt)
+        # Prepare time cache and various shared data
+        self._prepareTimeCache(fit=fit, maxTime=maxTime)
+        timeCache = self._getTimeCacheData(fit=fit)
+        applicationMap = self._prepareApplicationMap(miscParams=miscParams, fit=fit, tgt=tgt)
         # Custom iteration for time graph to show all data points
         currentDmg = None
         currentTime = None
@@ -258,7 +267,13 @@ class XTimeMixin(PointGetter):
         return xs, ys
 
     def getPoint(self, mainParam, miscParams, fit, tgt):
-        pass
+        x = mainParam[1]
+        # Prepare time cache and various data
+        self._prepareTimeCache(fit=fit, maxTime=x)
+        dmgData = self._getTimeCacheDataPoint(fit=fit, time=x)
+        applicationMap = self._prepareApplicationMap(miscParams=miscParams, fit=fit, tgt=tgt)
+        y = applyDamage(dmgMap=dmgData, applicationMap=applicationMap).total
+        return x, y
 
 
 class XTgtSpeedMixin(SmoothPointGetter):
