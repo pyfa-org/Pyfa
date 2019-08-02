@@ -28,6 +28,9 @@ AU_METERS = 149597870700
 
 class Distance2TimeGetter(SmoothPointGetter):
 
+    def __init__(self, graph):
+        super().__init__(graph, baseResolution=500, extraDepth=0)
+
     def _getCommonData(self, miscParams, fit, tgt):
         return {
             'subwarpSpeed': self.graph._subspeedCache.getSubwarpSpeed(fit),
