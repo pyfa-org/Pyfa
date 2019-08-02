@@ -48,16 +48,16 @@ class SmoothPointGetter(PointGetter, metaclass=ABCMeta):
         ys = []
         commonData = self._getCommonData(miscParams=miscParams, fit=fit, tgt=tgt)
 
-        def addExtraPoints(leftX, leftY, rightX, rightY, depth):
-            if depth > 0 and leftY != rightY:
-                newX = (leftX + rightX) / 2
-                newY = self._calculatePoint(x=newX, miscParams=miscParams, fit=fit, tgt=tgt, commonData=commonData)
-                addExtraPoints(leftX=prevX, leftY=prevY, rightX=newX, rightY=newY, depth=depth - 1)
-                xs.append(newX)
-                ys.append(newY)
-                addExtraPoints(leftX=newX, leftY=newY, rightX=rightX, rightY=rightY, depth=depth - 1)
+        def addExtraPoints(x1, y1, x2, y2, depth):
+            if depth <= 0 or y1 == y2:
+                return
+            newX = (x1 + x2) / 2
+            newY = self._calculatePoint(x=newX, miscParams=miscParams, fit=fit, tgt=tgt, commonData=commonData)
+            addExtraPoints(x1=prevX, y1=prevY, x2=newX, y2=newY, depth=depth - 1)
+            xs.append(newX)
+            ys.append(newY)
+            addExtraPoints(x1=newX, y1=newY, x2=x2, y2=y2, depth=depth - 1)
 
-        # Format: {depth level: last value on that level}
         prevX = None
         prevY = None
         # Go through X points defined by our resolution setting
@@ -66,7 +66,7 @@ class SmoothPointGetter(PointGetter, metaclass=ABCMeta):
             if prevX is not None and prevY is not None:
                 # And if Y values of adjacent data points are not equal, add extra points
                 # depending on extra depth setting
-                addExtraPoints(leftX=prevX, leftY=prevY, rightX=x, rightY=y, depth=self._extraDepth)
+                addExtraPoints(x1=prevX, y1=prevY, x2=x, y2=y, depth=self._extraDepth)
             prevX = x
             prevY = y
             xs.append(x)
