@@ -20,31 +20,12 @@
 
 import math
 from abc import ABCMeta, abstractmethod
-from collections import OrderedDict, namedtuple
+from collections import OrderedDict
 
 from eos.saveddata.fit import Fit
 from eos.saveddata.targetProfile import TargetProfile
 from eos.utils.float import floatUnerr
 from service.const import GraphCacheCleanupReason
-
-
-YDef = namedtuple('YDef', ('handle', 'unit', 'label'))
-XDef = namedtuple('XDef', ('handle', 'unit', 'label', 'mainInput'))
-VectorDef = namedtuple('VectorDef', ('lengthHandle', 'lengthUnit', 'angleHandle', 'angleUnit', 'label'))
-
-
-class Input:
-
-    def __init__(self, handle, unit, label, iconID, defaultValue, defaultRange, mainOnly=False, mainTooltip=None, secondaryTooltip=None):
-        self.handle = handle
-        self.unit = unit
-        self.label = label
-        self.iconID = iconID
-        self.defaultValue = defaultValue
-        self.defaultRange = defaultRange
-        self.mainOnly = mainOnly
-        self.mainTooltip = mainTooltip
-        self.secondaryTooltip = secondaryTooltip
 
 
 class FitGraph(metaclass=ABCMeta):
@@ -247,80 +228,3 @@ class FitGraph(metaclass=ABCMeta):
             denormalizer = self._denormalizers[key]
             values = [denormalizer(v, fit, tgt) for v in values]
         return values
-
-
-class PointGetter(metaclass=ABCMeta):
-
-    def __init__(self, graph):
-        self.graph = graph
-
-    @abstractmethod
-    def getRange(self, mainParamRange, miscParams, fit, tgt):
-        raise NotImplementedError
-
-    @abstractmethod
-    def getPoint(self, mainParamRange, miscParams, fit, tgt):
-        raise NotImplementedError
-
-
-class SmoothPointGetter(PointGetter, metaclass=ABCMeta):
-
-    def __init__(self, graph, baseResolution=200):
-        super().__init__(graph)
-        self._baseResolution = baseResolution
-
-    def getRange(self, mainParamRange, miscParams, fit, tgt):
-        xs = []
-        ys = []
-        commonData = self._getCommonData(miscParams=miscParams, fit=fit, tgt=tgt)
-        for x in self._iterLinear(mainParamRange[1]):
-            y = self._calculatePoint(x=x, miscParams=miscParams, fit=fit, tgt=tgt, commonData=commonData)
-            xs.append(x)
-            ys.append(y)
-        return xs, ys
-
-    def getPoint(self, mainParam, miscParams, fit, tgt):
-        commonData = self._getCommonData(miscParams=miscParams, fit=fit, tgt=tgt)
-        x = mainParam[1]
-        y = self._calculatePoint(x=x, miscParams=miscParams, fit=fit, tgt=tgt, commonData=commonData)
-        return x, y
-
-    def _iterLinear(self, valRange):
-        rangeLow = min(valRange)
-        rangeHigh = max(valRange)
-        # Resolution defines amount of ranges between points here,
-        # not amount of points
-        step = (rangeHigh - rangeLow) / self._baseResolution
-        if step == 0 or math.isnan(step):
-            yield rangeLow
-        else:
-            current = rangeLow
-            # Take extra half step to make sure end of range is always included
-            # despite any possible float errors
-            while current <= (rangeHigh + step / 2):
-                yield current
-                current += step
-
-    def _getCommonData(self, miscParams, fit, tgt):
-        return {}
-
-    @abstractmethod
-    def _calculatePoint(self, x, miscParams, fit, tgt, commonData):
-        raise NotImplementedError
-
-
-class FitDataCache:
-
-    def __init__(self):
-        self._data = {}
-
-    def clearForFit(self, fitID):
-        if fitID in self._data:
-            del self._data[fitID]
-
-    def clearAll(self):
-        self._data.clear()
-
-
-# noinspection PyUnresolvedReferences
-from gui.builtinGraphs import *
