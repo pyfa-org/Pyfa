@@ -38,16 +38,37 @@ class PointGetter(metaclass=ABCMeta):
 
 class SmoothPointGetter(PointGetter, metaclass=ABCMeta):
 
-    def __init__(self, graph, baseResolution=200):
+    def __init__(self, graph, baseResolution=50, extraDepth=2):
         super().__init__(graph)
         self._baseResolution = baseResolution
+        self._extraDepth = extraDepth
 
     def getRange(self, mainParamRange, miscParams, fit, tgt):
         xs = []
         ys = []
         commonData = self._getCommonData(miscParams=miscParams, fit=fit, tgt=tgt)
+
+        def addExtraPoints(leftX, leftY, rightX, rightY, depth):
+            if depth > 0 and leftY != rightY:
+                newX = (leftX + rightX) / 2
+                newY = self._calculatePoint(x=newX, miscParams=miscParams, fit=fit, tgt=tgt, commonData=commonData)
+                addExtraPoints(leftX=prevX, leftY=prevY, rightX=newX, rightY=newY, depth=depth - 1)
+                xs.append(newX)
+                ys.append(newY)
+                addExtraPoints(leftX=newX, leftY=newY, rightX=rightX, rightY=rightY, depth=depth - 1)
+
+        # Format: {depth level: last value on that level}
+        prevX = None
+        prevY = None
+        # Go through X points defined by our resolution setting
         for x in self._iterLinear(mainParamRange[1]):
             y = self._calculatePoint(x=x, miscParams=miscParams, fit=fit, tgt=tgt, commonData=commonData)
+            if prevX is not None and prevY is not None:
+                # And if Y values of adjacent data points are not equal, add extra points
+                # depending on extra depth setting
+                addExtraPoints(leftX=prevX, leftY=prevY, rightX=x, rightY=y, depth=self._extraDepth)
+            prevX = x
+            prevY = y
             xs.append(x)
             ys.append(y)
         return xs, ys
