@@ -61,7 +61,7 @@ class SmoothPointGetter(PointGetter, metaclass=ABCMeta):
         prevX = None
         prevY = None
         # Go through X points defined by our resolution setting
-        for x in self._iterLinear(mainParamRange[1]):
+        for x in self._xIterLinear(mainParamRange[1]):
             y = self._calculatePoint(x=x, miscParams=miscParams, fit=fit, tgt=tgt, commonData=commonData)
             if prevX is not None and prevY is not None:
                 # And if Y values of adjacent data points are not equal, add extra points
@@ -79,21 +79,17 @@ class SmoothPointGetter(PointGetter, metaclass=ABCMeta):
         y = self._calculatePoint(x=x, miscParams=miscParams, fit=fit, tgt=tgt, commonData=commonData)
         return x, y
 
-    def _iterLinear(self, valRange):
-        rangeLow = min(valRange)
-        rangeHigh = max(valRange)
+    def _xIterLinear(self, xRange):
+        xLow = min(xRange)
+        xHigh = max(xRange)
         # Resolution defines amount of ranges between points here,
         # not amount of points
-        step = (rangeHigh - rangeLow) / self._baseResolution
+        step = (xHigh - xLow) / self._baseResolution
         if step == 0 or math.isnan(step):
-            yield rangeLow
+            yield xLow
         else:
-            current = rangeLow
-            # Take extra half step to make sure end of range is always included
-            # despite any possible float errors
-            while current <= (rangeHigh + step / 2):
-                yield current
-                current += step
+            for i in range(self._baseResolution + 1):
+                yield xLow + step * i
 
     def _getCommonData(self, miscParams, fit, tgt):
         return {}
