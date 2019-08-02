@@ -21,12 +21,89 @@
 import math
 from functools import lru_cache
 
+from eos.const import FittingHardpoint
 from eos.saveddata.fit import Fit
+from gui.builtinGraphs.fitDamageStats.helper import getTgtRadius
 from service.const import GraphDpsDroneMode
 from service.settings import GraphSettings
-from .helper import getTgtMaxVelocity, getTgtSigRadius, getTgtRadius
 
 
+def getApplicationPerKey(fit, tgt, atkSpeed, atkAngle, distance, tgtSpeed, tgtAngle, tgtSigRadius):
+    applicationMap = {}
+    for mod in fit.modules:
+        if not mod.isDealingDamage():
+            continue
+        if mod.hardpoint == FittingHardpoint.TURRET:
+            applicationMap[mod] = getTurretMult(
+                mod=mod,
+                fit=fit,
+                tgt=tgt,
+                atkSpeed=atkSpeed,
+                atkAngle=atkAngle,
+                distance=distance,
+                tgtSpeed=tgtSpeed,
+                tgtAngle=tgtAngle,
+                tgtSigRadius=tgtSigRadius)
+        elif mod.hardpoint == FittingHardpoint.MISSILE:
+            applicationMap[mod] = getLauncherMult(
+                mod=mod,
+                fit=fit,
+                distance=distance,
+                tgtSpeed=tgtSpeed,
+                tgtSigRadius=tgtSigRadius)
+        elif mod.item.group.name in ('Smart Bomb', 'Structure Area Denial Module'):
+            applicationMap[mod] = getSmartbombMult(
+                mod=mod,
+                distance=distance)
+        elif mod.item.group.name == 'Missile Launcher Bomb':
+            applicationMap[mod] = getBombMult(
+                mod=mod,
+                fit=fit,
+                tgt=tgt,
+                distance=distance,
+                tgtSigRadius=tgtSigRadius)
+        elif mod.item.group.name == 'Structure Guided Bomb Launcher':
+            applicationMap[mod] = getGuidedBombMult(
+                mod=mod,
+                fit=fit,
+                distance=distance,
+                tgtSigRadius=tgtSigRadius)
+        elif mod.item.group.name in ('Super Weapon', 'Structure Doomsday Weapon'):
+            applicationMap[mod] = getDoomsdayMult(
+                mod=mod,
+                tgt=tgt,
+                distance=distance,
+                tgtSigRadius=tgtSigRadius)
+    for drone in fit.drones:
+        if not drone.isDealingDamage():
+            continue
+        applicationMap[drone] = getDroneMult(
+            drone=drone,
+            fit=fit,
+            tgt=tgt,
+            atkSpeed=atkSpeed,
+            atkAngle=atkAngle,
+            distance=distance,
+            tgtSpeed=tgtSpeed,
+            tgtAngle=tgtAngle,
+            tgtSigRadius=tgtSigRadius)
+    for fighter in fit.fighters:
+        if not fighter.isDealingDamage():
+            continue
+        for ability in fighter.abilities:
+            if not ability.dealsDamage or not ability.active:
+                continue
+            applicationMap[(fighter, ability.effectID)] = getFighterAbilityMult(
+                fighter=fighter,
+                ability=ability,
+                fit=fit,
+                distance=distance,
+                tgtSpeed=tgtSpeed,
+                tgtSigRadius=tgtSigRadius)
+    return applicationMap
+
+
+# Item application multiplier calculation
 def getTurretMult(mod, fit, tgt, atkSpeed, atkAngle, distance, tgtSpeed, tgtAngle, tgtSigRadius):
     cth = _calcTurretChanceToHit(
         atkSpeed=atkSpeed,
@@ -197,115 +274,7 @@ def getFighterAbilityMult(fighter, ability, fit, distance, tgtSpeed, tgtSigRadiu
     return mult
 
 
-def getWebbedSpeed(fit, tgt, currentUnwebbedSpeed, webMods, webDrones, webFighters, distance):
-    # Can slow down non-immune fits and target profiles
-    if isinstance(tgt, Fit) and tgt.ship.getModifiedItemAttr('disallowOffensiveModifiers'):
-        return currentUnwebbedSpeed
-    maxUnwebbedSpeed = getTgtMaxVelocity(tgt)
-    try:
-        speedRatio = currentUnwebbedSpeed / maxUnwebbedSpeed
-    except ZeroDivisionError:
-        currentWebbedSpeed = 0
-    else:
-        appliedMultipliers = {}
-        # Modules first, they are applied always the same way
-        for wData in webMods:
-            appliedBoost = wData.boost * _calcRangeFactor(
-                atkOptimalRange=wData.optimal,
-                atkFalloffRange=wData.falloff,
-                distance=distance)
-            if appliedBoost:
-                appliedMultipliers.setdefault(wData.stackingGroup, []).append((1 + appliedBoost / 100, wData.resAttrID))
-        maxWebbedSpeed = getTgtMaxVelocity(tgt, extraMultipliers=appliedMultipliers)
-        currentWebbedSpeed = maxWebbedSpeed * speedRatio
-        # Drones and fighters
-        mobileWebs = []
-        mobileWebs.extend(webFighters)
-        # Drones have range limit
-        if distance is None or distance <= fit.extraAttributes['droneControlRange']:
-            mobileWebs.extend(webDrones)
-        atkRadius = fit.ship.getModifiedItemAttr('radius')
-        # As mobile webs either follow the target or stick to the attacking ship,
-        # if target is within mobile web optimal - it can be applied unconditionally
-        longEnoughMws = [mw for mw in mobileWebs if distance is None or distance <= mw.optimal - atkRadius + mw.radius]
-        if longEnoughMws:
-            for mwData in longEnoughMws:
-                appliedMultipliers.setdefault(mwData.stackingGroup, []).append((1 + mwData.boost / 100, mwData.resAttrID))
-                mobileWebs.remove(mwData)
-            maxWebbedSpeed = getTgtMaxVelocity(tgt, extraMultipliers=appliedMultipliers)
-            currentWebbedSpeed = maxWebbedSpeed * speedRatio
-        # Apply remaining webs, from fastest to slowest
-        droneOpt = GraphSettings.getInstance().get('mobileDroneMode')
-        while mobileWebs:
-            # Process in batches unified by speed to save up resources
-            fastestMwSpeed = max(mobileWebs, key=lambda mw: mw.speed).speed
-            fastestMws = [mw for mw in mobileWebs if mw.speed == fastestMwSpeed]
-            for mwData in fastestMws:
-                # Faster than target or set to follow it - apply full slowdown
-                if (droneOpt == GraphDpsDroneMode.auto and mwData.speed >= currentWebbedSpeed) or droneOpt == GraphDpsDroneMode.followTarget:
-                    appliedMwBoost = mwData.boost
-                # Otherwise project from the center of the ship
-                else:
-                    if distance is None:
-                        rangeFactorDistance = None
-                    else:
-                        rangeFactorDistance = distance + atkRadius - mwData.radius
-                    appliedMwBoost = mwData.boost * _calcRangeFactor(
-                        atkOptimalRange=mwData.optimal,
-                        atkFalloffRange=mwData.falloff,
-                        distance=rangeFactorDistance)
-                appliedMultipliers.setdefault(mwData.stackingGroup, []).append((1 + appliedMwBoost / 100, mwData.resAttrID))
-                mobileWebs.remove(mwData)
-            maxWebbedSpeed = getTgtMaxVelocity(tgt, extraMultipliers=appliedMultipliers)
-            currentWebbedSpeed = maxWebbedSpeed * speedRatio
-    return currentWebbedSpeed
-
-
-def getTpMult(fit, tgt, tgtSpeed, tpMods, tpDrones, tpFighters, distance):
-    # Can blow non-immune fits and target profiles
-    if isinstance(tgt, Fit) and tgt.ship.getModifiedItemAttr('disallowOffensiveModifiers'):
-        return 1
-    untpedSig = getTgtSigRadius(tgt)
-    # Modules
-    appliedMultipliers = {}
-    for tpData in tpMods:
-        appliedBoost = tpData.boost * _calcRangeFactor(
-            atkOptimalRange=tpData.optimal,
-            atkFalloffRange=tpData.falloff,
-            distance=distance)
-        if appliedBoost:
-            appliedMultipliers.setdefault(tpData.stackingGroup, []).append((1 + appliedBoost / 100, tpData.resAttrID))
-    # Drones and fighters
-    mobileTps = []
-    mobileTps.extend(tpFighters)
-    # Drones have range limit
-    if distance is None or distance <= fit.extraAttributes['droneControlRange']:
-        mobileTps.extend(tpDrones)
-    droneOpt = GraphSettings.getInstance().get('mobileDroneMode')
-    atkRadius = fit.ship.getModifiedItemAttr('radius')
-    for mtpData in mobileTps:
-        # Faster than target or set to follow it - apply full TP
-        if (droneOpt == GraphDpsDroneMode.auto and mtpData.speed >= tgtSpeed) or droneOpt == GraphDpsDroneMode.followTarget:
-            appliedMtpBoost = mtpData.boost
-        # Otherwise project from the center of the ship
-        else:
-            if distance is None:
-                rangeFactorDistance = None
-            else:
-                rangeFactorDistance = distance + atkRadius - mtpData.radius
-            appliedMtpBoost = mtpData.boost * _calcRangeFactor(
-                atkOptimalRange=mtpData.optimal,
-                atkFalloffRange=mtpData.falloff,
-                distance=rangeFactorDistance)
-        appliedMultipliers.setdefault(mtpData.stackingGroup, []).append((1 + appliedMtpBoost / 100, mtpData.resAttrID))
-    tpedSig = getTgtSigRadius(tgt, extraMultipliers=appliedMultipliers)
-    if tpedSig == math.inf and untpedSig == math.inf:
-        return 1
-    mult = tpedSig / untpedSig
-    return mult
-
-
-# Turret-specific
+# Turret-specific math
 @lru_cache(maxsize=50)
 def _calcTurretMult(chanceToHit):
     """Calculate damage multiplier for turret-based weapons."""
@@ -356,7 +325,7 @@ def _calcTrackingFactor(atkTracking, atkOptimalSigRadius, angularSpeed, tgtSigRa
     return 0.5 ** (((angularSpeed * atkOptimalSigRadius) / (atkTracking * tgtSigRadius)) ** 2)
 
 
-# Missile-specific
+# Missile-specific math
 @lru_cache(maxsize=200)
 def _calcMissileFactor(atkEr, atkEv, atkDrf, tgtSpeed, tgtSigRadius):
     """Missile application."""
@@ -379,7 +348,7 @@ def _calcAggregatedDrf(reductionFactor, reductionSensitivity):
     return math.log(reductionFactor) / math.log(reductionSensitivity)
 
 
-# Generic
+# Generic math
 def _calcRangeFactor(atkOptimalRange, atkFalloffRange, distance):
     """Range strength/chance factor, applicable to guns, ewar, RRs, etc."""
     if distance is None:

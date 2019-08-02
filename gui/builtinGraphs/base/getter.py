@@ -32,7 +32,7 @@ class PointGetter(metaclass=ABCMeta):
         raise NotImplementedError
 
     @abstractmethod
-    def getPoint(self, mainParamRange, miscParams, fit, tgt):
+    def getPoint(self, mainParam, miscParams, fit, tgt):
         raise NotImplementedError
 
 

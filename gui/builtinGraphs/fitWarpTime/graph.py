@@ -21,7 +21,7 @@
 from service.const import GraphCacheCleanupReason
 from gui.builtinGraphs.base import FitGraph, XDef, YDef, Input
 from .getter import Distance2TimeGetter, AU_METERS
-from .subwarpCache import SubwarpSpeedCache
+from .cache import SubwarpSpeedCache
 
 
 class FitWarpTimeGraph(FitGraph):
