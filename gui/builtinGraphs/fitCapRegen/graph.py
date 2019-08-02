@@ -46,7 +46,6 @@ class FitCapRegenGraph(FitGraph):
         'capAmount': lambda fit, tgt: (0, fit.ship.getModifiedItemAttr('capacitorCapacity'))}
     _denormalizers = {
         ('capAmount', '%'): lambda v, fit, tgt: v * 100 / fit.ship.getModifiedItemAttr('capacitorCapacity')}
-
     _getters = {
         ('time', 'capAmount'): Time2CapAmountGetter,
         ('time', 'capRegen'): Time2CapRegenGetter,

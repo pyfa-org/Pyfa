@@ -39,7 +39,6 @@ class FitMobilityVsTimeGraph(FitGraph):
     # Calculation stuff
     _denormalizers = {
         ('distance', 'km'): lambda v, fit, tgt: v / 1000}
-
     _getters = {
         ('time', 'speed'): Time2SpeedGetter,
         ('time', 'distance'): Time2DistanceGetter}

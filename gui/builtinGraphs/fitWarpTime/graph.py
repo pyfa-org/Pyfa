@@ -58,7 +58,6 @@ class FitWarpTimeGraph(FitGraph):
     _denormalizers = {
         ('distance', 'AU'): lambda v, fit, tgt: v / AU_METERS,
         ('distance', 'km'): lambda v, fit, tgt: v / 1000}
-
     _getters = {
         ('distance', 'time'): Distance2TimeGetter}
 
