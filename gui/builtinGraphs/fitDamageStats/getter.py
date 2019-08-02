@@ -137,6 +137,7 @@ class XDistanceMixin(SmoothPointGetter):
             'dmgMap': self._getDamagePerKey(fit=fit, time=miscParamMap['time'])}
 
     def _calculatePoint(self, x, miscParams, fit, tgt, commonData):
+        distance = x
         miscParamMap = commonData['miscParamMap']
         tgtSpeed = miscParamMap['tgtSpeed']
         tgtSigRadius = getTgtSigRadius(tgt)
@@ -151,7 +152,7 @@ class XDistanceMixin(SmoothPointGetter):
                 webMods=webMods,
                 webDrones=webDrones,
                 webFighters=webFighters,
-                distance=x)
+                distance=distance)
             tgtSigRadius = tgtSigRadius * getTpMult(
                 fit=fit,
                 tgt=tgt,
@@ -159,13 +160,13 @@ class XDistanceMixin(SmoothPointGetter):
                 tpMods=tpMods,
                 tpDrones=tpDrones,
                 tpFighters=tpFighters,
-                distance=x)
+                distance=distance)
         applicationMap = getApplicationPerKey(
             fit=fit,
             tgt=tgt,
             atkSpeed=miscParamMap['atkSpeed'],
             atkAngle=miscParamMap['atkAngle'],
-            distance=x,
+            distance=distance,
             tgtSpeed=tgtSpeed,
             tgtAngle=miscParamMap['tgtAngle'],
             tgtSigRadius=tgtSigRadius)
@@ -212,10 +213,10 @@ class XTimeMixin(PointGetter):
             tgtSigRadius=tgtSigRadius)
         return applicationMap
 
-    def getRange(self, mainParamRange, miscParams, fit, tgt):
+    def getRange(self, xRange, miscParams, fit, tgt):
         xs = []
         ys = []
-        minTime, maxTime = mainParamRange[1]
+        minTime, maxTime = xRange
         # Prepare time cache and various shared data
         self._prepareTimeCache(fit=fit, maxTime=maxTime)
         timeCache = self._getTimeCacheData(fit=fit)
@@ -266,14 +267,14 @@ class XTimeMixin(PointGetter):
             ys.append(currentDmg or 0)
         return xs, ys
 
-    def getPoint(self, mainParam, miscParams, fit, tgt):
-        x = mainParam[1]
+    def getPoint(self, x, miscParams, fit, tgt):
+        time = x
         # Prepare time cache and various data
-        self._prepareTimeCache(fit=fit, maxTime=x)
-        dmgData = self._getTimeCacheDataPoint(fit=fit, time=x)
+        self._prepareTimeCache(fit=fit, maxTime=time)
+        dmgData = self._getTimeCacheDataPoint(fit=fit, time=time)
         applicationMap = self._prepareApplicationMap(miscParams=miscParams, fit=fit, tgt=tgt)
         y = applyDamage(dmgMap=dmgData, applicationMap=applicationMap).total
-        return x, y
+        return y
 
 
 class XTgtSpeedMixin(SmoothPointGetter):
@@ -290,8 +291,8 @@ class XTgtSpeedMixin(SmoothPointGetter):
             'dmgMap': self._getDamagePerKey(fit=fit, time=miscParamMap['time'])}
 
     def _calculatePoint(self, x, miscParams, fit, tgt, commonData):
-        miscParamMap = commonData['miscParamMap']
         tgtSpeed = x
+        miscParamMap = commonData['miscParamMap']
         tgtSigRadius = getTgtSigRadius(tgt)
         if commonData['applyProjected']:
             webMods, tpMods = self.graph._projectedCache.getProjModData(fit)
@@ -363,8 +364,8 @@ class XTgtSigRadiusMixin(SmoothPointGetter):
             'dmgMap': self._getDamagePerKey(fit=fit, time=miscParamMap['time'])}
 
     def _calculatePoint(self, x, miscParams, fit, tgt, commonData):
+        tgtSigRadius = x
         miscParamMap = commonData['miscParamMap']
-        tgtSigRadius = x * commonData['tgtSigMult']
         applicationMap = getApplicationPerKey(
             fit=fit,
             tgt=tgt,
@@ -373,7 +374,7 @@ class XTgtSigRadiusMixin(SmoothPointGetter):
             distance=miscParamMap['distance'],
             tgtSpeed=commonData['tgtSpeed'],
             tgtAngle=miscParamMap['tgtAngle'],
-            tgtSigRadius=tgtSigRadius)
+            tgtSigRadius=tgtSigRadius * commonData['tgtSigMult'])
         y = applyDamage(dmgMap=commonData['dmgMap'], applicationMap=applicationMap).total
         return y
 

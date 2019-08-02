@@ -34,11 +34,12 @@ class Distance2TimeGetter(SmoothPointGetter):
             'warpSpeed': fit.warpSpeed}
 
     def _calculatePoint(self, x, miscParams, fit, tgt, commonData):
-        y = calculate_time_in_warp(
+        distance = x
+        time = calculate_time_in_warp(
             max_subwarp_speed=commonData['subwarpSpeed'],
             max_warp_speed=commonData['warpSpeed'],
-            warp_dist=x)
-        return y
+            warp_dist=distance)
+        return time
 
 
 # Taken from https://wiki.eveuniversity.org/Warp_time_calculation#Implementation

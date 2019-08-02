@@ -31,11 +31,12 @@ class Time2CapAmountGetter(SmoothPointGetter):
             'capRegenTime': fit.ship.getModifiedItemAttr('rechargeRate') / 1000}
 
     def _calculatePoint(self, x, miscParams, fit, tgt, commonData):
-        y = calculateCapAmount(
+        time = x
+        capAmount = calculateCapAmount(
             maxCapAmount=commonData['maxCapAmount'],
             capRegenTime=commonData['capRegenTime'],
-            time=x)
-        return y
+            time=time)
+        return capAmount
 
 
 class Time2CapRegenGetter(SmoothPointGetter):
@@ -46,22 +47,24 @@ class Time2CapRegenGetter(SmoothPointGetter):
             'capRegenTime': fit.ship.getModifiedItemAttr('rechargeRate') / 1000}
 
     def _calculatePoint(self, x, miscParams, fit, tgt, commonData):
+        time = x
         currentCapAmount = calculateCapAmount(
             maxCapAmount=commonData['maxCapAmount'],
             capRegenTime=commonData['capRegenTime'],
-            time=x)
-        y = calculateCapRegen(
+            time=time)
+        capRegen = calculateCapRegen(
             maxCapAmount=commonData['maxCapAmount'],
             capRegenTime=commonData['capRegenTime'],
             currentCapAmount=currentCapAmount)
-        return y
+        return capRegen
 
 
 # Useless, but valid combination of x and y
 class CapAmount2CapAmountGetter(SmoothPointGetter):
 
     def _calculatePoint(self, x, miscParams, fit, tgt, commonData):
-        return x
+        capAmount = x
+        return capAmount
 
 
 class CapAmount2CapRegenGetter(SmoothPointGetter):
@@ -72,11 +75,12 @@ class CapAmount2CapRegenGetter(SmoothPointGetter):
             'capRegenTime': fit.ship.getModifiedItemAttr('rechargeRate') / 1000}
 
     def _calculatePoint(self, x, miscParams, fit, tgt, commonData):
-        y = calculateCapRegen(
+        capAmount = x
+        capRegen = calculateCapRegen(
             maxCapAmount=commonData['maxCapAmount'],
             capRegenTime=commonData['capRegenTime'],
-            currentCapAmount=x)
-        return y
+            currentCapAmount=capAmount)
+        return capRegen
 
 
 def calculateCapAmount(maxCapAmount, capRegenTime, time):

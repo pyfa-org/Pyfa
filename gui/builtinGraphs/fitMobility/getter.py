@@ -32,12 +32,13 @@ class Time2SpeedGetter(SmoothPointGetter):
             'agility': fit.ship.getModifiedItemAttr('agility')}
 
     def _calculatePoint(self, x, miscParams, fit, tgt, commonData):
+        time = x
         maxSpeed = commonData['maxSpeed']
         mass = commonData['mass']
         agility = commonData['agility']
         # https://wiki.eveuniversity.org/Acceleration#Mathematics_and_formulae
-        y = maxSpeed * (1 - math.exp((-x * 1000000) / (agility * mass)))
-        return y
+        speed = maxSpeed * (1 - math.exp((-time * 1000000) / (agility * mass)))
+        return speed
 
 
 class Time2DistanceGetter(SmoothPointGetter):
@@ -49,12 +50,13 @@ class Time2DistanceGetter(SmoothPointGetter):
             'agility': fit.ship.getModifiedItemAttr('agility')}
 
     def _calculatePoint(self, x, miscParams, fit, tgt, commonData):
+        time = x
         maxSpeed = commonData['maxSpeed']
         mass = commonData['mass']
         agility = commonData['agility']
         # Definite integral of:
         # https://wiki.eveuniversity.org/Acceleration#Mathematics_and_formulae
-        distance_t = maxSpeed * x + (maxSpeed * agility * mass * math.exp((-x * 1000000) / (agility * mass)) / 1000000)
+        distance_t = maxSpeed * time + (maxSpeed * agility * mass * math.exp((-time * 1000000) / (agility * mass)) / 1000000)
         distance_0 = maxSpeed * 0 + (maxSpeed * agility * mass * math.exp((-0 * 1000000) / (agility * mass)) / 1000000)
-        y = distance_t - distance_0
-        return y
+        distance = distance_t - distance_0
+        return distance

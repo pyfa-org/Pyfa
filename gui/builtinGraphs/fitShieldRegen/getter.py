@@ -31,11 +31,12 @@ class Time2ShieldAmountGetter(SmoothPointGetter):
             'shieldRegenTime': fit.ship.getModifiedItemAttr('shieldRechargeRate') / 1000}
 
     def _calculatePoint(self, x, miscParams, fit, tgt, commonData):
-        y = calculateShieldAmount(
+        time = x
+        shieldAmount = calculateShieldAmount(
             maxShieldAmount=commonData['maxShieldAmount'],
             shieldRegenTime=commonData['shieldRegenTime'],
-            time=x)
-        return y
+            time=time)
+        return shieldAmount
 
 
 class Time2ShieldRegenGetter(SmoothPointGetter):
@@ -46,22 +47,24 @@ class Time2ShieldRegenGetter(SmoothPointGetter):
             'shieldRegenTime': fit.ship.getModifiedItemAttr('shieldRechargeRate') / 1000}
 
     def _calculatePoint(self, x, miscParams, fit, tgt, commonData):
+        time = x
         currentShieldAmount = calculateShieldAmount(
             maxShieldAmount=commonData['maxShieldAmount'],
             shieldRegenTime=commonData['shieldRegenTime'],
-            time=x)
-        y = calculateShieldRegen(
+            time=time)
+        shieldRegen = calculateShieldRegen(
             maxShieldAmount=commonData['maxShieldAmount'],
             shieldRegenTime=commonData['shieldRegenTime'],
             currentShieldAmount=currentShieldAmount)
-        return y
+        return shieldRegen
 
 
 # Useless, but valid combination of x and y
 class ShieldAmount2ShieldAmountGetter(SmoothPointGetter):
 
     def _calculatePoint(self, x, miscParams, fit, tgt, commonData):
-        return x
+        shieldAmount = x
+        return shieldAmount
 
 
 class ShieldAmount2ShieldRegenGetter(SmoothPointGetter):
@@ -72,11 +75,12 @@ class ShieldAmount2ShieldRegenGetter(SmoothPointGetter):
             'shieldRegenTime': fit.ship.getModifiedItemAttr('shieldRechargeRate') / 1000}
 
     def _calculatePoint(self, x, miscParams, fit, tgt, commonData):
-        y = calculateShieldRegen(
+        shieldAmount = x
+        shieldRegen = calculateShieldRegen(
             maxShieldAmount=commonData['maxShieldAmount'],
             shieldRegenTime=commonData['shieldRegenTime'],
-            currentShieldAmount=x)
-        return y
+            currentShieldAmount=shieldAmount)
+        return shieldRegen
 
 
 def calculateShieldAmount(maxShieldAmount, shieldRegenTime, time):

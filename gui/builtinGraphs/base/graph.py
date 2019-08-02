@@ -139,7 +139,7 @@ class FitGraph(metaclass=ABCMeta):
     def _calcPlotPoints(self, mainInput, miscInputs, xSpec, ySpec, fit, tgt):
         mainParamRange, miscParams = self._normalizeInputs(mainInput=mainInput, miscInputs=miscInputs, fit=fit, tgt=tgt)
         mainParamRange, miscParams = self._limitParams(mainParamRange=mainParamRange, miscParams=miscParams, fit=fit, tgt=tgt)
-        xs, ys = self._getPoints(mainParamRange=mainParamRange, miscParams=miscParams, xSpec=xSpec, ySpec=ySpec, fit=fit, tgt=tgt)
+        xs, ys = self._getPoints(xRange=mainParamRange[1], miscParams=miscParams, xSpec=xSpec, ySpec=ySpec, fit=fit, tgt=tgt)
         ys = self._denormalizeValues(ys, ySpec, fit, tgt)
         # Sometimes x denormalizer may fail (e.g. during conversion of 0 ship speed to %).
         # If both inputs and outputs are in %, do some extra processing to at least have
@@ -211,14 +211,14 @@ class FitGraph(metaclass=ABCMeta):
 
     _getters = {}
 
-    def _getPoints(self, mainParamRange, miscParams, xSpec, ySpec, fit, tgt):
+    def _getPoints(self, xRange, miscParams, xSpec, ySpec, fit, tgt):
         try:
             getterClass = self._getters[(xSpec.handle, ySpec.handle)]
         except KeyError:
             return [], []
         else:
             getter = getterClass(graph=self)
-            return getter.getRange(mainParamRange=mainParamRange, miscParams=miscParams, fit=fit, tgt=tgt)
+            return getter.getRange(xRange=xRange, miscParams=miscParams, fit=fit, tgt=tgt)
 
     _denormalizers = {}
 
