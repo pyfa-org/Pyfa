@@ -64,9 +64,9 @@ def getTgtRadius(tgt):
     return radius
 
 
-# Just copypaste penalization chain calculation code in here to not make actual
-# attribute calculations slower than it already is due to extra function calls
-# Actually, with some modifications as multipliers arrive in different form
+# Just copypaste penalization chain calculation code (with some modifications,
+# as multipliers arrive in different form) in here to not make actual attribute
+# calculations slower than they already are due to extra function calls
 def _calculateMultiplier(multipliers):
     val = 1
     for penalizedMultipliers in multipliers.values():
