@@ -166,10 +166,7 @@ class XDistanceMixin(SmoothPointGetter):
 
 class XTimeMixin(PointGetter):
 
-    def getRange(self, mainParamRange, miscParams, fit, tgt):
-        xs = []
-        ys = []
-        minTime, maxTime = mainParamRange[1]
+    def _prepareData(self, time, miscParams, fit, tgt):
         # Process params into more convenient form
         miscParamMap = dict(miscParams)
         tgtSpeed = miscParamMap['tgtSpeed']
@@ -204,8 +201,16 @@ class XTimeMixin(PointGetter):
             tgtSpeed=tgtSpeed,
             tgtAngle=miscParamMap['tgtAngle'],
             tgtSigRadius=tgtSigRadius)
-        self._prepareTimeCache(fit=fit, maxTime=maxTime)
+        self._prepareTimeCache(fit=fit, maxTime=time)
         timeCache = self._getTimeCacheData(fit)
+        return tgtSpeed, tgtSigRadius, applicationMap, timeCache
+
+    def getRange(self, mainParamRange, miscParams, fit, tgt):
+        xs = []
+        ys = []
+        minTime, maxTime = mainParamRange[1]
+        tgtSpeed, tgtSigRadius, applicationMap, timeCache = self._prepareData(
+            time=maxTime, miscParams=miscParams, fit=fit, tgt=tgt)
         # Custom iteration for time graph to show all data points
         currentDmg = None
         currentTime = None
