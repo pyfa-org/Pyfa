@@ -48,14 +48,14 @@ class Time2ShieldRegenGetter(SmoothPointGetter):
 
     def _calculatePoint(self, x, miscParams, fit, tgt, commonData):
         time = x
-        currentShieldAmount = calculateShieldAmount(
+        shieldAmount = calculateShieldAmount(
             maxShieldAmount=commonData['maxShieldAmount'],
             shieldRegenTime=commonData['shieldRegenTime'],
             time=time)
         shieldRegen = calculateShieldRegen(
             maxShieldAmount=commonData['maxShieldAmount'],
             shieldRegenTime=commonData['shieldRegenTime'],
-            currentShieldAmount=currentShieldAmount)
+            currentShieldAmount=shieldAmount)
         return shieldRegen
 
 

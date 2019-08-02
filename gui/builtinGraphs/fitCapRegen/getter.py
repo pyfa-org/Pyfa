@@ -48,14 +48,14 @@ class Time2CapRegenGetter(SmoothPointGetter):
 
     def _calculatePoint(self, x, miscParams, fit, tgt, commonData):
         time = x
-        currentCapAmount = calculateCapAmount(
+        capAmount = calculateCapAmount(
             maxCapAmount=commonData['maxCapAmount'],
             capRegenTime=commonData['capRegenTime'],
             time=time)
         capRegen = calculateCapRegen(
             maxCapAmount=commonData['maxCapAmount'],
             capRegenTime=commonData['capRegenTime'],
-            currentCapAmount=currentCapAmount)
+            currentCapAmount=capAmount)
         return capRegen
 
 
