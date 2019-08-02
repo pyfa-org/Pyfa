@@ -18,6 +18,7 @@
 # ===============================================================================
 
 
+from eos.utils.float import floatUnerr
 from utils.repr import makeReprStr
 
 
@@ -42,12 +43,14 @@ class DmgTypes:
     def __eq__(self, other):
         if not isinstance(other, DmgTypes):
             return NotImplemented
-        return all((
-            self.em == other.em,
-            self.thermal == other.thermal,
-            self.kinetic == other.kinetic,
-            self.explosive == other.explosive,
-            self.total == other.total))
+        # Round for comparison's sake because often damage profiles are
+        # generated from data which includes float errors
+        return (
+            floatUnerr(self.em) == floatUnerr(other.em) and
+            floatUnerr(self.thermal) == floatUnerr(other.thermal) and
+            floatUnerr(self.kinetic) == floatUnerr(other.kinetic) and
+            floatUnerr(self.explosive) == floatUnerr(other.explosive) and
+            floatUnerr(self.total) == floatUnerr(other.total))
 
     def __bool__(self):
         return any((

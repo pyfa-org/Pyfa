@@ -23,6 +23,7 @@ from functools import lru_cache
 
 from eos.const import FittingHardpoint
 from eos.saveddata.fit import Fit
+from eos.utils.float import floatUnerr
 from gui.builtinGraphs.fitDamageStats.helper import getTgtRadius
 from service.const import GraphDpsDroneMode
 from service.settings import GraphSettings
@@ -100,6 +101,9 @@ def getApplicationPerKey(fit, tgt, atkSpeed, atkAngle, distance, tgtSpeed, tgtAn
                 distance=distance,
                 tgtSpeed=tgtSpeed,
                 tgtSigRadius=tgtSigRadius)
+    # Ensure consistent results - round off a little to avoid float errors
+    for k, v in applicationMap.items():
+        applicationMap[k] = floatUnerr(v)
     return applicationMap
 
 

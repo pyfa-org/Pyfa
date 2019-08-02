@@ -21,6 +21,7 @@
 import math
 
 from eos.saveddata.fit import Fit
+from eos.utils.float import floatUnerr
 from gui.builtinGraphs.fitDamageStats.helper import getTgtMaxVelocity, getTgtSigRadius
 from service.const import GraphDpsDroneMode
 from service.settings import GraphSettings
@@ -88,7 +89,8 @@ def getWebbedSpeed(fit, tgt, currentUnwebbedSpeed, webMods, webDrones, webFighte
                 mobileWebs.remove(mwData)
             maxWebbedSpeed = getTgtMaxVelocity(tgt, extraMultipliers=appliedMultipliers)
             currentWebbedSpeed = maxWebbedSpeed * speedRatio
-    return currentWebbedSpeed
+    # Ensure consistent results - round off a little to avoid float errors
+    return floatUnerr(currentWebbedSpeed)
 
 
 def getTpMult(fit, tgt, tgtSpeed, tpMods, tpDrones, tpFighters, distance):
@@ -132,4 +134,5 @@ def getTpMult(fit, tgt, tgtSpeed, tpMods, tpDrones, tpFighters, distance):
     if tpedSig == math.inf and untpedSig == math.inf:
         return 1
     mult = tpedSig / untpedSig
-    return mult
+    # Ensure consistent results - round off a little to avoid float errors
+    return floatUnerr(mult)
