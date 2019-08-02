@@ -156,9 +156,9 @@ class FitGraph(metaclass=ABCMeta):
 
     # Calculation stuff
     def _calcPlotPoints(self, mainInput, miscInputs, xSpec, ySpec, fit, tgt):
-        mainParam, miscParams = self._normalizeInputs(mainInput=mainInput, miscInputs=miscInputs, fit=fit, tgt=tgt)
-        mainParam, miscParams = self._limitParams(mainParam=mainParam, miscParams=miscParams, fit=fit, tgt=tgt)
-        xs, ys = self._getPoints(mainParam=mainParam, miscParams=miscParams, xSpec=xSpec, ySpec=ySpec, fit=fit, tgt=tgt)
+        mainParamRange, miscParams = self._normalizeInputs(mainInput=mainInput, miscInputs=miscInputs, fit=fit, tgt=tgt)
+        mainParamRange, miscParams = self._limitParams(mainParamRange=mainParamRange, miscParams=miscParams, fit=fit, tgt=tgt)
+        xs, ys = self._getPoints(mainParamRange=mainParamRange, miscParams=miscParams, xSpec=xSpec, ySpec=ySpec, fit=fit, tgt=tgt)
         ys = self._denormalizeValues(ys, ySpec, fit, tgt)
         # Sometimes x denormalizer may fail (e.g. during conversion of 0 ship speed to %).
         # If both inputs and outputs are in %, do some extra processing to at least have
@@ -186,9 +186,9 @@ class FitGraph(metaclass=ABCMeta):
         key = (mainInput.handle, mainInput.unit)
         if key in self._normalizers:
             normalizer = self._normalizers[key]
-            mainParam = (mainInput.handle, tuple(normalizer(v, fit, tgt) for v in mainInput.value))
+            mainParamRange = (mainInput.handle, tuple(normalizer(v, fit, tgt) for v in mainInput.value))
         else:
-            mainParam = (mainInput.handle, mainInput.value)
+            mainParamRange = (mainInput.handle, mainInput.value)
         miscParams = []
         for miscInput in miscInputs:
             key = (miscInput.handle, miscInput.unit)
@@ -198,11 +198,11 @@ class FitGraph(metaclass=ABCMeta):
             else:
                 miscParam = (miscInput.handle, miscInput.value)
             miscParams.append(miscParam)
-        return mainParam, miscParams
+        return mainParamRange, miscParams
 
     _limiters = {}
 
-    def _limitParams(self, mainParam, miscParams, fit, tgt):
+    def _limitParams(self, mainParamRange, miscParams, fit, tgt):
 
         def limitToRange(val, limitRange):
             if val is None:
@@ -211,12 +211,12 @@ class FitGraph(metaclass=ABCMeta):
             val = min(val, max(limitRange))
             return val
 
-        mainHandle, mainValue = mainParam
+        mainHandle, mainValue = mainParamRange
         if mainHandle in self._limiters:
             limiter = self._limiters[mainHandle]
-            newMainParam = (mainHandle, tuple(limitToRange(v, limiter(fit, tgt)) for v in mainValue))
+            newMainParamRange = (mainHandle, tuple(limitToRange(v, limiter(fit, tgt)) for v in mainValue))
         else:
-            newMainParam = mainParam
+            newMainParamRange = mainParamRange
         newMiscParams = []
         for miscParam in miscParams:
             miscHandle, miscValue = miscParam
@@ -226,18 +226,18 @@ class FitGraph(metaclass=ABCMeta):
                 newMiscParams.append(newMiscParam)
             else:
                 newMiscParams.append(miscParam)
-        return newMainParam, newMiscParams
+        return newMainParamRange, newMiscParams
 
     _getters = {}
 
-    def _getPoints(self, mainParam, miscParams, xSpec, ySpec, fit, tgt):
+    def _getPoints(self, mainParamRange, miscParams, xSpec, ySpec, fit, tgt):
         try:
             getterClass = self._getters[(xSpec.handle, ySpec.handle)]
         except KeyError:
             return [], []
         else:
             getter = getterClass(graph=self)
-            return getter.getRange(mainParam=mainParam, miscParams=miscParams, fit=fit, tgt=tgt)
+            return getter.getRange(mainParamRange=mainParamRange, miscParams=miscParams, fit=fit, tgt=tgt)
 
     _denormalizers = {}
 
@@ -255,11 +255,11 @@ class PointGetter(metaclass=ABCMeta):
         self.graph = graph
 
     @abstractmethod
-    def getRange(self, mainParam, miscParams, fit, tgt):
+    def getRange(self, mainParamRange, miscParams, fit, tgt):
         raise NotImplementedError
 
     @abstractmethod
-    def getPoint(self, mainParam, miscParams, fit, tgt, cache=None):
+    def getPoint(self, mainParamRange, miscParams, fit, tgt):
         raise NotImplementedError
 
 
@@ -269,24 +269,21 @@ class SmoothPointGetter(PointGetter, metaclass=ABCMeta):
         super().__init__(graph)
         self._baseResolution = baseResolution
 
-    def getRange(self, mainParam, miscParams, fit, tgt):
+    def getRange(self, mainParamRange, miscParams, fit, tgt):
         xs = []
         ys = []
         commonData = self._getCommonData(miscParams=miscParams, fit=fit, tgt=tgt)
-        for x in self._iterLinear(mainParam[1]):
-            y = self._calculatePoint(
-                mainParam=x, miscParams=miscParams,
-                fit=fit, tgt=tgt, commonData=commonData)
+        for x in self._iterLinear(mainParamRange[1]):
+            y = self._calculatePoint(x=x, miscParams=miscParams, fit=fit, tgt=tgt, commonData=commonData)
             xs.append(x)
             ys.append(y)
         return xs, ys
 
     def getPoint(self, mainParam, miscParams, fit, tgt):
         commonData = self._getCommonData(miscParams=miscParams, fit=fit, tgt=tgt)
-        y = self._calculatePoint(
-            mainParam=mainParam, miscParams=miscParams,
-            fit=fit, tgt=tgt, commonData=commonData)
-        return mainParam, y
+        x = mainParam[1]
+        y = self._calculatePoint(x=x, miscParams=miscParams, fit=fit, tgt=tgt, commonData=commonData)
+        return x, y
 
     def _iterLinear(self, valRange):
         rangeLow = min(valRange)
@@ -308,7 +305,7 @@ class SmoothPointGetter(PointGetter, metaclass=ABCMeta):
         return {}
 
     @abstractmethod
-    def _calculatePoint(self, mainParam, miscParams, fit, tgt, commonData):
+    def _calculatePoint(self, x, miscParams, fit, tgt, commonData):
         raise NotImplementedError
 
 
