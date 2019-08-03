@@ -51,7 +51,7 @@ def getWebbedSpeed(src, tgt, currentUnwebbedSpeed, webMods, webDrones, webFighte
         mobileWebs = []
         mobileWebs.extend(webFighters)
         # Drones have range limit
-        if distance is None or distance <= src.extraAttributes['droneControlRange']:
+        if distance is None or distance <= src.item.extraAttributes['droneControlRange']:
             mobileWebs.extend(webDrones)
         atkRadius = src.getRadius()
         # As mobile webs either follow the target or stick to the attacking ship,
