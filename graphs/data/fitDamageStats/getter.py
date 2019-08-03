@@ -125,6 +125,9 @@ class YInflictedDamageMixin:
 # X mixins
 class XDistanceMixin(SmoothPointGetter):
 
+    _baseResolution = 50
+    _extraDepth = 2
+
     def _getCommonData(self, miscParams, fit, tgt):
         # Process params into more convenient form
         miscParamMap = dict(miscParams)
@@ -279,6 +282,9 @@ class XTimeMixin(PointGetter):
 
 class XTgtSpeedMixin(SmoothPointGetter):
 
+    _baseResolution = 50
+    _extraDepth = 2
+
     def _getCommonData(self, miscParams, fit, tgt):
         # Process params into more convenient form
         miscParamMap = dict(miscParams)
@@ -328,6 +334,9 @@ class XTgtSpeedMixin(SmoothPointGetter):
 
 
 class XTgtSigRadiusMixin(SmoothPointGetter):
+
+    _baseResolution = 50
+    _extraDepth = 2
 
     def _getCommonData(self, miscParams, fit, tgt):
         # Process params into more convenient form

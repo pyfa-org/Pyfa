@@ -38,10 +38,8 @@ class PointGetter(metaclass=ABCMeta):
 
 class SmoothPointGetter(PointGetter, metaclass=ABCMeta):
 
-    def __init__(self, graph, baseResolution=50, extraDepth=2):
-        super().__init__(graph)
-        self._baseResolution = baseResolution
-        self._extraDepth = extraDepth
+    _baseResolution = 200
+    _extraDepth = 0
 
     def getRange(self, xRange, miscParams, fit, tgt):
         xs = []
