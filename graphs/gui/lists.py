@@ -145,7 +145,7 @@ class BaseWrapperList(gui.display.Display):
             return None
 
     def removeWrappers(self, wrappers):
-        wrappers = set(wrappers).union(self._wrappers)
+        wrappers = set(wrappers).intersection(self._wrappers)
         if not wrappers:
             return
         for wrapper in wrappers:
@@ -188,7 +188,7 @@ class BaseWrapperList(gui.display.Display):
             self.updateView()
 
     def OnFitChanged(self, event):
-        if set(event.fitIDs).union(w.item.ID for w in self._wrappers if w.isFit):
+        if set(event.fitIDs).intersection(w.item.ID for w in self._wrappers if w.isFit):
             self.updateView()
 
     def OnFitRemoved(self, event):
