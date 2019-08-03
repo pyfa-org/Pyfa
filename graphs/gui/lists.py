@@ -153,9 +153,9 @@ class BaseWrapperList(gui.display.Display):
         self.updateView()
         for wrapper in wrappers:
             if wrapper.isFit:
-                self.graphFrame.clearCache(reason=GraphCacheCleanupReason.fitRemoved, extraData=wrapper.fitID)
+                self.graphFrame.clearCache(reason=GraphCacheCleanupReason.fitRemoved, extraData=wrapper.item.ID)
             elif wrapper.isProfile:
-                self.graphFrame.clearCache(reason=GraphCacheCleanupReason.profileRemoved, extraData=wrapper.profileID)
+                self.graphFrame.clearCache(reason=GraphCacheCleanupReason.profileRemoved, extraData=wrapper.item.ID)
         self.graphFrame.draw()
 
     def getSelectedWrappers(self):
