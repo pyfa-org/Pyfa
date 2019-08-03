@@ -92,11 +92,14 @@ class FitGraph(metaclass=ABCMeta):
     def getPlotPoints(self, mainInput, miscInputs, xSpec, ySpec, src, tgt=None):
         if tgt is not None and tgt.isFit:
             tgtType = 'fit'
+            tgtItemID = tgt.item.ID
         elif tgt is not None and tgt.isProfile:
             tgtType = 'profile'
+            tgtItemID = tgt.item.ID
         else:
             tgtType = None
-        cacheKey = (src.itemID, tgtType, getattr(tgt, 'itemID', None))
+            tgtItemID = None
+        cacheKey = (src.item.ID, tgtType, tgtItemID)
         try:
             plotData = self._plotCache[cacheKey][(ySpec, xSpec)]
         except KeyError:

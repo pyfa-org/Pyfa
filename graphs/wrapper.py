@@ -38,10 +38,6 @@ class BaseWrapper:
         return isinstance(self.item, TargetProfile)
 
     @property
-    def itemID(self):
-        return self.item.ID
-
-    @property
     def name(self):
         if self.isFit:
             return '{} ({})'.format(self.item.name, self.item.ship.item.name)

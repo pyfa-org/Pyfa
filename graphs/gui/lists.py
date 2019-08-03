@@ -172,13 +172,13 @@ class BaseWrapperList(gui.display.Display):
 
     def containsFitID(self, fitID):
         for wrapper in self._wrappers:
-            if wrapper.isFit and wrapper.itemID == fitID:
+            if wrapper.isFit and wrapper.item.ID == fitID:
                 return True
         return False
 
     def containsProfileID(self, profileID):
         for wrapper in self._wrappers:
-            if wrapper.isProfile and wrapper.itemID == profileID:
+            if wrapper.isProfile and wrapper.item.ID == profileID:
                 return True
         return False
 
@@ -188,11 +188,11 @@ class BaseWrapperList(gui.display.Display):
             self.updateView()
 
     def OnFitChanged(self, event):
-        if set(event.fitIDs).union(w.itemID for w in self._wrappers if w.isFit):
+        if set(event.fitIDs).union(w.item.ID for w in self._wrappers if w.isFit):
             self.updateView()
 
     def OnFitRemoved(self, event):
-        wrapper = next((w for w in self._wrappers if w.isFit and w.itemID == event.fitID), None)
+        wrapper = next((w for w in self._wrappers if w.isFit and w.item.ID == event.fitID), None)
         if wrapper is not None:
             self._wrappers.remove(wrapper)
             self.updateView()
@@ -206,7 +206,7 @@ class BaseWrapperList(gui.display.Display):
             self.updateView()
 
     def OnProfileRemoved(self, event):
-        wrapper = next((w for w in self._wrappers if w.isProfile and w.itemID == event.profileID), None)
+        wrapper = next((w for w in self._wrappers if w.isProfile and w.item.ID == event.profileID), None)
         if wrapper is not None:
             self._wrappers.remove(wrapper)
             self.updateView()
@@ -222,7 +222,7 @@ class BaseWrapperList(gui.display.Display):
         self.graphFrame.draw()
 
     def getExistingFitIDs(self):
-        return [w.itemID for w in self._wrappers if w.isFit]
+        return [w.item.ID for w in self._wrappers if w.isFit]
 
     def addFitsByIDs(self, fitIDs):
         sFit = Fit.getInstance()
