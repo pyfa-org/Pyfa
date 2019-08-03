@@ -50,7 +50,8 @@ class BaseWrapperList(gui.display.Display):
 
     @property
     def wrappers(self):
-        return sorted(self._wrappers, key=lambda w: w.isFit)
+        # Sort fits first, then target profiles
+        return sorted(self._wrappers, key=lambda w: not w.isFit)
 
     # UI-related stuff
     @property
