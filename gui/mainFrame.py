@@ -34,11 +34,12 @@ from logbook import Logger
 from wx.lib.inspection import InspectionTool
 
 import config
+import gui.fitCommands as cmd
 import gui.globalEvents as GE
 from eos.config import gamedata_date, gamedata_version
 # import this to access override setting
 from eos.modifiedAttributeDict import ModifiedAttributeDict
-from gui import graphFrame
+from graphs.gui import GraphFrame, frame as graphFrame
 from gui.additionsPane import AdditionsPane
 from gui.bitmap_loader import BitmapLoader
 from gui.builtinMarketBrowser.events import ItemSelected
@@ -51,16 +52,15 @@ from gui.chrome_tabs import ChromeNotebook
 from gui.copySelectDialog import CopySelectDialog
 from gui.devTools import DevTools
 from gui.esiFittings import EveFittings, ExportToEve, SsoCharacterMgmt
-from gui.graphFrame import GraphFrame
 from gui.mainMenuBar import MainMenuBar
 from gui.marketBrowser import MarketBrowser
 from gui.multiSwitch import MultiSwitch
 from gui.patternEditor import DmgPatternEditorDlg
 from gui.preferenceDialog import PreferenceDialog
-from gui.targetProfileEditor import TargetProfileEditorDlg
 from gui.setEditor import ImplantSetEditorDlg
 from gui.shipBrowser import ShipBrowser
 from gui.statsPane import StatsPane
+from gui.targetProfileEditor import TargetProfileEditorDlg
 from gui.updateDialog import UpdateDialog
 from gui.utils.clipboard import fromClipboard
 from service.character import Character
@@ -70,7 +70,6 @@ from service.port import IPortUser, Port
 from service.price import Price
 from service.settings import HTMLExportSettings, SettingsProvider
 from service.update import Update
-import gui.fitCommands as cmd
 
 
 pyfalog = Logger(__name__)
@@ -963,9 +962,9 @@ class MainFrame(wx.Frame):
         if not self.graphFrame:
             self.graphFrame = GraphFrame(self)
 
-            if graphFrame.frame.graphFrame_enabled:
+            if graphFrame.graphFrame_enabled:
                 self.graphFrame.Show()
-        elif graphFrame.frame.graphFrame_enabled:
+        elif graphFrame.graphFrame_enabled:
             self.graphFrame.SetFocus()
 
     def openWXInspectTool(self, event):
