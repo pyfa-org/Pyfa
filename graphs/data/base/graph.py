@@ -22,8 +22,6 @@ import math
 from abc import ABCMeta, abstractmethod
 from collections import OrderedDict
 
-from eos.saveddata.fit import Fit
-from eos.saveddata.targetProfile import TargetProfile
 from eos.utils.float import floatUnerr
 from service.const import GraphCacheCleanupReason
 
@@ -91,18 +89,20 @@ class FitGraph(metaclass=ABCMeta):
     tgtVectorDef = None
     hasTargets = False
 
-    def getPlotPoints(self, mainInput, miscInputs, xSpec, ySpec, fit, tgt=None):
-        if isinstance(tgt, Fit):
+    def getPlotPoints(self, mainInput, miscInputs, xSpec, ySpec, src, tgt=None):
+        if tgt is not None and tgt.isFit:
             tgtType = 'fit'
-        elif isinstance(tgt, TargetProfile):
+        elif tgt is not None and tgt.isProfile:
             tgtType = 'profile'
         else:
             tgtType = None
-        cacheKey = (fit.ID, tgtType, getattr(tgt, 'ID', None))
+        cacheKey = (src.itemID, tgtType, getattr(tgt, 'itemID', None))
         try:
             plotData = self._plotCache[cacheKey][(ySpec, xSpec)]
         except KeyError:
-            plotData = self._calcPlotPoints(mainInput, miscInputs, xSpec, ySpec, fit, tgt)
+            plotData = self._calcPlotPoints(
+                mainInput=mainInput, miscInputs=miscInputs,
+                xSpec=xSpec, ySpec=ySpec, src=src, tgt=tgt)
             self._plotCache.setdefault(cacheKey, {})[(ySpec, xSpec)] = plotData
         return plotData
 
@@ -136,17 +136,23 @@ class FitGraph(metaclass=ABCMeta):
         return
 
     # Calculation stuff
-    def _calcPlotPoints(self, mainInput, miscInputs, xSpec, ySpec, fit, tgt):
-        mainParamRange, miscParams = self._normalizeInputs(mainInput=mainInput, miscInputs=miscInputs, fit=fit, tgt=tgt)
-        mainParamRange, miscParams = self._limitParams(mainParamRange=mainParamRange, miscParams=miscParams, fit=fit, tgt=tgt)
-        xs, ys = self._getPoints(xRange=mainParamRange[1], miscParams=miscParams, xSpec=xSpec, ySpec=ySpec, fit=fit, tgt=tgt)
-        ys = self._denormalizeValues(ys, ySpec, fit, tgt)
+    def _calcPlotPoints(self, mainInput, miscInputs, xSpec, ySpec, src, tgt):
+        mainParamRange, miscParams = self._normalizeInputs(
+            mainInput=mainInput, miscInputs=miscInputs,
+            src=src, tgt=tgt)
+        mainParamRange, miscParams = self._limitParams(
+            mainParamRange=mainParamRange, miscParams=miscParams,
+            src=src, tgt=tgt)
+        xs, ys = self._getPoints(
+            xRange=mainParamRange[1], miscParams=miscParams,
+            xSpec=xSpec, ySpec=ySpec, src=src, tgt=tgt)
+        ys = self._denormalizeValues(values=ys, axisSpec=ySpec, src=src, tgt=tgt)
         # Sometimes x denormalizer may fail (e.g. during conversion of 0 ship speed to %).
         # If both inputs and outputs are in %, do some extra processing to at least have
-        # proper graph which shows that fit has the same value over whole specified
-        # relative parameter range
+        # proper graph which shows the same value over whole specified relative parameter
+        # range
         try:
-            xs = self._denormalizeValues(xs, xSpec, fit, tgt)
+            xs = self._denormalizeValues(values=xs, axisSpec=xSpec, src=src, tgt=tgt)
         except ZeroDivisionError:
             if mainInput.unit == xSpec.unit == '%' and len(set(floatUnerr(y) for y in ys)) == 1:
                 xs = [min(mainInput.value), max(mainInput.value)]
@@ -163,11 +169,11 @@ class FitGraph(metaclass=ABCMeta):
 
     _normalizers = {}
 
-    def _normalizeInputs(self, mainInput, miscInputs, fit, tgt):
+    def _normalizeInputs(self, mainInput, miscInputs, src, tgt):
         key = (mainInput.handle, mainInput.unit)
         if key in self._normalizers:
             normalizer = self._normalizers[key]
-            mainParamRange = (mainInput.handle, tuple(normalizer(v, fit, tgt) for v in mainInput.value))
+            mainParamRange = (mainInput.handle, tuple(normalizer(v, src, tgt) for v in mainInput.value))
         else:
             mainParamRange = (mainInput.handle, mainInput.value)
         miscParams = []
@@ -175,7 +181,7 @@ class FitGraph(metaclass=ABCMeta):
             key = (miscInput.handle, miscInput.unit)
             if key in self._normalizers:
                 normalizer = self._normalizers[key]
-                miscParam = (miscInput.handle, normalizer(miscInput.value, fit, tgt))
+                miscParam = (miscInput.handle, normalizer(miscInput.value, src, tgt))
             else:
                 miscParam = (miscInput.handle, miscInput.value)
             miscParams.append(miscParam)
@@ -183,7 +189,7 @@ class FitGraph(metaclass=ABCMeta):
 
     _limiters = {}
 
-    def _limitParams(self, mainParamRange, miscParams, fit, tgt):
+    def _limitParams(self, mainParamRange, miscParams, src, tgt):
 
         def limitToRange(val, limitRange):
             if val is None:
@@ -195,7 +201,7 @@ class FitGraph(metaclass=ABCMeta):
         mainHandle, mainValue = mainParamRange
         if mainHandle in self._limiters:
             limiter = self._limiters[mainHandle]
-            newMainParamRange = (mainHandle, tuple(limitToRange(v, limiter(fit, tgt)) for v in mainValue))
+            newMainParamRange = (mainHandle, tuple(limitToRange(v, limiter(src, tgt)) for v in mainValue))
         else:
             newMainParamRange = mainParamRange
         newMiscParams = []
@@ -203,7 +209,7 @@ class FitGraph(metaclass=ABCMeta):
             miscHandle, miscValue = miscParam
             if miscHandle in self._limiters:
                 limiter = self._limiters[miscHandle]
-                newMiscParam = (miscHandle, limitToRange(miscValue, limiter(fit, tgt)))
+                newMiscParam = (miscHandle, limitToRange(miscValue, limiter(src, tgt)))
                 newMiscParams.append(newMiscParam)
             else:
                 newMiscParams.append(miscParam)
@@ -211,20 +217,20 @@ class FitGraph(metaclass=ABCMeta):
 
     _getters = {}
 
-    def _getPoints(self, xRange, miscParams, xSpec, ySpec, fit, tgt):
+    def _getPoints(self, xRange, miscParams, xSpec, ySpec, src, tgt):
         try:
             getterClass = self._getters[(xSpec.handle, ySpec.handle)]
         except KeyError:
             return [], []
         else:
             getter = getterClass(graph=self)
-            return getter.getRange(xRange=xRange, miscParams=miscParams, fit=fit, tgt=tgt)
+            return getter.getRange(xRange=xRange, miscParams=miscParams, src=src, tgt=tgt)
 
     _denormalizers = {}
 
-    def _denormalizeValues(self, values, axisSpec, fit, tgt):
+    def _denormalizeValues(self, values, axisSpec, src, tgt):
         key = (axisSpec.handle, axisSpec.unit)
         if key in self._denormalizers:
             denormalizer = self._denormalizers[key]
-            values = [denormalizer(v, fit, tgt) for v in values]
+            values = [denormalizer(v, src, tgt) for v in values]
         return values

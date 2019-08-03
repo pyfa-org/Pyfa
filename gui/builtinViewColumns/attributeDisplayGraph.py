@@ -27,9 +27,10 @@ import gui.mainFrame
 from eos.saveddata.fit import Fit
 from eos.saveddata.targetProfile import TargetProfile
 from eos.utils.spoolSupport import SpoolOptions, SpoolType
+from graphs.wrapper import BaseWrapper
 from gui.bitmap_loader import BitmapLoader
-from gui.viewColumn import ViewColumn
 from gui.utils.numberFormatter import formatAmount
+from gui.viewColumn import ViewColumn
 
 
 class GraphColumn(ViewColumn, metaclass=ABCMeta):
@@ -47,6 +48,8 @@ class GraphColumn(ViewColumn, metaclass=ABCMeta):
         raise NotImplementedError
 
     def getText(self, stuff):
+        if isinstance(stuff, BaseWrapper):
+            stuff = stuff.item
         if isinstance(stuff, (Fit, TargetProfile)):
             val, unit = self._getValue(stuff)
             if val is None:
@@ -59,6 +62,8 @@ class GraphColumn(ViewColumn, metaclass=ABCMeta):
         raise NotImplementedError
 
     def getToolTip(self, stuff):
+        if isinstance(stuff, BaseWrapper):
+            stuff = stuff.item
         if isinstance(stuff, (Fit, TargetProfile)):
             return self._getFitTooltip()
         return ''

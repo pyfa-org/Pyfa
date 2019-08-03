@@ -30,12 +30,12 @@ class Distance2TimeGetter(SmoothPointGetter):
 
     _baseResolution = 500
 
-    def _getCommonData(self, miscParams, fit, tgt):
+    def _getCommonData(self, miscParams, src, tgt):
         return {
-            'subwarpSpeed': self.graph._subspeedCache.getSubwarpSpeed(fit),
-            'warpSpeed': fit.warpSpeed}
+            'subwarpSpeed': self.graph._subspeedCache.getSubwarpSpeed(src),
+            'warpSpeed': src.item.warpSpeed}
 
-    def _calculatePoint(self, x, miscParams, fit, tgt, commonData):
+    def _calculatePoint(self, x, miscParams, src, tgt, commonData):
         distance = x
         time = calculate_time_in_warp(
             max_subwarp_speed=commonData['subwarpSpeed'],

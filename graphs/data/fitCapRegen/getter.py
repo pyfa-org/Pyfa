@@ -25,12 +25,12 @@ from graphs.data.base import SmoothPointGetter
 
 class Time2CapAmountGetter(SmoothPointGetter):
 
-    def _getCommonData(self, miscParams, fit, tgt):
+    def _getCommonData(self, miscParams, src, tgt):
         return {
-            'maxCapAmount': fit.ship.getModifiedItemAttr('capacitorCapacity'),
-            'capRegenTime': fit.ship.getModifiedItemAttr('rechargeRate') / 1000}
+            'maxCapAmount': src.item.ship.getModifiedItemAttr('capacitorCapacity'),
+            'capRegenTime': src.item.ship.getModifiedItemAttr('rechargeRate') / 1000}
 
-    def _calculatePoint(self, x, miscParams, fit, tgt, commonData):
+    def _calculatePoint(self, x, miscParams, src, tgt, commonData):
         time = x
         capAmount = calculateCapAmount(
             maxCapAmount=commonData['maxCapAmount'],
@@ -41,12 +41,12 @@ class Time2CapAmountGetter(SmoothPointGetter):
 
 class Time2CapRegenGetter(SmoothPointGetter):
 
-    def _getCommonData(self, miscParams, fit, tgt):
+    def _getCommonData(self, miscParams, src, tgt):
         return {
-            'maxCapAmount': fit.ship.getModifiedItemAttr('capacitorCapacity'),
-            'capRegenTime': fit.ship.getModifiedItemAttr('rechargeRate') / 1000}
+            'maxCapAmount': src.item.ship.getModifiedItemAttr('capacitorCapacity'),
+            'capRegenTime': src.item.ship.getModifiedItemAttr('rechargeRate') / 1000}
 
-    def _calculatePoint(self, x, miscParams, fit, tgt, commonData):
+    def _calculatePoint(self, x, miscParams, src, tgt, commonData):
         time = x
         capAmount = calculateCapAmount(
             maxCapAmount=commonData['maxCapAmount'],
@@ -62,19 +62,19 @@ class Time2CapRegenGetter(SmoothPointGetter):
 # Useless, but valid combination of x and y
 class CapAmount2CapAmountGetter(SmoothPointGetter):
 
-    def _calculatePoint(self, x, miscParams, fit, tgt, commonData):
+    def _calculatePoint(self, x, miscParams, src, tgt, commonData):
         capAmount = x
         return capAmount
 
 
 class CapAmount2CapRegenGetter(SmoothPointGetter):
 
-    def _getCommonData(self, miscParams, fit, tgt):
+    def _getCommonData(self, miscParams, src, tgt):
         return {
-            'maxCapAmount': fit.ship.getModifiedItemAttr('capacitorCapacity'),
-            'capRegenTime': fit.ship.getModifiedItemAttr('rechargeRate') / 1000}
+            'maxCapAmount': src.item.ship.getModifiedItemAttr('capacitorCapacity'),
+            'capRegenTime': src.item.ship.getModifiedItemAttr('rechargeRate') / 1000}
 
-    def _calculatePoint(self, x, miscParams, fit, tgt, commonData):
+    def _calculatePoint(self, x, miscParams, src, tgt, commonData):
         capAmount = x
         capRegen = calculateCapRegen(
             maxCapAmount=commonData['maxCapAmount'],

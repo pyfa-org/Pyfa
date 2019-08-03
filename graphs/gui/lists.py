@@ -23,12 +23,13 @@ import wx
 
 import gui.display
 from eos.saveddata.targetProfile import TargetProfile
+from graphs.wrapper import SourceWrapper, TargetWrapper
 from gui.contextMenu import ContextMenu
 from service.const import GraphCacheCleanupReason
 from service.fit import Fit
 
 
-class BaseList(gui.display.Display):
+class BaseWrapperList(gui.display.Display):
 
     DEFAULT_COLS = (
         'Base Icon',
@@ -37,7 +38,7 @@ class BaseList(gui.display.Display):
     def __init__(self, graphFrame, parent):
         super().__init__(parent)
         self.graphFrame = graphFrame
-        self.fits = []
+        self._wrappers = []
 
         self.hoveredRow = None
         self.hoveredColumn = None
@@ -46,6 +47,15 @@ class BaseList(gui.display.Display):
         self.Bind(wx.EVT_LEFT_DCLICK, self.OnLeftDClick)
         self.Bind(wx.EVT_MOTION, self.OnMouseMove)
         self.Bind(wx.EVT_LEAVE_WINDOW, self.OnLeaveWindow)
+
+    @property
+    def wrappers(self):
+        return sorted(self._wrappers, key=lambda w: w.isFit)
+
+    # UI-related stuff
+    @property
+    def defaultTTText(self):
+        raise NotImplementedError
 
     def refreshExtraColumns(self, extraColSpecs):
         baseColNames = set()
@@ -63,31 +73,13 @@ class BaseList(gui.display.Display):
             self.appendColumnBySpec(colSpec)
         self.refreshView()
 
-    def handleDrag(self, type, fitID):
-        if type == 'fit':
-            sFit = Fit.getInstance()
-            fit = sFit.getFit(fitID)
-            if fit not in self.fits:
-                self.fits.append(fit)
-                self.updateView()
-                self.graphFrame.draw()
+    def refreshView(self):
+        self.refresh(self.wrappers)
 
-    def kbEvent(self, event):
-        keycode = event.GetKeyCode()
-        mstate = wx.GetMouseState()
-        if keycode == 65 and mstate.GetModifiers() == wx.MOD_CONTROL:
-            self.selectAll()
-        elif keycode in (wx.WXK_DELETE, wx.WXK_NUMPAD_DELETE) and mstate.GetModifiers() == wx.MOD_NONE:
-            self.removeListItems(self.getSelectedListItems())
-        event.Skip()
+    def updateView(self):
+        self.update(self.wrappers)
 
-    def OnLeftDClick(self, event):
-        row, _ = self.HitTest(event.Position)
-        item = self.getListItem(row)
-        if item is None:
-            return
-        self.removeListItems([item])
-
+    # UI event handling
     def OnMouseMove(self, event):
         row, _, col = self.HitTestSubItem(event.Position)
         if row != self.hoveredRow or col != self.hoveredColumn:
@@ -97,7 +89,7 @@ class BaseList(gui.display.Display):
                 self.hoveredRow = row
                 self.hoveredColumn = col
                 if row != -1 and col != -1 and col < self.ColumnCount:
-                    item = self.getListItem(row)
+                    item = self.getWrapper(row)
                     if item is None:
                         return
                     tooltip = self.activeColumns[col].getToolTip(item)
@@ -115,70 +107,138 @@ class BaseList(gui.display.Display):
         self.hoveredColumn = None
         event.Skip()
 
-    # Fit events
+    def handleDrag(self, type, fitID):
+        if type == 'fit' and not self.containsFitID(fitID):
+            sFit = Fit.getInstance()
+            fit = sFit.getFit(fitID)
+            self.appendItem(fit)
+            self.updateView()
+            self.graphFrame.draw()
+
+    def OnLeftDClick(self, event):
+        row, _ = self.HitTest(event.Position)
+        wrapper = self.getWrapper(row)
+        if wrapper is None:
+            return
+        self.removeWrappers([wrapper])
+
+    def kbEvent(self, event):
+        keycode = event.GetKeyCode()
+        mstate = wx.GetMouseState()
+        if keycode == 65 and mstate.GetModifiers() == wx.MOD_CONTROL:
+            self.selectAll()
+        elif keycode in (wx.WXK_DELETE, wx.WXK_NUMPAD_DELETE) and mstate.GetModifiers() == wx.MOD_NONE:
+            self.removeWrappers(self.getSelectedWrappers())
+        event.Skip()
+
+    # Wrapper-related methods
+    @property
+    def wrapperClass(self):
+        raise NotImplementedError
+
+    def getWrapper(self, row):
+        if row == -1:
+            return None
+        try:
+            return self._wrappers[row]
+        except IndexError:
+            return None
+
+    def removeWrappers(self, wrappers):
+        wrappers = set(wrappers).union(self._wrappers)
+        if not wrappers:
+            return
+        for wrapper in wrappers:
+            self._wrappers.remove(wrapper)
+        self.updateView()
+        for wrapper in wrappers:
+            if wrapper.isFit:
+                self.graphFrame.clearCache(reason=GraphCacheCleanupReason.fitRemoved, extraData=wrapper.fitID)
+            elif wrapper.isProfile:
+                self.graphFrame.clearCache(reason=GraphCacheCleanupReason.profileRemoved, extraData=wrapper.profileID)
+        self.graphFrame.draw()
+
+    def getSelectedWrappers(self):
+        wrappers = []
+        for row in self.getSelectedRows():
+            wrapper = self.getWrapper(row)
+            if wrapper is None:
+                continue
+            wrappers.append(wrapper)
+        return wrappers
+
+    def appendItem(self, item):
+        self._wrappers.append(self.wrapperClass(item))
+
+    def containsFitID(self, fitID):
+        for wrapper in self._wrappers:
+            if wrapper.isFit and wrapper.itemID == fitID:
+                return True
+        return False
+
+    def containsProfileID(self, profileID):
+        for wrapper in self._wrappers:
+            if wrapper.isProfile and wrapper.itemID == profileID:
+                return True
+        return False
+
+    # Wrapper-related events
     def OnFitRenamed(self, event):
-        if event.fitID in [f.ID for f in self.fits]:
+        if self.containsFitID(event.fitID):
             self.updateView()
 
     def OnFitChanged(self, event):
-        if set(event.fitIDs).union(f.ID for f in self.fits):
+        if set(event.fitIDs).union(w.itemID for w in self._wrappers if w.isFit):
             self.updateView()
 
     def OnFitRemoved(self, event):
-        fit = next((f for f in self.fits if f.ID == event.fitID), None)
-        if fit is not None:
-            self.fits.remove(fit)
+        wrapper = next((w for w in self._wrappers if w.isFit and w.itemID == event.fitID), None)
+        if wrapper is not None:
+            self._wrappers.remove(wrapper)
             self.updateView()
 
-    @property
-    def defaultTTText(self):
-        raise NotImplementedError
+    def OnProfileRenamed(self, event):
+        if self.containsProfileID(event.profileID):
+            self.updateView()
 
-    def refreshView(self):
-        raise NotImplementedError
+    def OnProfileChanged(self, event):
+        if self.containsProfileID(event.profileID):
+            self.updateView()
 
-    def updateView(self):
-        raise NotImplementedError
-
-    def getListItem(self, row):
-        raise NotImplementedError
-
-    def removeListItems(self, items):
-        raise NotImplementedError
-
-    def getSelectedListItems(self):
-        items = []
-        for row in self.getSelectedRows():
-            item = self.getListItem(row)
-            if item is None:
-                continue
-            items.append(item)
-        return items
+    def OnProfileRemoved(self, event):
+        wrapper = next((w for w in self._wrappers if w.isProfile and w.itemID == event.profileID), None)
+        if wrapper is not None:
+            self._wrappers.remove(wrapper)
+            self.updateView()
 
     # Context menu handlers
     def addFit(self, fit):
         if fit is None:
             return
-        if fit in self.fits:
+        if self.containsFitID(fit.ID):
             return
-        self.fits.append(fit)
+        self.appendItem(fit)
         self.updateView()
         self.graphFrame.draw()
 
     def getExistingFitIDs(self):
-        return [f.ID for f in self.fits]
+        return [w.itemID for w in self._wrappers if w.isFit]
 
     def addFitsByIDs(self, fitIDs):
         sFit = Fit.getInstance()
         for fitID in fitIDs:
+            if self.containsFitID(fitID):
+                continue
             fit = sFit.getFit(fitID)
             if fit is not None:
-                self.fits.append(fit)
+                self.appendItem(fit)
         self.updateView()
         self.graphFrame.draw()
 
 
-class FitList(BaseList):
+class SourceWrapperList(BaseWrapperList):
+
+    wrapperClass = SourceWrapper
 
     def __init__(self, graphFrame, parent):
         super().__init__(graphFrame, parent)
@@ -187,19 +247,13 @@ class FitList(BaseList):
 
         fit = Fit.getInstance().getFit(self.graphFrame.mainFrame.getActiveFit())
         if fit is not None:
-            self.fits.append(fit)
+            self.appendItem(fit)
             self.updateView()
 
-    def refreshView(self):
-        self.refresh(self.fits)
-
-    def updateView(self):
-        self.update(self.fits)
-
     def spawnMenu(self, event):
-        selection = self.getSelectedListItems()
+        selection = self.getSelectedWrappers()
         clickedPos = self.getRowByAbs(event.Position)
-        mainItem = self.getListItem(clickedPos)
+        mainItem = self.getWrapper(clickedPos)
 
         sourceContext = 'graphFitList'
         itemContext = None if mainItem is None else 'Fit'
@@ -207,107 +261,33 @@ class FitList(BaseList):
         if menu:
             self.PopupMenu(menu)
 
-    def getListItem(self, row):
-        if row == -1:
-            return None
-        try:
-            return self.fits[row]
-        except IndexError:
-            return None
-
-    def removeListItems(self, items):
-        toRemove = [i for i in items if i in self.fits]
-        if not toRemove:
-            return
-        for fit in toRemove:
-            self.fits.remove(fit)
-        self.updateView()
-        for fit in toRemove:
-            self.graphFrame.clearCache(reason=GraphCacheCleanupReason.fitRemoved, extraData=fit.ID)
-        self.graphFrame.draw()
-
     @property
     def defaultTTText(self):
         return 'Drag a fit into this list to graph it'
 
 
-class TargetList(BaseList):
+class TargetWrapperList(BaseWrapperList):
+
+    wrapperClass = TargetWrapper
 
     def __init__(self, graphFrame, parent):
         super().__init__(graphFrame, parent)
 
         self.Bind(wx.EVT_CONTEXT_MENU, self.spawnMenu)
 
-        self.profiles = []
-        self.profiles.append(TargetProfile.getIdeal())
+        self.appendItem(TargetProfile.getIdeal())
         self.updateView()
 
-    def refreshView(self):
-        self.refresh(self.targets)
-
-    def updateView(self):
-        self.update(self.targets)
-
     def spawnMenu(self, event):
-        selection = self.getSelectedListItems()
+        selection = self.getSelectedWrappers()
         clickedPos = self.getRowByAbs(event.Position)
-        mainItem = self.getListItem(clickedPos)
+        mainItem = self.getWrapper(clickedPos)
 
         sourceContext = 'graphTgtList'
         itemContext = None if mainItem is None else 'Target'
         menu = ContextMenu.getMenu(self, mainItem, selection, (sourceContext, itemContext))
         if menu:
             self.PopupMenu(menu)
-
-    def getListItem(self, row):
-        if row == -1:
-            return None
-
-        numFits = len(self.fits)
-        numProfiles = len(self.profiles)
-
-        if (numFits + numProfiles) == 0:
-            return None
-
-        if row < numFits:
-            return self.fits[row]
-        else:
-            return self.profiles[row - numFits]
-
-    def removeListItems(self, items):
-        fitsToRemove = [i for i in items if i in self.fits]
-        profilesToRemove = [i for i in items if i in self.profiles]
-        if not fitsToRemove and not profilesToRemove:
-            return
-        for fit in fitsToRemove:
-            self.fits.remove(fit)
-        for profile in profilesToRemove:
-            self.profiles.remove(profile)
-        self.updateView()
-        for fit in fitsToRemove:
-            self.graphFrame.clearCache(reason=GraphCacheCleanupReason.fitRemoved, extraData=fit.ID)
-        for profile in profilesToRemove:
-            self.graphFrame.clearCache(reason=GraphCacheCleanupReason.profileRemoved, extraData=profile.ID)
-        self.graphFrame.draw()
-
-    # Target profile events
-    def OnProfileRenamed(self, event):
-        if event.profileID in [tp.ID for tp in self.profiles]:
-            self.updateView()
-
-    def OnProfileChanged(self, event):
-        if event.profileID in [tp.ID for tp in self.profiles]:
-            self.updateView()
-
-    def OnProfileRemoved(self, event):
-        profile = next((tp for tp in self.profiles if tp.ID == event.profileID), None)
-        if profile is not None:
-            self.profiles.remove(profile)
-            self.updateView()
-
-    @property
-    def targets(self):
-        return self.fits + self.profiles
 
     @property
     def defaultTTText(self):
@@ -317,8 +297,8 @@ class TargetList(BaseList):
     def addProfile(self, profile):
         if profile is None:
             return
-        if profile in self.profiles:
+        if self.containsProfileID(profile.ID):
             return
-        self.profiles.append(profile)
+        self.appendItem(profile)
         self.updateView()
         self.graphFrame.draw()

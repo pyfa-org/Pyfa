@@ -28,11 +28,11 @@ class PointGetter(metaclass=ABCMeta):
         self.graph = graph
 
     @abstractmethod
-    def getRange(self, xRange, miscParams, fit, tgt):
+    def getRange(self, xRange, miscParams, src, tgt):
         raise NotImplementedError
 
     @abstractmethod
-    def getPoint(self, x, miscParams, fit, tgt):
+    def getPoint(self, x, miscParams, src, tgt):
         raise NotImplementedError
 
 
@@ -41,16 +41,16 @@ class SmoothPointGetter(PointGetter, metaclass=ABCMeta):
     _baseResolution = 200
     _extraDepth = 0
 
-    def getRange(self, xRange, miscParams, fit, tgt):
+    def getRange(self, xRange, miscParams, src, tgt):
         xs = []
         ys = []
-        commonData = self._getCommonData(miscParams=miscParams, fit=fit, tgt=tgt)
+        commonData = self._getCommonData(miscParams=miscParams, src=src, tgt=tgt)
 
         def addExtraPoints(x1, y1, x2, y2, depth):
             if depth <= 0 or y1 == y2:
                 return
             newX = (x1 + x2) / 2
-            newY = self._calculatePoint(x=newX, miscParams=miscParams, fit=fit, tgt=tgt, commonData=commonData)
+            newY = self._calculatePoint(x=newX, miscParams=miscParams, src=src, tgt=tgt, commonData=commonData)
             addExtraPoints(x1=prevX, y1=prevY, x2=newX, y2=newY, depth=depth - 1)
             xs.append(newX)
             ys.append(newY)
@@ -60,7 +60,7 @@ class SmoothPointGetter(PointGetter, metaclass=ABCMeta):
         prevY = None
         # Go through X points defined by our resolution setting
         for x in self._xIterLinear(xRange):
-            y = self._calculatePoint(x=x, miscParams=miscParams, fit=fit, tgt=tgt, commonData=commonData)
+            y = self._calculatePoint(x=x, miscParams=miscParams, src=src, tgt=tgt, commonData=commonData)
             if prevX is not None and prevY is not None:
                 # And if Y values of adjacent data points are not equal, add extra points
                 # depending on extra depth setting
@@ -71,9 +71,9 @@ class SmoothPointGetter(PointGetter, metaclass=ABCMeta):
             ys.append(y)
         return xs, ys
 
-    def getPoint(self, x, miscParams, fit, tgt):
-        commonData = self._getCommonData(miscParams=miscParams, fit=fit, tgt=tgt)
-        return self._calculatePoint(x=x, miscParams=miscParams, fit=fit, tgt=tgt, commonData=commonData)
+    def getPoint(self, x, miscParams, src, tgt):
+        commonData = self._getCommonData(miscParams=miscParams, src=src, tgt=tgt)
+        return self._calculatePoint(x=x, miscParams=miscParams, src=src, tgt=tgt, commonData=commonData)
 
     def _xIterLinear(self, xRange):
         xLow = min(xRange)
@@ -87,9 +87,9 @@ class SmoothPointGetter(PointGetter, metaclass=ABCMeta):
             for i in range(self._baseResolution + 1):
                 yield xLow + step * i
 
-    def _getCommonData(self, miscParams, fit, tgt):
+    def _getCommonData(self, miscParams, src, tgt):
         return {}
 
     @abstractmethod
-    def _calculatePoint(self, x, miscParams, fit, tgt, commonData):
+    def _calculatePoint(self, x, miscParams, src, tgt, commonData):
         raise NotImplementedError

@@ -29,45 +29,45 @@ from graphs.data.base import FitDataCache
 class TimeCache(FitDataCache):
 
     # Whole data getters
-    def getDpsData(self, fit):
+    def getDpsData(self, src):
         """Return DPS data in {time: {key: dps}} format."""
-        return self._data[fit.ID]['finalDps']
+        return self._data[src.item.ID]['finalDps']
 
-    def getVolleyData(self, fit):
+    def getVolleyData(self, src):
         """Return volley data in {time: {key: volley}} format."""
-        return self._data[fit.ID]['finalVolley']
+        return self._data[src.item.ID]['finalVolley']
 
-    def getDmgData(self, fit):
+    def getDmgData(self, src):
         """Return inflicted damage data in {time: {key: damage}} format."""
-        return self._data[fit.ID]['finalDmg']
+        return self._data[src.item.ID]['finalDmg']
 
     # Specific data point getters
-    def getDpsDataPoint(self, fit, time):
+    def getDpsDataPoint(self, src, time):
         """Get DPS data by specified time in {key: dps} format."""
-        return self._getDataPoint(fit, time, self.getDpsData)
+        return self._getDataPoint(src=src, time=time, dataFunc=self.getDpsData)
 
-    def getVolleyDataPoint(self, fit, time):
+    def getVolleyDataPoint(self, src, time):
         """Get volley data by specified time in {key: volley} format."""
-        return self._getDataPoint(fit, time, self.getVolleyData)
+        return self._getDataPoint(src=src, time=time, dataFunc=self.getVolleyData)
 
-    def getDmgDataPoint(self, fit, time):
+    def getDmgDataPoint(self, src, time):
         """Get inflicted damage data by specified time in {key: dmg} format."""
-        return self._getDataPoint(fit, time, self.getDmgData)
+        return self._getDataPoint(src=src, time=time, dataFunc=self.getDmgData)
 
     # Preparation functions
-    def prepareDpsData(self, fit, maxTime):
-        self._prepareDpsVolleyData(fit, maxTime)
+    def prepareDpsData(self, src, maxTime):
+        self._prepareDpsVolleyData(src=src, maxTime=maxTime)
 
-    def prepareVolleyData(self, fit, maxTime):
-        self._prepareDpsVolleyData(fit, maxTime)
+    def prepareVolleyData(self, src, maxTime):
+        self._prepareDpsVolleyData(src=src, maxTime=maxTime)
 
-    def prepareDmgData(self, fit, maxTime):
+    def prepareDmgData(self, src, maxTime):
         # Time is none means that time parameter has to be ignored,
         # we do not need cache for that
         if maxTime is None:
             return
-        self._generateInternalForm(fit, maxTime)
-        fitCache = self._data[fit.ID]
+        self._generateInternalForm(src=src, maxTime=maxTime)
+        fitCache = self._data[src.item.ID]
         # Final cache has been generated already, don't do anything
         if 'finalDmg' in fitCache:
             return
@@ -93,13 +93,13 @@ class TimeCache(FitDataCache):
         del fitCache['internalDmg']
 
     # Private stuff
-    def _prepareDpsVolleyData(self, fit, maxTime):
+    def _prepareDpsVolleyData(self, src, maxTime):
         # Time is none means that time parameter has to be ignored,
         # we do not need cache for that
         if maxTime is None:
             return True
-        self._generateInternalForm(fit, maxTime)
-        fitCache = self._data[fit.ID]
+        self._generateInternalForm(src=src, maxTime=maxTime)
+        fitCache = self._data[src.item.ID]
         # Final cache has been generated already, don't do anything
         if 'finalDps' in fitCache and 'finalVolley' in fitCache:
             return
@@ -147,10 +147,10 @@ class TimeCache(FitDataCache):
             finalDpsCache[time] = timeDpsData
             finalVolleyCache[time] = timeVolleyData
 
-    def _generateInternalForm(self, fit, maxTime):
-        if self._isTimeCacheValid(fit, maxTime):
+    def _generateInternalForm(self, src, maxTime):
+        if self._isTimeCacheValid(src=src, maxTime=maxTime):
             return
-        fitCache = self._data[fit.ID] = {'maxTime': maxTime}
+        fitCache = self._data[src.item.ID] = {'maxTime': maxTime}
         intCacheDpsVolley = fitCache['internalDpsVolley'] = {}
         intCacheDmg = fitCache['internalDmg'] = {}
 
@@ -173,7 +173,7 @@ class TimeCache(FitDataCache):
             intCacheDmg.setdefault(ddKey, {})[addedTime] = addedDmg
 
         # Modules
-        for mod in fit.modules:
+        for mod in src.item.modules:
             if not mod.isDealingDamage():
                 continue
             cycleParams = mod.getCycleParameters(reloadOverride=True)
@@ -196,7 +196,7 @@ class TimeCache(FitDataCache):
                     break
                 currentTime += cycleTimeMs / 1000 + inactiveTimeMs / 1000
         # Drones
-        for drone in fit.drones:
+        for drone in src.item.drones:
             if not drone.isDealingDamage():
                 continue
             cycleParams = drone.getCycleParameters(reloadOverride=True)
@@ -214,7 +214,7 @@ class TimeCache(FitDataCache):
                     break
                 currentTime += cycleTimeMs / 1000 + inactiveTimeMs / 1000
         # Fighters
-        for fighter in fit.fighters:
+        for fighter in src.item.fighters:
             if not fighter.isDealingDamage():
                 continue
             cycleParams = fighter.getCycleParametersPerEffectOptimizedDps(reloadOverride=True)
@@ -236,15 +236,15 @@ class TimeCache(FitDataCache):
                         break
                     currentTime += cycleTimeMs / 1000 + inactiveTimeMs / 1000
 
-    def _isTimeCacheValid(self, fit, maxTime):
+    def _isTimeCacheValid(self, src, maxTime):
         try:
-            cacheMaxTime = self._data[fit.ID]['maxTime']
+            cacheMaxTime = self._data[src.item.ID]['maxTime']
         except KeyError:
             return False
         return maxTime <= cacheMaxTime
 
-    def _getDataPoint(self, fit, time, dataFunc):
-        data = dataFunc(fit)
+    def _getDataPoint(self, src, time, dataFunc):
+        data = dataFunc(src)
         timesBefore = [t for t in data if floatUnerr(t) <= floatUnerr(time)]
         try:
             time = max(timesBefore)

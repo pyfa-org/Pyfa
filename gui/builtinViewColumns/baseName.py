@@ -21,19 +21,22 @@
 # noinspection PyPackageRequirements
 import wx
 from logbook import Logger
+
+import gui.mainFrame
+from eos.const import FittingSlot
 from eos.saveddata.cargo import Cargo
-from eos.saveddata.implant import Implant
 from eos.saveddata.drone import Drone
 from eos.saveddata.fighter import Fighter
-from eos.saveddata.module import Module, Rack
 from eos.saveddata.fit import Fit, FitLite
+from eos.saveddata.implant import Implant
+from eos.saveddata.module import Module, Rack
 from eos.saveddata.targetProfile import TargetProfile
-from eos.const import FittingSlot
+from graphs.wrapper import BaseWrapper
+from gui.builtinContextMenus.envEffectAdd import AddEnvironmentEffect
+from gui.viewColumn import ViewColumn
 from service.fit import Fit as FitSvc
 from service.market import Market
-from gui.viewColumn import ViewColumn
-from gui.builtinContextMenus.envEffectAdd import AddEnvironmentEffect
-import gui.mainFrame
+
 
 pyfalog = Logger(__name__)
 
@@ -50,6 +53,9 @@ class BaseName(ViewColumn):
         self.projectedView = isinstance(fittingView, gui.builtinAdditionPanes.projectedView.ProjectedView)
 
     def getText(self, stuff):
+        if isinstance(stuff, BaseWrapper):
+            stuff = stuff.item
+
         if isinstance(stuff, Drone):
             return "%dx %s" % (stuff.amount, stuff.item.name)
         elif isinstance(stuff, Fighter):

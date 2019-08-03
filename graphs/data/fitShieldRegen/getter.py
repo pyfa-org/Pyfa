@@ -25,12 +25,12 @@ from graphs.data.base import SmoothPointGetter
 
 class Time2ShieldAmountGetter(SmoothPointGetter):
 
-    def _getCommonData(self, miscParams, fit, tgt):
+    def _getCommonData(self, miscParams, src, tgt):
         return {
-            'maxShieldAmount': fit.ship.getModifiedItemAttr('shieldCapacity'),
-            'shieldRegenTime': fit.ship.getModifiedItemAttr('shieldRechargeRate') / 1000}
+            'maxShieldAmount': src.item.ship.getModifiedItemAttr('shieldCapacity'),
+            'shieldRegenTime': src.item.ship.getModifiedItemAttr('shieldRechargeRate') / 1000}
 
-    def _calculatePoint(self, x, miscParams, fit, tgt, commonData):
+    def _calculatePoint(self, x, miscParams, src, tgt, commonData):
         time = x
         shieldAmount = calculateShieldAmount(
             maxShieldAmount=commonData['maxShieldAmount'],
@@ -41,12 +41,12 @@ class Time2ShieldAmountGetter(SmoothPointGetter):
 
 class Time2ShieldRegenGetter(SmoothPointGetter):
 
-    def _getCommonData(self, miscParams, fit, tgt):
+    def _getCommonData(self, miscParams, src, tgt):
         return {
-            'maxShieldAmount': fit.ship.getModifiedItemAttr('shieldCapacity'),
-            'shieldRegenTime': fit.ship.getModifiedItemAttr('shieldRechargeRate') / 1000}
+            'maxShieldAmount': src.item.ship.getModifiedItemAttr('shieldCapacity'),
+            'shieldRegenTime': src.item.ship.getModifiedItemAttr('shieldRechargeRate') / 1000}
 
-    def _calculatePoint(self, x, miscParams, fit, tgt, commonData):
+    def _calculatePoint(self, x, miscParams, src, tgt, commonData):
         time = x
         shieldAmount = calculateShieldAmount(
             maxShieldAmount=commonData['maxShieldAmount'],
@@ -62,19 +62,19 @@ class Time2ShieldRegenGetter(SmoothPointGetter):
 # Useless, but valid combination of x and y
 class ShieldAmount2ShieldAmountGetter(SmoothPointGetter):
 
-    def _calculatePoint(self, x, miscParams, fit, tgt, commonData):
+    def _calculatePoint(self, x, miscParams, src, tgt, commonData):
         shieldAmount = x
         return shieldAmount
 
 
 class ShieldAmount2ShieldRegenGetter(SmoothPointGetter):
 
-    def _getCommonData(self, miscParams, fit, tgt):
+    def _getCommonData(self, miscParams, src, tgt):
         return {
-            'maxShieldAmount': fit.ship.getModifiedItemAttr('shieldCapacity'),
-            'shieldRegenTime': fit.ship.getModifiedItemAttr('shieldRechargeRate') / 1000}
+            'maxShieldAmount': src.item.ship.getModifiedItemAttr('shieldCapacity'),
+            'shieldRegenTime': src.item.ship.getModifiedItemAttr('shieldRechargeRate') / 1000}
 
-    def _calculatePoint(self, x, miscParams, fit, tgt, commonData):
+    def _calculatePoint(self, x, miscParams, src, tgt, commonData):
         shieldAmount = x
         shieldRegen = calculateShieldRegen(
             maxShieldAmount=commonData['maxShieldAmount'],

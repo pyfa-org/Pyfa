@@ -31,15 +31,15 @@ MobileProjData = namedtuple('MobileProjData', ('boost', 'optimal', 'falloff', 's
 
 class ProjectedDataCache(FitDataCache):
 
-    def getProjModData(self, fit):
+    def getProjModData(self, src):
         try:
-            projectedData = self._data[fit.ID]['modules']
+            projectedData = self._data[src.item.ID]['modules']
         except KeyError:
             # Format of items for both: (boost strength, optimal, falloff, stacking group, resistance attr ID)
             webMods = []
             tpMods = []
-            projectedData = self._data.setdefault(fit.ID, {})['modules'] = (webMods, tpMods)
-            for mod in fit.modules:
+            projectedData = self._data.setdefault(src.item.ID, {})['modules'] = (webMods, tpMods)
+            for mod in src.item.modules:
                 if mod.state <= FittingModuleState.ONLINE:
                     continue
                 for webEffectName in ('remoteWebifierFalloff', 'structureModuleEffectStasisWebifier'):
@@ -53,7 +53,7 @@ class ProjectedDataCache(FitDataCache):
                 if 'doomsdayAOEWeb' in mod.item.effects:
                     webMods.append(ModProjData(
                         mod.getModifiedItemAttr('speedFactor'),
-                        max(0, (mod.maxRange or 0) + mod.getModifiedItemAttr('doomsdayAOERange') - fit.ship.getModifiedItemAttr('radius')),
+                        max(0, (mod.maxRange or 0) + mod.getModifiedItemAttr('doomsdayAOERange') - src.getRadius()),
                         mod.falloff or 0,
                         'default',
                         getResistanceAttrID(modifyingItem=mod, effect=mod.item.effects['doomsdayAOEWeb'])))
@@ -68,21 +68,21 @@ class ProjectedDataCache(FitDataCache):
                 if 'doomsdayAOEPaint' in mod.item.effects:
                     tpMods.append(ModProjData(
                         mod.getModifiedItemAttr('signatureRadiusBonus'),
-                        max(0, (mod.maxRange or 0) + mod.getModifiedItemAttr('doomsdayAOERange') - fit.ship.getModifiedItemAttr('radius')),
+                        max(0, (mod.maxRange or 0) + mod.getModifiedItemAttr('doomsdayAOERange') - src.getRadius()),
                         mod.falloff or 0,
                         'default',
                         getResistanceAttrID(modifyingItem=mod, effect=mod.item.effects['doomsdayAOEPaint'])))
         return projectedData
 
-    def getProjDroneData(self, fit):
+    def getProjDroneData(self, src):
         try:
-            projectedData = self._data[fit.ID]['drones']
+            projectedData = self._data[src.item.ID]['drones']
         except KeyError:
             # Format of items for both: (boost strength, optimal, falloff, stacking group, resistance attr ID, drone speed, drone radius)
             webDrones = []
             tpDrones = []
-            projectedData = self._data.setdefault(fit.ID, {})['drones'] = (webDrones, tpDrones)
-            for drone in fit.drones:
+            projectedData = self._data.setdefault(src.item.ID, {})['drones'] = (webDrones, tpDrones)
+            for drone in src.item.drones:
                 if drone.amountActive <= 0:
                     continue
                 if 'remoteWebifierEntity' in drone.item.effects:
@@ -105,15 +105,15 @@ class ProjectedDataCache(FitDataCache):
                         drone.getModifiedItemAttr('radius')),))
         return projectedData
 
-    def getProjFighterData(self, fit):
+    def getProjFighterData(self, src):
         try:
-            projectedData = self._data[fit.ID]['fighters']
+            projectedData = self._data[src.item.ID]['fighters']
         except KeyError:
             # Format of items for both: (boost strength, optimal, falloff, stacking group, resistance attr ID, fighter speed, fighter radius)
             webFighters = []
             tpFighters = []
-            projectedData = self._data.setdefault(fit.ID, {})['fighters'] = (webFighters, tpFighters)
-            for fighter in fit.fighters:
+            projectedData = self._data.setdefault(src.item.ID, {})['fighters'] = (webFighters, tpFighters)
+            for fighter in src.item.fighters:
                 if not fighter.active:
                     continue
                 for ability in fighter.abilities:

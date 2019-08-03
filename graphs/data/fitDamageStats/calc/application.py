@@ -22,22 +22,20 @@ import math
 from functools import lru_cache
 
 from eos.const import FittingHardpoint
-from eos.saveddata.fit import Fit
 from eos.utils.float import floatUnerr
-from graphs.data.fitDamageStats.helper import getTgtRadius
 from service.const import GraphDpsDroneMode
 from service.settings import GraphSettings
 
 
-def getApplicationPerKey(fit, tgt, atkSpeed, atkAngle, distance, tgtSpeed, tgtAngle, tgtSigRadius):
+def getApplicationPerKey(src, tgt, atkSpeed, atkAngle, distance, tgtSpeed, tgtAngle, tgtSigRadius):
     applicationMap = {}
-    for mod in fit.modules:
+    for mod in src.item.modules:
         if not mod.isDealingDamage():
             continue
         if mod.hardpoint == FittingHardpoint.TURRET:
             applicationMap[mod] = getTurretMult(
                 mod=mod,
-                fit=fit,
+                src=src,
                 tgt=tgt,
                 atkSpeed=atkSpeed,
                 atkAngle=atkAngle,
@@ -48,7 +46,7 @@ def getApplicationPerKey(fit, tgt, atkSpeed, atkAngle, distance, tgtSpeed, tgtAn
         elif mod.hardpoint == FittingHardpoint.MISSILE:
             applicationMap[mod] = getLauncherMult(
                 mod=mod,
-                fit=fit,
+                src=src,
                 distance=distance,
                 tgtSpeed=tgtSpeed,
                 tgtSigRadius=tgtSigRadius)
@@ -59,14 +57,14 @@ def getApplicationPerKey(fit, tgt, atkSpeed, atkAngle, distance, tgtSpeed, tgtAn
         elif mod.item.group.name == 'Missile Launcher Bomb':
             applicationMap[mod] = getBombMult(
                 mod=mod,
-                fit=fit,
+                src=src,
                 tgt=tgt,
                 distance=distance,
                 tgtSigRadius=tgtSigRadius)
         elif mod.item.group.name == 'Structure Guided Bomb Launcher':
             applicationMap[mod] = getGuidedBombMult(
                 mod=mod,
-                fit=fit,
+                src=src,
                 distance=distance,
                 tgtSigRadius=tgtSigRadius)
         elif mod.item.group.name in ('Super Weapon', 'Structure Doomsday Weapon'):
@@ -75,12 +73,12 @@ def getApplicationPerKey(fit, tgt, atkSpeed, atkAngle, distance, tgtSpeed, tgtAn
                 tgt=tgt,
                 distance=distance,
                 tgtSigRadius=tgtSigRadius)
-    for drone in fit.drones:
+    for drone in src.item.drones:
         if not drone.isDealingDamage():
             continue
         applicationMap[drone] = getDroneMult(
             drone=drone,
-            fit=fit,
+            src=src,
             tgt=tgt,
             atkSpeed=atkSpeed,
             atkAngle=atkAngle,
@@ -88,7 +86,7 @@ def getApplicationPerKey(fit, tgt, atkSpeed, atkAngle, distance, tgtSpeed, tgtAn
             tgtSpeed=tgtSpeed,
             tgtAngle=tgtAngle,
             tgtSigRadius=tgtSigRadius)
-    for fighter in fit.fighters:
+    for fighter in src.item.fighters:
         if not fighter.isDealingDamage():
             continue
         for ability in fighter.abilities:
@@ -97,7 +95,7 @@ def getApplicationPerKey(fit, tgt, atkSpeed, atkAngle, distance, tgtSpeed, tgtAn
             applicationMap[(fighter, ability.effectID)] = getFighterAbilityMult(
                 fighter=fighter,
                 ability=ability,
-                fit=fit,
+                src=src,
                 distance=distance,
                 tgtSpeed=tgtSpeed,
                 tgtSigRadius=tgtSigRadius)
@@ -108,11 +106,11 @@ def getApplicationPerKey(fit, tgt, atkSpeed, atkAngle, distance, tgtSpeed, tgtAn
 
 
 # Item application multiplier calculation
-def getTurretMult(mod, fit, tgt, atkSpeed, atkAngle, distance, tgtSpeed, tgtAngle, tgtSigRadius):
+def getTurretMult(mod, src, tgt, atkSpeed, atkAngle, distance, tgtSpeed, tgtAngle, tgtSigRadius):
     cth = _calcTurretChanceToHit(
         atkSpeed=atkSpeed,
         atkAngle=atkAngle,
-        atkRadius=fit.ship.getModifiedItemAttr('radius'),
+        atkRadius=src.getRadius(),
         atkOptimalRange=mod.maxRange,
         atkFalloffRange=mod.falloff,
         atkTracking=mod.getModifiedItemAttr('trackingSpeed'),
@@ -120,17 +118,17 @@ def getTurretMult(mod, fit, tgt, atkSpeed, atkAngle, distance, tgtSpeed, tgtAngl
         distance=distance,
         tgtSpeed=tgtSpeed,
         tgtAngle=tgtAngle,
-        tgtRadius=getTgtRadius(tgt),
+        tgtRadius=tgt.getRadius(),
         tgtSigRadius=tgtSigRadius)
     mult = _calcTurretMult(cth)
     return mult
 
 
-def getLauncherMult(mod, fit, distance, tgtSpeed, tgtSigRadius):
+def getLauncherMult(mod, src, distance, tgtSpeed, tgtSigRadius):
     modRange = mod.maxRange
     if modRange is None:
         return 0
-    if distance is not None and distance + fit.ship.getModifiedItemAttr('radius') > modRange:
+    if distance is not None and distance + src.getRadius() > modRange:
         return 0
     mult = _calcMissileFactor(
         atkEr=mod.getModifiedChargeAttr('aoeCloudSize'),
@@ -157,8 +155,8 @@ def getDoomsdayMult(mod, tgt, distance, tgtSigRadius):
         return 0
     # Single-target titan DDs are vs capitals only
     if {'superWeaponAmarr', 'superWeaponCaldari', 'superWeaponGallente', 'superWeaponMinmatar'}.intersection(mod.item.effects):
-        # Disallow only against subcap fits, allow against cap fits and tgt profiles
-        if isinstance(tgt, Fit) and not tgt.ship.item.requiresSkill('Capital Ships'):
+        # Disallow only against subcaps, allow against caps and tgt profiles
+        if tgt.isFit and not tgt.item.ship.item.requiresSkill('Capital Ships'):
             return 0
     damageSig = mod.getModifiedItemAttr('doomsdayDamageRadius') or mod.getModifiedItemAttr('signatureRadius')
     if not damageSig:
@@ -166,13 +164,13 @@ def getDoomsdayMult(mod, tgt, distance, tgtSigRadius):
     return min(1, tgtSigRadius / damageSig)
 
 
-def getBombMult(mod, fit, tgt, distance, tgtSigRadius):
+def getBombMult(mod, src, tgt, distance, tgtSigRadius):
     modRange = mod.maxRange
     if modRange is None:
         return 0
     blastRadius = mod.getModifiedChargeAttr('explosionRange')
-    atkRadius = fit.ship.getModifiedItemAttr('radius')
-    tgtRadius = getTgtRadius(tgt)
+    atkRadius = src.getRadius()
+    tgtRadius = tgt.getRadius()
     # Bomb starts in the center of the ship
     # Also here we assume that it affects target as long as blast
     # touches its surface, not center - I did not check this
@@ -185,11 +183,11 @@ def getBombMult(mod, fit, tgt, distance, tgtSigRadius):
         tgtSigRadius=tgtSigRadius)
 
 
-def getGuidedBombMult(mod, fit, distance, tgtSigRadius):
+def getGuidedBombMult(mod, src, distance, tgtSigRadius):
     modRange = mod.maxRange
     if modRange is None:
         return 0
-    if distance is not None and distance > modRange - fit.ship.getModifiedItemAttr('radius'):
+    if distance is not None and distance > modRange - src.getRadius():
         return 0
     eR = mod.getModifiedChargeAttr('aoeCloudSize')
     if eR == 0:
@@ -198,8 +196,8 @@ def getGuidedBombMult(mod, fit, distance, tgtSigRadius):
         return min(1, tgtSigRadius / eR)
 
 
-def getDroneMult(drone, fit, tgt, atkSpeed, atkAngle, distance, tgtSpeed, tgtAngle, tgtSigRadius):
-    if distance is not None and distance > fit.extraAttributes['droneControlRange']:
+def getDroneMult(drone, src, tgt, atkSpeed, atkAngle, distance, tgtSpeed, tgtAngle, tgtSigRadius):
+    if distance is not None and distance > src.item.extraAttributes['droneControlRange']:
         return 0
     droneSpeed = drone.getModifiedItemAttr('maxVelocity')
     # Hard to simulate drone behavior, so assume chance to hit is 1 for mobile drones
@@ -219,8 +217,8 @@ def getDroneMult(drone, fit, tgt, atkSpeed, atkAngle, distance, tgtSpeed, tgtAng
             cthDistance = None
         else:
             # As distance is ship surface to ship surface, we adjust it according
-            # to attacker fit's radiuses to have drone surface to ship surface distance
-            cthDistance = distance + fit.ship.getModifiedItemAttr('radius') - droneRadius
+            # to attacker ship's radiuses to have drone surface to ship surface distance
+            cthDistance = distance + src.getRadius() - droneRadius
         cth = _calcTurretChanceToHit(
             atkSpeed=min(atkSpeed, droneSpeed),
             atkAngle=atkAngle,
@@ -232,13 +230,13 @@ def getDroneMult(drone, fit, tgt, atkSpeed, atkAngle, distance, tgtSpeed, tgtAng
             distance=cthDistance,
             tgtSpeed=tgtSpeed,
             tgtAngle=tgtAngle,
-            tgtRadius=getTgtRadius(tgt),
+            tgtRadius=tgt.getRadius(),
             tgtSigRadius=tgtSigRadius)
     mult = _calcTurretMult(cth)
     return mult
 
 
-def getFighterAbilityMult(fighter, ability, fit, distance, tgtSpeed, tgtSigRadius):
+def getFighterAbilityMult(fighter, ability, src, distance, tgtSpeed, tgtSigRadius):
     fighterSpeed = fighter.getModifiedItemAttr('maxVelocity')
     attrPrefix = ability.attrPrefix
     # It's bomb attack
@@ -257,7 +255,7 @@ def getFighterAbilityMult(fighter, ability, fit, distance, tgtSpeed, tgtSigRadiu
         if distance is None:
             rangeFactorDistance = None
         else:
-            rangeFactorDistance = distance + fit.ship.getModifiedItemAttr('radius') - fighter.getModifiedItemAttr('radius')
+            rangeFactorDistance = distance + src.getRadius() - fighter.getModifiedItemAttr('radius')
         rangeFactor = _calcRangeFactor(
             atkOptimalRange=fighter.getModifiedItemAttr('{}RangeOptimal'.format(attrPrefix)) or fighter.getModifiedItemAttr('{}Range'.format(attrPrefix)),
             atkFalloffRange=fighter.getModifiedItemAttr('{}RangeFalloff'.format(attrPrefix)),

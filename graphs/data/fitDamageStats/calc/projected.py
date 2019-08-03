@@ -20,19 +20,17 @@
 
 import math
 
-from eos.saveddata.fit import Fit
 from eos.utils.float import floatUnerr
-from graphs.data.fitDamageStats.helper import getTgtMaxVelocity, getTgtSigRadius
 from service.const import GraphDpsDroneMode
 from service.settings import GraphSettings
 from .application import _calcRangeFactor
 
 
-def getWebbedSpeed(fit, tgt, currentUnwebbedSpeed, webMods, webDrones, webFighters, distance):
-    # Can slow down non-immune fits and target profiles
-    if isinstance(tgt, Fit) and tgt.ship.getModifiedItemAttr('disallowOffensiveModifiers'):
+def getWebbedSpeed(src, tgt, currentUnwebbedSpeed, webMods, webDrones, webFighters, distance):
+    # Can slow down non-immune ships and target profiles
+    if tgt.isFit and tgt.item.ship.getModifiedItemAttr('disallowOffensiveModifiers'):
         return currentUnwebbedSpeed
-    maxUnwebbedSpeed = getTgtMaxVelocity(tgt)
+    maxUnwebbedSpeed = tgt.getMaxVelocity()
     try:
         speedRatio = currentUnwebbedSpeed / maxUnwebbedSpeed
     except ZeroDivisionError:
@@ -47,15 +45,15 @@ def getWebbedSpeed(fit, tgt, currentUnwebbedSpeed, webMods, webDrones, webFighte
                 distance=distance)
             if appliedBoost:
                 appliedMultipliers.setdefault(wData.stackingGroup, []).append((1 + appliedBoost / 100, wData.resAttrID))
-        maxWebbedSpeed = getTgtMaxVelocity(tgt, extraMultipliers=appliedMultipliers)
+        maxWebbedSpeed = tgt.getMaxVelocity(extraMultipliers=appliedMultipliers)
         currentWebbedSpeed = maxWebbedSpeed * speedRatio
         # Drones and fighters
         mobileWebs = []
         mobileWebs.extend(webFighters)
         # Drones have range limit
-        if distance is None or distance <= fit.extraAttributes['droneControlRange']:
+        if distance is None or distance <= src.extraAttributes['droneControlRange']:
             mobileWebs.extend(webDrones)
-        atkRadius = fit.ship.getModifiedItemAttr('radius')
+        atkRadius = src.getRadius()
         # As mobile webs either follow the target or stick to the attacking ship,
         # if target is within mobile web optimal - it can be applied unconditionally
         longEnoughMws = [mw for mw in mobileWebs if distance is None or distance <= mw.optimal - atkRadius + mw.radius]
@@ -63,7 +61,7 @@ def getWebbedSpeed(fit, tgt, currentUnwebbedSpeed, webMods, webDrones, webFighte
             for mwData in longEnoughMws:
                 appliedMultipliers.setdefault(mwData.stackingGroup, []).append((1 + mwData.boost / 100, mwData.resAttrID))
                 mobileWebs.remove(mwData)
-            maxWebbedSpeed = getTgtMaxVelocity(tgt, extraMultipliers=appliedMultipliers)
+            maxWebbedSpeed = tgt.getMaxVelocity(extraMultipliers=appliedMultipliers)
             currentWebbedSpeed = maxWebbedSpeed * speedRatio
         # Apply remaining webs, from fastest to slowest
         droneOpt = GraphSettings.getInstance().get('mobileDroneMode')
@@ -87,17 +85,17 @@ def getWebbedSpeed(fit, tgt, currentUnwebbedSpeed, webMods, webDrones, webFighte
                         distance=rangeFactorDistance)
                 appliedMultipliers.setdefault(mwData.stackingGroup, []).append((1 + appliedMwBoost / 100, mwData.resAttrID))
                 mobileWebs.remove(mwData)
-            maxWebbedSpeed = getTgtMaxVelocity(tgt, extraMultipliers=appliedMultipliers)
+            maxWebbedSpeed = tgt.getMaxVelocity(extraMultipliers=appliedMultipliers)
             currentWebbedSpeed = maxWebbedSpeed * speedRatio
     # Ensure consistent results - round off a little to avoid float errors
     return floatUnerr(currentWebbedSpeed)
 
 
-def getTpMult(fit, tgt, tgtSpeed, tpMods, tpDrones, tpFighters, distance):
-    # Can blow non-immune fits and target profiles
-    if isinstance(tgt, Fit) and tgt.ship.getModifiedItemAttr('disallowOffensiveModifiers'):
+def getTpMult(src, tgt, tgtSpeed, tpMods, tpDrones, tpFighters, distance):
+    # Can blow non-immune ships and target profiles
+    if tgt.isFit and tgt.item.ship.getModifiedItemAttr('disallowOffensiveModifiers'):
         return 1
-    untpedSig = getTgtSigRadius(tgt)
+    untpedSig = tgt.getSigRadius()
     # Modules
     appliedMultipliers = {}
     for tpData in tpMods:
@@ -111,10 +109,10 @@ def getTpMult(fit, tgt, tgtSpeed, tpMods, tpDrones, tpFighters, distance):
     mobileTps = []
     mobileTps.extend(tpFighters)
     # Drones have range limit
-    if distance is None or distance <= fit.extraAttributes['droneControlRange']:
+    if distance is None or distance <= src.item.extraAttributes['droneControlRange']:
         mobileTps.extend(tpDrones)
     droneOpt = GraphSettings.getInstance().get('mobileDroneMode')
-    atkRadius = fit.ship.getModifiedItemAttr('radius')
+    atkRadius = src.getRadius()
     for mtpData in mobileTps:
         # Faster than target or set to follow it - apply full TP
         if (droneOpt == GraphDpsDroneMode.auto and mtpData.speed >= tgtSpeed) or droneOpt == GraphDpsDroneMode.followTarget:
@@ -130,7 +128,7 @@ def getTpMult(fit, tgt, tgtSpeed, tpMods, tpDrones, tpFighters, distance):
                 atkFalloffRange=mtpData.falloff,
                 distance=rangeFactorDistance)
         appliedMultipliers.setdefault(mtpData.stackingGroup, []).append((1 + appliedMtpBoost / 100, mtpData.resAttrID))
-    tpedSig = getTgtSigRadius(tgt, extraMultipliers=appliedMultipliers)
+    tpedSig = tgt.getSigRadius(extraMultipliers=appliedMultipliers)
     if tpedSig == math.inf and untpedSig == math.inf:
         return 1
     mult = tpedSig / untpedSig

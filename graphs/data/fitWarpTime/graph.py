@@ -51,12 +51,12 @@ class FitWarpTimeGraph(FitGraph):
 
     # Calculation stuff
     _normalizers = {
-        ('distance', 'AU'): lambda v, fit, tgt: v * AU_METERS,
-        ('distance', 'km'): lambda v, fit, tgt: v * 1000}
+        ('distance', 'AU'): lambda v, src, tgt: v * AU_METERS,
+        ('distance', 'km'): lambda v, src, tgt: v * 1000}
     _limiters = {
-        'distance': lambda fit, tgt: (0, fit.maxWarpDistance * AU_METERS)}
+        'distance': lambda src, tgt: (0, src.item.maxWarpDistance * AU_METERS)}
     _getters = {
         ('distance', 'time'): Distance2TimeGetter}
     _denormalizers = {
-        ('distance', 'AU'): lambda v, fit, tgt: v / AU_METERS,
-        ('distance', 'km'): lambda v, fit, tgt: v / 1000}
+        ('distance', 'AU'): lambda v, src, tgt: v / AU_METERS,
+        ('distance', 'km'): lambda v, src, tgt: v / 1000}

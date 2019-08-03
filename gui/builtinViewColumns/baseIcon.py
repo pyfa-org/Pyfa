@@ -1,11 +1,13 @@
 # noinspection PyPackageRequirements
 import wx
-from eos.saveddata.implant import Implant
-from eos.saveddata.drone import Drone
-from eos.saveddata.module import Module, Rack
-from eos.saveddata.fit import Fit
-from eos.saveddata.targetProfile import TargetProfile
+
 from eos.const import FittingSlot
+from eos.saveddata.drone import Drone
+from eos.saveddata.fit import Fit
+from eos.saveddata.implant import Implant
+from eos.saveddata.module import Module, Rack
+from eos.saveddata.targetProfile import TargetProfile
+from graphs.wrapper import BaseWrapper
 from gui.viewColumn import ViewColumn
 
 
@@ -21,6 +23,9 @@ class BaseIcon(ViewColumn):
         self.shipImage = fittingView.imageList.GetImageIndex("ship_small", "gui")
 
     def getImageId(self, stuff):
+        if isinstance(stuff, BaseWrapper):
+            stuff = stuff.item
+
         if isinstance(stuff, Drone):
             return -1
         elif isinstance(stuff, Fit):

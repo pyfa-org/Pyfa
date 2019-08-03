@@ -161,7 +161,7 @@ class RemoveItem(ContextMenuCombined):
             fitID=fitID, commandFitIDs=commandFitIDs))
 
     def __handleGraphItem(self, callingWindow, mainItem, selection):
-        callingWindow.removeListItems(selection)
+        callingWindow.removeWrappers(selection)
 
 
 RemoveItem.register()

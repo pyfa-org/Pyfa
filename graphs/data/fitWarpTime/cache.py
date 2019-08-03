@@ -24,9 +24,9 @@ from graphs.data.base import FitDataCache
 
 class SubwarpSpeedCache(FitDataCache):
 
-    def getSubwarpSpeed(self, fit):
+    def getSubwarpSpeed(self, src):
         try:
-            subwarpSpeed = self._data[fit.ID]
+            subwarpSpeed = self._data[src.item.ID]
         except KeyError:
             modStates = {}
             disallowedGroups = (
@@ -40,34 +40,34 @@ class SubwarpSpeedCache(FitDataCache):
                 'Cynosural Field Generator',
                 'Clone Vat Bay',
                 'Jump Portal Generator')
-            for mod in fit.modules:
+            for mod in src.item.modules:
                 if mod.item is not None and mod.item.group.name in disallowedGroups and mod.state >= FittingModuleState.ACTIVE:
                     modStates[mod] = mod.state
                     mod.state = FittingModuleState.ONLINE
             projFitStates = {}
-            for projFit in fit.projectedFits:
-                projectionInfo = projFit.getProjectionInfo(fit.ID)
+            for projFit in src.item.projectedFits:
+                projectionInfo = projFit.getProjectionInfo(src.item.ID)
                 if projectionInfo is not None and projectionInfo.active:
                     projFitStates[projectionInfo] = projectionInfo.active
                     projectionInfo.active = False
             projModStates = {}
-            for mod in fit.projectedModules:
+            for mod in src.item.projectedModules:
                 if not mod.isExclusiveSystemEffect and mod.state >= FittingModuleState.ACTIVE:
                     projModStates[mod] = mod.state
                     mod.state = FittingModuleState.ONLINE
             projDroneStates = {}
-            for drone in fit.projectedDrones:
+            for drone in src.item.projectedDrones:
                 if drone.amountActive > 0:
                     projDroneStates[drone] = drone.amountActive
                     drone.amountActive = 0
             projFighterStates = {}
-            for fighter in fit.projectedFighters:
+            for fighter in src.item.projectedFighters:
                 if fighter.active:
                     projFighterStates[fighter] = fighter.active
                     fighter.active = False
-            fit.calculateModifiedAttributes()
-            subwarpSpeed = fit.ship.getModifiedItemAttr('maxVelocity')
-            self._data[fit.ID] = subwarpSpeed
+            src.item.calculateModifiedAttributes()
+            subwarpSpeed = src.getMaxVelocity()
+            self._data[src.item.ID] = subwarpSpeed
             for projInfo, state in projFitStates.items():
                 projInfo.active = state
             for mod, state in modStates.items():
@@ -78,5 +78,5 @@ class SubwarpSpeedCache(FitDataCache):
                 drone.amountActive = amountActive
             for fighter, state in projFighterStates.items():
                 fighter.active = state
-            fit.calculateModifiedAttributes()
+            src.item.calculateModifiedAttributes()
         return subwarpSpeed

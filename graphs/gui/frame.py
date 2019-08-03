@@ -247,15 +247,20 @@ class GraphFrame(wx.Frame):
 
         mainInput, miscInputs = self.ctrlPanel.getValues()
         view = self.getView()
-        fits = self.ctrlPanel.fits
+        sources = self.ctrlPanel.sources
         if view.hasTargets:
-            targets = self.ctrlPanel.targets
-            iterList = tuple(itertools.product(fits, targets))
+            iterList = tuple(itertools.product(sources, self.ctrlPanel.targets))
         else:
-            iterList = tuple((f, None) for f in fits)
-        for fit, target in iterList:
+            iterList = tuple((f, None) for f in sources)
+        for source, target in iterList:
             try:
-                xs, ys = view.getPlotPoints(mainInput, miscInputs, chosenX, chosenY, fit, target)
+                xs, ys = view.getPlotPoints(
+                    mainInput=mainInput,
+                    miscInputs=miscInputs,
+                    xSpec=chosenX,
+                    ySpec=chosenY,
+                    src=source,
+                    tgt=target)
 
                 # Figure out min and max Y
                 min_y_this = min(ys, default=None)
@@ -275,11 +280,11 @@ class GraphFrame(wx.Frame):
                     self.subplot.plot(xs, ys)
 
                 if target is None:
-                    legend.append(self.getObjName(fit))
+                    legend.append(source.shortName)
                 else:
-                    legend.append('{} vs {}'.format(self.getObjName(fit), self.getObjName(target)))
+                    legend.append('{} vs {}'.format(source.shortName, target.shortName))
             except Exception as ex:
-                pyfalog.warning('Invalid values in "{0}"', fit.name)
+                pyfalog.warning('Invalid values in "{0}"', source.name)
                 self.canvas.draw()
                 self.Refresh()
                 return
@@ -330,12 +335,3 @@ class GraphFrame(wx.Frame):
 
         self.canvas.draw()
         self.Refresh()
-
-    @staticmethod
-    def getObjName(thing):
-        if isinstance(thing, Fit):
-            return '{} ({})'.format(thing.name, thing.ship.item.getShortName())
-        elif isinstance(thing, TargetProfile):
-            return thing.name
-        return ''
-

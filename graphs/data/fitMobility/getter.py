@@ -25,13 +25,13 @@ from graphs.data.base import SmoothPointGetter
 
 class Time2SpeedGetter(SmoothPointGetter):
 
-    def _getCommonData(self, miscParams, fit, tgt):
+    def _getCommonData(self, miscParams, src, tgt):
         return {
-            'maxSpeed': fit.ship.getModifiedItemAttr('maxVelocity'),
-            'mass': fit.ship.getModifiedItemAttr('mass'),
-            'agility': fit.ship.getModifiedItemAttr('agility')}
+            'maxSpeed': src.getMaxVelocity(),
+            'mass': src.item.ship.getModifiedItemAttr('mass'),
+            'agility': src.item.ship.getModifiedItemAttr('agility')}
 
-    def _calculatePoint(self, x, miscParams, fit, tgt, commonData):
+    def _calculatePoint(self, x, miscParams, src, tgt, commonData):
         time = x
         maxSpeed = commonData['maxSpeed']
         mass = commonData['mass']
@@ -43,13 +43,13 @@ class Time2SpeedGetter(SmoothPointGetter):
 
 class Time2DistanceGetter(SmoothPointGetter):
 
-    def _getCommonData(self, miscParams, fit, tgt):
+    def _getCommonData(self, miscParams, src, tgt):
         return {
-            'maxSpeed': fit.ship.getModifiedItemAttr('maxVelocity'),
-            'mass': fit.ship.getModifiedItemAttr('mass'),
-            'agility': fit.ship.getModifiedItemAttr('agility')}
+            'maxSpeed': src.getMaxVelocity(),
+            'mass': src.item.ship.getModifiedItemAttr('mass'),
+            'agility': src.item.ship.getModifiedItemAttr('agility')}
 
-    def _calculatePoint(self, x, miscParams, fit, tgt, commonData):
+    def _calculatePoint(self, x, miscParams, src, tgt, commonData):
         time = x
         maxSpeed = commonData['maxSpeed']
         mass = commonData['mass']

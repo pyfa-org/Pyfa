@@ -28,7 +28,7 @@ from gui.contextMenu import ContextMenu
 from gui.utils.inputs import FloatBox, FloatRangeBox
 from service.const import GraphCacheCleanupReason
 from service.fit import Fit
-from .lists import FitList, TargetList
+from .lists import SourceWrapperList, TargetWrapperList
 from .vector import VectorPicker
 
 
@@ -114,10 +114,10 @@ class GraphControlPanel(wx.Panel):
         mainSizer.Add(optsSizer, 0, wx.EXPAND | wx.ALL, 10)
 
         srcTgtSizer = wx.BoxSizer(wx.HORIZONTAL)
-        self.fitList = FitList(graphFrame, self)
-        self.fitList.SetMinSize((270, -1))
-        srcTgtSizer.Add(self.fitList, 1, wx.EXPAND | wx.ALL, 0)
-        self.targetList = TargetList(graphFrame, self)
+        self.sourceList = SourceWrapperList(graphFrame, self)
+        self.sourceList.SetMinSize((270, -1))
+        srcTgtSizer.Add(self.sourceList, 1, wx.EXPAND | wx.ALL, 0)
+        self.targetList = TargetWrapperList(graphFrame, self)
         self.targetList.SetMinSize((270, -1))
         srcTgtSizer.Add(self.targetList, 1, wx.EXPAND | wx.LEFT, 10)
         mainSizer.Add(srcTgtSizer, 1, wx.EXPAND | wx.LEFT | wx.BOTTOM | wx.RIGHT, 10)
@@ -162,7 +162,7 @@ class GraphControlPanel(wx.Panel):
             self.tgtVectorLabel.Show(False)
 
         # Source and target list
-        self.fitList.refreshExtraColumns(view.srcExtraCols)
+        self.sourceList.refreshExtraColumns(view.srcExtraCols)
         self.targetList.refreshExtraColumns(view.tgtExtraCols)
         self.targetList.Show(view.hasTargets)
 
@@ -333,34 +333,37 @@ class GraphControlPanel(wx.Panel):
         return self.xSubSelection.GetClientData(self.xSubSelection.GetSelection())
 
     @property
-    def fits(self):
-        return self.fitList.fits
+    def sources(self):
+        return self.sourceList.wrappers
 
     @property
     def targets(self):
-        return self.targetList.targets
+        return self.targetList.wrappers
 
     # Fit events
     def OnFitRenamed(self, event):
-        self.fitList.OnFitRenamed(event)
+        self.sourceList.OnFitRenamed(event)
         self.targetList.OnFitRenamed(event)
 
     def OnFitChanged(self, event):
-        self.fitList.OnFitChanged(event)
+        self.sourceList.OnFitChanged(event)
         self.targetList.OnFitChanged(event)
 
     def OnFitRemoved(self, event):
-        self.fitList.OnFitRemoved(event)
+        self.sourceList.OnFitRemoved(event)
         self.targetList.OnFitRemoved(event)
 
     # Target profile events
     def OnProfileRenamed(self, event):
+        self.sourceList.OnProfileRenamed(event)
         self.targetList.OnProfileRenamed(event)
 
     def OnProfileChanged(self, event):
+        self.sourceList.OnProfileChanged(event)
         self.targetList.OnProfileChanged(event)
 
     def OnProfileRemoved(self, event):
+        self.sourceList.OnProfileRemoved(event)
         self.targetList.OnProfileRemoved(event)
 
     def formatLabel(self, axisDef):

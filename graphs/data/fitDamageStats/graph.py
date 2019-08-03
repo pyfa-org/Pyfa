@@ -26,7 +26,6 @@ from .getter import (
     Time2DpsGetter, Time2VolleyGetter, Time2InflictedDamageGetter,
     TgtSpeed2DpsGetter, TgtSpeed2VolleyGetter, TgtSpeed2InflictedDamageGetter,
     TgtSigRadius2DpsGetter, TgtSigRadius2VolleyGetter, TgtSigRadius2InflictedDamageGetter)
-from .helper import getTgtMaxVelocity, getTgtSigRadius
 
 
 class FitDamageStatsGraph(FitGraph):
@@ -76,12 +75,12 @@ class FitDamageStatsGraph(FitGraph):
 
     # Calculation stuff
     _normalizers = {
-        ('distance', 'km'): lambda v, fit, tgt: None if v is None else v * 1000,
-        ('atkSpeed', '%'): lambda v, fit, tgt: v / 100 * fit.ship.getModifiedItemAttr('maxVelocity'),
-        ('tgtSpeed', '%'): lambda v, fit, tgt: v / 100 * getTgtMaxVelocity(tgt),
-        ('tgtSigRad', '%'): lambda v, fit, tgt: v / 100 * getTgtSigRadius(tgt)}
+        ('distance', 'km'): lambda v, src, tgt: None if v is None else v * 1000,
+        ('atkSpeed', '%'): lambda v, src, tgt: v / 100 * src.getMaxVelocity(),
+        ('tgtSpeed', '%'): lambda v, src, tgt: v / 100 * tgt.getMaxVelocity(),
+        ('tgtSigRad', '%'): lambda v, src, tgt: v / 100 * tgt.getSigRadius()}
     _limiters = {
-        'time': lambda fit, tgt: (0, 2500)}
+        'time': lambda src, tgt: (0, 2500)}
     _getters = {
         ('distance', 'dps'): Distance2DpsGetter,
         ('distance', 'volley'): Distance2VolleyGetter,
@@ -96,6 +95,6 @@ class FitDamageStatsGraph(FitGraph):
         ('tgtSigRad', 'volley'): TgtSigRadius2VolleyGetter,
         ('tgtSigRad', 'damage'): TgtSigRadius2InflictedDamageGetter}
     _denormalizers = {
-        ('distance', 'km'): lambda v, fit, tgt: None if v is None else v / 1000,
-        ('tgtSpeed', '%'): lambda v, fit, tgt: v * 100 / getTgtMaxVelocity(tgt),
-        ('tgtSigRad', '%'): lambda v, fit, tgt: v * 100 / getTgtSigRadius(tgt)}
+        ('distance', 'km'): lambda v, src, tgt: None if v is None else v / 1000,
+        ('tgtSpeed', '%'): lambda v, src, tgt: v * 100 / tgt.getMaxVelocity(),
+        ('tgtSigRad', '%'): lambda v, src, tgt: v * 100 / tgt.getSigRadius()}
