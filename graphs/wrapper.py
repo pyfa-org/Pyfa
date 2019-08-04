@@ -22,6 +22,7 @@ import math
 
 from eos.saveddata.fit import Fit
 from eos.saveddata.targetProfile import TargetProfile
+from service.const import TargetResistMode
 
 
 class BaseWrapper:
@@ -99,7 +100,51 @@ class TargetWrapper(BaseWrapper):
 
     def __init__(self, item):
         super().__init__(item=item)
-        self.resistMode = None
+        self.__resistMode = TargetResistMode.auto
+
+    @property
+    def resistMode(self):
+        return self.__resistMode
+
+    @resistMode.setter
+    def resistMode(self, value):
+        self.__resistMode = value
+
+    def getResists(self):
+        if self.isProfile:
+            em = self.item.emAmount
+            therm = self.item.thermalAmount
+            kin = self.item.kineticAmount
+            explo = self.item.explosiveAmount
+            return em, therm, kin, explo
+        if self.isFit:
+            if self.resistMode == TargetResistMode.auto:
+                return 0, 0, 0, 0
+            elif self.resistMode == TargetResistMode.shield:
+                return _getShieldResists(self.item.ship)
+            elif self.resistMode == TargetResistMode.armor:
+                return _getArmorResists(self.item.ship)
+            elif self.resistMode == TargetResistMode.hull:
+                return _getHullResists(self.item.ship)
+            elif self.resistMode == TargetResistMode.weighedAverage:
+                shieldEmRes, shieldThermRes, shieldKinRes, shieldExploRes = _getShieldResists(self.item.ship)
+                armorEmRes, armorThermRes, armorKinRes, armorExploRes = _getArmorResists(self.item.ship)
+                hullEmRes, hullThermRes, hullKinRes, hullExploRes = _getHullResists(self.item.ship)
+                hpData = self.item.hp
+                shieldHp = hpData['shield']
+                armorHp = hpData['armor']
+                hullHp = hpData['hull']
+                totalHp = shieldHp + armorHp + hullHp
+                totalEhpEm = shieldHp / (1 - shieldEmRes) + armorHp / (1 - armorEmRes) + hullHp / (1 - hullEmRes)
+                totalEhpTherm = shieldHp / (1 - shieldThermRes) + armorHp / (1 - armorThermRes) + hullHp / (1 - hullThermRes)
+                totalEhpKin = shieldHp / (1 - shieldKinRes) + armorHp / (1 - armorKinRes) + hullHp / (1 - hullKinRes)
+                totalEhpExplo = shieldHp / (1 - shieldExploRes) + armorHp / (1 - armorExploRes) + hullHp / (1 - hullExploRes)
+                weighedEmRes = 1 - totalHp / totalEhpEm
+                weighedThermRes = 1 - totalHp / totalEhpTherm
+                weighedKinRes = 1 - totalHp / totalEhpKin
+                weighedExploRes = 1 - totalHp / totalEhpExplo
+                return weighedEmRes, weighedThermRes, weighedKinRes, weighedExploRes
+        return 0, 0, 0, 0
 
 
 # Just copy-paste penalization chain calculation code (with some modifications,
@@ -125,3 +170,27 @@ def _calculateMultiplier(multipliers):
                 bonus = l[i]
                 val *= 1 + (bonus - 1) * math.exp(- i ** 2 / 7.1289)
     return val
+
+
+def _getShieldResists(ship):
+    em = 1 - ship.getModifiedItemAttr('shieldEmDamageResonance')
+    therm = 1 - ship.getModifiedItemAttr('shieldThermalDamageResonance')
+    kin = 1 - ship.getModifiedItemAttr('shieldKineticDamageResonance')
+    explo = 1 - ship.getModifiedItemAttr('shieldExplosiveDamageResonance')
+    return em, therm, kin, explo
+
+
+def _getArmorResists(ship):
+    em = 1 - ship.getModifiedItemAttr('armorEmDamageResonance')
+    therm = 1 - ship.getModifiedItemAttr('armorThermalDamageResonance')
+    kin = 1 - ship.getModifiedItemAttr('armorKineticDamageResonance')
+    explo = 1 - ship.getModifiedItemAttr('armorExplosiveDamageResonance')
+    return em, therm, kin, explo
+
+
+def _getHullResists(ship):
+    em = 1 - ship.getModifiedItemAttr('emDamageResonance')
+    therm = 1 - ship.getModifiedItemAttr('thermalDamageResonance')
+    kin = 1 - ship.getModifiedItemAttr('kineticDamageResonance')
+    explo = 1 - ship.getModifiedItemAttr('explosiveDamageResonance')
+    return em, therm, kin, explo

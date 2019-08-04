@@ -17,7 +17,7 @@
 # along with pyfa.  If not, see <http://www.gnu.org/licenses/>.
 # =============================================================================
 
-from enum import Enum, IntEnum, unique, auto
+from enum import Enum, IntEnum, unique, auto as autoId
 
 
 @unique
@@ -96,20 +96,20 @@ class GuiAttrGroup(IntEnum):
     This enum is used for GUI functions and getting redefined in
     /gui/builtinItemStatsViews/attributeGrouping.py
     """
-    FITTING = auto()
-    STRUCTURE = auto()
-    SHIELD = auto()
-    ARMOR = auto()
-    TARGETING = auto()
-    EWAR_RESISTS = auto()
-    CAPACITOR = auto()
-    SHARED_FACILITIES = auto()
-    FIGHTER_FACILITIES = auto()
-    ON_DEATH = auto()
-    JUMP_SYSTEMS = auto()
-    PROPULSIONS = auto()
-    FIGHTERS = auto()
-    SHIP_GROUP = auto()
+    FITTING = autoId()
+    STRUCTURE = autoId()
+    SHIELD = autoId()
+    ARMOR = autoId()
+    TARGETING = autoId()
+    EWAR_RESISTS = autoId()
+    CAPACITOR = autoId()
+    SHARED_FACILITIES = autoId()
+    FIGHTER_FACILITIES = autoId()
+    ON_DEATH = autoId()
+    JUMP_SYSTEMS = autoId()
+    PROPULSIONS = autoId()
+    FIGHTERS = autoId()
+    SHIP_GROUP = autoId()
 
 
 @unique
@@ -121,10 +121,19 @@ class GraphDpsDroneMode(IntEnum):
 
 @unique
 class GraphCacheCleanupReason(IntEnum):
-    fitChanged = auto()
-    fitRemoved = auto()
-    profileChanged = auto()
-    profileRemoved = auto()
-    graphSwitched = auto()
-    inputChanged = auto()
-    optionChanged = auto()
+    fitChanged = autoId()
+    fitRemoved = autoId()
+    profileChanged = autoId()
+    profileRemoved = autoId()
+    graphSwitched = autoId()
+    inputChanged = autoId()
+    optionChanged = autoId()
+
+
+@unique
+class TargetResistMode(IntEnum):
+    auto = autoId()
+    shield = autoId()
+    armor = autoId()
+    hull = autoId()
+    weighedAverage = autoId()
