@@ -23,7 +23,6 @@ from abc import ABCMeta, abstractmethod
 import wx
 
 import eos.config
-import gui.mainFrame
 from eos.saveddata.fit import Fit
 from eos.saveddata.targetProfile import TargetProfile
 from eos.utils.spoolSupport import SpoolOptions, SpoolType
@@ -37,7 +36,6 @@ class GraphColumn(ViewColumn, metaclass=ABCMeta):
 
     def __init__(self, fittingView, iconID, formatSpec=(3, 0, 3)):
         ViewColumn.__init__(self, fittingView)
-        self.mainFrame = gui.mainFrame.MainFrame.getInstance()
         self.imageId = fittingView.imageList.GetImageIndex(iconID, 'icons')
         self.bitmap = BitmapLoader.getBitmap(iconID, 'icons')
         self.mask = wx.LIST_MASK_TEXT

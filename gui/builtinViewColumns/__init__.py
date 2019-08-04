@@ -12,4 +12,5 @@ __all__ = [
     "state",
     "misc",
     "abilities",
-    "sideEffects"]
+    "sideEffects",
+    "targetResists"]
