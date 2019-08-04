@@ -141,7 +141,7 @@ class BaseWrapperList(gui.display.Display):
         if row == -1:
             return None
         try:
-            return self.__wrappers[row]
+            return self.wrappers[row]
         except IndexError:
             return None
 
