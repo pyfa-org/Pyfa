@@ -24,6 +24,7 @@ from graphs.wrapper import TargetWrapper
 from gui.bitmap_loader import BitmapLoader
 from gui.utils.numberFormatter import formatAmount
 from gui.viewColumn import ViewColumn
+from service.const import TargetResistMode
 
 
 class TargetResists(ViewColumn):
@@ -38,12 +39,26 @@ class TargetResists(ViewColumn):
 
     def getText(self, stuff):
         if isinstance(stuff, TargetWrapper):
-            em, therm, kin, explo = stuff.getResists()
-            return '{}/{}/{}/{}'.format(
+            em, therm, kin, explo, layer = stuff.getResists(includeLayer=True)
+            if stuff.isFit:
+                modeSuffixMap = {
+                    TargetResistMode.auto: 'auto',
+                    TargetResistMode.shield: 'shield',
+                    TargetResistMode.armor: 'armor',
+                    TargetResistMode.hull: 'hull',
+                    TargetResistMode.weighedAverage: 'weighed'}
+                modeSuffix = modeSuffixMap[stuff.resistMode]
+                if stuff.resistMode == TargetResistMode.auto and layer is not None:
+                    modeSuffix = '{} {}'.format(modeSuffix, layer)
+                modeSuffix = ' ({})'.format(modeSuffix)
+            else:
+                modeSuffix = ''
+            return '{}/{}/{}/{}{}'.format(
                 formatAmount(val=em * 100, prec=3, lowest=0, highest=0),
                 formatAmount(val=therm * 100, prec=3, lowest=0, highest=0),
                 formatAmount(val=kin * 100, prec=3, lowest=0, highest=0),
-                formatAmount(val=explo * 100, prec=3, lowest=0, highest=0))
+                formatAmount(val=explo * 100, prec=3, lowest=0, highest=0),
+                modeSuffix)
         return ''
 
     def getToolTip(self, mod):
