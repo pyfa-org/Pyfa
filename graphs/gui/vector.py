@@ -44,12 +44,18 @@ class VectorPicker(wx.Window):
         self.__length = 1
         self._left = False
         self._right = False
+        self._savedFocusedWindow = None
         self.SetToolTip(wx.ToolTip(self._tooltip))
         self.Bind(wx.EVT_PAINT, self.OnPaint)
         self.Bind(wx.EVT_ERASE_BACKGROUND, self.OnEraseBackground)
         self.Bind(wx.EVT_LEFT_DOWN, self.OnLeftDown)
         self.Bind(wx.EVT_RIGHT_DOWN, self.OnRightDown)
         self.Bind(wx.EVT_MOUSEWHEEL, self.OnWheel)
+        # Allows to focus these widgets on hover, needed to support
+        # vector length changing by scrolling
+        if 'wxMSW' in wx.PlatformInfo:
+            self.Bind(wx.EVT_MOTION, self.OnMouseMove)
+            self.Bind(wx.EVT_LEAVE_WINDOW, self.OnMouseLeave)
 
     @property
     def _tooltip(self):
@@ -222,6 +228,20 @@ class VectorPicker(wx.Window):
                 self.Refresh()
                 if (self._right and not self._left) or event.ShiftDown():
                     self.SendChangeEvent()
+
+    # Focus manipulation - otherwise scrolling doesn't work under Windows
+    def OnMouseMove(self, event):
+        event.Skip()
+        if not self.HasFocus():
+            self._savedFocusedWindow = self.FindFocus()
+            self.SetFocus()
+
+    def OnMouseLeave(self, event):
+        event.Skip()
+        if self.HasFocus():
+            if self._savedFocusedWindow is not None:
+                self._savedFocusedWindow.SetFocus()
+                self._savedFocusedWindow = None
 
     def SendChangeEvent(self):
         changeEvent = wx.CommandEvent(self.myEVT_VECTOR_CHANGED, self.GetId())
