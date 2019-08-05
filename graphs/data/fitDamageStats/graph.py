@@ -68,7 +68,6 @@ class FitDamageStatsGraph(FitGraph):
     tgtVectorDef = VectorDef(lengthHandle='tgtSpeed', lengthUnit='%', angleHandle='tgtAngle', angleUnit='degrees', label='Target')
     hasTargets = True
     srcExtraCols = ('Dps', 'Volley', 'Speed', 'Radius')
-    tgtExtraCols = ('Target Resists', 'Speed', 'SigRadius', 'Radius')
 
     @property
     def yDefs(self):
@@ -77,6 +76,14 @@ class FitDamageStatsGraph(FitGraph):
             YDef(handle='dps', unit=None, label='DPS' if ignoreResists else 'Effective DPS'),
             YDef(handle='volley', unit=None, label='Volley' if ignoreResists else 'Effective volley'),
             YDef(handle='damage', unit=None, label='Damage inflicted' if ignoreResists else 'Effective damage inflicted')]
+
+    @property
+    def tgtExtraCols(self):
+        cols = []
+        if not GraphSettings.getInstance().get('ignoreResists'):
+            cols.append('Target Resists')
+        cols.extend(('Speed', 'SigRadius', 'Radius'))
+        return cols
 
     # Calculation stuff
     _normalizers = {

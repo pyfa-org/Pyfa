@@ -205,8 +205,12 @@ class GraphFrame(wx.Frame):
 
     def OnGraphOptionChanged(self, event):
         event.Skip()
+        self.ctrlPanel.Freeze()
         if getattr(event, 'refreshAxeLabels', False):
             self.ctrlPanel.refreshAxeLabels()
+        if getattr(event, 'refreshColumns', False):
+            self.ctrlPanel.refreshColumns()
+        self.ctrlPanel.Thaw()
         self.clearCache(reason=GraphCacheCleanupReason.optionChanged)
         self.draw()
 

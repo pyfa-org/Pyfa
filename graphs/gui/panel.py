@@ -162,8 +162,7 @@ class GraphControlPanel(wx.Panel):
             self.tgtVectorLabel.Show(False)
 
         # Source and target list
-        self.sourceList.refreshExtraColumns(view.srcExtraCols)
-        self.targetList.refreshExtraColumns(view.tgtExtraCols)
+        self.refreshColumns()
         self.targetList.Show(view.hasTargets)
 
         # Inputs
@@ -260,12 +259,15 @@ class GraphControlPanel(wx.Panel):
         # Currently we need to refresh only Y for dps graph
         selectedY = self.ySubSelection.GetSelection()
         view = self.graphFrame.getView()
-        self.Freeze()
         self.ySubSelection.Clear()
         for yDef in view.yDefs:
             self.ySubSelection.Append(self.formatLabel(yDef), yDef)
         self.ySubSelection.SetSelection(selectedY)
-        self.Thaw()
+
+    def refreshColumns(self):
+        view = self.graphFrame.getView()
+        self.sourceList.refreshExtraColumns(view.srcExtraCols)
+        self.targetList.refreshExtraColumns(view.tgtExtraCols)
 
     def OnShowLegendChange(self, event):
         event.Skip()

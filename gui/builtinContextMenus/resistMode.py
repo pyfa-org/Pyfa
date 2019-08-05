@@ -8,6 +8,7 @@ from graphs.events import ResistModeChanged
 from graphs.wrapper import TargetWrapper
 from gui.contextMenu import ContextMenuCombined
 from service.const import TargetResistMode
+from service.settings import GraphSettings
 
 
 optionMap = OrderedDict((
@@ -25,6 +26,8 @@ class TargetWrapperResists(ContextMenuCombined):
 
     def display(self, callingWindow, srcContext, mainItem, selection):
         if srcContext != 'graphTgtList':
+            return False
+        if GraphSettings.getInstance().get('ignoreResists'):
             return False
         if not isinstance(mainItem, TargetWrapper) or not mainItem.isFit:
             return False
