@@ -20,6 +20,7 @@
 
 from graphs.data.base import FitGraph, XDef, YDef, Input, VectorDef
 from service.const import GraphCacheCleanupReason
+from service.settings import GraphSettings
 from .cache import ProjectedDataCache, TimeCache
 from .getter import (
     Distance2DpsGetter, Distance2VolleyGetter, Distance2InflictedDamageGetter,
@@ -58,10 +59,6 @@ class FitDamageStatsGraph(FitGraph):
         XDef(handle='tgtSpeed', unit='%', label='Target speed', mainInput=('tgtSpeed', '%')),
         XDef(handle='tgtSigRad', unit='m', label='Target signature radius', mainInput=('tgtSigRad', '%')),
         XDef(handle='tgtSigRad', unit='%', label='Target signature radius', mainInput=('tgtSigRad', '%'))]
-    yDefs = [
-        YDef(handle='dps', unit=None, label='DPS'),
-        YDef(handle='volley', unit=None, label='Volley'),
-        YDef(handle='damage', unit=None, label='Damage inflicted')]
     inputs = [
         Input(handle='time', unit='s', label='Time', iconID=1392, defaultValue=None, defaultRange=(0, 80), secondaryTooltip='When set, uses exact attacker\'s damage stats of at a given time\nWhen not set, uses attacker\'s damage stats as shown in stats panel of main window'),
         Input(handle='distance', unit='km', label='Distance', iconID=1391, defaultValue=None, defaultRange=(0, 100), mainTooltip='Distance between the attacker and the target, as seen in overview (surface-to-surface)', secondaryTooltip='Distance between the attacker and the target, as seen in overview (surface-to-surface)\nWhen set, places the target that far away from the attacker\nWhen not set, attacker\'s weapons always hit the target'),
@@ -72,6 +69,14 @@ class FitDamageStatsGraph(FitGraph):
     hasTargets = True
     srcExtraCols = ('Dps', 'Volley', 'Speed', 'Radius')
     tgtExtraCols = ('Target Resists', 'Speed', 'SigRadius', 'Radius')
+
+    @property
+    def yDefs(self):
+        ignoreResists = GraphSettings.getInstance().get('ignoreResists')
+        return [
+            YDef(handle='dps', unit=None, label='DPS' if ignoreResists else 'Effective DPS'),
+            YDef(handle='volley', unit=None, label='Volley' if ignoreResists else 'Effective volley'),
+            YDef(handle='damage', unit=None, label='Damage inflicted' if ignoreResists else 'Effective damage inflicted')]
 
     # Calculation stuff
     _normalizers = {

@@ -205,6 +205,8 @@ class GraphFrame(wx.Frame):
 
     def OnGraphOptionChanged(self, event):
         event.Skip()
+        if getattr(event, 'refreshAxeLabels', False):
+            self.ctrlPanel.refreshAxeLabels()
         self.clearCache(reason=GraphCacheCleanupReason.optionChanged)
         self.draw()
 

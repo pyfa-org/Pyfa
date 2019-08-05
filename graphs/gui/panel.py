@@ -256,6 +256,17 @@ class GraphControlPanel(wx.Panel):
                 continue
             addInputField(inputDef, handledHandles)
 
+    def refreshAxeLabels(self):
+        # Currently we need to refresh only Y for dps graph
+        selectedY = self.ySubSelection.GetSelection()
+        view = self.graphFrame.getView()
+        self.Freeze()
+        self.ySubSelection.Clear()
+        for yDef in view.yDefs:
+            self.ySubSelection.Append(self.formatLabel(yDef), yDef)
+        self.ySubSelection.SetSelection(selectedY)
+        self.Thaw()
+
     def OnShowLegendChange(self, event):
         event.Skip()
         self.graphFrame.draw()

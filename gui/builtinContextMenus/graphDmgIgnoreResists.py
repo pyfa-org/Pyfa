@@ -21,7 +21,7 @@ class GraphDmgIgnoreResistsMenu(ContextMenuUnconditional):
 
     def activate(self, callingWindow, fullContext, i):
         self.settings.set('ignoreResists', not self.settings.get('ignoreResists'))
-        wx.PostEvent(self.mainFrame, GE.GraphOptionChanged())
+        wx.PostEvent(self.mainFrame, GE.GraphOptionChanged(refreshAxeLabels=True))
 
     def isChecked(self, i):
         return self.settings.get('ignoreResists')
