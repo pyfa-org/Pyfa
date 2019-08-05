@@ -38,7 +38,7 @@ class BaseWrapperList(gui.display.Display):
     def __init__(self, graphFrame, parent):
         super().__init__(parent)
         self.graphFrame = graphFrame
-        self.__wrappers = []
+        self._wrappers = []
 
         self.hoveredRow = None
         self.hoveredColumn = None
@@ -51,7 +51,7 @@ class BaseWrapperList(gui.display.Display):
     @property
     def wrappers(self):
         # Sort fits first, then target profiles
-        return sorted(self.__wrappers, key=lambda w: not w.isFit)
+        return sorted(self._wrappers, key=lambda w: not w.isFit)
 
     # UI-related stuff
     @property
@@ -146,11 +146,11 @@ class BaseWrapperList(gui.display.Display):
             return None
 
     def removeWrappers(self, wrappers):
-        wrappers = set(wrappers).intersection(self.__wrappers)
+        wrappers = set(wrappers).intersection(self._wrappers)
         if not wrappers:
             return
         for wrapper in wrappers:
-            self.__wrappers.remove(wrapper)
+            self._wrappers.remove(wrapper)
         self.updateView()
         for wrapper in wrappers:
             if wrapper.isFit:
@@ -169,16 +169,16 @@ class BaseWrapperList(gui.display.Display):
         return wrappers
 
     def appendItem(self, item):
-        self.__wrappers.append(self.wrapperClass(item))
+        self._wrappers.append(self.wrapperClass(item))
 
     def containsFitID(self, fitID):
-        for wrapper in self.__wrappers:
+        for wrapper in self._wrappers:
             if wrapper.isFit and wrapper.item.ID == fitID:
                 return True
         return False
 
     def containsProfileID(self, profileID):
-        for wrapper in self.__wrappers:
+        for wrapper in self._wrappers:
             if wrapper.isProfile and wrapper.item.ID == profileID:
                 return True
         return False
@@ -189,13 +189,13 @@ class BaseWrapperList(gui.display.Display):
             self.updateView()
 
     def OnFitChanged(self, event):
-        if set(event.fitIDs).intersection(w.item.ID for w in self.__wrappers if w.isFit):
+        if set(event.fitIDs).intersection(w.item.ID for w in self._wrappers if w.isFit):
             self.updateView()
 
     def OnFitRemoved(self, event):
-        wrapper = next((w for w in self.__wrappers if w.isFit and w.item.ID == event.fitID), None)
+        wrapper = next((w for w in self._wrappers if w.isFit and w.item.ID == event.fitID), None)
         if wrapper is not None:
-            self.__wrappers.remove(wrapper)
+            self._wrappers.remove(wrapper)
             self.updateView()
 
     def OnProfileRenamed(self, event):
@@ -207,9 +207,9 @@ class BaseWrapperList(gui.display.Display):
             self.updateView()
 
     def OnProfileRemoved(self, event):
-        wrapper = next((w for w in self.__wrappers if w.isProfile and w.item.ID == event.profileID), None)
+        wrapper = next((w for w in self._wrappers if w.isProfile and w.item.ID == event.profileID), None)
         if wrapper is not None:
-            self.__wrappers.remove(wrapper)
+            self._wrappers.remove(wrapper)
             self.updateView()
 
     # Context menu handlers
@@ -223,7 +223,7 @@ class BaseWrapperList(gui.display.Display):
         self.graphFrame.draw()
 
     def getExistingFitIDs(self):
-        return [w.item.ID for w in self.__wrappers if w.isFit]
+        return [w.item.ID for w in self._wrappers if w.isFit]
 
     def addFitsByIDs(self, fitIDs):
         sFit = Fit.getInstance()
@@ -289,6 +289,10 @@ class TargetWrapperList(BaseWrapperList):
         menu = ContextMenu.getMenu(self, mainItem, selection, (sourceContext, itemContext))
         if menu:
             self.PopupMenu(menu)
+
+    def OnResistModeChanged(self, event):
+        if set(event.fitIDs).intersection(w.item.ID for w in self._wrappers if w.isFit):
+            self.updateView()
 
     @property
     def defaultTTText(self):

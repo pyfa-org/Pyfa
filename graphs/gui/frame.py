@@ -29,9 +29,8 @@ from logbook import Logger
 import gui.display
 import gui.globalEvents as GE
 import gui.mainFrame
-from eos.saveddata.fit import Fit
-from eos.saveddata.targetProfile import TargetProfile
 from graphs.data.base import FitGraph
+from graphs.events import RESIST_MODE_CHANGED
 from gui.bitmap_loader import BitmapLoader
 from service.const import GraphCacheCleanupReason
 from service.settings import GraphSettings
@@ -131,6 +130,7 @@ class GraphFrame(wx.Frame):
         self.mainFrame.Bind(GE.TARGET_PROFILE_RENAMED, self.OnProfileRenamed)
         self.mainFrame.Bind(GE.TARGET_PROFILE_CHANGED, self.OnProfileChanged)
         self.mainFrame.Bind(GE.TARGET_PROFILE_REMOVED, self.OnProfileRemoved)
+        self.mainFrame.Bind(RESIST_MODE_CHANGED, self.OnResistModeChanged)
         self.mainFrame.Bind(GE.GRAPH_OPTION_CHANGED, self.OnGraphOptionChanged)
 
         self.Layout()
@@ -196,6 +196,13 @@ class GraphFrame(wx.Frame):
         self.ctrlPanel.OnProfileRemoved(event)
         self.draw()
 
+    def OnResistModeChanged(self, event):
+        event.Skip()
+        for fitID in event.fitIDs:
+            self.clearCache(reason=GraphCacheCleanupReason.resistModeChanged, extraData=fitID)
+        self.ctrlPanel.OnResistModeChanged(event)
+        self.draw()
+
     def OnGraphOptionChanged(self, event):
         event.Skip()
         self.clearCache(reason=GraphCacheCleanupReason.optionChanged)
@@ -216,6 +223,7 @@ class GraphFrame(wx.Frame):
         self.mainFrame.Unbind(GE.TARGET_PROFILE_RENAMED, handler=self.OnProfileRenamed)
         self.mainFrame.Unbind(GE.TARGET_PROFILE_CHANGED, handler=self.OnProfileChanged)
         self.mainFrame.Unbind(GE.TARGET_PROFILE_REMOVED, handler=self.OnProfileRemoved)
+        self.mainFrame.Unbind(RESIST_MODE_CHANGED, handler=self.OnResistModeChanged)
         self.mainFrame.Unbind(GE.GRAPH_OPTION_CHANGED, handler=self.OnGraphOptionChanged)
         self.Destroy()
 

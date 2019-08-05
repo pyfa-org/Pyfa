@@ -125,6 +125,12 @@ class FitGraph(metaclass=ABCMeta):
                 cacheFitID, cacheTgtType, cacheTgtID = cacheKey
                 if cacheTgtType == 'profile' and extraData == cacheTgtID:
                     plotKeysToClear.add(cacheKey)
+        # Target fit resist mode changed
+        elif reason == GraphCacheCleanupReason.resistModeChanged:
+            for cacheKey in self._plotCache:
+                cacheFitID, cacheTgtType, cacheTgtID = cacheKey
+                if cacheTgtType == 'fit' and extraData == cacheTgtID:
+                    plotKeysToClear.add(cacheKey)
         # Wipe out whole plot cache otherwise
         else:
             for cacheKey in self._plotCache:

@@ -366,6 +366,9 @@ class GraphControlPanel(wx.Panel):
         self.sourceList.OnProfileRemoved(event)
         self.targetList.OnProfileRemoved(event)
 
+    def OnResistModeChanged(self, event):
+        self.targetList.OnResistModeChanged(event)
+
     def formatLabel(self, axisDef):
         if axisDef.unit is None:
             return axisDef.label
