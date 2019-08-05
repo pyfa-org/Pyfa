@@ -256,9 +256,8 @@ class SourceWrapperList(BaseWrapperList):
         clickedPos = self.getRowByAbs(event.Position)
         mainItem = self.getWrapper(clickedPos)
 
-        sourceContext = 'graphFitList'
         itemContext = None if mainItem is None else 'Fit'
-        menu = ContextMenu.getMenu(self, mainItem, selection, (sourceContext, itemContext))
+        menu = ContextMenu.getMenu(self, mainItem, selection, ('graphFitList', itemContext), ('graphFitListMisc', itemContext))
         if menu:
             self.PopupMenu(menu)
 
@@ -284,9 +283,8 @@ class TargetWrapperList(BaseWrapperList):
         clickedPos = self.getRowByAbs(event.Position)
         mainItem = self.getWrapper(clickedPos)
 
-        sourceContext = 'graphTgtList'
         itemContext = None if mainItem is None else 'Target'
-        menu = ContextMenu.getMenu(self, mainItem, selection, (sourceContext, itemContext))
+        menu = ContextMenu.getMenu(self, mainItem, selection, ('graphTgtList', itemContext), ('graphTgtListMisc', itemContext))
         if menu:
             self.PopupMenu(menu)
 
