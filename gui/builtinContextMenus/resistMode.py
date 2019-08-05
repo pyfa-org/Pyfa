@@ -16,7 +16,7 @@ optionMap = OrderedDict((
     ('Shield', TargetResistMode.shield),
     ('Armor', TargetResistMode.armor),
     ('Hull', TargetResistMode.hull),
-    ('Weighed Average', TargetResistMode.weighedAverage)))
+    ('Weighted Average', TargetResistMode.weightedAverage)))
 
 
 class TargetWrapperResists(ContextMenuCombined):

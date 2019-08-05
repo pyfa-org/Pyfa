@@ -137,4 +137,4 @@ class TargetResistMode(IntEnum):
     shield = autoId()
     armor = autoId()
     hull = autoId()
-    weighedAverage = autoId()
+    weightedAverage = autoId()

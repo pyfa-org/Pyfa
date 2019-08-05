@@ -128,8 +128,8 @@ class TargetWrapper(BaseWrapper):
                 em, therm, kin, explo = _getArmorResists(ship=self.item.ship)
             elif self.resistMode == TargetResistMode.hull:
                 em, therm, kin, explo = _getHullResists(ship=self.item.ship)
-            elif self.resistMode == TargetResistMode.weighedAverage:
-                em, therm, kin, explo = _getWeighedResists(fit=self.item)
+            elif self.resistMode == TargetResistMode.weightedAverage:
+                em, therm, kin, explo = _getWeightedResists(fit=self.item)
         if includeLayer:
             return em, therm, kin, explo, layer
         else:
@@ -185,7 +185,7 @@ def _getHullResists(ship):
     return em, therm, kin, explo
 
 
-def _getWeighedResists(fit):
+def _getWeightedResists(fit):
     shieldEmRes, shieldThermRes, shieldKinRes, shieldExploRes = _getShieldResists(fit.ship)
     armorEmRes, armorThermRes, armorKinRes, armorExploRes = _getArmorResists(fit.ship)
     hullEmRes, hullThermRes, hullKinRes, hullExploRes = _getHullResists(fit.ship)
@@ -198,11 +198,11 @@ def _getWeighedResists(fit):
     totalEhpTherm = shieldHp / (1 - shieldThermRes) + armorHp / (1 - armorThermRes) + hullHp / (1 - hullThermRes)
     totalEhpKin = shieldHp / (1 - shieldKinRes) + armorHp / (1 - armorKinRes) + hullHp / (1 - hullKinRes)
     totalEhpExplo = shieldHp / (1 - shieldExploRes) + armorHp / (1 - armorExploRes) + hullHp / (1 - hullExploRes)
-    weighedEmRes = 1 - totalHp / totalEhpEm
-    weighedThermRes = 1 - totalHp / totalEhpTherm
-    weighedKinRes = 1 - totalHp / totalEhpKin
-    weighedExploRes = 1 - totalHp / totalEhpExplo
-    return weighedEmRes, weighedThermRes, weighedKinRes, weighedExploRes
+    weightedEmRes = 1 - totalHp / totalEhpEm
+    weightedThermRes = 1 - totalHp / totalEhpTherm
+    weightedKinRes = 1 - totalHp / totalEhpKin
+    weightedExploRes = 1 - totalHp / totalEhpExplo
+    return weightedEmRes, weightedThermRes, weightedKinRes, weightedExploRes
 
 
 def _getAutoResists(fit):

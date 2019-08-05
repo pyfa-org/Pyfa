@@ -46,7 +46,7 @@ class TargetResists(ViewColumn):
                     TargetResistMode.shield: 'shield',
                     TargetResistMode.armor: 'armor',
                     TargetResistMode.hull: 'hull',
-                    TargetResistMode.weighedAverage: 'weighed'}
+                    TargetResistMode.weightedAverage: 'average'}
                 modeSuffix = modeSuffixMap[stuff.resistMode]
                 if stuff.resistMode == TargetResistMode.auto and layer is not None:
                     modeSuffix = '{} {}'.format(modeSuffix, layer)
