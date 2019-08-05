@@ -76,6 +76,7 @@ from gui.builtinViewColumns import (  # noqa: E402, F401
     baseIcon,
     baseName,
     capacitorUse,
+    color,
     maxRange,
     misc,
     price,

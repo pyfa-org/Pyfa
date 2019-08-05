@@ -31,10 +31,6 @@ from service.fit import Fit
 
 class BaseWrapperList(gui.display.Display):
 
-    DEFAULT_COLS = (
-        'Base Icon',
-        'Base Name')
-
     def __init__(self, graphFrame, parent):
         super().__init__(parent)
         self.graphFrame = graphFrame
@@ -239,6 +235,10 @@ class BaseWrapperList(gui.display.Display):
 
 class SourceWrapperList(BaseWrapperList):
 
+    DEFAULT_COLS = (
+        'Color',
+        'Base Icon',
+        'Base Name')
     wrapperClass = SourceWrapper
 
     def __init__(self, graphFrame, parent):
@@ -268,6 +268,9 @@ class SourceWrapperList(BaseWrapperList):
 
 class TargetWrapperList(BaseWrapperList):
 
+    DEFAULT_COLS = (
+        'Base Icon',
+        'Base Name')
     wrapperClass = TargetWrapper
 
     def __init__(self, graphFrame, parent):
