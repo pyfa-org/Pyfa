@@ -113,14 +113,14 @@ class GraphControlPanel(wx.Panel):
 
         mainSizer.Add(optsSizer, 0, wx.EXPAND | wx.ALL, 10)
 
-        srcTgtSizer = wx.BoxSizer(wx.HORIZONTAL)
+        self.srcTgtSizer = wx.BoxSizer(wx.HORIZONTAL)
         self.sourceList = SourceWrapperList(graphFrame, self)
         self.sourceList.SetMinSize((270, -1))
-        srcTgtSizer.Add(self.sourceList, 3, wx.EXPAND | wx.ALL, 0)
+        self.srcTgtSizer.Add(self.sourceList, 1, wx.EXPAND | wx.ALL, 0)
         self.targetList = TargetWrapperList(graphFrame, self)
         self.targetList.SetMinSize((270, -1))
-        srcTgtSizer.Add(self.targetList, 4, wx.EXPAND | wx.LEFT, 10)
-        mainSizer.Add(srcTgtSizer, 1, wx.EXPAND | wx.LEFT | wx.BOTTOM | wx.RIGHT, 10)
+        self.srcTgtSizer.Add(self.targetList, 1, wx.EXPAND | wx.LEFT, 10)
+        mainSizer.Add(self.srcTgtSizer, 1, wx.EXPAND | wx.LEFT | wx.BOTTOM | wx.RIGHT, 10)
 
         self.SetSizer(mainSizer)
 
@@ -162,7 +162,7 @@ class GraphControlPanel(wx.Panel):
             self.tgtVectorLabel.Show(False)
 
         # Source and target list
-        self.refreshColumns()
+        self.refreshColumns(layout=False)
         self.targetList.Show(view.hasTargets)
 
         # Inputs
@@ -264,10 +264,15 @@ class GraphControlPanel(wx.Panel):
             self.ySubSelection.Append(self.formatLabel(yDef), yDef)
         self.ySubSelection.SetSelection(selectedY)
 
-    def refreshColumns(self):
+    def refreshColumns(self, layout=True):
         view = self.graphFrame.getView()
         self.sourceList.refreshExtraColumns(view.srcExtraCols)
         self.targetList.refreshExtraColumns(view.tgtExtraCols)
+        self.srcTgtSizer.Detach(self.sourceList)
+        self.srcTgtSizer.Detach(self.targetList)
+        self.srcTgtSizer.Add(self.sourceList, self.sourceList.ColumnCount, wx.EXPAND | wx.ALL, 0)
+        self.srcTgtSizer.Add(self.targetList, self.targetList.ColumnCount, wx.EXPAND | wx.LEFT, 10)
+        self.Layout()
 
     def OnShowLegendChange(self, event):
         event.Skip()
