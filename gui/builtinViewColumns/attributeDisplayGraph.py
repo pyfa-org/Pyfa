@@ -34,6 +34,8 @@ from gui.viewColumn import ViewColumn
 
 class GraphColumn(ViewColumn, metaclass=ABCMeta):
 
+    stickPrefixToValue = False
+
     def __init__(self, fittingView, iconID, formatSpec=(3, 0, 3)):
         ViewColumn.__init__(self, fittingView)
         self.imageId = fittingView.imageList.GetImageIndex(iconID, 'icons')
@@ -52,7 +54,12 @@ class GraphColumn(ViewColumn, metaclass=ABCMeta):
             val, unit = self._getValue(stuff)
             if val is None:
                 return ''
-            return formatAmount(val, *self.formatSpec, unitName=unit)
+            # Stick to value - 25k GJ
+            if self.stickPrefixToValue:
+                return '{} {}'.format(formatAmount(val, *self.formatSpec), unit)
+            # Stick to unit - 25 km
+            else:
+                return formatAmount(val, *self.formatSpec, unitName=unit)
         return ''
 
     @abstractmethod
@@ -192,20 +199,13 @@ SignatureRadiusColumn.register()
 class ShieldAmountColumn(GraphColumn):
 
     name = 'ShieldAmount'
+    stickPrefixToValue = True
 
     def __init__(self, fittingView, params):
         super().__init__(fittingView, 1384)
 
     def _getValue(self, fit):
         return fit.ship.getModifiedItemAttr('shieldCapacity'), 'HP'
-
-    def getText(self, stuff):
-        if isinstance(stuff, Fit):
-            val, unit = self._getValue(stuff)
-            if val is None:
-                return ''
-            return '{} {}'.format(formatAmount(val, *self.formatSpec), unit)
-        return ''
 
     def _getFitTooltip(self):
         return 'Maximum shield amount'
@@ -234,20 +234,13 @@ ShieldTimeColumn.register()
 class CapAmountColumn(GraphColumn):
 
     name = 'CapAmount'
+    stickPrefixToValue = True
 
     def __init__(self, fittingView, params):
         super().__init__(fittingView, 1668)
 
     def _getValue(self, fit):
         return fit.ship.getModifiedItemAttr('capacitorCapacity'), 'GJ'
-
-    def getText(self, stuff):
-        if isinstance(stuff, Fit):
-            val, unit = self._getValue(stuff)
-            if val is None:
-                return ''
-            return '{} {}'.format(formatAmount(val, *self.formatSpec), unit)
-        return ''
 
     def _getFitTooltip(self):
         return 'Maximum capacitor amount'
