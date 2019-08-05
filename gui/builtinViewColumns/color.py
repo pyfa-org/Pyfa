@@ -42,7 +42,7 @@ class LineColor(ViewColumn):
 
     def getToolTip(self, stuff):
         if isinstance(stuff, SourceWrapper):
-            return ''
+            return 'Change line color'
         return ''
 
 
