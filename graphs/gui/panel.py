@@ -116,10 +116,10 @@ class GraphControlPanel(wx.Panel):
         srcTgtSizer = wx.BoxSizer(wx.HORIZONTAL)
         self.sourceList = SourceWrapperList(graphFrame, self)
         self.sourceList.SetMinSize((270, -1))
-        srcTgtSizer.Add(self.sourceList, 1, wx.EXPAND | wx.ALL, 0)
+        srcTgtSizer.Add(self.sourceList, 3, wx.EXPAND | wx.ALL, 0)
         self.targetList = TargetWrapperList(graphFrame, self)
         self.targetList.SetMinSize((270, -1))
-        srcTgtSizer.Add(self.targetList, 1, wx.EXPAND | wx.LEFT, 10)
+        srcTgtSizer.Add(self.targetList, 4, wx.EXPAND | wx.LEFT, 10)
         mainSizer.Add(srcTgtSizer, 1, wx.EXPAND | wx.LEFT | wx.BOTTOM | wx.RIGHT, 10)
 
         self.SetSizer(mainSizer)
