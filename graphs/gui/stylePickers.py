@@ -28,14 +28,13 @@ from gui.bitmap_loader import BitmapLoader
 class ColorPickerPopup(wx.PopupTransientWindow):
 
     def __init__(self, parent, wrapper, ncol=0, nrow=0):
-        super().__init__(parent, flags=wx.BORDER_STATIC)
+        super().__init__(parent, flags=wx.BORDER_SIMPLE)
         self.wrapper = wrapper
         ncol = ncol or len(BASE_COLORS)
         nrow = nrow or int(len(BASE_COLORS) / ncol) + (1 if (len(BASE_COLORS) % ncol) else 0)
 
-        self.SetBackgroundColour(wx.Colour(255, 255, 255))
+        self.SetBackgroundColour(wx.SystemSettings.GetColour(wx.SYS_COLOUR_WINDOW))
         sizer = wx.BoxSizer(wx.VERTICAL)
-        self.SetSizer(sizer)
 
         grid = wx.GridSizer(nrow, ncol, 0, 0)
         self.patches = list()
@@ -45,9 +44,10 @@ class ColorPickerPopup(wx.PopupTransientWindow):
             icon.SetToolTip(colorData.name)
             icon.Bind(wx.EVT_LEFT_DOWN, self.OnLeftDown)
             grid.Add(icon, flag=wx.ALL, border=3)
-
         sizer.Add(grid)
-        sizer.Fit(self)
+
+        self.SetSizer(sizer)
+        self.Fit()
         self.Layout()
 
     def OnLeftDown(self, event):
