@@ -157,3 +157,11 @@ class GraphLightness(IntEnum):
     normal = autoId()
     dark = autoId()
     bright = autoId()
+
+
+@unique
+class GraphLineStyle(IntEnum):
+    solid = autoId()
+    dashed = autoId()
+    dotted = autoId()
+    dashdotted = autoId()

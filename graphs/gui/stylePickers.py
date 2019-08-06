@@ -21,7 +21,7 @@
 # noinspection PyPackageRequirements
 import wx
 
-from graphs.style import BASE_COLORS, LIGHTNESSES
+from graphs.style import BASE_COLORS, LIGHTNESSES, STYLES
 from gui.bitmap_loader import BitmapLoader
 from service.const import GraphLightness
 
@@ -95,4 +95,12 @@ class LightnessPickerPopup(StylePickerPopup):
     sortingOrder = (GraphLightness.dark, GraphLightness.normal, GraphLightness.bright)
     wrapperAttr = 'lightnessID'
     ncols = 3
+    nrows = 1
+
+
+class LineStylePickerPopup(StylePickerPopup):
+
+    styleContainer = STYLES
+    wrapperAttr = 'lineStyleID'
+    ncols = 4
     nrows = 1

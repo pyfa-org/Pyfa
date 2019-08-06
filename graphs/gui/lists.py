@@ -27,10 +27,11 @@ from graphs.style import BASE_COLORS, LIGHTNESSES
 from graphs.wrapper import SourceWrapper, TargetWrapper
 from gui.builtinViewColumns.graphColor import GraphColor
 from gui.builtinViewColumns.graphLightness import GraphLightness
+from gui.builtinViewColumns.graphLineStyle import GraphLineStyle
 from gui.contextMenu import ContextMenu
 from service.const import GraphCacheCleanupReason
 from service.fit import Fit
-from .stylePickers import ColorPickerPopup, LightnessPickerPopup
+from .stylePickers import ColorPickerPopup, LightnessPickerPopup, LineStylePickerPopup
 
 
 class BaseWrapperList(gui.display.Display):
@@ -122,7 +123,9 @@ class BaseWrapperList(gui.display.Display):
         if row != -1:
             pickers = {
                 self.getColIndex(GraphColor): ColorPickerPopup,
-                self.getColIndex(GraphLightness): LightnessPickerPopup}
+                self.getColIndex(GraphLightness): LightnessPickerPopup,
+                self.getColIndex(GraphLineStyle): LineStylePickerPopup}
+            # In case we had no index for some column, remove None
             pickers.pop(None, None)
             col = self.getColumn(event.Position)
             if col in pickers:
@@ -286,7 +289,7 @@ class SourceWrapperList(BaseWrapperList):
         for colorID in BASE_COLORS:
             if leastUses == colorUseMap.get(colorID, 0):
                 break
-        self._wrappers.append(SourceWrapper(item, colorID))
+        self._wrappers.append(SourceWrapper(item=item, colorID=colorID))
 
     def spawnMenu(self, event):
         selection = self.getSelectedWrappers()
@@ -307,6 +310,7 @@ class TargetWrapperList(BaseWrapperList):
 
     DEFAULT_COLS = (
         'Graph Lightness',
+        'Graph Line Style',
         'Base Icon',
         'Base Name')
 
@@ -330,7 +334,7 @@ class TargetWrapperList(BaseWrapperList):
         for lightnessID in LIGHTNESSES:
             if leastUses == lightnessUseMap.get(lightnessID, 0):
                 break
-        self._wrappers.append(TargetWrapper(item=item, lightnessID=lightnessID))
+        self._wrappers.append(TargetWrapper(item=item, lightnessID=lightnessID, lineStyleID=None))
 
     def spawnMenu(self, event):
         selection = self.getSelectedWrappers()

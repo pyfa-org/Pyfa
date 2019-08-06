@@ -31,7 +31,7 @@ import gui.globalEvents as GE
 import gui.mainFrame
 from graphs.data.base import FitGraph
 from graphs.events import RESIST_MODE_CHANGED
-from graphs.style import BASE_COLORS, LIGHTNESSES, hsl_to_hsv
+from graphs.style import BASE_COLORS, LIGHTNESSES, STYLES, hsl_to_hsv
 from gui.bitmap_loader import BitmapLoader
 from service.const import GraphCacheCleanupReason
 from service.settings import GraphSettings
@@ -269,13 +269,14 @@ class GraphFrame(wx.Frame):
         else:
             iterList = tuple((f, None) for f in sources)
         for source, target in iterList:
-            # Get color data
+            # Get line style data
             try:
                 colorData = BASE_COLORS[source.colorID]
             except KeyError:
                 pyfalog.warning('Invalid color "{}" for "{}"'.format(source.colorID, source.name))
                 continue
             color = colorData.hsl
+            lineStyle = 'solid'
             if target is not None:
                 try:
                     lightnessData = LIGHTNESSES[target.lightnessID]
@@ -283,7 +284,14 @@ class GraphFrame(wx.Frame):
                     pyfalog.warning('Invalid lightness "{}" for "{}"'.format(target.lightnessID, target.name))
                     continue
                 color = lightnessData.func(color)
+                try:
+                    lineStyleData = STYLES[target.lineStyleID]
+                except KeyError:
+                    pyfalog.warning('Invalid line style "{}" for "{}"'.format(target.lightnessID, target.name))
+                    continue
+                lineStyle = lineStyleData.mplSpec
             color = hsv_to_rgb(hsl_to_hsv(color))
+
             # Get point data
             try:
                 xs, ys = view.getPlotPoints(
@@ -307,14 +315,14 @@ class GraphFrame(wx.Frame):
                     max_y = max(max_y, max_y_this)
 
                 if len(xs) == 1 and len(ys) == 1:
-                    self.subplot.plot(xs, ys, color=color, marker='.')
+                    self.subplot.plot(xs, ys, color=color, linestyle=lineStyle, marker='.')
                 else:
-                    self.subplot.plot(xs, ys, color=color)
+                    self.subplot.plot(xs, ys, color=color, linestyle=lineStyle)
 
                 if target is None:
-                    legend.append((color, source.shortName))
+                    legend.append((color, lineStyle, source.shortName))
                 else:
-                    legend.append((color, '{} vs {}'.format(source.shortName, target.shortName)))
+                    legend.append((color, lineStyle, '{} vs {}'.format(source.shortName, target.shortName)))
             except Exception as ex:
                 pyfalog.warning('Invalid values in "{0}"', source.name)
                 self.canvas.draw()
@@ -340,8 +348,8 @@ class GraphFrame(wx.Frame):
 
         legend2 = []
         for i, iData in enumerate(legend):
-            color, label = iData
-            legend2.append(Patch(color=color, label=label), )
+            color, lineStyle, label = iData
+            legend2.append(Patch(color=color, linestyle=lineStyle, label=label), )
 
         if len(legend2) > 0 and self.ctrlPanel.showLegend:
             leg = self.subplot.legend(handles=legend2)

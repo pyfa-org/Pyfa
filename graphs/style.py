@@ -20,11 +20,27 @@
 
 from collections import OrderedDict, namedtuple
 
-from service.const import GraphColor, GraphLightness
+# noinspection PyPackageRequirements
+import wx
+
+from service.const import GraphColor, GraphLightness, GraphLineStyle
 
 
 ColorData = namedtuple('ColorData', ('hsl', 'name', 'iconName'))
 LightnessData = namedtuple('LightnessData', ('name', 'iconName', 'func'))
+
+
+class LineStyleData:
+
+    def __init__(self, name, iconNamePrefix, mplSpec):
+        self.name = name
+        self._iconNamePrefix = iconNamePrefix
+        self.mplSpec = mplSpec
+
+    @property
+    def iconName(self):
+        # TODO: add code to use white icon if background is dark
+        return '{}_black'.format(self._iconNamePrefix)
 
 
 # In HSL format
@@ -60,3 +76,10 @@ LIGHTNESSES = OrderedDict([
     (GraphLightness.normal, LightnessData('Normal', 'lightness_normal', lambda hsl: hsl)),
     (GraphLightness.dark, LightnessData('Dark', 'lightness_dark', darken)),
     (GraphLightness.bright, LightnessData('Bright', 'lightness_bright', brighten))])
+
+
+STYLES = OrderedDict([
+    (GraphLineStyle.solid, LineStyleData('Solid', 'style_solid', 'solid')),
+    (GraphLineStyle.dashed, LineStyleData('Dashed', 'style_dashed', (0, (5, 1)))),
+    (GraphLineStyle.dotted, LineStyleData('Dotted', 'style_dotted', (0, (1, 1)))),
+    (GraphLineStyle.dashdotted, LineStyleData('Dash-dotted', 'style_dashdot', (0, (3, 1, 1, 1))))])
