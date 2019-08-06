@@ -29,6 +29,7 @@ from logbook import Logger
 import gui.display
 import gui.globalEvents as GE
 import gui.mainFrame
+from graphs.colors import BASE_COLORS, hsl_to_hsv
 from graphs.data.base import FitGraph
 from graphs.events import RESIST_MODE_CHANGED
 from gui.bitmap_loader import BitmapLoader
@@ -52,6 +53,7 @@ try:
     from matplotlib.patches import Patch
     from matplotlib.backends.backend_wxagg import FigureCanvasWxAgg as Canvas
     from matplotlib.figure import Figure
+    from matplotlib.colors import hsv_to_rgb
 except ImportError as e:
     pyfalog.warning('Matplotlib failed to import.  Likely missing or incompatible version.')
     graphFrame_enabled = False
@@ -268,6 +270,12 @@ class GraphFrame(wx.Frame):
             iterList = tuple((f, None) for f in sources)
         for source, target in iterList:
             try:
+                colorData = BASE_COLORS[source.color]
+            except KeyError:
+                pyfalog.warning('Invalid color for "{0}"', source.name)
+                continue
+            color = hsv_to_rgb(hsl_to_hsv(colorData.hsl))
+            try:
                 xs, ys = view.getPlotPoints(
                     mainInput=mainInput,
                     miscInputs=miscInputs,
@@ -289,14 +297,14 @@ class GraphFrame(wx.Frame):
                     max_y = max(max_y, max_y_this)
 
                 if len(xs) == 1 and len(ys) == 1:
-                    self.subplot.plot(xs, ys, '.')
+                    self.subplot.plot(xs, ys, color=color, marker='.')
                 else:
-                    self.subplot.plot(xs, ys)
+                    self.subplot.plot(xs, ys, color=color)
 
                 if target is None:
-                    legend.append(source.shortName)
+                    legend.append((color, source.shortName))
                 else:
-                    legend.append('{} vs {}'.format(source.shortName, target.shortName))
+                    legend.append((color, '{} vs {}'.format(source.shortName, target.shortName)))
             except Exception as ex:
                 pyfalog.warning('Invalid values in "{0}"', source.name)
                 self.canvas.draw()
@@ -321,23 +329,9 @@ class GraphFrame(wx.Frame):
         self.subplot.set_ylim(bottom=min_y, top=max_y)
 
         legend2 = []
-        legend_colors = {
-            0: 'blue',
-            1: 'orange',
-            2: 'green',
-            3: 'red',
-            4: 'purple',
-            5: 'brown',
-            6: 'pink',
-            7: 'grey',
-        }
-
-        for i, i_name in enumerate(legend):
-            try:
-                selected_color = legend_colors[i]
-            except:
-                selected_color = None
-            legend2.append(Patch(color=selected_color, label=i_name), )
+        for i, iData in enumerate(legend):
+            color, label = iData
+            legend2.append(Patch(color=color, label=label), )
 
         if len(legend2) > 0 and self.ctrlPanel.showLegend:
             leg = self.subplot.legend(handles=legend2)
