@@ -25,9 +25,11 @@ import gui.display
 from eos.saveddata.targetProfile import TargetProfile
 from graphs.colors import BASE_COLORS
 from graphs.wrapper import SourceWrapper, TargetWrapper
+from gui.builtinViewColumns.color import LineColor
 from gui.contextMenu import ContextMenu
 from service.const import GraphCacheCleanupReason
 from service.fit import Fit
+from .stylePickers import ColorPickerPopup
 
 
 class BaseWrapperList(gui.display.Display):
@@ -41,6 +43,7 @@ class BaseWrapperList(gui.display.Display):
         self.hoveredColumn = None
 
         self.Bind(wx.EVT_CHAR_HOOK, self.kbEvent)
+        self.Bind(wx.EVT_LEFT_DOWN, self.OnLeftDown)
         self.Bind(wx.EVT_LEFT_DCLICK, self.OnLeftDClick)
         self.Bind(wx.EVT_MOTION, self.OnMouseMove)
         self.Bind(wx.EVT_LEAVE_WINDOW, self.OnLeaveWindow)
@@ -112,6 +115,24 @@ class BaseWrapperList(gui.display.Display):
             self.appendItem(fit)
             self.updateView()
             self.graphFrame.draw()
+
+    def OnLeftDown(self, event):
+        row, _ = self.HitTest(event.Position)
+        if row != -1:
+            col = self.getColumn(event.Position)
+            if col == self.getColIndex(LineColor):
+                wrapper = self.getWrapper(row)
+                if wrapper is not None:
+                    win = ColorPickerPopup(parent=self, wrapper=wrapper, ncol=4, nrow=2)
+                    pos = wx.GetMousePosition()
+                    win.Position(pos, (0, 0))
+                    win.Popup()
+                    return
+        event.Skip()
+
+    def OnColorChange(self):
+        self.updateView()
+        self.graphFrame.draw()
 
     def OnLeftDClick(self, event):
         row, _ = self.HitTest(event.Position)
