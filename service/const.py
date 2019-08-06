@@ -138,3 +138,14 @@ class TargetResistMode(IntEnum):
     armor = autoId()
     hull = autoId()
     weightedAverage = autoId()
+
+@unique
+class Color(IntEnum):
+    red = autoId()
+    green = autoId()
+    blue = autoId()
+    yellow = autoId()
+    cyan = autoId()
+    magenta = autoId()
+    orange = autoId()
+    purple = autoId()
