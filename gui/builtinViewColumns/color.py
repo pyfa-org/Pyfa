@@ -21,7 +21,6 @@
 import wx
 
 from graphs.wrapper import SourceWrapper
-from gui.bitmap_loader import BitmapLoader
 from gui.viewColumn import ViewColumn
 
 
@@ -31,8 +30,9 @@ class LineColor(ViewColumn):
 
     def __init__(self, fittingView, params):
         ViewColumn.__init__(self, fittingView)
-        self.imageId = fittingView.imageList.GetImageIndex(1432, 'icons')
-        self.bitmap = BitmapLoader.getBitmap(1432, 'icons')
+        self.resizable = False
+        self.size = 16
+        self.maxsize = self.size
         self.mask = wx.LIST_MASK_TEXT
 
     def getText(self, stuff):
