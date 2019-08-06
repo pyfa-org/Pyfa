@@ -20,6 +20,7 @@
 # noinspection PyPackageRequirements
 import wx
 
+from graphs.colors import BASE_COLORS
 from graphs.wrapper import SourceWrapper
 from gui.viewColumn import ViewColumn
 
@@ -36,8 +37,14 @@ class LineColor(ViewColumn):
         self.mask = wx.LIST_MASK_TEXT
 
     def getImageId(self, stuff):
-        red = self.fittingView.imageList.GetImageIndex('color_red', 'gui')
-        return red
+        if isinstance(stuff, SourceWrapper):
+            try:
+                color_data = BASE_COLORS[stuff.color]
+            except KeyError:
+                return -1
+            img = self.fittingView.imageList.GetImageIndex(color_data[1], 'gui')
+            return img
+        return -1
 
     def getToolTip(self, stuff):
         if isinstance(stuff, SourceWrapper):
