@@ -25,9 +25,9 @@ from graphs.wrapper import SourceWrapper
 from gui.viewColumn import ViewColumn
 
 
-class LineColor(ViewColumn):
+class GraphColor(ViewColumn):
 
-    name = 'Color'
+    name = 'Graph Color'
 
     def __init__(self, fittingView, params):
         ViewColumn.__init__(self, fittingView)
@@ -39,7 +39,7 @@ class LineColor(ViewColumn):
     def getImageId(self, stuff):
         if isinstance(stuff, SourceWrapper):
             try:
-                color_data = BASE_COLORS[stuff.color]
+                color_data = BASE_COLORS[stuff.colorID]
             except KeyError:
                 return -1
             img = self.fittingView.imageList.GetImageIndex(color_data.iconName, 'gui')
@@ -52,4 +52,4 @@ class LineColor(ViewColumn):
         return ''
 
 
-LineColor.register()
+GraphColor.register()

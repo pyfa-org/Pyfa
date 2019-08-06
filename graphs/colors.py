@@ -20,7 +20,7 @@
 
 from collections import OrderedDict, namedtuple
 
-from service.const import Color
+from service.const import GraphColor
 
 
 ColorData = namedtuple('ColorData', ('hsl', 'name', 'iconName'))
@@ -28,14 +28,14 @@ ColorData = namedtuple('ColorData', ('hsl', 'name', 'iconName'))
 
 # In HSL format
 BASE_COLORS = OrderedDict([
-    (Color.red, ColorData((0 / 360.0, 1.0, 0.5), 'Red', 'color_red')),
-    (Color.green, ColorData((120 / 360.0, 1.0, 0.5), 'Green', 'color_green')),
-    (Color.blue, ColorData((240 / 360.0, 1.0, 0.5), 'Blue', 'color_blue')),
-    (Color.yellow, ColorData((56 / 360.0, 1.0, 0.5), 'Yellow', 'color_yellow')),
-    (Color.cyan, ColorData((180 / 360.0, 1.0, 0.5), 'Cyan', 'color_cyan')),
-    (Color.magenta, ColorData((300 / 360.0, 1.0, 0.5), 'Magenta', 'color_magenta')),
-    (Color.orange, ColorData((40 / 360.0, 1.0, 0.5), 'Orange', 'color_orange')),
-    (Color.purple, ColorData((275 / 360.0, 1.0, 0.5), 'Purple', 'color_purple'))])
+    (GraphColor.red, ColorData((0 / 360.0, 1.0, 0.5), 'Red', 'color_red')),
+    (GraphColor.green, ColorData((120 / 360.0, 1.0, 0.5), 'Green', 'color_green')),
+    (GraphColor.blue, ColorData((240 / 360.0, 1.0, 0.5), 'Blue', 'color_blue')),
+    (GraphColor.yellow, ColorData((56 / 360.0, 1.0, 0.5), 'Yellow', 'color_yellow')),
+    (GraphColor.cyan, ColorData((180 / 360.0, 1.0, 0.5), 'Cyan', 'color_cyan')),
+    (GraphColor.magenta, ColorData((300 / 360.0, 1.0, 0.5), 'Magenta', 'color_magenta')),
+    (GraphColor.orange, ColorData((40 / 360.0, 1.0, 0.5), 'Orange', 'color_orange')),
+    (GraphColor.purple, ColorData((275 / 360.0, 1.0, 0.5), 'Purple', 'color_purple'))])
 
 
 def hsl_to_hsv(hsl):
@@ -43,3 +43,13 @@ def hsl_to_hsv(hsl):
     s *= l if (l < 0.5) else (1 - l)
     l += s
     return (h, 2 * s / l, l)
+
+
+def darken(hsl):
+    h, s, l = hsl
+    return h, s * 0.7, l * 0.7
+
+
+def brighten(hsl):
+    h, s, l = hsl
+    return h, s * 0.7, l + (1 - l) * 0.4

@@ -139,8 +139,9 @@ class TargetResistMode(IntEnum):
     hull = autoId()
     weightedAverage = autoId()
 
+
 @unique
-class Color(IntEnum):
+class GraphColor(IntEnum):
     red = autoId()
     green = autoId()
     blue = autoId()
@@ -149,3 +150,10 @@ class Color(IntEnum):
     magenta = autoId()
     orange = autoId()
     purple = autoId()
+
+
+@unique
+class GraphLightness(IntEnum):
+    normal = autoId()
+    dark = autoId()
+    bright = autoId()

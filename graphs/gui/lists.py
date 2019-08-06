@@ -25,7 +25,7 @@ import gui.display
 from eos.saveddata.targetProfile import TargetProfile
 from graphs.colors import BASE_COLORS
 from graphs.wrapper import SourceWrapper, TargetWrapper
-from gui.builtinViewColumns.color import LineColor
+from gui.builtinViewColumns.graphColor import GraphColor
 from gui.contextMenu import ContextMenu
 from service.const import GraphCacheCleanupReason
 from service.fit import Fit
@@ -120,7 +120,7 @@ class BaseWrapperList(gui.display.Display):
         row, _ = self.HitTest(event.Position)
         if row != -1:
             col = self.getColumn(event.Position)
-            if col == self.getColIndex(LineColor):
+            if col == self.getColIndex(GraphColor):
                 wrapper = self.getWrapper(row)
                 if wrapper is not None:
                     win = ColorPickerPopup(parent=self, wrapper=wrapper, ncol=4, nrow=2)
@@ -254,7 +254,7 @@ class BaseWrapperList(gui.display.Display):
 class SourceWrapperList(BaseWrapperList):
 
     DEFAULT_COLS = (
-        'Color',
+        'Graph Color',
         'Base Icon',
         'Base Name')
 
@@ -272,9 +272,9 @@ class SourceWrapperList(BaseWrapperList):
         # Find out least used color
         colorUseMap = {c: 0 for c in BASE_COLORS}
         for wrapper in self._wrappers:
-            if wrapper.color not in colorUseMap:
+            if wrapper.colorID not in colorUseMap:
                 continue
-            colorUseMap[wrapper.color] += 1
+            colorUseMap[wrapper.colorID] += 1
         leastUses = min(colorUseMap.values(), default=0)
         color = None
         for color in BASE_COLORS:
@@ -300,6 +300,7 @@ class SourceWrapperList(BaseWrapperList):
 class TargetWrapperList(BaseWrapperList):
 
     DEFAULT_COLS = (
+        'Graph Lightness',
         'Base Icon',
         'Base Name')
 
@@ -312,7 +313,7 @@ class TargetWrapperList(BaseWrapperList):
         self.updateView()
 
     def appendItem(self, item):
-        self._wrappers.append(TargetWrapper(item))
+        self._wrappers.append(TargetWrapper(item, None))
 
     def spawnMenu(self, event):
         selection = self.getSelectedWrappers()

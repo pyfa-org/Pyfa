@@ -53,7 +53,7 @@ class ColorPickerPopup(wx.PopupTransientWindow):
     def OnLeftDown(self, event):
         colorID = getattr(event.GetEventObject(), 'colorID', None)
         if colorID is not None:
-            self.wrapper.color = colorID
+            self.wrapper.colorID = colorID
             self.Parent.OnColorChange()
             self.Hide()
             self.Destroy()

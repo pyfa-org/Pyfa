@@ -269,12 +269,14 @@ class GraphFrame(wx.Frame):
         else:
             iterList = tuple((f, None) for f in sources)
         for source, target in iterList:
+            # Get color data
             try:
-                colorData = BASE_COLORS[source.color]
+                colorData = BASE_COLORS[source.colorID]
             except KeyError:
                 pyfalog.warning('Invalid color for "{0}"', source.name)
                 continue
             color = hsv_to_rgb(hsl_to_hsv(colorData.hsl))
+            # Get point data
             try:
                 xs, ys = view.getPlotPoints(
                     mainInput=mainInput,

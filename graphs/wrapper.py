@@ -95,24 +95,33 @@ class BaseWrapper:
 
 class SourceWrapper(BaseWrapper):
 
-    def __init__(self, item, color):
+    def __init__(self, item, colorID):
         super().__init__(item)
-        self._color = color
+        self._colorID = colorID
 
     @property
-    def color(self):
-        return self._color
+    def colorID(self):
+        return self._colorID
 
-    @color.setter
-    def color(self, value):
-        self._color = value
+    @colorID.setter
+    def colorID(self, value):
+        self._colorID = value
 
 
 class TargetWrapper(BaseWrapper):
 
-    def __init__(self, item):
+    def __init__(self, item, lightness):
         super().__init__(item=item)
+        self._lightness = lightness
         self.__resistMode = TargetResistMode.auto
+
+    @property
+    def lightness(self):
+        return self._lightness
+
+    @lightness.setter
+    def lightness(self, value):
+        self._lightness = value
 
     @property
     def resistMode(self):
