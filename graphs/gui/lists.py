@@ -23,7 +23,7 @@ import wx
 
 import gui.display
 from eos.saveddata.targetProfile import TargetProfile
-from graphs.style import BASE_COLORS, LIGHTNESSES
+from graphs.style import BASE_COLORS, LIGHTNESSES, STYLES
 from graphs.wrapper import SourceWrapper, TargetWrapper
 from gui.builtinViewColumns.graphColor import GraphColor
 from gui.builtinViewColumns.graphLightness import GraphLightness
@@ -284,11 +284,15 @@ class SourceWrapperList(BaseWrapperList):
             if wrapper.colorID not in colorUseMap:
                 continue
             colorUseMap[wrapper.colorID] += 1
-        leastUses = min(colorUseMap.values(), default=0)
-        colorID = None
-        for colorID in BASE_COLORS:
-            if leastUses == colorUseMap.get(colorID, 0):
-                break
+
+        def getDefaultParams():
+            leastUses = min(colorUseMap.values(), default=0)
+            for colorID in BASE_COLORS:
+                if leastUses == colorUseMap.get(colorID, 0):
+                    return colorID
+            return None
+
+        colorID = getDefaultParams()
         self._wrappers.append(SourceWrapper(item=item, colorID=colorID))
 
     def spawnMenu(self, event):
@@ -324,17 +328,23 @@ class TargetWrapperList(BaseWrapperList):
 
     def appendItem(self, item):
         # Find out least used lightness
-        lightnessUseMap = {l: 0 for l in LIGHTNESSES}
+        lightnessUseMap = {(l, s): 0 for l in LIGHTNESSES for s in STYLES}
         for wrapper in self._wrappers:
-            if wrapper.lightnessID not in lightnessUseMap:
+            key = (wrapper.lightnessID, wrapper.lineStyleID)
+            if key not in lightnessUseMap:
                 continue
-            lightnessUseMap[wrapper.lightnessID] += 1
-        leastUses = min(lightnessUseMap.values(), default=0)
-        lightnessID = None
-        for lightnessID in LIGHTNESSES:
-            if leastUses == lightnessUseMap.get(lightnessID, 0):
-                break
-        self._wrappers.append(TargetWrapper(item=item, lightnessID=lightnessID, lineStyleID=None))
+            lightnessUseMap[key] += 1
+
+        def getDefaultParams():
+            leastUses = min(lightnessUseMap.values(), default=0)
+            for lineStyleID in STYLES:
+                for lightnessID in LIGHTNESSES:
+                    if leastUses == lightnessUseMap.get((lightnessID, lineStyleID), 0):
+                        return lightnessID, lineStyleID
+            return None, None
+
+        lightnessID, lineStyleID = getDefaultParams()
+        self._wrappers.append(TargetWrapper(item=item, lightnessID=lightnessID, lineStyleID=lineStyleID))
 
     def spawnMenu(self, event):
         selection = self.getSelectedWrappers()
