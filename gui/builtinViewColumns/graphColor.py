@@ -20,7 +20,7 @@
 # noinspection PyPackageRequirements
 import wx
 
-from graphs.colors import BASE_COLORS
+from graphs.style import BASE_COLORS
 from graphs.wrapper import SourceWrapper
 from gui.viewColumn import ViewColumn
 
@@ -39,10 +39,10 @@ class GraphColor(ViewColumn):
     def getImageId(self, stuff):
         if isinstance(stuff, SourceWrapper):
             try:
-                color_data = BASE_COLORS[stuff.colorID]
+                colorData = BASE_COLORS[stuff.colorID]
             except KeyError:
                 return -1
-            img = self.fittingView.imageList.GetImageIndex(color_data.iconName, 'gui')
+            img = self.fittingView.imageList.GetImageIndex(colorData.iconName, 'gui')
             return img
         return -1
 

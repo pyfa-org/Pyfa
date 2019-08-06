@@ -110,18 +110,18 @@ class SourceWrapper(BaseWrapper):
 
 class TargetWrapper(BaseWrapper):
 
-    def __init__(self, item, lightness):
+    def __init__(self, item, lightnessID):
         super().__init__(item=item)
-        self._lightness = lightness
+        self._lightnessID = lightnessID
         self.__resistMode = TargetResistMode.auto
 
     @property
-    def lightness(self):
-        return self._lightness
+    def lightnessID(self):
+        return self._lightnessID
 
-    @lightness.setter
-    def lightness(self, value):
-        self._lightness = value
+    @lightnessID.setter
+    def lightnessID(self, value):
+        self._lightnessID = value
 
     @property
     def resistMode(self):

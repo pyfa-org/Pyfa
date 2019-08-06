@@ -20,7 +20,7 @@
 # noinspection PyPackageRequirements
 import wx
 
-from graphs.colors import BASE_COLORS
+from graphs.style import LIGHTNESSES
 from graphs.wrapper import TargetWrapper
 from gui.viewColumn import ViewColumn
 
@@ -38,8 +38,12 @@ class GraphLightness(ViewColumn):
 
     def getImageId(self, stuff):
         if isinstance(stuff, TargetWrapper):
-            # img = self.fittingView.imageList.GetImageIndex(color_data.iconName, 'gui')
-            return -1
+            try:
+                lightnessData = LIGHTNESSES[stuff.lightnessID]
+            except KeyError:
+                return -1
+            img = self.fittingView.imageList.GetImageIndex(lightnessData.iconName, 'gui')
+            return img
         return -1
 
     def getToolTip(self, stuff):

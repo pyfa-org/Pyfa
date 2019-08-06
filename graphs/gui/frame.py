@@ -29,9 +29,9 @@ from logbook import Logger
 import gui.display
 import gui.globalEvents as GE
 import gui.mainFrame
-from graphs.colors import BASE_COLORS, hsl_to_hsv
 from graphs.data.base import FitGraph
 from graphs.events import RESIST_MODE_CHANGED
+from graphs.style import BASE_COLORS, LIGHTNESSES, hsl_to_hsv
 from gui.bitmap_loader import BitmapLoader
 from service.const import GraphCacheCleanupReason
 from service.settings import GraphSettings
@@ -273,9 +273,17 @@ class GraphFrame(wx.Frame):
             try:
                 colorData = BASE_COLORS[source.colorID]
             except KeyError:
-                pyfalog.warning('Invalid color for "{0}"', source.name)
+                pyfalog.warning('Invalid color "{}" for "{}"'.format(source.colorID, source.name))
                 continue
-            color = hsv_to_rgb(hsl_to_hsv(colorData.hsl))
+            color = colorData.hsl
+            if target is not None:
+                try:
+                    lightnessData = LIGHTNESSES[target.lightnessID]
+                except KeyError:
+                    pyfalog.warning('Invalid lightness "{}" for "{}"'.format(target.lightnessID, target.name))
+                    continue
+                color = lightnessData.func(color)
+            color = hsv_to_rgb(hsl_to_hsv(color))
             # Get point data
             try:
                 xs, ys = view.getPlotPoints(

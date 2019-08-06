@@ -20,10 +20,11 @@
 
 from collections import OrderedDict, namedtuple
 
-from service.const import GraphColor
+from service.const import GraphColor, GraphLightness
 
 
 ColorData = namedtuple('ColorData', ('hsl', 'name', 'iconName'))
+LightnessData = namedtuple('LightnessData', ('name', 'iconName', 'func'))
 
 
 # In HSL format
@@ -53,3 +54,9 @@ def darken(hsl):
 def brighten(hsl):
     h, s, l = hsl
     return h, s * 0.7, l + (1 - l) * 0.4
+
+
+LIGHTNESSES = OrderedDict([
+    (GraphLightness.normal, LightnessData('Normal', 'lightness_normal', lambda hsl: hsl)),
+    (GraphLightness.dark, LightnessData('Dark', 'lightness_dark', darken)),
+    (GraphLightness.bright, LightnessData('Bright', 'lightness_bright', brighten))])

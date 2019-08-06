@@ -21,22 +21,21 @@
 # noinspection PyPackageRequirements
 import wx
 
-from graphs.colors import BASE_COLORS
+from graphs.style import BASE_COLORS, LIGHTNESSES
 from gui.bitmap_loader import BitmapLoader
+from service.const import GraphLightness
 
 
 class ColorPickerPopup(wx.PopupTransientWindow):
 
-    def __init__(self, parent, wrapper, ncol=0, nrow=0):
+    def __init__(self, parent, wrapper):
         super().__init__(parent, flags=wx.BORDER_SIMPLE)
         self.wrapper = wrapper
-        ncol = ncol or len(BASE_COLORS)
-        nrow = nrow or int(len(BASE_COLORS) / ncol) + (1 if (len(BASE_COLORS) % ncol) else 0)
 
         self.SetBackgroundColour(wx.SystemSettings.GetColour(wx.SYS_COLOUR_WINDOW))
         sizer = wx.BoxSizer(wx.VERTICAL)
 
-        grid = wx.GridSizer(nrow, ncol, 0, 0)
+        grid = wx.GridSizer(2, 4, 0, 0)
         self.patches = list()
         for colorID, colorData in BASE_COLORS.items():
             icon = wx.StaticBitmap(self, wx.ID_ANY, BitmapLoader.getBitmap(colorData.iconName, 'gui'))
@@ -54,7 +53,43 @@ class ColorPickerPopup(wx.PopupTransientWindow):
         colorID = getattr(event.GetEventObject(), 'colorID', None)
         if colorID is not None:
             self.wrapper.colorID = colorID
-            self.Parent.OnColorChange()
+            self.Parent.OnLineStyleChange()
+            self.Hide()
+            self.Destroy()
+            return
+        event.Skip()
+
+
+class LightnessPickerPopup(wx.PopupTransientWindow):
+
+    def __init__(self, parent, wrapper):
+        super().__init__(parent, flags=wx.BORDER_SIMPLE)
+        self.wrapper = wrapper
+
+        self.SetBackgroundColour(wx.SystemSettings.GetColour(wx.SYS_COLOUR_WINDOW))
+        sizer = wx.BoxSizer(wx.VERTICAL)
+
+        grid = wx.GridSizer(1, 3, 0, 0)
+        self.patches = list()
+        customOrder = (GraphLightness.dark, GraphLightness.normal, GraphLightness.bright)
+        for lightnessID in customOrder:
+            lightnessData = LIGHTNESSES[lightnessID]
+            icon = wx.StaticBitmap(self, wx.ID_ANY, BitmapLoader.getBitmap(lightnessData.iconName, 'gui'))
+            icon.lightnessID = lightnessID
+            icon.SetToolTip(lightnessData.name)
+            icon.Bind(wx.EVT_LEFT_DOWN, self.OnLeftDown)
+            grid.Add(icon, flag=wx.ALL, border=3)
+        sizer.Add(grid)
+
+        self.SetSizer(sizer)
+        self.Fit()
+        self.Layout()
+
+    def OnLeftDown(self, event):
+        lightnessID = getattr(event.GetEventObject(), 'lightnessID', None)
+        if lightnessID is not None:
+            self.wrapper.lightnessID = lightnessID
+            self.Parent.OnLineStyleChange()
             self.Hide()
             self.Destroy()
             return

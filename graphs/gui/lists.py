@@ -23,13 +23,14 @@ import wx
 
 import gui.display
 from eos.saveddata.targetProfile import TargetProfile
-from graphs.colors import BASE_COLORS
+from graphs.style import BASE_COLORS, LIGHTNESSES
 from graphs.wrapper import SourceWrapper, TargetWrapper
 from gui.builtinViewColumns.graphColor import GraphColor
+from gui.builtinViewColumns.graphLightness import GraphLightness
 from gui.contextMenu import ContextMenu
 from service.const import GraphCacheCleanupReason
 from service.fit import Fit
-from .stylePickers import ColorPickerPopup
+from .stylePickers import ColorPickerPopup, LightnessPickerPopup
 
 
 class BaseWrapperList(gui.display.Display):
@@ -123,14 +124,22 @@ class BaseWrapperList(gui.display.Display):
             if col == self.getColIndex(GraphColor):
                 wrapper = self.getWrapper(row)
                 if wrapper is not None:
-                    win = ColorPickerPopup(parent=self, wrapper=wrapper, ncol=4, nrow=2)
+                    win = ColorPickerPopup(parent=self, wrapper=wrapper)
+                    pos = wx.GetMousePosition()
+                    win.Position(pos, (0, 0))
+                    win.Popup()
+                    return
+            if col == self.getColIndex(GraphLightness):
+                wrapper = self.getWrapper(row)
+                if wrapper is not None:
+                    win = LightnessPickerPopup(parent=self, wrapper=wrapper)
                     pos = wx.GetMousePosition()
                     win.Position(pos, (0, 0))
                     win.Popup()
                     return
         event.Skip()
 
-    def OnColorChange(self):
+    def OnLineStyleChange(self):
         self.updateView()
         self.graphFrame.draw()
 
@@ -276,11 +285,11 @@ class SourceWrapperList(BaseWrapperList):
                 continue
             colorUseMap[wrapper.colorID] += 1
         leastUses = min(colorUseMap.values(), default=0)
-        color = None
-        for color in BASE_COLORS:
-            if leastUses == colorUseMap.get(color, 0):
+        colorID = None
+        for colorID in BASE_COLORS:
+            if leastUses == colorUseMap.get(colorID, 0):
                 break
-        self._wrappers.append(SourceWrapper(item, color))
+        self._wrappers.append(SourceWrapper(item, colorID))
 
     def spawnMenu(self, event):
         selection = self.getSelectedWrappers()
@@ -313,7 +322,18 @@ class TargetWrapperList(BaseWrapperList):
         self.updateView()
 
     def appendItem(self, item):
-        self._wrappers.append(TargetWrapper(item, None))
+        # Find out least used lightness
+        lightnessUseMap = {l: 0 for l in LIGHTNESSES}
+        for wrapper in self._wrappers:
+            if wrapper.lightnessID not in lightnessUseMap:
+                continue
+            lightnessUseMap[wrapper.lightnessID] += 1
+        leastUses = min(lightnessUseMap.values(), default=0)
+        lightnessID = None
+        for lightnessID in LIGHTNESSES:
+            if leastUses == lightnessUseMap.get(lightnessID, 0):
+                break
+        self._wrappers.append(TargetWrapper(item=item, lightnessID=lightnessID))
 
     def spawnMenu(self, event):
         selection = self.getSelectedWrappers()
