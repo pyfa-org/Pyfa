@@ -95,9 +95,9 @@ class BaseWrapper:
 
 class SourceWrapper(BaseWrapper):
 
-    def __init__(self, item):
+    def __init__(self, item, color):
         super().__init__(item)
-        self._color = None
+        self._color = color
 
     @property
     def color(self):

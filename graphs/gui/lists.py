@@ -23,6 +23,7 @@ import wx
 
 import gui.display
 from eos.saveddata.targetProfile import TargetProfile
+from graphs.colors import BASE_COLORS
 from graphs.wrapper import SourceWrapper, TargetWrapper
 from gui.contextMenu import ContextMenu
 from service.const import GraphCacheCleanupReason
@@ -129,10 +130,6 @@ class BaseWrapperList(gui.display.Display):
         event.Skip()
 
     # Wrapper-related methods
-    @property
-    def wrapperClass(self):
-        raise NotImplementedError
-
     def getWrapper(self, row):
         if row == -1:
             return None
@@ -165,7 +162,7 @@ class BaseWrapperList(gui.display.Display):
         return wrappers
 
     def appendItem(self, item):
-        self._wrappers.append(self.wrapperClass(item))
+        raise NotImplemented
 
     def containsFitID(self, fitID):
         for wrapper in self._wrappers:
@@ -239,7 +236,6 @@ class SourceWrapperList(BaseWrapperList):
         'Color',
         'Base Icon',
         'Base Name')
-    wrapperClass = SourceWrapper
 
     def __init__(self, graphFrame, parent):
         super().__init__(graphFrame, parent)
@@ -250,6 +246,20 @@ class SourceWrapperList(BaseWrapperList):
         if fit is not None:
             self.appendItem(fit)
             self.updateView()
+
+    def appendItem(self, item):
+        # Find out least used color
+        colorUseMap = {c: 0 for c in BASE_COLORS}
+        for wrapper in self._wrappers:
+            if wrapper.color not in colorUseMap:
+                continue
+            colorUseMap[wrapper.color] += 1
+        leastUses = min(colorUseMap.values(), default=0)
+        color = None
+        for color in BASE_COLORS:
+            if leastUses == colorUseMap.get(color, 0):
+                break
+        self._wrappers.append(SourceWrapper(item, color))
 
     def spawnMenu(self, event):
         selection = self.getSelectedWrappers()
@@ -271,7 +281,6 @@ class TargetWrapperList(BaseWrapperList):
     DEFAULT_COLS = (
         'Base Icon',
         'Base Name')
-    wrapperClass = TargetWrapper
 
     def __init__(self, graphFrame, parent):
         super().__init__(graphFrame, parent)
@@ -280,6 +289,9 @@ class TargetWrapperList(BaseWrapperList):
 
         self.appendItem(TargetProfile.getIdeal())
         self.updateView()
+
+    def appendItem(self, item):
+        self._wrappers.append(TargetWrapper(item))
 
     def spawnMenu(self, event):
         selection = self.getSelectedWrappers()
