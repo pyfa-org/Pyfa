@@ -18,21 +18,24 @@
 # =============================================================================
 
 
-from collections import OrderedDict
+from collections import OrderedDict, namedtuple
 
 from service.const import Color
 
 
+ColorData = namedtuple('ColorData', ('hsl', 'name', 'iconName'))
+
+
 # In HSL format
 BASE_COLORS = OrderedDict([
-    (Color.red, ((0 / 360.0, 1.0, 0.5), 'color_red')),
-    (Color.green, ((120 / 360.0, 1.0, 0.5), 'color_green')),
-    (Color.blue, ((240 / 360.0, 1.0, 0.5), 'color_blue')),
-    (Color.yellow, ((56 / 360.0, 1.0, 0.5), 'color_yellow')),
-    (Color.cyan, ((180 / 360.0, 1.0, 0.5), 'color_cyan')),
-    (Color.magenta, ((300 / 360.0, 1.0, 0.5), 'color_magenta')),
-    (Color.orange, ((40 / 360.0, 1.0, 0.5), 'color_orange')),
-    (Color.purple, ((275 / 360.0, 1.0, 0.5), 'color_purple'))])
+    (Color.red, ColorData((0 / 360.0, 1.0, 0.5), 'Red', 'color_red')),
+    (Color.green, ColorData((120 / 360.0, 1.0, 0.5), 'Green', 'color_green')),
+    (Color.blue, ColorData((240 / 360.0, 1.0, 0.5), 'Blue', 'color_blue')),
+    (Color.yellow, ColorData((56 / 360.0, 1.0, 0.5), 'Yellow', 'color_yellow')),
+    (Color.cyan, ColorData((180 / 360.0, 1.0, 0.5), 'Cyan', 'color_cyan')),
+    (Color.magenta, ColorData((300 / 360.0, 1.0, 0.5), 'Magenta', 'color_magenta')),
+    (Color.orange, ColorData((40 / 360.0, 1.0, 0.5), 'Orange', 'color_orange')),
+    (Color.purple, ColorData((275 / 360.0, 1.0, 0.5), 'Purple', 'color_purple'))])
 
 
 def hsl_to_hsv(hsl):

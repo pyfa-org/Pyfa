@@ -42,7 +42,7 @@ class LineColor(ViewColumn):
                 color_data = BASE_COLORS[stuff.color]
             except KeyError:
                 return -1
-            img = self.fittingView.imageList.GetImageIndex(color_data[1], 'gui')
+            img = self.fittingView.imageList.GetImageIndex(color_data.iconName, 'gui')
             return img
         return -1
 
