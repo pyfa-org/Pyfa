@@ -26,7 +26,7 @@ from gui.bitmap_loader import BitmapLoader
 from service.const import GraphLightness
 
 
-class ColorPickerPopup(wx.PopupTransientWindow):
+class StylePickerPopup(wx.PopupTransientWindow):
 
     def __init__(self, parent, wrapper):
         super().__init__(parent, flags=wx.BORDER_SIMPLE)
@@ -35,12 +35,13 @@ class ColorPickerPopup(wx.PopupTransientWindow):
         self.SetBackgroundColour(wx.SystemSettings.GetColour(wx.SYS_COLOUR_WINDOW))
         sizer = wx.BoxSizer(wx.VERTICAL)
 
-        grid = wx.GridSizer(2, 4, 0, 0)
+        grid = wx.GridSizer(self.nrows, self.ncols, 0, 0)
         self.patches = list()
-        for colorID, colorData in BASE_COLORS.items():
-            icon = wx.StaticBitmap(self, wx.ID_ANY, BitmapLoader.getBitmap(colorData.iconName, 'gui'))
-            icon.colorID = colorID
-            icon.SetToolTip(colorData.name)
+        for styleID in self.sortingOrder:
+            styleData = self.styleContainer[styleID]
+            icon = wx.StaticBitmap(self, wx.ID_ANY, BitmapLoader.getBitmap(styleData.iconName, 'gui'))
+            icon.styleID = styleID
+            icon.SetToolTip(styleData.name)
             icon.Bind(wx.EVT_LEFT_DOWN, self.OnLeftDown)
             grid.Add(icon, flag=wx.ALL, border=3)
         sizer.Add(grid)
@@ -49,10 +50,30 @@ class ColorPickerPopup(wx.PopupTransientWindow):
         self.Fit()
         self.Layout()
 
+    @property
+    def styleContainer(self):
+        raise NotImplementedError
+
+    @property
+    def sortingOrder(self):
+        return self.styleContainer
+
+    @property
+    def ncols(self):
+        raise NotImplementedError
+
+    @property
+    def nrows(self):
+        raise NotImplementedError
+
+    @property
+    def wrapperAttr(self):
+        raise NotImplementedError
+
     def OnLeftDown(self, event):
-        colorID = getattr(event.GetEventObject(), 'colorID', None)
-        if colorID is not None:
-            self.wrapper.colorID = colorID
+        styleID = getattr(event.GetEventObject(), 'styleID', None)
+        if styleID is not None:
+            setattr(self.wrapper, self.wrapperAttr, styleID)
             self.Parent.OnLineStyleChange()
             self.Hide()
             self.Destroy()
@@ -60,37 +81,18 @@ class ColorPickerPopup(wx.PopupTransientWindow):
         event.Skip()
 
 
-class LightnessPickerPopup(wx.PopupTransientWindow):
+class ColorPickerPopup(StylePickerPopup):
 
-    def __init__(self, parent, wrapper):
-        super().__init__(parent, flags=wx.BORDER_SIMPLE)
-        self.wrapper = wrapper
+    styleContainer = BASE_COLORS
+    wrapperAttr = 'colorID'
+    ncols = 4
+    nrows = 2
 
-        self.SetBackgroundColour(wx.SystemSettings.GetColour(wx.SYS_COLOUR_WINDOW))
-        sizer = wx.BoxSizer(wx.VERTICAL)
 
-        grid = wx.GridSizer(1, 3, 0, 0)
-        self.patches = list()
-        customOrder = (GraphLightness.dark, GraphLightness.normal, GraphLightness.bright)
-        for lightnessID in customOrder:
-            lightnessData = LIGHTNESSES[lightnessID]
-            icon = wx.StaticBitmap(self, wx.ID_ANY, BitmapLoader.getBitmap(lightnessData.iconName, 'gui'))
-            icon.lightnessID = lightnessID
-            icon.SetToolTip(lightnessData.name)
-            icon.Bind(wx.EVT_LEFT_DOWN, self.OnLeftDown)
-            grid.Add(icon, flag=wx.ALL, border=3)
-        sizer.Add(grid)
+class LightnessPickerPopup(StylePickerPopup):
 
-        self.SetSizer(sizer)
-        self.Fit()
-        self.Layout()
-
-    def OnLeftDown(self, event):
-        lightnessID = getattr(event.GetEventObject(), 'lightnessID', None)
-        if lightnessID is not None:
-            self.wrapper.lightnessID = lightnessID
-            self.Parent.OnLineStyleChange()
-            self.Hide()
-            self.Destroy()
-            return
-        event.Skip()
+    styleContainer = LIGHTNESSES
+    sortingOrder = (GraphLightness.dark, GraphLightness.normal, GraphLightness.bright)
+    wrapperAttr = 'lightnessID'
+    ncols = 3
+    nrows = 1
