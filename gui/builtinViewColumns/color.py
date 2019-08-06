@@ -31,14 +31,13 @@ class LineColor(ViewColumn):
     def __init__(self, fittingView, params):
         ViewColumn.__init__(self, fittingView)
         self.resizable = False
-        self.size = 16
+        self.size = 20
         self.maxsize = self.size
         self.mask = wx.LIST_MASK_TEXT
 
-    def getText(self, stuff):
-        if isinstance(stuff, SourceWrapper):
-            return ''
-        return ''
+    def getImageId(self, stuff):
+        red = self.fittingView.imageList.GetImageIndex('color_red', 'gui')
+        return red
 
     def getToolTip(self, stuff):
         if isinstance(stuff, SourceWrapper):
