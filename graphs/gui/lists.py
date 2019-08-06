@@ -120,19 +120,16 @@ class BaseWrapperList(gui.display.Display):
     def OnLeftDown(self, event):
         row, _ = self.HitTest(event.Position)
         if row != -1:
+            pickers = {
+                self.getColIndex(GraphColor): ColorPickerPopup,
+                self.getColIndex(GraphLightness): LightnessPickerPopup}
+            pickers.pop(None, None)
             col = self.getColumn(event.Position)
-            if col == self.getColIndex(GraphColor):
+            if col in pickers:
+                picker = pickers[col]
                 wrapper = self.getWrapper(row)
                 if wrapper is not None:
-                    win = ColorPickerPopup(parent=self, wrapper=wrapper)
-                    pos = wx.GetMousePosition()
-                    win.Position(pos, (0, 0))
-                    win.Popup()
-                    return
-            if col == self.getColIndex(GraphLightness):
-                wrapper = self.getWrapper(row)
-                if wrapper is not None:
-                    win = LightnessPickerPopup(parent=self, wrapper=wrapper)
+                    win = picker(parent=self, wrapper=wrapper)
                     pos = wx.GetMousePosition()
                     win.Position(pos, (0, 0))
                     win.Popup()
