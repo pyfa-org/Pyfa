@@ -42,7 +42,9 @@ pyfalog = Logger(__name__)
 
 
 class BaseName(ViewColumn):
+
     name = "Base Name"
+    proportionWidth = 7
 
     def __init__(self, fittingView, params):
         ViewColumn.__init__(self, fittingView)

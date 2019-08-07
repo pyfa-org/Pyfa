@@ -34,6 +34,7 @@ from gui.viewColumn import ViewColumn
 
 class GraphColumn(ViewColumn, metaclass=ABCMeta):
 
+    proportionWidth = 2
     stickPrefixToValue = False
 
     def __init__(self, fittingView, iconID, formatSpec=(3, 0, 3)):

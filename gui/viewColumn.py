@@ -28,6 +28,7 @@ class ViewColumn:
     they can be used as columns in a view.
     """
     columns = {}
+    proportionWidth = 1
 
     def __init__(self, fittingView):
         self.fittingView = fittingView

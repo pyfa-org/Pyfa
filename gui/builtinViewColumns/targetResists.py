@@ -30,6 +30,7 @@ from service.const import TargetResistMode
 class TargetResists(ViewColumn):
 
     name = 'Target Resists'
+    proportionWidth = 5
 
     def __init__(self, fittingView, params):
         super().__init__(fittingView)
