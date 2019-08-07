@@ -32,7 +32,7 @@ class GraphColor(ViewColumn):
     def __init__(self, fittingView, params):
         ViewColumn.__init__(self, fittingView)
         self.resizable = False
-        self.size = 20
+        self.size = 24
         self.maxsize = self.size
         self.mask = wx.LIST_MASK_TEXT
 
