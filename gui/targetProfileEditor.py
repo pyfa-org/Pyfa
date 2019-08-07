@@ -80,8 +80,8 @@ class TargetProfileNameValidator(BaseValidator):
 
 class TargetProfileEntityEditor(EntityEditor):
 
-    def __init__(self, parent):
-        EntityEditor.__init__(self, parent, "Target Profile")
+    def __init__(self, parent, selected=None):
+        EntityEditor.__init__(self, parent=parent, entityName="Target Profile", selected=selected)
         self.SetEditorValidator(TargetProfileNameValidator)
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
 
@@ -122,7 +122,7 @@ class TargetProfileEditorDlg(wx.Dialog):
         ('signatureRadius', ('Signature radius\nLeave blank for infinitely big value', 'm')),
         ('radius', ('Radius', 'm'))])
 
-    def __init__(self, parent):
+    def __init__(self, parent, selected=None):
         wx.Dialog.__init__(
             self, parent, id=wx.ID_ANY,
             title="Target Profile Editor",
@@ -135,7 +135,7 @@ class TargetProfileEditorDlg(wx.Dialog):
 
         mainSizer = wx.BoxSizer(wx.VERTICAL)
 
-        self.entityEditor = TargetProfileEntityEditor(self)
+        self.entityEditor = TargetProfileEntityEditor(parent=self, selected=selected)
         mainSizer.Add(self.entityEditor, 0, wx.ALL | wx.EXPAND, 2)
 
         self.sl = wx.StaticLine(self)

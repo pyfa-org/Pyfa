@@ -36,7 +36,7 @@ class EntityEditor(wx.Panel):
     functions that get the list from the source, what to do when user does an action, and how to validate the input.
     """
 
-    def __init__(self, parent, entityName):
+    def __init__(self, parent, entityName, selected=None):
         wx.Panel.__init__(self, parent, id=wx.ID_ANY, style=wx.TAB_TRAVERSAL)
         self.entityName = entityName
         self.validator = None
@@ -70,7 +70,7 @@ class EntityEditor(wx.Panel):
         self.SetSizer(self.navSizer)
         self.Layout()
 
-        self.refreshEntityList()
+        self.refreshEntityList(selected=selected)
 
     def SetEditorValidator(self, validator=None):
         """ Sets validator class (not an instance of the class) """

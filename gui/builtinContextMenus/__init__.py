@@ -13,6 +13,7 @@ from gui.builtinContextMenus import moduleSpool
 from gui.builtinContextMenus import boosterSideEffects
 from gui.builtinContextMenus import fighterAbilities
 from gui.builtinContextMenus import resistMode
+from gui.builtinContextMenus.targetProfile import editor
 # Item info
 from gui.builtinContextMenus import itemStats
 from gui.builtinContextMenus import itemMarketJump
