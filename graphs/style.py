@@ -52,11 +52,11 @@ BASE_COLORS = OrderedDict([
     (GraphColor.red, ColorData((0 / 360.0, 1.0, 0.5), 'Red', 'color_red')),
     (GraphColor.green, ColorData((120 / 360.0, 1.0, 0.5), 'Green', 'color_green')),
     (GraphColor.blue, ColorData((240 / 360.0, 1.0, 0.5), 'Blue', 'color_blue')),
-    (GraphColor.yellow, ColorData((56 / 360.0, 1.0, 0.5), 'Yellow', 'color_yellow')),
-    (GraphColor.cyan, ColorData((180 / 360.0, 1.0, 0.5), 'Cyan', 'color_cyan')),
-    (GraphColor.magenta, ColorData((300 / 360.0, 1.0, 0.5), 'Magenta', 'color_magenta')),
     (GraphColor.orange, ColorData((40 / 360.0, 1.0, 0.5), 'Orange', 'color_orange')),
-    (GraphColor.purple, ColorData((275 / 360.0, 1.0, 0.5), 'Purple', 'color_purple'))])
+    (GraphColor.magenta, ColorData((300 / 360.0, 1.0, 0.5), 'Magenta', 'color_magenta')),
+    (GraphColor.cyan, ColorData((180 / 360.0, 1.0, 0.5), 'Cyan', 'color_cyan')),
+    (GraphColor.purple, ColorData((275 / 360.0, 1.0, 0.5), 'Purple', 'color_purple')),
+    (GraphColor.yellow, ColorData((56 / 360.0, 1.0, 0.5), 'Yellow', 'color_yellow'))])
 
 
 def hsl_to_hsv(hsl):
@@ -68,12 +68,12 @@ def hsl_to_hsv(hsl):
 
 def darken(hsl):
     h, s, l = hsl
-    return h, s * 0.7, l * 0.7
+    return h, s * 0.5, l * 0.5
 
 
 def brighten(hsl):
     h, s, l = hsl
-    return h, s * 0.7, l + (1 - l) * 0.4
+    return h, s * 0.5, l + (1 - l) * 0.5
 
 
 LIGHTNESSES = OrderedDict([
