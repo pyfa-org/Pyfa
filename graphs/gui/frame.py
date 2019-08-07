@@ -50,7 +50,7 @@ try:
     else:
         graphFrame_enabled = False
 
-    from matplotlib.patches import Patch
+    from matplotlib.lines import Line2D
     from matplotlib.backends.backend_wxagg import FigureCanvasWxAgg as Canvas
     from matplotlib.figure import Figure
     from matplotlib.colors import hsv_to_rgb
@@ -252,7 +252,7 @@ class GraphFrame(wx.Frame):
 
         self.subplot.clear()
         self.subplot.grid(True)
-        legend = []
+        lineData = []
 
         min_y = 0 if self.ctrlPanel.showY0 else None
         max_y = 0 if self.ctrlPanel.showY0 else None
@@ -320,9 +320,9 @@ class GraphFrame(wx.Frame):
                     self.subplot.plot(xs, ys, color=color, linestyle=lineStyle)
 
                 if target is None:
-                    legend.append((color, lineStyle, source.shortName))
+                    lineData.append((color, lineStyle, source.shortName))
                 else:
-                    legend.append((color, lineStyle, '{} vs {}'.format(source.shortName, target.shortName)))
+                    lineData.append((color, lineStyle, '{} vs {}'.format(source.shortName, target.shortName)))
             except Exception as ex:
                 pyfalog.warning('Invalid values in "{0}"', source.name)
                 self.canvas.draw()
@@ -346,17 +346,16 @@ class GraphFrame(wx.Frame):
             max_y += 5
         self.subplot.set_ylim(bottom=min_y, top=max_y)
 
-        legend2 = []
-        for i, iData in enumerate(legend):
+        legendLines = []
+        for i, iData in enumerate(lineData):
             color, lineStyle, label = iData
-            legend2.append(Patch(color=color, linestyle=lineStyle, label=label), )
+            legendLines.append(Line2D([0], [0], color=color, linestyle=lineStyle, label=label))
 
-        if len(legend2) > 0 and self.ctrlPanel.showLegend:
-            leg = self.subplot.legend(handles=legend2)
-            for t in leg.get_texts():
+        if len(legendLines) > 0 and self.ctrlPanel.showLegend:
+            legend = self.subplot.legend(handles=legendLines)
+            for t in legend.get_texts():
                 t.set_fontsize('small')
-
-            for l in leg.get_lines():
+            for l in legend.get_lines():
                 l.set_linewidth(1)
 
         self.canvas.draw()
