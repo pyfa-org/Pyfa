@@ -39,8 +39,12 @@ class LineStyleData:
 
     @property
     def iconName(self):
-        # TODO: add code to use white icon if background is dark
-        return '{}_black'.format(self._iconNamePrefix)
+        # Get lightness out of RGB color, see following link for math:
+        # https://www.niwa.nu/2013/05/math-behind-colorspace-conversions-rgb-hsl/
+        r, g, b, a = (c / 255 for c in wx.SystemSettings.GetColour(wx.SYS_COLOUR_WINDOW))
+        l = (max(r, g, b) + min (r, g, b)) / 2
+        suffix = '_black' if l > 0.3 else '_white'
+        return '{}{}'.format(self._iconNamePrefix, suffix)
 
 
 # In HSL format
