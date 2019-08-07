@@ -213,13 +213,18 @@ class ItemMutatorList(wx.ScrolledWindow):
 
     def OnWindowClose(self):
         # Submit mutation changes
-        fit = Fit.getInstance().getFit(self.carryingFitID)
+        sFit = Fit.getInstance()
+        fit = sFit.getFit(self.carryingFitID)
         if self.mod in fit.modules:
             currentMutation = {}
             for slider, m in self.event_mapping.items():
                 # Sliders may have more up-to-date info than mutator in case we changed
                 # value in slider and without confirming it, decided to close window
-                currentMutation[m.attrID] = slider.GetValue()
+                value = slider.GetValue()
+                value = m.attribute.unit.ComplicateValue(value)
+                if value != m.value:
+                    value = sFit.changeMutatedValuePrelim(m, value)
+                currentMutation[m.attrID] = value
             mainFrame = gui.mainFrame.MainFrame.getInstance()
             mainFrame.getCommandForFit(self.carryingFitID).Submit(cmd.GuiChangeLocalModuleMutationCommand(
                 fitID=self.carryingFitID,
