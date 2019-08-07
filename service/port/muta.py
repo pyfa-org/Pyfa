@@ -19,7 +19,7 @@
 
 
 from eos.db.gamedata.queries import getAttributeInfo, getDynamicItem
-from gui.utils.numberFormatter import roundToPrec
+from eos.utils.float import floatUnerr
 from service.port.shared import fetchItem
 
 
@@ -31,9 +31,8 @@ def renderMutant(mutant, firstPrefix='', prefix=''):
         mutatedAttrs[attrName] = mutator.value
     exportLines.append('{}{}'.format(firstPrefix, mutant.baseItem.name))
     exportLines.append('{}{}'.format(prefix, mutant.mutaplasmid.item.name))
-    # Round to 7th significant number to avoid exporting float errors
     customAttrsLine = ', '.join(
-        '{} {}'.format(a, roundToPrec(mutatedAttrs[a], 7))
+        '{} {}'.format(a, floatUnerr(mutatedAttrs[a]))
         for a in sorted(mutatedAttrs))
     exportLines.append('{}{}'.format(prefix, customAttrsLine))
     return '\n'.join(exportLines)

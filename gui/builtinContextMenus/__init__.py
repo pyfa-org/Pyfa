@@ -26,6 +26,7 @@ from gui.builtinContextMenus import droneSplitStack
 from gui.builtinContextMenus import itemVariationChange
 from gui.builtinContextMenus import moduleMutations
 from gui.builtinContextMenus import moduleFill
+from gui.builtinContextMenus import moduleMutatedExport
 from gui.builtinContextMenus import skillAffectors
 # Market stuff
 from gui.builtinContextMenus import itemFill
