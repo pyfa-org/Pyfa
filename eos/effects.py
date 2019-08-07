@@ -7824,7 +7824,7 @@ class Effect2736(BaseEffect):
 
     @classmethod
     def handler(cls, fit, booster, context, **kwargs):
-        fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Armor Repair Unit',
+        fit.modules.filteredItemBoost(lambda mod: mod.item.group.name in ('Armor Repair Unit', 'Ancillary Armor Repairer'),
                                       'armorDamageAmount', booster.getModifiedItemAttr(cls.attr), **kwargs)
 
 
@@ -16749,10 +16749,8 @@ class Effect4970(BaseEffect):
 
     @staticmethod
     def handler(fit, src, context, **kwargs):
-        fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Shield Operation'), 'shieldBonus',
-                                      src.getModifiedItemAttr('boosterShieldBoostAmountPenalty'), **kwargs)
-        fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Capital Shield Operation'), 'shieldBonus',
-                                      src.getModifiedItemAttr('boosterShieldBoostAmountPenalty'), **kwargs)
+        fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Shield Operation') or mod.item.requiresSkill('Capital Shield Operation'),
+                                      'shieldBonus', src.getModifiedItemAttr('boosterShieldBoostAmountPenalty'), **kwargs)
 
 
 class Effect4972(BaseEffect):
