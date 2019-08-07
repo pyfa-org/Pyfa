@@ -216,17 +216,18 @@ class ItemMutatorList(wx.ScrolledWindow):
         fit = Fit.getInstance().getFit(self.carryingFitID)
         if self.mod in fit.modules:
             currentMutation = {}
-            for m in self.event_mapping.values():
-                currentMutation[m.attrID] = m.value
+            for slider, m in self.event_mapping.items():
+                # Sliders may have more up-to-date info than mutator in case we changed
+                # value in slider and without confirming it, decided to close window
+                currentMutation[m.attrID] = slider.GetValue()
             mainFrame = gui.mainFrame.MainFrame.getInstance()
             mainFrame.getCommandForFit(self.carryingFitID).Submit(cmd.GuiChangeLocalModuleMutationCommand(
                 fitID=self.carryingFitID,
                 position=fit.modules.index(self.mod),
                 mutation=currentMutation,
                 oldMutation=self.initialMutations))
-        # Stop animations to prevent crashes when window is closed while it's in progress
         for slider in self.event_mapping:
-            slider.slider.FreezeAnimation()
+            slider.OnWindowClose()
 
     def callLater(self):
         self.timer = None

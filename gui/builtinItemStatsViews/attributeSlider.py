@@ -111,8 +111,11 @@ class AttributeSlider(wx.Panel):
         self.SetSizerAndFit(vsizer1)
         self.parent.SetClientSize((500, vsizer1.GetSize()[1]))
 
+    def GetValue(self):
+        return self.ctrl.GetValue()
+
     def UpdateValue(self, evt):
-        self.SetValue(self.ctrl.GetValue())
+        self.SetValue(self.GetValue())
         evt.Skip()
 
     def SetValue(self, value, post_event=True):
@@ -129,12 +132,17 @@ class AttributeSlider(wx.Panel):
     def OnMouseWheel(self, evt):
         if evt.GetWheelRotation() > 0 and evt.GetWheelAxis() == wx.MOUSE_WHEEL_VERTICAL:
             self.ctrl.Value = self.ctrl.Value + self.ctrl.Increment
-            self.SetValue(self.ctrl.GetValue())
+            self.SetValue(self.GetValue())
         elif evt.GetWheelRotation() < 0 and evt.GetWheelAxis() == wx.MOUSE_WHEEL_VERTICAL:
             self.ctrl.Value = self.ctrl.Value - self.ctrl.Increment
-            self.SetValue(self.ctrl.GetValue())
+            self.SetValue(self.GetValue())
         else:
             evt.Skip()
+
+    def OnWindowClose(self):
+        # Stop animations to prevent crashes when window is
+        # closed while animation is in progress
+        self.slider.FreezeAnimation()
 
 
 class TestAttributeSlider(wx.Frame):
