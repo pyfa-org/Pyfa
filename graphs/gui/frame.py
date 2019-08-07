@@ -314,6 +314,7 @@ class GraphFrame(wx.Frame):
                 elif max_y_this is not None:
                     max_y = max(max_y, max_y_this)
 
+                # If we have single data point, show marker - otherwise line won't be shown
                 if len(xs) == 1 and len(ys) == 1:
                     self.subplot.plot(xs, ys, color=color, linestyle=lineStyle, marker='.')
                 else:
