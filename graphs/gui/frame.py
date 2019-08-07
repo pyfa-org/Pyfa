@@ -244,12 +244,6 @@ class GraphFrame(wx.Frame):
     def draw(self):
         global mpl_version
 
-        # Eee #1430. draw() is not being unbound properly when the window closes.
-        # This is an easy fix, but not a proper solution
-        if not self:
-            pyfalog.warning('GraphFrame handled event, however GraphFrame no longer exists. Ignoring event')
-            return
-
         self.subplot.clear()
         self.subplot.grid(True)
         lineData = []
