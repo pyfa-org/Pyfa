@@ -68,7 +68,7 @@ def hsl_to_hsv(hsl):
 
 def darken(hsl):
     h, s, l = hsl
-    return h, s * 0.5, l * 0.5
+    return h, s * 0.5, l * 0.7
 
 
 def brighten(hsl):
