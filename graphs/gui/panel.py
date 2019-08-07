@@ -270,15 +270,8 @@ class GraphControlPanel(wx.Panel):
         self.targetList.refreshExtraColumns(view.tgtExtraCols)
         self.srcTgtSizer.Detach(self.sourceList)
         self.srcTgtSizer.Detach(self.targetList)
-
-        def getProportion(wrapperList):
-            propWidth = 0
-            for column in wrapperList.activeColumns:
-                propWidth += column.proportionWidth
-            return propWidth
-
-        self.srcTgtSizer.Add(self.sourceList, getProportion(self.sourceList), wx.EXPAND | wx.ALL, 0)
-        self.srcTgtSizer.Add(self.targetList, getProportion(self.targetList), wx.EXPAND | wx.LEFT, 10)
+        self.srcTgtSizer.Add(self.sourceList, self.sourceList.getWidthProportion(), wx.EXPAND | wx.ALL, 0)
+        self.srcTgtSizer.Add(self.targetList, self.targetList.getWidthProportion(), wx.EXPAND | wx.LEFT, 10)
         self.Layout()
 
     def OnShowLegendChange(self, event):

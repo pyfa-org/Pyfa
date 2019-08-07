@@ -296,3 +296,7 @@ class Display(wx.ListCtrl):
             rows.append(row)
             row = self.GetNextSelected(row)
         return rows
+
+    def getWidthProportion(self):
+        propWidth = sum(c.proportionWidth for c in self.activeColumns)
+        return propWidth
