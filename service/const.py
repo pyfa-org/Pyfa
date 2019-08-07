@@ -67,6 +67,7 @@ class PortEftOptions(IntEnum):
     IMPLANTS = 1
     MUTATIONS = 2
     LOADED_CHARGES = 3
+    CARGO = 4
 
 
 @unique

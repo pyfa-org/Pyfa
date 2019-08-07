@@ -43,11 +43,12 @@ from service.port.shared import IPortUser, fetchItem, processing_notify
 
 pyfalog = Logger(__name__)
 
+
 EFT_OPTIONS = (
     (PortEftOptions.LOADED_CHARGES, 'Loaded Charges', 'Export charges loaded into modules', True),
     (PortEftOptions.MUTATIONS, 'Mutated Attributes', 'Export mutated modules\' stats', True),
     (PortEftOptions.IMPLANTS, 'Implants && Boosters', 'Export implants and boosters', True),
-)
+    (PortEftOptions.CARGO, 'Cargo', 'Export cargo hold contents', True))
 
 
 MODULE_CATS = ('Module', 'Subsystem', 'Structure Module')
@@ -133,14 +134,15 @@ def exportEft(fit, options, callback):
             sections.append('\n\n'.join(charSection))
 
     # Section 4: cargo
-    cargoLines = []
-    for cargo in sorted(
-        fit.cargo,
-        key=lambda c: (c.item.group.category.name, c.item.group.name, c.item.name)
-    ):
-        cargoLines.append('{} x{}'.format(cargo.item.name, cargo.amount))
-    if cargoLines:
-        sections.append('\n'.join(cargoLines))
+    if options[PortEftOptions.CARGO]:
+        cargoLines = []
+        for cargo in sorted(
+            fit.cargo,
+            key=lambda c: (c.item.group.category.name, c.item.group.name, c.item.name)
+        ):
+            cargoLines.append('{} x{}'.format(cargo.item.name, cargo.amount))
+        if cargoLines:
+            sections.append('\n'.join(cargoLines))
 
     # Section 5: mutated modules' details
     mutationLines = []
