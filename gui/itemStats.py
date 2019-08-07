@@ -129,11 +129,11 @@ class ItemStatsDialog(wx.Dialog):
                 self.SetSize(size)
         self.parentWnd.RegisterStatsWindow(self)
 
-        self.Show()
-
+        self.Bind(wx.EVT_CLOSE, self.OnClose)
         self.Bind(wx.EVT_CHAR_HOOK, self.kbEvent)
-        self.Bind(wx.EVT_CLOSE, self.closeEvent)
         self.Bind(wx.EVT_ACTIVATE, self.OnActivate)
+
+        self.Show()
 
     def OnActivate(self, event):
         self.parentWnd.SetActiveStatsWindow(self)
@@ -142,20 +142,17 @@ class ItemStatsDialog(wx.Dialog):
         keycode = event.GetKeyCode()
         mstate = wx.GetMouseState()
         if keycode == wx.WXK_ESCAPE and mstate.GetModifiers() == wx.MOD_NONE:
-            self.closeWindow()
+            self.Close()
             return
         event.Skip()
 
-    def closeEvent(self, event):
-        self.container.onParentClose()
-        self.closeWindow()
-        event.Skip()
-
-    def closeWindow(self):
+    def OnClose(self, event):
+        self.container.OnWindowClose()
         if self.dlgOrder == ItemStatsDialog.counter:
             ItemStatsDialog.counter -= 1
         self.parentWnd.UnregisterStatsWindow(self)
         self.Destroy()
+
 
 class ItemStatsContainer(wx.Panel):
 
@@ -218,7 +215,7 @@ class ItemStatsContainer(wx.Panel):
         if tab != -1:
             self.nbContainer.SetSelection(tab)
 
-    def onParentClose(self):
+    def OnWindowClose(self):
         mutaPanel = getattr(self, 'mutator', None)
         if mutaPanel is not None:
-            mutaPanel.submitMutationChanges()
+            mutaPanel.OnWindowClose()

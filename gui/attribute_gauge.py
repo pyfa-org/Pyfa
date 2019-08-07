@@ -9,18 +9,17 @@ from gui.utils import anim_effects
 
 
 class AttributeGauge(wx.Window):
-    def __init__(self, parent, max_range=100, animate=True, leading_edge=True, edge_on_neutral=True, guide_lines=False, size=(-1, 30), *args,
-                 **kargs):
-
-        super().__init__(parent, size=size, *args, **kargs)
+    def __init__(
+        self, parent, max_range=100, animate=True, leading_edge=True,
+        edge_on_neutral=True, guide_lines=False, size=(-1, 30), *args, **kwargs
+    ):
+        super().__init__(parent, size=size, *args, **kwargs)
 
         self._size = size
 
         self.guide_lines = guide_lines
 
         self._border_colour = wx.BLACK
-        self._bar_colour = None
-        self._bar_gradient = None
 
         self.leading_edge = leading_edge
         self.edge_on_neutral = edge_on_neutral
@@ -28,8 +27,6 @@ class AttributeGauge(wx.Window):
         self._border_padding = 0
         self._max_range = max_range
         self._value = 0
-
-        self._fraction_digits = 0
 
         self._timer_id = wx.NewId()
         self._timer = None
@@ -43,14 +40,6 @@ class AttributeGauge(wx.Window):
         self._anim_value = 0
         self._anim_direction = 0
         self.anim_effect = anim_effects.OUT_QUAD
-
-        # transition colors used based on how full (or overfilled) the gauge is.
-        self.transition_colors = [
-            (wx.Colour(191, 191, 191), wx.Colour(96, 191, 0)),  # < 0-100%
-            (wx.Colour(191, 167, 96), wx.Colour(255, 191, 0)),  # < 100-101%
-            (wx.Colour(255, 191, 0), wx.Colour(255, 128, 0)),  # < 101-103%
-            (wx.Colour(255, 128, 0), wx.Colour(255, 0, 0))  # < 103-105%
-        ]
 
         self.goodColor = wx.Colour(96, 191, 0)
         self.badColor = wx.Colour(255, 64, 0)
@@ -68,50 +57,16 @@ class AttributeGauge(wx.Window):
 
         self.Bind(wx.EVT_PAINT, self.OnPaint)
         self.Bind(wx.EVT_TIMER, self.OnTimer)
-        self.Bind(wx.EVT_ENTER_WINDOW, self.OnWindowEnter)
-        self.Bind(wx.EVT_LEAVE_WINDOW, self.OnWindowLeave)
         self.SetBackgroundStyle(wx.BG_STYLE_PAINT)
 
     def OnEraseBackground(self, event):
         pass
-
-    def OnWindowEnter(self, event):
-        self._show_remaining = True
-        self.Refresh()
-
-    def OnWindowLeave(self, event):
-        self._show_remaining = False
-        self.Refresh()
 
     def GetBorderColour(self):
         return self._border_colour
 
     def SetBorderColour(self, colour):
         self._border_colour = colour
-
-    def GetBarColour(self):
-        return self._bar_colour
-
-    def SetBarColour(self, colour):
-        self._bar_colour = colour
-
-    def SetFractionDigits(self, digits):
-        self._fraction_digits = digits
-
-    def GetBarGradient(self):
-        if self._bar_gradient is None:
-            return None
-
-        return self._bar_gradient[0]
-
-    def SetBarGradient(self, gradient=None):
-        if gradient is None:
-            self._bar_gradient = None
-        else:
-            if not isinstance(gradient, list):
-                self._bar_gradient = [gradient]
-            else:
-                self._bar_gradient = list(gradient)
 
     def GetBorderPadding(self):
         return self._border_padding
@@ -133,6 +88,11 @@ class AttributeGauge(wx.Window):
         else:
             self._anim_value = self._percentage
             self.Refresh()
+
+    def FreezeAnimation(self):
+        self._animate = False
+        if self._timer:
+            self._timer.Stop()
 
     def SetRange(self, range, reinit=False, animate=True):
         """
@@ -231,51 +191,50 @@ class AttributeGauge(wx.Window):
             pad = 1 + self.GetBorderPadding()
             rect.Deflate(pad, pad)
 
-        if True:
-            # if we have a bar color set, then we will use this
-            colour = self.goodColor if value >= 0 else self.badColor
+        # if we have a bar color set, then we will use this
+        colour = self.goodColor if value >= 0 else self.badColor
 
-            is_even = rect.width % 2 == 0
+        is_even = rect.width % 2 == 0
 
-            # the size of half our available drawing area (since we're only working in halves)
-            half = (rect.width / 2)
+        # the size of half our available drawing area (since we're only working in halves)
+        half = (rect.width / 2)
 
-            # calculate width of bar as a percentage of half the space
-            w = abs(half * (value / 100))
-            w = min(w, half)  # Ensure that we don't overshoot our drawing area
-            w = math.ceil(w)  # round up to nearest pixel, this ensures that we don't lose representation for sub pixels
+        # calculate width of bar as a percentage of half the space
+        w = abs(half * (value / 100))
+        w = min(w, half)  # Ensure that we don't overshoot our drawing area
+        w = math.ceil(w)  # round up to nearest pixel, this ensures that we don't lose representation for sub pixels
 
-            # print("Percentage: {}\t\t\t\t\tValue: {}\t\t\t\t\tWidth: {}\t\t\t\t\tHalf: {}\t\t\t\t\tRect Width: {}".format(
-            # round(self._percentage, 3), round(value,3), w, half, rect.width))
+        # print("Percentage: {}\t\t\t\t\tValue: {}\t\t\t\t\tWidth: {}\t\t\t\t\tHalf: {}\t\t\t\t\tRect Width: {}".format(
+        # round(self._percentage, 3), round(value,3), w, half, rect.width))
 
-            # set guide_lines every 10 pixels of the main gauge (not including borders)
-            if self.guide_lines:
-                for x in range(1, 20):
-                    dc.SetBrush(wx.Brush(wx.LIGHT_GREY))
-                    dc.SetPen(wx.Pen(wx.LIGHT_GREY))
-                    dc.DrawRectangle(x * 10, 1, 1, rect.height)
+        # set guide_lines every 10 pixels of the main gauge (not including borders)
+        if self.guide_lines:
+            for x in range(1, 20):
+                dc.SetBrush(wx.Brush(wx.LIGHT_GREY))
+                dc.SetPen(wx.Pen(wx.LIGHT_GREY))
+                dc.DrawRectangle(x * 10, 1, 1, rect.height)
 
-            dc.SetBrush(wx.Brush(colour))
-            dc.SetPen(wx.Pen(colour))
+        dc.SetBrush(wx.Brush(colour))
+        dc.SetPen(wx.Pen(colour))
 
-            # If we have an  even width, we can simply dedicate the middle-most pixels to both sides
-            # However, if there is an odd width, the middle pixel is shared between the left and right gauge
+        # If we have an  even width, we can simply dedicate the middle-most pixels to both sides
+        # However, if there is an odd width, the middle pixel is shared between the left and right gauge
 
-            if value >= 0:
-                padding = (half if is_even else math.ceil(half - 1)) + 1
-                dc.DrawRectangle(padding, 1, w, rect.height)
+        if value >= 0:
+            padding = (half if is_even else math.ceil(half - 1)) + 1
+            dc.DrawRectangle(padding, 1, w, rect.height)
+        else:
+            padding = half - w + 1 if is_even else math.ceil(half) - (w - 1)
+            dc.DrawRectangle(padding, 1, w, rect.height)
+
+        if self.leading_edge and (self.edge_on_neutral or value != 0):
+            dc.SetPen(wx.Pen(wx.WHITE))
+            dc.SetBrush(wx.Brush(wx.WHITE))
+
+            if value > 0:
+                dc.DrawRectangle(min(padding + w, rect.width), 1, 1, rect.height)
             else:
-                padding = half - w + 1 if is_even else math.ceil(half) - (w - 1)
-                dc.DrawRectangle(padding, 1, w, rect.height)
-
-            if self.leading_edge and (self.edge_on_neutral or value != 0):
-                dc.SetPen(wx.Pen(wx.WHITE))
-                dc.SetBrush(wx.Brush(wx.WHITE))
-
-                if value > 0:
-                    dc.DrawRectangle(min(padding + w, rect.width), 1, 1, rect.height)
-                else:
-                    dc.DrawRectangle(max(padding - 1, 1), 1, 1, rect.height)
+                dc.DrawRectangle(max(padding - 1, 1), 1, 1, rect.height)
 
     def OnTimer(self, event):
         old_value = self._old_percentage

@@ -61,8 +61,8 @@ class ItemMutatorPanel(wx.Panel):
         self.SetSizer(mainSizer)
         self.Layout()
 
-    def submitMutationChanges(self):
-        self.mutaList.submitMutationChanges()
+    def OnWindowClose(self):
+        self.mutaList.OnWindowClose()
 
 
 class ItemMutatorList(wx.ScrolledWindow):
@@ -211,7 +211,8 @@ class ItemMutatorList(wx.ScrolledWindow):
                 slider.SetValue(value)
         evt.Skip()
 
-    def submitMutationChanges(self):
+    def OnWindowClose(self):
+        # Submit mutation changes
         fit = Fit.getInstance().getFit(self.carryingFitID)
         if self.mod in fit.modules:
             currentMutation = {}
@@ -223,6 +224,9 @@ class ItemMutatorList(wx.ScrolledWindow):
                 position=fit.modules.index(self.mod),
                 mutation=currentMutation,
                 oldMutation=self.initialMutations))
+        # Stop animations to prevent crashes when window is closed while it's in progress
+        for slider in self.event_mapping:
+            slider.slider.FreezeAnimation()
 
     def callLater(self):
         self.timer = None
