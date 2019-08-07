@@ -131,11 +131,9 @@ class AttributeSlider(wx.Panel):
 
     def OnMouseWheel(self, evt):
         if evt.GetWheelRotation() > 0 and evt.GetWheelAxis() == wx.MOUSE_WHEEL_VERTICAL:
-            self.ctrl.Value = self.ctrl.Value + self.ctrl.Increment
-            self.SetValue(self.GetValue())
+            self.SetValue(self.ctrl.Value + self.ctrl.Increment)
         elif evt.GetWheelRotation() < 0 and evt.GetWheelAxis() == wx.MOUSE_WHEEL_VERTICAL:
-            self.ctrl.Value = self.ctrl.Value - self.ctrl.Increment
-            self.SetValue(self.GetValue())
+            self.SetValue(self.ctrl.Value - self.ctrl.Increment)
         else:
             evt.Skip()
 
