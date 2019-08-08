@@ -1244,12 +1244,23 @@ class Fit:
                         # If this is a turret, don't stagger activations
                         disableStagger = mod.hardpoint == FittingHardpoint.TURRET
 
-                        drains.append((int(fullCycleTime), mod.getModifiedItemAttr("capacitorNeed") or 0,
-                                       mod.numShots or 0, disableStagger, reloadTime))
+                        drains.append((
+                            int(fullCycleTime),
+                            mod.getModifiedItemAttr("capacitorNeed") or 0,
+                            mod.numShots or 0,
+                            disableStagger,
+                            reloadTime,
+                            mod.item.group == 'Capacitor Booster'))
 
         for fullCycleTime, capNeed, clipSize, reloadTime in self.iterDrains():
-            # Stagger incoming effects for cap simulation
-            drains.append((int(fullCycleTime), capNeed, clipSize, False, reloadTime))
+            drains.append((
+                int(fullCycleTime),
+                capNeed,
+                clipSize,
+                # Stagger incoming effects for cap simulation
+                False,
+                reloadTime,
+                False))
             if capNeed > 0:
                 capUsed += capNeed / (fullCycleTime / 1000.0)
             else:

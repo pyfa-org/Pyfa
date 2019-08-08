@@ -59,7 +59,7 @@ class CapSimulator:
         return duration, capNeed
 
     def init(self, modules):
-        """prepare modules. a list of (duration, capNeed, clipSize, disableStagger) tuples is
+        """prepare modules. a list of (duration, capNeed, clipSize, disableStagger, reloadTime, isInjector) tuples is
          expected, with clipSize 0 if the module has infinite ammo.
             """
         self.modules = modules
@@ -72,7 +72,7 @@ class CapSimulator:
         disable_period = False
 
         # Loop over modules, clearing clipSize if applicable, and group modules based on attributes
-        for (duration, capNeed, clipSize, disableStagger, reloadTime) in self.modules:
+        for (duration, capNeed, clipSize, disableStagger, reloadTime, isInjector) in self.modules:
             if self.scale:
                 duration, capNeed = self.scale_activation(duration, capNeed)
 
@@ -83,22 +83,22 @@ class CapSimulator:
                 reloadTime = 0
 
             # Group modules based on their properties
-            if (duration, capNeed, clipSize, disableStagger, reloadTime) in mods:
-                mods[(duration, capNeed, clipSize, disableStagger, reloadTime)] += 1
+            if (duration, capNeed, clipSize, disableStagger, reloadTime, isInjector) in mods:
+                mods[(duration, capNeed, clipSize, disableStagger, reloadTime, isInjector)] += 1
             else:
-                mods[(duration, capNeed, clipSize, disableStagger, reloadTime)] = 1
+                mods[(duration, capNeed, clipSize, disableStagger, reloadTime, isInjector)] = 1
 
         # Loop over grouped modules, configure staggering and push to the simulation state
-        for (duration, capNeed, clipSize, disableStagger, reloadTime), amount in mods.items():
+        for (duration, capNeed, clipSize, disableStagger, reloadTime, isInjector), amount in mods.items():
             if self.stagger and not disableStagger:
                 if clipSize == 0:
                     duration = int(duration / amount)
                 else:
                     stagger_amount = (duration * clipSize + reloadTime) / (amount * clipSize)
                     for i in range(1, amount):
-                        heapq.heappush(self.state,
-                                       [i * stagger_amount, duration,
-                                        capNeed, 0, clipSize, reloadTime])
+                        heapq.heappush(
+                            self.state,
+                            [i * stagger_amount, duration, capNeed, 0, clipSize, reloadTime])
             else:
                 capNeed *= amount
 
