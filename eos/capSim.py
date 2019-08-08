@@ -77,16 +77,17 @@ class CapSimulator:
                 duration, capNeed = self.scale_activation(duration, capNeed)
 
             # set clipSize to infinite if reloads are disabled unless it's
-            # a cap booster module.
-            if not self.reload and capNeed > 0:
+            # a cap booster module
+            if not self.reload and not isInjector:
                 clipSize = 0
                 reloadTime = 0
 
             # Group modules based on their properties
-            if (duration, capNeed, clipSize, disableStagger, reloadTime, isInjector) in mods:
-                mods[(duration, capNeed, clipSize, disableStagger, reloadTime, isInjector)] += 1
+            key = (duration, capNeed, clipSize, disableStagger, reloadTime, isInjector)
+            if key in mods:
+                mods[key] += 1
             else:
-                mods[(duration, capNeed, clipSize, disableStagger, reloadTime, isInjector)] = 1
+                mods[key] = 1
 
         # Loop over grouped modules, configure staggering and push to the simulation state
         for (duration, capNeed, clipSize, disableStagger, reloadTime, isInjector), amount in mods.items():

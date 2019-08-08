@@ -1250,7 +1250,7 @@ class Fit:
                             mod.numShots or 0,
                             disableStagger,
                             reloadTime,
-                            mod.item.group == 'Capacitor Booster'))
+                            mod.item.group.name == 'Capacitor Booster'))
 
         for fullCycleTime, capNeed, clipSize, reloadTime in self.iterDrains():
             drains.append((
