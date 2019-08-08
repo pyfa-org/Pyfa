@@ -821,10 +821,22 @@ class Market:
                 items.append(item)
         return items
 
+    def getRecentlyUsed(self):
+        recentlyUsedItems = []
+        for itemID in self.serviceMarketRecentlyUsedModules["pyfaMarketRecentlyUsedModules"]:
+            item = self.getItem(itemID)
+            if item is None:
+                self.serviceMarketRecentlyUsedModules["pyfaMarketRecentlyUsedModules"].remove(itemID)
+            recentlyUsedItems.append(item)
+        return recentlyUsedItems
+
     def storeRecentlyUsed(self, itemID):
         recentlyUsedModules = self.serviceMarketRecentlyUsedModules["pyfaMarketRecentlyUsedModules"]
         while itemID in recentlyUsedModules:
             recentlyUsedModules.remove(itemID)
+        item = self.getItem(itemID)
+        if item.isAbyssal:
+            return
         while len(recentlyUsedModules) >= 20:
             recentlyUsedModules.pop(-1)
         recentlyUsedModules.insert(0, itemID)

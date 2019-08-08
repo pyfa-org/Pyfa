@@ -6,6 +6,7 @@ from gui import globalEvents as GE
 from gui.fitCommands.calc.booster.add import CalcAddBoosterCommand
 from gui.fitCommands.helpers import BoosterInfo, InternalCommandHistory
 from service.fit import Fit
+from service.market import Market
 
 
 class GuiAddBoosterCommand(wx.Command):
@@ -19,6 +20,7 @@ class GuiAddBoosterCommand(wx.Command):
     def Do(self):
         cmd = CalcAddBoosterCommand(fitID=self.fitID, boosterInfo=BoosterInfo(itemID=self.itemID))
         success = self.internalHistory.submit(cmd)
+        Market.getInstance().storeRecentlyUsed(self.itemID)
         eos.db.flush()
         sFit = Fit.getInstance()
         sFit.recalc(self.fitID)

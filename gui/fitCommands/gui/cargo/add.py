@@ -5,6 +5,7 @@ import gui.mainFrame
 from gui import globalEvents as GE
 from gui.fitCommands.calc.cargo.add import CalcAddCargoCommand
 from gui.fitCommands.helpers import CargoInfo, InternalCommandHistory
+from service.market import Market
 
 
 class GuiAddCargoCommand(wx.Command):
@@ -19,6 +20,7 @@ class GuiAddCargoCommand(wx.Command):
     def Do(self):
         cmd = CalcAddCargoCommand(fitID=self.fitID, cargoInfo=CargoInfo(itemID=self.itemID, amount=self.amount))
         success = self.internalHistory.submit(cmd)
+        Market.getInstance().storeRecentlyUsed(self.itemID)
         eos.db.commit()
         wx.PostEvent(gui.mainFrame.MainFrame.getInstance(), GE.FitChanged(fitIDs=(self.fitID,)))
         return success

@@ -6,6 +6,7 @@ from gui import globalEvents as GE
 from gui.fitCommands.calc.module.localRemove import CalcRemoveLocalModulesCommand
 from gui.fitCommands.helpers import InternalCommandHistory, restoreRemovedDummies
 from service.fit import Fit
+from service.market import Market
 
 
 class GuiRemoveLocalModuleCommand(wx.Command):
@@ -19,11 +20,16 @@ class GuiRemoveLocalModuleCommand(wx.Command):
         self.savedRemovedDummies = None
 
     def Do(self):
+        sMkt = Market.getInstance()
         sFit = Fit.getInstance()
         fit = sFit.getFit(self.fitID)
         self.savedTypeIDs = {m.itemID for m in fit.modules if not m.isEmpty}
         cmd = CalcRemoveLocalModulesCommand(fitID=self.fitID, positions=self.positions)
         success = self.internalHistory.submit(cmd)
+        for container in (cmd.savedSubInfos, cmd.savedModInfos):
+            for position in sorted(container, reverse=True):
+                modInfo = container[position]
+                sMkt.storeRecentlyUsed(modInfo.itemID)
         eos.db.flush()
         sFit.recalc(self.fitID)
         self.savedRemovedDummies = sFit.fill(self.fitID)

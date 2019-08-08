@@ -6,6 +6,7 @@ from gui import globalEvents as GE
 from gui.fitCommands.calc.module.localAdd import CalcAddLocalModuleCommand
 from gui.fitCommands.helpers import InternalCommandHistory, ModuleInfo, restoreRemovedDummies
 from service.fit import Fit
+from service.market import Market
 
 
 class GuiFillWithNewLocalModulesCommand(wx.Command):
@@ -25,6 +26,7 @@ class GuiFillWithNewLocalModulesCommand(wx.Command):
             if not self.internalHistory.submit(cmd):
                 break
             added_modules += 1
+        Market.getInstance().storeRecentlyUsed(self.itemID)
         eos.db.flush()
         sFit = Fit.getInstance()
         sFit.recalc(self.fitID)

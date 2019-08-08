@@ -6,6 +6,7 @@ from gui import globalEvents as GE
 from gui.fitCommands.calc.fighter.localRemove import CalcRemoveLocalFighterCommand
 from gui.fitCommands.helpers import InternalCommandHistory
 from service.fit import Fit
+from service.market import Market
 
 
 class GuiRemoveLocalFightersCommand(wx.Command):
@@ -17,10 +18,12 @@ class GuiRemoveLocalFightersCommand(wx.Command):
         self.positions = positions
 
     def Do(self):
+        sMkt = Market.getInstance()
         results = []
         for position in sorted(self.positions, reverse=True):
             cmd = CalcRemoveLocalFighterCommand(fitID=self.fitID, position=position)
             results.append(self.internalHistory.submit(cmd))
+            sMkt.storeRecentlyUsed(cmd.savedFighterInfo.itemID)
         success = any(results)
         eos.db.flush()
         sFit = Fit.getInstance()

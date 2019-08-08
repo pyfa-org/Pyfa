@@ -6,6 +6,7 @@ from gui import globalEvents as GE
 from gui.fitCommands.calc.fighter.localAdd import CalcAddLocalFighterCommand
 from gui.fitCommands.helpers import FighterInfo, InternalCommandHistory
 from service.fit import Fit
+from service.market import Market
 
 
 class GuiAddLocalFighterCommand(wx.Command):
@@ -19,6 +20,7 @@ class GuiAddLocalFighterCommand(wx.Command):
     def Do(self):
         cmd = CalcAddLocalFighterCommand(fitID=self.fitID, fighterInfo=FighterInfo(itemID=self.itemID))
         success = self.internalHistory.submit(cmd)
+        Market.getInstance().storeRecentlyUsed(self.itemID)
         eos.db.flush()
         sFit = Fit.getInstance()
         sFit.recalc(self.fitID)

@@ -6,6 +6,7 @@ import gui.mainFrame
 from gui import globalEvents as GE
 from gui.fitCommands.helpers import InternalCommandHistory
 from gui.fitCommands.calc.implant.remove import CalcRemoveImplantCommand
+from service.market import Market
 
 
 class GuiRemoveImplantsCommand(wx.Command):
@@ -17,10 +18,12 @@ class GuiRemoveImplantsCommand(wx.Command):
         self.positions = positions
 
     def Do(self):
+        sMkt = Market.getInstance()
         results = []
         for position in sorted(self.positions, reverse=True):
             cmd = CalcRemoveImplantCommand(fitID=self.fitID, position=position)
             results.append(self.internalHistory.submit(cmd))
+            sMkt.storeRecentlyUsed(cmd.savedImplantInfo.itemID)
         success = any(results)
         eos.db.flush()
         sFit = Fit.getInstance()

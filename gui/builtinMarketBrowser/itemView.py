@@ -27,7 +27,6 @@ class ItemView(Display):
 
         self.unfilteredStore = set()
         self.filteredStore = set()
-        self.recentlyUsedModules = []
         self.sMkt = marketBrowser.sMkt
         self.sFit = Fit.getInstance()
 
@@ -52,14 +51,6 @@ class ItemView(Display):
         # Make reverse map, used by sorter
         self.metaMap = self.makeReverseMetaMap()
         self.active = []
-
-        # Fill up recently used modules set
-        pyfalog.debug("Fill up recently used modules set")
-        for itemID in self.sMkt.serviceMarketRecentlyUsedModules["pyfaMarketRecentlyUsedModules"]:
-            item = self.sMkt.getItem(itemID)
-            if item is None:
-                self.sMkt.serviceMarketRecentlyUsedModules["pyfaMarketRecentlyUsedModules"].remove(itemID)
-            self.recentlyUsedModules.append(item)
 
     def delaySearch(self, evt):
         sFit = Fit.getInstance()
@@ -87,12 +78,6 @@ class ItemView(Display):
             return
 
         if self.mainFrame.getActiveFit():
-
-            self.sMkt.storeRecentlyUsed(self.active[sel].ID)
-            self.recentlyUsedModules = []
-            for itemID in self.sMkt.serviceMarketRecentlyUsedModules["pyfaMarketRecentlyUsedModules"]:
-                self.recentlyUsedModules.append(self.sMkt.getItem(itemID))
-
             wx.PostEvent(self.mainFrame, ItemSelected(itemID=self.active[sel].ID))
 
     def treeSelectionChanged(self, event=None):
@@ -119,7 +104,7 @@ class ItemView(Display):
             else:
                 # If method was called but selection wasn't actually made or we have a hit on recently used modules
                 if seldata == RECENTLY_USED_MODULES:
-                    items = self.recentlyUsedModules
+                    items = self.sMkt.getRecentlyUsed()
                 else:
                     items = set()
 

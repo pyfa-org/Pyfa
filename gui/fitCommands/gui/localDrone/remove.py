@@ -6,6 +6,7 @@ from gui import globalEvents as GE
 from gui.fitCommands.calc.drone.localRemove import CalcRemoveLocalDroneCommand
 from gui.fitCommands.helpers import InternalCommandHistory
 from service.fit import Fit
+from service.market import Market
 
 
 class GuiRemoveLocalDronesCommand(wx.Command):
@@ -18,6 +19,7 @@ class GuiRemoveLocalDronesCommand(wx.Command):
         self.amount = amount
 
     def Do(self):
+        sMkt = Market.getInstance()
         results = []
         for position in sorted(self.positions, reverse=True):
             cmd = CalcRemoveLocalDroneCommand(
@@ -25,6 +27,7 @@ class GuiRemoveLocalDronesCommand(wx.Command):
                 position=position,
                 amount=self.amount)
             results.append(self.internalHistory.submit(cmd))
+            sMkt.storeRecentlyUsed(cmd.savedDroneInfo.itemID)
         success = any(results)
         eos.db.flush()
         sFit = Fit.getInstance()

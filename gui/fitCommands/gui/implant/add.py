@@ -8,6 +8,7 @@ from gui.fitCommands.calc.implant.add import CalcAddImplantCommand
 from gui.fitCommands.calc.implant.changeLocation import CalcChangeImplantLocationCommand
 from gui.fitCommands.helpers import ImplantInfo, InternalCommandHistory
 from service.fit import Fit
+from service.market import Market
 
 
 class GuiAddImplantCommand(wx.Command):
@@ -28,6 +29,7 @@ class GuiAddImplantCommand(wx.Command):
             successSource = False
         cmd = CalcAddImplantCommand(fitID=self.fitID, implantInfo=ImplantInfo(itemID=self.itemID))
         successImplant = self.internalHistory.submit(cmd)
+        Market.getInstance().storeRecentlyUsed(self.itemID)
         # Acceptable behavior when we already have passed implant and just switch source, or
         # when we have source and add implant, but not if we do not change anything
         success = successSource or successImplant
