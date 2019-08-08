@@ -92,14 +92,17 @@ class CapSimulator:
         # Loop over grouped modules, configure staggering and push to the simulation state
         for (duration, capNeed, clipSize, disableStagger, reloadTime, isInjector), amount in mods.items():
             if self.stagger and not disableStagger:
+                # Stagger all mods if they do not need to be reloaded
                 if clipSize == 0:
                     duration = int(duration / amount)
+                # Stagger mods after first
                 else:
                     stagger_amount = (duration * clipSize + reloadTime) / (amount * clipSize)
                     for i in range(1, amount):
                         heapq.heappush(
                             self.state,
                             [i * stagger_amount, duration, capNeed, 0, clipSize, reloadTime])
+            # If mods are not staggered - just multiply cap use
             else:
                 capNeed *= amount
 
@@ -195,7 +198,7 @@ class CapSimulator:
 
         # calculate EVE's stability value
         try:
-            avgDrain = reduce(float.__add__, [x[2] / x[1] for x in self.state], 0.0)
+            avgDrain = sum(x[2] / x[1] for x in self.state)
             self.cap_stable_eve = 0.25 * (1.0 + sqrt(-(2.0 * avgDrain * tau - capCapacity) / capCapacity)) ** 2
         except ValueError:
             self.cap_stable_eve = 0.0
@@ -205,7 +208,6 @@ class CapSimulator:
             self.cap_stable_low = cap_lowest
             self.cap_stable_high = cap_lowest_pre
         else:
-            self.cap_stable_low = \
-                self.cap_stable_high = 0.0
+            self.cap_stable_low = self.cap_stable_high = 0.0
 
         self.runtime = time.time() - start
