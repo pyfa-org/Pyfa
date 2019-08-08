@@ -74,19 +74,22 @@ class PreferenceDialog(wx.Dialog):
 
         self.Layout()
 
-        self.btnOK.Bind(wx.EVT_BUTTON, self.OnBtnOK)
+        self.Bind(wx.EVT_CLOSE, self.OnClose)
         self.Bind(wx.EVT_CHAR_HOOK, self.kbEvent)
+        self.btnOK.Bind(wx.EVT_BUTTON, self.OnBtnOK)
 
     def OnBtnOK(self, event):
-        self.closeWindow()
+        self.Close()
 
     def kbEvent(self, event):
         keycode = event.GetKeyCode()
         mstate = wx.GetMouseState()
         if keycode == wx.WXK_ESCAPE and mstate.GetModifiers() == wx.MOD_NONE:
-            self.closeWindow()
+            self.Close()
             return
         event.Skip()
 
-    def closeWindow(self):
+    def OnClose(self, event):
+        if self.IsModal():
+            self.EndModal(wx.ID_OK)
         self.Destroy()
