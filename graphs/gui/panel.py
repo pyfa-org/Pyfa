@@ -147,16 +147,16 @@ class GraphControlPanel(wx.Panel):
         # Vectors
         self._setVectorDefaults()
         if view.srcVectorDef is not None:
-            self.srcVectorLabel.SetLabel(view.srcVectorDef.label)
             self.srcVector.Show(True)
             self.srcVectorLabel.Show(True)
+            self.srcVectorLabel.SetLabel(view.srcVectorDef.label)
         else:
             self.srcVector.Show(False)
             self.srcVectorLabel.Show(False)
         if view.tgtVectorDef is not None:
-            self.tgtVectorLabel.SetLabel(view.tgtVectorDef.label)
             self.tgtVector.Show(True)
             self.tgtVectorLabel.Show(True)
+            self.tgtVectorLabel.SetLabel(view.tgtVectorDef.label)
         else:
             self.tgtVector.Show(False)
             self.tgtVectorLabel.Show(False)
