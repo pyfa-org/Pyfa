@@ -1,5 +1,7 @@
 os: linux
 language: python
+git:
+  depth: 400
 python:
   - 3.6
 matrix:
