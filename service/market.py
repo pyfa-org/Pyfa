@@ -820,3 +820,11 @@ class Market:
             if self.getPublicityByItem(item):
                 items.append(item)
         return items
+
+    def storeRecentlyUsed(self, itemID):
+        recentlyUsedModules = self.serviceMarketRecentlyUsedModules["pyfaMarketRecentlyUsedModules"]
+        while itemID in recentlyUsedModules:
+            recentlyUsedModules.remove(itemID)
+        while len(recentlyUsedModules) >= 20:
+            recentlyUsedModules.pop(-1)
+        recentlyUsedModules.insert(0, itemID)

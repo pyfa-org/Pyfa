@@ -3,7 +3,7 @@ from logbook import Logger
 
 from eos.saveddata.module import Module
 import gui.builtinMarketBrowser.pfSearchBox as SBox
-from gui.builtinMarketBrowser.events import ItemSelected, MAX_RECENTLY_USED_MODULES, RECENTLY_USED_MODULES
+from gui.builtinMarketBrowser.events import ItemSelected, RECENTLY_USED_MODULES
 from gui.contextMenu import ContextMenu
 from gui.display import Display
 from gui.utils.staticHelpers import DragDropHelper
@@ -85,20 +85,12 @@ class ItemView(Display):
 
         if self.mainFrame.getActiveFit():
 
-            self.storeRecentlyUsedMarketItem(self.active[sel].ID)
+            self.sMkt.storeRecentlyUsed(self.active[sel].ID)
             self.recentlyUsedModules = []
             for itemID in self.sMkt.serviceMarketRecentlyUsedModules["pyfaMarketRecentlyUsedModules"]:
                 self.recentlyUsedModules.append(self.sMkt.getItem(itemID))
 
             wx.PostEvent(self.mainFrame, ItemSelected(itemID=self.active[sel].ID))
-
-    def storeRecentlyUsedMarketItem(self, itemID):
-        recentlyUsedModules = self.sMkt.serviceMarketRecentlyUsedModules["pyfaMarketRecentlyUsedModules"]
-        while itemID in recentlyUsedModules:
-            recentlyUsedModules.remove(itemID)
-        while len(self.sMkt.serviceMarketRecentlyUsedModules["pyfaMarketRecentlyUsedModules"]) >= MAX_RECENTLY_USED_MODULES:
-            self.sMkt.serviceMarketRecentlyUsedModules["pyfaMarketRecentlyUsedModules"].pop(-1)
-        self.sMkt.serviceMarketRecentlyUsedModules["pyfaMarketRecentlyUsedModules"].insert(0, itemID)
 
     def treeSelectionChanged(self, event=None):
         self.selectionMade('tree')
