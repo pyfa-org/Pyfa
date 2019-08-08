@@ -801,7 +801,7 @@ class Market:
 
     def filterItemsByMeta(self, items, metas):
         """Filter items by meta lvl"""
-        filtered = set([item for item in items if self.getMetaGroupIdByItem(item) in metas])
+        filtered = [item for item in items if self.getMetaGroupIdByItem(item) in metas]
         return filtered
 
     def getReplacements(self, identity):

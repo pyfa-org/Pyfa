@@ -27,7 +27,7 @@ class ItemView(Display):
 
         self.unfilteredStore = set()
         self.filteredStore = set()
-        self.recentlyUsedModules = set()
+        self.recentlyUsedModules = []
         self.sMkt = marketBrowser.sMkt
         self.sFit = Fit.getInstance()
 
@@ -56,7 +56,7 @@ class ItemView(Display):
         # Fill up recently used modules set
         pyfalog.debug("Fill up recently used modules set")
         for itemID in self.sMkt.serviceMarketRecentlyUsedModules["pyfaMarketRecentlyUsedModules"]:
-            self.recentlyUsedModules.add(self.sMkt.getItem(itemID))
+            self.recentlyUsedModules.append(self.sMkt.getItem(itemID))
 
     def delaySearch(self, evt):
         sFit = Fit.getInstance()
@@ -86,17 +86,19 @@ class ItemView(Display):
         if self.mainFrame.getActiveFit():
 
             self.storeRecentlyUsedMarketItem(self.active[sel].ID)
-            self.recentlyUsedModules = set()
+            self.recentlyUsedModules = []
             for itemID in self.sMkt.serviceMarketRecentlyUsedModules["pyfaMarketRecentlyUsedModules"]:
-                self.recentlyUsedModules.add(self.sMkt.getItem(itemID))
+                self.recentlyUsedModules.append(self.sMkt.getItem(itemID))
 
             wx.PostEvent(self.mainFrame, ItemSelected(itemID=self.active[sel].ID))
 
     def storeRecentlyUsedMarketItem(self, itemID):
-        if len(self.sMkt.serviceMarketRecentlyUsedModules["pyfaMarketRecentlyUsedModules"]) > MAX_RECENTLY_USED_MODULES:
-            self.sMkt.serviceMarketRecentlyUsedModules["pyfaMarketRecentlyUsedModules"].pop(0)
-
-        self.sMkt.serviceMarketRecentlyUsedModules["pyfaMarketRecentlyUsedModules"].append(itemID)
+        recentlyUsedModules = self.sMkt.serviceMarketRecentlyUsedModules["pyfaMarketRecentlyUsedModules"]
+        while itemID in recentlyUsedModules:
+            recentlyUsedModules.remove(itemID)
+        while len(self.sMkt.serviceMarketRecentlyUsedModules["pyfaMarketRecentlyUsedModules"]) >= MAX_RECENTLY_USED_MODULES:
+            self.sMkt.serviceMarketRecentlyUsedModules["pyfaMarketRecentlyUsedModules"].pop(-1)
+        self.sMkt.serviceMarketRecentlyUsedModules["pyfaMarketRecentlyUsedModules"].insert(0, itemID)
 
     def treeSelectionChanged(self, event=None):
         self.selectionMade('tree')
@@ -161,7 +163,7 @@ class ItemView(Display):
                         btn.setUserSelection(True)
                 filteredItems = self.filterItems()
         self.filteredStore = filteredItems
-        self.update(list(self.filteredStore))
+        self.update(self.filteredStore)
 
     def filterItems(self):
         sMkt = self.sMkt
@@ -261,7 +263,8 @@ class ItemView(Display):
             # Clear selection
             self.unselectAll()
             # Perform sorting, using item's meta levels besides other stuff
-            items.sort(key=self.itemSort)
+            if self.marketBrowser.mode != 'recent':
+                items.sort(key=self.itemSort)
         # Mark current item list as active
         self.active = items
         # Show them
@@ -275,7 +278,8 @@ class ItemView(Display):
             sMkt = self.sMkt
             self.metalvls = sMkt.directAttrRequest(items, attrs)
             # Re-sort stuff
-            items.sort(key=self.itemSort)
+            if self.marketBrowser.mode != 'recent':
+                items.sort(key=self.itemSort)
 
         for i, item in enumerate(items[:9]):
             # set shortcut info for first 9 modules
