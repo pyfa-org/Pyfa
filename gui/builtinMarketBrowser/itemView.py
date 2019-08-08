@@ -56,7 +56,10 @@ class ItemView(Display):
         # Fill up recently used modules set
         pyfalog.debug("Fill up recently used modules set")
         for itemID in self.sMkt.serviceMarketRecentlyUsedModules["pyfaMarketRecentlyUsedModules"]:
-            self.recentlyUsedModules.append(self.sMkt.getItem(itemID))
+            item = self.sMkt.getItem(itemID)
+            if item is None:
+                self.sMkt.serviceMarketRecentlyUsedModules["pyfaMarketRecentlyUsedModules"].remove(itemID)
+            self.recentlyUsedModules.append(item)
 
     def delaySearch(self, evt):
         sFit = Fit.getInstance()
