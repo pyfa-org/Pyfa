@@ -181,7 +181,7 @@ class CapSimulator:
             # If injecting cap will "overshoot" max cap, postpone it
             if isInjector and cap - capNeed > capCapacity:
                 awaitingInjectors.append((duration, capNeed, shot, clipSize, reloadTime, isInjector))
-            
+
             else:
                 # If we will need more cap than we have, but we are not at 100% -
                 # use awaiting cap injectors to top us up until we have enough or

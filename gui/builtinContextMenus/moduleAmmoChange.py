@@ -67,8 +67,8 @@ class ChangeModuleAmmo(ContextMenuCombined):
             if d > 0:
                 damage += d
 
-        # Take optimal and half falloff as range factor
-        rangeFactor = range_ + falloff / 2
+        # Take optimal and falloff as range factor
+        rangeFactor = range_ + falloff
 
         return - rangeFactor, charge.name.rsplit()[-2:], damage, charge.name
 
