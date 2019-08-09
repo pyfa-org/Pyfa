@@ -91,6 +91,12 @@ class CapSimulator:
 
         # Loop over grouped modules, configure staggering and push to the simulation state
         for (duration, capNeed, clipSize, disableStagger, reloadTime, isInjector), amount in mods.items():
+            # Just push multiple instances if item is injector. We do not want to stagger them as we will
+            # use them as needed and want them to be available right away
+            if isInjector:
+                for i in range(amount):
+                    heapq.heappush(self.state, [0, duration, capNeed, 0, clipSize, reloadTime])
+                continue
             if self.stagger and not disableStagger:
                 # Stagger all mods if they do not need to be reloaded
                 if clipSize == 0:
@@ -99,9 +105,7 @@ class CapSimulator:
                 else:
                     stagger_amount = (duration * clipSize + reloadTime) / (amount * clipSize)
                     for i in range(1, amount):
-                        heapq.heappush(
-                            self.state,
-                            [i * stagger_amount, duration, capNeed, 0, clipSize, reloadTime])
+                        heapq.heappush(self.state, [i * stagger_amount, duration, capNeed, 0, clipSize, reloadTime])
             # If mods are not staggered - just multiply cap use
             else:
                 capNeed *= amount
