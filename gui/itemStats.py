@@ -39,26 +39,25 @@ from gui.builtinItemStatsViews.itemMutator import ItemMutatorPanel
 from eos.saveddata.module import Module
 
 
-class ItemStatsDialog(wx.Dialog):
+class ItemStatsFrame(wx.Frame):
     counter = 0
 
     def __init__(
-            self,
-            victim,
-            fullContext=None,
-            pos=wx.DefaultPosition,
-            size=wx.DefaultSize,
-            maximized=False
+        self,
+        victim,
+        fullContext=None,
+        pos=wx.DefaultPosition,
+        size=wx.DefaultSize,
+        maximized=False
     ):
-
-        wx.Dialog.__init__(
-                self,
-                gui.mainFrame.MainFrame.getInstance(),
-                wx.ID_ANY,
-                title="Item stats",
-                pos=pos,
-                size=size,
-                style=wx.CAPTION | wx.CLOSE_BOX | wx.MINIMIZE_BOX | wx.MAXIMIZE_BOX | wx.RESIZE_BORDER | wx.SYSTEM_MENU
+        wx.Frame.__init__(
+            self,
+            gui.mainFrame.MainFrame.getInstance(),
+            wx.ID_ANY,
+            title="Item stats",
+            pos=pos,
+            size=size,
+            style=wx.DEFAULT_FRAME_STYLE | wx.FRAME_FLOAT_ON_PARENT
         )
 
         empty = getattr(victim, "isEmpty", False)
@@ -108,13 +107,13 @@ class ItemStatsDialog(wx.Dialog):
         psize = self.parentWnd.GetSize()
         ppos = self.parentWnd.GetPosition()
 
-        ItemStatsDialog.counter += 1
-        self.dlgOrder = ItemStatsDialog.counter
+        ItemStatsFrame.counter += 1
+        self.dlgOrder = ItemStatsFrame.counter
 
-        counter = ItemStatsDialog.counter
+        counter = ItemStatsFrame.counter
         dlgStep = 30
         if counter * dlgStep > ppos.x + psize.width - dlgsize.x or counter * dlgStep > ppos.y + psize.height - dlgsize.y:
-            ItemStatsDialog.counter = 1
+            ItemStatsFrame.counter = 1
 
         dlgx = ppos.x + counter * dlgStep
         dlgy = ppos.y + counter * dlgStep
@@ -146,10 +145,10 @@ class ItemStatsDialog(wx.Dialog):
 
     def OnClose(self, event):
         self.container.OnWindowClose()
-        if self.dlgOrder == ItemStatsDialog.counter:
-            ItemStatsDialog.counter -= 1
+        if self.dlgOrder == ItemStatsFrame.counter:
+            ItemStatsFrame.counter -= 1
         self.parentWnd.UnregisterStatsWindow(self)
-        self.Destroy()
+        event.Skip()
 
 
 class ItemStatsContainer(wx.Panel):

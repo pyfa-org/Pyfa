@@ -3,7 +3,7 @@ import wx
 
 import gui.mainFrame
 from gui.contextMenu import ContextMenuSingle
-from gui.itemStats import ItemStatsDialog
+from gui.itemStats import ItemStatsFrame
 from service.fit import Fit
 
 
@@ -55,7 +55,7 @@ class ItemStats(ContextMenuSingle):
             reuse = True
 
         if self.mainFrame.GetActiveStatsWindow() is None and reuse:
-            dlg = ItemStatsDialog(stuff, fullContext)
+            frame = ItemStatsFrame(stuff, fullContext)
         elif reuse:
             lastWnd = self.mainFrame.GetActiveStatsWindow()
             pos = lastWnd.GetPosition()
@@ -65,12 +65,12 @@ class ItemStats(ContextMenuSingle):
             else:
                 size = wx.DefaultSize
                 pos = wx.DefaultPosition
-            dlg = ItemStatsDialog(stuff, fullContext, pos, size, maximized)
+            frame = ItemStatsFrame(stuff, fullContext, pos, size, maximized)
             lastWnd.Close()
 
         else:
-            dlg = ItemStatsDialog(stuff, fullContext)
-        dlg.Show()
+            frame = ItemStatsFrame(stuff, fullContext)
+        frame.Show()
 
 
 ItemStats.register()
