@@ -149,45 +149,50 @@ class EveFittings(wx.Frame):
             return
         data = json.loads(self.fitTree.fittingsTreeCtrl.GetItemData(selection))
 
-        dlg = wx.MessageDialog(self,
-                               "Do you really want to delete %s (%s) from EVE?" % (data['name'], getItem(data['ship_type_id']).name),
-                               "Confirm Delete", wx.YES | wx.NO | wx.ICON_QUESTION)
-
-        if dlg.ShowModal() == wx.ID_YES:
-            try:
-                sEsi.delFitting(self.getActiveCharacter(), data['fitting_id'])
-                # repopulate the fitting list
-                self.fitTree.populateSkillTree(self.fittings)
-                self.fitView.update([])
-            except requests.exceptions.ConnectionError:
-                msg = "Connection error, please check your internet connection"
-                pyfalog.error(msg)
-                self.statusbar.SetStatusText(msg)
+        with wx.MessageDialog(
+            self, "Do you really want to delete %s (%s) from EVE?" % (data['name'], getItem(data['ship_type_id']).name),
+            "Confirm Delete", wx.YES | wx.NO | wx.ICON_QUESTION
+        ) as dlg:
+            if dlg.ShowModal() == wx.ID_YES:
+                try:
+                    sEsi.delFitting(self.getActiveCharacter(), data['fitting_id'])
+                    # repopulate the fitting list
+                    self.fitTree.populateSkillTree(self.fittings)
+                    self.fitView.update([])
+                except requests.exceptions.ConnectionError:
+                    msg = "Connection error, please check your internet connection"
+                    pyfalog.error(msg)
+                    self.statusbar.SetStatusText(msg)
 
 
 class ESIServerExceptionHandler:
     def __init__(self, parentWindow, ex):
-        dlg = wx.MessageDialog(parentWindow,
-                               "There was an issue starting up the localized server, try setting "
-                               "Login Authentication Method to Manual by going to Preferences -> EVE SS0 -> "
-                               "Login Authentication Method. If this doesn't fix the problem please file an "
-                               "issue on Github.",
-                               "Add Character Error",
-                                wx.OK | wx.ICON_ERROR)
-        dlg.ShowModal()
         pyfalog.error(ex)
+        with wx.MessageDialog(
+            parentWindow,
+            "There was an issue starting up the localized server, try setting "
+            "Login Authentication Method to Manual by going to Preferences -> EVE SS0 -> "
+            "Login Authentication Method. If this doesn't fix the problem please file an "
+            "issue on Github.",
+            "Add Character Error",
+            wx.OK | wx.ICON_ERROR
+        ) as dlg:
+            dlg.ShowModal()
 
 
 class ESIExceptionHandler:
     # todo: make this a generate excetpion handler for all calls
     def __init__(self, parentWindow, ex):
         if ex.response['error'].startswith('Token is not valid') or ex.response['error'] == 'invalid_token':  # todo: this seems messy, figure out a better response
-            dlg = wx.MessageDialog(parentWindow,
-                                   "There was an error validating characters' SSO token. Please try "
-                                   "logging into the character again to reset the token.", "Invalid Token",
-                                   wx.OK | wx.ICON_ERROR)
-            dlg.ShowModal()
             pyfalog.error(ex)
+            with wx.MessageDialog(
+                parentWindow,
+                "There was an error validating characters' SSO token. Please try "
+                "logging into the character again to reset the token.",
+                "Invalid Token",
+                wx.OK | wx.ICON_ERROR
+            ) as dlg:
+                dlg.ShowModal()
         else:
             # We don't know how to handle the error, raise it for the global error handler to pick it up
             raise ex

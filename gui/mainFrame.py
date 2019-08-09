@@ -424,29 +424,31 @@ class MainFrame(wx.Frame):
         fit = sFit.getFit(self.getActiveFit())
         defaultFile = "%s - %s.xml" % (fit.ship.item.name, fit.name) if fit else None
 
-        dlg = wx.FileDialog(self, "Save Fitting As...",
-                            wildcard="EVE XML fitting files (*.xml)|*.xml",
-                            style=wx.FD_SAVE,
-                            defaultFile=defaultFile)
-        if dlg.ShowModal() == wx.ID_OK:
-            self.supress_left_up = True
-            format_ = dlg.GetFilterIndex()
-            path = dlg.GetPath()
-            if format_ == 0:
-                output = Port.exportXml([fit], None)
-                if '.' not in os.path.basename(path):
-                    path += ".xml"
-            else:
-                pyfalog.warning("oops, invalid fit format %d" % format_)
-                try:
-                    dlg.Destroy()
-                except RuntimeError:
-                    pyfalog.error("Tried to destroy an object that doesn't exist in <showExportDialog>.")
-                return
+        with wx.FileDialog(
+            self, "Save Fitting As...",
+            wildcard="EVE XML fitting files (*.xml)|*.xml",
+            style=wx.FD_SAVE,
+            defaultFile=defaultFile
+        ) as dlg:
+            if dlg.ShowModal() == wx.ID_OK:
+                self.supress_left_up = True
+                format_ = dlg.GetFilterIndex()
+                path = dlg.GetPath()
+                if format_ == 0:
+                    output = Port.exportXml([fit], None)
+                    if '.' not in os.path.basename(path):
+                        path += ".xml"
+                else:
+                    pyfalog.warning("oops, invalid fit format %d" % format_)
+                    try:
+                        dlg.Destroy()
+                    except RuntimeError:
+                        pyfalog.error("Tried to destroy an object that doesn't exist in <showExportDialog>.")
+                    return
 
-            with open(path, "w", encoding="utf-8") as openfile:
-                openfile.write(output)
-                openfile.close()
+                with open(path, "w", encoding="utf-8") as openfile:
+                    openfile.write(output)
+                    openfile.close()
 
         try:
             dlg.Destroy()
@@ -606,13 +608,18 @@ class MainFrame(wx.Frame):
         fit = sFit.getFit(fitID)
 
         if not fit.ignoreRestrictions:
-            dlg = wx.MessageDialog(self, "Are you sure you wish to ignore fitting restrictions for the "
-                                         "current fit? This could lead to wildly inaccurate results and possible errors.", "Confirm", wx.YES_NO | wx.ICON_QUESTION)
+            with wx.MessageDialog(
+                self, "Are you sure you wish to ignore fitting restrictions for the "
+                "current fit? This could lead to wildly inaccurate results and possible errors.",
+                "Confirm", wx.YES_NO | wx.ICON_QUESTION
+            ) as dlg:
+                result = dlg.ShowModal() == wx.ID_YES
         else:
-            dlg = wx.MessageDialog(self, "Re-enabling fitting restrictions for this fit will also remove any illegal items "
-                                         "from the fit. Do you want to continue?", "Confirm", wx.YES_NO | wx.ICON_QUESTION)
-        result = dlg.ShowModal() == wx.ID_YES
-        dlg.Destroy()
+            with wx.MessageDialog(
+                self, "Re-enabling fitting restrictions for this fit will also remove any illegal items "
+                "from the fit. Do you want to continue?", "Confirm", wx.YES_NO | wx.ICON_QUESTION
+            ) as dlg:
+                result = dlg.ShowModal() == wx.ID_YES
         if result:
             self.command.Submit(cmd.GuiToggleFittingRestrictionsCommand(fitID=fitID))
 
@@ -739,88 +746,79 @@ class MainFrame(wx.Frame):
     def exportSkillsNeeded(self, event):
         """ Exports skills needed for active fit and active character """
         sCharacter = Character.getInstance()
-        saveDialog = wx.FileDialog(
+        with wx.FileDialog(
             self,
             "Export Skills Needed As...",
             wildcard=("EVEMon skills training file (*.emp)|*.emp|"
                       "EVEMon skills training XML file (*.xml)|*.xml|"
                       "Text skills training file (*.txt)|*.txt"),
             style=wx.FD_SAVE | wx.FD_OVERWRITE_PROMPT,
-        )
+        ) as dlg:
+            if dlg.ShowModal() == wx.ID_OK:
+                saveFmtInt = dlg.GetFilterIndex()
 
-        if saveDialog.ShowModal() == wx.ID_OK:
-            saveFmtInt = saveDialog.GetFilterIndex()
+                if saveFmtInt == 0:  # Per ordering of wildcards above
+                    saveFmt = "emp"
+                elif saveFmtInt == 1:
+                    saveFmt = "xml"
+                else:
+                    saveFmt = "txt"
 
-            if saveFmtInt == 0:  # Per ordering of wildcards above
-                saveFmt = "emp"
-            elif saveFmtInt == 1:
-                saveFmt = "xml"
-            else:
-                saveFmt = "txt"
+                filePath = dlg.GetPath()
+                if '.' not in os.path.basename(filePath):
+                    filePath += ".{0}".format(saveFmt)
 
-            filePath = saveDialog.GetPath()
-            if '.' not in os.path.basename(filePath):
-                filePath += ".{0}".format(saveFmt)
-
-            self.waitDialog = wx.BusyInfo("Exporting skills needed...")
-            sCharacter.backupSkills(filePath, saveFmt, self.getActiveFit(), self.closeWaitDialog)
-
-        saveDialog.Destroy()
+                self.waitDialog = wx.BusyInfo("Exporting skills needed...")
+                sCharacter.backupSkills(filePath, saveFmt, self.getActiveFit(), self.closeWaitDialog)
 
     def fileImportDialog(self, event):
         """Handles importing single/multiple EVE XML / EFT cfg fit files"""
-        dlg = wx.FileDialog(
+        with wx.FileDialog(
             self,
             "Open One Or More Fitting Files",
             wildcard=("EVE XML fitting files (*.xml)|*.xml|"
                       "EFT text fitting files (*.cfg)|*.cfg|"
                       "All Files (*)|*"),
             style=wx.FD_OPEN | wx.FD_FILE_MUST_EXIST | wx.FD_MULTIPLE
-        )
-        if dlg.ShowModal() == wx.ID_OK:
-            self.progressDialog = wx.ProgressDialog(
-                "Importing fits",
-                " " * 100,  # set some arbitrary spacing to create width in window
-                parent=self,
-                style=wx.PD_CAN_ABORT | wx.PD_SMOOTH | wx.PD_ELAPSED_TIME | wx.PD_APP_MODAL
-            )
-            # self.progressDialog.message = None
-            Port.importFitsThreaded(dlg.GetPaths(), self)
-            self.progressDialog.ShowModal()
-            try:
-                dlg.Destroy()
-            except RuntimeError:
-                pyfalog.error("Tried to destroy an object that doesn't exist in <fileImportDialog>.")
+        ) as dlg:
+            if dlg.ShowModal() == wx.ID_OK:
+                self.progressDialog = wx.ProgressDialog(
+                    "Importing fits",
+                    " " * 100,  # set some arbitrary spacing to create width in window
+                    parent=self,
+                    style=wx.PD_CAN_ABORT | wx.PD_SMOOTH | wx.PD_ELAPSED_TIME | wx.PD_APP_MODAL
+                )
+                Port.importFitsThreaded(dlg.GetPaths(), self)
+                self.progressDialog.ShowModal()
 
     def backupToXml(self, event):
         """ Back up all fits to EVE XML file """
         defaultFile = "pyfa-fits-%s.xml" % strftime("%Y%m%d_%H%M%S", gmtime())
 
-        saveDialog = wx.FileDialog(
+        with wx.FileDialog(
             self,
             "Save Backup As...",
             wildcard="EVE XML fitting file (*.xml)|*.xml",
             style=wx.FD_SAVE | wx.FD_OVERWRITE_PROMPT,
             defaultFile=defaultFile,
-        )
+        ) as dlg:
+            if dlg.ShowModal() == wx.ID_OK:
+                filePath = dlg.GetPath()
+                if '.' not in os.path.basename(filePath):
+                    filePath += ".xml"
 
-        if saveDialog.ShowModal() == wx.ID_OK:
-            filePath = saveDialog.GetPath()
-            if '.' not in os.path.basename(filePath):
-                filePath += ".xml"
+                sFit = Fit.getInstance()
+                max_ = sFit.countAllFits()
 
-            sFit = Fit.getInstance()
-            max_ = sFit.countAllFits()
-
-            self.progressDialog = wx.ProgressDialog(
-                "Backup fits",
-                "Backing up %d fits to: %s" % (max_, filePath),
-                maximum=max_,
-                parent=self,
-                style=wx.PD_CAN_ABORT | wx.PD_SMOOTH | wx.PD_ELAPSED_TIME | wx.PD_APP_MODAL
-            )
-            Port.backupFits(filePath, self)
-            self.progressDialog.ShowModal()
+                self.progressDialog = wx.ProgressDialog(
+                    "Backup fits",
+                    "Backing up %d fits to: %s" % (max_, filePath),
+                    maximum=max_,
+                    parent=self,
+                    style=wx.PD_CAN_ABORT | wx.PD_SMOOTH | wx.PD_ELAPSED_TIME | wx.PD_APP_MODAL
+                )
+                Port.backupFits(filePath, self)
+                self.progressDialog.ShowModal()
 
     def exportHtml(self, event):
         from gui.utils.exportHtml import exportHtml
@@ -831,15 +829,14 @@ class MainFrame(wx.Frame):
         path = settings.getPath()
 
         if not os.path.isdir(os.path.dirname(path)):
-            dlg = wx.MessageDialog(
+            with wx.MessageDialog(
                 self,
                 "Invalid Path\n\nThe following path is invalid or does not exist: \n%s\n\nPlease verify path location pyfa's preferences." % path,
                 "Error",
                 wx.OK | wx.ICON_ERROR
-            )
-
-            if dlg.ShowModal() == wx.ID_OK:
-                return
+            ) as dlg:
+                if dlg.ShowModal() == wx.ID_OK:
+                    return
 
         self.progressDialog = wx.ProgressDialog(
             "Backup fits",
@@ -887,12 +884,12 @@ class MainFrame(wx.Frame):
         if action & IPortUser.ID_ERROR:
             self.closeProgressDialog()
             _message = "Import Error" if action & IPortUser.PROCESS_IMPORT else "Export Error"
-            dlg = wx.MessageDialog(self,
-                                   "The following error was generated\n\n%s\n\nBe aware that already processed fits were not saved" % data,
-                                   _message, wx.OK | wx.ICON_ERROR)
-            # if dlg.ShowModal() == wx.ID_OK:
-            #     return
-            dlg.ShowModal()
+            with wx.MessageDialog(
+                self,
+                "The following error was generated\n\n%s\n\nBe aware that already processed fits were not saved" % data,
+                _message, wx.OK | wx.ICON_ERROR
+            ) as dlg:
+                dlg.ShowModal()
             return
 
         # data is str
@@ -946,18 +943,17 @@ class MainFrame(wx.Frame):
 
     def importCharacter(self, event):
         """ Imports character XML file from EVE API """
-        dlg = wx.FileDialog(
+        with wx.FileDialog(
             self,
             "Open One Or More Character Files",
             wildcard="EVE API XML character files (*.xml)|*.xml|All Files (*)|*",
             style=wx.FD_OPEN | wx.FD_FILE_MUST_EXIST | wx.FD_MULTIPLE
-        )
-
-        if dlg.ShowModal() == wx.ID_OK:
-            self.supress_left_up = True
-            self.waitDialog = wx.BusyInfo("Importing Character...")
-            sCharacter = Character.getInstance()
-            sCharacter.importCharacter(dlg.GetPaths(), self.importCharacterCallback)
+        ) as dlg:
+            if dlg.ShowModal() == wx.ID_OK:
+                self.supress_left_up = True
+                self.waitDialog = wx.BusyInfo("Importing Character...")
+                sCharacter = Character.getInstance()
+                sCharacter.importCharacter(dlg.GetPaths(), self.importCharacterCallback)
 
     def importCharacterCallback(self):
         self.closeWaitDialog()

@@ -108,61 +108,63 @@ class ItemParams(wx.Panel):
     def ExportItemStats(self, event):
         exportFileName = self.item.name + " (" + str(self.item.ID) + ").csv"
 
-        saveFileDialog = wx.FileDialog(self, "Save CSV file", "", exportFileName,
-                                       "CSV files (*.csv)|*.csv", wx.FD_SAVE | wx.FD_OVERWRITE_PROMPT)
+        with wx.FileDialog(
+            self, "Save CSV file", "", exportFileName,
+            "CSV files (*.csv)|*.csv", wx.FD_SAVE | wx.FD_OVERWRITE_PROMPT
+        ) as dlg:
 
-        if saveFileDialog.ShowModal() == wx.ID_CANCEL:
-            return  # the user hit cancel...
+            if dlg.ShowModal() == wx.ID_CANCEL:
+                return  # the user hit cancel...
 
-        with open(saveFileDialog.GetPath(), "w") as exportFile:
-            writer = csv.writer(exportFile, delimiter=',')
-
-            writer.writerow(
-                    [
-                        "ID",
-                        "Internal Name",
-                        "Friendly Name",
-                        "Modified Value",
-                        "Base Value",
-                    ]
-            )
-
-            for attribute in self.attrValues:
-
-                try:
-                    attribute_id = self.attrInfo[attribute].ID
-                except (KeyError, AttributeError):
-                    attribute_id = ''
-
-                try:
-                    attribute_name = self.attrInfo[attribute].name
-                except (KeyError, AttributeError):
-                    attribute_name = attribute
-
-                try:
-                    attribute_displayname = self.attrInfo[attribute].displayName
-                except (KeyError, AttributeError):
-                    attribute_displayname = ''
-
-                try:
-                    attribute_value = self.attrInfo[attribute].value
-                except (KeyError, AttributeError):
-                    attribute_value = ''
-
-                try:
-                    attribute_modified_value = self.attrValues[attribute].value
-                except (KeyError, AttributeError):
-                    attribute_modified_value = self.attrValues[attribute]
+            with open(dlg.GetPath(), "w") as exportFile:
+                writer = csv.writer(exportFile, delimiter=',')
 
                 writer.writerow(
                         [
-                            attribute_id,
-                            attribute_name,
-                            attribute_displayname,
-                            attribute_modified_value,
-                            attribute_value,
+                            "ID",
+                            "Internal Name",
+                            "Friendly Name",
+                            "Modified Value",
+                            "Base Value",
                         ]
                 )
+
+                for attribute in self.attrValues:
+
+                    try:
+                        attribute_id = self.attrInfo[attribute].ID
+                    except (KeyError, AttributeError):
+                        attribute_id = ''
+
+                    try:
+                        attribute_name = self.attrInfo[attribute].name
+                    except (KeyError, AttributeError):
+                        attribute_name = attribute
+
+                    try:
+                        attribute_displayname = self.attrInfo[attribute].displayName
+                    except (KeyError, AttributeError):
+                        attribute_displayname = ''
+
+                    try:
+                        attribute_value = self.attrInfo[attribute].value
+                    except (KeyError, AttributeError):
+                        attribute_value = ''
+
+                    try:
+                        attribute_modified_value = self.attrValues[attribute].value
+                    except (KeyError, AttributeError):
+                        attribute_modified_value = self.attrValues[attribute]
+
+                    writer.writerow(
+                            [
+                                attribute_id,
+                                attribute_name,
+                                attribute_displayname,
+                                attribute_modified_value,
+                                attribute_value,
+                            ]
+                    )
 
     def SetupImageList(self):
         self.imageList.RemoveAll()

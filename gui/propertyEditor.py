@@ -110,60 +110,62 @@ class AttributeEditor(wx.Frame):
         self.Destroy()
 
     def OnImport(self, event):
-        dlg = wx.FileDialog(self, "Import pyfa override file",
-                            wildcard="pyfa override file (*.csv)|*.csv",
-                            style=wx.FD_OPEN | wx.FD_FILE_MUST_EXIST)
-        if dlg.ShowModal() == wx.ID_OK:
-            path = dlg.GetPath()
-            with open(path, 'r') as csvfile:
-                spamreader = csv.reader(csvfile)
-                for row in spamreader:
-                    if len(row) == 0:  # csvwriter seems to added blank lines to the end sometimes
-                        continue
-                    itemID, attrID, value = row
-                    item = getItem(int(itemID))
-                    attr = getAttributeInfo(int(attrID))
-                    item.setOverride(attr, float(value))
-            self.itemView.updateItems(True)
+        with wx.FileDialog(
+            self, "Import pyfa override file",
+            wildcard="pyfa override file (*.csv)|*.csv",
+            style=wx.FD_OPEN | wx.FD_FILE_MUST_EXIST
+        ) as dlg:
+            if dlg.ShowModal() == wx.ID_OK:
+                path = dlg.GetPath()
+                with open(path, 'r') as csvfile:
+                    spamreader = csv.reader(csvfile)
+                    for row in spamreader:
+                        if len(row) == 0:  # csvwriter seems to added blank lines to the end sometimes
+                            continue
+                        itemID, attrID, value = row
+                        item = getItem(int(itemID))
+                        attr = getAttributeInfo(int(attrID))
+                        item.setOverride(attr, float(value))
+                self.itemView.updateItems(True)
 
     def OnExport(self, event):
         sMkt = Market.getInstance()
         items = sMkt.getItemsWithOverrides()
         defaultFile = "pyfa_overrides.csv"
 
-        dlg = wx.FileDialog(self, "Save Overrides As...",
-                            wildcard="pyfa overrides (*.csv)|*.csv",
-                            style=wx.FD_SAVE,
-                            defaultFile=defaultFile)
-
-        if dlg.ShowModal() == wx.ID_OK:
-            path = dlg.GetPath()
-            with open(path, 'w', encoding='utf-8') as csvfile:
-                writer = csv.writer(csvfile)
-                for item in items:
-                    for key, override in item.overrides.items():
-                        writer.writerow([item.ID, override.attrID, override.value])
+        with wx.FileDialog(
+            self, "Save Overrides As...",
+            wildcard="pyfa overrides (*.csv)|*.csv",
+            style=wx.FD_SAVE,
+            defaultFile=defaultFile
+        ) as dlg:
+            if dlg.ShowModal() == wx.ID_OK:
+                path = dlg.GetPath()
+                with open(path, 'w', encoding='utf-8') as csvfile:
+                    writer = csv.writer(csvfile)
+                    for item in items:
+                        for key, override in item.overrides.items():
+                            writer.writerow([item.ID, override.attrID, override.value])
 
     def OnClear(self, event):
-        dlg = wx.MessageDialog(
+        with wx.MessageDialog(
             self,
             "Are you sure you want to delete all overrides?",
             "Confirm Delete",
             wx.YES | wx.NO | wx.ICON_EXCLAMATION
-        )
-
-        if dlg.ShowModal() == wx.ID_YES:
-            sMkt = Market.getInstance()
-            items = sMkt.getItemsWithOverrides()
-            # We can't just delete overrides, as loaded items will still have
-            # them assigned. Deleting them from the database won't propagate
-            # them due to the eve/user database disconnect. We must loop through
-            # all items that have overrides and remove them
-            for item in items:
-                for _, x in list(item.overrides.items()):
-                    item.deleteOverride(x.attr)
-            self.itemView.updateItems(True)
-            self.pg.Clear()
+        ) as dlg:
+            if dlg.ShowModal() == wx.ID_YES:
+                sMkt = Market.getInstance()
+                items = sMkt.getItemsWithOverrides()
+                # We can't just delete overrides, as loaded items will still have
+                # them assigned. Deleting them from the database won't propagate
+                # them due to the eve/user database disconnect. We must loop through
+                # all items that have overrides and remove them
+                for item in items:
+                    for _, x in list(item.overrides.items()):
+                        item.deleteOverride(x.attr)
+                self.itemView.updateItems(True)
+                self.pg.Clear()
 
 
 # This is literally a stripped down version of the market.

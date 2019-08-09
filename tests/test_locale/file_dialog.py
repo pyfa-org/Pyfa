@@ -31,58 +31,60 @@ class MyForm(wx.Frame):
 
     # ----------------------------------------------------------------------
     def loadFile(self, event):
-        openFileDialog = wx.FileDialog(self, "Open", "", "",
-                                       "Python files (*.py)|*.py",
-                                       wx.FD_OPEN | wx.FD_FILE_MUST_EXIST)
-        openFileDialog.ShowModal()
-        path = openFileDialog.GetPath()
-        try:
-            os_walk_without_codec = GetPath(path)
-        except (UnicodeEncodeError, UnicodeTranslateError, UnicodeError, UnicodeDecodeError, UnicodeWarning, TypeError) as e:
-            os_walk_without_codec = e
+        with wx.FileDialog(
+            self, "Open", "", "",
+            "Python files (*.py)|*.py",
+            wx.FD_OPEN | wx.FD_FILE_MUST_EXIST
+        ) as dlg:
+            dlg.ShowModal()
+            path = dlg.GetPath()
+            try:
+                os_walk_without_codec = GetPath(path)
+            except (UnicodeEncodeError, UnicodeTranslateError, UnicodeError, UnicodeDecodeError, UnicodeWarning, TypeError) as e:
+                os_walk_without_codec = e
 
-        try:
-            os_walk_with_system_codec = GetPath(path, None, sys.getdefaultencoding())
-        except (UnicodeEncodeError, UnicodeTranslateError, UnicodeError, UnicodeDecodeError, UnicodeWarning, TypeError) as e:
-            os_walk_with_system_codec = e
+            try:
+                os_walk_with_system_codec = GetPath(path, None, sys.getdefaultencoding())
+            except (UnicodeEncodeError, UnicodeTranslateError, UnicodeError, UnicodeDecodeError, UnicodeWarning, TypeError) as e:
+                os_walk_with_system_codec = e
 
-        try:
-            os_walk_unicode_without_codec = GetUnicodePath(path)
-        except (UnicodeEncodeError, UnicodeTranslateError, UnicodeError, UnicodeDecodeError, UnicodeWarning, TypeError) as e:
-            os_walk_unicode_without_codec = e
+            try:
+                os_walk_unicode_without_codec = GetUnicodePath(path)
+            except (UnicodeEncodeError, UnicodeTranslateError, UnicodeError, UnicodeDecodeError, UnicodeWarning, TypeError) as e:
+                os_walk_unicode_without_codec = e
 
-        try:
-            os_walk_unicode_with_system_codec = GetUnicodePath(path, None, sys.getdefaultencoding())
-        except (UnicodeEncodeError, UnicodeTranslateError, UnicodeError, UnicodeDecodeError, UnicodeWarning, TypeError) as e:
-            os_walk_unicode_with_system_codec = e
+            try:
+                os_walk_unicode_with_system_codec = GetUnicodePath(path, None, sys.getdefaultencoding())
+            except (UnicodeEncodeError, UnicodeTranslateError, UnicodeError, UnicodeDecodeError, UnicodeWarning, TypeError) as e:
+                os_walk_unicode_with_system_codec = e
 
-        print("Simple print:")
-        print(path)
+            print("Simple print:")
+            print(path)
 
-        print("Type:")
-        print((type(path)))
+            print("Type:")
+            print((type(path)))
 
-        print("OS Walk: No Codec:")
-        print(os_walk_without_codec)
+            print("OS Walk: No Codec:")
+            print(os_walk_without_codec)
 
-        print("OS Walk: Default System Codec:")
-        print(os_walk_with_system_codec)
+            print("OS Walk: Default System Codec:")
+            print(os_walk_with_system_codec)
 
-        print("OS Unicode Walk: No Codec:")
-        print(os_walk_unicode_without_codec)
+            print("OS Unicode Walk: No Codec:")
+            print(os_walk_unicode_without_codec)
 
-        print("OS Unicode Walk: Default System Codec:")
-        print(os_walk_unicode_with_system_codec)
-        openFileDialog.Destroy()
+            print("OS Unicode Walk: Default System Codec:")
+            print(os_walk_unicode_with_system_codec)
 
     # ----------------------------------------------------------------------
     def saveFile(self, event):
-        saveFileDialog = wx.FileDialog(self, "Save As", "", "",
-                                       "Python files (*.py)|*.py",
-                                       wx.FD_SAVE | wx.FD_OVERWRITE_PROMPT)
-        saveFileDialog.ShowModal()
-        saveFileDialog.GetPath()
-        saveFileDialog.Destroy()
+        with wx.FileDialog(
+            self, "Save As", "", "",
+            "Python files (*.py)|*.py",
+            wx.FD_SAVE | wx.FD_OVERWRITE_PROMPT
+        ) as dlg:
+            dlg.ShowModal()
+            dlg.GetPath()
 
 
 # Run the program

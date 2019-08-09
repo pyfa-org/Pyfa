@@ -305,16 +305,18 @@ class CharacterEditor(wx.Frame):
         sChar = Character.getInstance()
         name = sChar.getCharName(charID)
 
-        dlg = TextEntryValidatedDialog(parent, CharacterTextValidor,
-                                       "Enter a name for your new Character:",
-                                       "Save Character As...")
-        dlg.SetValue("{} Copy".format(name))
-        dlg.txtctrl.SetInsertionPointEnd()
-        dlg.CenterOnParent()
+        with TextEntryValidatedDialog(
+            parent, CharacterTextValidor,
+            "Enter a name for your new Character:",
+            "Save Character As..."
+        ) as dlg:
+            dlg.SetValue("{} Copy".format(name))
+            dlg.txtctrl.SetInsertionPointEnd()
+            dlg.CenterOnParent()
 
-        if dlg.ShowModal() == wx.ID_OK:
-            sChar = Character.getInstance()
-            return sChar.saveCharacterAs(charID, dlg.txtctrl.GetValue().strip())
+            if dlg.ShowModal() == wx.ID_OK:
+                sChar = Character.getInstance()
+                return sChar.saveCharacterAs(charID, dlg.txtctrl.GetValue().strip())
 
 
 class SkillTreeView(wx.Panel):
@@ -436,11 +438,12 @@ class SkillTreeView(wx.Panel):
 
     def importSkills(self, evt):
 
-        dlg = wx.MessageDialog(self, "Importing skills into this character will set the skill levels as pending. " +
-                                     "To save the skills permanently, please click the Save button at the bottom of the window after importing"
-                                     , "Import Skills", wx.OK)
-        dlg.ShowModal()
-        dlg.Destroy()
+        with wx.MessageDialog(
+            self, ("Importing skills into this character will set the skill levels as pending. To save the skills "
+                   "permanently, please click the Save button at the bottom of the window after importing"),
+            "Import Skills", wx.OK
+        ) as dlg:
+            dlg.ShowModal()
 
         text = fromClipboard().strip()
         if text:
@@ -456,10 +459,9 @@ class SkillTreeView(wx.Panel):
                         skill.setLevel(level, ignoreRestrict=True)
 
             except Exception as e:
-                dlg = wx.MessageDialog(self, "There was an error importing skills, please see log file", "Error", wx.ICON_ERROR)
-                dlg.ShowModal()
-                dlg.Destroy()
                 pyfalog.error(e)
+                with wx.MessageDialog(self, "There was an error importing skills, please see log file", "Error", wx.ICON_ERROR) as dlg:
+                    dlg.ShowModal()
 
             finally:
                 self.charEditor.btnRestrict()
