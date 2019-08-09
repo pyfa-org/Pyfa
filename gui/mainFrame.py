@@ -408,7 +408,7 @@ class MainFrame(wx.Frame):
         else:
             if selected:
                 self.tgtProfileEditor.selectTargetProfile(selected)
-            self.tgtProfileEditor.SetFocus()
+            self.tgtProfileEditor.Raise()
 
     def OnShowDamagePatternEditor(self, event):
         with DmgPatternEditorDlg(self) as dlg:
@@ -969,7 +969,7 @@ class MainFrame(wx.Frame):
             if graphFrame.graphFrame_enabled:
                 self.graphFrame.Show()
         elif graphFrame.graphFrame_enabled:
-            self.graphFrame.SetFocus()
+            self.graphFrame.Raise()
 
     def openWXInspectTool(self, event):
         if not InspectionTool().initialized:
