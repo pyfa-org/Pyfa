@@ -209,7 +209,7 @@ class CharacterEditor(wx.Frame):
 
         self.Centre(wx.BOTH)
 
-        self.Bind(wx.EVT_CLOSE, self.closeEvent)
+        self.Bind(wx.EVT_CLOSE, self.OnClose)
         self.Bind(wx.EVT_CHAR_HOOK, self.kbEvent)
         self.Bind(GE.CHAR_LIST_UPDATED, self.refreshCharacterList)
         self.entityEditor.Bind(wx.EVT_CHOICE, self.charChanged)
@@ -235,9 +235,7 @@ class CharacterEditor(wx.Frame):
             event.Skip()
 
     def editingFinished(self, event):
-        # del self.disableWin
-        wx.PostEvent(self.mainFrame, GE.CharListUpdated())
-        self.Destroy()
+        self.Close()
 
     def saveChar(self, event):
         sChr = Character.getInstance()
@@ -260,16 +258,18 @@ class CharacterEditor(wx.Frame):
         keycode = event.GetKeyCode()
         mstate = wx.GetMouseState()
         if keycode == wx.WXK_ESCAPE and mstate.GetModifiers() == wx.MOD_NONE:
-            self.closeWindow()
+            self.Close()
             return
         event.Skip()
 
-    def closeEvent(self, event):
-        self.closeWindow()
-
-    def closeWindow(self):
+    def OnClose(self, event):
         wx.PostEvent(self.mainFrame, GE.CharListUpdated())
-        self.Destroy()
+        sFit = Fit.getInstance()
+        fitID = self.mainFrame.getActiveFit()
+        if fitID is not None:
+            sFit.clearFit(fitID)
+            wx.PostEvent(self.mainFrame, GE.FitChanged(fitIDs=(fitID,)))
+        event.Skip()
 
     def restrict(self):
         self.entityEditor.btnRename.Enable(False)
@@ -290,15 +290,6 @@ class CharacterEditor(wx.Frame):
 
         if event is not None:
             event.Skip()
-
-    def Destroy(self):
-        sFit = Fit.getInstance()
-        fitID = self.mainFrame.getActiveFit()
-        if fitID is not None:
-            sFit.clearFit(fitID)
-            wx.PostEvent(self.mainFrame, GE.FitChanged(fitIDs=(fitID,)))
-
-        wx.Frame.Destroy(self)
 
     @staticmethod
     def SaveCharacterAs(parent, charID):
