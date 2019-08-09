@@ -96,18 +96,15 @@ class AttributeEditor(wx.Frame):
         keycode = event.GetKeyCode()
         mstate = wx.GetMouseState()
         if keycode == wx.WXK_ESCAPE and mstate.GetModifiers() == wx.MOD_NONE:
-            self.closeWindow()
+            self.Close()
             return
         event.Skip()
 
     def OnClose(self, event):
-        self.closeWindow()
-
-    def closeWindow(self):
         fitID = self.mainFrame.getActiveFit()
         if fitID is not None:
             wx.PostEvent(self.mainFrame, GE.FitChanged(fitIDs=(fitID,)))
-        self.Destroy()
+        event.Skip()
 
     def OnImport(self, event):
         with wx.FileDialog(

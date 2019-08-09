@@ -63,8 +63,7 @@ class ItemStatsFrame(wx.Frame):
         empty = getattr(victim, "isEmpty", False)
 
         if empty:
-            self.Hide()
-            self.Destroy()
+            self.Close()
             return
 
         srcContext = fullContext[0]

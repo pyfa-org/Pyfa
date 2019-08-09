@@ -60,6 +60,7 @@ class ErrorHandler:
 
 
 class ErrorFrame(wx.Frame):
+
     def __init__(self, parent=None, error_title='Error!'):
         wx.Frame.__init__(self, parent, id=wx.ID_ANY, title="pyfa error", pos=wx.DefaultPosition, size=wx.Size(500, 600),
                           style=wx.DEFAULT_FRAME_STYLE ^ wx.RESIZE_BORDER | wx.STAY_ON_TOP)
@@ -115,12 +116,8 @@ class ErrorFrame(wx.Frame):
         self.Layout()
 
         self.Centre(wx.BOTH)
-        self.Bind(wx.EVT_CLOSE, self.OnClose)
 
         self.Show()
-
-    def OnClose(self, evt):
-        self.Hide()
 
     def addException(self, text):
         self.errorTextCtrl.AppendText("\n{}\n\n{}".format("#" * 20, text))

@@ -70,7 +70,6 @@ class EveFittings(wx.Frame):
         self.importBtn.Bind(wx.EVT_BUTTON, self.importFitting)
         self.deleteBtn.Bind(wx.EVT_BUTTON, self.deleteFitting)
 
-        self.Bind(wx.EVT_CLOSE, self.OnClose)
         self.Bind(wx.EVT_CHAR_HOOK, self.kbEvent)
 
         self.statusbar = wx.StatusBar(self)
@@ -101,9 +100,6 @@ class EveFittings(wx.Frame):
         if keycode == wx.WXK_ESCAPE and mstate.GetModifiers() == wx.MOD_NONE:
             self.Close()
             return
-        event.Skip()
-
-    def OnClose(self, event):
         event.Skip()
 
     def getActiveCharacter(self):
@@ -226,7 +222,6 @@ class ExportToEve(wx.Frame):
         self.statusbar.SetFieldsCount(2)
         self.statusbar.SetStatusWidths([100, -1])
 
-        self.Bind(wx.EVT_CLOSE, self.OnClose)
         self.Bind(wx.EVT_CHAR_HOOK, self.kbEvent)
 
         self.SetSizer(mainSizer)
@@ -254,9 +249,6 @@ class ExportToEve(wx.Frame):
         if keycode == wx.WXK_ESCAPE and mstate.GetModifiers() == wx.MOD_NONE:
             self.Close()
             return
-        event.Skip()
-
-    def OnClose(self, event):
         event.Skip()
 
     def getActiveCharacter(self):
