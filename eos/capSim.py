@@ -95,7 +95,7 @@ class CapSimulator:
             # use them as needed and want them to be available right away
             if isInjector:
                 for i in range(amount):
-                    heapq.heappush(self.state, [0, duration, capNeed, 0, clipSize, reloadTime])
+                    heapq.heappush(self.state, [0, duration, capNeed, 0, clipSize, reloadTime, isInjector])
                 continue
             if self.stagger and not disableStagger:
                 # Stagger all mods if they do not need to be reloaded
@@ -105,7 +105,7 @@ class CapSimulator:
                 else:
                     stagger_amount = (duration * clipSize + reloadTime) / (amount * clipSize)
                     for i in range(1, amount):
-                        heapq.heappush(self.state, [i * stagger_amount, duration, capNeed, 0, clipSize, reloadTime])
+                        heapq.heappush(self.state, [i * stagger_amount, duration, capNeed, 0, clipSize, reloadTime, isInjector])
             # If mods are not staggered - just multiply cap use
             else:
                 capNeed *= amount
@@ -116,7 +116,7 @@ class CapSimulator:
             if clipSize:
                 disable_period = True
 
-            heapq.heappush(self.state, [0, duration, capNeed, 0, clipSize, reloadTime])
+            heapq.heappush(self.state, [0, duration, capNeed, 0, clipSize, reloadTime, isInjector])
 
         if disable_period:
             self.period = self.t_max
@@ -127,6 +127,7 @@ class CapSimulator:
         """Run the simulation"""
 
         start = time.time()
+        awaitingInjectors = []
 
         self.reset()
 
@@ -153,11 +154,15 @@ class CapSimulator:
 
         while 1:
             activation = pop(state)
-            t_now, duration, capNeed, shot, clipSize, reloadTime = activation
+            t_now, duration, capNeed, shot, clipSize, reloadTime, isInjector = activation
+
+            # Max time reached, stop simulation - we're stable
             if t_now >= t_max:
                 break
 
-            cap = ((1.0 + (sqrt(cap / capCapacity) - 1.0) * exp((t_last - t_now) / tau)) ** 2) * capCapacity
+            # Regenerate cap from last time point
+            if t_now > t_last:
+                cap = ((1.0 + (sqrt(cap / capCapacity) - 1.0) * exp((t_last - t_now) / tau)) ** 2) * capCapacity
 
             if t_now != t_last:
                 if cap < cap_lowest_pre:
@@ -170,30 +175,91 @@ class CapSimulator:
                     cap_wrap = round(cap, stability_precision)
                     t_wrap += period
 
-            cap -= capNeed
-            if cap > capCapacity:
-                cap = capCapacity
-
+            t_last = t_now
             iterations += 1
 
-            t_last = t_now
+            # If injecting cap will "overshoot" max cap, postpone it
+            if isInjector and cap - capNeed > capCapacity:
+                awaitingInjectors.append((duration, capNeed, shot, clipSize, reloadTime, isInjector))
+            
+            else:
+                # If we will need more cap than we have, but we are not at 100% -
+                # use awaiting cap injectors to top us up until we have enough or
+                # until we're full
+                if capNeed > cap and cap < capCapacity:
+                    while awaitingInjectors and capNeed > cap and capCapacity > cap:
+                        neededInjection = min(capNeed - cap, capCapacity - cap)
+                        # Find injectors which have just enough cap or more
+                        goodInjectors = [i for i in awaitingInjectors if -i[1] >= neededInjection]
+                        if goodInjectors:
+                            # Pick injector which overshoots the least
+                            bestInjector = min(goodInjectors, key=lambda i: -i[1])
+                        else:
+                            # Take the one which provides the most cap
+                            bestInjector = max(goodInjectors, key=lambda i: -i[1])
+                        # Use injector
+                        awaitingInjectors.remove(bestInjector)
+                        inj_duration, inj_capNeed, inj_shot, inj_clipSize, inj_reloadTime, inj_isInjector = bestInjector
+                        cap -= inj_capNeed
+                        if cap > capCapacity:
+                            cap = capCapacity
+                        # Add injector to regular state tracker
+                        inj_t_now = t_now
+                        inj_t_now += inj_duration
+                        inj_shot += 1
+                        if inj_clipSize:
+                            if inj_shot % inj_clipSize == 0:
+                                inj_shot = 0
+                                inj_t_now += inj_reloadTime
+                        push(state, [inj_t_now, inj_duration, inj_capNeed, inj_shot, inj_clipSize, inj_reloadTime, inj_isInjector])
 
-            if cap < cap_lowest:
-                if cap < 0.0:
-                    break
-                cap_lowest = cap
+                # Apply cap modification
+                cap -= capNeed
+                if cap > capCapacity:
+                    cap = capCapacity
 
-            # queue the next activation of this module
-            t_now += duration
-            shot += 1
-            if clipSize:
-                if shot % clipSize == 0:
-                    shot = 0
-                    t_now += reloadTime  # include reload time
-            activation[0] = t_now
-            activation[3] = shot
+                if cap < cap_lowest:
+                    # Negative cap - we're unstable, simulation is over
+                    if cap < 0.0:
+                        break
+                    cap_lowest = cap
 
-            push(state, activation)
+                # Try using awaiting injectors to top up the cap after spending some
+                while awaitingInjectors and cap < capCapacity:
+                    neededInjection = capCapacity - cap
+                    # Find injectors which do not overshoot max cap
+                    goodInjectors = [i for i in awaitingInjectors if -i[1] <= neededInjection]
+                    if not goodInjectors:
+                        break
+                    # Take the one which provides the most cap
+                    bestInjector = max(goodInjectors, key=lambda i: -i[1])
+                    # Use injector
+                    awaitingInjectors.remove(bestInjector)
+                    inj_duration, inj_capNeed, inj_shot, inj_clipSize, inj_reloadTime, inj_isInjector = bestInjector
+                    cap -= inj_capNeed
+                    if cap > capCapacity:
+                        cap = capCapacity
+                    # Add injector to regular state tracker
+                    inj_t_now = t_now
+                    inj_t_now += inj_duration
+                    inj_shot += 1
+                    if inj_clipSize:
+                        if inj_shot % inj_clipSize == 0:
+                            inj_shot = 0
+                            inj_t_now += inj_reloadTime
+                    push(state, [inj_t_now, inj_duration, inj_capNeed, inj_shot, inj_clipSize, inj_reloadTime, inj_isInjector])
+
+                # queue the next activation of this module
+                t_now += duration
+                shot += 1
+                if clipSize:
+                    if shot % clipSize == 0:
+                        shot = 0
+                        t_now += reloadTime  # include reload time
+                activation[0] = t_now
+                activation[3] = shot
+
+                push(state, activation)
         push(state, activation)
 
         # update instance with relevant results.
