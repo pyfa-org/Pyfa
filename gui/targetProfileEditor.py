@@ -111,7 +111,7 @@ class TargetProfileEntityEditor(EntityEditor):
         wx.PostEvent(self.mainFrame, GE.TargetProfileRemoved(profileID=entity.ID))
 
 
-class TargetProfileEditorDlg(wx.Dialog):
+class TargetProfileEditor(wx.Frame):
 
     DAMAGE_TYPES = OrderedDict([
         ("em", "EM resistance"),
@@ -124,9 +124,9 @@ class TargetProfileEditorDlg(wx.Dialog):
         ('radius', ('Radius', 'm'))])
 
     def __init__(self, parent, selected=None):
-        wx.Dialog.__init__(
+        wx.Frame.__init__(
             self, parent, id=wx.ID_ANY,
-            title="Target Profile Editor",
+            title="Target Profile Editor", style=wx.DEFAULT_FRAME_STYLE | wx.FRAME_FLOAT_ON_PARENT,
             # Dropdown list widget is scaled to its longest content line on GTK, adapt to that
             size=wx.Size(500, 240) if "wxGTK" in wx.PlatformInfo else wx.Size(350, 240))
 
@@ -235,7 +235,7 @@ class TargetProfileEditorDlg(wx.Dialog):
             btn.Bind(wx.EVT_BUTTON, getattr(self, "{}Patterns".format(name.lower())))
 
         if not self.entityEditor.checkEntitiesExist():
-            self.Destroy()
+            self.Close()
             return
 
         self.Layout()
@@ -259,10 +259,15 @@ class TargetProfileEditorDlg(wx.Dialog):
 
     def OnInputTimer(self, event):
         event.Skip()
-
         if self.block:
             return
+        if self.validateFields():
+            p = self.entityEditor.getActiveEntity()
+            TargetProfile.getInstance().saveChanges(p)
+            wx.PostEvent(self.mainFrame, GE.TargetProfileChanged(profileID=p.ID))
 
+    def validateFields(self):
+        valid = True
         try:
             p = self.entityEditor.getActiveEntity()
 
@@ -289,22 +294,18 @@ class TargetProfileEditorDlg(wx.Dialog):
             self.stNotice.SetLabel("")
             self.totSizer.Layout()
 
-            if event is not None:
-                event.Skip()
-
-            TargetProfile.getInstance().saveChanges(p)
-            wx.PostEvent(self.mainFrame, GE.TargetProfileChanged(profileID=p.ID))
-
         except ValueError as e:
             self.stNotice.SetLabel(e.args[0])
+            valid = False
         finally:  # Refresh for color changes to take effect immediately
             self.Refresh()
+        return valid
 
     def patternChanged(self, event=None):
         """Event fired when user selects pattern. Can also be called from script"""
 
         if not self.entityEditor.checkEntitiesExist():
-            self.Destroy()
+            self.Close()
             return
 
         p = self.entityEditor.getActiveEntity()
@@ -327,7 +328,7 @@ class TargetProfileEditorDlg(wx.Dialog):
                 edit.ChangeValueFloat(amount)
 
         self.block = False
-        self.OnFieldChanged()
+        self.validateFields()
 
     def __del__(self):
         pass
@@ -372,3 +373,7 @@ class TargetProfileEditorDlg(wx.Dialog):
         changedFitIDs = Fit.getInstance().processTargetProfileChange()
         if changedFitIDs:
             wx.PostEvent(self.mainFrame, GE.FitChanged(fitIDs=changedFitIDs))
+
+    def selectTargetProfile(self, profile):
+        self.entityEditor.setActiveEntity(profile)
+        self.patternChanged()

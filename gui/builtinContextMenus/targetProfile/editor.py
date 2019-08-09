@@ -2,7 +2,7 @@ import gui.mainFrame
 from eos.saveddata.targetProfile import TargetProfile
 from graphs.wrapper import TargetWrapper
 from gui.contextMenu import ContextMenuSingle
-from gui.targetProfileEditor import TargetProfileEditorDlg
+from gui.targetProfileEditor import TargetProfileEditor
 
 
 class TargetProfileEditor(ContextMenuSingle):
@@ -25,8 +25,7 @@ class TargetProfileEditor(ContextMenuSingle):
         return 'Edit Target Profile'
 
     def activate(self, callingWindow, fullContext, mainItem, i):
-        with TargetProfileEditorDlg(parent=callingWindow, selected=mainItem.item) as dlg:
-            dlg.ShowModal()
+        self.mainFrame.ShowTargetProfileEditor(selected=mainItem.item)
 
 
 TargetProfileEditor.register()

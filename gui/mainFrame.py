@@ -60,7 +60,7 @@ from gui.preferenceDialog import PreferenceDialog
 from gui.setEditor import ImplantSetEditorDlg
 from gui.shipBrowser import ShipBrowser
 from gui.statsPane import StatsPane
-from gui.targetProfileEditor import TargetProfileEditorDlg
+from gui.targetProfileEditor import TargetProfileEditor
 from gui.updateDialog import UpdateDialog
 from gui.utils.clipboard import fromClipboard
 from service.character import Character
@@ -213,6 +213,7 @@ class MainFrame(wx.Frame):
 
         # Internal vars to keep track of other windows (graphing/stats)
         self.graphFrame = None
+        self.tgtProfileEditor = None
         self.statsWnds = []
         self.activeStatsWnd = None
 
@@ -385,31 +386,39 @@ class MainFrame(wx.Frame):
         # info.WebSite = (forumUrl, "pyfa thread at EVE Online forum")
         wx.adv.AboutBox(info)
 
-    def showDevTools(self, event):
+    def OnShowDevTools(self, event):
         dlg = DevTools(self)
         dlg.Show()
 
-    def showCharacterEditor(self, event):
+    def OnShowCharacterEditor(self, event):
         dlg = CharacterEditor(self)
         dlg.Show()
 
-    def showAttrEditor(self, event):
+    def OnShowAttrEditor(self, event):
         dlg = AttributeEditor(self)
         dlg.Show()
 
-    def showTargetProfileEditor(self, event):
-        with TargetProfileEditorDlg(self) as dlg:
-            dlg.ShowModal()
+    def OnShowTargetProfileEditor(self, event):
+        self.ShowTargetProfileEditor()
 
-    def showDamagePatternEditor(self, event):
+    def ShowTargetProfileEditor(self, selected=None):
+        if not self.tgtProfileEditor:
+            self.tgtProfileEditor = TargetProfileEditor(self, selected=selected)
+            self.tgtProfileEditor.Show()
+        else:
+            if selected:
+                self.tgtProfileEditor.selectTargetProfile(selected)
+            self.tgtProfileEditor.SetFocus()
+
+    def OnShowDamagePatternEditor(self, event):
         with DmgPatternEditorDlg(self) as dlg:
             dlg.ShowModal()
 
-    def showImplantSetEditor(self, event):
+    def OnShowImplantSetEditor(self, event):
         with ImplantSetEditorDlg(self) as dlg:
             dlg.ShowModal()
 
-    def showExportDialog(self, event):
+    def OnShowExportDialog(self, event):
         """ Export active fit """
         sFit = Fit.getInstance()
         fit = sFit.getFit(self.getActiveFit())
@@ -444,7 +453,7 @@ class MainFrame(wx.Frame):
         except RuntimeError:
             pyfalog.error("Tried to destroy an object that doesn't exist in <showExportDialog>.")
 
-    def showPreferenceDialog(self, event):
+    def OnShowPreferenceDialog(self, event):
         with PreferenceDialog(self) as dlg:
             dlg.ShowModal()
 
@@ -463,21 +472,21 @@ class MainFrame(wx.Frame):
         # Widgets Inspector
         if config.debug:
             self.Bind(wx.EVT_MENU, self.openWXInspectTool, id=self.widgetInspectMenuID)
-            self.Bind(wx.EVT_MENU, self.showDevTools, id=menuBar.devToolsId)
+            self.Bind(wx.EVT_MENU, self.OnShowDevTools, id=menuBar.devToolsId)
         # About
         self.Bind(wx.EVT_MENU, self.ShowAboutBox, id=wx.ID_ABOUT)
         # Char editor
-        self.Bind(wx.EVT_MENU, self.showCharacterEditor, id=menuBar.characterEditorId)
+        self.Bind(wx.EVT_MENU, self.OnShowCharacterEditor, id=menuBar.characterEditorId)
         # Damage pattern editor
-        self.Bind(wx.EVT_MENU, self.showDamagePatternEditor, id=menuBar.damagePatternEditorId)
+        self.Bind(wx.EVT_MENU, self.OnShowDamagePatternEditor, id=menuBar.damagePatternEditorId)
         # Target Profile editor
-        self.Bind(wx.EVT_MENU, self.showTargetProfileEditor, id=menuBar.targetProfileEditorId)
+        self.Bind(wx.EVT_MENU, self.OnShowTargetProfileEditor, id=menuBar.targetProfileEditorId)
         # Implant Set editor
-        self.Bind(wx.EVT_MENU, self.showImplantSetEditor, id=menuBar.implantSetEditorId)
+        self.Bind(wx.EVT_MENU, self.OnShowImplantSetEditor, id=menuBar.implantSetEditorId)
         # Import dialog
         self.Bind(wx.EVT_MENU, self.fileImportDialog, id=wx.ID_OPEN)
         # Export dialog
-        self.Bind(wx.EVT_MENU, self.showExportDialog, id=wx.ID_SAVEAS)
+        self.Bind(wx.EVT_MENU, self.OnShowExportDialog, id=wx.ID_SAVEAS)
         # Import from Clipboard
         self.Bind(wx.EVT_MENU, self.importFromClipboard, id=wx.ID_PASTE)
         # Backup fits
@@ -489,7 +498,7 @@ class MainFrame(wx.Frame):
         # Export HTML
         self.Bind(wx.EVT_MENU, self.exportHtml, id=menuBar.exportHtmlId)
         # Preference dialog
-        self.Bind(wx.EVT_MENU, self.showPreferenceDialog, id=wx.ID_PREFERENCES)
+        self.Bind(wx.EVT_MENU, self.OnShowPreferenceDialog, id=wx.ID_PREFERENCES)
         # User guide
         self.Bind(wx.EVT_MENU, self.goWiki, id=menuBar.wikiId)
 
@@ -515,7 +524,7 @@ class MainFrame(wx.Frame):
         self.Bind(wx.EVT_MENU, self.ssoHandler, id=menuBar.ssoLoginId)
 
         # Open attribute editor
-        self.Bind(wx.EVT_MENU, self.showAttrEditor, id=menuBar.attrEditorId)
+        self.Bind(wx.EVT_MENU, self.OnShowAttrEditor, id=menuBar.attrEditorId)
         # Toggle Overrides
         self.Bind(wx.EVT_MENU, self.toggleOverrides, id=menuBar.toggleOverridesId)
 
@@ -526,7 +535,7 @@ class MainFrame(wx.Frame):
         self.Bind(wx.EVT_MENU, self.toggleIgnoreRestriction, id=menuBar.toggleIgnoreRestrictionID)
 
         # Graphs
-        self.Bind(wx.EVT_MENU, self.openGraphFrame, id=menuBar.graphFrameId)
+        self.Bind(wx.EVT_MENU, self.OnShowGraphFrame, id=menuBar.graphFrameId)
 
         toggleSearchBoxId = wx.NewId()
         toggleShipMarketId = wx.NewId()
@@ -957,7 +966,7 @@ class MainFrame(wx.Frame):
     def closeWaitDialog(self):
         del self.waitDialog
 
-    def openGraphFrame(self, event):
+    def OnShowGraphFrame(self, event):
         if not self.graphFrame:
             self.graphFrame = GraphFrame(self)
 

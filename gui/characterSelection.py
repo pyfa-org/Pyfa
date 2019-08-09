@@ -180,7 +180,7 @@ class CharacterSelection(wx.Panel):
         if charID == -1:
             # revert to previous character
             self.charChoice.SetSelection(self.charCache)
-            self.mainFrame.showCharacterEditor(event)
+            self.mainFrame.OnShowCharacterEditor(event)
             return
 
         self.toggleRefreshButton()

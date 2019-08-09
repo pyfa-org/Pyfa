@@ -67,14 +67,17 @@ except Exception:
 
 class GraphFrame(wx.Frame):
 
-    def __init__(self, parent, style=wx.DEFAULT_FRAME_STYLE | wx.NO_FULL_REPAINT_ON_RESIZE | wx.FRAME_FLOAT_ON_PARENT):
+    def __init__(self, parent):
 
         global graphFrame_enabled
         if not graphFrame_enabled:
             pyfalog.warning('Matplotlib is not enabled. Skipping initialization.')
             return
 
-        wx.Frame.__init__(self, parent, title='pyfa: Graph Generator', style=style, size=(520, 390))
+        wx.Frame.__init__(
+            self, parent, title='Graphs',
+            style=wx.DEFAULT_FRAME_STYLE | wx.NO_FULL_REPAINT_ON_RESIZE | wx.FRAME_FLOAT_ON_PARENT,
+            size=(520, 390))
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
 
         self.SetIcon(wx.Icon(BitmapLoader.getBitmap('graphs_small', 'gui')))
@@ -122,7 +125,7 @@ class GraphFrame(wx.Frame):
         self.ctrlPanel.updateControls(layout=False)
 
         # Event bindings - local events
-        self.Bind(wx.EVT_CLOSE, self.closeEvent)
+        self.Bind(wx.EVT_CLOSE, self.OnClose)
         self.Bind(wx.EVT_CHAR_HOOK, self.kbEvent)
 
         # Event bindings - external events
@@ -149,15 +152,11 @@ class GraphFrame(wx.Frame):
             self.SetSize(newSize)
             self.SetMinSize(newSize)
 
-    def closeEvent(self, event):
-        self.closeWindow()
-        event.Skip()
-
     def kbEvent(self, event):
         keycode = event.GetKeyCode()
         mstate = wx.GetMouseState()
         if keycode == wx.WXK_ESCAPE and mstate.GetModifiers() == wx.MOD_NONE:
-            self.closeWindow()
+            self.Close()
             return
         event.Skip()
 
@@ -224,7 +223,7 @@ class GraphFrame(wx.Frame):
         self.draw()
         event.Skip()
 
-    def closeWindow(self):
+    def OnClose(self, event):
         self.mainFrame.Unbind(GE.FIT_RENAMED, handler=self.OnFitRenamed)
         self.mainFrame.Unbind(GE.FIT_CHANGED, handler=self.OnFitChanged)
         self.mainFrame.Unbind(GE.FIT_REMOVED, handler=self.OnFitRemoved)
@@ -233,7 +232,7 @@ class GraphFrame(wx.Frame):
         self.mainFrame.Unbind(GE.TARGET_PROFILE_REMOVED, handler=self.OnProfileRemoved)
         self.mainFrame.Unbind(RESIST_MODE_CHANGED, handler=self.OnResistModeChanged)
         self.mainFrame.Unbind(GE.GRAPH_OPTION_CHANGED, handler=self.OnGraphOptionChanged)
-        self.Destroy()
+        event.Skip()
 
     def getView(self):
         return self.graphSelection.GetClientData(self.graphSelection.GetSelection())
