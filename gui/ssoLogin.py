@@ -5,6 +5,7 @@ import gui.globalEvents as GE
 
 
 class SsoLogin(wx.Dialog):
+
     def __init__(self):
         mainFrame = gui.mainFrame.MainFrame.getInstance()
 

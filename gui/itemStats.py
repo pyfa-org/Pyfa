@@ -133,8 +133,6 @@ class ItemStatsDialog(wx.Dialog):
         self.Bind(wx.EVT_CHAR_HOOK, self.kbEvent)
         self.Bind(wx.EVT_ACTIVATE, self.OnActivate)
 
-        self.Show()
-
     def OnActivate(self, event):
         self.parentWnd.SetActiveStatsWindow(self)
 

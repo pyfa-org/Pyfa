@@ -99,19 +99,12 @@ class EveFittings(wx.Frame):
         keycode = event.GetKeyCode()
         mstate = wx.GetMouseState()
         if keycode == wx.WXK_ESCAPE and mstate.GetModifiers() == wx.MOD_NONE:
-            self.closeWindow()
+            self.Close()
             return
         event.Skip()
 
     def OnClose(self, event):
-        self.closeWindow()
-        # self.cacheTimer.Stop()  # must be manually stopped, otherwise crash. See https://github.com/wxWidgets/Phoenix/issues/632
         event.Skip()
-
-    def closeWindow(self):
-        self.mainFrame.Unbind(GE.EVT_SSO_LOGOUT)
-        self.mainFrame.Unbind(GE.EVT_SSO_LOGIN)
-        self.Destroy()
 
     def getActiveCharacter(self):
         selection = self.charChoice.GetCurrentSelection()
@@ -254,18 +247,12 @@ class ExportToEve(wx.Frame):
         keycode = event.GetKeyCode()
         mstate = wx.GetMouseState()
         if keycode == wx.WXK_ESCAPE and mstate.GetModifiers() == wx.MOD_NONE:
-            self.closeWindow()
+            self.Close()
             return
         event.Skip()
 
     def OnClose(self, event):
-        self.closeWindow()
         event.Skip()
-
-    def closeWindow(self):
-        self.mainFrame.Unbind(GE.EVT_SSO_LOGOUT)
-        self.mainFrame.Unbind(GE.EVT_SSO_LOGIN)
-        self.Destroy()
 
     def getActiveCharacter(self):
         selection = self.charChoice.GetCurrentSelection()
@@ -341,6 +328,7 @@ class SsoCharacterMgmt(wx.Dialog):
         self.deleteBtn.Bind(wx.EVT_BUTTON, self.delChar)
 
         self.mainFrame.Bind(GE.EVT_SSO_LOGIN, self.ssoLogin)
+        self.Bind(wx.EVT_CLOSE, self.OnClose)
         self.Bind(wx.EVT_CHAR_HOOK, self.kbEvent)
 
         self.SetSizer(mainSizer)
@@ -349,20 +337,19 @@ class SsoCharacterMgmt(wx.Dialog):
         self.Centre(wx.BOTH)
 
     def ssoLogin(self, event):
-        if self:
-            # todo: these events don't unbind properly when window is closed (?), hence the `if`. Figure out better way of doing this.
-            self.popCharList()
-            event.Skip()
+        self.popCharList()
+        event.Skip()
 
     def kbEvent(self, event):
         keycode = event.GetKeyCode()
         mstate = wx.GetMouseState()
         if keycode == wx.WXK_ESCAPE and mstate.GetModifiers() == wx.MOD_NONE:
-            self.closeWindow()
+            self.Close()
             return
         event.Skip()
 
-    def closeWindow(self):
+    def OnClose(self, event):
+        self.mainFrame.Unbind(GE.EVT_SSO_LOGIN, handler=self.ssoLogin)
         self.Destroy()
 
     def popCharList(self):

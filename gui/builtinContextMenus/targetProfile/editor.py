@@ -25,7 +25,8 @@ class TargetProfileEditor(ContextMenuSingle):
         return 'Edit Target Profile'
 
     def activate(self, callingWindow, fullContext, mainItem, i):
-        TargetProfileEditorDlg(parent=callingWindow, selected=mainItem.item)
+        with TargetProfileEditorDlg(parent=callingWindow, selected=mainItem.item) as dlg:
+            dlg.ShowModal()
 
 
 TargetProfileEditor.register()

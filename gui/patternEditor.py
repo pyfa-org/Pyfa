@@ -278,9 +278,6 @@ class DmgPatternEditorDlg(wx.Dialog):
         keycode = event.GetKeyCode()
         mstate = wx.GetMouseState()
         if keycode == wx.WXK_ESCAPE and mstate.GetModifiers() == wx.MOD_NONE:
-            self.closeWindow()
+            self.Close()
             return
         event.Skip()
-
-    def closeWindow(self):
-        self.Destroy()

@@ -55,8 +55,7 @@ class ItemStats(ContextMenuSingle):
             reuse = True
 
         if self.mainFrame.GetActiveStatsWindow() is None and reuse:
-            ItemStatsDialog(stuff, fullContext)
-
+            dlg = ItemStatsDialog(stuff, fullContext)
         elif reuse:
             lastWnd = self.mainFrame.GetActiveStatsWindow()
             pos = lastWnd.GetPosition()
@@ -66,11 +65,12 @@ class ItemStats(ContextMenuSingle):
             else:
                 size = wx.DefaultSize
                 pos = wx.DefaultPosition
-            ItemStatsDialog(stuff, fullContext, pos, size, maximized)
+            dlg = ItemStatsDialog(stuff, fullContext, pos, size, maximized)
             lastWnd.Close()
 
         else:
-            ItemStatsDialog(stuff, fullContext)
+            dlg = ItemStatsDialog(stuff, fullContext)
+        dlg.Show()
 
 
 ItemStats.register()

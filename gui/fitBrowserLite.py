@@ -62,7 +62,6 @@ class FitBrowserLiteDialog(wx.Dialog):
         self.Bind(wx.EVT_TIMER, self.OnInputTimer, self.inputTimer)
         self.searchBox.Bind(event=wx.EVT_TEXT, handler=self.OnSearchChanged)
 
-
         self.SetSizer(mainSizer)
         self.Layout()
         self.SetSize(self.GetBestSize())

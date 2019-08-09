@@ -480,13 +480,11 @@ class SkillTreeView(wx.Panel):
     def onSecStatus(self, event):
         sChar = Character.getInstance()
         char = self.charEditor.entityEditor.getActiveEntity()
-        myDlg = SecStatusDialog(self, char.secStatus or 0.0)
-        res = myDlg.ShowModal()
-        if res == wx.ID_OK:
-            value = myDlg.floatSpin.GetValue()
-            sChar.setSecStatus(char, value)
-            self.btnSecStatus.SetLabel("Sec Status: {0:.2f}".format(value))
-        myDlg.Destroy()
+        with SecStatusDialog(self, char.secStatus or 0.0) as dlg:
+            if dlg.ShowModal() == wx.ID_OK:
+                value = dlg.floatSpin.GetValue()
+                sChar.setSecStatus(char, value)
+                self.btnSecStatus.SetLabel("Sec Status: {0:.2f}".format(value))
 
     def delaySearch(self, evt):
         if self.searchInput.GetValue() == "" or self.searchInput.GetValue() == self.searchInput.default_text:
@@ -897,19 +895,19 @@ class APIView(wx.Panel):
 class SecStatusDialog(wx.Dialog):
 
     def __init__(self, parent, sec):
-        wx.Dialog.__init__(self, parent, title="Set Security Status", size=(275, 175))
+        wx.Dialog.__init__(self, parent, title="Set Security Status", size=(300, 175))
 
         self.SetSizeHints(wx.DefaultSize, wx.DefaultSize)
 
         bSizer1 = wx.BoxSizer(wx.VERTICAL)
 
         self.m_staticText1 = wx.StaticText(self, wx.ID_ANY,
-                                        "Security Status is used in some CONCORD hull calculations; you can set the characters security status here",
+                                        "Security Status is used in some CONCORD hull calculations",
                                         wx.DefaultPosition, wx.DefaultSize, 0)
         self.m_staticText1.Wrap(-1)
         bSizer1.Add(self.m_staticText1, 1, wx.ALL | wx.EXPAND, 5)
 
-        self.floatSpin = FloatSpin(self, value=sec, min_val=-5.0, max_val=5.0, increment=0.1, digits=2, size=(100, -1))
+        self.floatSpin = FloatSpin(self, value=sec, min_val=-5.0, max_val=5.0, increment=0.1, digits=2, size=(-1, -1))
         bSizer1.Add(self.floatSpin, 0, wx.ALIGN_CENTER | wx.ALL, 5)
 
         btnOk = wx.Button(self, wx.ID_OK)
@@ -918,4 +916,4 @@ class SecStatusDialog(wx.Dialog):
         self.SetSizer(bSizer1)
         self.Layout()
 
-        self.Centre(wx.BOTH)
+        self.Center(wx.BOTH)

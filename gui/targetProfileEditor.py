@@ -112,6 +112,7 @@ class TargetProfileEntityEditor(EntityEditor):
 
 
 class TargetProfileEditorDlg(wx.Dialog):
+
     DAMAGE_TYPES = OrderedDict([
         ("em", "EM resistance"),
         ("thermal", "Thermal resistance"),
@@ -243,15 +244,12 @@ class TargetProfileEditorDlg(wx.Dialog):
         self.CenterOnParent()
 
         self.Bind(wx.EVT_CHOICE, self.patternChanged)
-        self.Bind(wx.EVT_CLOSE, self.onClose)
         self.Bind(wx.EVT_CHAR_HOOK, self.kbEvent)
 
         self.inputTimer = wx.Timer(self)
         self.Bind(wx.EVT_TIMER, self.OnInputTimer, self.inputTimer)
 
         self.patternChanged()
-
-        self.ShowModal()
 
     def OnFieldChanged(self, event=None):
         if event is not None:
@@ -366,17 +364,9 @@ class TargetProfileEditorDlg(wx.Dialog):
         keycode = event.GetKeyCode()
         mstate = wx.GetMouseState()
         if keycode == wx.WXK_ESCAPE and mstate.GetModifiers() == wx.MOD_NONE:
-            self.closeWindow()
+            self.Close()
             return
         event.Skip()
-
-    def onClose(self, event):
-        self.processChanges()
-        event.Skip()
-
-    def closeWindow(self):
-        self.processChanges()
-        self.Destroy()
 
     def processChanges(self):
         changedFitIDs = Fit.getInstance().processTargetProfileChange()

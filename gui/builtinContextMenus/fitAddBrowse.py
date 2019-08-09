@@ -26,10 +26,10 @@ class AddBrowsedFits(ContextMenuUnconditional):
             'graphFitList': 'Add Fits to Graph',
             'graphTgtList': 'Add Targets to Graph'}
         excludedFitIDs = callingWindow.getExistingFitIDs()
-        dlg = FitBrowserLiteDialog(self.mainFrame, title=titles[fullContext[0]], excludedFitIDs=excludedFitIDs)
-        if dlg.ShowModal() == wx.ID_OK:
-            fitIDs = dlg.getFitIDsToAdd()
-            callingWindow.addFitsByIDs(fitIDs)
+        with FitBrowserLiteDialog(self.mainFrame, title=titles[fullContext[0]], excludedFitIDs=excludedFitIDs) as dlg:
+            if dlg.ShowModal() == wx.ID_OK:
+                fitIDs = dlg.getFitIDsToAdd()
+                callingWindow.addFitsByIDs(fitIDs)
 
 
 AddBrowsedFits.register()

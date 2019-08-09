@@ -175,7 +175,6 @@ class ImplantSetEditorDlg(wx.Dialog):
         self.Export.Bind(wx.EVT_BUTTON, self.exportPatterns)
 
         self.CenterOnParent()
-        self.ShowModal()
 
     def entityChanged(self, event):
         if not self.entityEditor.checkEntitiesExist():
@@ -186,12 +185,9 @@ class ImplantSetEditorDlg(wx.Dialog):
         keycode = event.GetKeyCode()
         mstate = wx.GetMouseState()
         if keycode == wx.WXK_ESCAPE and mstate.GetModifiers() == wx.MOD_NONE:
-            self.closeWindow()
+            self.Close()
             return
         event.Skip()
-
-    def closeWindow(self):
-        self.Destroy()
 
     def __del__(self):
         pass

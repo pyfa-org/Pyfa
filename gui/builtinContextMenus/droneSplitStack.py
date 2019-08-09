@@ -27,21 +27,21 @@ class DroneSplitStack(ContextMenuSingle):
         return "Split {} Stack".format(itmContext)
 
     def activate(self, callingWindow, fullContext, mainItem, i):
-        dlg = DroneStackSplit(self.mainFrame, mainItem.amount)
+        with DroneStackSplit(self.mainFrame, mainItem.amount) as dlg:
 
-        if dlg.ShowModal() == wx.ID_OK:
+            if dlg.ShowModal() == wx.ID_OK:
 
-            if dlg.input.GetLineText(0).strip() == '':
-                return
+                if dlg.input.GetLineText(0).strip() == '':
+                    return
 
-            fitID = self.mainFrame.getActiveFit()
-            fit = Fit.getInstance().getFit(fitID)
-            cleanInput = re.sub(r'[^0-9.]', '', dlg.input.GetLineText(0).strip())
+                fitID = self.mainFrame.getActiveFit()
+                fit = Fit.getInstance().getFit(fitID)
+                cleanInput = re.sub(r'[^0-9.]', '', dlg.input.GetLineText(0).strip())
 
-            if mainItem in fit.drones:
-                position = fit.drones.index(mainItem)
-                self.mainFrame.command.Submit(cmd.GuiSplitLocalDroneStackCommand(
-                    fitID=fitID, position=position, amount=int(cleanInput)))
+                if mainItem in fit.drones:
+                    position = fit.drones.index(mainItem)
+                    self.mainFrame.command.Submit(cmd.GuiSplitLocalDroneStackCommand(
+                        fitID=fitID, position=position, amount=int(cleanInput)))
 
 
 DroneSplitStack.register()
@@ -50,6 +50,7 @@ DroneSplitStack.register()
 class DroneStackSplit(wx.Dialog):
 
     def __init__(self, parent, value):
+
         wx.Dialog.__init__(self, parent, title="Split Drone Stack")
         self.SetMinSize((346, 156))
 

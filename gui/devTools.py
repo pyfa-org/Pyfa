@@ -17,13 +17,15 @@
 # along with pyfa.    If not, see <http://www.gnu.org/licenses/>.
 # =============================================================================
 
+import gc
+import threading
+import time
+
 # noinspection PyPackageRequirements
 import wx
 from logbook import Logger
-import gc
-import eos
-import time
-import threading
+
+import eos.db
 from gui.builtinShipBrowser.events import FitSelected
 
 
@@ -34,7 +36,7 @@ class DevTools(wx.Dialog):
     DAMAGE_TYPES = ("em", "thermal", "kinetic", "explosive")
 
     def __init__(self, parent):
-        wx.Dialog.__init__(self, parent, id=wx.ID_ANY, title="Damage Pattern Editor", size=wx.Size(400, 240))
+        wx.Dialog.__init__(self, parent, id=wx.ID_ANY, title="Development Tools", size=wx.Size(400, 240))
         self.mainFrame = parent
         self.block = False
         self.SetSizeHints(wx.DefaultSize, wx.DefaultSize)
@@ -62,13 +64,15 @@ class DevTools(wx.Dialog):
         mainSizer.Add(self.cmdPrint, 0, wx.EXPAND | wx.TOP | wx.BOTTOM, 5)
 
         self.cmdPrint.Bind(wx.EVT_BUTTON, self.cmd_print)
+        self.Bind(wx.EVT_CLOSE, self.OnClose)
 
         self.SetSizer(mainSizer)
 
         self.Layout()
         self.CenterOnParent()
-        self.Show()
-        print(parent)
+
+    def OnClose(self, event):
+        self.Destroy()
 
     def objects_by_id(self, evt):
         input = self.id_get.GetValue()

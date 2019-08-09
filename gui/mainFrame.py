@@ -237,8 +237,8 @@ class MainFrame(wx.Frame):
         return Fit.getCommandProcessor(fitID)
 
     def ShowUpdateBox(self, release, version):
-        dlg = UpdateDialog(self, release, version)
-        dlg.ShowModal()
+        with UpdateDialog(self, release, version) as dlg:
+            dlg.ShowModal()
 
     def LoadPreviousOpenFits(self):
         sFit = Fit.getInstance()
@@ -386,7 +386,8 @@ class MainFrame(wx.Frame):
         wx.adv.AboutBox(info)
 
     def showDevTools(self, event):
-        DevTools(self)
+        dlg = DevTools(self)
+        dlg.Show()
 
     def showCharacterEditor(self, event):
         dlg = CharacterEditor(self)
@@ -397,18 +398,16 @@ class MainFrame(wx.Frame):
         dlg.Show()
 
     def showTargetProfileEditor(self, event):
-        TargetProfileEditorDlg(self)
+        with TargetProfileEditorDlg(self) as dlg:
+            dlg.ShowModal()
 
     def showDamagePatternEditor(self, event):
-        dlg = DmgPatternEditorDlg(self)
-        dlg.ShowModal()
-        try:
-            dlg.Destroy()
-        except RuntimeError:
-            pyfalog.error("Tried to destroy an object that doesn't exist in <showDamagePatternEditor>.")
+        with DmgPatternEditorDlg(self) as dlg:
+            dlg.ShowModal()
 
     def showImplantSetEditor(self, event):
-        ImplantSetEditorDlg(self)
+        with ImplantSetEditorDlg(self) as dlg:
+            dlg.ShowModal()
 
     def showExportDialog(self, event):
         """ Export active fit """
@@ -446,8 +445,8 @@ class MainFrame(wx.Frame):
             pyfalog.error("Tried to destroy an object that doesn't exist in <showExportDialog>.")
 
     def showPreferenceDialog(self, event):
-        dlg = PreferenceDialog(self)
-        dlg.ShowModal()
+        with PreferenceDialog(self) as dlg:
+            dlg.ShowModal()
 
     @staticmethod
     def goWiki(event):

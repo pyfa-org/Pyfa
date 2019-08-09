@@ -74,7 +74,6 @@ class PreferenceDialog(wx.Dialog):
 
         self.Layout()
 
-        self.Bind(wx.EVT_CLOSE, self.OnClose)
         self.Bind(wx.EVT_CHAR_HOOK, self.kbEvent)
         self.btnOK.Bind(wx.EVT_BUTTON, self.OnBtnOK)
 
@@ -88,8 +87,3 @@ class PreferenceDialog(wx.Dialog):
             self.Close()
             return
         event.Skip()
-
-    def OnClose(self, event):
-        if self.IsModal():
-            self.EndModal(wx.ID_OK)
-        self.Destroy()
