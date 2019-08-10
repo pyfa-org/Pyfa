@@ -32,11 +32,15 @@ from gui.builtinShipBrowser.events import FitSelected
 pyfalog = Logger(__name__)
 
 
-class DevTools(wx.Dialog):
+class DevTools(wx.Frame):
+
     DAMAGE_TYPES = ("em", "thermal", "kinetic", "explosive")
 
     def __init__(self, parent):
-        wx.Dialog.__init__(self, parent, id=wx.ID_ANY, title="Development Tools", size=wx.Size(400, 240))
+        wx.Frame.__init__(
+            self, parent, id=wx.ID_ANY, title="Development Tools",
+            style=wx.DEFAULT_FRAME_STYLE | wx.FRAME_FLOAT_ON_PARENT,
+            size=wx.Size(400, 320) if "wxGTK" in wx.PlatformInfo else wx.Size(400, 240))
         self.mainFrame = parent
         self.block = False
         self.SetSizeHints(wx.DefaultSize, wx.DefaultSize)
@@ -64,15 +68,11 @@ class DevTools(wx.Dialog):
         mainSizer.Add(self.cmdPrint, 0, wx.EXPAND | wx.TOP | wx.BOTTOM, 5)
 
         self.cmdPrint.Bind(wx.EVT_BUTTON, self.cmd_print)
-        self.Bind(wx.EVT_CLOSE, self.OnClose)
 
         self.SetSizer(mainSizer)
 
         self.Layout()
         self.CenterOnParent()
-
-    def OnClose(self, event):
-        self.Destroy()
 
     def objects_by_id(self, evt):
         input = self.id_get.GetValue()

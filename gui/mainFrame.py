@@ -214,6 +214,7 @@ class MainFrame(wx.Frame):
         # Internal vars to keep track of other windows (graphing/stats)
         self.graphFrame = None
         self.tgtProfileEditor = None
+        self.devTools = None
         self.statsWnds = []
         self.activeStatsWnd = None
 
@@ -387,16 +388,15 @@ class MainFrame(wx.Frame):
         wx.adv.AboutBox(info)
 
     def OnShowDevTools(self, event):
-        dlg = DevTools(self)
-        dlg.Show()
+        self.bringUpWindow('devTools', DevTools)
 
     def OnShowCharacterEditor(self, event):
         dlg = CharacterEditor(self)
         dlg.Show()
 
     def OnShowAttrEditor(self, event):
-        dlg = AttributeEditor(self)
-        dlg.Show()
+        frame = AttributeEditor(self)
+        frame.Show()
 
     def OnShowTargetProfileEditor(self, event):
         self.ShowTargetProfileEditor()
@@ -965,7 +965,6 @@ class MainFrame(wx.Frame):
     def OnShowGraphFrame(self, event):
         if not self.graphFrame:
             self.graphFrame = GraphFrame(self)
-
             if graphFrame.graphFrame_enabled:
                 self.graphFrame.Show()
         elif graphFrame.graphFrame_enabled:
@@ -981,3 +980,11 @@ class MainFrame(wx.Frame):
         if not wnd:
             wnd = self
         InspectionTool().Show(wnd, True)
+
+    def bringUpWindow(self, attrName, windowClass):
+        if not getattr(self, attrName):
+            frame = windowClass(self)
+            setattr(self, attrName, frame)
+            frame.Show()
+        else:
+            getattr(self, attrName).Raise()
