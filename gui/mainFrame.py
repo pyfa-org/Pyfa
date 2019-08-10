@@ -212,6 +212,8 @@ class MainFrame(wx.Frame):
         self.registerMenu()
 
         # Internal vars to keep track of other windows (graphing/stats)
+        self.charEditor = None
+        self.attrEditor = None
         self.graphFrame = None
         self.tgtProfileEditor = None
         self.devTools = None
@@ -391,12 +393,10 @@ class MainFrame(wx.Frame):
         self.bringUpWindow('devTools', DevTools)
 
     def OnShowCharacterEditor(self, event):
-        dlg = CharacterEditor(self)
-        dlg.Show()
+        self.bringUpWindow('charEditor', CharacterEditor)
 
     def OnShowAttrEditor(self, event):
-        frame = AttributeEditor(self)
-        frame.Show()
+        self.bringUpWindow('attrEditor', AttributeEditor)
 
     def OnShowTargetProfileEditor(self, event):
         self.ShowTargetProfileEditor()
