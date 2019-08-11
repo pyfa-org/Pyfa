@@ -34,6 +34,7 @@ from wx.lib.agw.floatspin import FloatSpin
 
 import config
 import gui.globalEvents as GE
+from gui.auxFrame import AuxiliaryFrame
 from gui.bitmap_loader import BitmapLoader
 from gui.builtinViews.entityEditor import BaseValidator, EntityEditor, TextEntryValidatedDialog
 from gui.builtinViews.implantEditor import BaseImplantEditorView
@@ -43,6 +44,7 @@ from service.character import Character
 from service.esi import Esi
 from service.fit import Fit
 from service.market import Market
+
 
 pyfalog = Logger(__name__)
 
@@ -149,10 +151,10 @@ class CharacterEntityEditor(EntityEditor):
         sChar.delete(entity)
 
 
-class CharacterEditor(wx.Frame):
+class CharacterEditor(AuxiliaryFrame):
+
     def __init__(self, parent):
-        wx.Frame.__init__(self, parent, id=wx.ID_ANY, title="Character Editor", pos=wx.DefaultPosition,
-                          size=wx.Size(640, 600), style=wx.DEFAULT_FRAME_STYLE ^ wx.RESIZE_BORDER | wx.FRAME_FLOAT_ON_PARENT)
+        super().__init__(parent, id=wx.ID_ANY, title="Character Editor", pos=wx.DefaultPosition, size=wx.Size(640, 600))
 
         i = wx.Icon(BitmapLoader.getBitmap("character_small", "gui"))
         self.SetIcon(i)

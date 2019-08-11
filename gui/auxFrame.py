@@ -25,7 +25,7 @@ import wx
 class AuxiliaryFrame(wx.Frame):
 
         def __init__(self, parent, id=None, title=None, pos=None, size=None, style=None, name=None):
-            baseStyle = wx.FRAME_NO_TASKBAR | wx.FRAME_FLOAT_ON_PARENT | wx.RESIZE_BORDER | wx.CAPTION | wx.CLOSE_BOX | wx.SYSTEM_MENU
+            baseStyle = wx.FRAME_NO_TASKBAR | wx.FRAME_FLOAT_ON_PARENT | wx.CAPTION | wx.CLOSE_BOX | wx.SYSTEM_MENU
             kwargs = {
                 'parent': parent,
                 'style': baseStyle if style is None else baseStyle | style}

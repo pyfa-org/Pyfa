@@ -32,6 +32,7 @@ import gui.mainFrame
 from graphs.data.base import FitGraph
 from graphs.events import RESIST_MODE_CHANGED
 from graphs.style import BASE_COLORS, LIGHTNESSES, STYLES, hsl_to_hsv
+from gui.auxFrame import AuxiliaryFrame
 from gui.bitmap_loader import BitmapLoader
 from service.const import GraphCacheCleanupReason
 from service.settings import GraphSettings
@@ -65,7 +66,7 @@ except Exception:
     graphFrame_enabled = False
 
 
-class GraphFrame(wx.Frame):
+class GraphFrame(AuxiliaryFrame):
 
     def __init__(self, parent):
 
@@ -74,10 +75,7 @@ class GraphFrame(wx.Frame):
             pyfalog.warning('Matplotlib is not enabled. Skipping initialization.')
             return
 
-        wx.Frame.__init__(
-            self, parent, title='Graphs',
-            style=wx.DEFAULT_FRAME_STYLE | wx.NO_FULL_REPAINT_ON_RESIZE | wx.FRAME_FLOAT_ON_PARENT,
-            size=(520, 390))
+        super().__init__(parent, title='Graphs', style=wx.RESIZE_BORDER | wx.NO_FULL_REPAINT_ON_RESIZE, size=(520, 390))
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
 
         self.SetIcon(wx.Icon(BitmapLoader.getBitmap('graphs_small', 'gui')))

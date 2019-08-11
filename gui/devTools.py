@@ -26,20 +26,20 @@ import wx
 from logbook import Logger
 
 import eos.db
+from gui.auxFrame import AuxiliaryFrame
 from gui.builtinShipBrowser.events import FitSelected
 
 
 pyfalog = Logger(__name__)
 
 
-class DevTools(wx.Frame):
+class DevTools(AuxiliaryFrame):
 
     DAMAGE_TYPES = ("em", "thermal", "kinetic", "explosive")
 
     def __init__(self, parent):
-        wx.Frame.__init__(
-            self, parent, id=wx.ID_ANY, title="Development Tools",
-            style=wx.DEFAULT_FRAME_STYLE | wx.FRAME_FLOAT_ON_PARENT,
+        super().__init__(
+            parent, id=wx.ID_ANY, title="Development Tools", style=wx.RESIZE_BORDER,
             size=wx.Size(400, 320) if "wxGTK" in wx.PlatformInfo else wx.Size(400, 240))
         self.mainFrame = parent
         self.block = False
