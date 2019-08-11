@@ -28,7 +28,8 @@ class GuiChangeLocalModuleStatesCommand(wx.Command):
         success = self.internalHistory.submit(cmd)
         eos.db.flush()
         sFit = Fit.getInstance()
-        sFit.recalc(self.fitID)
+        if cmd.recalcNeeded:
+            sFit.recalc(self.fitID)
         self.savedRemovedDummies = sFit.fill(self.fitID)
         eos.db.commit()
         wx.PostEvent(gui.mainFrame.MainFrame.getInstance(), GE.FitChanged(fitIDs=(self.fitID,)))

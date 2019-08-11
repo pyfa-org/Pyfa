@@ -61,3 +61,12 @@ class CalcChangeLocalModuleStatesCommand(wx.Command):
             mod.state = state
         restoreCheckedStates(fit, self.savedStateCheckChanges, ignoreModPoss=self.savedStates)
         return True
+
+    @property
+    def recalcNeeded(self):
+        if self.savedStateCheckChanges is None:
+            return True
+        for container in self.savedStateCheckChanges:
+            if len(container) > 0:
+                return True
+        return False
