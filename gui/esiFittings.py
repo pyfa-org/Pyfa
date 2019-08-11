@@ -1,30 +1,31 @@
 import json
+
+import requests
 # noinspection PyPackageRequirements
 import wx
-import requests
-
-from service.port import Port
-from service.fit import Fit
-
-from eos.saveddata.cargo import Cargo
-from eos.db import getItem
-
-from gui.display import Display
-import gui.globalEvents as GE
-
 from logbook import Logger
+
+import gui.globalEvents as GE
+from eos.db import getItem
+from eos.saveddata.cargo import Cargo
+from gui.auxFrame import AuxiliaryFrame
+from gui.display import Display
 from service.esi import Esi
 from service.esiAccess import APIException
+from service.fit import Fit
+from service.port import Port
 from service.port.esi import ESIExportException
+
 
 pyfalog = Logger(__name__)
 
 
-class EveFittings(wx.Frame):
+class EveFittings(AuxiliaryFrame):
 
     def __init__(self, parent):
-        wx.Frame.__init__(self, parent, id=wx.ID_ANY, title="Browse EVE Fittings", pos=wx.DefaultPosition,
-                          size=wx.Size(750, 450), style=wx.DEFAULT_FRAME_STYLE | wx.FRAME_FLOAT_ON_PARENT)
+        super().__init__(
+            parent, id=wx.ID_ANY, title="Browse EVE Fittings", pos=wx.DefaultPosition,
+            size=wx.Size(750, 450), style=wx.RESIZE_BORDER)
 
         self.SetBackgroundColour(wx.SystemSettings.GetColour(wx.SYS_COLOUR_BTNFACE))
 
@@ -194,11 +195,12 @@ class ESIExceptionHandler:
             raise ex
 
 
-class ExportToEve(wx.Frame):
+class ExportToEve(AuxiliaryFrame):
 
     def __init__(self, parent):
-        wx.Frame.__init__(self, parent, id=wx.ID_ANY, title="Export fit to EVE", pos=wx.DefaultPosition,
-                          size=(wx.Size(350, 100)), style=wx.DEFAULT_FRAME_STYLE | wx.TAB_TRAVERSAL)
+        super().__init__(
+            parent, id=wx.ID_ANY, title="Export fit to EVE", pos=wx.DefaultPosition,
+            size=(wx.Size(350, 100)), style=wx.RESIZE_BORDER)
 
         self.mainFrame = parent
         self.SetBackgroundColour(wx.SystemSettings.GetColour(wx.SYS_COLOUR_BTNFACE))
@@ -228,7 +230,7 @@ class ExportToEve(wx.Frame):
         self.SetStatusBar(self.statusbar)
         self.Layout()
 
-        self.Centre(wx.BOTH)
+        self.Center(wx.BOTH)
 
     def updateCharList(self):
         sEsi = Esi.getInstance()

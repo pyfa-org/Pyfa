@@ -141,31 +141,3 @@ class AttributeSlider(wx.Panel):
         # Stop animations to prevent crashes when window is
         # closed while animation is in progress
         self.slider.FreezeAnimation()
-
-
-class TestAttributeSlider(wx.Frame):
-
-    def __init__(self, parent, id):
-        title = 'Slider...'
-        pos = wx.DefaultPosition
-        size = wx.DefaultSize
-        sty = wx.DEFAULT_FRAME_STYLE
-        wx.Frame.__init__(self, parent, id, title, pos, size, sty)
-
-        self.panel = AttributeSlider(self, -50, 0.8, 1.5, False)
-        self.panel.Bind(EVT_VALUE_CHANGED, self.thing)
-        self.panel.SetValue(-55)
-        self.Bind(wx.EVT_CLOSE, self.OnCloseWindow)
-
-    def OnCloseWindow(self, event):
-        self.Destroy()
-
-    def thing(self, evt):
-        print("thing")
-
-
-if __name__ == "__main__":
-    app = wx.App()
-    frame = TestAttributeSlider(None, wx.ID_ANY)
-    frame.Show()
-    app.MainLoop()

@@ -24,19 +24,19 @@ import wx
 
 class AuxiliaryFrame(wx.Frame):
 
-        def __init__(self, parent, id=None, title=None, pos=None, size=None, style=None, name=None):
-            baseStyle = wx.FRAME_NO_TASKBAR | wx.FRAME_FLOAT_ON_PARENT | wx.CAPTION | wx.CLOSE_BOX | wx.SYSTEM_MENU
-            kwargs = {
-                'parent': parent,
-                'style': baseStyle if style is None else baseStyle | style}
-            if id is not None:
-                kwargs['id'] = id
-            if title is not None:
-                kwargs['title'] = title
-            if pos is not None:
-                kwargs['pos'] = pos
-            if size is not None:
-                kwargs['size'] = size
-            if name is not None:
-                kwargs['name'] = name
-            super().__init__(**kwargs)
+    def __init__(self, parent, id=None, title=None, pos=None, size=None, style=None, name=None):
+        baseStyle = wx.FRAME_NO_TASKBAR | wx.FRAME_FLOAT_ON_PARENT | wx.CAPTION | wx.CLOSE_BOX | wx.SYSTEM_MENU
+        kwargs = {
+            'parent': parent,
+            'style': baseStyle if style is None else baseStyle | style}
+        if id is not None:
+            kwargs['id'] = id
+        if title is not None:
+            kwargs['title'] = title
+        if pos is not None:
+            kwargs['pos'] = pos
+        if size is not None:
+            kwargs['size'] = size
+        if name is not None:
+            kwargs['name'] = name
+        super().__init__(**kwargs)

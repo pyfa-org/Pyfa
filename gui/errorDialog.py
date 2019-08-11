@@ -17,16 +17,18 @@
 # along with pyfa.  If not, see <http://www.gnu.org/licenses/>.
 # ===============================================================================
 
-# import platform
+import datetime
 import sys
-#
+import traceback
+
 # noinspection PyPackageRequirements
 import wx
-import traceback
-import config
 from logbook import Logger
+
+import config
+from gui.auxFrame import AuxiliaryFrame
 from service.prereqsCheck import version_block
-import datetime
+
 
 pyfalog = Logger(__name__)
 
@@ -59,11 +61,12 @@ class ErrorHandler:
         cls.__parent = parent
 
 
-class ErrorFrame(wx.Frame):
+class ErrorFrame(AuxiliaryFrame):
 
     def __init__(self, parent=None, error_title='Error!'):
-        wx.Frame.__init__(self, parent, id=wx.ID_ANY, title="pyfa error", pos=wx.DefaultPosition, size=wx.Size(500, 600),
-                          style=wx.DEFAULT_FRAME_STYLE ^ wx.RESIZE_BORDER | wx.STAY_ON_TOP)
+        super().__init__(
+            parent, id=wx.ID_ANY, title="pyfa error", pos=wx.DefaultPosition,
+            size=wx.Size(500, 600), style=wx.STAY_ON_TOP)
 
         from eos.config import gamedata_version, gamedata_date
 

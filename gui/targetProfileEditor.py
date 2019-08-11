@@ -27,6 +27,7 @@ from logbook import Logger
 
 import gui.mainFrame
 import gui.globalEvents as GE
+from gui.auxFrame import AuxiliaryFrame
 from gui.bitmap_loader import BitmapLoader
 from gui.builtinViews.entityEditor import EntityEditor, BaseValidator
 from gui.utils.clipboard import toClipboard, fromClipboard
@@ -111,7 +112,7 @@ class TargetProfileEntityEditor(EntityEditor):
         wx.PostEvent(self.mainFrame, GE.TargetProfileRemoved(profileID=entity.ID))
 
 
-class TargetProfileEditor(wx.Frame):
+class TargetProfileEditor(AuxiliaryFrame):
 
     DAMAGE_TYPES = OrderedDict([
         ("em", "EM resistance"),
@@ -124,9 +125,8 @@ class TargetProfileEditor(wx.Frame):
         ('radius', ('Radius', 'm'))])
 
     def __init__(self, parent, selected=None):
-        wx.Frame.__init__(
-            self, parent, id=wx.ID_ANY,
-            title="Target Profile Editor", style=wx.DEFAULT_FRAME_STYLE | wx.FRAME_FLOAT_ON_PARENT,
+        super().__init__(
+            parent, id=wx.ID_ANY, title="Target Profile Editor", style=wx.RESIZE_BORDER,
             # Dropdown list widget is scaled to its longest content line on GTK, adapt to that
             size=wx.Size(500, 240) if "wxGTK" in wx.PlatformInfo else wx.Size(350, 240))
 

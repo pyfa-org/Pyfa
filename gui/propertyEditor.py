@@ -2,34 +2,29 @@ import csv
 
 # noinspection PyPackageRequirements
 import wx
+# noinspection PyPackageRequirements
+import wx.propgrid as wxpg
 from logbook import Logger
 
-try:
-    # noinspection PyPackageRequirements
-    import wx.propgrid as wxpg
-except:
-    if wx.VERSION < (2, 9):
-        raise ImportError("wx.propgrid is only available in wxPython >= 2.9")
-    else:
-        raise
-
-from eos.db.gamedata.queries import getItem, getAttributeInfo
-from service.market import Market
+import gui.builtinMarketBrowser.pfSearchBox as SBox
 import gui.display as d
 import gui.globalEvents as GE
-import gui.builtinMarketBrowser.pfSearchBox as SBox
-from gui.marketBrowser import SearchBox
+from eos.db.gamedata.queries import getAttributeInfo, getItem
+from gui.auxFrame import AuxiliaryFrame
 from gui.bitmap_loader import BitmapLoader
+from gui.marketBrowser import SearchBox
+from service.market import Market
+
 
 pyfalog = Logger(__name__)
 
 
-class AttributeEditor(wx.Frame):
+class AttributeEditor(AuxiliaryFrame):
 
     def __init__(self, parent):
-        wx.Frame.__init__(self, parent, wx.ID_ANY, title="Attribute Editor", pos=wx.DefaultPosition,
-                          size=wx.Size(650, 600),
-                          style=wx.DEFAULT_FRAME_STYLE | wx.FRAME_FLOAT_ON_PARENT | wx.TAB_TRAVERSAL)
+        super().__init__(
+            parent, wx.ID_ANY, title="Attribute Editor", pos=wx.DefaultPosition,
+            size=wx.Size(650, 600), style=wx.RESIZE_BORDER)
 
         i = wx.Icon(BitmapLoader.getBitmap("fit_rename_small", "gui"))
         self.SetIcon(i)

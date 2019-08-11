@@ -3,8 +3,9 @@ import wx
 
 class PFBitmapFrame(wx.Frame):
     def __init__(self, parent, pos, bitmap):
-        wx.Frame.__init__(self, parent, id=wx.ID_ANY, title=wx.EmptyString, pos=pos, size=wx.DefaultSize,
-                          style=wx.NO_BORDER | wx.FRAME_NO_TASKBAR | wx.STAY_ON_TOP)
+        super().__init__(
+            parent, id=wx.ID_ANY, title=wx.EmptyString, pos=pos, size=wx.DefaultSize,
+            style=wx.NO_BORDER | wx.FRAME_NO_TASKBAR | wx.STAY_ON_TOP)
         img = bitmap.ConvertToImage()
         img = img.ConvertToGreyscale()
         bitmap = wx.Bitmap(img)
@@ -32,14 +33,14 @@ class PFBitmapFrame(wx.Frame):
         if self.transp < 0:
             self.transp = 0
             self.timer.Stop()
-            wx.Frame.Show(self, False)
+            super().Show(False)
             self.Destroy()
             return
         self.SetTransparent(self.transp)
 
     def Show(self, showWnd=True):
         if showWnd:
-            wx.Frame.Show(self, showWnd)
+            super().Show(showWnd)
             self.Parent.SetFocus()
             self.direction = 1
             self.timer.Start(5)
