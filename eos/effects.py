@@ -27828,7 +27828,7 @@ class Effect6504(BaseEffect):
         for attrName in ('emDamage', 'thermalDamage', 'kineticDamage', 'explosiveDamage'):
             fit.modules.filteredChargeBoost(lambda mod: (mod.charge.requiresSkill('XL Torpedoes') or
                                                          mod.charge.requiresSkill('XL Cruise Missiles') or
-                                                         mod.charge.requiresSkill('Torpedoes')), 'thermalDamage',
+                                                         mod.charge.requiresSkill('Torpedoes')), attrName,
                                             src.getModifiedItemAttr('shipBonusDreadnoughtC1'),
                                             skill='Caldari Dreadnought', **kwargs)
 
@@ -28911,7 +28911,8 @@ class Effect6582(BaseEffect):
                                       'speed', src.getModifiedItemAttr('siegeLauncherROFBonus'), **kwargs)
 
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Target Navigation Prediction'),
-                                      'speed', src.getModifiedItemAttr('siegeHAWMissileROFBonus'), **kwargs)
+                                      'speed', src.getModifiedItemAttr('siegeHAWMissileROFBonus'),
+                                      stackingPenalties=True, **kwargs)
 
         fit.modules.filteredChargeBoost(lambda mod: mod.charge.requiresSkill('Torpedoes'),
                                         'maxVelocity', src.getModifiedItemAttr('siegeTorpedoVelocityBonus'),
