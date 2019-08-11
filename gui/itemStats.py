@@ -21,25 +21,25 @@
 import wx
 
 import config
-from service.market import Market
 import gui.mainFrame
+from eos.saveddata.module import Module
+from gui.auxFrame import AuxiliaryFrame
 from gui.bitmap_loader import BitmapLoader
-
-from gui.builtinItemStatsViews.itemTraits import ItemTraits
-from gui.builtinItemStatsViews.itemDescription import ItemDescription
+from gui.builtinItemStatsViews.itemAffectedBy import ItemAffectedBy
 from gui.builtinItemStatsViews.itemAttributes import ItemParams
 from gui.builtinItemStatsViews.itemCompare import ItemCompare
-from gui.builtinItemStatsViews.itemRequirements import ItemRequirements
 from gui.builtinItemStatsViews.itemDependants import ItemDependents
+from gui.builtinItemStatsViews.itemDescription import ItemDescription
 from gui.builtinItemStatsViews.itemEffects import ItemEffects
-from gui.builtinItemStatsViews.itemAffectedBy import ItemAffectedBy
-from gui.builtinItemStatsViews.itemProperties import ItemProperties
 from gui.builtinItemStatsViews.itemMutator import ItemMutatorPanel
+from gui.builtinItemStatsViews.itemProperties import ItemProperties
+from gui.builtinItemStatsViews.itemRequirements import ItemRequirements
+from gui.builtinItemStatsViews.itemTraits import ItemTraits
+from service.market import Market
 
-from eos.saveddata.module import Module
 
+class ItemStatsFrame(AuxiliaryFrame):
 
-class ItemStatsFrame(wx.Frame):
     counter = 0
 
     def __init__(
@@ -50,15 +50,13 @@ class ItemStatsFrame(wx.Frame):
         size=wx.DefaultSize,
         maximized=False
     ):
-        wx.Frame.__init__(
-            self,
-            gui.mainFrame.MainFrame.getInstance(),
-            wx.ID_ANY,
+        super().__init__(
+            parent=gui.mainFrame.MainFrame.getInstance(),
+            id=wx.ID_ANY,
             title="Item stats",
             pos=pos,
             size=size,
-            style=wx.DEFAULT_FRAME_STYLE | wx.FRAME_FLOAT_ON_PARENT
-        )
+            style=wx.RESIZE_BORDER)
 
         empty = getattr(victim, "isEmpty", False)
 
