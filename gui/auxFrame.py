@@ -24,6 +24,8 @@ import wx
 
 class AuxiliaryFrame(wx.Frame):
 
+    _instance = None
+
     def __init__(self, parent, id=None, title=None, pos=None, size=None, style=None, name=None):
         baseStyle = wx.FRAME_NO_TASKBAR | wx.FRAME_FLOAT_ON_PARENT | wx.CAPTION | wx.CLOSE_BOX | wx.SYSTEM_MENU
         kwargs = {
@@ -40,3 +42,12 @@ class AuxiliaryFrame(wx.Frame):
         if name is not None:
             kwargs['name'] = name
         super().__init__(**kwargs)
+
+    @classmethod
+    def openOne(cls, parent):
+        if not cls._instance:
+            frame = cls(parent)
+            cls._instance = frame
+            frame.Show()
+        else:
+            cls._instance.Raise()

@@ -1391,7 +1391,7 @@ class PFNotebookPagePreview(wx.Frame):
         if self.transp < 0:
             self.transp = 0
             self.timer.Stop()
-            wx.Frame.Show(self, False)
+            super().Show(False)
             self.Destroy()
             return
         self.SetTransparent(self.transp)
@@ -1407,7 +1407,7 @@ class PFNotebookPagePreview(wx.Frame):
 
     def Show(self, showWnd=True):
         if showWnd:
-            wx.Frame.Show(self, showWnd)
+            super().Show(showWnd)
             self.RaiseParent()
             self.direction = 1
             self.timer.Start(10)

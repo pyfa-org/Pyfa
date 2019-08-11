@@ -137,7 +137,7 @@ class MainFrame(wx.Frame):
     def __init__(self, title="pyfa"):
         pyfalog.debug("Initialize MainFrame")
         self.title = title
-        wx.Frame.__init__(self, None, wx.ID_ANY, self.title)
+        super().__init__(None, wx.ID_ANY, self.title)
         self.supress_left_up = False
 
         MainFrame.__instance = self
@@ -212,11 +212,8 @@ class MainFrame(wx.Frame):
         self.registerMenu()
 
         # Internal vars to keep track of other windows (graphing/stats)
-        self.charEditor = None
-        self.attrEditor = None
         self.graphFrame = None
         self.tgtProfileEditor = None
-        self.devTools = None
         self.statsWnds = []
         self.activeStatsWnd = None
 
@@ -390,13 +387,13 @@ class MainFrame(wx.Frame):
         wx.adv.AboutBox(info)
 
     def OnShowDevTools(self, event):
-        self.bringUpWindow('devTools', DevTools)
+        DevTools.openOne(parent=self)
 
     def OnShowCharacterEditor(self, event):
-        self.bringUpWindow('charEditor', CharacterEditor)
+        CharacterEditor.openOne(parent=self)
 
     def OnShowAttrEditor(self, event):
-        self.bringUpWindow('attrEditor', AttributeEditor)
+        AttributeEditor.openOne(parent=self)
 
     def OnShowTargetProfileEditor(self, event):
         self.ShowTargetProfileEditor()
@@ -980,11 +977,3 @@ class MainFrame(wx.Frame):
         if not wnd:
             wnd = self
         InspectionTool().Show(wnd, True)
-
-    def bringUpWindow(self, attrName, windowClass):
-        if not getattr(self, attrName):
-            frame = windowClass(self)
-            setattr(self, attrName, frame)
-            frame.Show()
-        else:
-            getattr(self, attrName).Raise()
