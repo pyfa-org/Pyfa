@@ -55,9 +55,9 @@ from gui.esiFittings import EveFittings, ExportToEve, SsoCharacterMgmt
 from gui.mainMenuBar import MainMenuBar
 from gui.marketBrowser import MarketBrowser
 from gui.multiSwitch import MultiSwitch
-from gui.patternEditor import DmgPatternEditorDlg
+from gui.patternEditor import DmgPatternEditor
 from gui.preferenceDialog import PreferenceDialog
-from gui.setEditor import ImplantSetEditorDlg
+from gui.setEditor import ImplantSetEditor
 from gui.shipBrowser import ShipBrowser
 from gui.statsPane import StatsPane
 from gui.targetProfileEditor import TargetProfileEditor
@@ -397,18 +397,13 @@ class MainFrame(wx.Frame):
         AttributeEditor.openOne(parent=self)
 
     def OnShowTargetProfileEditor(self, event):
-        self.ShowTargetProfileEditor()
-
-    def ShowTargetProfileEditor(self, selected=None):
-        TargetProfileEditor.openOne(parent=self, selected=selected)
+        TargetProfileEditor.openOne(parent=self)
 
     def OnShowDamagePatternEditor(self, event):
-        with DmgPatternEditorDlg(self) as dlg:
-            dlg.ShowModal()
+        DmgPatternEditor.openOne(parent=self)
 
     def OnShowImplantSetEditor(self, event):
-        with ImplantSetEditorDlg(self) as dlg:
-            dlg.ShowModal()
+        ImplantSetEditor.openOne(parent=self)
 
     def OnShowExportDialog(self, event):
         """ Export active fit """
@@ -430,22 +425,12 @@ class MainFrame(wx.Frame):
                     output = Port.exportXml([fit], None)
                     if '.' not in os.path.basename(path):
                         path += ".xml"
+                    with open(path, "w", encoding="utf-8") as openfile:
+                        openfile.write(output)
+                        openfile.close()
                 else:
                     pyfalog.warning("oops, invalid fit format %d" % format_)
-                    try:
-                        dlg.Destroy()
-                    except RuntimeError:
-                        pyfalog.error("Tried to destroy an object that doesn't exist in <showExportDialog>.")
                     return
-
-                with open(path, "w", encoding="utf-8") as openfile:
-                    openfile.write(output)
-                    openfile.close()
-
-        try:
-            dlg.Destroy()
-        except RuntimeError:
-            pyfalog.error("Tried to destroy an object that doesn't exist in <showExportDialog>.")
 
     def OnShowPreferenceDialog(self, event):
         with PreferenceDialog(self) as dlg:
@@ -834,8 +819,7 @@ class MainFrame(wx.Frame):
             "Backup fits",
             "Generating HTML file at: %s" % path,
             maximum=max_, parent=self,
-            style=wx.PD_APP_MODAL | wx.PD_ELAPSED_TIME
-        )
+            style=wx.PD_APP_MODAL | wx.PD_ELAPSED_TIME)
 
         exportHtml.getInstance().refreshFittingHtml(True, self.backupCallback)
         self.progressDialog.ShowModal()

@@ -5,7 +5,7 @@ from gui.contextMenu import ContextMenuSingle
 from gui.targetProfileEditor import TargetProfileEditor
 
 
-class TargetProfileEditor(ContextMenuSingle):
+class TargetProfileEditorMenu(ContextMenuSingle):
 
     def __init__(self):
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
@@ -25,7 +25,7 @@ class TargetProfileEditor(ContextMenuSingle):
         return 'Edit Target Profile'
 
     def activate(self, callingWindow, fullContext, mainItem, i):
-        self.mainFrame.ShowTargetProfileEditor(selected=mainItem.item)
+        TargetProfileEditor.openOne(parent=self.mainFrame, selected=mainItem.item)
 
 
-TargetProfileEditor.register()
+TargetProfileEditorMenu.register()

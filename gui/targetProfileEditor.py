@@ -124,7 +124,7 @@ class TargetProfileEditor(AuxiliaryFrame):
         ('signatureRadius', ('Signature radius\nLeave blank for infinitely big value', 'm')),
         ('radius', ('Radius', 'm'))])
 
-    def __init__(self, parent, selected=None):
+    def __init__(self, parent):
         super().__init__(
             parent, id=wx.ID_ANY, title="Target Profile Editor", style=wx.RESIZE_BORDER,
             # Dropdown list widget is scaled to its longest content line on GTK, adapt to that
@@ -136,7 +136,7 @@ class TargetProfileEditor(AuxiliaryFrame):
 
         mainSizer = wx.BoxSizer(wx.VERTICAL)
 
-        self.entityEditor = TargetProfileEntityEditor(parent=self, selected=selected)
+        self.entityEditor = TargetProfileEntityEditor(parent=self)
         mainSizer.Add(self.entityEditor, 0, wx.ALL | wx.EXPAND, 2)
 
         self.sl = wx.StaticLine(self)
@@ -241,6 +241,7 @@ class TargetProfileEditor(AuxiliaryFrame):
         self.Layout()
         bsize = self.GetBestSize()
         self.SetSize((-1, bsize.height))
+        self.SetMinSize(self.GetSize())
         self.CenterOnParent()
 
         self.Bind(wx.EVT_CHOICE, self.patternChanged)

@@ -19,13 +19,16 @@
 
 # noinspection PyPackageRequirements
 import wx
-from gui.bitmap_loader import BitmapLoader
+from logbook import Logger
 # noinspection PyPackageRequirements
 from wx.lib.intctrl import IntCtrl
-from gui.utils.clipboard import toClipboard, fromClipboard
-from gui.builtinViews.entityEditor import EntityEditor, BaseValidator
+
+from gui.auxFrame import AuxiliaryFrame
+from gui.bitmap_loader import BitmapLoader
+from gui.builtinViews.entityEditor import BaseValidator, EntityEditor
+from gui.utils.clipboard import fromClipboard, toClipboard
 from service.damagePattern import DamagePattern, ImportError
-from logbook import Logger
+
 
 pyfalog = Logger(__name__)
 
@@ -85,13 +88,13 @@ class DmgPatternEntityEditor(EntityEditor):
         sDP.deletePattern(entity)
 
 
-class DmgPatternEditorDlg(wx.Dialog):
+class DmgPatternEditor(AuxiliaryFrame):
+
     DAMAGE_TYPES = ("em", "thermal", "kinetic", "explosive")
 
     def __init__(self, parent):
-        wx.Dialog.__init__(
-            self, parent, id=wx.ID_ANY,
-            title="Damage Pattern Editor",
+        super().__init__(
+            parent, id=wx.ID_ANY, title="Damage Pattern Editor", style=wx.RESIZE_BORDER,
             # Dropdown list widget is scaled to its longest content line on GTK, adapt to that
             size=wx.Size(500, 240) if "wxGTK" in wx.PlatformInfo else wx.Size(400, 240))
 
@@ -185,6 +188,7 @@ class DmgPatternEditorDlg(wx.Dialog):
         self.Layout()
         bsize = self.GetBestSize()
         self.SetSize((-1, bsize.height))
+        self.SetMinSize(self.GetSize())
         self.CenterOnParent()
 
         self.Bind(wx.EVT_CHOICE, self.patternChanged)
