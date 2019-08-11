@@ -39,7 +39,7 @@ import gui.globalEvents as GE
 from eos.config import gamedata_date, gamedata_version
 # import this to access override setting
 from eos.modifiedAttributeDict import ModifiedAttributeDict
-from graphs.gui import GraphFrame, frame as graphFrame
+from graphs.gui import GraphFrame
 from gui.additionsPane import AdditionsPane
 from gui.bitmap_loader import BitmapLoader
 from gui.builtinMarketBrowser.events import ItemSelected
@@ -211,9 +211,7 @@ class MainFrame(wx.Frame):
         self.SetMenuBar(MainMenuBar(self))
         self.registerMenu()
 
-        # Internal vars to keep track of other windows (graphing/stats)
-        self.graphFrame = None
-        self.tgtProfileEditor = None
+        # Internal vars to keep track of other windows
         self.statsWnds = []
         self.activeStatsWnd = None
 
@@ -386,6 +384,9 @@ class MainFrame(wx.Frame):
         # info.WebSite = (forumUrl, "pyfa thread at EVE Online forum")
         wx.adv.AboutBox(info)
 
+    def OnShowGraphFrame(self, event):
+        GraphFrame.openOne(self)
+
     def OnShowDevTools(self, event):
         DevTools.openOne(parent=self)
 
@@ -399,13 +400,7 @@ class MainFrame(wx.Frame):
         self.ShowTargetProfileEditor()
 
     def ShowTargetProfileEditor(self, selected=None):
-        if not self.tgtProfileEditor:
-            self.tgtProfileEditor = TargetProfileEditor(self, selected=selected)
-            self.tgtProfileEditor.Show()
-        else:
-            if selected:
-                self.tgtProfileEditor.selectTargetProfile(selected)
-            self.tgtProfileEditor.Raise()
+        TargetProfileEditor.openOne(parent=self, selected=selected)
 
     def OnShowDamagePatternEditor(self, event):
         with DmgPatternEditorDlg(self) as dlg:
@@ -958,14 +953,6 @@ class MainFrame(wx.Frame):
 
     def closeWaitDialog(self):
         del self.waitDialog
-
-    def OnShowGraphFrame(self, event):
-        if not self.graphFrame:
-            self.graphFrame = GraphFrame(self)
-            if graphFrame.graphFrame_enabled:
-                self.graphFrame.Show()
-        elif graphFrame.graphFrame_enabled:
-            self.graphFrame.Raise()
 
     def openWXInspectTool(self, event):
         if not InspectionTool().initialized:

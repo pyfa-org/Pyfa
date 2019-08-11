@@ -81,8 +81,8 @@ class TargetProfileNameValidator(BaseValidator):
 
 class TargetProfileEntityEditor(EntityEditor):
 
-    def __init__(self, parent, selected=None):
-        EntityEditor.__init__(self, parent=parent, entityName="Target Profile", selected=selected)
+    def __init__(self, parent):
+        EntityEditor.__init__(self, parent=parent, entityName="Target Profile")
         self.SetEditorValidator(TargetProfileNameValidator)
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
 
@@ -250,6 +250,12 @@ class TargetProfileEditor(AuxiliaryFrame):
         self.Bind(wx.EVT_TIMER, self.OnInputTimer, self.inputTimer)
 
         self.patternChanged()
+
+    @classmethod
+    def openOne(cls, parent, selected=None):
+        super().openOne(parent)
+        if selected is not None:
+            cls._instance.selectTargetProfile(selected)
 
     def OnFieldChanged(self, event=None):
         if event is not None:

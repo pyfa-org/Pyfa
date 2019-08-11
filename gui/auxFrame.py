@@ -45,6 +45,7 @@ class AuxiliaryFrame(wx.Frame):
 
     @classmethod
     def openOne(cls, parent):
+        """If window is open and alive - raise it, open otherwise"""
         if not cls._instance:
             frame = cls(parent)
             cls._instance = frame

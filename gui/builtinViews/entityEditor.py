@@ -173,8 +173,9 @@ class EntityEditor(wx.Panel):
         try:
             idx = self.choices.index(entity)
         except IndexError:
-            return
+            return False
         self.entityChoices.SetSelection(idx)
+        return True
 
     def checkEntitiesExist(self):
         if len(self.choices) == 0:

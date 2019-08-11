@@ -140,6 +140,11 @@ class GraphFrame(AuxiliaryFrame):
         self.UpdateWindowSize()
         self.draw()
 
+    @classmethod
+    def openOne(cls, parent):
+        if graphFrame_enabled:
+            super().openOne(parent)
+
     def UpdateWindowSize(self):
         curW, curH = self.GetSize()
         bestW, bestH = self.GetBestSize()

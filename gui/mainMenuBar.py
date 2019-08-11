@@ -23,7 +23,7 @@ import wx
 import config
 from service.character import Character
 from service.fit import Fit
-from graphs.gui import GraphFrame, frame as graphFrame
+from graphs.gui import frame as graphFrame
 import gui.globalEvents as GE
 from gui.bitmap_loader import BitmapLoader
 
