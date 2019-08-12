@@ -48,6 +48,7 @@ class ErrorHandler:
                 app = wx.App(False)
                 cls.__frame = ErrorFrame(None)
                 cls.__frame.addException("".join(t))
+                cls.__frame.Show()
                 app.MainLoop()
                 sys.exit()
             else:
@@ -120,8 +121,6 @@ class ErrorFrame(AuxiliaryFrame):
         self.SetMinSize(self.GetSize())
 
         self.Centre(wx.BOTH)
-
-        self.Show()
 
     def addException(self, text):
         self.errorTextCtrl.AppendText("\n{}\n\n{}".format("#" * 20, text))

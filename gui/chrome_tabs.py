@@ -1333,14 +1333,12 @@ class _TabsContainer(wx.Panel):
             if not self.preview_tab.GetSelected():
                 page = self.Parent.GetPage(self.GetTabIndex(self.preview_tab))
                 if page.Snapshot():
-
                     self.preview_wnd = PFNotebookPagePreview(
-                                                        self,
-                                                        (mposx + 3, mposy + 3),
-                                                        page.Snapshot(),
-                                                        self.preview_tab.text)
+                        self,
+                        (mposx + 3, mposy + 3),
+                        page.Snapshot(),
+                        self.preview_tab.text)
                     self.preview_wnd.Show()
-
         event.Skip()
 
 
