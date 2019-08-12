@@ -41,9 +41,11 @@ class GuiRemoveProjectedItemsCommand(wx.Command):
 
     def Do(self):
         results = []
+        needRecalc = True
         for pModPosition in sorted(self.pModPositions, reverse=True):
             cmd = CalcRemoveProjectedModuleCommand(fitID=self.fitID, position=pModPosition)
             results.append(self.internalHistory.submit(cmd))
+            needRecalc = cmd.needsGuiRecalc
         for pDroneItemID in self.pDroneItemIDs:
             cmd = CalcRemoveProjectedDroneCommand(fitID=self.fitID, itemID=pDroneItemID, amount=self.amount)
             results.append(self.internalHistory.submit(cmd))
@@ -54,9 +56,10 @@ class GuiRemoveProjectedItemsCommand(wx.Command):
             cmd = CalcRemoveProjectedFitCommand(fitID=self.fitID, projectedFitID=pFitID, amount=self.amount)
             results.append(self.internalHistory.submit(cmd))
         success = any(results)
-        eos.db.flush()
         sFit = Fit.getInstance()
-        sFit.recalc(self.fitID)
+        if needRecalc:
+            eos.db.flush()
+            sFit.recalc(self.fitID)
         sFit.fill(self.fitID)
         eos.db.commit()
         wx.PostEvent(gui.mainFrame.MainFrame.getInstance(), GE.FitChanged(fitIDs=(self.fitID,)))

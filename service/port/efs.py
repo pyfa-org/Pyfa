@@ -67,13 +67,17 @@ class EfsPort:
 
         if propID is None:
             return None
-        CalcAddLocalModuleCommand(fitID, ModuleInfo(itemID=propID)).Do()
-        sFit.recalc(fit)
+        cmd = CalcAddLocalModuleCommand(fitID, ModuleInfo(itemID=propID))
+        cmd.Do()
+        if cmd.needsGuiRecalc:
+            sFit.recalc(fit)
         fit = eos.db.getFit(fitID)
         mwdPropSpeed = fit.maxSpeed
         mwdPosition = list(filter(lambda mod: mod.item and mod.item.ID == propID, fit.modules))[0].position
-        CalcRemoveLocalModulesCommand(fitID, [mwdPosition]).Do()
-        sFit.recalc(fit)
+        cmd = CalcRemoveLocalModulesCommand(fitID, [mwdPosition])
+        cmd.Do()
+        if cmd.needsGuiRecalc:
+            sFit.recalc(fit)
         fit = eos.db.getFit(fitID)
         return mwdPropSpeed
 
@@ -136,13 +140,15 @@ class EfsPort:
                         CalcChangeModuleChargesCommand(
                             fit.ID,
                             projected=False,
-                            chargeMap={mod.position: None}).Do()
+                            chargeMap={mod.position: None},
+                            recalc=False).Do()
                         sFit.recalc(fit)
                         stats["unloadedCapacitorNeed"] = mod.getModifiedItemAttr("capacitorNeed")
                         CalcChangeModuleChargesCommand(
                             fit.ID,
                             projected=False,
-                            chargeMap={mod.position: c.typeID}).Do()
+                            chargeMap={mod.position: c.typeID},
+                            recalc=False).Do()
                         sFit.recalc(fit)
             elif mod.item.group.name == "Capacitor Booster":
                 # The capacitorNeed is negative, which provides the boost.

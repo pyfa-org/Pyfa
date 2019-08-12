@@ -24,9 +24,10 @@ class GuiImportLocalMutatedModuleCommand(wx.Command):
     def Do(self):
         cmd = CalcAddLocalModuleCommand(fitID=self.fitID, newModInfo=self.newModInfo)
         success = self.internalHistory.submit(cmd)
-        eos.db.flush()
         sFit = Fit.getInstance()
-        sFit.recalc(self.fitID)
+        if cmd.needsGuiRecalc:
+            eos.db.flush()
+            sFit.recalc(self.fitID)
         self.savedRemovedDummies = sFit.fill(self.fitID)
         eos.db.commit()
         wx.PostEvent(

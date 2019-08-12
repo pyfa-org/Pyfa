@@ -11,12 +11,13 @@ pyfalog = Logger(__name__)
 
 class CalcChangeModuleChargesCommand(wx.Command):
 
-    def __init__(self, fitID, projected, chargeMap, ignoreRestriction=False):
+    def __init__(self, fitID, projected, chargeMap, ignoreRestrictions=False, recalc=True):
         wx.Command.__init__(self, True, 'Change Module Charges')
         self.fitID = fitID
         self.projected = projected
         self.chargeMap = chargeMap
-        self.ignoreRestriction = ignoreRestriction
+        self.ignoreRestriction = ignoreRestrictions
+        self.recalc = recalc
         self.savedChargeMap = None
         self.savedStateCheckChanges = None
 
@@ -48,8 +49,9 @@ class CalcChangeModuleChargesCommand(wx.Command):
             mod.charge = chargeItem
         if not changes:
             return False
-        sFit.recalc(fit)
-        self.savedStateCheckChanges = sFit.checkStates(fit, None)
+        if self.recalc:
+            sFit.recalc(fit)
+            self.savedStateCheckChanges = sFit.checkStates(fit, None)
         return True
 
     def Undo(self):
@@ -58,8 +60,18 @@ class CalcChangeModuleChargesCommand(wx.Command):
             fitID=self.fitID,
             projected=self.projected,
             chargeMap=self.savedChargeMap,
-            ignoreRestriction=True)
+            ignoreRestrictions=True,
+            recalc=False)
         if not cmd.Do():
             return False
         restoreCheckedStates(Fit.getInstance().getFit(self.fitID), self.savedStateCheckChanges)
         return True
+
+    @property
+    def needsGuiRecalc(self):
+        if self.savedStateCheckChanges is None:
+            return True
+        for container in self.savedStateCheckChanges:
+            if len(container) > 0:
+                return True
+        return False

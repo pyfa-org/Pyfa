@@ -39,14 +39,7 @@ class CalcAddLocalModuleCommand(wx.Command):
                         fitID=self.fitID,
                         position=fit.modules.index(oldMod),
                         newModInfo=self.newModInfo)
-                    if not self.subsystemCmd.Do():
-                        return False
-                    # Need to flush because checkStates sometimes relies on module->fit
-                    # relationship via .owner attribute, which is handled by SQLAlchemy
-                    eos.db.flush()
-                    sFit.recalc(fit)
-                    self.savedStateCheckChanges = sFit.checkStates(fit, newMod)
-                    return True
+                    return self.subsystemCmd.Do()
         if not newMod.fits(fit):
             pyfalog.warning('Module does not fit')
             return False
@@ -66,15 +59,23 @@ class CalcAddLocalModuleCommand(wx.Command):
         pyfalog.debug('Undoing addition of local module {} to fit {}'.format(self.newModInfo, self.fitID))
         # We added a subsystem module, which actually ran the replace command. Run the undo for that guy instead
         if self.subsystemCmd is not None:
-            if not self.subsystemCmd.Undo():
-                return False
-            restoreCheckedStates(Fit.getInstance().getFit(self.fitID), self.savedStateCheckChanges)
-            return True
+            return self.subsystemCmd.Undo()
         if self.savedPosition is None:
             return False
         from .localRemove import CalcRemoveLocalModulesCommand
-        cmd = CalcRemoveLocalModulesCommand(fitID=self.fitID, positions=[self.savedPosition])
+        cmd = CalcRemoveLocalModulesCommand(fitID=self.fitID, positions=[self.savedPosition], recalc=False)
         if not cmd.Do():
             return False
         restoreCheckedStates(Fit.getInstance().getFit(self.fitID), self.savedStateCheckChanges)
         return True
+
+    @property
+    def needsGuiRecalc(self):
+        if self.subsystemCmd is not None:
+            return self.subsystemCmd.needsGuiRecalc
+        if self.savedStateCheckChanges is None:
+            return True
+        for container in self.savedStateCheckChanges:
+            if len(container) > 0:
+                return True
+        return False

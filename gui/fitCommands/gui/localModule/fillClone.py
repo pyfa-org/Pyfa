@@ -30,8 +30,9 @@ class GuiFillWithClonedLocalModulesCommand(wx.Command):
             if not self.internalHistory.submit(cmd):
                 break
             added_modules += 1
-        eos.db.flush()
-        sFit.recalc(self.fitID)
+        if cmd.needsGuiRecalc:
+            eos.db.flush()
+            sFit.recalc(self.fitID)
         self.savedRemovedDummies = sFit.fill(self.fitID)
         eos.db.commit()
         success = added_modules > 0

@@ -21,17 +21,21 @@ class GuiReplaceLocalModuleCommand(wx.Command):
 
     def Do(self):
         results = []
+        needRecalc = None
         for position in self.positions:
             cmd = CalcReplaceLocalModuleCommand(
                 fitID=self.fitID,
                 position=position,
                 newModInfo=ModuleInfo(itemID=self.itemID))
             results.append(self.internalHistory.submit(cmd))
+            # Last command decides if we need it or not
+            needRecalc = cmd.needsGuiRecalc
         success = any(results)
         Market.getInstance().storeRecentlyUsed(self.itemID)
-        eos.db.flush()
         sFit = Fit.getInstance()
-        sFit.recalc(self.fitID)
+        if needRecalc:
+            eos.db.flush()
+            sFit.recalc(self.fitID)
         self.savedRemovedDummies = sFit.fill(self.fitID)
         eos.db.commit()
         wx.PostEvent(

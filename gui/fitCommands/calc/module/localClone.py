@@ -44,8 +44,17 @@ class CalcCloneLocalModuleCommand(wx.Command):
     def Undo(self):
         pyfalog.debug('Undoing cloning of local module from position {} to position {} for fit ID {}'.format(self.srcPosition, self.dstPosition, self.fitID))
         from .localRemove import CalcRemoveLocalModulesCommand
-        cmd = CalcRemoveLocalModulesCommand(fitID=self.fitID, positions=[self.dstPosition])
+        cmd = CalcRemoveLocalModulesCommand(fitID=self.fitID, positions=[self.dstPosition], recalc=False)
         if not cmd.Do():
             return False
         restoreCheckedStates(Fit.getInstance().getFit(self.fitID), self.savedStateCheckChanges)
         return True
+
+    @property
+    def needsGuiRecalc(self):
+        if self.savedStateCheckChanges is None:
+            return True
+        for container in self.savedStateCheckChanges:
+            if len(container) > 0:
+                return True
+        return False

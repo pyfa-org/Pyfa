@@ -22,6 +22,7 @@ class GuiChangeProjectedModuleMetasCommand(wx.Command):
         sFit = Fit.getInstance()
         fit = sFit.getFit(self.fitID)
         results = []
+        needRecalc = None
         for position in sorted(self.positions, reverse=True):
             module = fit.projectedModules[position]
             if module.itemID == self.newItemID:
@@ -31,9 +32,12 @@ class GuiChangeProjectedModuleMetasCommand(wx.Command):
             cmdRemove = CalcRemoveProjectedModuleCommand(fitID=self.fitID, position=position)
             cmdAdd = CalcAddProjectedModuleCommand(fitID=self.fitID, modInfo=info)
             results.append(self.internalHistory.submitBatch(cmdRemove, cmdAdd))
+            # Only last add command counts
+            needRecalc = cmdAdd.needsGuiRecalc
         success = any(results)
-        eos.db.flush()
-        sFit.recalc(self.fitID)
+        if needRecalc:
+            eos.db.flush()
+            sFit.recalc(self.fitID)
         sFit.fill(self.fitID)
         eos.db.commit()
         wx.PostEvent(gui.mainFrame.MainFrame.getInstance(), GE.FitChanged(fitIDs=(self.fitID,)))

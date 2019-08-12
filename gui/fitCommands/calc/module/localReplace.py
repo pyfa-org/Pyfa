@@ -11,7 +11,7 @@ pyfalog = Logger(__name__)
 
 class CalcReplaceLocalModuleCommand(wx.Command):
 
-    def __init__(self, fitID, position, newModInfo, unloadInvalidCharges=False, ignoreRestrictions=False):
+    def __init__(self, fitID, position, newModInfo, unloadInvalidCharges=False, ignoreRestrictions=False, recalc=True):
         wx.Command.__init__(self, True, 'Replace Module')
         self.fitID = fitID
         self.position = position
@@ -19,6 +19,7 @@ class CalcReplaceLocalModuleCommand(wx.Command):
         self.oldModInfo = None
         self.unloadInvalidCharges = unloadInvalidCharges
         self.ignoreRestrictions = ignoreRestrictions
+        self.recalc = recalc
         self.savedStateCheckChanges = None
         self.unloadedCharge = None
 
@@ -56,11 +57,12 @@ class CalcReplaceLocalModuleCommand(wx.Command):
             pyfalog.warning('Failed to replace in list')
             self.Undo()
             return False
-        # Need to flush because checkStates sometimes relies on module->fit
-        # relationship via .owner attribute, which is handled by SQLAlchemy
-        eos.db.flush()
-        sFit.recalc(fit)
-        self.savedStateCheckChanges = sFit.checkStates(fit, newMod)
+        if self.recalc:
+            # Need to flush because checkStates sometimes relies on module->fit
+            # relationship via .owner attribute, which is handled by SQLAlchemy
+            eos.db.flush()
+            sFit.recalc(fit)
+            self.savedStateCheckChanges = sFit.checkStates(fit, newMod)
         return True
 
     def Undo(self):
@@ -70,7 +72,7 @@ class CalcReplaceLocalModuleCommand(wx.Command):
         # Remove if there was no module
         if self.oldModInfo is None:
             from .localRemove import CalcRemoveLocalModulesCommand
-            cmd = CalcRemoveLocalModulesCommand(fitID=self.fitID, positions=[self.position])
+            cmd = CalcRemoveLocalModulesCommand(fitID=self.fitID, positions=[self.position], recalc=False)
             if not cmd.Do():
                 return False
             restoreCheckedStates(fit, self.savedStateCheckChanges)
@@ -87,3 +89,12 @@ class CalcReplaceLocalModuleCommand(wx.Command):
             return False
         restoreCheckedStates(fit, self.savedStateCheckChanges)
         return True
+
+    @property
+    def needsGuiRecalc(self):
+        if self.savedStateCheckChanges is None:
+            return True
+        for container in self.savedStateCheckChanges:
+            if len(container) > 0:
+                return True
+        return False

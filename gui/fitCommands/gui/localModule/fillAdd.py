@@ -27,9 +27,11 @@ class GuiFillWithNewLocalModulesCommand(wx.Command):
                 break
             added_modules += 1
         Market.getInstance().storeRecentlyUsed(self.itemID)
-        eos.db.flush()
         sFit = Fit.getInstance()
-        sFit.recalc(self.fitID)
+        # Only last command decides if we need to recalc here or not
+        if cmd.needsGuiRecalc:
+            eos.db.flush()
+            sFit.recalc(self.fitID)
         self.savedRemovedDummies = sFit.fill(self.fitID)
         eos.db.commit()
         success = added_modules > 0

@@ -25,9 +25,10 @@ class GuiCloneLocalModuleCommand(wx.Command):
         sFit = Fit.getInstance()
         cmd = CalcCloneLocalModuleCommand(fitID=self.fitID, srcPosition=self.srcPosition, dstPosition=self.dstPosition)
         success = self.internalHistory.submit(cmd)
-        eos.db.flush()
         fit = sFit.getFit(self.fitID)
-        sFit.recalc(self.fitID)
+        if cmd.needsGuiRecalc:
+            eos.db.flush()
+            sFit.recalc(self.fitID)
         self.savedRemovedDummies = sFit.fill(self.fitID)
         eos.db.commit()
         self.savedItemID = fit.modules[self.srcPosition].itemID

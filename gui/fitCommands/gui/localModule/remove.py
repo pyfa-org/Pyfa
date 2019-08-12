@@ -30,8 +30,9 @@ class GuiRemoveLocalModuleCommand(wx.Command):
             for position in sorted(container, reverse=True):
                 modInfo = container[position]
                 sMkt.storeRecentlyUsed(modInfo.itemID)
-        eos.db.flush()
-        sFit.recalc(self.fitID)
+        if cmd.needsGuiRecalc:
+            eos.db.flush()
+            sFit.recalc(self.fitID)
         self.savedRemovedDummies = sFit.fill(self.fitID)
         eos.db.commit()
         wx.PostEvent(

@@ -34,8 +34,9 @@ class GuiRevertMutatedLocalModuleCommand(wx.Command):
                 spoolType=mod.spoolType,
                 spoolAmount=mod.spoolAmount))
         success = self.internalHistory.submit(cmd)
-        eos.db.flush()
-        sFit.recalc(self.fitID)
+        if cmd.needsGuiRecalc:
+            eos.db.flush()
+            sFit.recalc(self.fitID)
         sFit.fill(self.fitID)
         eos.db.commit()
         wx.PostEvent(gui.mainFrame.MainFrame.getInstance(), GE.FitChanged(fitIDs=(self.fitID,)))

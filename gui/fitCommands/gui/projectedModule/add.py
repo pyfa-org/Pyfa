@@ -19,9 +19,10 @@ class GuiAddProjectedModuleCommand(wx.Command):
     def Do(self):
         cmd = CalcAddProjectedModuleCommand(fitID=self.fitID, modInfo=ModuleInfo(itemID=self.itemID))
         success = self.internalHistory.submit(cmd)
-        eos.db.flush()
         sFit = Fit.getInstance()
-        sFit.recalc(self.fitID)
+        if cmd.needsGuiRecalc:
+            eos.db.flush()
+            sFit.recalc(self.fitID)
         sFit.fill(self.fitID)
         eos.db.commit()
         wx.PostEvent(gui.mainFrame.MainFrame.getInstance(), GE.FitChanged(fitIDs=(self.fitID,)))

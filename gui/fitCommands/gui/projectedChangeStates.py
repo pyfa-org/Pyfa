@@ -58,12 +58,14 @@ class GuiChangeProjectedItemStatesCommand(wx.Command):
         if self.proposedState is None:
             return False
         results = []
+        needRecalc = True
         if self.pModPositions:
             cmd = CalcChangeProjectedModuleStatesCommand(
                 fitID=self.fitID,
                 positions=self.pModPositions,
                 proposedState=self.proposedState)
             results.append(self.internalHistory.submit(cmd))
+            needRecalc = cmd.needsGuiRecalc
         for pDroneItemID in self.pDroneItemIDs:
             cmd = CalcChangeProjectedDroneStateCommand(
                 fitID=self.fitID,
@@ -83,9 +85,10 @@ class GuiChangeProjectedItemStatesCommand(wx.Command):
                 state=False if self.proposedState == 'inactive' else True)
             results.append(self.internalHistory.submit(cmd))
         success = any(results)
-        eos.db.flush()
         sFit = Fit.getInstance()
-        sFit.recalc(self.fitID)
+        if needRecalc:
+            eos.db.flush()
+            sFit.recalc(self.fitID)
         sFit.fill(self.fitID)
         eos.db.commit()
         wx.PostEvent(gui.mainFrame.MainFrame.getInstance(), GE.FitChanged(fitIDs=(self.fitID,)))

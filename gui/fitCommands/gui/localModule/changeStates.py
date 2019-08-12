@@ -26,9 +26,9 @@ class GuiChangeLocalModuleStatesCommand(wx.Command):
             positions=self.positions,
             click=self.click)
         success = self.internalHistory.submit(cmd)
-        eos.db.flush()
         sFit = Fit.getInstance()
-        if cmd.recalcNeeded:
+        if cmd.needsGuiRecalc:
+            eos.db.flush()
             sFit.recalc(self.fitID)
         self.savedRemovedDummies = sFit.fill(self.fitID)
         eos.db.commit()

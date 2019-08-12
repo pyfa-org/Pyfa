@@ -11,10 +11,11 @@ pyfalog = Logger(__name__)
 
 class CalcRemoveProjectedModuleCommand(wx.Command):
 
-    def __init__(self, fitID, position):
+    def __init__(self, fitID, position, recalc=True):
         wx.Command.__init__(self, True)
         self.fitID = fitID
         self.position = position
+        self.recalc = recalc
         self.savedModInfo = None
         self.savedStateCheckChanges = None
 
@@ -26,11 +27,12 @@ class CalcRemoveProjectedModuleCommand(wx.Command):
         self.savedModInfo = ModuleInfo.fromModule(mod)
         del fit.projectedModules[self.position]
 
-        # Need to flush because checkStates sometimes relies on module->fit
-        # relationship via .owner attribute, which is handled by SQLAlchemy
-        eos.db.flush()
-        sFit.recalc(fit)
-        self.savedStateCheckChanges = sFit.checkStates(fit, None)
+        if self.recalc:
+            # Need to flush because checkStates sometimes relies on module->fit
+            # relationship via .owner attribute, which is handled by SQLAlchemy
+            eos.db.flush()
+            sFit.recalc(fit)
+            self.savedStateCheckChanges = sFit.checkStates(fit, None)
         return True
 
     def Undo(self):
@@ -40,8 +42,18 @@ class CalcRemoveProjectedModuleCommand(wx.Command):
             fitID=self.fitID,
             modInfo=self.savedModInfo,
             position=self.position,
-            ignoreRestrictions=True)
+            ignoreRestrictions=True,
+            recalc=False)
         if not cmd.Do():
             return False
         restoreCheckedStates(Fit.getInstance().getFit(self.fitID), self.savedStateCheckChanges)
         return True
+
+    @property
+    def needsGuiRecalc(self):
+        if self.savedStateCheckChanges is None:
+            return True
+        for container in self.savedStateCheckChanges:
+            if len(container) > 0:
+                return True
+        return False

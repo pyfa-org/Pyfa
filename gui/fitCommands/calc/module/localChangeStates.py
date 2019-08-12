@@ -63,7 +63,7 @@ class CalcChangeLocalModuleStatesCommand(wx.Command):
         return True
 
     @property
-    def recalcNeeded(self):
+    def needsGuiRecalc(self):
         if self.savedStateCheckChanges is None:
             return True
         for container in self.savedStateCheckChanges:

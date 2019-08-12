@@ -22,9 +22,10 @@ class GuiAddLocalModuleCommand(wx.Command):
         cmd = CalcAddLocalModuleCommand(fitID=self.fitID, newModInfo=ModuleInfo(itemID=self.itemID))
         success = self.internalHistory.submit(cmd)
         Market.getInstance().storeRecentlyUsed(self.itemID)
-        eos.db.flush()
         sFit = Fit.getInstance()
-        sFit.recalc(self.fitID)
+        if cmd.needsGuiRecalc:
+            eos.db.flush()
+            sFit.recalc(self.fitID)
         self.savedRemovedDummies = sFit.fill(self.fitID)
         eos.db.commit()
         wx.PostEvent(

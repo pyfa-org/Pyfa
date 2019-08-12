@@ -12,12 +12,13 @@ pyfalog = Logger(__name__)
 
 class CalcAddProjectedModuleCommand(wx.Command):
 
-    def __init__(self, fitID, modInfo, position=None, ignoreRestrictions=False):
+    def __init__(self, fitID, modInfo, position=None, ignoreRestrictions=False, recalc=True):
         wx.Command.__init__(self, True)
         self.fitID = fitID
         self.newModInfo = modInfo
         self.newPosition = position
         self.ignoreRestrictions = ignoreRestrictions
+        self.recalc = recalc
         self.oldModInfo = None
         self.oldPosition = None
         self.savedStateCheckChanges = None
@@ -46,11 +47,12 @@ class CalcAddProjectedModuleCommand(wx.Command):
                 return False
             self.newPosition = fit.projectedModules.index(newMod)
 
-        # Need to flush because checkStates sometimes relies on module->fit
-        # relationship via .owner attribute, which is handled by SQLAlchemy
-        eos.db.flush()
-        sFit.recalc(fit)
-        self.savedStateCheckChanges = sFit.checkStates(fit, newMod)
+        if self.recalc:
+            # Need to flush because checkStates sometimes relies on module->fit
+            # relationship via .owner attribute, which is handled by SQLAlchemy
+            eos.db.flush()
+            sFit.recalc(fit)
+            self.savedStateCheckChanges = sFit.checkStates(fit, newMod)
         return True
 
     def Undo(self):
@@ -60,7 +62,8 @@ class CalcAddProjectedModuleCommand(wx.Command):
                 fitID=self.fitID,
                 modInfo=self.oldModInfo,
                 position=self.oldPosition,
-                ignoreRestrictions=True)
+                ignoreRestrictions=True,
+                recalc=False)
             if not cmd.Do():
                 return False
             restoreCheckedStates(Fit.getInstance().getFit(self.fitID), self.savedStateCheckChanges)
@@ -68,8 +71,18 @@ class CalcAddProjectedModuleCommand(wx.Command):
         from .projectedRemove import CalcRemoveProjectedModuleCommand
         cmd = CalcRemoveProjectedModuleCommand(
             fitID=self.fitID,
-            position=self.newPosition)
+            position=self.newPosition,
+            recalc=False)
         if not cmd.Do():
             return False
         restoreCheckedStates(Fit.getInstance().getFit(self.fitID), self.savedStateCheckChanges)
         return True
+
+    @property
+    def needsGuiRecalc(self):
+        if self.savedStateCheckChanges is None:
+            return True
+        for container in self.savedStateCheckChanges:
+            if len(container) > 0:
+                return True
+        return False

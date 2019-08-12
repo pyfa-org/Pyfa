@@ -42,8 +42,9 @@ class GuiChangeLocalModuleMetasCommand(wx.Command):
         if not commands:
             return False
         success = self.internalHistory.submitBatch(*commands)
-        eos.db.flush()
-        sFit.recalc(self.fitID)
+        if commands[-1].needsGuiRecalc:
+            eos.db.flush()
+            sFit.recalc(self.fitID)
         self.savedRemovedDummies = sFit.fill(self.fitID)
         eos.db.commit()
         events = []

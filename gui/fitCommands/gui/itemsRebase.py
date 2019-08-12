@@ -22,6 +22,7 @@ class GuiRebaseItemsCommand(wx.Command):
     def Do(self):
         sFit = Fit.getInstance()
         fit = sFit.getFit(self.fitID)
+        # Here we assume that item attribs do not change and item state will not change
         for mod in fit.modules:
             if mod.itemID in self.rebaseMap:
                 cmd = CalcRebaseItemCommand(
@@ -34,7 +35,8 @@ class GuiRebaseItemsCommand(wx.Command):
                 cmd = CalcChangeModuleChargesCommand(
                     fitID=self.fitID,
                     projected=False,
-                    chargeMap={fit.modules.index(mod): self.rebaseMap[mod.chargeID]})
+                    chargeMap={fit.modules.index(mod): self.rebaseMap[mod.chargeID]},
+                    recalc=False)
                 self.internalHistory.submit(cmd)
         for containerName in ('drones', 'fighters', 'implants', 'boosters'):
             container = getattr(fit, containerName)

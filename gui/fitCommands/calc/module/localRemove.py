@@ -12,10 +12,11 @@ pyfalog = Logger(__name__)
 
 class CalcRemoveLocalModulesCommand(wx.Command):
 
-    def __init__(self, fitID, positions):
+    def __init__(self, fitID, positions, recalc=True):
         wx.Command.__init__(self, True, 'Remove Module')
         self.fitID = fitID
         self.positions = positions
+        self.recalc = recalc
         self.savedSubInfos = None
         self.savedModInfos = None
         self.savedStateCheckChanges = None
@@ -39,12 +40,12 @@ class CalcRemoveLocalModulesCommand(wx.Command):
         if len(self.savedSubInfos) == 0 and len(self.savedModInfos) == 0:
             return False
 
-        # Need to flush because checkStates sometimes relies on module->fit
-        # relationship via .owner attribute, which is handled by SQLAlchemy
-        eos.db.flush()
-        sFit.recalc(fit)
-        self.savedStateCheckChanges = sFit.checkStates(fit, None)
-        # If no modules were removed, report that command was not completed
+        if self.recalc:
+            # Need to flush because checkStates sometimes relies on module->fit
+            # relationship via .owner attribute, which is handled by SQLAlchemy
+            eos.db.flush()
+            sFit.recalc(fit)
+            self.savedStateCheckChanges = sFit.checkStates(fit, None)
         return True
 
     def Undo(self):
@@ -60,7 +61,8 @@ class CalcRemoveLocalModulesCommand(wx.Command):
                     fitID=self.fitID,
                     position=position,
                     newModInfo=modInfo,
-                    ignoreRestrictions=True)
+                    ignoreRestrictions=True,
+                    recalc=False)
                 results.append(cmd.Do())
             sFit.recalc(fit)
         for position, modInfo in self.savedModInfos.items():
@@ -68,9 +70,19 @@ class CalcRemoveLocalModulesCommand(wx.Command):
                 fitID=self.fitID,
                 position=position,
                 newModInfo=modInfo,
-                ignoreRestrictions=True)
+                ignoreRestrictions=True,
+                recalc=False)
             results.append(cmd.Do())
         if not any(results):
             return False
         restoreCheckedStates(fit, self.savedStateCheckChanges)
         return True
+
+    @property
+    def needsGuiRecalc(self):
+        if self.savedStateCheckChanges is None:
+            return True
+        for container in self.savedStateCheckChanges:
+            if len(container) > 0:
+                return True
+        return False
