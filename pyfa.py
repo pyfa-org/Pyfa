@@ -128,7 +128,6 @@ if __name__ == "__main__":
             os.mkdir(config.savePath)
 
         eos.db.saveddata_meta.create_all()
-
         from gui.mainFrame import MainFrame
 
         # set title if it wasn't supplied by argument

@@ -151,6 +151,7 @@ class Fit:
     @staticmethod
     def getFitsWithModules(typeIDs):
         """ Lists fits flagged as booster """
+        pyfalog.debug('Getting fits with modules')
         fits = eos.db.getFitsWithModules(typeIDs)
         return fits
 

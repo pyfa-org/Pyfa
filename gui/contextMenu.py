@@ -35,6 +35,7 @@ class ContextMenu(metaclass=ABCMeta):
 
     @classmethod
     def register(cls):
+        pyfalog.debug('registering context menu class {}'.format(cls.__name__))
         ContextMenu.menus.append(cls)
 
     @classmethod

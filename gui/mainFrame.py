@@ -30,14 +30,12 @@ import wx
 import wx.adv
 from logbook import Logger
 # noinspection PyPackageRequirements
-# noinspection PyPackageRequirements
 from wx.lib.inspection import InspectionTool
 
 import config
 import gui.fitCommands as cmd
 import gui.globalEvents as GE
 from eos.config import gamedata_date, gamedata_version
-# import this to access override setting
 from eos.modifiedAttributeDict import ModifiedAttributeDict
 from graphs.gui import GraphFrame
 from gui.additionsPane import AdditionsPane

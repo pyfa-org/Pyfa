@@ -35,6 +35,7 @@ class ReadOnlyException(Exception):
     pass
 
 
+pyfalog.debug('Initializing gamedata')
 gamedata_connectionstring = config.gamedata_connectionstring
 if callable(gamedata_connectionstring):
     gamedata_engine = create_engine("sqlite://", creator=gamedata_connectionstring, echo=config.debug)
@@ -45,6 +46,7 @@ gamedata_meta = MetaData()
 gamedata_meta.bind = gamedata_engine
 gamedata_session = sessionmaker(bind=gamedata_engine, autoflush=False, expire_on_commit=False)()
 
+pyfalog.debug('Getting gamedata version')
 # This should be moved elsewhere, maybe as an actual query. Current, without try-except, it breaks when making a new
 # game db because we haven't reached gamedata_meta.create_all()
 try:
@@ -60,6 +62,7 @@ except Exception as e:
     config.gamedata_version = None
     config.gamedata_date = None
 
+pyfalog.debug('Initializing saveddata')
 saveddata_connectionstring = config.saveddata_connectionstring
 if saveddata_connectionstring is not None:
     if callable(saveddata_connectionstring):
@@ -76,16 +79,19 @@ else:
 # Lock controlling any changes introduced to session
 sd_lock = threading.RLock()
 
+pyfalog.debug('Importing gamedata DB scheme')
 # Import all the definitions for all our database stuff
 # noinspection PyPep8
 from eos.db.gamedata import alphaClones, attribute, category, effect, group, item, marketGroup, metaData, metaGroup, queries, traits, unit, dynamicAttributes
+pyfalog.debug('Importing saveddata DB scheme')
 # noinspection PyPep8
 from eos.db.saveddata import booster, cargo, character, damagePattern, databaseRepair, drone, fighter, fit, implant, implantSet, loadDefaultDatabaseValues, \
     miscData, mutator, module, override, price, queries, skill, targetProfile, user
 
-# Import queries
+pyfalog.debug('Importing gamedata queries')
 # noinspection PyPep8
 from eos.db.gamedata.queries import *
+pyfalog.debug('Importing saveddata queries')
 # noinspection PyPep8
 from eos.db.saveddata.queries import *
 
