@@ -186,9 +186,6 @@ class Display(wx.ListCtrl):
 
     def populate(self, stuff):
         if stuff is not None:
-            wasFrozen = self.IsFrozen()
-            if not wasFrozen:
-                self.Freeze()
             listItemCount = self.GetItemCount()
             stuffItemCount = len(stuff)
 
@@ -205,15 +202,10 @@ class Display(wx.ListCtrl):
                     for i in range(listItemCount - stuffItemCount):
                         self.DeleteItem(self.getLastItem())
                     self.Refresh()
-            if not wasFrozen:
-                self.Thaw()
 
     def refresh(self, stuff):
         if stuff is None:
             return
-        wasFrozen = self.IsFrozen()
-        if not wasFrozen:
-           self.Freeze()
         item = -1
         for id_, st in enumerate(stuff):
 
@@ -265,8 +257,6 @@ class Display(wx.ListCtrl):
                         self.SetColumnWidth(i, headerWidth)
                 else:
                     self.SetColumnWidth(i, col.size)
-        if not wasFrozen:
-            self.Thaw()
 
     def update(self, stuff):
         self.populate(stuff)
