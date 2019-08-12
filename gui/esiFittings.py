@@ -306,6 +306,7 @@ class SsoCharacterMgmt(AuxiliaryFrame):
             size=wx.Size(550, 250), style=wx.RESIZE_BORDER)
         self.mainFrame = parent
         mainSizer = wx.BoxSizer(wx.HORIZONTAL)
+        self.SetBackgroundColour(wx.SystemSettings.GetColour(wx.SYS_COLOUR_BTNFACE))
 
         self.lcCharacters = wx.ListCtrl(self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.LC_REPORT)
 
