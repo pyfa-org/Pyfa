@@ -117,6 +117,7 @@ class ErrorFrame(AuxiliaryFrame):
         self.SetSizer(mainSizer)
         mainSizer.Layout()
         self.Layout()
+        self.SetMinSize(self.GetSize())
 
         self.Centre(wx.BOTH)
 

@@ -73,6 +73,7 @@ class DevTools(AuxiliaryFrame):
 
         self.Layout()
         self.CenterOnParent()
+        self.SetMinSize(self.GetSize())
 
     def objects_by_id(self, evt):
         input = self.id_get.GetValue()

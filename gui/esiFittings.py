@@ -79,6 +79,7 @@ class EveFittings(AuxiliaryFrame):
 
         self.SetSizer(mainSizer)
         self.Layout()
+        self.SetMinSize(self.GetSize())
 
         self.Centre(wx.BOTH)
 
@@ -229,6 +230,7 @@ class ExportToEve(AuxiliaryFrame):
         self.SetSizer(mainSizer)
         self.SetStatusBar(self.statusbar)
         self.Layout()
+        self.SetMinSize(self.GetSize())
 
         self.Center(wx.BOTH)
 

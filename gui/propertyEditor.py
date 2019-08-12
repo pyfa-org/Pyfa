@@ -83,6 +83,7 @@ class AttributeEditor(AuxiliaryFrame):
         sizer.Add(panel, 1, wx.EXPAND)
         self.SetSizer(sizer)
         self.SetAutoLayout(True)
+        self.SetMinSize(self.GetSize())
 
         self.Bind(wx.EVT_CLOSE, self.OnClose)
         self.Bind(wx.EVT_CHAR_HOOK, self.kbEvent)
