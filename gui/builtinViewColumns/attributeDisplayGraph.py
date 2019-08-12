@@ -299,3 +299,21 @@ class WarpDistanceColumn(GraphColumn):
 
 
 WarpDistanceColumn.register()
+
+
+class ScanResolutionColumn(GraphColumn):
+
+    name = 'ScanResolution'
+    stickPrefixToValue = True
+
+    def __init__(self, fittingView, params):
+        super().__init__(fittingView, 74)
+
+    def _getValue(self, fit):
+        return fit.ship.getModifiedItemAttr('scanResolution'), 'mm'
+
+    def _getFitTooltip(self):
+        return 'Scan Resolution'
+
+
+ScanResolutionColumn.register()

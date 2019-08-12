@@ -18,9 +18,12 @@
 # =============================================================================
 
 
-from . import fitDamageStats
-from . import fitShieldRegen
-from . import fitCapRegen
-from . import fitMobility
-from . import fitWarpTime
-from . import fitLockTime
+from graphs.data.base import SmoothPointGetter
+
+
+class TgtSigRadius2LockTimeGetter(SmoothPointGetter):
+
+    def _calculatePoint(self, x, miscParams, src, tgt, commonData):
+        tgtSigRadius = x
+        time = src.item.calculateLockTime(radius=tgtSigRadius)
+        return time

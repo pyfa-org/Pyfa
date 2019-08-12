@@ -18,9 +18,22 @@
 # =============================================================================
 
 
-from . import fitDamageStats
-from . import fitShieldRegen
-from . import fitCapRegen
-from . import fitMobility
-from . import fitWarpTime
-from . import fitLockTime
+import math
+
+from graphs.data.base import FitGraph, Input, XDef, YDef
+from .getter import TgtSigRadius2LockTimeGetter
+
+
+class FitLockTimeGraph(FitGraph):
+
+    # UI stuff
+    internalName = 'lockTimeGraph'
+    name = 'Lock Time'
+    xDefs = [XDef(handle='tgtSigRad', unit='m', label='Target signature radius', mainInput=('tgtSigRad', 'm'))]
+    yDefs = [YDef(handle='time', unit='s', label='Lock time')]
+    inputs = [Input(handle='tgtSigRad', unit='m', label='Target signature', iconID=1390, defaultValue=None, defaultRange=(25, 500))]
+    srcExtraCols = ('ScanResolution',)
+
+    # Calculation stuff
+    _limiters = {'tgtSigRad': lambda src, tgt: (1, math.inf)}
+    _getters = {('tgtSigRad', 'time'): TgtSigRadius2LockTimeGetter}
