@@ -87,14 +87,11 @@ class EveFittings(AuxiliaryFrame):
         sEsi = Esi.getInstance()
         chars = sEsi.getSsoCharacters()
 
-        if len(chars) == 0:
-            self.Close()
-
         self.charChoice.Clear()
         for char in chars:
             self.charChoice.Append(char.characterName, char.ID)
-
-        self.charChoice.SetSelection(0)
+        if len(chars) > 0:
+            self.charChoice.SetSelection(0)
 
     def kbEvent(self, event):
         keycode = event.GetKeyCode()
@@ -106,14 +103,19 @@ class EveFittings(AuxiliaryFrame):
 
     def getActiveCharacter(self):
         selection = self.charChoice.GetCurrentSelection()
-        return self.charChoice.GetClientData(selection) if selection is not None else None
+        return self.charChoice.GetClientData(selection) if selection not in (None, -1) else None
 
     def fetchFittings(self, event):
         sEsi = Esi.getInstance()
         waitDialog = wx.BusyInfo("Fetching fits, please wait...", parent=self)
-
+        activeChar = self.getActiveCharacter()
+        if activeChar is None:
+            msg = "Need at least one ESI character to fetch"
+            pyfalog.warning(msg)
+            self.statusbar.SetStatusText(msg)
+            return
         try:
-            self.fittings = sEsi.getFittings(self.getActiveCharacter())
+            self.fittings = sEsi.getFittings(activeChar)
             # self.cacheTime = fittings.get('cached_until')
             # self.updateCacheStatus(None)
             # self.cacheTimer.Start(1000)
@@ -152,8 +154,11 @@ class EveFittings(AuxiliaryFrame):
             "Confirm Delete", wx.YES | wx.NO | wx.ICON_QUESTION
         ) as dlg:
             if dlg.ShowModal() == wx.ID_YES:
+                activeChar = self.getActiveCharacter()
+                if activeChar is None:
+                    return
                 try:
-                    sEsi.delFitting(self.getActiveCharacter(), data['fitting_id'])
+                    sEsi.delFitting(activeChar, data['fitting_id'])
                     # repopulate the fitting list
                     self.fitTree.populateSkillTree(self.fittings)
                     self.fitView.update([])
@@ -201,7 +206,7 @@ class ExportToEve(AuxiliaryFrame):
     def __init__(self, parent):
         super().__init__(
             parent, id=wx.ID_ANY, title="Export fit to EVE", pos=wx.DefaultPosition,
-            size=(wx.Size(350, 100)), style=wx.RESIZE_BORDER)
+            size=wx.Size(400, 120) if "wxGTK" in wx.PlatformInfo else wx.Size(350, 100), style=wx.RESIZE_BORDER)
 
         self.mainFrame = parent
         self.SetBackgroundColour(wx.SystemSettings.GetColour(wx.SYS_COLOUR_BTNFACE))
@@ -238,14 +243,12 @@ class ExportToEve(AuxiliaryFrame):
         sEsi = Esi.getInstance()
         chars = sEsi.getSsoCharacters()
 
-        if len(chars) == 0:
-            self.Close()
-
         self.charChoice.Clear()
         for char in chars:
             self.charChoice.Append(char.characterName, char.ID)
 
-        self.charChoice.SetSelection(0)
+        if len(chars) > 0:
+            self.charChoice.SetSelection(0)
 
     def kbEvent(self, event):
         keycode = event.GetKeyCode()
@@ -257,7 +260,7 @@ class ExportToEve(AuxiliaryFrame):
 
     def getActiveCharacter(self):
         selection = self.charChoice.GetCurrentSelection()
-        return self.charChoice.GetClientData(selection) if selection is not None else None
+        return self.charChoice.GetClientData(selection) if selection not in (None, -1) else None
 
     def exportFitting(self, event):
         sPort = Port.getInstance()
@@ -274,7 +277,13 @@ class ExportToEve(AuxiliaryFrame):
 
         sFit = Fit.getInstance()
         data = sPort.exportESI(sFit.getFit(fitID))
-        res = sEsi.postFitting(self.getActiveCharacter(), data)
+        activeChar = self.getActiveCharacter()
+        if activeChar is None:
+            msg = "Need at least one ESI character to export"
+            pyfalog.warning(msg)
+            self.statusbar.SetStatusText(msg, 1)
+            return
+        res = sEsi.postFitting(activeChar, data)
 
         try:
             res.raise_for_status()
