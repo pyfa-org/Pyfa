@@ -20,25 +20,24 @@
 # noinspection PyPackageRequirements
 import wx
 from logbook import Logger
-# noinspection PyPackageRequirements
-from wx.lib.intctrl import IntCtrl
 
 from gui.auxFrame import AuxiliaryFrame
 from gui.bitmap_loader import BitmapLoader
 from gui.builtinViews.entityEditor import BaseValidator, EntityEditor
 from gui.utils.clipboard import fromClipboard, toClipboard
+from gui.utils.inputs import FloatBox
 from service.damagePattern import DamagePattern, ImportError
 
 
 pyfalog = Logger(__name__)
 
 
-class DmgPatternTextValidor(BaseValidator):
+class DmgPatternNameValidator(BaseValidator):
     def __init__(self):
         BaseValidator.__init__(self)
 
     def Clone(self):
-        return DmgPatternTextValidor()
+        return DmgPatternNameValidator()
 
     def Validate(self, win):
         entityEditor = win.parent
@@ -62,7 +61,7 @@ class DmgPatternTextValidor(BaseValidator):
 class DmgPatternEntityEditor(EntityEditor):
     def __init__(self, parent):
         EntityEditor.__init__(self, parent, "Damage Profile")
-        self.SetEditorValidator(DmgPatternTextValidor)
+        self.SetEditorValidator(DmgPatternNameValidator)
 
     def getEntitiesFromContext(self):
         sDP = DamagePattern.getInstance()
@@ -134,18 +133,16 @@ class DmgPatternEditor(AuxiliaryFrame):
                 border = 5
 
             # set text edit
-            setattr(self, "%sEdit" % type_, IntCtrl(self, wx.ID_ANY, 0, wx.DefaultPosition, defSize))
-            setattr(self, "%sPerc" % type_, wx.StaticText(self, wx.ID_ANY, "0%"))
-            editObj = getattr(self, "%sEdit" % type_)
+            editBox = FloatBox(parent=self, id=wx.ID_ANY, value=0, pos=wx.DefaultPosition, size=defSize)
+            percLabel = wx.StaticText(self, wx.ID_ANY, "0%")
+            setattr(self, "%sEdit" % type_, editBox)
+            setattr(self, "%sPerc" % type_, percLabel)
 
             dmgeditSizer.Add(bmp, 0, style, border)
-            dmgeditSizer.Add(editObj, 0, wx.BOTTOM | wx.TOP | wx.ALIGN_CENTER_VERTICAL, 5)
-            dmgeditSizer.Add(getattr(self, "%sPerc" % type_), 0, wx.LEFT | wx.ALIGN_CENTER_VERTICAL, 5)
+            dmgeditSizer.Add(editBox, 0, wx.BOTTOM | wx.TOP | wx.ALIGN_CENTER_VERTICAL, 5)
+            dmgeditSizer.Add(percLabel, 0, wx.LEFT | wx.ALIGN_CENTER_VERTICAL, 5)
 
-            editObj.Bind(wx.EVT_TEXT, self.ValuesUpdated)
-            editObj.SetLimited(True)
-            editObj.SetMin(0)
-            editObj.SetMax(2000000)
+            editBox.Bind(wx.EVT_TEXT, self.OnFieldChanged)
 
         contentSizer.Add(dmgeditSizer, 1, wx.EXPAND | wx.ALL, 5)
         self.slfooter = wx.StaticLine(self)
@@ -196,17 +193,17 @@ class DmgPatternEditor(AuxiliaryFrame):
 
         self.patternChanged()
 
-    def ValuesUpdated(self, event=None):
+    def OnFieldChanged(self, event=None):
         if self.block:
             return
 
         p = self.entityEditor.getActiveEntity()
-        total = sum([getattr(self, "%sEdit" % attr).GetValue() for attr in self.DAMAGE_TYPES])
+        total = sum([getattr(self, "%sEdit" % attr).GetValueFloat() for attr in self.DAMAGE_TYPES])
         for type_ in self.DAMAGE_TYPES:
-            editObj = getattr(self, "%sEdit" % type_)
-            percObj = getattr(self, "%sPerc" % type_)
-            setattr(p, "%sAmount" % type_, editObj.GetValue())
-            percObj.SetLabel("%.1f%%" % (float(editObj.GetValue()) * 100 / total if total > 0 else 0))
+            editBox = getattr(self, "%sEdit" % type_)
+            percLabel = getattr(self, "%sPerc" % type_)
+            setattr(p, "%sAmount" % type_, editBox.GetValueFloat())
+            percLabel.SetLabel("%.1f%%" % (float(editBox.GetValueFloat()) * 100 / total if total > 0 else 0))
 
         self.totSizer.Layout()
 
@@ -245,10 +242,10 @@ class DmgPatternEditor(AuxiliaryFrame):
         for field in self.DAMAGE_TYPES:
             edit = getattr(self, "%sEdit" % field)
             amount = int(round(getattr(p, "%sAmount" % field)))
-            edit.SetValue(amount)
+            edit.ChangeValueFloat(amount)
 
         self.block = False
-        self.ValuesUpdated()
+        self.OnFieldChanged()
 
     def __del__(self):
         pass
