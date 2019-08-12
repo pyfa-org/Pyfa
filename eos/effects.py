@@ -28912,7 +28912,7 @@ class Effect6582(BaseEffect):
 
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Target Navigation Prediction'),
                                       'speed', src.getModifiedItemAttr('siegeHAWMissileROFBonus'),
-                                      stackingPenalties=True, **kwargs)
+                                      stackingPenalties=True, penaltyGroup='postPercent', **kwargs)
 
         fit.modules.filteredChargeBoost(lambda mod: mod.charge.requiresSkill('Torpedoes'),
                                         'maxVelocity', src.getModifiedItemAttr('siegeTorpedoVelocityBonus'),
