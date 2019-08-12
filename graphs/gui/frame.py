@@ -346,7 +346,7 @@ class GraphFrame(AuxiliaryFrame):
         legendLines = []
         for i, iData in enumerate(lineData):
             color, lineStyle, label = iData
-            legendLines.append(Line2D([0], [0], color=color, linestyle=lineStyle, label=label))
+            legendLines.append(Line2D([0], [0], color=color, linestyle=lineStyle, label=label.replace('$', '\$')))
 
         if len(legendLines) > 0 and self.ctrlPanel.showLegend:
             legend = self.subplot.legend(handles=legendLines)
