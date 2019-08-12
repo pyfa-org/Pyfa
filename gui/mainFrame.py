@@ -261,21 +261,42 @@ class MainFrame(wx.Frame):
         self.waitDialog = wx.BusyInfo("Loading previous fits...")
         OpenFitsThread(fits, self.closeWaitDialog)
 
+    def _getDisplayData(self):
+        displayData = []
+        for i in range(wx.Display.GetCount()):
+            display = wx.Display(i)
+            displayData.append(display.GetClientArea())
+        return displayData
+
     def LoadMainFrameAttribs(self):
-        mainFrameDefaultAttribs = {"wnd_width": 1000, "wnd_height": 700, "wnd_maximized": False, "browser_width": 300,
-                                   "market_height": 0, "fitting_height": -200}
-        self.mainFrameAttribs = SettingsProvider.getInstance().getSettings("pyfaMainWindowAttribs",
-                                                                           mainFrameDefaultAttribs)
+        mainFrameDefaultAttribs = {
+            "wnd_display": 0, "wnd_x": 0, "wnd_y": 0, "wnd_width": 1000, "wnd_height": 700, "wnd_maximized": False,
+            "browser_width": 300, "market_height": 0, "fitting_height": -200}
+        self.mainFrameAttribs = SettingsProvider.getInstance().getSettings(
+            "pyfaMainWindowAttribs", mainFrameDefaultAttribs)
+
+        wndDisplay = self.mainFrameAttribs["wnd_display"]
+        displayData = self._getDisplayData()
+        try:
+            selectedDisplayData = displayData[wndDisplay]
+        except IndexError:
+            selectedDisplayData = displayData[0]
+        dspX, dspY, dspW, dspH = selectedDisplayData
 
         if self.mainFrameAttribs["wnd_maximized"]:
-            width = mainFrameDefaultAttribs["wnd_width"]
-            height = mainFrameDefaultAttribs["wnd_height"]
+            wndW = mainFrameDefaultAttribs["wnd_width"]
+            wndH = mainFrameDefaultAttribs["wnd_height"]
+            wndX = min(mainFrameDefaultAttribs["wnd_x"], dspW * 0.75)
+            wndY = min(mainFrameDefaultAttribs["wnd_y"], dspH * 0.75)
             self.Maximize()
         else:
-            width = self.mainFrameAttribs["wnd_width"]
-            height = self.mainFrameAttribs["wnd_height"]
+            wndW = self.mainFrameAttribs["wnd_width"]
+            wndH = self.mainFrameAttribs["wnd_height"]
+            wndX = min(self.mainFrameAttribs["wnd_x"], dspW * 0.75)
+            wndY = min(self.mainFrameAttribs["wnd_y"], dspH * 0.75)
 
-        self.SetSize((width, height))
+        self.SetPosition((dspX + wndX, dspY + wndY))
+        self.SetSize((wndW, wndH))
         self.SetMinSize((mainFrameDefaultAttribs["wnd_width"], mainFrameDefaultAttribs["wnd_height"]))
 
         self.browserWidth = self.mainFrameAttribs["browser_width"]
@@ -285,10 +306,27 @@ class MainFrame(wx.Frame):
     def UpdateMainFrameAttribs(self):
         if self.IsIconized():
             return
-        width, height = self.GetSize()
 
-        self.mainFrameAttribs["wnd_width"] = width
-        self.mainFrameAttribs["wnd_height"] = height
+        wndGlobalX, wndGlobalY = self.GetPosition()
+        displayData = self._getDisplayData()
+        wndDisplay = 0
+        wndX = 0
+        wndY = 0
+        for i, (sdX, sdY, sdW, sdH) in enumerate(displayData):
+            wndRelX = wndGlobalX - sdX
+            wndRelY = wndGlobalY - sdY
+            if 0 <= wndRelX < sdW and 0 <= wndRelY < sdH:
+                wndDisplay = i
+                wndX = wndRelX
+                wndY = wndRelY
+                break
+        self.mainFrameAttribs["wnd_display"] = wndDisplay
+        self.mainFrameAttribs["wnd_x"] = wndX
+        self.mainFrameAttribs["wnd_y"] = wndY
+
+        wndW, wndH = self.GetSize()
+        self.mainFrameAttribs["wnd_width"] = wndW
+        self.mainFrameAttribs["wnd_height"] = wndH
         self.mainFrameAttribs["wnd_maximized"] = self.IsMaximized()
 
         self.mainFrameAttribs["browser_width"] = self.notebookBrowsers.GetSize()[0]
