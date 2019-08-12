@@ -50,8 +50,7 @@ DroneSplitStack.register()
 class DroneStackSplit(wx.Dialog):
 
     def __init__(self, parent, value):
-
-        wx.Dialog.__init__(self, parent, title="Split Drone Stack")
+        super().__init__(parent, title="Split Drone Stack", style=wx.DEFAULT_DIALOG_STYLE)
         self.SetMinSize((346, 156))
 
         bSizer1 = wx.BoxSizer(wx.VERTICAL)

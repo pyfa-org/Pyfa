@@ -890,7 +890,7 @@ class APIView(wx.Panel):
 class SecStatusDialog(wx.Dialog):
 
     def __init__(self, parent, sec):
-        wx.Dialog.__init__(self, parent, title="Set Security Status", size=(300, 175))
+        super().__init__(parent, title="Set Security Status", size=(300, 175), style=wx.DEFAULT_DIALOG_STYLE)
 
         self.SetSizeHints(wx.DefaultSize, wx.DefaultSize)
 

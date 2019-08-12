@@ -42,8 +42,7 @@ class CopySelectDialog(wx.Dialog):
     copyFormatEfs = 5
 
     def __init__(self, parent):
-        wx.Dialog.__init__(self, parent, id=wx.ID_ANY, title="Select a format", size=(-1, -1),
-                           style=wx.DEFAULT_DIALOG_STYLE)
+        super().__init__(parent, id=wx.ID_ANY, title="Select a format", size=(-1, -1), style=wx.DEFAULT_DIALOG_STYLE)
 
         self.CopySelectDict = {
             CopySelectDialog.copyFormatEft     : self.exportEft,

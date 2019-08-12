@@ -298,11 +298,12 @@ class ExportToEve(AuxiliaryFrame):
                 pyfalog.error(ex)
 
 
-class SsoCharacterMgmt(wx.Dialog):
+class SsoCharacterMgmt(AuxiliaryFrame):
 
     def __init__(self, parent):
-        wx.Dialog.__init__(self, parent, id=wx.ID_ANY, title="SSO Character Management", pos=wx.DefaultPosition,
-                           size=wx.Size(550, 250), style=wx.DEFAULT_DIALOG_STYLE)
+        super().__init__(
+            parent, id=wx.ID_ANY, title="SSO Character Management", pos=wx.DefaultPosition,
+            size=wx.Size(550, 250), style=wx.RESIZE_BORDER)
         self.mainFrame = parent
         mainSizer = wx.BoxSizer(wx.HORIZONTAL)
 
@@ -334,6 +335,7 @@ class SsoCharacterMgmt(wx.Dialog):
 
         self.SetSizer(mainSizer)
         self.Layout()
+        self.SetMinSize(self.GetSize())
 
         self.Centre(wx.BOTH)
 
@@ -351,7 +353,7 @@ class SsoCharacterMgmt(wx.Dialog):
 
     def OnClose(self, event):
         self.mainFrame.Unbind(GE.EVT_SSO_LOGIN, handler=self.ssoLogin)
-        self.Destroy()
+        event.Skip()
 
     def popCharList(self):
         sEsi = Esi.getInstance()

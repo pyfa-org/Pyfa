@@ -601,8 +601,7 @@ class MainFrame(wx.Frame):
             self.command.Submit(cmd.GuiToggleFittingRestrictionsCommand(fitID=fitID))
 
     def eveFittings(self, event):
-        dlg = EveFittings(self)
-        dlg.Show()
+        EveFittings.openOne(parent=self)
 
     def onSSOLogin(self, event):
         menu = self.GetMenuBar()
@@ -619,12 +618,10 @@ class MainFrame(wx.Frame):
         menu.Enable(menu.exportToEveId, not enable)
 
     def ssoHandler(self, event):
-        dlg = SsoCharacterMgmt(self)
-        dlg.Show()
+        SsoCharacterMgmt.openOne(parent=self)
 
     def exportToEve(self, event):
-        dlg = ExportToEve(self)
-        dlg.Show()
+        ExportToEve.openOne(parent=self)
 
     def toggleOverrides(self, event):
         ModifiedAttributeDict.overrides_enabled = not ModifiedAttributeDict.overrides_enabled

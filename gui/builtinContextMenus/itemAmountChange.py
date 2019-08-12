@@ -88,7 +88,7 @@ ChangeItemAmount.register()
 class AmountChanger(wx.Dialog):
 
     def __init__(self, parent, value, limits=None):
-        wx.Dialog.__init__(self, parent, title="Change Amount")
+        super().__init__(parent, title="Change Amount", style=wx.DEFAULT_DIALOG_STYLE)
         self.SetMinSize((346, 156))
 
         bSizer1 = wx.BoxSizer(wx.VERTICAL)

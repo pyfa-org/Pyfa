@@ -9,11 +9,13 @@ class SsoLogin(wx.Dialog):
     def __init__(self):
         mainFrame = gui.mainFrame.MainFrame.getInstance()
 
-        wx.Dialog.__init__(self, mainFrame, id=wx.ID_ANY, title="SSO Login", size=wx.Size(400, 240))
+        super().__init__(
+            mainFrame, id=wx.ID_ANY, title="SSO Login", style=wx.DEFAULT_DIALOG_STYLE,
+            size=wx.Size(450, 240) if "wxGTK" in wx.PlatformInfo else wx.Size(400, 240))
 
         bSizer1 = wx.BoxSizer(wx.VERTICAL)
 
-        text = wx.StaticText(self, wx.ID_ANY, "Copy and paste the block of text provided by pyfa.io, then click OK")
+        text = wx.StaticText(self, wx.ID_ANY, "Copy and paste the block of text provided by pyfa.io")
         bSizer1.Add(text, 0, wx.ALL | wx.EXPAND, 10)
 
         self.ssoInfoCtrl = wx.TextCtrl(self, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, (-1, -1), style=wx.TE_MULTILINE)
@@ -47,7 +49,7 @@ class SsoLogin(wx.Dialog):
 class SsoLoginServer(wx.Dialog):
     def __init__(self, port):
         mainFrame = gui.mainFrame.MainFrame.getInstance()
-        wx.Dialog.__init__(self, mainFrame, id=wx.ID_ANY, title="SSO Login", size=(-1, -1))
+        super().__init__(mainFrame, id=wx.ID_ANY, title="SSO Login", size=(-1, -1), style=wx.DEFAULT_DIALOG_STYLE)
 
         from service.esi import Esi
 

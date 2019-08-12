@@ -14,7 +14,7 @@ def fitSorter(fit):
 class FitBrowserLiteDialog(wx.Dialog):
 
     def __init__(self, parent, title='Add Fits', excludedFitIDs=()):
-        wx.Dialog.__init__(self, parent, title=title, style=wx.DEFAULT_DIALOG_STYLE)
+        super().__init__(parent, title=title, style=wx.DEFAULT_DIALOG_STYLE)
 
         listWidth = 250 if 'wxGTK' in wx.PlatformInfo else 200
 

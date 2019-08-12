@@ -91,8 +91,7 @@ class LoadAnimation(wx.Window):
 class WaitDialog(wx.Dialog):
 
     def __init__(self, parent, title="Processing"):
-        wx.Dialog.__init__(self, parent, id=wx.ID_ANY, title=title, size=(300, 30),
-                           style=wx.NO_BORDER)
+        super().__init__(parent, id=wx.ID_ANY, title=title, size=(300, 30), style=wx.NO_BORDER)
         mainSizer = wx.BoxSizer(wx.HORIZONTAL)
 
         self.progress = LoadAnimation(self, label=title, size=(300, 30))

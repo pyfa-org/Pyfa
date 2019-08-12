@@ -48,8 +48,9 @@ hr {{ border: #000 1px solid; }}
 class UpdateDialog(wx.Dialog):
 
     def __init__(self, parent, release, version):
-        wx.Dialog.__init__(self, parent, id=wx.ID_ANY, title="pyfa Update Available", pos=wx.DefaultPosition,
-                           size=wx.Size(550, 450), style=wx.DEFAULT_DIALOG_STYLE)
+        super().__init__(
+            parent, id=wx.ID_ANY, title="pyfa Update Available", pos=wx.DefaultPosition,
+            size=wx.Size(550, 450), style=wx.DEFAULT_DIALOG_STYLE)
 
         self.UpdateSettings = svc_UpdateSettings.getInstance()
         self.releaseInfo = release
