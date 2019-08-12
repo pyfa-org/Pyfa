@@ -27,6 +27,7 @@ from gui.builtinViews.entityEditor import BaseValidator, EntityEditor
 from gui.utils.clipboard import fromClipboard, toClipboard
 from gui.utils.inputs import FloatBox
 from service.damagePattern import DamagePattern, ImportError
+from service.fit import Fit
 
 
 pyfalog = Logger(__name__)
@@ -191,12 +192,21 @@ class DmgPatternEditor(AuxiliaryFrame):
         self.Bind(wx.EVT_CHOICE, self.patternChanged)
         self.Bind(wx.EVT_CHAR_HOOK, self.kbEvent)
 
+        self.inputTimer = wx.Timer(self)
+        self.Bind(wx.EVT_TIMER, self.OnInputTimer, self.inputTimer)
+
         self.patternChanged()
 
     def OnFieldChanged(self, event=None):
+        if event is not None:
+            event.Skip()
+        self.inputTimer.Stop()
+        self.inputTimer.Start(Fit.getInstance().serviceFittingOptions['marketSearchDelay'], True)
+
+    def OnInputTimer(self, event):
+        event.Skip()
         if self.block:
             return
-
         p = self.entityEditor.getActiveEntity()
         total = sum([getattr(self, "%sEdit" % attr).GetValueFloat() for attr in self.DAMAGE_TYPES])
         for type_ in self.DAMAGE_TYPES:
@@ -204,12 +214,7 @@ class DmgPatternEditor(AuxiliaryFrame):
             percLabel = getattr(self, "%sPerc" % type_)
             setattr(p, "%sAmount" % type_, editBox.GetValueFloat())
             percLabel.SetLabel("%.1f%%" % (float(editBox.GetValueFloat()) * 100 / total if total > 0 else 0))
-
         self.totSizer.Layout()
-
-        if event is not None:
-            event.Skip()
-
         DamagePattern.getInstance().saveChanges(p)
 
     def restrict(self):
