@@ -39,9 +39,7 @@ class ProjectedDataCache(FitDataCache):
             webMods = []
             tpMods = []
             projectedData = self._data.setdefault(src.item.ID, {})['modules'] = (webMods, tpMods)
-            for mod in src.item.modules:
-                if mod.state <= FittingModuleState.ONLINE:
-                    continue
+            for mod in src.item.activeModulesIter():
                 for webEffectName in ('remoteWebifierFalloff', 'structureModuleEffectStasisWebifier'):
                     if webEffectName in mod.item.effects:
                         webMods.append(ModProjData(
@@ -82,9 +80,7 @@ class ProjectedDataCache(FitDataCache):
             webDrones = []
             tpDrones = []
             projectedData = self._data.setdefault(src.item.ID, {})['drones'] = (webDrones, tpDrones)
-            for drone in src.item.drones:
-                if drone.amountActive <= 0:
-                    continue
+            for drone in src.item.activeDronesIter():
                 if 'remoteWebifierEntity' in drone.item.effects:
                     webDrones.extend(drone.amountActive * (MobileProjData(
                         drone.getModifiedItemAttr('speedFactor'),
@@ -113,19 +109,14 @@ class ProjectedDataCache(FitDataCache):
             webFighters = []
             tpFighters = []
             projectedData = self._data.setdefault(src.item.ID, {})['fighters'] = (webFighters, tpFighters)
-            for fighter in src.item.fighters:
-                if not fighter.active:
-                    continue
-                for ability in fighter.abilities:
-                    if not ability.active:
-                        continue
-                    if ability.effect.name == 'fighterAbilityStasisWebifier':
-                        webFighters.append(MobileProjData(
-                            fighter.getModifiedItemAttr('fighterAbilityStasisWebifierSpeedPenalty') * fighter.amountActive,
-                            fighter.getModifiedItemAttr('fighterAbilityStasisWebifierOptimalRange'),
-                            fighter.getModifiedItemAttr('fighterAbilityStasisWebifierFalloffRange'),
-                            'default',
-                            getResistanceAttrID(modifyingItem=fighter, effect=fighter.item.effects['fighterAbilityStasisWebifier']),
-                            fighter.getModifiedItemAttr('maxVelocity'),
-                            fighter.getModifiedItemAttr('radius')))
+            for fighter, ability in src.item.activeFighterAbilityIter():
+                if ability.effect.name == 'fighterAbilityStasisWebifier':
+                    webFighters.append(MobileProjData(
+                        fighter.getModifiedItemAttr('fighterAbilityStasisWebifierSpeedPenalty') * fighter.amountActive,
+                        fighter.getModifiedItemAttr('fighterAbilityStasisWebifierOptimalRange'),
+                        fighter.getModifiedItemAttr('fighterAbilityStasisWebifierFalloffRange'),
+                        'default',
+                        getResistanceAttrID(modifyingItem=fighter, effect=fighter.item.effects['fighterAbilityStasisWebifier']),
+                        fighter.getModifiedItemAttr('maxVelocity'),
+                        fighter.getModifiedItemAttr('radius')))
         return projectedData

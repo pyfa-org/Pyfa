@@ -31,38 +31,29 @@ class Distance2WebbingStrengthGetter(SmoothPointGetter):
     _extraDepth = 2
 
     def _getCommonData(self, miscParams, src, tgt):
-        resist = miscParams['resist'] or 0
+        resonance = 1 - (miscParams['resist'] or 0)
         webs = []
-        for mod in src.item.modules:
-            if mod.state <= FittingModuleState.ONLINE:
-                continue
+        for mod in src.item.activeModulesIter():
             for webEffectName in ('remoteWebifierFalloff', 'structureModuleEffectStasisWebifier'):
                 if webEffectName in mod.item.effects:
                     webs.append((
-                        mod.getModifiedItemAttr('speedFactor') * (1 - resist),
+                        mod.getModifiedItemAttr('speedFactor') * resonance,
                         mod.maxRange or 0, mod.falloff or 0, 'default'))
             if 'doomsdayAOEWeb' in mod.item.effects:
                 webs.append((
-                    mod.getModifiedItemAttr('speedFactor') * (1 - resist),
+                    mod.getModifiedItemAttr('speedFactor') * resonance,
                     max(0, (mod.maxRange or 0) + mod.getModifiedItemAttr('doomsdayAOERange') - src.getRadius()),
                     mod.falloff or 0, 'default'))
-        for drone in src.item.drones:
-            if drone.amountActive <= 0:
-                continue
+        for drone in src.item.activeDronesIter():
             if 'remoteWebifierEntity' in drone.item.effects:
                 webs.extend(drone.amountActive * ((
-                    drone.getModifiedItemAttr('speedFactor') * (1 - resist),
+                    drone.getModifiedItemAttr('speedFactor') * resonance,
                     src.item.extraAttributes['droneControlRange'], 0, 'default'),))
-        for fighter in src.item.fighters:
-            if not fighter.active:
-                continue
-            for ability in fighter.abilities:
-                if not ability.active:
-                    continue
-                if ability.effect.name == 'fighterAbilityStasisWebifier':
-                    webs.append((
-                        fighter.getModifiedItemAttr('fighterAbilityStasisWebifierSpeedPenalty') * fighter.amountActive * (1 - resist),
-                        math.inf, 0, 'default'))
+        for fighter, ability in src.item.activeFighterAbilityIter():
+            if ability.effect.name == 'fighterAbilityStasisWebifier':
+                webs.append((
+                    fighter.getModifiedItemAttr('fighterAbilityStasisWebifierSpeedPenalty') * fighter.amountActive * resonance,
+                    math.inf, 0, 'default'))
         return {'webs': webs}
 
     def _calculatePoint(self, x, miscParams, src, tgt, commonData):

@@ -39,3 +39,4 @@ class FitEwarStatsGraph(FitGraph):
         ('resist', '%'): lambda v, src, tgt: None if v is None else v / 100}
     _limiters = {'resist': lambda src, tgt: (0, 1)}
     _getters = {('distance', 'webStr'): Distance2WebbingStrengthGetter}
+    _denormalizers = {('distance', 'km'): lambda v, src, tgt: None if v is None else v / 1000}

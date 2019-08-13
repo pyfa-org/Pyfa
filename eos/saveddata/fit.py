@@ -1572,6 +1572,24 @@ class Fit:
             secstatus = FitSystemSecurity.NULLSEC
         return secstatus
 
+
+    def activeModulesIter(self):
+        for mod in self.modules:
+            if mod.state >= FittingModuleState.ACTIVE:
+                yield mod
+
+    def activeDronesIter(self):
+        for drone in self.drones:
+            if drone.amountActive > 0:
+                yield drone
+
+    def activeFighterAbilityIter(self):
+        for fighter in self.fighters:
+            if fighter.active:
+                for ability in fighter.abilities:
+                    if ability.active:
+                        yield fighter, ability
+
     def __deepcopy__(self, memo=None):
         fitCopy = Fit()
         # Character and owner are not copied
