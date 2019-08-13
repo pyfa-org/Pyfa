@@ -21,9 +21,9 @@
 import math
 
 from eos.utils.float import floatUnerr
+from graphs.calc import calculateRangeFactor
 from service.const import GraphDpsDroneMode
 from service.settings import GraphSettings
-from .application import _calcRangeFactor
 
 
 def getWebbedSpeed(src, tgt, currentUnwebbedSpeed, webMods, webDrones, webFighters, distance):
@@ -39,9 +39,9 @@ def getWebbedSpeed(src, tgt, currentUnwebbedSpeed, webMods, webDrones, webFighte
         appliedMultipliers = {}
         # Modules first, they are applied always the same way
         for wData in webMods:
-            appliedBoost = wData.boost * _calcRangeFactor(
-                atkOptimalRange=wData.optimal,
-                atkFalloffRange=wData.falloff,
+            appliedBoost = wData.boost * calculateRangeFactor(
+                srcOptimalRange=wData.optimal,
+                srcFalloffRange=wData.falloff,
                 distance=distance)
             if appliedBoost:
                 appliedMultipliers.setdefault(wData.stackingGroup, []).append((1 + appliedBoost / 100, wData.resAttrID))
@@ -79,9 +79,9 @@ def getWebbedSpeed(src, tgt, currentUnwebbedSpeed, webMods, webDrones, webFighte
                         rangeFactorDistance = None
                     else:
                         rangeFactorDistance = distance + atkRadius - mwData.radius
-                    appliedMwBoost = mwData.boost * _calcRangeFactor(
-                        atkOptimalRange=mwData.optimal,
-                        atkFalloffRange=mwData.falloff,
+                    appliedMwBoost = mwData.boost * calculateRangeFactor(
+                        srcOptimalRange=mwData.optimal,
+                        srcFalloffRange=mwData.falloff,
                         distance=rangeFactorDistance)
                 appliedMultipliers.setdefault(mwData.stackingGroup, []).append((1 + appliedMwBoost / 100, mwData.resAttrID))
                 mobileWebs.remove(mwData)
@@ -99,9 +99,9 @@ def getTpMult(src, tgt, tgtSpeed, tpMods, tpDrones, tpFighters, distance):
     # Modules
     appliedMultipliers = {}
     for tpData in tpMods:
-        appliedBoost = tpData.boost * _calcRangeFactor(
-            atkOptimalRange=tpData.optimal,
-            atkFalloffRange=tpData.falloff,
+        appliedBoost = tpData.boost * calculateRangeFactor(
+            srcOptimalRange=tpData.optimal,
+            srcFalloffRange=tpData.falloff,
             distance=distance)
         if appliedBoost:
             appliedMultipliers.setdefault(tpData.stackingGroup, []).append((1 + appliedBoost / 100, tpData.resAttrID))
@@ -123,9 +123,9 @@ def getTpMult(src, tgt, tgtSpeed, tpMods, tpDrones, tpFighters, distance):
                 rangeFactorDistance = None
             else:
                 rangeFactorDistance = distance + atkRadius - mtpData.radius
-            appliedMtpBoost = mtpData.boost * _calcRangeFactor(
-                atkOptimalRange=mtpData.optimal,
-                atkFalloffRange=mtpData.falloff,
+            appliedMtpBoost = mtpData.boost * calculateRangeFactor(
+                srcOptimalRange=mtpData.optimal,
+                srcFalloffRange=mtpData.falloff,
                 distance=rangeFactorDistance)
         appliedMultipliers.setdefault(mtpData.stackingGroup, []).append((1 + appliedMtpBoost / 100, mtpData.resAttrID))
     tpedSig = tgt.getSigRadius(extraMultipliers=appliedMultipliers)

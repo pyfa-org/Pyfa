@@ -23,6 +23,7 @@ from functools import lru_cache
 
 from eos.const import FittingHardpoint
 from eos.utils.float import floatUnerr
+from graphs.calc import calculateRangeFactor
 from service.const import GraphDpsDroneMode
 from service.settings import GraphSettings
 
@@ -256,9 +257,9 @@ def getFighterAbilityMult(fighter, ability, src, distance, tgtSpeed, tgtSigRadiu
             rangeFactorDistance = None
         else:
             rangeFactorDistance = distance + src.getRadius() - fighter.getModifiedItemAttr('radius')
-        rangeFactor = _calcRangeFactor(
-            atkOptimalRange=fighter.getModifiedItemAttr('{}RangeOptimal'.format(attrPrefix)) or fighter.getModifiedItemAttr('{}Range'.format(attrPrefix)),
-            atkFalloffRange=fighter.getModifiedItemAttr('{}RangeFalloff'.format(attrPrefix)),
+        rangeFactor = calculateRangeFactor(
+            srcOptimalRange=fighter.getModifiedItemAttr('{}RangeOptimal'.format(attrPrefix)) or fighter.getModifiedItemAttr('{}Range'.format(attrPrefix)),
+            srcFalloffRange=fighter.getModifiedItemAttr('{}RangeFalloff'.format(attrPrefix)),
             distance=rangeFactorDistance)
     drf = fighter.getModifiedItemAttr('{}ReductionFactor'.format(attrPrefix), None)
     if drf is None:
@@ -301,7 +302,7 @@ def _calcTurretChanceToHit(
     """Calculate chance to hit for turret-based weapons."""
     # https://wiki.eveuniversity.org/Turret_mechanics#Hit_Math
     angularSpeed = _calcAngularSpeed(atkSpeed, atkAngle, atkRadius, distance, tgtSpeed, tgtAngle, tgtRadius)
-    rangeFactor = _calcRangeFactor(atkOptimalRange, atkFalloffRange, distance)
+    rangeFactor = calculateRangeFactor(atkOptimalRange, atkFalloffRange, distance)
     trackingFactor = _calcTrackingFactor(atkTracking, atkOptimalSigRadius, angularSpeed, tgtSigRadius)
     cth = rangeFactor * trackingFactor
     return cth
@@ -350,19 +351,7 @@ def _calcAggregatedDrf(reductionFactor, reductionSensitivity):
     return math.log(reductionFactor) / math.log(reductionSensitivity)
 
 
-# Generic math
-def _calcRangeFactor(atkOptimalRange, atkFalloffRange, distance):
-    """Range strength/chance factor, applicable to guns, ewar, RRs, etc."""
-    if distance is None:
-        return 1
-    if atkFalloffRange > 0:
-        return 0.5 ** ((max(0, distance - atkOptimalRange) / atkFalloffRange) ** 2)
-    elif distance <= atkOptimalRange:
-        return 1
-    else:
-        return 0
-
-
+# Misc math
 def _calcBombFactor(atkEr, tgtSigRadius):
     if atkEr == 0:
         return 1

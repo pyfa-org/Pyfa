@@ -91,8 +91,7 @@ class FitDamageStatsGraph(FitGraph):
         ('atkSpeed', '%'): lambda v, src, tgt: v / 100 * src.getMaxVelocity(),
         ('tgtSpeed', '%'): lambda v, src, tgt: v / 100 * tgt.getMaxVelocity(),
         ('tgtSigRad', '%'): lambda v, src, tgt: v / 100 * tgt.getSigRadius()}
-    _limiters = {
-        'time': lambda src, tgt: (0, 2500)}
+    _limiters = {'time': lambda src, tgt: (0, 2500)}
     _getters = {
         ('distance', 'dps'): Distance2DpsGetter,
         ('distance', 'volley'): Distance2VolleyGetter,

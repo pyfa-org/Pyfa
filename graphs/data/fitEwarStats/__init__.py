@@ -18,10 +18,7 @@
 # =============================================================================
 
 
-from . import fitDamageStats
-from . import fitEwarStats
-from . import fitShieldRegen
-from . import fitCapRegen
-from . import fitMobility
-from . import fitWarpTime
-from . import fitLockTime
+from .graph import FitEwarStatsGraph
+
+
+FitEwarStatsGraph.register()
