@@ -258,7 +258,7 @@ class MainFrame(wx.Frame):
             self.fitMultiSwitch.AddPage()
             return
 
-        self.waitDialog = wx.BusyInfo("Loading previous fits...")
+        self.waitDialog = wx.BusyInfo("Loading previous fits...", parent=self)
         OpenFitsThread(fits, self.closeWaitDialog)
 
     def _getDisplayData(self):
@@ -778,7 +778,7 @@ class MainFrame(wx.Frame):
                 if '.' not in os.path.basename(filePath):
                     filePath += ".{0}".format(saveFmt)
 
-                self.waitDialog = wx.BusyInfo("Exporting skills needed...")
+                self.waitDialog = wx.BusyInfo("Exporting skills needed...", parent=self)
                 sCharacter.backupSkills(filePath, saveFmt, self.getActiveFit(), self.closeWaitDialog)
 
     def fileImportDialog(self, event):
@@ -960,7 +960,7 @@ class MainFrame(wx.Frame):
         ) as dlg:
             if dlg.ShowModal() == wx.ID_OK:
                 self.supress_left_up = True
-                self.waitDialog = wx.BusyInfo("Importing Character...")
+                self.waitDialog = wx.BusyInfo("Importing Character...", parent=self)
                 sCharacter = Character.getInstance()
                 sCharacter.importCharacter(dlg.GetPaths(), self.importCharacterCallback)
 
