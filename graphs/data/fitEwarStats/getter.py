@@ -20,12 +20,11 @@
 
 import math
 
-from eos.const import FittingModuleState
 from graphs.calc import calculateMultiplier, calculateRangeFactor
 from graphs.data.base import SmoothPointGetter
 
 
-class Distance2WebbingStrengthGetter(SmoothPointGetter):
+class Distance2WebbingStrGetter(SmoothPointGetter):
 
     _baseResolution = 50
     _extraDepth = 2
@@ -60,6 +59,43 @@ class Distance2WebbingStrengthGetter(SmoothPointGetter):
         distance = x
         strMults = {}
         for strength, optimal, falloff, stackingGroup in commonData['webs']:
+            strength *= calculateRangeFactor(srcOptimalRange=optimal, srcFalloffRange=falloff, distance=distance)
+            strMults.setdefault(stackingGroup, []).append((1 + strength / 100, None))
+        strMult = calculateMultiplier(strMults)
+        strength = (1 - strMult) * 100
+        return strength
+
+
+class Distance2DampStrLockRangeGetter(SmoothPointGetter):
+
+    _baseResolution = 50
+    _extraDepth = 2
+
+    def _getCommonData(self, miscParams, src, tgt):
+        resonance = 1 - (miscParams['resist'] or 0)
+        damps = []
+        for mod in src.item.activeModulesIter():
+            for dampEffectName in ('remoteSensorDampFalloff', 'structureModuleEffectRemoteSensorDampener'):
+                if dampEffectName in mod.item.effects:
+                    damps.append((
+                        mod.getModifiedItemAttr('maxTargetRangeBonus') * resonance,
+                        mod.maxRange or 0, mod.falloff or 0, 'default'))
+            if 'doomsdayAOEDamp' in mod.item.effects:
+                damps.append((
+                    mod.getModifiedItemAttr('maxTargetRangeBonus') * resonance,
+                    max(0, (mod.maxRange or 0) + mod.getModifiedItemAttr('doomsdayAOERange') - src.getRadius()),
+                    mod.falloff or 0, 'default'))
+        for drone in src.item.activeDronesIter():
+            if 'remoteSensorDampEntity' in drone.item.effects:
+                damps.extend(drone.amountActive * ((
+                    drone.getModifiedItemAttr('maxTargetRangeBonus') * resonance,
+                    src.item.extraAttributes['droneControlRange'], 0, 'default'),))
+        return {'damps': damps}
+
+    def _calculatePoint(self, x, miscParams, src, tgt, commonData):
+        distance = x
+        strMults = {}
+        for strength, optimal, falloff, stackingGroup in commonData['damps']:
             strength *= calculateRangeFactor(srcOptimalRange=optimal, srcFalloffRange=falloff, distance=distance)
             strMults.setdefault(stackingGroup, []).append((1 + strength / 100, None))
         strMult = calculateMultiplier(strMults)

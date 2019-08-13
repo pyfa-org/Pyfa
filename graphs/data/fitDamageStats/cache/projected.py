@@ -20,7 +20,6 @@
 
 from collections import namedtuple
 
-from eos.const import FittingModuleState
 from eos.modifiedAttributeDict import getResistanceAttrID
 from graphs.data.base import FitDataCache
 

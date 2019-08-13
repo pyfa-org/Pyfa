@@ -19,7 +19,7 @@
 
 
 from graphs.data.base import FitGraph, Input, XDef, YDef
-from .getter import Distance2WebbingStrengthGetter
+from .getter import Distance2WebbingStrGetter, Distance2DampStrLockRangeGetter
 
 
 class FitEwarStatsGraph(FitGraph):
@@ -28,7 +28,9 @@ class FitEwarStatsGraph(FitGraph):
     internalName = 'ewarStatsGraph'
     name = 'Electronic Warfare Stats'
     xDefs = [XDef(handle='distance', unit='km', label='Distance', mainInput=('distance', 'km'))]
-    yDefs = [YDef(handle='webStr', unit='%', label='Webbing strength')]
+    yDefs = [
+        YDef(handle='webStr', unit='%', label='Web speed reduction'),
+        YDef(handle='dampStrLockRange', unit='%', label='Damp lock range reduction')]
     inputs = [
         Input(handle='distance', unit='km', label='Distance', iconID=1391, defaultValue=None, defaultRange=(0, 100)),
         Input(handle='resist', unit='%', label='Target resistance', iconID=1393, defaultValue=0, defaultRange=(0, 100))]
@@ -38,5 +40,7 @@ class FitEwarStatsGraph(FitGraph):
         ('distance', 'km'): lambda v, src, tgt: None if v is None else v * 1000,
         ('resist', '%'): lambda v, src, tgt: None if v is None else v / 100}
     _limiters = {'resist': lambda src, tgt: (0, 1)}
-    _getters = {('distance', 'webStr'): Distance2WebbingStrengthGetter}
+    _getters = {
+        ('distance', 'webStr'): Distance2WebbingStrGetter,
+        ('distance', 'dampStrLockRange'): Distance2DampStrLockRangeGetter}
     _denormalizers = {('distance', 'km'): lambda v, src, tgt: None if v is None else v / 1000}
