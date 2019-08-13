@@ -31,7 +31,7 @@ class Distance2WebbingStrengthGetter(SmoothPointGetter):
     _extraDepth = 2
 
     def _getCommonData(self, miscParams, src, tgt):
-        resist = dict(miscParams)['resist'] or 0
+        resist = miscParams['resist'] or 0
         webs = []
         for mod in src.item.modules:
             if mod.state <= FittingModuleState.ONLINE:

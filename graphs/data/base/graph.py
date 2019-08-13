@@ -185,15 +185,14 @@ class FitGraph(metaclass=ABCMeta):
             mainParamRange = (mainInput.handle, tuple(normalizer(v, src, tgt) for v in mainInput.value))
         else:
             mainParamRange = (mainInput.handle, mainInput.value)
-        miscParams = []
+        miscParams = {}
         for miscInput in miscInputs:
             key = (miscInput.handle, miscInput.unit)
             if key in self._normalizers:
                 normalizer = self._normalizers[key]
-                miscParam = (miscInput.handle, normalizer(miscInput.value, src, tgt))
+                miscParams[miscInput.handle] = normalizer(miscInput.value, src, tgt)
             else:
-                miscParam = (miscInput.handle, miscInput.value)
-            miscParams.append(miscParam)
+                miscParams[miscInput.handle] = miscInput.value
         return mainParamRange, miscParams
 
     _limiters = {}
@@ -210,19 +209,13 @@ class FitGraph(metaclass=ABCMeta):
         mainHandle, mainValue = mainParamRange
         if mainHandle in self._limiters:
             limiter = self._limiters[mainHandle]
-            newMainParamRange = (mainHandle, tuple(limitToRange(v, limiter(src, tgt)) for v in mainValue))
-        else:
-            newMainParamRange = mainParamRange
-        newMiscParams = []
-        for miscParam in miscParams:
-            miscHandle, miscValue = miscParam
+            mainParamRange = (mainHandle, tuple(limitToRange(v, limiter(src, tgt)) for v in mainValue))
+        for miscHandle in miscParams:
             if miscHandle in self._limiters:
                 limiter = self._limiters[miscHandle]
-                newMiscParam = (miscHandle, limitToRange(miscValue, limiter(src, tgt)))
-                newMiscParams.append(newMiscParam)
-            else:
-                newMiscParams.append(miscParam)
-        return newMainParamRange, newMiscParams
+                miscValue = miscParams[miscHandle]
+                miscParams[miscHandle] = limitToRange(miscValue, limiter(src, tgt))
+        return mainParamRange, miscParams
 
     _getters = {}
 

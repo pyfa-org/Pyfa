@@ -135,21 +135,17 @@ class XDistanceMixin(SmoothPointGetter):
     _extraDepth = 2
 
     def _getCommonData(self, miscParams, src, tgt):
-        # Process params into more convenient form
-        miscParamMap = dict(miscParams)
         # Prepare time cache here because we need to do it only once,
         # and this function is called once per point info fetch
-        self._prepareTimeCache(src=src, maxTime=miscParamMap['time'])
+        self._prepareTimeCache(src=src, maxTime=miscParams['time'])
         return {
             'applyProjected': GraphSettings.getInstance().get('applyProjected'),
-            'miscParamMap': miscParamMap,
-            'dmgMap': self._getDamagePerKey(src=src, time=miscParamMap['time']),
+            'dmgMap': self._getDamagePerKey(src=src, time=miscParams['time']),
             'tgtResists': tgt.getResists()}
 
     def _calculatePoint(self, x, miscParams, src, tgt, commonData):
         distance = x
-        miscParamMap = commonData['miscParamMap']
-        tgtSpeed = miscParamMap['tgtSpeed']
+        tgtSpeed = miscParams['tgtSpeed']
         tgtSigRadius = tgt.getSigRadius()
         if commonData['applyProjected']:
             webMods, tpMods = self.graph._projectedCache.getProjModData(src)
@@ -174,11 +170,11 @@ class XDistanceMixin(SmoothPointGetter):
         applicationMap = getApplicationPerKey(
             src=src,
             tgt=tgt,
-            atkSpeed=miscParamMap['atkSpeed'],
-            atkAngle=miscParamMap['atkAngle'],
+            atkSpeed=miscParams['atkSpeed'],
+            atkAngle=miscParams['atkAngle'],
             distance=distance,
             tgtSpeed=tgtSpeed,
-            tgtAngle=miscParamMap['tgtAngle'],
+            tgtAngle=miscParams['tgtAngle'],
             tgtSigRadius=tgtSigRadius)
         y = applyDamage(
             dmgMap=commonData['dmgMap'],
@@ -190,9 +186,7 @@ class XDistanceMixin(SmoothPointGetter):
 class XTimeMixin(PointGetter):
 
     def _prepareApplicationMap(self, miscParams, src, tgt):
-        # Process params into more convenient form
-        miscParamMap = dict(miscParams)
-        tgtSpeed = miscParamMap['tgtSpeed']
+        tgtSpeed = miscParams['tgtSpeed']
         tgtSigRadius = tgt.getSigRadius()
         if GraphSettings.getInstance().get('applyProjected'):
             webMods, tpMods = self.graph._projectedCache.getProjModData(src)
@@ -205,7 +199,7 @@ class XTimeMixin(PointGetter):
                 webMods=webMods,
                 webDrones=webDrones,
                 webFighters=webFighters,
-                distance=miscParamMap['distance'])
+                distance=miscParams['distance'])
             tgtSigRadius = tgtSigRadius * getTpMult(
                 src=src,
                 tgt=tgt,
@@ -213,16 +207,16 @@ class XTimeMixin(PointGetter):
                 tpMods=tpMods,
                 tpDrones=tpDrones,
                 tpFighters=tpFighters,
-                distance=miscParamMap['distance'])
+                distance=miscParams['distance'])
         # Get all data we need for all times into maps/caches
         applicationMap = getApplicationPerKey(
             src=src,
             tgt=tgt,
-            atkSpeed=miscParamMap['atkSpeed'],
-            atkAngle=miscParamMap['atkAngle'],
-            distance=miscParamMap['distance'],
+            atkSpeed=miscParams['atkSpeed'],
+            atkAngle=miscParams['atkAngle'],
+            distance=miscParams['distance'],
             tgtSpeed=tgtSpeed,
-            tgtAngle=miscParamMap['tgtAngle'],
+            tgtAngle=miscParams['tgtAngle'],
             tgtSigRadius=tgtSigRadius)
         return applicationMap
 
@@ -297,20 +291,16 @@ class XTgtSpeedMixin(SmoothPointGetter):
     _extraDepth = 2
 
     def _getCommonData(self, miscParams, src, tgt):
-        # Process params into more convenient form
-        miscParamMap = dict(miscParams)
         # Prepare time cache here because we need to do it only once,
         # and this function is called once per point info fetch
-        self._prepareTimeCache(src=src, maxTime=miscParamMap['time'])
+        self._prepareTimeCache(src=src, maxTime=miscParams['time'])
         return {
             'applyProjected': GraphSettings.getInstance().get('applyProjected'),
-            'miscParamMap': miscParamMap,
-            'dmgMap': self._getDamagePerKey(src=src, time=miscParamMap['time']),
+            'dmgMap': self._getDamagePerKey(src=src, time=miscParams['time']),
             'tgtResists': tgt.getResists()}
 
     def _calculatePoint(self, x, miscParams, src, tgt, commonData):
         tgtSpeed = x
-        miscParamMap = commonData['miscParamMap']
         tgtSigRadius = tgt.getSigRadius()
         if commonData['applyProjected']:
             webMods, tpMods = self.graph._projectedCache.getProjModData(src)
@@ -323,7 +313,7 @@ class XTgtSpeedMixin(SmoothPointGetter):
                 webMods=webMods,
                 webDrones=webDrones,
                 webFighters=webFighters,
-                distance=miscParamMap['distance'])
+                distance=miscParams['distance'])
             tgtSigRadius = tgtSigRadius * getTpMult(
                 src=src,
                 tgt=tgt,
@@ -331,15 +321,15 @@ class XTgtSpeedMixin(SmoothPointGetter):
                 tpMods=tpMods,
                 tpDrones=tpDrones,
                 tpFighters=tpFighters,
-                distance=miscParamMap['distance'])
+                distance=miscParams['distance'])
         applicationMap = getApplicationPerKey(
             src=src,
             tgt=tgt,
-            atkSpeed=miscParamMap['atkSpeed'],
-            atkAngle=miscParamMap['atkAngle'],
-            distance=miscParamMap['distance'],
+            atkSpeed=miscParams['atkSpeed'],
+            atkAngle=miscParams['atkAngle'],
+            distance=miscParams['distance'],
             tgtSpeed=tgtSpeed,
-            tgtAngle=miscParamMap['tgtAngle'],
+            tgtAngle=miscParams['tgtAngle'],
             tgtSigRadius=tgtSigRadius)
         y = applyDamage(
             dmgMap=commonData['dmgMap'],
@@ -354,9 +344,7 @@ class XTgtSigRadiusMixin(SmoothPointGetter):
     _extraDepth = 2
 
     def _getCommonData(self, miscParams, src, tgt):
-        # Process params into more convenient form
-        miscParamMap = dict(miscParams)
-        tgtSpeed = miscParamMap['tgtSpeed']
+        tgtSpeed = miscParams['tgtSpeed']
         tgtSigMult = 1
         if GraphSettings.getInstance().get('applyProjected'):
             webMods, tpMods = self.graph._projectedCache.getProjModData(src)
@@ -369,7 +357,7 @@ class XTgtSigRadiusMixin(SmoothPointGetter):
                 webMods=webMods,
                 webDrones=webDrones,
                 webFighters=webFighters,
-                distance=miscParamMap['distance'])
+                distance=miscParams['distance'])
             tgtSigMult = getTpMult(
                 src=src,
                 tgt=tgt,
@@ -377,28 +365,26 @@ class XTgtSigRadiusMixin(SmoothPointGetter):
                 tpMods=tpMods,
                 tpDrones=tpDrones,
                 tpFighters=tpFighters,
-                distance=miscParamMap['distance'])
+                distance=miscParams['distance'])
         # Prepare time cache here because we need to do it only once,
         # and this function is called once per point info fetch
-        self._prepareTimeCache(src=src, maxTime=miscParamMap['time'])
+        self._prepareTimeCache(src=src, maxTime=miscParams['time'])
         return {
-            'miscParamMap': miscParamMap,
             'tgtSpeed': tgtSpeed,
             'tgtSigMult': tgtSigMult,
-            'dmgMap': self._getDamagePerKey(src=src, time=miscParamMap['time']),
+            'dmgMap': self._getDamagePerKey(src=src, time=miscParams['time']),
             'tgtResists': tgt.getResists()}
 
     def _calculatePoint(self, x, miscParams, src, tgt, commonData):
         tgtSigRadius = x
-        miscParamMap = commonData['miscParamMap']
         applicationMap = getApplicationPerKey(
             src=src,
             tgt=tgt,
-            atkSpeed=miscParamMap['atkSpeed'],
-            atkAngle=miscParamMap['atkAngle'],
-            distance=miscParamMap['distance'],
+            atkSpeed=miscParams['atkSpeed'],
+            atkAngle=miscParams['atkAngle'],
+            distance=miscParams['distance'],
             tgtSpeed=commonData['tgtSpeed'],
-            tgtAngle=miscParamMap['tgtAngle'],
+            tgtAngle=miscParams['tgtAngle'],
             tgtSigRadius=tgtSigRadius * commonData['tgtSigMult'])
         y = applyDamage(
             dmgMap=commonData['dmgMap'],
