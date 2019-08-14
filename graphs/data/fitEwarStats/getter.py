@@ -24,6 +24,53 @@ from graphs.calc import calculateMultiplier, calculateRangeFactor
 from graphs.data.base import SmoothPointGetter
 
 
+class Distance2NeutingStrGetter(SmoothPointGetter):
+
+    _baseResolution = 50
+    _extraDepth = 2
+
+    def _getCommonData(self, miscParams, src, tgt):
+        resonance = 1 - (miscParams['resist'] or 0)
+        neuts = []
+        for mod in src.item.activeModulesIter():
+            for effectName in ('energyNeutralizerFalloff', 'structureEnergyNeutralizerFalloff'):
+                if effectName in mod.item.effects:
+                    neuts.append((
+                        mod.getModifiedItemAttr('energyNeutralizerAmount') / self.__getDuration(mod) * resonance,
+                        mod.maxRange or 0, mod.falloff or 0))
+            if 'energyNosferatuFalloff' in mod.item.effects and mod.getModifiedItemAttr('nosOverride'):
+                neuts.append((
+                    mod.getModifiedItemAttr('powerTransferAmount') / self.__getDuration(mod) * resonance,
+                    mod.maxRange or 0, mod.falloff or 0))
+            if 'doomsdayAOENeut' in mod.item.effects:
+                neuts.append((
+                    mod.getModifiedItemAttr('energyNeutralizerAmount') / self.__getDuration(mod) * resonance,
+                    max(0, (mod.maxRange or 0) + mod.getModifiedItemAttr('doomsdayAOERange') - src.getRadius()),
+                    mod.falloff or 0))
+        for drone in src.item.activeDronesIter():
+            if 'entityEnergyNeutralizerFalloff' in drone.item.effects:
+                neuts.extend(drone.amountActive * ((
+                    drone.getModifiedItemAttr('energyNeutralizerAmount') / (drone.getModifiedItemAttr('energyNeutralizerDuration') / 1000) * resonance,
+                    src.item.extraAttributes['droneControlRange'], 0),))
+        for fighter, ability in src.item.activeFighterAbilityIter():
+            if ability.effect.name == 'fighterAbilityEnergyNeutralizer':
+                nps = fighter.getModifiedItemAttr('fighterAbilityEnergyNeutralizerAmount') / (ability.cycleTime / 1000)
+                neuts.append((
+                    nps * fighter.amountActive * resonance,
+                    math.inf, 0))
+        return {'neuts': neuts}
+
+    def _calculatePoint(self, x, miscParams, src, tgt, commonData):
+        distance = x
+        combinedStr = 0
+        for strength, optimal, falloff in commonData['neuts']:
+            combinedStr += strength * calculateRangeFactor(srcOptimalRange=optimal, srcFalloffRange=falloff, distance=distance)
+        return combinedStr
+
+    def __getDuration(self, mod):
+        return getattr(mod.getCycleParameters(), 'averageTime', math.inf) / 1000
+
+
 class Distance2WebbingStrGetter(SmoothPointGetter):
 
     _baseResolution = 50
@@ -82,28 +129,28 @@ class Distance2EcmStrMaxGetter(SmoothPointGetter):
                 if effectName in mod.item.effects:
                     ecms.append((
                         max(mod.getModifiedItemAttr(a) for a in self.ECM_ATTRS_GENERAL) * resonance,
-                        mod.maxRange or 0, mod.falloff or 0, 'default'))
+                        mod.maxRange or 0, mod.falloff or 0))
             if 'doomsdayAOEECM' in mod.item.effects:
                 ecms.append((
                     max(mod.getModifiedItemAttr(a) for a in self.ECM_ATTRS_GENERAL) * resonance,
                     max(0, (mod.maxRange or 0) + mod.getModifiedItemAttr('doomsdayAOERange') - src.getRadius()),
-                    mod.falloff or 0, 'default'))
+                    mod.falloff or 0))
         for drone in src.item.activeDronesIter():
             if 'entityECMFalloff' in drone.item.effects:
                 ecms.extend(drone.amountActive * ((
                     max(drone.getModifiedItemAttr(a) for a in self.ECM_ATTRS_GENERAL) * resonance,
-                    src.item.extraAttributes['droneControlRange'], 0, 'default'),))
+                    src.item.extraAttributes['droneControlRange'], 0),))
         for fighter, ability in src.item.activeFighterAbilityIter():
             if ability.effect.name == 'fighterAbilityECM':
                 ecms.append((
                     max(fighter.getModifiedItemAttr(a) for a in self.ECM_ATTRS_FIGHTERS) * fighter.amountActive * resonance,
-                    math.inf, 0, 'default'))
+                    math.inf, 0))
         return {'ecms': ecms}
 
     def _calculatePoint(self, x, miscParams, src, tgt, commonData):
         distance = x
         combinedStr = 0
-        for strength, optimal, falloff, stackingGroup in commonData['ecms']:
+        for strength, optimal, falloff in commonData['ecms']:
             combinedStr += strength * calculateRangeFactor(srcOptimalRange=optimal, srcFalloffRange=falloff, distance=distance)
         return combinedStr
 

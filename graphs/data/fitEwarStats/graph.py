@@ -20,8 +20,9 @@
 
 from graphs.data.base import FitGraph, Input, XDef, YDef
 from .getter import (
-    Distance2WebbingStrGetter, Distance2EcmStrMaxGetter, Distance2DampStrLockRangeGetter,
-    Distance2TdStrOptimalGetter, Distance2GdStrRangeGetter, Distance2TpStrGetter)
+    Distance2NeutingStrGetter, Distance2WebbingStrGetter, Distance2EcmStrMaxGetter,
+    Distance2DampStrLockRangeGetter, Distance2TdStrOptimalGetter, Distance2GdStrRangeGetter,
+    Distance2TpStrGetter)
 
 
 class FitEwarStatsGraph(FitGraph):
@@ -31,6 +32,7 @@ class FitEwarStatsGraph(FitGraph):
     name = 'Electronic Warfare Stats'
     xDefs = [XDef(handle='distance', unit='km', label='Distance', mainInput=('distance', 'km'))]
     yDefs = [
+        YDef(handle='neutStr', unit=None, label='Cap neutralized per second', selectorLabel='Neuts: cap per second'),
         YDef(handle='webStr', unit='%', label='Speed reduction', selectorLabel='Webs: speed reduction'),
         YDef(handle='ecmStrMax', unit=None, label='Combined ECM strength', selectorLabel='ECM: combined strength'),
         YDef(handle='dampStrLockRange', unit='%', label='Lock range reduction', selectorLabel='Damps: lock range reduction'),
@@ -47,6 +49,7 @@ class FitEwarStatsGraph(FitGraph):
         ('resist', '%'): lambda v, src, tgt: None if v is None else v / 100}
     _limiters = {'resist': lambda src, tgt: (0, 1)}
     _getters = {
+        ('distance', 'neutStr'): Distance2NeutingStrGetter,
         ('distance', 'webStr'): Distance2WebbingStrGetter,
         ('distance', 'ecmStrMax'): Distance2EcmStrMaxGetter,
         ('distance', 'dampStrLockRange'): Distance2DampStrLockRangeGetter,

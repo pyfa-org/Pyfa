@@ -22599,6 +22599,29 @@ class Effect5853(BaseEffect):
                                skill='Expedition Frigates', **kwargs)
 
 
+class Effect5854(BaseEffect):
+    """
+    shipBonusNosferatuOverride
+
+    Used by:
+    Ship: Ashimmu
+    Ship: Bhaalgorn
+    Ship: Caedes
+    Ship: Chemosh
+    Ship: Cruor
+    Ship: Dagon
+    Ship: Molok
+    Ship: Rabisu
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context, **kwargs):
+        fit.modules.filteredItemForce(lambda mod: mod.item.group.name == 'Energy Nosferatu',
+                                      'nosOverride', ship.getModifiedItemAttr('nosOverride'), **kwargs)
+
+
 class Effect5862(BaseEffect):
     """
     shipMissileEMDamageCB
