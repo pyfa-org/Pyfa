@@ -177,3 +177,40 @@ class Distance2GdStrRangeGetter(SmoothPointGetter):
         timeStrMult = calculateMultiplier(timeStrMults)
         strength = (1 - velocityStrMult * timeStrMult) * 100
         return strength
+
+
+class Distance2TpStrGetter(SmoothPointGetter):
+
+    _baseResolution = 50
+    _extraDepth = 2
+
+    def _getCommonData(self, miscParams, src, tgt):
+        resonance = 1 - (miscParams['resist'] or 0)
+        tps = []
+        for mod in src.item.activeModulesIter():
+            for effectName in ('remoteTargetPaintFalloff', 'structureModuleEffectTargetPainter'):
+                if effectName in mod.item.effects:
+                    tps.append((
+                        mod.getModifiedItemAttr('signatureRadiusBonus') * resonance,
+                        mod.maxRange or 0, mod.falloff or 0, 'default'))
+            if 'doomsdayAOEPaint' in mod.item.effects:
+                tps.append((
+                    mod.getModifiedItemAttr('signatureRadiusBonus') * resonance,
+                    max(0, (mod.maxRange or 0) + mod.getModifiedItemAttr('doomsdayAOERange') - src.getRadius()),
+                    mod.falloff or 0, 'default'))
+        for drone in src.item.activeDronesIter():
+            if 'remoteTargetPaintEntity' in drone.item.effects:
+                tps.extend(drone.amountActive * ((
+                    drone.getModifiedItemAttr('signatureRadiusBonus') * resonance,
+                    src.item.extraAttributes['droneControlRange'], 0, 'default'),))
+        return {'tps': tps}
+
+    def _calculatePoint(self, x, miscParams, src, tgt, commonData):
+        distance = x
+        strMults = {}
+        for strength, optimal, falloff, stackingGroup in commonData['tps']:
+            strength *= calculateRangeFactor(srcOptimalRange=optimal, srcFalloffRange=falloff, distance=distance)
+            strMults.setdefault(stackingGroup, []).append((1 + strength / 100, None))
+        strMult = calculateMultiplier(strMults)
+        strength = (strMult - 1) * 100
+        return strength
