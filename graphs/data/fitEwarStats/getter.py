@@ -33,8 +33,8 @@ class Distance2WebbingStrGetter(SmoothPointGetter):
         resonance = 1 - (miscParams['resist'] or 0)
         webs = []
         for mod in src.item.activeModulesIter():
-            for webEffectName in ('remoteWebifierFalloff', 'structureModuleEffectStasisWebifier'):
-                if webEffectName in mod.item.effects:
+            for effectName in ('remoteWebifierFalloff', 'structureModuleEffectStasisWebifier'):
+                if effectName in mod.item.effects:
                     webs.append((
                         mod.getModifiedItemAttr('speedFactor') * resonance,
                         mod.maxRange or 0, mod.falloff or 0, 'default'))
@@ -75,8 +75,8 @@ class Distance2DampStrLockRangeGetter(SmoothPointGetter):
         resonance = 1 - (miscParams['resist'] or 0)
         damps = []
         for mod in src.item.activeModulesIter():
-            for dampEffectName in ('remoteSensorDampFalloff', 'structureModuleEffectRemoteSensorDampener'):
-                if dampEffectName in mod.item.effects:
+            for effectName in ('remoteSensorDampFalloff', 'structureModuleEffectRemoteSensorDampener'):
+                if effectName in mod.item.effects:
                     damps.append((
                         mod.getModifiedItemAttr('maxTargetRangeBonus') * resonance,
                         mod.maxRange or 0, mod.falloff or 0, 'default'))
@@ -96,6 +96,43 @@ class Distance2DampStrLockRangeGetter(SmoothPointGetter):
         distance = x
         strMults = {}
         for strength, optimal, falloff, stackingGroup in commonData['damps']:
+            strength *= calculateRangeFactor(srcOptimalRange=optimal, srcFalloffRange=falloff, distance=distance)
+            strMults.setdefault(stackingGroup, []).append((1 + strength / 100, None))
+        strMult = calculateMultiplier(strMults)
+        strength = (1 - strMult) * 100
+        return strength
+
+
+class Distance2TdStrOptimalGetter(SmoothPointGetter):
+
+    _baseResolution = 50
+    _extraDepth = 2
+
+    def _getCommonData(self, miscParams, src, tgt):
+        resonance = 1 - (miscParams['resist'] or 0)
+        tds = []
+        for mod in src.item.activeModulesIter():
+            for effectName in ('shipModuleTrackingDisruptor', 'structureModuleEffectWeaponDisruption'):
+                if effectName in mod.item.effects:
+                    tds.append((
+                        mod.getModifiedItemAttr('maxRangeBonus') * resonance,
+                        mod.maxRange or 0, mod.falloff or 0, 'default'))
+            if 'doomsdayAOETrack' in mod.item.effects:
+                tds.append((
+                    mod.getModifiedItemAttr('maxRangeBonus') * resonance,
+                    max(0, (mod.maxRange or 0) + mod.getModifiedItemAttr('doomsdayAOERange') - src.getRadius()),
+                    mod.falloff or 0, 'default'))
+        for drone in src.item.activeDronesIter():
+            if 'npcEntityWeaponDisruptor' in drone.item.effects:
+                tds.extend(drone.amountActive * ((
+                    drone.getModifiedItemAttr('maxRangeBonus') * resonance,
+                    src.item.extraAttributes['droneControlRange'], 0, 'default'),))
+        return {'tds': tds}
+
+    def _calculatePoint(self, x, miscParams, src, tgt, commonData):
+        distance = x
+        strMults = {}
+        for strength, optimal, falloff, stackingGroup in commonData['tds']:
             strength *= calculateRangeFactor(srcOptimalRange=optimal, srcFalloffRange=falloff, distance=distance)
             strMults.setdefault(stackingGroup, []).append((1 + strength / 100, None))
         strMult = calculateMultiplier(strMults)

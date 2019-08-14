@@ -19,7 +19,7 @@
 
 
 from graphs.data.base import FitGraph, Input, XDef, YDef
-from .getter import Distance2WebbingStrGetter, Distance2DampStrLockRangeGetter
+from .getter import Distance2WebbingStrGetter, Distance2DampStrLockRangeGetter, Distance2TdStrOptimalGetter
 
 
 class FitEwarStatsGraph(FitGraph):
@@ -30,7 +30,8 @@ class FitEwarStatsGraph(FitGraph):
     xDefs = [XDef(handle='distance', unit='km', label='Distance', mainInput=('distance', 'km'))]
     yDefs = [
         YDef(handle='webStr', unit='%', label='Speed reduction', selectorLabel='Webs: speed reduction'),
-        YDef(handle='dampStrLockRange', unit='%', label='Lock range reduction', selectorLabel='Damps: lock range reduction')]
+        YDef(handle='dampStrLockRange', unit='%', label='Lock range reduction', selectorLabel='Damps: lock range reduction'),
+        YDef(handle='tdStrOptimal', unit='%', label='Optimal range reduction', selectorLabel='TDs: optimal range reduction')]
     inputs = [
         Input(handle='distance', unit='km', label='Distance', iconID=1391, defaultValue=None, defaultRange=(0, 100)),
         Input(handle='resist', unit='%', label='Target resistance', iconID=1393, defaultValue=0, defaultRange=(0, 100))]
@@ -42,5 +43,6 @@ class FitEwarStatsGraph(FitGraph):
     _limiters = {'resist': lambda src, tgt: (0, 1)}
     _getters = {
         ('distance', 'webStr'): Distance2WebbingStrGetter,
-        ('distance', 'dampStrLockRange'): Distance2DampStrLockRangeGetter}
+        ('distance', 'dampStrLockRange'): Distance2DampStrLockRangeGetter,
+        ('distance', 'tdStrOptimal'): Distance2TdStrOptimalGetter}
     _denormalizers = {('distance', 'km'): lambda v, src, tgt: None if v is None else v / 1000}
