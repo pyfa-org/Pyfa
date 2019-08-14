@@ -36,7 +36,7 @@ from gui.auxFrame import AuxiliaryFrame
 from gui.bitmap_loader import BitmapLoader
 from service.const import GraphCacheCleanupReason
 from service.settings import GraphSettings
-from .panel import GraphControlPanel
+from .ctrlPanel import GraphControlPanel
 
 
 pyfalog = Logger(__name__)
