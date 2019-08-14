@@ -136,11 +136,11 @@ class GraphControlPanel(wx.Panel):
         self.ySubSelection.Clear()
         self.xSubSelection.Clear()
         for yDef in view.yDefs:
-            self.ySubSelection.Append(self.formatLabel(yDef), yDef)
+            self.ySubSelection.Append(self.formatLabel(yDef, selector=True), yDef)
         self.ySubSelection.SetSelection(0)
         self.ySubSelection.Enable(len(view.yDefs) > 1)
         for xDef in view.xDefs:
-            self.xSubSelection.Append(self.formatLabel(xDef), xDef)
+            self.xSubSelection.Append(self.formatLabel(xDef, selector=True), xDef)
         self.xSubSelection.SetSelection(0)
         self.xSubSelection.Enable(len(view.xDefs) > 1)
 
@@ -261,7 +261,7 @@ class GraphControlPanel(wx.Panel):
         view = self.graphFrame.getView()
         self.ySubSelection.Clear()
         for yDef in view.yDefs:
-            self.ySubSelection.Append(self.formatLabel(yDef), yDef)
+            self.ySubSelection.Append(self.formatLabel(yDef, selector=True), yDef)
         self.ySubSelection.SetSelection(selectedY)
 
     def refreshColumns(self, layout=True):
@@ -387,10 +387,11 @@ class GraphControlPanel(wx.Panel):
     def OnResistModeChanged(self, event):
         self.targetList.OnResistModeChanged(event)
 
-    def formatLabel(self, axisDef):
+    def formatLabel(self, axisDef, selector=False):
+        label = axisDef.selectorLabel if selector else axisDef.label
         if axisDef.unit is None:
-            return axisDef.label
-        return '{}, {}'.format(axisDef.label, axisDef.unit)
+            return label
+        return '{}, {}'.format(label, axisDef.unit)
 
     def _storeCurrentValues(self):
         main, misc = self.getValues()

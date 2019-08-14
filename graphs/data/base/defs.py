@@ -21,9 +21,63 @@
 from collections import namedtuple
 
 
-YDef = namedtuple('YDef', ('handle', 'unit', 'label'))
-XDef = namedtuple('XDef', ('handle', 'unit', 'label', 'mainInput'))
 VectorDef = namedtuple('VectorDef', ('lengthHandle', 'lengthUnit', 'angleHandle', 'angleUnit', 'label'))
+
+
+class YDef:
+
+    def __init__(self, handle, unit, label, selectorLabel=None):
+        self.handle = handle
+        self.unit = unit
+        self.label = label
+        self._selectorLabel = selectorLabel
+
+    @property
+    def selectorLabel(self):
+        if self._selectorLabel is not None:
+            return self._selectorLabel
+        return self.label
+
+    def __hash__(self):
+        return hash((self.handle, self.unit, self.label, self._selectorLabel))
+
+    def __eq__(self, other):
+        if not isinstance(other, YDef):
+            return False
+        return all((
+            self.handle == other.handle,
+            self.unit == other.unit,
+            self.label == other.label,
+            self._selectorLabel == other._selectorLabel))
+
+
+class XDef:
+
+    def __init__(self, handle, unit, label, mainInput, selectorLabel=None):
+        self.handle = handle
+        self.unit = unit
+        self.label = label
+        self.mainInput = mainInput
+        self._selectorLabel = selectorLabel
+
+    @property
+    def selectorLabel(self):
+        if self._selectorLabel is not None:
+            return self._selectorLabel
+        return self.label
+
+    def __hash__(self):
+        return hash((self.handle, self.unit, self.label, self.mainInput, self._selectorLabel))
+
+    def __eq__(self, other):
+        if not isinstance(other, XDef):
+            return False
+        return all((
+            self.handle == other.handle,
+            self.unit == other.unit,
+            self.label == other.label,
+            self.mainInput == other.mainInput,
+            self._selectorLabel == other._selectorLabel))
 
 
 class Input:
@@ -38,3 +92,20 @@ class Input:
         self.mainOnly = mainOnly
         self.mainTooltip = mainTooltip
         self.secondaryTooltip = secondaryTooltip
+
+    def __hash__(self):
+        return hash((self.handle, self.unit, self.label, self.iconID, self.defaultValue, self.defaultRange, self.mainOnly, self.mainTooltip, self.secondaryTooltip))
+
+    def __eq__(self, other):
+        if not isinstance(other, Input):
+            return False
+        return all((
+            self.handle == other.handle,
+            self.unit == other.unit,
+            self.label == other.label,
+            self.iconID == other.iconID,
+            self.defaultValue == other.defaultValue,
+            self.defaultRange == other.defaultRange,
+            self.mainOnly == other.mainOnly,
+            self.mainTooltip == other.mainTooltip,
+            self.secondaryTooltip == other.secondaryTooltip))

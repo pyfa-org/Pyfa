@@ -29,8 +29,8 @@ class FitEwarStatsGraph(FitGraph):
     name = 'Electronic Warfare Stats'
     xDefs = [XDef(handle='distance', unit='km', label='Distance', mainInput=('distance', 'km'))]
     yDefs = [
-        YDef(handle='webStr', unit='%', label='Web speed reduction'),
-        YDef(handle='dampStrLockRange', unit='%', label='Damp lock range reduction')]
+        YDef(handle='webStr', unit='%', label='Speed reduction', selectorLabel='Webs: speed reduction'),
+        YDef(handle='dampStrLockRange', unit='%', label='Lock range reduction', selectorLabel='Damps: lock range reduction')]
     inputs = [
         Input(handle='distance', unit='km', label='Distance', iconID=1391, defaultValue=None, defaultRange=(0, 100)),
         Input(handle='resist', unit='%', label='Target resistance', iconID=1393, defaultValue=0, defaultRange=(0, 100))]
