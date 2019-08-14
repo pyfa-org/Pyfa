@@ -138,3 +138,42 @@ class Distance2TdStrOptimalGetter(SmoothPointGetter):
         strMult = calculateMultiplier(strMults)
         strength = (1 - strMult) * 100
         return strength
+
+
+class Distance2GdStrRangeGetter(SmoothPointGetter):
+
+    _baseResolution = 50
+    _extraDepth = 2
+
+    def _getCommonData(self, miscParams, src, tgt):
+        resonance = 1 - (miscParams['resist'] or 0)
+        gds = []
+        for mod in src.item.activeModulesIter():
+            for effectName in ('shipModuleGuidanceDisruptor', 'structureModuleEffectWeaponDisruption'):
+                if effectName in mod.item.effects:
+                    gds.append((
+                        mod.getModifiedItemAttr('missileVelocityBonus') * resonance,
+                        mod.getModifiedItemAttr('explosionDelayBonus') * resonance,
+                        mod.maxRange or 0, mod.falloff or 0, 'default'))
+            if 'doomsdayAOETrack' in mod.item.effects:
+                gds.append((
+                    mod.getModifiedItemAttr('missileVelocityBonus') * resonance,
+                    mod.getModifiedItemAttr('explosionDelayBonus') * resonance,
+                    max(0, (mod.maxRange or 0) + mod.getModifiedItemAttr('doomsdayAOERange') - src.getRadius()),
+                    mod.falloff or 0, 'default'))
+        return {'gds': gds}
+
+    def _calculatePoint(self, x, miscParams, src, tgt, commonData):
+        distance = x
+        velocityStrMults = {}
+        timeStrMults = {}
+        for velocityStr, timeStr, optimal, falloff, stackingGroup in commonData['gds']:
+            rangeFactor = calculateRangeFactor(srcOptimalRange=optimal, srcFalloffRange=falloff, distance=distance)
+            velocityStr *= rangeFactor
+            timeStr *= rangeFactor
+            velocityStrMults.setdefault(stackingGroup, []).append((1 + velocityStr / 100, None))
+            timeStrMults.setdefault(stackingGroup, []).append((1 + timeStr / 100, None))
+        velocityStrMult = calculateMultiplier(velocityStrMults)
+        timeStrMult = calculateMultiplier(timeStrMults)
+        strength = (1 - velocityStrMult * timeStrMult) * 100
+        return strength

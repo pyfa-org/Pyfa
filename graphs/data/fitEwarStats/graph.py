@@ -19,7 +19,9 @@
 
 
 from graphs.data.base import FitGraph, Input, XDef, YDef
-from .getter import Distance2WebbingStrGetter, Distance2DampStrLockRangeGetter, Distance2TdStrOptimalGetter
+from .getter import (
+    Distance2WebbingStrGetter, Distance2DampStrLockRangeGetter, Distance2TdStrOptimalGetter,
+    Distance2GdStrRangeGetter)
 
 
 class FitEwarStatsGraph(FitGraph):
@@ -31,7 +33,8 @@ class FitEwarStatsGraph(FitGraph):
     yDefs = [
         YDef(handle='webStr', unit='%', label='Speed reduction', selectorLabel='Webs: speed reduction'),
         YDef(handle='dampStrLockRange', unit='%', label='Lock range reduction', selectorLabel='Damps: lock range reduction'),
-        YDef(handle='tdStrOptimal', unit='%', label='Optimal range reduction', selectorLabel='TDs: optimal range reduction')]
+        YDef(handle='tdStrOptimal', unit='%', label='Turret optimal range reduction', selectorLabel='TDs: turret optimal range reduction'),
+        YDef(handle='gdStrRange', unit='%', label='Missile flight range reduction', selectorLabel='GDs: missile flight range reduction')]
     inputs = [
         Input(handle='distance', unit='km', label='Distance', iconID=1391, defaultValue=None, defaultRange=(0, 100)),
         Input(handle='resist', unit='%', label='Target resistance', iconID=1393, defaultValue=0, defaultRange=(0, 100))]
@@ -44,5 +47,6 @@ class FitEwarStatsGraph(FitGraph):
     _getters = {
         ('distance', 'webStr'): Distance2WebbingStrGetter,
         ('distance', 'dampStrLockRange'): Distance2DampStrLockRangeGetter,
-        ('distance', 'tdStrOptimal'): Distance2TdStrOptimalGetter}
+        ('distance', 'tdStrOptimal'): Distance2TdStrOptimalGetter,
+        ('distance', 'gdStrRange'): Distance2GdStrRangeGetter}
     _denormalizers = {('distance', 'km'): lambda v, src, tgt: None if v is None else v / 1000}
