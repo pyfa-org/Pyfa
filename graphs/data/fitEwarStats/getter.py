@@ -66,6 +66,48 @@ class Distance2WebbingStrGetter(SmoothPointGetter):
         return strength
 
 
+class Distance2EcmStrMaxGetter(SmoothPointGetter):
+
+    _baseResolution = 50
+    _extraDepth = 2
+
+    ECM_ATTRS_GENERAL = ('scanGravimetricStrengthBonus', 'scanLadarStrengthBonus', 'scanMagnetometricStrengthBonus', 'scanRadarStrengthBonus')
+    ECM_ATTRS_FIGHTERS = ('fighterAbilityECMStrengthGravimetric', 'fighterAbilityECMStrengthLadar', 'fighterAbilityECMStrengthMagnetometric', 'fighterAbilityECMStrengthRadar')
+
+    def _getCommonData(self, miscParams, src, tgt):
+        resonance = 1 - (miscParams['resist'] or 0)
+        ecms = []
+        for mod in src.item.activeModulesIter():
+            for effectName in ('remoteECMFalloff', 'structureModuleEffectECM'):
+                if effectName in mod.item.effects:
+                    ecms.append((
+                        max(mod.getModifiedItemAttr(a) for a in self.ECM_ATTRS_GENERAL) * resonance,
+                        mod.maxRange or 0, mod.falloff or 0, 'default'))
+            if 'doomsdayAOEECM' in mod.item.effects:
+                ecms.append((
+                    max(mod.getModifiedItemAttr(a) for a in self.ECM_ATTRS_GENERAL) * resonance,
+                    max(0, (mod.maxRange or 0) + mod.getModifiedItemAttr('doomsdayAOERange') - src.getRadius()),
+                    mod.falloff or 0, 'default'))
+        for drone in src.item.activeDronesIter():
+            if 'entityECMFalloff' in drone.item.effects:
+                ecms.extend(drone.amountActive * ((
+                    max(drone.getModifiedItemAttr(a) for a in self.ECM_ATTRS_GENERAL) * resonance,
+                    src.item.extraAttributes['droneControlRange'], 0, 'default'),))
+        for fighter, ability in src.item.activeFighterAbilityIter():
+            if ability.effect.name == 'fighterAbilityECM':
+                ecms.append((
+                    max(fighter.getModifiedItemAttr(a) for a in self.ECM_ATTRS_FIGHTERS) * fighter.amountActive * resonance,
+                    math.inf, 0, 'default'))
+        return {'ecms': ecms}
+
+    def _calculatePoint(self, x, miscParams, src, tgt, commonData):
+        distance = x
+        combinedStr = 0
+        for strength, optimal, falloff, stackingGroup in commonData['ecms']:
+            combinedStr += strength * calculateRangeFactor(srcOptimalRange=optimal, srcFalloffRange=falloff, distance=distance)
+        return combinedStr
+
+
 class Distance2DampStrLockRangeGetter(SmoothPointGetter):
 
     _baseResolution = 50
