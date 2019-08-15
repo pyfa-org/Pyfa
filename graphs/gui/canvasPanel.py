@@ -217,7 +217,11 @@ class GraphCanvasPanel(wx.Panel):
                     # If due to some bug or insufficient plot density we're
                     # out of bounds, do not add anything
                     if minY <= val <= maxY:
-                        yMarks.add(roundToPrec(val, 4))
+                        if abs(val) < 0.0001:
+                            val = 0
+                        else:
+                            val = roundToPrec(val, 4)
+                        yMarks.add(val)
 
                 for source, target in iterList:
                     xs, ys = plotData[(source, target)]
