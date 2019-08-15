@@ -83,11 +83,16 @@ class GraphCanvasPanel(wx.Panel):
         self.figure.set_edgecolor(clr)
         self.canvas = Canvas(self, -1, self.figure)
         self.canvas.SetBackgroundColour(wx.Colour(*rgbtuple))
+        self.canvas.mpl_connect('button_press_event', self.OnMplCanvasClick)
         self.subplot = self.figure.add_subplot(111)
         self.subplot.grid(True)
         mainSizer.Add(self.canvas, 1, wx.EXPAND | wx.ALL, 0)
 
         self.SetSizer(mainSizer)
+
+        self.xMark = None
+        self.mplOnDragHandler = None
+        self.mplOnReleaseHandler = None
 
     def draw(self):
         self.subplot.clear()
@@ -201,3 +206,41 @@ class GraphCanvasPanel(wx.Panel):
 
         self.canvas.draw()
         self.Refresh()
+
+    def markXApproximate(self, x):
+        if x is not None:
+            self.xMark = x
+            self.draw()
+
+    def markXAccurate(self, x):
+        if x is not None:
+            self.xMark = x
+            self.draw()
+
+    def unmarkX(self):
+        self.xMark = None
+        self.draw()
+
+    # Matplotlib event handlers
+    def OnMplCanvasClick(self, event):
+        if event.button == 1:
+            if not self.mplOnDragHandler:
+                self.mplOnDragHandler = self.canvas.mpl_connect('motion_notify_event', self.OnMplCanvasDrag)
+            if not self.mplOnReleaseHandler:
+                self.mplOnReleaseHandler = self.canvas.mpl_connect('button_release_event', self.OnMplCanvasRelease)
+            self.markXApproximate(event.xdata)
+        elif event.button == 3:
+            self.unmarkX()
+
+    def OnMplCanvasDrag(self, event):
+        self.markXApproximate(event.xdata)
+
+    def OnMplCanvasRelease(self, event):
+        if event.button == 1:
+            if self.mplOnDragHandler:
+                self.canvas.mpl_disconnect(self.mplOnDragHandler)
+                self.mplOnDragHandler = None
+            if self.mplOnReleaseHandler:
+                self.canvas.mpl_disconnect(self.mplOnReleaseHandler)
+                self.mplOnReleaseHandler = None
+            self.markXAccurate(event.xdata)
