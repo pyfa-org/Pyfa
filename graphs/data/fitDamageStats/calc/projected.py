@@ -31,62 +31,61 @@ def getWebbedSpeed(src, tgt, currentUnwebbedSpeed, webMods, webDrones, webFighte
     if tgt.isFit and tgt.item.ship.getModifiedItemAttr('disallowOffensiveModifiers'):
         return currentUnwebbedSpeed
     maxUnwebbedSpeed = tgt.getMaxVelocity()
-    try:
-        speedRatio = currentUnwebbedSpeed / maxUnwebbedSpeed
-    except ZeroDivisionError:
-        currentWebbedSpeed = 0
-    else:
-        appliedMultipliers = {}
-        # Modules first, they are applied always the same way
-        for wData in webMods:
-            appliedBoost = wData.boost * calculateRangeFactor(
-                srcOptimalRange=wData.optimal,
-                srcFalloffRange=wData.falloff,
-                distance=distance)
-            if appliedBoost:
-                appliedMultipliers.setdefault(wData.stackingGroup, []).append((1 + appliedBoost / 100, wData.resAttrID))
+    # What's immobile cannot be slowed
+    if maxUnwebbedSpeed == 0:
+        return maxUnwebbedSpeed
+    speedRatio = currentUnwebbedSpeed / maxUnwebbedSpeed
+    appliedMultipliers = {}
+    # Modules first, they are applied always the same way
+    for wData in webMods:
+        appliedBoost = wData.boost * calculateRangeFactor(
+            srcOptimalRange=wData.optimal,
+            srcFalloffRange=wData.falloff,
+            distance=distance)
+        if appliedBoost:
+            appliedMultipliers.setdefault(wData.stackingGroup, []).append((1 + appliedBoost / 100, wData.resAttrID))
+    maxWebbedSpeed = tgt.getMaxVelocity(extraMultipliers=appliedMultipliers)
+    currentWebbedSpeed = maxWebbedSpeed * speedRatio
+    # Drones and fighters
+    mobileWebs = []
+    mobileWebs.extend(webFighters)
+    # Drones have range limit
+    if distance is None or distance <= src.item.extraAttributes['droneControlRange']:
+        mobileWebs.extend(webDrones)
+    atkRadius = src.getRadius()
+    # As mobile webs either follow the target or stick to the attacking ship,
+    # if target is within mobile web optimal - it can be applied unconditionally
+    longEnoughMws = [mw for mw in mobileWebs if distance is None or distance <= mw.optimal - atkRadius + mw.radius]
+    if longEnoughMws:
+        for mwData in longEnoughMws:
+            appliedMultipliers.setdefault(mwData.stackingGroup, []).append((1 + mwData.boost / 100, mwData.resAttrID))
+            mobileWebs.remove(mwData)
         maxWebbedSpeed = tgt.getMaxVelocity(extraMultipliers=appliedMultipliers)
         currentWebbedSpeed = maxWebbedSpeed * speedRatio
-        # Drones and fighters
-        mobileWebs = []
-        mobileWebs.extend(webFighters)
-        # Drones have range limit
-        if distance is None or distance <= src.item.extraAttributes['droneControlRange']:
-            mobileWebs.extend(webDrones)
-        atkRadius = src.getRadius()
-        # As mobile webs either follow the target or stick to the attacking ship,
-        # if target is within mobile web optimal - it can be applied unconditionally
-        longEnoughMws = [mw for mw in mobileWebs if distance is None or distance <= mw.optimal - atkRadius + mw.radius]
-        if longEnoughMws:
-            for mwData in longEnoughMws:
-                appliedMultipliers.setdefault(mwData.stackingGroup, []).append((1 + mwData.boost / 100, mwData.resAttrID))
-                mobileWebs.remove(mwData)
-            maxWebbedSpeed = tgt.getMaxVelocity(extraMultipliers=appliedMultipliers)
-            currentWebbedSpeed = maxWebbedSpeed * speedRatio
-        # Apply remaining webs, from fastest to slowest
-        droneOpt = GraphSettings.getInstance().get('mobileDroneMode')
-        while mobileWebs:
-            # Process in batches unified by speed to save up resources
-            fastestMwSpeed = max(mobileWebs, key=lambda mw: mw.speed).speed
-            fastestMws = [mw for mw in mobileWebs if mw.speed == fastestMwSpeed]
-            for mwData in fastestMws:
-                # Faster than target or set to follow it - apply full slowdown
-                if (droneOpt == GraphDpsDroneMode.auto and mwData.speed >= currentWebbedSpeed) or droneOpt == GraphDpsDroneMode.followTarget:
-                    appliedMwBoost = mwData.boost
-                # Otherwise project from the center of the ship
+    # Apply remaining webs, from fastest to slowest
+    droneOpt = GraphSettings.getInstance().get('mobileDroneMode')
+    while mobileWebs:
+        # Process in batches unified by speed to save up resources
+        fastestMwSpeed = max(mobileWebs, key=lambda mw: mw.speed).speed
+        fastestMws = [mw for mw in mobileWebs if mw.speed == fastestMwSpeed]
+        for mwData in fastestMws:
+            # Faster than target or set to follow it - apply full slowdown
+            if (droneOpt == GraphDpsDroneMode.auto and mwData.speed >= currentWebbedSpeed) or droneOpt == GraphDpsDroneMode.followTarget:
+                appliedMwBoost = mwData.boost
+            # Otherwise project from the center of the ship
+            else:
+                if distance is None:
+                    rangeFactorDistance = None
                 else:
-                    if distance is None:
-                        rangeFactorDistance = None
-                    else:
-                        rangeFactorDistance = distance + atkRadius - mwData.radius
-                    appliedMwBoost = mwData.boost * calculateRangeFactor(
-                        srcOptimalRange=mwData.optimal,
-                        srcFalloffRange=mwData.falloff,
-                        distance=rangeFactorDistance)
-                appliedMultipliers.setdefault(mwData.stackingGroup, []).append((1 + appliedMwBoost / 100, mwData.resAttrID))
-                mobileWebs.remove(mwData)
-            maxWebbedSpeed = tgt.getMaxVelocity(extraMultipliers=appliedMultipliers)
-            currentWebbedSpeed = maxWebbedSpeed * speedRatio
+                    rangeFactorDistance = distance + atkRadius - mwData.radius
+                appliedMwBoost = mwData.boost * calculateRangeFactor(
+                    srcOptimalRange=mwData.optimal,
+                    srcFalloffRange=mwData.falloff,
+                    distance=rangeFactorDistance)
+            appliedMultipliers.setdefault(mwData.stackingGroup, []).append((1 + appliedMwBoost / 100, mwData.resAttrID))
+            mobileWebs.remove(mwData)
+        maxWebbedSpeed = tgt.getMaxVelocity(extraMultipliers=appliedMultipliers)
+        currentWebbedSpeed = maxWebbedSpeed * speedRatio
     # Ensure consistent results - round off a little to avoid float errors
     return floatUnerr(currentWebbedSpeed)
 

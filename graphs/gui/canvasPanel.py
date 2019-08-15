@@ -21,6 +21,7 @@
 import itertools
 import os
 import traceback
+from bisect import bisect
 
 
 # noinspection PyPackageRequirements
@@ -29,6 +30,7 @@ from logbook import Logger
 
 
 from graphs.style import BASE_COLORS, LIGHTNESSES, STYLES, hsl_to_hsv
+from gui.utils.numberFormatter import roundToPrec
 
 
 pyfalog = Logger(__name__)
@@ -99,6 +101,7 @@ class GraphCanvasPanel(wx.Panel):
         self.subplot.grid(True)
         allXs = set()
         allYs = set()
+        plotData = {}
         legendData = []
         chosenX = self.graphFrame.ctrlPanel.xType
         chosenY = self.graphFrame.ctrlPanel.yType
@@ -146,6 +149,7 @@ class GraphCanvasPanel(wx.Panel):
                     ySpec=chosenY,
                     src=source,
                     tgt=target)
+                plotData[(source, target)] = (xs, ys)
                 allXs.update(xs)
                 allYs.update(ys)
                 # If we have single data point, show marker - otherwise line won't be shown
@@ -159,7 +163,7 @@ class GraphCanvasPanel(wx.Panel):
                 else:
                     legendData.append((color, lineStyle, '{} vs {}'.format(source.shortName, target.shortName)))
             except Exception:
-                pyfalog.warning('Invalid values in "{0}"', source.name)
+                pyfalog.warning('Failed to plot "{}" vs "{}"'.format(source.name, '' if target is None else target.name))
                 self.canvas.draw()
                 self.Refresh()
                 return
@@ -171,17 +175,17 @@ class GraphCanvasPanel(wx.Panel):
         maxY = max(allYs, default=0)
         # Extend range a little for some visual space
         yRange = maxY - minY
-        minY -= yRange * 0.05
-        maxY += yRange * 0.05
+        canvasMinY = minY - yRange * 0.05
+        canvasMaxY = maxY + yRange * 0.1  # Extra space for "X mark"
         # Extend by % of value if we show function of a constant
-        if minY == maxY:
-            minY -= minY * 0.05
-            maxY += minY * 0.05
+        if canvasMinY == canvasMaxY:
+            canvasMinY -= canvasMinY * 0.05
+            canvasMaxY += canvasMinY * 0.05
         # If still equal, function is 0, spread out visual space as special case
-        if minY == maxY:
-            minY -= 5
-            maxY += 5
-        self.subplot.set_ylim(bottom=minY, top=maxY)
+        if canvasMinY == canvasMaxY:
+            canvasMinY -= 5
+            canvasMaxY += 5
+        self.subplot.set_ylim(bottom=canvasMinY, top=canvasMaxY)
 
         # Process X marks line
         if self.xMark is not None:
@@ -189,8 +193,62 @@ class GraphCanvasPanel(wx.Panel):
             maxX = max(allXs, default=None)
             if minX is not None and maxX is not None:
                 xMark = max(min(self.xMark, maxX), minX)
+                # Draw line
                 self.subplot.axvline(x=xMark, linestyle='dotted', linewidth=1, color=(0, 0, 0))
+                # Draw its X position
+                if chosenX.unit is None:
+                    xLabel = ' {}'.format(roundToPrec(xMark, 4))
+                else:
+                    xLabel = ' {} {}'.format(roundToPrec(xMark, 4), chosenX.unit)
+                self.subplot.annotate(
+                    xLabel, xy=(xMark, maxY + 0.66 * (canvasMaxY - maxY)), xytext=(-1, -1),
+                    textcoords='offset pixels', ha='left', va='center', fontsize='small')
+                # Get Y values
+                yMarks = set()
 
+                def addYMark(val):
+                    yMarks.add(roundToPrec(val, 4))
+
+                for source, target in iterList:
+                    xs, ys = plotData[(source, target)]
+                    if not xs or xMark < min(xs) or xMark > max(xs):
+                        continue
+                    # Fetch values from graphs when we're asked to provide accurate data
+                    if accurateMarks:
+                        try:
+                            y = view.getPoint(
+                                x=xMark,
+                                miscInputs=miscInputs,
+                                xSpec=chosenX,
+                                ySpec=chosenY,
+                                src=source,
+                                tgt=target)
+                            addYMark(y)
+                        except Exception:
+                            pyfalog.warning('Failed to get X mark for "{}" vs "{}"'.format(source.name, '' if target is None else target.name))
+                            # Silently skip this mark, otherwise other marks and legend display will fail
+                            continue
+                    # Otherwise just do linear interpolation between two points
+                    else:
+                        if xMark in xs:
+                            # We might have multiples of the same value in our sequence, pick value for the last one
+                            idx = len(xs) - xs[::-1].index(xMark) - 1
+                            addYMark(ys[idx])
+                            continue
+                        idx = bisect(xs, xMark)
+                        xLeft = xs[idx - 1]
+                        xRight = xs[idx]
+                        yLeft = ys[idx - 1]
+                        yRight = ys[idx]
+                        pos = (xMark - xLeft) / (xRight - xLeft)
+                        yMark =  yLeft + pos * (yRight - yLeft)
+                        addYMark(yMark)
+
+                # Draw Y values
+                for yMark in yMarks:
+                    self.subplot.annotate(
+                        ' {}'.format(yMark), xy=(xMark, yMark), xytext=(-1, -1),
+                        textcoords='offset pixels', ha='left', va='center', fontsize='small')
 
         legendLines = []
         for i, iData in enumerate(legendData):
@@ -211,11 +269,6 @@ class GraphCanvasPanel(wx.Panel):
         if x is not None:
             self.xMark = x
             self.draw(accurateMarks=False)
-
-    def markXAccurate(self, x):
-        if x is not None:
-            self.xMark = x
-            self.draw()
 
     def unmarkX(self):
         self.xMark = None
@@ -243,4 +296,8 @@ class GraphCanvasPanel(wx.Panel):
             if self.mplOnReleaseHandler:
                 self.canvas.mpl_disconnect(self.mplOnReleaseHandler)
                 self.mplOnReleaseHandler = None
-            self.markXAccurate(event.xdata)
+            # Do not write markX here because of strange mouse behavior: when dragging,
+            # sometimes when you release button, x coordinate changes. To avoid that,
+            # we just re-use coordinates set on click/drag and just request to redraw
+            # using accurate data
+            self.draw(accurateMarks=True)
