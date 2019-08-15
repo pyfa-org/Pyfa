@@ -192,13 +192,11 @@ class GraphCanvasPanel(wx.Panel):
         canvasMinX, canvasMaxX = getLimits(allXs, minExtra=0.02, maxExtra=0.05)
         self.subplot.set_ylim(bottom=canvasMinY, top=canvasMaxY)
         self.subplot.set_xlim(left=canvasMinX, right=canvasMaxX)
-
         # Process X marks line
         if self.xMark is not None:
             minX = min(allXs, default=None)
             maxX = max(allXs, default=None)
             if minX is not None and maxX is not None:
-                maxY = max(allYs, default=0)
                 xMark = max(min(self.xMark, maxX), minX)
                 # Draw line
                 self.subplot.axvline(x=xMark, linestyle='dotted', linewidth=1, color=(0, 0, 0))
@@ -208,7 +206,7 @@ class GraphCanvasPanel(wx.Panel):
                 else:
                     xLabel = ' {} {}'.format(roundToPrec(xMark, 4), chosenX.unit)
                 self.subplot.annotate(
-                    xLabel, xy=(xMark, canvasMaxY - 10), xytext=(-1, -1), annotation_clip=False,
+                    xLabel, xy=(xMark, canvasMaxY - 0.01 * (canvasMaxY - canvasMinY)), xytext=(-1, -1), annotation_clip=False,
                     textcoords='offset pixels', ha='left', va='top', fontsize='small')
                 # Get Y values
                 yMarks = set()
@@ -254,7 +252,7 @@ class GraphCanvasPanel(wx.Panel):
                 # Draw Y values
                 for yMark in yMarks:
                     self.subplot.annotate(
-                        ' {}'.format(yMark), xy=(xMark, yMark), xytext=(-1, -1), annotation_clip=False,
+                        ' {}'.format(yMark), xy=(xMark, yMark), xytext=(-1, -1),
                         textcoords='offset pixels', ha='left', va='center', fontsize='small')
 
         legendLines = []
