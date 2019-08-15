@@ -197,6 +197,8 @@ class GraphCanvasPanel(wx.Panel):
             minX = min(allXs, default=None)
             maxX = max(allXs, default=None)
             if minX is not None and maxX is not None:
+                minY = min(allYs, default=None)
+                maxY = max(allYs, default=None)
                 xMark = max(min(self.xMark, maxX), minX)
                 # Draw line
                 self.subplot.axvline(x=xMark, linestyle='dotted', linewidth=1, color=(0, 0, 0))
@@ -212,7 +214,10 @@ class GraphCanvasPanel(wx.Panel):
                 yMarks = set()
 
                 def addYMark(val):
-                    yMarks.add(roundToPrec(val, 4))
+                    # If due to some bug or insufficient plot density we're
+                    # out of bounds, do not add anything
+                    if minY <= val <= maxY:
+                        yMarks.add(roundToPrec(val, 4))
 
                 for source, target in iterList:
                     xs, ys = plotData[(source, target)]
