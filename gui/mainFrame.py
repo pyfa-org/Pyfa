@@ -37,7 +37,7 @@ import gui.fitCommands as cmd
 import gui.globalEvents as GE
 from eos.config import gamedata_date, gamedata_version
 from eos.modifiedAttributeDict import ModifiedAttributeDict
-from graphs.gui import GraphFrame
+from graphs import GraphFrame
 from gui.additionsPane import AdditionsPane
 from gui.bitmap_loader import BitmapLoader
 from gui.builtinMarketBrowser.events import ItemSelected
