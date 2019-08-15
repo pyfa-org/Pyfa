@@ -46,7 +46,8 @@ class FitShieldRegenGraph(FitGraph):
 
     # Calculation stuff
     _normalizers = {
-        ('shieldAmount', '%'): lambda v, src, tgt: v / 100 * src.item.ship.getModifiedItemAttr('shieldCapacity')}
+        ('shieldAmount', '%'): lambda v, src, tgt: v / 100 * src.item.ship.getModifiedItemAttr('shieldCapacity'),
+        ('shieldAmount', 'EHP'): lambda v, src, tgt: v / src.item.damagePattern.effectivify(src.item, 1, 'shield')}
     _limiters = {
         'shieldAmount': lambda src, tgt: (0, src.item.ship.getModifiedItemAttr('shieldCapacity'))}
     _getters = {
