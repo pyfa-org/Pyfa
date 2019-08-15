@@ -284,11 +284,13 @@ class GraphControlPanel(wx.Panel):
 
     def OnYTypeUpdate(self, event):
         event.Skip()
+        self.graphFrame.resetXMark()
         self.graphFrame.draw()
 
     def OnXTypeUpdate(self, event):
         event.Skip()
         self._updateInputs()
+        self.graphFrame.resetXMark()
         self.graphFrame.Layout()
         self.graphFrame.UpdateWindowSize()
         self.graphFrame.draw()

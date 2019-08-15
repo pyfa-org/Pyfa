@@ -175,6 +175,7 @@ class GraphFrame(AuxiliaryFrame):
         view = self.getView()
         GraphSettings.getInstance().set('selectedGraph', view.internalName)
         self.clearCache(reason=GraphCacheCleanupReason.graphSwitched)
+        self.resetXMark()
         self.ctrlPanel.updateControls()
         self.draw()
         event.Skip()
@@ -198,3 +199,6 @@ class GraphFrame(AuxiliaryFrame):
 
     def draw(self):
         self.canvasPanel.draw()
+
+    def resetXMark(self):
+        self.canvasPanel.xMark = None
