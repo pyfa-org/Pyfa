@@ -201,6 +201,7 @@ class FitGraph(metaclass=ABCMeta):
     def _calcPoint(self, x, miscInputs, xSpec, ySpec, src, tgt):
         x = self._normalizeValue(value=x, axisSpec=xSpec, src=src, tgt=tgt)
         miscParams = self._normalizeMisc(miscInputs=miscInputs, src=src, tgt=tgt)
+        miscParams = self._limitMisc(miscParams=miscParams, src=src, tgt=tgt)
         y = self._getPoint(x=x, miscParams=miscParams, xSpec=xSpec, ySpec=ySpec, src=src, tgt=tgt)
         y = self._denormalizeValue(value=y, axisSpec=ySpec, src=src, tgt=tgt)
         return y
