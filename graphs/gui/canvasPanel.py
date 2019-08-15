@@ -189,7 +189,7 @@ class GraphCanvasPanel(wx.Panel):
         if self.graphFrame.ctrlPanel.showY0:
             allYs.add(0)
         canvasMinY, canvasMaxY = getLimits(allYs, minExtra=0.05, maxExtra=0.1)
-        canvasMinX, canvasMaxX = getLimits(allXs, minExtra=0.02, maxExtra=0.09)
+        canvasMinX, canvasMaxX = getLimits(allXs, minExtra=0.02, maxExtra=0.05)
         self.subplot.set_ylim(bottom=canvasMinY, top=canvasMaxY)
         self.subplot.set_xlim(left=canvasMinX, right=canvasMaxX)
 
@@ -208,8 +208,8 @@ class GraphCanvasPanel(wx.Panel):
                 else:
                     xLabel = ' {} {}'.format(roundToPrec(xMark, 4), chosenX.unit)
                 self.subplot.annotate(
-                    xLabel, xy=(xMark, maxY + 0.66 * (canvasMaxY - maxY)), xytext=(-1, -1),
-                    textcoords='offset pixels', ha='left', va='center', fontsize='small')
+                    xLabel, xy=(xMark, canvasMaxY - 10), xytext=(-1, -1), annotation_clip=False,
+                    textcoords='offset pixels', ha='left', va='top', fontsize='small')
                 # Get Y values
                 yMarks = set()
 
@@ -254,7 +254,7 @@ class GraphCanvasPanel(wx.Panel):
                 # Draw Y values
                 for yMark in yMarks:
                     self.subplot.annotate(
-                        ' {}'.format(yMark), xy=(xMark, yMark), xytext=(-1, -1),
+                        ' {}'.format(yMark), xy=(xMark, yMark), xytext=(-1, -1), annotation_clip=False,
                         textcoords='offset pixels', ha='left', va='center', fontsize='small')
 
         legendLines = []
