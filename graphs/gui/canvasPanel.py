@@ -168,30 +168,37 @@ class GraphCanvasPanel(wx.Panel):
                 self.Refresh()
                 return
 
+        def getLimits(vals, minExtra=0, maxExtra=0):
+            minVal = min(vals, default=0)
+            maxVal = max(vals, default=0)
+            # Extend range a little for some visual space
+            valRange = maxVal - minVal
+            minVal -= valRange * minExtra
+            maxVal += valRange * maxExtra
+            # Extend by % of value if we show function of a constant
+            if minVal == maxVal:
+                minVal -= minVal * 0.05
+                maxVal += minVal * 0.05
+            # If still equal, function is 0, spread out visual space as special case
+            if minVal == maxVal:
+                minVal -= 5
+                maxVal += 5
+            return minVal, maxVal
+
         # Setting Y limits for canvas
         if self.graphFrame.ctrlPanel.showY0:
             allYs.add(0)
-        minY = min(allYs, default=0)
-        maxY = max(allYs, default=0)
-        # Extend range a little for some visual space
-        yRange = maxY - minY
-        canvasMinY = minY - yRange * 0.05
-        canvasMaxY = maxY + yRange * 0.1  # Extra space for "X mark"
-        # Extend by % of value if we show function of a constant
-        if canvasMinY == canvasMaxY:
-            canvasMinY -= canvasMinY * 0.05
-            canvasMaxY += canvasMinY * 0.05
-        # If still equal, function is 0, spread out visual space as special case
-        if canvasMinY == canvasMaxY:
-            canvasMinY -= 5
-            canvasMaxY += 5
+        canvasMinY, canvasMaxY = getLimits(allYs, minExtra=0.05, maxExtra=0.1)
+        canvasMinX, canvasMaxX = getLimits(allXs, minExtra=0.02, maxExtra=0.09)
         self.subplot.set_ylim(bottom=canvasMinY, top=canvasMaxY)
+        self.subplot.set_xlim(left=canvasMinX, right=canvasMaxX)
 
         # Process X marks line
         if self.xMark is not None:
             minX = min(allXs, default=None)
             maxX = max(allXs, default=None)
             if minX is not None and maxX is not None:
+                maxY = max(allYs, default=0)
                 xMark = max(min(self.xMark, maxX), minX)
                 # Draw line
                 self.subplot.axvline(x=xMark, linestyle='dotted', linewidth=1, color=(0, 0, 0))
