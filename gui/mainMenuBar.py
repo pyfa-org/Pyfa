@@ -23,7 +23,7 @@ import wx
 import config
 from service.character import Character
 from service.fit import Fit
-from graphs.gui import frame as graphFrame
+from graphs.gui import canvasPanel as graphCanvasPanel
 import gui.globalEvents as GE
 from gui.bitmap_loader import BitmapLoader
 
@@ -101,7 +101,7 @@ class MainMenuBar(wx.MenuBar):
         graphFrameItem = wx.MenuItem(fitMenu, self.graphFrameId, "&Graphs\tCTRL+G")
         graphFrameItem.SetBitmap(BitmapLoader.getBitmap("graphs_small", "gui"))
         fitMenu.Append(graphFrameItem)
-        if not graphFrame.graphFrame_enabled:
+        if not graphCanvasPanel.graphFrame_enabled:
             self.Enable(self.graphFrameId, False)
         self.ignoreRestrictionItem = fitMenu.Append(self.toggleIgnoreRestrictionID, "Disable Fitting Re&strictions")
 
