@@ -85,7 +85,7 @@ class GraphControlPanel(wx.Panel):
         self.srcVectorLabel = wx.StaticText(self, wx.ID_ANY, '')
         self.srcVectorSizer.Add(self.srcVectorLabel, 0, wx.ALIGN_CENTER_HORIZONTAL| wx.BOTTOM, 5)
         self.srcVector = VectorPicker(self, style=wx.NO_BORDER, size=vectorSize, offset=0)
-        self.srcVector.Bind(VectorPicker.EVT_VECTOR_CHANGED, self.OnFieldChanged)
+        self.srcVector.Bind(VectorPicker.EVT_VECTOR_CHANGED, self.OnMiscFieldChanged)
         self.srcVectorSizer.Add(self.srcVector, 0, wx.SHAPED | wx.ALIGN_CENTER_HORIZONTAL | wx.ALIGN_CENTER_VERTICAL | wx.ALL, 0)
         graphOptsSizer.Add(self.srcVectorSizer, 0, wx.EXPAND | wx.LEFT, 15)
 
@@ -93,7 +93,7 @@ class GraphControlPanel(wx.Panel):
         self.tgtVectorLabel = wx.StaticText(self, wx.ID_ANY, '')
         self.tgtVectorSizer.Add(self.tgtVectorLabel, 0, wx.ALIGN_CENTER_HORIZONTAL | wx.BOTTOM, 5)
         self.tgtVector = VectorPicker(self, style=wx.NO_BORDER, size=vectorSize, offset=0)
-        self.tgtVector.Bind(VectorPicker.EVT_VECTOR_CHANGED, self.OnFieldChanged)
+        self.tgtVector.Bind(VectorPicker.EVT_VECTOR_CHANGED, self.OnMiscFieldChanged)
         self.tgtVectorSizer.Add(self.tgtVector, 0, wx.SHAPED | wx.ALIGN_CENTER_HORIZONTAL | wx.ALIGN_CENTER_VERTICAL | wx.ALL, 0)
         graphOptsSizer.Add(self.tgtVectorSizer, 0, wx.EXPAND | wx.LEFT, 10)
 
@@ -222,9 +222,10 @@ class GraphControlPanel(wx.Panel):
             tooltipText = (inputDef.mainTooltip if mainInput else inputDef.secondaryTooltip) or ''
             if mainInput:
                 fieldTextBox = FloatRangeBox(self, self._storedRanges.get((inputDef.handle, inputDef.unit), inputDef.defaultRange))
+                fieldTextBox.Bind(wx.EVT_TEXT, self.OnMainFieldChanged)
             else:
                 fieldTextBox = FloatBox(self, self._storedConsts.get((inputDef.handle, inputDef.unit), inputDef.defaultValue))
-            fieldTextBox.Bind(wx.EVT_TEXT, self.OnFieldChanged)
+                fieldTextBox.Bind(wx.EVT_TEXT, self.OnMiscFieldChanged)
             fieldTextBox.SetToolTip(wx.ToolTip(tooltipText))
             fieldSizer.Add(fieldTextBox, 0, wx.EXPAND | wx.ALIGN_CENTER_VERTICAL | wx.RIGHT, 5)
             fieldIcon = None
@@ -295,7 +296,13 @@ class GraphControlPanel(wx.Panel):
         self.graphFrame.UpdateWindowSize()
         self.graphFrame.draw()
 
-    def OnFieldChanged(self, event):
+    def OnMainFieldChanged(self, event):
+        event.Skip()
+        self.graphFrame.resetXMark()
+        self.inputTimer.Stop()
+        self.inputTimer.Start(Fit.getInstance().serviceFittingOptions['marketSearchDelay'], True)
+
+    def OnMiscFieldChanged(self, event):
         event.Skip()
         self.inputTimer.Stop()
         self.inputTimer.Start(Fit.getInstance().serviceFittingOptions['marketSearchDelay'], True)
