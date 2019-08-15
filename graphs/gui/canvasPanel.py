@@ -94,14 +94,12 @@ class GraphCanvasPanel(wx.Panel):
         self.mplOnDragHandler = None
         self.mplOnReleaseHandler = None
 
-    def draw(self):
+    def draw(self, accurateMarks=True):
         self.subplot.clear()
         self.subplot.grid(True)
-        lineData = []
-
-        min_y = 0 if self.graphFrame.ctrlPanel.showY0 else None
-        max_y = 0 if self.graphFrame.ctrlPanel.showY0 else None
-
+        allXs = set()
+        allYs = set()
+        legendData = []
         chosenX = self.graphFrame.ctrlPanel.xType
         chosenY = self.graphFrame.ctrlPanel.yType
         self.subplot.set(xlabel=self.graphFrame.ctrlPanel.formatLabel(chosenX), ylabel=self.graphFrame.ctrlPanel.formatLabel(chosenY))
@@ -146,54 +144,44 @@ class GraphCanvasPanel(wx.Panel):
                     ySpec=chosenY,
                     src=source,
                     tgt=target)
-
-                # Figure out min and max Y
-                min_y_this = min(ys, default=None)
-                if min_y is None:
-                    min_y = min_y_this
-                elif min_y_this is not None:
-                    min_y = min(min_y, min_y_this)
-                max_y_this = max(ys, default=None)
-                if max_y is None:
-                    max_y = max_y_this
-                elif max_y_this is not None:
-                    max_y = max(max_y, max_y_this)
-
+                allXs.update(xs)
+                allYs.update(ys)
                 # If we have single data point, show marker - otherwise line won't be shown
                 if len(xs) == 1 and len(ys) == 1:
                     self.subplot.plot(xs, ys, color=color, linestyle=lineStyle, marker='.')
                 else:
                     self.subplot.plot(xs, ys, color=color, linestyle=lineStyle)
-
+                # Fill data for legend
                 if target is None:
-                    lineData.append((color, lineStyle, source.shortName))
+                    legendData.append((color, lineStyle, source.shortName))
                 else:
-                    lineData.append((color, lineStyle, '{} vs {}'.format(source.shortName, target.shortName)))
+                    legendData.append((color, lineStyle, '{} vs {}'.format(source.shortName, target.shortName)))
             except Exception as ex:
                 pyfalog.warning('Invalid values in "{0}"', source.name)
                 self.canvas.draw()
                 self.Refresh()
                 return
 
-        # Special case for when we do not show Y = 0 and have no fits
-        if min_y is None:
-            min_y = 0
-        if max_y is None:
-            max_y = 0
+        if self.graphFrame.ctrlPanel.showY0:
+            allYs.add(0)
+        minY = min(allYs, default=0)
+        maxY = max(allYs, default=0)
         # Extend range a little for some visual space
-        y_range = max_y - min_y
-        min_y -= y_range * 0.05
-        max_y += y_range * 0.05
-        if min_y == max_y:
-            min_y -= min_y * 0.05
-            max_y += min_y * 0.05
-        if min_y == max_y:
-            min_y -= 5
-            max_y += 5
-        self.subplot.set_ylim(bottom=min_y, top=max_y)
+        yRange = maxY - minY
+        minY -= yRange * 0.05
+        maxY += yRange * 0.05
+        # Extend by % of value if we show function of a constant
+        if minY == maxY:
+            minY -= minY * 0.05
+            maxY += minY * 0.05
+        # If still equal, function is 0, spread out visual space as special case
+        if minY == maxY:
+            minY -= 5
+            maxY += 5
+        self.subplot.set_ylim(bottom=minY, top=maxY)
 
         legendLines = []
-        for i, iData in enumerate(lineData):
+        for i, iData in enumerate(legendData):
             color, lineStyle, label = iData
             legendLines.append(Line2D([0], [0], color=color, linestyle=lineStyle, label=label.replace('$', '\$')))
 
@@ -210,7 +198,7 @@ class GraphCanvasPanel(wx.Panel):
     def markXApproximate(self, x):
         if x is not None:
             self.xMark = x
-            self.draw()
+            self.draw(accurateMarks=False)
 
     def markXAccurate(self, x):
         if x is not None:
