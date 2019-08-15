@@ -38,8 +38,10 @@ class FitGraph(metaclass=ABCMeta):
         FitGraph.viewMap[cls.internalName] = cls
 
     def __init__(self):
-        # Format: {(fit ID, target type, target ID): data}
+        # Format: {(fit ID, target type, target ID): {(xSpec, ySpec): (xs, ys)}}
         self._plotCache = {}
+        # Format: {(fit ID, target type, target ID): {(xSpec, ySpec): {x: y}}}
+        self._pointCache = {}
 
     @property
     @abstractmethod
@@ -90,6 +92,67 @@ class FitGraph(metaclass=ABCMeta):
     hasTargets = False
 
     def getPlotPoints(self, mainInput, miscInputs, xSpec, ySpec, src, tgt=None):
+        cacheKey = self._makeCacheKey(src=src, tgt=tgt)
+        try:
+            plotData = self._plotCache[cacheKey][(ySpec, xSpec)]
+        except KeyError:
+            plotData = self._calcPlotPoints(
+                mainInput=mainInput, miscInputs=miscInputs,
+                xSpec=xSpec, ySpec=ySpec, src=src, tgt=tgt)
+            self._plotCache.setdefault(cacheKey, {})[(ySpec, xSpec)] = plotData
+        return plotData
+
+    def getPoint(self, x, miscInputs, xSpec, ySpec, src, tgt=None):
+        cacheKey = self._makeCacheKey(src=src, tgt=tgt)
+        try:
+            y = self._pointCache[cacheKey][(ySpec, xSpec)][x]
+        except KeyError:
+            y = self._calcPoint(x=x, miscInputs=miscInputs, xSpec=xSpec, ySpec=ySpec, src=src, tgt=tgt)
+            self._pointCache.setdefault(cacheKey, {}).setdefault((ySpec, xSpec), {})[x] = y
+        return y
+
+    def clearCache(self, reason, extraData=None):
+        caches = (self._plotCache, self._pointCache)
+        plotKeysToClear = set()
+        # If fit changed - clear plots which concern this fit
+        if reason in (GraphCacheCleanupReason.fitChanged, GraphCacheCleanupReason.fitRemoved):
+            for cache in caches:
+                for cacheKey in cache:
+                    cacheFitID, cacheTgtType, cacheTgtID = cacheKey
+                    if extraData == cacheFitID:
+                        plotKeysToClear.add(cacheKey)
+                    elif cacheTgtType == 'fit' and extraData == cacheTgtID:
+                        plotKeysToClear.add(cacheKey)
+        # Same for profile
+        elif reason in (GraphCacheCleanupReason.profileChanged, GraphCacheCleanupReason.profileRemoved):
+            for cache in caches:
+                for cacheKey in cache:
+                    cacheFitID, cacheTgtType, cacheTgtID = cacheKey
+                    if cacheTgtType == 'profile' and extraData == cacheTgtID:
+                        plotKeysToClear.add(cacheKey)
+        # Target fit resist mode changed
+        elif reason == GraphCacheCleanupReason.resistModeChanged:
+            for cache in caches:
+                for cacheKey in cache:
+                    cacheFitID, cacheTgtType, cacheTgtID = cacheKey
+                    if cacheTgtType == 'fit' and extraData == cacheTgtID:
+                        plotKeysToClear.add(cacheKey)
+        # Wipe out whole plot cache otherwise
+        else:
+            for cache in caches:
+                for cacheKey in cache:
+                    plotKeysToClear.add(cacheKey)
+        # Do actual cleanup
+        for cache in caches:
+            for cacheKey in plotKeysToClear:
+                try:
+                    del cache[cacheKey]
+                except KeyError:
+                    pass
+        # Process any internal caches graphs might have
+        self._clearInternalCache(reason, extraData)
+
+    def _makeCacheKey(self, src, tgt):
         if tgt is not None and tgt.isFit:
             tgtType = 'fit'
             tgtItemID = tgt.item.ID
@@ -100,59 +163,18 @@ class FitGraph(metaclass=ABCMeta):
             tgtType = None
             tgtItemID = None
         cacheKey = (src.item.ID, tgtType, tgtItemID)
-        try:
-            plotData = self._plotCache[cacheKey][(ySpec, xSpec)]
-        except KeyError:
-            plotData = self._calcPlotPoints(
-                mainInput=mainInput, miscInputs=miscInputs,
-                xSpec=xSpec, ySpec=ySpec, src=src, tgt=tgt)
-            self._plotCache.setdefault(cacheKey, {})[(ySpec, xSpec)] = plotData
-        return plotData
-
-    def clearCache(self, reason, extraData=None):
-        plotKeysToClear = set()
-        # If fit changed - clear plots which concern this fit
-        if reason in (GraphCacheCleanupReason.fitChanged, GraphCacheCleanupReason.fitRemoved):
-            for cacheKey in self._plotCache:
-                cacheFitID, cacheTgtType, cacheTgtID = cacheKey
-                if extraData == cacheFitID:
-                    plotKeysToClear.add(cacheKey)
-                elif cacheTgtType == 'fit' and extraData == cacheTgtID:
-                    plotKeysToClear.add(cacheKey)
-        # Same for profile
-        elif reason in (GraphCacheCleanupReason.profileChanged, GraphCacheCleanupReason.profileRemoved):
-            for cacheKey in self._plotCache:
-                cacheFitID, cacheTgtType, cacheTgtID = cacheKey
-                if cacheTgtType == 'profile' and extraData == cacheTgtID:
-                    plotKeysToClear.add(cacheKey)
-        # Target fit resist mode changed
-        elif reason == GraphCacheCleanupReason.resistModeChanged:
-            for cacheKey in self._plotCache:
-                cacheFitID, cacheTgtType, cacheTgtID = cacheKey
-                if cacheTgtType == 'fit' and extraData == cacheTgtID:
-                    plotKeysToClear.add(cacheKey)
-        # Wipe out whole plot cache otherwise
-        else:
-            for cacheKey in self._plotCache:
-                plotKeysToClear.add(cacheKey)
-        # Do actual cleanup
-        for cacheKey in plotKeysToClear:
-            del self._plotCache[cacheKey]
-        # Process any internal caches graphs might have
-        self._clearInternalCache(reason, extraData)
+        return cacheKey
 
     def _clearInternalCache(self, reason, extraData):
         return
 
     # Calculation stuff
     def _calcPlotPoints(self, mainInput, miscInputs, xSpec, ySpec, src, tgt):
-        mainParamRange, miscParams = self._normalizeInputs(
-            mainInput=mainInput, miscInputs=miscInputs,
-            src=src, tgt=tgt)
-        mainParamRange, miscParams = self._limitParams(
-            mainParamRange=mainParamRange, miscParams=miscParams,
-            src=src, tgt=tgt)
-        xs, ys = self._getPoints(
+        mainParamRange = self._normalizeMain(mainInput=mainInput, src=src, tgt=tgt)
+        miscParams = self._normalizeMisc(miscInputs=miscInputs, src=src, tgt=tgt)
+        mainParamRange = self._limitMain(mainParamRange=mainParamRange, src=src, tgt=tgt)
+        miscParams = self._limitMisc(miscParams=miscParams, src=src, tgt=tgt)
+        xs, ys = self._getPlotPoints(
             xRange=mainParamRange[1], miscParams=miscParams,
             xSpec=xSpec, ySpec=ySpec, src=src, tgt=tgt)
         ys = self._denormalizeValues(values=ys, axisSpec=ySpec, src=src, tgt=tgt)
@@ -176,15 +198,25 @@ class FitGraph(metaclass=ABCMeta):
                 ys = [ys[0], ys[0]]
         return xs, ys
 
+    def _calcPoint(self, x, miscInputs, xSpec, ySpec, src, tgt):
+        x = self._normalizeValue(value=x, axisSpec=xSpec, src=src, tgt=tgt)
+        miscParams = self._normalizeMisc(miscInputs=miscInputs, src=src, tgt=tgt)
+        y = self._getPoint(x=x, miscParams=miscParams, xSpec=xSpec, ySpec=ySpec, src=src, tgt=tgt)
+        y = self._denormalizeValue(value=y, axisSpec=ySpec, src=src, tgt=tgt)
+        return y
+
     _normalizers = {}
 
-    def _normalizeInputs(self, mainInput, miscInputs, src, tgt):
+    def _normalizeMain(self, mainInput, src, tgt):
         key = (mainInput.handle, mainInput.unit)
         if key in self._normalizers:
             normalizer = self._normalizers[key]
             mainParamRange = (mainInput.handle, tuple(normalizer(v, src, tgt) for v in mainInput.value))
         else:
             mainParamRange = (mainInput.handle, mainInput.value)
+        return mainParamRange
+
+    def _normalizeMisc(self, miscInputs, src, tgt):
         miscParams = {}
         for miscInput in miscInputs:
             key = (miscInput.handle, miscInput.unit)
@@ -193,33 +225,43 @@ class FitGraph(metaclass=ABCMeta):
                 miscParams[miscInput.handle] = normalizer(miscInput.value, src, tgt)
             else:
                 miscParams[miscInput.handle] = miscInput.value
-        return mainParamRange, miscParams
+        return miscParams
+
+    def _normalizeValue(self, value, axisSpec, src, tgt):
+        key = (axisSpec.handle, axisSpec.unit)
+        if key in self._normalizers:
+            normalizer = self._normalizers[key]
+            value = normalizer(value, src, tgt)
+        return value
 
     _limiters = {}
 
-    def _limitParams(self, mainParamRange, miscParams, src, tgt):
-
-        def limitToRange(val, limitRange):
-            if val is None:
-                return None
-            val = max(val, min(limitRange))
-            val = min(val, max(limitRange))
-            return val
-
+    def _limitMain(self, mainParamRange, src, tgt):
         mainHandle, mainValue = mainParamRange
         if mainHandle in self._limiters:
             limiter = self._limiters[mainHandle]
-            mainParamRange = (mainHandle, tuple(limitToRange(v, limiter(src, tgt)) for v in mainValue))
+            mainParamRange = (mainHandle, tuple(self.__limitToRange(v, limiter(src, tgt)) for v in mainValue))
+        return mainParamRange
+
+    def _limitMisc(self, miscParams, src, tgt):
         for miscHandle in miscParams:
             if miscHandle in self._limiters:
                 limiter = self._limiters[miscHandle]
                 miscValue = miscParams[miscHandle]
-                miscParams[miscHandle] = limitToRange(miscValue, limiter(src, tgt))
-        return mainParamRange, miscParams
+                miscParams[miscHandle] = self.__limitToRange(miscValue, limiter(src, tgt))
+        return miscParams
+
+    @staticmethod
+    def __limitToRange(val, limitRange):
+        if val is None:
+            return None
+        val = max(val, min(limitRange))
+        val = min(val, max(limitRange))
+        return val
 
     _getters = {}
 
-    def _getPoints(self, xRange, miscParams, xSpec, ySpec, src, tgt):
+    def _getPlotPoints(self, xRange, miscParams, xSpec, ySpec, src, tgt):
         try:
             getterClass = self._getters[(xSpec.handle, ySpec.handle)]
         except KeyError:
@@ -227,6 +269,15 @@ class FitGraph(metaclass=ABCMeta):
         else:
             getter = getterClass(graph=self)
             return getter.getRange(xRange=xRange, miscParams=miscParams, src=src, tgt=tgt)
+
+    def _getPoint(self, x, miscParams, xSpec, ySpec, src, tgt):
+        try:
+            getterClass = self._getters[(xSpec.handle, ySpec.handle)]
+        except KeyError:
+            return [], []
+        else:
+            getter = getterClass(graph=self)
+            return getter.getPoint(x=x, miscParams=miscParams, src=src, tgt=tgt)
 
     _denormalizers = {}
 
@@ -236,3 +287,10 @@ class FitGraph(metaclass=ABCMeta):
             denormalizer = self._denormalizers[key]
             values = [denormalizer(v, src, tgt) for v in values]
         return values
+
+    def _denormalizeValue(self, value, axisSpec, src, tgt):
+        key = (axisSpec.handle, axisSpec.unit)
+        if key in self._denormalizers:
+            denormalizer = self._denormalizers[key]
+            value = denormalizer(value, src, tgt)
+        return value
