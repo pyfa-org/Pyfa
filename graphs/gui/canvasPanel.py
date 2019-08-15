@@ -111,6 +111,8 @@ class GraphCanvasPanel(wx.Panel):
             iterList = tuple(itertools.product(sources, self.graphFrame.ctrlPanel.targets))
         else:
             iterList = tuple((f, None) for f in sources)
+
+        # Draw plot lines and get data for legend
         for source, target in iterList:
             # Get line style data
             try:
@@ -156,12 +158,13 @@ class GraphCanvasPanel(wx.Panel):
                     legendData.append((color, lineStyle, source.shortName))
                 else:
                     legendData.append((color, lineStyle, '{} vs {}'.format(source.shortName, target.shortName)))
-            except Exception as ex:
+            except Exception:
                 pyfalog.warning('Invalid values in "{0}"', source.name)
                 self.canvas.draw()
                 self.Refresh()
                 return
 
+        # Setting Y limits for canvas
         if self.graphFrame.ctrlPanel.showY0:
             allYs.add(0)
         minY = min(allYs, default=0)
@@ -179,6 +182,15 @@ class GraphCanvasPanel(wx.Panel):
             minY -= 5
             maxY += 5
         self.subplot.set_ylim(bottom=minY, top=maxY)
+
+        # Process X marks line
+        if self.xMark is not None:
+            minX = min(allXs, default=None)
+            maxX = max(allXs, default=None)
+            if minX is not None and maxX is not None:
+                xMark = max(min(self.xMark, maxX), minX)
+                self.subplot.axvline(x=xMark, linestyle='dotted', linewidth=1, color=(0, 0, 0))
+
 
         legendLines = []
         for i, iData in enumerate(legendData):
