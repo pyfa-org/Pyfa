@@ -112,3 +112,84 @@ class DmgTypes:
     def __repr__(self):
         spec = ['em', 'thermal', 'kinetic', 'explosive', 'total']
         return makeReprStr(self, spec)
+
+
+class RRTypes:
+    """Container for tank data stats."""
+
+    def __init__(self, shield, armor, hull, capacitor):
+        self.shield = shield
+        self.armor = armor
+        self.hull = hull
+        self.capacitor = capacitor
+
+    # Iterator is needed to support tuple-style unpacking
+    def __iter__(self):
+        yield self.shield
+        yield self.armor
+        yield self.hull
+        yield self.capacitor
+
+    def __eq__(self, other):
+        if not isinstance(other, RRTypes):
+            return NotImplemented
+        # Round for comparison's sake because often tanking numbers are
+        # generated from data which includes float errors
+        return (
+            floatUnerr(self.shield) == floatUnerr(other.shield) and
+            floatUnerr(self.armor) == floatUnerr(other.armor) and
+            floatUnerr(self.hull) == floatUnerr(other.hull) and
+            floatUnerr(self.capacitor) == floatUnerr(other.capacitor))
+
+    def __bool__(self):
+        return any((self.shield, self.armor, self.hull, self.capacitor))
+
+    def __add__(self, other):
+        return type(self)(
+            shield=self.shield + other.shield,
+            armor=self.armor + other.armor,
+            hull=self.hull + other.hull,
+            capacitor=self.capacitor + other.capacitor)
+
+    def __iadd__(self, other):
+        self.shield += other.shield
+        self.armor += other.armor
+        self.hull += other.hull
+        self.capacitor += other.capacitor
+        return self
+
+    def __mul__(self, mul):
+        return type(self)(
+            shield=self.shield * mul,
+            armor=self.armor * mul,
+            hull=self.hull * mul,
+            capacitor=self.capacitor * mul)
+
+    def __imul__(self, mul):
+        if mul == 1:
+            return
+        self.shield *= mul
+        self.armor *= mul
+        self.hull *= mul
+        self.capacitor *= mul
+        return self
+
+    def __truediv__(self, div):
+        return type(self)(
+            shield=self.shield / div,
+            armor=self.armor / div,
+            hull=self.hull / div,
+            capacitor=self.capacitor / div)
+
+    def __itruediv__(self, div):
+        if div == 1:
+            return self
+        self.shield /= div
+        self.armor /= div
+        self.hull /= div
+        self.capacitor /= div
+        return self
+
+    def __repr__(self):
+        spec = ['shield', 'armor', 'hull', 'capacitor']
+        return makeReprStr(self, spec)

@@ -30,7 +30,7 @@ from eos.saveddata.mutator import Mutator
 from eos.utils.cycles import CycleInfo, CycleSequence
 from eos.utils.float import floatUnerr
 from eos.utils.spoolSupport import calculateSpoolup, resolveSpoolOptions
-from eos.utils.stats import DmgTypes
+from eos.utils.stats import DmgTypes, RRTypes
 
 
 pyfalog = Logger(__name__)
@@ -134,6 +134,7 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
             self.__charge = None
 
         self.__baseVolley = None
+        self.__baseRRAmount = None
         self.__baseRemoteReps = None
         self.__miningyield = None
         self.__reloadTime = None
@@ -482,6 +483,50 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
             explosive=dmgDuringCycle.explosive * dpsFactor)
         return dps
 
+    def getRepAmountParameters(self, spoolOptions=None, ignoreState=False):
+        if self.isEmpty or (self.state < FittingModuleState.ACTIVE and not ignoreState):
+            return {}
+        remoteModuleGroups = {
+            "Remote Armor Repairer": "Armor",
+            "Ancillary Remote Armor Repairer": "Armor",
+            "Mutadaptive Remote Armor Repairer": "Armor",
+            "Remote Hull Repairer": "Hull",
+            "Remote Shield Booster": "Shield",
+            "Ancillary Remote Shield Booster": "Shield",
+            "Remote Capacitor Transmitter": "Capacitor"}
+        rrType = remoteModuleGroups.get(self.item.group.name)
+        if rrType is None:
+            return {}
+        if self.__baseRRAmount is None:
+            self.__baseRRAmount = {}
+            shieldAmount = 0
+            armorAmount = 0
+            hullAmount = 0
+            capacitorAmount = 0
+            if rrType == "Hull":
+                hullAmount += self.getModifiedItemAttr("structureDamageAmount", 0)
+            elif rrType == "Armor":
+                armorAmount += self.getModifiedItemAttr("armorDamageAmount", 0)
+            elif rrType == "Shield":
+                shieldAmount += self.getModifiedItemAttr("shieldBonus", 0)
+            elif rrType == "Capacitor":
+                capacitorAmount += self.getModifiedItemAttr("powerTransferAmount", 0)
+            rrDelay = 0 if rrType == "Shield" else self.rawCycleTime
+            self.__baseRRAmount[rrDelay] = RRTypes(shield=shieldAmount, armor=armorAmount, hull=hullAmount, capacitor=capacitorAmount)
+        spoolType, spoolAmount = resolveSpoolOptions(spoolOptions, self)
+        spoolBoost = calculateSpoolup(
+            self.getModifiedItemAttr("repairMultiplierBonusMax", 0),
+            self.getModifiedItemAttr("repairMultiplierBonusPerCycle", 0),
+            self.rawCycleTime / 1000, spoolType, spoolAmount)[0]
+        spoolMultiplier = 1 + spoolBoost
+        adjustedRRAmount = {}
+        for rrTime, rrAmount in self.__baseRRAmount.items():
+            if spoolMultiplier == 1:
+                adjustedRRAmount[rrTime] = rrAmount
+            else:
+                adjustedRRAmount[rrTime] = rrAmount * spoolMultiplier
+        return adjustedRRAmount
+
     def getRemoteReps(self, spoolOptions=None, ignoreState=False):
         if self.isEmpty or (self.state < FittingModuleState.ACTIVE and not ignoreState):
             return None, 0
@@ -789,6 +834,7 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
 
     def clear(self):
         self.__baseVolley = None
+        self.__baseRRAmount = None
         self.__baseRemoteReps = None
         self.__miningyield = None
         self.__reloadTime = None
