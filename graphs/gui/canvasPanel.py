@@ -168,28 +168,11 @@ class GraphCanvasPanel(wx.Panel):
                 self.Refresh()
                 return
 
-        def getLimits(vals, minExtra=0, maxExtra=0):
-            minVal = min(vals, default=0)
-            maxVal = max(vals, default=0)
-            # Extend range a little for some visual space
-            valRange = maxVal - minVal
-            minVal -= valRange * minExtra
-            maxVal += valRange * maxExtra
-            # Extend by % of value if we show function of a constant
-            if minVal == maxVal:
-                minVal -= minVal * 0.05
-                maxVal += minVal * 0.05
-            # If still equal, function is 0, spread out visual space as special case
-            if minVal == maxVal:
-                minVal -= 5
-                maxVal += 5
-            return minVal, maxVal
-
         # Setting Y limits for canvas
         if self.graphFrame.ctrlPanel.showY0:
             allYs.add(0)
-        canvasMinY, canvasMaxY = getLimits(allYs, minExtra=0.05, maxExtra=0.1)
-        canvasMinX, canvasMaxX = getLimits(allXs, minExtra=0.02, maxExtra=0.05)
+        canvasMinY, canvasMaxY = self._getLimits(allYs, minExtra=0.05, maxExtra=0.1)
+        canvasMinX, canvasMaxX = self._getLimits(allXs, minExtra=0.02, maxExtra=0.05)
         self.subplot.set_ylim(bottom=canvasMinY, top=canvasMaxY)
         self.subplot.set_xlim(left=canvasMinX, right=canvasMaxX)
         # Process X marks line
@@ -250,12 +233,7 @@ class GraphCanvasPanel(wx.Panel):
                             addYMark(ys[idx])
                             continue
                         idx = bisect(xs, xMark)
-                        xLeft = xs[idx - 1]
-                        xRight = xs[idx]
-                        yLeft = ys[idx - 1]
-                        yRight = ys[idx]
-                        pos = (xMark - xLeft) / (xRight - xLeft)
-                        yMark =  yLeft + pos * (yRight - yLeft)
+                        yMark = self._interpolateX(x=xMark, x1=xs[idx - 1], y1=ys[idx - 1], x2=xs[idx], y2=ys[idx])
                         addYMark(yMark)
 
                 # Draw Y values
@@ -287,6 +265,30 @@ class GraphCanvasPanel(wx.Panel):
     def unmarkX(self):
         self.xMark = None
         self.draw()
+
+    @staticmethod
+    def _getLimits(vals, minExtra=0, maxExtra=0):
+        minVal = min(vals, default=0)
+        maxVal = max(vals, default=0)
+        # Extend range a little for some visual space
+        valRange = maxVal - minVal
+        minVal -= valRange * minExtra
+        maxVal += valRange * maxExtra
+        # Extend by % of value if we show function of a constant
+        if minVal == maxVal:
+            minVal -= minVal * 0.05
+            maxVal += minVal * 0.05
+        # If still equal, function is 0, spread out visual space as special case
+        if minVal == maxVal:
+            minVal -= 5
+            maxVal += 5
+        return minVal, maxVal
+
+    @staticmethod
+    def _interpolateX(x, x1, y1, x2, y2):
+        pos = (x - x1) / (x2 - x1)
+        y = y1 + pos * (y2 - y1)
+        return y
 
     # Matplotlib event handlers
     def OnMplCanvasClick(self, event):
