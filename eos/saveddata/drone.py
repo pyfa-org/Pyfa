@@ -25,7 +25,7 @@ import eos.db
 from eos.effectHandlerHelpers import HandledCharge, HandledItem
 from eos.modifiedAttributeDict import ChargeAttrShortcut, ItemAttrShortcut, ModifiedAttributeDict
 from eos.utils.cycles import CycleInfo
-from eos.utils.stats import DmgTypes
+from eos.utils.stats import DmgTypes, RRTypes
 
 
 pyfalog = Logger(__name__)
@@ -68,6 +68,7 @@ class Drone(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
         """ Build object. Assumes proper and valid item already set """
         self.__charge = None
         self.__baseVolley = None
+        self.__baseRRAmount = None
         self.__baseRemoteReps = None
         self.__miningyield = None
         self.__itemModifiedAttributes = ModifiedAttributeDict()
@@ -173,6 +174,27 @@ class Drone(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
             kinetic=volley.kinetic * dpsFactor,
             explosive=volley.explosive * dpsFactor)
         return dps
+
+    def isRemoteRepping(self):
+        repParams = self.getRepAmountParameters()
+        for rrData in repParams.values():
+            if rrData:
+                return True
+        return False
+
+    def getRepAmountParameters(self):
+        if self.amountActive <= 0:
+            return {}
+        if self.__baseRRAmount is None:
+            self.__baseRRAmount = {}
+            hullAmount = self.getModifiedItemAttr("structureDamageAmount", 0)
+            armorAmount = self.getModifiedItemAttr("armorDamageAmount", 0)
+            shieldAmount = self.getModifiedItemAttr("shieldBonus", 0)
+            if shieldAmount:
+                self.__baseRRAmount[0] = RRTypes(shield=shieldAmount, armor=0, hull=0, capacitor=0)
+            if armorAmount or hullAmount:
+                self.__baseRRAmount[self.cycleTime] = RRTypes(shield=shieldAmount, armor=0, hull=0, capacitor=0)
+        return self.__baseRRAmount
 
     def getCycleParameters(self, reloadOverride=None):
         cycleTime = self.cycleTime

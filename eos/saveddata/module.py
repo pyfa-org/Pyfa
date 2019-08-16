@@ -483,6 +483,13 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
             explosive=dmgDuringCycle.explosive * dpsFactor)
         return dps
 
+    def isRemoteRepping(self, ignoreState=False):
+        repParams = self.getRepAmountParameters(ignoreState=ignoreState)
+        for rrData in repParams.values():
+            if rrData:
+                return True
+        return False
+
     def getRepAmountParameters(self, spoolOptions=None, ignoreState=False):
         if self.isEmpty or (self.state < FittingModuleState.ACTIVE and not ignoreState):
             return {}
