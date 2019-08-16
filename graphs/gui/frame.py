@@ -164,7 +164,7 @@ class GraphFrame(AuxiliaryFrame):
         event.Skip()
         self.ctrlPanel.Freeze()
         if getattr(event, 'refreshAxeLabels', False):
-            self.ctrlPanel.refreshAxeLabels()
+            self.ctrlPanel.refreshAxeLabels(restoreSelection=True)
         if getattr(event, 'refreshColumns', False):
             self.ctrlPanel.refreshColumns()
         self.ctrlPanel.Thaw()

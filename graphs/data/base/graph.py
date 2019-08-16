@@ -90,6 +90,7 @@ class FitGraph(metaclass=ABCMeta):
     srcVectorDef = None
     tgtVectorDef = None
     hasTargets = False
+    usesHpEffectivity = False
 
     def getPlotPoints(self, mainInput, miscInputs, xSpec, ySpec, src, tgt=None):
         cacheKey = self._makeCacheKey(src=src, tgt=tgt)

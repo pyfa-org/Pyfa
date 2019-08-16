@@ -133,16 +133,8 @@ class GraphControlPanel(wx.Panel):
             self.Freeze()
         self._clearStoredValues()
         view = self.graphFrame.getView()
-        self.ySubSelection.Clear()
-        self.xSubSelection.Clear()
-        for yDef in view.yDefs:
-            self.ySubSelection.Append(self.formatLabel(yDef, selector=True), yDef)
-        self.ySubSelection.SetSelection(0)
-        self.ySubSelection.Enable(len(view.yDefs) > 1)
-        for xDef in view.xDefs:
-            self.xSubSelection.Append(self.formatLabel(xDef, selector=True), xDef)
-        self.xSubSelection.SetSelection(0)
-        self.xSubSelection.Enable(len(view.xDefs) > 1)
+
+        self.refreshAxeLabels()
 
         # Vectors
         self._setVectorDefaults()
@@ -256,14 +248,25 @@ class GraphControlPanel(wx.Panel):
                 continue
             addInputField(inputDef, handledHandles)
 
-    def refreshAxeLabels(self):
-        # Currently we need to refresh only Y for dps graph
-        selectedY = self.ySubSelection.GetSelection()
+    def refreshAxeLabels(self, restoreSelection=False):
         view = self.graphFrame.getView()
+        if restoreSelection:
+            selectedY = self.ySubSelection.GetSelection()
+            selectedX = self.xSubSelection.GetSelection()
+        else:
+            selectedY = selectedX = 0
+
         self.ySubSelection.Clear()
         for yDef in view.yDefs:
             self.ySubSelection.Append(self.formatLabel(yDef, selector=True), yDef)
+        self.ySubSelection.Enable(len(view.yDefs) > 1)
         self.ySubSelection.SetSelection(selectedY)
+
+        self.xSubSelection.Clear()
+        for xDef in view.xDefs:
+            self.xSubSelection.Append(self.formatLabel(xDef, selector=True), xDef)
+        self.xSubSelection.Enable(len(view.xDefs) > 1)
+        self.xSubSelection.SetSelection(selectedX)
 
     def refreshColumns(self, layout=True):
         view = self.graphFrame.getView()
