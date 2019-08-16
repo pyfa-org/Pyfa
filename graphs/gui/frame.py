@@ -163,12 +163,15 @@ class GraphFrame(AuxiliaryFrame):
 
     def OnGraphOptionChanged(self, event):
         event.Skip()
-        self.ctrlPanel.Freeze()
-        if getattr(event, 'refreshAxeLabels', False):
-            self.ctrlPanel.refreshAxeLabels(restoreSelection=True)
-        if getattr(event, 'refreshColumns', False):
-            self.ctrlPanel.refreshColumns()
-        self.ctrlPanel.Thaw()
+        layout = getattr(event, 'refreshColumns', False) or getattr(event, 'refreshColumns', False)
+        if layout:
+            self.ctrlPanel.Freeze()
+            if getattr(event, 'refreshAxeLabels', False):
+                self.ctrlPanel.refreshAxeLabels(restoreSelection=True)
+            if getattr(event, 'refreshColumns', False):
+                self.ctrlPanel.refreshColumns()
+            self.Layout()
+            self.ctrlPanel.Thaw()
         self.clearCache(reason=GraphCacheCleanupReason.optionChanged)
         self.draw()
 
@@ -179,6 +182,7 @@ class GraphFrame(AuxiliaryFrame):
         if currentView.usesHpEffectivity:
             currentView.isEffective = event.effective
             self.ctrlPanel.refreshAxeLabels(restoreSelection=True)
+            self.Layout()
             self.clearCache(reason=GraphCacheCleanupReason.hpEffectivityChanged)
             self.draw()
         # Even if graph is not selected, keep it updated
