@@ -162,6 +162,7 @@ class ResistancesViewFull(StatsView):
         wx.PostEvent(self.mainFrame, GE.EffectiveHpToggled(effective=self.stEHPs.GetLabel() == "HP"))
 
     def ehpSwitch(self, event):
+        event.Skip()
         self.showEffective = event.effective
         fitID = self.mainFrame.getActiveFit()
         wx.PostEvent(self.mainFrame, GE.FitChanged(fitIDs=(fitID,)))

@@ -130,6 +130,7 @@ class GraphCacheCleanupReason(IntEnum):
     inputChanged = autoId()
     optionChanged = autoId()
     resistModeChanged = autoId()
+    hpEffectivityChanged = autoId()
 
 
 @unique

@@ -18,6 +18,7 @@
 # =============================================================================
 
 
+import gui.mainFrame
 from graphs.data.base import FitGraph, XDef, YDef, Input
 from .getter import (
     Time2ShieldAmountGetter, Time2ShieldRegenGetter,
@@ -29,24 +30,29 @@ class FitShieldRegenGraph(FitGraph):
     # UI stuff
     internalName = 'shieldRegenGraph'
     name = 'Shield Regeneration'
-    xDefs = [
-        XDef(handle='time', unit='s', label='Time', mainInput=('time', 's')),
-        XDef(handle='shieldAmount', unit='EHP', label='Shield amount', mainInput=('shieldAmount', '%')),
-        XDef(handle='shieldAmount', unit='HP', label='Shield amount', mainInput=('shieldAmount', '%')),
-        XDef(handle='shieldAmount', unit='%', label='Shield amount', mainInput=('shieldAmount', '%'))]
-    yDefs = [
-        YDef(handle='shieldAmount', unit='EHP', label='Shield amount'),
-        YDef(handle='shieldAmount', unit='HP', label='Shield amount'),
-        YDef(handle='shieldRegen', unit='EHP/s', label='Shield regen'),
-        YDef(handle='shieldRegen', unit='HP/s', label='Shield regen')]
     inputs = [
         Input(handle='time', unit='s', label='Time', iconID=1392, defaultValue=120, defaultRange=(0, 300), mainOnly=True),
         Input(handle='shieldAmount', unit='%', label='Shield amount', iconID=1384, defaultValue=25, defaultRange=(0, 100), mainOnly=True)]
     srcExtraCols = ('ShieldAmount', 'ShieldTime')
+    usesHpEffectivity = True
+
+    @property
+    def xDefs(self):
+        return [
+            XDef(handle='time', unit='s', label='Time', mainInput=('time', 's')),
+            XDef(handle='shieldAmount', unit='EHP' if self.isEffective else 'HP', label='Shield amount', mainInput=('shieldAmount', '%')),
+            XDef(handle='shieldAmount', unit='%', label='Shield amount', mainInput=('shieldAmount', '%'))]
+
+    @property
+    def yDefs(self):
+        return [
+            YDef(handle='shieldAmount', unit='EHP' if self.isEffective else 'HP', label='Shield amount'),
+            YDef(handle='shieldRegen', unit='EHP/s' if self.isEffective else 'HP/s', label='Shield regen')]
 
     # Calculation stuff
     _normalizers = {
         ('shieldAmount', '%'): lambda v, src, tgt: v / 100 * src.item.ship.getModifiedItemAttr('shieldCapacity'),
+        # Needed only for "x mark" support, to convert EHP x into normalized value
         ('shieldAmount', 'EHP'): lambda v, src, tgt: v / src.item.damagePattern.effectivify(src.item, 1, 'shield')}
     _limiters = {
         'shieldAmount': lambda src, tgt: (0, src.item.ship.getModifiedItemAttr('shieldCapacity'))}
@@ -59,3 +65,7 @@ class FitShieldRegenGraph(FitGraph):
         ('shieldAmount', '%'): lambda v, src, tgt: v * 100 / src.item.ship.getModifiedItemAttr('shieldCapacity'),
         ('shieldAmount', 'EHP'): lambda v, src, tgt: src.item.damagePattern.effectivify(src.item, v, 'shield'),
         ('shieldRegen', 'EHP/s'): lambda v, src, tgt: src.item.damagePattern.effectivify(src.item, v, 'shield')}
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.isEffective = gui.mainFrame.MainFrame.getInstance().statsPane.nameViewMap['resistancesViewFull'].showEffective

@@ -46,10 +46,10 @@ class RechargeViewFull(StatsView):
         return width
 
     def toggleEffective(self, event):
+        event.Skip()
         self.effective = event.effective
         sFit = Fit.getInstance()
         self.refreshPanel(sFit.getFit(self.mainFrame.getActiveFit()))
-        event.Skip()
 
     def populatePanel(self, contentPanel, headerPanel):
         contentSizer = contentPanel.GetSizer()

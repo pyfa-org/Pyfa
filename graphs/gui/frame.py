@@ -88,6 +88,7 @@ class GraphFrame(AuxiliaryFrame):
         self.mainFrame.Bind(GE.TARGET_PROFILE_REMOVED, self.OnProfileRemoved)
         self.mainFrame.Bind(RESIST_MODE_CHANGED, self.OnResistModeChanged)
         self.mainFrame.Bind(GE.GRAPH_OPTION_CHANGED, self.OnGraphOptionChanged)
+        self.mainFrame.Bind(GE.EFFECTIVE_HP_TOGGLED, self.OnEffectiveHpToggled)
 
         self.Layout()
         self.UpdateWindowSize()
@@ -171,6 +172,23 @@ class GraphFrame(AuxiliaryFrame):
         self.clearCache(reason=GraphCacheCleanupReason.optionChanged)
         self.draw()
 
+    def OnEffectiveHpToggled(self, event):
+        event.Skip()
+        currentView = self.getView()
+        # Redraw graph if needed
+        if currentView.usesHpEffectivity:
+            currentView.isEffective = event.effective
+            self.ctrlPanel.refreshAxeLabels(restoreSelection=True)
+            self.clearCache(reason=GraphCacheCleanupReason.hpEffectivityChanged)
+            self.draw()
+        # Even if graph is not selected, keep it updated
+        for idx in range(self.graphSelection.GetCount()):
+            view = self.getView(idx=idx)
+            if view is currentView:
+                continue
+            if view.usesHpEffectivity:
+                view.isEffective = event.effective
+
     def OnGraphSwitched(self, event):
         view = self.getView()
         GraphSettings.getInstance().set('selectedGraph', view.internalName)
@@ -189,10 +207,13 @@ class GraphFrame(AuxiliaryFrame):
         self.mainFrame.Unbind(GE.TARGET_PROFILE_REMOVED, handler=self.OnProfileRemoved)
         self.mainFrame.Unbind(RESIST_MODE_CHANGED, handler=self.OnResistModeChanged)
         self.mainFrame.Unbind(GE.GRAPH_OPTION_CHANGED, handler=self.OnGraphOptionChanged)
+        self.mainFrame.Unbind(GE.EFFECTIVE_HP_TOGGLED, handler=self.OnEffectiveHpToggled)
         event.Skip()
 
-    def getView(self):
-        return self.graphSelection.GetClientData(self.graphSelection.GetSelection())
+    def getView(self, idx=None):
+        if idx is None:
+            idx = self.graphSelection.GetSelection()
+        return self.graphSelection.GetClientData(idx)
 
     def clearCache(self, reason, extraData=None):
         self.getView().clearCache(reason, extraData)
