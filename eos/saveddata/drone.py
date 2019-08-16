@@ -174,15 +174,16 @@ class Drone(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
             explosive=volley.explosive * dpsFactor)
         return dps
 
-    def isRemoteRepping(self):
-        repParams = self.getRepAmountParameters()
+    def isRemoteRepping(self, ignoreState=False):
+        repParams = self.getRepAmountParameters(ignoreState=ignoreState)
         for rrData in repParams.values():
             if rrData:
                 return True
         return False
 
-    def getRepAmountParameters(self):
-        if self.amountActive <= 0:
+    def getRepAmountParameters(self, ignoreState=False):
+        amount = self.amount if ignoreState else self.amountActive
+        if amount <= 0:
             return {}
         if self.__baseRRAmount is None:
             self.__baseRRAmount = {}
@@ -191,12 +192,12 @@ class Drone(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
             shieldAmount = self.getModifiedItemAttr("shieldBonus", 0)
             if shieldAmount:
                 self.__baseRRAmount[0] = RRTypes(
-                    shield=shieldAmount * self.amountActive,
+                    shield=shieldAmount * amount,
                     armor=0, hull=0, capacitor=0)
             if armorAmount or hullAmount:
                 self.__baseRRAmount[self.cycleTime] = RRTypes(
-                    shield=0, armor=armorAmount * self.amountActive,
-                    hull=hullAmount * self.amountActive, capacitor=0)
+                    shield=0, armor=armorAmount * amount,
+                    hull=hullAmount * amount, capacitor=0)
         return self.__baseRRAmount
 
     def getRemoteReps(self, ignoreState=False):
@@ -204,7 +205,7 @@ class Drone(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
         cycleParams = self.getCycleParameters()
         if cycleParams is None:
             return rrDuringCycle
-        repAmountParams = self.getRepAmountParameters()
+        repAmountParams = self.getRepAmountParameters(ignoreState=ignoreState)
         avgCycleTime = cycleParams.averageTime
         if len(repAmountParams) == 0 or avgCycleTime == 0:
             return rrDuringCycle
