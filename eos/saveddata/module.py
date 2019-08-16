@@ -506,7 +506,11 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
             if rrType == "Hull":
                 hullAmount += self.getModifiedItemAttr("structureDamageAmount", 0)
             elif rrType == "Armor":
-                armorAmount += self.getModifiedItemAttr("armorDamageAmount", 0)
+                if self.item.group.name == "Ancillary Remote Armor Repairer" and self.charge:
+                    mult = self.getModifiedItemAttr("chargedArmorDamageMultiplier", 1)
+                else:
+                    mult = 1
+                armorAmount += self.getModifiedItemAttr("armorDamageAmount", 0) * mult
             elif rrType == "Shield":
                 shieldAmount += self.getModifiedItemAttr("shieldBonus", 0)
             elif rrType == "Capacitor":
