@@ -20,6 +20,7 @@
 
 from . import fitDamageStats
 from . import fitEwarStats
+from . import fitRemoteReps
 from . import fitShieldRegen
 from . import fitCapRegen
 from . import fitMobility

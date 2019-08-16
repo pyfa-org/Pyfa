@@ -18,7 +18,5 @@
 # =============================================================================
 
 
-from .graph import FitMobilityGraph
+from graphs.data.base import SmoothPointGetter
 
-
-FitMobilityGraph.register()

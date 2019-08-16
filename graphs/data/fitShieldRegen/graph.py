@@ -54,8 +54,7 @@ class FitShieldRegenGraph(FitGraph):
         ('shieldAmount', '%'): lambda v, src, tgt: v / 100 * src.item.ship.getModifiedItemAttr('shieldCapacity'),
         # Needed only for "x mark" support, to convert EHP x into normalized value
         ('shieldAmount', 'EHP'): lambda v, src, tgt: v / src.item.damagePattern.effectivify(src.item, 1, 'shield')}
-    _limiters = {
-        'shieldAmount': lambda src, tgt: (0, src.item.ship.getModifiedItemAttr('shieldCapacity'))}
+    _limiters = {'shieldAmount': lambda src, tgt: (0, src.item.ship.getModifiedItemAttr('shieldCapacity'))}
     _getters = {
         ('time', 'shieldAmount'): Time2ShieldAmountGetter,
         ('time', 'shieldRegen'): Time2ShieldRegenGetter,

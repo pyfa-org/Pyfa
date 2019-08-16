@@ -42,8 +42,7 @@ class FitWarpTimeGraph(FitGraph):
     xDefs = [
         XDef(handle='distance', unit='AU', label='Distance', mainInput=('distance', 'AU')),
         XDef(handle='distance', unit='km', label='Distance', mainInput=('distance', 'km'))]
-    yDefs = [
-        YDef(handle='time', unit='s', label='Warp time')]
+    yDefs = [YDef(handle='time', unit='s', label='Warp time')]
     inputs = [
         Input(handle='distance', unit='AU', label='Distance', iconID=1391, defaultValue=20, defaultRange=(0, 50)),
         Input(handle='distance', unit='km', label='Distance', iconID=1391, defaultValue=1000, defaultRange=(150, 5000))]
@@ -53,10 +52,8 @@ class FitWarpTimeGraph(FitGraph):
     _normalizers = {
         ('distance', 'AU'): lambda v, src, tgt: v * AU_METERS,
         ('distance', 'km'): lambda v, src, tgt: v * 1000}
-    _limiters = {
-        'distance': lambda src, tgt: (0, src.item.maxWarpDistance * AU_METERS)}
-    _getters = {
-        ('distance', 'time'): Distance2TimeGetter}
+    _limiters = {'distance': lambda src, tgt: (0, src.item.maxWarpDistance * AU_METERS)}
+    _getters = {('distance', 'time'): Distance2TimeGetter}
     _denormalizers = {
         ('distance', 'AU'): lambda v, src, tgt: v / AU_METERS,
         ('distance', 'km'): lambda v, src, tgt: v / 1000}

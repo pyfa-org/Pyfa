@@ -40,14 +40,11 @@ class FitCapRegenGraph(FitGraph):
     srcExtraCols = ('CapAmount', 'CapTime')
 
     # Calculation stuff
-    _normalizers = {
-        ('capAmount', '%'): lambda v, src, tgt: v / 100 * src.item.ship.getModifiedItemAttr('capacitorCapacity')}
-    _limiters = {
-        'capAmount': lambda src, tgt: (0, src.item.ship.getModifiedItemAttr('capacitorCapacity'))}
+    _normalizers = {('capAmount', '%'): lambda v, src, tgt: v / 100 * src.item.ship.getModifiedItemAttr('capacitorCapacity')}
+    _limiters = {'capAmount': lambda src, tgt: (0, src.item.ship.getModifiedItemAttr('capacitorCapacity'))}
     _getters = {
         ('time', 'capAmount'): Time2CapAmountGetter,
         ('time', 'capRegen'): Time2CapRegenGetter,
         ('capAmount', 'capAmount'): CapAmount2CapAmountGetter,
         ('capAmount', 'capRegen'): CapAmount2CapRegenGetter}
-    _denormalizers = {
-        ('capAmount', '%'): lambda v, src, tgt: v * 100 / src.item.ship.getModifiedItemAttr('capacitorCapacity')}
+    _denormalizers = {('capAmount', '%'): lambda v, src, tgt: v * 100 / src.item.ship.getModifiedItemAttr('capacitorCapacity')}

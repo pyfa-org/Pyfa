@@ -18,7 +18,7 @@
 # =============================================================================
 
 
-from .graph import FitMobilityGraph
+from .graph import FitRemoteRepsGraph
 
 
-FitMobilityGraph.register()
+FitRemoteRepsGraph.register()

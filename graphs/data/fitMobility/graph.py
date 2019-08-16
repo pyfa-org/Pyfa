@@ -22,23 +22,20 @@ from graphs.data.base import FitGraph, XDef, YDef, Input
 from .getter import Time2SpeedGetter, Time2DistanceGetter
 
 
-class FitMobilityVsTimeGraph(FitGraph):
+class FitMobilityGraph(FitGraph):
 
     # UI stuff
     internalName = 'mobilityGraph'
     name = 'Mobility'
-    xDefs = [
-        XDef(handle='time', unit='s', label='Time', mainInput=('time', 's'))]
+    xDefs = [XDef(handle='time', unit='s', label='Time', mainInput=('time', 's'))]
     yDefs = [
         YDef(handle='speed', unit='m/s', label='Speed'),
         YDef(handle='distance', unit='km', label='Distance')]
-    inputs = [
-        Input(handle='time', unit='s', label='Time', iconID=1392, defaultValue=10, defaultRange=(0, 30))]
+    inputs = [Input(handle='time', unit='s', label='Time', iconID=1392, defaultValue=10, defaultRange=(0, 30))]
     srcExtraCols = ('Speed', 'Agility')
 
     # Calculation stuff
     _getters = {
         ('time', 'speed'): Time2SpeedGetter,
         ('time', 'distance'): Time2DistanceGetter}
-    _denormalizers = {
-        ('distance', 'km'): lambda v, src, tgt: v / 1000}
+    _denormalizers = {('distance', 'km'): lambda v, src, tgt: v / 1000}
