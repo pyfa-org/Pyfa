@@ -35,7 +35,7 @@ class FitRemoteRepsGraph(FitGraph):
     inputs = [
         Input(handle='time', unit='s', label='Time', iconID=1392, defaultValue=None, defaultRange=(0, 80), secondaryTooltip='When set, uses repairing ship\'s exact RR stats at a given time\nWhen not set, uses attacker\'s RR stats as shown in stats panel of main window'),
         Input(handle='distance', unit='km', label='Distance', iconID=1391, defaultValue=None, defaultRange=(0, 100), mainTooltip='Distance between the repairing ship and the target, as seen in overview (surface-to-surface)', secondaryTooltip='Distance between the repairing ship and the target, as seen in overview (surface-to-surface)')]
-    srcExtraCols = ()
+    srcExtraCols = ('ShieldRR', 'ArmorRR', 'HullRR')
 
     # Calculation stuff
     _normalizers = {('distance', 'km'): lambda v, src, tgt: None if v is None else v * 1000}

@@ -317,3 +317,60 @@ class ScanResolutionColumn(GraphColumn):
 
 
 ScanResolutionColumn.register()
+
+
+class ShieldRRColumn(GraphColumn):
+
+    name = 'ShieldRR'
+    stickPrefixToValue = True
+
+    def __init__(self, fittingView, params):
+        super().__init__(fittingView, 1384, (3, 0, 3))
+
+    def _getValue(self, fit):
+        defaultSpoolValue = eos.config.settings['globalDefaultSpoolupPercentage']
+        return fit.getRemoteReps(spoolOptions=SpoolOptions(SpoolType.SCALE, defaultSpoolValue, False)).shield, 'HP/s'
+
+    def _getFitTooltip(self):
+        return 'Declared shield repair speed'
+
+
+ShieldRRColumn.register()
+
+
+class ArmorRRColumn(GraphColumn):
+
+    name = 'ArmorRR'
+    stickPrefixToValue = True
+
+    def __init__(self, fittingView, params):
+        super().__init__(fittingView, 80, (3, 0, 3))
+
+    def _getValue(self, fit):
+        defaultSpoolValue = eos.config.settings['globalDefaultSpoolupPercentage']
+        return fit.getRemoteReps(spoolOptions=SpoolOptions(SpoolType.SCALE, defaultSpoolValue, False)).armor, 'HP/s'
+
+    def _getFitTooltip(self):
+        return 'Declared armor repair speed'
+
+
+ArmorRRColumn.register()
+
+
+class HullRRColumn(GraphColumn):
+
+    name = 'HullRR'
+    stickPrefixToValue = True
+
+    def __init__(self, fittingView, params):
+        super().__init__(fittingView, 67, (3, 0, 3))
+
+    def _getValue(self, fit):
+        defaultSpoolValue = eos.config.settings['globalDefaultSpoolupPercentage']
+        return fit.getRemoteReps(spoolOptions=SpoolOptions(SpoolType.SCALE, defaultSpoolValue, False)).hull, 'HP/s'
+
+    def _getFitTooltip(self):
+        return 'Declared hull repair speed'
+
+
+HullRRColumn.register()
