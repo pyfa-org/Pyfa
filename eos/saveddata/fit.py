@@ -36,7 +36,7 @@ from eos.saveddata.character import Character
 from eos.saveddata.citadel import Citadel
 from eos.saveddata.module import Module
 from eos.saveddata.ship import Ship
-from eos.utils.stats import DmgTypes
+from eos.utils.stats import DmgTypes, RRTypes
 
 
 pyfalog = Logger(__name__)
@@ -1291,21 +1291,13 @@ class Fit:
 
     def getRemoteReps(self, spoolOptions=None):
         if spoolOptions not in self.__remoteRepMap:
-            remoteReps = {}
+            remoteReps = RRTypes(0, 0, 0, 0)
 
             for module in self.modules:
-                rrType, rrAmount = module.getRemoteReps(spoolOptions=spoolOptions)
-                if rrType:
-                    if rrType not in remoteReps:
-                        remoteReps[rrType] = 0
-                    remoteReps[rrType] += rrAmount
+                remoteReps += module.getRemoteReps(spoolOptions=spoolOptions)
 
             for drone in self.drones:
-                rrType, rrAmount = drone.getRemoteReps()
-                if rrType:
-                    if rrType not in remoteReps:
-                        remoteReps[rrType] = 0
-                    remoteReps[rrType] += rrAmount
+                remoteReps += drone.getRemoteReps()
 
             self.__remoteRepMap[spoolOptions] = remoteReps
 

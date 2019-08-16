@@ -69,7 +69,6 @@ class Drone(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
         self.__charge = None
         self.__baseVolley = None
         self.__baseRRAmount = None
-        self.__baseRemoteReps = None
         self.__miningyield = None
         self.__itemModifiedAttributes = ModifiedAttributeDict()
         self.__itemModifiedAttributes.original = self.__item.attributes
@@ -191,46 +190,35 @@ class Drone(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
             armorAmount = self.getModifiedItemAttr("armorDamageAmount", 0)
             shieldAmount = self.getModifiedItemAttr("shieldBonus", 0)
             if shieldAmount:
-                self.__baseRRAmount[0] = RRTypes(shield=shieldAmount, armor=0, hull=0, capacitor=0)
+                self.__baseRRAmount[0] = RRTypes(
+                    shield=shieldAmount * self.amountActive,
+                    armor=0, hull=0, capacitor=0)
             if armorAmount or hullAmount:
-                self.__baseRRAmount[self.cycleTime] = RRTypes(shield=shieldAmount, armor=0, hull=0, capacitor=0)
+                self.__baseRRAmount[self.cycleTime] = RRTypes(
+                    shield=0, armor=armorAmount * self.amountActive,
+                    hull=hullAmount * self.amountActive, capacitor=0)
         return self.__baseRRAmount
+
+    def getRemoteReps(self, ignoreState=False):
+        rrDuringCycle = RRTypes(0, 0, 0, 0)
+        cycleParams = self.getCycleParameters()
+        if cycleParams is None:
+            return rrDuringCycle
+        repAmountParams = self.getRepAmountParameters()
+        avgCycleTime = cycleParams.averageTime
+        if len(repAmountParams) == 0 or avgCycleTime == 0:
+            return rrDuringCycle
+        for rrAmount in repAmountParams.values():
+            rrDuringCycle += rrAmount
+        rrFactor = 1 / (avgCycleTime / 1000)
+        rrDuringCycle *= rrFactor
+        return rrDuringCycle
 
     def getCycleParameters(self, reloadOverride=None):
         cycleTime = self.cycleTime
         if cycleTime == 0:
             return None
         return CycleInfo(self.cycleTime, 0, math.inf)
-
-    def getRemoteReps(self, ignoreState=False):
-        if self.amountActive <= 0 and not ignoreState:
-            return (None, 0)
-        if self.__baseRemoteReps is None:
-            rrShield = self.getModifiedItemAttr("shieldBonus", 0)
-            rrArmor = self.getModifiedItemAttr("armorDamageAmount", 0)
-            rrHull = self.getModifiedItemAttr("structureDamageAmount", 0)
-            if rrShield:
-                rrType = "Shield"
-                rrAmount = rrShield
-            elif rrArmor:
-                rrType = "Armor"
-                rrAmount = rrArmor
-            elif rrHull:
-                rrType = "Hull"
-                rrAmount = rrHull
-            else:
-                rrType = None
-                rrAmount = 0
-            if rrAmount:
-                droneAmount = self.amount if ignoreState else self.amountActive
-                cycleParams = self.getCycleParameters()
-                if cycleParams is None:
-                    rrType = None
-                    rrAmount = 0
-                else:
-                    rrAmount *= droneAmount / (cycleParams.averageTime / 1000)
-            self.__baseRemoteReps = (rrType, rrAmount)
-        return self.__baseRemoteReps
 
     @property
     def miningStats(self):
@@ -292,7 +280,7 @@ class Drone(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
 
     def clear(self):
         self.__baseVolley = None
-        self.__baseRemoteReps = None
+        self.__baseRRAmount = None
         self.__miningyield = None
         self.itemModifiedAttributes.clear()
         self.chargeModifiedAttributes.clear()

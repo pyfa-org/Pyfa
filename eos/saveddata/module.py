@@ -135,7 +135,6 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
 
         self.__baseVolley = None
         self.__baseRRAmount = None
-        self.__baseRemoteReps = None
         self.__miningyield = None
         self.__reloadTime = None
         self.__reloadForce = None
@@ -539,56 +538,19 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
         return adjustedRRAmount
 
     def getRemoteReps(self, spoolOptions=None, ignoreState=False):
-        if self.isEmpty or (self.state < FittingModuleState.ACTIVE and not ignoreState):
-            return None, 0
-
-        def getBaseRemoteReps(module):
-            remoteModuleGroups = {
-                "Remote Armor Repairer": "Armor",
-                "Ancillary Remote Armor Repairer": "Armor",
-                "Mutadaptive Remote Armor Repairer": "Armor",
-                "Remote Hull Repairer": "Hull",
-                "Remote Shield Booster": "Shield",
-                "Ancillary Remote Shield Booster": "Shield",
-                "Remote Capacitor Transmitter": "Capacitor"}
-            rrType = remoteModuleGroups.get(module.item.group.name, None)
-            if not rrType:
-                return None, 0
-            if rrType == "Hull":
-                rrAmount = module.getModifiedItemAttr("structureDamageAmount", 0)
-            elif rrType == "Armor":
-                rrAmount = module.getModifiedItemAttr("armorDamageAmount", 0)
-            elif rrType == "Shield":
-                rrAmount = module.getModifiedItemAttr("shieldBonus", 0)
-            elif rrType == "Capacitor":
-                rrAmount = module.getModifiedItemAttr("powerTransferAmount", 0)
-            else:
-                return None, 0
-
-            return rrType, rrAmount
-
-        if self.__baseRemoteReps is None:
-            self.__baseRemoteReps = getBaseRemoteReps(self)
-
-        rrType, rrAmount = self.__baseRemoteReps
-
-        if rrAmount:
-            cycleParams = self.getCycleParameters()
-            if cycleParams is None:
-                return None, 0
-            rrAmount *= 1 / (cycleParams.averageTime / 1000)
-            if self.item.group.name == "Ancillary Remote Armor Repairer" and self.charge:
-                rrAmount *= self.getModifiedItemAttr("chargedArmorDamageMultiplier", 1)
-
-        if rrType and rrAmount and self.item.group.name == "Mutadaptive Remote Armor Repairer":
-            spoolType, spoolAmount = resolveSpoolOptions(spoolOptions, self)
-            spoolBoost = calculateSpoolup(
-                self.getModifiedItemAttr("repairMultiplierBonusMax", 0),
-                self.getModifiedItemAttr("repairMultiplierBonusPerCycle", 0),
-                self.rawCycleTime / 1000, spoolType, spoolAmount)[0]
-            rrAmount *= (1 + spoolBoost)
-
-        return rrType, rrAmount
+        rrDuringCycle = RRTypes(0, 0, 0, 0)
+        cycleParams = self.getCycleParameters()
+        if cycleParams is None:
+            return rrDuringCycle
+        repAmountParams = self.getRepAmountParameters(spoolOptions=spoolOptions, ignoreState=ignoreState)
+        avgCycleTime = cycleParams.averageTime
+        if len(repAmountParams) == 0 or avgCycleTime == 0:
+            return rrDuringCycle
+        for rrAmount in repAmountParams.values():
+            rrDuringCycle += rrAmount
+        rrFactor = 1 / (avgCycleTime / 1000)
+        rrDuringCycle *= rrFactor
+        return rrDuringCycle
 
     def getSpoolData(self, spoolOptions=None):
         weaponMultMax = self.getModifiedItemAttr("damageMultiplierBonusMax", 0)
@@ -846,7 +808,6 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
     def clear(self):
         self.__baseVolley = None
         self.__baseRRAmount = None
-        self.__baseRemoteReps = None
         self.__miningyield = None
         self.__reloadTime = None
         self.__reloadForce = None
