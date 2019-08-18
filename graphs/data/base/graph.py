@@ -79,17 +79,17 @@ class FitGraph(metaclass=ABCMeta):
     def inputMap(self):
         return OrderedDict(((i.handle, i.unit), i) for i in self.inputs)
 
-    @property
-    def srcExtraCols(self):
-        return ()
+    checkboxes = ()
 
     @property
-    def tgtExtraCols(self):
-        return ()
+    def checkboxesMap(self):
+        return OrderedDict((ec.handle, ec) for ec in self.checkboxes)
 
+    hasTargets = False
     srcVectorDef = None
     tgtVectorDef = None
-    hasTargets = False
+    srcExtraCols = ()
+    tgtExtraCols = ()
     usesHpEffectivity = False
 
     def getPlotPoints(self, mainInput, miscInputs, xSpec, ySpec, src, tgt=None):

@@ -34,6 +34,7 @@ from .vector import VectorPicker
 
 InputData = namedtuple('InputData', ('handle', 'unit', 'value'))
 InputBox = namedtuple('InputBox', ('handle', 'unit', 'textBox', 'icon', 'label'))
+CheckBox = namedtuple('CheckBox', ('handle', 'checkBox'))
 
 
 class GraphControlPanel(wx.Panel):
@@ -43,6 +44,7 @@ class GraphControlPanel(wx.Panel):
         self.graphFrame = graphFrame
         self._mainInputBox = None
         self._miscInputBoxes = []
+        self._inputCheckboxes = []
         self._storedRanges = {}
         self._storedConsts = {}
 
@@ -85,7 +87,7 @@ class GraphControlPanel(wx.Panel):
         self.srcVectorLabel = wx.StaticText(self, wx.ID_ANY, '')
         self.srcVectorSizer.Add(self.srcVectorLabel, 0, wx.ALIGN_CENTER_HORIZONTAL| wx.BOTTOM, 5)
         self.srcVector = VectorPicker(self, style=wx.NO_BORDER, size=vectorSize, offset=0)
-        self.srcVector.Bind(VectorPicker.EVT_VECTOR_CHANGED, self.OnMiscFieldChanged)
+        self.srcVector.Bind(VectorPicker.EVT_VECTOR_CHANGED, self.OnNonMainInputChanged)
         self.srcVectorSizer.Add(self.srcVector, 0, wx.SHAPED | wx.ALIGN_CENTER_HORIZONTAL | wx.ALIGN_CENTER_VERTICAL | wx.ALL, 0)
         graphOptsSizer.Add(self.srcVectorSizer, 0, wx.EXPAND | wx.LEFT, 15)
 
@@ -93,7 +95,7 @@ class GraphControlPanel(wx.Panel):
         self.tgtVectorLabel = wx.StaticText(self, wx.ID_ANY, '')
         self.tgtVectorSizer.Add(self.tgtVectorLabel, 0, wx.ALIGN_CENTER_HORIZONTAL | wx.BOTTOM, 5)
         self.tgtVector = VectorPicker(self, style=wx.NO_BORDER, size=vectorSize, offset=0)
-        self.tgtVector.Bind(VectorPicker.EVT_VECTOR_CHANGED, self.OnMiscFieldChanged)
+        self.tgtVector.Bind(VectorPicker.EVT_VECTOR_CHANGED, self.OnNonMainInputChanged)
         self.tgtVectorSizer.Add(self.tgtVector, 0, wx.SHAPED | wx.ALIGN_CENTER_HORIZONTAL | wx.ALIGN_CENTER_VERTICAL | wx.ALL, 0)
         graphOptsSizer.Add(self.tgtVectorSizer, 0, wx.EXPAND | wx.LEFT, 10)
 
@@ -178,9 +180,12 @@ class GraphControlPanel(wx.Panel):
             for child in (inputBox.textBox, inputBox.icon, inputBox.label):
                 if child is not None:
                     child.Destroy()
+        for checkbox in self._inputCheckboxes:
+            checkbox.checkBox.Destroy()
         self.inputsSizer.Clear()
         self._mainInputBox = None
         self._miscInputBoxes.clear()
+        self._inputCheckboxes.clear()
 
         # Update vectors
         def handleVector(vectorDef, vector, handledHandles, mainInputHandle):
@@ -214,10 +219,10 @@ class GraphControlPanel(wx.Panel):
             tooltipText = (inputDef.mainTooltip if mainInput else inputDef.secondaryTooltip) or ''
             if mainInput:
                 fieldTextBox = FloatRangeBox(self, self._storedRanges.get((inputDef.handle, inputDef.unit), inputDef.defaultRange))
-                fieldTextBox.Bind(wx.EVT_TEXT, self.OnMainFieldChanged)
+                fieldTextBox.Bind(wx.EVT_TEXT, self.OnMainInputChanged)
             else:
                 fieldTextBox = FloatBox(self, self._storedConsts.get((inputDef.handle, inputDef.unit), inputDef.defaultValue))
-                fieldTextBox.Bind(wx.EVT_TEXT, self.OnMiscFieldChanged)
+                fieldTextBox.Bind(wx.EVT_TEXT, self.OnNonMainInputChanged)
             fieldTextBox.SetToolTip(wx.ToolTip(tooltipText))
             fieldSizer.Add(fieldTextBox, 0, wx.EXPAND | wx.ALIGN_CENTER_VERTICAL | wx.RIGHT, 5)
             fieldIcon = None
@@ -239,7 +244,6 @@ class GraphControlPanel(wx.Panel):
             else:
                 self._miscInputBoxes.append(inputBox)
 
-
         addInputField(view.inputMap[self.xType.mainInput], handledHandles, mainInput=True)
         for inputDef in view.inputs:
             if inputDef.mainOnly:
@@ -247,6 +251,21 @@ class GraphControlPanel(wx.Panel):
             if inputDef.handle in handledHandles:
                 continue
             addInputField(inputDef, handledHandles)
+
+        def addInputCheckbox(checkboxDef, handledHandles):
+            handledHandles.add(checkboxDef.handle)
+            fieldCheckbox = wx.CheckBox(self, wx.ID_ANY, checkboxDef.label, wx.DefaultPosition, wx.DefaultSize, 0)
+            fieldCheckbox.SetValue(self._storedConsts.get((checkboxDef.handle, None), checkboxDef.defaultValue))
+            fieldCheckbox.Bind(wx.EVT_CHECKBOX, self.OnNonMainInputChanged)
+            self.inputsSizer.Add(fieldCheckbox, 0, wx.BOTTOM, 5)
+            # Store info about added checkbox
+            checkbox = CheckBox(handle=checkboxDef.handle, checkBox=fieldCheckbox)
+            self._inputCheckboxes.append(checkbox)
+
+        for checkboxDef in view.checkboxes:
+            if checkboxDef.handle in handledHandles:
+                continue
+            addInputCheckbox(checkboxDef, handledHandles)
 
     def refreshAxeLabels(self, restoreSelection=False):
         view = self.graphFrame.getView()
@@ -299,13 +318,13 @@ class GraphControlPanel(wx.Panel):
         self.graphFrame.UpdateWindowSize()
         self.graphFrame.draw()
 
-    def OnMainFieldChanged(self, event):
+    def OnMainInputChanged(self, event):
         event.Skip()
         self.graphFrame.resetXMark()
         self.inputTimer.Stop()
         self.inputTimer.Start(Fit.getInstance().serviceFittingOptions['marketSearchDelay'], True)
 
-    def OnMiscFieldChanged(self, event):
+    def OnNonMainInputChanged(self, event):
         event.Skip()
         self.inputTimer.Stop()
         self.inputTimer.Start(Fit.getInstance().serviceFittingOptions['marketSearchDelay'], True)
@@ -343,6 +362,9 @@ class GraphControlPanel(wx.Panel):
         # Other input boxes
         for inputBox in self._miscInputBoxes:
             addMiscData(handle=inputBox.handle, unit=inputBox.unit, value=inputBox.textBox.GetValueFloat())
+        # Checkboxes
+        for checkbox in self._inputCheckboxes:
+            addMiscData(handle=checkbox.handle, unit=None, value=checkbox.checkBox.GetValue())
 
         return main, misc
 
@@ -413,8 +435,8 @@ class GraphControlPanel(wx.Panel):
             self._storedConsts[(input.handle, input.unit)] = input.value
 
     def _clearStoredValues(self):
-        self._storedConsts.clear()
         self._storedRanges.clear()
+        self._storedConsts.clear()
 
     def _setVectorDefaults(self):
         self.srcVector.SetValue(length=0, angle=90)

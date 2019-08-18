@@ -22,6 +22,7 @@ from collections import namedtuple
 
 
 VectorDef = namedtuple('VectorDef', ('lengthHandle', 'lengthUnit', 'angleHandle', 'angleUnit', 'label'))
+InputCheckbox = namedtuple('InputCheckbox', ('handle', 'label', 'defaultValue'))
 
 
 class YDef:

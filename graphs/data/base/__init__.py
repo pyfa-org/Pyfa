@@ -18,6 +18,6 @@
 # =============================================================================
 
 from .cache import FitDataCache
-from .defs import XDef, YDef, VectorDef, Input
+from .defs import XDef, YDef, VectorDef, Input, InputCheckbox
 from .getter import PointGetter, SmoothPointGetter
 from .graph import FitGraph

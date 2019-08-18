@@ -18,7 +18,7 @@
 # =============================================================================
 
 
-from graphs.data.base import FitGraph, XDef, YDef, Input
+from graphs.data.base import FitGraph, XDef, YDef, Input, InputCheckbox
 from service.const import GraphCacheCleanupReason
 from .cache import TimeCache
 from .getter import Distance2RpsGetter, Distance2RepAmountGetter, Time2RpsGetter, Time2RepAmountGetter
@@ -52,6 +52,7 @@ class FitRemoteRepsGraph(FitGraph):
         Input(handle='time', unit='s', label='Time', iconID=1392, defaultValue=None, defaultRange=(0, 80), secondaryTooltip='When set, uses repairing ship\'s exact RR stats at a given time\nWhen not set, uses repairing ship\'s RR stats as shown in stats panel of main window'),
         Input(handle='distance', unit='km', label='Distance', iconID=1391, defaultValue=None, defaultRange=(0, 100), mainTooltip='Distance between the repairing ship and the target, as seen in overview (surface-to-surface)', secondaryTooltip='Distance between the repairing ship and the target, as seen in overview (surface-to-surface)')]
     srcExtraCols = ('ShieldRR', 'ArmorRR', 'HullRR')
+    checkboxes = [InputCheckbox(handle='ancReload', label='Reload ancillary reps', defaultValue=True)]
 
     # Calculation stuff
     _normalizers = {('distance', 'km'): lambda v, src, tgt: None if v is None else v * 1000}
