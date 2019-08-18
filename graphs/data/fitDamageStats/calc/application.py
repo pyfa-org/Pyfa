@@ -302,7 +302,8 @@ def _calcTurretChanceToHit(
     """Calculate chance to hit for turret-based weapons."""
     # https://wiki.eveuniversity.org/Turret_mechanics#Hit_Math
     angularSpeed = _calcAngularSpeed(atkSpeed, atkAngle, atkRadius, distance, tgtSpeed, tgtAngle, tgtRadius)
-    rangeFactor = calculateRangeFactor(atkOptimalRange, atkFalloffRange, distance)
+    # Turrets can be activated regardless of range to target
+    rangeFactor = calculateRangeFactor(atkOptimalRange, atkFalloffRange, distance, restrictedRange=False)
     trackingFactor = _calcTrackingFactor(atkTracking, atkOptimalSigRadius, angularSpeed, tgtSigRadius)
     cth = rangeFactor * trackingFactor
     return cth
