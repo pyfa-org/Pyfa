@@ -30,7 +30,7 @@ from service.settings import GraphSettings
 
 def getApplicationPerKey(src, tgt, atkSpeed, atkAngle, distance, tgtSpeed, tgtAngle, tgtSigRadius):
     applicationMap = {}
-    for mod in src.item.modules:
+    for mod in src.item.activeModulesIter():
         if not mod.isDealingDamage():
             continue
         if mod.hardpoint == FittingHardpoint.TURRET:
@@ -74,7 +74,7 @@ def getApplicationPerKey(src, tgt, atkSpeed, atkAngle, distance, tgtSpeed, tgtAn
                 tgt=tgt,
                 distance=distance,
                 tgtSigRadius=tgtSigRadius)
-    for drone in src.item.drones:
+    for drone in src.item.activeDronesIter():
         if not drone.isDealingDamage():
             continue
         applicationMap[drone] = getDroneMult(
@@ -87,7 +87,7 @@ def getApplicationPerKey(src, tgt, atkSpeed, atkAngle, distance, tgtSpeed, tgtAn
             tgtSpeed=tgtSpeed,
             tgtAngle=tgtAngle,
             tgtSigRadius=tgtSigRadius)
-    for fighter in src.item.fighters:
+    for fighter in src.item.activeFightersIter():
         if not fighter.isDealingDamage():
             continue
         for ability in fighter.abilities:
@@ -112,8 +112,8 @@ def getTurretMult(mod, src, tgt, atkSpeed, atkAngle, distance, tgtSpeed, tgtAngl
         atkSpeed=atkSpeed,
         atkAngle=atkAngle,
         atkRadius=src.getRadius(),
-        atkOptimalRange=mod.maxRange,
-        atkFalloffRange=mod.falloff,
+        atkOptimalRange=mod.maxRange or 0,
+        atkFalloffRange=mod.falloff or 0,
         atkTracking=mod.getModifiedItemAttr('trackingSpeed'),
         atkOptimalSigRadius=mod.getModifiedItemAttr('optimalSigRadius'),
         distance=distance,
@@ -224,8 +224,8 @@ def getDroneMult(drone, src, tgt, atkSpeed, atkAngle, distance, tgtSpeed, tgtAng
             atkSpeed=min(atkSpeed, droneSpeed),
             atkAngle=atkAngle,
             atkRadius=droneRadius,
-            atkOptimalRange=drone.maxRange,
-            atkFalloffRange=drone.falloff,
+            atkOptimalRange=drone.maxRange or 0,
+            atkFalloffRange=drone.falloff or 0,
             atkTracking=drone.getModifiedItemAttr('trackingSpeed'),
             atkOptimalSigRadius=drone.getModifiedItemAttr('optimalSigRadius'),
             distance=cthDistance,

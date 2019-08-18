@@ -1575,12 +1575,16 @@ class Fit:
             if drone.amountActive > 0:
                 yield drone
 
-    def activeFighterAbilityIter(self):
+    def activeFightersIter(self):
         for fighter in self.fighters:
             if fighter.active:
-                for ability in fighter.abilities:
-                    if ability.active:
-                        yield fighter, ability
+                yield fighter
+
+    def activeFighterAbilityIter(self):
+        for fighter in self.activeFightersIter():
+            for ability in fighter.abilities:
+                if ability.active:
+                    yield fighter, ability
 
     def __deepcopy__(self, memo=None):
         fitCopy = Fit()

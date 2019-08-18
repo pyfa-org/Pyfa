@@ -173,7 +173,7 @@ class TimeCache(FitDataCache):
             intCacheDmg.setdefault(ddKey, {})[addedTime] = addedDmg
 
         # Modules
-        for mod in src.item.modules:
+        for mod in src.item.activeModulesIter():
             if not mod.isDealingDamage():
                 continue
             cycleParams = mod.getCycleParameters(reloadOverride=True)
@@ -196,7 +196,7 @@ class TimeCache(FitDataCache):
                     break
                 currentTime += cycleTimeMs / 1000 + inactiveTimeMs / 1000
         # Drones
-        for drone in src.item.drones:
+        for drone in src.item.activeDronesIter():
             if not drone.isDealingDamage():
                 continue
             cycleParams = drone.getCycleParameters(reloadOverride=True)
@@ -214,7 +214,7 @@ class TimeCache(FitDataCache):
                     break
                 currentTime += cycleTimeMs / 1000 + inactiveTimeMs / 1000
         # Fighters
-        for fighter in src.item.fighters:
+        for fighter in src.item.activeFightersIter():
             if not fighter.isDealingDamage():
                 continue
             cycleParams = fighter.getCycleParametersPerEffectOptimizedDps(reloadOverride=True)

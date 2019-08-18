@@ -549,8 +549,8 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
         for rrAmount in repAmountParams.values():
             rrDuringCycle += rrAmount
         rrFactor = 1 / (avgCycleTime / 1000)
-        rrDuringCycle *= rrFactor
-        return rrDuringCycle
+        rps = rrDuringCycle * rrFactor
+        return rps
 
     def getSpoolData(self, spoolOptions=None):
         weaponMultMax = self.getModifiedItemAttr("damageMultiplierBonusMax", 0)

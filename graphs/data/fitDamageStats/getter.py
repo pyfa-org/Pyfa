@@ -51,15 +51,15 @@ class YDpsMixin:
         # Compose map ourselves using current fit settings if time is not specified
         dpsMap = {}
         defaultSpoolValue = eos.config.settings['globalDefaultSpoolupPercentage']
-        for mod in src.item.modules:
+        for mod in src.item.activeModulesIter():
             if not mod.isDealingDamage():
                 continue
             dpsMap[mod] = mod.getDps(spoolOptions=SpoolOptions(SpoolType.SCALE, defaultSpoolValue, False))
-        for drone in src.item.drones:
+        for drone in src.item.activeDronesIter():
             if not drone.isDealingDamage():
                 continue
             dpsMap[drone] = drone.getDps()
-        for fighter in src.item.fighters:
+        for fighter in src.item.activeFightersIter():
             if not fighter.isDealingDamage():
                 continue
             for effectID, effectDps in fighter.getDpsPerEffect().items():
@@ -85,15 +85,15 @@ class YVolleyMixin:
         # Compose map ourselves using current fit settings if time is not specified
         volleyMap = {}
         defaultSpoolValue = eos.config.settings['globalDefaultSpoolupPercentage']
-        for mod in src.item.modules:
+        for mod in src.item.activeModulesIter():
             if not mod.isDealingDamage():
                 continue
             volleyMap[mod] = mod.getVolley(spoolOptions=SpoolOptions(SpoolType.SCALE, defaultSpoolValue, False))
-        for drone in src.item.drones:
+        for drone in src.item.activeDronesIter():
             if not drone.isDealingDamage():
                 continue
             volleyMap[drone] = drone.getVolley()
-        for fighter in src.item.fighters:
+        for fighter in src.item.activeFightersIter():
             if not fighter.isDealingDamage():
                 continue
             for effectID, effectVolley in fighter.getVolleyPerEffect().items():

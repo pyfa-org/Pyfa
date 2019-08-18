@@ -19,9 +19,25 @@
 
 
 from graphs.data.base import FitGraph, XDef, YDef, Input
+from service.const import GraphCacheCleanupReason
+from .cache import TimeCache
+from .getter import Distance2RpsGetter, Distance2RepAmountGetter, Time2RpsGetter, Time2RepAmountGetter
 
 
 class FitRemoteRepsGraph(FitGraph):
+
+    def __init__(self):
+        super().__init__()
+        self._timeCache = TimeCache()
+
+    def _clearInternalCache(self, reason, extraData):
+        # Here, we care only about fit changes, graph changes and option switches
+        # - Input changes are irrelevant as time cache cares only about
+        # time input, and it regenerates once time goes beyond cached value
+        if reason in (GraphCacheCleanupReason.fitChanged, GraphCacheCleanupReason.fitRemoved):
+            self._timeCache.clearForFit(extraData)
+        elif reason == GraphCacheCleanupReason.graphSwitched:
+            self._timeCache.clearAll()
 
     # UI stuff
     internalName = 'remoteRepsGraph'
@@ -33,12 +49,16 @@ class FitRemoteRepsGraph(FitGraph):
         YDef(handle='rps', unit='HP/s', label='Repair speed'),
         YDef(handle='total', unit='HP', label='Total repaired')]
     inputs = [
-        Input(handle='time', unit='s', label='Time', iconID=1392, defaultValue=None, defaultRange=(0, 80), secondaryTooltip='When set, uses repairing ship\'s exact RR stats at a given time\nWhen not set, uses attacker\'s RR stats as shown in stats panel of main window'),
+        Input(handle='time', unit='s', label='Time', iconID=1392, defaultValue=None, defaultRange=(0, 80), secondaryTooltip='When set, uses repairing ship\'s exact RR stats at a given time\nWhen not set, uses repairing ship\'s RR stats as shown in stats panel of main window'),
         Input(handle='distance', unit='km', label='Distance', iconID=1391, defaultValue=None, defaultRange=(0, 100), mainTooltip='Distance between the repairing ship and the target, as seen in overview (surface-to-surface)', secondaryTooltip='Distance between the repairing ship and the target, as seen in overview (surface-to-surface)')]
     srcExtraCols = ('ShieldRR', 'ArmorRR', 'HullRR')
 
     # Calculation stuff
     _normalizers = {('distance', 'km'): lambda v, src, tgt: None if v is None else v * 1000}
     _limiters = {'time': lambda src, tgt: (0, 2500)}
-    _getters = {}
+    _getters = {
+        ('distance', 'rps'): Distance2RpsGetter,
+        ('distance', 'total'): Distance2RepAmountGetter,
+        ('time', 'rps'): Time2RpsGetter,
+        ('time', 'total'): Time2RepAmountGetter}
     _denormalizers = {('distance', 'km'): lambda v, src, tgt: None if v is None else v / 1000}

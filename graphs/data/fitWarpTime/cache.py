@@ -40,8 +40,8 @@ class SubwarpSpeedCache(FitDataCache):
                 'Cynosural Field Generator',
                 'Clone Vat Bay',
                 'Jump Portal Generator')
-            for mod in src.item.modules:
-                if mod.item is not None and mod.item.group.name in disallowedGroups and mod.state >= FittingModuleState.ACTIVE:
+            for mod in src.item.activeModulesIter():
+                if mod.item is not None and mod.item.group.name in disallowedGroups:
                     modStates[mod] = mod.state
                     mod.state = FittingModuleState.ONLINE
             projFitStates = {}
