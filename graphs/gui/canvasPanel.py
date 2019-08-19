@@ -210,6 +210,8 @@ class GraphCanvasPanel(wx.Panel):
                 yMarks = set()
 
                 def addYMark(val):
+                    if val is None:
+                        return
                     # If due to some bug or insufficient plot density we're
                     # out of bounds, do not add anything
                     if minY <= val <= maxY:

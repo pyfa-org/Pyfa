@@ -30,24 +30,24 @@ class Time2CapAmountGetter(SmoothPointGetter):
         if not miscParams['useCapsim']:
             return super().getRange(xRange=xRange, miscParams=miscParams, src=src, tgt=tgt)
         capAmountT0 = miscParams['capAmountT0'] or 0
-        xs = []
-        ys = []
         capSimDataRaw = src.item.getCapSimData(startingCap=capAmountT0)
+        # Same here, no cap sim data - use smooth getter which considers only regen
         if not capSimDataRaw:
-            return xs, ys
+            return super().getRange(xRange=xRange, miscParams=miscParams, src=src, tgt=tgt)
         capSimDataMaxTime = capSimDataRaw[-1][0]
         minTime, maxTime = xRange
         maxTime = min(maxTime, capSimDataMaxTime)
         maxPointXDistance = (maxTime - minTime) / self._baseResolution
         capSimDataInRange = {k: v for k, v in capSimDataRaw if minTime <= k <= maxTime}
-        maxCapAmount = src.item.ship.getModifiedItemAttr('capacitorCapacity')
-        capRegenTime = src.item.ship.getModifiedItemAttr('rechargeRate') / 1000
         prevTime = minTime
-        # Calculate starting cap for first value seen in our range
+        xs = []
+        ys = []
         capSimDataBefore = {k: v for k, v in capSimDataRaw if k < minTime}
         # When time range lies to the right of last cap sim data point, return nothing
-        if len(capSimDataBefore) and max(capSimDataBefore) == capSimDataMaxTime:
+        if len(capSimDataBefore) > 0 and max(capSimDataBefore) == capSimDataMaxTime:
             return xs, ys
+        maxCapAmount = src.item.ship.getModifiedItemAttr('capacitorCapacity')
+        capRegenTime = src.item.ship.getModifiedItemAttr('rechargeRate') / 1000
 
         def plotCapRegen(prevTime, prevCap, currentTime):
             subrangeAmount = math.ceil((currentTime - prevTime) / maxPointXDistance)
@@ -62,6 +62,7 @@ class Time2CapAmountGetter(SmoothPointGetter):
                 xs.append(subrangeTime)
                 ys.append(subrangeCap)
 
+        # Calculate starting cap for first value seen in our range
         if capSimDataBefore:
             timeBefore = max(capSimDataBefore)
             capBefore = capSimDataBefore[timeBefore]
@@ -94,6 +95,37 @@ class Time2CapAmountGetter(SmoothPointGetter):
         # Use smooth getter when we're not using cap sim
         if not miscParams['useCapsim']:
             return super().getPoint(x=x, miscParams=miscParams, src=src, tgt=tgt)
+        capAmountT0 = miscParams['capAmountT0'] or 0
+        capSimDataRaw = src.item.getCapSimData(startingCap=capAmountT0)
+        # Same here, no cap sim data - use smooth getter which considers only regen
+        if not capSimDataRaw:
+            return super().getPoint(x=x, miscParams=miscParams, src=src, tgt=tgt)
+        currentTime = x
+        capSimDataBefore = {k: v for k, v in capSimDataRaw if k <= currentTime}
+        capSimDataMaxTime = capSimDataRaw[-1][0]
+        # When time range lies to the right of last cap sim data point, return nothing
+        if len(capSimDataBefore) > 0 and max(capSimDataBefore) == capSimDataMaxTime:
+            return None
+        maxCapAmount = src.item.ship.getModifiedItemAttr('capacitorCapacity')
+        capRegenTime = src.item.ship.getModifiedItemAttr('rechargeRate') / 1000
+        if capSimDataBefore:
+            timeBefore = max(capSimDataBefore)
+            capBefore = capSimDataBefore[timeBefore]
+            if timeBefore == currentTime:
+                currentCap = capBefore
+            else:
+                currentCap = calculateCapAmount(
+                        maxCapAmount=maxCapAmount,
+                        capRegenTime=capRegenTime,
+                        capAmountT0=capBefore,
+                        time=currentTime - timeBefore)
+        else:
+            currentCap = calculateCapAmount(
+                maxCapAmount=maxCapAmount,
+                capRegenTime=capRegenTime,
+                capAmountT0=capAmountT0,
+                time=currentTime)
+        return currentCap
 
     def _getCommonData(self, miscParams, src, tgt):
         return {
