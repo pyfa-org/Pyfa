@@ -35,6 +35,7 @@ class Time2ShieldAmountGetter(SmoothPointGetter):
         shieldAmount = calculateShieldAmount(
             maxShieldAmount=commonData['maxShieldAmount'],
             shieldRegenTime=commonData['shieldRegenTime'],
+            shieldAmountT0=miscParams['shieldAmountT0'] or 0,
             time=time)
         return shieldAmount
 
@@ -51,6 +52,7 @@ class Time2ShieldRegenGetter(SmoothPointGetter):
         shieldAmount = calculateShieldAmount(
             maxShieldAmount=commonData['maxShieldAmount'],
             shieldRegenTime=commonData['shieldRegenTime'],
+            shieldAmountT0=miscParams['shieldAmountT0'] or 0,
             time=time)
         shieldRegen = calculateShieldRegen(
             maxShieldAmount=commonData['maxShieldAmount'],
@@ -83,10 +85,10 @@ class ShieldAmount2ShieldRegenGetter(SmoothPointGetter):
         return shieldRegen
 
 
-def calculateShieldAmount(maxShieldAmount, shieldRegenTime, time):
+def calculateShieldAmount(maxShieldAmount, shieldRegenTime, shieldAmountT0, time):
     # The same formula as for cap
     # https://wiki.eveuniversity.org/Capacitor#Capacitor_recharge_rate
-    return maxShieldAmount * (1 + math.exp(5 * -time / shieldRegenTime) * -1) ** 2
+    return maxShieldAmount * (1 + math.exp(5 * -time / shieldRegenTime) * (math.sqrt(shieldAmountT0 / maxShieldAmount) - 1)) ** 2
 
 
 def calculateShieldRegen(maxShieldAmount, shieldRegenTime, currentShieldAmount):

@@ -36,7 +36,9 @@ class FitShieldRegenGraph(FitGraph):
         Input(handle='shieldAmount', unit='%', label='Shield amount', iconID=1384, defaultValue=25, defaultRange=(0, 100), conditions=[
             (('shieldAmount', 'EHP'), None),
             (('shieldAmount', 'HP'), None),
-            (('shieldAmount', '%'), None)])]
+            (('shieldAmount', '%'), None)]),
+        Input(handle='shieldAmountT0', unit='%', label='Starting shield amount', iconID=1384, defaultValue=0, defaultRange=(0, 100), conditions=[
+            (('time', 's'), None)])]
     srcExtraCols = ('ShieldAmount', 'ShieldTime')
     usesHpEffectivity = True
 
@@ -56,9 +58,12 @@ class FitShieldRegenGraph(FitGraph):
     # Calculation stuff
     _normalizers = {
         ('shieldAmount', '%'): lambda v, src, tgt: v / 100 * src.item.ship.getModifiedItemAttr('shieldCapacity'),
+        ('shieldAmountT0', '%'): lambda v, src, tgt: None if v is None else v / 100 * src.item.ship.getModifiedItemAttr('shieldCapacity'),
         # Needed only for "x mark" support, to convert EHP x into normalized value
         ('shieldAmount', 'EHP'): lambda v, src, tgt: v / src.item.damagePattern.effectivify(src.item, 1, 'shield')}
-    _limiters = {'shieldAmount': lambda src, tgt: (0, src.item.ship.getModifiedItemAttr('shieldCapacity'))}
+    _limiters = {
+        'shieldAmount': lambda src, tgt: (0, src.item.ship.getModifiedItemAttr('shieldCapacity')),
+        'shieldAmountT0': lambda src, tgt: (0, src.item.ship.getModifiedItemAttr('shieldCapacity'))}
     _getters = {
         ('time', 'shieldAmount'): Time2ShieldAmountGetter,
         ('time', 'shieldRegen'): Time2ShieldRegenGetter,
