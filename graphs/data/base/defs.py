@@ -22,7 +22,6 @@ from collections import namedtuple
 
 
 VectorDef = namedtuple('VectorDef', ('lengthHandle', 'lengthUnit', 'angleHandle', 'angleUnit', 'label'))
-InputCheckbox = namedtuple('InputCheckbox', ('handle', 'label', 'defaultValue'))
 
 
 class YDef:
@@ -110,4 +109,26 @@ class Input:
             self.defaultRange == other.defaultRange,
             self.mainTooltip == other.mainTooltip,
             self.secondaryTooltip == other.secondaryTooltip,
+            self.conditions == other.conditions))
+
+
+class InputCheckbox:
+
+    def __init__(self, handle, label, defaultValue, conditions=()):
+        self.handle = handle
+        self.label = label
+        self.defaultValue = defaultValue
+        # Format: ((x condition, y condition), (x condition, y condition), ...)
+        self.conditions = tuple(conditions)
+
+    def __hash__(self):
+        return hash((self.handle, self.label, self.defaultValue, self.conditions))
+
+    def __eq__(self, other):
+        if not isinstance(other, Input):
+            return False
+        return all((
+            self.handle == other.handle,
+            self.label == other.label,
+            self.defaultValue == other.defaultValue,
             self.conditions == other.conditions))

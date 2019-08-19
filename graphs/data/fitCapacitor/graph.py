@@ -39,12 +39,18 @@ class FitCapRegenGraph(FitGraph):
             (('time', 's'), None)]),
         Input(handle='capAmount', unit='%', label='Cap amount', iconID=1668, defaultValue=25, defaultRange=(0, 100), conditions=[
             (('capAmount', 'GJ'), None),
-            (('capAmount', '%'), None)])]
+            (('capAmount', '%'), None)]),
+        Input(handle='capAmountT0', unit='%', label='Starting cap amount', iconID=1668, defaultValue=0, defaultRange=(0, 100), conditions=[
+            (('time', 's'), None)])]
     srcExtraCols = ('CapAmount', 'CapTime')
 
     # Calculation stuff
-    _normalizers = {('capAmount', '%'): lambda v, src, tgt: v / 100 * src.item.ship.getModifiedItemAttr('capacitorCapacity')}
-    _limiters = {'capAmount': lambda src, tgt: (0, src.item.ship.getModifiedItemAttr('capacitorCapacity'))}
+    _normalizers = {
+        ('capAmount', '%'): lambda v, src, tgt: v / 100 * src.item.ship.getModifiedItemAttr('capacitorCapacity'),
+        ('capAmountT0', '%'): lambda v, src, tgt: None if v is None else v / 100 * src.item.ship.getModifiedItemAttr('capacitorCapacity')}
+    _limiters = {
+        'capAmount': lambda src, tgt: (0, src.item.ship.getModifiedItemAttr('capacitorCapacity')),
+        'capAmountT0': lambda src, tgt: (0, src.item.ship.getModifiedItemAttr('capacitorCapacity'))}
     _getters = {
         ('time', 'capAmount'): Time2CapAmountGetter,
         ('time', 'capRegen'): Time2CapRegenGetter,

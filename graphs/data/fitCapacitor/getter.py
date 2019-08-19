@@ -35,6 +35,7 @@ class Time2CapAmountGetter(SmoothPointGetter):
         capAmount = calculateCapAmount(
             maxCapAmount=commonData['maxCapAmount'],
             capRegenTime=commonData['capRegenTime'],
+            capAmountT0=miscParams['capAmountT0'] or 0,
             time=time)
         return capAmount
 
@@ -51,6 +52,7 @@ class Time2CapRegenGetter(SmoothPointGetter):
         capAmount = calculateCapAmount(
             maxCapAmount=commonData['maxCapAmount'],
             capRegenTime=commonData['capRegenTime'],
+            capAmountT0=miscParams['capAmountT0'] or 0,
             time=time)
         capRegen = calculateCapRegen(
             maxCapAmount=commonData['maxCapAmount'],
@@ -83,9 +85,9 @@ class CapAmount2CapRegenGetter(SmoothPointGetter):
         return capRegen
 
 
-def calculateCapAmount(maxCapAmount, capRegenTime, time):
+def calculateCapAmount(maxCapAmount, capRegenTime, capAmountT0, time):
     # https://wiki.eveuniversity.org/Capacitor#Capacitor_recharge_rate
-    return maxCapAmount * (1 + math.exp(5 * -time / capRegenTime) * -1) ** 2
+    return maxCapAmount * (1 + math.exp(5 * -time / capRegenTime) * (math.sqrt(capAmountT0 / maxCapAmount) - 1)) ** 2
 
 
 def calculateCapRegen(maxCapAmount, capRegenTime, currentCapAmount):
