@@ -1,7 +1,7 @@
 import heapq
 import time
 from math import sqrt, exp
-from functools import reduce
+from collections import Counter
 
 DAY = 24 * 60 * 60 * 1000
 
@@ -97,6 +97,9 @@ class CapSimulator:
 
         # Loop over grouped modules, configure staggering and push to the simulation state
         for (duration, capNeed, clipSize, disableStagger, reloadTime, isInjector), amount in mods.items():
+            # period optimization doesn't work when reloads are active.
+            if clipSize:
+                disable_period = True
             # Just push multiple instances if item is injector. We do not want to stagger them as we will
             # use them as needed and want them to be available right away
             if isInjector:
@@ -118,10 +121,6 @@ class CapSimulator:
 
             period = lcm(period, duration)
 
-            # period optimization doesn't work when reloads are active.
-            if clipSize:
-                disable_period = True
-
             heapq.heappush(self.state, [0, duration, capNeed, 0, clipSize, reloadTime, isInjector])
 
         if disable_period:
@@ -134,7 +133,7 @@ class CapSimulator:
 
         start = time.time()
         awaitingInjectors = []
-
+        awaitingInjectorsCounterWrap = Counter()
         self.reset()
 
         push = heapq.heappush
@@ -154,7 +153,6 @@ class CapSimulator:
         cap_lowest_pre = self.startingCapacity  # lowest cap value before activations
         cap = self.startingCapacity  # current cap value
         t_wrap = self.period  # point in time of next period
-
         t_last = 0
         t_max = self.t_max
 
@@ -176,9 +174,11 @@ class CapSimulator:
                 if t_now == t_wrap:
                     # history is repeating itself, so if we have more cap now than last
                     # time this happened, it is a stable setup.
-                    if cap >= cap_wrap:
+                    awaitingInjectorsCounterNow = Counter(awaitingInjectors)
+                    if cap >= cap_wrap and awaitingInjectorsCounterNow == awaitingInjectorsCounterWrap:
                         break
                     cap_wrap = round(cap, stability_precision)
+                    awaitingInjectorsCounterWrap = awaitingInjectorsCounterNow
                     t_wrap += period
 
             t_last = t_now

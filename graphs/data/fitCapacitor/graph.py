@@ -51,6 +51,7 @@ class FitCapacitorGraph(FitGraph):
         ('capAmount', '%'): lambda v, src, tgt: v / 100 * src.item.ship.getModifiedItemAttr('capacitorCapacity'),
         ('capAmountT0', '%'): lambda v, src, tgt: None if v is None else v / 100 * src.item.ship.getModifiedItemAttr('capacitorCapacity')}
     _limiters = {
+        'time': lambda src, tgt: (0, 3600),
         'capAmount': lambda src, tgt: (0, src.item.ship.getModifiedItemAttr('capacitorCapacity')),
         'capAmountT0': lambda src, tgt: (0, src.item.ship.getModifiedItemAttr('capacitorCapacity'))}
     _getters = {
