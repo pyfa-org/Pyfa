@@ -31,8 +31,12 @@ class FitShieldRegenGraph(FitGraph):
     internalName = 'shieldRegenGraph'
     name = 'Shield Regeneration'
     inputs = [
-        Input(handle='time', unit='s', label='Time', iconID=1392, defaultValue=120, defaultRange=(0, 300), mainOnly=True),
-        Input(handle='shieldAmount', unit='%', label='Shield amount', iconID=1384, defaultValue=25, defaultRange=(0, 100), mainOnly=True)]
+        Input(handle='time', unit='s', label='Time', iconID=1392, defaultValue=120, defaultRange=(0, 300), conditions=[
+            (('time', 's'), None)]),
+        Input(handle='shieldAmount', unit='%', label='Shield amount', iconID=1384, defaultValue=25, defaultRange=(0, 100), conditions=[
+            (('shieldAmount', 'EHP'), None),
+            (('shieldAmount', 'HP'), None),
+            (('shieldAmount', '%'), None)])]
     srcExtraCols = ('ShieldAmount', 'ShieldTime')
     usesHpEffectivity = True
 

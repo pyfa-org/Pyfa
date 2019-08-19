@@ -83,19 +83,20 @@ class XDef:
 
 class Input:
 
-    def __init__(self, handle, unit, label, iconID, defaultValue, defaultRange, mainOnly=False, mainTooltip=None, secondaryTooltip=None):
+    def __init__(self, handle, unit, label, iconID, defaultValue, defaultRange, mainTooltip=None, secondaryTooltip=None, conditions=()):
         self.handle = handle
         self.unit = unit
         self.label = label
         self.iconID = iconID
         self.defaultValue = defaultValue
         self.defaultRange = defaultRange
-        self.mainOnly = mainOnly
         self.mainTooltip = mainTooltip
         self.secondaryTooltip = secondaryTooltip
+        # Format: ((x condition, y condition), (x condition, y condition), ...)
+        self.conditions = tuple(conditions)
 
     def __hash__(self):
-        return hash((self.handle, self.unit, self.label, self.iconID, self.defaultValue, self.defaultRange, self.mainOnly, self.mainTooltip, self.secondaryTooltip))
+        return hash((self.handle, self.unit, self.label, self.iconID, self.defaultValue, self.defaultRange, self.mainTooltip, self.secondaryTooltip, self.conditions))
 
     def __eq__(self, other):
         if not isinstance(other, Input):
@@ -107,6 +108,6 @@ class Input:
             self.iconID == other.iconID,
             self.defaultValue == other.defaultValue,
             self.defaultRange == other.defaultRange,
-            self.mainOnly == other.mainOnly,
             self.mainTooltip == other.mainTooltip,
-            self.secondaryTooltip == other.secondaryTooltip))
+            self.secondaryTooltip == other.secondaryTooltip,
+            self.conditions == other.conditions))

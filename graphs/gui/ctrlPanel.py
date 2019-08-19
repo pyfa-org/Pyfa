@@ -186,86 +186,102 @@ class GraphControlPanel(wx.Panel):
         self._mainInputBox = None
         self._miscInputBoxes.clear()
         self._inputCheckboxes.clear()
-
         # Update vectors
-        def handleVector(vectorDef, vector, handledHandles, mainInputHandle):
-            handledHandles.add(vectorDef.lengthHandle)
-            handledHandles.add(vectorDef.angleHandle)
-            try:
-                storedLength = self._storedConsts[(vectorDef.lengthHandle, vectorDef.lengthUnit)]
-            except KeyError:
-                pass
-            else:
-                vector.SetLength(storedLength / 100)
-            try:
-                storedAngle = self._storedConsts[(vectorDef.angleHandle, vectorDef.angleUnit)]
-            except KeyError:
-                pass
-            else:
-                vector.SetAngle(storedAngle)
-            vector.SetDirectionOnly(vectorDef.lengthHandle == mainInputHandle)
-
         view = self.graphFrame.getView()
         handledHandles = set()
         if view.srcVectorDef is not None:
-            handleVector(view.srcVectorDef, self.srcVector, handledHandles, self.xType.mainInput[0])
+            self.__handleVector(view.srcVectorDef, self.srcVector, handledHandles, self.xType.mainInput[0])
         if view.tgtVectorDef is not None:
-            handleVector(view.tgtVectorDef, self.tgtVector, handledHandles, self.xType.mainInput[0])
-
+            self.__handleVector(view.tgtVectorDef, self.tgtVector, handledHandles, self.xType.mainInput[0])
         # Update inputs
-        def addInputField(inputDef, handledHandles, mainInput=False):
-            handledHandles.add(inputDef.handle)
-            fieldSizer = wx.BoxSizer(wx.HORIZONTAL)
-            tooltipText = (inputDef.mainTooltip if mainInput else inputDef.secondaryTooltip) or ''
-            if mainInput:
-                fieldTextBox = FloatRangeBox(self, self._storedRanges.get((inputDef.handle, inputDef.unit), inputDef.defaultRange))
-                fieldTextBox.Bind(wx.EVT_TEXT, self.OnMainInputChanged)
-            else:
-                fieldTextBox = FloatBox(self, self._storedConsts.get((inputDef.handle, inputDef.unit), inputDef.defaultValue))
-                fieldTextBox.Bind(wx.EVT_TEXT, self.OnNonMainInputChanged)
-            fieldTextBox.SetToolTip(wx.ToolTip(tooltipText))
-            fieldSizer.Add(fieldTextBox, 0, wx.EXPAND | wx.ALIGN_CENTER_VERTICAL | wx.RIGHT, 5)
-            fieldIcon = None
-            if inputDef.iconID is not None:
-                icon = BitmapLoader.getBitmap(inputDef.iconID, 'icons')
-                if icon is not None:
-                    fieldIcon = wx.StaticBitmap(self)
-                    fieldIcon.SetBitmap(icon)
-                    fieldIcon.SetToolTip(wx.ToolTip(tooltipText))
-                    fieldSizer.Add(fieldIcon, 0, wx.ALIGN_CENTER_VERTICAL | wx.RIGHT, 3)
-            fieldLabel = wx.StaticText(self, wx.ID_ANY, self.formatLabel(inputDef))
-            fieldLabel.SetToolTip(wx.ToolTip(tooltipText))
-            fieldSizer.Add(fieldLabel, 0, wx.ALIGN_CENTER_VERTICAL | wx.ALL, 0)
-            self.inputsSizer.Add(fieldSizer, 0, wx.EXPAND | wx.BOTTOM, 5)
-            # Store info about added input box
-            inputBox = InputBox(handle=inputDef.handle, unit=inputDef.unit, textBox=fieldTextBox, icon=fieldIcon, label=fieldLabel)
-            if mainInput:
-                self._mainInputBox = inputBox
-            else:
-                self._miscInputBoxes.append(inputBox)
-
-        addInputField(view.inputMap[self.xType.mainInput], handledHandles, mainInput=True)
+        self.__addInputField(view.inputMap[self.xType.mainInput], handledHandles, mainInput=True)
         for inputDef in view.inputs:
-            if inputDef.mainOnly:
-                continue
             if inputDef.handle in handledHandles:
                 continue
-            addInputField(inputDef, handledHandles)
-
-        def addInputCheckbox(checkboxDef, handledHandles):
-            handledHandles.add(checkboxDef.handle)
-            fieldCheckbox = wx.CheckBox(self, wx.ID_ANY, checkboxDef.label, wx.DefaultPosition, wx.DefaultSize, 0)
-            fieldCheckbox.SetValue(self._storedConsts.get((checkboxDef.handle, None), checkboxDef.defaultValue))
-            fieldCheckbox.Bind(wx.EVT_CHECKBOX, self.OnNonMainInputChanged)
-            self.inputsSizer.Add(fieldCheckbox, 0, wx.BOTTOM, 5)
-            # Store info about added checkbox
-            checkbox = CheckBox(handle=checkboxDef.handle, checkBox=fieldCheckbox)
-            self._inputCheckboxes.append(checkbox)
-
+            self.__addInputField(inputDef, handledHandles)
+        # Add checkboxes
         for checkboxDef in view.checkboxes:
             if checkboxDef.handle in handledHandles:
                 continue
-            addInputCheckbox(checkboxDef, handledHandles)
+            self.__addInputCheckbox(checkboxDef, handledHandles)
+
+    def __handleVector(self, vectorDef, vector, handledHandles, mainInputHandle):
+        handledHandles.add(vectorDef.lengthHandle)
+        handledHandles.add(vectorDef.angleHandle)
+        try:
+            storedLength = self._storedConsts[(vectorDef.lengthHandle, vectorDef.lengthUnit)]
+        except KeyError:
+            pass
+        else:
+            vector.SetLength(storedLength / 100)
+        try:
+            storedAngle = self._storedConsts[(vectorDef.angleHandle, vectorDef.angleUnit)]
+        except KeyError:
+            pass
+        else:
+            vector.SetAngle(storedAngle)
+        vector.SetDirectionOnly(vectorDef.lengthHandle == mainInputHandle)
+
+    def __addInputField(self, inputDef, handledHandles, mainInput=False):
+        if not self.__checkInputConditions(inputDef):
+            return
+        handledHandles.add(inputDef.handle)
+        fieldSizer = wx.BoxSizer(wx.HORIZONTAL)
+        tooltipText = (inputDef.mainTooltip if mainInput else inputDef.secondaryTooltip) or ''
+        if mainInput:
+            fieldTextBox = FloatRangeBox(self, self._storedRanges.get((inputDef.handle, inputDef.unit), inputDef.defaultRange))
+            fieldTextBox.Bind(wx.EVT_TEXT, self.OnMainInputChanged)
+        else:
+            fieldTextBox = FloatBox(self, self._storedConsts.get((inputDef.handle, inputDef.unit), inputDef.defaultValue))
+            fieldTextBox.Bind(wx.EVT_TEXT, self.OnNonMainInputChanged)
+        fieldTextBox.SetToolTip(wx.ToolTip(tooltipText))
+        fieldSizer.Add(fieldTextBox, 0, wx.EXPAND | wx.ALIGN_CENTER_VERTICAL | wx.RIGHT, 5)
+        fieldIcon = None
+        if inputDef.iconID is not None:
+            icon = BitmapLoader.getBitmap(inputDef.iconID, 'icons')
+            if icon is not None:
+                fieldIcon = wx.StaticBitmap(self)
+                fieldIcon.SetBitmap(icon)
+                fieldIcon.SetToolTip(wx.ToolTip(tooltipText))
+                fieldSizer.Add(fieldIcon, 0, wx.ALIGN_CENTER_VERTICAL | wx.RIGHT, 3)
+        fieldLabel = wx.StaticText(self, wx.ID_ANY, self.formatLabel(inputDef))
+        fieldLabel.SetToolTip(wx.ToolTip(tooltipText))
+        fieldSizer.Add(fieldLabel, 0, wx.ALIGN_CENTER_VERTICAL | wx.ALL, 0)
+        self.inputsSizer.Add(fieldSizer, 0, wx.EXPAND | wx.BOTTOM, 5)
+        # Store info about added input box
+        inputBox = InputBox(handle=inputDef.handle, unit=inputDef.unit, textBox=fieldTextBox, icon=fieldIcon, label=fieldLabel)
+        if mainInput:
+            self._mainInputBox = inputBox
+        else:
+            self._miscInputBoxes.append(inputBox)
+
+    def __addInputCheckbox(self, checkboxDef, handledHandles):
+        handledHandles.add(checkboxDef.handle)
+        fieldCheckbox = wx.CheckBox(self, wx.ID_ANY, checkboxDef.label, wx.DefaultPosition, wx.DefaultSize, 0)
+        fieldCheckbox.SetValue(self._storedConsts.get((checkboxDef.handle, None), checkboxDef.defaultValue))
+        fieldCheckbox.Bind(wx.EVT_CHECKBOX, self.OnNonMainInputChanged)
+        self.inputsSizer.Add(fieldCheckbox, 0, wx.BOTTOM, 5)
+        # Store info about added checkbox
+        checkbox = CheckBox(handle=checkboxDef.handle, checkBox=fieldCheckbox)
+        self._inputCheckboxes.append(checkbox)
+
+    def __checkInputConditions(self, inputDef):
+        if not inputDef.conditions:
+            return True
+        selectedX = self.xType
+        selectedY = self.yType
+        for xCond, yCond in inputDef.conditions:
+            xMatch = True
+            yMatch = True
+            if xCond is not None:
+                xCondHandle, xCondUnit = xCond
+                xMatch = selectedX.handle == xCondHandle and selectedX.unit == xCondUnit
+            if yCond is not None:
+                yCondHandle, yCondUnit = yCond
+                yMatch = selectedY.handle == yCondHandle and selectedY.unit == yCondUnit
+            if xMatch and yMatch:
+                return True
+        return False
 
     def refreshAxeLabels(self, restoreSelection=False):
         view = self.graphFrame.getView()
