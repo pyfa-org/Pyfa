@@ -159,10 +159,16 @@ class TimeCache(FitDataCache):
                 continue
             currentTime = 0
             nonstopCycles = 0
+            cyclesWithoutReload = 0
+            cyclesUntilReload = mod.numShots
             for cycleTimeMs, inactiveTimeMs, isInactivityReload in cycleParams.iterCycles():
+                cyclesWithoutReload += 1
                 cycleRepAmounts = []
                 repAmountParams = mod.getRepAmountParameters(spoolOptions=SpoolOptions(SpoolType.CYCLES, nonstopCycles, True))
                 for repTimeMs, repAmount in repAmountParams.items():
+                    # Loaded ancillary armor rep can keep running at less efficiency if we decide to not reload
+                    if isAncArmor and mod.charge and not ancReload and cyclesWithoutReload > cyclesUntilReload:
+                        repAmount = repAmount / mod.getModifiedItemAttr('chargedArmorDamageMultiplier', 1)
                     cycleRepAmounts.append(repAmount)
                     addRepAmount(mod, currentTime + repTimeMs / 1000, repAmount)
                 addRps(mod, currentTime, currentTime + cycleTimeMs / 1000, cycleRepAmounts)
@@ -170,6 +176,8 @@ class TimeCache(FitDataCache):
                     nonstopCycles = 0
                 else:
                     nonstopCycles += 1
+                if isInactivityReload:
+                    cyclesWithoutReload = 0
                 if currentTime > maxTime:
                     break
                 currentTime += cycleTimeMs / 1000 + inactiveTimeMs / 1000
