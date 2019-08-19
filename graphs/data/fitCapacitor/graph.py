@@ -18,7 +18,7 @@
 # =============================================================================
 
 
-from graphs.data.base import FitGraph, Input, XDef, YDef
+from graphs.data.base import FitGraph, XDef, YDef, Input, InputCheckbox
 from .getter import CapAmount2CapAmountGetter, CapAmount2CapRegenGetter, Time2CapAmountGetter, Time2CapRegenGetter
 
 
@@ -42,6 +42,8 @@ class FitCapRegenGraph(FitGraph):
             (('capAmount', '%'), None)]),
         Input(handle='capAmountT0', unit='%', label='Starting cap amount', iconID=1668, defaultValue=0, defaultRange=(0, 100), conditions=[
             (('time', 's'), None)])]
+    checkboxes = [InputCheckbox(handle='useCapsim', label='Use capacitor simulator', defaultValue=True, conditions=[
+        (('time', 's'), ('capAmount', 'GJ'))])]
     srcExtraCols = ('CapAmount', 'CapTime')
 
     # Calculation stuff

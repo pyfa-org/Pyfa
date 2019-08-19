@@ -256,6 +256,8 @@ class GraphControlPanel(wx.Panel):
             self._miscInputBoxes.append(inputBox)
 
     def __addInputCheckbox(self, checkboxDef, handledHandles):
+        if not self.__checkInputConditions(checkboxDef):
+            return
         handledHandles.add(checkboxDef.handle)
         fieldCheckbox = wx.CheckBox(self, wx.ID_ANY, checkboxDef.label, wx.DefaultPosition, wx.DefaultSize, 0)
         fieldCheckbox.SetValue(self._storedConsts.get((checkboxDef.handle, None), checkboxDef.defaultValue))
@@ -323,7 +325,10 @@ class GraphControlPanel(wx.Panel):
 
     def OnYTypeUpdate(self, event):
         event.Skip()
+        self._updateInputs()
         self.graphFrame.resetXMark()
+        self.graphFrame.Layout()
+        self.graphFrame.UpdateWindowSize()
         self.graphFrame.draw()
 
     def OnXTypeUpdate(self, event):
