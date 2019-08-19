@@ -1284,12 +1284,16 @@ class Fit:
 
     def getCapSimData(self, startingCap):
         if startingCap not in self.__savedCapSimData:
-            self.__runCapSim(startingCap=startingCap)
+            self.__runCapSim(startingCap=startingCap, tMax=3600, optimizeRepeats=False)
         return self.__savedCapSimData[startingCap]
 
-    def __runCapSim(self, drains=None, startingCap=None):
+    def __runCapSim(self, drains=None, startingCap=None, tMax=None, optimizeRepeats=True):
         if drains is None:
             drains, nil, nil = self.__generateDrain()
+        if tMax is None:
+            tMax = 6 * 60 * 60 * 1000
+        else:
+            tMax *= 1000
         sim = capSim.CapSimulator()
         sim.init(drains)
         sim.capacitorCapacity = self.ship.getModifiedItemAttr("capacitorCapacity")
@@ -1297,10 +1301,13 @@ class Fit:
         sim.startingCapacity = startingCap = self.ship.getModifiedItemAttr("capacitorCapacity") if startingCap is None else startingCap
         sim.stagger = True
         sim.scale = False
-        sim.t_max = 6 * 60 * 60 * 1000
+        sim.t_max = tMax
         sim.reload = self.factorReload
+        sim.optimize_repeats = optimizeRepeats
         sim.run()
-        self.__savedCapSimData[startingCap] = sim.saved_changes
+        # We do not want to store partial results
+        if not sim.result_optimized_repeats:
+            self.__savedCapSimData[startingCap] = sim.saved_changes
         return sim
 
     def getRemoteReps(self, spoolOptions=None):

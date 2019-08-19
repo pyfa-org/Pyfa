@@ -46,6 +46,10 @@ class CapSimulator:
         self.saved_changes = ()
         self.saved_changes_internal = None
 
+        # Reports if sim was stopped due to detecting stability early
+        self.optimize_repeats = True
+        self.result_optimized_repeats = None
+
     def scale_activation(self, duration, capNeed):
         for res in self.scale_resolutions:
             mod = duration % res
@@ -73,6 +77,7 @@ class CapSimulator:
         """Reset the simulator state"""
         self.state = []
         self.saved_changes_internal = {}
+        self.result_optimized_repeats = False
         mods = {}
         period = 1
         disable_period = False
@@ -175,7 +180,8 @@ class CapSimulator:
                     # history is repeating itself, so if we have more cap now than last
                     # time this happened, it is a stable setup.
                     awaitingInjectorsCounterNow = Counter(awaitingInjectors)
-                    if cap >= cap_wrap and awaitingInjectorsCounterNow == awaitingInjectorsCounterWrap:
+                    if self.optimize_repeats and cap >= cap_wrap and awaitingInjectorsCounterNow == awaitingInjectorsCounterWrap:
+                        self.result_optimized_repeats = True
                         break
                     cap_wrap = round(cap, stability_precision)
                     awaitingInjectorsCounterWrap = awaitingInjectorsCounterNow
