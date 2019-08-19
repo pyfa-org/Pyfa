@@ -29,31 +29,31 @@ from graphs.data.base import FitDataCache
 class TimeCache(FitDataCache):
 
     # Whole data getters
-    def getRpsData(self, src):
+    def getRpsData(self, src, ancReload):
         """Return RPS data in {time: {key: rps}} format."""
-        return self._data[src.item.ID]['finalRps']
+        return self._data[src.item.ID][ancReload]['finalRps']
 
-    def getRepAmountData(self, src):
+    def getRepAmountData(self, src, ancReload):
         """Return rep amount data in {time: {key: amount}} format."""
-        return self._data[src.item.ID]['finalRepAmount']
+        return self._data[src.item.ID][ancReload]['finalRepAmount']
 
     # Specific data point getters
-    def getRpsDataPoint(self, src, time):
+    def getRpsDataPoint(self, src, ancReload, time):
         """Get RPS data by specified time in {key: rps} format."""
-        return self._getDataPoint(src=src, time=time, dataFunc=self.getRpsData)
+        return self._getDataPoint(src=src, ancReload=ancReload, time=time, dataFunc=self.getRpsData)
 
-    def getRepAmountDataPoint(self, src, time):
+    def getRepAmountDataPoint(self, src, ancReload, time):
         """Get rep amount data by specified time in {key: amount} format."""
-        return self._getDataPoint(src=src, time=time, dataFunc=self.getRepAmountData)
+        return self._getDataPoint(src=src, ancReload=ancReload, time=time, dataFunc=self.getRepAmountData)
 
     # Preparation functions
-    def prepareRpsData(self, src, maxTime):
+    def prepareRpsData(self, src, ancReload, maxTime):
         # Time is none means that time parameter has to be ignored,
         # we do not need cache for that
         if maxTime is None:
             return True
-        self._generateInternalForm(src=src, maxTime=maxTime)
-        fitCache = self._data[src.item.ID]
+        self._generateInternalForm(src=src, ancReload=ancReload, maxTime=maxTime)
+        fitCache = self._data[src.item.ID][ancReload]
         # Final cache has been generated already, don't do anything
         if 'finalRps' in fitCache:
             return
@@ -93,13 +93,13 @@ class TimeCache(FitDataCache):
                 timeRpsData[key] = pointCache[key][time]
             finalRpsCache[time] = timeRpsData
 
-    def prepareRepAmountData(self, src, maxTime):
+    def prepareRepAmountData(self, src, ancReload, maxTime):
         # Time is none means that time parameter has to be ignored,
         # we do not need cache for that
         if maxTime is None:
             return
-        self._generateInternalForm(src=src, maxTime=maxTime)
-        fitCache = self._data[src.item.ID]
+        self._generateInternalForm(src=src, ancReload=ancReload, maxTime=maxTime)
+        fitCache = self._data[src.item.ID][ancReload]
         # Final cache has been generated already, don't do anything
         if 'finalRepAmount' in fitCache:
             return
@@ -125,10 +125,10 @@ class TimeCache(FitDataCache):
         del fitCache['internalRepAmount']
 
     # Private stuff
-    def _generateInternalForm(self, src, maxTime):
-        if self._isTimeCacheValid(src=src, maxTime=maxTime):
+    def _generateInternalForm(self, src, ancReload, maxTime):
+        if self._isTimeCacheValid(src=src, ancReload=ancReload, maxTime=maxTime):
             return
-        fitCache = self._data[src.item.ID] = {'maxTime': maxTime}
+        fitCache = self._data.setdefault(src.item.ID, {})[ancReload] = {'maxTime': maxTime}
         intCacheRps = fitCache['internalRps'] = {}
         intCacheRepAmount = fitCache['internalRepAmount'] = {}
 
@@ -187,15 +187,15 @@ class TimeCache(FitDataCache):
                     break
                 currentTime += cycleTimeMs / 1000 + inactiveTimeMs / 1000
 
-    def _isTimeCacheValid(self, src, maxTime):
+    def _isTimeCacheValid(self, src, ancReload, maxTime):
         try:
-            cacheMaxTime = self._data[src.item.ID]['maxTime']
+            cacheMaxTime = self._data[src.item.ID][ancReload]['maxTime']
         except KeyError:
             return False
         return maxTime <= cacheMaxTime
 
-    def _getDataPoint(self, src, time, dataFunc):
-        data = dataFunc(src)
+    def _getDataPoint(self, src, ancReload, time, dataFunc):
+        data = dataFunc(src=src, ancReload=ancReload)
         timesBefore = [t for t in data if floatUnerr(t) <= floatUnerr(time)]
         try:
             time = max(timesBefore)

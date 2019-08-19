@@ -37,10 +37,10 @@ def applyReps(rrMap, applicationMap):
 # Y mixins
 class YRpsMixin:
 
-    def _getRepsPerKey(self, src, time):
+    def _getRepsPerKey(self, src, ancReload, time):
         # Use data from time cache if time was not specified
         if time is not None:
-            return self._getTimeCacheDataPoint(src=src, time=time)
+            return self._getTimeCacheDataPoint(src=src, ancReload=ancReload, time=time)
         # Compose map ourselves using current fit settings if time is not specified
         rpsMap = {}
         defaultSpoolValue = eos.config.settings['globalDefaultSpoolupPercentage']
@@ -54,32 +54,32 @@ class YRpsMixin:
             rpsMap[drone] = drone.getRemoteReps()
         return rpsMap
 
-    def _prepareTimeCache(self, src, maxTime):
-        self.graph._timeCache.prepareRpsData(src=src, maxTime=maxTime)
+    def _prepareTimeCache(self, src, ancReload, maxTime):
+        self.graph._timeCache.prepareRpsData(src=src, ancReload=ancReload, maxTime=maxTime)
 
-    def _getTimeCacheData(self, src):
-        return self.graph._timeCache.getRpsData(src=src)
+    def _getTimeCacheData(self, src, ancReload):
+        return self.graph._timeCache.getRpsData(src=src, ancReload=ancReload)
 
-    def _getTimeCacheDataPoint(self, src, time):
-        return self.graph._timeCache.getRpsDataPoint(src=src, time=time)
+    def _getTimeCacheDataPoint(self, src, ancReload, time):
+        return self.graph._timeCache.getRpsDataPoint(src=src, ancReload=ancReload, time=time)
 
 
 class YRepAmountMixin:
 
-    def _getRepsPerKey(self, src, time):
+    def _getRepsPerKey(self, src, ancReload, time):
         # Total reps given makes no sense without time specified
         if time is None:
             raise ValueError
-        return self._getTimeCacheDataPoint(src=src, time=time)
+        return self._getTimeCacheDataPoint(src=src, ancReload=ancReload, time=time)
 
-    def _prepareTimeCache(self, src, maxTime):
-        self.graph._timeCache.prepareRepAmountData(src=src, maxTime=maxTime)
+    def _prepareTimeCache(self, src, ancReload, maxTime):
+        self.graph._timeCache.prepareRepAmountData(src=src, ancReload=ancReload, maxTime=maxTime)
 
-    def _getTimeCacheData(self, src):
-        return self.graph._timeCache.getRepAmountData(src=src)
+    def _getTimeCacheData(self, src, ancReload):
+        return self.graph._timeCache.getRepAmountData(src=src, ancReload=ancReload)
 
-    def _getTimeCacheDataPoint(self, src, time):
-        return self.graph._timeCache.getRepAmountDataPoint(src=src, time=time)
+    def _getTimeCacheDataPoint(self, src, ancReload, time):
+        return self.graph._timeCache.getRepAmountDataPoint(src=src, ancReload=ancReload, time=time)
 
 
 # X mixins
@@ -91,8 +91,8 @@ class XDistanceMixin(SmoothPointGetter):
     def _getCommonData(self, miscParams, src, tgt):
         # Prepare time cache here because we need to do it only once,
         # and this function is called once per point info fetch
-        self._prepareTimeCache(src=src, maxTime=miscParams['time'])
-        return {'rrMap': self._getRepsPerKey(src=src, time=miscParams['time'])}
+        self._prepareTimeCache(src=src, ancReload=miscParams['ancReload'], maxTime=miscParams['time'])
+        return {'rrMap': self._getRepsPerKey(src=src, ancReload=miscParams['ancReload'], time=miscParams['time'])}
 
     def _calculatePoint(self, x, miscParams, src, tgt, commonData):
         distance = x
@@ -110,8 +110,8 @@ class XTimeMixin(PointGetter):
         ys = []
         minTime, maxTime = xRange
         # Prepare time cache and various shared data
-        self._prepareTimeCache(src=src, maxTime=maxTime)
-        timeCache = self._getTimeCacheData(src=src)
+        self._prepareTimeCache(src=src, ancReload=miscParams['ancReload'], maxTime=maxTime)
+        timeCache = self._getTimeCacheData(src=src, ancReload=miscParams['ancReload'])
         applicationMap = getApplicationPerKey(src=src, distance=miscParams['distance'])
         # Custom iteration for time graph to show all data points
         currentRepAmount = None
@@ -162,8 +162,8 @@ class XTimeMixin(PointGetter):
     def getPoint(self, x, miscParams, src, tgt):
         time = x
         # Prepare time cache and various data
-        self._prepareTimeCache(src=src, maxTime=time)
-        repAmountData = self._getTimeCacheDataPoint(src=src, time=time)
+        self._prepareTimeCache(src=src, ancReload=miscParams['ancReload'], maxTime=time)
+        repAmountData = self._getTimeCacheDataPoint(src=src, ancReload=miscParams['ancReload'], time=time)
         applicationMap = getApplicationPerKey(src=src, distance=miscParams['distance'])
         y = applyReps(rrMap=repAmountData, applicationMap=applicationMap)
         return y
