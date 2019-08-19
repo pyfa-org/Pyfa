@@ -143,6 +143,7 @@ class Fit:
         self.__capState = None
         self.__capUsed = None
         self.__capRecharge = None
+        self.__savedCapSimData = {}
         self.__calculatedTargets = []
         self.factorReload = False
         self.boostsFits = set()
@@ -160,6 +161,7 @@ class Fit:
         self.__capState = None
         self.__capUsed = None
         self.__capRecharge = None
+        self.__savedCapSimData.clear()
 
     @property
     def targetProfile(self):
@@ -461,6 +463,7 @@ class Fit:
         self.__capState = None
         self.__capUsed = None
         self.__capRecharge = None
+        self.__savedCapSimData.clear()
         self.ecmProjectedStr = 1
         # self.commandBonuses = {}
 
@@ -1227,30 +1230,29 @@ class Fit:
         drains = []
         capUsed = 0
         capAdded = 0
-        for mod in self.modules:
-            if mod.state >= FittingModuleState.ACTIVE:
-                if (mod.getModifiedItemAttr("capacitorNeed") or 0) != 0:
-                    cycleTime = mod.rawCycleTime or 0
-                    reactivationTime = mod.getModifiedItemAttr("moduleReactivationDelay") or 0
-                    fullCycleTime = cycleTime + reactivationTime
-                    reloadTime = mod.reloadTime
-                    if fullCycleTime > 0:
-                        capNeed = mod.capUse
-                        if capNeed > 0:
-                            capUsed += capNeed
-                        else:
-                            capAdded -= capNeed
+        for mod in self.activeModulesIter():
+            if (mod.getModifiedItemAttr("capacitorNeed") or 0) != 0:
+                cycleTime = mod.rawCycleTime or 0
+                reactivationTime = mod.getModifiedItemAttr("moduleReactivationDelay") or 0
+                fullCycleTime = cycleTime + reactivationTime
+                reloadTime = mod.reloadTime
+                if fullCycleTime > 0:
+                    capNeed = mod.capUse
+                    if capNeed > 0:
+                        capUsed += capNeed
+                    else:
+                        capAdded -= capNeed
 
-                        # If this is a turret, don't stagger activations
-                        disableStagger = mod.hardpoint == FittingHardpoint.TURRET
+                    # If this is a turret, don't stagger activations
+                    disableStagger = mod.hardpoint == FittingHardpoint.TURRET
 
-                        drains.append((
-                            int(fullCycleTime),
-                            mod.getModifiedItemAttr("capacitorNeed") or 0,
-                            mod.numShots or 0,
-                            disableStagger,
-                            reloadTime,
-                            mod.item.group.name == 'Capacitor Booster'))
+                    drains.append((
+                        int(fullCycleTime),
+                        mod.getModifiedItemAttr("capacitorNeed") or 0,
+                        mod.numShots or 0,
+                        disableStagger,
+                        reloadTime,
+                        mod.item.group.name == 'Capacitor Booster'))
 
         for fullCycleTime, capNeed, clipSize, reloadTime in self.iterDrains():
             drains.append((
@@ -1272,22 +1274,34 @@ class Fit:
         drains, self.__capUsed, self.__capRecharge = self.__generateDrain()
         self.__capRecharge += self.calculateCapRecharge()
         if len(drains) > 0:
-            sim = capSim.CapSimulator()
-            sim.init(drains)
-            sim.capacitorCapacity = self.ship.getModifiedItemAttr("capacitorCapacity")
-            sim.capacitorRecharge = self.ship.getModifiedItemAttr("rechargeRate")
-            sim.stagger = True
-            sim.scale = False
-            sim.t_max = 6 * 60 * 60 * 1000
-            sim.reload = self.factorReload
-            sim.run()
-
+            sim = self.__runCapSim(drains=drains)
             capState = (sim.cap_stable_low + sim.cap_stable_high) / (2 * sim.capacitorCapacity)
             self.__capStable = capState > 0
             self.__capState = min(100, capState * 100) if self.__capStable else sim.t / 1000.0
         else:
             self.__capStable = True
             self.__capState = 100
+
+    def getCapSimData(self, startingCap):
+        if startingCap not in self.__savedCapSimData:
+            self.__runCapSim(startingCap=startingCap)
+        return self.__savedCapSimData[startingCap]
+
+    def __runCapSim(self, drains=None, startingCap=None):
+        if drains is None:
+            drains, nil, nil = self.__generateDrain()
+        sim = capSim.CapSimulator()
+        sim.init(drains)
+        sim.capacitorCapacity = self.ship.getModifiedItemAttr("capacitorCapacity")
+        sim.capacitorRecharge = self.ship.getModifiedItemAttr("rechargeRate")
+        sim.startingCapacity = startingCap = self.ship.getModifiedItemAttr("capacitorCapacity") if startingCap is None else startingCap
+        sim.stagger = True
+        sim.scale = False
+        sim.t_max = 6 * 60 * 60 * 1000
+        sim.reload = self.factorReload
+        sim.run()
+        self.__savedCapSimData[startingCap] = sim.saved_changes
+        return sim
 
     def getRemoteReps(self, spoolOptions=None):
         if spoolOptions not in self.__remoteRepMap:

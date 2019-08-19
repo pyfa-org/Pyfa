@@ -42,7 +42,7 @@ class FitCapRegenGraph(FitGraph):
             (('capAmount', '%'), None)]),
         Input(handle='capAmountT0', unit='%', label='Starting cap amount', iconID=1668, defaultValue=0, defaultRange=(0, 100), conditions=[
             (('time', 's'), None)])]
-    checkboxes = [InputCheckbox(handle='useCapsim', label='Use capacitor simulator', defaultValue=True, conditions=[
+    checkboxes = [InputCheckbox(handle='useCapsim', label='Use capacitor simulator', defaultValue=False, conditions=[
         (('time', 's'), ('capAmount', 'GJ'))])]
     srcExtraCols = ('CapAmount', 'CapTime')
 

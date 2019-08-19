@@ -21,6 +21,7 @@ class CapSimulator:
 
         self.capacitorCapacity = 100
         self.capacitorRecharge = 1000
+        self.startingCapacity = 1000
 
         # max simulated time.
         self.t_max = DAY
@@ -40,6 +41,10 @@ class CapSimulator:
 
         # relevant decimal digits of capacitor for LCM period optimization
         self.stability_precision = 1
+
+        # Stores how cap sim changed cap values outside of cap regen time
+        self.saved_changes = ()
+        self.saved_changes_internal = None
 
     def scale_activation(self, duration, capNeed):
         for res in self.scale_resolutions:
@@ -67,6 +72,7 @@ class CapSimulator:
     def reset(self):
         """Reset the simulator state"""
         self.state = []
+        self.saved_changes_internal = {}
         mods = {}
         period = 1
         disable_period = False
@@ -143,10 +149,10 @@ class CapSimulator:
         capCapacity = self.capacitorCapacity
         tau = self.capacitorRecharge / 5.0
 
-        cap_wrap = capCapacity  # cap value at last period
-        cap_lowest = capCapacity  # lowest cap value encountered
-        cap_lowest_pre = capCapacity  # lowest cap value before activations
-        cap = capCapacity  # current cap value
+        cap_wrap = self.startingCapacity  # cap value at last period
+        cap_lowest = self.startingCapacity  # lowest cap value encountered
+        cap_lowest_pre = self.startingCapacity  # lowest cap value before activations
+        cap = self.startingCapacity  # current cap value
         t_wrap = self.period  # point in time of next period
 
         t_last = 0
@@ -203,6 +209,7 @@ class CapSimulator:
                         cap -= inj_capNeed
                         if cap > capCapacity:
                             cap = capCapacity
+                        self.saved_changes_internal[t_now] = cap
                         # Add injector to regular state tracker
                         inj_t_now = t_now
                         inj_t_now += inj_duration
@@ -217,6 +224,7 @@ class CapSimulator:
                 cap -= capNeed
                 if cap > capCapacity:
                     cap = capCapacity
+                self.saved_changes_internal[t_now] = cap
 
                 if cap < cap_lowest:
                     # Negative cap - we're unstable, simulation is over
@@ -239,6 +247,7 @@ class CapSimulator:
                     cap -= inj_capNeed
                     if cap > capCapacity:
                         cap = capCapacity
+                    self.saved_changes_internal[t_now] = cap
                     # Add injector to regular state tracker
                     inj_t_now = t_now
                     inj_t_now += inj_duration
@@ -279,5 +288,8 @@ class CapSimulator:
             self.cap_stable_high = cap_lowest_pre
         else:
             self.cap_stable_low = self.cap_stable_high = 0.0
+
+        self.saved_changes = tuple((k, v) for k, v in self.saved_changes_internal.items())
+        self.saved_changes_internal = None
 
         self.runtime = time.time() - start
