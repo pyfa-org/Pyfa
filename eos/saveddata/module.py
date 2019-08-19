@@ -900,14 +900,14 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
             early_cycles = cycles_until_reload - final_cycles
             # Single cycle until effect cannot run anymore
             if early_cycles == 0:
-                return CycleInfo(active_time, 0, 1)
+                return CycleInfo(active_time, 0, 1, False)
             # Multiple cycles with the same parameters
             if forced_inactive_time == 0:
-                return CycleInfo(active_time, 0, cycles_until_reload)
+                return CycleInfo(active_time, 0, cycles_until_reload, False)
             # Multiple cycles with different parameters
             return CycleSequence((
-                CycleInfo(active_time, forced_inactive_time, early_cycles),
-                CycleInfo(active_time, 0, final_cycles)
+                CycleInfo(active_time, forced_inactive_time, early_cycles, False),
+                CycleInfo(active_time, 0, final_cycles, False)
             ), 1)
         # Module cycles the same way all the time in 3 cases:
         # 1) caller doesn't want to take into account reload time
@@ -918,7 +918,8 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
             cycles_until_reload == math.inf or
             forced_inactive_time >= reload_time
         ):
-            return CycleInfo(active_time, forced_inactive_time, math.inf)
+            isInactivityReload = factorReload and forced_inactive_time >= reload_time
+            return CycleInfo(active_time, forced_inactive_time, math.inf, isInactivityReload)
         # We've got to take reload into consideration
         else:
             final_cycles = 1
@@ -926,10 +927,10 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
             # If effect has to reload after each its cycle, then its parameters
             # are the same all the time
             if early_cycles == 0:
-                return CycleInfo(active_time, reload_time, math.inf)
+                return CycleInfo(active_time, reload_time, math.inf, True)
             return CycleSequence((
-                CycleInfo(active_time, forced_inactive_time, early_cycles),
-                CycleInfo(active_time, reload_time, final_cycles)
+                CycleInfo(active_time, forced_inactive_time, early_cycles, False),
+                CycleInfo(active_time, reload_time, final_cycles, True)
             ), math.inf)
 
     @property

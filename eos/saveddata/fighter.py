@@ -263,16 +263,19 @@ class Fighter(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
         return cycleParamsInfinite if totalOnlyInfinite >= totalAllWithReloads else cycleParamsReload
 
     def getCycleParametersPerEffectInfinite(self):
-        return {a.effectID: CycleInfo(a.cycleTime, 0, math.inf) for a in self.abilities if a.numShots == 0 and a.cycleTime > 0}
+        return {
+            a.effectID: CycleInfo(a.cycleTime, 0, math.inf, False)
+            for a in self.abilities
+            if a.numShots == 0 and a.cycleTime > 0}
 
     def getCycleParametersPerEffect(self, reloadOverride=None):
         factorReload = reloadOverride if reloadOverride is not None else self.owner.factorReload
         # Assume it can cycle infinitely
         if not factorReload:
-            return {a.effectID: CycleInfo(a.cycleTime, 0, math.inf) for a in self.abilities if a.cycleTime > 0}
+            return {a.effectID: CycleInfo(a.cycleTime, 0, math.inf, False) for a in self.abilities if a.cycleTime > 0}
         limitedAbilities = [a for a in self.abilities if a.numShots > 0 and a.cycleTime > 0]
         if len(limitedAbilities) == 0:
-            return {a.effectID: CycleInfo(a.cycleTime, 0, math.inf) for a in self.abilities if a.cycleTime > 0}
+            return {a.effectID: CycleInfo(a.cycleTime, 0, math.inf, False) for a in self.abilities if a.cycleTime > 0}
         validAbilities = [a for a in self.abilities if a.cycleTime > 0]
         if len(validAbilities) == 0:
             return {}
@@ -300,13 +303,13 @@ class Fighter(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
             sequence = []
             if extraShotTime is not None:
                 if regularShots > 0:
-                    sequence.append(CycleInfo(ability.cycleTime, 0, regularShots))
-                sequence.append(CycleInfo(extraShotTime, refuelTime, 1))
+                    sequence.append(CycleInfo(ability.cycleTime, 0, regularShots, False))
+                sequence.append(CycleInfo(extraShotTime, refuelTime, 1, True))
             else:
                 regularShotsNonReload = regularShots - 1
                 if regularShotsNonReload > 0:
-                    sequence.append(CycleInfo(ability.cycleTime, 0, regularShotsNonReload))
-                sequence.append(CycleInfo(ability.cycleTime, refuelTime, 1))
+                    sequence.append(CycleInfo(ability.cycleTime, 0, regularShotsNonReload, False))
+                sequence.append(CycleInfo(ability.cycleTime, refuelTime, 1, True))
             cycleParams[ability.effectID] = CycleSequence(sequence, math.inf)
         return cycleParams
 

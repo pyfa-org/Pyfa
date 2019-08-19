@@ -159,7 +159,7 @@ class TimeCache(FitDataCache):
                 continue
             currentTime = 0
             nonstopCycles = 0
-            for cycleTimeMs, inactiveTimeMs in cycleParams.iterCycles():
+            for cycleTimeMs, inactiveTimeMs, isInactivityReload in cycleParams.iterCycles():
                 cycleRepAmounts = []
                 repAmountParams = mod.getRepAmountParameters(spoolOptions=SpoolOptions(SpoolType.CYCLES, nonstopCycles, True))
                 for repTimeMs, repAmount in repAmountParams.items():
@@ -182,7 +182,7 @@ class TimeCache(FitDataCache):
                 continue
             currentTime = 0
             repAmountParams = drone.getRepAmountParameters()
-            for cycleTimeMs, inactiveTimeMs in cycleParams.iterCycles():
+            for cycleTimeMs, inactiveTimeMs, isInactivityReload in cycleParams.iterCycles():
                 cycleRepAmounts = []
                 for repTimeMs, repAmount in repAmountParams.items():
                     cycleRepAmounts.append(repAmount)

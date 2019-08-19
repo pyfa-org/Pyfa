@@ -219,7 +219,7 @@ class Drone(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
         cycleTime = self.cycleTime
         if cycleTime == 0:
             return None
-        return CycleInfo(self.cycleTime, 0, math.inf)
+        return CycleInfo(self.cycleTime, 0, math.inf, False)
 
     @property
     def miningStats(self):

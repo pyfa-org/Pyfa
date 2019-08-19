@@ -6,10 +6,11 @@ from utils.repr import makeReprStr
 
 class CycleInfo:
 
-    def __init__(self, activeTime, inactiveTime, quantity):
+    def __init__(self, activeTime, inactiveTime, quantity, isInactivityReload):
         self.activeTime = activeTime
         self.inactiveTime = inactiveTime
         self.quantity = quantity
+        self.isInactivityReload = isInactivityReload
 
     @property
     def averageTime(self):
@@ -18,7 +19,7 @@ class CycleInfo:
     def iterCycles(self):
         i = 0
         while i < self.quantity:
-            yield self.activeTime, self.inactiveTime
+            yield self.activeTime, self.inactiveTime, self.isInactivityReload
             i += 1
 
     def _getCycleQuantity(self):
@@ -28,7 +29,7 @@ class CycleInfo:
         return (self.activeTime + self.inactiveTime) * self.quantity
 
     def __repr__(self):
-        spec = ['activeTime', 'inactiveTime', 'quantity']
+        spec = ['activeTime', 'inactiveTime', 'quantity', 'isInactivityReload']
         return makeReprStr(self, spec)
 
 
@@ -47,8 +48,8 @@ class CycleSequence:
         i = 0
         while i < self.quantity:
             for cycleInfo in self.sequence:
-                for cycleTime, inactiveTime in cycleInfo.iterCycles():
-                    yield cycleTime, inactiveTime
+                for cycleTime, inactiveTime, isInactivityReload in cycleInfo.iterCycles():
+                    yield cycleTime, inactiveTime, isInactivityReload
             i += 1
 
     def _getCycleQuantity(self):

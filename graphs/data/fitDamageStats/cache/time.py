@@ -181,7 +181,7 @@ class TimeCache(FitDataCache):
                 continue
             currentTime = 0
             nonstopCycles = 0
-            for cycleTimeMs, inactiveTimeMs in cycleParams.iterCycles():
+            for cycleTimeMs, inactiveTimeMs, isInactivityReload in cycleParams.iterCycles():
                 cycleVolleys = []
                 volleyParams = mod.getVolleyParameters(spoolOptions=SpoolOptions(SpoolType.CYCLES, nonstopCycles, True))
                 for volleyTimeMs, volley in volleyParams.items():
@@ -204,7 +204,7 @@ class TimeCache(FitDataCache):
                 continue
             currentTime = 0
             volleyParams = drone.getVolleyParameters()
-            for cycleTimeMs, inactiveTimeMs in cycleParams.iterCycles():
+            for cycleTimeMs, inactiveTimeMs, isInactivityReload in cycleParams.iterCycles():
                 cycleVolleys = []
                 for volleyTimeMs, volley in volleyParams.items():
                     cycleVolleys.append(volley)
@@ -226,7 +226,7 @@ class TimeCache(FitDataCache):
                     continue
                 currentTime = 0
                 abilityVolleyParams = volleyParams[effectID]
-                for cycleTimeMs, inactiveTimeMs in abilityCycleParams.iterCycles():
+                for cycleTimeMs, inactiveTimeMs, isInactivityReload in abilityCycleParams.iterCycles():
                     cycleVolleys = []
                     for volleyTimeMs, volley in abilityVolleyParams.items():
                         cycleVolleys.append(volley)
