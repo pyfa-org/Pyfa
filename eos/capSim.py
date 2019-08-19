@@ -289,7 +289,7 @@ class CapSimulator:
         else:
             self.cap_stable_low = self.cap_stable_high = 0.0
 
-        self.saved_changes = tuple((k, v) for k, v in self.saved_changes_internal.items())
+        self.saved_changes = tuple((k / 1000, max(0, self.saved_changes_internal[k])) for k in sorted(self.saved_changes_internal))
         self.saved_changes_internal = None
 
         self.runtime = time.time() - start

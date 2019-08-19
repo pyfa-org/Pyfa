@@ -18,7 +18,7 @@
 # =============================================================================
 
 
-from .graph import FitCapRegenGraph
+from .graph import FitCapacitorGraph
 
 
-FitCapRegenGraph.register()
+FitCapacitorGraph.register()

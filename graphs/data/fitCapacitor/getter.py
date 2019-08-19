@@ -25,6 +25,76 @@ from graphs.data.base import SmoothPointGetter
 
 class Time2CapAmountGetter(SmoothPointGetter):
 
+    def getRange(self, xRange, miscParams, src, tgt):
+        # Use smooth getter when we're not using cap sim
+        if not miscParams['useCapsim']:
+            return super().getRange(xRange=xRange, miscParams=miscParams, src=src, tgt=tgt)
+        capAmountT0 = miscParams['capAmountT0'] or 0
+        xs = []
+        ys = []
+        capSimDataRaw = src.item.getCapSimData(startingCap=capAmountT0)
+        if not capSimDataRaw:
+            return xs, ys
+        capSimDataMaxTime = capSimDataRaw[-1][0]
+        minTime, maxTime = xRange
+        maxTime = min(maxTime, capSimDataMaxTime)
+        maxPointXDistance = (maxTime - minTime) / self._baseResolution
+        capSimDataInRange = {k: v for k, v in capSimDataRaw if minTime <= k <= maxTime}
+        maxCapAmount = src.item.ship.getModifiedItemAttr('capacitorCapacity')
+        capRegenTime = src.item.ship.getModifiedItemAttr('rechargeRate') / 1000
+        prevTime = minTime
+        # Calculate starting cap for first value seen in our range
+        capSimDataBefore = {k: v for k, v in capSimDataRaw if k < minTime}
+        # When time range lies to the right of last cap sim data point, return nothing
+        if len(capSimDataBefore) and max(capSimDataBefore) == capSimDataMaxTime:
+            return xs, ys
+
+        def plotCapRegen(prevTime, prevCap, currentTime):
+            subrangeAmount = math.ceil((currentTime - prevTime) / maxPointXDistance)
+            subrangeLength = (currentTime - prevTime) / subrangeAmount
+            for i in range(1, subrangeAmount + 1):
+                subrangeTime = prevTime + subrangeLength * i
+                subrangeCap = calculateCapAmount(
+                    maxCapAmount=maxCapAmount,
+                    capRegenTime=capRegenTime,
+                    capAmountT0=prevCap,
+                    time=subrangeTime - prevTime)
+                xs.append(subrangeTime)
+                ys.append(subrangeCap)
+
+        if capSimDataBefore:
+            timeBefore = max(capSimDataBefore)
+            capBefore = capSimDataBefore[timeBefore]
+            prevCap = calculateCapAmount(
+                    maxCapAmount=maxCapAmount,
+                    capRegenTime=capRegenTime,
+                    capAmountT0=capBefore,
+                    time=prevTime - timeBefore)
+        else:
+            prevCap = calculateCapAmount(
+                maxCapAmount=maxCapAmount,
+                capRegenTime=capRegenTime,
+                capAmountT0=capAmountT0,
+                time=prevTime)
+        xs.append(prevTime)
+        ys.append(prevCap)
+        for currentTime in sorted(capSimDataInRange):
+            if currentTime > prevTime:
+                plotCapRegen(prevTime=prevTime, prevCap=prevCap, currentTime=currentTime)
+            currentCap = capSimDataInRange[currentTime]
+            xs.append(currentTime)
+            ys.append(currentCap)
+            prevTime = currentTime
+            prevCap = currentCap
+        if maxTime > prevTime:
+            plotCapRegen(prevTime=prevTime, prevCap=prevCap, currentTime=maxTime)
+        return xs, ys
+
+    def getPoint(self, x, miscParams, src, tgt):
+        # Use smooth getter when we're not using cap sim
+        if not miscParams['useCapsim']:
+            return super().getPoint(x=x, miscParams=miscParams, src=src, tgt=tgt)
+
     def _getCommonData(self, miscParams, src, tgt):
         return {
             'maxCapAmount': src.item.ship.getModifiedItemAttr('capacitorCapacity'),

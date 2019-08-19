@@ -22,11 +22,11 @@ from graphs.data.base import FitGraph, XDef, YDef, Input, InputCheckbox
 from .getter import CapAmount2CapAmountGetter, CapAmount2CapRegenGetter, Time2CapAmountGetter, Time2CapRegenGetter
 
 
-class FitCapRegenGraph(FitGraph):
+class FitCapacitorGraph(FitGraph):
 
     # UI stuff
-    internalName = 'capRegenGraph'
-    name = 'Capacitor Regeneration'
+    internalName = 'capacitorGraph'
+    name = 'Capacitor'
     xDefs = [
         XDef(handle='time', unit='s', label='Time', mainInput=('time', 's')),
         XDef(handle='capAmount', unit='GJ', label='Cap amount', mainInput=('capAmount', '%')),
@@ -40,9 +40,9 @@ class FitCapRegenGraph(FitGraph):
         Input(handle='capAmount', unit='%', label='Cap amount', iconID=1668, defaultValue=25, defaultRange=(0, 100), conditions=[
             (('capAmount', 'GJ'), None),
             (('capAmount', '%'), None)]),
-        Input(handle='capAmountT0', unit='%', label='Starting cap amount', iconID=1668, defaultValue=0, defaultRange=(0, 100), conditions=[
+        Input(handle='capAmountT0', unit='%', label='Starting cap amount', iconID=1668, defaultValue=100, defaultRange=(0, 100), conditions=[
             (('time', 's'), None)])]
-    checkboxes = [InputCheckbox(handle='useCapsim', label='Use capacitor simulator', defaultValue=False, conditions=[
+    checkboxes = [InputCheckbox(handle='useCapsim', label='Use capacitor simulator', defaultValue=True, conditions=[
         (('time', 's'), ('capAmount', 'GJ'))])]
     srcExtraCols = ('CapAmount', 'CapTime')
 
