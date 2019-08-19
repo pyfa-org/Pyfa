@@ -19,6 +19,7 @@
 
 
 import itertools
+import math
 import os
 import traceback
 from bisect import bisect
@@ -149,6 +150,9 @@ class GraphCanvasPanel(wx.Panel):
                     ySpec=chosenY,
                     src=source,
                     tgt=target)
+                if not self.__checkNumbers(xs, ys):
+                    pyfalog.warning('Failed to plot "{}" vs "{}" due to inf or NaN in values'.format(source.name, '' if target is None else target.name))
+                    continue
                 plotData[(source, target)] = (xs, ys)
                 allXs.update(xs)
                 allYs.update(ys)
@@ -298,6 +302,13 @@ class GraphCanvasPanel(wx.Panel):
         pos = (x - x1) / (x2 - x1)
         y = y1 + pos * (y2 - y1)
         return y
+
+    @staticmethod
+    def __checkNumbers(xs, ys):
+        for number in itertools.chain(xs, ys):
+            if math.isnan(number) or math.isinf(number):
+                return False
+        return True
 
     # Matplotlib event handlers
     def OnMplCanvasClick(self, event):
