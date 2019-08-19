@@ -68,8 +68,12 @@ class TargetProfileSwitcher(ContextMenuUnconditional):
             start, end = profile.name.find('['), profile.name.find(']')
             if start is not -1 and end is not -1:
                 currBase = profile.name[start + 1:end]
+                name = profile.name[end + 1:].strip()
+                if not name:
+                    self.singles.append(profile)
+                    continue
                 # set helper attr
-                setattr(profile, '_name', profile.name[end + 1:].strip())
+                setattr(profile, '_name', name)
                 if currBase not in self.subMenus:
                     self.subMenus[currBase] = []
                 self.subMenus[currBase].append(profile)

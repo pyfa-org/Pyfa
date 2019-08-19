@@ -40,8 +40,12 @@ class ChangeDamagePattern(ContextMenuUnconditional):
             start, end = pattern.name.find('['), pattern.name.find(']')
             if start is not -1 and end is not -1:
                 currBase = pattern.name[start + 1:end]
+                name = pattern.name[end + 1:].strip()
+                if not name:
+                    self.singles.append(pattern)
+                    continue
                 # set helper attr
-                setattr(pattern, "_name", pattern.name[end + 1:].strip())
+                setattr(pattern, "_name", name)
                 if currBase not in self.subMenus:
                     self.subMenus[currBase] = []
                 self.subMenus[currBase].append(pattern)
