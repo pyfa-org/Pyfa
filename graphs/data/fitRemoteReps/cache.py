@@ -149,7 +149,12 @@ class TimeCache(FitDataCache):
         for mod in src.item.activeModulesIter():
             if not mod.isRemoteRepping():
                 continue
-            cycleParams = mod.getCycleParameters(reloadOverride=True)
+            isAncShield = 'shipModuleAncillaryRemoteShieldBooster' in mod.item.effects
+            isAncArmor = 'shipModuleAncillaryRemoteArmorRepairer' in mod.item.effects
+            if isAncShield or isAncArmor:
+                cycleParams = mod.getCycleParameters(reloadOverride=ancReload)
+            else:
+                cycleParams = mod.getCycleParameters(reloadOverride=True)
             if cycleParams is None:
                 continue
             currentTime = 0

@@ -537,9 +537,9 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
                 adjustedRRAmount[rrTime] = rrAmount * spoolMultiplier
         return adjustedRRAmount
 
-    def getRemoteReps(self, spoolOptions=None, ignoreState=False):
+    def getRemoteReps(self, spoolOptions=None, ignoreState=False, reloadOverride=None):
         rrDuringCycle = RRTypes(0, 0, 0, 0)
-        cycleParams = self.getCycleParameters()
+        cycleParams = self.getCycleParameters(reloadOverride=reloadOverride)
         if cycleParams is None:
             return rrDuringCycle
         repAmountParams = self.getRepAmountParameters(spoolOptions=spoolOptions, ignoreState=ignoreState)
