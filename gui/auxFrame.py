@@ -42,6 +42,8 @@ class AuxiliaryFrame(wx.Frame):
         if name is not None:
             kwargs['name'] = name
         super().__init__(**kwargs)
+        if 'wxMSW' in wx.PlatformInfo:
+            self.SetBackgroundColour(wx.SystemSettings.GetColour(wx.SYS_COLOUR_BTNFACE))
 
     @classmethod
     def openOne(cls, parent):

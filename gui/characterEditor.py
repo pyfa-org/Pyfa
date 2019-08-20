@@ -163,8 +163,6 @@ class CharacterEditor(AuxiliaryFrame):
         # self.disableWin = wx.WindowDisabler(self)
         sFit = Fit.getInstance()
 
-        self.SetBackgroundColour(wx.SystemSettings.GetColour(wx.SYS_COLOUR_BTNFACE))
-
         mainSizer = wx.BoxSizer(wx.VERTICAL)
 
         self.entityEditor = CharacterEntityEditor(self)

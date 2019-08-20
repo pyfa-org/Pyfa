@@ -27,8 +27,6 @@ class EveFittings(AuxiliaryFrame):
             parent, id=wx.ID_ANY, title="Browse EVE Fittings", pos=wx.DefaultPosition,
             size=wx.Size(750, 450), style=wx.RESIZE_BORDER)
 
-        self.SetBackgroundColour(wx.SystemSettings.GetColour(wx.SYS_COLOUR_BTNFACE))
-
         self.mainFrame = parent
         mainSizer = wx.BoxSizer(wx.VERTICAL)
 
@@ -209,7 +207,6 @@ class ExportToEve(AuxiliaryFrame):
             size=wx.Size(400, 120) if "wxGTK" in wx.PlatformInfo else wx.Size(350, 100), style=wx.RESIZE_BORDER)
 
         self.mainFrame = parent
-        self.SetBackgroundColour(wx.SystemSettings.GetColour(wx.SYS_COLOUR_BTNFACE))
 
         mainSizer = wx.BoxSizer(wx.VERTICAL)
         hSizer = wx.BoxSizer(wx.HORIZONTAL)
@@ -315,7 +312,6 @@ class SsoCharacterMgmt(AuxiliaryFrame):
             size=wx.Size(550, 250), style=wx.RESIZE_BORDER)
         self.mainFrame = parent
         mainSizer = wx.BoxSizer(wx.HORIZONTAL)
-        self.SetBackgroundColour(wx.SystemSettings.GetColour(wx.SYS_COLOUR_BTNFACE))
 
         self.lcCharacters = wx.ListCtrl(self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.LC_REPORT)
 

@@ -80,9 +80,6 @@ class ErrorFrame(AuxiliaryFrame):
 
         self.SetSizeHints(wx.DefaultSize, wx.DefaultSize)
 
-        if 'wxMSW' in wx.PlatformInfo:
-            self.SetBackgroundColour(wx.SystemSettings.GetColour(wx.SYS_COLOUR_BTNFACE))
-
         mainSizer = wx.BoxSizer(wx.VERTICAL)
         headSizer = wx.BoxSizer(wx.HORIZONTAL)
 
