@@ -865,7 +865,7 @@ class Effect271(BaseEffect):
     hullUpgradesArmorHpBonusPostPercentHpLocationShip
 
     Used by:
-    Implants named like: grade Slave (15 of 18)
+    Implants named like: grade Amulet (15 of 18)
     Modules named like: Trimark Armor Pump (8 of 8)
     Implant: Low-grade Snake Epsilon
     Implant: Mid-grade Snake Epsilon
@@ -4557,7 +4557,7 @@ class Effect1579(BaseEffect):
     setBonusSansha
 
     Used by:
-    Implants named like: grade Slave (18 of 18)
+    Implants named like: grade Amulet (18 of 18)
     Implant: High-grade Halo Omega
     """
 
@@ -4567,7 +4567,7 @@ class Effect1579(BaseEffect):
     @staticmethod
     def handler(fit, implant, context, **kwargs):
         fit.appliedImplants.filteredItemMultiply(lambda target: target.item.requiresSkill('Cybernetics'),
-                                                 'armorHpBonus', implant.getModifiedItemAttr('implantSetSansha') or 1, **kwargs)
+                                                 'armorHpBonus', implant.getModifiedItemAttr('implantSetAmulet') or 1, **kwargs)
 
 
 class Effect1581(BaseEffect):
@@ -7833,7 +7833,7 @@ class Effect2737(BaseEffect):
     boosterShieldCapacityPenalty
 
     Used by:
-    Implants from group: Booster (12 of 69)
+    Implants from group: Booster (12 of 67)
     """
 
     attr = 'boosterShieldCapacityPenalty'
@@ -21948,6 +21948,7 @@ class Effect5754(BaseEffect):
     Used by:
     Modules named like: Tracking Computer (19 of 19)
     Variations of module: Tracking Disruptor I (6 of 6)
+    Module: Dark Blood Tracking Disruptor
     """
 
     type = 'overheat'
@@ -27128,6 +27129,7 @@ class Effect6424(BaseEffect):
 
     Used by:
     Variations of module: Tracking Disruptor I (6 of 6)
+    Module: Dark Blood Tracking Disruptor
     """
 
     type = 'projected', 'active'
