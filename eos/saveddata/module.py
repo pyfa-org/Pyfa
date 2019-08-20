@@ -677,30 +677,41 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
 
     def canHaveState(self, state=None, projectedOnto=None):
         """
-        Check with other modules if there are restrictions that might not allow this module to be activated
+        Check with other modules if there are restrictions that might not allow this module to be activated.
+        Returns True if state is allowed, or max state module can have if current state is invalid.
         """
-        # If we're going to set module to offline or online for local modules or offline for projected,
-        # it should be fine for all cases
+        # If we're going to set module to offline, it should be fine for all cases
         item = self.item
-        if (state <= FittingModuleState.ONLINE and projectedOnto is None) or (state <= FittingModuleState.OFFLINE):
+        if state <= FittingModuleState.OFFLINE:
             return True
 
         # Check if the local module is over it's max limit; if it's not, we're fine
+        maxGroupOnline = self.getModifiedItemAttr("maxGroupOnline", None)
         maxGroupActive = self.getModifiedItemAttr("maxGroupActive", None)
-        if maxGroupActive is None and projectedOnto is None:
+        if maxGroupOnline is None and maxGroupActive is None and projectedOnto is None:
             return True
 
         # Following is applicable only to local modules, we do not want to limit projected
         if projectedOnto is None:
+            currOnline = 0
             currActive = 0
             group = item.group.name
+            maxState = None
             for mod in self.owner.modules:
                 currItem = getattr(mod, "item", None)
-                if mod.state >= FittingModuleState.ACTIVE and currItem is not None and currItem.group.name == group:
-                    currActive += 1
-                if currActive > maxGroupActive:
-                    break
-            return currActive <= maxGroupActive
+                if currItem is not None and currItem.group.name == group:
+                    if mod.state >= FittingModuleState.ONLINE:
+                        currOnline += 1
+                    if mod.state >= FittingModuleState.ACTIVE:
+                        currActive += 1
+                    if maxGroupOnline is not None and currOnline > maxGroupOnline:
+                        if maxState is None or maxState > FittingModuleState.OFFLINE:
+                            maxState = FittingModuleState.OFFLINE
+                            break
+                    if maxGroupActive is not None and currActive > maxGroupActive:
+                        if maxState is None or maxState > FittingModuleState.ONLINE:
+                            maxState = FittingModuleState.ONLINE
+            return True if maxState is None else maxState
         # For projected, we're checking if ship is vulnerable to given item
         else:
             # Do not allow to apply offensive modules on ship with offensive module immunite, with few exceptions
@@ -711,10 +722,10 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
                                          "energyNosferatuFalloff",
                                          "energyNeutralizerFalloff"}
                 if not offensiveNonModifiers.intersection(set(item.effects)):
-                    return False
+                    return FittingModuleState.OFFLINE
             # If assistive modules are not allowed, do not let to apply these altogether
             if item.assistive and projectedOnto.ship.getModifiedItemAttr("disallowAssistance") == 1:
-                return False
+                return FittingModuleState.OFFLINE
             return True
 
     def isValidCharge(self, charge):

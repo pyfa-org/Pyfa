@@ -450,13 +450,21 @@ class Fit:
         for pos, mod in enumerate(fit.modules):
             if mod is not base:
                 # fix for #529, where a module may be in incorrect state after CCP changes mechanics of module
-                if not mod.canHaveState(mod.state) or not mod.isValidState(mod.state):
+                canHaveState = mod.canHaveState(mod.state)
+                if canHaveState is not True:
+                    changedMods[pos] = mod.state
+                    mod.state = canHaveState
+                elif not mod.isValidState(mod.state):
                     changedMods[pos] = mod.state
                     mod.state = FittingModuleState.ONLINE
 
         for pos, mod in enumerate(fit.projectedModules):
             # fix for #529, where a module may be in incorrect state after CCP changes mechanics of module
-            if not mod.canHaveState(mod.state, fit) or not mod.isValidState(mod.state):
+            canHaveState = mod.canHaveState(mod.state, fit)
+            if canHaveState is not True:
+                changedProjMods[pos] = mod.state
+                mod.state = canHaveState
+            elif not mod.isValidState(mod.state):
                 changedProjMods[pos] = mod.state
                 mod.state = FittingModuleState.OFFLINE
 
