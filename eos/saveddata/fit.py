@@ -1273,8 +1273,8 @@ class Fit:
     def simulateCap(self):
         drains, self.__capUsed, self.__capRecharge = self.__generateDrain()
         self.__capRecharge += self.calculateCapRecharge()
-        if len(drains) > 0:
-            sim = self.__runCapSim(drains=drains)
+        sim = self.__runCapSim(drains=drains)
+        if sim is not None:
             capState = (sim.cap_stable_low + sim.cap_stable_high) / (2 * sim.capacitorCapacity)
             self.__capStable = capState > 0
             self.__capState = min(100, capState * 100) if self.__capStable else sim.t / 1000.0
@@ -1294,21 +1294,25 @@ class Fit:
             tMax = 6 * 60 * 60 * 1000
         else:
             tMax *= 1000
-        sim = capSim.CapSimulator()
-        sim.init(drains)
-        sim.capacitorCapacity = self.ship.getModifiedItemAttr("capacitorCapacity")
-        sim.capacitorRecharge = self.ship.getModifiedItemAttr("rechargeRate")
-        sim.startingCapacity = startingCap = self.ship.getModifiedItemAttr("capacitorCapacity") if startingCap is None else startingCap
-        sim.stagger = True
-        sim.scale = False
-        sim.t_max = tMax
-        sim.reload = self.factorReload
-        sim.optimize_repeats = optimizeRepeats
-        sim.run()
-        # We do not want to store partial results
-        if not sim.result_optimized_repeats:
-            self.__savedCapSimData[startingCap] = sim.saved_changes
-        return sim
+        if len(drains) > 0:
+            sim = capSim.CapSimulator()
+            sim.init(drains)
+            sim.capacitorCapacity = self.ship.getModifiedItemAttr("capacitorCapacity")
+            sim.capacitorRecharge = self.ship.getModifiedItemAttr("rechargeRate")
+            sim.startingCapacity = startingCap = self.ship.getModifiedItemAttr("capacitorCapacity") if startingCap is None else startingCap
+            sim.stagger = True
+            sim.scale = False
+            sim.t_max = tMax
+            sim.reload = self.factorReload
+            sim.optimize_repeats = optimizeRepeats
+            sim.run()
+            # We do not want to store partial results
+            if not sim.result_optimized_repeats:
+                self.__savedCapSimData[startingCap] = sim.saved_changes
+            return sim
+        else:
+            self.__savedCapSimData[startingCap] = []
+            return None
 
     def getRemoteReps(self, spoolOptions=None):
         if spoolOptions not in self.__remoteRepMap:
