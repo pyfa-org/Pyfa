@@ -96,7 +96,6 @@ def main(db, json_path):
             'typeName': 'typeName',
             'description': 'description'
         },
-        #phbtraits???
         'mapbulk_marketGroups': {
             'marketGroupName': 'marketGroupName',
             'description': 'description'
@@ -165,7 +164,7 @@ def main(db, json_path):
             typeLines = []
             typeId = row['typeID']
             traitData = row['traits']
-            for skillData in sorted(traitData.get('skills', ()), key=lambda i: i['header']):
+            for skillData in traitData.get('skills', ()):
                 typeLines.append(convertSection(skillData))
             if 'role' in traitData:
                 typeLines.append(convertSection(traitData['role']))
