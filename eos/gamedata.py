@@ -594,8 +594,7 @@ class DynamicItemItem(EqBase):
 class MarketGroup(EqBase):
     def __repr__(self):
         return "MarketGroup(ID={}, name={}, parent={}) at {}".format(
-                self.ID, self.name, getattr(self.parent, "name", None), self.name, hex(id(self))
-        )
+            self.ID, self.name, getattr(self.parent, "name", None), hex(id(self)))
 
 
 class MetaGroup(EqBase):

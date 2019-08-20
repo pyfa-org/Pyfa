@@ -71,7 +71,7 @@ def main(db, json_path):
         'marketGroups': eos.gamedata.MarketGroup}
 
     fieldMapping = {
-        'mapbulk_marketGroups': {
+        'marketGroups': {
             'id': 'marketGroupID',
             'name': 'marketGroupName'}}
 

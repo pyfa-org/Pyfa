@@ -260,12 +260,12 @@ class Market:
         # Dictionary of items with forced meta groups, uses following format:
         # Item name: (metagroup name, parent type name)
         self.ITEMS_FORCEDMETAGROUP = {
-            "'Habitat' Miner I"                        : ("Storyline", "Miner I"),
-            "'Wild' Miner I"                           : ("Storyline", "Miner I"),
-            "Medium Nano Armor Repair Unit I"          : ("Tech I", "Medium Armor Repairer I"),
+            "'Habitat' Miner I": ("Storyline", "Miner I"),
+            "'Wild' Miner I": ("Storyline", "Miner I"),
+            "Medium Nano Armor Repair Unit I": ("Tech I", "Medium Armor Repairer I"),
             "Large 'Reprieve' Vestment Reconstructer I": ("Storyline", "Large Armor Repairer I"),
-            "Khanid Navy Torpedo Launcher"             : ("Faction", "Torpedo Launcher I"),
-        }
+            "Khanid Navy Torpedo Launcher": ("Faction", "Torpedo Launcher I"),
+            "Dark Blood Tracking Disruptor": ("Faction", "Tracking Disruptor I")}
         # Parent type name: set(item names)
         self.ITEMS_FORCEDMETAGROUP_R = {}
         for item, value in list(self.ITEMS_FORCEDMETAGROUP.items()):
@@ -329,13 +329,13 @@ class Market:
             "Structure Module",
         )
         self.SEARCH_GROUPS = ("Ice Product",)
-        self.ROOT_MARKET_GROUPS = (9,  # Modules
+        self.ROOT_MARKET_GROUPS = (9,  # Ship Equipment
                                    1111,  # Rigs
                                    157,  # Drones
-                                   11,  # Ammo
+                                   11,  # Ammunition & Charges
                                    1112,  # Subsystems
                                    24,  # Implants & Boosters
-                                   404,  # Deployables
+                                   404,  # Deployable Structures
                                    2202,  # Structure Equipment
                                    2203  # Structure Modifications
                                    )
