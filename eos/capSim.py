@@ -141,9 +141,6 @@ class CapSimulator:
         awaitingInjectorsCounterWrap = Counter()
         self.reset()
 
-        #if len(self.state) == 0:
-
-
         push = heapq.heappush
         pop = heapq.heappop
 

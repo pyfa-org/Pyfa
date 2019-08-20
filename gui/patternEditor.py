@@ -208,12 +208,12 @@ class DmgPatternEditor(AuxiliaryFrame):
         if self.block:
             return
         p = self.entityEditor.getActiveEntity()
-        total = sum([getattr(self, "%sEdit" % attr).GetValueFloat() for attr in self.DAMAGE_TYPES])
+        total = sum([(getattr(self, "%sEdit" % attr).GetValueFloat() or 0) for attr in self.DAMAGE_TYPES])
         for type_ in self.DAMAGE_TYPES:
             editBox = getattr(self, "%sEdit" % type_)
             percLabel = getattr(self, "%sPerc" % type_)
-            setattr(p, "%sAmount" % type_, editBox.GetValueFloat())
-            percLabel.SetLabel("%.1f%%" % (float(editBox.GetValueFloat()) * 100 / total if total > 0 else 0))
+            setattr(p, "%sAmount" % type_, editBox.GetValueFloat() or 0)
+            percLabel.SetLabel("%.1f%%" % ((editBox.GetValueFloat() or 0) * 100 / total if total > 0 else 0))
         self.totSizer.Layout()
         DamagePattern.getInstance().saveChanges(p)
 
