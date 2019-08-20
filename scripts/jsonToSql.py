@@ -68,46 +68,18 @@ def main(db, json_path):
         'evetypes': eos.gamedata.Item,
         'phbtraits': eos.gamedata.Traits,
         'phbmetadata': eos.gamedata.MetaData,
-        'mapbulk_marketGroups': eos.gamedata.MarketGroup,
-    }
+        'marketGroups': eos.gamedata.MarketGroup}
 
     fieldMapping = {
-        'dgmattribs': {
-            'displayName': 'displayName'
-        },
-        'dgmeffects': {
-            'displayName': 'displayName',
-            'description': 'description'
-        },
-        'dgmunits': {
-            'displayName': 'displayName'
-        },
-        #icons???
-        'evecategories': {
-            'categoryName': 'categoryName'
-        },
-        'evegroups': {
-            'groupName': 'groupName'
-        },
-        'invmetagroups': {
-            'metaGroupName': 'metaGroupName'
-        },
-        'evetypes': {
-            'typeName': 'typeName',
-            'description': 'description'
-        },
         'mapbulk_marketGroups': {
-            'marketGroupName': 'marketGroupName',
-            'description': 'description'
-        }
-
-    }
+            'id': 'marketGroupID',
+            'name': 'marketGroupName'}}
 
     rowsInValues = (
         'evetypes',
         'evegroups',
-        'evecategories'
-    )
+        'evecategories',
+        'marketGroups')
 
     def convertIcons(data):
         new = []
@@ -303,7 +275,14 @@ def main(db, json_path):
         with open(os.path.join(jsonPath, '{}.json'.format(jsonName)), encoding='utf-8') as f:
             tableData = json.load(f)
         if jsonName in rowsInValues:
-            tableData = list(tableData.values())
+            newTableData = []
+            for k, v in tableData.items():
+                row = {}
+                row.update(v)
+                if 'id' not in row:
+                    row['id'] = int(k)
+                newTableData.append(row)
+            tableData = newTableData
         if jsonName == 'icons':
             tableData = convertIcons(tableData)
         if jsonName == 'phbtraits':
