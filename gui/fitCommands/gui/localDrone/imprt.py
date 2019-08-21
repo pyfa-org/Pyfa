@@ -17,15 +17,14 @@ class GuiImportLocalDronesCommand(wx.Command):
         self.drones = drones
 
     def Do(self):
-        if not self.drones:
-            return False
-        commands = []
+        results = []
         for itemID, amount in self.drones:
-            commands.append(CalcAddLocalDroneCommand(
+            cmd = CalcAddLocalDroneCommand(
                 fitID=self.fitID,
                 droneInfo=DroneInfo(itemID=itemID, amount=amount, amountActive=0),
-                forceNewStack=True))
-        success = self.internalHistory.submitBatch(*commands)
+                forceNewStack=True)
+            results.append(self.internalHistory.submit(cmd))
+        success = any(results)
         eos.db.flush()
         sFit = Fit.getInstance()
         sFit.recalc(self.fitID)

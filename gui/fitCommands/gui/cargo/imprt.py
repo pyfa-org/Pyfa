@@ -20,12 +20,11 @@ class GuiImportCargosCommand(wx.Command):
             self.cargos[itemID] += amount
 
     def Do(self):
-        if not self.cargos:
-            return False
-        commands = []
+        results = []
         for itemID, amount in self.cargos.items():
-            commands.append(CalcAddCargoCommand(fitID=self.fitID, cargoInfo=CargoInfo(itemID=itemID, amount=amount)))
-        success = self.internalHistory.submitBatch(*commands)
+            cmd = CalcAddCargoCommand(fitID=self.fitID, cargoInfo=CargoInfo(itemID=itemID, amount=amount))
+            results.append(self.internalHistory.submit(cmd))
+        success = any(results)
         eos.db.commit()
         wx.PostEvent(gui.mainFrame.MainFrame.getInstance(), GE.FitChanged(fitIDs=(self.fitID,)))
         return success

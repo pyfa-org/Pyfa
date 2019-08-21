@@ -17,12 +17,11 @@ class GuiImportLocalFightersCommand(wx.Command):
         self.fighters = fighters
 
     def Do(self):
-        if not self.fighters:
-            return False
-        commands = []
+        results = []
         for itemID, amount in self.fighters:
-            commands.append(CalcAddLocalFighterCommand(fitID=self.fitID, fighterInfo=FighterInfo(itemID=itemID, amount=amount, state=False)))
-        success = self.internalHistory.submitBatch(*commands)
+            cmd = CalcAddLocalFighterCommand(fitID=self.fitID, fighterInfo=FighterInfo(itemID=itemID, amount=amount, state=False))
+            results.append(self.internalHistory.submit(cmd))
+        success = any(results)
         eos.db.flush()
         sFit = Fit.getInstance()
         sFit.recalc(self.fitID)

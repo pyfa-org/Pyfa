@@ -17,12 +17,11 @@ class GuiImportBoostersCommand(wx.Command):
         self.boosters = set(b[0] for b in boosters)
 
     def Do(self):
-        if not self.boosters:
-            return False
-        commands = []
+        results = []
         for itemID in self.boosters:
-            commands.append(CalcAddBoosterCommand(fitID=self.fitID, boosterInfo=BoosterInfo(itemID=itemID)))
-        success = self.internalHistory.submitBatch(*commands)
+            cmd = CalcAddBoosterCommand(fitID=self.fitID, boosterInfo=BoosterInfo(itemID=itemID))
+            results.append(self.internalHistory.submit(cmd))
+        success = any(results)
         eos.db.flush()
         sFit = Fit.getInstance()
         sFit.recalc(self.fitID)

@@ -28,10 +28,11 @@ class GuiImportImplantsCommand(wx.Command):
             successSource = self.internalHistory.submit(cmd)
         else:
             successSource = False
-        commands = []
+        resultsImplants = []
         for itemID in self.implants:
-            commands.append(CalcAddImplantCommand(fitID=self.fitID, implantInfo=ImplantInfo(itemID=itemID)))
-        successImplants = self.internalHistory.submitBatch(*commands)
+            cmd = CalcAddImplantCommand(fitID=self.fitID, implantInfo=ImplantInfo(itemID=itemID))
+            resultsImplants.append(self.internalHistory.submit(cmd))
+        successImplants = any(resultsImplants)
         # Acceptable behavior when we already have passed implant and just switch source, or
         # when we have source and add implant, but not if we do not change anything
         success = successSource or successImplants
