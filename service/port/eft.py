@@ -104,45 +104,32 @@ def exportEft(fit, options, callback):
 
     # Section 2: drones, fighters
     minionSection = []
-    droneLines = []
-    for drone in sorted(fit.drones, key=lambda d: d.item.name):
-        droneLines.append('{} x{}'.format(drone.item.name, drone.amount))
-    if droneLines:
-        minionSection.append('\n'.join(droneLines))
-    fighterLines = []
-    for fighter in sorted(fit.fighters, key=lambda f: f.item.name):
-        fighterLines.append('{} x{}'.format(fighter.item.name, fighter.amount))
-    if fighterLines:
-        minionSection.append('\n'.join(fighterLines))
+    droneExport = exportDrones(fit.drones)
+    if droneExport:
+        minionSection.append(droneExport)
+    fighterExport = exportFighters(fit.fighters)
+    if fighterExport:
+        minionSection.append(fighterExport)
     if minionSection:
         sections.append('\n\n'.join(minionSection))
 
     # Section 3: implants, boosters
     if options[PortEftOptions.IMPLANTS]:
         charSection = []
-        implantLines = []
-        for implant in sorted(fit.implants, key=lambda i: i.slot or 0):
-            implantLines.append(implant.item.name)
-        if implantLines:
-            charSection.append('\n'.join(implantLines))
-        boosterLines = []
-        for booster in sorted(fit.boosters, key=lambda b: b.slot or 0):
-            boosterLines.append(booster.item.name)
-        if boosterLines:
-            charSection.append('\n'.join(boosterLines))
+        implantExport = exportImplants(fit.implants)
+        if implantExport:
+            charSection.append(implantExport)
+        boosterExport = exportBoosters(fit.boosters)
+        if boosterExport:
+            charSection.append(boosterExport)
         if charSection:
             sections.append('\n\n'.join(charSection))
 
     # Section 4: cargo
     if options[PortEftOptions.CARGO]:
-        cargoLines = []
-        for cargo in sorted(
-            fit.cargo,
-            key=lambda c: (c.item.group.category.name, c.item.group.name, c.item.name)
-        ):
-            cargoLines.append('{} x{}'.format(cargo.item.name, cargo.amount))
-        if cargoLines:
-            sections.append('\n'.join(cargoLines))
+        cargoExport = exportCargo(fit.cargo)
+        if cargoExport:
+            sections.append(cargoExport)
 
     # Section 5: mutated modules' details
     mutationLines = []
@@ -159,6 +146,41 @@ def exportEft(fit, options, callback):
         callback(text)
     else:
         return text
+
+
+def exportDrones(drones):
+    droneLines = []
+    for drone in sorted(drones, key=lambda d: d.item.name):
+        droneLines.append('{} x{}'.format(drone.item.name, drone.amount))
+    return '\n'.join(droneLines)
+
+
+def exportFighters(fighters):
+    fighterLines = []
+    for fighter in sorted(fighters, key=lambda f: f.item.name):
+        fighterLines.append('{} x{}'.format(fighter.item.name, fighter.amount))
+    return '\n'.join(fighterLines)
+
+
+def exportImplants(implants):
+    implantLines = []
+    for implant in sorted(implants, key=lambda i: i.slot or 0):
+        implantLines.append(implant.item.name)
+    return '\n'.join(implantLines)
+
+
+def exportBoosters(boosters):
+    boosterLines = []
+    for booster in sorted(boosters, key=lambda b: b.slot or 0):
+        boosterLines.append(booster.item.name)
+    return '\n'.join(boosterLines)
+
+
+def exportCargo(cargos):
+    cargoLines = []
+    for cargo in sorted(cargos, key=lambda c: (c.item.group.category.name, c.item.group.name, c.item.name)):
+        cargoLines.append('{} x{}'.format(cargo.item.name, cargo.amount))
+    return '\n'.join(cargoLines)
 
 
 def importEft(lines):

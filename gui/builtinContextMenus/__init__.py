@@ -47,3 +47,6 @@ from gui.builtinContextMenus.targetProfile import switcher
 from gui.builtinContextMenus import graphDmgIgnoreResists
 from gui.builtinContextMenus import graphDmgApplyProjected
 from gui.builtinContextMenus import graphDmgDroneMode
+# Additions panel menus
+from gui.builtinContextMenus import additionsExportSelection
+from gui.builtinContextMenus import additionsExportAll

@@ -1,11 +1,7 @@
 # noinspection PyPackageRequirements
 import wx
 
-import gui.fitCommands as cmd
-import gui.globalEvents as GE
-import gui.mainFrame
 from gui.contextMenu import ContextMenuUnconditional
-from service.character import Character
 from service.implantSet import ImplantSets as s_ImplantSets
 
 
