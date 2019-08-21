@@ -446,7 +446,7 @@ class Miscellanea(ViewColumn):
             return text, tooltip
         elif itemGroup in ("Capacitor Recharger", "Capacitor Power Relay", "Capacitor Battery"):
             fit = Fit.getInstance().getFit(self.fittingView.getActiveFit())
-            capGain = fit.getCapGainFromMod(stuff)
+            capGain = fit.getCapRegenGainFromMod(stuff)
             if not capGain:
                 return "", None
             text = formatAmount(capGain, 3, 0, 3, forceSign=True)
