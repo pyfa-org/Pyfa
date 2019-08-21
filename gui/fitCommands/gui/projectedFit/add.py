@@ -18,13 +18,11 @@ class GuiAddProjectedFitsCommand(wx.Command):
         self.amount = amount
 
     def Do(self):
-        commands = []
+        results = []
         for projectedFitID in self.projectedFitIDs:
             cmd = CalcAddProjectedFitCommand(fitID=self.fitID, projectedFitID=projectedFitID, amount=self.amount)
-            commands.append(cmd)
-        if not commands:
-            return False
-        success = self.internalHistory.submitBatch(*commands)
+            results.append(self.internalHistory.submit(cmd))
+        success = any(results)
         sFit = Fit.getInstance()
         eos.db.flush()
         sFit.recalc(self.fitID)

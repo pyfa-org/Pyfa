@@ -16,21 +16,21 @@ class GuiChangeLocalModuleMetasCommand(wx.Command):
         self.fitID = fitID
         self.positions = positions
         self.newItemID = newItemID
-        self.relacedItemIDs = None
+        self.replacedItemIDs = None
         self.savedRemovedDummies = None
 
     def Do(self):
         sFit = Fit.getInstance()
         fit = sFit.getFit(self.fitID)
-        commands = []
+        results = []
         self.replacedItemIDs = set()
+        lastSuccessfulCmd = None
         for position in self.positions:
             module = fit.modules[position]
             if module.isEmpty:
                 continue
             if module.itemID == self.newItemID:
                 continue
-            self.replacedItemIDs.add(module.itemID)
             info = ModuleInfo.fromModule(module)
             info.itemID = self.newItemID
             cmd = CalcReplaceLocalModuleCommand(
@@ -38,11 +38,13 @@ class GuiChangeLocalModuleMetasCommand(wx.Command):
                 position=position,
                 newModInfo=info,
                 unloadInvalidCharges=True)
-            commands.append(cmd)
-        if not commands:
-            return False
-        success = self.internalHistory.submitBatch(*commands)
-        if commands[-1].needsGuiRecalc:
+            result = self.internalHistory.submit(cmd)
+            results.append(result)
+            if result:
+                self.replacedItemIDs.add(module.itemID)
+                lastSuccessfulCmd = cmd
+        success = any(results)
+        if lastSuccessfulCmd is not None and lastSuccessfulCmd.needsGuiRecalc:
             eos.db.flush()
             sFit.recalc(self.fitID)
         self.savedRemovedDummies = sFit.fill(self.fitID)

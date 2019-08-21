@@ -17,13 +17,11 @@ class GuiAddCommandFitsCommand(wx.Command):
         self.commandFitIDs = commandFitIDs
 
     def Do(self):
-        commands = []
+        results = []
         for commandFitID in self.commandFitIDs:
             cmd = CalcAddCommandCommand(fitID=self.fitID, commandFitID=commandFitID)
-            commands.append(cmd)
-        if not commands:
-            return False
-        success = self.internalHistory.submitBatch(*commands)
+            results.append(self.internalHistory.submit(cmd))
+        success = any(results)
         eos.db.flush()
         sFit = Fit.getInstance()
         sFit.recalc(self.fitID)
