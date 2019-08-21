@@ -294,9 +294,9 @@ class EfsPort:
                 droneIDs.append(drone.item.typeID)
                 droneNames.append("%s x%s" % (drone.item.name, drone.amount))
         for fighter in fit.fighters:
-            if fighter.amountActive > 0:
+            if fighter.amount > 0:
                 fighterIDs.append(fighter.item.typeID)
-                fighterNames.append("%s x%s" % (fighter.item.name, fighter.amountActive))
+                fighterNames.append("%s x%s" % (fighter.item.name, fighter.amount))
         if len(droneNames) > 0:
             modTypeIDs.extend([0, 0])
             modTypeIDs.extend(droneIDs)
@@ -352,7 +352,7 @@ class EfsPort:
         abBaseDamage = sum(map(lambda damType: fighterAttr(baseRefDam + damType), damTypes))
         abDamage = abBaseDamage * fighterAttr(baseRefDam + "Multiplier")
         return {
-            "name": abilityName, "volley": abDamage * fighter.amountActive, "explosionRadius": fighterAttr(baseRef + "ExplosionRadius"),
+            "name": abilityName, "volley": abDamage * fighter.amount, "explosionRadius": fighterAttr(baseRef + "ExplosionRadius"),
             "explosionVelocity": fighterAttr(baseRef + "ExplosionVelocity"), "optimal": fighterAttr(baseRef + rangeSuffix),
             "damageReductionFactor": damageReductionFactor, "rof": fighterAttr(baseRef + "Duration"),
         }
@@ -435,7 +435,7 @@ class EfsPort:
                 }
                 weaponSystems.append(statDict)
         for fighter in fit.fighters:
-            if fighter.getDps().total > 0 and fighter.amountActive > 0:
+            if fighter.getDps().total > 0 and fighter.amount > 0:
                 fighterAttr = fighter.getModifiedItemAttr
                 abilities = []
                 if "fighterAbilityAttackMissileDamageEM" in fighter.item.attributes.keys():
@@ -449,7 +449,7 @@ class EfsPort:
                 statDict = {
                     "dps": fighter.getDps().total, "type": "Fighter", "name": fighter.item.name,
                     "maxSpeed": fighterAttr("maxVelocity"), "abilities": abilities,
-                    "ehp": fighterAttr("shieldCapacity") / 0.8875 * fighter.amountActive,
+                    "ehp": fighterAttr("shieldCapacity") / 0.8875 * fighter.amount,
                     "volley": fighter.getVolley().total, "signatureRadius": fighterAttr("signatureRadius")
                 }
                 weaponSystems.append(statDict)

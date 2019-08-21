@@ -312,7 +312,7 @@ def exportXml(fits, iportuser, callback):
 
             for fighter in fit.fighters:
                 hardware = doc.createElement("hardware")
-                hardware.setAttribute("qty", "%d" % fighter.amountActive)
+                hardware.setAttribute("qty", "%d" % fighter.amount)
                 hardware.setAttribute("slot", "fighter bay")
                 hardware.setAttribute("type", fighter.item.name)
                 fitting.appendChild(hardware)

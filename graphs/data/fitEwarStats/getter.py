@@ -56,7 +56,7 @@ class Distance2NeutingStrGetter(SmoothPointGetter):
             if ability.effect.name == 'fighterAbilityEnergyNeutralizer':
                 nps = fighter.getModifiedItemAttr('fighterAbilityEnergyNeutralizerAmount') / (ability.cycleTime / 1000)
                 neuts.append((
-                    nps * fighter.amountActive * resonance,
+                    nps * fighter.amount * resonance,
                     math.inf, 0))
         return {'neuts': neuts}
 
@@ -98,7 +98,7 @@ class Distance2WebbingStrGetter(SmoothPointGetter):
         for fighter, ability in src.item.activeFighterAbilityIter():
             if ability.effect.name == 'fighterAbilityStasisWebifier':
                 webs.append((
-                    fighter.getModifiedItemAttr('fighterAbilityStasisWebifierSpeedPenalty') * fighter.amountActive * resonance,
+                    fighter.getModifiedItemAttr('fighterAbilityStasisWebifierSpeedPenalty') * fighter.amount * resonance,
                     math.inf, 0, 'default'))
         return {'webs': webs}
 
@@ -143,7 +143,7 @@ class Distance2EcmStrMaxGetter(SmoothPointGetter):
         for fighter, ability in src.item.activeFighterAbilityIter():
             if ability.effect.name == 'fighterAbilityECM':
                 ecms.append((
-                    max(fighter.getModifiedItemAttr(a) for a in self.ECM_ATTRS_FIGHTERS) * fighter.amountActive * resonance,
+                    max(fighter.getModifiedItemAttr(a) for a in self.ECM_ATTRS_FIGHTERS) * fighter.amount * resonance,
                     math.inf, 0))
         return {'ecms': ecms}
 

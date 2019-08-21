@@ -46,6 +46,7 @@ fighter_abilities_table = Table("fightersAbilities", saveddata_meta,
 mapper(Fighter, fighters_table,
        properties={
            "owner"              : relation(Fit),
+           "_amount"            : fighters_table.c.amount,
            "_Fighter__abilities": relation(
                    FighterAbility,
                    backref="fighter",

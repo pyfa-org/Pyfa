@@ -35,10 +35,8 @@ def formatPrice(stuff, priceObj):
     textItems = []
     if priceObj.price:
         mult = 1
-        if isinstance(stuff, (Drone, Cargo)):
+        if isinstance(stuff, (Drone, Fighter, Cargo)):
             mult = stuff.amount
-        elif isinstance(stuff, Fighter):
-            mult = stuff.amountActive
         textItems.append(formatAmount(priceObj.price * mult, 3, 3, 9, currency=True))
     if priceObj.status in (PriceStatus.fetchFail, PriceStatus.fetchTimeout):
         textItems.append("(!)")

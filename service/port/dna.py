@@ -165,7 +165,7 @@ def exportDna(fit, options, callback):
         dna += ":{0};{1}".format(drone.itemID, drone.amount)
 
     for fighter in fit.fighters:
-        dna += ":{0};{1}".format(fighter.itemID, fighter.amountActive)
+        dna += ":{0};{1}".format(fighter.itemID, fighter.amount)
 
     for cargo in fit.cargo:
         # DNA format is a simple/dumb format. As CCP uses the slot information of the item itself

@@ -22,7 +22,7 @@ class CalcChangeFighterAmountCommand(wx.Command):
         fit = Fit.getInstance().getFit(self.fitID)
         container = fit.projectedFighters if self.projected else fit.fighters
         fighter = container[self.position]
-        if self.amount == fighter.amount or self.amount == fighter.amountActive:
+        if self.amount == fighter.amount:
             return False
         self.savedAmount = fighter.amount
         if self.amount == -1:

@@ -62,7 +62,7 @@ class BaseName(ViewColumn):
             return "%dx %s" % (stuff.amount, stuff.item.name)
         elif isinstance(stuff, Fighter):
             return "%d/%d %s" % \
-                   (stuff.amountActive, stuff.getModifiedItemAttr("fighterSquadronMaxSize"), stuff.item.name)
+                   (stuff.amount, stuff.getModifiedItemAttr("fighterSquadronMaxSize"), stuff.item.name)
         elif isinstance(stuff, Cargo):
             return "%dx %s" % (stuff.amount, stuff.item.name)
         elif isinstance(stuff, Fit):

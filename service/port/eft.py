@@ -111,7 +111,7 @@ def exportEft(fit, options, callback):
         minionSection.append('\n'.join(droneLines))
     fighterLines = []
     for fighter in sorted(fit.fighters, key=lambda f: f.item.name):
-        fighterLines.append('{} x{}'.format(fighter.item.name, fighter.amountActive))
+        fighterLines.append('{} x{}'.format(fighter.item.name, fighter.amount))
     if fighterLines:
         minionSection.append('\n'.join(fighterLines))
     if minionSection:

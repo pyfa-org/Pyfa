@@ -51,7 +51,7 @@ class Fighter(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
 
         # -1 is a placeholder that represents max squadron size, which we may not know yet as ships may modify this with
         # their effects. If user changes this, it is then overridden with user value.
-        self.amount = -1
+        self._amount = -1
 
         self.__abilities = self.__getAbilities()
 
@@ -136,12 +136,15 @@ class Fighter(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
         return self.__slot
 
     @property
-    def amountActive(self):
-        return int(self.getModifiedItemAttr("fighterSquadronMaxSize")) if self.amount == -1 else self.amount
+    def amount(self):
+        return int(self.getModifiedItemAttr("fighterSquadronMaxSize")) if self._amount == -1 else self._amount
 
-    @amountActive.setter
-    def amountActive(self, i):
-        self.amount = int(max(min(i, self.getModifiedItemAttr("fighterSquadronMaxSize")), 0))
+    @amount.setter
+    def amount(self, amount):
+        amount = max(0, int(amount))
+        if amount >= self.getModifiedItemAttr("fighterSquadronMaxSize"):
+            amount = -1
+        self._amount = amount
 
     @property
     def fighterSquadronMaxSize(self):
@@ -184,7 +187,7 @@ class Fighter(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
         return False
 
     def getVolleyParametersPerEffect(self, targetProfile=None):
-        if not self.active or self.amountActive <= 0:
+        if not self.active or self.amount <= 0:
             return {}
         if self.__baseVolley is None:
             self.__baseVolley = {}
@@ -235,7 +238,7 @@ class Fighter(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
         return DmgTypes(em=em, thermal=thermal, kinetic=kinetic, explosive=explosive)
 
     def getDpsPerEffect(self, targetProfile=None):
-        if not self.active or self.amountActive <= 0:
+        if not self.active or self.amount <= 0:
             return {}
         cycleParams = self.getCycleParametersPerEffectOptimizedDps(targetProfile=targetProfile)
         dpsMap = {}
@@ -339,7 +342,7 @@ class Fighter(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
             if falloff is not None:
                 return falloff
 
-    @validates("ID", "itemID", "chargeID", "amount", "amountActive")
+    @validates("ID", "itemID", "chargeID", "amount")
     def validator(self, key, val):
         map = {
             "ID"      : lambda _val: isinstance(_val, int),
@@ -347,7 +350,6 @@ class Fighter(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
             "chargeID": lambda _val: isinstance(_val, int),
             "amount"  : lambda _val: isinstance(_val, int) and _val >= -1,
         }
-
         if not map[key](val):
             raise ValueError(str(val) + " is not a valid value for " + key)
         else:
@@ -403,7 +405,7 @@ class Fighter(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
                         effect.handler(fit, self, context)
                 else:
                     i = 0
-                    while i != self.amountActive:
+                    while i != self.amount:
                         try:
                             effect.handler(fit, self, context, effect=effect)
                         except:
@@ -412,7 +414,7 @@ class Fighter(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
 
     def __deepcopy__(self, memo):
         copy = Fighter(self.item)
-        copy.amount = self.amount
+        copy._amount = self._amount
         copy.active = self.active
         for ability in self.abilities:
             copyAbility = next(filter(lambda a: a.effectID == ability.effectID, copy.abilities))
@@ -420,11 +422,11 @@ class Fighter(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
         return copy
 
     def rebase(self, item):
-        amount = self.amount
+        amount = self._amount
         active = self.active
         abilityEffectStates = {a.effectID: a.active for a in self.abilities}
         Fighter.__init__(self, item)
-        self.amount = amount
+        self._amount = amount
         self.active = active
         for ability in self.abilities:
             if ability.effectID in abilityEffectStates:

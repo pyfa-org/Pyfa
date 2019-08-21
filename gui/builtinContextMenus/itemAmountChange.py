@@ -38,8 +38,6 @@ class ChangeItemAmount(ContextMenuSingle):
                 value = mainItem.getProjectionInfo(fitID).amount
             except AttributeError:
                 return
-        elif isinstance(mainItem, es_Fighter):
-            value = mainItem.amountActive
         else:
             value = mainItem.amount
 

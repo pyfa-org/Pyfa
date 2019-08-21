@@ -1098,7 +1098,7 @@ class Fit:
     def fighterBayUsed(self):
         amount = 0
         for f in self.fighters:
-            amount += f.item.volume * f.amountActive
+            amount += f.item.volume * f.amount
 
         return amount
 

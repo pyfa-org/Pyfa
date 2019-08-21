@@ -27268,7 +27268,7 @@ class Effect6434(BaseEffect):
     @classmethod
     def handler(cls, fit, src, context, **kwargs):
         if 'projected' in context:
-            amount = src.getModifiedItemAttr('{}Amount'.format(cls.prefix)) * src.amountActive
+            amount = src.getModifiedItemAttr('{}Amount'.format(cls.prefix)) * src.amount
             time = src.getModifiedItemAttr('{}Duration'.format(cls.prefix))
 
             if 'effect' in kwargs:
@@ -27295,7 +27295,7 @@ class Effect6435(BaseEffect):
     def handler(cls, fit, src, context, **kwargs):
         if 'projected' not in context:
             return
-        fit.ship.boostItemAttr('maxVelocity', src.getModifiedItemAttr('{}SpeedPenalty'.format(cls.prefix)) * src.amountActive,
+        fit.ship.boostItemAttr('maxVelocity', src.getModifiedItemAttr('{}SpeedPenalty'.format(cls.prefix)) * src.amount,
                                stackingPenalties=True, **kwargs)
 
 
@@ -27316,7 +27316,7 @@ class Effect6436(BaseEffect):
     def handler(cls, fit, src, context, **kwargs):
         if 'projected' not in context:
             return
-        fit.ship.increaseItemAttr('warpScrambleStatus', src.getModifiedItemAttr('{}PointStrength'.format(cls.prefix)) * src.amountActive, **kwargs)
+        fit.ship.increaseItemAttr('warpScrambleStatus', src.getModifiedItemAttr('{}PointStrength'.format(cls.prefix)) * src.amount, **kwargs)
 
 
 class Effect6437(BaseEffect):
@@ -27333,11 +27333,11 @@ class Effect6437(BaseEffect):
     type = 'projected', 'active'
 
     @classmethod
-    def handler(cls, fit, module, context, **kwargs):
+    def handler(cls, fit, src, context, **kwargs):
         if 'projected' not in context:
             return
         # jam formula: 1 - (1- (jammer str/ship str))^(# of jam mods with same str))
-        strModifier = 1 - (module.getModifiedItemAttr('{}Strength{}'.format(cls.prefix, fit.scanType)) * module.amountActive) / fit.scanStrength
+        strModifier = 1 - (src.getModifiedItemAttr('{}Strength{}'.format(cls.prefix, fit.scanType)) * src.amount) / fit.scanStrength
 
         if 'effect' in kwargs:
             from eos.modifiedAttributeDict import ModifiedAttributeDict

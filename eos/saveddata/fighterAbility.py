@@ -127,7 +127,7 @@ class FighterAbility:
             therm = self.fighter.getModifiedItemAttr("{}DamageTherm".format(self.attrPrefix), 0)
             kin = self.fighter.getModifiedItemAttr("{}DamageKin".format(self.attrPrefix), 0)
             exp = self.fighter.getModifiedItemAttr("{}DamageExp".format(self.attrPrefix), 0)
-        dmgMult = self.fighter.amountActive * self.fighter.getModifiedItemAttr("{}DamageMultiplier".format(self.attrPrefix), 1)
+        dmgMult = self.fighter.amount * self.fighter.getModifiedItemAttr("{}DamageMultiplier".format(self.attrPrefix), 1)
         volley = DmgTypes(
             em=em * dmgMult * (1 - getattr(targetProfile, "emAmount", 0)),
             thermal=therm * dmgMult * (1 - getattr(targetProfile, "thermalAmount", 0)),

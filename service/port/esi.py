@@ -129,7 +129,7 @@ def exportESI(ofit, callback):
     for fighter in ofit.fighters:
         item = nested_dict()
         item['flag'] = INV_FLAG_FIGHTER
-        item['quantity'] = fighter.amountActive
+        item['quantity'] = fighter.amount
         item['type_id'] = fighter.item.ID
         fit['items'].append(item)
 

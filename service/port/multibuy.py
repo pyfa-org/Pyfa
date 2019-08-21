@@ -46,7 +46,7 @@ def exportMultiBuy(fit, options, callback):
         _addItem(itemAmounts, drone.item, drone.amount)
 
     for fighter in fit.fighters:
-        _addItem(itemAmounts, fighter.item, fighter.amountActive)
+        _addItem(itemAmounts, fighter.item, fighter.amount)
 
     if options[PortMultiBuyOptions.CARGO]:
         for cargo in fit.cargo:

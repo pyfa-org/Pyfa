@@ -111,7 +111,7 @@ class ProjectedDataCache(FitDataCache):
             for fighter, ability in src.item.activeFighterAbilityIter():
                 if ability.effect.name == 'fighterAbilityStasisWebifier':
                     webFighters.append(MobileProjData(
-                        fighter.getModifiedItemAttr('fighterAbilityStasisWebifierSpeedPenalty') * fighter.amountActive,
+                        fighter.getModifiedItemAttr('fighterAbilityStasisWebifierSpeedPenalty') * fighter.amount,
                         fighter.getModifiedItemAttr('fighterAbilityStasisWebifierOptimalRange'),
                         fighter.getModifiedItemAttr('fighterAbilityStasisWebifierFalloffRange'),
                         'default',
