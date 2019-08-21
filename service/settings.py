@@ -474,6 +474,7 @@ class ContextMenuSettings:
             "project"               : 1,
             "moduleFill"            : 1,
             "spoolup"               : 1,
+            "additionsCopyPaste"    : 1,
         }
 
         self.ContextMenuDefaultSettings = SettingsProvider.getInstance().getSettings("pyfaContextMenuSettings", ContextMenuDefaultSettings)

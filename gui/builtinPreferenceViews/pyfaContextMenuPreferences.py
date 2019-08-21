@@ -64,17 +64,22 @@ class PFContextMenuPref(PreferenceView):
         rbSizerRow2.Add(self.rbBox5, 1, wx.ALL, 5)
         self.rbBox5.Bind(wx.EVT_RADIOBOX, self.OnSetting5Change)
 
-        self.rbBox6 = wx.RadioBox(panel, -1, "Spoolup", wx.DefaultPosition, wx.DefaultSize, ['Disabled', 'Enabled'], 1, wx.RA_SPECIFY_COLS)
-        self.rbBox6.SetSelection(self.settings.get('spoolup'))
-        rbSizerRow2.Add(self.rbBox6, 1, wx.ALL, 5)
-        self.rbBox6.Bind(wx.EVT_RADIOBOX, self.OnSetting6Change)
-
         mainSizer.Add(rbSizerRow2, 1, wx.ALL | wx.EXPAND, 0)
 
         # Row 3
-        # rbSizerRow3 = wx.BoxSizer(wx.HORIZONTAL)
-        #
-        # mainSizer.Add(rbSizerRow3, 1, wx.ALL | wx.EXPAND, 0)
+        rbSizerRow3 = wx.BoxSizer(wx.HORIZONTAL)
+
+        self.rbBox6 = wx.RadioBox(panel, -1, "Spoolup", wx.DefaultPosition, wx.DefaultSize, ['Disabled', 'Enabled'], 1, wx.RA_SPECIFY_COLS)
+        self.rbBox6.SetSelection(self.settings.get('spoolup'))
+        rbSizerRow3.Add(self.rbBox6, 1, wx.ALL, 5)
+        self.rbBox6.Bind(wx.EVT_RADIOBOX, self.OnSetting6Change)
+
+        self.rbBox7 = wx.RadioBox(panel, -1, "Additions Panel Copy/Paste", wx.DefaultPosition, wx.DefaultSize, ['Disabled', 'Enabled'], 1, wx.RA_SPECIFY_COLS)
+        self.rbBox7.SetSelection(self.settings.get('additionsCopyPaste'))
+        rbSizerRow3.Add(self.rbBox7, 1, wx.ALL, 5)
+        self.rbBox7.Bind(wx.EVT_RADIOBOX, self.OnSetting7Change)
+
+        mainSizer.Add(rbSizerRow3, 1, wx.ALL | wx.EXPAND, 0)
 
         panel.SetSizer(mainSizer)
         panel.Layout()
@@ -96,6 +101,9 @@ class PFContextMenuPref(PreferenceView):
 
     def OnSetting6Change(self, event):
         self.settings.set('spoolup', event.GetInt())
+
+    def OnSetting7Change(self, event):
+        self.settings.set('additionsCopyPaste', event.GetInt())
 
     def getImage(self):
         return BitmapLoader.getBitmap("settings_menu", "gui")

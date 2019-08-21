@@ -3,6 +3,7 @@ from gui.contextMenu import ContextMenuUnconditional
 from gui.utils.clipboard import toClipboard
 from service.fit import Fit
 from service.port.eft import exportDrones, exportFighters, exportCargo, exportImplants, exportBoosters
+from service.settings import ContextMenuSettings
 
 
 viewSpecMap = {
@@ -20,6 +21,8 @@ class AdditionsExportAll(ContextMenuUnconditional):
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
 
     def display(self, callingWindow, srcContext):
+        if not ContextMenuSettings.getInstance().get('additionsCopyPaste'):
+            return False
         if srcContext not in viewSpecMap:
             return False
         fit = Fit.getInstance().getFit(self.mainFrame.getActiveFit())
