@@ -228,13 +228,42 @@ class ModifiedAttributeDict(collections.MutableMapping):
         # and we do not actually need those operators atm
         preIncreaseAdjustment = 0
         multiplierAdjustment = 1
-        ignoredPenalizedMultipliers = None
+        ignorePenalizedMultipliers = {}
         postIncreaseAdjustment = 0
-        # for fit, afflictors in self.getAfflictions(key).items():
-        #     for afflictor1, operator, stackingGroup, preResAmount, postResAmount, used in afflictors:
-        #         if afflictor1 is afflictor:
-        #             print(afflictor.item.name, operator, stackingGroup, preResAmount, postResAmount, used)
-        return self[key]
+        for fit, afflictors in self.getAfflictions(key).items():
+            for innerAfflictor, operator, stackingGroup, preResAmount, postResAmount, used in afflictors:
+                if innerAfflictor is afflictor:
+                    if operator == Operator.MULTIPLY:
+                        if stackingGroup is None:
+                            multiplierAdjustment /= postResAmount
+                        else:
+                            ignorePenalizedMultipliers.setdefault(stackingGroup, []).append(postResAmount)
+                    elif operator == Operator.PREINCREASE:
+                        preIncreaseAdjustment -= postResAmount
+                    elif operator == Operator.POSTINCREASE:
+                        postIncreaseAdjustment -= postResAmount
+
+        val = self.__calculateValue(
+            key, preIncAdj=preIncreaseAdjustment, multAdj=multiplierAdjustment,
+            postIncAdj=postIncreaseAdjustment, ignorePenMult=ignorePenalizedMultipliers)
+        if val is not None:
+            return val
+
+        # Then in values which are not yet calculated
+        if self.__intermediary:
+            val = self.__intermediary.get(key)
+        else:
+            val = None
+        if val is not None:
+            return val
+
+        # Original value
+        val = self.getOriginal(key)
+        if val is not None:
+            return val
+
+        # Passed in default value
+        return default
 
     def __delitem__(self, key):
         if key in self.__modified:
@@ -281,7 +310,7 @@ class ModifiedAttributeDict(collections.MutableMapping):
         keys.update(iter(self.__intermediary.keys()))
         return len(keys)
 
-    def __calculateValue(self, key, extraMultipliers=None):
+    def __calculateValue(self, key, extraMultipliers=None, preIncAdj=None, multAdj=None, postIncAdj=None, ignorePenMult=None):
         # It's possible that various attributes are capped by other attributes,
         # it's defined by reference maxAttributeID
         try:
@@ -357,10 +386,22 @@ class ModifiedAttributeDict(collections.MutableMapping):
         # We'll do stuff in the following order:
         # preIncrease > multiplier > stacking penalized multipliers > postIncrease
         val += preIncrease
+        if preIncAdj is not None:
+            val += preIncAdj
         val *= multiplier
+        if multAdj is not None:
+            val *= multAdj
         # Each group is penalized independently
         # Things in different groups will not be stack penalized between each other
-        for penalizedMultipliers in penalizedMultiplierGroups.values():
+        for penaltyGroup, penalizedMultipliers in penalizedMultiplierGroups.items():
+            if ignorePenMult is not None and penaltyGroup in ignorePenMult:
+                # Avoid modifying source and remove multipliers we were asked to remove for this calc
+                penalizedMultipliers = penalizedMultipliers[:]
+                for ignoreMult in ignorePenMult[penaltyGroup]:
+                    try:
+                        penalizedMultipliers.remove(ignoreMult)
+                    except ValueError:
+                        pass
             # A quick explanation of how this works:
             # 1: Bonuses and penalties are calculated seperately, so we'll have to filter each of them
             l1 = [_val for _val in penalizedMultipliers if _val > 1]
@@ -378,6 +419,8 @@ class ModifiedAttributeDict(collections.MutableMapping):
                     bonus = l[i]
                     val *= 1 + (bonus - 1) * exp(- i ** 2 / 7.1289)
         val += postIncrease
+        if postIncAdj is not None:
+            val += postIncAdj
 
         # Cap value if we have cap defined
         if cappingValue is not None:
