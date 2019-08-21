@@ -50,3 +50,4 @@ from gui.builtinContextMenus import graphDmgDroneMode
 # Additions panel menus
 from gui.builtinContextMenus import additionsExportSelection
 from gui.builtinContextMenus import additionsExportAll
+from gui.builtinContextMenus import additionsImport

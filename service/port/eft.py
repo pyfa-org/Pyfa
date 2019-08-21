@@ -862,3 +862,21 @@ class AbstractFit:
         if itemSpec.item not in self.cargo:
             self.cargo[itemSpec.item] = Cargo(itemSpec.item)
         self.cargo[itemSpec.item].amount += itemSpec.amount
+
+
+def parseAdditions(text):
+    items = []
+    sMkt = Market.getInstance()
+    pattern = '^(?P<typeName>[^,/\[\]]+?)( x(?P<amount>\d+?))?$'
+    for line in text.splitlines():
+        line = line.strip()
+        m = re.match(pattern, line)
+        if not m:
+            continue
+        item = sMkt.getItem(m.group('typeName'))
+        if item is None:
+            continue
+        amount = m.group('amount')
+        amount = 1 if amount is None else int(amount)
+        items.append((item, amount))
+    return items
