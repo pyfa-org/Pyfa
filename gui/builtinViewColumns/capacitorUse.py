@@ -21,39 +21,55 @@
 import wx
 
 from eos.saveddata.mode import Mode
-from service.attribute import Attribute
+from eos.utils.float import floatUnerr
+from gui.bitmap_loader import BitmapLoader
 from gui.utils.numberFormatter import formatAmount
 from gui.viewColumn import ViewColumn
-from gui.bitmap_loader import BitmapLoader
+from service.attribute import Attribute
+from service.fit import Fit
 
 
 class CapacitorUse(ViewColumn):
-    name = "Capacitor Usage"
+
+    name = 'Capacitor Usage'
 
     def __init__(self, fittingView, params):
         ViewColumn.__init__(self, fittingView)
 
         self.mask = wx.LIST_MASK_IMAGE
 
-        Attribute.getInstance().getAttributeInfo("capacitorNeed")
-        self.imageId = fittingView.imageList.GetImageIndex("capacitorRecharge_small", "gui")
-        self.bitmap = BitmapLoader.getBitmap("capacitorRecharge_small", "gui")
+        Attribute.getInstance().getAttributeInfo('capacitorNeed')
+        self.imageId = fittingView.imageList.GetImageIndex('capacitorRecharge_small', 'gui')
+        self.bitmap = BitmapLoader.getBitmap('capacitorRecharge_small', 'gui')
 
     def getText(self, mod):
         if isinstance(mod, Mode):
-            return ""
-
+            return ''
+        fit = Fit.getInstance().getFit(self.fittingView.getActiveFit())
+        if fit is None:
+            return ''
         capUse = mod.capUse
-        if capUse:
-            return "%s%s" % ("+" if capUse < 0 else "", (formatAmount(-capUse, 3, 0, 3)))
+        # Do not show cap diff numbers
+        if mod.item is not None and mod.item.group.name in (
+            'Capacitor Battery', 'Structure Capacitor Battery',
+            'Capacitor Power Relay', 'Structure Capacitor Power Relay',
+            'Capacitor Recharger', 'Power Diagnostic System', 'Capacitor Flux Coil',
+            'Rig Core', 'Shield Power Relay'
+        ):
+            capRegenDiff = fit.getCapRegenGainFromMod(mod)
         else:
-            return ""
+            capRegenDiff = 0
+        capDiff = floatUnerr(capRegenDiff - capUse)
+        if capDiff:
+            return formatAmount(capDiff, 3, 0, 3, forceSign=True)
+        else:
+            return ''
 
     def getImageId(self, mod):
         return -1
 
     def getToolTip(self, mod):
-        return self.name
+        return 'Capacitor Usage'
 
 
 CapacitorUse.register()

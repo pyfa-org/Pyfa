@@ -36,7 +36,6 @@ from eos.saveddata.character import Character
 from eos.saveddata.citadel import Citadel
 from eos.saveddata.module import Module
 from eos.saveddata.ship import Ship
-from eos.utils.float import floatUnerr
 from eos.utils.stats import DmgTypes, RRTypes
 
 
@@ -1323,7 +1322,7 @@ class Fit:
         nomodRegen = self.calculateCapRecharge(
             capacity=self.ship.getModifiedItemAttrWithoutAfflictor("capacitorCapacity", mod),
             rechargeRate=self.ship.getModifiedItemAttrWithoutAfflictor("rechargeRate", mod) / 1000.0)
-        return floatUnerr(currentRegen - nomodRegen)
+        return currentRegen - nomodRegen
 
     def getRemoteReps(self, spoolOptions=None):
         if spoolOptions not in self.__remoteRepMap:
