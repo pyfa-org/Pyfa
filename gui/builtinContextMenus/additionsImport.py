@@ -1,4 +1,5 @@
 import gui.mainFrame
+from gui import fitCommands as cmd
 from gui.contextMenu import ContextMenuUnconditional
 from gui.utils.clipboard import fromClipboard
 from service.fit import Fit
@@ -7,12 +8,12 @@ from service.settings import ContextMenuSettings
 
 
 viewSpecMap = {
-    'droneItemMisc': ('Drones', None),
-    'fighterItemMisc': ('Fighters', None),
-    'cargoItemMisc': ('Cargo Items', None),
-    'implantItemMisc': ('Implants', None),
-    'implantItemMiscChar': ('Implants', None),
-    'boosterItemMisc': ('Boosters', None)}
+    'droneItemMisc': ('Drones', lambda i: i.isDrone, cmd.GuiImportLocalDronesCommand),
+    'fighterItemMisc': ('Fighters', lambda i: i.isFighter, cmd.GuiImportLocalFightersCommand),
+    'cargoItemMisc': ('Cargo Items', lambda i: not i.isAbyssal, cmd.GuiImportCargosCommand),
+    'implantItemMisc': ('Implants', lambda i: i.isImplant, cmd.GuiImportImplantsCommand),
+    'implantItemMiscChar': ('Implants', lambda i: i.isImplant, cmd.GuiImportImplantsCommand),
+    'boosterItemMisc': ('Boosters', lambda i: i.isBooster, cmd.GuiImportBoostersCommand)}
 
 
 class AdditionsImport(ContextMenuUnconditional):
@@ -40,6 +41,12 @@ class AdditionsImport(ContextMenuUnconditional):
     def activate(self, callingWindow, fullContext, i):
         text = fromClipboard()
         items = parseAdditions(text)
+        filterFunc = viewSpecMap[self.srcContext][1]
+        items = [(i.ID, a) for i, a in items if filterFunc(i)]
+        if not items:
+            return
+        command = viewSpecMap[self.srcContext][2]
+        self.mainFrame.command.Submit(command(self.mainFrame.getActiveFit(), items))
 
 
 AdditionsImport.register()
