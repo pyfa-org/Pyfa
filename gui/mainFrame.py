@@ -739,11 +739,30 @@ class MainFrame(wx.Frame):
         activeFit = self.getActiveFit()
         try:
             importType, importData = Port().importFitFromBuffer(clipboard, activeFit)
-            # If it's mutated item - make sure there's at least base item specified
             if importType == "MutatedItem":
                 # we've imported an Abyssal module, need to fire off the command to add it to the fit
                 self.command.Submit(cmd.GuiImportLocalMutatedModuleCommand(activeFit, *importData[0]))
-                return  # no need to do anything else
+                return
+            if importType == "AdditionsDrones":
+                if self.command.Submit(cmd.GuiImportLocalDronesCommand(activeFit, importData[0])):
+                    self.additionsPane.select("Drones")
+                return
+            if importType == "AdditionsFighters":
+                if self.command.Submit(cmd.GuiImportLocalFightersCommand(activeFit, importData[0])):
+                    self.additionsPane.select("Fighters")
+                return
+            if importType == "AdditionsImplants":
+                if self.command.Submit(cmd.GuiImportImplantsCommand(activeFit, importData[0])):
+                    self.additionsPane.select("Implants")
+                return
+            if importType == "AdditionsBoosters":
+                if self.command.Submit(cmd.GuiImportBoostersCommand(activeFit, importData[0])):
+                    self.additionsPane.select("Boosters")
+                return
+            if importType == "AdditionsCargo":
+                if self.command.Submit(cmd.GuiImportCargosCommand(activeFit, importData[0])):
+                    self.additionsPane.select("Cargo")
+                return
         except:
             pyfalog.error("Attempt to import failed:\n{0}", clipboard)
         else:

@@ -54,6 +54,7 @@ EFT_OPTIONS = (
 MODULE_CATS = ('Module', 'Subsystem', 'Structure Module')
 SLOT_ORDER = (FittingSlot.LOW, FittingSlot.MED, FittingSlot.HIGH, FittingSlot.RIG, FittingSlot.SUBSYSTEM, FittingSlot.SERVICE)
 OFFLINE_SUFFIX = '/OFFLINE'
+NAME_CHARS = '[^,/\[\]]'  # Characters which are allowed to be used in name
 
 
 def exportEft(fit, options, callback):
@@ -193,10 +194,9 @@ def importEft(lines):
     aFit = AbstractFit()
     aFit.mutations = _importGetMutationData(lines)
 
-    nameChars = '[^,/\[\]]'  # Characters which are allowed to be used in name
     stubPattern = '^\[.+?\]$'
-    modulePattern = '^(?P<typeName>{0}+?)(,\s*(?P<chargeName>{0}+?))?(?P<offline>\s*{1})?(\s*\[(?P<mutation>\d+?)\])?$'.format(nameChars, OFFLINE_SUFFIX)
-    droneCargoPattern = '^(?P<typeName>{}+?) x(?P<amount>\d+?)$'.format(nameChars)
+    modulePattern = '^(?P<typeName>{0}+?)(,\s*(?P<chargeName>{0}+?))?(?P<offline>\s*{1})?(\s*\[(?P<mutation>\d+?)\])?$'.format(NAME_CHARS, OFFLINE_SUFFIX)
+    droneCargoPattern = '^(?P<typeName>{}+?) x(?P<amount>\d+?)$'.format(NAME_CHARS)
 
     sections = []
     for section in _importSectionIter(lines):
@@ -864,12 +864,20 @@ class AbstractFit:
         self.cargo[itemSpec.item].amount += itemSpec.amount
 
 
+
+def _lineIter(text):
+    """Iterate over non-blank lines."""
+    for line in text.splitlines():
+        line = line.strip()
+        if line:
+            yield line
+
+
 def parseAdditions(text):
     items = []
     sMkt = Market.getInstance()
-    pattern = '^(?P<typeName>[^,/\[\]]+?)( x(?P<amount>\d+?))?$'
-    for line in text.splitlines():
-        line = line.strip()
+    pattern = '^(?P<typeName>{}+?)( x(?P<amount>\d+?))?$'.format(NAME_CHARS)
+    for line in _lineIter(text):
         m = re.match(pattern, line)
         if not m:
             continue
@@ -880,3 +888,73 @@ def parseAdditions(text):
         amount = 1 if amount is None else int(amount)
         items.append((item, amount))
     return items
+
+
+def isValidDroneImport(text):
+    pattern = 'x\d+$'
+    for line in _lineIter(text):
+        if not re.search(pattern, line):
+            return False, ()
+    itemData = parseAdditions(text)
+    if not itemData:
+        return False, ()
+    for item, amount in itemData:
+        if not item.isDrone:
+            return False, ()
+    return True, itemData
+
+
+def isValidFighterImport(text):
+    pattern = 'x\d+$'
+    for line in _lineIter(text):
+        if not re.search(pattern, line):
+            return False, ()
+    itemData = parseAdditions(text)
+    if not itemData:
+        return False, ()
+    for item, amount in itemData:
+        if not item.isFighter:
+            return False, ()
+    return True, itemData
+
+
+def isValidCargoImport(text):
+    pattern = 'x\d+$'
+    for line in _lineIter(text):
+        if not re.search(pattern, line):
+            return False, ()
+    itemData = parseAdditions(text)
+    if not itemData:
+        return False, ()
+    for item, amount in itemData:
+        if item.isAbyssal:
+            return False, ()
+    return True, itemData
+
+
+def isValidImplantImport(text):
+    pattern = 'x\d+$'
+    for line in _lineIter(text):
+        if re.search(pattern, line):
+            return False, ()
+    itemData = parseAdditions(text)
+    if not itemData:
+        return False, ()
+    for item, amount in itemData:
+        if not item.isImplant:
+            return False, ()
+    return True, itemData
+
+
+def isValidBoosterImport(text):
+    pattern = 'x\d+$'
+    for line in _lineIter(text):
+        if re.search(pattern, line):
+            return False, ()
+    itemData = parseAdditions(text)
+    if not itemData:
+        return False, ()
+    for item, amount in itemData:
+        if not item.isBooster:
+            return False, ()
+    return True, itemData
