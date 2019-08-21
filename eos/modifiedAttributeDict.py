@@ -243,6 +243,9 @@ class ModifiedAttributeDict(collections.MutableMapping):
                     elif operator == Operator.POSTINCREASE:
                         postIncreaseAdjustment -= postResAmount
 
+        if preIncreaseAdjustment == 0 and multiplierAdjustment == 1 and postIncreaseAdjustment == 0 and len(ignorePenalizedMultipliers) == 0:
+            return self.get(key, default=default)
+
         val = self.__calculateValue(
             key, preIncAdj=preIncreaseAdjustment, multAdj=multiplierAdjustment,
             postIncAdj=postIncreaseAdjustment, ignorePenMult=ignorePenalizedMultipliers)
