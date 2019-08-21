@@ -1198,9 +1198,11 @@ class Fit:
     def capDelta(self):
         return (self.__capRecharge or 0) - (self.__capUsed or 0)
 
-    def calculateCapRecharge(self, percent=PEAK_RECHARGE):
-        capacity = self.ship.getModifiedItemAttr("capacitorCapacity")
-        rechargeRate = self.ship.getModifiedItemAttr("rechargeRate") / 1000.0
+    def calculateCapRecharge(self, percent=PEAK_RECHARGE, capacity=None, rechargeRate=None):
+        if capacity is None:
+            capacity = self.ship.getModifiedItemAttr("capacitorCapacity")
+        if rechargeRate is None:
+            rechargeRate = self.ship.getModifiedItemAttr("rechargeRate") / 1000.0
         return 10 / rechargeRate * sqrt(percent) * (1 - sqrt(percent)) * capacity
 
     def calculateShieldRecharge(self, percent=PEAK_RECHARGE):
@@ -1314,6 +1316,14 @@ class Fit:
             self.__savedCapSimData[startingCap] = []
             return None
 
+    def getCapGainFromMod(self, mod):
+        """Return how much cap regen do we gain from having this module"""
+        currentRegen = self.calculateCapRecharge()
+        nomodRegen = self.calculateCapRecharge(
+            capacity=self.ship.getModifiedItemAttrWithoutAfflictor("capacitorCapacity", mod),
+            rechargeRate=self.ship.getModifiedItemAttrWithoutAfflictor("rechargeRate", mod) / 1000.0)
+        return currentRegen - nomodRegen
+
     def getRemoteReps(self, spoolOptions=None):
         if spoolOptions not in self.__remoteRepMap:
             remoteReps = RRTypes(0, 0, 0, 0)
@@ -1417,47 +1427,47 @@ class Fit:
                 for tankType in localAdjustment:
                     dict = self.extraAttributes.getAfflictions(tankType)
                     if self in dict:
-                        for mod, _, amount, used in dict[self]:
+                        for afflictor, operator, stackingGroup, preResAmount, postResAmount, used in dict[self]:
                             if not used:
                                 continue
-                            if mod.projected:
+                            if afflictor.projected:
                                 continue
-                            if mod.item.group.name not in groupAttrMap:
+                            if afflictor.item.group.name not in groupAttrMap:
                                 continue
                             usesCap = True
                             try:
-                                if mod.capUse:
-                                    capUsed -= mod.capUse
+                                if afflictor.capUse:
+                                    capUsed -= afflictor.capUse
                                 else:
                                     usesCap = False
                             except AttributeError:
                                 usesCap = False
 
                             # Normal Repairers
-                            if usesCap and not mod.charge:
-                                cycleTime = mod.rawCycleTime
-                                amount = mod.getModifiedItemAttr(groupAttrMap[mod.item.group.name])
+                            if usesCap and not afflictor.charge:
+                                cycleTime = afflictor.rawCycleTime
+                                amount = afflictor.getModifiedItemAttr(groupAttrMap[afflictor.item.group.name])
                                 localAdjustment[tankType] -= amount / (cycleTime / 1000.0)
-                                repairers.append(mod)
+                                repairers.append(afflictor)
                             # Ancillary Armor reps etc
-                            elif usesCap and mod.charge:
-                                cycleTime = mod.rawCycleTime
-                                amount = mod.getModifiedItemAttr(groupAttrMap[mod.item.group.name])
-                                if mod.charge.name == "Nanite Repair Paste":
-                                    multiplier = mod.getModifiedItemAttr("chargedArmorDamageMultiplier") or 1
+                            elif usesCap and afflictor.charge:
+                                cycleTime = afflictor.rawCycleTime
+                                amount = afflictor.getModifiedItemAttr(groupAttrMap[afflictor.item.group.name])
+                                if afflictor.charge.name == "Nanite Repair Paste":
+                                    multiplier = afflictor.getModifiedItemAttr("chargedArmorDamageMultiplier") or 1
                                 else:
                                     multiplier = 1
                                 localAdjustment[tankType] -= amount * multiplier / (cycleTime / 1000.0)
-                                repairers.append(mod)
+                                repairers.append(afflictor)
                             # Ancillary Shield boosters etc
-                            elif not usesCap and mod.item.group.name in ("Ancillary Shield Booster", "Ancillary Remote Shield Booster"):
-                                cycleTime = mod.rawCycleTime
-                                amount = mod.getModifiedItemAttr(groupAttrMap[mod.item.group.name])
-                                if self.factorReload and mod.charge:
-                                    reloadtime = mod.reloadTime
+                            elif not usesCap and afflictor.item.group.name in ("Ancillary Shield Booster", "Ancillary Remote Shield Booster"):
+                                cycleTime = afflictor.rawCycleTime
+                                amount = afflictor.getModifiedItemAttr(groupAttrMap[afflictor.item.group.name])
+                                if self.factorReload and afflictor.charge:
+                                    reloadtime = afflictor.reloadTime
                                 else:
                                     reloadtime = 0.0
-                                offdutycycle = reloadtime / ((max(mod.numShots, 1) * cycleTime) + reloadtime)
+                                offdutycycle = reloadtime / ((max(afflictor.numShots, 1) * cycleTime) + reloadtime)
                                 localAdjustment[tankType] -= amount * offdutycycle / (cycleTime / 1000.0)
 
                 # Sort repairers by efficiency. We want to use the most efficient repairers first
@@ -1469,35 +1479,35 @@ class Fit:
                 # Most efficient first, as we sorted earlier.
                 # calculate how much the repper can rep stability & add to total
                 totalPeakRecharge = self.capRecharge
-                for mod in repairers:
+                for afflictor in repairers:
                     if capUsed > totalPeakRecharge:
                         break
 
-                    if self.factorReload and mod.charge:
-                        reloadtime = mod.reloadTime
+                    if self.factorReload and afflictor.charge:
+                        reloadtime = afflictor.reloadTime
                     else:
                         reloadtime = 0.0
 
-                    cycleTime = mod.rawCycleTime
-                    capPerSec = mod.capUse
+                    cycleTime = afflictor.rawCycleTime
+                    capPerSec = afflictor.capUse
 
                     if capPerSec is not None and cycleTime is not None:
                         # Check how much this repper can work
                         sustainability = min(1, (totalPeakRecharge - capUsed) / capPerSec)
-                        amount = mod.getModifiedItemAttr(groupAttrMap[mod.item.group.name])
+                        amount = afflictor.getModifiedItemAttr(groupAttrMap[afflictor.item.group.name])
                         # Add the sustainable amount
-                        if not mod.charge:
-                            localAdjustment[groupStoreMap[mod.item.group.name]] += sustainability * amount / (
+                        if not afflictor.charge:
+                            localAdjustment[groupStoreMap[afflictor.item.group.name]] += sustainability * amount / (
                                     cycleTime / 1000.0)
                         else:
-                            if mod.charge.name == "Nanite Repair Paste":
-                                multiplier = mod.getModifiedItemAttr("chargedArmorDamageMultiplier") or 1
+                            if afflictor.charge.name == "Nanite Repair Paste":
+                                multiplier = afflictor.getModifiedItemAttr("chargedArmorDamageMultiplier") or 1
                             else:
                                 multiplier = 1
-                            ondutycycle = (max(mod.numShots, 1) * cycleTime) / (
-                                    (max(mod.numShots, 1) * cycleTime) + reloadtime)
+                            ondutycycle = (max(afflictor.numShots, 1) * cycleTime) / (
+                                    (max(afflictor.numShots, 1) * cycleTime) + reloadtime)
                             localAdjustment[groupStoreMap[
-                                mod.item.group.name]] += sustainability * amount * ondutycycle * multiplier / (
+                                afflictor.item.group.name]] += sustainability * amount * ondutycycle * multiplier / (
                                     cycleTime / 1000.0)
 
                         capUsed += capPerSec

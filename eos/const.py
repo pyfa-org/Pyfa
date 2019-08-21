@@ -101,3 +101,12 @@ class FitSystemSecurity(IntEnum):
     LOWSEC = 1
     NULLSEC = 2
     WSPACE = 3
+
+
+@unique
+class Operator(IntEnum):
+    PREASSIGN = 0
+    PREINCREASE = 1
+    MULTIPLY = 2
+    POSTINCREASE = 3
+    FORCE = 4

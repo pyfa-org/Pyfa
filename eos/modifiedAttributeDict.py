@@ -20,9 +20,12 @@
 import collections
 from copy import copy
 from math import exp
+
+from eos.const import Operator
 # TODO: This needs to be moved out, we shouldn't have *ANY* dependencies back to other modules/methods inside eos.
 # This also breaks writing any tests. :(
 from eos.db.gamedata.queries import getAttributeInfo
+
 
 defaultValuesCache = {}
 cappingAttrKeyCache = {}
@@ -55,6 +58,11 @@ class ItemAttrShortcut:
         return_value = self.itemModifiedAttributes.getWithExtraMods(key, extraMultipliers=extraMultipliers)
         return return_value or default
 
+    def getModifiedItemAttrWithoutAfflictor(self, key, afflictor, default=0):
+        """Returns attribute value with passed afflictor modification removed."""
+        return_value = self.itemModifiedAttributes.getWithoutAfflictor(key, afflictor)
+        return return_value or default
+
     def getItemBaseAttrValue(self, key, default=0):
         return_value = self.itemModifiedAttributes.getOriginal(key)
         return return_value or default
@@ -68,7 +76,12 @@ class ChargeAttrShortcut:
 
     def getModifiedChargeAttrWithExtraMods(self, key, extraMultipliers=None, default=0):
         """Returns attribute value with passed modifiers applied to it."""
-        return_value = self.itemModifiedAttributes.getWithExtraMods(key, extraMultipliers=extraMultipliers)
+        return_value = self.chargeModifiedAttributes.getWithExtraMods(key, extraMultipliers=extraMultipliers)
+        return return_value or default
+
+    def getModifiedChargeAttrWithoutAfflictor(self, key, afflictor, default=0):
+        """Returns attribute value with passed modifiers applied to it."""
+        return_value = self.chargeModifiedAttributes.getWithoutAfflictor(key, afflictor)
         return return_value or default
 
     def getChargeBaseAttrValue(self, key, default=0):
@@ -93,6 +106,10 @@ class ModifiedAttributeDict(collections.MutableMapping):
         # Final modified values
         self.__modified = {}
         # Affected by entities
+        # Format:
+        # {attr name: {modifying fit: (
+        #   modifying item, operation, stacking group, pre-resist amount,
+        #   post-resist amount, affects result or not)}}
         self.__affectedBy = {}
         # Overrides (per item)
         self.__overrides = {}
@@ -204,6 +221,20 @@ class ModifiedAttributeDict(collections.MutableMapping):
 
         # Passed in default value
         return default
+
+    def getWithoutAfflictor(self, key, afflictor, default=0):
+        # Here we do not have support for preAssigns/forceds, as doing them would
+        # mean that we have to store all of them in a list which increases memory use,
+        # and we do not actually need those operators atm
+        preIncreaseAdjustment = 0
+        multiplierAdjustment = 1
+        ignoredPenalizedMultipliers = None
+        postIncreaseAdjustment = 0
+        # for fit, afflictors in self.getAfflictions(key).items():
+        #     for afflictor1, operator, stackingGroup, preResAmount, postResAmount, used in afflictors:
+        #         if afflictor1 is afflictor:
+        #             print(afflictor.item.name, operator, stackingGroup, preResAmount, postResAmount, used)
+        return self[key]
 
     def __delitem__(self, key):
         if key in self.__modified:
@@ -373,7 +404,7 @@ class ModifiedAttributeDict(collections.MutableMapping):
     def iterAfflictions(self):
         return self.__affectedBy.__iter__()
 
-    def __afflict(self, attributeName, operation, bonus, used=True):
+    def __afflict(self, attributeName, operator, stackingGroup, preResAmount, postResAmount, used=True):
         """Add modifier to list of things affecting current item"""
         # Do nothing if no fit is assigned
         fit = self.fit
@@ -399,13 +430,13 @@ class ModifiedAttributeDict(collections.MutableMapping):
             modifier = fit.getModifier()
 
         # Add current affliction to list
-        affs.append((modifier, operation, bonus, used))
+        affs.append((modifier, operator, stackingGroup, preResAmount, postResAmount, used))
 
     def preAssign(self, attributeName, value, **kwargs):
         """Overwrites original value of the entity with given one, allowing further modification"""
         self.__preAssigns[attributeName] = value
         self.__placehold(attributeName)
-        self.__afflict(attributeName, "=", value, value != self.getOriginal(attributeName))
+        self.__afflict(attributeName, Operator.PREASSIGN, None, value, value, value != self.getOriginal(attributeName))
 
     def increase(self, attributeName, increase, position="pre", skill=None, **kwargs):
         """Increase value of given attribute by given number"""
@@ -418,8 +449,10 @@ class ModifiedAttributeDict(collections.MutableMapping):
         # Increases applied before multiplications and after them are
         # written in separate maps
         if position == "pre":
+            operator = Operator.PREINCREASE
             tbl = self.__preIncreases
         elif position == "post":
+            operator = Operator.POSTINCREASE
             tbl = self.__postIncreases
         else:
             raise ValueError("position should be either pre or post")
@@ -427,7 +460,7 @@ class ModifiedAttributeDict(collections.MutableMapping):
             tbl[attributeName] = 0
         tbl[attributeName] += increase
         self.__placehold(attributeName)
-        self.__afflict(attributeName, "+", increase, increase != 0)
+        self.__afflict(attributeName, operator, None, increase, increase, increase != 0)
 
     def multiply(self, attributeName, multiplier, stackingPenalties=False, penaltyGroup="default", skill=None, **kwargs):
         """Multiply value of given attribute by given factor"""
@@ -437,6 +470,7 @@ class ModifiedAttributeDict(collections.MutableMapping):
         if skill:
             multiplier *= self.__handleSkill(skill)
 
+        preResMultiplier = multiplier
         resisted = False
         # Goddammit CCP, make up your mind where you want this information >.< See #1139
         if 'effect' in kwargs:
@@ -468,7 +502,9 @@ class ModifiedAttributeDict(collections.MutableMapping):
         if resisted:
             afflictPenal += "r"
 
-        self.__afflict(attributeName, "%s*" % afflictPenal, multiplier, multiplier != 1)
+        self.__afflict(
+            attributeName, Operator.MULTIPLY, penaltyGroup if stackingPenalties else None,
+            preResMultiplier, multiplier, multiplier != 1)
 
     def boost(self, attributeName, boostFactor, skill=None, **kwargs):
         """Boost value by some percentage"""
@@ -482,7 +518,7 @@ class ModifiedAttributeDict(collections.MutableMapping):
         """Force value to attribute and prohibit any changes to it"""
         self.__forced[attributeName] = value
         self.__placehold(attributeName)
-        self.__afflict(attributeName, "\u2263", value)
+        self.__afflict(attributeName, Operator.FORCE, None, value, value)
 
     @staticmethod
     def getResistance(fit, effect):

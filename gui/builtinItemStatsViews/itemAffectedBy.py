@@ -1,6 +1,7 @@
 # noinspection PyPackageRequirements
 import wx
 
+from eos.const import Operator
 from eos.saveddata.mode import Mode
 from eos.saveddata.character import Skill
 from eos.saveddata.implant import Implant
@@ -15,6 +16,21 @@ from eos.saveddata.fit import Fit
 import gui.mainFrame
 from gui.contextMenu import ContextMenu
 from gui.bitmap_loader import BitmapLoader
+
+
+def formatOperator(operator, stackingGroup, preResAmount, postResAmount):
+    opMap = {
+        Operator.PREASSIGN: '=',
+        Operator.PREINCREASE: '+',
+        Operator.MULTIPLY: '*',
+        Operator.POSTINCREASE: '+',
+        Operator.FORCE: '\u2263'}
+    prefix = ''
+    if stackingGroup is not None:
+        prefix += 's'
+    if preResAmount != postResAmount:
+        prefix += 'r'
+    return '{}{}'.format(prefix, opMap[operator])
 
 
 class ItemAffectedBy(wx.Panel):
@@ -183,7 +199,7 @@ class ItemAffectedBy(wx.Panel):
                 continue
 
             for fit, afflictors in attributes.getAfflictions(attrName).items():
-                for afflictor, modifier, amount, used in afflictors:
+                for afflictor, operator, stackingGroup, preResAmount, postResAmount, used in afflictors:
 
                     if not used or afflictor.item is None:
                         continue
@@ -209,8 +225,10 @@ class ItemAffectedBy(wx.Panel):
                     else:
                         item = afflictor.item
 
-                    items[attrName].append(
-                            (type(afflictor), afflictor, item, modifier, amount, getattr(afflictor, "projected", False)))
+                    items[attrName].append((
+                        type(afflictor), afflictor, item,
+                        formatOperator(operator, stackingGroup, preResAmount, postResAmount),
+                        postResAmount, getattr(afflictor, "projected", False)))
 
         # Make sure projected fits are on top
         rootOrder = list(container.keys())
@@ -316,7 +334,7 @@ class ItemAffectedBy(wx.Panel):
                 continue
 
             for fit, afflictors in attributes.getAfflictions(attrName).items():
-                for afflictor, modifier, amount, used in afflictors:
+                for afflictor, operator, stackingGroup, preResAmount, postResAmount, used in afflictors:
                     if not used or getattr(afflictor, 'item', None) is None:
                         continue
 
@@ -343,12 +361,13 @@ class ItemAffectedBy(wx.Panel):
 
                     info = items[item.name]
                     info[1].add(afflictor)
+                    operatorStr = formatOperator(operator, stackingGroup, preResAmount, postResAmount)
                     # If info[1] > 1, there are two separate modules working.
                     # Check to make sure we only include the modifier once
                     # See GH issue 154
-                    if len(info[1]) > 1 and (attrName, modifier, amount) in info[2]:
+                    if len(info[1]) > 1 and (attrName, operatorStr, postResAmount) in info[2]:
                         continue
-                    info[2].append((attrName, modifier, amount))
+                    info[2].append((attrName, operatorStr, postResAmount))
 
         # Make sure projected fits are on top
         rootOrder = list(container.keys())
