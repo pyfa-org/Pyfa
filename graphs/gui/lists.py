@@ -296,8 +296,10 @@ class SourceWrapperList(BaseWrapperList):
         self._wrappers.append(SourceWrapper(item=item, colorID=colorID))
 
     def spawnMenu(self, event):
-        selection = self.getSelectedWrappers()
         clickedPos = self.getRowByAbs(event.Position)
+        self.ensureSelection(clickedPos)
+
+        selection = self.getSelectedWrappers()
         mainItem = self.getWrapper(clickedPos)
 
         itemContext = None if mainItem is None else 'Fit'
@@ -347,8 +349,10 @@ class TargetWrapperList(BaseWrapperList):
         self._wrappers.append(TargetWrapper(item=item, lightnessID=lightnessID, lineStyleID=lineStyleID))
 
     def spawnMenu(self, event):
-        selection = self.getSelectedWrappers()
         clickedPos = self.getRowByAbs(event.Position)
+        self.ensureSelection(clickedPos)
+
+        selection = self.getSelectedWrappers()
         mainItem = self.getWrapper(clickedPos)
 
         itemContext = None if mainItem is None else 'Target'

@@ -624,6 +624,9 @@ class FittingView(d.Display):
             pyfalog.error("Caught dead object")
 
     def spawnMenu(self, event):
+        clickedPos = self.getRowByAbs(event.Position)
+        self.ensureSelection(clickedPos)
+
         if self.activeFitID is None or self.getColumn(self.screenToClientFixed(event.Position)) == self.getColIndex(State):
             return
 
@@ -636,7 +639,6 @@ class FittingView(d.Display):
                 selection.append(mod)
 
         fit = Fit.getInstance().getFit(self.activeFitID)
-        clickedPos = self.getRowByAbs(event.Position)
         mainMod = None
         if clickedPos != -1:
             try:
@@ -646,10 +648,6 @@ class FittingView(d.Display):
             else:
                 if mod is not None and (mod in fit.modules or mod is fit.mode):
                     mainMod = mod
-
-        if mainMod is not None and mainMod not in selection:
-            self.unselectAll()
-            self.Select(clickedPos)
 
         sMkt = Market.getInstance()
         contexts = []

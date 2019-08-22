@@ -283,6 +283,9 @@ class ProjectedView(d.Display):
         event.Skip()
 
     def spawnMenu(self, event):
+        clickedPos = self.getRowByAbs(event.Position)
+        self.ensureSelection(clickedPos)
+
         fitID = self.mainFrame.getActiveFit()
         if fitID is None:
             return
@@ -290,7 +293,6 @@ class ProjectedView(d.Display):
         if self.getColumn(self.screenToClientFixed(event.Position)) == self.getColIndex(State):
             return
 
-        clickedPos = self.getRowByAbs(event.Position)
         mainItem = self.get(clickedPos)
 
         contexts = []

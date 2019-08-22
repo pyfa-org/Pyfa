@@ -262,8 +262,10 @@ class ImplantDisplay(d.Display):
         event.Skip()
 
     def spawnMenu(self, event):
-        selection = self.getSelectedImplants()
         clickedPos = self.getRowByAbs(event.Position)
+        self.ensureSelection(clickedPos)
+
+        selection = self.getSelectedImplants()
         mainImplant = None
         if clickedPos != -1:
             try:

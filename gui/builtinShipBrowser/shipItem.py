@@ -18,6 +18,7 @@ pyfalog = Logger(__name__)
 
 
 class ShipItem(SFItem.SFBrowserItem):
+
     def __init__(self, parent, shipID=None, shipFittingInfo=("Test", "TestTrait", 2), itemData=None, graphicID=None,
                  id=wx.ID_ANY, pos=wx.DefaultPosition,
                  size=(0, 40), style=0):

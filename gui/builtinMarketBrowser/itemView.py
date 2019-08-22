@@ -15,6 +15,7 @@ pyfalog = Logger(__name__)
 
 
 class ItemView(Display):
+
     DEFAULT_COLS = ["Base Icon",
                     "Base Name",
                     "attr:power,,,True",
@@ -219,13 +220,14 @@ class ItemView(Display):
         return catname, mktgrpid, parentname, metatab, metalvl, item.name
 
     def contextMenu(self, event):
+        clickedPos = self.getRowByAbs(event.Position)
+        self.ensureSelection(clickedPos)
+
         # Check if something is selected, if so, spawn the menu for it
-        sel = self.GetFirstSelected()
-        if sel == -1:
+        if clickedPos == -1:
             return
 
-        item = self.active[sel]
-
+        item = self.active[clickedPos]
         sMkt = self.sMkt
         sourceContext = "marketItemMisc" if self.marketBrowser.mode in ("search", "recent") else "marketItemGroup"
         itemContext = sMkt.getCategoryByItem(item).name

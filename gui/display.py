@@ -298,3 +298,19 @@ class Display(wx.ListCtrl):
     def getWidthProportion(self):
         propWidth = sum(c.proportionWidth for c in self.activeColumns)
         return propWidth
+
+    def ensureSelection(self, clickedPos):
+        """
+        On mac, when right-click on any item happens, it doesn't get selected.
+        This method ensures that selection actually happens.
+        """
+        if 'wxMac' in wx.PlatformInfo:
+            if clickedPos != -1:
+                selectedPoss = self.getSelectedRows()
+                if clickedPos not in selectedPoss:
+                    self.unselectAll()
+                    self.Select(clickedPos)
+                    # Change focus only when we manipulate selection
+                    focusedPos = self.GetFocusedItem()
+                    if clickedPos != focusedPos:
+                        self.Focus(clickedPos)

@@ -187,8 +187,10 @@ class CargoView(d.Display):
         self.mainFrame.command.Submit(cmd.GuiRemoveCargosCommand(fitID=fitID, itemIDs=itemIDs))
 
     def spawnMenu(self, event):
-        selection = self.getSelectedCargos()
         clickedPos = self.getRowByAbs(event.Position)
+        self.ensureSelection(clickedPos)
+
+        selection = self.getSelectedCargos()
         mainCargo = None
         if clickedPos != -1:
             try:

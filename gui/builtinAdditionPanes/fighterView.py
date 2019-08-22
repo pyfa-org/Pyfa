@@ -348,8 +348,10 @@ class FighterDisplay(d.Display):
         event.Skip()
 
     def spawnMenu(self, event):
-        selection = self.getSelectedFighters()
         clickedPos = self.getRowByAbs(event.Position)
+        self.ensureSelection(clickedPos)
+
+        selection = self.getSelectedFighters()
         mainFighter = None
         if clickedPos != -1:
             try:

@@ -185,8 +185,10 @@ class CommandView(d.Display):
         event.Skip()
 
     def spawnMenu(self, event):
-        selection = self.getSelectedCommandFits()
         clickedPos = self.getRowByAbs(event.Position)
+        self.ensureSelection(clickedPos)
+
+        selection = self.getSelectedCommandFits()
         mainCommandFit = None
         if clickedPos != -1:
             try:

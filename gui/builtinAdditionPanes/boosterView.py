@@ -199,8 +199,10 @@ class BoosterView(d.Display):
         event.Skip()
 
     def spawnMenu(self, event):
-        selection = self.getSelectedBoosters()
         clickedPos = self.getRowByAbs(event.Position)
+        self.ensureSelection(clickedPos)
+
+        selection = self.getSelectedBoosters()
         mainBooster = None
         if clickedPos != -1:
             try:
