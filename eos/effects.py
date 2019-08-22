@@ -32673,16 +32673,14 @@ class Effect6898(BaseEffect):
     Subsystems named like: Offensive Support Processor (3 of 4)
     """
 
+    runTime = 'early'
     type = 'passive'
 
     @staticmethod
     def handler(fit, src, context, **kwargs):
-        fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Remote Armor Repair Systems') and
-                                                  mod.getModifiedItemAttr('mediumRemoteRepFittingMultiplier', 0) == 1,
-                                      'cpu', src.getModifiedItemAttr('subsystemMRARFittingReduction'), **kwargs)
-        fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Remote Armor Repair Systems') and
-                                                  mod.getModifiedItemAttr('mediumRemoteRepFittingMultiplier', 0) == 1,
-                                      'power', src.getModifiedItemAttr('subsystemMRARFittingReduction'), **kwargs)
+        fit.modules.filteredItemBoost(
+            lambda mod: mod.item.requiresSkill('Remote Armor Repair Systems'),
+            'mediumRemoteRepFittingMultiplier', src.getModifiedItemAttr('subsystemMRARFittingReduction'), **kwargs)
 
 
 class Effect6899(BaseEffect):
@@ -32698,12 +32696,9 @@ class Effect6899(BaseEffect):
 
     @staticmethod
     def handler(fit, src, context, **kwargs):
-        fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Shield Emission Systems') and
-                                                  mod.getModifiedItemAttr('mediumRemoteRepFittingMultiplier', 0) == 1,
-                                      'cpu', src.getModifiedItemAttr('subsystemMRSBFittingReduction'), **kwargs)
-        fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Shield Emission Systems') and
-                                                  mod.getModifiedItemAttr('mediumRemoteRepFittingMultiplier', 0) == 1,
-                                      'power', src.getModifiedItemAttr('subsystemMRSBFittingReduction'), **kwargs)
+        fit.modules.filteredItemBoost(
+            lambda mod: mod.item.requiresSkill('Shield Emission Systems'),
+            'mediumRemoteRepFittingMultiplier', src.getModifiedItemAttr('subsystemMRSBFittingReduction'), **kwargs)
 
 
 class Effect6900(BaseEffect):
