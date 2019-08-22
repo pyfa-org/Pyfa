@@ -88,7 +88,7 @@ class Fit:
             "enableGaugeAnimation": True,
             "openFitInNew": False,
             "priceSystem": "Jita",
-            "priceSource": "eve-marketdata.com",
+            "priceSource": "evemarketer",
             "showShipBrowserTooltip": True,
             "marketSearchDelay": 250,
             "ammoChangeAll": False,
