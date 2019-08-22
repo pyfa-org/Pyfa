@@ -163,9 +163,9 @@ class FirepowerViewFull(StatsView):
         stats = (
             (
                 "labelFullDpsWeapon",
-                lambda: fit.getWeaponDps(spoolOptions=SpoolOptions(SpoolType.SCALE, defaultSpoolValue, False)).total,
-                lambda: fit.getWeaponDps(spoolOptions=SpoolOptions(SpoolType.SCALE, 0, True)).total,
-                lambda: fit.getWeaponDps(spoolOptions=SpoolOptions(SpoolType.SCALE, 1, True)).total,
+                lambda: fit.getWeaponDps(spoolOptions=SpoolOptions(SpoolType.SPOOL_SCALE, defaultSpoolValue, False)).total,
+                lambda: fit.getWeaponDps(spoolOptions=SpoolOptions(SpoolType.SPOOL_SCALE, 0, True)).total,
+                lambda: fit.getWeaponDps(spoolOptions=SpoolOptions(SpoolType.SPOOL_SCALE, 1, True)).total,
                 3, 0, 0, "{}{} DPS"),
             (
                 "labelFullDpsDrone",
@@ -175,15 +175,15 @@ class FirepowerViewFull(StatsView):
                 3, 0, 0, "{}{} DPS"),
             (
                 "labelFullVolleyTotal",
-                lambda: fit.getTotalVolley(spoolOptions=SpoolOptions(SpoolType.SCALE, defaultSpoolValue, False)).total,
-                lambda: fit.getTotalVolley(spoolOptions=SpoolOptions(SpoolType.SCALE, 0, True)).total,
-                lambda: fit.getTotalVolley(spoolOptions=SpoolOptions(SpoolType.SCALE, 1, True)).total,
+                lambda: fit.getTotalVolley(spoolOptions=SpoolOptions(SpoolType.SPOOL_SCALE, defaultSpoolValue, False)).total,
+                lambda: fit.getTotalVolley(spoolOptions=SpoolOptions(SpoolType.SPOOL_SCALE, 0, True)).total,
+                lambda: fit.getTotalVolley(spoolOptions=SpoolOptions(SpoolType.SPOOL_SCALE, 1, True)).total,
                 3, 0, 0, "{}{}"),
             (
                 "labelFullDpsTotal",
-                lambda: fit.getTotalDps(spoolOptions=SpoolOptions(SpoolType.SCALE, defaultSpoolValue, False)).total,
-                lambda: fit.getTotalDps(spoolOptions=SpoolOptions(SpoolType.SCALE, 0, True)).total,
-                lambda: fit.getTotalDps(spoolOptions=SpoolOptions(SpoolType.SCALE, 1, True)).total,
+                lambda: fit.getTotalDps(spoolOptions=SpoolOptions(SpoolType.SPOOL_SCALE, defaultSpoolValue, False)).total,
+                lambda: fit.getTotalDps(spoolOptions=SpoolOptions(SpoolType.SPOOL_SCALE, 0, True)).total,
+                lambda: fit.getTotalDps(spoolOptions=SpoolOptions(SpoolType.SPOOL_SCALE, 1, True)).total,
                 3, 0, 0, "{}{}"))
 
         counter = 0

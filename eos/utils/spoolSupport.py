@@ -18,6 +18,7 @@
 # ===============================================================================
 
 
+import math
 from collections import namedtuple
 
 from eos.const import SpoolType
@@ -36,15 +37,32 @@ def calculateSpoolup(modMaxValue, modStepValue, modCycleTime, spoolType, spoolAm
     """
     if not modMaxValue or not modStepValue:
         return 0, 0, 0
-    if spoolType == SpoolType.SCALE:
-        cycles = int(floatUnerr(spoolAmount * modMaxValue / modStepValue))
-        return cycles * modStepValue, cycles, cycles * modCycleTime
+    if spoolType == SpoolType.SPOOL_SCALE:
+        # For spool scale, round to closest cycle for scaled spool amount
+        cycles = round(spoolAmount * modMaxValue / modStepValue)
+        spoolValue = min(modMaxValue, cycles * modStepValue)
+        return spoolValue, cycles, cycles * modCycleTime
+    elif spoolType == SpoolType.CYCLE_SCALE:
+        # For cycle scale, find out max amount of cycles and scale against it
+        cycles = round(spoolAmount * math.ceil(floatUnerr(modMaxValue / modStepValue)))
+        spoolValue = min(modMaxValue, cycles * modStepValue)
+        return spoolValue, cycles, cycles * modCycleTime
     elif spoolType == SpoolType.TIME:
-        cycles = min(int(floatUnerr(spoolAmount / modCycleTime)), int(floatUnerr(modMaxValue / modStepValue)))
-        return cycles * modStepValue, cycles, cycles * modCycleTime
+        cycles = min(
+            # How many full cycles mod had by passed time
+            math.floor(floatUnerr(spoolAmount / modCycleTime)),
+            # Max amount of cycles
+            math.ceil(floatUnerr(modMaxValue / modStepValue)))
+        spoolValue = min(modMaxValue, cycles * modStepValue)
+        return spoolValue, cycles, cycles * modCycleTime
     elif spoolType == SpoolType.CYCLES:
-        cycles = min(int(spoolAmount), int(floatUnerr(modMaxValue / modStepValue)))
-        return cycles * modStepValue, cycles, cycles * modCycleTime
+        cycles = min(
+            # Consider full cycles only
+            math.floor(spoolAmount),
+            # Max amount of cycles
+            math.ceil(floatUnerr(modMaxValue / modStepValue)))
+        spoolValue = min(modMaxValue, cycles * modStepValue)
+        return spoolValue, cycles, cycles * modCycleTime
     else:
         return 0, 0, 0
 

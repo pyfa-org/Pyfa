@@ -45,10 +45,10 @@ class ChangeModuleSpool(ContextMenuSingle):
             bindmenu = m
 
         isNotDefault = self.mod.spoolType is not None and self.mod.spoolAmount is not None
-        cycleDefault = self.mod.getSpoolData(spoolOptions=SpoolOptions(SpoolType.SCALE, eos.config.settings['globalDefaultSpoolupPercentage'], True))[0]
-        cycleCurrent = self.mod.getSpoolData(spoolOptions=SpoolOptions(SpoolType.SCALE, eos.config.settings['globalDefaultSpoolupPercentage'], False))[0]
-        cycleMin = self.mod.getSpoolData(spoolOptions=SpoolOptions(SpoolType.SCALE, 0, True))[0]
-        cycleMax = self.mod.getSpoolData(spoolOptions=SpoolOptions(SpoolType.SCALE, 1, True))[0]
+        cycleDefault = self.mod.getSpoolData(spoolOptions=SpoolOptions(SpoolType.SPOOL_SCALE, eos.config.settings['globalDefaultSpoolupPercentage'], True))[0]
+        cycleCurrent = self.mod.getSpoolData(spoolOptions=SpoolOptions(SpoolType.SPOOL_SCALE, eos.config.settings['globalDefaultSpoolupPercentage'], False))[0]
+        cycleMin = self.mod.getSpoolData(spoolOptions=SpoolOptions(SpoolType.SPOOL_SCALE, 0, True))[0]
+        cycleMax = self.mod.getSpoolData(spoolOptions=SpoolOptions(SpoolType.SPOOL_SCALE, 1, True))[0]
         cycleTotalMin = min(cycleDefault, cycleCurrent, cycleMin)
         cycleTotalMax = max(cycleDefault, cycleCurrent, cycleMax)
 
