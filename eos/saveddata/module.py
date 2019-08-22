@@ -428,7 +428,13 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
             self.__baseVolley = {}
             dmgGetter = self.getModifiedChargeAttr if self.charge else self.getModifiedItemAttr
             dmgMult = self.getModifiedItemAttr("damageMultiplier", 1)
-            dmgDelay = self.getModifiedItemAttr("damageDelayDuration", 0) or self.getModifiedItemAttr("doomsdayWarningDuration", 0)
+            # Some delay attributes have non-0 default value, so we have to pick according to effects
+            if {'superWeaponAmarr', 'superWeaponCaldari', 'superWeaponGallente', 'superWeaponMinmatar', 'lightningWeapon'}.intersection(self.item.effects):
+                dmgDelay = self.getModifiedItemAttr("damageDelayDuration", 0)
+            elif {'doomsdayBeamDOT', 'doomsdaySlash', 'doomsdayConeDOT'}.intersection(self.item.effects):
+                dmgDelay = self.getModifiedItemAttr("doomsdayWarningDuration", 0)
+            else:
+                dmgDelay = 0
             dmgDuration = self.getModifiedItemAttr("doomsdayDamageDuration", 0)
             dmgSubcycle = self.getModifiedItemAttr("doomsdayDamageCycleTime", 0)
             # Reaper DD can damage each target only once
