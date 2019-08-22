@@ -58,11 +58,6 @@ class MainMenuBar(wx.MenuBar):
         self.devToolsId = wx.NewId()
         self.optimizeFitPrice = wx.NewId()
 
-        # pheonix: evaluate if this is needed
-        if 'wxMac' in wx.PlatformInfo and wx.VERSION >= (3, 0):
-            wx.ID_COPY = wx.NewId()
-            wx.ID_PASTE = wx.NewId()
-
         self.mainFrame = mainFrame
         wx.MenuBar.__init__(self)
 
