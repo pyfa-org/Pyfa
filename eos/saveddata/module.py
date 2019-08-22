@@ -339,7 +339,12 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
                 duringAcceleration = maxVelocity / 2 * accelTime
                 # Distance done after being at full speed
                 fullSpeed = maxVelocity * (flightTime - accelTime)
-                return duringAcceleration + fullSpeed
+                maxRange = duringAcceleration + fullSpeed
+                if 'fofMissileLaunching' in self.charge.effects:
+                    rangeLimit = self.getModifiedChargeAttr("maxFOFTargetRange")
+                    if rangeLimit:
+                        maxRange = min(maxRange, rangeLimit)
+                return maxRange
 
     @property
     def falloff(self):
