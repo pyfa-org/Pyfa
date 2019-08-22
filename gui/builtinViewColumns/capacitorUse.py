@@ -29,6 +29,13 @@ from service.attribute import Attribute
 from service.fit import Fit
 
 
+regenGroups = (
+    'Capacitor Battery', 'Structure Capacitor Battery',
+    'Capacitor Power Relay', 'Structure Capacitor Power Relay',
+    'Capacitor Recharger', 'Power Diagnostic System', 'Capacitor Flux Coil',
+    'Rig Core', 'Shield Power Relay')
+
+
 class CapacitorUse(ViewColumn):
 
     name = 'Capacitor Usage'
@@ -50,12 +57,7 @@ class CapacitorUse(ViewColumn):
             return ''
         capUse = mod.capUse
         # Do not show cap diff numbers
-        if mod.item is not None and mod.item.group.name in (
-            'Capacitor Battery', 'Structure Capacitor Battery',
-            'Capacitor Power Relay', 'Structure Capacitor Power Relay',
-            'Capacitor Recharger', 'Power Diagnostic System', 'Capacitor Flux Coil',
-            'Rig Core', 'Shield Power Relay'
-        ):
+        if mod.item is not None and mod.item.group.name in regenGroups:
             capRegenDiff = fit.getCapRegenGainFromMod(mod)
         else:
             capRegenDiff = 0
@@ -69,7 +71,13 @@ class CapacitorUse(ViewColumn):
         return -1
 
     def getToolTip(self, mod):
-        return 'Capacitor Usage'
+        if isinstance(mod, Mode):
+            return ''
+        if mod.item is not None and mod.item.group.name in regenGroups:
+            return 'Effect on peak capacitor regeneration'
+        if mod.capUse:
+            return 'Capacitor usage'
+        return ''
 
 
 CapacitorUse.register()
