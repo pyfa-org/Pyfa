@@ -42,6 +42,9 @@ class AuxiliaryFrame(wx.Frame):
         if name is not None:
             kwargs['name'] = name
         super().__init__(**kwargs)
+        # Intercept copy-paste actions and do nothing in secondary windows
+        self.Bind(wx.EVT_MENU, self.OnSuppressedAction, id=wx.ID_COPY)
+        self.Bind(wx.EVT_MENU, self.OnSuppressedAction, id=wx.ID_PASTE)
         if 'wxMSW' in wx.PlatformInfo:
             self.SetBackgroundColour(wx.SystemSettings.GetColour(wx.SYS_COLOUR_BTNFACE))
 
@@ -54,3 +57,6 @@ class AuxiliaryFrame(wx.Frame):
             frame.Show()
         else:
             cls._instance.Raise()
+
+    def OnSuppressedAction(self, event):
+        return
