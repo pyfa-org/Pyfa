@@ -31,6 +31,20 @@ defaultValuesCache = {}
 cappingAttrKeyCache = {}
 
 
+def getAttrDefault(key, fallback=None):
+    try:
+        default = defaultValuesCache[key]
+    except KeyError:
+        attrInfo = getAttributeInfo(key)
+        if attrInfo is None:
+            default = defaultValuesCache[key] = None
+        else:
+            default = defaultValuesCache[key] = attrInfo.defaultValue
+    if default is None:
+        default = fallback
+    return default
+
+
 def getResistanceAttrID(modifyingItem, effect):
     # If it doesn't exist on the effect, check the modifying modules attributes. If it's there, set it on the
     # effect for this session so that we don't have to look here again (won't always work when it's None, but
@@ -286,6 +300,9 @@ class ModifiedAttributeDict(collections.MutableMapping):
             if self.original:
                 val = self.original.get(key, val)
 
+        if val is None:
+            val = getAttrDefault(key, fallback=None)
+
         if val is None and val != default:
             val = default
 
@@ -374,16 +391,7 @@ class ModifiedAttributeDict(collections.MutableMapping):
 
         # Grab initial value, priorities are:
         # Results of ongoing calculation > preAssign > original > 0
-        try:
-            default = defaultValuesCache[key]
-        except KeyError:
-            attrInfo = getAttributeInfo(key)
-            if attrInfo is None:
-                default = defaultValuesCache[key] = 0.0
-            else:
-                dv = attrInfo.defaultValue
-                default = defaultValuesCache[key] = dv if dv is not None else 0.0
-
+        default = getAttrDefault(key, fallback=0.0)
         val = self.__intermediary.get(key, self.__preAssigns.get(key, self.getOriginal(key, default)))
 
         # We'll do stuff in the following order:
