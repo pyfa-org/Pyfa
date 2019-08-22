@@ -647,6 +647,10 @@ class FittingView(d.Display):
                 if mod is not None and (mod in fit.modules or mod is fit.mode):
                     mainMod = mod
 
+        if mainMod is not None and mainMod not in selection:
+            self.unselectAll()
+            self.Select(clickedPos)
+
         sMkt = Market.getInstance()
         contexts = []
         if isinstance(mainMod, Module) and not mainMod.isEmpty:
