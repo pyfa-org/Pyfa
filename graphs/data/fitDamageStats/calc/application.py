@@ -24,6 +24,7 @@ from functools import lru_cache
 from eos.const import FittingHardpoint
 from eos.utils.float import floatUnerr
 from graphs.calc import calculateRangeFactor
+from service.attribute import Attribute
 from service.const import GraphDpsDroneMode
 from service.settings import GraphSettings
 
@@ -97,6 +98,7 @@ def getApplicationPerKey(src, tgt, atkSpeed, atkAngle, distance, tgtSpeed, tgtAn
                 fighter=fighter,
                 ability=ability,
                 src=src,
+                tgt=tgt,
                 distance=distance,
                 tgtSpeed=tgtSpeed,
                 tgtSigRadius=tgtSigRadius)
@@ -237,7 +239,7 @@ def getDroneMult(drone, src, tgt, atkSpeed, atkAngle, distance, tgtSpeed, tgtAng
     return mult
 
 
-def getFighterAbilityMult(fighter, ability, src, distance, tgtSpeed, tgtSigRadius):
+def getFighterAbilityMult(fighter, ability, src, tgt, distance, tgtSpeed, tgtSigRadius):
     fighterSpeed = fighter.getModifiedItemAttr('maxVelocity')
     attrPrefix = ability.attrPrefix
     # It's bomb attack
@@ -273,7 +275,14 @@ def getFighterAbilityMult(fighter, ability, src, distance, tgtSpeed, tgtSigRadiu
         atkDrf=_calcAggregatedDrf(reductionFactor=drf, reductionSensitivity=drs),
         tgtSpeed=tgtSpeed,
         tgtSigRadius=tgtSigRadius)
-    mult = rangeFactor * missileFactor
+    resistMult = 1
+    if tgt.isFit:
+        resistAttrID = fighter.getModifiedItemAttr('{}ResistanceID'.format(attrPrefix))
+        if resistAttrID:
+            resistAttrInfo = Attribute.getInstance().getAttributeInfo(resistAttrID)
+            if resistAttrInfo is not None:
+                resistMult = tgt.item.ship.getModifiedItemAttr(resistAttrInfo.name, 1)
+    mult = rangeFactor * missileFactor * resistMult
     return mult
 
 
