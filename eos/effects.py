@@ -5851,6 +5851,7 @@ class Effect2008(BaseEffect):
     cynosuralDurationBonus
 
     Used by:
+    Ships from group: Black Ops (5 of 5)
     Ships from group: Force Recon Ship (8 of 9)
     """
 
@@ -5858,7 +5859,7 @@ class Effect2008(BaseEffect):
 
     @staticmethod
     def handler(fit, ship, context, **kwargs):
-        fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == 'Cynosural Field Generator',
+        fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Cynosural Field Theory'),
                                       'duration', ship.getModifiedItemAttr('durationBonus'), **kwargs)
 
 
@@ -35801,3 +35802,58 @@ class Effect7231(BaseEffect):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Repair Systems'),
                                       'armorDamageAmount', ship.getModifiedItemAttr('shipBonusGC3'),
                                       skill='Gallente Cruiser', **kwargs)
+
+
+class Effect7232(BaseEffect):
+    """
+    modifyDamageMultiplierBonusMax
+
+    Used by:
+    Implants named like: Low Grade Kostenadza (5 of 6)
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, implant, context, **kwargs):
+        fit.modules.filteredItemBoost(
+            lambda mod: mod.item.group.name == 'Precursor Weapon', 'damageMultiplierBonusMax',
+            implant.getModifiedItemAttr('damageMultiplierBonusMaxModifier'), **kwargs)
+
+
+class Effect7233(BaseEffect):
+    """
+    modifyDamageMultiplierBonusPerCycle
+
+    Used by:
+    Implants named like: Low Grade Kostenadza (5 of 6)
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, implant, context, **kwargs):
+        fit.modules.filteredItemBoost(
+            lambda mod: mod.item.group.name == 'Precursor Weapon', 'damageMultiplierBonusPerCycle',
+            implant.getModifiedItemAttr('damageMultiplierBonusPerCycleModifier'), **kwargs)
+
+
+class Effect7234(BaseEffect):
+    """
+    implantSetKostenadza
+
+    Used by:
+    Implants named like: Low Grade Kostenadza (6 of 6)
+    """
+
+    runTime = 'early'
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, implant, context, **kwargs):
+        fit.appliedImplants.filteredItemMultiply(
+            lambda imp: imp.item.group.name == 'Cyberimplant', 'damageMultiplierBonusMaxModifier',
+            implant.getModifiedItemAttr('setBonusKostenadza'), **kwargs)
+        fit.appliedImplants.filteredItemMultiply(
+            lambda imp: imp.item.group.name == 'Cyberimplant', 'damageMultiplierBonusPerCycleModifier',
+            implant.getModifiedItemAttr('setBonusKostenadza'), **kwargs)
