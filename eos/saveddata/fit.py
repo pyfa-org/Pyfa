@@ -1320,8 +1320,8 @@ class Fit:
         """Return how much cap regen do we gain from having this module"""
         currentRegen = self.calculateCapRecharge()
         nomodRegen = self.calculateCapRecharge(
-            capacity=self.ship.getModifiedItemAttrWithoutAfflictor("capacitorCapacity", mod),
-            rechargeRate=self.ship.getModifiedItemAttrWithoutAfflictor("rechargeRate", mod) / 1000.0)
+            capacity=self.ship.getModifiedItemAttrWithoutAfflictors("capacitorCapacity", [mod]),
+            rechargeRate=self.ship.getModifiedItemAttrWithoutAfflictors("rechargeRate", [mod]) / 1000.0)
         return currentRegen - nomodRegen
 
     def getRemoteReps(self, spoolOptions=None):

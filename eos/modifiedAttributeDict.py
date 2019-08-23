@@ -72,9 +72,9 @@ class ItemAttrShortcut:
         return_value = self.itemModifiedAttributes.getWithExtraMods(key, extraMultipliers=extraMultipliers)
         return return_value or default
 
-    def getModifiedItemAttrWithoutAfflictor(self, key, afflictor, default=0):
-        """Returns attribute value with passed afflictor modification removed."""
-        return_value = self.itemModifiedAttributes.getWithoutAfflictor(key, afflictor)
+    def getModifiedItemAttrWithoutAfflictors(self, key, afflictors, default=0):
+        """Returns attribute value with passed afflictors' modification removed."""
+        return_value = self.itemModifiedAttributes.getWithoutAfflictors(key, afflictors)
         return return_value or default
 
     def getItemBaseAttrValue(self, key, default=0):
@@ -93,9 +93,9 @@ class ChargeAttrShortcut:
         return_value = self.chargeModifiedAttributes.getWithExtraMods(key, extraMultipliers=extraMultipliers)
         return return_value or default
 
-    def getModifiedChargeAttrWithoutAfflictor(self, key, afflictor, default=0):
-        """Returns attribute value with passed modifiers applied to it."""
-        return_value = self.chargeModifiedAttributes.getWithoutAfflictor(key, afflictor)
+    def getModifiedChargeAttrWithoutAfflictors(self, key, afflictors, default=0):
+        """Returns attribute value with passed afflictors' modification removed."""
+        return_value = self.chargeModifiedAttributes.getWithoutAfflictors(key, afflictors)
         return return_value or default
 
     def getChargeBaseAttrValue(self, key, default=0):
@@ -236,7 +236,7 @@ class ModifiedAttributeDict(collections.MutableMapping):
         # Passed in default value
         return default
 
-    def getWithoutAfflictor(self, key, afflictor, default=0):
+    def getWithoutAfflictors(self, key, ignoredAfflictors, default=0):
         # Here we do not have support for preAssigns/forceds, as doing them would
         # mean that we have to store all of them in a list which increases memory use,
         # and we do not actually need those operators atm
@@ -245,8 +245,8 @@ class ModifiedAttributeDict(collections.MutableMapping):
         ignorePenalizedMultipliers = {}
         postIncreaseAdjustment = 0
         for fit, afflictors in self.getAfflictions(key).items():
-            for innerAfflictor, operator, stackingGroup, preResAmount, postResAmount, used in afflictors:
-                if innerAfflictor is afflictor:
+            for afflictor, operator, stackingGroup, preResAmount, postResAmount, used in afflictors:
+                if afflictor in ignoredAfflictors:
                     if operator == Operator.MULTIPLY:
                         if stackingGroup is None:
                             multiplierAdjustment /= postResAmount
