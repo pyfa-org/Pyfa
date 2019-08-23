@@ -77,6 +77,8 @@ class TargetProfile:
 
     @signatureRadius.setter
     def signatureRadius(self, val):
+        if val is not None and math.isinf(val):
+            val = None
         self._signatureRadius = val
 
     @property
@@ -106,7 +108,7 @@ class TargetProfile:
                     continue
                 line = line.split('#', 1)[0]  # allows for comments
                 type, data = line.rsplit('=', 1)
-                type, data = type.strip(), data.split(',')
+                type, data = type.strip(), [d.strip() for d in data.split(',')]
             except:
                 pyfalog.warning("Data isn't in correct format, continue to next line.")
                 continue
@@ -115,11 +117,13 @@ class TargetProfile:
                 continue
 
             numPatterns += 1
-            name, data = data[0], data[1:5]
+            name, dataRes, dataMisc = data[0], data[1:5], data[5:8]
             fields = {}
 
-            for index, val in enumerate(data):
-                val = float(val)
+            for index, val in enumerate(dataRes):
+                val = float(val) if val else 0
+                if math.isinf(val):
+                    val = 0
                 try:
                     assert 0 <= val <= 100
                     fields["%sAmount" % cls.DAMAGE_TYPES[index]] = val / 100
@@ -127,7 +131,18 @@ class TargetProfile:
                     pyfalog.warning("Caught unhandled exception in import patterns.")
                     continue
 
-            if len(fields) == 4:  # Avoid possible blank lines
+            if len(dataMisc) == 3:
+                for index, val in enumerate(dataMisc):
+                    try:
+                        fieldName = ("maxVelocity", "signatureRadius", "radius")[index]
+                    except IndexError:
+                        break
+                    val = float(val) if val else 0
+                    if fieldName != "signatureRadius" and math.isinf(val):
+                        val = 0
+                    fields[fieldName] = val
+
+            if len(fields) in (4, 7):  # Avoid possible blank lines
                 if name.strip() in lookup:
                     pattern = lookup[name.strip()]
                     pattern.update(**fields)
@@ -142,20 +157,23 @@ class TargetProfile:
 
         return patterns, numPatterns
 
-    EXPORT_FORMAT = "TargetProfile = %s,%.1f,%.1f,%.1f,%.1f\n"
+    EXPORT_FORMAT = "TargetProfile = %s,%.1f,%.1f,%.1f,%.1f,%.1f,%.1f,%.1f\n"
 
     @classmethod
     def exportPatterns(cls, *patterns):
         out = "# Exported from pyfa\n#\n"
         out += "# Values are in following format:\n"
-        out += "# TargetProfile = [name],[EM %],[Thermal %],[Kinetic %],[Explosive %]\n\n"
+        out += "# TargetProfile = [name],[EM %],[Thermal %],[Kinetic %],[Explosive %],[Max velocity m/s],[Signature radius m],[Radius m]\n\n"
         for dp in patterns:
             out += cls.EXPORT_FORMAT % (
                 dp.name,
                 dp.emAmount * 100,
                 dp.thermalAmount * 100,
                 dp.kineticAmount * 100,
-                dp.explosiveAmount * 100
+                dp.explosiveAmount * 100,
+                dp.maxVelocity,
+                dp.signatureRadius,
+                dp.radius
             )
 
         return out.strip()
