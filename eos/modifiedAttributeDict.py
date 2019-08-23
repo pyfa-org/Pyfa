@@ -67,14 +67,8 @@ class ItemAttrShortcut:
         return_value = self.itemModifiedAttributes.get(key)
         return return_value or default
 
-    def getModifiedItemAttrWithExtraMods(self, key, extraMultipliers=None, default=0):
-        """Returns attribute value with passed modifiers applied to it."""
-        return_value = self.itemModifiedAttributes.getWithExtraMods(key, extraMultipliers=extraMultipliers)
-        return return_value or default
-
-    def getModifiedItemAttrWithoutAfflictors(self, key, afflictors, default=0):
-        """Returns attribute value with passed afflictors' modification removed."""
-        return_value = self.itemModifiedAttributes.getWithoutAfflictors(key, afflictors)
+    def getModifiedItemAttrExtended(self, key, extraMultipliers=None, ignoreAfflictors=(), default=0):
+        return_value = self.itemModifiedAttributes.getExtended(key, extraMultipliers=extraMultipliers, ignoreAfflictors=ignoreAfflictors)
         return return_value or default
 
     def getItemBaseAttrValue(self, key, default=0):
@@ -88,14 +82,8 @@ class ChargeAttrShortcut:
         return_value = self.chargeModifiedAttributes.get(key)
         return return_value or default
 
-    def getModifiedChargeAttrWithExtraMods(self, key, extraMultipliers=None, default=0):
-        """Returns attribute value with passed modifiers applied to it."""
-        return_value = self.chargeModifiedAttributes.getWithExtraMods(key, extraMultipliers=extraMultipliers)
-        return return_value or default
-
-    def getModifiedChargeAttrWithoutAfflictors(self, key, afflictors, default=0):
-        """Returns attribute value with passed afflictors' modification removed."""
-        return_value = self.chargeModifiedAttributes.getWithoutAfflictors(key, afflictors)
+    def getModifiedChargeAttrExtended(self, key, extraMultipliers=None, ignoreAfflictors=(), default=0):
+        return_value = self.chargeModifiedAttributes.getExtended(key, extraMultipliers=extraMultipliers, ignoreAfflictors=ignoreAfflictors)
         return return_value or default
 
     def getChargeBaseAttrValue(self, key, default=0):
@@ -211,32 +199,11 @@ class ModifiedAttributeDict(collections.MutableMapping):
         # Original value is the least priority
         return self.getOriginal(key)
 
-    def getWithExtraMods(self, key, extraMultipliers=None, default=0):
-        """Copy of __getitem__ with some modifications."""
-        if not extraMultipliers:
-            return self.get(key, default=default)
-
-        val = self.__calculateValue(key, extraMultipliers=extraMultipliers)
-        if val is not None:
-            return val
-
-        # Then in values which are not yet calculated
-        if self.__intermediary:
-            val = self.__intermediary.get(key)
-        else:
-            val = None
-        if val is not None:
-            return val
-
-        # Original value
-        val = self.getOriginal(key)
-        if val is not None:
-            return val
-
-        # Passed in default value
-        return default
-
-    def getWithoutAfflictors(self, key, ignoredAfflictors, default=0):
+    def getExtended(self, key, extraMultipliers=None, ignoreAfflictors=None, default=0):
+        """
+        Here we consider couple of parameters. If they affect final result, we do
+        not store result, and if they are - we do.
+        """
         # Here we do not have support for preAssigns/forceds, as doing them would
         # mean that we have to store all of them in a list which increases memory use,
         # and we do not actually need those operators atm
@@ -246,7 +213,7 @@ class ModifiedAttributeDict(collections.MutableMapping):
         postIncreaseAdjustment = 0
         for fit, afflictors in self.getAfflictions(key).items():
             for afflictor, operator, stackingGroup, preResAmount, postResAmount, used in afflictors:
-                if afflictor in ignoredAfflictors:
+                if afflictor in ignoreAfflictors:
                     if operator == Operator.MULTIPLY:
                         if stackingGroup is None:
                             multiplierAdjustment /= postResAmount
@@ -257,29 +224,31 @@ class ModifiedAttributeDict(collections.MutableMapping):
                     elif operator == Operator.POSTINCREASE:
                         postIncreaseAdjustment -= postResAmount
 
-        if preIncreaseAdjustment == 0 and multiplierAdjustment == 1 and postIncreaseAdjustment == 0 and len(ignorePenalizedMultipliers) == 0:
+        # If we apply no customizations - use regular getter
+        if (
+            not extraMultipliers and
+            preIncreaseAdjustment == 0 and multiplierAdjustment == 1 and
+            postIncreaseAdjustment == 0 and len(ignorePenalizedMultipliers) == 0
+        ):
             return self.get(key, default=default)
 
+        # Try to calculate custom values
         val = self.__calculateValue(
-            key, preIncAdj=preIncreaseAdjustment, multAdj=multiplierAdjustment,
+            key, extraMultipliers=extraMultipliers, preIncAdj=preIncreaseAdjustment, multAdj=multiplierAdjustment,
             postIncAdj=postIncreaseAdjustment, ignorePenMult=ignorePenalizedMultipliers)
         if val is not None:
             return val
 
-        # Then in values which are not yet calculated
+        # Then the same fallbacks as in regular getter
         if self.__intermediary:
             val = self.__intermediary.get(key)
         else:
             val = None
         if val is not None:
             return val
-
-        # Original value
         val = self.getOriginal(key)
         if val is not None:
             return val
-
-        # Passed in default value
         return default
 
     def __delitem__(self, key):

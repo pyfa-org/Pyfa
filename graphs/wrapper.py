@@ -54,10 +54,13 @@ class BaseWrapper:
             return self.item.name
         return ''
 
-    def getMaxVelocity(self, extraMultipliers=None):
+    def getMaxVelocity(self, extraMultipliers=None, ignoreAfflictors=()):
         if self.isFit:
-            if extraMultipliers:
-                maxVelocity = self.item.ship.getModifiedItemAttrWithExtraMods('maxVelocity', extraMultipliers=extraMultipliers)
+            if extraMultipliers or ignoreAfflictors:
+                maxVelocity = self.item.ship.getModifiedItemAttrExtended(
+                    'maxVelocity',
+                    extraMultipliers=extraMultipliers,
+                    ignoreAfflictors=ignoreAfflictors)
             else:
                 maxVelocity = self.item.ship.getModifiedItemAttr('maxVelocity')
         elif self.isProfile:
@@ -68,10 +71,13 @@ class BaseWrapper:
             maxVelocity = None
         return maxVelocity
 
-    def getSigRadius(self, extraMultipliers=None):
+    def getSigRadius(self, extraMultipliers=None, ignoreAfflictors=()):
         if self.isFit:
-            if extraMultipliers:
-                sigRadius = self.item.ship.getModifiedItemAttrWithExtraMods('signatureRadius', extraMultipliers=extraMultipliers)
+            if extraMultipliers or ignoreAfflictors:
+                sigRadius = self.item.ship.getModifiedItemAttrExtended(
+                    'signatureRadius',
+                    extraMultipliers=extraMultipliers,
+                    ignoreAfflictors=ignoreAfflictors)
             else:
                 sigRadius = self.item.ship.getModifiedItemAttr('signatureRadius')
         elif self.isProfile:

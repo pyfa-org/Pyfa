@@ -26,6 +26,47 @@ from service.const import GraphDpsDroneMode
 from service.settings import GraphSettings
 
 
+def _isRegularScram(mod):
+    if not mod.item:
+        return False
+    if not {'warpScrambleBlockMWDWithNPCEffect', 'structureWarpScrambleBlockMWDWithNPCEffect'}.intersection(mod.item.effects):
+        return False
+    if not mod.getModifiedItemAttr('activationBlockedStrenght', 0):
+        return False
+    return True
+
+
+def _isHicScram(mod):
+    if not mod.item:
+        return False
+    if 'warpDisruptSphere' not in mod.item.effects:
+        return False
+    if not mod.charge:
+        return False
+    if 'shipModuleFocusedWarpScramblingScript' not in mod.charge.effects:
+        return False
+    return True
+
+
+def getScramRange(src):
+    scramRange = None
+    for mod in src.item.modules:
+        if _isRegularScram(mod) or _isHicScram(mod):
+            scramRange = max(scramRange or 0, mod.maxRange or 0)
+    return scramRange
+
+
+def getScrammables(tgt):
+    scrammables = []
+    if tgt.isFit:
+        for mod in tgt.item.modules:
+            if not mod.item:
+                continue
+            if {'moduleBonusMicrowarpdrive', 'microJumpDrive', 'microJumpPortalDrive'}.intersection(mod.item.effects):
+                scrammables.append(mod)
+    return scrammables
+
+
 def getWebbedSpeed(src, tgt, currentUnwebbedSpeed, webMods, webDrones, webFighters, distance):
     # Can slow down non-immune ships and target profiles
     if tgt.isFit and tgt.item.ship.getModifiedItemAttr('disallowOffensiveModifiers'):
