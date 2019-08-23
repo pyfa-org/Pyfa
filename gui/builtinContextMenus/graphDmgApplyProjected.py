@@ -17,7 +17,7 @@ class GraphDmgApplyProjectedMenu(ContextMenuUnconditional):
         return srcContext == 'dmgStatsGraph'
 
     def getText(self, callingWindow, itmContext):
-        return 'Apply Attacker Webs and TPs'
+        return 'Apply Projected Items'
 
     def activate(self, callingWindow, fullContext, i):
         self.settings.set('applyProjected', not self.settings.get('applyProjected'))

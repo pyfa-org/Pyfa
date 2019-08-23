@@ -106,7 +106,9 @@ class GraphCanvasPanel(wx.Panel):
         legendData = []
         chosenX = self.graphFrame.ctrlPanel.xType
         chosenY = self.graphFrame.ctrlPanel.yType
-        self.subplot.set(xlabel=self.graphFrame.ctrlPanel.formatLabel(chosenX), ylabel=self.graphFrame.ctrlPanel.formatLabel(chosenY))
+        self.subplot.set(
+            xlabel=self.graphFrame.ctrlPanel.formatLabel(chosenX),
+            ylabel=self.graphFrame.ctrlPanel.formatLabel(chosenY))
 
         mainInput, miscInputs = self.graphFrame.ctrlPanel.getValues()
         view = self.graphFrame.getView()
@@ -212,14 +214,11 @@ class GraphCanvasPanel(wx.Panel):
                 def addYMark(val):
                     if val is None:
                         return
+                    rounded = roundToPrec(val, 4)
                     # If due to some bug or insufficient plot density we're
                     # out of bounds, do not add anything
-                    if minY <= val <= maxY:
-                        if abs(val) < 0.0001:
-                            val = 0
-                        else:
-                            val = roundToPrec(val, 4)
-                        yMarks.add(val)
+                    if minY <= val <= maxY or minY <= rounded <= maxY:
+                        yMarks.add(rounded)
 
                 for source, target in iterList:
                     xs, ys = plotData[(source, target)]
