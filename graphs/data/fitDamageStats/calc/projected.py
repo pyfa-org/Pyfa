@@ -26,15 +26,59 @@ from service.const import GraphDpsDroneMode
 from service.settings import GraphSettings
 
 
-def getWebbedSpeed(src, tgt, currentUnwebbedSpeed, webMods, webDrones, webFighters, distance):
+def _isRegularScram(mod):
+    if not mod.item:
+        return False
+    if not {'warpScrambleBlockMWDWithNPCEffect', 'structureWarpScrambleBlockMWDWithNPCEffect'}.intersection(mod.item.effects):
+        return False
+    if not mod.getModifiedItemAttr('activationBlockedStrenght', 0):
+        return False
+    return True
+
+
+def _isHicScram(mod):
+    if not mod.item:
+        return False
+    if 'warpDisruptSphere' not in mod.item.effects:
+        return False
+    if not mod.charge:
+        return False
+    if 'shipModuleFocusedWarpScramblingScript' not in mod.charge.effects:
+        return False
+    return True
+
+
+def getScramRange(src):
+    scramRange = None
+    for mod in src.item.modules:
+        if _isRegularScram(mod) or _isHicScram(mod):
+            scramRange = max(scramRange or 0, mod.maxRange or 0)
+    return scramRange
+
+
+def getScrammables(tgt):
+    scrammables = []
+    if tgt.isFit:
+        for mod in tgt.item.modules:
+            if not mod.item:
+                continue
+            if {'moduleBonusMicrowarpdrive', 'microJumpDrive', 'microJumpPortalDrive'}.intersection(mod.item.effects):
+                scrammables.append(mod)
+    return scrammables
+
+
+def getTackledSpeed(src, tgt, currentUntackledSpeed, srcScramRange, tgtScrammables, webMods, webDrones, webFighters, distance):
     # Can slow down non-immune ships and target profiles
     if tgt.isFit and tgt.item.ship.getModifiedItemAttr('disallowOffensiveModifiers'):
-        return currentUnwebbedSpeed
-    maxUnwebbedSpeed = tgt.getMaxVelocity()
+        return currentUntackledSpeed
+    maxUntackledSpeed = tgt.getMaxVelocity()
     # What's immobile cannot be slowed
-    if maxUnwebbedSpeed == 0:
-        return maxUnwebbedSpeed
-    speedRatio = currentUnwebbedSpeed / maxUnwebbedSpeed
+    if maxUntackledSpeed == 0:
+        return maxUntackledSpeed
+    speedRatio = currentUntackledSpeed / maxUntackledSpeed
+    # No scrams or distance is longer than longest scram - nullify scrammables list
+    if srcScramRange is None or (distance is not None and distance > srcScramRange):
+        tgtScrammables = ()
     appliedMultipliers = {}
     # Modules first, they are applied always the same way
     for wData in webMods:
@@ -44,8 +88,8 @@ def getWebbedSpeed(src, tgt, currentUnwebbedSpeed, webMods, webDrones, webFighte
             distance=distance)
         if appliedBoost:
             appliedMultipliers.setdefault(wData.stackingGroup, []).append((1 + appliedBoost / 100, wData.resAttrID))
-    maxWebbedSpeed = tgt.getMaxVelocity(extraMultipliers=appliedMultipliers)
-    currentWebbedSpeed = maxWebbedSpeed * speedRatio
+    maxTackledSpeed = tgt.getMaxVelocity(extraMultipliers=appliedMultipliers, ignoreAfflictors=tgtScrammables)
+    currentTackledSpeed = maxTackledSpeed * speedRatio
     # Drones and fighters
     mobileWebs = []
     mobileWebs.extend(webFighters)
@@ -60,8 +104,8 @@ def getWebbedSpeed(src, tgt, currentUnwebbedSpeed, webMods, webDrones, webFighte
         for mwData in longEnoughMws:
             appliedMultipliers.setdefault(mwData.stackingGroup, []).append((1 + mwData.boost / 100, mwData.resAttrID))
             mobileWebs.remove(mwData)
-        maxWebbedSpeed = tgt.getMaxVelocity(extraMultipliers=appliedMultipliers)
-        currentWebbedSpeed = maxWebbedSpeed * speedRatio
+        maxTackledSpeed = tgt.getMaxVelocity(extraMultipliers=appliedMultipliers, ignoreAfflictors=tgtScrammables)
+        currentTackledSpeed = maxTackledSpeed * speedRatio
     # Apply remaining webs, from fastest to slowest
     droneOpt = GraphSettings.getInstance().get('mobileDroneMode')
     while mobileWebs:
@@ -70,7 +114,7 @@ def getWebbedSpeed(src, tgt, currentUnwebbedSpeed, webMods, webDrones, webFighte
         fastestMws = [mw for mw in mobileWebs if mw.speed == fastestMwSpeed]
         for mwData in fastestMws:
             # Faster than target or set to follow it - apply full slowdown
-            if (droneOpt == GraphDpsDroneMode.auto and mwData.speed >= currentWebbedSpeed) or droneOpt == GraphDpsDroneMode.followTarget:
+            if (droneOpt == GraphDpsDroneMode.auto and mwData.speed >= currentTackledSpeed) or droneOpt == GraphDpsDroneMode.followTarget:
                 appliedMwBoost = mwData.boost
             # Otherwise project from the center of the ship
             else:
@@ -84,18 +128,21 @@ def getWebbedSpeed(src, tgt, currentUnwebbedSpeed, webMods, webDrones, webFighte
                     distance=rangeFactorDistance)
             appliedMultipliers.setdefault(mwData.stackingGroup, []).append((1 + appliedMwBoost / 100, mwData.resAttrID))
             mobileWebs.remove(mwData)
-        maxWebbedSpeed = tgt.getMaxVelocity(extraMultipliers=appliedMultipliers)
-        currentWebbedSpeed = maxWebbedSpeed * speedRatio
+        maxTackledSpeed = tgt.getMaxVelocity(extraMultipliers=appliedMultipliers, ignoreAfflictors=tgtScrammables)
+        currentTackledSpeed = maxTackledSpeed * speedRatio
     # Ensure consistent results - round off a little to avoid float errors
-    return floatUnerr(currentWebbedSpeed)
+    return floatUnerr(currentTackledSpeed)
 
 
-def getTpMult(src, tgt, tgtSpeed, tpMods, tpDrones, tpFighters, distance):
+def getSigRadiusMult(src, tgt, tgtSpeed, srcScramRange, tgtScrammables, tpMods, tpDrones, tpFighters, distance):
     # Can blow non-immune ships and target profiles
     if tgt.isFit and tgt.item.ship.getModifiedItemAttr('disallowOffensiveModifiers'):
         return 1
-    untpedSig = tgt.getSigRadius()
-    # Modules
+    initSig = tgt.getSigRadius()
+    # No scrams or distance is longer than longest scram - nullify scrammables list
+    if srcScramRange is None or (distance is not None and distance > srcScramRange):
+        tgtScrammables = ()
+    # TPing modules
     appliedMultipliers = {}
     for tpData in tpMods:
         appliedBoost = tpData.boost * calculateRangeFactor(
@@ -104,7 +151,7 @@ def getTpMult(src, tgt, tgtSpeed, tpMods, tpDrones, tpFighters, distance):
             distance=distance)
         if appliedBoost:
             appliedMultipliers.setdefault(tpData.stackingGroup, []).append((1 + appliedBoost / 100, tpData.resAttrID))
-    # Drones and fighters
+    # TPing drones
     mobileTps = []
     mobileTps.extend(tpFighters)
     # Drones have range limit
@@ -127,9 +174,9 @@ def getTpMult(src, tgt, tgtSpeed, tpMods, tpDrones, tpFighters, distance):
                 srcFalloffRange=mtpData.falloff,
                 distance=rangeFactorDistance)
         appliedMultipliers.setdefault(mtpData.stackingGroup, []).append((1 + appliedMtpBoost / 100, mtpData.resAttrID))
-    tpedSig = tgt.getSigRadius(extraMultipliers=appliedMultipliers)
-    if tpedSig == math.inf and untpedSig == math.inf:
+    modifiedSig = tgt.getSigRadius(extraMultipliers=appliedMultipliers, ignoreAfflictors=tgtScrammables)
+    if modifiedSig == math.inf and initSig == math.inf:
         return 1
-    mult = tpedSig / untpedSig
+    mult = modifiedSig / initSig
     # Ensure consistent results - round off a little to avoid float errors
     return floatUnerr(mult)

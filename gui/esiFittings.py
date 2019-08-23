@@ -273,7 +273,15 @@ class ExportToEve(AuxiliaryFrame):
         sEsi = Esi.getInstance()
 
         sFit = Fit.getInstance()
-        data = sPort.exportESI(sFit.getFit(fitID))
+        try:
+            data = sPort.exportESI(sFit.getFit(fitID))
+        except ESIExportException as e:
+            msg = str(e)
+            if not msg:
+                msg = "Failed to generate export data"
+            pyfalog.warning(msg)
+            self.statusbar.SetStatusText(msg, 1)
+            return
         activeChar = self.getActiveCharacter()
         if activeChar is None:
             msg = "Need at least one ESI character to export"

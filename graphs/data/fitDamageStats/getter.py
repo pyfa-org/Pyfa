@@ -24,7 +24,7 @@ from eos.utils.stats import DmgTypes
 from graphs.data.base import PointGetter, SmoothPointGetter
 from service.settings import GraphSettings
 from .calc.application import getApplicationPerKey
-from .calc.projected import getTpMult, getWebbedSpeed
+from .calc.projected import getScramRange, getScrammables, getTackledSpeed, getSigRadiusMult
 
 
 def applyDamage(dmgMap, applicationMap, tgtResists):
@@ -138,8 +138,11 @@ class XDistanceMixin(SmoothPointGetter):
         # Prepare time cache here because we need to do it only once,
         # and this function is called once per point info fetch
         self._prepareTimeCache(src=src, maxTime=miscParams['time'])
+        applyProjected = GraphSettings.getInstance().get('applyProjected')
         return {
-            'applyProjected': GraphSettings.getInstance().get('applyProjected'),
+            'applyProjected': applyProjected,
+            'srcScramRange': getScramRange(src=src) if applyProjected else None,
+            'tgtScrammables': getScrammables(tgt=tgt) if applyProjected else (),
             'dmgMap': self._getDamagePerKey(src=src, time=miscParams['time']),
             'tgtResists': tgt.getResists()}
 
@@ -151,18 +154,22 @@ class XDistanceMixin(SmoothPointGetter):
             webMods, tpMods = self.graph._projectedCache.getProjModData(src)
             webDrones, tpDrones = self.graph._projectedCache.getProjDroneData(src)
             webFighters, tpFighters = self.graph._projectedCache.getProjFighterData(src)
-            tgtSpeed = getWebbedSpeed(
+            tgtSpeed = getTackledSpeed(
                 src=src,
                 tgt=tgt,
-                currentUnwebbedSpeed=tgtSpeed,
+                currentUntackledSpeed=tgtSpeed,
+                srcScramRange=commonData['srcScramRange'],
+                tgtScrammables=commonData['tgtScrammables'],
                 webMods=webMods,
                 webDrones=webDrones,
                 webFighters=webFighters,
                 distance=distance)
-            tgtSigRadius = tgtSigRadius * getTpMult(
+            tgtSigRadius = tgtSigRadius * getSigRadiusMult(
                 src=src,
                 tgt=tgt,
                 tgtSpeed=tgtSpeed,
+                srcScramRange=commonData['srcScramRange'],
+                tgtScrammables=commonData['tgtScrammables'],
                 tpMods=tpMods,
                 tpDrones=tpDrones,
                 tpFighters=tpFighters,
@@ -189,21 +196,27 @@ class XTimeMixin(PointGetter):
         tgtSpeed = miscParams['tgtSpeed']
         tgtSigRadius = tgt.getSigRadius()
         if GraphSettings.getInstance().get('applyProjected'):
+            srcScramRange = getScramRange(src=src)
+            tgtScrammables = getScrammables(tgt=tgt)
             webMods, tpMods = self.graph._projectedCache.getProjModData(src)
             webDrones, tpDrones = self.graph._projectedCache.getProjDroneData(src)
             webFighters, tpFighters = self.graph._projectedCache.getProjFighterData(src)
-            tgtSpeed = getWebbedSpeed(
+            tgtSpeed = getTackledSpeed(
                 src=src,
                 tgt=tgt,
-                currentUnwebbedSpeed=tgtSpeed,
+                currentUntackledSpeed=tgtSpeed,
+                srcScramRange=srcScramRange,
+                tgtScrammables=tgtScrammables,
                 webMods=webMods,
                 webDrones=webDrones,
                 webFighters=webFighters,
                 distance=miscParams['distance'])
-            tgtSigRadius = tgtSigRadius * getTpMult(
+            tgtSigRadius = tgtSigRadius * getSigRadiusMult(
                 src=src,
                 tgt=tgt,
                 tgtSpeed=tgtSpeed,
+                srcScramRange=srcScramRange,
+                tgtScrammables=tgtScrammables,
                 tpMods=tpMods,
                 tpDrones=tpDrones,
                 tpFighters=tpFighters,
@@ -303,21 +316,27 @@ class XTgtSpeedMixin(SmoothPointGetter):
         tgtSpeed = x
         tgtSigRadius = tgt.getSigRadius()
         if commonData['applyProjected']:
+            srcScramRange = getScramRange(src=src)
+            tgtScrammables = getScrammables(tgt=tgt)
             webMods, tpMods = self.graph._projectedCache.getProjModData(src)
             webDrones, tpDrones = self.graph._projectedCache.getProjDroneData(src)
             webFighters, tpFighters = self.graph._projectedCache.getProjFighterData(src)
-            tgtSpeed = getWebbedSpeed(
+            tgtSpeed = getTackledSpeed(
                 src=src,
                 tgt=tgt,
-                currentUnwebbedSpeed=tgtSpeed,
+                currentUntackledSpeed=tgtSpeed,
+                srcScramRange=srcScramRange,
+                tgtScrammables=tgtScrammables,
                 webMods=webMods,
                 webDrones=webDrones,
                 webFighters=webFighters,
                 distance=miscParams['distance'])
-            tgtSigRadius = tgtSigRadius * getTpMult(
+            tgtSigRadius = tgtSigRadius * getSigRadiusMult(
                 src=src,
                 tgt=tgt,
                 tgtSpeed=tgtSpeed,
+                srcScramRange=srcScramRange,
+                tgtScrammables=tgtScrammables,
                 tpMods=tpMods,
                 tpDrones=tpDrones,
                 tpFighters=tpFighters,
@@ -347,21 +366,27 @@ class XTgtSigRadiusMixin(SmoothPointGetter):
         tgtSpeed = miscParams['tgtSpeed']
         tgtSigMult = 1
         if GraphSettings.getInstance().get('applyProjected'):
+            srcScramRange = getScramRange(src=src)
+            tgtScrammables = getScrammables(tgt=tgt)
             webMods, tpMods = self.graph._projectedCache.getProjModData(src)
             webDrones, tpDrones = self.graph._projectedCache.getProjDroneData(src)
             webFighters, tpFighters = self.graph._projectedCache.getProjFighterData(src)
-            tgtSpeed = getWebbedSpeed(
+            tgtSpeed = getTackledSpeed(
                 src=src,
                 tgt=tgt,
-                currentUnwebbedSpeed=tgtSpeed,
+                currentUntackledSpeed=tgtSpeed,
+                srcScramRange=srcScramRange,
+                tgtScrammables=tgtScrammables,
                 webMods=webMods,
                 webDrones=webDrones,
                 webFighters=webFighters,
                 distance=miscParams['distance'])
-            tgtSigMult = getTpMult(
+            tgtSigMult = getSigRadiusMult(
                 src=src,
                 tgt=tgt,
                 tgtSpeed=tgtSpeed,
+                srcScramRange=srcScramRange,
+                tgtScrammables=tgtScrammables,
                 tpMods=tpMods,
                 tpDrones=tpDrones,
                 tpFighters=tpFighters,
