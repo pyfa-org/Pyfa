@@ -50,7 +50,7 @@ def _isHicScram(mod):
 
 def getScramRange(src):
     scramRange = None
-    for mod in src.item.modules:
+    for mod in src.item.activeModulesIter():
         if _isRegularScram(mod) or _isHicScram(mod):
             scramRange = max(scramRange or 0, mod.maxRange or 0)
     return scramRange
@@ -59,7 +59,7 @@ def getScramRange(src):
 def getScrammables(tgt):
     scrammables = []
     if tgt.isFit:
-        for mod in tgt.item.modules:
+        for mod in tgt.item.activeModulesIter():
             if not mod.item:
                 continue
             if {'moduleBonusMicrowarpdrive', 'microJumpDrive', 'microJumpPortalDrive'}.intersection(mod.item.effects):
