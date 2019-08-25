@@ -104,9 +104,7 @@ def roundToPrec(val, prec):
     # Also make sure that we do not ask to calculate logarithm of zero
     if int(val) == val:
         return int(val)
-    # Find round factor, taking into consideration that we want to keep at least prec
-    # positions for fractions with zero integer part (e.g. 0.0000354 for prec=3)
-    roundFactor = int(prec - math.ceil(math.log10(abs(val))))
+    roundFactor = int(prec - getNormalizationShift(val) - 1)
     # But we don't want to round integers
     if roundFactor < 0:
         roundFactor = 0
@@ -116,6 +114,16 @@ def roundToPrec(val, prec):
     if int(val) == val:
         val = int(val)
     return val
+
+
+def getNormalizationShift(val):
+    """
+    Given a value, return how many positions to the left we should shift
+    decimal separator to get number in range of [1, 10)
+    """
+    if val == 0:
+        return None
+    return math.floor(math.log10(abs(val)))
 
 
 def roundDec(val, prec):
