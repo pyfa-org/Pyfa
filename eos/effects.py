@@ -4261,7 +4261,7 @@ class Effect1434(BaseEffect):
         for sensorType in ('Gravimetric', 'Ladar', 'Magnetometric', 'Radar'):
             fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Electronic Warfare'),
                                           'scan{0}StrengthBonus'.format(sensorType),
-                                          ship.getModifiedItemAttr('shipBonusCB'), stackingPenalties=True,
+                                          ship.getModifiedItemAttr('shipBonusCB'),
                                           skill='Caldari Battleship', **kwargs)
 
 
