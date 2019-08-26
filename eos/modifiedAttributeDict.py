@@ -49,7 +49,7 @@ def getResistanceAttrID(modifyingItem, effect):
     # If it doesn't exist on the effect, check the modifying modules attributes. If it's there, set it on the
     # effect for this session so that we don't have to look here again (won't always work when it's None, but
     # will catch most)
-    if not effect.getattr('resistanceCalculated'):
+    if not effect.resistanceID and not effect.getattr('resistanceCalculated'):
         attrPrefix = effect.getattr('prefix')
         if attrPrefix:
             effect.resistanceID = int(modifyingItem.getModifiedItemAttr('{}ResistanceID'.format(attrPrefix))) or None
@@ -553,10 +553,12 @@ class ModifiedAttributeDict(collections.MutableMapping):
         if 'projected' not in effectType:
             return 1
         remoteResistID = getResistanceAttrID(modifyingItem=fit.getModifier(), effect=effect)
+        if not remoteResistID:
+            return 1
         attrInfo = getAttributeInfo(remoteResistID)
         # Get the attribute of the resist
         resist = fit.ship.itemModifiedAttributes[attrInfo.attributeName] or None
-        return resist or 1.0
+        return resist or 1
 
 
 class Affliction:
