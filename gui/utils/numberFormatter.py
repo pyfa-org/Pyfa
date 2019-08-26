@@ -99,12 +99,15 @@ def formatAmount(val, prec=3, lowest=0, highest=0, currency=False, forceSign=Fal
     return result
 
 
-def roundToPrec(val, prec):
+def roundToPrec(val, prec, nsValue=None):
+    """
+    nsValue: custom value which should be used to determine normalization shift
+    """
     # We're not rounding integers anyway
     # Also make sure that we do not ask to calculate logarithm of zero
     if int(val) == val:
         return int(val)
-    roundFactor = int(prec - getNormalizationShift(val) - 1)
+    roundFactor = int(prec - math.floor(math.log10(abs(val if nsValue is None else nsValue))) - 1)
     # But we don't want to round integers
     if roundFactor < 0:
         roundFactor = 0
@@ -114,16 +117,6 @@ def roundToPrec(val, prec):
     if int(val) == val:
         val = int(val)
     return val
-
-
-def getNormalizationShift(val):
-    """
-    Given a value, return how many positions to the left we should shift
-    decimal separator to get number in range of [1, 10)
-    """
-    if val == 0:
-        return None
-    return math.floor(math.log10(abs(val)))
 
 
 def roundDec(val, prec):
