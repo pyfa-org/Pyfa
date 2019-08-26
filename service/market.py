@@ -305,9 +305,10 @@ class Market:
         self.ITEMS_FORCEDMARKETGROUP_R = self.__makeRevDict(self.ITEMS_FORCEDMARKETGROUP)
 
         self.FORCEDMARKETGROUP = {
-            685: False,  # Ship Equipment > Electronic Warfare > ECCM
-            681: False,  # Ship Equipment > Electronic Warfare > Sensor Backup Arrays
-            1639: False  # Ship Equipment > Fleet Assistance > Command Processors
+            685: False,   # Ship Equipment > Electronic Warfare > ECCM
+            681: False,   # Ship Equipment > Electronic Warfare > Sensor Backup Arrays
+            1639: False,  # Ship Equipment > Fleet Assistance > Command Processors
+            2527: True,   # Ship Equipment > Hull & Armor > Mutadaptive Remote Armor Repairers - has hasTypes set to 1 while actually having no types
         }
 
         # Misc definitions
