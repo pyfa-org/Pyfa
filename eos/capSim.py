@@ -148,6 +148,7 @@ class CapSimulator:
         stability_precision = self.stability_precision
         period = self.period
 
+        activation = None
         iterations = 0
 
         capCapacity = self.capacitorCapacity
@@ -162,7 +163,12 @@ class CapSimulator:
         t_max = self.t_max
 
         while 1:
-            activation = pop(state)
+            # Nothing to pop - might happen when no mods are activated, or when
+            # only cap injectors are active (and are postponed by code below)
+            try:
+                activation = pop(state)
+            except IndexError:
+                break
             t_now, duration, capNeed, shot, clipSize, reloadTime, isInjector = activation
 
             # Max time reached, stop simulation - we're stable
@@ -275,7 +281,8 @@ class CapSimulator:
                 activation[3] = shot
 
                 push(state, activation)
-        push(state, activation)
+        if activation is not None:
+            push(state, activation)
 
         # update instance with relevant results.
         self.t = t_last
