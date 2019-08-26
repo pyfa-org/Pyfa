@@ -5966,8 +5966,10 @@ class Effect2019(BaseEffect):
     @staticmethod
     def handler(fit, container, context, **kwargs):
         level = container.level if 'skill' in context else 1
+        penalized = False if 'skill' in context else True
         fit.drones.filteredItemBoost(lambda drone: drone.item.group.name == 'Logistic Drone',
-                                     'shieldBonus', container.getModifiedItemAttr('damageHP') * level, **kwargs)
+                                     'shieldBonus', container.getModifiedItemAttr('damageHP') * level,
+                                     stackingPenalties=penalized, **kwargs)
 
 
 class Effect2020(BaseEffect):
