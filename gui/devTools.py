@@ -39,7 +39,7 @@ class DevTools(AuxiliaryFrame):
 
     def __init__(self, parent):
         super().__init__(
-            parent, id=wx.ID_ANY, title="Development Tools", style=wx.RESIZE_BORDER,
+            parent, id=wx.ID_ANY, title="Development Tools", resizeable=True,
             size=wx.Size(400, 320) if "wxGTK" in wx.PlatformInfo else wx.Size(400, 240))
         self.mainFrame = parent
         self.block = False

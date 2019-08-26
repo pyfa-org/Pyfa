@@ -24,7 +24,7 @@ class AttributeEditor(AuxiliaryFrame):
     def __init__(self, parent):
         super().__init__(
             parent, wx.ID_ANY, title="Attribute Editor", pos=wx.DefaultPosition,
-            size=wx.Size(650, 600), style=wx.RESIZE_BORDER)
+            size=wx.Size(650, 600), resizeable=True)
 
         i = wx.Icon(BitmapLoader.getBitmap("fit_rename_small", "gui"))
         self.SetIcon(i)

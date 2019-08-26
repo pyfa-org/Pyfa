@@ -45,7 +45,7 @@ class GraphFrame(AuxiliaryFrame):
             pyfalog.warning('Matplotlib is not enabled. Skipping initialization.')
             return
 
-        super().__init__(parent, title='Graphs', style=wx.RESIZE_BORDER, size=(520, 390))
+        super().__init__(parent, title='Graphs', size=(520, 390), resizeable=True)
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
 
         self.SetIcon(wx.Icon(BitmapLoader.getBitmap('graphs_small', 'gui')))

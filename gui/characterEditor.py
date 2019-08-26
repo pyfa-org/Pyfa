@@ -154,7 +154,9 @@ class CharacterEntityEditor(EntityEditor):
 class CharacterEditor(AuxiliaryFrame):
 
     def __init__(self, parent):
-        super().__init__(parent, id=wx.ID_ANY, title="Character Editor", pos=wx.DefaultPosition, size=wx.Size(640, 600))
+        super().__init__(
+            parent, id=wx.ID_ANY, title="Character Editor", resizeable=True,
+            pos=wx.DefaultPosition, size=wx.Size(640, 600))
 
         i = wx.Icon(BitmapLoader.getBitmap("character_small", "gui"))
         self.SetIcon(i)

@@ -25,7 +25,7 @@ class EveFittings(AuxiliaryFrame):
     def __init__(self, parent):
         super().__init__(
             parent, id=wx.ID_ANY, title="Browse EVE Fittings", pos=wx.DefaultPosition,
-            size=wx.Size(750, 450), style=wx.RESIZE_BORDER)
+            size=wx.Size(750, 450), resizeable=True)
 
         self.mainFrame = parent
         mainSizer = wx.BoxSizer(wx.VERTICAL)
@@ -204,7 +204,7 @@ class ExportToEve(AuxiliaryFrame):
     def __init__(self, parent):
         super().__init__(
             parent, id=wx.ID_ANY, title="Export fit to EVE", pos=wx.DefaultPosition,
-            size=wx.Size(400, 120) if "wxGTK" in wx.PlatformInfo else wx.Size(350, 100), style=wx.RESIZE_BORDER)
+            size=wx.Size(400, 120) if "wxGTK" in wx.PlatformInfo else wx.Size(350, 100), resizeable=True)
 
         self.mainFrame = parent
 
@@ -317,7 +317,7 @@ class SsoCharacterMgmt(AuxiliaryFrame):
     def __init__(self, parent):
         super().__init__(
             parent, id=wx.ID_ANY, title="SSO Character Management", pos=wx.DefaultPosition,
-            size=wx.Size(550, 250), style=wx.RESIZE_BORDER)
+            size=wx.Size(550, 250), resizeable=True)
         self.mainFrame = parent
         mainSizer = wx.BoxSizer(wx.HORIZONTAL)
 

@@ -126,7 +126,7 @@ class TargetProfileEditor(AuxiliaryFrame):
 
     def __init__(self, parent):
         super().__init__(
-            parent, id=wx.ID_ANY, title="Target Profile Editor", style=wx.RESIZE_BORDER,
+            parent, id=wx.ID_ANY, title="Target Profile Editor", resizeable=True,
             # Dropdown list widget is scaled to its longest content line on GTK, adapt to that
             size=wx.Size(500, 240) if "wxGTK" in wx.PlatformInfo else wx.Size(350, 240))
 

@@ -56,7 +56,7 @@ class ItemStatsFrame(AuxiliaryFrame):
             title="Item stats",
             pos=pos,
             size=size,
-            style=wx.RESIZE_BORDER)
+            resizeable=True)
 
         empty = getattr(victim, "isEmpty", False)
 
