@@ -63,7 +63,7 @@ def getResistanceAttrID(modifyingItem, effect):
         else:
             resistanceID = int(modifyingItem.getModifiedItemAttr("remoteResistanceID")) or None
         resistanceCache[cacheKey] = resistanceID
-    return resistanceID
+        return resistanceID
 
 
 class ItemAttrShortcut:
