@@ -51,6 +51,7 @@ class ChangeItemToVariation(ContextMenuCombined):
     def getSubMenu(self, callingWindow, context, mainItem, selection, rootMenu, i, pitem):
         self.moduleLookup = {}
         sFit = Fit.getInstance()
+        sMkt = Market.getInstance()
         fit = sFit.getFit(self.mainFrame.getActiveFit())
 
         def get_metalevel(x):
@@ -61,7 +62,8 @@ class ChangeItemToVariation(ContextMenuCombined):
         def get_metagroup(x):
             # We want deadspace before officer mods
             remap = {5: 6, 6: 5}
-            return remap.get(x.metaGroup.ID, x.metaGroup.ID) if x.metaGroup is not None else 0
+            metaGroup = sMkt.getMetaGroupByItem(x)
+            return remap.get(metaGroup.ID, metaGroup.ID) if metaGroup is not None else 0
 
         def get_boosterrank(x):
             # If we're returning a lot of items, sort my name
@@ -84,7 +86,9 @@ class ChangeItemToVariation(ContextMenuCombined):
             bindmenu = m
 
         # Do not show abyssal items
-        items = list(i for i in self.mainVariations if i.metaGroup is None or i.metaGroup.ID != 15)
+        items = list(
+            i for i in self.mainVariations
+            if sMkt.getMetaGroupByItem(i) is None or sMkt.getMetaGroupByItem(i).ID != 15)
         # Sort items by metalevel, and group within that metalevel
         # Sort all items by name first
         items.sort(key=lambda x: x.name)
@@ -102,12 +106,13 @@ class ChangeItemToVariation(ContextMenuCombined):
         group = None
         for item in items:
             # Apparently no metaGroup for the Tech I variant:
+            metaGroup = sMkt.getMetaGroupByItem(item)
             if 'subSystem' in item.effects:
                 thisgroup = item.marketGroup.marketGroupName
-            elif item.metaGroup is None:
+            elif metaGroup is None:
                 thisgroup = 'Tech I'
             else:
-                thisgroup = item.metaGroup.name
+                thisgroup = metaGroup.name
 
             if thisgroup != group and context not in ('implantItem', 'boosterItem'):
                 group = thisgroup
