@@ -6720,9 +6720,9 @@ class Effect2251(BaseEffect):
 
     @staticmethod
     def handler(fit, src, context, **kwargs):
-        fit.modules.filteredItemIncrease(lambda mod: mod.item.requiresSkill('Leadership'), 'maxGroupActive',
-                                         src.getModifiedItemAttr('maxGangModules'), **kwargs)
         fit.modules.filteredItemIncrease(lambda mod: mod.item.requiresSkill('Leadership'), 'maxGroupOnline',
+                                         src.getModifiedItemAttr('maxGangModules'), **kwargs)
+        fit.modules.filteredItemIncrease(lambda mod: mod.item.requiresSkill('Leadership'), 'maxGroupActive',
                                          src.getModifiedItemAttr('maxGangModules'), **kwargs)
 
 
@@ -29502,6 +29502,8 @@ class Effect6613(BaseEffect):
 
     @staticmethod
     def handler(fit, src, context, **kwargs):
+        fit.modules.filteredItemIncrease(lambda mod: mod.item.requiresSkill('Leadership'), 'maxGroupOnline',
+                                         src.getModifiedItemAttr('shipBonusRole1'), **kwargs)
         fit.modules.filteredItemIncrease(lambda mod: mod.item.requiresSkill('Leadership'), 'maxGroupActive',
                                          src.getModifiedItemAttr('shipBonusRole1'), **kwargs)
 
@@ -29604,6 +29606,8 @@ class Effect6619(BaseEffect):
 
     @staticmethod
     def handler(fit, src, context, **kwargs):
+        fit.modules.filteredItemIncrease(lambda mod: mod.item.requiresSkill('Leadership'), 'maxGroupOnline',
+                                         src.getModifiedItemAttr('shipBonusRole1'), **kwargs)
         fit.modules.filteredItemIncrease(lambda mod: mod.item.requiresSkill('Leadership'), 'maxGroupActive',
                                          src.getModifiedItemAttr('shipBonusRole1'), **kwargs)
 
@@ -29916,6 +29920,8 @@ class Effect6640(BaseEffect):
 
     @staticmethod
     def handler(fit, src, context, **kwargs):
+        fit.modules.filteredItemIncrease(lambda mod: mod.item.requiresSkill('Leadership'), 'maxGroupOnline',
+                                         src.getModifiedItemAttr('shipBonusRole1'), **kwargs)
         fit.modules.filteredItemIncrease(lambda mod: mod.item.requiresSkill('Leadership'), 'maxGroupActive',
                                          src.getModifiedItemAttr('shipBonusRole1'), **kwargs)
 
