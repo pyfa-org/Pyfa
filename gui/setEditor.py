@@ -119,7 +119,7 @@ class ImplantSetEditor(AuxiliaryFrame):
 
     def __init__(self, parent):
         super().__init__(
-            parent, id=wx.ID_ANY, title="Implant Set Editor", style=wx.RESIZE_BORDER,
+            parent, id=wx.ID_ANY, title="Implant Set Editor", resizeable=True,
             size=wx.Size(950, 500) if "wxGTK" in wx.PlatformInfo else wx.Size(850, 420))
 
         self.block = False

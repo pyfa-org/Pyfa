@@ -4261,7 +4261,7 @@ class Effect1434(BaseEffect):
         for sensorType in ('Gravimetric', 'Ladar', 'Magnetometric', 'Radar'):
             fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Electronic Warfare'),
                                           'scan{0}StrengthBonus'.format(sensorType),
-                                          ship.getModifiedItemAttr('shipBonusCB'), stackingPenalties=True,
+                                          ship.getModifiedItemAttr('shipBonusCB'),
                                           skill='Caldari Battleship', **kwargs)
 
 
@@ -5967,8 +5967,10 @@ class Effect2019(BaseEffect):
     @staticmethod
     def handler(fit, container, context, **kwargs):
         level = container.level if 'skill' in context else 1
+        penalized = False if 'skill' in context else True
         fit.drones.filteredItemBoost(lambda drone: drone.item.group.name == 'Logistic Drone',
-                                     'shieldBonus', container.getModifiedItemAttr('damageHP') * level, **kwargs)
+                                     'shieldBonus', container.getModifiedItemAttr('damageHP') * level,
+                                     stackingPenalties=penalized, **kwargs)
 
 
 class Effect2020(BaseEffect):
@@ -6721,9 +6723,9 @@ class Effect2251(BaseEffect):
 
     @staticmethod
     def handler(fit, src, context, **kwargs):
-        fit.modules.filteredItemIncrease(lambda mod: mod.item.requiresSkill('Leadership'), 'maxGroupActive',
-                                         src.getModifiedItemAttr('maxGangModules'), **kwargs)
         fit.modules.filteredItemIncrease(lambda mod: mod.item.requiresSkill('Leadership'), 'maxGroupOnline',
+                                         src.getModifiedItemAttr('maxGangModules'), **kwargs)
+        fit.modules.filteredItemIncrease(lambda mod: mod.item.requiresSkill('Leadership'), 'maxGroupActive',
                                          src.getModifiedItemAttr('maxGangModules'), **kwargs)
 
 
@@ -29503,6 +29505,8 @@ class Effect6613(BaseEffect):
 
     @staticmethod
     def handler(fit, src, context, **kwargs):
+        fit.modules.filteredItemIncrease(lambda mod: mod.item.requiresSkill('Leadership'), 'maxGroupOnline',
+                                         src.getModifiedItemAttr('shipBonusRole1'), **kwargs)
         fit.modules.filteredItemIncrease(lambda mod: mod.item.requiresSkill('Leadership'), 'maxGroupActive',
                                          src.getModifiedItemAttr('shipBonusRole1'), **kwargs)
 
@@ -29605,6 +29609,8 @@ class Effect6619(BaseEffect):
 
     @staticmethod
     def handler(fit, src, context, **kwargs):
+        fit.modules.filteredItemIncrease(lambda mod: mod.item.requiresSkill('Leadership'), 'maxGroupOnline',
+                                         src.getModifiedItemAttr('shipBonusRole1'), **kwargs)
         fit.modules.filteredItemIncrease(lambda mod: mod.item.requiresSkill('Leadership'), 'maxGroupActive',
                                          src.getModifiedItemAttr('shipBonusRole1'), **kwargs)
 
@@ -29917,6 +29923,8 @@ class Effect6640(BaseEffect):
 
     @staticmethod
     def handler(fit, src, context, **kwargs):
+        fit.modules.filteredItemIncrease(lambda mod: mod.item.requiresSkill('Leadership'), 'maxGroupOnline',
+                                         src.getModifiedItemAttr('shipBonusRole1'), **kwargs)
         fit.modules.filteredItemIncrease(lambda mod: mod.item.requiresSkill('Leadership'), 'maxGroupActive',
                                          src.getModifiedItemAttr('shipBonusRole1'), **kwargs)
 

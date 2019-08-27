@@ -38,6 +38,9 @@ from .ctrlPanel import GraphControlPanel
 pyfalog = Logger(__name__)
 
 
+REDRAW_DELAY = 500
+
+
 class GraphFrame(AuxiliaryFrame):
 
     def __init__(self, parent):
@@ -45,7 +48,7 @@ class GraphFrame(AuxiliaryFrame):
             pyfalog.warning('Matplotlib is not enabled. Skipping initialization.')
             return
 
-        super().__init__(parent, title='Graphs', style=wx.RESIZE_BORDER, size=(520, 390))
+        super().__init__(parent, title='Graphs', size=(520, 390), resizeable=True)
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
 
         self.SetIcon(wx.Icon(BitmapLoader.getBitmap('graphs_small', 'gui')))
@@ -90,6 +93,9 @@ class GraphFrame(AuxiliaryFrame):
         self.mainFrame.Bind(GE.GRAPH_OPTION_CHANGED, self.OnGraphOptionChanged)
         self.mainFrame.Bind(GE.EFFECTIVE_HP_TOGGLED, self.OnEffectiveHpToggled)
 
+        self.drawTimer = wx.Timer(self)
+        self.Bind(wx.EVT_TIMER, self.OnDrawTimer, self.drawTimer)
+
         self.Layout()
         self.UpdateWindowSize()
         self.draw()
@@ -128,7 +134,10 @@ class GraphFrame(AuxiliaryFrame):
         for fitID in event.fitIDs:
             self.clearCache(reason=GraphCacheCleanupReason.fitChanged, extraData=fitID)
         self.ctrlPanel.OnFitChanged(event)
-        self.draw()
+        # Data has to be recalculated - delay redraw
+        # to give time to finish UI update in main window
+        self.drawTimer.Stop()
+        self.drawTimer.Start(REDRAW_DELAY, True)
 
     def OnFitRemoved(self, event):
         event.Skip()
@@ -184,7 +193,10 @@ class GraphFrame(AuxiliaryFrame):
             self.ctrlPanel.refreshAxeLabels(restoreSelection=True)
             self.Layout()
             self.clearCache(reason=GraphCacheCleanupReason.hpEffectivityChanged)
-            self.draw()
+            # Data has to be recalculated - delay redraw
+            # to give time to finish UI update in main window
+            self.drawTimer.Stop()
+            self.drawTimer.Start(REDRAW_DELAY, True)
         # Even if graph is not selected, keep it updated
         for idx in range(self.graphSelection.GetCount()):
             view = self.getView(idx=idx)
@@ -201,6 +213,10 @@ class GraphFrame(AuxiliaryFrame):
         self.ctrlPanel.updateControls()
         self.draw()
         event.Skip()
+
+    def OnDrawTimer(self, event):
+        event.Skip()
+        self.draw()
 
     def OnClose(self, event):
         self.mainFrame.Unbind(GE.FIT_RENAMED, handler=self.OnFitRenamed)

@@ -33,6 +33,7 @@ from eos.saveddata.module import Module, Rack
 from eos.saveddata.targetProfile import TargetProfile
 from graphs.wrapper import BaseWrapper
 from gui.builtinContextMenus.envEffectAdd import AddEnvironmentEffect
+from gui.utils.numberFormatter import formatAmount
 from gui.viewColumn import ViewColumn
 from service.fit import Fit as FitSvc
 from service.market import Market
@@ -64,7 +65,11 @@ class BaseName(ViewColumn):
             return "%d/%d %s" % \
                    (stuff.amount, stuff.getModifiedItemAttr("fighterSquadronMaxSize"), stuff.item.name)
         elif isinstance(stuff, Cargo):
-            return "%dx %s" % (stuff.amount, stuff.item.name)
+            if stuff.item.group.name in ("Cargo Container", "Secure Cargo Container", "Audit Log Secure Container", "Freight Container"):
+                capacity = stuff.item.getAttribute('capacity')
+                if capacity:
+                    return "{:d}x {} ({} m\u00B3)".format(stuff.amount, stuff.item.name, formatAmount(capacity, 3, 0, 6))
+            return "{:d}x {}".format(stuff.amount, stuff.item.name)
         elif isinstance(stuff, Fit):
             if self.projectedView:
                 # we need a little more information for the projected view

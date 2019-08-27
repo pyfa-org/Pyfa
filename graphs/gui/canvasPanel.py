@@ -188,6 +188,7 @@ class GraphCanvasPanel(wx.Panel):
             if minX is not None and maxX is not None:
                 minY = min(allYs, default=None)
                 maxY = max(allYs, default=None)
+                yDiff = (maxY or 0) - (minY or 0)
                 xMark = max(min(self.xMark, maxX), minX)
                 # If in top 10% of X coordinates, align labels differently
                 if xMark > canvasMinX + 0.9 * (canvasMaxX - canvasMinX):
@@ -214,7 +215,12 @@ class GraphCanvasPanel(wx.Panel):
                 def addYMark(val):
                     if val is None:
                         return
-                    rounded = roundToPrec(val, 4)
+                    # Round according to shown Y range - the bigger the range,
+                    # the rougher the rounding
+                    if yDiff != 0:
+                        rounded = roundToPrec(val, 4, nsValue=yDiff)
+                    else:
+                        rounded = val
                     # If due to some bug or insufficient plot density we're
                     # out of bounds, do not add anything
                     if minY <= val <= maxY or minY <= rounded <= maxY:

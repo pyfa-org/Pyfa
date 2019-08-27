@@ -99,14 +99,15 @@ def formatAmount(val, prec=3, lowest=0, highest=0, currency=False, forceSign=Fal
     return result
 
 
-def roundToPrec(val, prec):
+def roundToPrec(val, prec, nsValue=None):
+    """
+    nsValue: custom value which should be used to determine normalization shift
+    """
     # We're not rounding integers anyway
     # Also make sure that we do not ask to calculate logarithm of zero
     if int(val) == val:
         return int(val)
-    # Find round factor, taking into consideration that we want to keep at least prec
-    # positions for fractions with zero integer part (e.g. 0.0000354 for prec=3)
-    roundFactor = int(prec - math.ceil(math.log10(abs(val))))
+    roundFactor = int(prec - math.floor(math.log10(abs(val if nsValue is None else nsValue))) - 1)
     # But we don't want to round integers
     if roundFactor < 0:
         roundFactor = 0

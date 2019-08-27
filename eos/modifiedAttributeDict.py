@@ -29,6 +29,7 @@ from eos.db.gamedata.queries import getAttributeInfo
 
 defaultValuesCache = {}
 cappingAttrKeyCache = {}
+resistanceCache = {}
 
 
 def getAttrDefault(key, fallback=None):
@@ -46,19 +47,23 @@ def getAttrDefault(key, fallback=None):
 
 
 def getResistanceAttrID(modifyingItem, effect):
-    # If it doesn't exist on the effect, check the modifying modules attributes. If it's there, set it on the
-    # effect for this session so that we don't have to look here again (won't always work when it's None, but
-    # will catch most)
-    if not effect.getattr('resistanceCalculated'):
+    # If it doesn't exist on the effect, check the modifying module's attributes.
+    # If it's there, cache it and return
+    if effect.resistanceID:
+        return effect.resistanceID
+    cacheKey = (modifyingItem.item.ID, effect.ID)
+    try:
+        return resistanceCache[cacheKey]
+    except KeyError:
         attrPrefix = effect.getattr('prefix')
         if attrPrefix:
-            effect.resistanceID = int(modifyingItem.getModifiedItemAttr('{}ResistanceID'.format(attrPrefix))) or None
-            if not effect.resistanceID:
-                effect.resistanceID = int(modifyingItem.getModifiedItemAttr('{}RemoteResistanceID'.format(attrPrefix))) or None
+            resistanceID = int(modifyingItem.getModifiedItemAttr('{}ResistanceID'.format(attrPrefix))) or None
+            if not resistanceID:
+                resistanceID = int(modifyingItem.getModifiedItemAttr('{}RemoteResistanceID'.format(attrPrefix))) or None
         else:
-            effect.resistanceID = int(modifyingItem.getModifiedItemAttr("remoteResistanceID")) or None
-        effect.resistanceCalculated = True
-    return effect.resistanceID
+            resistanceID = int(modifyingItem.getModifiedItemAttr("remoteResistanceID")) or None
+        resistanceCache[cacheKey] = resistanceID
+        return resistanceID
 
 
 class ItemAttrShortcut:
@@ -553,10 +558,12 @@ class ModifiedAttributeDict(collections.MutableMapping):
         if 'projected' not in effectType:
             return 1
         remoteResistID = getResistanceAttrID(modifyingItem=fit.getModifier(), effect=effect)
+        if not remoteResistID:
+            return 1
         attrInfo = getAttributeInfo(remoteResistID)
         # Get the attribute of the resist
         resist = fit.ship.itemModifiedAttributes[attrInfo.attributeName] or None
-        return resist or 1.0
+        return resist or 1
 
 
 class Affliction:
