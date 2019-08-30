@@ -42,14 +42,15 @@ class SsoLogin(wx.Dialog):
         webbrowser.open(uri)
 
     def OnLogin(self, event):
-        self.Close()
+        self.EndModal(wx.ID_OK)
         event.Skip()
 
 
 class SsoLoginServer(wx.Dialog):
+
     def __init__(self, port):
-        mainFrame = gui.mainFrame.MainFrame.getInstance()
-        super().__init__(mainFrame, id=wx.ID_ANY, title="SSO Login", size=(-1, -1), style=wx.DEFAULT_DIALOG_STYLE)
+        self.mainFrame = gui.mainFrame.MainFrame.getInstance()
+        super().__init__(self.mainFrame, id=wx.ID_ANY, title="SSO Login", size=(-1, -1), style=wx.DEFAULT_DIALOG_STYLE)
 
         from service.esi import Esi
 
@@ -59,8 +60,8 @@ class SsoLoginServer(wx.Dialog):
         uri = self.sEsi.getLoginURI(serverAddr)
 
         bSizer1 = wx.BoxSizer(wx.VERTICAL)
-        mainFrame.Bind(GE.EVT_SSO_LOGIN, self.OnLogin)
-        self.Bind(wx.EVT_CLOSE, self.OnClose)
+        self.mainFrame.Bind(GE.EVT_SSO_LOGIN, self.OnLogin)
+        self.Bind(wx.EVT_WINDOW_DESTROY, self.OnDestroy)
 
         text = wx.StaticText(self, wx.ID_ANY, "Waiting for character login through EVE Single Sign-On.")
         bSizer1.Add(text, 0, wx.ALL | wx.EXPAND, 10)
@@ -78,9 +79,10 @@ class SsoLoginServer(wx.Dialog):
         webbrowser.open(uri)
 
     def OnLogin(self, event):
-        self.Close()
+        self.EndModal(wx.ID_OK)
         event.Skip()
 
-    def OnClose(self, event):
+    def OnDestroy(self, event):
+        self.mainFrame.Unbind(GE.EVT_SSO_LOGIN, handler=self.OnLogin)
         self.sEsi.stopServer()
         event.Skip()
