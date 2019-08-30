@@ -38,8 +38,9 @@ def calculateSpoolup(modMaxValue, modStepValue, modCycleTime, spoolType, spoolAm
     if not modMaxValue or not modStepValue:
         return 0, 0, 0
     if spoolType == SpoolType.SPOOL_SCALE:
-        # For spool scale, round to closest cycle for scaled spool amount
-        cycles = round(spoolAmount * modMaxValue / modStepValue)
+        # Find out at which point of spoolup scale we're on, find out how many cycles
+        # is enough to reach it and recalculate spoolup value for that amount of cycles
+        cycles = math.ceil(floatUnerr(modMaxValue * spoolAmount / modStepValue))
         spoolValue = min(modMaxValue, cycles * modStepValue)
         return spoolValue, cycles, cycles * modCycleTime
     elif spoolType == SpoolType.CYCLE_SCALE:
