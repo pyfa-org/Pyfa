@@ -33,17 +33,11 @@ class SsoLogin(wx.Dialog):
         self.SetSizer(bSizer1)
         self.Center()
 
-        mainFrame.Bind(GE.EVT_SSO_LOGIN, self.OnLogin)
-
         from service.esi import Esi
 
         self.sEsi = Esi.getInstance()
         uri = self.sEsi.getLoginURI(None)
         webbrowser.open(uri)
-
-    def OnLogin(self, event):
-        self.EndModal(wx.ID_OK)
-        event.Skip()
 
 
 class SsoLoginServer(wx.Dialog):
