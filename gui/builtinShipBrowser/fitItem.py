@@ -344,14 +344,13 @@ class FitItem(SFItem.SFBrowserItem):
         if mstate.GetModifiers() == wx.MOD_SHIFT or mstate.MiddleIsDown():
             self.deleteFit()
         else:
-            with wx.MessageDialog(
-                self,
-                "Do you really want to delete this fit?",
-                "Confirm Delete",
-                wx.YES | wx.NO | wx.ICON_QUESTION
-            ) as dlg:
-                if dlg.ShowModal() == wx.ID_YES:
-                    self.deleteFit()
+            dlg = wx.MessageDialog(
+                self, "Do you really want to delete this fit?", "Confirm Delete",
+                wx.YES | wx.NO | wx.ICON_QUESTION)
+            if dlg.ShowModal() == wx.ID_YES:
+                self.deleteFit()
+            else:
+                dlg.Destroy()
 
     def deleteFit(self, event=None):
         pyfalog.debug("Deleting ship fit.")
