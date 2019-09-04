@@ -30501,6 +30501,8 @@ class Effect6681(BaseEffect):
 
     @staticmethod
     def handler(fit, src, context, **kwargs):
+        fit.modules.filteredItemIncrease(lambda mod: mod.item.requiresSkill('Leadership'), 'maxGroupOnline',
+                                         src.getModifiedItemAttr('shipBonusRole3'), **kwargs)
         fit.modules.filteredItemIncrease(lambda mod: mod.item.requiresSkill('Leadership'), 'maxGroupActive',
                                          src.getModifiedItemAttr('shipBonusRole3'), **kwargs)
 
