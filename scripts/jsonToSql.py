@@ -285,7 +285,7 @@ def main(db, json_path):
             tableData = newTableData
         if jsonName == 'icons':
             tableData = convertIcons(tableData)
-        if jsonName == 'phbtraits':
+        if jsonName == 'traits':
             tableData = convertTraits(tableData)
         if jsonName == 'clonegrades':
             tableData = convertClones(tableData)

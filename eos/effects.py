@@ -8527,7 +8527,7 @@ class Effect2857(BaseEffect):
     cynosuralGeneration
 
     Used by:
-    Modules from group: Cynosural Field Generator (2 of 2)
+    Modules from group: Cynosural Field Generator (3 of 3)
     """
 
     type = 'active'
@@ -35814,7 +35814,7 @@ class Effect7232(BaseEffect):
     modifyDamageMultiplierBonusMax
 
     Used by:
-    Implants named like: Low Grade Kostenadza (5 of 6)
+    Implants named like: Low Grade Mimesis (5 of 6)
     """
 
     type = 'passive'
@@ -35831,7 +35831,7 @@ class Effect7233(BaseEffect):
     modifyDamageMultiplierBonusPerCycle
 
     Used by:
-    Implants named like: Low Grade Kostenadza (5 of 6)
+    Implants named like: Low Grade Mimesis (5 of 6)
     """
 
     type = 'passive'
@@ -35845,10 +35845,10 @@ class Effect7233(BaseEffect):
 
 class Effect7234(BaseEffect):
     """
-    implantSetKostenadza
+    implantSetMimesis
 
     Used by:
-    Implants named like: Low Grade Kostenadza (6 of 6)
+    Implants named like: Low Grade Mimesis (6 of 6)
     """
 
     runTime = 'early'
@@ -35858,7 +35858,7 @@ class Effect7234(BaseEffect):
     def handler(fit, implant, context, **kwargs):
         fit.appliedImplants.filteredItemMultiply(
             lambda imp: imp.item.group.name == 'Cyberimplant', 'damageMultiplierBonusMaxModifier',
-            implant.getModifiedItemAttr('setBonusKostenadza'), **kwargs)
+            implant.getModifiedItemAttr('setBonusMimesis'), **kwargs)
         fit.appliedImplants.filteredItemMultiply(
             lambda imp: imp.item.group.name == 'Cyberimplant', 'damageMultiplierBonusPerCycleModifier',
-            implant.getModifiedItemAttr('setBonusKostenadza'), **kwargs)
+            implant.getModifiedItemAttr('setBonusMimesis'), **kwargs)
