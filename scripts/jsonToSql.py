@@ -55,23 +55,23 @@ def main(db, json_path):
 
     # Config dict
     tables = {
-        'clonegrades': eos.gamedata.AlphaCloneSkill,
-        'dgmattribs': eos.gamedata.AttributeInfo,
-        'dgmeffects': eos.gamedata.Effect,
-        'dgmtypeattribs': eos.gamedata.Attribute,
-        'dgmtypeeffects': eos.gamedata.ItemEffect,
-        'dgmunits': eos.gamedata.Unit,
-        'evecategories': eos.gamedata.Category,
-        'evegroups': eos.gamedata.Group,
-        'invmetagroups': eos.gamedata.MetaGroup,
-        'invmetatypes': eos.gamedata.MetaType,
-        'evetypes': eos.gamedata.Item,
-        'phbtraits': eos.gamedata.Traits,
-        'phbmetadata': eos.gamedata.MetaData,
-        'marketGroups': eos.gamedata.MarketGroup}
+        'clonegrades': ('fsd_lite', eos.gamedata.AlphaCloneSkill),
+        'dgmattribs': ('bulkdata', eos.gamedata.AttributeInfo),
+        'dgmeffects': ('bulkdata', eos.gamedata.Effect),
+        'dgmtypeattribs': ('bulkdata', eos.gamedata.Attribute),
+        'dgmtypeeffects': ('bulkdata', eos.gamedata.ItemEffect),
+        'dgmunits': ('bulkdata', eos.gamedata.Unit),
+        'evecategories': ('fsd_lite', eos.gamedata.Category),
+        'evegroups': ('fsd_lite', eos.gamedata.Group),
+        'invmetagroups': ('bulkdata', eos.gamedata.MetaGroup),
+        'invmetatypes': ('bulkdata', eos.gamedata.MetaType),
+        'evetypes': ('fsd_lite', eos.gamedata.Item),
+        'traits': ('phobos', eos.gamedata.Traits),
+        'metadata': ('phobos', eos.gamedata.MetaData),
+        'marketgroups': ('fsd_binary', eos.gamedata.MarketGroup)}
 
     fieldMapping = {
-        'marketGroups': {
+        'marketgroups': {
             'id': 'marketGroupID',
             'name': 'marketGroupName'}}
 
@@ -79,7 +79,7 @@ def main(db, json_path):
         'evetypes',
         'evegroups',
         'evecategories',
-        'marketGroups')
+        'marketgroups')
 
     def convertIcons(data):
         new = []
@@ -271,8 +271,8 @@ def main(db, json_path):
     data = {}
 
     # Dump all data to memory so we can easely cross check ignored rows
-    for jsonName, cls in tables.items():
-        with open(os.path.join(jsonPath, '{}.json'.format(jsonName)), encoding='utf-8') as f:
+    for jsonName, (minerName, cls) in tables.items():
+        with open(os.path.join(jsonPath, minerName, '{}.json'.format(jsonName)), encoding='utf-8') as f:
             tableData = json.load(f)
         if jsonName in rowsInValues:
             newTableData = []
@@ -342,7 +342,7 @@ def main(db, json_path):
                 ):
                     row['published'] = True
 
-                instance = tables[jsonName]()
+                instance = tables[jsonName][1]()
                 # fix for issue 80
                 if jsonName is 'icons' and 'res:/ui/texture/icons/' in str(row['iconFile']).lower():
                     row['iconFile'] = row['iconFile'].lower().replace('res:/ui/texture/icons/', '').replace('.png', '')
@@ -370,7 +370,7 @@ def main(db, json_path):
                 eos.db.gamedata_session.add(instance)
 
     # quick and dirty hack to get this data in
-    with open(os.path.join(jsonPath, 'dynamicattributes.json'), encoding='utf-8') as f:
+    with open(os.path.join(jsonPath, 'fsd_binary', 'dynamicitemattributes.json'), encoding='utf-8') as f:
         bulkdata = json.load(f)
         for mutaID, data in bulkdata.items():
             muta = eos.gamedata.DynamicItem()
